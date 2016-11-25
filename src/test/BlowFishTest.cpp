@@ -196,4 +196,3 @@ c=05044B62FA52D080 k[24]=F0E1D2C3B4A5968778695A4B3C2D1E0F0011223344556677
       EXPECT_TRUE(memcmp(tmp, plaintext_vk[i], 8) == 0) << "Test vector " << i;
     }
   }
-

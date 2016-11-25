@@ -436,4 +436,3 @@ void DboxMain::ImportFilters()
     gmb.MessageBox(cs_temp, cs_title, uiFlags);
   }
 }
-

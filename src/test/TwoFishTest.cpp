@@ -225,4 +225,3 @@ TEST(TwoFishTest, ECB_VK)
     EXPECT_TRUE(memcmp(res, vectors[i].CT, 16) == 0) << "Test vector " << i;
   }
 }
-

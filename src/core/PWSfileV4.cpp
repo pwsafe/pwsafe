@@ -84,7 +84,6 @@ PWSfileV4::CKeyBlocks PWSfileV4::CKeyBlocks::operator=(const PWSfileV4::CKeyBloc
   return *this;
 }
 
-
 PWSfileV4::PWSfileV4(const StringX &filename, RWmode mode, VERSION version)
   : PWSfile(filename, mode, version),
     m_effectiveFileLength(0), m_nHashIters(MIN_HASH_ITERATIONS)
@@ -492,7 +491,6 @@ void PWSfileV4::ComputeEndKB(const unsigned char hnonce[SHA256::HASHLEN],
   m_hmac.Update(hnonce, SHA256::HASHLEN);
   m_hmac.Final(digest);
 }
-
 
 #define SAFE_FWRITE(p, sz, cnt, stream) \
   { \

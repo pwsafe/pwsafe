@@ -1635,4 +1635,3 @@ bool PWSFilterManager::PassesAttFiltering(const CItemData *pci, const PWScore &c
   // We finished all the groups and haven't found one that is true - exclude entry.
   return false;
 }
-

@@ -433,7 +433,6 @@ CRichEditExtn::CRichEditExtn(COLORREF focusColor)
   m_vmenu_items.clear();
 }
 
-
 void CRichEditExtn::SetContextMenu(const std::vector<st_context_menu> &vmenu_items)
 {
   // Don't allow if menu string is empty.
@@ -981,7 +980,6 @@ void CComboBoxExtn::AdjustItemHeight(int nInc)
 {
   SetItemHeight(0, GetItemHeight(0) + nInc);
 }
-
 
 //-----------------------------------------------------------------
 // CSecEditExtn is meant for sensitive information that you really don't

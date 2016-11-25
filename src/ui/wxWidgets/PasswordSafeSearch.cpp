@@ -65,8 +65,6 @@ enum {
   ID_FIND_STATUS_AREA
 };
 
-
-
 PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(0),
                                                                     m_parentFrame(parent),
                                                                     m_criteria(new SelectionCriteria)
@@ -81,13 +79,11 @@ PasswordSafeSearch::~PasswordSafeSearch(void)
   m_criteria = 0;
 }
 
-
 void PasswordSafeSearch::OnSearchTextChanged(wxCommandEvent& evt)
 {
   wxSearchCtrl *srchCtrl = wxDynamicCast(evt.GetEventObject(), wxSearchCtrl);
   srchCtrl->SetModified(true);
 }
-
 
 /*!
  * wxEVT_COMMAND_TEXT_ENTER event handler for ID_FIND_EDITBOX
@@ -180,7 +176,6 @@ void PasswordSafeSearch::FindPrevious()
       UpdateView();
     }
 }
-
 
 /*!
  * wxEVT_COMMAND_TOOL_CLICKED event handler for ID_FIND_CLOSE
@@ -460,7 +455,6 @@ void PasswordSafeSearch::Activate(void)
   m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
   ClearToolbarStatusArea();
 }
-
 
 template <class Iter, class Accessor>
 void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr, Iter begin, Iter end, Accessor afn)

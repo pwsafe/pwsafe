@@ -12,7 +12,6 @@
 #ifndef _EDITSHORTCUT_H_
 #define _EDITSHORTCUT_H_
 
-
 /*!
  * Includes
  */
@@ -51,7 +50,6 @@ class UIInterFace;
 #define SYMBOL_EDITSHORTCUT_SIZE wxSize(400, 300)
 #define SYMBOL_EDITSHORTCUT_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * EditShortcut class declaration

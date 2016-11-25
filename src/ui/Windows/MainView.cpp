@@ -622,7 +622,6 @@ void DboxMain::setupBars()
   m_FindToolBar.SetBarStyle(dwStyle);
   m_FindToolBar.SetWindowText(L"Find");
 
-
   // Set Toolbar according to graphic capabilities, overridable by user choice.
   if (NumBits < 16 || !PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar))  {
     SetToolbar(ID_MENUITEM_OLD_TOOLBAR, true);
@@ -3493,7 +3492,6 @@ int DboxMain::OnUpdateViewReports(const int nID)
   if (!GetDriveAndDirectory(cs_Database, cs_drive, cs_directory))
     return FALSE;
 
-
   csAction.LoadString(SetupViewReports(nID));
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
 
@@ -3939,7 +3937,6 @@ void DboxMain::UpdateEntryImages(const CItemData &ci)
     m_ctlItemTree.DeleteItem(pdi->tree_item);
   }
 }
-
 
 void DboxMain::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpdis)
 {

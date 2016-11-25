@@ -811,7 +811,6 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
     } while (hSibling != NULL);
     // If we made it here, then name's unique.
 
-
     // PR2407325: If the user edits a group name so that it has
     // a GROUP_SEP, all hell breaks loose.
     // Right Thing (tm) would be to parse and create subgroups as
@@ -2232,7 +2231,6 @@ void CPWTreeCtrl::SortTree(const HTREEITEM htreeitem)
 
   // here iff user prefers "explorer type view", that is,
   // groups first.
-
 
   // unbelievable, but we have to recurse ourselves!
   // foreach child of hti

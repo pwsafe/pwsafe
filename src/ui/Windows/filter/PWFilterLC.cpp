@@ -2433,7 +2433,6 @@ BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLRe
                 cs_TipText, _TRUNCATE);
     pTTTW->lpszText = (LPWSTR)m_pwchTip;
 
-
     return TRUE;   // we found a tool tip,
   }
   

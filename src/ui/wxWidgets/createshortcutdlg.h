@@ -10,10 +10,8 @@
 * 
 */
 
-
 #ifndef _CREATESHORTCUTDLG_H_
 #define _CREATESHORTCUTDLG_H_
-
 
 /*!
  * Includes
@@ -51,7 +49,6 @@ class UIInterFace;
 #define SYMBOL_CREATESHORTCUTDLG_SIZE wxSize(300, 300)
 #define SYMBOL_CREATESHORTCUTDLG_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * CreateShortcutDlg class declaration

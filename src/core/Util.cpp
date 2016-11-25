@@ -76,7 +76,6 @@ void trashMemory(LPTSTR buffer, size_t length)
   trashMemory(reinterpret_cast<unsigned char *>(buffer), length * sizeof(buffer[0]));
 }
 
-
 /**
 Burn some stack memory
 @param len amount of stack to burn in bytes
@@ -710,7 +709,6 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
   ostringstream oss;
   const unsigned char *utf8 = NULL;
   size_t utf8Len = 0;
-
 
   for (i = 0; i < indent; i++) oss << "\t";
   oss << "<" << name << ">" ;

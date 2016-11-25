@@ -88,4 +88,3 @@ private:
 
   bool m_bKillActiveInProgress;  // Checked already in OnUserBkpLocationKillfocus
 };
-

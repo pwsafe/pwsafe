@@ -295,4 +295,3 @@ void CYubiCfgDlg::OnBnClickedYubiShowHide()
   }
   UpdateData(FALSE);
 }
-

@@ -94,4 +94,3 @@ LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
   return CPropertyPage::WindowProc(message, wParam, lParam);
 }
-

@@ -45,4 +45,3 @@ BOOL COptions_PropertyPage::OnQueryCancel()
   }
   return CPWPropertyPage::OnQueryCancel();
 }
-

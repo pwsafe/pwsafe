@@ -12,7 +12,6 @@
 
 using namespace std;
 
-
 #define NUM_LOG_ENTRIES 256
 
 PWSLog *PWSLog::self = NULL;

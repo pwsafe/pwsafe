@@ -11,7 +11,6 @@
 #if !defined(jprdebug_h)
 #define jprdebug_h
 
-
 #if defined(JPRDEBUG)
 
 #define DBGMSG(x) ::OutputDebugString(x)

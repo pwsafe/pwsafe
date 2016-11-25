@@ -9,7 +9,6 @@
 #ifndef _DELETECONFIRMATION_H_
 #define _DELETECONFIRMATION_H_
 
-
 /*!
  * Includes
  */
@@ -42,7 +41,6 @@
 #define SYMBOL_DELETECONFIRMATION_SIZE wxSize(400, 300)
 #define SYMBOL_DELETECONFIRMATION_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * DeleteConfirmation class declaration

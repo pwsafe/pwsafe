@@ -82,7 +82,6 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
   return retval;
 }
 
-
 PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename, const StringX &passkey)
 {
   if (pws_os::FileExists(filename.c_str())) {

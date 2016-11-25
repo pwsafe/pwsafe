@@ -66,8 +66,6 @@
 
 #endif  /* WINVER < 0x0501 */
 
-
-
 // For ShutdownBlockReasonCreate & ShutdownBlockReasonDestroy
 typedef BOOL (WINAPI *PSBR_CREATE) (HWND, LPCWSTR);
 typedef BOOL (WINAPI *PSBR_DESTROY) (HWND);

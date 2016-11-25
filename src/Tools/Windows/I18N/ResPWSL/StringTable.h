@@ -55,4 +55,3 @@ private:
   CMapStringToOb m_mapStrings;
   CString m_strKey;
 };
-

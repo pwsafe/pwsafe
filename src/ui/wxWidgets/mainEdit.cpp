@@ -101,8 +101,6 @@ void PasswordSafeFrame::DoEdit(CItemData item)
   }
 }
 
-
-
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ADD
  */
@@ -255,7 +253,6 @@ void PasswordSafeFrame::OnFindPrevious( wxCommandEvent& /* evt */ )
   m_search->FindPrevious();
 }
 
-
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
  */
@@ -264,7 +261,6 @@ void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& /* evt */ )
 {
   PWSclipboard::GetInstance()->ClearData();
 }
-
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYPASSWORD
@@ -308,8 +304,6 @@ void PasswordSafeFrame::DoCopyRunCmd(CItemData &item)
   UpdateAccessTime(item);
 }
 
-
-
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYUSERNAME
  */
@@ -328,7 +322,6 @@ void PasswordSafeFrame::DoCopyUsername(CItemData &item)
   UpdateAccessTime(item);
 }
 
-
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYNOTESFLD
  */
@@ -346,7 +339,6 @@ void PasswordSafeFrame::DoCopyNotes(CItemData &item)
   PWSclipboard::GetInstance()->SetData(item.GetNotes());
   UpdateAccessTime(item);
 }
-
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYURL

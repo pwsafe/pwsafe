@@ -964,7 +964,6 @@ void CAddEdit_Additional::OnPWHCopyAll()
   GetMainDlg()->UpdateLastClipboardAction(CItemData::RESERVED);
 }
 
-
 void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *pResult)
 {
   LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);

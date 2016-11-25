@@ -44,8 +44,6 @@ END_EVENT_TABLE()
 
 IMPLEMENT_CLASS( CDragBar, wxControl )
 
-
-
 CDragBar::CDragBar(wxFrame* parent, IDragSourceTextProvider* provider,
                                 wxOrientation orient /*= wxHORIZONTAL*/) :
                                                 wxControl(parent, wxID_ANY),

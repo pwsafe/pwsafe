@@ -25,5 +25,4 @@ private:
   DECLARE_NO_COPY_CLASS(COpenFilePickerValidator)
 };
 
-
 #endif

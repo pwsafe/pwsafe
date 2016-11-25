@@ -222,7 +222,6 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   } else {
     pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - OSK DLL loaded OK.\n");
 
-
     LP_OSK_GetKeyboardData pGetKBData =
       LP_OSK_GetKeyboardData(pws_os::GetFunction(OSK_module, "OSK_GetKeyboardData"));
     LP_OSK_ListKeyboards pListKBs =
@@ -2158,7 +2157,6 @@ void CVKeyBoardDlg::OnLButtonDown(UINT nFlags, CPoint point)
 
   PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x,point.y));
 }
-
 
 void CVKeyBoardDlg::OnSaveKLID()
 {

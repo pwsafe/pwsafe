@@ -54,7 +54,6 @@ void CPWHdrCtrlNoChng::OnBeginTrack(NMHDR *, LRESULT *pLResult)
   *pLResult = TRUE;
 }
 
-
 void CPWHdrCtrlNoChng::OnItemChanging(NMHDR *, LRESULT *pLResult)
 {
   *pLResult = m_bStopChange ? TRUE : FALSE;

@@ -44,4 +44,3 @@ TCHAR* pws_os::pws_itot(int val, TCHAR* out, unsigned base)
   std::reverse(out, p);
   return out;
 }
-

@@ -10,10 +10,8 @@
 * 
 */
 
-
 #ifndef _PASSWORDSUBSET_H_
 #define _PASSWORDSUBSET_H_
-
 
 /*!
  * Includes
@@ -49,7 +47,6 @@
 #define SYMBOL_CPASSWORDSUBSET_SIZE wxSize(400, 300)
 #define SYMBOL_CPASSWORDSUBSET_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * CPasswordSubset class declaration

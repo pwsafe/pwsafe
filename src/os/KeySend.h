@@ -62,4 +62,3 @@ private:
   unsigned m_delayMS; //delay between keystrokes in milliseconds
   CKeySendImpl *m_impl;
 };
-

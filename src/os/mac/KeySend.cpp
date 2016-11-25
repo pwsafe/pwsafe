@@ -71,7 +71,6 @@ bool CKeySend::SimulateApplicationSwitch(void)
 }
 #endif
 
-
 void CKeySend::SelectAll() const
 {
   const bool selectedAll = pws_os::SelectAll();

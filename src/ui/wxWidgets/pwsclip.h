@@ -40,4 +40,3 @@ private:
 };
 
 #endif /* _PWSCLIP_H_ */
-

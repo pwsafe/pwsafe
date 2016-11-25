@@ -23,7 +23,6 @@ and was written by Pål K. Tønder
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 CSysColStatic::CSysColStatic() :
   m_nImageID(-1), m_hBmp(NULL)
 {

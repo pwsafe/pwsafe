@@ -160,7 +160,6 @@
 //#include "./graphics/toolbar/classic/viewreports.xpm"
 //#include "./graphics/toolbar/classic/viewreports_disabled.xpm"
 
-
 enum {ID_SEPARATOR = -1};
 
 #define PWS_TOOLBAR_BITMAPS(n)  wxCONCAT(n, _xpm),                              \

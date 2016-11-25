@@ -178,4 +178,3 @@ void CFilterDCADlg::OnBnClickedOk()
 
   CFilterBaseDlg::OnOK();
 }
-

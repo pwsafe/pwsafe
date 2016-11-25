@@ -101,7 +101,6 @@ CPasswordSubsetDlg::~CPasswordSubsetDlg()
   m_CopyPswdBitmap.Detach();
 }
 
-
 void CPasswordSubsetDlg::DoDataExchange(CDataExchange* pDX)
 {
     CPWDialog::DoDataExchange(pDX);

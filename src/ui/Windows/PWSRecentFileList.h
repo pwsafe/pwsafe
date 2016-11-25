@@ -34,4 +34,3 @@ public:
   int GetMaxSize() const { return GetSize(); }
   int GetNumUsed() const;
 };
-

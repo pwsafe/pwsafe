@@ -226,7 +226,6 @@ void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
   nPos++;
 }
 
-
 StringX PWPolicy::GetDisplayString()
 {
   // Display string for policy in List View and Show entries' differences

@@ -77,7 +77,6 @@ void CItemAtt::CreateUUID()
   SetUUID(uuid);
 }
 
-
 void CItemAtt::SetUUID(const CUUID &uuid)
 {
   CItem::SetField(ATTUUID, static_cast<const unsigned char *>(*uuid.GetARep()), sizeof(uuid_array_t));
@@ -260,7 +259,6 @@ int CItemAtt::Export(const stringT &fname) const
   delete[] value;
   return status;
 }
-
 
 bool CItemAtt::SetField(unsigned char type, const unsigned char *data,
                         size_t len)

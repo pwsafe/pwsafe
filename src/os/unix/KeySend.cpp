@@ -42,7 +42,6 @@ static pws_os::AutotypeMethod DefaultAutytypeMethod() {
   return GetPref(PWSprefs::UseAltAutoType)? pws_os::ATMETHOD_XTEST: pws_os::ATMETHOD_XSENDKEYS;
 }
 
-
 ////////////////////////////////////////////////////
 // CKeySend - The generic implementation
 CKeySend::CKeySend(bool, unsigned defaultDelay)

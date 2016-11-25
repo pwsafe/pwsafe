@@ -1342,7 +1342,6 @@ void CManageFiltersDlg::SortFilterView()
   phctrl->SetItem(m_iSortColumn, &hdi);
 }
 
-
 BOOL CManageFiltersDlg::PreTranslateMessage(MSG* pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
@@ -1357,4 +1356,3 @@ void CManageFiltersDlg::OnHelp()
 {
   ShowHelp(L"::/html/filters.html#ManagingFilters");
 }
-

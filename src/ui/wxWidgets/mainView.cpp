@@ -50,7 +50,6 @@ void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_LIST_VIEW
  */
@@ -62,7 +61,6 @@ void PasswordSafeFrame::OnListViewClick( wxCommandEvent& /* evt */ )
   ShowGrid(true);
   m_currentView = GRID;
 }
-
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_TREE_VIEW
@@ -177,7 +175,6 @@ void PasswordSafeFrame::OnShowUnsavedEntriesClick( wxCommandEvent& event )
     CurrentFilter().Empty();
   ApplyFilters();
 }
-
 
 void PasswordSafeFrame::ApplyFilters()
 {

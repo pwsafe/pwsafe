@@ -21,7 +21,6 @@
 #include <string>
 #include "tstring.h"
 
-
 /**
  * \ingroup Utils
  * Class to convert strings from/to UTF8 and UTF16.

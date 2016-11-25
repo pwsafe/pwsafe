@@ -1094,7 +1094,6 @@ void CPasswordPolicyDlg::UnselectNamedPolicy()
   m_cbxPolicyNames.EnableWindow(FALSE);
 }
 
-
 void CPasswordPolicyDlg::OnSymbolReset()
 {
   do_reset_symbols(true);

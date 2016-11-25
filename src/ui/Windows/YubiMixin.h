@@ -21,7 +21,6 @@
 #ifndef NO_YUBI
 #include <afxmt.h> // for CMutex
 
-
 class CYubiMixin {
  public:
   CYubiMixin();

@@ -49,4 +49,3 @@ public:
   void OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hMenu);
   void OnEnterIdle(WPARAM nWhy, HWND hwndWho);
 };
-

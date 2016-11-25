@@ -1672,7 +1672,6 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     } // !exists
   } // !filename.IsEmpty()
 
-
   if (bFileIsReadOnly || bForceReadOnly) {
     // As file is read-only, we must honour it and not permit user to change it
     pcore->SetReadOnly(true);

@@ -229,4 +229,3 @@ void CAboutDlg::OnTakeTestdump()
   CDumpSelect dmpslct;
   dmpslct.DoModal();
 }
-

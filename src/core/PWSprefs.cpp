@@ -1129,7 +1129,6 @@ void PWSprefs::InitializePreferences()
             m_configfilename.c_str(),
             isRO ? L"R/O" : L"R/W");
 
-
   // Does the registry entry exist for this user?
   m_bRegistryKeyExists = CheckRegistryExists();
 

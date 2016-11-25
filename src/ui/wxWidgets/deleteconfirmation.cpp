@@ -33,13 +33,11 @@
 ////@begin XPM images
 ////@end XPM images
 
-
 /*!
  * DeleteConfirmation type definition
  */
 
 IMPLEMENT_CLASS( DeleteConfirmation, wxDialog )
-
 
 /*!
  * DeleteConfirmation event table definition
@@ -55,7 +53,6 @@ BEGIN_EVENT_TABLE( DeleteConfirmation, wxDialog )
 ////@end DeleteConfirmation event table entries
 
 END_EVENT_TABLE()
-
 
 /*!
  * DeleteConfirmation constructors
@@ -73,7 +70,6 @@ DeleteConfirmation::DeleteConfirmation( wxWindow* parent, int num_children, wxWi
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * DeleteConfirmation creator
@@ -95,7 +91,6 @@ bool DeleteConfirmation::Create( wxWindow* parent, wxWindowID id, const wxString
   return true;
 }
 
-
 /*!
  * DeleteConfirmation destructor
  */
@@ -105,7 +100,6 @@ DeleteConfirmation::~DeleteConfirmation()
 ////@begin DeleteConfirmation destruction
 ////@end DeleteConfirmation destruction
 }
-
 
 /*!
  * Member initialisation
@@ -117,7 +111,6 @@ void DeleteConfirmation::Init()
   m_areyousure = NULL;
 ////@end DeleteConfirmation member initialisation
 }
-
 
 /*!
  * Control creation for DeleteConfirmation
@@ -155,7 +148,6 @@ void DeleteConfirmation::CreateControls()
 ////@end DeleteConfirmation content construction
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -189,7 +181,6 @@ wxIcon DeleteConfirmation::GetIconResource( const wxString& WXUNUSED(name) )
 ////@end DeleteConfirmation icon retrieval
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_NO
  */
@@ -204,7 +195,6 @@ void DeleteConfirmation::OnNoClick( wxCommandEvent& /* evt */ )
   EndModal(wxID_NO);
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_YES
  */
@@ -218,4 +208,3 @@ void DeleteConfirmation::OnYesClick( wxCommandEvent& /* evt */ )
   }
   EndModal(wxID_YES);
 }
-

@@ -37,7 +37,6 @@ protected:
     int  do_encoding() const throw() { return 2; }
 };
 
-
 /** Conversion facet that allows to read Unicode files in UTF-8 encoding */
 class utf8_conversion
 : public std::codecvt<wchar_t, char, std::mbstate_t>

@@ -198,7 +198,6 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_PWDPOLSM
  */

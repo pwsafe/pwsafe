@@ -12,7 +12,6 @@
 #ifndef _PWSAFEAPP_H_
 #define _PWSAFEAPP_H_
 
-
 /*!
  * Includes
  */

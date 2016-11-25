@@ -153,7 +153,6 @@ void CPWFiltersDlg::OnOk()
   if (UpdateData(TRUE) == FALSE)
     return;
 
-
   if (m_iType == DFTYPE_MAIN && m_filtername.IsEmpty()) {
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_FILTERNAMEEMPTY);

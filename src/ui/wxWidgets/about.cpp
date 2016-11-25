@@ -21,7 +21,6 @@
 #endif
 #include <wx/url.h>
 
-
 ////@begin includes
 ////@end includes
 
@@ -38,13 +37,11 @@
 #include "graphics/cpane.xpm"
 ////@end XPM images
 
-
 /*!
  * CAbout type definition
  */
 
 IMPLEMENT_CLASS( CAbout, wxDialog )
-
 
 /*!
  * CAbout event table definition
@@ -62,7 +59,6 @@ BEGIN_EVENT_TABLE( CAbout, wxDialog )
 
 END_EVENT_TABLE()
 
-
 /*!
  * CAbout constructors
  */
@@ -77,7 +73,6 @@ CAbout::CAbout( wxWindow* parent, wxWindowID id, const wxString& caption, const 
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * CAbout creator
@@ -103,7 +98,6 @@ bool CAbout::Create( wxWindow* parent, wxWindowID id, const wxString& caption, c
   return true;
 }
 
-
 /*!
  * CAbout destructor
  */
@@ -114,7 +108,6 @@ CAbout::~CAbout()
 ////@end CAbout destruction
 }
 
-
 /*!
  * Member initialization
  */
@@ -123,7 +116,6 @@ void CAbout::Init()
 {
   m_newVerStatus = NULL;
 }
-
 
 /*!
  * Control creation for CAbout
@@ -198,7 +190,6 @@ void CAbout::CreateControls()
   buildStaticText->SetLabel(dstring);
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -235,7 +226,6 @@ wxIcon CAbout::GetIconResource( const wxString& WXUNUSED(name) )
 ////@end CAbout icon retrieval
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
  */
@@ -247,7 +237,6 @@ void CAbout::OnCloseClick( wxCommandEvent& WXUNUSED(event) )
   EndModal(wxID_CLOSE);
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in CAbout.
 }
-
 
 /*!
  * core routine "CheckVersion::CheckLatestVersion" checks if there is a later version
