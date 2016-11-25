@@ -1662,11 +1662,11 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
   PWSprefs::IntPrefs pref = (isShift) ?
     PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction;
 
-  short DCA = short(PWSprefs::GetInstance()->GetPref(pref));
+  int16 DCA = int16(PWSprefs::GetInstance()->GetPref(pref));
 
   CItemData *pci = item.IsShortcut() ? m_core.GetBaseEntry(&item) : &item;
 
-  short itemDCA;
+  int16 itemDCA;
   pci->GetDCA(itemDCA, isShift);
 
   if (itemDCA >= PWSprefs::minDCA && itemDCA <= PWSprefs::maxDCA)
