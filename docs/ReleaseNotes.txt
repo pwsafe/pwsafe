@@ -21,7 +21,7 @@ Bugs fixed in 3.41.0pre
 reduce character truncation.
 [] Clicking on a field's name copies the value to the clipboard when adding
 a new entry (and not only when editing).
-[] Update password history when Appy is clicked, not only when Edit
+[] Update password history when Apply is clicked, not only when Edit
 window's closed.
 [] All empty groups are no longer shown when the user filters for only entries 
 with expired passwords.
@@ -324,7 +324,7 @@ or opening a Password Safe database.
 entered via virtual keyboard.
 [1176] Tweak definition of what's considered a 'weak' password.
 [1174] "Open as read-only" check-box now correctly reflects the file's state.
-[1117] Dragging dropbar icon doesn't copy text to clipboard unless
+[1117] Dragging DragBar icon doesn't copy text to clipboard unless
 Control key's pressed when icon's clicked upon.
 
 New Features for 3.33
