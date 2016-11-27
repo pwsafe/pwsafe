@@ -184,8 +184,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_sxSelectedGroup = L"";
   m_sxVisibleGroup = L"";
 
-  // Don't reset unknown prefs before command line parsed
-  ClearData(true, false);
+  ClearData(true);
 
   m_titlebar = L"";
   m_toolbarsSetup = FALSE;

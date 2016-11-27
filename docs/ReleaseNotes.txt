@@ -15,7 +15,7 @@ The ReleaseNotes.html file has links to the relevant tickets/issues.
 
 Bugs fixed in 3.41.1
 ====================
-None
+[1367] Fixed regression in command line arguments -h and -u support.
 
 Changes to Existing Features in 3.41.1
 ======================================
@@ -45,7 +45,6 @@ when exiting Options.
 Randomize button.
 [1368] The Status bar now shows the correct number of entries when a database
 is unlocked.
-[1367] Fixed regression in command line arguments -h and -u support.
 [1366] Copying the unexpanded autotype string on Edit entry screen using Ctrl+click
 on Autotype label now works.
 [1365] Ctrl+F now switches focus back to Find toolbar if it is already open.
