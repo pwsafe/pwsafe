@@ -341,7 +341,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
 
   CGeneralMsgBox gmb;
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);
+    cs_temp.Format(IDS_CANTOPENWRITING, static_cast<LPCWSTR>(cs_newfile));
     cs_title.LoadString(IDS_FILEWRITEERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
   } else {
@@ -358,7 +358,7 @@ void DboxMain::ImportFilters()
 
   if (!pws_os::FileExists(XSDFilename)) {
     CGeneralMsgBox gmb;
-    cs_temp.Format(IDSC_MISSINGXSD, XSDfn.c_str());
+    cs_temp.Format(IDSC_MISSINGXSD, static_cast<LPCWSTR>(XSDfn.c_str()));
     cs_title.LoadString(IDSC_CANTVALIDATEXML);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
@@ -411,17 +411,18 @@ void DboxMain::ImportFilters()
     UINT uiFlags = MB_OK | MB_ICONWARNING;
     switch (rc) {
       case PWScore::XML_FAILED_VALIDATION:
-        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(),
-                       strErrors.c_str());
+        cs_temp.Format(IDS_FAILEDXMLVALIDATE, static_cast<LPCWSTR>(fd.GetFileName()),
+                       static_cast<LPCWSTR>(strErrors.c_str()));
         break;
       case PWScore::XML_FAILED_IMPORT:
-        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors.c_str());
+        cs_temp.Format(IDS_XMLERRORS, static_cast<LPCWSTR>(fd.GetFileName()),
+                       static_cast<LPCWSTR>(strErrors.c_str()));
         break;
       case PWScore::SUCCESS:
         if (!strErrors.empty()) {
           std::wstring csErrors = strErrors + L"\n";
-          cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName(),
-                         csErrors.c_str());
+          cs_temp.Format(IDS_XMLIMPORTWITHERRORS, static_cast<LPCWSTR>(fd.GetFileName()),
+                         static_cast<LPCWSTR>(csErrors.c_str()));
         } else {
           cs_temp.LoadString(IDS_FILTERSIMPORTEDOK);
           uiFlags = MB_OK | MB_ICONINFORMATION;

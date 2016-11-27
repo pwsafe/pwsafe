@@ -55,7 +55,7 @@ BOOL CCreateShortcutDlg::OnInitDialog()
   // Make sure Group combobox is wide enough
   SetGroupComboBoxWidth();
 
-  m_title.Format(IDS_SCTARGET, m_tt);
+  m_title.Format(IDS_SCTARGET, static_cast<LPCWSTR>(m_tt));
 
   CSecString cs_target(L"");
   if (!m_tg.IsEmpty())
@@ -120,9 +120,12 @@ void CCreateShortcutDlg::OnOK()
   if (GetMainDlg()->Find(m_group, m_title, m_username) != app.GetMainDlg()->End()) {
     CSecString temp;
     if (m_group.IsEmpty())
-      temp.Format(IDS_ENTRYEXISTS2, m_title, m_username);
+      temp.Format(IDS_ENTRYEXISTS2, static_cast<LPCWSTR>(m_title),
+                  static_cast<LPCWSTR>(m_username));
     else
-      temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
+      temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(m_group),
+                  static_cast<LPCWSTR>(m_title),
+                  static_cast<LPCWSTR>(m_username));
     gmb.AfxMessageBox(temp);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();

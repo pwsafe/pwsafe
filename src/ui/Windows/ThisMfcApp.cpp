@@ -189,9 +189,9 @@ static bool CheckFile(const CString &fn)
   CString cs_msg(L"");
 
   if (status == INVALID_FILE_ATTRIBUTES) {
-    cs_msg.Format(IDS_FILEERROR1, fn);
+    cs_msg.Format(IDS_FILEERROR1, static_cast<LPCWSTR>(fn));
   } else if (status & FILE_ATTRIBUTE_DIRECTORY) {
-    cs_msg.Format(IDS_FILEERROR2, fn);
+    cs_msg.Format(IDS_FILEERROR2, static_cast<LPCWSTR>(fn));
   }
 
   if (cs_msg.IsEmpty()) {
@@ -336,11 +336,11 @@ void ThisMfcApp::LoadLocalizedStuff()
     //  and supplied Help file
     free((void *)m_pszHelpFilePath);
 
-    cs_HelpPath.Format(L"%spwsafe.chm", cs_HelpDir);
+    cs_HelpPath.Format(L"%spwsafe.chm", static_cast<LPCWSTR>(cs_HelpDir));
     if (PathFileExists(cs_HelpPath)) {
       m_pszHelpFilePath = _wcsdup(cs_HelpPath);
       m_csHelpFile = cs_HelpPath;
-      pws_os::Trace(L"Using help file: %s\n", cs_HelpPath);
+      pws_os::Trace(L"Using help file: %s\n", static_cast<LPCWSTR>(cs_HelpPath));
     } else {
       m_pszHelpFilePath = NULL;
       m_csHelpFile = L"";
@@ -368,13 +368,14 @@ void ThisMfcApp::LoadLocalizedStuff()
   // Find resource-only DLL if requested
   const CString format_string = (cs_CTRY.IsEmpty()) ?
                       L"pwsafe%s%s.dll" : L"pwsafe%s_%s.dll";
-  cs_ResPath.Format(format_string, cs_LANG, cs_CTRY);
+  cs_ResPath.Format(format_string, static_cast<LPCWSTR>(cs_LANG),
+                       static_cast<LPCWSTR>(cs_CTRY));
   m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
                                               pws_os::LOAD_LIBRARY_APP));
 
   if (m_hInstResDLL == NULL && !cs_CTRY.IsEmpty()) {
     // Now try base
-    cs_ResPath.Format(L"pwsafe%s.dll", cs_LANG);
+    cs_ResPath.Format(L"pwsafe%s.dll", static_cast<LPCWSTR>(cs_LANG));
     m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
                                                 pws_os::LOAD_LIBRARY_APP));
   }
@@ -389,14 +390,14 @@ void ThisMfcApp::LoadLocalizedStuff()
       CGeneralMsgBox gmb;
       CString oops;
       oops.Format(L"Executable/language DLL (%s) version mismatch %d.%d.%d/%d.%d.%d.\n", 
-                  cs_ResPath,
+                  static_cast<LPCWSTR>(cs_ResPath),
                   HIWORD(dw_fileMajorMinor), LOWORD(dw_fileMajorMinor), HIWORD(dw_fileBuildRevision),
                   HIWORD(m_dwMajorMinor), LOWORD(m_dwMajorMinor), HIWORD(m_dwBuildRevision));
       gmb.AfxMessageBox(oops);
       pws_os::FreeLibrary(m_hInstResDLL);
       m_hInstResDLL = NULL;
     } else { // Passed version check
-      pws_os::Trace(L"Using language DLL '%s'.\n", cs_ResPath);
+      pws_os::Trace(L"Using language DLL '%s'.\n", static_cast<LPCWSTR>(cs_ResPath));
       GetDLLVersionData(cs_ResPath, m_ResLangID);
     }
   } // end of resource dll hunt
@@ -408,21 +409,24 @@ void ThisMfcApp::LoadLocalizedStuff()
   bool helpFileFound = false;
 
   if (!cs_LANG.IsEmpty() && !cs_CTRY.IsEmpty()) {
-    cs_HelpPath.Format(L"%spwsafe%s_%s.chm", cs_HelpDir, cs_LANG, cs_CTRY);
+    cs_HelpPath.Format(L"%spwsafe%s_%s.chm", static_cast<LPCWSTR>(cs_HelpDir),
+                       static_cast<LPCWSTR>(cs_LANG),
+                       static_cast<LPCWSTR>(cs_CTRY));
     if (PathFileExists(cs_HelpPath)) {
       helpFileFound = true;
     }
   }
 
   if (!helpFileFound && !cs_LANG.IsEmpty()) {
-    cs_HelpPath.Format(L"%spwsafe%s.chm", cs_HelpDir, cs_LANG);
+    cs_HelpPath.Format(L"%spwsafe%s.chm", static_cast<LPCWSTR>(cs_HelpDir),
+                        static_cast<LPCWSTR>(cs_LANG));
     if (PathFileExists(cs_HelpPath)) {
       helpFileFound = true;
     }
   }
 
   if (!helpFileFound) {
-    cs_HelpPath.Format(L"%spwsafe.chm", cs_HelpDir);
+    cs_HelpPath.Format(L"%spwsafe.chm",static_cast<LPCWSTR>( cs_HelpDir));
     if (PathFileExists(cs_HelpPath)) {
       helpFileFound = true;
     }
@@ -443,7 +447,7 @@ void ThisMfcApp::LoadLocalizedStuff()
 
     m_pszHelpFilePath = _wcsdup(cs_HelpPath);
     m_csHelpFile = cs_HelpPath;
-    pws_os::Trace(L"Using help file: %s\n", cs_HelpPath);
+    pws_os::Trace(L"Using help file: %s\n", static_cast<LPCWSTR>(cs_HelpPath));
   }
 }
 
@@ -846,7 +850,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
               // safest to keep this particular error message in English
               // and out of the language-specific dlls.
               missing_cfg.Format(L"Configuration file %s not found - creating it.",
-                                 *arg);
+                                 static_cast<LPCWSTR>(*arg));
               gmb.AfxMessageBox(missing_cfg, L"Error", MB_OK|MB_ICONINFORMATION);
             }
           }
@@ -1420,7 +1424,7 @@ void ThisMfcApp::GetLanguageFiles()
     if (len == 15)
       cs_CC = cs_dll.Mid(9, 2);
 
-    cs_temp.Format(L"pwsafe%s.chm", cs_LL);
+    cs_temp.Format(L"pwsafe%s.chm", static_cast<LPCWSTR>(cs_LL));
     cs_helpfile = cs_ExePath + cs_temp;
     std::wstring wsHelpFile = (LPCWSTR)cs_helpfile;
     bool bHelpFileExists = pws_os::FileExists(wsHelpFile);

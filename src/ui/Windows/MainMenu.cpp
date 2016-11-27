@@ -488,8 +488,8 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
       if (iter != m_MapMenuShortcuts.end()) {
         CString str;
         if (iter->second.siVirtKey != 0) {
-          str.Format(L"%s\t%s", iter->second.name.c_str(), 
-                       CMenuShortcut::FormatShortcut(iter));
+          str.Format(L"%s\t%s", static_cast<LPCWSTR>(iter->second.name.c_str()),
+                     static_cast<LPCWSTR>(CMenuShortcut::FormatShortcut(iter)));
         } else {
           str = iter->second.name.c_str();
         }

@@ -124,7 +124,8 @@ void DboxMain::OnAdd()
         (prefs->GetPref(PWSprefs::QuerySetDef)) &&
         (!sxUsername.IsEmpty())) {
       CQuerySetDef defDlg(this);
-      defDlg.m_defaultusername.Format(IDS_SETUSERNAME, (const CString&)sxUsername);
+      defDlg.m_defaultusername.Format(IDS_SETUSERNAME,
+            static_cast<LPCWSTR>((const CString&)sxUsername));
 
       INT_PTR rc2 = defDlg.DoModal();
 
@@ -226,7 +227,8 @@ void DboxMain::OnCreateShortcut()
         (prefs->GetPref(PWSprefs::QuerySetDef)) &&
         (!dlg_createshortcut.m_username.IsEmpty())) {
       CQuerySetDef defDlg(this);
-      defDlg.m_defaultusername.Format(IDS_SETUSERNAME, (const CString&)dlg_createshortcut.m_username);
+      defDlg.m_defaultusername.Format(IDS_SETUSERNAME,
+                 static_cast<LPCWSTR>((const CString&)dlg_createshortcut.m_username));
 
       INT_PTR rc2 = defDlg.DoModal();
 
@@ -2304,13 +2306,17 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
           // This base is in fact an alias. ParseBaseEntryPWD already found 'proper base'
           // So dropped entry will point to the 'proper base' and tell the user.
           CString cs_msg;
-          cs_msg.Format(IDS_DDBASEISALIAS, sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str());
+          cs_msg.Format(IDS_DDBASEISALIAS, static_cast<LPCWSTR>(sxgroup.c_str()),
+                        static_cast<LPCWSTR>(sxtitle.c_str()),
+                        static_cast<LPCWSTR>(sxuser.c_str()));
           gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
         } else
         if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
           // Only normal or alias base allowed as target
           CString cs_msg;
-          cs_msg.Format(IDS_ABASEINVALID, sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str());
+          cs_msg.Format(IDS_ABASEINVALID, static_cast<LPCWSTR>(sxgroup.c_str()),
+                        static_cast<LPCWSTR>(sxtitle.c_str()),
+                        static_cast<LPCWSTR>(sxuser.c_str()));
           gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
           continue;
         }
@@ -2328,7 +2334,9 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
         if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_SHORTCUTBASE) {
           // Only normal or shortcut base allowed as target
           CString cs_msg;
-          cs_msg.Format(IDS_SBASEINVALID, sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str());
+          cs_msg.Format(IDS_SBASEINVALID, static_cast<LPCWSTR>(sxgroup.c_str()),
+                        static_cast<LPCWSTR>(sxtitle.c_str()),
+                        static_cast<LPCWSTR>(sxuser.c_str()));
           gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
           continue;
         }

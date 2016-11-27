@@ -158,7 +158,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
   if (sx_dats.empty())
     cs_dats = DEFAULT_AUTOTYPE;
   else
-    cs_dats.Format(IDS_DEFAULTAUTOTYPE, sx_dats.c_str());
+    cs_dats.Format(IDS_DEFAULTAUTOTYPE, static_cast<LPCWSTR>(sx_dats.c_str()));
 
   GetDlgItem(IDC_DEFAULTAUTOTYPE)->SetWindowText(cs_dats);
 
@@ -531,7 +531,7 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       }
 
       cs_msg.LoadString(ierror);
-      cs_errmsg.Format(IDS_KBS_INVALID, cs_msg);
+      cs_errmsg.Format(IDS_KBS_INVALID, static_cast<LPCWSTR>(cs_msg));
       m_stc_warning.SetWindowText(cs_errmsg);
       m_stc_warning.ShowWindow(SW_SHOW);
 
@@ -552,8 +552,10 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       const StringX sxGroup = iter->second.GetGroup();
       const StringX sxTitle = iter->second.GetTitle();
       const StringX sxUser  = iter->second.GetUser();
-      cs_errmsg.Format(IDS_KBS_INUSEBYENTRY, cs_HotKey,
-                       sxGroup.c_str(), sxTitle.c_str(), sxUser.c_str());
+      cs_errmsg.Format(IDS_KBS_INUSEBYENTRY, static_cast<LPCWSTR>(cs_HotKey),
+                       static_cast<LPCWSTR>(sxGroup.c_str()),
+                       static_cast<LPCWSTR>(sxTitle.c_str()),
+                       static_cast<LPCWSTR>(sxUser.c_str()));
       m_stc_warning.SetWindowText(cs_errmsg);
       m_stc_warning.ShowWindow(SW_SHOW);
 
@@ -577,7 +579,9 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       // (on this instance for this user!)
       Remove(sxMenuItemName, L'&');
       CString cs_override(MAKEINTRESOURCE(IDS_ENTRYKBST_OVERRIDE));
-      cs_errmsg.Format(IDS_KBS_INUSEBYMENU, cs_HotKey, sxMenuItemName.c_str(), cs_override);
+      cs_errmsg.Format(IDS_KBS_INUSEBYMENU, static_cast<LPCWSTR>(cs_HotKey),
+                       static_cast<LPCWSTR>(sxMenuItemName.c_str()),
+                       static_cast<LPCWSTR>(cs_override));
       m_stc_warning.SetWindowText(cs_errmsg);
       m_stc_warning.ShowWindow(SW_SHOW);
       // We have warned them - so now accept
@@ -667,7 +671,7 @@ BOOL CAddEdit_Additional::OnApply()
       CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
       CString cs_temp(MAKEINTRESOURCE(IDS_RUN_IGNOREORFIX));
       CString cs_errmsg;
-      cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, errmsg.c_str());
+      cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, static_cast<LPCWSTR>(errmsg.c_str()));
       cs_errmsg += cs_temp;
       INT_PTR rc = gmb.MessageBox(cs_errmsg, cs_title,
                            MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
@@ -832,7 +836,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
           CGeneralMsgBox gmb;
           CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
           CString cs_errmsg;
-          cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, errmsg.c_str());
+          cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, static_cast<LPCWSTR>(errmsg.c_str()));
           gmb.MessageBox(cs_errmsg, cs_title, MB_ICONERROR);
         }
       }

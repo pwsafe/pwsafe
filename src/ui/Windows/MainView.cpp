@@ -113,7 +113,7 @@ void DboxMain::BlockLogoffShutdown(const bool bChanged)
   if (bChanged) {
     if (m_pfcnShutdownBlockReasonCreate != NULL) {
       CString cs_stopreason;
-      cs_stopreason.Format(IDS_STOPREASON, m_core.GetCurFile().c_str());
+      cs_stopreason.Format(IDS_STOPREASON, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
       m_pfcnShutdownBlockReasonCreate(m_hWnd, cs_stopreason);
       m_bBlockShutdown = true;
     }
@@ -3330,7 +3330,9 @@ void DboxMain::OnViewReports()
 
   for (int i = 0; i < sizeof(Reports) / sizeof(Reports[0]); i++) {
     csAction.LoadString(Reports[i]);
-    cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
+    cs_filename.Format(IDSC_REPORTFILENAME, static_cast<LPCWSTR>(cs_drive),
+                       static_cast<LPCWSTR>(cs_directory),
+                       static_cast<LPCWSTR>(csAction));
     if (::_tstat(cs_filename, &statbuf) == 0) {
       gmb.AddButton(Reports[i], csAction);
       bReportExists = true;
@@ -3366,7 +3368,9 @@ void DboxMain::OnViewReports()
       return;
   }
   csAction.LoadString(uistring);
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
+  cs_filename.Format(IDSC_REPORTFILENAME, static_cast<LPCWSTR>(cs_drive),
+                     static_cast<LPCWSTR>(cs_directory),
+                     static_cast<LPCWSTR>(csAction));
 
   ViewReport(cs_filename);
   return;
@@ -3415,7 +3419,9 @@ void DboxMain::OnViewReportsByID(UINT nID)
     return;
 
   csAction.LoadString(SetupViewReports(nID));
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
+  cs_filename.Format(IDSC_REPORTFILENAME, static_cast<LPCWSTR>(cs_drive),
+                     static_cast<LPCWSTR>(cs_directory),
+                     static_cast<LPCWSTR>(csAction));
 
   ViewReport(cs_filename);
 }
@@ -3463,7 +3469,8 @@ void DboxMain::ViewReport(const CString &cs_ReportFileName) const
   CString cs_CommandLine;
 
   // Make the command line = "<program>" "file" 
-  cs_CommandLine.Format(L"\"%s\" \"%s\"", szExecName, cs_ReportFileName);
+  cs_CommandLine.Format(L"\"%s\" \"%s\"", static_cast<LPCWSTR>(szExecName), 
+                        static_cast<LPCWSTR>(cs_ReportFileName));
   int ilen = cs_CommandLine.GetLength();
   LPWSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
 
@@ -3493,7 +3500,9 @@ int DboxMain::OnUpdateViewReports(const int nID)
     return FALSE;
 
   csAction.LoadString(SetupViewReports(nID));
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
+  cs_filename.Format(IDSC_REPORTFILENAME, static_cast<LPCWSTR>(cs_drive),
+                     static_cast<LPCWSTR>(cs_directory),
+                     static_cast<LPCWSTR>(csAction));
 
   struct _stat statbuf;
 
@@ -3712,7 +3721,7 @@ void DboxMain::OnToolBarFindReport()
   // tell the user we're done & provide short Compare report
   if (!bFAdvanced) {
     cs_temp.LoadString(IDS_NONE);
-    buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
+    buffer.Format(IDS_ADVANCEDOPTIONS, static_cast<LPCWSTR>(cs_temp));
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();
   } else {
@@ -3761,15 +3770,17 @@ void DboxMain::OnToolBarFindReport()
       uistring = PWSMatch::GetRule(PWSMatch::MatchRule(abs(Fsubgroup_function)));
 
       cs_text.LoadString(uistring);
-      cs_temp.Format(IDS_ADVANCEDSUBSET, cs_Object, cs_text, Fsubgroup_name.c_str(),
-                     cs_case);
+      cs_temp.Format(IDS_ADVANCEDSUBSET, static_cast<LPCWSTR>(cs_Object),
+                     static_cast<LPCWSTR>(cs_text),
+                     static_cast<LPCWSTR>(Fsubgroup_name.c_str()),
+                     static_cast<LPCWSTR>(cs_case));
     }
-    buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
+    buffer.Format(IDS_ADVANCEDOPTIONS, static_cast<LPCWSTR>(cs_temp));
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();
 
     cs_temp.LoadString(IDS_RPTFIND);
-    buffer.Format(IDS_ADVANCEDFIELDS, cs_temp);
+    buffer.Format(IDS_ADVANCEDFIELDS, static_cast<LPCWSTR>(cs_temp));
     rpt.WriteLine((LPCWSTR)buffer);
 
     buffer = L"\t";
@@ -3805,17 +3816,18 @@ void DboxMain::OnToolBarFindReport()
   }
 
   if (pindices->empty()) {
-    buffer.Format(IDS_SEARCHRESULTS1, csFindString);
+    buffer.Format(IDS_SEARCHRESULTS1, static_cast<LPCWSTR>(csFindString));
     rpt.WriteLine((LPCWSTR)buffer);
   } else {
-    buffer.Format(IDS_SEARCHRESULTS2, csFindString);
+    buffer.Format(IDS_SEARCHRESULTS2, static_cast<LPCWSTR>(csFindString));
     rpt.WriteLine((LPCWSTR)buffer);
 
     for (int i = 0; i < (int)pindices->size(); i++) {
       int index = pindices->at(i);
       CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(index);
-      buffer.Format(IDS_COMPARESTATS, pci->GetGroup().c_str(),
-                    pci->GetTitle().c_str(), pci->GetUser().c_str());
+      buffer.Format(IDS_COMPARESTATS, static_cast<LPCWSTR>(pci->GetGroup().c_str()),
+                    static_cast<LPCWSTR>(pci->GetTitle().c_str()),
+                    static_cast<LPCWSTR>(pci->GetUser().c_str()));
       rpt.WriteLine((LPCWSTR)buffer, false);
     }
   }

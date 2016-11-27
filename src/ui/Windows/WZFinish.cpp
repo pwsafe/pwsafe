@@ -265,17 +265,17 @@ int CWZFinish::ExecuteAction()
       case PWScore::SUCCESS:
         break;
       case PWScore::CANT_OPEN_FILE:
-        cs_temp.Format(IDS_CANTOPENREADING, sx_Filename2.c_str());
+        cs_temp.Format(IDS_CANTOPENREADING, static_cast<LPCWSTR>(sx_Filename2.c_str()));
         cs_title.LoadString(IDS_FILEREADERROR);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
         break;
       case PWScore::BAD_DIGEST:
-        cs_temp.Format(IDS_FILECORRUPT, sx_Filename2.c_str());
+        cs_temp.Format(IDS_FILECORRUPT, static_cast<LPCWSTR>(sx_Filename2.c_str()));
         cs_title.LoadString(IDS_FILEREADERROR);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);
         break;
       default:
-        cs_temp.Format(IDS_UNKNOWNERROR, sx_Filename2.c_str());
+        cs_temp.Format(IDS_UNKNOWNERROR, static_cast<LPCWSTR>(sx_Filename2.c_str()));
         cs_title.LoadString(IDS_FILEREADERROR);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);
         break;
@@ -448,7 +448,7 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
             break;
         }
         cs_temp.LoadString(uiMsg);
-        cs_text.Format(IDS_WZACTIONFAILED, cs_temp);
+        cs_text.Format(IDS_WZACTIONFAILED, static_cast<LPCWSTR>(cs_temp));
       } else
         cs_text.LoadString(IDS_COMPLETE);
     }

@@ -648,14 +648,18 @@ BOOL CAddEdit_Basic::OnApply()
       CSecString temp;
       if (M_group().IsEmpty())
         if (M_username().IsEmpty())
-          temp.Format(IDS_ENTRYEXISTS3, M_title());
+          temp.Format(IDS_ENTRYEXISTS3, static_cast<LPCWSTR>(M_title()));
         else
-          temp.Format(IDS_ENTRYEXISTS2, M_title(), M_username());
+          temp.Format(IDS_ENTRYEXISTS2, static_cast<LPCWSTR>(M_title()),
+                      static_cast<LPCWSTR>(M_username()));
       else
         if (M_username().IsEmpty())
-          temp.Format(IDS_ENTRYEXISTS1, M_group(), M_title());
+          temp.Format(IDS_ENTRYEXISTS1, static_cast<LPCWSTR>(M_group()),
+                      static_cast<LPCWSTR>(M_title()));
         else
-          temp.Format(IDS_ENTRYEXISTS, M_group(), M_title(), M_username());
+          temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(M_group()),
+                      static_cast<LPCWSTR>(M_title()),
+                      static_cast<LPCWSTR>(M_username()));
 
       gmb.AfxMessageBox(temp);
       pFocus = &m_ex_title;
@@ -667,7 +671,9 @@ BOOL CAddEdit_Basic::OnApply()
       const CItemData &listItem = GetMainDlg()->GetEntryAt(listindex);
       if (listItem.GetUUID() != M_pci()->GetUUID()) {
         CSecString temp;
-        temp.Format(IDS_ENTRYEXISTS, M_group(), M_title(), M_username());
+        temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(M_group()),
+                    static_cast<LPCWSTR>(M_title()),
+                    static_cast<LPCWSTR>(M_username()));
         gmb.AfxMessageBox(temp);
         pFocus = &m_ex_title;
         goto error;
@@ -704,9 +710,11 @@ BOOL CAddEdit_Basic::OnApply()
       CString cs_errmsg, cs_title, cs_base, cs_alias;
       cs_base.LoadString(M_original_entrytype() == CItemData::ET_ALIASBASE ? IDS_EXP_ABASE : IDS_EXP_SBASE);
       cs_alias.LoadString(IDS_EXP_ALIAS);
-      cs_title.Format(IDS_CHANGINGBASEENTRY, cs_base, cs_alias);
+      cs_title.Format(IDS_CHANGINGBASEENTRY, static_cast<LPCWSTR>(cs_base),
+                      static_cast<LPCWSTR>(cs_alias));
       cs_errmsg.Format(M_original_entrytype() == CItemData::ET_ALIASBASE ?
-                              IDS_CHANGINGBASEENTRY1 : IDS_CHANGINGBASEENTRY2, cs_alias);
+                       IDS_CHANGINGBASEENTRY1 : IDS_CHANGINGBASEENTRY2,
+                       static_cast<LPCWSTR>(cs_alias));
       int rc = gmb.MessageBox(cs_errmsg, cs_title, MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
 
       if (rc == IDNO) {
@@ -1466,7 +1474,8 @@ void CAddEdit_Basic::OnViewDependents()
   else
     cs_type.LoadString(M_num_dependents() == 1 ? IDSC_SHORTCUT : IDSC_SHORTCUTS);
 
-  cs_msg.Format(IDS_VIEWDEPENDENTS, M_num_dependents(), cs_type, M_dependents());
+  cs_msg.Format(IDS_VIEWDEPENDENTS, M_num_dependents(), static_cast<LPCWSTR>(cs_type),
+                static_cast<LPCWSTR>(M_dependents()));
   gmb.MessageBox(cs_msg, AfxGetAppName(), MB_OK);
 }
 

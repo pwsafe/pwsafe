@@ -74,11 +74,17 @@ BOOL CAboutDlg::OnInitDialog()
 
   const CString cs2go = SysInfo::IsUnderPw2go() ? L"2go " : L" ";
   if (m_nBuild == 0) { // hide build # if zero (formal release)
-    m_appversion.Format(L"%s%sV%d.%02d%s (%s)", AfxGetAppName(), cs2go,
-                        m_nMajor, m_nMinor, SpecialBuild, Revision);
+    m_appversion.Format(L"%s%sV%d.%02d%s (%s)", AfxGetAppName(),
+                        static_cast<LPCWSTR>(cs2go),
+                        m_nMajor, m_nMinor,
+                        static_cast<LPCWSTR>(SpecialBuild),
+                        static_cast<LPCWSTR>(Revision));
   } else {
-    m_appversion.Format(L"%s%sV%d.%02d.%02d%s (%s)", AfxGetAppName(), cs2go,
-                        m_nMajor, m_nMinor, m_nBuild, SpecialBuild, Revision);
+    m_appversion.Format(L"%s%sV%d.%02d.%02d%s (%s)", AfxGetAppName(),
+                        static_cast<LPCWSTR>(cs2go),
+                        m_nMajor, m_nMinor, m_nBuild,
+                        static_cast<LPCWSTR>(SpecialBuild),
+                        static_cast<LPCWSTR>(Revision));
   }
 
 #ifdef _DEBUG
@@ -158,7 +164,8 @@ void CAboutDlg::CheckNewVer()
       CGeneralMsgBox gmb;
       CString newer;
       newer.Format(SysInfo::IsUnderU3() ? IDS_NEWER_AVAILABLE_U3 : IDS_NEWER_AVAILABLE,
-                   m_appversion, latest.c_str());
+                   static_cast<LPCWSTR>(m_appversion),
+                   static_cast<LPCWSTR>(latest.c_str()));
       m_newVerStatus.Format(IDS_NEWER_AVAILABLE_SHORT, html_redfont, html_endfont);
       gmb.MessageBox(newer, CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)), MB_ICONEXCLAMATION);
       break;

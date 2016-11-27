@@ -556,7 +556,8 @@ void CManageFiltersDlg::OnFilterDelete()
   // Now to confirm with user:
   CString cs_msg;
   CGeneralMsgBox gmb;
-  cs_msg.Format(IDS_CONFIRMFILTERDELETE, cs_pool, cs_selected);
+  cs_msg.Format(IDS_CONFIRMFILTERDELETE, static_cast<LPCWSTR>(cs_pool),
+                static_cast<LPCWSTR>(cs_selected));
   if (gmb.AfxMessageBox(cs_msg, NULL, MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES)
     return;
 

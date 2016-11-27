@@ -248,7 +248,7 @@ BOOL CWZSelectDB::OnInitDialog()
 
   if (bWARNINGTEXT) {
     if (nID != ID_MENUITEM_SYNCHRONIZE)
-      cs_text.Format(IDS_WZSLCT_WARNING_EXP, cs_temp);
+      cs_text.Format(IDS_WZSLCT_WARNING_EXP, static_cast<LPCWSTR>(cs_temp));
 
     GetDlgItem(IDC_STATIC_WZWARNING)->SetWindowText(cs_text);
     m_stc_warning.SetColour(RGB(255,0,0));
@@ -592,7 +592,7 @@ LRESULT CWZSelectDB::OnWizardNext()
         // file browser button
         if (!m_bFileExistsUserAsked) {
           CString cs_msg, cs_title(MAKEINTRESOURCE(iExportType));
-          cs_msg.Format(IDS_REPLACEEXPORTFILE, m_filespec);
+          cs_msg.Format(IDS_REPLACEEXPORTFILE, static_cast<LPCWSTR>(m_filespec));
           INT_PTR rc = gmb.AfxMessageBox(cs_msg, cs_title,
                          MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
           if (rc == IDNO) {
