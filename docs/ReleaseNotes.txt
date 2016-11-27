@@ -1,4 +1,4 @@
-Password Safe 3.41.0 Release Notes November 2016
+Password Safe 3.41.1 Release Notes ???????? 201?
 ================================================
 
 This note describes the new features, fixed bugs and known problems
@@ -12,6 +12,18 @@ Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
 SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
+
+Bugs fixed in 3.41.1
+====================
+None
+
+Changes to Existing Features in 3.41.1
+======================================
+None
+
+New Features for 3.41.1
+=======================
+None
 
 Bugs fixed in 3.41.0
 ====================
