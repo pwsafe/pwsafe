@@ -130,7 +130,7 @@ BOOL COptionsBackup::OnInitDialog()
     CString cs_Preference_Warning;
     CString cs_temp(MAKEINTRESOURCE(GetMainDlg()->IsDBOpen() ? IDS_DB_READ_ONLY : IDS_NO_DB));
 
-    cs_Preference_Warning.Format(IDS_STATIC_DB_PREFS_RO_WARNING, cs_temp);
+    cs_Preference_Warning.Format(IDS_STATIC_DB_PREFS_RO_WARNING, static_cast<LPCWSTR>(cs_temp));
     GetDlgItem(IDC_STATIC_DB_PREFS_RO_WARNING)->SetWindowText(cs_Preference_Warning);
 
     GetDlgItem(IDC_SAVEIMMEDIATELY)->EnableWindow(FALSE);
@@ -495,7 +495,7 @@ void COptionsBackup::ExpandBackupPath()
     if (dwResult == 0 || dwResult > (MAX_PATH + 1)) {
       CGeneralMsgBox gmb;
       CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_EXPANDPATH));
-      cs_msg.Format(IDS_CANT_EXPANDPATH, m_UserBackupOtherLocation);
+      cs_msg.Format(IDS_CANT_EXPANDPATH, static_cast<LPCWSTR>(m_UserBackupOtherLocation));
       gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONEXCLAMATION);
     } else {
       m_csExpandedPath = wsExpandedPath;

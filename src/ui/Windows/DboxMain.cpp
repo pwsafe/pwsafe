@@ -184,8 +184,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_sxSelectedGroup = L"";
   m_sxVisibleGroup = L"";
 
-  // Don't reset unknown prefs before command line parsed
-  ClearData(true, false);
+  ClearData(true);
 
   m_titlebar = L"";
   m_toolbarsSetup = FALSE;
@@ -978,7 +977,7 @@ void DboxMain::InitPasswordSafe()
       CGeneralMsgBox gmb;
       CString cs_title, cs_msg, cs_temp;
       cs_temp.Format(IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
-      cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, cs_temp);
+      cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, static_cast<LPCWSTR>(cs_temp));
       cs_title.LoadString(IDSC_CANTVALIDATEXML);
       gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONSTOP);
       return;
@@ -1242,27 +1241,27 @@ void DboxMain::SetDragbarToolTips()
     // Set 
     CString cs_ToolTip, cs_field;
     cs_field.LoadString(IDS_GROUP);
-    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, static_cast<LPCWSTR>(cs_field));
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGGROUP), cs_ToolTip);
     cs_field.LoadString(IDS_TITLE);
-    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, static_cast<LPCWSTR>(cs_field));
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGTITLE), cs_ToolTip);
     cs_field.LoadString(IDS_USERNAME);
-    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, static_cast<LPCWSTR>(cs_field));
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGUSER), cs_ToolTip);
     cs_field.LoadString(IDS_PASSWORD);
-    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, static_cast<LPCWSTR>(cs_field));
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGPASSWORD), cs_ToolTip);
     cs_field.LoadString(IDS_NOTES);
-    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, static_cast<LPCWSTR>(cs_field));
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGNOTES), cs_ToolTip);
     cs_field.LoadString(IDS_URL);
-    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, static_cast<LPCWSTR>(cs_field));
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGURL), cs_ToolTip);
     cs_field.LoadString(IDS_EMAIL);
-    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, static_cast<LPCWSTR>(cs_field));
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGEMAIL), cs_ToolTip);
-    cs_ToolTip.Format(IDS_DRAGTOAUTOTYPE, cs_field);
+    cs_ToolTip.Format(IDS_DRAGTOAUTOTYPE, static_cast<LPCWSTR>(cs_field));
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGAUTO), cs_ToolTip);    
   }
 }
@@ -1746,7 +1745,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       if (i_pid > -1) {
         // If PID present then it is ":%08d" = 9 chars in length
         ASSERT((cs_user_and_host.GetLength() - i_pid) == 9);
-        cs_PID.Format(IDS_PROCESSID, cs_user_and_host.Right(8));
+        cs_PID.Format(IDS_PROCESSID, static_cast<LPCWSTR>(cs_user_and_host.Right(8)));
         cs_user_and_host = cs_user_and_host.Left(i_pid);
       } else
         cs_PID = L"";
@@ -1763,7 +1762,9 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       gmb.AddButton(IDS_READONLY, IDS_READONLY);
       gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
 #else
-      cs_msg.Format(IDS_LOCKED, curFile.c_str(), cs_user_and_host, cs_PID);
+      cs_msg.Format(IDS_LOCKED, static_cast<LPCWSTR>(curFile.c_str()),
+                    static_cast<LPCWSTR>(cs_user_and_host),
+                    static_cast<LPCWSTR>(cs_PID));
       gmb.SetMsg(cs_msg);
       gmb.AddButton(IDS_READONLY, IDS_READONLY);
       gmb.AddButton(IDS_READWRITE, IDS_READWRITE);

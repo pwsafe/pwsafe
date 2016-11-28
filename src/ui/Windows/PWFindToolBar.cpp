@@ -639,12 +639,12 @@ void CPWFindToolBar::Find()
       }
       if (m_iFindDirection == FIND_DOWN && m_lastshown >= m_numFound) {
         cs_temp.LoadString(IDS_SEARCHTOP);
-        cs_status.Format(IDS_SEARCHWRAPPED, cs_temp);
+        cs_status.Format(IDS_SEARCHWRAPPED, static_cast<LPCWSTR>(cs_temp));
         m_lastshown = 0;
       } else
         if (m_iFindDirection == FIND_UP && m_lastshown == size_t(-1)) {
         cs_temp.LoadString(IDS_SEARCHBOTTOM);
-        cs_status.Format(IDS_SEARCHWRAPPED, cs_temp);
+        cs_status.Format(IDS_SEARCHWRAPPED, static_cast<LPCWSTR>(cs_temp));
         m_lastshown = m_numFound - 1;
       } else
         cs_status.Format(IDS_FOUNDMATCHES, m_lastshown + 1, m_numFound);

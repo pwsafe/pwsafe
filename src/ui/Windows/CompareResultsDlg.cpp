@@ -470,7 +470,10 @@ LRESULT CCompareResultsDlg::ProcessAllFunction(const int ifunction,
           user = pos->second.GetUser();
           cs_tmp.LoadString(IDS_ORIGINALDB);
           buffer.Format(ifunction == SYNCHALL ? IDS_SYNCENTRY : IDS_COPYENTRY,
-                        cs_tmp, group, title, user);
+                        static_cast<LPCWSTR>(cs_tmp),
+                        static_cast<LPCWSTR>(group),
+                        static_cast<LPCWSTR>(title),
+                        static_cast<LPCWSTR>(user));
           m_pRpt->WriteLine((LPCWSTR)buffer);
           break;
         case EDIT:
@@ -529,7 +532,10 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction,
           user = pos->second.GetUser();
           cs_tmp.LoadString(IDS_ORIGINALDB);
           buffer.Format(ifunction == SYNCH ? IDS_SYNCENTRY : IDS_COPYENTRY,
-                        cs_tmp, group, title, user);
+                        static_cast<LPCWSTR>(cs_tmp),
+                        static_cast<LPCWSTR>(group),
+                        static_cast<LPCWSTR>(title),
+                        static_cast<LPCWSTR>(user));
           m_pRpt->WriteLine((LPCWSTR)buffer);
           break;
         case EDIT:
@@ -648,7 +654,8 @@ void CCompareResultsDlg::OnCompareCopyToOriginalDB()
   const CString cs_originaldb(MAKEINTRESOURCE(IDS_ORIGINALDB));
   const CString cs_comparisondb(MAKEINTRESOURCE(IDS_COMPARISONDB));
 
-  cs_msg.Format(IDS_COPYLEFTRIGHT, cs_comparisondb, cs_originaldb);
+  cs_msg.Format(IDS_COPYLEFTRIGHT, static_cast<LPCWSTR>(cs_comparisondb),
+                static_cast<LPCWSTR>(cs_originaldb));
   ifunction = COPY_TO_ORIGINALDB;
 
   if (cs_text.Right(1) == L"*")
@@ -773,7 +780,8 @@ void CCompareResultsDlg::DoAllFunctions(const int ifunction)
   const CString cs_comparisondb(MAKEINTRESOURCE(IDS_COMPARISONDB));
 
   cs_msg.Format(ifunction == COPYALL_TO_ORIGINALDB ? IDS_COPYALL : IDS_SYNCHRONIZEALL,
-                cs_comparisondb, cs_originaldb);
+                static_cast<LPCWSTR>(cs_comparisondb),
+                static_cast<LPCWSTR>(cs_originaldb));
 
   // Check if any records have unknown fields
   POSITION pos = m_LCResults.GetFirstSelectedItemPosition();
@@ -1190,7 +1198,7 @@ void CCompareResultsDlg::WriteReportData()
   CString buffer;
 
   if (!m_OnlyInCurrent.empty()) {
-    buffer.Format(IDS_COMPAREENTRIES1, m_scFilename1);
+    buffer.Format(IDS_COMPAREENTRIES1, static_cast<LPCWSTR>(m_scFilename1));
     m_pRpt->WriteLine((LPCWSTR)buffer);
     for (cd_iter = m_OnlyInCurrent.begin(); cd_iter != m_OnlyInCurrent.end();
          cd_iter++) {
@@ -1203,7 +1211,7 @@ void CCompareResultsDlg::WriteReportData()
   }
 
   if (!m_OnlyInComp.empty()) {
-    buffer.Format(IDS_COMPAREENTRIES2, m_scFilename2);
+    buffer.Format(IDS_COMPAREENTRIES2, static_cast<LPCWSTR>(m_scFilename2));
     m_pRpt->WriteLine((LPCWSTR)buffer);
     for (cd_iter = m_OnlyInComp.begin(); cd_iter != m_OnlyInComp.end();
          cd_iter++) {

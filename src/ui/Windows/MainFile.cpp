@@ -72,7 +72,7 @@ static void DisplayFileWriteError(INT_PTR rc, const StringX &cs_newfile)
   CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
   switch (rc) {
   case PWScore::CANT_OPEN_FILE:
-    cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile.c_str());
+    cs_temp.Format(IDS_CANTOPENWRITING, static_cast<LPCWSTR>(cs_newfile.c_str()));
     break;
   case PWScore::FAILURE:
     cs_temp.Format(IDS_FILEWRITEFAILURE);
@@ -81,7 +81,7 @@ static void DisplayFileWriteError(INT_PTR rc, const StringX &cs_newfile)
     cs_temp.Format(IDS_MISSINGPASSKEY);
     break;
   default:
-    cs_temp.Format(IDS_UNKNOWNERROR, cs_newfile.c_str());
+    cs_temp.Format(IDS_UNKNOWNERROR, static_cast<LPCWSTR>(cs_newfile.c_str()));
     break;
   }
   gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
@@ -161,7 +161,7 @@ BOOL DboxMain::OpenOnInit()
       } else {
         // Here if there was a filename saved from last invocation, but it couldn't
         // be opened. It was either removed or renamed, so ask the user what to do
-        cs_msg.Format(IDS_CANTOPENSAFE, m_core.GetCurFile().c_str());
+        cs_msg.Format(IDS_CANTOPENSAFE, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
         CGeneralMsgBox gmb;
         gmb.SetMsg(cs_msg);
         gmb.SetStandardIcon(MB_ICONQUESTION);
@@ -213,7 +213,7 @@ BOOL DboxMain::OpenOnInit()
       rc2 == PWScore::READ_FAIL) {
     CGeneralMsgBox gmb;
     cs_title.LoadString(IDS_FILEREADERROR);
-    cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile().c_str());
+    cs_msg.Format(IDS_FILECORRUPT, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
     if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONERROR) == IDNO) {
       CDialog::OnCancel();
       goto exit;
@@ -278,7 +278,7 @@ int DboxMain::New()
   if (!m_core.IsReadOnly() && !m_bUserDeclinedSave && m_core.HasDBChanged()) {
     CGeneralMsgBox gmb;
     CString cs_temp;
-    cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
+    cs_temp.Format(IDS_SAVEDATABASE, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
     rc = gmb.MessageBox(cs_temp, AfxGetAppName(),
                              MB_YESNOCANCEL | MB_ICONQUESTION);
     switch (rc) {
@@ -745,7 +745,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
       m_bAlreadyToldUserNoSave = false;
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_SAFENOTEXIST, sx_Filename.c_str());
+      cs_temp.Format(IDS_SAFENOTEXIST, static_cast<LPCWSTR>(sx_Filename.c_str()));
       gmb.SetTitle(IDS_FILEOPENERROR);
       gmb.SetMsg(cs_temp);
       gmb.SetStandardIcon(MB_ICONQUESTION);
@@ -830,7 +830,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
     case PWScore::SUCCESS:
       break;
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPENREADING, sx_Filename.c_str());
+      cs_temp.Format(IDS_CANTOPENREADING, static_cast<LPCWSTR>(sx_Filename.c_str()));
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       /*
         Everything stays as is... Worst case,
@@ -839,14 +839,14 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
       rc = PWScore::CANT_OPEN_FILE;
       goto exit;
     case PWScore::BAD_DIGEST:
-      cs_temp.Format(IDS_FILECORRUPT, sx_Filename.c_str());
+      cs_temp.Format(IDS_FILECORRUPT, static_cast<LPCWSTR>(sx_Filename.c_str()));
       if (gmb.MessageBox(cs_temp, cs_title, MB_YESNO | MB_ICONERROR) == IDYES) {
         rc = PWScore::SUCCESS;
         break;
       } else
         goto exit;
     default:
-      cs_temp.Format(IDS_UNKNOWNERROR, sx_Filename.c_str());
+      cs_temp.Format(IDS_UNKNOWNERROR, static_cast<LPCWSTR>(sx_Filename.c_str()));
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);
       goto exit;
   }
@@ -1127,7 +1127,7 @@ int DboxMain::Save(const SaveType savetype)
         if (dwResult == 0 || dwResult > (MAX_PATH + 1)) {
           CGeneralMsgBox gmbx;
           CString cs_msgx, cs_titlex(MAKEINTRESOURCE(IDS_EXPANDPATH));
-          cs_msg.Format(IDS_CANT_EXPANDPATH, userBackupDir.c_str());
+          cs_msg.Format(IDS_CANT_EXPANDPATH, static_cast<LPCWSTR>(userBackupDir.c_str()));
           gmbx.MessageBox(cs_msgx, cs_titlex, MB_OK | MB_ICONEXCLAMATION);
 
           gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
@@ -1142,7 +1142,7 @@ int DboxMain::Save(const SaveType savetype)
             case ST_NORMALEXIT:
             {
               cs_temp.LoadString(IDS_NOIBACKUP);
-              cs_msg.Format(IDS_NOIBACKUP2, cs_temp);
+              cs_msg.Format(IDS_NOIBACKUP2, static_cast<LPCWSTR>(cs_temp));
               gmb.SetTitle(IDS_FILEWRITEERROR);
               gmb.SetMsg(cs_msg);
               gmb.SetStandardIcon(MB_ICONEXCLAMATION);
@@ -1158,7 +1158,7 @@ int DboxMain::Save(const SaveType savetype)
             case ST_SAVEIMMEDIATELY:
             {
               cs_temp.LoadString(IDS_NOIBACKUP);
-              cs_msg.Format(IDS_NOIBACKUP3, cs_temp);
+              cs_msg.Format(IDS_NOIBACKUP3, static_cast<LPCWSTR>(cs_temp));
               gmb.SetTitle(IDS_FILEWRITEERROR);
               gmb.SetMsg(cs_msg);
               gmb.SetStandardIcon(MB_ICONEXCLAMATION);
@@ -1312,7 +1312,7 @@ int DboxMain::SaveIfChanged()
     CGeneralMsgBox gmb;
     INT_PTR rc, rc2;
     CString cs_temp;
-    cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
+    cs_temp.Format(IDS_SAVEDATABASE, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
     rc = gmb.MessageBox(cs_temp, AfxGetAppName(),
                             MB_YESNOCANCEL | MB_ICONQUESTION);
     switch (rc) {
@@ -1367,7 +1367,7 @@ int DboxMain::SaveAs()
     CGeneralMsgBox gmb;
 
     // Note: string IDS_NEWFORMAT2 will need to be updated when DB V4 is the default
-    cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile().c_str());
+    cs_msg.Format(IDS_NEWFORMAT2, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
     cs_title.LoadString(IDS_VERSIONWARNING);
 
     gmb.SetTitle(cs_title);
@@ -1439,7 +1439,8 @@ int DboxMain::SaveAs()
   // Note: We have to lock the new file before releasing the old (on success)
   if (!m_core.LockFile2(newfile.c_str(), locker)) {
     CGeneralMsgBox gmb;
-    cs_temp.Format(IDS_FILEISLOCKED, newfile.c_str(), locker.c_str());
+    cs_temp.Format(IDS_FILEISLOCKED, static_cast<LPCWSTR>(newfile.c_str()),
+                   static_cast<LPCWSTR>(locker.c_str()));
     cs_title.LoadString(IDS_FILELOCKERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
@@ -1554,7 +1555,7 @@ void DboxMain::OnExportVx(UINT nID)
     // Only need warning if exporting to a lower DB version
     CGeneralMsgBox gmb;
 
-    cs_text.Format(IDS_EXPORTWARNING, m_core.GetCurFile().c_str());
+    cs_text.Format(IDS_EXPORTWARNING, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
     cs_title.LoadString(IDS_VERSIONWARNING);
 
     gmb.SetTitle(cs_title);
@@ -1675,7 +1676,8 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   LoadAString(str_text, IDS_RPTEXPORTDB);
   prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
   LoadAString(str_text, IDS_EXDB);
-  cs_temp.Format(IDS_EXPORTFILE, str_text.c_str(), sx_Filename.c_str());
+  cs_temp.Format(IDS_EXPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
+                 static_cast<LPCWSTR>(sx_Filename.c_str()));
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
 
@@ -1828,7 +1830,8 @@ int DboxMain::DoExportText(const StringX &sx_Filename, const UINT nID,
   LoadAString(str_text, IDS_RPTEXPORTTEXT);
   prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
   LoadAString(str_text, IDS_TEXT);
-  cs_temp.Format(IDS_EXPORTFILE, str_text.c_str(), sx_Filename.c_str());
+  cs_temp.Format(IDS_EXPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
+                 static_cast<LPCWSTR>(sx_Filename.c_str()));
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
 
@@ -1969,7 +1972,8 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const UINT nID,
   LoadAString(str_text, IDS_RPTEXPORTXML);
   prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
   LoadAString(str_text, IDS_XML);
-  cs_temp.Format(IDS_EXPORTFILE, str_text.c_str(), sx_Filename.c_str());
+  cs_temp.Format(IDS_EXPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
+                 static_cast<LPCWSTR>(sx_Filename.c_str()));
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
 
@@ -2186,7 +2190,7 @@ void DboxMain::OnExportAttachment()
       DWORD_PTR dw = SHGetFileInfo(soutputfile.c_str(), 0, &sfi, sizeof(sfi), SHGFI_TYPENAME);
 
       if (dw != 0) {
-        filter.Format(IDS_FDF_FILES, sfi.szTypeName, ext, ext);
+        filter.Format(IDS_FDF_FILES, static_cast<LPCWSTR>(sfi.szTypeName), ext, ext);
       } else {
         // Use All files!
         filter.LoadString(IDS_FDF_ALL);
@@ -2239,7 +2243,7 @@ void DboxMain::OnImportText()
   if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
     cs_title.LoadString(IDS_TEXTIMPORTFAILED);
-    cs_temp.Format(IDS_DBHASDUPLICATES, m_core.GetCurFile().c_str());
+    cs_temp.Format(IDS_DBHASDUPLICATES, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
     gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
     return;
   }
@@ -2300,7 +2304,8 @@ void DboxMain::OnImportText()
     LoadAString(str_text, IDS_RPTIMPORTTEXT);
     rpt.StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
     LoadAString(str_text, IDS_TEXT);
-    cs_temp.Format(IDS_IMPORTFILE, str_text.c_str(), TxtFileName.c_str());
+    cs_temp.Format(IDS_IMPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
+                   static_cast<LPCWSTR>(TxtFileName.c_str()));
     rpt.WriteLine((LPCWSTR)cs_temp);
     rpt.WriteLine();
 
@@ -2316,12 +2321,12 @@ void DboxMain::OnImportText()
     switch (rc) {
       case PWScore::CANT_OPEN_FILE:
         cs_title.LoadString(IDS_FILEREADERROR);
-        cs_temp.Format(IDS_CANTOPENREADING, TxtFileName.c_str());
+        cs_temp.Format(IDS_CANTOPENREADING, static_cast<LPCWSTR>(TxtFileName.c_str()));
         delete pcmd;
         break;
       case PWScore::INVALID_FORMAT:
         cs_title.LoadString(IDS_FILEREADERROR);
-        cs_temp.Format(IDS_INVALIDFORMAT, TxtFileName.c_str());
+        cs_temp.Format(IDS_INVALIDFORMAT, static_cast<LPCWSTR>(TxtFileName.c_str()));
         delete pcmd;
         break;
       case PWScore::FAILURE:
@@ -2349,13 +2354,13 @@ void DboxMain::OnImportText()
         CString cs_type;
         cs_type.LoadString(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
         cs_temp.Format(bImportPSWDsOnly ? IDS_RECORDSUPDATED : IDS_RECORDSIMPORTED,
-                       numImported, cs_type);
+                       numImported, static_cast<LPCWSTR>(cs_type));
         rpt.WriteLine((LPCWSTR)cs_temp);
 
         if (numSkipped != 0) {
           CString cs_tmp;
           cs_type.LoadString(numSkipped == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
-          cs_tmp.Format(IDS_RECORDSSKIPPED, numSkipped, cs_type);
+          cs_tmp.Format(IDS_RECORDSSKIPPED, numSkipped, static_cast<LPCWSTR>(cs_type));
           rpt.WriteLine((LPCWSTR)cs_tmp);
           cs_temp += cs_tmp;
         }
@@ -2363,7 +2368,7 @@ void DboxMain::OnImportText()
         if (numPWHErrors != 0) {
           CString cs_tmp;
           cs_type.LoadString(numPWHErrors == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
-          cs_tmp.Format(IDS_RECORDSPWHERRRORS, numPWHErrors, cs_type);
+          cs_tmp.Format(IDS_RECORDSPWHERRRORS, numPWHErrors, static_cast<LPCWSTR>(cs_type));
           rpt.WriteLine((LPCWSTR)cs_tmp);
           cs_temp += cs_tmp;
         }
@@ -2371,7 +2376,7 @@ void DboxMain::OnImportText()
         if (numRenamed != 0) {
           CString cs_tmp;
           cs_type.LoadString(numRenamed == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
-          cs_tmp.Format(IDS_RECORDSRENAMED, numRenamed, cs_type);
+          cs_tmp.Format(IDS_RECORDSRENAMED, numRenamed, static_cast<LPCWSTR>(cs_type));
           rpt.WriteLine((LPCWSTR)cs_tmp);
           cs_temp += cs_tmp;
         }
@@ -2458,7 +2463,8 @@ void DboxMain::OnImportKeePassV1CSV()
     LoadAString(str_text, IDS_RPTIMPORTKPV1CSV);
     rpt.StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
     LoadAString(str_text, IDS_TEXT);
-    cs_msg.Format(IDS_IMPORTFILE, str_text.c_str(), KPsFileName.c_str());
+    cs_msg.Format(IDS_IMPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
+                  static_cast<LPCWSTR>(KPsFileName.c_str()));
     rpt.WriteLine((LPCWSTR)cs_msg);
     rpt.WriteLine();
 
@@ -2467,7 +2473,7 @@ void DboxMain::OnImportKeePassV1CSV()
     switch (rc) {
       case PWScore::CANT_OPEN_FILE:
       {
-        cs_msg.Format(IDS_CANTOPENREADING, KPsFileName.c_str());
+        cs_msg.Format(IDS_CANTOPENREADING, static_cast<LPCWSTR>(KPsFileName.c_str()));
         cs_title.LoadString(IDS_FILEOPENERROR);
         delete [] pcmd;
         break;
@@ -2478,7 +2484,7 @@ void DboxMain::OnImportKeePassV1CSV()
         if (uiReasonCode > 0)
           cs_msg.LoadString(uiReasonCode);
         else
-          cs_msg.Format(IDS_INVALIDFORMAT, KPsFileName.c_str());
+          cs_msg.Format(IDS_INVALIDFORMAT, static_cast<LPCWSTR>(KPsFileName.c_str()));
         cs_title.LoadString(IDS_IMPORTFAILED);
         delete [] pcmd;
         break;
@@ -2501,7 +2507,7 @@ void DboxMain::OnImportKeePassV1CSV()
         rpt.WriteLine();
         CString cs_type;
         cs_type.LoadString(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
-        cs_msg.Format(IDS_RECORDSIMPORTED, numImported, cs_type);
+        cs_msg.Format(IDS_RECORDSIMPORTED, numImported, static_cast<LPCWSTR>(cs_type));
         rpt.WriteLine((LPCWSTR)cs_msg);
 
         cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
@@ -2572,7 +2578,8 @@ void DboxMain::OnImportKeePassV1TXT()
     LoadAString(str_text, IDS_RPTIMPORTKPV1TXT);
     rpt.StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
     LoadAString(str_text, IDS_TEXT);
-    cs_msg.Format(IDS_IMPORTFILE, str_text.c_str(), KPsFileName.c_str());
+    cs_msg.Format(IDS_IMPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
+                  static_cast<LPCWSTR>(KPsFileName.c_str()));
     rpt.WriteLine((LPCWSTR)cs_msg);
     rpt.WriteLine();
 
@@ -2581,7 +2588,7 @@ void DboxMain::OnImportKeePassV1TXT()
     switch (rc) {
       case PWScore::CANT_OPEN_FILE:
       {
-        cs_msg.Format(IDS_CANTOPENREADING, KPsFileName.c_str());
+        cs_msg.Format(IDS_CANTOPENREADING, static_cast<LPCWSTR>(KPsFileName.c_str()));
         cs_title.LoadString(IDS_FILEOPENERROR);
         delete [] pcmd;
         break;
@@ -2591,7 +2598,7 @@ void DboxMain::OnImportKeePassV1TXT()
         if (uiReasonCode > 0)
           cs_msg.LoadString(uiReasonCode);
         else
-          cs_msg.Format(IDS_INVALIDFORMAT, KPsFileName.c_str());
+          cs_msg.Format(IDS_INVALIDFORMAT, static_cast<LPCWSTR>(KPsFileName.c_str()));
         cs_title.LoadString(IDS_IMPORTFAILED);
         delete [] pcmd;
         break;
@@ -2613,7 +2620,7 @@ void DboxMain::OnImportKeePassV1TXT()
         rpt.WriteLine();
         CString cs_type;
         cs_type.LoadString(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
-        cs_msg.Format(IDS_RECORDSIMPORTED, numImported, cs_type);
+        cs_msg.Format(IDS_RECORDSIMPORTED, numImported, static_cast<LPCWSTR>(cs_type));
         rpt.WriteLine((LPCWSTR)cs_msg);
 
         cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
@@ -2649,7 +2656,7 @@ void DboxMain::OnImportXML()
   GTUSet setGTU;
   if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
-    cs_temp.Format(IDS_DBHASDUPLICATES, m_core.GetCurFile().c_str());
+    cs_temp.Format(IDS_DBHASDUPLICATES, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
     gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
     return;
   }
@@ -2658,7 +2665,7 @@ void DboxMain::OnImportXML()
   std::wstring XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
   if (!pws_os::FileExists(XSDFilename)) {
-    cs_temp.Format(IDSC_MISSINGXSD, XSDfn.c_str());
+    cs_temp.Format(IDSC_MISSINGXSD, static_cast<LPCWSTR>(XSDfn.c_str()));
     cs_title.LoadString(IDSC_CANTVALIDATEXML);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
@@ -2719,7 +2726,8 @@ void DboxMain::OnImportXML()
     LoadAString(str_text, IDS_RPTIMPORTXML);
     rpt.StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
     LoadAString(str_text, IDS_XML);
-    cs_temp.Format(IDS_IMPORTFILE, str_text.c_str(), XMLFilename);
+    cs_temp.Format(IDS_IMPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
+                   static_cast<LPCWSTR>(XMLFilename));
     rpt.WriteLine((LPCWSTR)cs_temp);
     rpt.WriteLine();
 
@@ -2738,12 +2746,12 @@ void DboxMain::OnImportXML()
     switch (rc) {
       case PWScore::XML_FAILED_VALIDATION:
         rpt.WriteLine(strXMLErrors.c_str());
-        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), L"");
+        cs_temp.Format(IDS_FAILEDXMLVALIDATE, static_cast<LPCWSTR>(fd.GetFileName()), L"");
         delete pcmd;
         break;
       case PWScore::XML_FAILED_IMPORT:
         rpt.WriteLine(strXMLErrors.c_str());
-        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), L"");
+        cs_temp.Format(IDS_XMLERRORS, static_cast<LPCWSTR>(fd.GetFileName()), L"");
         delete pcmd;
         break;
       case PWScore::SUCCESS:
@@ -2788,12 +2796,16 @@ void DboxMain::OnImportXML()
           }
 
           cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
-                         fd.GetFileName(), numValidated, numImported,
-                         cs_skipped, cs_renamed, cs_PWHErrors);
+                         static_cast<LPCWSTR>(fd.GetFileName()),
+                         numValidated, numImported,
+                         static_cast<LPCWSTR>(cs_skipped),
+                         static_cast<LPCWSTR>(cs_renamed),
+                         static_cast<LPCWSTR>(cs_PWHErrors));
         } else {
           const CString cs_validate(MAKEINTRESOURCE(numValidated == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
           const CString cs_imported(MAKEINTRESOURCE(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
-          cs_temp.Format(IDS_XMLIMPORTOK, numValidated, cs_validate, numImported, cs_imported);
+          cs_temp.Format(IDS_XMLIMPORTOK, numValidated, static_cast<LPCWSTR>(cs_validate),
+                         numImported, static_cast<LPCWSTR>(cs_imported));
         }
 
         RefreshViews();
@@ -2822,7 +2834,7 @@ void DboxMain::OnImportXML()
       if (numShortcutsRemoved != 0) {
         rpt.WriteLine();
         CString cs_imported(MAKEINTRESOURCE(IDSC_IMPORTED));
-        cs_tmp.Format(IDSC_REMOVEDKBSHORTCUTS, cs_imported);
+        cs_tmp.Format(IDSC_REMOVEDKBSHORTCUTS, static_cast<LPCWSTR>(cs_imported));
         rpt.WriteLine((LPCWSTR)cs_tmp);
       }
     }
@@ -2962,13 +2974,14 @@ void DboxMain::ChangeMode(bool promptUser)
           if (i_pid > -1) {
             // If PID present then it is ":%08d" = 9 chars in length
             ASSERT((cs_user_and_host.GetLength() - i_pid) == 9);
-            cs_PID.Format(IDS_PROCESSID, cs_user_and_host.Right(8));
+            cs_PID.Format(IDS_PROCESSID, static_cast<LPCWSTR>(cs_user_and_host.Right(8)));
             cs_user_and_host = cs_user_and_host.Left(i_pid);
           } else {
             cs_PID = L"";
           }
 
-          cs_msg.Format(IDS_CM_FAIL_REASON1, cs_user_and_host, cs_PID);
+          cs_msg.Format(IDS_CM_FAIL_REASON1, static_cast<LPCWSTR>(cs_user_and_host),
+                        static_cast<LPCWSTR>(cs_PID));
           bInUse = true;
           break;
         }
@@ -3107,7 +3120,7 @@ std::wstring DboxMain::DoMerge(PWScore *pothercore,
   if (!pothercore->GetUniqueGTUValidated() && !pothercore->InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
     cs_title.LoadString(IDS_MERGEFAILED);
-    cs_temp.Format(IDS_DBHASDUPLICATES, pothercore->GetCurFile().c_str());
+    cs_temp.Format(IDS_DBHASDUPLICATES, static_cast<LPCWSTR>(pothercore->GetCurFile().c_str()));
     gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
     return L"";
   }
@@ -3116,7 +3129,7 @@ std::wstring DboxMain::DoMerge(PWScore *pothercore,
   if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
     cs_title.LoadString(IDS_MERGEFAILED);
-    cs_temp.Format(IDS_DBHASDUPLICATES, m_core.GetCurFile().c_str());
+    cs_temp.Format(IDS_DBHASDUPLICATES, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
     gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
     return L"";
   }
@@ -3125,7 +3138,7 @@ std::wstring DboxMain::DoMerge(PWScore *pothercore,
   std::wstring str_text;
   LoadAString(str_text, IDS_RPTMERGE);
   prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
-  cs_temp.Format(IDS_MERGINGDATABASE, pothercore->GetCurFile().c_str());
+  cs_temp.Format(IDS_MERGINGDATABASE, static_cast<LPCWSTR>(pothercore->GetCurFile().c_str()));
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
 
@@ -3183,8 +3196,8 @@ bool DboxMain::DoCompare(PWScore *pothercore,
   // Create report as we go
   std::wstring str_text;
   LoadAString(str_text, IDS_RPTCOMPARE);
-  prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
-  cs_temp.Format(IDS_COMPARINGDATABASE, pothercore->GetCurFile().c_str());
+  prpt->StartReport(str_text.c_str(), static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
+  cs_temp.Format(IDS_COMPARINGDATABASE, static_cast<LPCWSTR>(pothercore->GetCurFile().c_str()));
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
 
@@ -3269,8 +3282,8 @@ bool DboxMain::DoCompare(PWScore *pothercore,
   }
 
   cs_buffer.Format(IDS_COMPARESTATISTICS,
-                   m_core.GetCurFile().c_str(),
-                   pothercore->GetCurFile().c_str());
+                   static_cast<LPCWSTR>(m_core.GetCurFile().c_str()),
+                   static_cast<LPCWSTR>(pothercore->GetCurFile().c_str()));
 
   bool brc(true);  // True == databases are identical
   if (m_list_OnlyInCurrent.empty() &&
@@ -3342,7 +3355,7 @@ void DboxMain::DoSynchronize(PWScore *pothercore,
   if (!pothercore->GetUniqueGTUValidated() && !pothercore->InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
     str_title.LoadString(IDS_SYNCHFAILED);
-    str_temp.Format(IDS_DBHASDUPLICATES, pothercore->GetCurFile().c_str());
+    str_temp.Format(IDS_DBHASDUPLICATES, static_cast<LPCWSTR>(pothercore->GetCurFile().c_str()));
     gmb.MessageBox(str_temp, str_title, MB_ICONEXCLAMATION);
     return;
   }
@@ -3351,7 +3364,7 @@ void DboxMain::DoSynchronize(PWScore *pothercore,
   if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
     str_title.LoadString(IDS_SYNCHFAILED);
-    str_temp.Format(IDS_DBHASDUPLICATES, m_core.GetCurFile().c_str());
+    str_temp.Format(IDS_DBHASDUPLICATES, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
     gmb.MessageBox(str_temp, str_title, MB_ICONEXCLAMATION);
     return;
   }
@@ -3392,7 +3405,7 @@ void DboxMain::DoSynchronize(PWScore *pothercore,
   std::wstring str_text;
   LoadAString(str_text, IDS_RPTSYNCH);
   prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
-  str_temp.Format(IDS_SYNCHINGDATABASE, pothercore->GetCurFile().c_str());
+  str_temp.Format(IDS_SYNCHINGDATABASE, static_cast<LPCWSTR>(pothercore->GetCurFile().c_str()));
   prpt->WriteLine((LPCWSTR)str_temp);
   prpt->WriteLine();
 
@@ -4261,7 +4274,7 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
   // tell the user we're done & provide short Compare report
   if (bAdvanced == FALSE) {
     cs_temp.LoadString(IDS_NONE);
-    cs_buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
+    cs_buffer.Format(IDS_ADVANCEDOPTIONS, static_cast<LPCWSTR>(cs_temp));
     pRpt->WriteLine((LPCWSTR)cs_buffer);
     pRpt->WriteLine();
   } else {
@@ -4300,19 +4313,21 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
       uistring = PWSMatch::GetRule(PWSMatch::MatchRule(abs(st_SADV.subgroup_function)));
 
       cs_text.LoadString(uistring);
-      cs_temp.Format(IDS_ADVANCEDSUBSET, cs_Object, cs_text, st_SADV.subgroup_name.c_str(),
-                     cs_case);
+      cs_temp.Format(IDS_ADVANCEDSUBSET, static_cast<LPCWSTR>(cs_Object),
+                     static_cast<LPCWSTR>(cs_text),
+                     static_cast<LPCWSTR>(st_SADV.subgroup_name.c_str()),
+                     static_cast<LPCWSTR>(cs_case));
     }
 
     if (type == WZAdvanced::MERGE)
       return;
 
-    cs_buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
+    cs_buffer.Format(IDS_ADVANCEDOPTIONS, static_cast<LPCWSTR>(cs_temp));
     pRpt->WriteLine((LPCWSTR)cs_buffer);
     pRpt->WriteLine();
 
     cs_temp.LoadString(uimsgftn);
-    cs_buffer.Format(IDS_ADVANCEDFIELDS, cs_temp);
+    cs_buffer.Format(IDS_ADVANCEDFIELDS, static_cast<LPCWSTR>(cs_temp));
     pRpt->WriteLine((LPCWSTR)cs_buffer);
 
     cs_buffer = L"\t";

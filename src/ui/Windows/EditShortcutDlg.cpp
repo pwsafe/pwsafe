@@ -218,7 +218,9 @@ void CEditShortcutDlg::OnOK()
     if (notSame) {
       CGeneralMsgBox gmb;
       CSecString temp;
-      temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
+      temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(m_group),
+                  static_cast<LPCWSTR>(m_title),
+                  static_cast<LPCWSTR>(m_username));
       gmb.AfxMessageBox(temp);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();

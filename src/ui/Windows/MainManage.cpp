@@ -123,7 +123,7 @@ int DboxMain::BackupSafe()
   rc = m_core.WriteFile(tempname, m_core.GetReadFileVersion(), false);
   if (rc == PWScore::CANT_OPEN_FILE) {
     CGeneralMsgBox gmb;
-    cs_temp.Format(IDS_CANTOPENWRITING, tempname.c_str());
+    cs_temp.Format(IDS_CANTOPENWRITING, static_cast<LPCWSTR>(tempname.c_str()));
     cs_title.LoadString(IDS_FILEWRITEERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
@@ -205,7 +205,7 @@ int DboxMain::RestoreSafe()
     case PWScore::SUCCESS:
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPEN, sx_backup.c_str());
+      cs_temp.Format(IDS_CANTOPEN, static_cast<LPCWSTR>(sx_backup.c_str()));
       cs_title.LoadString(IDS_FILEOPENERROR);
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     case TAR_OPEN:
@@ -235,7 +235,7 @@ int DboxMain::RestoreSafe()
   CReport Rpt;
   rc = m_core.ReadFile(sx_backup, sx_passkey, !m_bNoValidation, MAXTEXTCHARS, &Rpt);
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENREADING, sx_backup.c_str());
+    cs_temp.Format(IDS_CANTOPENREADING, static_cast<LPCWSTR>(sx_backup.c_str()));
     cs_title.LoadString(IDS_FILEREADERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;

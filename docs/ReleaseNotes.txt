@@ -1,4 +1,4 @@
-Password Safe 3.41.0 Release Notes November 2016
+Password Safe 3.41.1 Release Notes ???????? 201?
 ================================================
 
 This note describes the new features, fixed bugs and known problems
@@ -12,6 +12,19 @@ Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
 SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
+
+Bugs fixed in 3.41.1
+====================
+[1384] Toolbar images and text are now back in sync.
+[1367] Fixed regression in command line arguments -h and -u support.
+
+Changes to Existing Features in 3.41.1
+======================================
+None
+
+New Features for 3.41.1
+=======================
+None
 
 Bugs fixed in 3.41.0
 ====================
@@ -33,7 +46,6 @@ when exiting Options.
 Randomize button.
 [1368] The Status bar now shows the correct number of entries when a database
 is unlocked.
-[1367] Fixed regression in command line arguments -h and -u support.
 [1366] Copying the unexpanded autotype string on Edit entry screen using Ctrl+click
 on Autotype label now works.
 [1365] Ctrl+F now switches focus back to Find toolbar if it is already open.

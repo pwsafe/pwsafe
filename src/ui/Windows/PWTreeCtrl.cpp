@@ -734,15 +734,18 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       CSecString temp;
       if (sxGroup.empty()) {
         if (sxNewUser.empty())
-          temp.Format(IDS_ENTRYEXISTS3, sxNewTitle.c_str());
+          temp.Format(IDS_ENTRYEXISTS3, static_cast<LPCWSTR>(sxNewTitle.c_str()));
         else
-          temp.Format(IDS_ENTRYEXISTS2, sxNewTitle.c_str(), sxNewUser.c_str());
+          temp.Format(IDS_ENTRYEXISTS2, static_cast<LPCWSTR>(sxNewTitle.c_str()),
+                      static_cast<LPCWSTR>(sxNewUser.c_str()));
       } else {
         if (sxNewUser.empty())
-          temp.Format(IDS_ENTRYEXISTS1, sxGroup.c_str(), sxNewTitle.c_str());
+          temp.Format(IDS_ENTRYEXISTS1, static_cast<LPCWSTR>(sxGroup.c_str()),
+                      static_cast<LPCWSTR>(sxNewTitle.c_str()));
         else
-          temp.Format(IDS_ENTRYEXISTS, sxGroup.c_str(), sxNewTitle.c_str(),
-                      sxNewUser.c_str());
+          temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(sxGroup.c_str()),
+                      static_cast<LPCWSTR>(sxNewTitle.c_str()),
+                      static_cast<LPCWSTR>(sxNewUser.c_str()));
       }
       gmb.AfxMessageBox(temp);
       goto bad_exit;
@@ -1505,7 +1508,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
           itemData = GetItemData(m_hitemDrag);
           ASSERT(itemData != NULL);
           pci = (CItemData *)itemData;
-          cs_title.Format(IDS_SCTARGET, pci->GetTitle().c_str());
+          cs_title.Format(IDS_SCTARGET, static_cast<LPCWSTR>(pci->GetTitle().c_str()));
           cs_user = pci->GetUser();
 
           // If there is a matching entry in our list, generate unique one

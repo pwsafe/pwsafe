@@ -658,13 +658,13 @@ BOOL CVKeyBoardDlg::OnInitDialog()
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_LSHIFT), cs_ToolTip);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_RSHIFT), cs_ToolTip);
   cs_temp.LoadString(IDS_VKLCTRL);
-  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, cs_temp);
+  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, static_cast<LPCWSTR>(cs_temp));
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_LCTRL), cs_ToolTip);
   cs_temp.LoadString(IDS_VKRCTRL);
-  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, cs_temp);
+  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, static_cast<LPCWSTR>(cs_temp));
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_RCTRL), cs_ToolTip);
   cs_temp.LoadString(IDS_VKALTGR);
-  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, cs_temp);
+  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, static_cast<LPCWSTR>(cs_temp));
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_ALTGR), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_VKSTATIC_ALT);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_ALT), cs_ToolTip);
@@ -694,7 +694,7 @@ BOOL CVKeyBoardDlg::OnInitDialog()
         ASSERT(0);
     }
     if (pszFont != NULL) {
-      cs_ToolTip.Format(IDS_USRFONT, cs_VKeyboardFont.c_str(), pszFont);
+      cs_ToolTip.Format(IDS_USRFONT, static_cast<LPCWSTR>(cs_VKeyboardFont.c_str()), pszFont);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_INFO), cs_ToolTip);
     }
   } else
@@ -1668,7 +1668,7 @@ void CVKeyBoardDlg::OnChangeKeyboard()
     cs_ToolTip.LoadString(IDS_VK_SW_KOREAN);
   } else {
     cs_temp.LoadString(IDS_VKALTGR);
-    cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, cs_temp);
+    cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, static_cast<LPCWSTR>(cs_temp));
   }
 
   m_pToolTipCtrl->UpdateTipText(cs_ToolTip, (CWnd *)&m_vkbb_AltGr);

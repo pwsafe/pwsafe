@@ -189,9 +189,9 @@ static bool CheckFile(const CString &fn)
   CString cs_msg(L"");
 
   if (status == INVALID_FILE_ATTRIBUTES) {
-    cs_msg.Format(IDS_FILEERROR1, fn);
+    cs_msg.Format(IDS_FILEERROR1, static_cast<LPCWSTR>(fn));
   } else if (status & FILE_ATTRIBUTE_DIRECTORY) {
-    cs_msg.Format(IDS_FILEERROR2, fn);
+    cs_msg.Format(IDS_FILEERROR2, static_cast<LPCWSTR>(fn));
   }
 
   if (cs_msg.IsEmpty()) {
@@ -336,11 +336,11 @@ void ThisMfcApp::LoadLocalizedStuff()
     //  and supplied Help file
     free((void *)m_pszHelpFilePath);
 
-    cs_HelpPath.Format(L"%spwsafe.chm", cs_HelpDir);
+    cs_HelpPath.Format(L"%spwsafe.chm", static_cast<LPCWSTR>(cs_HelpDir));
     if (PathFileExists(cs_HelpPath)) {
       m_pszHelpFilePath = _wcsdup(cs_HelpPath);
       m_csHelpFile = cs_HelpPath;
-      pws_os::Trace(L"Using help file: %s\n", cs_HelpPath);
+      pws_os::Trace(L"Using help file: %s\n", static_cast<LPCWSTR>(cs_HelpPath));
     } else {
       m_pszHelpFilePath = NULL;
       m_csHelpFile = L"";
@@ -368,13 +368,14 @@ void ThisMfcApp::LoadLocalizedStuff()
   // Find resource-only DLL if requested
   const CString format_string = (cs_CTRY.IsEmpty()) ?
                       L"pwsafe%s%s.dll" : L"pwsafe%s_%s.dll";
-  cs_ResPath.Format(format_string, cs_LANG, cs_CTRY);
+  cs_ResPath.Format(format_string, static_cast<LPCWSTR>(cs_LANG),
+                       static_cast<LPCWSTR>(cs_CTRY));
   m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
                                               pws_os::LOAD_LIBRARY_APP));
 
   if (m_hInstResDLL == NULL && !cs_CTRY.IsEmpty()) {
     // Now try base
-    cs_ResPath.Format(L"pwsafe%s.dll", cs_LANG);
+    cs_ResPath.Format(L"pwsafe%s.dll", static_cast<LPCWSTR>(cs_LANG));
     m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
                                                 pws_os::LOAD_LIBRARY_APP));
   }
@@ -389,14 +390,14 @@ void ThisMfcApp::LoadLocalizedStuff()
       CGeneralMsgBox gmb;
       CString oops;
       oops.Format(L"Executable/language DLL (%s) version mismatch %d.%d.%d/%d.%d.%d.\n", 
-                  cs_ResPath,
+                  static_cast<LPCWSTR>(cs_ResPath),
                   HIWORD(dw_fileMajorMinor), LOWORD(dw_fileMajorMinor), HIWORD(dw_fileBuildRevision),
                   HIWORD(m_dwMajorMinor), LOWORD(m_dwMajorMinor), HIWORD(m_dwBuildRevision));
       gmb.AfxMessageBox(oops);
       pws_os::FreeLibrary(m_hInstResDLL);
       m_hInstResDLL = NULL;
     } else { // Passed version check
-      pws_os::Trace(L"Using language DLL '%s'.\n", cs_ResPath);
+      pws_os::Trace(L"Using language DLL '%s'.\n", static_cast<LPCWSTR>(cs_ResPath));
       GetDLLVersionData(cs_ResPath, m_ResLangID);
     }
   } // end of resource dll hunt
@@ -408,21 +409,24 @@ void ThisMfcApp::LoadLocalizedStuff()
   bool helpFileFound = false;
 
   if (!cs_LANG.IsEmpty() && !cs_CTRY.IsEmpty()) {
-    cs_HelpPath.Format(L"%spwsafe%s_%s.chm", cs_HelpDir, cs_LANG, cs_CTRY);
+    cs_HelpPath.Format(L"%spwsafe%s_%s.chm", static_cast<LPCWSTR>(cs_HelpDir),
+                       static_cast<LPCWSTR>(cs_LANG),
+                       static_cast<LPCWSTR>(cs_CTRY));
     if (PathFileExists(cs_HelpPath)) {
       helpFileFound = true;
     }
   }
 
   if (!helpFileFound && !cs_LANG.IsEmpty()) {
-    cs_HelpPath.Format(L"%spwsafe%s.chm", cs_HelpDir, cs_LANG);
+    cs_HelpPath.Format(L"%spwsafe%s.chm", static_cast<LPCWSTR>(cs_HelpDir),
+                        static_cast<LPCWSTR>(cs_LANG));
     if (PathFileExists(cs_HelpPath)) {
       helpFileFound = true;
     }
   }
 
   if (!helpFileFound) {
-    cs_HelpPath.Format(L"%spwsafe.chm", cs_HelpDir);
+    cs_HelpPath.Format(L"%spwsafe.chm",static_cast<LPCWSTR>( cs_HelpDir));
     if (PathFileExists(cs_HelpPath)) {
       helpFileFound = true;
     }
@@ -443,7 +447,7 @@ void ThisMfcApp::LoadLocalizedStuff()
 
     m_pszHelpFilePath = _wcsdup(cs_HelpPath);
     m_csHelpFile = cs_HelpPath;
-    pws_os::Trace(L"Using help file: %s\n", cs_HelpPath);
+    pws_os::Trace(L"Using help file: %s\n", static_cast<LPCWSTR>(cs_HelpPath));
   }
 }
 
@@ -653,6 +657,84 @@ void ThisMfcApp::SetLanguage()
   SetupMenu();
 }
 
+bool ThisMfcApp::GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost, StringX &sxUser)
+{
+  // ONLY get config file, host & user name if supplied
+  // This MUST be done before PWSprefs is first initialised
+  bool rc(false);
+  sxConfigFile = sxHost = sxUser = L"";
+
+  if (m_lpCmdLine[0] != L'\0') {
+    CString args = m_lpCmdLine;
+
+    // Start command line parsing by pushing each argument into a vector
+    // Quotes are stripped here
+    vector<CString> argvec;
+    int pos = 0;
+    CString tok;
+    do {
+      if (args[pos] == L'\"')
+        tok = args.Tokenize(L"\"", pos);
+      else
+        tok = args.Tokenize(L" ", pos);
+      if (!tok.IsEmpty())
+        argvec.push_back(tok);
+    } while (pos != -1 && pos < args.GetLength());
+
+    vector<CString>::iterator arg = argvec.begin();
+
+    while (arg != argvec.end()) {
+      if ((*arg)[0] == L'-') {
+        switch ((*arg)[1]) {
+        case L'U': case L'u': // set effective user
+          // ensure there's another non-flag argument
+          if ((arg + 1) == argvec.end() || (arg + 1)[0] == L'-') {
+            // Better stop as we don't know how bad things are!
+            return false;
+          } else {
+            arg++;
+            sxUser = *arg;
+            rc = true;
+          }
+          break;
+        case L'H': case L'h': // set effective host
+          // ensure there's another non-flag argument
+          if ((arg + 1) == argvec.end() || (arg + 1)[0] == L'-') {
+            // Better stop as we don't know how bad things are!
+            return false;
+          } else {
+            arg++;
+            sxHost = *arg;
+            rc = true;
+          }
+          break;
+        case L'G': case L'g': // override default config file
+          // ensure there's another non-flag argument
+          if ((arg + 1) == argvec.end() || (arg + 1)[0] == L'-') {
+            // Better stop as we don't know how bad things are!
+            return false;
+          } else {
+            arg++;
+            if (!pws_os::FileExists(std::wstring(*arg))) {
+              // FileExists returns false if specified file not found
+              // DON'T use PWSprefs here
+              // Better stop as we don't know how bad things are!
+              return false;
+            } else {
+              sxConfigFile = *arg;
+              rc = true;
+            }
+          }
+          break;
+        } // switch on flag
+      }
+      arg++;
+    } // while argvec
+  } // Command line not empty
+
+  return rc;
+}
+
 bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
 {
   /*
@@ -742,6 +824,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
         arg++;
         continue;
       }
+
       if ((*arg)[0] == L'-') {
         switch ((*arg)[1]) {
         case L'E': case L'e':
@@ -757,16 +840,15 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
             Usage();
             return false;
           }
+
           // get password from user
-          StringX passkey;
           CCryptKeyEntry dlg(isEncrypt);
           INT_PTR nResponse = dlg.DoModal();
 
-          if (nResponse == IDOK) {
-            passkey = LPCWSTR(dlg.m_cryptkey1);
-          } else {
+          if (nResponse != IDOK) {
             return false;
           }
+          StringX passkey = LPCWSTR(dlg.m_cryptkey1);
 
           BOOL status;
           if (isEncrypt) {
@@ -776,7 +858,6 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
               CGeneralMsgBox gmb;
               gmb.AfxMessageBox(errstr.c_str(), NULL, MB_OK | MB_ICONEXCLAMATION);
             }
-            return true;
           } else {
             std::wstring errstr;
             status = PWSfile::Decrypt(std::wstring(*(arg+1)), passkey, errstr);
@@ -784,8 +865,8 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
               CGeneralMsgBox gmb;
               gmb.AfxMessageBox(errstr.c_str(), NULL, MB_OK | MB_ICONEXCLAMATION);
             }
-            return true;
           }
+          return true;
         } // -e or -d flag
         case L'C': case L'c':
           m_core.SetCurFile(L"");
@@ -813,31 +894,35 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
           // ensure there's another non-flag argument
           if ((arg + 1) == argvec.end() || (arg + 1)[0] == L'-') {
             Usage();
-            return FALSE;
+            return false;
           } else {
             arg++;
-            SysInfo::GetInstance()->SetEffectiveUser(LPCWSTR(*arg));
+            // No need to set effective user as done in previous parsing
+            // of command line to get config information
           }
           break;
         case L'H': case L'h': // set effective host
           // ensure there's another non-flag argument
           if ((arg + 1) == argvec.end() || (arg + 1)[0] == L'-') {
             Usage();
-            return FALSE;
+            return false;
           } else {
             arg++;
-            SysInfo::GetInstance()->SetEffectiveHost(LPCWSTR(*arg));
+            // No need to set effective host as done in previous parsing
+            // of command line to get config information
           }
           break;
         case L'G': case L'g': // override default config file
           // ensure there's another non-flag argument
           if ((arg + 1) == argvec.end() || (arg + 1)[0] == L'-') {
             Usage();
-            return FALSE;
+            return false;
           } else {
             arg++;
-            if (!PWSprefs::SetConfigFile(std::wstring(*arg))) {
-              // SetConfigFile returns false if specified file not found
+            // No need to set config file as done in previous parsing
+            // of command line to get config information
+            if (!pws_os::FileExists(std::wstring(*arg))) {
+              // FileExists returns false if specified file not found
               CGeneralMsgBox gmb;
               CString missing_cfg;
               // Classic chicken-and-egg here: Since the local
@@ -846,8 +931,8 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
               // safest to keep this particular error message in English
               // and out of the language-specific dlls.
               missing_cfg.Format(L"Configuration file %s not found - creating it.",
-                                 *arg);
-              gmb.AfxMessageBox(missing_cfg, L"Error", MB_OK|MB_ICONINFORMATION);
+                                 static_cast<LPCWSTR>(*arg));
+              gmb.AfxMessageBox(missing_cfg, L"Error", MB_OK | MB_ICONINFORMATION);
             }
           }
           break;
@@ -872,18 +957,16 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
       } // if arg is a flag or not
       arg++;
     } // while argvec
+
     // If start silent && no filename specified, start closed as well
     if (startSilent && !fileGiven)
       dbox.SetStartClosed(true);
   } // Command line not empty
 
   if (!allDone) {
-    // MUST (indirectly) create PWSprefs first thing after parsing argv
-    // Ensures all things like saving locations etc. are set up.
-    PWSprefs *prefs = PWSprefs::GetInstance();
     // Update dialog orientation preference if user specified:
     if (dialogOrientation != -1)
-      prefs->SetPref(PWSprefs::DlgOrientation, dialogOrientation);
+      PWSprefs::GetInstance()->SetPref(PWSprefs::DlgOrientation, dialogOrientation);
   } // !allDone
   return true;
 }
@@ -913,7 +996,43 @@ BOOL ThisMfcApp::InitInstance()
   */
   SetRegistryKey(L"Password Safe");
 
+  m_core.SetReadOnly(false);
+  // Command line parsing MUST be done before the first PWSprefs lookup!
+  // (since user/host/config file may be overridden!)
+  bool allDone = false;
+
+  // Get config information from the command line before "really" parsing the command line!
+  StringX sxConfigFile, sxHost, sxUser;
+  if (GetConfigFromCommandLine(sxConfigFile, sxHost, sxUser)) {
+    // No errors - so set config file, user & host if supplied
+    // Set up config file
+    if (!sxConfigFile.empty())
+      PWSprefs::SetConfigFile(sxConfigFile.c_str());
+
+    if (!sxHost.empty())
+      SysInfo::GetInstance()->SetEffectiveHost(sxHost.c_str());
+
+    if (!sxUser.empty())
+      SysInfo::GetInstance()->SetEffectiveUser(sxUser.c_str());
+  }
+
+  // Set up PWSprefs for this PasswordSafe session.
+  // Whilst the language may be changed by the user via a menu, there is no user
+  // facility to change the config file, host or user later.
+  PWSprefs::GetInstance();
+
+  // Now load translations (localized messages used in Usage and encrypt/decrypt dialogs)
+  LoadLocalizedStuff();
+
+#ifndef _DEBUG
+  if (m_hInstResDLL != NULL)
+    LocalizeFaultHandler(m_hInstResDLL);
+#endif
+
+  // Do not create dbox before config data obtained as it would create PWSprefs
+  // using the potentially incorrect config data
   DboxMain dbox(NULL);
+
   std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions;
   bsSupportedFunctions.set(UIInterFace::DATABASEMODIFIED);
   bsSupportedFunctions.set(UIInterFace::UPDATEGUI);
@@ -923,20 +1042,10 @@ BOOL ThisMfcApp::InitInstance()
 
   m_core.SetUIInterFace(&dbox, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
 
-  m_core.SetReadOnly(false);
-  // Command line parsing MUST be done before the first PWSprefs lookup!
-  // (since user/host/config file may be overridden!)
-  bool allDone = false;
-
-  // Load translations before command line parsing (localized messages used in Usage and encrypt/decrypt dialogs)
-  LoadLocalizedStuff();
-#ifndef _DEBUG
-  if (m_hInstResDLL != NULL)
-    LocalizeFaultHandler(m_hInstResDLL);
-#endif
-
-  // Note: Even though PWSprefs has not yet been created, parsing the command line
-  // will (via DboxMain) fill in values within it!
+  // Parse the command line again.  If there were errors getting the config file,
+  // host or user before, then this time around we will issue messages but they
+  // will probably be in English unless the config data was OK previously and
+  // the config file specifies a different language.
   bool parseVal = ParseCommandLine(dbox, allDone);
 
   // allDone will be true iff -e or -d options given, in which case
@@ -1420,7 +1529,7 @@ void ThisMfcApp::GetLanguageFiles()
     if (len == 15)
       cs_CC = cs_dll.Mid(9, 2);
 
-    cs_temp.Format(L"pwsafe%s.chm", cs_LL);
+    cs_temp.Format(L"pwsafe%s.chm", static_cast<LPCWSTR>(cs_LL));
     cs_helpfile = cs_ExePath + cs_temp;
     std::wstring wsHelpFile = (LPCWSTR)cs_helpfile;
     bool bHelpFileExists = pws_os::FileExists(wsHelpFile);
