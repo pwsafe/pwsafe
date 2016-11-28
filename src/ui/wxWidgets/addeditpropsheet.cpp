@@ -1516,7 +1516,6 @@ void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& /* evt */ )
 
 PWPolicy AddEditPropSheet::GetPWPolicyFromUI()
 {
-  Validate(); TransferDataFromWindow();
   wxASSERT_MSG(m_ourPWPRB->GetValue() && !m_defPWPRB->GetValue(), wxT("Trying to get Password policy from UI when db defaults are to be used"));
 
   PWPolicy pwp;
