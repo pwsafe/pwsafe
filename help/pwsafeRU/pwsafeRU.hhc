@@ -1,6 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <HTML>
-<HEAD><meta http-equiv='content-type' content='text/html; charset=Windows-1251'><!-- Sitemap 1.0 -->
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=Windows-1251"><!-- Sitemap 1.0 -->
 <meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
 
 </HEAD><BODY>
@@ -124,15 +125,15 @@
 			<param name="Local" value="html\file_menu.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Меню «Изменить»">
+			<param name="Name" value="Меню «Правка»">
 			<param name="Local" value="html\edit_menu.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Меню «Просмотр»">
+			<param name="Name" value="Меню «Вид»">
 			<param name="Local" value="html\view_menu.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Меню «Управление»">
+			<param name="Name" value="Меню «Сервис»">
 			<param name="Local" value="html\manage_menu.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
