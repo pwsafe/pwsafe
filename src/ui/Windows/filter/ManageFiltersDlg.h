@@ -110,7 +110,6 @@ private:
   static CString GetFilterPoolName(FilterPool fp);
 
   CListCtrl m_FilterLC, m_FilterProperties;
-  CStatusBar m_statusBar;
   CImageList *m_pImageList, *m_pCheckImageList;
   CPWHdrCtrlNoChng m_FLCHeader;
   CPWHdrCtrlNoChng m_FPROPHeader;
@@ -119,7 +118,7 @@ private:
   CString m_selectedfiltername, m_activefiltername;
   int m_selectedfilter, m_activefilter;
   int m_num_to_export, m_num_to_copy;
-  bool m_bFilterActive, m_bDBFiltersChanged;
+  bool m_bMFFilterActive, m_bDBFiltersChanged;
   int m_iSortColumn, m_bSortAscending;
 
   bool m_bCanHaveAttachments;

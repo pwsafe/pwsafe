@@ -253,7 +253,7 @@ BOOL DboxMain::OpenOnInit()
 
   bool bFileIsReadOnly;
   pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
-  m_statusBar.SetFileStatus(m_bOpen, bFileIsReadOnly);
+  m_StatusBar.SetFileStatus(m_bOpen, bFileIsReadOnly);
 
   retval = TRUE;
 
@@ -443,6 +443,7 @@ int DboxMain::NewFile(StringX &newfilename)
   // Tidy up filters
   CurrentFilter().Empty();
   m_bFilterActive = false;
+  FilterFindEntries(false, NULL);
 
   // Clear any saved group information
   m_TreeViewGroup = L"";
@@ -505,6 +506,7 @@ int DboxMain::Close(const bool bTrySave)
   // Tidy up filters
   CurrentFilter().Empty();
   m_bFilterActive = m_bUnsavedDisplayed = m_bExpireDisplayed = false;
+  FilterFindEntries(false, NULL);
   ApplyFilters();
 
   // Set Dragbar images correctly
@@ -528,7 +530,7 @@ int DboxMain::Close(const bool bTrySave)
   m_ilastaction = 0;
   UpdateStatusBar();
 
-  m_statusBar.SetFileStatus(false, false);
+  m_StatusBar.SetFileStatus(false, false);
 
   // Delete any saved status information
   while (!m_stkSaveGUIInfo.empty()) {
@@ -693,7 +695,7 @@ int DboxMain::Open(const UINT uiTitle)
 
   bool bFileIsReadOnly;
   pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
-  m_statusBar.SetFileStatus(m_bOpen, bFileIsReadOnly);
+  m_StatusBar.SetFileStatus(m_bOpen, bFileIsReadOnly);
 
   return rc;
 }
@@ -784,6 +786,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   // Tidy up filters
   CurrentFilter().Empty();
   m_bFilterActive = false;
+  FilterFindEntries(false, NULL);
   ApplyFilters();
 
   // Reset flag as new file
@@ -871,7 +874,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
 
   bool bFileIsReadOnly;
   pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
-  m_statusBar.SetFileStatus(m_bOpen, bFileIsReadOnly);
+  m_StatusBar.SetFileStatus(m_bOpen, bFileIsReadOnly);
 
 exit:
   if (!bAskerSet)
@@ -906,6 +909,7 @@ void DboxMain::PostOpenProcessing()
   // Tidy up filters
   CurrentFilter().Empty();
   m_bFilterActive = false;
+  FilterFindEntries(false, NULL);
 
   // Clear any saved group information
   m_TreeViewGroup = L"";

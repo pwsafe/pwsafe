@@ -561,7 +561,10 @@ void CPWFindToolBar::ClearFind()
   m_subgroup_object = m_subgroup_function = 0;
   m_last_subgroup_object = m_last_subgroup_function = 0;
   m_lastshown = size_t(-1);
-  m_indices.clear();
+  m_vIndices.clear();
+  m_vFoundUUIDs.clear();
+
+  app.GetMainDlg()->FilterFindEntries(false, NULL);
 }
 
 void CPWFindToolBar::Find()
@@ -601,16 +604,17 @@ void CPWFindToolBar::Find()
   }
 
   if (m_lastshown == size_t(-1)) {
-    m_indices.clear();
+    m_vIndices.clear();
+    m_vFoundUUIDs.clear();
 
     if (m_bAdvanced)
-      m_numFound = app.GetMainDlg()->FindAll(m_search_text, m_cs_search, m_indices,
+      m_numFound = app.GetMainDlg()->FindAll(m_search_text, m_cs_search, m_vIndices, m_vFoundUUIDs,
                                  m_pst_SADV->bsFields, m_pst_SADV->bsAttFields,
                                  m_pst_SADV->subgroup_bset,
                                  m_pst_SADV->subgroup_name, m_pst_SADV->subgroup_object, 
                                  m_pst_SADV->subgroup_function);
     else
-      m_numFound = app.GetMainDlg()->FindAll(m_search_text, m_cs_search, m_indices);
+      m_numFound = app.GetMainDlg()->FindAll(m_search_text, m_cs_search, m_vIndices, m_vFoundUUIDs);
 
     switch (m_numFound) {
       case 0:
@@ -629,7 +633,7 @@ void CPWFindToolBar::Find()
   // OK, so now we have a (possibly empty) list of items to select.
   if (m_numFound > 0) {
     if (m_numFound == 1) {
-      app.GetMainDlg()->SelectFindEntry(m_indices[0], TRUE);
+      app.GetMainDlg()->SelectFindEntry(m_vIndices[0], TRUE);
     } else { // m_numFound > 1
       if (m_iFindDirection == FIND_DOWN) {
         m_lastshown++;
@@ -649,13 +653,17 @@ void CPWFindToolBar::Find()
       } else
         cs_status.Format(IDS_FOUNDMATCHES, m_lastshown + 1, m_numFound);
 
-      app.GetMainDlg()->SelectFindEntry(m_indices[m_lastshown], TRUE);
+      app.GetMainDlg()->SelectFindEntry(m_vIndices[m_lastshown], TRUE);
     }
   }
-  if (m_numFound == 0)
+
+  if (m_numFound == 0) {
     m_findresults.SetColour(RGB(255, 0, 0));
-  else
+    app.GetMainDlg()->FilterFindEntries(false, NULL);
+  } else {
     m_findresults.ResetColour();
+    app.GetMainDlg()->FilterFindEntries(true, &m_vFoundUUIDs);
+  }
 
   m_findresults.SetWindowText(cs_status);
   Invalidate();
@@ -709,7 +717,8 @@ void CPWFindToolBar::ShowFindAdvanced()
 
         m_numFound = size_t(-1);
         m_lastshown = size_t(-1);
-        m_indices.clear();
+        m_vIndices.clear();
+        m_vFoundUUIDs.clear();
       }
     } else {
       bAdvanced = false;
@@ -723,8 +732,10 @@ void CPWFindToolBar::ShowFindAdvanced()
 
     m_numFound = size_t(-1);
     m_lastshown = size_t(-1);
-    m_indices.clear();
+    m_vIndices.clear();
+    m_vFoundUUIDs.clear();
   }
+
   // Set new state
   m_bAdvanced = bAdvanced;
 

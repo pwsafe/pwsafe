@@ -608,9 +608,12 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_ALL_EXPIRY, MF_BYCOMMAND |
                               m_bExpireDisplayed ? MF_CHECKED : MF_UNCHECKED);
 
+    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_FOUNDENTRIES, MF_BYCOMMAND |
+                              m_bFindFilterDisplayed ? MF_CHECKED : MF_UNCHECKED);
+
     // Don't show filter menu if "internal" menu active
     pPopupMenu->EnableMenuItem(ID_FILTERMENU, MF_BYCOMMAND |
-             (m_bUnsavedDisplayed || m_bExpireDisplayed) ? MF_GRAYED : MF_ENABLED);
+             (m_bUnsavedDisplayed || m_bExpireDisplayed || m_bFindFilterDisplayed) ? MF_GRAYED : MF_ENABLED);
 
     pPopupMenu->CheckMenuRadioItem(ID_MENUITEM_NEW_TOOLBAR,
                                    ID_MENUITEM_OLD_TOOLBAR,

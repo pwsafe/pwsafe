@@ -519,7 +519,7 @@ void DboxMain::setupBars()
   // This code is copied from the DLGCBR32 example that comes with MFC
 
   // Add the status bar
-  if (m_statusBar.Create(this)) {
+  if (m_StatusBar.Create(this)) {
     // Set up DoubleClickAction text - remove Shift+DCA
     const int dca = int(PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction));
     switch (dca) {
@@ -569,19 +569,19 @@ void DboxMain::setupBars()
     statustext[CPWStatusBar::SB_READONLY] = IDS_READ_ONLY;
 
     // And show
-    m_statusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
+    m_StatusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
 
     UINT uiID, uiStyle;
     int cxWidth;
-    m_statusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID,
+    m_StatusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID,
                             uiStyle, cxWidth);
-    int iBMWidth = m_statusBar.GetBitmapWidth();
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID,
+    int iBMWidth = m_StatusBar.GetBitmapWidth();
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID,
                             uiStyle | SBT_OWNERDRAW, iBMWidth);
 
     // Make a sunken or recessed border around the first pane
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK, 
-                            m_statusBar.GetItemID(CPWStatusBar::SB_DBLCLICK), 
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK, 
+                            m_StatusBar.GetItemID(CPWStatusBar::SB_DBLCLICK), 
                             SBPS_STRETCH, NULL);
   }
 
@@ -806,7 +806,7 @@ ItemListIter DboxMain::Find(int i)
 */
 
 size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
-                         vector<int> &indices)
+                         vector<int> &vIndices, vector<pws_os::CUUID> &vFoundUUIDs)
 {
   CItemData::FieldBits bsFields;
   bsFields.set();  // Default search is all text fields!
@@ -814,19 +814,21 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   CItemAtt::AttFieldBits bsAttFields;
   bsAttFields.reset();  // Default DON'T search attachment filename
 
-  return FindAll(str, CaseSensitive, indices, bsFields, bsAttFields,
+  return FindAll(str, CaseSensitive, vIndices, vFoundUUIDs, bsFields, bsAttFields,
                  false, L"", 0, 0);
 }
 
 size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
-                         vector<int> &indices,
+                         vector<int> &vIndices,
+                         vector<pws_os::CUUID> &vFoundUUIDs,
                          const CItemData::FieldBits &bsFields,
                          const CItemAtt::AttFieldBits &bsAttFields, 
                          const bool &subgroup_bset, const std::wstring &subgroup_name,
                          const int subgroup_object, const int subgroup_function)
 {
   ASSERT(!str.IsEmpty());
-  ASSERT(indices.empty());
+  ASSERT(vIndices.empty());
+  ASSERT(vFoundUUIDs.empty());
 
   StringX curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
   StringX curEmail, curSymbols, curPolicyName, curRunCommand, listTitle, saveTitle;
@@ -1008,7 +1010,9 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
       int li = pdi->list_index;
       ASSERT(m_ctlItemList.GetItemText(li, ititle) == saveTitle.c_str());
       // add to indices, bump retval
-      indices.push_back(li);
+      vIndices.push_back(li);
+      // Add into FoundUUID list
+      vFoundUUIDs.push_back(curitem.GetUUID());
     } // match found in m_pwlist
 
 nextentry:
@@ -1018,15 +1022,33 @@ nextentry:
       olistPos++;
   } // while
 
-  retval = indices.size();
+  retval = vIndices.size();
   // Sort indices if in List View
   if (m_IsListView && retval > 1)
-    sort(indices.begin(), indices.end());
+    sort(vIndices.begin(), vIndices.end());
 
   if (!m_IsListView)
     OIL.clear();
 
   return retval;
+}
+
+void DboxMain::FilterFindEntries(const bool bFilter, std::vector<pws_os::CUUID> *pvFoundUUIDs)
+{
+  // Tell FilterManager what to do
+  m_FilterManager.SetFindFilter(bFilter, pvFoundUUIDs);
+
+  if (!bFilter && m_bFindFilterDisplayed) {
+    m_bFilterActive = m_bFindFilterDisplayed = false;
+    m_ctlItemList.SetFilterState(false);
+    m_ctlItemTree.SetFilterState(false);
+    m_StatusBar.SetFilterStatus(false);
+
+    if (GetNumEntries() != 0)
+      RefreshViews();
+  }
+
+  UpdateStatusBar();
 }
 
 //Checks and sees if everything works and something is selected
@@ -1164,12 +1186,14 @@ void DboxMain::RefreshViews(const ViewType iView)
     m_ctlItemList.SetRedraw(FALSE);
     m_ctlItemList.DeleteAllItems();
   }
+
   if (iView & TREEONLY) {
     m_ctlItemTree.SetRedraw(FALSE);
     m_mapGroupToTreeItem.clear();
     m_mapTreeItemToGroup.clear();
     m_ctlItemTree.DeleteAllItems();
   }
+
   m_bBoldItem = false;
 
   for (auto listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
@@ -1178,16 +1202,17 @@ void DboxMain::RefreshViews(const ViewType iView)
     DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
     if (pdi != NULL)
       pdi->list_index = -1; // easier, but less efficient, to delete pdi
+
     InsertItemIntoGUITreeList(ci, -1, false, iView);
   }
 
   // Need to add any empty groups into the view
-  // Note: "Expired" status is valid for "Entries" and not empty groups
-  // and so they will not be displayed
+  if (m_bFilterActive) {
+    bool bAlreadyExists;
+    // 1. Filter on Unsaved changes
   if (m_bUnsavedDisplayed && m_core.HaveEmptyGroupsChanged()) {
     // We have some unsaved empty groups
     // Only add empty groups not yet saved
-    bool bAlreadyExists;
     std::vector<StringX> vSavedEmptyGroups = m_core.GetSavedEmptyGroups();
     for (auto emptyGrp : m_core.GetEmptyGroups())     {
       auto it = std::find(vSavedEmptyGroups.begin(), vSavedEmptyGroups.end(), emptyGrp);
@@ -1196,27 +1221,57 @@ void DboxMain::RefreshViews(const ViewType iView)
         m_bNumPassedFiltering++;
       }
     }
-  } else
-  if (m_bFilterActive && !m_bExpireDisplayed) {
-    // If filter active and included a test on the group value
-    // should an empty group be in the GUI
-    // Show all empty groups as passing a filter, which can only include
-    // the group value
-    bool bAlreadyExists;
+    }
+
+    // 2. Filter on Find results
+    if (m_bFindFilterDisplayed) {
+      // Maybe use full search Info
+      //bool bAdvanced, subgroup_bset, subgroup_bset;
+      //int subgroup_object, subgroup_function;
+      //std::wstring subgroup_name;
+      //CItemData::FieldBits bsFields;
+      //CItemAtt::AttFieldBits bsAttFields;
+
+      //m_FindToolBar.GetSearchInfo(bAdvanced, bsFields, bsAttFields, subgroup_name,
+      //                            subgroup_bset, subgroup_object, subgroup_function);
+
+      // Initially only test if empty group contains the search text (case insensitive)
+      CString csFindString;
+      m_FindToolBar.GetSearchText(csFindString);
+      StringX sxFindString(csFindString);
+      ToUpper(sxFindString);
+
+      for (auto &emptyGrp : m_core.GetEmptyGroups()) {
+        StringX sxCode = emptyGrp;
+        ToUpper(sxCode);
+        if (sxCode.find(sxFindString) != StringX::npos) {
+          m_ctlItemTree.AddGroup(emptyGrp.c_str(), bAlreadyExists);
+          m_bNumPassedFiltering++;
+        }
+      }
+    }
+
+    // 3. Filter on entries with expired passwords - do not add any empty groups
+    // Don't add empty groups if m_bExpireDisplayed == true
+
+    // 4. User defined filter
+    if (!m_bExpireDisplayed && !m_bUnsavedDisplayed && !m_bFindFilterDisplayed) {
+      // Show all empty groups that passes a filter, which must include
+      // a test on the group value
     for (auto &emptyGrp : m_core.GetEmptyGroups()) {
       if (m_FilterManager.PassesEmptyGroupFiltering(emptyGrp)) {
         m_ctlItemTree.AddGroup(emptyGrp.c_str(), bAlreadyExists);
         m_bNumPassedFiltering++;
       }
     }
-  } else
-  if (!m_bExpireDisplayed) {
-    // Show all empty groups as no special filter
+    }
+  } else {
+    // Show all empty groups as no filter active
     bool bAlreadyExists;
     for (auto &emptyGrp : m_core.GetEmptyGroups()) {
       m_ctlItemTree.AddGroup(emptyGrp.c_str(), bAlreadyExists);
     }
-  }
+  }  // m_bFilterActive
 
   m_ctlItemTree.SortTree(TVI_ROOT);
   SortListView();
@@ -1697,6 +1752,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
   if (m_bFilterActive) {
     if (!m_FilterManager.PassesFiltering(ci, m_core))
       return -1;
+
     m_bNumPassedFiltering++;
   }
 
@@ -3653,11 +3709,11 @@ void DboxMain::SetToolBarPositions()
 
   if (m_FindToolBar.IsVisible()) {
     // Is visible.  Try to get FindToolBar "above" the StatusBar!
-    ASSERT(m_FindToolBar.GetParent() == m_statusBar.GetParent());
+    ASSERT(m_FindToolBar.GetParent() == m_StatusBar.GetParent());
 
     CRect ftb_rect, stb_rect;
     m_FindToolBar.GetWindowRect(&ftb_rect);
-    m_statusBar.GetWindowRect(&stb_rect);
+    m_StatusBar.GetWindowRect(&stb_rect);
 
     if (ftb_rect.top > stb_rect.top) {
       // FindToolBar is "below" the StatusBar
@@ -3667,10 +3723,10 @@ void DboxMain::SetToolBarPositions()
       m_FindToolBar.MoveWindow(ftb_rect.left, ftb_rect.top - stb_rect.Height(),
                                ftb_rect.Width(), ftb_rect.Height());
       // Move Statusbar down by the height of the FindToolBar
-      m_statusBar.MoveWindow(stb_rect.left, stb_rect.top + ftb_rect.Height(),
+      m_StatusBar.MoveWindow(stb_rect.left, stb_rect.top + ftb_rect.Height(),
                              stb_rect.Width(), stb_rect.Height());
       m_FindToolBar.Invalidate();
-      m_statusBar.Invalidate();
+      m_StatusBar.Invalidate();
     }
   }
 
@@ -4237,9 +4293,13 @@ void DboxMain::OnShowUnsavedEntries()
     if (m_bExpireDisplayed)
       m_bExpireDisplayed = !m_bExpireDisplayed;
 
+    if (m_bFindFilterDisplayed)
+      m_bFindFilterDisplayed = !m_bFindFilterDisplayed;
+
     CurrentFilter() = m_FilterManager.GetUnsavedFilter();
-  } else
+  } else {
     CurrentFilter().Empty();
+  }
 
   ApplyFilters();
 
@@ -4262,9 +4322,13 @@ void DboxMain::OnShowExpireList()
     if (m_bUnsavedDisplayed)
       m_bUnsavedDisplayed = !m_bUnsavedDisplayed;
 
+    if (m_bFindFilterDisplayed)
+      m_bFindFilterDisplayed = !m_bFindFilterDisplayed;
+
     CurrentFilter() = m_FilterManager.GetExpireFilter();
-  } else
+  } else {
     CurrentFilter().Empty();
+  }
 
   ApplyFilters();
 
@@ -4274,6 +4338,35 @@ void DboxMain::OnShowExpireList()
     m_bExpireDisplayed ? FALSE : TRUE);
   m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_MANAGEFILTERS,
     m_bExpireDisplayed ? FALSE : TRUE);
+}
+
+void DboxMain::OnShowFoundEntries() 
+{
+  m_bFindFilterDisplayed = !m_bFindFilterDisplayed;
+
+  if (!m_bUnsavedDisplayed)
+    m_bFilterActive = !m_bFilterActive;
+
+  if (m_bFilterActive) {
+    if (m_bUnsavedDisplayed)
+      m_bUnsavedDisplayed = !m_bUnsavedDisplayed;
+
+    if (m_bExpireDisplayed)
+      m_bExpireDisplayed = !m_bExpireDisplayed;
+
+    CurrentFilter() = m_FilterManager.GetFoundFilter();
+  } else {
+    CurrentFilter().Empty();
+  }
+
+  ApplyFilters();
+
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_APPLYFILTER,
+    (m_bFindFilterDisplayed || !m_bFilterActive) ? FALSE : TRUE);
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_EDITFILTER,
+    m_bFindFilterDisplayed ? FALSE : TRUE);
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_MANAGEFILTERS,
+    m_bFindFilterDisplayed ? FALSE : TRUE);
 }
 
 void DboxMain::UpdateToolBarDoUndo()
