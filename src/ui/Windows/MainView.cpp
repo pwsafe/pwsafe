@@ -519,7 +519,7 @@ void DboxMain::setupBars()
   // This code is copied from the DLGCBR32 example that comes with MFC
 
   // Add the status bar
-  if (m_statusBar.Create(this)) {
+  if (m_StatusBar.Create(this)) {
     // Set up DoubleClickAction text - remove Shift+DCA
     const int dca = int(PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction));
     switch (dca) {
@@ -569,19 +569,19 @@ void DboxMain::setupBars()
     statustext[CPWStatusBar::SB_READONLY] = IDS_READ_ONLY;
 
     // And show
-    m_statusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
+    m_StatusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
 
     UINT uiID, uiStyle;
     int cxWidth;
-    m_statusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID,
+    m_StatusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID,
                             uiStyle, cxWidth);
-    int iBMWidth = m_statusBar.GetBitmapWidth();
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID,
+    int iBMWidth = m_StatusBar.GetBitmapWidth();
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID,
                             uiStyle | SBT_OWNERDRAW, iBMWidth);
 
     // Make a sunken or recessed border around the first pane
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK, 
-                            m_statusBar.GetItemID(CPWStatusBar::SB_DBLCLICK), 
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK, 
+                            m_StatusBar.GetItemID(CPWStatusBar::SB_DBLCLICK), 
                             SBPS_STRETCH, NULL);
   }
 
@@ -3653,11 +3653,11 @@ void DboxMain::SetToolBarPositions()
 
   if (m_FindToolBar.IsVisible()) {
     // Is visible.  Try to get FindToolBar "above" the StatusBar!
-    ASSERT(m_FindToolBar.GetParent() == m_statusBar.GetParent());
+    ASSERT(m_FindToolBar.GetParent() == m_StatusBar.GetParent());
 
     CRect ftb_rect, stb_rect;
     m_FindToolBar.GetWindowRect(&ftb_rect);
-    m_statusBar.GetWindowRect(&stb_rect);
+    m_StatusBar.GetWindowRect(&stb_rect);
 
     if (ftb_rect.top > stb_rect.top) {
       // FindToolBar is "below" the StatusBar
@@ -3667,10 +3667,10 @@ void DboxMain::SetToolBarPositions()
       m_FindToolBar.MoveWindow(ftb_rect.left, ftb_rect.top - stb_rect.Height(),
                                ftb_rect.Width(), ftb_rect.Height());
       // Move Statusbar down by the height of the FindToolBar
-      m_statusBar.MoveWindow(stb_rect.left, stb_rect.top + ftb_rect.Height(),
+      m_StatusBar.MoveWindow(stb_rect.left, stb_rect.top + ftb_rect.Height(),
                              stb_rect.Width(), stb_rect.Height());
       m_FindToolBar.Invalidate();
-      m_statusBar.Invalidate();
+      m_StatusBar.Invalidate();
     }
   }
 

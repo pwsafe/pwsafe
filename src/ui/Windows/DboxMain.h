@@ -453,7 +453,7 @@ public:
   CString m_titlebar; // what's displayed in the title bar
 
   CPWFindToolBar m_FindToolBar;  // Find toolbar
-  CPWStatusBar m_statusBar;
+  CPWStatusBar m_StatusBar;
   BOOL m_toolbarsSetup;
   UINT m_toolbarMode;
   UINT statustext[CPWStatusBar::SB_TOTAL];
