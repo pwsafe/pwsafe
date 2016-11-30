@@ -35,7 +35,7 @@ CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
                                PWSFilters &mapfilters,
                                bool bCanHaveAttachments)
   : CPWDialog(CManageFiltersDlg::IDD, pParent),
-  m_bFilterActive(bFilterActive), m_MapMFDFilters(mapfilters),
+  m_bMFFilterActive(bFilterActive), m_MapMFDFilters(mapfilters),
   m_selectedfilterpool(FPOOL_LAST), m_selectedfiltername(L""),
   m_activefilterpool(FPOOL_LAST), m_activefiltername(L""),
   m_selectedfilter(-1), m_activefilter(-1),
@@ -390,7 +390,7 @@ do_edit:
       m_MapMFDFilters.erase(flt_key);
 
       // If this was active, we need to clear it and re-apply
-      if (m_bFilterActive && 
+      if (m_bMFFilterActive &&
           m_activefilterpool == FPOOL_SESSION && 
           m_activefiltername == filters.fname.c_str()) {
         bJustDoIt = true;
@@ -460,7 +460,7 @@ do_edit:
       m_bDBFiltersChanged = true;
 
     // If the original was active, we need to clear it and re-apply
-    if (m_bFilterActive && 
+    if (m_bMFFilterActive &&
         m_activefilterpool == flt_key.fpool && 
         m_activefiltername == m_selectedfiltername) {
       bJustDoIt = true;
@@ -646,7 +646,7 @@ void CManageFiltersDlg::SetFilter()
   // Now add flag to new selected and active filter
   pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
   pflt_idata->flt_flags |= MFLT_INUSE;
-  m_bFilterActive = true;
+  m_bMFFilterActive = true;
 
   m_FilterLC.Invalidate();  // Ensure selected statement updated
 }
@@ -661,7 +661,7 @@ void CManageFiltersDlg::ClearFilter()
   if (pflt_idata != NULL)
     pflt_idata->flt_flags &= ~MFLT_INUSE;
   m_activefilter = -1;
-  m_bFilterActive = false;
+  m_bMFFilterActive = false;
 
   m_FilterLC.Invalidate();  // Ensure selected statement updated
 }
@@ -865,7 +865,7 @@ void CManageFiltersDlg::UpdateFilterList()
     m_FilterLC.SetItemText(iItem, MFLC_COPYTODATABASE, L".");
     m_FilterLC.SetItemText(iItem, MFLC_EXPORT, L".");
 
-    if (m_bFilterActive &&
+    if (m_bMFFilterActive &&
         mf_iter->first.fpool == m_activefilterpool &&
         mf_iter->first.cs_filtername.c_str() == m_activefiltername) {
       m_activefilter = iItem;

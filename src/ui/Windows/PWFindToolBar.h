@@ -30,8 +30,7 @@ protected:
 
 };
 
-class CPWFindToolBar : public CToolBar
-{
+class CPWFindToolBar : public CToolBar {
   DECLARE_DYNAMIC(CPWFindToolBar)
 
 public:
@@ -45,9 +44,8 @@ public:
 
   void ShowFindToolBar(bool bShow);
   bool IsVisible() {return m_bVisible;} // virt function, can't constify
-  bool EntriesFound() const {return !m_indices.empty();}
-  void GetSearchText(CString &csFindString)
-  {m_findedit.GetWindowText(csFindString);}
+  bool EntriesFound() const { return !m_vIndices.empty(); }
+  void GetSearchText(CString &csFindString) {m_findedit.GetWindowText(csFindString);}
   void Find();
   void ClearFind();
   void ShowFindAdvanced();
@@ -63,9 +61,10 @@ public:
     bAdvanced = m_bAdvanced;
     bsFields = m_pst_SADV->bsFields; bsAttFields = m_pst_SADV->bsAttFields;
     subgroup_name = m_subgroup_name; subgroup_bset = m_subgroup_bset;
-    subgroup_object = m_subgroup_object; subgroup_function = m_subgroup_function;}
+    subgroup_object = m_subgroup_object; subgroup_function = m_subgroup_function;
+  }
 
-  std::vector<int> *GetSearchResults() {return &m_indices;}
+  std::vector<int> *GetSearchResults() { return &m_vIndices; }
   void SetStatus(CString cs_status) {m_findresults.SetWindowText(cs_status);}
 
   CFindEditCtrl m_findedit;
@@ -97,7 +96,10 @@ private:
   bool m_bVisible, m_bCaseSensitive;
   bool m_bAdvanced, m_bFontSet;
 
-  std::vector<int> m_indices; // array of found items
+  std::vector<int> m_vIndices; // array of found items
+  // Vector of found entries' UUID for advance search to display only those
+  // entries satisfying a search
+  std::vector<pws_os::CUUID> m_vFoundUUIDs;
 
   bool m_cs_search, m_last_cs_search;
   CSecString m_search_text, m_last_search_text;

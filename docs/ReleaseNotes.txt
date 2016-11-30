@@ -25,7 +25,8 @@ None
 
 New Features for 3.41.1
 =======================
-None
+[] A new internal filter has been implemented to show only those entries from
+last Find. Access via the View menu or Ctrl+K shortcut.
 
 Bugs fixed in 3.41.0
 ====================

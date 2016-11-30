@@ -171,7 +171,7 @@ CPWTreeCtrl::CPWTreeCtrl()
   : m_isRestoring(false), m_bWithinThisInstance(true),
   m_bMouseInWindow(false), m_nHoverNDTimerID(0), m_nShowNDTimerID(0),
   m_hgDataALL(NULL), m_hgDataTXT(NULL), m_hgDataUTXT(NULL),
-  m_bFilterActive(false), m_bUseHighLighting(false)
+  m_bTreeFilterActive(false), m_bUseHighLighting(false)
 {
   // Register a clipboard format for column drag & drop.
   // Note that it's OK to register same format more than once:
@@ -2258,15 +2258,15 @@ void CPWTreeCtrl::SortTree(const HTREEITEM htreeitem)
 
 void CPWTreeCtrl::SetFilterState(bool bState)
 {
-  m_bFilterActive = bState;
+  m_bTreeFilterActive = bState;
 
   // Red if filter active, black if not
-  SetTextColor(m_bFilterActive ? RGB(168, 0, 0) : RGB(0, 0, 0));
+  SetTextColor(m_bTreeFilterActive ? RGB(168, 0, 0) : RGB(0, 0, 0));
 }
 
 BOOL CPWTreeCtrl::OnEraseBkgnd(CDC* pDC)
 {
-  if (m_bFilterActive && app.GetMainDlg()->GetNumPassedFiltering() == 0) {
+  if (m_bTreeFilterActive && app.GetMainDlg()->GetNumPassedFiltering() == 0) {
     int nSavedDC = pDC->SaveDC(); //save the current DC state
 
     // Set up variables

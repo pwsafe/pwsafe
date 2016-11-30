@@ -163,7 +163,7 @@ private:
   bool m_bShowNotes, m_bMouseInWindow;
 
   // Filter
-  bool m_bFilterActive;
+  bool m_bTreeFilterActive;
   bool m_bEditLabelCompleted;
 
   bool m_bUseHighLighting;

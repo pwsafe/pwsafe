@@ -393,12 +393,15 @@ class PWSFilterManager {
   void CreateGroups();
   bool PassesFiltering(const CItemData &ci, const PWScore &core);
   bool PassesEmptyGroupFiltering(const StringX &sxGroup);
+  void SetFindFilter(const bool &bFilter, std::vector<pws_os::CUUID> *pvFoundUUIDs);
 
   // predefined filters accessors, use by assigning to m_currentfilter
   const st_filters &GetExpireFilter() const {return m_expirefilter;}
   const st_filters &GetUnsavedFilter() const {return m_unsavedfilter;}
+  const st_filters &GetFoundFilter() const { return m_lastfoundfilter; }
 
   st_filters m_currentfilter;
+  size_t GetFindFilterSize() { return m_vFoundUUIDs.size(); }
   
  private:
    bool PassesPWHFiltering(const CItemData *pci) const;
@@ -408,7 +411,13 @@ class PWSFilterManager {
    vfiltergroups m_vMflgroups, m_vHflgroups, m_vPflgroups, m_vAflgroups;
 
    // predefined filters, set up at c'tor
-   st_filters m_expirefilter, m_unsavedfilter;
+   st_filters m_expirefilter, m_unsavedfilter, m_lastfoundfilter;
+
+   // Filter on Find results
+   bool m_bFindFilterActive;
+   // Vector of found entries' UUID for advance search to display only those
+   // entries satisfying a search
+   std::vector<pws_os::CUUID> m_vFoundUUIDs;
 };
 
 #endif  /* __PWSFILTERS_H */

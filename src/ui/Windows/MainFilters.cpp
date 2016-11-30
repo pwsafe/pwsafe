@@ -48,12 +48,15 @@ static char THIS_FILE[] = __FILE__;
 
 void DboxMain::OnCancelFilter()
 {
-  // Deal with the 2 internal filters before user defined ones
+  // Deal with the 3 internal filters before user defined ones
   if (m_bExpireDisplayed) {
     OnShowExpireList();
   } else
   if (m_bUnsavedDisplayed) {
     OnShowUnsavedEntries();
+  } else
+  if (m_bFindFilterDisplayed) {
+    OnShowFoundEntries();
   } else
   if (m_bFilterActive) {
     ApplyFilter();

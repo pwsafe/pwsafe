@@ -443,6 +443,7 @@ int DboxMain::NewFile(StringX &newfilename)
   // Tidy up filters
   CurrentFilter().Empty();
   m_bFilterActive = false;
+  FilterFindEntries(false, NULL);
 
   // Clear any saved group information
   m_TreeViewGroup = L"";
@@ -505,6 +506,7 @@ int DboxMain::Close(const bool bTrySave)
   // Tidy up filters
   CurrentFilter().Empty();
   m_bFilterActive = m_bUnsavedDisplayed = m_bExpireDisplayed = false;
+  FilterFindEntries(false, NULL);
   ApplyFilters();
 
   // Set Dragbar images correctly
@@ -784,6 +786,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   // Tidy up filters
   CurrentFilter().Empty();
   m_bFilterActive = false;
+  FilterFindEntries(false, NULL);
   ApplyFilters();
 
   // Reset flag as new file
@@ -906,6 +909,7 @@ void DboxMain::PostOpenProcessing()
   // Tidy up filters
   CurrentFilter().Empty();
   m_bFilterActive = false;
+  FilterFindEntries(false, NULL);
 
   // Clear any saved group information
   m_TreeViewGroup = L"";

@@ -134,8 +134,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_sxAutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bWTSRegistered(false),
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
-  m_bUnsavedDisplayed(false), m_RUEList(*app.GetCore()),
-  m_eye_catcher(_wcsdup(EYE_CATCHER)),
+  m_bUnsavedDisplayed(false), m_bExpireDisplayed(false), m_bFindFilterDisplayed(false),
+  m_RUEList(*app.GetCore()), m_eye_catcher(_wcsdup(EYE_CATCHER)),
   m_hUser32(NULL), m_bInAddGroup(false), m_bWizardActive(false),
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
   m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
@@ -144,7 +144,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bRenameCtrl(false), m_bRenameShift(false),
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
   m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false), m_bCompareEntries(false),
-  m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
+  m_bInRefresh(false), m_bInRestoreWindows(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
   m_ilastaction(0), m_bNoValidation(false), m_bDBInitiallyRO(false), m_bViaDCA(false),
   m_bUserDeclinedSave(false), m_bRestoredDBUnsaved(false),
@@ -437,6 +437,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
   ON_COMMAND(ID_MENUITEM_SHOWHIDE_UNSAVED, OnShowUnsavedEntries)
   ON_COMMAND(ID_MENUITEM_SHOW_ALL_EXPIRY, OnShowExpireList)
+  ON_COMMAND(ID_MENUITEM_SHOW_FOUNDENTRIES, OnShowFoundEntries)
 
   // Manage Menu
   ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPassphraseChange)
@@ -664,6 +665,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REFRESH, true, true, false, false},
   {ID_MENUITEM_SHOWHIDE_UNSAVED, true, false, false, false},
   {ID_MENUITEM_SHOW_ALL_EXPIRY, true, true, false, false},
+  {ID_MENUITEM_SHOW_FOUNDENTRIES, true, true, false, false},
   // Manage menu
   {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
@@ -3289,6 +3291,13 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       // display of unsaved or expired entries
       if (m_core.GetExpirySize() == 0 ||
           (m_bFilterActive && !m_bExpireDisplayed))
+        iEnable = FALSE;
+      break;
+    case ID_MENUITEM_SHOW_FOUNDENTRIES:
+      // Filter sub-menu mutually exclusive with use of internal filters for
+      // display of unsaved or expired entries
+      if (m_FilterManager.GetFindFilterSize() == 0 ||
+        (m_bFilterActive && !m_bFindFilterDisplayed))
         iEnable = FALSE;
       break;
     case ID_MENUITEM_CLEAR_MRU:

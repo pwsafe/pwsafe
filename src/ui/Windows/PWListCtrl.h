@@ -73,7 +73,7 @@ private:
   bool IsNotesColumnPresent();
 
   // Filter
-  bool m_bFilterActive;
+  bool m_bListFilterActive;
 
   CFont *GetFontBasedOnStatus(CItemData *pci, COLORREF &cf);
   bool m_bUseHighLighting;
