@@ -18,6 +18,8 @@ Bugs fixed in 3.41.1
 [1385] The filter active indicator now shows in Windows 7.
 [1384] Toolbar images and text are now back in sync.
 [1367] Fixed regression in command line arguments -h and -u support.
+[1358] When PaswordSafe automatically locks to the TaskBar, the unlock window now gets
+input focus when clicking on the icon to unlock the database.
 
 Changes to Existing Features in 3.41.1
 ======================================

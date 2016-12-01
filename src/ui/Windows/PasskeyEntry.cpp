@@ -235,27 +235,37 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   SetIcon(m_hIcon, TRUE);  // Set big icon
   SetIcon(m_hIcon, FALSE); // Set small icon
 
+  // Following brings to top when hotkey pressed.
+  // This is "stronger" than BringWindowToTop().
+  SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+  SetActiveWindow();
+  SetForegroundWindow();
+
   if (app.WasHotKeyPressed()) {
     // Reset it
     app.SetHotKeyPressed(false);
-    // Following (1) brings to top when hotkey pressed,
-    // (2) ensures focus is on password entry field, where it belongs.
-    // This is "stronger" than BringWindowToTop().
-    SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-    SetActiveWindow();
-    SetForegroundWindow();
-    m_pctlPasskey->SetFocus();
+    // Ensures focus is on password entry field, where it belongs.
+    // Do NOT use SetFocus in OnInitDialog as it bypasses the Dialog manager
+    //m_pctlPasskey->SetFocus();
+    GotoDlgCtrl(m_pctlPasskey);
     return FALSE;
   }
 
   // Following works fine for other (non-hotkey) cases:
-  SetForegroundWindow();
+  if (m_index == GCP_RESTORE || m_index == GCP_WITHEXIT) {
+    SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    SetActiveWindow();
+    SetForegroundWindow();
+  }
 
   // If the dbase field's !empty, the user most likely will want to enter
   // a password:
   if (m_index == GCP_FIRST && !m_filespec.IsEmpty()) {
     m_MRU_combo.SetEditSel(-1, -1);
-    m_pctlPasskey->SetFocus();
+    // Ensures focus is on password entry field, where it belongs.
+    // Do NOT use SetFocus in OnInitDialog as it bypasses the Dialog manager
+    //m_pctlPasskey->SetFocus();
+    GotoDlgCtrl(m_pctlPasskey);
     return FALSE;
   }
 
