@@ -15,4 +15,3 @@ ipch
 *.vc.opendb
 /.vs
 *.VC.db
-/help/default/*.chw
