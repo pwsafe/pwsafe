@@ -110,7 +110,6 @@ private:
   static CString GetFilterPoolName(FilterPool fp);
 
   CListCtrl m_FilterLC, m_FilterProperties;
-  CStatusBar m_statusBar;
   CImageList *m_pImageList, *m_pCheckImageList;
   CPWHdrCtrlNoChng m_FLCHeader;
   CPWHdrCtrlNoChng m_FPROPHeader;

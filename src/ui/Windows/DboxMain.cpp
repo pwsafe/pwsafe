@@ -2727,80 +2727,95 @@ void DboxMain::UpdateStatusBar()
   if (m_toolbarsSetup != TRUE)
     return;
 
-  CString s;
-
   // Set the width according to the text
   UINT uiID, uiStyle;
-  int iWidth;
+  int iWidth, iFilterWidth;
   CRect rectPane;
-  // calculate text width
-  CClientDC dc(&m_statusBar);
-  CFont *pFont = m_statusBar.GetFont();
+  CString s;
+
+  // Calculate text width
+  CClientDC dc(&m_StatusBar);
+  CFont *pFont = m_StatusBar.GetFont();
   ASSERT(pFont);
   dc.SelectObject(pFont);
-  const int iBMWidth = m_statusBar.GetBitmapWidth();
+  const int iBMWidth = m_StatusBar.GetBitmapWidth();
 
   if (m_bOpen) {
     dc.DrawText(m_lastclipboardaction, &rectPane, DT_CALCRECT);
-    m_statusBar.GetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, iWidth);
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
-    m_statusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, m_lastclipboardaction);
+    m_StatusBar.GetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, iWidth);
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
+    m_StatusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, m_lastclipboardaction);
 
     s = m_core.HasDBChanged() ? L"*" : L" ";
     s += m_core.HaveDBPrefsChanged() ? L"°" : L" ";
     dc.DrawText(s, &rectPane, DT_CALCRECT);
-    m_statusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, rectPane.Width());
-    m_statusBar.SetPaneText(CPWStatusBar::SB_MODIFIED, s);
+    m_StatusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, rectPane.Width());
+    m_StatusBar.SetPaneText(CPWStatusBar::SB_MODIFIED, s);
 
     s.LoadString(m_core.IsReadOnly() ? IDS_READ_ONLY : IDS_READ_WRITE);
     dc.DrawText(s, &rectPane, DT_CALCRECT);
-    m_statusBar.GetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, iWidth);
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, rectPane.Width());
-    m_statusBar.SetPaneText(CPWStatusBar::SB_READONLY, s);
+    m_StatusBar.GetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, iWidth);
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, rectPane.Width());
+    m_StatusBar.SetPaneText(CPWStatusBar::SB_READONLY, s);
 
     if (m_bFilterActive)
-      s.Format(IDS_NUMITEMSFILTER, m_bNumPassedFiltering,
-                m_core.GetNumEntries());
+      s.Format(IDS_NUMITEMSFILTER, m_bNumPassedFiltering, m_core.GetNumEntries());
     else
       s.Format(IDS_NUMITEMS, m_core.GetNumEntries());
 
     dc.DrawText(s, &rectPane, DT_CALCRECT);
-    m_statusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
-    m_statusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, s);
+    m_StatusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
+    m_StatusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, s);
 
-    m_statusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iWidth);
-    uiID = m_bFilterActive ? IDB_FILTER_ACTIVE : IDS_BLANK;
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle | SBT_OWNERDRAW, iBMWidth);
+    s = L" ";
+    dc.DrawText(s, &rectPane, DT_CALCRECT);
+    m_StatusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iWidth);
+    if (m_bFilterActive) {
+      iFilterWidth = iBMWidth;
+      uiID = IDB_FILTER_ACTIVE;
+      uiStyle |= SBT_OWNERDRAW;
+    } else {
+      iFilterWidth = rectPane.Width();
+      uiID = IDS_BLANK;
+      uiStyle &= ~SBT_OWNERDRAW;
+    }
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iFilterWidth);
+    m_StatusBar.SetPaneText(CPWStatusBar::SB_FILTER, s);
+
+    // Fix issue displaying image in Windows 7
+    CRect rect;
+    m_StatusBar.GetItemRect(CPWStatusBar::SB_FILTER, &rect);
+    m_StatusBar.RedrawWindow(&rect);
   } else {
     s.LoadString(IDSC_STATCOMPANY);
-    m_statusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, s);
+    m_StatusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, s);
 
     dc.DrawText(L" ", &rectPane, DT_CALCRECT);
 
-    m_statusBar.GetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, iWidth);
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
-    m_statusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, L" ");
+    m_StatusBar.GetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, iWidth);
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
+    m_StatusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, L" ");
 
-    m_statusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, rectPane.Width());
-    m_statusBar.SetPaneText(CPWStatusBar::SB_MODIFIED, L" ");
+    m_StatusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, rectPane.Width());
+    m_StatusBar.SetPaneText(CPWStatusBar::SB_MODIFIED, L" ");
 
-    m_statusBar.GetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, iWidth);
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, rectPane.Width());
-    m_statusBar.SetPaneText(CPWStatusBar::SB_READONLY, L" ");
+    m_StatusBar.GetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, iWidth);
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, rectPane.Width());
+    m_StatusBar.SetPaneText(CPWStatusBar::SB_READONLY, L" ");
 
-    m_statusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
-    m_statusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, L" ");
+    m_StatusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
+    m_StatusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, L" ");
 
-    m_statusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iWidth);
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, IDS_BLANK, uiStyle | SBT_OWNERDRAW, iBMWidth);
+    m_StatusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iWidth);
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, IDS_BLANK, uiStyle | SBT_OWNERDRAW, iBMWidth);
   }
 
-  m_statusBar.Invalidate();
-  m_statusBar.UpdateWindow();
+  m_StatusBar.Invalidate();
+  m_StatusBar.UpdateWindow();
 
   /*
   This doesn't exactly belong here, but it makes sure that the
@@ -2827,7 +2842,7 @@ void DboxMain::SetDCAText(CItemData *pci)
   if (m_IsListView && m_ctlItemList.GetSelectedCount() != 1)
     si_dca = -1;
 
-  m_statusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, PWSprefs::GetDCAdescription(si_dca).c_str());
+  m_StatusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, PWSprefs::GetDCAdescription(si_dca).c_str());
 }
 
 struct NoDuplicates{

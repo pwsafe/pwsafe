@@ -154,15 +154,14 @@ void DboxMain::ClearFilter()
 
 void DboxMain::ApplyFilters()
 {
-  m_statusBar.SetFilterStatus(m_bFilterActive);
-
-  m_statusBar.Invalidate();
-  m_statusBar.UpdateWindow();
-
   m_ctlItemTree.SetFilterState(m_bFilterActive);
   m_ctlItemList.SetFilterState(m_bFilterActive);
+  m_StatusBar.SetFilterStatus(m_bFilterActive);
+
   m_ctlItemTree.Invalidate();
   m_ctlItemList.Invalidate();
+  m_StatusBar.Invalidate();
+  m_StatusBar.UpdateWindow();
 
   m_FilterManager.CreateGroups();
 

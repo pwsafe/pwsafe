@@ -37,7 +37,7 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 
-  CStatusBar m_statusBar;
+  CStatusBar m_RSDStatusBar;
 
 private:
   void SetControls(int cx, int cy);
