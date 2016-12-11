@@ -18,6 +18,7 @@
 #include "stdafx.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
+#include "DboxMain.h"
 #include "YubiCfgDlg.h"
 #include "PKBaseDlg.h" // for *YubiExists
 
@@ -154,7 +155,6 @@ BEGIN_MESSAGE_MAP(CYubiCfgDlg, CPWDialog)
     ON_BN_CLICKED(IDC_YUBI_SHOW_HIDE, &CYubiCfgDlg::OnBnClickedYubiShowHide)
 END_MESSAGE_MAP()
 
-
 void CYubiCfgDlg::yubiInserted(void)
 {
   GetDlgItem(IDC_YUBI_SN)->EnableWindow(TRUE);
@@ -183,9 +183,7 @@ void CYubiCfgDlg::yubiRemoved(void)
   GetDlgItem(IDOK)->EnableWindow(FALSE);
 }
 
-
 // CYubiCfgDlg message handlers
-
 
 void CYubiCfgDlg::OnYubiGenBn()
 {
@@ -208,11 +206,17 @@ void CYubiCfgDlg::OnBnClickedOk()
     unsigned char yubi_sk_bin[YUBI_SK_LEN];
     HexStr2BinSK(skStr, yubi_sk_bin, YUBI_SK_LEN);
 
-    if (WriteYubiSK(yubi_sk_bin) == YKLIB_OK) { // 1. Update SK on Yubi.
+    if (WriteYubiSK(yubi_sk_bin) == YKLIB_OK) {
+      // 1. Update SK on Yubi.
+
       // 2. If YubiKey update succeeds, update in core.
       m_core.SetYubiSK(yubi_sk_bin);
+
       // 3. Write DB ASAP!
-      m_core.WriteCurFile();
+      int rc = m_core.WriteCurFile();
+      if (rc == PWScore::SUCCESS)
+        GetMainDlg()->BlockLogoffShutdown(false);
+
       trashMemory(yubi_sk_bin, YUBI_SK_LEN);
     } else {
       const CString err = L"Failed to update YubiKey";
@@ -291,4 +295,3 @@ void CYubiCfgDlg::OnBnClickedYubiShowHide()
   }
   UpdateData(FALSE);
 }
-

@@ -469,7 +469,7 @@ void COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
                    m_ReservedShortcuts.end(),
                    reserved(st_mst)) != m_ReservedShortcuts.end()) {
     // Reserved shortcut ignored
-    cs_warning.Format(IDS_SHCT_WARNING2, str);
+    cs_warning.Format(IDS_SHCT_WARNING2, static_cast<LPCWSTR>(str));
     goto set_warning;
   }
 
@@ -482,7 +482,8 @@ void COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
     if (inuse_iter != m_MapMenuShortcuts.end() && 
         inuse_iter->first != iter->first) {
       // Shortcut in use
-      cs_warning.Format(IDS_SHCT_WARNING3, str, inuse_iter->second.name.c_str());
+      cs_warning.Format(IDS_SHCT_WARNING3, static_cast<LPCWSTR>(str),
+                        static_cast<LPCWSTR>(inuse_iter->second.name.c_str()));
       goto set_warning;
     }
   }
@@ -733,7 +734,7 @@ int COptionsShortcuts::CheckAppHotKey()
       }
       
       cs_msg.LoadString(ierror);
-      cs_errmsg.Format(IDS_KBS_INVALID, cs_msg);
+      cs_errmsg.Format(IDS_KBS_INVALID, static_cast<LPCWSTR>(cs_msg));
 
       CGeneralMsgBox gmb;
       CString cs_title(MAKEINTRESOURCE(IDS_SHORTCUT_WARNING));
@@ -757,8 +758,10 @@ int COptionsShortcuts::CheckAppHotKey()
       const StringX sxTitle = iter->second.GetTitle();
       const StringX sxUser  = iter->second.GetUser();
 
-      cs_errmsg.Format(IDS_KBS_INUSEBYENTRY, cs_HotKey,
-                       sxGroup.c_str(), sxTitle.c_str(), sxUser.c_str());
+      cs_errmsg.Format(IDS_KBS_INUSEBYENTRY, static_cast<LPCWSTR>(cs_HotKey),
+                       static_cast<LPCWSTR>(sxGroup.c_str()),
+                       static_cast<LPCWSTR>(sxTitle.c_str()),
+                       static_cast<LPCWSTR>(sxUser.c_str()));
 
       CGeneralMsgBox gmb;
       CString cs_title(MAKEINTRESOURCE(IDS_SHORTCUT_WARNING));
@@ -784,7 +787,9 @@ int COptionsShortcuts::CheckAppHotKey()
       // (on this instance for this user!)
       Remove(sxMenuItemName, L'&');
       CString cs_override(MAKEINTRESOURCE(IDS_APPHOTKEY_OVERRIDE));
-      cs_errmsg.Format(IDS_KBS_INUSEBYMENU, cs_HotKey, sxMenuItemName.c_str(), cs_override);
+      cs_errmsg.Format(IDS_KBS_INUSEBYMENU, static_cast<LPCWSTR>(cs_HotKey),
+                       static_cast<LPCWSTR>(sxMenuItemName.c_str()),
+                       static_cast<LPCWSTR>(cs_override));
 
       CGeneralMsgBox gmb;
       CString cs_title(MAKEINTRESOURCE(IDS_SHORTCUT_WARNING));

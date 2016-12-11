@@ -35,6 +35,7 @@ protected:
 
   CString m_UserBackupPrefix;
   CString m_UserBackupOtherLocation;
+  CString m_csExpandedPath;
   BOOL m_SaveImmediately;
   BOOL m_BackupBeforeSave;
   BOOL m_PurgeOrphanAttachments;
@@ -50,7 +51,7 @@ protected:
   CString m_currentFileBasename;
 
   CButtonExtn m_chkbox;
-  CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4;
+  CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4, m_Help5;
 
   // Overrides
   // ClassWizard generate virtual function overrides
@@ -72,6 +73,7 @@ protected:
   afx_msg void OnBackupBeforeSave();
   afx_msg void OnBrowseForLocation();
   afx_msg void OnUserPrefixKillfocus();
+  afx_msg void OnUserBkpLocationKillfocus();
   afx_msg void OnComboChanged();
   afx_msg void OnPreferencesHelp();
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
@@ -81,5 +83,9 @@ protected:
 
 private:
   void SetExample();
-};
+  void ExpandBackupPath();
 
+  BOOL VerifyFields();
+
+  bool m_bKillActiveInProgress;  // Checked already in OnUserBkpLocationKillfocus
+};

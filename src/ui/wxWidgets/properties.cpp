@@ -33,13 +33,11 @@
 ////@begin XPM images
 ////@end XPM images
 
-
 /*!
  * CProperties type definition
  */
 
 IMPLEMENT_CLASS( CProperties, wxDialog )
-
 
 /*!
  * CProperties event table definition
@@ -54,7 +52,6 @@ BEGIN_EVENT_TABLE( CProperties, wxDialog )
 
 END_EVENT_TABLE()
 
-
 /*!
  * CProperties constructors
  */
@@ -67,7 +64,6 @@ CProperties::CProperties(wxWindow* parent, const PWScore &core,
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * CProperties creator
@@ -89,7 +85,6 @@ bool CProperties::Create( wxWindow* parent, wxWindowID id, const wxString& capti
   return true;
 }
 
-
 /*!
  * CProperties destructor
  */
@@ -99,7 +94,6 @@ CProperties::~CProperties()
 ////@begin CProperties destruction
 ////@end CProperties destruction
 }
-
 
 /*!
  * Member initialisation
@@ -173,7 +167,6 @@ void CProperties::Init()
     m_unknownfields = _("None");
   }
 }
-
 
 /*!
  * Control creation for CProperties
@@ -271,7 +264,6 @@ void CProperties::CreateControls()
 ////@end CProperties content construction
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -305,7 +297,6 @@ wxIcon CProperties::GetIconResource( const wxString& WXUNUSED(name) )
 ////@end CProperties icon retrieval
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
@@ -317,4 +308,3 @@ void CProperties::OnOkClick( wxCommandEvent& /* evt */ )
   EndModal(wxID_OK);
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CProperties.
 }
-

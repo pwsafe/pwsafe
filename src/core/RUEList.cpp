@@ -125,7 +125,8 @@ bool CRUEList::GetPWEntry(size_t index, CItemData &ci) const
     // Entry does not exist anymore!
     // We break constness here since this is "housekeeping", and
     // doesn't affect the object's semantics
-    const_cast<CRUEList *>(this)->m_RUEList.erase(m_RUEList.begin() + index);
+    RUEList::iterator iter = const_cast<CRUEList *>(this)->m_RUEList.begin() + index;
+    const_cast<CRUEList *>(this)->m_RUEList.erase(iter);
     return false;
   } else { // valid pw_listpos
     ci = m_core.GetEntry(pw_listpos);

@@ -40,6 +40,7 @@ struct st_AE_master_data {
   CSecString title;
   CSecString username;
   CSecString realpassword;
+  CSecString lastpassword;
   CSecString oldRealPassword;
   CSecString realnotes;
   CSecString originalrealnotesTRC;
@@ -49,6 +50,7 @@ struct st_AE_master_data {
   CSecString base;
   CSecString dependents;
   pws_os::CUUID entry_uuid;
+  pws_os::CUUID original_base_uuid;
   pws_os::CUUID base_uuid;
   int num_dependents;
   int ibasedata;
@@ -124,6 +126,7 @@ public:
   CSecString &M_title() {return m_AEMD.title;}
   CSecString &M_username() {return m_AEMD.username;}
   CSecString &M_realpassword() {return m_AEMD.realpassword;}
+  CSecString &M_lastpassword() { return m_AEMD.lastpassword; }
   CSecString &M_oldRealPassword() {return m_AEMD.oldRealPassword;}
   CSecString &M_realnotes() {return m_AEMD.realnotes;}
   CSecString &M_originalrealnotesTRC() {return m_AEMD.originalrealnotesTRC;}
@@ -137,6 +140,7 @@ public:
   CSecString &M_dependents() {return m_AEMD.dependents;}
   pws_os::CUUID &M_entry_uuid() {return m_AEMD.entry_uuid;}
   pws_os::CUUID &M_base_uuid() {return m_AEMD.base_uuid;}
+  pws_os::CUUID &M_original_base_uuid() { return m_AEMD.original_base_uuid; }
   int &M_num_dependents() {return m_AEMD.num_dependents;}
   int &M_ibasedata() {return m_AEMD.ibasedata;}
   CItemData::EntryType &M_original_entrytype() {return m_AEMD.original_entrytype;}

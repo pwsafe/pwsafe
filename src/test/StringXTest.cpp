@@ -176,4 +176,3 @@ TEST(StringXTest, testAssign)
   s2.assign(s1);
   EXPECT_TRUE(s1 == s2);
 }
-

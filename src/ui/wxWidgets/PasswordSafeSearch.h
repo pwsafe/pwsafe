@@ -109,7 +109,6 @@ private:
     void PrintLabel(const TCHAR* prefix = 0);
 };
 
-
 /*!
  * PasswordSafeSearch class declaration
  */

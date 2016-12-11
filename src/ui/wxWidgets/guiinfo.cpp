@@ -209,4 +209,3 @@ void GUIInfo::RestoreTreeViewInfo(PWSTreeCtrl* tree)
   // Finally select the previously "selected" item
   RestoreTreeItem(tree, m_treeSelection, SelectItem());
 }
-

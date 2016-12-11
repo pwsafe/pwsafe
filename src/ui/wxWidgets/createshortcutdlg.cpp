@@ -34,13 +34,11 @@
 ////@begin XPM images
 ////@end XPM images
 
-
 /*!
  * CreateShortcutDlg type definition
  */
 
 IMPLEMENT_CLASS( CreateShortcutDlg, wxDialog )
-
 
 /*!
  * CreateShortcutDlg event table definition
@@ -54,7 +52,6 @@ BEGIN_EVENT_TABLE( CreateShortcutDlg, wxDialog )
 ////@end CreateShortcutDlg event table entries
 
 END_EVENT_TABLE()
-
 
 /*!
  * CreateShortcutDlg constructors
@@ -72,7 +69,6 @@ CreateShortcutDlg::CreateShortcutDlg(wxWindow* parent, PWScore &core,
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * CreateShortcutDlg creator
@@ -108,7 +104,6 @@ void CreateShortcutDlg::ItemFieldsToDialog()
   // we're invoked via right-click n a node
 }
 
-
 /*!
  * CreateShortcutDlg destructor
  */
@@ -118,7 +113,6 @@ CreateShortcutDlg::~CreateShortcutDlg()
 ////@begin CreateShortcutDlg destruction
 ////@end CreateShortcutDlg destruction
 }
-
 
 /*!
  * Member initialisation
@@ -130,7 +124,6 @@ void CreateShortcutDlg::Init()
   m_groupCtrl = NULL;
 ////@end CreateShortcutDlg member initialisation
 }
-
 
 /*!
  * Control creation for CreateShortcutDlg
@@ -190,7 +183,6 @@ void CreateShortcutDlg::CreateControls()
 ////@end CreateShortcutDlg content construction
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -223,7 +215,6 @@ wxIcon CreateShortcutDlg::GetIconResource( const wxString& WXUNUSED(name) )
   return wxNullIcon;
 ////@end CreateShortcutDlg icon retrieval
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
@@ -259,4 +250,3 @@ void CreateShortcutDlg::OnOkClick( wxCommandEvent& /* evt */ )
   }
   EndModal(wxID_OK);
 }
-

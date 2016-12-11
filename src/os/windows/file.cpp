@@ -28,8 +28,8 @@
 #include "../file.h"
 #include "../dir.h"
 #include "../env.h"
+#include "../debug.h"
 
-#include "../../core/StringX.h"
 #include "../../core/core.h"
 
 const TCHAR pws_os::PathSeparator = _T('\\');
@@ -399,6 +399,42 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   std::FILE *fd = NULL;
   _tfopen_s(&fd, filename.c_str(), mode);
   return fd;
+}
+
+int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
+{
+  if (fd != NULL) {
+    if (bIsWrite) {
+      // Flush the data buffers
+      // fflush returns 0 if the buffer was successfully flushed.
+      // A return value of EOF indicates an error.
+      int rc = fflush(fd);
+
+      // Don't bother trying FlushFileBuffers if fflush failed
+      if (rc == 0) {
+        // Windows FlushFileBuffers == Linux fsync
+        int ifileno = _fileno(fd);
+
+        if ((HANDLE)ifileno != INVALID_HANDLE_VALUE) {
+          intptr_t iosfhandle = _get_osfhandle(ifileno);
+
+          if ((HANDLE)iosfhandle != INVALID_HANDLE_VALUE) {
+            BOOL brc = FlushFileBuffers((HANDLE)iosfhandle);
+
+            if (brc == FALSE) {
+              pws_os::IssueError(_T("FlushFileBuffers on close of file on removable device"), false);
+            }
+          } // iosfhandle
+        } // ifileno
+      }  // fflush rc
+    }
+
+    // Now close file
+    // fclose returns 0 if the stream is successfully closed or EOF to indicate an error.
+    return fclose(fd);
+  } else {
+    return 0;
+  }
 }
 
 ulong64 pws_os::fileLength(std::FILE *fp) {

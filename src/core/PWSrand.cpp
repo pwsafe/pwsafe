@@ -11,8 +11,6 @@
 #include "PwsPlatform.h"
 #include "PWSrand.h"
 
-
-
 PWSrand *PWSrand::self = NULL;
 
 PWSrand *PWSrand::GetInstance()

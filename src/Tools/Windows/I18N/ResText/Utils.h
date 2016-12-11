@@ -35,7 +35,6 @@ public:
     static void SearchReplace(std::wstring& str, const std::wstring& toreplace, const std::wstring& replacewith);
 };
 
-
 // trim from start
 inline std::string &ltrim(std::string &s)
 {

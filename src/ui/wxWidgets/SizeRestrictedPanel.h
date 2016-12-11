@@ -23,6 +23,4 @@ class SizeRestrictedPanel: public wxPanel
     wxSize GetWindowSizeForVirtualSize(const wxSize& size) const;
 };
 
-
 #endif
-

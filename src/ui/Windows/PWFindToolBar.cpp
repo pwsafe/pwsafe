@@ -84,6 +84,19 @@ const UINT CPWFindToolBar::m_FindToolBarNewBMs[] = {
   IDB_FINDADVANCEDON_NEW,       // m_iAdvancedOn_BM_offset is this offset
 };
 
+// CFindEditCtrl
+
+CFindEditCtrl::CFindEditCtrl()
+{
+}
+
+CFindEditCtrl::~CFindEditCtrl()
+{
+}
+
+BEGIN_MESSAGE_MAP(CFindEditCtrl, CEditExtn)
+END_MESSAGE_MAP()
+
 LRESULT CFindEditCtrl::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   if (message == WM_SYSCOMMAND && wParam == SC_KEYMENU) {
@@ -120,6 +133,8 @@ exit:
   return CEditExtn::WindowProc(message, wParam, lParam);
 }
 
+// CPWFindToolBar
+
 IMPLEMENT_DYNAMIC(CPWFindToolBar, CToolBar)
 
 CPWFindToolBar::CPWFindToolBar()
@@ -133,7 +148,7 @@ CPWFindToolBar::CPWFindToolBar()
   m_last_subgroup_object(CItemData::GROUP), m_last_subgroup_function(0),
   m_iCase_Insensitive_BM_offset(-1), m_iCase_Sensitive_BM_offset(-1),
   m_iAdvanced_BM_offset(-1), m_iAdvancedOn_BM_offset(-1),
-  m_iFindDirection(FIND_DOWN)
+  m_iFindDirection(FIND_DOWN), m_bFontSet(false)
 {
   m_last_bsFields.reset();
   m_last_bsAttFields.reset();
@@ -306,6 +321,61 @@ void CPWFindToolBar::Init(const int NumBits, int iWMSGID,
   m_iWMSGID = iWMSGID;
 }
 
+void CPWFindToolBar::ChangeFont()
+{
+  // User has changed the Add/Edit font
+  m_FindTextFont.DeleteObject();
+
+  CRect rt;
+  GetItemRect(0, &rt);
+  const int iBtnHeight = rt.Height();
+
+  // Use Add/Edit font rather than Tree/List font to determine height
+  LOGFONT lf = { 0 };
+  Fonts::GetInstance()->GetAddEditFont(&lf);
+  VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
+  m_findedit.SetFont(&m_FindTextFont);
+
+  bool bFontChanged(false);
+
+  do {
+    // Does it fit?  If not, keep reducing point size until it does.
+    TEXTMETRIC tm;
+    HDC hDC = ::GetDC(m_findedit);
+
+    HFONT hFontOld = (HFONT)SelectObject(hDC, m_FindTextFont.GetSafeHandle());
+
+    GetTextMetrics(hDC, &tm);
+    LONG iFontHeight = tm.tmHeight + tm.tmExternalLeading;
+
+    if (iFontHeight > iBtnHeight) {
+      if (lf.lfHeight < 0) {
+        int iPointSize = -::MulDiv(lf.lfHeight, 72, GetDeviceCaps(hDC, LOGPIXELSY));
+        iPointSize--;
+        lf.lfHeight = -MulDiv(iPointSize, ::GetDeviceCaps(hDC, LOGPIXELSY), 72);
+      } else {
+        int iPointSize = ::MulDiv(lf.lfHeight - tm.tmInternalLeading, 72, GetDeviceCaps(hDC, LOGPIXELSY));
+        iPointSize--;
+        lf.lfHeight = tm.tmInternalLeading + MulDiv(iPointSize, GetDeviceCaps(hDC, LOGPIXELSY), 72);
+      }
+
+      m_FindTextFont.DeleteObject();
+      VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
+      m_findedit.SetFont(&m_FindTextFont);
+
+      bFontChanged = true;
+    } else {
+      bFontChanged = false;
+    }
+
+    SelectObject(hDC, hFontOld);
+    ::ReleaseDC(NULL, hDC);
+  } while(bFontChanged);
+
+  m_findresults.SetFont(&m_FindTextFont);
+  m_bFontSet = true;
+}
+
 void CPWFindToolBar::LoadDefaultToolBar(const int toolbarMode)
 {
   CToolBarCtrl& tbCtrl = GetToolBarCtrl();
@@ -399,36 +469,33 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
     CRect rt;
     GetItemRect(0, &rt);
     const int iBtnHeight = rt.Height();
-    const int iFontHeight = int(Fonts::GetInstance()->CalcHeight());
-    bool switchFont = (iFontHeight <= (iBtnHeight + 3));
 
     /**
+     * Bjorne's suggestion: Set Find fonts to tree/list view font
+     * However, from BR 1371 it is better to use the Add/Edit font
+     * which is already used for CEdit controls.
      *
-     * Bjorne's suggestion: Set Find fonts to tree/list
-     * Unfortunately, I couldn't get the edit or text (results) controls
-     * to change size to fit the new font.
-     * Therefore we'll only change the font if it's going to fit in
-     * the controls, letting it be a little larger than the current size.
+     * Unfortunately, as unable to change size of the CEdit controls so
+     * that the text fits, we will dynamically reduce the font size
+     * until it fits in the CEdit controls.
+     *
+     * We also do this if the user changes the Add/Edit font.
+     *
+     * Note: It is better this way as we did not do any sanity checks that
+     * the user hadn't set an enormous point size e.g. 72!
      */
-    if (switchFont) {
-      m_FindTextFont.DeleteObject();
-      LOGFONT lf = {0};
-      Fonts::GetInstance()->GetCurrentFont(&lf);
-      VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
+    if (!m_bFontSet) {
+      ChangeFont();
     }
 
     SetHeight(iBtnHeight + 4);  // Add border
-
-    if (switchFont)
-      m_findedit.SetFont(&m_FindTextFont);
     m_findedit.ChangeColour();
     m_findedit.SetWindowPos(NULL, 0, 0, EDITCTRL_WIDTH, iBtnHeight,
                             SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
 
     m_findedit.SetSel(0, -1);  // Select all text
     m_findedit.Invalidate();
-    if (switchFont)
-      m_findresults.SetFont(&m_FindTextFont);
+
     m_findresults.SetWindowPos(NULL, 0, 0, FINDRESULTS_WIDTH, iBtnHeight,
                                SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
   }
@@ -438,6 +505,7 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
   ::ShowWindow(this->GetSafeHwnd(), bShow ? SW_SHOW : SW_HIDE);
   ::EnableWindow(this->GetSafeHwnd(), bShow ? TRUE : FALSE);
   m_findedit.SetFocus();
+
   m_bVisible = bShow;
 }
 
@@ -571,12 +639,12 @@ void CPWFindToolBar::Find()
       }
       if (m_iFindDirection == FIND_DOWN && m_lastshown >= m_numFound) {
         cs_temp.LoadString(IDS_SEARCHTOP);
-        cs_status.Format(IDS_SEARCHWRAPPED, cs_temp);
+        cs_status.Format(IDS_SEARCHWRAPPED, static_cast<LPCWSTR>(cs_temp));
         m_lastshown = 0;
       } else
         if (m_iFindDirection == FIND_UP && m_lastshown == size_t(-1)) {
         cs_temp.LoadString(IDS_SEARCHBOTTOM);
-        cs_status.Format(IDS_SEARCHWRAPPED, cs_temp);
+        cs_status.Format(IDS_SEARCHWRAPPED, static_cast<LPCWSTR>(cs_temp));
         m_lastshown = m_numFound - 1;
       } else
         cs_status.Format(IDS_FOUNDMATCHES, m_lastshown + 1, m_numFound);

@@ -50,7 +50,6 @@ BEGIN_EVENT_TABLE( CExportTextWarningDlgBase, wxDialog )
 #endif
 END_EVENT_TABLE()
 
-
 CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxEmptyString,
                       wxDefaultPosition, wxDefaultSize,
                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),
@@ -163,4 +162,3 @@ void CExportTextWarningDlgBase::OnPollingTimer(wxTimerEvent &evt)
   }
 }
 #endif
-

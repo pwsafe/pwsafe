@@ -491,7 +491,7 @@ void CAddEdit_Attachment::OnAttExport()
       SHFILEINFO sfi = {0};
       DWORD_PTR dw = SHGetFileInfo(m_AttFileName, 0, &sfi, sizeof(sfi), SHGFI_TYPENAME);
       if (dw != 0) {
-        filter.Format(IDS_FDF_FILES, sfi.szTypeName, ext, ext);
+        filter.Format(IDS_FDF_FILES, static_cast<LPCWSTR>(sfi.szTypeName), ext, ext);
       } else {
         // Use All files!
         filter.LoadString(IDS_FDF_ALL);

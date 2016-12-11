@@ -46,7 +46,6 @@ BEGIN_EVENT_TABLE( AdvancedSelectionPanel, wxPanel )
   EVT_BUTTON( ID_REMOVE_ALL, AdvancedSelectionPanel::OnRemoveAll )
 END_EVENT_TABLE()
 
-
 AdvancedSelectionPanel::AdvancedSelectionPanel(wxWindow* parentWnd,
                                                SelectionCriteria* existingCriteria,
                                                bool autoValidate):

@@ -90,7 +90,7 @@ int DboxMain::BackupSafe()
     dir = cdrive + cdir;
   }
 
-  //SaveAs-type dialog box
+  // SaveAs-type dialog box
   while (1) {
     CPWFileDialog fd(FALSE,
                      L"bak",
@@ -124,7 +124,7 @@ int DboxMain::BackupSafe()
   rc = m_core.WriteFile(tempname, m_core.GetReadFileVersion(), false);
   if (rc == PWScore::CANT_OPEN_FILE) {
     CGeneralMsgBox gmb;
-    cs_temp.Format(IDS_CANTOPENWRITING, tempname);
+    cs_temp.Format(IDS_CANTOPENWRITING, static_cast<LPCWSTR>(tempname.c_str()));
     cs_title.LoadString(IDS_FILEWRITEERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
@@ -143,8 +143,8 @@ void DboxMain::OnRestoreSafe()
 int DboxMain::RestoreSafe()
 {
   int rc;
-  StringX backup, passkey, temp;
-  StringX currbackup =
+  StringX sx_backup, sx_passkey;
+  StringX sx_currbackup =
     PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup);
 
   if (m_bOpen) {
@@ -173,7 +173,7 @@ int DboxMain::RestoreSafe()
   while (1) {
     CPWFileDialog fd(TRUE,
                      L"bak",
-                     currbackup.c_str(),
+                     sx_currbackup.c_str(),
                      OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
                      CString(MAKEINTRESOURCE(IDS_FDF_BUS)),
                      this);
@@ -193,20 +193,20 @@ int DboxMain::RestoreSafe()
       return PWScore::USER_CANCEL;
     }
     if (rc2 == IDOK) {
-      backup = fd.GetPathName();
+      sx_backup = fd.GetPathName();
       break;
     } else
       return PWScore::USER_CANCEL;
   }
 
-  rc = GetAndCheckPassword(backup, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+  rc = GetAndCheckPassword(sx_backup, sx_passkey, GCP_NORMAL);  // OK, CANCEL, HELP
 
   CGeneralMsgBox gmb;
   switch (rc) {
     case PWScore::SUCCESS:
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPEN, backup);
+      cs_temp.Format(IDS_CANTOPEN, static_cast<LPCWSTR>(sx_backup.c_str()));
       cs_title.LoadString(IDS_FILEOPENERROR);
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     case TAR_OPEN:
@@ -234,9 +234,9 @@ int DboxMain::RestoreSafe()
 
   // Validate it unless user says NO
   CReport Rpt;
-  rc = m_core.ReadFile(backup, passkey, !m_bNoValidation, MAXTEXTCHARS, &Rpt);
+  rc = m_core.ReadFile(sx_backup, sx_passkey, !m_bNoValidation, MAXTEXTCHARS, &Rpt);
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENREADING, backup);
+    cs_temp.Format(IDS_CANTOPENREADING, static_cast<LPCWSTR>(sx_backup.c_str()));
     cs_title.LoadString(IDS_FILEREADERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
@@ -337,12 +337,12 @@ void DboxMain::OnOptions()
         uiMessage = IDSC_STATCOMPANY;
     }
     statustext[CPWStatusBar::SB_DBLCLICK] = uiMessage;
-    m_statusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
+    m_StatusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
     UpdateStatusBar();
 
     // Make a sunken or recessed border around the first pane
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK,
-                            m_statusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK,
+                            m_StatusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
                             SBPS_STRETCH, NULL);
 
     int iTrayColour = pOptionsPS->GetTrayIconColour();

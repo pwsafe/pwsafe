@@ -556,7 +556,8 @@ void CManageFiltersDlg::OnFilterDelete()
   // Now to confirm with user:
   CString cs_msg;
   CGeneralMsgBox gmb;
-  cs_msg.Format(IDS_CONFIRMFILTERDELETE, cs_pool, cs_selected);
+  cs_msg.Format(IDS_CONFIRMFILTERDELETE, static_cast<LPCWSTR>(cs_pool),
+                static_cast<LPCWSTR>(cs_selected));
   if (gmb.AfxMessageBox(cs_msg, NULL, MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES)
     return;
 
@@ -1342,7 +1343,6 @@ void CManageFiltersDlg::SortFilterView()
   phctrl->SetItem(m_iSortColumn, &hdi);
 }
 
-
 BOOL CManageFiltersDlg::PreTranslateMessage(MSG* pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
@@ -1357,4 +1357,3 @@ void CManageFiltersDlg::OnHelp()
 {
   ShowHelp(L"::/html/filters.html#ManagingFilters");
 }
-

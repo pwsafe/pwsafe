@@ -12,7 +12,6 @@
 #ifndef _OPTIONSPROPSHEET_H_
 #define _OPTIONSPROPSHEET_H_
 
-
 /*!
  * Includes
  */
@@ -117,7 +116,6 @@ class wxBookCtrlEvent;
 #define SYMBOL_COPTIONS_POSITION wxDefaultPosition
 ////@end control identifiers
 
-
 /*!
  * Options class declaration
  */
@@ -195,7 +193,6 @@ public:
 
   /// wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGING event handler for all pages (wxID_ANY)
   void OnPageChanging(wxBookCtrlEvent& evt);
-
 
 ////@begin COptions member function declarations
 

@@ -83,7 +83,6 @@ BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)
   ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockOnIdleTimeout)
-  ON_EN_KILLFOCUS(IDC_IDLE_TIMEOUT, OnKillFocusIdleTime)
 
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
@@ -209,6 +208,18 @@ BOOL COptionsSecurity::OnApply()
 {
   UpdateData(TRUE);
 
+  CString csText;
+  ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->GetWindowText(csText);
+  m_IdleTimeOut = _wtoi(csText);
+
+  // Check that options, as set, are valid.
+  if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > 120)) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_INVALIDTIMEOUT);
+    ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
+    return FALSE;
+  }
+
   CGeneralMsgBox gmb;
   // Go ask Misc for DoubleClickAction value
   int iDoubleClickAction;
@@ -257,8 +268,10 @@ BOOL COptionsSecurity::PreTranslateMessage(MSG* pMsg)
   return COptions_PropertyPage::PreTranslateMessage(pMsg);
 }
 
-void COptionsSecurity::OnKillFocusIdleTime()
+BOOL COptionsSecurity::OnKillActive()
 {
+  COptions_PropertyPage::OnKillActive();
+
   CString csText;
   ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->GetWindowText(csText);
   m_IdleTimeOut = _wtoi(csText);
@@ -268,7 +281,10 @@ void COptionsSecurity::OnKillFocusIdleTime()
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_INVALIDTIMEOUT);
     ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
+    return FALSE;
   }
+
+  return TRUE;
 }
 
 void COptionsSecurity::OnHelp()

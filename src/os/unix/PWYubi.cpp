@@ -83,7 +83,6 @@ static bool check_firmware_version(YK_KEY *yk)
   return retval;
 }
 
-
 bool PWYubi::GetSerial(unsigned int &serial) const
 {
   bool retval = false;
@@ -228,8 +227,6 @@ PWYubi::RequestStatus PWYubi::GetResponse(unsigned char resp[PWYubi::RESPLEN])
   pthread_mutex_unlock(&s_mutex);
   return m_reqstat;
 }
-
-
 
 void PWYubi::report_error() const
 {

@@ -19,7 +19,6 @@
 #include <sys/types.h>
 #include <pwd.h>
 
-
 #include "../env.h"
 #include "../utf8conv.h" // for pws_os::towc
 #ifndef HOST_NAME_MAX

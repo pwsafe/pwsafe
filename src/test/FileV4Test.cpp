@@ -278,9 +278,12 @@ TEST_F(FileV4Test, CoreRWTest)
   ASSERT_TRUE(core.HasAtt(attItem.GetUUID()));
   EXPECT_EQ(1, core.GetAtt(attItem.GetUUID()).GetRefcount());
 
+  // Deleting an entry does not delete linked attachments
+  // Any attachment remains but orphaned
   core.Execute(DeleteEntryCommand::Create(&core, readFullItem));
   ASSERT_EQ(0, core.GetNumEntries());
-  ASSERT_EQ(0, core.GetNumAtts());
+  ASSERT_EQ(0, core.GetNumLinkedAtts());
+  ASSERT_EQ(1, core.GetNumAtts());
 
   // Get core to delete any existing commands
   core.ClearCommands();

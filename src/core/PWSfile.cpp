@@ -12,6 +12,7 @@
 #include "SysInfo.h"
 #include "core.h"
 #include "os/file.h"
+#include "os/dir.h"  // for splitpath
 
 #include "sha1.h" // for simple encrypt/decrypt
 #include "PWSrand.h"
@@ -81,7 +82,6 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
   return retval;
 }
 
-
 PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename, const StringX &passkey)
 {
   if (pws_os::FileExists(filename.c_str())) {
@@ -101,7 +101,7 @@ PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename, const StringX &pa
 PWSfile::PWSfile(const StringX &filename, RWmode mode, VERSION v)
   : m_filename(filename), m_passkey(_T("")), m_fd(NULL),
   m_curversion(v), m_rw(mode), m_defusername(_T("")),
-    m_fish(NULL), m_terminal(NULL), m_status(SUCCESS),
+  m_fish(NULL), m_terminal(NULL), m_status(SUCCESS),
   m_nRecordsWithUnknownFields(0)
 {
 }
@@ -143,12 +143,14 @@ int PWSfile::Close()
 {
   delete m_fish;
   m_fish = NULL;
+  int rc(SUCCESS);
+
   if (m_fd != NULL) {
-    fflush(m_fd);
-    fclose(m_fd);
+    rc = pws_os::FClose(m_fd, m_rw == Write);
     m_fd = NULL;
   }
-  return SUCCESS;
+
+  return rc;
 }
 
 size_t PWSfile::WriteCBC(unsigned char type, const unsigned char *data,

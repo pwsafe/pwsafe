@@ -21,6 +21,7 @@
 #include "PWSfile.h"
 #include "PWSfileV4.h"
 #include "PWStime.h"
+#include "PWHistory.h"
 
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
@@ -400,8 +401,6 @@ int CItemData::WriteUnknowns(PWSfile *out) const
   return PWSfile::SUCCESS;
 }
 
-
-
 //-----------------------------------------------------------------------------
 // Accessors
 
@@ -479,6 +478,35 @@ StringX CItemData::GetFieldValue(FieldType ft) const
       ASSERT(0);
     }
     return str;
+  }
+}
+
+StringX CItemData::GetEffectiveFieldValue(FieldType ft, const CItemData *pbci) const
+{
+  if (IsNormal() || IsBase())
+    return GetField(ft);
+
+  // Here if we're a dependent;
+  ASSERT(IsDependent());
+  ASSERT(pbci != NULL);
+
+  if (IsAlias()) {
+    // Only current and password history are taken from base entry
+    // Everything else is from the actual entry
+    if (ft == PASSWORD || ft == PWHIST)
+      return pbci->GetField(ft);
+    else
+      return GetField(ft);
+  } else if (IsShortcut()) {
+    // For a shortcut everything is taken from its base entry,
+    // except the group, title and user.
+    if (ft == GROUP || ft == TITLE || ft == USER)
+      return GetField(ft);
+    else
+      return pbci->GetField(ft);
+  } else {
+    ASSERT(0);
+    return _T("");
   }
 }
 
@@ -713,6 +741,11 @@ StringX CItemData::GetPWHistory() const
   if (ret == _T("0") || ret == _T("00000"))
     ret = _T("");
   return ret;
+}
+
+StringX CItemData::GetPreviousPassword() const
+{
+  return ::GetPreviousPassword(GetField(PWHIST));
 }
 
 StringX CItemData::GetPlaintext(const TCHAR &separator,
@@ -1705,7 +1738,7 @@ bool CItemData::Matches(int16 dca, int iFunction, const bool bShift) const
   return false;
 }
 
-bool CItemData::Matches(time_t time1, time_t time2, int iObject,
+bool CItemData::MatchesTime(time_t time1, time_t time2, int iObject,
                         int iFunction) const
 {
   //   Check time values are selected
@@ -2013,7 +2046,6 @@ static void push(vector<char> &v, char type,
   }
 }
 
-
 void CItemData::SerializePlainText(vector<char> &v,
                                    const CItemData *pcibase)  const
 {
@@ -2168,4 +2200,3 @@ stringT CItemData::EngFieldName(FieldType ft)
     return _T("");
   };
 }
-

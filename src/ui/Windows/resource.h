@@ -320,7 +320,6 @@
 #define IDB_DRAGEMAIL_CLASSIC           476
 #define IDB_DRAGEMAILX_CLASSIC          477
 #define IDB_UNDO_CLASSIC                478
-#define IDD_ALIAS_PSWDCHANGE            479
 #define IDB_REDO_CLASSIC                480
 #define IDB_UNDO_NEW                    481
 #define IDB_REDO_NEW                    482
@@ -391,10 +390,11 @@
 #define IDB_QUESTIONMARK                547
 #define IDD_VIEWATTACHMENT              548
 #define IDB_EMPTY_DISABLED              549
-#define IDD_VIEWAVAILABLEATTACHMENTS    550
-#define IDD_VIEWATTACHMENTENTRIES       551
-#define IDD_MANAGEATTACHMENTS           552
-#define IDD_REUSEATTACHMENT             553
+#define IDB_REDEXCLAMATION              550
+#define IDD_VIEWAVAILABLEATTACHMENTS    551
+#define IDD_VIEWATTACHMENTENTRIES       552
+#define IDD_MANAGEATTACHMENTS           553
+#define IDD_REUSEATTACHMENT             554
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -861,16 +861,24 @@
 #define IDC_IMAGE_HSCROLL               1550
 #define IDC_IMAGE_VSCROLL               1551
 #define IDC_EXPORTFILTERS               1552
-#define IDC_ATT_ATTACH                  1553
-#define IDC_ORPHANEDATTACHMENTLIST      1554
-#define IDC_ENTRYLIST                   1555
-#define IDC_STATIC_REFERENCEDBY         1556
-#define IDC_PURGEORPHANATTACHMENTS      1557
-#define IDC_IMPORTFILENAME              1558
-#define IDC_IMPORTFILEPATH              1559
-#define IDC_EXISTINGFILENAME            1560
-#define IDC_EXISTINGFILEPATH            1561
-#define IDC_EXISTINGFILETITLE           1562
+#define IDC_EXPANDEDUSERBACKUPOTHRLOC   1553
+#define IDC_USERBACKUPOTHERLOCATIONHELP2 1554
+#define IDC_SMARTLABELHELP              1555
+#define IDC_PASSWORDHELP                1556
+#define IDC_NOTESHELP                   1557
+#define IDC_AUTOTYPEHELP                1558
+#define IDC_PASSWORDHELP2               1559
+#define IDC_PWHHELP                     1560
+#define IDC_ATT_ATTACH                  1561
+#define IDC_ORPHANEDATTACHMENTLIST      1562
+#define IDC_ENTRYLIST                   1563
+#define IDC_STATIC_REFERENCEDBY         1564
+#define IDC_PURGEORPHANATTACHMENTS      1565
+#define IDC_IMPORTFILENAME              1566
+#define IDC_IMPORTFILEPATH              1567
+#define IDC_EXISTINGFILENAME            1568
+#define IDC_EXISTINGFILEPATH            1569
+#define IDC_EXISTINGFILETITLE           1570
 
 // Next default values for new objects
 // 
@@ -878,7 +886,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        555
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1563
+#define _APS_NEXT_CONTROL_VALUE         1571
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif

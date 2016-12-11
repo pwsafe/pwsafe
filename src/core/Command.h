@@ -40,8 +40,6 @@ public:
   enum CommandDBChange { NONE = -1, MULTICOMMAND, DB, DBPREFS, DBHEADER, DBEMPTYGROUP, DBPOLICYNAMES,
     DBFILTERS };
 
-  enum StateType { COMMANDACTION = 0, PREEXECUTE, POSTEXECUTE };
-
   virtual ~Command();
   virtual int Execute() = 0;
   virtual int Redo() {return Execute();} // common case
@@ -50,16 +48,7 @@ public:
   void SetNoGUINotify() {m_bNotifyGUI = false;}
   bool GetGUINotify() const {return m_bNotifyGUI;}
 
-  void SaveChangedState(StateType st, st_DBChangeStatus &stDBCS);
-  void RestoreChangedState(st_DBChangeStatus &stDBCS);
-
-  CommandDBChange GetCommandChange() const { return m_CommandDBChange; }
-
-  const st_DBChangeStatus &GetPostCommandStatus() const
-  { return m_PostCommand; }
-
-  const st_DBChangeStatus &GetCommandStatus() const
-  { return m_Command; }
+  virtual bool WasDBChanged() const;
   
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
@@ -67,11 +56,9 @@ protected:
   CommandInterface *m_pcomInt;
   bool m_bNotifyGUI;
 
-  st_DBChangeStatus m_PreCommand;
-  st_DBChangeStatus m_PostCommand;
-  st_DBChangeStatus m_Command;
-
   int m_RC;
+
+  // The command change value is ONLY set during Execute
   CommandDBChange m_CommandDBChange;
 };
 
@@ -106,22 +93,26 @@ public:
     GUI_UNDO_MERGESYNC,
     GUI_REFRESH_TREE,
     GUI_REFRESH_ENTRY,
+    GUI_REFRESH_BOTHVIEWS,
     GUI_DB_PREFERENCES_CHANGED,
     GUI_PWH_CHANGED_IN_DB
   };
 
+  // Note: entryUUID only used in GUI_REFRESH_ENTRY
   static UpdateGUICommand *Create(CommandInterface *pcomInt,
-                                  ExecuteFn When, GUI_Action ga)
-  { return new UpdateGUICommand(pcomInt, When, ga); }
+                                  ExecuteFn When, GUI_Action ga,
+                                  const pws_os::CUUID &entryUUID = pws_os::CUUID::NullUUID())
+  { return new UpdateGUICommand(pcomInt, When, ga, entryUUID); }
   int Execute();
   void Undo();
 
 private:
   UpdateGUICommand& operator=(const UpdateGUICommand&); // Do not implement
   UpdateGUICommand(CommandInterface *pcomInt, ExecuteFn When,
-                   GUI_Action ga);
+                   GUI_Action ga, const pws_os::CUUID &entryUUID);
   const ExecuteFn m_When;
   const GUI_Action m_ga;
+  pws_os::CUUID m_entryUUID;
 };
 
 // PWS related commands
@@ -361,6 +352,7 @@ private:
   CReport *m_pRpt;
   CItemData::EntryType m_type;
   int m_iVia;
+
   // Alias/Shortcut structures
   // Permanent Multimap: since potentially more than one alias/shortcut per base
   //  Key = base uuid; Value = multiple alias/shortcut uuids
@@ -410,6 +402,9 @@ private:
   pws_os::CUUID m_from_baseuuid;
   pws_os::CUUID m_to_baseuuid;
   CItemData::EntryType m_type;
+
+  ItemMMap m_saved_base2aliases_mmap;
+  ItemMMap m_saved_base2shortcuts_mmap;
 };
 
 class UpdatePasswordHistoryCommand : public Command
@@ -490,7 +485,7 @@ public:
   void Undo();
 
   void Add(Command *pcmd);
-  void Insert(Command *pcmd); // VERY INEFFICIENT - use sparingly
+  void Insert(Command *pcmd, size_t ioffset = 0); // VERY INEFFICIENT - use sparingly
   bool Remove(Command *pcmd);
   bool Remove();
   bool GetRC(Command *pcmd, int &rc);

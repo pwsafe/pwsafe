@@ -71,7 +71,6 @@ bool CKeySend::SimulateApplicationSwitch(void)
 }
 #endif
 
-
 void CKeySend::SelectAll() const
 {
   const bool selectedAll = pws_os::SelectAll();
@@ -84,6 +83,18 @@ void CKeySend::EmulateMods(bool /*emulate*/)
 }
 
 bool CKeySend::IsEmulatingMods() const
+{
+  return false;
+}
+
+void CKeySend::SendVirtualKey(WORD, bool, bool, bool)
+{
+}
+void CKeySend::SetOldSendMethod(bool)
+{
+}
+
+bool CKeySend::LookupVirtualKey(const StringX &, WORD &)
 {
   return false;
 }

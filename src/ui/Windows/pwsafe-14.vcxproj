@@ -728,6 +728,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <SwapRunFromCD>true</SwapRunFromCD>
       <SwapRunFromNET>true</SwapRunFromNET>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PostBuildEvent>
       <Command>cscript post_build.vbs //Nologo</Command>
@@ -803,7 +804,6 @@
     <ClCompile Include="AddEdit_PropertyPage.cpp" />
     <ClCompile Include="AddEdit_PropertySheet.cpp" />
     <ClCompile Include="AdvancedDlg.cpp" />
-    <ClCompile Include="ChangeAliasPswd.cpp" />
     <ClCompile Include="ClearQuestionDlg.cpp" />
     <ClCompile Include="ColumnChooserDlg.cpp" />
     <ClCompile Include="ColumnChooserLC.cpp" />
@@ -944,7 +944,6 @@
     <ClInclude Include="AddEdit_PropertySheet.h" />
     <ClInclude Include="AdvancedDlg.h" />
     <ClInclude Include="AdvancedValues.h" />
-    <ClInclude Include="ChangeAliasPswd.h" />
     <ClInclude Include="ClearQuestionDlg.h" />
     <ClInclude Include="ColumnChooserDlg.h" />
     <ClInclude Include="ColumnChooserLC.h" />
@@ -1393,6 +1392,7 @@
     <Image Include="graphics\checked_disabled.bmp" />
     <Image Include="graphics\empty_disabled.bmp" />
     <Image Include="graphics\question_mark.bmp" />
+    <Image Include="graphics\red_exclamation.bmp" />
     <Image Include="graphics\toolbar\classic\exportDB.bmp" />
     <Image Include="graphics\toolbar\classic\exportV1.bmp" />
     <Image Include="graphics\toolbar\classic\exportV2.bmp" />

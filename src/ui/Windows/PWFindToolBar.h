@@ -16,9 +16,18 @@
 
 class CFindEditCtrl : public CEditExtn
 {
+  // Thanks to John Z. Czopowik VC++ MVP for code for vertically centred text in a
+  // CEdit control
+public:
+  CFindEditCtrl();
+  virtual ~CFindEditCtrl();
+
 protected:
   // Needed to trap Entry Keyboard Shortcuts if we are in control
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+
+  DECLARE_MESSAGE_MAP()
+
 };
 
 class CPWFindToolBar : public CToolBar
@@ -50,7 +59,8 @@ public:
                      CItemData::FieldBits &bsFields, CItemAtt::AttFieldBits &bsAttFields,
                      std::wstring &subgroup_name, 
                      bool &subgroup_bset, int &subgroup_object, int &subgroup_function)
-  {bAdvanced = m_bAdvanced;
+  {
+    bAdvanced = m_bAdvanced;
     bsFields = m_pst_SADV->bsFields; bsAttFields = m_pst_SADV->bsAttFields;
     subgroup_name = m_subgroup_name; subgroup_bset = m_subgroup_bset;
     subgroup_object = m_subgroup_object; subgroup_function = m_subgroup_function;}
@@ -61,6 +71,7 @@ public:
   CFindEditCtrl m_findedit;
   CStaticExtn m_findresults;
   void SetSearchDirection(int iFindDirection) {m_iFindDirection = iFindDirection;}
+  void ChangeFont();
 
 protected:
   BOOL PreTranslateMessage(MSG* pMsg);
@@ -84,7 +95,7 @@ private:
   int m_iWMSGID;
   int m_toolbarMode, m_bitmode, m_iFindDirection;
   bool m_bVisible, m_bCaseSensitive;
-  bool m_bAdvanced;
+  bool m_bAdvanced, m_bFontSet;
 
   std::vector<int> m_indices; // array of found items
 

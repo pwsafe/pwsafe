@@ -46,7 +46,6 @@
 // the task chain throws, in which case the rest of the tasks in the chain
 // are not invoked.
 
-
 #ifndef __TIMEDTASKCHAIN_H__
 #define __TIMEDTASKCHAIN_H__
 
@@ -90,7 +89,4 @@ private:
 	void Next();
 };
 
-
-
 #endif
-

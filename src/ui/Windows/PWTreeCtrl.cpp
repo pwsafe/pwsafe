@@ -734,15 +734,18 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       CSecString temp;
       if (sxGroup.empty()) {
         if (sxNewUser.empty())
-          temp.Format(IDS_ENTRYEXISTS3, sxNewTitle.c_str());
+          temp.Format(IDS_ENTRYEXISTS3, static_cast<LPCWSTR>(sxNewTitle.c_str()));
         else
-          temp.Format(IDS_ENTRYEXISTS2, sxNewTitle.c_str(), sxNewUser.c_str());
+          temp.Format(IDS_ENTRYEXISTS2, static_cast<LPCWSTR>(sxNewTitle.c_str()),
+                      static_cast<LPCWSTR>(sxNewUser.c_str()));
       } else {
         if (sxNewUser.empty())
-          temp.Format(IDS_ENTRYEXISTS1, sxGroup.c_str(), sxNewTitle.c_str());
+          temp.Format(IDS_ENTRYEXISTS1, static_cast<LPCWSTR>(sxGroup.c_str()),
+                      static_cast<LPCWSTR>(sxNewTitle.c_str()));
         else
-          temp.Format(IDS_ENTRYEXISTS, sxGroup.c_str(), sxNewTitle.c_str(),
-                      sxNewUser.c_str());
+          temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(sxGroup.c_str()),
+                      static_cast<LPCWSTR>(sxNewTitle.c_str()),
+                      static_cast<LPCWSTR>(sxNewUser.c_str()));
       }
       gmb.AfxMessageBox(temp);
       goto bad_exit;
@@ -811,7 +814,6 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
     } while (hSibling != NULL);
     // If we made it here, then name's unique.
 
-
     // PR2407325: If the user edits a group name so that it has
     // a GROUP_SEP, all hell breaks loose.
     // Right Thing (tm) would be to parse and create subgroups as
@@ -850,13 +852,15 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
         pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath,
                         DBEmptyGroupsCommand::EG_RENAME));
       } else {
-        // Rename any empty groups within this group
-        // Get current empty groups
-        pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath,
-                        DBEmptyGroupsCommand::EG_RENAMEPATH));
+        if (!app.GetMainDlg()->IsInAddGroup()) {
+          // Rename any empty groups within this group
+          // Get current empty groups
+          pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath,
+            DBEmptyGroupsCommand::EG_RENAMEPATH));
 
-        // Update map of groups
-        app.GetMainDlg()->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
+          // Update map of groups
+          app.GetMainDlg()->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
+        }
       }
 
     } // good group name (no GROUP_SEP)
@@ -902,7 +906,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // We refresh the view
       Command *pcmd_undo = UpdateGUICommand::Create(pcore,
                                                 UpdateGUICommand::WN_UNDO,
-                                                UpdateGUICommand::GUI_REFRESH_TREE);
+                                                UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
       pmulticmds->Add(pcmd_undo);
 
       // Update Group
@@ -911,7 +915,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // We refresh the view
       Command *pcmd_redo = UpdateGUICommand::Create(pcore,
                                               UpdateGUICommand::WN_EXECUTE_REDO,
-                                              UpdateGUICommand::GUI_REFRESH_TREE);
+                                              UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
       pmulticmds->Add(pcmd_redo);
     }
   }
@@ -1107,6 +1111,7 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
         bAlreadyExists = false;
       } else
         ti = si;
+
       app.GetMainDlg()->m_mapGroupToTreeItem[sxPath2Root] = ti;
       app.GetMainDlg()->m_mapTreeItemToGroup[ti] = sxPath2Root;
     } while (!sxPath.empty());
@@ -1503,7 +1508,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
           itemData = GetItemData(m_hitemDrag);
           ASSERT(itemData != NULL);
           pci = (CItemData *)itemData;
-          cs_title.Format(IDS_SCTARGET, pci->GetTitle().c_str());
+          cs_title.Format(IDS_SCTARGET, static_cast<LPCWSTR>(pci->GetTitle().c_str()));
           cs_user = pci->GetUser();
 
           // If there is a matching entry in our list, generate unique one
@@ -1551,7 +1556,15 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
 
         MultiCommands *pmulticmds = MultiCommands::Create(app.GetCore());
         pmulticmds->Add(UpdateGUICommand::Create(app.GetCore(),
-          UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_TREE));
+          UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
+
+        // Make sure that the folder to which drag is performed will 
+        // be removed from the vector of empty groups
+        StringX sxGroup(GetGroup(hitemDrop));
+        if (app.GetMainDlg()->IsEmptyGroup(sxGroup)) {
+          pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxGroup,
+            DBEmptyGroupsCommand::EG_DELETE));
+        }
 
         StringX sxDropGroup(L"");
         bool bEmptyGroup(false);
@@ -1611,16 +1624,8 @@ BOOL CPWTreeCtrl::OnDrop(CWnd *, COleDataObject *pDataObject,
           break;
         }
 
-        // Make sure that the folder to which drag is performed will 
-        // be removed from the vector of empty groups
-        StringX sxGroup(GetGroup(hitemDrop));
-        if (app.GetMainDlg()->IsEmptyGroup(sxGroup)) {
-          pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxGroup,
-            DBEmptyGroupsCommand::EG_DELETE));
-        }
-
         pmulticmds->Add(UpdateGUICommand::Create(app.GetCore(),
-          UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_TREE));
+          UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
 
         // Do it
         app.GetMainDlg()->Execute(pmulticmds);
@@ -2229,7 +2234,6 @@ void CPWTreeCtrl::SortTree(const HTREEITEM htreeitem)
 
   // here iff user prefers "explorer type view", that is,
   // groups first.
-
 
   // unbelievable, but we have to recurse ourselves!
   // foreach child of hti

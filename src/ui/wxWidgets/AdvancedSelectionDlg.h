@@ -9,10 +9,8 @@
 #ifndef __ADVANCEDDSELECTIONDLG_H__
 #define __ADVANCEDDSELECTIONDLG_H__
 
-
 #include "../../core/ItemData.h"
 #include "./wxutils.h"
-
 
 /*
  *
@@ -163,6 +161,5 @@ public:
     SetSizerAndFit(sizer);
   }
 };
-
 
 #endif

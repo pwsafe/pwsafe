@@ -9,10 +9,15 @@
 #ifndef __FILE_H
 #define __FILE_H
 #include "typedefs.h"
+
+#include "../core/StringX.h"
+
 #include <cstdio>
 #include <vector>
 
 namespace pws_os {
+  enum RWmode { Read, Write };
+
   extern void AddDrive(stringT &path);
   extern bool FileExists(const stringT &filename);
   extern bool FileExists(const stringT &filename, bool &bReadOnly);
@@ -27,6 +32,7 @@ namespace pws_os {
                          HANDLE &lockFileHandle, int &LockCount);
 
   extern std::FILE *FOpen(const stringT &filename, const TCHAR *mode);
+  extern int FClose(std::FILE *fd, const bool &bIsWrite);
   extern ulong64 fileLength(std::FILE *fp);
   extern bool GetFileTimes(const stringT &filename,
       time_t &ctime, time_t &mtime, time_t &atime);

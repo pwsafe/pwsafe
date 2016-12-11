@@ -19,7 +19,6 @@ CFilterBaseDlg::CFilterBaseDlg(UINT nIDTemplate, CWnd* pParentWnd)
   }
 }
 
-
 BOOL CFilterBaseDlg::OnInitDialog()
 {
   BOOL retval = CPWDialog::OnInitDialog();

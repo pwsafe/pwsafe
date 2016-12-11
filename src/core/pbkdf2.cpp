@@ -9,10 +9,6 @@
 // Based on LibTomCrypt by
 // Tom St Denis, tomstdenis@iahu.ca, http://libtomcrypt.org
 
-/*
- */
-
-
 #include "PwsPlatform.h"
 #include "hmac.h"
 
@@ -45,7 +41,6 @@ void pbkdf2(const unsigned char *password, unsigned long password_len,
   ASSERT(out      != NULL);
   ASSERT(hmac     != NULL);
   ASSERT(outlen   != NULL);
-
 
   buf[0] = new unsigned char[BlockSize * 2];
   if (buf[0] == NULL) {

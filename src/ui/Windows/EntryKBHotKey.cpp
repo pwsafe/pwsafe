@@ -85,4 +85,3 @@ void CEntryKBHotKey::OnSetFocus(CWnd *pOldWnd)
     m_pParent->OnEntryHotKeySetFocus();
   }
 }
-

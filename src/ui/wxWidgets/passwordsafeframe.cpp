@@ -81,7 +81,6 @@ using pws_os::CUUID;
 using std::get;
 using std::make_tuple;
 
-
 /*!
  * PasswordSafeFrame type definition
  */
@@ -266,7 +265,6 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
       style |= wxSTAY_ON_TOP;
     Create( parent, id, caption, pos, size, style );
 }
-
 
 /*!
  * PasswordSafeFrame creator
@@ -460,7 +458,7 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu29->Append(ID_BROWSEURL, _("&Browse to URL\tCtrl+L"), wxEmptyString, wxITEM_NORMAL);
   itemMenu29->Append(ID_AUTOTYPE, _("Perform Auto&type\tCtrl+T"), wxEmptyString, wxITEM_NORMAL);
   itemMenu29->Append(ID_GOTOBASEENTRY, _("Go to Base entry"), wxEmptyString, wxITEM_NORMAL);
-  menuBar->Append(itemMenu29, _("Edit"));
+  menuBar->Append(itemMenu29, _("&Edit"));
   wxMenu* itemMenu48 = new wxMenu;
   itemMenu48->Append(ID_LIST_VIEW, _("Flattened &List"), wxEmptyString, wxITEM_RADIO);
   itemMenu48->Append(ID_TREE_VIEW, _("Nested &Tree"), wxEmptyString, wxITEM_RADIO);
@@ -493,7 +491,7 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu67->Append(ID_REPORT_MERGE, _("&Merge"), wxEmptyString, wxITEM_NORMAL);
   itemMenu67->Append(ID_REPORT_VALIDATE, _("&Validate"), wxEmptyString, wxITEM_NORMAL);
   itemMenu48->Append(ID_REPORTSMENU, _("Reports"), itemMenu67);
-  menuBar->Append(itemMenu48, _("View"));
+  menuBar->Append(itemMenu48, _("&View"));
   wxMenu* itemMenu74 = new wxMenu;
   itemMenu74->Append(ID_CHANGECOMBO, _("&Change Safe Combination..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu74->AppendSeparator();
@@ -508,12 +506,12 @@ void PasswordSafeFrame::CreateMenubar()
 #endif
   itemMenu74->AppendSeparator();
   AddLanguageMenu( itemMenu74 );
-  menuBar->Append(itemMenu74, _("Manage"));
+  menuBar->Append(itemMenu74, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP, _("Get &Help"), wxEmptyString, wxITEM_NORMAL);
   itemMenu79->Append(ID_VISITWEBSITE, _("Visit Password Safe &website..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu79->Append(wxID_ABOUT, _("&About Password Safe..."), wxEmptyString, wxITEM_NORMAL);
-  menuBar->Append(itemMenu79, _("Help"));
+  menuBar->Append(itemMenu79, _("&Help"));
   itemFrame1->SetMenuBar(menuBar);
 
   m_statusBar = new CPWStatusBar( itemFrame1, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER );
@@ -1005,7 +1003,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
 int PasswordSafeFrame::SaveIfChanged()
 {
   // Deal with unsaved but changed restored DB
-  if (m_bRestoredDBUnsaved && m_core.HasAnythingChanged()) {
+  if (m_bRestoredDBUnsaved && m_core.HasDBChanged()) {
     wxMessageDialog dlg(this,
                         _("Do you wish to save the this restored database as new database?"),
                         _("Unsaved restored database"),
@@ -1038,7 +1036,7 @@ int PasswordSafeFrame::SaveIfChanged()
   //
   // Note: RUE list saved here via time stamp being updated.
   // Otherwise it won't be saved unless something else has changed
-  if ((m_bTSUpdated || m_core.HasAnythingChanged()) &&
+  if ((m_bTSUpdated || m_core.HasDBChanged()) &&
       m_core.GetNumEntries() > 0) {
     wxString prompt(_("Do you want to save changes to the password database"));
     if (!m_core.GetCurFile().empty()) {
@@ -1113,7 +1111,6 @@ void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
   if (rc == PWScore::SUCCESS)
     m_core.ResumeOnDBNotification();
 }
-
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_CLOSE
@@ -1275,13 +1272,11 @@ int PasswordSafeFrame::Open(const wxString &fname)
 #endif
 }
 
-
 void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
 {
   CProperties props(this, m_core);
   props.ShowModal();
 }
-
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
@@ -1297,7 +1292,6 @@ void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& /* evt */ )
   window->Destroy();
 }
 
-
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVE
  */
@@ -1306,7 +1300,6 @@ void PasswordSafeFrame::OnSaveClick( wxCommandEvent& /* evt */ )
 {
   Save();
 }
-
 
 void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
 {
@@ -1620,7 +1613,6 @@ void PasswordSafeFrame::SaveSettings(void) const
   m_grid->SaveSettings();
 }
 
-
 bool PasswordSafeFrame::IsRUEEvent(const wxCommandEvent& evt) const
 {
   const int cmd = int(evt.GetExtraLong());
@@ -1631,7 +1623,6 @@ long PasswordSafeFrame::GetEventRUEIndex(const wxCommandEvent& evt) const
 {
   return GetRUEIndex(int(evt.GetExtraLong()));
 }
-
 
 void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
 {
@@ -1671,11 +1662,11 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
   PWSprefs::IntPrefs pref = (isShift) ?
     PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction;
 
-  short DCA = short(PWSprefs::GetInstance()->GetPref(pref));
+  int16 DCA = int16(PWSprefs::GetInstance()->GetPref(pref));
 
   CItemData *pci = item.IsShortcut() ? m_core.GetBaseEntry(&item) : &item;
 
-  short itemDCA;
+  int16 itemDCA;
   pci->GetDCA(itemDCA, isShift);
 
   if (itemDCA >= PWSprefs::minDCA && itemDCA <= PWSprefs::maxDCA)
@@ -2288,7 +2279,6 @@ int PasswordSafeFrame::New()
   return PWScore::SUCCESS;
 }
 
-
 int PasswordSafeFrame::NewFile(StringX &fname)
 {
   wxString cs_text(_("Please choose a name for the new database"));
@@ -2487,7 +2477,6 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
 #endif
   }
 }
-
 
 void PasswordSafeFrame::TryIconize(int attempts)
 {
@@ -2987,7 +2976,6 @@ void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
     if (dir.empty())
       dir = towxstring(PWSdirs::GetSafeDir());
 
-
     wxFileDialog fd(this, cs_text, dir, filename.GetFullName(), cs_fmt,
                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
@@ -3264,7 +3252,6 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
   }
 }
 
-
 void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
 {
   // disable in read-only mode or empty
@@ -3345,5 +3332,3 @@ void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
 // already have them implemented in main*.cpp
 // (how to get DB to stop generating them??)
 //-----------------------------------------------------------------
-
-

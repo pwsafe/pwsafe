@@ -1,27 +1,91 @@
-Password Safe 3.40.1 Release Notes September 2016
-=================================================
+Password Safe 3.41.1 Release Notes ???????? 201?
+================================================
 
-This note describe the new features, fixed bugs and known problems
+This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
-Password Safe, please see the accompanying README.txt file. For more 
+Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.40.1
-====================
-[1365] Ctrl+F now switches focus back to Find toolbar if it is already open.
-[1363] Empty groups no longer disappear when moving nested groups into them and
-do not leave duplicated empty groups in the database.
+Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
+SourceForge Project tickets.  Any beginning with 'G' are issues raised on
+PasswordSafe's GitHub project, where the current source can also be found.
+The ReleaseNotes.html file has links to the relevant tickets/issues.
 
-Changes to Existing Features in 3.40.1
+Bugs fixed in 3.41.1
+====================
+[1385] The filter active indicator now shows in Windows 7.
+[1384] Toolbar images and text are now back in sync.
+[1367] Fixed regression in command line arguments -h and -u support.
+[1358] When PaswordSafe automatically locks to the TaskBar, the unlock window now gets
+input focus when clicking on the icon to unlock the database.
+
+Changes to Existing Features in 3.41.1
 ======================================
 None
 
-New Features for 3.40.1
+New Features for 3.41.1
 =======================
+None
+
+Bugs fixed in 3.41.0
+====================
+[] Fix crash if Find active when applying a filter, e.g., show entries with expiry dates.
+[] Ensure shortcut is updated in GUI after editing.
+[] Text in the Find toolbar search edit control is now vertically centered to
+reduce character truncation.
+[] Clicking on a field's name copies the value to the clipboard when adding
+a new entry (and not only when editing).
+[] Update password history when Apply is clicked, not only when Edit
+window's closed.
+[] No longer show empty groups when the user filters for entries 
+with expired passwords.
+[1378] Fix application crash if Add/Edit entry dialog open when the database is locked
+e.g. via idle timer, workstation lock etc.
+[1373] An invalid or non-existent backup directory path can no longer be saved
+when exiting Options.
+[1369] The virtual keyboard no longer becomes unusable after clicking on the
+Randomize button.
+[1368] The Status bar now shows the correct number of entries when a database
+is unlocked.
+[1366] Copying the unexpanded autotype string on Edit entry screen using Ctrl+click
+on Autotype label now works.
+[1365] Ctrl+F now switches focus back to Find toolbar if it is already open.
+[1364] Unnecessary tree view refreshes fixed.
+[1363] Empty groups no longer disappear when moving nested groups into them and
+do not leave duplicated empty groups in the database.
+[G192] Saved changes no longer prevent logoff or system shutdown.
+
+Changes to Existing Features in 3.41.0
+======================================
+[] You can no longer change an alias's base entry's password from the alias entry.
+Instead, you should edit the base entry directly by selecting the alias entry and 
+using the Edit or right-click context menu to select its base.
+[] The "Show Find Toolbar" has been removed from the View menu as it appears in
+the Edit menu. Ctrl+F still works as before to show the Find toolbar or transfer
+focus to it if already visible.
+[1371] The font used in the Find toolbar is now set to the user specified Add/Edit
+font instead of the Tree/List view font.
+
+New Features for 3.41.0
+=======================
+[] New AutoType field '\#' toggles the use of the older mechanism to
+send keyboard input to other applications e.g. browsers.
+[] Add more Help to the Add/Edit Basic and Additional tabs.
+[] Empty groups added but not yet saved are now included when the user filters
+on unsaved changes.
+[] Empty groups, whose names satisfy a filter that include tests on group name
+values, are now included in the display when the filter is active.
+[815] The database backup location now supports environmental variables e.g. 
+%homedrive% and %homepath%.  If used, the resulting path is shown.
+[814] Clearing the recent database list now requires confirmation.
 [813] When exporting a group to a new database, there is now an option to also
 export all filters stored in the database to the new database.
+[796] Autotype has been extended to support the previous password, if present
+in the entry's password history, via the Autotype field '\q'. In addition, for Windows,
+a number of keyboard keys are supported by specifying the key between '\{' and '}'. Please
+see Help for details.
 
 Bugs fixed in 3.40
 ==================
@@ -41,7 +105,6 @@ PasswordSafe database, the referenced policy is now also exported.
 [1355] Fixed tabbing order in Basic AddEdit tab.
 [1352] Fixed regression in recent entry processing.
 [1347] Prevent a user from trying to copy a filter to a read-only database.
-[1346] The Notes window no longer scrolls when re-activated after losing focus. 
 [1345] Removed the ability to create a new database when read-only is
 checked.
 [1342, 1343] Fix multiple empty group issues.
@@ -275,7 +338,7 @@ or opening a Password Safe database.
 entered via virtual keyboard.
 [1176] Tweak definition of what's considered a 'weak' password.
 [1174] "Open as read-only" check-box now correctly reflects the file's state.
-[1117] Dragging dropbar icon doesn't copy text to clipboard unless
+[1117] Dragging DragBar icon doesn't copy text to clipboard unless
 Control key's pressed when icon's clicked upon.
 
 New Features for 3.33

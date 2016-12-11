@@ -22,7 +22,6 @@
 // Note: Option "SI_TRUSTEE_UNIQUE" (Allow one instance per user account)
 // has been implemented for Password Safe
 
-
 #include "stdafx.h"
 #include "SingleInstance.h"
 

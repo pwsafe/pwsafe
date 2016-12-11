@@ -89,7 +89,7 @@ BOOL CFilterDCADlg::OnInitDialog()
     }
 
     cs_dca.LoadString(ui_dca);
-    cs_text.Format(IDSC_CURRENTDEFAULTDCA, cs_dca);
+    cs_text.Format(IDSC_CURRENTDEFAULTDCA, static_cast<LPCWSTR>(cs_dca));
     iItem = m_cbxDCA.AddString(cs_text);
     m_cbxDCA.SetItemData(iItem, (DWORD)-1);  // Default!
 
@@ -178,4 +178,3 @@ void CFilterDCADlg::OnBnClickedOk()
 
   CFilterBaseDlg::OnOK();
 }
-

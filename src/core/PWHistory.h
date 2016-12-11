@@ -57,6 +57,7 @@ PWHistEntry() : changetttdate(0), changedate(), password() {}
 PWHistEntry(const PWHistEntry &that) :
   changetttdate(that.changetttdate), changedate(that.changedate),
     password(that.password) {}
+
   PWHistEntry &operator=(const PWHistEntry &that)
   { if (this != &that) {
       changetttdate = that.changetttdate;
@@ -79,6 +80,8 @@ bool CreatePWHistoryList(const StringX &pwh_str,
                          size_t &pwh_max, size_t &num_err,
                          PWHistList &pwhl, PWSUtil::TMC time_format);
 
+StringX GetPreviousPassword(const StringX &pwh_str);
+
 StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num);
 
 #endif
@@ -86,4 +89,3 @@ StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num);
 // Local variables:
 // mode: c++
 // End:
-

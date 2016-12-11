@@ -230,7 +230,6 @@ void FieldSelectionPanel::OnRemoveAll( wxCommandEvent& /* evt */ )
   }
 }
 
-
 ///////////////////////////////////////////////////////////////////////////
 // FieldSelectionPanelValidator
 //

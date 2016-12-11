@@ -21,7 +21,6 @@ protected:
   CommandsTest() {}
 };
 
-
 // And now the tests...
 
 TEST_F(CommandsTest, AddItem)
@@ -44,7 +43,8 @@ TEST_F(CommandsTest, AddItem)
   EXPECT_FALSE(core.HasDBChanged());
   EXPECT_EQ(0, core.GetNumEntries());
 
-  delete pcmd;
+  // Get core to delete any existing commands
+  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, CreateShortcutEntry)
@@ -136,18 +136,24 @@ TEST_F(CommandsTest, EditEntry)
   pcmd = EditEntryCommand::Create(&core, it, it2);
   core.Execute(pcmd);
   EXPECT_TRUE(core.HasDBChanged());
+
   iter = core.Find(it.GetUUID());
   EXPECT_EQ(core.GetEntry(iter).GetTitle(), it2.GetTitle());
   core.Undo();
   EXPECT_TRUE(core.HasDBChanged());
+
   iter = core.Find(it.GetUUID());
   EXPECT_EQ(core.GetEntry(iter).GetTitle(), it.GetTitle());
   core.Undo();
   EXPECT_EQ(core.GetNumEntries(), 0);
   EXPECT_FALSE(core.HasDBChanged());
+
   core.Redo();
   EXPECT_TRUE(core.HasDBChanged());
   EXPECT_EQ(core.GetNumEntries(), 1);
+
+  // Get core to delete any existing commands
+  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, RenameGroup)
@@ -170,15 +176,18 @@ TEST_F(CommandsTest, RenameGroup)
   
   pcmd = RenameGroupCommand::Create(&core, L"Group0.Alpha", L"Group0.Beta");
   core.Execute(pcmd);
+
   iter = core.Find(uuid);
   ASSERT_NE(core.GetEntryEndIter(), iter);
   EXPECT_EQ(core.GetEntry(iter).GetGroup(), L"Group0.Beta");
   core.Undo();
+
   iter = core.Find(uuid);
   ASSERT_NE(core.GetEntryEndIter(), iter);
   EXPECT_EQ(core.GetEntry(iter).GetGroup(), L"Group0.Alpha");
 
-  delete pcmd;
+  // Get core to delete any existing commands
+  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, CountGroups)
@@ -194,7 +203,6 @@ TEST_F(CommandsTest, CountGroups)
 
   Command *pcmd = AddEntryCommand::Create(&core, di);  
   core.Execute(pcmd);
-  delete pcmd;
 
   core.GetAllGroups(vGroups);
   EXPECT_TRUE(vGroups.empty());
@@ -204,7 +212,6 @@ TEST_F(CommandsTest, CountGroups)
   di2.SetGroup(L"g1");
   pcmd = EditEntryCommand::Create(&core, di, di2);
   core.Execute(pcmd);
-  delete pcmd;
 
   core.GetAllGroups(vGroups);
   EXPECT_EQ(1, vGroups.size());
@@ -214,7 +221,6 @@ TEST_F(CommandsTest, CountGroups)
   di.SetGroup(L"g1.g1-1");
   pcmd = EditEntryCommand::Create(&core, di2, di);
   core.Execute(pcmd);
-  delete pcmd;
 
   core.GetAllGroups(vGroups);
   EXPECT_EQ(2, vGroups.size());
@@ -223,8 +229,10 @@ TEST_F(CommandsTest, CountGroups)
   eg.push_back(L"e1");
   pcmd = DBEmptyGroupsCommand::Create(&core, eg, DBEmptyGroupsCommand::EG_ADDALL);
   core.Execute(pcmd);
-  delete pcmd;
 
   core.GetAllGroups(vGroups);
   EXPECT_EQ(3, vGroups.size());
+
+  // Get core to delete any existing commands
+  core.ClearCommands();
 }

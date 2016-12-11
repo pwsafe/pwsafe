@@ -12,7 +12,6 @@
 #include "../../core/ItemData.h"
 #include "./wxutils.h"
 
-
 /*
  * SelectionCriteria data structure backs the AdvancedSelectionPanel widget
  * 

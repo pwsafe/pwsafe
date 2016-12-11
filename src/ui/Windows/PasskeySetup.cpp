@@ -41,7 +41,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core)
   : CPKBaseDlg(CPasskeySetup::IDD, pParent),
@@ -127,7 +126,7 @@ void CPasskeySetup::OnOK()
   StringX errmess;
   if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {
     CString cs_msg, cs_text;
-    cs_msg.Format(IDS_WEAKPASSPHRASE, errmess.c_str());
+    cs_msg.Format(IDS_WEAKPASSPHRASE, static_cast<LPCWSTR>(errmess.c_str()));
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
     cs_text.LoadString(IDS_USEITANYWAY);
     cs_msg += cs_text;
@@ -150,7 +149,6 @@ void CPasskeySetup::OnHelp()
 {
   ShowHelp(L"::/html/create_new_db.html");
 }
-
 
 void CPasskeySetup::OnPasskeySetfocus()
 {
@@ -259,7 +257,7 @@ void CPasskeySetup::ProcessPhrase()
 {
   // OnOK clears the passkey, so we save it
   const CSecString save_passkey = m_passkey;
-  TRACE(L"CPasskeySetup::ProcessPhrase(%s)\n", m_passkey);
+  TRACE(L"CPasskeySetup::ProcessPhrase(%s)\n", static_cast<LPCWSTR>(m_passkey));
   CPKBaseDlg::OnOK();
   m_passkey = save_passkey;
 }

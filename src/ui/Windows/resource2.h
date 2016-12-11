@@ -116,7 +116,6 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_OLD_TOOLBAR         32105
 #define ID_MENUITEM_SHOWHIDE_TOOLBAR    32106
 #define ID_MENUITEM_SHOWHIDE_DRAGBAR    32107
-#define ID_MENUITEM_SHOWFINDTOOLBAR     32108
 #define ID_MENUITEM_EXPANDALL           32109
 #define ID_MENUITEM_COLLAPSEALL         32110
 #define ID_MENUITEM_REFRESH             32111

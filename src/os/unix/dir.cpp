@@ -56,7 +56,6 @@ bool pws_os::chdir(const stringT &dir)
   return retval;
 }
 
-
 bool pws_os::splitpath(const stringT &path,
                        stringT &drive, stringT &dir,
                        stringT &file, stringT &ext)

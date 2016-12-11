@@ -30,6 +30,7 @@
 #include <errno.h>
 #include <iomanip>
 #include <type_traits> // for static_assert
+#include <algorithm> // for sort
 
 using namespace std;
 using pws_os::CUUID;
@@ -54,7 +55,6 @@ using pws_os::CUUID;
  *         V3.29Y          0x030C
  *         V3.30           0x030D
 */
-
 
 const short VersionNum = 0x030D;
 
@@ -954,6 +954,9 @@ int PWSfileV3::ReadHeader()
       }
       delete[] utf8; utf8 = NULL; utf8Len = 0;
     } while (fieldType != HDR_END);
+
+  // Now sort it for when we compare.
+  std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
 
     return SUCCESS;
   }

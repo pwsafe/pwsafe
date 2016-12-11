@@ -12,7 +12,6 @@
 #ifndef _PWSGRID_H_
 #define _PWSGRID_H_
 
-
 /*!
  * Includes
  */
@@ -47,7 +46,6 @@ class PWSGrid;
 
 typedef std::map<int, pws_os::CUUID> RowUUIDMapT;
 typedef std::map<pws_os::CUUID, int, std::less<pws_os::CUUID> > UUIDRowMapT;
-
 
 /*!
  * PWSGrid class declaration

@@ -869,7 +869,6 @@ void CAddEdit_PasswordPolicy::OnNamesComboChanged()
   SetPolicyControls();
 }
 
-
 void CAddEdit_PasswordPolicy::OnSymbolReset()
 {
   std::wstring symbols;

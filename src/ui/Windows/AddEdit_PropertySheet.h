@@ -33,6 +33,9 @@ public:
   virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
   virtual BOOL PreTranslateMessage(MSG* pMsg);
 
+  //{{AFX_MSG(CAddEdit_PropertySheet)
+  //}}AFX_MSG
+
   DECLARE_DYNAMIC(CAddEdit_PropertySheet)
 
   // Get/Set routines needed by DboxMain Add & Edit
@@ -44,13 +47,12 @@ public:
   void SetDefUsername(StringX defusername) {m_AEMD.defusername = CSecString(defusername);}
 
   CItemData::EntryType &GetOriginalEntrytype() {return m_AEMD.original_entrytype;}
-  void SetOriginalEntrytype(enum CItemData::EntryType original_entrytype)
-  {m_AEMD.original_entrytype = original_entrytype;}
 
   const CSecString &GetBase() const {return m_AEMD.base;}
 
   const int GetIBasedata() const {return m_AEMD.ibasedata;}
   pws_os::CUUID &GetBaseUUID() {return m_AEMD.base_uuid;}
+  pws_os::CUUID &GetOriginalkBaseUUID() { return m_AEMD.original_base_uuid; }
 
   const CItemData *GetOriginalCI() const {return m_AEMD.pci_original;}
   const CItemData *GetNewCI() const {return m_AEMD.pci;}
@@ -77,6 +79,7 @@ protected:
 
 private:
   void SetupInitialValues();
+  BOOL OnApply(const int &iCID);
 
   CAddEdit_Basic           *m_pp_basic;
   CAddEdit_Additional      *m_pp_additional;

@@ -30,7 +30,6 @@ struct RUEntryData {
   CItemData *pci;
 };
 
-
 // private struct: one of these for each owner-draw menu item
 struct CRUEItemData {
   unsigned long magicNum;      // magic number identifying me

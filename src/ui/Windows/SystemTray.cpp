@@ -410,15 +410,9 @@ static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pc
   if (brc == 0) goto exit;
   ipos++;
 
-  if (pci->IsShortcut()) {
-    // Shortcut has no data of itself - for all other menu items
-    // use base entry's fields
-    const CItemData *pBase = app.GetMainDlg()->GetBaseEntry(pci);
-    if (pBase != NULL)
-      pci = pBase;
-  }
+  const CItemData *pbci = pci->IsDependent() ? app.GetMainDlg()->GetBaseEntry(pci) : NULL;
 
-  if (!pci->IsUserEmpty()) {
+  if (!pci->IsFieldValueEmpty(CItemData::USER, pbci)) {
     cs_text.LoadString(IDS_TRAYCOPYUSERNAME);
     brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
                             ID_MENUITEM_TRAYCOPYUSERNAME1 + i,
@@ -427,7 +421,7 @@ static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pc
     ipos++;
   }
 
-  if (!pci->IsNotesEmpty()) {
+  if (!pci->IsFieldValueEmpty(CItemData::NOTES, pbci)) {
     cs_text.LoadString(IDS_TRAYCOPYNOTES);
     brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
                             ID_MENUITEM_TRAYCOPYNOTES1 + i,
@@ -443,7 +437,7 @@ static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pc
   if (brc == 0) goto exit;
   ipos++;
 
-  if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
+  if (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && !pci->IsURLEmail(pbci)) {
     cs_text.LoadString(IDS_TRAYCOPYURL);
     brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
                             ID_MENUITEM_TRAYCOPYURL1 + i,
@@ -452,8 +446,9 @@ static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pc
     ipos++;
   }
 
-  if (!pci->IsEmailEmpty() || 
-      (pci->IsEmailEmpty() && !pci->IsURLEmpty() && pci->IsURLEmail())) {
+  if (!pci->IsFieldValueEmpty(CItemData::EMAIL, pbci) ||
+      (pci->IsFieldValueEmpty(CItemData::EMAIL, pbci) &&
+        !pci->IsFieldValueEmpty(CItemData::EMAIL, pbci) && pci->IsURLEmail(pbci))) {
     cs_text.LoadString(IDS_TRAYCOPYEMAIL);
     brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
                             ID_MENUITEM_TRAYCOPYEMAIL1 + i,
@@ -462,7 +457,7 @@ static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pc
     ipos++;
   }
 
-  if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
+  if (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && !pci->IsURLEmail(pbci)) {
     cs_text.LoadString(IDS_TRAYBROWSE);
     brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
                             ID_MENUITEM_TRAYBROWSE1 + i,
@@ -476,7 +471,8 @@ static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pc
     ipos++;
   }
 
-  if (!pci->IsEmailEmpty() || (!pci->IsURLEmpty() && pci->IsURLEmail())) {
+  if (!pci->IsFieldValueEmpty(CItemData::EMAIL, pbci) || 
+      (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && pci->IsURLEmail(pbci))) {
     cs_text.LoadString(IDS_TRAYSENDEMAIL);
     brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
                             ID_MENUITEM_TRAYSENDEMAIL1 + i,
@@ -485,7 +481,7 @@ static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pc
     ipos++;
   }
 
-  if (!pci->IsRunCommandEmpty()) {
+  if (!pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci)) {
     cs_text.LoadString(IDS_TRAYRUNCOMMAND);
     brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
                             ID_MENUITEM_TRAYRUNCMD1 + i,

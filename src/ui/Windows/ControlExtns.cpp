@@ -233,12 +233,15 @@ void CEditExtn::OnSetFocus(CWnd* pOldWnd)
 {
   m_bIsFocused = TRUE;
   CEdit::OnSetFocus(pOldWnd);
+
   if (m_lastposition >= 0) {
     int iLine = LineFromChar(m_lastposition);
     LineScroll(iLine);
     SetSel(m_nStartChar, m_nEndChar); 
   }
   Invalidate(TRUE);
+
+  ShowCaret();
 }
 
 void CEditExtn::OnKillFocus(CWnd* pNewWnd)
@@ -246,8 +249,11 @@ void CEditExtn::OnKillFocus(CWnd* pNewWnd)
   m_bIsFocused = FALSE;
   m_lastposition = LineIndex();
   GetSel(m_nStartChar, m_nEndChar);
-  CEdit::OnKillFocus(pNewWnd);
+
+  // Force update colour via CtlColor
   Invalidate(TRUE);
+
+  CEdit::OnKillFocus(pNewWnd);
 }
 
 void CEditExtn::OnLButtonDown(UINT nFlags, CPoint point)
@@ -427,7 +433,6 @@ CRichEditExtn::CRichEditExtn(COLORREF focusColor)
   m_vmenu_items.clear();
 }
 
-
 void CRichEditExtn::SetContextMenu(const std::vector<st_context_menu> &vmenu_items)
 {
   // Don't allow if menu string is empty.
@@ -490,7 +495,7 @@ void CRichEditExtn::OnLButtonDblClk(UINT nFlags, CPoint point)
   SetSel(nStartChar, nStartChar + csTemp.GetLength());
 }
 
-void CRichEditExtn::OnSetFocus(CWnd* pOldWnd)
+void CRichEditExtn::OnSetFocus(CWnd *pOldWnd)
 {
   m_bIsFocused = TRUE;
   CRichEditCtrl::OnSetFocus(pOldWnd);
@@ -504,11 +509,12 @@ void CRichEditExtn::OnSetFocus(CWnd* pOldWnd)
   Invalidate(TRUE);
 }
 
-void CRichEditExtn::OnKillFocus(CWnd* pNewWnd)
+void CRichEditExtn::OnKillFocus(CWnd *pNewWnd)
 {
   m_bIsFocused = FALSE;
   m_lastposition = LineIndex();
   GetSel(m_nStartChar, m_nEndChar);
+
   CRichEditCtrl::OnKillFocus(pNewWnd);
 
   SetBackgroundColor(FALSE, crefNoFocus);
@@ -974,7 +980,6 @@ void CComboBoxExtn::AdjustItemHeight(int nInc)
 {
   SetItemHeight(0, GetItemHeight(0) + nInc);
 }
-
 
 //-----------------------------------------------------------------
 // CSecEditExtn is meant for sensitive information that you really don't

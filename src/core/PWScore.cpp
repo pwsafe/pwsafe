@@ -12,6 +12,7 @@
 #include "core.h"
 #include "TwoFish.h"
 #include "PWSprefs.h"
+#include "PWHistory.h"
 #include "PWSrand.h"
 #include "Util.h"
 #include "SysInfo.h"
@@ -73,25 +74,25 @@ struct st_ValidateResults {
   int num_orphan_att;
 
   st_ValidateResults()
-  : num_invalid_UUIDs(0), num_duplicate_UUIDs(0),
-  num_empty_titles(0), num_empty_passwords(0),
-  num_duplicate_GTU_fixed(0),
-  num_PWH_fixed(0), num_excessivetxt_found(0),
-  num_alias_warnings(0), num_shortcuts_warnings(0),
-  num_missing_att(0), num_orphan_att(0)
+    : num_invalid_UUIDs(0), num_duplicate_UUIDs(0),
+    num_empty_titles(0), num_empty_passwords(0),
+    num_duplicate_GTU_fixed(0),
+    num_PWH_fixed(0), num_excessivetxt_found(0),
+    num_alias_warnings(0), num_shortcuts_warnings(0),
+    num_missing_att(0), num_orphan_att(0)
   {}
 
   st_ValidateResults(const st_ValidateResults &that)
-  : num_invalid_UUIDs(that.num_invalid_UUIDs),
-  num_duplicate_UUIDs(that.num_duplicate_UUIDs),
-  num_empty_titles(that.num_empty_titles),
-  num_empty_passwords(that.num_empty_passwords),
-  num_duplicate_GTU_fixed(that.num_duplicate_GTU_fixed),
-  num_PWH_fixed(that.num_PWH_fixed),
-  num_excessivetxt_found(that.num_excessivetxt_found),
-  num_alias_warnings(that.num_alias_warnings),
-  num_shortcuts_warnings(that.num_shortcuts_warnings),
-  num_missing_att(that.num_missing_att), num_orphan_att(that.num_orphan_att)
+    : num_invalid_UUIDs(that.num_invalid_UUIDs),
+    num_duplicate_UUIDs(that.num_duplicate_UUIDs),
+    num_empty_titles(that.num_empty_titles),
+    num_empty_passwords(that.num_empty_passwords),
+    num_duplicate_GTU_fixed(that.num_duplicate_GTU_fixed),
+    num_PWH_fixed(that.num_PWH_fixed),
+    num_excessivetxt_found(that.num_excessivetxt_found),
+    num_alias_warnings(that.num_alias_warnings),
+    num_shortcuts_warnings(that.num_shortcuts_warnings),
+    num_missing_att(that.num_missing_att), num_orphan_att(that.num_orphan_att)
   {}
 
   st_ValidateResults &operator=(const st_ValidateResults &that) {
@@ -112,7 +113,7 @@ struct st_ValidateResults {
   }
 
   int TotalIssues()
-  { 
+  {
     return (num_invalid_UUIDs + num_duplicate_UUIDs +
             num_empty_titles + num_empty_passwords +
             num_duplicate_GTU_fixed +
@@ -136,7 +137,7 @@ PWScore::PWScore() :
                      m_bIsReadOnly(false), m_bIsOpen(false),
                      m_nRecordsWithUnknownFields(0),
                      m_bNotifyDB(false), m_pUIIF(NULL), m_pFileSig(NULL),
-                     m_iAppHotKey(0)
+                     m_iAppHotKey(0), m_DBCurrentState(CLEAN)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -169,12 +170,19 @@ PWScore::~PWScore()
 }
 
 void PWScore::SetApplicationNameAndVersion(const stringT &appName,
-                                           DWORD dwMajorMinor)
+                                           DWORD dwMajorMinor,
+                                           DWORD dwBuildRevision)
 {
   int nMajor = HIWORD(dwMajorMinor);
   int nMinor = LOWORD(dwMajorMinor);
-  Format(m_AppNameAndVersion, L"%ls V%d.%02d", appName.c_str(),
-         nMajor, nMinor);
+  int nRevison = HIWORD(dwBuildRevision);
+  if (nRevison == 0)
+    Format(m_AppNameAndVersion, L"%ls V%d.%02d", appName.c_str(),
+           nMajor, nMinor);
+  else
+    Format(m_AppNameAndVersion, L"%ls V%d.%02d.%d", appName.c_str(),
+           nMajor, nMinor, nRevison);
+
 }
 
 // Return whether first [g:t:u] is greater than the second [g:t:u]
@@ -346,10 +354,14 @@ void PWScore::DoDeleteEntry(const CItemData &item)
     }
 
     if (item.HasAttRef()) {
-      RemoveAtt(item.GetAttUUID());
+      CItemAtt &att = GetAtt(item.GetAttUUID());
+      if (att.GetRefcount() == 1)
+        RemoveAtt(item.GetAttUUID());
+      else
+        att.DecRefcount();
 
       // Remove from map of attachments to entries
-      UpdateAttEntryMap(false, item.GetUUID(), item.GetUUID());
+      UpdateAttEntryMap(false, item.GetAttUUID(), item.GetUUID());
     }
   } // pos != m_pwlist.end()
 }
@@ -411,7 +423,7 @@ void PWScore::DoDeleteAtt(const CItemAtt &att)
 }
 #endif
 
-void PWScore::ClearData(void)
+void PWScore::ClearData()
 {
   const unsigned int BS = TwoFish::BLOCKSIZE;
   if (m_passkey_len > 0) {
@@ -447,10 +459,13 @@ void PWScore::ClearData(void)
 
   // Clear out Empty Groups
   m_vEmptyGroups.clear();
-  m_InitialvEmptyGroups.clear();
+  m_InitialEmptyGroups.clear();
 
-  // Clear out commands
+  // Clear out commands and DB pre-command states
   ClearCommands();
+
+  // Reset DB pre-command state to clean
+  m_DBCurrentState = CLEAN;
 
   // Clear changed nodes
   m_vNodes_Modified.clear();
@@ -463,9 +478,6 @@ void PWScore::ClearData(void)
 
   // Clear any unknown preferences from previous databases
   PWSprefs::GetInstance()->ClearUnknownPrefs();
-
-  // Reset state of unchanged DB
-  m_stDBCS.Clear();
 
   // OK now closed
   m_bIsOpen = false;
@@ -620,6 +632,42 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
   if (bUpdateSig)
     m_pFileSig = new PWSFileSig(filename.c_str());
 
+  // If not exporting, set to clean
+  if (version == m_ReadFileVersion) {
+    // Set current state to CLEAN
+    m_DBCurrentState = CLEAN;
+
+    std::vector<DBStates>::iterator iter;
+
+    if (m_redo_DBState_iter != m_vDBState.end()) {
+      // Update command after of this one to be {before = CLEAN, after = DIRTY}
+      m_redo_DBState_iter->before = CLEAN;
+      m_redo_DBState_iter->after = DIRTY;
+
+      // Update all additional commands after of the next one to be
+      // {before = DIRTY, after = DIRTY}
+      iter = m_redo_DBState_iter + 1;
+      for (; iter != m_vDBState.end(); iter++) {
+        iter->before = DIRTY;
+        iter->after = DIRTY;
+      }
+    }
+
+    if (m_undo_DBState_iter != m_vDBState.end()) {
+      // Update command before this one to be {before = DIRTY, after = CLEAN}
+      m_undo_DBState_iter->before = DIRTY;
+      m_undo_DBState_iter->after = CLEAN;
+
+      // Update all additional commands before the previous one to be
+      // {before = DIRTY, after = DIRTY}
+      iter = m_undo_DBState_iter;
+      while (iter != m_vDBState.begin()) {
+        iter--;
+        iter->before = DIRTY;
+        iter->after = DIRTY;
+      }
+    }
+  }
   return SUCCESS;
 }
 
@@ -756,101 +804,31 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
 
 void PWScore::ClearCommands()
 {
+  // Clear commands
   while (!m_vpcommands.empty()) {
     delete m_vpcommands.back();
     m_vpcommands.pop_back();
   }
   m_undo_iter = m_redo_iter = m_vpcommands.end();
+
+  // Clear DB states
+  m_vDBState.clear();
+  m_undo_DBState_iter = m_redo_DBState_iter = m_vDBState.end();
 }
 
-void PWScore::GetChangedStatus(Command *pcmd, st_DBChangeStatus &st_Command)
-{
-  // Commands ALWAYS update the DB either an entry/group or a DB preference
-  // Need to know if entry/group or DB preference
-  Command::CommandDBChange ct = pcmd->GetCommandChange();
-  if (ct == Command::MULTICOMMAND) {
-    // Need to check each one
-    std::vector<Command *>::iterator cmd_iter;
-    MultiCommands *pmulticmd = dynamic_cast<MultiCommands *>(pcmd);
-    for (cmd_iter = pmulticmd->m_vpcmds.begin();
-      cmd_iter != pmulticmd->m_vpcmds.end(); cmd_iter++) {
-      GetChangedStatus(*cmd_iter, st_Command);
-    }
-  } else {
-    // { GUIUPDATE = -1, MULTICOMMAND, DB, DBPREFS, DBEMPTYGROUP, DBPOLICYNAMES };
-    switch (ct) {
-    case Command::NONE:
-      // No change to DB at all
-      break;
-    case Command::DB:
-      // This includes any change to entries
-      st_Command.bDBChanged = true;
-      break;
-    case Command::DBPREFS:
-      st_Command.bDBPrefsChanged = true;
-      break;
-    case Command::DBHEADER:
-      // Excludes DB preferences which are handled separately via DBPREFS
-      st_Command.bDBHeaderChanged = true;
-      break;
-    case Command::DBEMPTYGROUP:
-      st_Command.bEmptyGroupsChanged = true;
-      break;
-    case Command::DBPOLICYNAMES:
-      st_Command.bPolicyNamesChanged = true;
-      break;
-    case Command::DBFILTERS:
-      st_Command.bDBFiltersChanged= true;
-      break;
-    case Command::MULTICOMMAND:
-      ASSERT(0);
-    }
-  }
-}
-
-void PWScore::SetChangedStatus()
-{
-  // Update bDBPrefsChanged, bEmptyGroupsChanged, bPolicyNamesChanged
-  // and bDBFiltersChanged by checking against original values set in
-  // SetInitialValues. This bypasses the need to check do/undo/revert.
-
-  // Check if DB is open (can't use empty file name to mean no DB as that
-  // is the case when a database has been restored but not yet saved)
-  if (m_bIsOpen) {
-    const StringX prefString(PWSprefs::GetInstance()->Store());
-    m_stDBCS.bDBPrefsChanged = HaveHeaderPreferencesChanged(prefString);
-  }
-
-  //  Check if the DB header has changed
-  m_stDBCS.bDBHeaderChanged = (m_InitialDBName != m_hdr.m_DB_Name) ||
-    (m_InitialDBDesc != m_hdr.m_DB_Description);
-  
-  // We won't explicitly save the Recently Used Entry list (also in the header)
-  // nor the group display bitmap in the DB unless something else has changed
-  // in the DB
-
-  // These are also in the header!!!
-  m_stDBCS.bEmptyGroupsChanged = (m_InitialvEmptyGroups != m_vEmptyGroups);
-  m_stDBCS.bPolicyNamesChanged = (m_InitialMapPSWDPLC != m_MapPSWDPLC);
-  m_stDBCS.bDBFiltersChanged = (m_InitialMapDBFilters != m_MapDBFilters);
-}
-
-// Related to above
+// On open and every time we save, record the "initial" state
 void PWScore::SetInitialValues()
 {
   m_InitialDBName = m_hdr.m_DB_Name;              // for detecting header changes
   m_InitialDBDesc = m_hdr.m_DB_Description;       // for detecting header changes
   m_InitialDBPreferences = m_hdr.m_prefString;    // for detecting DB preference changes
-  m_InitialvEmptyGroups = m_vEmptyGroups;         // for WasEmptyGroupsChanged
+  m_InitialEmptyGroups = m_vEmptyGroups;          // for WasEmptyGroupsChanged
   m_InitialMapPSWDPLC = m_MapPSWDPLC;             // for HavePasswordPolicyNamesChanged
   m_InitialMapDBFilters = m_MapDBFilters;         // for HaveDBFiltersChanged
 
   // NOTE: These two are not tested for "Save Immediately" but only when the DB is closed
   m_InitialDisplayStatus = m_hdr.m_displaystatus; // for HasGroupDisplayChanged
   m_InitialRUEList = m_RUEList;                   // for detecting header changes
-
-  // Clear changes
-  m_stDBCS.Clear();
 
   // Clear changed nodes
   m_vNodes_Modified.clear();
@@ -885,31 +863,37 @@ int PWScore::Execute(Command *pcmd)
       delete (*cmd_Iter);
     }
 
+    // Now remove old commands past this one from vector
     m_vpcommands.erase(m_redo_iter, m_vpcommands.end());
+    // Now remove old DB change states past this one from vector
+    m_vDBState.erase(m_redo_DBState_iter, m_vDBState.end());
   }
 
-  // Put this command on the end of the command chain and reset iterators
-  // to the end for undo/redo
+  // Put this command on the end of the command chain
   m_vpcommands.push_back(pcmd);
-  m_undo_iter = m_redo_iter = m_vpcommands.end();
 
-  // Get & set new DB status
-  pcmd->SaveChangedState(Command::PREEXECUTE, m_stDBCS);
+  // And reset iterator to the end for undo/redo
+  m_undo_iter = m_redo_iter = m_vpcommands.end();
 
   // Execute it
   int rc = pcmd->Execute();
 
-  // Now set changed status
-  // First get what this command changes, then update the final state
-  st_DBChangeStatus st_Command;
-  GetChangedStatus(pcmd, st_Command);
-  pcmd->SaveChangedState(Command::COMMANDACTION, st_Command);
-  pcmd->SaveChangedState(Command::POSTEXECUTE, m_stDBCS);
+  // Save current before & after DB states
+  // Note: commands should always change something but check
+  DBStates cmdDBStates;
+  cmdDBStates.before = m_DBCurrentState;
+  cmdDBStates.after = pcmd->WasDBChanged() ? DIRTY : CLEAN;
+  m_vDBState.push_back(cmdDBStates);
 
-  SetChangedStatus();
+  // Set current state
+  m_DBCurrentState = cmdDBStates.after;
+
+  // And reset iterator to the end for undo/redo
+  m_undo_DBState_iter = m_redo_DBState_iter = m_vDBState.end();
 
   // Set undo iterator to this one
   m_undo_iter--;
+  m_undo_DBState_iter--;
 
   // If user has set Save Immediately, then Execute() changes the DB and it should be
   // saved (with or without an intermediate backup)
@@ -927,35 +911,22 @@ void PWScore::Undo()
 
   // Reset next command to redo (i.e., the one we just about to undo)
   m_redo_iter = m_undo_iter;
+  m_redo_DBState_iter = m_undo_DBState_iter;
 
   // Undo it
   (*m_undo_iter)->Undo();
 
-  // Is the current change status the same as expected from post the previous
-  // execution of this command? (Unless the last 2 changes changed the same area!)
-  // If so, we should be able to just set the status to the PreExecute values
-  // stored in this command.
-  if (m_stDBCS == (*m_undo_iter)->GetPostCommandStatus()) {
-    (*m_undo_iter)->RestoreChangedState(m_stDBCS);
-  } else {
-    // What to do here?  Check if current state is unchanged (save performed?)
-    // so that new state is the same as if the command was executed
-    // IF NOT UNCHANGED THEN SOMEONE HAS CHANGED THE STATUS BYPASSING COMMANDS
-    if (!m_stDBCS.HasAnythingChanged()) {
-      m_stDBCS = (*m_undo_iter)->GetCommandStatus();
-    } else {
-      ASSERT(0);
-    }
-  }
-
-  SetChangedStatus();
-
-  // Reset iterator so that we know next command to undo
+  // Reset command & DBstate iterator so that we know next command to undo
   if (m_undo_iter == m_vpcommands.begin()) {
     m_undo_iter = m_vpcommands.end();
+    m_undo_DBState_iter = m_vDBState.end();
   } else {
     m_undo_iter--;
+    m_undo_DBState_iter--;
   }
+
+  // Need to reset current DB state based on the next command's before state
+  m_DBCurrentState = m_redo_DBState_iter->before;
 
   // If user has set Save Immediately, then Undo changes the DB and it should be
   // saved (with or without an intermediate backup)
@@ -972,25 +943,20 @@ void PWScore::Redo()
 
   // Reset next command to undo (i.e. the one we just about to redo)
   m_undo_iter = m_redo_iter;
-
-  // Shouldn't need to save pre-execute status in command as already there
-  // BUT user may have saved the DB in between.
-  (*m_redo_iter)->SaveChangedState(Command::PREEXECUTE, m_stDBCS);
+  m_undo_DBState_iter = m_redo_DBState_iter;
 
   // Redo it
   (*m_redo_iter)->Redo();
 
-  // Now set changed status
-  // First get what this command changes, then update the final state
-  // Don't need to save command action status in command as already there
-  (*m_redo_iter)->SaveChangedState(Command::POSTEXECUTE, m_stDBCS);
-
-  SetChangedStatus();
+  // Need to reset current DB state based on the command's after state
+  m_DBCurrentState = m_redo_DBState_iter->after;
 
   // Reset iterator so that we know next command to redo
   if (m_redo_iter != m_vpcommands.end()) {
     m_redo_iter++;
+    m_redo_DBState_iter++;
   }
+
   
   // If user has set Save Immediately, then Redo changes the DB and it should be
   // saved (with or without an intermediate backup)
@@ -1130,7 +1096,6 @@ void PWScore::ProcessReadEntry(CItemData &ci_temp,
   m_pwlist.insert(std::make_pair(ci_temp.GetUUID(), ci_temp));
 }
 
-
 static void ReportReadErrors(CReport *pRpt,
                              std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
                              std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID)
@@ -1268,7 +1233,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   SetInitialValues();
 
   // We keep this vector sorted for comparison - other apps may not
-  std::sort(m_InitialvEmptyGroups.begin(), m_InitialvEmptyGroups.end());
+  std::sort(m_InitialEmptyGroups.begin(), m_InitialEmptyGroups.end());
 
   if (pRpt != NULL) {
     std::wstring cs_title;
@@ -1374,7 +1339,6 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
     maxnumincbackups = 998;
   }
 
-
   using std::vector;
 
   stringT cs_filenamemask(cs_filenamebase);
@@ -1395,7 +1359,6 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
     is >> n;
     file_nums.push_back(n);
   }
-
 
   if (file_nums.empty()) {
     cs_newname = cs_filenamebase + _T("_001");
@@ -1765,7 +1728,6 @@ bool PWScore::HasRUEListChanged() const
          (m_hdr.m_RUEList != m_InitialRUEList);
 }
 
-
 static void collectGroups(const StringX &sxg, std::set<stringT> &setGroups)
 {
   StringX sxGroup(sxg);
@@ -1796,7 +1758,7 @@ static void collectGroups(const StringX &sxg, std::set<stringT> &setGroups)
 
 // GetAllGroups - returns an array of all unique group prefix names
 // e.g., "A", "A.B", "A.B.C"
-void PWScore::GetAllGroups(std::vector<stringT> &vAllGroups) const
+void PWScore::GetAllGroups(std::vector<stringT> &vAllGroups, const bool bIncludeEmptyGroups) const
 {
   // use the fact that set eliminates dups for us
   std::set<stringT> setGroups;
@@ -1810,10 +1772,12 @@ void PWScore::GetAllGroups(std::vector<stringT> &vAllGroups) const
     } // IsGroupSet()
   } // for m_pwlist
 
-  // Now add Empty groups in the same manner
-  for (auto iter2 = m_vEmptyGroups.begin(); iter2 != m_vEmptyGroups.end(); iter2++) {
-    ASSERT(!iter2->empty());
-    collectGroups(*iter2, setGroups);
+  if (bIncludeEmptyGroups) {
+    // Now add Empty groups in the same manner
+    for (auto iter2 = m_vEmptyGroups.begin(); iter2 != m_vEmptyGroups.end(); iter2++) {
+      ASSERT(!iter2->empty());
+      collectGroups(*iter2, setGroups);
+    }
   }
 
   vAllGroups.clear();
@@ -2035,9 +1999,10 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
      3. Check group/title/user must be unique.
      4. Check that no text field has more than iMAXCHARS, that can displayed
         in the GUI's text control.
-     5. For attachments (V4):
-     5.1 Check that each ATTREF in a data entry has a corresponding ItemAtt
-     5.2 Check that each ItemAtt has a corresponding "owner" ItemData
+     5. Validate Empty Groups
+     6. For attachments (V4):
+     6.1 Check that each ATTREF in a data entry has a corresponding ItemAtt
+     6.2 Check that each ItemAtt has a corresponding "owner" ItemData
 
      Note:
      m_pwlist is implemented as a map keyed on UUIDs, each entry is
@@ -2165,7 +2130,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
       }
     }
 
-    // Attachment Reference check (5.1)
+    // Attachment Reference check (6.1)
     if (ci.HasAttRef()) {
       sAtts.insert(ci.GetAttUUID());
       if (!HasAtt(ci.GetAttUUID())) {
@@ -2179,6 +2144,14 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
       } else {
         m_att2item_mmap.insert(std::make_pair(ci.GetAttUUID(), ci.GetUUID()));
       }
+
+      // Validate entry not in an empty group
+      std::vector<StringX>::iterator itEG;
+      itEG = std::find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxgroup);
+      if (itEG != m_vEmptyGroups.end()) {
+        // Empty group can't have entries!  Remove
+        m_vEmptyGroups.erase(itEG);
+      }
     }
 
     if (bFixed) {
@@ -2190,7 +2163,28 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
     }
   } // iteration over m_pwlist
 
-  // Check for orphan attachments (5.2)
+  // Validate Empty Groups don't have empty sub-groups
+  if (!m_vEmptyGroups.empty()) {
+    std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
+    std::vector<size_t> viDelete;
+    for (size_t ieg = 0; ieg < m_vEmptyGroups.size() - 1; ieg++) {
+      StringX sxEG = m_vEmptyGroups[ieg] + L".";
+      if (sxEG == m_vEmptyGroups[ieg + 1].substr(0, sxEG.length())) {
+        // Can't be empty as has empty sub-group. Save to delete later
+        viDelete.push_back(ieg);
+      }
+    }
+
+    if (!viDelete.empty()) {
+      // Remove non-empty groups
+      std::vector<size_t>::reverse_iterator rit;
+      for (rit = viDelete.rbegin(); rit != viDelete.rend(); rit++) {
+        m_vEmptyGroups.erase(m_vEmptyGroups.begin() + *rit);
+      }
+    }
+  }
+
+  // Check for orphan attachments (6.2)
   for (auto att_iter = m_attlist.begin(); att_iter != m_attlist.end(); att_iter++) {
     if (sAtts.find(att_iter->first) == sAtts.end()) {
       st_AttTitle_Filename stATFN;
@@ -2208,7 +2202,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
       att_iter->second.SetOrphaned(true);
     }
   }
-
 
 #if 0 // XXX We've separated alias/shortcut processing from Validate - reconsider this!
   // See if we have any entries with passwords that imply they are an alias
@@ -2243,7 +2236,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 #endif
 
   if (st_vr.TotalIssues() != 0 && pRpt != NULL) {
-
+    // Only report problems if a. There are some and b. We have a report file
     if ((st_vr.num_invalid_UUIDs == 0 && st_vr.num_duplicate_UUIDs == 0)) {
       // As both zero, we didn't put error header in report - so do it now
       pRpt->WriteLine();
@@ -2413,12 +2406,11 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
 
   m_bUniqueGTUValidated = true;
   if (st_vr.TotalIssues() > 0) {
-    m_stDBCS.bDBChanged = true; // Should this be via a Command - can't see how!
+    m_DBCurrentState = DIRTY;
     return true;
   } else {
     return false;
   }
-  // CppCheck says: "error: Memory leak: pmulticmds".  I can't see these commands executed either!
 }
 
 bool PWScore::ValidateKBShortcut(int32 &iKBShortcut)
@@ -2635,7 +2627,7 @@ void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid,
     }
   }
 
-  // Reset base entry to normal if it has no more aliases
+  // Reset base entry to normal if it has no more aliases/shortcuts
   if (pmmap->find(base_uuid) == pmmap->end()) {
     ItemListIter iter = m_pwlist.find(base_uuid);
     if (iter != m_pwlist.end()) {
@@ -2700,9 +2692,16 @@ bool PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
 
   lastfromElement = pmmap->upper_bound(from_baseuuid);
 
-  for ( ; from_itr != lastfromElement; from_itr++) {
+  // Get a list of entries to be moved as doing it in-place
+  // will cause a loop as modifying mmap while processing it!
+  UUIDVector tlist;
+  for (; from_itr != lastfromElement; from_itr++) {
+    tlist.push_back(from_itr->second);
+  }
+
+  for (size_t idep = 0 ; idep < tlist.size(); idep++) {
     // Add to new base in base -> entry multimap
-    pmmap->insert(ItemMMap_Pair(to_baseuuid, from_itr->second));
+    pmmap->insert(ItemMMap_Pair(to_baseuuid, tlist[idep]));
   }
 
   // Now delete all old base entries
@@ -3018,9 +3017,13 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
   // pl.ibasedata is:
   //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
   //   0: password not in alias format
-  //  -n: password contains (n-1) colons but either no base entry found or no unique entry found (n = 1, 2 or 3)
+  //  -n: password contains (n-1) colons but either no base entry found or 
+  //      no unique entry found (n = 1, 2 or 3)
 
-  // "bMultipleEntriesFound" is set if no "unique" base entry could be found and is only valid if n = -1 or -2.
+  // "bMultipleEntriesFound" is set if no "unique" base entry could be found and
+  //  is only valid if n = -1 or -2.
+
+  // Returns true if in a valid alias format, false if not
 
   pl.bMultipleEntriesFound = false;
 
@@ -3143,7 +3146,7 @@ void PWScore::NotifyDBModified()
   // to populate message during Vista and later shutdowns
   if (m_bNotifyDB && m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::DATABASEMODIFIED))
-    m_pUIIF->DatabaseModified(HasAnythingChanged());
+    m_pUIIF->DatabaseModified(HasDBChanged());
 }
 
 void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
@@ -3798,6 +3801,9 @@ bool PWScore::SetEmptyGroups(const std::vector<StringX> &vEmptyGroups)
   bool brc(false);
   if (m_vEmptyGroups != vEmptyGroups) {
     m_vEmptyGroups = vEmptyGroups;
+
+    // Now sort it for when we compare.
+    std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
     brc = true;
   }
   return brc;
@@ -3816,12 +3822,24 @@ bool PWScore::AddEmptyGroup(const StringX &sxEmptyGroup)
   if (sxEmptyGroup.empty())
     return false;
 
+  std::vector<stringT> vAllNonEmptyGroups;
+  GetAllGroups(vAllNonEmptyGroups, false);
+
+  std::sort(vAllNonEmptyGroups.begin(), vAllNonEmptyGroups.end());
+  stringT sEG = sxEmptyGroup.c_str();
+
+  // Don't add if an entry with this group alreadly exists
+  if (find(vAllNonEmptyGroups.begin(), vAllNonEmptyGroups.end(), sEG) !=
+           vAllNonEmptyGroups.end())
+    return false;
+
+  // Only add if not already present
   if (find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxEmptyGroup) ==
            m_vEmptyGroups.end()) {
     // Add it
     m_vEmptyGroups.push_back(sxEmptyGroup);
 
-    // Then sort it for when we campare.
+    // Then sort it for when we compare.
     // Could use std::set but unnecessary complication/overhead
     std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
     return true;
@@ -3851,7 +3869,7 @@ bool PWScore::RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGr
     m_vEmptyGroups.erase(iter);
     // Add new name
     m_vEmptyGroups.push_back(sxNewGroup);
-    // Sort it for when we campare.
+    // Sort it for when we compare.
     std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
     bChanged = true;
   } else {
@@ -3876,7 +3894,7 @@ bool PWScore::RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxN
       }
     }
 
-    // Now sort it for when we campare.
+    // Now sort it for when we compare.
     std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
   }
   return bChanged;

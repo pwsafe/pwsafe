@@ -26,14 +26,18 @@ public:
   enum { IDD = IDD_INPUTBOX };
 
 protected:
+  //{{AFX_VIRTUAL(CInputBox)
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   virtual BOOL PreTranslateMessage(MSG* pMsg);
+  //}}AFX_VIRTUAL
 
+  // Generated message map functions
+  //{{AFX_MSG(CInputBox)
   afx_msg void OnOK();
   afx_msg void OnInputChanged();
   afx_msg void OnActivate(UINT nState, CWnd *pWndOther, BOOL bMinimized);
-
+    //}}AFX_MSG
 
   CEdit m_edText;
   UINT m_nIDCaption;

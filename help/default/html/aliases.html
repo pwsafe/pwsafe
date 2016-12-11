@@ -47,23 +47,44 @@ password field is enough to define the other entry as an alias of
 <p>In the general case, a "name" can contain all of the following fields,
 separated by colons: Group, Title and User name. Note that if the title
 is unique in the database, then the other fields are optional. Likewise,
-if the group and title together or title and user together specify a unique entry, then
-the corresponding user or group doesn't have to be specified.</p>
+if the group and title together or title and user together specify a unique
+entry, then the corresponding user or group doesn't have to be specified.</p>
 
-<p>In <b>Password Safe</b> entries, only the Title field is mandatory.  Group and User name
-fields are optional as long as the resulting combination of "group/title/user&nbsp;name"
-is unique. As indicated above, the alias' "password" is in the form [g:t:u] but
+
+<p>In <b>Password Safe</b> entries, only the Title and Password fields are
+mandatory.  Group and User name fields are optional as long as the resulting 
+combination of "group/title/user&nbsp;name" is unique. As indicated above, the
+alias' "password" is in the form [g:t:u] but
 in fact you only have to specify enough information to uniquely identify
 the base entry.  So, if there is only one entry in the database with title 't',
 then [t] would be sufficient - since title is mandatory and only one item is given,
 it is assumed to be the title.  If there were more than one entry with this title,
-you would be warned that this is the case, and you would need to be more specific to
-identify the base entry by adding either its group or its user name or both!
-As long as there is a unique entry that fits the information provided, any of
+you would be warned that this is the case, and you would need to be more specific in order to
+uniquely identify the base entry by adding either its group, its user name, or both.
+As long as there is a matching unique entry, any of
 the following formats are accepted: [g:t:u], [g:t], [t:u] or [t].  Specifying a
-colon without a value implies an empty field, e.g. [g:t:] says entry with
-title 't' in group 'g' and with no user name value and [:t:] says entry with
-title 't' in the root with no user name value etc.</p>
+colon without a value implies an empty field, e.g. [g:t:] means an entry with
+title 't' in group 'g' and with no user name value and [:t:] specifies an entry with
+title 't' in the root with no user name value, etc.</p>
+
+<p>If you change the password of an Alias (either via the Generate password button or
+by typing in the password field), the change will only be 
+made when the Apply or OK button is clicked. However, if you wish to change
+the base entry's password, then you should edit the base entry directly.
+If you change the Alias's password from [g:t:u] 
+to some other value not in this format, it will change from an alias to a "normal" entry, and will have 
+no relation to the previous base entry. Of course, 
+you can restore the connection by Undo, or manually editing the password.</p>
+
+<p>Unlike shortcuts, which refer to the base entry for <u>all</u> fields, aliases 
+have their own values for all fields <u>except</u> for its password, which is its
+base's.  For example: copying the aliases URL will use the alias's value but 
+copying the alias's password will copy its base's.</p>
+
+<p>Finally, if a normal entry was saving its password history before it was made an alias by
+changing its password as described above, then it will retain this history.  If the
+alias is then reverted back to a normal entry at a later date, this password history
+will again become active and be updated if its password is changed.</p>
 
 <p>The following examples should make this clear.</p>
 
@@ -71,7 +92,7 @@ title 't' in the root with no user name value etc.</p>
 
 <ol>
 <li>If the base entry's title is "LDAP Server", and there are no
-other entries with that title, then an alias will be defined by an
+other entries with that title, then an alias can be defined by an
 entry that has "[LDAP Server]" in the password field.</li>
 <li>If there are "LDAP Server" entries in two different groups, say
 "Dept. A" and "Dept. B", then one can specify an alias to the latter by
@@ -88,7 +109,7 @@ similar base entries, e.g., "[LDAP Server:Joe]" and "[LDAP Server:Mary]".</li>
 them, are displayed with a green triangle instead of a green square in
 the nested tree view.</p>
 
-<p>Alias entries are shown with white triangles.</p>
+<p>Alias entries are shown with grey triangles.</p>
 
 <p><img style="border: 1px solid ; width: 163px; height: 127px;" alt="Alias example" src="images/alias_example.jpg"></p>
 

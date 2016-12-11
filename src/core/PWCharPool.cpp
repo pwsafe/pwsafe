@@ -227,7 +227,6 @@ StringX CPasswordCharPool::MakePassword() const
   ASSERT(m_uselowercase || m_useuppercase || m_usedigits ||
          m_usesymbols   || m_usehexdigits || m_pronounceable);
 
-
   // pronounceable and hex passwords are handled separately:
   if (m_pronounceable)
     return MakePronounceable();
@@ -267,7 +266,6 @@ StringX CPasswordCharPool::MakePassword() const
           goto do_shuffle; // break out of two loops, goto needed
       }
     }
-
 
   // Now fill in the rest
   while (temp.length() != m_pwlen) {

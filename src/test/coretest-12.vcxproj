@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AESTest.cpp" />
+    <ClCompile Include="AliasShortcutTest.cpp" />
     <ClCompile Include="BlowFishTest.cpp" />
     <ClCompile Include="CommandsTest.cpp" />
     <ClCompile Include="coretest.cpp">

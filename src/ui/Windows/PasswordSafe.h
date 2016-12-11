@@ -11,7 +11,6 @@
 // main header file for the PasswordSafe application
 //-----------------------------------------------------------------------------
 
-
 #if defined(WIN32)
 #include "stdafx.h"
 #endif

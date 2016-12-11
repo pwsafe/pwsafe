@@ -48,8 +48,6 @@ take_6_bits(unsigned value, size_t right_position)
     return uchar((value >> right_position) & 63);
 }
 
-
-
 inline size_t
 most_signifant_bit_position(unsigned value)
 {
@@ -62,8 +60,6 @@ most_signifant_bit_position(unsigned value)
     return result + 1;
     //return *lower_bound(range(0u, 31u), \x -> (1 << x <= value));
 }
-
-
 
 utf8_conversion::result
 utf8_conversion::do_in(mbstate_t&,
@@ -95,7 +91,6 @@ utf8_conversion::do_in(mbstate_t&,
 
     return ok;
 }
-
 
 utf8_conversion::result
 utf8_conversion::do_out(mbstate_t&,
@@ -133,4 +128,3 @@ utf8_conversion::do_out(mbstate_t&,
         }
         return ok;
 }
-

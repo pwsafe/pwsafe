@@ -179,9 +179,10 @@ private:
   bool m_bAltNum, m_bAltGr, m_bCapsLock, m_bRandom;
   bool m_bShift, m_bLCtrl, m_bRCtrl;
   bool m_bSaveShift, m_bSaveLCtrl, m_bSaveRCtrl, m_bSaveAltGr, m_bSaveCapsLock;
-  bool m_bLCtrlChars, m_bAltGrChars, m_bRCtrlChars, m_bDeadKeyActive;
+  bool m_bLCtrlChars, m_bAltGrChars, m_bRCtrlChars;
   bool m_bAllow_bC, m_bAllow_bS, m_bAllow_lC, m_bAllow_lS;
   bool m_bAllow_gC, m_bAllow_gS, m_bAllow_rC, m_bAllow_rS;
+  bool m_bDeadKeyActive, m_bDeadKeySaved;
 
   static int m_iFont;
   static bool m_bUserSpecifiedFont;

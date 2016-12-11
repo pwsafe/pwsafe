@@ -488,8 +488,8 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
       if (iter != m_MapMenuShortcuts.end()) {
         CString str;
         if (iter->second.siVirtKey != 0) {
-          str.Format(L"%s\t%s", iter->second.name.c_str(), 
-                       CMenuShortcut::FormatShortcut(iter));
+          str.Format(L"%s\t%s", static_cast<LPCWSTR>(iter->second.name.c_str()),
+                     static_cast<LPCWSTR>(CMenuShortcut::FormatShortcut(iter)));
         } else {
           str = iter->second.name.c_str();
         }
@@ -513,7 +513,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
   const bool bItemSelected = (SelItemOk() == TRUE);
   const bool bReadOnly = m_core.IsReadOnly();
-  const CItemData *pci(NULL);
+  const CItemData *pci(NULL), *pbci(NULL);
   const wchar_t *tc_dummy = L" ";
 
   ASSERT_VALID(pPopupMenu);
@@ -534,6 +534,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     bool bFileIsReadOnly;
     if (!m_bOpen || (pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly) && bFileIsReadOnly)) {
       pPopupMenu->EnableMenuItem(ID_MENUITEM_CHANGEMODE, MF_BYCOMMAND | MF_GRAYED);
+    }
+
+    if (app.GetMRU()->GetNumUsed() == 0) {
+      pPopupMenu->EnableMenuItem(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND | MF_GRAYED);
+      pPopupMenu->EnableMenuItem(ID_MENUITEM_MRUENTRY, MF_BYCOMMAND | MF_GRAYED);
     }
 
     // Remove the corresponding Export V3/V4
@@ -586,15 +591,6 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
 
   // If View menu selected (contains 'Flattened &List' menu item)
   if (uiMenuID == ID_VIEWMENU) {
-    // Delete Show Find Toolbar menu item - don't know if there or previously deleted
-    pPopupMenu->RemoveMenu(ID_MENUITEM_SHOWFINDTOOLBAR, MF_BYCOMMAND);
-    if (!m_FindToolBar.IsVisible()) {
-      // Put it back if not visible - before the separator
-      int pos = app.FindMenuItem(pPopupMenu, ID_MENUITEM_SHOWHIDE_DRAGBAR);
-      pPopupMenu->InsertMenu(pos + 1,
-                             MF_BYPOSITION  | MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_SHOWFINDTOOLBAR, tc_dummy);
-    }
     pPopupMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW,
                                    bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW,
                                    MF_BYCOMMAND);
@@ -636,14 +632,13 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   if (bItemSelected) {
     pci = getSelectedItem();
     ASSERT(pci != NULL);
+    if (pci->IsDependent())
+      pbci = m_core.GetBaseEntry(pci);
   }
 
   // Save original entry type before possibly changing pci
   const CItemData::EntryType etype_original = 
           pci == NULL ? CItemData::ET_INVALID : pci->GetEntryType();
-
-  if (bItemSelected && pci->IsShortcut())
-    pci = m_core.GetBaseEntry(pci);
 
   if (bTreeView) {
     HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
@@ -716,20 +711,22 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_ADD, tc_dummy);
       }
 
-      // Only have Find Next/Previous if find still active and entries were found
+      // Add Find Next/Previous if find still active and entries were found
       if (m_FindToolBar.IsVisible() && m_FindToolBar.EntriesFound()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_FIND, tc_dummy);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_FINDUP, tc_dummy);
-      } else { // otherwise just add "Find..."
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_FINDELLIPSIS, tc_dummy);
-      }
+      } 
+
+      // Always add "Find..."
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                              ID_MENUITEM_FINDELLIPSIS, tc_dummy);
 
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_GROUPENTER, tc_dummy);
+      
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_DELETEGROUP, tc_dummy);
@@ -809,6 +806,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_ADD, tc_dummy);
       }
+
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              m_core.IsReadOnly() ? ID_MENUITEM_VIEW : ID_MENUITEM_EDIT,
                              tc_dummy);
@@ -821,16 +819,19 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                  ID_MENUITEM_RENAMEENTRY, tc_dummy);
         }
       }
+
       // Only have Find Next/Previous if find still active and entries were found
       if (m_FindToolBar.IsVisible() && m_FindToolBar.EntriesFound()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_FIND, tc_dummy);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_FINDUP, tc_dummy);
-      } else { // otherwise just add "Find..."
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_FINDELLIPSIS, tc_dummy);
       }
+
+      // Always add "Find..."
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_FINDELLIPSIS, tc_dummy);
+
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_DUPLICATEENTRY, tc_dummy);
@@ -840,7 +841,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                  ID_MENUITEM_ADDGROUP, tc_dummy);
         }
       }
+
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      
       if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_UNDO, tc_dummy);
@@ -848,6 +851,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_REDO, tc_dummy);
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
+
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
@@ -856,11 +860,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_PASSWORDSUBSET, tc_dummy);
 
-      if (!pci->IsUserEmpty())
+      if (!pci->IsFieldValueEmpty(CItemData::USER, pbci))
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYUSERNAME, tc_dummy);
 
-      if (!pci->IsNotesEmpty())
+      if (!pci->IsFieldValueEmpty(CItemData::NOTES, pbci))
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYNOTESFLD, tc_dummy);
 
@@ -871,39 +875,42 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       *    3. If URL is not empty and is an email address, add email menuitem
       *       (if not already added)
       */
-      bool bAddCopyEmail = !pci->IsEmailEmpty();
-      bool bAddSendEmail = bAddCopyEmail || (!pci->IsURLEmpty() && pci->IsURLEmail());
-      bool bAddURL = !pci->IsURLEmpty();
+      bool bAddCopyEmail = !pci->IsFieldValueEmpty(CItemData::EMAIL, pbci);
+      bool bAddSendEmail = bAddCopyEmail || 
+               (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && pci->IsURLEmail(pbci));
+      bool bAddURL = !pci->IsFieldValueEmpty(CItemData::URL, pbci);
 
       // Add copies in order
       if (bAddURL) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYURL, tc_dummy);
       }
+
       if (bAddCopyEmail) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYEMAIL, tc_dummy);
       }
 
-      if (!pci->IsRunCommandEmpty())
+      if (!pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci))
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYRUNCOMMAND, tc_dummy);
 
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
 
       // Add actions in order
-      if (bAddURL && !pci->IsURLEmail()) {
+      if (bAddURL && !pci->IsURLEmail(pbci)) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_BROWSEURL, tc_dummy);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_BROWSEURLPLUS, tc_dummy);
       }
+
       if (bAddSendEmail) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_SENDEMAIL, tc_dummy);
       }
 
-      if (!pci->IsRunCommandEmpty()) {
+      if (!pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci)) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_RUNCOMMAND, tc_dummy);
       }
@@ -935,7 +942,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
           ASSERT(0);
       }
 
-      if (pci->HasAttRef()) {
+      if (pci->IsShortcut() ? pbci->HasAttRef() : pci->HasAttRef()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_VIEWATTACHMENT, tc_dummy);
       }
@@ -955,7 +962,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       EEstr.LoadString(IDS_EXPORTENTMENU);
       pPopupMenu->AppendMenu(MF_POPUP, (UINT)EEsubMenu.Detach(), EEstr);
 
-      if (pci->HasAttRef()) {
+      if (pci->IsShortcut() ? pbci->HasAttRef() : pci->HasAttRef()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
           ID_MENUITEM_EXPORT_ATTACHMENT, tc_dummy);
       }
@@ -1182,7 +1189,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
   BOOL brc;
   CPoint client;
   int item = -1;
-  const CItemData *pci = NULL;
+  const CItemData *pci(NULL), *pbci(NULL);
   CMenu menu;
 
   MENUINFO minfo ={0};
@@ -1234,7 +1241,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       brc = menu.SetMenuInfo(&minfo);
       ASSERT(brc != 0);
 
-      CMenu* pPopup = menu.GetSubMenu(0);
+      CMenu *pPopup = menu.GetSubMenu(0);
       ASSERT_VALID(pPopup);
 
       // Use this DboxMain for commands
@@ -1413,19 +1420,19 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       pPopup->RemoveMenu(pci->IsProtected() ? ID_MENUITEM_PROTECT : ID_MENUITEM_UNPROTECT, MF_BYCOMMAND);
     }
 
-    // NOTE: after here, if an entry is a Shortcut, pci points to its base entry!
-    if (pci->IsShortcut()) {
-      pci = m_core.GetBaseEntry(pci);
+    if (pci->IsDependent()) {
+      pbci = m_core.GetBaseEntry(pci);
     }
 
-    bool bCopyEmail = !pci->IsEmailEmpty();
-    bool bSendEmail = bCopyEmail || (!pci->IsURLEmpty() && pci->IsURLEmail());
-    bool bUseURL = !pci->IsURLEmpty() && !pci->IsURLEmail();
+    bool bCopyEmail = !pci->IsFieldValueEmpty(CItemData::EMAIL, pbci);
+    bool bSendEmail = bCopyEmail ||
+               (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && pci->IsURLEmail(pbci));
+    bool bUseURL = !pci->IsFieldValueEmpty(CItemData::URL, pbci) && !pci->IsURLEmail(pbci);
 
-    if (pci->IsUserEmpty())
+    if (pci->IsFieldValueEmpty(CItemData::USER, pbci))
       pPopup->RemoveMenu(ID_MENUITEM_COPYUSERNAME, MF_BYCOMMAND);
 
-    if (pci->IsNotesEmpty())
+    if (pci->IsFieldValueEmpty(CItemData::NOTES, pbci))
       pPopup->RemoveMenu(ID_MENUITEM_COPYNOTESFLD, MF_BYCOMMAND);
 
     if (!bCopyEmail)
@@ -1434,7 +1441,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
     if (!bSendEmail)
       pPopup->RemoveMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND);
 
-    if (pci->IsURLEmpty())
+    if (pci->IsFieldValueEmpty(CItemData::URL, pbci))
       pPopup->RemoveMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND);
 
     if (!bUseURL) {
@@ -1442,7 +1449,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       pPopup->RemoveMenu(ID_MENUITEM_BROWSEURLPLUS, MF_BYCOMMAND);
     }
 
-    if (pci->IsRunCommandEmpty()) {
+    if (pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci)) {
       pPopup->RemoveMenu(ID_MENUITEM_COPYRUNCOMMAND, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_RUNCOMMAND, MF_BYCOMMAND);
     }

@@ -41,19 +41,25 @@ open('https://sourceforge.net/p/passwordsafe/support-requests/'+ ID +'/',
 '_blank',
 'resizable=yes,scrollbars=yes,toolbar=no,location=no,directories=no,status=no,menubar=no,copyhistory=no');
 }
+// GitHub Issues Tracker
+function GH(ID) {
+remote =
+open('https://github.com/pwsafe/pwsafe/issues/'+ ID +'/',
+'_blank',
+'resizable=yes,scrollbars=yes,toolbar=no,location=no,directories=no,status=no,menubar=no,copyhistory=no');
+}
 </script>
 
 <noscript>
-<p style="color:red; text-align:center; font-size:24pt;">*** Scripting is disabled - links to Tracker items
-will not work! ***</p>
+<p style="color:red; text-align:center; font-size:24pt;">*** Scripting is disabled - links to Tracker items will not work! ***</p>
 </noscript>
 </head>
 
 <body>
 
-<h1 align="center">Password Safe 3.40.1 Release Notes September 2016</h1>
+<h1 align="center">Password Safe 3.41.1 Release Notes ???????? 201?</h1>
 
-<p>This note describe the new features, fixed bugs and known problems
+<p>This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
 Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit the
@@ -61,50 +67,212 @@ information on the product and the project, please visit the
 Details about changes to older releases may be found in the file
 ChangeLog.txt.</p>
 
+<p>Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
+SourceForge Project tickets.  Any beginning with 'G' are issues raised on
+PasswordSafe's GitHub project, where the current source can also be found.
+</p>
+
 <p>Here are the notes for the latest version. Previous versions
 are described <a href="#prev-vers">here</a>.
 Information about older versions may be found <a href="https://pwsafe.org/history.shtml">here</a>.</p>
 <br>
 <hr>
 
-<h3><a name="V3.40.1"></a>Version V3.40.1</h3>
-<hr>
-<h4><a name="V3.40.1BugsFixed"></a>Bugs fixed in V3.40.1</h4>
+<h4><a name="V3.41.1BugsFixed"></a>Bugs fixed in V3.41.1</h4>
 <table>
 <tbody>
 <tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1385);return false;">1385</a></td>
+<td>The filter active indicator now shows in Windows 7.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1384);return false;">1384</a></td>
+<td>Toolbar images and text are now back in sync.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1367);return false;">1367</a></td>
+<td>Fixed regression in command line arguments -h and -u support.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1358);return false;">1358</a></td>
+<td>When PaswordSafe automatically locks to the TaskBar, the unlock window now gets
+input focus when clicking on the icon to unlock the database.</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+<hr>
+<h4><a name="V3.41.1Changes"></a>Changes to Existing Features in V3.41.1</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">-</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+<hr>
+<h4><a name="V3.41.1New"></a>New Features for V3.41.1</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">-</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+<hr>
+<h3><a name="V3.41.0"></a>Version V3.41.0</h3>
+<hr>
+<h4><a name="V3.41.0BugsFixed"></a>Bugs fixed in V3.41.0</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Fix crash if Find active when applying a filter, e.g., show entries with expiry dates.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Ensure shortcut is updated in GUI after editing.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Text in the Find toolbar search edit control is now vertically centered to
+reduce character truncation.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Clicking on a field's name copies the value to the clipboard when adding
+a new entry (and not only when editing).</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Update password history when Apply is clicked, not only when Edit
+window's closed.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>No longer show empty groups when the user filters for entries 
+with expired passwords.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1378);return false;">1378</a></td>
+<td>Fix application crash if Add/Edit entry dialog is open when the database is locked
+e.g. via idle timer, workstation lock etc.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1373);return false;">1373</a></td>
+<td>
+An invalid or non-existent backup directory path can no longer be saved
+when exiting Options.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1369);return false;">1369</a></td>
+<td>The virtual keyboard no longer becomes unusable after clicking on the Randomize button.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1368);return false;">1368</a></td>
+<td>The Status bar now shows the correct number of entries when a database is unlocked.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1366);return false;">1366</a></td>
+<td>Copying the unexpanded autotype string on Edit entry screen using Ctrl+click
+on Autotype label now works.</td>
+</tr>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1365);return false;">1365</a></td>
 <td>Ctrl+F now switches focus back to Find toolbar if it is already open.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1364);return false;">1364</a></td>
+<td>Unnecessary tree view refreshes fixed.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1363);return false;">1363</a></td>
 <td>Empty groups no longer disappear when moving nested groups into them and
 do not leave duplicated empty groups in the database.</td>
 </tr>
-</tbody>
-</table>
-
-<br>
-<hr>
-<h4><a name="V3.40.1Changes"></a>Changes to Existing Features in V3.40.1</h4>
-<table>
-<tbody>
 <tr>
-<td align="center" width="100">None</td>
-<td> </td>
+<td align="center" width="100"><a href="nojs.html" onclick="GH(192);return false;">G192</a></td>
+<td>Saved changes no longer prevent logoff or system shutdown.</td>
 </tr>
 </tbody>
 </table>
 
 <br>
 <hr>
-<h4><a name="V3.40.1New"></a>New Features for V3.40.1</h4>
+<h4><a name="V3.41.0Changes"></a>Changes to Existing Features in V3.41.0</h4>
 <table>
 <tbody>
+<tr>
+<td align="center" width="100">[]</td>
+<td>You can no longer change an alias's base entry's password from the alias 
+entry. Instead, you should edit the base entry directly by selecting the
+alias entry and using the Edit or right-click context menu to select its base.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>The "Show Find Toolbar" has been removed from the View menu as it appears in
+the Edit menu. Ctrl+F still works as before to show the Find toolbar or transfer
+focus to it if already visible.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1371);return false;">1371</a></td>
+<td>The font used in the Find toolbar is now set to the user specified Add/Edit
+font instead of the Tree/List view font.</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+<hr>
+<h4><a name="V3.41.0New"></a>New Features for V3.41.0</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">[]</td>
+<td>New AutoType field '\#' toggles the use of the older mechanism to
+send keyboard input to other applications e.g. browsers.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Add more Help to the Add/Edit Basic and Additional tabs.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Empty groups added but not yet saved are now included when the user filters
+on unsaved changes.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Empty groups, whose names satisfy a filter that include tests on group name
+values, are now included in the display when the filter is active.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(815);return false;">815</a></td>
+<td>The database backup location now supports environmental variables e.g. 
+%homedrive% and %homepath%.  If used, the resulting path is shown.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(814);return false;">814</a></td>
+<td>Clearing the recent database list now requires confirmation.</td>
+</tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(813);return false;">813</a></td>
 <td>When exporting a group to a new database, there is now an option to also export
 all filters stored in the database to the new database.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(796);return false;">796</a></td>
+<td>Autotype has been extended to support the previous password, if present
+in the entry's password history, via the Autotype field '\q'. In addition, for Windows,
+a number of keyboard keys are supported by specifying the key between '\{' and '}'. Please
+see Help for details.</td>
 </tr>
 </tbody>
 </table>
@@ -159,10 +327,6 @@ PasswordSafe database, the referenced policy is now also exported.</td>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1347);return false;">1347</a></td>
 <td>Prevent a user from trying to copy a filter to a read-only database.</td>
-</tr>
-<tr>
-<td align="center" width="100"><a href="nojs.html" onclick="BR(1346);return false;">1346</a></td>
-<td>The Notes window no longer scrolls when re-activated after losing focus.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1345);return false;">1345</a></td>
@@ -854,7 +1018,7 @@ Please see Help entry for more details.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1117);return false;">1117</a></td>
-<td>Dragging dropbar icon doesn't copy text to clipboard unless Control key's pressed when icon's clicked upon.</td>
+<td>Dragging DragBar icon doesn't copy text to clipboard unless Control key's pressed when icon's clicked upon.</td>
 </tr>
 </tbody>
 </table>

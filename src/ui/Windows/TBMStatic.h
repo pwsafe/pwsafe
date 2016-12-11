@@ -36,4 +36,3 @@ private:
   UINT m_nID;
   CBitmap m_Bitmap;
 };
-

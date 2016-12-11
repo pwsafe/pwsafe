@@ -30,6 +30,8 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+bool CEditShortcutDlg::m_bShowUUID = false;
+
 CEditShortcutDlg::CEditShortcutDlg(CItemData *pci, CWnd* pParent,
   const CSecString &cs_tg, const CSecString &cs_tt, const CSecString &cs_tu)
   : CPWDialog(CEditShortcutDlg::IDD, pParent),
@@ -46,6 +48,10 @@ CEditShortcutDlg::CEditShortcutDlg(CItemData *pci, CWnd* pParent,
   m_locPMTime = pci->GetPMTimeL();
   m_locATime = pci->GetATimeL();
   m_locRMTime = pci->GetRMTimeL();
+
+#ifdef DEBUG
+  m_bShowUUID = true;
+#endif
 }
 
 CEditShortcutDlg::~CEditShortcutDlg()
@@ -77,6 +83,15 @@ END_MESSAGE_MAP()
 BOOL CEditShortcutDlg::OnInitDialog() 
 {
   CPWDialog::OnInitDialog();
+
+  // Get Add/Edit font
+  CFont *pFont = Fonts::GetInstance()->GetAddEditFont();
+
+  // Change font size of the group, title & username fields and the base entry name
+  m_ex_group.SetFont(pFont);
+  m_ex_title.SetFont(pFont);
+  m_ex_username.SetFont(pFont);
+  GetDlgItem(IDC_MYBASE)->SetFont(pFont);
 
   CString cs_text;
   CSecString cs_target(L"\xab");
@@ -130,6 +145,23 @@ BOOL CEditShortcutDlg::OnInitDialog()
 
   // Show base entry
   GetDlgItem(IDC_MYBASE)->SetWindowText(cs_target);
+
+  if (m_bShowUUID) {
+    CString cs_uuid(MAKEINTRESOURCE(IDS_NA));
+    pws_os::CUUID entry_uuid = m_pci->GetUUID();
+    if (entry_uuid != pws_os::CUUID::NullUUID()) {
+      ostringstreamT os;
+      pws_os::CUUID huuid(*entry_uuid.GetARep(), true);
+      os << std::uppercase << huuid;
+      cs_uuid = os.str().c_str();
+    }
+    GetDlgItem(IDC_UUID)->SetWindowText(cs_uuid);
+    GetDlgItem(IDC_STATIC_UUID)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_UUID)->ShowWindow(SW_SHOW);
+  } else {
+    GetDlgItem(IDC_STATIC_UUID)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_UUID)->ShowWindow(SW_HIDE);
+  }
 
   UpdateData(FALSE);
   m_ex_group.ChangeColour();
@@ -186,7 +218,9 @@ void CEditShortcutDlg::OnOK()
     if (notSame) {
       CGeneralMsgBox gmb;
       CSecString temp;
-      temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
+      temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(m_group),
+                  static_cast<LPCWSTR>(m_title),
+                  static_cast<LPCWSTR>(m_username));
       gmb.AfxMessageBox(temp);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();

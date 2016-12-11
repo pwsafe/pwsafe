@@ -9,7 +9,6 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/AddEdit_PropertySheet.h
             src/ui/Windows/AdvancedDlg.h
             src/ui/Windows/AdvancedValues.h
-            src/ui/Windows/ChangeAliasPswd.h
             src/ui/Windows/ClearQuestionDlg.h
             src/ui/Windows/ColumnChooserDlg.h
             src/ui/Windows/ColumnChooserLC.h
@@ -154,7 +153,6 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/AddEdit_PropertyPage.cpp
             src/ui/Windows/AddEdit_PropertySheet.cpp
             src/ui/Windows/AdvancedDlg.cpp
-            src/ui/Windows/ChangeAliasPswd.cpp
             src/ui/Windows/ClearQuestionDlg.cpp
             src/ui/Windows/ColumnChooserDlg.cpp
             src/ui/Windows/ColumnChooserLC.cpp

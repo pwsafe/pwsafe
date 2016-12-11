@@ -275,7 +275,6 @@ struct ApplyEditedShortcuts {
   }
 };
 
-
 bool IsFunctionKey(int keycode)
 {
   return keycode >= WXK_F1 && keycode <= WXK_F24;
@@ -397,7 +396,6 @@ void PWSMenuShortcuts::ChangeShortcutAt(size_t idx, const wxAcceleratorEntry& ne
 
   m_midata[idx].SetUserShortcut(newEntry);
 }
-
 
 int ModifiersToAccelFlags(int mods)
 {
@@ -771,5 +769,3 @@ bool ShortcutsGridValidator::Validate(wxWindow* parent)
   }
   return true;
 }
-
-

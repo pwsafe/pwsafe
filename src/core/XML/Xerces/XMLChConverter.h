@@ -16,7 +16,6 @@
 #include <map>
 #include <algorithm>
 
-
 struct _XMLChDeallocator {
   typedef std::map<const char*, XMLCh*> XMLChStrings;
   XMLChStrings allocations;
@@ -92,7 +91,6 @@ struct _XMLChDeallocator {
 
 #define USES_XMLCH_STR _XMLChDeallocator __xmlch_deallocator;
 #define USES_XMLCH_STR_END __xmlch_deallocator.Clear();
-
 
 #define _A2X(s) __xmlch_deallocator.Ansi2Xml(s)
 #define _W2X(ws) __xmlch_deallocator.WChar2Xml(ws)

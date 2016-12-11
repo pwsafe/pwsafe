@@ -12,7 +12,6 @@
 // Abstract the gory details of reading and writing an encrypted database
 //-----------------------------------------------------------------------------
 
-
 #include "PWSfile.h"
 #include "TwoFish.h"
 #include "sha256.h"

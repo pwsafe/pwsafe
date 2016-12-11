@@ -51,7 +51,6 @@ using namespace std;
 #include "pwsclip.h"
 #endif
 
-
 #include <wx/spinctrl.h>
 #include <wx/taskbar.h>
 
@@ -73,7 +72,6 @@ using namespace std;
 #else
 #define STR(s) wxT(s)
 #endif
-
 
 // wx debug messages (a) don't really interest us, and
 // (b) manage to crash wx 3.0.2 under Windows due to some
@@ -143,13 +141,11 @@ static wxAsker    anAsker;
 IMPLEMENT_APP( PwsafeApp )
 ////@end implement app
 
-
 /*!
  * PwsafeApp type definition
  */
 
 IMPLEMENT_CLASS( PwsafeApp, wxApp )
-
 
 /*!
  * PwsafeApp event table definition
@@ -222,7 +218,6 @@ void PwsafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func
                  << (msg? msg: L"") << endl;
 }
 #endif
-
 
 /** Activate help subsystem for given language
 * @param language help language for activation (if not found, default will be used)
@@ -397,7 +392,6 @@ bool PwsafeApp::OnInit()
   m_appIcons.AddIcon(pwsafe32);
   m_appIcons.AddIcon(pwsafe48);
 
-
   if (!m_helpController){ // helpController (re)created  on language activation
     std::wcerr << L"Could not initialize help subsystem." << std::endl;
     if (!prefs->GetPref(PWSprefs::IgnoreHelpLoadError) && !cmd_silent) {
@@ -517,7 +511,6 @@ wxLanguage PwsafeApp::GetSelectedLanguage() {
     return GetSystemLanguage();
   }
 }
-
 
 /*!
  * Activates a language.

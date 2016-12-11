@@ -153,7 +153,7 @@ void CPasskeyChangeDlg::OnOK()
   // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
   // (also used in CPasskeySetup)
   else if (!CPasswordCharPool::CheckPassword(m_newpasskey, errmess)) {
-    cs_msg.Format(IDS_WEAKPASSPHRASE, errmess.c_str());
+    cs_msg.Format(IDS_WEAKPASSPHRASE, static_cast<LPCWSTR>(errmess.c_str()));
 
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
     cs_text.LoadString(IDS_USEITANYWAY);

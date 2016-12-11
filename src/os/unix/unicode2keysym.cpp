@@ -16,7 +16,6 @@
 #include <X11/Intrinsic.h>
 #include "./unicode2keysym.h"
 
-
 KeySym unicode2keysym(wchar_t wc)
 {
   switch (wc) {
@@ -680,4 +679,3 @@ KeySym unicode2keysym(wchar_t wc)
 	default: return NoSymbol;
   };
 }
-

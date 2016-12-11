@@ -153,7 +153,6 @@ void CPWFiltersDlg::OnOk()
   if (UpdateData(TRUE) == FALSE)
     return;
 
-
   if (m_iType == DFTYPE_MAIN && m_filtername.IsEmpty()) {
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_FILTERNAMEEMPTY);
@@ -319,9 +318,9 @@ void CPWFiltersDlg::UpdateStatusText()
       ASSERT(0);
   }
 
-  m_statusBar.SetPaneText(0, s, TRUE);
-  m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
-  m_statusBar.UpdateWindow();
+  m_RSDStatusBar.SetPaneText(0, s, TRUE);
+  m_RSDStatusBar.SetPaneInfo(0, m_RSDStatusBar.GetItemID(0), SBPS_STRETCH, NULL);
+  m_RSDStatusBar.UpdateWindow();
 }
 
 BOOL CPWFiltersDlg::PreTranslateMessage(MSG* pMsg)

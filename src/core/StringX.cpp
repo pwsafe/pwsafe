@@ -196,7 +196,6 @@ template<class T> void Format(T &s, int fmt, ...)
   va_end(args);
 }
 
-
 // instantiations for StringX & stringT
 template int CompareNoCase(const StringX &s1, const StringX &s2);
 template int CompareNoCase(const stringT &s1, const stringT &s2);

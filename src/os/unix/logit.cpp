@@ -13,7 +13,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-
 void pws_os::Logit(LPCTSTR lpszFormat, ...)
 {
   va_list args;

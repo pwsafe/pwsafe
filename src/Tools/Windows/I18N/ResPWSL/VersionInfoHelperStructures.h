@@ -44,7 +44,6 @@ struct Var: public BaseVersionStruct {
   DWORD Value[1]; 
 }; 
 
-
 struct BaseFileInfo: public BaseVersionStruct 
 { 
 };

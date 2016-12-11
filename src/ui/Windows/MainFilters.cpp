@@ -154,15 +154,14 @@ void DboxMain::ClearFilter()
 
 void DboxMain::ApplyFilters()
 {
-  m_statusBar.SetFilterStatus(m_bFilterActive);
-
-  m_statusBar.Invalidate();
-  m_statusBar.UpdateWindow();
-
   m_ctlItemTree.SetFilterState(m_bFilterActive);
   m_ctlItemList.SetFilterState(m_bFilterActive);
+  m_StatusBar.SetFilterStatus(m_bFilterActive);
+
   m_ctlItemTree.Invalidate();
   m_ctlItemList.Invalidate();
+  m_StatusBar.Invalidate();
+  m_StatusBar.UpdateWindow();
 
   m_FilterManager.CreateGroups();
 
@@ -171,12 +170,6 @@ void DboxMain::ApplyFilters()
   bool bFilters = CurrentFilter().IsActive();
   m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_APPLYFILTER, 
                                               bFilters ? TRUE : FALSE);
-
-  // Clear Find as old entries might not now be in the List View (which is how
-  // Find works).  Also, hide it if visible.
-  m_FindToolBar.ClearFind();
-  if (m_FindToolBar.IsVisible())
-    OnHideFindToolBar();
 
   if (m_bFilterActive)
     m_ctlItemTree.OnExpandAll();
@@ -298,7 +291,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
   INT_PTR rc;
 
   // do the export
-  //SaveAs-type dialog box
+  // SaveAs-type dialog box
   std::wstring XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
                                                   L"filters.xml");
   cs_text.LoadString(IDS_NAMEXMLFILE);
@@ -347,7 +340,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
 
   CGeneralMsgBox gmb;
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);
+    cs_temp.Format(IDS_CANTOPENWRITING, static_cast<LPCWSTR>(cs_newfile));
     cs_title.LoadString(IDS_FILEWRITEERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
   } else {
@@ -364,7 +357,7 @@ void DboxMain::ImportFilters()
 
   if (!pws_os::FileExists(XSDFilename)) {
     CGeneralMsgBox gmb;
-    cs_temp.Format(IDSC_MISSINGXSD, XSDfn.c_str());
+    cs_temp.Format(IDSC_MISSINGXSD, static_cast<LPCWSTR>(XSDfn.c_str()));
     cs_title.LoadString(IDSC_CANTVALIDATEXML);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
@@ -417,17 +410,18 @@ void DboxMain::ImportFilters()
     UINT uiFlags = MB_OK | MB_ICONWARNING;
     switch (rc) {
       case PWScore::XML_FAILED_VALIDATION:
-        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(),
-                       strErrors.c_str());
+        cs_temp.Format(IDS_FAILEDXMLVALIDATE, static_cast<LPCWSTR>(fd.GetFileName()),
+                       static_cast<LPCWSTR>(strErrors.c_str()));
         break;
       case PWScore::XML_FAILED_IMPORT:
-        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors.c_str());
+        cs_temp.Format(IDS_XMLERRORS, static_cast<LPCWSTR>(fd.GetFileName()),
+                       static_cast<LPCWSTR>(strErrors.c_str()));
         break;
       case PWScore::SUCCESS:
         if (!strErrors.empty()) {
           std::wstring csErrors = strErrors + L"\n";
-          cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName(),
-                         csErrors.c_str());
+          cs_temp.Format(IDS_XMLIMPORTWITHERRORS, static_cast<LPCWSTR>(fd.GetFileName()),
+                         static_cast<LPCWSTR>(csErrors.c_str()));
         } else {
           cs_temp.LoadString(IDS_FILTERSIMPORTEDOK);
           uiFlags = MB_OK | MB_ICONINFORMATION;
@@ -442,4 +436,3 @@ void DboxMain::ImportFilters()
     gmb.MessageBox(cs_temp, cs_title, uiFlags);
   }
 }
-

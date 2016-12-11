@@ -14,7 +14,6 @@
 
 #include "resource.h"
 
-
 #include "core/pwsprefs.h"
 #include "core/core.h" // for IDSC_UNKNOWN_ERROR
 #include "core/Util.h" // for trashMemory()

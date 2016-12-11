@@ -10,10 +10,8 @@
 * 
 */
 
-
 #ifndef _PASSWORDPOLICY_H_
 #define _PASSWORDPOLICY_H_
-
 
 /*!
  * Includes
@@ -68,7 +66,6 @@ class wxSpinCtrl;
 #define SYMBOL_CPASSWORDPOLICY_SIZE wxSize(400, 300)
 #define SYMBOL_CPASSWORDPOLICY_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * CPasswordPolicy class declaration

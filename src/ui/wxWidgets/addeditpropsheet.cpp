@@ -51,7 +51,6 @@
 
 IMPLEMENT_CLASS( AddEditPropSheet, wxPropertySheetDialog )
 
-
 /*!
  * AddEditPropSheet event table definition
  */
@@ -157,7 +156,6 @@ AddEditPropSheet::~AddEditPropSheet()
 ////@end AddEditPropSheet destruction
 }
 
-
 /*!
  * Member initialisation
  */
@@ -233,6 +231,21 @@ public:
 private:
   int m_rbID;
 };
+
+static void setupDCAStrings(wxArrayString &as)
+{
+  // semi-duplicated in SetupDCAComboBoxes(),
+  // but leaving these empty now causes an assert
+  as.Add(_("Auto Type"));
+  as.Add(_("Browse"));
+  as.Add(_("Browse + Auto Type"));
+  as.Add(_("Copy Notes"));
+  as.Add(_("Copy Password"));
+  as.Add(_("Copy Password + Minimize"));
+  as.Add(_("Copy Username"));
+  as.Add(_("Edit/View Entry"));
+  as.Add(_("Execute Run command"));
+}
 
 /*!
  * Control creation for AddEditPropSheet
@@ -361,15 +374,7 @@ void AddEditPropSheet::CreateControls()
   itemFlexGridSizer40->Add(itemStaticText45, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString m_DCAcomboBoxStrings;
-  m_DCAcomboBoxStrings.Add(_("Auto Type"));
-  m_DCAcomboBoxStrings.Add(_("Browse"));
-  m_DCAcomboBoxStrings.Add(_("Browse + Auto Type"));
-  m_DCAcomboBoxStrings.Add(_("Copy Notes"));
-  m_DCAcomboBoxStrings.Add(_("Copy Password"));
-  m_DCAcomboBoxStrings.Add(_("Copy Password + Minimize"));
-  m_DCAcomboBoxStrings.Add(_("Copy Username"));
-  m_DCAcomboBoxStrings.Add(_("Edit/View Entry"));
-  m_DCAcomboBoxStrings.Add(_("Execute Run command"));
+  setupDCAStrings(m_DCAcomboBoxStrings);
   m_DCAcomboBox = new wxComboBox( itemPanel38, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_DCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -377,15 +382,7 @@ void AddEditPropSheet::CreateControls()
   itemFlexGridSizer40->Add(itemStaticText47, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString m_SDCAcomboBoxStrings;
-  m_SDCAcomboBoxStrings.Add(_("Auto Type"));
-  m_SDCAcomboBoxStrings.Add(_("Browse"));
-  m_SDCAcomboBoxStrings.Add(_("Browse + Auto Type"));
-  m_SDCAcomboBoxStrings.Add(_("Copy Notes"));
-  m_SDCAcomboBoxStrings.Add(_("Copy Password"));
-  m_SDCAcomboBoxStrings.Add(_("Copy Password + Minimize"));
-  m_SDCAcomboBoxStrings.Add(_("Copy Username"));
-  m_SDCAcomboBoxStrings.Add(_("Edit/View Entry"));
-  m_SDCAcomboBoxStrings.Add(_("Execute Run command"));
+  setupDCAStrings(m_SDCAcomboBoxStrings);
   m_SDCAcomboBox = new wxComboBox( itemPanel38, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_SDCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -1017,7 +1014,6 @@ void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& /* evt */ )
     ::wxLaunchDefaultBrowser(m_url, wxBROWSER_NEW_WINDOW);
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON3
  */
@@ -1041,7 +1037,6 @@ void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
     }
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
@@ -1110,16 +1105,16 @@ void AddEditPropSheet::HidePassword()
   m_Password2Ctrl->Enable(true);
 }
 
-static void GetSelectedDCA(const wxComboBox *pcbox, short &val,
+static short GetSelectedDCA(const wxComboBox *pcbox,
                            short lastval, short defval)
 {
   int sel = pcbox->GetSelection();
   intptr_t ival = -1;
   if (sel == wxNOT_FOUND) { // no selection
-    val = (lastval == defval) ? -1 : lastval;
+    return -1;
   } else {
     ival = reinterpret_cast<intptr_t>(pcbox->GetClientData(sel));
-    val = (ival == defval) ? -1 : ival;
+    return (ival == defval) ? -1 : ival;
   }
 }
 
@@ -1159,12 +1154,12 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       short lastDCA, lastShiftDCA;
       const PWSprefs *prefs = PWSprefs::GetInstance();
       m_item.GetDCA(lastDCA);
-      GetSelectedDCA(m_DCAcomboBox, m_DCA, lastDCA,
-                     short(prefs->GetPref(PWSprefs::DoubleClickAction)));
+      m_DCA = GetSelectedDCA(m_DCAcomboBox, lastDCA,
+                             short(prefs->GetPref(PWSprefs::DoubleClickAction)));
 
       m_item.GetShiftDCA(lastShiftDCA);
-      GetSelectedDCA(m_SDCAcomboBox, m_ShiftDCA, lastShiftDCA,
-                     short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
+      m_ShiftDCA = GetSelectedDCA(m_SDCAcomboBox, lastShiftDCA,
+                                  short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
       // Check if modified
       int lastXTimeInt;
       m_item.GetXTimeInt(lastXTimeInt);
@@ -1360,7 +1355,6 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1
  */
@@ -1372,7 +1366,6 @@ void AddEditPropSheet::OnKeepHistoryClick(wxCommandEvent &)
      m_MaxPWHistCtrl->Enable(m_keepPWHist);
    }
 }
-
 
 #if 0 // XXX Remove, as we did away with this checkbox!
 void AddEditPropSheet::OnOverrideDCAClick( wxCommandEvent& /* evt */ )
@@ -1452,7 +1445,6 @@ void AddEditPropSheet::OnExpRadiobuttonSelected( wxCommandEvent& evt )
   m_RecurringCtrl->Enable(!On && !Never);
 }
 
-
 /*!
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
  */
@@ -1509,7 +1501,6 @@ void AddEditPropSheet::OnUseHexCBClick( wxCommandEvent& /* evt */ )
  }
 }
 
-
 /*!
  * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL7
  */
@@ -1525,7 +1516,6 @@ void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& /* evt */ )
 
 PWPolicy AddEditPropSheet::GetPWPolicyFromUI()
 {
-  Validate(); TransferDataFromWindow();
   wxASSERT_MSG(m_ourPWPRB->GetValue() && !m_defPWPRB->GetValue(), wxT("Trying to get Password policy from UI when db defaults are to be used"));
 
   PWPolicy pwp;
@@ -1620,7 +1610,6 @@ void AddEditPropSheet::OnClearPWHist(wxCommandEvent& /*evt*/)
     m_PWHistory.Empty();
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
  */
@@ -1647,7 +1636,6 @@ void AddEditPropSheet::OnEZreadCBClick(wxCommandEvent& evt)
   m_symbols = st_symbols.c_str();
   m_ownsymbols->SetValue(m_symbols);
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
@@ -1719,7 +1707,6 @@ void AddEditPropSheet::OnSendButtonClick( wxCommandEvent& event )
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_POLICYLIST
  */
@@ -1741,7 +1728,6 @@ void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
   EnablePWPolicyControls(false);
 }
 
-
 /*!
  * wxEVT_DATE_CHANGED event handler for ID_DATECTRL
  */
@@ -1751,7 +1737,6 @@ void AddEditPropSheet::OnExpDateChanged( wxDateEvent& event )
   SetXTime(event.GetEventObject());
 }
 
-
 /*!
  * wxEVT_COMMAND_SPINCTRL_UPDATED event handler for ID_SPINCTRL2
  */
@@ -1760,7 +1745,6 @@ void AddEditPropSheet::OnExpIntervalChanged( wxSpinEvent& event )
 {
   SetXTime(event.GetEventObject());
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
@@ -1774,7 +1758,6 @@ void AddEditPropSheet::OnSymbolsCB( wxCommandEvent& event )
   FindWindow(ID_RESET_SYMBOLS)->Enable(checked);
 }
 
-
 /*!
  * wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS
  */
@@ -1786,7 +1769,6 @@ void AddEditPropSheet::OnOwnSymSetFocus( wxFocusEvent& event )
   event.Skip();
 ////@end wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS in AddEditPropSheet.
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_RESET_SYMBOLS
@@ -1805,7 +1787,6 @@ void AddEditPropSheet::OnResetSymbolsClick( wxCommandEvent& WXUNUSED(event) )
   m_ownsymbols->SetValue(m_symbols);
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX5
  */
@@ -1814,7 +1795,6 @@ void AddEditPropSheet::OnDigitsCB( wxCommandEvent& event )
 {
   m_pwpDigSpin->Enable(event.IsChecked());
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX4
@@ -1825,7 +1805,6 @@ void AddEditPropSheet::OnUppercaseCB( wxCommandEvent& event )
   m_pwpUCSpin->Enable(event.IsChecked());
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
  */
@@ -1834,4 +1813,3 @@ void AddEditPropSheet::OnLowercaseCB( wxCommandEvent& event )
 {
   m_pwpLCSpin->Enable(event.IsChecked());
 }
-

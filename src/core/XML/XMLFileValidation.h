@@ -140,7 +140,6 @@ struct st_file_element_data {
   unsigned short int element_entry_code /* XLE_PASSWORDSAFE  - entry values*/;
 };
 
-
 class XMLFileValidation
 {
 public:

@@ -41,7 +41,6 @@ BOOL CCryptKeyEntry::OnInitDialog()
   return TRUE;
 }
 
-
 void CCryptKeyEntry::DoDataExchange(CDataExchange* pDX)
 {
   CDialog::DoDataExchange(pDX);

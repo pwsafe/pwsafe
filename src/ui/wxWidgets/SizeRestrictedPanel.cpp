@@ -57,4 +57,3 @@ wxSize SizeRestrictedPanel::GetWindowSizeForVirtualSize(const wxSize& size) cons
   }
   return bestSize;
 }
-

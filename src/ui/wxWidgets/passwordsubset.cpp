@@ -33,13 +33,11 @@
 #include "graphics/toolbar/new/copypassword_disabled.xpm"
 ////@end XPM images
 
-
 /*!
  * CPasswordSubset type definition
  */
 
 IMPLEMENT_DYNAMIC_CLASS( CPasswordSubset, wxDialog )
-
 
 /*!
  * CPasswordSubset event table definition
@@ -53,7 +51,6 @@ BEGIN_EVENT_TABLE( CPasswordSubset, wxDialog )
 ////@end CPasswordSubset event table entries
 
 END_EVENT_TABLE()
-
 
 /*!
  * CPasswordSubset constructors
@@ -72,7 +69,6 @@ CPasswordSubset::CPasswordSubset( wxWindow* parent, const StringX &password,
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * CPasswordSubset creator
@@ -94,7 +90,6 @@ bool CPasswordSubset::Create( wxWindow* parent, wxWindowID id, const wxString& c
   return true;
 }
 
-
 /*!
  * CPasswordSubset destructor
  */
@@ -104,7 +99,6 @@ CPasswordSubset::~CPasswordSubset()
 ////@begin CPasswordSubset destruction
 ////@end CPasswordSubset destruction
 }
-
 
 /*!
  * Member initialisation
@@ -118,7 +112,6 @@ void CPasswordSubset::Init()
   m_error = NULL;
 ////@end CPasswordSubset member initialisation
 }
-
 
 /*!
  * Control creation for CPasswordSubset
@@ -177,7 +170,6 @@ void CPasswordSubset::CreateControls()
 ////@end CPasswordSubset content construction
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -222,7 +214,6 @@ wxIcon CPasswordSubset::GetIconResource( const wxString& name )
   return wxNullIcon;
 ////@end CPasswordSubset icon retrieval
 }
-
 
 /*!
  * wxEVT_CHAR event handler for ID_TEXTCTRL
@@ -274,7 +265,6 @@ void CPasswordSubset::OnChar( wxKeyEvent& event )
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON
  */
@@ -293,7 +283,6 @@ void CPasswordSubset::OnBitmapbuttonClick( wxCommandEvent& event )
     PWSclipboard::GetInstance()->SetData(reduced_str.wc_str());
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE

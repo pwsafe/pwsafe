@@ -609,7 +609,6 @@ BOOL CWZAdvanced::OnInitDialog()
   cs_ToolTip.LoadString(IDS_ADVANCED_DESELECTALL);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTALL), cs_ToolTip);
 
-
   return TRUE;
 }
 
@@ -844,7 +843,7 @@ LRESULT CWZAdvanced::OnWizardNext()
 
       CString cs_msg;
       cs_temp.LoadString(uimsg);
-      cs_msg.Format(IDS_NO_ENTRIES_PROCESSED, cs_temp);
+      cs_msg.Format(IDS_NO_ENTRIES_PROCESSED, static_cast<LPCWSTR>(cs_temp));
       cs_title.LoadString(IDS_NO_ENTRIES_SELECTED);
       gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONWARNING);
       return -1;

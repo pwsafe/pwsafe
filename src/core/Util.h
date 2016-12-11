@@ -70,7 +70,6 @@ extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
 extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
                         Fish *Algorithm, unsigned char *cbcbuffer);
 
-
 // The following can be used directly or via template functions getInt<> / putInt<>
 
 /*
@@ -227,7 +226,6 @@ template<typename T>
 T inline getInt(const unsigned char *buf) { return GetPutImpl<T, sizeof(T)>::GetInt(buf); }
 template<typename T>
 void inline putInt(unsigned char *buf, const T val) { GetPutImpl<T, sizeof(T)>::PutInt(buf, val); }
-
 
 bool operator==(const std::string& str1, const stringT& str2);
 inline bool operator==(const stringT& str1, const std::string &str2) { return str2 == str1; }

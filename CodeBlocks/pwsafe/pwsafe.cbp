@@ -496,6 +496,8 @@
 		<Unit filename="../../src/ui/wxWidgets/optionspropsheet.h" />
 		<Unit filename="../../src/ui/wxWidgets/passwordsafeframe.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/passwordsafeframe.h" />
+		<Unit filename="../../src/ui/wxWidgets/passwordsubset.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/passwordsubset.h" />
 		<Unit filename="../../src/ui/wxWidgets/properties.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/properties.h" />
 		<Unit filename="../../src/ui/wxWidgets/pwsafeapp.cpp" />

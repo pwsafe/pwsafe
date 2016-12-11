@@ -36,6 +36,7 @@ struct BaseEntryParms {
   CItemData::EntryType TargetType;
   int ibasedata;
   bool bMultipleEntriesFound;
+
   BaseEntryParms() : base_uuid(pws_os::CUUID::NullUUID()) {}
 };
 
@@ -252,12 +253,13 @@ public:
    m_LockCount = m_LockCount2; m_LockCount2 = 0;}
 
   // Set application data
-  void SetApplicationNameAndVersion(const stringT &appName, DWORD dwMajorMinor);
+  void SetApplicationNameAndVersion(const stringT &appName, DWORD dwMajorMinor,
+                                    DWORD dwBuildRevision = 0);
 
   // GetAllGroups - returns an array of all unique group prefix names in m_pwlist
   // e.g., "A", "A.B", "A.B.C"
   // "All" includes empty groups!
-  void GetAllGroups(std::vector<stringT> &vAllGroups) const;
+  void GetAllGroups(std::vector<stringT> &vAllGroups, const bool bIncludeEmptyGroups = true) const;
   // Construct unique title
   StringX GetUniqueTitle(const StringX &group, const StringX &title,
                          const StringX &user, const int IDS_MESSAGE);
@@ -362,31 +364,24 @@ public:
   ItemListIter GetUniqueBase(const StringX &grouptitle, 
                              const StringX &titleuser, bool &bMultiple);
 
-  bool HasDBChanged() const
-  { return m_stDBCS.bDBChanged; }
+  bool HasDBChanged() { return m_DBCurrentState == DIRTY; }
+
   bool HaveDBPrefsChanged() const
-  { return m_stDBCS.bDBPrefsChanged; }
+  { return m_InitialDBPreferences != PWSprefs::GetInstance()->Store(); }
   bool HaveHeaderPreferencesChanged(const StringX &prefString)
   { return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0; }
   bool HaveEmptyGroupsChanged() const
-  { return m_stDBCS.bEmptyGroupsChanged; }
+  { return m_InitialEmptyGroups != m_vEmptyGroups; }
   bool HavePasswordPolicyNamesChanged() const
-  { return m_stDBCS.bPolicyNamesChanged; }
+  { return m_InitialMapPSWDPLC != m_MapPSWDPLC; }
   bool HaveDBFiltersChanged() const
-  { return m_stDBCS.bDBFiltersChanged; }
+  { return m_InitialMapDBFilters != m_MapDBFilters; }
 
   // Note GroupDisplay & RUE list not checked for Save Immediately processing
   // Also, these are changed by user indirect action and therefore changes are NOT
   // implemented via a Command (do not require Undo/Redo processing)
   bool HasGroupDisplayChanged() const;
   bool HasRUEListChanged() const;
-
-  // NOTE - GroupDisplay & RUE list are NOT checked via this call
-  bool HasAnythingChanged() const
-  { return m_stDBCS.HasAnythingChanged(); }
-  
-  // PWScore::Execute uses this to set the changed status
-  void GetChangedStatus(Command *pcmd, st_DBChangeStatus &st_Command);
 
   bool ChangeMode(stringT &locker, int &iErrorCode);
   PWSFileSig& GetCurrentFileSig() {return *m_pFileSig;}
@@ -443,6 +438,7 @@ public:
 
   // Empty Groups
   const std::vector<StringX> & GetEmptyGroups() const {return m_vEmptyGroups;}
+  const std::vector<StringX> & GetSavedEmptyGroups() const { return m_InitialEmptyGroups; }
   bool IsEmptyGroup(const StringX &sxEmptyGroup) const;
   size_t GetNumberEmptyGroups() const {return m_vEmptyGroups.size();}
 
@@ -460,6 +456,7 @@ public:
   void RemoveAtt(const pws_os::CUUID &attuuid);
   bool HasAtt(const pws_os::CUUID &attuuid) const {return m_attlist.find(attuuid) != m_attlist.end();}
   AttList::size_type GetNumAtts() const {return m_attlist.size();}
+  ItemMMap::size_type GetNumLinkedAtts() const { return m_att2item_mmap.size(); }
  
   std::set<StringX> GetAllMediaTypes() const;
 
@@ -474,6 +471,7 @@ protected:
   bool m_isAuxCore; // set in c'tor, if true, never update prefs from DB.  
 
 private:
+
   // Database update routines
 
   // NOTE: Member functions starting with 'Do' or 'Undo' are meant to
@@ -523,15 +521,10 @@ private:
   //***** Make all calls that change the core private
   //   This excludes Group Display and RUE List which should not be via 
   //   Commands as no requirement to Undo/Redo and whose save is UI driven.
-  void SetChangedStatus(); // Used by Execute/Undo/Redo
   void SetInitialValues(); // Called after successful read/write of a database
 
   // Update header
   int SetHeaderItem(const StringX &sxNewValue, PWSfile::HeaderType ht);
-
-  // Update DB preferences - not sure why this is still here (called by DBPrefsCommand::Execute)
-  void SetDBPrefsChanged(bool bDBprefschanged)
-  { m_stDBCS.bDBPrefsChanged = bDBprefschanged; }
 
   // Set empty groups
   bool SetEmptyGroups(const std::vector<StringX> &vEmptyGroups);
@@ -594,9 +587,7 @@ private:
   bool m_bNotifyDB;
   bool m_bIsOpen;
 
-  st_DBChangeStatus m_stDBCS;
-
-  PWSfileHeader m_hdr;
+    PWSfileHeader m_hdr;
   StringX m_InitialDBName, m_InitialDBDesc;
   StringX m_InitialDBPreferences;
   std::vector<bool> m_InitialDisplayStatus; // for HasGroupDisplayChanged (stored in header)
@@ -630,7 +621,7 @@ private:
 
   // EmptyGroups
   std::vector<StringX> m_vEmptyGroups;
-  std::vector<StringX> m_InitialvEmptyGroups;
+  std::vector<StringX> m_InitialEmptyGroups;
 
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
@@ -652,6 +643,18 @@ private:
   std::vector<Command *> m_vpcommands;
   std::vector<Command *>::iterator m_undo_iter;
   std::vector<Command *>::iterator m_redo_iter;
+  
+  // DB clean/dirty states - before and after command execution.
+  enum DBState { CLEAN, DIRTY };
+  struct DBStates {
+    DBState before;
+    DBState after;
+  };
+
+  std::vector<DBStates> m_vDBState;
+  std::vector<DBStates>::iterator m_undo_DBState_iter;
+  std::vector<DBStates>::iterator m_redo_DBState_iter;
+  DBState m_DBCurrentState;
 
   static Reporter *m_pReporter; // set as soon as possible to show errors
   static Asker *m_pAsker;

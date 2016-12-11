@@ -33,19 +33,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static bool SafeGetBaseEntry(const CItemData &dep, CItemData &base)
-{
-  // Asserts in debug build if GetBaseEntry(dependent) fails
-  // returns false in release build
-  const CItemData *pBase = app.GetMainDlg()->GetBaseEntry(&dep);
-  ASSERT(pBase != NULL);
-  if (pBase != NULL) {
-    base = *pBase;
-    return true;
-  } else
-    return false;
-}
-
 static bool GetRUEntry(CRUEList &RUEList, size_t index, CItemData &ci)
 {
   bool retval = RUEList.GetPWEntry(index, ci);
@@ -93,20 +80,21 @@ void DboxMain::OnTrayClearRecentEntries()
 void DboxMain::OnTrayCopyUsername(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYUSERNAME1) &&
-    (nID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX));
+         (nID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX));
 
-  CItemData ci;
+  CItemData ci, *pbci(nullptr);
+
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYCOPYUSERNAME1, ci))
     return;
 
-  if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(ci, ci))
-      return; // fail safely in release
-  }
+  if (ci.IsDependent())
+    pbci = m_core.GetBaseEntry(&ci);
 
-  const StringX cs_username = ci.GetUser();
-  SetClipboardData(cs_username);
+  const StringX sx_user = ci.GetEffectiveFieldValue(CItemData::USER, pbci);
+  SetClipboardData(sx_user);
   UpdateLastClipboardAction(CItemData::USER);
+
+  // Username always comes from the entry irrespective of type
   UpdateAccessTime(ci.GetUUID());
 }
 
@@ -118,19 +106,19 @@ void DboxMain::OnTrayCopyPassword(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYPASSWORD1) && (nID <= ID_MENUITEM_TRAYCOPYPASSWORDMAX));
 
-  CItemData ci;
+  CItemData ci, *pbci(nullptr);
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYCOPYPASSWORD1, ci))
     return;
 
-  if (ci.IsDependent()) {
-    if (!SafeGetBaseEntry(ci, ci))
-      return; // fail safely in release
-  }
+  if (ci.IsDependent())
+    pbci = m_core.GetBaseEntry(&ci);
 
-  const StringX cs_password = ci.GetPassword();
-  SetClipboardData(cs_password);
+  const StringX sx_password = ci.GetEffectiveFieldValue(CItemData::PASSWORD, pbci);
+  SetClipboardData(sx_password);
   UpdateLastClipboardAction(CItemData::PASSWORD);
-  UpdateAccessTime(ci.GetUUID());
+
+  // Password always comes from a normal or alias/shortcut base entry
+  UpdateAccessTime(pbci == nullptr ? ci.GetUUID() : pbci->GetUUID());
 }
 
 void DboxMain::OnUpdateTrayCopyPassword(CCmdUI *)
@@ -141,17 +129,19 @@ void DboxMain::OnTrayCopyNotes(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYNOTES1) && (nID <= ID_MENUITEM_TRAYCOPYNOTESMAX));
 
-  CItemData ci;
+  CItemData ci, *pbci(nullptr);
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYCOPYNOTES1, ci))
     return;
 
-  if (ci.IsShortcut())
-    if (!SafeGetBaseEntry(ci, ci))
-      return;
+  if (ci.IsDependent())
+    pbci = m_core.GetBaseEntry(&ci);
 
-  SetClipboardData(ci.GetNotes());
+  const StringX sx_notes = ci.GetEffectiveFieldValue(CItemData::NOTES, pbci);
+  SetClipboardData(sx_notes);
   UpdateLastClipboardAction(CItemData::NOTES);
-  UpdateAccessTime(ci.GetUUID());
+
+  // Notes for a shortcut comes from base, otherwise from the entry
+  UpdateAccessTime(ci.IsShortcut() ? pbci->GetUUID() : ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayCopyNotes(CCmdUI *)
@@ -174,27 +164,32 @@ void DboxMain::OnTrayBrowse(UINT nID)
       return;
   }
 
-  if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(ci, ci))
-      return;
-  }
+  const CItemData *pbci = ci.IsDependent() ? m_core.GetBaseEntry(&ci) : nullptr;
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
-  if (!ci.IsURLEmpty()) {
+  if (!PWSAuxParse::GetEffectiveValues(&ci, pbci, sx_group, sx_title, sx_user,
+                                       sx_pswd, sx_lastpswd,
+                                       sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
+    return;
+
+  if (!sx_url.empty()) {
     std::vector<size_t> vactionverboffsets;
-    StringX sxAutotype = PWSAuxParse::GetAutoTypeString(ci.GetAutoType(),
-                                  ci.GetGroup(), ci.GetTitle(), 
-                                  ci.GetUser(), ci.GetPassword(), 
-                                  ci.GetNotes(), ci.GetURL(), ci.GetEmail(),
+    StringX sxAutotype = PWSAuxParse::GetAutoTypeString(sx_autotype,
+                                  sx_group, sx_title, sx_user,
+                                  sx_pswd, sx_lastpswd,
+                                  sx_notes, sx_url, sx_email,
                                   vactionverboffsets);
 
-    LaunchBrowser(ci.GetURL().c_str(), sxAutotype, vactionverboffsets, bDoAutotype);
+    LaunchBrowser(sx_url.c_str(), sxAutotype, vactionverboffsets, bDoAutotype);
 
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
-      SetClipboardData(ci.GetPassword());
+      SetClipboardData(sx_pswd);
       UpdateLastClipboardAction(CItemData::PASSWORD);
     }
   }
-  UpdateAccessTime(ci.GetUUID());
+
+  // URL for a shortcut comes from base, otherwise from the entry
+  UpdateAccessTime(ci.IsShortcut() ? pbci->GetUUID() : ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
@@ -204,7 +199,7 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   ASSERT(((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX)) ||
          ((nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX)));
 
-  CItemData ci;
+  CItemData ci, *pbci(nullptr);
   const bool bDoAutotype = (nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && 
                            (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX);
   if (!bDoAutotype) {
@@ -215,51 +210,50 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
       return;
   }
 
-  if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(ci, ci))
-      return;
-  }
+  if (ci.IsDependent())
+    pbci = m_core.GetBaseEntry(&ci);
 
   // Has it an embedded URL
-  if (ci.IsURLEmpty()) {
+  if (ci.IsFieldValueEmpty(CItemData::URL, pbci)) {
     pCmdUI->Enable(FALSE);
   } else {
-    const bool bIsEmail = ci.IsURLEmail();
+    const bool bIsEmail = ci.IsURLEmail(pbci);
     MapMenuShortcutsIter iter;
-  if (!bIsEmail && (nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX))
-    iter = m_MapMenuShortcuts.find(ID_MENUITEM_BROWSEURL);
-  else if (!bIsEmail && (nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX))
-    iter = m_MapMenuShortcuts.find(ID_MENUITEM_BROWSEURLPLUS);
-  else if (bIsEmail && (nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX))
-    iter = m_MapMenuShortcuts.find(ID_MENUITEM_SENDEMAIL);
+    if (!bIsEmail && (nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX))
+      iter = m_MapMenuShortcuts.find(ID_MENUITEM_BROWSEURL);
+    else if (!bIsEmail && (nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX))
+      iter = m_MapMenuShortcuts.find(ID_MENUITEM_BROWSEURLPLUS);
+    else if (bIsEmail && (nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX))
+      iter = m_MapMenuShortcuts.find(ID_MENUITEM_SENDEMAIL);
+
     ASSERT(iter != m_MapMenuShortcuts.end());
     CString cs_text = iter->second.name.c_str();
     int nPos = cs_text.Find(L"\t");
     if (nPos > 0)
       cs_text = cs_text.Left(nPos);
+
     pCmdUI->SetText(cs_text);
   }
 }
 
-
 void DboxMain::OnTrayCopyEmail(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYEMAIL1) &&
-    (nID <= ID_MENUITEM_TRAYCOPYEMAILMAX));
+         (nID <= ID_MENUITEM_TRAYCOPYEMAILMAX));
 
-  CItemData ci;
+  CItemData ci, *pbci(nullptr);
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYCOPYEMAIL1, ci))
     return;
 
-  if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(ci, ci))
-      return; // fail safely in release
-  }
+  if (ci.IsDependent())
+    pbci = m_core.GetBaseEntry(&ci);
 
-  const StringX cs_email = ci.GetEmail();
-  SetClipboardData(cs_email);
+  const StringX sx_email = ci.GetEffectiveFieldValue(CItemData::EMAIL, pbci);
+  SetClipboardData(sx_email);
   UpdateLastClipboardAction(CItemData::EMAIL);
-  UpdateAccessTime(ci.GetUUID());
+
+  // Email for a shortcut comes from base, otherwise from the entry
+  UpdateAccessTime(ci.IsShortcut() ? pbci->GetUUID() : ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayCopyEmail(CCmdUI *)
@@ -270,27 +264,29 @@ void DboxMain::OnTraySendEmail(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYSENDEMAIL1) && (nID <= ID_MENUITEM_TRAYSENDEMAILMAX));
 
-  CItemData ci;
+  CItemData ci, *pbci(nullptr);
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYSENDEMAIL1, ci))
       return;
 
-  if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(ci, ci))
-      return; // fail safely in release
-  }
+  if (ci.IsDependent())
+    pbci = m_core.GetBaseEntry(&ci);
+
+  const StringX sx_email = ci.GetEffectiveFieldValue(CItemData::EMAIL, pbci);
 
   CString cs_command;
-  if (!ci.IsEmailEmpty()) {
+  if (!sx_email.empty()) {
     cs_command = L"mailto:";
-    cs_command += ci.GetEmail().c_str();
+    cs_command += sx_email.c_str();
   } else {
-    cs_command = ci.GetURL().c_str();
+    cs_command = ci.GetEffectiveFieldValue(CItemData::URL, pbci).c_str();
   }
 
   if (!cs_command.IsEmpty()) {
     std::vector<size_t> vactionverboffsets;
     LaunchBrowser(cs_command, L"", vactionverboffsets, false);
-    UpdateAccessTime(ci.GetUUID());
+
+    // Email/URL for a shortcut comes from base, otherwise from the entry
+    UpdateAccessTime(ci.IsShortcut() ? pbci->GetUUID() : ci.GetUUID());
   }
 }
 
@@ -342,6 +338,9 @@ void DboxMain::OnTrayAutoType(UINT nID)
 
   m_bInAT = true;
   AutoType(ci);
+
+  // Unclear what AutoType is going to reference from entry, if a shortcut,
+  // and what from the base so just update the entry access time
   UpdateAccessTime(ci.GetUUID());
   m_bInAT = false;
 }
@@ -354,30 +353,33 @@ void DboxMain::OnTrayCopyURL(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYURL1) && (nID <= ID_MENUITEM_TRAYCOPYURLMAX));
 
-  CItemData ci;
+  CItemData ci, *pbci(nullptr);
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYCOPYURL1, ci))
     return;
 
-  if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(ci, ci))
-      return; // fail safely in release
+  if (ci.IsDependent())
+    pbci = m_core.GetBaseEntry(&ci);
+
+  StringX sx_URL = ci.GetEffectiveFieldValue(CItemData::URL, pbci);
+
+  if (!sx_URL.empty()) {
+    StringX::size_type ipos;
+    ipos = sx_URL.find(L"[alt]");
+    if (ipos != StringX::npos)
+      sx_URL.replace(ipos, 5, L"");
+    ipos = sx_URL.find(L"[ssh]");
+    if (ipos != StringX::npos)
+      sx_URL.replace(ipos, 5, L"");
+    ipos = sx_URL.find(L"{alt}");
+    if (ipos != StringX::npos)
+      sx_URL.replace(ipos, 5, L"");
   }
 
-  StringX cs_URL = ci.GetURL();
-  StringX::size_type ipos;
-  ipos = cs_URL.find(L"[alt]");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
-  ipos = cs_URL.find(L"[ssh]");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
-  ipos = cs_URL.find(L"{alt}");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
-
-  SetClipboardData(cs_URL);
+  SetClipboardData(sx_URL);
   UpdateLastClipboardAction(CItemData::URL);
-  UpdateAccessTime(ci.GetUUID());
+
+  // URL for a shortcut comes from base, otherwise from the entry
+  UpdateAccessTime(ci.IsShortcut() ? pbci->GetUUID() : ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayCopyURL(CCmdUI *)
@@ -392,26 +394,75 @@ void DboxMain::OnTrayRunCommand(UINT nID)
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYRUNCMD1, ci))
     return;
 
-  if (ci.IsShortcut()) {
-    if (!SafeGetBaseEntry(ci, ci))
-      return; // fail safely in release
+  const CItemData *pbci = ci.IsDependent() ? m_core.GetBaseEntry(&ci) : nullptr;
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+
+  if (!PWSAuxParse::GetEffectiveValues(&ci, pbci, sx_group, sx_title, sx_user,
+                                       sx_pswd, sx_lastpswd,
+                                       sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
+    return;
+
+  StringX sx_Expanded_ES;
+  if (sx_runcmd.empty())
+    return;
+
+  std::wstring errmsg;
+  StringX::size_type st_column;
+  bool bURLSpecial;
+  sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_runcmd,
+                                                  m_core.GetCurFile(), &ci, pbci,
+                                                  m_bDoAutoType, m_sxAutoType,
+                                                  errmsg, st_column, bURLSpecial);
+
+  if (!errmsg.empty()) {
+    CGeneralMsgBox gmb;
+    CString cs_title, cs_errmsg;
+    cs_title.LoadString(IDS_RUNCOMMAND_ERROR);
+    cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, errmsg.c_str());
+    gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONQUESTION);
+    return;
   }
 
-  StringX cs_URL = ci.GetURL();
-  StringX::size_type ipos;
-  ipos = cs_URL.find(L"[alt]");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
-  ipos = cs_URL.find(L"[ssh]");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
-  ipos = cs_URL.find(L"{alt}");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
+  // if no autotype value in run command's $a(value), start with item's (bug #1078)
+  if (m_sxAutoType.empty())
+    m_sxAutoType = ci.GetAutoType();
 
-  SetClipboardData(cs_URL);
-  UpdateLastClipboardAction(CItemData::URL);
-  UpdateAccessTime(ci.GetUUID());
+  m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType,
+                                                sx_group, sx_title, sx_user,
+                                                sx_pswd, sx_lastpswd,
+                                                sx_notes, sx_url, sx_email,
+                                                m_vactionverboffsets);
+  SetClipboardData(sx_pswd);
+  UpdateLastClipboardAction(CItemData::PASSWORD);
+
+  // Password always comes from a normal or base entry
+  UpdateAccessTime(pbci == nullptr ? ci.GetUUID() : pbci->GetUUID());
+
+  // Now honour presence of [alt], {alt} or [ssh] in the url if present
+  // in the RunCommand field.  Note: they are all treated the same (unlike
+  // in 'Browse to'.
+  StringX sxAltBrowser(PWSprefs::GetInstance()->
+    GetPref(PWSprefs::AltBrowser));
+
+  if (bURLSpecial && !sxAltBrowser.empty()) {
+    StringX sxCmdLineParms(PWSprefs::GetInstance()->
+      GetPref(PWSprefs::AltBrowserCmdLineParms));
+
+    if (sxAltBrowser[0] != L'\'' && sxAltBrowser[0] != L'"')
+      sxAltBrowser = L"\"" + sxAltBrowser + L"\"";
+    if (!sxCmdLineParms.empty())
+      sx_Expanded_ES = sxAltBrowser + StringX(L" ") +
+      sxCmdLineParms + StringX(L" ") + sx_Expanded_ES;
+    else
+      sx_Expanded_ES = sxAltBrowser + StringX(L" ") + sx_Expanded_ES;
+  }
+
+  bool rc = m_runner.runcmd(sx_Expanded_ES, !m_sxAutoType.empty());
+  if (!rc) {
+    m_bDoAutoType = false;
+    m_sxAutoType = L"";
+    return;
+  }
 }
 
 void DboxMain::OnUpdateTrayRunCommand(CCmdUI *)

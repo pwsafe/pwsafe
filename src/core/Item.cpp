@@ -167,8 +167,6 @@ void CItem::GetUnknownField(unsigned char &type, size_t &length,
   GetField(item, pdata, flength);
 }
 
-
-
 void CItem::Clear()
 {
   m_fields.clear();

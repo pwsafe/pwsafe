@@ -23,4 +23,3 @@ namespace pws_os {
   bool SelectAll();
 };
 #endif
-

@@ -66,8 +66,6 @@
 
 #endif  /* WINVER < 0x0501 */
 
-
-
 // For ShutdownBlockReasonCreate & ShutdownBlockReasonDestroy
 typedef BOOL (WINAPI *PSBR_CREATE) (HWND, LPCWSTR);
 typedef BOOL (WINAPI *PSBR_DESTROY) (HWND);
@@ -423,6 +421,7 @@ public:
   // If we have processed it returns 0 else 1
   BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers);
   bool IsWorkstationLocked() const;
+  void BlockLogoffShutdown(const bool bChanged);
 
   std::set<StringX> GetAllMediaTypes() const
   {return m_core.GetAllMediaTypes();}
@@ -455,7 +454,7 @@ public:
   CString m_titlebar; // what's displayed in the title bar
 
   CPWFindToolBar m_FindToolBar;  // Find toolbar
-  CPWStatusBar m_statusBar;
+  CPWStatusBar m_StatusBar;
   BOOL m_toolbarsSetup;
   UINT m_toolbarMode;
   UINT statustext[CPWStatusBar::SB_TOTAL];
@@ -543,8 +542,8 @@ public:
   void SortListView();
 
   //Version of message functions with return values
-  int Save(const SaveType savetype);
-  int SaveAs(void);
+  int Save(const SaveType savetype = DboxMain::ST_INVALID);
+  int SaveAs();
   int Open(const UINT uiTitle = IDS_CHOOSEDATABASE);
   int Open(const StringX &sx_Filename, const bool bReadOnly, const bool bHideReadOnly = false);
   int CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey);

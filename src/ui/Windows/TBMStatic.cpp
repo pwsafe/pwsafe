@@ -73,4 +73,3 @@ void CTBMStatic::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour
     }
   }
 }
-
