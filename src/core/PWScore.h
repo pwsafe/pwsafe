@@ -456,6 +456,7 @@ public:
   void RemoveAtt(const pws_os::CUUID &attuuid);
   bool HasAtt(const pws_os::CUUID &attuuid) const {return m_attlist.find(attuuid) != m_attlist.end();}
   AttList::size_type GetNumAtts() const {return m_attlist.size();}
+  ItemMMap::size_type GetNumLinkedAtts() const { return m_att2item_mmap.size(); }
  
   std::set<StringX> GetAllMediaTypes() const;
 

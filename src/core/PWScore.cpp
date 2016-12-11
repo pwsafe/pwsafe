@@ -354,10 +354,14 @@ void PWScore::DoDeleteEntry(const CItemData &item)
     }
 
     if (item.HasAttRef()) {
-      RemoveAtt(item.GetAttUUID());
+      CItemAtt &att = GetAtt(item.GetAttUUID());
+      if (att.GetRefcount() == 1)
+        RemoveAtt(item.GetAttUUID());
+      else
+        att.DecRefcount();
 
       // Remove from map of attachments to entries
-      UpdateAttEntryMap(false, item.GetUUID(), item.GetUUID());
+      UpdateAttEntryMap(false, item.GetAttUUID(), item.GetUUID());
     }
   } // pos != m_pwlist.end()
 }
