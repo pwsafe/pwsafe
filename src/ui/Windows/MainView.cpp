@@ -1455,8 +1455,9 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           SetFindToolBar(true);
 
         // Re-apply attachment apply purge status
-        for (size_t i = 0; i < m_vToBePurgedAttachments.size(); i++) {
-          CItemAtt &att = m_core.GetAtt(m_vToBePurgedAttachments[i]);
+        for (auto iter = m_vToBePurgedAttachments.begin();
+             iter != m_vToBePurgedAttachments.end(); iter++) {
+          CItemAtt &att = m_core.GetAtt(*iter);
           att.SetToBePurged(true);
         }
 

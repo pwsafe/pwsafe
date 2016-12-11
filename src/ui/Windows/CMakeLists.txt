@@ -127,6 +127,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/ThisMfcApp.h
             src/ui/Windows/ViewReport.h
             src/ui/Windows/ViewAttachmentDlg.h
+            src/ui/Windows/ViewAttachmentEntriesDlg.h
             src/ui/Windows/VirtualKeyboard/VKBButton.h
             src/ui/Windows/VirtualKeyboard/VKeyBoardDlg.h
             src/ui/Windows/VirtualKeyboard/VKresource.h
@@ -273,6 +274,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/ThisMfcApp.cpp
             src/ui/Windows/ViewReport.cpp
             src/ui/Windows/ViewAttachmentDlg.cpp
+            src/ui/Windows/ViewAttachmentEntriesDlg.cpp
             src/ui/Windows/VirtualKeyboard/VKBButton.cpp
             src/ui/Windows/VirtualKeyboard/VKeyBoardDlg.cpp
             src/ui/Windows/WZAdvanced.cpp

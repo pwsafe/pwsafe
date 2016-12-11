@@ -207,7 +207,6 @@ BOOL COptionsBackup::OnInitDialog()
     GetDlgItem(IDC_PURGEORPHANATTACHMENTS)->ShowWindow(SW_HIDE);
     m_Help5.EnableWindow(FALSE);
     m_Help5.ShowWindow(SW_HIDE);
->>>>>>> Support orphaned attachments. Introduce "purge" of attachments.
   }
 
   return TRUE;
