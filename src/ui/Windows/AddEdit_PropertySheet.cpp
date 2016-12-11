@@ -369,7 +369,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
         // TODO - What if user has removed the old attachment or changed it? (Rony)
         if (m_AEMD.attachment.HasUUID()) {
           m_AEMD.pci->SetAttUUID(m_AEMD.attachment.GetUUID());
-          m_AEMD.pcore->PutAtt(m_AEMD.attachment);
+          m_AEMD.pcore->PutAtt(m_AEMD.attachment, m_AEMD.pci->GetUUID());
         } else {
           m_AEMD.pci->ClearAttUUID();
           if (m_AEMD.oldattachment.HasUUID())
