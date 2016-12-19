@@ -16,6 +16,7 @@
 
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
+#include "core/SysInfo.h"
 
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
@@ -35,8 +36,6 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSystem property page
 
-bool COptionsSystem::m_bShowConfigFile = false;
-
 IMPLEMENT_DYNAMIC(COptionsSystem, COptions_PropertyPage)
 
 COptionsSystem::COptionsSystem(CWnd *pParent, st_Opt_master_data *pOPTMD) 
@@ -46,10 +45,6 @@ COptionsSystem::COptionsSystem(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_DeleteRegistry(FALSE), m_saveDeleteRegistry(FALSE),
   m_Migrate2Appdata(FALSE), m_saveMigrate2Appdata(FALSE)
 {
-#ifdef _DEBUG
-  m_bShowConfigFile = true;
-#endif
-
   m_UseSystemTray = M_UseSystemTray();
   m_HideSystemTray = M_HideSystemTray();
   m_Startup = M_Startup();
@@ -105,33 +100,48 @@ BOOL COptionsSystem::OnInitDialog()
   COptions_PropertyPage::OnInitDialog();
 
   PWSprefs *prefs = PWSprefs::GetInstance();
-  if (!m_bShowConfigFile) {
-    GetDlgItem(IDC_STATIC_CONFIGFILE)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_RWSTATUS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_CONFIGFILE)->ShowWindow(SW_HIDE);
-  } else {
-    PWSprefs::ConfigOption configoption;
-    std::wstring wsCF = prefs->GetConfigFile(configoption);
-    std::wstring wsCO(L"");
-    switch (configoption) {
-      case PWSprefs::CF_NONE:
-        LoadAString(wsCF, IDS_NONE);
-        break;
-      case PWSprefs::CF_REGISTRY:
-        LoadAString(wsCF, IDS_REGISTRY);
-        break;
-      case PWSprefs::CF_FILE_RO:
-        LoadAString(wsCO, IDS_READ_ONLY);
-        break;
-      case PWSprefs::CF_FILE_RW:
-      case PWSprefs::CF_FILE_RW_NEW:
-        LoadAString(wsCO, IDS_READ_WRITE);
-        break;
-      default:
-        ASSERT(0);
-    }
-    GetDlgItem(IDC_CONFIGFILE)->SetWindowText(wsCF.c_str());
-    GetDlgItem(IDC_STATIC_RWSTATUS)->SetWindowText(wsCO.c_str());
+
+  PWSprefs::ConfigOption configoption;
+  StringX sx_CF = prefs->GetConfigFile(configoption).c_str();
+  std::wstring  wsCO(L"");
+  switch (configoption) {
+    case PWSprefs::CF_NONE:
+      LoadAString(sx_CF, IDS_NONE);
+      break;
+    case PWSprefs::CF_REGISTRY:
+      LoadAString(sx_CF, IDS_REGISTRY);
+      break;
+    case PWSprefs::CF_FILE_RO:
+      LoadAString(wsCO, IDS_READ_ONLY);
+      break;
+    case PWSprefs::CF_FILE_RW:
+    case PWSprefs::CF_FILE_RW_NEW:
+      LoadAString(wsCO, IDS_READ_WRITE);
+      break;
+    default:
+      ASSERT(0);
+  }
+
+  CString cs_text;
+
+  // R/W status
+  GetDlgItem(IDC_STATIC_RWSTATUS)->SetWindowText(wsCO.c_str());
+
+  // Config file name & location
+  cs_text = PWSUtil::NormalizeTTT(sx_CF).c_str();
+  GetDlgItem(IDC_CONFIGFILE)->SetWindowText(cs_text);
+
+  // Effective host & user used in config file
+  if (configoption == PWSprefs::CF_FILE_RO || 
+      configoption == PWSprefs::CF_FILE_RW ||
+      configoption == PWSprefs::CF_FILE_RW_NEW) {
+    stringT hn = SysInfo::GetInstance()->GetEffectiveHost();
+    PWSprefs::XMLify(charT('H'), hn);
+    stringT un = SysInfo::GetInstance()->GetEffectiveUser();
+    PWSprefs::XMLify(charT('u'), un);
+
+    cs_text.Format(IDS_HOSTUSER, static_cast<LPCWSTR>(hn.c_str()), static_cast<LPCWSTR>(un.c_str()));
+    GetDlgItem(IDC_STATIC_HOSTUSER)->SetWindowText(cs_text);
   }
 
   bool bofferdeleteregistry = prefs->OfferDeleteRegistry();

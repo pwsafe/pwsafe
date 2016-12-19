@@ -793,3 +793,4 @@
 #define IDS_CHANGINGBASEENTRY1          6040
 #define IDS_CHANGINGBASEENTRY2          6041
 #define IDS_EXP_ALIAS                   6042
+#define IDS_HOSTUSER                    6043

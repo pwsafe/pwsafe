@@ -863,6 +863,7 @@
 #define IDC_AUTOTYPEHELP                1558
 #define IDC_PASSWORDHELP2               1559
 #define IDC_PWHHELP                     1560
+#define IDC_STATIC_HOSTUSER             1561
 
 // Next default values for new objects
 // 
@@ -870,7 +871,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        551
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1560
+#define _APS_NEXT_CONTROL_VALUE         1562
 #define _APS_NEXT_SYMED_VALUE           540
 #endif
 #endif
