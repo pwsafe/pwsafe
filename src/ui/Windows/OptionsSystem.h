@@ -68,7 +68,4 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-
-private:
-  static bool m_bShowConfigFile;
 };
