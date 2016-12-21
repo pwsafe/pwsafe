@@ -249,10 +249,10 @@ void CSafeCombinationEntry::CreateControls()
   m_combinationEntry->SetValidatorTarget(& m_password);
 
 #if (REVISION == 0)
-  m_version->SetLabel(wxString::Format(wxT("V%d.%d %ls"),
+  m_version->SetLabel(wxString::Format(wxT("V%d.%.2d %ls"),
                                        MAJORVERSION, MINORVERSION, SPECIALBUILD));
 #else
-  m_version->SetLabel(wxString::Format(wxT("V%d.%d.%d %ls"),
+  m_version->SetLabel(wxString::Format(wxT("V%d.%d.%.2d %ls"),
                                        MAJORVERSION, MINORVERSION,
                                        REVISION, SPECIALBUILD));
 #endif
