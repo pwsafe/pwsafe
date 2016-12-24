@@ -61,16 +61,6 @@ extern const wchar_t *GROUP_SEP2;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void Shower(CWnd *pWnd)
-{
-  pWnd->ShowWindow(SW_SHOW);
-}
-
-void Hider(CWnd *pWnd)
-{
-  pWnd->ShowWindow(SW_HIDE);
-}
-
 void DboxMain::DatabaseModified(bool bChanged)
 {
   PWS_LOGIT_ARGS("bChanged=%s", bChanged ? L"true" : L"false");
@@ -1273,7 +1263,7 @@ void DboxMain::RestoreWindows()
   RefreshViews();
 
   BringWindowToTop();
-  CPWDialog::GetDialogTracker()->Apply(Shower);
+  CPWDialog::GetDialogTracker()->ShowOpenDialogs();
 
   //RestoreDisplayAfterMinimize();
 }
@@ -1445,7 +1435,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           m_savedDBprefs = EMPTYSAVEDDBPREFS;
         }
 
-        CPWDialog::GetDialogTracker()->Apply(Shower);
+        CPWDialog::GetDialogTracker()->ShowOpenDialogs();
 
         RestoreGUIStatusEx();
 
@@ -2248,7 +2238,7 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     m_savedDBprefs = prefs->Store();
 
     // Hide everything
-    CPWDialog::GetDialogTracker()->Apply(Hider);
+    CPWDialog::GetDialogTracker()->HideOpenDialogs();
 
     // Now hide/minimize main dialog
     bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
@@ -2285,7 +2275,7 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
           m_savedDBprefs = prefs->Store();
 
           // Hide everything
-          CPWDialog::GetDialogTracker()->Apply(Hider);
+          CPWDialog::GetDialogTracker()->HideOpenDialogs();
 
           // Now hide/minimize main dialog
           bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);

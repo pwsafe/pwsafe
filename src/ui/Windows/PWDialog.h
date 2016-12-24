@@ -65,9 +65,11 @@ public:
   bool AnyOpenDialogs() const;
   void AddOpenDialog(CWnd *dlg);
   void RemoveOpenDialog(CWnd *dlg);
-  void Apply(void (*f)(CWnd *)); // applies f to all open dialogs
+  void ShowOpenDialogs();
+  void HideOpenDialogs();
 
 private:
+  void Apply(void (*f)(CWnd *)); // applies f to all open dialogs
   mutable CMutex m_mutex; // to protect access to our list of open dialogs
   // CWnd = CDialog & CPropertySheet common ancestor!
   std::list<CWnd *> m_dialogs;

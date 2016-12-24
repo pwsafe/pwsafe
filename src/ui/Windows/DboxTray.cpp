@@ -33,8 +33,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void Hider(CWnd *pWnd);
-
 static bool GetRUEntry(CRUEList &RUEList, size_t index, CItemData &ci)
 {
   bool retval = RUEList.GetPWEntry(index, ci);
@@ -64,7 +62,7 @@ void DboxMain::OnTrayLockUnLock()
         m_vGroupDisplayState = GetGroupDisplayState();
       if (LockDataBase())  { // save db if needed, clear data
         // Hide everything
-        CPWDialog::GetDialogTracker()->Apply(Hider);
+        CPWDialog::GetDialogTracker()->HideOpenDialogs();
 
         // Now hide main dialog
         ShowWindow(SW_HIDE);
