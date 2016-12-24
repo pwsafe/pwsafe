@@ -1243,11 +1243,6 @@ void DboxMain::RefreshViews(const ViewType iView)
   m_bInRefresh = false;
 }
 
-static void Shower(CWnd *pWnd)
-{
-  pWnd->ShowWindow(SW_SHOW);
-}
-
 void DboxMain::RestoreWindows()
 {
   PWS_LOGIT;
@@ -1268,7 +1263,7 @@ void DboxMain::RestoreWindows()
   RefreshViews();
 
   BringWindowToTop();
-  CPWDialog::GetDialogTracker()->Apply(Shower);
+  CPWDialog::GetDialogTracker()->ShowOpenDialogs();
 
   //RestoreDisplayAfterMinimize();
 }
@@ -1440,7 +1435,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           m_savedDBprefs = EMPTYSAVEDDBPREFS;
         }
 
-        CPWDialog::GetDialogTracker()->Apply(Shower);
+        CPWDialog::GetDialogTracker()->ShowOpenDialogs();
 
         RestoreGUIStatusEx();
 
@@ -2225,11 +2220,6 @@ void DboxMain::OnCollapseAll()
   SaveGroupDisplayState();
 }
 
-static void Hider(CWnd *pWnd)
-{
-  pWnd->ShowWindow(SW_HIDE);
-}
-
 void DboxMain::OnTimer(UINT_PTR nIDEvent)
 {
   if ((nIDEvent == TIMER_LOCKONWTSLOCK && IsWorkstationLocked()) ||
@@ -2246,13 +2236,14 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     // Save any database preference changes
     PWSprefs *prefs = PWSprefs::GetInstance();
     m_savedDBprefs = prefs->Store();
+
+    // Hide everything
+    CPWDialog::GetDialogTracker()->HideOpenDialogs();
+
+    // Now hide/minimize main dialog
     bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
-    if (!usingsystray) {
-      ShowWindow(SW_MINIMIZE);
-    } else {
-      CPWDialog::GetDialogTracker()->Apply(Hider);
-      ShowWindow(SW_HIDE);
-    }
+    ShowWindow(usingsystray ? SW_HIDE : SW_MINIMIZE);
+
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
       KillTimer(TIMER_LOCKONWTSLOCK);
   } else if (nIDEvent == TIMER_EXPENT) {
@@ -2280,13 +2271,15 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
 
         if (prefs->GetPref(PWSprefs::LockOnWindowLock) &&
             LockDataBase()) {
+          // Save any database preference changes
+          m_savedDBprefs = prefs->Store();
+
+          // Hide everything
+          CPWDialog::GetDialogTracker()->HideOpenDialogs();
+
+          // Now hide/minimize main dialog
           bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
-          if (!usingsystray) {
-            ShowWindow(SW_MINIMIZE);
-          } else {
-            CPWDialog::GetDialogTracker()->Apply(Hider);
-            ShowWindow(SW_HIDE);
-          }
+          ShowWindow(usingsystray ? SW_HIDE : SW_MINIMIZE);
         }
       }
       break;

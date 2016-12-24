@@ -61,6 +61,10 @@ void DboxMain::OnTrayLockUnLock()
       if (!IsIconic())
         m_vGroupDisplayState = GetGroupDisplayState();
       if (LockDataBase())  { // save db if needed, clear data
+        // Hide everything
+        CPWDialog::GetDialogTracker()->HideOpenDialogs();
+
+        // Now hide main dialog
         ShowWindow(SW_HIDE);
       }
       break;

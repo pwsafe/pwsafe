@@ -156,3 +156,25 @@ void CPWDialogTracker::Apply(void (*f)(CWnd *))
   m_mutex.Unlock();
   std::for_each(dialogs.begin(), dialogs.end(), std::ptr_fun(f));
 }
+
+namespace {
+  void Shower(CWnd *pWnd)
+  {
+    pWnd->ShowWindow(SW_SHOW);
+  }
+
+  void Hider(CWnd *pWnd)
+  {
+    pWnd->ShowWindow(SW_HIDE);
+  }
+}
+
+void CPWDialogTracker::ShowOpenDialogs()
+{
+  Apply(Shower);
+}
+
+void CPWDialogTracker::HideOpenDialogs()
+{
+  Apply(Hider);
+}
