@@ -79,6 +79,33 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
   m_current_version = app.GetCore()->GetReadFileVersion();
 }
 
+void CAdvancedDlg::DoDataExchange(CDataExchange* pDX)
+{
+  CPWDialog::DoDataExchange(pDX);
+  //{{AFX_DATA_MAP(CAdvancedDlg)
+  if (m_iIndex == FIND) {
+    DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_SET, m_subgroup_set);
+    DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_CASE, m_subgroup_case);
+    DDX_Text(pDX, IDC_ADVANCED_SUBGROUP_NAME, m_subgroup_name);
+  }
+  //}}AFX_DATA_MAP
+}
+
+BEGIN_MESSAGE_MAP(CAdvancedDlg, CPWDialog)
+  //{{AFX_MSG_MAP(CAdvancedDlg)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+
+  ON_BN_CLICKED(IDC_ADVANCED_SUBGROUP_SET, OnSetSubGroup)
+  ON_BN_CLICKED(IDC_ADVANCED_SELECTSOME, OnSelectSome)
+  ON_BN_CLICKED(IDC_ADVANCED_SELECTALL, OnSelectAll)
+  ON_BN_CLICKED(IDC_ADVANCED_DESELECTSOME, OnDeselectSome)
+  ON_BN_CLICKED(IDC_ADVANCED_DESELECTALL, OnDeselectAll)
+  ON_BN_CLICKED(IDC_ADVANCED_RESET, OnReset)
+
+  ON_NOTIFY(LVN_ITEMCHANGING, IDC_ADVANCED_SELECTED, OnSelectedItemChanging)
+  //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
 BOOL CAdvancedDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
@@ -310,31 +337,6 @@ BOOL CAdvancedDlg::OnInitDialog()
 
   return TRUE;
 }
-
-void CAdvancedDlg::DoDataExchange(CDataExchange* pDX)
-{
-  CPWDialog::DoDataExchange(pDX);
-  //{{AFX_DATA_MAP(CAdvancedDlg)
-  if (m_iIndex == FIND) {
-    DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_SET, m_subgroup_set);
-    DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_CASE, m_subgroup_case);
-    DDX_Text(pDX, IDC_ADVANCED_SUBGROUP_NAME, m_subgroup_name);
-  }
-  //}}AFX_DATA_MAP
-}
-
-BEGIN_MESSAGE_MAP(CAdvancedDlg, CPWDialog)
-  //{{AFX_MSG_MAP(CAdvancedDlg)
-  ON_BN_CLICKED(IDC_ADVANCED_SUBGROUP_SET, OnSetSubGroup)
-  ON_BN_CLICKED(IDC_ADVANCED_SELECTSOME, OnSelectSome)
-  ON_BN_CLICKED(IDC_ADVANCED_SELECTALL, OnSelectAll)
-  ON_BN_CLICKED(IDC_ADVANCED_DESELECTSOME, OnDeselectSome)
-  ON_BN_CLICKED(IDC_ADVANCED_DESELECTALL, OnDeselectAll)
-  ON_BN_CLICKED(IDC_ADVANCED_RESET, OnReset)
-  ON_BN_CLICKED(ID_HELP, OnHelp)
-  ON_NOTIFY(LVN_ITEMCHANGING, IDC_ADVANCED_SELECTED, OnSelectedItemChanging) 
-  //}}AFX_MSG_MAP
-END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CAdvancedDlg message handlers
