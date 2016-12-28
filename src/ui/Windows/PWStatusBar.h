@@ -30,7 +30,7 @@ public:
   virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT *pResult);
 
   void SetFilterStatus(const bool bStatus)
-  {m_bFilterStatus = bStatus;}
+  {m_bSTBFilterStatus = bStatus;}
 
   int GetBitmapWidth()
   {return m_bmWidth;}
@@ -52,7 +52,7 @@ private:
   bool ShowToolTip(int nPane, const bool bVisible);
 
   CInfoDisplay *m_pSBToolTips;
-  bool m_bFilterStatus;
+  bool m_bSTBFilterStatus;
   int m_bmHeight, m_bmWidth;
   CBitmap m_FilterBitmap;
 
