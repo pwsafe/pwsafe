@@ -208,7 +208,7 @@ void CCompareWithSelectDlg::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResu
   if (m_pSelected->GetGroup() == m_group && m_pSelected->GetTitle() == m_title &&
       m_pSelected->GetUser() == m_username) {
     // Unselect it
-    m_cwItemTree.SetItemState(hItem, 0, LVIS_SELECTED);
+    m_cwItemTree.SetItemState(hItem, 0, TVIS_SELECTED);
 
     m_pSelected = NULL;
     GetDlgItem(IDOK)->EnableWindow(FALSE);
