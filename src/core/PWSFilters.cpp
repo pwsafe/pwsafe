@@ -872,8 +872,8 @@ PWSFilterManager::PWSFilterManager()
     fr.fdate1 = 0;
     m_expirefilter.vMfldata.push_back(fr);
     m_expirefilter.num_Mactive = (int)m_expirefilter.vMfldata.size();
-
   }
+
   {
     LoadAString(m_unsavedfilter.fname, IDSC_NONSAVEDCHANGES);
 
@@ -891,6 +891,25 @@ PWSFilterManager::PWSFilterManager()
     m_unsavedfilter.vMfldata.push_back(fr);
     m_unsavedfilter.num_Mactive = (int)m_unsavedfilter.vMfldata.size();
   }
+
+  {
+    LoadAString(m_lastfoundfilter.fname, IDSC_FOUNDENTRIESFILTER);
+
+    // Actual values not needed as matching done by UUID
+    st_FilterRow fr;
+
+    fr.bFilterComplete = true;
+    fr.ftype = FT_INVALID;
+    fr.mtype = PWSMatch::MT_INVALID;
+    fr.rule = PWSMatch::MR_INVALID;
+    fr.ltype = LC_OR;
+
+    fr.fdate1 = 0;
+    m_lastfoundfilter.vMfldata.push_back(fr);
+    m_lastfoundfilter.num_Mactive = (int)m_lastfoundfilter.vMfldata.size();
+  }
+
+  m_bFindFilterActive = false;
 }
 
 void PWSFilterManager::CreateGroups()
@@ -1038,6 +1057,14 @@ void PWSFilterManager::CreateGroups()
     m_vAflgroups.clear();
 }
 
+void PWSFilterManager::SetFilterFindEntries(std::vector<pws_os::CUUID> *pvFoundUUIDs)
+{
+  if (pvFoundUUIDs == NULL)
+    m_vFltrFoundUUIDs.clear();
+  else
+    m_vFltrFoundUUIDs = *pvFoundUUIDs;
+}
+
 bool PWSFilterManager::PassesFiltering(const CItemData &ci, const PWScore &core)
 {
   bool thistest_rc;
@@ -1047,6 +1074,11 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci, const PWScore &core)
 
   if (!m_currentfilter.IsActive())
     return true;
+
+  if (m_bFindFilterActive) {
+    return (std::find(m_vFltrFoundUUIDs.begin(), m_vFltrFoundUUIDs.end(),
+                      ci.GetUUID()) != m_vFltrFoundUUIDs.end());
+  }
 
   const CItemData::EntryType entrytype = ci.GetEntryType();
 

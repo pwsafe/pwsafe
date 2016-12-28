@@ -48,12 +48,15 @@ static char THIS_FILE[] = __FILE__;
 
 void DboxMain::OnCancelFilter()
 {
-  // Deal with the 2 internal filters before user defined ones
+  // Deal with the 3 internal filters before user defined ones
   if (m_bExpireDisplayed) {
     OnShowExpireList();
   } else
   if (m_bUnsavedDisplayed) {
     OnShowUnsavedEntries();
+  } else
+  if (m_bFindFilterDisplayed) {
+    OnShowFoundEntries();
   } else
   if (m_bFilterActive) {
     ApplyFilter();
@@ -148,8 +151,14 @@ bool DboxMain::EditFilter(st_filters *pfilters, const bool &bAllowSet)
 void DboxMain::ClearFilter()
 {
   CurrentFilter().Empty();
+
   m_bFilterActive = false;
-  ApplyFilters();
+  m_ctlItemTree.SetFilterState(m_bFilterActive);
+  m_ctlItemList.SetFilterState(m_bFilterActive);
+  m_StatusBar.SetFilterStatus(m_bFilterActive);
+
+  if (m_bOpen)
+    ApplyFilters();
 }
 
 void DboxMain::ApplyFilters()
@@ -173,6 +182,16 @@ void DboxMain::ApplyFilters()
 
   if (m_bFilterActive)
     m_ctlItemTree.OnExpandAll();
+
+  // m_LastFoundTreeItem might be invalid if filter activated or cleared
+  pws_os::CUUID entry_uuid;
+  int iLastShown = m_FindToolBar.GetLastSelectedFountItem(entry_uuid);
+  if (iLastShown >= 0) {
+    CItemData *pci = &m_core.Find(entry_uuid)->second;
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    m_LastFoundTreeItem = pdi->tree_item;
+    m_LastFoundListItem = pdi->list_index;
+  }
 
   // Update Status Bar
   UpdateStatusBar();

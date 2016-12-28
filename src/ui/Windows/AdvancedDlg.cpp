@@ -502,32 +502,6 @@ void CAdvancedDlg::OnOK()
     return;
   }
 
-  if (m_iIndex == FIND) {
-    if (m_subgroup_set == BST_CHECKED) {
-      GetDlgItemText(IDC_ADVANCED_SUBGROUP_NAME, m_subgroup_name);
-      int nObject = ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->GetCurSel();
-      if (nObject == CB_ERR) {
-        gmb.AfxMessageBox(IDS_NOOBJECT);
-        m_bsFields.set();  // note: impossible to set them all even via the advanced dialog
-        ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->SetFocus();
-        return;
-      }
-  
-      int nFunction = ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION))->GetCurSel();
-      if (nFunction == CB_ERR) {
-        gmb.AfxMessageBox(IDS_NOFUNCTION);
-        m_bsFields.set();  // note: impossible to set them all even via the advanced dialog
-        ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION))->SetFocus();
-        return;
-      }
-  
-      m_subgroup_object = int(((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->GetItemData(nObject));
-      m_subgroup_function = int(((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION))->GetItemData(nFunction));
-      if (m_subgroup_case == BST_CHECKED)
-        m_subgroup_function *= (-1);
-    }
-  }
-
   if (m_subgroup_name == L"*")
     m_subgroup_name.Empty();
 

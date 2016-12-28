@@ -134,13 +134,16 @@ public:
 
   // FindAll is used by CPWFindToolBar, returns # of finds.
   size_t FindAll(const CString &str, BOOL CaseSensitive,
-                 std::vector<int> &indices);
+                 std::vector<int> &vIndices, std::vector<pws_os::CUUID> &vFoundUUIDs);
   size_t FindAll(const CString &str, BOOL CaseSensitive,
-                 std::vector<int> &indices,
+                 std::vector<int> &vIndices,
+                 std::vector<pws_os::CUUID> &vFoundUUIDs,
                  const CItemData::FieldBits &bsFields, 
                  const CItemAtt::AttFieldBits &bsAttFields, 
                  const bool &subgroup_set, const std::wstring &subgroup_name,
                  const int subgroup_object, const int subgroup_function);
+
+  void SetFilterFindEntries(std::vector<pws_os::CUUID> *pvFoundUUIDs);
 
   // Used by ListCtrl KeyDown
   bool IsImageVisible() const {return m_bImageInLV;}
@@ -205,7 +208,6 @@ public:
   void UpdateToolBarROStatus(const bool bIsRO);
   void UpdateToolBarForSelectedItem(const CItemData *pci);
   void SetToolBarPositions();
-  void InvalidateSearch() {m_FindToolBar.InvalidateSearch();}
   void ResumeOnDBNotification() {m_core.ResumeOnDBNotification();}
   void SuspendOnDBNotification() {m_core.SuspendOnDBNotification();}
   bool GetDBNotificationState() {return m_core.GetDBNotificationState();}
@@ -477,8 +479,9 @@ public:
   int m_treatwhitespaceasempty;
 
   HTREEITEM m_LastFoundTreeItem;
-  int m_LastFoundListItem;
+  int m_LastFoundListItem, m_iCurrentItemFound;
   bool m_bBoldItem;
+  bool m_bFindToolBarVisibleAtLock;
 
   WCHAR *m_pwchTip;
   
@@ -686,6 +689,7 @@ public:
   afx_msg void OnRefreshWindow();
   afx_msg void OnShowUnsavedEntries();
   afx_msg void OnShowExpireList();
+  afx_msg void OnShowFoundEntries();
   afx_msg void OnMinimize();
   afx_msg void OnRestore();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -835,7 +839,7 @@ private:
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
   void CancelPendingPasswordDialog();
 
-  void RemoveFromGUI(CItemData &ci, bool bUpdateGUI);
+  void RemoveFromGUI(CItemData &ci, const bool bUpdateGUI);
   void AddToGUI(CItemData &ci);
   void RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft);
   void RefreshEntryPasswordInGUI(CItemData &ci);
@@ -861,7 +865,7 @@ private:
   CInfoDisplay *m_pNotesDisplay;
 
   // Filters
-  bool m_bFilterActive, m_bUnsavedDisplayed, m_bExpireDisplayed;
+  bool m_bFilterActive, m_bUnsavedDisplayed, m_bExpireDisplayed, m_bFindFilterDisplayed;
   // Current filter
   st_filters &CurrentFilter() {return m_FilterManager.m_currentfilter;}
 
