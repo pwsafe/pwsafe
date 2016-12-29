@@ -19,8 +19,6 @@
 #include <iomanip>
 #include <assert.h>
 
-#include <Winsock.h> /* for htonl, htons */
-
 using namespace std;
 
 static void array2UUUID(const uuid_array_t &ua, UUID &uuid)
