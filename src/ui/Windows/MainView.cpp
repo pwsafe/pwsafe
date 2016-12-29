@@ -1017,10 +1017,9 @@ nextentry:
 
   retval = vIndices.size();
   // Sort indices if in List View
-  if (m_IsListView && retval > 1)
+  if (m_IsListView)
     sort(vIndices.begin(), vIndices.end());
-
-  if (!m_IsListView)
+  else
     OIL.clear();
 
   // If none found, reset found items
@@ -1093,7 +1092,7 @@ BOOL DboxMain::SelectEntry(const int i, BOOL MakeVisible)
   m_ctlItemList.Invalidate();
   m_ctlItemTree.Invalidate();
 
-  return m_ctlItemList.IsWindowVisible() ? retval_tree : retval_list;
+  return m_ctlItemList.IsWindowVisible() ? retval_list : retval_tree;
 }
 
 void DboxMain::SelectFirstEntry()
