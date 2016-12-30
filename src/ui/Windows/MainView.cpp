@@ -1091,9 +1091,10 @@ void DboxMain::SelectFirstEntry()
       m_ctlItemList.EnsureVisible(0, FALSE);
       pci = (CItemData *)m_ctlItemList.GetItemData(0);
     } else {
-      HTREEITEM hitem = m_ctlItemTree.GetFirstVisibleItem();
+      HTREEITEM hitem = m_ctlItemTree.GetRootItem();
       if (hitem != NULL) {
         m_ctlItemTree.SelectItem(hitem);
+        m_ctlItemTree.EnsureVisible(hitem);
         pci = (CItemData *)m_ctlItemTree.GetItemData(hitem);
       }
     }
