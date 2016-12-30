@@ -1876,6 +1876,7 @@ void CPWTreeCtrl::OnCollapseAll()
   HTREEITEM hItem = GetRootItem();
   if (hItem == NULL)
     return;
+
   SetRedraw(FALSE);
   do {
     CollapseBranch(hItem);
@@ -1895,8 +1896,6 @@ void CPWTreeCtrl::CollapseBranch(HTREEITEM hItem)
       CollapseBranch(hItem);
     } while((hItem = GetNextSiblingItem(hItem)) != NULL);
   }
-
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
 
 HTREEITEM CPWTreeCtrl::GetNextTreeItem(HTREEITEM hItem) 
