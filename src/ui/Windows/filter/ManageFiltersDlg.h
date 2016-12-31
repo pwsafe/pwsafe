@@ -118,7 +118,7 @@ private:
   CString m_selectedfiltername, m_activefiltername;
   int m_selectedfilter, m_activefilter;
   int m_num_to_export, m_num_to_copy;
-  bool m_bFilterActive, m_bDBFiltersChanged;
+  bool m_bMFFilterActive, m_bDBFiltersChanged;
   int m_iSortColumn, m_bSortAscending;
 
   bool m_bCanHaveAttachments;

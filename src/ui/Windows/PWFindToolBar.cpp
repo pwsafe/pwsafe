@@ -36,7 +36,6 @@
 * in the Find Toolbar, you must update the "m_iCase_Insensitive_BM_offset" variable
 * with its new offset in the bitmap arrays.
 * Also, the Case Sensitive bitmap must be the last bitmap in the arrays.
-
 */
 
 #define EDITCTRL_WIDTH 100    // width of Edit control for Search Text
@@ -148,7 +147,7 @@ CPWFindToolBar::CPWFindToolBar()
   m_last_subgroup_object(CItemData::GROUP), m_last_subgroup_function(0),
   m_iCase_Insensitive_BM_offset(-1), m_iCase_Sensitive_BM_offset(-1),
   m_iAdvanced_BM_offset(-1), m_iAdvancedOn_BM_offset(-1),
-  m_iFindDirection(FIND_DOWN), m_bFontSet(false)
+  m_iFindDirection(FIND_DOWN), m_bFontSet(false), m_bUseSavedFindValues(false)
 {
   m_last_bsFields.reset();
   m_last_bsAttFields.reset();
@@ -165,15 +164,21 @@ CPWFindToolBar::CPWFindToolBar()
 CPWFindToolBar::~CPWFindToolBar()
 {
   delete[] m_pOriginalTBinfo;
-  m_findedit.DestroyWindow();
+
+  m_ImageLists[0].DeleteImageList();
+  m_ImageLists[1].DeleteImageList();
+  m_ImageLists[2].DeleteImageList();
 }
 
 void CPWFindToolBar::OnDestroy()
 {
-  m_ImageLists[0].DeleteImageList();
-  m_ImageLists[1].DeleteImageList();
-  m_ImageLists[2].DeleteImageList();
-  m_FindTextFont.DeleteObject();
+  if (m_edtFindText.GetSafeHwnd() != NULL) {
+    m_edtFindText.DestroyWindow();
+  }
+
+  if (m_stcFindResults.GetSafeHwnd() != NULL) {
+    m_stcFindResults.DestroyWindow();
+  }
 }
 
 BEGIN_MESSAGE_MAP(CPWFindToolBar, CToolBar)
@@ -224,22 +229,22 @@ BOOL CPWFindToolBar::PreTranslateMessage(MSG *pMsg)
         return TRUE;
       }
       if (pMsg->wParam == VK_DELETE) {
-        CPoint pt_cursor = m_findedit.GetCaretPos();
-        int iCaret = m_findedit.CharFromPos(pt_cursor);
+        CPoint pt_cursor = m_edtFindText.GetCaretPos();
+        int iCaret = m_edtFindText.CharFromPos(pt_cursor);
         int iCharIndex = LOWORD(iCaret);
-        int iTextLen = m_findedit.GetWindowTextLength();
+        int iTextLen = m_edtFindText.GetWindowTextLength();
         int iStartChar, iEndChar;
-        m_findedit.GetSel(iStartChar, iEndChar);
+        m_edtFindText.GetSel(iStartChar, iEndChar);
         if (iCharIndex == iStartChar && iCharIndex == iEndChar) {
           // Nothing selected - forward backspace
-          m_findedit.SetSel(iCharIndex, iCharIndex + 1);
-          m_findedit.ReplaceSel(L"");
+          m_edtFindText.SetSel(iCharIndex, iCharIndex + 1);
+          m_edtFindText.ReplaceSel(L"");
         } else if (iTextLen > (iEndChar - iStartChar)) {
-          m_findedit.ReplaceSel(L"");
+          m_edtFindText.ReplaceSel(L"");
         } else {
-          m_findedit.SetWindowText(L"");
+          m_edtFindText.SetWindowText(L"");
         }
-        m_findedit.Invalidate();
+        m_edtFindText.Invalidate();
         return TRUE;
       }
     }
@@ -334,14 +339,14 @@ void CPWFindToolBar::ChangeFont()
   LOGFONT lf = { 0 };
   Fonts::GetInstance()->GetAddEditFont(&lf);
   VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
-  m_findedit.SetFont(&m_FindTextFont);
+  m_edtFindText.SetFont(&m_FindTextFont);
 
   bool bFontChanged(false);
 
   do {
     // Does it fit?  If not, keep reducing point size until it does.
     TEXTMETRIC tm;
-    HDC hDC = ::GetDC(m_findedit);
+    HDC hDC = ::GetDC(m_edtFindText);
 
     HFONT hFontOld = (HFONT)SelectObject(hDC, m_FindTextFont.GetSafeHandle());
 
@@ -361,7 +366,7 @@ void CPWFindToolBar::ChangeFont()
 
       m_FindTextFont.DeleteObject();
       VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
-      m_findedit.SetFont(&m_FindTextFont);
+      m_edtFindText.SetFont(&m_FindTextFont);
 
       bFontChanged = true;
     } else {
@@ -372,7 +377,6 @@ void CPWFindToolBar::ChangeFont()
     ::ReleaseDC(NULL, hDC);
   } while(bFontChanged);
 
-  m_findresults.SetFont(&m_FindTextFont);
   m_bFontSet = true;
 }
 
@@ -416,8 +420,12 @@ void CPWFindToolBar::AddExtraControls()
   ASSERT(index != -1);
 
   // If we have been here before, destroy it first
-  if (m_findedit.GetSafeHwnd() != NULL) {
-    m_findedit.DestroyWindow();
+  if (m_edtFindText.GetSafeHwnd() != NULL) {
+    if (m_bFontSet) {
+      m_FindTextFont.DeleteObject();
+      m_bFontSet = false;
+    }
+    m_edtFindText.DestroyWindow();
   }
 
   // Convert that button to a separator
@@ -427,14 +435,17 @@ void CPWFindToolBar::AddExtraControls()
   // trapped by PreTranslateMessage and treated as if the Find button had been
   // pressed
   rect = CRect(0, 0, EDITCTRL_WIDTH, iHeight);
-  VERIFY(m_findedit.Create(WS_CHILD | WS_VISIBLE |
+  VERIFY(m_edtFindText.Create(WS_CHILD | WS_VISIBLE |
                            ES_AUTOHSCROLL | ES_LEFT | ES_WANTRETURN | ES_MULTILINE,
                            CRect(rect.left + 2, rect.top, rect.right - 2, rect.bottom),
                            this, ID_TOOLBUTTON_FINDEDITCTRL));
 
   GetItemRect(index, &rect);
-  m_findedit.SetWindowPos(NULL, rect.left + 2, rect.top , 0, 0,
+  m_edtFindText.SetWindowPos(NULL, rect.left + 2, rect.top , 0, 0,
                           SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS);
+
+  // Set font
+  ChangeFont();
 
   // Add find search results CStatic control
   // Get the index of the placeholder's position in the toolbar
@@ -442,22 +453,29 @@ void CPWFindToolBar::AddExtraControls()
   ASSERT(index != -1);
 
   // If we have been here before, destroy it first
-  if (m_findresults.GetSafeHwnd() != NULL) {
-    m_findresults.DestroyWindow();
+  if (m_stcFindResults.GetSafeHwnd() != NULL) {
+    m_FindResultsFont.DeleteObject();
+    m_stcFindResults.DestroyWindow();
   }
 
   // Convert that button to a separator
   SetButtonInfo(index, ID_TOOLBUTTON_FINDRESULTS, TBBS_SEPARATOR, FINDRESULTS_WIDTH);
 
   rect = CRect(0, 0, FINDRESULTS_WIDTH, iHeight);
-  VERIFY(m_findresults.Create(L"", WS_CHILD | WS_VISIBLE |
+  VERIFY(m_stcFindResults.Create(L"", WS_CHILD | WS_VISIBLE |
                               SS_LEFTNOWORDWRAP | SS_CENTERIMAGE,
                               CRect(rect.left + 2, rect.top, rect.right - 2, rect.bottom),
                               this, ID_TOOLBUTTON_FINDEDITCTRL));
 
   GetItemRect(index, &rect);
-  m_findresults.SetWindowPos(NULL, rect.left + 2, rect.top, 0, 0,
+  m_stcFindResults.SetWindowPos(NULL, rect.left + 2, rect.top, 0, 0,
                              SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS);
+
+  NONCLIENTMETRICS ncm;
+  ncm.cbSize = sizeof(NONCLIENTMETRICS);
+  if (SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0)) {
+    m_FindResultsFont.CreateFontIndirect(&ncm.lfMessageFont);
+  }
 }
 
 void CPWFindToolBar::ShowFindToolBar(bool bShow)
@@ -489,14 +507,14 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
     }
 
     SetHeight(iBtnHeight + 4);  // Add border
-    m_findedit.ChangeColour();
-    m_findedit.SetWindowPos(NULL, 0, 0, EDITCTRL_WIDTH, iBtnHeight,
+    m_edtFindText.ChangeColour();
+    m_edtFindText.SetWindowPos(NULL, 0, 0, EDITCTRL_WIDTH, iBtnHeight,
                             SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
 
-    m_findedit.SetSel(0, -1);  // Select all text
-    m_findedit.Invalidate();
+    m_edtFindText.SetSel(0, -1);  // Select all text
+    m_edtFindText.Invalidate();
 
-    m_findresults.SetWindowPos(NULL, 0, 0, FINDRESULTS_WIDTH, iBtnHeight,
+    m_stcFindResults.SetWindowPos(NULL, 0, 0, FINDRESULTS_WIDTH, iBtnHeight,
                                SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
   }
 
@@ -504,7 +522,7 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
 
   ::ShowWindow(this->GetSafeHwnd(), bShow ? SW_SHOW : SW_HIDE);
   ::EnableWindow(this->GetSafeHwnd(), bShow ? TRUE : FALSE);
-  m_findedit.SetFocus();
+  m_edtFindText.SetFocus();
 
   m_bVisible = bShow;
 }
@@ -548,9 +566,9 @@ void CPWFindToolBar::ClearFind()
   if (this->GetSafeHwnd() == NULL)
     return;
 
-  m_findedit.SetWindowText(L"");
-  m_findresults.ResetColour();
-  m_findresults.SetWindowText(L"");
+  m_edtFindText.SetWindowText(L"");
+  m_stcFindResults.ResetColour();
+  m_stcFindResults.SetWindowText(L"");
 
   m_bCaseSensitive = m_last_cs_search = false;
   m_bAdvanced = false;
@@ -561,7 +579,21 @@ void CPWFindToolBar::ClearFind()
   m_subgroup_object = m_subgroup_function = 0;
   m_last_subgroup_object = m_last_subgroup_function = 0;
   m_lastshown = size_t(-1);
-  m_indices.clear();
+  m_vIndices.clear();
+  m_vFoundUUIDs.clear();
+
+  app.GetMainDlg()->SetFilterFindEntries(NULL);
+}
+
+int CPWFindToolBar::GetLastSelectedFountItem(pws_os::CUUID &entry_uuid)
+{
+  entry_uuid = pws_os::CUUID::NullUUID();
+
+  if (m_lastshown >= 0 && m_lastshown < (int)m_vFoundUUIDs.size()) {
+    entry_uuid = m_vFoundUUIDs[m_lastshown];
+  }
+
+  return m_lastshown;
 }
 
 void CPWFindToolBar::Find()
@@ -570,11 +602,12 @@ void CPWFindToolBar::Find()
     return;
 
   CString cs_status, cs_temp;
-  m_findedit.GetWindowText(m_search_text);
+  m_edtFindText.GetWindowText(m_search_text);
+
   if (m_search_text.IsEmpty()) {
     cs_status.LoadString(IDS_ENTERSEARCHSTRING);
-    m_findresults.SetColour(RGB(255, 0, 0));
-    m_findresults.SetWindowText(cs_status);
+    m_stcFindResults.SetColour(RGB(255, 0, 0));
+    m_stcFindResults.SetWindowText(cs_status);
     return;
   }
 
@@ -601,16 +634,17 @@ void CPWFindToolBar::Find()
   }
 
   if (m_lastshown == size_t(-1)) {
-    m_indices.clear();
+    m_vIndices.clear();
+    m_vFoundUUIDs.clear();
 
     if (m_bAdvanced)
-      m_numFound = app.GetMainDlg()->FindAll(m_search_text, m_cs_search, m_indices,
+      m_numFound = app.GetMainDlg()->FindAll(m_search_text, m_cs_search, m_vIndices, m_vFoundUUIDs,
                                  m_pst_SADV->bsFields, m_pst_SADV->bsAttFields,
                                  m_pst_SADV->subgroup_bset,
                                  m_pst_SADV->subgroup_name, m_pst_SADV->subgroup_object, 
                                  m_pst_SADV->subgroup_function);
     else
-      m_numFound = app.GetMainDlg()->FindAll(m_search_text, m_cs_search, m_indices);
+      m_numFound = app.GetMainDlg()->FindAll(m_search_text, m_cs_search, m_vIndices, m_vFoundUUIDs);
 
     switch (m_numFound) {
       case 0:
@@ -629,7 +663,7 @@ void CPWFindToolBar::Find()
   // OK, so now we have a (possibly empty) list of items to select.
   if (m_numFound > 0) {
     if (m_numFound == 1) {
-      app.GetMainDlg()->SelectFindEntry(m_indices[0], TRUE);
+      app.GetMainDlg()->SelectFindEntry(m_vIndices[0], TRUE);
     } else { // m_numFound > 1
       if (m_iFindDirection == FIND_DOWN) {
         m_lastshown++;
@@ -649,16 +683,33 @@ void CPWFindToolBar::Find()
       } else
         cs_status.Format(IDS_FOUNDMATCHES, m_lastshown + 1, m_numFound);
 
-      app.GetMainDlg()->SelectFindEntry(m_indices[m_lastshown], TRUE);
+      app.GetMainDlg()->SelectFindEntry(m_vIndices[m_lastshown], TRUE);
     }
   }
-  if (m_numFound == 0)
-    m_findresults.SetColour(RGB(255, 0, 0));
-  else
-    m_findresults.ResetColour();
 
-  m_findresults.SetWindowText(cs_status);
+  if (m_numFound == 0) {
+    m_stcFindResults.SetColour(RGB(255, 0, 0));
+    app.GetMainDlg()->SetFilterFindEntries(NULL);
+  } else {
+    m_stcFindResults.ResetColour();
+    app.GetMainDlg()->SetFilterFindEntries(&m_vFoundUUIDs);
+  }
+
+  m_stcFindResults.SetWindowText(cs_status);
   Invalidate();
+}
+
+void CPWFindToolBar::Find(const int ilastshown)
+{
+  if (ilastshown >= 0 && ilastshown < (int)m_vIndices.size()) {
+    CString cs_status;
+    m_lastshown = ilastshown;
+    cs_status.Format(IDS_FOUNDMATCHES, m_lastshown + 1, m_numFound);
+    m_stcFindResults.SetWindowText(cs_status);
+    Invalidate();
+
+    app.GetMainDlg()->SelectFindEntry(m_vIndices[m_lastshown], TRUE);
+  }
 }
 
 void CPWFindToolBar::ShowFindAdvanced()
@@ -704,12 +755,13 @@ void CPWFindToolBar::ShowFindAdvanced()
            (old_subgroup_name != m_pst_SADV->subgroup_name ||
             old_subgroup_object != m_pst_SADV->subgroup_object ||
             old_subgroup_function != m_pst_SADV->subgroup_function))) {
-        m_findresults.ResetColour();
-        m_findresults.SetWindowText(L"");
+        m_stcFindResults.ResetColour();
+        m_stcFindResults.SetWindowText(L"");
 
         m_numFound = size_t(-1);
         m_lastshown = size_t(-1);
-        m_indices.clear();
+        m_vIndices.clear();
+        m_vFoundUUIDs.clear();
       }
     } else {
       bAdvanced = false;
@@ -718,13 +770,15 @@ void CPWFindToolBar::ShowFindAdvanced()
 
   if ((m_bAdvanced != bAdvanced) || !bAdvanced) {
     // State has changed or user doesn't want advanced selection criteria!
-    m_findresults.ResetColour();
-    m_findresults.SetWindowText(L"");
+    m_stcFindResults.ResetColour();
+    m_stcFindResults.SetWindowText(L"");
 
     m_numFound = size_t(-1);
     m_lastshown = size_t(-1);
-    m_indices.clear();
+    m_vIndices.clear();
+    m_vFoundUUIDs.clear();
   }
+
   // Set new state
   m_bAdvanced = bAdvanced;
 

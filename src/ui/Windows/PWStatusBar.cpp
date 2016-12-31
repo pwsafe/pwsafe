@@ -38,7 +38,7 @@ TIMEINT_SB_SHOWING The length of time the tool tip window remains visible
 IMPLEMENT_DYNAMIC(CPWStatusBar, CStatusBar)
 
 CPWStatusBar::CPWStatusBar()
-  : m_bFilterStatus(false), m_pSBToolTips(NULL), m_bUseToolTips(false),
+  : m_bSTBFilterStatus(false), m_pSBToolTips(NULL), m_bUseToolTips(false),
   m_bMouseInWindow(false), m_bFileReadOnly(false), m_bFileOpen(false)
 {
   m_FilterBitmap.LoadBitmap(IDB_FILTER_ACTIVE);
@@ -93,7 +93,7 @@ void CPWStatusBar::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
       // Get the pane rectangle and calculate text coordinates
       CRect rect(&lpDrawItemStruct->rcItem);
-      if (m_bFilterStatus) {
+      if (m_bSTBFilterStatus) {
         // Centre bitmap in pane.
         int ileft = rect.left + rect.Width() / 2 - m_bmWidth / 2;
         int itop = rect.top + rect.Height() / 2 - m_bmHeight / 2;

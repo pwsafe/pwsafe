@@ -300,6 +300,7 @@ BEGIN
   IDSC_INVALID_XML_VER2    "The filter XML version (%d) is greater than that supported by this instance of PasswordSafe (%d)."
   IDSC_EXPIREPASSWORDS     "Entries with a password expiry"
   IDSC_NONSAVEDCHANGES     "Unsaved changes"
+  IDSC_FOUNDENTRIESFILTER  "Last found entries"
 END
 
 STRINGTABLE

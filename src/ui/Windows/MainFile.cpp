@@ -443,6 +443,8 @@ int DboxMain::NewFile(StringX &newfilename)
   // Tidy up filters
   CurrentFilter().Empty();
   m_bFilterActive = false;
+  m_FilterManager.SetFindFilter(false);
+  m_FilterManager.SetFilterFindEntries(NULL);
 
   // Clear any saved group information
   m_TreeViewGroup = L"";
@@ -489,23 +491,22 @@ int DboxMain::Close(const bool bTrySave)
     m_core.SetCurFile(L"");
   }
 
-  // Zero entry UUID selected and first visible at minimize and group text
-  m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
-  m_TUUIDSelectedAtMinimize = CUUID::NullUUID();
-  m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
-  m_TUUIDVisibleAtMinimize = CUUID::NullUUID();
-  m_sxSelectedGroup = L"";
-  m_sxVisibleGroup = L"";
-
   CAddEdit_DateTimes::m_bShowUUID = false;
 
   // Reset core and clear all associated data
   m_core.ReInit();
 
+  // Clear display
+  ClearData();
+
+  // Set closed before anything else thinks there is data still here
+  m_bOpen = false;
+
   // Tidy up filters
-  CurrentFilter().Empty();
-  m_bFilterActive = m_bUnsavedDisplayed = m_bExpireDisplayed = false;
-  ApplyFilters();
+  m_bFilterActive = m_bUnsavedDisplayed = m_bExpireDisplayed = m_bFindFilterDisplayed = false;
+  m_FilterManager.SetFindFilter(false);
+  m_FilterManager.SetFilterFindEntries(NULL);
+  ClearFilter();
 
   // Set Dragbar images correctly
   m_DDGroup.SetStaticState(false);
@@ -520,7 +521,8 @@ int DboxMain::Close(const bool bTrySave)
   app.SetTooltipText(L"PasswordSafe");
   UpdateSystemTray(CLOSED);
 
-  // Call UpdateMenuAndToolBar before UpdateStatusBar, as it sets m_bOpen
+  // Call UpdateMenuAndToolBar before UpdateStatusBar
+  // But we have already set m_bOpen
   UpdateMenuAndToolBar(false);
   m_titlebar = L"Password Safe";
   SetWindowText(LPCWSTR(m_titlebar));
@@ -775,27 +777,14 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
       return PWScore::USER_CANCEL; // conservative behaviour for release version
   }
 
-  // clear the data before loading the new file
+  // Clear the data before loading the new file
   ClearData();
 
   // Reset saved DB preferences
   m_savedDBprefs = EMPTYSAVEDDBPREFS;
 
-  // Tidy up filters
-  CurrentFilter().Empty();
-  m_bFilterActive = false;
-  ApplyFilters();
-
   // Reset flag as new file
   m_bUserDeclinedSave = false;
-
-  // Zero entry UUID selected and first visible at minimize and group text
-  m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
-  m_TUUIDSelectedAtMinimize = CUUID::NullUUID();
-  m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
-  m_TUUIDVisibleAtMinimize = CUUID::NullUUID();
-  m_sxSelectedGroup = L"";
-  m_sxVisibleGroup = L"";
 
   cs_title.LoadString(IDS_FILEREADERROR);
   bool bAskerSet = m_core.IsAskerSet();
@@ -902,10 +891,6 @@ void DboxMain::PostOpenProcessing()
     app.AddToMRU(m_core.GetCurFile().c_str());
 
   ChangeOkUpdate();
-
-  // Tidy up filters
-  CurrentFilter().Empty();
-  m_bFilterActive = false;
 
   // Clear any saved group information
   m_TreeViewGroup = L"";

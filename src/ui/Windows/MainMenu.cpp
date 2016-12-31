@@ -147,7 +147,7 @@ void DboxMain::SetUpInitialMenuStrings()
   UINT excludedMenuItems[] = {
   // Add user Excluded Menu Items - anything that is a Popup Menu
     ID_FILEMENU, ID_EXPORTMENU, ID_IMPORTMENU, ID_EDITMENU,
-    ID_VIEWMENU, ID_FILTERMENU, ID_CHANGEFONTMENU, ID_REPORTSMENU,
+    ID_VIEWMENU, ID_SUBVIEWMENU, ID_FILTERMENU, ID_CHANGEFONTMENU, ID_REPORTSMENU,
     ID_MANAGEMENU, ID_LANGUAGEMENU, ID_HELPMENU, ID_FINDMENU,
     ID_EXPORTENTMENU, ID_EXPORTGROUPMENU,
 
@@ -267,6 +267,9 @@ void DboxMain::SetUpInitialMenuStrings()
   isubmenu_pos = app.FindMenuItem(pMainMenu, ID_VIEWMENU);
   ASSERT(isubmenu_pos != -1);
   pSubMenu = pMainMenu->GetSubMenu(isubmenu_pos);
+
+  // Do View Menu Subview submenu
+  InsertShortcuts(pSubMenu, m_MapMenuShortcuts, ID_SUBVIEWMENU);
 
   // Do View Menu Filter submenu
   InsertShortcuts(pSubMenu, m_MapMenuShortcuts, ID_FILTERMENU);
@@ -586,7 +589,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   }
 
   // We have done for all except the Edit and View menus
-  if (uiMenuID != ID_EDITMENU && uiMenuID != ID_VIEWMENU && uiMenuID != ID_FILTERMENU)
+  if (uiMenuID != ID_EDITMENU && uiMenuID != ID_VIEWMENU &&
+      uiMenuID != ID_FILTERMENU && uiMenuID != ID_SUBVIEWMENU)
     return;
 
   // If View menu selected (contains 'Flattened &List' menu item)
@@ -602,15 +606,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_DRAGBAR, MF_BYCOMMAND |
                               bDragBarState ? MF_CHECKED : MF_UNCHECKED);
 
-    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_UNSAVED, MF_BYCOMMAND |
-                              m_bUnsavedDisplayed ? MF_CHECKED : MF_UNCHECKED);
-
-    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_ALL_EXPIRY, MF_BYCOMMAND |
-                              m_bExpireDisplayed ? MF_CHECKED : MF_UNCHECKED);
-
     // Don't show filter menu if "internal" menu active
     pPopupMenu->EnableMenuItem(ID_FILTERMENU, MF_BYCOMMAND |
-             (m_bUnsavedDisplayed || m_bExpireDisplayed) ? MF_GRAYED : MF_ENABLED);
+             (m_bUnsavedDisplayed || m_bExpireDisplayed || m_bFindFilterDisplayed) ? MF_GRAYED : MF_ENABLED);
 
     pPopupMenu->CheckMenuRadioItem(ID_MENUITEM_NEW_TOOLBAR,
                                    ID_MENUITEM_OLD_TOOLBAR,
@@ -621,6 +619,18 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     pPopupMenu->EnableMenuItem(ID_REPORTSMENU, MF_BYCOMMAND | (m_bOpen ? MF_ENABLED : MF_GRAYED));
     goto exit;
   }  // View menu
+
+  if (uiMenuID == ID_SUBVIEWMENU) {
+    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_UNSAVED, MF_BYCOMMAND |
+                              m_bUnsavedDisplayed ? MF_CHECKED : MF_UNCHECKED);
+
+    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_ALL_EXPIRY, MF_BYCOMMAND |
+                              m_bExpireDisplayed ? MF_CHECKED : MF_UNCHECKED);
+
+    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_FOUNDENTRIES, MF_BYCOMMAND |
+                              m_bFindFilterDisplayed ? MF_CHECKED : MF_UNCHECKED);
+    goto exit;
+  } // Subview
 
   if (uiMenuID == ID_FILTERMENU) {
     pPopupMenu->ModifyMenu(1, MF_BYPOSITION,
@@ -691,6 +701,22 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
           pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
         }
       }
+      
+      // Add Find Next/Previous if find entries were found
+      if (m_FindToolBar.EntriesFound()) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_FIND, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_FINDUP, tc_dummy);
+      } 
+
+      // Only add "Find..." if find filter not active
+      if (!(m_bFilterActive && m_bFindFilterDisplayed)) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                                ID_MENUITEM_FINDELLIPSIS, tc_dummy);
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      }
+
       if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_UNDO, tc_dummy);
@@ -711,19 +737,21 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_ADD, tc_dummy);
       }
 
-      // Add Find Next/Previous if find still active and entries were found
-      if (m_FindToolBar.IsVisible() && m_FindToolBar.EntriesFound()) {
+      // Add Find Next/Previous if find entries were found
+      if (m_FindToolBar.EntriesFound()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_FIND, tc_dummy);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_FINDUP, tc_dummy);
       } 
 
-      // Always add "Find..."
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                              ID_MENUITEM_FINDELLIPSIS, tc_dummy);
+      // Only add "Find..." if find filter not active
+      if (!(m_bFilterActive && m_bFindFilterDisplayed)) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                                ID_MENUITEM_FINDELLIPSIS, tc_dummy);
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      }
 
-      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_GROUPENTER, tc_dummy);
       
@@ -820,17 +848,20 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         }
       }
 
-      // Only have Find Next/Previous if find still active and entries were found
-      if (m_FindToolBar.IsVisible() && m_FindToolBar.EntriesFound()) {
+      // Only have Find Next/Previous if find entries were found
+      if (m_FindToolBar.EntriesFound()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_FIND, tc_dummy);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_FINDUP, tc_dummy);
       }
 
-      // Always add "Find..."
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_FINDELLIPSIS, tc_dummy);
+      // Only add "Find..." if find filter not active
+      if (!(m_bFilterActive && m_bFindFilterDisplayed)) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                                ID_MENUITEM_FINDELLIPSIS, tc_dummy);
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      }
 
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
@@ -1020,6 +1051,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     case ID_IMPORTMENU:
     case ID_EDITMENU:
     case ID_VIEWMENU:
+    case ID_SUBVIEWMENU:
     case ID_FILTERMENU:
     case ID_EXPORTENTMENU:
     case ID_EXPORTGROUPMENU:

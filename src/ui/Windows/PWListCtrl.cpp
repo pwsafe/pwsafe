@@ -23,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 
 CPWListCtrl::CPWListCtrl()
   : m_FindTimerID(0), m_csFind(L""), m_bMouseInWindow(false), 
-  m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bFilterActive(false),
+  m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bListFilterActive(false),
   m_bUseHighLighting(false)
 {
 }
@@ -275,15 +275,15 @@ bool CPWListCtrl::FindNext(const CString &cs_find, const int iSubItem)
 
 void CPWListCtrl::SetFilterState(bool bState)
 {
-  m_bFilterActive = bState;
+  m_bListFilterActive = bState;
 
   // Red if filter active, black if not
-  SetTextColor(m_bFilterActive ? RGB(168, 0, 0) : RGB(0, 0, 0));
+  SetTextColor(m_bListFilterActive ? RGB(168, 0, 0) : RGB(0, 0, 0));
 }
 
 BOOL CPWListCtrl::OnEraseBkgnd(CDC* pDC)
 {
-  if (m_bFilterActive && app.GetMainDlg()->GetNumPassedFiltering() == 0) {
+  if (m_bListFilterActive && app.GetMainDlg()->GetNumPassedFiltering() == 0) {
     int nSavedDC = pDC->SaveDC(); //save the current DC state
 
     // Set up variables
@@ -416,6 +416,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       break;
 
     case CDDS_ITEMPREPAINT:
+      bitem_selected = (pLVCD->nmcd.uItemState & CDIS_SELECTED) == CDIS_SELECTED;
       *pLResult |= CDRF_NOTIFYSUBITEMDRAW;
       break;
 
@@ -460,7 +461,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Sub-item PostPaint
       // Restore old font if any
       if (bchanged_subitem_font) {
-        bchanged_subitem_font = false;
+        bchanged_subitem_font = bitem_selected = false;
         pDC->SelectObject(pCurrentFont);
         *pLResult |= CDRF_NEWFONT;
       }

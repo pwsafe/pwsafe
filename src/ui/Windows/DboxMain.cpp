@@ -128,14 +128,14 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bAlreadyToldUserNoSave(false), m_inExit(false),
   m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false),
   m_lastclipboardaction(L""), m_pNotesDisplay(NULL),
-  m_LastFoundTreeItem(NULL), m_LastFoundListItem(-1),
+  m_LastFoundTreeItem(NULL), m_LastFoundListItem(-1), m_iCurrentItemFound(-1),
   m_bFilterActive(false), m_bNumPassedFiltering(0),
   m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
   m_sxAutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bWTSRegistered(false),
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
-  m_bUnsavedDisplayed(false), m_RUEList(*app.GetCore()),
-  m_eye_catcher(_wcsdup(EYE_CATCHER)),
+  m_bUnsavedDisplayed(false), m_bExpireDisplayed(false), m_bFindFilterDisplayed(false),
+  m_RUEList(*app.GetCore()), m_eye_catcher(_wcsdup(EYE_CATCHER)),
   m_hUser32(NULL), m_bInAddGroup(false), m_bWizardActive(false),
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
   m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
@@ -144,14 +144,15 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bRenameCtrl(false), m_bRenameShift(false),
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
   m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false), m_bCompareEntries(false),
-  m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
+  m_bInRefresh(false), m_bInRestoreWindows(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
   m_ilastaction(0), m_bNoValidation(false), m_bDBInitiallyRO(false), m_bViaDCA(false),
   m_bUserDeclinedSave(false), m_bRestoredDBUnsaved(false),
   m_LUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
-  m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID())
+  m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
+  m_bFindToolBarVisibleAtLock(false)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::LOAD_LIBRARY_SYS));
@@ -437,6 +438,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
   ON_COMMAND(ID_MENUITEM_SHOWHIDE_UNSAVED, OnShowUnsavedEntries)
   ON_COMMAND(ID_MENUITEM_SHOW_ALL_EXPIRY, OnShowExpireList)
+  ON_COMMAND(ID_MENUITEM_SHOW_FOUNDENTRIES, OnShowFoundEntries)
 
   // Manage Menu
   ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPassphraseChange)
@@ -664,6 +666,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REFRESH, true, true, false, false},
   {ID_MENUITEM_SHOWHIDE_UNSAVED, true, false, false, false},
   {ID_MENUITEM_SHOW_ALL_EXPIRY, true, true, false, false},
+  {ID_MENUITEM_SHOW_FOUNDENTRIES, true, true, false, false},
   // Manage menu
   {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
@@ -2017,12 +2020,6 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   // Note: bUpdateWindows = true only when called from within OnSysCommand-SC_RESTORE
   // and via the Restore menu item via the SystemTray (OnRestore)
 
-  /*
-  pws_os::Trace(L"RestoreWindowsData:bUpdateWindows = %s; bInRestoreWindowsData %s\n",
-                bUpdateWindows ? L"true" : L"false",
-                m_bInRestoreWindowsData ? L"true" : L"false");
-  */
-
   // We should not be called by a routine we call - only duplicates refreshes etc.
   if (m_bInRestoreWindowsData)
     return false;
@@ -2075,6 +2072,21 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       RefreshViews();
       ShowWindow(SW_RESTORE);
     }
+
+    // Restore Find toolbar as it was before locking
+    if (m_bFindToolBarVisibleAtLock) {
+      OnShowFindToolbar();
+      m_bFindToolBarVisibleAtLock = false;
+      if (m_iCurrentItemFound != -1) {
+        m_FindToolBar.Find(m_iCurrentItemFound);
+      }
+    }
+
+    //// If filter was active - re-apply
+    //if (m_bFilterActive) {
+    //  ApplyFilter();
+    //}
+
     brc = true;
     goto exit;
   }
@@ -2149,6 +2161,15 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
         ShowWindow(SW_SHOW);
       if (bUpdateWindows)
         RestoreWindows();
+
+      // Restore Find toolbar as it was before locking
+      if (m_bFindToolBarVisibleAtLock) {
+        OnShowFindToolbar();
+        m_bFindToolBarVisibleAtLock = false;
+        if (m_iCurrentItemFound != -1) {
+          m_FindToolBar.Find(m_iCurrentItemFound);
+        }
+      }
     } else {
       ShowWindow(bUseSysTray ? SW_HIDE : SW_MINIMIZE);
     }
@@ -2294,9 +2315,7 @@ BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers)
         }
         
         // Get CListCtrl to do our work for us - LVN_ITEMCHANGED
-        m_ctlItemList.SetItemState(pdi->list_index,
-                                            LVIS_FOCUSED | LVIS_SELECTED,
-                                            LVIS_FOCUSED | LVIS_SELECTED);
+        m_ctlItemList.SetItemState(pdi->list_index,  LVIS_FOCUSED | LVIS_SELECTED,  LVIS_FOCUSED | LVIS_SELECTED);
         m_ctlItemList.EnsureVisible(pdi->list_index, FALSE);
       } else {
         // Get CTreeCtrl to do our work for us - TVN_SELCHANGED
@@ -3070,15 +3089,17 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   const CItemData *pci(NULL), *pbci(NULL);
   CItemData::EntryType etype(CItemData::ET_INVALID);
 
-  if (bTreeView) {
-    HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
-    bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeaf(hi));
-    if (hi != NULL)
-      pci = (CItemData *)m_ctlItemTree.GetItemData(hi);
-  } else {
-    POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
-    if (pos != NULL)
-      pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
+  if (m_bOpen) {
+    if (bTreeView) {
+      HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
+      bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeaf(hi));
+      if (hi != NULL)
+        pci = (CItemData *)m_ctlItemTree.GetItemData(hi);
+    } else {
+      POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+      if (pos != NULL)
+        pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
+    }
   }
 
   if (pci != NULL) {
@@ -3289,6 +3310,13 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       // display of unsaved or expired entries
       if (m_core.GetExpirySize() == 0 ||
           (m_bFilterActive && !m_bExpireDisplayed))
+        iEnable = FALSE;
+      break;
+    case ID_MENUITEM_SHOW_FOUNDENTRIES:
+      // Filter sub-menu mutually exclusive with use of internal filters for
+      // display of unsaved or expired entries
+      if (m_FilterManager.GetFindFilterSize() == 0 ||
+          (m_bFilterActive && !m_bFindFilterDisplayed))
         iEnable = FALSE;
       break;
     case ID_MENUITEM_CLEAR_MRU:
