@@ -1101,9 +1101,7 @@ void DboxMain::SelectFirstEntry()
     // Ensure an entry is selected after open
     CItemData *pci(NULL);
     if (m_ctlItemList.IsWindowVisible()) {
-      m_ctlItemList.SetItemState(0,
-                                 LVIS_FOCUSED | LVIS_SELECTED,
-                                 LVIS_FOCUSED | LVIS_SELECTED);
+      m_ctlItemList.SetItemState(0, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
       m_ctlItemList.EnsureVisible(0, FALSE);
       pci = (CItemData *)m_ctlItemList.GetItemData(0);
     } else {
@@ -2413,7 +2411,7 @@ bool DboxMain::LockDataBase()
   // If a Find is active, save its status
   pws_os::CUUID entry_uuid;
   m_bFindToolBarVisibleAtLock = m_FindToolBar.IsVisible();
-  m_iCurrentItemFound = m_FindToolBar.GetLastSelectedFountItem(entry_uuid);
+  m_iCurrentItemFound = m_FindToolBar.GetLastSelectedFoundItem(entry_uuid);
 
   // If there's a pending dialog box prompting for a
   // password, we need to kill it, since we will prompt
@@ -4381,7 +4379,26 @@ void DboxMain::OnShowFoundEntries()
     CurrentFilter() = m_FilterManager.GetFoundFilter();
   }
 
+  // Get current found item selected
+  CItemData *pci(NULL);
+  if (m_LastFoundTreeItem != NULL) {
+    pci = (CItemData *)m_ctlItemTree.GetItemData(m_LastFoundTreeItem);
+    ASSERT(pci != NULL);
+  }
+
+  UnFindItem();
+  //m_LastFoundTreeItem = NULL;
+  //m_LastFoundListItem = -1;
+
   ApplyFilters();
+
+  if (pci != NULL) {
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    ASSERT(pdi != NULL);
+    if (pdi != NULL) {
+      SelectFindEntry(pdi->list_index, TRUE);
+    }
+  }
 
   m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_APPLYFILTER,
     (m_bFindFilterDisplayed || !m_bFilterActive) ? FALSE : TRUE);
