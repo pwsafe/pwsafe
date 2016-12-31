@@ -16,13 +16,13 @@
 <img alt="View Menu" src="images/view_menu.jpg">
 
 <p>The <b>View Menu</b> controls the available display options. You can
-switch between how your entries' user names and passwords are
+switch between how your entries are
 shown: either as a single list (<b>Flattened List</b>) or organized by category
 (<b>Nested Tree</b>).
-You can choose whether or not to display a toolbar, and if so, if to
-use the 'Classic' or 'New Toolbar' icons. The toolbar itself is also
+You can choose whether or not to display a toolbar, and if so, whether to
+use the 'Classic' or 'New' toolbar icons. The toolbar itself is also
 customizable. You can also expand or collapse all the groups displayed
-in the Nested Tree view, filter the entries displayed to match any
+in the Nested Tree view, display subsets of the entries, filter the entries displayed to match any
 criteria, select the font in which the entries are displayed and
 display reports of merge, compare, import and other advanced operations.</p>
 
@@ -82,24 +82,20 @@ To display or hide the Dragbar, check or uncheck the <b>Dragbar Visible</b> menu
 
 <p>Collapses all groups <i>(Nested Tree view only)</i>.</p>
 
-<h3>Refresh F5</h3>
-<p>Refreshes the display either by pressing the F5 key or clicking on this menu item.</p>
 
-<h3>Special Internal Filters</h3>
+<h3>Subviews</h3>
 
-<p>The following three special internal filters have been provided.  They are mutually
-exclusive with themselves and <a href="#user_defined_filters">user defined filters</a> - 
-only one can be active at a given time.</p>
+<p>"Subviews" are predefined filters that when selected, show only the entries that match their criteria.</p>
 
 <p>As all filters, they can be cleared by double-clicking the red and white striped
 "filter active" indicator at the bottom right of the Status Bar, as can be seen in the
 following images where the filter is active.</p>
 
-<h4>1. Show unsaved changes</h4>
+<h4>1. Unsaved changes</h4>
 
 <p>If item <b>Save database immediately after Edit or Add</b> in menu
 <a href="backups_tab.html">Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Backups</a>
-is unchecked, changed item will not automatically be saved, but they will be shown in a different
+is unchecked, changed item will not be saved immediately, but they will be shown in a different
 colour. See the next picture:</p>
 
 <p>Overview of all entries:<br>
@@ -115,9 +111,9 @@ full database will be displayed.</p>
 <p><small><b>Note:</b> As long as there are some unsaved items, there will be
 a "*" in the status area at the bottom of the application's window.</small></p>
 
-<h4>2. Show entries with Expiry dates</h4>
+<h4>2. Expiry dates</h4>
 
-<p>If you select this menu item, only entries with an expiry date will
+<p>If you select this menu item, only entries with a defined expiry date will
 be shown in the list. It does not matter that the expiry date is in
 the past or future.</p>
 
@@ -126,7 +122,7 @@ be grayed out.</p>
 
 <img alt="Expired Password Filter" src="images/expired_password_filter.jpg">
 
-<h4>3. Show entries from last Find</h4>
+<h4>3. Last Find</h4>
 
 <p>If you select this menu item, only entries that were found during the last
 Find operation will be shown. If a Find hadn't been performed or it had been cleared,
@@ -181,6 +177,8 @@ to disk, it will overwrite any previous report for this operation without
 requesting permission.  You may view these reports at a later date when you
 open a database in this same directory.</p>
 
+<h3>Refresh F5</h3>
+<p>Refreshes the display either by pressing the F5 key or clicking on this menu item.</p>
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>
 <br>

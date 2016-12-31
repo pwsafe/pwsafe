@@ -590,6 +590,14 @@ void ThisMfcApp::SetupMenu()
   minfo.dwMenuData = ID_VIEWMENU;
   pMenu1->SetMenuInfo(&minfo);
 
+  // Do View Menu Subview submenu
+  pos2 = app.FindMenuItem(pMenu1, ID_SUBVIEWMENU);
+  ASSERT(pos2 != -1);
+
+  pMenu2 = pMenu1->GetSubMenu(pos2);
+  minfo.dwMenuData = ID_SUBVIEWMENU;
+  pMenu2->SetMenuInfo(&minfo);
+
   // Do View Menu Filter submenu
   pos2 = app.FindMenuItem(pMenu1, ID_FILTERMENU);
   ASSERT(pos2 != -1);

@@ -147,7 +147,7 @@ void DboxMain::SetUpInitialMenuStrings()
   UINT excludedMenuItems[] = {
   // Add user Excluded Menu Items - anything that is a Popup Menu
     ID_FILEMENU, ID_EXPORTMENU, ID_IMPORTMENU, ID_EDITMENU,
-    ID_VIEWMENU, ID_FILTERMENU, ID_CHANGEFONTMENU, ID_REPORTSMENU,
+    ID_VIEWMENU, ID_SUBVIEWMENU, ID_FILTERMENU, ID_CHANGEFONTMENU, ID_REPORTSMENU,
     ID_MANAGEMENU, ID_LANGUAGEMENU, ID_HELPMENU, ID_FINDMENU,
     ID_EXPORTENTMENU, ID_EXPORTGROUPMENU,
 
@@ -267,6 +267,9 @@ void DboxMain::SetUpInitialMenuStrings()
   isubmenu_pos = app.FindMenuItem(pMainMenu, ID_VIEWMENU);
   ASSERT(isubmenu_pos != -1);
   pSubMenu = pMainMenu->GetSubMenu(isubmenu_pos);
+
+  // Do View Menu Subview submenu
+  InsertShortcuts(pSubMenu, m_MapMenuShortcuts, ID_SUBVIEWMENU);
 
   // Do View Menu Filter submenu
   InsertShortcuts(pSubMenu, m_MapMenuShortcuts, ID_FILTERMENU);
@@ -586,7 +589,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   }
 
   // We have done for all except the Edit and View menus
-  if (uiMenuID != ID_EDITMENU && uiMenuID != ID_VIEWMENU && uiMenuID != ID_FILTERMENU)
+  if (uiMenuID != ID_EDITMENU && uiMenuID != ID_VIEWMENU &&
+      uiMenuID != ID_FILTERMENU && uiMenuID != ID_SUBVIEWMENU)
     return;
 
   // If View menu selected (contains 'Flattened &List' menu item)
@@ -602,15 +606,6 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_DRAGBAR, MF_BYCOMMAND |
                               bDragBarState ? MF_CHECKED : MF_UNCHECKED);
 
-    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_UNSAVED, MF_BYCOMMAND |
-                              m_bUnsavedDisplayed ? MF_CHECKED : MF_UNCHECKED);
-
-    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_ALL_EXPIRY, MF_BYCOMMAND |
-                              m_bExpireDisplayed ? MF_CHECKED : MF_UNCHECKED);
-
-    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_FOUNDENTRIES, MF_BYCOMMAND |
-                              m_bFindFilterDisplayed ? MF_CHECKED : MF_UNCHECKED);
-
     // Don't show filter menu if "internal" menu active
     pPopupMenu->EnableMenuItem(ID_FILTERMENU, MF_BYCOMMAND |
              (m_bUnsavedDisplayed || m_bExpireDisplayed || m_bFindFilterDisplayed) ? MF_GRAYED : MF_ENABLED);
@@ -624,6 +619,18 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     pPopupMenu->EnableMenuItem(ID_REPORTSMENU, MF_BYCOMMAND | (m_bOpen ? MF_ENABLED : MF_GRAYED));
     goto exit;
   }  // View menu
+
+  if (uiMenuID == ID_SUBVIEWMENU) {
+    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_UNSAVED, MF_BYCOMMAND |
+                              m_bUnsavedDisplayed ? MF_CHECKED : MF_UNCHECKED);
+
+    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_ALL_EXPIRY, MF_BYCOMMAND |
+                              m_bExpireDisplayed ? MF_CHECKED : MF_UNCHECKED);
+
+    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_FOUNDENTRIES, MF_BYCOMMAND |
+                              m_bFindFilterDisplayed ? MF_CHECKED : MF_UNCHECKED);
+    goto exit;
+  } // Subview
 
   if (uiMenuID == ID_FILTERMENU) {
     pPopupMenu->ModifyMenu(1, MF_BYPOSITION,
@@ -1044,6 +1051,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     case ID_IMPORTMENU:
     case ID_EDITMENU:
     case ID_VIEWMENU:
+    case ID_SUBVIEWMENU:
     case ID_FILTERMENU:
     case ID_EXPORTENTMENU:
     case ID_EXPORTGROUPMENU:
