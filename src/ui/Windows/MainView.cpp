@@ -1100,19 +1100,22 @@ void DboxMain::SelectFirstEntry()
   if (m_core.GetNumEntries() > 0) {
     // Ensure an entry is selected after open
     CItemData *pci(NULL);
-
-    // Do both Tree & List views just in case user changes view
-    m_ctlItemList.SetItemState(0, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
-    m_ctlItemList.EnsureVisible(0, FALSE);
-    pci = (CItemData *)m_ctlItemList.GetItemData(0);
-
-    HTREEITEM hitem = m_ctlItemTree.GetFirstVisibleItem();
-    if (hitem != NULL) {
-      m_ctlItemTree.SelectItem(hitem);
+    if (m_ctlItemList.IsWindowVisible()) {
+      m_ctlItemList.SetItemState(0,
+                                 LVIS_FOCUSED | LVIS_SELECTED,
+                                 LVIS_FOCUSED | LVIS_SELECTED);
+      m_ctlItemList.EnsureVisible(0, FALSE);
+      pci = (CItemData *)m_ctlItemList.GetItemData(0);
+    } else {
+      HTREEITEM hitem = m_ctlItemTree.GetRootItem();
+      if (hitem != NULL) {
+        m_ctlItemTree.SelectItem(hitem);
+        m_ctlItemTree.EnsureVisible(hitem);
+        pci = (CItemData *)m_ctlItemTree.GetItemData(hitem);
+      }
     }
 
     UpdateToolBarForSelectedItem(pci);
-
     SetDCAText(pci);
   }
 }
