@@ -73,7 +73,7 @@ public:
   void SetSearchDirection(int iFindDirection) {m_iFindDirection = iFindDirection;}
   void ChangeFont();
 
-  int GetLastSelectedFountItem(pws_os::CUUID &entry_uuid);
+  int GetLastSelectedFoundItem(pws_os::CUUID &entry_uuid);
 
 protected:
   BOOL PreTranslateMessage(MSG* pMsg);

@@ -185,7 +185,7 @@ void DboxMain::ApplyFilters()
 
   // m_LastFoundTreeItem might be invalid if filter activated or cleared
   pws_os::CUUID entry_uuid;
-  int iLastShown = m_FindToolBar.GetLastSelectedFountItem(entry_uuid);
+  int iLastShown = m_FindToolBar.GetLastSelectedFoundItem(entry_uuid);
   if (iLastShown >= 0) {
     CItemData *pci = &m_core.Find(entry_uuid)->second;
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();

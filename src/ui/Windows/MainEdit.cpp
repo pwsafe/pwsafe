@@ -466,6 +466,22 @@ void DboxMain::OnDuplicateGroup()
         // Make copy normal to begin with - if it has dependents then when those
         // are added then its entry type will automatically be changed
         ci2.SetNormal();
+
+        // Set creation time to now but keep all others
+        // Note: potential date/time inconsistencies that should not be "fixed"
+        // during open validation i.e. fields changed before the entry was created!
+        ci2.SetCTime();
+
+        time_t original_creation_time, t;
+        original_creation_time = pci->GetCTime(original_creation_time);
+
+        // If the password & entry modification times are zero, they haven't
+        // been changed since the entry was created.  Use original creation times.
+        t = pci->GetPMTime(t);
+        ci2.SetPMTime(t == 0 ? original_creation_time : t);
+        t = pci->GetRMTime(t);
+        ci2.SetRMTime(t == 0 ? original_creation_time : t);
+
         Command *pcmd = AddEntryCommand::Create(&m_core, ci2);
         pcmd->SetNoGUINotify();
         pmulti_cmd_base->Add(pcmd);
@@ -517,10 +533,27 @@ void DboxMain::OnDuplicateGroup()
           const StringX sxThisEntryNewGroup = sxNewPath + subPath;
           ci2.SetGroup(sxThisEntryNewGroup);
 
-          if (pci->IsAlias())
+          // Set creation time to now but keep all others
+          // Note: potential date/time inconsistencies that should not be "fixed"
+          // during open validation i.e. fields changed before the entry was created!
+          ci2.SetCTime();
+
+          time_t original_creation_time, t;
+          original_creation_time = pci->GetCTime(original_creation_time);
+
+          if (pci->IsAlias()) {
             ci2.SetAlias();
-          else
+
+            // If the password & entry modification time are zero, they haven't
+            // been changed since the entry was created.  Use original creation times.
+            t = pci->GetPMTime(t);
+            ci2.SetPMTime(t == 0 ? original_creation_time : t);
+            t = pci->GetRMTime(t);
+            ci2.SetRMTime(t == 0 ? original_creation_time : t);
+          } else {
+            // Shortcuts don't have a password that a user can change
             ci2.SetShortcut();
+          }
 
           Command *pcmd = NULL;
           const CItemData *pbci = GetBaseEntry(pci);
@@ -536,6 +569,7 @@ void DboxMain::OnDuplicateGroup()
             // Base not in duplicated group - use old base
             baseUUID = pbci->GetUUID();
           } // where's the base?
+
           pcmd = AddEntryCommand::Create(&m_core, ci2, baseUUID);
           pcmd->SetNoGUINotify();
           pmulti_cmd_deps->Add(pcmd);
@@ -1686,6 +1720,25 @@ void DboxMain::OnDuplicateEntry()
     } else if (pci->IsBase()) {
       ci2.SetNormal();
     }
+
+    // Set creation time to now but keep all others unchanged.
+    // Note: potential date/time inconsistencies that should not be "fixed"
+    // during open validation i.e. fields changed before the entry was created!
+    ci2.SetCTime();
+
+    time_t original_creation_time, t;
+    original_creation_time = pci->GetCTime(original_creation_time);
+
+    // If the password & entry modification times are zero, they haven't
+    // been changed since the entry was created.  Use original creation times.
+    if (!pci->IsShortcut()) {
+      // Shortcuts don't have a password that a user can change
+      t = pci->GetPMTime(t);
+      ci2.SetPMTime(t == 0 ? original_creation_time : t);
+    }
+
+    t = pci->GetRMTime(t);
+    ci2.SetRMTime(t == 0 ? original_creation_time : t);
 
     Execute(AddEntryCommand::Create(&m_core, ci2, baseUUID));
 
