@@ -16,6 +16,7 @@ The ReleaseNotes.html file has links to the relevant tickets/issues.
 Bugs fixed in 3.41.1
 ====================
 [] Fix issue when locking database when not using the System Tray.
+[] Fix empty group validation on DB open.
 [1392] If the command line parameter '-g' is used to specify a configuration
 file by its relative path, PasswordSafe will now look for it in the same
 directory as the executable unless overridden by the PWS_PREFSDIR environmental
