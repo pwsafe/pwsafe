@@ -286,7 +286,8 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
       GetLocker(lock_filename, s_locker);
       locker = s_locker.c_str();
       break;
-    default: {
+    default:
+    {
       // Give detailed error message, if possible
       LPTSTR lpMsgBuf = NULL;
       if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
@@ -300,8 +301,8 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
       } else { // should never happen!
         LoadAString(locker, IDSC_NOLOCKACCESS); // better than nothing
       }
-    }
       break;
+    }
     } // switch (error)
     return false;
   } else { // valid filehandle, write our info

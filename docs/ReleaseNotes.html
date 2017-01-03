@@ -86,6 +86,17 @@ Information about older versions may be found <a href="https://pwsafe.org/histor
 <td>Fix issue when locking database when not using the System Tray.</td>
 </tr>
 <tr>
+<td align="center" width="100">[]</td>
+<td>Fix empty group validation on DB open.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1392);return false;">1392</a></td>
+<td>If the command line parameter '-g' is used to specify a configuration
+file by its relative path, PasswordSafe will now look for it in the same
+directory as the executable unless overridden by the PWS_PREFSDIR environmental
+variable.</td>
+</tr>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1391);return false;">1391</a></td>
 <td>Fixed slow opening of a database if the default group display is completely
 collapsed.</td>
@@ -116,6 +127,11 @@ input focus when clicking on the icon to unlock the database.</td>
 <table>
 <tbody>
 <tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(819);return false;">819</a></td>
+<td>When an entry is duplicated directly or by being in a group being duplicated, its
+creation time is now changed to the duplication time.</td>
+</tr>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(816);return false;">816</a></td>
 <td>Set installed version in uninstall section of Registry for Windows version.</td>
 </tr>
@@ -131,6 +147,11 @@ input focus when clicking on the icon to unlock the database.</td>
 <td align="center" width="100">[]</td>
 <td>A new internal filter has been implemented to show only those entries from
 last Find. Access via the View menu or Ctrl+K shortcut.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Add command line argument '-l' to allow a language file to be used for error
+messages when processing the command line.</td>
 </tr>
 </tbody>
 </table>

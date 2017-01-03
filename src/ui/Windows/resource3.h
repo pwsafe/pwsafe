@@ -794,3 +794,6 @@
 #define IDS_CHANGINGBASEENTRY2          6041
 #define IDS_EXP_ALIAS                   6042
 #define IDS_HOSTUSER                    6043
+#define IDS_CONFIGFILENOTFOUND1         6044
+#define IDS_CONFIGFILENOTFOUND2         6045
+#define IDS_CANTCREATECONFIGFILE        6046
