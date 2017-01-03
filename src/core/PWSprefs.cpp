@@ -127,10 +127,10 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("HideSystemTray"), false, ptApplication},             // application
   {_T("UsePrimarySelectionForClipboard"), false, ptApplication}, //application
   {_T("CopyPasswordWhenBrowseToURL"), false, ptDatabase},   // database
-  {_T("UseAltAutoType"), false, ptApplication},             //application
-  {_T("IgnoreHelpLoadError"), false, ptApplication},        //application
-  {_T("VKPlaySound"), false, ptApplication},                //application
-  {_T("ListSortAscending"), true, ptApplication},           //application
+  {_T("UseAltAutoType"), false, ptApplication},             // application
+  {_T("IgnoreHelpLoadError"), false, ptApplication},        // application
+  {_T("VKPlaySound"), false, ptApplication},                // application
+  {_T("ListSortAscending"), true, ptApplication},           // application
 };
 
 // Default value = -1 means set at runtime
@@ -168,10 +168,10 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
                             minDCA, maxDCA},                        // application
   {_T("DefaultAutotypeDelay"), 10, ptApplication,
                             1, 60000},                              // application
-  {_T("DlgOrientation"), AUTO, ptApplication, AUTO, WIDE},         // application
-  {_T("TimedTaskChainDelay"), 100, ptApplication, -1, -1},         // application
-  {_T("AutotypeSelectAllKeyCode"), 0, ptApplication, 0, 255},         // application
-  {_T("AutotypeSelectAllModMask"), 0, ptApplication, 0, 255},         // application
+  {_T("DlgOrientation"), AUTO, ptApplication, AUTO, WIDE},          // application
+  {_T("TimedTaskChainDelay"), 100, ptApplication, -1, -1},          // application
+  {_T("AutotypeSelectAllKeyCode"), 0, ptApplication, 0, 255},       // application
+  {_T("AutotypeSelectAllModMask"), 0, ptApplication, 0, 255},       // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

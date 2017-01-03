@@ -16,6 +16,10 @@ The ReleaseNotes.html file has links to the relevant tickets/issues.
 Bugs fixed in 3.41.1
 ====================
 [] Fix issue when locking database when not using the System Tray.
+[1392] If the command line parameter '-g' is used to specify a configuration
+file by its relative path, PasswordSafe will now look for it in the same
+directory as the executable unless overridden by the PWS_PREFSDIR environmental
+variable.
 [1391] Fixed slow opening of a database if the default group display is completely
 collapsed.
 [1385] The filter active indicator now shows in Windows 7.
@@ -35,6 +39,8 @@ New Features for 3.41.1
 =======================
 [] A new internal filter has been implemented to show only those entries from
 last Find. Access via the View menu or Ctrl+K shortcut.
+[] Add command line argument '-l' to allow a language file to be used for error
+messages when processing the command line.
 
 Bugs fixed in 3.41.0
 ====================

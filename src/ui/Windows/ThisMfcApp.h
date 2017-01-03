@@ -111,7 +111,7 @@ protected:
 private:
   bool ParseCommandLine(DboxMain &dbox, bool &allDone);
   bool GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost, StringX &sxUser);
-  void LoadLocalizedStuff();
+  void LoadLocalizedStuff(StringX sxLL);
   void SetupMenu();
   static BOOL CALLBACK searcher(HWND hWnd, LPARAM lParam);
 
