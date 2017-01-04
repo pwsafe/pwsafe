@@ -466,6 +466,10 @@ void DboxMain::OnDuplicateGroup()
         // Make copy normal to begin with - if it has dependents then when those
         // are added then its entry type will automatically be changed
         ci2.SetNormal();
+
+        // Set duplication times as per FR819
+        ci2.SetDuplicateTimes(*pci);
+
         Command *pcmd = AddEntryCommand::Create(&m_core, ci2);
         pcmd->SetNoGUINotify();
         pmulti_cmd_base->Add(pcmd);
@@ -517,10 +521,14 @@ void DboxMain::OnDuplicateGroup()
           const StringX sxThisEntryNewGroup = sxNewPath + subPath;
           ci2.SetGroup(sxThisEntryNewGroup);
 
-          if (pci->IsAlias())
+          if (pci->IsAlias()) {
             ci2.SetAlias();
-          else
+          } else {
             ci2.SetShortcut();
+          }
+
+          // Set duplication times as per FR819
+          ci2.SetDuplicateTimes(*pci);
 
           Command *pcmd = NULL;
           const CItemData *pbci = GetBaseEntry(pci);
@@ -536,6 +544,7 @@ void DboxMain::OnDuplicateGroup()
             // Base not in duplicated group - use old base
             baseUUID = pbci->GetUUID();
           } // where's the base?
+
           pcmd = AddEntryCommand::Create(&m_core, ci2, baseUUID);
           pcmd->SetNoGUINotify();
           pmulti_cmd_deps->Add(pcmd);
@@ -1687,6 +1696,9 @@ void DboxMain::OnDuplicateEntry()
       ci2.SetNormal();
     }
 
+    // Set duplication times as per FR819
+    ci2.SetDuplicateTimes(*pci);
+
     Execute(AddEntryCommand::Create(&m_core, ci2, baseUUID));
 
     pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
@@ -1697,10 +1709,6 @@ void DboxMain::OnDuplicateEntry()
     InsertItemIntoGUITreeList(m_core.GetEntry(iter));
     FixListIndexes();
 
-    int rc = SelectEntry(pdi->list_index);
-    if (rc == 0) {
-      SelectEntry(m_ctlItemList.GetItemCount() - 1);
-    }
     m_RUEList.AddRUEntry(ci2.GetUUID());
 
     ChangeOkUpdate();

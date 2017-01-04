@@ -16,6 +16,11 @@ The ReleaseNotes.html file has links to the relevant tickets/issues.
 Bugs fixed in 3.41.1
 ====================
 [] Fix issue when locking database when not using the System Tray.
+[] Fix empty group validation on DB open.
+[1392] If the command line parameter '-g' is used to specify a configuration
+file by its relative path, PasswordSafe will now look for it in the same
+directory as the executable unless overridden by the PWS_PREFSDIR environmental
+variable.
 [1391] Fixed slow opening of a database if the default group display is completely
 collapsed.
 [1385] The filter active indicator now shows in Windows 7.
@@ -26,8 +31,9 @@ input focus when clicking on the icon to unlock the database.
 
 Changes to Existing Features in 3.41.1
 ======================================
-[816] Set installed version in uninstall section of Registry for
-Windows version.
+[819] A duplicated entry's creation time is set to the time of duplication.
+All other times are copied from the original.
+[816] Set installed version in uninstall section of Registry for Windows version.
 
 New Features for 3.41.1
 =======================

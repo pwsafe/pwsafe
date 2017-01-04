@@ -1401,6 +1401,33 @@ bool CItemData::SetTime(int whichtime, const stringT &time_str)
   return false;
 }
 
+void CItemData::SetDuplicateTimes(const CItemData &src)
+{
+  // As per FR819
+  // Note: potential date/time inconsistencies that should not be "fixed"
+  // during open validation i.e. fields changed before the entry was created!
+
+  // Set creation time to now but keep all others unchanged.
+  // (ignore last access time as will be updated if the user has requested
+  // that these are maintained).
+  SetCTime();
+
+  time_t original_creation_time, t;
+  original_creation_time = src.GetCTime(original_creation_time);
+
+  // If the password & entry modification times are zero, they haven't
+  // been changed since the entry was created.  Use original creation times.
+  if (!src.IsShortcut()) {
+    // Shortcuts don't have a password that a user can change
+    t = src.GetPMTime(t);
+    SetPMTime(t == 0 ? original_creation_time : t);
+  }
+
+  // Set record modification time
+  t = src.GetRMTime(t);
+  SetRMTime(t == 0 ? original_creation_time : t);
+}
+
 void CItemData::SetXTimeInt(int32 xint)
 {
   unsigned char buf[sizeof(int32)];

@@ -14,8 +14,6 @@
 // String Table
 //
 
-// Usage
-
 STRINGTABLE
 BEGIN
   IDSC_PASSWORDTOOSHORT   "Password is too short"

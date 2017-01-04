@@ -2132,13 +2132,26 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
         fixedItem.ClearAttUUID();
         bFixed = true;
       }
+    }
 
-      // Validate entry not in an empty group
-      std::vector<StringX>::iterator itEG;
-      itEG = std::find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxgroup);
-      if (itEG != m_vEmptyGroups.end()) {
-        // Empty group can't have entries!  Remove
-        m_vEmptyGroups.erase(itEG);
+    // Empty group can't have entries!
+    // This removes the empty group if it is an exact match to this entry's group
+    std::vector<StringX>::iterator itEG;
+    itEG = std::find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxgroup);
+    if (itEG != m_vEmptyGroups.end()) {
+      m_vEmptyGroups.erase(itEG);
+    }
+
+    // This remove the empty group if it contains this entry in one of its subgroups
+    // Need to use reverse iterator so that can erase elements and still
+    // iterate the vector but erase only takes a normal iterator!
+    std::vector<StringX>::reverse_iterator ritEG = m_vEmptyGroups.rbegin();
+    while (ritEG != m_vEmptyGroups.rend()) {
+      StringX sxEGDot = *ritEG + L".";
+      ritEG++;
+      if (sxgroup.length() > sxEGDot.length() &&
+          _tcsncmp(sxEGDot.c_str(), sxgroup.c_str(), sxEGDot.length()) == 0) {
+        ritEG = std::vector<StringX>::reverse_iterator(m_vEmptyGroups.erase(ritEG.base()));
       }
     }
 

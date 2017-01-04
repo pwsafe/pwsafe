@@ -2,6 +2,7 @@
 
 //  Usage
 #define IDS_USAGE                       5000
+#define IDS_INVALIDCOMMANDLINE          5001
 
 // Window state
 #define IDS_ALWAYSONTOP                 5010
