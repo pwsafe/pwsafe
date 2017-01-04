@@ -295,6 +295,8 @@ public:
   void SetAlias() {SetEntryType(ET_ALIAS);}
   void SetShortcut() {SetEntryType(ET_SHORTCUT);}
 
+  void SetDuplicateTimes(const CItemData &src);
+
   EntryStatus GetStatus() const {return m_entrystatus;}
   void ClearStatus() {m_entrystatus = ES_CLEAN;}
   void SetStatus(const EntryStatus es) {m_entrystatus = es;}
