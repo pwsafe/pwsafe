@@ -16,6 +16,7 @@ The ReleaseNotes.html file has links to the relevant tickets/issues.
 Bugs fixed in 3.41.1
 ====================
 [] Fix issue when locking database when not using the System Tray.
+[] Fix empty group validation on DB open.
 [1391] Fixed slow opening of a database if the default group display is completely
 collapsed.
 [1385] The filter active indicator now shows in Windows 7.
