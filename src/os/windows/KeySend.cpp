@@ -395,17 +395,17 @@ bool CKeySend::IsEmulatingMods() const
 bool CKeySend::LookupVirtualKey(const StringX &kname, WORD &kval)
 {
   static const std::map<std::wstring, WORD> vkmap = {
-    {L"ENTER", VK_RETURN},
-    {L"UP", VK_UP},
-    {L"DOWN", VK_DOWN},
-    {L"LEFT", VK_LEFT},
-    {L"RIGHT", VK_RIGHT},
-    {L"HOME", VK_HOME},
-    {L"END", VK_END},
-    {L"PGUP", VK_PRIOR},
-    {L"PGDN", VK_NEXT},
-    {L"TAB", VK_TAB},
-    {L"SPACE", VK_SPACE},
+    {L"ENTER", (WORD)VK_RETURN},
+    {L"UP", (WORD)VK_UP},
+    {L"DOWN", (WORD)VK_DOWN},
+    {L"LEFT", (WORD)VK_LEFT},
+    {L"RIGHT", (WORD)VK_RIGHT},
+    {L"HOME", (WORD)VK_HOME},
+    {L"END", (WORD)VK_END},
+    {L"PGUP", (WORD)VK_PRIOR},
+    {L"PGDN", (WORD)VK_NEXT},
+    {L"TAB", (WORD)VK_TAB},
+    {L"SPACE", (WORD)VK_SPACE},
   };
 
   auto iter = vkmap.find(kname.c_str());

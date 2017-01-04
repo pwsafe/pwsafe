@@ -75,14 +75,12 @@ This will cause the application to read and write preferences under the specifie
 <i>hostname</i>, instead of under the machine's name.</li>
 
 <li><b>-g</b> <i>config_file</i><br>
-This will cause the specified file to be used for loading and storing
-preferences, instead of the default pwsafe.cfg. If just a filename is
-given, without a path, it will be searched for in the directory in which the
-application was invoked. Note that if the filename and/or path has
-spaces, it should be enclosed in double quotes. This is useful in a
-"wrapper" script/batch file on a portable device (e.g., disk-on-key) by
-setting the config dir as needed. See also the description of
-<b>PWS_PREFSDIR</b> in the <a href="preferences.html">Preferences</a> Section.</li> 
+This will cause the specified file to be used for loading and storing preferences,
+instead of the default pwsafe.cfg. If just a filename is given, without a path,
+it will be searched for in the directory in which the application was invoked
+unless overridden by the <b>PWS_PREFSDIR</b> environment variable (see its description
+in the <a href="preferences.html">Preferences</a> Section). Note that if the filename
+and/or path has spaces, it should be enclosed in double quotes.</li> 
 </ul>
 
 <p>Finally, there are some special command line flags beginning with "--".  They are:
