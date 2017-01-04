@@ -48,27 +48,31 @@ and per user, so that the file may be shared between different users,
 and across different machines.</p>
 
 <p>By default, pwsafe.cfg is kept in the same directory as the pwsafe.exe
-executable program. If, however, the <code>PWS_PREFSDIR</code> environment variable
-is set, pwsafe will use the configuration file stored there. This is
+executable program. If, however, the <b>PWS_PREFSDIR</b> environment
+variable is set, pwsafe will use the configuration file stored there. This is
 useful for cases where write permissions to the pwsafe.exe install
-directory is restricted (See also the description of the <b>-g</b>
-  option in the <a href="cli.html">Command Line Arguments</a> Section).</p>
+directory are restricted (See also the description of the <b>-g</b>
+option in the <a href="cli.html">Command Line Arguments</a> Section) and
+in a "wrapper" script/batch file on a portable device (e.g., disk-on-key) by
+setting the configuration Folder/directory as needed.</p>
 
-<p>The following tables describes the configuration items. Most of them are configurable via the
-<a href="manage_menu.html">"Manage&nbsp;&rarr;&nbsp;Options"</a> dialog box.  As we use XML to
-save these values, field names are case sensitive. Preferences stored in the "pwsafe.cfg" file
-apply to all open databases.  Those stored in the database apply only to that database.
-In Windows Vista or Windows 7, the pwsafe.cfg file can be found in:
-"<code>C:\Users\&lt;username&gt;\AppData\Local\PasswordSafe</code>" and in Windows XP, it can be found in:
-"<code>C:\Documents and Settings\&lt;username&gt;\Application Data\PasswordSafe</code>". Note both directories may
-be hidden and Folder View properties may need to be modified in order to be able to view it.</p>
+<p>The following tables describes the configuration items. Most of them are
+configurable via the <a href="manage_menu.html">"Manage&nbsp;&rarr;&nbsp;Options"</a>
+dialog box.  As we use XML to save these values, field names are case sensitive.
+Preferences stored in the "pwsafe.cfg" file apply to all open databases.  Those
+stored in the database apply only to that particular database. In Windows Vista
+and later, the pwsafe.cfg file can be found in:
+"<code>C:\Users\&lt;username&gt;\AppData\Local\PasswordSafe</code>"
+but, in Windows XP, it can be found in:
+"<code>C:\Documents and Settings\&lt;username&gt;\Application Data\PasswordSafe</code>".
+Note both directories may be hidden and Folder View properties may need to be
+modified in order to be able to view it.</p>
 
 Notes:
 <ul>
 <li>Obsolete preferences are not listed.</li>
 <li>Only non-default preference values are stored in the configuration file or database.</li>
 </ul> 
-
 
 <p><big><b>Warning:</b> Do <b>NOT</b> modify any of the preferences in the pwsafe.cfg
 file manually, as this may cause unexpected or unpredictable results.  Whilst we have

@@ -128,7 +128,7 @@ BOOL COptionsSystem::OnInitDialog()
   GetDlgItem(IDC_STATIC_RWSTATUS)->SetWindowText(wsCO.c_str());
 
   // Config file name & location
-  cs_text = PWSUtil::NormalizeTTT(sx_CF).c_str();
+  cs_text = PWSUtil::NormalizeTTT(sx_CF, 60).c_str();
   GetDlgItem(IDC_CONFIGFILE)->SetWindowText(cs_text);
 
   // Effective host & user used in config file

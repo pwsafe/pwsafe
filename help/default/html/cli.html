@@ -57,8 +57,8 @@ is meant for starting the application upon login, via a shortcut in the user's
 Startup folder). <b>Note:</b> This implicitly puts the application in the system tray.</li>
 
 <li><i>pwsafe</i> <b>-m</b><br>
-<big><span style="width: 500px;"><font size="-1"><big>This is the same as the '<b>-c</b>' option, with the
-addition that the application is started as minimized.</big></font></span></big></li>
+This is the same as the '<b>-c</b>' option, with the addition that the application
+is started as minimized.</li>
 </ul>
 
 <p>In addition, the following options are accepted and may be useful if you wish to
@@ -80,10 +80,9 @@ preferences, instead of the default pwsafe.cfg. If just a filename is
 given, without a path, it will be searched for in the directory in which the
 application was invoked. Note that if the filename and/or path has
 spaces, it should be enclosed in double quotes. This is useful in a
-  "wrapper" script/batch file on a portable device (e.g., disk-on-key),
-  setting the config dir as needed. See also the description of
-  <b>PWS_PREFSDIR</b> in
-  the <a href="preferences.html">Preferences</a> Section.</li> 
+"wrapper" script/batch file on a portable device (e.g., disk-on-key) by
+setting the config dir as needed. See also the description of
+<b>PWS_PREFSDIR</b> in the <a href="preferences.html">Preferences</a> Section.</li> 
 </ul>
 
 <p>Finally, there are some special command line flags beginning with "--".  They are:
@@ -91,7 +90,7 @@ spaces, it should be enclosed in double quotes. This is useful in a
 
 <ul>
 <li><b>--do-tall, --do-wide, --do-auto</b><br>
-By default, <b>Password Safe</b> will check the screen dimensions and choose tall or wide versions of the larger dialog screens. Specifying <b>--do-tall</b> or <b>--do-wide</b> forces the choice, and <b>--do-auto</b> resets the system to use its internal logic. Note that this sets a <a href="preferences.html">>preference</a>, so it's enough to use this flag once on a given machine.</li>
+By default, <b>Password Safe</b> will check the screen dimensions and choose tall or wide versions of the larger dialog screens. Specifying <b>--do-tall</b> or <b>--do-wide</b> forces the choice, and <b>--do-auto</b> resets the system to use its internal logic. Note that this sets a <a href="preferences.html">preference</a>, so it's enough to use this flag once on a given machine.</li>
 <li><b>--novalidate</b><br>
 This will prevent <b>Password Safe</b> validating databases automatically when they are
 opened.  Some validation is always required e.g. uniqueness of the entry's ID and the

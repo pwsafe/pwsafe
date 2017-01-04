@@ -51,6 +51,7 @@
 
 #include <vector>
 #include <errno.h>
+#include <fstream>
 #include <io.h>
 
 using namespace std;
@@ -179,7 +180,8 @@ ThisMfcApp::~ThisMfcApp()
 static void Usage()
 {
   CGeneralMsgBox gmb;
-  gmb.AfxMessageBox(IDS_USAGE);
+  CString csMsg(MAKEINTRESOURCE(IDS_USAGE)), csTitle(MAKEINTRESOURCE(IDS_INVALIDCOMMANDLINE));
+  gmb.AfxMessageBox(csMsg, csTitle, MB_OK);
 }
 
 // tests if file exists, returns true if so, displays error message if not
@@ -669,8 +671,8 @@ bool ThisMfcApp::GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost
 {
   // ONLY get config file, host & user name if supplied
   // This MUST be done before PWSprefs is first initialised
-  bool rc(false);
   sxConfigFile = sxHost = sxUser = L"";
+  wstring sConfig;
 
   if (m_lpCmdLine[0] != L'\0') {
     CString args = m_lpCmdLine;
@@ -698,41 +700,117 @@ bool ThisMfcApp::GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost
           // ensure there's another non-flag argument
           if ((arg + 1) == argvec.end() || (arg + 1)[0] == L'-') {
             // Better stop as we don't know how bad things are!
+            // However - tell user about issue!
+            Usage();
             return false;
           } else {
             arg++;
             sxUser = *arg;
-            rc = true;
           }
           break;
         case L'H': case L'h': // set effective host
           // ensure there's another non-flag argument
           if ((arg + 1) == argvec.end() || (arg + 1)[0] == L'-') {
             // Better stop as we don't know how bad things are!
+            // However - tell user about issue!
+            Usage();
             return false;
           } else {
             arg++;
             sxHost = *arg;
-            rc = true;
           }
           break;
         case L'G': case L'g': // override default config file
           // ensure there's another non-flag argument
           if ((arg + 1) == argvec.end() || (arg + 1)[0] == L'-') {
             // Better stop as we don't know how bad things are!
+            // However - tell user about issue!
+            Usage();
             return false;
           } else {
             arg++;
-            if (!pws_os::FileExists(std::wstring(*arg))) {
-              // FileExists returns false if specified file not found
-              // DON'T use PWSprefs here
-              // Better stop as we don't know how bad things are!
-              return false;
+            bool bRelative(false);
+            if (PathIsRelative(*arg)) {
+              // As per Help entry - use executable directory unless overridden
+              // Don't use PWSdirs::GetConfigDir()
+              wstring sPWS_PREFSDIR = pws_os::getenv("PWS_PREFSDIR", true);
+              if (sPWS_PREFSDIR.empty()) {
+                sConfig = pws_os::getexecdir() + wstring(*arg);
+              } else {
+                sConfig = sPWS_PREFSDIR + wstring(*arg);
+              }
+              bRelative = true;
             } else {
-              sxConfigFile = *arg;
-              rc = true;
+              sConfig = *arg;
+            }
+
+            // Now resolve and tidy up absolute path
+            wchar_t full[_MAX_PATH + 1];
+            if (_wfullpath(full, sConfig.c_str(), _MAX_PATH) != NULL) {
+              sConfig = full;
+            }
+
+            if (!pws_os::FileExists(sConfig)) {
+              // FileExists returns false if specified file not found
+              CString cs_ErrorMsg, csConfigfile;
+              // If the user hasn't specified a language for issueing error messages
+              // during command line processing and before the configuration file
+              // has been opened, this message will be in English (as will any display
+              // of the Usage.
+              if (bRelative) {
+                // Also tell user the full path we checked as well.
+                csConfigfile.Format(L"%s\n  (%s)", static_cast<LPCWSTR>(*arg), 
+                  static_cast<LPCWSTR>(sConfig.c_str()));
+              } else {
+                // Just tell the user the absolute path they specified
+                csConfigfile = *arg;
+              }
+
+              CGeneralMsgBox gmb;
+              cs_ErrorMsg.Format(L"Configuration file not found.\n  %s\n\nDo you wish to create it?",
+                static_cast<LPCWSTR>(csConfigfile));
+
+              INT_PTR rc = gmb.AfxMessageBox(cs_ErrorMsg, L"Error finding configuration file",
+                                 MB_YESNO | MB_ICONINFORMATION | MB_DEFBUTTON2);
+
+              if (rc == IDNO) {
+                // Better stop as we don't know how bad things are!
+                return false;
+              }
+
+              // Try to create it
+              FILE *configfile = pws_os::FOpen(sConfig.c_str(), _T("w"));
+              if (configfile == NULL) {
+                // Can't create it either!!!
+                // Give detailed error message, if possible
+                DWORD error = GetLastError();
+                LPTSTR lpMsgBuf = NULL;
+                DWORD dw = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+                                  NULL,
+                                  error,
+                                  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                                  (LPTSTR)&lpMsgBuf,
+                                  0, NULL);
+                if (dw != 0) {
+                  CGeneralMsgBox gmb_err;
+                  cs_ErrorMsg.Format(L"Unable to create configuration file:\n\n\t%s", lpMsgBuf);
+
+                  gmb_err.AfxMessageBox(cs_ErrorMsg, L"Error",
+                    MB_OK | MB_ICONINFORMATION);
+
+                  // Free buffer
+                  LocalFree(lpMsgBuf);
+                }
+                // Better stop as we don't know how bad things are!
+                return false;
+              }
+
+              // Close & delete it & drop through
+              fclose(configfile);
+              pws_os::DeleteAFile(sConfig);
             }
           }
+          sxConfigFile = sConfig.c_str();
           break;
         } // switch on flag
       }
@@ -740,7 +818,7 @@ bool ThisMfcApp::GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost
     } // while argvec
   } // Command line not empty
 
-  return rc;
+  return true;
 }
 
 bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
@@ -899,50 +977,10 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
           // Obsolete - databases are always validated during opening unless --novalidate specified
           break;
         case L'U': case L'u': // set effective user
-          // ensure there's another non-flag argument
-          if ((arg + 1) == argvec.end() || (arg + 1)[0] == L'-') {
-            Usage();
-            return false;
-          } else {
-            arg++;
-            // No need to set effective user as done in previous parsing
-            // of command line to get config information
-          }
-          break;
         case L'H': case L'h': // set effective host
-          // ensure there's another non-flag argument
-          if ((arg + 1) == argvec.end() || (arg + 1)[0] == L'-') {
-            Usage();
-            return false;
-          } else {
-            arg++;
-            // No need to set effective host as done in previous parsing
-            // of command line to get config information
-          }
-          break;
         case L'G': case L'g': // override default config file
-          // ensure there's another non-flag argument
-          if ((arg + 1) == argvec.end() || (arg + 1)[0] == L'-') {
-            Usage();
-            return false;
-          } else {
-            arg++;
-            // No need to set config file as done in previous parsing
-            // of command line to get config information
-            if (!pws_os::FileExists(std::wstring(*arg))) {
-              // FileExists returns false if specified file not found
-              CGeneralMsgBox gmb;
-              CString missing_cfg;
-              // Classic chicken-and-egg here: Since the local
-              // language could be specified in the config file, and since
-              // the desired config file can't be found, it seems
-              // safest to keep this particular error message in English
-              // and out of the language-specific dlls.
-              missing_cfg.Format(L"Configuration file %s not found - creating it.",
-                                 static_cast<LPCWSTR>(*arg));
-              gmb.AfxMessageBox(missing_cfg, L"Error", MB_OK | MB_ICONINFORMATION);
-            }
-          }
+          // These have already been processed by member function GetConfigFromCommandLine
+          arg++;
           break;
         case L'Q': case L'q': // be Quiet re missing fonts, dlls, etc.
           m_noSysEnvWarnings = true;
@@ -1022,12 +1060,15 @@ BOOL ThisMfcApp::InitInstance()
 
     if (!sxUser.empty())
       SysInfo::GetInstance()->SetEffectiveUser(sxUser.c_str());
+  } else {
+    // Issues - get out
+    return FALSE;
   }
 
   // Set up PWSprefs for this PasswordSafe session.
   // Whilst the language may be changed by the user via a menu, there is no user
   // facility to change the config file, host or user later.
-  PWSprefs::GetInstance();
+  PWSprefs *prefs = PWSprefs::GetInstance();
 
   // Now load translations (localized messages used in Usage and encrypt/decrypt dialogs)
   LoadLocalizedStuff();
@@ -1062,8 +1103,6 @@ BOOL ThisMfcApp::InitInstance()
     return parseVal ? TRUE : FALSE;
   else if (!parseVal) // bad command line args
     return FALSE;
-
-  PWSprefs *prefs = PWSprefs::GetInstance();
 
   // And the others - even if not referenced here
   Fonts *pFonts = Fonts::GetInstance();
