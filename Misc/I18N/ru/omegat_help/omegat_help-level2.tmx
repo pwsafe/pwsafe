@@ -2120,7 +2120,7 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>Note:<ept i="0">&lt;/b0&gt;</ept> Windows environmental variables are <bpt i="1" x="1">&lt;b1&gt;</bpt>not<ept i="1">&lt;/b1&gt;</ept> case sensitive.</seg>
+        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>Note:<ept i="0">&lt;/b0&gt;</ept> Windows environment variables are <bpt i="1" x="1">&lt;b1&gt;</bpt>not<ept i="1">&lt;/b1&gt;</ept> case sensitive.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T200732Z">
         <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>Примечание.<ept i="0">&lt;/b0&gt;</ept> В ОС Windows переменные окружения <bpt i="1" x="1">&lt;b1&gt;</bpt>регистронезависимы.<ept i="1">&lt;/b1&gt;</ept></seg>
@@ -4201,7 +4201,7 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Any unknown environmental variable is left unchanged in the Run Command e.g., %xyz%\notepad.exe remains as %xyz%\notepad.exe if variable 'xyz' is not set.</seg>
+        <seg>Any unknown environment variable is left unchanged in the Run Command e.g., %xyz%\notepad.exe remains as %xyz%\notepad.exe if variable 'xyz' is not set.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110215T191700Z">
         <seg>Имена неопознанных переменных окружения остаются без изменений. Например, "%xyz%\notepad.exe" останется равным "%xyz%\notepad.exe", если переменная окружения «xyz» не определена.</seg>
@@ -11082,7 +11082,7 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>On Windows, the normal substitution of environmental variables (specified as %variable_name%) is performed.</seg>
+        <seg>On Windows, the normal substitution of environment variables (specified as %variable_name%) is performed.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110215T191557Z">
         <seg>В ОС Windows также можно подставлять переменные окружения (как обычно, имя переменной окружается символами «%», например, %variable_name%).</seg>
@@ -18335,7 +18335,7 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>You may also use environmental variables in defining the alternate location for example: "<bpt i="0" x="0">&lt;c0&gt;</bpt>%homedrive%%homepath%\Documents\PWS Backups\<ept i="0">&lt;/c0&gt;</ept>".</seg>
+        <seg>You may also use environment variables in defining the alternate location for example: "<bpt i="0" x="0">&lt;c0&gt;</bpt>%homedrive%%homepath%\Documents\PWS Backups\<ept i="0">&lt;/c0&gt;</ept>".</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20161128T172657Z" creationid="pm_kan" creationdate="20161128T172636Z">
         <seg>При указании каталога для резервных копий допускается использование переменных окружения, например «<bpt i="0" x="0">&lt;c0&gt;</bpt>%homedrive%%homepath%\Documents\PWS Backups\<ept i="0">&lt;/c0&gt;</ept>».</seg>

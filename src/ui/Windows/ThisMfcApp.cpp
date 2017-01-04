@@ -310,14 +310,14 @@ void ThisMfcApp::LoadLocalizedStuff()
   const CString cs_HelpDir(PWSdirs::GetHelpDir().c_str());
   const CString cs_ExePath(PWSdirs::GetExeDir().c_str());
   
-  // See if user overridden default via Environmental Variable
+  // See if user overridden default via Environment Variable
   bool bPLRC(FALSE);
   
   // See if user has set preference instead.
   StringX sxLL = PWSprefs::GetInstance()->GetPref(PWSprefs::LanguageFile);
 
   if (!sxLL.empty()) {
-    // Preferences trumps Environmental Variable!!!!!
+    // Preferences trumps Environment Variable!!!!!
     size_t len = sxLL.length();
     ASSERT(len == 2 || len == 5);
     if (len == 2) {
@@ -1112,7 +1112,7 @@ BOOL ThisMfcApp::InitInstance()
   UNREFERENCED_PARAMETER(pFonts);
   UNREFERENCED_PARAMETER(pPWSver);
 
-  // Update Quiet value if via environmental variable rather than 
+  // Update Quiet value if via environment variable rather than 
   // command line flag
   CString cs_PWS_QUIET;
   if (cs_PWS_QUIET.GetEnvironmentVariable(L"PWS_QUIET") != FALSE)

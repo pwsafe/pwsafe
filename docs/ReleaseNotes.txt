@@ -19,7 +19,7 @@ Bugs fixed in 3.41.1
 [] Fix empty group validation on DB open.
 [1392] If the command line parameter '-g' is used to specify a configuration
 file by its relative path, PasswordSafe will now look for it in the same
-directory as the executable unless overridden by the PWS_PREFSDIR environmental
+directory as the executable unless overridden by the PWS_PREFSDIR environment
 variable.
 [1391] Fixed slow opening of a database if the default group display is completely
 collapsed.
@@ -88,7 +88,7 @@ send keyboard input to other applications e.g. browsers.
 on unsaved changes.
 [] Empty groups, whose names satisfy a filter that include tests on group name
 values, are now included in the display when the filter is active.
-[815] The database backup location now supports environmental variables e.g. 
+[815] The database backup location now supports environment variables e.g. 
 %homedrive% and %homepath%.  If used, the resulting path is shown.
 [814] Clearing the recent database list now requires confirmation.
 [813] When exporting a group to a new database, there is now an option to also

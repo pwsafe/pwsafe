@@ -156,7 +156,7 @@ bool PWSRun::runcmd(const StringX &run_command, const bool &bAutotype) const
   }
 
   // tokenize into separate elements using % as the field separator.
-  // If this corresponds to a set environmental variable - replace it
+  // If this corresponds to a set environment variable - replace it
   // and rebuild the command
   for (StringX::size_type st_startpos = 0;
        st_startpos < first_part.size();
@@ -245,7 +245,7 @@ StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound) const
 {
   // 1. If first parameter is in quotes - assume fully qualified - don't search.
   // 2. If first parameter starts with '%, assume it is going to be replaced by the
-  // corresponding environmental variable - no need to search directories.
+  // corresponding environment variable - no need to search directories.
   // 3. If the first parameter ends in '.xxx', and '.xxx' is in the PATHEXT variable,
   // search for it as-is.  If not, append each of the known extensions to it and then
   // search.

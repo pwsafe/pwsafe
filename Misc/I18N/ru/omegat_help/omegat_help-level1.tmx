@@ -2120,7 +2120,7 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Note: Windows environmental variables are not case sensitive.</seg>
+        <seg>Note: Windows environment variables are not case sensitive.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T200732Z">
         <seg>Примечание. В ОС Windows переменные окружения регистронезависимы.</seg>
@@ -4201,7 +4201,7 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Any unknown environmental variable is left unchanged in the Run Command e.g., %xyz%\notepad.exe remains as %xyz%\notepad.exe if variable 'xyz' is not set.</seg>
+        <seg>Any unknown environment variable is left unchanged in the Run Command e.g., %xyz%\notepad.exe remains as %xyz%\notepad.exe if variable 'xyz' is not set.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T191700Z">
         <seg>Имена неопознанных переменных окружения остаются без изменений. Например, "%xyz%\notepad.exe" останется равным "%xyz%\notepad.exe", если переменная окружения «xyz» не определена.</seg>
@@ -11082,7 +11082,7 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>On Windows, the normal substitution of environmental variables (specified as %variable_name%) is performed.</seg>
+        <seg>On Windows, the normal substitution of environment variables (specified as %variable_name%) is performed.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T191557Z">
         <seg>В ОС Windows также можно подставлять переменные окружения (как обычно, имя переменной окружается символами «%», например, %variable_name%).</seg>
@@ -18335,7 +18335,7 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>You may also use environmental variables in defining the alternate location for example: "%homedrive%%homepath%\Documents\PWS Backups\".</seg>
+        <seg>You may also use environment variables in defining the alternate location for example: "%homedrive%%homepath%\Documents\PWS Backups\".</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20161128T172657Z" creationid="pm_kan" creationdate="20161128T172636Z">
         <seg>При указании каталога для резервных копий допускается использование переменных окружения, например «%homedrive%%homepath%\Documents\PWS Backups\».</seg>
