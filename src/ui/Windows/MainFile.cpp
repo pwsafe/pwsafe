@@ -1715,7 +1715,7 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
                                    vEmptyGroups, bExportDBFilters, prpt);
 
   OIL.clear();
-  export_core.ClearData();
+  export_core.ClearDBData();
 
   if (rc != PWScore::SUCCESS) {
     DisplayFileWriteError(rc, sx_Filename);

@@ -259,7 +259,7 @@ void PasswordSafeFrame::OnFindPrevious( wxCommandEvent& /* evt */ )
 
 void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& /* evt */ )
 {
-  PWSclipboard::GetInstance()->ClearData();
+  PWSclipboard::GetInstance()->ClearCBData();
 }
 
 /*!

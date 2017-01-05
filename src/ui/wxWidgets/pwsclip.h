@@ -24,7 +24,7 @@ public:
   static PWSclipboard *GetInstance();
   static void DeleteInstance();
   bool SetData(const StringX &data);
-  bool ClearData();
+  bool ClearCBData();
 #if defined(__X__) || defined(__WXGTK__)
   void UsePrimarySelection(bool primary, bool clearOnChange=true);
 #endif

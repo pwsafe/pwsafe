@@ -120,7 +120,7 @@ public:
   {m_nRecordsWithUnknownFields++;}
 
   // Clear out database structures and associated fields
-  void ClearData();
+  void ClearDBData();
   void ReInit(bool bNewfile = false);
 
   // Following used to read/write databases and Get/Set file name

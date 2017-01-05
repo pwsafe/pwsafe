@@ -420,7 +420,7 @@ void PWScore::DoDeleteAtt(const CItemAtt &att)
 }
 #endif
 
-void PWScore::ClearData()
+void PWScore::ClearDBData()
 {
   const unsigned int BS = TwoFish::BLOCKSIZE;
   if (m_passkey_len > 0) {
@@ -488,12 +488,12 @@ void PWScore::ReInit(bool bNewFile)
     m_ReadFileVersion = PWSfile::UNKNOWN_VERSION;
 
   // Clear all internal variables
-  ClearData();
+  ClearDBData();
 }
 
 void PWScore::NewFile(const StringX &passkey)
 {
-  ClearData();
+  ClearDBData();
   SetPassKey(passkey);
   m_ReadFileVersion = PWSfile::VCURRENT;
 }
@@ -1207,7 +1207,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
     }
   } // !m_isAuxCore
 
-  ClearData(); // Before overwriting old data, but after opening the file...
+  ClearDBData(); // Before overwriting old data, but after opening the file...
 
   SetPassKey(a_passkey); // so user won't be prompted for saves
 

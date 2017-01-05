@@ -1943,7 +1943,7 @@ void DboxMain::ClearData(const bool bClearMRE)
 {
   PWS_LOGIT;
 
-  m_core.ClearData();  // Clears DB & DB Preferences changed flags
+  m_core.ClearDBData();  // Clears DB & DB Preferences changed flags
 
   if (bClearMRE)
     m_RUEList.ClearEntries();
