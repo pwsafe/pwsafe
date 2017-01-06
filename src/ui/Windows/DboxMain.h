@@ -533,7 +533,7 @@ public:
   BOOL PreTranslateMessage(MSG* pMsg);
 
   void UpdateAlwaysOnTop();
-  void ClearData(const bool bClearMRE = true);
+  void ClearAppData(const bool bClearMRE = true);
   int NewFile(StringX &filename);
 
   void SetListView();

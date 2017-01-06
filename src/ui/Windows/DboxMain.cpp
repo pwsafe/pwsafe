@@ -185,8 +185,6 @@ DboxMain::DboxMain(CWnd* pParent)
   m_sxSelectedGroup = L"";
   m_sxVisibleGroup = L"";
 
-  ClearData(true);
-
   m_titlebar = L"";
   m_toolbarsSetup = FALSE;
 

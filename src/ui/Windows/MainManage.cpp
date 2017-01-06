@@ -228,8 +228,11 @@ int DboxMain::RestoreSafe()
     m_core.UnlockFile(m_core.GetCurFile().c_str());
   }
 
-  // clear the data before restoring
-  ClearData();
+  // Reset core and clear ALL associated data
+  m_core.ReInit();
+
+  // Clear application data
+  ClearAppData();
 
   // Validate it unless user says NO
   CReport Rpt;

@@ -805,6 +805,7 @@ bool PasswordSafeFrame::Show(bool show)
 void PasswordSafeFrame::OnExitClick( wxCommandEvent& /* evt */ )
 {
   m_exitFromMenu = true;
+
   Close();
 }
 
@@ -1066,17 +1067,10 @@ int PasswordSafeFrame::SaveIfChanged()
   return PWScore::SUCCESS;
 }
 
-void PasswordSafeFrame::ClearData()
+void PasswordSafeFrame::ClearAppData()
 {
   m_grid->Clear();
   m_tree->Clear();
-  //the grid would have deleted the data in one of its callbacks
-  //but only if it was initialized, which might not happen
-  //if it was never shown.  In those cases, clear the data here
-  if (m_core.GetNumEntries() != 0) {
-    m_core.ClearDBData();
-  }
-  m_core.ReInit();
 }
 
 CItemData *PasswordSafeFrame::GetSelectedEntry() const
@@ -1126,9 +1120,16 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
     int rc = SaveIfChanged();
     if (rc != PWScore::SUCCESS)
       return;
+
     m_core.UnlockFile(m_core.GetCurFile().c_str());
     m_core.SetCurFile(wxEmptyString);
-    ClearData();
+
+    // Reset core and clear ALL associated data
+    m_core.ReInit();
+
+    // clear the application data before ending
+    ClearAppData();
+
     SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
     m_core.SetReadOnly(false);
@@ -1211,8 +1212,11 @@ int PasswordSafeFrame::Open(const wxString &fname)
       return PWScore::USER_CANCEL; // conservative behaviour for release version
   }
 
-  // clear the data before loading the new file
-  ClearData();
+  // Reset core and clear ALL associated data
+  m_core.ReInit();
+
+  // clear the application data before loading the new file
+  ClearAppData();
 
   cs_title.LoadString(IDS_FILEREADERROR);
   MFCAsker q;
@@ -1443,6 +1447,13 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
       m_core.UnlockFile(m_core.GetCurFile().c_str());
 
     SaveSettings();
+
+    // Reset core and clear ALL associated data
+    m_core.ReInit();
+
+    // clear the application data before ending
+    ClearAppData();
+
     Destroy();
   }
   else {
@@ -2312,10 +2323,12 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   if (rc == wxID_CANCEL)
     return PWScore::USER_CANCEL;  //User cancelled password entry
 
-  // Reset core
+  // Reset core and clear ALL associated data
   m_core.ReInit(true);
 
-  ClearData();
+  // clear the application data before creating new file
+  ClearAppData();
+
   PWSprefs::GetInstance()->SetDatabasePrefsToDefaults();
   const StringX &oldfilename = m_core.GetCurFile();
   // The only way we're the locker is if it's locked & we're !readonly
@@ -2338,7 +2351,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   return PWScore::SUCCESS;
 }
 
-bool PasswordSafeFrame::SaveAndClearDatabase()
+bool PasswordSafeFrame::SaveAndClearDatabaseOnLock()
 {
   //Save UI elements first
   PWSprefs::GetInstance()->SaveApplicationPreferences();
@@ -2347,7 +2360,14 @@ bool PasswordSafeFrame::SaveAndClearDatabase()
 
   //Save alerts the user
   if (!m_core.HasDBChanged() || Save() == PWScore::SUCCESS) {
-    ClearData();
+    // Do NOT call PWScore::ReInit as it will clear commands preventing the
+    // user from undoing commands after unlocking DB
+
+    // Clear all internal variables EXCEPT command and DB state vectors
+    m_core.ClearDBData();
+
+    // clear the application data before locking
+    ClearAppData();
     return true;
   }
   return false;
@@ -2534,7 +2554,7 @@ void PasswordSafeFrame::LockDb()
   }
 
   m_guiInfo->Save(this);
-  if (SaveAndClearDatabase())
+  if (SaveAndClearDatabaseOnLock())
     m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
 }
 

@@ -311,7 +311,7 @@ public:
   int Execute(Command *pcmd);
   void Undo();
   void Redo();
-  void ClearCommands();
+  void ClearCommands();  // This should be private to prevent UI calling directly but called by coretest
   bool AnyToUndo() const;
   bool AnyToRedo() const;
 

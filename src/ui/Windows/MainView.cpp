@@ -1939,11 +1939,9 @@ void DboxMain::ReSelectItems(pws_os::CUUID entry_uuid,
     }
   }
 }
-void DboxMain::ClearData(const bool bClearMRE)
+void DboxMain::ClearAppData(const bool bClearMRE)
 {
   PWS_LOGIT;
-
-  m_core.ClearDBData();  // Clears DB & DB Preferences changed flags
 
   if (bClearMRE)
     m_RUEList.ClearEntries();
@@ -2414,7 +2412,15 @@ bool DboxMain::LockDataBase()
   // for the existing dbase's password upon restore.
   // Avoid lots of edge cases this way.
   CancelPendingPasswordDialog();
-  ClearData(false);
+
+  // Do NOT call PWScore::ReInit as it will clear commands preventing the
+  // user from undoing commands after unlocking DB
+
+  // Reset core and clear all associated data EXCEPT commands & DB state
+  m_core.ClearDBData();
+
+  // Clear the application data before locking
+  ClearAppData(false);
 
   // Because LockDatabase actually doen't minimize the Window, the OnSize
   // routine is not called to clear the clipboard - so do it here

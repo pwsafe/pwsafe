@@ -418,10 +418,11 @@ int DboxMain::NewFile(StringX &newfilename)
   else
     return PWScore::USER_CANCEL;  //User cancelled password entry
 
-  // Reset core
+  // Reset core and clear ALL associated data
   m_core.ReInit(true);
 
-  ClearData();
+  // Clear application data
+  ClearAppData();
 
   const StringX &oldfilename = m_core.GetCurFile();
   // The only way we're the locker is if it's locked & we're !readonly
@@ -477,7 +478,7 @@ int DboxMain::Close(const bool bTrySave)
         return rc;
 
       // No need to reset DB changed flag to stop being asked again here as
-      // done in ClearData call below (which calls m_core.ClearData()
+      // done in ClearAppData call below (which calls m_core.ClearData()
     }
   }
 
@@ -493,11 +494,11 @@ int DboxMain::Close(const bool bTrySave)
 
   CAddEdit_DateTimes::m_bShowUUID = false;
 
-  // Reset core and clear all associated data
+  // Reset core and clear ALL associated data
   m_core.ReInit();
 
-  // Clear display
-  ClearData();
+  // Clear application data
+  ClearAppData();
 
   // Set closed before anything else thinks there is data still here
   m_bOpen = false;
@@ -777,8 +778,11 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
       return PWScore::USER_CANCEL; // conservative behaviour for release version
   }
 
-  // Clear the data before loading the new file
-  ClearData();
+  // Reset core and clear ALL associated data
+  m_core.ReInit();
+
+  // Clear application data
+  ClearAppData();
 
   // Reset saved DB preferences
   m_savedDBprefs = EMPTYSAVEDDBPREFS;
@@ -4064,7 +4068,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     * Note: that if database was cleared (e.g., locked), it might be possible
     * to save an empty list :-(
     * Protect against this both here and in OnSize (where we minimize & possibly
-    * ClearData).
+    * ClearAppData).
     */
 
     if (bAutoSave && !m_core.IsReadOnly() &&
@@ -4111,8 +4115,11 @@ void DboxMain::CleanUpAndExit(const bool bNormalExit)
     ClearClipboardData();
   }
 
-  // wipe data, save prefs, go home.
-  ClearData();
+  // Reset core and clear ALL associated data
+  m_core.ReInit();
+
+  // Clear application data
+  ClearAppData();
 
   // Cleanup here - doesn't work in ~DboxMain or ~CCoolMenuManager
   m_menuManager.Cleanup();

@@ -172,8 +172,11 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
       m_core.UnlockFile(m_core.GetCurFile().c_str());
     }
 
-    // clear the data before restoring
-    ClearData();
+    // Reset core and clear ALL associated data
+    m_core.ReInit();
+
+    // clear the application data before restoring
+    ClearAppData();
 
     if (m_core.ReadFile(tostringx(wxbf), passkey, true, MAXTEXTCHARS) == PWScore::CANT_OPEN_FILE) {
       wxMessageBox(wxbf << wxT("\n\n") << _("Could not open file for reading!"),
