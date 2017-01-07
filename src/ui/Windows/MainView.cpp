@@ -1079,8 +1079,6 @@ BOOL DboxMain::SelectEntry(const int i, BOOL MakeVisible)
   }
 
   retval_tree = m_ctlItemTree.SelectItem(pdi->tree_item);
-  // Following needed to show selection when Find dbox has focus. Ugh.
-  m_ctlItemTree.SetItemState(pdi->tree_item, TVIS_DROPHILITED | TVIS_SELECTED, TVIS_DROPHILITED | TVIS_SELECTED);
 
   if (MakeVisible) {
     if (m_ctlItemList.IsWindowVisible()) {
@@ -1101,9 +1099,7 @@ void DboxMain::SelectFirstEntry()
     // Ensure an entry is selected after open
     CItemData *pci(NULL);
     if (m_ctlItemList.IsWindowVisible()) {
-      m_ctlItemList.SetItemState(0,
-                                 LVIS_FOCUSED | LVIS_SELECTED,
-                                 LVIS_FOCUSED | LVIS_SELECTED);
+      m_ctlItemList.SetItemState(0, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
       m_ctlItemList.EnsureVisible(0, FALSE);
       pci = (CItemData *)m_ctlItemList.GetItemData(0);
     } else {
@@ -1125,6 +1121,11 @@ BOOL DboxMain::SelectFindEntry(const int i, BOOL MakeVisible)
   BOOL retval_list, retval_tree;
   if (m_ctlItemList.GetItemCount() == 0)
     return FALSE;
+
+  if (i < 0 || i >= m_ctlItemList.GetItemCount()) {
+    ASSERT(0);
+    return FALSE;
+  }
 
   CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
   ASSERT(pci != NULL);
@@ -1179,9 +1180,7 @@ void DboxMain::RefreshViews(const ViewType iView)
   m_bInRefresh = true;
 
   // Need to save last found item information
-  pws_os::CUUID entry_uuid(pws_os::CUUID::NullUUID());
-  pws_os::CUUID tree_find_entry_uuid(pws_os::CUUID::NullUUID());
-  pws_os::CUUID list_find_entry_uuid(pws_os::CUUID::NullUUID());
+  pws_os::CUUID entry_uuid, tree_find_entry_uuid, list_find_entry_uuid;
   StringX sxGroupPath;
 
   // Save selected/highlighted entry
@@ -1322,8 +1321,6 @@ void DboxMain::RestoreWindows()
 
   BringWindowToTop();
   CPWDialog::GetDialogTracker()->ShowOpenDialogs();
-
-  //RestoreDisplayAfterMinimize();
 }
 
 // this tells OnSize that the user is currently
@@ -1541,11 +1538,6 @@ void DboxMain::OnRestore()
   // Called when the System Tray Restore menu option is used
   RestoreWindowsData(true);
 
-  // No need for next statement as it is done via RestoreWindowsData(true)
-  // calling RestoreWindows which issues ShowWindow(SW_RESTORE) which does it
-  // in OnSize - convoluted logic - needs a re-write but oh so carefully!
-  //RestoreDisplayAfterMinimize();
-
   m_ctlItemTree.SetRestoreMode(false);
 
   TellUserAboutExpiredPasswords();
@@ -1558,7 +1550,6 @@ void DboxMain::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult, const boo
     OnTreeItemSelected(pNotifyStruct, pLResult);
   else
     OnListItemSelected(pNotifyStruct, pLResult);
-
 }
 
 void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -1857,6 +1848,15 @@ void DboxMain::GetSelectedItems(pws_os::CUUID &entry_uuid,
                                 pws_os::CUUID &tree_find_entry_uuid, pws_os::CUUID &list_find_entry_uuid,
                                 StringX &sxGroupPath)
 {
+  entry_uuid = tree_find_entry_uuid = list_find_entry_uuid = pws_os::CUUID::NullUUID();
+  sxGroupPath.clear();
+
+  if (m_ctlItemTree.GetCount() == 0) {
+    m_LastFoundTreeItem = NULL;
+    m_LastFoundListItem = -1;
+    return;
+  }
+
   // Find last found entries (no groups)
   if (m_LastFoundTreeItem != NULL) {
     CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(m_LastFoundTreeItem);
@@ -2044,12 +2044,6 @@ void DboxMain::SortListView()
   // Turn on the correct arrow
   hdi.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
   m_LVHdrCtrl.SetItem(iIndex, &hdi);
-
-  if (!m_bIsRestoring && m_FindToolBar.EntriesFound()) {
-    // Redo find as list/entries may have changed
-    m_FindToolBar.InvalidateSearch();
-    m_FindToolBar.Find();
-  }
 }
 
 void DboxMain::OnHeaderRClick(NMHDR *, LRESULT *pLResult)
@@ -2413,7 +2407,7 @@ bool DboxMain::LockDataBase()
   // If a Find is active, save its status
   pws_os::CUUID entry_uuid;
   m_bFindToolBarVisibleAtLock = m_FindToolBar.IsVisible();
-  m_iCurrentItemFound = m_FindToolBar.GetLastSelectedFountItem(entry_uuid);
+  m_iCurrentItemFound = m_FindToolBar.GetLastSelectedFoundItem(entry_uuid);
 
   // If there's a pending dialog box prompting for a
   // password, we need to kill it, since we will prompt
@@ -3594,9 +3588,7 @@ void DboxMain::OnRefreshWindow()
 {
   PWS_LOGIT;
 
-  pws_os::CUUID entry_uuid(pws_os::CUUID::NullUUID());
-  pws_os::CUUID tree_find_entry_uuid(pws_os::CUUID::NullUUID());
-  pws_os::CUUID list_find_entry_uuid(pws_os::CUUID::NullUUID());
+  pws_os::CUUID entry_uuid, tree_find_entry_uuid, list_find_entry_uuid;
   StringX sxGroupPath;
  
   // Save selected/highlighted entry
@@ -3776,14 +3768,13 @@ void DboxMain::OnToolBarFindAdvanced()
 
 void DboxMain::OnToolBarFindReport()
 {
-  std::vector<int> *pindices;
   CString csFindString;
 
-  pindices = m_FindToolBar.GetSearchResults();
   m_FindToolBar.GetSearchText(csFindString);
-  if (pindices == NULL || csFindString.IsEmpty())
+  if (csFindString.IsEmpty())
     return;
 
+  std::vector<int> vIndices = m_FindToolBar.GetSearchResults();
   CString buffer, cs_temp;
   CReport rpt;
   cs_temp.LoadString(IDS_RPTFIND);
@@ -3896,15 +3887,15 @@ void DboxMain::OnToolBarFindReport()
     rpt.WriteLine();
   }
 
-  if (pindices->empty()) {
+  if (vIndices.empty()) {
     buffer.Format(IDS_SEARCHRESULTS1, static_cast<LPCWSTR>(csFindString));
     rpt.WriteLine((LPCWSTR)buffer);
   } else {
     buffer.Format(IDS_SEARCHRESULTS2, static_cast<LPCWSTR>(csFindString));
     rpt.WriteLine((LPCWSTR)buffer);
 
-    for (int i = 0; i < (int)pindices->size(); i++) {
-      int index = pindices->at(i);
+    for (size_t i = 0; i < vIndices.size(); i++) {
+      int index = vIndices[i];
       CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(index);
       buffer.Format(IDS_COMPARESTATS, static_cast<LPCWSTR>(pci->GetGroup().c_str()),
                     static_cast<LPCWSTR>(pci->GetTitle().c_str()),
@@ -4381,7 +4372,19 @@ void DboxMain::OnShowFoundEntries()
     CurrentFilter() = m_FilterManager.GetFoundFilter();
   }
 
+  // If a Find is active, save its status
+  pws_os::CUUID entry_uuid;
+  m_iCurrentItemFound = m_FindToolBar.GetLastSelectedFoundItem(entry_uuid);
+
+  UnFindItem();
+
   ApplyFilters();
+
+  // As ApplyFilters will redo the Find resetting the selected item to the first
+  // Put it back now
+  if (m_iCurrentItemFound != -1) {
+    m_FindToolBar.Find(m_iCurrentItemFound);
+  }
 
   m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_APPLYFILTER,
     (m_bFindFilterDisplayed || !m_bFilterActive) ? FALSE : TRUE);

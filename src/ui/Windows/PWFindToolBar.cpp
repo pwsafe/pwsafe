@@ -585,15 +585,16 @@ void CPWFindToolBar::ClearFind()
   app.GetMainDlg()->SetFilterFindEntries(NULL);
 }
 
-int CPWFindToolBar::GetLastSelectedFountItem(pws_os::CUUID &entry_uuid)
+int CPWFindToolBar::GetLastSelectedFoundItem(pws_os::CUUID &entry_uuid)
 {
   entry_uuid = pws_os::CUUID::NullUUID();
 
   if (m_lastshown >= 0 && m_lastshown < (int)m_vFoundUUIDs.size()) {
     entry_uuid = m_vFoundUUIDs[m_lastshown];
+    return m_lastshown;
   }
 
-  return m_lastshown;
+  return -1;
 }
 
 void CPWFindToolBar::Find()

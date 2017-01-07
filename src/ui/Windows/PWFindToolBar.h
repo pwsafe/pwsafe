@@ -65,7 +65,10 @@ public:
     subgroup_object = m_subgroup_object; subgroup_function = m_subgroup_function;
   }
 
-  std::vector<int> *GetSearchResults() { return &m_vIndices; }
+  std::vector<int> GetSearchResults() { return m_vIndices; }
+  std::vector<pws_os::CUUID> GetFoundUUIDS() { return m_vFoundUUIDs; }
+  void SetSearchResults(const std::vector<int> &vIndices) { m_vIndices = vIndices; }
+
   void SetStatus(CString cs_status) {m_stcFindResults.SetWindowText(cs_status);}
 
   CFindEditCtrl m_edtFindText;
@@ -73,7 +76,7 @@ public:
   void SetSearchDirection(int iFindDirection) {m_iFindDirection = iFindDirection;}
   void ChangeFont();
 
-  int GetLastSelectedFountItem(pws_os::CUUID &entry_uuid);
+  int GetLastSelectedFoundItem(pws_os::CUUID &entry_uuid);
 
 protected:
   BOOL PreTranslateMessage(MSG* pMsg);

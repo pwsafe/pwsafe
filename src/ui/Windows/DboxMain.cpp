@@ -1389,18 +1389,43 @@ void DboxMain::OnRedo()
 
 void DboxMain::FixListIndexes()
 {
-  int N = m_ctlItemList.GetItemCount();
+  std::vector<int> vIndices = m_FindToolBar.GetSearchResults();
+  std::vector<pws_os::CUUID> vFoundUUIDs = m_FindToolBar.GetFoundUUIDS();
+  std::vector<pws_os::CUUID>::iterator it;
+
+  ASSERT(vIndices.size() == vFoundUUIDs.size());
+
+  // Reset all indices
+  vIndices.assign(vIndices.size(), -1);
+
+  const int N = m_ctlItemList.GetItemCount();
   for (int i = 0; i < N; i++) {
     CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
     ASSERT(pci != NULL);
+
+    bool bInFindList(false);
+    size_t ioffset(0);
+    it = std::find(vFoundUUIDs.begin(), vFoundUUIDs.end(), pci->GetUUID());
+    if (it != vFoundUUIDs.end()) {
+      bInFindList = true;
+      ioffset = it - vFoundUUIDs.begin();
+    }
     if (m_bFilterActive &&
-        !m_FilterManager.PassesFiltering(*pci, m_core))
+        !m_FilterManager.PassesFiltering(*pci, m_core)) {
+      ASSERT(!bInFindList);
       continue;
+    }
 
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
     ASSERT(pdi != NULL);
     pdi->list_index = i;
+
+    if (bInFindList)
+      vIndices[ioffset] = i;
   }
+
+  // Now update the real copy
+  m_FindToolBar.SetSearchResults(vIndices);
 }
 
 void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
@@ -2077,15 +2102,11 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
     if (m_bFindToolBarVisibleAtLock) {
       OnShowFindToolbar();
       m_bFindToolBarVisibleAtLock = false;
-      if (m_iCurrentItemFound != -1) {
-        m_FindToolBar.Find(m_iCurrentItemFound);
-      }
     }
 
-    //// If filter was active - re-apply
-    //if (m_bFilterActive) {
-    //  ApplyFilter();
-    //}
+    if (m_iCurrentItemFound != -1) {
+      m_FindToolBar.Find(m_iCurrentItemFound);
+    }
 
     brc = true;
     goto exit;
@@ -2115,6 +2136,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
                                bUseSysTray ? GCP_RESTORE : GCP_WITHEXIT,
                                flags);
     }
+
     CGeneralMsgBox gmb;
     CString cs_temp, cs_title;
 
@@ -2166,9 +2188,10 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       if (m_bFindToolBarVisibleAtLock) {
         OnShowFindToolbar();
         m_bFindToolBarVisibleAtLock = false;
-        if (m_iCurrentItemFound != -1) {
-          m_FindToolBar.Find(m_iCurrentItemFound);
-        }
+      }
+
+      if (m_iCurrentItemFound != -1) {
+        m_FindToolBar.Find(m_iCurrentItemFound);
       }
     } else {
       ShowWindow(bUseSysTray ? SW_HIDE : SW_MINIMIZE);
