@@ -110,9 +110,12 @@ void DboxMain::OnSetFilter()
 
   INT_PTR rc = sf.DoModal();
 
-  if (rc == IDOK) {
+  if (rc == IDOK || (rc == IDCANCEL && m_bFilterActive)) {
     // If filters currently active - update and re-apply
     // If not, just update
+
+    // User can apply the filter in SetFiltersDlg and then press Cancel button
+    // and so still process
     CurrentFilter().Empty();
     CurrentFilter() = filters;
 
