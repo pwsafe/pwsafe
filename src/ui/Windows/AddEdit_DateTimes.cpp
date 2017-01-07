@@ -362,7 +362,7 @@ BOOL CAddEdit_DateTimes::OnApply()
 void CAddEdit_DateTimes::OnDateTimeChanged(NMHDR *, LRESULT *pLResult)
 {
   *pLResult = 0;
-  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY || m_inSetX)
+  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0 || m_inSetX)
     return;
 
   SetXTime();
@@ -370,7 +370,7 @@ void CAddEdit_DateTimes::OnDateTimeChanged(NMHDR *, LRESULT *pLResult)
 
 void CAddEdit_DateTimes::OnDaysChanged()
 {
-  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY || m_inSetX)
+  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0 || m_inSetX)
     return;
 
   SetXTime();
