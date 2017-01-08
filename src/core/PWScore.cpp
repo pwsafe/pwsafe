@@ -3224,8 +3224,13 @@ void PWScore::UnlockFile2(const stringT &filename)
 
 bool PWScore::IsNodeModified(StringX &path) const
 {
-  return std::find(m_vNodes_Modified.begin(),
-                   m_vNodes_Modified.end(), path) != m_vNodes_Modified.end();
+  if (!IsEmptyGroup(path)) {
+    return std::find(m_vNodes_Modified.begin(),
+      m_vNodes_Modified.end(), path) != m_vNodes_Modified.end();
+  } else {
+    return find(m_InitialEmptyGroups.begin(), m_InitialEmptyGroups.end(), path) ==
+      m_InitialEmptyGroups.end();
+  }
 }
 
 void PWScore::AddChangedNodes(StringX path)
@@ -3810,7 +3815,7 @@ bool PWScore::SetEmptyGroups(const std::vector<StringX> &vEmptyGroups)
 bool PWScore::IsEmptyGroup(const StringX &sxEmptyGroup) const
 {
   return find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxEmptyGroup) !=
-                   m_vEmptyGroups.end();
+              m_vEmptyGroups.end();
 }
 
 bool PWScore::AddEmptyGroup(const StringX &sxEmptyGroup)
