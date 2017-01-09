@@ -110,9 +110,12 @@ void DboxMain::OnSetFilter()
 
   INT_PTR rc = sf.DoModal();
 
-  if (rc == IDOK) {
+  if (rc == IDOK || (rc == IDCANCEL && m_bFilterActive)) {
     // If filters currently active - update and re-apply
     // If not, just update
+
+    // User can apply the filter in SetFiltersDlg and then press Cancel button
+    // and so still process
     CurrentFilter().Empty();
     CurrentFilter() = filters;
 
@@ -185,7 +188,7 @@ void DboxMain::ApplyFilters()
 
   // m_LastFoundTreeItem might be invalid if filter activated or cleared
   pws_os::CUUID entry_uuid;
-  int iLastShown = m_FindToolBar.GetLastSelectedFountItem(entry_uuid);
+  int iLastShown = m_FindToolBar.GetLastSelectedFoundItem(entry_uuid);
   if (iLastShown >= 0) {
     CItemData *pci = &m_core.Find(entry_uuid)->second;
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();

@@ -227,7 +227,7 @@ public:
   bool ExitRequested() const {return m_inExit;}
   void AutoResizeColumns();
   void ResetIdleLockCounter(UINT event = WM_SIZE); // default arg always resets
-  bool ClearClipboardData() {return m_clipboard.ClearData();}
+  bool ClearClipboardData() {return m_clipboard.ClearCBData();}
   bool SetClipboardData(const StringX &data)
   {return m_clipboard.SetData(data.c_str());}
   void AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
@@ -533,7 +533,7 @@ public:
   BOOL PreTranslateMessage(MSG* pMsg);
 
   void UpdateAlwaysOnTop();
-  void ClearData(const bool bClearMRE = true);
+  void ClearAppData(const bool bClearMRE = true);
   int NewFile(StringX &filename);
 
   void SetListView();

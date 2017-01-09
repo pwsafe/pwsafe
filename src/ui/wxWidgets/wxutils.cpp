@@ -38,7 +38,7 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
              bool showMsgbox /*= true*/, wxWindow* msgboxParent /*= NULL*/,
         bool setupCopy /*= false*/)
 {
-  othercore.ClearData();
+  othercore.ClearDBData();
 
   StringX dbpath(tostringx(file));
   int rc = othercore.ReadFile(dbpath, combination);

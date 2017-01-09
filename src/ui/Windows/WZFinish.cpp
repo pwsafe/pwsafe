@@ -239,7 +239,7 @@ int CWZFinish::ExecuteAction()
 
   if (bOtherIsDB) {
     // Not really needed but...
-    m_pothercore->ClearData();
+    m_pothercore->ClearDBData();
 
     // Reading a new file changes the preferences as they are instance dependent
     // not core dependent
@@ -282,7 +282,7 @@ int CWZFinish::ExecuteAction()
     }
 
     if (rc != PWScore::SUCCESS) {
-      m_pothercore->ClearData();
+      m_pothercore->ClearDBData();
       m_pothercore->SetCurFile(L"");
       delete m_pothercore;
       m_pothercore = NULL;
@@ -394,7 +394,7 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
     if (m_pothercore->IsLockedFile(m_pothercore->GetCurFile().c_str()))
       m_pothercore->UnlockFile(m_pothercore->GetCurFile().c_str());
 
-    m_pothercore->ClearData();
+    m_pothercore->ClearDBData();
     m_pothercore->SetCurFile(L"");
     delete m_pothercore;
     m_pothercore = NULL;

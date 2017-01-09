@@ -479,9 +479,9 @@ public:
   int SaveImmediately();
   void ShowGrid(bool show = true);
   void ShowTree(bool show = true);
-  void ClearData();
+  void ClearAppData();
   bool ReloadDatabase(const StringX& password);
-  bool SaveAndClearDatabase();
+  bool SaveAndClearDatabaseOnLock();
   void CleanupAfterReloadFailure(bool tellUser);
   Command *Delete(CItemData *pci);
   Command *Delete(wxTreeItemId tid); // for group delete

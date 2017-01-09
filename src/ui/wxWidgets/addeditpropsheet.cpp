@@ -1108,6 +1108,8 @@ void AddEditPropSheet::HidePassword()
 static short GetSelectedDCA(const wxComboBox *pcbox,
                            short lastval, short defval)
 {
+  UNREFERENCED_PARAMETER(lastval);
+
   int sel = pcbox->GetSelection();
   intptr_t ival = -1;
   if (sel == wxNOT_FOUND) { // no selection

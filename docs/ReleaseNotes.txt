@@ -31,6 +31,8 @@ input focus when clicking on the icon to unlock the database.
 
 Changes to Existing Features in 3.41.1
 ======================================
+[] Previous commands, e.g. edit or delete an entry, are no longer cleared when the database
+is locked to enable their undo after the database has been unlocked.
 [819] A duplicated entry's creation time is set to the time of duplication.
 All other times are copied from the original.
 [816] Set installed version in uninstall section of Registry for Windows version.

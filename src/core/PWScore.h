@@ -120,7 +120,7 @@ public:
   {m_nRecordsWithUnknownFields++;}
 
   // Clear out database structures and associated fields
-  void ClearData();
+  void ClearDBData();
   void ReInit(bool bNewfile = false);
 
   // Following used to read/write databases and Get/Set file name
@@ -311,7 +311,7 @@ public:
   int Execute(Command *pcmd);
   void Undo();
   void Redo();
-  void ClearCommands();
+  void ClearCommands();  // This should be private to prevent UI calling directly but called by coretest
   bool AnyToUndo() const;
   bool AnyToRedo() const;
 

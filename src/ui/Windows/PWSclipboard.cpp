@@ -27,7 +27,7 @@ PWSclipboard::PWSclipboard()
 
 PWSclipboard::~PWSclipboard()
 {
-  // ClearData(); - current application behaviour allows user to keep
+  // ClearCPData(); - current application behaviour allows user to keep
   // data after application exit. 
 }
 
@@ -67,7 +67,7 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
   return m_set;
 }
 
-bool PWSclipboard::ClearData()
+bool PWSclipboard::ClearCBData()
 {
   if (m_set) {
     COleDataObject odo;

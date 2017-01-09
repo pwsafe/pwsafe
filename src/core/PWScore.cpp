@@ -420,7 +420,7 @@ void PWScore::DoDeleteAtt(const CItemAtt &att)
 }
 #endif
 
-void PWScore::ClearData()
+void PWScore::ClearDBData()
 {
   const unsigned int BS = TwoFish::BLOCKSIZE;
   if (m_passkey_len > 0) {
@@ -455,9 +455,6 @@ void PWScore::ClearData()
   m_vEmptyGroups.clear();
   m_InitialEmptyGroups.clear();
 
-  // Clear out commands and DB pre-command states
-  ClearCommands();
-
   // Reset DB pre-command state to clean
   m_DBCurrentState = CLEAN;
 
@@ -487,13 +484,16 @@ void PWScore::ReInit(bool bNewFile)
   else
     m_ReadFileVersion = PWSfile::UNKNOWN_VERSION;
 
-  // Clear all internal variables
-  ClearData();
+  // Clear all internal variables EXCEPT command and DB state vectors
+  ClearDBData();
+
+  // Now clear out commands and DB pre-command states
+  ClearCommands();
 }
 
 void PWScore::NewFile(const StringX &passkey)
 {
-  ClearData();
+  ClearDBData();
   SetPassKey(passkey);
   m_ReadFileVersion = PWSfile::VCURRENT;
 }
@@ -794,6 +794,11 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
 
 void PWScore::ClearCommands()
 {
+  // ONLY do this at each DB Open (including new DB) & Close and application exit
+  // Do NOT call this when clearing DB entries at DB lock as the user
+  // will not be able to undo any changes after unlocking the DB
+  // Should only be called from PWScore::ReInit
+
   // Clear commands
   while (!m_vpcommands.empty()) {
     delete m_vpcommands.back();
@@ -1207,7 +1212,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
     }
   } // !m_isAuxCore
 
-  ClearData(); // Before overwriting old data, but after opening the file...
+  ClearDBData(); // Before overwriting old data, but after opening the file...
 
   SetPassKey(a_passkey); // so user won't be prompted for saves
 

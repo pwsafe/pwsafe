@@ -1025,7 +1025,7 @@ void CAddEdit_Basic::OnGroupComboChanged()
 
 void CAddEdit_Basic::OnChanged()
 {
-  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
+  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return;
 
   UpdateData(TRUE);
@@ -1034,7 +1034,7 @@ void CAddEdit_Basic::OnChanged()
 
 void CAddEdit_Basic::OnENChangeNotes()
 {
-  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
+  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return;
 
   // Called for any change - even just clicking on it - so check really changed
