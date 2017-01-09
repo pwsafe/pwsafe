@@ -418,7 +418,7 @@ void DboxMain::OnOptions()
            iter++) {
         // User should not have these sub-entries in their config file
         if (iter->first == ID_MENUITEM_GROUPENTER  ||
-            iter->first == ID_MENUITEM_VIEW        || 
+            iter->first == ID_MENUITEM_VIEWENTRY        || 
             iter->first == ID_MENUITEM_DELETEENTRY ||
             iter->first == ID_MENUITEM_DELETEGROUP ||
             iter->first == ID_MENUITEM_RENAMEENTRY ||
@@ -449,8 +449,8 @@ void DboxMain::OnOptions()
 
       // Set up the shortcuts based on the main entry
       // for View, Delete and Rename
-      iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDIT);
-      iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEW);
+      iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDITENTRY);
+      iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEWENTRY);
       iter_entry->second.SetKeyFlags(iter->second);
 
       SetupSpecialShortcuts();

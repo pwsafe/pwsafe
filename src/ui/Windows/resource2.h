@@ -61,8 +61,8 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 // Edit menu
 #define ID_EDITMENU                     32050
 #define ID_MENUITEM_ADD                 32051
-#define ID_MENUITEM_EDIT                32052
-#define ID_MENUITEM_VIEW                32053
+#define ID_MENUITEM_EDITENTRY           32052
+#define ID_MENUITEM_VIEWENTRY           32053
 #define ID_MENUITEM_GROUPENTER          32054
 #define ID_MENUITEM_DELETE              32055
 #define ID_MENUITEM_DELETEENTRY         32056

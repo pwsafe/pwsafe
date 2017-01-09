@@ -66,7 +66,7 @@ const CPWToolBar::GuiRecord CPWToolBar::MainGuiInfo[] =
     {L"browseurl", ID_MENUITEM_BROWSEURL, IDB_BROWSEURL_CLASSIC, IDB_BROWSEURL_NEW, IDB_BROWSEURL_NEW_D},
     {L"~", ID_SEPARATOR, 0, 0, 0},
     {L"add", ID_MENUITEM_ADD, IDB_ADD_CLASSIC, IDB_ADD_NEW, IDB_ADD_NEW_D},
-    {L"viewedit", ID_MENUITEM_EDIT, IDB_VIEWEDIT_CLASSIC, IDB_VIEWEDIT_NEW, IDB_VIEWEDIT_NEW_D},
+    {L"viewedit", ID_MENUITEM_EDITENTRY, IDB_VIEWEDIT_CLASSIC, IDB_VIEWEDIT_NEW, IDB_VIEWEDIT_NEW_D},
     {L"~", ID_SEPARATOR, 0, 0, 0},
     {L"delete", ID_MENUITEM_DELETEENTRY, IDB_DELETE_CLASSIC, IDB_DELETE_NEW, IDB_DELETE_NEW_D},
     {L"~", ID_SEPARATOR, 0, 0, 0},
@@ -210,7 +210,7 @@ void CPWToolBar::OnToolBarQueryInsert(NMHDR *, LRESULT *pLResult)
 
 void CPWToolBar::OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMTOOLBAR* pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
+  NMTOOLBAR *pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
   if ((pNMToolbar->tbButton.idCommand != ID_SEPARATOR) &&
       GetToolBarCtrl().IsButtonHidden(pNMToolbar->tbButton.idCommand))
@@ -221,7 +221,7 @@ void CPWToolBar::OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
 void CPWToolBar::OnToolBarQueryInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMTOOLBAR* pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
+  NMTOOLBAR *pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
   ASSERT(pNMToolbar->iItem < _countof(MainGuiInfo));
 
@@ -236,7 +236,7 @@ void CPWToolBar::OnToolBarQueryInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
 void CPWToolBar::OnToolBarGetButtonInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMTOOLBAR* pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
+  NMTOOLBAR *pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
   ASSERT(pNMToolbar->iItem <= _countof(MainGuiInfo));
 
@@ -387,9 +387,15 @@ CString CPWToolBar::GetButtonString() const
       continue;
     }
 
+    // Change control ID as only ID_MENUITEM_EDITENTRY is in MainGuiInfo
+    // but we may have changed the button ID to ID_MENUITEM_VIEWENTRY
+    UINT nID = tbinfo.idCommand;
+    if (nID == ID_MENUITEM_VIEWENTRY)
+      nID = ID_MENUITEM_EDITENTRY;
+
     int index = -1;
     for (int j = 0; j < _countof(MainGuiInfo); j++) {
-      if (MainGuiInfo[j].ID == UINT(tbinfo.idCommand)) {
+      if (MainGuiInfo[j].ID == nID) {
         index = j;
         break;
       }
@@ -525,9 +531,9 @@ void CPWToolBar::MapControlIDtoImage(ID2ImageMap &IDtoImages)
     IDtoImages[ID_MENUITEM_DELETEGROUP] = iter->second;
   }
   // View has same image as Edit
-  iter = IDtoImages.find(ID_MENUITEM_EDIT);
+  iter = IDtoImages.find(ID_MENUITEM_EDITENTRY);
   if (iter != IDtoImages.end()) {
-    IDtoImages[ID_MENUITEM_VIEW] = iter->second;
+    IDtoImages[ID_MENUITEM_VIEWENTRY] = iter->second;
   }
 }
 
