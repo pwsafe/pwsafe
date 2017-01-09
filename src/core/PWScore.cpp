@@ -149,6 +149,7 @@ PWScore::PWScore() :
     }
   }
   m_undo_iter = m_redo_iter = m_vpcommands.end();
+  m_undo_DBState_iter = m_redo_DBState_iter = m_vDBState.end();
 }
 
 PWScore::~PWScore()
