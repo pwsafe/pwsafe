@@ -836,7 +836,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       }
 
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             m_core.IsReadOnly() ? ID_MENUITEM_VIEW : ID_MENUITEM_EDIT,
+                             m_core.IsReadOnly() || pci->IsProtected() ? ID_MENUITEM_VIEW : ID_MENUITEM_EDIT,
                              tc_dummy);
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,

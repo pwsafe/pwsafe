@@ -3024,6 +3024,12 @@ void DboxMain::OnChangeMode()
   // Do allow current (and possible future 'experimental') formats
   if (m_core.GetReadFileVersion() >= PWSfile::VCURRENT)
     ChangeMode(true); // true means "prompt use for password".
+
+  // Update Toolbar
+  UpdateToolBarROStatus(m_core.IsReadOnly());
+
+  CItemData *pci = GetLastSelected();
+  UpdateToolBarForSelectedItem(pci);
 }
 
 void DboxMain::OnCompare()

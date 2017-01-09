@@ -107,7 +107,8 @@ const CPWToolBar::GuiRecord CPWToolBar::MainGuiInfo[] =
     {L"managepolicies", ID_MENUITEM_PSWD_POLICIES, IDB_PSWD_POLICIES_CLASSIC, IDB_PSWD_POLICIES_NEW, IDB_PSWD_POLICIES_NEW_D},
   };
 
-// Additional Controls not on ToolBar
+// Additional Controls NOT on ToolBar and can't be added by the user during customise.
+// They are listed here ONLY to provide images for the menu items!
 const CPWToolBar::GuiRecord CPWToolBar::OtherGuiInfo[] =
   // CString name; UINT ID, classicBM, newBM, disBM
   {
@@ -212,7 +213,7 @@ void CPWToolBar::OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult)
   NMTOOLBAR* pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
   if ((pNMToolbar->tbButton.idCommand != ID_SEPARATOR) &&
-    GetToolBarCtrl().IsButtonHidden(pNMToolbar->tbButton.idCommand))
+      GetToolBarCtrl().IsButtonHidden(pNMToolbar->tbButton.idCommand))
     *pLResult = FALSE;
   else
     *pLResult = TRUE;
@@ -225,9 +226,9 @@ void CPWToolBar::OnToolBarQueryInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
   ASSERT(pNMToolbar->iItem < _countof(MainGuiInfo));
 
   if ((pNMToolbar->iItem >= 0) &&
-    (pNMToolbar->iItem < _countof(MainGuiInfo))) {
-      pNMToolbar->tbButton = m_pOriginalTBinfo[pNMToolbar->iItem];
-      *pLResult = TRUE;
+      (pNMToolbar->iItem < _countof(MainGuiInfo))) {
+    pNMToolbar->tbButton = m_pOriginalTBinfo[pNMToolbar->iItem];
+    *pLResult = TRUE;
   } else {
     *pLResult = FALSE;
   }
@@ -276,7 +277,7 @@ void CPWToolBar::Init(const int NumBits, bool bRefresh)
   m_DisabledImageLists[1].Create(16, 16, iNewFlags2, m_iNum_Bitmaps, 2);
 
   int iNum_Main = _countof(MainGuiInfo);
-  int iNum_Other  = _countof(OtherGuiInfo);
+  int iNum_Other = _countof(OtherGuiInfo);
 
   for (i = 0; i < iNum_Main; i++) {
     if (MainGuiInfo[i].classicBM == IDB_BROWSEURL_CLASSIC) {

@@ -419,9 +419,21 @@ void DboxMain::UpdateToolBarROStatus(const bool bIsRO)
     BOOL State = bIsRO ? FALSE : TRUE;
     BOOL SaveState = (!bIsRO && m_core.HasDBChanged()) ? TRUE : FALSE;
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
-    mainTBCtrl.EnableButton(ID_MENUITEM_ADD, State);
-    mainTBCtrl.EnableButton(ID_MENUITEM_DELETEENTRY, State);
+
+    // Allow or not Save
     mainTBCtrl.EnableButton(ID_MENUITEM_SAVE, SaveState);
+
+    // Disable the following Toolbar buttons if R-O
+    int IDs[] = { ID_MENUITEM_ADD , ID_MENUITEM_ADDGROUP,
+      ID_MENUITEM_EDIT, ID_MENUITEM_DELETEENTRY,
+      ID_MENUITEM_IMPORT_PLAINTEXT, ID_MENUITEM_IMPORT_XML,
+      ID_MENUITEM_MERGE, ID_MENUITEM_SYNCHRONIZE,
+      ID_MENUITEM_UNDO, ID_MENUITEM_REDO };
+
+    // Do it
+    for (int i = 0; i < sizeof(IDs) / sizeof(int); i++) {
+      mainTBCtrl.EnableButton(IDs[i], State);
+    }
   }
 }
 
@@ -3622,11 +3634,16 @@ void DboxMain::OnCustomizeToolbar()
   CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
   mainTBCtrl.Customize();
 
-  StringX cs_temp = LPCWSTR(m_MainToolBar.GetButtonString());
-  PWSprefs::GetInstance()->SetPref(PWSprefs::MainToolBarButtons, cs_temp);
+  // Update toolbar per R/W status
+  UpdateToolBarROStatus(m_core.IsReadOnly());
 
+  // Update toolbar per selected item
   CItemData *pci = getSelectedItem();
   UpdateToolBarForSelectedItem(pci);
+
+  // Now save user's Toolbar preference
+  StringX cs_temp = LPCWSTR(m_MainToolBar.GetButtonString());
+  PWSprefs::GetInstance()->SetPref(PWSprefs::MainToolBarButtons, cs_temp);
 }
 
 void DboxMain::OnShowFindToolbar()

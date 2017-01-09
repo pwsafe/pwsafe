@@ -587,7 +587,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EXIT, true, true, true, true},
   // Edit menu
   {ID_MENUITEM_ADD, true, false, true, false},
-  {ID_MENUITEM_EDIT, true, true, false, false},
+  {ID_MENUITEM_EDIT, true, false, false, false},
   {ID_MENUITEM_VIEW, true, true, false, false},
   {ID_MENUITEM_GROUPENTER, true, true, false, false},
   {ID_MENUITEM_DELETEENTRY, true, false, false, false},
