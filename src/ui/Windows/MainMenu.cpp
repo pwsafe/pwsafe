@@ -163,8 +163,8 @@ void DboxMain::SetUpInitialMenuStrings()
   // for the action.  Add here to stop them being in the Shortcut
   // Options CListCtrl.
   // User can alter the function using the base values
-  // ID_MENUITEM_EDIT, ID_MENUITEM_DELETE & ID_MENUITEM_RENAME
-    ID_MENUITEM_VIEW,
+  // ID_MENUITEM_EDITENTRY, ID_MENUITEM_DELETE & ID_MENUITEM_RENAME
+    ID_MENUITEM_VIEWENTRY,
     ID_MENUITEM_DELETEENTRY, ID_MENUITEM_DELETEGROUP,
     ID_MENUITEM_RENAMEENTRY, ID_MENUITEM_RENAMEGROUP,
   };
@@ -373,7 +373,7 @@ void DboxMain::SetUpInitialMenuStrings()
     const st_prefShortcut &stxst = vShortcuts[i];
     // User should not have these sub-entries in their config file
     if (stxst.id == ID_MENUITEM_GROUPENTER  ||
-        stxst.id == ID_MENUITEM_VIEW        ||
+        stxst.id == ID_MENUITEM_VIEWENTRY        ||
         stxst.id == ID_MENUITEM_DELETEENTRY ||
         stxst.id == ID_MENUITEM_DELETEGROUP ||
         stxst.id == ID_MENUITEM_RENAME      ||
@@ -410,9 +410,9 @@ void DboxMain::SetUpInitialMenuStrings()
 
   // Set up the shortcuts based on the main entry
   // for View, Delete and Rename
-  iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDIT);
+  iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDITENTRY);
   ASSERT(iter != m_MapMenuShortcuts.end());
-  iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEW);
+  iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEWENTRY);
   ASSERT(iter_entry != m_MapMenuShortcuts.end());
   iter_entry->second.SetKeyFlags(iter->second);
 
@@ -836,7 +836,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       }
 
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             m_core.IsReadOnly() ? ID_MENUITEM_VIEW : ID_MENUITEM_EDIT,
+                             m_core.IsReadOnly() || pci->IsProtected() ?
+                                 ID_MENUITEM_VIEWENTRY : ID_MENUITEM_EDITENTRY,
                              tc_dummy);
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,

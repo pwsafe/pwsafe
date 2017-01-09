@@ -66,7 +66,7 @@ const CPWToolBar::GuiRecord CPWToolBar::MainGuiInfo[] =
     {L"browseurl", ID_MENUITEM_BROWSEURL, IDB_BROWSEURL_CLASSIC, IDB_BROWSEURL_NEW, IDB_BROWSEURL_NEW_D},
     {L"~", ID_SEPARATOR, 0, 0, 0},
     {L"add", ID_MENUITEM_ADD, IDB_ADD_CLASSIC, IDB_ADD_NEW, IDB_ADD_NEW_D},
-    {L"viewedit", ID_MENUITEM_EDIT, IDB_VIEWEDIT_CLASSIC, IDB_VIEWEDIT_NEW, IDB_VIEWEDIT_NEW_D},
+    {L"viewedit", ID_MENUITEM_EDITENTRY, IDB_VIEWEDIT_CLASSIC, IDB_VIEWEDIT_NEW, IDB_VIEWEDIT_NEW_D},
     {L"~", ID_SEPARATOR, 0, 0, 0},
     {L"delete", ID_MENUITEM_DELETEENTRY, IDB_DELETE_CLASSIC, IDB_DELETE_NEW, IDB_DELETE_NEW_D},
     {L"~", ID_SEPARATOR, 0, 0, 0},
@@ -107,7 +107,8 @@ const CPWToolBar::GuiRecord CPWToolBar::MainGuiInfo[] =
     {L"managepolicies", ID_MENUITEM_PSWD_POLICIES, IDB_PSWD_POLICIES_CLASSIC, IDB_PSWD_POLICIES_NEW, IDB_PSWD_POLICIES_NEW_D},
   };
 
-// Additional Controls not on ToolBar
+// Additional Controls NOT on ToolBar and can't be added by the user during customise.
+// They are listed here ONLY to provide images for the menu items!
 const CPWToolBar::GuiRecord CPWToolBar::OtherGuiInfo[] =
   // CString name; UINT ID, classicBM, newBM, disBM
   {
@@ -209,10 +210,10 @@ void CPWToolBar::OnToolBarQueryInsert(NMHDR *, LRESULT *pLResult)
 
 void CPWToolBar::OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMTOOLBAR* pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
+  NMTOOLBAR *pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
   if ((pNMToolbar->tbButton.idCommand != ID_SEPARATOR) &&
-    GetToolBarCtrl().IsButtonHidden(pNMToolbar->tbButton.idCommand))
+      GetToolBarCtrl().IsButtonHidden(pNMToolbar->tbButton.idCommand))
     *pLResult = FALSE;
   else
     *pLResult = TRUE;
@@ -220,14 +221,14 @@ void CPWToolBar::OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
 void CPWToolBar::OnToolBarQueryInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMTOOLBAR* pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
+  NMTOOLBAR *pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
   ASSERT(pNMToolbar->iItem < _countof(MainGuiInfo));
 
   if ((pNMToolbar->iItem >= 0) &&
-    (pNMToolbar->iItem < _countof(MainGuiInfo))) {
-      pNMToolbar->tbButton = m_pOriginalTBinfo[pNMToolbar->iItem];
-      *pLResult = TRUE;
+      (pNMToolbar->iItem < _countof(MainGuiInfo))) {
+    pNMToolbar->tbButton = m_pOriginalTBinfo[pNMToolbar->iItem];
+    *pLResult = TRUE;
   } else {
     *pLResult = FALSE;
   }
@@ -235,7 +236,7 @@ void CPWToolBar::OnToolBarQueryInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
 void CPWToolBar::OnToolBarGetButtonInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMTOOLBAR* pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
+  NMTOOLBAR *pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
   ASSERT(pNMToolbar->iItem <= _countof(MainGuiInfo));
 
@@ -276,7 +277,7 @@ void CPWToolBar::Init(const int NumBits, bool bRefresh)
   m_DisabledImageLists[1].Create(16, 16, iNewFlags2, m_iNum_Bitmaps, 2);
 
   int iNum_Main = _countof(MainGuiInfo);
-  int iNum_Other  = _countof(OtherGuiInfo);
+  int iNum_Other = _countof(OtherGuiInfo);
 
   for (i = 0; i < iNum_Main; i++) {
     if (MainGuiInfo[i].classicBM == IDB_BROWSEURL_CLASSIC) {
@@ -386,9 +387,15 @@ CString CPWToolBar::GetButtonString() const
       continue;
     }
 
+    // Change control ID as only ID_MENUITEM_EDITENTRY is in MainGuiInfo
+    // but we may have changed the button ID to ID_MENUITEM_VIEWENTRY
+    UINT nID = tbinfo.idCommand;
+    if (nID == ID_MENUITEM_VIEWENTRY)
+      nID = ID_MENUITEM_EDITENTRY;
+
     int index = -1;
     for (int j = 0; j < _countof(MainGuiInfo); j++) {
-      if (MainGuiInfo[j].ID == UINT(tbinfo.idCommand)) {
+      if (MainGuiInfo[j].ID == nID) {
         index = j;
         break;
       }
@@ -524,9 +531,9 @@ void CPWToolBar::MapControlIDtoImage(ID2ImageMap &IDtoImages)
     IDtoImages[ID_MENUITEM_DELETEGROUP] = iter->second;
   }
   // View has same image as Edit
-  iter = IDtoImages.find(ID_MENUITEM_EDIT);
+  iter = IDtoImages.find(ID_MENUITEM_EDITENTRY);
   if (iter != IDtoImages.end()) {
-    IDtoImages[ID_MENUITEM_VIEW] = iter->second;
+    IDtoImages[ID_MENUITEM_VIEWENTRY] = iter->second;
   }
 }
 

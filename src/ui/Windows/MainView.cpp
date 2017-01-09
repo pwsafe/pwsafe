@@ -419,9 +419,35 @@ void DboxMain::UpdateToolBarROStatus(const bool bIsRO)
     BOOL State = bIsRO ? FALSE : TRUE;
     BOOL SaveState = (!bIsRO && m_core.HasDBChanged()) ? TRUE : FALSE;
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
-    mainTBCtrl.EnableButton(ID_MENUITEM_ADD, State);
-    mainTBCtrl.EnableButton(ID_MENUITEM_DELETEENTRY, State);
+
+    // Allow or not Save
     mainTBCtrl.EnableButton(ID_MENUITEM_SAVE, SaveState);
+
+    // Disable the following Toolbar buttons if R-O
+    int IDs[] = { ID_MENUITEM_ADD , ID_MENUITEM_ADDGROUP,
+      ID_MENUITEM_DELETEENTRY,
+      ID_MENUITEM_IMPORT_PLAINTEXT, ID_MENUITEM_IMPORT_XML,
+      ID_MENUITEM_MERGE, ID_MENUITEM_SYNCHRONIZE,
+      ID_MENUITEM_UNDO, ID_MENUITEM_REDO };
+
+    // Update state of Toolbar buttons
+    for (int i = 0; i < sizeof(IDs) / sizeof(int); i++) {
+      mainTBCtrl.EnableButton(IDs[i], State);
+    }
+
+    if (bIsRO) {
+      // Edit should become View
+      int nIndex = m_MainToolBar.CommandToIndex(ID_MENUITEM_EDITENTRY);
+      if (nIndex != -1) {
+        mainTBCtrl.SetCmdID(nIndex, ID_MENUITEM_VIEWENTRY);
+      }
+    } else {
+      // View should become Edit
+      int nIndex = m_MainToolBar.CommandToIndex(ID_MENUITEM_VIEWENTRY);
+      if (nIndex != -1) {
+        mainTBCtrl.SetCmdID(nIndex, ID_MENUITEM_EDITENTRY);
+      }
+    }
   }
 }
 
@@ -431,10 +457,10 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
   // from ItemData that's already been deleted. Ugh.
   if (m_core.GetNumEntries() != 0) {
     const CItemData *pci_entry(pci), *pbci(NULL);
-    BOOL State = (pci_entry == NULL) ? FALSE : TRUE;
+    BOOL State = (pci_entry == NULL) ? FALSE : TRUE; // Entry vs Group
     int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
                  ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, 
-                 ID_MENUITEM_RUNCOMMAND, ID_MENUITEM_EDIT,
+                 ID_MENUITEM_RUNCOMMAND, ID_MENUITEM_EDITENTRY,
                  ID_MENUITEM_PASSWORDSUBSET};
 
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
@@ -444,6 +470,22 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
 
     mainTBCtrl.EnableButton(ID_MENUITEM_UNDO, m_core.AnyToUndo() ? TRUE : FALSE);
     mainTBCtrl.EnableButton(ID_MENUITEM_REDO, m_core.AnyToRedo() ? TRUE : FALSE);
+
+    if (pci_entry != NULL) {
+      if (m_core.IsReadOnly() || pci_entry->IsProtected()) {
+        // Edit should become View
+        int nIndex = m_MainToolBar.CommandToIndex(ID_MENUITEM_EDITENTRY);
+        if (nIndex != -1) {
+          mainTBCtrl.SetCmdID(nIndex, ID_MENUITEM_VIEWENTRY);
+        }
+      } else {
+        // View should become Edit
+        int nIndex = m_MainToolBar.CommandToIndex(ID_MENUITEM_VIEWENTRY);
+        if (nIndex != -1) {
+          mainTBCtrl.SetCmdID(nIndex, ID_MENUITEM_EDITENTRY);
+        }
+      }
+    }
 
     if (pci_entry != NULL && pci_entry->IsDependent()) {
       pbci = GetBaseEntry(pci_entry);
@@ -3620,13 +3662,26 @@ void DboxMain::OnRefreshWindow()
 void DboxMain::OnCustomizeToolbar()
 {
   CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
+
+  // Before we customise the Toolbar, to prevent multiple "Edit entry" buttons
+  // change back View to Edit (if changed)
+  int nIndex = m_MainToolBar.CommandToIndex(ID_MENUITEM_VIEWENTRY);
+  if (nIndex != -1) {
+    mainTBCtrl.SetCmdID(nIndex, ID_MENUITEM_EDITENTRY);
+  }
+
   mainTBCtrl.Customize();
 
-  StringX cs_temp = LPCWSTR(m_MainToolBar.GetButtonString());
-  PWSprefs::GetInstance()->SetPref(PWSprefs::MainToolBarButtons, cs_temp);
+  // Update toolbar per R/W status
+  UpdateToolBarROStatus(m_core.IsReadOnly());
 
+  // Update toolbar per selected item
   CItemData *pci = getSelectedItem();
   UpdateToolBarForSelectedItem(pci);
+
+  // Now save user's Toolbar preference
+  StringX cs_temp = LPCWSTR(m_MainToolBar.GetButtonString());
+  PWSprefs::GetInstance()->SetPref(PWSprefs::MainToolBarButtons, cs_temp);
 }
 
 void DboxMain::OnShowFindToolbar()

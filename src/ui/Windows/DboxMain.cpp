@@ -372,8 +372,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
   ON_COMMAND(ID_MENUITEM_DUPLICATEGROUP, OnDuplicateGroup)
   ON_COMMAND(ID_MENUITEM_CREATESHORTCUT, OnCreateShortcut)
-  ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
-  ON_COMMAND(ID_MENUITEM_VIEW, OnEdit)
+  ON_COMMAND(ID_MENUITEM_EDITENTRY, OnEdit)
+  ON_COMMAND(ID_MENUITEM_VIEWENTRY, OnEdit)
   ON_COMMAND(ID_MENUITEM_GROUPENTER, OnEdit)
   ON_COMMAND(ID_MENUITEM_BROWSEURL, OnBrowse)
   ON_COMMAND(ID_MENUITEM_SENDEMAIL, OnSendEmail)
@@ -587,8 +587,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EXIT, true, true, true, true},
   // Edit menu
   {ID_MENUITEM_ADD, true, false, true, false},
-  {ID_MENUITEM_EDIT, true, true, false, false},
-  {ID_MENUITEM_VIEW, true, true, false, false},
+  {ID_MENUITEM_EDITENTRY, true, false, false, false},
+  {ID_MENUITEM_VIEWENTRY, true, true, false, false},
   {ID_MENUITEM_GROUPENTER, true, true, false, false},
   {ID_MENUITEM_DELETEENTRY, true, false, false, false},
   {ID_MENUITEM_DELETEGROUP, true, false, false, false},
@@ -3136,7 +3136,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_DUPLICATEENTRY:
     case ID_MENUITEM_COPYPASSWORD:
     case ID_MENUITEM_AUTOTYPE:
-    case ID_MENUITEM_EDIT:
+    case ID_MENUITEM_EDITENTRY:
     case ID_MENUITEM_PASSWORDSUBSET:
       if (bGroupSelected)
         iEnable = FALSE;
