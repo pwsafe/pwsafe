@@ -236,3 +236,77 @@ TEST_F(CommandsTest, CountGroups)
   // Get core to delete any existing commands
   core.ClearCommands();
 }
+
+TEST_F(CommandsTest, UpdatePassword)
+{
+  PWScore core;
+  CItemData it;
+  it.CreateUUID();
+  time_t t;
+  time(&t);
+  it.SetCTime(t);
+  it.SetTitle(L"KarmaKiller");
+  it.SetPassword(L"MoreWideF1ns");
+
+  Command *pcmd = AddEntryCommand::Create(&core, it);
+  core.Execute(pcmd);
+  EXPECT_TRUE(core.HasDBChanged());
+
+  ItemListConstIter iter = core.Find(it.GetUUID());
+  ASSERT_NE(core.GetEntryEndIter(), iter);
+  CItemData it2(core.GetEntry(iter));
+  EXPECT_EQ(it, it2);
+
+  const StringX newPassword(L"ManifestQuin1ne");
+  pcmd = UpdatePasswordCommand::Create(&core, it, newPassword);
+  core.Execute(pcmd);
+  EXPECT_TRUE(core.HasDBChanged());
+
+  iter = core.Find(it.GetUUID());
+  EXPECT_EQ(core.GetEntry(iter).GetPassword(), newPassword);
+  core.Undo();
+  EXPECT_TRUE(core.HasDBChanged());
+
+  iter = core.Find(it.GetUUID());
+  EXPECT_EQ(core.GetEntry(iter).GetPassword(), it.GetPassword());
+
+  // Get core to delete any existing commands
+  core.ClearCommands();
+}
+
+TEST_F(CommandsTest, UpdateEntry)
+{
+  PWScore core;
+  CItemData it;
+  it.CreateUUID();
+  time_t t;
+  time(&t);
+  it.SetCTime(t);
+  it.SetTitle(L"RedC1gar");
+  it.SetPassword(L"EarlyR1zer");
+
+  Command *pcmd = AddEntryCommand::Create(&core, it);
+  core.Execute(pcmd);
+  EXPECT_TRUE(core.HasDBChanged());
+
+  ItemListConstIter iter = core.Find(it.GetUUID());
+  ASSERT_NE(core.GetEntryEndIter(), iter);
+  CItemData it2(core.GetEntry(iter));
+  EXPECT_EQ(it, it2);
+
+  const StringX newTitle(L"PastaFar1an");
+  pcmd = UpdateEntryCommand::Create(&core, it, CItem::TITLE, newTitle);
+  core.Execute(pcmd);
+  EXPECT_TRUE(core.HasDBChanged());
+
+  iter = core.Find(it.GetUUID());
+  EXPECT_EQ(core.GetEntry(iter).GetTitle(), newTitle);
+  core.Undo();
+  EXPECT_TRUE(core.HasDBChanged());
+
+  iter = core.Find(it.GetUUID());
+  EXPECT_EQ(core.GetEntry(iter).GetTitle(), it.GetTitle());
+
+  // Get core to delete any existing commands
+  core.ClearCommands();
+}

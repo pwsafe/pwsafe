@@ -281,11 +281,9 @@ private:
             CItemData::EntryStatus es,
             UpdateGUICommand::ExecuteFn efn);
 
-  pws_os::CUUID m_entry_uuid;
-  CItemData::FieldType m_ftype;
-  StringX m_value, m_old_value, m_oldpwhistory;
-  time_t m_tttoldXtime;
-  CItemData::EntryStatus m_old_status;
+  CItemData m_old_ci;
+  CItemData m_new_ci;
+  const CItemData::FieldType m_ftype;
 };
 
 class UpdatePasswordCommand : public Command
@@ -300,11 +298,9 @@ public:
 
 private:
   UpdatePasswordCommand(CommandInterface *pcomInt,
-                        CItemData &ci, const StringX sxNewPassword);
-  pws_os::CUUID m_entry_uuid;
-  StringX m_sxNewPassword, m_sxOldPassword, m_sxOldPWHistory;
-  CItemData::EntryStatus m_old_status;
-  time_t m_tttOldXTime;
+                        const CItemData &ci, const StringX &sxNewPassword);
+  const CItemData m_old_ci; // for uuid, password, password history, XTime, entry status
+  CItemData m_new_ci; // for new password
 };
 
 class AddDependentEntryCommand : public Command
@@ -347,8 +343,8 @@ private:
                              UUIDVector &dependentslist, CReport *pRpt,
                              CItemData::EntryType type, int iVia);
   UUIDVector m_dependentslist;
-  ItemList *m_pmapDeletedItems;
-  SaveTypePWMap *m_pmapSaveStatus;
+  ItemList m_mapDeletedItems;
+  SaveTypePWMap m_mapSaveStatus;
   CReport *m_pRpt;
   CItemData::EntryType m_type;
   int m_iVia;

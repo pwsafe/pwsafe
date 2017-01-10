@@ -700,11 +700,9 @@ UpdateEntryCommand::UpdateEntryCommand(CommandInterface *pcomInt,
                                        const CItemData &ci,
                                        CItemData::FieldType ftype,
                                        const StringX &value)
-  : Command(pcomInt), m_ftype(ftype), m_value(value)
+  : Command(pcomInt), m_old_ci(ci), m_ftype(ftype)
 {
-  m_entry_uuid = ci.GetUUID();
-  m_old_status = ci.GetStatus();
-  m_old_value = ci.GetFieldValue(m_ftype);
+  m_new_ci.SetFieldValue(ftype, value);
 }
 
 void UpdateEntryCommand::Doit(const CUUID &entry_uuid,
@@ -718,14 +716,17 @@ void UpdateEntryCommand::Doit(const CUUID &entry_uuid,
     if (ftype != CItemData::PASSWORD)
       pos->second.SetFieldValue(ftype, value);
     else {
+      time_t tttoldXtime;
       if (efn == UpdateGUICommand::WN_EXECUTE_REDO) {
-        m_oldpwhistory = pos->second.GetPWHistory();
-        pos->second.GetXTime(m_tttoldXtime);
+        m_old_ci.SetPWHistory(pos->second.GetPWHistory());
+        pos->second.GetXTime(tttoldXtime);
+        m_old_ci.SetXTime(tttoldXtime);
         pos->second.UpdatePassword(value);
       } else {
         pos->second.SetPassword(value);
-        pos->second.SetXTime(m_tttoldXtime);
-        pos->second.SetPWHistory(m_oldpwhistory);
+        m_old_ci.GetXTime(tttoldXtime);
+        pos->second.SetXTime(tttoldXtime);
+        pos->second.SetPWHistory(m_old_ci.GetPWHistory());
       }
     }
     if (ftype == CItemData::PASSWORD ||
@@ -740,14 +741,16 @@ void UpdateEntryCommand::Doit(const CUUID &entry_uuid,
 int UpdateEntryCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
-    Doit(m_entry_uuid, m_ftype, m_value, CItemData::ES_MODIFIED, UpdateGUICommand::WN_EXECUTE_REDO);
+    Doit(m_old_ci.GetUUID(), m_ftype, m_new_ci.GetFieldValue(m_ftype),
+         CItemData::ES_MODIFIED, UpdateGUICommand::WN_EXECUTE_REDO);
 
     if (m_bNotifyGUI)
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
-                                        m_entry_uuid, m_ftype);
+                                        m_old_ci.GetUUID(), m_ftype);
 
     if (m_ftype == CItemData::XTIME)
-      m_pcomInt->UpdateExpiryEntry(m_entry_uuid, m_ftype, m_value);
+      m_pcomInt->UpdateExpiryEntry(m_old_ci.GetUUID(), m_ftype,
+                                   m_new_ci.GetFieldValue(m_ftype));
 
     m_CommandDBChange = DB;
   }
@@ -757,11 +760,12 @@ int UpdateEntryCommand::Execute()
 void UpdateEntryCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
-    Doit(m_entry_uuid, m_ftype, m_old_value, m_old_status, UpdateGUICommand::WN_UNDO);
+    Doit(m_old_ci.GetUUID(), m_ftype, m_old_ci.GetFieldValue(m_ftype),
+         m_old_ci.GetStatus(), UpdateGUICommand::WN_UNDO);
 
     if (m_bNotifyGUI)
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
-                                        m_entry_uuid, m_ftype);
+                                        m_old_ci.GetUUID(), m_ftype);
   }
 }
 
@@ -770,26 +774,23 @@ void UpdateEntryCommand::Undo()
 // ------------------------------------------------
 
 UpdatePasswordCommand::UpdatePasswordCommand(CommandInterface *pcomInt,
-                                             CItemData &ci,
-                                             const StringX sxNewPassword)
-  : Command(pcomInt), m_sxNewPassword(sxNewPassword)
+                                             const CItemData &ci,
+                                             const StringX &sxNewPassword)
+  : Command(pcomInt), m_old_ci(ci)
 {
-  m_entry_uuid = ci.GetUUID();
-  m_old_status = ci.GetStatus();
-  m_sxOldPassword = ci.GetPassword();
-  m_sxOldPWHistory = ci.GetPWHistory();
-  ci.GetXTime(m_tttOldXTime);
+  m_new_ci.SetPassword(sxNewPassword);
 }
 
 int UpdatePasswordCommand::Execute()
 {
-  if (!m_pcomInt->IsReadOnly() && m_sxOldPassword != m_sxNewPassword) {
-    ItemListIter pos = m_pcomInt->Find(m_entry_uuid);
+  if (!m_pcomInt->IsReadOnly() &&m_old_ci.GetPassword() != m_new_ci.GetPassword()) {
+    ItemListIter pos = m_pcomInt->Find(m_old_ci.GetUUID());
     if (pos != m_pcomInt->GetEntryEndIter()) {
-      pos->second.UpdatePassword(m_sxNewPassword);
-      time_t tttNewXTime;
+      pos->second.UpdatePassword(m_new_ci.GetPassword());
+      time_t tttNewXTime, tttOldXTime;
       pos->second.GetXTime(tttNewXTime);
-      if (m_tttOldXTime != tttNewXTime) {
+      m_old_ci.GetXTime(tttOldXTime);
+      if (tttOldXTime != tttNewXTime) {
         m_pcomInt->UpdateExpiryEntry(pos->second);
       }
       pos->second.SetStatus(CItemData::ES_MODIFIED);
@@ -800,7 +801,7 @@ int UpdatePasswordCommand::Execute()
 
     if (m_bNotifyGUI)
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD,
-        m_entry_uuid);
+                                        m_old_ci.GetUUID());
   }
   return 0;
 }
@@ -808,17 +809,19 @@ int UpdatePasswordCommand::Execute()
 void UpdatePasswordCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
-    ItemListIter pos = m_pcomInt->Find(m_entry_uuid);
+    ItemListIter pos = m_pcomInt->Find(m_old_ci.GetUUID());
     if (pos != m_pcomInt->GetEntryEndIter()) {
-      pos->second.SetPassword(m_sxOldPassword);
-      pos->second.SetPWHistory(m_sxOldPWHistory);
-      pos->second.SetStatus(m_old_status);
-      pos->second.SetXTime(m_tttOldXTime);
+      time_t tttOldXTime;
+      m_old_ci.GetXTime(tttOldXTime);
+      pos->second.SetPassword(m_old_ci.GetPassword());
+      pos->second.SetPWHistory(m_old_ci.GetPWHistory());
+      pos->second.SetStatus(m_old_ci.GetStatus());
+      pos->second.SetXTime(tttOldXTime);
     }
 
     if (m_bNotifyGUI)
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD,
-        m_entry_uuid);
+                                        m_old_ci.GetUUID());
   }
 }
 
@@ -864,14 +867,10 @@ AddDependentEntriesCommand::AddDependentEntriesCommand(CommandInterface *pcomInt
   : Command(pcomInt), m_dependentslist(dependentslist), m_pRpt(pRpt),
     m_type(type), m_iVia(iVia)
 {
-  m_pmapDeletedItems = new ItemList;
-  m_pmapSaveStatus = new SaveTypePWMap;
 }
 
 AddDependentEntriesCommand::~AddDependentEntriesCommand()
 {
-  delete m_pmapDeletedItems;
-  delete m_pmapSaveStatus;
 }
 
 int AddDependentEntriesCommand::Execute()
@@ -886,7 +885,7 @@ int AddDependentEntriesCommand::Execute()
 
     rc = m_pcomInt->DoAddDependentEntries(m_dependentslist, m_pRpt,
                                           m_type, m_iVia,
-                                          m_pmapDeletedItems, m_pmapSaveStatus);
+                                          &m_mapDeletedItems, &m_mapSaveStatus);
 
     m_CommandDBChange = DB;
   }
@@ -896,7 +895,7 @@ int AddDependentEntriesCommand::Execute()
 void AddDependentEntriesCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
-    m_pcomInt->UndoAddDependentEntries(m_pmapDeletedItems, m_pmapSaveStatus);
+    m_pcomInt->UndoAddDependentEntries(&m_mapDeletedItems, &m_mapSaveStatus);
 
     if (m_type == CItemData::ET_ALIAS) {
       m_pcomInt->SetBase2AliasesMmap(m_saved_base2aliases_mmap);
