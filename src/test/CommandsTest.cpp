@@ -12,6 +12,10 @@
 #endif
 
 #include "core/PWScore.h"
+#include "core/PWSfileV3.h"
+#include "core/PWHistory.h"
+#include "os/file.h"
+
 #include "gtest/gtest.h"
 
 // A fixture for factoring common code across tests
@@ -39,6 +43,7 @@ TEST_F(CommandsTest, AddItem)
   ASSERT_NE(core.GetEntryEndIter(), iter);
   EXPECT_EQ(di, core.GetEntry(iter));
   EXPECT_TRUE(core.HasDBChanged());
+
   core.Undo();
   EXPECT_FALSE(core.HasDBChanged());
   EXPECT_EQ(0, core.GetNumEntries());
@@ -240,38 +245,99 @@ TEST_F(CommandsTest, CountGroups)
 TEST_F(CommandsTest, UpdatePassword)
 {
   PWScore core;
+  size_t pwh_max, num_err;
+  PWHistList pwhl;
+
+  const stringT fname(L"UpdPWTest.psafe3");
+  const StringX passphrase(L"WhyAmIDoingThis?");
+  const int32 i1day = 86400; // 24 * 60 * 60 seconds
+  const StringX sxOldPassword(L"MoreWideF1ns");
+  const StringX sxNewPassword(L"ManifestQuin1ne");
+
+  core.SetCurFile(fname.c_str());
+  core.NewFile(passphrase);
+
   CItemData it;
   it.CreateUUID();
-  time_t t;
+  time_t t, tPMtime;
   time(&t);
+  tPMtime = t - i1day;
   it.SetCTime(t);
   it.SetTitle(L"KarmaKiller");
-  it.SetPassword(L"MoreWideF1ns");
+  it.SetPassword(sxOldPassword);
+  it.SetPWHistory(L"10300");  // On and save 3
+  it.SetPMTime(tPMtime);       // Say password set yesterday
+  it.SetXTimeInt(i1day * 10);
+  it.SetXTime(t - i1day * 2); // Say expired 2 days ago
 
   Command *pcmd = AddEntryCommand::Create(&core, it);
   core.Execute(pcmd);
   EXPECT_TRUE(core.HasDBChanged());
+  EXPECT_TRUE(it.IsExpired());
 
   ItemListConstIter iter = core.Find(it.GetUUID());
   ASSERT_NE(core.GetEntryEndIter(), iter);
   CItemData it2(core.GetEntry(iter));
   EXPECT_EQ(it, it2);
 
-  const StringX newPassword(L"ManifestQuin1ne");
-  pcmd = UpdatePasswordCommand::Create(&core, it, newPassword);
+  core.WriteCurFile();
+  EXPECT_FALSE(core.HasDBChanged());
+
+  pcmd = UpdatePasswordCommand::Create(&core, it, sxNewPassword);
   core.Execute(pcmd);
   EXPECT_TRUE(core.HasDBChanged());
 
   iter = core.Find(it.GetUUID());
-  EXPECT_EQ(core.GetEntry(iter).GetPassword(), newPassword);
+  CItemData it3(core.GetEntry(iter));
+  EXPECT_EQ(it3.GetPassword(), sxNewPassword);
+  ASSERT_FALSE(it3.IsExpired());
+
+  EXPECT_TRUE(CreatePWHistoryList(it3.GetPWHistory(), pwh_max, num_err,
+                                  pwhl, PWSUtil::TMC_ASC_UNKNOWN));
+
+  EXPECT_EQ(0, num_err);
+  EXPECT_EQ(3, pwh_max);
+  EXPECT_EQ(1, pwhl.size());
+  EXPECT_EQ(sxOldPassword, pwhl[0].password);
+  EXPECT_EQ(tPMtime, pwhl[0].changetttdate);
+
   core.Undo();
+  EXPECT_FALSE(core.HasDBChanged());
+
+  iter = core.Find(it.GetUUID());
+  CItemData it4(core.GetEntry(iter));
+  EXPECT_EQ(it4.GetPassword(), sxOldPassword);
+
+  EXPECT_TRUE(CreatePWHistoryList(it4.GetPWHistory(), pwh_max, num_err,
+                                  pwhl, PWSUtil::TMC_ASC_UNKNOWN));
+
+  EXPECT_EQ(0, num_err);
+  EXPECT_EQ(3, pwh_max);
+  EXPECT_EQ(0, pwhl.size());
+
+  core.Redo();
   EXPECT_TRUE(core.HasDBChanged());
 
   iter = core.Find(it.GetUUID());
-  EXPECT_EQ(core.GetEntry(iter).GetPassword(), it.GetPassword());
+  CItemData it5(core.GetEntry(iter));
+  EXPECT_EQ(it5.GetPassword(), sxNewPassword);
+
+  // New password change time is that of when Redo is performed & not original time
+  it5.GetPMTime(tPMtime);
+
+  EXPECT_TRUE(CreatePWHistoryList(it5.GetPWHistory(), pwh_max, num_err,
+                                  pwhl, PWSUtil::TMC_ASC_UNKNOWN));
+  EXPECT_EQ(0, num_err);
+  EXPECT_EQ(3, pwh_max);
+  EXPECT_EQ(1, pwhl.size());
+  EXPECT_EQ(sxOldPassword, pwhl[0].password);
+  EXPECT_EQ(tPMtime, pwhl[0].changetttdate);
 
   // Get core to delete any existing commands
   core.ClearCommands();
+
+  // Delete file
+  pws_os::DeleteAFile(fname);
 }
 
 TEST_F(CommandsTest, UpdateEntry)

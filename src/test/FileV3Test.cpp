@@ -96,7 +96,7 @@ TEST_F(FileV3Test, EmptyFile)
   ASSERT_TRUE(pws_os::FileExists(fname));
 
   PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
-  // Try opening with wrong passphrasse, check failure
+  // Try opening with wrong passphrase, check failure
   EXPECT_EQ(PWSfile::WRONG_PASSWORD, fr.Open(_T("x")));
 
   // Now open with correct one, check emptiness
