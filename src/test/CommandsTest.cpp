@@ -270,11 +270,6 @@ TEST_F(CommandsTest, UpdatePassword)
   it.SetXTimeInt(i1day * 10);
   it.SetXTime(t - i1day * 2); // Say expired 2 days ago
 
-  StringX sxPMTime, sxOldPswdLen, sxPWH;
-  Format(sxPMTime, L"%08x", tPMtime);
-  Format(sxOldPswdLen, L"%04x", sxOldPassword.length());
-  sxPWH = StringX(L"10301") + sxPMTime + sxOldPswdLen + sxOldPassword;
-
   Command *pcmd = AddEntryCommand::Create(&core, it);
   core.Execute(pcmd);
   EXPECT_TRUE(core.HasDBChanged());
@@ -326,6 +321,9 @@ TEST_F(CommandsTest, UpdatePassword)
   iter = core.Find(it.GetUUID());
   CItemData it5(core.GetEntry(iter));
   EXPECT_EQ(it5.GetPassword(), sxNewPassword);
+
+  // New password change time is that of when Redo is performed & not original time
+  it5.GetPMTime(tPMtime);
 
   EXPECT_TRUE(CreatePWHistoryList(it5.GetPWHistory(), pwh_max, num_err,
                                   pwhl, PWSUtil::TMC_ASC_UNKNOWN));
