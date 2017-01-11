@@ -407,7 +407,7 @@ creation times and values of the last few passwords used in the current
 entry, in the following format:
     "fmmnnTLPTLP...TLP"
 where:
-    f  = {0,1} if password history is on/off
+    f  = {0,1} if password history is off(0) / on(1)
     mm = 2 hexadecimal digits max size of history list (i.e. max = 255)
     nn = 2 hexadecimal digits current size of history list
     T  = Time password was set (time_t written out in %08x)
