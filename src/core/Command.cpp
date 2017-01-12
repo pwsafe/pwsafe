@@ -46,7 +46,7 @@ using pws_os::CUUID;
 
 Command::Command(CommandInterface *pcomInt)
 :  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0), m_CommandDBChange(NONE),
-m_CommandChangeType(NONE), m_bInMultiCommand(false)
+   m_CommandChangeType(NONE), m_bInMultiCommand(false)
 {
 }
 
@@ -54,11 +54,12 @@ Command::~Command()
 {
 }
 
-void Command::SaveDBInformation(const bool bIsMultiCommand)
+void Command::SaveDBInformation()
 {
   // Currently only modified nodes are dealt with - could add any other DB information
   // at a later date if required
-  if (!InMultiCommand() || bIsMultiCommand) {
+  // right predicate's only relevant for nested MultiCommands
+  if (!InMultiCommand() || (dynamic_cast<MultiCommands *>(this) != NULL)) {
     // Only do this if executed outside a MultiCommand or it is the Multicommand itself
     // We could change an entry and so here is where we save DB information
     // just in case.  Currently only modified nodes.
@@ -66,12 +67,13 @@ void Command::SaveDBInformation(const bool bIsMultiCommand)
   }
 }
 
-void Command::RestoreDBInformation(const bool bIsMultiCommand)
+void Command::RestoreDBInformation()
 {
   // Only do this if executed outside a MultiCommand or it is the Multicommand itself
   // Currently only modified nodes are dealt with - could add any other DB information
   // at a later date if required
-  if (!InMultiCommand() || bIsMultiCommand) {
+  // right predicate's only relevant for nested MultiCommands
+  if (!InMultiCommand() || (dynamic_cast<MultiCommands *>(this) != NULL)) {
     // Get current modified nodes vector
     std::vector<StringX> vModifiedNodes = m_pcomInt->GetModifiedNodes();
 
@@ -123,7 +125,7 @@ int MultiCommands::Execute()
     if (*cmd_Iter != NULL && (*cmd_Iter)->IsEntryChangeType()) {
       // We could change an entry and so here is where we save DB information
       // just in case.  Currently only modified nodes.
-      SaveDBInformation(true);
+      SaveDBInformation();
       break;
     }
   }
@@ -155,7 +157,7 @@ void MultiCommands::Undo()
     if (*cmd_rIter != NULL && (*cmd_rIter)->IsEntryChangeType()) {
       // We could change an entry and so here is where we save DB information
       // just in case.  Currently only modified nodes.
-      RestoreDBInformation(true);
+      RestoreDBInformation();
       break;
     }
   }
@@ -164,7 +166,7 @@ void MultiCommands::Undo()
 void MultiCommands::Add(Command *pcmd)
 {
   ASSERT(pcmd != NULL);
-  pcmd->SetInMultiCommand(true);
+  pcmd->SetInMultiCommand();
   m_vpcmds.push_back(pcmd);
 }
 
@@ -173,35 +175,8 @@ void MultiCommands::Insert(Command *pcmd, size_t ioffset)
   // VERY INEFFICIENT - use sparingly to insert commands into the
   // multi-command vector
   ASSERT(pcmd != NULL);
-  pcmd->SetInMultiCommand(true);
+  pcmd->SetInMultiCommand();
   m_vpcmds.insert(m_vpcmds.begin() + ioffset, pcmd);
-}
-
-bool MultiCommands::Remove(Command *pcmd)
-{
-  ASSERT(pcmd != NULL);
-  std::vector<Command *>::iterator cmd_Iter;
-
-  // Reset in a MultiCommand in case executed by itself later
-  pcmd->SetInMultiCommand(false);
-
-  cmd_Iter = find(m_vpcmds.begin(), m_vpcmds.end(), pcmd);
-  if (cmd_Iter != m_vpcmds.end()) {
-    delete (*cmd_Iter);
-    m_vpcmds.erase(cmd_Iter);
-    return true;
-  } else
-    return false;
-}
-
-bool MultiCommands::Remove()
-{
-  if (!m_vpcmds.empty()) {
-    delete m_vpcmds.back();
-    m_vpcmds.pop_back();
-    return true;
-  } else
-    return false;
 }
 
 bool MultiCommands::GetRC(Command *pcmd, int &rc)

@@ -739,7 +739,7 @@ void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const CItemData &ci)
     m_ctlItemTree.SetItemText(hItem, csNewString);
   }
 
-  // Update view (e.g. nolonger highlighted if not changed)
+  // Update view (e.g. no longer highlighted if not changed)
   CRect rect;
   m_ctlItemTree.GetItemRect(hItem, &rect, FALSE);
   m_ctlItemTree.InvalidateRect(&rect);

@@ -50,32 +50,30 @@ public:
 
   // This tells a MultiCommand that this command could change an entry
   // as opposed to a DB preference, header, empty group, password policy or filter
-  virtual bool IsEntryChangeType() { return m_CommandChangeType == DB; }
+  bool IsEntryChangeType() const { return m_CommandChangeType == DB; }
 
   // This states if something was actually changed
-  virtual bool WasDBChanged() const
-  { return m_CommandDBChange != NONE; }
+  bool WasDBChanged() const { return m_CommandDBChange != NONE; }
 
-  // Is a command is within a MultiCommand, do not save DB information
-  // other than that needed for the actual command.
-  // This prevents multiple copies of similar data that is only needed once
-  // in a MultiCommand i.e. at creation and during Undo
-  virtual bool InMultiCommand() const
-  { return m_bInMultiCommand; }
-
-  virtual void SetInMultiCommand(const bool bInMultiCommand)
-  { m_bInMultiCommand = bInMultiCommand; }
-  
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
 
-  void SaveDBInformation(const bool bIsMultiCommand = false);
-  void RestoreDBInformation(const bool bIsMultiCommand = false);
+  void SaveDBInformation();
+  void RestoreDBInformation();
 
+  // If a command is within a MultiCommand, do not save DB information
+  // other than that needed for the actual command.
+  // This prevents multiple copies of similar data that is only needed once
+  // in a MultiCommand i.e. at creation and during Undo
+  bool InMultiCommand() const { return m_bInMultiCommand; }
+
+  friend class MultiCommands; // Yes, a derived class needs to be a friend here...
+  void SetInMultiCommand() { m_bInMultiCommand = true; }
+  
   CommandInterface *m_pcomInt;
   bool m_bNotifyGUI, m_bInMultiCommand;
 
-  // Command return code (nt all commands set this to anything other than zero)
+  // Command return code (not all commands set this to anything other than zero)
   int m_RC;
 
   // If needed, to be used by a Multicommand that changes the DB or
@@ -511,8 +509,6 @@ public:
 
   void Add(Command *pcmd);
   void Insert(Command *pcmd, size_t ioffset = 0); // VERY INEFFICIENT - use sparingly
-  bool Remove(Command *pcmd);
-  bool Remove();
   bool GetRC(Command *pcmd, int &rc);
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_vpcmds.size();}

@@ -33,9 +33,6 @@ class CommandInterface {
   virtual ItemListIter GetEntryEndIter() = 0;
   virtual ItemListConstIter GetEntryEndIter() const = 0;
 
-  virtual std::vector<StringX> &GetModifiedNodes() = 0;
-  virtual void SetModifiedNodes(std::vector<StringX> &) = 0;
-
   // Command-specific methods
   virtual void DoAddEntry(const CItemData &item, const CItemAtt *att) = 0;
   virtual void DoDeleteEntry(const CItemData &item) = 0;
@@ -108,8 +105,17 @@ class CommandInterface {
 
   virtual const PWSFilters &GetDBFilters() = 0;
   virtual bool SetDBFilters(const PWSFilters &MapDBFilters) = 0;
- 
+
+  std::vector<StringX> &GetModifiedNodes() { return m_vModifiedNodes; }
+  void SetModifiedNodes(const std::vector<StringX> &saved_vNodes_Modified)
+  { m_vModifiedNodes = saved_vNodes_Modified; }
+
+  
   virtual ~CommandInterface() {}
+
+ protected:
+  // Changed groups
+  std::vector<StringX> m_vModifiedNodes;
 };
 
 #endif /* __COMMANDINTERFACE_H */

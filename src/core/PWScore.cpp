@@ -3243,11 +3243,6 @@ bool PWScore::IsNodeModified(StringX &path) const
   }
 }
 
-void PWScore::SetModifiedNodes(std::vector<StringX> &saved_vNodes_Modified)
-{
-  m_vModifiedNodes = saved_vNodes_Modified;
-}
-
 void PWScore::AddChangedNodes(StringX path)
 {
   StringX nextpath(path);
