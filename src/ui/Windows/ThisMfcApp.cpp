@@ -1088,6 +1088,7 @@ BOOL ThisMfcApp::InitInstance()
   bsSupportedFunctions.set(UIInterFace::GUISETUPDISPLAYINFO);
   bsSupportedFunctions.set(UIInterFace::GUIREFRESHENTRY);
   bsSupportedFunctions.set(UIInterFace::UPDATEWIZARD);
+  bsSupportedFunctions.set(UIInterFace::UPDATEGUIGROUPS);
 
   m_core.SetUIInterFace(&dbox, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
 

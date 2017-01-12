@@ -750,6 +750,10 @@ private:
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                          const pws_os::CUUID &entry_uuid,
                          CItemData::FieldType ft, bool bUpdateGUI);
+  // Version for groups
+  virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
+                         const std::vector<StringX> &vGroups);
+  
   virtual void GUISetupDisplayInfo(CItemData &ci);
   virtual void GUIRefreshEntry(const CItemData &ci);
   virtual void UpdateWizard(const std::wstring &s);
@@ -844,7 +848,8 @@ private:
   void RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft);
   void RefreshEntryPasswordInGUI(CItemData &ci);
   void RebuildGUI(const ViewType iView = BOTHVIEWS);
-  void UpdateEntryinGUI(CItemData &ci);
+  void UpdateEntryInGUI(CItemData &ci);
+  void UpdateGroupsInGUI(const std::vector<StringX> &vGroups);
   StringX GetListViewItemText(CItemData &ci, const int &icolumn);
   
   static const struct UICommandTableEntry {

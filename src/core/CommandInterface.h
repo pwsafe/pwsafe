@@ -33,6 +33,9 @@ class CommandInterface {
   virtual ItemListIter GetEntryEndIter() = 0;
   virtual ItemListConstIter GetEntryEndIter() const = 0;
 
+  virtual std::vector<StringX> &GetModifiedNodes() = 0;
+  virtual void SetModifiedNodes(std::vector<StringX> &) = 0;
+
   // Command-specific methods
   virtual void DoAddEntry(const CItemData &item, const CItemAtt *att) = 0;
   virtual void DoDeleteEntry(const CItemData &item) = 0;
@@ -81,6 +84,8 @@ class CommandInterface {
                                       const pws_os::CUUID &,
                                       CItemData::FieldType ft = CItemData::START,
                                       bool bUpdateGUI = true) = 0;
+  virtual void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
+                                      const std::vector<StringX> &vGroups) = 0;
 
   virtual void AddExpiryEntry(const CItemData &ci) = 0;
   virtual void UpdateExpiryEntry(const CItemData &ci) = 0;

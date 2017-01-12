@@ -2139,6 +2139,12 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   }
 }
 
+void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action /*ga*/,
+                                  const std::vector<StringX> &/*vGroups*/)
+{
+  // TODO
+  return;
+}
 void PasswordSafeFrame::RefreshEntryFieldInGUI(const CItemData& item, CItemData::FieldType ft)
 {
   if (m_currentView == GRID) {

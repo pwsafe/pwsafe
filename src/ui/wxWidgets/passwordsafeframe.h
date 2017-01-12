@@ -193,6 +193,8 @@ public:
                            const pws_os::CUUID &entry_uuid,
                            CItemData::FieldType ft = CItemData::START,
                            bool bUpdateGUI = true);
+    virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
+                           const std::vector<StringX> &vGroups);
 
     virtual void GUIRefreshEntry(const CItemData &ci);
 
