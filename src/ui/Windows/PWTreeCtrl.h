@@ -167,5 +167,5 @@ private:
   bool m_bEditLabelCompleted;
 
   bool m_bUseHighLighting;
-  std::vector<StringX> m_vNodes_Modified;
+  std::vector<StringX> m_vModifiedNodes;
 };

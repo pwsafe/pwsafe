@@ -32,11 +32,12 @@ public:
    * NOTE: New functions must be placed at the end of the list.
    * Sequential values must be used as they are used to access positions in
    * a std::bitset<NUM_SUPPORTED> variable.
+   *
+   * DO NOT change the order of the functions as UIs will fail
    */
   enum Functions {
     DATABASEMODIFIED = 0, UPDATEGUI, GUISETUPDISPLAYINFO, GUIREFRESHENTRY,
-    UPDATEWIZARD,
-    // Add new functions here!
+    UPDATEWIZARD, UPDATEGUIGROUPS,
     NUM_SUPPORTED};
 
   /*
@@ -53,6 +54,10 @@ public:
                          const pws_os::CUUID &entry_uuid,
                          CItemData::FieldType ft = CItemData::START,
                          bool bUpdateGUI = true) = 0;
+
+  // Version for groups
+  virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
+                         const std::vector<StringX> &vGroups) = 0;
 
   // GUISetupDisplayInfo: let GUI populate DisplayInfo field in an entry
   virtual void GUISetupDisplayInfo(CItemData &ci) = 0;

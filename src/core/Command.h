@@ -48,15 +48,43 @@ public:
   void SetNoGUINotify() {m_bNotifyGUI = false;}
   bool GetGUINotify() const {return m_bNotifyGUI;}
 
-  virtual bool WasDBChanged() const;
+  // This tells a MultiCommand that this command could change an entry
+  // as opposed to a DB preference, header, empty group, password policy or filter
+  virtual bool IsEntryChangeType() { return m_CommandChangeType == DB; }
+
+  // This states if something was actually changed
+  virtual bool WasDBChanged() const
+  { return m_CommandDBChange != NONE; }
+
+  // Is a command is within a MultiCommand, do not save DB information
+  // other than that needed for the actual command.
+  // This prevents multiple copies of similar data that is only needed once
+  // in a MultiCommand i.e. at creation and during Undo
+  virtual bool InMultiCommand() const
+  { return m_bInMultiCommand; }
+
+  virtual void SetInMultiCommand(const bool bInMultiCommand)
+  { m_bInMultiCommand = bInMultiCommand; }
   
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
 
-  CommandInterface *m_pcomInt;
-  bool m_bNotifyGUI;
+  void SaveDBInformation(const bool bIsMultiCommand = false);
+  void RestoreDBInformation(const bool bIsMultiCommand = false);
 
+  CommandInterface *m_pcomInt;
+  bool m_bNotifyGUI, m_bInMultiCommand;
+
+  // Command return code (nt all commands set this to anything other than zero)
   int m_RC;
+
+  // If needed, to be used by a Multicommand that changes the DB or
+  // a single command that changes the DB outside a MultiCommand
+  std::vector<StringX> m_vSavedModifiedNodes;
+
+  // This is the potential change type if it there is anything to do
+  // It is set so that MultiCommands can tell whether to save DB information
+  CommandDBChange m_CommandChangeType;
 
   // The command change value is ONLY set during Execute
   CommandDBChange m_CommandDBChange;
@@ -93,6 +121,7 @@ public:
     GUI_UNDO_MERGESYNC,
     GUI_REFRESH_TREE,
     GUI_REFRESH_ENTRY,
+    GUI_REFRESH_GROUPS,
     GUI_REFRESH_BOTHVIEWS,
     GUI_DB_PREFERENCES_CHANGED,
     GUI_PWH_CHANGED_IN_DB

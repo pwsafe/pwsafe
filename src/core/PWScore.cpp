@@ -165,7 +165,7 @@ PWScore::~PWScore()
   }
 
   m_UHFL.clear();
-  m_vNodes_Modified.clear();
+  m_vModifiedNodes.clear();
 
   delete m_pFileSig;
 }
@@ -460,7 +460,7 @@ void PWScore::ClearDBData()
   m_DBCurrentState = CLEAN;
 
   // Clear changed nodes
-  m_vNodes_Modified.clear();
+  m_vModifiedNodes.clear();
 
   // Clear expired password entries
   m_ExpireCandidates.clear();
@@ -827,7 +827,7 @@ void PWScore::SetInitialValues()
   m_InitialRUEList = m_RUEList;                   // for detecting header changes
 
   // Clear changed nodes
-  m_vNodes_Modified.clear();
+  m_vModifiedNodes.clear();
 }
 
 int PWScore::Execute(Command *pcmd)
@@ -3159,6 +3159,16 @@ void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
     m_pUIIF->UpdateGUI(ga, entry_uuid, ft, bUpdateGUI);
 }
 
+void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
+                                     const std::vector<StringX> &vGroups)
+{
+  // This allows the core to provide feedback to the UI that the GUI needs
+  // updating due to a field having its value changed
+  if (m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::UPDATEGUIGROUPS))
+    m_pUIIF->UpdateGUI(ga, vGroups);
+}
+
 void PWScore::GUISetupDisplayInfo(CItemData &ci)
 {
   // This allows the core to provide feedback to the UI that ???
@@ -3225,20 +3235,26 @@ void PWScore::UnlockFile2(const stringT &filename)
 bool PWScore::IsNodeModified(StringX &path) const
 {
   if (!IsEmptyGroup(path)) {
-    return std::find(m_vNodes_Modified.begin(),
-      m_vNodes_Modified.end(), path) != m_vNodes_Modified.end();
+    return std::find(m_vModifiedNodes.begin(),
+      m_vModifiedNodes.end(), path) != m_vModifiedNodes.end();
   } else {
     return find(m_InitialEmptyGroups.begin(), m_InitialEmptyGroups.end(), path) ==
       m_InitialEmptyGroups.end();
   }
 }
 
+void PWScore::SetModifiedNodes(std::vector<StringX> &saved_vNodes_Modified)
+{
+  m_vModifiedNodes = saved_vNodes_Modified;
+}
+
 void PWScore::AddChangedNodes(StringX path)
 {
   StringX nextpath(path);
   while (!nextpath.empty()) {
-    if (std::find(m_vNodes_Modified.begin(), m_vNodes_Modified.end(), nextpath) == m_vNodes_Modified.end())
-      m_vNodes_Modified.push_back(nextpath);
+    if (std::find(m_vModifiedNodes.begin(), m_vModifiedNodes.end(), nextpath) ==
+        m_vModifiedNodes.end())
+      m_vModifiedNodes.push_back(nextpath);
     size_t i = nextpath.find_last_of(_T("."));
     if (i == nextpath.npos)
       i = 0;
@@ -3472,17 +3488,27 @@ int PWScore::DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath)
   ItemListIter iter;
 
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
-    if (iter->second.GetGroup() == sxOldPath) {
+    StringX sxGroup = iter->second.GetGroup();
+    if (sxGroup == sxOldPath) {
       iter->second.SetGroup(sxNewPath);
+
+      // Add both to modified nodes even though old renamed to new
+      AddChangedNodes(sxOldPath);
+      AddChangedNodes(sxNewPath);
     }
-    else if ((iter->second.GetGroup().length() > len2) && (iter->second.GetGroup().substr(0, len2) == sxOldPath2) &&
-     (iter->second.GetGroup()[len2] != wcDot)) {
+    else if ((sxGroup.length() > len2) &&
+             (sxGroup.substr(0, len2) == sxOldPath2) &&
+             (sxGroup[len2] != wcDot)) {
       // Need to check that next symbol is not a dot
       // to ensure not affecting another group
       // (group name could contain trailing dots, for example abc..def.g)
       // subgroup name will have len > len2 (old_name + dot + subgroup_name)
-      StringX sxSubGroups = iter->second.GetGroup().substr(len2);
+      StringX sxSubGroups = sxGroup.substr(len2);
       iter->second.SetGroup(sxNewPath + sxDot + sxSubGroups);
+
+      // Add both to modified nodes even though old renamed to new
+      AddChangedNodes(sxOldPath);
+      AddChangedNodes(sxNewPath + sxDot + sxSubGroups);
     }
   }
   return 0;
