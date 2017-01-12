@@ -3488,17 +3488,27 @@ int PWScore::DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath)
   ItemListIter iter;
 
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
-    if (iter->second.GetGroup() == sxOldPath) {
+    StringX sxGroup = iter->second.GetGroup();
+    if (sxGroup == sxOldPath) {
       iter->second.SetGroup(sxNewPath);
+
+      // Add both to modified nodes even though old renamed to new
+      AddChangedNodes(sxOldPath);
+      AddChangedNodes(sxNewPath);
     }
-    else if ((iter->second.GetGroup().length() > len2) && (iter->second.GetGroup().substr(0, len2) == sxOldPath2) &&
-     (iter->second.GetGroup()[len2] != wcDot)) {
+    else if ((sxGroup.length() > len2) &&
+             (sxGroup.substr(0, len2) == sxOldPath2) &&
+             (sxGroup[len2] != wcDot)) {
       // Need to check that next symbol is not a dot
       // to ensure not affecting another group
       // (group name could contain trailing dots, for example abc..def.g)
       // subgroup name will have len > len2 (old_name + dot + subgroup_name)
-      StringX sxSubGroups = iter->second.GetGroup().substr(len2);
+      StringX sxSubGroups = sxGroup.substr(len2);
       iter->second.SetGroup(sxNewPath + sxDot + sxSubGroups);
+
+      // Add both to modified nodes even though old renamed to new
+      AddChangedNodes(sxOldPath);
+      AddChangedNodes(sxNewPath + sxDot + sxSubGroups);
     }
   }
   return 0;
