@@ -13,6 +13,7 @@
 #include "PWSprefs.h"
 
 #include <algorithm>
+#include <iterator>
 
 // ------------------------------------------------
 // Base class: Command
@@ -44,7 +45,8 @@
 using pws_os::CUUID;
 
 Command::Command(CommandInterface *pcomInt)
-:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0), m_CommandDBChange(NONE)
+:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0), m_CommandDBChange(NONE),
+m_CommandChangeType(NONE), m_bInMultiCommand(false)
 {
 }
 
@@ -52,9 +54,47 @@ Command::~Command()
 {
 }
 
-bool Command::WasDBChanged() const
+void Command::SaveDBInformation(const bool bIsMultiCommand)
 {
-  return m_CommandDBChange != CommandDBChange::NONE;
+  // Currently only modified nodes are dealt with - could add any other DB information
+  // at a later date if required
+  if (!InMultiCommand() || bIsMultiCommand) {
+    // Only do this if executed outside a MultiCommand or it is the Multicommand itself
+    // We could change an entry and so here is where we save DB information
+    // just in case.  Currently only modified nodes.
+    m_vSavedModifiedNodes = m_pcomInt->GetModifiedNodes();
+  }
+}
+
+void Command::RestoreDBInformation(const bool bIsMultiCommand)
+{
+  // Only do this if executed outside a MultiCommand or it is the Multicommand itself
+  // Currently only modified nodes are dealt with - could add any other DB information
+  // at a later date if required
+  if (!InMultiCommand() || bIsMultiCommand) {
+    // Get current modified nodes vector
+    std::vector<StringX> vModifiedNodes = m_pcomInt->GetModifiedNodes();
+
+    // Only do this if executed outside a MultiCommand
+    // We could change an entry and so here is where we save DB information
+    // just in case.  Currently only modified nodes.
+    m_pcomInt->SetModifiedNodes(m_vSavedModifiedNodes);
+
+    // We now have to refresh those modified groups now no longer modified
+    std::sort(vModifiedNodes.begin(), vModifiedNodes.end());
+    std::sort(m_vSavedModifiedNodes.begin(), m_vSavedModifiedNodes.end());
+
+    // Remove those modified nodes that were modified before we executed this command
+    std::vector<StringX> vChangedNodes;
+    std::set_difference(
+      vModifiedNodes.begin(), vModifiedNodes.end(),
+      m_vSavedModifiedNodes.begin(), m_vSavedModifiedNodes.end(),
+      std::inserter(vChangedNodes, vChangedNodes.begin())
+    );
+
+    // Tell GUI to refresh this group
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_GROUPS, vChangedNodes);
+  }
 }
 
 // ------------------------------------------------
@@ -80,6 +120,15 @@ int MultiCommands::Execute()
   std::vector<Command *>::iterator cmd_Iter;
 
   for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
+    if (*cmd_Iter != NULL && (*cmd_Iter)->IsEntryChangeType()) {
+      // We could change an entry and so here is where we save DB information
+      // just in case.  Currently only modified nodes.
+      SaveDBInformation(true);
+      break;
+    }
+  }
+
+  for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
     int rc(-1);
     if (*cmd_Iter != NULL) {
       rc = (*cmd_Iter)->Execute();
@@ -101,11 +150,21 @@ void MultiCommands::Undo()
     if (*cmd_rIter != NULL)
       (*cmd_rIter)->Undo();
   }
+
+  for (cmd_rIter = m_vpcmds.rbegin(); cmd_rIter != m_vpcmds.rend(); cmd_rIter++) {
+    if (*cmd_rIter != NULL && (*cmd_rIter)->IsEntryChangeType()) {
+      // We could change an entry and so here is where we save DB information
+      // just in case.  Currently only modified nodes.
+      RestoreDBInformation(true);
+      break;
+    }
+  }
 }
 
 void MultiCommands::Add(Command *pcmd)
 {
   ASSERT(pcmd != NULL);
+  pcmd->SetInMultiCommand(true);
   m_vpcmds.push_back(pcmd);
 }
 
@@ -114,6 +173,7 @@ void MultiCommands::Insert(Command *pcmd, size_t ioffset)
   // VERY INEFFICIENT - use sparingly to insert commands into the
   // multi-command vector
   ASSERT(pcmd != NULL);
+  pcmd->SetInMultiCommand(true);
   m_vpcmds.insert(m_vpcmds.begin() + ioffset, pcmd);
 }
 
@@ -121,6 +181,9 @@ bool MultiCommands::Remove(Command *pcmd)
 {
   ASSERT(pcmd != NULL);
   std::vector<Command *>::iterator cmd_Iter;
+
+  // Reset in a MultiCommand in case executed by itself later
+  pcmd->SetInMultiCommand(false);
 
   cmd_Iter = find(m_vpcmds.begin(), m_vpcmds.end(), pcmd);
   if (cmd_Iter != m_vpcmds.end()) {
@@ -452,6 +515,8 @@ AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
                                  const CItemAtt *att, const Command *pcmd)
   : Command(pcomInt), m_ci(ci)
 {
+  m_CommandChangeType = DB;
+
   if (att != NULL)
     m_att = *att;
 
@@ -471,6 +536,8 @@ AddEntryCommand::~AddEntryCommand()
 int AddEntryCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
+    SaveDBInformation();
+
     m_pcomInt->DoAddEntry(m_ci, &m_att);
     m_pcomInt->AddChangedNodes(m_ci.GetGroup());
 
@@ -505,6 +572,8 @@ void AddEntryCommand::Undo()
 
     DeleteEntryCommand delete_entry_cmd(m_pcomInt, m_ci, this);
     delete_entry_cmd.Execute();
+
+    RestoreDBInformation();
   }
 }
 
@@ -516,6 +585,8 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
                                        const CItemData &ci, const Command *pcmd)
   : Command(pcomInt), m_ci(ci), m_dependents(0)
 {
+  m_CommandChangeType = DB;
+
   if (pcmd != NULL) {
     m_bNotifyGUI = pcmd->GetGUINotify();
   }
@@ -561,6 +632,8 @@ int DeleteEntryCommand::Execute()
   // Get out quick if R-O
   if (m_pcomInt->IsReadOnly())
     return 0;
+
+  SaveDBInformation();
 
   // There's at least one case where we may get here with an entry
   // that's already been deleted: Consider a base and its shortcut
@@ -633,6 +706,8 @@ void DeleteEntryCommand::Undo()
 
     // Since not needed for Undo/Redo again - delete it
     delete pmulticmds;
+
+    RestoreDBInformation();
   } // R/W & change to undo
 }
 
@@ -648,6 +723,8 @@ EditEntryCommand::EditEntryCommand(CommandInterface *pcomInt,
   // We're only supposed to operate on entries
   // with same uuids, and possibly different fields
   ASSERT(m_old_ci.GetUUID() == m_new_ci.GetUUID());
+
+  m_CommandChangeType = DB;
 }
 
 EditEntryCommand::~EditEntryCommand()
@@ -657,6 +734,8 @@ EditEntryCommand::~EditEntryCommand()
 int EditEntryCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
+    SaveDBInformation();
+
     m_pcomInt->DoReplaceEntry(m_old_ci, m_new_ci);
 
     m_pcomInt->AddChangedNodes(m_old_ci.GetGroup());
@@ -689,6 +768,8 @@ void EditEntryCommand::Undo()
                 UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRY;
       m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
     }
+
+    RestoreDBInformation();
   }
 }
 
@@ -702,6 +783,8 @@ UpdateEntryCommand::UpdateEntryCommand(CommandInterface *pcomInt,
                                        const StringX &value)
   : Command(pcomInt), m_old_ci(ci), m_ftype(ftype)
 {
+  m_CommandChangeType = DB;
+
   m_new_ci.SetFieldValue(ftype, value);
 }
 
@@ -741,6 +824,8 @@ void UpdateEntryCommand::Doit(const CUUID &entry_uuid,
 int UpdateEntryCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
+    SaveDBInformation();
+
     Doit(m_old_ci.GetUUID(), m_ftype, m_new_ci.GetFieldValue(m_ftype),
          CItemData::ES_MODIFIED, UpdateGUICommand::WN_EXECUTE_REDO);
 
@@ -766,6 +851,8 @@ void UpdateEntryCommand::Undo()
     if (m_bNotifyGUI)
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
                                         m_old_ci.GetUUID(), m_ftype);
+  
+    RestoreDBInformation();
   }
 }
 
@@ -778,12 +865,16 @@ UpdatePasswordCommand::UpdatePasswordCommand(CommandInterface *pcomInt,
                                              const StringX &sxNewPassword)
   : Command(pcomInt), m_old_ci(ci)
 {
+  m_CommandChangeType = DB;
+
   m_new_ci.SetPassword(sxNewPassword);
 }
 
 int UpdatePasswordCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly() &&m_old_ci.GetPassword() != m_new_ci.GetPassword()) {
+    SaveDBInformation();
+
     ItemListIter pos = m_pcomInt->Find(m_old_ci.GetUUID());
     if (pos != m_pcomInt->GetEntryEndIter()) {
       pos->second.UpdatePassword(m_new_ci.GetPassword());
@@ -822,6 +913,8 @@ void UpdatePasswordCommand::Undo()
     if (m_bNotifyGUI)
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD,
                                         m_old_ci.GetUUID());
+
+    RestoreDBInformation();  
   }
 }
 
@@ -836,11 +929,14 @@ AddDependentEntryCommand::AddDependentEntryCommand(CommandInterface *pcomInt,
   : Command(pcomInt), m_base_uuid(base_uuid),
     m_entry_uuid(entry_uuid), m_type(type)
 {
+  m_CommandChangeType = DB;
 }
 
 int AddDependentEntryCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
+    SaveDBInformation();
+
     m_pcomInt->DoAddDependentEntry(m_base_uuid, m_entry_uuid, m_type);
 
     m_CommandDBChange = DB;
@@ -852,6 +948,8 @@ void AddDependentEntryCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
     m_pcomInt->DoRemoveDependentEntry(m_base_uuid, m_entry_uuid, m_type);
+  
+    RestoreDBInformation();
   }
 }
 
@@ -867,6 +965,7 @@ AddDependentEntriesCommand::AddDependentEntriesCommand(CommandInterface *pcomInt
   : Command(pcomInt), m_dependentslist(dependentslist), m_pRpt(pRpt),
     m_type(type), m_iVia(iVia)
 {
+  m_CommandChangeType = DB;
 }
 
 AddDependentEntriesCommand::~AddDependentEntriesCommand()
@@ -877,6 +976,8 @@ int AddDependentEntriesCommand::Execute()
 {
   int rc(0);
   if (!m_pcomInt->IsReadOnly()) {
+    SaveDBInformation();
+
     if (m_type == CItemData::ET_ALIAS) {
       m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
     } else { // if !alias, assume shortcut
@@ -902,6 +1003,8 @@ void AddDependentEntriesCommand::Undo()
     } else { // if !alias, assume shortcut
       m_pcomInt->SetBase2ShortcutsMmap(m_saved_base2shortcuts_mmap);
     }
+
+    RestoreDBInformation();
   }
 }
 
@@ -916,11 +1019,14 @@ RemoveDependentEntryCommand::RemoveDependentEntryCommand(CommandInterface *pcomI
   : Command(pcomInt), m_base_uuid(base_uuid),
     m_entry_uuid(entry_uuid), m_type(type)
 {
+  m_CommandChangeType = DB;
 }
 
 int RemoveDependentEntryCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
+    SaveDBInformation();
+
     m_pcomInt->DoRemoveDependentEntry(m_base_uuid, m_entry_uuid, m_type);
 
     m_CommandDBChange = DB;
@@ -932,6 +1038,8 @@ void RemoveDependentEntryCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
     m_pcomInt->DoAddDependentEntry(m_base_uuid, m_entry_uuid, m_type);
+  
+    RestoreDBInformation();
   }
 }
 
@@ -946,11 +1054,14 @@ MoveDependentEntriesCommand::MoveDependentEntriesCommand(CommandInterface *pcomI
   : Command(pcomInt), m_from_baseuuid(from_baseuuid),
     m_to_baseuuid(to_baseuuid), m_type(type)
 {
+  m_CommandChangeType = DB;
 }
 
 int MoveDependentEntriesCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
+    SaveDBInformation();
+
     if (m_type == CItemData::ET_ALIAS) {
       m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
     } else { // if !alias, assume shortcut
@@ -973,6 +1084,8 @@ void MoveDependentEntriesCommand::Undo()
     } else { // if !alias, assume shortcut
       m_pcomInt->SetBase2ShortcutsMmap(m_saved_base2shortcuts_mmap);
     }
+  
+    RestoreDBInformation();
   }
 }
 
@@ -984,12 +1097,16 @@ UpdatePasswordHistoryCommand::UpdatePasswordHistoryCommand(CommandInterface *pco
                                                            const int iAction,
                                                            const int new_default_max)
  : Command(pcomInt), m_iAction(iAction), m_new_default_max(new_default_max)
-{}
+{
+  m_CommandChangeType = DB;
+}
 
 int UpdatePasswordHistoryCommand::Execute()
 {
   int rc(0);
   if (!m_pcomInt->IsReadOnly()) {
+    SaveDBInformation();
+
     rc = m_pcomInt->DoUpdatePasswordHistory(m_iAction, m_new_default_max,
                                             m_mapSavedHistory);
 
@@ -1002,6 +1119,8 @@ void UpdatePasswordHistoryCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
     m_pcomInt->UndoUpdatePasswordHistory(m_mapSavedHistory);
+  
+    RestoreDBInformation();
   }
 }
 
@@ -1012,12 +1131,16 @@ void UpdatePasswordHistoryCommand::Undo()
 RenameGroupCommand::RenameGroupCommand(CommandInterface *pcomInt,
                                        const StringX sxOldPath, const StringX sxNewPath)
  : Command(pcomInt), m_sxOldPath(sxOldPath), m_sxNewPath(sxNewPath)
-{}
+{
+  m_CommandChangeType = DB;
+}
 
 int RenameGroupCommand::Execute()
 {
   int rc(0);
   if (!m_pcomInt->IsReadOnly() && m_sxOldPath != m_sxNewPath) {
+    SaveDBInformation();
+
     rc = m_pcomInt->DoRenameGroup(m_sxOldPath, m_sxNewPath);
 
     m_CommandDBChange = DB;
@@ -1029,6 +1152,8 @@ void RenameGroupCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
     m_pcomInt->UndoRenameGroup(m_sxOldPath, m_sxNewPath);
+  
+    RestoreDBInformation();
   }
 }
 
