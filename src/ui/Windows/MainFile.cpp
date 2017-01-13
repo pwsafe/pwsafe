@@ -2880,7 +2880,7 @@ void DboxMain::OnProperties()
       pmulticmds->Add(pcmd_desc);
     }
 
-    if (pmulticmds->GetSize() > 0) {
+    if (!pmulticmds->IsEmpty()) {
       // Do it
       Execute(pmulticmds);
       ChangeOkUpdate();
@@ -3802,7 +3802,7 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
     pmulticmds->Add(pcmdCopy);
   }
 
-  if (pmulticmds->GetSize() == 0)
+  if (pmulticmds->IsEmpty())
     return FALSE;
 
   CWaitCursor waitCursor;
@@ -3894,7 +3894,7 @@ LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
     }
   }
 
-  if (pmulticmds->GetSize() > 0) {
+  if (!pmulticmds->IsEmpty()) {
     CWaitCursor waitCursor;
     Execute(pmulticmds);
     waitCursor.Restore();

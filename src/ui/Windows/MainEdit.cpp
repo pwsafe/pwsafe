@@ -558,18 +558,20 @@ void DboxMain::OnDuplicateGroup()
     // We either do only one set of multi-commands, none of them or both of them
     // as one multi-command (normals/bases first followed by dependents) and possibly
     // add empty groups
-    const int iDoExec = ((pmulti_cmd_base->GetSize() == 0) ? 0 : 1) +
-                        ((pmulti_cmd_deps->GetSize() == 0) ? 0 : 2);
-    if (iDoExec != 0 || pmulti_cmd_egrps->GetSize() != 0) {
+    const int iDoExec = (pmulti_cmd_base->IsEmpty() ? 0 : 1) +
+                        (pmulti_cmd_deps->IsEmpty() ? 0 : 2);
+    
+    if (iDoExec != 0 || !pmulti_cmd_egrps->IsEmpty()) {
       pcmd_undo = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_UNDO,
                                             UpdateGUICommand::GUI_UNDO_IMPORT);
       pcmd_redo = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_EXECUTE_REDO,
                                             UpdateGUICommand::GUI_REDO_IMPORT);
     }
+   
     switch (iDoExec) {
       case 0:
         // Do nothing unless there are empty groups
-        if (pmulti_cmd_egrps->GetSize() != 0) {
+        if (!pmulti_cmd_egrps->IsEmpty()) {
           pmulti_cmd_egrps->Insert(pcmd_undo);
           pmulti_cmd_egrps->Add(pcmd_redo);
           Execute(pmulti_cmd_egrps);
@@ -580,7 +582,7 @@ void DboxMain::OnDuplicateGroup()
       case 1:
         // Only normal/base entries
         pmulti_cmd_base->Insert(pcmd_undo);
-        if (pmulti_cmd_egrps->GetSize() != 0)
+        if (!pmulti_cmd_egrps->IsEmpty())
           pmulti_cmd_base->Add(pmulti_cmd_egrps);
         pmulti_cmd_base->Add(pcmd_redo);
         Execute(pmulti_cmd_base);
@@ -589,7 +591,7 @@ void DboxMain::OnDuplicateGroup()
       case 2:
         // Only dependents
         pmulti_cmd_deps->Insert(pcmd_undo);
-        if (pmulti_cmd_egrps->GetSize() != 0)
+        if (!pmulti_cmd_egrps->IsEmpty())
           pmulti_cmd_deps->Add(pmulti_cmd_egrps);
         pmulti_cmd_deps->Add(pcmd_redo);
         Execute(pmulti_cmd_deps);
@@ -602,8 +604,11 @@ void DboxMain::OnDuplicateGroup()
         pmulti_cmds->Add(pcmd_undo);
         pmulti_cmds->Add(pmulti_cmd_base);
         pmulti_cmds->Add(pmulti_cmd_deps);
-        if (pmulti_cmd_egrps->GetSize() != 0)
+
+        if (!pmulti_cmd_egrps->IsEmpty()) {
           pmulti_cmds->Add(pmulti_cmd_egrps);
+        }
+
         pmulti_cmds->Add(pcmd_redo);
         Execute(pmulti_cmds);
         bChanged = true;
@@ -614,11 +619,11 @@ void DboxMain::OnDuplicateGroup()
     }
 
     // If we didn't populate the multi-commands, delete them
-    if (pmulti_cmd_base->GetSize() == 0)
+    if (pmulti_cmd_base->IsEmpty())
       delete pmulti_cmd_base;
-    if (pmulti_cmd_deps->GetSize() == 0)
+    if (pmulti_cmd_deps->IsEmpty())
       delete pmulti_cmd_deps;
-    if (pmulti_cmd_egrps->GetSize() == 0)
+    if (pmulti_cmd_egrps->IsEmpty())
       delete pmulti_cmd_egrps;
   } else { // !m_ctlItemTree.ItemHasChildren(ti)
     // User is duplicating an empty group - just add it
@@ -798,7 +803,7 @@ void DboxMain::ChangeSubtreeEntriesProtectStatus(const UINT nID)
     }
   }
 
-  if (pmulticmds->GetSize() != 0) {
+  if (!pmulticmds->IsEmpty()) {
     Execute(pmulticmds);
 
     ChangeOkUpdate();
@@ -954,7 +959,7 @@ void DboxMain::OnDelete()
     }
 
     // Now do it
-    if (pmcmd->GetSize() > 0) {
+    if (!pmcmd->IsEmpty()) {
       Execute(pmcmd);
     }
 

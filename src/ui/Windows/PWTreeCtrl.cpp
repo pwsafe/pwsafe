@@ -920,7 +920,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
     }
   }
 
-  if (pmulticmds->GetSize() > 0)
+  if (!pmulticmds->IsEmpty())
     app.GetMainDlg()->Execute(pmulticmds);
   else
     delete pmulticmds;
@@ -1718,7 +1718,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
     app.GetMainDlg()->Delete(pmcmd); // XXX assume we've a selected item here!
    
     // Now do it
-    if (pmcmd->GetSize() > 0) {
+    if (!pmcmd->IsEmpty()) {
       app.GetMainDlg()->Execute(pmcmd);
     }
   }
