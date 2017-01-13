@@ -551,7 +551,7 @@ void DboxMain::OnOptions()
     // If DB preferences changed and/or password history options
     if (pmulticmds != NULL) {
       int num_altered(0);
-      if (pmulticmds->GetSize() > 0) {
+      if (!pmulticmds->IsEmpty()) {
         // Do it
         Execute(pmulticmds);
 

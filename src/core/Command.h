@@ -32,6 +32,8 @@ class CommandInterface;
  * no Command object can be created on the stack.
  */
 
+class MultiCommands;
+
 // Base Command class
 
 class Command
@@ -455,6 +457,7 @@ public:
   static RenameGroupCommand *Create(CommandInterface *pcomInt,
                                     const StringX sxOldPath, const StringX sxNewPath)
   { return new RenameGroupCommand(pcomInt, sxOldPath, sxNewPath); }
+  ~RenameGroupCommand();
   int Execute();
   void Undo();
 
@@ -463,6 +466,7 @@ private:
                      StringX sxOldPath, StringX sxNewPath);
 
    StringX m_sxOldPath, m_sxNewPath;
+   MultiCommands *m_pmulticmds;
 };
 
 class ChangeDBHeaderCommand : public Command {
@@ -512,11 +516,14 @@ public:
   bool GetRC(Command *pcmd, int &rc);
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_vpcmds.size();}
+  bool IsEmpty() const { return m_vpcmds.size() == 0; }
+  void SetNested() { SetInMultiCommand(); }
 
   std::vector<Command *> m_vpcmds;
 
  private:
   MultiCommands(CommandInterface *pcomInt);
+
   std::vector<int> m_vRCs;
 };
 

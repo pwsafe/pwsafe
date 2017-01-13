@@ -548,6 +548,16 @@ void COptions::CreateControls()
 
   GetBookCtrl()->AddPage(itemPanel86, _("Security"));
 
+  wxPanel* itemPanel123 = new wxPanel(GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER | wxTAB_TRAVERSAL);
+  wxGrid* itemGrid124 = new wxGrid(itemPanel123, ID_GRID1, wxDefaultPosition, itemPanel123->ConvertDialogToPixels(wxSize(200, 150)), wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL);
+  itemGrid124->SetDefaultColSize(100);
+  itemGrid124->SetDefaultRowSize(25);
+  itemGrid124->SetColLabelSize(25);
+  itemGrid124->SetRowLabelSize(50);
+  itemGrid124->CreateGrid(50, 2, wxGrid::wxGridSelectCells);
+
+  GetBookCtrl()->AddPage(itemPanel123, _("Shortcuts"));
+
   wxPanel* itemPanel104 = new wxPanel( GetBookCtrl(), ID_PANEL6, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer105 = new wxBoxSizer(wxVERTICAL);
   itemPanel104->SetSizer(itemBoxSizer105);
@@ -630,16 +640,6 @@ void COptions::CreateControls()
   itemBoxSizer105->Add(m_systrayclosediconcolourRB, 0, wxGROW|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel104, _("System"));
-
-  wxPanel* itemPanel123 = new wxPanel( GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
-  wxGrid* itemGrid124 = new wxGrid( itemPanel123, ID_GRID1, wxDefaultPosition, itemPanel123->ConvertDialogToPixels(wxSize(200, 150)), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
-  itemGrid124->SetDefaultColSize(100);
-  itemGrid124->SetDefaultRowSize(25);
-  itemGrid124->SetColLabelSize(25);
-  itemGrid124->SetRowLabelSize(50);
-  itemGrid124->CreateGrid(50, 2, wxGrid::wxGridSelectCells);
-
-  GetBookCtrl()->AddPage(itemPanel123, _("Shortcuts"));
 
   // Set validators
   itemCheckBox4->SetValidator( wxGenericValidator(& m_saveimmediate) );
