@@ -641,6 +641,7 @@ void DeleteEntryCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
     MultiCommands *pmulticmds = MultiCommands::Create(m_pcomInt);
+    pmulticmds->SetNested();
 
     if (m_ci.IsDependent()) {
       // Check if dep entry hasn't already been added - can happen if
@@ -676,7 +677,7 @@ void DeleteEntryCommand::Undo()
     } // !IsDependent
 
     // Now do everything, if there is anything to do.
-    if (pmulticmds->GetSize() > 0)
+    if (!pmulticmds->IsEmpty())
       pmulticmds->Execute();
 
     // Since not needed for Undo/Redo again - delete it
@@ -1105,9 +1106,14 @@ void UpdatePasswordHistoryCommand::Undo()
 
 RenameGroupCommand::RenameGroupCommand(CommandInterface *pcomInt,
                                        const StringX sxOldPath, const StringX sxNewPath)
- : Command(pcomInt), m_sxOldPath(sxOldPath), m_sxNewPath(sxNewPath)
+ : Command(pcomInt), m_sxOldPath(sxOldPath), m_sxNewPath(sxNewPath), m_pmulticmds(NULL)
 {
   m_CommandChangeType = DB;
+}
+
+RenameGroupCommand::~RenameGroupCommand()
+{
+  delete m_pmulticmds;
 }
 
 int RenameGroupCommand::Execute()
@@ -1116,7 +1122,14 @@ int RenameGroupCommand::Execute()
   if (!m_pcomInt->IsReadOnly() && m_sxOldPath != m_sxNewPath) {
     SaveDBInformation();
 
-    rc = m_pcomInt->DoRenameGroup(m_sxOldPath, m_sxNewPath);
+    if (m_pmulticmds == NULL) {
+      // Execute (will not be NULL if performing a Redo)
+      rc = m_pcomInt->DoRenameGroup(m_sxOldPath, m_sxNewPath, m_pmulticmds);
+    }
+
+    // Do it
+    if (!m_pmulticmds->IsEmpty())
+      m_pmulticmds->Execute();
 
     m_CommandDBChange = DB;
   }
@@ -1125,8 +1138,9 @@ int RenameGroupCommand::Execute()
 
 void RenameGroupCommand::Undo()
 {
-  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
-    m_pcomInt->UndoRenameGroup(m_sxOldPath, m_sxNewPath);
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB &&
+      !m_pmulticmds->IsEmpty()) {
+    m_pcomInt->UndoRenameGroup(m_pmulticmds);
   
     RestoreDBInformation();
   }

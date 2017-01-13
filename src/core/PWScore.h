@@ -479,8 +479,9 @@ private:
                                       SavePWHistoryMap &mapSavedHistory);
   virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory);
 
-  virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath);
-  virtual void UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath);
+  virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath,
+                            MultiCommands * &pmulticmds);
+  virtual void UndoRenameGroup(MultiCommands *pmulticmds);
 
   virtual int DoChangeHeader(const StringX &sxNewValue, const PWSfile::HeaderType ht);
   virtual void UndoChangeHeader(const StringX &sxOldValue, const PWSfile::HeaderType ht);

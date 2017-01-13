@@ -3474,7 +3474,8 @@ void PWScore::UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory)
   }
 }
 
-int PWScore::DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath)
+int PWScore::DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath,
+                           MultiCommands * &pmulticmds)
 {
   const StringX sxDot(L".");
   const wchar_t wcDot=L'.';
@@ -3482,9 +3483,18 @@ int PWScore::DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath)
   const size_t len2 = sxOldPath2.length();
   ItemListIter iter;
 
+  pmulticmds = MultiCommands::Create(this);
+
+  // Nested Multicommand so set in a MultiCommand so that it doesn't save information again
+  pmulticmds->SetNested();
+
+  Command *pcmd;
+
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
     if (iter->second.GetGroup() == sxOldPath) {
-      iter->second.SetGroup(sxNewPath);
+      pcmd = UpdateEntryCommand::Create(this, iter->second,
+                                        CItemData::GROUP, sxNewPath);
+      pmulticmds->Add(pcmd);
     }
     else if ((iter->second.GetGroup().length() > len2) && (iter->second.GetGroup().substr(0, len2) == sxOldPath2) &&
      (iter->second.GetGroup()[len2] != wcDot)) {
@@ -3493,15 +3503,19 @@ int PWScore::DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath)
       // (group name could contain trailing dots, for example abc..def.g)
       // subgroup name will have len > len2 (old_name + dot + subgroup_name)
       StringX sxSubGroups = iter->second.GetGroup().substr(len2);
-      iter->second.SetGroup(sxNewPath + sxDot + sxSubGroups);
+
+      pcmd = UpdateEntryCommand::Create(this, iter->second,
+                                  CItemData::GROUP, sxNewPath + sxDot + sxSubGroups);
+      pmulticmds->Add(pcmd);
     }
   }
+
   return 0;
 }
 
-void PWScore::UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath)
+void PWScore::UndoRenameGroup(MultiCommands *pmulticmds)
 {
-  DoRenameGroup(sxNewPath, sxOldPath);
+  pmulticmds->Undo();
 }
 
 int PWScore::DoChangeHeader(const StringX &sxNewValue, const PWSfile::HeaderType ht)

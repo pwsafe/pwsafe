@@ -62,8 +62,9 @@ class CommandInterface {
                                       SavePWHistoryMap &mapSavedHistory) = 0;
   virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory) = 0;
 
-  virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
-  virtual void UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
+  virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath,
+                            MultiCommands * &pmulticmds) = 0;
+  virtual void UndoRenameGroup(MultiCommands *pmulticmds) = 0;
 
   virtual int DoChangeHeader(const StringX &sxNewValue, const PWSfile::HeaderType ht) = 0;
   virtual void UndoChangeHeader(const StringX &sxOldValue, const PWSfile::HeaderType ht) = 0;
