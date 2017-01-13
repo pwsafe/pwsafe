@@ -585,10 +585,7 @@ private:
   const ItemMMap &GetBase2ShortcutsMmap() const {return m_base2shortcuts_mmap;}
   void SetBase2ShortcutsMmap(ItemMMap &b2smm) {m_base2shortcuts_mmap = b2smm;}
   
-  // Changed groups
-  std::vector<StringX> m_vNodes_Modified;
-  std::vector<StringX> m_saved_vNodes_Modified;
-
+ 
   // Following are private in PWScore, public in CommandInterface:
   void AddChangedNodes(StringX path);
 
@@ -609,6 +606,10 @@ private:
                               CItemData::FieldType ft = CItemData::START,
                               bool bUpdateGUI = true);
 
+  // Version for groups
+  void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
+                              const std::vector<StringX> &vGroups);
+  
   // Create header for included(Text) and excluded(XML) exports
   StringX BuildHeader(const CItemData::FieldBits &bsFields, const bool bIncluded);
 

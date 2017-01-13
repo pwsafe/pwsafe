@@ -165,7 +165,7 @@ PWScore::~PWScore()
   }
 
   m_UHFL.clear();
-  m_vNodes_Modified.clear();
+  m_vModifiedNodes.clear();
 
   delete m_pFileSig;
 }
@@ -460,7 +460,7 @@ void PWScore::ClearDBData()
   m_DBCurrentState = CLEAN;
 
   // Clear changed nodes
-  m_vNodes_Modified.clear();
+  m_vModifiedNodes.clear();
 
   // Clear expired password entries
   m_ExpireCandidates.clear();
@@ -827,7 +827,7 @@ void PWScore::SetInitialValues()
   m_InitialRUEList = m_RUEList;                   // for detecting header changes
 
   // Clear changed nodes
-  m_vNodes_Modified.clear();
+  m_vModifiedNodes.clear();
 }
 
 int PWScore::Execute(Command *pcmd)
@@ -3159,6 +3159,16 @@ void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
     m_pUIIF->UpdateGUI(ga, entry_uuid, ft, bUpdateGUI);
 }
 
+void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
+                                     const std::vector<StringX> &vGroups)
+{
+  // This allows the core to provide feedback to the UI that the GUI needs
+  // updating due to a field having its value changed
+  if (m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::UPDATEGUIGROUPS))
+    m_pUIIF->UpdateGUI(ga, vGroups);
+}
+
 void PWScore::GUISetupDisplayInfo(CItemData &ci)
 {
   // This allows the core to provide feedback to the UI that ???
@@ -3225,8 +3235,8 @@ void PWScore::UnlockFile2(const stringT &filename)
 bool PWScore::IsNodeModified(StringX &path) const
 {
   if (!IsEmptyGroup(path)) {
-    return std::find(m_vNodes_Modified.begin(),
-      m_vNodes_Modified.end(), path) != m_vNodes_Modified.end();
+    return std::find(m_vModifiedNodes.begin(),
+      m_vModifiedNodes.end(), path) != m_vModifiedNodes.end();
   } else {
     return find(m_InitialEmptyGroups.begin(), m_InitialEmptyGroups.end(), path) ==
       m_InitialEmptyGroups.end();
@@ -3237,8 +3247,9 @@ void PWScore::AddChangedNodes(StringX path)
 {
   StringX nextpath(path);
   while (!nextpath.empty()) {
-    if (std::find(m_vNodes_Modified.begin(), m_vNodes_Modified.end(), nextpath) == m_vNodes_Modified.end())
-      m_vNodes_Modified.push_back(nextpath);
+    if (std::find(m_vModifiedNodes.begin(), m_vModifiedNodes.end(), nextpath) ==
+        m_vModifiedNodes.end())
+      m_vModifiedNodes.push_back(nextpath);
     size_t i = nextpath.find_last_of(_T("."));
     if (i == nextpath.npos)
       i = 0;

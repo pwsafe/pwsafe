@@ -48,15 +48,41 @@ public:
   void SetNoGUINotify() {m_bNotifyGUI = false;}
   bool GetGUINotify() const {return m_bNotifyGUI;}
 
-  virtual bool WasDBChanged() const;
-  
+  // This tells a MultiCommand that this command could change an entry
+  // as opposed to a DB preference, header, empty group, password policy or filter
+  bool IsEntryChangeType() const { return m_CommandChangeType == DB; }
+
+  // This states if something was actually changed
+  bool WasDBChanged() const { return m_CommandDBChange != NONE; }
+
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
 
-  CommandInterface *m_pcomInt;
-  bool m_bNotifyGUI;
+  void SaveDBInformation();
+  void RestoreDBInformation();
 
+  // If a command is within a MultiCommand, do not save DB information
+  // other than that needed for the actual command.
+  // This prevents multiple copies of similar data that is only needed once
+  // in a MultiCommand i.e. at creation and during Undo
+  bool InMultiCommand() const { return m_bInMultiCommand; }
+
+  friend class MultiCommands; // Yes, a derived class needs to be a friend here...
+  void SetInMultiCommand() { m_bInMultiCommand = true; }
+  
+  CommandInterface *m_pcomInt;
+  bool m_bNotifyGUI, m_bInMultiCommand;
+
+  // Command return code (not all commands set this to anything other than zero)
   int m_RC;
+
+  // If needed, to be used by a Multicommand that changes the DB or
+  // a single command that changes the DB outside a MultiCommand
+  std::vector<StringX> m_vSavedModifiedNodes;
+
+  // This is the potential change type if it there is anything to do
+  // It is set so that MultiCommands can tell whether to save DB information
+  CommandDBChange m_CommandChangeType;
 
   // The command change value is ONLY set during Execute
   CommandDBChange m_CommandDBChange;
@@ -93,6 +119,7 @@ public:
     GUI_UNDO_MERGESYNC,
     GUI_REFRESH_TREE,
     GUI_REFRESH_ENTRY,
+    GUI_REFRESH_GROUPS,
     GUI_REFRESH_BOTHVIEWS,
     GUI_DB_PREFERENCES_CHANGED,
     GUI_PWH_CHANGED_IN_DB
@@ -482,8 +509,6 @@ public:
 
   void Add(Command *pcmd);
   void Insert(Command *pcmd, size_t ioffset = 0); // VERY INEFFICIENT - use sparingly
-  bool Remove(Command *pcmd);
-  bool Remove();
   bool GetRC(Command *pcmd, int &rc);
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_vpcmds.size();}

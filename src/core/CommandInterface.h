@@ -81,6 +81,8 @@ class CommandInterface {
                                       const pws_os::CUUID &,
                                       CItemData::FieldType ft = CItemData::START,
                                       bool bUpdateGUI = true) = 0;
+  virtual void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
+                                      const std::vector<StringX> &vGroups) = 0;
 
   virtual void AddExpiryEntry(const CItemData &ci) = 0;
   virtual void UpdateExpiryEntry(const CItemData &ci) = 0;
@@ -103,8 +105,17 @@ class CommandInterface {
 
   virtual const PWSFilters &GetDBFilters() = 0;
   virtual bool SetDBFilters(const PWSFilters &MapDBFilters) = 0;
- 
+
+  std::vector<StringX> &GetModifiedNodes() { return m_vModifiedNodes; }
+  void SetModifiedNodes(const std::vector<StringX> &saved_vNodes_Modified)
+  { m_vModifiedNodes = saved_vNodes_Modified; }
+
+  
   virtual ~CommandInterface() {}
+
+ protected:
+  // Changed groups
+  std::vector<StringX> m_vModifiedNodes;
 };
 
 #endif /* __COMMANDINTERFACE_H */

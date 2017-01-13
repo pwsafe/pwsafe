@@ -196,7 +196,11 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       // Refresh one entry ListView row and in the tree if the Title/Username/Password
       // has changed and visible in the tree when entry has been edited
       ASSERT(pci != NULL);
-      UpdateEntryinGUI(*pci);
+      UpdateEntryInGUI(*pci);
+      break;
+    case UpdateGUICommand::GUI_REFRESH_GROUPS:
+      // Processed in the other overload of UpdateGUI
+      ASSERT(0);
       break;
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
       // Change any impact on the application due to a database preference change
@@ -212,6 +216,19 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
     default:
       break;
   }
+}
+
+void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
+                         const std::vector<StringX> &vGroups)
+{
+  if (ga != UpdateGUICommand::GUI_REFRESH_GROUPS) {
+    // Processed in the other overload of UpdateGUI
+    ASSERT(0);
+    return;
+  }
+
+  // Update these groups in the Tree display - saves doing a complete refresh!
+  UpdateGroupsInGUI(vGroups);
 }
 
 void DboxMain::UpdateGUIDisplay()
@@ -715,20 +732,20 @@ void DboxMain::UpdateListItemField(const int lindex, const int type, const Strin
 
 void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const CItemData &ci)
 {
-  CRect rect;
-
   CSecString csCurrentString = m_ctlItemTree.GetItemText(hItem);
   CSecString csNewString = m_ctlItemTree.MakeTreeDisplayString(ci);
 
   if (csCurrentString != csNewString) {
     m_ctlItemTree.SetItemText(hItem, csNewString);
-
-    m_ctlItemTree.GetItemRect(hItem, &rect, FALSE);
-    m_ctlItemTree.InvalidateRect(&rect);
   }
+
+  // Update view (e.g. no longer highlighted if not changed)
+  CRect rect;
+  m_ctlItemTree.GetItemRect(hItem, &rect, FALSE);
+  m_ctlItemTree.InvalidateRect(&rect);
 }
 
-void DboxMain::UpdateEntryinGUI(CItemData &ci)
+void DboxMain::UpdateEntryInGUI(CItemData &ci)
 {
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
   ASSERT(pdi != NULL);
@@ -818,6 +835,21 @@ void DboxMain::UpdateEntryinGUI(CItemData &ci)
         m_ctlItemList.EnsureVisible(iItem, false);
         break;
       }
+    }
+  }
+}
+
+void DboxMain::UpdateGroupsInGUI(const std::vector<StringX> &vGroups)
+{
+  // Update these group in the Tree display - saves doing a complete refresh!
+  std::map<StringX, HTREEITEM>::iterator it;
+
+  for (auto iter_group = vGroups.begin(); iter_group != vGroups.end(); iter_group++) {
+    it = m_mapGroupToTreeItem.find(*iter_group);
+    if (it != m_mapGroupToTreeItem.end()) {
+      CRect rect;
+      m_ctlItemTree.GetItemRect(it->second, &rect, FALSE);
+      m_ctlItemTree.InvalidateRect(&rect);
     }
   }
 }
