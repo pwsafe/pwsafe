@@ -805,8 +805,9 @@ void DboxMain::ChangeSubtreeEntriesProtectStatus(const UINT nID)
 
   if (!pmulticmds->IsEmpty()) {
     Execute(pmulticmds);
-
     ChangeOkUpdate();
+  } else { // IsEmpty
+    delete pmulticmds;
   }
 }
 
@@ -961,6 +962,8 @@ void DboxMain::OnDelete()
     // Now do it
     if (!pmcmd->IsEmpty()) {
       Execute(pmcmd);
+    } else {
+      delete pmcmd;
     }
 
     // Only refresh views if an entry or a non-empty group was deleted
