@@ -4696,8 +4696,8 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
     // Save expand/collapse status of groups
     m_vGroupDisplayState = GetGroupDisplayState();
 
-    m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
-    m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
+    m_TUUIDSelectedAtMinimize = CUUID::NullUUID();
+    m_TUUIDVisibleAtMinimize = CUUID::NullUUID();
 
     m_sxSelectedGroup = L"";
     m_sxVisibleGroup = L"";
