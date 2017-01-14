@@ -3494,6 +3494,7 @@ int PWScore::DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath,
     if (iter->second.GetGroup() == sxOldPath) {
       pcmd = UpdateEntryCommand::Create(this, iter->second,
                                         CItemData::GROUP, sxNewPath);
+      pcmd->SetNoGUINotify();
       pmulticmds->Add(pcmd);
     }
     else if ((iter->second.GetGroup().length() > len2) && (iter->second.GetGroup().substr(0, len2) == sxOldPath2) &&
@@ -3506,6 +3507,7 @@ int PWScore::DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath,
 
       pcmd = UpdateEntryCommand::Create(this, iter->second,
                                   CItemData::GROUP, sxNewPath + sxDot + sxSubGroups);
+      pcmd->SetNoGUINotify();
       pmulticmds->Add(pcmd);
     }
   }
