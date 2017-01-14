@@ -4784,6 +4784,11 @@ void DboxMain::RestoreGUIStatusEx()
     // Group selected
     if (!m_sxSelectedGroup.empty()) {
       // Find corresponding tree item
+      // The issue here is that we might have just performed a group rename
+      // (execute, redo or undo) and so the selected group is no longer
+      // in the map and can't be selected.
+      // QUestion is: how to save this for reselection afterwards or
+      // ho to get new group name after rename execute/undo/redo.
       std::map<StringX, HTREEITEM>::iterator iter;
       iter = m_mapGroupToTreeItem.find(m_sxSelectedGroup);
       if (iter != m_mapGroupToTreeItem.end()) {
@@ -4961,20 +4966,17 @@ void DboxMain::SaveGUIStatus()
   HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
   if (hi != NULL) {
     pci_tree = (CItemData *)m_ctlItemTree.GetItemData(hi);
-    if (pci_tree != pci_list) {
-      if (pci_tree != NULL) {
-        SaveGUIInfo.tSelected = pci_tree->GetUUID();
-        SaveGUIInfo.btSelectedValid = true;
-      } else {
-        StringX s(L"");
-        if (hi != NULL)
-          s = m_ctlItemTree.GetItemText(hi);
+    if (pci_tree != NULL) {
+      SaveGUIInfo.tSelected = pci_tree->GetUUID();
+      SaveGUIInfo.btSelectedValid = true;
+    } else {
+      StringX s;
+      s = m_ctlItemTree.GetItemText(hi);
 
-        while ((hi = m_ctlItemTree.GetParentItem(hi)) != NULL) {
-          s = StringX(m_ctlItemTree.GetItemText(hi)) + StringX(L".") + s;
-        }
-        SaveGUIInfo.sxGroupName = s;
+      while ((hi = m_ctlItemTree.GetParentItem(hi)) != NULL) {
+        s = StringX(m_ctlItemTree.GetItemText(hi)) + StringX(L".") + s;
       }
+      SaveGUIInfo.sxGroupName = s;
     }
   }
   SaveGUIInfo.vGroupDisplayState = GetGroupDisplayState();
