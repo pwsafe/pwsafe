@@ -620,7 +620,7 @@ void CPWTreeCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
   
   // Don't bother if no entries or not via the keyboard/mouse (check this first
   // as more likely than no entries).
-   if (pNMTreeView->action != TVC_BYKEYBOARD || GetCount() == 0)
+   if (pNMTreeView->action == TVC_UNKNOWN || GetCount() == 0)
      return;
 
   app.GetMainDlg()->OnItemSelected(pNotifyStruct, pLResult, true);
