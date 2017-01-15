@@ -387,7 +387,7 @@ public:
 
   void OnBackupSafe(wxCommandEvent& evt);
   void OnRestoreSafe(wxCommandEvent& evt);
-  
+
   void OnVisitWebsite(wxCommandEvent&);
 
   void OnPasswordSubset(wxCommandEvent& evt);
@@ -451,6 +451,7 @@ public:
   void ViewReport(CReport& rpt);
 
   CItemData *GetSelectedEntry() const;
+  CItemData* GetBaseEntry(const CItemData *item) const;
   CItemData *GetSelectedEntry(const wxCommandEvent& evt, CItemData &rueItem) const;
   wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
 
@@ -487,7 +488,6 @@ public:
   void CleanupAfterReloadFailure(bool tellUser);
   Command *Delete(CItemData *pci);
   Command *Delete(wxTreeItemId tid); // for group delete
-  CItemData* GetBaseOfSelectedEntry(); //traverses to the base item if the selected item is a shortcut
   void UpdateAccessTime(CItemData &ci);
   void CreateMainToolbar();
   void ReCreateMainToolbar();
