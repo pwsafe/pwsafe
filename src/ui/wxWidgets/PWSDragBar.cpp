@@ -7,7 +7,7 @@
  */
 
 /** \file PWSDragBar.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
@@ -84,12 +84,12 @@ struct _DragbarElementInfo {
   const char** classic_bitmap;
   const char** classic_bitmap_disabled;
   CItemData::FieldType ft;
-} DragbarElements[] = { PWS_TOOLINFO(Group,     GROUP), 
-                        PWS_TOOLINFO(Title,     TITLE), 
-                        PWS_TOOLINFO(User,      USER), 
-                        PWS_TOOLINFO(Password,  PASSWORD), 
-                        PWS_TOOLINFO(Notes,     NOTES), 
-                        PWS_TOOLINFO(URL,       URL), 
+} DragbarElements[] = { PWS_TOOLINFO(Group,     GROUP),
+                        PWS_TOOLINFO(Title,     TITLE),
+                        PWS_TOOLINFO(User,      USER),
+                        PWS_TOOLINFO(Password,  PASSWORD),
+                        PWS_TOOLINFO(Notes,     NOTES),
+                        PWS_TOOLINFO(URL,       URL),
                         PWS_TOOLINFO(Email,     EMAIL)
                       };
 
@@ -128,18 +128,24 @@ PWSDragBar::~PWSDragBar()
 
 wxString PWSDragBar::GetText(int id) const
 {
-  CItemData* item = m_frame->GetSelectedEntry();
-  if (item) {
-    return towxstring(item->GetFieldValue(DragbarElements[id-DRAGBAR_TOOLID_BASE].ft));
-  }
-  return wxEmptyString;
+  const int idx = id - DRAGBAR_TOOLID_BASE;
+  wxASSERT( idx >= 0 && size_t(idx) < NumberOf(DragbarElements));
+
+  const CItemData *pci(nullptr), *pbci(nullptr);
+  pci = m_frame->GetSelectedEntry();
+  pbci = m_frame->GetBaseEntry(pci);
+
+  return pci ? towxstring(pci->GetEffectiveFieldValue(DragbarElements[idx].ft, pbci)) : wxEmptyString;
 }
 
 bool PWSDragBar::IsEnabled(int id) const
 {
   const int idx = id - DRAGBAR_TOOLID_BASE;
   wxASSERT( idx >= 0 && size_t(idx) < NumberOf(DragbarElements));
-  
-  CItemData* item = m_frame->GetSelectedEntry();
-  return item != 0 && item->GetFieldValue(DragbarElements[idx].ft).empty() == false;
+
+  const CItemData *pci(nullptr), *pbci(nullptr);
+  pci = m_frame->GetSelectedEntry();
+  pbci = m_frame->GetBaseEntry(pci);
+
+  return pci && !pci->IsFieldValueEmpty(DragbarElements[idx].ft, pbci);
 }

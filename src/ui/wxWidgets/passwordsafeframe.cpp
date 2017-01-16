@@ -1314,7 +1314,7 @@ void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
 int PasswordSafeFrame::SaveAs()
 {
   const PWSfile::VERSION curver = m_core.GetReadFileVersion();
-  
+
   if (curver != PWSfile::V30 && curver != PWSfile::V40 &&
       curver != PWSfile::UNKNOWN_VERSION) {
     if (wxMessageBox( wxString::Format(_("The original database, '%ls', is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the 'File->Export To-> Old (1.x or 2) format' command."),
@@ -1836,13 +1836,12 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
   }
 }
 
-CItemData* PasswordSafeFrame::GetBaseOfSelectedEntry()
+CItemData* PasswordSafeFrame::GetBaseEntry(const CItemData *item) const
 {
-  CItemData* item = GetSelectedEntry();
-  if (item && (item->IsShortcut() || item->IsAlias())) {
-    item = m_core.GetBaseEntry(item);
+  if (item && item->IsDependent()) {
+    return m_core.GetBaseEntry(item);
   }
-  return item;
+  return nullptr;
 }
 
 ////////////////////////////////////////////////////////
@@ -1854,83 +1853,84 @@ CItemData* PasswordSafeFrame::GetBaseOfSelectedEntry()
 //
 void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 {
+  bool bGroupSelected(false), bFileIsReadOnly(false), bTreeView(m_currentView == TREE);
+  const CItemData *pci(nullptr), *pbci(nullptr);
+
+  bFileIsReadOnly = m_core.IsReadOnly();
+  bGroupSelected = (bTreeView &&
+      m_tree->GetSelection().IsOk() &&
+      m_tree->GetSelection() != m_tree->GetRootItem() &&
+      m_tree->ItemIsGroup(m_tree->GetSelection()));
+
+  pci = GetSelectedEntry();
+
+  if (pci) {
+    if (pci->IsDependent()) {
+      pbci = m_core.GetBaseEntry(pci);
+    }
+  }
+
   switch (evt.GetId()) {
     case wxID_SAVE:
       evt.Enable(m_core.HasDBChanged() || m_core.HaveDBPrefsChanged());
       break;
 
     case ID_ADDGROUP:
-      evt.Enable(m_currentView == TREE && !m_core.IsReadOnly());
+      evt.Enable(bTreeView && !bFileIsReadOnly);
       break;
+
     case ID_EXPANDALL:
     case ID_COLLAPSEALL:
-      evt.Enable(m_currentView == TREE);
+      evt.Enable(bTreeView);
       break;
 
     case ID_RENAME:
       // only allowed if a GROUP item is selected in tree view
-      evt.Enable(m_currentView == TREE && !m_core.IsReadOnly() &&
-                 m_tree->GetSelection().IsOk() &&
-                 m_tree->GetSelection() != m_tree->GetRootItem() &&
-                 m_tree->ItemIsGroup(m_tree->GetSelection()));
+      evt.Enable(bGroupSelected && !bFileIsReadOnly);
       break;
 
     case ID_BROWSEURL:
     case ID_BROWSEURLPLUS:
     case ID_COPYURL:
-    {
-      CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable( item && !item->IsURLEmpty() && !item->IsURLEmail() );
+      evt.Enable(!bGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::URL, pbci));
       break;
-    }
+
     case ID_SENDEMAIL:
     case ID_COPYEMAIL:
-    {
-      CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable( item && !item->IsEmailEmpty() );
+      evt.Enable(!bGroupSelected && pci &&
+          (!pci->IsFieldValueEmpty(CItemData::EMAIL, pbci) ||
+          (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && pci->IsURLEmail(pbci))));
       break;
-    }
+
     case ID_COPYUSERNAME:
-    {
-      CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable(item && !item->IsUserEmpty());
+      evt.Enable(!bGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::USER, pbci));
       break;
-    }
+
     case ID_COPYNOTESFLD:
-    {
-      CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable(item && !item->IsNotesEmpty());
+      evt.Enable(!bGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::NOTES, pbci));
       break;
-    }
+
     case ID_RUNCOMMAND:
     case ID_COPYRUNCOMMAND:
-    {
-      CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable(item && !item->IsRunCommandEmpty());
+      evt.Enable(!bGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci));
       break;
-    }
+
     case ID_CREATESHORTCUT:
-    {
-      CItemData* item = GetSelectedEntry();
-      evt.Enable(item && !m_core.IsReadOnly() &&
-                 (item->IsNormal() || item->IsShortcutBase()));
+      evt.Enable(!bGroupSelected && !bFileIsReadOnly && pci &&
+          (pci->IsNormal() || pci->IsShortcutBase()));
       break;
-    }
+
     case ID_EDIT:
     case ID_COPYPASSWORD:
     case ID_AUTOTYPE:
     case ID_PASSWORDSUBSET:
-      // not allowed if a group is selected in tree view
-      evt.Enable(m_currentView == GRID || GetSelectedEntry() != NULL );
+      evt.Enable(!bGroupSelected && pci);
       break;
 
     case ID_GOTOBASEENTRY:
     case ID_EDITBASEENTRY:
-    {
-      const CItemData* item = GetSelectedEntry();
-      evt.Enable(item != NULL && (item->IsShortcut() || item->IsAlias()));
+      evt.Enable(!bGroupSelected && pci && (pci->IsShortcut() || pci->IsAlias()));
       break;
-    }
 
     case wxID_UNDO:
       evt.Enable(m_core.AnyToUndo());
@@ -1942,16 +1942,16 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_SYNCHRONIZE:
     case ID_CHANGECOMBO:
-      evt.Enable(!m_core.IsReadOnly() && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
+      evt.Enable(!bFileIsReadOnly && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
       break;
 
     case wxID_ADD:
-      evt.Enable(!m_core.IsReadOnly());
+      evt.Enable(!bFileIsReadOnly);
       break;
 
     case wxID_DELETE:
     case ID_DUPLICATEENTRY:
-      evt.Enable(!m_core.IsReadOnly() && GetSelectedEntry() != NULL);
+      evt.Enable(!bFileIsReadOnly && pci);
       break;
 
     case ID_SHOWHIDE_UNSAVED:
@@ -1964,7 +1964,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_MERGE:
     case ID_IMPORTMENU:
-      evt.Enable(!m_core.IsReadOnly());
+      evt.Enable(!bFileIsReadOnly);
       break;
 
     default:

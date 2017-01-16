@@ -813,7 +813,7 @@ static struct {short pv; wxString name;}
 void AddEditPropSheet::UpdateExpTimes()
 {
   // From m_item to display
-  
+
   m_item.GetXTime(m_tttXTime);
   m_item.GetXTimeInt(m_XTimeInt);
   m_XTime = m_CurXTime = m_item.GetXTimeL().c_str();
@@ -887,6 +887,21 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   m_url = m_item.GetURL().c_str();
   m_email = m_item.GetEmail().c_str();
   m_password = m_item.GetPassword();
+
+  if (m_item.IsAlias()) {
+    // Update password to alias form
+    // Show text stating that it is an alias
+
+    const CItemData *pbci = m_core.GetBaseEntry(&m_item);
+    ASSERT(pbci);
+    if (pbci) {
+      m_password = L"[" +
+                pbci->GetGroup() + L":" +
+                pbci->GetTitle() + L":" +
+                pbci->GetUser()  + L"]";
+    }
+  } // IsAlias
+
   PWSprefs *prefs = PWSprefs::GetInstance();
   if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
     ShowPassword();
@@ -1235,7 +1250,26 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
                      m_symbols    != m_item.GetSymbols().c_str()     ||
                      oldPWP       != pwp);
 
-      bIsPSWDModified = (password != m_item.GetPassword());
+
+        if (!m_item.IsAlias()) {
+          bIsPSWDModified = (password != m_item.GetPassword());
+        }
+        else {
+          // Update password to alias form
+          // Show text stating that it is an alias
+          const CItemData *pbci = m_core.GetBaseEntry(&m_item);
+          ASSERT(pbci);
+          if (pbci) {
+            StringX alias = L"[" +
+                pbci->GetGroup() + L":" +
+                pbci->GetTitle() + L":" +
+                pbci->GetUser()  + L"]";
+            bIsPSWDModified = (password != alias);
+          }
+          else {
+            bIsPSWDModified = true;
+          }
+        }
 
       if (bIsModified) {
         // Just modify all - even though only 1 may have actually been modified
