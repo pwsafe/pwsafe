@@ -2121,7 +2121,6 @@ void CPWFilterLC::SetComboBoxWidth(const int iSubItem)
   // If the width of the list box is too small, adjust it so that every
   // item is completely visible.
   m_ComboBox.SetDroppedWidth(dx);
-  //m_ComboBox.SetDroppedWidth(dx);
 }
 
 void CPWFilterLC::DeleteEntry(FieldType ftype)

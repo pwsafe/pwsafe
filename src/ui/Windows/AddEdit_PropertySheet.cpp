@@ -59,7 +59,6 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.URL = L"";
     m_AEMD.email = L"";
     m_AEMD.symbols = m_AEMD.oldsymbols = L"";
-    m_AEMD.num_dependents = 0;
 
     // Entry type initialisation
     m_AEMD.original_entrytype = CItemData::ET_NORMAL;
@@ -688,24 +687,22 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   // Set up dependents
   m_AEMD.base_uuid = m_AEMD.original_base_uuid = pws_os::CUUID::NullUUID();
 
-  m_AEMD.num_dependents = 0;
   pws_os::CUUID original_base_uuid(pws_os::CUUID::NullUUID());
 
   pws_os::CUUID original_uuid = m_AEMD.pci_original->GetUUID();  // Edit doesn't change this!
   if (m_AEMD.pci->IsBase()) {
     UUIDVector dependentslist;
-    StringX csDependents(L"");
+    std::vector<StringX> vsxDependents;
 
     m_AEMD.pcore->GetAllDependentEntries(original_uuid, dependentslist,
                                   m_AEMD.pci->IsAliasBase() ?
                                   CItemData::ET_ALIAS : CItemData::ET_SHORTCUT);
-    size_t num_dependents = dependentslist.size();
-    if (num_dependents > 0) {
-      m_AEMD.pcore->SortDependents(dependentslist, csDependents);
+    
+    if (!dependentslist.empty()) {
+      m_AEMD.pcore->SortDependents(dependentslist, vsxDependents);
     }
 
-    m_AEMD.num_dependents = (int)num_dependents;
-    m_AEMD.dependents = CSecString(csDependents);
+    m_AEMD.vsxdependents = vsxDependents;
     dependentslist.clear();
   } else
   if (m_AEMD.pci->IsAlias()) {

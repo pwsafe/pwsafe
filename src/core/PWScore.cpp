@@ -220,25 +220,32 @@ void PWScore::SortDependents(UUIDVector &dlist, StringX &sxDependents)
   std::vector<StringX> sorted_dependents;
   std::vector<StringX>::iterator sd_iter;
 
-  ItemListIter iter;
-  UUIDVectorIter diter;
-  StringX sx_dependent;
-
-  for (diter = dlist.begin(); diter != dlist.end(); diter++) {
-    iter = Find(*diter);
-    if (iter != GetEntryEndIter()) {
-      sx_dependent = iter->second.GetGroup() + _T(":") +
-                     iter->second.GetTitle() + _T(":") +
-                     iter->second.GetUser();
-      sorted_dependents.push_back(sx_dependent);
-    }
-  }
-
-  std::sort(sorted_dependents.begin(), sorted_dependents.end(), GTUCompare);
+  SortDependents(dlist, sorted_dependents);
   sxDependents = _T("");
 
   for (sd_iter = sorted_dependents.begin(); sd_iter != sorted_dependents.end(); sd_iter++)
     sxDependents += _T("\t[") +  *sd_iter + _T("]\r\n");
+}
+
+void PWScore::SortDependents(UUIDVector &dlist, std::vector<StringX> &vsxDependents)
+{
+  ItemListIter iter;
+  UUIDVectorIter diter;
+
+  for (diter = dlist.begin(); diter != dlist.end(); diter++) {
+    iter = Find(*diter);
+    if (iter != GetEntryEndIter()) {
+      StringX sx_dependent;
+      sx_dependent = _T("[") +
+                            iter->second.GetGroup() + _T(":") +
+                            iter->second.GetTitle() + _T(":") +
+                            iter->second.GetUser()  +
+                     _T("]");
+      vsxDependents.push_back(sx_dependent);
+    }
+  }
+
+  std::sort(vsxDependents.begin(), vsxDependents.end(), GTUCompare);
 }
 
 void PWScore::DoAddEntry(const CItemData &item, const CItemAtt *att)

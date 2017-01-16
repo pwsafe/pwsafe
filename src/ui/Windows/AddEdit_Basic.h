@@ -56,8 +56,10 @@ public:
   CStaticExtn m_stc_notes;
   CStaticExtn m_stc_URL;
   CStaticExtn m_stc_email;
+  CStaticExtn m_stc_isdependent;
+  CStaticExtn m_stc_dependent;
 
-  CButton m_ViewDependentsBtn;
+  CComboBox m_cmbDependents;
   //}}AFX_DATA
 
   CExtThread *m_thread; // worker thread
@@ -102,7 +104,6 @@ protected:
   afx_msg void OnCopyPassword();
   afx_msg void OnShowPassword();
   afx_msg void OnSTCExClicked(UINT nId);
-  afx_msg void OnViewDependents();
   afx_msg void OnLaunch();
   afx_msg void OnSendEmail();
 
@@ -121,6 +122,8 @@ private:
   void HidePassword();
   void ShowNotes();
   void HideNotes();
+  void SetUpDependentsCombo();
+  void SetComboBoxWidth();
 
   bool CheckNewPassword(const StringX &group, const StringX &title,
                         const StringX &user, const StringX &password,

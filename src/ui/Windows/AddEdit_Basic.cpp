@@ -135,7 +135,7 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_URL, m_ex_URL);
   DDX_Control(pDX, IDC_EMAIL, m_ex_email);
   DDX_Control(pDX, IDC_MYBASE, m_ex_base);
-  DDX_Control(pDX, IDC_VIEWDEPENDENTS, m_ViewDependentsBtn);
+  DDX_Control(pDX, IDC_LISTDEPENDENTS, m_cmbDependents);
 
   DDX_Control(pDX, IDC_STATIC_GROUP, m_stc_group);
   DDX_Control(pDX, IDC_STATIC_TITLE, m_stc_title);
@@ -144,6 +144,8 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_STATIC_NOTES, m_stc_notes);
   DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
   DDX_Control(pDX, IDC_STATIC_EMAIL, m_stc_email);
+  DDX_Control(pDX, IDC_STATIC_ISANALIAS, m_stc_isdependent);
+  DDX_Control(pDX, IDC_STATIC_DEPENDENT, m_stc_dependent);
 
   DDX_Control(pDX, IDC_SMARTLABELHELP, m_Help1);
   DDX_Control(pDX, IDC_PASSWORDHELP, m_Help2);
@@ -162,7 +164,6 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
   ON_BN_CLICKED(IDC_LAUNCH, OnLaunch)
   ON_BN_CLICKED(IDC_SENDEMAIL, OnSendEmail)
-  ON_BN_CLICKED(IDC_VIEWDEPENDENTS, OnViewDependents)
 
   ON_CBN_SELCHANGE(IDC_GROUP, OnGroupComboChanged)
   ON_CBN_EDITCHANGE(IDC_GROUP, OnGroupComboChanged)
@@ -203,8 +204,8 @@ BOOL CAddEdit_Basic::OnInitDialog()
   ModifyStyleEx(0, WS_EX_CONTROLPARENT);
 
   Fonts *pFonts = Fonts::GetInstance();
-  pFonts->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
-  pFonts->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD2));
+  pFonts->ApplyPasswordFont(&m_ex_password);
+  pFonts->ApplyPasswordFont(&m_ex_password2);
 
   // Get Add/Edit font
   CFont *pFont = pFonts->GetAddEditFont();
@@ -290,16 +291,16 @@ BOOL CAddEdit_Basic::OnInitDialog()
     CancelToClose();
 
     // Disable Group Combo
-    GetDlgItem(IDC_GROUP)->EnableWindow(FALSE);
+    m_ex_group.EnableWindow(FALSE);
 
     // Disable normal Edit controls
-    GetDlgItem(IDC_TITLE)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_USERNAME)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_PASSWORD)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_PASSWORD2)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_NOTES)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_URL)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_EMAIL)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    m_ex_title.SendMessage(EM_SETREADONLY, TRUE, 0);
+    m_ex_username.SendMessage(EM_SETREADONLY, TRUE, 0);
+    m_ex_password.SendMessage(EM_SETREADONLY, TRUE, 0);
+    m_ex_password2.SendMessage(EM_SETREADONLY, TRUE, 0);
+    m_ex_notes.SendMessage(EM_SETREADONLY, TRUE, 0);
+    m_ex_URL.SendMessage(EM_SETREADONLY, TRUE, 0);
+    m_ex_email.SendMessage(EM_SETREADONLY, TRUE, 0);
 
     // Disable Button
     GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
@@ -340,26 +341,28 @@ BOOL CAddEdit_Basic::OnInitDialog()
   CString cs_text;
   if (M_original_entrytype() == CItemData::ET_ALIASBASE ||
       M_original_entrytype() == CItemData::ET_SHORTCUTBASE) {
-    // Show button to allow users to view dependents
-    cs_text.LoadString(M_original_entrytype() == CItemData::ET_ALIASBASE ?
-                       IDS_VIEWALIASESBTN : IDS_VIEWSHORTCUTSBTN);
-    GetDlgItem(IDC_VIEWDEPENDENTS)->SetWindowText(cs_text);
-    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_SHOW);
+    // Show ComboBox to allow users to view dependents
+    SetUpDependentsCombo();
+    m_cmbDependents.ShowWindow(SW_SHOW);
+    m_cmbDependents.SetCurSel(0);
 
     cs_text.LoadString(M_original_entrytype() == CItemData::ET_ALIASBASE ?
                        IDS_ISANALIASBASE : IDS_ISASHORTCUTBASE);
-    GetDlgItem(IDC_STATIC_ISANALIAS)->SetWindowText(cs_text);
-    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
+    m_stc_isdependent.SetWindowText(cs_text);
+
+    m_stc_isdependent.ShowWindow(SW_SHOW);
     m_ex_base.ShowWindow(SW_HIDE);
+    m_stc_dependent.ShowWindow(SW_SHOW);
   } else if (M_original_entrytype() == CItemData::ET_ALIAS) {
     // Update password to alias form
     // Show text stating that it is an alias
     m_password = m_password2 = M_base();
-    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
+    m_cmbDependents.ShowWindow(SW_HIDE);
 
-    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
+    m_stc_isdependent.ShowWindow(SW_SHOW);
     m_ex_base.SetWindowText(M_base());
     m_ex_base.ShowWindow(SW_SHOW);
+    m_stc_dependent.ShowWindow(SW_HIDE);
 
     // Swap Help buttons
     m_Help2.EnableWindow(FALSE);
@@ -369,9 +372,10 @@ BOOL CAddEdit_Basic::OnInitDialog()
     m_Help3.ShowWindow(SW_SHOW);
   } else if (M_original_entrytype() == CItemData::ET_NORMAL) {
     // Normal - do none of the above
-    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
+    m_cmbDependents.ShowWindow(SW_HIDE);
+    m_stc_isdependent.ShowWindow(SW_HIDE);
     m_ex_base.ShowWindow(SW_HIDE);
+    m_stc_dependent.ShowWindow(SW_HIDE);
   }
 
   if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
@@ -806,11 +810,12 @@ void CAddEdit_Basic::ShowHideBaseInfo(const CItemData::EntryType &entrytype, CSe
 {
   switch (entrytype) {
   case CItemData::ET_ALIAS:
-    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
+    m_cmbDependents.ShowWindow(SW_HIDE);
+    m_stc_isdependent.ShowWindow(SW_SHOW);
 
     m_ex_base.SetWindowText(csBase);
     m_ex_base.ShowWindow(SW_SHOW);
+    m_stc_dependent.ShowWindow(SW_HIDE);
 
     // Swap help buttons/information
     m_Help2.EnableWindow(FALSE);
@@ -819,11 +824,12 @@ void CAddEdit_Basic::ShowHideBaseInfo(const CItemData::EntryType &entrytype, CSe
     m_Help3.ShowWindow(SW_SHOW);
     break;
   case CItemData::ET_NORMAL:
-    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
+    m_cmbDependents.ShowWindow(SW_HIDE);
+    m_stc_isdependent.ShowWindow(SW_HIDE);
 
     m_ex_base.SetWindowText(L"");
     m_ex_base.ShowWindow(SW_HIDE);
+    m_stc_dependent.ShowWindow(SW_HIDE);
 
     // Swap help buttons/information
     m_Help2.EnableWindow(TRUE);
@@ -962,7 +968,7 @@ void CAddEdit_Basic::ShowNotes()
   if (m_isNotesHidden) { // idempotent
     m_isNotesHidden = false;
     m_notes = M_realnotes();
-    GetDlgItem(IDC_NOTES)->Invalidate();
+    m_ex_notes.Invalidate();
     SetZoomMenu();
   }
 }
@@ -974,7 +980,7 @@ void CAddEdit_Basic::HideNotes()
     M_realnotes() = m_notes;
     
     m_notes = HIDDEN_NOTES;
-    GetDlgItem(IDC_NOTES)->Invalidate();
+    m_ex_notes.Invalidate();
     // Disable zoom of hidden text
     m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, false);
     m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, false);
@@ -1228,9 +1234,9 @@ LRESULT CAddEdit_Basic::OnCallExternalEditor(WPARAM, LPARAM)
   m_bOKCancel = GetParent()->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
 
   const CString cs_text(MAKEINTRESOURCE(IDS_NOTES_IN_EXTERNAL_EDITOR));
-  CWnd *pwnotes = GetDlgItem(IDC_NOTES);
-  pwnotes->EnableWindow(FALSE);
-  pwnotes->SetWindowText(cs_text);
+
+  m_ex_notes.EnableWindow(FALSE);
+  m_ex_notes.SetWindowText(cs_text);
 
   m_thread = CExtThread::BeginThread(ExternalEditorThread, this);
   return 0L;
@@ -1365,7 +1371,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
 {
   std::wstring note;
-  GetDlgItem(IDC_NOTES)->EnableWindow(TRUE);
+  m_ex_notes.EnableWindow(TRUE);
 
   if (wParam != 0) {
     goto error_exit;
@@ -1434,7 +1440,7 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
   M_realnotes() = m_notes = note.c_str();
 
   UpdateData(FALSE);
-  GetDlgItem(IDC_NOTES)->Invalidate();
+  m_ex_notes.Invalidate();
 
   // Delete temporary file
   _wremove(m_szTempName);
@@ -1452,31 +1458,12 @@ error_exit:
   m_notes = M_realnotes();
 
   UpdateData(FALSE);
-  GetDlgItem(IDC_NOTES)->Invalidate();
+  m_ex_notes.Invalidate();
 
   // Restore Sheet buttons
   GetParent()->GetDlgItem(IDOK)->EnableWindow(m_bOKSave == 0 ? TRUE : FALSE);
   GetParent()->GetDlgItem(IDCANCEL)->EnableWindow(m_bOKCancel == 0 ? TRUE : FALSE);
   return 0L;
-}
-
-void CAddEdit_Basic::OnViewDependents()
-{
-  // Ignore unless button is visible
-  if (!GetDlgItem(IDC_VIEWDEPENDENTS)->IsWindowVisible())
-    return;
-
-  CString cs_msg, cs_type;
-  CGeneralMsgBox gmb;
-
-  if (M_original_entrytype() == CItemData::ET_ALIASBASE)
-    cs_type.LoadString(M_num_dependents() == 1 ? IDSC_ALIAS : IDSC_ALIASES);
-  else
-    cs_type.LoadString(M_num_dependents() == 1 ? IDSC_SHORTCUT : IDSC_SHORTCUTS);
-
-  cs_msg.Format(IDS_VIEWDEPENDENTS, M_num_dependents(), static_cast<LPCWSTR>(cs_type),
-                static_cast<LPCWSTR>(M_dependents()));
-  gmb.MessageBox(cs_msg, AfxGetAppName(), MB_OK);
 }
 
 bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title,
@@ -1675,4 +1662,62 @@ void CAddEdit_Basic::OnCopyPassword()
 
   GetMainDlg()->SetClipboardData(m_password);
   GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
+}
+
+void CAddEdit_Basic::SetUpDependentsCombo()
+{
+  // Get Add/Edit font
+  CFont *pFont = Fonts::GetInstance()->GetAddEditFont();
+  m_cmbDependents.SetFont(pFont);
+
+  CString cs_type;
+  cs_type.LoadString(M_original_entrytype() == CItemData::ET_ALIASBASE ?
+      IDS_LIST_OF_ALIASES : IDS_LIST_OF_SHORTCUTS);
+
+  m_stc_dependent.SetWindowText(cs_type);
+
+  for (size_t i = 0; i < M_vsxdependents().size(); i++) {
+    m_cmbDependents.AddString(M_vsxdependents()[i].c_str());
+  }
+
+  SetComboBoxWidth();
+}
+
+void CAddEdit_Basic::SetComboBoxWidth()
+{
+  // Find the longest string in the combo box.
+  CString str;
+  CSize sz;
+  int dx = 0;
+  TEXTMETRIC tm;
+  CDC *pDC = m_cmbDependents.GetDC();
+  CFont *pFont = m_cmbDependents.GetFont();
+
+  // Select the listbox font, save the old font
+  CFont *pOldFont = pDC->SelectObject(pFont);
+
+  // Get the text metrics for avg char width
+  pDC->GetTextMetrics(&tm);
+
+  for (int i = 0; i < m_cmbDependents.GetCount(); i++) {
+    m_cmbDependents.GetLBText(i, str);
+    sz = pDC->GetTextExtent(str);
+
+    // Add the avg width to prevent clipping
+    sz.cx += tm.tmAveCharWidth;
+
+    if (sz.cx > dx)
+      dx = sz.cx;
+  }
+
+  // Select the old font back into the DC
+  pDC->SelectObject(pOldFont);
+  m_cmbDependents.ReleaseDC(pDC);
+
+  // Adjust the width for the vertical scroll bar and the left and right border.
+  dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2 * ::GetSystemMetrics(SM_CXEDGE);
+
+  // If the width of the list box is too small, adjust it so that every
+  // item is completely visible.
+  m_cmbDependents.SetDroppedWidth(dx);
 }

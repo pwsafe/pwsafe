@@ -338,6 +338,7 @@ public:
 
   // alias/base and shortcut/base handling
   void SortDependents(UUIDVector &dlist, StringX &csDependents);
+  void SortDependents(UUIDVector &dlist, std::vector<StringX> &vsxDependents);
   size_t NumAliases(const pws_os::CUUID &base_uuid) const
   {return m_base2aliases_mmap.count(base_uuid);}
   size_t NumShortcuts(const pws_os::CUUID &base_uuid) const
