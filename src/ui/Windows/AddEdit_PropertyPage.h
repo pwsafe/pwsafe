@@ -48,11 +48,10 @@ struct st_AE_master_data {
   CSecString email;
 
   CSecString base;
-  CSecString dependents;
+  std::vector<StringX> vsxdependents;
   pws_os::CUUID entry_uuid;
   pws_os::CUUID original_base_uuid;
   pws_os::CUUID base_uuid;
-  int num_dependents;
   int ibasedata;
   enum CItemData::EntryType original_entrytype;
 
@@ -137,11 +136,10 @@ public:
   CSecString &M_default_symbols() {return m_AEMD.default_symbols;}
 
   CSecString &M_base() {return m_AEMD.base;}
-  CSecString &M_dependents() {return m_AEMD.dependents;}
+  std::vector<StringX> &M_vsxdependents() {return m_AEMD.vsxdependents;}
   pws_os::CUUID &M_entry_uuid() {return m_AEMD.entry_uuid;}
   pws_os::CUUID &M_base_uuid() {return m_AEMD.base_uuid;}
   pws_os::CUUID &M_original_base_uuid() { return m_AEMD.original_base_uuid; }
-  int &M_num_dependents() {return m_AEMD.num_dependents;}
   int &M_ibasedata() {return m_AEMD.ibasedata;}
   CItemData::EntryType &M_original_entrytype() {return m_AEMD.original_entrytype;}
 

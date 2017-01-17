@@ -273,7 +273,6 @@
 #define IDS_CPF_TVDD                    5449
 #define IDS_RECORDUNKNOWNFIELDS         5450
 #define IDS_IMPORTFILE                  5451
-#define IDS_VIEWDEPENDENTS              5452
 #define IDS_EXPORTFILE                  5453
 #define IDS_ALIASNOTFOUNDA              5455
 #define IDS_ALIASNOTFOUND0A             5456
@@ -315,8 +314,6 @@
 #define IDS_SBASEINVALID                5500
 #define IDS_MUSTHAVETARGET              5501
 #define IDS_VIEWSHORTCUTS               5502
-#define IDS_VIEWALIASESBTN              5503
-#define IDS_VIEWSHORTCUTSBTN            5504
 #define IDS_MULTIPLETARGETSFOUND        5505
 #define IDS_TARGETNOTFOUND              5506
 #define IDS_PROVISMUTUALLYEXCL          5507
@@ -795,3 +792,5 @@
 #define IDS_CHANGINGBASEENTRY2          6041
 #define IDS_EXP_ALIAS                   6042
 #define IDS_HOSTUSER                    6043
+#define IDS_LIST_OF_ALIASES             6044
+#define IDS_LIST_OF_SHORTCUTS           6045
