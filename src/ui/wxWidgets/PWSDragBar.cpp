@@ -135,7 +135,8 @@ wxString PWSDragBar::GetText(int id) const
   pci = m_frame->GetSelectedEntry();
   pbci = m_frame->GetBaseEntry(pci);
 
-  return pci ? towxstring(pci->GetEffectiveFieldValue(DragbarElements[idx].ft, pbci)) : wxEmptyString;
+  return pci ?
+    towxstring(pci->GetEffectiveFieldValue(DragbarElements[idx].ft, pbci)) : wxString(wxEmptyString);
 }
 
 bool PWSDragBar::IsEnabled(int id) const
