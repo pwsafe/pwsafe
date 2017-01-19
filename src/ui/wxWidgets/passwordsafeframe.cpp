@@ -333,9 +333,7 @@ void PasswordSafeFrame::Init()
   std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions;
   bsSupportedFunctions.set(UIInterFace::DATABASEMODIFIED);
   bsSupportedFunctions.set(UIInterFace::UPDATEGUI);
-  bsSupportedFunctions.set(UIInterFace::GUISETUPDISPLAYINFO);
   bsSupportedFunctions.set(UIInterFace::GUIREFRESHENTRY);
-  //bsSupportedFunctions.set(UIInterFace::UPDATEWIZARD);
 
   m_core.SetUIInterFace(this, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
 
@@ -1646,18 +1644,6 @@ void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
   if (!m_core.IsReadOnly() && bMaintainDateTimeStamps) {
     ci.SetATime();
     UpdateStatusBar();
-#ifdef NOTYET
-    // Need to update view if there
-    if (m_nColumnIndexByType[CItemData::ATIME] != -1) {
-      // Get index of entry
-      DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
-      // Get value in correct format
-      CString cs_atime = ci.GetATimeL().c_str();
-      // Update it
-      m_ctlItemList.SetItemText(pdi->list_index,
-        m_nColumnIndexByType[CItemData::ATIME], cs_atime);
-    }
-#endif
   }
 }
 
@@ -2016,12 +2002,6 @@ void PasswordSafeFrame::DatabaseModified(bool modified)
     if (rc == PWScore::SUCCESS)
       modified = false;
   }
-}
-
-void PasswordSafeFrame::GUISetupDisplayInfo(CItemData &ci)
-{
-  UNREFERENCED_PARAMETER(ci);
-  // XXX TBD
 }
 
 void PasswordSafeFrame::RebuildGUI(const int iView /*= iBothViews*/)
