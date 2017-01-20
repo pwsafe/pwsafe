@@ -4544,8 +4544,9 @@ void DboxMain::RemoveFromGUI(CItemData &ci, const bool bUpdateGUI)
       m_LastFoundListItem = -1;
     }
 
-    pdi->list_index = -1;
-    pdi->tree_item = 0;
+    // Now remove from map
+    size_t num = m_MapEntryToGUI.erase(ci.GetUUID());
+    ASSERT(num == 1);
 
     FixListIndexes(); // sucks, as make M deletions an NxM operation
     if (bUpdateGUI) { // Make controls redraw
