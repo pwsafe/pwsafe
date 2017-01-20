@@ -872,6 +872,7 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
                           sx_merged.c_str(), str_timestring.c_str());
       ci_temp.SetTitle(sx_newTitle);
     }
+
     // Check this is unique - if not - don't add this one! - its only an alias/shortcut!
     // We can't keep trying for uniqueness after adding a timestamp!
     foundPos = Find(ci_temp.GetGroup(), sx_newTitle, ci_temp.GetUser());
@@ -879,7 +880,8 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
       continue;
 
     ci_temp.SetBaseUUID(new_base_uuid);
-    Command *pcmd1 = AddEntryCommand::Create(this, ci_temp);
+    ci_temp.SetStatus(CItemData::ES_ADDED);
+    Command *pcmd1 = AddEntryCommand::Create(this, ci_temp, new_base_uuid);
     pcmd1->SetNoGUINotify();
     pmulticmds->Add(pcmd1);
 
