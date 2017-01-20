@@ -420,7 +420,7 @@ public:
   PWPolicy m_pwp;
 
   // Get link between entry and GUI
-  DisplayInfo * GetEntryGUIInfo(const CItemData &ci, const bool bASSERT = true);
+  DisplayInfo * GetEntryGUIInfo(const CItemData &ci, const bool bAllowFail = false);
 
   // Mapping Group to Tree Item to save searching all the time!
   // Be nice to have a bimap implementation
@@ -1025,7 +1025,7 @@ private:
   std::stack<st_SaveGUIInfo> m_stkSaveGUIInfo;
 };
 
-inline DisplayInfo * DboxMain::GetEntryGUIInfo(const CItemData &ci, const bool bASSERT)
+inline DisplayInfo * DboxMain::GetEntryGUIInfo(const CItemData &ci, const bool bAllowFail)
 {
   std::map<pws_os::CUUID, DisplayInfo, std::less<pws_os::CUUID> >::iterator E2G_iter;
 
@@ -1034,7 +1034,7 @@ inline DisplayInfo * DboxMain::GetEntryGUIInfo(const CItemData &ci, const bool b
     return &E2G_iter->second;
   }
 
-  if (bASSERT) {
+  if (!bAllowFail) {
     ASSERT(0);
   }
   return nullptr;  

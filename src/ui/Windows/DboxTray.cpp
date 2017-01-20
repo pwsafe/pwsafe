@@ -306,7 +306,7 @@ void DboxMain::OnTraySelect(UINT nID)
   if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYSELECT1, ci))
       return;
 
-  DisplayInfo *pdi = GetEntryGUIInfo(ci, false);
+  DisplayInfo *pdi = GetEntryGUIInfo(ci, true);
 
   if (pdi != NULL) {
     // Could be null if RefreshViews not called,

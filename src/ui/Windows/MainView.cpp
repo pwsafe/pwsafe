@@ -1270,7 +1270,7 @@ void DboxMain::RefreshViews(const ViewType iView)
   for (auto listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
        listPos++) {
     CItemData &ci = m_core.GetEntry(listPos);
-    DisplayInfo *pdi = GetEntryGUIInfo(ci, false);
+    DisplayInfo *pdi = GetEntryGUIInfo(ci, true);
     if (pdi != NULL) {
       pdi->list_index = -1;
       pdi->tree_item = 0;
@@ -1778,7 +1778,7 @@ void DboxMain::OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult)
 int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex, 
                                 const bool bSort, const ViewType iView)
 {
-  DisplayInfo *pdi = GetEntryGUIInfo(ci, false);
+  DisplayInfo *pdi = GetEntryGUIInfo(ci, true);
   if (pdi != NULL && pdi->list_index != -1 && pdi->tree_item != 0) {
     // true iff item already displayed
     return iIndex;
@@ -4521,7 +4521,7 @@ void DboxMain::RemoveFromGUI(CItemData &ci, const bool bUpdateGUI)
   CItemData *pci2 = &iter->second;
   DisplayInfo *pdi2 = GetEntryGUIInfo(*pci2);
 
-  DisplayInfo *pdi = GetEntryGUIInfo(ci, false);
+  DisplayInfo *pdi = GetEntryGUIInfo(ci, true);
 
   if (pdi != NULL) {
     ASSERT(pdi2->list_index == pdi->list_index &&
@@ -4677,7 +4677,7 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
       int i = m_ctlItemList.GetNextSelectedItem(pos);
       pci = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(pci != NULL);  // No groups in List View
-      DisplayInfo *pdi = GetEntryGUIInfo(*pci, false);
+      DisplayInfo *pdi = GetEntryGUIInfo(*pci, true);
       ASSERT(pdi != NULL && pdi->list_index == i);
       m_LUUIDSelectedAtMinimize = pci->GetUUID();
     } // p != 0
@@ -4687,7 +4687,7 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
     if (i >= 0) {
       pci = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(pci != NULL);  // No groups in List View
-      DisplayInfo *pdi = GetEntryGUIInfo(*pci, false);
+      DisplayInfo *pdi = GetEntryGUIInfo(*pci, true);
       ASSERT(pdi != NULL && pdi->list_index == i);
       m_LUUIDVisibleAtMinimize = pci->GetUUID();
     } // i >= 0
