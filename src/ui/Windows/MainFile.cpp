@@ -3583,9 +3583,6 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   const CItemData *pfromEntry = &fromPos->second;
   CItemData ci_temp(*pfromEntry);  // Set up copy
 
-  DisplayInfo *pdi = new DisplayInfo;
-  ci_temp.SetDisplayInfo(pdi); // DisplayInfo values will be set later
-
   // If the UUID is not in use in the "to" core, copy it too, otherwise reuse current
   if (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter()) {
     ci_temp.SetUUID(fromUUID);
@@ -3747,9 +3744,6 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
     ASSERT(fromPos != pfromcore->GetEntryEndIter());
     const CItemData *pfromEntry = &fromPos->second;
     CItemData ci_temp(*pfromEntry);  // Set up copy
-
-    DisplayInfo *pdi = new DisplayInfo;
-    ci_temp.SetDisplayInfo(pdi); // DisplayInfo values will be set later
 
     // Special processing for password policies (default & named)
     StringX sxPolicyName = pfromEntry->GetPolicyName();

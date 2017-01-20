@@ -691,7 +691,6 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
       // found a match
       CItemData curItem = currentCore->GetEntry(foundPos);
       CItemData updItem(curItem);
-      updItem.SetDisplayInfo(NULL);
 
       uuid_array_t current_uuid, other_uuid;
       curItem.GetUUID(current_uuid);

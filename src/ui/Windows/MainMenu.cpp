@@ -1313,8 +1313,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       UpdateToolBarForSelectedItem(pci);
       if (pci != NULL) {
         // right-click was on an item (LEAF of some kind: normal, alias, shortcut)
-        DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-        ASSERT(pdi != NULL);
+        DisplayInfo *pdi = GetEntryGUIInfo(*pci);
         ASSERT(pdi->tree_item == ti);
         item = pdi->list_index;
         m_ctlItemTree.SelectItem(ti); // So that OnEdit gets the right one

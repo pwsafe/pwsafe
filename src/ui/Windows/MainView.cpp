@@ -240,12 +240,6 @@ void DboxMain::UpdateGUIDisplay()
   UpdateMenuAndToolBar(m_bOpen);
 }
 
-// Called from PWScore to get GUI to update its reserved field
-void DboxMain::GUISetupDisplayInfo(CItemData &ci)
-{
-  ci.SetDisplayInfo(new DisplayInfo);
-}
-
 void DboxMain::GUIRefreshEntry(const CItemData &ci)
 {
   UpdateEntryImages(ci);
@@ -735,6 +729,7 @@ void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const CItemData &ci)
   CSecString csCurrentString = m_ctlItemTree.GetItemText(hItem);
   CSecString csNewString = m_ctlItemTree.MakeTreeDisplayString(ci);
 
+  pws_os::Trace(L"UpdateTreeItem %08x - length: %d\n", hItem, csCurrentString.GetLength());
   if (csCurrentString != csNewString) {
     m_ctlItemTree.SetItemText(hItem, csNewString);
   }
@@ -747,7 +742,7 @@ void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const CItemData &ci)
 
 void DboxMain::UpdateEntryInGUI(CItemData &ci)
 {
-  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+  DisplayInfo *pdi = GetEntryGUIInfo(ci);
   ASSERT(pdi != NULL);
 
   const int iIndex = pdi->list_index;
@@ -1072,8 +1067,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
 
     if (bFoundit) {
       // Find index in displayed list
-      DisplayInfo *pdi = (DisplayInfo *)curitem.GetDisplayInfo();
-      ASSERT(pdi != NULL);
+      DisplayInfo *pdi = GetEntryGUIInfo(curitem);
       int li = pdi->list_index;
       ASSERT(m_ctlItemList.GetItemText(li, ititle) == saveTitle.c_str());
       // add to indices, bump retval
@@ -1138,8 +1132,7 @@ BOOL DboxMain::SelectEntry(const int i, BOOL MakeVisible)
 
   CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
   ASSERT(pci != NULL);
-  DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-  ASSERT(pdi != NULL);
+  DisplayInfo *pdi = GetEntryGUIInfo(*pci);
   ASSERT(pdi->list_index == i);
 
   // Was there anything selected before?
@@ -1218,8 +1211,7 @@ BOOL DboxMain::SelectFindEntry(const int i, BOOL MakeVisible)
   retval_list = m_ctlItemList.SetItemState(i, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
   m_LastFoundListItem = i;
 
-  DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-  ASSERT(pdi != NULL);
+  DisplayInfo *pdi = GetEntryGUIInfo(*pci);
   ASSERT(pdi->list_index == i);
 
   retval_tree = m_ctlItemTree.SelectItem(pdi->tree_item);
@@ -1278,9 +1270,11 @@ void DboxMain::RefreshViews(const ViewType iView)
   for (auto listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
        listPos++) {
     CItemData &ci = m_core.GetEntry(listPos);
-    DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
-    if (pdi != NULL)
-      pdi->list_index = -1; // easier, but less efficient, to delete pdi
+    DisplayInfo *pdi = GetEntryGUIInfo(ci, false);
+    if (pdi != NULL) {
+      pdi->list_index = -1;
+      pdi->tree_item = 0;
+    }
 
     InsertItemIntoGUITreeList(ci, -1, false, iView);
   }
@@ -1784,26 +1778,28 @@ void DboxMain::OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult)
 int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex, 
                                 const bool bSort, const ViewType iView)
 {
-  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
-  if (pdi != NULL && pdi->list_index != -1) {
+  DisplayInfo *pdi = GetEntryGUIInfo(ci, false);
+  if (pdi != NULL && pdi->list_index != -1 && pdi->tree_item != 0) {
     // true iff item already displayed
     return iIndex;
   }
+
+  DisplayInfo di;
+
+  if (pdi != NULL)
+    di = *pdi;
 
   int iResult = iIndex;
   if (iResult < 0) {
     iResult = m_ctlItemList.GetItemCount();
   }
 
-  if (pdi == NULL) {
-    pdi = new DisplayInfo;
-    ci.SetDisplayInfo(pdi);
-  }
-
   if (iView & LISTONLY)
-    pdi->list_index = -1;
+    di.list_index = -1;
   if (iView & TREEONLY)
-    pdi->tree_item = NULL;
+    di.tree_item = NULL;
+
+  SetEntryGUIInfo(ci, di);
 
   if (m_bFilterActive) {
     if (!m_FilterManager.PassesFiltering(ci, m_core))
@@ -1828,7 +1824,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
       return iResult;
     }
 
-    pdi->list_index = iResult;
+    di.list_index = iResult;
     if (m_bImageInLV)
       SetEntryImage(iResult, nImage);
   }
@@ -1852,7 +1848,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     SetEntryImage(ti, nImage);
 
     ASSERT(ti != NULL);
-    pdi->tree_item = ti;
+    di.tree_item = ti;
   }
 
   if (iView & LISTONLY) {
@@ -1882,6 +1878,8 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
 
     m_ctlItemList.SetItemData(iResult, (DWORD_PTR)&ci);
   }
+
+  SetEntryGUIInfo(ci, di);
   return iResult;
 }
 
@@ -1897,7 +1895,7 @@ CItemData *DboxMain::getSelectedItem()
       int i = m_ctlItemList.GetNextSelectedItem(pos);
       pci = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(pci != NULL);
-      DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+      DisplayInfo *pdi = GetEntryGUIInfo(*pci);
       ASSERT(pdi != NULL && pdi->list_index == i);
     }
   } else { // tree view; go from HTREEITEM to index
@@ -1906,8 +1904,7 @@ CItemData *DboxMain::getSelectedItem()
       pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
       if (pci != NULL) {
         // leaf: do some sanity tests
-        DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-        ASSERT(pdi != NULL);
+        DisplayInfo *pdi = GetEntryGUIInfo(*pci);
         if (pdi->tree_item != ti) {
           pws_os::Trace(L"DboxMain::getSelectedItem: fixing pdi->tree_item!\n");
           pdi->tree_item = ti;
@@ -1979,7 +1976,7 @@ void DboxMain::ReSelectItems(pws_os::CUUID entry_uuid,
     ItemListIter iter = Find(entry_uuid);
     if (iter != m_core.GetEntryEndIter()) {
       CItemData &ci = GetEntryAt(iter);
-      DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+      DisplayInfo *pdi = GetEntryGUIInfo(ci);
       hItem = pdi->tree_item;
       item = pdi->list_index;
     }
@@ -1999,7 +1996,7 @@ void DboxMain::ReSelectItems(pws_os::CUUID entry_uuid,
     ItemListIter iter = Find(tree_find_entry_uuid);
     if (iter != m_core.GetEntryEndIter()) {
       CItemData &ci = GetEntryAt(iter);
-      DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+      DisplayInfo *pdi = GetEntryGUIInfo(ci);
       m_LastFoundTreeItem = pdi->tree_item;
     }
   }
@@ -2008,7 +2005,7 @@ void DboxMain::ReSelectItems(pws_os::CUUID entry_uuid,
     ItemListIter iter = Find(list_find_entry_uuid);
     if (iter != m_core.GetEntryEndIter()) {
       CItemData &ci = GetEntryAt(iter);
-      DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+      DisplayInfo *pdi = GetEntryGUIInfo(ci);
       m_LastFoundListItem = pdi->list_index;
     }
   }
@@ -2035,6 +2032,8 @@ void DboxMain::ClearAppData(const bool bClearMRE)
 
     m_mapGroupToTreeItem.clear();
     m_mapTreeItemToGroup.clear();
+
+    m_MapEntryToGUI.clear();
 
     m_bBoldItem = false;
 
@@ -4104,7 +4103,7 @@ void DboxMain::SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEnt
 
 void DboxMain::UpdateEntryImages(const CItemData &ci)
 {
-  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+  DisplayInfo *pdi = GetEntryGUIInfo(ci);
   if (ci.GetStatus() != CItemData::ES_DELETED) {
     int nImage = GetEntryImage(ci);
     SetEntryImage(pdi->list_index, nImage, true);
@@ -4520,8 +4519,9 @@ void DboxMain::RemoveFromGUI(CItemData &ci, const bool bUpdateGUI)
   }
 
   CItemData *pci2 = &iter->second;
-  DisplayInfo *pdi2 = (DisplayInfo *)pci2->GetDisplayInfo();
-  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+  DisplayInfo *pdi2 = GetEntryGUIInfo(*pci2);
+
+  DisplayInfo *pdi = GetEntryGUIInfo(ci, false);
 
   if (pdi != NULL) {
     ASSERT(pdi2->list_index == pdi->list_index &&
@@ -4545,7 +4545,7 @@ void DboxMain::RemoveFromGUI(CItemData &ci, const bool bUpdateGUI)
     }
 
     pdi->list_index = -1;
-    pdi->tree_item = NULL;
+    pdi->tree_item = 0;
 
     FixListIndexes(); // sucks, as make M deletions an NxM operation
     if (bUpdateGUI) { // Make controls redraw
@@ -4558,7 +4558,7 @@ void DboxMain::RemoveFromGUI(CItemData &ci, const bool bUpdateGUI)
 void DboxMain::RefreshEntryPasswordInGUI(CItemData &ci)
 {
   // For when Entry's password + PW history has been updated
-  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+  DisplayInfo *pdi = GetEntryGUIInfo(ci);
 
   UpdateListItemField(pdi->list_index, CItemData::PWHIST, ci.GetPWHistory());
   RefreshEntryFieldInGUI(ci, CItemData::PASSWORD);
@@ -4567,7 +4567,7 @@ void DboxMain::RefreshEntryPasswordInGUI(CItemData &ci)
 void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
 {
   // For when any field is updated
-  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+  DisplayInfo *pdi = GetEntryGUIInfo(ci);
 
   StringX sx_fielddata;
   time_t t;
@@ -4676,7 +4676,7 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
       int i = m_ctlItemList.GetNextSelectedItem(pos);
       pci = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(pci != NULL);  // No groups in List View
-      DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+      DisplayInfo *pdi = GetEntryGUIInfo(*pci, false);
       ASSERT(pdi != NULL && pdi->list_index == i);
       m_LUUIDSelectedAtMinimize = pci->GetUUID();
     } // p != 0
@@ -4686,7 +4686,7 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
     if (i >= 0) {
       pci = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(pci != NULL);  // No groups in List View
-      DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+      DisplayInfo *pdi = GetEntryGUIInfo(*pci, false);
       ASSERT(pdi != NULL && pdi->list_index == i);
       m_LUUIDVisibleAtMinimize = pci->GetUUID();
     } // i >= 0
@@ -4709,8 +4709,7 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
       pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
       if (pci != NULL) {
         // Entry: do some sanity tests
-        DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-        ASSERT(pdi != NULL);
+        DisplayInfo *pdi = GetEntryGUIInfo(*pci);
         if (pdi->tree_item != ti) {
           pws_os::Trace(L"DboxMain::SaveGUIStatusEx: fixing pdi->tree_item!\n");
           pdi->tree_item = ti;
@@ -4728,8 +4727,7 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
       pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
       if (pci != NULL) {
         // Entry: do some sanity tests
-        DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-        ASSERT(pdi != NULL);
+        DisplayInfo *pdi = GetEntryGUIInfo(*pci);
         if (pdi->tree_item != ti) {
           pws_os::Trace(L"DboxMain::SaveGUIStatusEx: fixing pdi->tree_item!\n");
           pdi->tree_item = ti;
@@ -4773,8 +4771,7 @@ void DboxMain::RestoreGUIStatusEx()
     // Entry selected
     ItemListIter iter = Find(m_TUUIDSelectedAtMinimize);
     if (iter != End()) {
-      DisplayInfo *pdi = ((DisplayInfo *)(iter->second.GetDisplayInfo()));
-      ASSERT(pdi != NULL);
+      DisplayInfo *pdi = GetEntryGUIInfo(iter->second);
       if (pdi != NULL) {
         htsel = pdi->tree_item;
         pci = &iter->second;
@@ -4811,8 +4808,7 @@ void DboxMain::RestoreGUIStatusEx()
     // Entry topmost visible
     ItemListIter iter = Find(m_TUUIDVisibleAtMinimize);
     if (iter != End()) {
-      DisplayInfo *pdi = ((DisplayInfo *)(iter->second.GetDisplayInfo()));
-      ASSERT(pdi != NULL);
+      DisplayInfo *pdi = GetEntryGUIInfo(iter->second);
       if (pdi != NULL) {
         htvis = pdi->tree_item;
       }
@@ -4841,8 +4837,7 @@ void DboxMain::RestoreGUIStatusEx()
   if (m_LUUIDSelectedAtMinimize != CUUID::NullUUID()) {
     ItemListIter iter = Find(m_LUUIDSelectedAtMinimize);
     if (iter != End()) {
-      DisplayInfo *pdi = ((DisplayInfo *)(iter->second.GetDisplayInfo()));
-      ASSERT(pdi != NULL);
+      DisplayInfo *pdi = GetEntryGUIInfo(iter->second);
       if (pdi != NULL) {
         // Select the Entry
         m_ctlItemList.SetItemState(pdi->list_index, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
@@ -4857,8 +4852,7 @@ void DboxMain::RestoreGUIStatusEx()
   if (m_LUUIDVisibleAtMinimize != CUUID::NullUUID()) {
     ItemListIter iter = Find(m_LUUIDVisibleAtMinimize);
     if (iter != End()) {
-      DisplayInfo *pdi = ((DisplayInfo *)(iter->second.GetDisplayInfo()));
-      ASSERT(pdi != NULL);
+      DisplayInfo *pdi = GetEntryGUIInfo(iter->second);
       if (pdi != NULL) {
         // There is CListCtrl::GetTopIndex but No CListCtrl::SetTopIndex - Grrrrr!
         CRect indexRect, topRect;
@@ -4963,22 +4957,29 @@ void DboxMain::SaveGUIStatus()
     }
   }
 
-  HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
-  if (hi != NULL) {
-    pci_tree = (CItemData *)m_ctlItemTree.GetItemData(hi);
-    if (pci_tree != NULL) {
-      SaveGUIInfo.tSelected = pci_tree->GetUUID();
-      SaveGUIInfo.btSelectedValid = true;
-    } else {
-      StringX s;
-      s = m_ctlItemTree.GetItemText(hi);
+  if (!m_sxNewPath.empty()) {
+    SaveGUIInfo.sxGroupName = m_sxNewPath;  // Rename group only
+    SaveGUIInfo.btGroupValid = true;
+  } else {
+    HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
+    if (hi != NULL) {
+      pci_tree = (CItemData *)m_ctlItemTree.GetItemData(hi);
+      if (pci_tree != NULL) {
+        SaveGUIInfo.tSelected = pci_tree->GetUUID();
+        SaveGUIInfo.btSelectedValid = true;
+      } else {
+        StringX s;
+        s = m_ctlItemTree.GetItemText(hi);
 
-      while ((hi = m_ctlItemTree.GetParentItem(hi)) != NULL) {
-        s = StringX(m_ctlItemTree.GetItemText(hi)) + StringX(L".") + s;
+        while ((hi = m_ctlItemTree.GetParentItem(hi)) != NULL) {
+          s = StringX(m_ctlItemTree.GetItemText(hi)) + StringX(L".") + s;
+        }
+        SaveGUIInfo.sxGroupName = s;
+        SaveGUIInfo.btGroupValid = true;
       }
-      SaveGUIInfo.sxGroupName = s;
     }
   }
+
   SaveGUIInfo.vGroupDisplayState = GetGroupDisplayState();
 
   m_stkSaveGUIInfo.push(SaveGUIInfo);
@@ -4997,15 +4998,21 @@ void DboxMain::RestoreGUIStatus()
   DisplayInfo *pdi;
   if (SaveGUIInfo.blSelectedValid) {
     iter = Find(SaveGUIInfo.lSelected);
-    pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
-    m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
-    m_ctlItemTree.SelectItem(pdi->tree_item);
+    // Check if the previously selected item has been deleted
+    if (iter != End()) {
+      pdi = GetEntryGUIInfo(iter->second);
+      m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
+      m_ctlItemTree.SelectItem(pdi->tree_item);
+    }
   }
 
   if (SaveGUIInfo.btSelectedValid) {
     iter = Find(SaveGUIInfo.tSelected);
-    pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
-    m_ctlItemTree.SelectItem(pdi->tree_item);
+    // Check if the previously selected item has been deleted
+    if (iter != End()) {
+      pdi = GetEntryGUIInfo(iter->second);
+      m_ctlItemTree.SelectItem(pdi->tree_item);
+    }
   }
 
   if (SaveGUIInfo.btGroupValid) {

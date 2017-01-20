@@ -117,6 +117,20 @@ MultiCommands::~MultiCommands()
   }
 }
 
+Command * MultiCommands::SearchForCommand(const type_info &ti)
+{
+  // Initial implementation - search for first command of a specific class
+  // in a MultiCommand.  Could be enhanced to return a vector of commands
+  // if all commands of a specific class are required.
+
+  for (auto cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
+    if (typeid(**cmd_Iter) == ti) {
+      return *cmd_Iter;
+    }
+  }
+  return nullptr;
+}
+
 int MultiCommands::Execute()
 {
   std::vector<Command *>::iterator cmd_Iter;

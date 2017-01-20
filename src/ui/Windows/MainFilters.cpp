@@ -191,7 +191,7 @@ void DboxMain::ApplyFilters()
   int iLastShown = m_FindToolBar.GetLastSelectedFoundItem(entry_uuid);
   if (iLastShown >= 0) {
     CItemData *pci = &m_core.Find(entry_uuid)->second;
-    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    DisplayInfo *pdi = GetEntryGUIInfo(*pci);
     m_LastFoundTreeItem = pdi->tree_item;
     m_LastFoundListItem = pdi->list_index;
   }

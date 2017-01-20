@@ -1329,32 +1329,74 @@ void DboxMain::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 
 void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 {
-  if (pcore == NULL)
-    pcore = &m_core;
-
-  SaveGUIStatus();
-  pcore->Execute(pcmd);
-
-  // See if we have any special filters active that now do not have any entries
-  // to display, which would have meant that the user should not be able to select them,
-  // we need to cancel them
-  if (m_ctlItemTree.GetCount() == 0 &&
-      (CurrentFilter() == m_FilterManager.GetExpireFilter() ||
-       CurrentFilter() == m_FilterManager.GetUnsavedFilter())) {
-    OnCancelFilter();
-  }
-
-  UpdateToolBarDoUndo();
-
-  UpdateStatusBar();
-
-  SaveGUIStatusEx(BOTHVIEWS);
+  DoCommand(pcmd, pcore, false);
 }
 
 void DboxMain::OnUndo()
 {
-  m_core.Undo();
-  
+  DoCommand(NULL, NULL, true);
+}
+
+void DboxMain::OnRedo()
+{
+  DoCommand(NULL, NULL, false);
+}
+
+void DboxMain::DoCommand(Command *pcmd, PWScore *pcore, const bool bUndo)
+{
+  // If pcmd != NULL then Execute
+  // If pcmd == NULL and bUndo == true  then Undo
+  // If pcmd == NULL and bUndo == false then Redo
+
+  if (pcore == NULL)
+    pcore = &m_core;
+
+  // Get temporary pointer to currrent command to see if a RenameGroupCommand
+  Command *pcommand = pcmd;
+
+  if (pcmd == NULL) {
+    if (bUndo)
+      pcommand = pcore->GetUndoCommand();
+    else
+      pcommand = pcore->GetRedoCommand();
+  }
+
+  m_sxNewPath.clear();
+  StringX sxOldPath(L""), sxNewPath(L"");
+  if (typeid(*pcommand) == typeid(MultiCommands)) {
+    Command *pRGcmd = 
+      dynamic_cast<MultiCommands *>(pcommand)->SearchForCommand(typeid(RenameGroupCommand));
+    if (pRGcmd != NULL) {
+      ASSERT(dynamic_cast<RenameGroupCommand *>(pRGcmd) != NULL);
+      dynamic_cast<RenameGroupCommand *>(pRGcmd)->GetPaths(sxOldPath, sxNewPath);
+    }
+  }
+
+  // Need to set m_sxNewPath before calling SaveGUIStatus()
+  if (pcmd != NULL) {
+    m_sxNewPath = sxNewPath;
+  } else {
+    if (bUndo) {
+      m_sxNewPath = sxOldPath;
+      pcommand = pcore->GetUndoCommand();
+    } else {
+      m_sxNewPath = sxNewPath;
+      pcommand = pcore->GetRedoCommand();
+    }
+  }
+
+  SaveGUIStatus();
+
+  if (pcmd != NULL) {
+    pcore->Execute(pcmd);
+  } else {
+    if (bUndo) {
+      pcore->Undo();
+    } else {
+      pcore->Redo();
+    }
+  }
+
   // See if we have any special filters active that now do not have any entries
   // to display, which would have meant that the user should not be able to select them,
   // we need to cancel them
@@ -1365,18 +1407,6 @@ void DboxMain::OnUndo()
   }
 
   RestoreGUIStatus();
-
-  UpdateToolBarDoUndo();
-  UpdateMenuAndToolBar(m_bOpen);
-  UpdateStatusBar();
-
-  SaveGUIStatusEx(BOTHVIEWS);
-}
-
-void DboxMain::OnRedo()
-{
-  SaveGUIStatus();
-  m_core.Redo();
 
   UpdateToolBarDoUndo();
   UpdateMenuAndToolBar(m_bOpen);
@@ -1414,8 +1444,7 @@ void DboxMain::FixListIndexes()
       continue;
     }
 
-    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-    ASSERT(pdi != NULL);
+    DisplayInfo *pdi = GetEntryGUIInfo(*pci);
     pdi->list_index = i;
 
     if (bInFindList)
@@ -2324,8 +2353,9 @@ BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers)
     if (uuid != pws_os::CUUID::NullUUID()) {
       // Yes - find the entry  and deselect any already selected
       ItemListIter iter = m_core.Find(uuid);
-      DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
-      ASSERT(pdi != NULL);
+
+      DisplayInfo *pdi = GetEntryGUIInfo(iter->second);
+
       if (m_ctlItemList.IsWindowVisible()) {
         // Unselect all others first
         POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
@@ -2611,12 +2641,11 @@ void DboxMain::UpdateAccessTime(const pws_os::CUUID &uuid)
     SetEntryTimestampsChanged(true);
 
     if (!IsGUIEmpty() &&
-        (m_nColumnIndexByType[CItemData::ATIME] != -1)) {
+      (m_nColumnIndexByType[CItemData::ATIME] != -1)) {
       // Need to update view if there and the display has been
       // rebuilt/restored after unlocking or minimized
       // Get index of entry
-      DisplayInfo *pdi = (DisplayInfo *)item.GetDisplayInfo();
-      ASSERT(pdi != NULL);
+      DisplayInfo *pdi = GetEntryGUIInfo(item);
       // Get value in correct format
       const CString cs_atime(item.GetATimeL().c_str());
       // Update it

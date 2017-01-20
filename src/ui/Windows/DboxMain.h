@@ -70,6 +70,31 @@
 typedef BOOL (WINAPI *PSBR_CREATE) (HWND, LPCWSTR);
 typedef BOOL (WINAPI *PSBR_DESTROY) (HWND);
 
+// Entry to GUI mapping
+// Following used to keep track of display vs data
+// stored as opaque data in m_MapEntryToGUI
+// Exposed here because PWTreeCtrl needs to update it after drag&drop
+struct DisplayInfo {
+  int list_index;
+  HTREEITEM tree_item;
+
+  DisplayInfo() :list_index(-1), tree_item(0) {}
+  virtual ~DisplayInfo() {}
+
+  DisplayInfo(const DisplayInfo &that)
+    : list_index(that.list_index), tree_item(that.tree_item)
+  {}
+
+  DisplayInfo &operator=(const DisplayInfo &that)
+  {
+    if (this != &that) {
+      list_index = that.list_index;
+      tree_item = that.tree_item;
+    }
+    return *this;
+  }
+};
+
 enum SearchDirection {FIND_UP = -1, FIND_DOWN = 1};
 
 // List of all Popup menus in the Main Menu
@@ -366,6 +391,8 @@ public:
   bool IsInRename() const {return m_bInRename;}
   bool IsInAddGroup() const {return m_bInAddGroup;}
   void ResetInAddGroup() {m_bInAddGroup = false;}
+  void SetRenameGroups(const StringX sxNewPath)
+  { m_sxNewPath = sxNewPath; }
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -391,6 +418,9 @@ public:
 
   // Used in Add & Edit & PasswordPolicyDlg
   PWPolicy m_pwp;
+
+  // Get link between entry and GUI
+  DisplayInfo * GetEntryGUIInfo(const CItemData &ci, const bool bASSERT = true);
 
   // Mapping Group to Tree Item to save searching all the time!
   // Be nice to have a bimap implementation
@@ -754,7 +784,6 @@ private:
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                          const std::vector<StringX> &vGroups);
   
-  virtual void GUISetupDisplayInfo(CItemData &ci);
   virtual void GUIRefreshEntry(const CItemData &ci);
   virtual void UpdateWizard(const std::wstring &s);
 
@@ -793,6 +822,15 @@ private:
   pws_os::CUUID m_LUUIDVisibleAtMinimize;  // to restore List entry position  upon un-minimize
   pws_os::CUUID m_TUUIDVisibleAtMinimize;  // to restore Tree entry position  upon un-minimize
   StringX m_sxVisibleGroup;                // to restore Tree group position  upon un-minimize
+ 
+  // Here lies the mapping between an entry and its place on the GUI (Tree/List views)
+  std::map<pws_os::CUUID, DisplayInfo, std::less<pws_os::CUUID> > m_MapEntryToGUI;
+  
+  // Set link between entry and GUI
+  void SetEntryGUIInfo(const CItemData &ci, DisplayInfo &di);
+
+  // Used in SaveGUIStatus to remember position during rename group - set by CPWTreeCtrl
+  StringX m_sxNewPath;
 
   StringX m_sxOriginalGroup;                 // Needed when doing recursive deletions of groups
 
@@ -851,6 +889,7 @@ private:
   void UpdateEntryInGUI(CItemData &ci);
   void UpdateGroupsInGUI(const std::vector<StringX> &vGroups);
   StringX GetListViewItemText(CItemData &ci, const int &icolumn);
+  void DoCommand(Command *pcmd = NULL, PWScore *pcore = NULL, const bool bUndo = true);
   
   static const struct UICommandTableEntry {
     UINT ID;
@@ -986,28 +1025,22 @@ private:
   std::stack<st_SaveGUIInfo> m_stkSaveGUIInfo;
 };
 
-// Following used to keep track of display vs data
-// stored as opaque data in CItemData.{Get,Set}DisplayInfo()
-// Exposed here because PWTreeCtrl needs to update it after drag&drop
-struct DisplayInfo : public DisplayInfoBase {
-  int list_index;
-  HTREEITEM tree_item;
+inline DisplayInfo * DboxMain::GetEntryGUIInfo(const CItemData &ci, const bool bASSERT)
+{
+  std::map<pws_os::CUUID, DisplayInfo, std::less<pws_os::CUUID> >::iterator E2G_iter;
 
- DisplayInfo() :list_index(-1), tree_item(0) {}
-  virtual ~DisplayInfo() {}
-  virtual DisplayInfo *clone() const // virtual c'tor idiom
-  { return new DisplayInfo(*this); }
- 
-  DisplayInfo(const DisplayInfo &that)
-  : list_index(that.list_index), tree_item(that.tree_item)
-  {}
-
-  DisplayInfo &operator=(const DisplayInfo &that)
-  {
-    if (this != &that) {
-      list_index = that.list_index;
-      tree_item = that.tree_item;
-    }
-    return *this;
+  E2G_iter = m_MapEntryToGUI.find(ci.GetUUID());
+  if (E2G_iter != m_MapEntryToGUI.end()) {
+    return &E2G_iter->second;
   }
-};
+
+  if (bASSERT) {
+    ASSERT(0);
+  }
+  return nullptr;  
+}
+
+inline void DboxMain::SetEntryGUIInfo(const CItemData &ci, DisplayInfo &di)
+{
+  m_MapEntryToGUI[ci.GetUUID()] = di;
+}

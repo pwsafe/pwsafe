@@ -1364,9 +1364,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       ci_temp.SetStatus(CItemData::ES_ADDED);
     }
 
-    // Get GUI to populate its field
-    GUISetupDisplayInfo(ci_temp);
-
     // Need to check that entry keyboard shortcut not already in use!
     int32 iKBShortcut;
     ci_temp.GetKBShortcut(iKBShortcut);
@@ -1807,7 +1804,6 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
 
     ci_temp.SetStatus(CItemData::ES_ADDED);
 
-    GUISetupDisplayInfo(ci_temp);
     Command *pcmd = AddEntryCommand::Create(this, ci_temp);
     pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);
@@ -2288,9 +2284,6 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     }
 
     ci_temp.SetStatus(CItemData::ES_ADDED);
-
-    // Get GUI to populate its field
-    GUISetupDisplayInfo(ci_temp);
 
     // Add to commands to execute
     Command *pcmd = AddEntryCommand::Create(this, ci_temp);

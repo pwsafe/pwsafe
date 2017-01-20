@@ -25,16 +25,13 @@ CItem::CItem()
 
 CItem::CItem(const CItem &that) :
   m_fields(that.m_fields),
-  m_URFL(that.m_URFL),
-  m_display_info(that.m_display_info == NULL ?
-                 NULL : that.m_display_info->clone())
+  m_URFL(that.m_URFL)
 {
   memcpy(m_key, that.m_key, sizeof(m_key));
 }
 
 CItem::~CItem()
 {
-  delete m_display_info;
   delete m_blowfish;
   // Following protects against possible use-after-delete
   // bug, since new BF will be created, rather than
@@ -48,9 +45,6 @@ CItem& CItem::operator=(const CItem &that)
     m_fields = that.m_fields;
     m_URFL = that.m_URFL;
 
-    delete m_display_info;
-    m_display_info = that.m_display_info == NULL ?
-      NULL : that.m_display_info->clone();
     memcpy(m_key, that.m_key, sizeof(m_key));
     delete m_blowfish;
     m_blowfish = nullptr;

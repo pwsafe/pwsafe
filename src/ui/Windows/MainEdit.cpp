@@ -145,9 +145,6 @@ void DboxMain::OnAdd()
       }
     }
 
-    DisplayInfo *pdi = new DisplayInfo;
-    ci.SetDisplayInfo(pdi); // DisplayInfo values will be set later
-
     // Save to find it again
     const pws_os::CUUID newentry_uuid = ci.GetUUID();
 
@@ -443,7 +440,6 @@ void DboxMain::OnDuplicateGroup()
 
         // Set up copy
         CItemData ci2(*pci);
-        ci2.SetDisplayInfo(NULL);
         ci2.CreateUUID();
         ci2.SetStatus(CItemData::ES_ADDED);
         ci2.SetProtected(false);
@@ -506,7 +502,6 @@ void DboxMain::OnDuplicateGroup()
 
           // Set up copy
           CItemData ci2(*pci);
-          ci2.SetDisplayInfo(NULL);
           ci2.CreateUUID();
           ci2.SetStatus(CItemData::ES_ADDED);
           ci2.SetProtected(false);
@@ -987,7 +982,8 @@ void DboxMain::Delete(MultiCommands *pmcmd)
 
   if (pci != NULL) {
     // Easy option - just one entry
-    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    DisplayInfo *pdi = GetEntryGUIInfo(*pci);
+
     bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
                       (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
     // Now delete single entry
@@ -1307,7 +1303,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   Command *pcmd(NULL);
 
   // Determine if last entry in this group just in case the user changes the group
-  DisplayInfo *pdi = (DisplayInfo *)pci_original->GetDisplayInfo();
+  DisplayInfo *pdi = GetEntryGUIInfo(*pci_original);
   bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
                     (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
 
@@ -1475,10 +1471,23 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   pcmd = EditEntryCommand::Create(pcore, *(pci_original), ci_new);
   pmulticmds->Add(pcmd);
 
+  DisplayInfo *pdiold = GetEntryGUIInfo(*pci_original);
+  ASSERT(pdiold != NULL);
+
+  const HTREEITEM hItemOld = pdiold->tree_item;
+  pws_os::Trace(L"UpdateEntry old %08x\n", hItemOld);
+
+  const HTREEITEM hItemNew = pdiold->tree_item;
+
+  DisplayInfo *pdinew = GetEntryGUIInfo(ci_new);
+  ASSERT(pdinew != NULL);
+
+  pws_os::Trace(L"UpdateEntry new %08x\n", hItemNew);
+
   // Restore PWH as it was before it became an alias if we had changed it
   if (bAliasBecomingNormal) {
-  if (bTemporaryChangeOfPWH) {
-    sxPWH[0] = L'1';
+    if (bTemporaryChangeOfPWH) {
+      sxPWH[0] = L'1';
     }
     pcmd = UpdateEntryCommand::Create(pcore, ci_new,
                                       CItemData::PWHIST,
@@ -1541,7 +1550,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   // Reselect entry, where-ever it may be
   iter = m_core.Find(original_uuid);
   if (iter != End()) {
-    DisplayInfo *pnew_di = (DisplayInfo *)iter->second.GetDisplayInfo();
+    DisplayInfo *pnew_di = GetEntryGUIInfo(iter->second);
     SelectEntry(pnew_di->list_index);
   }
 }
@@ -1564,7 +1573,7 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
   pws_os::CUUID entryuuid = ci_original.GetUUID();
 
   // Determine if last entry in this group just in case the user changes the group
-  DisplayInfo *pdi = (DisplayInfo *)ci_original.GetDisplayInfo();
+  DisplayInfo *pdi = GetEntryGUIInfo(ci_original);
   bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
                     (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
 
@@ -1631,8 +1640,8 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
     Execute(pmulticmds, pcore);
 
     // DisplayInfo's copied and changed, get up-to-date version
-    DisplayInfo *pnew_di = static_cast<DisplayInfo *>
-         (pcore->GetEntry(pcore->Find(ci_original.GetUUID())).GetDisplayInfo());
+    CItemData &cidp = pcore->GetEntry(pcore->Find(ci_original.GetUUID()));
+    DisplayInfo *pnew_di = GetEntryGUIInfo(cidp);
     rc = SelectEntry(pnew_di->list_index);
 
     if (rc == 0) {
@@ -1655,8 +1664,7 @@ void DboxMain::OnDuplicateEntry()
   if (SelItemOk() == TRUE) {
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
-    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-    ASSERT(pdi != NULL);
+    DisplayInfo *pdi = GetEntryGUIInfo(*pci);
 
     // Get information from current selected entry
     const StringX ci2_group = pci->GetGroup();
@@ -1677,7 +1685,6 @@ void DboxMain::OnDuplicateEntry()
 
     // Set up new entry
     CItemData ci2(*pci);
-    ci2.SetDisplayInfo(NULL);
     ci2.CreateUUID();
     ci2.SetGroup(ci2_group);
     ci2.SetTitle(ci2_title);
@@ -1709,7 +1716,9 @@ void DboxMain::OnDuplicateEntry()
 
     Execute(AddEntryCommand::Create(&m_core, ci2, baseUUID));
 
-    pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
+    // so that InsertItemIntoGUITreeList will set new values
+    pdi->list_index = -1;
+    pdi->tree_item = 0;
 
     ItemListIter iter = m_core.Find(ci2.GetUUID());
     ASSERT(iter != m_core.GetEntryEndIter());
@@ -2051,7 +2060,7 @@ void DboxMain::OnGotoBaseEntry()
 
     const CItemData *pbci = GetBaseEntry(pci);
     if (pbci != NULL) {
-      DisplayInfo *pdi = (DisplayInfo *)pbci->GetDisplayInfo();
+      DisplayInfo *pdi = GetEntryGUIInfo(*pbci);
       SelectEntry(pdi->list_index);
       UpdateAccessTime(pci->GetUUID());
     }
@@ -2068,7 +2077,7 @@ void DboxMain::OnEditBaseEntry()
     CItemData *pbci = GetBaseEntry(pci);
     if (pbci != NULL) {
       const pws_os::CUUID uuid = pbci->GetUUID();
-      DisplayInfo *pdi = (DisplayInfo *)pbci->GetDisplayInfo();
+      DisplayInfo *pdi = GetEntryGUIInfo(*pbci);
       SelectEntry(pdi->list_index);
       EditItem(pbci);
       UpdateAccessTime(uuid);

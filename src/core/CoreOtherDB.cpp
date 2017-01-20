@@ -990,7 +990,6 @@ void PWScore::Synchronize(PWScore *pothercore,
         continue;
 
       CItemData updItem(curItem);
-      updItem.SetDisplayInfo(NULL);
 
       if (curItem.GetUUID() != otherItem.GetUUID()) {
         pws_os::Trace(_T("Synchronize: Mis-match UUIDs for [%ls:%ls:%ls]\n"),
@@ -1023,7 +1022,6 @@ void PWScore::Synchronize(PWScore *pothercore,
       if (!bUpdated)
         continue;
 
-      GUISetupDisplayInfo(updItem);
       updItem.SetStatus(CItemData::ES_MODIFIED);
 
       StringX sx_updated;
