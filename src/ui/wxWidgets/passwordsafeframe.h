@@ -187,8 +187,6 @@ public:
     // UIinterface concrete methods:
     virtual void DatabaseModified(bool bChanged);
 
-    virtual void GUISetupDisplayInfo(CItemData &) {}
-
     virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                            const pws_os::CUUID &entry_uuid,
                            CItemData::FieldType ft = CItemData::START,
