@@ -79,7 +79,7 @@ struct DisplayInfo {
   HTREEITEM tree_item;
 
   DisplayInfo() :list_index(-1), tree_item(0) {}
-  virtual ~DisplayInfo() {}
+  ~DisplayInfo() {}
 
   DisplayInfo(const DisplayInfo &that)
     : list_index(that.list_index), tree_item(that.tree_item)
@@ -420,10 +420,10 @@ public:
   PWPolicy m_pwp;
 
   // Get link between entry and GUI
-  DisplayInfo * GetEntryGUIInfo(const CItemData &ci, const bool bAllowFail = false);
+  DisplayInfo *GetEntryGUIInfo(const CItemData &ci, bool bAllowFail = false);
 
   // Mapping Group to Tree Item to save searching all the time!
-  // Be nice to have a bimap implementation
+  // Be nice to have a bitmap implementation
   std::map<StringX, HTREEITEM> m_mapGroupToTreeItem;
   std::map<HTREEITEM, StringX> m_mapTreeItemToGroup;
   void GetAllGroups(std::vector<std::wstring> &vGroups) const;
@@ -433,9 +433,9 @@ public:
   bool CheckPreTranslateRename(MSG* pMsg);
   bool CheckPreTranslateAutoType(MSG* pMsg);
 
-  void SetSetup() {m_bSetup = true;}                     // called by app when '--setup' passed
-  void NoValidation() {m_bNoValidation = true;}          // called by app when '--novalidate' passed
-  void AllowCompareEntries() {m_bCompareEntries = true;} // called by app when '--cetreeview' passed
+  void SetSetup() {m_bSetup = true;}                     // called when '--setup' passed
+  void NoValidation() {m_bNoValidation = true;}          // called when '--novalidate' passed
+  void AllowCompareEntries() {m_bCompareEntries = true;} // called when '--cetreeview' passed
 
   // Needed public function for ComapreResultsDialog
   void CPRInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
@@ -827,7 +827,8 @@ private:
   std::map<pws_os::CUUID, DisplayInfo, std::less<pws_os::CUUID> > m_MapEntryToGUI;
   
   // Set link between entry and GUI
-  void SetEntryGUIInfo(const CItemData &ci, DisplayInfo &di);
+  void SetEntryGUIInfo(const CItemData &ci, const DisplayInfo &di)
+  { m_MapEntryToGUI[ci.GetUUID()] = di; } // often used to update, so map::insert() is inappropriate
 
   // Used in SaveGUIStatus to remember position during rename group - set by CPWTreeCtrl
   StringX m_sxNewPath;
@@ -1025,22 +1026,16 @@ private:
   std::stack<st_SaveGUIInfo> m_stkSaveGUIInfo;
 };
 
-inline DisplayInfo * DboxMain::GetEntryGUIInfo(const CItemData &ci, const bool bAllowFail)
+inline DisplayInfo *DboxMain::GetEntryGUIInfo(const CItemData &ci,
+                                              bool bAllowFail)
 {
-  std::map<pws_os::CUUID, DisplayInfo, std::less<pws_os::CUUID> >::iterator E2G_iter;
-
-  E2G_iter = m_MapEntryToGUI.find(ci.GetUUID());
+  auto E2G_iter = m_MapEntryToGUI.find(ci.GetUUID());
   if (E2G_iter != m_MapEntryToGUI.end()) {
     return &E2G_iter->second;
   }
 
   if (!bAllowFail) {
-    ASSERT(0);
+    ASSERT(0); // caller expected the find to succeed
   }
   return nullptr;  
-}
-
-inline void DboxMain::SetEntryGUIInfo(const CItemData &ci, DisplayInfo &di)
-{
-  m_MapEntryToGUI[ci.GetUUID()] = di;
 }

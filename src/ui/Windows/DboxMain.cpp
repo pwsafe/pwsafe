@@ -1365,7 +1365,7 @@ void DboxMain::DoCommand(Command *pcmd, PWScore *pcore, const bool bUndo)
   StringX sxOldPath(L""), sxNewPath(L"");
   if (typeid(*pcommand) == typeid(MultiCommands)) {
     Command *pRGcmd = 
-      dynamic_cast<MultiCommands *>(pcommand)->SearchForCommand(typeid(RenameGroupCommand));
+      dynamic_cast<MultiCommands *>(pcommand)->FindCommand(typeid(RenameGroupCommand));
     if (pRGcmd != NULL) {
       ASSERT(dynamic_cast<RenameGroupCommand *>(pRGcmd) != NULL);
       dynamic_cast<RenameGroupCommand *>(pRGcmd)->GetPaths(sxOldPath, sxNewPath);

@@ -462,7 +462,7 @@ public:
   int Execute();
   void Undo();
 
-  void GetPaths(StringX &sxOldPath, StringX &sxNewPath)
+  void GetPaths(StringX &sxOldPath, StringX &sxNewPath) const
   { sxOldPath = m_sxOldPath; sxNewPath = m_sxNewPath; }
 
 private:
@@ -523,7 +523,7 @@ public:
   bool IsEmpty() const { return m_vpcmds.empty(); }
   void SetNested() { SetInMultiCommand(); }
 
-  Command * SearchForCommand(const type_info &ti);
+  Command *FindCommand(const type_info &ti);
 
  private:
   MultiCommands(CommandInterface *pcomInt);
