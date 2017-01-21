@@ -240,9 +240,9 @@ void DboxMain::UpdateGUIDisplay()
   UpdateMenuAndToolBar(m_bOpen);
 }
 
-void DboxMain::GUIRefreshEntry(const CItemData &ci)
+void DboxMain::GUIRefreshEntry(const CItemData &ci, bool bAllowFail)
 {
-  UpdateEntryImages(ci);
+  UpdateEntryImages(ci, bAllowFail);
 }
 
 void DboxMain::UpdateWizard(const std::wstring &s)
@@ -4101,9 +4101,12 @@ void DboxMain::SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEnt
   }
 }
 
-void DboxMain::UpdateEntryImages(const CItemData &ci)
+void DboxMain::UpdateEntryImages(const CItemData &ci, bool bAllowFail)
 {
-  DisplayInfo *pdi = GetEntryGUIInfo(ci);
+  DisplayInfo *pdi = GetEntryGUIInfo(ci, bAllowFail);
+  if (pdi == NULL)
+    return;
+
   if (ci.GetStatus() != CItemData::ES_DELETED) {
     int nImage = GetEntryImage(ci);
     SetEntryImage(pdi->list_index, nImage, true);
@@ -4111,6 +4114,8 @@ void DboxMain::UpdateEntryImages(const CItemData &ci)
   } else { // deleted item, remove from display
     m_ctlItemList.DeleteItem(pdi->list_index);
     m_ctlItemTree.DeleteItem(pdi->tree_item);
+    size_t i = m_MapEntryToGUI.erase(ci.GetUUID());
+    ASSERT(i == 1);
   }
 }
 

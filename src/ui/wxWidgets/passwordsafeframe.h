@@ -194,7 +194,7 @@ public:
     virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                            const std::vector<StringX> &vGroups);
 
-    virtual void GUIRefreshEntry(const CItemData &ci);
+    virtual void GUIRefreshEntry(const CItemData &ci, bool bAllowFail = false);
 
     virtual void UpdateWizard(const stringT &s);
 

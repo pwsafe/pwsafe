@@ -339,10 +339,11 @@ void PWScore::DoDeleteEntry(const CItemData &item)
                     m_base2shortcuts_mmap.upper_bound(entry_uuid));
       for (ItemMMapIter iter = deps.begin(); iter != deps.end(); iter++) {
         CItemData depItem = Find(iter->second)->second;
-        DoDeleteEntry(depItem);
         // Set deleted for GUIRefreshEntry() which will remove from display
         depItem.SetStatus(CItemData::ES_DELETED);
         GUIRefreshEntry(depItem);
+        
+        DoDeleteEntry(depItem);
       }
     }
 
@@ -2648,7 +2649,10 @@ void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid,
     ItemListIter iter = m_pwlist.find(base_uuid);
     if (iter != m_pwlist.end()) {
       iter->second.SetNormal();
-      GUIRefreshEntry(iter->second);
+
+      // If base was being deleted, it might have been removed from the GUI
+      // before we get here dealing with its last dependent
+      GUIRefreshEntry(iter->second, true);
     }
   }
 }
@@ -3187,13 +3191,13 @@ void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
     m_pUIIF->UpdateGUI(ga, vGroups);
 }
 
-void PWScore::GUIRefreshEntry(const CItemData &ci)
+void PWScore::GUIRefreshEntry(const CItemData &ci, bool bAllowFail)
 {
   // This allows the core to provide feedback to the UI that a particular
   // entry has been modified
   if (m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::GUIREFRESHENTRY))
-    m_pUIIF->GUIRefreshEntry(ci);
+    m_pUIIF->GUIRefreshEntry(ci, bAllowFail);
 }
 
 void PWScore::UpdateWizard(const stringT &s)

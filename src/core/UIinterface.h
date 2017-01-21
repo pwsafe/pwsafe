@@ -61,7 +61,7 @@ public:
 
   // GUIRefreshEntry: called when the entry's graphic representation
   // may have changed - GUI should update and invalidate its display.
-  virtual void GUIRefreshEntry(const CItemData &ci) = 0;
+  virtual void GUIRefreshEntry(const CItemData &ci, bool bAllowFail = false) = 0;
 
   // UpdateWizard: called to update text in Wizard during export Text/XML.
   virtual void UpdateWizard(const stringT &s) = 0;

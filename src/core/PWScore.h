@@ -381,7 +381,7 @@ public:
   bool GetDBNotificationState()
   {return m_bNotifyDB;}
 
-  void GUIRefreshEntry(const CItemData &ci);
+  void GUIRefreshEntry(const CItemData &ci, bool bAllowFail = false);
   void UpdateWizard(const stringT &s);
 
   // Get/Set Display information from/to database

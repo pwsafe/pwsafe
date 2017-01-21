@@ -283,7 +283,7 @@ public:
   HICON GetEntryIcon(const int nImage) const;
   void SetEntryImage(const int &index, const int nImage, const bool bOneEntry = false);
   void SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry = false);
-  void UpdateEntryImages(const CItemData &ci);
+  void UpdateEntryImages(const CItemData &ci, bool bAllowFail = false);
 
   void RefreshImages();
   void CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
@@ -784,7 +784,7 @@ private:
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                          const std::vector<StringX> &vGroups);
   
-  virtual void GUIRefreshEntry(const CItemData &ci);
+  virtual void GUIRefreshEntry(const CItemData &ci, bool bAllowFail = false);
   virtual void UpdateWizard(const std::wstring &s);
 
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
