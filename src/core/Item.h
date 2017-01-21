@@ -43,14 +43,6 @@
 
 class BlowFish;
 
-struct DisplayInfoBase
-{
-  // Following used by display methods of the GUI
-  DisplayInfoBase() {}
-  virtual ~DisplayInfoBase() {}
-  virtual DisplayInfoBase *clone() const = 0; // virtual c'tor idiom
-};
-
 class CItem
 {
 public:
@@ -139,9 +131,6 @@ public:
   size_t NumberUnknownFields() const {return m_URFL.size();}
 
   CItem& operator=(const CItem& second);
-  // Following used by display methods - we just keep it handy
-  DisplayInfoBase *GetDisplayInfo() const {return m_display_info;}
-  void SetDisplayInfo(DisplayInfoBase *di) {delete m_display_info; m_display_info = di;}
   void Clear();
   void ClearField(int ft) {m_fields.erase(ft);}
 
@@ -195,9 +184,6 @@ private:
   // than the BlowFish object for copy c'tor and assignment
   unsigned char m_key[32];
   mutable BlowFish *m_blowfish = nullptr;
-
-  // Following used by display methods - we just keep it handy
-  DisplayInfoBase *m_display_info = nullptr;
 };
 
 #endif /* __ITEM_H */

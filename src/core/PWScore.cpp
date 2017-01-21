@@ -959,7 +959,6 @@ void PWScore::Redo()
     m_redo_iter++;
     m_redo_DBState_iter++;
   }
-
   
   // If user has set Save Immediately, then Redo changes the DB and it should be
   // saved (with or without an intermediate backup)
@@ -967,6 +966,18 @@ void PWScore::Redo()
 
   // Then tell the UI update the GUI
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUID::NullUUID());
+}
+
+Command * PWScore::GetRedoCommand()
+{
+  ASSERT(m_redo_iter != m_vpcommands.end());
+  return *m_redo_iter;
+}
+
+Command * PWScore::GetUndoCommand()
+{
+  ASSERT(m_undo_iter != m_vpcommands.end());
+  return *m_undo_iter;
 }
 
 bool PWScore::AnyToUndo() const
@@ -3174,14 +3185,6 @@ void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
   if (m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::UPDATEGUIGROUPS))
     m_pUIIF->UpdateGUI(ga, vGroups);
-}
-
-void PWScore::GUISetupDisplayInfo(CItemData &ci)
-{
-  // This allows the core to provide feedback to the UI that ???
-  if (m_pUIIF != NULL &&
-      m_bsSupportedFunctions.test(UIInterFace::GUISETUPDISPLAYINFO))
-    m_pUIIF->GUISetupDisplayInfo(ci);
 }
 
 void PWScore::GUIRefreshEntry(const CItemData &ci)

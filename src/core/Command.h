@@ -23,6 +23,7 @@ class CommandInterface;
 
 #include <map>
 #include <vector>
+#include <typeinfo>
 
 /**
  * Command-derived classes are used to support undo/redo.
@@ -461,6 +462,9 @@ public:
   int Execute();
   void Undo();
 
+  void GetPaths(StringX &sxOldPath, StringX &sxNewPath) const
+  { sxOldPath = m_sxOldPath; sxNewPath = m_sxNewPath; }
+
 private:
   RenameGroupCommand(CommandInterface *pcomInt,
                      StringX sxOldPath, StringX sxNewPath);
@@ -518,6 +522,8 @@ public:
   std::size_t GetSize() const {return m_vpcmds.size();}
   bool IsEmpty() const { return m_vpcmds.empty(); }
   void SetNested() { SetInMultiCommand(); }
+
+  Command *FindCommand(const type_info &ti);
 
  private:
   MultiCommands(CommandInterface *pcomInt);

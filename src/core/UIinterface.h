@@ -36,7 +36,7 @@ public:
    * DO NOT change the order of the functions as UIs will fail
    */
   enum Functions {
-    DATABASEMODIFIED = 0, UPDATEGUI, GUISETUPDISPLAYINFO, GUIREFRESHENTRY,
+    DATABASEMODIFIED = 0, UPDATEGUI, GUIREFRESHENTRY,
     UPDATEWIZARD, UPDATEGUIGROUPS,
     NUM_SUPPORTED};
 
@@ -58,9 +58,6 @@ public:
   // Version for groups
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                          const std::vector<StringX> &vGroups) = 0;
-
-  // GUISetupDisplayInfo: let GUI populate DisplayInfo field in an entry
-  virtual void GUISetupDisplayInfo(CItemData &ci) = 0;
 
   // GUIRefreshEntry: called when the entry's graphic representation
   // may have changed - GUI should update and invalidate its display.

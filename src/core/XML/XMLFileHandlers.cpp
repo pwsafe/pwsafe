@@ -964,7 +964,7 @@ void XMLFileHandlers::AddXMLEntries()
         m_numShortcutsRemoved++;
       }
     }
-    m_pXMLcore->GUISetupDisplayInfo(ci_temp);
+
     Command *pcmd = AddEntryCommand::Create(m_pXMLcore, ci_temp);
     pcmd->SetNoGUINotify();
     m_pmulticmds->Add(pcmd);

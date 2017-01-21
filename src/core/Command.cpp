@@ -110,11 +110,23 @@ MultiCommands::MultiCommands(CommandInterface *pcomInt)
 
 MultiCommands::~MultiCommands()
 {
-  std::vector<Command *>::iterator cmd_Iter;
+  for_each(m_vpcmds.begin(), m_vpcmds.end(),
+           [] (Command *pcmd) {delete pcmd;});
+}
 
-  for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
-    delete (*cmd_Iter);
-  }
+Command *MultiCommands::FindCommand(const type_info &ti)
+{
+  // Initial implementation - search for first command of a specific class
+  // in a MultiCommand.  Could be enhanced to return a vector of commands
+  // if all commands of a specific class are required.
+
+  auto retval = find_if(m_vpcmds.begin(), m_vpcmds.end(),
+                        [&ti] (Command *pcmd) {
+                          return typeid(*pcmd) == ti;
+                        }
+                        );
+
+  return (retval != m_vpcmds.end()) ? *retval : nullptr;
 }
 
 int MultiCommands::Execute()

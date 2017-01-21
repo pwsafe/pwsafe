@@ -413,7 +413,6 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
 
     // Set up new entry
     CItemData ci2(*pci);
-    ci2.SetDisplayInfo(NULL);
     ci2.CreateUUID();
     ci2.SetGroup(ci2_group);
     ci2.SetTitle(ci2_title);

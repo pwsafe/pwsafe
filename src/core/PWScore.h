@@ -314,6 +314,8 @@ public:
   void ClearCommands();  // This should be private to prevent UI calling directly but called by coretest
   bool AnyToUndo() const;
   bool AnyToRedo() const;
+  Command * GetRedoCommand();
+  Command * GetUndoCommand();
 
   // Find in m_pwlist by group, title and user name, exact match
   ItemListIter Find(const StringX &a_group,
@@ -379,7 +381,6 @@ public:
   bool GetDBNotificationState()
   {return m_bNotifyDB;}
 
-  void GUISetupDisplayInfo(CItemData &ci);
   void GUIRefreshEntry(const CItemData &ci);
   void UpdateWizard(const stringT &s);
 

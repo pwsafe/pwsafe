@@ -1085,7 +1085,6 @@ BOOL ThisMfcApp::InitInstance()
   std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions;
   bsSupportedFunctions.set(UIInterFace::DATABASEMODIFIED);
   bsSupportedFunctions.set(UIInterFace::UPDATEGUI);
-  bsSupportedFunctions.set(UIInterFace::GUISETUPDISPLAYINFO);
   bsSupportedFunctions.set(UIInterFace::GUIREFRESHENTRY);
   bsSupportedFunctions.set(UIInterFace::UPDATEWIZARD);
   bsSupportedFunctions.set(UIInterFace::UPDATEGUIGROUPS);

@@ -779,8 +779,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
     ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = L'\0';
 
     // update corresponding List mode text - but  only those visible in Tree
-    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-    ASSERT(pdi != NULL);
+    DisplayInfo *pdi = app.GetMainDlg()->GetEntryGUIInfo(*pci);
     int lindex = pdi->list_index;
 
     if (sxNewTitle != pci->GetTitle()) {
@@ -1148,8 +1147,7 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
   if (itemData != 0) { // Non-NULL itemData implies Leaf
     CItemData *pci = (CItemData *)itemData;
 
-    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-    ASSERT(pdi != NULL);
+    DisplayInfo *pdi = app.GetMainDlg()->GetEntryGUIInfo(*pci);
     ASSERT(pdi->list_index >= 0);
 
     // Update Group
@@ -1295,7 +1293,6 @@ bool CPWTreeCtrl::CopyItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
     ci_temp.CreateUUID(); // Copy needs its own UUID
     ci_temp.SetGroup(sNewPath);
     ci_temp.SetTitle(ci_title);
-    ci_temp.SetDisplayInfo(new DisplayInfo);
 
     CItemData::EntryType temp_et = ci_temp.GetEntryType();
     switch (temp_et) {
