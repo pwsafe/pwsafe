@@ -662,7 +662,7 @@ void DeleteEntryCommand::Undo()
         pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this));
       }
     } else {
-      pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this));
+      pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetUUID(), &m_att, this));
 
       if (m_ci.IsShortcutBase()) { // restore dependents
         for (std::vector<CItemData>::iterator iter = m_dependents.begin();
