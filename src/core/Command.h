@@ -269,7 +269,7 @@ private:
   const CItemData m_ci;
   CItemAtt m_att;
   pws_os::CUUID m_base_uuid; // for undo of shortcut or alias deletion
-  std::vector<CItemData> m_dependents; // for undo of base deletion
+  std::vector<CItemData> m_vdependents; // for undo of base deletion
 };
 
 class EditEntryCommand : public Command

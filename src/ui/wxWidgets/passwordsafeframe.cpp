@@ -2148,8 +2148,10 @@ void PasswordSafeFrame::RefreshEntryPasswordInGUI(const CItemData& item)
   }
 }
 
-void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item)
+void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item, bool bAllowFail)
 {
+  UNREFERENCED_PARAMETER(bAllowFail);
+
   if (item.GetStatus() ==CItemData::ES_DELETED) {
     uuid_array_t uuid;
     item.GetUUID(uuid);

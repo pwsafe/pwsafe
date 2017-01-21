@@ -570,7 +570,7 @@ void AddEntryCommand::Undo()
 
 DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
                                        const CItemData &ci, const Command *pcmd)
-  : Command(pcomInt), m_ci(ci), m_dependents(0)
+  : Command(pcomInt), m_ci(ci)
 {
   m_CommandChangeType = DB;
 
@@ -604,7 +604,7 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
         ItemListIter itemIter = pcomInt->Find(dep_uuid);
         ASSERT(itemIter != pcomInt->GetEntryEndIter());
         if (itemIter != pcomInt->GetEntryEndIter())
-          m_dependents.push_back(itemIter->second);
+          m_vdependents.push_back(itemIter->second);
       } // for all dependents
     } // IsBase
   } // !IsNormal
@@ -662,19 +662,19 @@ void DeleteEntryCommand::Undo()
         pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this));
       }
     } else {
-      pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this));
+      pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetUUID(), &m_att, this));
 
       if (m_ci.IsShortcutBase()) { // restore dependents
-        for (std::vector<CItemData>::iterator iter = m_dependents.begin();
-             iter != m_dependents.end(); iter++) {
+        for (std::vector<CItemData>::iterator iter = m_vdependents.begin();
+             iter != m_vdependents.end(); iter++) {
           pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL));
         }
       } else if (m_ci.IsAliasBase()) {
         // Undeleting an alias base means making all the dependents refer to the alias
         // again. Perhaps the easiest approach is to delete the existing entries
         // and create new aliases.
-        for (std::vector<CItemData>::iterator iter = m_dependents.begin();
-             iter != m_dependents.end(); iter++) {
+        for (std::vector<CItemData>::iterator iter = m_vdependents.begin();
+             iter != m_vdependents.end(); iter++) {
           // Need to check that alias still exists - could have been deleted in group along with item
           // being undone, in which case it will be added separately
           if (m_pcomInt->Find(iter->GetUUID()) == m_pcomInt->GetEntryEndIter())
