@@ -986,16 +986,22 @@ void DboxMain::Delete(MultiCommands *pmcmd)
 
     bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
                       (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
-    // Now delete single entry
-    pmcmd->Add(Delete(pci));
 
-    // Check if last entry in group and if so - add group to empty groups
-    if (bLastEntry) {
-      StringX sxGroup = pci->GetGroup();
-      if (!sxGroup.empty()) {
-        // Only add group if not root
-        pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxGroup,
-          DBEmptyGroupsCommand::EG_ADD));
+    // Now delete single entry
+    Command *pcmd = Delete(pci);
+
+    // pcmd can by NULL if user says No to confirm delete of a base entry!
+    if (pcmd != NULL) {
+      pmcmd->Add(pcmd);
+
+      // Check if last entry in group and if so - add group to empty groups
+      if (bLastEntry) {
+        StringX sxGroup = pci->GetGroup();
+        if (!sxGroup.empty()) {
+          // Only add group if not root
+          pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxGroup,
+            DBEmptyGroupsCommand::EG_ADD));
+        }
       }
     }
   } else
