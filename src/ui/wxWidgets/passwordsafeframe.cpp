@@ -2035,8 +2035,7 @@ void PasswordSafeFrame::RefreshViews()
 
 void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
                                   const CUUID &entry_uuid,
-                                  CItemData::FieldType ft,
-                                  bool bUpdateGUI)
+                                  CItemData::FieldType ft)
 {
   // Callback from PWScore if GUI needs updating
   // Note: For some values of 'ga', 'ci' & ft are invalid and not used.
@@ -2047,7 +2046,6 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
 
   // TODO: bUpdateGUI processing in PasswordSafeFrame::UpdateGUI
   UNREFERENCED_PARAMETER(ft);
-  UNREFERENCED_PARAMETER(bUpdateGUI);
 
   CItemData *pci(NULL);
 

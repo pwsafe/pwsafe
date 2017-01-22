@@ -52,8 +52,7 @@ public:
   // and the entry/entries needs refreshing in GUI:
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                          const pws_os::CUUID &entry_uuid,
-                         CItemData::FieldType ft = CItemData::START,
-                         bool bUpdateGUI = true) = 0;
+                         CItemData::FieldType ft = CItemData::START) = 0;
 
   // Version for groups
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,

@@ -80,8 +80,7 @@ class CommandInterface {
 
   virtual void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action,
                                       const pws_os::CUUID &,
-                                      CItemData::FieldType ft = CItemData::START,
-                                      bool bUpdateGUI = true) = 0;
+                                      CItemData::FieldType ft = CItemData::START) = 0;
   virtual void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
                                       const std::vector<StringX> &vGroups) = 0;
 

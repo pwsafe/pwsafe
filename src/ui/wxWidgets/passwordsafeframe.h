@@ -189,8 +189,7 @@ public:
 
     virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                            const pws_os::CUUID &entry_uuid,
-                           CItemData::FieldType ft = CItemData::START,
-                           bool bUpdateGUI = true);
+                           CItemData::FieldType ft = CItemData::START);
     virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                            const std::vector<StringX> &vGroups);
 

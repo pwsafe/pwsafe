@@ -152,7 +152,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
-  m_bFindToolBarVisibleAtLock(false)
+  m_bFindToolBarVisibleAtLock(false), m_bSuspendGUIUpdates(false), m_iNeedRefresh(NONE)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::LOAD_LIBRARY_SYS));
@@ -1348,6 +1348,22 @@ void DboxMain::DoCommand(Command *pcmd, PWScore *pcore, const bool bUndo)
   // If pcmd == NULL and bUndo == true  then Undo
   // If pcmd == NULL and bUndo == false then Redo
 
+  BOOL bLocked(FALSE);
+  m_iNeedRefresh = NONE;
+
+  if (!m_bSuspendGUIUpdates) {
+    m_ctlItemList.SetRedraw(FALSE);
+    m_ctlItemTree.SetRedraw(FALSE);
+
+    // Can only lock one Window at a time - pick the one currently visible
+    if (m_ctlItemList.IsWindowVisible())
+      bLocked =m_ctlItemList.LockWindowUpdate();
+    else
+      bLocked = m_ctlItemTree.LockWindowUpdate();
+
+    m_bSuspendGUIUpdates = true;
+  }
+
   if (pcore == NULL)
     pcore = &m_core;
 
@@ -1404,6 +1420,26 @@ void DboxMain::DoCommand(Command *pcmd, PWScore *pcore, const bool bUndo)
       (CurrentFilter() == m_FilterManager.GetExpireFilter() ||
        CurrentFilter() == m_FilterManager.GetUnsavedFilter())) {
     OnCancelFilter();
+  }
+
+  if (m_bSuspendGUIUpdates) {
+    // Now unlock Window updates
+    if (bLocked) {
+      if (m_ctlItemList.IsWindowVisible())
+        m_ctlItemList.UnlockWindowUpdate();
+      else
+        m_ctlItemTree.UnlockWindowUpdate();
+    }
+
+    m_ctlItemList.SetRedraw(TRUE);
+    m_ctlItemTree.SetRedraw(TRUE);
+
+    m_bSuspendGUIUpdates = false;
+  }
+
+  if (m_iNeedRefresh != NONE) {
+    RefreshViews(m_iNeedRefresh);
+    m_iNeedRefresh = NONE;
   }
 
   RestoreGUIStatus();
