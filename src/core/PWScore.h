@@ -606,8 +606,7 @@ private:
   std::bitset<UIInterFace::NUM_SUPPORTED> m_bsSupportedFunctions;
   
   void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action, const pws_os::CUUID &,
-                              CItemData::FieldType ft = CItemData::START,
-                              bool bUpdateGUI = true);
+                              CItemData::FieldType ft = CItemData::START);
 
   // Version for groups
   void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,

@@ -3171,14 +3171,13 @@ void PWScore::NotifyDBModified()
 
 void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
                                      const CUUID &entry_uuid,
-                                     CItemData::FieldType ft,
-                                     bool bUpdateGUI)
+                                     CItemData::FieldType ft)
 {
   // This allows the core to provide feedback to the UI that the GUI needs
   // updating due to a field having its value changed
   if (m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::UPDATEGUI))
-    m_pUIIF->UpdateGUI(ga, entry_uuid, ft, bUpdateGUI);
+    m_pUIIF->UpdateGUI(ga, entry_uuid, ft);
 }
 
 void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,

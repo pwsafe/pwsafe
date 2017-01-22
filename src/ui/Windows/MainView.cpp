@@ -126,15 +126,10 @@ void DboxMain::BlockLogoffShutdown(const bool bChanged)
 }
 
 void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga, 
-                         const CUUID &entry_uuid, CItemData::FieldType ft,
-                         bool bUpdateGUI)
+                         const CUUID &entry_uuid, CItemData::FieldType ft)
 {
   // Callback from PWScore if GUI needs updating
   // Note: For some values of 'ga', 'entry_uuid' & ft are invalid and not used.
- 
-  // "bUpdateGUI" is only used by GUI_DELETE_ENTRY when called as part
-  // of the Edit Entry Command where the entry is deleted and then added and
-  // the GUI should not be updated until after the Add.
   CItemData *pci(NULL);
 
   ItemListIter pos = Find(entry_uuid);
@@ -158,7 +153,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       break;
     case UpdateGUICommand::GUI_DELETE_ENTRY:
       ASSERT(pci != NULL);
-      RemoveFromGUI(*pci, bUpdateGUI);
+      RemoveFromGUI(*pci);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
       // Only used when group, title, username or password changed via in place
@@ -1239,7 +1234,17 @@ void DboxMain::RefreshViews(const ViewType iView)
 {
   PWS_LOGIT_ARGS("iView=%d", iView);
 
-  if (!m_bInitDone)
+  if (iView == NONE)
+    return;
+
+  // Remember if we need a refresh later
+  // Luckily ViewType values are bitwise compaptible i.e.
+  //   LISTONLY = 0x01, TREEONLY = 0x10, BOTHVIEWS = 0x11
+  // Pity no |= operator for non-scoped enum
+  m_iNeedRefresh = (ViewType)((int)m_iNeedRefresh | (int)iView);
+
+  // Ignore if not yet initialised or we have suspended GUI updates
+  if (!m_bInitDone || m_bSuspendGUIUpdates)
     return;
 
   m_bNumPassedFiltering = 0;
@@ -4508,11 +4513,10 @@ void DboxMain::AddToGUI(CItemData &ci)
     FixListIndexes();
   }
 
-  // Potentially don't redraw as future refresh will do it if Find filter active
   RefreshViews(BOTHVIEWS);
 }
 
-void DboxMain::RemoveFromGUI(CItemData &ci, const bool bUpdateGUI)
+void DboxMain::RemoveFromGUI(CItemData &ci)
 {
   // RemoveFromGUI should always occur BEFORE the entry is deleted!
   // Note: Also called if a filter is active and an entry is changed and no longer
@@ -4531,11 +4535,11 @@ void DboxMain::RemoveFromGUI(CItemData &ci, const bool bUpdateGUI)
   if (pdi != NULL) {
     ASSERT(pdi2->list_index == pdi->list_index &&
            pdi2->tree_item == pdi->tree_item);
-    if (bUpdateGUI) {
-      HTREEITEM hItem = m_ctlItemTree.GetNextItem(pdi->tree_item,
-                             TVGN_PREVIOUSVISIBLE);
-      m_ctlItemTree.SelectItem(hItem);
-    }
+
+    HTREEITEM hItem = m_ctlItemTree.GetNextItem(pdi->tree_item,
+                            TVGN_PREVIOUSVISIBLE);
+    m_ctlItemTree.SelectItem(hItem);
+
 
     m_ctlItemList.DeleteItem(pdi->list_index);
     m_ctlItemTree.DeleteWithParents(pdi->tree_item);
@@ -4554,10 +4558,8 @@ void DboxMain::RemoveFromGUI(CItemData &ci, const bool bUpdateGUI)
     ASSERT(num == 1);
 
     FixListIndexes(); // sucks, as make M deletions an NxM operation
-    if (bUpdateGUI) { // Make controls redraw
-      m_ctlItemList.Invalidate();
-      m_ctlItemTree.Invalidate();
-    }
+    m_ctlItemList.Invalidate();
+    m_ctlItemTree.Invalidate();
   }
 }
 
@@ -4685,7 +4687,7 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
       DisplayInfo *pdi = GetEntryGUIInfo(*pci, true);
       ASSERT(pdi != NULL && pdi->list_index == i);
       m_LUUIDSelectedAtMinimize = pci->GetUUID();
-    } // p != 0
+    } // pos != 0
 
     // Get first entry visible in CListCtrl
     int i = m_ctlItemList.GetTopIndex();

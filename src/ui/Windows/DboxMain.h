@@ -185,7 +185,7 @@ public:
 
   // For InsertItemIntoGUITreeList and RefreshViews (mainly when refreshing views)
   // Note: iBothViews = iListOnly + iTreeOnly
-  enum ViewType {LISTONLY = 1, TREEONLY = 2, BOTHVIEWS = 3};
+  enum ViewType { NONE = 0, LISTONLY = 1, TREEONLY = 2, BOTHVIEWS = 3 };
 
   void RefreshViews(const ViewType iView = BOTHVIEWS);
 
@@ -473,10 +473,16 @@ public:
   // used to speed up the resizable dialog so OnSize/SIZE_RESTORED isn't called
   bool m_bSizing;
   bool m_bIsRestoring;
+
+  // Is DB open
   bool m_bOpen;
+
+  // Other bool
   bool m_bInRestoreWindowsData;
   bool m_bUserDeclinedSave;
   bool m_bRestoredDBUnsaved;
+  bool m_bSuspendGUIUpdates;
+  ViewType m_iNeedRefresh;
 
   bool m_bSetup;          // invoked with '--setup'?
   bool m_bNoValidation;   // invoked with '--novalidate'?
@@ -779,7 +785,7 @@ private:
   virtual void DatabaseModified(bool bChanged);
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                          const pws_os::CUUID &entry_uuid,
-                         CItemData::FieldType ft, bool bUpdateGUI);
+                         CItemData::FieldType ft);
   // Version for groups
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                          const std::vector<StringX> &vGroups);
@@ -882,7 +888,7 @@ private:
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
   void CancelPendingPasswordDialog();
 
-  void RemoveFromGUI(CItemData &ci, const bool bUpdateGUI);
+  void RemoveFromGUI(CItemData &ci);
   void AddToGUI(CItemData &ci);
   void RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft);
   void RefreshEntryPasswordInGUI(CItemData &ci);
