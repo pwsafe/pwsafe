@@ -451,6 +451,7 @@ int CItemAtt::Read(PWSfile *in)
   delete[] utf8; // if here via goto exit
 
   if (numread > 0) {
+    m_offset = in->GetOffset();
     return status;
   } else
     return PWSfile::READ_FAIL;

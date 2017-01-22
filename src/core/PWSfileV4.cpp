@@ -390,7 +390,7 @@ int PWSfileV4::ReadRecord(CItemAtt &att)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V40);
-  if (unsigned(ftell(m_fd)) < m_effectiveFileLength)
+  if (unsigned(GetOffset()) < m_effectiveFileLength)
     return att.Read(this);
   else
     return END_OF_FILE;

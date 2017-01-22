@@ -126,6 +126,8 @@ public:
   int GetNumRecordsWithUnknownFields() const
   {return m_nRecordsWithUnknownFields;}
 
+  long GetOffset() const;
+  
   // Following implemented in V3 and later
   virtual uint32 GetNHashIters() const {return 0;}
   virtual void SetNHashIters(uint32 ) {}

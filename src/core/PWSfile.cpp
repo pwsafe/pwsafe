@@ -236,6 +236,13 @@ void PWSfile::SetUnknownHeaderFields(UnknownFieldList &UHFL)
     m_UHFL.clear();
 }
 
+long PWSfile::GetOffset() const
+{
+  long retval = ftell(m_fd);
+  ASSERT(ulong64(retval) <= pws_os::fileLength(m_fd));
+  return retval;
+}
+
 // Following for 'legacy' use of pwsafe as file encryptor/decryptor
 // this is for the undocumented 'command line file encryption'
 static const stringT CIPHERTEXT_SUFFIX(_S(".PSF"));
