@@ -1357,7 +1357,7 @@ void DboxMain::DoCommand(Command *pcmd, PWScore *pcore, const bool bUndo)
 
     // Can only lock one Window at a time - pick the one currently visible
     if (m_ctlItemList.IsWindowVisible())
-      bLocked =m_ctlItemList.LockWindowUpdate();
+      bLocked = m_ctlItemList.LockWindowUpdate();
     else
       bLocked = m_ctlItemTree.LockWindowUpdate();
 
