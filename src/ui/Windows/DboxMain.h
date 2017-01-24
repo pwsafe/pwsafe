@@ -447,7 +447,7 @@ public:
   const unsigned int GetMenuShortcut(const unsigned short int &siVirtKey,
                                      const unsigned char &cModifier, StringX &sxMenuItemName);
   
-  void ChangeMode(bool promptUser); // r-o <-> r/w
+  bool ChangeMode(bool promptUser); // r-o <-> r/w
 
   // If we have processed it returns 0 else 1
   BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers);
