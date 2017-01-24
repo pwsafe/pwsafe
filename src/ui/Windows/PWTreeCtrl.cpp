@@ -1855,13 +1855,18 @@ void CPWTreeCtrl::OnExpandAll()
   HTREEITEM hItem = this->GetRootItem();
   if (hItem == NULL)
     return;
-  SetRedraw(FALSE);
+
+  CWaitCursor wait;
+
+  //SetRedraw(FALSE);
   do {
-    Expand(hItem,TVE_EXPAND);
-    hItem = GetNextItem(hItem,TVGN_NEXTVISIBLE);
-  } while (hItem);
+    Expand(hItem, TVE_EXPAND);
+  } while ((hItem = GetNextItem(hItem, TVGN_NEXTVISIBLE)) != NULL);
+
   EnsureVisible(GetSelectedItem());
-  SetRedraw(TRUE);
+  //SetRedraw(TRUE);
+
+  wait.Restore();
 
   app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
@@ -1874,11 +1879,11 @@ void CPWTreeCtrl::OnCollapseAll()
   if (hItem == NULL)
     return;
 
-  SetRedraw(FALSE);
+  //SetRedraw(FALSE);
   do {
     CollapseBranch(hItem);
   } while((hItem = GetNextSiblingItem(hItem)) != NULL);
-  SetRedraw(TRUE);
+  //SetRedraw(TRUE);
 
   app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
