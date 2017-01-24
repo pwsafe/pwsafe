@@ -63,7 +63,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_filespec(a_filespec), m_orig_filespec(a_filespec),
   m_tries(0),
   m_status(TAR_INVALID),
-  m_PKE_ReadOnly((bReadOnly || bFileReadOnly) ? TRUE : FALSE),
+  m_btnReadOnly((bReadOnly || bFileReadOnly) ? TRUE : FALSE),
   m_bFileReadOnly(bFileReadOnly),
   m_bForceReadOnly(bForceReadOnly),
   m_bHideReadOnly(bHideReadOnly),
@@ -114,7 +114,7 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
   DDX_Text(pDX, IDC_SELECTED_DATABASE, m_SelectedDatabase);
-  DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
+  DDX_Check(pDX, IDC_READONLY, m_btnReadOnly);
   DDX_Control(pDX, IDOK, m_ctlOK);
   //}}AFX_DATA_MAP
 }
@@ -165,7 +165,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 
   CWnd *create_bn = GetDlgItem(IDC_CREATE_DB);
   if (create_bn) // not always there
-    create_bn->EnableWindow((m_bForceReadOnly || m_PKE_ReadOnly) ? FALSE : TRUE);
+    create_bn->EnableWindow((m_bForceReadOnly || m_btnReadOnly) ? FALSE : TRUE);
 
   // Only show virtual Keyboard menu if we can load DLL
   if (!CVKeyBoardDlg::IsOSKAvailable()) {
@@ -379,6 +379,8 @@ void CPasskeyEntry::OnOK()
     return;
   }
 
+  m_PKE_ReadOnly = m_btnReadOnly;
+
   ProcessPhrase();
 }
 
@@ -395,10 +397,16 @@ void CPasskeyEntry::ProcessPhrase()
     // r-o -> r/w may fail
     // Note that if file is read-only, m_bForceReadOnly is true -> checkbox
     // is disabled -> don't need to worry about that.
+    BOOL bIsRO = GetMainDlg()->IsDBReadOnly();
     if ((m_index == GCP_RESTORE || m_index == GCP_WITHEXIT) && 
-        (m_PKE_ReadOnly == TRUE) == pws_os::IsLockedFile(LPCWSTR(m_filespec))) {
-      GetMainDlg()->ChangeMode(false); // false means
-      //                           "don't prompt use for password", as we just got it.
+        (m_PKE_ReadOnly != bIsRO) && pws_os::IsLockedFile(LPCWSTR(m_filespec))) {
+      // false means "don't prompt use for password", as we just got it.
+      bool brc = GetMainDlg()->ChangeMode(false); 
+
+      // If user failed to change R/W status from bIsRO to m_PKE_ReadOnly
+      // reset local variable back to current DB state
+      if (!brc)
+        m_PKE_ReadOnly = bIsRO;
     }
     CPWDialog::OnOK();
     m_passkey = save_passkey;
@@ -444,7 +452,7 @@ void CPasskeyEntry::UpdateRO()
   if (!m_bForceReadOnly) {
     // If allowed, change R-O state to reflect file's permission - only if file is R-O
     if (pws_os::FileExists(LPCWSTR(m_filespec), m_bFileReadOnly) && m_bFileReadOnly) {
-      m_PKE_ReadOnly = TRUE;
+      m_btnReadOnly = TRUE;
       GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
       ((CButton *)GetDlgItem(IDC_READONLY))->SetCheck(BST_CHECKED);
     } else {
@@ -463,10 +471,10 @@ void CPasskeyEntry::OnComboEditChange()
 
 void CPasskeyEntry::OnBnClickedReadonly()
 {
-  m_PKE_ReadOnly = ((CButton *)GetDlgItem(IDC_READONLY))->GetCheck() == BST_CHECKED;
+  m_btnReadOnly = ((CButton *)GetDlgItem(IDC_READONLY))->GetCheck() == BST_CHECKED;
   CWnd *create_bn = GetDlgItem(IDC_CREATE_DB);
   if (create_bn) // not always there
-    create_bn->EnableWindow(!m_PKE_ReadOnly);
+    create_bn->EnableWindow(!m_btnReadOnly);
 }
 
 void CPasskeyEntry::OnComboSelChange()
@@ -541,7 +549,7 @@ void CPasskeyEntry::OnOpenFileBrowser()
       // Read-only checkbox only available up to Windows XP
       // In XP, the checkbox setting overrides the main dialog checkbox
       // but the user can then change it in the main dialog if they want
-      m_PKE_ReadOnly = fd.GetReadOnlyPref();
+      m_btnReadOnly = fd.GetReadOnlyPref();
     }
 
     m_filespec = fd.GetPathName();

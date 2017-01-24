@@ -1,4 +1,4 @@
-Password Safe 3.41.1 Release Notes ???????? 201?
+Password Safe 3.41.1 Release Notes ???????? 2017
 ================================================
 
 This note describes the new features, fixed bugs and known problems
@@ -17,6 +17,7 @@ Bugs fixed in 3.41.1
 ====================
 [] Fix issue when locking database when not using the System Tray.
 [] Fix empty group validation on DB open.
+[484] Correctly handle opening a locked database, which is open in R/W by another user.
 [1392] If the command line parameter '-g' is used to specify a configuration
 file by its relative path, PasswordSafe will now look for it in the same
 directory as the executable unless overridden by the PWS_PREFSDIR environment
