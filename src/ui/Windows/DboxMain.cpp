@@ -350,6 +350,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_NEW, OnNew)
   ON_COMMAND(ID_MENUITEM_OPEN, OnOpen)
   ON_COMMAND(ID_MENUITEM_CLOSE, OnClose)
+  ON_COMMAND(ID_MENUITEM_LOCK, OnTrayLockUnLock)
   ON_COMMAND(ID_MENUITEM_CLEAR_MRU, OnClearMRU)
   ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
   ON_COMMAND(ID_MENUITEM_SAVEAS, OnSaveAs)
@@ -566,6 +567,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_OPEN, true, true, true, true},
   {ID_MENUITEM_NEW, true, true, true, true},
   {ID_MENUITEM_CLOSE, true, true, true, false},
+  {ID_MENUITEM_LOCK, true, true, true, false},
   {ID_MENUITEM_SAVE, true, false, true, false},
   {ID_MENUITEM_SAVEAS, true, true, true, false},
   {ID_MENUITEM_CLEAR_MRU, true, true, true, true},
@@ -3424,6 +3426,10 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       //  don't give the user the option to change to R/W
       pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
       iEnable = (m_bOpen && m_core.GetReadFileVersion() >= PWSfile::VCURRENT && !bFileIsReadOnly) ? TRUE : FALSE;
+      break;
+    case ID_MENUITEM_LOCK:
+      // If the user can see the menu - the DB is unlocked - so always allow locking
+      iEnable = TRUE;
       break;
     default:
       break;
