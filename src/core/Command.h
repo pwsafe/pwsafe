@@ -523,7 +523,7 @@ public:
   bool IsEmpty() const { return m_vpcmds.empty(); }
   void SetNested() { SetInMultiCommand(); }
 
-  Command *FindCommand(const type_info &ti);
+  Command *FindCommand(const std::type_info &ti);
 
  private:
   MultiCommands(CommandInterface *pcomInt);

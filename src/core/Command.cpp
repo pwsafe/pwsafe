@@ -114,7 +114,7 @@ MultiCommands::~MultiCommands()
            [] (Command *pcmd) {delete pcmd;});
 }
 
-Command *MultiCommands::FindCommand(const type_info &ti)
+Command *MultiCommands::FindCommand(const std::type_info &ti)
 {
   // Initial implementation - search for first command of a specific class
   // in a MultiCommand.  Could be enhanced to return a vector of commands
