@@ -390,6 +390,9 @@
 #define IDD_VIEWATTACHMENT              548
 #define IDB_EMPTY_DISABLED              549
 #define IDB_REDEXCLAMATION              550
+#define IDB_LOCK_CLASSIC                551
+#define IDB_LOCK_NEW                    552
+#define IDB_LOCK_NEW_D                  553
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -870,7 +873,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        551
+#define _APS_NEXT_RESOURCE_VALUE        554
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1563
 #define _APS_NEXT_SYMED_VALUE           540

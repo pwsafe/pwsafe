@@ -373,7 +373,7 @@ void DboxMain::SetUpInitialMenuStrings()
     const st_prefShortcut &stxst = vShortcuts[i];
     // User should not have these sub-entries in their config file
     if (stxst.id == ID_MENUITEM_GROUPENTER  ||
-        stxst.id == ID_MENUITEM_VIEWENTRY        ||
+        stxst.id == ID_MENUITEM_VIEWENTRY   ||
         stxst.id == ID_MENUITEM_DELETEENTRY ||
         stxst.id == ID_MENUITEM_DELETEGROUP ||
         stxst.id == ID_MENUITEM_RENAME      ||
@@ -1018,7 +1018,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   }  // Edit menu
 
 exit:
-    SetUpMenuStrings(pPopupMenu);
+  SetUpMenuStrings(pPopupMenu);
 }
 
 // Helps with MRU by allowing ON_UPDATE_COMMAND_UI
