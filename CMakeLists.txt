@@ -9,6 +9,10 @@ project (passwordsafe CXX C)
 include(CheckLibraryExists)
 include(CheckIncludeFile)
 
+if (NOT WIN32)
+include(FindUnixCommands)
+endif (NOT WIN32)
+
 # Version configuration:
 # version.mfc for Windows MFC build, version.wx for all the rest
 # version file has the following format:
@@ -338,7 +342,7 @@ install (TARGETS pwsafe RUNTIME DESTINATION "bin")
 if (NOT WIN32)
    install (DIRECTORY xml DESTINATION "share/pwsafe/")
    ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/pwsafe.1.gz
-                      COMMAND /bin/gzip ARGS -9 -n -k 
+                      COMMAND ${GZIP} ARGS -9 -n -k 
                         "${PROJECT_SOURCE_DIR}/docs/pwsafe.1"
                       COMMAND /bin/mv ARGS 
                         "${PROJECT_SOURCE_DIR}/docs/pwsafe.1.gz" 
