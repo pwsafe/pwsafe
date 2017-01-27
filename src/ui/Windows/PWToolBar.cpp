@@ -55,6 +55,7 @@ const CPWToolBar::GuiRecord CPWToolBar::MainGuiInfo[] =
     {L"new", ID_MENUITEM_NEW, IDB_NEW_CLASSIC, IDB_NEW_NEW, IDB_NEW_NEW_D},
     {L"open", ID_MENUITEM_OPEN, IDB_OPEN_CLASSIC, IDB_OPEN_NEW, IDB_OPEN_NEW_D},
     {L"close", ID_MENUITEM_CLOSE, IDB_CLOSE_CLASSIC, IDB_CLOSE_NEW, IDB_CLOSE_NEW_D},
+    {L"lock", ID_MENUITEM_LOCK, IDB_LOCK_CLASSIC, IDB_TRAYLOCK_NEW, IDB_TRAYLOCK_NEW_D},
     {L"save", ID_MENUITEM_SAVE, IDB_SAVE_CLASSIC, IDB_SAVE_NEW, IDB_SAVE_NEW_D},
     {L"~", ID_SEPARATOR, 0, 0, 0},
     {L"copypassword", ID_MENUITEM_COPYPASSWORD, IDB_COPYPASSWORD_CLASSIC, IDB_COPYPASSWORD_NEW, IDB_COPYPASSWORD_NEW_D},
@@ -437,6 +438,7 @@ void CPWToolBar::ChangeImages(const int toolbarMode)
   m_toolbarMode = toolbarMode;
   const int nImageListNum = (m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) ? 0 : m_bitmode;
   tbCtrl.SetImageList(&m_ImageLists[nImageListNum]);
+
   // We only do the New toolbar disabled images.  MS can handle the Classic OK
   if (nImageListNum != 0)
     tbCtrl.SetDisabledImageList(&m_DisabledImageLists[nImageListNum - 1]);
@@ -552,6 +554,7 @@ void CPWToolBar::SetupImageList(const GuiRecord *guiInfo,
     UINT bmID = CALL_MEMBER_FN(guiInfo[i], GetBM)();
     if (bmID == 0)
       continue; // skip over separator
+
     BOOL brc = bmNormal.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(bmID), RT_BITMAP),
                                MAKEINTRESOURCE(bmID), IMAGE_BITMAP, 0, 0,
                                (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
@@ -592,10 +595,10 @@ void CPWToolBar::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour
     GetRValue(newbkgrndColour)};
 
   for (UINT i = 0; i < numPixels; ++i) {
-    if (pixels[i].rgbtBlue == 192 &&
-      pixels[i].rgbtGreen == 192 &&
-      pixels[i].rgbtRed == 192) {
-        pixels[i] = newbkgrndColourRGB;
+    if (pixels[i].rgbtBlue  == 192 &&
+        pixels[i].rgbtGreen == 192 &&
+        pixels[i].rgbtRed   == 192) {
+      pixels[i] = newbkgrndColourRGB;
     }
   }
 }

@@ -496,9 +496,9 @@ void ThisMfcApp::SetupMenu()
   pMenu1 = m_pMainMenu->GetSubMenu(pos1);
   minfo.dwMenuData = ID_FILEMENU;
   
-  if (pMenu1 != NULL) { // Look for "Close Database"
+  if (pMenu1 != NULL) { // Look for "Lock Database"
     pMenu1->SetMenuInfo(&minfo);
-    pos2 = FindMenuItem(pMenu1, ID_MENUITEM_CLOSE);
+    pos2 = FindMenuItem(pMenu1, ID_MENUITEM_LOCK);
   }
   else
     pos2 = -1;

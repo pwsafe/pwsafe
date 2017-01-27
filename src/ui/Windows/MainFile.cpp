@@ -2901,7 +2901,7 @@ bool DboxMain::ChangeMode(bool promptUser)
   // Return value says change was successful
   const bool bWasRO = IsDBReadOnly();
 
-  if (!bWasRO) {
+  if (!bWasRO) { // R/W -> R-O
     // Try to save if any changes done to database
     int rc = SaveIfChanged();
     if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
@@ -2921,11 +2921,11 @@ bool DboxMain::ChangeMode(bool promptUser)
       while (m_core.HasDBChanged()) {
         OnUndo();
       }
-    }
+    } // USER_DECLINED_SAVE
 
     // Clear the Commands & DB pre-command states
     m_core.ClearCommands();
-  } else if (promptUser) {
+  } else if (promptUser) { // R-O -> R/W
     // Taken from GetAndCheckPassword.
     // We don't want all the other processing that GetAndCheckPassword does
     CPasskeyEntry PasskeyEntryDlg(this, m_core.GetCurFile().c_str(),
@@ -2934,7 +2934,7 @@ bool DboxMain::ChangeMode(bool promptUser)
     INT_PTR rc = PasskeyEntryDlg.DoModal();
     if (rc != IDOK)
       return false;
-  }
+  } // R-O -> R/W
 
   bool rc(true);
   std::wstring locker = L"";

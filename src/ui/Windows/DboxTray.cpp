@@ -64,8 +64,11 @@ void DboxMain::OnTrayLockUnLock()
         // Hide everything
         CPWDialog::GetDialogTracker()->HideOpenDialogs();
 
-        // Now hide main dialog
-        ShowWindow(SW_HIDE);
+        // Now hide/minimize main dialog
+        if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
+          ShowWindow(SW_HIDE);
+        else
+          ShowWindow(SW_MINIMIZE);
       }
       break;
     case ThisMfcApp::CLOSED:

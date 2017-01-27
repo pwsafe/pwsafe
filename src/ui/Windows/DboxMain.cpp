@@ -350,6 +350,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_NEW, OnNew)
   ON_COMMAND(ID_MENUITEM_OPEN, OnOpen)
   ON_COMMAND(ID_MENUITEM_CLOSE, OnClose)
+  ON_COMMAND(ID_MENUITEM_LOCK, OnTrayLockUnLock)
   ON_COMMAND(ID_MENUITEM_CLEAR_MRU, OnClearMRU)
   ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
   ON_COMMAND(ID_MENUITEM_SAVEAS, OnSaveAs)
@@ -566,6 +567,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_OPEN, true, true, true, true},
   {ID_MENUITEM_NEW, true, true, true, true},
   {ID_MENUITEM_CLOSE, true, true, true, false},
+  {ID_MENUITEM_LOCK, true, true, true, false},
   {ID_MENUITEM_SAVE, true, false, true, false},
   {ID_MENUITEM_SAVEAS, true, true, true, false},
   {ID_MENUITEM_CLEAR_MRU, true, true, true, true},
@@ -1803,22 +1805,21 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
     // This dialog's setting of read-only overrides file dialog
     bool bIsReadOnly = m_pPasskeyEntryDlg->IsReadOnly();
-    pcore->SetReadOnly(bIsReadOnly);
 
     // Set read-only mode if user explicitly requested it OR
-    // we could not create a lock file.
+    // if we failed to create a lock file.
     switch (index) {
       case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
         pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile.c_str(), locker));
         break;
       case GCP_NORMAL:
+      case GCP_RESTORE:
+      case GCP_WITHEXIT:
         if (!bIsReadOnly) // !first, lock if !bIsReadOnly
           pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
         else
           pcore->SetReadOnly(bIsReadOnly);
         break;
-      case GCP_RESTORE:
-      case GCP_WITHEXIT:
       case GCP_CHANGEMODE:
       default:
         // user can't change R-O status
