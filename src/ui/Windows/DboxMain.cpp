@@ -3426,10 +3426,6 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
       iEnable = (m_bOpen && m_core.GetReadFileVersion() >= PWSfile::VCURRENT && !bFileIsReadOnly) ? TRUE : FALSE;
       break;
-    case ID_MENUITEM_LOCK:
-      // If the user can see the menu - the DB is unlocked - so always allow locking
-      iEnable = TRUE;
-      break;
     default:
       break;
   }
