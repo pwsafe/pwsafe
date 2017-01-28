@@ -44,6 +44,9 @@ New Features for 3.41.1
 last Find. Access via the View menu or Ctrl+K shortcut.
 [822] An open database can now be locked via the File menu or a Toolbar button
 irrespective of whether the System Tray is used or not.
+[821] A new symbol for protected entries (locked padlock - Unicode U+01F512)
+has been implemented but, if the currently selected Tree/List font does not support
+it and the user is not running Windows 10, then the old symbol ('#') will be used.
 
 Bugs fixed in 3.41.0
 ====================

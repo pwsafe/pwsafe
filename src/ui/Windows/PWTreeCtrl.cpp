@@ -171,7 +171,7 @@ CPWTreeCtrl::CPWTreeCtrl()
   : m_isRestoring(false), m_bWithinThisInstance(true),
   m_bMouseInWindow(false), m_nHoverNDTimerID(0), m_nShowNDTimerID(0),
   m_hgDataALL(NULL), m_hgDataTXT(NULL), m_hgDataUTXT(NULL),
-  m_bTreeFilterActive(false), m_bUseHighLighting(false)
+  m_bTreeFilterActive(false), m_bUseHighLighting(false), m_bUseNew(true)
 {
   // Register a clipboard format for column drag & drop.
   // Note that it's OK to register same format more than once:
@@ -2187,8 +2187,11 @@ CSecString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
       treeDispString += L"}";
     }
   }
-  if (ci.IsProtected())
-    treeDispString += L" #";
+
+  if (ci.IsProtected()) {
+    treeDispString += L" ";
+    treeDispString +=  m_bUseNew ? m_sProtectSymbol.c_str() : L"#";
+  }
 
   if (ci.HasAttRef())
     treeDispString += L" +";

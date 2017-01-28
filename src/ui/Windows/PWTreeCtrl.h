@@ -88,6 +88,14 @@ public:
   HTREEITEM FindItem(const CString &path, HTREEITEM hRoot);
   const StringX &GetDroppedFile() const {return m_droppedFile;}
 
+  void UseNewProtectedSymbol(const bool bUseNew)
+  { m_bUseNew = bUseNew; }
+  bool IsUsingNewProtectedSymbol() { return m_bUseNew; }
+  void SetNewProtectedSymbol(const std::wstring sProtectSymbol)
+  { m_sProtectSymbol = sProtectSymbol; }
+  std::wstring GetNewProtectedSymbol()
+  { return m_sProtectSymbol; }
+
 protected:
   //{{AFX_MSG(CPWTreeCtrl)
   afx_msg void OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult);
@@ -168,4 +176,7 @@ private:
 
   bool m_bUseHighLighting;
   std::vector<StringX> m_vModifiedNodes;
+
+  bool m_bUseNew;
+  std::wstring m_sProtectSymbol;
 };
