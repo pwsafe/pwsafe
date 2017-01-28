@@ -2536,7 +2536,26 @@ bool DboxMain::IsWorkstationLocked() const
 
 void DboxMain::OnChangeTreeFont()
 {
+  const bool bWasUsingNewProtectSymbol = m_ctlItemTree.IsUsingNewProtectedSymbol();
+
   ChangeFont(CFontsDialog::TREELISTFONT);
+
+  wstring sProtect = m_ctlItemTree.GetNewProtectedSymbol();
+  bool bSupported = IsCharacterSupported(sProtect);
+  bool bWindows10 = pws_os::IsWindows10OrGreater();
+
+  // If supported - fine - use it
+  // If not, use it if running under Windows 10 which seems to handle this nicely
+  m_ctlItemTree.UseNewProtectedSymbol(bSupported ? true : bWindows10);
+
+  if (!bSupported) {
+    pws_os::Trace(L"New font does not support the new entry Protected symbol.\n");
+  }
+
+  // If we have changed the "protect" symbol, then the Invalidate in the ChangeFont
+  // routine is not good enough - we have to change the actual displayed string
+  if (bWasUsingNewProtectSymbol != (bSupported ? true : bWindows10))
+    RefreshViews();
 }
 
 void DboxMain::OnChangeAddEditFont()
@@ -2650,6 +2669,10 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
 
         // Recalculate header widths but don't change column widths
         CalcHeaderWidths();
+
+        // Redraw in new font
+        m_ctlItemTree.Invalidate();
+        m_ctlItemList.Invalidate();
         break;
       case CFontsDialog::ADDEDITFONT:
         // Transfer the new font to the selected Add/Edit fields
