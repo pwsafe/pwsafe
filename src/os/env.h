@@ -22,8 +22,10 @@ namespace pws_os {
   extern stringT getprocessid();
 
 #if defined(_MSC_VER)
-  // Windows only - MFC or wxWidgts
+  // Windows only - MFC or wxWidgets
+  extern bool    RtlGetVersion(DWORD &dwMajorVersion, DWORD &dwMinorVersion, DWORD &dwBuildNumber);
   extern bool    IsWindowsVistaOrGreater();
+  extern bool    IsWindows10OrGreater();
 #endif
 }
 #endif /* __ENV_H */
