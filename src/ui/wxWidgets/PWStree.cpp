@@ -174,9 +174,34 @@ PWSTreeCtrl::~PWSTreeCtrl()
  * Member initialisation
  */
 
+std::wstring Utf32ToUtf16(uint32_t codepoint)
+{
+  wchar_t wc[3];
+  if (codepoint < 0x10000) {
+    // Length 1
+    wc[0] = static_cast<wchar_t>(codepoint);
+    wc[1] = wc[2] = 0;
+  } else {
+    if (codepoint <= 0x10FFFF) {
+      codepoint -= 0x10000;
+      // Length 2
+      wc[0] = (unsigned short)(codepoint >> 10) + (unsigned short)0xD800;
+      wc[1] = (unsigned short)(codepoint & 0x3FF) + (unsigned short)0xDC00;
+      wc[2] = 0;
+    } else {
+      // Length 1
+      wc[0] = 0xFFFD;
+      wc[1] = wc[2] = 0;
+    }
+  }
+  std::wstring s = wc;
+  return s;
+}
+
 void PWSTreeCtrl::Init()
 {
 ////@begin PWSTreeCtrl member initialisation
+  sProtect = Utf32ToUtf16(0x1f512);
 ////@end PWSTreeCtrl member initialisation
 }
 
@@ -294,19 +319,25 @@ wxString PWSTreeCtrl::ItemDisplayString(const CItemData &item) const
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   const wxString title = item.GetTitle().c_str();
+
+  // Title is a mandatory field - no need to worry if empty
   wxString disp = title;
 
   if (prefs->GetPref(PWSprefs::ShowUsernameInTree)) {
     const wxString user = item.GetUser().c_str();
-    if (!user.empty())
-      disp += wxT(" [") + user + wxT("]");
+    // User is NOT a mandatory field - but show not present by empty brackets i.e. []
+    // if user wants it displayed
+    disp += wxT(" [") + user + wxT("]");
   }
 
   if (prefs->GetPref(PWSprefs::ShowPasswordInTree)) {
     const wxString passwd = item.GetPassword().c_str();
-    if (!passwd.empty())
-      disp += wxT(" {") + passwd + wxT("}");
+    // Password is a mandatory field - no need to worry if empty
+    disp += wxT(" {") + passwd + wxT("}");
   }
+
+  if (item.IsProtected())
+    disp += wxT(" ") + sProtect;
 
   return disp;
 }
