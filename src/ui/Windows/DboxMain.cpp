@@ -918,21 +918,21 @@ void DboxMain::InitPasswordSafe()
   CFont *pCurrentFont = GetFont();
   pCurrentFont->GetLogFont(&dfltTreeListFont);
 
-  CString szTreeFont = prefs->GetPref(PWSprefs::TreeFont).c_str();
+  std::wstring szTreeFont = prefs->GetPref(PWSprefs::TreeFont).c_str();
   Fonts *pFonts = Fonts::GetInstance();
 
   // If we didn't find font specified in rc, and user didn't select anything
   // fallback to MS Sans Serif
   if (CString(dfltTreeListFont.lfFaceName) == L"System" &&
-      szTreeFont.IsEmpty()) {
+      szTreeFont.empty()) {
     const CString MS_SanSerif8 = L"-11,0,0,0,400,0,0,0,177,1,2,1,34,MS Sans Serif";
     szTreeFont = MS_SanSerif8;
     pFonts->ExtractFont(szTreeFont, dfltTreeListFont); // Save for 'Reset font' action
   }
   
   LOGFONT tree_lf;
-  if (!szTreeFont.IsEmpty()) { // either preference or our own fallback
-    pFonts->ExtractFont(szTreeFont, tree_lf);
+  // either preference or our own fallback
+  if (!szTreeFont.empty() && pFonts->ExtractFont(szTreeFont, tree_lf)) {
     pFonts->SetCurrentFont(&tree_lf);
   } else {
     pFonts->SetCurrentFont(&dfltTreeListFont);
@@ -952,10 +952,9 @@ void DboxMain::InitPasswordSafe()
   m_ctlItemTree.UseNewProtectedSymbol(bSupported ? true : bWindows10);
 
   // Set up Add/Edit font too.
-  CString szAddEditFont = prefs->GetPref(PWSprefs::AddEditFont).c_str();
+  std::wstring szAddEditFont = prefs->GetPref(PWSprefs::AddEditFont).c_str();
 
-  if (!szAddEditFont.IsEmpty()) {
-    pFonts->ExtractFont(szAddEditFont, LF);
+  if (!szAddEditFont.empty() && pFonts->ExtractFont(szAddEditFont, LF)) {
     pFonts->SetAddEditFont(&LF);
   } else {
     // Not set - use add/Edit dialog font - difficult to get so use hard
@@ -965,10 +964,9 @@ void DboxMain::InitPasswordSafe()
   }
 
   // Set up Password font too.
-  CString szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont).c_str();
+  std::wstring szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont).c_str();
 
-  if (!szPasswordFont.IsEmpty()) {
-    pFonts->ExtractFont(szPasswordFont, LF);
+  if (!szPasswordFont.empty() && pFonts->ExtractFont(szPasswordFont, LF)) {
     pFonts->SetPasswordFont(&LF);
   } else {
     // Not set - use default password font
@@ -976,10 +974,9 @@ void DboxMain::InitPasswordSafe()
   }
 
   // Set up Notes font too.
-  CString szNotesFont = prefs->GetPref(PWSprefs::NotesFont).c_str();
+  std::wstring szNotesFont = prefs->GetPref(PWSprefs::NotesFont).c_str();
 
-  if (!szNotesFont.IsEmpty()) {
-    pFonts->ExtractFont(szNotesFont, LF);
+  if (!szNotesFont.empty() && pFonts->ExtractFont(szNotesFont, LF)) {
     pFonts->SetNotesFont(&LF);
   } else {
     // Not set - use tree/list font set above

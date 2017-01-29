@@ -10,6 +10,8 @@
 // Fonts.h
 //-----------------------------------------------------------------------------
 
+#include <string>
+
 class Fonts
 {
 public:
@@ -41,7 +43,7 @@ public:
   void GetDefaultPasswordFont(LOGFONT &lf);
   void GetDefaultAddEditFont(LOGFONT &lf);
 
-  void ExtractFont(const CString& str, LOGFONT &lf);
+  bool ExtractFont(const std::wstring& str, LOGFONT &lf);
 
   LONG CalcHeight(const bool bIncludeNotesFont = false) const;
 
