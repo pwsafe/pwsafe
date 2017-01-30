@@ -27,8 +27,9 @@ public:
   CSecString m_username;
   CSecString m_title;
   CSecString m_group;
+
   // target's group, title, user
-  CSecString m_tg, m_tt, m_tu;
+  CSecString m_basegroup, m_basetitle, m_baseuser;
   int m_ibasedata;
 
   CComboBoxExtn m_ex_group;
