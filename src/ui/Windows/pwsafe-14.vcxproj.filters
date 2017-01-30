@@ -1724,5 +1724,8 @@
     <Image Include="graphics\red_exclamation.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="graphics\toolbar\classic\lock_database.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

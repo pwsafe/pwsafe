@@ -1390,6 +1390,7 @@
     <Image Include="graphics\toolbar\classic\exportV2.bmp" />
     <Image Include="graphics\toolbar\classic\exportV3.bmp" />
     <Image Include="graphics\toolbar\classic\exportV4.bmp" />
+    <Image Include="graphics\toolbar\classic\lock_database.bmp" />
     <Image Include="graphics\toolbar\new\exportDB.bmp" />
     <Image Include="graphics\toolbar\new\exportDB_disabled.bmp" />
     <Image Include="graphics\toolbar\new\exportV1.bmp" />
