@@ -68,6 +68,7 @@ class PasswordSafeSearch;
 #define ID_EDIT 10024
 #define ID_RENAME 10025
 #define ID_DUPLICATEENTRY 10026
+#define ID_PROTECT 10134
 #define ID_ADDGROUP 10027
 #define ID_CLEARCLIPBOARD 10028
 #define ID_COPYPASSWORD 10029
@@ -231,6 +232,9 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_DELETE
   void OnDeleteClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_PROTECT
+  void OnProtectUnprotectClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
   void OnClearclipboardClick( wxCommandEvent& event );

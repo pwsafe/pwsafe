@@ -174,34 +174,9 @@ PWSTreeCtrl::~PWSTreeCtrl()
  * Member initialisation
  */
 
-std::wstring Utf32ToUtf16(uint32_t codepoint)
-{
-  wchar_t wc[3];
-  if (codepoint < 0x10000) {
-    // Length 1
-    wc[0] = static_cast<wchar_t>(codepoint);
-    wc[1] = wc[2] = 0;
-  } else {
-    if (codepoint <= 0x10FFFF) {
-      codepoint -= 0x10000;
-      // Length 2
-      wc[0] = (unsigned short)(codepoint >> 10) + (unsigned short)0xD800;
-      wc[1] = (unsigned short)(codepoint & 0x3FF) + (unsigned short)0xDC00;
-      wc[2] = 0;
-    } else {
-      // Length 1
-      wc[0] = 0xFFFD;
-      wc[1] = wc[2] = 0;
-    }
-  }
-  std::wstring s = wc;
-  return s;
-}
-
 void PWSTreeCtrl::Init()
 {
 ////@begin PWSTreeCtrl member initialisation
-  sProtect = Utf32ToUtf16(0x1f512);
 ////@end PWSTreeCtrl member initialisation
 }
 
@@ -337,7 +312,7 @@ wxString PWSTreeCtrl::ItemDisplayString(const CItemData &item) const
   }
 
   if (item.IsProtected())
-    disp += wxT(" ") + sProtect;
+    disp += wxT(" #");
 
   return disp;
 }

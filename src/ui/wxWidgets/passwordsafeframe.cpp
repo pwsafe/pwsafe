@@ -108,6 +108,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( wxID_ADD, PasswordSafeFrame::OnAddClick )
   EVT_MENU( ID_EDIT, PasswordSafeFrame::OnEditClick )
   EVT_MENU( wxID_DELETE, PasswordSafeFrame::OnDeleteClick )
+  EVT_MENU( ID_PROTECT, PasswordSafeFrame::OnProtectUnprotectClick )
   EVT_MENU( ID_CLEARCLIPBOARD, PasswordSafeFrame::OnClearclipboardClick )
   EVT_MENU( ID_COPYPASSWORD, PasswordSafeFrame::OnCopypasswordClick )
   EVT_MENU( ID_COPYUSERNAME, PasswordSafeFrame::OnCopyusernameClick )
@@ -232,7 +233,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI(wxID_DELETE,        PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_MERGE,           PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_CHANGECOMBO,     PasswordSafeFrame::OnUpdateUI )
-EVT_UPDATE_UI(ID_IMPORTMENU,        PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_IMPORTMENU,      PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_PROTECT,         PasswordSafeFrame::OnUpdateUI )
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -442,6 +444,7 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu29->Append(ID_RENAME, _("Rename Entry\tF2"), wxEmptyString, wxITEM_NORMAL);
   itemMenu29->Append(wxID_FIND, _("&Find Entry...\tCtrl+F"), wxEmptyString, wxITEM_NORMAL);
   itemMenu29->Append(ID_DUPLICATEENTRY, _("&Duplicate Entry\tCtrl+D"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_PROTECT, _("Protect Entry"), wxEmptyString, wxITEM_CHECK);
   itemMenu29->AppendSeparator();
   itemMenu29->Append(ID_ADDGROUP, _("Add Group"), wxEmptyString, wxITEM_NORMAL);
   itemMenu29->AppendSeparator();
@@ -1765,6 +1768,10 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     itemEditMenu.Append(ID_CREATESHORTCUT, _("Create &Shortcut"));
     itemEditMenu.Append(ID_GOTOBASEENTRY,  _("&Go to Base entry"));
     itemEditMenu.Append(ID_EDITBASEENTRY,  _("&Edit Base entry"));
+    if (!item->IsShortcut()) {
+      itemEditMenu.AppendCheckItem(ID_PROTECT,  _("Protect Entry"));
+      itemEditMenu.Check(ID_PROTECT, item->IsProtected());
+    }
 
     switch (item->GetEntryType()) {
       case CItemData::ET_NORMAL:
@@ -1936,6 +1943,9 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case wxID_DELETE:
+      evt.Enable(!bFileIsReadOnly && pci && !pci->IsProtected());
+      break;
+
     case ID_DUPLICATEENTRY:
       evt.Enable(!bFileIsReadOnly && pci);
       break;
@@ -1953,7 +1963,11 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!bFileIsReadOnly);
       break;
 
-    default:
+    case ID_PROTECT:
+      evt.Enable(!bFileIsReadOnly && pci && !pci->IsShortcut());
+      evt.Check(pci && pci->IsProtected());
+      break;
+  default:
       break;
   }
 }

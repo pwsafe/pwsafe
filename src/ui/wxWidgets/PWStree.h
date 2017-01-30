@@ -133,7 +133,6 @@ public:
   void FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem);
   void FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, const wxString& oldPath);
 ////@begin PWSTreeCtrl member variables
-  std::wstring sProtect;
 ////@end PWSTreeCtrl member variables
   PWScore &m_core;
   UUIDTIMapT m_item_map; // given a uuid, find the tree item pronto!
