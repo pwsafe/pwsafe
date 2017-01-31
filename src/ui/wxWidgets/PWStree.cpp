@@ -311,8 +311,13 @@ wxString PWSTreeCtrl::ItemDisplayString(const CItemData &item) const
     disp += wxT(" {") + passwd + wxT("}");
   }
 
-  if (item.IsProtected())
+  if (item.IsProtected()) { 
     disp += wxT(" #");
+#ifdef NOTYET
+    wxUniChar padlock(0x1f512);
+    disp +=padlock;
+#endif
+  }
 
   return disp;
 }
