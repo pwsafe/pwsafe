@@ -12,11 +12,14 @@
 
 #include "../lib.h"
 #include "../debug.h"
+
 #include <windows.h>
 
-void *pws_os::LoadLibrary(const TCHAR *lib, int type){
+void *pws_os::LoadLibrary(const TCHAR *lib, int type)
+{
   ASSERT(lib != NULL);
-// Qualify full path name.  (Lockheed Martin) Secure Coding  11-14-2007
+  
+  // Qualify full path name.  (Lockheed Martin) Secure Coding  11-14-2007
   TCHAR szFilePath[MAX_PATH+1];
   memset(szFilePath, 0, MAX_PATH+1);
   if (type == LOAD_LIBRARY_SYS) {

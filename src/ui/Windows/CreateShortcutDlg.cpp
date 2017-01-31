@@ -24,9 +24,10 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CCreateShortcutDlg::CCreateShortcutDlg(CWnd* pParent, 
-  const CSecString &cs_tg, const CSecString &cs_tt, const CSecString &cs_tu)
+  const CSecString &cs_basegroup, const CSecString &cs_basetitle, const CSecString &cs_baseuser)
   : CPWDialog(CCreateShortcutDlg::IDD, pParent),
-  m_tg(cs_tg), m_tt(cs_tt), m_tu(cs_tu), m_group(cs_tg), m_username(cs_tu)
+  m_basegroup(cs_basegroup), m_basetitle(cs_basetitle), m_baseuser(cs_baseuser),
+  m_group(cs_basegroup), m_username(cs_baseuser)
 {
 }
 
@@ -55,15 +56,13 @@ BOOL CCreateShortcutDlg::OnInitDialog()
   // Make sure Group combobox is wide enough
   SetGroupComboBoxWidth();
 
-  m_title.Format(IDS_SCTARGET, static_cast<LPCWSTR>(m_tt));
+  m_title.Format(IDS_SCTARGET, static_cast<LPCWSTR>(m_basetitle));
 
-  CSecString cs_target(L"");
-  if (!m_tg.IsEmpty())
-    cs_target = m_tg + L".";
-  cs_target += m_tt;
-  if (!m_tu.IsEmpty())
-    cs_target += L"." + m_tu;
-  GetDlgItem(IDC_MYBASE)->SetWindowText(cs_target);
+  CSecString cs_base(L"");
+  cs_base = L"\xab" + m_basegroup + L"\xbb " +
+            L"\xab" + m_basetitle + L"\xbb " +
+            L"\xab" + m_baseuser  + L"\xbb";
+  GetDlgItem(IDC_MYBASE)->SetWindowText(cs_base);
 
   m_ex_group.ChangeColour();
 

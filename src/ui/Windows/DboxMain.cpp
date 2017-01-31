@@ -62,6 +62,8 @@
 #include <bitset>
 #include <algorithm>
 
+#include <usp10.h>    // for support of Unicode character (Uniscribe)
+
 // Need to add Windows SDK 6.0 (or later) 'include' and 'lib' libraries to
 // Visual Studio "VC++ directories" in their respective search orders to find
 // 'WtsApi32.h' and 'WtsApi32.lib'
@@ -712,6 +714,92 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_CUSTOMIZETOOLBAR, true, true, true, true},
 };
 
+std::wstring Utf32ToUtf16(uint32_t codepoint)
+{
+  wchar_t wc[3];
+  if (codepoint < 0x10000) {
+    // Length 1
+    wc[0] = static_cast<wchar_t>(codepoint);
+    wc[1] = wc[2] = 0;
+  } else {
+    if (codepoint <= 0x10FFFF) {
+      codepoint -= 0x10000;
+      // Length 2
+      wc[0] = (unsigned short)(codepoint >> 10) + (unsigned short)0xD800;
+      wc[1] = (unsigned short)(codepoint & 0x3FF) + (unsigned short)0xDC00;
+      wc[2] = 0;
+    } else {
+      // Length 1
+      wc[0] = 0xFFFD;
+      wc[1] = wc[2] = 0;
+    }
+  }
+  std::wstring s = wc;
+  return s;
+}
+
+bool DboxMain::IsCharacterSupported(std::wstring &sProtect)
+{
+  HRESULT hr;
+  int cItems, cMaxItems = 2;
+  bool bSupported(false);
+  SCRIPT_ITEM items[3];  // Number should be (cMaxItems + 1)
+
+  ASSERT(sProtect.length() < 3);
+
+  // Itemize - Uniscribe function
+  hr = ScriptItemize(sProtect.c_str(), sProtect.length(), cMaxItems, NULL, NULL, items, &cItems);
+
+  if (SUCCEEDED(hr) == FALSE)
+    return bSupported;
+
+  ASSERT(cItems == 1);
+
+  SCRIPT_CACHE sc = NULL;
+
+  CDC *ptreeDC = m_ctlItemTree.GetDC();
+  HFONT hOldFont;
+  CFont *pFont = Fonts::GetInstance()->GetCurrentFont();
+  hOldFont = (HFONT)ptreeDC->SelectObject(pFont->GetSafeHandle());
+
+  for (int i = 0; i < cItems; i++) {
+    int idx = items[i].iCharPos;
+    int len = items[i + 1].iCharPos - idx;
+    int cMaxGlyphs = len * 2 + 16;  // As recommended by Uniscribe documentation
+    int cGlyphs = 0;
+
+    WORD *pwLogClust = (WORD *)malloc(sizeof(WORD) * cMaxGlyphs);
+    WORD *pwOutGlyphs = (WORD *)malloc(sizeof(WORD) * cMaxGlyphs);
+    SCRIPT_VISATTR *psva = (SCRIPT_VISATTR *)malloc(sizeof(SCRIPT_VISATTR) * cMaxGlyphs);
+
+    // Shape - Uniscribe function
+    hr = ScriptShape(ptreeDC->GetSafeHdc(), &sc, sProtect.substr(idx).c_str(), len, cMaxGlyphs,
+      &items[i].a, pwOutGlyphs, pwLogClust, psva, &cGlyphs);
+
+    if (SUCCEEDED(hr) == FALSE)
+      goto clean;
+
+    if (pwOutGlyphs[0] != 0)
+      bSupported = true;
+
+  clean:
+    // Free up storage
+    free(pwOutGlyphs);
+    free(pwLogClust);
+    free(psva);
+
+    if (SUCCEEDED(hr) == FALSE)
+      break;
+  }
+
+  // Free cache - Uniscribe function
+  ScriptFreeCache(&sc);
+
+  ptreeDC->SelectObject(hOldFont);
+
+  return bSupported;
+}
+
 void DboxMain::InitPasswordSafe()
 {
   PWS_LOGIT;
@@ -830,31 +918,43 @@ void DboxMain::InitPasswordSafe()
   CFont *pCurrentFont = GetFont();
   pCurrentFont->GetLogFont(&dfltTreeListFont);
 
-  CString szTreeFont = prefs->GetPref(PWSprefs::TreeFont).c_str();
+  std::wstring szTreeFont = prefs->GetPref(PWSprefs::TreeFont).c_str();
   Fonts *pFonts = Fonts::GetInstance();
 
   // If we didn't find font specified in rc, and user didn't select anything
   // fallback to MS Sans Serif
   if (CString(dfltTreeListFont.lfFaceName) == L"System" &&
-      szTreeFont.IsEmpty()) {
+      szTreeFont.empty()) {
     const CString MS_SanSerif8 = L"-11,0,0,0,400,0,0,0,177,1,2,1,34,MS Sans Serif";
     szTreeFont = MS_SanSerif8;
     pFonts->ExtractFont(szTreeFont, dfltTreeListFont); // Save for 'Reset font' action
   }
   
   LOGFONT tree_lf;
-  if (!szTreeFont.IsEmpty()) { // either preference or our own fallback
-    pFonts->ExtractFont(szTreeFont, tree_lf);
+  // either preference or our own fallback
+  if (!szTreeFont.empty() && pFonts->ExtractFont(szTreeFont, tree_lf)) {
     pFonts->SetCurrentFont(&tree_lf);
   } else {
     pFonts->SetCurrentFont(&dfltTreeListFont);
   }
 
-  // Set up Add/Edit font too.
-  CString szAddEditFont = prefs->GetPref(PWSprefs::AddEditFont).c_str();
+  uint32_t newprotectedsymbol = 0x1f512;
 
-  if (!szAddEditFont.IsEmpty()) {
-    pFonts->ExtractFont(szAddEditFont, LF);
+  // Convert UTF-32 to UTF-16 or a surrogate pair of UTF-16
+  std::wstring sProtect = Utf32ToUtf16(newprotectedsymbol);
+  m_ctlItemTree.SetNewProtectedSymbol(sProtect);
+
+  bool bSupported = IsCharacterSupported(sProtect);
+  bool bWindows10 = pws_os::IsWindows10OrGreater();
+
+  // If supported - fine - use it
+  // If not, use it if running under Windows 10 which seems to handle this nicely
+  m_ctlItemTree.UseNewProtectedSymbol(bSupported ? true : bWindows10);
+
+  // Set up Add/Edit font too.
+  std::wstring szAddEditFont = prefs->GetPref(PWSprefs::AddEditFont).c_str();
+
+  if (!szAddEditFont.empty() && pFonts->ExtractFont(szAddEditFont, LF)) {
     pFonts->SetAddEditFont(&LF);
   } else {
     // Not set - use add/Edit dialog font - difficult to get so use hard
@@ -864,10 +964,9 @@ void DboxMain::InitPasswordSafe()
   }
 
   // Set up Password font too.
-  CString szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont).c_str();
+  std::wstring szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont).c_str();
 
-  if (!szPasswordFont.IsEmpty()) {
-    pFonts->ExtractFont(szPasswordFont, LF);
+  if (!szPasswordFont.empty() && pFonts->ExtractFont(szPasswordFont, LF)) {
     pFonts->SetPasswordFont(&LF);
   } else {
     // Not set - use default password font
@@ -875,10 +974,9 @@ void DboxMain::InitPasswordSafe()
   }
 
   // Set up Notes font too.
-  CString szNotesFont = prefs->GetPref(PWSprefs::NotesFont).c_str();
+  std::wstring szNotesFont = prefs->GetPref(PWSprefs::NotesFont).c_str();
 
-  if (!szNotesFont.IsEmpty()) {
-    pFonts->ExtractFont(szNotesFont, LF);
+  if (!szNotesFont.empty() && pFonts->ExtractFont(szNotesFont, LF)) {
     pFonts->SetNotesFont(&LF);
   } else {
     // Not set - use tree/list font set above

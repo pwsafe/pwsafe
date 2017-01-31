@@ -863,3 +863,18 @@ void PasswordSafeFrame::OnPasswordSubset(wxCommandEvent &evt)
   if (item != NULL)
     DoPasswordSubset(*item);
 }
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_PROTECT
+ */
+
+void PasswordSafeFrame::OnProtectUnprotectClick( wxCommandEvent& event )
+{
+  CItemData *item = GetSelectedEntry();
+  if (item != NULL) {
+    bool protect = event.IsChecked();
+    m_core.Execute(UpdateEntryCommand::Create(&m_core, *item,
+                                              CItemData::PROTECTED,
+                                              protect ? L"1" : L"0"));
+  }
+}

@@ -17,7 +17,10 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "Fonts.h"
+
 #include "core/PwsPlatform.h"
+
+#include <vector>
 
 Fonts *Fonts::self = NULL;
 
@@ -211,38 +214,91 @@ void Fonts::SetNotesFont(LOGFONT *pLF)
   m_pNotesFont->CreateFontIndirect(pLF);
 }
 
-static CString GetToken(CString& str, LPCWSTR c)
+#ifdef DEBUG
+void FixFontPreference(std::wstring &sFont)
 {
-  // helper function for ExtractFont()
-  int pos = str.Find(c);
-  CString token = str.Left(pos);
-  str = str.Mid(pos + 1);
-  return token;
+  // Need to cope with differences between wxWidgets wxFont GetNativeFontInfoDesc
+  // and our MFC implementation if they share the same config file, which will
+  // only be during testing until wxWdigets replaces MFC version on WIndows!
+
+  // GetNativeFontInfoDesc adds an extra version paramater at the start of this string
+  // and uses semi-colons to delimit values
+
+  // MFC font preference is missing the first 'version' value at the start of this string
+  // and uses commas to delimit values
+
+#ifdef __WX__
+  // wxWidgets fails safely if given a MFC created font preference - just doesn't set font
+  // This will NEVER be used as in the  MFC source but consider putting this routine in
+  // the wx build whereever it uses a font preference string.
+  if (sFont.find(L',') != -1) {
+    // First replace commans with semi-colons
+    std::replace(sFont.begin(), sFont.end(), L',', L';');
+
+    // Count the number of delimiters
+    size_t count = std::count(sFont.begin(), sFont.end(), L';');
+
+    // Add first value, which is a version, if only 13 (MFC Windows)
+    if (count == 13)
+      sFont = L"0;" + sxFont;
+  }
+#else
+  // MFC does NOT fail safely if given a wxWdigets created font preference
+  if (sFont.find(L';') != -1) {
+    // First replace semi-colons with commas
+    std::replace(sFont.begin(), sFont.end(), L';', L',');
+
+    // Count the number of delimiters
+    size_t count = std::count(sFont.begin(), sFont.end(), L',');
+
+    // Skip first value, which is a version, if more than 13 (wxWidgets)
+    if (count > 13) {
+      size_t pos = sFont.find(L",");
+      sFont.erase(0, pos + 1);
+    }
+  }
+#endif
 }
+#endif
 
-void Fonts::ExtractFont(const CString &str, LOGFONT &lf)
+bool Fonts::ExtractFont(const std::wstring &str, LOGFONT &lf)
 {
-  CString s(str);
+  std::wstring sFont = str;
+#ifdef DEBUG
+  FixFontPreference(sFont);
+#endif
+
+  // Tokenize
+  std::vector<std::wstring> vtokens;
+  size_t pos = 0;
+  std::wstring token;
+  while ((pos = sFont.find(L',')) != std::wstring::npos) {
+    token = sFont.substr(0, pos);
+    vtokens.push_back(token);
+    sFont.erase(0, pos + 1);
+  }
+  vtokens.push_back(sFont);
+
+  if (vtokens.size() != 14)
+    return false;
+
   SecureZeroMemory(&lf, sizeof(lf));
-  lf.lfHeight      = _wtol((LPCWSTR)GetToken(s, L","));
-  lf.lfWidth       = _wtol((LPCWSTR)GetToken(s, L","));
-  lf.lfEscapement  = _wtol((LPCWSTR)GetToken(s, L","));
-  lf.lfOrientation = _wtol((LPCWSTR)GetToken(s, L","));
-  lf.lfWeight      = _wtol((LPCWSTR)GetToken(s, L","));
+  lf.lfHeight         = _wtol(vtokens[0].c_str());
+  lf.lfWidth          = _wtol(vtokens[1].c_str());
+  lf.lfEscapement     = _wtol(vtokens[2].c_str());
+  lf.lfOrientation    = _wtol(vtokens[3].c_str());
+  lf.lfWeight         = _wtol(vtokens[4].c_str());
+  lf.lfItalic         = (BYTE)_wtoi(vtokens[5].c_str());
+  lf.lfUnderline      = (BYTE)_wtoi(vtokens[6].c_str());
+  lf.lfStrikeOut      = (BYTE)_wtoi(vtokens[7].c_str());
+  lf.lfCharSet        = (BYTE)_wtoi(vtokens[8].c_str());
+  lf.lfOutPrecision   = (BYTE)_wtoi(vtokens[9].c_str());
+  lf.lfClipPrecision  = (BYTE)_wtoi(vtokens[10].c_str());
+  lf.lfQuality        = (BYTE)_wtoi(vtokens[11].c_str());
+  lf.lfPitchAndFamily = (BYTE)_wtoi(vtokens[12].c_str());
 
-#pragma warning(push)
-#pragma warning(disable:4244) //conversion from 'int' to 'BYTE', possible loss of data
-  lf.lfItalic         = _wtoi((LPCWSTR)GetToken(s, L","));
-  lf.lfUnderline      = _wtoi((LPCWSTR)GetToken(s, L","));
-  lf.lfStrikeOut      = _wtoi((LPCWSTR)GetToken(s, L","));
-  lf.lfCharSet        = _wtoi((LPCWSTR)GetToken(s, L","));
-  lf.lfOutPrecision   = _wtoi((LPCWSTR)GetToken(s, L","));
-  lf.lfClipPrecision  = _wtoi((LPCWSTR)GetToken(s, L","));
-  lf.lfQuality        = _wtoi((LPCWSTR)GetToken(s, L","));
-  lf.lfPitchAndFamily = _wtoi((LPCWSTR)GetToken(s, L","));
-#pragma warning(pop)
-
-  wcscpy_s(lf.lfFaceName, LF_FACESIZE, s);
+  wcscpy_s(lf.lfFaceName, LF_FACESIZE, vtokens[13].c_str());
+  return true;
 }
 
 void Fonts::SetUpFont(CWnd *pWnd, CFont *pfont)
