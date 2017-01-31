@@ -328,7 +328,7 @@ elseif (WIN32)
    set (YUBILIB "YkLib22")
   endif ()
   target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} 
-      ${YUBILIB} ${PWS_DLL_LIBS} version Rpcrt4 htmlhelp SetupAPI Hid
+      ${YUBILIB} ${PWS_DLL_LIBS} version Rpcrt4 htmlhelp SetupAPI Hid usp10
       Dbghelp Urlmon gdiplus ${MSXML_LIB} ${CMAKE_REQUIRED_LIBRARIES})
 else ()
   target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11
