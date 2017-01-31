@@ -11,6 +11,8 @@
 #include "stdafx.h"
 
 #include "ThisMfcApp.h"
+#include "fonts.h"
+
 #include "ConfirmDeleteDlg.h"
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
@@ -45,7 +47,7 @@ void CConfirmDeleteDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CConfirmDeleteDlg, CPWDialog)
 END_MESSAGE_MAP()
 
-BOOL CConfirmDeleteDlg::OnInitDialog(void)
+BOOL CConfirmDeleteDlg::OnInitDialog()
 {
   CString cs_text;
   if (m_numchildren > 0) {
@@ -73,6 +75,10 @@ BOOL CConfirmDeleteDlg::OnInitDialog(void)
               L"\xab" + m_sxUser  + L"\xbb";
     GetDlgItem(IDC_ENTRY)->SetWindowText(sxEntry.c_str());
 
+    // Get Add/Edit font
+    CFont *pFont = Fonts::GetInstance()->GetAddEditFont();
+    GetDlgItem(IDC_ENTRY)->SetFont(pFont);
+
     // Disable/hide children info - n/a for a single entry
     GetDlgItem(IDC_DELETECHILDREN)->EnableWindow(FALSE);
     GetDlgItem(IDC_DELETECHILDREN)->ShowWindow(SW_HIDE);
@@ -82,6 +88,7 @@ BOOL CConfirmDeleteDlg::OnInitDialog(void)
   }
   cs_text.LoadString((m_numchildren > 0) ? IDS_DELGRP : IDS_DELENT);
   GetDlgItem(IDC_DELITEM)->SetWindowText(cs_text);
+
   return TRUE;
 }
 
