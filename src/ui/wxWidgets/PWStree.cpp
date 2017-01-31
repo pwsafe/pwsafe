@@ -294,18 +294,29 @@ wxString PWSTreeCtrl::ItemDisplayString(const CItemData &item) const
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   const wxString title = item.GetTitle().c_str();
+
+  // Title is a mandatory field - no need to worry if empty
   wxString disp = title;
 
   if (prefs->GetPref(PWSprefs::ShowUsernameInTree)) {
     const wxString user = item.GetUser().c_str();
-    if (!user.empty())
-      disp += wxT(" [") + user + wxT("]");
+    // User is NOT a mandatory field - but show not present by empty brackets i.e. []
+    // if user wants it displayed
+    disp += wxT(" [") + user + wxT("]");
   }
 
   if (prefs->GetPref(PWSprefs::ShowPasswordInTree)) {
     const wxString passwd = item.GetPassword().c_str();
-    if (!passwd.empty())
-      disp += wxT(" {") + passwd + wxT("}");
+    // Password is a mandatory field - no need to worry if empty
+    disp += wxT(" {") + passwd + wxT("}");
+  }
+
+  if (item.IsProtected()) { 
+    disp += wxT(" #");
+#ifdef NOTYET
+    wxUniChar padlock(0x1f512);
+    disp +=padlock;
+#endif
   }
 
   return disp;
