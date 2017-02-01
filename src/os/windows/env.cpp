@@ -147,10 +147,10 @@ stringT pws_os::getprocessid()
 
 typedef void (WINAPI * RtlGetVersion_FUNC) (OSVERSIONINFOEXW *);
 
-bool pws_os::RtlGetVersion(DWORD &dwMajorVersion, DWORD &dwMinorVersion, DWORD &dwBuildNumber)
+bool pws_os::RtlGetVersion(DWORD &dwMajor, DWORD &dwMinor, DWORD &dwBuild)
 {
   RtlGetVersion_FUNC rtl_func;
-  dwMajorVersion = dwMinorVersion = dwBuildNumber = 0;
+  dwMajor = dwMinor = dwBuild = 0;
 
   HMODULE hMod = HMODULE(pws_os::LoadLibrary(L"ntdll.dll", pws_os::LOAD_LIBRARY_SYS));
 
@@ -169,9 +169,9 @@ bool pws_os::RtlGetVersion(DWORD &dwMajorVersion, DWORD &dwMinorVersion, DWORD &
 
     pws_os::FreeLibrary(hMod);
 
-    dwMajorVersion = osw.dwMajorVersion;
-    dwMinorVersion = osw.dwMinorVersion;
-    dwBuildNumber = osw.dwBuildNumber;
+    dwMajor = osw.dwMajorVersion;
+    dwMinor = osw.dwMinorVersion;
+    dwBuild = osw.dwBuildNumber;
 
     return true;
   } else {
@@ -189,13 +189,13 @@ bool pws_os::RtlGetVersion(DWORD &dwMajorVersion, DWORD &dwMinorVersion, DWORD &
 *    Windows 2012           6.1     OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION
 *    Windows 7              6.1     OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION
 *    Windows Server 2008 R2 6.1     OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION
-*    Windows Vista          6.0     OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION
-*    Windows Server 2008    6.0     OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION
 
 *
 * Versions no longer supported by current PasswordSafe due to missing APIs or not supported by
 * latest version of Visual Studio.
 *   Operating system       Version  Other
+*    Windows Vista          6.0     OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION
+*    Windows Server 2008    6.0     OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION
 *    Windows Server 2003 R2 5.2     GetSystemMetrics(SM_SERVERR2) != 0
 *    Windows Home Server    5.2     OSVERSIONINFOEX.wSuiteMask & VER_SUITE_WH_SERVER
 *    Windows Server 2003    5.2     GetSystemMetrics(SM_SERVERR2) == 0
@@ -219,24 +219,60 @@ bool pws_os::RtlGetVersion(DWORD &dwMajorVersion, DWORD &dwMinorVersion, DWORD &
 
 bool pws_os::IsWindowsVistaOrGreater()
 {
-  DWORD dwMajorVersion, dwMinorVersion, dwBuildNumber;
+  DWORD dwMajor, dwMinor, dwBuild;
 
-  bool rc = RtlGetVersion(dwMajorVersion, dwMinorVersion, dwBuildNumber);
+  bool rc = RtlGetVersion(dwMajor, dwMinor, dwBuild);
 
   if (rc) {
-    return dwMajorVersion >= 6;
+    return dwMajor >= 6;
+  } else
+    return false;
+}
+
+bool pws_os::IsWindows7OrGreater()
+{
+  DWORD dwMajor, dwMinor, dwBuild;
+
+  bool rc = RtlGetVersion(dwMajor, dwMinor, dwBuild);
+
+  if (rc) {
+    return dwMajor >= 10  || (dwMajor == 6 && dwMinor >= 1);
+  } else
+    return false;
+}
+
+bool pws_os::IsWindows8OrGreater()
+{
+  DWORD dwMajor, dwMinor, dwBuild;
+
+  bool rc = RtlGetVersion(dwMajor, dwMinor, dwBuild);
+
+  if (rc) {
+    return dwMajor >= 10 || (dwMajor == 6 && dwMinor >= 2);
+  } else
+    return false;
+}
+
+bool pws_os::IsWindows81OrGreater()
+{
+  DWORD dwMajor, dwMinor, dwBuild;
+
+  bool rc = RtlGetVersion(dwMajor, dwMinor, dwBuild);
+
+  if (rc) {
+    return dwMajor >= 10 || (dwMajor == 6 && dwMinor == 3);
   } else
     return false;
 }
 
 bool pws_os::IsWindows10OrGreater()
 {
-  DWORD dwMajorVersion, dwMinorVersion, dwBuildNumber;
+  DWORD dwMajor, dwMinor, dwBuild;
 
-  bool rc = RtlGetVersion(dwMajorVersion, dwMinorVersion, dwBuildNumber);
+  bool rc = RtlGetVersion(dwMajor, dwMinor, dwBuild);
 
   if (rc) {
-    return dwMajorVersion >= 10;
+    return dwMajor >= 10;
   } else
     return false;
 }

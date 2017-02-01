@@ -15,6 +15,7 @@
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "EditShortcutDlg.h"
+#include "DuplicateEntry.h"
 #include "ControlExtns.h"
 
 #include "core/PWSprefs.h"
@@ -202,7 +203,7 @@ void CEditShortcutDlg::OnOK()
   if (!m_group.IsEmpty() && m_group[0] == '.') {
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_DOTINVALID);
-    ((CEdit*)GetDlgItem(IDC_GROUP))->SetFocus();
+    ((CEdit *)GetDlgItem(IDC_GROUP))->SetFocus();
     goto dont_close;
   }
 
@@ -216,14 +217,17 @@ void CEditShortcutDlg::OnOK()
     const CItemData &listItem = GetMainDlg()->GetEntryAt(listindex);
     bool notSame = listItem.GetUUID() != m_pci->GetUUID();
     if (notSame) {
-      CGeneralMsgBox gmb;
-      CSecString temp;
-      temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(m_group),
-                  static_cast<LPCWSTR>(m_title),
-                  static_cast<LPCWSTR>(m_username));
-      gmb.AfxMessageBox(temp);
-      ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
-      ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
+      CString csTitle, csMessage;
+      CString csCaptionEntry(MAKEINTRESOURCE(IDS_SHORTCUT));
+      CString csMessageEntry(MAKEINTRESOURCE(IDS_A_SHORTCUT));
+      csTitle.Format(IDS_DUPLICATE, static_cast<LPCWSTR>(csCaptionEntry));
+      csMessage.Format(IDS_DUPLICATE_ENTRY, static_cast<LPCWSTR>(csMessageEntry));
+      CDuplicateEntry dlg(this, csTitle, csMessage, m_group, m_title, m_username);
+
+      dlg.DoModal();
+
+      ((CEdit *)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
+      ((CEdit *)GetDlgItem(IDC_TITLE))->SetFocus();
       goto dont_close;
     }
   }

@@ -90,7 +90,6 @@
 #define IDS_MUSTHAVEPASSWORD            5248
 #define IDS_DOTINVALID                  5249
 #define IDS_PASSWORDSNOTMATCH           5250
-#define IDS_ENTRYEXISTS                 5251
 #define IDS_ENTRIESDONOTMATCH           5254
 #define IDS_ENTERKEYANDVERIFY           5255
 #define IDS_PASSWORDOVERRIDE            5256
@@ -242,7 +241,6 @@
 #define IDS_MERGEX                      5416
 #define IDS_EXPORT_TEXTX                5417
 #define IDS_EXPORT_XMLX                 5418
-#define IDS_ENTRYEXISTS2                5419
 #define IDS_ADVANCED_TITLETEXT          5420
 #define IDS_ADVANCED_PASSWORDTEXT       5421
 #define IDS_ADVANCED_GROUPTEXT          5422
@@ -325,7 +323,6 @@
 #define IDS_SAMPLETEXT                  5513
 #define IDS_EMPTYSAMPLETEXT             5514
 #define IDS_MENUCOPYEMAIL               5516
-#define IDS_COPYEMAIL                   5517
 #define IDS_SCTARGET                    5520
 #define IDS_ADVANCEDOPTIONS             5522
 #define IDS_ADVANCEDSUBSET              5523
@@ -483,8 +480,6 @@
 #define IDS_TREEFONT                    5692
 #define IDS_PSWDFONT                    5693
 #define IDS_OSK_NO_UNICODE_FONT         5694
-#define IDS_ENTRYEXISTS1                5695
-#define IDS_ENTRYEXISTS3                5696
 #define IDS_DRAGTOCOPY                  5697
 #define IDS_ADDENTRY                    5698
 #define IDS_EDITENTRY                   5699
@@ -794,3 +789,10 @@
 #define IDS_HOSTUSER                    6043
 #define IDS_LIST_OF_ALIASES             6044
 #define IDS_LIST_OF_SHORTCUTS           6045
+#define IDS_DUPLICATE                   6046
+#define IDS_DUPLICATE_ENTRY             6047
+#define IDS_A_SHORTCUT                  6048
+#define IDS_AN_ENTRY                    6049
+#define IDS_SHORTCUT                    6050
+#define IDS_ENTRY                       6051
+
