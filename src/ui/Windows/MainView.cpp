@@ -1985,8 +1985,10 @@ void DboxMain::ReSelectItems(pws_os::CUUID entry_uuid,
       hItem = pdi->tree_item;
       item = pdi->list_index;
     }
-  } else if (!sxGroupPath.empty()) {
-    hItem = m_mapGroupToTreeItem[sxGroupPath];
+  } else
+   if (!sxGroupPath.empty() &&
+       m_mapGroupToTreeItem.find(m_sxSelectedGroup) != m_mapGroupToTreeItem.end()) {
+     hItem = m_mapGroupToTreeItem[sxGroupPath];
   }
 
   // Now select
