@@ -257,7 +257,7 @@ static void GetVersionInfoFromFile(const CString &csFileName,
   // Get version information from the given file
   dwVerInfoSize = ::GetFileVersionInfoSize((LPWSTR)(LPCWSTR)csFileName, &dwVerHnd);
   if (dwVerInfoSize > 0) {
-    char* pVersionInfo = new char[dwVerInfoSize];
+    char *pVersionInfo = new char[dwVerInfoSize];
     if (pVersionInfo != NULL) {
       BOOL bRet = ::GetFileVersionInfo((LPWSTR)(LPCWSTR)csFileName,
                     (DWORD)dwVerHnd, (DWORD)dwVerInfoSize, (LPVOID)pVersionInfo);
@@ -1207,7 +1207,7 @@ BOOL ThisMfcApp::InitInstance()
   }
 
   // Run dialog - note that we don't particularly care what the response was
-  (void) dbox.DoModal();
+  dbox.DoModal();
 
   if (m_pTrayIcon != NULL)
     m_pTrayIcon->DestroyWindow();
@@ -1248,38 +1248,38 @@ void ThisMfcApp::ClearMRU()
 
   // Can't get the MRU list on the menu to tidy up automatically
   // Do it manually!
-  CWnd* pMain = AfxGetMainWnd();
+  CWnd *pMain = AfxGetMainWnd();
 
-  CMenu* xmainmenu = pMain->GetMenu();
+  CMenu *pMainMenu = pMain->GetMenu();
 
   // Look for "File" menu.
-  int pos = FindMenuItem(xmainmenu, ID_FILEMENU);
+  int pos = FindMenuItem(pMainMenu, ID_FILEMENU);
 
-  CMenu* xfile_submenu = xmainmenu->GetSubMenu(pos);
-  if (xfile_submenu != NULL)  // Look for MRU first entry
-    pos = FindMenuItem(xfile_submenu, ID_FILE_MRU_ENTRY1);
+  CMenu *pFile_Submenu = pMainMenu->GetSubMenu(pos);
+  if (pFile_Submenu != NULL)  // Look for MRU first entry
+    pos = FindMenuItem(pFile_Submenu, ID_FILE_MRU_ENTRY1);
   else
     return;
 
   if (pos > -1) {
     // Recent databases are on the main File menu - remove them
     for (int nID = numMRU; nID > 1; nID--)
-      xfile_submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
+      pFile_Submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
 
     return;
   }
 
   // Recent databases are on the popup menu off the main File menu
-  CMenu* xpopupmenu = xfile_submenu->GetSubMenu(3);
-  if (xpopupmenu != NULL)  // Look for MRU first entry
-    pos = FindMenuItem(xpopupmenu, ID_FILE_MRU_ENTRY1);
+  CMenu *pPopupMenu = pFile_Submenu->GetSubMenu(3);
+  if (pPopupMenu != NULL)  // Look for MRU first entry
+    pos = FindMenuItem(pPopupMenu, ID_FILE_MRU_ENTRY1);
   else
     return;
 
   if (pos > -1) {
     // Recent databases are on a popup menu - remove them
     for (int nID = numMRU; nID > 1; nID--)
-      xfile_submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
+      pFile_Submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
 
     return;
   }
@@ -1356,7 +1356,7 @@ BOOL ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
 // FindMenuItem() will find a menu item string from the specified
 // popup menu and returns its position (0-based) in the specified
 // popup menu. It returns -1 if no such menu item string is found.
-int ThisMfcApp::FindMenuItem(CMenu* Menu, LPCWSTR MenuString)
+int ThisMfcApp::FindMenuItem(CMenu *Menu, LPCWSTR MenuString)
 {
   ASSERT(Menu);
   ASSERT(::IsMenu(Menu->GetSafeHmenu()));
@@ -1375,7 +1375,7 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, LPCWSTR MenuString)
 // FindMenuItem() will find a menu item ID from the specified
 // popup menu and returns its position (0-based) in the specified
 // popup menu. It returns -1 if no such menu item string is found.
-int ThisMfcApp::FindMenuItem(CMenu* Menu, UINT MenuID)
+int ThisMfcApp::FindMenuItem(CMenu *Menu, UINT MenuID)
 {
   ASSERT(Menu);
   ASSERT(::IsMenu(Menu->GetSafeHmenu()));
@@ -1406,7 +1406,7 @@ void ThisMfcApp::GetApplicationVersionData()
   ::GetModuleFileName(NULL, szFullPath, sizeof(szFullPath));
   dwVerInfoSize = ::GetFileVersionInfoSize(szFullPath, &dwVerHnd);
   if (dwVerInfoSize > 0) {
-    char* pVersionInfo = new char[dwVerInfoSize];
+    char *pVersionInfo = new char[dwVerInfoSize];
     if (pVersionInfo != NULL) {
       BOOL bRet = ::GetFileVersionInfo((LPWSTR)szFullPath,
                                        (DWORD)dwVerHnd,
@@ -1433,7 +1433,7 @@ void ThisMfcApp::GetApplicationVersionData()
         CString cs_text;
         wchar_t *buffer, *lpsztext;
         UINT buflen;
-        TRANSARRAY* lpTransArray;
+        TRANSARRAY *lpTransArray;
 
         VerQueryValue(pVersionInfo, L"\\VarFileInfo\\Translation",
                      (LPVOID*)&buffer, &buflen);
@@ -1495,7 +1495,7 @@ void ThisMfcApp::GetDLLVersionData(const CString &cs_dll, int &wLangID)
   // Get version information from the DLL
   dwVerInfoSize = ::GetFileVersionInfoSize(cs_dll, &dwVerHnd);
   if (dwVerInfoSize > 0) {
-    char* pVersionInfo = new char[dwVerInfoSize];
+    char *pVersionInfo = new char[dwVerInfoSize];
     if (pVersionInfo != NULL) {
       BOOL bRet = ::GetFileVersionInfo((LPCWSTR)cs_dll,
                                        (DWORD)dwVerHnd,
