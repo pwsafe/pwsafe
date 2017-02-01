@@ -16,6 +16,7 @@
 #include "AddEdit_Basic.h"
 #include "AddEdit_PropertySheet.h"
 
+#include "DuplicateEntry.h"
 #include "GeneralMsgBox.h"
 #include "Fonts.h"
 
@@ -649,23 +650,15 @@ BOOL CAddEdit_Basic::OnApply()
   if (M_uicaller() == IDS_ADDENTRY) {
     // Add entry
     if (listindex != GetMainDlg()->End()) {
-      CSecString temp;
-      if (M_group().IsEmpty())
-        if (M_username().IsEmpty())
-          temp.Format(IDS_ENTRYEXISTS3, static_cast<LPCWSTR>(M_title()));
-        else
-          temp.Format(IDS_ENTRYEXISTS2, static_cast<LPCWSTR>(M_title()),
-                      static_cast<LPCWSTR>(M_username()));
-      else
-        if (M_username().IsEmpty())
-          temp.Format(IDS_ENTRYEXISTS1, static_cast<LPCWSTR>(M_group()),
-                      static_cast<LPCWSTR>(M_title()));
-        else
-          temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(M_group()),
-                      static_cast<LPCWSTR>(M_title()),
-                      static_cast<LPCWSTR>(M_username()));
+      CString csTitle, csMessage;
+      CString csCaptionEntry(MAKEINTRESOURCE(IDS_ENTRY));
+      CString csMessageEntry(MAKEINTRESOURCE(IDS_AN_ENTRY));
+      csTitle.Format(IDS_DUPLICATE, static_cast<LPCWSTR>(csCaptionEntry));
+      csMessage.Format(IDS_DUPLICATE_ENTRY, static_cast<LPCWSTR>(csMessageEntry));
+      CDuplicateEntry dlg(this, csTitle, csMessage, M_group(), M_title(), M_username());
 
-      gmb.AfxMessageBox(temp);
+      dlg.DoModal();
+
       pFocus = &m_ex_title;
       goto error;
     }
@@ -674,11 +667,15 @@ BOOL CAddEdit_Basic::OnApply()
     if (listindex != GetMainDlg()->End()) {
       const CItemData &listItem = GetMainDlg()->GetEntryAt(listindex);
       if (listItem.GetUUID() != M_pci()->GetUUID()) {
-        CSecString temp;
-        temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(M_group()),
-                    static_cast<LPCWSTR>(M_title()),
-                    static_cast<LPCWSTR>(M_username()));
-        gmb.AfxMessageBox(temp);
+        CString csTitle, csMessage;
+        CString csCaptionEntry(MAKEINTRESOURCE(IDS_ENTRY));
+        CString csMessageEntry(MAKEINTRESOURCE(IDS_AN_ENTRY));
+        csTitle.Format(IDS_DUPLICATE, static_cast<LPCWSTR>(csCaptionEntry));
+        csMessage.Format(IDS_DUPLICATE_ENTRY, static_cast<LPCWSTR>(csMessageEntry));
+        CDuplicateEntry dlg(this, csTitle, csMessage, M_group(), M_title(), M_username());
+
+        dlg.DoModal();
+
         pFocus = &m_ex_title;
         goto error;
       }

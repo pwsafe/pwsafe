@@ -14,6 +14,7 @@
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "CreateShortcutDlg.h"
+#include "DuplicateEntry.h"
 #include "ControlExtns.h"
 
 #ifdef _DEBUG
@@ -105,29 +106,28 @@ void CCreateShortcutDlg::OnOK()
   //Check that data is valid
   if (m_title.IsEmpty()) {
     gmb.AfxMessageBox(IDS_MUSTHAVETITLE);
-    ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
+    ((CEdit *)GetDlgItem(IDC_TITLE))->SetFocus();
     return;
   }
 
   if (!m_group.IsEmpty() && m_group[0] == '.') {
     gmb.AfxMessageBox(IDS_DOTINVALID);
-    ((CEdit*)GetDlgItem(IDC_GROUP))->SetFocus();
+    ((CEdit *)GetDlgItem(IDC_GROUP))->SetFocus();
     return;
   }
 
   // If there is a matching entry in our list, tell the user to try again.
   if (GetMainDlg()->Find(m_group, m_title, m_username) != app.GetMainDlg()->End()) {
-    CSecString temp;
-    if (m_group.IsEmpty())
-      temp.Format(IDS_ENTRYEXISTS2, static_cast<LPCWSTR>(m_title),
-                  static_cast<LPCWSTR>(m_username));
-    else
-      temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(m_group),
-                  static_cast<LPCWSTR>(m_title),
-                  static_cast<LPCWSTR>(m_username));
-    gmb.AfxMessageBox(temp);
-    ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
-    ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
+    CString csTitle, csMessage;
+    CString csCaptionEntry(MAKEINTRESOURCE(IDS_SHORTCUT));
+    CString csMessageEntry(MAKEINTRESOURCE(IDS_A_SHORTCUT));
+    csTitle.Format(IDS_DUPLICATE, static_cast<LPCWSTR>(csCaptionEntry));
+    csMessage.Format(IDS_DUPLICATE_ENTRY, static_cast<LPCWSTR>(csMessageEntry));
+    CDuplicateEntry dlg(this, csTitle, csMessage, m_group, m_title, m_username);
+    dlg.DoModal();
+
+    ((CEdit *)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
+    ((CEdit *)GetDlgItem(IDC_TITLE))->SetFocus();
     return;
   }
   //End check

@@ -15,7 +15,7 @@
 #include "DDSupport.h"
 #include "SecString.h"
 #include "SMemFile.h"
-#include "GeneralMsgBox.h"
+#include "DuplicateEntry.h"
 
 #include "core/ItemData.h"
 #include "core/Util.h"
@@ -730,24 +730,14 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
     StringX sxGroup = pci->GetGroup();
     if ((sxNewTitle != pci->GetTitle() || sxNewUser != pci->GetUser()) &&
         app.GetMainDlg()->Find(sxGroup, sxNewTitle, sxNewUser) != app.GetMainDlg()->End()) {
-      CGeneralMsgBox gmb;
-      CSecString temp;
-      if (sxGroup.empty()) {
-        if (sxNewUser.empty())
-          temp.Format(IDS_ENTRYEXISTS3, static_cast<LPCWSTR>(sxNewTitle.c_str()));
-        else
-          temp.Format(IDS_ENTRYEXISTS2, static_cast<LPCWSTR>(sxNewTitle.c_str()),
-                      static_cast<LPCWSTR>(sxNewUser.c_str()));
-      } else {
-        if (sxNewUser.empty())
-          temp.Format(IDS_ENTRYEXISTS1, static_cast<LPCWSTR>(sxGroup.c_str()),
-                      static_cast<LPCWSTR>(sxNewTitle.c_str()));
-        else
-          temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(sxGroup.c_str()),
-                      static_cast<LPCWSTR>(sxNewTitle.c_str()),
-                      static_cast<LPCWSTR>(sxNewUser.c_str()));
-      }
-      gmb.AfxMessageBox(temp);
+      CString csTitle, csMessage;
+      CString csCaptionEntry(MAKEINTRESOURCE(IDS_ENTRY));
+      CString csMessageEntry(MAKEINTRESOURCE(IDS_AN_ENTRY));
+      csTitle.Format(IDS_DUPLICATE, static_cast<LPCWSTR>(csCaptionEntry));
+      csMessage.Format(IDS_DUPLICATE_ENTRY, static_cast<LPCWSTR>(csMessageEntry));
+      CDuplicateEntry dlg(this, csTitle, csMessage, sxGroup, sxNewTitle, sxNewUser);
+
+      dlg.DoModal();
       goto bad_exit;
     }
 
