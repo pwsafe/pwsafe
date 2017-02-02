@@ -731,23 +731,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
     if ((sxNewTitle != pci->GetTitle() || sxNewUser != pci->GetUser()) &&
         app.GetMainDlg()->Find(sxGroup, sxNewTitle, sxNewUser) != app.GetMainDlg()->End()) {
       CGeneralMsgBox gmb;
-      CSecString temp;
-      if (sxGroup.empty()) {
-        if (sxNewUser.empty())
-          temp.Format(IDS_ENTRYEXISTS3, static_cast<LPCWSTR>(sxNewTitle.c_str()));
-        else
-          temp.Format(IDS_ENTRYEXISTS2, static_cast<LPCWSTR>(sxNewTitle.c_str()),
-                      static_cast<LPCWSTR>(sxNewUser.c_str()));
-      } else {
-        if (sxNewUser.empty())
-          temp.Format(IDS_ENTRYEXISTS1, static_cast<LPCWSTR>(sxGroup.c_str()),
-                      static_cast<LPCWSTR>(sxNewTitle.c_str()));
-        else
-          temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(sxGroup.c_str()),
-                      static_cast<LPCWSTR>(sxNewTitle.c_str()),
-                      static_cast<LPCWSTR>(sxNewUser.c_str()));
-      }
-      gmb.AfxMessageBox(temp);
+      gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
       goto bad_exit;
     }
 
