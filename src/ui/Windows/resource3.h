@@ -242,7 +242,6 @@
 #define IDS_MERGEX                      5416
 #define IDS_EXPORT_TEXTX                5417
 #define IDS_EXPORT_XMLX                 5418
-#define IDS_ENTRYEXISTS2                5419
 #define IDS_ADVANCED_TITLETEXT          5420
 #define IDS_ADVANCED_PASSWORDTEXT       5421
 #define IDS_ADVANCED_GROUPTEXT          5422
@@ -483,8 +482,6 @@
 #define IDS_TREEFONT                    5692
 #define IDS_PSWDFONT                    5693
 #define IDS_OSK_NO_UNICODE_FONT         5694
-#define IDS_ENTRYEXISTS1                5695
-#define IDS_ENTRYEXISTS3                5696
 #define IDS_DRAGTOCOPY                  5697
 #define IDS_ADDENTRY                    5698
 #define IDS_EDITENTRY                   5699

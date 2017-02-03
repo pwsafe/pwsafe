@@ -117,15 +117,7 @@ void CCreateShortcutDlg::OnOK()
 
   // If there is a matching entry in our list, tell the user to try again.
   if (GetMainDlg()->Find(m_group, m_title, m_username) != app.GetMainDlg()->End()) {
-    CSecString temp;
-    if (m_group.IsEmpty())
-      temp.Format(IDS_ENTRYEXISTS2, static_cast<LPCWSTR>(m_title),
-                  static_cast<LPCWSTR>(m_username));
-    else
-      temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(m_group),
-                  static_cast<LPCWSTR>(m_title),
-                  static_cast<LPCWSTR>(m_username));
-    gmb.AfxMessageBox(temp);
+    gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
     return;

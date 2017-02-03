@@ -217,11 +217,7 @@ void CEditShortcutDlg::OnOK()
     bool notSame = listItem.GetUUID() != m_pci->GetUUID();
     if (notSame) {
       CGeneralMsgBox gmb;
-      CSecString temp;
-      temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(m_group),
-                  static_cast<LPCWSTR>(m_title),
-                  static_cast<LPCWSTR>(m_username));
-      gmb.AfxMessageBox(temp);
+      gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
       goto dont_close;

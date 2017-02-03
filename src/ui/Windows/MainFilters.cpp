@@ -196,6 +196,11 @@ void DboxMain::ApplyFilters()
     m_LastFoundListItem = pdi->list_index;
   }
 
+  if (iLastShown < 0 || m_LastFoundListItem < 0) {
+    // No item selected by Find or found item not in this view - select first entry
+    SelectFirstEntry();
+  }
+
   // Update Status Bar
   UpdateStatusBar();
 }

@@ -335,7 +335,7 @@ BEGIN
   IDSC_DCAVIEWEDIT         "View/Edit selected entry"
   IDSC_DCACOPYPASSWORDMIN  "Copy password to clipboard, minimize"
   IDSC_DCARUN              "Run Command"
-  IDSC_DCASENDEMAIL        "Send email"
+  IDSC_DCASENDEMAIL        "Send Email"
   IDSC_DEFAULT             " (application default)"
 END
 
@@ -353,7 +353,7 @@ BEGIN
   IDSC_STATVIEWEDIT        "Double-Click on entry to View/Edit it"
   IDSC_STATCOPYPASSWORDMIN "Double-Click on entry to Copy Password and Minimize"
   IDSC_STATRUN             "Double-Click on entry to Run Command"
-  IDSC_STATSENDEMAIL       "Double-Click on entry to Send email"
+  IDSC_STATSENDEMAIL       "Double-Click on entry to Send Email"
 END
 
 STRINGTABLE

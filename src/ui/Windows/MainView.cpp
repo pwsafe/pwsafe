@@ -1164,12 +1164,14 @@ void DboxMain::SelectFirstEntry()
       m_ctlItemList.SetItemState(0, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
       m_ctlItemList.EnsureVisible(0, FALSE);
       pci = (CItemData *)m_ctlItemList.GetItemData(0);
+      m_ctlItemList.SetFocus();
     } else {
       HTREEITEM hitem = m_ctlItemTree.GetRootItem();
       if (hitem != NULL) {
         m_ctlItemTree.SelectItem(hitem);
         m_ctlItemTree.EnsureVisible(hitem);
         pci = (CItemData *)m_ctlItemTree.GetItemData(hitem);
+        m_ctlItemTree.SetFocus();
       }
     }
 

@@ -649,23 +649,7 @@ BOOL CAddEdit_Basic::OnApply()
   if (M_uicaller() == IDS_ADDENTRY) {
     // Add entry
     if (listindex != GetMainDlg()->End()) {
-      CSecString temp;
-      if (M_group().IsEmpty())
-        if (M_username().IsEmpty())
-          temp.Format(IDS_ENTRYEXISTS3, static_cast<LPCWSTR>(M_title()));
-        else
-          temp.Format(IDS_ENTRYEXISTS2, static_cast<LPCWSTR>(M_title()),
-                      static_cast<LPCWSTR>(M_username()));
-      else
-        if (M_username().IsEmpty())
-          temp.Format(IDS_ENTRYEXISTS1, static_cast<LPCWSTR>(M_group()),
-                      static_cast<LPCWSTR>(M_title()));
-        else
-          temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(M_group()),
-                      static_cast<LPCWSTR>(M_title()),
-                      static_cast<LPCWSTR>(M_username()));
-
-      gmb.AfxMessageBox(temp);
+      gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
       pFocus = &m_ex_title;
       goto error;
     }
@@ -674,11 +658,7 @@ BOOL CAddEdit_Basic::OnApply()
     if (listindex != GetMainDlg()->End()) {
       const CItemData &listItem = GetMainDlg()->GetEntryAt(listindex);
       if (listItem.GetUUID() != M_pci()->GetUUID()) {
-        CSecString temp;
-        temp.Format(IDS_ENTRYEXISTS, static_cast<LPCWSTR>(M_group()),
-                    static_cast<LPCWSTR>(M_title()),
-                    static_cast<LPCWSTR>(M_username()));
-        gmb.AfxMessageBox(temp);
+        gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
         pFocus = &m_ex_title;
         goto error;
       }
