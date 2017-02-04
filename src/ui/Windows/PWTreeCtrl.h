@@ -12,6 +12,8 @@
 */
 
 #include <Afxcmn.h>
+
+#include "PWTouch.h"
 #include "SecString.h"
 #include "Fonts.h"
 
@@ -26,11 +28,11 @@ class CPWTDropTarget;
 class CPWTDataSource;
 class CPWTDropSource;
 
-class CPWTreeCtrl : public CTreeCtrl
+class CPWTreeCtrlX : public CTreeCtrl
 {
 public:
-  CPWTreeCtrl();
-  ~CPWTreeCtrl();
+  CPWTreeCtrlX();
+  ~CPWTreeCtrlX();
 
   // indices of bitmaps in ImageList
   // NOTE for normal and base entries items, order MUST be: 
@@ -47,7 +49,7 @@ public:
     virtual void operator()(HTREEITEM) = 0;
     virtual ~TreeItemFunctor() {}                                   
   };
-  
+
   void Initialize();
   void ActivateND(const bool bActivate);
 
@@ -97,7 +99,7 @@ public:
   { return m_sProtectSymbol; }
 
 protected:
-  //{{AFX_MSG(CPWTreeCtrl)
+  //{{AFX_MSG(CPWTreeCtrlX)
   afx_msg void OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *pLResult);
@@ -180,3 +182,9 @@ private:
   bool m_bUseNew;
   std::wstring m_sProtectSymbol;
 };
+
+/**
+* typedef to hide the fact that CPWTreeCtrlX is really a mixin.
+*/
+
+typedef CPWTouch< CPWTreeCtrlX > CPWTreeCtrl;

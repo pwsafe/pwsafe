@@ -16,16 +16,17 @@
 
 #pragma once
 
+#include "PWTouch.h"
 #include "SecString.h"
 #include "Fonts.h"
 
 class CItemData;
 
-class CPWListCtrl : public CListCtrl
+class CPWListCtrlX : public CListCtrl
 {
 public:
-  CPWListCtrl();
-  ~CPWListCtrl();
+  CPWListCtrlX();
+  ~CPWListCtrlX();
 
   void Initialize();
   void ActivateND(const bool bActivate);
@@ -78,3 +79,10 @@ private:
   CFont *GetFontBasedOnStatus(CItemData *pci, COLORREF &cf);
   bool m_bUseHighLighting;
 };
+
+/**
+* typedef to hide the fact that COptionsShortcuts is really a mixin.
+*/
+
+typedef CPWTouch< CPWListCtrlX > CPWListCtrl;
+

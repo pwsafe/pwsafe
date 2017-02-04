@@ -18,7 +18,7 @@
 #include <algorithm>
 #include <iterator>
 
-// CPWToolBar
+// CPWToolBarX
 
 /*
   To add a new Toolbar button to this class:
@@ -49,7 +49,7 @@
 // languages as they are used only in the configuration file.
 // Note a separator is denoted by '~'
 
-const CPWToolBar::GuiRecord CPWToolBar::MainGuiInfo[] =
+const CPWToolBarX::GuiRecord CPWToolBarX::MainGuiInfo[] =
   // CString name; UINT ID, classicBM, newBM, disBM
   {
     {L"new", ID_MENUITEM_NEW, IDB_NEW_CLASSIC, IDB_NEW_NEW, IDB_NEW_NEW_D},
@@ -110,7 +110,7 @@ const CPWToolBar::GuiRecord CPWToolBar::MainGuiInfo[] =
 
 // Additional Controls NOT on ToolBar and can't be added by the user during customise.
 // They are listed here ONLY to provide images for the menu items!
-const CPWToolBar::GuiRecord CPWToolBar::OtherGuiInfo[] =
+const CPWToolBarX::GuiRecord CPWToolBarX::OtherGuiInfo[] =
   // CString name; UINT ID, classicBM, newBM, disBM
   {
     {L"", ID_MENUITEM_PROPERTIES, IDB_PROPERTIES_CLASSIC, IDB_PROPERTIES_NEW, IDB_PROPERTIES_NEW_D},
@@ -157,21 +157,21 @@ const CPWToolBar::GuiRecord CPWToolBar::OtherGuiInfo[] =
     {L"", ID_MENUITEM_SYNCHRONIZEALL, IDB_IMPORT_CLASSIC, IDB_IMPORT_NEW, IDB_IMPORT_NEW_D},
   };
 
-IMPLEMENT_DYNAMIC(CPWToolBar, CToolBar)
+IMPLEMENT_DYNAMIC(CPWToolBarX, CToolBar)
 
-CPWToolBar::CPWToolBar()
+CPWToolBarX::CPWToolBarX()
 :  m_bitmode(1), m_iBrowseURL_BM_offset(-1), m_iSendEmail_BM_offset(-1)
 {
   m_pOriginalTBinfo = new TBBUTTON[_countof(MainGuiInfo)];
   m_iNum_Bitmaps = _countof(MainGuiInfo) + _countof(OtherGuiInfo);
 }
 
-CPWToolBar::~CPWToolBar()
+CPWToolBarX::~CPWToolBarX()
 {
   delete[] m_pOriginalTBinfo;
 }
 
-void CPWToolBar::OnDestroy()
+void CPWToolBarX::OnDestroy()
 {
   m_ImageLists[0].DeleteImageList();
   m_ImageLists[1].DeleteImageList();
@@ -180,7 +180,7 @@ void CPWToolBar::OnDestroy()
   m_DisabledImageLists[1].DeleteImageList();
 }
 
-BEGIN_MESSAGE_MAP(CPWToolBar, CToolBar)
+BEGIN_MESSAGE_MAP(CPWToolBarX, CToolBar)
   ON_NOTIFY_REFLECT(TBN_GETBUTTONINFO, OnToolBarGetButtonInfo)
   ON_NOTIFY_REFLECT(TBN_QUERYINSERT, OnToolBarQueryInsert)
   ON_NOTIFY_REFLECT(TBN_QUERYDELETE, OnToolBarQueryDelete)
@@ -189,9 +189,9 @@ BEGIN_MESSAGE_MAP(CPWToolBar, CToolBar)
   ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
-// CPWToolBar message handlers
+// CPWToolBarX message handlers
 
-void CPWToolBar::RefreshImages()
+void CPWToolBarX::RefreshImages()
 {
   m_ImageLists[0].DeleteImageList();
   m_ImageLists[1].DeleteImageList();
@@ -204,12 +204,12 @@ void CPWToolBar::RefreshImages()
   ChangeImages(m_toolbarMode);
 }
 
-void CPWToolBar::OnToolBarQueryInsert(NMHDR *, LRESULT *pLResult)
+void CPWToolBarX::OnToolBarQueryInsert(NMHDR *, LRESULT *pLResult)
 {
   *pLResult = TRUE;
 }
 
-void CPWToolBar::OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWToolBarX::OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMTOOLBAR *pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
@@ -220,7 +220,7 @@ void CPWToolBar::OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult)
     *pLResult = TRUE;
 }
 
-void CPWToolBar::OnToolBarQueryInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWToolBarX::OnToolBarQueryInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMTOOLBAR *pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
@@ -235,7 +235,7 @@ void CPWToolBar::OnToolBarQueryInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
   }
 }
 
-void CPWToolBar::OnToolBarGetButtonInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWToolBarX::OnToolBarGetButtonInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMTOOLBAR *pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
@@ -251,14 +251,14 @@ void CPWToolBar::OnToolBarGetButtonInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
   }
 }
 
-void CPWToolBar::OnToolBarReset(NMHDR *, LRESULT *)
+void CPWToolBarX::OnToolBarReset(NMHDR *, LRESULT *)
 {
   Reset();
 }
 
 //  Other routines
 
-void CPWToolBar::Init(const int NumBits, bool bRefresh)
+void CPWToolBarX::Init(const int NumBits, bool bRefresh)
 {
   int i, j;
   const UINT iClassicFlags = ILC_MASK | ILC_COLOR8;
@@ -329,7 +329,7 @@ void CPWToolBar::Init(const int NumBits, bool bRefresh)
   }
 }
 
-void CPWToolBar::CustomizeButtons(CString csButtonNames)
+void CPWToolBarX::CustomizeButtons(CString csButtonNames)
 {
   if (csButtonNames.IsEmpty()) {
     // Add all buttons
@@ -366,7 +366,7 @@ void CPWToolBar::CustomizeButtons(CString csButtonNames)
   tbCtrl.AutoSize();
 }
 
-CString CPWToolBar::GetButtonString() const
+CString CPWToolBarX::GetButtonString() const
 {
   CString cs_buttonnames(L"");
   TBBUTTONINFO tbinfo;
@@ -412,7 +412,7 @@ CString CPWToolBar::GetButtonString() const
   return cs_buttonnames;
 }
 
-void CPWToolBar::Reset()
+void CPWToolBarX::Reset()
 {
   int nCount, i;
   CToolBarCtrl& tbCtrl = GetToolBarCtrl();
@@ -432,7 +432,7 @@ void CPWToolBar::Reset()
   tbCtrl.AutoSize();
 }
 
-void CPWToolBar::ChangeImages(const int toolbarMode)
+void CPWToolBarX::ChangeImages(const int toolbarMode)
 {
   CToolBarCtrl& tbCtrl = GetToolBarCtrl();
   m_toolbarMode = toolbarMode;
@@ -446,7 +446,7 @@ void CPWToolBar::ChangeImages(const int toolbarMode)
     tbCtrl.SetDisabledImageList(NULL);
 }
 
-void CPWToolBar::LoadDefaultToolBar(const int toolbarMode)
+void CPWToolBarX::LoadDefaultToolBar(const int toolbarMode)
 {
   int nCount, i, j;
   CToolBarCtrl& tbCtrl = GetToolBarCtrl();
@@ -508,7 +508,7 @@ void CPWToolBar::LoadDefaultToolBar(const int toolbarMode)
   tbCtrl.SetExtendedStyle(dwStyleEx | TBSTYLE_EX_MIXEDBUTTONS);
 }
 
-void CPWToolBar::MapControlIDtoImage(ID2ImageMap &IDtoImages)
+void CPWToolBarX::MapControlIDtoImage(ID2ImageMap &IDtoImages)
 {
   int i, j(0);
   for (i = 0; i < _countof(MainGuiInfo); i++) {
@@ -539,7 +539,7 @@ void CPWToolBar::MapControlIDtoImage(ID2ImageMap &IDtoImages)
   }
 }
 
-void CPWToolBar::SetupImageList(const GuiRecord *guiInfo,
+void CPWToolBarX::SetupImageList(const GuiRecord *guiInfo,
                                 GuiRecordGetter GetBM, GuiRecordGetter GetDisBM,
                                 const int numBMs, const int nImageList)
 {
@@ -575,7 +575,7 @@ void CPWToolBar::SetupImageList(const GuiRecord *guiInfo,
   }
 }
 
-void CPWToolBar::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour)
+void CPWToolBarX::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour)
 {
   // Get how many pixels in the bitmap
   BITMAP bmInfo;

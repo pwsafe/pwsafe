@@ -1099,6 +1099,25 @@ void DboxMain::InitPasswordSafe()
     }
   }
 #endif
+
+#if (NTDDI_VERSION >= NTDDI_WIN7)
+  // Windows 7 dependent
+  // "#if (NTDDI_VERSION >= NTDDI_WIN7)" is temporary just in case need to
+  // quickly revert back to Vista and later support by changing WINVER back
+  // to 0x0600 leaving this code in place
+
+  // Holds gesture configuration
+  CGestureConfig gestureConfig;
+
+  BOOL brc = GetGestureConfig(&gestureConfig);
+  if (brc) {
+    gestureConfig.EnableTwoFingerTap(TRUE);
+    gestureConfig.EnablePressAndTap(TRUE);
+    SetGestureConfig(&gestureConfig);
+  } else {
+    pws_os::IssueError(L"GetGestureConfig", false);
+  }
+#endif
 }
 
 LRESULT DboxMain::OnHotKey(WPARAM wParam, LPARAM )

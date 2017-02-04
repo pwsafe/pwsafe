@@ -458,14 +458,14 @@ public:
   {return m_core.GetAllMediaTypes();}
 
  protected:
-   // ClassWizard generated virtual function overrides
-   //{{AFX_VIRTUAL(DboxMain)
-   virtual BOOL OnInitDialog();
-   virtual void OnCancel();
-   virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
-   // override following to reset idle timeout on any event
-   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-   //}}AFX_VIRTUAL
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(DboxMain)
+  virtual BOOL OnInitDialog();
+  virtual void OnCancel();
+  virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
+  // override following to reset idle timeout on any event
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
   HICON m_hIcon;
   HICON m_hIconSm;

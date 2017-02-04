@@ -22,11 +22,11 @@ class CCompareResultsDlg;
 // Trivial class for results CListCtrl for detecting left mouse click and 
 // performing custom draw
 
-class CCPListCtrl : public CListCtrl
+class CCPListCtrlX : public CListCtrl
 {
 public:
-  CCPListCtrl();
-  ~CCPListCtrl();
+  CCPListCtrlX();
+  ~CCPListCtrlX();
 
   virtual BOOL PreTranslateMessage(MSG *pMsg);
 
@@ -46,6 +46,12 @@ protected:
 private:
   int m_row, m_column;
 };
+
+/**
+* typedef to hide the fact that CPNListCtrl is really a mixin.
+*/
+
+typedef CPWTouch< CCPListCtrlX > CCPListCtrl;
 
 // The following structure is needed for compare to send back data
 // to allow copying, viewing, editing and synching of entries
