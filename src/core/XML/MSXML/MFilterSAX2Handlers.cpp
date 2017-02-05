@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -332,15 +332,15 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     st_Filterkey fk;
     fk.fpool = m_FPool;
     fk.cs_filtername = cur_filter->fname;
-    if (m_MapFilters->find(fk) != m_MapFilters->end()) {
+    if (m_MapXMLFilters->find(fk) != m_MapXMLFilters->end()) {
       stringT question;
       Format(question, IDSC_FILTEREXISTS, cur_filter->fname.c_str());
       if (m_pAsker == NULL || !(*m_pAsker)(question)) {
-        m_MapFilters->erase(fk);
+        m_MapXMLFilters->erase(fk);
       }
     }
     if (rc == IDYES) {
-      m_MapFilters->insert(PWSFilters::Pair(fk, *cur_filter));
+      m_MapXMLFilters->insert(PWSFilters::Pair(fk, *cur_filter));
     }
     delete cur_filter;
     return S_OK;

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -115,7 +115,7 @@ BOOL CCompareWithSelectDlg::OnInitDialog()
   for (listPos = m_pcore->GetEntryIter(); listPos != m_pcore->GetEntryEndIter();
        listPos++) {
     CItemData &ci = m_pcore->GetEntry(listPos);
-    // Don't add shortuts our ourselves
+    // Don't add shortcuts our ourselves
     if (ci.GetEntryType() != CItemData::ET_SHORTCUT &&
         m_pci->GetUUID() != ci.GetUUID())
       InsertItemIntoGUITree(ci);
@@ -208,7 +208,7 @@ void CCompareWithSelectDlg::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResu
   if (m_pSelected->GetGroup() == m_group && m_pSelected->GetTitle() == m_title &&
       m_pSelected->GetUser() == m_username) {
     // Unselect it
-    m_cwItemTree.SetItemState(hItem, 0, LVIS_SELECTED);
+    m_cwItemTree.SetItemState(hItem, 0, TVIS_SELECTED);
 
     m_pSelected = NULL;
     GetDlgItem(IDOK)->EnableWindow(FALSE);

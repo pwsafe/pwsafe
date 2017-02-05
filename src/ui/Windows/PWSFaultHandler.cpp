@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -100,7 +100,7 @@ void InstallFaultHandler(const int major, const int minor, const int build,
                          const wchar_t *revision, const DWORD timestamp)
 {
   
-  hDbgHelp = HMODULE(pws_os::LoadLibrary(_T("DbgHelp.dll"), pws_os::LOAD_LIBRARY_SYS));
+  hDbgHelp = HMODULE(pws_os::LoadLibrary(L"DbgHelp.dll", pws_os::LOAD_LIBRARY_SYS));
   if (hDbgHelp == NULL)
     return;
 
@@ -244,11 +244,12 @@ void PopulateMinidumpUserStreams(PWSprefs *prefs, bool bOpen, bool bRW, UserStre
 
   StringX sx_Buffer;
   int len;
+  const size_t maxLen = USERSTREAMSIZE - 5 - 1;
 
   if (iStream == usAll || iStream == usPrefs || iStream == us1) {
     // Get all Boolean preferences
     sx_Buffer = prefs->PWSprefs::GetAllBoolPrefs();
-    len = min(sx_Buffer.length(), USERSTREAMSIZE - 5 - 1);
+    len = std::min(sx_Buffer.length(), maxLen);
     SecureZeroMemory(szUserStream1, sizeof(szUserStream1));
     swprintf_s(szUserStream1, USERSTREAMSIZE,
                L"US01 %s", sx_Buffer.substr(0, len).c_str());
@@ -257,7 +258,7 @@ void PopulateMinidumpUserStreams(PWSprefs *prefs, bool bOpen, bool bRW, UserStre
   if (iStream == usAll || iStream == usPrefs || iStream == us2) {
     // Get all Integer preferences
     sx_Buffer = prefs->PWSprefs::GetAllIntPrefs();
-    len = min(sx_Buffer.length(), USERSTREAMSIZE - 5 - 1);
+    len = std::min(sx_Buffer.length(), maxLen);
     SecureZeroMemory(szUserStream2, sizeof(szUserStream1));
     swprintf_s(szUserStream2, USERSTREAMSIZE,
                L"US02 %s", sx_Buffer.substr(0, len).c_str());
@@ -266,7 +267,7 @@ void PopulateMinidumpUserStreams(PWSprefs *prefs, bool bOpen, bool bRW, UserStre
   if (iStream == usAll || iStream == usPrefs || iStream == us3) {
     // Get SOME String preferences (do not include user data)
     sx_Buffer = prefs->PWSprefs::GetAllStringPrefs();
-    len = min(sx_Buffer.length(), USERSTREAMSIZE - 5 - 1);
+    len = std::min(sx_Buffer.length(), maxLen);
     SecureZeroMemory(szUserStream3, sizeof(szUserStream1));
     swprintf_s(szUserStream3, USERSTREAMSIZE,
                L"US03 %s", sx_Buffer.substr(0, len).c_str());
@@ -358,12 +359,12 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
     UserStreams[3].Buffer = (void *)&szUserStream3[0];
     UserStreams[3].BufferSize = (ULONG)((wcslen(szUserStream3) + 1) * sizeof(wchar_t));
 
-    stringT us4 = PWSLog::GetLog()->DumpLog();
+    std::wstring us4 = PWSLog::GetLog()->DumpLog();
 
     if (us4.length() > 0) {
       UserStreams[4].Type = LastReservedStream + 5;
       UserStreams[4].Buffer = (void *)us4.c_str();
-      UserStreams[4].BufferSize = (ULONG)(us4.length() * sizeof(TCHAR));
+      UserStreams[4].BufferSize = (ULONG)(us4.length() * sizeof(wchar_t));
     }
 
     MINIDUMP_USER_STREAM_INFORMATION musi;

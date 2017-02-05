@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -9,6 +9,8 @@
 //-----------------------------------------------------------------------------
 
 #include "stdafx.h"
+
+#include "Windowsdefs.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
@@ -68,15 +70,18 @@ void CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
+  ON_WM_TIMER()
+
   ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
+  ON_BN_CLICKED(IDC_YUBIKEY2_BTN, OnYubikey2Btn)
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
+
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_NEWPASSKEY, OnNewPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_CONFIRMNEW, OnConfirmNewSetfocus)
-  ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
+
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
-  ON_BN_CLICKED(IDC_YUBIKEY2_BTN, OnYubikey2Btn)
-  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
-  ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 BOOL CPasskeyChangeDlg::OnInitDialog()
@@ -148,7 +153,7 @@ void CPasskeyChangeDlg::OnOK()
   // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
   // (also used in CPasskeySetup)
   else if (!CPasswordCharPool::CheckPassword(m_newpasskey, errmess)) {
-    cs_msg.Format(IDS_WEAKPASSPHRASE, errmess.c_str());
+    cs_msg.Format(IDS_WEAKPASSPHRASE, static_cast<LPCWSTR>(errmess.c_str()));
 
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
     cs_text.LoadString(IDS_USEITANYWAY);

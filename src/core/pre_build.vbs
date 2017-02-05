@@ -1,5 +1,5 @@
 '
-' Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+' Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 ' All rights reserved. Use of the code is allowed under the
 ' Artistic License 2.0 terms, as specified in the LICENSE file
 ' distributed with this code, or available from
@@ -38,7 +38,7 @@ strConfig = objShell.ExpandEnvironmentStrings("%ConfigurationName%")
 
 strConfigLC = LCase(strConfig)
 
-' Rather than assume that wxWidgets or other non-MFC configurations and
+' Rather than assume that wxWidgets or other non-MFC configurations end
 ' with 'wx', just use known MFC configurations
 Select Case strConfigLC
   Case "debug", "release", "debug64", "release64"

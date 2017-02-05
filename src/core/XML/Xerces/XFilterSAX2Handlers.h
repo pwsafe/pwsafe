@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -50,11 +50,11 @@ public:
   // Local variables & functions
   void SetVariables(Asker *pAsker, PWSFilters *mapfilters, const FilterPool fpool, 
                     const bool &bValidation)
-  {m_pAsker = pAsker; m_MapFilters = mapfilters, m_FPool = fpool; m_bValidation = bValidation;}
+  {m_pAsker = pAsker; m_MapXMLFilters = mapfilters, m_FPool = fpool; m_bValidation = bValidation;}
   void SetSchemaVersion(int ischema_version)
   {m_iSchema_Version = ischema_version;}
 
-  PWSFilters *m_MapFilters;
+  PWSFilters *m_MapXMLFilters;  // So as not to confuse with UI & core
   FilterPool m_FPool;
   int m_type;
 

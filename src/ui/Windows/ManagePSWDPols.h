@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -75,7 +75,7 @@ private:
   static int CALLBACK SortNames(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   static int CALLBACK SortEntries(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   
-  // Hisory of current changes for Undo/Redo and index to current change
+  // History of current changes for Undo/Redo and index to current change
   // that can be undone. Note: if this is less that the size of the vector
   // of saved changes, then there are changes that can be redone.
   std::vector<st_PSWDPolicyChange> m_vchanges;

@@ -1,15 +1,175 @@
-Password Safe 3.38.3 Release Notes ???? 2016
-============================================
+Password Safe 3.41.1 Release Notes ???????? 2017
+================================================
 
-This note describe the new features, fixed bugs and known problems
+This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
-Password Safe, please see the accompanying README.txt file. For more 
+Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.38.3
+Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
+SourceForge Project tickets.  Any beginning with 'G' are issues raised on
+PasswordSafe's GitHub project, where the current source can also be found.
+The ReleaseNotes.html file has links to the relevant tickets/issues.
+
+Bugs fixed in 3.41.1
 ====================
+[] Fix issue when locking database when not using the System Tray.
+[] Fix empty group validation on DB open.
+[1393] Correctly handle opening a locked database, which is open in R/W by another user.
+[1392] If the command line parameter '-g' is used to specify a configuration
+file by its relative path, PasswordSafe will now look for it in the same
+directory as the executable unless overridden by the PWS_PREFSDIR environment
+variable.
+[1391] Fixed slow opening of a database if the default group display is completely
+collapsed.
+[1385] The filter active indicator now shows in Windows 7.
+[1384] Toolbar images and text are now back in sync.
+[1367] Fixed regression in command line arguments -h and -u support.
+[1358] When PaswordSafe automatically locks to the TaskBar, the unlock window now gets
+input focus when clicking on the icon to unlock the database.
+
+Changes to Existing Features in 3.41.1
+======================================
+[] Previous commands, e.g. edit or delete an entry, are no longer cleared when the database
+is locked to enable their undo after the database has been unlocked.
+[819] A duplicated entry's creation time is set to the time of duplication.
+All other times are copied from the original.
+[816] Set installed version in uninstall section of Registry for Windows version.
+
+New Features for 3.41.1
+=======================
+[] A new internal filter has been implemented to show only those entries from
+last Find. Access via the View menu or Ctrl+K shortcut.
+[822] An open database can now be locked via the File menu or a Toolbar button
+irrespective of whether the System Tray is used or not.
+[821] A new symbol for protected entries (locked padlock - Unicode U+01F512)
+has been implemented but, if the currently selected Tree/List font does not support
+it and the user is not running Windows 10, then the old symbol ('#') will be used.
+
+Bugs fixed in 3.41.0
+====================
+[] Fix crash if Find active when applying a filter, e.g., show entries with expiry dates.
+[] Ensure shortcut is updated in GUI after editing.
+[] Text in the Find toolbar search edit control is now vertically centered to
+reduce character truncation.
+[] Clicking on a field's name copies the value to the clipboard when adding
+a new entry (and not only when editing).
+[] Update password history when Apply is clicked, not only when Edit
+window's closed.
+[] No longer show empty groups when the user filters for entries 
+with expired passwords.
+[1378] Fix application crash if Add/Edit entry dialog open when the database is locked
+e.g. via idle timer, workstation lock etc.
+[1373] An invalid or non-existent backup directory path can no longer be saved
+when exiting Options.
+[1369] The virtual keyboard no longer becomes unusable after clicking on the
+Randomize button.
+[1368] The Status bar now shows the correct number of entries when a database
+is unlocked.
+[1366] Copying the unexpanded autotype string on Edit entry screen using Ctrl+click
+on Autotype label now works.
+[1365] Ctrl+F now switches focus back to Find toolbar if it is already open.
+[1364] Unnecessary tree view refreshes fixed.
+[1363] Empty groups no longer disappear when moving nested groups into them and
+do not leave duplicated empty groups in the database.
+[G192] Saved changes no longer prevent logoff or system shutdown.
+
+Changes to Existing Features in 3.41.0
+======================================
+[] You can no longer change an alias's base entry's password from the alias entry.
+Instead, you should edit the base entry directly by selecting the alias entry and 
+using the Edit or right-click context menu to select its base.
+[] The "Show Find Toolbar" has been removed from the View menu as it appears in
+the Edit menu. Ctrl+F still works as before to show the Find toolbar or transfer
+focus to it if already visible.
+[1371] The font used in the Find toolbar is now set to the user specified Add/Edit
+font instead of the Tree/List view font.
+
+New Features for 3.41.0
+=======================
+[] New AutoType field '\#' toggles the use of the older mechanism to
+send keyboard input to other applications e.g. browsers.
+[] Add more Help to the Add/Edit Basic and Additional tabs.
+[] Empty groups added but not yet saved are now included when the user filters
+on unsaved changes.
+[] Empty groups, whose names satisfy a filter that include tests on group name
+values, are now included in the display when the filter is active.
+[815] The database backup location now supports environment variables e.g. 
+%homedrive% and %homepath%.  If used, the resulting path is shown.
+[814] Clearing the recent database list now requires confirmation.
+[813] When exporting a group to a new database, there is now an option to also
+export all filters stored in the database to the new database.
+[796] Autotype has been extended to support the previous password, if present
+in the entry's password history, via the Autotype field '\q'. In addition, for Windows,
+a number of keyboard keys are supported by specifying the key between '\{' and '}'. Please
+see Help for details.
+
+Bugs fixed in 3.40
+==================
+[] Correctly import empty groups from a XML file when an imported group has
+been specified.
+[] Empty groups are now added when merging one PasswordSafe database into another.
+[] List view column widths are no longer reset when dragging columns to different
+positions or columns are added or removed.
+[] The user specified Notes font is now also applied to the Notes column in the
+List view.
+[] Entry Protected state and AutoType string is now correctly displayed in the
+List view.
+[] After entry has been edited from List View, it now remains visible after
+Edit/Undo/Redo even if the change alters its position within the view.
+[1360] When an entry/group using a Named Password Policy is exported to a
+PasswordSafe database, the referenced policy is now also exported.
+[1355] Fixed tabbing order in Basic AddEdit tab.
+[1352] Fixed regression in recent entry processing.
+[1347] Prevent a user from trying to copy a filter to a read-only database.
+[1345] Removed the ability to create a new database when read-only is
+checked.
+[1342, 1343] Fix multiple empty group issues.
+[1335] If "Minimize after Autotype" option is set, it will also be honoured for
+the user action: "Browse to URL + Autotype".
+[1315] Keep selected entry selected after refreshing the view (F5).
+[1314] Selected entries keep highlight when the Find toolbar is opened
+and even when Password Safe loses focus to another application.
+[1313, 1318] Find toolbar no longer closes when it shouldn't. In addition,
+results are updated when entries are added/deleted.
+
+Changes to Existing Features in 3.40
+====================================
+[] Save Immediately has been enhanced to apply to all changes to the database
+and not just after an edit or addition of an entry. It is STRONGLY recommended
+that, if enabled, then the option to "Create intermediate backups" is also
+enabled. Note, changes made via the Compare database results dialog will not
+cause a database save for each action but will after the compare results dialog
+has been closed.
+[] The last sort direction in List View (ascending or descending) on closing
+a database is now stored in the application configuration file and is no longer
+stored in the database header.
+[] The number of groups shown in the database properties dialog is now counted
+in the same manner as directories/folders in a file system, e.g.,
+Windows Explorer. This includes empty groups. The number of empty
+groups is also shown.
+
+New Features for 3.40
+=====================
+[] Empty sub-groups are included when exporting a group to a new PasswordSafe
+database.
+[] Adding an empty group will also cause the database to be saved if the user has
+selected the option "Save database immediately after any change".
+[811] The user's selected Notes font is now used for Tooltips in the Tree and List
+views if the Display preference 'Show Notes as Tooltips in Tree & List views' is
+set.
+[810] Allow font selection for all the user input fields in the Add/Edit entry
+and the Create Shortcut dialogs.
+
+Bugs fixed in 3.39.1
+====================
+[] Fixed a regression that crept into 3.39, breaking non-English
+language support.
+
+Bugs fixed in 3.39
+==================
 [1334] An empty group is now correctly changed to a normal group when
 an entry is copied into it via Drag & Drop.
 [1330] Duplication of an alias or shortcut base entry now correctly
@@ -19,9 +179,10 @@ appears always selected until the display is refreshed.
 [] Export of a complete database to XML now includes all Named Password
 Policies.
 [] When renaming a group, all empty subgroups are now correctly renamed.
+[] Disable switch to read-only when unlocking with changes pending.
 
-Changes to Existing Features in 3.38.3
-======================================
+Changes to Existing Features in 3.39
+====================================
 [806] The group will be saved as an "empty group" when the last entry with this
 group value is deleted. This is similar to the action of the filesystem when
 the last file within a folder/directory is deleted.
@@ -29,8 +190,11 @@ the last file within a folder/directory is deleted.
 now no longer includes any trailing spaces.  This is different to the
 standard Microsoft processing in their products.
 
-New Features for 3.38.3
-=======================
+New Features for 3.39
+=====================
+[] Support Drag & Drop of empty groups and groups containing empty
+groups between multiple instances of PasswordSafe.  Note: Prior versions
+of PasswordSafe will not recognise or process empty groups.
 [] It is now possible to list entries using a Named Password Policy from
 the Manage Password Policies dialog (right click on the name).
 
@@ -56,7 +220,7 @@ Bugs fixed in 3.38.1
 [1312] Now able to duplicate an alias entry without errors.
 [1306] Display of an empty group is now correctly displayed when an entry
 is moved to it via editing.
-[1295] Create Shortcut group dropdown box width no longer trucates long
+[1295] Create Shortcut group dropdown box width no longer truncates long
 group paths.
 [1057] Aliases and shortcuts imported via XML now correctly point to their 
 respective base entries.
@@ -116,7 +280,7 @@ fixed.
 Options Security tab.
 [1260] If Password Safe is unable to find the user specified external editor,
 the external edit is cancelled and the Notes field remains unchanged.
-[1258] Group dropdown box width no longer trucates long group paths.
+[1258] Group dropdown box width no longer truncates long group paths.
 [1254] Toolbar customisation now has correctly aligned text/images.
 [1244] Changes to symbol set in default password policy are respected
 when "Use easy-to-read characters" is set.
@@ -149,7 +313,7 @@ checking for consistency.
 [1231] Relax restriction on easy-vision password policy + more
 consistent UI.
 [1229] Hex digits checkbox can be selected in Generate Passwords.
-[1228] Fixed incompatability with Password Policies generated with
+[1228] Fixed incompatibility with Password Policies generated with
 previous versions.
 [1226] Fixed regression in Find toolbar functionality.
 
@@ -193,7 +357,7 @@ or opening a Password Safe database.
 entered via virtual keyboard.
 [1176] Tweak definition of what's considered a 'weak' password.
 [1174] "Open as read-only" check-box now correctly reflects the file's state.
-[1117] Dragging dropbar icon doesn't copy text to clipboard unless
+[1117] Dragging DragBar icon doesn't copy text to clipboard unless
 Control key's pressed when icon's clicked upon.
 
 New Features for 3.33

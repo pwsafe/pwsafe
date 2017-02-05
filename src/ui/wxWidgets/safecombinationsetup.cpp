@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -47,7 +47,6 @@
 
 IMPLEMENT_DYNAMIC_CLASS( CSafeCombinationSetup, wxDialog )
 
-
 /*!
  * CSafeCombinationSetup event table definition
  */
@@ -68,7 +67,6 @@ EVT_TIMER(POLLING_TIMER_ID, CSafeCombinationSetup::OnPollingTimer)
 ////@end CSafeCombinationSetup event table entries
 END_EVENT_TABLE()
 
-
 /*!
  * CSafeCombinationSetup constructors
  */
@@ -83,7 +81,6 @@ CSafeCombinationSetup::CSafeCombinationSetup( wxWindow* parent, wxWindowID id, c
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * CSafeCombinationSetup creator
@@ -110,7 +107,6 @@ bool CSafeCombinationSetup::Create( wxWindow* parent, wxWindowID id, const wxStr
   return true;
 }
 
-
 /*!
  * CSafeCombinationSetup destructor
  */
@@ -123,7 +119,6 @@ CSafeCombinationSetup::~CSafeCombinationSetup()
   delete m_pollingTimer;
 #endif
 }
-
 
 /*!
  * Member initialisation
@@ -138,7 +133,6 @@ void CSafeCombinationSetup::Init()
 #endif
 ////@end CSafeCombinationSetup member initialisation
 }
-
 
 /*!
  * Control creation for CSafeCombinationSetup
@@ -198,7 +192,6 @@ void CSafeCombinationSetup::CreateControls()
 ////@end CSafeCombinationSetup content construction
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -238,7 +231,6 @@ wxIcon CSafeCombinationSetup::GetIconResource( const wxString& WXUNUSED(name) )
   return wxNullIcon;
 ////@end CSafeCombinationSetup icon retrieval
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
@@ -293,7 +285,6 @@ void CSafeCombinationSetup::OnOkClick( wxCommandEvent& /* evt */ )
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
@@ -313,7 +304,6 @@ void CSafeCombinationSetup::OnPollingTimer(wxTimerEvent &evt)
     HandlePollingTimer(); // in CYubiMixin
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -32,11 +32,12 @@ public:
    * NOTE: New functions must be placed at the end of the list.
    * Sequential values must be used as they are used to access positions in
    * a std::bitset<NUM_SUPPORTED> variable.
+   *
+   * DO NOT change the order of the functions as UIs will fail
    */
   enum Functions {
-    DATABASEMODIFIED = 0, UPDATEGUI, GUISETUPDISPLAYINFO, GUIREFRESHENTRY,
-    UPDATEWIZARD,
-    // Add new functions here!
+    DATABASEMODIFIED = 0, UPDATEGUI, GUIREFRESHENTRY,
+    UPDATEWIZARD, UPDATEGUIGROUPS,
     NUM_SUPPORTED};
 
   /*
@@ -51,15 +52,15 @@ public:
   // and the entry/entries needs refreshing in GUI:
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                          const pws_os::CUUID &entry_uuid,
-                         CItemData::FieldType ft = CItemData::START,
-                         bool bUpdateGUI = true) = 0;
+                         CItemData::FieldType ft = CItemData::START) = 0;
 
-  // GUISetupDisplayInfo: let GUI populate DisplayInfo field in an entry
-  virtual void GUISetupDisplayInfo(CItemData &ci) = 0;
+  // Version for groups
+  virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
+                         const std::vector<StringX> &vGroups) = 0;
 
   // GUIRefreshEntry: called when the entry's graphic representation
   // may have changed - GUI should update and invalidate its display.
-  virtual void GUIRefreshEntry(const CItemData &ci) = 0;
+  virtual void GUIRefreshEntry(const CItemData &ci, bool bAllowFail = false) = 0;
 
   // UpdateWizard: called to update text in Wizard during export Text/XML.
   virtual void UpdateWizard(const stringT &s) = 0;

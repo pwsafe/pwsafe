@@ -57,13 +57,13 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_IMPORT_KEEPASSV1CSV 32024
 #define ID_MENUITEM_EXPORT2V3FORMAT     32025
 #define ID_MENUITEM_EXPORT2V4FORMAT     32026
-
+#define ID_MENUITEM_LOCK                32027
 
 // Edit menu
 #define ID_EDITMENU                     32050
 #define ID_MENUITEM_ADD                 32051
-#define ID_MENUITEM_EDIT                32052
-#define ID_MENUITEM_VIEW                32053
+#define ID_MENUITEM_EDITENTRY           32052
+#define ID_MENUITEM_VIEWENTRY           32053
 #define ID_MENUITEM_GROUPENTER          32054
 #define ID_MENUITEM_DELETE              32055
 #define ID_MENUITEM_DELETEENTRY         32056
@@ -107,6 +107,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_EXPORTGRP2XML       32094
 #define ID_MENUITEM_EXPORTGRP2DB        32095
 #define ID_MENUITEM_EXPORT_ATTACHMENT   32096
+#define ID_MENUITEM_VIEWATTACHMENT      32097
 
 // View menu
 #define ID_VIEWMENU                     32101
@@ -116,7 +117,6 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_OLD_TOOLBAR         32105
 #define ID_MENUITEM_SHOWHIDE_TOOLBAR    32106
 #define ID_MENUITEM_SHOWHIDE_DRAGBAR    32107
-#define ID_MENUITEM_SHOWFINDTOOLBAR     32108
 #define ID_MENUITEM_EXPANDALL           32109
 #define ID_MENUITEM_COLLAPSEALL         32110
 #define ID_MENUITEM_REFRESH             32111
@@ -147,6 +147,9 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_EXPORTENTMENU                32136
 #define ID_EXPORTGROUPMENU              32137
 #define ID_MENUITEM_CHANGENOTESFONT     32138
+#define ID_MENUITEM_CHANGEADDEDITFONT   32139
+#define ID_MENUITEM_SHOW_FOUNDENTRIES   32140  
+#define ID_SUBVIEWMENU                  32141
 
 // Manage menu
 #define ID_MANAGEMENU                   32150

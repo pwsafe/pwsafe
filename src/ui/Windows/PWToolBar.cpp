@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -55,6 +55,7 @@ const CPWToolBar::GuiRecord CPWToolBar::MainGuiInfo[] =
     {L"new", ID_MENUITEM_NEW, IDB_NEW_CLASSIC, IDB_NEW_NEW, IDB_NEW_NEW_D},
     {L"open", ID_MENUITEM_OPEN, IDB_OPEN_CLASSIC, IDB_OPEN_NEW, IDB_OPEN_NEW_D},
     {L"close", ID_MENUITEM_CLOSE, IDB_CLOSE_CLASSIC, IDB_CLOSE_NEW, IDB_CLOSE_NEW_D},
+    {L"lock", ID_MENUITEM_LOCK, IDB_LOCK_CLASSIC, IDB_TRAYLOCK_NEW, IDB_TRAYLOCK_NEW_D},
     {L"save", ID_MENUITEM_SAVE, IDB_SAVE_CLASSIC, IDB_SAVE_NEW, IDB_SAVE_NEW_D},
     {L"~", ID_SEPARATOR, 0, 0, 0},
     {L"copypassword", ID_MENUITEM_COPYPASSWORD, IDB_COPYPASSWORD_CLASSIC, IDB_COPYPASSWORD_NEW, IDB_COPYPASSWORD_NEW_D},
@@ -66,7 +67,7 @@ const CPWToolBar::GuiRecord CPWToolBar::MainGuiInfo[] =
     {L"browseurl", ID_MENUITEM_BROWSEURL, IDB_BROWSEURL_CLASSIC, IDB_BROWSEURL_NEW, IDB_BROWSEURL_NEW_D},
     {L"~", ID_SEPARATOR, 0, 0, 0},
     {L"add", ID_MENUITEM_ADD, IDB_ADD_CLASSIC, IDB_ADD_NEW, IDB_ADD_NEW_D},
-    {L"viewedit", ID_MENUITEM_EDIT, IDB_VIEWEDIT_CLASSIC, IDB_VIEWEDIT_NEW, IDB_VIEWEDIT_NEW_D},
+    {L"viewedit", ID_MENUITEM_EDITENTRY, IDB_VIEWEDIT_CLASSIC, IDB_VIEWEDIT_NEW, IDB_VIEWEDIT_NEW_D},
     {L"~", ID_SEPARATOR, 0, 0, 0},
     {L"delete", ID_MENUITEM_DELETEENTRY, IDB_DELETE_CLASSIC, IDB_DELETE_NEW, IDB_DELETE_NEW_D},
     {L"~", ID_SEPARATOR, 0, 0, 0},
@@ -97,7 +98,7 @@ const CPWToolBar::GuiRecord CPWToolBar::MainGuiInfo[] =
     {L"runcommand", ID_MENUITEM_RUNCOMMAND, IDB_RUNCMD_CLASSIC, IDB_RUNCMD_NEW, IDB_RUNCMD_NEW_D},
     {L"sendemail", ID_MENUITEM_SENDEMAIL, IDB_SENDEMAIL_CLASSIC, IDB_SENDEMAIL_NEW, IDB_SENDEMAIL_NEW_D},
     {L"listtree", ID_TOOLBUTTON_LISTTREE, IDB_LISTTREE_CLASSIC, IDB_LISTTREE_NEW, IDB_LISTTREE_NEW_D},
-    {L"find", ID_MENUITEM_SHOWFINDTOOLBAR, IDB_FIND_CLASSIC, IDB_FIND_NEW, IDB_FIND_NEW_D},
+    {L"find", ID_MENUITEM_FINDELLIPSIS, IDB_FIND_CLASSIC, IDB_FIND_NEW, IDB_FIND_NEW_D},
     {L"viewreports", ID_TOOLBUTTON_VIEWREPORTS, IDB_VIEWREPORTS_CLASSIC, IDB_VIEWREPORTS_NEW, IDB_VIEWREPORTS_NEW_D}, 
     {L"applyfilters", ID_MENUITEM_APPLYFILTER, IDB_APPLYFILTERS_CLASSIC, IDB_APPLYFILTERS_NEW, IDB_APPLYFILTERS_NEW_D},
     {L"clearfilters", ID_MENUITEM_CLEARFILTER, IDB_CLEARFILTERS_CLASSIC, IDB_CLEARFILTERS_NEW, IDB_CLEARFILTERS_NEW_D},
@@ -107,7 +108,8 @@ const CPWToolBar::GuiRecord CPWToolBar::MainGuiInfo[] =
     {L"managepolicies", ID_MENUITEM_PSWD_POLICIES, IDB_PSWD_POLICIES_CLASSIC, IDB_PSWD_POLICIES_NEW, IDB_PSWD_POLICIES_NEW_D},
   };
 
-// Additional Controls not on ToolBar
+// Additional Controls NOT on ToolBar and can't be added by the user during customise.
+// They are listed here ONLY to provide images for the menu items!
 const CPWToolBar::GuiRecord CPWToolBar::OtherGuiInfo[] =
   // CString name; UINT ID, classicBM, newBM, disBM
   {
@@ -116,6 +118,7 @@ const CPWToolBar::GuiRecord CPWToolBar::OtherGuiInfo[] =
     {L"", ID_MENUITEM_DUPLICATEENTRY, IDB_DUPLICATE_CLASSIC, IDB_DUPLICATE_NEW, IDB_DUPLICATE_NEW_D},
     {L"", ID_CHANGEFONTMENU, IDB_CHANGEFONTMENU_CLASSIC, IDB_CHANGEFONTMENU_NEW, IDB_CHANGEFONTMENU_NEW_D},
     {L"", ID_MENUITEM_CHANGETREEFONT, IDB_CHANGEFONTMENU_CLASSIC, IDB_CHANGEFONTMENU_NEW, IDB_CHANGEFONTMENU_NEW_D},
+    {L"", ID_MENUITEM_CHANGEADDEDITFONT, IDB_CHANGEFONTMENU_CLASSIC, IDB_CHANGEFONTMENU_NEW, IDB_CHANGEFONTMENU_NEW_D},
     {L"", ID_MENUITEM_CHANGEPSWDFONT, IDB_CHANGEPSWDFONTMENU_CLASSIC, IDB_CHANGEPSWDFONTMENU_NEW, IDB_CHANGEPSWDFONTMENU_NEW_D},
     {L"", ID_MENUITEM_REPORT_COMPARE, IDB_COMPARE_CLASSIC, IDB_COMPARE_NEW, IDB_COMPARE_NEW_D},
     {L"", ID_MENUITEM_REPORT_FIND, IDB_FIND_CLASSIC, IDB_FIND_NEW, IDB_FIND_NEW_D},
@@ -208,10 +211,10 @@ void CPWToolBar::OnToolBarQueryInsert(NMHDR *, LRESULT *pLResult)
 
 void CPWToolBar::OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMTOOLBAR* pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
+  NMTOOLBAR *pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
   if ((pNMToolbar->tbButton.idCommand != ID_SEPARATOR) &&
-    GetToolBarCtrl().IsButtonHidden(pNMToolbar->tbButton.idCommand))
+      GetToolBarCtrl().IsButtonHidden(pNMToolbar->tbButton.idCommand))
     *pLResult = FALSE;
   else
     *pLResult = TRUE;
@@ -219,14 +222,14 @@ void CPWToolBar::OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
 void CPWToolBar::OnToolBarQueryInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMTOOLBAR* pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
+  NMTOOLBAR *pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
   ASSERT(pNMToolbar->iItem < _countof(MainGuiInfo));
 
   if ((pNMToolbar->iItem >= 0) &&
-    (pNMToolbar->iItem < _countof(MainGuiInfo))) {
-      pNMToolbar->tbButton = m_pOriginalTBinfo[pNMToolbar->iItem];
-      *pLResult = TRUE;
+      (pNMToolbar->iItem < _countof(MainGuiInfo))) {
+    pNMToolbar->tbButton = m_pOriginalTBinfo[pNMToolbar->iItem];
+    *pLResult = TRUE;
   } else {
     *pLResult = FALSE;
   }
@@ -234,7 +237,7 @@ void CPWToolBar::OnToolBarQueryInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
 void CPWToolBar::OnToolBarGetButtonInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMTOOLBAR* pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
+  NMTOOLBAR *pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
   ASSERT(pNMToolbar->iItem <= _countof(MainGuiInfo));
 
@@ -275,7 +278,7 @@ void CPWToolBar::Init(const int NumBits, bool bRefresh)
   m_DisabledImageLists[1].Create(16, 16, iNewFlags2, m_iNum_Bitmaps, 2);
 
   int iNum_Main = _countof(MainGuiInfo);
-  int iNum_Other  = _countof(OtherGuiInfo);
+  int iNum_Other = _countof(OtherGuiInfo);
 
   for (i = 0; i < iNum_Main; i++) {
     if (MainGuiInfo[i].classicBM == IDB_BROWSEURL_CLASSIC) {
@@ -385,9 +388,15 @@ CString CPWToolBar::GetButtonString() const
       continue;
     }
 
+    // Change control ID as only ID_MENUITEM_EDITENTRY is in MainGuiInfo
+    // but we may have changed the button ID to ID_MENUITEM_VIEWENTRY
+    UINT nID = tbinfo.idCommand;
+    if (nID == ID_MENUITEM_VIEWENTRY)
+      nID = ID_MENUITEM_EDITENTRY;
+
     int index = -1;
     for (int j = 0; j < _countof(MainGuiInfo); j++) {
-      if (MainGuiInfo[j].ID == UINT(tbinfo.idCommand)) {
+      if (MainGuiInfo[j].ID == nID) {
         index = j;
         break;
       }
@@ -429,6 +438,7 @@ void CPWToolBar::ChangeImages(const int toolbarMode)
   m_toolbarMode = toolbarMode;
   const int nImageListNum = (m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) ? 0 : m_bitmode;
   tbCtrl.SetImageList(&m_ImageLists[nImageListNum]);
+
   // We only do the New toolbar disabled images.  MS can handle the Classic OK
   if (nImageListNum != 0)
     tbCtrl.SetDisabledImageList(&m_DisabledImageLists[nImageListNum - 1]);
@@ -523,14 +533,10 @@ void CPWToolBar::MapControlIDtoImage(ID2ImageMap &IDtoImages)
     IDtoImages[ID_MENUITEM_DELETEGROUP] = iter->second;
   }
   // View has same image as Edit
-  iter = IDtoImages.find(ID_MENUITEM_EDIT);
+  iter = IDtoImages.find(ID_MENUITEM_EDITENTRY);
   if (iter != IDtoImages.end()) {
-    IDtoImages[ID_MENUITEM_VIEW] = iter->second;
+    IDtoImages[ID_MENUITEM_VIEWENTRY] = iter->second;
   }
-
-  // special case, pending re-org:
-  // Edit->Find... menu uses same bitmap as View->Show Find Toolbar
-  IDtoImages[ID_MENUITEM_FINDELLIPSIS] = IDtoImages[ID_MENUITEM_SHOWFINDTOOLBAR];
 }
 
 void CPWToolBar::SetupImageList(const GuiRecord *guiInfo,
@@ -548,6 +554,7 @@ void CPWToolBar::SetupImageList(const GuiRecord *guiInfo,
     UINT bmID = CALL_MEMBER_FN(guiInfo[i], GetBM)();
     if (bmID == 0)
       continue; // skip over separator
+
     BOOL brc = bmNormal.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(bmID), RT_BITMAP),
                                MAKEINTRESOURCE(bmID), IMAGE_BITMAP, 0, 0,
                                (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
@@ -588,10 +595,10 @@ void CPWToolBar::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour
     GetRValue(newbkgrndColour)};
 
   for (UINT i = 0; i < numPixels; ++i) {
-    if (pixels[i].rgbtBlue == 192 &&
-      pixels[i].rgbtGreen == 192 &&
-      pixels[i].rgbtRed == 192) {
-        pixels[i] = newbkgrndColourRGB;
+    if (pixels[i].rgbtBlue  == 192 &&
+        pixels[i].rgbtGreen == 192 &&
+        pixels[i].rgbtRed   == 192) {
+      pixels[i] = newbkgrndColourRGB;
     }
   }
 }

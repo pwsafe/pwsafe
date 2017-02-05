@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -16,7 +16,7 @@
 IMPLEMENT_DYNAMIC(COptions_PropertySheet, CPWPropertySheet)
 
 COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
-                                               const bool bLongPPs)
+  const bool bLongPPs)
   : CPWPropertySheet(nID, pParent, bLongPPs),
   m_save_bSymbols(L""), m_save_iUseOwnSymbols(DEFAULT_SYMBOLS),
   m_save_iPreExpiryWarnDays(0),
@@ -26,7 +26,7 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
   m_save_bShowUsernameInTree(FALSE), m_save_bShowPasswordInTree(FALSE), 
   m_save_bExplorerTypeTree(FALSE), m_save_bPreExpiryWarn(FALSE),
   m_save_bLockOnWindowLock(FALSE), m_bStartupShortcutExists(FALSE),
-  m_save_bHighlightChanges(FALSE),
+  m_save_bSaveImmediately(TRUE), m_save_bHighlightChanges(FALSE),
   m_pp_backup(NULL), m_pp_display(NULL), m_pp_misc(NULL),
   m_pp_passwordhistory(NULL), m_pp_security(NULL),
   m_pp_shortcuts(NULL), m_pp_system(NULL)
@@ -94,7 +94,7 @@ BOOL COptions_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
                 (WPARAM)CPWPropertyPage::PP_UPDATE_VARIABLES, 0L) != 0)
       return TRUE;
 
-    // Now update preferences as per user's wishes
+    // Now update a copy of the preferences as per user's wishes
     UpdateCopyPreferences();
 
     // Now end it all so that OnApply isn't called again
@@ -125,7 +125,7 @@ void COptions_PropertySheet::SetupInitialValues()
   // Backup Data
   CString cs_backupPrefix, cs_backupDir;
   m_OPTMD.CurrentFile = GetMainDlg()->GetCurFile().c_str();
-  m_OPTMD.SaveImmediately =
+  m_OPTMD.SaveImmediately = m_save_bSaveImmediately = 
       prefs->GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
   m_OPTMD.BackupBeforeSave =
       prefs->GetPref(PWSprefs::BackupBeforeEverySave) ? TRUE : FALSE;
@@ -272,7 +272,7 @@ void COptions_PropertySheet::UpdateCopyPreferences()
 
   // Now update the Application preferences.
   // In PropertyPage alphabetic order
-  // Note: Updating the copy values - especially important for DB preferences!!!
+  // Note: Updating the COPY values - especially important for DB preferences!!!
 
   // Backup
   prefs->SetPref(PWSprefs::BackupBeforeEverySave,
@@ -308,11 +308,15 @@ void COptions_PropertySheet::UpdateCopyPreferences()
                  m_OPTMD.PreExpiryWarnDays, true);
   prefs->SetPref(PWSprefs::ClosedTrayIconColour,
                  m_OPTMD.TrayIconColour, true);
-  if (m_save_bHighlightChanges != m_OPTMD.HighlightChanges) {
-    prefs->SetPref(PWSprefs::HighlightChanges,
-                   m_OPTMD.HighlightChanges == TRUE, true);
-    m_bRefreshViews = true;
-  }
+  prefs->SetPref(PWSprefs::HighlightChanges,
+                  m_OPTMD.HighlightChanges == TRUE, true);
+  
+  // Changes are highlighted only if "hightlight changes" is true and 
+  // "save immediately" is false.
+  // So only need to refresh view if the new combination is different
+  // to the original combination
+  m_bRefreshViews = (m_save_bHighlightChanges && !m_save_bSaveImmediately) != 
+                    (m_OPTMD.HighlightChanges && !m_OPTMD.SaveImmediately);
 
   // Misc
   prefs->SetPref(PWSprefs::DeleteQuestion,

@@ -19,23 +19,28 @@ created and managed.</p>
 
 <h3>Save database immediately after Edit or Add</h3> 
 
-<p>When checked, <b>Password Safe</b> saves all changes made to a 
-password entry immediately, without waiting for the user to use 
-<b>Save</b> or <b>Save As</b> and without confirmation.</p> 
+<p>When Checked, the database will be saved if there is any change
+  e.g. add, delete, duplicate, edit or rename of an entry or group as
+  well as if any entries/groups are added/moved via import or Drag &amp;
+  Drop. When this is used, enabling "Create intermediate backups" is
+  recommended, as this helps protect against disk problems. <br>
+  Note that changes made via the Compare database results dialog
+  will <em>not</em> cause a database save for each action, but only
+  after the compare results dialog has been closed.</p>
 
 <h3>Create intermediate backups (.ibak) before saving</h3> 
 
 <p>When checked, <b>Password Safe</b> will copy the database before each 
 save. The names and location of the backup copies are defined in the 
-following fields, as well as how many previous copies should be kept.</p> 
+following fields, as well as how many previous copies will be kept.</p> 
 
 <h3>Backup Name</h3> 
 
 <p>The names of the backup files consist of <b>Base</b> (by default, the 
 name of the database without the .psafe3 extension), and <b>Suffix</b> 
 (none, a running count, or the date/time of the backup). Here you can 
-configure what the backups will be named, and how many will be saved 
-(<b>Password Safe</b> will automatically erase the oldest databases 
+configure what the backups will be named, and how many will be saved. 
+<b>Password Safe</b> will automatically erase the oldest databases 
 beyond the number of backups that you specified. Note that Password Safe 
 will only erase old databases if the suffix is an incremented number 
 (running count).</p> 
@@ -46,7 +51,12 @@ will only erase old databases if the suffix is an incremented number
 directory as the currently open database. In this field you can specify 
 an alternate location, such as a special backup directory, network 
 drive, disk-on-key, etc. Of course, you must have write permission to 
-the location you specify.</p> 
+the location you specify.</p>
+
+<p>You may also use environment variables in defining the alternate location
+for example: "<code>%homedrive%%homepath%\Documents\PWS Backups\</code>".  If you use these
+variables, the expanded path will be shown underneath once you navigate to a different
+control on this tab.</p>
 
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>

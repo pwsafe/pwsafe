@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -102,7 +102,7 @@ INT_PTR CPWPropertySheet::DoModal()
 
 LRESULT CPWPropertySheet::OnMenuChar(UINT nChar, UINT nFlags, CMenu *pMenu)
 {
-  // Stop beeps when presing Allt+<key> in the HotKeyCtrls
+  // Stop beeps when presing Alt+<key> in the HotKeyCtrls
   const int nID = GetFocus()->GetDlgCtrlID();
 
   // IDs correspond to AddEdit_Additional Entry Keyboard Shortcut Hotkey and

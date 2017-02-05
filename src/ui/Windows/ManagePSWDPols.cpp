@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -495,7 +495,6 @@ void CManagePSWDPols::OnList()
   else
     UpdateEntryList();
 
-
   CString cs_label(MAKEINTRESOURCE(m_bViewPolicy ? IDS_LIST : IDC_DETAILS));
   GetDlgItem(IDC_LIST_POLICYENTRIES)->SetWindowText(cs_label);
 }
@@ -666,7 +665,7 @@ void CManagePSWDPols::OnPolicyRightClick(NMHDR * /*pNotifyStruct*/, LRESULT *pLR
 
   int nItem = m_PolicyNames.GetNextSelectedItem(pos);
 
-  // Ignore is default policty (first entry)
+  // Ignore is default policy (first entry)
   if (nItem == 0)
     return;
 
@@ -773,7 +772,7 @@ void CManagePSWDPols::OnColumnNameClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
   if (iIndex == m_iSortNamesIndex) {
     m_bSortNamesAscending = !m_bSortNamesAscending;
   } else {
-    // Turn off all previous sort arrrows
+    // Turn off all previous sort arrows
     for (int i = 0; i < pHdrCtrl->GetItemCount(); i++) {
       pHdrCtrl->GetItem(i, &hdi);
       if ((hdi.fmt & (HDF_SORTUP | HDF_SORTDOWN)) != 0) {
@@ -811,7 +810,7 @@ void CManagePSWDPols::OnColumnEntryClick(NMHDR *pNotifyStruct, LRESULT *pLResult
   if (iIndex == m_iSortEntriesIndex) {
     m_bSortEntriesAscending = !m_bSortEntriesAscending;
   } else {
-    // Turn off all previous sort arrrows
+    // Turn off all previous sort arrows
     for (int i = 0; i < pHdrCtrl->GetItemCount(); i++) {
       pHdrCtrl->GetItem(i, &hdi);
       if ((hdi.fmt & (HDF_SORTUP | HDF_SORTDOWN)) != 0) {
@@ -866,7 +865,7 @@ void CManagePSWDPols::UpdateNames()
   m_PolicyNames.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
 }
 
-static void WindowsRowPutter(int row, const stringT &name, const stringT &value,
+static void WindowsRowPutter(int row, const std::wstring &name, const std::wstring &value,
                              void *table)
 {
   // Callback function used by st_PSWDPolicy::Policy2Table

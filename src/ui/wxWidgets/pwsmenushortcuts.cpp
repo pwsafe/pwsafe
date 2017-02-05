@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -142,7 +142,7 @@ bool MenuItemData::IsDirty() const {
 }
 
 /*
- * The only realiable way to change the accelerator, atleast for 2.8.11, is to
+ * The only reliable way to change the accelerator, at least for 2.8.11, is to
  * set a new and complete label, with full mnemonics + accelerator.   Don't
  * use wxMenuItem::SetAccel(), or do * SetItemLabel(SomeManipulation(GetItemLabelText()))).
  * You will end up with underscores in place where the '&' mnemonic is, and they would multiply
@@ -275,7 +275,6 @@ struct ApplyEditedShortcuts {
   }
 };
 
-
 bool IsFunctionKey(int keycode)
 {
   return keycode >= WXK_F1 && keycode <= WXK_F24;
@@ -397,7 +396,6 @@ void PWSMenuShortcuts::ChangeShortcutAt(size_t idx, const wxAcceleratorEntry& ne
 
   m_midata[idx].SetUserShortcut(newEntry);
 }
-
 
 int ModifiersToAccelFlags(int mods)
 {
@@ -771,5 +769,3 @@ bool ShortcutsGridValidator::Validate(wxWindow* parent)
   }
   return true;
 }
-
-

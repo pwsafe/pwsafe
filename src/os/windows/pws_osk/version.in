@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -13,13 +13,14 @@
 // pre-build step that uses git's 'describe' function and
 // replaces "GITREV" with current git commit info.
 
-// Format: Major, Minor, Build, Revision
-//   Build  = 0 for all Formally Released versions
-//   Build != 0 for all Intermediate versions
+// Format: Major, Minor, Revision
+//   Revision  = 0 for all Formally Released versions
+//   Revision != 0 for all Intermediate versions
 
-#define FILEVER           1, 1, 0
-#define PRODUCTVER        1, 1, 0
-#define STROSKFILEVER     "1, 1, 0 , GITREV\0"
-#define STROSKPRODUCTVER  STROSKFILEVER
+#define PRODUCTVER     @pwsafe_osk_VERSION_MAJOR@, @pwsafe_osk_VERSION_MINOR@, @pwsafe_osk_REVISION@
+#define STROSKPRODUCTVER "@pwsafe_osk_VERSION_MAJOR@, @pwsafe_osk_VERSION_MINOR@, @pwsafe_osk_REVISION@, @pwsafe_osk_VERSTRING@\0"
+
+#define FILEVER        PRODUCTVER
+#define STROSKFILEVER  STROSKPRODUCTVER
 
 #endif // _VERSION_H_

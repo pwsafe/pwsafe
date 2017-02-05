@@ -31,11 +31,11 @@
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
-					<Add option="-g" />
 					<Add option="-fPIC" />
+					<Add option="-m64" />
+					<Add option="-g" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-m64" />
 					<Add option="-Wpedantic" />
 					<Add option="-Wdouble-promotion" />
 					<Add option="-Wformat=2" />
@@ -83,11 +83,11 @@
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
-					<Add option="-g" />
 					<Add option="-fPIC" />
+					<Add option="-m32" />
+					<Add option="-g" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-m32" />
 					<Add option="-Wpedantic" />
 					<Add option="-Wdouble-promotion" />
 					<Add option="-Wformat=2" />
@@ -258,11 +258,11 @@
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
-					<Add option="-g" />
 					<Add option="-fPIC" />
+					<Add option="-m32" />
+					<Add option="-g" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-m32" />
 					<Add option="-Wpedantic" />
 					<Add option="-Wdouble-promotion" />
 					<Add option="-Wformat=2" />
@@ -422,6 +422,8 @@
 		<Unit filename="../../src/core/PWStime.h" />
 		<Unit filename="../../src/core/Proxy.h" />
 		<Unit filename="../../src/core/PwsPlatform.h" />
+		<Unit filename="../../src/core/RUEList.cpp" />
+		<Unit filename="../../src/core/RUEList.h" />
 		<Unit filename="../../src/core/Report.cpp" />
 		<Unit filename="../../src/core/Report.h" />
 		<Unit filename="../../src/core/StringX.cpp" />

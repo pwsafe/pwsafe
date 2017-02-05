@@ -39,9 +39,6 @@
     <ClCompile Include="AdvancedDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChangeAliasPswd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ClearQuestionDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -288,9 +285,6 @@
     <ClCompile Include="RichEditCtrlExtn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RUEList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SampleTextDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -410,6 +404,9 @@
     </ClCompile>
     <ClCompile Include="PWPListEntries.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PWPListEntries.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -677,9 +674,6 @@
     <ClInclude Include="RichEditCtrlExtn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RUEList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SampleTextDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -816,9 +810,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="filter\SetAttachmentFiltersDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWPListEntries.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

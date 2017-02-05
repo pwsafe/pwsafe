@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -78,6 +78,33 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
 
   m_current_version = app.GetCore()->GetReadFileVersion();
 }
+
+void CAdvancedDlg::DoDataExchange(CDataExchange* pDX)
+{
+  CPWDialog::DoDataExchange(pDX);
+  //{{AFX_DATA_MAP(CAdvancedDlg)
+  if (m_iIndex == FIND) {
+    DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_SET, m_subgroup_set);
+    DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_CASE, m_subgroup_case);
+    DDX_Text(pDX, IDC_ADVANCED_SUBGROUP_NAME, m_subgroup_name);
+  }
+  //}}AFX_DATA_MAP
+}
+
+BEGIN_MESSAGE_MAP(CAdvancedDlg, CPWDialog)
+  //{{AFX_MSG_MAP(CAdvancedDlg)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+
+  ON_BN_CLICKED(IDC_ADVANCED_SUBGROUP_SET, OnSetSubGroup)
+  ON_BN_CLICKED(IDC_ADVANCED_SELECTSOME, OnSelectSome)
+  ON_BN_CLICKED(IDC_ADVANCED_SELECTALL, OnSelectAll)
+  ON_BN_CLICKED(IDC_ADVANCED_DESELECTSOME, OnDeselectSome)
+  ON_BN_CLICKED(IDC_ADVANCED_DESELECTALL, OnDeselectAll)
+  ON_BN_CLICKED(IDC_ADVANCED_RESET, OnReset)
+
+  ON_NOTIFY(LVN_ITEMCHANGING, IDC_ADVANCED_SELECTED, OnSelectedItemChanging)
+  //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
 
 BOOL CAdvancedDlg::OnInitDialog()
 {
@@ -311,31 +338,6 @@ BOOL CAdvancedDlg::OnInitDialog()
   return TRUE;
 }
 
-void CAdvancedDlg::DoDataExchange(CDataExchange* pDX)
-{
-  CPWDialog::DoDataExchange(pDX);
-  //{{AFX_DATA_MAP(CAdvancedDlg)
-  if (m_iIndex == FIND) {
-    DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_SET, m_subgroup_set);
-    DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_CASE, m_subgroup_case);
-    DDX_Text(pDX, IDC_ADVANCED_SUBGROUP_NAME, m_subgroup_name);
-  }
-  //}}AFX_DATA_MAP
-}
-
-BEGIN_MESSAGE_MAP(CAdvancedDlg, CPWDialog)
-  //{{AFX_MSG_MAP(CAdvancedDlg)
-  ON_BN_CLICKED(IDC_ADVANCED_SUBGROUP_SET, OnSetSubGroup)
-  ON_BN_CLICKED(IDC_ADVANCED_SELECTSOME, OnSelectSome)
-  ON_BN_CLICKED(IDC_ADVANCED_SELECTALL, OnSelectAll)
-  ON_BN_CLICKED(IDC_ADVANCED_DESELECTSOME, OnDeselectSome)
-  ON_BN_CLICKED(IDC_ADVANCED_DESELECTALL, OnDeselectAll)
-  ON_BN_CLICKED(IDC_ADVANCED_RESET, OnReset)
-  ON_BN_CLICKED(ID_HELP, OnHelp)
-  ON_NOTIFY(LVN_ITEMCHANGING, IDC_ADVANCED_SELECTED, OnSelectedItemChanging) 
-  //}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
 /////////////////////////////////////////////////////////////////////////////
 // CAdvancedDlg message handlers
 
@@ -498,32 +500,6 @@ void CAdvancedDlg::OnOK()
     gmb.AfxMessageBox(cs_error_msg);
     m_bsFields.set();  // note: impossible to set them all even via the advanced dialog
     return;
-  }
-
-  if (m_iIndex == FIND) {
-    if (m_subgroup_set == BST_CHECKED) {
-      GetDlgItemText(IDC_ADVANCED_SUBGROUP_NAME, m_subgroup_name);
-      int nObject = ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->GetCurSel();
-      if (nObject == CB_ERR) {
-        gmb.AfxMessageBox(IDS_NOOBJECT);
-        m_bsFields.set();  // note: impossible to set them all even via the advanced dialog
-        ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->SetFocus();
-        return;
-      }
-  
-      int nFunction = ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION))->GetCurSel();
-      if (nFunction == CB_ERR) {
-        gmb.AfxMessageBox(IDS_NOFUNCTION);
-        m_bsFields.set();  // note: impossible to set them all even via the advanced dialog
-        ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION))->SetFocus();
-        return;
-      }
-  
-      m_subgroup_object = int(((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->GetItemData(nObject));
-      m_subgroup_function = int(((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION))->GetItemData(nFunction));
-      if (m_subgroup_case == BST_CHECKED)
-        m_subgroup_function *= (-1);
-    }
   }
 
   if (m_subgroup_name == L"*")

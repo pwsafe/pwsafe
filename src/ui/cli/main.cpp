@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -39,7 +39,6 @@ static void usage(char *pname)
   cerr << "Usage: " << pname << " safe --imp[=file] --text|--xml" << endl
        << "\t safe --exp[=file] --text|--xml" << endl;
 }
-
 
 struct UserArgs {
   UserArgs() : ImpExp(Unset), Format(Unknown) {}
@@ -182,7 +181,7 @@ int main(int argc, char *argv[])
     CItemData::FieldBits all(~0L);
     int N;
     if (ua.Format == UserArgs::XML) {
-      status = core.WriteXMLFile(ua.fname, all, L"", 0, 0, L' ', N);
+      status = core.WriteXMLFile(ua.fname, all, L"", 0, 0, L' ', L"", N);
     } else { // export text
       status = core.WritePlaintextFile(ua.fname, all, L"", 0, 0, L' ', N);
     }
@@ -281,7 +280,7 @@ ImportText(PWScore &core, const StringX &fname)
     break;
   case PWScore::SUCCESS:
   case PWScore::OK_WITH_ERRORS:
-    // deliberate fallthru
+    // deliberate fallthrough
   default:
     {
       rc = core.Execute(pcmd);
@@ -336,10 +335,9 @@ ImportXML(PWScore &core, const StringX &fname)
 #endif
 
   std::wstring ImportedPrefix;
-  std::wstring dir;
   std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
   int numValidated(0), numImported(0), numSkipped(0), numRenamed(0), numPWHErrors(0);
-  int numNoPolicy(0), numRenamedPolicies(0), numShortcutsRemoved(0);
+  int numNoPolicy(0), numRenamedPolicies(0), numShortcutsRemoved(0), numEmptyGroupsRemoved(0);
   bool bImportPSWDsOnly = false;
 
   
@@ -351,7 +349,6 @@ ImportXML(PWScore &core, const StringX &fname)
   str_text += fname.c_str();
   rpt.WriteLine(str_text);
   rpt.WriteLine();
-  std::vector<StringX> vgroups;
   Command *pcmd = NULL;
 
   int rc = core.ImportXMLFile(ImportedPrefix.c_str(), fname.c_str(),
@@ -359,7 +356,7 @@ ImportXML(PWScore &core, const StringX &fname)
                               strXMLErrors, strSkippedList, strPWHErrorList,
                               strRenameList, numValidated, numImported,
                               numSkipped, numPWHErrors, numRenamed,
-                              numNoPolicy, numRenamedPolicies, numShortcutsRemoved,
+                              numNoPolicy, numRenamedPolicies, numShortcutsRemoved, numEmptyGroupsRemoved,
                               rpt, pcmd);
 
   switch (rc) {

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -11,6 +11,7 @@
 //-----------------------------------------------------------------------------
 
 #include "PasswordSafe.h"
+#include "Windowsdefs.h"
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "Shortcut.h"
@@ -33,6 +34,7 @@
 #include "HKModifiers.h"
 #include "YubiCfgDlg.h"
 
+#include "core/core.h"
 #include "core/pwsprefs.h"
 #include "core/PWSdirs.h"
 #include "core/PWSAuxParse.h"
@@ -87,7 +89,7 @@ int DboxMain::BackupSafe()
     dir = cdrive + cdir;
   }
 
-  //SaveAs-type dialog box
+  // SaveAs-type dialog box
   while (1) {
     CPWFileDialog fd(FALSE,
                      L"bak",
@@ -121,7 +123,7 @@ int DboxMain::BackupSafe()
   rc = m_core.WriteFile(tempname, m_core.GetReadFileVersion(), false);
   if (rc == PWScore::CANT_OPEN_FILE) {
     CGeneralMsgBox gmb;
-    cs_temp.Format(IDS_CANTOPENWRITING, tempname);
+    cs_temp.Format(IDS_CANTOPENWRITING, static_cast<LPCWSTR>(tempname.c_str()));
     cs_title.LoadString(IDS_FILEWRITEERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
@@ -140,16 +142,19 @@ void DboxMain::OnRestoreSafe()
 int DboxMain::RestoreSafe()
 {
   int rc;
-  StringX backup, passkey, temp;
-  StringX currbackup =
+  StringX sx_backup, sx_passkey;
+  StringX sx_currbackup =
     PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup);
 
-  rc = SaveIfChanged();
-  if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
-    return rc;
-   
-  // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-  SetChanged(Clear);
+  if (m_bOpen) {
+    rc = SaveIfChanged();
+    if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
+      return rc;
+
+    // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
+    if (rc == PWScore::USER_DECLINED_SAVE)
+      m_bUserDeclinedSave = true;
+  }
 
   CString cs_text, cs_temp, cs_title;
   cs_text.LoadString(IDS_PICKRESTORE);
@@ -167,7 +172,7 @@ int DboxMain::RestoreSafe()
   while (1) {
     CPWFileDialog fd(TRUE,
                      L"bak",
-                     currbackup.c_str(),
+                     sx_currbackup.c_str(),
                      OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
                      CString(MAKEINTRESOURCE(IDS_FDF_BUS)),
                      this);
@@ -187,20 +192,20 @@ int DboxMain::RestoreSafe()
       return PWScore::USER_CANCEL;
     }
     if (rc2 == IDOK) {
-      backup = fd.GetPathName();
+      sx_backup = fd.GetPathName();
       break;
     } else
       return PWScore::USER_CANCEL;
   }
 
-  rc = GetAndCheckPassword(backup, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+  rc = GetAndCheckPassword(sx_backup, sx_passkey, GCP_NORMAL);  // OK, CANCEL, HELP
 
   CGeneralMsgBox gmb;
   switch (rc) {
     case PWScore::SUCCESS:
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPEN, backup);
+      cs_temp.Format(IDS_CANTOPEN, static_cast<LPCWSTR>(sx_backup.c_str()));
       cs_title.LoadString(IDS_FILEOPENERROR);
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     case TAR_OPEN:
@@ -223,23 +228,30 @@ int DboxMain::RestoreSafe()
     m_core.UnlockFile(m_core.GetCurFile().c_str());
   }
 
-  // clear the data before restoring
-  ClearData();
+  // Reset core and clear ALL associated data
+  m_core.ReInit();
+
+  // Clear application data
+  ClearAppData();
 
   // Validate it unless user says NO
   CReport Rpt;
-  rc = m_core.ReadFile(backup, passkey, !m_bNoValidation, MAXTEXTCHARS, &Rpt);
+  rc = m_core.ReadFile(sx_backup, sx_passkey, !m_bNoValidation, MAXTEXTCHARS, &Rpt);
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENREADING, backup);
+    cs_temp.Format(IDS_CANTOPENREADING, static_cast<LPCWSTR>(sx_backup.c_str()));
     cs_title.LoadString(IDS_FILEREADERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
 
   m_core.SetCurFile(L"");    // Force a Save As...
-  m_core.SetDBChanged(true); // So that the restored file will be saved
+  // Rather than set the DB as having been changed to force it to
+  // be saved, use new variable
+  m_bRestoredDBUnsaved = true;
+
   m_titlebar.LoadString(IDS_UNTITLEDRESTORE);
   app.SetTooltipText(L"PasswordSafe");
+  
   ChangeOkUpdate();
   RefreshViews();
 
@@ -263,6 +275,9 @@ void DboxMain::OnOptions()
     bAppHotKeyEnabled = FALSE;
   else
     bAppHotKeyEnabled = prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
+
+  // Get current status of how the user wants to the initial display
+  bool bTreeOpenStatus = prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen) != PWSprefs::AsPerLastSave;
 
   // Disable Hotkey around this as the user may press the current key when 
   // selecting the new key!
@@ -298,37 +313,38 @@ void DboxMain::OnOptions()
     iPWSHotKeyValue = pOptionsPS->GetHotKeyValue();
 
     // Update status bar
-    UINT uiMessage(IDS_STATCOMPANY);
+    UINT uiMessage(IDSC_STATCOMPANY);
     switch (pOptionsPS->GetDCA()) {
       case PWSprefs::DoubleClickAutoType:
-        uiMessage = IDS_STATAUTOTYPE; break;
+        uiMessage = IDSC_STATAUTOTYPE; break;
       case PWSprefs::DoubleClickBrowse:
-        uiMessage = IDS_STATBROWSE; break;
+        uiMessage = IDSC_STATBROWSE; break;
       case PWSprefs::DoubleClickCopyNotes:
-        uiMessage = IDS_STATCOPYNOTES; break;
+        uiMessage = IDSC_STATCOPYNOTES; break;
       case PWSprefs::DoubleClickCopyPassword:
-        uiMessage = IDS_STATCOPYPASSWORD; break;
+        uiMessage = IDSC_STATCOPYPASSWORD; break;
       case PWSprefs::DoubleClickCopyUsername:
-        uiMessage = IDS_STATCOPYUSERNAME; break;
+        uiMessage = IDSC_STATCOPYUSERNAME; break;
       case PWSprefs::DoubleClickViewEdit:
-        uiMessage = IDS_STATVIEWEDIT; break;
+        uiMessage = IDSC_STATVIEWEDIT; break;
       case PWSprefs::DoubleClickCopyPasswordMinimize:
-        uiMessage = IDS_STATCOPYPASSWORDMIN; break;
+        uiMessage = IDSC_STATCOPYPASSWORDMIN; break;
       case PWSprefs::DoubleClickBrowsePlus:
-        uiMessage = IDS_STATBROWSEPLUS; break;
+        uiMessage = IDSC_STATBROWSEPLUS; break;
       case PWSprefs::DoubleClickRun:
-        uiMessage = IDS_STATRUN; break;
+        uiMessage = IDSC_STATRUN; break;
       case PWSprefs::DoubleClickSendEmail:
-        uiMessage = IDS_STATSENDEMAIL; break;
+        uiMessage = IDSC_STATSENDEMAIL; break;
       default:
-        uiMessage = IDS_STATCOMPANY;
+        uiMessage = IDSC_STATCOMPANY;
     }
     statustext[CPWStatusBar::SB_DBLCLICK] = uiMessage;
-    m_statusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
+    m_StatusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
     UpdateStatusBar();
+
     // Make a sunken or recessed border around the first pane
-    m_statusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK,
-                            m_statusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK,
+                            m_StatusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
                             SBPS_STRETCH, NULL);
 
     int iTrayColour = pOptionsPS->GetTrayIconColour();
@@ -383,14 +399,14 @@ void DboxMain::OnOptions()
       }
     }
 
+    m_ctlItemList.SetHighlightChanges(pOptionsPS->HighlightChanges() &&
+      !pOptionsPS->SaveImmediately());
+    m_ctlItemTree.SetHighlightChanges(pOptionsPS->HighlightChanges() &&
+      !pOptionsPS->SaveImmediately());
+
     if (pOptionsPS->RefreshViews()) {
-      m_ctlItemList.SetHighlightChanges(pOptionsPS->HighlightChanges());
-      m_ctlItemTree.SetHighlightChanges(pOptionsPS->HighlightChanges());
       RefreshViews();
     }
-
-    if (pOptionsPS->SaveGroupDisplayState())
-      SaveGroupDisplayState();
 
     if (pOptionsPS->UpdateShortcuts()) {
       // Create vector of shortcuts for user's config file
@@ -402,7 +418,7 @@ void DboxMain::OnOptions()
            iter++) {
         // User should not have these sub-entries in their config file
         if (iter->first == ID_MENUITEM_GROUPENTER  ||
-            iter->first == ID_MENUITEM_VIEW        || 
+            iter->first == ID_MENUITEM_VIEWENTRY        || 
             iter->first == ID_MENUITEM_DELETEENTRY ||
             iter->first == ID_MENUITEM_DELETEGROUP ||
             iter->first == ID_MENUITEM_RENAMEENTRY ||
@@ -433,8 +449,8 @@ void DboxMain::OnOptions()
 
       // Set up the shortcuts based on the main entry
       // for View, Delete and Rename
-      iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDIT);
-      iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEW);
+      iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDITENTRY);
+      iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEWENTRY);
       iter_entry->second.SetKeyFlags(iter->second);
 
       SetupSpecialShortcuts();
@@ -478,7 +494,7 @@ void DboxMain::OnOptions()
 
     if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (sxOldDBPrefsString != sxNewDBPrefsString) {
-        // Determine whether Tree needs redisplayng due to change
+        // Determine whether Tree needs redisplaying due to change
         // in what is shown (e.g. usernames/passwords)
         bool bUserDisplayChanged = pOptionsPS->UserDisplayChanged();
         // Note: passwords are only shown in the Tree if usernames are also shown
@@ -493,6 +509,7 @@ void DboxMain::OnOptions()
         }
         pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
         pmulticmds->Add(pcmd);
+
         if (bNeedGUITreeUpdate) {
           pcmd = UpdateGUICommand::Create(&m_core,
                                                   UpdateGUICommand::WN_EXECUTE_REDO,
@@ -500,12 +517,19 @@ void DboxMain::OnOptions()
           pmulticmds->Add(pcmd);
         }
       }
+
+      // Save group display if the user has switched to Explorer mode or
+      // has changed the TreeDisplayStatusAtOpen to AsPerLastSave
+      if (pOptionsPS->SaveGroupDisplayState() ||
+        (!bTreeOpenStatus &&
+          prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen, true) == PWSprefs::AsPerLastSave)) {
+        SaveGroupDisplayState();
+      }
     }
 
     const int iAction = pOptionsPS->GetPWHAction();
     const int new_default_max = pOptionsPS->GetPWHistoryMax();
     size_t ipwh_exec(0);
-    int num_altered(0);
 
     if (iAction != 0) {
       pcmd = UpdateGUICommand::Create(&m_core,
@@ -526,8 +550,11 @@ void DboxMain::OnOptions()
 
     // If DB preferences changed and/or password history options
     if (pmulticmds != NULL) {
-      if (pmulticmds->GetSize() > 0) {
+      int num_altered(0);
+      if (!pmulticmds->IsEmpty()) {
+        // Do it
         Execute(pmulticmds);
+
         if (ipwh_exec > 0) {
           // We did do PWHistory update
           if (pmulticmds->GetRC(ipwh_exec, num_altered)) {
@@ -561,20 +588,15 @@ void DboxMain::OnOptions()
               gmb.AfxMessageBox(cs_Msg);
             }
           }
+
+          if (num_altered > 0) {
+            ChangeOkUpdate();
+          }
         } 
       } else {
         // Was created but no commands added in the end.
         delete pmulticmds;
       }
-    }
-
-    if (m_core.HaveDBPrefsChanged() || num_altered > 0) {
-      if (m_core.HaveDBPrefsChanged())
-        SetChanged(DBPrefs);
-      if (num_altered > 0)
-        SetChanged(Data);
-      
-      ChangeOkUpdate();
     }
   }
 
@@ -644,8 +666,10 @@ void DboxMain::OnGeneratePassword()
 
 void DboxMain::OnYubikey()
 {
+#ifndef NO_YUBI
   CYubiCfgDlg dlg(this, m_core);
   dlg.DoModal();
+#endif /* NO_YUBI */
 }
 
 void DboxMain::OnManagePasswordPolicies()
@@ -704,6 +728,8 @@ void DboxMain::OnManagePasswordPolicies()
     Command *pcmd = DBPolicyNamesCommand::Create(&m_core, MapPSWDPLC,
                              DBPolicyNamesCommand::NP_REPLACEALL);
     pmulticmds->Add(pcmd);
+
+    // Do it
     Execute(pmulticmds);
 
     // Update Minidump user streams

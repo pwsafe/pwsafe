@@ -1,4 +1,4 @@
-; Password Safe Installer Laguage script template
+; Password Safe Installer Language script template
 ; This file is the basis for translating the installer
 ; to a new language. To use:
 ; 1. Copy file to pwsafe_xx.lng, where xx is the ISO 3166-1 2-letter

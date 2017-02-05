@@ -22,7 +22,7 @@ LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
                   PWSFilters.cpp PWSLog.cpp PWSprefs.cpp \
                   Command.cpp PWSrand.cpp Report.cpp \
                   sha1.cpp sha256.cpp core_st.cpp\
-		  pbkdf2.cpp KeyWrap.cpp \
+								  pbkdf2.cpp KeyWrap.cpp RUEList.cpp \
                   StringX.cpp SysInfo.cpp \
                   TwoFish.cpp UnknownField.cpp  \
                   UTF8Conv.cpp Util.cpp CoreOtherDB.cpp \
@@ -32,7 +32,8 @@ LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
                   XML/XMLFileHandlers.cpp XML/XMLFileValidation.cpp \
                   XML/Xerces/XFileSAX2Handlers.cpp XML/Xerces/XFileValidator.cpp \
                   XML/Xerces/XFileXMLProcessor.cpp XML/Xerces/XFilterSAX2Handlers.cpp \
-                  XML/Xerces/XFilterXMLProcessor.cpp XML/Xerces/XSecMemMgr.cpp PWSLog.cpp
+                  XML/Xerces/XFilterXMLProcessor.cpp XML/Xerces/XSecMemMgr.cpp PWSLog.cpp \
+				  RUEList.cpp
 
 SRC             = $(LIBSRC)
 

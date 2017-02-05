@@ -32,6 +32,7 @@ set (CORE_SRCS
   PWSrand.cpp
   PWStime.cpp
   Report.cpp
+  RUEList.cpp
   sha1.cpp
   sha256.cpp
   StringX.cpp
@@ -42,32 +43,58 @@ set (CORE_SRCS
   Util.cpp
   VerifyFormat.cpp
   XMLprefs.cpp
-  XML/Xerces/XFileSAX2Handlers.cpp
-  XML/Xerces/XFileValidator.cpp
-  XML/Xerces/XFileXMLProcessor.cpp
-  XML/Xerces/XFilterSAX2Handlers.cpp
-  XML/Xerces/XFilterXMLProcessor.cpp
-  XML/Xerces/XSecMemMgr.cpp
   XML/XMLFileHandlers.cpp
   XML/XMLFileValidation.cpp
   pugixml/pugixml.cpp
   )
 
-if (NOT WIN32)
+if (XML_MSXML)
+  list (APPEND CORE_SRCS
+    XML/MSXML/MFileSAX2Handlers.cpp
+    XML/MSXML/MFileValidator.cpp
+    XML/MSXML/MFileXMLProcessor.cpp
+    XML/MSXML/MFilterSAX2Handlers.cpp
+    XML/MSXML/MFilterXMLProcessor.cpp
+  )
+endif (XML_MSXML)
+
+if (XML_XERCESC)
+  list (APPEND CORE_SRCS
+    XML/Xerces/XFileSAX2Handlers.cpp
+    XML/Xerces/XFileValidator.cpp
+    XML/Xerces/XFileXMLProcessor.cpp
+    XML/Xerces/XFilterSAX2Handlers.cpp
+    XML/Xerces/XFilterXMLProcessor.cpp
+    XML/Xerces/XSecMemMgr.cpp
+   )
+endif (XML_XERCESC)
+
+if (NOT WIN32 OR WX_WINDOWS)
   list (APPEND CORE_SRCS ${CMAKE_CURRENT_BINARY_DIR}/core_st.cpp)
-  
+  if (WIN32)
+    set (PERL_EXECUTABLE "Perl_executable_undefined" CACHE FILEPATH
+    "Path to perl.exe, from activestate.com or Cygwin") 
+    set (MV "move")
+    string (REPLACE "/" "\\" FROM "${PROJECT_SOURCE_DIR}/src/core/core_st")
+    string (REPLACE "/" "\\" TO "${CMAKE_CURRENT_BINARY_DIR}/core_st")
+  else (WIN32)
+    set (PERL_EXECUTABLE "perl")
+    set (MV "mv")
+    set (FROM "${PROJECT_SOURCE_DIR}/src/core/core_st")
+    set (TO "${CMAKE_CURRENT_BINARY_DIR}/core_st")
+  endif (WIN32)
   set (RC2CPP "${PROJECT_SOURCE_DIR}/Misc/rc2cpp.pl")
 
   add_custom_command (
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/core_st.cpp ${CMAKE_CURRENT_BINARY_DIR}/core_st.h
-    COMMAND ${RC2CPP} ${PROJECT_SOURCE_DIR}/src/core/core.rc2
-    COMMAND "mv"  ${PROJECT_SOURCE_DIR}/src/core/core_st.cpp  ${CMAKE_CURRENT_BINARY_DIR}/core_st.cpp
-    COMMAND "mv"  ${PROJECT_SOURCE_DIR}/src/core/core_st.h  ${CMAKE_CURRENT_BINARY_DIR}/core_st.h
+    COMMAND "${PERL_EXECUTABLE}" "${RC2CPP}" "${PROJECT_SOURCE_DIR}/src/core/core.rc2"
+    COMMAND "${MV}" "${FROM}.cpp" "${TO}.cpp"
+    COMMAND "${MV}" "${FROM}.h" "${TO}.h"
     DEPENDS core.rc2
     )
   include_directories(${CMAKE_CURRENT_BINARY_DIR})
-else ()
+else (NOT WIN32 OR WX_WINDOWS)
   list (APPEND CORE_SRCS core.rc2)
-endif()
+endif(NOT WIN32 OR WX_WINDOWS)
 
 add_library(core ${CORE_SRCS})

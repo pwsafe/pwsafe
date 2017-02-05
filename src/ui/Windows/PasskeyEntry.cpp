@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,6 +13,7 @@ Passkey?  That's Russian for 'pass'.  You know, passkey
 down the streetsky.  [Groucho Marx]
 */
 
+#include "Windowsdefs.h"
 #include "PasswordSafe.h"
 #include "PWFileDialog.h"
 #include "ThisMfcApp.h"
@@ -62,7 +63,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_filespec(a_filespec), m_orig_filespec(a_filespec),
   m_tries(0),
   m_status(TAR_INVALID),
-  m_PKE_ReadOnly((bReadOnly || bFileReadOnly) ? TRUE : FALSE),
+  m_btnReadOnly((bReadOnly || bFileReadOnly) ? TRUE : FALSE),
   m_bFileReadOnly(bFileReadOnly),
   m_bForceReadOnly(bForceReadOnly),
   m_bHideReadOnly(bHideReadOnly),
@@ -85,9 +86,10 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   CString csSpecialBuild = pPWSver->GetSpecialBuild();
 
   if (nBuild == 0)
-    m_appversion.Format(L"V%d.%02d%s", nMajor, nMinor, csSpecialBuild);
+    m_appversion.Format(L"V%d.%02d%s", nMajor, nMinor, static_cast<LPCWSTR>(csSpecialBuild));
   else
-    m_appversion.Format(L"V%d.%02d.%02d%s", nMajor, nMinor, nBuild, csSpecialBuild);
+    m_appversion.Format(L"V%d.%02d.%02d%s", nMajor, nMinor, nBuild,
+                        static_cast<LPCWSTR>(csSpecialBuild));
 }
 
 CPasskeyEntry::~CPasskeyEntry()
@@ -112,7 +114,7 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
   DDX_Text(pDX, IDC_SELECTED_DATABASE, m_SelectedDatabase);
-  DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
+  DDX_Check(pDX, IDC_READONLY, m_btnReadOnly);
   DDX_Control(pDX, IDOK, m_ctlOK);
   //}}AFX_DATA_MAP
 }
@@ -121,16 +123,19 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   //{{AFX_MSG_MAP(CPasskeyEntry)
   ON_WM_DESTROY()
   ON_WM_TIMER()
+
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_CREATE_DB, OnCreateDb)
   ON_BN_CLICKED(IDC_EXIT, OnExit)
-  ON_CBN_EDITCHANGE(IDC_DATABASECOMBO, OnComboEditChange)
-  ON_CBN_SELCHANGE(IDC_DATABASECOMBO, OnComboSelChange)
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
   ON_BN_CLICKED(IDC_READONLY, OnBnClickedReadonly)
   ON_BN_CLICKED(IDC_BTN_BROWSE, OnOpenFileBrowser)
-  ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
-  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
+
+  ON_CBN_EDITCHANGE(IDC_DATABASECOMBO, OnComboEditChange)
+  ON_CBN_SELCHANGE(IDC_DATABASECOMBO, OnComboSelChange)
+
+  ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -154,35 +159,13 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
-  switch(m_index) {
-    case GCP_FIRST:
-      // At start up - give the user the option unless file is R-O
-      GetDlgItem(IDC_READONLY)->EnableWindow((m_bForceReadOnly || m_bFileReadOnly) ? FALSE : TRUE);
-      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-      GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
-      break;
-    case GCP_NORMAL:
-      // otherwise during open - user can - again unless file is R-O
-      if (m_bHideReadOnly) {
-        GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
-        GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
-      } else {
-        GetDlgItem(IDC_READONLY)->EnableWindow((m_bForceReadOnly || m_bFileReadOnly) ? FALSE : TRUE);
-        GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-      }
-      break;
-    case GCP_RESTORE:
-    case GCP_WITHEXIT:
-      GetDlgItem(IDC_READONLY)->EnableWindow((m_bForceReadOnly || m_bFileReadOnly) ? FALSE : TRUE);
-      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-      break;
-    case GCP_CHANGEMODE:
-      GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
-      GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
-      break;
-    default:
-      ASSERT(FALSE);
-  }
+  GetDlgItem(IDC_READONLY)->EnableWindow((m_bForceReadOnly || m_bFileReadOnly || m_bHideReadOnly) ?
+                                         FALSE : TRUE);
+  GetDlgItem(IDC_READONLY)->ShowWindow(m_bHideReadOnly ? SW_HIDE : SW_SHOW);
+
+  CWnd *create_bn = GetDlgItem(IDC_CREATE_DB);
+  if (create_bn) // not always there
+    create_bn->EnableWindow((m_bForceReadOnly || m_btnReadOnly) ? FALSE : TRUE);
 
   // Only show virtual Keyboard menu if we can load DLL
   if (!CVKeyBoardDlg::IsOSKAvailable()) {
@@ -191,6 +174,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   }
 
   if (m_index == GCP_FIRST) {
+    GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
     GetDlgItem(IDC_SELECTED_DATABASE)->ShowWindow(SW_HIDE);
 
     CRecentFileList *mru = app.GetMRU();
@@ -251,27 +235,37 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   SetIcon(m_hIcon, TRUE);  // Set big icon
   SetIcon(m_hIcon, FALSE); // Set small icon
 
+  // Following brings to top when hotkey pressed.
+  // This is "stronger" than BringWindowToTop().
+  SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+  SetActiveWindow();
+  SetForegroundWindow();
+
   if (app.WasHotKeyPressed()) {
     // Reset it
     app.SetHotKeyPressed(false);
-    // Following (1) brings to top when hotkey pressed,
-    // (2) ensures focus is on password entry field, where it belongs.
-    // This is "stronger" than BringWindowToTop().
-    SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-    SetActiveWindow();
-    SetForegroundWindow();
-    m_pctlPasskey->SetFocus();
+    // Ensures focus is on password entry field, where it belongs.
+    // Do NOT use SetFocus in OnInitDialog as it bypasses the Dialog manager
+    //m_pctlPasskey->SetFocus();
+    GotoDlgCtrl(m_pctlPasskey);
     return FALSE;
   }
 
   // Following works fine for other (non-hotkey) cases:
-  SetForegroundWindow();
+  if (m_index == GCP_RESTORE || m_index == GCP_WITHEXIT) {
+    SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    SetActiveWindow();
+    SetForegroundWindow();
+  }
 
   // If the dbase field's !empty, the user most likely will want to enter
   // a password:
   if (m_index == GCP_FIRST && !m_filespec.IsEmpty()) {
     m_MRU_combo.SetEditSel(-1, -1);
-    m_pctlPasskey->SetFocus();
+    // Ensures focus is on password entry field, where it belongs.
+    // Do NOT use SetFocus in OnInitDialog as it bypasses the Dialog manager
+    //m_pctlPasskey->SetFocus();
+    GotoDlgCtrl(m_pctlPasskey);
     return FALSE;
   }
 
@@ -385,6 +379,8 @@ void CPasskeyEntry::OnOK()
     return;
   }
 
+  m_PKE_ReadOnly = m_btnReadOnly;
+
   ProcessPhrase();
 }
 
@@ -401,10 +397,16 @@ void CPasskeyEntry::ProcessPhrase()
     // r-o -> r/w may fail
     // Note that if file is read-only, m_bForceReadOnly is true -> checkbox
     // is disabled -> don't need to worry about that.
+    BOOL bIsRO = GetMainDlg()->IsDBReadOnly();
     if ((m_index == GCP_RESTORE || m_index == GCP_WITHEXIT) && 
-        (m_PKE_ReadOnly == TRUE) == pws_os::IsLockedFile(LPCWSTR(m_filespec))) {
-      GetMainDlg()->ChangeMode(false); // false means
-      //                           "don't prompt use for password", as we just got it.
+        (m_PKE_ReadOnly != bIsRO) && pws_os::IsLockedFile(LPCWSTR(m_filespec))) {
+      // false means "don't prompt use for password", as we just got it.
+      bool brc = GetMainDlg()->ChangeMode(false); 
+
+      // If user failed to change R/W status from bIsRO to m_PKE_ReadOnly
+      // reset local variable back to current DB state
+      if (!brc)
+        m_PKE_ReadOnly = bIsRO;
     }
     CPWDialog::OnOK();
     m_passkey = save_passkey;
@@ -450,7 +452,7 @@ void CPasskeyEntry::UpdateRO()
   if (!m_bForceReadOnly) {
     // If allowed, change R-O state to reflect file's permission - only if file is R-O
     if (pws_os::FileExists(LPCWSTR(m_filespec), m_bFileReadOnly) && m_bFileReadOnly) {
-      m_PKE_ReadOnly = TRUE;
+      m_btnReadOnly = TRUE;
       GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
       ((CButton *)GetDlgItem(IDC_READONLY))->SetCheck(BST_CHECKED);
     } else {
@@ -467,10 +469,12 @@ void CPasskeyEntry::OnComboEditChange()
   UpdateRO();
 }
 
-
 void CPasskeyEntry::OnBnClickedReadonly()
 {
-  m_PKE_ReadOnly = ((CButton *)GetDlgItem(IDC_READONLY))->GetCheck() == BST_CHECKED;
+  m_btnReadOnly = ((CButton *)GetDlgItem(IDC_READONLY))->GetCheck() == BST_CHECKED;
+  CWnd *create_bn = GetDlgItem(IDC_CREATE_DB);
+  if (create_bn) // not always there
+    create_bn->EnableWindow(!m_btnReadOnly);
 }
 
 void CPasskeyEntry::OnComboSelChange()
@@ -545,7 +549,7 @@ void CPasskeyEntry::OnOpenFileBrowser()
       // Read-only checkbox only available up to Windows XP
       // In XP, the checkbox setting overrides the main dialog checkbox
       // but the user can then change it in the main dialog if they want
-      m_PKE_ReadOnly = fd.GetReadOnlyPref();
+      m_btnReadOnly = fd.GetReadOnlyPref();
     }
 
     m_filespec = fd.GetPathName();
@@ -573,9 +577,9 @@ void CPasskeyEntry::SetHeight(const int num)
 
   if ((rect.top - sz.cy) < 0 || 
       (rect.bottom + sz.cy > ::GetSystemMetrics(SM_CYSCREEN))) {
-    int ifit = max((rect.top / ht), (::GetSystemMetrics(SM_CYSCREEN) - rect.bottom) / ht);
+    int ifit = std::max((rect.top / ht), (::GetSystemMetrics(SM_CYSCREEN) - rect.bottom) / ht);
     int ht2 = ht * ifit;
-    sz.cy = min(ht2, sz.cy);
+    sz.cy = std::min((long)ht2, sz.cy);
   }
 
   m_MRU_combo.SetWindowPos(NULL, 0, 0, sz.cx, sz.cy, SWP_NOMOVE | SWP_NOZORDER);

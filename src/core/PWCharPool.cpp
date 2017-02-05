@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -217,8 +217,8 @@ struct RandomWrapper {
 StringX CPasswordCharPool::MakePassword() const
 {
   // We don't care if the policy is inconsistent e.g. 
-  // number of lower case chars > 1 + make pronouceable
-  // The individual routines (normal, hex, pronouceable) will
+  // number of lower case chars > 1 + make pronounceable
+  // The individual routines (normal, hex, pronounceable) will
   // ignore what they don't need.
   // Saves an awful amount of bother with setting values to zero and
   // back as the user changes their minds!
@@ -226,7 +226,6 @@ StringX CPasswordCharPool::MakePassword() const
   ASSERT(m_pwlen > 0);
   ASSERT(m_uselowercase || m_useuppercase || m_usedigits ||
          m_usesymbols   || m_usehexdigits || m_pronounceable);
-
 
   // pronounceable and hex passwords are handled separately:
   if (m_pronounceable)
@@ -267,7 +266,6 @@ StringX CPasswordCharPool::MakePassword() const
           goto do_shuffle; // break out of two loops, goto needed
       }
     }
-
 
   // Now fill in the rest
   while (temp.length() != m_pwlen) {

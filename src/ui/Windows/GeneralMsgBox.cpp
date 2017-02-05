@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -15,7 +15,7 @@
 * This is a cut down version of TcxMsgBox by Thales P. Carvalho but then
 * significantly enhanced to support text with HTML formatting and links
 * instead of a RTF string by using a CRichEditCtrlExtn control.
-* See www.codeproject.com for the orgininal code
+* See www.codeproject.com for the original code
 */
 
 #include "stdafx.h"
@@ -449,7 +449,7 @@ BOOL CGeneralMsgBox::OnInitDialog()
   if (m_uiEscCmdId == (UINT)IDC_STATIC)
     ModifyStyle(WS_SYSMENU, NULL);
 
-  // Focusing and setting the defaul button
+  // Focusing and setting the default button
   if (m_uiDefCmdId != (UINT)IDC_STATIC) {
     GetDlgItem(m_uiDefCmdId)->SetFocus();
     SetDefID(m_uiDefCmdId);
@@ -609,7 +609,7 @@ void CGeneralMsgBox::CreateBtns()
   CFont *pWndFont = GetFont();
   CFont *poldFont = dc.SelectObject(pWndFont);
 
-  CRect rcDummy; // dimesion doesn't matter here
+  CRect rcDummy; // dimension doesn't matter here
 
   INT_PTR cBtns = m_aBtns.GetSize();
 
@@ -619,8 +619,8 @@ void CGeneralMsgBox::CreateBtns()
     // Finding the minimum dimension needed to properly show any button
     CSize dimBtn = dc.GetTextExtent(btndata.strBtn);
 
-    m_dimBtn.cx = max(m_dimBtn.cx, dimBtn.cx);
-    m_dimBtn.cy = max(m_dimBtn.cy, dimBtn.cy);
+    m_dimBtn.cx = std::max(m_dimBtn.cx, dimBtn.cx);
+    m_dimBtn.cy = std::max(m_dimBtn.cy, dimBtn.cy);
 
     // Creating the button with MFC's CButton help.
     CButton btnCtrl;
@@ -642,7 +642,7 @@ void CGeneralMsgBox::CreateBtns()
 void CGeneralMsgBox::CreateIcon()
 {
   if (m_hIcon != NULL) {
-    CRect rcDummy; // dimesion doesn't matter here
+    CRect rcDummy; // dimension doesn't matter here
 
     // Creating the icon control
     m_stIconCtrl.Create(NULL, WS_CHILD | WS_VISIBLE | WS_DISABLED | SS_ICON, 

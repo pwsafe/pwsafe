@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -14,6 +14,8 @@
 // COptionsBackup dialog
 #include "resource.h"
 #include "Options_PropertyPage.h"
+#include "TBMStatic.h"
+
 #include "core/PWSprefs.h"
 
 class COptionsBackup : public COptions_PropertyPage
@@ -33,6 +35,7 @@ protected:
 
   CString m_UserBackupPrefix;
   CString m_UserBackupOtherLocation;
+  CString m_csExpandedPath;
   BOOL m_SaveImmediately;
   BOOL m_BackupBeforeSave;
   int m_BackupPrefix;
@@ -47,6 +50,7 @@ protected:
   CString m_currentFileBasename;
 
   CButtonExtn m_chkbox;
+  CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4;
 
   // Overrides
   // ClassWizard generate virtual function overrides
@@ -68,6 +72,7 @@ protected:
   afx_msg void OnBackupBeforeSave();
   afx_msg void OnBrowseForLocation();
   afx_msg void OnUserPrefixKillfocus();
+  afx_msg void OnUserBkpLocationKillfocus();
   afx_msg void OnComboChanged();
   afx_msg void OnPreferencesHelp();
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
@@ -77,5 +82,9 @@ protected:
 
 private:
   void SetExample();
-};
+  void ExpandBackupPath();
 
+  BOOL VerifyFields();
+
+  bool m_bKillActiveInProgress;  // Checked already in OnUserBkpLocationKillfocus
+};

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -84,6 +84,8 @@ public:
   static bool UserSetCfgFile() {return m_userSetCfgFile;}
   ConfigOption GetConfigOption() {return m_ConfigOption;}
 
+  static stringT GetDCAdescription(int dca);
+
   // prefString is stored in database file, format described in PWSprefs.cpp
   void Load(const StringX &prefString, bool bUseCopy = false);
   StringX Store(bool bUseCopy = false); // returns string for saving in file
@@ -93,7 +95,7 @@ public:
 
   enum BoolPrefs {AlwaysOnTop, ShowPWDefault,
     ShowPasswordInTree,
-    SortAscending,
+    SortAscending, // Obsoleted in 3.40 as moved to application config file
     UseDefaultUser, SaveImmediately, PWUseLowercase, PWUseUppercase,
     PWUseDigits, PWUseSymbols, PWUseHexDigits, PWUseEasyVision,
     DontAskQuestion, DeleteQuestion, DCShowsPassword,
@@ -123,6 +125,7 @@ public:
     UseAltAutoType,  // Only under X-Windows
     IgnoreHelpLoadError, // Only under WX
     VKPlaySound, // Windows only
+    ListSortAscending,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
@@ -142,6 +145,7 @@ public:
     MainToolBarButtons, PasswordFont, TreeListSampleText, PswdSampleText,
     LastUsedKeyboard, VKeyboardFontName, VKSampleText, AltNotesEditor,
     LanguageFile, DefaultSymbols, NotesFont, NotesSampleText, AutotypeTaskDelays,
+    AddEditFont, AddEditSampleText,
     NumStringPrefs};
 
   // for DoubleClickAction and ShiftDoubleClickAction

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -106,7 +106,7 @@ public:
   //}}AFX_DATA
 
   bool m_bOriginalDBReadOnly, m_bComparisonDBReadOnly;
-  bool m_OriginalDBChanged, m_ComparisonDBChanged;
+  bool m_OriginalDBChanged;
   bool m_bTreatWhiteSpaceasEmpty;
   CString GetResults() {return m_results;}
 
@@ -169,6 +169,7 @@ private:
   size_t m_numOnlyInCurrent, m_numOnlyInComp, m_numConflicts, m_numIdentical;
   int m_nCols;
   bool m_bFirstInCompare;
+  bool m_bDBNotificationState;
 
   // These columns always shown
   static const UINT FixedCols[USER + 1];

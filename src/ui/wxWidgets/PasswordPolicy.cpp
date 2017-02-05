@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -30,8 +30,6 @@
 ////@begin XPM images
 ////@end XPM images
 
-
-
 /*!
  * CPasswordPolicy event table definition
  */
@@ -53,7 +51,6 @@ BEGIN_EVENT_TABLE( CPasswordPolicy, wxDialog )
 
 END_EVENT_TABLE()
 
-
 /*!
  * CPasswordPolicy constructor
  */
@@ -67,7 +64,6 @@ CPasswordPolicy::CPasswordPolicy( wxWindow* parent, PWScore &core,
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * CPasswordPolicy creator
@@ -115,7 +111,6 @@ CPasswordPolicy::~CPasswordPolicy()
 ////@end CPasswordPolicy destruction
 }
 
-
 /*!
  * Member initialisation
  */
@@ -142,7 +137,6 @@ void CPasswordPolicy::Init()
   m_pwpHexCtrl = NULL;
 ////@end CPasswordPolicy member initialisation
 }
-
 
 /*!
  * Control creation for CPasswordPolicy
@@ -302,7 +296,6 @@ void CPasswordPolicy::CreateControls()
 ////@end CPasswordPolicy content construction
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -346,7 +339,7 @@ bool CPasswordPolicy::Verify()
   if (m_pwUseHex &&
      (m_pwUseLowercase || m_pwUseUppercase || m_pwUseDigits ||
       m_pwUseSymbols || m_pwUseEasyVision || m_pwMakePronounceable)) {
-    mess = _("Hexadecimal is mutually exculsive to all other options.");
+    mess = _("Hexadecimal is mutually exclusive to all other options.");
     retval = false;
   } else if (m_pwUseHex) {
     if (m_pwdefaultlength % 2 != 0) {
@@ -441,8 +434,6 @@ void CPasswordPolicy::OnOkClick( wxCommandEvent& )
   EndModal(wxID_OK);
 }
 
-
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
@@ -454,7 +445,6 @@ void CPasswordPolicy::OnCancelClick( wxCommandEvent& event )
   event.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CPasswordPolicy.
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
@@ -526,7 +516,6 @@ void CPasswordPolicy::OnPwPolUseLowerCase( wxCommandEvent& )
   CBox2Spin(m_pwpUseLowerCtrl, m_pwpLCSpin);
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX4
  */
@@ -536,7 +525,6 @@ void CPasswordPolicy::OnPwPolUseUpperCase( wxCommandEvent& )
   CBox2Spin(m_pwpUseUpperCtrl, m_pwpUCSpin);
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX5
  */
@@ -545,7 +533,6 @@ void CPasswordPolicy::OnPwPolUseDigits( wxCommandEvent& )
 {
   CBox2Spin(m_pwpUseDigitsCtrl, m_pwpDigSpin);
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
@@ -568,7 +555,6 @@ void CPasswordPolicy::OnResetSymbolsClick( wxCommandEvent& WXUNUSED(event) )
   SetDefaultSymbolDisplay(true);
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
  */
@@ -579,7 +565,7 @@ void CPasswordPolicy::OnPronouceableCBClick( wxCommandEvent& event )
     // Check if ezread is also set - forbid both
     if (m_pwpEasyCtrl->GetValue()) {
       m_pwpPronounceCtrl->SetValue(false);
-      wxMessageBox(_("Sorry, \"pronouncable\" and \"easy-to-read\" cannot be both selected"),
+      wxMessageBox(_("Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"),
                    _("Error"), wxOK|wxICON_ERROR, this);
       return;
     }
@@ -587,7 +573,6 @@ void CPasswordPolicy::OnPronouceableCBClick( wxCommandEvent& event )
   if (Validate() && TransferDataFromWindow())
     SetDefaultSymbolDisplay(false);
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
@@ -599,7 +584,7 @@ void CPasswordPolicy::OnEZreadCBClick( wxCommandEvent& event )
     // Check if pronounceable is also set - forbid both
     if (m_pwpPronounceCtrl->GetValue()) {
       m_pwpEasyCtrl->SetValue(false);
-      wxMessageBox(_("Sorry, \"easy-to-read\" and \"pronouncable\" cannot be both selected"),
+      wxMessageBox(_("Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"),
                    _("Error"), wxOK|wxICON_ERROR, this);
       return;
     }
@@ -607,4 +592,3 @@ void CPasswordPolicy::OnEZreadCBClick( wxCommandEvent& event )
   if (Validate() && TransferDataFromWindow())
     SetDefaultSymbolDisplay(false);
 }
-

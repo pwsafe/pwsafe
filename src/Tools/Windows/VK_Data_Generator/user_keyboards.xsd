@@ -6,7 +6,7 @@
     This XML Schema corresponds to V3.18 of Password Safe.
     This describes keyboards that cannot be extracted or need extra changes.
     Each keyboard must have a unique keyboard layout ID (KLID) and name.
-    To make different from those in Winodws, these should end with 'FFF'.
+    To make different from those in Windows, these should end with 'FFF'.
     The Japanese keyboard is different as there are XX versions.
     
     Each keyboard has keys denoted by their scan code,  and then the 

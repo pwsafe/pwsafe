@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -163,7 +163,6 @@ void PWScore::Compare(PWScore *pothercore,
          Fourth byte
          1... ....  POLICYNAME [0x18] - not checked by default
          .1.. ....  KBSHORTCUT [0x19] - not checked by default
-
 
         */
         bsConflicts.reset();
@@ -353,6 +352,17 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
   return u1.compare(u2) < 0;
 }
 
+bool PWScore::MatchGroupName(const StringX &stValue, const StringX &subgroup_name,
+                             const int &iFunction) const
+{
+  ASSERT(iFunction != 0); // must be positive or negative!
+
+  // Can't have these comparisons for empty group names
+  ASSERT(iFunction != PWSMatch::MR_PRESENT && iFunction != PWSMatch::MR_NOTPRESENT);
+
+  return PWSMatch::Match(stValue, subgroup_name, iFunction);
+}
+
 // Merge flags indicating differing fields if group, title and user are identical
 #define MRG_PASSWORD   0x8000
 #define MRG_NOTES      0x4000
@@ -411,6 +421,7 @@ stringT PWScore::Merge(PWScore *pothercore,
   int numConflicts = 0;
   int numAliasesAdded = 0;
   int numShortcutsAdded = 0;
+  int numEmptyGroupsAdded = 0;
   uuid_array_t base_uuid, new_base_uuid;
   bool bTitleRenamed(false);
   StringX sx_merged;
@@ -775,6 +786,22 @@ stringT PWScore::Merge(PWScore *pothercore,
     return _T("");
   }
 
+  // OK now merge empty groups
+  std::vector<StringX> vOtherEmptyGroups;
+  vOtherEmptyGroups = pothercore->GetEmptyGroups();
+  const StringX sxsubgroup_name = subgroup_name.c_str();
+
+  for (size_t i = 0; i < vOtherEmptyGroups.size(); i++) {
+    // Don't add group if already in this DB or if it doesn't meet subgroup test
+    if (IsEmptyGroup(vOtherEmptyGroups[i]) || (subgroup_bset &&
+          !MatchGroupName(sxsubgroup_name, vOtherEmptyGroups[i], subgroup_function)))
+      continue;
+
+    pmulticmds->Add(DBEmptyGroupsCommand::Create(this, vOtherEmptyGroups[i],
+      DBEmptyGroupsCommand::EG_ADD));
+    numEmptyGroupsAdded++;
+  }
+
   Command *pcmd2 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_REDO,
                                             UpdateGUICommand::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
@@ -786,18 +813,20 @@ stringT PWScore::Merge(PWScore *pothercore,
   }
 
   // Tell the user we're done & provide short merge report
-  stringT str_entries, str_conflicts, str_aliases, str_shortcuts;
-  int totalAdded = numAdded + numConflicts + numAliasesAdded + numShortcutsAdded;
+  stringT str_entries, str_conflicts, str_aliases, str_shortcuts, str_emptygroups;
+  int totalAdded = numAdded + numConflicts + numAliasesAdded + numShortcutsAdded + numEmptyGroupsAdded;
   LoadAString(str_entries, totalAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
   LoadAString(str_conflicts, numConflicts == 1 ? IDSC_CONFLICT : IDSC_CONFLICTS);
   LoadAString(str_aliases, numAliasesAdded == 1 ? IDSC_ALIAS : IDSC_ALIASES);
   LoadAString(str_shortcuts, numShortcutsAdded == 1 ? IDSC_SHORTCUT : IDSC_SHORTCUTS);
+  LoadAString(str_emptygroups, numEmptyGroupsAdded == 1 ? IDSC_EMPTYGROUP : IDSC_EMPTYGROUPS);
 
   Format(str_results, IDSC_MERGECOMPLETED,
                    totalAdded, str_entries.c_str(),
                    numConflicts, str_conflicts.c_str(),
                    numAliasesAdded, str_aliases.c_str(),
-                   numShortcutsAdded, str_shortcuts.c_str());
+                   numShortcutsAdded, str_shortcuts.c_str(),
+                   numEmptyGroupsAdded, str_emptygroups.c_str());
   pRpt->WriteLine(str_results.c_str());
 
   return str_results;
@@ -843,6 +872,7 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
                           sx_merged.c_str(), str_timestring.c_str());
       ci_temp.SetTitle(sx_newTitle);
     }
+
     // Check this is unique - if not - don't add this one! - its only an alias/shortcut!
     // We can't keep trying for uniqueness after adding a timestamp!
     foundPos = Find(ci_temp.GetGroup(), sx_newTitle, ci_temp.GetUser());
@@ -850,7 +880,8 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
       continue;
 
     ci_temp.SetBaseUUID(new_base_uuid);
-    Command *pcmd1 = AddEntryCommand::Create(this, ci_temp);
+    ci_temp.SetStatus(CItemData::ES_ADDED);
+    Command *pcmd1 = AddEntryCommand::Create(this, ci_temp, new_base_uuid);
     pcmd1->SetNoGUINotify();
     pmulticmds->Add(pcmd1);
 
@@ -891,8 +922,23 @@ void PWScore::Synchronize(PWScore *pothercore,
           update requested fields
   */
 
+  CItemData::FieldBits bsSyncFields(bsFields);
+
+  // These fields just do not make sense to synchronise
+  CItemData::FieldType ftInappropriateSyncFields[] = { 
+    CItemData::GROUPTITLE, CItemData::UUID, CItemData::ATTREF,
+    CItemData::BASEUUID, CItemData::ALIASUUID, CItemData::SHORTCUTUUID };
+
+  // Turn them off
+  for (int i = 0; i < sizeof(ftInappropriateSyncFields) / sizeof(CItemData::FieldType); i++) {
+    bsSyncFields.reset(ftInappropriateSyncFields[i]);
+  }
+
   std::vector<StringX> vs_updated;
   numUpdated = 0;
+
+  // Stop updating the GUI whilst Synchronise is in progress
+  SuspendOnDBNotification();
 
   MultiCommands *pmulticmds = MultiCommands::Create(this);
   Command *pcmd1 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_UNDO,
@@ -944,7 +990,6 @@ void PWScore::Synchronize(PWScore *pothercore,
         continue;
 
       CItemData updItem(curItem);
-      updItem.SetDisplayInfo(NULL);
 
       if (curItem.GetUUID() != otherItem.GetUUID()) {
         pws_os::Trace(_T("Synchronize: Mis-match UUIDs for [%ls:%ls:%ls]\n"),
@@ -953,8 +998,8 @@ void PWScore::Synchronize(PWScore *pothercore,
 
       bool bUpdated(false);
       // Do not try and change GROUPTITLE = 0x00 (use GROUP & TITLE separately) or UUID = 0x01
-      for (size_t i = 2; i < bsFields.size(); i++) {
-        if (bsFields.test(i)) {
+      for (size_t i = 2; i < bsSyncFields.size(); i++) {
+        if (bsSyncFields.test(i)) {
           StringX sxValue = otherItem.GetFieldValue(static_cast<CItemData::FieldType>(i));
 
           // Special processing for password policies (default & named)
@@ -977,7 +1022,6 @@ void PWScore::Synchronize(PWScore *pothercore,
       if (!bUpdated)
         continue;
 
-      GUISetupDisplayInfo(updItem);
       updItem.SetStatus(CItemData::ES_MODIFIED);
 
       StringX sx_updated;
@@ -986,7 +1030,6 @@ void PWScore::Synchronize(PWScore *pothercore,
       vs_updated.push_back(sx_updated);
 
       Command *pcmd = EditEntryCommand::Create(this, curItem, updItem);
-      pcmd->SetNoGUINotify();
       pmulticmds->Add(pcmd);
 
       // Update the Wizard page
@@ -1014,6 +1057,7 @@ void PWScore::Synchronize(PWScore *pothercore,
   // See if user has cancelled
   if (pbCancel != NULL && *pbCancel) {
     delete pmulticmds;
+    ResumeOnDBNotification();
     return;
   }
 
@@ -1021,6 +1065,9 @@ void PWScore::Synchronize(PWScore *pothercore,
                                             UpdateGUICommand::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
   Execute(pmulticmds);
+
+  // Resume updating the GUI after Synchronise has completed
+  ResumeOnDBNotification();
 
   // See if user has cancelled too late - reset flag so incorrect information not given to user
   if (pbCancel != NULL && *pbCancel) {

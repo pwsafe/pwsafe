@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -18,6 +18,7 @@
 #include "stdafx.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
+#include "DboxMain.h"
 #include "YubiCfgDlg.h"
 #include "PKBaseDlg.h" // for *YubiExists
 
@@ -35,7 +36,7 @@ static const wchar_t PSSWDCHAR = L'*';
 
 CYubiCfgDlg::CYubiCfgDlg(CWnd* pParent, PWScore &core)
   : CPWDialog(CYubiCfgDlg::IDD, pParent), m_core(core),
-    m_YubiSN(_T("")), m_YubiSK(_T("")), m_isSKHidden(true)
+    m_YubiSN(L""), m_YubiSK(L""), m_isSKHidden(true)
 {
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer event
 }
@@ -154,7 +155,6 @@ BEGIN_MESSAGE_MAP(CYubiCfgDlg, CPWDialog)
     ON_BN_CLICKED(IDC_YUBI_SHOW_HIDE, &CYubiCfgDlg::OnBnClickedYubiShowHide)
 END_MESSAGE_MAP()
 
-
 void CYubiCfgDlg::yubiInserted(void)
 {
   GetDlgItem(IDC_YUBI_SN)->EnableWindow(TRUE);
@@ -165,7 +165,7 @@ void CYubiCfgDlg::yubiInserted(void)
     HideSK();
     m_YubiSK = BinSK2HexStr(m_core.GetYubiSK(), YUBI_SK_LEN).c_str();
   } else 
-    m_YubiSK = _T("");
+    m_YubiSK = L"";
   ReadYubiSN();
   GetDlgItem(IDC_YUBI_SN)->SetWindowText(m_YubiSN);
   UpdateData(FALSE);
@@ -173,7 +173,7 @@ void CYubiCfgDlg::yubiInserted(void)
 
 void CYubiCfgDlg::yubiRemoved(void)
 {
-  m_YubiSN = _T("");
+  m_YubiSN = L"";
   m_YubiSK = CSecString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT));
   ShowSK();
   UpdateData(FALSE);
@@ -183,9 +183,7 @@ void CYubiCfgDlg::yubiRemoved(void)
   GetDlgItem(IDOK)->EnableWindow(FALSE);
 }
 
-
 // CYubiCfgDlg message handlers
-
 
 void CYubiCfgDlg::OnYubiGenBn()
 {
@@ -208,14 +206,20 @@ void CYubiCfgDlg::OnBnClickedOk()
     unsigned char yubi_sk_bin[YUBI_SK_LEN];
     HexStr2BinSK(skStr, yubi_sk_bin, YUBI_SK_LEN);
 
-    if (WriteYubiSK(yubi_sk_bin) == YKLIB_OK) { // 1. Update SK on Yubi.
+    if (WriteYubiSK(yubi_sk_bin) == YKLIB_OK) {
+      // 1. Update SK on Yubi.
+
       // 2. If YubiKey update succeeds, update in core.
       m_core.SetYubiSK(yubi_sk_bin);
+
       // 3. Write DB ASAP!
-      m_core.WriteCurFile();
+      int rc = m_core.WriteCurFile();
+      if (rc == PWScore::SUCCESS)
+        GetMainDlg()->BlockLogoffShutdown(false);
+
       trashMemory(yubi_sk_bin, YUBI_SK_LEN);
     } else {
-      const CString err = _T("Failed to update YubiKey");
+      const CString err = L"Failed to update YubiKey";
       GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_SHOW);
       GetDlgItem(IDC_YUBI_API)->SetWindowText(err);
     }
@@ -291,4 +295,3 @@ void CYubiCfgDlg::OnBnClickedYubiShowHide()
   }
   UpdateData(FALSE);
 }
-

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -233,12 +233,15 @@ void CEditExtn::OnSetFocus(CWnd* pOldWnd)
 {
   m_bIsFocused = TRUE;
   CEdit::OnSetFocus(pOldWnd);
+
   if (m_lastposition >= 0) {
     int iLine = LineFromChar(m_lastposition);
     LineScroll(iLine);
     SetSel(m_nStartChar, m_nEndChar); 
   }
   Invalidate(TRUE);
+
+  ShowCaret();
 }
 
 void CEditExtn::OnKillFocus(CWnd* pNewWnd)
@@ -246,8 +249,11 @@ void CEditExtn::OnKillFocus(CWnd* pNewWnd)
   m_bIsFocused = FALSE;
   m_lastposition = LineIndex();
   GetSel(m_nStartChar, m_nEndChar);
-  CEdit::OnKillFocus(pNewWnd);
+
+  // Force update colour via CtlColor
   Invalidate(TRUE);
+
+  CEdit::OnKillFocus(pNewWnd);
 }
 
 void CEditExtn::OnLButtonDown(UINT nFlags, CPoint point)
@@ -427,7 +433,6 @@ CRichEditExtn::CRichEditExtn(COLORREF focusColor)
   m_vmenu_items.clear();
 }
 
-
 void CRichEditExtn::SetContextMenu(const std::vector<st_context_menu> &vmenu_items)
 {
   // Don't allow if menu string is empty.
@@ -490,7 +495,7 @@ void CRichEditExtn::OnLButtonDblClk(UINT nFlags, CPoint point)
   SetSel(nStartChar, nStartChar + csTemp.GetLength());
 }
 
-void CRichEditExtn::OnSetFocus(CWnd* pOldWnd)
+void CRichEditExtn::OnSetFocus(CWnd *pOldWnd)
 {
   m_bIsFocused = TRUE;
   CRichEditCtrl::OnSetFocus(pOldWnd);
@@ -504,11 +509,12 @@ void CRichEditExtn::OnSetFocus(CWnd* pOldWnd)
   Invalidate(TRUE);
 }
 
-void CRichEditExtn::OnKillFocus(CWnd* pNewWnd)
+void CRichEditExtn::OnKillFocus(CWnd *pNewWnd)
 {
   m_bIsFocused = FALSE;
   m_lastposition = LineIndex();
   GetSel(m_nStartChar, m_nEndChar);
+
   CRichEditCtrl::OnKillFocus(pNewWnd);
 
   SetBackgroundColor(FALSE, crefNoFocus);
@@ -975,7 +981,6 @@ void CComboBoxExtn::AdjustItemHeight(int nInc)
   SetItemHeight(0, GetItemHeight(0) + nInc);
 }
 
-
 //-----------------------------------------------------------------
 // CSecEditExtn is meant for sensitive information that you really don't
 // want to be in memory more than necessary, such as master passwords
@@ -1166,7 +1171,7 @@ CSymbolEdit::CSymbolEdit() : CEdit(), m_validSym(CPasswordCharPool::GetDefaultSy
 {
 }
 
-void CSymbolEdit::SetValidSym(const stringT &s)
+void CSymbolEdit::SetValidSym(const std::wstring &s)
 {
   // Set the member variable.
   // it's the caller's responsibility to decide
@@ -1290,16 +1295,16 @@ void CButtonExtn::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   // in MS's Forum: "Visual Studio Developer Center > Visual Studio vNext Forums > Visual C++ General"
   // Modified for MFC, Checkbox and Radio buttons by DK
 
-  LPNMCUSTOMDRAW lpNMCustomDraw = (LPNMCUSTOMDRAW)pNotifyStruct;
+  NMCUSTOMDRAW *pLVCD = (NMCUSTOMDRAW *)pNotifyStruct;
   *pLResult = CDRF_DODEFAULT;
 
-  switch (lpNMCustomDraw->dwDrawStage) {
+  switch (pLVCD->dwDrawStage) {
     case CDDS_PREPAINT:
       BOOL fChecked = GetCheck() & BST_CHECKED;
-      BOOL fHot = lpNMCustomDraw->uItemState & CDIS_HOT;
-      BOOL fFocus = lpNMCustomDraw->uItemState & CDIS_FOCUS;
-      DrawButton(lpNMCustomDraw->hdr.hwndFrom, lpNMCustomDraw->hdc,
-                 &lpNMCustomDraw->rc, fChecked, fHot, fFocus);
+      BOOL fHot = pLVCD->uItemState & CDIS_HOT;
+      BOOL fFocus = pLVCD->uItemState & CDIS_FOCUS;
+      DrawButton(pLVCD->hdr.hwndFrom, pLVCD->hdc,
+                 &pLVCD->rc, fChecked, fHot, fFocus);
   }
 }
 

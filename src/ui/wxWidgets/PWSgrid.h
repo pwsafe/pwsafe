@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -11,7 +11,6 @@
 
 #ifndef _PWSGRID_H_
 #define _PWSGRID_H_
-
 
 /*!
  * Includes
@@ -47,7 +46,6 @@ class PWSGrid;
 
 typedef std::map<int, pws_os::CUUID> RowUUIDMapT;
 typedef std::map<pws_os::CUUID, int, std::less<pws_os::CUUID> > UUIDRowMapT;
-
 
 /*!
  * PWSGrid class declaration
@@ -101,6 +99,9 @@ public:
   /// wxEVT_GRID_CELL_LEFT_DCLICK event handler for ID_LISTBOX
   void OnLeftDClick( wxGridEvent& evt);
 
+  /// wxEVT_GRID_SELECT_CELL event handler for ID_LISTBOX
+  void OnSelectCell( wxGridEvent& event );
+
   /// wxEVT_CHAR event handler for ID_LISTBOX
   void OnChar( wxKeyEvent& evt);
 
@@ -126,6 +127,8 @@ public:
   int  FindItemRow(const pws_os::CUUID& uu);
 
   void SaveSettings(void) const;
+
+  void SetFilterState(bool state);
 
 ////@begin PWSGrid member variables
 ////@end PWSGrid member variables

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -23,7 +23,8 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   va_list args;
   va_start(args, lpszFormat);
 
-  int num_required, num_written;
+  unsigned int num_required;
+  int num_written;
 
   num_required = GetStringBufSize(lpszFormat, args);
   va_end(args);//after using args we should reset list
@@ -161,6 +162,27 @@ bool pws_os::DisableDumpAttach()
 }
 
 #else  /* _DEBUG or DEBUG */
+#ifdef __FreeBSD__
+/*bool pws_os::DisableDumpAttach()
+{
+  // prevent ptrace and creation of core dumps
+  // No-op under DEBUG build, return true to avoid error handling
+  return true;
+}*/
+#include <unistd.h>
+#include <sys/procctl.h>
+#include <sys/resource.h>
+bool pws_os::DisableDumpAttach()
+{
+  // prevent ptrace and creation of core dumps
+  int mode = PROC_TRACE_CTL_DISABLE;
+  procctl(P_PID, getpid(), PROC_TRACE_CTL, &mode);
+  struct rlimit rlim;
+  rlim.rlim_cur = rlim.rlim_max = 0;
+  setrlimit(RLIMIT_CORE, &rlim);
+  return true;
+}
+#else
 #include <sys/prctl.h>
 
 bool pws_os::DisableDumpAttach()
@@ -168,6 +190,7 @@ bool pws_os::DisableDumpAttach()
   // prevent ptrace and creation of core dumps
   return prctl(PR_SET_DUMPABLE, 0) == 0;
 }
+#endif /* __FreeBSD__ */
 
 DWORD pws_os::IssueError(const stringT &, bool )
 {

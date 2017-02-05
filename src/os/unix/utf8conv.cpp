@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -67,7 +67,7 @@ wstring pws_os::towc(const char *val)
 {
   wstring retval(L"");
   assert(val != NULL);
-  int len = strlen(val);
+  size_t len = strlen(val);
   int wsize;
   const char *p = val;
   wchar_t wvalue;
@@ -96,5 +96,3 @@ std::string pws_os::tomb(const stringT& val)
   } else
     return string();
 }
-
-

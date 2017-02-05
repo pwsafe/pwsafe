@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -22,7 +22,6 @@ and was written by Pål K. Tønder
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
 
 CSysColStatic::CSysColStatic() :
   m_nImageID(-1), m_hBmp(NULL)

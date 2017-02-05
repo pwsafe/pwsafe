@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -9,13 +9,17 @@
 /**
  * \file Windows-specific implementation of lib.h
  */
+
 #include "../lib.h"
 #include "../debug.h"
+
 #include <windows.h>
 
-void *pws_os::LoadLibrary(const TCHAR *lib, int type){
+void *pws_os::LoadLibrary(const TCHAR *lib, int type)
+{
   ASSERT(lib != NULL);
-// Qualify full path name.  (Lockheed Martin) Secure Coding  11-14-2007
+  
+  // Qualify full path name.  (Lockheed Martin) Secure Coding  11-14-2007
   TCHAR szFilePath[MAX_PATH+1];
   memset(szFilePath, 0, MAX_PATH+1);
   if (type == LOAD_LIBRARY_SYS) {
@@ -61,4 +65,3 @@ void *pws_os::GetFunction(void *handle, const char *name)
   ASSERT(handle != NULL && name != NULL);
   return ::GetProcAddress(HMODULE(handle), name);
 }
-

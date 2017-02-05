@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -46,6 +46,8 @@ private:
   CComboBoxExtn m_ex_group;
   CEditExtn m_ex_title;
   CEditExtn m_ex_username;
+
+  static bool m_bShowUUID;
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

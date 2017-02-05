@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,13 +13,13 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-
 void pws_os::Logit(LPCTSTR lpszFormat, ...)
 {
   va_list args;
   va_start(args, lpszFormat);
 
-  int num_required, num_written;
+  unsigned int num_required;
+  int num_written;
 
   num_required = GetStringBufSize(lpszFormat, args);
   va_end(args);  // after using args we should reset list

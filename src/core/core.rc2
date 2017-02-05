@@ -14,8 +14,6 @@
 // String Table
 //
 
-// Usage
-
 STRINGTABLE
 BEGIN
   IDSC_PASSWORDTOOSHORT   "Password is too short"
@@ -242,6 +240,8 @@ BEGIN
   IDSC_UNKNOWN             "Unknown"
   IDSC_ENTRY               "entry"
   IDSC_ENTRIES             "entries"
+  IDSC_EMPTYGROUP          "empty group"
+  IDSC_EMPTYGROUPS         "empty groups"
 END
 
 STRINGTABLE
@@ -296,6 +296,9 @@ BEGIN
   IDSC_MISSING_XML_VER     "The filter XML version is missing."
   IDSC_INVALID_XML_VER1    "The filter XML version (%d) is greater than the current schema (%d)."
   IDSC_INVALID_XML_VER2    "The filter XML version (%d) is greater than that supported by this instance of PasswordSafe (%d)."
+  IDSC_EXPIREPASSWORDS     "Entries with a password expiry"
+  IDSC_NONSAVEDCHANGES     "Unsaved changes"
+  IDSC_FOUNDENTRIESFILTER  "Last found entries"
 END
 
 STRINGTABLE
@@ -332,8 +335,25 @@ BEGIN
   IDSC_DCAVIEWEDIT         "View/Edit selected entry"
   IDSC_DCACOPYPASSWORDMIN  "Copy password to clipboard, minimize"
   IDSC_DCARUN              "Run Command"
-  IDSC_DCASENDEMAIL        "Send email"
+  IDSC_DCASENDEMAIL        "Send Email"
   IDSC_DEFAULT             " (application default)"
+END
+
+// Double Click Action text for status bar
+
+STRINGTABLE
+BEGIN
+  IDSC_STATCOMPANY         "https://pwsafe.org/"
+  IDSC_STATAUTOTYPE        "Double-Click on entry to Autotype"
+  IDSC_STATBROWSE          "Double-Click on entry to Browse to URL"
+  IDSC_STATBROWSEPLUS      "Double-Click on entry to Browse to URL + Autotype"
+  IDSC_STATCOPYPASSWORD    "Double-Click on entry to Copy Password"
+  IDSC_STATCOPYNOTES       "Double-Click on entry to Copy Notes"
+  IDSC_STATCOPYUSERNAME    "Double-Click on entry to Copy Username"
+  IDSC_STATVIEWEDIT        "Double-Click on entry to View/Edit it"
+  IDSC_STATCOPYPASSWORDMIN "Double-Click on entry to Copy Password and Minimize"
+  IDSC_STATRUN             "Double-Click on entry to Run Command"
+  IDSC_STATSENDEMAIL       "Double-Click on entry to Send Email"
 END
 
 STRINGTABLE
@@ -356,7 +376,7 @@ BEGIN
   IDSC_MISSINGPOLICYNAME   "\tPassword policy name '%ls' is not in the database."
   IDSC_MISSINGPOLICYNAMES  "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
   IDSC_RENAMEDPOLICYNAMES  "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
-  IDSC_IMPORTPOLICY        "%ls  - Imported %ls"
+  IDSC_IMPORTPOLICY        "%ls - Imported %ls"
   IDSC_MERGEPOLICY         "%ls - Merged %ls"
   IDSC_SYNCPOLICY          "%ls - Sync'd %ls"
   IDSC_COPYPOLICY          "%ls - Copied %ls"
@@ -364,6 +384,8 @@ BEGIN
   IDSC_KBSHORTCUT_REMOVED  "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been removed from the %ls entry."
   IDSC_KBSHORTCUT_USEBYAPP "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application. It has been removed from the entry."
   IDSC_REMOVEDKBSHORTCUTS  "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %ls entries."
+  IDSC_IMPORTEDEMPTYGROUPS "including %d empty group(s)."
+  IDSC_FILTERSEXPORTEDTODB "Current database filters have been exported to this database."
 END
 
 STRINGTABLE
@@ -385,7 +407,7 @@ BEGIN
   IDSC_SYNCHUPDATED        "\nThe following %ls %ls updated:"
   IDSC_SYNCHCOMPLETED      "\nSynchronize completed: %d %ls updated"
   IDSC_MERGECONFLICTS      "Conflicting entries for \xab%ls\xbb \xab%ls\xbb \xab%ls\xbb.\n  Adding merged entry as \xab%ls\xbb \xab%ls\xbb \xab%ls\xbb.\n    Differing field(s): %ls"
-  IDSC_MERGECOMPLETED      "\nMerge completed: %d %ls added (%d %ls, %d %ls, %d %ls)"
+  IDSC_MERGECOMPLETED      "\nMerge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
   IDSC_CONFLICT            "conflict"
   IDSC_CONFLICTS           "conflicts"
   IDSC_MERGED              "merged"

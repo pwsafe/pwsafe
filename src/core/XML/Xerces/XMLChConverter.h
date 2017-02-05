@@ -2,7 +2,7 @@
 #define __XMLCH_CONVERTER_H__
 
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -15,7 +15,6 @@
 
 #include <map>
 #include <algorithm>
-
 
 struct _XMLChDeallocator {
   typedef std::map<const char*, XMLCh*> XMLChStrings;
@@ -92,7 +91,6 @@ struct _XMLChDeallocator {
 
 #define USES_XMLCH_STR _XMLChDeallocator __xmlch_deallocator;
 #define USES_XMLCH_STR_END __xmlch_deallocator.Clear();
-
 
 #define _A2X(s) __xmlch_deallocator.Ansi2Xml(s)
 #define _W2X(ws) __xmlch_deallocator.WChar2Xml(ws)

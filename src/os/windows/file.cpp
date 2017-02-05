@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,8 +28,8 @@
 #include "../file.h"
 #include "../dir.h"
 #include "../env.h"
+#include "../debug.h"
 
-#include "../../core/StringX.h"
 #include "../../core/core.h"
 
 const TCHAR pws_os::PathSeparator = _T('\\');
@@ -151,7 +151,7 @@ void pws_os::FindFiles(const stringT &filter, std::vector<stringT> &res)
 * an existing lock.
 * This fails to check liveness of the locker process, specifically,
 * if a user just turns of her PC, the lock file will remain.
-* So, I'm keeping the Posix code under idef POSIX_FILE_LOCK,
+* So, I'm keeping the Posix code under ifdef POSIX_FILE_LOCK,
 * and re-implementing using the Win32 API, whose semantics
 * supposedly protect against this scenario.
 * Thanks to Frank (xformer) for discussion on the subject.
@@ -286,7 +286,8 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
       GetLocker(lock_filename, s_locker);
       locker = s_locker.c_str();
       break;
-    default: {
+    default:
+    {
       // Give detailed error message, if possible
       LPTSTR lpMsgBuf = NULL;
       if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
@@ -298,10 +299,10 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
         locker = lpMsgBuf;
         LocalFree(lpMsgBuf);
       } else { // should never happen!
-        LoadAString(locker, IDSC_NOLOCKACCESS); // berrer than nothing
+        LoadAString(locker, IDSC_NOLOCKACCESS); // better than nothing
       }
-    }
       break;
+    }
     } // switch (error)
     return false;
   } else { // valid filehandle, write our info
@@ -399,6 +400,42 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   std::FILE *fd = NULL;
   _tfopen_s(&fd, filename.c_str(), mode);
   return fd;
+}
+
+int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
+{
+  if (fd != NULL) {
+    if (bIsWrite) {
+      // Flush the data buffers
+      // fflush returns 0 if the buffer was successfully flushed.
+      // A return value of EOF indicates an error.
+      int rc = fflush(fd);
+
+      // Don't bother trying FlushFileBuffers if fflush failed
+      if (rc == 0) {
+        // Windows FlushFileBuffers == Linux fsync
+        int ifileno = _fileno(fd);
+
+        if ((HANDLE)ifileno != INVALID_HANDLE_VALUE) {
+          intptr_t iosfhandle = _get_osfhandle(ifileno);
+
+          if ((HANDLE)iosfhandle != INVALID_HANDLE_VALUE) {
+            BOOL brc = FlushFileBuffers((HANDLE)iosfhandle);
+
+            if (brc == FALSE) {
+              pws_os::IssueError(_T("FlushFileBuffers on close of file on removable device"), false);
+            }
+          } // iosfhandle
+        } // ifileno
+      }  // fflush rc
+    }
+
+    // Now close file
+    // fclose returns 0 if the stream is successfully closed or EOF to indicate an error.
+    return fclose(fd);
+  } else {
+    return 0;
+  }
 }
 
 ulong64 pws_os::fileLength(std::FILE *fp) {

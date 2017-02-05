@@ -18,6 +18,7 @@
 #include "VKresource.h"
 #include "VKresource3.h"
 
+#include "../Windowsdefs.h"
 #include "../PasswordSafe.h" // for app extern declaration
 #include "../ThisMfcApp.h" // for NoSysEnvWarnings()
 #include "../GeneralMsgBox.h"
@@ -209,9 +210,9 @@ bool CVKeyBoardDlg::IsOSKAvailable()
 
   // Try to load DLL
 #if defined(_DEBUG) || defined(DEBUG)
-  TCHAR *dll_name = _T("pws_osk_D.dll");
+  wchar_t *dll_name = L"pws_osk_D.dll";
 #else
-  TCHAR *dll_name = _T("pws_osk.dll");
+  wchar_t *dll_name = L"pws_osk.dll";
 #endif
   HINSTANCE OSK_module = HINSTANCE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
 
@@ -220,7 +221,6 @@ bool CVKeyBoardDlg::IsOSKAvailable()
     return false;
   } else {
     pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - OSK DLL loaded OK.\n");
-
 
     LP_OSK_GetKeyboardData pGetKBData =
       LP_OSK_GetKeyboardData(pws_os::GetFunction(OSK_module, "OSK_GetKeyboardData"));
@@ -339,7 +339,8 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
     m_bAltGr(false), m_bAltNum(false),
     m_bCapsLock(false), m_bRandom(false),
     m_bLCtrlChars(false), m_bAltGrChars(false), m_bRCtrlChars(false),
-    m_bDeadKeyActive(false), m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0),
+    m_bDeadKeyActive(false), m_bDeadKeySaved(false),
+    m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0),
     m_uiMouseDblClkTime(0), m_bSaveKLID(BST_CHECKED), m_bPlaySound(BST_UNCHECKED),
     m_bShowPassphrase(BST_UNCHECKED)
 {
@@ -359,9 +360,9 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
   // dll is guaranteed to be loadable, right version and in general 100% kosher
   // by IsOSKAvailable(). Caller is responsible to call that, though...
 #if defined(_DEBUG) || defined(DEBUG)
-  TCHAR *dll_name = _T("pws_osk_D.dll");
+  wchar_t *dll_name = L"pws_osk_D.dll";
 #else
-  TCHAR *dll_name = _T("pws_osk.dll");
+  wchar_t *dll_name = L"pws_osk.dll";
 #endif
   m_OSK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
 
@@ -657,13 +658,13 @@ BOOL CVKeyBoardDlg::OnInitDialog()
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_LSHIFT), cs_ToolTip);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_RSHIFT), cs_ToolTip);
   cs_temp.LoadString(IDS_VKLCTRL);
-  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, cs_temp);
+  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, static_cast<LPCWSTR>(cs_temp));
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_LCTRL), cs_ToolTip);
   cs_temp.LoadString(IDS_VKRCTRL);
-  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, cs_temp);
+  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, static_cast<LPCWSTR>(cs_temp));
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_RCTRL), cs_ToolTip);
   cs_temp.LoadString(IDS_VKALTGR);
-  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, cs_temp);
+  cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, static_cast<LPCWSTR>(cs_temp));
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_ALTGR), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_VKSTATIC_ALT);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_ALT), cs_ToolTip);
@@ -693,7 +694,7 @@ BOOL CVKeyBoardDlg::OnInitDialog()
         ASSERT(0);
     }
     if (pszFont != NULL) {
-      cs_ToolTip.Format(IDS_USRFONT, cs_VKeyboardFont.c_str(), pszFont);
+      cs_ToolTip.Format(IDS_USRFONT, static_cast<LPCWSTR>(cs_VKeyboardFont.c_str()), pszFont);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_INFO), cs_ToolTip);
     }
   } else
@@ -1408,7 +1409,7 @@ void CVKeyBoardDlg::SetNormalButtons()
   CString cs_ToolTip;
   cs_ToolTip.LoadString(IDS_VKDEADKEY);
   if (m_bAltNum) {
-    // Normal keys disbled if using AltNum
+    // Normal keys disabled if using AltNum
     for (int i = 0; i < NUM_KEYS; i++) {
       m_vkbb_Keys[i].SetWindowText(L"");
       m_vkbb_Keys[i].EnableWindow(FALSE);
@@ -1667,7 +1668,7 @@ void CVKeyBoardDlg::OnChangeKeyboard()
     cs_ToolTip.LoadString(IDS_VK_SW_KOREAN);
   } else {
     cs_temp.LoadString(IDS_VKALTGR);
-    cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, cs_temp);
+    cs_ToolTip.Format(IDS_VKSTATIC_SPECIAL, static_cast<LPCWSTR>(cs_temp));
   }
 
   m_pToolTipCtrl->UpdateTipText(cs_ToolTip, (CWnd *)&m_vkbb_AltGr);
@@ -1911,19 +1912,23 @@ void CVKeyBoardDlg::SetDeadKeyEnvironment(const bool bState)
     m_bSaveRCtrl = m_bRCtrl;
     m_bSaveAltGr = m_bAltGr;
     m_bSaveCapsLock = m_bCapsLock;
+    m_bDeadKeySaved = true;
 
     m_bShift = m_bLCtrl = m_bRCtrl = m_bAltGr = m_bCapsLock = false;
 
     m_State |= VST_MENU;
     m_State &= ~(VST_SHIFT | VST_LCTRL | VST_ALTGR | VST_RCTRL | VST_CAPSLOCK);
   } else {
-    m_State = m_SaveState;
+    if (m_bDeadKeySaved) {
+      m_State = m_SaveState;
 
-    m_bShift = m_bSaveShift;
-    m_bLCtrl = m_bSaveLCtrl;
-    m_bRCtrl = m_bSaveRCtrl;
-    m_bAltGr = m_bSaveAltGr;
-    m_bCapsLock = m_bSaveCapsLock;
+      m_bShift = m_bSaveShift;
+      m_bLCtrl = m_bSaveLCtrl;
+      m_bRCtrl = m_bSaveRCtrl;
+      m_bAltGr = m_bSaveAltGr;
+      m_bCapsLock = m_bSaveCapsLock;
+      m_bDeadKeySaved = false;
+    }
   }
 
   m_cbxKeyBoards.EnableWindow(bEnable);
@@ -2147,12 +2152,11 @@ HBRUSH CVKeyBoardDlg::OnCtlColor(CDC* pDC, CWnd *pWnd, UINT nCtlColor)
 
 void CVKeyBoardDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
-  // Allow draging without the caption bar!
+  // Allow dragging without the caption bar!
   CPWDialog::OnLButtonDown(nFlags, point);
 
   PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x,point.y));
 }
-
 
 void CVKeyBoardDlg::OnSaveKLID()
 {

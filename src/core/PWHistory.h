@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -57,6 +57,7 @@ PWHistEntry() : changetttdate(0), changedate(), password() {}
 PWHistEntry(const PWHistEntry &that) :
   changetttdate(that.changetttdate), changedate(that.changedate),
     password(that.password) {}
+
   PWHistEntry &operator=(const PWHistEntry &that)
   { if (this != &that) {
       changetttdate = that.changetttdate;
@@ -76,8 +77,10 @@ typedef std::vector<PWHistEntry> PWHistList;
 // num_err will have the number of ill-formed entries.
 
 bool CreatePWHistoryList(const StringX &pwh_str,
-                        size_t &pwh_max, size_t &num_err,
+                         size_t &pwh_max, size_t &num_err,
                          PWHistList &pwhl, PWSUtil::TMC time_format);
+
+StringX GetPreviousPassword(const StringX &pwh_str);
 
 StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num);
 
@@ -86,4 +89,3 @@ StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num);
 // Local variables:
 // mode: c++
 // End:
-

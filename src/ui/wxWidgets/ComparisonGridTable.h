@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -20,7 +20,6 @@
 #define CurrentBackgroundColor    *wxWHITE
 #define ComparisonBackgroundColor *wxWHITE
 
-
 struct SelectionCriteria;
 class PWScore;
 
@@ -38,7 +37,6 @@ public:
 
   DECLARE_EVENT_TABLE()
 };
-
 
 class ComparisonGridTable: public wxGridTableBase
 {
@@ -80,7 +78,7 @@ public:
 ///////////////////////////////////////////////////////////////
 //UniSafeCompareGridTable
 //
-//Class to handle display of comparison results which only invole a single 
+//Class to handle display of comparison results which only involve a single 
 //safe (uses only a single core)
 class UniSafeCompareGridTable: public ComparisonGridTable
 {
@@ -118,7 +116,7 @@ public:
 ///////////////////////////////////////////////////////////////////
 //MultiSafeCompareGridTable
 //
-//Class to handle display of comparison results which invole two
+//Class to handle display of comparison results which involve two
 //safes (uses both the cores in comparison result)
 class MultiSafeCompareGridTable: public ComparisonGridTable
 {

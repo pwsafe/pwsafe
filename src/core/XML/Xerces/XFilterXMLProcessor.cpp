@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -60,7 +60,7 @@
 
 XFilterXMLProcessor::XFilterXMLProcessor(PWSFilters &mapfilters, const FilterPool fpool,
                                          Asker *pAsker)
-  : m_pAsker(pAsker), m_MapFilters(mapfilters), m_FPool(fpool)
+  : m_pAsker(pAsker), m_MapXMLFilters(mapfilters), m_FPool(fpool)
 {
 }
 
@@ -126,7 +126,7 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   // Set 'dummy' schema version to arbitrary value > 1
   pSAX2Handler->SetSchemaVersion(99);
 
-  pSAX2Handler->SetVariables(m_pAsker, &m_MapFilters, m_FPool, m_bValidation);
+  pSAX2Handler->SetVariables(m_pAsker, &m_MapXMLFilters, m_FPool, m_bValidation);
 
   // instantiate converter out of if/else to be sure that string will be valid
   // till the end of pSAX2Parser, that may capture pointer to string from MemBufInputSource

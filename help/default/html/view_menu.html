@@ -16,13 +16,13 @@
 <img alt="View Menu" src="images/view_menu.jpg">
 
 <p>The <b>View Menu</b> controls the available display options. You can
-switch between how your entries' user names and passwords are
+switch between how your entries are
 shown: either as a single list (<b>Flattened List</b>) or organized by category
 (<b>Nested Tree</b>).
-You can choose whether or not to display a toolbar, and if so, if to
-use the 'Classic' or 'New Toolbar' icons. The toolbar itself is also
+You can choose whether or not to display a toolbar, and if so, whether to
+use the 'Classic' or 'New' toolbar icons. The toolbar itself is also
 customizable. You can also expand or collapse all the groups displayed
-in the Nested Tree view, filter the entries displayed to match any
+in the Nested Tree view, display subsets of the entries, filter the entries displayed to match any
 criteria, select the font in which the entries are displayed and
 display reports of merge, compare, import and other advanced operations.</p>
 
@@ -67,7 +67,7 @@ that you can only use the Dragbar AutoType image to replace any existing string 
 that window by the expanded AutoType string. If dropped in a window of another
 application the result will depend on how that application processes the Tab and Shift+Tab
 characters.
-<li>If the <i>control</i> key is pressed while clicking on a dragbar icon, the relevant text is copied to the clipboard <em>in addition</em>
+<li>If the <i>control</i> key is pressed while clicking on a Dragbar icon, the relevant text is copied to the clipboard <em>in addition</em>
 to being pasted when the mouse button is released. This can be useful in cases where the drop "missed" by a pixel or two, allowing you to
 perform a paste operation, rather than trying to drag again.</li>
 </ul></p>
@@ -82,28 +82,39 @@ To display or hide the Dragbar, check or uncheck the <b>Dragbar Visible</b> menu
 
 <p>Collapses all groups <i>(Nested Tree view only)</i>.</p>
 
-<h3>Refresh F5</h3>
-<p>Refreshes the display either by pressing the F5 key or clicking on this menu item.</p>
+<h3>Subviews</h3>
 
-<h3>Show unsaved changes</h3>
+<img alt="Subviews" src="images/subviews_menu.jpg">
+
+<p>"Subviews" are predefined filters that when selected, show only the entries that match their criteria.</p>
+
+<p>As all filters, they can be cleared by double-clicking the red and white striped
+"filter active" indicator at the bottom right of the Status Bar, as can be seen in the
+following images where the filter is active.</p>
+
+<h4>1. Unsaved changes</h4>
 
 <p>If item <b>Save database immediately after Edit or Add</b> in menu
 <a href="backups_tab.html">Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Backups</a>
-is unchecked, changed item will not be saved, but they will be shown in a different
+is unchecked, changed item will not be saved immediately, but they will be shown in a different
 colour. See the next picture:</p>
 
-<p>Overview of all entries:<br><img alt="Data with changes" src="images/tree_view_change.jpg"></p>
+<p>Overview of all entries:<br>
+<img alt="Data with changes" src="images/tree_view_change.jpg"></p>
 
-<p>By checking this item, only changed and unsaved items will be shown.</p>
+<p>By checking this item, only changed and unsaved items will be shown.  If this filter
+is active and you save your database changes, it will be cancelled and the
+full database will be displayed.</p>
 
-<p>Overview of all changed entries:<br><img alt="Data, only changes" src="images/tree_view_change_only.jpg"></p>
+<p>Overview of all changed entries:<br>
+<img alt="Data, only changes" src="images/tree_view_change_only.jpg"></p>
 
 <p><small><b>Note:</b> As long as there are some unsaved items, there will be
 a "*" in the status area at the bottom of the application's window.</small></p>
 
-<h3>Show entries with Expiry dates</h3>
+<h4>2. Expiry dates</h4>
 
-<p>If you select this menu item, only entries with an expiry date will
+<p>If you select this menu item, only entries with a defined expiry date will
 be shown in the list. It does not matter that the expiry date is in
 the past or future.</p>
 
@@ -112,13 +123,37 @@ be grayed out.</p>
 
 <img alt="Expired Password Filter" src="images/expired_password_filter.jpg">
 
-<h3>Filters</h3>
+<h4>3. Last Find results</h4>
 
-<p>A "filter" is a criteria (or set of criteria) that an entry either matches or doesn't
-match. <b>Password Safe</b> allows
-you to define filters, and display only those entries that matches a
-given filter. For more information on defining and using filters, see
-<a href="filters.html">here</a>.</p>
+<p>If you select this menu item, only entries that were found during the last
+Find operation will be shown. If a Find hadn't been performed or it had been cleared,
+then this menu item will be grayed out. If the Find Toolbar was visible when this
+filter was activated, it will be closed, since  <u>no new Finds can be performed whilst
+this filter is active</u>. Find Next (F3) and Find Previous (Shift-F3) will still be
+available.</p>
+
+<p><b>Note</b>: If this filter is active, as it is based on displaying entries in the database
+found during the last Find operation and only these, i.e. the <u>Find operation
+is not redone</u> should the database be changed.  For example:<br>
+<ul>
+<li>If an entry is edited so that it no longer satisfies the previous Find,
+it will still be displayed.</li>
+<li>If an entry is duplicated, the new copy will not be included in the display.</li>
+<li>If an entry is deleted, it will be removed from the display.</li>
+<li>If the above deleted entry is reinstated, i.e. via Undo (Ctrl-Z), the entry will
+again be displayed.</li>
+<li>If new entries are added either directly or, say, via Merge, these will also not be
+displayed as they were not in the database when the last Find operation was performed.</li>
+</ul></p>
+
+<img alt="Last Find Filter" src="images/last_find_filter.jpg">
+
+<h3><a name="user_defined_filters"></a>User defined Filters</h3>
+
+<p>A "filter" is a criteria (or set of criteria) that an entry either matches
+or doesn't match. <b>Password Safe</b> allows you to define filters and display
+only those entries that match a given filter. For more information on defining
+and using filters, see <a href="filters.html">here</a>.</p>
 
 <h3>Change Font</h3>
 
@@ -143,6 +178,8 @@ to disk, it will overwrite any previous report for this operation without
 requesting permission.  You may view these reports at a later date when you
 open a database in this same directory.</p>
 
+<h3>Refresh F5</h3>
+<p>Refreshes the display either by pressing the F5 key or clicking on this menu item.</p>
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>
 <br>

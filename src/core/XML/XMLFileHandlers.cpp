@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -92,6 +92,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       m_numNoPolicies = 0;
       m_numRenamedPolicies = 0;
       m_numShortcutsRemoved = 0;
+      m_numEmptyGroupsImported = 0;
       m_bEntryBeingProcessed = false;
       break;
     case XLE_ENTRY:
@@ -195,7 +196,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       bpref = PWSprefs::ShowPasswordInTree;
       break;
     case XLE_PREF_SORTASCENDING:
-      bpref = PWSprefs::SortAscending;
+      // Obsolete in 3.40 - keep but do nothing
       break;
     case XLE_PREF_USEDEFAULTUSER:
       bpref = PWSprefs::UseDefaultUser;
@@ -352,8 +353,11 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_EGNAME:
       if (!m_sxElemContent.empty() &&
-          find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), m_sxElemContent) == m_vEmptyGroups.end())
+          find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), m_sxElemContent) 
+                  == m_vEmptyGroups.end()) {
         m_vEmptyGroups.push_back(m_sxElemContent);
+        m_numEmptyGroupsImported++;
+      }
       break;
 
     // MUST be in the same order as enum beginning STR_GROUP...
@@ -597,13 +601,6 @@ void XMLFileHandlers::AddXMLEntries()
   if (!m_MapPSWDPLC.empty()) {
     Command *pcmd = DBPolicyNamesCommand::Create(m_pXMLcore, m_MapPSWDPLC,
                             DBPolicyNamesCommand::NP_ADDNEW);
-    m_pmulticmds->Add(pcmd);
-  }
-
-  // Then add any Empty Groups imported that are not already in the database
-  if (!m_vEmptyGroups.empty()) {
-    Command *pcmd = DBEmptyGroupsCommand::Create(m_pXMLcore, m_vEmptyGroups,
-                           DBEmptyGroupsCommand::EG_ADDALL);
     m_pmulticmds->Add(pcmd);
   }
 
@@ -967,7 +964,7 @@ void XMLFileHandlers::AddXMLEntries()
         m_numShortcutsRemoved++;
       }
     }
-    m_pXMLcore->GUISetupDisplayInfo(ci_temp);
+
     Command *pcmd = AddEntryCommand::Create(m_pXMLcore, ci_temp);
     pcmd->SetNoGUINotify();
     m_pmulticmds->Add(pcmd);
@@ -984,6 +981,40 @@ void XMLFileHandlers::AddXMLEntries()
                                                       CItemData::PASSWORD);
   pcmdS->SetNoGUINotify();
   m_pmulticmds->Add(pcmdS);
+
+  // Validate Empty Groups don't have empty sub-groups
+  if (!m_vEmptyGroups.empty()) {
+    std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
+    std::vector<size_t> viDelete;
+    for (size_t ieg = 0; ieg < m_vEmptyGroups.size() - 1; ieg++) {
+      StringX sxEG = m_vEmptyGroups[ieg] + L".";
+      if (sxEG == m_vEmptyGroups[ieg + 1].substr(0, sxEG.length())) {
+        // Can't be empty as has empty sub-group. Save to delete later
+        viDelete.push_back(ieg);
+      }
+    }
+
+    if (!viDelete.empty()) {
+      // Remove non-empty groups
+      std::vector<size_t>::reverse_iterator rit;
+      for (rit = viDelete.rbegin(); rit != viDelete.rend(); rit++) {
+        m_vEmptyGroups.erase(m_vEmptyGroups.begin() + *rit);
+      }
+    }
+  }
+  
+  // Then add any Empty Groups imported that are not already in the database
+  if (!m_vEmptyGroups.empty()) {
+    if (!m_ImportedPrefix.empty()) {
+      const StringX sxNewPath = StringX(m_ImportedPrefix.c_str()) + StringX(L".");
+      for (size_t i = 0; i < m_vEmptyGroups.size(); i++) {
+        m_vEmptyGroups[i] = sxNewPath + m_vEmptyGroups[i];
+      }
+    }
+    Command *pcmd = DBEmptyGroupsCommand::Create(m_pXMLcore, m_vEmptyGroups,
+                           DBEmptyGroupsCommand::EG_ADDALL);
+    m_pmulticmds->Add(pcmd);
+  }
 
   Command *pcmd2 = UpdateGUICommand::Create(m_pXMLcore,
                                             UpdateGUICommand::WN_EXECUTE_REDO,

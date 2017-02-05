@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -58,7 +58,6 @@
 
 IMPLEMENT_CLASS( CSafeCombinationEntry, wxDialog )
 
-
 /*!
  * CSafeCombinationEntry event table definition
  */
@@ -67,25 +66,18 @@ BEGIN_EVENT_TABLE( CSafeCombinationEntry, wxDialog )
 
 ////@begin CSafeCombinationEntry event table entries
   EVT_ACTIVATE( CSafeCombinationEntry::OnActivate )
-
   EVT_BUTTON( ID_ELLIPSIS, CSafeCombinationEntry::OnEllipsisClick )
-
   EVT_BUTTON( ID_NEWDB, CSafeCombinationEntry::OnNewDbClick )
-
 #ifndef NO_YUBI
   EVT_BUTTON( ID_YUBIBTN, CSafeCombinationEntry::OnYubibtnClick )
-
   EVT_TIMER(POLLING_TIMER_ID, CSafeCombinationEntry::OnPollingTimer)
 #endif
-
   EVT_BUTTON( wxID_OK, CSafeCombinationEntry::OnOk )
-
   EVT_BUTTON( wxID_CANCEL, CSafeCombinationEntry::OnCancel )
-
   EVT_COMBOBOX(ID_DBASECOMBOBOX, CSafeCombinationEntry::OnDBSelectionChange)
-////@end CSafeCombinationEntry event table entries
+  EVT_CHECKBOX(ID_READONLY, CSafeCombinationEntry::OnReadonlyClick)
+                ////@end CSafeCombinationEntry event table entries
 END_EVENT_TABLE()
-
 
 /*!
  * CSafeCombinationEntry constructors
@@ -107,7 +99,6 @@ CSafeCombinationEntry::CSafeCombinationEntry(wxWindow* parent, PWScore &core,
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * CSafeCombinationEntry creator
@@ -134,7 +125,6 @@ bool CSafeCombinationEntry::Create( wxWindow* parent, wxWindowID id, const wxStr
   return true;
 }
 
-
 /*!
  * CSafeCombinationEntry destructor
  */
@@ -147,7 +137,6 @@ CSafeCombinationEntry::~CSafeCombinationEntry()
   delete m_pollingTimer;
 #endif
 }
-
 
 /*!
  * Member initialisation
@@ -168,7 +157,6 @@ void CSafeCombinationEntry::Init()
   m_postInitDone = false;
 ////@end CSafeCombinationEntry member initialisation
 }
-
 
 /*!
  * Control creation for CSafeCombinationEntry
@@ -194,7 +182,7 @@ void CSafeCombinationEntry::CreateControls()
   wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("graphics/psafetxt.xpm")), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemStaticBitmap6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_version = new wxStaticText( itemDialog1, wxID_STATIC, _("VX.YY"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_version = new wxStaticText( itemDialog1, wxID_STATIC, wxT("VX.YY"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(m_version, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Open Password Database:"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -261,10 +249,10 @@ void CSafeCombinationEntry::CreateControls()
   m_combinationEntry->SetValidatorTarget(& m_password);
 
 #if (REVISION == 0)
-  m_version->SetLabel(wxString::Format(wxT("V%d.%d %ls"),
+  m_version->SetLabel(wxString::Format(wxT("V%d.%.2d %ls"),
                                        MAJORVERSION, MINORVERSION, SPECIALBUILD));
 #else
-  m_version->SetLabel(wxString::Format(wxT("V%d.%d.%d %ls"),
+  m_version->SetLabel(wxString::Format(wxT("V%d.%d.%.2d %ls"),
                                        MAJORVERSION, MINORVERSION,
                                        REVISION, SPECIALBUILD));
 #endif
@@ -340,7 +328,6 @@ wxIcon CSafeCombinationEntry::GetIconResource( const wxString& WXUNUSED(name) )
 ////@end CSafeCombinationEntry icon retrieval
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
@@ -386,7 +373,7 @@ void CSafeCombinationEntry::ProcessPhrase()
   case PWScore::WRONG_PASSWORD:
   default:
     if (m_tries >= 2) {
-      errmess = _("Three strikes - yer out!");
+      errmess = _("Too many retries - exiting");
     } else {
       m_tries++;
       errmess = _("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')");
@@ -414,7 +401,6 @@ void CSafeCombinationEntry::OnCancel( wxCommandEvent& event )
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationEntry.
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_ELLIPSIS
  */
@@ -422,7 +408,7 @@ void CSafeCombinationEntry::OnCancel( wxCommandEvent& event )
 void CSafeCombinationEntry::OnEllipsisClick( wxCommandEvent& /* evt */ )
 {
   wxFileDialog fd(this, _("Please Choose a Database to Open:"),
-                  PWSdirs::GetSafeDir().c_str(), wxT(""),
+                  PWSdirs::GetSafeDir().c_str(), wxEmptyString,
                   _("Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| All files (*.*; *)|*.*;*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
 
@@ -434,7 +420,6 @@ void CSafeCombinationEntry::OnEllipsisClick( wxCommandEvent& /* evt */ )
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEWDB
  */
@@ -445,11 +430,16 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
   // 2. Get a password
   // 3. Set m_filespec && m_passkey to returned value!
   wxString newfile;
-  wxString cs_msg, cs_title, cs_temp;
 
   wxString cf(wxT("pwsafe")); // reasonable default for first time user
   stringT v3FileName = PWSUtil::GetNewFileName(tostdstring(cf), wxT("psafe3"));
   stringT dir = PWSdirs::GetSafeDir();
+
+  // Following is since I couldn't get UpdateNew() to work correctly
+  // when app read-only is set externally, and we really don't
+  // want the mixup of a new read-only db...
+  if (m_readOnly)
+    return;
 
   while (1) {
     wxFileDialog fd(this, _("Please choose a name for the new database"),
@@ -492,7 +482,6 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
                  _("Write Error"), wxOK | wxICON_ERROR, this);
   }
 }
-
 
 #ifndef NO_YUBI
 /*!
@@ -545,5 +534,21 @@ void CSafeCombinationEntry::UpdateReadOnlyCheckbox()
     wxCheckBox *ro = wxDynamicCast(FindWindow(ID_READONLY), wxCheckBox);
     ro->SetValue( writeable? m_core.IsReadOnly(): true );
     ro->Enable(writeable);
+    UpdateNew(!writeable);
   }
+}
+
+void CSafeCombinationEntry::UpdateNew(bool isRO)
+{
+  FindWindow(ID_NEWDB)->Enable(!isRO);
+}
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_READONLY
+ */
+
+void CSafeCombinationEntry::OnReadonlyClick( wxCommandEvent& event )
+{
+  m_readOnly = event.IsChecked();
+  UpdateNew(m_readOnly);
 }

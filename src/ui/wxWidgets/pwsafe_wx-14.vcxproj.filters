@@ -75,9 +75,6 @@
     <ClInclude Include="RecentDBList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RUEList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="safecombinationchange.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -174,6 +171,9 @@
     <ClInclude Include="TimedTaskChain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="passwordsubset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pwsafe.rc">
@@ -242,9 +242,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PWStree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RUEList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="safecombinationchange.cpp">
@@ -329,6 +326,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TimedTaskChain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mainView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="passwordsubset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

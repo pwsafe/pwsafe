@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -11,22 +11,12 @@
 #pragma once
 
 #include "AddEdit_PropertyPage.h"
+#include "ImgStatic.h"
+
 #include "resource.h"
 
 #include "afxwin.h"
 #include "atlimage.h" // for CImage
-
-class CDragDropAttachment : public CStatic
-{
-
-  // Generated message map functions
-protected:
-  //{{AFX_MSG(CDragDropAttachment)
-  afx_msg void OnDropFiles(HDROP hDropInfo);
-  //}}AFX_MSG
-
-  DECLARE_MESSAGE_MAP()
-};
 
 class CAddEdit_Attachment : public CAddEdit_PropertyPage
 {
@@ -42,8 +32,6 @@ public:
   enum { IDD = IDD_ADDEDIT_ATT, IDD_SHORT = IDD_ADDEDIT_ATT_SHORT };
 
   enum ATT_TYPE { NO_ATTACHMENT = -1, ATTACHMENT_IS_IMAGE = 0, ATTACHMENT_NOT_IMAGE};
-
-  void UpdateStats();
 
 protected:
   // Overrides
@@ -62,7 +50,9 @@ protected:
   //{{AFX_MSG(CAddEdit_Attachment)
   afx_msg void OnHelp();
   afx_msg void OnPaint();
+  afx_msg BOOL OnEraseBkgnd(CDC *pDC);
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
+
   afx_msg void OnAttImport();
   afx_msg void OnAttExport();
   afx_msg void OnAttRemove();
@@ -76,8 +66,6 @@ private:
 
   bool m_bInitdone;
   ATT_TYPE m_attType;
-  CRect m_initial_clientrect, m_initial_windowrect, m_clientrect;
-  int m_xoffset, m_yoffset;
 
   CSecString m_AttName;
   CSecString m_AttFileName;
@@ -85,9 +73,7 @@ private:
 
   CStatic m_stcNoPreview;
   CImage m_AttImage;
-
-  // Visible counterpart of CImage
-  CDragDropAttachment m_AttStatic;
+  CImgStatic m_stImgAttachment;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

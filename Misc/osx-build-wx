@@ -6,7 +6,7 @@
 # on the compilers and SDKs supported on the version of OS X it is running on.
 # 
 # If was initially written for building wx2.8 on Snow Leopard such that the 
-# pwsafe binary would run on OS X 10.4+.  It followed the documenetation here:
+# pwsafe binary would run on OS X 10.4+.  It followed the documentation here:
 #   http://wiki.wxwidgets.org/Development:_wxMac
 #
 # See the sections "Building on Snow Leopard for Snow Leopard" and

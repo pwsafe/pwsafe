@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -24,8 +24,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CSHCTListCtrl::CSHCTListCtrl()
-: m_pParent(NULL), m_pHotKey(NULL), m_pwchTip(NULL),
-  m_bHotKeyActive(false)
+: m_pParent(NULL), m_pHotKey(NULL), m_bHotKeyActive(false)
 {
   m_pHotKey = new CSHCTHotKey;
   m_crWindowText = ::GetSysColor(COLOR_WINDOWTEXT);
@@ -36,7 +35,6 @@ CSHCTListCtrl::~CSHCTListCtrl()
 {
   m_pHotKey->DestroyWindow();
   delete m_pHotKey;
-  delete m_pwchTip;
 }
 
 BEGIN_MESSAGE_MAP(CSHCTListCtrl, CListCtrl)
@@ -48,7 +46,6 @@ BEGIN_MESSAGE_MAP(CSHCTListCtrl, CListCtrl)
   ON_WM_MOUSEWHEEL()
 
   ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
-  ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -62,7 +59,6 @@ void CSHCTListCtrl::Init(COptionsShortcuts *pParent)
   }
   m_pHotKey->SetMyParent(this);
   m_pParent = pParent;
-  EnableToolTips(TRUE);
 }
 
 void CSHCTListCtrl::OnLButtonDown(UINT , CPoint point)
@@ -81,9 +77,6 @@ void CSHCTListCtrl::OnLButtonDown(UINT , CPoint point)
   iSubItem = lvhti.iSubItem;
   if (m_item < 0 || iSubItem != SHCT_SHORTCUTKEYS)
     return;
-
-  if (m_pParent != NULL)
-    m_pParent->ClearWarning();
 
   // GetSubItemRect for the first column gives the total width
   // Therefore need to get it from GetColmnWidth
@@ -178,9 +171,6 @@ update:
   UpdateWindow();
 
 exit:
-  if (m_pParent != NULL)
-    m_pParent->ClearWarning();
-
   if (m_item >= 0)
     SetItemState(m_item, SHCT_SHORTCUTKEYS, LVIS_SELECTED | LVIS_DROPHILITED);
 }
@@ -264,103 +254,4 @@ void CSHCTListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
     default:
       break;
   }
-}
-
-INT_PTR CSHCTListCtrl::OnToolHitTest(CPoint point, TOOLINFO *pTI) const
-{
-  LVHITTESTINFO lvhti;
-  lvhti.pt = point;
-
-  int item = ListView_SubItemHitTest(this->m_hWnd, &lvhti);
-  if (item < 0)
-    return -1;
-
-  int nSubItem = lvhti.iSubItem;
-
-  // nFlags is 0 if the SubItemHitTest fails
-  // Therefore, 0 & <anything> will equal false
-  if (lvhti.flags & LVHT_ONITEMLABEL) {
-    // get the client (area occupied by this control
-    RECT rcClient;
-    GetClientRect(&rcClient);
-
-    // fill in the TOOLINFO structure
-    pTI->hwnd = m_hWnd;
-    pTI->uId = (UINT) (nSubItem + 1);
-    pTI->lpszText = LPSTR_TEXTCALLBACK;
-    pTI->rect = rcClient;
-
-    return pTI->uId;  // By returning a unique value per listItem,
-              // we ensure that when the mouse moves over another
-              // list item, the tooltip will change
-  } else {
-    //Otherwise, we aren't interested, so let the message propagate
-    return -1;
-  }
-}
-
-BOOL CSHCTListCtrl::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLResult)
-{
-  UINT_PTR nID = pNotifyStruct->idFrom;
-
-  // check if this is the automatic tooltip of the control
-  if (nID == 0) 
-    return TRUE;  // do not allow display of automatic tooltip,
-                  // or our tooltip will disappear
-
-  TOOLTIPTEXTW *pTTTW = (TOOLTIPTEXTW *)pNotifyStruct;
-
-  *pLResult = 0;
-
-  // get the mouse position
-  const MSG* pMessage;
-  pMessage = GetCurrentMessage();
-  ASSERT(pMessage);
-  CPoint pt;
-  pt = pMessage->pt;    // get the point from the message
-  ScreenToClient(&pt);  // convert the point's coords to be relative to this control
-
-  // see if the point falls onto a list item
-  LVHITTESTINFO lvhti;
-  lvhti.pt = pt;
-  
-  SubItemHitTest(&lvhti);
-  int nSubItem = lvhti.iSubItem;
-
-  // nFlags is 0 if the SubItemHitTest fails
-  // Therefore, 0 & <anything> will equal false
-  if (lvhti.flags & LVHT_ONITEMLABEL) {
-    // If it did fall on a list item,
-    // and it was also hit one of the
-    // item specific subitems we wish to show tooltips for
-    
-    switch (nSubItem) {
-      case SHCT_MENUITEMTEXT:
-        nID = IDS_SHCT_TOOLTIP0;
-        break;
-      case SHCT_SHORTCUTKEYS:
-        nID = IDS_SHCT_TOOLTIP1;
-        break;
-      default:
-        return FALSE;
-    }
-    // If there was a CString associated with the list item,
-    // copy it's text (up to 80 characters worth, limitation 
-    // of the TOOLTIPTEXT structure) into the TOOLTIPTEXT 
-    // structure's szText member
-
-    CString cs_TipText(MAKEINTRESOURCE(nID));
-
-    delete m_pwchTip;
-
-    m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
-    wcsncpy_s(m_pwchTip, cs_TipText.GetLength() + 1,
-                cs_TipText, _TRUNCATE);
-    pTTTW->lpszText = (LPWSTR)m_pwchTip;
-
-    return TRUE;   // we found a tool tip,
-  }
-  
-  return FALSE;  // we didn't handle the message, let the 
-                 // framework continue propagating the message
 }

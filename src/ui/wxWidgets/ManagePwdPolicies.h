@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -10,10 +10,8 @@
 * 
 */
 
-
 #ifndef _MANAGEPWDPOLICIES_H_
 #define _MANAGEPWDPOLICIES_H_
-
 
 /*!
  * Includes
@@ -61,7 +59,6 @@ class wxGrid;
 #define SYMBOL_CMANAGEPASSWORDPOLICIES_SIZE wxSize(400, 300)
 #define SYMBOL_CMANAGEPASSWORDPOLICIES_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * CManagePasswordPolicies class declaration
@@ -145,7 +142,7 @@ public:
   /// Should we show tooltips?
   static bool ShowToolTips();
 
-  // Overriden virtuals
+  // Overridden virtuals
   virtual bool Show(bool show = true);
 
 ////@begin CManagePasswordPolicies member variables

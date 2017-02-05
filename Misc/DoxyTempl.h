@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -47,7 +47,7 @@
 * \note
 * If you write docu for a global entity like typedefs, enums or defines, be 
 * sure to write a docu block for the containing file as well! 
-* Otherwise, doxygen might ommit your comment.
+* Otherwise, doxygen might omit your comment.
 */
 typedef myType int;
 
@@ -73,5 +73,5 @@ private:
   char *bar; /**< short notation for documenting members (or parameters) */
 };
 
-/// You can ommit the \\brief command if you write one line after three slashes.
+/// You can omit the \\brief command if you write one line after three slashes.
 int returnZero();

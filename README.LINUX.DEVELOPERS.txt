@@ -46,6 +46,7 @@ For Fedora:
 cmake (See note 1 below)
 gcc-c++
 git
+gtest-devel
 libXt-devel
 libXtst-devel
 libuuid-devel
@@ -127,12 +128,14 @@ CXXFLAGS.
 Create a Debian Package
 =======================
 Extract the source tree into some directory and change into this
-directory, i.e. where Makefile.linux is present.
+directory, i.e. where CMakeLists.txt is present.
 
-* make -f Makefile.linux
-* make -f Makefile.linux deb
+* mkdir build
+* cd build
+* cmake ..
+* cpack -G DEB ..
 
 
 Install the Debian package
 ==========================
-* sudo dpkg -i Releases/passwordsafe-debian-<version>.<arch>.deb
+* sudo dpkg -i passwordsafe-debian-<version>.<arch>.deb

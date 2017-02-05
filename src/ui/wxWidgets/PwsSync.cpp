@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -9,7 +9,6 @@
 /** \file PwsSync.cpp
 *
 */
-
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -118,7 +117,6 @@ public:
   virtual void SaveData(SyncData* data);
 };
 
-
 //helper class used by field selection page to construct the UI
 struct SyncFieldSelection {
   static bool IsMandatoryField(CItemData::FieldType /*field*/) {
@@ -213,7 +211,6 @@ public:
   virtual void OnPageEnter(PageDirection dir);
 };
 
-
 ///////////////////////////////////////////////////
 // PwsSyncWizard Implementation
 //
@@ -293,7 +290,6 @@ CReport* PwsSyncWizard::GetReport() const {
   return &m_syncData->syncReport;
 }
 
-
 ////////////////////////////////////////////
 //SyncWizardPage implementation
 //
@@ -347,7 +343,6 @@ void SyncWizardPage::SetChildWindowText(unsigned id, const wxString& str)
 {
   FindWindow(id)->SetLabel(str);
 }
-
 
 ////////////////////////////////////////////
 //SyncStartPage implementation
@@ -427,7 +422,6 @@ void SyncFieldSelectionPage::SaveData(SyncData* data)
 {
   data->selCriteria = *m_panel->m_criteria;
 }
-
 
 //////////////////////////////////////////////////////
 // SyncOptionsSummaryPage implementation
@@ -697,7 +691,6 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
       // found a match
       CItemData curItem = currentCore->GetEntry(foundPos);
       CItemData updItem(curItem);
-      updItem.SetDisplayInfo(NULL);
 
       uuid_array_t current_uuid, other_uuid;
       curItem.GetUUID(current_uuid);

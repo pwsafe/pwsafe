@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -100,7 +100,6 @@ CPasswordSubsetDlg::~CPasswordSubsetDlg()
 {
   m_CopyPswdBitmap.Detach();
 }
-
 
 void CPasswordSubsetDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -283,7 +282,8 @@ void CPasswordSubsetDlg::OnCopy()
   cs_data.ReleaseBuffer(len);
 
   // Remove blanks from between the characters
-  cs_data.Remove(_T(' '));
+  // XXX - this breaks if a selected char happens to be a space...
+  cs_data.Remove(L' ');
   GetMainDlg()->SetClipboardData(cs_data);
   GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 }

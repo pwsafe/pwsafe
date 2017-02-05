@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -8,8 +8,8 @@
 
 #include "stdafx.h"
 
+#include "Windowsdefs.h"
 #include "SCWListCtrl.h"
-#include "DboxMain.h" // For TIMER_FIND
 #include "Fonts.h"
 #include "ShowCompareDlg.h"
 
@@ -46,10 +46,9 @@ BEGIN_MESSAGE_MAP(CSCWListCtrl, CListCtrl)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-
 void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMLVCUSTOMDRAW *pLVCD = (NMLVCUSTOMDRAW *)pNotifyStruct;
+  NMLVCUSTOMDRAW *pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
   *pLResult = CDRF_DODEFAULT;
 
@@ -246,5 +245,5 @@ LRESULT CSCWListCtrl::OnSetFont(WPARAM, LPARAM)
 }
 
 void CSCWListCtrl::DrawItem(LPDRAWITEMSTRUCT){
-  //DrawItem must be overriden for LVS_OWNERDRAWFIXED style lists
+  //DrawItem must be overridden for LVS_OWNERDRAWFIXED style lists
 }

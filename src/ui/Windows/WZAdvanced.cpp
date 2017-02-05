@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -609,7 +609,6 @@ BOOL CWZAdvanced::OnInitDialog()
   cs_ToolTip.LoadString(IDS_ADVANCED_DESELECTALL);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTALL), cs_ToolTip);
 
-
   return TRUE;
 }
 
@@ -844,7 +843,7 @@ LRESULT CWZAdvanced::OnWizardNext()
 
       CString cs_msg;
       cs_temp.LoadString(uimsg);
-      cs_msg.Format(IDS_NO_ENTRIES_PROCESSED, cs_temp);
+      cs_msg.Format(IDS_NO_ENTRIES_PROCESSED, static_cast<LPCWSTR>(cs_temp));
       cs_title.LoadString(IDS_NO_ENTRIES_SELECTED);
       gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONWARNING);
       return -1;

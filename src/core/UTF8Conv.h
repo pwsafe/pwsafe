@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -32,7 +32,7 @@ public:
 private:
   CUTF8Conv(const CUTF8Conv &); // not supported
   CUTF8Conv &operator=(const CUTF8Conv &); // ditto
-  // following pointers allocated dynamically and monotically increase in size
+  // following pointers allocated dynamically and monotonically increase in size
   // for efficiency w/o arbitrary restrictions
   // deallocated by d'tor
   unsigned char *m_utf8;

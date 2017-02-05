@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -46,6 +46,7 @@ public:
   int getNumNoPolicies() {return m_numNoPolicies;}
   int getNumRenamedPolicies() const {return m_numRenamedPolicies;}
   int getNumShortcutsRemoved() const {return m_numShortcutsRemoved;}
+  int getNumEmptyGroupsImported() const {return m_numEmptyGroupsImported;}
 
 private:
   PWScore *m_pXMLcore;
@@ -58,7 +59,7 @@ private:
   int m_numEntriesValidated, m_numEntriesImported, m_numEntriesSkipped;
   int m_numEntriesPWHErrors, m_numEntriesRenamed;
   int m_numRenamedPolicies, m_numNoPolicies;
-  int m_numShortcutsRemoved;
+  int m_numShortcutsRemoved, m_numEmptyGroupsImported;
   TCHAR m_delimiter;
   bool m_bValidation;
 };

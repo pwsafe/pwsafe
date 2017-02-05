@@ -155,7 +155,6 @@ YKLIB_RC CYkLib::rawWrite(BYTE cmd, BYTE *dt, size_t bcnt)
 	}
 }
 
-
 /*************************************************************************
 **  function getCrc                                                     **
 **  Calculate ISO13239 checksum of buffer                               **
@@ -217,7 +216,7 @@ unsigned short CYkLib::enumPorts(void)
 	// Get the collection of present Yubikey devices
 
 	hi = SetupDiGetClassDevs(&GUID_DEVINTERFACE_KEYBOARD, 0, 0, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-	if (hi == INVALID_HANDLE_VALUE) return -1;
+	if (hi == INVALID_HANDLE_VALUE) return (unsigned short)-1;
 
 	di.cbSize = sizeof (SP_DEVICE_INTERFACE_DATA);
 
@@ -354,7 +353,7 @@ bool CYkLib::getPortName(unsigned short portIndex, wchar_t *dst, size_t dstSize)
 **  YKLIB_RC openKey(wchar_ t *portName)                                **
 **                                                                      **
 **  Where:                                                              **
-**  "portName" is name of specfic port. NULL for all ports              **
+**  "portName" is name of specific port. NULL for all ports              **
 **                                                                      **
 **  Returns: Status return code                                         **
 **                                                                      **
@@ -599,7 +598,7 @@ YKLIB_RC CYkLib::abortPendingRequest(void)
     STATUS status;
     YKLIB_RC rc;
 
-    // Check startus first
+    // Check status first
 
     if ((rc = readStatus(&status)) != YKLIB_NOT_READY) return rc;
 
@@ -770,7 +769,7 @@ YKLIB_RC CYkLib::setKey160(CONFIG *cfg, const unsigned char *key)
 **                                                                      **
 **  Where:                                                              **
 **  "cfg" is pointer to destination configuration structure				**
-**  "seed" is moving factor. Must be even divisable by 16               **
+**  "seed" is moving factor. Must be even divisible by 16               **
 **                                                                      **
 **  Returns: Status return code                                         **
 **                                                                      **

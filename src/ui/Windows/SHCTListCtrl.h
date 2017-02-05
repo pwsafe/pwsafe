@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -32,10 +32,7 @@ public:
   void OnMenuShortcutKillFocus(const WORD wVirtualKeyCode, const WORD wModifiers);
 
 protected:
-  INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;
-
   //{{AFX_MSG(CSHCTListCtrl)
-  afx_msg BOOL OnToolTipText(UINT id, NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
@@ -50,7 +47,6 @@ private:
   COptionsShortcuts *m_pParent;
 
   CSHCTHotKey *m_pHotKey;
-  WCHAR *m_pwchTip;
   int m_item;
   UINT m_id;
   bool m_bHotKeyActive;

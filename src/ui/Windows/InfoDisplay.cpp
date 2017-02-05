@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -26,7 +26,8 @@ extern HRGN GetWorkAreaRegion();
 
 IMPLEMENT_DYNAMIC(CInfoDisplay, CWnd)
 
-CInfoDisplay::CInfoDisplay(bool use_current_monitor): m_use_current_monitor(use_current_monitor)
+CInfoDisplay::CInfoDisplay(bool use_current_monitor): m_use_current_monitor(use_current_monitor),
+  m_font(NULL), m_pTextFont(NULL)
 {
 }
 
@@ -48,8 +49,8 @@ void CInfoDisplay::OnPaint()
 {
   CPaintDC dc(this); // device context for painting
 
-  CFont *pFont = GetFont();
-  dc.SelectObject(pFont);
+  // The user may have specified a font
+  dc.SelectObject(m_pTextFont != NULL ? m_pTextFont : GetFont());
 
   // First, we compute the maximum line width, and set the rectangle wide enough to
   // hold this.  Then we use DrawText/DT_CALCRECT to compute the height
@@ -71,14 +72,15 @@ void CInfoDisplay::OnPaint()
     while(TRUE) { /* scan string */
       CSecString line;
       int p = s.Find(L"\n");
-      if (p < 0)
+      if (p < 0) {
         line = s;
-      else { /* one line */
+      }  else { /* one line */
         line = s.Left(p);
         s = s.Mid(p + 1);
       } /* one line */
+
       CSize sz = dc.GetTextExtent(line);
-      box.cx = max(box.cx, sz.cx);
+      box.cx = std::max(box.cx, sz.cx);
       box.cy += tm.tmHeight + tm.tmInternalLeading;
       if (p < 0)
         break;
@@ -141,7 +143,7 @@ void CInfoDisplay::OnPaint()
              y = rs.top; 
 
           bMoveWindow = true;
-          // Check that mouse pointer isn't on infowindow: when it is, window isn't displayed (treated somwhere as focus/mouse move?)
+          // Check that mouse pointer isn't on infowindow: when it is, window isn't displayed (treated somewhere as focus/mouse move?)
           if ((mouse_pt.x >= x) && (mouse_pt.x <= x + rs.Width()) && (mouse_pt.y >= y) && (mouse_pt.y <= y + rs.Height())) {
              if (mouse_pt.y == y)
                 y++;
@@ -254,4 +256,9 @@ LRESULT CInfoDisplay::OnSetFont(WPARAM wParam, LPARAM lParam)
 LRESULT CInfoDisplay::OnGetFont(WPARAM, LPARAM)
 {
   return (LRESULT)m_font;
+}
+
+void CInfoDisplay::SetWindowTextFont(CFont *pFont)
+{
+  m_pTextFont = pFont;
 }

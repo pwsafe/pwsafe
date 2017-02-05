@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -29,6 +29,7 @@
 #include "about.h"
 #include "PWSgrid.h"
 #include "PWStree.h"
+#include "PWStatusBar.h"
 ////@end includes
 #include "PWSgridtable.h"
 #include "safecombinationsetup.h"
@@ -80,7 +81,6 @@ using pws_os::CUUID;
 using std::get;
 using std::make_tuple;
 
-
 /*!
  * PasswordSafeFrame type definition
  */
@@ -98,45 +98,28 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
 ////@begin PasswordSafeFrame event table entries
   EVT_CLOSE( PasswordSafeFrame::OnCloseWindow )
-
   EVT_MENU( wxID_NEW, PasswordSafeFrame::OnNewClick )
-
   EVT_MENU( wxID_OPEN, PasswordSafeFrame::OnOpenClick )
-
   EVT_MENU( wxID_CLOSE, PasswordSafeFrame::OnCloseClick )
-
   EVT_MENU( wxID_SAVE, PasswordSafeFrame::OnSaveClick )
-
   EVT_MENU( wxID_SAVEAS, PasswordSafeFrame::OnSaveAsClick )
-
   EVT_MENU( wxID_PROPERTIES, PasswordSafeFrame::OnPropertiesClick )
-
   EVT_MENU( wxID_EXIT, PasswordSafeFrame::OnExitClick )
-
   EVT_MENU( wxID_ADD, PasswordSafeFrame::OnAddClick )
-
   EVT_MENU( ID_EDIT, PasswordSafeFrame::OnEditClick )
-
   EVT_MENU( wxID_DELETE, PasswordSafeFrame::OnDeleteClick )
-
+  EVT_MENU( ID_PROTECT, PasswordSafeFrame::OnProtectUnprotectClick )
   EVT_MENU( ID_CLEARCLIPBOARD, PasswordSafeFrame::OnClearclipboardClick )
-
   EVT_MENU( ID_COPYPASSWORD, PasswordSafeFrame::OnCopypasswordClick )
-
   EVT_MENU( ID_COPYUSERNAME, PasswordSafeFrame::OnCopyusernameClick )
-
   EVT_MENU( ID_COPYNOTESFLD, PasswordSafeFrame::OnCopynotesfldClick )
-
   EVT_MENU( ID_COPYURL, PasswordSafeFrame::OnCopyurlClick )
-
   EVT_MENU( ID_LIST_VIEW, PasswordSafeFrame::OnListViewClick )
-
   EVT_MENU( ID_TREE_VIEW, PasswordSafeFrame::OnTreeViewClick )
-
+  EVT_MENU( ID_SHOWHIDE_UNSAVED, PasswordSafeFrame::OnShowUnsavedEntriesClick )
+  EVT_MENU( ID_SHOW_ALL_EXPIRY, PasswordSafeFrame::OnShowAllExpiryClick )
   EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
-
   EVT_MENU( wxID_PREFERENCES, PasswordSafeFrame::OnPreferencesClick )
-
   EVT_MENU( ID_PWDPOLSM, PasswordSafeFrame::OnPwdPolsMClick )
 
 #ifndef NO_YUBI
@@ -146,7 +129,6 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU_RANGE( ID_LANGUAGE_BEGIN, ID_LANGUAGE_END, PasswordSafeFrame::OnLanguageClick )
 
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
-
 ////@end PasswordSafeFrame event table entries
   EVT_MENU( ID_COPYEMAIL, PasswordSafeFrame::OnCopyEmailClick )
 
@@ -175,6 +157,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_CREATESHORTCUT, PasswordSafeFrame::OnCreateShortcut )
 
   EVT_MENU( ID_DUPLICATEENTRY, PasswordSafeFrame::OnDuplicateEntry )
+
+  EVT_MENU( ID_PASSWORDSUBSET, PasswordSafeFrame::OnPasswordSubset )
 
   EVT_MENU( ID_IMPORT_PLAINTEXT, PasswordSafeFrame::OnImportText )
 
@@ -245,7 +229,12 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI(wxID_UNDO,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(wxID_REDO,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_SYNCHRONIZE,     PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(wxID_ADD,           PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(wxID_DELETE,        PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_MERGE,           PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_CHANGECOMBO,     PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_IMPORTMENU,      PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_PROTECT,         PasswordSafeFrame::OnUpdateUI )
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -255,8 +244,10 @@ static void DisplayFileWriteError(int rc, const StringX &fname);
  */
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
-: m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString)
+: m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)),
+  m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
+  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
+  m_bShowExpiry(false), m_bFilterActive(false)
 {
     Init();
 }
@@ -265,8 +256,10 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-  : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString)
+  : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)),
+    m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
+    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
+    m_bShowExpiry(false), m_bFilterActive(false)
 {
     Init();
     m_currentView = (PWSprefs::GetInstance()->GetPref(PWSprefs::LastView) == _T("list")) ? GRID : TREE;
@@ -274,7 +267,6 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
       style |= wxSTAY_ON_TOP;
     Create( parent, id, caption, pos, size, style );
 }
-
 
 /*!
  * PasswordSafeFrame creator
@@ -331,7 +323,7 @@ PasswordSafeFrame::~PasswordSafeFrame()
   delete m_guiInfo;
   m_guiInfo = 0;
 
-  m_core.ClearData();
+  m_core.ClearDBData();
 }
 
 /*!
@@ -343,9 +335,7 @@ void PasswordSafeFrame::Init()
   std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions;
   bsSupportedFunctions.set(UIInterFace::DATABASEMODIFIED);
   bsSupportedFunctions.set(UIInterFace::UPDATEGUI);
-  bsSupportedFunctions.set(UIInterFace::GUISETUPDISPLAYINFO);
   bsSupportedFunctions.set(UIInterFace::GUIREFRESHENTRY);
-  //bsSupportedFunctions.set(UIInterFace::UPDATEWIZARD);
 
   m_core.SetUIInterFace(this, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
 
@@ -353,6 +343,7 @@ void PasswordSafeFrame::Init()
 ////@begin PasswordSafeFrame member initialisation
   m_grid = NULL;
   m_tree = NULL;
+  m_statusBar = NULL;
 ////@end PasswordSafeFrame member initialisation
   RegisterLanguageMenuItems();
 }
@@ -414,119 +405,120 @@ void PasswordSafeFrame::CreateMenubar()
   // Create all menu items
   // Recreating the menu items updates also their translation
 ////@begin PasswordSafeFrame content construction
+  PasswordSafeFrame* itemFrame1 = this;
+
   wxMenu* itemMenu3 = new wxMenu;
-  itemMenu3->Append(wxID_NEW);
-  itemMenu3->Append(wxID_OPEN);
-  itemMenu3->Append(wxID_CLOSE);
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::MRUOnFileMenu)) {
-    wxGetApp().recentDatabases().UseMenu(itemMenu3);
-    wxGetApp().recentDatabases().AddFilesToMenu(itemMenu3);  //must add existing history entries manually.
-  } else { // create Recent Safes submenu
-    itemMenu3->AppendSeparator();
-    wxMenu* itemMenuRecents = new wxMenu;
-    wxGetApp().recentDatabases().UseMenu(itemMenuRecents);
-    wxGetApp().recentDatabases().AddFilesToMenu(itemMenuRecents);
-    itemMenu3->Append(ID_MRUMENU, _("&Recent Safes"), itemMenuRecents);
-  }
-  itemMenu3->Append(ID_MENU_CLEAR_MRU, _("Clear Recent Safe List"), _T(""), wxITEM_NORMAL);
+  itemMenu3->Append(wxID_NEW, _("&New..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(wxID_OPEN, _("&Open..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(wxID_CLOSE, _("&Close"), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
-  itemMenu3->Append(wxID_SAVE);
-  itemMenu3->Append(wxID_SAVEAS);
+  itemMenu3->Append(ID_MENU_CLEAR_MRU, _("Clear Recent Safe List"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->AppendSeparator();
+  itemMenu3->Append(wxID_SAVE, _("&Save..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(wxID_SAVEAS, _("Save &As..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
   wxMenu* itemMenu13 = new wxMenu;
-  itemMenu13->Append(ID_EXPORT2OLD1XFORMAT, _("v&1.x format..."), _T(""), wxITEM_NORMAL);
-  itemMenu13->Append(ID_EXPORT2V2FORMAT, _("v&2 format..."), _T(""), wxITEM_NORMAL);
-  itemMenu13->Append(ID_EXPORT2V4FORMAT, _("v&4 format (EXPERIMENTAL)..."), _T(""), wxITEM_NORMAL);
-  itemMenu13->Append(ID_EXPORT2PLAINTEXT, _("&Plain Text (tab separated)..."), _T(""), wxITEM_NORMAL);
-  itemMenu13->Append(ID_EXPORT2XML, _("&XML format..."), _T(""), wxITEM_NORMAL);
+  itemMenu13->Append(ID_EXPORT2OLD1XFORMAT, _("v&1.x format..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu13->Append(ID_EXPORT2V2FORMAT, _("v&2 format..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu13->Append(ID_EXPORT2V4FORMAT, _("v&4 format (EXPERIMENTAL)..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu13->Append(ID_EXPORT2PLAINTEXT, _("&Plain Text (tab separated)..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu13->Append(ID_EXPORT2XML, _("&XML format..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(ID_EXPORTMENU, _("Export &To"), itemMenu13);
-  wxMenu* itemMenu18 = new wxMenu;
-  itemMenu18->Append(ID_IMPORT_PLAINTEXT, _("&Plain Text..."), _T(""), wxITEM_NORMAL);
-  itemMenu18->Append(ID_IMPORT_XML, _("&XML format..."), _T(""), wxITEM_NORMAL);
-  itemMenu18->Append(ID_IMPORT_KEEPASS, _("&KeePass..."), _T(""), wxITEM_NORMAL);
-  itemMenu3->Append(ID_IMPORTMENU, _("Import &From"), itemMenu18);
-  itemMenu3->Append(ID_MERGE, _("Merge..."), _T(""), wxITEM_NORMAL);
-  itemMenu3->Append(ID_COMPARE, _("Compare..."), _T(""), wxITEM_NORMAL);
-  itemMenu3->Append(ID_SYNCHRONIZE, _("S&ynchronize..."), _T(""), wxITEM_NORMAL);
+  wxMenu* itemMenu19 = new wxMenu;
+  itemMenu19->Append(ID_IMPORT_PLAINTEXT, _("&Plain Text..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu19->Append(ID_IMPORT_XML, _("&XML format..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu19->Append(ID_IMPORT_KEEPASS, _("&KeePass..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(ID_IMPORTMENU, _("Import &From"), itemMenu19);
+  itemMenu3->Append(ID_MERGE, _("Merge..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(ID_COMPARE, _("Compare..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(ID_SYNCHRONIZE, _("S&ynchronize..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
-  itemMenu3->Append(wxID_PROPERTIES);
+  itemMenu3->Append(wxID_PROPERTIES, _("&Properties"), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
-  itemMenu3->Append(wxID_EXIT);
+  itemMenu3->Append(wxID_EXIT, _("E&xit"), wxEmptyString, wxITEM_NORMAL);
   menuBar->Append(itemMenu3, _("&File"));
-  wxMenu* itemMenu28 = new wxMenu;
-  itemMenu28->Append(wxID_ADD, _("&Add Entry...\tCtrl+A"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_EDIT, _("Edit/&View Entry...\tCtrl+Enter"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(wxID_DELETE, _("&Delete Entry\tDel"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_RENAME, _("Rename Entry\tF2"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(wxID_FIND, _("&Find Entry...\tCtrl+F"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_DUPLICATEENTRY, _("&Duplicate Entry\tCtrl+D"), _T(""), wxITEM_NORMAL);
-  itemMenu28->AppendSeparator();
-  itemMenu28->Append(ID_ADDGROUP, _("Add Group"), _T(""), wxITEM_NORMAL);
-  itemMenu28->AppendSeparator();
-  itemMenu28->Append(wxID_UNDO);
-  itemMenu28->Append(wxID_REDO);
-  itemMenu28->Append(ID_CLEARCLIPBOARD, _("C&lear Clipboard\tCtrl+Del"), _T(""), wxITEM_NORMAL);
-  itemMenu28->AppendSeparator();
-  itemMenu28->Append(ID_COPYPASSWORD, _("&Copy Password to Clipboard\tCtrl+C"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_COPYUSERNAME, _("Copy &Username to Clipboard\tCtrl+U"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_COPYNOTESFLD, _("Copy &Notes to Clipboard\tCtrl+G"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_COPYURL, _("Copy URL to Clipboard\tCtrl+Alt+L"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_BROWSEURL, _("&Browse to URL\tCtrl+L"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_AUTOTYPE, _("Perform Auto&type\tCtrl+T"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(ID_GOTOBASEENTRY, _("Go to Base entry"), _T(""), wxITEM_NORMAL);
-  menuBar->Append(itemMenu28, _("&Edit"));
-  wxMenu* itemMenu47 = new wxMenu;
-  itemMenu47->Append(ID_LIST_VIEW, _("Flattened &List"), _T(""), wxITEM_RADIO);
-  itemMenu47->Append(ID_TREE_VIEW, _("Nested &Tree"), _T(""), wxITEM_RADIO);
-  itemMenu47->AppendSeparator();
-  itemMenu47->Append(ID_SHOWHIDE_TOOLBAR, _("Toolbar &visible"), _T(""), wxITEM_CHECK);
-  itemMenu47->AppendRadioItem(ID_TOOLBAR_NEW, _("&New Toolbar"));
-  itemMenu47->AppendRadioItem(ID_TOOLBAR_CLASSIC, _("&Classic Toolbar"));
-  itemMenu47->Append(ID_SHOWHIDE_DRAGBAR, _("&Dragbar visible"), _T(""), wxITEM_CHECK);
-  itemMenu47->AppendSeparator();
-  itemMenu47->Append(ID_EXPANDALL, _("Expand All"), _T(""), wxITEM_NORMAL);
-  itemMenu47->Append(ID_COLLAPSEALL, _("Collapse All"), _T(""), wxITEM_NORMAL);
-  wxMenu* itemMenu56 = new wxMenu;
-  itemMenu56->Append(ID_EDITFILTER, _("&New/Edit Filter..."), _T(""), wxITEM_NORMAL);
-  itemMenu56->Append(ID_APPLYFILTER, _("&Apply current"), _T(""), wxITEM_NORMAL);
-  itemMenu56->Append(ID_MANAGEFILTERS, _("&Manage..."), _T(""), wxITEM_NORMAL);
-  itemMenu47->Append(ID_FILTERMENU, _("&Filters"), itemMenu56);
-  itemMenu47->AppendSeparator();
-  itemMenu47->Append(ID_CUSTOMIZETOOLBAR, _("Customize &Main Toolbar..."), _T(""), wxITEM_NORMAL);
-  wxMenu* itemMenu62 = new wxMenu;
-  itemMenu62->Append(ID_CHANGETREEFONT, _("&Tree/List Font"), _T(""), wxITEM_NORMAL);
-  itemMenu62->Append(ID_CHANGEPSWDFONT, _("&Password Font"), _T(""), wxITEM_NORMAL);
-  itemMenu47->Append(ID_CHANGEFONTMENU, _("Change &Font"), itemMenu62);
-  wxMenu* itemMenu65 = new wxMenu;
-  itemMenu65->Append(ID_REPORT_COMPARE, _("&Compare"), _T(""), wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_FIND, _("&Find"), _T(""), wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_IMPORTTEXT, _("Import &Text"), _T(""), wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_IMPORTXML, _("Import &XML"), _T(""), wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_MERGE, _("&Merge"), _T(""), wxITEM_NORMAL);
-  itemMenu65->Append(ID_REPORT_VALIDATE, _("&Validate"), _T(""), wxITEM_NORMAL);
-  itemMenu47->Append(ID_REPORTSMENU, _("Reports"), itemMenu65);
-  menuBar->Append(itemMenu47, _("&View"));
-  wxMenu* itemMenu72 = new wxMenu;
-  itemMenu72->Append(ID_CHANGECOMBO, _("&Change Safe Combination..."), _T(""), wxITEM_NORMAL);
-  itemMenu72->AppendSeparator();
-  itemMenu72->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), _T(""), wxITEM_NORMAL);
-  itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), _T(""), wxITEM_NORMAL);
-  itemMenu72->AppendSeparator();
-  itemMenu72->Append(wxID_PREFERENCES, _("&Options...\tCtrl+M"), _T(""), wxITEM_NORMAL);
-  itemMenu72->Append(ID_PWDPOLSM, _("Password Policies..."), _T(""), wxITEM_NORMAL);
+  wxMenu* itemMenu29 = new wxMenu;
+  itemMenu29->Append(wxID_ADD, _("&Add Entry...\tCtrl+A"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_EDIT, _("Edit/&View Entry...\tCtrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(wxID_DELETE, _("&Delete Entry\tDel"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_RENAME, _("Rename Entry\tF2"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(wxID_FIND, _("&Find Entry...\tCtrl+F"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_DUPLICATEENTRY, _("&Duplicate Entry\tCtrl+D"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_PROTECT, _("Protect Entry"), wxEmptyString, wxITEM_CHECK);
+  itemMenu29->AppendSeparator();
+  itemMenu29->Append(ID_ADDGROUP, _("Add Group"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->AppendSeparator();
+  itemMenu29->Append(wxID_UNDO);
+  itemMenu29->Append(wxID_REDO);
+  itemMenu29->Append(ID_CLEARCLIPBOARD, _("C&lear Clipboard\tCtrl+Del"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->AppendSeparator();
+  itemMenu29->Append(ID_COPYPASSWORD, _("&Copy Password to Clipboard\tCtrl+C"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_COPYUSERNAME, _("Copy &Username to Clipboard\tCtrl+U"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_COPYNOTESFLD, _("Copy &Notes to Clipboard\tCtrl+G"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_COPYURL, _("Copy URL to Clipboard\tCtrl+Alt+L"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_BROWSEURL, _("&Browse to URL\tCtrl+L"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_AUTOTYPE, _("Perform Auto&type\tCtrl+T"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu29->Append(ID_GOTOBASEENTRY, _("Go to Base entry"), wxEmptyString, wxITEM_NORMAL);
+  menuBar->Append(itemMenu29, _("&Edit"));
+  wxMenu* itemMenu48 = new wxMenu;
+  itemMenu48->Append(ID_LIST_VIEW, _("Flattened &List"), wxEmptyString, wxITEM_RADIO);
+  itemMenu48->Append(ID_TREE_VIEW, _("Nested &Tree"), wxEmptyString, wxITEM_RADIO);
+  itemMenu48->AppendSeparator();
+  itemMenu48->Append(ID_SHOWHIDE_TOOLBAR, _("Toolbar &visible"), wxEmptyString, wxITEM_CHECK);
+  itemMenu48->AppendRadioItem(ID_TOOLBAR_NEW, _("&New Toolbar"));
+  itemMenu48->AppendRadioItem(ID_TOOLBAR_CLASSIC, _("&Classic Toolbar"));
+  itemMenu48->Append(ID_SHOWHIDE_DRAGBAR, _("&Dragbar visible"), wxEmptyString, wxITEM_CHECK);
+  itemMenu48->AppendSeparator();
+  itemMenu48->Append(ID_EXPANDALL, _("Expand All"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu48->Append(ID_COLLAPSEALL, _("Collapse All"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu48->Append(ID_SHOWHIDE_UNSAVED, _("Show &Unsaved Changes"), wxEmptyString, wxITEM_CHECK);
+  itemMenu48->Append(ID_SHOW_ALL_EXPIRY, _("Show entries with E&xpiry dates"), wxEmptyString, wxITEM_CHECK);
+  wxMenu* itemMenu58 = new wxMenu;
+  itemMenu58->Append(ID_EDITFILTER, _("&New/Edit Filter..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu58->Append(ID_APPLYFILTER, _("&Apply current"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu58->Append(ID_MANAGEFILTERS, _("&Manage..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu48->Append(ID_FILTERMENU, _("&Filters"), itemMenu58);
+  itemMenu48->AppendSeparator();
+  itemMenu48->Append(ID_CUSTOMIZETOOLBAR, _("Customize &Main Toolbar..."), wxEmptyString, wxITEM_NORMAL);
+  wxMenu* itemMenu64 = new wxMenu;
+  itemMenu64->Append(ID_CHANGETREEFONT, _("&Tree/List Font"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu64->Append(ID_CHANGEPSWDFONT, _("&Password Font"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu48->Append(ID_CHANGEFONTMENU, _("Change &Font"), itemMenu64);
+  wxMenu* itemMenu67 = new wxMenu;
+  itemMenu67->Append(ID_REPORT_COMPARE, _("&Compare"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu67->Append(ID_REPORT_FIND, _("&Find"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu67->Append(ID_REPORT_IMPORTTEXT, _("Import &Text"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu67->Append(ID_REPORT_IMPORTXML, _("Import &XML"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu67->Append(ID_REPORT_MERGE, _("&Merge"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu67->Append(ID_REPORT_VALIDATE, _("&Validate"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu48->Append(ID_REPORTSMENU, _("Reports"), itemMenu67);
+  menuBar->Append(itemMenu48, _("&View"));
+  wxMenu* itemMenu74 = new wxMenu;
+  itemMenu74->Append(ID_CHANGECOMBO, _("&Change Safe Combination..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu74->AppendSeparator();
+  itemMenu74->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu74->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu74->AppendSeparator();
+  itemMenu74->Append(wxID_PREFERENCES, _("&Options...\tCtrl+M"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu74->Append(ID_PWDPOLSM, _("Password Policies..."), wxEmptyString, wxITEM_NORMAL);
 #ifndef NO_YUBI
-  itemMenu72->AppendSeparator();
-  itemMenu72->Append(ID_YUBIKEY_MNG, _("YubiKey..."), _T("Configure and backup YubiKeys"), wxITEM_NORMAL);
+  itemMenu74->AppendSeparator();
+  itemMenu74->Append(ID_YUBIKEY_MNG, _("YubiKey..."), _("Configure and backup YubiKeys"), wxITEM_NORMAL);
 #endif
-  itemMenu72->AppendSeparator();
-  AddLanguageMenu( itemMenu72 );
-
-  menuBar->Append(itemMenu72, _("&Manage"));
+  itemMenu74->AppendSeparator();
+  AddLanguageMenu( itemMenu74 );
+  menuBar->Append(itemMenu74, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
-  itemMenu79->Append(wxID_HELP);
-  itemMenu79->Append(ID_VISITWEBSITE, _("Visit Password Safe &website..."), _T(""), wxITEM_NORMAL);
-  itemMenu79->Append(wxID_ABOUT);
+  itemMenu79->Append(wxID_HELP, _("Get &Help"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu79->Append(ID_VISITWEBSITE, _("Visit Password Safe &website..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu79->Append(wxID_ABOUT, _("&About Password Safe..."), wxEmptyString, wxITEM_NORMAL);
   menuBar->Append(itemMenu79, _("&Help"));
+  itemFrame1->SetMenuBar(menuBar);
+
+  m_statusBar = new CPWStatusBar( itemFrame1, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER );
+  m_statusBar->SetFieldsCount(6);
+  itemFrame1->SetStatusBar(m_statusBar);
+
 ////@end PasswordSafeFrame content construction
 
   menuBar->Thaw();
@@ -540,9 +532,10 @@ void PasswordSafeFrame::CreateMenubar()
 
   // Update menu selections
   GetMenuBar()->Check( (m_currentView == TREE) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
-  GetMenuBar()->Check( PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true );
-  if ((m_selectedLanguage > ID_LANGUAGE_BEGIN) && (m_selectedLanguage < ID_LANGUAGE_END))
-    GetMenuBar()->Check( m_selectedLanguage, true );
+  GetMenuBar()->Check( PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
+                       ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true );
+  m_statusBar->Setup();
+
 }
 
 /**
@@ -617,8 +610,10 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
     if (menu_item != nullptr)
       menu_item->Enable(get<2>(item.second));
   }
-  // duplicate English label to simplify switching language in case of wrong selection
+
   parent->Append(ID_LANGUAGEMENU, _("Select Language") + L" (Select Language)", child);
+  if ((m_selectedLanguage > ID_LANGUAGE_BEGIN) && (m_selectedLanguage < ID_LANGUAGE_END))
+    child->Check( m_selectedLanguage, true );
 }
 
 /**
@@ -740,10 +735,11 @@ bool PasswordSafeFrame::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap PasswordSafeFrame::GetBitmapResource( const wxString& WXUNUSED(name) )
+wxBitmap PasswordSafeFrame::GetBitmapResource( const wxString& name)
 {
     // Bitmap retrieval
 ////@begin PasswordSafeFrame bitmap retrieval
+  wxUnusedVar(name);
   return wxNullBitmap;
 ////@end PasswordSafeFrame bitmap retrieval
 }
@@ -756,7 +752,8 @@ wxIcon PasswordSafeFrame::GetIconResource( const wxString& name )
 {
     // Icon retrieval
 ////@begin PasswordSafeFrame icon retrieval
-  if (name == _T("../graphics/wxWidgets/cpane.xpm"))
+  wxUnusedVar(name);
+  if (name == wxT("../graphics/wxWidgets/cpane.xpm"))
   {
     wxIcon icon(cpane_xpm);
     return icon;
@@ -786,10 +783,12 @@ int PasswordSafeFrame::Load(const StringX &passwd)
     wxGetApp().ConfigureIdleTimer();
     SetTitle(m_core.GetCurFile().c_str());
     m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+    m_core.ResumeOnDBNotification();
   } else {
-    SetTitle(_T(""));
+    SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
   }
+  UpdateStatusBar();
   return status;
 }
 
@@ -807,6 +806,7 @@ bool PasswordSafeFrame::Show(bool show)
 void PasswordSafeFrame::OnExitClick( wxCommandEvent& /* evt */ )
 {
   m_exitFromMenu = true;
+
   Close();
 }
 
@@ -824,7 +824,9 @@ void PasswordSafeFrame::ShowGrid(bool show)
     for (iter = m_core.GetEntryIter(), i = 0;
          iter != m_core.GetEntryEndIter();
          iter++) {
-      m_grid->AddItem(iter->second, i++);
+      if (!m_bFilterActive ||
+          m_FilterManager.PassesFiltering(iter->second, m_core))
+        m_grid->AddItem(iter->second, i++);
     }
 
     m_guiInfo->RestoreGridViewInfo(m_grid);
@@ -848,7 +850,9 @@ void PasswordSafeFrame::ShowTree(bool show)
     for (iter = m_core.GetEntryIter();
          iter != m_core.GetEntryEndIter();
          iter++) {
-      m_tree->AddItem(iter->second);
+      if (!m_bFilterActive ||
+          m_FilterManager.PassesFiltering(iter->second, m_core))
+        m_tree->AddItem(iter->second);
     }
 
     // Empty groups need to be added separately
@@ -870,106 +874,6 @@ void PasswordSafeFrame::ShowTree(bool show)
   GetSizer()->Layout();
 }
 
-void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
-{
-  //This assumes the menu item is checked before it comes here
-  if (GetMenuBar()->IsChecked(evt.GetId())) {
-    PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, evt.GetId() == ID_TOOLBAR_NEW);
-    RefreshToolbarButtons();
-    PWSDragBar* dragbar = GetDragBar();
-    wxCHECK_RET(dragbar, wxT("Could not find dragbar"));
-    dragbar->RefreshButtons();
-    wxCHECK_RET(m_search, wxT("Search object not created as expected"));
-    m_search->RefreshButtons();
-  }
-}
-
-
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_LIST_VIEW
- */
-
-void PasswordSafeFrame::OnListViewClick( wxCommandEvent& /* evt */ )
-{
-  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("list"));
-  ShowTree(false);
-  ShowGrid(true);
-  m_currentView = GRID;
-}
-
-
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_TREE_VIEW
- */
-
-void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& /* evt */ )
-{
-  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("tree"));
-  ShowGrid(false);
-  ShowTree(true);
-  m_currentView = TREE;
-}
-
-void PasswordSafeFrame::OnExpandAll(wxCommandEvent& /*evt*/)
-{
-  wxASSERT(m_currentView == TREE);
-  m_tree->ExpandAll();
-}
-
-void PasswordSafeFrame::OnCollapseAll(wxCommandEvent& /*evt*/)
-{
-  wxASSERT(m_currentView == TREE);
-
-  //we cannot just call wxTreeCtrl::CollapseAll(), since it tries to
-  //collapse the invisible root item also, and thus ASSERTs
-  wxTreeItemIdValue cookie;
-  for ( wxTreeItemId root = m_tree->GetRootItem(), idCurr = m_tree->GetFirstChild(root, cookie);
-        idCurr.IsOk();
-        idCurr = m_tree->GetNextChild(root, cookie) )
-  {
-      m_tree->CollapseAllChildren(idCurr);
-  }
-}
-
-void PasswordSafeFrame::OnChangeTreeFont(wxCommandEvent& /*evt*/)
-{
-  wxFont currentFont(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::TreeFont)));
-
-  if (!currentFont.IsOk()) {
-    currentFont = IsTreeView() ? m_tree->GetFont() : m_grid->GetDefaultCellFont();
-  }
-
-  wxFont newFont = ::wxGetFontFromUser(this, currentFont, _("Select Tree/List display font"));
-
-  if (newFont.IsOk()) {
-    if (IsTreeView()) {
-      m_tree->SetFont(newFont);
-    }
-    else {
-      m_grid->SetDefaultCellFont(newFont);
-    }
-    PWSprefs::GetInstance()->SetPref(PWSprefs::TreeFont, tostringx(newFont.GetNativeFontInfoDesc()));
-  }
-}
-
-void PasswordSafeFrame::OnChangePasswordFont(wxCommandEvent& /*evt*/)
-{
-  wxFont passwordFont(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::PasswordFont)));
-
-  wxFont newFont = ::wxGetFontFromUser(this, passwordFont, _("Set Password display font"));
-  if (newFont.IsOk()) {
-    PWSprefs::GetInstance()->SetPref(PWSprefs::PasswordFont, tostringx(newFont.GetNativeFontInfoDesc()));
-  }
-}
-
-void PasswordSafeFrame::OnShowHideToolBar(wxCommandEvent& evt)
-{
-  GetToolBar()->Show(evt.IsChecked());
-  PWSprefs::GetInstance()->SetPref(PWSprefs::ShowToolbar, evt.IsChecked());
-  DoLayout();
-  SendSizeEvent();
-}
-
 PWSDragBar* PasswordSafeFrame::GetDragBar()
 {
   wxSizer* origSizer = GetSizer();
@@ -987,14 +891,10 @@ PWSDragBar* PasswordSafeFrame::GetDragBar()
   return dragbar;
 }
 
-void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
+int PasswordSafeFrame::SaveImmediately()
 {
-  PWSDragBar* dragbar = GetDragBar();
-  wxCHECK_RET(dragbar, wxT("Could not find dragbar"));
-
-  dragbar->Show(evt.IsChecked());
-  PWSprefs::GetInstance()->SetPref(PWSprefs::ShowDragbar, evt.IsChecked());
-  DoLayout();
+  // Get normal save to do this (code already there for intermediate backups)
+  return Save(ST_SAVEIMMEDIATELY);
 }
 
 int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
@@ -1013,7 +913,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
     case PWSfile::VCURRENT:
     case PWSfile::V40:
       if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
-        int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
+        unsigned int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
         int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
         std::wstring userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
         std::wstring userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
@@ -1026,6 +926,11 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
                 return PWScore::SUCCESS;
               else
                 return SaveAs();
+
+            case ST_SAVEIMMEDIATELY:
+              if (wxMessageBox(_("Unable to create intermediate backup.  Do you wish to save changes to your database without it?"),
+                _("Write Error"), wxYES_NO | wxICON_EXCLAMATION, this) == wxID_NO)
+                return PWScore::USER_CANCEL;
             case ST_INVALID:
               // No particular end of PWS exit i.e. user clicked Save or
               // saving a changed database before opening another
@@ -1078,9 +983,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
     return rc;
   }
 
-  m_core.ResetStateAfterSave();
-  m_core.ClearChangedNodes();
-  SetChanged(Clear);
+  UpdateStatusBar();
 //  ChangeOkUpdate();
 
   // Added/Modified entries now saved - reverse it & refresh display
@@ -1101,27 +1004,42 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
 
 int PasswordSafeFrame::SaveIfChanged()
 {
+  // Deal with unsaved but changed restored DB
+  if (m_bRestoredDBUnsaved && m_core.HasDBChanged()) {
+    wxMessageDialog dlg(this,
+                        _("Do you wish to save the this restored database as new database?"),
+                        _("Unsaved restored database"),
+                        (wxICON_QUESTION | wxCANCEL |
+                         wxYES_NO | wxYES_DEFAULT));
+    int rc = dlg.ShowModal();
+    switch (rc) {
+      case wxID_CANCEL:
+        return PWScore::USER_CANCEL;
+      case wxID_YES:
+        rc = SaveAs();
+        // Make sure that file was successfully written
+        if (rc != PWScore::SUCCESS)
+          return PWScore::CANT_OPEN_FILE;
+        else {
+          m_bRestoredDBUnsaved = false;
+          return rc;
+        }
+      case wxID_NO:
+        return PWScore::USER_DECLINED_SAVE;
+      default:
+        ASSERT(0);
+    }
+  }
+
   if (m_core.IsReadOnly())
     return PWScore::SUCCESS;
 
+  // Offer to save existing database if it was modified.
+  //
   // Note: RUE list saved here via time stamp being updated.
   // Otherwise it won't be saved unless something else has changed
-  if ((m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
-       m_core.GetNumEntries() > 0) {
-    int rc = Save();
-    if (rc != PWScore::SUCCESS)
-      return PWScore::USER_CANCEL;
-    else
-      return PWScore::SUCCESS;
-  }
-
-
-  // offer to save existing database if it was modified.
-  // used before loading another
-  // returns PWScore::SUCCESS if save succeeded or if user decided
-  // not to save
-
-  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
+  if ((m_bTSUpdated || m_core.HasDBChanged()) &&
+      m_core.GetNumEntries() > 0) {
     wxString prompt(_("Do you want to save changes to the password database"));
     if (!m_core.GetCurFile().empty()) {
       prompt += wxT(": ");
@@ -1141,8 +1059,7 @@ int PasswordSafeFrame::SaveIfChanged()
         if (rc != PWScore::SUCCESS)
           return PWScore::CANT_OPEN_FILE;
       case wxID_NO:
-        // Reset changed flag
-        SetChanged(Clear);
+        UpdateStatusBar();
         break;
       default:
         ASSERT(0);
@@ -1151,17 +1068,10 @@ int PasswordSafeFrame::SaveIfChanged()
   return PWScore::SUCCESS;
 }
 
-void PasswordSafeFrame::ClearData()
+void PasswordSafeFrame::ClearAppData()
 {
   m_grid->Clear();
   m_tree->Clear();
-  //the grid would have deleted the data in one of its callbacks
-  //but only if it was initialized, which might not happen
-  //if it was never shown.  In those cases, clear the data here
-  if (m_core.GetNumEntries() != 0) {
-    m_core.ClearData();
-  }
-  m_core.ReInit();
 }
 
 CItemData *PasswordSafeFrame::GetSelectedEntry() const
@@ -1176,15 +1086,26 @@ CItemData *PasswordSafeFrame::GetSelectedEntry() const
   return NULL;
 }
 
+// Following is "generalized" GetSelectedEntry to support section via RUE
+CItemData *PasswordSafeFrame::GetSelectedEntry(const wxCommandEvent& evt, CItemData &rueItem) const
+{
+  if (!IsRUEEvent(evt))
+    return GetSelectedEntry();
+  else
+    return m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL;
+}
+
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN
  */
 
 void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
 {
-  DoOpen(_("Please Choose a Database to Open:"));
-}
+  int rc = DoOpen(_("Please Choose a Database to Open:"));
 
+  if (rc == PWScore::SUCCESS)
+    m_core.ResumeOnDBNotification();
+}
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_CLOSE
@@ -1200,12 +1121,20 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
     int rc = SaveIfChanged();
     if (rc != PWScore::SUCCESS)
       return;
+
     m_core.UnlockFile(m_core.GetCurFile().c_str());
-    m_core.SetCurFile(_T(""));
-    ClearData();
-    SetTitle(_T(""));
+    m_core.SetCurFile(wxEmptyString);
+
+    // Reset core and clear ALL associated data
+    m_core.ReInit();
+
+    // clear the application data before ending
+    ClearAppData();
+
+    SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
     m_core.SetReadOnly(false);
+    UpdateStatusBar();
   }
 }
 
@@ -1231,7 +1160,6 @@ int PasswordSafeFrame::DoOpen(const wxString& title)
 
 int PasswordSafeFrame::Open(const wxString &fname)
 {
-
   //Check that this file isn't already open
   if (wxFileName(fname).SameAs(towxstring(m_core.GetCurFile()))) {
     //It is the same damn file
@@ -1285,8 +1213,11 @@ int PasswordSafeFrame::Open(const wxString &fname)
       return PWScore::USER_CANCEL; // conservative behaviour for release version
   }
 
-  // clear the data before loading the new file
-  ClearData();
+  // Reset core and clear ALL associated data
+  m_core.ReInit();
+
+  // clear the application data before loading the new file
+  ClearAppData();
 
   cs_title.LoadString(IDS_FILEREADERROR);
   MFCAsker q;
@@ -1346,13 +1277,11 @@ int PasswordSafeFrame::Open(const wxString &fname)
 #endif
 }
 
-
 void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
 {
   CProperties props(this, m_core);
   props.ShowModal();
 }
-
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
@@ -1368,7 +1297,6 @@ void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& /* evt */ )
   window->Destroy();
 }
 
-
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVE
  */
@@ -1377,7 +1305,6 @@ void PasswordSafeFrame::OnSaveClick( wxCommandEvent& /* evt */ )
 {
   Save();
 }
-
 
 void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
 {
@@ -1388,7 +1315,7 @@ void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
 int PasswordSafeFrame::SaveAs()
 {
   const PWSfile::VERSION curver = m_core.GetReadFileVersion();
-  
+
   if (curver != PWSfile::V30 && curver != PWSfile::V40 &&
       curver != PWSfile::UNKNOWN_VERSION) {
     if (wxMessageBox( wxString::Format(_("The original database, '%ls', is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the 'File->Export To-> Old (1.x or 2) format' command."),
@@ -1439,8 +1366,6 @@ int PasswordSafeFrame::SaveAs()
   m_core.SetRUEList(RUElist);
 
   int rc = m_core.WriteFile(newfile, curver);
-  m_core.ResetStateAfterSave();
-  m_core.ClearChangedNodes();
 
   if (rc != PWScore::SUCCESS) {
     m_core.SetFileUUID(file_uuid);
@@ -1462,7 +1387,7 @@ int PasswordSafeFrame::SaveAs()
   app.SetTooltipText(m_core.GetCurFile().c_str());
 #endif
   SetTitle(towxstring(m_core.GetCurFile()));
-  SetChanged(Clear);
+  UpdateStatusBar();
 #if 0
   ChangeOkUpdate();
 
@@ -1484,6 +1409,9 @@ int PasswordSafeFrame::SaveAs()
     // and so cause toolbar to be the correct version
     m_core.SetReadOnly(false);
   }
+
+  // In case it was an unsaved restored DB
+  m_bRestoredDBUnsaved = false;
 
   return PWScore::SUCCESS;
 }
@@ -1512,7 +1440,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
     }
 
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnExit)) {
-      PWSclipboard::GetInstance()->ClearData();
+      PWSclipboard::GetInstance()->ClearCBData();
     }
 
     // Don't leave dangling locks!
@@ -1520,13 +1448,20 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
       m_core.UnlockFile(m_core.GetCurFile().c_str());
 
     SaveSettings();
+
+    // Reset core and clear ALL associated data
+    m_core.ReInit();
+
+    // clear the application data before ending
+    ClearAppData();
+
     Destroy();
   }
   else {
     const bool lockOnMinimize = PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear);
 
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnExit)) {
-      PWSclipboard::GetInstance()->ClearData();
+      PWSclipboard::GetInstance()->ClearCBData();
     }
 #if wxCHECK_VERSION(2,9,5)
     CallAfter(&PasswordSafeFrame::HideUI, lockOnMinimize);
@@ -1594,7 +1529,7 @@ void PasswordSafeFrame::OnAboutClick( wxCommandEvent& /* evt */ )
 void PasswordSafeFrame::OnBrowseURL(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item)
     DoBrowse(*item, false); //false => no autotype
 }
@@ -1606,7 +1541,7 @@ void PasswordSafeFrame::OnBrowseURL(wxCommandEvent& evt)
 void PasswordSafeFrame::OnBrowseUrlAndAutotype(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item) {
     DoBrowse(*item, true); //true => autotype
   }
@@ -1619,7 +1554,7 @@ void PasswordSafeFrame::OnBrowseUrlAndAutotype(wxCommandEvent& evt)
 void PasswordSafeFrame::OnSendEmail(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item)
     DoEmail(*item);
 }
@@ -1631,7 +1566,7 @@ void PasswordSafeFrame::OnSendEmail(wxCommandEvent& evt)
 void PasswordSafeFrame::OnRunCommand(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item)
     DoRun(*item);
 }
@@ -1643,7 +1578,7 @@ void PasswordSafeFrame::OnRunCommand(wxCommandEvent& evt)
 void PasswordSafeFrame::OnAutoType(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item) {
 #ifdef __WXMAC__
     Lower();
@@ -1690,39 +1625,6 @@ void PasswordSafeFrame::SaveSettings(void) const
   m_grid->SaveSettings();
 }
 
-void PasswordSafeFrame::SetChanged(ChangeType changed)
-{
-  if (m_core.IsReadOnly())
-    return;
-
-  switch (changed) {
-    case Data:
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
-        // Don't save if just adding group as it will just 'disappear'!
-        Save();
-      } else {
-        m_core.SetDBChanged(true);
-      }
-      break;
-    case Clear:
-      m_core.SetChanged(false, false);
-      m_bTSUpdated = false;
-      break;
-    case TimeStamp:
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps))
-        m_bTSUpdated = true;
-      break;
-    case DBPrefs:
-      m_core.SetDBPrefsChanged(true);
-      break;
-    case ClearDBPrefs:
-      m_core.SetDBPrefsChanged(false);
-      break;
-    default:
-      ASSERT(0);
-  }
-}
-
 bool PasswordSafeFrame::IsRUEEvent(const wxCommandEvent& evt) const
 {
   const int cmd = int(evt.GetExtraLong());
@@ -1734,7 +1636,6 @@ long PasswordSafeFrame::GetEventRUEIndex(const wxCommandEvent& evt) const
   return GetRUEIndex(int(evt.GetExtraLong()));
 }
 
-
 void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
 {
   // Mark access time if so configured
@@ -1745,19 +1646,7 @@ void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
 
   if (!m_core.IsReadOnly() && bMaintainDateTimeStamps) {
     ci.SetATime();
-    SetChanged(TimeStamp);
-#ifdef NOTYET
-    // Need to update view if there
-    if (m_nColumnIndexByType[CItemData::ATIME] != -1) {
-      // Get index of entry
-      DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
-      // Get value in correct format
-      CString cs_atime = ci.GetATimeL().c_str();
-      // Update it
-      m_ctlItemList.SetItemText(pdi->list_index,
-        m_nColumnIndexByType[CItemData::ATIME], cs_atime);
-    }
-#endif
+    UpdateStatusBar();
   }
 }
 
@@ -1773,11 +1662,11 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
   PWSprefs::IntPrefs pref = (isShift) ?
     PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction;
 
-  short DCA = short(PWSprefs::GetInstance()->GetPref(pref));
+  int16 DCA = int16(PWSprefs::GetInstance()->GetPref(pref));
 
   CItemData *pci = item.IsShortcut() ? m_core.GetBaseEntry(&item) : &item;
 
-  short itemDCA;
+  int16 itemDCA;
   pci->GetDCA(itemDCA, isShift);
 
   if (itemDCA >= PWSprefs::minDCA && itemDCA <= PWSprefs::maxDCA)
@@ -1879,6 +1768,10 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     itemEditMenu.Append(ID_CREATESHORTCUT, _("Create &Shortcut"));
     itemEditMenu.Append(ID_GOTOBASEENTRY,  _("&Go to Base entry"));
     itemEditMenu.Append(ID_EDITBASEENTRY,  _("&Edit Base entry"));
+    if (!item->IsShortcut()) {
+      itemEditMenu.AppendCheckItem(ID_PROTECT,  _("Protect Entry"));
+      itemEditMenu.Check(ID_PROTECT, item->IsProtected());
+    }
 
     switch (item->GetEntryType()) {
       case CItemData::ET_NORMAL:
@@ -1936,13 +1829,12 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
   }
 }
 
-CItemData* PasswordSafeFrame::GetBaseOfSelectedEntry()
+CItemData* PasswordSafeFrame::GetBaseEntry(const CItemData *item) const
 {
-  CItemData* item = GetSelectedEntry();
-  if (item && (item->IsShortcut() || item->IsAlias())) {
-    item = m_core.GetBaseEntry(item);
+  if (item && item->IsDependent()) {
+    return m_core.GetBaseEntry(item);
   }
-  return item;
+  return nullptr;
 }
 
 ////////////////////////////////////////////////////////
@@ -1954,79 +1846,84 @@ CItemData* PasswordSafeFrame::GetBaseOfSelectedEntry()
 //
 void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 {
+  bool bGroupSelected(false), bFileIsReadOnly(false), bTreeView(m_currentView == TREE);
+  const CItemData *pci(nullptr), *pbci(nullptr);
+
+  bFileIsReadOnly = m_core.IsReadOnly();
+  bGroupSelected = (bTreeView &&
+      m_tree->GetSelection().IsOk() &&
+      m_tree->GetSelection() != m_tree->GetRootItem() &&
+      m_tree->ItemIsGroup(m_tree->GetSelection()));
+
+  pci = GetSelectedEntry();
+
+  if (pci) {
+    if (pci->IsDependent()) {
+      pbci = m_core.GetBaseEntry(pci);
+    }
+  }
+
   switch (evt.GetId()) {
     case wxID_SAVE:
-      evt.Enable(m_core.IsChanged() || m_core.HaveDBPrefsChanged());
+      evt.Enable(m_core.HasDBChanged() || m_core.HaveDBPrefsChanged());
       break;
 
     case ID_ADDGROUP:
+      evt.Enable(bTreeView && !bFileIsReadOnly);
+      break;
+
     case ID_EXPANDALL:
     case ID_COLLAPSEALL:
-      evt.Enable(m_currentView == TREE);
+      evt.Enable(bTreeView);
       break;
 
     case ID_RENAME:
       // only allowed if a GROUP item is selected in tree view
-      evt.Enable(m_currentView == TREE && m_tree->GetSelection() != m_tree->GetRootItem() &&
-                 m_tree->ItemIsGroup(m_tree->GetSelection()));
+      evt.Enable(bGroupSelected && !bFileIsReadOnly);
       break;
 
     case ID_BROWSEURL:
     case ID_BROWSEURLPLUS:
     case ID_COPYURL:
-    {
-      CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable( item && !item->IsURLEmpty() && !item->IsURLEmail() );
+      evt.Enable(!bGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::URL, pbci));
       break;
-    }
+
     case ID_SENDEMAIL:
     case ID_COPYEMAIL:
-    {
-      CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable( item && !item->IsEmailEmpty() );
+      evt.Enable(!bGroupSelected && pci &&
+          (!pci->IsFieldValueEmpty(CItemData::EMAIL, pbci) ||
+          (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && pci->IsURLEmail(pbci))));
       break;
-    }
+
     case ID_COPYUSERNAME:
-    {
-      CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable(item && !item->IsUserEmpty());
+      evt.Enable(!bGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::USER, pbci));
       break;
-    }
+
     case ID_COPYNOTESFLD:
-    {
-      CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable(item && !item->IsNotesEmpty());
+      evt.Enable(!bGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::NOTES, pbci));
       break;
-    }
+
     case ID_RUNCOMMAND:
     case ID_COPYRUNCOMMAND:
-    {
-      CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable(item && !item->IsRunCommandEmpty());
+      evt.Enable(!bGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci));
       break;
-    }
+
     case ID_CREATESHORTCUT:
-    {
-      CItemData* item = GetSelectedEntry();
-      evt.Enable(item && (item->IsNormal() || item->IsShortcutBase()));
+      evt.Enable(!bGroupSelected && !bFileIsReadOnly && pci &&
+          (pci->IsNormal() || pci->IsShortcutBase()));
       break;
-    }
-    case ID_DUPLICATEENTRY:
+
+    case ID_EDIT:
     case ID_COPYPASSWORD:
     case ID_AUTOTYPE:
-    case ID_EDIT:
     case ID_PASSWORDSUBSET:
-      // not allowed if a group is selected in tree view
-      evt.Enable(m_currentView == GRID || GetSelectedEntry() != NULL );
+      evt.Enable(!bGroupSelected && pci);
       break;
 
     case ID_GOTOBASEENTRY:
     case ID_EDITBASEENTRY:
-    {
-      const CItemData* item = GetSelectedEntry();
-      evt.Enable(item != NULL && (item->IsShortcut() || item->IsAlias()));
+      evt.Enable(!bGroupSelected && pci && (pci->IsShortcut() || pci->IsAlias()));
       break;
-    }
 
     case wxID_UNDO:
       evt.Enable(m_core.AnyToUndo());
@@ -2037,22 +1934,48 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SYNCHRONIZE:
-      evt.Enable(!m_core.IsReadOnly() && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
+    case ID_CHANGECOMBO:
+      evt.Enable(!bFileIsReadOnly && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
+      break;
+
+    case wxID_ADD:
+      evt.Enable(!bFileIsReadOnly);
       break;
 
     case wxID_DELETE:
-      evt.Enable(GetSelectedEntry() != NULL);
+      evt.Enable(!bFileIsReadOnly && pci && !pci->IsProtected());
       break;
 
-    default:
+    case ID_DUPLICATEENTRY:
+      evt.Enable(!bFileIsReadOnly && pci);
+      break;
+
+    case ID_SHOWHIDE_UNSAVED:
+      evt.Enable(!m_bShowExpiry);
+      break;
+
+    case ID_SHOW_ALL_EXPIRY:
+      evt.Enable(!m_bShowUnsaved);
+      break;
+
+    case ID_MERGE:
+    case ID_IMPORTMENU:
+      evt.Enable(!bFileIsReadOnly);
+      break;
+
+    case ID_PROTECT:
+      evt.Enable(!bFileIsReadOnly && pci && !pci->IsShortcut());
+      evt.Check(pci && pci->IsProtected());
+      break;
+  default:
       break;
   }
 }
 
 bool PasswordSafeFrame::IsClosed() const
 {
-  return m_core.GetCurFile().empty() && m_core.GetNumEntries() == 0 && !m_core.IsChanged()
-                    && !m_core.AnyToUndo() && !m_core.AnyToRedo();
+  return (m_core.GetCurFile().empty() && m_core.GetNumEntries() == 0 &&
+          !m_core.HasDBChanged() && !m_core.AnyToUndo() && !m_core.AnyToRedo());
 }
 
 // Implementation of UIinterface methods
@@ -2071,7 +1994,7 @@ void PasswordSafeFrame::DatabaseModified(bool modified)
     }
     if (m_grid) m_grid->GetEventHandler()->AddPendingEvent(evt);
   }
-  else if (m_core.IsChanged()) {  //"else if" => both DB and it's prefs can't change at the same time
+  else if (m_core.HasDBChanged()) {  //"else if" => both DB and it's prefs can't change at the same time
     if (m_search) m_search->Invalidate();
     if (m_currentView == TREE) {
       if (m_grid != NULL)
@@ -2086,12 +2009,13 @@ void PasswordSafeFrame::DatabaseModified(bool modified)
   } else {
     wxFAIL_MSG(wxT("What changed in the DB if not entries or preferences?"));
   }
-}
 
-void PasswordSafeFrame::GUISetupDisplayInfo(CItemData &ci)
-{
-  UNREFERENCED_PARAMETER(ci);
-  // XXX TBD
+  // Save Immediately if user requested it
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+    int rc = SaveImmediately();
+    if (rc == PWScore::SUCCESS)
+      modified = false;
+  }
 }
 
 void PasswordSafeFrame::RebuildGUI(const int iView /*= iBothViews*/)
@@ -2120,12 +2044,12 @@ void PasswordSafeFrame::RefreshViews()
     ShowGrid();
 
   m_guiInfo->Restore(this);
+  UpdateStatusBar();
 }
 
 void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
                                   const CUUID &entry_uuid,
-                                  CItemData::FieldType ft,
-                                  bool bUpdateGUI)
+                                  CItemData::FieldType ft)
 {
   // Callback from PWScore if GUI needs updating
   // Note: For some values of 'ga', 'ci' & ft are invalid and not used.
@@ -2136,7 +2060,6 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
 
   // TODO: bUpdateGUI processing in PasswordSafeFrame::UpdateGUI
   UNREFERENCED_PARAMETER(ft);
-  UNREFERENCED_PARAMETER(bUpdateGUI);
 
   CItemData *pci(NULL);
 
@@ -2208,6 +2131,12 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   }
 }
 
+void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action /*ga*/,
+                                  const std::vector<StringX> &/*vGroups*/)
+{
+  // TODO
+  return;
+}
 void PasswordSafeFrame::RefreshEntryFieldInGUI(const CItemData& item, CItemData::FieldType ft)
 {
   if (m_currentView == GRID) {
@@ -2231,8 +2160,10 @@ void PasswordSafeFrame::RefreshEntryPasswordInGUI(const CItemData& item)
   }
 }
 
-void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item)
+void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item, bool bAllowFail)
 {
+  UNREFERENCED_PARAMETER(bAllowFail);
+
   if (item.GetStatus() ==CItemData::ES_DELETED) {
     uuid_array_t uuid;
     item.GetUUID(uuid);
@@ -2307,7 +2238,7 @@ int PasswordSafeFrame::New()
 {
   int rc, rc2;
 
-  if (!m_core.IsReadOnly() && m_core.IsChanged()) {
+  if (!m_core.IsReadOnly() && m_core.HasDBChanged()) {
     wxString msg(_("Do you want to save changes to the password database: "));
     msg += m_core.GetCurFile().c_str();
     wxMessageDialog mbox(this, msg, GetTitle(), wxCANCEL | wxYES_NO | wxICON_QUESTION);
@@ -2325,8 +2256,7 @@ int PasswordSafeFrame::New()
         else
           return PWScore::CANT_OPEN_FILE;
     case wxID_NO:
-      // Reset changed flag
-      SetChanged(Clear);
+      UpdateStatusBar();
       break;
     default:
       ASSERT(0);
@@ -2351,8 +2281,6 @@ int PasswordSafeFrame::New()
     DisplayFileWriteError(rc, cs_newfile);
     return PWScore::USER_CANCEL;
   }
-  m_core.ClearChangedNodes();
-
   SetLabel(PWSUtil::NormalizeTTT(wxT("Password Safe - ") + cs_newfile).c_str());
 
   m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
@@ -2362,10 +2290,8 @@ int PasswordSafeFrame::New()
   return PWScore::SUCCESS;
 }
 
-
 int PasswordSafeFrame::NewFile(StringX &fname)
 {
-  wxString cs_msg, cs_title, cs_temp;
   wxString cs_text(_("Please choose a name for the new database"));
 
   wxString cf(wxT("pwsafe")); // reasonable default for first time user
@@ -2397,10 +2323,12 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   if (rc == wxID_CANCEL)
     return PWScore::USER_CANCEL;  //User cancelled password entry
 
-  // Reset core
+  // Reset core and clear ALL associated data
   m_core.ReInit(true);
 
-  ClearData();
+  // clear the application data before creating new file
+  ClearAppData();
+
   PWSprefs::GetInstance()->SetDatabasePrefsToDefaults();
   const StringX &oldfilename = m_core.GetCurFile();
   // The only way we're the locker is if it's locked & we're !readonly
@@ -2423,7 +2351,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   return PWScore::SUCCESS;
 }
 
-bool PasswordSafeFrame::SaveAndClearDatabase()
+bool PasswordSafeFrame::SaveAndClearDatabaseOnLock()
 {
   //Save UI elements first
   PWSprefs::GetInstance()->SaveApplicationPreferences();
@@ -2431,8 +2359,15 @@ bool PasswordSafeFrame::SaveAndClearDatabase()
   m_savedDBPrefs = towxstring(PWSprefs::GetInstance()->Store());
 
   //Save alerts the user
-  if (!m_core.IsChanged() || Save() == PWScore::SUCCESS) {
-    ClearData();
+  if (!m_core.HasDBChanged() || Save() == PWScore::SUCCESS) {
+    // Do NOT call PWScore::ReInit as it will clear commands preventing the
+    // user from undoing commands after unlocking DB
+
+    // Clear all internal variables EXCEPT command and DB state vectors
+    m_core.ClearDBData();
+
+    // clear the application data before locking
+    ClearAppData();
     return true;
   }
   return false;
@@ -2486,8 +2421,6 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
     if (m_savedDBPrefs != wxEmptyString) {
       const StringX savedPrefs = tostringx(m_savedDBPrefs);
       PWSprefs::GetInstance()->Load(savedPrefs);
-      if (m_core.HaveHeaderPreferencesChanged(savedPrefs))
-        m_core.SetDBPrefsChanged(true);
       m_savedDBPrefs = wxEmptyString;
     }
   }
@@ -2552,7 +2485,7 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
       LockDb();
 #endif
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
-        PWSclipboard::GetInstance()->ClearData();
+        PWSclipboard::GetInstance()->ClearCBData();
       }
     }
   }
@@ -2564,7 +2497,6 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
 #endif
   }
 }
-
 
 void PasswordSafeFrame::TryIconize(int attempts)
 {
@@ -2588,7 +2520,7 @@ void PasswordSafeFrame::HideUI(bool lock)
 
   // As HideUI doesn't produce iconize event we need to process clear clipboard options
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
-    PWSclipboard::GetInstance()->ClearData();
+    PWSclipboard::GetInstance()->ClearCBData();
   }
 
   m_guiInfo->Save(this);
@@ -2622,7 +2554,7 @@ void PasswordSafeFrame::LockDb()
   }
 
   m_guiInfo->Save(this);
-  if (SaveAndClearDatabase())
+  if (SaveAndClearDatabaseOnLock())
     m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
 }
 
@@ -2650,6 +2582,7 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
   switch(Open(dbfile))
   {
     case PWScore::SUCCESS:
+      m_core.ResumeOnDBNotification();
       break;
 
     case PWScore::USER_CANCEL:
@@ -2739,7 +2672,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
       break;
     case PWScore::SUCCESS:
     case PWScore::OK_WITH_ERRORS:
-      // deliberate fallthru
+      // deliberate fallthrough
     default:
     {
       if (pcmd != NULL)
@@ -2851,7 +2784,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
       break;
     }
     case PWScore::SUCCESS:
-    default: // deliberate fallthru
+    default: // deliberate fallthrough
       if (pcmd != NULL)
         Execute(pcmd);
       RefreshViews();
@@ -2908,7 +2841,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   wxString XMLFilename = dlg.filepath;
   int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
   int numRenamedPolicies, numNoPolicy;
-  int numShortcutsRemoved;
+  int numShortcutsRemoved, numEmptyGroupsImported;
   bool bImportPSWDsOnly = dlg.importPasswordsOnly;
 
   wxBeginBusyCursor();  // This may take a while!
@@ -2926,24 +2859,25 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
                             strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
                             numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
                             numNoPolicy, numRenamedPolicies, numShortcutsRemoved,
+                            numEmptyGroupsImported,
                             rpt, pcmd);
   wxEndBusyCursor();  // Restore normal cursor
 
   wxString cs_temp;
   wxString cs_title(_("Import XML failed"));
 
-  std::wstring csErrors(wxT(""));
+  std::wstring csErrors(wxEmptyString);
   switch (rc) {
     case PWScore::XML_FAILED_VALIDATION:
       rpt.WriteLine(strXMLErrors.c_str());
       cs_temp = wxString::Format(_("File: %ls failed validation against XML Schema:\n\n%ls"),
-                                        dlg.filepath.c_str(), wxT(""));
+                                        dlg.filepath.c_str(), wxEmptyString);
       delete pcmd;
       break;
     case PWScore::XML_FAILED_IMPORT:
       rpt.WriteLine(strXMLErrors.c_str());
       cs_temp = wxString::Format(_("File: %ls passed Validation but had the following errors during import:\n\n%ls"),
-                              dlg.filepath.c_str(), wxT(""));
+                              dlg.filepath.c_str(), wxEmptyString);
       delete pcmd;
       break;
     case PWScore::SUCCESS:
@@ -2987,11 +2921,13 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
         cs_temp.Printf(_("File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See report for details."),
                        dlg.filepath.c_str(), numValidated, numImported,
                        cs_skipped.c_str(), cs_renamed.c_str(), cs_PWHErrors.c_str());
-
+        // TODO -Tell user if any empty groups imported
       } else {
         const TCHAR* cs_validate = numValidated == 1 ? _("entry").c_str() : _("entries").c_str();
         const TCHAR* cs_imported = numImported == 1 ? _("entry").c_str() : _("entries").c_str();
         cs_temp.Printf(_("Validated %d %ls\n\nImported %d %ls"), numValidated, cs_validate, numImported, cs_imported);
+
+        // TODO -Tell user if any empty groups imported
       }
 
       RefreshViews();
@@ -3059,7 +2995,6 @@ void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
     wxString dir = filename.GetPath();
     if (dir.empty())
       dir = towxstring(PWSdirs::GetSafeDir());
-
 
     wxFileDialog fd(this, cs_text, dir, filename.GetFullName(), cs_fmt,
                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -3143,7 +3078,7 @@ struct ExportFullXml {
   {
     bool bFilterActive = false;
     return core.WriteXMLFile(filename, bsFields, subgroup_name, subgroup_object, subgroup_function,
-                          delimiter, numExported, il, bFilterActive, rpt);
+                          delimiter, wxT(""), numExported, il, bFilterActive, rpt);
   }
   static wxString GetAdvancedSelectionTitle() {
     return _("Advanced XML Export Options");
@@ -3291,7 +3226,6 @@ void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
     PWSprefs *prefs =  PWSprefs::GetInstance();
 
     const StringX sxSavePrefString(prefs->Store());
-    const bool bSaveIfDBPrefsChanged = prefs->IsDBprefsChanged();
 
     // Save all the 'other core' preferences in the copy - to use for
     // 'other' default Password Policy when needed in Compare, Merge & Sync
@@ -3302,7 +3236,6 @@ void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
 
     // Reset database preferences - first to defaults then add saved changes!
     prefs->Load(sxSavePrefString);
-    prefs->SetDBprefsChanged(bSaveIfDBPrefsChanged);
 
     if (rc == PWScore::SUCCESS) {
         Merge(tostringx(dlg.GetOtherSafePath()), &othercore, dlg.GetSelectionCriteria());
@@ -3339,7 +3272,6 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
   }
 }
 
-
 void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
 {
   // disable in read-only mode or empty
@@ -3350,7 +3282,7 @@ void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
   wiz.RunWizard(wiz.GetFirstPage());
 
   if (wiz.GetNumUpdated() > 0)
-    SetChanged(Data);
+    UpdateStatusBar();
 
 #ifdef NOT_YET
   ChangeOkUpdate();
@@ -3371,6 +3303,48 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
 void PasswordSafeFrame::OnVisitWebsite(wxCommandEvent&)
 {
   wxLaunchDefaultBrowser("https://pwsafe.org");
+}
+
+void PasswordSafeFrame::UpdateStatusBar()
+{
+
+  if (!m_core.GetCurFile().empty()) {
+    wxString text;
+    // SB_DBLCLICK pane is set per selected entry, not here
+
+    //    m_statusBar->SetStatusText(m_lastclipboardaction, CPWStatusBar::SB_CLIPBOARDACTION);
+
+    text = m_core.HasDBChanged() ? wxT("*") : wxT(" ");
+    m_statusBar->SetStatusText(text, CPWStatusBar::SB_MODIFIED);
+
+    text = m_core.IsReadOnly() ? wxT("R-O") : wxT("R/W");
+    m_statusBar->SetStatusText(text, CPWStatusBar::SB_READONLY);
+
+    text.Clear(); text <<  m_core.GetNumEntries();
+    m_statusBar->SetStatusText(text, CPWStatusBar::SB_NUM_ENT);
+
+    text = m_bFilterActive ? wxT("[F]") : wxT("   ");
+    m_statusBar->SetStatusText(text, CPWStatusBar::SB_FILTER);
+  } else { // no open file
+    m_statusBar->SetStatusText(PWSprefs::GetDCAdescription(-1), CPWStatusBar::SB_DBLCLICK);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_CLIPBOARDACTION);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_MODIFIED);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_READONLY);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_NUM_ENT);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_FILTER);
+  }
+}
+
+void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
+{
+  int16 dca = -1;
+
+  if (pci != NULL) {
+    pci->GetDCA(dca);
+    if (dca == -1)
+      dca = PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
+  }
+  m_statusBar->SetStatusText(PWSprefs::GetDCAdescription(dca), CPWStatusBar::SB_DBLCLICK);
 }
 
 //-----------------------------------------------------------------

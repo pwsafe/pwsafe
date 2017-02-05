@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -16,6 +16,7 @@
 #include "AddEdit_PasswordPolicy.h"
 #include "AddEdit_PropertySheet.h"
 #include "GeneralMsgBox.h"
+#include "Fonts.h"
 
 #include "core/core.h"
 #include "core/PwsPlatform.h"
@@ -179,6 +180,13 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 {
   CAddEdit_PropertyPage::OnInitDialog();
 
+  // Get Add/Edit font
+  Fonts *pFonts = Fonts::GetInstance();
+  CFont *pFont = pFonts->GetAddEditFont();
+
+  // Change font size of the user supplied symbol fields
+  m_symbols.SetFont(pFont);
+
   // Populate the combo box
   m_cbxPolicyNames.ResetContent();
   m_cbxPolicyNames.ChangeColour();
@@ -210,16 +218,14 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   m_cbxPolicyNames.GetComboBoxInfo(&info);
   ::SendMessage(info.hwndItem ,EM_SETREADONLY, TRUE, 0);
 
-  if (!vNames.empty()) {
-    if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
-      // Read-only
-      m_cbxPolicyNames.EnableWindow(FALSE);
-      m_cbxPolicyNames.ShowWindow(M_ipolicy() == SPECIFIC_POLICY ? SW_HIDE : SW_SHOW);
-    }
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
+    // Read-only
+    m_cbxPolicyNames.EnableWindow(FALSE);
+    m_cbxPolicyNames.ShowWindow(M_ipolicy() == SPECIFIC_POLICY ? SW_HIDE : SW_SHOW);
+  } else {
+    // If specific policy - disable named policy combobox
+    m_cbxPolicyNames.EnableWindow(M_ipolicy() == SPECIFIC_POLICY ? FALSE : TRUE);
   }
-
-  // If specific policy - disable named policy combobox
-  m_cbxPolicyNames.EnableWindow(M_ipolicy() == SPECIFIC_POLICY ? FALSE : TRUE);
 
   if (M_ipolicy() == NAMED_POLICY) {
     if (index != 0) {
@@ -270,7 +276,7 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 
 void CAddEdit_PasswordPolicy::OnChanged()
 {
-  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
+  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return;
 
   UpdateData(TRUE);
@@ -579,7 +585,7 @@ void CAddEdit_PasswordPolicy::OnMakePronounceable()
 
 void CAddEdit_PasswordPolicy::OnOwnSymbolsChanged()
 {
-  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
+  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return;
 
   UpdateData(TRUE);
@@ -767,10 +773,10 @@ void CAddEdit_PasswordPolicy::SetPolicyFromVariables()
       M_pwp().symbolminlength = (int)m_pwsymbolminlength;
       M_pwp().upperminlength = (int)m_pwupperminlength;
 
-      if (m_pwusesymbols == TRUE) {
+      CString cs_symbols;
+      m_symbols.GetWindowText(cs_symbols);
+      if (m_pwusesymbols == TRUE && !cs_symbols.IsEmpty()) {
         M_iownsymbols() = OWN_SYMBOLS;
-        CString cs_symbols;
-        m_symbols.GetWindowText(cs_symbols);
         M_symbols() = CSecString(cs_symbols);
       } else {
         M_iownsymbols() = DEFAULT_SYMBOLS;
@@ -861,10 +867,9 @@ void CAddEdit_PasswordPolicy::OnNamesComboChanged()
   SetPolicyControls();
 }
 
-
 void CAddEdit_PasswordPolicy::OnSymbolReset()
 {
-  stringT symbols;
+  std::wstring symbols;
   if (m_pweasyvision)
     symbols = CPasswordCharPool::GetEasyVisionSymbols();
   else if (m_pwmakepronounceable)

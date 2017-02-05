@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -11,11 +11,13 @@
 
 #include "stdafx.h"
 
+#include "Windowsdefs.h"
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "CompareResultsDlg.h"
 #include "ShowCompareDlg.h"
 
+#include "core/core.h"
 #include "core/PWScore.h"
 #include "core/Report.h"
 
@@ -35,7 +37,7 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(CCompareResultsDlg, CPWResizeDialog)
 
-// These columns always shown and in this order (do not chnage)
+// These columns always shown and in this order (do not change)
 const UINT CCompareResultsDlg::FixedCols[CCompareResultsDlg::USER + 1] = {
     IDS_ORIGINALDB, IDS_COMPARISONDB, IDS_GROUP, IDS_TITLE, IDS_USERNAME
 };
@@ -77,7 +79,7 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
   m_Conflicts(Conflicts), m_Identical(Identical),
   m_bsFields(bsFields), m_pcore0(pcore0), m_pcore1(pcore1),
   m_pRpt(pRpt), m_bSortAscending(true), m_iSortedColumn(0),
-  m_OriginalDBChanged(false), m_ComparisonDBChanged(false),
+  m_OriginalDBChanged(false),
   m_bTreatWhiteSpaceasEmpty(false),
   m_ShowIdenticalEntries(BST_UNCHECKED)
 {
@@ -126,13 +128,18 @@ END_MESSAGE_MAP()
 
 BOOL CCompareResultsDlg::OnInitDialog()
 {
+  // We do not allow Save Immediately for actions performed via the
+  // CompareResults dialog - these include copy, edit, synchronise
+  m_bDBNotificationState = GetMainDlg()->GetDBNotificationState();
+  GetMainDlg()->SuspendOnDBNotification();
+
   std::vector<UINT> vibottombtns;
   vibottombtns.push_back(IDOK);
 
   AddMainCtrlID(IDC_RESULTLIST);
   AddBtnsCtrlIDs(vibottombtns);
 
-  UINT statustext[1] = {IDS_STATCOMPANY};
+  UINT statustext[1] = {IDSC_STATCOMPANY};
   SetStatusBar(&statustext[0], 1);
 
   CPWResizeDialog::OnInitDialog();
@@ -388,6 +395,10 @@ void CCompareResultsDlg::OnShowIdenticalEntries()
 
 void CCompareResultsDlg::OnCancel()
 {
+  // Reset Save Immediately if set originally
+  if (m_bDBNotificationState)
+    GetMainDlg()->ResumeOnDBNotification();
+
   m_menuManager.Cleanup();
 
   CPWResizeDialog::OnCancel();
@@ -395,6 +406,10 @@ void CCompareResultsDlg::OnCancel()
 
 void CCompareResultsDlg::OnOK()
 {
+  // Reset Save Immediately if set originally
+  if (m_bDBNotificationState)
+    GetMainDlg()->ResumeOnDBNotification();
+
   m_menuManager.Cleanup();
 
   CPWResizeDialog::OnOK();
@@ -409,9 +424,9 @@ void CCompareResultsDlg::UpdateStatusBar()
 {
   m_results.Format(IDS_COMPARERESULTS, m_numOnlyInCurrent, m_numOnlyInComp,
                                        m_numConflicts, m_numIdentical);
-  m_statusBar.SetPaneText(0, m_results, TRUE);
-  m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
-  m_statusBar.UpdateWindow();
+  m_RSDStatusBar.SetPaneText(0, m_results, TRUE);
+  m_RSDStatusBar.SetPaneInfo(0, m_RSDStatusBar.GetItemID(0), SBPS_STRETCH, NULL);
+  m_RSDStatusBar.UpdateWindow();
 }
 
 LRESULT CCompareResultsDlg::ProcessAllFunction(const int ifunction,
@@ -455,7 +470,10 @@ LRESULT CCompareResultsDlg::ProcessAllFunction(const int ifunction,
           user = pos->second.GetUser();
           cs_tmp.LoadString(IDS_ORIGINALDB);
           buffer.Format(ifunction == SYNCHALL ? IDS_SYNCENTRY : IDS_COPYENTRY,
-                        cs_tmp, group, title, user);
+                        static_cast<LPCWSTR>(cs_tmp),
+                        static_cast<LPCWSTR>(group),
+                        static_cast<LPCWSTR>(title),
+                        static_cast<LPCWSTR>(user));
           m_pRpt->WriteLine((LPCWSTR)buffer);
           break;
         case EDIT:
@@ -514,7 +532,10 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction,
           user = pos->second.GetUser();
           cs_tmp.LoadString(IDS_ORIGINALDB);
           buffer.Format(ifunction == SYNCH ? IDS_SYNCENTRY : IDS_COPYENTRY,
-                        cs_tmp, group, title, user);
+                        static_cast<LPCWSTR>(cs_tmp),
+                        static_cast<LPCWSTR>(group),
+                        static_cast<LPCWSTR>(title),
+                        static_cast<LPCWSTR>(user));
           m_pRpt->WriteLine((LPCWSTR)buffer);
           break;
         case EDIT:
@@ -633,7 +654,8 @@ void CCompareResultsDlg::OnCompareCopyToOriginalDB()
   const CString cs_originaldb(MAKEINTRESOURCE(IDS_ORIGINALDB));
   const CString cs_comparisondb(MAKEINTRESOURCE(IDS_COMPARISONDB));
 
-  cs_msg.Format(IDS_COPYLEFTRIGHT, cs_comparisondb, cs_originaldb);
+  cs_msg.Format(IDS_COPYLEFTRIGHT, static_cast<LPCWSTR>(cs_comparisondb),
+                static_cast<LPCWSTR>(cs_originaldb));
   ifunction = COPY_TO_ORIGINALDB;
 
   if (cs_text.Right(1) == L"*")
@@ -758,7 +780,8 @@ void CCompareResultsDlg::DoAllFunctions(const int ifunction)
   const CString cs_comparisondb(MAKEINTRESOURCE(IDS_COMPARISONDB));
 
   cs_msg.Format(ifunction == COPYALL_TO_ORIGINALDB ? IDS_COPYALL : IDS_SYNCHRONIZEALL,
-                cs_comparisondb, cs_originaldb);
+                static_cast<LPCWSTR>(cs_comparisondb),
+                static_cast<LPCWSTR>(cs_originaldb));
 
   // Check if any records have unknown fields
   POSITION pos = m_LCResults.GetFirstSelectedItemPosition();
@@ -991,7 +1014,7 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *pNMHDR, LRESULT *pLResult)
     CMenu *pPopup = menu.GetSubMenu(0);
     ASSERT(pPopup != NULL);
 
-    // Disable copy/sychnronize if target is read-only or entry is protected
+    // Disable copy/synchronize if target is read-only or entry is protected
     // Delete synchronize if not in both databases (and not already identical)
     if (m_LCResults.GetColumn() == COMPARE) {
       // User clicked on Comparison DB
@@ -1007,7 +1030,7 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *pNMHDR, LRESULT *pLResult)
       }
     }
 
-    // Can't synchonize pr compare if not in both databases!
+    // Can't synchronize pr compare if not in both databases!
     if (indatabase != BOTH) {
       pPopup->RemoveMenu(ID_MENUITEM_SYNCHRONIZE, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_COMPARE_ENTRIES, MF_BYCOMMAND);
@@ -1175,7 +1198,7 @@ void CCompareResultsDlg::WriteReportData()
   CString buffer;
 
   if (!m_OnlyInCurrent.empty()) {
-    buffer.Format(IDS_COMPAREENTRIES1, m_scFilename1);
+    buffer.Format(IDS_COMPAREENTRIES1, static_cast<LPCWSTR>(m_scFilename1));
     m_pRpt->WriteLine((LPCWSTR)buffer);
     for (cd_iter = m_OnlyInCurrent.begin(); cd_iter != m_OnlyInCurrent.end();
          cd_iter++) {
@@ -1188,7 +1211,7 @@ void CCompareResultsDlg::WriteReportData()
   }
 
   if (!m_OnlyInComp.empty()) {
-    buffer.Format(IDS_COMPAREENTRIES2, m_scFilename2);
+    buffer.Format(IDS_COMPAREENTRIES2, static_cast<LPCWSTR>(m_scFilename2));
     m_pRpt->WriteLine((LPCWSTR)buffer);
     for (cd_iter = m_OnlyInComp.begin(); cd_iter != m_OnlyInComp.end();
          cd_iter++) {
@@ -1475,7 +1498,7 @@ bool CCPListCtrl::IsSelected(DWORD_PTR iRow)
 
 void CCPListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMLVCUSTOMDRAW *pLVCD = (NMLVCUSTOMDRAW *)pNotifyStruct;
+  NMLVCUSTOMDRAW *pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
   *pLResult = CDRF_DODEFAULT;
 

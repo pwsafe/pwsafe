@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -91,6 +91,10 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_MAINTAINDATETIMESTAMPS, m_chkbox[0]);
   DDX_Control(pDX, IDC_USEDEFUSER, m_chkbox[1]);
+
+  DDX_Control(pDX, IDC_MAINTAINDATETIMESTAMPSHELP, m_Help1);
+  DDX_Control(pDX, IDC_OTHERBROWSERLOCATIONHELP, m_Help2);
+  DDX_Control(pDX, IDC_OTHEREDITORLOCATIONHELP, m_Help3);
   //}}AFX_DATA_MAP
 }
 
@@ -114,7 +118,17 @@ BOOL COptionsMisc::OnInitDialog()
 
   for (int i = 0; i < 2; i++) {
     m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
-    m_chkbox[i].ResetBkgColour();//Use current window's background
+    m_chkbox[i].ResetBkgColour(); // Use current window's background
+  }
+
+  // Database preferences - can't change in R/O mode of if no DB is open
+  if (!GetMainDlg()->IsDBOpen() || GetMainDlg()->IsDBReadOnly()) {
+    GetDlgItem(IDC_DEFUSERNAME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_USERNAME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_DEFAUTOTYPE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_DB_DEF_AUTOTYPE_TEXT)->EnableWindow(FALSE);
+    GetDlgItem(IDC_MAINTAINDATETIMESTAMPS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_USEDEFUSER)->EnableWindow(FALSE);
   }
 
   OnUseDefUser();
@@ -142,12 +156,24 @@ BOOL COptionsMisc::OnInitDialog()
   pspin->SetBase(10);
   pspin->SetPos(m_AutotypeDelay);
 
-  InitToolTip();
-  // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
-  AddTool(IDC_MAINTAINDATETIMESTAMPS, IDS_MAINTAINDATETIMESTAMPS);
-  AddTool(IDC_OTHERBROWSERLOCATION,   IDS_OTHERBROWSERLOCATION);
-  AddTool(IDC_OTHEREDITORLOCATION,    IDS_OTHEREDITORLOCATION);
-  ActivateToolTip();
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+    m_Help2.Init(IDB_QUESTIONMARK);
+    m_Help3.Init(IDB_QUESTIONMARK);
+
+    // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+    AddTool(IDC_MAINTAINDATETIMESTAMPSHELP, IDS_MAINTAINDATETIMESTAMPS);
+    AddTool(IDC_OTHERBROWSERLOCATIONHELP, IDS_OTHERBROWSERLOCATION);
+    AddTool(IDC_OTHEREDITORLOCATIONHELP, IDS_OTHEREDITORLOCATION);
+    ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+    m_Help2.EnableWindow(FALSE);
+    m_Help2.ShowWindow(SW_HIDE);
+    m_Help3.EnableWindow(FALSE);
+    m_Help3.ShowWindow(SW_HIDE);
+  }
 
   return TRUE;
 }
@@ -185,7 +211,7 @@ LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
       break;
     case PP_UPDATE_VARIABLES:
       // Since OnOK calls OnApply after we need to verify and/or
-      // copy data into the entry - we do it ourselfs here first
+      // copy data into the entry - we do it ourselves here first
       if (OnApply() == FALSE)
         return 1L;
     default:
@@ -387,7 +413,7 @@ HBRUSH COptionsMisc::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 
   // Database preferences - associated static text
   switch (pWnd->GetDlgCtrlID()) {
-    case IDC_USERNAME:
+    case IDC_DEFUSERNAME:
     case IDC_STATIC_USERNAME:
     case IDC_STATIC_DEFAUTOTYPE:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -42,7 +42,7 @@ void SendString(CFStringRef str, unsigned delayMS)
     if (verticalTab == c)
       continue;
     
-    //see if we need to specify the virtual ekycode for this char
+    //see if we need to specify the virtual keycode for this char
     CGKeyCode vKey = 0; //0 = kVK_ANSI_A, but I don't know of a more appropriate default value
     for (size_t j = 0; j < NumberOf(specialKeyCodes); ++j) {
       if ( CFStringGetCharacterAtIndex(specialChars, j) == c) {
@@ -120,7 +120,6 @@ bool pws_os::MacSimulateApplicationSwitch(unsigned delayMS)
                               {VK_TAB, false, true},
                               {VK_CMD, false, false}
                             };
-
 
   return EmulateKeyStrokes(KeySequence, NumberOf(KeySequence), delayMS);
 }

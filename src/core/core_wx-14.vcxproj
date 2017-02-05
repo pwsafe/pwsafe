@@ -155,12 +155,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -188,12 +188,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debugwx|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -220,12 +220,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..;$(XercesDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -253,12 +253,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugwxX|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..;$(Xerces64Dir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -285,13 +285,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__WX__;__WXMSW__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__WX__;__WXMSW__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -318,13 +318,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Releasewx|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;__WX__;__WXMSW__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;__WX__;__WXMSW__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -350,13 +350,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..;$(XercesDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__WX__;__WXMSW__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__WX__;__WXMSW__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -383,13 +383,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..;$(Xerces64Dir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;__WX__;__WXMSW__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;__WX__;__WXMSW__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -446,6 +446,7 @@
     <ClCompile Include="PWSrand.cpp" />
     <ClCompile Include="PWStime.cpp" />
     <ClCompile Include="Report.cpp" />
+    <ClCompile Include="RUEList.cpp" />
     <ClCompile Include="sha1.cpp" />
     <ClCompile Include="sha256.cpp" />
     <ClCompile Include="StringX.cpp" />
@@ -506,6 +507,7 @@
     <ClInclude Include="PWSrand.h" />
     <ClInclude Include="PWStime.h" />
     <ClInclude Include="Report.h" />
+    <ClInclude Include="RUEList.h" />
     <ClInclude Include="sha1.h" />
     <ClInclude Include="sha256.h" />
     <ClInclude Include="StringX.h" />

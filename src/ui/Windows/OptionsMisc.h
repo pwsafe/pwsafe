@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,6 +13,8 @@
 /////////////////////////////////////////////////////////////////////////////
 // COptionsMisc dialog
 #include "Options_PropertyPage.h"
+#include "TBMStatic.h"
+
 #include "resource.h"
 
 class COptionsMisc : public COptions_PropertyPage
@@ -47,6 +49,7 @@ protected:
   //}}AFX_DATA
 
   CButtonExtn m_chkbox[2];
+  CTBMStatic m_Help1, m_Help2, m_Help3;
 
   int m_DCA_to_Index[PWSprefs::maxDCA + 1];
 

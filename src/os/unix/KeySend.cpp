@@ -1,10 +1,14 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
+
+#include <map>
+#include <X11/keysym.h>
+
 #include "../KeySend.h"
 #include "../sleep.h"
 #include "./xsendstring.h"
@@ -37,7 +41,6 @@ static Ret GetPref(PrefEnum pref) {
 static pws_os::AutotypeMethod DefaultAutytypeMethod() {
   return GetPref(PWSprefs::UseAltAutoType)? pws_os::ATMETHOD_XTEST: pws_os::ATMETHOD_XSENDKEYS;
 }
-
 
 ////////////////////////////////////////////////////
 // CKeySend - The generic implementation
@@ -106,4 +109,38 @@ void CKeySend::EmulateMods(bool emulate)
 bool CKeySend::IsEmulatingMods() const
 {
   return m_impl->IsEmulatingMods();
+}
+
+void CKeySend::SendVirtualKey(WORD, bool, bool, bool)
+{
+}
+
+void CKeySend::SetOldSendMethod(bool)
+{
+}
+
+bool CKeySend::LookupVirtualKey(const StringX &kname, WORD &kval)
+{
+  static const std::map<std::wstring, WORD> vkmap = {
+    {L"ENTER", XK_KP_Enter},
+    {L"UP", XK_KP_Up},
+    {L"DOWN", XK_KP_Down},
+    {L"LEFT", XK_KP_Left},
+    {L"RIGHT", XK_KP_Right},
+    {L"HOME", XK_KP_Home},
+    {L"END", XK_KP_End},
+    {L"PGUP", XK_KP_Page_Up},
+    {L"PGDN", XK_KP_Page_Down},
+    {L"TAB", XK_KP_Tab},
+    {L"SPACE", XK_KP_Space},
+  };
+
+  auto iter = vkmap.find(kname.c_str());
+  if (iter == vkmap.end()) {
+    kval = 0;
+    return false;
+  } else {
+    kval = iter->second;
+    return true;
+  }
 }

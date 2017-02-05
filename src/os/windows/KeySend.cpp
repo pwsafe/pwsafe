@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -9,6 +9,8 @@
 #ifndef __WX__
 #include <afxwin.h>
 #endif
+
+#include <map>
 
 #include "../KeySend.h"
 #include "../env.h"
@@ -43,13 +45,10 @@ CKeySend::CKeySend(bool bForceOldMethod, unsigned defaultDelay)
 
   m_impl = new CKeySendImpl;
   m_impl->m_delay = m_delayMS;
-  // We want to use keybd_event (OldSendChar) for Win2K & older,
-  // SendInput (NewSendChar) for newer versions.
-  if (bForceOldMethod)
-    m_impl->m_isOldOS = true;
-  else {
-    m_impl->m_isOldOS = !pws_os::IsWindowsVistaOrGreater();
-  }
+
+  //Set Windows Send Method
+  SetOldSendMethod(bForceOldMethod);
+
   // get the locale of the current thread.
   // we are assuming that all window and threading in the 
   // current users desktop have the same locale.
@@ -59,6 +58,22 @@ CKeySend::CKeySend(bool bForceOldMethod, unsigned defaultDelay)
 CKeySend::~CKeySend()
 {
   delete m_impl;
+}
+
+void CKeySend::SetOldSendMethod(bool bForceOldMethod)
+{
+  // We want to use keybd_event (OldSendChar) for Win2K & older,
+  // SendInput (NewSendChar) for newer versions.
+
+  // However, some key strokes only seem to work with the older method even on the
+  // newer versions of Windows
+  m_impl->m_isOldOS = bForceOldMethod;
+
+  if (bForceOldMethod) {
+    m_impl->m_isOldOS = true;
+  } else {
+    m_impl->m_isOldOS = !pws_os::IsWindowsVistaOrGreater();
+  }
 }
 
 void CKeySend::SendString(const StringX &data)
@@ -200,6 +215,62 @@ static void newSendVK(WORD vk)
     pws_os::Trace(L"newSendVK: SendInput failed status=%d\n", status);
 }
 
+void CKeySend::SendVirtualKey(WORD wVK, bool bAlt, bool bCtrl, bool bShift)
+{
+  UINT status;
+  INPUT input[8] = { cinput, cinput, cinput, cinput, cinput, cinput, cinput, cinput };
+  int i = 0;
+  if (bAlt) {
+    // Add Alt key down
+    input[i].ki.wVk = VK_MENU;
+    i++;
+  }
+
+  if (bCtrl) {
+    // Add Ctrl key down
+    input[i].ki.wVk = VK_CONTROL;
+    i++;
+  }
+
+  if (bShift) {
+    // Add Shift key down
+    input[i].ki.wVk = VK_SHIFT;
+    i++;
+  }
+
+  // Add character key down
+  input[i].ki.wVk = wVK;
+  i++;
+
+  // Add character key up
+  input[i].ki.wVk = wVK;
+  input[i].ki.dwFlags = KEYEVENTF_KEYUP;
+  i++;
+
+  if (bShift) {
+    // Add Shift key up
+    input[i].ki.wVk = VK_SHIFT;
+    input[i].ki.dwFlags = KEYEVENTF_KEYUP;
+    i++;
+  }
+
+  if (bCtrl) {
+    // Add Ctrl kep up
+    input[i].ki.wVk = VK_CONTROL;
+    input[i].ki.dwFlags = KEYEVENTF_KEYUP;
+    i++;
+  }
+
+  if (bAlt) {
+    // Add Alt key up
+    input[i].ki.wVk = VK_MENU;
+    input[i].ki.dwFlags = KEYEVENTF_KEYUP;
+    i++;
+  }
+
+  status = ::SendInput(i, input, sizeof(INPUT));
+}
+
 void CKeySend::ResetKeyboardState() const
 {
   // We need to make sure that the Control Key is still not down. 
@@ -214,7 +285,7 @@ void CKeySend::ResetKeyboardState() const
     if (m_impl->m_isOldOS) {
       keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, m_impl->m_hlocale),
                   KEYEVENTF_EXTENDEDKEY, 0);
-      keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_impl->m_hlocale),
+      keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, m_impl->m_hlocale),
                   KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
     } else {
       newSendVK(VK_CONTROL); // Send Ctrl keydown/keyup via SendInput
@@ -319,4 +390,30 @@ void CKeySend::EmulateMods(bool /*emulate*/)
 bool CKeySend::IsEmulatingMods() const
 {
   return false;
+}
+
+bool CKeySend::LookupVirtualKey(const StringX &kname, WORD &kval)
+{
+  static const std::map<std::wstring, WORD> vkmap = {
+    {L"ENTER", (WORD)VK_RETURN},
+    {L"UP", (WORD)VK_UP},
+    {L"DOWN", (WORD)VK_DOWN},
+    {L"LEFT", (WORD)VK_LEFT},
+    {L"RIGHT", (WORD)VK_RIGHT},
+    {L"HOME", (WORD)VK_HOME},
+    {L"END", (WORD)VK_END},
+    {L"PGUP", (WORD)VK_PRIOR},
+    {L"PGDN", (WORD)VK_NEXT},
+    {L"TAB", (WORD)VK_TAB},
+    {L"SPACE", (WORD)VK_SPACE},
+  };
+
+  auto iter = vkmap.find(kname.c_str());
+  if (iter == vkmap.end()) {
+    kval = 0;
+    return false;
+  } else {
+    kval = iter->second;
+    return true;
+  }
 }

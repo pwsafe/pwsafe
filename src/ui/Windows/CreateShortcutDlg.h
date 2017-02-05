@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -27,8 +27,9 @@ public:
   CSecString m_username;
   CSecString m_title;
   CSecString m_group;
+
   // target's group, title, user
-  CSecString m_tg, m_tt, m_tu;
+  CSecString m_basegroup, m_basetitle, m_baseuser;
   int m_ibasedata;
 
   CComboBoxExtn m_ex_group;

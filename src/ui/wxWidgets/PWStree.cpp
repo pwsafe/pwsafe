@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -27,7 +27,7 @@
 #include <vector>
 
 #include "PWStree.h"
-#include "passwordsafeframe.h" // for DispatchDblClickAction()
+#include "passwordsafeframe.h"
 #include "core/PWSprefs.h"
 #include "../../core/Command.h"
 
@@ -89,6 +89,7 @@ enum {ID_TREECTRL_1 = ID_TREECTRL + 1 };
 BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
 
 ////@begin PWSTreeCtrl event table entries
+  EVT_TREE_SEL_CHANGED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlSelChanged )
   EVT_TREE_ITEM_ACTIVATED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlItemActivated )
   EVT_TREE_ITEM_MENU( ID_TREECTRL, PWSTreeCtrl::OnContextMenu )
   EVT_CHAR( PWSTreeCtrl::OnChar )
@@ -146,7 +147,6 @@ PWSTreeCtrl::PWSTreeCtrl(wxWindow* parent, PWScore &core,
   Create(parent, id, pos, size, style);
 }
 
-
 /*!
  * PWSTreeCtrl creator
  */
@@ -160,7 +160,6 @@ bool PWSTreeCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
   return true;
 }
 
-
 /*!
  * PWSTreeCtrl destructor
  */
@@ -171,7 +170,6 @@ PWSTreeCtrl::~PWSTreeCtrl()
 ////@end PWSTreeCtrl destruction
 }
 
-
 /*!
  * Member initialisation
  */
@@ -181,7 +179,6 @@ void PWSTreeCtrl::Init()
 ////@begin PWSTreeCtrl member initialisation
 ////@end PWSTreeCtrl member initialisation
 }
-
 
 /*!
  * Control creation for PWSTreeCtrl
@@ -235,7 +232,7 @@ static StringX GetPathElem(StringX &sxPath)
   size_t len=sxPath.length();
   if (dotPos == StringX::npos){
     sxElement = sxPath;
-    sxPath = wxT("");
+    sxPath = wxEmptyString;
   } else {
     while ((dotPos < len) && (sxPath[dotPos] == GROUP_SEP)) {// look for consecutive dots
       dotPos++;
@@ -246,7 +243,7 @@ static StringX GetPathElem(StringX &sxPath)
     }
     else { // trailing dots
       sxElement = sxPath;
-      sxPath = wxT("");
+      sxPath = wxEmptyString;
     }
   }
   return sxElement;
@@ -293,23 +290,33 @@ wxTreeItemId PWSTreeCtrl::AddGroup(const StringX &group)
   return ti;
 }
 
-
 wxString PWSTreeCtrl::ItemDisplayString(const CItemData &item) const
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   const wxString title = item.GetTitle().c_str();
+
+  // Title is a mandatory field - no need to worry if empty
   wxString disp = title;
 
   if (prefs->GetPref(PWSprefs::ShowUsernameInTree)) {
     const wxString user = item.GetUser().c_str();
-    if (!user.empty())
-      disp += wxT(" [") + user + wxT("]");
+    // User is NOT a mandatory field - but show not present by empty brackets i.e. []
+    // if user wants it displayed
+    disp += wxT(" [") + user + wxT("]");
   }
 
   if (prefs->GetPref(PWSprefs::ShowPasswordInTree)) {
     const wxString passwd = item.GetPassword().c_str();
-    if (!passwd.empty())
-      disp += wxT(" {") + passwd + wxT("}");
+    // Password is a mandatory field - no need to worry if empty
+    disp += wxT(" {") + passwd + wxT("}");
+  }
+
+  if (item.IsProtected()) { 
+    disp += wxT(" #");
+#ifdef NOTYET
+    wxUniChar padlock(0x1f512);
+    disp +=padlock;
+#endif
   }
 
   return disp;
@@ -386,7 +393,6 @@ void PWSTreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft
   else if (ft == CItemData::TITLE || ft == CItemData::START ||
        (ft == CItemData::USER && prefs->GetPref(PWSprefs::ShowUsernameInTree)) ||
        (ft == CItemData::PASSWORD && prefs->GetPref(PWSprefs::ShowPasswordInTree))) {
-    wxRect rc;
     wxTreeItemId ti = Find(item);
     if (ti.IsOk()) {
       SetItemText(ti, ItemDisplayString(item));
@@ -424,7 +430,7 @@ CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
 
 }
 
-//overriden from base for case-insensitive sort
+//overridden from base for case-insensitive sort
 int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2)
 {
   const bool groupsFirst = PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree),
@@ -513,7 +519,6 @@ bool PWSTreeCtrl::Remove(const CUUID &uuid)
   }
 }
 
-
 void PWSTreeCtrl::SetItemImage(const wxTreeItemId &node,
                                const CItemData &item)
 {
@@ -557,7 +562,6 @@ void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
   }
 }
 
-
 /*!
  * wxEVT_TREE_ITEM_MENU event handler for ID_TREECTRL
  */
@@ -587,7 +591,6 @@ void PWSTreeCtrl::OnGetToolTip( wxTreeEvent& evt )
     }
   }
 }
-
 
 /*!
  * wxEVT_CHAR event handler for ID_TREECTRL
@@ -650,10 +653,18 @@ void PWSTreeCtrl::OnRenameGroup(wxCommandEvent& /* evt */)
 
 void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
 {
+  const wxString &label =evt.GetLabel();
+
+  if (label.empty()) {
+    // empty entry or group names are a non-no...
+    evt.Veto();
+    return;
+  }
+
   switch (evt.GetId()) {
     case ID_TREECTRL:
     {
-      if (evt.GetLabel().Find(wxT('.')) == wxNOT_FOUND) {
+      if (label.Find(wxT('.')) == wxNOT_FOUND) {
       // Not safe to modify the tree ctrl in any way.  Wait for the stack to unwind.
       wxTreeEvent newEvt(evt);
       newEvt.SetId(ID_TREECTRL_1);
@@ -761,3 +772,35 @@ void PWSTreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, 
     wxTreeCtrl::SelectItem(newItem);
 }
 
+/*!
+ * wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL
+ */
+
+void PWSTreeCtrl::OnTreectrlSelChanged( wxTreeEvent& evt )
+{
+  CItemData *pci = GetItem(evt.GetItem());
+
+  dynamic_cast<PasswordSafeFrame *>(GetParent())->UpdateSelChanged(pci);
+}
+
+static void ColourChildren(PWSTreeCtrl *tree, wxTreeItemId parent, const wxColour &colour)
+{
+  wxTreeItemIdValue cookie;
+  wxTreeItemId child = tree->GetFirstChild(parent, cookie);
+
+  while (child) {
+    tree->SetItemTextColour(child, colour);
+    child = tree->GetNextChild(parent, cookie);
+    if (child && tree->ItemHasChildren(child))
+      ColourChildren(tree, child, colour);
+  }
+}
+
+void PWSTreeCtrl::SetFilterState(bool state)
+{
+  const wxColour *colour = state ? wxRED : wxBLACK;
+  // iterate over all items, no way to do this en-mass
+  wxTreeItemId root = GetRootItem();
+  if (root)
+    ColourChildren(this, root, *colour);
+}

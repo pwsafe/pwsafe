@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -10,9 +10,9 @@
 
 #include "stdafx.h"
 
+#include "Windowsdefs.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
-#include "DboxMain.h"
 #include "GeneralMsgBox.h"
 #include "Options_PropertySheet.h"
 #include "PasskeySetup.h"
@@ -41,7 +41,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core)
   : CPKBaseDlg(CPasskeySetup::IDD, pParent),
@@ -67,13 +66,15 @@ void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CPasskeySetup, CPKBaseDlg)
+  ON_WM_TIMER()
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
-  ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
+
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_VERIFY, OnVerifykeySetfocus)
-  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
-  ON_WM_TIMER()
+
+  ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
 END_MESSAGE_MAP()
 
 BOOL CPasskeySetup::OnInitDialog() 
@@ -125,7 +126,7 @@ void CPasskeySetup::OnOK()
   StringX errmess;
   if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {
     CString cs_msg, cs_text;
-    cs_msg.Format(IDS_WEAKPASSPHRASE, errmess.c_str());
+    cs_msg.Format(IDS_WEAKPASSPHRASE, static_cast<LPCWSTR>(errmess.c_str()));
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
     cs_text.LoadString(IDS_USEITANYWAY);
     cs_msg += cs_text;
@@ -148,7 +149,6 @@ void CPasskeySetup::OnHelp()
 {
   ShowHelp(L"::/html/create_new_db.html");
 }
-
 
 void CPasskeySetup::OnPasskeySetfocus()
 {
@@ -257,7 +257,7 @@ void CPasskeySetup::ProcessPhrase()
 {
   // OnOK clears the passkey, so we save it
   const CSecString save_passkey = m_passkey;
-  TRACE(_T("CPasskeySetup::ProcessPhrase(%s)\n"), m_passkey);
+  TRACE(L"CPasskeySetup::ProcessPhrase(%s)\n", static_cast<LPCWSTR>(m_passkey));
   CPKBaseDlg::OnOK();
   m_passkey = save_passkey;
 }
@@ -274,6 +274,7 @@ void CPasskeySetup::YubiFailed()
 
 void CPasskeySetup::YubiInitialize()
 {
+#ifndef NO_YUBI
   CGeneralMsgBox gmb;
   CYubiCfgDlg ycd(this, m_core);
   unsigned char sk[CYubiCfgDlg::YUBI_SK_LEN];
@@ -287,4 +288,5 @@ void CPasskeySetup::YubiInitialize()
     gmb.AfxMessageBox(IDS_YUBI_INIT_FAILED,
                       MB_OK | MB_ICONERROR);
   }
+#endif /* NO_YUBI */
 }

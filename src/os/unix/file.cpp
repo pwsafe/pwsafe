@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -27,8 +27,9 @@
 
 #include "../file.h"
 #include "../env.h"
-#include "core.h"
-#include "StringXStream.h"
+
+#include "../../core/core.h"
+#include "../../core/StringXStream.h"
 
 using namespace std;
 
@@ -108,7 +109,7 @@ bool pws_os::CopyAFile(const stringT &from, const stringT &to)
     ofstream dst(szto, ios_base::out|ios_base::binary);
     const size_t BUFSIZE = 2048;
     char buf[BUFSIZE];
-    size_t readBytes;
+    streamsize readBytes;
 
     do {
       src.read(buf, BUFSIZE);
@@ -197,7 +198,6 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
   UNREFERENCED_PARAMETER(lockFileHandle);
   UNREFERENCED_PARAMETER(LockCount);
   const stringT lock_filename = GetLockFileName(filename);
-  stringT s_locker;
   bool retval = false;
   size_t lfs = wcstombs(NULL, lock_filename.c_str(), lock_filename.length()) + 1;
   char *lfn = new char[lfs];
@@ -237,7 +237,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
     } // switch (errno)
     retval = false;
   } else { // valid filehandle, write our info
-    int numWrit;
+    ssize_t numWrit;
     const stringT user = pws_os::getusername();
     const stringT host = pws_os::gethostname();
     const stringT pid = pws_os::getprocessid();
@@ -290,6 +290,19 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   delete[] cfname;
   delete[] cmode;
   return retval;
+}
+
+int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
+{
+  if (fd != NULL) {
+    if (bIsWrite) {
+      // Flush the data buffers
+      fflush(fd);
+    }
+    // Now close file
+    return fclose(fd);
+  }
+  return 0;
 }
 
 ulong64 pws_os::fileLength(std::FILE *fp)

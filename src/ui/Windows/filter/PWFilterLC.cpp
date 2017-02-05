@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -29,7 +29,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CPWFilterLC::CPWFilterLC()
-  : m_pPWF(NULL), m_iType(0), m_pfilters(NULL), m_bInitDone(false),
+  : m_pPWF(NULL), m_iType(DFTYPE_INVALID), m_pfilters(NULL), m_bInitDone(false),
    m_fwidth(-1), m_lwidth(-1), m_rowheight(-1),
    m_bSetFieldActive(false), m_bSetLogicActive(false),
    m_iItem(-1), m_numfilters(0), m_pFont(NULL),
@@ -61,7 +61,7 @@ CPWFilterLC::~CPWFilterLC()
 
 BEGIN_MESSAGE_MAP(CPWFilterLC, CListCtrl)
   //{{AFX_MSG_MAP(CPWFilterLC)
-  ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
+  ON_NOTIFY_EX_RANGE(TTN_NEEDTEXT, 0, 0xFFFF, OnToolTipText)
   ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
   ON_WM_LBUTTONDOWN()
   ON_WM_DESTROY()
@@ -75,7 +75,7 @@ void CPWFilterLC::OnDestroy()
   CListCtrl::OnDestroy();
 }
 
-void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertype,
+void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const FilterType &filtertype,
   bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes)
 {
   m_pPWF = static_cast<CPWFiltersDlg *>(pParent);
@@ -87,6 +87,8 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertyp
   EnableToolTips(TRUE);
 
   const COLORREF crTransparent = RGB(192, 192, 192);
+
+  // Load all images as list in enum CheckImageLC and in the order specified in it
   CBitmap bitmap;
   BITMAP bm;
   bitmap.LoadBitmap(IDB_CHECKED);
@@ -742,7 +744,7 @@ bool CPWFilterLC::SetField(const int iItem)
   bool retval(false);
 
   // Set focus to main window in case user does page up/down next
-  // so that it changes the scoll bar not the value in this
+  // so that it changes the scroll bar not the value in this
   // ComboBox
   GetParent()->SetFocus();
 
@@ -1047,7 +1049,7 @@ void CPWFilterLC::CancelField(const int iItem)
   // User has selected field
 
   // Set focus to main window in case user does page up/down next
-  // so that it changes the scoll bar not the value in this
+  // so that it changes the scroll bar not the value in this
   // ComboBox
   GetParent()->SetFocus();
 
@@ -1207,7 +1209,7 @@ void CPWFilterLC::DropDownCombo(const UINT nID)
 bool CPWFilterLC::GetCriterion()
 {
   // User has already enabled the filter and selected the field type
-  // Now get the criteron
+  // Now get the criterion
   ASSERT(m_iItem >= 0);
 
   // Get offset into vector of controls
@@ -1555,7 +1557,7 @@ bool CPWFilterLC::GetCriterion()
 
 void CPWFilterLC::SetUpComboBoxData()
 {
-  // Set up the Field selction Combobox
+  // Set up the Field selection Combobox
 
   // NOTE: The ComboBox strings are NOT sorted by design !
   if (m_vLcbx_data.empty()) {
@@ -2009,8 +2011,8 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
     m_ComboBox.GetClientRect(&combo_rect);
     IMAGEINFO imageinfo;
     m_pCheckImageList->GetImageInfo(0, &imageinfo);
-    m_rowheight = max(combo_rect.Height(),
-      abs(imageinfo.rcImage.top - imageinfo.rcImage.bottom));
+    m_rowheight = std::max(combo_rect.Height(),
+      (int)abs(imageinfo.rcImage.top - imageinfo.rcImage.bottom));
 
     m_pImageList = new CImageList;
     m_pImageList->Create(1, m_rowheight, ILC_COLOR4, 1, 1);
@@ -2042,7 +2044,7 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
         (rect.bottom + sz.cy > ::GetSystemMetrics(SM_CYSCREEN))) {
       int ifit = max((rect.top / ht), (::GetSystemMetrics(SM_CYSCREEN) - rect.bottom) / ht);
       int ht2 = ht * ifit;
-      sz.cy = min(ht2, sz.cy);
+      sz.cy = std::min((long)ht2, sz.cy);
     }
   }
 
@@ -2119,7 +2121,6 @@ void CPWFilterLC::SetComboBoxWidth(const int iSubItem)
   // If the width of the list box is too small, adjust it so that every
   // item is completely visible.
   m_ComboBox.SetDroppedWidth(dx);
-  //m_ComboBox.SetDroppedWidth(dx);
 }
 
 void CPWFilterLC::DeleteEntry(FieldType ftype)
@@ -2189,7 +2190,7 @@ void CPWFilterLC::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
             iy = inner_rect.CenterPoint().y;
             // The '7' below is ~ half the bitmap size of 13.
             inner_rect.SetRect(ix - 7, iy - 7, ix + 7, iy + 7);
-            DrawImage(pDC, inner_rect, bFilterActive ? 0 : 1);
+            DrawImage(pDC, inner_rect, bFilterActive ? CHECKEDLC : UNCHECKEDLC);
             *pLResult = CDRF_SKIPDEFAULT;
             break;
           case FLC_ADD_BUTTON:
@@ -2272,7 +2273,7 @@ void CPWFilterLC::DrawSubItemText(int iItem, int iSubItem, CDC *pDC,
   }
 }
 
-void CPWFilterLC::DrawImage(CDC *pDC, CRect &rect, int nImage)
+void CPWFilterLC::DrawImage(CDC *pDC, CRect &rect, CheckImageLC nImage)
 {
   // Draw check image in given rectangle
   if (rect.IsRectEmpty() || nImage < 0) {
@@ -2430,7 +2431,6 @@ BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLRe
     wcsncpy_s(m_pwchTip, cs_TipText.GetLength() + 1,
                 cs_TipText, _TRUNCATE);
     pTTTW->lpszText = (LPWSTR)m_pwchTip;
-
 
     return TRUE;   // we found a tool tip,
   }

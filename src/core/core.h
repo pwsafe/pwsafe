@@ -174,6 +174,8 @@
 #define IDSC_MISSINGXSD                 3345
 #define IDSC_CANTVALIDATEXML            3346
 #define IDSC_FILTERSKEPT                3347
+#define IDSC_EXPIREPASSWORDS            3348
+#define IDSC_NONSAVEDCHANGES            3349
 #define IDSC_EXS_INPUTEMPTY             3350
 #define IDSC_EXS_VARNAMEEMPTY           3351
 #define IDSC_EXS_FIRSTNOTALPHA          3352
@@ -279,6 +281,11 @@
 #define IDSC_VALIDATE_ORPHAN_ATT        3454
 #define IDSC_VALIDATE_ATTACHMENT        3455
 #define IDCS_VALIDATE_NOTSET            3456
+#define IDSC_EMPTYGROUP                 3457
+#define IDSC_EMPTYGROUPS                3458
+#define IDSC_IMPORTEDEMPTYGROUPS        3459
+#define IDSC_FILTERSEXPORTEDTODB        3460
+#define IDSC_FOUNDENTRIESFILTER         3461
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000
@@ -293,6 +300,18 @@
 #define IDSC_DCARUN                     4009
 #define IDSC_DCASENDEMAIL               4010
 #define IDSC_DEFAULT                    4011
+
+#define IDSC_STATCOMPANY                4020
+#define IDSC_STATAUTOTYPE               4021
+#define IDSC_STATBROWSE                 4022
+#define IDSC_STATCOPYNOTES              4023
+#define IDSC_STATCOPYPASSWORD           4024
+#define IDSC_STATCOPYUSERNAME           4025
+#define IDSC_STATVIEWEDIT               4026
+#define IDSC_STATCOPYPASSWORDMIN        4027
+#define IDSC_STATBROWSEPLUS             4030
+#define IDSC_STATRUN                    4031
+#define IDSC_STATSENDEMAIL              4032
 
 // Named Policy stuff
 #define IDSC_PUSELOWER                  4100

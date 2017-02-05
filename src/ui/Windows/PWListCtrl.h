@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -35,6 +35,7 @@ public:
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
   void UpdateRowHeight(bool bInvalidate);
+
 protected:
   //{{AFX_MSG(CPWListCtrl)
   afx_msg void OnDestroy();
@@ -68,8 +69,11 @@ private:
   CPoint m_HoverNDPoint;
   bool m_bShowNotes, m_bMouseInWindow;
 
+  // Determine if Notes column displayed in List View
+  bool IsNotesColumnPresent();
+
   // Filter
-  bool m_bFilterActive;
+  bool m_bListFilterActive;
 
   CFont *GetFontBasedOnStatus(CItemData *pci, COLORREF &cf);
   bool m_bUseHighLighting;

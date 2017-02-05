@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -23,7 +23,7 @@
 //
 // * Override CSubclassWnd::WindowProc to handle messages. Make sure you call
 //   CSubclassWnd::WindowProc if you don't handle the message, or your
-//   window will never get messages. If you write seperate message handlers,
+//   window will never get messages. If you write separate message handlers,
 //   you can call Default() to pass the message to the window.
 //
 // * Instantiate your derived class somewhere and call HookWindow(pWnd)

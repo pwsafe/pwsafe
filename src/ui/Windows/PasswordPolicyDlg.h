@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -127,7 +127,7 @@ private:
   int m_save[N_NOHEX]; // save cb's state when disabling hex
   UINT m_savelen[N_HEX_LENGTHS];
 
-  stringT m_PolicyName;
+  std::wstring m_PolicyName;
   PWPolicy m_st_default_pp;
   PSWDPolicyMap m_MapPSWDPLC;
   PSWDPolicyMapIter m_iter;

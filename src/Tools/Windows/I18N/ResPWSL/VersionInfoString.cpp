@@ -52,7 +52,7 @@ void CVersionInfoString::Write(CVersionInfoBuffer & viBuf)
 
   //Write wValueLength
   if (!m_strValue.IsEmpty())
-    viBuf.WriteWord(m_strValue.GetLength() + 1);
+    viBuf.WriteWord((WORD)m_strValue.GetLength() + 1);
   else
     viBuf.WriteWord(0);
 

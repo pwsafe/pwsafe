@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -16,7 +16,7 @@
 //
 // As in Unix, we support the concept of an "effective" v.s. "real"
 // name. The "real" is read from the system API, and is immutable.
-// The "effecitve" is initially set to be == the real value, but
+// The "effective" is initially set to be == the real value, but
 // may be overridden by the relevant SetEffective*() member function.
 //-----------------------------------------------------------------
 #include "os/typedefs.h"

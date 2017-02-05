@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -98,7 +98,7 @@ bool PerformConfigMigration()
   bRetVal = false;
   bool bNoMoreNodes(false);
   CXMLprefs newXMLConfig(wsExecDirCfgFile.c_str()); // for migrating user/host to new
-  CXMLprefs oldXMLConfig(wsExecDirCfgFile.c_str()); // for reomving user/host from old
+  CXMLprefs oldXMLConfig(wsExecDirCfgFile.c_str()); // for removing user/host from old
 
   // Create the new one from it just containing our host/user
   if (!newXMLConfig.Load())

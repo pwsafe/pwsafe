@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -34,13 +34,11 @@
 ////@begin XPM images
 ////@end XPM images
 
-
 /*!
  * EditShortcut type definition
  */
 
 IMPLEMENT_CLASS( EditShortcut, wxDialog )
-
 
 /*!
  * EditShortcut event table definition
@@ -54,7 +52,6 @@ BEGIN_EVENT_TABLE( EditShortcut, wxDialog )
 ////@end EditShortcut event table entries
 
 END_EVENT_TABLE()
-
 
 /*!
  * EditShortcut constructors
@@ -71,7 +68,6 @@ EditShortcut::EditShortcut(wxWindow* parent,
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * EditShortcut creator
@@ -98,7 +94,7 @@ void EditShortcut::ItemFieldsToDialog()
 {
   // Populate the combo box
   std::vector<stringT> aryGroups;
-  m_core.GetUniqueGroups(aryGroups);
+  m_core.GetAllGroups(aryGroups);
   for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
     m_groupCtrl->Append(aryGroups[igrp].c_str());
   }
@@ -124,7 +120,6 @@ void EditShortcut::ItemFieldsToDialog()
   }
 }
 
-
 /*!
  * EditShortcut destructor
  */
@@ -134,7 +129,6 @@ EditShortcut::~EditShortcut()
 ////@begin EditShortcut destruction
 ////@end EditShortcut destruction
 }
-
 
 /*!
  * Member initialisation
@@ -146,7 +140,6 @@ void EditShortcut::Init()
   m_groupCtrl = NULL;
 ////@end EditShortcut member initialisation
 }
-
 
 /*!
  * Control creation for EditShortcut
@@ -240,7 +233,6 @@ void EditShortcut::CreateControls()
 ////@end EditShortcut content construction
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -273,7 +265,6 @@ wxIcon EditShortcut::GetIconResource( const wxString& WXUNUSED(name) )
   return wxNullIcon;
 ////@end EditShortcut icon retrieval
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
@@ -308,4 +299,3 @@ void EditShortcut::OnOkClick( wxCommandEvent& /* evt */ )
   }
   EndModal(wxID_OK);
 }
-

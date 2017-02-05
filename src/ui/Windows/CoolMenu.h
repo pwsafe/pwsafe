@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -17,7 +17,7 @@
 // Modified for PWS toolbar
 // Remove automatic accelerators
 // Updated for VS2005 + UNICODE
-// Change from MS classes to STL eqivalents where possible
+// Change from MS classes to STL equivalents where possible
 // Understand that RUE menu also uses MENUITEMINFO dwItemData field for icons
 
 #include "Subclass.h"
@@ -77,7 +77,7 @@ protected:
   CImageList     m_ImageList;   // image list for all buttons
   CImageList     m_DisabledImageList; // disabled image list for all buttons
   MenuVector     m_menuList;    // list of HMENU's initialized
-  PMDVector      m_pmdList;     // Vector of ptrs to CMenuItemData
+  PMDVector      m_pmdList;     // Vector of pointers to CMenuItemData
   CSize          m_szBitmap;    // size of button bitmap
   CSize          m_szButton;    // size of button (including shadow)
   CFont          m_fontMenu;    // menu font

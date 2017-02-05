@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -47,7 +47,7 @@ void CPWSRecentFileList::ReadList()
 
 void CPWSRecentFileList::WriteList()
 {
-  extern void RelativizePath(stringT &);
+  extern void RelativizePath(std::wstring &);
   PWSprefs *pref = PWSprefs::GetInstance();
   // writes to registry or config file
   if (pref->IsUsingRegistry()) {
@@ -55,18 +55,32 @@ void CPWSRecentFileList::WriteList()
   } else {
     const int num_MRU = GetSize();
     const int max_MRU = ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1;
-    std::wstring *csMRUFiles = new std::wstring[num_MRU];
+    std::wstring *sMRUFiles = new std::wstring[num_MRU];
 
     for (int i = 0; i < num_MRU; i++) {
-      csMRUFiles[i] = (*this)[i];
-      if (!csMRUFiles[i].empty()) {
-        Trim(csMRUFiles[i]);
-        RelativizePath(csMRUFiles[i]);
+      sMRUFiles[i] = (*this)[i];
+      if (!sMRUFiles[i].empty()) {
+        Trim(sMRUFiles[i]);
+        RelativizePath(sMRUFiles[i]);
       }
     }
 
-    pref->SetMRUList(csMRUFiles, num_MRU, max_MRU);
-    delete[] csMRUFiles;
+    pref->SetMRUList(sMRUFiles, num_MRU, max_MRU);
+    delete[] sMRUFiles;
   }
 }
 
+int CPWSRecentFileList::GetNumUsed() const
+{
+  int n = 0;
+  const int num_MRU = GetSize();
+  // workaround silly MFC lack of const operator[]:
+  CPWSRecentFileList *self = const_cast<CPWSRecentFileList *>(this);
+
+  for (int i = 0; i < num_MRU; i++) {
+  if (!(*self)[i].IsEmpty())
+      n++;
+  }
+
+  return n;
+}

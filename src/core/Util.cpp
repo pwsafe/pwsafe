@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -60,6 +60,12 @@ void trashMemory(void *buffer, size_t length)
     std::memset(buffer, 0x55, length);
     std::memset(buffer, 0xAA, length);
     std::memset(buffer,    0, length);
+#ifdef __GNUC__
+    // break compiler optimization of this function for gcc
+    // see trick used in google's boring ssl:
+    // https://boringssl.googlesource.com/boringssl/+/ad1907fe73334d6c696c8539646c21b11178f20f%5E!/#F0
+    __asm__ __volatile__("" : : "r"(buffer) : "memory");
+#endif
   }
 }
 #ifdef _WIN32
@@ -69,7 +75,6 @@ void trashMemory(LPTSTR buffer, size_t length)
 {
   trashMemory(reinterpret_cast<unsigned char *>(buffer), length * sizeof(buffer[0]));
 }
-
 
 /**
 Burn some stack memory
@@ -705,7 +710,6 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
   const unsigned char *utf8 = NULL;
   size_t utf8Len = 0;
 
-
   for (i = 0; i < indent; i++) oss << "\t";
   oss << "<" << name << ">" ;
   utf8conv.ToUTF8(tmp.substr(0, 10), utf8, utf8Len);
@@ -723,11 +727,11 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
  * @param[in] args - arguments for format string
  * @return buffer size including NULL-terminating character
 */
-int GetStringBufSize(const TCHAR *fmt, va_list args)
+unsigned int GetStringBufSize(const TCHAR *fmt, va_list args)
 {
   TCHAR *buffer=NULL;
 
-  int len=0;
+  unsigned int len = 0;
 
 #ifdef _WIN32
   len = _vsctprintf(fmt, args) + 1;
@@ -735,16 +739,18 @@ int GetStringBufSize(const TCHAR *fmt, va_list args)
   va_list ar;
   va_copy(ar, args);
   // Linux doesn't do this correctly :-(
-  int guess = 16;
+  unsigned int guess = 16;
+  int nBytes = -1;
   while (1) {
     len = guess;
     buffer = new TCHAR[len];
-    len = _vstprintf_s(buffer, len, fmt, ar);
+    nBytes = _vstprintf_s(buffer, len, fmt, ar);
     va_end(ar);//after using args we should reset list
     va_copy(ar, args);
-    if (len++ > 0)
+    if (nBytes++ > 0) {
+      len = nBytes;
       break;
-    else { // too small, resize & try again
+    } else { // too small, resize & try again
       delete[] buffer;
       buffer = NULL;
       guess *= 2;
@@ -755,7 +761,6 @@ int GetStringBufSize(const TCHAR *fmt, va_list args)
   if (buffer)
     delete[] buffer;
 
-  ASSERT(len > 0);
   return len;
 }
 

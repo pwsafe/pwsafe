@@ -1,0 +1,7 @@
+#!/bin/sh
+# have to use wrapper script, because C::B don't support stream redirection inside `expr`
+exec=/usr/bin/32/wx-config
+if ! [ -x "$exec" ]; then
+exec=wx-config
+fi
+$exec "$@" | sed 's/\(^\|\s\)-I/ -isystem /g'

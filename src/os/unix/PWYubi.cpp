@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -82,7 +82,6 @@ static bool check_firmware_version(YK_KEY *yk)
   free(st);
   return retval;
 }
-
 
 bool PWYubi::GetSerial(unsigned int &serial) const
 {
@@ -228,8 +227,6 @@ PWYubi::RequestStatus PWYubi::GetResponse(unsigned char resp[PWYubi::RESPLEN])
   pthread_mutex_unlock(&s_mutex);
   return m_reqstat;
 }
-
-
 
 void PWYubi::report_error() const
 {

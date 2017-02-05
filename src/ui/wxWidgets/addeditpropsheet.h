@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -12,7 +12,6 @@
 
 #ifndef _ADDEDITPROPSHEET_H_
 #define _ADDEDITPROPSHEET_H_
-
 
 /*!
  * Includes
@@ -113,8 +112,6 @@ class UIInterFace;
 #define SYMBOL_VIEWPROPSHEET_TITLE _("View Entry")
 #define SYMBOL_AUTOPROPSHEET_TITLE _("Add, Edit or View Entry")
 
-
-
 /*!
  * AddEditPropSheet class declaration
  */
@@ -170,7 +167,7 @@ public:
   void OnKeepHistoryClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON
-  void OnRadiobuttonSelected( wxCommandEvent& event );
+  void OnExpRadiobuttonSelected( wxCommandEvent& event );
 
   /// wxEVT_DATE_CHANGED event handler for ID_DATECTRL
   void OnExpDateChanged( wxDateEvent& event );
@@ -361,7 +358,8 @@ private:
   CItemData m_item;
   void ItemFieldsToPropSheet();
   void SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift);
-  void SetXTime(wxObject *src);
+  void UpdateExpTimes(); // entry -> controls
+  void SetXTime(wxObject *src); // sync controls + controls -> entry
   void UpdatePWPolicyControls(const PWPolicy& pwp);
   void EnablePWPolicyControls(bool enable);
   PWPolicy GetPWPolicyFromUI();

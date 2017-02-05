@@ -4,12 +4,11 @@ set (RESTEXT_SRCS
     ResModule.cpp
     ResText.cpp
     stdafx.cpp
+    UnicodeUtils.cpp
     Utils.cpp
 )
 
 set (RESTEXT_RES ResText.rc)
-
-set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /D _AFXDLL" )
 
 add_executable( ResText
                 EXCLUDE_FROM_ALL

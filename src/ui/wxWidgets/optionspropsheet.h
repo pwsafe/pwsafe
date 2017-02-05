@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -11,7 +11,6 @@
 
 #ifndef _OPTIONSPROPSHEET_H_
 #define _OPTIONSPROPSHEET_H_
-
 
 /*!
  * Includes
@@ -117,7 +116,6 @@ class wxBookCtrlEvent;
 #define SYMBOL_COPTIONS_POSITION wxDefaultPosition
 ////@end control identifiers
 
-
 /*!
  * Options class declaration
  */
@@ -195,7 +193,6 @@ public:
 
   /// wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGING event handler for all pages (wxID_ANY)
   void OnPageChanging(wxBookCtrlEvent& evt);
-
 
 ////@begin COptions member function declarations
 

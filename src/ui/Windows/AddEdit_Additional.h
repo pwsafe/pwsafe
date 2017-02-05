@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,6 +13,7 @@
 #include "AddEdit_PropertyPage.h"
 #include "PWHistListCtrl.h"
 #include "EntryKBHotKey.h"
+#include "TBMStatic.h"
 
 #include "resource.h"
 
@@ -40,6 +41,8 @@ public:
 
   void OnEntryHotKeyKillFocus();
   void OnEntryHotKeySetFocus();
+  void UpdatePasswordHistoryLC();
+  bool HasBeenShown() const { return m_bInitdone; }
 
 protected:
   CEditExtn m_ex_autotype;
@@ -58,7 +61,7 @@ protected:
 
   int m_iSortedColumn;
   bool m_bSortAscending;
-  bool m_ClearPWHistory;
+  bool m_bClearPWHistory;
 
   // Overrides
   // ClassWizard generate virtual function overrides
@@ -74,6 +77,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(CAddEdit_Additional)
   afx_msg void OnHelp();
+  afx_msg void OnAutoTypeHelp();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
 
@@ -98,6 +102,8 @@ private:
   void SetupDCAComboBoxes(CComboBox *pcbox, bool isShift);
   int CheckKeyboardShortcut();
  
+  CTBMStatic m_Help1, m_Help2;
+
   COLORREF m_autotype_cfOldColour, m_runcmd_cfOldColour;
   bool m_bInitdone;
   bool m_bWarnUserKBShortcut;

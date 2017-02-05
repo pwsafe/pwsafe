@@ -207,7 +207,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -222,7 +222,7 @@
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -264,7 +264,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -278,7 +278,7 @@
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -314,7 +314,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -328,7 +328,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -377,7 +377,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -390,7 +390,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -433,7 +433,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -448,7 +448,7 @@
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\..;$(XercesDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;USE_XML_LIBRARY=MSXML;DEMO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=MSXML;DEMO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -485,7 +485,7 @@
       <SwapRunFromNET>true</SwapRunFromNET>
     </Link>
     <PostBuildEvent>
-      <Command>cscript post_build.vbs</Command>
+      <Command>cscript post_build.vbs //Nologo</Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
@@ -494,7 +494,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -508,7 +508,7 @@
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\..;$(XercesDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;USE_XML_LIBRARY=MSXML;DEMO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=MSXML;DEMO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -542,13 +542,13 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>cscript post_build.vbs</Command>
+      <Command>cscript post_build.vbs //Nologo</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -562,7 +562,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -591,7 +591,7 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;dbghelp.lib;usp10.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -606,7 +606,7 @@
       <SwapRunFromNET>true</SwapRunFromNET>
     </Link>
     <PostBuildEvent>
-      <Command>cscript post_build.vbs</Command>
+      <Command>cscript post_build.vbs //Nologo</Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
@@ -615,7 +615,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -628,7 +628,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -669,13 +669,13 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>cscript post_build.vbs</Command>
+      <Command>cscript post_build.vbs //Nologo</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -690,7 +690,7 @@
       <Optimization>MinSpace</Optimization>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -716,7 +716,7 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;usp10.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -728,9 +728,10 @@
       <TargetMachine>MachineX86</TargetMachine>
       <SwapRunFromCD>true</SwapRunFromCD>
       <SwapRunFromNET>true</SwapRunFromNET>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PostBuildEvent>
-      <Command>cscript post_build.vbs</Command>
+      <Command>cscript post_build.vbs //Nologo</Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
@@ -739,7 +740,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseM|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -753,7 +754,7 @@
       <Optimization>MinSpace</Optimization>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -790,7 +791,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>cscript post_build.vbs</Command>
+      <Command>cscript post_build.vbs //Nologo</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -803,7 +804,6 @@
     <ClCompile Include="AddEdit_PropertyPage.cpp" />
     <ClCompile Include="AddEdit_PropertySheet.cpp" />
     <ClCompile Include="AdvancedDlg.cpp" />
-    <ClCompile Include="ChangeAliasPswd.cpp" />
     <ClCompile Include="ClearQuestionDlg.cpp" />
     <ClCompile Include="ColumnChooserDlg.cpp" />
     <ClCompile Include="ColumnChooserLC.cpp" />
@@ -875,6 +875,7 @@
     <ClCompile Include="PasskeySetup.cpp" />
     <ClCompile Include="PasswordPolicyDlg.cpp" />
     <ClCompile Include="PasswordSubsetDlg.cpp" />
+    <ClCompile Include="ImgStatic.cpp" />
     <ClCompile Include="PKBaseDlg.cpp" />
     <ClCompile Include="Properties.cpp" />
     <ClCompile Include="PupText.cpp" />
@@ -899,7 +900,6 @@
     <ClCompile Include="PWTreeCtrl.cpp" />
     <ClCompile Include="QuerySetDef.cpp" />
     <ClCompile Include="RichEditCtrlExtn.cpp" />
-    <ClCompile Include="RUEList.cpp" />
     <ClCompile Include="SampleTextDlg.cpp" />
     <ClCompile Include="SCWListCtrl.cpp" />
     <ClCompile Include="SecString.cpp" />
@@ -915,7 +915,9 @@
     <ClCompile Include="Subclass.cpp" />
     <ClCompile Include="SysColStatic.cpp" />
     <ClCompile Include="SystemTray.cpp" />
+    <ClCompile Include="TBMStatic.cpp" />
     <ClCompile Include="ThisMfcApp.cpp" />
+    <ClCompile Include="ViewAttachmentDlg.cpp" />
     <ClCompile Include="ViewReport.cpp" />
     <ClCompile Include="VirtualKeyboard\VKBButton.cpp" />
     <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp" />
@@ -938,7 +940,6 @@
     <ClInclude Include="AddEdit_PropertySheet.h" />
     <ClInclude Include="AdvancedDlg.h" />
     <ClInclude Include="AdvancedValues.h" />
-    <ClInclude Include="ChangeAliasPswd.h" />
     <ClInclude Include="ClearQuestionDlg.h" />
     <ClInclude Include="ColumnChooserDlg.h" />
     <ClInclude Include="ColumnChooserLC.h" />
@@ -1005,6 +1006,7 @@
     <ClInclude Include="PasswordPolicyDlg.h" />
     <ClInclude Include="PasswordSafe.h" />
     <ClInclude Include="PasswordSubsetDlg.h" />
+    <ClInclude Include="ImgStatic.h" />
     <ClInclude Include="PKBaseDlg.h" />
     <ClInclude Include="Properties.h" />
     <ClInclude Include="PupText.h" />
@@ -1032,7 +1034,6 @@
     <ClInclude Include="resource2.h" />
     <ClInclude Include="resource3.h" />
     <ClInclude Include="RichEditCtrlExtn.h" />
-    <ClInclude Include="RUEList.h" />
     <ClInclude Include="SampleTextDlg.h" />
     <ClInclude Include="SCWListCtrl.h" />
     <ClInclude Include="SecString.h" />
@@ -1049,13 +1050,16 @@
     <ClInclude Include="Subclass.h" />
     <ClInclude Include="SysColStatic.h" />
     <ClInclude Include="SystemTray.h" />
+    <ClInclude Include="TBMStatic.h" />
     <ClInclude Include="ThisMfcApp.h" />
+    <ClInclude Include="ViewAttachmentDlg.h" />
     <ClInclude Include="ViewReport.h" />
     <ClInclude Include="VirtualKeyboard\VKresource.h" />
     <ClInclude Include="VirtualKeyboard\VKresource3.h" />
     <ClInclude Include="VirtualKeyboard\VKShiftState.h" />
     <ClInclude Include="VirtualKeyboard\VKBButton.h" />
     <ClInclude Include="VirtualKeyboard\VKeyBoardDlg.h" />
+    <ClInclude Include="Windowsdefs.h" />
     <ClInclude Include="WZAdvanced.h" />
     <ClInclude Include="WZExecuteThreadParms.h" />
     <ClInclude Include="WZFinish.h" />
@@ -1377,11 +1381,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="graphics\checked_disabled.bmp" />
+    <Image Include="graphics\empty_disabled.bmp" />
+    <Image Include="graphics\question_mark.bmp" />
+    <Image Include="graphics\red_exclamation.bmp" />
     <Image Include="graphics\toolbar\classic\exportDB.bmp" />
     <Image Include="graphics\toolbar\classic\exportV1.bmp" />
     <Image Include="graphics\toolbar\classic\exportV2.bmp" />
     <Image Include="graphics\toolbar\classic\exportV3.bmp" />
     <Image Include="graphics\toolbar\classic\exportV4.bmp" />
+    <Image Include="graphics\toolbar\classic\lock_database.bmp" />
     <Image Include="graphics\toolbar\new\exportDB.bmp" />
     <Image Include="graphics\toolbar\new\exportDB_disabled.bmp" />
     <Image Include="graphics\toolbar\new\exportV1.bmp" />
@@ -1392,6 +1401,7 @@
     <Image Include="graphics\toolbar\new\exportV3_disabled.bmp" />
     <Image Include="graphics\toolbar\new\exportV4.bmp" />
     <Image Include="graphics\toolbar\new\exportV4_disabled.bmp" />
+    <Image Include="graphics\unchecked_disabled.bmp" />
     <Image Include="graphics\Yubikey-button-disabled.bmp" />
     <Image Include="graphics\Yubikey-button.bmp" />
   </ItemGroup>

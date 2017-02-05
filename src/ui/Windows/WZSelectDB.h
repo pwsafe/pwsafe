@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -33,7 +33,7 @@ protected:
   CStaticExtn m_stc_warning;
   CString m_filespec;
   int m_tries, m_state;
-  int m_bAdvanced;
+  int m_bAdvanced, m_bExportDBFilters;
   CButtonBitmapExtn m_ctlSDToggle;
 
   BOOL OnInitDialog();
@@ -52,6 +52,7 @@ protected:
   afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnAdvanced();
+  afx_msg void OnExportFilters();
   afx_msg void OnPasskeySetfocus();
   afx_msg void OnPasskey2Setfocus();
   afx_msg void OnVerify2keySetfocus();

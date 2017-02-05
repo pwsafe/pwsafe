@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -332,7 +332,7 @@ class CSymbolEdit : public CEdit
   // Construction
 public:
   CSymbolEdit();
-  void SetValidSym(const stringT &s);
+  void SetValidSym(const std::wstring &s);
 
 protected:
   //{{AFX_MSG(CSymbolEdit)
@@ -342,7 +342,7 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 private:
-  stringT m_validSym; // defaults to CPasswordCharPool::GetDefaultSymbols()
+  std::wstring m_validSym; // defaults to CPasswordCharPool::GetDefaultSymbols()
 };
 
 /////////////////////////////////////////////////////////////////////////////

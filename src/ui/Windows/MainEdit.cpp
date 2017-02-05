@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -25,6 +25,7 @@
 #include "ExpPWListDlg.h"
 #include "CompareWithSelectDlg.h"
 #include "ShowCompareDlg.h"
+#include "ViewAttachmentDlg.h"
 
 #include "core/pwsprefs.h"
 #include "core/PWSAuxParse.h"
@@ -69,7 +70,7 @@ void DboxMain::OnAdd()
         if (pci != NULL) { // leaf selected
           m_TreeViewGroup = pci->GetGroup();
         } else { // node selected
-          m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
+          m_TreeViewGroup = m_mapTreeItemToGroup[ti];
         }
       }
     } else { // list view
@@ -114,7 +115,6 @@ void DboxMain::OnAdd()
 
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
-    bool bSetDefaultUser(false);
     CSecString &sxUsername = pAddEntryPSH->GetUsername();
 
     MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
@@ -124,13 +124,12 @@ void DboxMain::OnAdd()
         (prefs->GetPref(PWSprefs::QuerySetDef)) &&
         (!sxUsername.IsEmpty())) {
       CQuerySetDef defDlg(this);
-      defDlg.m_defaultusername.Format(IDS_SETUSERNAME, (const CString&)sxUsername);
+      defDlg.m_defaultusername.Format(IDS_SETUSERNAME,
+            static_cast<LPCWSTR>((const CString&)sxUsername));
 
       INT_PTR rc2 = defDlg.DoModal();
 
       if (rc2 == IDOK) {
-        bSetDefaultUser = true;
-
         // Initialise a copy of the DB preferences
         prefs->SetupCopyPrefs();
 
@@ -141,18 +140,10 @@ void DboxMain::OnAdd()
         // Set new DB preferences String value (from Copy)
         StringX sxNewDBPrefsString(prefs->Store(true));
 
-        Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
-                                                  UpdateGUICommand::WN_UNDO,
-                                                  UpdateGUICommand::GUI_REFRESH_TREE);
-        pmulticmds->Add(pcmd_undo);
-
         Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
         pmulticmds->Add(pcmd);
       }
     }
-
-    DisplayInfo *pdi = new DisplayInfo;
-    ci.SetDisplayInfo(pdi); // DisplayInfo values will be set later
 
     // Save to find it again
     const pws_os::CUUID newentry_uuid = ci.GetUUID();
@@ -173,13 +164,7 @@ void DboxMain::OnAdd()
     pmulticmds->Add(AddEntryCommand::Create(&m_core, ci, baseUUID,
                                             pAddEntryPSH->GetAtt()));
 
-    if (bSetDefaultUser) {
-      Command *pcmd3 = UpdateGUICommand::Create(&m_core,
-                                                UpdateGUICommand::WN_EXECUTE_REDO,
-                                                UpdateGUICommand::GUI_REFRESH_TREE);
-      pmulticmds->Add(pcmd3);
-    }
-
+    // Do it
     Execute(pmulticmds);
 
     if (m_core.GetNumEntries() == 1) {
@@ -189,13 +174,11 @@ void DboxMain::OnAdd()
 
     SortListView();
     m_ctlItemList.SetFocus();
-    SetChanged(Data);
 
     // Find the new entry again as DisplayInfo now updated
     ItemListIter iter = m_core.Find(newentry_uuid);
     UpdateToolBarForSelectedItem(&iter->second);
 
-    ChangeOkUpdate();
     m_RUEList.AddRUEntry(newentry_uuid);
 
     // May need to update menu/toolbar if database was previously empty
@@ -207,6 +190,7 @@ void DboxMain::OnAdd()
     else
       m_ctlItemList.SetFocus();
 
+    ChangeOkUpdate();
   } // rc == OK
   
   // Delete Add Property Sheet
@@ -240,8 +224,11 @@ void DboxMain::OnCreateShortcut()
         (prefs->GetPref(PWSprefs::QuerySetDef)) &&
         (!dlg_createshortcut.m_username.IsEmpty())) {
       CQuerySetDef defDlg(this);
-      defDlg.m_defaultusername.Format(IDS_SETUSERNAME, (const CString&)dlg_createshortcut.m_username);
+      defDlg.m_defaultusername.Format(IDS_SETUSERNAME,
+                 static_cast<LPCWSTR>((const CString&)dlg_createshortcut.m_username));
+
       INT_PTR rc2 = defDlg.DoModal();
+
       if (rc2 == IDOK) {
         // Initialise a copy of the DB preferences
         prefs->SetupCopyPrefs();
@@ -267,19 +254,21 @@ void DboxMain::OnCreateShortcut()
   }
 }
 
-void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
-                                   const StringX &cs_title, const StringX &cs_user,
+void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &sx_group,
+                                   const StringX &sx_title, const StringX &sx_user,
                                    StringX &sxNewDBPrefsString)
 {
   ASSERT(pci != NULL);
 
   CItemData ci_temp;
-  ci_temp.SetGroup(cs_group);
-  ci_temp.SetTitle(cs_title);
-  ci_temp.SetUser(cs_user);
+  ci_temp.SetGroup(sx_group);
+  ci_temp.SetTitle(sx_title);
+  ci_temp.SetUser(sx_user);
   ci_temp.SetPassword(L"[Shortcut]");
+
+  // call before setting to shortcut so that it can be moved to correct place
+  ci_temp.CreateUUID();
   ci_temp.SetShortcut();
-  ci_temp.CreateUUID(); // call after setting to shortcut!
 
   time_t t;
   time(&t);
@@ -289,24 +278,20 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
   if (!sxNewDBPrefsString.empty()) {
-    Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
-                                              UpdateGUICommand::WN_UNDO,
-                                              UpdateGUICommand::GUI_REFRESH_TREE);
-    pmulticmds->Add(pcmd_undo);
-
     Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+    pmulticmds->Add(pcmd);
+  }
+
+  if (IsEmptyGroup(sx_group)) {
+    Command *pcmd = DBEmptyGroupsCommand::Create(&m_core, sx_group,
+                                                 DBEmptyGroupsCommand::EG_DELETE);
     pmulticmds->Add(pcmd);
   }
 
   Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp, pci->GetUUID());
   pmulticmds->Add(pcmd);
 
-  if (!sxNewDBPrefsString.empty()) {
-   Command *pcmd3 = UpdateGUICommand::Create(&m_core,
-                                              UpdateGUICommand::WN_EXECUTE_REDO,
-                                              UpdateGUICommand::GUI_REFRESH_TREE);
-    pmulticmds->Add(pcmd3);
-  }
+  // Do it
   Execute(pmulticmds);
 
   // Update base item's graphic
@@ -315,9 +300,10 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
     UpdateEntryImages(iter->second);
 
   m_ctlItemList.SetFocus();
-  SetChanged(Data);
-  ChangeOkUpdate();
+
   m_RUEList.AddRUEntry(ci_temp.GetUUID());
+
+  ChangeOkUpdate();
 }
 
 //Add a group (tree view only)
@@ -345,7 +331,7 @@ void DboxMain::OnAddGroup()
         m_TreeViewGroup = L"";
       } else  {
         HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
-        m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
+        m_TreeViewGroup = m_mapTreeItemToGroup[ti];
       }
     }
 
@@ -363,7 +349,7 @@ void DboxMain::OnAddGroup()
     do {
       newGroup = m_ctlItemTree.AddGroup(s_copy.c_str(), bAlreadyExists);
       i++;
-      // Format as per Windows Exlorer "New Folder"/"New Folder (n)"
+      // Format as per Windows Explorer "New Folder"/"New Folder (n)"
       // where if 'n' present, it starts from 2
       Format(s_copy, L"%s (%d)", m_TreeViewGroup.c_str(), i);
     } while (bAlreadyExists);
@@ -395,7 +381,7 @@ void DboxMain::OnDuplicateGroup()
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
-  bool bRefresh(true), bState;
+  bool bRefresh(true), bState, bChanged(false);
   // Get selected group
   HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
 
@@ -403,7 +389,7 @@ void DboxMain::OnDuplicateGroup()
   ASSERT((CItemData *)m_ctlItemTree.GetItemData(ti) == NULL);
 
   // Get complete group name
-  StringX sxCurrentPath = (StringX)m_ctlItemTree.GetGroup(ti); // e.g., a.b.c
+  StringX sxCurrentPath = m_mapTreeItemToGroup[ti]; // e.g., a.b.c
   StringX sxCurrentGroup = (StringX)m_ctlItemTree.GetItemText(ti); // e.g., c
   size_t grplen = sxCurrentPath.length();
 
@@ -454,7 +440,6 @@ void DboxMain::OnDuplicateGroup()
 
         // Set up copy
         CItemData ci2(*pci);
-        ci2.SetDisplayInfo(NULL);
         ci2.CreateUUID();
         ci2.SetStatus(CItemData::ES_ADDED);
         ci2.SetProtected(false);
@@ -477,6 +462,10 @@ void DboxMain::OnDuplicateGroup()
         // Make copy normal to begin with - if it has dependents then when those
         // are added then its entry type will automatically be changed
         ci2.SetNormal();
+
+        // Set duplication times as per FR819
+        ci2.SetDuplicateTimes(*pci);
+
         Command *pcmd = AddEntryCommand::Create(&m_core, ci2);
         pcmd->SetNoGUINotify();
         pmulti_cmd_base->Add(pcmd);
@@ -485,7 +474,7 @@ void DboxMain::OnDuplicateGroup()
         bVNodeStates.push_back(bState);
 
         // Get group name & check if empty
-        StringX subPath = (StringX)m_ctlItemTree.GetGroup(hNextItem); // e.g., a.b.c
+        StringX subPath = m_mapTreeItemToGroup[hNextItem]; // e.g., a.b.c
         if (IsEmptyGroup(subPath)) {
           ASSERT(subPath.length() >= grplen);
           subPath = subPath.substr(grplen);
@@ -513,7 +502,6 @@ void DboxMain::OnDuplicateGroup()
 
           // Set up copy
           CItemData ci2(*pci);
-          ci2.SetDisplayInfo(NULL);
           ci2.CreateUUID();
           ci2.SetStatus(CItemData::ES_ADDED);
           ci2.SetProtected(false);
@@ -528,10 +516,14 @@ void DboxMain::OnDuplicateGroup()
           const StringX sxThisEntryNewGroup = sxNewPath + subPath;
           ci2.SetGroup(sxThisEntryNewGroup);
 
-          if (pci->IsAlias())
+          if (pci->IsAlias()) {
             ci2.SetAlias();
-          else
+          } else {
             ci2.SetShortcut();
+          }
+
+          // Set duplication times as per FR819
+          ci2.SetDuplicateTimes(*pci);
 
           Command *pcmd = NULL;
           const CItemData *pbci = GetBaseEntry(pci);
@@ -547,6 +539,7 @@ void DboxMain::OnDuplicateGroup()
             // Base not in duplicated group - use old base
             baseUUID = pbci->GetUUID();
           } // where's the base?
+
           pcmd = AddEntryCommand::Create(&m_core, ci2, baseUUID);
           pcmd->SetNoGUINotify();
           pmulti_cmd_deps->Add(pcmd);
@@ -560,39 +553,44 @@ void DboxMain::OnDuplicateGroup()
     // We either do only one set of multi-commands, none of them or both of them
     // as one multi-command (normals/bases first followed by dependents) and possibly
     // add empty groups
-    const int iDoExec = ((pmulti_cmd_base->GetSize() == 0) ? 0 : 1) +
-                        ((pmulti_cmd_deps->GetSize() == 0) ? 0 : 2);
-    if (iDoExec != 0 || pmulti_cmd_egrps->GetSize() != 0) {
+    const int iDoExec = (pmulti_cmd_base->IsEmpty() ? 0 : 1) +
+                        (pmulti_cmd_deps->IsEmpty() ? 0 : 2);
+    
+    if (iDoExec != 0 || !pmulti_cmd_egrps->IsEmpty()) {
       pcmd_undo = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_UNDO,
                                             UpdateGUICommand::GUI_UNDO_IMPORT);
       pcmd_redo = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_EXECUTE_REDO,
                                             UpdateGUICommand::GUI_REDO_IMPORT);
     }
+   
     switch (iDoExec) {
       case 0:
         // Do nothing unless there are empty groups
-        if (pmulti_cmd_egrps->GetSize() != 0) {
+        if (!pmulti_cmd_egrps->IsEmpty()) {
           pmulti_cmd_egrps->Insert(pcmd_undo);
           pmulti_cmd_egrps->Add(pcmd_redo);
           Execute(pmulti_cmd_egrps);
+          bChanged = true;
         } else
           bRefresh = false;
         break;
       case 1:
         // Only normal/base entries
         pmulti_cmd_base->Insert(pcmd_undo);
-        if (pmulti_cmd_egrps->GetSize() != 0)
+        if (!pmulti_cmd_egrps->IsEmpty())
           pmulti_cmd_base->Add(pmulti_cmd_egrps);
         pmulti_cmd_base->Add(pcmd_redo);
         Execute(pmulti_cmd_base);
+        bChanged = true;
         break;
       case 2:
         // Only dependents
         pmulti_cmd_deps->Insert(pcmd_undo);
-        if (pmulti_cmd_egrps->GetSize() != 0)
+        if (!pmulti_cmd_egrps->IsEmpty())
           pmulti_cmd_deps->Add(pmulti_cmd_egrps);
         pmulti_cmd_deps->Add(pcmd_redo);
         Execute(pmulti_cmd_deps);
+        bChanged = true;
         break;
       case 3:
       {
@@ -601,10 +599,14 @@ void DboxMain::OnDuplicateGroup()
         pmulti_cmds->Add(pcmd_undo);
         pmulti_cmds->Add(pmulti_cmd_base);
         pmulti_cmds->Add(pmulti_cmd_deps);
-        if (pmulti_cmd_egrps->GetSize() != 0)
+
+        if (!pmulti_cmd_egrps->IsEmpty()) {
           pmulti_cmds->Add(pmulti_cmd_egrps);
+        }
+
         pmulti_cmds->Add(pcmd_redo);
         Execute(pmulti_cmds);
+        bChanged = true;
         break;
       }
       default:
@@ -612,11 +614,11 @@ void DboxMain::OnDuplicateGroup()
     }
 
     // If we didn't populate the multi-commands, delete them
-    if (pmulti_cmd_base->GetSize() == 0)
+    if (pmulti_cmd_base->IsEmpty())
       delete pmulti_cmd_base;
-    if (pmulti_cmd_deps->GetSize() == 0)
+    if (pmulti_cmd_deps->IsEmpty())
       delete pmulti_cmd_deps;
-    if (pmulti_cmd_egrps->GetSize() == 0)
+    if (pmulti_cmd_egrps->IsEmpty())
       delete pmulti_cmd_egrps;
   } else { // !m_ctlItemTree.ItemHasChildren(ti)
     // User is duplicating an empty group - just add it
@@ -629,6 +631,7 @@ void DboxMain::OnDuplicateGroup()
       m_ctlItemTree.SetItemImage(ng_ti, CPWTreeCtrl::GROUP, CPWTreeCtrl::GROUP);
 
     m_mapGroupToTreeItem[sxNewPath] = ng_ti;
+    m_mapTreeItemToGroup[ng_ti] = sxNewPath;
 
     MultiCommands *pmulti_cmds = MultiCommands::Create(&m_core);
     Command *pcmd(NULL), *pcmd_undo(NULL), *pcmd_redo(NULL);
@@ -646,6 +649,7 @@ void DboxMain::OnDuplicateGroup()
     pmulti_cmds->Add(pcmd);
     pmulti_cmds->Add(pcmd_redo);
     Execute(pmulti_cmds);
+    bChanged = true;
     bRefresh = true;
   }
 
@@ -669,6 +673,10 @@ void DboxMain::OnDuplicateGroup()
   } // bRefresh
 
   m_ctlItemTree.SelectItem(ti);
+
+  if (bChanged) {
+    ChangeOkUpdate();
+  }
 }
 
 void DboxMain::OnProtect(UINT nID)
@@ -693,13 +701,12 @@ void DboxMain::OnProtect(UINT nID)
                                                nID == ID_MENUITEM_UNPROTECT ? L"0" : L"1");
     Execute(pcmd);
 
-    SetChanged(Data);
+    ChangeOkUpdate();
   } else {
     // Group
     ASSERT(nID == ID_MENUITEM_PROTECTGROUP || nID == ID_MENUITEM_UNPROTECTGROUP);
     ChangeSubtreeEntriesProtectStatus(nID);
   }
-  ChangeOkUpdate();
 }
 
 void DboxMain::OnCompareEntries()
@@ -790,8 +797,13 @@ void DboxMain::ChangeSubtreeEntriesProtectStatus(const UINT nID)
       hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
     }
   }
-  if (pmulticmds->GetSize() != 0)
+
+  if (!pmulticmds->IsEmpty()) {
     Execute(pmulticmds);
+    ChangeOkUpdate();
+  } else { // IsEmpty
+    delete pmulticmds;
+  }
 }
 
 bool DboxMain::GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected)
@@ -842,6 +854,7 @@ void DboxMain::OnDelete()
                                      GetPref(PWSprefs::DeleteQuestion));
   bool dodelete = true;
   int num_children = 0;
+  m_sxOriginalGroup = L""; // Needed if deleting a groups due to Delete recusrsion
 
   // Find number of child items, ask for confirmation if > 0
   StringX sxGroup(L""), sxTitle(L""), sxUser(L"");
@@ -850,9 +863,45 @@ void DboxMain::OnDelete()
     HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
     if (hStartItem != NULL) {
       if (m_ctlItemTree.GetItemData(hStartItem) == NULL) {  // group node
-        // ALWAYS ask if deleting a group - unless it is empty!
-        num_children = m_ctlItemTree.CountChildren(hStartItem);
+        // ALWAYS ask if deleting a group - unless it is empty or
+        // only contains empty groups!
+        m_sxOriginalGroup = m_mapTreeItemToGroup[hStartItem];
+        num_children = m_ctlItemTree.CountLeafChildren(hStartItem);
         bAskForDeleteConfirmation = num_children != 0;
+
+        // If the user just wants to delete an empty group or
+        // a group only containing empty groups - delete!
+        if (num_children == 0) {
+          MultiCommands *pmcmd = MultiCommands::Create(&m_core);
+          const StringX sxPath2 = m_sxOriginalGroup + L".";
+          const int len = sxPath2.length();
+          std::vector<StringX> vEmptyGroups = m_core.GetEmptyGroups();
+          for (size_t i = 0; i < vEmptyGroups.size(); i++) {
+            if (vEmptyGroups[i] == m_sxOriginalGroup || vEmptyGroups[i].substr(0, len) == sxPath2) {
+              pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, vEmptyGroups[i],
+                DBEmptyGroupsCommand::EG_DELETE));
+            }
+          }
+
+          // Was this empty group the only child of its parent?
+          // If so - make it empty too.
+          HTREEITEM parent = m_ctlItemTree.GetParentItem(hStartItem);
+          num_children = m_ctlItemTree.CountChildren(parent);
+          if (num_children == 1 && parent != NULL && parent != TVI_ROOT) {
+            StringX sxPath= m_mapTreeItemToGroup[parent];
+            pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxPath,
+              DBEmptyGroupsCommand::EG_ADD));
+          }
+
+          // Now do it
+          Execute(pmcmd);
+
+          // Clear current group as just deleted
+          m_TreeViewGroup = L"";
+
+          ChangeOkUpdate();
+          return;
+        }
       } else {
         pci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
       }
@@ -861,6 +910,7 @@ void DboxMain::OnDelete()
     // Ignore if more than one selected - List view only
     if (m_ctlItemList.GetSelectedCount() > 1)
       return;
+
     POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
     if (pos != NULL) {
       pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
@@ -886,7 +936,31 @@ void DboxMain::OnDelete()
   }
 
   if (dodelete) {
-    Delete();
+    // Here we delete an entry or a group containing entries
+    MultiCommands *pmcmd = MultiCommands::Create(&m_core);
+    Delete(pmcmd);
+
+    // If we were originally deleting a group with entries, we now need to delete
+    // resulting empty groups (after all sub-entries deleted) and the original group
+    if (!m_sxOriginalGroup.empty()) {
+      const StringX sxPath2 = m_sxOriginalGroup + L".";
+      const int len = sxPath2.length();
+      std::vector<StringX> vEmptyGroups = m_core.GetEmptyGroups();
+      for (size_t i = 0; i < vEmptyGroups.size(); i++) {
+        if (vEmptyGroups[i] == m_sxOriginalGroup || vEmptyGroups[i].substr(0, len) == sxPath2) {
+          pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, vEmptyGroups[i],
+            DBEmptyGroupsCommand::EG_DELETE));
+        }
+      }
+    }
+
+    // Now do it
+    if (!pmcmd->IsEmpty()) {
+      Execute(pmcmd);
+    } else {
+      delete pmcmd;
+    }
+
     // Only refresh views if an entry or a non-empty group was deleted
     // If we refresh when deleting an empty group, the user will lose all
     // other empty groups
@@ -897,7 +971,7 @@ void DboxMain::OnDelete()
   }
 }
 
-void DboxMain::Delete()
+void DboxMain::Delete(MultiCommands *pmcmd)
 {
   // "Top level" element delete:
   // 1. Sets up Command mechanism
@@ -905,33 +979,46 @@ void DboxMain::Delete()
   // 3. Executes, updates UI.
 
   CItemData *pci = getSelectedItem();
-  MultiCommands *pmcmd = MultiCommands::Create(&m_core);
 
   if (pci != NULL) {
     // Easy option - just one entry
-    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    DisplayInfo *pdi = GetEntryGUIInfo(*pci);
+
     bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
                       (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
-    // Now delete single entry
-    pmcmd->Add(Delete(pci));
 
-    // Check if last entry in group and if so - add group to empty groups
-    if (bLastEntry) {
-      pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, pci->GetGroup(),
-        DBEmptyGroupsCommand::EG_ADD));
+    // Now delete single entry
+    Command *pcmd = Delete(pci);
+
+    // pcmd can by NULL if user says No to confirm delete of a base entry!
+    if (pcmd != NULL) {
+      pmcmd->Add(pcmd);
+
+      // Check if last entry in group and if so - add group to empty groups
+      if (bLastEntry) {
+        StringX sxGroup = pci->GetGroup();
+        if (!sxGroup.empty()) {
+          // Only add group if not root
+          pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxGroup,
+            DBEmptyGroupsCommand::EG_ADD));
+        }
+      }
     }
   } else
   if (m_ctlItemTree.IsWindowVisible()) {
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
     // Deleting a Group
     HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
+    // Only interested in children of the parent - not grand-children etc.
+    const int numchildren = m_ctlItemTree.CountChildren(parent, false);
 
     // We need to collect bases and dependents separately, deleting the latter first
     // so that an undo will add bases first.
     std::vector<Command *> vbases, vdeps, vemptygrps;
 
     // Generate commands
-    Delete(ti, vbases, vdeps, vemptygrps);
+    // Note - as deleting a group - don't make this top level group empty
+    Delete(ti, vbases, vdeps, vemptygrps, true);
 
     // Delete normal and dependent entries
     std::for_each(vdeps.begin(), vdeps.end(),
@@ -947,11 +1034,14 @@ void DboxMain::Delete()
       [&](Command *cmd) {pmcmd->Add(cmd);});
 
     m_ctlItemTree.SelectItem(parent);
-    m_TreeViewGroup = L"";
-  }
 
-  if (pmcmd->GetSize() > 0) {
-    Execute(pmcmd);
+    // If this was the last group - make parent empty.
+    if (numchildren == 1) {
+      const StringX sxPath = m_ctlItemTree.GetGroup(parent);
+      pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxPath,
+        DBEmptyGroupsCommand::EG_ADD));
+    }
+    m_TreeViewGroup = L"";
   }
 }
 
@@ -961,8 +1051,6 @@ Command *DboxMain::Delete(const CItemData *pci)
   // Normal, base, alias, shortcut...
   // ONLY called when deleting a group and all its entries
   ASSERT(pci != NULL);
-  pws_os::Trace(L"DboxMain::Delete(%s.%s)\n", pci->GetGroup().c_str(),
-        pci->GetTitle().c_str());
 
   // ConfirmDelete asks for user confirmation
   // when deleting a shortcut or alias base.
@@ -987,7 +1075,8 @@ struct FindGroupFromHTREEITEM {
 void DboxMain::Delete(HTREEITEM ti,
                       std::vector<Command *> &vbases,
                       std::vector<Command *> &vdeps,
-                      std::vector<Command *> &vemptygrps)
+                      std::vector<Command *> &vemptygrps,
+                      bool bExcludeTopGroup)
 {
   // Delete a group
   // Create a multicommand, iterate over tree's children,
@@ -1000,18 +1089,19 @@ void DboxMain::Delete(HTREEITEM ti,
   if (m_ctlItemTree.IsLeaf(ti)) {
     // normal bottom out of recursion
     CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
-    if (pci->IsBase())
+    if (pci->IsBase() || pci->IsNormal())
       vbases.push_back(Delete(pci));
     else
       vdeps.push_back(Delete(pci));
   }
 
-  // Here if we have a bona fida group
+  // Here if we have a bona fide group
   ASSERT(ti != NULL && !m_ctlItemTree.IsLeaf(ti));
   
-  StringX sxPath = m_ctlItemTree.GetGroup(ti);
+  StringX sxPath = m_mapTreeItemToGroup[ti];
   // Check if an Empty Group
-  if (m_ctlItemTree.ItemHasChildren(ti) != 0) {
+  if (m_ctlItemTree.ItemHasChildren(ti) != 0 && !bExcludeTopGroup &&
+    m_sxOriginalGroup == sxPath) {
     // Non-empty group - convert to empty if user want to keep it
     vemptygrps.push_back(DBEmptyGroupsCommand::Create(&m_core, sxPath,
       DBEmptyGroupsCommand::EG_ADD));
@@ -1051,8 +1141,9 @@ void DboxMain::OnRename()
       }
       m_bInRename = true;
       m_ctlItemTree.EditLabel(hItem);
-      if (m_bFilterActive && m_ctlItemTree.WasLabelEdited())
+      if (m_ctlItemTree.WasLabelEdited())
         RefreshViews();
+
       m_bInRename = false;
     }
   }
@@ -1070,10 +1161,22 @@ void DboxMain::OnEdit()
         if (!m_bViaDCA) {
           EditShortcut(pci);
         } else {
+          // Save entry UUID in case DB locked
+          pws_os::CUUID entryuuid = pci->GetUUID();
           EditItem(GetBaseEntry(pci));
+
+          // If DB was locked then the pci will not be valid and the number of entries will be zero
+          // (otherwise shouldn't be since we were just editing one) - so use entry's UUID
+          UpdateAccessTime(entryuuid);
         }
       }  else {
+        // Save entry UUID in case DB locked
+        pws_os::CUUID entryuuid = pci->GetUUID();
         EditItem(pci);
+
+        // If DB was locked then the pci will not be valid and the number of entries will be zero
+        // (otherwise shouldn't be since we were just editing one) - so use entry's UUID
+        UpdateAccessTime(entryuuid);
       }
     } catch (CString &err) {
       CGeneralMsgBox gmb;
@@ -1114,7 +1217,8 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   // As pci may be invalidated if database is Locked while in this routine,
   // we use a clone
   CItemData ci_original(*pci);
-  pci = NULL; // Set to NULL - should use ci_original
+
+  pci = NULL; // Set to NULL - use ci_original
 
   const UINT uicaller = pcore->IsReadOnly() ? IDS_VIEWENTRY : IDS_EDITENTRY;
 
@@ -1179,11 +1283,10 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   return brc;
 }
 
-LRESULT DboxMain::OnApplyEditChanges(WPARAM wParam, LPARAM lParam)
+LRESULT DboxMain::OnApplyEditChanges(WPARAM wParam, LPARAM )
 {
   // Called if user does 'Apply' on the Add/Edit property sheet via
   // Windows Message PWS_MSG_EDIT_APPLY
-  UNREFERENCED_PARAMETER(lParam);
   CAddEdit_PropertySheet *pentry_psh = (CAddEdit_PropertySheet *)wParam;
   UpdateEntry(pentry_psh);
   return 0L;
@@ -1205,11 +1308,19 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   MultiCommands *pmulticmds = MultiCommands::Create(pcore);
   Command *pcmd(NULL);
 
+  // Determine if last entry in this group just in case the user changes the group
+  DisplayInfo *pdi = GetEntryGUIInfo(*pci_original);
+  bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
+                    (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
+
   StringX newPassword = ci_new.GetPassword();
 
   CUUID original_base_uuid = CUUID::NullUUID();
   CUUID new_base_uuid = pentry_psh->GetBaseUUID();
   CUUID original_uuid = pci_original->GetUUID();
+
+  StringX sxPWH = pci_original->GetPWHistory();
+  bool bTemporaryChangeOfPWH(false), bAliasBecomingNormal(false);
 
   if (pci_original->IsDependent()) {
     const CItemData *pci_orig_base = m_core.GetBaseEntry(pci_original);
@@ -1226,6 +1337,8 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
                                                      original_uuid,
                                                      CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
+
+      // We can allow saving of the current password in the ALias PWH this time
       ci_new.SetPassword(L"[Alias]");
       ci_new.SetAlias();
       ci_new.SetBaseUUID(new_base_uuid);
@@ -1236,34 +1349,42 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   } // Normal entry, password changed
 
   if (pentry_psh->GetOriginalEntrytype() == CItemData::ET_ALIAS) {
-    // Original was an alias - delete it from multimap
-    // RemoveDependentEntry also resets base to normal if no more dependents
-    pcmd = RemoveDependentEntryCommand::Create(pcore, original_base_uuid,
-                                                      original_uuid,
-                                                      CItemData::ET_ALIAS);
-    pmulticmds->Add(pcmd);
-    if (newPassword == pentry_psh->GetBase()) {
-      // Password (i.e. base) unchanged - put it back
-      pcmd = AddDependentEntryCommand::Create(pcore, original_base_uuid,
-                                                     original_uuid,
-                                                     CItemData::ET_ALIAS);
+    // Original was an alias
+    // Only remove alias from multimap if base has changed (either to another
+    // base or none [alias now a normal entry].
+    if (new_base_uuid != original_base_uuid) {
+      // Its base has been changed or removed to become a normal entry again
+      // RemoveDependentEntry also resets base to normal if no more dependents
+      pcmd = RemoveDependentEntryCommand::Create(pcore, original_base_uuid,
+                                                        original_uuid,
+                                                        CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
-    } else { // Password changed
+
       // Password changed so might be an alias of another entry!
-      // Could also be the same entry i.e. [:t:] == [t] !
       if (pentry_psh->GetIBasedata() > 0) { // Still an alias
         pcmd = AddDependentEntryCommand::Create(pcore, new_base_uuid,
                                                        original_uuid,
                                                        CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
-        ci_new.SetPassword(L"[Alias]");
+
         ci_new.SetAlias();
         ci_new.SetBaseUUID(new_base_uuid);
       } else { // No longer an alias
+        // Temporarily disable password history so it doesn't have the special
+        // password of [Alias] saved into it on reverting to normal
+        bAliasBecomingNormal = true;
+        if (!sxPWH.empty() && sxPWH.substr(0, 1) == L"1") {
+          bTemporaryChangeOfPWH = true;
+          sxPWH[0] = L'0';
+          ci_new.SetPWHistory(sxPWH);
+        }
+
+        // Change password
         ci_new.SetPassword(newPassword);
+        // Now set as a normal entry - this will also clear old base_uuid
         ci_new.SetNormal();
-      }
-    } // Password changed
+      } // Password changed
+    } // base uuids changed
   } // Alias
 
   if (pentry_psh->GetOriginalEntrytype() == CItemData::ET_ALIASBASE &&
@@ -1276,19 +1397,62 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
                                                      original_uuid,
                                                      CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
-      ci_new.SetPassword(L"[Alias]");
+
       ci_new.SetAlias();
       ci_new.SetBaseUUID(new_base_uuid);
-      // Move old aliases across
+
+      // Move old aliases across in core multimap
       pcmd = MoveDependentEntriesCommand::Create(pcore, original_uuid,
                                                         new_base_uuid,
                                                         CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
+
+      // Now actually move the aliases
+      const CUUID old_base_uuid = pci_original->GetUUID();
+      UUIDVector tlist;
+      m_core.GetAllDependentEntries(old_base_uuid, tlist, CItemData::ET_ALIAS);
+      for (size_t idep = 0; idep < tlist.size(); idep++) {
+        ItemListIter alias_iter = m_core.Find(tlist[idep]);
+        CItemData ci_oldalias(alias_iter->second);
+        CItemData ci_newalias(ci_oldalias);
+        ci_newalias.SetBaseUUID(new_base_uuid);
+        pcmd = EditEntryCommand::Create(pcore, ci_oldalias, ci_newalias);
+        pmulticmds->Add(pcmd);
+      }
     } else { // Still a base entry but with a new password
       ci_new.SetPassword(newPassword);
-      ci_new.SetAliasBase();
     }
   } // AliasBase with password changed
+
+  if (pentry_psh->GetOriginalEntrytype() == CItemData::ET_SHORTCUTBASE &&
+      pci_original->GetPassword() != newPassword) {
+    // Original was a shortcut base and can only become a normal entry
+    if (pentry_psh->GetIBasedata() > 0) {
+      // Now an alias
+      // Make this one an alias
+      pcmd = AddDependentEntryCommand::Create(pcore, new_base_uuid,
+                                                     original_uuid,
+                                                     CItemData::ET_ALIAS);
+      pmulticmds->Add(pcmd);
+
+      ci_new.SetPassword(L"[Alias]");
+      ci_new.SetAlias();
+      ci_new.SetBaseUUID(new_base_uuid);
+
+      // Delete shortcuts
+      const CUUID old_base_uuid = pci_original->GetUUID();
+      UUIDVector tlist;
+      m_core.GetAllDependentEntries(old_base_uuid, tlist, CItemData::ET_SHORTCUT);
+      for (size_t idep = 0; idep < tlist.size(); idep++) {
+        ItemListIter shortcut_iter = m_core.Find(tlist[idep]);
+        pcmd = DeleteEntryCommand::Create(&m_core, shortcut_iter->second);
+        pmulticmds->Add(pcmd);
+      }
+    } else { // Still a base entry but with a new password
+      ci_new.SetPassword(newPassword);
+      ci_new.SetShortcutBase();
+    }
+  } // ShortcutBase with password changed
 
   // Update old base...
   iter = pcore->Find(original_base_uuid);
@@ -1296,7 +1460,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
     UpdateEntryImages(iter->second);
 
   // ... and the new base entry (only if different from the old one)
-  if (CUUID(new_base_uuid) != CUUID(original_base_uuid)) {
+  if (new_base_uuid != pws_os::CUUID::NullUUID() && new_base_uuid != original_base_uuid) {
     iter = pcore->Find(new_base_uuid);
     if (iter != End())
       UpdateEntryImages(iter->second);
@@ -1309,8 +1473,33 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
 
   ci_new.SetStatus(CItemData::ES_MODIFIED);
 
+  // Now actually do the edit!
   pcmd = EditEntryCommand::Create(pcore, *(pci_original), ci_new);
   pmulticmds->Add(pcmd);
+
+  DisplayInfo *pdiold = GetEntryGUIInfo(*pci_original);
+  ASSERT(pdiold != NULL);
+
+  const HTREEITEM hItemOld = pdiold->tree_item;
+  pws_os::Trace(L"UpdateEntry old %08x\n", hItemOld);
+
+  const HTREEITEM hItemNew = pdiold->tree_item;
+
+  DisplayInfo *pdinew = GetEntryGUIInfo(ci_new);
+  ASSERT(pdinew != NULL);
+
+  pws_os::Trace(L"UpdateEntry new %08x\n", hItemNew);
+
+  // Restore PWH as it was before it became an alias if we had changed it
+  if (bAliasBecomingNormal) {
+    if (bTemporaryChangeOfPWH) {
+      sxPWH[0] = L'1';
+    }
+    pcmd = UpdateEntryCommand::Create(pcore, ci_new,
+                                      CItemData::PWHIST,
+                                      sxPWH);
+    pmulticmds->Add(pcmd);
+  }
 
   const StringX &sxNewGroup = ci_new.GetGroup();
   if (m_core.IsEmptyGroup(sxNewGroup)) {
@@ -1319,13 +1508,31 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
       DBEmptyGroupsCommand::EG_DELETE));
   }
 
+  // Check if group changed and last entry in group and, if so,
+  // add original group to empty groups
+  if (bLastEntry && pci_original->GetGroup() != sxNewGroup) {
+    pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, pci_original->GetGroup(),
+      DBEmptyGroupsCommand::EG_ADD));
+
+    // If new group currently empty - it isn't now
+    if (IsEmptyGroup(sxNewGroup)) {
+      pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, sxNewGroup,
+        DBEmptyGroupsCommand::EG_DELETE));
+    }
+  }
+
+  // Do it
   Execute(pmulticmds, pcore);
 
-  SetChanged(Data);
   ChangeOkUpdate();
 
   // Order may have changed as a result of edit
-  m_ctlItemTree.SortTree(TVI_ROOT);
+  // Check if we need to though!
+  if (m_ctlItemTree.MakeTreeDisplayString(*pci_original) != 
+      m_ctlItemTree.MakeTreeDisplayString(ci_new)) {
+    m_ctlItemTree.SortTree(TVI_ROOT);
+  }
+
   SortListView();
 
   short sh_odca, sh_ndca;
@@ -1340,7 +1547,8 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   UpdateEntryImages(ci_new);
 
   // Update display if no longer passes filter criteria
-  if (m_bFilterActive && !PassesFiltering(ci_new, m_currentfilter)) {
+  if (m_bFilterActive &&
+      !m_FilterManager.PassesFiltering(ci_new, m_core)) {
       RefreshViews();
       return;
   }
@@ -1348,8 +1556,8 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   // Reselect entry, where-ever it may be
   iter = m_core.Find(original_uuid);
   if (iter != End()) {
-    DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
-    SelectEntry(pdi->list_index);
+    DisplayInfo *pnew_di = GetEntryGUIInfo(iter->second);
+    SelectEntry(pnew_di->list_index);
   }
 }
 
@@ -1361,10 +1569,19 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.
   CItemData ci_edit(*pci);
+
   // As pci may be invalidated if database is Locked while in this routine,
   // we use a clone
   CItemData ci_original(*pci);
-  pci = NULL; // Set to NULL - should use ci_original
+
+  pci = NULL; // Set to NULL - use ci_original
+
+  pws_os::CUUID entryuuid = ci_original.GetUUID();
+
+  // Determine if last entry in this group just in case the user changes the group
+  DisplayInfo *pdi = GetEntryGUIInfo(ci_original);
+  bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
+                    (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
 
   const CItemData *pbci = GetBaseEntry(&ci_original);
 
@@ -1394,14 +1611,44 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
     ci_edit.SetXTime((time_t)0);
     ci_edit.SetStatus(CItemData::ES_MODIFIED);
 
-    Command *pcmd = EditEntryCommand::Create(pcore, ci_original, ci_edit);
-    Execute(pcmd, pcore);
-    SetChanged(Data);
+    MultiCommands *pmulticmds = MultiCommands::Create(pcore);
+
+    Command *pcmd_undo = UpdateGUICommand::Create(&m_core,
+                                                          UpdateGUICommand::WN_UNDO,
+                                                          UpdateGUICommand::GUI_REFRESH_ENTRY,
+                                                          entryuuid);
+    pmulticmds->Add(pcmd_undo);
+
+    pmulticmds->Add(EditEntryCommand::Create(pcore, ci_original, ci_edit));
+
+    // Check if group changed and last entry in group and, if so,
+    // add original group to empty groups
+    const StringX &sxNewGroup = ci_edit.GetGroup();
+    if (bLastEntry && ci_original.GetGroup() != sxNewGroup) {
+      pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, ci_original.GetGroup(),
+        DBEmptyGroupsCommand::EG_ADD));
+
+      // If new group currently empty - it isn't now
+      if (IsEmptyGroup(sxNewGroup)) {
+        pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, sxNewGroup,
+          DBEmptyGroupsCommand::EG_DELETE));
+      }
+    }
+
+    Command *pcmd_redo = UpdateGUICommand::Create(&m_core,
+                                                          UpdateGUICommand::WN_REDO,
+                                                          UpdateGUICommand::GUI_REFRESH_ENTRY,
+                                                          entryuuid);
+
+    pmulticmds->Add(pcmd_redo);
+
+    // Do it
+    Execute(pmulticmds, pcore);
 
     // DisplayInfo's copied and changed, get up-to-date version
-    DisplayInfo *pdi = static_cast<DisplayInfo *>
-         (pcore->GetEntry(pcore->Find(ci_original.GetUUID())).GetDisplayInfo());
-    rc = SelectEntry(pdi->list_index);
+    CItemData &cidp = pcore->GetEntry(pcore->Find(ci_original.GetUUID()));
+    DisplayInfo *pnew_di = GetEntryGUIInfo(cidp);
+    rc = SelectEntry(pnew_di->list_index);
 
     if (rc == 0) {
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
@@ -1423,8 +1670,7 @@ void DboxMain::OnDuplicateEntry()
   if (SelItemOk() == TRUE) {
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
-    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-    ASSERT(pdi != NULL);
+    DisplayInfo *pdi = GetEntryGUIInfo(*pci);
 
     // Get information from current selected entry
     const StringX ci2_group = pci->GetGroup();
@@ -1445,7 +1691,6 @@ void DboxMain::OnDuplicateEntry()
 
     // Set up new entry
     CItemData ci2(*pci);
-    ci2.SetDisplayInfo(NULL);
     ci2.CreateUUID();
     ci2.SetGroup(ci2_group);
     ci2.SetTitle(ci2_title);
@@ -1472,23 +1717,24 @@ void DboxMain::OnDuplicateEntry()
       ci2.SetNormal();
     }
 
+    // Set duplication times as per FR819
+    ci2.SetDuplicateTimes(*pci);
+
     Execute(AddEntryCommand::Create(&m_core, ci2, baseUUID));
 
-    pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
+    // so that InsertItemIntoGUITreeList will set new values
+    pdi->list_index = -1;
+    pdi->tree_item = 0;
 
     ItemListIter iter = m_core.Find(ci2.GetUUID());
     ASSERT(iter != m_core.GetEntryEndIter());
 
     InsertItemIntoGUITreeList(m_core.GetEntry(iter));
     FixListIndexes();
-    SetChanged(Data);
 
-    int rc = SelectEntry(pdi->list_index);
-    if (rc == 0) {
-      SelectEntry(m_ctlItemList.GetItemCount() - 1);
-    }
-    ChangeOkUpdate();
     m_RUEList.AddRUEntry(ci2.GetUUID());
+
+    ChangeOkUpdate();
   }
 }
 
@@ -1499,7 +1745,6 @@ void DboxMain::OnDisplayPswdSubset()
 
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
-
 
   if (pci->IsDependent()) {
     pci = GetBaseEntry(pci);
@@ -1558,8 +1803,8 @@ void DboxMain::OnCopyRunCommand()
 
 void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSpecial)
 {
-  // Boolean 'bSpecial' flag is CItemData::FieldType 'ft' dependent
-  // For example:
+  // bSpecial's meaning depends on ft:
+  //
   //   For "CItemData::PASSWORD": "bSpecial" == true means "Minimize after copy"
   //   For "CItemData::RUNCMD":   "bSpecial" == true means "Do NOT expand the Run command"
   if (SelItemOk() != TRUE)
@@ -1568,16 +1813,15 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
+  CItemData *pbci(NULL);
   const pws_os::CUUID uuid = pci->GetUUID();
 
-  if ((pci->IsShortcut() && ft != CItemData::USER) ||
-      (pci->IsAlias() && ft == CItemData::PASSWORD)) {
-    CItemData *pbci = GetBaseEntry(pci);
+  if (pci->IsDependent()) {
+    pbci = GetBaseEntry(pci);
     ASSERT(pbci != NULL);
-    pci = pbci;
   }
 
-  StringX sxData;
+  StringX sxData = pci->GetEffectiveFieldValue(ft, pbci);
 
   switch (ft) {
     case CItemData::PASSWORD:
@@ -1587,22 +1831,18 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
       if (clearDlg.m_dontaskquestion == FALSE &&
           clearDlg.DoModal() == IDCANCEL)
         return;
-      sxData = pci->GetPassword();
       if (bSpecial) {
         ShowWindow(SW_MINIMIZE);
       }
       break;
     }
     case CItemData::USER:
-      sxData = pci->GetUser();
       break;
     case CItemData::NOTES:
-      sxData = pci->GetNotes();
       break;
     case CItemData::URL:
     {
       StringX::size_type ipos;
-      sxData = pci->GetURL();
       ipos = sxData.find(L"[alt]");
       if (ipos != StringX::npos)
         sxData.replace(ipos, 5, L"");
@@ -1621,17 +1861,11 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
       break;
     }
     case CItemData::RUNCMD:
-      sxData = pci->GetRunCommand();
       if (!bSpecial) {
         // Expand Run Command
         std::wstring errmsg;
         size_t st_column;
         bool bURLSpecial;
-
-        CItemData *pbci = NULL;
-        if (pci->IsAlias()) {
-          pbci = GetBaseEntry(pci);
-        }
 
         sxData = PWSAuxParse::GetExpandedString(sxData,
                                                  m_core.GetCurFile(),
@@ -1639,7 +1873,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
                                                  m_bDoAutoType,
                                                  m_sxAutoType,
                                                  errmsg, st_column, bURLSpecial);
-        if (errmsg.length() > 0) {
+        if (!errmsg.empty()) {
           CGeneralMsgBox gmb;
           CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
           CString cs_errmsg;
@@ -1649,7 +1883,6 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
       }
       break;
     case CItemData::EMAIL:
-      sxData = pci->GetEmail();
       break;
     default:
       ASSERT(0);
@@ -1662,6 +1895,8 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
 
 void DboxMain::UpdateLastClipboardAction(const int iaction)
 {
+  // Note use of CItemData::RESERVED for indicating in the
+  // Status bar that an old password has been copied
   int imsg(0);
   m_lastclipboardaction = L"";
   switch (iaction) {
@@ -1696,6 +1931,12 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
     case CItemData::EMAIL:
       imsg = IDS_EMAILCOPIED;
       break;
+    case CItemData::PWHIST:
+      imsg = IDS_PWHISTORYCOPIED;
+      break;
+    case CItemData::RESERVED:
+      imsg = IDS_OLDPSWDCOPIED;
+      break;
     default:
       ASSERT(0);
       return;
@@ -1713,12 +1954,6 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
 
   m_ilastaction = iaction;
   UpdateStatusBar();
-}
-
-void DboxMain::OnShowFindToolbar()
-{
-  // Show Find Toolbar
-  SetFindToolBar(true);
 }
 
 void DboxMain::OnClearClipboard()
@@ -1755,14 +1990,11 @@ void DboxMain::OnAutoType()
   CItemData *pci(NULL);
   if (m_ctlItemTree.IsWindowVisible() && m_LastFoundTreeItem != NULL) {
     pci = (CItemData *)m_ctlItemTree.GetItemData(m_LastFoundTreeItem);
-    pws_os::Trace(L"OnAutoType: Using Tree found item\n");
   } else
   if (m_ctlItemList.IsWindowVisible() && m_LastFoundListItem >= 0) {
     pci = (CItemData *)m_ctlItemList.GetItemData(m_LastFoundListItem);
-    pws_os::Trace(L"OnAutoType: Using List found item\n");
   } else {
     pci = getSelectedItem();
-    pws_os::Trace(L"OnAutoType: Using Selected item\n");
   }
 
   if (pci == NULL)
@@ -1771,7 +2003,7 @@ void DboxMain::OnAutoType()
   UpdateAccessTime(pci->GetUUID());
 
   // All code using ci must be before this AutoType since the
-  // latter may trash *pci if lock-on-minimize
+  // *pci may be trashed if lock-on-minimize
   AutoType(*pci);
 }
 
@@ -1834,7 +2066,7 @@ void DboxMain::OnGotoBaseEntry()
 
     const CItemData *pbci = GetBaseEntry(pci);
     if (pbci != NULL) {
-      DisplayInfo *pdi = (DisplayInfo *)pbci->GetDisplayInfo();
+      DisplayInfo *pdi = GetEntryGUIInfo(*pbci);
       SelectEntry(pdi->list_index);
       UpdateAccessTime(pci->GetUUID());
     }
@@ -1851,7 +2083,7 @@ void DboxMain::OnEditBaseEntry()
     CItemData *pbci = GetBaseEntry(pci);
     if (pbci != NULL) {
       const pws_os::CUUID uuid = pbci->GetUUID();
-      DisplayInfo *pdi = (DisplayInfo *)pbci->GetDisplayInfo();
+      DisplayInfo *pdi = GetEntryGUIInfo(*pbci);
       SelectEntry(pdi->list_index);
       EditItem(pbci);
       UpdateAccessTime(uuid);
@@ -1859,7 +2091,7 @@ void DboxMain::OnEditBaseEntry()
   }
 }
 
-void DboxMain::OnRunCommand()
+void DboxMain::OnViewAttachment()
 {
   if (SelItemOk() != TRUE)
     return;
@@ -1867,35 +2099,62 @@ void DboxMain::OnRunCommand()
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-  CItemData *pbci = NULL;
+  if (!pci->HasAttRef())
+    return;
 
-  const pws_os::CUUID uuid = pci->GetUUID();
-  StringX sx_pswd;
+  ASSERT(m_core.HasAtt(pci->GetAttUUID()));
+  CItemAtt att = m_core.GetAtt(pci->GetAttUUID());
 
-  if (pci->IsDependent()) {
-    pbci = GetBaseEntry(pci);
-    ASSERT(pbci != NULL);
-    sx_pswd = pbci->GetPassword();
-    if (pci->IsShortcut()) {
-      pci = pbci;
-      pbci = NULL;
-    }
-  } else {
-    sx_pswd = pci->GetPassword();
+  // Shouldn't be here if no content
+  if (!att.HasContent())
+    return;
+
+  // Get media type before we find we can't load it
+  CString csMediaType = att.GetMediaType().c_str();
+
+  if (csMediaType.Left(5) != L"image") {
+    CGeneralMsgBox gmb;
+    CString csMessage(MAKEINTRESOURCE(IDS_NOPREVIEW_AVAILABLE));
+    CString csTitle(MAKEINTRESOURCE(IDS_VIEWATTACHMENT));
+    gmb.MessageBox(csMessage, csTitle, MB_OK);
+    return;
   }
 
-  StringX sx_RunCommand, sx_Expanded_ES;
-  sx_RunCommand = pci->GetRunCommand();
-  if (sx_RunCommand.empty())
+  CViewAttachmentDlg viewdlg(this, &att);
+
+  viewdlg.DoModal();
+}
+
+void DboxMain::OnRunCommand()
+{
+  if (SelItemOk() != TRUE)
+    return;
+
+  const CItemData *pci = getSelectedItem();
+  ASSERT(pci != NULL);
+  if (pci == NULL)
+    return;
+
+  const CItemData *pbci = pci->IsDependent() ? m_core.GetBaseEntry(pci) : nullptr;
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+
+  if (!PWSAuxParse::GetEffectiveValues(pci, pbci, sx_group, sx_title, sx_user,
+                                       sx_pswd, sx_lastpswd,
+                                       sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
+    return;
+
+  StringX sx_Expanded_ES;
+  if (sx_runcmd.empty())
     return;
 
   std::wstring errmsg;
   StringX::size_type st_column;
   bool bURLSpecial;
-  sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_RunCommand,
-                       m_core.GetCurFile(), pci, pbci,
-                       m_bDoAutoType, m_sxAutoType,
-                       errmsg, st_column, bURLSpecial);
+  sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_runcmd,
+                                                   m_core.GetCurFile(), pci, pbci,
+                                                   m_bDoAutoType, m_sxAutoType,
+                                                   errmsg, st_column, bURLSpecial);
+
   if (!errmsg.empty()) {
     CGeneralMsgBox gmb;
     CString cs_title, cs_errmsg;
@@ -1905,16 +2164,18 @@ void DboxMain::OnRunCommand()
     return;
   }
 
+  pws_os::CUUID uuid = pci->GetUUID();
+
   // if no autotype value in run command's $a(value), start with item's (bug #1078)
   if (m_sxAutoType.empty())
     m_sxAutoType = pci->GetAutoType();
 
-  m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType, pci->GetGroup(),
-                                 pci->GetTitle(), pci->GetUser(),
-                                 sx_pswd, pci->GetNotes(),
-                                 pci->GetURL(), pci->GetEmail(),
-                                 m_vactionverboffsets);
-  SetClipboardData(pci->GetPassword());
+  m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType,
+                                                sx_group, sx_title, sx_user,
+                                                sx_pswd, sx_lastpswd,
+                                                sx_notes, sx_url, sx_email,
+                                                m_vactionverboffsets);
+  SetClipboardData(sx_pswd);
   UpdateLastClipboardAction(CItemData::PASSWORD);
   UpdateAccessTime(uuid);
 
@@ -1945,7 +2206,8 @@ void DboxMain::OnRunCommand()
   }
 }
 
-void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
+void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
+                            const std::vector<StringX> &vsxEmptyGroups)
 {
   // Add Drop entries
   CItemData ci_temp;
@@ -1964,6 +2226,9 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
   m_core.InitialiseGTU(setGTU);
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+  pmulticmds->Add(UpdateGUICommand::Create(&m_core,
+     UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
 
   for (pos = in_oblist.GetHeadPosition(); pos != NULL; in_oblist.GetNext(pos)) {
     CDDObject *pDDObject = (CDDObject *)in_oblist.GetAt(pos);
@@ -2072,13 +2337,17 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
           // This base is in fact an alias. ParseBaseEntryPWD already found 'proper base'
           // So dropped entry will point to the 'proper base' and tell the user.
           CString cs_msg;
-          cs_msg.Format(IDS_DDBASEISALIAS, sxgroup, sxtitle, sxuser);
+          cs_msg.Format(IDS_DDBASEISALIAS, static_cast<LPCWSTR>(sxgroup.c_str()),
+                        static_cast<LPCWSTR>(sxtitle.c_str()),
+                        static_cast<LPCWSTR>(sxuser.c_str()));
           gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
         } else
         if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
           // Only normal or alias base allowed as target
           CString cs_msg;
-          cs_msg.Format(IDS_ABASEINVALID, sxgroup, sxtitle, sxuser);
+          cs_msg.Format(IDS_ABASEINVALID, static_cast<LPCWSTR>(sxgroup.c_str()),
+                        static_cast<LPCWSTR>(sxtitle.c_str()),
+                        static_cast<LPCWSTR>(sxuser.c_str()));
           gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
           continue;
         }
@@ -2086,6 +2355,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
                                                          ci_temp.GetUUID(),
                                                          CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
+
         ci_temp.SetPassword(L"[Alias]");
         ci_temp.SetAlias();
       } else
@@ -2095,7 +2365,9 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
         if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_SHORTCUTBASE) {
           // Only normal or shortcut base allowed as target
           CString cs_msg;
-          cs_msg.Format(IDS_SBASEINVALID, sxgroup, sxtitle, sxuser);
+          cs_msg.Format(IDS_SBASEINVALID, static_cast<LPCWSTR>(sxgroup.c_str()),
+                        static_cast<LPCWSTR>(sxtitle.c_str()),
+                        static_cast<LPCWSTR>(sxuser.c_str()));
           gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
           continue;
         }
@@ -2104,6 +2376,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
                                                          ci_temp.GetUUID(),
                                                          CItemData::ET_SHORTCUT);
         pmulticmds->Add(pcmd);
+
         ci_temp.SetPassword(L"[Shortcut]");
         ci_temp.SetShortcut();
       }
@@ -2140,26 +2413,58 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
 
     // Add to pwlist
     Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
+
     if (!bAddToViews) {
       // ONLY Add to pwlist and NOT to Tree or List views
       // After the call to AddDependentEntries for shortcuts, check if still
       // in password list and, if so, then add to Tree + List views
       pcmd->SetNoGUINotify();
     }
+
     pmulticmds->Add(pcmd);
   } // iteration over in_oblist
 
   // Now try to add aliases/shortcuts we couldn't add in previous processing
-  Command *pcmdA = AddDependentEntriesCommand::Create(&m_core,
-                                                      Possible_Aliases, NULL,
-                                                      CItemData::ET_ALIAS,
-                                                      CItemData::PASSWORD);
-  pmulticmds->Add(pcmdA);
-  Command *pcmdS = AddDependentEntriesCommand::Create(&m_core,
-                                                      Possible_Shortcuts, NULL,
-                                                      CItemData::ET_SHORTCUT,
-                                                      CItemData::PASSWORD);
-  pmulticmds->Add(pcmdS);
+  if (!Possible_Aliases.empty()) {
+    Command *pcmdA = AddDependentEntriesCommand::Create(&m_core,
+                                                        Possible_Aliases, NULL,
+                                                        CItemData::ET_ALIAS,
+                                                        CItemData::PASSWORD);
+    pmulticmds->Add(pcmdA);
+  }
+
+  if (!Possible_Shortcuts.empty()) {
+    Command *pcmdS = AddDependentEntriesCommand::Create(&m_core,
+                                                        Possible_Shortcuts, NULL,
+                                                        CItemData::ET_SHORTCUT,
+                                                        CItemData::PASSWORD);
+    pmulticmds->Add(pcmdS);
+  }
+
+  // Now add Empty Groups
+  for (size_t i = 0; i < vsxEmptyGroups.size(); i++) {
+    pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, vsxEmptyGroups[i],
+      DBEmptyGroupsCommand::EG_ADD));
+  }
+
+  pmulticmds->Add(UpdateGUICommand::Create(&m_core,
+    UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
+
+  if (pmulticmds->GetSize() > 2) {
+    // Since we added some commands apart from the first & last WM_UNDO/WM_REDO,
+    // check if original drop group was empty - if so, it won't be now
+    // We need to insert it after the first command (WN_UNDO, GUI_REFRESH_BOTHVIEWS)
+    if (IsEmptyGroup(DropGroup)) {
+      pmulticmds->Insert(DBEmptyGroupsCommand::Create(&m_core, DropGroup,
+        DBEmptyGroupsCommand::EG_DELETE), 1);
+    }
+  } else {
+    // We didn't add any "useful" commands - so why continue?
+    delete pmulticmds;
+    return;
+  }
+
+  // Do it!
   Execute(pmulticmds);
 
   // Some shortcuts may have been deleted from the database as base does not exist
@@ -2178,7 +2483,6 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
   // Clear set
   setGTU.clear();
 
-  SetChanged(Data);
   FixListIndexes();
   RefreshViews();
 

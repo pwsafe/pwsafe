@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -8,7 +8,7 @@
 
 #pragma once
 
-// CColumnChooserLC (Coloumn Chooser "Drag" ListCtrl)
+// CColumnChooserLC (Column Chooser "Drag" ListCtrl)
 
 #include "DropTarget.h"
 #include "DropSource.h"
@@ -43,9 +43,12 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CDataSource m_CCDataSource;
-  CDropTarget m_CCDropTarget;
-  CImageList* m_pDragImage;
+  CDataSource *m_pCCDataSource;
+  CDropTarget *m_pCCDropTarget;
+  COleDropSource *m_pCCDropSource;
+  friend class CDataSource;
+
+  CImageList *m_pDragImage;
   int m_iItem;
   // Clipboard format for Column Chooser Drag & Drop
   CLIPFORMAT m_ccddCPFID;

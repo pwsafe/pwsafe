@@ -99,14 +99,14 @@ BOOL APIENTRY DllMain(HMODULE /* hModule */,
 OSK_API int OSK_GetVersion()
 {
   // Return current version to ensure caller and DLL are in step
-  // with regard to calling functions and Implemention Structure
+  // with regard to calling functions and Implementation Structure
   return VK_DLL_VERSION;
 }
 
 OSK_API void OSK_ListKeyboards(UINT &uiKLID, UINT &uiCtrlID)
 {
   // Provide list of supported keyboards in this DLL
-  // Called with uiKLID = 0 to intialise and return first entry
+  // Called with uiKLID = 0 to initialise and return first entry
   // Continues returning information. End of list signalled by returning
   // zero uiKLID.
   static int KLID_index = 0;

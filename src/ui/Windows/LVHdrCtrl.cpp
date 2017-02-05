@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -10,12 +10,17 @@
 //
 
 #include "stdafx.h"
+
+#include "Windowsdefs.h"
+#include "LVHdrCtrl.h"
+
+#include "resource3.h"
+
+#include "core/itemdata.h" // For CItemData::UUID
+
 #include <afxole.h>         // MFC OLE classes
 #include <afxodlgs.h>       // MFC OLE dialog classes
 #include <afxdisp.h >       // MFC OLE automation classes
-#include "LVHdrCtrl.h"
-#include "DboxMain.h"       // For PWS_MSG_CCTOHDR_DD_COMPLETE and enum FROMCC & FROMHDR
-#include "core/itemdata.h" // For CItemData::UUID
 
 // LVHdrCtrl
 
@@ -30,11 +35,23 @@ CLVHdrCtrl::CLVHdrCtrl()
   CString cs_CPF(MAKEINTRESOURCE(IDS_CPF_CDD));
   m_ccddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
   ASSERT(m_ccddCPFID != 0);
+
+  m_pHdrDataSource = new CDataSource();
+  m_pHdrDropTarget = new CDropTarget();
+  m_pHdrDropSource = new COleDropSource();
 }
 
 CLVHdrCtrl::~CLVHdrCtrl()
 {
-  m_HdrDropTarget.Revoke();
+  m_pHdrDropTarget->Revoke();
+
+  // Don't delete m_pDataSource but first release all references and
+  // this routine will delete it when the references get to 0.
+  m_pHdrDataSource->InternalRelease();
+
+  // delete the Drop Target & Source
+  delete m_pHdrDropTarget;
+  delete m_pHdrDropSource;
 }
 
 BEGIN_MESSAGE_MAP(CLVHdrCtrl, CHeaderCtrl)

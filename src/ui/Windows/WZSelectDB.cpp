@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -7,7 +7,9 @@
 */
 
 #include "stdafx.h"
+
 #include "passwordsafe.h"
+#include "Windowsdefs.h"
 #include "DboxMain.h"
 
 #include "WZSelectDB.h"
@@ -43,7 +45,7 @@ IMPLEMENT_DYNAMIC(CWZSelectDB, CWZPropertyPage)
 CWZSelectDB::CWZSelectDB(CWnd *pParent, int idd, UINT nIDCaption,
        const int nType)
  : CWZPropertyPage(idd, nIDCaption, nType), m_tries(0), m_state(0),
-  m_pVKeyBoardDlg(NULL), m_bAdvanced(BST_UNCHECKED),
+  m_pVKeyBoardDlg(NULL), m_bAdvanced(BST_UNCHECKED), m_bExportDBFilters(BST_UNCHECKED),
   m_bFileExistsUserAsked(false),
   m_filespec(L""), m_passkey(L""), m_passkey2(L""), m_verify2(L""),
   m_defexpdelim(L"\xbb"), m_pctlDB(new CEditExtn),
@@ -84,11 +86,19 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
 {
   CWZPropertyPage::DoDataExchange(pDX);
 
+  const UINT nID = m_pWZPSH->GetID();
+
   //{{AFX_DATA_MAP(CWZSelectDB)
   DDX_Text(pDX, IDC_DATABASE, m_filespec);
 
   DDX_Control(pDX, IDC_DATABASE, *m_pctlDB);
   DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
+
+  if (nID != ID_MENUITEM_COMPARE && 
+      nID != ID_MENUITEM_MERGE   && 
+      nID != ID_MENUITEM_SYNCHRONIZE) {
+    DDX_Check(pDX, IDC_EXPORTFILTERS, m_bExportDBFilters);
+  }
 
   // Can't use DDX_Text for CSecEditExtn
   m_pctlPasskey->DoDDX(pDX, m_passkey);
@@ -100,8 +110,6 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
   DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
-
-  const UINT nID = m_pWZPSH->GetID();
 
   if (nID == ID_MENUITEM_SYNCHRONIZE         ||
       nID == ID_MENUITEM_EXPORT2PLAINTEXT    ||
@@ -161,6 +169,7 @@ BEGIN_MESSAGE_MAP(CWZSelectDB, CWZPropertyPage)
 
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_ADVANCED, OnAdvanced)
+  ON_BN_CLICKED(IDC_EXPORTFILTERS, OnExportFilters)
 
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
   //}}AFX_MSG_MAP
@@ -239,7 +248,7 @@ BOOL CWZSelectDB::OnInitDialog()
 
   if (bWARNINGTEXT) {
     if (nID != ID_MENUITEM_SYNCHRONIZE)
-      cs_text.Format(IDS_WZSLCT_WARNING_EXP, cs_temp);
+      cs_text.Format(IDS_WZSLCT_WARNING_EXP, static_cast<LPCWSTR>(cs_temp));
 
     GetDlgItem(IDC_STATIC_WZWARNING)->SetWindowText(cs_text);
     m_stc_warning.SetColour(RGB(255,0,0));
@@ -259,12 +268,13 @@ BOOL CWZSelectDB::OnInitDialog()
 
   std::wstring ExportFileName;
   UINT uifilemsg(IDS_WZDATABASE);
-  stringT str_extn(L"");
+  std::wstring str_extn(L"");
+
   switch (nID) {
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
     {
-      // Disable & hide - Advnaced checkbox & specifying delimiter
+      // Disable & hide - Advanced checkbox & specifying delimiter
       GetDlgItem(IDC_ADVANCED)->ShowWindow(SW_HIDE);
       GetDlgItem(IDC_ADVANCED)->EnableWindow(FALSE);
 
@@ -273,10 +283,16 @@ BOOL CWZSelectDB::OnInitDialog()
       GetDlgItem(IDC_WZDEFEXPDELIM)->ShowWindow(SW_HIDE);
       GetDlgItem(IDC_WZDEFEXPDELIM)->EnableWindow(FALSE);
 
-      stringT drive, dir, file, ext;
+      // Potentially allow user to export DB filters
+      bool bEnableExportFilters = (nID == ID_MENUITEM_EXPORTGRP2DB) &&
+                                   app.GetMainDlg()->GetCore()->GetDBFilters().size() > 0;
+      GetDlgItem(IDC_EXPORTFILTERS)->ShowWindow(bEnableExportFilters ? SW_SHOW : SW_HIDE);
+      GetDlgItem(IDC_EXPORTFILTERS)->EnableWindow(bEnableExportFilters ? TRUE : FALSE);
+
+      std::wstring drive, dir, file, ext;
       pws_os::splitpath(m_pWZPSH->WZPSHGetCurFile().c_str(), drive, dir, file, ext);
 
-      stringT str_file = file + L".export";
+      std::wstring str_file = file + L".export";
 
       // Create new DB
       const PWSfile::VERSION current_version = m_pWZPSH->GetDBVersion();
@@ -303,6 +319,10 @@ BOOL CWZSelectDB::OnInitDialog()
       m_pctlDB->SetWindowText(ExportFileName.c_str());
       m_filespec = ExportFileName.c_str();
       uifilemsg = IDS_WZFILE;
+
+      GetDlgItem(IDC_EXPORTFILTERS)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_EXPORTFILTERS)->EnableWindow(FALSE);
+
       break;
 
     case ID_MENUITEM_SYNCHRONIZE:
@@ -354,7 +374,7 @@ BOOL CWZSelectDB::OnInitDialog()
   m_yubi_timeout.ShowWindow(SW_HIDE);
   m_yubi_timeout.SetRange(0, 15);
   bool bYubiInserted = IsYubiInserted();
-  // MFC has ancient bug: can't render diasbled version of bitmap,
+  // MFC has ancient bug: can't render disabled version of bitmap,
   // so instead of showing drek, we roll our own, and leave enabled.
   ybn->EnableWindow(TRUE);
 
@@ -436,7 +456,6 @@ void CWZSelectDB::OnVerify2keySetfocus()
   m_LastFocus = IDC_VERIFY2;
 }
 
-
 void CWZSelectDB::OnAdvanced()
 {
   //m_bAdvanced = ((CButton*)GetDlgItem(IDC_ADVANCED))->GetCheck();
@@ -446,6 +465,11 @@ void CWZSelectDB::OnAdvanced()
                                         IDS_WZNEXT));
 
   m_pWZPSH->GetDlgItem(ID_WIZNEXT)->SetWindowText(cs_tmp);
+}
+
+void CWZSelectDB::OnExportFilters()
+{
+  m_bExportDBFilters = ((CButton*)GetDlgItem(IDC_EXPORTFILTERS))->GetCheck();
 }
 
 void CWZSelectDB::OnPassKeyChange()
@@ -568,7 +592,7 @@ LRESULT CWZSelectDB::OnWizardNext()
         // file browser button
         if (!m_bFileExistsUserAsked) {
           CString cs_msg, cs_title(MAKEINTRESOURCE(iExportType));
-          cs_msg.Format(IDS_REPLACEEXPORTFILE, m_filespec);
+          cs_msg.Format(IDS_REPLACEEXPORTFILE, static_cast<LPCWSTR>(m_filespec));
           INT_PTR rc = gmb.AfxMessageBox(cs_msg, cs_title,
                          MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
           if (rc == IDNO) {
@@ -653,6 +677,7 @@ LRESULT CWZSelectDB::OnWizardNext()
   m_pWZPSH->SetOtherDB(sx_Filename2);
   m_pWZPSH->SetDelimiter(m_defexpdelim.GetAt(0));
   m_pWZPSH->SetAdvanced(m_bAdvanced == BST_CHECKED);
+  m_pWZPSH->SetExportDBFilters(m_bExportDBFilters == BST_CHECKED);
 
   return m_bAdvanced == BST_CHECKED ? 0 : IDD_WZFINISH;
 }
@@ -865,7 +890,7 @@ LRESULT CWZSelectDB::OnInsertBuffer(WPARAM, LPARAM)
         OnPassKey2Change();
         break;
       case IDC_VERIFY2:
-        OnVerify2Change();;
+        OnVerify2Change();
         break;
       default:
         // Error!
@@ -900,7 +925,7 @@ void CWZSelectDB::yubiShowChallengeSent()
 {
   // A request's in the air, setup GUI to wait for reply
   m_yubi_status.ShowWindow(SW_HIDE);
-  m_yubi_status.SetWindowText(_T(""));
+  m_yubi_status.SetWindowText(L"");
   m_yubi_timeout.ShowWindow(SW_SHOW);
   m_yubi_timeout.SetPos(15);
 }
@@ -912,8 +937,8 @@ void CWZSelectDB::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BY
     m_yubi_status.ShowWindow(SW_SHOW);
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_timeout.SetPos(0);
-    m_yubi_status.SetWindowText(_T(""));
-    TRACE(_T("yubiCheckCompleted: YKLIB_OK"));
+    m_yubi_status.SetWindowText(L"");
+    pws_os::Trace(L"yubiCheckCompleted: YKLIB_OK");
     m_pending = false;
     m_passkey = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
     m_state |= KEYPRESENT;
@@ -943,7 +968,7 @@ void CWZSelectDB::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BY
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_status.ShowWindow(SW_SHOW);
     // Generic error message
-    TRACE(_T("yubiCompleted(%d)\n"), yrc);
+    pws_os::Trace(L"yubiCompleted(%d)\n", yrc);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDSC_UNKNOWN_ERROR)));
     break;
   }

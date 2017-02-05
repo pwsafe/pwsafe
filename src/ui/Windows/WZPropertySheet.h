@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -35,6 +35,7 @@ public:
   st_SaveAdvValues *GetAdvValues() const {return m_pst_SADV;}
   wchar_t GetDelimiter() const {return m_delimiter;}
   bool GetAdvanced() const {return m_bAdvanced;}
+  bool GetExportDBFilters() const { return m_bExportDBFilters; }
   bool GetCompleted() const {return m_bCompleted;}
 
   void SetPassKey(const StringX passkey) {m_passkey = passkey;}
@@ -43,6 +44,8 @@ public:
   void SetAdvValues(st_SaveAdvValues *pst_SADV) {m_pst_SADV = pst_SADV;}
   void SetDelimiter(const wchar_t &delimiter) {m_delimiter = delimiter;}
   void SetAdvanced(const bool &bAdvanced) {m_bAdvanced = bAdvanced;}
+  void SetExportDBFilters(const bool &bExportDBFilters)
+  { m_bExportDBFilters = bExportDBFilters; }
   void SetCompleted(const bool &bCompleted) {m_bCompleted = bCompleted;}
 
   void WZPSHMakeOrderedItemList(OrderedItemList &OIL)
@@ -52,7 +55,7 @@ public:
   {return app.GetMainDlg()->getSelectedItem();}
 
   int WZPSHTestSelection(const bool bAdvanced,
-                         const stringT &subgroup_name,
+                         const std::wstring &subgroup_name,
                          const int &subgroup_object,
                          const int &subgroup_function,
                          const OrderedItemList *pOIL)
@@ -66,8 +69,8 @@ public:
                       bool *pbCancel)
   {return app.GetMainDlg()->DoCompare(pothercore, bAdvanced, prpt, pbCancel);}
 
-  stringT WZPSHDoMerge(PWScore *pothercore, const bool bAdvanced, CReport *prpt,
-                       bool *pbCancel)
+  std::wstring WZPSHDoMerge(PWScore *pothercore, const bool bAdvanced, CReport *prpt,
+                            bool *pbCancel)
   {return app.GetMainDlg()->DoMerge(pothercore, bAdvanced, prpt, pbCancel);}
 
   void WZPSHDoSynchronize(PWScore *pothercore,
@@ -82,15 +85,17 @@ public:
                                prpt);}
 
   int WZPSHDoExportXML(const StringX &sx_Filename, const UINT nID,
-                       const wchar_t &delimiter, const bool bAdvanced, 
+                       const wchar_t &delimiter, const bool bAdvanced,
                        int &numExported, CReport *prpt)
   {return app.GetMainDlg()->DoExportXML(sx_Filename, nID, delimiter, bAdvanced, numExported,
                               prpt);}
 
   int WZPSHDoExportDB(const StringX &sx_Filename, const UINT nID,
+                      const bool bExportDBFilters,
                       const StringX &sx_ExportKey, int &numExported, CReport *prpt)
   {
-    return app.GetMainDlg()->DoExportDB(sx_Filename, nID, sx_ExportKey, numExported, prpt);
+    return app.GetMainDlg()->DoExportDB(sx_Filename, nID,
+                                        bExportDBFilters, sx_ExportKey, numExported, prpt);
   }
 
   void WZPSHViewReport(CReport &prpt)
@@ -142,7 +147,7 @@ private:
   StringX m_filespec;
   st_SaveAdvValues *m_pst_SADV;
   wchar_t m_delimiter;
-  bool m_bAdvanced, m_bCompleted;
+  bool m_bAdvanced, m_bExportDBFilters, m_bCompleted;
   int m_numProcessed;
 
   PWSfile::VERSION DB_version;

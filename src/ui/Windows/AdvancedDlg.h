@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -14,6 +14,7 @@
 
 #include "PWDialog.h"
 #include "core/ItemData.h"
+#include "core/PWSfile.h"
 #include "AdvancedValues.h"
 
 class CAdvancedDlg : public CPWDialog
@@ -32,25 +33,25 @@ public:
   CString m_subgroup_name;
   int m_subgroup_set, m_subgroup_object, m_subgroup_function, m_subgroup_case;
   int m_treatwhitespaceasempty;
-
   //}}AFX_DATA
 
   CItemData::FieldBits m_bsFields;
   CItemAtt::AttFieldBits m_bsAttFields;
 
+protected:
   // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CAdvancedDlg)
-protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
   //}}AFX_VIRTUAL
+
+  BOOL PreTranslateMessage(MSG* pMsg);
 
   Type m_iIndex;
   static int dialog_lookup[LAST];
 
   // Implementation
-protected:
-  virtual BOOL OnInitDialog();
   // Generated message map functions
   //{{AFX_MSG(CAdvancedDlg)
   afx_msg void OnSetSubGroup();
@@ -62,11 +63,9 @@ protected:
   virtual void OnOK();
   afx_msg void OnReset();
   afx_msg void OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult);
-
   //}}AFX_MSG
-  DECLARE_MESSAGE_MAP()
 
-  BOOL PreTranslateMessage(MSG* pMsg);
+  DECLARE_MESSAGE_MAP()
 
 private:
   static int CALLBACK AdvCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);

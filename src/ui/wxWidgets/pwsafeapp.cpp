@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -51,7 +51,6 @@ using namespace std;
 #include "pwsclip.h"
 #endif
 
-
 #include <wx/spinctrl.h>
 #include <wx/taskbar.h>
 
@@ -73,7 +72,6 @@ using namespace std;
 #else
 #define STR(s) wxT(s)
 #endif
-
 
 // wx debug messages (a) don't really interest us, and
 // (b) manage to crash wx 3.0.2 under Windows due to some
@@ -143,13 +141,11 @@ static wxAsker    anAsker;
 IMPLEMENT_APP( PwsafeApp )
 ////@end implement app
 
-
 /*!
  * PwsafeApp type definition
  */
 
 IMPLEMENT_CLASS( PwsafeApp, wxApp )
-
 
 /*!
  * PwsafeApp event table definition
@@ -222,7 +218,6 @@ void PwsafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func
                  << (msg? msg: L"") << endl;
 }
 #endif
-
 
 /** Activate help subsystem for given language
 * @param language help language for activation (if not found, default will be used)
@@ -397,7 +392,6 @@ bool PwsafeApp::OnInit()
   m_appIcons.AddIcon(pwsafe32);
   m_appIcons.AddIcon(pwsafe48);
 
-
   if (!m_helpController){ // helpController (re)created  on language activation
     std::wcerr << L"Could not initialize help subsystem." << std::endl;
     if (!prefs->GetPref(PWSprefs::IgnoreHelpLoadError) && !cmd_silent) {
@@ -518,7 +512,6 @@ wxLanguage PwsafeApp::GetSelectedLanguage() {
   }
 }
 
-
 /*!
  * Activates a language.
  *
@@ -626,7 +619,7 @@ CRecentDBList &PwsafeApp::recentDatabases()
 {
   // we create an instance of m_recentDatabases
   // as late as possible in order to make
-  // sure that prefs' is set correcly (user, machine, etc.)
+  // sure that prefs' is set correctly (user, machine, etc.)
   if (m_recentDatabases == NULL)
     m_recentDatabases = new CRecentDBList;
   return *m_recentDatabases;

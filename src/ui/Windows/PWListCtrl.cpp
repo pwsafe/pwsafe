@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -7,6 +7,8 @@
 */
 
 #include "stdafx.h"
+
+#include "Windowsdefs.h"
 #include "PWListCtrl.h"
 #include "DboxMain.h"
 #include "ThisMfcApp.h"
@@ -21,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 
 CPWListCtrl::CPWListCtrl()
   : m_FindTimerID(0), m_csFind(L""), m_bMouseInWindow(false), 
-  m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bFilterActive(false),
+  m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bListFilterActive(false),
   m_bUseHighLighting(false)
 {
 }
@@ -59,6 +61,23 @@ void CPWListCtrl::ActivateND(const bool bActivate)
   if (!m_bShowNotes) {
     m_bMouseInWindow = false;
   }
+}
+
+bool CPWListCtrl::IsNotesColumnPresent()
+{
+  CHeaderCtrl *pHeader = GetHeaderCtrl();
+  if (pHeader == NULL)
+    return false;
+
+  HDITEM hdi;
+  hdi.mask = HDI_LPARAM;
+  
+  for (int icol = 0; icol < pHeader->GetItemCount(); icol++) {
+    pHeader->GetItem(icol, &hdi);
+    if (hdi.lParam == CItemData::NOTES)
+      return true;    
+  }
+  return false;
 }
 
 void CPWListCtrl::SetUpFont()
@@ -103,14 +122,14 @@ void CPWListCtrl::OnPaint()
 {
   CListCtrl::OnPaint();
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iListOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::LISTONLY);
 }
 
 void CPWListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
   CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iListOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::LISTONLY);
 }
 
 BOOL CPWListCtrl::PreTranslateMessage(MSG* pMsg)
@@ -256,15 +275,15 @@ bool CPWListCtrl::FindNext(const CString &cs_find, const int iSubItem)
 
 void CPWListCtrl::SetFilterState(bool bState)
 {
-  m_bFilterActive = bState;
+  m_bListFilterActive = bState;
 
   // Red if filter active, black if not
-  SetTextColor(m_bFilterActive ? RGB(168, 0, 0) : RGB(0, 0, 0));
+  SetTextColor(m_bListFilterActive ? RGB(168, 0, 0) : RGB(0, 0, 0));
 }
 
 BOOL CPWListCtrl::OnEraseBkgnd(CDC* pDC)
 {
-  if (m_bFilterActive && app.GetMainDlg()->GetNumPassedFiltering() == 0) {
+  if (m_bListFilterActive && app.GetMainDlg()->GetNumPassedFiltering() == 0) {
     int nSavedDC = pDC->SaveDC(); //save the current DC state
 
     // Set up variables
@@ -369,7 +388,7 @@ CFont *CPWListCtrl::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
 
 void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMLVCUSTOMDRAW *pNMLVCUSTOMDRAW = (NMLVCUSTOMDRAW *)pNotifyStruct;
+  NMLVCUSTOMDRAW *pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
   *pLResult = CDRF_DODEFAULT;
 
@@ -377,25 +396,27 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   static bool bchanged_item_font(false), bchanged_subitem_font(false);
   static CFont *pCurrentFont = NULL;
   static CFont *pPasswordFont = NULL;
+  static CFont *pNotesFont = NULL;
   static CDC *pDC = NULL;
 
   HDITEM hdi = {0};
   hdi.mask = HDI_LPARAM;
 
-  CItemData *pci = (CItemData *)pNMLVCUSTOMDRAW->nmcd.lItemlParam;
+  CItemData *pci = (CItemData *)pLVCD->nmcd.lItemlParam;
 
-  switch (pNMLVCUSTOMDRAW->nmcd.dwDrawStage) {
+  switch (pLVCD->nmcd.dwDrawStage) {
     case CDDS_PREPAINT:
       // PrePaint
-      pDC = CDC::FromHandle(pNMLVCUSTOMDRAW->nmcd.hdc);
+      pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
       bchanged_item_font = bchanged_subitem_font = false;
       pCurrentFont = Fonts::GetInstance()->GetCurrentFont();
       pPasswordFont = Fonts::GetInstance()->GetPasswordFont();
+      pNotesFont = Fonts::GetInstance()->GetNotesFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
 
     case CDDS_ITEMPREPAINT:
-      // Item PrePaint
+      bitem_selected = (pLVCD->nmcd.uItemState & CDIS_SELECTED) == CDIS_SELECTED;
       *pLResult |= CDRF_NOTIFYSUBITEMDRAW;
       break;
 
@@ -410,13 +431,19 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
     case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
       // Sub-item PrePaint
-      GetHeaderCtrl()->GetItem(pNMLVCUSTOMDRAW->iSubItem, &hdi);
+      GetHeaderCtrl()->GetItem(pLVCD->iSubItem, &hdi);
       if (hdi.lParam == CItemData::PASSWORD) {
         // Use Password font
         bchanged_subitem_font = true;
         pDC->SelectObject(pPasswordFont);
         *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
       } else
+        if (hdi.lParam == CItemData::NOTES) {
+          // Use Notes font
+          bchanged_subitem_font = true;
+          pDC->SelectObject(pNotesFont);
+          *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
+        } else
       if (m_bUseHighLighting) {
         COLORREF cf;
         CFont *uFont = GetFontBasedOnStatus(pci, cf);
@@ -424,7 +451,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
           bchanged_subitem_font = true;
           pDC->SelectObject(uFont);
           if (!bitem_selected)
-            pNMLVCUSTOMDRAW->clrText = cf;
+            pLVCD->clrText = cf;
           *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
         }
       }
@@ -434,7 +461,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Sub-item PostPaint
       // Restore old font if any
       if (bchanged_subitem_font) {
-        bchanged_subitem_font = false;
+        bchanged_subitem_font = bitem_selected = false;
         pDC->SelectObject(pCurrentFont);
         *pLResult |= CDRF_NEWFONT;
       }
@@ -457,16 +484,20 @@ void CPWListCtrl::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
   if (!Fonts::GetInstance())
      return;
   
-  int padding=4;
+  int padding = 4;
   if (GetExtendedStyle() & LVS_EX_GRIDLINES)
-     padding+=2;
+     padding += 2;
   
-  lpMeasureItemStruct->itemHeight = Fonts::GetInstance()->CalcHeight()+padding;
-  //Remove LVS_OWNERDRAWFIXED style to apply default DrawItem
+  const bool bNotesDisplayed = IsNotesColumnPresent();
+  lpMeasureItemStruct->itemHeight = Fonts::GetInstance()->CalcHeight(bNotesDisplayed) + 
+    padding;
+
+  // Remove LVS_OWNERDRAWFIXED style to apply default DrawItem
   ModifyStyle(LVS_OWNERDRAWFIXED, 0);
 }
 
-void CPWListCtrl::UpdateRowHeight(bool bInvalidate){
+void CPWListCtrl::UpdateRowHeight(bool bInvalidate)
+{
   // We need to change WINDOWPOS to trigger MeasureItem 
   // http://www.codeproject.com/Articles/1401/Changing-Row-Height-in-an-owner-drawn-Control
   CRect rc;
@@ -481,11 +512,10 @@ void CPWListCtrl::UpdateRowHeight(bool bInvalidate){
   ModifyStyle(0, LVS_OWNERDRAWFIXED);
 
   SendMessage(WM_WINDOWPOSCHANGED, 0, (LPARAM)&wp);
-  if (bInvalidate)
-  {
+  if (bInvalidate) {
     Invalidate();
     int idx = GetTopIndex();
-    if (idx >=0)
+    if (idx >= 0)
       EnsureVisible(idx, FALSE);
   }
 }
@@ -498,5 +528,5 @@ LRESULT CPWListCtrl::OnSetFont(WPARAM, LPARAM)
 }
 
 void CPWListCtrl::DrawItem(LPDRAWITEMSTRUCT){
-  //DrawItem must be overriden for LVS_OWNERDRAWFIXED style lists
+  //DrawItem must be overridden for LVS_OWNERDRAWFIXED style lists
 }

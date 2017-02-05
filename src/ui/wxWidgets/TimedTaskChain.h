@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -38,26 +38,26 @@
 // it does not get destroyed as the current call stack unwinds. Similarly,
 // it cannot be destructed at will. It will autodestruct once it finishes
 // executing all its tasks. Therefore, the ctor and dtor are private, and
-// it must be constructed via a public static funciton.
+// it must be constructed via a public static function.
 //
 // Each task is a functor (regular function, lambda or a functor) that takes
 // and returns void. The error handler functor should take a std::exception
-// derived class as argument. Its is only invoked if any of the functions in
+// derived class as argument. It is only invoked if any of the functions in
 // the task chain throws, in which case the rest of the tasks in the chain
 // are not invoked.
-
 
 #ifndef __TIMEDTASKCHAIN_H__
 #define __TIMEDTASKCHAIN_H__
 
+#include <wx/timer.h>
+
 #include <list>
 #include <functional>
-#include <wx/timer.h>
 
 class TimedTaskChain: public wxTimer
 {
 	typedef std::function<void(void)> TaskType;
-    typedef std::pair<TaskType, int> TaskWithInterval;
+  typedef std::pair<TaskType, int> TaskWithInterval;
 	typedef std::list<TaskWithInterval> TaskList;
 
 	typedef std::function<void(const std::exception&)> ErrorHandlerType;
@@ -74,14 +74,14 @@ class TimedTaskChain: public wxTimer
 
 public:
 	static TimedTaskChain& CreateTaskChain(std::initializer_list<TaskWithInterval> tasks);
-    static TimedTaskChain& CreateTaskChain(std::initializer_list<TaskType> tasks);
-    static TimedTaskChain& CreateTaskChain(const TaskType &tasks);
+  static TimedTaskChain& CreateTaskChain(std::initializer_list<TaskType> tasks);
+  static TimedTaskChain& CreateTaskChain(const TaskType &tasks);
 
 	TimedTaskChain& then(const TaskType& task, int delay = DefaultTaskDelay() ) { m_tasks.push_back({task, delay}); return *this; }
 
 	void OnError(ErrorHandlerType errHandler) { m_errorHandler = errHandler; }
 
-    // overriden from wxTimer
+    // overridden from wxTimer
     void Notify();
 
 private:
@@ -89,7 +89,4 @@ private:
 	void Next();
 };
 
-
-
 #endif
-

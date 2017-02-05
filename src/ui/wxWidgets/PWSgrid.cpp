@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -46,7 +46,6 @@ using pws_os::CUUID;
 
 IMPLEMENT_CLASS( PWSGrid, wxGrid )
 
-
 /*!
  * PWSGrid event table definition
  */
@@ -56,6 +55,7 @@ BEGIN_EVENT_TABLE( PWSGrid, wxGrid )
 ////@begin PWSGrid event table entries
   EVT_GRID_CELL_RIGHT_CLICK( PWSGrid::OnCellRightClick )
   EVT_GRID_CELL_LEFT_DCLICK( PWSGrid::OnLeftDClick )
+  EVT_GRID_SELECT_CELL( PWSGrid::OnSelectCell )
   EVT_CHAR( PWSGrid::OnChar )
   EVT_CONTEXT_MENU(PWSGrid::OnContextMenu)
   EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PWSGrid::OnDBGUIPrefsChange)
@@ -80,7 +80,6 @@ PWSGrid::PWSGrid(wxWindow* parent, PWScore &core,
   Create(parent, id, pos, size, style);
 }
 
-
 /*!
  * PWSGrid creator
  */
@@ -101,7 +100,6 @@ bool PWSGrid::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const 
   return true;
 }
 
-
 /*!
  * PWSGrid destructor
  */
@@ -112,7 +110,6 @@ PWSGrid::~PWSGrid()
 ////@end PWSGrid destruction
 }
 
-
 /*!
  * Member initialisation
  */
@@ -122,7 +119,6 @@ void PWSGrid::Init()
 ////@begin PWSGrid member initialisation
 ////@end PWSGrid member initialisation
 }
-
 
 /*!
  * Control creation for PWSGrid
@@ -332,7 +328,7 @@ void PWSGrid::DeleteItems(int row, size_t numItems)
       }
     }
   }
-  if (m_core.IsChanged())
+  if (m_core.HasDBChanged())
     OnPasswordListModified();
 }
 
@@ -404,7 +400,6 @@ CItemData *PWSGrid::GetItem(int row) const
   return NULL;
 }
 
-
 /*!
  * wxEVT_GRID_CELL_LEFT_DCLICK event handler for ID_LISTBOX
  */
@@ -448,7 +443,6 @@ void PWSGrid::OnChar( wxKeyEvent& evt )
   evt.Skip();
 }
 
-
 void PWSGrid::SaveSettings(void) const
 {
   PWSGridTable* table = dynamic_cast<PWSGridTable*>(GetTable());
@@ -470,4 +464,22 @@ void PWSGrid::Clear()
     EndBatch();
   }
   DeleteAllItems();
+}
+
+/*!
+ * wxEVT_GRID_SELECT_CELL event handler for ID_LISTBOX
+ */
+
+void PWSGrid::OnSelectCell( wxGridEvent& evt )
+{
+  CItemData *pci = GetItem(evt.GetRow());
+
+  dynamic_cast<PasswordSafeFrame *>(GetParent())->UpdateSelChanged(pci);
+}
+
+void PWSGrid::SetFilterState(bool state)
+{
+  const wxColour *colour = state ? wxRED : wxBLACK;
+  SetDefaultCellTextColour(*colour);
+  ForceRefresh();
 }

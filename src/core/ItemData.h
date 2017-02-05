@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -132,6 +132,7 @@ public:
   int32 GetXTimeInt(int32 &xint) const; // V30
   StringX GetXTimeInt() const; // V30
   StringX GetPWHistory() const;  // V30
+  StringX GetPreviousPassword() const;
   void GetPWPolicy(PWPolicy &pwp) const;
   StringX GetPWPolicy() const {return GetField(POLICY);}
   StringX GetRunCommand() const {return GetField(RUNCMD);}
@@ -149,6 +150,9 @@ public:
   StringX GetKBShortcut() const;
 
   StringX GetFieldValue(FieldType ft) const;
+
+  // Following encapsulates difference between Alias and Shortcut w.r.t. field 'ownership':
+  StringX GetEffectiveFieldValue(FieldType ft, const CItemData *pbci) const;
 
   // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
   // it's used for multi-line notes and to replace '.' within the Title field.
@@ -226,7 +230,7 @@ public:
                int iFunction) const;  // string values
   bool Matches(int num1, int num2, int iObject,
                int iFunction) const;  // integer values
-  bool Matches(time_t time1, time_t time2, int iObject,
+  bool MatchesTime(time_t time1, time_t time2, int iObject,
                int iFunction) const;  // time values
   bool Matches(int16 dca, int iFunction, const bool bShift = false) const;  // DCA values
   bool Matches(EntryType etype, int iFunction) const;  // Entrytype values
@@ -265,6 +269,9 @@ public:
   bool IsEmailEmpty() const                { return !IsEmailSet();         }
   bool IsPolicyEmpty() const               { return !IsPasswordPolicySet();}
 
+  bool IsFieldValueEmpty(FieldType ft, const CItemData *pbci) const
+  { return GetEffectiveFieldValue(ft, pbci).empty(); }
+
   bool HasAttRef() const                   { return IsFieldSet(ATTREF);    }
 
   void SerializePlainText(std::vector<char> &v,
@@ -288,12 +295,17 @@ public:
   void SetAlias() {SetEntryType(ET_ALIAS);}
   void SetShortcut() {SetEntryType(ET_SHORTCUT);}
 
+  void SetDuplicateTimes(const CItemData &src);
+
   EntryStatus GetStatus() const {return m_entrystatus;}
   void ClearStatus() {m_entrystatus = ES_CLEAN;}
   void SetStatus(const EntryStatus es) {m_entrystatus = es;}
 
   bool IsURLEmail() const
   {return GetURL().find(_T("mailto:")) != StringX::npos;}
+
+  bool IsURLEmail(const CItemData *pbci) const
+  { return GetEffectiveFieldValue(URL, pbci).find(_T("mailto:")) != StringX::npos; }
 
 private:
   EntryType m_entrytype;

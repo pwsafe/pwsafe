@@ -163,12 +163,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;NO_YUBI=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;NO_YUBI=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -205,12 +205,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debugwx|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;NO_YUBI=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;NO_YUBI=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
@@ -245,12 +245,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
@@ -286,12 +286,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugwxX|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
@@ -326,13 +326,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -364,13 +364,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Releasewx|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wwxMSVC_VERSION_AUTO;xUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wwxMSVC_VERSION_AUTO;xUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -401,13 +401,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -439,13 +439,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|x64'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
+      <Command>cscript pre_build.vbs //Nologo</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0600;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -499,6 +499,7 @@
     <ClInclude Include="PasswordPolicy.h" />
     <ClInclude Include="passwordsafeframe.h" />
     <ClInclude Include="PasswordSafeSearch.h" />
+    <ClInclude Include="passwordsubset.h" />
     <ClInclude Include="properties.h" />
     <ClInclude Include="pwsafeapp.h" />
     <ClInclude Include="pwsclip.h" />
@@ -510,7 +511,6 @@
     <ClInclude Include="PwsToolbarButtons.h" />
     <ClInclude Include="PWStree.h" />
     <ClInclude Include="RecentDBList.h" />
-    <ClInclude Include="RUEList.h" />
     <ClInclude Include="safecombinationchange.h" />
     <ClInclude Include="SafeCombinationCtrl.h" />
     <ClInclude Include="safecombinationentry.h" />
@@ -551,6 +551,7 @@
     <ClCompile Include="ImportXmlDlg.cpp" />
     <ClCompile Include="mainEdit.cpp" />
     <ClCompile Include="mainManage.cpp" />
+    <ClCompile Include="mainView.cpp" />
     <ClCompile Include="ManagePwdPolicies.cpp" />
     <ClCompile Include="MergeDlg.cpp" />
     <ClCompile Include="OpenFilePickerValidator.cpp" />
@@ -558,6 +559,7 @@
     <ClCompile Include="PasswordPolicy.cpp" />
     <ClCompile Include="passwordsafeframe.cpp" />
     <ClCompile Include="PasswordSafeSearch.cpp" />
+    <ClCompile Include="passwordsubset.cpp" />
     <ClCompile Include="properties.cpp" />
     <ClCompile Include="pwsafeapp.cpp" />
     <ClCompile Include="pwsclip.cpp" />
@@ -567,7 +569,6 @@
     <ClCompile Include="pwsmenushortcuts.cpp" />
     <ClCompile Include="PwsSync.cpp" />
     <ClCompile Include="PWStree.cpp" />
-    <ClCompile Include="RUEList.cpp" />
     <ClCompile Include="safecombinationchange.cpp" />
     <ClCompile Include="SafeCombinationCtrl.cpp" />
     <ClCompile Include="safecombinationentry.cpp" />
@@ -607,7 +608,7 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\..\os\windows\os_wx-14.vcxproj">
-      <Project>{d5dbd8e8-cf48-4ca3-b773-c5f3b3316c73}</Project>
+      <Project>{d5dbd8e8-cf48-4ca3-b773-c5f3b3306c73}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\..\os\windows\yubi\YkLib22_wx-14.vcxproj">

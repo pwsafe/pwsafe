@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -14,7 +14,7 @@
   NOTE: In VS2013 wxWidgets 3.0.x builds:
     Both <wx/clipbrd.h> & <wx/dataobj.h> cause 51 warnings about using unsecure
     versions of standard calls, such as 'wcscpy' instead of 'wcscpy_s', if any
-    previously inluded header file includes <string> even though pre-processor
+    previously included header file includes <string> even though pre-processor
     variables _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES and
     _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT are defined.
 
@@ -63,7 +63,7 @@ PWSclipboard::PWSclipboard(): m_set(false)
 /**
  * Put text data to clipboard
  * @param[in] data data to store in clipboard
- * @param isSensitive if data sensitive, we remeber it's hash and will clear on ClearData() call
+ * @param isSensitive if data sensitive, we remember its hash and will clear on ClearCBData() call
  * @return \c true, if we could open the clipboard and put the data
 */
 bool PWSclipboard::SetData(const StringX &data)
@@ -92,7 +92,7 @@ bool PWSclipboard::SetData(const StringX &data)
  * Clear from clipboard data, that we put there previously
  * @return \c true, if we cleared our data, or stored data don't belong to us
 */
-bool PWSclipboard::ClearData()
+bool PWSclipboard::ClearCBData()
 {
   wxMutexLocker clip(m_clipboardMutex);
 
@@ -134,7 +134,7 @@ bool PWSclipboard::ClearData()
 void PWSclipboard::UsePrimarySelection(bool primary, bool clearOnChange) {
   if (primary != wxTheClipboard->IsUsingPrimarySelection()) {
     if (clearOnChange)
-      ClearData();
+      ClearCBData();
     wxTheClipboard->UsePrimarySelection(primary);
   }
 }

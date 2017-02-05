@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -167,8 +167,6 @@ void CompareDlg::CreateControls()
   dlgSizer->AddSpacer(BottomMargin);
 
   SetSizerAndFit(dlgSizer);
-
-
 }
 
 struct CompareDlgType {
@@ -412,7 +410,7 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   if (menuContext.cdata == m_conflicts) {
     selectionCount /= 2;
     wxCHECK_RET(menuContext.selectedItems.GetCount()%2 ==0, wxT("Conflicts grid should always select an even numer of items"));
-    //Our alogo requires the indexes to be in order, and sometimes these are actually unsorted
+    //Our algorithm requires the indexes to be in order, and sometimes these are actually unsorted
     menuContext.selectedItems.Sort(pless);
     for( size_t idx = 1; idx <= selectionCount; ++idx) {
       wxCHECK_RET(menuContext.selectedItems[idx]%2 != 0, wxT("Selection indexes not in expected order"));
@@ -551,7 +549,6 @@ bool CompareDlg::ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool re
   return ae.ShowModal() == wxID_OK && !readOnly;
 }
 
-
 void CompareDlg::OnExpandDataPanels(wxCommandEvent& /*evt*/)
 {
   m_dbSelectionPane->Collapse();
@@ -630,7 +627,6 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
       Layout();
   }
 }
-
 
 void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
 {

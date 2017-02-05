@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -29,7 +29,7 @@
 struct LANGHELPFILE {
   LCID lcid;                 // LCID for the language
   std::wstring wsLL;         // 2-character language code
-  std::wstring wsCC;         // 2-chharacter country code if needed
+  std::wstring wsCC;         // 2-character country code if needed
   std::wstring wsLanguage;   // Name of language for menu item
 
   /*
@@ -110,6 +110,7 @@ protected:
 
 private:
   bool ParseCommandLine(DboxMain &dbox, bool &allDone);
+  bool GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost, StringX &sxUser);
   void LoadLocalizedStuff();
   void SetupMenu();
   static BOOL CALLBACK searcher(HWND hWnd, LPARAM lParam);

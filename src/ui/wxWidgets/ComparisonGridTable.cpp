@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -448,7 +448,7 @@ wxGridCellAttr* MultiSafeCompareGridTable::GetAttr(int row, int col, wxGridCellA
 
 wxString MultiSafeCompareGridTable::GetRowLabelValue(int row)
 {
-  //donot show row labels in odd number rows in conflict grid
+  //do not show row labels in odd number rows in conflict grid
   if (row%2 == 1)
     return wxEmptyString;
   return wxGridTableBase::GetRowLabelValue(row/2);

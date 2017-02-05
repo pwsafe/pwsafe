@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -87,7 +87,7 @@ CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongP
     m_Symbols = m_oldSymbols = m_st_default_pp.symbols.c_str();
   else {
     // empty, set to appropriate default
-    stringT st_symbols;
+    std::wstring st_symbols;
     if (m_PWEasyVision == TRUE)
       st_symbols = CPasswordCharPool::GetEasyVisionSymbols();
     else if (m_PWMakePronounceable == TRUE)
@@ -933,7 +933,7 @@ void CPasswordPolicyDlg::OnENOwnSymbols()
   CString cs_symbols;
   m_SymbolsEdit.GetWindowText(cs_symbols);
 
-  // Check if user about to leave own symbols emtpy
+  // Check if user about to leave own symbols empty
   if (cs_symbols.GetLength() == 0) {
     // Tell user
     CGeneralMsgBox gmb;
@@ -1094,7 +1094,6 @@ void CPasswordPolicyDlg::UnselectNamedPolicy()
   m_cbxPolicyNames.EnableWindow(FALSE);
 }
 
-
 void CPasswordPolicyDlg::OnSymbolReset()
 {
   do_reset_symbols(true);
@@ -1102,7 +1101,7 @@ void CPasswordPolicyDlg::OnSymbolReset()
 
 void CPasswordPolicyDlg::do_reset_symbols(bool restore_defaults)
 {
-  stringT st_symbols;
+  std::wstring st_symbols;
   if (m_PWEasyVision == TRUE)
     st_symbols = CPasswordCharPool::GetEasyVisionSymbols();
   else if (m_PWMakePronounceable == TRUE)

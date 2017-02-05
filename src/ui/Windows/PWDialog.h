@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -41,15 +41,17 @@ public:
   static CPWDialogTracker *GetDialogTracker();
 
   DECLARE_DYNAMIC(CPWDialog)
+
 protected:
   DboxMain *GetMainDlg() const;
-  void InitToolTip(int Flags = TTS_BALLOON | TTS_NOPREFIX, int delayTimeFactor = 1);
+  bool InitToolTip(int Flags = TTS_BALLOON | TTS_NOPREFIX, int delayTimeFactor = 1);
   void AddTool(int DlgItemID, int ResID);
   void ActivateToolTip();
   void RelayToolTipEvent(MSG *pMsg);
   void ShowHelp(const CString &topicFile);
 
   CToolTipCtrl *m_pToolTipCtrl;
+
 private:
   static CPWDialogTracker *sm_tracker;
 };
@@ -63,9 +65,11 @@ public:
   bool AnyOpenDialogs() const;
   void AddOpenDialog(CWnd *dlg);
   void RemoveOpenDialog(CWnd *dlg);
-  void Apply(void (*f)(CWnd *)); // applies f to all open dialogs
+  void ShowOpenDialogs();
+  void HideOpenDialogs();
 
 private:
+  void Apply(void (*f)(CWnd *)); // applies f to all open dialogs
   mutable CMutex m_mutex; // to protect access to our list of open dialogs
   // CWnd = CDialog & CPropertySheet common ancestor!
   std::list<CWnd *> m_dialogs;

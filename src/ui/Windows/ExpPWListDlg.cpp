@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -9,6 +9,8 @@
 //
 
 #include "stdafx.h"
+
+#include "Windowsdefs.h"
 #include "ExpPWListDlg.h"
 #include "DboxMain.h"
 #include "SecString.h"
@@ -87,8 +89,7 @@ void CExpPWListDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CExpPWListDlg, CPWDialog)
   ON_BN_CLICKED(IDOK, OnOK)
   ON_BN_CLICKED(ID_HELP, OnIconHelp)
-  ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
-  ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
+  ON_NOTIFY(HDN_ITEMCLICK, 0, OnHeaderClicked)
   ON_NOTIFY(NM_DBLCLK, IDC_EXPIRED_PASSWORD_LIST, OnItemDoubleClick)
   ON_WM_DESTROY()
 END_MESSAGE_MAP()
@@ -196,7 +197,7 @@ BOOL CExpPWListDlg::OnInitDialog()
     int nColumnWidth = m_expPWListCtrl.GetColumnWidth(i);
     m_expPWListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
     int nHeaderWidth = m_expPWListCtrl.GetColumnWidth(i);
-    m_expPWListCtrl.SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
+    m_expPWListCtrl.SetColumnWidth(i, std::max(nColumnWidth, nHeaderWidth));
   }
 
   // Redraw

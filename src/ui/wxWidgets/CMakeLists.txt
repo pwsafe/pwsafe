@@ -36,11 +36,11 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/PWSDragBar.h
     src/ui/wxWidgets/PWSgrid.h
     src/ui/wxWidgets/PWSgridtable.h
+    src/ui/wxWidgets/PWStatusBar.h
     src/ui/wxWidgets/PWStree.h
     src/ui/wxWidgets/PasswordPolicy.h
     src/ui/wxWidgets/PwsSync.h
     src/ui/wxWidgets/PwsToolbarButtons.h
-    src/ui/wxWidgets/RUEList.h
     src/ui/wxWidgets/RecentDBList.h
     src/ui/wxWidgets/SafeCombinationCtrl.h
     src/ui/wxWidgets/SelectionCriteria.h
@@ -49,6 +49,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/SystemTrayMenuId.h
     src/ui/wxWidgets/safecombinationprompt.h
     src/ui/wxWidgets/TimedTaskChain.h
+    src/ui/wxWidgets/passwordsubset.h
     )
 
 
@@ -66,6 +67,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/pwsclip.cpp
     src/ui/wxWidgets/safecombinationentry.cpp
     src/ui/wxWidgets/mainEdit.cpp
+    src/ui/wxWidgets/mainView.cpp
     src/ui/wxWidgets/ViewReport.cpp
     src/ui/wxWidgets/safecombinationprompt.cpp
     src/ui/wxWidgets/passwordsafeframe.cpp
@@ -96,11 +98,11 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/PWSgridtable.cpp
     src/ui/wxWidgets/PWStree.cpp
     src/ui/wxWidgets/PwsSync.cpp
-    src/ui/wxWidgets/RUEList.cpp
     src/ui/wxWidgets/SafeCombinationCtrl.cpp
     src/ui/wxWidgets/SelectionCriteria.cpp
     src/ui/wxWidgets/SizeRestrictedPanel.cpp
     src/ui/wxWidgets/TimedTaskChain.cpp
+    src/ui/wxWidgets/passwordsubset.cpp
     )
   
 if(HAVE_YKPERS_H)

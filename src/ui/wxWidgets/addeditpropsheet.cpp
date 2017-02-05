@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -51,7 +51,6 @@
 
 IMPLEMENT_CLASS( AddEditPropSheet, wxPropertySheetDialog )
 
-
 /*!
  * AddEditPropSheet event table definition
  */
@@ -65,11 +64,11 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
   EVT_BUTTON( ID_GO_BTN, AddEditPropSheet::OnGoButtonClick )
   EVT_BUTTON( ID_SEND_BTN, AddEditPropSheet::OnSendButtonClick )
   EVT_CHECKBOX( ID_CHECKBOX1, AddEditPropSheet::OnKeepHistoryClick )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON, AddEditPropSheet::OnRadiobuttonSelected )
+  EVT_RADIOBUTTON( ID_RADIOBUTTON, AddEditPropSheet::OnExpRadiobuttonSelected )
   EVT_DATE_CHANGED( ID_DATECTRL, AddEditPropSheet::OnExpDateChanged )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON1, AddEditPropSheet::OnRadiobuttonSelected )
+  EVT_RADIOBUTTON( ID_RADIOBUTTON1, AddEditPropSheet::OnExpRadiobuttonSelected )
   EVT_SPINCTRL( ID_SPINCTRL2, AddEditPropSheet::OnExpIntervalChanged )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON4, AddEditPropSheet::OnRadiobuttonSelected )
+  EVT_RADIOBUTTON( ID_RADIOBUTTON4, AddEditPropSheet::OnExpRadiobuttonSelected )
   EVT_RADIOBUTTON( ID_RADIOBUTTON2, AddEditPropSheet::OnPWPRBSelected )
   EVT_COMBOBOX( ID_POLICYLIST, AddEditPropSheet::OnPolicylistSelected )
   EVT_RADIOBUTTON( ID_RADIOBUTTON3, AddEditPropSheet::OnPWPRBSelected )
@@ -137,7 +136,8 @@ bool AddEditPropSheet::Create( wxWindow* parent, wxWindowID id, const wxString& 
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
 
-  CreateButtons(wxOK|wxCANCEL|wxHELP);
+  int flags = (m_type == VIEW) ? (wxCLOSE|wxHELP) : (wxOK|wxCANCEL|wxHELP);
+  CreateButtons(flags);
   CreateControls();
   LayoutDialog();
   Centre();
@@ -155,7 +155,6 @@ AddEditPropSheet::~AddEditPropSheet()
 ////@begin AddEditPropSheet destruction
 ////@end AddEditPropSheet destruction
 }
-
 
 /*!
  * Member initialisation
@@ -232,6 +231,21 @@ public:
 private:
   int m_rbID;
 };
+
+static void setupDCAStrings(wxArrayString &as)
+{
+  // semi-duplicated in SetupDCAComboBoxes(),
+  // but leaving these empty now causes an assert
+  as.Add(_("Auto Type"));
+  as.Add(_("Browse"));
+  as.Add(_("Browse + Auto Type"));
+  as.Add(_("Copy Notes"));
+  as.Add(_("Copy Password"));
+  as.Add(_("Copy Password + Minimize"));
+  as.Add(_("Copy Username"));
+  as.Add(_("Edit/View Entry"));
+  as.Add(_("Execute Run command"));
+}
 
 /*!
  * Control creation for AddEditPropSheet
@@ -360,15 +374,7 @@ void AddEditPropSheet::CreateControls()
   itemFlexGridSizer40->Add(itemStaticText45, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString m_DCAcomboBoxStrings;
-  m_DCAcomboBoxStrings.Add(_("Auto Type"));
-  m_DCAcomboBoxStrings.Add(_("Browse"));
-  m_DCAcomboBoxStrings.Add(_("Browse + Auto Type"));
-  m_DCAcomboBoxStrings.Add(_("Copy Notes"));
-  m_DCAcomboBoxStrings.Add(_("Copy Password"));
-  m_DCAcomboBoxStrings.Add(_("Copy Password + Minimize"));
-  m_DCAcomboBoxStrings.Add(_("Copy Username"));
-  m_DCAcomboBoxStrings.Add(_("Edit/View Entry"));
-  m_DCAcomboBoxStrings.Add(_("Execute Run command"));
+  setupDCAStrings(m_DCAcomboBoxStrings);
   m_DCAcomboBox = new wxComboBox( itemPanel38, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_DCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -376,15 +382,7 @@ void AddEditPropSheet::CreateControls()
   itemFlexGridSizer40->Add(itemStaticText47, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString m_SDCAcomboBoxStrings;
-  m_SDCAcomboBoxStrings.Add(_("Auto Type"));
-  m_SDCAcomboBoxStrings.Add(_("Browse"));
-  m_SDCAcomboBoxStrings.Add(_("Browse + Auto Type"));
-  m_SDCAcomboBoxStrings.Add(_("Copy Notes"));
-  m_SDCAcomboBoxStrings.Add(_("Copy Password"));
-  m_SDCAcomboBoxStrings.Add(_("Copy Password + Minimize"));
-  m_SDCAcomboBoxStrings.Add(_("Copy Username"));
-  m_SDCAcomboBoxStrings.Add(_("Edit/View Entry"));
-  m_SDCAcomboBoxStrings.Add(_("Execute Run command"));
+  setupDCAStrings(m_SDCAcomboBoxStrings);
   m_SDCAcomboBox = new wxComboBox( itemPanel38, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_SDCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -655,6 +653,8 @@ void AddEditPropSheet::CreateControls()
   // Setup symbols
   m_symbols = CPasswordCharPool::GetDefaultSymbols().c_str();
   m_ownsymbols->SetValue(m_symbols);
+
+  m_ExpTimeCtrl->SetRange(1, 3650);
 }
 
 /*!
@@ -810,6 +810,53 @@ static struct {short pv; wxString name;}
   }
 }
 
+void AddEditPropSheet::UpdateExpTimes()
+{
+  // From m_item to display
+
+  m_item.GetXTime(m_tttXTime);
+  m_item.GetXTimeInt(m_XTimeInt);
+  m_XTime = m_CurXTime = m_item.GetXTimeL().c_str();
+
+  if (m_XTime.empty())
+    m_XTime = m_CurXTime = _("Never");
+
+  wxCommandEvent dummy;
+  wxDateTime exp;
+  if (m_tttXTime == 0) { // never expires
+    m_OnRB->SetValue(false);
+    m_InRB->SetValue(false);
+    m_NeverRB->SetValue(true);
+    exp = wxDateTime::Now();
+    dummy.SetEventObject(m_NeverRB);
+  } else {
+    exp = wxDateTime(m_tttXTime);
+    if (m_XTimeInt == 0) { // expiration specified as date
+      m_OnRB->SetValue(true);
+      m_InRB->SetValue(false);
+      m_NeverRB->SetValue(false);
+      m_ExpTimeCtrl->Enable(false);
+      m_Recurring = false;
+      dummy.SetEventObject(m_OnRB);
+    } else { // exp. specified as interval
+      m_OnRB->SetValue(false);
+      m_InRB->SetValue(true);
+      m_NeverRB->SetValue(false);
+      m_ExpDate->Enable(false);
+      m_ExpTimeCtrl->SetValue(m_XTimeInt);
+      m_Recurring = true;
+      dummy.SetEventObject(m_InRB);
+    }
+    m_RecurringCtrl->Enable(m_Recurring);
+    m_ExpDate->SetValue(exp);
+  }
+
+  if (exp > wxDateTime::Today())
+    exp = wxDateTime::Today(); // otherwise we can never move exp date back
+  m_ExpDate->SetRange(exp, wxDateTime(time_t(-1)));
+
+  OnExpRadiobuttonSelected(dummy); // setup enable/disable of expiry-related controls
+}
 
 void AddEditPropSheet::ItemFieldsToPropSheet()
 {
@@ -817,7 +864,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   std::vector<stringT>::iterator sviter;
 
   // Populate the group combo box
-  m_core.GetUniqueGroups(svec);
+  m_core.GetAllGroups(svec);
   for (sviter = svec.begin(); sviter != svec.end(); sviter++)
     m_groupCtrl->Append(sviter->c_str());
 
@@ -840,6 +887,21 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   m_url = m_item.GetURL().c_str();
   m_email = m_item.GetEmail().c_str();
   m_password = m_item.GetPassword();
+
+  if (m_item.IsAlias()) {
+    // Update password to alias form
+    // Show text stating that it is an alias
+
+    const CItemData *pbci = m_core.GetBaseEntry(&m_item);
+    ASSERT(pbci);
+    if (pbci) {
+      m_password = L"[" +
+                pbci->GetGroup() + L":" +
+                pbci->GetTitle() + L":" +
+                pbci->GetUser()  + L"]";
+    }
+  } // IsAlias
+
   PWSprefs *prefs = PWSprefs::GetInstance();
   if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
     ShowPassword();
@@ -915,45 +977,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   } // m_type
 
   // Password Expiration
-  m_XTime = m_CurXTime = m_item.GetXTimeL().c_str();
-  if (m_XTime.empty())
-    m_XTime = m_CurXTime = _("Never");
-  m_item.GetXTime(m_tttXTime);
-
-  m_item.GetXTimeInt(m_XTimeInt);
-
-  wxCommandEvent dummy;
-  wxDateTime earliestExp;
-  if (m_tttXTime == 0) { // never expires
-    m_OnRB->SetValue(false);
-    m_InRB->SetValue(false);
-    m_NeverRB->SetValue(true);
-    earliestExp = wxDateTime::Now();
-    dummy.SetEventObject(m_NeverRB);
-  } else {
-    earliestExp = wxDateTime(m_tttXTime);
-    if (m_XTimeInt == 0) { // expiration specified as date
-      m_OnRB->SetValue(true);
-      m_InRB->SetValue(false);
-      m_NeverRB->SetValue(false);
-      m_ExpTimeCtrl->Enable(false);
-      m_Recurring = false;
-      dummy.SetEventObject(m_OnRB);
-    } else { // exp. specified as interval
-      m_OnRB->SetValue(false);
-      m_InRB->SetValue(true);
-      m_NeverRB->SetValue(false);
-      m_ExpDate->Enable(false);
-      m_ExpTimeCtrl->SetValue(m_XTimeInt);
-      m_Recurring = true;
-      dummy.SetEventObject(m_InRB);
-    }
-    m_RecurringCtrl->Enable(m_Recurring);
-  }
-
-  m_ExpDate->SetRange(earliestExp, wxDateTime(time_t(-1)));
-
-  OnRadiobuttonSelected(dummy); // setup enable/disable of expiry-related controls
+  UpdateExpTimes();
   // Modification times
   m_CTime = m_item.GetCTimeL().c_str();
   m_PMTime = m_item.GetPMTimeL().c_str();
@@ -1005,7 +1029,6 @@ void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& /* evt */ )
     ::wxLaunchDefaultBrowser(m_url, wxBROWSER_NEW_WINDOW);
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON3
  */
@@ -1029,7 +1052,6 @@ void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
     }
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
@@ -1098,16 +1120,18 @@ void AddEditPropSheet::HidePassword()
   m_Password2Ctrl->Enable(true);
 }
 
-static void GetSelectedDCA(const wxComboBox *pcbox, short &val,
+static short GetSelectedDCA(const wxComboBox *pcbox,
                            short lastval, short defval)
 {
+  UNREFERENCED_PARAMETER(lastval);
+
   int sel = pcbox->GetSelection();
   intptr_t ival = -1;
   if (sel == wxNOT_FOUND) { // no selection
-    val = (lastval == defval) ? -1 : lastval;
+    return -1;
   } else {
     ival = reinterpret_cast<intptr_t>(pcbox->GetClientData(sel));
-    val = (ival == defval) ? -1 : ival;
+    return (ival == defval) ? -1 : ival;
   }
 }
 
@@ -1147,12 +1171,12 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       short lastDCA, lastShiftDCA;
       const PWSprefs *prefs = PWSprefs::GetInstance();
       m_item.GetDCA(lastDCA);
-      GetSelectedDCA(m_DCAcomboBox, m_DCA, lastDCA,
-                     short(prefs->GetPref(PWSprefs::DoubleClickAction)));
+      m_DCA = GetSelectedDCA(m_DCAcomboBox, lastDCA,
+                             short(prefs->GetPref(PWSprefs::DoubleClickAction)));
 
       m_item.GetShiftDCA(lastShiftDCA);
-      GetSelectedDCA(m_SDCAcomboBox, m_ShiftDCA, lastShiftDCA,
-                     short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
+      m_ShiftDCA = GetSelectedDCA(m_SDCAcomboBox, lastShiftDCA,
+                                  short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
       // Check if modified
       int lastXTimeInt;
       m_item.GetXTimeInt(lastXTimeInt);
@@ -1207,7 +1231,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       } else {
         m_core.GetPolicyFromName(oldPolName, oldPWP);
       }
-      // now get dbox's effecive policy:
+      // now get dbox's effective policy:
       pwp = GetSelectedPWPolicy();
 
       bIsModified = (group        != m_item.GetGroup().c_str()       ||
@@ -1226,7 +1250,26 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
                      m_symbols    != m_item.GetSymbols().c_str()     ||
                      oldPWP       != pwp);
 
-      bIsPSWDModified = (password != m_item.GetPassword());
+
+        if (!m_item.IsAlias()) {
+          bIsPSWDModified = (password != m_item.GetPassword());
+        }
+        else {
+          // Update password to alias form
+          // Show text stating that it is an alias
+          const CItemData *pbci = m_core.GetBaseEntry(&m_item);
+          ASSERT(pbci);
+          if (pbci) {
+            StringX alias = L"[" +
+                pbci->GetGroup() + L":" +
+                pbci->GetTitle() + L":" +
+                pbci->GetUser()  + L"]";
+            bIsPSWDModified = (password != alias);
+          }
+          else {
+            bIsPSWDModified = true;
+          }
+        }
 
       if (bIsModified) {
         // Just modify all - even though only 1 may have actually been modified
@@ -1245,7 +1288,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         if (m_defPWPRB->GetValue()) {
           polName = m_cbxPolicyNames->GetValue();
           if (polName == _("Default Policy"))
-            polName = wxT("");
+            polName = wxEmptyString;
         } else {
           m_item.SetPWPolicy(pwp);
         }
@@ -1263,8 +1306,11 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         m_item.SetRMTime(t);
       if (m_tttXTime != lastXtime)
         m_item.SetXTime(m_tttXTime);
+      if (m_Recurring) {
       if (m_XTimeInt != lastXTimeInt)
         m_item.SetXTimeInt(m_XTimeInt);
+      } else
+        m_item.SetXTimeInt(0);
       // All fields in m_item now reflect user's edits
       // Let's update the core's data
       uuid_array_t uuid;
@@ -1329,7 +1375,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
 #endif
       if (m_item.IsAlias()) {
         m_item.SetXTime((time_t)0);
-        m_item.SetPWPolicy(_T(""));
+        m_item.SetPWPolicy(wxEmptyString);
       } else {
         m_item.SetXTime(m_tttXTime);
       }
@@ -1345,7 +1391,6 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1
  */
@@ -1357,7 +1402,6 @@ void AddEditPropSheet::OnKeepHistoryClick(wxCommandEvent &)
      m_MaxPWHistCtrl->Enable(m_keepPWHist);
    }
 }
-
 
 #if 0 // XXX Remove, as we did away with this checkbox!
 void AddEditPropSheet::OnOverrideDCAClick( wxCommandEvent& /* evt */ )
@@ -1402,7 +1446,7 @@ void AddEditPropSheet::SetXTime(wxObject *src)
         wxString rstr;
         rstr.Printf(_(" (every %d days)"), m_XTimeInt);
         m_XTime += rstr;
-      } // recurring
+      }
     } else {
       ASSERT(0);
     }
@@ -1415,7 +1459,7 @@ void AddEditPropSheet::SetXTime(wxObject *src)
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON
  */
 
-void AddEditPropSheet::OnRadiobuttonSelected( wxCommandEvent& evt )
+void AddEditPropSheet::OnExpRadiobuttonSelected( wxCommandEvent& evt )
 {
   bool On = (evt.GetEventObject() == m_OnRB);
   bool Never = (evt.GetEventObject() == m_NeverRB);
@@ -1436,7 +1480,6 @@ void AddEditPropSheet::OnRadiobuttonSelected( wxCommandEvent& evt )
   m_ExpTimeCtrl->Enable(!On && !Never);
   m_RecurringCtrl->Enable(!On && !Never);
 }
-
 
 /*!
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
@@ -1494,7 +1537,6 @@ void AddEditPropSheet::OnUseHexCBClick( wxCommandEvent& /* evt */ )
  }
 }
 
-
 /*!
  * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL7
  */
@@ -1510,7 +1552,6 @@ void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& /* evt */ )
 
 PWPolicy AddEditPropSheet::GetPWPolicyFromUI()
 {
-  Validate(); TransferDataFromWindow();
   wxASSERT_MSG(m_ourPWPRB->GetValue() && !m_defPWPRB->GetValue(), wxT("Trying to get Password policy from UI when db defaults are to be used"));
 
   PWPolicy pwp;
@@ -1605,7 +1646,6 @@ void AddEditPropSheet::OnClearPWHist(wxCommandEvent& /*evt*/)
     m_PWHistory.Empty();
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
  */
@@ -1617,7 +1657,7 @@ void AddEditPropSheet::OnEZreadCBClick(wxCommandEvent& evt)
     // Check if pronounceable is also set - forbid both
     if (m_pwpPronounceCtrl->GetValue()) {
       m_pwpEasyCtrl->SetValue(false);
-      wxMessageBox(_("Sorry, \"easy-to-read\" and \"pronouncable\" cannot be both selected"),
+      wxMessageBox(_("Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"),
                    _("Error"), wxOK|wxICON_ERROR, this);
       return;
     }
@@ -1633,7 +1673,6 @@ void AddEditPropSheet::OnEZreadCBClick(wxCommandEvent& evt)
   m_ownsymbols->SetValue(m_symbols);
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
  */
@@ -1645,7 +1684,7 @@ void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& evt)
     // Check if ezread is also set - forbid both
     if (m_pwpEasyCtrl->GetValue()) {
       m_pwpPronounceCtrl->SetValue(false);
-      wxMessageBox(_("Sorry, \"pronouncable\" and \"easy-to-read\" cannot be both selected"),
+      wxMessageBox(_("Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"),
                    _("Error"), wxOK|wxICON_ERROR, this);
       return;
     }
@@ -1700,10 +1739,9 @@ void AddEditPropSheet::OnSendButtonClick( wxCommandEvent& event )
     StringX mail_cmd= tostringx(_("mailto:"));
     mail_cmd += tostringx(m_email);
     PWSRun runner;
-    runner.issuecmd(mail_cmd, wxT(""), false);
+    runner.issuecmd(mail_cmd, wxEmptyString, false);
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_POLICYLIST
@@ -1726,7 +1764,6 @@ void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
   EnablePWPolicyControls(false);
 }
 
-
 /*!
  * wxEVT_DATE_CHANGED event handler for ID_DATECTRL
  */
@@ -1736,7 +1773,6 @@ void AddEditPropSheet::OnExpDateChanged( wxDateEvent& event )
   SetXTime(event.GetEventObject());
 }
 
-
 /*!
  * wxEVT_COMMAND_SPINCTRL_UPDATED event handler for ID_SPINCTRL2
  */
@@ -1745,7 +1781,6 @@ void AddEditPropSheet::OnExpIntervalChanged( wxSpinEvent& event )
 {
   SetXTime(event.GetEventObject());
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
@@ -1759,7 +1794,6 @@ void AddEditPropSheet::OnSymbolsCB( wxCommandEvent& event )
   FindWindow(ID_RESET_SYMBOLS)->Enable(checked);
 }
 
-
 /*!
  * wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS
  */
@@ -1771,7 +1805,6 @@ void AddEditPropSheet::OnOwnSymSetFocus( wxFocusEvent& event )
   event.Skip();
 ////@end wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS in AddEditPropSheet.
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_RESET_SYMBOLS
@@ -1790,7 +1823,6 @@ void AddEditPropSheet::OnResetSymbolsClick( wxCommandEvent& WXUNUSED(event) )
   m_ownsymbols->SetValue(m_symbols);
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX5
  */
@@ -1799,7 +1831,6 @@ void AddEditPropSheet::OnDigitsCB( wxCommandEvent& event )
 {
   m_pwpDigSpin->Enable(event.IsChecked());
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX4
@@ -1810,7 +1841,6 @@ void AddEditPropSheet::OnUppercaseCB( wxCommandEvent& event )
   m_pwpUCSpin->Enable(event.IsChecked());
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
  */
@@ -1819,4 +1849,3 @@ void AddEditPropSheet::OnLowercaseCB( wxCommandEvent& event )
 {
   m_pwpLCSpin->Enable(event.IsChecked());
 }
-

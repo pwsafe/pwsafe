@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -50,14 +50,13 @@ static void get_failsafe_rnd(char * &p, unsigned &slen)
   memcpy(p, &tv.tv_usec, slen);
 }
 
-
 void pws_os::GetRandomSeed(void *p, unsigned &slen)
 {
   /**
    * Return a cryptographically strong seed
    * from /dev/random, if possible.
    *
-   * When called with p == NULL, return nuber of bytes currently
+   * When called with p == NULL, return number of bytes currently
    * in entropy pool.
    * To minimize TOCTTOU, we also read the data at this time,
    * and deliver it when called with non-NULL p.

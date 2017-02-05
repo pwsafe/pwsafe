@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -144,7 +144,8 @@ static UINT WZExecuteThread(LPVOID pParam)
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
       status = pthdpms->pWZPSH->WZPSHDoExportDB(pthdpms->sx_Filename,
-                   pthdpms->nID, pthdpms->sx_exportpasskey,
+                   pthdpms->nID, pthdpms->bExportDBFilters,
+                   pthdpms->sx_exportpasskey,
                    pthdpms->numProcessed, pthdpms->prpt);
       break;
     default:
@@ -238,7 +239,7 @@ int CWZFinish::ExecuteAction()
 
   if (bOtherIsDB) {
     // Not really needed but...
-    m_pothercore->ClearData();
+    m_pothercore->ClearDBData();
 
     // Reading a new file changes the preferences as they are instance dependent
     // not core dependent
@@ -264,24 +265,24 @@ int CWZFinish::ExecuteAction()
       case PWScore::SUCCESS:
         break;
       case PWScore::CANT_OPEN_FILE:
-        cs_temp.Format(IDS_CANTOPENREADING, sx_Filename2.c_str());
+        cs_temp.Format(IDS_CANTOPENREADING, static_cast<LPCWSTR>(sx_Filename2.c_str()));
         cs_title.LoadString(IDS_FILEREADERROR);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
         break;
       case PWScore::BAD_DIGEST:
-        cs_temp.Format(IDS_FILECORRUPT, sx_Filename2.c_str());
+        cs_temp.Format(IDS_FILECORRUPT, static_cast<LPCWSTR>(sx_Filename2.c_str()));
         cs_title.LoadString(IDS_FILEREADERROR);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);
         break;
       default:
-        cs_temp.Format(IDS_UNKNOWNERROR, sx_Filename2.c_str());
+        cs_temp.Format(IDS_UNKNOWNERROR, static_cast<LPCWSTR>(sx_Filename2.c_str()));
         cs_title.LoadString(IDS_FILEREADERROR);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);
         break;
     }
 
     if (rc != PWScore::SUCCESS) {
-      m_pothercore->ClearData();
+      m_pothercore->ClearDBData();
       m_pothercore->SetCurFile(L"");
       delete m_pothercore;
       m_pothercore = NULL;
@@ -299,6 +300,7 @@ int CWZFinish::ExecuteAction()
       m_prpt = new CReport;
 
     const bool bAdvanced = m_pWZPSH->GetAdvanced();
+    const bool bExportDBFilters = m_pWZPSH->GetExportDBFilters();
 
     m_thdpms.pWZFinish = this;
     m_thdpms.nID = nID;
@@ -308,12 +310,13 @@ int CWZFinish::ExecuteAction()
     m_thdpms.sx_Filename = sx_Filename2;
     m_thdpms.sx_exportpasskey = m_pWZPSH->GetExportPassKey();
     m_thdpms.bAdvanced = bAdvanced;
+    m_thdpms.bExportDBFilters = bExportDBFilters;
 
     m_pExecuteThread = AfxBeginThread(WZExecuteThread, &m_thdpms,
                                 THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
 
     if (m_pExecuteThread == NULL) {
-      pws_os::Trace(_T("Unable to create Execute thread\n"));
+      pws_os::Trace(L"Unable to create Execute thread\n");
       return PWScore::FAILURE;
     }
 
@@ -391,7 +394,7 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
     if (m_pothercore->IsLockedFile(m_pothercore->GetCurFile().c_str()))
       m_pothercore->UnlockFile(m_pothercore->GetCurFile().c_str());
 
-    m_pothercore->ClearData();
+    m_pothercore->ClearDBData();
     m_pothercore->SetCurFile(L"");
     delete m_pothercore;
     m_pothercore = NULL;
@@ -432,10 +435,12 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
             break;
           case ID_MENUITEM_EXPORT2PLAINTEXT:
           case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+          case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
             uiMsg = IDS_WZEXPORTTEXT;
             break;
           case ID_MENUITEM_EXPORT2XML:
           case ID_MENUITEM_EXPORTENT2XML:
+          case ID_MENUITEM_EXPORTGRP2XML:
             uiMsg = IDS_WZEXPORTXML;
             break;
           default:
@@ -443,7 +448,7 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
             break;
         }
         cs_temp.LoadString(uiMsg);
-        cs_text.Format(IDS_WZACTIONFAILED, cs_temp);
+        cs_text.Format(IDS_WZACTIONFAILED, static_cast<LPCWSTR>(cs_temp));
       } else
         cs_text.LoadString(IDS_COMPLETE);
     }

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2013-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2013-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -18,7 +18,7 @@
 
 static int AES_wrap_unwrap_test(const unsigned char *kek, int keybits,
                                 const unsigned char *eout,
-                                const unsigned char *key, int keylen);
+                                const unsigned char *key, unsigned int keylen);
 
 TEST(KeyWrapTest, AES_keywrap)
 {
@@ -86,7 +86,7 @@ TEST(KeyWrapTest, AES_keywrap)
 
 static int AES_wrap_unwrap_test(const unsigned char *kek, int keybits,
                                 const unsigned char *eout,
-                                const unsigned char *key, int keylen)
+                                const unsigned char *key, unsigned int keylen)
 {
   unsigned char *otmp = NULL, *ptmp = NULL;
   int ret = 0;
