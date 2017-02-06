@@ -40,6 +40,7 @@
     <RootNamespace>pwsafe</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'" Label="Configuration">
@@ -112,21 +113,21 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">..\$(PWSBin)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugwxX|x64'">..\$(PWSBin)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugwxX|x64'">..\$(PWSBin)64\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">..\$(PWSBin)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debugwx|x64'">..\$(PWSBin)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debugwx|x64'">..\$(PWSBin)64\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">..\$(PWSBin)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|x64'">..\$(PWSBin)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|x64'">..\$(PWSBin)64\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">..\$(PWSBin)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Releasewx|x64'">..\$(PWSBin)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Releasewx|x64'">..\$(PWSBin)64\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugwxX|x64'">..\$(PWSObj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugwxX|x64'">..\$(PWSObj)64\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debugwx|x64'">..\$(PWSObj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debugwx|x64'">..\$(PWSObj)64\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|x64'">..\$(PWSObj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|x64'">..\$(PWSObj)64\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Releasewx|x64'">..\$(PWSObj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Releasewx|x64'">..\$(PWSObj)64\$(ProjectName)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debugwx|x64'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">true</LinkIncremental>
@@ -215,10 +216,10 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>..\$(PWSObj)\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\$(PWSObj)64\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\$(PWSObj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\$(PWSObj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\$(PWSObj)64\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ShowIncludes>false</ShowIncludes>
@@ -233,7 +234,7 @@
       <AdditionalLibraryDirectories>$(WXDIR)/lib/vc140_x64_lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>..\$(PWSBin)64/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
@@ -296,10 +297,10 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>..\$(PWSObj)\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\$(PWSObj)64\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\$(PWSObj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\$(PWSObj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\$(PWSObj)64\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ShowIncludes>false</ShowIncludes>
@@ -310,11 +311,11 @@
       <UndefinePreprocessorDefinitions>WX_CPU_X86</UndefinePreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw30ud_xrc.lib;wxmsw30ud_qa.lib;wxmsw30ud_html.lib;wxmsw30ud_adv.lib;wxmsw30ud_core.lib;wxbase30ud_xml.lib;wxbase30ud_net.lib;wxmsw30ud_richtext.lib;wxbase30ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;xerces-c_static_3D.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc140_x64_lib;$(Xerces64Dir)/lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw30ud_xrc.lib;wxmsw30ud_qa.lib;wxmsw30ud_html.lib;wxmsw30ud_adv.lib;wxmsw30ud_core.lib;wxbase30ud_xml.lib;wxbase30ud_net.lib;wxmsw30ud_richtext.lib;wxbase30ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;xerces-c_static_3D.lib;setupapi.lib;Urlmon.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc140_x64_lib;$(Xerces64Dir)/lib;..\$(PWSLib)64;..\..\..\build\lib\pwsafe\Debug64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>..\$(PWSBin)64/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
@@ -374,10 +375,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>..\$(PWSObj)\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\$(PWSObj)64\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\$(PWSObj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\$(PWSObj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\$(PWSObj)64\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
@@ -388,10 +389,10 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw30u_xrc.lib;wxmsw30u_qa.lib;wxmsw30u_html.lib;wxmsw30u_adv.lib;wxmsw30u_core.lib;wxbase30u_xml.lib;wxbase30u_net.lib;wxmsw30u_richtext.lib;wxbase30u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc140_x64_lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc140_x64_lib;..\$(PWSLib)64;..\..\..\build\lib\pwsafe\Release64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>..\$(PWSBin)64/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
       <OptimizeReferences>true</OptimizeReferences>
@@ -449,10 +450,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>..\$(PWSObj)\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\$(PWSObj)64\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\$(PWSObj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\$(PWSObj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\$(PWSObj)64\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
@@ -462,11 +463,11 @@
       <UndefinePreprocessorDefinitions>WX_CPU_X86</UndefinePreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw30u_xrc.lib;wxmsw30u_qa.lib;wxmsw30u_html.lib;wxmsw30u_adv.lib;wxmsw30u_core.lib;wxbase30u_xml.lib;wxbase30u_net.lib;wxmsw30u_richtext.lib;wxbase30u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;xerces-c_static_3.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc140_x64_lib;$(Xerces64Dir)/lib;..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;wxmsw30u_xrc.lib;wxmsw30u_qa.lib;wxmsw30u_html.lib;wxmsw30u_adv.lib;wxmsw30u_core.lib;wxbase30u_xml.lib;wxbase30u_net.lib;wxmsw30u_richtext.lib;wxbase30u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;xerces-c_static_3.lib;setupapi.lib;Urlmon.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc140_x64_lib;$(Xerces64Dir)/lib;..\$(PWSLib)64;..\..\..\build\lib\pwsafe\Release64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>..\$(PWSBin)64/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
       <OptimizeReferences>true</OptimizeReferences>

@@ -156,25 +156,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">$(PWSLib)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">$(PWSLib)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">$(PWSLib)64\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(PWSLib)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(PWSLib)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(PWSLib)64\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">$(PWSLib)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">$(PWSLib)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">$(PWSLib)64\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">$(PWSLib)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|x64'">$(PWSLib)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|x64'">$(PWSLib)64\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(PWSLib)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(PWSLib)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(PWSLib)64\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">$(PWSobj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">$(PWSobj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">$(PWSobj)64\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(PWSobj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(PWSobj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(PWSobj)64\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">$(PWSobj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">$(PWSobj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">$(PWSobj)64\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">$(PWSobj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|x64'">$(PWSobj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|x64'">$(PWSobj)64\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(PWSobj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(PWSobj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(PWSobj)64\$(ProjectName)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">core</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">core</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">core</TargetName>
@@ -230,10 +230,10 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>$(PWSobj)\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>$(PWSobj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>$(PWSobj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>$(PWSobj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>$(PWSobj)64\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(PWSobj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>$(PWSobj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>$(PWSobj)64\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -244,7 +244,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(PWSLib)\core.lib</OutputFile>
+      <OutputFile>$(PWSLib)64\core.lib</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
@@ -296,10 +296,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>$(PWSobj)\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>$(PWSobj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>$(PWSobj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>$(PWSobj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>$(PWSobj)64\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(PWSobj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>$(PWSobj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>$(PWSobj)64\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
@@ -309,7 +309,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(PWSLib)\core.lib</OutputFile>
+      <OutputFile>$(PWSLib)64\core.lib</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
@@ -361,10 +361,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>$(PWSobj)\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>$(PWSobj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>$(PWSobj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>$(PWSobj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>$(PWSobj)64\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(PWSobj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>$(PWSobj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>$(PWSobj)64\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -375,7 +375,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(PWSLib)\core.lib</OutputFile>
+      <OutputFile>$(PWSLib)64\core.lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
   </ItemDefinitionGroup>
@@ -422,10 +422,10 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>$(PWSobj)\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>$(PWSobj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>$(PWSobj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>$(PWSobj)\$(ProjectName)/$(ProjectName).pdb</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>$(PWSobj)64\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(PWSobj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>$(PWSobj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>$(PWSobj)64\$(ProjectName)/$(ProjectName).pdb</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -436,7 +436,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(PWSLib)\core.lib</OutputFile>
+      <OutputFile>$(PWSLib)64\core.lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
   </ItemDefinitionGroup>
@@ -488,10 +488,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>$(PWSobj)\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>$(PWSobj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>$(PWSobj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>$(PWSobj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>$(PWSobj)64\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(PWSobj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>$(PWSobj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>$(PWSobj)64\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -503,7 +503,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(PWSLib)\core.lib</OutputFile>
+      <OutputFile>$(PWSLib)64\core.lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
   </ItemDefinitionGroup>
