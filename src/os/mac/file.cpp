@@ -354,7 +354,7 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   return retval;
 }
 
-void pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
+int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
 {
   if (fd != NULL) {
     if (bIsWrite) {
