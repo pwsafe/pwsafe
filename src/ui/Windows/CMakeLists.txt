@@ -101,6 +101,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/PWStatusBar.h
             src/ui/Windows/PWSversion.h
             src/ui/Windows/PWToolBar.h
+            src/ui/Windows/PWTouch.h
             src/ui/Windows/PWTreeCtrl.h
             src/ui/Windows/QuerySetDef.h
             src/ui/Windows/resource.h
