@@ -830,6 +830,9 @@
     <ClInclude Include="Windowsdefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PWTouch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\core\core.rc2">
