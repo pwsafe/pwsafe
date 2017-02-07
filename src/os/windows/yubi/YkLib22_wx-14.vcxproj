@@ -24,6 +24,7 @@
     <RootNamespace>YkLib22</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -70,13 +71,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\$(PWSLib)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\$(PWSLib)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\$(PWSLib)64\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\$(PWSLib)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\$(PWSLib)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\$(PWSLib)64\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\$(PWSObj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\$(PWSObj)64\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\$(PWSObj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\$(PWSObj)64\$(ProjectName)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">YkLib22</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">YkLib22</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">YkLib22</TargetName>
@@ -115,7 +116,7 @@
     <Lib>
       <AdditionalDependencies>hid.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(WDKDIR)\Lib\winv6.3\um\x64;$(WDKDIR)\lib\win7\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <OutputFile>..\..\$(PWSLib)\YkLib22.lib</OutputFile>
+      <OutputFile>..\..\$(PWSLib)64\YkLib22.lib</OutputFile>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>MSVCRTD.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Lib>
@@ -154,7 +155,7 @@
     </ClCompile>
     <Lib>
       <AdditionalDependencies>hid.lib</AdditionalDependencies>
-      <OutputFile>..\..\$(PWSLib)\YkLib22.lib</OutputFile>
+      <OutputFile>..\..\$(PWSLib)64\YkLib22.lib</OutputFile>
       <AdditionalLibraryDirectories>$(WDKDIR)\Lib\winv6.3\um\x64;$(WDKDIR)\lib\win7\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
     </Lib>

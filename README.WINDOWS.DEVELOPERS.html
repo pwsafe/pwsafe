@@ -331,10 +331,14 @@ framework in the DebugM build - specifically the DebugM build of the coretest pr
 <p>To generate the required library, open gtest.sln in the "msvc" sub-directory in the gtest
 directory.</p>
 <p>You only need to build the Debug version of gtest library (gtestd.lib) in the gtest project of the
-solution "gtest.sln". PasswordSafe does not use the "gtest-md.sln" solution nor following projects
+solution "gtest.sln". <b>However</b>, if you use the CMake process, it does require the "gtest_maind.lib"
+library <b>and</b> their Release equivalents.  In this case, it is probably easier to right-click on the
+gtest_main project and build both configurations since this project builds both libraries.</p>
+
+<p>PasswordSafe does not use the "gtest-md.sln" solution nor following projects
 in gtest.sln:</p>
 <ol type="a">
- <li>gtest_main</li>
+ <li>gtest_main (except if you use CMake as above)</li>
  <li>gtest_prod_test</li>
  <li>gtest_unittest</li>
 </ol> 
@@ -374,6 +378,47 @@ in gtest.sln:</p>
     </ul>
   </li>
 </ol>
+
+<p>If you wish to build the 64-bit version, you will first have to create a new
+platform x64 and then make similar changes as above.  Note: When creating the new
+platform via the Configuration Manager, it is easier to select copy from the
+current x86 platform and then just make the changes marked in bold below:</p>
+<ol>
+  <li> Configuration Properties: General: (where NN is 12 for VS2013 &amp; 14 for VS2015)
+    <ul>
+      <li> All configurations:<br>
+          Output directory:       ..\build-vcNN/$(Configuration)<b>64</b>\<br>
+          Intermediate Directory: $(Configuration)/$(ProjectName)<b>64</b>\
+      </li>
+      <li>Debug configuration:<br>
+         Target Name:            $(ProjectName)d
+      </li>
+      <li>Release configuration (not used by PasswordSafe):<br>
+         Target Name:            $(ProjectName)
+      </li>
+    </ul>
+  </li>
+
+  <li>Configuration Properties: C/C++: General
+    <ul>
+      <li>Debug configuration:<br>
+          Debug Information Format: Program Database (/Zi)
+      </li>
+    </ul>
+  </li>
+    
+  <li>Configuration Properties: C/C++: Output Files
+    <ul>
+      <li>Debug configuration:<br>
+          Program Database File Name: $(OutDir)\$(ProjectName)d.pdb
+      </li>
+      <li>Release configuration (not used by PasswordSafe):<br>
+          Program Database File Name: $(OutDir)\$(ProjectName).pdb
+      </li>
+    </ul>
+  </li>
+</ol>
+
 <p>Please remember to (re-)run the PasswordSafe configure-12.vbs or configure-14.vbs script to set
 the necessary gtest include and library directories.  These would normally be the subdirectories
 "include" and either "build-vc12" or "build-vc14" of the "gtest-1.7.0" directory.</p>

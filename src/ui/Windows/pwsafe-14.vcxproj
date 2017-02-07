@@ -48,6 +48,7 @@
     <RootNamespace>pwsafe</RootNamespace>
     <Keyword>MFCProj</Keyword>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'" Label="Configuration">
@@ -163,25 +164,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">..\$(PWSBin)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">..\$(PWSBin)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">..\$(PWSBin)64\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\$(PWSBin)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\$(PWSBin)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\$(PWSBin)64\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">..\$(PWSBin)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">..\$(PWSBin)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">..\$(PWSBin)64\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">..\$(PWSBin)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|x64'">..\$(PWSBin)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|x64'">..\$(PWSBin)64\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\$(PWSBin)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\$(PWSBin)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\$(PWSBin)64\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">..\$(PWSObj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">..\$(PWSObj)64\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\$(PWSObj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\$(PWSObj)64\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">..\$(PWSObj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">..\$(PWSObj)64\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|x64'">..\$(PWSObj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|x64'">..\$(PWSObj)64\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\$(PWSObj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\$(PWSObj)64\$(ProjectName)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
@@ -285,10 +286,10 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>..\$(PWSObj)\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\$(PWSObj)64\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\$(PWSObj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\$(PWSObj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\$(PWSObj)64\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
@@ -303,10 +304,10 @@
     <Link>
       <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
+      <OutputFile>..\$(PWSBin)64/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
+      <AdditionalLibraryDirectories>..\$(PWSLib)64;..\..\..\build\lib\pwsafe\Release64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ProgramDatabaseFile>..\$(PWSBin)64/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
@@ -383,7 +384,7 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>..\$(PWSObj)\$(ProjectName)/pwsafe.tlb</TypeLibraryName>
+      <TypeLibraryName>..\$(PWSObj)64\$(ProjectName)/pwsafe.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
@@ -398,10 +399,10 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>..\$(PWSObj)\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\$(PWSObj)64\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\$(PWSObj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\$(PWSObj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\$(PWSObj)64\$(ProjectName)/</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -419,13 +420,13 @@
       <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
-      <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
+      <OutputFile>..\$(PWSBin)64/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib)64;..\..\..\build\lib\pwsafe\Debug64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>..\$(PWSBin)64/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
@@ -500,7 +501,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>..\$(PWSObj)\$(ProjectName)/pwsafe.tlb</TypeLibraryName>
+      <TypeLibraryName>..\$(PWSObj)64\$(ProjectName)/pwsafe.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
@@ -515,10 +516,10 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>..\$(PWSObj)\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\$(PWSObj)64\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\$(PWSObj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\$(PWSObj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\$(PWSObj)64\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
@@ -533,11 +534,11 @@
     <Link>
       <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
+      <OutputFile>..\$(PWSBin)64/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib)64;..\..\..\build\lib\pwsafe\Release64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>..\$(PWSBin)64/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
@@ -636,10 +637,10 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>..\$(PWSObj)\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/$(ProjectName).pdb</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\$(PWSObj)64\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\$(PWSObj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\$(PWSObj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\$(PWSObj)64\$(ProjectName)/$(ProjectName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -656,15 +657,15 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;dbghelp.lib;usp10.lib;;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
-      <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
+      <OutputFile>..\$(PWSBin)64/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib)64;..\..\..\build\lib\pwsafe\Debug64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>..\$(PWSBin)64/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
@@ -761,10 +762,10 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>..\$(PWSObj)\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\$(PWSObj)64\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\$(PWSObj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\$(PWSObj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\$(PWSObj)64\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
@@ -779,12 +780,12 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF /SECTION:.rsrc,rw %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;setupapi.lib;usp10.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\$(PWSBin)64/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib)64;..\..\..\build\lib\pwsafe\Release64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>..\$(PWSBin)64/pwsafe.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
       <SubSystem>Windows</SubSystem>
@@ -1028,6 +1029,7 @@
     <ClInclude Include="PWStatusBar.h" />
     <ClInclude Include="PWSversion.h" />
     <ClInclude Include="PWToolBar.h" />
+    <ClInclude Include="PWTouch.h" />
     <ClInclude Include="PWTreeCtrl.h" />
     <ClInclude Include="QuerySetDef.h" />
     <ClInclude Include="resource.h" />

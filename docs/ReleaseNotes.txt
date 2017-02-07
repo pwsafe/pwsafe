@@ -42,6 +42,8 @@ New Features for 3.41.1
 =======================
 [] A new internal filter has been implemented to show only those entries from
 last Find. Access via the View menu or Ctrl+K shortcut.
+[] PasswordSafe now supports the "long press" as the equivalent of a right mouse click
+on Windows systems with touch screens running Windows 7 and later.
 [822] An open database can now be locked via the File menu or a Toolbar button
 irrespective of whether the System Tray is used or not.
 [821] A new symbol for protected entries (locked padlock - Unicode U+01F512)
