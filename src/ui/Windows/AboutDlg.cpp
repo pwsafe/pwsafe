@@ -87,6 +87,11 @@ BOOL CAboutDlg::OnInitDialog()
                         static_cast<LPCWSTR>(Revision));
   }
 
+#if _WIN64
+  // Only add platform information for 64-bit build
+  m_appversion += L" 64-bit";
+#endif
+
 #ifdef _DEBUG
   m_appversion += L" [D]";
 #endif
