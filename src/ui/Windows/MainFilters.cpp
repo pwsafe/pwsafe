@@ -49,6 +49,10 @@ static char THIS_FILE[] = __FILE__;
 void DboxMain::OnCancelFilter()
 {
   // Deal with the 3 internal filters before user defined ones
+
+  // Save currently selected items
+  SaveGUIStatus();
+
   if (m_bExpireDisplayed) {
     OnShowExpireList();
   } else
@@ -61,6 +65,9 @@ void DboxMain::OnCancelFilter()
   if (m_bFilterActive) {
     ApplyFilter();
   }
+
+  // Now try to restore selection
+  RestoreGUIStatus();
 }
 
 void DboxMain::OnApplyFilter()
@@ -194,6 +201,9 @@ void DboxMain::ApplyFilters()
     DisplayInfo *pdi = GetEntryGUIInfo(*pci);
     m_LastFoundTreeItem = pdi->tree_item;
     m_LastFoundListItem = pdi->list_index;
+
+    UpdateToolBarForSelectedItem(pci);
+    SetDCAText(pci);
   }
 
   if (iLastShown < 0 || m_LastFoundListItem < 0) {
