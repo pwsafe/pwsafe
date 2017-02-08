@@ -699,7 +699,7 @@ BOOL CAddEdit_Basic::OnApply()
       cs_errmsg.Format(M_original_entrytype() == CItemData::ET_ALIASBASE ?
                        IDS_CHANGINGBASEENTRY1 : IDS_CHANGINGBASEENTRY2,
                        static_cast<LPCWSTR>(cs_alias));
-      int rc = gmb.MessageBox(cs_errmsg, cs_title, MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
+      int rc = (int)gmb.MessageBox(cs_errmsg, cs_title, MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
 
       if (rc == IDNO) {
         UpdateData(FALSE);

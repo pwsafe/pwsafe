@@ -235,7 +235,7 @@ bool CPWListCtrl::FindNext(const CString &cs_find, const int iSubItem)
   if (pos == NULL)
     iItem = 0;
   else
-    iItem = (int)pos;
+    iItem = (int)(INT_PTR)pos;
 
   do {
     cs_text = GetItemText(iItem, iSubItem);
@@ -259,7 +259,7 @@ bool CPWListCtrl::FindNext(const CString &cs_find, const int iSubItem)
         break;
       }
       iItem++;
-    } while (iItem != (int)pos);
+    } while (iItem != (INT_PTR)pos);
   }
 
   if (bFound) {

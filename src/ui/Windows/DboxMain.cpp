@@ -748,7 +748,7 @@ bool DboxMain::IsCharacterSupported(std::wstring &sProtect)
   ASSERT(sProtect.length() < 3);
 
   // Itemize - Uniscribe function
-  hr = ScriptItemize(sProtect.c_str(), sProtect.length(), cMaxItems, NULL, NULL, items, &cItems);
+  hr = ScriptItemize(sProtect.c_str(), (int)sProtect.length(), cMaxItems, NULL, NULL, items, &cItems);
 
   if (SUCCEEDED(hr) == FALSE)
     return bSupported;
@@ -1798,7 +1798,7 @@ void DboxMain::OnPasswordSafeWebsite()
 {
   HINSTANCE stat = ::ShellExecute(NULL, NULL, L"https://pwsafe.org/",
                               NULL, L".", SW_SHOWNORMAL);
-  if (int(stat) <= 32) {
+  if ((__int64)stat <= 32) {
 #ifdef _DEBUG
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(L"oops");
@@ -2055,14 +2055,14 @@ BOOL DboxMain::OnToolTipText(UINT, NMHDR *pNotifyStruct, LRESULT *pLResult)
   TOOLTIPTEXTW *pTTTW = (TOOLTIPTEXTW *)pNotifyStruct;
   wchar_t tc_FullText[4096];  // Maxsize of a string in a resource file
   CString cs_TipText;
-  UINT nID = (UINT)pNotifyStruct->idFrom;
+  UINT_PTR nID = pNotifyStruct->idFrom;
   if (pTTTW->uFlags & TTF_IDISHWND) {
     // idFrom is actually the HWND of the tool
     nID = ((UINT)(WORD)::GetDlgCtrlID((HWND)nID));
   }
 
   if (nID != 0) { // will be zero on a separator
-    if (AfxLoadString(nID, tc_FullText, 4095) == 0)
+    if (AfxLoadString((UINT)nID, tc_FullText, 4095) == 0)
       return FALSE;
 
     // this is the command id, not the button index
@@ -3283,7 +3283,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     } else {
       POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
       if (pos != NULL)
-        pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
+        pci = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos - 1);
     }
   }
 

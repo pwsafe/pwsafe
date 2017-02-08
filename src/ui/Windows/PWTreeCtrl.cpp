@@ -1943,7 +1943,7 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
     GetEntryData(out_oblist, pci);
   } else {
     const StringX DragPathParent = GetGroup(GetParentItem(m_hitemDrag));
-    m_nDragPathLen = DragPathParent.length();
+    m_nDragPathLen = (int)DragPathParent.length();
 
     StringX DragPath = GetGroup(m_hitemDrag);
     // Check if this is an empty group
@@ -2001,7 +2001,7 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
 
       if (conv.ToUTF8(vEmptyGroups[i].c_str(), utf8, utf8Len)) {
         outDDmemfile.Write((void *)&utf8Len, sizeof(utf8Len));
-        outDDmemfile.Write(reinterpret_cast<const char *>(utf8), utf8Len);
+        outDDmemfile.Write(reinterpret_cast<const char *>(utf8), (UINT)utf8Len);
       } else {
         ASSERT(0);
       }
@@ -2074,7 +2074,7 @@ bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen,
 
       // Clear buffer
       memset(utf8, 0, buffer_size);
-      num_read = inDDmemfile.Read(utf8, utf8Len);
+      num_read = inDDmemfile.Read(utf8, (UINT)utf8Len);
       ASSERT(num_read == utf8Len);        
         
       conv.FromUTF8(utf8, utf8Len, sxEmptyGroup);

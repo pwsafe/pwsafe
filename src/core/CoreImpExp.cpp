@@ -1986,7 +1986,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   for (size_t i = 0; i < hdr_tokens.size(); i++) {
     vector<StringX>::iterator it(std::find(vs_Header.begin(), vs_Header.end(), hdr_tokens[i]));
     if (it != vs_Header.end()) {
-      i_Offset[it - vs_Header.begin()] = i;
+      i_Offset[it - vs_Header.begin()] = (int)i;
       num_found++;
     }
   }

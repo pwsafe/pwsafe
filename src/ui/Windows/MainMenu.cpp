@@ -792,7 +792,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
           ID_MENUITEM_EXPORTGRP2DB, GGstr);
         GGstr.LoadString(IDS_EXPORTGRPMENU);
-        pPopupMenu->AppendMenu(MF_POPUP, (UINT)GGsubMenu.Detach(), GGstr);
+        pPopupMenu->AppendMenu(MF_POPUP, (UINT_PTR)GGsubMenu.Detach(), GGstr);
       }
 
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
@@ -992,7 +992,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       EEsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
                            ID_MENUITEM_EXPORTENT2DB, EEstr);
       EEstr.LoadString(IDS_EXPORTENTMENU);
-      pPopupMenu->AppendMenu(MF_POPUP, (UINT)EEsubMenu.Detach(), EEstr);
+      pPopupMenu->AppendMenu(MF_POPUP, (UINT_PTR)EEsubMenu.Detach(), EEstr);
 
       if (pci->IsShortcut() ? pbci->HasAttRef() : pci->HasAttRef()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
