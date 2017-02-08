@@ -5029,6 +5029,11 @@ void DboxMain::RestoreGUIStatus()
 
   st_SaveGUIInfo &SaveGUIInfo = m_stkSaveGUIInfo.top();
 
+  if (m_bBoldItem) {
+    m_ctlItemTree.SetItemState(m_LastFoundTreeItem, 0, TVIS_BOLD);
+    m_bBoldItem = false;
+  }
+
   ItemListIter iter;
   DisplayInfo *pdi;
   if (SaveGUIInfo.blSelectedValid) {
@@ -5038,6 +5043,9 @@ void DboxMain::RestoreGUIStatus()
       pdi = GetEntryGUIInfo(iter->second);
       m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
       m_ctlItemTree.SelectItem(pdi->tree_item);
+
+      UpdateToolBarForSelectedItem(&iter->second);
+      SetDCAText(&iter->second);
     }
   }
 
@@ -5047,6 +5055,9 @@ void DboxMain::RestoreGUIStatus()
     if (iter != End()) {
       pdi = GetEntryGUIInfo(iter->second);
       m_ctlItemTree.SelectItem(pdi->tree_item);
+
+      UpdateToolBarForSelectedItem(&iter->second);
+      SetDCAText(&iter->second);
     }
   }
 
@@ -5055,6 +5066,9 @@ void DboxMain::RestoreGUIStatus()
     grouptreeiter = m_mapGroupToTreeItem.find(SaveGUIInfo.sxGroupName);
     if (grouptreeiter != m_mapGroupToTreeItem.end()) {
       m_ctlItemTree.SelectItem(grouptreeiter->second);
+
+      UpdateToolBarForSelectedItem(NULL);
+      SetDCAText(NULL);
     }
   }
 

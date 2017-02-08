@@ -2597,14 +2597,18 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
     // Mark base entry as a base entry - must be a normal entry or already an alias base
     ASSERT(biter->second.IsNormal() || biter->second.IsAliasBase());
     biter->second.SetAliasBase();
-    if (baseWasNormal)
-      GUIRefreshEntry(biter->second);
+    if (baseWasNormal) {
+      // Allow fail as new entry might not yet be in the GUI
+      GUIRefreshEntry(biter->second, true);
+    }
   } else if (type == CItemData::ET_SHORTCUT) {
     // Mark base entry as a base entry - must be a normal entry or already a shortcut base
     ASSERT(biter->second.IsNormal() || biter->second.IsShortcutBase());
     biter->second.SetShortcutBase();
-    if (baseWasNormal)
-      GUIRefreshEntry(biter->second);
+    if (baseWasNormal) {
+      // Allow fail as new entry might not yet be in the GUI
+      GUIRefreshEntry(biter->second, true);
+    }
   }
 
   // Add to the base->type multimap

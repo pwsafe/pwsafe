@@ -46,9 +46,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">$(PWSBin)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">$(PWSBin)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">$(PWSBin)64\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">$(PWSObj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">$(PWSObj)64\$(ProjectName)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">false</LinkIncremental>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">coretest</TargetName>
@@ -94,7 +94,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugM|x64'">
     <Midl>
-      <TypeLibraryName>$(PWSObj)\$(ProjectName)/coretest.tlb</TypeLibraryName>
+      <TypeLibraryName>$(PWSObj)64\$(ProjectName)/coretest.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
@@ -119,10 +119,10 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(PWSBin)\coretest.exe</OutputFile>
+      <AdditionalDependencies>core.lib;os.lib;gtestd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(PWSBin)64\coretest.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>$(PWSLib);$(GtestLibDir)\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(PWSLib)64;$(GtestLibDir)\Debug64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>

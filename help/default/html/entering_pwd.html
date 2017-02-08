@@ -170,26 +170,59 @@ entries, and is explained in detail <a href="aliases.html">here</a>.
 <h3>Editing Existing Entries</h3>
 
 <ol>
-<li>Select the password entry to edit from the list</li>
+<li>Select the entry to edit from the list</li>
 <li>Select <b>Edit/View Entry</b> from the <b>Edit</b> menu</li>
 </ol>
 
 <hr>
+<h3>Editing Existing Entries via the Tree View</h3>
 
-<small><b>Note:</b> By default, passwords are obscured. To see
-the password associated with the Entry click <b>Show Password</b>.</small><br>
+<ol>
+<li>Select the entry to edit from the list then:</li>
+<li>Select <b>Edit/View Entry</b> from the <b>Edit</b> menu <b>OR</b></li>
+<li>Right-click on the entry and select <b>Edit/View Entry</b>
+from the context menu</li>
+<li>You can change the fields that are displayed in the tree view
+  directly. To do so:
+<ul>
+<li>Right-click on a group and select <b>Rename Group</b> from the
+  context menu <b>OR</b></li>
+<li>Press the shortcut key to rename (default F2) and overtype the
+displayed text (format is "title [username] {password}".</li>
+</ul>
+</ol>
+
+<hr>
+<small>
+<b>Notes:</b>
+<ol>
+<li>By default, usernames and passwords are not displayed in the Tree View. Displaying
+the username and the password are controlled by preferences (see:
+<a href="display_tab.html">Display Tab</a>). They work in a hierachy i.e. passwords can
+only be displayed if usernames are displayed.</li>
+<li>Also by default, passwords are obscured when editing the entry. To see
+the password associated with the entry click <b>Show Password</b> when editing it.
+<li>The title and password are the only mandatory fields for an entry. Therefore, if
+they are ommited during rename, they will retain their previous values.
+However, you may clear the username field, as long as it is being displayed,
+by entering "[]" during the rename implying an empty value.</li>
+</li>
+</ol>
+</small>
 <hr>
 
-<h3>Add a New Group</h3>
-
+<h3>Add a New Group via Tree View</h3>
 <ol>
 <li>Select <b>Add Group</b> from the <b>Edit</b> menu</li>
 <li>Enter the Group name</li>
 </ol>
+
 <h3>Edit a Group Name</h3>
 <ul>
 <li>Right-click on the group and select <b>Rename Group</b>
-from the drop down list</li>
+from the context menu or</li>
+<li>Select the group and press the shortcut to rename (default F2) and overtype the
+group name.</li>
 </ul>
 
 <hr>
@@ -198,11 +231,8 @@ from the drop down list</li>
 <b>Notes:</b>
 <ol>
 <li>Group names can be "nested" i.e. placing a group name within/under another group name.</li>
-<li>Groups do <b>not</b> exist in their own right. They exist by virtue of an entry being
-present with within it or within a sub-group of the group.  Therefore, if you add a group
-and the database is saved before you add an entry in it or its sub-group, it will disappear.
-The simplest method of ensuring a new group remains is to create a new entry and type
-in the new group path in the group field (groups are separated by periods ('.')).</li>
+<li>A group cannot be renamed to multiple groups through the <b>Rename Group</b> menu item or
+shortcut, i.e., group "a" cannot be renamed to "x.y".</li>
 </ol>
 </small>
 

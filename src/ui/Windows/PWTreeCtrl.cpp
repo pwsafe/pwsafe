@@ -505,9 +505,11 @@ void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 }
 
 static bool splitLeafText(const wchar_t *lt, StringX &newTitle, 
-                          StringX &newUser, StringX &newPassword)
+                          StringX &newUser, StringX &newPassword,
+                          bool &bUserSet)
 {
   bool bPasswordSet(false);
+  bUserSet = false;
 
   newTitle = newUser = newPassword = L"";
 
@@ -571,6 +573,7 @@ static bool splitLeafText(const wchar_t *lt, StringX &newTitle,
     newUser = cs_leafText.Mid(OpenSquareBraceIndex + 1, 
                               CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
     Trim(newUser);
+    bUserSet = true;
     goto final_check;
   }
 
@@ -592,6 +595,7 @@ static bool splitLeafText(const wchar_t *lt, StringX &newTitle,
     newUser = cs_leafText.Mid(OpenSquareBraceIndex + 1, 
                               CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
     Trim(newUser);
+    bUserSet = true;
     newPassword = cs_leafText.Mid(OpenCurlyBraceIndex + 1, 
                                   CloseCurlyBraceIndex - OpenCurlyBraceIndex - 1);
     Trim(newPassword);
@@ -722,9 +726,28 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
     pci = (CItemData *)GetItemData(ti);
     ASSERT(pci != NULL);
 
-    if (!splitLeafText(sxNewText.c_str(), sxNewTitle, sxNewUser, sxNewPassword)) {
+    bool bUserSet;
+    if (!splitLeafText(sxNewText.c_str(), sxNewTitle, sxNewUser, sxNewPassword, bUserSet)) {
       // errors in user's input - restore text and refresh display
       goto bad_exit;
+    }
+
+    // The user can change any of Title, User & Password via rename
+    // but ONLY if that field is being displayed.
+    if (sxNewTitle.empty()) {
+      // Title empty - change ignored as mandatory field
+      sxNewTitle = pci->GetTitle();
+    }
+
+    if (!bShowUsernameInTree || !bUserSet) {
+      // Username not visible - changed ignored - OR
+      // Username visible but  user hasn't explicitly changed it
+      sxNewUser = pci->GetUser();
+    }
+
+    if (!bShowPasswordInTree || sxNewPassword.empty()) {
+      // Password change ignored if not visible or empty as mandatory field
+      sxNewPassword = pci->GetPassword();
     }
 
     StringX sxGroup = pci->GetGroup();
@@ -734,11 +757,6 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
       goto bad_exit;
     }
-
-    if (sxNewUser.empty())
-      sxNewUser = pci->GetUser();
-    if (sxNewPassword.empty())
-      sxNewPassword = pci->GetPassword();
 
     StringX treeDispString = sxNewTitle;
     if (bShowUsernameInTree) {
@@ -865,6 +883,19 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
         pmulticmds->Add(UpdateEntryCommand::Create(pcore, *pci,
                                                    CItemData::PASSWORD, sxNewPassword));
       }
+    }
+
+    if (!pmulticmds->IsEmpty()) {
+      // We refresh the Tree view as rename may alter entry's posiition
+      Command *pcmd_undo = UpdateGUICommand::Create(pcore,
+                                          UpdateGUICommand::WN_UNDO,
+                                          UpdateGUICommand::GUI_REFRESH_TREE);
+      pmulticmds->Insert(pcmd_undo, 0);
+
+      Command *pcmd_redo = UpdateGUICommand::Create(pcore,
+                                          UpdateGUICommand::WN_EXECUTE_REDO,
+                                          UpdateGUICommand::GUI_REFRESH_TREE);
+      pmulticmds->Add(pcmd_redo);
     }
   } else {
     // Group
