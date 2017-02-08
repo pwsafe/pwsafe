@@ -16,16 +16,17 @@
 
 #pragma once
 
+#include "PWTouch.h"
 #include "SecString.h"
 #include "Fonts.h"
 
 class CItemData;
 
-class CPWListCtrl : public CListCtrl
+class CPWListCtrlX : public CListCtrl
 {
 public:
-  CPWListCtrl();
-  ~CPWListCtrl();
+  CPWListCtrlX();
+  ~CPWListCtrlX();
 
   void Initialize();
   void ActivateND(const bool bActivate);
@@ -37,7 +38,7 @@ public:
   void UpdateRowHeight(bool bInvalidate);
 
 protected:
-  //{{AFX_MSG(CPWListCtrl)
+  //{{AFX_MSG(CPWListCtrlX)
   afx_msg void OnDestroy();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
@@ -78,3 +79,9 @@ private:
   CFont *GetFontBasedOnStatus(CItemData *pci, COLORREF &cf);
   bool m_bUseHighLighting;
 };
+
+/**
+* typedef to hide the fact that CPWListCtrl is really a mixin.
+*/
+
+typedef CPWTouch< CPWListCtrlX > CPWListCtrl;

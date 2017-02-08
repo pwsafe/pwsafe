@@ -18,30 +18,30 @@
 * plus the new GetGestureStatus.
 */
 
-template< class T>
+template<class T>
 class CPWTouch : public T
 {
 protected:
 #if (NTDDI_VERSION >= NTDDI_WIN7)
   virtual ULONG GetGestureStatus(CPoint)
   {
-  // Windows 7 dependent
-  // "#if (NTDDI_VERSION >= NTDDI_WIN7)" is temporary just in case need to
-  // quickly revert back to Vista and later support by changing WINVER back
-  // to 0x0600 leaving this code in place
-  // Do NOT include TABLET_DISABLE_PRESSANDHOLD if on a tablet
-  // But DO disable it otherwise, as this will improve responsiveness
-  // for mouse clicks because it creates a wait time to distinguish
-  // between the two operations.
-  pws_os::Trace(L"CPWTouch::GetGestureStatus\n");
+    // Windows 7 dependent
+    // "#if (NTDDI_VERSION >= NTDDI_WIN7)" is temporary just in case need to
+    // quickly revert back to Vista and later support by changing WINVER back
+    // to 0x0600 leaving this code in place
 
-  const DWORD dwTabletProperty =
-    TABLET_DISABLE_PENTAPFEEDBACK    | // disables UI feedback on pen up (waves)
-    TABLET_DISABLE_PENBARRELFEEDBACK | // disables UI feedback on pen button down (circle)
-    TABLET_DISABLE_FLICKS;             // disables pen flicks (back, forward, drag down, drag up)
+    // Do NOT include TABLET_DISABLE_PRESSANDHOLD if on a tablet
+    // But DO include it otherwise, as this will improve responsiveness
+    // for mouse clicks because, if not disabled, it creates a wait time to
+    // distinguish between the two operations.
+    const DWORD dwTabletProperty =
+      TABLET_DISABLE_PENTAPFEEDBACK    | // disables UI feedback on pen up (waves)
+      TABLET_DISABLE_PENBARRELFEEDBACK | // disables UI feedback on pen button down (circle)
+      TABLET_DISABLE_FLICKS;             // disables pen flicks (back, forward, drag down, drag up)
 
-  int itablet = GetSystemMetrics(SM_TABLETPC);
-  return itablet = 0 ? TABLET_DISABLE_PRESSANDHOLD : dwTabletProperty;
+    bool bTablet = GetSystemMetrics(SM_TABLETPC) != 0;
+    pws_os::Trace(L"CPWTouch::GetGestureStatus - running on %s\n", bTablet ? L"Tablet" : L"Desktop");
+    return bTablet ? dwTabletProperty : TABLET_DISABLE_PRESSANDHOLD;
   }
 #endif
 };

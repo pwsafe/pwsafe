@@ -21,19 +21,19 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CPWListCtrl::CPWListCtrl()
+CPWListCtrlX::CPWListCtrlX()
   : m_FindTimerID(0), m_csFind(L""), m_bMouseInWindow(false), 
   m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bListFilterActive(false),
   m_bUseHighLighting(false)
 {
 }
 
-CPWListCtrl::~CPWListCtrl()
+CPWListCtrlX::~CPWListCtrlX()
 {
 }
 
-BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
-  //{{AFX_MSG_MAP(CPWListCtrl)
+BEGIN_MESSAGE_MAP(CPWListCtrlX, CListCtrl)
+  //{{AFX_MSG_MAP(CPWListCtrlX)
   ON_NOTIFY_REFLECT(LVN_ITEMCHANGING, OnItemChanging)
   ON_NOTIFY_REFLECT(LVN_KEYDOWN, OnSelectionChanged)
   ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
@@ -50,12 +50,12 @@ BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-void CPWListCtrl::Initialize()
+void CPWListCtrlX::Initialize()
 {
   UpdateRowHeight(false);
 }
 
-void CPWListCtrl::ActivateND(const bool bActivate)
+void CPWListCtrlX::ActivateND(const bool bActivate)
 {
   m_bShowNotes = bActivate;
   if (!m_bShowNotes) {
@@ -63,7 +63,7 @@ void CPWListCtrl::ActivateND(const bool bActivate)
   }
 }
 
-bool CPWListCtrl::IsNotesColumnPresent()
+bool CPWListCtrlX::IsNotesColumnPresent()
 {
   CHeaderCtrl *pHeader = GetHeaderCtrl();
   if (pHeader == NULL)
@@ -80,12 +80,12 @@ bool CPWListCtrl::IsNotesColumnPresent()
   return false;
 }
 
-void CPWListCtrl::SetUpFont()
+void CPWListCtrlX::SetUpFont()
 {
   Fonts::GetInstance()->SetUpFont(this, Fonts::GetInstance()->GetCurrentFont());
 }
 
-LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
+LRESULT CPWListCtrlX::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
 {
   const int iSubItem = app.GetMainDlg()->IsImageVisible() ? 1 : 0;
   bool bFirst;
@@ -111,28 +111,28 @@ LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
   return 0L;
 }
 
-void CPWListCtrl::OnDestroy()
+void CPWListCtrlX::OnDestroy()
 {
   // Remove dummy ImageList. PWTreeCtrl removes the real one!
   app.GetMainDlg()->m_pImageList0->DeleteImageList();
   delete app.GetMainDlg()->m_pImageList0;
 }
 
-void CPWListCtrl::OnPaint()
+void CPWListCtrlX::OnPaint()
 {
   CListCtrl::OnPaint();
 
   app.GetMainDlg()->SaveGUIStatusEx(DboxMain::LISTONLY);
 }
 
-void CPWListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+void CPWListCtrlX::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
   CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
 
   app.GetMainDlg()->SaveGUIStatusEx(DboxMain::LISTONLY);
 }
 
-BOOL CPWListCtrl::PreTranslateMessage(MSG* pMsg)
+BOOL CPWListCtrlX::PreTranslateMessage(MSG* pMsg)
 {
   // Process User's AutoType shortcut
   if (app.GetMainDlg()->CheckPreTranslateAutoType(pMsg))
@@ -146,7 +146,7 @@ BOOL CPWListCtrl::PreTranslateMessage(MSG* pMsg)
   return CListCtrl::PreTranslateMessage(pMsg);
 }
 
-void CPWListCtrl::OnTimer(UINT_PTR nIDEvent)
+void CPWListCtrlX::OnTimer(UINT_PTR nIDEvent)
 {
   switch (nIDEvent) {
     case TIMER_FIND:
@@ -176,7 +176,7 @@ void CPWListCtrl::OnTimer(UINT_PTR nIDEvent)
   }
 }
 
-void CPWListCtrl::OnMouseMove(UINT nFlags, CPoint point)
+void CPWListCtrlX::OnMouseMove(UINT nFlags, CPoint point)
 {
   app.GetMainDlg()->ResetIdleLockCounter();
   if (!m_bShowNotes)
@@ -209,7 +209,7 @@ void CPWListCtrl::OnMouseMove(UINT nFlags, CPoint point)
   CListCtrl::OnMouseMove(nFlags, point);
 }
 
-LRESULT CPWListCtrl::OnMouseLeave(WPARAM, LPARAM)
+LRESULT CPWListCtrlX::OnMouseLeave(WPARAM, LPARAM)
 {
   KillTimer(m_nHoverNDTimerID);
   KillTimer(m_nShowNDTimerID);
@@ -220,7 +220,7 @@ LRESULT CPWListCtrl::OnMouseLeave(WPARAM, LPARAM)
   return 0L;
 }
 
-bool CPWListCtrl::FindNext(const CString &cs_find, const int iSubItem)
+bool CPWListCtrlX::FindNext(const CString &cs_find, const int iSubItem)
 {
   int iItem;
   bool bFound(false);
@@ -273,7 +273,7 @@ bool CPWListCtrl::FindNext(const CString &cs_find, const int iSubItem)
   return bFound;
 }
 
-void CPWListCtrl::SetFilterState(bool bState)
+void CPWListCtrlX::SetFilterState(bool bState)
 {
   m_bListFilterActive = bState;
 
@@ -281,7 +281,7 @@ void CPWListCtrl::SetFilterState(bool bState)
   SetTextColor(m_bListFilterActive ? RGB(168, 0, 0) : RGB(0, 0, 0));
 }
 
-BOOL CPWListCtrl::OnEraseBkgnd(CDC* pDC)
+BOOL CPWListCtrlX::OnEraseBkgnd(CDC* pDC)
 {
   if (m_bListFilterActive && app.GetMainDlg()->GetNumPassedFiltering() == 0) {
     int nSavedDC = pDC->SaveDC(); //save the current DC state
@@ -329,7 +329,7 @@ BOOL CPWListCtrl::OnEraseBkgnd(CDC* pDC)
   return TRUE;
 }
 
-void CPWListCtrl::OnItemChanging(NMHDR *pNMHDR, LRESULT *pLResult)
+void CPWListCtrlX::OnItemChanging(NMHDR *pNMHDR, LRESULT *pLResult)
 {
   *pLResult = FALSE;  // Allow change
 
@@ -352,7 +352,7 @@ void CPWListCtrl::OnItemChanging(NMHDR *pNMHDR, LRESULT *pLResult)
   }
 }
 
-void CPWListCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWListCtrlX::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   if (GetItemCount() == 0)
     return;
@@ -369,7 +369,7 @@ void CPWListCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
   }
 }
 
-CFont *CPWListCtrl::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
+CFont *CPWListCtrlX::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
 {
   if (pci == NULL)
     return NULL;
@@ -386,7 +386,7 @@ CFont *CPWListCtrl::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
   return NULL;
 }
 
-void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMLVCUSTOMDRAW *pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
@@ -479,7 +479,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   }
 }
 
-void CPWListCtrl::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+void CPWListCtrlX::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
   if (!Fonts::GetInstance())
      return;
@@ -496,7 +496,7 @@ void CPWListCtrl::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
   ModifyStyle(LVS_OWNERDRAWFIXED, 0);
 }
 
-void CPWListCtrl::UpdateRowHeight(bool bInvalidate)
+void CPWListCtrlX::UpdateRowHeight(bool bInvalidate)
 {
   // We need to change WINDOWPOS to trigger MeasureItem 
   // http://www.codeproject.com/Articles/1401/Changing-Row-Height-in-an-owner-drawn-Control
@@ -520,13 +520,13 @@ void CPWListCtrl::UpdateRowHeight(bool bInvalidate)
   }
 }
 
-LRESULT CPWListCtrl::OnSetFont(WPARAM, LPARAM)
+LRESULT CPWListCtrlX::OnSetFont(WPARAM, LPARAM)
 {
   LRESULT res = Default();
   UpdateRowHeight(false);
   return res;
 }
 
-void CPWListCtrl::DrawItem(LPDRAWITEMSTRUCT){
+void CPWListCtrlX::DrawItem(LPDRAWITEMSTRUCT){
   //DrawItem must be overridden for LVS_OWNERDRAWFIXED style lists
 }
