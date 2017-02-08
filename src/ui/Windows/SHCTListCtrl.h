@@ -8,21 +8,22 @@
 
 #pragma once
 
-#include "SHCTHotKey.h"
+#include "PWTouch.h"
 #include "MenuShortcuts.h"
 
 class COptionsShortcuts;
+class CSHCTHotKey;
 
 // Subitem indices
 #define SHCT_SHORTCUTKEYS  0
 #define SHCT_MENUITEMTEXT  1
 #define SHCT_NUM_COLUMNS   2
 
-class CSHCTListCtrl : public CListCtrl
+class CSHCTListCtrlX : public CListCtrl
 {
 public:
-  CSHCTListCtrl();
-  ~CSHCTListCtrl();
+  CSHCTListCtrlX();
+  ~CSHCTListCtrlX();
 
   void Init(COptionsShortcuts *pParent);
 
@@ -32,7 +33,7 @@ public:
   void OnMenuShortcutKillFocus(const WORD wVirtualKeyCode, const WORD wModifiers);
 
 protected:
-  //{{AFX_MSG(CSHCTListCtrl)
+  //{{AFX_MSG(CSHCTListCtrlX)
   afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
@@ -52,3 +53,9 @@ private:
   bool m_bHotKeyActive;
   COLORREF m_crWindowText, m_crRedText;
 };
+
+/**
+* typedef to hide the fact that CSHCTListCtrl is really a mixin.
+*/
+
+typedef CPWTouch< CSHCTListCtrlX > CSHCTListCtrl;

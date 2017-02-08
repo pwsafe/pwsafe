@@ -1443,22 +1443,22 @@ bool CCompareResultsDlg::CompareEntries(st_CompareData *pst_data)
 
 // Compare CListCtrl
 
-CCPListCtrl::CCPListCtrl()
+CCPListCtrlX::CCPListCtrlX()
   : m_row(-1), m_column(-1)
 {
 }
 
-CCPListCtrl::~CCPListCtrl()
+CCPListCtrlX::~CCPListCtrlX()
 {
 }
 
-BEGIN_MESSAGE_MAP(CCPListCtrl, CListCtrl)
-  //{{AFX_MSG_MAP(CCPListCtrl)
+BEGIN_MESSAGE_MAP(CCPListCtrlX, CListCtrl)
+  //{{AFX_MSG_MAP(CCPListCtrlX)
   ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-BOOL CCPListCtrl::PreTranslateMessage(MSG *pMsg)
+BOOL CCPListCtrlX::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_LBUTTONDOWN) {
     // Get cell position for CustomDraw
@@ -1484,7 +1484,7 @@ BOOL CCPListCtrl::PreTranslateMessage(MSG *pMsg)
   return CListCtrl::PreTranslateMessage(pMsg);
 } 
 
-bool CCPListCtrl::IsSelected(DWORD_PTR iRow)
+bool CCPListCtrlX::IsSelected(DWORD_PTR iRow)
 {
   POSITION pos = GetFirstSelectedItemPosition();
 
@@ -1496,7 +1496,7 @@ bool CCPListCtrl::IsSelected(DWORD_PTR iRow)
   return false;
 }
 
-void CCPListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CCPListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMLVCUSTOMDRAW *pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "SHCTListCtrl.h"
+#include "SHCTHotKey.h"
 #include "OptionsShortcuts.h"
 
 #include <algorithm>
@@ -23,7 +24,7 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CSHCTListCtrl::CSHCTListCtrl()
+CSHCTListCtrlX::CSHCTListCtrlX()
 : m_pParent(NULL), m_pHotKey(NULL), m_bHotKeyActive(false)
 {
   m_pHotKey = new CSHCTHotKey;
@@ -31,14 +32,14 @@ CSHCTListCtrl::CSHCTListCtrl()
   m_crRedText    = RGB(168, 0, 0);
 }
 
-CSHCTListCtrl::~CSHCTListCtrl()
+CSHCTListCtrlX::~CSHCTListCtrlX()
 {
   m_pHotKey->DestroyWindow();
   delete m_pHotKey;
 }
 
-BEGIN_MESSAGE_MAP(CSHCTListCtrl, CListCtrl)
-  //{{AFX_MSG_MAP(CSHCTListCtrl)
+BEGIN_MESSAGE_MAP(CSHCTListCtrlX, CListCtrl)
+  //{{AFX_MSG_MAP(CSHCTListCtrlX)
   ON_WM_LBUTTONDOWN()
   ON_WM_RBUTTONDOWN()
   ON_WM_HSCROLL()
@@ -49,7 +50,7 @@ BEGIN_MESSAGE_MAP(CSHCTListCtrl, CListCtrl)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-void CSHCTListCtrl::Init(COptionsShortcuts *pParent)
+void CSHCTListCtrlX::Init(COptionsShortcuts *pParent)
 {
   if (m_pHotKey->GetSafeHwnd() == NULL) {
     CRect itemrect(0, 0, 0, 0);
@@ -57,11 +58,11 @@ void CSHCTListCtrl::Init(COptionsShortcuts *pParent)
     m_pHotKey->ModifyStyle(WS_BORDER, 0, 0);
     // Would like to change the default font (e.g. smaller and not bold) but it gets ignored
   }
-  m_pHotKey->SetMyParent(this);
+  m_pHotKey->SetMyParent(dynamic_cast<CSHCTListCtrl *>(this));
   m_pParent = pParent;
 }
 
-void CSHCTListCtrl::OnLButtonDown(UINT , CPoint point)
+void CSHCTListCtrlX::OnLButtonDown(UINT , CPoint point)
 {
   MapMenuShortcutsIter iter;
   CRect subitemrect;
@@ -105,7 +106,7 @@ void CSHCTListCtrl::OnLButtonDown(UINT , CPoint point)
   UpdateWindow();
 }
 
-void CSHCTListCtrl::OnRButtonDown(UINT , CPoint point)
+void CSHCTListCtrlX::OnRButtonDown(UINT , CPoint point)
 {
   CMenu PopupMenu;
   MapMenuShortcutsIter iter;
@@ -175,7 +176,7 @@ exit:
     SetItemState(m_item, SHCT_SHORTCUTKEYS, LVIS_SELECTED | LVIS_DROPHILITED);
 }
 
-void CSHCTListCtrl::SaveHotKey()
+void CSHCTListCtrlX::SaveHotKey()
 {
   if (m_bHotKeyActive) {
     WORD wVirtualKeyCode, wHKModifiers;
@@ -184,7 +185,7 @@ void CSHCTListCtrl::SaveHotKey()
   }
 }
 
-void CSHCTListCtrl::OnMenuShortcutKillFocus(const WORD wVirtualKeyCode, 
+void CSHCTListCtrlX::OnMenuShortcutKillFocus(const WORD wVirtualKeyCode,
                                           const WORD wHKModifiers)
 {
   m_pHotKey->EnableWindow(FALSE);
@@ -198,21 +199,21 @@ void CSHCTListCtrl::OnMenuShortcutKillFocus(const WORD wVirtualKeyCode,
   m_bHotKeyActive = false;
 }
 
-void CSHCTListCtrl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+void CSHCTListCtrlX::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
   SaveHotKey();
   CListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
   UpdateWindow();
 }
 
-void CSHCTListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+void CSHCTListCtrlX::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
   SaveHotKey();
   CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
   UpdateWindow();
 }
 
-BOOL CSHCTListCtrl::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+BOOL CSHCTListCtrlX::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
   SaveHotKey();
   BOOL brc = CListCtrl::OnMouseWheel(nFlags, zDelta, pt);
@@ -220,7 +221,7 @@ BOOL CSHCTListCtrl::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
   return brc;
 }
 
-void CSHCTListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CSHCTListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
