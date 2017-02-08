@@ -382,7 +382,8 @@ in gtest.sln:</p>
 <p>If you wish to build the 64-bit version, you will first have to create a new
 platform x64 and then make similar changes as above.  Note: When creating the new
 platform via the Configuration Manager, it is easier to select copy from the
-current x86 platform and then just make the changes marked in bold below:</p>
+current x86 platform and then just make the changes marked in bold below but
+do not forget to add WIN64 to the C preprocessor definitions for the x64 platform:</p>
 <ol>
   <li> Configuration Properties: General: (where NN is 12 for VS2013 &amp; 14 for VS2015)
     <ul>
