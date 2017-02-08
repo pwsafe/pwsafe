@@ -5044,8 +5044,10 @@ void DboxMain::RestoreGUIStatus()
       m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
       m_ctlItemTree.SelectItem(pdi->tree_item);
 
-      UpdateToolBarForSelectedItem(&iter->second);
-      SetDCAText(&iter->second);
+      if (m_ctlItemList.IsWindowVisible()) {
+        UpdateToolBarForSelectedItem(&iter->second);
+        SetDCAText(&iter->second);
+      }
     }
   }
 
@@ -5056,8 +5058,10 @@ void DboxMain::RestoreGUIStatus()
       pdi = GetEntryGUIInfo(iter->second);
       m_ctlItemTree.SelectItem(pdi->tree_item);
 
-      UpdateToolBarForSelectedItem(&iter->second);
-      SetDCAText(&iter->second);
+      if (m_ctlItemTree.IsWindowVisible()) {
+        UpdateToolBarForSelectedItem(&iter->second);
+        SetDCAText(&iter->second);
+      }
     }
   }
 
@@ -5067,8 +5071,10 @@ void DboxMain::RestoreGUIStatus()
     if (grouptreeiter != m_mapGroupToTreeItem.end()) {
       m_ctlItemTree.SelectItem(grouptreeiter->second);
 
-      UpdateToolBarForSelectedItem(NULL);
-      SetDCAText(NULL);
+      if (m_ctlItemTree.IsWindowVisible()) {
+        UpdateToolBarForSelectedItem(NULL);
+        SetDCAText(NULL);
+      }
     }
   }
 

@@ -8,7 +8,7 @@
 
 #pragma once
 
-class CSHCTListCtrl;
+#include "SHCTListCtrl.h"
 
 // SHCTHotKey
 
