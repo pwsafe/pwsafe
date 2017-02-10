@@ -19,6 +19,7 @@ wishing to compile PasswordSafe for Windows. Linux developers should read the fi
 <li><a href="README.WINDOWS.DEVELOPERS.html#Software_Requirements">Software Requirements</a></li>
 <li><a href="README.WINDOWS.DEVELOPERS.html#XML_Processing">XML Processing</a></li>
 <li><a href="README.WINDOWS.DEVELOPERS.html#Gtest">Gtest</a></li>
+<li><a href="README.WINDOWS.DEVELOPERS.html#Wix MSI Installer">Wix MSI Installer</a></li>
 <li><a href="README.WINDOWS.DEVELOPERS.html#Minidump_Production">Minidumps</a></li>
 </ol>
 
@@ -425,6 +426,41 @@ the necessary gtest include and library directories.  These would normally be th
 
 <p>Note: you can also make the similar changes to those above in the projects not used by
 PasswordSafe in gtest.sln  if you wish to run the gtest Test programs.</p>
+
+<h3><a name="Wix MSI Installer"></a>Wix MSI Installer (Windows only)</h3>
+
+<p>MSI installer files for the x86 and x64 platforms can be created using the Wix Toolset.
+The current version is 3.10. The Wix Toolset is available at 
+<a href="http://wixtoolset.org/releases/">http://wixtoolset.org/releases/</a></p>
+
+<p>To build the MSI files, open a command prompt and change to the root directory of 
+your source tree. Run the following command.</p>
+
+<pre>
+  install\windows\BuildWixInstall.bat
+</pre>
+
+<p>This will build MSI files for both x86 and x64 platforms in the root directory.
+The program version specified in version.mfc will be applied to the .msi file.</p>
+
+<pre>
+  pwsafe.msi
+  pwsafe64.msi
+</pre>
+
+<p>You can build the files individually this way.</p>
+
+<pre>
+  install\windows\BuildWixInstall.bat x86
+  install\windows\BuildWixInstall.bat x64
+</pre>
+
+<p>If you need to work on the Wix scripts (.wxs file), you can find them in the
+install\windows directory.</p>
+<pre>
+  pwsafe-template-x86.wxs
+  pwsafe-template-x64.wxs
+</pre>
 
 <h3><a name="Minidump_Production"></a>Minidump Production (Windows only)</h3>
 

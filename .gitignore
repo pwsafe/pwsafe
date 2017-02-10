@@ -10,6 +10,8 @@ ipch
 *.opensdf
 *.suo
 *.wixpdb
+*.wixobj
+pwsafe*.msi
 *.props
 *.stackdump
 *.vc.opendb
