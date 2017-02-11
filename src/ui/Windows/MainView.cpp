@@ -1543,7 +1543,9 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
         m_bIsRestoring = true; // Stop 'sort of list view' hiding FindToolBar
         m_ctlItemTree.SetRestoreMode(true);
+
         RefreshViews(BOTHVIEWS);
+
         m_ctlItemTree.SetRestoreMode(false);
         m_bIsRestoring = false;
 
@@ -1560,6 +1562,9 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
         CPWDialog::GetDialogTracker()->ShowOpenDialogs();
 
+        // Restore current horizontal scroll bar position
+        m_ctlItemList.Scroll(CSize(m_iListHBarPos, 0));
+        m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
         RestoreGUIStatusEx();
 
         if (prefs->GetPref(PWSprefs::UseSystemTray) && app.IsIconVisible() == FALSE) {      
@@ -1594,11 +1599,23 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
 void DboxMain::OnMinimize()
 {
+  // Called when the System Tray Minimize menu option is used
+
+  // Also, in order to save the scroll positions during minimize
+  // of the application, this should be the ONLY place that calls
+  // "ShowWindow(SW_MINIMIZE);" as this call can't be intercepted
   PWS_LOGIT;
 
-  // Called when the System Tray Minimize menu option is used
   if (m_bStartHiddenAndMinimized)
     m_bStartHiddenAndMinimized = false;
+
+  // Save current horizontal scroll bar position
+  if (m_ctlItemList.GetItemCount() == 0) {
+    m_iListHBarPos = m_iTreeHBarPos = 0;
+  } else {
+    m_iListHBarPos = m_ctlItemList.GetScrollPos(SB_HORZ);
+    m_iTreeHBarPos = m_ctlItemTree.GetScrollPos(SB_HORZ);
+  }
 
   // Let OnSize handle this
   ShowWindow(SW_MINIMIZE);
@@ -2393,8 +2410,11 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     CPWDialog::GetDialogTracker()->HideOpenDialogs();
 
     // Now hide/minimize main dialog
-    bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
-    ShowWindow(usingsystray ? SW_HIDE : SW_MINIMIZE);
+    if (prefs->GetPref(PWSprefs::UseSystemTray)) {
+      ShowWindow(SW_HIDE);
+    } else {
+      OnMinimize();
+    }
 
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
       KillTimer(TIMER_LOCKONWTSLOCK);
@@ -2430,8 +2450,11 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
           CPWDialog::GetDialogTracker()->HideOpenDialogs();
 
           // Now hide/minimize main dialog
-          bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
-          ShowWindow(usingsystray ? SW_HIDE : SW_MINIMIZE);
+          if (prefs->GetPref(PWSprefs::UseSystemTray)) {
+            ShowWindow(SW_HIDE);
+          } else {
+            OnMinimize();
+          }
         }
       }
       break;
@@ -4895,7 +4918,7 @@ void DboxMain::RestoreGUIStatusEx()
         int icurtop = m_ctlItemList.GetTopIndex();
         m_ctlItemList.GetItemRect(pdi->list_index, indexRect, LVIR_BOUNDS);
         m_ctlItemList.GetItemRect(icurtop, topRect, LVIR_BOUNDS);
-        m_ctlItemList.Scroll(CSize(0, (topRect.top - indexRect.top) * indexRect.Height()));
+        m_ctlItemList.Scroll(CSize(0, (indexRect.top - topRect.top) * indexRect.Height()));
 
         // Just in case MFC actually selected the first visible entry
         m_ctlItemList.SetItemState(pdi->list_index, 0, LVIS_FOCUSED | LVIS_SELECTED);

@@ -940,6 +940,11 @@ void DboxMain::PostOpenProcessing()
 
   // Now enable notification of DB changes
   ResumeOnDBNotification();
+
+  // Set initial horizontal scroll bar position
+  m_iListHBarPos = m_iTreeHBarPos = 0;
+  m_ctlItemList.Scroll(CSize(SB_HORZ, 0));
+  m_ctlItemTree.SetScrollPos(SB_HORZ, 0);
 }
 
 int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
@@ -4147,7 +4152,7 @@ void DboxMain::OnCancel()
   // If system tray is enabled, cancel (escape)
   // minimizes to the system tray, else exit application
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
-    ShowWindow(SW_MINIMIZE);
+    OnMinimize();
   } else {
     SavePreferencesOnExit();
     int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
