@@ -4985,7 +4985,7 @@ void DboxMain::SaveGUIStatus()
   // HTREEITEM values may be different when we come to use it.
   POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
   if (pos != NULL) {
-    pci_list = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
+    pci_list = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos - 1);
     if (pci_list != NULL) {
       SaveGUIInfo.lSelected = pci_list->GetUUID();
       SaveGUIInfo.blSelectedValid = true;

@@ -77,17 +77,17 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Sub-item PrePaint
       if (pLVCD->iSubItem == 0) {
         CRect rect;
-        GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
+        GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
         if (rect.top < 0) {
           *pLResult = CDRF_SKIPDEFAULT;
           break;
         }
         CRect rect1;
-        GetSubItemRect(pLVCD->nmcd.dwItemSpec, 1, LVIR_BOUNDS, rect1);
+        GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, 1, LVIR_BOUNDS, rect1);
         rect.right = rect1.left;
         rect.DeflateRect(2, 2);
 
-        CString str = GetItemText(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem);
+        CString str = GetItemText((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem);
         pDC->SetTextColor(((pLVCD->nmcd.lItemlParam & REDTEXT) == REDTEXT) ?
                                 RGB(255, 0, 0) : crWindowText);
 

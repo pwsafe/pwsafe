@@ -591,7 +591,7 @@ int CPWFindToolBar::GetLastSelectedFoundItem(pws_os::CUUID &entry_uuid)
 
   if (m_lastshown >= 0 && m_lastshown < (int)m_vFoundUUIDs.size()) {
     entry_uuid = m_vFoundUUIDs[m_lastshown];
-    return m_lastshown;
+    return (int)m_lastshown;
   }
 
   return -1;

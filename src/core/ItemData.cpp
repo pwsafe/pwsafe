@@ -1726,7 +1726,7 @@ bool CItemData::Matches(int num1, int num2, int iObject,
       GetSize(reinterpret_cast<size_t &>(iValue));
       break;
     case PASSWORDLEN:
-      iValue = GetPasswordLength();
+      iValue = (int)GetPasswordLength();
       break;
     case KBSHORTCUT:
       GetKBShortcut(iValue);

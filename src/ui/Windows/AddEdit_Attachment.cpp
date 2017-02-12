@@ -511,7 +511,7 @@ void CAddEdit_Attachment::ShowPreview()
     if (m_csMediaType.Left(5) == L"image") {
       // Should be an image file - but may not be supported by CImage - try..
       // Allocate attachment buffer
-      UINT imagesize = att.GetContentSize();
+      UINT imagesize = (UINT)att.GetContentSize();
       HGLOBAL gMemory = GlobalAlloc(GMEM_MOVEABLE, imagesize);
       ASSERT(gMemory);
 

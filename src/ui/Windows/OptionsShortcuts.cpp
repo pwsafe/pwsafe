@@ -641,7 +641,7 @@ void COptionsShortcuts::OnKBShortcutDoulbleClick(NMHDR *pNotifyStruct, LRESULT *
   m_options_psh->EnableWindow(FALSE);
 
   DWORD_PTR lParam = m_EntryShortcutLC.GetItemData(iItem);
-  pws_os::CUUID &EntryUUID = GetKBShortcutUUID(lParam);
+  pws_os::CUUID &EntryUUID = GetKBShortcutUUID((int)(INT_PTR)lParam);
   iter = app.GetCore()->Find(EntryUUID);
   bool bEdited = GetMainDlg()->EditItem(&iter->second, NULL);
   if (!GetMainDlg()->IsDBReadOnly() && bEdited) {

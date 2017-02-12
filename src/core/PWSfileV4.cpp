@@ -251,7 +251,7 @@ size_t PWSfileV4::WriteCBC(unsigned char type, const unsigned char *data,
 
   m_hmac.Update(&type, 1);
   m_hmac.Update(buf, sizeof(buf));
-  m_hmac.Update(data, length);
+  m_hmac.Update(data, (unsigned long)length);
 
   return PWSfile::WriteCBC(type, data, length);
 }
@@ -310,7 +310,7 @@ size_t PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
   _writecbc(m_fd, content, len, &fish, IV);
 
   // update content's HMAC
-  hmac.Update(content, len);
+  hmac.Update(content, (unsigned long)len);
 
   // write content's HMAC
   unsigned char digest[SHA256::HASHLEN];
@@ -344,7 +344,7 @@ size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
 
     m_hmac.Update(&type, 1);
     m_hmac.Update(buf, sizeof(buf));
-    m_hmac.Update(data, length);
+    m_hmac.Update(data, (unsigned long)length);
   }
 
   return numRead;
@@ -411,7 +411,7 @@ void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,
 
   HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> hmac;
   ConvertString(passkey, pstr, passLen);
-  pbkdf2(pstr, passLen, salt, saltLen, N, &hmac, Ptag, &PtagLen);
+  pbkdf2(pstr, (unsigned long)passLen, salt, saltLen, N, &hmac, Ptag, &PtagLen);
 
 #ifdef UNICODE
   trashMemory(pstr, passLen);
@@ -836,10 +836,10 @@ bool PWSfileV4::VerifyKeyBlocks()
   unsigned char ReadEndKB[SHA256::HASHLEN];
   unsigned char CalcEndKB[SHA256::HASHLEN];
 
-  int nRead = fread(hnonce, sizeof(hnonce), 1, m_fd);
+  int nRead = (int)fread(hnonce, sizeof(hnonce), 1, m_fd);
   if (nRead != 1)
     return false;
-  nRead = fread(ReadEndKB, sizeof(ReadEndKB), 1, m_fd);
+  nRead = (int)fread(ReadEndKB, sizeof(ReadEndKB), 1, m_fd);
   if (nRead != 1)
     return false;
 
@@ -960,7 +960,7 @@ bool PWSfileV4::CKeyBlocks::RemoveKeyBlock(const StringX &passkey)
     return false;
 
   KeyBlockFinder find_kb(passkey);
-  const unsigned long old_size = m_kbs.size();
+  const unsigned long old_size = (unsigned long)m_kbs.size();
   m_kbs.erase(remove_if(m_kbs.begin(), m_kbs.end(), find_kb),
                m_kbs.end());
 
