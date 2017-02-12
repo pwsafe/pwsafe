@@ -1832,7 +1832,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
           clearDlg.DoModal() == IDCANCEL)
         return;
       if (bSpecial) {
-        ShowWindow(SW_MINIMIZE);
+        OnMinimize();
       }
       break;
     }
@@ -2033,7 +2033,9 @@ void DboxMain::AutoType(const CItemData &ci)
   if (bMinOnAuto) {
     // Need to save display status for when we return from minimize
     m_vGroupDisplayState = GetGroupDisplayState();
-    ShowWindow(SW_MINIMIZE);
+
+    // Now minimise
+    OnMinimize();
   } else {
     ShowWindow(SW_HIDE);
   }

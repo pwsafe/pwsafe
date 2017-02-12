@@ -10,18 +10,20 @@
 
 // CPWToolBar
 
+#include "PWTouch.h"
+
 #include <map>
 
 typedef std::map<UINT, UINT> ID2ImageMap;
 typedef ID2ImageMap::iterator ID2ImageMapIter;
 
-class CPWToolBar : public CToolBar
+class CPWToolBarX : public CToolBar
 {
-  DECLARE_DYNAMIC(CPWToolBar)
+  DECLARE_DYNAMIC(CPWToolBarX)
 
 public:
-  CPWToolBar();
-  virtual ~CPWToolBar();
+  CPWToolBarX();
+  virtual ~CPWToolBarX();
 
   void Init(const int NumBits, const bool bRefresh = false);
   void LoadDefaultToolBar(const int toolbarMode);
@@ -37,7 +39,7 @@ public:
   void RefreshImages();
 
 protected:
-  //{{AFX_MSG(CPWToolBar)
+  //{{AFX_MSG(CPWToolBarX)
   afx_msg void OnToolBarGetButtonInfo(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnToolBarQueryInsert(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult);
@@ -59,6 +61,7 @@ private:
     UINT GetNewBM() const {return newBM;}
     UINT GetDisBM() const {return disBM;}
   };
+
   // member function pointer typedef for above getters
   typedef UINT (GuiRecord::*GuiRecordGetter)() const;
   
@@ -90,3 +93,9 @@ private:
   bool m_bIsDefault;
   int m_iBrowseURL_BM_offset, m_iSendEmail_BM_offset;
 };
+
+/**
+* typedef to hide the fact that CPWToolBar is really a mixin.
+*/
+
+typedef CPWTouch< CPWToolBarX > CPWToolBar;

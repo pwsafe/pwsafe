@@ -821,6 +821,7 @@ private:
   int m_nColumnHeaderWidthByType[CItem::LAST_DATA];
   int m_nSaveColumnHeaderWidthByType[CItem::LAST_DATA];
   int m_iheadermaxwidth;
+  int m_iListHBarPos, m_iTreeHBarPos;
 
   pws_os::CUUID m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
   pws_os::CUUID m_TUUIDSelectedAtMinimize; // to restore Tree entry selection upon un-minimize
