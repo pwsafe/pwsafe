@@ -55,7 +55,7 @@ I18N_DIR := ./src/ui/Windows/I18N
 I18N_DLL_DIR := ./build/bin/pwsafe/I18N
 POT_FILE := $(I18N_DIR)/pwsafe.pot
 HELP_DIR := ./help
-BIN_DIR := ./build/bin/pwsafe/releasem
+BIN_DIR := ./build/bin/pwsafe/release
 TMPDIR := /cygdrive/c/tmp
 RELNOTES := $(CURDIR)/docs/ReleaseNotes.txt
 

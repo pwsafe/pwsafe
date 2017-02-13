@@ -17,6 +17,8 @@ Bugs fixed in 3.41.1
 ====================
 [] Fix issue when locking database when not using the System Tray.
 [] Fix empty group validation on DB open.
+[1395] PasswordSafe now correctly duplicates a group containing both a base entry and
+its dependent i.e. shortcut or alias.
 [1393] Correctly handle opening a locked database, which is open in R/W by another user.
 [1392] If the command line parameter '-g' is used to specify a configuration
 file by its relative path, PasswordSafe will now look for it in the same
@@ -29,6 +31,8 @@ collapsed.
 [1367] Fixed regression in command line arguments -h and -u support.
 [1358] When PaswordSafe automatically locks to the TaskBar, the unlock window now gets
 input focus when clicking on the icon to unlock the database.
+[1275] The scroll positions of the Tree and List views are now saved on minimize and
+used to set the window position when it is restored..
 
 Changes to Existing Features in 3.41.1
 ======================================

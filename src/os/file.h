@@ -39,6 +39,9 @@ namespace pws_os {
   extern bool SetFileTimes(const stringT &filename,
       time_t ctime, time_t mtime, time_t atime);
   extern const TCHAR PathSeparator; // slash for Unix, backslash for Windows
+
+  // Most stdio.h routines return -1 for an error (not INVALID_HANDLE_VALUE)
+  #define INVALID_FILE_DESCRIPTOR (int)-1
 }
 #endif /* __FILE_H */
 //-----------------------------------------------------------------------------

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "PWTouch.h"
 #include "SecString.h"        // for CSecEditExtn
 #include <vector>             // for Listbox Tooltips & EditExtn menus
 
@@ -108,14 +109,14 @@ struct st_context_menu {
   }
 };
 
-class CEditExtn : public CEdit
+class CEditExtnX : public CEdit
 {
   // Construction
 public:
-  CEditExtn(COLORREF focusColor = (RGB(222, 255, 222))); // light green
-  CEditExtn(std::vector<st_context_menu> vmenu_items, 
+  CEditExtnX(COLORREF focusColor = (RGB(222, 255, 222))); // light green
+  CEditExtnX(std::vector<st_context_menu> vmenu_items, 
             COLORREF focusColor = (RGB(222, 255, 222))); //light green
-  virtual ~CEditExtn();
+  virtual ~CEditExtnX();
 
   void ChangeColour() {m_bIsFocused = TRUE;}
   void UpdateState(const int message_number, const bool new_state);
@@ -127,7 +128,7 @@ public:
   void EnableMenuItem(const int message_number, const bool bEnable);
 
 protected:
-  //{{AFX_MSG(CEditExtn)
+  //{{AFX_MSG(CEditExtnX)
   afx_msg void OnSetFocus(CWnd* pOldWnd);
   afx_msg void OnKillFocus(CWnd* pNewWnd);
   afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
@@ -149,12 +150,18 @@ private:
   std::vector<st_context_menu> m_vmenu_items;
 };
 
-class CRichEditExtn : public CRichEditCtrl
+/**
+* typedef to hide the fact that CEditExtn is really a mixin.
+*/
+
+typedef CPWTouch< CEditExtnX > CEditExtn;
+
+class CRichEditExtnX : public CRichEditCtrl
 {
   // Construction
 public:
-  CRichEditExtn(COLORREF focusColor = (RGB(222, 255, 222))); // light green
-  virtual ~CRichEditExtn();
+  CRichEditExtnX(COLORREF focusColor = (RGB(222, 255, 222))); // light green
+  virtual ~CRichEditExtnX();
 
   void SetContextMenu(const std::vector<st_context_menu> &vmenu_items);
   void ChangeColour() {m_bIsFocused = TRUE;}
@@ -165,7 +172,7 @@ public:
   void EnableMenuItem(const int message_number, const bool bEnable);
 
 protected:
-  //{{AFX_MSG(CRichEditExtn)
+  //{{AFX_MSG(CRichEditExtnX)
   afx_msg void OnSetFocus(CWnd *pOldWnd);
   afx_msg void OnKillFocus(CWnd *pNewWnd);
   afx_msg void OnContextMenu(CWnd *pWnd, CPoint point);
@@ -188,13 +195,19 @@ private:
   HCURSOR m_hCursor;
 };
 
+/**
+* typedef to hide the fact that CRichEditExtn is really a mixin.
+*/
+
+typedef CPWTouch< CRichEditExtnX > CRichEditExtn;
+
 // Following is meant for sensitive information that you really don't
 // want to be in memory more than necessary, such as master passwords
 // We use a CSecEditExtn::Impl class member not for security, but to
 // avoid #including stuff here that really shouldn't be of interest to
 // users of these classes
 
-class CSecEditExtn : public CEditExtn
+class CSecEditExtn : public CEditExtnX
 {
 public:
   CSecEditExtn();
@@ -304,7 +317,7 @@ public:
   void SetBottomMargin(int iMargin) { m_nBottomMargin = iMargin; }
   void SetHorizontalMargin(int iMargin) { m_nHorizontalMargin = iMargin; }
 
-  CEditExtn m_edit;
+  CEditExtnX m_edit;
   CListBoxExtn m_listbox;
   void ChangeColour();
 

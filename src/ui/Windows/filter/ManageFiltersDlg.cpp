@@ -193,7 +193,7 @@ BOOL CManageFiltersDlg::OnInitDialog()
     pflt_idata->flt_key.cs_filtername = L".";
     pflt_idata->flt_key.fpool = FPOOL_SESSION;
     pflt_idata->flt_flags = MFLT_REQUEST_COPY_TO_DB | MFLT_REQUEST_EXPORT | MFLT_INUSE;
-    m_FilterLC.SetItemData(iItem, (DWORD)pflt_idata);
+    m_FilterLC.SetItemData(iItem, (DWORD_PTR)pflt_idata);
   }
 
   // Set row height to take image by adding a dummy ImageList
@@ -879,7 +879,7 @@ void CManageFiltersDlg::UpdateFilterList()
     pflt_idata->flt_flags = (m_activefilter == iItem) ? MFLT_INUSE : 0;
     if (m_selectedfilter == iItem)
       pflt_idata->flt_flags |= MFLT_SELECTED;
-    m_FilterLC.SetItemData(iItem, (DWORD)pflt_idata);
+    m_FilterLC.SetItemData(iItem, (DWORD_PTR)pflt_idata);
     i++;
   }
 

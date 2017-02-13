@@ -940,6 +940,11 @@ void DboxMain::PostOpenProcessing()
 
   // Now enable notification of DB changes
   ResumeOnDBNotification();
+
+  // Set initial horizontal scroll bar position
+  m_iListHBarPos = m_iTreeHBarPos = 0;
+  m_ctlItemList.Scroll(CSize(SB_HORZ, 0));
+  m_ctlItemTree.SetScrollPos(SB_HORZ, 0);
 }
 
 int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
@@ -1709,7 +1714,7 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
     }
   }
 
-  numExported = OIL.size();
+  numExported = (int)OIL.size();
 
   export_core.SetCurFile(sx_Filename);
   export_core.SetReadOnly(false);
@@ -2068,7 +2073,7 @@ void DboxMain::OnExportAttachment()
   if (csMediaType.Left(5) == L"image") {
     // Should be an image file - but may not be supported by CImage - try..
     // Allocate attachment buffer
-    UINT imagesize = att.GetContentSize();
+    UINT imagesize = (UINT)att.GetContentSize();
     HGLOBAL gMemory = GlobalAlloc(GMEM_MOVEABLE, imagesize);
     ASSERT(gMemory);
 
@@ -4147,7 +4152,7 @@ void DboxMain::OnCancel()
   // If system tray is enabled, cancel (escape)
   // minimizes to the system tray, else exit application
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
-    ShowWindow(SW_MINIMIZE);
+    OnMinimize();
   } else {
     SavePreferencesOnExit();
     int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
