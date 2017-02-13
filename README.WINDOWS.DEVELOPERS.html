@@ -58,7 +58,7 @@ be possible to build the wxWidgets version.</p>
 
 <p>To summarise: The 'official' version of PasswordSafe on Windows
 platforms is based on MFC (Microsoft's Foundation Classes), and
-uses Microsoft's XML parser. This corresponds to the <i>ReleaseM</i>
+uses Microsoft's XML parser. This corresponds to the <i>Release</i>
 configuration in the build environment, i.e., the release build using Microsoft's
 XML parser.  This will build the required DLLs using their Release configuration
 (pws_at.dll for AutoType support and pws_osk.dll for the Virtual Keyboard) and
@@ -86,28 +86,20 @@ is not valid. The supported combinations are:</p>
 <ul>
 <li>32-bit versions - platform Win32:</li>
 <ul>
-<li><b>Debug</b> - builds the debug version of the required DLLs (pws_at_D.dll and pws_osk_D.dll).
-This project is automatically selected when any of the debug builds below are selected.</li>
-<li><b>DebugM</b> - builds the debug version using the Microsoft XML parser</li>
-<li><b>DebugX</b> - builds the debug version using the Xerces XML parser</li>
-<li><b>Release</b> - builds the release version of the required DLLs (pws_at.dll and pws_osk.dll)
-and the resource DLL (pwsafe_base.dll). This project is automatically selected when any 
-of the release builds below are selected.</li>
-<li><b>ReleaseM</b> - builds the release version using the Microsoft XML parser</li>
-<li><b>ReleaseX</b> - builds the release version using the Xerces XML parser</li>
+<li><b>Debug</b> - builds the debug version using the Microsoft XML parser and the required DLLs
+(pws_at_D.dll and pws_osk_D.dll).</li>
+<li><b>Release</b> - builds the release version using the Microsoft XML parser and the required DLLs
+(pws_at.dll and pws_osk.dll). This will also contain the base language DLL used to generate I18N
+support.</li>
 </ul>
 
 <li>64-bit versions - platform x64:</li>
 <ul>
-<li><b>Debug64</b> - builds the debug version of the required DLLs (pws_at_D.dll and pws_osk_D.dll).
-This project is automatically selected when any of the debug builds below are selected.</li>
-<li><b>DebugM64</b> - builds the debug version using the Microsoft XML parser</li>
-<li><b>DebugX64</b> - builds the debug version using the Xerces XML parser</li>
-<li><b>Release64</b> - builds the release version of the required DLLs (pws_at.dll and pws_osk.dll)
-and the resource DLL (pwsafe_base.dll). This project is automatically selected when any 
-of the release builds below are selected.</li>
-<li><b>ReleaseM64</b> - builds the release version using the Microsoft XML parser</li>
-<li><b>ReleaseX64</b> - builds the release version using the Xerces XML parser</li>
+<li><b>Debug64</b> - builds the debug version using the Microsoft XML parser and the required DLLs
+(pws_at_D.dll and pws_osk_D.dll).</li>
+<li><b>Release64</b> - builds the release version using the Microsoft XML parser and the required DLLs
+(pws_at.dll and pws_osk.dll). This will also contain the base language DLL used to generate I18N
+support.</li>
 </ul>
 </ul>
 
@@ -116,18 +108,14 @@ of the release builds below are selected.</li>
 <ul>
 <li>32-bit versions - platform Win32:</li>
 <ul>
-<li><b>Debugwx</b> - builds the debug version without any XML parser</li>
-<li><b>DebugwxX</b> - builds the debug version using the Xerces XML parser</li>
-<li><b>Releasewx</b> - builds the release version without any XML parser</li>
-<li><b>ReleasewxX</b> - builds the release version using the Xerces XML parser</li>
+<li><b>Debugwx</b> - builds the debug version using the Xerces XML parser</li>
+<li><b>Releasewx</b> - builds the release version using the Xerces XML parser</li>
 </ul>
 
 <li>64-bit versions - platform x64:</li>
 <ul>
-<li><b>Debugwx64</b> - builds the debug version without any XML parser</li>
-<li><b>DebugwxX64</b> - builds the debug version using the Xerces XML parser</li>
-<li><b>Releasewx64</b> - builds the release version without any XML parser</li>
-<li><b>ReleasewxX64</b> - builds the release version using the Xerces XML parser</li>
+<li><b>Debugwx64</b> - builds the debug version using the Xerces XML parser</li>
+<li><b>Releasewx64</b> - builds the release version using the Xerces XML parser</li>
 </ul>
 </ul>
 
@@ -326,7 +314,7 @@ correct and just needs placing in the appropriate fields.</p>
 <p>The following instructions were written for version 1.7.0 of gtest.</p>
 
 <p>PasswordSafe uses the <a href="https://github.com/google/googletest" target="_blank">gtest</a>
-framework in the DebugM build - specifically the DebugM build of the coretest project.</p>
+framework in the Debug build - specifically the Debug build of the coretest project.</p>
 
 <p>To generate the required library, open gtest.sln in the "msvc" sub-directory in the gtest
 directory.</p>
@@ -473,7 +461,7 @@ had the error, maybe this and, possibly, the associated Link Map can be
 uploaded to a Developers section on this web site to aid all developers.</li>
 <li>You should probably maintain the directory structure of the project
 as described in the source downloaded from SourceForge and place the
-Program Debug Database file in the '..\src\bin\releasem' directory.</li>
+Program Debug Database file in the '..\build\bin\pwsafe\release' directory.</li>
 <li>Save the user's minidump file on your PC. Use VS to Open this <u>as
 a Project</u> (e.g. File-&gt;Open-&gt;Project/Solution).</li>
 <li>In the Debugging Options, specify the directory containing the corresponding
