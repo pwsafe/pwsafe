@@ -1740,13 +1740,13 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
         if (prefs->GetPref(PWSprefs::MinimizeOnAutotype)) {
           // Need to save display status for when we return from minimize
           m_vGroupDisplayState = GetGroupDisplayState();
-          ShowWindow(SW_MINIMIZE);
+          OnMinimize();
         } else {
           // Don't hide unless shown in System Tray!
           if (prefs->GetPref(PWSprefs::UseSystemTray))
             ShowWindow(SW_HIDE);
           else
-            ShowWindow(SW_MINIMIZE);
+            OnMinimize();
         }
 
       UpdateAccessTime(uuid);
@@ -2119,6 +2119,13 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
 
   switch (nSysID) {
     case SC_MINIMIZE:
+      // Save current horizontal scroll bar position
+      if (m_ctlItemList.GetItemCount() == 0) {
+        m_iListHBarPos = m_iTreeHBarPos = 0;
+      } else {
+        m_iListHBarPos = m_ctlItemList.GetScrollPos(SB_HORZ);
+        m_iTreeHBarPos = m_ctlItemTree.GetScrollPos(SB_HORZ);
+      }
       break;
     case SC_CLOSE:
       if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
@@ -2356,7 +2363,11 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
         m_FindToolBar.Find(m_iCurrentItemFound);
       }
     } else {
-      ShowWindow(bUseSysTray ? SW_HIDE : SW_MINIMIZE);
+      if (bUseSysTray) {
+        ShowWindow(SW_HIDE);
+      } else {
+        OnMinimize();
+      }
     }
     goto exit;
   }

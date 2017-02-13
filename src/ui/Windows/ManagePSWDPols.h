@@ -10,12 +10,23 @@
 #include "PWDialog.h"
 #include "ControlExtns.h"
 #include "DDStatic.h"
+#include "PWTouch.h"
 
 #include "core/StringX.h"
 #include "core/coredefs.h"
 #include "core/PWPolicy.h"
 
 #include "resource.h"
+
+// PolicyNames CListCtrl
+class CPNListCtrlX : public CListCtrl {
+};
+
+/**
+* typedef to hide the fact that CPNListCtrl is really a mixin.
+*/
+
+typedef CPWTouch< CPNListCtrlX > CPNListCtrl;
 
 // CManagePSWDPols dialog
 
@@ -36,7 +47,7 @@ public:
   bool IsChanged() const {return m_bChanged;}
 
 protected:
-  CListCtrl m_PolicyNames;
+  CPNListCtrl m_PolicyNames;
   CListCtrl m_PolicyDetails;
   CListCtrl m_PolicyEntries;
 
