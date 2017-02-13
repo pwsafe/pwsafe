@@ -309,9 +309,9 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the release.
-  File "..\..\build\bin\pwsafe\releasem\pwsafe.exe"
-  File "..\..\build\bin\pwsafe\releasem\pws_at.dll"
-  File "..\..\build\bin\pwsafe\releasem\pws_osk.dll"
+  File "..\..\build\bin\pwsafe\release\pwsafe.exe"
+  File "..\..\build\bin\pwsafe\release\pws_at.dll"
+  File "..\..\build\bin\pwsafe\release\pws_osk.dll"
   File "..\..\help\default\pwsafe.chm"
   File "..\..\LICENSE"
   File "..\..\README.TXT"
