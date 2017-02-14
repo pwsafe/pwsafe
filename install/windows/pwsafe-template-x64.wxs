@@ -5,8 +5,8 @@
   There are two key differences between this Wix script for x64 and one for x86
   1.  It uses ProgramFiles64Folder as the directory for program files. This equates
       to putting the files in C:\Program Files\ instead of C:\Program Files(x86)\.
-  2.  The pwsafe executable files are taken from build\bin\pwsafe\releasem64\ instead
-      of build\bin\pwsafe\releasem\.
+  2.  The pwsafe executable files are taken from build\bin\pwsafe\release64\ instead
+      of build\bin\pwsafe\release\.
       
   The following parameters must be specified on the candle command line.
       -dPWSAFE_VERSION=x.xx.x
@@ -71,16 +71,16 @@
           <Component Id='MainProgram'
             Guid='25c2da5c-d483-4ca7-84f6-d28e17a59188'>
             <File Id='file12' Name='pwsafe.exe' DiskId='1' KeyPath='yes'
-              Source='build\bin\pwsafe\releasem64\pwsafe.exe' Vital='yes'> 
+              Source='build\bin\pwsafe\release64\pwsafe.exe' Vital='yes'> 
               <Shortcut Id='MainProgramShortCut' Directory='ProgramMenuFolder'
               Name='Password Safe $(var.PWSAFE_VERSION)' ShortName='pwsafe'
               Icon='pwsafe.exe' IconIndex='0' Advertise='yes' />
             </File>
             <File Id='file13' Name='pws_at.dll' DiskId='1'
-              Source='build\bin\pwsafe\releasem64\pws_at.dll' Vital='yes'> 
+              Source='build\bin\pwsafe\release64\pws_at.dll' Vital='yes'> 
             </File>
             <File Id='file14' Name='pws_osk.dll' DiskId='1'
-              Source='build\bin\pwsafe\releasem64\pws_osk.dll' Vital='yes'> 
+              Source='build\bin\pwsafe\release64\pws_osk.dll' Vital='yes'> 
             </File>
             <File Id='file15' Name='pwsafeDE.dll' DiskId='1'
               Source='build\bin\pwsafe\I18N\pwsafeDE.dll' Vital='yes'> 
@@ -134,7 +134,7 @@
       <Directory Id='ProgramMenuFolder' Name='Programs' />
     </Directory>
 
-    <Icon Id='pwsafe.exe' SourceFile='build\bin\pwsafe\releasem64\pwsafe.exe' />
+    <Icon Id='pwsafe.exe' SourceFile='build\bin\pwsafe\release64\pwsafe.exe' />
 
     <Feature Id='Complete' Level='1'>
       <ComponentRef Id='Documentation' />
