@@ -416,7 +416,7 @@ int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
         // Windows FlushFileBuffers == Linux fsync
         int ifileno = _fileno(fd);
 
-        if ((HANDLE)ifileno != INVALID_HANDLE_VALUE) {
+        if (ifileno != INVALID_FILE_DESCRIPTOR) {
           intptr_t iosfhandle = _get_osfhandle(ifileno);
 
           if ((HANDLE)iosfhandle != INVALID_HANDLE_VALUE) {

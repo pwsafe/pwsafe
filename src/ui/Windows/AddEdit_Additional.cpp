@@ -716,8 +716,8 @@ BOOL CAddEdit_Additional::OnApply()
     wchar_t buffer[6];
     swprintf_s(buffer, 6, L"%1x%02x%02x",
               (M_SavePWHistory() == FALSE) ? 0 : 1,
-              M_MaxPWHistory(),
-              M_pwhistlist().size());
+              (unsigned int)M_MaxPWHistory(),
+              (unsigned int)M_pwhistlist().size());
     if (M_PWHistory().GetLength() >= 5) {
       for (int i = 0; i < 5; i++) {
         M_PWHistory().SetAt(i, buffer[i]);
@@ -973,7 +973,7 @@ void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *pResult)
   LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
   int selectedRow = pNMItemActivate->iItem;
   if (selectedRow >= 0) {
-    int indx = m_PWHistListCtrl.GetItemData(selectedRow);
+    int indx = (int)m_PWHistListCtrl.GetItemData(selectedRow);
     const StringX histpasswd = M_pwhistlist()[indx].password;
     GetMainDlg()->SetClipboardData(histpasswd);
 

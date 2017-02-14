@@ -431,7 +431,7 @@ int CItemAtt::Read(PWSfile *in)
     trashMemory(AK, sizeof(AK));
     
     // calculate HMAC
-    hmac.Update(content, content_len);
+    hmac.Update(content, (unsigned long)content_len);
     hmac.Final(calculated_digest);
 
     if (memcmp(expected_digest, calculated_digest,

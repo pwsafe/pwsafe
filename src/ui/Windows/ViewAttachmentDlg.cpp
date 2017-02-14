@@ -243,7 +243,7 @@ BOOL CViewAttachmentDlg::OnInitDialog()
   int rc(0);
   HRESULT hr(S_OK);
 
-  UINT imagesize = m_pattachment->GetContentSize();
+  UINT imagesize = (UINT)m_pattachment->GetContentSize();
   HGLOBAL gMemory = GlobalAlloc(GMEM_MOVEABLE, imagesize);
   ASSERT(gMemory);
 

@@ -249,7 +249,7 @@ void PopulateMinidumpUserStreams(PWSprefs *prefs, bool bOpen, bool bRW, UserStre
   if (iStream == usAll || iStream == usPrefs || iStream == us1) {
     // Get all Boolean preferences
     sx_Buffer = prefs->PWSprefs::GetAllBoolPrefs();
-    len = std::min(sx_Buffer.length(), maxLen);
+    len = (int)std::min(sx_Buffer.length(), maxLen);
     SecureZeroMemory(szUserStream1, sizeof(szUserStream1));
     swprintf_s(szUserStream1, USERSTREAMSIZE,
                L"US01 %s", sx_Buffer.substr(0, len).c_str());
@@ -258,7 +258,7 @@ void PopulateMinidumpUserStreams(PWSprefs *prefs, bool bOpen, bool bRW, UserStre
   if (iStream == usAll || iStream == usPrefs || iStream == us2) {
     // Get all Integer preferences
     sx_Buffer = prefs->PWSprefs::GetAllIntPrefs();
-    len = std::min(sx_Buffer.length(), maxLen);
+    len = (int)std::min(sx_Buffer.length(), maxLen);
     SecureZeroMemory(szUserStream2, sizeof(szUserStream1));
     swprintf_s(szUserStream2, USERSTREAMSIZE,
                L"US02 %s", sx_Buffer.substr(0, len).c_str());
@@ -267,7 +267,7 @@ void PopulateMinidumpUserStreams(PWSprefs *prefs, bool bOpen, bool bRW, UserStre
   if (iStream == usAll || iStream == usPrefs || iStream == us3) {
     // Get SOME String preferences (do not include user data)
     sx_Buffer = prefs->PWSprefs::GetAllStringPrefs();
-    len = std::min(sx_Buffer.length(), maxLen);
+    len = (int)std::min(sx_Buffer.length(), maxLen);
     SecureZeroMemory(szUserStream3, sizeof(szUserStream1));
     swprintf_s(szUserStream3, USERSTREAMSIZE,
                L"US03 %s", sx_Buffer.substr(0, len).c_str());

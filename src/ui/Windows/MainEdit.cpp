@@ -690,7 +690,7 @@ void DboxMain::OnProtect(UINT nID)
   } else {
     POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
     if (pos != NULL) {
-      pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
+      pci = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos - 1);
     }
   }
   if (pci != NULL) {
@@ -874,7 +874,7 @@ void DboxMain::OnDelete()
         if (num_children == 0) {
           MultiCommands *pmcmd = MultiCommands::Create(&m_core);
           const StringX sxPath2 = m_sxOriginalGroup + L".";
-          const int len = sxPath2.length();
+          const int len = (int)sxPath2.length();
           std::vector<StringX> vEmptyGroups = m_core.GetEmptyGroups();
           for (size_t i = 0; i < vEmptyGroups.size(); i++) {
             if (vEmptyGroups[i] == m_sxOriginalGroup || vEmptyGroups[i].substr(0, len) == sxPath2) {
@@ -913,7 +913,7 @@ void DboxMain::OnDelete()
 
     POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
     if (pos != NULL) {
-      pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
+      pci = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos - 1);
     }
   }
 
@@ -944,7 +944,7 @@ void DboxMain::OnDelete()
     // resulting empty groups (after all sub-entries deleted) and the original group
     if (!m_sxOriginalGroup.empty()) {
       const StringX sxPath2 = m_sxOriginalGroup + L".";
-      const int len = sxPath2.length();
+      const int len = (int)sxPath2.length();
       std::vector<StringX> vEmptyGroups = m_core.GetEmptyGroups();
       for (size_t i = 0; i < vEmptyGroups.size(); i++) {
         if (vEmptyGroups[i] == m_sxOriginalGroup || vEmptyGroups[i].substr(0, len) == sxPath2) {
@@ -1832,7 +1832,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
           clearDlg.DoModal() == IDCANCEL)
         return;
       if (bSpecial) {
-        ShowWindow(SW_MINIMIZE);
+        OnMinimize();
       }
       break;
     }
@@ -2033,7 +2033,9 @@ void DboxMain::AutoType(const CItemData &ci)
   if (bMinOnAuto) {
     // Need to save display status for when we return from minimize
     m_vGroupDisplayState = GetGroupDisplayState();
-    ShowWindow(SW_MINIMIZE);
+
+    // Now minimise
+    OnMinimize();
   } else {
     ShowWindow(SW_HIDE);
   }
