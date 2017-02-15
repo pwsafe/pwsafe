@@ -33,11 +33,11 @@ if $%1 == $x64 goto :buildx64
 ::
 :help
   echo. 
-  echo Syntax: BuildWixMSI [platform]
+  echo Syntax: BuildWixInstall [platform]
   echo   platform = [x86 ^| x64]
   echo Build all platforms: BuildWixInstall
-  echo Build only x86: BuildWixMSI x86
-  echo Build only x54: BuildWixMSI x64
+  echo Build only x86: BuildWixInstall x86
+  echo Build only x54: BuildWixInstall x64
   echo. 
   goto :exit
   
