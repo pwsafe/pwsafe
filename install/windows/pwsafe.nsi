@@ -144,9 +144,10 @@
 ; Hopefully, this file will be compiled via the following command line
 ; command:
 ;
-; makensis.exe /DVERSION=X.XX pwsafe.nsi
+; makensis.exe /DVERSION=X.XX /DARCH=xNN pwsafe.nsi
 ;
-; where X.XX is the version number of Password Safe.
+; where X.XX is the version number of Password Safe and
+; xNN is x86 or x64.
 
   !ifndef VERSION
     !error "VERSION undefined. Usage: makensis.exe /DVERSION=X.XX /DARCH=[x86|x64] pwsafe.nsi"
@@ -163,6 +164,7 @@
 ;Variables
 
   Var INSTALL_TYPE
+  Var TARGET_ARCH ; 32-bit or 64-bit
   
   ;Request application privileges for Windows Vista and later.
   RequestExecutionLevel admin
@@ -183,18 +185,20 @@
 ;--------------------------------
 ; General
 
-  ; Name and file
-  Name "Password Safe ${VERSION}"
-  BrandingText "PasswordSafe ${VERSION} Installer"
-
   ; Default installation folder based on chosen architecture
   !if ${ARCH} == "x86"
     OutFile "pwsafe-${VERSION}.exe"
     InstallDir "$PROGRAMFILES\Password Safe"
+    ; Name and file
+    Name "Password Safe ${VERSION} (32-bit)"
+    BrandingText "PasswordSafe ${VERSION} (32-bit) Installer"
     !echo "Building x86 installer"
   !else if ${ARCH} == "x64" 
     OutFile "pwsafe64-${VERSION}.exe"
     InstallDir "$PROGRAMFILES64\Password Safe"
+    ; Name and file
+    Name "Password Safe ${VERSION} (64-bit)"
+    BrandingText "PasswordSafe ${VERSION} (64-bit) Installer"
     !echo "Building x64 installer"
   !else
     !error "ARCH must be either x86 or x64"
@@ -335,11 +339,13 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the install.
   ${If} ${ARCH} == "x86"
+    StrCpy $TARGET_ARCH "(32-bit)"
     File "..\..\build\bin\pwsafe\release\pwsafe.exe"
     File "..\..\build\bin\pwsafe\release\pws_at.dll"
     File "..\..\build\bin\pwsafe\release\pws_osk.dll"
   ${EndIf}
   ${If} ${ARCH} == "x64"  
+    StrCpy $TARGET_ARCH "(64-bit)"
     File "..\..\build\bin\pwsafe\release64\pwsafe.exe"
     File "..\..\build\bin\pwsafe\release64\pws_at.dll"
     File "..\..\build\bin\pwsafe\release64\pws_osk.dll"
@@ -375,7 +381,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   ; current user doesn't have permission to write to HKLM, then the
   ; uninstaller will not appear in the Add or Remove Programs window.
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
-        "DisplayName" "Password Safe"
+        "DisplayName" "Password Safe $TARGET_ARCH"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
         "DisplayIcon" "$INSTDIR\pwsafe.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
