@@ -23,7 +23,7 @@ set PATH="%ProgramFiles(x86)%\WiX Toolset v3.10\bin";%PATH%
 FOR /F "eol=# tokens=1,2,3* " %%i IN (version.mfc) DO set PWS_%%i=%%k
 set "version_mfc=%PWS_VER_MAJOR%.%PWS_VER_MINOR%.%PWS_VER_REV%"
 
-:: No platform means build all
+:: No platform means build both x86 and x64
 if $%1$ == $$ goto :buildx86
 if $%1 == $x86 goto :buildx86
 if $%1 == $x64 goto :buildx64
@@ -47,21 +47,21 @@ if $%1 == $x64 goto :buildx64
 :buildx86
 
 echo.
-echo Building pwsafe.msi for version %version_mfc%
+echo ***Building pwsafe.msi for version %version_mfc%
 echo.
 
-candle -dPWSAFE_VERSION=%version_mfc% -dpwsafe_platform=%2 install\windows\pwsafe-template-x86.wxs
-light -ext WixUIExtension -cultures:en-us pwsafe-template-x86.wixobj -out pwsafe.msi
+candle -dPWSAFE_VERSION=%version_mfc% -dPlatform=x86 install\windows\pwsafe-template.wxs
+light -ext WixUIExtension -cultures:en-us pwsafe-template.wixobj -out pwsafe.msi
 if $%1 == $x86 goto :exit
 
 :buildx64
 
 echo.
-echo Building pwsafe64.msi for version %version_mfc%
+echo ***Building pwsafe64.msi for version %version_mfc%
 echo.
 
-candle -dPWSAFE_VERSION=%version_mfc% -dpwsafe_platform=%2 -arch x64 install\windows\pwsafe-template-x64.wxs
-light -ext WixUIExtension -cultures:en-us pwsafe-template-x64.wixobj -out pwsafe64.msi
+candle -dPWSAFE_VERSION=%version_mfc% -dPlatform=x64 -arch x64 install\windows\pwsafe-template.wxs
+light -ext WixUIExtension -cultures:en-us pwsafe-template.wixobj -out pwsafe64.msi
 goto :exit
 
 :exit
