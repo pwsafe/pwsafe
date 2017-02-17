@@ -1394,7 +1394,12 @@ void DboxMain::RestoreWindows()
 
   RefreshViews();
 
+  // Restore current horizontal scroll bar position
+  m_ctlItemList.Scroll(CSize(m_iListHBarPos, 0));
+  m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
+
   BringWindowToTop();
+
   CPWDialog::GetDialogTracker()->ShowOpenDialogs();
 }
 
@@ -1502,8 +1507,10 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       // over the minimize/restore event.
       m_savedDBprefs = prefs->Store();
 
-      // PWSprefs::DatabaseClear == Locked
-      if (prefs->GetPref(PWSprefs::DatabaseClear)) {
+      // PWSprefs::DatabaseClear == Lock DB on minimize but
+      // only bother if currently unlocked
+      if (app.GetSystemTrayState() == ThisMfcApp::UNLOCKED && 
+          prefs->GetPref(PWSprefs::DatabaseClear)) {
         if (!LockDataBase()) {
           // Failed to save - abort minimize and clearing of data
           ShowWindow(SW_SHOW);
@@ -1604,6 +1611,8 @@ void DboxMain::OnMinimize()
   // Also, in order to save the scroll positions during minimize
   // of the application, this should be the ONLY place that calls
   // "ShowWindow(SW_MINIMIZE);" as this call can't be intercepted
+  // The one EXCEPTION is after calls to LockDataBase as we must save
+  // the scroll positions before the GUI is cleared.
   PWS_LOGIT;
 
   if (m_bStartHiddenAndMinimized)
@@ -1629,6 +1638,10 @@ void DboxMain::OnRestore()
 
   // Called when the System Tray Restore menu option is used
   RestoreWindowsData(true);
+
+  // Restore current horizontal scroll bar position
+  m_ctlItemList.Scroll(CSize(m_iListHBarPos, 0));
+  m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
 
   m_ctlItemTree.SetRestoreMode(false);
 
@@ -2410,10 +2423,12 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     CPWDialog::GetDialogTracker()->HideOpenDialogs();
 
     // Now hide/minimize main dialog
+    // NOTE: Do not call OnMinimize if minimizing as this will overwrite
+    // the scroll bar positions
     if (prefs->GetPref(PWSprefs::UseSystemTray)) {
       ShowWindow(SW_HIDE);
     } else {
-      OnMinimize();
+      ShowWindow(SW_MINIMIZE);
     }
 
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
@@ -2505,6 +2520,15 @@ bool DboxMain::LockDataBase()
       gmb.MessageBox(cs_text, cs_title, MB_ICONSTOP);
       return false;
     }
+  }
+
+  // Save current horizontal scroll bar position BEFORE
+  // everyting is cleared
+  if (m_ctlItemList.GetItemCount() == 0) {
+    m_iListHBarPos = m_iTreeHBarPos = 0;
+  } else {
+    m_iListHBarPos = m_ctlItemList.GetScrollPos(SB_HORZ);
+    m_iTreeHBarPos = m_ctlItemTree.GetScrollPos(SB_HORZ);
   }
 
   // If a Find is active, save its status

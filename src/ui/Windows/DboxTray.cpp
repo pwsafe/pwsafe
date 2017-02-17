@@ -60,15 +60,18 @@ void DboxMain::OnTrayLockUnLock()
       ClearClipboardData();
       if (!IsIconic())
         m_vGroupDisplayState = GetGroupDisplayState();
+
       if (LockDataBase())  { // save db if needed, clear data
         // Hide everything
         CPWDialog::GetDialogTracker()->HideOpenDialogs();
 
         // Now hide/minimize main dialog
+        // NOTE: Do not call OnMinimize if minimizing as this will overwrite
+        // the scroll bar positions
         if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
           ShowWindow(SW_HIDE);
         else
-          OnMinimize();
+          ShowWindow(SW_MINIMIZE);
       }
       break;
     case ThisMfcApp::CLOSED:
