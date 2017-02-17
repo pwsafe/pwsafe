@@ -911,6 +911,12 @@ void DboxMain::InitPasswordSafe()
 
   // Set up fonts before playing with Tree/List views
   LOGFONT LF;
+  int iFontSize;
+
+  // Get resolution
+  HDC hDC = ::GetWindowDC(GetSafeHwnd());
+  const int Ypixels = GetDeviceCaps(hDC, LOGPIXELSY);
+  ::ReleaseDC(GetSafeHwnd(), hDC);
 
   // Get current font (as specified in .rc file for IDD_PASSWORDSAFE_DIALOG) & save it
   // If it's not available, fall back to font used in pre-3.18 versions, rather than
@@ -933,9 +939,16 @@ void DboxMain::InitPasswordSafe()
   LOGFONT tree_lf;
   // either preference or our own fallback
   if (!szTreeFont.empty() && pFonts->ExtractFont(szTreeFont, tree_lf)) {
-    pFonts->SetCurrentFont(&tree_lf);
+    iFontSize = prefs->GetPref(PWSprefs::TreeFontPtSz);
+    if (iFontSize == 0) {
+      iFontSize = -MulDiv(tree_lf.lfHeight, 72, Ypixels) * 10;
+      prefs->SetPref(PWSprefs::TreeFontPtSz, iFontSize);
+    }
+    pFonts->SetCurrentFont(&tree_lf, iFontSize);
   } else {
-    pFonts->SetCurrentFont(&dfltTreeListFont);
+    pFonts->SetCurrentFont(&dfltTreeListFont, 0);
+    iFontSize = -MulDiv(dfltTreeListFont.lfHeight, 72, Ypixels) * 10;
+    prefs->SetPref(PWSprefs::TreeFontPtSz, iFontSize);
   }
 
   uint32_t newprotectedsymbol = 0x1f512;
@@ -955,33 +968,54 @@ void DboxMain::InitPasswordSafe()
   std::wstring szAddEditFont = prefs->GetPref(PWSprefs::AddEditFont).c_str();
 
   if (!szAddEditFont.empty() && pFonts->ExtractFont(szAddEditFont, LF)) {
-    pFonts->SetAddEditFont(&LF);
+    iFontSize = prefs->GetPref(PWSprefs::AddEditFontPtSz);
+    if (iFontSize == 0) {
+      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+      prefs->SetPref(PWSprefs::AddEditFontPtSz, iFontSize);
+    }
+    pFonts->SetAddEditFont(&LF, iFontSize);
   } else {
     // Not set - use add/Edit dialog font - difficult to get so use hard
     // coded default
     pFonts->GetDefaultAddEditFont(LF);
-    pFonts->SetAddEditFont(&LF);
+    iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+    prefs->SetPref(PWSprefs::AddEditFontPtSz, iFontSize);
+    pFonts->SetAddEditFont(&LF, iFontSize);
   }
 
   // Set up Password font too.
   std::wstring szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont).c_str();
 
   if (!szPasswordFont.empty() && pFonts->ExtractFont(szPasswordFont, LF)) {
-    pFonts->SetPasswordFont(&LF);
+    iFontSize = prefs->GetPref(PWSprefs::PasswordFontPtSz);
+    if (iFontSize == 0) {
+      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+      prefs->SetPref(PWSprefs::PasswordFontPtSz, iFontSize);
+    }
+    pFonts->SetPasswordFont(&LF, iFontSize);
   } else {
     // Not set - use default password font
-    pFonts->SetPasswordFont(NULL);
+    pFonts->SetPasswordFont(NULL, 0);
+    iFontSize = -MulDiv(-16, 72, Ypixels) * 10;  // Taken from default password font 12pt
+    prefs->SetPref(PWSprefs::PasswordFontPtSz, iFontSize);
   }
 
   // Set up Notes font too.
   std::wstring szNotesFont = prefs->GetPref(PWSprefs::NotesFont).c_str();
 
   if (!szNotesFont.empty() && pFonts->ExtractFont(szNotesFont, LF)) {
-    pFonts->SetNotesFont(&LF);
+    iFontSize = prefs->GetPref(PWSprefs::NotesFontPtSz);
+    if (iFontSize == 0) {
+      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+      prefs->SetPref(PWSprefs::NotesFontPtSz, iFontSize);
+    }
+    pFonts->SetNotesFont(&LF, iFontSize);
   } else {
     // Not set - use tree/list font set above
     pFonts->GetCurrentFont(&LF);
-    pFonts->SetNotesFont(&LF);
+    iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+    prefs->SetPref(PWSprefs::NotesFontPtSz, iFontSize);
+    pFonts->SetNotesFont(&LF, iFontSize);
   }
 
   // transfer the fonts to the tree windows

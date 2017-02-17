@@ -2615,12 +2615,15 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
   StringX cs_FontName, cs_SampleText;
   LOGFONT lf, dflt_lf;
   PWSprefs::StringPrefs pref_Font(PWSprefs::TreeFont), pref_FontSampleText(PWSprefs::TreeListSampleText);
+  PWSprefs::IntPrefs pref_font_point_size(PWSprefs::TreeFontPtSz);
+  int iFontSize(0);
 
   DWORD dwFlags = CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT;
 
   switch (iType) {
     case CFontsDialog::TREELISTFONT:
       pref_Font = PWSprefs::TreeFont;
+      pref_font_point_size = PWSprefs::TreeFontPtSz;
       pref_FontSampleText = PWSprefs::TreeListSampleText;
       pOldFont = m_ctlItemTree.GetFont();
       pOldFont->GetLogFont(&lf);
@@ -2628,18 +2631,21 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       break;
     case CFontsDialog::ADDEDITFONT:
       pref_Font = PWSprefs::AddEditFont;
+      pref_font_point_size = PWSprefs::AddEditFontPtSz;
       pref_FontSampleText = PWSprefs::AddEditSampleText;
       pFonts->GetAddEditFont(&lf);
       pFonts->GetDefaultAddEditFont(dflt_lf);
       break;
     case CFontsDialog::PASSWORDFONT:
       pref_Font = PWSprefs::PasswordFont;
+      pref_font_point_size = PWSprefs::PasswordFontPtSz;
       pref_FontSampleText = PWSprefs::PswdSampleText;
       pFonts->GetPasswordFont(&lf);
       pFonts->GetDefaultPasswordFont(dflt_lf);
       break;
     case CFontsDialog::NOTESFONT:
       pref_Font = PWSprefs::NotesFont;
+      pref_font_point_size = PWSprefs::NotesFontPtSz;
       pref_FontSampleText = PWSprefs::NotesSampleText;
       pFonts->GetNotesFont(&lf);
       dflt_lf = dfltTreeListFont; // Default Notes font is the default Tree/List font
@@ -2675,6 +2681,7 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
 
   INT_PTR rc = fontdlg.DoModal();
   if (rc== IDOK) {
+    iFontSize = fontdlg.GetSize();
     if (iType == CFontsDialog::VKEYBOARDFONT && fontdlg.m_bReset) {
       // User requested the Virtual Keyboard to be reset now
       // Other fonts are just reset within the Fontdialog without exiting
@@ -2687,7 +2694,7 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
     switch (iType) {
       case CFontsDialog::TREELISTFONT:
         // Set current tree/list font
-        pFonts->SetCurrentFont(&lf);
+        pFonts->SetCurrentFont(&lf, iFontSize);
 
         // Transfer the fonts to the tree and list windows
         m_ctlItemTree.SetUpFont();
@@ -2703,21 +2710,21 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
         break;
       case CFontsDialog::ADDEDITFONT:
         // Transfer the new font to the selected Add/Edit fields
-        pFonts->SetAddEditFont(&lf);
+        pFonts->SetAddEditFont(&lf, iFontSize);
 
         // Change the Find Toolbar font
         m_FindToolBar.ChangeFont();
         break;
       case CFontsDialog::PASSWORDFONT:
         // Transfer the new font to the passwords
-        pFonts->SetPasswordFont(&lf);
+        pFonts->SetPasswordFont(&lf, iFontSize);
 
         // Recalculating row height
         m_ctlItemList.UpdateRowHeight(true);
         break;
       case CFontsDialog::NOTESFONT:
         // Transfer the new font to the Notes field
-        pFonts->SetNotesFont(&lf);
+        pFonts->SetNotesFont(&lf, iFontSize);
 
         // Recalculating row height
         m_ctlItemList.UpdateRowHeight(true);
@@ -2759,6 +2766,7 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
         lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
         lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
       prefs->SetPref(pref_Font, LPCWSTR(font_str));
+      prefs->SetPref(pref_font_point_size, iFontSize);
     }
 
     // Save user's sample text
