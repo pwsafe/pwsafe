@@ -1,17 +1,41 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!-- PasswordSafe MSI package source code for WIX -->
 <!-- Granted to the public domain by xenophonf -->
+<!--
+  How to build installer from script. Run from repo root directory.
+  
+  install\windows\BuildWixInstall x.xx [x86|x64]
+  
+  x.xx = pwsafe version (e.g. 3.41.1)
+  x86 = build 32-bit installer
+  x64 = build 64-bit installer
+-->
 <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
+
+  <!-- Product name as you want it to appear in Add/Remove Programs-->
+  <?if $(var.Platform) = x64 ?>
+    <?define ProductName = "Password Safe $(var.PWSAFE_VERSION) for Windows (64 bit)" ?>
+    <?define Win64 = "yes" ?>
+    <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+    <?define Architecture = "64-bit" ?>
+    <?define BinDir = "build\bin\pwsafe\release64" ?>
+  <?else ?>
+    <?define ProductName = "Password Safe $(var.PWSAFE_VERSION) for Windows (32 bit)" ?>
+    <?define Win64 = "no" ?>
+    <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+    <?define Architecture = "32-bit" ?>
+    <?define BinDir = "build\bin\pwsafe\release" ?>
+  <?endif ?>
 
   <Product Id='c2a02857-d138-446b-b181-442dee20c8e6'
 	   UpgradeCode='6dbf5233-ad08-4345-9ac7-746f32614a43'
-	   Name='Password Safe PWSAFE_VERSION for Windows'
-	   Version='PWSAFE_VERSION'
+	   Name='Password Safe $(var.PWSAFE_VERSION) for Windows ($(var.Architecture))'
+	   Version='$(var.PWSAFE_VERSION)'
 	   Language='1033'
 	   Manufacturer='Rony Shapiro'>
 
     <Package
-	     Description='Password Safe PWSAFE_VERSION is an Open Source utility for simply and securely managing passwords for multiple accounts.' 
+	     Description='Password Safe $(var.PWSAFE_VERSION) is an Open Source utility for simply and securely managing passwords for multiple accounts.' 
 	     Comments='MSI package courtesy of Matthew X. Economou.'
 	     Manufacturer='Rony Shapiro'
 	     InstallerVersion='200'
@@ -27,7 +51,8 @@
     <Property Id='WIXUI_INSTALLDIR' Value='PASSWORDSAFEPRODUCTDIR' />
 
     <Directory Id='TARGETDIR' Name='SourceDir'>
-      <Directory Id='ProgramFilesFolder' Name='PFiles'>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+      <Directory Id='$(var.PlatformProgramFilesFolder)' Name='PFiles'>
 	<Directory Id='PASSWORDSAFEPRODUCTDIR' Name='Password Safe'
 	ShortName='pwsafe'>
 	  <Component Id='Documentation' Guid='5787ed38-5d7f-4242-aa89-87d94f2077ed'>
@@ -56,19 +81,34 @@
 	    <File Id='file11' Name='pwsafeZH.chm' DiskId='1'
 	    Source='help\pwsafeZH\pwsafeZH.chm' /> 
 	  </Component>
-	  <Component Id='MainProgram'
+	  <Component Id='MainProgram' Win64='$(var.Win64)'
 	  Guid='25c2da5c-d483-4ca7-84f6-d28e17a59188'>
-	    <File Id='file12' Name='pwsafe.exe' DiskId='1'
-	      Source='build\bin\pwsafe\releasem\pwsafe.exe' Vital='yes'> 
-	      <Shortcut Id='MainProgram' Directory='ProgramMenuFolder'
-	      Name='Password Safe PWSAFE_VERSION' ShortName='pwsafe'
-	      Icon='pwsafe.exe' IconIndex='0' Advertise='yes' />
-	    </File>
+	    <File Id='file12' Name='pwsafe.exe' DiskId='1' KeyPath='yes'
+	      Source='$(var.BinDir)\pwsafe.exe' Vital='yes'> 
+	      <Shortcut 
+          Id='StartMenuShortCut' 
+          Directory='ProgramMenuFolder'
+          Name='Password Safe' 
+          ShortName='pwsafe'
+          WorkingDirectory="PASSWORDSAFEPRODUCTDIR" 
+          Icon='pwsafe.exe' 
+          IconIndex='0' 
+          Advertise='yes' />
+        <Shortcut
+          Id="DesktopShortcut"
+          Directory="DesktopFolder"
+          Name="Password Safe"
+          ShortName='pwsafe'
+          WorkingDirectory="PASSWORDSAFEPRODUCTDIR" 
+          Icon='pwsafe.exe' 
+          IconIndex='0' 
+          Advertise='yes' />	    
+      </File>
 	    <File Id='file13' Name='pws_at.dll' DiskId='1'
-	      Source='build\bin\pwsafe\releasem\pws_at.dll' Vital='yes'> 
+	      Source='$(var.BinDir)\pws_at.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file14' Name='pws_osk.dll' DiskId='1'
-	      Source='build\bin\pwsafe\releasem\pws_osk.dll' Vital='yes'> 
+	      Source='$(var.BinDir)\pws_osk.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file15' Name='pwsafeDE.dll' DiskId='1'
 	      Source='build\bin\pwsafe\I18N\pwsafeDE.dll' Vital='yes'> 
@@ -122,7 +162,7 @@
       <Directory Id='ProgramMenuFolder' Name='Programs' />
     </Directory>
 
-    <Icon Id='pwsafe.exe' SourceFile='build\bin\pwsafe\releasem\pwsafe.exe' />
+    <Icon Id='pwsafe.exe' SourceFile='$(var.BinDir)\pwsafe.exe' />
 
     <Feature Id='Complete' Level='1'>
       <ComponentRef Id='Documentation' />
