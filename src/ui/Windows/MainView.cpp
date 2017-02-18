@@ -4773,7 +4773,10 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
 
     // Get first entry visible in CListCtrl
     int i = m_ctlItemList.GetTopIndex();
-    if (i >= 0) {
+
+    // Note GetTopIndex can give an invalid value
+    // if the List view has never been visible - check within limits
+    if (i >= 0 && i < m_ctlItemList.GetItemCount()) {
       pci = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(pci != NULL);  // No groups in List View
       DisplayInfo *pdi = GetEntryGUIInfo(*pci, true);
