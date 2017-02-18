@@ -68,5 +68,6 @@ configure_file (
 set(CMAKE_CXX_FLAGS
   "${CMAKE_CXX_FLAGS} /D PWS_OSK_EXPORTS")
 add_library(pws_osk SHARED ${OSK_SRCS} ${OSK_RES})
+set_target_properties(pws_osk PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CACHEFILE_DIR})
 
 install (TARGETS pws_osk RUNTIME DESTINATION bin)
