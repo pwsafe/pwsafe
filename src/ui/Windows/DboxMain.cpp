@@ -1902,21 +1902,27 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     passkey = LPCWSTR(m_pPasskeyEntryDlg->GetPasskey());
 
     // This dialog's setting of read-only overrides file dialog
-    bool bIsReadOnly = m_pPasskeyEntryDlg->IsReadOnly();
+    bool bWantReadOnly = m_pPasskeyEntryDlg->IsReadOnly();  // Requested state
+    bool bWasReadOnly = pcore->IsReadOnly();                // Previous state
 
     // Set read-only mode if user explicitly requested it OR
     // if we failed to create a lock file.
     switch (index) {
       case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
-        pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile.c_str(), locker));
+        pcore->SetReadOnly(bWantReadOnly || !pcore->LockFile(curFile.c_str(), locker));
         break;
       case GCP_NORMAL:
-      case GCP_RESTORE:
-      case GCP_WITHEXIT:
-        if (!bIsReadOnly) // !first, lock if !bIsReadOnly
+        if (!bWantReadOnly) // !first, lock if !bIsReadOnly
           pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
         else
-          pcore->SetReadOnly(bIsReadOnly);
+          pcore->SetReadOnly(bWantReadOnly);
+        break;
+      case GCP_RESTORE:
+      case GCP_WITHEXIT:
+        // Only lock if DB was R-O and now isn't otherwise lockcount is
+        // increased too much and the lock file won't be deleted on close
+        if (!bWantReadOnly && bWasReadOnly)
+          pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
         break;
       case GCP_CHANGEMODE:
       default:
@@ -1924,7 +1930,9 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
         break;
     }
 
-    UpdateToolBarROStatus(bIsReadOnly);
+    // Update to current state
+    // This is not necessarily what was wanted if we couldn't get lock for R/W
+    UpdateToolBarROStatus(pcore->IsReadOnly());
 
     // locker won't be null IFF tried to lock and failed, in which case
     // it shows the current file locker
