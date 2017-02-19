@@ -109,7 +109,7 @@ void Fonts::GetCurrentFont(LOGFONT *pLF)
   m_pCurrentFont->GetLogFont(pLF);
 }
 
-void Fonts::SetCurrentFont(LOGFONT *pLF)
+void Fonts::SetCurrentFont(LOGFONT *pLF, const int iPtSz)
 {
   ASSERT(pLF != NULL);
   if (pLF == NULL)
@@ -120,7 +120,14 @@ void Fonts::SetCurrentFont(LOGFONT *pLF)
   } else {
     m_pCurrentFont->DeleteObject();
   }
-  m_pCurrentFont->CreateFontIndirect(pLF);
+
+  if (iPtSz == 0) {
+    m_pCurrentFont->CreateFontIndirect(pLF);
+  } else {
+    LOGFONT lf(*pLF);
+    lf.lfHeight = iPtSz;
+    m_pCurrentFont->CreatePointFontIndirect(&lf);
+  }
 }
 
 void Fonts::GetAddEditFont(LOGFONT *pLF)
@@ -132,7 +139,7 @@ void Fonts::GetAddEditFont(LOGFONT *pLF)
   m_pAddEditFont->GetLogFont(pLF);
 }
 
-void Fonts::SetAddEditFont(LOGFONT *pLF)
+void Fonts::SetAddEditFont(LOGFONT *pLF, const int iPtSz)
 {
   ASSERT(pLF != NULL);
   if (pLF == NULL)
@@ -143,7 +150,14 @@ void Fonts::SetAddEditFont(LOGFONT *pLF)
   } else {
     m_pAddEditFont->DeleteObject();
   }
-  m_pAddEditFont->CreateFontIndirect(pLF);
+
+  if (iPtSz == 0) {
+    m_pAddEditFont->CreateFontIndirect(pLF);
+  } else {
+    LOGFONT lf(*pLF);
+    lf.lfHeight = iPtSz;
+    m_pAddEditFont->CreatePointFontIndirect(&lf);
+  }
 }
 
 void Fonts::GetPasswordFont(LOGFONT *pLF)
@@ -165,14 +179,21 @@ void Fonts::GetDefaultAddEditFont(LOGFONT &lf)
   memcpy(&lf, &dfltAddEditLogfont, sizeof(LOGFONT));
 }
 
-void Fonts::SetPasswordFont(LOGFONT *pLF)
+void Fonts::SetPasswordFont(LOGFONT *pLF, const int iPtSz)
 {
   if (m_pPasswordFont == NULL) {
     m_pPasswordFont = new CFont;
   } else {
     m_pPasswordFont->DeleteObject();
   }
-  m_pPasswordFont->CreateFontIndirect(pLF == NULL ? &dfltPasswordLogfont : pLF);
+
+  if (iPtSz == 0 || pLF == NULL) {
+    m_pPasswordFont->CreateFontIndirect(pLF == NULL ? &dfltPasswordLogfont : pLF);
+  } else {
+    LOGFONT lf(*pLF);
+    lf.lfHeight = iPtSz;
+    m_pPasswordFont->CreatePointFontIndirect(&lf);
+  }
 }
 
 void Fonts::ApplyPasswordFont(CWnd* pDlgItem)
@@ -200,7 +221,7 @@ void Fonts::GetNotesFont(LOGFONT *pLF)
   m_pNotesFont->GetLogFont(pLF);
 }
 
-void Fonts::SetNotesFont(LOGFONT *pLF)
+void Fonts::SetNotesFont(LOGFONT *pLF, const int iPtSz)
 {
   ASSERT(pLF != NULL);
   if (pLF == NULL)
@@ -211,7 +232,14 @@ void Fonts::SetNotesFont(LOGFONT *pLF)
   } else {
     m_pNotesFont->DeleteObject();
   }
-  m_pNotesFont->CreateFontIndirect(pLF);
+
+  if (iPtSz == 0) {
+    m_pNotesFont->CreateFontIndirect(pLF);
+  } else {
+    LOGFONT lf(*pLF);
+    lf.lfHeight = iPtSz;
+    m_pNotesFont->CreatePointFontIndirect(&lf);
+  }
 }
 
 #ifdef DEBUG

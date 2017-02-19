@@ -1394,7 +1394,12 @@ void DboxMain::RestoreWindows()
 
   RefreshViews();
 
+  // Restore current horizontal scroll bar position
+  m_ctlItemList.Scroll(CSize(m_iListHBarPos, 0));
+  m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
+
   BringWindowToTop();
+
   CPWDialog::GetDialogTracker()->ShowOpenDialogs();
 }
 
@@ -1502,8 +1507,10 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       // over the minimize/restore event.
       m_savedDBprefs = prefs->Store();
 
-      // PWSprefs::DatabaseClear == Locked
-      if (prefs->GetPref(PWSprefs::DatabaseClear)) {
+      // PWSprefs::DatabaseClear == Lock DB on minimize but
+      // only bother if currently unlocked
+      if (app.GetSystemTrayState() == ThisMfcApp::UNLOCKED && 
+          prefs->GetPref(PWSprefs::DatabaseClear)) {
         if (!LockDataBase()) {
           // Failed to save - abort minimize and clearing of data
           ShowWindow(SW_SHOW);
@@ -1604,6 +1611,8 @@ void DboxMain::OnMinimize()
   // Also, in order to save the scroll positions during minimize
   // of the application, this should be the ONLY place that calls
   // "ShowWindow(SW_MINIMIZE);" as this call can't be intercepted
+  // The one EXCEPTION is after calls to LockDataBase as we must save
+  // the scroll positions before the GUI is cleared.
   PWS_LOGIT;
 
   if (m_bStartHiddenAndMinimized)
@@ -1629,6 +1638,10 @@ void DboxMain::OnRestore()
 
   // Called when the System Tray Restore menu option is used
   RestoreWindowsData(true);
+
+  // Restore current horizontal scroll bar position
+  m_ctlItemList.Scroll(CSize(m_iListHBarPos, 0));
+  m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
 
   m_ctlItemTree.SetRestoreMode(false);
 
@@ -2410,10 +2423,12 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     CPWDialog::GetDialogTracker()->HideOpenDialogs();
 
     // Now hide/minimize main dialog
+    // NOTE: Do not call OnMinimize if minimizing as this will overwrite
+    // the scroll bar positions
     if (prefs->GetPref(PWSprefs::UseSystemTray)) {
       ShowWindow(SW_HIDE);
     } else {
-      OnMinimize();
+      ShowWindow(SW_MINIMIZE);
     }
 
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
@@ -2505,6 +2520,15 @@ bool DboxMain::LockDataBase()
       gmb.MessageBox(cs_text, cs_title, MB_ICONSTOP);
       return false;
     }
+  }
+
+  // Save current horizontal scroll bar position BEFORE
+  // everyting is cleared
+  if (m_ctlItemList.GetItemCount() == 0) {
+    m_iListHBarPos = m_iTreeHBarPos = 0;
+  } else {
+    m_iListHBarPos = m_ctlItemList.GetScrollPos(SB_HORZ);
+    m_iTreeHBarPos = m_ctlItemTree.GetScrollPos(SB_HORZ);
   }
 
   // If a Find is active, save its status
@@ -2615,12 +2639,15 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
   StringX cs_FontName, cs_SampleText;
   LOGFONT lf, dflt_lf;
   PWSprefs::StringPrefs pref_Font(PWSprefs::TreeFont), pref_FontSampleText(PWSprefs::TreeListSampleText);
+  PWSprefs::IntPrefs pref_font_point_size(PWSprefs::TreeFontPtSz);
+  int iFontSize(0);
 
   DWORD dwFlags = CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT;
 
   switch (iType) {
     case CFontsDialog::TREELISTFONT:
       pref_Font = PWSprefs::TreeFont;
+      pref_font_point_size = PWSprefs::TreeFontPtSz;
       pref_FontSampleText = PWSprefs::TreeListSampleText;
       pOldFont = m_ctlItemTree.GetFont();
       pOldFont->GetLogFont(&lf);
@@ -2628,18 +2655,21 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       break;
     case CFontsDialog::ADDEDITFONT:
       pref_Font = PWSprefs::AddEditFont;
+      pref_font_point_size = PWSprefs::AddEditFontPtSz;
       pref_FontSampleText = PWSprefs::AddEditSampleText;
       pFonts->GetAddEditFont(&lf);
       pFonts->GetDefaultAddEditFont(dflt_lf);
       break;
     case CFontsDialog::PASSWORDFONT:
       pref_Font = PWSprefs::PasswordFont;
+      pref_font_point_size = PWSprefs::PasswordFontPtSz;
       pref_FontSampleText = PWSprefs::PswdSampleText;
       pFonts->GetPasswordFont(&lf);
       pFonts->GetDefaultPasswordFont(dflt_lf);
       break;
     case CFontsDialog::NOTESFONT:
       pref_Font = PWSprefs::NotesFont;
+      pref_font_point_size = PWSprefs::NotesFontPtSz;
       pref_FontSampleText = PWSprefs::NotesSampleText;
       pFonts->GetNotesFont(&lf);
       dflt_lf = dfltTreeListFont; // Default Notes font is the default Tree/List font
@@ -2675,6 +2705,7 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
 
   INT_PTR rc = fontdlg.DoModal();
   if (rc== IDOK) {
+    iFontSize = fontdlg.GetSize();
     if (iType == CFontsDialog::VKEYBOARDFONT && fontdlg.m_bReset) {
       // User requested the Virtual Keyboard to be reset now
       // Other fonts are just reset within the Fontdialog without exiting
@@ -2687,7 +2718,7 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
     switch (iType) {
       case CFontsDialog::TREELISTFONT:
         // Set current tree/list font
-        pFonts->SetCurrentFont(&lf);
+        pFonts->SetCurrentFont(&lf, iFontSize);
 
         // Transfer the fonts to the tree and list windows
         m_ctlItemTree.SetUpFont();
@@ -2703,21 +2734,21 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
         break;
       case CFontsDialog::ADDEDITFONT:
         // Transfer the new font to the selected Add/Edit fields
-        pFonts->SetAddEditFont(&lf);
+        pFonts->SetAddEditFont(&lf, iFontSize);
 
         // Change the Find Toolbar font
         m_FindToolBar.ChangeFont();
         break;
       case CFontsDialog::PASSWORDFONT:
         // Transfer the new font to the passwords
-        pFonts->SetPasswordFont(&lf);
+        pFonts->SetPasswordFont(&lf, iFontSize);
 
         // Recalculating row height
         m_ctlItemList.UpdateRowHeight(true);
         break;
       case CFontsDialog::NOTESFONT:
         // Transfer the new font to the Notes field
-        pFonts->SetNotesFont(&lf);
+        pFonts->SetNotesFont(&lf, iFontSize);
 
         // Recalculating row height
         m_ctlItemList.UpdateRowHeight(true);
@@ -2759,6 +2790,7 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
         lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
         lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
       prefs->SetPref(pref_Font, LPCWSTR(font_str));
+      prefs->SetPref(pref_font_point_size, iFontSize);
     }
 
     // Save user's sample text
@@ -4741,7 +4773,10 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
 
     // Get first entry visible in CListCtrl
     int i = m_ctlItemList.GetTopIndex();
-    if (i >= 0) {
+
+    // Note GetTopIndex can give an invalid value
+    // if the List view has never been visible - check within limits
+    if (i >= 0 && i < m_ctlItemList.GetItemCount()) {
       pci = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(pci != NULL);  // No groups in List View
       DisplayInfo *pdi = GetEntryGUIInfo(*pci, true);

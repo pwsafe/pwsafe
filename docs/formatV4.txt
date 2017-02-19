@@ -97,7 +97,7 @@ hash-function-based key stretching algorithm in [PBKDF2], with SHA-256
 i's passphrase. All keyblocks protect the same K and L values (see
 below).
 
-2.2.4 KW is the Key Wrap algorithm defined in [RFC3349], using the
+2.2.4 KW is the Key Wrap algorithm defined in [RFC3394], using the
 user-specified encryption algorithm (TwoFish, AES,...).
 
 2.2.5 KW(Pi',K) is the wrapped random encryption key K that is used to

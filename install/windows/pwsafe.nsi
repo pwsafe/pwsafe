@@ -3,7 +3,7 @@
 ; Password Safe Installation Script
 ;
 ; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
-; Copyright 2005-2007 Rony Shapiro <ronys@pwsafe.org>
+; Copyright 2005-2017 Rony Shapiro <ronys@pwsafe.org>
 ; 2009 extended by Karel Van der Gucht for multiple language use
 ; This script may be redistributed and/or modified under the Artistic
 ; License 2.0 terms as available at 
@@ -69,7 +69,11 @@
 ;    2.0 should be used.  This script is compatible with version 2.0
 ;    of NSIS.
 ;
-; 2. Make sure that makensis.exe is on your path.  This is only to make
+; 2. Install the nsProcess NSIS plug in. This can be found at
+;    http://nsis.sourceforge.net/NsProcess_plugin
+;    Choose version 1.6 or later. 
+;
+; 3. Make sure that makensis.exe is on your path.  This is only to make
 ;    easier step 3 of the creation process detailed below.  This script
 ;    does not recursively call makensis.exe, so this step is merely for
 ;    convenience sake.
@@ -77,8 +81,9 @@
 ; After the above requirements are fulfilled, the following steps 
 ; should be followed each time you want to create a release:
 ;
-; 1. Compile Password Safe in release mode.  The script relies on 
-;    pwsafe.exe existing in the ReleaseM subdirectory.
+; 1. Compile Password Safe in Release and Release64 mode.  The script 
+;    relies on pwsafe.exe existing in the Release and Release64 
+;    subdirectory.
 ;
 ; 2. Compile the help files for Password Safe.  The script relies on 
 ;    the English pwsafe.chm existing in the help/default subdirectory,
@@ -87,14 +92,19 @@
 ; 3. At the command line (or in a build script such as the .dsp file,
 ;    makefile, or other scripted build process), execute the following:
 ;
-;        makensis.exe /DVERSION=X.XX pwsafe.nsi
+;        makensis.exe /DVERSION=X.XX /DARCH=x86 pwsafe.nsi
+;        makensis.exe /DVERSION=X.XX /DARCH=x64 pwsafe.nsi
 ;
 ;    where X.XX is the version number of the current build of Password
 ;    Safe.
 ;
-; The output from the above process should be pwsafe-X.XX.exe.  This is
-; the installer.  It can be placed, by itself, on a publicly available
-; location.
+; The output from the above process should be:
+;
+;    pwsafe-X.XX.exe (the 32-bit version) 
+;    pwsafe64-X.XX.exe (the 64-bit version) 
+;
+; These are the installers.  They can be placed on a publicly 
+; available location.
 ; 
 ; The script is setup for several languages, and ready for others.
 ; Just remove the comments ";-L-" where appropriate.
@@ -134,18 +144,27 @@
 ; Hopefully, this file will be compiled via the following command line
 ; command:
 ;
-; makensis.exe /DVERSION=X.XX pwsafe.nsi
+; makensis.exe /DVERSION=X.XX /DARCH=xNN pwsafe.nsi
 ;
-; where X.XX is the version number of Password Safe.
+; where X.XX is the version number of Password Safe and
+; xNN is x86 or x64.
 
   !ifndef VERSION
-    !error "VERSION undefined. Usage: makensis.exe /DVERSION=X.XX pwsafe.nsi"
+    !error "VERSION undefined. Usage: makensis.exe /DVERSION=X.XX /DARCH=[x86|x64] pwsafe.nsi"
   !endif
+
+;--------------------------------
+; Installer architecture x86 or x64
+
+!ifndef ARCH
+  !error "ARCH undefined. Usage: makensis.exe /DVERSION=X.XX /DARCH=[x86|x64] pwsafe.nsi"
+!endif  
 
 ;--------------------------------
 ;Variables
 
   Var INSTALL_TYPE
+  Var TARGET_ARCH ; 32-bit or 64-bit
   
   ;Request application privileges for Windows Vista and later.
   RequestExecutionLevel admin
@@ -166,14 +185,24 @@
 ;--------------------------------
 ; General
 
-  ; Name and file
-  Name "Password Safe ${VERSION}"
-  BrandingText "PasswordSafe ${VERSION} Installer"
-
-  OutFile "pwsafe-${VERSION}.exe"
-
-  ; Default installation folder
-  InstallDir "$PROGRAMFILES\Password Safe"
+  ; Default installation folder based on chosen architecture
+  !if ${ARCH} == "x86"
+    OutFile "pwsafe-${VERSION}.exe"
+    InstallDir "$PROGRAMFILES\Password Safe"
+    ; Name and file
+    Name "Password Safe ${VERSION} (32-bit)"
+    BrandingText "PasswordSafe ${VERSION} (32-bit) Installer"
+    !echo "Building x86 installer"
+  !else if ${ARCH} == "x64" 
+    OutFile "pwsafe64-${VERSION}.exe"
+    InstallDir "$PROGRAMFILES64\Password Safe"
+    ; Name and file
+    Name "Password Safe ${VERSION} (64-bit)"
+    BrandingText "PasswordSafe ${VERSION} (64-bit) Installer"
+    !echo "Building x64 installer"
+  !else
+    !error "ARCH must be either x86 or x64"
+  !endif
   
   ; Get installation folder from registry if available
   InstallDirRegKey HKCU "Software\Password Safe\Password Safe" "installdir"
@@ -308,10 +337,19 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   SetOutPath "$INSTDIR"
   
   ; Get all of the files.  This list should be modified when additional
-  ; files are added to the release.
-  File "..\..\build\bin\pwsafe\release\pwsafe.exe"
-  File "..\..\build\bin\pwsafe\release\pws_at.dll"
-  File "..\..\build\bin\pwsafe\release\pws_osk.dll"
+  ; files are added to the install.
+  ${If} ${ARCH} == "x86"
+    StrCpy $TARGET_ARCH "(32-bit)"
+    File "..\..\build\bin\pwsafe\release\pwsafe.exe"
+    File "..\..\build\bin\pwsafe\release\pws_at.dll"
+    File "..\..\build\bin\pwsafe\release\pws_osk.dll"
+  ${EndIf}
+  ${If} ${ARCH} == "x64"  
+    StrCpy $TARGET_ARCH "(64-bit)"
+    File "..\..\build\bin\pwsafe\release64\pwsafe.exe"
+    File "..\..\build\bin\pwsafe\release64\pws_at.dll"
+    File "..\..\build\bin\pwsafe\release64\pws_osk.dll"
+  ${EndIf}
   File "..\..\help\default\pwsafe.chm"
   File "..\..\LICENSE"
   File "..\..\README.TXT"
@@ -343,7 +381,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   ; current user doesn't have permission to write to HKLM, then the
   ; uninstaller will not appear in the Add or Remove Programs window.
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
-        "DisplayName" "Password Safe"
+        "DisplayName" "Password Safe $TARGET_ARCH"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
         "DisplayIcon" "$INSTDIR\pwsafe.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
