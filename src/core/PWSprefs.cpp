@@ -89,7 +89,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("QuerySetDef"), true, ptApplication},                 // application
   {_T("UseNewToolbar"), true, ptApplication},               // application
   #ifdef __linux__
-  {_T("UseSystemTray"), false, ptApplication},               // application
+  {_T("UseSystemTray"), false, ptApplication},              // application
   #else
   {_T("UseSystemTray"), true, ptApplication},               // application
   #endif
@@ -136,12 +136,12 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
 // Default value = -1 means set at runtime
 // Extra two values for Integer - min and max acceptable values (ignored if = -1)
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
-  {_T("column1width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
-  {_T("column2width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
-  {_T("column3width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
-  {_T("column4width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
+  {_T("column1width"), static_cast<unsigned int>(-1), ptApplication, -1, -1}, // application
+  {_T("column2width"), static_cast<unsigned int>(-1), ptApplication, -1, -1}, // application
+  {_T("column3width"), static_cast<unsigned int>(-1), ptApplication, -1, -1}, // application
+  {_T("column4width"), static_cast<unsigned int>(-1), ptApplication, -1, -1}, // application
   {_T("sortedcolumn"), 0, ptApplication, 0, 15},                    // application
-  {_T("PWDefaultLength"), 12, ptDatabase, 4, 1024},                  // database
+  {_T("PWDefaultLength"), 12, ptDatabase, 4, 1024},                 // database
   // maxmruitems maximum = (ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1)
   {_T("maxmruitems"), 4, ptApplication, 0, 20},                     // application
   {_T("IdleTimeout"), 5, ptDatabase, 1, 120},                       // database
@@ -168,10 +168,14 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
                             minDCA, maxDCA},                        // application
   {_T("DefaultAutotypeDelay"), 10, ptApplication,
                             1, 60000},                              // application
-  {_T("DlgOrientation"), AUTO, ptApplication, AUTO, WIDE},         // application
-  {_T("TimedTaskChainDelay"), 100, ptApplication, -1, -1},         // application
-  {_T("AutotypeSelectAllKeyCode"), 0, ptApplication, 0, 255},         // application
-  {_T("AutotypeSelectAllModMask"), 0, ptApplication, 0, 255},         // application
+  {_T("DlgOrientation"), AUTO, ptApplication, AUTO, WIDE},          // application
+  {_T("TimedTaskChainDelay"), 100, ptApplication, -1, -1},          // application
+  {_T("AutotypeSelectAllKeyCode"), 0, ptApplication, 0, 255},       // application
+  {_T("AutotypeSelectAllModMask"), 0, ptApplication, 0, 255},       // application
+  {_T("TreeFontPtSz"), 0, ptApplication, 0, -1},                    // application
+  {_T("PasswordFontPtSz"), 0, ptApplication, 0, -1},                // application
+  {_T("NotesFontPtSz"), 0, ptApplication, 0, -1},                   // application
+  {_T("AddEditFontPtSz"), 0, ptApplication, 0, -1},                 // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
