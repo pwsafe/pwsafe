@@ -295,7 +295,11 @@ size_t PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
   int32 len32 = reinterpret_cast<int &>(len);
   unsigned char buf[4];
   putInt32(buf, len32);
+  pws_os::Trace(L"PWSfileV4::WriteContentFields() offset before writing Length: %ld\n",
+                GetOffset());
   WriteField(CItemAtt::CONTENT, buf, sizeof(buf));
+  pws_os::Trace(L"PWSfileV4::WriteContentFields() offset after writing Length: %ld\n",
+                GetOffset());
 
   // Create fish with EK
   TwoFish fish(EK, sizeof(EK));
@@ -308,6 +312,8 @@ size_t PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
 
   // write actual content using EK
   _writecbc(m_fd, content, len, &fish, IV);
+  pws_os::Trace(L"PWSfileV4::WriteContentFields() offset after writing content: %ld\n",
+                GetOffset());
 
   // update content's HMAC
   hmac.Update(content, (unsigned long)len);

@@ -236,6 +236,11 @@ void PWSfile::SetUnknownHeaderFields(UnknownFieldList &UHFL)
     m_UHFL.clear();
 }
 
+bool PWSfile::SetOffset(long offset)
+{
+  return fseek(m_fd, offset, SEEK_SET) == 0;
+}
+
 long PWSfile::GetOffset() const
 {
   long retval = ftell(m_fd);

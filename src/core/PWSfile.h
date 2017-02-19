@@ -113,9 +113,12 @@ public:
   virtual int Open(const StringX &passkey) = 0;
   virtual int Close();
 
+  void FOpen(); // calls right variant of m_fd = fopen(m_filename);
+
   virtual int WriteRecord(const CItemData &item) = 0;
   virtual int ReadRecord(CItemData &item) = 0;
 
+  const StringX &GetFileName() const {return m_filename;}
   const PWSfileHeader &GetHeader() const {return m_hdr;}
   void SetHeader(const PWSfileHeader &h) {m_hdr = h;}
 
@@ -126,6 +129,7 @@ public:
   int GetNumRecordsWithUnknownFields() const
   {return m_nRecordsWithUnknownFields;}
 
+  bool SetOffset(long offset); // offset is from beginning of file
   long GetOffset() const;
   
   // Following implemented in V3 and later
@@ -155,7 +159,6 @@ public:
   
 protected:
   PWSfile(const StringX &filename, RWmode mode, VERSION v = UNKNOWN_VERSION);
-  void FOpen(); // calls right variant of m_fd = fopen(m_filename);
   virtual size_t WriteCBC(unsigned char type, const StringX &data) = 0;
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
                           size_t length);

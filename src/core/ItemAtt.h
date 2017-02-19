@@ -130,9 +130,12 @@ public:
 private:
   bool SetField(unsigned char type, const unsigned char *data, size_t len);
   size_t WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const;
+  int Load(); // Loads att content from PasswordSafe file (for lazy load)
 
   EntryStatus m_entrystatus;
-  long m_offset; // location on file, for lazy evaluation
+  long m_offset; // location of first byte of content field on file, for lazy evaluation
+  int32 m_contLen; // Length of content in bytes as read from content field
+  StringX m_DBFileName; // name of pwd file to look in for attachment when loading it
   unsigned m_refcount; // how many CItemData objects refer to this?
 };
 #endif /* __ITEMATT_H */

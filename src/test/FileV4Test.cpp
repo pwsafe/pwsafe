@@ -204,6 +204,16 @@ TEST_F(FileV4Test, MulitKeysTest)
   EXPECT_FALSE(kbs.RemoveKeyBlock(passphrase));
 }
 
+static bool filesEqual(const stringT &a, const stringT &b)
+{
+  // TBD - fill in the blanks
+  if (!pws_os::FileExists(a))
+    return false;
+  if (!pws_os::FileExists(b))
+    return false;
+  return true;
+}
+
 TEST_F(FileV4Test, AttTest)
 {
   PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
@@ -218,8 +228,13 @@ TEST_F(FileV4Test, AttTest)
   EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt));
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
-  attItem.SetOffset(readAtt.GetOffset());
-  EXPECT_EQ(attItem, readAtt);
+  // Can't directly test equality of CItemAtt, so test effective behavior
+  const stringT outAttFile(L"data/imageout.jpg");
+  EXPECT_EQ(PWSfile::SUCCESS, readAtt.Export(outAttFile));
+  stringT inAttName = readAtt.GetFilePath().c_str();
+  inAttName += readAtt.GetFileName().c_str();
+  EXPECT_TRUE(filesEqual(inAttName, outAttFile));
+  EXPECT_TRUE(pws_os::DeleteAFile(outAttFile));
 }
 
 TEST_F(FileV4Test, HdrItemAttTest)
@@ -247,8 +262,13 @@ TEST_F(FileV4Test, HdrItemAttTest)
   EXPECT_EQ(fullItem, readData[0]);
   EXPECT_EQ(PWSfile::WRONG_RECORD, fr.ReadRecord(readData[1])); // att here!
   EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt));
-  attItem.SetOffset(readAtt.GetOffset());
-  EXPECT_EQ(attItem, readAtt);
+  // Can't directly test equality of CItemAtt, so test effective behavior
+  const stringT outAttFile(L"data/imageout.jpg");
+  EXPECT_EQ(PWSfile::SUCCESS, readAtt.Export(outAttFile));
+  stringT inAttName = readAtt.GetFilePath().c_str();
+  inAttName += readAtt.GetFileName().c_str();
+  EXPECT_TRUE(filesEqual(inAttName, outAttFile));
+  EXPECT_TRUE(pws_os::DeleteAFile(outAttFile));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
 }
 
