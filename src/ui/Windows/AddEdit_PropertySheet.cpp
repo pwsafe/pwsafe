@@ -55,7 +55,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.username = L"";
     m_AEMD.realpassword = L"";
     m_AEMD.lastpassword = L"";
-    m_AEMD.realnotes = m_AEMD.originalrealnotesTRC = L"";
+    m_AEMD.notes = m_AEMD.originalnotesTRC = L"";
     m_AEMD.URL = L"";
     m_AEMD.email = L"";
     m_AEMD.symbols = m_AEMD.oldsymbols = L"";
@@ -135,6 +135,23 @@ END_MESSAGE_MAP()
 void CAddEdit_PropertySheet::OnSysCommand(UINT nID, LPARAM lParam)
 {
   const UINT nSysID = nID & 0xFFF0;
+
+  // Cancel external editor in use for Notes
+  if (nSysID == SC_CLOSE && m_pp_basic->IsNotesExternalEditorActive()) {
+    CGeneralMsgBox gmb;
+    CString cs_message(MAKEINTRESOURCE(IDS_CANCEL_EXT_EDITOR)),
+      cs_title(MAKEINTRESOURCE(IDS_EXT_EDITOR_ACTIVE));
+    int rc = gmb.MessageBox(cs_message, cs_title, MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION);
+    if (rc == IDYES)
+      m_pp_basic->CancelThreadWait();
+    
+    // Do NOT cancel the whole edit by processing the message as this will free Add/Edit Basic
+    // property page whilst it is still being executed causing an application crash.
+    // So just return causing the external edit to be cancelled and return passed back
+    // to Add/Edit
+    return;
+  }
+
   if (nSysID == SC_CLOSE &&
       (m_AEMD.uicaller == IDS_VIEWENTRY ||
       (m_AEMD.uicaller == IDS_EDITENTRY &&  m_AEMD.ucprotected != 0))) {
@@ -295,7 +312,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
       m_bIsModified = (m_AEMD.group       != m_AEMD.pci->GetGroup()      ||
                        m_AEMD.title       != m_AEMD.pci->GetTitle()      ||
                        m_AEMD.username    != m_AEMD.pci->GetUser()       ||
-                       m_AEMD.realnotes   != m_AEMD.originalrealnotesTRC ||
+                       m_AEMD.notes       != m_AEMD.originalnotesTRC     ||
                        m_AEMD.URL         != m_AEMD.pci->GetURL()        ||
                        m_AEMD.autotype    != m_AEMD.pci->GetAutoType()   ||
                        m_AEMD.runcommand  != m_AEMD.pci->GetRunCommand() ||
@@ -323,7 +340,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
         m_AEMD.pci->SetUser(m_AEMD.username.IsEmpty() ?
                                   m_AEMD.defusername : m_AEMD.username);
         if (m_bNotesChanged)
-          m_AEMD.pci->SetNotes(m_AEMD.realnotes);
+          m_AEMD.pci->SetNotes(m_AEMD.notes);
 
         m_AEMD.pci->SetURL(m_AEMD.URL);
         m_AEMD.pci->SetAutoType(m_AEMD.autotype);
@@ -415,7 +432,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
       m_AEMD.pci->SetUser(m_AEMD.username.IsEmpty() ?
                                 m_AEMD.defusername : m_AEMD.username);
       m_AEMD.pci->SetPassword(m_AEMD.realpassword);
-      m_AEMD.pci->SetNotes(m_AEMD.realnotes);
+      m_AEMD.pci->SetNotes(m_AEMD.notes);
       m_AEMD.pci->SetURL(m_AEMD.URL);
       m_AEMD.pci->SetAutoType(m_AEMD.autotype);
       m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
@@ -564,7 +581,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.username = m_AEMD.pci->GetUser();
   m_AEMD.realpassword = m_AEMD.oldRealPassword = m_AEMD.pci->GetPassword();
   m_AEMD.lastpassword = m_AEMD.pci->GetPreviousPassword();
-  m_AEMD.realnotes = m_AEMD.originalrealnotesTRC = m_AEMD.pci->GetNotes();
+  m_AEMD.notes = m_AEMD.originalnotesTRC = m_AEMD.pci->GetNotes();
   m_AEMD.URL = m_AEMD.pci->GetURL();
   m_AEMD.email = m_AEMD.pci->GetEmail();
   m_AEMD.symbols = m_AEMD.oldsymbols = m_AEMD.pci->GetSymbols();
@@ -573,10 +590,10 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.iownsymbols = m_AEMD.ioldownsymbols;
   m_AEMD.pci->GetProtected(m_AEMD.ucprotected);
 
-  if (m_AEMD.realnotes.GetLength() > MAXTEXTCHARS) {
+  if (m_AEMD.notes.GetLength() > MAXTEXTCHARS) {
     // Limit the Notes field to what can be displayed
-    m_AEMD.realnotes =  m_AEMD.realnotes.Left(MAXTEXTCHARS);
-    m_AEMD.originalrealnotesTRC = m_AEMD.realnotes;
+    m_AEMD.notes =  m_AEMD.notes.Left(MAXTEXTCHARS);
+    m_AEMD.originalnotesTRC = m_AEMD.notes;
     CGeneralMsgBox gmb;
     CString cs_text, cs_title(MAKEINTRESOURCE(IDS_WARNINGTEXTLENGTH));
     cs_text.Format(IDS_TRUNCATETEXT, MAXTEXTCHARS);

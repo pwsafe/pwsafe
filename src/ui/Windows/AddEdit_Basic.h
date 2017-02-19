@@ -28,16 +28,15 @@ public:
 
   CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD);
 
-  static CString CS_SHOW, CS_HIDE;
-  static CSecString HIDDEN_NOTES;
+  static CString CS_SHOW, CS_HIDE, CS_EXTERNAL_EDITOR, CS_HIDDEN_NOTES;
+  static HANDLE ghEvents[2];
 
-    // Dialog Data
+  // Dialog Data
   //{{AFX_DATA(CAddEdit_Basic)
   enum { IDD = IDD_ADDEDIT_BASIC, IDD_SHORT = IDD_ADDEDIT_BASIC_SHORT };
 
   CSecString m_password, m_password2;
-  CSecString m_notes;
-
+ 
   CComboBoxExtn m_ex_group;
 
   CEditExtn m_ex_title;
@@ -60,6 +59,7 @@ public:
   CStaticExtn m_stc_dependent;
 
   CComboBox m_cmbDependents;
+  CEditExtn m_ex_hidden_notes;
   //}}AFX_DATA
 
   CExtThread *m_thread; // worker thread
@@ -68,6 +68,12 @@ public:
 
   bool m_isPWHidden, m_isNotesHidden;
   bool m_bWordWrap, m_bLaunchPlus;
+
+  void CancelThreadWait()
+  { SetEvent(ghEvents[1]); }
+
+  bool IsNotesExternalEditorActive()
+  { return m_bUsingNotesExternalEditor; }
 
   // Overrides
   // ClassWizard generate virtual function overrides
@@ -87,12 +93,12 @@ protected:
   //{{AFX_MSG(CAddEdit_Basic)
   afx_msg void OnHelp();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
+  afx_msg void OnPageKillActive(NMHDR *nmhdr, LRESULT *pLResult);
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
 
   afx_msg void OnENSetFocusPassword();
   afx_msg void OnENSetFocusPassword2();
   afx_msg void OnENChangePassword();
-  afx_msg void OnENSetFocusNotes();
   afx_msg void OnENKillFocusNotes();
   afx_msg void OnChanged();
   afx_msg void OnENChangeNotes();
@@ -120,8 +126,9 @@ private:
   void SelectAllNotes();
   void ShowPassword();
   void HidePassword();
-  void ShowNotes();
-  void HideNotes();
+  void ShowNotes(const bool bForceShow = false);
+  void HideNotes(const bool bForceHide = false);
+  void ResetHiddenNotes();
   void SetUpDependentsCombo();
   void SetComboBoxWidth();
 
@@ -140,8 +147,9 @@ private:
   BOOL m_bOKSave, m_bOKCancel;
 
   bool m_bInitdone;
+  bool m_bUsingNotesExternalEditor;
   int m_iPointSize;
-  int m_NotesFirstVisibleLine;
+  int /*m_NotesFirstVisibleLine,*/ m_iLineCount;
 
   CBitmap m_CopyPswdBitmap;
 };

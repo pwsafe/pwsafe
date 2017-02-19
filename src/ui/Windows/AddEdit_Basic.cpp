@@ -42,10 +42,12 @@ static char THIS_FILE[] = __FILE__;
 
 static wchar_t PSSWDCHAR = L'*';
 
-CSecString CAddEdit_Basic::HIDDEN_NOTES;
+HANDLE CAddEdit_Basic::ghEvents[2];
 
 CString CAddEdit_Basic::CS_SHOW;
 CString CAddEdit_Basic::CS_HIDE;
+CString CAddEdit_Basic::CS_EXTERNAL_EDITOR;
+CString CAddEdit_Basic::CS_HIDDEN_NOTES;
 
 /////////////////////////////////////////////////////////////////////////////
 // CAddEdit_Basic property page
@@ -56,13 +58,18 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
     CAddEdit_Basic::IDD, CAddEdit_Basic::IDD_SHORT,
     pAEMD),
-  m_bInitdone(false), m_thread(NULL), m_isNotesHidden(false), m_NotesFirstVisibleLine(-1)
+  m_bInitdone(false), m_thread(NULL), m_isNotesHidden(false), /*m_NotesFirstVisibleLine(-1),*/
+  m_bUsingNotesExternalEditor(false)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
-    HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
     CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT);
     CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT);
+    CS_HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
+    CS_EXTERNAL_EDITOR.LoadString(IDS_NOTES_IN_EXTERNAL_EDITOR);
   }
+
+  // Clear external editor events
+  ghEvents[0] = ghEvents[1] = NULL;
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -70,7 +77,15 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   m_bWordWrap = prefs->GetPref(PWSprefs::NotesWordWrap);
 
   m_password = m_password2 = M_realpassword();
-  m_notes = M_realnotes().Left(MAXTEXTCHARS);
+
+  if (M_notes().GetLength() > MAXTEXTCHARS) {
+    M_notes() = M_notes().Left(MAXTEXTCHARS);
+
+    CGeneralMsgBox gmb;
+    CString cs_text, cs_title(MAKEINTRESOURCE(IDS_WARNINGTEXTLENGTH));
+    cs_text.Format(IDS_TRUNCATETEXT, MAXTEXTCHARS);
+    gmb.MessageBox(cs_text, cs_title, MB_OK | MB_ICONEXCLAMATION);
+  }
 
   // Set up right-click Notes context menu additions
   std::vector<st_context_menu> vmenu_items;
@@ -118,13 +133,12 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
   m_ex_password.DoDDX(pDX, m_password);
   m_ex_password2.DoDDX(pDX, m_password2);
 
-  DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
-
   DDX_CBString(pDX, IDC_GROUP, (CString&)M_group());
   DDX_Text(pDX, IDC_TITLE, (CString&)M_title());
   DDX_Text(pDX, IDC_USERNAME, (CString&)M_username());
   DDX_Text(pDX, IDC_URL, (CString&)M_URL());
   DDX_Text(pDX, IDC_EMAIL, (CString&)M_email());
+  DDX_Text(pDX, IDC_NOTES, (CString&)M_notes());
 
   DDX_Control(pDX, IDC_GROUP, m_ex_group);
   DDX_Control(pDX, IDC_TITLE, m_ex_title);
@@ -132,6 +146,7 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
   DDX_Control(pDX, IDC_PASSWORD2, m_ex_password2);
   DDX_Control(pDX, IDC_NOTES, m_ex_notes);
+  DDX_Control(pDX, IDC_HIDDEN_NOTES, m_ex_hidden_notes);
   DDX_Control(pDX, IDC_URL, m_ex_URL);
   DDX_Control(pDX, IDC_EMAIL, m_ex_email);
   DDX_Control(pDX, IDC_MYBASE, m_ex_base);
@@ -178,7 +193,6 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
 
   ON_EN_SETFOCUS(IDC_PASSWORD, OnENSetFocusPassword)
   ON_EN_SETFOCUS(IDC_PASSWORD2, OnENSetFocusPassword2)
-  ON_EN_SETFOCUS(IDC_NOTES, OnENSetFocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTES, OnENKillFocusNotes)
 
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_EMAIL, OnSTCExClicked)
@@ -191,6 +205,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
 
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
+  ON_NOTIFY(PSN_KILLACTIVE, 0, OnPageKillActive)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -229,8 +244,10 @@ BOOL CAddEdit_Basic::OnInitDialog()
   // Set Notes font!
   if (prefs->GetPref(PWSprefs::NotesFont).empty()) {
     m_ex_notes.SetFont(pFonts->GetCurrentFont());
+    m_ex_hidden_notes.SetFont(pFonts->GetCurrentFont());
   } else {
     m_ex_notes.SetFont(pFonts->GetNotesFont());
+    m_ex_hidden_notes.SetFont(pFonts->GetNotesFont());
   }
 
   if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
@@ -299,6 +316,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
     m_ex_password.SendMessage(EM_SETREADONLY, TRUE, 0);
     m_ex_password2.SendMessage(EM_SETREADONLY, TRUE, 0);
     m_ex_notes.SendMessage(EM_SETREADONLY, TRUE, 0);
+    m_ex_hidden_notes.SendMessage(EM_SETREADONLY, TRUE, 0);
     m_ex_URL.SendMessage(EM_SETREADONLY, TRUE, 0);
     m_ex_email.SendMessage(EM_SETREADONLY, TRUE, 0);
 
@@ -384,20 +402,32 @@ BOOL CAddEdit_Basic::OnInitDialog()
     HidePassword();
   }
 
+  // Set "Hidden Notes" text
+  m_ex_hidden_notes.SetWindowText(CS_HIDDEN_NOTES);
+  // Make read only
+  m_ex_hidden_notes.SendMessage(EM_SETREADONLY, TRUE, 0);
+
   if (prefs->GetPref(PWSprefs::ShowNotesDefault)) {
-    ShowNotes();
+    ShowNotes(true);
   } else {
-    HideNotes();
+    HideNotes(true);
     m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, false);
     m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, false);
   }
 
-  CHARFORMAT cf = {0};
-  cf.cbSize = sizeof(cf);
+  long nStart, nEnd;
+  m_ex_notes.GetSel(nStart, nEnd);
 
+  CHARFORMAT cf = { 0 };
+  cf.cbSize = sizeof(cf);
   m_ex_notes.SetSel(0, -1);
   m_ex_notes.SendMessage(EM_GETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
   m_iPointSize = cf.yHeight / 20;
+
+  // Now unselect Notes
+  m_ex_notes.SetSel(nStart, nEnd);
+
+  m_iLineCount = m_ex_notes.GetLineCount();
 
   // Set initial Word Wrap
   m_ex_notes.SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
@@ -498,6 +528,13 @@ BOOL CAddEdit_Basic::OnKillActive()
   return CAddEdit_PropertyPage::OnKillActive();
 }
 
+void CAddEdit_Basic::OnPageKillActive(NMHDR *, LRESULT *pLResult)
+{
+  // Don't allow page switching if Notes being edited in the user's
+  // external editor
+  *pLResult = m_bUsingNotesExternalEditor ? 1 : 0;
+}
+
 LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
 {
   UpdateData(TRUE);
@@ -510,7 +547,7 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
           if (M_group()        != M_pci()->GetGroup()      ||
               M_title()        != M_pci()->GetTitle()      ||
               M_username()     != M_pci()->GetUser()       ||
-              M_realnotes()    != M_originalrealnotesTRC() ||
+              M_notes()        != M_originalnotesTRC()     ||
               M_URL()          != M_pci()->GetURL()        ||
               M_email()        != M_pci()->GetEmail()      ||
               (M_ipolicy()     != NAMED_POLICY &&
@@ -523,7 +560,7 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
               !M_title().IsEmpty()        ||
               !M_username().IsEmpty()     ||
               !M_realpassword().IsEmpty() ||
-              !M_realnotes().IsEmpty()    ||
+              !M_notes().IsEmpty()        ||
               !M_URL().IsEmpty()          ||
               !M_email().IsEmpty()        ||
               !M_symbols().IsEmpty()        )
@@ -541,7 +578,7 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
   return 0L;
 }
 
-BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
+BOOL CAddEdit_Basic::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
@@ -550,10 +587,23 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
 
   RelayToolTipEvent(pMsg);
 
+  // Handle if user clicks on Hidden Notes
+  if (m_ex_hidden_notes.m_hWnd == pMsg->hwnd) {
+    switch (pMsg->message) {
+    case WM_LBUTTONDOWN:
+    case WM_RBUTTONDOWN:
+      if (!m_bUsingNotesExternalEditor)
+        ShowNotes();
+    case WM_LBUTTONUP:
+    case WM_RBUTTONUP:
+      return TRUE;
+    }
+  }
+
   // Ctrl + 'key' in Notes
   if (pMsg->message == WM_KEYDOWN &&
-    (GetKeyState(VK_CONTROL) & 0x8000) == 0x8000 &&
-    m_ex_notes.m_hWnd == ::GetFocus()) {
+      (GetKeyState(VK_CONTROL) & 0x8000) == 0x8000 &&
+      m_ex_notes.m_hWnd == ::GetFocus()) {
     switch (pMsg->wParam) {
     case 'A':
       // Ctrl+A (Select All), then SelectAllNotes
@@ -572,7 +622,7 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
   }
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_CONTROL &&
-    GetDlgItem(IDC_LAUNCH)->IsWindowEnabled()) {
+      GetDlgItem(IDC_LAUNCH)->IsWindowEnabled()) {
     CString cs_text(MAKEINTRESOURCE(m_bLaunchPlus ? IDS_LAUNCH : IDS_LAUNCHPLUS));
     GetDlgItem(IDC_LAUNCH)->SetWindowText(cs_text);
     m_bLaunchPlus = !m_bLaunchPlus;
@@ -602,7 +652,7 @@ BOOL CAddEdit_Basic::OnApply()
   M_email().EmptyIfOnlyWhiteSpace();
   M_symbols().EmptyIfOnlyWhiteSpace();
 
-  m_notes.EmptyIfOnlyWhiteSpace();
+  M_notes().EmptyIfOnlyWhiteSpace();
 
   if (m_password.IsOnlyWhiteSpace()) {
     m_password.Empty();
@@ -613,12 +663,9 @@ BOOL CAddEdit_Basic::OnApply()
   if (!m_isPWHidden || m_password != HIDDEN_PASSWORD)
     M_realpassword() = m_password;
 
-  if (!m_isNotesHidden)
-    M_realnotes() = m_notes;
-
   UpdateData(FALSE);
 
-  //Check that data is valid
+  // Check that data is valid
   if (M_title().IsEmpty()) {
     gmb.AfxMessageBox(IDS_MUSTHAVETITLE);
     pFocus = &m_ex_title;
@@ -951,27 +998,48 @@ LRESULT CAddEdit_Basic::OnZoomNotes(WPARAM, LPARAM lParam)
   return 0L;
 }
 
-void CAddEdit_Basic::ShowNotes()
+void CAddEdit_Basic::ShowNotes(const bool bForceShow)
 {
-  if (m_isNotesHidden) { // idempotent
+  if (bForceShow || m_isNotesHidden) {
     m_isNotesHidden = false;
-    m_notes = M_realnotes();
-    m_ex_notes.Invalidate();
+
+    // Swap windows
+    m_ex_notes.ShowWindow(SW_SHOW);
+    m_ex_notes.EnableWindow(TRUE);
+    m_ex_hidden_notes.ShowWindow(SW_HIDE);
+    m_ex_hidden_notes.EnableWindow(FALSE);
+
+    m_ex_notes.SetFocus();
+
     SetZoomMenu();
   }
+
+  // Try to put window back as it was before hidden
+  //if (m_NotesFirstVisibleLine >= 0) {
+  //  // Then scroll correctly
+  //  int nNewFirstVisibleLine = m_ex_notes.GetFirstVisibleLine();
+  //  if (m_NotesFirstVisibleLine != nNewFirstVisibleLine)
+  //    m_ex_notes.LineScroll(m_NotesFirstVisibleLine - nNewFirstVisibleLine, 0);
+  //}
 }
 
-void CAddEdit_Basic::HideNotes()
+void CAddEdit_Basic::HideNotes(const bool bForceHide)
 {
-  if (!m_isNotesHidden) { // idempotent
+  if (bForceHide || !m_isNotesHidden) {
     m_isNotesHidden = true;
-    M_realnotes() = m_notes;
-    
-    m_notes = HIDDEN_NOTES;
-    m_ex_notes.Invalidate();
+
+    // Swap windows
+    m_ex_notes.ShowWindow(SW_HIDE);
+    m_ex_notes.EnableWindow(FALSE);
+    m_ex_hidden_notes.ShowWindow(SW_SHOW);
+    m_ex_hidden_notes.EnableWindow(TRUE);
+
     // Disable zoom of hidden text
     m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, false);
     m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, false);
+
+    // Save current position
+    //m_NotesFirstVisibleLine = m_ex_notes.GetFirstVisibleLine();
   }
 }
 
@@ -1032,10 +1100,21 @@ void CAddEdit_Basic::OnENChangeNotes()
     return;
 
   // Called for any change - even just clicking on it - so check really changed
-  CSecString current_notes;
-  m_ex_notes.GetWindowText(current_notes);
-  if (current_notes == M_realnotes()  || current_notes == HIDDEN_NOTES)
+  if (m_ex_hidden_notes.IsWindowVisible()) {
     return;
+  } else {
+    CSecString current_notes;
+    m_ex_notes.GetWindowText(current_notes);
+    if (current_notes == M_notes())
+      return;
+  }
+
+  // Try to scroll as lines added or deleted
+  int iLineCount = m_ex_notes.GetLineCount();
+  if (m_iLineCount != iLineCount) {
+    m_ex_notes.LineScroll(iLineCount - m_iLineCount);
+  }
+  m_iLineCount = iLineCount;
 
   m_ae_psh->SetChanged(true);
   m_ae_psh->SetNotesChanged(true); // Needed if Notes field is long and will be truncated
@@ -1087,7 +1166,7 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
       break;
     case IDC_STATIC_NOTES:
       m_stc_notes.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      cs_data = M_realnotes();
+      cs_data = M_notes();
       iaction = CItemData::NOTES;
       break;
     case IDC_STATIC_URL:
@@ -1129,35 +1208,11 @@ LRESULT CAddEdit_Basic::OnWordWrap(WPARAM, LPARAM)
   return 0L;
 }
 
-void CAddEdit_Basic::OnENSetFocusNotes()
-{
-  UpdateData(TRUE);
-  ShowNotes();
-  UpdateData(FALSE);
-
-  // Try to put window back as it was before hidden
-  if (m_NotesFirstVisibleLine > 0) {
-    // Then scroll correctly
-    int nNewFirstVisibleLine = m_ex_notes.GetFirstVisibleLine();
-    pws_os::Trace(L"SetFocus: NewFirstLine: %d\n", nNewFirstVisibleLine);
-    if (m_NotesFirstVisibleLine != nNewFirstVisibleLine)
-      m_ex_notes.LineScroll(m_NotesFirstVisibleLine - nNewFirstVisibleLine, 0);
-  }
-}
-
 void CAddEdit_Basic::OnENKillFocusNotes()
 {
-  UpdateData(TRUE);
-
-  // Save first visible line
-  m_NotesFirstVisibleLine = m_isNotesHidden ? -1 : m_ex_notes.GetFirstVisibleLine();
-
   if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault)) {
     HideNotes();
-  } else
-    M_realnotes() = m_notes;
-
-  UpdateData(FALSE);
+  }
 }
 
 void CAddEdit_Basic::OnLaunch()
@@ -1179,7 +1234,7 @@ void CAddEdit_Basic::OnLaunch()
                                                        M_username(),
                                                        sPassword,
                                                        sLastPassword,
-                                                       M_realnotes(),
+                                                       M_notes(),
                                                        M_URL(),
                                                        M_email(),
                                                        vactionverboffsets);
@@ -1221,10 +1276,12 @@ LRESULT CAddEdit_Basic::OnCallExternalEditor(WPARAM, LPARAM)
   m_bOKSave = GetParent()->GetDlgItem(IDOK)->EnableWindow(FALSE);
   m_bOKCancel = GetParent()->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
 
-  const CString cs_text(MAKEINTRESOURCE(IDS_NOTES_IN_EXTERNAL_EDITOR));
+  m_ex_hidden_notes.SetWindowText(CS_EXTERNAL_EDITOR);
+  HideNotes(true);
+  m_bUsingNotesExternalEditor = true;
 
-  m_ex_notes.EnableWindow(FALSE);
-  m_ex_notes.SetWindowText(cs_text);
+  // Clear events
+  ghEvents[0] = ghEvents[1] = NULL;
 
   m_thread = CExtThread::BeginThread(ExternalEditorThread, this);
   return 0L;
@@ -1249,9 +1306,9 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
       CGeneralMsgBox gmb;
       gmb.AfxMessageBox(L"oops");
 #endif
-      // Send error return (WPARAM != 0)
-      self->PostMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 16, 0);
-      return 16;
+      self->SendMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 8, 0);
+      self->ResetHiddenNotes();
+      return 8;
     }
     sxEditor = szExecName;
   }
@@ -1263,9 +1320,9 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
     cs_msg.Format(IDS_CANT_FIND_EXT_EDITOR, sxEditor.c_str());
     gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONEXCLAMATION);
 
-    // Send error return (WPARAM != 0)
-    self->PostMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 16, 0);
-    return 0;
+    self->SendMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 12, 0);
+    self->ResetHiddenNotes();
+    return 12;
   }
 
   sxEditor = szExecName;
@@ -1276,9 +1333,9 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
     cs_msg.Format(IDS_CANT_FIND_EXT_EDITOR, sxEditor.c_str());
     gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONEXCLAMATION);
 
-    // Send error return (WPARAM != 0)
-    self->PostMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 16, 0);
-    return 0;
+    self->SendMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 16, 0);
+    self->ResetHiddenNotes();
+    return 16;
   }
 
   // Now we know the editor exists - go copy the data for it!
@@ -1295,7 +1352,9 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   FILE *fd;
 
   if ((fd = pws_os::FOpen(self->m_szTempName, L"w+b")) == NULL) {
-    return 0;
+    self->SendMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 20, 0);
+    self->ResetHiddenNotes();
+    return 20;
   }
 
   // Write BOM
@@ -1303,8 +1362,8 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   putwc(iBOM, fd);
 
   // Write out text
-  fwrite(reinterpret_cast<const void *>((LPCWSTR)self->M_realnotes()), sizeof(BYTE),
-             self->M_realnotes().GetLength() * sizeof(wchar_t), fd);
+  fwrite(reinterpret_cast<const void *>((LPCWSTR)self->M_notes()), sizeof(BYTE),
+             self->M_notes().GetLength() * sizeof(wchar_t), fd);
 
   // Close file before invoking editor
   fclose(fd);
@@ -1317,8 +1376,8 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   si.cb = sizeof(si);
   ZeroMemory(&pi, sizeof(PROCESS_INFORMATION));
 
-  DWORD dwCreationFlags(0);
-  dwCreationFlags = CREATE_UNICODE_ENVIRONMENT;
+  DWORD dwCreationFlags;
+  dwCreationFlags = CREATE_UNICODE_ENVIRONMENT | CREATE_SUSPENDED;
 
   CString cs_CommandLine;
 
@@ -1337,31 +1396,61 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
     _wremove(self->m_szTempName);
     SecureZeroMemory(self->m_szTempName, sizeof(self->m_szTempName));
 
-    // Send error return (WPARAM != 0)
-    self->PostMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 16, 0);
-    return 0;
+    self->SendMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 24, 0);
+    self->ResetHiddenNotes();
+    return 24;
   }
+
+  // All set up now set process going
+  ResumeThread(pi.hThread);
 
   WaitForInputIdle(pi.hProcess, INFINITE);
 
-  // Wait until child process exits.
-  WaitForSingleObject(pi.hProcess, INFINITE);
+  // Disable me to stop other changes until editor ends or user cancels it
+  self->EnableWindow(FALSE);
+
+  // Wait until child process exits or we cancel it
+  ghEvents[0] = pi.hProcess;                            // Thread ended
+  ghEvents[1] = CreateEvent(NULL, FALSE, FALSE, NULL);  // We cancelled
+
+  // Now wait for editor to end or user to cancel
+  DWORD dwEvent = WaitForMultipleObjects(2, ghEvents, FALSE, INFINITE);
 
   // Close process and thread handles.
   CloseHandle(pi.hProcess);
   CloseHandle(pi.hThread);
   cs_CommandLine.ReleaseBuffer();
 
-  self->PostMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 0, 0);
+  // If edit ended normally (i.e. not cancelled by user) - go process
+  // Otherwise indicate cancelled
+  self->SendMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, dwEvent == (WAIT_OBJECT_0 + 0) ? 0 : 28, 0);
+
+  self->ResetHiddenNotes();
   return 0;
+}
+
+void CAddEdit_Basic::ResetHiddenNotes()
+{
+  // Put back hidden notes message
+  m_ex_hidden_notes.SetWindowText(CS_HIDDEN_NOTES);
+  
+  // Show notes again
+  ShowNotes(true);
+
+  // No longer in the external editor
+  m_bUsingNotesExternalEditor = false;
+
+  // Re-enable the property page
+  EnableWindow(TRUE);
 }
 
 LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
 {
-  std::wstring note;
-  m_ex_notes.EnableWindow(TRUE);
+  std::wstring sNewNotes;
+  CSecString sOldNotes = M_notes();
 
   if (wParam != 0) {
+    // Tidy up and re-enable sheet OK/Cancel buttons
     goto error_exit;
   }
 
@@ -1372,7 +1461,7 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
     goto error_exit;
   }
 
-  M_realnotes().Empty();
+  M_notes().Empty();
 
   ulong64 flength = pws_os::fileLength(fd);
 
@@ -1407,15 +1496,15 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
   // Read in text
   fread(pBuffer, sizeof(BYTE), slength - 2, fd);
 
-  note = reinterpret_cast<const LPCWSTR>(pBuffer);
+  sNewNotes = reinterpret_cast<const LPCWSTR>(pBuffer);
 
   delete [] pBuffer;
 
   // Close file before invoking editor
   fclose(fd);
 
-  if (note.length() > MAXTEXTCHARS) {
-    note = note.substr(0, MAXTEXTCHARS);
+  if (sNewNotes.length() > MAXTEXTCHARS) {
+    sNewNotes = sNewNotes.substr(0, MAXTEXTCHARS);
 
     CGeneralMsgBox gmb;
     CString cs_text, cs_title(MAKEINTRESOURCE(IDS_WARNINGTEXTLENGTH));
@@ -1425,7 +1514,7 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
 
   // Set real notes field, and
   // we are still displaying the old text, so replace that too
-  M_realnotes() = m_notes = note.c_str();
+  M_notes() = sNewNotes.c_str();
 
   UpdateData(FALSE);
   m_ex_notes.Invalidate();
@@ -1438,13 +1527,14 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
   GetParent()->GetDlgItem(IDOK)->EnableWindow(m_bOKSave == 0 ? TRUE : FALSE);
   GetParent()->GetDlgItem(IDCANCEL)->EnableWindow(m_bOKCancel == 0 ? TRUE : FALSE);
 
-  OnENChangeNotes();
+  if (sOldNotes != M_notes()) {
+    m_ae_psh->SetChanged(true);
+    m_ae_psh->SetNotesChanged(true); // Needed if Notes field is long and will be truncated
+  }
   return 0L;
 
 error_exit:
-  // Restore notes field and get out
-  m_notes = M_realnotes();
-
+  // Get out
   UpdateData(FALSE);
   m_ex_notes.Invalidate();
 
