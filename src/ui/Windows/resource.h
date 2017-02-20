@@ -403,6 +403,8 @@
 #define IDC_USERNAME                    1010
 #define IDC_NOTES                       1011
 #define IDC_ITEMLIST                    1012
+#define IDC_HIDDEN_NOTES                1012
+#define IDC_NOTES2                      1012
 #define IDC_ITEMTREE                    1013
 #define IDC_SHOWPASSWORD                1014
 #define IDC_CLEARCHECK                  1015

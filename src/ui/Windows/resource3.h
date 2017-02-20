@@ -791,3 +791,5 @@
 #define IDS_HOSTUSER                    6043
 #define IDS_LIST_OF_ALIASES             6044
 #define IDS_LIST_OF_SHORTCUTS           6045
+#define IDS_EXT_EDITOR_ACTIVE           6046
+#define IDS_CANCEL_EXT_EDITOR           6047

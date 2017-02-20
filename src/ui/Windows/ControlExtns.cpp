@@ -427,7 +427,7 @@ void CEditExtnX::EnableMenuItem(const int message_number, const bool bEnable)
 // CRichEditExtnX
 
 CRichEditExtnX::CRichEditExtnX(COLORREF focusColor)
-  : m_bIsFocused(FALSE), m_lastposition(-1), m_crefInFocus(focusColor),
+  : m_bIsFocused(FALSE), m_nScrollHPos(-1), m_nScrollVPos(-1), m_crefInFocus(focusColor),
   m_bContextMenu(false)
 {
   m_vmenu_items.clear();
@@ -499,10 +499,18 @@ void CRichEditExtnX::OnSetFocus(CWnd *pOldWnd)
 {
   m_bIsFocused = TRUE;
   CRichEditCtrl::OnSetFocus(pOldWnd);
-  if (m_lastposition >= 0) {
-    int iLine = LineFromChar(m_lastposition);
-    LineScroll(iLine);
-    SetSel(m_nStartChar, m_nEndChar); 
+
+  // Reselect what the user had selected before losing focus
+  SetSel(m_nStartChar, m_nEndChar);
+
+  if (m_nScrollVPos >= 0) {
+    // Reset the scroll bar position.
+    SetScrollPos(SB_HORZ, m_nScrollHPos);
+    SetScrollPos(SB_VERT, m_nScrollVPos);
+
+    // Reset the display scroll position.
+    SendMessage(WM_HSCROLL, MAKEWPARAM(SB_THUMBTRACK, m_nScrollHPos), 0);
+    SendMessage(WM_VSCROLL, MAKEWPARAM(SB_THUMBTRACK, m_nScrollVPos), 0);
   }
 
   SetBackgroundColor(FALSE, m_crefInFocus);
@@ -512,7 +520,12 @@ void CRichEditExtnX::OnSetFocus(CWnd *pOldWnd)
 void CRichEditExtnX::OnKillFocus(CWnd *pNewWnd)
 {
   m_bIsFocused = FALSE;
-  m_lastposition = LineIndex();
+
+  // Get the scroll bar position.
+  m_nScrollHPos = GetScrollPos(SB_HORZ);
+  m_nScrollVPos = GetScrollPos(SB_VERT);
+
+  // Save user selection
   GetSel(m_nStartChar, m_nEndChar);
 
   CRichEditCtrl::OnKillFocus(pNewWnd);
@@ -524,24 +537,26 @@ void CRichEditExtnX::OnKillFocus(CWnd *pNewWnd)
 void CRichEditExtnX::OnLButtonDown(UINT nFlags, CPoint point)
 {
   // Get the scroll bar position.
-  int nScrollHPos = GetScrollPos(SB_HORZ);
-  int nScrollVPos = GetScrollPos(SB_VERT);
+  m_nScrollHPos = GetScrollPos(SB_HORZ);
+  m_nScrollVPos = GetScrollPos(SB_VERT);
 
   int n = CharFromPos(point);
-  m_lastposition = HIWORD(n);
   m_nStartChar = m_nEndChar = LOWORD(n);
 
   CRichEditCtrl::OnLButtonDown(nFlags, point);
 
-  // Reset the scroll bar position.
-  SetScrollPos(SB_HORZ, nScrollHPos);
-  SetScrollPos(SB_VERT, nScrollVPos);
-
-  // Reset the display scroll position.
-  SendMessage(WM_HSCROLL, MAKEWPARAM(SB_THUMBTRACK, nScrollHPos), 0);
-  SendMessage(WM_VSCROLL, MAKEWPARAM(SB_THUMBTRACK, nScrollVPos), 0);
-
+  // Reselect what the user had selected before losing focus
   SetSel(m_nStartChar, m_nEndChar);
+
+  if (m_nScrollVPos >= 0) {
+    // Reset the scroll bar position.
+    SetScrollPos(SB_HORZ, m_nScrollHPos);
+    SetScrollPos(SB_VERT, m_nScrollVPos);
+
+    // Reset the display scroll position.
+    SendMessage(WM_HSCROLL, MAKEWPARAM(SB_THUMBTRACK, m_nScrollHPos), 0);
+    SendMessage(WM_VSCROLL, MAKEWPARAM(SB_THUMBTRACK, m_nScrollVPos), 0);
+  }
 }
 
 BOOL CRichEditExtnX::OnSetCursor(CWnd *pWnd, UINT nHitTest, UINT message)

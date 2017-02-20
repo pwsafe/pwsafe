@@ -492,6 +492,14 @@ void DboxMain::OnOptions()
     // in this session with this database, until the database is closed.
     Command *pcmd;
 
+    // Save current horizontal scroll bar position in case view is refreshed
+    if (m_ctlItemList.GetItemCount() == 0) {
+      m_iListHBarPos = m_iTreeHBarPos = 0;
+    } else {
+      m_iListHBarPos = m_ctlItemList.GetScrollPos(SB_HORZ);
+      m_iTreeHBarPos = m_ctlItemTree.GetScrollPos(SB_HORZ);
+    }
+
     if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (sxOldDBPrefsString != sxNewDBPrefsString) {
         // Determine whether Tree needs redisplaying due to change
@@ -592,7 +600,11 @@ void DboxMain::OnOptions()
           if (num_altered > 0) {
             ChangeOkUpdate();
           }
-        } 
+        }
+
+        // Restore current horizontal scroll bar position
+        m_ctlItemList.Scroll(CSize(m_iListHBarPos, 0));
+        m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
       } else {
         // Was created but no commands added in the end.
         delete pmulticmds;
