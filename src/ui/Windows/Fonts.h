@@ -30,13 +30,13 @@ public:
   COLORREF GetModified_Color() {return MODIFIED_COLOR;}
 
   void GetCurrentFont(LOGFONT *pLF);
-  void SetCurrentFont(LOGFONT *pLF);
+  void SetCurrentFont(LOGFONT *pLF, const int iPtSz);
   void GetAddEditFont(LOGFONT *pLF);
-  void SetAddEditFont(LOGFONT *pLF);
+  void SetAddEditFont(LOGFONT *pLF, const int iPtSz);
   void GetPasswordFont(LOGFONT *pLF);
-  void SetPasswordFont(LOGFONT *pLF);
+  void SetPasswordFont(LOGFONT *pLF, const int iPtSz);
   void GetNotesFont(LOGFONT *pLF);
-  void SetNotesFont(LOGFONT *pLF);
+  void SetNotesFont(LOGFONT *pLF, const int iPtSz);
 
   void ApplyPasswordFont(CWnd* pLF);
 

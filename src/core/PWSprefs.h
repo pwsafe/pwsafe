@@ -137,6 +137,7 @@ public:
     OptShortcutColumnWidth, ShiftDoubleClickAction, DefaultAutotypeDelay,
     DlgOrientation, TimedTaskChainDelay,
     AutotypeSelectAllKeyCode, AutotypeSelectAllModMask, //X only
+    TreeFontPtSz, PasswordFontPtSz, NotesFontPtSz, AddEditFontPtSz,
     NumIntPrefs};
 
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,

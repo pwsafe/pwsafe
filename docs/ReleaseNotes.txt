@@ -38,6 +38,9 @@ Changes to Existing Features in 3.41.1
 ======================================
 [] Previous commands, e.g. edit or delete an entry, are no longer cleared when the database
 is locked to enable their undo after the database has been unlocked.
+[] User selected font sizes are now saved in points in the configuration file so that the
+same size of font is used across different user systems if sharing the configuration file. This
+helps where the different systems have different resolutions.
 [819] A duplicated entry's creation time is set to the time of duplication.
 All other times are copied from the original.
 [816] Set installed version in uninstall section of Registry for Windows version.

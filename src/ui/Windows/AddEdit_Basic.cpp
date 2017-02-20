@@ -925,10 +925,14 @@ LRESULT CAddEdit_Basic::OnZoomNotes(WPARAM, LPARAM lParam)
   WPARAM wp_increment = (lParam > 0 ? 1 : -1) * 2;
 
   long nStart, nEnd;
+  // Save user's selection
   m_ex_notes.GetSel(nStart, nEnd);
 
-  m_ex_notes.SetSel(0, -1);
+  // Hide selection during zoom processing
   m_ex_notes.HideSelection(TRUE, FALSE);
+  
+  // Do zoom
+  m_ex_notes.SetSel(0, -1);
   m_ex_notes.SendMessage(EM_SETFONTSIZE, wp_increment, 0);
 
   CHARFORMAT cf = {0};
@@ -937,6 +941,10 @@ LRESULT CAddEdit_Basic::OnZoomNotes(WPARAM, LPARAM lParam)
   m_ex_notes.SendMessage(EM_GETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
   m_iPointSize = cf.yHeight / 20;
 
+  // Restore view of selection
+  m_ex_notes.HideSelection(FALSE, FALSE);
+  
+  // Restore user's selection
   m_ex_notes.SetSel(nStart, nEnd);
 
   SetZoomMenu();
