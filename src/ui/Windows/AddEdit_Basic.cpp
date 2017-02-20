@@ -26,6 +26,8 @@
 
 #include "os/file.h"
 
+#include "os/debug.h"
+
 #include <shlwapi.h>
 #include <fstream>
 #include <limits>
@@ -415,17 +417,13 @@ BOOL CAddEdit_Basic::OnInitDialog()
     m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, false);
   }
 
-  long nStart, nEnd;
-  m_ex_notes.GetSel(nStart, nEnd);
-
-  CHARFORMAT cf = { 0 };
+  // Get current font size
+  CHARFORMAT2 cf;
+  memset(&cf, 0, sizeof(cf));
   cf.cbSize = sizeof(cf);
-  m_ex_notes.SetSel(0, -1);
-  m_ex_notes.SendMessage(EM_GETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
+  m_ex_notes.GetDefaultCharFormat(cf);
+  ASSERT((cf.dwMask & CFM_SIZE) == CFM_SIZE);
   m_iPointSize = cf.yHeight / 20;
-
-  // Now unselect Notes
-  m_ex_notes.SetSel(nStart, nEnd);
 
   m_iLineCount = m_ex_notes.GetLineCount();
 
@@ -971,28 +969,18 @@ LRESULT CAddEdit_Basic::OnZoomNotes(WPARAM, LPARAM lParam)
 
   WPARAM wp_increment = (lParam > 0 ? 1 : -1) * 2;
 
-  long nStart, nEnd;
-  // Save user's selection
-  m_ex_notes.GetSel(nStart, nEnd);
-
-  // Hide selection during zoom processing
-  m_ex_notes.HideSelection(TRUE, FALSE);
-  
-  // Do zoom
-  m_ex_notes.SetSel(0, -1);
-  m_ex_notes.SendMessage(EM_SETFONTSIZE, wp_increment, 0);
-
-  CHARFORMAT cf = {0};
+  CHARFORMAT2 cf;
+  memset(&cf, 0, sizeof(cf));
   cf.cbSize = sizeof(cf);
+  cf.dwMask = CFM_SIZE;
+  cf.yHeight = (m_iPointSize + wp_increment) * 20;
+  m_ex_notes.SetDefaultCharFormat(cf);
 
-  m_ex_notes.SendMessage(EM_GETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
+  memset(&cf, 0, sizeof(cf));
+  cf.cbSize = sizeof(cf);
+  m_ex_notes.GetDefaultCharFormat(cf);
+  ASSERT((cf.dwMask & CFM_SIZE) == CFM_SIZE);
   m_iPointSize = cf.yHeight / 20;
-
-  // Restore view of selection
-  m_ex_notes.HideSelection(FALSE, FALSE);
-  
-  // Restore user's selection
-  m_ex_notes.SetSel(nStart, nEnd);
 
   SetZoomMenu();
   return 0L;
