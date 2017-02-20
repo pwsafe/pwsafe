@@ -7,8 +7,8 @@
 */
 
 // GeneralMsgBox.cpp
+
 /*
-* GeneralMsgBox.h
 *
 * Implements the extended Message Box class.
 *

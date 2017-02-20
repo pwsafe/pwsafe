@@ -115,8 +115,11 @@ BOOL DboxMain::OpenOnInit()
   if (rc == PWScore::USER_CANCEL || rc == PWScore::USER_EXIT)
     return FALSE;
 
-  if (rc == PWScore::OPEN_NODB)
+  if (rc == PWScore::OPEN_NODB) {
+    // Ensure all Toolbar buttons are correctly set
+    UpdateMenuAndToolBar(false);
     return TRUE;
+  }
 
   CString cs_title, cs_msg;
   cs_title.LoadString(IDS_FILEREADERROR);

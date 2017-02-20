@@ -188,7 +188,8 @@ private:
   BOOL m_bIsFocused;
   const COLORREF m_crefInFocus;
 
-  long m_lastposition, m_nStartChar, m_nEndChar;
+  int m_nScrollHPos, m_nScrollVPos;
+  long m_nStartChar, m_nEndChar;
   std::vector<st_context_menu> m_vmenu_items;
   
   bool m_bContextMenu;
