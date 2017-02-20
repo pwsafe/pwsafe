@@ -136,6 +136,9 @@ StringX CItemAtt::GetTime(int whichtime, PWSUtil::TMC result_format) const
 
 size_t CItemAtt::GetContentLength() const
 {
+  if (!HasContent())
+    const_cast<CItemAtt *>(this)->Load();
+
   auto fiter = m_fields.find(CONTENT);
 
   if (fiter != m_fields.end())
@@ -146,6 +149,9 @@ size_t CItemAtt::GetContentLength() const
 
 size_t CItemAtt::GetContentSize() const
 {
+  if (!HasContent())
+    const_cast<CItemAtt *>(this)->Load();
+
   auto fiter = m_fields.find(CONTENT);
 
   if (fiter != m_fields.end())
@@ -158,8 +164,12 @@ bool CItemAtt::GetContent(unsigned char *content, size_t csize) const
 {
   ASSERT(content != NULL);
 
-  if (!HasContent() || csize < GetContentSize())
+  if (csize < GetContentSize())
     return false;
+
+  if (!HasContent())
+    if (const_cast<CItemAtt *>(this)->Load() != PWSfile::SUCCESS)
+      return false;
 
   GetField(m_fields.find(CONTENT)->second, content, csize);
   return true;
@@ -230,7 +240,10 @@ int CItemAtt::Export(const stringT &fname) const
   int status = PWScore::SUCCESS;
 
   ASSERT(!fname.empty());
-  ASSERT(IsFieldSet(CONTENT));
+
+  if (!HasContent())
+    const_cast<CItemAtt *>(this)->Load();
+
   // fail safely @runtime:
   if (!IsFieldSet(CONTENT))
     return PWScore::FAILURE;
@@ -421,8 +434,6 @@ int CItemAtt::Read(PWSfile *in)
   delete[] utf8; // if here via goto exit
 
   if (numread > 0) {
-    if (status == PWSfile::SUCCESS)
-      status = Load(); // Load content - will move to GetContent()
     return status;
   } else
     return PWSfile::READ_FAIL;
@@ -444,7 +455,6 @@ int CItemAtt::Load()
       !IsFieldSet(ATTAK) ||
       !IsFieldSet(ATTIV) ||
       !IsFieldSet(CONTENTHMAC)) {
-    ASSERT(0);
     return PWSfile::READ_FAIL;
   }
 
