@@ -967,7 +967,7 @@ LRESULT CAddEdit_Basic::OnZoomNotes(WPARAM, LPARAM lParam)
   if ((lParam < 0 && m_iPointSize <= 6) || (lParam > 0 && m_iPointSize >= 72))
     return 0L;
 
-  WPARAM wp_increment = (lParam > 0 ? 1 : -1) * 2;
+  UINT wp_increment = (lParam > 0 ? 1 : -1) * 2;
 
   CHARFORMAT2 cf;
   memset(&cf, 0, sizeof(cf));

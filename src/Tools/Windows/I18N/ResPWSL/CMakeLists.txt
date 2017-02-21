@@ -16,3 +16,7 @@ add_executable( ResPWSL
 
 set_property( TARGET ResPWSL
               PROPERTY FOLDER Tools )
+              
+target_compile_definitions(ResPWSL PRIVATE 
+              _CRT_SECURE_NO_WARNINGS 
+              _CRT_NON_CONFORMING_SWPRINTFS)
