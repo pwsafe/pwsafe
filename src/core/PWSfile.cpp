@@ -244,7 +244,6 @@ bool PWSfile::SetOffset(long offset)
 long PWSfile::GetOffset() const
 {
   long retval = ftell(m_fd);
-  ASSERT(ulong64(retval) <= pws_os::fileLength(m_fd));
   return retval;
 }
 

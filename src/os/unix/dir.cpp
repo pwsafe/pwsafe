@@ -71,7 +71,7 @@ bool pws_os::splitpath(const stringT &path,
   stringT::size_type last_dot = path.find_last_of(_T("."));
   if (last_dot != stringT::npos && last_dot > last_slash) {
     file = path.substr(last_slash + 1, last_dot - last_slash - 1);
-    ext = path.substr(last_dot + 1);
+    ext = path.substr(last_dot);
   } else {
     file = path.substr(last_slash + 1);
     ext = _T("");
