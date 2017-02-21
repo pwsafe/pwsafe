@@ -11,6 +11,7 @@ file (COPY "data/text1.txt" DESTINATION "data")
 
 add_executable(coretest ${TEST_SRCS})
 if (MSVC)
+set_target_properties(coretest PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1)
 target_link_libraries(coretest ${GTEST_LIBRARIES} core os Rpcrt4)
 elseif (APPLE)
 target_link_libraries(coretest ${GTEST_LIBRARIES} core os pthread "-framework CoreFoundation")
