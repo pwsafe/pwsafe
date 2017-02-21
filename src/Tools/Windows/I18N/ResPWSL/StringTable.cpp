@@ -55,12 +55,12 @@ void CStringTable::FromStringTable(StringTable* pStringTable)
   m_strKey = pStringTable->szKey;
 
   String* pString = (String*) DWORDALIGN(&pStringTable->szKey[wcslen(pStringTable->szKey)+1]);
-  while ((DWORD)pString < ((DWORD) pStringTable + pStringTable->wLength)) {
+  while ((DWORD_PTR)pString < ((DWORD_PTR) pStringTable + pStringTable->wLength)) {
     CVersionInfoString* pVIString = new CVersionInfoString(pString);
     m_lstStrings.AddTail(pVIString);
     m_mapStrings.SetAt(pVIString->GetKey(), pVIString);
 
-    pString = (String*) DWORDALIGN((DWORD) pString + pString->wLength);
+    pString = (String*) DWORDALIGN((DWORD_PTR) pString + pString->wLength);
   }
 }
 

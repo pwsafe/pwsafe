@@ -137,14 +137,14 @@ BOOL CVersionInfo::FromFile(const CString &strModulePath, LPCTSTR lpszResourceId
   memcpy(&m_vsFixedFileInfo, pFixedInfo, sizeof(VS_FIXEDFILEINFO));
 
   // Iterate children StringFileInfo or VarFileInfo
-  BaseFileInfo *pChild = (BaseFileInfo*) DWORDALIGN((DWORD)pFixedInfo + pVI->wValueLength);
+  BaseFileInfo *pChild = (BaseFileInfo*) DWORDALIGN((DWORD_PTR)pFixedInfo + pVI->wValueLength);
 
   BOOL bHasVar = FALSE;
   BOOL bHasStrings = FALSE;
   BOOL bBlockOrderKnown = FALSE;
   CStringList lstTranslations;
 
-  while ((DWORD)pChild < ((DWORD)(pVI) + pVI->wLength)) {
+  while ((DWORD_PTR)pChild < ((DWORD_PTR)(pVI) + pVI->wLength)) {
     if (!wcscmp(pChild->szKey, L"StringFileInfo")) {
       //It is a StringFileInfo
       ASSERT(1 == pChild->wType);
@@ -166,7 +166,7 @@ BOOL CVersionInfo::FromFile(const CString &strModulePath, LPCTSTR lpszResourceId
       // Iterate Var elements
       // There really must be only one
       Var* pVar = (Var*) DWORDALIGN(&pVarInfo->szKey[wcslen(pVarInfo->szKey)+1]);
-      while ((DWORD)pVar < ((DWORD) pVarInfo + pVarInfo->wLength)) {
+      while ((DWORD_PTR)pVar < ((DWORD_PTR) pVarInfo + pVarInfo->wLength)) {
         ASSERT(!bHasVar && "Multiple Vars in VarFileInfo");
         ASSERT(!wcscmp(pVar->szKey, L"Translation"));
         ASSERT(pVar->wValueLength);
@@ -182,7 +182,7 @@ BOOL CVersionInfo::FromFile(const CString &strModulePath, LPCTSTR lpszResourceId
         }
 
         bHasVar = TRUE;
-        pVar = (Var*) DWORDALIGN((DWORD)pVar + pVar->wLength);
+        pVar = (Var*) DWORDALIGN((DWORD_PTR)pVar + pVar->wLength);
       }
 
       ASSERT(bHasVar && "No Var in VarFileInfo");
@@ -193,7 +193,7 @@ BOOL CVersionInfo::FromFile(const CString &strModulePath, LPCTSTR lpszResourceId
       bBlockOrderKnown = TRUE;
       m_bRegularInfoOrder = bHasStrings;
     }
-    pChild = (BaseFileInfo*) DWORDALIGN((DWORD)pChild + pChild->wLength);
+    pChild = (BaseFileInfo*) DWORDALIGN((DWORD_PTR)pChild + pChild->wLength);
   }
 
 #ifdef _DEBUG
