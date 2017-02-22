@@ -10,3 +10,4 @@ set(CMAKE_CXX_FLAGS
 
 add_library(pwsafe_base SHARED ${LANG_SRCS} ${LANG_RES})
 set_property( TARGET pwsafe_base PROPERTY FOLDER I18N )
+set_target_properties(pwsafe_base PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CACHEFILE_DIR})
