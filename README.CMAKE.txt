@@ -11,7 +11,8 @@ Why Cmake?
   manually when adding/removing files.
 
 
-Step-by-step for getting started with Cmake using Visual Studio 2015.
+Step-by-step for getting started with Cmake using Visual Studio 2015
+--------------------------------------------------------------------
 
 1. After installing cmake, create a _build directory under pwsafe's
 toplevel directory. To keep MFC & wxWidgets files separate, suggest
@@ -24,22 +25,36 @@ you wish to build the MFC or wxWidgets version.  To select the
 wxWidgets version, check the box WX_WINDOWS, otherwise you will build the
 MFC version.
 
-3. Click on Configure. Select the Visual Studio platform. Cmake will
-think a bit and the report errors: "CMake Error at [...] (message):
+3. Click on Configure. Select the "Visual Studio 14 2015" generator. 
+If you want to build x64, choose "Visual Studio 14 2015 Win64" generator. 
+Cmake will think a bit and then report errors: "CMake Error at [...] (message):
   Could NOT find GTest (missing: GTEST_LIBRARY GTEST_INCLUDE_DIR
   GTEST_MAIN_LIBRARY)
-To fix this, click on GTEST_ROOT and set it to the directory where
+To fix this, click on the "Advanced" check box to see all of the variables.
+Find GTEST_ROOT in the list and set it to the directory where
 gtest is installed on your machine - for example: C:/local/src/gtest-svn/.
 This should enable cmake to at least find the include directory.
 Note: if you do not use the default locations for the built libraries
 (e.g. different directories for the VS2012 & VS2015 builds), cmake will
-not find the libraries but you can specify the pathe relative to the
+not find the libraries but you can specify the path relative to the
 GTEST_ROOT, e.g.,
+
+You need to define all of these values.
+
+CMake Variable           Your Configuration
+--------------           ------------------
 GTEST_ROOT               C:/local/src/gtest-svn
 GTEST_LIBRARY            .\build-vc14\Release
 GTEST_LIBRARY_DEBUG      .\build-vc14\Debug
 GTEST_MAIN_LIBRARY       .\build-vc14\Release
 GTEST_MAIN_LIBRARY_DEBUG .\build-vc14\Debug
+
+If you are building x64, you need to build gtest in x64 mode. The VS
+solutions that come with gtest do not include an x64 build, so you 
+will need to create an x64 build configuration. Only the Debug/x64
+configuration is needed. You should name the output directory in 
+a way that that identifies it clearly (e.g. Debug64). Otherwise,
+it is easy to end up with x86/x64 collisions. 
 
 4. XML support: For the MFC build, you can choose either: (a)
 XML_MSXML, which will use Microsoft's implementation for XML
@@ -55,6 +70,8 @@ For example:
 XercesC_INCLUDE_DIR     C:/local/xerces-c-3.1.3-x86_64-windows-vc-14.0/include
 XercesC_LIBRARY_DEBUG   C:/local/xerces-c-3.1.3-x86-windows-vc-14.0/lib
 XercesC_LIBRARY_RELEASE C:/local/xerces-c-3.1.3-x86-windows-vc-14.0/lib
+
+Again, if you are building x64, you need to build Xerces in x64 mode.
 
 5. If you wish to build the wxWidgets version, check the box WX_WINDOWS and
 pick a different _build directory (e.g. _build_wx) so that your MFC files are
@@ -72,10 +89,13 @@ PERL_EXECUTABLE       perl.exe
 Note: wxWidgets_wxrc_EXECUTABLE is not required for pwsafe wxWidgets builds.
 
 5. Click on Generate. This will create the passwordsafe.sln file in the appropriate
-_build.
+_build directory.
 
 6. Open passwordsafe.sln and right-click on the pwsafe project, select
 "Set as StartUp Project" and then build the solution.
+
+Linux
+-----
 
 For Linux, similarly, only to get started, do:
 $ mkdir build

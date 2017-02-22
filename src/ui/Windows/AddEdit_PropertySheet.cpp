@@ -141,7 +141,7 @@ void CAddEdit_PropertySheet::OnSysCommand(UINT nID, LPARAM lParam)
     CGeneralMsgBox gmb;
     CString cs_message(MAKEINTRESOURCE(IDS_CANCEL_EXT_EDITOR)),
       cs_title(MAKEINTRESOURCE(IDS_EXT_EDITOR_ACTIVE));
-    int rc = gmb.MessageBox(cs_message, cs_title, MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION);
+    INT_PTR rc = gmb.MessageBox(cs_message, cs_title, MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION);
     if (rc == IDYES)
       m_pp_basic->CancelThreadWait();
     

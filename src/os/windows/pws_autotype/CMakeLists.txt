@@ -68,5 +68,6 @@ configure_file (
 set(CMAKE_CXX_FLAGS
   "${CMAKE_CXX_FLAGS} /D PWS_AT_EXPORTS")
 add_library(pws_at SHARED ${AT_SRCS} ${AT_RES})
+set_target_properties(pws_at PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CACHEFILE_DIR})
 
 install (TARGETS pws_at RUNTIME DESTINATION bin)
