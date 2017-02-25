@@ -3790,16 +3790,21 @@ void DboxMain::OnCustomizeToolbar()
 
   mainTBCtrl.Customize();
 
-  // Update toolbar per R/W status
-  UpdateToolBarROStatus(m_core.IsReadOnly());
-
-  // Update toolbar per selected item
-  CItemData *pci = getSelectedItem();
-  UpdateToolBarForSelectedItem(pci);
-
   // Now save user's Toolbar preference
   StringX cs_temp = LPCWSTR(m_MainToolBar.GetButtonString());
   PWSprefs::GetInstance()->SetPref(PWSprefs::MainToolBarButtons, cs_temp);
+
+  // Ensure toolbar buttons reflect current state e.g. no DB open or R-O or R/W status if open
+  if (!m_bOpen) {
+    UpdateMenuAndToolBar(false);
+  } else {
+    // Update toolbar per R/W status
+    UpdateToolBarROStatus(m_core.IsReadOnly());
+
+    // Update toolbar per selected item
+    CItemData *pci = getSelectedItem();
+    UpdateToolBarForSelectedItem(pci);
+  }
 }
 
 void DboxMain::OnShowFindToolbar()
