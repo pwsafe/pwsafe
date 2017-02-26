@@ -379,8 +379,6 @@ void CPasskeyEntry::OnOK()
     return;
   }
 
-  m_PKE_ReadOnly = m_btnReadOnly;
-
   ProcessPhrase();
 }
 
@@ -388,6 +386,10 @@ void CPasskeyEntry::ProcessPhrase()
 {
   CGeneralMsgBox gmb;
 
+  // Can get here via base class yubiProcessCompleted and so need to get state of R-O button
+  // here rather in OnOK
+  m_PKE_ReadOnly = m_btnReadOnly;
+  
   switch (GetMainDlg()->CheckPasskey(LPCWSTR(m_filespec), LPCWSTR(m_passkey))) {
   case PWScore::SUCCESS: {
     // OnOK clears the passkey, so we save it
