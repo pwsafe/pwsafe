@@ -2179,7 +2179,7 @@ CSecString CPWTreeCtrlX::GetPrefix(HTREEITEM hItem) const
     retval = CSecString(GetItemText(p)) + retval;
     p = GetParentItem(p);
     if (p != NULL)
-      retval = CSecString(GROUP_SEP) + retval;
+      retval = CSecString(GROUP_SEP2) + retval;
   }
   return retval;
 }
