@@ -613,7 +613,6 @@ public:
   afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
   afx_msg void OnTrayLockUnLock();
   afx_msg void OnTrayClearRecentEntries();
-  afx_msg void OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI);
   afx_msg void OnTrayCopyUsername(UINT nID);
   afx_msg void OnUpdateTrayCopyUsername(CCmdUI *pCmdUI);
   afx_msg void OnTrayCopyPassword(UINT nID);
