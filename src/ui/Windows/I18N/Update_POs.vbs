@@ -1,4 +1,10 @@
 'Update the Resource Only DLLs for each language we support
+'
+' This script uses the 32-bit languageDLL to update PO files.
+' A 64-bit version of this action is not required, because the 
+' resources in the PO file and languageDLL are not architecture
+' dependent.
+'
 
 Option Explicit
 
