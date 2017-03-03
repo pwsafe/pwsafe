@@ -43,8 +43,10 @@ GH_UPLOAD_CMD := /usr/local/bin/github-release
 export GITHUB_USER := pwsafe
 export GITHUB_REPO := pwsafe
 PYTHON := /usr/bin/python
-MAKENSIS := /cygdrive/c/local/NSIS/makensis.exe
-WIXDIR := /cygdrive/c/local/WIX
+# MAKENSIS := /cygdrive/c/local/NSIS/makensis.exe
+MAKENSIS := "/cygdrive/c/Program Files (x86)/NSIS/Bin/makensis.exe"
+# WIXDIR := /cygdrive/c/local/WIX
+WIXDIR := "/cygdrive/c/Program Files (x86)/WiX Toolset v3.10/bin"
 CANDLE := $(WIXDIR)/candle.exe
 LIGHT := $(WIXDIR)/light.exe
 SIGNTOOL := /cygdrive/c/Program\ Files\ \(x86\)/Windows\ Kits/8.1/bin/x64/signtool.exe
@@ -53,9 +55,11 @@ RELTAG = V$(subst .,_,$(RELEASENAME))
 
 I18N_DIR := ./src/ui/Windows/I18N
 I18N_DLL_DIR := ./build/bin/pwsafe/I18N
+I18N_DLL_DIR_64 := ./build/bin/pwsafe/I18N64
 POT_FILE := $(I18N_DIR)/pwsafe.pot
 HELP_DIR := ./help
 BIN_DIR := ./build/bin/pwsafe/release
+BIN_DIR_64 := ./build/bin/pwsafe/release64
 TMPDIR := /cygdrive/c/tmp
 RELNOTES := $(CURDIR)/docs/ReleaseNotes.txt
 
@@ -107,6 +111,10 @@ endif
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).exe.sig -f pwsafe-$(RELEASENAME).exe.sig; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).msi -f pwsafe-$(RELEASENAME).msi; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).msi.sig -f pwsafe-$(RELEASENAME).msi.sig; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe64-$(RELEASENAME).exe -f pwsafe64-$(RELEASENAME).exe; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe64-$(RELEASENAME).exe.sig -f pwsafe64-$(RELEASENAME).exe.sig; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe64-$(RELEASENAME).msi -f pwsafe64-$(RELEASENAME).msi; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe64-$(RELEASENAME).msi.sig -f pwsafe64-$(RELEASENAME).msi.sig; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME).zip -f $(BINRELNAME).zip; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME).zip.sig -f $(BINRELNAME).zip.sig; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME)-map+pdb.zip \
@@ -137,25 +145,37 @@ sha1sums:
 
 signatures:
 	$(GPG_SIGN) $(RELEASEDIR)/pwsafe-$(RELEASENAME).exe
+	$(GPG_SIGN) $(RELEASEDIR)/pwsafe64-$(RELEASENAME).exe
 	$(GPG_SIGN) $(RELEASEDIR)/$(BINRELNAME).zip
 	$(GPG_SIGN) $(RELEASEDIR)/$(SRCRELNAME).zip
 	$(GPG_SIGN) $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
+	$(GPG_SIGN) $(RELEASEDIR)/pwsafe64-$(RELEASENAME).msi
 
-installables: nsis msi
+installables: nsis msi nsis-64 msi-64
 
 nsis:
-	$(MAKENSIS) /DVERSION=$(RELEASENAME) install/windows/pwsafe.nsi
+	$(MAKENSIS) /DVERSION=$(RELEASENAME) /DARCH=x86 install/windows/pwsafe.nsi
 	(cd install/windows; $(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe-$(RELEASENAME).exe)
 	$(MV) install/windows/pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
 
+nsis-64:
+	$(MAKENSIS) /DVERSION=$(RELEASENAME) /DARCH=x64 install/windows/pwsafe.nsi
+	(cd install/windows; $(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe64-$(RELEASENAME).exe)
+	$(MV) install/windows/pwsafe64-$(RELEASENAME).exe $(RELEASEDIR)
+
 msi:
-	$(SED) 's/PWSAFE_VERSION/$(RELEASENUM)/' \
-		< install/windows/pwsafe-template.wxs > install/pwsafe.wxs
-	$(CANDLE) install/pwsafe.wxs
-	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe.wixobj \
+	$(CANDLE) -dPWSAFE_VERSION=$(RELEASENUM) -dPlatform=x86 install/windows/pwsafe-template.wxs
+	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe-template.wixobj \
 					-out pwsafe.msi
 	$(MV) pwsafe.msi $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
-	$(RM) pwsafe.wixobj install/pwsafe.wxs
+	$(RM) pwsafe-template.wixobj
+
+msi-64:
+	$(CANDLE) -dPWSAFE_VERSION=$(RELEASENUM) -dPlatform=x64 -arch x64 install/windows/pwsafe-template.wxs
+	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe-template.wixobj \
+					-out pwsafe64.msi
+	$(MV) pwsafe64.msi $(RELEASEDIR)/pwsafe64-$(RELEASENAME).msi
+	$(RM) pwsafe-template.wixobj
 
 release:  i18n bin-release src-release
 
