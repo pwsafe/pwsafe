@@ -1,0 +1,23 @@
+#
+# A list of LCIDs and locales can be found here:
+# https://msdn.microsoft.com/en-us/library/cc233982.aspx
+#
+# To add a new translation file, simply add a new 
+# record to the end of this file.
+#
+# Each of the following non-comment lines defines a translation PO file
+# in the pos directory.
+# File name   LCID   LL_CC LL
+#
+pwsafe_cz.po  0x0405 CS_CZ CZ
+pwsafe_dk.po  0x0406 DA_DK DA
+pwsafe_de.po  0x0407 DE_DE DE
+pwsafe_es.po  0x0c0a ES_ES ES
+pwsafe_fr.po  0x040c FR_FR FR
+pwsafe_it.po  0x0410 IT_IT IT
+pwsafe_kr.po  0x0412 KO_KR KO
+pwsafe_nl.po  0x0413 NL_NL NL
+pwsafe_pl.po  0x0415 PL_PL PL
+pwsafe_ru.po  0x0419 RU_RU RU
+pwsafe_sv.po  0x041d SV_SE SV
+pwsafe_zh.po  0x0804 ZH_CN ZH
