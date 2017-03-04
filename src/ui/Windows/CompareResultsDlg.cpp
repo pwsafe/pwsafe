@@ -1141,11 +1141,6 @@ void CCompareResultsDlg::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
     pst_data->listindex = i;
   }
 
-#if (WINVER < 0x0501)  // These are already defined for WinXP and later
-#define HDF_SORTUP   0x0400
-#define HDF_SORTDOWN 0x0200
-#endif
-
   HDITEM hdi;
   hdi.mask = HDI_FORMAT;
 

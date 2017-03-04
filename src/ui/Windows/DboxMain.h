@@ -48,24 +48,6 @@
 #include <list>
 #include <stack>
 
-#if (WINVER < 0x0501)  // These are already defined for WinXP and later
-#define HDF_SORTUP             0x0400
-#define HDF_SORTDOWN           0x0200
-
-#define WM_WTSSESSION_CHANGE   0x02B1
-
-#define WTS_CONSOLE_CONNECT                0x1
-#define WTS_CONSOLE_DISCONNECT             0x2
-#define WTS_REMOTE_CONNECT                 0x3
-#define WTS_REMOTE_DISCONNECT              0x4
-#define WTS_SESSION_LOGON                  0x5
-#define WTS_SESSION_LOGOFF                 0x6
-#define WTS_SESSION_LOCK                   0x7
-#define WTS_SESSION_UNLOCK                 0x8
-#define WTS_SESSION_REMOTE_CONTROL         0x9
-
-#endif  /* WINVER < 0x0501 */
-
 // For ShutdownBlockReasonCreate & ShutdownBlockReasonDestroy
 typedef BOOL (WINAPI *PSBR_CREATE) (HWND, LPCWSTR);
 typedef BOOL (WINAPI *PSBR_DESTROY) (HWND);
