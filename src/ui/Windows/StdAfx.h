@@ -37,6 +37,7 @@ namespace Gdiplus {
 
 #include <htmlhelp.h>
 #include <afxdlgs.h>
+#include <afxcontrolbars.h>
 
 // Don't show warning for automatic inline conversion
 #pragma warning(disable: 4711)
@@ -47,3 +48,6 @@ namespace Gdiplus {
 // Ensure that switch enum statements without a "default" case statement catch all
 // possible enum values
 #pragma warning(error: 4062)
+
+// Save including it everywhere!
+#include "Windowsdefs.h"

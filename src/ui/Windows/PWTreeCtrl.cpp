@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 
-#include "Windowsdefs.h"
 #include "PWTreeCtrl.h"
 #include "DboxMain.h"
 #include "ThisMfcApp.h"

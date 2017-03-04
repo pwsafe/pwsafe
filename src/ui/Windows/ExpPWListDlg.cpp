@@ -10,7 +10,6 @@
 
 #include "stdafx.h"
 
-#include "Windowsdefs.h"
 #include "ExpPWListDlg.h"
 #include "DboxMain.h"
 #include "SecString.h"

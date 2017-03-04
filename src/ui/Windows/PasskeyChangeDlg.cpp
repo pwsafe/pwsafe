@@ -10,7 +10,6 @@
 
 #include "stdafx.h"
 
-#include "Windowsdefs.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"

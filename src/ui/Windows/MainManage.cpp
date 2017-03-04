@@ -11,7 +11,7 @@
 //-----------------------------------------------------------------------------
 
 #include "PasswordSafe.h"
-#include "Windowsdefs.h"
+
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "Shortcut.h"
