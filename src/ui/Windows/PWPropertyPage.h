@@ -29,6 +29,7 @@ protected:
   DboxMain *GetMainDlg() const;
   bool InitToolTip(int Flags = TTS_BALLOON | TTS_NOPREFIX, int delayTimeFactor = 1);
   void AddTool(int DlgItemID, int ResID);
+  void AddTool(int DlgItemID, CString cs);
   void ActivateToolTip();
   void RelayToolTipEvent(MSG *pMsg);
   void ShowHelp(const CString &topicFile);

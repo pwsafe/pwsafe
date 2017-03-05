@@ -61,6 +61,13 @@ void CPWPropertyPage::AddTool(int DlgItemID, int ResID)
   }
 }
 
+void CPWPropertyPage::AddTool(int DlgItemID, CString cs)
+{
+  if (m_pToolTipCtrl != NULL) {
+    m_pToolTipCtrl->AddTool(GetDlgItem(DlgItemID), cs);
+  }
+}
+
 void CPWPropertyPage::ActivateToolTip()
 {
   if (m_pToolTipCtrl != NULL)
