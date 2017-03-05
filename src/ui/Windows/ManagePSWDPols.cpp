@@ -495,7 +495,7 @@ void CManagePSWDPols::OnList()
   else
     UpdateEntryList();
 
-  CString cs_label(MAKEINTRESOURCE(m_bViewPolicy ? IDS_LIST : IDC_DETAILS));
+  CString cs_label(MAKEINTRESOURCE(m_bViewPolicy ? IDS_LIST : IDS_DETAILS));
   GetDlgItem(IDC_LIST_POLICYENTRIES)->SetWindowText(cs_label);
 }
 

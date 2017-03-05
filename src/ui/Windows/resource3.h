@@ -543,8 +543,8 @@
 #define IDS_NORECYCLEBINTITLE           5766
 #define IDS_NORECYCLEBINMSG             5767
 #define IDS_EBCONTINUE                  5768
-#define IDC_EBDELETE                    5769
-#define IDC_EBSELECT                    5770
+#define IDS_EBDELETE                    5769
+#define IDS_EBSELECT                    5770
 #define IDS_EBEXIT                      5771
 #define IDS_EBLISTCTRL                  5772
 #define IDS_EBLISTCTRLROW1              5773
@@ -671,7 +671,7 @@
 #define IDS_NOT_USED                    5908
 #define IDS_COMPPOLICYNAME              5909
 #define IDS_POLICY_VIEWENTRY            5910
-#define IDC_DETAILS                     5911
+#define IDS_DETAILS                     5911
 #define IDS_LIST                        5912
 #define IDS_EDIT_DEFAULT_POLICY         5913
 #define IDS_ADD_NAMED_POLICY            5914

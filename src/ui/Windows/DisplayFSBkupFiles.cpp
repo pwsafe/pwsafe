@@ -67,9 +67,9 @@ BOOL CDisplayFSBkupFiles::OnInitDialog()
     CString cs_ToolTip;
     cs_ToolTip.LoadString(IDS_EBCONTINUE);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_CONTINUE), cs_ToolTip);
-    cs_ToolTip.LoadString(IDC_EBDELETE);
+    cs_ToolTip.LoadString(IDS_EBDELETE);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_DELETE), cs_ToolTip);
-    cs_ToolTip.LoadString(IDC_EBSELECT);
+    cs_ToolTip.LoadString(IDS_EBSELECT);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_SELECT), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_EBEXIT);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDCANCEL), cs_ToolTip);
