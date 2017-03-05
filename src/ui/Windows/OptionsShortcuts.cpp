@@ -111,9 +111,7 @@ BOOL COptionsShortcuts::OnInitDialog()
   // Override default HeaderCtrl ID of 0
   CHeaderCtrl *pLCHdrCtrl = m_ShortcutLC.GetHeaderCtrl();
   pLCHdrCtrl->SetDlgCtrlID(IDC_LIST_HEADER);
-
-  DWORD dwExtendedStyle = m_ShortcutLC.GetExtendedStyle() | LVS_EX_GRIDLINES;
-  m_ShortcutLC.SetExtendedStyle(dwExtendedStyle);
+  m_ShortcutLC.SetHeaderCtrlID(IDC_LIST_HEADER);
 
   CString cs_colname;
   cs_colname.LoadString(IDS_COL_SHORTCUT);
@@ -168,7 +166,7 @@ BOOL COptionsShortcuts::OnInitDialog()
   CHeaderCtrl *pEntryLCHdrCtrl = m_EntryShortcutLC.GetHeaderCtrl();
   pEntryLCHdrCtrl->SetDlgCtrlID(IDC_ENTLIST_HEADER);
 
-  dwExtendedStyle = m_EntryShortcutLC.GetExtendedStyle() | LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT;
+  DWORD dwExtendedStyle = m_EntryShortcutLC.GetExtendedStyle() | LVS_EX_FULLROWSELECT;
   m_EntryShortcutLC.SetExtendedStyle(dwExtendedStyle);
 
   cs_colname.LoadString(IDS_COL_SHORTCUT);
