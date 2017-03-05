@@ -314,7 +314,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
                        m_AEMD.username    != m_AEMD.pci->GetUser()       ||
                        m_AEMD.notes       != m_AEMD.originalnotesTRC     ||
                        m_AEMD.URL         != m_AEMD.pci->GetURL()        ||
-                       m_AEMD.autotype    != m_AEMD.pci->GetAutoType()   ||
+                       m_AEMD.autotype    != m_AEMD.pci->GetAutotype()   ||
                        m_AEMD.runcommand  != m_AEMD.pci->GetRunCommand() ||
                        m_AEMD.DCA         != iDCA                        ||
                        m_AEMD.ShiftDCA    != iShiftDCA                   ||
@@ -343,7 +343,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
           m_AEMD.pci->SetNotes(m_AEMD.notes);
 
         m_AEMD.pci->SetURL(m_AEMD.URL);
-        m_AEMD.pci->SetAutoType(m_AEMD.autotype);
+        m_AEMD.pci->SetAutotype(m_AEMD.autotype);
         m_AEMD.pci->SetPWHistory(m_AEMD.PWHistory);
         m_AEMD.PWHistory = m_AEMD.PWHistory;
         m_AEMD.oldNumPWHistory = m_AEMD.NumPWHistory;
@@ -434,7 +434,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
       m_AEMD.pci->SetPassword(m_AEMD.realpassword);
       m_AEMD.pci->SetNotes(m_AEMD.notes);
       m_AEMD.pci->SetURL(m_AEMD.URL);
-      m_AEMD.pci->SetAutoType(m_AEMD.autotype);
+      m_AEMD.pci->SetAutotype(m_AEMD.autotype);
       m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
       m_AEMD.pci->SetDCA(m_AEMD.DCA);
       m_AEMD.pci->SetShiftDCA(m_AEMD.ShiftDCA);
@@ -613,7 +613,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   }
 
   // Additional data
-  m_AEMD.autotype = m_AEMD.pci->GetAutoType();
+  m_AEMD.autotype = m_AEMD.pci->GetAutotype();
   m_AEMD.runcommand = m_AEMD.pci->GetRunCommand();
   m_AEMD.pci->GetDCA(m_AEMD.DCA);
   m_AEMD.oldDCA = m_AEMD.DCA;

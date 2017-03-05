@@ -77,7 +77,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(CAddEdit_Additional)
   afx_msg void OnHelp();
-  afx_msg void OnAutoTypeHelp();
+  afx_msg void OnAutotypeHelp();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
 

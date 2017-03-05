@@ -1869,8 +1869,8 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
         sxData = PWSAuxParse::GetExpandedString(sxData,
                                                  m_core.GetCurFile(),
                                                  pci, pbci,
-                                                 m_bDoAutoType,
-                                                 m_sxAutoType,
+                                                 m_bDoAutotype,
+                                                 m_sxAutotype,
                                                  errmsg, st_column, bURLSpecial);
         if (!errmsg.empty()) {
           CGeneralMsgBox gmb;
@@ -1979,12 +1979,12 @@ void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp, bool bIssueM
   }
 }
 
-void DboxMain::PerformAutoType()
+void DboxMain::PerformAutotype()
 {
-  OnAutoType();
+  OnAutotype();
 }
 
-void DboxMain::OnAutoType()
+void DboxMain::OnAutotype()
 {
   CItemData *pci(NULL);
   if (m_ctlItemTree.IsWindowVisible() && m_LastFoundTreeItem != NULL) {
@@ -2001,14 +2001,14 @@ void DboxMain::OnAutoType()
 
   UpdateAccessTime(pci->GetUUID());
 
-  // All code using ci must be before this AutoType since the
+  // All code using ci must be before this Autotype since the
   // *pci may be trashed if lock-on-minimize
-  AutoType(*pci);
+  Autotype(*pci);
 }
 
-void DboxMain::AutoType(const CItemData &ci)
+void DboxMain::Autotype(const CItemData &ci)
 {
-  // Called from OnAutoType, OnTrayAutoType and OnDragAutoType
+  // Called from OnAutotype, OnTrayAutotype and OnDragAutotype
 
   // Rules are ("Minimize on Autotype" takes precedence):
   // 1. If "MinimizeOnAutotype" - minimize PWS during Autotype but do
@@ -2026,7 +2026,7 @@ void DboxMain::AutoType(const CItemData &ci)
   // Use CItemData ci before we potentially minimize the Window, since if
   // the user also specifies 'Lock on Minimize', it will become invalid.
   std::vector<size_t> vactionverboffsets;
-  const StringX sxautotype = PWSAuxParse::GetAutoTypeString(ci, m_core,
+  const StringX sxautotype = PWSAuxParse::GetAutotypeString(ci, m_core,
                                                             vactionverboffsets);
 
   if (bMinOnAuto) {
@@ -2039,7 +2039,7 @@ void DboxMain::AutoType(const CItemData &ci)
     ShowWindow(SW_HIDE);
   }
 
-  DoAutoType(sxautotype, vactionverboffsets);
+  DoAutotype(sxautotype, vactionverboffsets);
 
   // If we minimized it, exit. If we only hid it, now show it
   if (bMinOnAuto)
@@ -2053,10 +2053,10 @@ void DboxMain::AutoType(const CItemData &ci)
   }
 }
 
-void DboxMain::DoAutoType(const StringX &sx_autotype,
+void DboxMain::DoAutotype(const StringX &sx_autotype,
                           const std::vector<size_t> &vactionverboffsets)
 {
-  PWSAuxParse::SendAutoTypeString(sx_autotype, vactionverboffsets);
+  PWSAuxParse::SendAutotypeString(sx_autotype, vactionverboffsets);
 }
 
 void DboxMain::OnGotoBaseEntry()
@@ -2153,7 +2153,7 @@ void DboxMain::OnRunCommand()
   bool bURLSpecial;
   sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_runcmd,
                                                    m_core.GetCurFile(), pci, pbci,
-                                                   m_bDoAutoType, m_sxAutoType,
+                                                   m_bDoAutotype, m_sxAutotype,
                                                    errmsg, st_column, bURLSpecial);
 
   if (!errmsg.empty()) {
@@ -2168,10 +2168,10 @@ void DboxMain::OnRunCommand()
   pws_os::CUUID uuid = pci->GetUUID();
 
   // if no autotype value in run command's $a(value), start with item's (bug #1078)
-  if (m_sxAutoType.empty())
-    m_sxAutoType = pci->GetAutoType();
+  if (m_sxAutotype.empty())
+    m_sxAutotype = pci->GetAutotype();
 
-  m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType,
+  m_sxAutotype = PWSAuxParse::GetAutotypeString(m_sxAutotype,
                                                 sx_group, sx_title, sx_user,
                                                 sx_pswd, sx_lastpswd,
                                                 sx_notes, sx_url, sx_email,
@@ -2199,10 +2199,10 @@ void DboxMain::OnRunCommand()
       sx_Expanded_ES = sxAltBrowser + StringX(L" ") + sx_Expanded_ES;
   }
 
-  bool rc = m_runner.runcmd(sx_Expanded_ES, !m_sxAutoType.empty());
+  bool rc = m_runner.runcmd(sx_Expanded_ES, !m_sxAutotype.empty());
   if (!rc) {
-    m_bDoAutoType = false;
-    m_sxAutoType = L"";
+    m_bDoAutotype = false;
+    m_sxAutotype = L"";
     return;
   }
 }
@@ -2500,11 +2500,11 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
   }
 }
 
-LRESULT DboxMain::OnDragAutoType(WPARAM wParam, LPARAM /* lParam */)
+LRESULT DboxMain::OnDragAutotype(WPARAM wParam, LPARAM /* lParam */)
 {
   const CItemData *pci = reinterpret_cast<const CItemData *>(wParam);
 
-  AutoType(*pci);
+  Autotype(*pci);
   return 0L;
 }
 

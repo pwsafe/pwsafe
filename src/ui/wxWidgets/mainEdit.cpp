@@ -487,7 +487,7 @@ void PasswordSafeFrame::DoCopyEmail(CItemData &item)
 void PasswordSafeFrame::DoAutotype(CItemData &ci)
 {
   std::vector<size_t> vactionverboffsets;
-  const StringX sxautotype = PWSAuxParse::GetAutoTypeString(ci, m_core,
+  const StringX sxautotype = PWSAuxParse::GetAutotypeString(ci, m_core,
                                                             vactionverboffsets);
   // even though we only need them in one of the *later* tasks, its safer to
   // get sxautotype and vactionverboffsets set up before the reference to
@@ -724,7 +724,7 @@ void PasswordSafeFrame::DoBrowse(CItemData &item, bool bAutotype)
 
   if (!cs_command.IsEmpty()) {
     std::vector<size_t> vactionverboffsets;
-    StringX sxautotype = PWSAuxParse::GetAutoTypeString(*pci, m_core,
+    StringX sxautotype = PWSAuxParse::GetAutotypeString(*pci, m_core,
                                                         vactionverboffsets);
     LaunchBrowser(cs_command, sxautotype, vactionverboffsets, bAutotype);
 #ifdef NOT_YET

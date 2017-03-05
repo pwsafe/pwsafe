@@ -768,7 +768,7 @@ void XMLFileHandlers::AddXMLEntries()
 
     EmptyIfOnlyWhiteSpace(cur_entry->autotype);
     if (!cur_entry->autotype.empty())
-      ci_temp.SetAutoType(cur_entry->autotype);
+      ci_temp.SetAutotype(cur_entry->autotype);
 
     if (!cur_entry->ctime.empty())
       ci_temp.SetCTime(cur_entry->ctime.c_str());

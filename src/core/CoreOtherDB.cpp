@@ -503,7 +503,7 @@ stringT PWScore::Merge(PWScore *pothercore,
         str_diffs += str_temp + _T(", ");
       }
 
-      if (otherItem.GetAutoType() != curItem.GetAutoType()) {
+      if (otherItem.GetAutotype() != curItem.GetAutotype()) {
         diff_flags |= MRG_AUTOTYPE;
         LoadAString(str_temp, IDSC_FLDNMAUTOTYPE);
         str_diffs += str_temp + _T(", ");

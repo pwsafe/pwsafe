@@ -326,7 +326,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       iResult = CompareNoCase(pLHS_PCI->GetRunCommand(), pRHS_PCI->GetRunCommand());
       break;
     case CItemData::AUTOTYPE:
-      iResult = CompareNoCase(pLHS_PCI->GetAutoType(), pRHS_PCI->GetAutoType());
+      iResult = CompareNoCase(pLHS_PCI->GetAutotype(), pRHS_PCI->GetAutotype());
       break;
     case CItemData::CTIME:
       pLHS_PCI->GetCTime(t1);
@@ -565,7 +565,7 @@ void DboxMain::setupBars()
     // Set up DoubleClickAction text - remove Shift+DCA
     const int dca = int(PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction));
     switch (dca) {
-      case PWSprefs::DoubleClickAutoType:
+      case PWSprefs::DoubleClickAutotype:
         statustext[CPWStatusBar::SB_DBLCLICK] = IDSC_STATAUTOTYPE;
         break;
       case PWSprefs::DoubleClickBrowse:
@@ -936,7 +936,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curPolicyName = curitem.GetPolicyName();
     curRunCommand = curitem.GetRunCommand();
     curKBS = curitem.GetKBShortcut();
-    curAT = curitem.GetAutoType();
+    curAT = curitem.GetAutotype();
     curXInt = curitem.GetXTimeInt();
 
     // Don't bother getting the attachment if not searching its fields
@@ -2889,18 +2889,18 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
   TrimLeft(sxFile);
   // Obey user's No Autotype flag [xa]
   if (no_autotype > 0) {
-    m_bDoAutoType = false;
-    m_sxAutoType = L"";
+    m_bDoAutotype = false;
+    m_sxAutotype = L"";
     m_vactionverboffsets.clear();
   } else {
     // Either do it because they pressed the right menu/shortcut
     // or they had specified Do Autotype flag [autotype]
-    m_bDoAutoType = bDoAutotype || autotypeReplacements > 0;
-    m_sxAutoType = m_bDoAutoType ? sxAutotype : L"";
-    if (m_bDoAutoType)
+    m_bDoAutotype = bDoAutotype || autotypeReplacements > 0;
+    m_sxAutotype = m_bDoAutotype ? sxAutotype : L"";
+    if (m_bDoAutotype)
       m_vactionverboffsets = vactionverboffsets;
   }
-  bool rc = m_runner.issuecmd(sxFile, sxParameters, !m_sxAutoType.empty());
+  bool rc = m_runner.issuecmd(sxFile, sxParameters, !m_sxAutotype.empty());
 
   if (!rc) {
     CGeneralMsgBox gmb;

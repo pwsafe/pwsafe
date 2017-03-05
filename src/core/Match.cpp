@@ -398,7 +398,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
         case -1:                                        id = IDSC_CURRENTDEFAULTDCA;  break;
         case PWSprefs::DoubleClickCopyPassword:         id = IDSC_DCACOPYPASSWORD;    break;
         case PWSprefs::DoubleClickViewEdit:             id = IDSC_DCAVIEWEDIT;        break;
-        case PWSprefs::DoubleClickAutoType:             id = IDSC_DCAAUTOTYPE;        break;
+        case PWSprefs::DoubleClickAutotype:             id = IDSC_DCAAUTOTYPE;        break;
         case PWSprefs::DoubleClickBrowse:               id = IDSC_DCABROWSE;          break;
         case PWSprefs::DoubleClickCopyNotes:            id = IDSC_DCACOPYNOTES;       break;
         case PWSprefs::DoubleClickCopyUsername:         id = IDSC_DCACOPYUSERNAME;    break;
@@ -419,7 +419,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
         switch (iDCA) {
           case PWSprefs::DoubleClickCopyPassword:         id2 = IDSC_DCACOPYPASSWORD;    break;
           case PWSprefs::DoubleClickViewEdit:             id2 = IDSC_DCAVIEWEDIT;        break;
-          case PWSprefs::DoubleClickAutoType:             id2 = IDSC_DCAAUTOTYPE;        break;
+          case PWSprefs::DoubleClickAutotype:             id2 = IDSC_DCAAUTOTYPE;        break;
           case PWSprefs::DoubleClickBrowse:               id2 = IDSC_DCABROWSE;          break;
           case PWSprefs::DoubleClickCopyNotes:            id2 = IDSC_DCACOPYNOTES;       break;
           case PWSprefs::DoubleClickCopyUsername:         id2 = IDSC_DCACOPYUSERNAME;    break;

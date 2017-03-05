@@ -56,7 +56,7 @@ struct CreateAccelTable {
 
 private:
   ACCEL *m_pacceltbl;
-  unsigned char m_ucAutotypeKey; // AutoType shortcut key
+  unsigned char m_ucAutotypeKey; // Autotype shortcut key
 };
 
 static bool IsExtended(int code)
@@ -433,7 +433,7 @@ void DboxMain::UpdateAccelTable()
   // Add on space of 3 reserved shortcuts (Ctrl-Q, F4, F1)
   numscs = (int)std::count_if(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(),
                          cntscs) + 3;
-  // But take off 1 if there is a shortcut for AutoType
+  // But take off 1 if there is a shortcut for Autotype
   if (m_wpAutotypeKey != 0)
     numscs--;
 

@@ -1205,7 +1205,7 @@ void CAddEdit_Basic::OnLaunch()
     sLastPassword = pciA->GetPreviousPassword();
   }
 
-  StringX sx_autotype = PWSAuxParse::GetAutoTypeString(M_autotype(),
+  StringX sx_autotype = PWSAuxParse::GetAutotypeString(M_autotype(),
                                                        M_group(),
                                                        M_title(),
                                                        M_username(),
@@ -1216,12 +1216,12 @@ void CAddEdit_Basic::OnLaunch()
                                                        M_email(),
                                                        vactionverboffsets);
 
-  const bool bDoAutoType = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
+  const bool bDoAutotype = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
 
-  GetMainDlg()->LaunchBrowser(M_URL(), sx_autotype, vactionverboffsets, bDoAutoType);
+  GetMainDlg()->LaunchBrowser(M_URL(), sx_autotype, vactionverboffsets, bDoAutotype);
   GetMainDlg()->UpdateLastClipboardAction(CItemData::URL);
 
-  if (bDoAutoType) {
+  if (bDoAutotype) {
     // Reset button
     BYTE KeyState[256];
     ASSERT(GetKeyboardState(&KeyState[0]));

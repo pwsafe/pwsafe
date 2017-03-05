@@ -1252,7 +1252,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     if (i_Offset[URL] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[URL]))
       ci_temp.SetURL(tokens[i_Offset[URL]].c_str());
     if (i_Offset[AUTOTYPE] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[AUTOTYPE]))
-      ci_temp.SetAutoType(tokens[i_Offset[AUTOTYPE]].c_str());
+      ci_temp.SetAutotype(tokens[i_Offset[AUTOTYPE]].c_str());
     if (i_Offset[CTIME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[CTIME]))
       if (!ci_temp.SetCTime(tokens[i_Offset[CTIME]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(CTIME), numlines);

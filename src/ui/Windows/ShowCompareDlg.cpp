@@ -36,7 +36,7 @@ CShowCompareDlg::CShowCompareDlg(CItemData *pci, CItemData *pci_other, CWnd *pPa
   // Set up DCA to string values
   m_DCA.resize(PWSprefs::maxDCA + 1);
 
-  m_DCA[PWSprefs::DoubleClickAutoType] = IDSC_DCAAUTOTYPE;
+  m_DCA[PWSprefs::DoubleClickAutotype] = IDSC_DCAAUTOTYPE;
   m_DCA[PWSprefs::DoubleClickBrowse] = IDSC_DCABROWSE;
   m_DCA[PWSprefs::DoubleClickBrowsePlus] = IDSC_DCABROWSEPLUS;
   m_DCA[PWSprefs::DoubleClickCopyNotes] = IDSC_DCACOPYNOTES;

@@ -97,7 +97,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_Additional)
   ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
-  ON_BN_CLICKED(IDC_AUTOTYPEHELP, OnAutoTypeHelp)
+  ON_BN_CLICKED(IDC_AUTOTYPEHELP, OnAutotypeHelp)
 
   ON_EN_CHANGE(IDC_AUTOTYPE, OnChanged)
   ON_EN_CHANGE(IDC_MAXPWHISTORY, OnChanged)
@@ -281,7 +281,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
 void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)
 {
   const struct {int res; int pref;} ResPref[] = {
-    {IDSC_DCAAUTOTYPE,        PWSprefs::DoubleClickAutoType},
+    {IDSC_DCAAUTOTYPE,        PWSprefs::DoubleClickAutotype},
     {IDSC_DCABROWSE,          PWSprefs::DoubleClickBrowse},
     {IDSC_DCABROWSEPLUS,      PWSprefs::DoubleClickBrowsePlus},
     {IDSC_DCACOPYNOTES,       PWSprefs::DoubleClickCopyNotes},
@@ -349,7 +349,7 @@ void CAddEdit_Additional::OnHelp()
   ShowHelp(L"::/html/entering_pwd_add.html");
 }
 
-void CAddEdit_Additional::OnAutoTypeHelp()
+void CAddEdit_Additional::OnAutotypeHelp()
 {
   ShowHelp(L"::/html/autotype.html");
 }
@@ -607,7 +607,7 @@ LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
         return 1L;
       switch (M_uicaller()) {
         case IDS_EDITENTRY:
-          if (M_autotype()    != M_pci()->GetAutoType()   ||
+          if (M_autotype()    != M_pci()->GetAutotype()   ||
               M_runcommand()  != M_pci()->GetRunCommand() ||
               M_DCA()         != M_oldDCA()               ||
               M_ShiftDCA()    != M_oldShiftDCA()          ||
@@ -658,11 +658,11 @@ BOOL CAddEdit_Additional::OnApply()
     //Check Run Command parses - don't substitute
     std::wstring errmsg;
     size_t st_column;
-    bool bAutoType(false);
+    bool bAutotype(false);
     StringX sxAutotype(L"");
     bool bURLSpecial;
     PWSAuxParse::GetExpandedString(M_runcommand(), L"", NULL, NULL,
-                                   bAutoType, sxAutotype, errmsg, st_column,
+                                   bAutotype, sxAutotype, errmsg, st_column,
                                    bURLSpecial);
     if (errmsg.length() > 0) {
       CGeneralMsgBox gmb;
@@ -789,7 +789,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
           sLastPassword = pciA->GetPreviousPassword();
         }
 
-        sxData = PWSAuxParse::GetAutoTypeString(M_autotype(),
+        sxData = PWSAuxParse::GetAutotypeString(M_autotype(),
                                                 M_group(),
                                                 M_title(),
                                                 M_username(),
@@ -827,8 +827,8 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
         sxData = PWSAuxParse::GetExpandedString(M_runcommand(),
                                                 M_currentDB(),
                                                 M_pci(), pbci,
-                                                GetMainDlg()->m_bDoAutoType,
-                                                GetMainDlg()->m_sxAutoType,
+                                                GetMainDlg()->m_bDoAutotype,
+                                                GetMainDlg()->m_sxAutotype,
                                                 errmsg, st_column, bURLSpecial);
         if (errmsg.length() > 0) {
           CGeneralMsgBox gmb;

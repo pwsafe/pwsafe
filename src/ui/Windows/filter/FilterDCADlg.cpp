@@ -75,7 +75,7 @@ BOOL CFilterDCADlg::OnInitDialog()
     const short si_DCA = (short)PWSprefs::GetInstance()->GetPref(m_type == PWSMatch::MT_DCA ?
         PWSprefs::DoubleClickAction : PWSprefs::ShiftDoubleClickAction);
     switch (si_DCA) {
-      case PWSprefs::DoubleClickAutoType:             ui_dca = IDSC_DCAAUTOTYPE;        break;
+      case PWSprefs::DoubleClickAutotype:             ui_dca = IDSC_DCAAUTOTYPE;        break;
       case PWSprefs::DoubleClickBrowse:               ui_dca = IDSC_DCABROWSE;          break;
       case PWSprefs::DoubleClickCopyNotes:            ui_dca = IDSC_DCACOPYNOTES;       break;
       case PWSprefs::DoubleClickCopyPassword:         ui_dca = IDSC_DCACOPYPASSWORD;    break;
@@ -103,7 +103,7 @@ BOOL CFilterDCADlg::OnInitDialog()
 
     cs_text.LoadString(IDSC_DCAAUTOTYPE);
     iItem = m_cbxDCA.AddString(cs_text);
-    m_cbxDCA.SetItemData(iItem, PWSprefs::DoubleClickAutoType);
+    m_cbxDCA.SetItemData(iItem, PWSprefs::DoubleClickAutotype);
 
     cs_text.LoadString(IDSC_DCABROWSE);
     iItem = m_cbxDCA.AddString(cs_text);

@@ -132,8 +132,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_lastclipboardaction(L""), m_pNotesDisplay(NULL),
   m_LastFoundTreeItem(NULL), m_LastFoundListItem(-1), m_iCurrentItemFound(-1),
   m_bFilterActive(false), m_bNumPassedFiltering(0),
-  m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
-  m_sxAutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bWTSRegistered(false),
+  m_currentfilterpool(FPOOL_LAST), m_bDoAutotype(false),
+  m_sxAutotype(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bWTSRegistered(false),
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bUnsavedDisplayed(false), m_bExpireDisplayed(false), m_bFindFilterDisplayed(false),
@@ -278,14 +278,14 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
   // lParam = 0
 
   bool brc;
-  if (!m_bDoAutoType || (m_bDoAutoType && m_sxAutoType.empty())) {
-    // Should never happen as we should not be active if not doing AutoType!
+  if (!m_bDoAutotype || (m_bDoAutotype && m_sxAutotype.empty())) {
+    // Should never happen as we should not be active if not doing Autotype!
     brc = m_runner.UnInit();
     pws_os::Trace(L"DboxMain::OnWH_SHELL_CallBack - Error - AT_HK_UnInitialise : %s\n",
           brc ? L"OK" : L"FAILED");
     // Reset Autotype
-    m_bDoAutoType = false;
-    m_sxAutoType = L"";
+    m_bDoAutotype = false;
+    m_sxAutotype = L"";
     // Reset Keyboard/Mouse Input
     pws_os::Trace(L"DboxMain::OnWH_SHELL_CallBack - BlockInput reset\n");
     ::BlockInput(FALSE);
@@ -333,11 +333,11 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
   // Do Autotype!  Note: All fields were substituted before getting here
   // Pure guess to wait 1 second.  Might be more or less but certainly > 0
   ::Sleep(1000);
-  DoAutoType(m_sxAutoType, m_vactionverboffsets);
+  DoAutotype(m_sxAutotype, m_vactionverboffsets);
 
-  // Reset AutoType
-  m_bDoAutoType = false;
-  m_sxAutoType = L"";
+  // Reset Autotype
+  m_bDoAutotype = false;
+  m_sxAutotype = L"";
 
   return 0L;
 }
@@ -394,7 +394,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_RENAMEENTRY, OnRename)
   ON_COMMAND(ID_MENUITEM_RENAMEGROUP, OnRename)
   ON_COMMAND(ID_MENUITEM_DUPLICATEENTRY, OnDuplicateEntry)
-  ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutoType)
+  ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutotype)
   ON_COMMAND(ID_MENUITEM_GOTOBASEENTRY, OnGotoBaseEntry)
   ON_COMMAND(ID_MENUITEM_RUNCOMMAND, OnRunCommand)
   ON_COMMAND(ID_MENUITEM_EDITBASEENTRY, OnEditBaseEntry)
@@ -524,7 +524,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_MESSAGE(PWS_MSG_COMPARE_RESULT_ALLFNCTN, OnProcessCompareResultAllFunction)
   ON_MESSAGE(PWS_MSG_EXPIRED_PASSWORD_EDIT, OnEditExpiredPasswordEntry)
   ON_MESSAGE(PWS_MSG_TOOLBAR_FIND, OnToolBarFindMessage)
-  ON_MESSAGE(PWS_MSG_DRAGAUTOTYPE, OnDragAutoType)
+  ON_MESSAGE(PWS_MSG_DRAGAUTOTYPE, OnDragAutotype)
   ON_MESSAGE(PWS_MSG_EXECUTE_FILTERS, OnExecuteFilters)
   ON_MESSAGE(PWS_MSG_EDIT_APPLY, OnApplyEditChanges)
   ON_MESSAGE(PWS_MSG_DROPPED_FILE, OnDroppedFile)
@@ -545,8 +545,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYBROWSE1, ID_MENUITEM_TRAYBROWSEMAX, OnUpdateTrayBrowse)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYDELETE1, ID_MENUITEM_TRAYDELETEMAX, OnTrayDeleteEntry)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYDELETE1, ID_MENUITEM_TRAYDELETEMAX, OnUpdateTrayDeleteEntry)
-  ON_COMMAND_RANGE(ID_MENUITEM_TRAYAUTOTYPE1, ID_MENUITEM_TRAYAUTOTYPEMAX, OnTrayAutoType)
-  ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYAUTOTYPE1, ID_MENUITEM_TRAYAUTOTYPEMAX, OnUpdateTrayAutoType)
+  ON_COMMAND_RANGE(ID_MENUITEM_TRAYAUTOTYPE1, ID_MENUITEM_TRAYAUTOTYPEMAX, OnTrayAutotype)
+  ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYAUTOTYPE1, ID_MENUITEM_TRAYAUTOTYPEMAX, OnUpdateTrayAutotype)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYURL1, ID_MENUITEM_TRAYCOPYURLMAX, OnTrayCopyURL)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYURL1, ID_MENUITEM_TRAYCOPYURLMAX, OnUpdateTrayCopyURL)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYRUNCMD1, ID_MENUITEM_TRAYRUNCMDMAX, OnTrayRunCommand)
@@ -1679,8 +1679,8 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
 
   m_bViaDCA = true;  // Currently only needed for View/Edit
   switch (iDCA) {
-    case PWSprefs::DoubleClickAutoType:
-      OnAutoType();
+    case PWSprefs::DoubleClickAutotype:
+      OnAutotype();
       break;
     case PWSprefs::DoubleClickBrowse:
       OnBrowse();
@@ -1761,7 +1761,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
     if (!cs_command.IsEmpty()) {
       const pws_os::CUUID uuid = pci->GetUUID();
       std::vector<size_t> vactionverboffsets;
-      StringX sx_autotype = PWSAuxParse::GetAutoTypeString(*pci, m_core,
+      StringX sx_autotype = PWSAuxParse::GetAutotypeString(*pci, m_core,
                                                            vactionverboffsets);
       LaunchBrowser(cs_command, sx_autotype, vactionverboffsets, bDoAutotype);
 
@@ -2452,7 +2452,7 @@ void DboxMain::OnHelp()
 
 BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
 {
-  // Don't do anything if in AutoType
+  // Don't do anything if in Autotype
   if (m_bInAT)
     return TRUE;
 
@@ -3733,10 +3733,10 @@ bool DboxMain::CheckPreTranslateRename(MSG* pMsg)
   return false;
 }
 
-bool DboxMain::CheckPreTranslateAutoType(MSG* pMsg)
+bool DboxMain::CheckPreTranslateAutotype(MSG* pMsg)
 {
-  // Need to handle the keyboard shortcut for AutoType ourselves in order
-  // to remove any interaction of the keyboard and AutoTyped characters
+  // Need to handle the keyboard shortcut for Autotype ourselves in order
+  // to remove any interaction of the keyboard and Autotyped characters
   if (m_wpAutotypeKey != 0) {
     // Process user's Autotype shortcut - (Sys)KeyDown
     if (pMsg->message == m_wpAutotypeDNMsg && pMsg->wParam == m_wpAutotypeKey) {
@@ -3758,7 +3758,7 @@ bool DboxMain::CheckPreTranslateAutoType(MSG* pMsg)
       m_btAT.reset(0);   // Virtual Key
       if (m_btAT.none()) {
         // All keys are now up - send the message
-        PerformAutoType();
+        PerformAutotype();
         m_bInAT = false;
       }
       return true;
@@ -3770,7 +3770,7 @@ bool DboxMain::CheckPreTranslateAutoType(MSG* pMsg)
       m_btAT.reset(1);   // Ctrl Key
       if (m_btAT.none()) {
         // All keys are now up - send the message
-        PerformAutoType();
+        PerformAutotype();
         m_bInAT = false;
       }
       return true;
@@ -3782,7 +3782,7 @@ bool DboxMain::CheckPreTranslateAutoType(MSG* pMsg)
       m_btAT.reset(2);   // Shift Key
       if (m_btAT.none()) {
         // All keys are now up - send the message
-        PerformAutoType();
+        PerformAutotype();
         m_bInAT = false;
       }
       return true;

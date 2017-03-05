@@ -315,7 +315,7 @@ void DboxMain::OnOptions()
     // Update status bar
     UINT uiMessage(IDSC_STATCOMPANY);
     switch (pOptionsPS->GetDCA()) {
-      case PWSprefs::DoubleClickAutoType:
+      case PWSprefs::DoubleClickAutotype:
         uiMessage = IDSC_STATAUTOTYPE; break;
       case PWSprefs::DoubleClickBrowse:
         uiMessage = IDSC_STATBROWSE; break;
