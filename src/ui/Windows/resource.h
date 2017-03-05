@@ -403,8 +403,6 @@
 #define IDC_USERNAME                    1010
 #define IDC_NOTES                       1011
 #define IDC_ITEMLIST                    1012
-#define IDC_HIDDEN_NOTES                1012
-#define IDC_NOTES2                      1012
 #define IDC_ITEMTREE                    1013
 #define IDC_SHOWPASSWORD                1014
 #define IDC_CLEARCHECK                  1015
@@ -414,6 +412,7 @@
 #define IDC_CONFIRMDELETE               1019
 #define IDC_APPBUILTON                  1020
 #define IDC_CONFIRMCOPY                 1021
+#define IDC_HIDDEN_NOTES                1022
 #define IDC_GENERATEPASSWORD            1025
 #define IDC_LOCKONMINIMIZE              1026
 #define IDC_DEFPWSHOWINEDIT             1028
