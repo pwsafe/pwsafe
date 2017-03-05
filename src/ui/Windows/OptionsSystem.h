@@ -38,7 +38,7 @@ protected:
 
   BOOL m_DeleteRegistry, m_saveDeleteRegistry;
   BOOL m_Migrate2Appdata, m_saveMigrate2Appdata;
-  BOOL m_InitialHotkeyState;
+  BOOL m_InitialHotKeyState;
 
   CTBMStatic m_Help1, m_Help2;
   //}}AFX_DATA

@@ -267,7 +267,7 @@ void DboxMain::OnOptions()
   // Get old DB preferences String value for use later
   const StringX sxOldDBPrefsString(prefs->Store());
 
-  // Save Hotkey info
+  // Save HotKey info
   BOOL bAppHotKeyEnabled;
   int32 iPWSHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
   // Can't be enabled if not set!
@@ -279,7 +279,7 @@ void DboxMain::OnOptions()
   // Get current status of how the user wants to the initial display
   bool bTreeOpenStatus = prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen) != PWSprefs::AsPerLastSave;
 
-  // Disable Hotkey around this as the user may press the current key when 
+  // Disable HotKey around this as the user may press the current key when 
   // selecting the new key!
   UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID); // clear last - never hurts
 
@@ -307,7 +307,7 @@ void DboxMain::OnOptions()
   if (rc == IDOK) {
     // Now update the application look and feel as appropriate
 
-    // Get updated Hotkey information as we will either re-instate the original or
+    // Get updated HotKey information as we will either re-instate the original or
     // set these new values
     bAppHotKeyEnabled = pOptionsPS->GetHotKeyState();
     iPWSHotKeyValue = pOptionsPS->GetHotKeyValue();

@@ -12,16 +12,16 @@
 
 #include "os/typedefs.h"
 
-// Hotkey conversion routines!
+// HotKey conversion routines!
 /*
   Wonderful MS - different definitions for everything!
 
-  Used by Windows to Register a Hotkey and also the WM_HOTKEY message
+  Used by Windows to Register a HotKey and also the WM_HOTKEY message
     MOD_ALT             0x01
     MOD_CONTROL         0x02
     MOD_SHIFT           0x04
 
-  Used by CHotKeyCtrl to Get/Set the Hotkey in the control
+  Used by CHotKeyCtrl to Get/Set the HotKey in the control
     HOTKEYF_SHIFT       0x01 
     HOTKEYF_CONTROL     0x02
     HOTKEYF_ALT         0x04

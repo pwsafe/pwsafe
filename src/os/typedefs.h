@@ -34,7 +34,7 @@ typedef wchar_t charT;
 
 #include "../core/PwsPlatform.h" // for afxwin.h, and endian macros
 
-// Hotkey values. Internal PWS values - need to convert to either MFC or wxWidgets
+// HotKey values. Internal PWS values - need to convert to either MFC or wxWidgets
 // values in the GUI when retrieving these from the preferences and aso back to PWS
 // internal values before giving them to PWSPrefs for saving in the XML config file.
 #define PWS_HOTKEYF_ALT     0x01

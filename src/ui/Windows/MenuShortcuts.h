@@ -15,7 +15,7 @@
 #include <map>
 #include <vector>
 
-// Structure used for vector of reserved Hotkeys
+// Structure used for vector of reserved HotKeys
 struct st_MenuShortcut {
   unsigned int nControlID;
   unsigned short int siVirtKey;

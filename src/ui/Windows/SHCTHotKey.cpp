@@ -45,7 +45,7 @@ void CSHCTHotKey::OnKillFocus(CWnd *)
 BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
 {
   // This is all to allow user to add special characters like ENTER, DELETE into
-  // their assigned Hotkey
+  // their assigned HotKey
   if (pMsg->message == WM_KEYDOWN || pMsg->message == WM_KEYUP) {
     const UINT_PTR nChar = pMsg->wParam;
     if ((nChar == VK_RETURN && 
@@ -67,7 +67,7 @@ BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
       WORD wVirtualKeyCode, wHKModifiers;
       GetHotKey(wVirtualKeyCode, wHKModifiers);
 
-      // Enter sets the Hotkey unless user did Ctrl+Enter, or
+      // Enter sets the HotKey unless user did Ctrl+Enter, or
       // Alt+Enter or Ctrl+Alt+Enter, in which is taken as a HotKey
       if (nChar == VK_RETURN && 
           ((wHKModifiers & HOTKEYF_CONTROL) != HOTKEYF_CONTROL &&

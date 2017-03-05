@@ -106,7 +106,7 @@ public:
   virtual BOOL OnQueryCancel();
 
   // Retrieve DoubleClickAction or ClearClipboardOnMimimize
-  // or if Hot Key set
+  // or if HotKey set
   // Make sure no overlap with 'PP_' enum in CPWPropertyPage
   enum {PPOPT_GET_DCA = 10, PPOPT_GET_CCOM, PPOPT_HOTKEY_SET};
 

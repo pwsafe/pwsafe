@@ -827,7 +827,7 @@ void DboxMain::InitPasswordSafe()
   int iAppShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
   m_core.SetAppHotKey(iAppShortcut);
 
-  // Set Hotkey, if active
+  // Set HotKey, if active
   if (prefs->GetPref(PWSprefs::HotKeyEnabled)) {
     RegisterHotKey(m_hWnd, PWS_HOTKEY_ID, UINT(wModifiers), UINT(wVirtualKeyCode));
     // Registration might fail if combination already registered elsewhere,
@@ -1431,7 +1431,7 @@ void DboxMain::OnDestroy()
   if (!filename.empty() && !m_core.IsReadOnly() && m_core.IsLockedFile(filename))
     m_core.UnlockFile(filename);
 
-  // Get rid of hotkey
+  // Get rid of HotKeys
   UnregisterHotKey(GetSafeHwnd(), PWS_HOTKEY_ID);
 
   // Stop being notified about session changes

@@ -360,7 +360,7 @@ void DboxMain::SetUpInitialMenuStrings()
   // change shortcuts as per preferences
   std::vector<st_prefShortcut> vShortcuts(PWSprefs::GetInstance()->GetPrefShortcuts());
 
-  // We need to convert from PWS to Hotkey modifiers
+  // We need to convert from PWS to HotKey modifiers
   for (size_t i = 0; i < vShortcuts.size(); i++) {
     WORD wPWSModifiers = vShortcuts[i].cModifier;
     // Translate from CHotKeyCtrl to PWS modifiers
