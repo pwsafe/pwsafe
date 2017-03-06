@@ -60,7 +60,7 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
     CAddEdit_Basic::IDD, CAddEdit_Basic::IDD_SHORT,
     pAEMD),
-  m_bInitdone(false), m_thread(NULL), m_isNotesHidden(false), /*m_NotesFirstVisibleLine(-1),*/
+  m_bInitdone(false), m_thread(NULL), m_isNotesHidden(false),
   m_bUsingNotesExternalEditor(false)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
@@ -1001,14 +1001,6 @@ void CAddEdit_Basic::ShowNotes(const bool bForceShow)
 
     SetZoomMenu();
   }
-
-  // Try to put window back as it was before hidden
-  //if (m_NotesFirstVisibleLine >= 0) {
-  //  // Then scroll correctly
-  //  int nNewFirstVisibleLine = m_ex_notes.GetFirstVisibleLine();
-  //  if (m_NotesFirstVisibleLine != nNewFirstVisibleLine)
-  //    m_ex_notes.LineScroll(m_NotesFirstVisibleLine - nNewFirstVisibleLine, 0);
-  //}
 }
 
 void CAddEdit_Basic::HideNotes(const bool bForceHide)
@@ -1025,9 +1017,6 @@ void CAddEdit_Basic::HideNotes(const bool bForceHide)
     // Disable zoom of hidden text
     m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, false);
     m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, false);
-
-    // Save current position
-    //m_NotesFirstVisibleLine = m_ex_notes.GetFirstVisibleLine();
   }
 }
 

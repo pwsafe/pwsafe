@@ -38,7 +38,7 @@ CSHCTListCtrlX::~CSHCTListCtrlX()
   delete m_pHotKey;
 }
 
-BEGIN_MESSAGE_MAP(CSHCTListCtrlX, CListCtrl)
+BEGIN_MESSAGE_MAP(CSHCTListCtrlX, CGridListCtrl)
   //{{AFX_MSG_MAP(CSHCTListCtrlX)
   ON_WM_LBUTTONDOWN()
   ON_WM_RBUTTONDOWN()
@@ -202,21 +202,21 @@ void CSHCTListCtrlX::OnMenuShortcutKillFocus(const WORD wVirtualKeyCode,
 void CSHCTListCtrlX::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
   SaveHotKey();
-  CListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
+  CGridListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
   UpdateWindow();
 }
 
 void CSHCTListCtrlX::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
   SaveHotKey();
-  CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
+  CGridListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
   UpdateWindow();
 }
 
 BOOL CSHCTListCtrlX::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
   SaveHotKey();
-  BOOL brc = CListCtrl::OnMouseWheel(nFlags, zDelta, pt);
+  BOOL brc = CGridListCtrl::OnMouseWheel(nFlags, zDelta, pt);
   UpdateWindow();
   return brc;
 }

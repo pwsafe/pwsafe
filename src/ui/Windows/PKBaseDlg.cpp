@@ -129,8 +129,6 @@ BOOL CPKBaseDlg::OnInitDialog(void)
 
 BOOL CPKBaseDlg::PreTranslateMessage(MSG* pMsg)
 {
-  RelayToolTipEvent(pMsg);
-
   // Show/hide caps lock indicator
   CWnd *pCapsLock = GetDlgItem(IDC_CAPSLOCK);
   if (pCapsLock != NULL) {

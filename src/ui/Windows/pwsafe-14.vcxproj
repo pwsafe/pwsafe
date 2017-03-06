@@ -575,6 +575,7 @@
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FontsDialog.cpp" />
     <ClCompile Include="GeneralMsgBox.cpp" />
+    <ClCompile Include="GridListCtrl.cpp" />
     <ClCompile Include="ImportTextDlg.cpp" />
     <ClCompile Include="ImportXMLDlg.cpp" />
     <ClCompile Include="InfoDisplay.cpp" />
@@ -710,6 +711,7 @@
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="FontsDialog.h" />
     <ClInclude Include="GeneralMsgBox.h" />
+    <ClInclude Include="GridListCtrl.h" />
     <ClInclude Include="HKModifiers.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXMLDlg.h" />

@@ -10,7 +10,6 @@
 
 #include "StdAfx.h"
 
-#include "Windowsdefs.h"
 #include "ImgStatic.h"
 
 #include "GeneralMsgBox.h"

@@ -12,7 +12,6 @@
 #include "stdafx.h"
 #include "afxole.h"
 
-#include "Windowsdefs.h"
 #include "DDStatic.h"
 #include "DboxMain.h"
 #include "ThisMfcApp.h"

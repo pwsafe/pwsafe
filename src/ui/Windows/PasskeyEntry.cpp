@@ -13,7 +13,6 @@ Passkey?  That's Russian for 'pass'.  You know, passkey
 down the streetsky.  [Groucho Marx]
 */
 
-#include "Windowsdefs.h"
 #include "PasswordSafe.h"
 #include "PWFileDialog.h"
 #include "ThisMfcApp.h"
@@ -379,8 +378,6 @@ void CPasskeyEntry::OnOK()
     return;
   }
 
-  m_PKE_ReadOnly = m_btnReadOnly;
-
   ProcessPhrase();
 }
 
@@ -388,6 +385,10 @@ void CPasskeyEntry::ProcessPhrase()
 {
   CGeneralMsgBox gmb;
 
+  // Can get here via base class yubiProcessCompleted and so need to get state of R-O button
+  // here rather in OnOK
+  m_PKE_ReadOnly = m_btnReadOnly;
+  
   switch (GetMainDlg()->CheckPasskey(LPCWSTR(m_filespec), LPCWSTR(m_passkey))) {
   case PWScore::SUCCESS: {
     // OnOK clears the passkey, so we save it
