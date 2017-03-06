@@ -891,17 +891,6 @@ void CAddEdit_Additional::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResul
     m_iSortedColumn = phdn->iItem;
     m_PWHistListCtrl.SortItems(PWHistCompareFunc, (LPARAM)this);
 
-    // Note: WINVER defines the minimum system level for which this is program compiled and
-    // NOT the level of system it is running on!
-    // In this case, these values are defined in Windows XP and later and supported
-    // by V6 of comctl32.dll (supplied with Windows XP) and later.
-    // They should be ignored by earlier levels of this dll or .....
-    //     we can check the dll version (code available on request)!
-
-#if (WINVER < 0x0501)  // These are already defined for WinXP and later
-#define HDF_SORTUP 0x0400
-#define HDF_SORTDOWN 0x0200
-#endif
     HDITEM HeaderItem;
     HeaderItem.mask = HDI_FORMAT;
     m_PWHistListCtrl.GetHeaderCtrl()->GetItem(m_iSortedColumn, &HeaderItem);

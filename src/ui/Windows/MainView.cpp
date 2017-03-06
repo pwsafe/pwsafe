@@ -12,7 +12,6 @@
 
 #include "PasswordSafe.h"
 
-#include "Windowsdefs.h"
 #include "ThisMfcApp.h"
 #include "AddEdit_PropertySheet.h"
 #include "DboxMain.h"

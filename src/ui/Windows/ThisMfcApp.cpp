@@ -17,7 +17,6 @@
 
 #include "PasswordSafe.h"
 
-#include "Windowsdefs.h"
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources

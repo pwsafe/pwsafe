@@ -9,7 +9,6 @@
 #include "stdafx.h"
 
 #include "passwordsafe.h"
-#include "Windowsdefs.h"
 #include "DboxMain.h"
 
 #include "WZSelectDB.h"
