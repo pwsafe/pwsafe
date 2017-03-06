@@ -445,11 +445,17 @@ stringT PWScore::Merge(PWScore *pothercore,
     CItemData otherItem = pothercore->GetEntry(otherPos);
     CItemData::EntryType et = otherItem.GetEntryType();
 
-    // Need to check that entry keyboard shortcut not already in use!
+    // Need to check that entry keyboard shortcut not already in use by an existing entry!
     int32 iKBShortcut;
     otherItem.GetKBShortcut(iKBShortcut);
     CUUID kbshortcut_uuid = GetKBShortcut(iKBShortcut);
-    bool bKBShortcutInUse = (iKBShortcut != 0&& kbshortcut_uuid != CUUID::NullUUID());
+    bool bKBShortcutInUse = (iKBShortcut != 0 && kbshortcut_uuid != CUUID::NullUUID());
+
+    // Need to check that entry keyboard shortcut not already in use by the 
+    // Application or Autotype HotKeys!
+    if ((m_iAppHotKey != 0 && m_iAppHotKey == iKBShortcut) ||
+        (m_iAutotypeHotKey != 0 && m_iAutotypeHotKey == iKBShortcut))
+      bKBShortcutInUse = true;
 
     // Handle Aliases and Shortcuts when processing their base entries
     if (otherItem.IsDependent())
@@ -991,6 +997,18 @@ void PWScore::Synchronize(PWScore *pothercore,
 
       CItemData updItem(curItem);
 
+      // Need to check that entry keyboard shortcut not already in use by an existing entry!
+      int32 iKBShortcut;
+      otherItem.GetKBShortcut(iKBShortcut);
+      CUUID kbshortcut_uuid = GetKBShortcut(iKBShortcut);
+      bool bKBShortcutInUse = (iKBShortcut != 0 && kbshortcut_uuid != CUUID::NullUUID());
+
+      // Need to check that entry keyboard shortcut not already in use by the 
+      // Application or Autotype HotKeys!
+      if ((m_iAppHotKey != 0 && m_iAppHotKey == iKBShortcut) ||
+          (m_iAutotypeHotKey != 0 && m_iAutotypeHotKey == iKBShortcut))
+        bKBShortcutInUse = true;
+
       if (curItem.GetUUID() != otherItem.GetUUID()) {
         pws_os::Trace(_T("Synchronize: Mis-match UUIDs for [%ls:%ls:%ls]\n"),
              sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
@@ -1000,6 +1018,10 @@ void PWScore::Synchronize(PWScore *pothercore,
       // Do not try and change GROUPTITLE = 0x00 (use GROUP & TITLE separately) or UUID = 0x01
       for (size_t i = 2; i < bsSyncFields.size(); i++) {
         if (bsSyncFields.test(i)) {
+          // Don't synchronise shortcut if already in use or reserved
+          if (bKBShortcutInUse && static_cast<CItemData::FieldType>(i) == CItemData::KBSHORTCUT)
+            continue;
+
           StringX sxValue = otherItem.GetFieldValue(static_cast<CItemData::FieldType>(i));
 
           // Special processing for password policies (default & named)

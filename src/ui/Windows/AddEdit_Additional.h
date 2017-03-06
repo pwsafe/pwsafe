@@ -24,6 +24,7 @@ public:
   DECLARE_DYNAMIC(CAddEdit_Additional)
 
   CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEMD);
+  ~CAddEdit_Additional();
 
   // Dialog Data
   //{{AFX_DATA(CAddEdit_Additional)
@@ -31,7 +32,7 @@ public:
          IDD_SHORT = IDD_ADDEDIT_ADDITIONAL_SHORT };
 
   // 0 is Best, > 0 is OK, < 0 is Bad
-  enum {KBSHORTCUT_IN_USE_BY_PWS     = -5,
+  enum {KBSHORTCUT_IN_USE_BY_PWS     = -3,
         KBSHORTCUT_INVALID_CHARACTER = -2,
         KBSHORTCUT_IN_USE_BY_ENTRY   = -1,
         KBSHORTCUT_UNIQUE            =  0,
@@ -40,7 +41,6 @@ public:
         KBSHORTCUT_CANT_MAKE_UNIQUE  =  3};
 
   void OnEntryHotKeyKillFocus();
-  void OnEntryHotKeySetFocus();
   void UpdatePasswordHistoryLC();
   bool HasBeenShown() const { return m_bInitdone; }
 
@@ -79,11 +79,13 @@ protected:
   afx_msg void OnHelp();
   afx_msg void OnAutotypeHelp();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
+  afx_msg void OnContextMenu(CWnd *pWnd, CPoint point);
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
 
   afx_msg void OnDCAComboChanged();
   afx_msg void OnShiftDCAComboChanged();
   afx_msg void OnChanged();
+  afx_msg void OnRunCmdChanged();
   afx_msg void OnHotKeyChanged();
 
   afx_msg void OnSTCExClicked(UINT nId);
@@ -102,16 +104,18 @@ private:
   void SetupDCAComboBoxes(CComboBox *pcbox, bool isShift);
   int CheckKeyboardShortcut();
  
-  CTBMStatic m_Help1, m_Help2;
+  CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4, m_Help5;
 
   COLORREF m_autotype_cfOldColour, m_runcmd_cfOldColour;
   bool m_bInitdone;
   bool m_bWarnUserKBShortcut;
 
   int32 m_iAppHotKey, m_iOldHotKey;
-  WORD m_wAppVirtualKeyCode;
-  WORD m_wAppWindowsModifiers; // Values using Windows definition of control keys.
-  bool m_bAppHotKeyEnabled;
+  WORD m_wAppVirtualKeyCode, m_wAppVirtualKeyCode2;
+  WORD m_wAppWindowsModifiers;
+  WORD m_wSavedVirtualKeyCode, m_wSavedModifiers;
+  bool m_bAE_AppHotKeyEnabled, m_bAE_AutotypeHotKeyEnabled;
+  bool m_bPWSAppHotKeyEnabled, m_bPWSAutotypeHotKeyEnabled;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

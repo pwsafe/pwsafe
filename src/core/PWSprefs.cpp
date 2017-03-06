@@ -131,6 +131,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("IgnoreHelpLoadError"), false, ptApplication},        //application
   {_T("VKPlaySound"), false, ptApplication},                //application
   {_T("ListSortAscending"), true, ptApplication},           //application
+  {_T("EnableAutotypeHotKey"), false, ptApplication},       //application
 };
 
 // Default value = -1 means set at runtime
@@ -1483,9 +1484,10 @@ void PWSprefs::SaveApplicationPreferences()
 {
   PWS_LOGIT;
 
-  int i;
   if (!m_prefs_changed[APP_PREF])
     return;
+
+  int i;
 
   if (m_ConfigOption == CF_FILE_RW ||
       m_ConfigOption == CF_FILE_RW_NEW) {

@@ -137,7 +137,7 @@ PWScore::PWScore() :
                      m_bIsReadOnly(false), m_bIsOpen(false),
                      m_nRecordsWithUnknownFields(0),
                      m_bNotifyDB(false), m_pUIIF(NULL), m_pFileSig(NULL),
-                     m_iAppHotKey(0), m_DBCurrentState(CLEAN)
+                     m_iAppHotKey(0), m_iAutotypeHotKey(0), m_DBCurrentState(CLEAN)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {

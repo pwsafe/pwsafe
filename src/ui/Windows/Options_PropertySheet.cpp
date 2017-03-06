@@ -241,6 +241,9 @@ void COptions_PropertySheet::SetupInitialValues()
     m_OPTMD.AppHotKeyEnabled =
       prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
 
+   m_OPTMD.AutotypeHotKeyEnabled =
+    prefs->GetPref(PWSprefs::EnableAutotypeHotKey) ? TRUE : FALSE;
+
   m_OPTMD.ColWidth =
       prefs->GetPref(PWSprefs::OptShortcutColumnWidth);
   m_OPTMD.DefColWidth =
@@ -437,6 +440,8 @@ void COptions_PropertySheet::UpdateCopyPreferences()
                  m_OPTMD.AppHotKeyValue, true);
   prefs->SetPref(PWSprefs::HotKeyEnabled,
                  m_OPTMD.AppHotKeyEnabled == TRUE, true);
+  prefs->SetPref(PWSprefs::EnableAutotypeHotKey,
+                 m_OPTMD.AutotypeHotKeyEnabled == TRUE, true);
 
   if (m_pp_shortcuts->HaveShortcutsChanged())
     m_bUpdateShortcuts = true;

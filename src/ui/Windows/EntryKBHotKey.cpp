@@ -29,7 +29,6 @@ CEntryKBHotKey::~CEntryKBHotKey()
 
 BEGIN_MESSAGE_MAP(CEntryKBHotKey, CHotKeyCtrl)
   ON_WM_KILLFOCUS()
-  ON_WM_SETFOCUS()
 END_MESSAGE_MAP()
 
 // EntryKBHotKey message handlers
@@ -74,14 +73,5 @@ void CEntryKBHotKey::OnKillFocus(CWnd *pNewWnd)
 
   if (m_pParent != NULL) {
     m_pParent->OnEntryHotKeyKillFocus();
-  }
-}
-
-void CEntryKBHotKey::OnSetFocus(CWnd *pOldWnd)
-{
-  CWnd::OnSetFocus(pOldWnd);
-
-  if (m_pParent != NULL) {
-    m_pParent->OnEntryHotKeySetFocus();
   }
 }

@@ -9,8 +9,11 @@
 //
 
 #include "stdafx.h"
+
 #include "ThisMfcApp.h"    // For Help
 #include "Options_PropertySheet.h"
+#include "HKModifiers.h"
+#include "HotKeyConflictDlg.h"
 #include "HKModifiers.h"
 
 #include "resource.h"
@@ -26,20 +29,6 @@ using pws_os::CUUID;
 
 // COptionsShortcuts dialog
 
-BEGIN_MESSAGE_MAP(CAppHotKey, CHotKeyCtrl)
-  //{{AFX_MSG_MAP(CAppHotKey)
-  ON_WM_KILLFOCUS()
-  //}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-void CAppHotKey::OnKillFocus(CWnd* pNewWnd)
-{
-  CHotKeyCtrl::OnKillFocus(pNewWnd);
-
-  if (m_pParent->CheckAppHotKey())
-    m_pParent->Invalidate();
-}
-
 IMPLEMENT_DYNAMIC(COptionsShortcuts, COptions_PropertyPage)
 
 COptionsShortcuts::COptionsShortcuts(CWnd *pParent, st_Opt_master_data *pOPTMD)
@@ -49,46 +38,62 @@ COptionsShortcuts::COptionsShortcuts(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_bShortcutsChanged(false),
   m_bSortAscending(true), m_iSortedColumn(0),
   m_bKBSortAscending(true), m_iKBSortedColumn(0),
-  m_bWarnUserKBShortcut(false), m_iOldAppHotKey(0)
+  m_iOldAppHotKey(0), m_pAutotype_HK_Font(NULL), m_bConflictDetected(false), m_PrevItem(-1)
 {
   m_AppHotKeyValue = M_AppHotKey_Value();
-  m_bAppHotKeyEnabled = M_AppHotKeyEnabled();
+  m_bOS_AppHotKeyEnabled = M_AppHotKeyEnabled();
+  m_bOS_AutotypeHotKeyEnabled = M_AutotypeHotKeyEnabled();
   m_iColWidth = M_ColWidth();
   m_iDefColWidth = M_DefColWidth();
+
+  m_wAppVirtualKeyCode = LOWORD(m_AppHotKeyValue);
+  m_wAppModifiers = HIWORD(m_AppHotKeyValue);
 }
 
-COptionsShortcuts::~COptionsShortcuts(){ }
+COptionsShortcuts::~COptionsShortcuts()
+{
+  if (m_pAutotype_HK_Font) {
+    m_pAutotype_HK_Font->DeleteObject();
+    delete m_pAutotype_HK_Font;
+  }
+}
 
 void COptionsShortcuts::DoDataExchange(CDataExchange* pDX)
 {
   COptions_PropertyPage::DoDataExchange(pDX);
 
-  DDX_Check(pDX, IDC_APPHOTKEY_ENABLE, m_bAppHotKeyEnabled);
+  DDX_Check(pDX, IDC_APPHOTKEY_ENABLE, m_bOS_AppHotKeyEnabled);
+  DDX_Check(pDX, IDC_AUTOTYPEHOTKEY_ENABLE, m_bOS_AutotypeHotKeyEnabled);
   DDX_Control(pDX, IDC_APPHOTKEY_CTRL, m_AppHotKeyCtrl);
   DDX_Control(pDX, IDC_SHORTCUTLIST, m_ShortcutLC);
   DDX_Control(pDX, IDC_ENTSHORTCUTLIST, m_EntryShortcutLC);
 
   DDX_Control(pDX, IDC_ENTSHORTCUTLISTHELP, m_Help1);
   DDX_Control(pDX, IDC_SHORTCUTLISTHELP, m_Help2);
+  DDX_Control(pDX, IDC_APPHOTKEYHELP, m_Help3);
+  DDX_Control(pDX, IDC_AUTOTYPEHOTKEYHELP, m_Help4);
 }
 
 BEGIN_MESSAGE_MAP(COptionsShortcuts, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsShortcuts)
-  ON_WM_CTLCOLOR()
   ON_WM_MEASUREITEM()
+  ON_WM_WINDOWPOSCHANGED()
+  ON_WM_CONTEXTMENU()
+
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_APPHOTKEY_ENABLE, OnEnableAppHotKey)
+  ON_BN_CLICKED(IDC_AUTOTYPEHOTKEY_ENABLE, OnEnableAutotypeHotKey)
   ON_BN_CLICKED(IDC_RESETALLSHORTCUTS, OnResetAll)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   ON_NOTIFY(HDN_ENDTRACK, IDC_LIST_HEADER, OnHeaderNotify)
   ON_NOTIFY(NM_RCLICK, IDC_LIST_HEADER, OnHeaderRClick)
   ON_COMMAND(ID_MENUITEM_RESETCOLUMNWIDTH, OnResetColumnWidth)
+  ON_EN_CHANGE(IDC_APPHOTKEY_CTRL, OnAppHotKeyChanged)
 
   // Entry keyboard shortcuts
   ON_NOTIFY(HDN_ITEMCLICK, IDC_ENTLIST_HEADER, OnColumnClick)
   ON_NOTIFY(NM_DBLCLK, IDC_ENTSHORTCUTLIST, OnKBShortcutDoulbleClick) 
- 
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -99,14 +104,22 @@ BOOL COptionsShortcuts::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
 
-  m_AppHotKeyCtrl.m_pParent = this;
-
-  m_AppHotKeyCtrl.SetHotKey(LOWORD(m_AppHotKeyValue),HIWORD(m_AppHotKeyValue));
-  if (m_bAppHotKeyEnabled == FALSE)
-    m_AppHotKeyCtrl.EnableWindow(FALSE);
+  m_AppHotKeyCtrl.SetHotKey(LOWORD(m_AppHotKeyValue), HIWORD(m_AppHotKeyValue));
 
   // Program shortcuts
   m_ShortcutLC.Init(this);
+
+  // Increase font of Autotype HotKey fixed value (Shift + Ctrl + T)
+  CWnd *pWnd = GetDlgItem(IDC_STATIC_AUTOTYPEHOTKEY);
+  pWnd->SetWindowText(CString(MAKEINTRESOURCE(IDS_AUTOTYPE_HOTKEY_VALUE)));
+  CFont *pFont = pWnd->GetFont();
+  LOGFONT lf;
+  pFont->GetLogFont(&lf);
+  lf.lfHeight -= 2;
+
+  m_pAutotype_HK_Font = new CFont;
+  m_pAutotype_HK_Font->CreateFontIndirect(&lf);
+  pWnd->SetFont(m_pAutotype_HK_Font);
 
   // Override default HeaderCtrl ID of 0
   CHeaderCtrl *pLCHdrCtrl = m_ShortcutLC.GetHeaderCtrl();
@@ -203,7 +216,7 @@ BOOL COptionsShortcuts::OnInitDialog()
     ASSERT(iItem != -1);
     m_EntryShortcutLC.SetItemText(iItem, 1, sxGroup.c_str()); // Group
     m_EntryShortcutLC.SetItemText(iItem, 2, sxTitle.c_str()); // Title
-    m_EntryShortcutLC.SetItemText(iItem, 3, sxUser.c_str()); // User
+    m_EntryShortcutLC.SetItemText(iItem, 3, sxUser.c_str());  // User
     m_EntryShortcutLC.SetItemData(iItem, iKBShortcut);
   } // foreach mapKBShortcutMap
 
@@ -211,24 +224,35 @@ BOOL COptionsShortcuts::OnInitDialog()
   m_EntryShortcutLC.SortItems(CKBSHCompareFunc, (LPARAM)this);
 
   m_EntryShortcutLC.SetColumnWidth(0, m_iColWidth); // SHCT_SHORTCUTKEYS
-  m_EntryShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // GROUP
-  m_EntryShortcutLC.SetColumnWidth(2, LVSCW_AUTOSIZE_USEHEADER); // TITLE
-  m_EntryShortcutLC.SetColumnWidth(3, LVSCW_AUTOSIZE_USEHEADER); // USER
+  m_EntryShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // Group
+  m_EntryShortcutLC.SetColumnWidth(2, LVSCW_AUTOSIZE_USEHEADER); // Title
+  m_EntryShortcutLC.SetColumnWidth(3, LVSCW_AUTOSIZE_USEHEADER); // User
 
   if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
     m_Help1.Init(IDB_QUESTIONMARK);
     m_Help2.Init(IDB_QUESTIONMARK);
+    m_Help3.Init(IDB_QUESTIONMARK);
+    m_Help4.Init(IDB_QUESTIONMARK);
 
-    AddTool(IDC_ENTSHORTCUTLISTHELP, IDS_KBS_TOOLTIP1);
-    AddTool(IDC_SHORTCUTLISTHELP, IDS_SHCT_TOOLTIP);
+    AddTool(IDC_ENTSHORTCUTLISTHELP, IDS_ENTKBSHCTHOTKEYHELP2);
+    AddTool(IDC_SHORTCUTLISTHELP, IDS_SHORTCUTLISTHELP);
+    AddTool(IDC_APPHOTKEYHELP, IDS_APPHOTKEYHELP);
+    AddTool(IDC_AUTOTYPEHOTKEYHELP, IDS_AUTOTYPEHOTKEYHELP);
+
     ActivateToolTip();
   } else {
     m_Help1.EnableWindow(FALSE);
     m_Help1.ShowWindow(SW_HIDE);
     m_Help2.EnableWindow(FALSE);
     m_Help2.ShowWindow(SW_HIDE);
+    m_Help3.EnableWindow(FALSE);
+    m_Help3.ShowWindow(SW_HIDE);
+    m_Help4.EnableWindow(FALSE);
+    m_Help4.ShowWindow(SW_HIDE);
   }
 
+  // Set variable so that OnSetActive checks the Application & Autotype hotkeys
+  m_bFirstShown = true;
   return TRUE;
 }
 
@@ -246,8 +270,9 @@ LRESULT COptionsShortcuts::OnQuerySiblings(WPARAM wParam, LPARAM )
   // Have any of my fields been changed?
   switch (wParam) {
     case PP_DATA_CHANGED:
-      if (M_AppHotKeyEnabled()     != m_bAppHotKeyEnabled            ||
+      if (M_AppHotKeyEnabled()      != m_bOS_AppHotKeyEnabled        ||
           M_AppHotKey_Value()       != m_AppHotKeyValue              ||
+          M_AutotypeHotKeyEnabled() != m_bOS_AutotypeHotKeyEnabled   ||
           m_MapMenuShortcuts.size() != m_MapSaveMenuShortcuts.size() ||
           !std::equal(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(), m_MapSaveMenuShortcuts.begin(),
                    shortcutmaps_equal)) {
@@ -257,7 +282,7 @@ LRESULT COptionsShortcuts::OnQuerySiblings(WPARAM wParam, LPARAM )
         m_bShortcutsChanged = false;
       break;
     case PPOPT_HOTKEY_SET:
-      return (m_bAppHotKeyEnabled == TRUE) ? 1L : 0L;
+      return (m_bOS_AppHotKeyEnabled == TRUE) ? 1L : 0L;
     case PP_UPDATE_VARIABLES:
       // Since OnOK calls OnApply after we need to verify and/or
       // copy data into the entry - we do it ourselves here first
@@ -272,21 +297,51 @@ BOOL COptionsShortcuts::OnKillActive()
   if (UpdateData(TRUE) == FALSE)
     return FALSE;
 
-  if (CheckAppHotKey() < 0 || m_bWarnUserKBShortcut)
+  WORD wVirtualKeyCode, wHKModifiers;
+  m_AppHotKeyCtrl.GetHotKey(wVirtualKeyCode, wHKModifiers);
+
+  if (CheckHotKey(wVirtualKeyCode, wHKModifiers, PWS_HOTKEY_ID) < 0)
+    return FALSE;
+
+  if (CheckHotKey(wVirtualKeyCode, wHKModifiers, PWS_AT_HOTKEY_ID) < 0)
     return FALSE;
 
   return CPWPropertyPage::OnKillActive();
+}
+
+void COptionsShortcuts::OnWindowPosChanged(WINDOWPOS *lpwndpos)
+{
+  CPWPropertyPage::OnWindowPosChanged(lpwndpos);
+
+  if (m_bFirstShown && (lpwndpos->flags & SWP_SHOWWINDOW)) {
+    m_bFirstShown = false;
+    int iRC = app.GetMainDlg()->SetAndCheckHotKeys(false);
+    if (iRC != CHotKeyConflictDlg::HKE_NONE) {
+      if (iRC & CHotKeyConflictDlg::HKE_APP) {
+        ((CButton *)GetDlgItem(IDC_APPHOTKEY_ENABLE))->SetCheck(BST_UNCHECKED);
+        m_bOS_AppHotKeyEnabled = FALSE;
+      }
+      if (iRC & CHotKeyConflictDlg::HKE_AT) {
+        ((CButton *)GetDlgItem(IDC_AUTOTYPEHOTKEY_ENABLE))->SetCheck(BST_UNCHECKED);
+        m_bOS_AutotypeHotKeyEnabled = FALSE;
+      }
+    }
+  }
 }
 
 BOOL COptionsShortcuts::OnApply()
 {
   UpdateData(TRUE);
 
-  if (CheckAppHotKey() < 0 || m_bWarnUserKBShortcut)
-    return FALSE;
-
   WORD wVirtualKeyCode, wHKModifiers;
   m_AppHotKeyCtrl.GetHotKey(wVirtualKeyCode, wHKModifiers);
+
+  if (CheckHotKey(wVirtualKeyCode, wHKModifiers, PWS_HOTKEY_ID) < 0)
+    return FALSE;
+
+  if (CheckHotKey(wVirtualKeyCode, wHKModifiers, PWS_AT_HOTKEY_ID) < 0)
+    return FALSE;
+
   m_AppHotKeyValue = (wHKModifiers << 16) + wVirtualKeyCode;
 
   if (m_MapMenuShortcuts.size() != m_MapSaveMenuShortcuts.size() ||
@@ -297,7 +352,8 @@ BOOL COptionsShortcuts::OnApply()
      m_bShortcutsChanged = false;
 
   M_AppHotKey_Value() = m_AppHotKeyValue;
-  M_AppHotKeyEnabled() = m_bAppHotKeyEnabled;
+  M_AppHotKeyEnabled() = m_bOS_AppHotKeyEnabled;
+  M_AutotypeHotKeyEnabled() = m_bOS_AutotypeHotKeyEnabled;
   M_ColWidth() = m_iColWidth;
   M_DefColWidth() = m_iDefColWidth;
 
@@ -344,13 +400,63 @@ void COptionsShortcuts::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS)
    }
 }
 
-void COptionsShortcuts::OnEnableAppHotKey() 
+void COptionsShortcuts::OnAppHotKeyChanged()
 {
-  if (((CButton*)GetDlgItem(IDC_APPHOTKEY_ENABLE))->GetCheck() == 1) {
-    GetDlgItem(IDC_APPHOTKEY_CTRL)->EnableWindow(TRUE);
-    GetDlgItem(IDC_APPHOTKEY_CTRL)->SetFocus();
-  } else
-    GetDlgItem(IDC_APPHOTKEY_CTRL)->EnableWindow(FALSE);
+  WORD wVirtualKeyCode, wModifiers;
+  m_AppHotKeyCtrl.GetHotKey(wVirtualKeyCode, wModifiers);
+
+  if (wVirtualKeyCode == AUTOTYPE_HOTKEY_KEYCODE && wModifiers == AUTOTYPE_HOTKEY_MODIFIERS) {
+    // Same as PWS Autotype HotKey
+    CGeneralMsgBox gmb;
+    CString cs_errmsg, csHotKey(MAKEINTRESOURCE(IDS_AUTOTYPE_HOTKEY_VALUE));
+    CString cs_Reset(MAKEINTRESOURCE(IDS_KBS_RESET));
+    cs_errmsg.Format(IDS_AUTOTYPE_RESERVED, static_cast<LPCWSTR>(cs_Reset));
+    CString cs_title;
+    cs_title.Format(IDS_SHORTCUT_CONFLICT, csHotKey);
+
+    gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONSTOP);
+
+    // Restore last saved values
+    m_AppHotKeyCtrl.SetHotKey(m_wAppVirtualKeyCode, m_wAppModifiers);
+    return;
+  }
+}
+
+void COptionsShortcuts::OnEnableAppHotKey()
+{
+  UpdateData(TRUE);
+  
+  m_PrevItem = -1;
+  m_bConflictDetected = false;
+
+  if (((CButton *)GetDlgItem(IDC_APPHOTKEY_ENABLE))->GetCheck() == BST_CHECKED) {
+    WORD wVirtualKeyCode, wHKModifiers;
+    m_AppHotKeyCtrl.GetHotKey(wVirtualKeyCode, wHKModifiers);
+
+    if (CheckHotKey(wVirtualKeyCode, wHKModifiers, PWS_HOTKEY_ID) == HOTKEY_UNIQUE) {
+      GetDlgItem(IDC_APPHOTKEY_CTRL)->EnableWindow(TRUE);
+      GetDlgItem(IDC_APPHOTKEY_CTRL)->SetFocus();
+    } else {
+      ((CButton *)GetDlgItem(IDC_APPHOTKEY_ENABLE))->SetCheck(BST_UNCHECKED);
+      m_bOS_AppHotKeyEnabled = FALSE;
+    }
+  }
+}
+
+void COptionsShortcuts::OnEnableAutotypeHotKey()
+{
+  UpdateData(TRUE);
+
+  m_PrevItem = -1;
+  m_bConflictDetected = false;
+
+  if (((CButton *)GetDlgItem(IDC_AUTOTYPEHOTKEY_ENABLE))->GetCheck() == BST_CHECKED) {
+    WORD wVirtualKeyCode(AUTOTYPE_HOTKEY_KEYCODE), wHKModifiers(AUTOTYPE_HOTKEY_MODIFIERS);
+    if (CheckHotKey(wVirtualKeyCode, wHKModifiers, PWS_AT_HOTKEY_ID) != HOTKEY_UNIQUE) {
+      ((CButton *)GetDlgItem(IDC_AUTOTYPEHOTKEY_ENABLE))->SetCheck(BST_UNCHECKED);
+      m_bOS_AutotypeHotKeyEnabled = FALSE;
+    }
+  }
 }
 
 void COptionsShortcuts::OnResetAll()
@@ -415,7 +521,7 @@ void COptionsShortcuts::OnHeaderRClick(NMHDR *, LRESULT *pLResult)
     minfo.fMask = MIM_MENUDATA;
     minfo.dwMenuData = IDR_POPRESETCOLUMNWIDTH;
     menu.SetMenuInfo(&minfo);
-    CMenu* pPopup = menu.GetSubMenu(0);
+    CMenu *pPopup = menu.GetSubMenu(0);
 
     pPopup->TrackPopupMenu(dwTrackPopupFlags, ptMousePos.x, ptMousePos.y, this);
   }
@@ -440,24 +546,62 @@ void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
 
 // Tortuous route to get here!
 // Menu m_HotKey looses focus and calls parent (CListCtrl) that calls here
-void COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
-                                              const WORD wVirtualKeyCode, 
-                                              const WORD wHKModifiers)
+bool COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
+                                                const WORD wVirtualKeyCode,
+                                                const WORD wHKModifiers)
 {
+  if (item != m_PrevItem)
+    m_bConflictDetected = false;
+
+  m_PrevItem = item;
+
+  if (m_bConflictDetected)
+    return false;
+
   CString str(L"");
   CString cs_warning;
+  CString cs_title;
+  CGeneralMsgBox gmb;
   MapMenuShortcutsIter iter, inuse_iter;
   st_MenuShortcut st_mst;
 
-  st_mst.siVirtKey  = wVirtualKeyCode;
+  st_mst.siVirtKey = wVirtualKeyCode;
   st_mst.cModifier = wVirtualKeyCode == 0 ? 0 : (unsigned char)wHKModifiers;
+
+  // Check if user has assigned the application hotkey to a menu item
+  WORD wAppVirtualKeyCode, wAppHKModifiers;
+  m_AppHotKeyCtrl.GetHotKey(wAppVirtualKeyCode, wAppHKModifiers);
+
+  if (m_bOS_AppHotKeyEnabled &&
+      wVirtualKeyCode == wAppVirtualKeyCode &&
+      wHKModifiers == wAppHKModifiers) {
+
+    // Same as PWS application HotKey
+    gmb.AfxMessageBox(IDS_KBS_SAMEASAPP, MB_OK);
+    return false;
+  }
+
+  if (m_bOS_AutotypeHotKeyEnabled &&
+      wVirtualKeyCode == AUTOTYPE_HOTKEY_KEYCODE &&
+      wHKModifiers == AUTOTYPE_HOTKEY_MODIFIERS) {
+
+    // Same as PWS Autotype HotKey
+    CString cs_errmsg, csHotKey(MAKEINTRESOURCE(IDS_AUTOTYPE_HOTKEY_VALUE));
+    CString cs_Reset(MAKEINTRESOURCE(IDS_KBS_RESET));
+    cs_errmsg.Format(IDS_AUTOTYPE_RESERVED, static_cast<LPCWSTR>(cs_Reset));
+    cs_title.Format(IDS_SHORTCUT_CONFLICT, csHotKey);
+
+    gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONSTOP);
+    return false;
+  }
 
   // Stop compiler complaining - put this here even if not needed
   already_inuse inuse(st_mst);
 
   if (!CMenuShortcut::IsNormalShortcut(st_mst)) {
     // Invalid shortcut
-    cs_warning.LoadString(IDS_SHCT_WARNING1);
+    cs_title.LoadString(IDS_SHORTCUT_WARNING);
+    cs_warning.LoadString(IDS_SHORTCUT_WARNING1);
     goto set_warning;
   }
 
@@ -467,7 +611,8 @@ void COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
                    m_ReservedShortcuts.end(),
                    reserved(st_mst)) != m_ReservedShortcuts.end()) {
     // Reserved shortcut ignored
-    cs_warning.Format(IDS_SHCT_WARNING2, static_cast<LPCWSTR>(str));
+    cs_title.LoadString(IDS_SHORTCUT_WARNING);
+    cs_warning.Format(IDS_SHORTCUT_WARNING2, static_cast<LPCWSTR>(str));
     goto set_warning;
   }
 
@@ -480,8 +625,10 @@ void COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
     if (inuse_iter != m_MapMenuShortcuts.end() && 
         inuse_iter->first != iter->first) {
       // Shortcut in use
-      cs_warning.Format(IDS_SHCT_WARNING3, static_cast<LPCWSTR>(str),
-                        static_cast<LPCWSTR>(inuse_iter->second.name.c_str()));
+      CString cs_MenuItemName = inuse_iter->second.name.c_str();
+      cs_MenuItemName.Remove(L'&');
+      cs_title.Format(IDS_SHORTCUT_CONFLICT, static_cast<LPCWSTR>(str));
+      cs_warning.Format(IDS_SHORTCUT_CONFLICT1, static_cast<LPCWSTR>(cs_MenuItemName));
       goto set_warning;
     }
   }
@@ -495,12 +642,12 @@ void COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
   m_ShortcutLC.SetColumnWidth(0, m_iColWidth);              // SHCT_SHORTCUTKEYS
   m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // SHCT_MENUITEMTEXT
   m_ShortcutLC.UpdateWindow();
-  return;
+  return true;
 
 set_warning:
-  CGeneralMsgBox gmb;
-  CString cs_title(MAKEINTRESOURCE(IDS_SHORTCUT_WARNING));
   gmb.MessageBox(cs_warning, cs_title, MB_OK | MB_ICONSTOP);
+  m_bConflictDetected = true;
+  return false;
 }
 
 void COptionsShortcuts::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -671,77 +818,94 @@ void COptionsShortcuts::OnKBShortcutDoulbleClick(NMHDR *pNotifyStruct, LRESULT *
   UpdateWindow();
 }
 
-int COptionsShortcuts::CheckAppHotKey()
+int COptionsShortcuts::CheckHotKey(WORD &wVirtualKeyCode, WORD &wHKModifiers, int iWhichHotKey)
 {
+  if (m_bConflictDetected)
+    return -1;
+
+  const CString cs_AutotypeHotKeyValue(MAKEINTRESOURCE(IDS_AUTOTYPE_HOTKEY_VALUE));
+
   int32 iAppHotKey;
-  
-  WORD wVirtualKeyCode, wHKModifiers, wPWSModifiers;
+  CGeneralMsgBox gmb;
+  CString cs_errmsg1, cs_errmsg2, cs_errmsg3, cs_errmsg4, cs_msg;
+  int iRC(0);
+
+  WORD wPWSModifiers;
   m_AppHotKeyCtrl.GetHotKey(wVirtualKeyCode, wHKModifiers);
   
   // Translate from CHotKeyCtrl to PWS modifiers
   wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
-  iAppHotKey = (wPWSModifiers << 16) + wVirtualKeyCode ;
+  iAppHotKey = (wPWSModifiers << 16) + wVirtualKeyCode;
 
-  if (m_iOldAppHotKey != iAppHotKey)
-    m_bWarnUserKBShortcut = false;
-
-  if (iAppHotKey != 0) {
-    CString cs_errmsg, cs_msg;
-    
-    if ((wPWSModifiers & PWS_HOTKEYF_ALT) == 0 &&
-        (wPWSModifiers & PWS_HOTKEYF_CONTROL) == 0 &&
-        !m_bWarnUserKBShortcut) {
+  if (iAppHotKey != 0 && iWhichHotKey == PWS_HOTKEY_ID) {
+    if ((wPWSModifiers & (PWS_HOTKEYF_ALT | PWS_HOTKEYF_CONTROL)) == 0) {
       // Add Alt and/or Ctrl key and tell user but first check not already in use
-      int iRC;
       pws_os::CUUID chk_uuid;
 
       WORD wValidModifierCombos[] = {
                    PWS_HOTKEYF_ALT,
-                   PWS_HOTKEYF_ALT     | PWS_HOTKEYF_SHIFT,
+                   PWS_HOTKEYF_ALT | PWS_HOTKEYF_SHIFT,
                    PWS_HOTKEYF_CONTROL,
                    PWS_HOTKEYF_CONTROL | PWS_HOTKEYF_SHIFT,
-                   PWS_HOTKEYF_ALT     | PWS_HOTKEYF_CONTROL,
-                   PWS_HOTKEYF_ALT     | PWS_HOTKEYF_CONTROL | PWS_HOTKEYF_SHIFT};
-      int iActions[] = {IDS_KBS_ADD_ALT, IDS_KBS_ADD_ALTSHIFT,
-                        IDS_KBS_ADD_CTRL, IDS_KBS_ADD_CTRLSHIFT,
-                        IDS_KBS_ADD_ALTCTRL, IDS_KBS_ADD_ALTCTRLSHIFT};
-      
+                   PWS_HOTKEYF_ALT | PWS_HOTKEYF_CONTROL,
+                   PWS_HOTKEYF_ALT | PWS_HOTKEYF_CONTROL | PWS_HOTKEYF_SHIFT };
+      int iActions[] = { IDS_KBS_ADD_ALT,     IDS_KBS_ADD_ALTSHIFT,
+                         IDS_KBS_ADD_CTRL,    IDS_KBS_ADD_CTRLSHIFT,
+                         IDS_KBS_ADD_ALTCTRL, IDS_KBS_ADD_ALTCTRLSHIFT };
+
       // Try them in order
       int iChange, ierror(IDS_KBS_CANTADD);
-      for (iChange = 0; iChange < sizeof(wValidModifierCombos)/sizeof(WORD); iChange++) {
-        int iNewAppHotKey = wValidModifierCombos[iChange];
-        chk_uuid = app.GetCore()->GetKBShortcut(iNewAppHotKey);
-        if (chk_uuid == CUUID::NullUUID()) {
-          ierror = iActions[iChange];
-          break;
+      for (iChange = 0; iChange < sizeof(wValidModifierCombos) / sizeof(WORD); iChange++) {
+        StringX sxMenuItemName;
+
+        int iNewAppHotKey = wValidModifierCombos[iChange] + wVirtualKeyCode;
+        wPWSModifiers = wValidModifierCombos[iChange];
+        wHKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
+        unsigned char ucModifiers = wHKModifiers & 0xff;
+
+        unsigned int nCID = GetMainDlg()->GetMenuShortcut(wVirtualKeyCode,
+          ucModifiers, sxMenuItemName);
+
+        // If not in use by a menu, check entry shortcuts
+        if (nCID == 0) {
+          chk_uuid = app.GetCore()->GetKBShortcut(iNewAppHotKey);
+          if (chk_uuid == CUUID::NullUUID()) {
+            ierror = iActions[iChange];
+            break;
+          }
         }
       }
 
       if (ierror == IDS_KBS_CANTADD) {
         wVirtualKeyCode = wHKModifiers = wPWSModifiers = 0;
-        iRC = APPHOTKEY_CANT_MAKE_UNIQUE;
+        iRC += HOTKEY_CANT_MAKE_UNIQUE;
       } else {
-        wPWSModifiers |= wValidModifierCombos[iChange];
-        wHKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
-        iRC = APPHOTKEY_MADE_UNIQUE;
+        iRC += HOTKEY_MADE_UNIQUE;
       }
       
       cs_msg.LoadString(ierror);
-      cs_errmsg.Format(IDS_KBS_INVALID, static_cast<LPCWSTR>(cs_msg));
-
-      CGeneralMsgBox gmb;
+      cs_errmsg1.Format(IDS_KBS_INVALID, static_cast<LPCWSTR>(cs_msg));
       CString cs_title(MAKEINTRESOURCE(IDS_SHORTCUT_WARNING));
-      gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONSTOP);
+      gmb.MessageBox(cs_errmsg1, cs_title, MB_OK | MB_ICONSTOP);
 
       // Get new keyboard shortcut
       m_iOldAppHotKey = iAppHotKey = (wPWSModifiers << 16) + wVirtualKeyCode;
       ((CHotKeyCtrl *)GetDlgItem(IDC_APPHOTKEY_CTRL))->SetFocus();
-      m_bWarnUserKBShortcut = true;
+
       m_AppHotKeyCtrl.SetHotKey(wVirtualKeyCode, wHKModifiers);
+      m_bConflictDetected = true;
       return iRC;
     }
+  }
 
-    const CString cs_HotKey = m_AppHotKeyCtrl.GetHotKeyName();
+  StringX sxMenuItemName;
+  unsigned char ucModifiers = wHKModifiers & 0xff;
+
+  if (m_bOS_AppHotKeyEnabled && iWhichHotKey == PWS_HOTKEY_ID) {
+    iRC = 0;
+    CString cs_AppHotKeyValue = m_AppHotKeyCtrl.GetHotKeyName();
+
+    // First check if in use by an entry
     pws_os::CUUID uuid = app.GetCore()->GetKBShortcut(iAppHotKey);
 
     if (uuid != CUUID::NullUUID()) {
@@ -749,49 +913,110 @@ int COptionsShortcuts::CheckAppHotKey()
       ItemListIter iter = app.GetCore()->Find(uuid);
       const StringX sxGroup = iter->second.GetGroup();
       const StringX sxTitle = iter->second.GetTitle();
-      const StringX sxUser  = iter->second.GetUser();
+      const StringX sxUser = iter->second.GetUser();
 
-      cs_errmsg.Format(IDS_KBS_INUSEBYENTRY, static_cast<LPCWSTR>(cs_HotKey),
-                       static_cast<LPCWSTR>(sxGroup.c_str()),
-                       static_cast<LPCWSTR>(sxTitle.c_str()),
-                       static_cast<LPCWSTR>(sxUser.c_str()));
+      cs_errmsg1.Format(IDS_KBS_INUSEBYENTRY, static_cast<LPCWSTR>(cs_AppHotKeyValue),
+        static_cast<LPCWSTR>(sxGroup.c_str()),
+        static_cast<LPCWSTR>(sxTitle.c_str()),
+        static_cast<LPCWSTR>(sxUser.c_str()),
+        L"");
 
-      CGeneralMsgBox gmb;
-      CString cs_title(MAKEINTRESOURCE(IDS_SHORTCUT_WARNING));
-      gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONSTOP); gmb;
-
-      ((CHotKeyCtrl *)GetDlgItem(IDC_APPHOTKEY_CTRL))->SetFocus();
-
-      // Reset keyboard shortcut
-      wVirtualKeyCode = wHKModifiers = wPWSModifiers = 0;
-      m_AppHotKeyCtrl.SetHotKey(wVirtualKeyCode, wHKModifiers);
-      return APPHOTKEY_IN_USE_BY_ENTRY;
+      iRC = HOTKEY_IN_USE_BY_ENTRY;
     }
-    
-    StringX sxMenuItemName;
-    unsigned char ucModifiers = wHKModifiers & 0xff;
+
     unsigned int nCID = GetMainDlg()->GetMenuShortcut(wVirtualKeyCode,
-                                                  ucModifiers, sxMenuItemName);
+                                              ucModifiers, sxMenuItemName);
+
+    // Next check if in use by a menu item (on this instance for this user!)
     if (nCID != 0) {
-      // Save this value
-      m_iOldAppHotKey = iAppHotKey;
-
-      // Warn user that it is already in use for a menu item
-      // (on this instance for this user!)
       Remove(sxMenuItemName, L'&');
-      CString cs_override(MAKEINTRESOURCE(IDS_APPHOTKEY_OVERRIDE));
-      cs_errmsg.Format(IDS_KBS_INUSEBYMENU, static_cast<LPCWSTR>(cs_HotKey),
-                       static_cast<LPCWSTR>(sxMenuItemName.c_str()),
-                       static_cast<LPCWSTR>(cs_override));
 
-      CGeneralMsgBox gmb;
-      CString cs_title(MAKEINTRESOURCE(IDS_SHORTCUT_WARNING));
-      gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONSTOP);
+      cs_errmsg2.Format(IDS_KBS_INUSEBYMENU, static_cast<LPCWSTR>(cs_AppHotKeyValue),
+        static_cast<LPCWSTR>(sxMenuItemName.c_str()));
 
-      // We have warned them - so now accept
-      m_bWarnUserKBShortcut = !m_bWarnUserKBShortcut;
-      return APPHOTKEY_IN_USE_BY_MENU;
+      iRC += HOTKEY_IN_USE_BY_MENU;
     }
   }
-  return APPHOTKEY_UNIQUE;
+
+  if (m_bOS_AutotypeHotKeyEnabled && iWhichHotKey == PWS_AT_HOTKEY_ID) {
+    int32 iAutotypeHotKey = (AUTOTYPE_HOTKEY_MODIFIERS << 16) + AUTOTYPE_HOTKEY_KEYCODE;
+    pws_os::CUUID uuid = app.GetCore()->GetKBShortcut(iAutotypeHotKey);
+
+    if (uuid != CUUID::NullUUID()) {
+      // Tell user that it already exists as an entry keyboard shortcut
+      ItemListIter iter = app.GetCore()->Find(uuid);
+      const StringX sxGroup = iter->second.GetGroup();
+      const StringX sxTitle = iter->second.GetTitle();
+      const StringX sxUser = iter->second.GetUser();
+
+      cs_errmsg3.Format(IDS_KBS_INUSEBYENTRY, static_cast<LPCWSTR>(cs_AutotypeHotKeyValue),
+        static_cast<LPCWSTR>(sxGroup.c_str()),
+        static_cast<LPCWSTR>(sxTitle.c_str()),
+        static_cast<LPCWSTR>(sxUser.c_str()),
+        L"");
+
+      iRC += HOTKEY_IN_USE_BY_ENTRY;
+    }
+
+    ucModifiers = (unsigned char)ConvertModifersPWS2MFC(AUTOTYPE_HOTKEY_MODIFIERS);
+    unsigned int nCID = GetMainDlg()->GetMenuShortcut(AUTOTYPE_HOTKEY_KEYCODE,
+                                              ucModifiers, sxMenuItemName);
+
+    // Next check if in use by a menu item (on this instance for this user!)
+    if (nCID != 0) {
+      Remove(sxMenuItemName, L'&');
+
+      cs_errmsg4.Format(IDS_KBS_INUSEBYMENU, static_cast<LPCWSTR>(cs_AutotypeHotKeyValue),
+        static_cast<LPCWSTR>(sxMenuItemName.c_str()));
+
+      iRC += HOTKEY_IN_USE_BY_MENU;
+    }
+  }
+
+  if (iRC != 0) {
+    CString cs_errmsg(cs_errmsg1);
+    if (!cs_errmsg2.IsEmpty())
+      cs_errmsg += (cs_errmsg.IsEmpty() ? L"" : L"\n\n") + cs_errmsg2;
+    if (!cs_errmsg3.IsEmpty())
+      cs_errmsg += (cs_errmsg.IsEmpty() ? L"" : L"\n\n") + cs_errmsg3;
+    if (!cs_errmsg4.IsEmpty())
+      cs_errmsg += (cs_errmsg.IsEmpty() ? L"" : L"\n\n") + cs_errmsg4;
+
+    pws_os::Trace(L"COptionsShortcuts::CheckHotKey#2\n");
+    CString cs_title, cs_Key(MAKEINTRESOURCE(iWhichHotKey == PWS_HOTKEY_ID ? IDS_APPHOTKEY : IDS_AUTOTYPE_HOTKEY));
+    cs_title.Format(IDS_SHORTCUT_CONFLICT, static_cast<LPCWSTR>(cs_Key));
+    gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONSTOP);
+
+    m_bConflictDetected = true;
+    return iRC;
+  } else {
+    m_bConflictDetected = false;
+    return HOTKEY_UNIQUE;
+  }
+}
+
+void COptionsShortcuts::OnContextMenu(CWnd *, CPoint point)
+{
+  CRect rect;
+
+  m_AppHotKeyCtrl.GetWindowRect(&rect);
+  if (rect.PtInRect(point)) {
+    WORD wVirtualKeyCode, wHKModifiers;
+    m_AppHotKeyCtrl.GetHotKey(wVirtualKeyCode, wHKModifiers);
+
+    if (wVirtualKeyCode == 0 && wHKModifiers == 0)
+      return;
+
+    CMenu PopupMenu;
+    PopupMenu.LoadMenu(IDR_POPRESETSHORTCUT);
+    CMenu *pContextMenu = PopupMenu.GetSubMenu(0);
+    pContextMenu->RemoveMenu(ID_MENUITEM_REMOVESHORTCUT, MF_BYCOMMAND);
+
+    int nID = pContextMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RETURNCMD,
+      point.x, point.y, this);
+
+    if (nID == ID_MENUITEM_RESETSHORTCUT) {
+      m_AppHotKeyCtrl.SetHotKey(0, 0);
+    }
+  }
 }

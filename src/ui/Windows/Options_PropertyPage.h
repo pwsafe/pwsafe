@@ -82,6 +82,7 @@ struct st_Opt_master_data {
   // Shortcut Data
   int32 AppHotKeyValue;
   BOOL AppHotKeyEnabled;
+  BOOL AutotypeHotKeyEnabled;
   int ColWidth;
   int DefColWidth;
 
@@ -175,6 +176,7 @@ public:
   // Shortcut Data
   inline int32 &M_AppHotKey_Value() {return m_OPTMD.AppHotKeyValue;}
   inline BOOL &M_AppHotKeyEnabled() {return m_OPTMD.AppHotKeyEnabled;}
+  inline BOOL &M_AutotypeHotKeyEnabled() { return m_OPTMD.AutotypeHotKeyEnabled; }
   inline int &M_ColWidth() {return m_OPTMD.ColWidth;}
   inline int &M_DefColWidth() {return m_OPTMD.DefColWidth;}
 

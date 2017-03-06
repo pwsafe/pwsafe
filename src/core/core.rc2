@@ -383,6 +383,7 @@ BEGIN
   IDSC_ENTRIES_POLICIES    "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%ls) appended:%ls"
   IDSC_KBSHORTCUT_REMOVED  "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been removed from the %ls entry."
   IDSC_KBSHORTCUT_USEBYAPP "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application. It has been removed from the entry."
+  IDSC_KBSHORTCUT_RESERVED "Entry keyboard shortcut %ls entry %ls is reserved for the PasswordSafe Autotype HotKey. It has been removed from the entry."
   IDSC_REMOVEDKBSHORTCUTS  "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %ls entries."
   IDSC_IMPORTEDEMPTYGROUPS "including %d empty group(s)."
   IDSC_FILTERSEXPORTEDTODB "Current database filters have been exported to this database."

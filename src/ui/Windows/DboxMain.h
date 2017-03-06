@@ -437,7 +437,12 @@ public:
   void BlockLogoffShutdown(const bool bChanged);
 
   std::set<StringX> GetAllMediaTypes() const
-  {return m_core.GetAllMediaTypes();}
+  { return m_core.GetAllMediaTypes(); }
+
+  int CheckShortcuts();
+  int SetAndCheckHotKeys(bool bSetHotKey);
+  bool IsAppHotKeyEnabled() { return m_bAppHotKeyEnabled; }
+  bool IsAutotypeHotKeyEnabled() { return m_bAutotypeHotKeyEnabled; }
 
  protected:
    // ClassWizard generated virtual function overrides
@@ -803,6 +808,7 @@ private:
   int m_nSaveColumnHeaderWidthByType[CItem::LAST_DATA];
   int m_iheadermaxwidth;
   int m_iListHBarPos, m_iTreeHBarPos;
+  bool m_bAppHotKeyEnabled, m_bAutotypeHotKeyEnabled;
 
   pws_os::CUUID m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
   pws_os::CUUID m_TUUIDSelectedAtMinimize; // to restore Tree entry selection upon un-minimize
@@ -880,10 +886,12 @@ private:
   StringX GetListViewItemText(CItemData &ci, const int &icolumn);
   void DoCommand(Command *pcmd = NULL, PWScore *pcore = NULL, const bool bUndo = true);
   bool IsCharacterSupported(std::wstring &sProtect);
+
+  void RestoreMenuShortcuts();
   
   static const struct UICommandTableEntry {
     UINT ID;
-    enum {InOpenRW=0, InOpenRO=1, InEmpty=2, InClosed=3, bOK_LAST};
+    enum { InOpenRW = 0, InOpenRO = 1, InEmpty = 2, InClosed = 3, bOK_LAST };
     bool bOK[bOK_LAST];
   } m_UICommandTable[];
 
@@ -915,6 +923,7 @@ private:
 
   // Menu Shortcuts
   MapMenuShortcuts m_MapMenuShortcuts;
+  MapMenuShortcuts m_MapDeletedShortcuts;
 
   // Menu items we don't allow the user to modify or see in Options
   // Shortcuts CListCtrl

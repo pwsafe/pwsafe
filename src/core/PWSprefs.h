@@ -127,6 +127,7 @@ public:
     IgnoreHelpLoadError, // Only under WX
     VKPlaySound, // Windows only
     ListSortAscending,
+    EnableAutotypeHotKey,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,

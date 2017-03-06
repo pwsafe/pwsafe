@@ -7,6 +7,7 @@
 */
 
 #include "stdafx.h"
+
 #include "SHCTListCtrl.h"
 #include "SHCTHotKey.h"
 #include "OptionsShortcuts.h"
@@ -25,11 +26,11 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CSHCTListCtrlX::CSHCTListCtrlX()
-: m_pParent(NULL), m_pHotKey(NULL), m_bHotKeyActive(false)
+: m_pParent(NULL), m_pHotKey(NULL), m_bHotKeyActive(false),
+  m_crRedText(RGB(168, 0, 0))
 {
   m_pHotKey = new CSHCTHotKey;
   m_crWindowText = ::GetSysColor(COLOR_WINDOWTEXT);
-  m_crRedText    = RGB(168, 0, 0);
 }
 
 CSHCTListCtrlX::~CSHCTListCtrlX()
@@ -58,6 +59,7 @@ void CSHCTListCtrlX::Init(COptionsShortcuts *pParent)
     m_pHotKey->ModifyStyle(WS_BORDER, 0, 0);
     // Would like to change the default font (e.g. smaller and not bold) but it gets ignored
   }
+
   m_pHotKey->SetMyParent(dynamic_cast<CSHCTListCtrl *>(this));
   m_pParent = pParent;
 }
@@ -94,6 +96,7 @@ void CSHCTListCtrlX::OnLButtonDown(UINT , CPoint point)
     WORD vModifiers = iter->second.cModifier;
     m_pHotKey->SetHotKey(iter->second.siVirtKey, vModifiers);
   }
+
   m_pHotKey->EnableWindow(TRUE);
   m_pHotKey->ShowWindow(SW_SHOW);
   m_pHotKey->BringWindowToTop();
@@ -134,11 +137,11 @@ void CSHCTListCtrlX::OnRButtonDown(UINT , CPoint point)
   }
 
   PopupMenu.LoadMenu(IDR_POPRESETSHORTCUT);
-  CMenu* pContextMenu = PopupMenu.GetSubMenu(0);
+  CMenu *pContextMenu = PopupMenu.GetSubMenu(0);
   if (iter->second.siVirtKey == 0)
     pContextMenu->RemoveMenu(ID_MENUITEM_REMOVESHORTCUT, MF_BYCOMMAND);
 
-  if (iter->second.siVirtKey   == iter->second.siDefVirtKey &&
+  if (iter->second.siVirtKey  == iter->second.siDefVirtKey &&
       iter->second.cModifier  == iter->second.cDefModifier)
     pContextMenu->RemoveMenu(ID_MENUITEM_RESETSHORTCUT, MF_BYCOMMAND);
 
@@ -181,22 +184,24 @@ void CSHCTListCtrlX::SaveHotKey()
   if (m_bHotKeyActive) {
     WORD wVirtualKeyCode, wHKModifiers;
     m_pHotKey->GetHotKey(wVirtualKeyCode, wHKModifiers);
-    OnMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers);
+    OnLCMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers);
   }
 }
 
-void CSHCTListCtrlX::OnMenuShortcutKillFocus(const WORD wVirtualKeyCode,
-                                          const WORD wHKModifiers)
+bool CSHCTListCtrlX::OnLCMenuShortcutKillFocus(WORD &wVirtualKeyCode,
+                                               WORD &wHKModifiers)
 {
   m_pHotKey->EnableWindow(FALSE);
   m_pHotKey->ShowWindow(SW_HIDE);
+  bool brc(false);
 
   if (m_pParent != NULL) {
-    m_pParent->OnMenuShortcutKillFocus(m_item, m_id, 
+    brc = m_pParent->OnMenuShortcutKillFocus(m_item, m_id,
                                  wVirtualKeyCode, wHKModifiers);
   }
 
   m_bHotKeyActive = false;
+  return brc;
 }
 
 void CSHCTListCtrlX::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)

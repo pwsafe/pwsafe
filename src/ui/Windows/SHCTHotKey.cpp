@@ -38,7 +38,9 @@ void CSHCTHotKey::OnKillFocus(CWnd *)
   if (m_pParent != NULL) {
     WORD wVirtualKeyCode, wHKModifiers;
     GetHotKey(wVirtualKeyCode, wHKModifiers);
-    m_pParent->OnMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers);
+    if (!m_pParent->OnLCMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers)) {
+      wVirtualKeyCode = wHKModifiers = 0;
+    }
   }
 }
 

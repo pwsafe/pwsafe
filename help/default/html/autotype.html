@@ -48,7 +48,7 @@ field. This is a very convenient combination.</p>
 <li>Maximize or 
 open <b>Password Safe</b></li>
 <li>Select a password entry</li> 
-<li><b>Ctrl+T</b> or right-click and select <b>Perform Autotype</b> or 
+<li><b>Shift + Ctrl + T</b> or right-click and select <b>Perform Autotype</b> or 
 click on the Toolbar button to initiate.</li> </ol> 
 
 <h3><a name="autotype_details"></a>Customizing Autotype</h3> 
@@ -74,7 +74,7 @@ ell, not the digit '1').</li>
 <li>Any end of line characters '\n', '\r' or '\r\n' are converted to '\r' (carriage return).</li>
 <li>No substitution is made to escape sequences within the Notes field
 (e.g. '\u', '\p' etc.) except for the '\t' sequence, which is replaced by the Tab
-character and '\s' sequence, which is replaced by "Shift+Tab".</li>
+character and '\s' sequence, which is replaced by "Shift + Tab".</li>
 </ul>
 <li><b>\o<i>NNN</i></b> is replaced by the contents of the n<sup>th</sup> line
 of the Notes field</li>
@@ -95,7 +95,7 @@ as part of the authentication process.</small>
 
 <li><b>\b</b> is replaced by the backspace key.</li>
 <li><b>\t</b> is replaced by the Tab key, in effect skipping a field on the website's form.</li> 
-<li><b>\s</b> is replaced by the "Shift+Tab", in effect back-tabbing to 
+<li><b>\s</b> is replaced by the "Shift + Tab", in effect back-tabbing to 
 the previous field.</li>
 <li><b>\n</b> is replaced by the enter key, in effect pressing a button.</li>
 <li><b>\\</b> is replaced by the backslash (\) key.</li>
@@ -185,7 +185,7 @@ style="margin-left:20px; border-spacing:10px">
 <tr><td><b>+</b></td><td>Shift key</td></tr> </table> 
 
 <p>For example:<br> "\{+Tab}" is equivalent to "Shift+Tab"<br> "\{+^Tab}" is
-equivalent to "Ctrl+Shift+Tab"<br> "\{^Home}" is equivalent to "Control+Home".</p> 
+equivalent to "Ctrl + Shift + Tab"<br> "\{^Home}" is equivalent to "Control + Home".</p> 
 
 <h3>Shortcuts and Aliases</h3>
 
@@ -217,8 +217,9 @@ number (12345) must be entered before the user and password:
 </pre> 
 </p>
 
-<p><b>Example 2:</b> The following, sent in by a user, clears the username field before username and password
-autotype begins. Non-empty username fields are very common. Some 
+<p><b>Example 2:</b> The following, sent in by a user, clears the username
+field before username and password
+Autotype begins. Non-empty username fields are very common. Some 
 sites remember the username even when the user does not want it to or 
 user forgets to clear the don't remember username and, because of 
 browser cookies, it is remembered anyway, or if login fails for whatever 

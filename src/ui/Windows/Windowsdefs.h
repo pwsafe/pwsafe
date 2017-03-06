@@ -98,8 +98,13 @@ rectangle.
 // DragBar time interval 
 #define TIMER_DRAGBAR_TIME 100
 
-// HotKey value ID to maximum value allowed by Windows for an app.
+// HotKey values ID starting at maximum value allowed by Windows for an app.
 #define PWS_HOTKEY_ID      0xBFFF
+#define PWS_AT_HOTKEY_ID   0xBFFE
+
+// Autotype HotKey (fixed) Shift+Ctrl+T [In Windows format as defined in HKModifiers.h]
+#define AUTOTYPE_HOTKEY_MODIFIERS  6
+#define AUTOTYPE_HOTKEY_KEYCODE    0x54
 
 // Arbitrary string to mean that the saved DB preferences are empty.
 #define EMPTYSAVEDDBPREFS L"#Empty#"

@@ -234,6 +234,9 @@ int DboxMain::RestoreSafe()
   // Clear application data
   ClearAppData();
 
+  // If we temporarily removed menu shortcuts due to conflicts - put them back
+  RestoreMenuShortcuts();
+
   // Validate it unless user says NO
   CReport Rpt;
   rc = m_core.ReadFile(sx_backup, sx_passkey, !m_bNoValidation, MAXTEXTCHARS, &Rpt);
@@ -268,20 +271,25 @@ void DboxMain::OnOptions()
   const StringX sxOldDBPrefsString(prefs->Store());
 
   // Save HotKey info
-  BOOL bAppHotKeyEnabled;
+  BOOL bAppHotKeyEnabled, bAutotypeHotKeyEnabled;
   int32 iPWSHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
+
   // Can't be enabled if not set!
-  if (iPWSHotKeyValue == 0)
+  if (iPWSHotKeyValue == 0) {
     bAppHotKeyEnabled = FALSE;
-  else
+  } else {
     bAppHotKeyEnabled = prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
+  }
+
+  bAutotypeHotKeyEnabled = prefs->GetPref(PWSprefs::EnableAutotypeHotKey) ? TRUE : FALSE;
 
   // Get current status of how the user wants to the initial display
   bool bTreeOpenStatus = prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen) != PWSprefs::AsPerLastSave;
 
   // Disable HotKey around this as the user may press the current key when 
   // selecting the new key!
-  UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID); // clear last - never hurts
+  UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID);    // clear last - never hurts
+  UnregisterHotKey(m_hWnd, PWS_AT_HOTKEY_ID); // clear last - never hurts
 
   COptions_PropertySheet *pOptionsPS(NULL);
   
@@ -311,6 +319,9 @@ void DboxMain::OnOptions()
     // set these new values
     bAppHotKeyEnabled = pOptionsPS->GetHotKeyState();
     iPWSHotKeyValue = pOptionsPS->GetHotKeyValue();
+
+    // Is Autotype HotKey enabled?
+    bAutotypeHotKeyEnabled = pOptionsPS->GetAutotypeHotKeyState();
 
     // Update status bar
     UINT uiMessage(IDSC_STATCOMPANY);
@@ -634,9 +645,10 @@ void DboxMain::OnOptions()
   if (bAppHotKeyEnabled == TRUE) {
     // Only set if valid i.e. a character plus at least Alt or Ctrl
     if (wVirtualKeyCode != 0 && (wModifiers & (MOD_ALT | MOD_CONTROL)) != 0) {
-      BOOL brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
-                                UINT(wModifiers), UINT(wVirtualKeyCode));
-      if (brc == FALSE) {
+      m_bAppHotKeyEnabled = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
+                                UINT(wModifiers), UINT(wVirtualKeyCode)) == TRUE;
+
+      if (!m_bAppHotKeyEnabled) {
         CGeneralMsgBox gmb;
         gmb.AfxMessageBox(IDS_NOHOTKEY, MB_OK);
         bAppHotKeyEnabled = FALSE;
@@ -644,9 +656,28 @@ void DboxMain::OnOptions()
     } else {
       bAppHotKeyEnabled = FALSE;
     }
+
+    m_bAppHotKeyEnabled = bAppHotKeyEnabled == TRUE;
   }
+
   // Just in case we reset this being enabled
   prefs->SetPref(PWSprefs::HotKeyEnabled, bAppHotKeyEnabled == TRUE);
+
+  if (bAutotypeHotKeyEnabled == TRUE) {
+    m_bAutotypeHotKeyEnabled = RegisterHotKey(m_hWnd, PWS_AT_HOTKEY_ID,
+                        UINT(AUTOTYPE_HOTKEY_MODIFIERS), UINT(AUTOTYPE_HOTKEY_KEYCODE)) == TRUE;
+
+    if (!m_bAutotypeHotKeyEnabled) {
+      CGeneralMsgBox gmb;
+      gmb.AfxMessageBox(IDS_NOHOTKEY, MB_OK);
+      bAutotypeHotKeyEnabled = FALSE;
+    }
+
+    m_bAutotypeHotKeyEnabled = bAutotypeHotKeyEnabled == TRUE;
+  }
+
+  // Just in case we reset this being enabled
+  prefs->SetPref(PWSprefs::EnableAutotypeHotKey, bAutotypeHotKeyEnabled == TRUE);
 
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), usPrefs);

@@ -951,8 +951,9 @@ void XMLFileHandlers::AddXMLEntries()
         m_prpt->WriteLine(sxTemp.c_str());
         m_numShortcutsRemoved++;
       }
+
       // Check if already in use as an the PaswordSafe Application HotKey
-      if (m_pXMLcore->GetAppHotKey() == iKBShortcut) {
+      if (m_pXMLcore->GetAppHotKey() != 0 && m_pXMLcore->GetAppHotKey() == iKBShortcut) {
         // Remove it
         ci_temp.SetKBShortcut(0);
 
@@ -960,6 +961,19 @@ void XMLFileHandlers::AddXMLEntries()
         StringX sxTemp, sxImported;
         LoadAString(sxImported, IDSC_IMPORTED);
         Format(sxTemp, IDSC_KBSHORTCUT_USEBYAPP, sxImported.c_str(), sxImportedEntry.c_str());
+        m_prpt->WriteLine(sxTemp.c_str());
+        m_numShortcutsRemoved++;
+      }
+
+      // Now check against the Autotype HotKey
+      if (m_pXMLcore->GetAutotypeHotKey() != 0 && m_pXMLcore->GetAutotypeHotKey() == iKBShortcut) {
+        // Remove it
+        ci_temp.SetKBShortcut(0);
+
+        // Tell the user via the report
+        StringX sxTemp, sx_Imported;
+        LoadAString(sx_Imported, IDSC_IMPORTED);
+        Format(sxTemp, IDSC_KBSHORTCUT_RESERVED, sx_Imported.c_str(), sxImportedEntry.c_str());
         m_prpt->WriteLine(sxTemp.c_str());
         m_numShortcutsRemoved++;
       }

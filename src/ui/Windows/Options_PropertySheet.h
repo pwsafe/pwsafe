@@ -40,6 +40,7 @@ public:
   int GetPWHAction() const {return m_OPTMD.PWHAction;}
   int GetPWHistoryMax() const {return m_OPTMD.PWHistoryNumDefault;}
   bool GetHotKeyState() const {return m_OPTMD.AppHotKeyEnabled == TRUE;}
+  bool GetAutotypeHotKeyState() const { return m_OPTMD.AutotypeHotKeyEnabled == TRUE; }
   bool GetEnableGrid() const {return m_OPTMD.EnableGrid == TRUE;}
   bool GetNotesAsTips() const {return m_OPTMD.ShowNotesAsTipsInViews == TRUE;}
   bool RefreshViews() {return m_bRefreshViews;}

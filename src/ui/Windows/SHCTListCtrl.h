@@ -31,7 +31,7 @@ public:
   void SaveHotKey();
   bool IsHotKeyActive() {return m_bHotKeyActive;}
 
-  void OnMenuShortcutKillFocus(const WORD wVirtualKeyCode, const WORD wModifiers);
+  bool OnLCMenuShortcutKillFocus(WORD &wVirtualKeyCode, WORD &wModifiers);
 
 protected:
   //{{AFX_MSG(CSHCTListCtrlX)
