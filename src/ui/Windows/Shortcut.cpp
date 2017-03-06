@@ -124,10 +124,8 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
          the icon and the index of the icon */
       if (!IconLocation.IsEmpty()) {
         HRESULT hr = psl->SetIconLocation(IconLocation, IconIndex);
-#ifdef _DEBUG
         if (FAILED(hr))
           pws_os::Trace(L"IconLocation not changed!\n");
-#endif
       }
 
       if (SUCCEEDED(ppf->Save(sSpecialFolder, TRUE)))

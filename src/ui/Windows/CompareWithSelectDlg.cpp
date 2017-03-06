@@ -84,10 +84,9 @@ BOOL CCompareWithSelectDlg::OnInitDialog()
 
   m_pImageList = new CImageList();
 
-  BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight,
-                                     ILC_MASK | ILC_COLORDDB,
-                                     CCWTreeCtrl::NUM_IMAGES, 0);
-  ASSERT(status != 0);
+  VERIFY(m_pImageList->Create(bm.bmWidth, bm.bmHeight,
+                              ILC_MASK | ILC_COLORDDB,
+                              CCWTreeCtrl::NUM_IMAGES, 0) != 0);
 
   // Order of LoadBitmap() calls matches CCWTreeCtrl public enum
   //bitmap.LoadBitmap(IDB_GROUP); - already loaded above to get width

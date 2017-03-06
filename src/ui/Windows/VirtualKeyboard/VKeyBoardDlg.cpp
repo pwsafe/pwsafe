@@ -1719,8 +1719,7 @@ void CVKeyBoardDlg::GetAllKeyboardsAvailable()
 
 void CVKeyBoardDlg::ProcessKeyboard(const UINT uiKLID, const bool bSetType)
 {
-  BOOL brc = m_pGetKBData(uiKLID, m_stKBImpl);
-  ASSERT(brc);
+  VERIFY(m_pGetKBData(uiKLID, m_stKBImpl));
 
   // Reset numbers and scan codes
   m_bRandom = false;

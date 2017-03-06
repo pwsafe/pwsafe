@@ -135,11 +135,9 @@ BOOL CExpPWListDlg::OnInitDialog()
 
   m_pImageList = new CImageList();
   // Number (12) corresponds to number in CPWTreeCtrl public enum
-  BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight,
-                                     ILC_MASK | ILC_COLORDDB,
-                                     CPWTreeCtrl::NUM_IMAGES, 0);
-  ASSERT(status != 0);
-
+  VERIFY(m_pImageList->Create(bm.bmWidth, bm.bmHeight,
+                              ILC_MASK | ILC_COLORDDB,
+                              CPWTreeCtrl::NUM_IMAGES, 0));
   // Order of LoadBitmap() calls matches CPWTreeCtrl public enum
   // Also now used by CListCtrl!
   //bitmap.LoadBitmap(IDB_GROUP); - already loaded above to get width
