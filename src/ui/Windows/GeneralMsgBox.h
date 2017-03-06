@@ -40,13 +40,6 @@
 #include "RichEditCtrlExtn.h"
 #include "PWDialog.h"
 
-// If not compiled for Windows XP or later
-#if (WINVER < 0x0501)
-#ifndef IDTIMEOUT
-#define IDTIMEOUT 32000
-#endif
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // CGeneralMsgBox
 

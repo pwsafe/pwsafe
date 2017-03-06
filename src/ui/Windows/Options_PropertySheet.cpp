@@ -285,7 +285,7 @@ void COptions_PropertySheet::UpdateCopyPreferences()
                  m_OPTMD.MaxNumIncBackups, true);
   if (!m_OPTMD.UserBackupOtherLocation.IsEmpty()) {
     // Make sure it ends in a slash!
-    if (m_OPTMD.UserBackupOtherLocation.Right(1) != CSecString(L'\\'))
+    if (m_OPTMD.UserBackupOtherLocation.Right(1) != CSecString(L"\\"))
       m_OPTMD.UserBackupOtherLocation += L'\\';
   }
   prefs->SetPref(PWSprefs::BackupDir,

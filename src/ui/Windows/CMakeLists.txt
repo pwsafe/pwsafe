@@ -54,6 +54,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/Fonts.h
             src/ui/Windows/FontsDialog.h
             src/ui/Windows/GeneralMsgBox.h
+            src/ui/Windows/GridListCtrl.h
             src/ui/Windows/HKModifiers.h
             src/ui/Windows/ImgStatic.h
             src/ui/Windows/ImportTextDlg.h
@@ -196,6 +197,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/Fonts.cpp
             src/ui/Windows/FontsDialog.cpp
             src/ui/Windows/GeneralMsgBox.cpp
+            src/ui/Windows/GridListCtrl.cpp
             src/ui/Windows/ImgStatic.cpp
             src/ui/Windows/ImportTextDlg.cpp
             src/ui/Windows/ImportXMLDlg.cpp

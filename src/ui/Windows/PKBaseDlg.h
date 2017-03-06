@@ -50,8 +50,6 @@ protected:
   int m_index;
   bool m_bVKAvailable;
 
-  CToolTipCtrl *m_pToolTipCtrl;
-
   // Generated message map functions
   //{{AFX_MSG(CPKBaseDlg)
   afx_msg void OnDestroy();

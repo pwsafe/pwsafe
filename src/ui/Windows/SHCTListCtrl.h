@@ -9,6 +9,7 @@
 #pragma once
 
 #include "PWTouch.h"
+#include "GridListCtrl.h"
 #include "MenuShortcuts.h"
 
 class COptionsShortcuts;
@@ -19,7 +20,7 @@ class CSHCTHotKey;
 #define SHCT_MENUITEMTEXT  1
 #define SHCT_NUM_COLUMNS   2
 
-class CSHCTListCtrlX : public CListCtrl
+class CSHCTListCtrlX : public CGridListCtrl
 {
 public:
   CSHCTListCtrlX();

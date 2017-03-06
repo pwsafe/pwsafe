@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "Windowsdefs.h"
 #include "PWPropertyPage.h"
 #include "SecString.h"
 #include "ControlExtns.h"
