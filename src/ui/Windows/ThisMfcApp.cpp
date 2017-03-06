@@ -1567,7 +1567,7 @@ void ThisMfcApp::GetLanguageFiles()
     //                               012345678901           012345678901234
     // length should be either 10+2 (pwsafeLL.dll) or 10+5 (pwsafeLL_CC.dll)
     int len = cs_dll.GetLength();
-    ASSERT(len == 12 || len == 15);
+
     if (len != 12 && len != 15)
       continue;
 
