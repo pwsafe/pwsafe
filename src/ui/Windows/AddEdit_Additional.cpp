@@ -436,10 +436,8 @@ void CAddEdit_Additional::OnEntryHotKeySetFocus()
   
   // If PWS Application has an active Hot Key, disable it when user
   // is potentially editing this entry's Hot Key
-  BOOL brc = UnregisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID);
+  VERIFY(UnregisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID));
 
-  ASSERT(brc);
-  
   m_bAppHotKeyEnabled = false;
 }
 

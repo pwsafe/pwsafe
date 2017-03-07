@@ -690,8 +690,7 @@ void CManagePSWDPols::OnPolicyRightClick(NMHDR * /*pNotifyStruct*/, LRESULT *pLR
     minfo.cbSize = sizeof(MENUINFO);
     minfo.fMask = MIM_MENUDATA;
     minfo.dwMenuData = ipopup;
-    BOOL brc = menu.SetMenuInfo(&minfo);
-    ASSERT(brc != 0);
+    VERIFY(menu.SetMenuInfo(&minfo));
 
     CMenu *pPopup = menu.GetSubMenu(0);
     ASSERT(pPopup != NULL);

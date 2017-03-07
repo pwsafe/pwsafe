@@ -1485,8 +1485,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
 
   const HTREEITEM hItemNew = pdiold->tree_item;
 
-  DisplayInfo *pdinew = GetEntryGUIInfo(ci_new);
-  ASSERT(pdinew != NULL);
+  ASSERT(GetEntryGUIInfo(ci_new) != nullptr);
 
   pws_os::Trace(L"UpdateEntry new %08x\n", hItemNew);
 

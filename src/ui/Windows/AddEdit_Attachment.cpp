@@ -262,8 +262,7 @@ void CAddEdit_Attachment::OnAttImport()
 
   // Get file information
   struct _stati64 info;
-  int rc = _wstati64(m_AttFileName, &info);
-  ASSERT(rc == 0);
+  VERIFY(_wstati64(m_AttFileName, &info) == 0);
 
   m_csFileCTime = PWSUtil::ConvertToDateTimeString(info.st_ctime, PWSUtil::TMC_LOCALE).c_str();
   m_csFileMTime = PWSUtil::ConvertToDateTimeString(info.st_mtime, PWSUtil::TMC_LOCALE).c_str();

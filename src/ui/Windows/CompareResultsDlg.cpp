@@ -165,8 +165,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
     if (m_bsFields.test(OptCols[i].ft)) {
       cs_header.LoadString(OptCols[i].ids);
       // Add on the end
-      int icol = m_LCResults.InsertColumn(LAST, cs_header, LVCFMT_CENTER);
-      ASSERT(icol != -1);
+      VERIFY(m_LCResults.InsertColumn(LAST, cs_header, LVCFMT_CENTER) != -1);
     }
   }
 
@@ -952,8 +951,7 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *pNMHDR, LRESULT *pLResult)
       minfo.cbSize = sizeof(MENUINFO);
       minfo.fMask = MIM_MENUDATA;
       minfo.dwMenuData = ipopup;
-      BOOL brc = menu.SetMenuInfo(&minfo);
-      ASSERT(brc != 0);
+      VERIFY(menu.SetMenuInfo(&minfo));
 
       CMenu *pPopup = menu.GetSubMenu(0);
       ASSERT(pPopup != NULL);
@@ -1007,8 +1005,7 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *pNMHDR, LRESULT *pLResult)
     minfo.cbSize = sizeof(MENUINFO);
     minfo.fMask = MIM_MENUDATA;
     minfo.dwMenuData = ipopup;
-    BOOL brc = menu.SetMenuInfo(&minfo);
-    ASSERT(brc != 0);
+    VERIFY(menu.SetMenuInfo(&minfo));
 
     CMenu *pPopup = menu.GetSubMenu(0);
     ASSERT(pPopup != NULL);

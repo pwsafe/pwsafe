@@ -62,9 +62,8 @@ CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
   bitmap.GetBitmap(&bm); // should be 13 x 13
 
   m_pCheckImageList = new CImageList;
-  BOOL status = m_pCheckImageList->Create(bm.bmWidth, bm.bmHeight,
-                                     ILC_MASK | ILC_COLOR, 4, 0);
-  ASSERT(status != 0);
+  VERIFY(m_pCheckImageList->Create(bm.bmWidth, bm.bmHeight,
+                                   ILC_MASK | ILC_COLOR, 4, 0));
 
   m_pCheckImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();

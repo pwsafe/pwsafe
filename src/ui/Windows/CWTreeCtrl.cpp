@@ -54,8 +54,7 @@ bool CCWTreeCtrl::IsLeaf(HTREEITEM hItem) const
 {
   // ItemHasChildren() won't work in the general case
   int i, dummy;
-  BOOL status = GetItemImage(hItem, i, dummy);
-  ASSERT(status);
+  VERIFY(GetItemImage(hItem, i, dummy));
   return (i != GROUP);
 }
 

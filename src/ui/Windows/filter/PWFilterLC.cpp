@@ -95,9 +95,8 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const FilterType &fi
   bitmap.GetBitmap(&bm); // should be 13 x 13
 
   m_pCheckImageList = new CImageList;
-  BOOL status = m_pCheckImageList->Create(bm.bmWidth, bm.bmHeight,
-                                     ILC_MASK | ILC_COLOR, 2, 0);
-  ASSERT(status != 0);
+  VERIFY(m_pCheckImageList->Create(bm.bmWidth, bm.bmHeight,
+                                   ILC_MASK | ILC_COLOR, 2, 0));
 
   m_pCheckImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
@@ -195,9 +194,7 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const FilterType &fi
   // Create ComboBox
   CRect rc(0, 0, 10, 10);
   const DWORD dwStyle = CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE | WS_VSCROLL;
-  BOOL bSuccess = m_ComboBox.Create(dwStyle, rc, this, 0);
-
-  ASSERT(bSuccess);
+  VERIFY(m_ComboBox.Create(dwStyle, rc, this, 0));
 
   // Default is hidden & disabled
   m_ComboBox.EnableWindow(FALSE);

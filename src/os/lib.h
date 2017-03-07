@@ -20,7 +20,12 @@ namespace pws_os {
    *
    * Linux: 'type' maps to 'flags' for dlopen()
    */
-   enum loadLibraryTypes { LOAD_LIBRARY_SYS, LOAD_LIBRARY_APP, LOAD_LIBRARY_CUSTOM };
+   enum loadLibraryTypes { 
+	   LOAD_LIBRARY_SYS, 
+	   LOAD_LIBRARY_APP, 
+	   LOAD_LIBRARY_CUSTOM,
+	   LOAD_LIBRARY_RESOURCE
+   };
    extern void *LoadLibrary(const TCHAR *lib, int type);
    extern void *GetFunction(void *handle, const char *name);
    extern bool FreeLibrary(void *handle);

@@ -709,8 +709,7 @@ void DboxMain::UpdateListItemField(const int lindex, const int type, const Strin
   if (iSubItem < 0)
     return;
 
-  BOOL brc = m_ctlItemList.SetItemText(lindex, iSubItem, newText.c_str());
-  ASSERT(brc == TRUE);
+  VERIFY(m_ctlItemList.SetItemText(lindex, iSubItem, newText.c_str()));
   if (m_iTypeSortColumn == type) { // resort if necessary
     m_bSortAscending = PWSprefs::GetInstance()->GetPref(PWSprefs::SortAscending);
     m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
@@ -1931,8 +1930,7 @@ CItemData *DboxMain::getSelectedItem()
       int i = m_ctlItemList.GetNextSelectedItem(pos);
       pci = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(pci != NULL);
-      DisplayInfo *pdi = GetEntryGUIInfo(*pci);
-      ASSERT(pdi != NULL && pdi->list_index == i);
+      ASSERT(GetEntryGUIInfo(*pci) != NULL && GetEntryGUIInfo(*pci)->list_index == i);
     }
   } else { // tree view; go from HTREEITEM to index
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
@@ -4205,8 +4203,7 @@ void DboxMain::UpdateEntryImages(const CItemData &ci, bool bAllowFail)
   } else { // deleted item, remove from display
     m_ctlItemList.DeleteItem(pdi->list_index);
     m_ctlItemTree.DeleteItem(pdi->tree_item);
-    size_t i = m_MapEntryToGUI.erase(ci.GetUUID());
-    ASSERT(i == 1);
+    VERIFY(m_MapEntryToGUI.erase(ci.GetUUID()) == 1);
   }
 }
 
@@ -4613,14 +4610,11 @@ void DboxMain::RemoveFromGUI(CItemData &ci)
     return;
   }
 
-  CItemData *pci2 = &iter->second;
-  DisplayInfo *pdi2 = GetEntryGUIInfo(*pci2);
-
   DisplayInfo *pdi = GetEntryGUIInfo(ci, true);
 
   if (pdi != NULL) {
-    ASSERT(pdi2->list_index == pdi->list_index &&
-           pdi2->tree_item == pdi->tree_item);
+    ASSERT(GetEntryGUIInfo(iter->second)->list_index == pdi->list_index &&
+           GetEntryGUIInfo(iter->second)->tree_item == pdi->tree_item);
 
     HTREEITEM hItem = m_ctlItemTree.GetNextItem(pdi->tree_item,
                             TVGN_PREVIOUSVISIBLE);
@@ -4640,8 +4634,7 @@ void DboxMain::RemoveFromGUI(CItemData &ci)
     }
 
     // Now remove from map
-    size_t num = m_MapEntryToGUI.erase(ci.GetUUID());
-    ASSERT(num == 1);
+    VERIFY(m_MapEntryToGUI.erase(ci.GetUUID()) == 1);
 
     FixListIndexes(); // sucks, as make M deletions an NxM operation
     m_ctlItemList.Invalidate();
@@ -4770,8 +4763,7 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
       int i = m_ctlItemList.GetNextSelectedItem(pos);
       pci = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(pci != NULL);  // No groups in List View
-      DisplayInfo *pdi = GetEntryGUIInfo(*pci, true);
-      ASSERT(pdi != NULL && pdi->list_index == i);
+      ASSERT(GetEntryGUIInfo(*pci, true) != NULL && GetEntryGUIInfo(*pci, true)->list_index == i);
       m_LUUIDSelectedAtMinimize = pci->GetUUID();
     } // pos != 0
 
@@ -4783,8 +4775,7 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
     if (i >= 0 && i < m_ctlItemList.GetItemCount()) {
       pci = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(pci != NULL);  // No groups in List View
-      DisplayInfo *pdi = GetEntryGUIInfo(*pci, true);
-      ASSERT(pdi != NULL && pdi->list_index == i);
+      ASSERT(GetEntryGUIInfo(*pci, true) != NULL && GetEntryGUIInfo(*pci, true)->list_index == i);
       m_LUUIDVisibleAtMinimize = pci->GetUUID();
     } // i >= 0
   }

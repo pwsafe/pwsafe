@@ -1019,8 +1019,7 @@ struct CSecEditExtn::Impl {
     // Following to clear the keyboard buffer
     BYTE bytKeyBoardState[256] = {0};
     
-    BOOL brc = ::SetKeyboardState(bytKeyBoardState);
-    ASSERT(brc);
+    VERIFY(::SetKeyboardState(bytKeyBoardState));
   }
   CItemField m_field;
   BlowFish *m_bf;
