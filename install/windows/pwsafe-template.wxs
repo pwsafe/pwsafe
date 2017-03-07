@@ -19,12 +19,14 @@
     <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
     <?define Architecture = "64-bit" ?>
     <?define BinDir = "build\bin\pwsafe\release64" ?>
+    <?define LangDir = "build\bin\pwsafe\I18N64" ?>
   <?else ?>
     <?define ProductName = "Password Safe $(var.PWSAFE_VERSION) for Windows (32 bit)" ?>
     <?define Win64 = "no" ?>
     <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
     <?define Architecture = "32-bit" ?>
     <?define BinDir = "build\bin\pwsafe\release" ?>
+    <?define LangDir = "build\bin\pwsafe\I18N" ?>
   <?endif ?>
 
   <Product Id='c2a02857-d138-446b-b181-442dee20c8e6'
@@ -111,37 +113,37 @@
 	      Source='$(var.BinDir)\pws_osk.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file15' Name='pwsafeDE.dll' DiskId='1'
-	      Source='build\bin\pwsafe\I18N\pwsafeDE.dll' Vital='yes'> 
+	      Source='$(var.LangDir)\pwsafeDE.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file16' Name='pwsafeES.dll' DiskId='1'
-	      Source='build\bin\pwsafe\I18N\pwsafeES.dll' Vital='yes'> 
+	      Source='$(var.LangDir)\pwsafeES.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file17' Name='pwsafeIT.dll' DiskId='1'
-	      Source='build\bin\pwsafe\I18N\pwsafeIT.dll' Vital='yes'> 
+	      Source='$(var.LangDir)\pwsafeIT.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file18' Name='pwsafePL.dll' DiskId='1'
-	      Source='build\bin\pwsafe\I18N\pwsafePL.dll' Vital='yes'> 
+	      Source='$(var.LangDir)\pwsafePL.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file19' Name='pwsafeRU.dll' DiskId='1'
-	      Source='build\bin\pwsafe\I18N\pwsafeRU.dll' Vital='yes'> 
+	      Source='$(var.LangDir)\pwsafeRU.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file20' Name='pwsafeSV.dll' DiskId='1'
-	      Source='build\bin\pwsafe\I18N\pwsafeSV.dll' Vital='yes'> 
+	      Source='$(var.LangDir)\pwsafeSV.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file21' Name='pwsafeZH.dll' DiskId='1'
-	      Source='build\bin\pwsafe\I18N\pwsafeZH.dll' Vital='yes'> 
+	      Source='$(var.LangDir)\pwsafeZH.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file22' Name='pwsafeKO.dll' DiskId='1'
-	      Source='build\bin\pwsafe\I18N\pwsafeKO.dll' Vital='yes'> 
+	      Source='$(var.LangDir)\pwsafeKO.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file23' Name='pwsafeNL.dll' DiskId='1'
-	      Source='build\bin\pwsafe\I18N\pwsafeNL.dll' Vital='yes'> 
+	      Source='$(var.LangDir)\pwsafeNL.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file24' Name='pwsafeDA.dll' DiskId='1'
-	      Source='build\bin\pwsafe\I18N\pwsafeDA.dll' Vital='yes'> 
+	      Source='$(var.LangDir)\pwsafeDA.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file25' Name='pwsafeFR.dll' DiskId='1'
-	      Source='build\bin\pwsafe\I18N\pwsafeFR.dll' Vital='yes'> 
+	      Source='$(var.LangDir)\pwsafeFR.dll' Vital='yes'> 
 	    </File>
 	  </Component>
 	  <Component Id='SupportingFiles'

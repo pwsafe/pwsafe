@@ -164,7 +164,6 @@
 ;Variables
 
   Var INSTALL_TYPE
-  Var TARGET_ARCH ; 32-bit or 64-bit
   
   ;Request application privileges for Windows Vista and later.
   RequestExecutionLevel admin
@@ -192,6 +191,9 @@
     ; Name and file
     Name "Password Safe ${VERSION} (32-bit)"
     BrandingText "PasswordSafe ${VERSION} (32-bit) Installer"
+    !define LANG_DLL "..\..\build\bin\pwsafe\I18N"
+    !define BIN_DIR "..\..\build\bin\pwsafe\release"
+    !define TARGET_ARCH "(32-bit)"
     !echo "Building x86 installer"
   !else if ${ARCH} == "x64" 
     OutFile "pwsafe64-${VERSION}.exe"
@@ -199,6 +201,9 @@
     ; Name and file
     Name "Password Safe ${VERSION} (64-bit)"
     BrandingText "PasswordSafe ${VERSION} (64-bit) Installer"
+    !define LANG_DLL "..\..\build\bin\pwsafe\I18N64"
+    !define BIN_DIR "..\..\build\bin\pwsafe\release64"
+    !define TARGET_ARCH "(64-bit)"
     !echo "Building x64 installer"
   !else
     !error "ARCH must be either x86 or x64"
@@ -338,18 +343,9 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the install.
-  ${If} ${ARCH} == "x86"
-    StrCpy $TARGET_ARCH "(32-bit)"
-    File "..\..\build\bin\pwsafe\release\pwsafe.exe"
-    File "..\..\build\bin\pwsafe\release\pws_at.dll"
-    File "..\..\build\bin\pwsafe\release\pws_osk.dll"
-  ${EndIf}
-  ${If} ${ARCH} == "x64"  
-    StrCpy $TARGET_ARCH "(64-bit)"
-    File "..\..\build\bin\pwsafe\release64\pwsafe.exe"
-    File "..\..\build\bin\pwsafe\release64\pws_at.dll"
-    File "..\..\build\bin\pwsafe\release64\pws_osk.dll"
-  ${EndIf}
+  File "${BIN_DIR}\pwsafe.exe"
+  File "${BIN_DIR}\pws_at.dll"
+  File "${BIN_DIR}\pws_osk.dll"
   File "..\..\help\default\pwsafe.chm"
   File "..\..\LICENSE"
   File "..\..\README.TXT"
@@ -381,7 +377,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   ; current user doesn't have permission to write to HKLM, then the
   ; uninstaller will not appear in the Add or Remove Programs window.
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
-        "DisplayName" "Password Safe $TARGET_ARCH"
+        "DisplayName" "Password Safe ${TARGET_ARCH}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
         "DisplayIcon" "$INSTDIR\pwsafe.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
@@ -407,77 +403,77 @@ Section  "$(ENGLISH_SUPPORT)" EnglishSection
 SectionEnd
 Section /o "$(CHINESE_CN_SUPPORT)" ChineseSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeZH.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeZH.dll"
   File /nonfatal "..\..\help\pwsafeZH\pwsafeZH.chm"
 SectionEnd
 Section /o "$(CHINESE_TW_SUPPORT)" ChineseTWSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeZH_TW.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeZH_TW.dll"
   File /nonfatal "..\..\help\pwsafeZH\pwsafeZH_TW.chm"
 SectionEnd
 Section /o "$(GERMAN_SUPPORT)" GermanSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeDE.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeDE.dll"
   File /nonfatal "..\..\help\pwsafeDE\pwsafeDE.chm"
 SectionEnd
 Section /o "$(SPANISH_SUPPORT)" SpanishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeES.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeES.dll"
   File /nonfatal "..\..\help\pwsafeES\pwsafeES.chm"
 SectionEnd
 Section /o "$(SWEDISH_SUPPORT)" SwedishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeSV.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeSV.dll"
   File /nonfatal "..\..\help\pwsafeSV\pwsafeSV.chm"
 SectionEnd
 Section /o "$(DUTCH_SUPPORT)" DutchSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeNL.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeNL.dll"
   File /nonfatal "..\..\help\pwsafeNL\pwsafeNL.chm"
 SectionEnd
 Section /o "$(FRENCH_SUPPORT)" FrenchSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeFR.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeFR.dll"
   File /nonfatal "..\..\help\pwsafeFR\pwsafeFR.chm"
 SectionEnd
 Section /o "$(RUSSIAN_SUPPORT)" RussianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeRU.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeRU.dll"
   File /nonfatal "..\..\help\pwsafeRU\pwsafeRU.chm"
 SectionEnd
 Section /o "$(POLISH_SUPPORT)" PolishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafePL.dll"
+  File /nonfatal "${LANG_DLL}\pwsafePL.dll"
   File /nonfatal "..\..\help\pwsafePL\pwsafePL.chm"
 SectionEnd
 Section /o "$(ITALIAN_SUPPORT)" ItalianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeIT.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeIT.dll"
   File /nonfatal "..\..\help\pwsafeIT\pwsafeIT.chm"
 SectionEnd
 Section /o "$(DANISH_SUPPORT)" DanishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeDA.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeDA.dll"
   File /nonfatal "..\..\help\pwsafeDA\pwsafeDA.chm"
 SectionEnd
 Section /o "$(KOREAN_SUPPORT)" KoreanSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeKO.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeKO.dll"
   File /nonfatal "..\..\help\pwsafeKO\pwsafeKO.chm"
 SectionEnd
 Section /o "$(CZECH_SUPPORT)" CzechSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeCZ.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeCZ.dll"
   File /nonfatal "..\..\help\pwsafeCZ\pwsafeCZ.chm"
 SectionEnd
 Section /o "$(TURKISH_SUPPORT)" TurkishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeTR.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeTR.dll"
   File /nonfatal "..\..\help\pwsafeTR\pwsafeTR.chm"
 SectionEnd
 Section /o "$(HUNGARIAN_SUPPORT)" HungarianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeHU.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeHU.dll"
   File /nonfatal "..\..\help\pwsafeHU\pwsafeHU.chm"
 SectionEnd
 SectionGroupEnd

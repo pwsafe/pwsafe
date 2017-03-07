@@ -45,6 +45,7 @@
 #include "os/file.h"
 #include "os/env.h"
 #include "os/lib.h"
+#include "os/debug.h"
 
 #include "Shlwapi.h"
 
@@ -372,17 +373,24 @@ void ThisMfcApp::LoadLocalizedStuff()
   cs_ResPath.Format(format_string, static_cast<LPCWSTR>(cs_LANG),
                        static_cast<LPCWSTR>(cs_CTRY));
   m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
-                                              pws_os::LOAD_LIBRARY_APP));
+                                              pws_os::LOAD_LIBRARY_RESOURCE));
 
   if (m_hInstResDLL == NULL && !cs_CTRY.IsEmpty()) {
     // Now try base
     cs_ResPath.Format(L"pwsafe%s.dll", static_cast<LPCWSTR>(cs_LANG));
     m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
-                                                pws_os::LOAD_LIBRARY_APP));
+                                                pws_os::LOAD_LIBRARY_RESOURCE));
   }
 
   if (m_hInstResDLL == NULL) {
     pws_os::Trace(L"Could not load language DLLs - using embedded resources.\n");
+    // If the requested DLL is not default English, show an error so we know the specifics.
+    // At a minimum this will show the actual error code.
+    if (!(cs_LANG == L"EN" && cs_CTRY.IsEmpty())) {
+		  CString errMessage;
+		  errMessage.Format(L"Attempt to load %s", LPCTSTR(cs_ResPath));
+		  pws_os::IssueError(LPCTSTR(errMessage));
+	  }
   } else { // successfully loaded a resource dll, check version
     DWORD dw_fileMajorMinor, dw_fileBuildRevision;
     GetVersionInfoFromFile(cs_ResPath, dw_fileMajorMinor, dw_fileBuildRevision);
