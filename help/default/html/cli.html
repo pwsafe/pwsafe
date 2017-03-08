@@ -83,6 +83,17 @@ in the <a href="preferences.html">Preferences</a> Section). Note that if the fil
 and/or path has spaces, it should be enclosed in double quotes.</li> 
 </ul>
 
+<p>Note: As the configuration file uses XML, the username and hostname must satisfy the
+XML standards:
+<ul>
+<li>The first character must be alphanumeric. If not, a "u" will be prefixed to the username
+and a "h" will be prefixed to the hostname as appropriate.</li>
+<li>They must only contain alphanumeric characters or one or more of the underscore, hyphen,
+colon or full stop characters ("_-:."). If other characters are present, they will be replaced by the
+underscore ("_").</li>
+</ul>
+</p>
+
 <p>Finally, there are some special command line flags beginning with "--".  They are:
 </p>
 

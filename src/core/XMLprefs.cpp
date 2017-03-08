@@ -62,7 +62,7 @@ bool CXMLprefs::CreateXML(bool bLoad)
     return m_pXMLDoc != NULL;
 }
 
-bool CXMLprefs::Load()
+bool CXMLprefs::XML_Load()
 {
   // Already loaded?
   if (m_pXMLDoc != NULL)
@@ -108,11 +108,27 @@ bool CXMLprefs::Load()
   return true;
 }
 
-bool CXMLprefs::Store()
+void SortPreferences(pugi::xml_node parent)
+{
+  // Sort the application preferences of this host/user (case insensitive)
+  std::vector<pugi::xml_node> children(parent.begin(), parent.end());
+
+  std::sort(children.begin(), children.end(),
+    [](pugi::xml_node l, pugi::xml_node r) {
+          return _tcsicmp(l.name(), r.name()) < 0;
+        });
+
+  for (pugi::xml_node n : children) {
+    parent.append_move(n);
+  }
+}
+
+bool CXMLprefs::XML_Store(const stringT &csBaseKeyName)
 {
   bool retval = false;
   bool alreadyLocked = m_bIsLocked;
   pugi::xml_node decl;
+  pugi::xml_node nodePrefs;
 
   if (!alreadyLocked) {
     stringT locker;
@@ -140,6 +156,10 @@ bool CXMLprefs::Store()
   decl.append_attribute(_T("version")) = _T("1.0");
   decl.append_attribute(_T("encoding")) = _T("utf-8");
   decl.append_attribute(_T("standalone")) = _T("yes");
+
+  nodePrefs = m_pXMLDoc->first_element_by_path(csBaseKeyName.c_str(), _T('\\'));
+  if (nodePrefs != NULL)
+    SortPreferences(nodePrefs);
 
   retval = m_pXMLDoc->save_file(m_csConfigFile.c_str(), _T("  "),
                          pugi::format_default | pugi::format_write_bom,
@@ -212,8 +232,9 @@ int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue)
   pugi::xml_node prefnode = (node.first_child().type() == pugi::node_pcdata) ?
      node.first_child() : node.append_child(pugi::node_pcdata);
 
-  if (!prefnode.set_value(sValue.c_str()))
-     iRetVal = XML_PUT_TEXT_FAILED;
+  if (!prefnode.set_value(sValue.c_str())) {
+    iRetVal = XML_PUT_TEXT_FAILED;
+  }
 
   return iRetVal;
 }
@@ -375,7 +396,7 @@ std::vector<st_prefShortcut> CXMLprefs::GetShortcuts(const stringT &csBaseKeyNam
     cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_SHIFT;
 
     // wxWidgets only - set values so not lost in XML file 
-    // but not use them in Windows MFC - they are never tested in MFC code
+    // but not used in Windows MFC - they are never tested in MFC code
     // when creating the necessary hotkeys/shortcuts
     itemp = shortcut.attribute(_T("Win")).as_int();
     cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_WIN;
