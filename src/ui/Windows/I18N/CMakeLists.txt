@@ -15,7 +15,7 @@ set (RESPWSL "${TOOLS_BIN_DIR}/ResPWSL/Release/ResPWSL.exe")
 string (REGEX REPLACE "(..)" "pos/pwsafe_\\1.po; " POS ${LANGS})
 
 set (BASE_DLL
-     "${CMAKE_BINARY_DIR}/src/ui/Windows/language/Release/pwsafe_base.dll")
+     "${CMAKE_BINARY_DIR}/Release/pwsafe_base.dll")
 
 set (DLL_DIR "${CMAKE_BINARY_DIR}/bin")
 
@@ -85,26 +85,26 @@ macro( make_dll LANG CODE OUT)
                      COMMAND "${RESTEXT}" "apply" "${BASE_DLL}"
                              "foo.dll" "${CMAKE_CURRENT_SOURCE_DIR}/pos/pwsafe_${LANG}.po"
                      COMMAND "${RESPWSL}" "apply" "foo.dll" "${CODE}"
-                     COMMAND "DEL" "foo.dll"
+                     COMMAND "DEL" "foo.dll" "pwsafe${UCLANG}.dll"
                      COMMAND "REN" "pwsafe${OUT}.dll" "pwsafe${UCLANG}.dll"
                      WORKING_DIRECTORY ${DLL_DIR}
                      COMMENT "Making pwsafe${UCLANG}.dll"
                      )
 endmacro( make_dll LANG CODE )
 
-make_dll( "de" "0x0407" "DE_DE")
-make_dll( "sv" "0x041d" "SV_SE")
-make_dll( "es" "0x0c0a" "ES_ES")
-make_dll( "pl" "0x0415" "PL_PL")
-make_dll( "zh" "0x0804" "ZH_CN")
-make_dll( "ru" "0x0419" "RU_RU")
-make_dll( "it" "0x0410" "IT_IT")
-make_dll( "fr" "0x040c" "FR_FR")
+make_dll( "cz" "0x0405" "CS_CZ")
 make_dll( "da" "0x0406" "DA_DK")
+make_dll( "de" "0x0407" "DE_DE")
+make_dll( "es" "0x0c0a" "ES_ES")
+make_dll( "fr" "0x040c" "FR_FR")
+make_dll( "hu" "0x040e" "HU_HU")
+make_dll( "it" "0x0410" "IT_IT")
 make_dll( "kr" "0x0412" "KO_KR")
 make_dll( "nl" "0x0413" "NL_NL")
-make_dll( "cz" "0x0405" "CS_CZ")
+make_dll( "pl" "0x0415" "PL_PL")
+make_dll( "ru" "0x0419" "RU_RU")
+make_dll( "sv" "0x041d" "SV_SE")
 make_dll( "tr" "0x041f" "TR_TR")
-make_dll( "hu" "0x040e" "HU_HU")
+make_dll( "zh" "0x0804" "ZH_CN")
 
 set_property( TARGET dlls PROPERTY FOLDER I18N )
