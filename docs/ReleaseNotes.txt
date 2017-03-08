@@ -17,6 +17,7 @@ Bugs fixed in 3.41.1
 ====================
 [] Fix issue when locking database when not using the System Tray.
 [] Fix empty group validation on DB open.
+[G288] Changes to default password policy now persistent under V4 databases.
 [1395] PasswordSafe now correctly duplicates a group containing both a base entry and
 its dependent i.e. shortcut or alias.
 [1393] Correctly handle opening a locked database, which is open in R/W by another user.

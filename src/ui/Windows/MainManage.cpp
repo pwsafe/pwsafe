@@ -500,7 +500,7 @@ void DboxMain::OnOptions()
       m_iTreeHBarPos = m_ctlItemTree.GetScrollPos(SB_HORZ);
     }
 
-    if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+    if (m_core.GetReadFileVersion() >= PWSfile::V30) { // older versions don't have prefs
       if (sxOldDBPrefsString != sxNewDBPrefsString) {
         // Determine whether Tree needs redisplaying due to change
         // in what is shown (e.g. usernames/passwords)
@@ -730,7 +730,7 @@ void DboxMain::OnManagePasswordPolicies()
       StringX sxNewDBPrefsString(PWSprefs::GetInstance()->Store(true));
 
       // Set up Command to update string in database
-      if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+      if (m_core.GetReadFileVersion() >= PWSfile::V30) { // older versions don't have prefs
         Command *pcmd_undo = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
         pmulticmds->Add(pcmd_undo);
       }
