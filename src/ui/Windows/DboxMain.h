@@ -427,7 +427,8 @@ public:
   const std::vector<UINT> &GetExcludedMenuItems() {return m_ExcludedMenuItems;}
   const std::vector<st_MenuShortcut> &GetReservedShortcuts() {return m_ReservedShortcuts;}
   const unsigned int GetMenuShortcut(const unsigned short int &siVirtKey,
-                                     const unsigned char &cModifier, StringX &sxMenuItemName);
+                                     const unsigned char &cModifier, StringX &sxMenuItemName,
+                                     MapMenuShortcuts *pMapMenuShortcuts = NULL);
   
   bool ChangeMode(bool promptUser); // r-o <-> r/w
 

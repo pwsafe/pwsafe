@@ -642,6 +642,7 @@ void DboxMain::OnOptions()
   int32 iAppShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
   m_core.SetAppHotKey(iAppShortcut);
 
+  bool bHotKeyInUseMessage(false);
   if (bAppHotKeyEnabled == TRUE) {
     // Only set if valid i.e. a character plus at least Alt or Ctrl
     if (wVirtualKeyCode != 0 && (wModifiers & (MOD_ALT | MOD_CONTROL)) != 0) {
@@ -652,6 +653,7 @@ void DboxMain::OnOptions()
         CGeneralMsgBox gmb;
         gmb.AfxMessageBox(IDS_NOHOTKEY, MB_OK);
         bAppHotKeyEnabled = FALSE;
+        bHotKeyInUseMessage = true;
       }
     } else {
       bAppHotKeyEnabled = FALSE;
@@ -667,7 +669,8 @@ void DboxMain::OnOptions()
     m_bAutotypeHotKeyEnabled = RegisterHotKey(m_hWnd, PWS_AT_HOTKEY_ID,
                         UINT(AUTOTYPE_HOTKEY_MODIFIERS), UINT(AUTOTYPE_HOTKEY_KEYCODE)) == TRUE;
 
-    if (!m_bAutotypeHotKeyEnabled) {
+    // Don't issue same message twice
+    if (!m_bAutotypeHotKeyEnabled && !bHotKeyInUseMessage) {
       CGeneralMsgBox gmb;
       gmb.AfxMessageBox(IDS_NOHOTKEY, MB_OK);
       bAutotypeHotKeyEnabled = FALSE;

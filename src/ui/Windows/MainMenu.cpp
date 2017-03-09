@@ -1590,21 +1590,25 @@ bool DboxMain::ProcessLanguageMenu(CMenu *pPopupMenu)
 
 const unsigned int DboxMain::GetMenuShortcut(const unsigned short int &siVirtKey,
                                              const unsigned char &cModifier,
-                                             StringX &sxMenuItemName)
+                                             StringX &sxMenuItemName,
+                                             MapMenuShortcuts *pMapMenuShortcuts)
 {
   unsigned int nControlID(0);
   sxMenuItemName.empty();
   MapMenuShortcutsIter inuse_iter;
 
+  if (pMapMenuShortcuts == NULL)
+    pMapMenuShortcuts = &m_MapMenuShortcuts;
+
   st_MenuShortcut st_mst;
   st_mst.siVirtKey = siVirtKey;
   st_mst.cModifier = cModifier;
   
-  inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
-                            m_MapMenuShortcuts.end(),
+  inuse_iter = std::find_if(pMapMenuShortcuts->begin(),
+                            pMapMenuShortcuts->end(),
                             already_inuse(st_mst));
 
-  if (inuse_iter != m_MapMenuShortcuts.end()) {
+  if (inuse_iter != pMapMenuShortcuts->end()) {
     nControlID = inuse_iter->first;
     sxMenuItemName = inuse_iter->second.name.c_str();
   }

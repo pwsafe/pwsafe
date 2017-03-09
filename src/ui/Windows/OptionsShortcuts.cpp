@@ -136,22 +136,22 @@ BOOL COptionsShortcuts::OnInitDialog()
   CString str;
   int iItem(0);
 
-  for (MenuMapiter = m_MapMenuShortcuts.begin(); MenuMapiter != m_MapMenuShortcuts.end();
+  for (MenuMapiter = m_OSMapMenuShortcuts.begin(); MenuMapiter != m_OSMapMenuShortcuts.end();
        MenuMapiter++) {
     // We don't allow change of certain menu items
     // Just don't put in the list that the user sees.
     if (MenuMapiter->second.uiParentID == 0)
       continue;
 
-    if (std::find(m_ExcludedMenuItems.begin(),
-                  m_ExcludedMenuItems.end(),
-                  MenuMapiter->first) != m_ExcludedMenuItems.end())
+    if (std::find(m_OSExcludedMenuItems.begin(),
+                  m_OSExcludedMenuItems.end(),
+                  MenuMapiter->first) != m_OSExcludedMenuItems.end())
         continue;
 
     str = CMenuShortcut::FormatShortcut(MenuMapiter);
 
-    MenuMapiter_parent = m_MapMenuShortcuts.find(MenuMapiter->second.uiParentID);
-    ASSERT(MenuMapiter_parent != m_MapMenuShortcuts.end());
+    MenuMapiter_parent = m_OSMapMenuShortcuts.find(MenuMapiter->second.uiParentID);
+    ASSERT(MenuMapiter_parent != m_OSMapMenuShortcuts.end());
     CString sMenuItemtext = (CString(MenuMapiter_parent->second.name.c_str()) +
                              CString(L" \xbb ") +
                              CString(MenuMapiter->second.name.c_str()));
@@ -195,9 +195,9 @@ BOOL COptionsShortcuts::OnInitDialog()
 
   KBShortcutMapConstIter kbiter;
 
-  m_KBShortcutMap = GetMainDlg()->GetAllKBShortcuts();
+  m_OSKBShortcutMap = GetMainDlg()->GetAllKBShortcuts();
 
-  for (kbiter = m_KBShortcutMap.begin(); kbiter != m_KBShortcutMap.end();
+  for (kbiter = m_OSKBShortcutMap.begin(); kbiter != m_OSKBShortcutMap.end();
        kbiter++) {
     int32 iKBShortcut = kbiter->first;
     WORD wVirtualKeyCode = iKBShortcut & 0xff;
@@ -270,12 +270,12 @@ LRESULT COptionsShortcuts::OnQuerySiblings(WPARAM wParam, LPARAM )
   // Have any of my fields been changed?
   switch (wParam) {
     case PP_DATA_CHANGED:
-      if (M_AppHotKeyEnabled()      != m_bOS_AppHotKeyEnabled        ||
-          M_AppHotKey_Value()       != m_AppHotKeyValue              ||
-          M_AutotypeHotKeyEnabled() != m_bOS_AutotypeHotKeyEnabled   ||
-          m_MapMenuShortcuts.size() != m_MapSaveMenuShortcuts.size() ||
-          !std::equal(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(), m_MapSaveMenuShortcuts.begin(),
-                   shortcutmaps_equal)) {
+      if (M_AppHotKeyEnabled()        != m_bOS_AppHotKeyEnabled          ||
+          M_AppHotKey_Value()         != m_AppHotKeyValue                ||
+          M_AutotypeHotKeyEnabled()   != m_bOS_AutotypeHotKeyEnabled     ||
+          m_OSMapMenuShortcuts.size() != m_OSMapSaveMenuShortcuts.size() ||
+          !std::equal(m_OSMapMenuShortcuts.begin(), m_OSMapMenuShortcuts.end(),
+                      m_OSMapSaveMenuShortcuts.begin(), shortcutmaps_equal)) {
         m_bShortcutsChanged = true;
         return 1L;
       } else
@@ -344,9 +344,9 @@ BOOL COptionsShortcuts::OnApply()
 
   m_AppHotKeyValue = (wHKModifiers << 16) + wVirtualKeyCode;
 
-  if (m_MapMenuShortcuts.size() != m_MapSaveMenuShortcuts.size() ||
-      !std::equal(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(),
-                  m_MapSaveMenuShortcuts.begin(), shortcutmaps_equal))
+  if (m_OSMapMenuShortcuts.size() != m_OSMapSaveMenuShortcuts.size() ||
+      !std::equal(m_OSMapMenuShortcuts.begin(), m_OSMapMenuShortcuts.end(),
+                  m_OSMapSaveMenuShortcuts.begin(), shortcutmaps_equal))
      m_bShortcutsChanged = true;
    else
      m_bShortcutsChanged = false;
@@ -467,7 +467,7 @@ void COptionsShortcuts::OnResetAll()
   for (int i = 0; i < m_ShortcutLC.GetItemCount(); i++) {
     UINT id = (UINT)LOWORD(m_ShortcutLC.GetItemData(i));
 
-    iter = m_MapMenuShortcuts.find(id);
+    iter = m_OSMapMenuShortcuts.find(id);
     iter->second.siVirtKey = iter->second.siDefVirtKey;
     iter->second.cModifier = iter->second.cDefModifier;
   
@@ -539,9 +539,9 @@ void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
                     const std::vector<UINT> &ExcludedMenuItems,
                     const std::vector<st_MenuShortcut> &ReservedShortcuts)
 {
-  m_MapMenuShortcuts = m_MapSaveMenuShortcuts = MapMenuShortcuts;
-  m_ExcludedMenuItems = ExcludedMenuItems;
-  m_ReservedShortcuts = ReservedShortcuts;
+  m_OSMapMenuShortcuts = m_OSMapSaveMenuShortcuts = MapMenuShortcuts;
+  m_OSExcludedMenuItems = ExcludedMenuItems;
+  m_OSReservedShortcuts = ReservedShortcuts;
 }
 
 // Tortuous route to get here!
@@ -607,9 +607,9 @@ bool COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
 
   str = CMenuShortcut::FormatShortcut(st_mst);
 
-  if (std::find_if(m_ReservedShortcuts.begin(),
-                   m_ReservedShortcuts.end(),
-                   reserved(st_mst)) != m_ReservedShortcuts.end()) {
+  if (std::find_if(m_OSReservedShortcuts.begin(),
+                   m_OSReservedShortcuts.end(),
+                   reserved(st_mst)) != m_OSReservedShortcuts.end()) {
     // Reserved shortcut ignored
     cs_title.LoadString(IDS_SHORTCUT_WARNING);
     cs_warning.Format(IDS_SHORTCUT_WARNING2, static_cast<LPCWSTR>(str));
@@ -617,12 +617,12 @@ bool COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
   }
 
   // Check not already in use (ignore if deleting current shortcut)
-  iter = m_MapMenuShortcuts.find(id);
+  iter = m_OSMapMenuShortcuts.find(id);
   if (st_mst.siVirtKey != 0) {
-    inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
-                              m_MapMenuShortcuts.end(),
+    inuse_iter = std::find_if(m_OSMapMenuShortcuts.begin(),
+                              m_OSMapMenuShortcuts.end(),
                               inuse);
-    if (inuse_iter != m_MapMenuShortcuts.end() && 
+    if (inuse_iter != m_OSMapMenuShortcuts.end() &&
         inuse_iter->first != iter->first) {
       // Shortcut in use
       CString cs_MenuItemName = inuse_iter->second.name.c_str();
@@ -637,8 +637,8 @@ bool COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
   iter->second.siVirtKey = st_mst.siVirtKey;
   iter->second.cModifier = st_mst.cModifier;
 
-  m_ShortcutLC.SetItemText(item, 0, str);  // SHCT_SHORTCUTKEYS
-  m_ShortcutLC.RedrawItems(item, item);    // SHCT_MENUITEMTEXT
+  m_ShortcutLC.SetItemText(item, 0, str);                   // SHCT_SHORTCUTKEYS
+  m_ShortcutLC.RedrawItems(item, item);                     // SHCT_MENUITEMTEXT
   m_ShortcutLC.SetColumnWidth(0, m_iColWidth);              // SHCT_SHORTCUTKEYS
   m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // SHCT_MENUITEMTEXT
   m_ShortcutLC.UpdateWindow();
@@ -717,8 +717,8 @@ int CALLBACK COptionsShortcuts::CKBSHCompareFunc(LPARAM lParam1, LPARAM lParam2,
       iResult = wRHS_VirtualKeyCode < wLHS_VirtualKeyCode ? 1 : -1;
 
   } else {
-    pws_os::CUUID &LHS_UUID = self->m_KBShortcutMap[int(lParam1)];
-    pws_os::CUUID &RHS_UUID = self->m_KBShortcutMap[int(lParam2)];
+    pws_os::CUUID &LHS_UUID = self->m_OSKBShortcutMap[int(lParam1)];
+    pws_os::CUUID &RHS_UUID = self->m_OSKBShortcutMap[int(lParam2)];
     iLHS = app.GetCore()->Find(LHS_UUID);
     iRHS = app.GetCore()->Find(RHS_UUID);
     switch (nSortColumn) {
@@ -756,13 +756,13 @@ int CALLBACK COptionsShortcuts::CompareFunc(LPARAM lParam1, LPARAM lParam2,
 
 bool COptionsShortcuts::GetMapMenuShortcutsIter(const UINT &id, MapMenuShortcutsIter &iter)
 {
-  iter = m_MapMenuShortcuts.find(id);
-  return iter != m_MapMenuShortcuts.end();
+  iter = m_OSMapMenuShortcuts.find(id);
+  return iter != m_OSMapMenuShortcuts.end();
 }
 
 void COptionsShortcuts::RefreshKBShortcuts()
 {
-  m_KBShortcutMap = GetMainDlg()->GetAllKBShortcuts();
+  m_OSKBShortcutMap = GetMainDlg()->GetAllKBShortcuts();
 }
 
 void COptionsShortcuts::OnKBShortcutDoulbleClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -803,10 +803,10 @@ void COptionsShortcuts::OnKBShortcutDoulbleClick(NMHDR *pNotifyStruct, LRESULT *
     const StringX sxGroup = iter->second.GetGroup();
     const StringX sxTitle = iter->second.GetTitle();
     const StringX sxUser  = iter->second.GetUser();
-    m_EntryShortcutLC.SetItemText(iItem, ENTRYSHCT_SHORTCUTKEYS, str);  // SHORTCUTKEYS
+    m_EntryShortcutLC.SetItemText(iItem, ENTRYSHCT_SHORTCUTKEYS, str);      // SHORTCUTKEYS
     m_EntryShortcutLC.SetItemText(iItem, ENTRYSHCT_GROUP, sxGroup.c_str()); // Group
     m_EntryShortcutLC.SetItemText(iItem, ENTRYSHCT_TITLE, sxTitle.c_str()); // Title
-    m_EntryShortcutLC.SetItemText(iItem, ENTRYSHCT_USER, sxUser.c_str()); // User
+    m_EntryShortcutLC.SetItemText(iItem, ENTRYSHCT_USER, sxUser.c_str());   // User
     m_EntryShortcutLC.SetItemData(iItem, iKBShortcut);
    
     m_EntryShortcutLC.RedrawItems(iItem, iItem);
@@ -864,7 +864,7 @@ int COptionsShortcuts::CheckHotKey(WORD &wVirtualKeyCode, WORD &wHKModifiers, in
         unsigned char ucModifiers = wHKModifiers & 0xff;
 
         unsigned int nCID = GetMainDlg()->GetMenuShortcut(wVirtualKeyCode,
-          ucModifiers, sxMenuItemName);
+                                                  ucModifiers, sxMenuItemName, &m_OSMapMenuShortcuts);
 
         // If not in use by a menu, check entry shortcuts
         if (nCID == 0) {
@@ -925,7 +925,7 @@ int COptionsShortcuts::CheckHotKey(WORD &wVirtualKeyCode, WORD &wHKModifiers, in
     }
 
     unsigned int nCID = GetMainDlg()->GetMenuShortcut(wVirtualKeyCode,
-                                              ucModifiers, sxMenuItemName);
+                                              ucModifiers, sxMenuItemName, &m_OSMapMenuShortcuts);
 
     // Next check if in use by a menu item (on this instance for this user!)
     if (nCID != 0) {
@@ -960,7 +960,7 @@ int COptionsShortcuts::CheckHotKey(WORD &wVirtualKeyCode, WORD &wHKModifiers, in
 
     ucModifiers = (unsigned char)ConvertModifersPWS2MFC(AUTOTYPE_HOTKEY_MODIFIERS);
     unsigned int nCID = GetMainDlg()->GetMenuShortcut(AUTOTYPE_HOTKEY_KEYCODE,
-                                              ucModifiers, sxMenuItemName);
+                                              ucModifiers, sxMenuItemName, &m_OSMapMenuShortcuts);
 
     // Next check if in use by a menu item (on this instance for this user!)
     if (nCID != 0) {
@@ -1017,6 +1017,22 @@ void COptionsShortcuts::OnContextMenu(CWnd *, CPoint point)
 
     if (nID == ID_MENUITEM_RESETSHORTCUT) {
       m_AppHotKeyCtrl.SetHotKey(0, 0);
+
+      // Need to update my copy of the map
+      // Get row for Menu information
+      UINT uFlags;
+      int index = m_ShortcutLC.HitTest(point, &uFlags);
+      ASSERT(index != -1);  // Can't be -1 as user got here via right click on a row!
+      UINT id = (UINT)LOWORD(m_ShortcutLC.GetItemData(index));
+
+      // Now remove from my copy.
+      MapMenuShortcutsIter iter = m_OSMapMenuShortcuts.find(id);
+      ASSERT(iter != m_OSMapMenuShortcuts.end());
+
+      if (iter != m_OSMapMenuShortcuts.end()) {
+        iter->second.cModifier = iter->second.cDefModifier;
+        iter->second.siVirtKey = iter->second.siDefVirtKey;
+      }
     }
   }
 }

@@ -1233,20 +1233,17 @@ int DboxMain::SetAndCheckHotKeys(bool bSetHotKey)
     }
   }
 
-  if (iRC != CHotKeyConflictDlg::HKE_NONE) {
-    // Tell user
-    CHotKeyConflictDlg dlg((CWnd *)this, iRC, cs_AppHotKeyValue, cs_AutotypeHotKeyValue,
-      cs_APPMENU, cs_APPENTRY, cs_ATMENU, cs_ATENTRY);
-
-    // Tell the user!
-    dlg.DoModal();
-  }
-
   if (prefs->GetPref(PWSprefs::HotKeyEnabled) && (iRC & CHotKeyConflictDlg::HKE_APP) == 0) {
     // No conflicts and user wants the HotKey - do it unless already registered
     if (!m_bAppHotKeyEnabled) {
       m_bAppHotKeyEnabled = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID, UINT(wModifiers),
         UINT(wVirtualKeyCode)) == TRUE;
+    }
+
+    if (!m_bAppHotKeyEnabled) {
+      // Couldn't register HotKey
+      cs_APPMENU.LoadString(IDS_NOHOTKEY);
+      iRC += CHotKeyConflictDlg::HKE_APPINUSE;
     }
   }
 
@@ -1264,11 +1261,26 @@ int DboxMain::SetAndCheckHotKeys(bool bSetHotKey)
       m_bAutotypeHotKeyEnabled = RegisterHotKey(m_hWnd, PWS_AT_HOTKEY_ID, UINT(AUTOTYPE_HOTKEY_MODIFIERS),
         UINT(AUTOTYPE_HOTKEY_KEYCODE)) == TRUE;
     }
+
+    if (!m_bAutotypeHotKeyEnabled) {
+      // Couldn't register HotKey
+      cs_ATMENU.LoadString(IDS_NOHOTKEY);
+      iRC += CHotKeyConflictDlg::HKE_ATINUSE;
+    }
   }
 
   if (prefs->GetPref(PWSprefs::EnableAutotypeHotKey) && (iRC & CHotKeyConflictDlg::HKE_AT) != 0) {
     // User wanted the HotKey - do there are conflicts - disable it
     prefs->SetPref(PWSprefs::EnableAutotypeHotKey, FALSE);
+  }
+
+  if (iRC != CHotKeyConflictDlg::HKE_NONE) {
+    // Tell user
+    CHotKeyConflictDlg dlg((CWnd *)this, iRC, cs_AppHotKeyValue, cs_AutotypeHotKeyValue,
+      cs_APPMENU, cs_APPENTRY, cs_ATMENU, cs_ATENTRY);
+
+    // Tell the user!
+    dlg.DoModal();
   }
 
   // Check for shortcut conflicts in the open DB
@@ -1564,9 +1576,12 @@ BOOL DboxMain::OnInitDialog()
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
 
-  // Set HotKeys, if active
-  // But first check if there are any conflicts
-  SetAndCheckHotKeys(true);
+  // No need to set HotKeys if the user opened a DB at start as would have been
+  // checked in PostOpenProcessing
+  if (!m_bOpen) {
+    // Set HotKeys, if requested but first check if there are any conflicts
+    SetAndCheckHotKeys(true);
+  }
 
   return TRUE;  // return TRUE unless you set the focus to a control
 }

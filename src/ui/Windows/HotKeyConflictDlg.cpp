@@ -89,11 +89,51 @@ BOOL CHotKeyConflictDlg::OnInitDialog()
   }
 
   // Update Group text with Autotype HotKey value
-  CWnd *pWndAT = GetDlgItem(IDC_STATIC_ATHK);
-  CString csText;
-  pWndAT->GetWindowText(csText);
-  csText += L" (" + m_csATVALUE + L")";
-  pWndAT->SetWindowText(csText);
+  {
+    CWnd *pWndAT = GetDlgItem(IDC_STATIC_ATHK);
+    CString csText;
+    pWndAT->GetWindowText(csText);
+    csText += L" (" + m_csATVALUE + L")";
+    pWndAT->SetWindowText(csText);
+  }
+
+  if ((m_iRC & HKE_APP) == 0 && (m_iRC & HKE_AT) == 0) {
+    // No conflicts - so must be here due to HotKeys in use - no need for message
+    GetDlgItem(IDC_STATIC_MESSAGE)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_MESSAGE)->EnableWindow(FALSE);
+  }
+
+  // Now resize static to take bigger message about HotKey in use
+  if (m_iRC & HKE_APPINUSE) {
+    CWnd *pWndAPP = GetDlgItem(IDC_STATIC_APPMENU);
+    CDC dc;
+    dc.CreateCompatibleDC(NULL);
+    CFont *pOldFont = dc.SelectObject(pWndAPP->GetFont());
+
+    CRect rect;
+    pWndAPP->GetClientRect(&rect);
+
+    dc.DrawText(m_csAPPMENU, &rect, DT_CALCRECT | DT_NOPREFIX | DT_EDITCONTROL);
+
+    pWndAPP->SetWindowPos(0, 0, 0, rect.Width(), rect.Height(), SWP_NOMOVE);
+    dc.SelectObject(pOldFont);
+  }
+
+  // Now resize static to take bigger message about HotKey in use
+  if (m_iRC & HKE_ATINUSE) {
+    CWnd *pWndAT = GetDlgItem(IDC_STATIC_ATMENU);
+    CDC dc;
+    dc.CreateCompatibleDC(NULL);
+    CFont *pOldFont = dc.SelectObject(pWndAT->GetFont());
+
+    CRect rect;
+    pWndAT->GetClientRect(&rect);
+
+    dc.DrawText(m_csATMENU, &rect, DT_CALCRECT | DT_NOPREFIX | DT_EDITCONTROL);
+
+    pWndAT->SetWindowPos(0, 0, 0, rect.Width(), rect.Height(), SWP_NOMOVE);
+    dc.SelectObject(pOldFont);
+  }
 
   return TRUE;
 }
@@ -107,7 +147,7 @@ HBRUSH CHotKeyConflictDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
     pDC->SetBkMode(TRANSPARENT);
     switch (pWnd->GetDlgCtrlID()) {
     case IDC_STATIC_APPMENU:
-      if (m_iRC & HKE_APPMENU) {
+      if (m_iRC & (HKE_APPMENU | HKE_APPINUSE)) {
         pDC->SetTextColor(RGB(255, 0, 0));
       }
       break;
@@ -117,7 +157,7 @@ HBRUSH CHotKeyConflictDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
       }
       break;
     case IDC_STATIC_ATMENU:
-      if (m_iRC & HKE_ATMENU) {
+      if (m_iRC & (HKE_ATMENU | HKE_ATINUSE)) {
         pDC->SetTextColor(RGB(255, 0, 0));
       }
       break;

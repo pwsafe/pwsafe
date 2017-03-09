@@ -50,7 +50,7 @@ public:
                     const std::vector<UINT> &ExcludedMenuItems,
                     const std::vector<st_MenuShortcut> &ReservedShortcuts);
 
-  MapMenuShortcuts GetMaps() {return m_MapMenuShortcuts;}
+  MapMenuShortcuts GetMaps() {return m_OSMapMenuShortcuts;}
 
   bool GetMapMenuShortcutsIter(const UINT &id, MapMenuShortcutsIter &iter);
   
@@ -58,7 +58,7 @@ public:
                                const WORD wVirtualKeyCode, const WORD wModifiers);
 
   pws_os::CUUID &GetKBShortcutUUID(int lParam)
-  {return m_KBShortcutMap[lParam];}
+  {return m_OSKBShortcutMap[lParam];}
 
 protected:
   // Dialog Data
@@ -127,11 +127,11 @@ private:
   void RefreshKBShortcuts();
   int CheckHotKey(WORD &wVirtualKeyCode, WORD &wHKModifiers, int iWhichHotKey);
 
-  MapMenuShortcuts m_MapMenuShortcuts, m_MapSaveMenuShortcuts;
-  std::vector<UINT> m_ExcludedMenuItems;
-  std::vector<st_MenuShortcut> m_ReservedShortcuts;
+  MapMenuShortcuts m_OSMapMenuShortcuts, m_OSMapSaveMenuShortcuts;
+  std::vector<UINT> m_OSExcludedMenuItems;
+  std::vector<st_MenuShortcut> m_OSReservedShortcuts;
 
-  KBShortcutMap m_KBShortcutMap;
+  KBShortcutMap m_OSKBShortcutMap;
 
   int32 m_iOldAppHotKey;
   bool m_bShortcutsChanged;
