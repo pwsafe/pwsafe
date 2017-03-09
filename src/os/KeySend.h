@@ -37,6 +37,9 @@ public:
     Tab    Tab key
     Space  Space key
    */
+
+  static stringT GetKeyName(WORD wVirtualKeyCode, bool bExtended);
+
   CKeySend(bool bForceOldMethod = false, unsigned defaultDelay = 10); // bForceOldMethod's Windows-specific
   ~CKeySend();
   void SendString(const StringX &data);
