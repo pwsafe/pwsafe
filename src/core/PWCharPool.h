@@ -108,12 +108,7 @@ private:
   struct typeFreq_s {
     uint numchars;
     StringX vchars;
-  typeFreq_s(const CPasswordCharPool *parent, CharType ct, uint nc)
-  : numchars(nc) {
-    vchars.resize(parent->m_pwlen);
-    std::generate(vchars.begin(), vchars.end(),
-                  [this, parent, ct] () {return parent->GetRandomChar(ct);});
-  }
+    typeFreq_s(const CPasswordCharPool *parent, CharType ct, uint nc);
   };
 
   CPasswordCharPool &operator=(const CPasswordCharPool &);

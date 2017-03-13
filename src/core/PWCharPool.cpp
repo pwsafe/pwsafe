@@ -61,6 +61,15 @@ const size_t CPasswordCharPool::easyvision_hexdigit_len = LENGTH(easyvision_hexd
 const charT CPasswordCharPool::pronounceable_symbol_chars[] = _T("@&(#!|$+");
 
 //-----------------------------------------------------------------------------
+CPasswordCharPool::typeFreq_s::typeFreq_s(const CPasswordCharPool *parent, CharType ct, uint nc)
+  : numchars(nc)
+{
+  vchars.resize(parent->m_pwlen);
+  std::generate(vchars.begin(), vchars.end(),
+                [this, parent, ct] () {return parent->GetRandomChar(ct);});
+}
+
+//-----------------------------------------------------------------------------
 
 CPasswordCharPool::CPasswordCharPool(const PWPolicy &policy)
   : m_pwlen(policy.length),
@@ -209,11 +218,6 @@ charT CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t) const
   return GetRandomChar(t, r);
 }
 
-struct RandomWrapper {
-  unsigned int operator()(unsigned int i)
-  {return PWSrand::GetInstance()->RangeRand(i);}
-};
-
 StringX CPasswordCharPool::MakePassword() const
 {
   // We don't care if the policy is inconsistent e.g. 
@@ -255,37 +259,42 @@ StringX CPasswordCharPool::MakePassword() const
          return a.numchars > b.numchars;
        });
 
-  StringX temp;
+  StringX retval, cat;
   // First meet the 'at least' constraints
   for (auto iter = typeFreqs.begin(); iter != typeFreqs.end(); iter++)
     for (uint j = 0; j < iter->numchars; j++) {
       if (!iter->vchars.empty()) {
-        temp.push_back(iter->vchars.back());
+        retval.push_back(iter->vchars.back());
         iter->vchars.pop_back();
-        if (temp.length() == m_pwlen)
+        if (retval.length() == m_pwlen)
           goto do_shuffle; // break out of two loops, goto needed
       }
     }
 
   // Now fill in the rest
-  while (temp.length() != m_pwlen) {
-    uint i = PWSrand::GetInstance()->RangeRand(typeFreqs.size());
-    if (!typeFreqs[i].vchars.empty()) {
-      temp.push_back(typeFreqs[i].vchars.back());
-      typeFreqs[i].vchars.pop_back();
-      if (temp.length() == m_pwlen)
-        goto do_shuffle; // break out of two loops, goto needed
-    }
-  }
+  for (int i = 0; i < NUMTYPES; i++)
+    if (m_lengths[i] > 0)
+      cat += m_char_arrays[i];
+
+  random_shuffle(cat.begin(), cat.end(),
+                 [](unsigned int i)
+                 {
+                   return PWSrand::GetInstance()->RangeRand(i);
+                 });
+
+  retval += cat.substr(0, m_pwlen - retval.length());
 
  do_shuffle:
   // If 'at least' values were non-zero, we have some unwanted order,
-  // se we mix things up a bit:
-  RandomWrapper rnw;
-  random_shuffle(temp.begin(), temp.end(), rnw);
+  // so we mix things up a bit:
+  random_shuffle(retval.begin(), retval.end(),
+                 [](unsigned int i)
+                 {
+                   return PWSrand::GetInstance()->RangeRand(i);
+                 });
 
-  ASSERT(temp.length() == size_t(m_pwlen));
-  return temp;
+  ASSERT(retval.length() == size_t(m_pwlen));
+  return retval;
 }
 
 static const struct {
@@ -423,8 +432,12 @@ StringX CPasswordCharPool::MakePronounceable() const
       // choose how many to replace (not too many, but at least one)
       unsigned int rn = pwsrnd->RangeRand(sc.size() - 1)/2 + 1;
       // replace some of them
-      RandomWrapper rnw;
-      random_shuffle(sc.begin(), sc.end(), rnw);
+      random_shuffle(sc.begin(), sc.end(),
+                     [](unsigned int i)
+                     {
+                       return PWSrand::GetInstance()->RangeRand(i);
+                     });
+
       for (unsigned int i = 0; i < rn; i++)
         leet_replace(password, sc[i], m_usedigits, m_usesymbols);
     }
