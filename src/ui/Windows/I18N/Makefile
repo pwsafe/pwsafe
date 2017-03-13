@@ -28,7 +28,9 @@ DLL_LIST = pwsafeCZ.dll pwsafeES.dll pwsafeDE.dll \
 	pwsafeHU.dll
 
 DEST_DIR := ../../../../build/bin/pwsafe/I18N
+DEST_DIR_64 := ../../../../build/bin/pwsafe/I18N64
 DLLS = $(DLL_LIST:%=$(DEST_DIR)/%)
+DLLS_64 = $(DLL_LIST:%=$(DEST_DIR_64)/%)
 
 TOOLS_SRC_DIR := ../../../Tools/Windows/I18N
 TOOLS_BIN_DIR := ../../../../build/bin
@@ -38,94 +40,6 @@ CHECK_PO := ../../../../Misc/check_po.py
 help:
 	@echo "Make one of:"
 	@echo "update-pos dlls tools clean check help"
-
-
-# Currently we need a rule per language, due to the LCID.
-# I'm sure that we can improve on this...
-
-$(DEST_DIR)/pwsafeSV.dll : pos/pwsafe_sv.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x041d; \
-	$(RM) foo.dll; $(MV) pwsafeSV_SE.dll $(DEST_DIR)/pwsafeSV.dll
-	$(CHMOD) 755 $@
-
-$(DEST_DIR)/pwsafeES.dll : pos/pwsafe_es.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x0c0a; \
-	$(RM) foo.dll; $(MV) pwsafeES_ES.dll $(DEST_DIR)/pwsafeES.dll
-	$(CHMOD) 755 $@
-
-$(DEST_DIR)/pwsafeDE.dll : pos/pwsafe_de.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x0407; \
-	$(RM) foo.dll; $(MV) pwsafeDE_DE.dll $(DEST_DIR)/pwsafeDE.dll
-	$(CHMOD) 755 $@
-
-$(DEST_DIR)/pwsafePL.dll : pos/pwsafe_pl.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x0415; \
-	$(RM) foo.dll; $(MV) pwsafePL_PL.dll $(DEST_DIR)/pwsafePL.dll
-	$(CHMOD) 755 $@
-
-$(DEST_DIR)/pwsafeZH.dll : pos/pwsafe_zh.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x0804; \
-	$(RM) foo.dll; $(MV) pwsafeZH_CN.dll $(DEST_DIR)/pwsafeZH.dll
-	$(CHMOD) 755 $@
-
-$(DEST_DIR)/pwsafeRU.dll : pos/pwsafe_ru.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x0419; \
-	$(RM) foo.dll; $(MV) pwsafeRU_RU.dll $(DEST_DIR)/pwsafeRU.dll
-	$(CHMOD) 755 $@
-
-$(DEST_DIR)/pwsafeIT.dll : pos/pwsafe_it.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x0410; \
-	$(RM) foo.dll; $(MV) pwsafeIT_IT.dll $(DEST_DIR)/pwsafeIT.dll
-	$(CHMOD) 755 $@
-
-$(DEST_DIR)/pwsafeFR.dll : pos/pwsafe_fr.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x040c; \
-	$(RM) foo.dll; $(MV) pwsafeFR_FR.dll $(DEST_DIR)/pwsafeFR.dll
-	$(CHMOD) 755 $@
-
-$(DEST_DIR)/pwsafeDA.dll : pos/pwsafe_dk.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x0406; \
-	$(RM) foo.dll; $(MV) pwsafeDA_DK.dll $(DEST_DIR)/pwsafeDA.dll
-	$(CHMOD) 755 $@
-
-$(DEST_DIR)/pwsafeKO.dll : pos/pwsafe_kr.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x0412; \
-	$(RM) foo.dll; $(MV) pwsafeKO_KR.dll $(DEST_DIR)/pwsafeKO.dll
-	$(CHMOD) 755 $@
-
-$(DEST_DIR)/pwsafeNL.dll : pos/pwsafe_nl.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x0413; \
-	$(RM) foo.dll; $(MV) pwsafeNL_NL.dll $(DEST_DIR)/pwsafeNL.dll
-	$(CHMOD) 755 $@
-
-$(DEST_DIR)/pwsafeCZ.dll : pos/pwsafe_cz.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x0405; \
-	$(RM) foo.dll; $(MV) pwsafeCS_CZ.dll $(DEST_DIR)/pwsafeCZ.dll
-	$(CHMOD) 755 $@
-
-$(DEST_DIR)/pwsafeTR.dll : pos/pwsafe_tr.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x041f; \
-	$(RM) foo.dll; $(MV) pwsafeTR_TR.dll $(DEST_DIR)/pwsafeTR.dll
-	$(CHMOD) 755 $@
-
-$(DEST_DIR)/pwsafeHU.dll : pos/pwsafe_hu.po
-	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
-	$(RESPWSL) apply foo.dll 0x040e; \
-	$(RM) foo.dll; $(MV) pwsafeHU_HU.dll $(DEST_DIR)/pwsafeHU.dll
-	$(CHMOD) 755 $@
 
 # No need to change anything below this line
 RESTEXT = $(TOOLS_BIN_DIR)/restext/release/ResText.exe
@@ -140,8 +54,10 @@ BASE_DLL = ../../../../build/bin/pwsafe/release/pwsafe_base.dll
 
 update-pos: tools $(POS)
 
+# All of the .po files depend on the pwsafe_base.dll from the languageDLL project
 $(POS): $(BASE_DLL)
 
+# How to make a .po file from pwsafe_base.dll
 %.po: $(BASE_DLL)
 	$(RESTEXT) extract $^ $@
 
@@ -151,13 +67,25 @@ pwsafe.pot: tools $(BASE_DLL)
 dest_dir :
 	@mkdir -p $(DEST_DIR)
 
-dlls : dest_dir $(DLLS)
+# Originally, this rule triggered the individual DLL rules above
+# However, we now use the VB scripts to make the language DLLs
+dlls : tools dest_dir dlls_32 dlls_64
 
+# The issue with the VB scripts is that they have built-in pauses that stop the makefile
+dlls_32:
+	cscript Create_DLLs.vbs -quiet x86
+
+dlls_64:
+	cscript Create_DLLs.vbs -quiet x64
+
+# TODO 64 bit
 tools : 
 	$(MAKE) -C $(TOOLS_SRC_DIR)
 
+# TODO
 check :
 	python $(CHECK_PO) $(POS)
 
+# TODO
 clean :
 	$(MAKE) -C $(TOOLS_SRC_DIR) clean

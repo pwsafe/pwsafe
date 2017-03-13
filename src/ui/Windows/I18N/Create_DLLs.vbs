@@ -26,60 +26,39 @@ End If
 DO_ALL = True
 ARCH = "x86"
 DO_COUNTRY = Empty
+DO_QUIET = False
 
-' Command argument validation
-' Valid argument combinations
-'   None | /h | /help | /?
-'   LL
-'   x86
-'   x64
-'   LL x86
-'   LL x64
-Select Case Wscript.Arguments.Count
-  Case 1
-    ' The single argument can be a country or an architecture spec
-    DIM Arg1
-    Arg1 = UCase(Wscript.Arguments(0))
-    Select Case Arg1
-      Case "X86"
-        ARCH = "x86"
-      Case "X64"
-        ARCH = "x64"
-      Case "/HELP", "/H", "/?" 
-        Usage
-        Wscript.Quit(0)
-      Case Else
-        if Len(Arg1) = 2 Then
-          DO_ALL = False
-          DO_COUNTRY = Arg1
-        Else
-          ' Currently languages must be 2 characters long
-          Usage
-          Wscript.Quit(0)
-        End If
-    End Select
-  Case 2
-    ' The first arg is a language and the second is the architecture
-    DO_ALL = False
-    DO_COUNTRY = UCase(Wscript.Arguments(0))
-    If Len(DO_COUNTRY) <> 2 Then
-      ' Currently languages must be 2 characters long
+'
+' Argument syntax: [-q | -quiet] [LL] [x86 | x64] [/help | /h | /?]
+' Basically, if an argument that is not well known is treated as a LL value
+' Oddly, this is far simpler and more flexible code than its predecessor!
+'
+Dim argx
+For argx = 0 To Wscript.Arguments.Count - 1
+  Dim arg
+  arg = UCase(Wscript.Arguments(argx))
+  Select Case arg
+    Case "X86"
+      ARCH = "x86"
+    Case "X64"
+      ARCH = "x64"
+    Case "-Q", "-QUIET"
+      DO_QUIET = True
+    Case "/HELP", "/H", "/?" 
       Usage
       Wscript.Quit(0)
-    End If
-    Select Case Wscript.Arguments(1)
-      Case "x86"
-        ARCH = "x86"
-      Case "x64"
-        ARCH = "x64"
-      Case Else
+    Case Else
+      ' Currently languages must be 2 characters long
+      If Len(Arg1) = 2 Then
+        DO_ALL = False
+        DO_COUNTRY = Arg1
+      Else
+        ' If the argument is none of the above, show help and exit
         Usage
         Wscript.Quit(0)
-    End Select
-  Case Else
-    Usage
-    Wscript.Quit(0)
-End Select
+      End If
+  End Select
+Next
 
 Dim CURPATH, TOOLS, RESTEXT, RESPWSL, BASE_DLL, DEST_DIR, DO_ALL, DO_COUNTRY, ARCH
 
@@ -122,14 +101,16 @@ CURPATH = CURPATH & "\"
 ' It is not clear what permissions are a problem. Could be that
 ' the script needs to be run as Administrator, but there appears
 ' to be nothing special about the permissions of the DLLs.
-WScript.Echo " "
-WScript.Echo "*** Please ensure that you have deleted ALL DLLs from this script directory:"
-WScript.Echo  "    " & CURPATH
-WScript.Echo  " "
-WScript.Echo "*** Please delete any DLLs you are (re)making from the target directory:"
-WScript.Echo  "    " & DEST_DIR
-WScript.Echo  " "
-Pause("Press any key to continue.")
+If Not DO_QUIET Then
+  WScript.Echo " "
+  WScript.Echo "*** Please ensure that you have deleted ALL DLLs from this script directory:"
+  WScript.Echo  "    " & CURPATH
+  WScript.Echo  " "
+  WScript.Echo "*** Please delete any DLLs you are (re)making from the target directory:"
+  WScript.Echo  "    " & DEST_DIR
+  WScript.Echo  " "
+  Pause("Press any key to continue.")
+End if
 
 ' Make absolute addresses
 DEST_DIR = objFSO.GetAbsolutePathName(DEST_DIR)
@@ -272,7 +253,8 @@ End Sub
 Sub Usage
   MsgBox "This script must be executed by cscript.exe in a Command window" & vbCRLF & _
     vbCRLF & _
-    "cscript Create_DLLs.vbs [LL | /h | /help | /?] [x86 | x64]" & vbCRLF & _
+    "cscript Create_DLLs.vbs [-q | -quiet] [LL] [/h | /help | /?] [x86 | x64]" & vbCRLF & _
+    "    -q | -quiet -  do not prompt user" & vbCRLF & _
     "    LL - a two letter language code for a specific language DLL" & vbCRLF & _
     "         e.g cscript Create_DLLs.vbs DE ==> for German/Germany" & vbCRLF & _
     "    /h | /help | /? - show help" & vbCRLF & _
