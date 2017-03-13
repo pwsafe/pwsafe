@@ -51,14 +51,6 @@ BOOL CHotKeyConflictDlg::OnInitDialog()
     EndDialog(0);
   }
 
-  // Make message Bold
-  LOGFONT lf;
-  CWnd *pWnd = GetDlgItem(IDC_STATIC_MESSAGE);
-  CFont *pFont = pWnd->GetFont();
-  pFont->GetLogFont(&lf);
-  lf.lfWeight = FW_BOLD;
-  m_BoldFont.CreateFontIndirect(&lf);
-
   GetDlgItem(IDC_STATIC_APPMENU)->SetWindowText(m_csAPPMENU);
   if (m_csAPPMENU.IsEmpty()) {
     GetDlgItem(IDC_STATIC_APPMENU)->EnableWindow(FALSE);
@@ -165,9 +157,6 @@ HBRUSH CHotKeyConflictDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
       if (m_iRC & HKE_ATENTRY) {
         pDC->SetTextColor(RGB(255, 0, 0));
       }
-      break;
-    case IDC_STATIC_MESSAGE:
-      pDC->SelectObject(&m_BoldFont);
       break;
     }
   }

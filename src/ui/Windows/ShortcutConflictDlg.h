@@ -60,14 +60,12 @@ protected:
   virtual BOOL OnInitDialog();
 
   afx_msg void OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
 
 	DECLARE_MESSAGE_MAP()
 
 private:
   static int CALLBACK CKBSHCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
-  CFont m_BoldFont;
   std::vector<st_Conflicts> m_vConflicts;
 
   int m_iKBSortedColumn;

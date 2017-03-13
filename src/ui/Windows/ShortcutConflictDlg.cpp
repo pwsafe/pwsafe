@@ -71,7 +71,6 @@ void CShortcutConflictDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CShortcutConflictDlg, CPWDialog)
-  ON_WM_CTLCOLOR()
   ON_NOTIFY(HDN_ITEMCLICK, IDC_SHORTCUTLIST_HEADER, OnColumnClick)
 END_MESSAGE_MAP()
 
@@ -80,14 +79,6 @@ END_MESSAGE_MAP()
 BOOL CShortcutConflictDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
-
-  // Make message Bold
-  LOGFONT lf;
-  CWnd *pWnd = GetDlgItem(IDC_STATIC_MESSAGE);
-  CFont *pFont = pWnd->GetFont();
-  pFont->GetLogFont(&lf);
-  lf.lfWeight = FW_BOLD;
-  m_BoldFont.CreateFontIndirect(&lf);
 
   // Set CListCtrl Header Control ID
   CHeaderCtrl *pHeader = m_LCConflicts.GetHeaderCtrl();
@@ -147,19 +138,6 @@ BOOL CShortcutConflictDlg::OnInitDialog()
   m_LCConflicts.Invalidate();
 
   return TRUE;
-}
-
-HBRUSH CShortcutConflictDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
-{
-  HBRUSH hbr = CPWDialog::OnCtlColor(pDC, pWnd, nCtlColor);
-
-  // Only deal with Static controls and then
-  if (nCtlColor == CTLCOLOR_STATIC && pWnd->GetDlgCtrlID() == IDC_STATIC_MESSAGE) {
-    pDC->SetBkMode(TRANSPARENT);
-    pDC->SelectObject(&m_BoldFont);
-  }
-
-  return hbr;
 }
 
 void CShortcutConflictDlg::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)

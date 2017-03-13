@@ -45,5 +45,4 @@ protected:
 private:
   CString m_csAPPVALUE, m_csATVALUE, m_csAPPMENU, m_csAPPENTRY, m_csATMENU, m_csATENTRY;
   int m_iRC;
-  CFont m_BoldFont;
 };
