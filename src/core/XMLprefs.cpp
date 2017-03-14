@@ -110,7 +110,7 @@ bool CXMLprefs::XML_Load()
   return true;
 }
 
-void SortPreferences(pugi::xml_node parent)
+static void SortPreferences(pugi::xml_node &parent)
 {
   // Sort the application preferences of this host/user (case insensitive)
   std::vector<pugi::xml_node> children(parent.begin(), parent.end());
