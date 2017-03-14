@@ -124,9 +124,10 @@ public:
     UsePrimarySelectionForClipboard,  // Only under X-Windows
     CopyPasswordWhenBrowseToURL,
     UseAltAutoType,  // Only under X-Windows
-    IgnoreHelpLoadError, // Only under WX
+    IgnoreHelpLoadError, // Only wxWidgets build
     VKPlaySound, // Windows only
     ListSortAscending,
+    AutotypeHotKeyEnabled,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
@@ -137,8 +138,9 @@ public:
     PWLowercaseMinLength, PWSymbolMinLength, PWUppercaseMinLength,
     OptShortcutColumnWidth, ShiftDoubleClickAction, DefaultAutotypeDelay,
     DlgOrientation, TimedTaskChainDelay,
-    AutotypeSelectAllKeyCode, AutotypeSelectAllModMask, //X only
+    AutotypeSelectAllKeyCode, AutotypeSelectAllModMask, // X only
     TreeFontPtSz, PasswordFontPtSz, NotesFontPtSz, AddEditFontPtSz,
+    AutotypeHotKey,
     NumIntPrefs};
 
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
@@ -154,7 +156,7 @@ public:
   // NOTE: When adding items, update the pwsafe.xsd & pwsafe_filter.xsd schemas
   //       to increase the maximum value in "dcaType"
   enum {minDCA = 0, DoubleClickCopyPassword = 0, DoubleClickViewEdit = 1,
-    DoubleClickAutoType = 2, DoubleClickBrowse = 3,
+    DoubleClickAutotype = 2, DoubleClickBrowse = 3,
     DoubleClickCopyNotes = 4, DoubleClickCopyUsername = 5,
     DoubleClickCopyPasswordMinimize = 6,
     DoubleClickBrowsePlus = 7, DoubleClickRun = 8,

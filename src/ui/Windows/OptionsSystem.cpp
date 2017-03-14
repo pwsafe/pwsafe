@@ -53,7 +53,7 @@ COptionsSystem::COptionsSystem(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_MultipleInstances = M_MultipleInstances();
   m_MaxREItems = M_MaxREItems();
   m_MaxMRUItems = M_MaxMRUItems();
-  m_InitialHotkeyState = M_AppHotKeyEnabled();
+  m_InitialHotKeyState = M_AppHotKeyEnabled();
 }
 
 void COptionsSystem::DoDataExchange(CDataExchange *pDX)
@@ -253,7 +253,7 @@ BOOL COptionsSystem::OnApply()
   M_MultipleInstances() = m_MultipleInstances;
   M_MaxREItems() = m_MaxREItems;
   M_MaxMRUItems() = m_MaxMRUItems;
-  M_AppHotKeyEnabled() = m_InitialHotkeyState;
+  M_AppHotKeyEnabled() = m_InitialHotKeyState;
 
   return COptions_PropertyPage::OnApply();
 }
@@ -297,7 +297,7 @@ void COptionsSystem::OnUseSystemTray()
       GetDlgItem(IDC_DEFPWHIDESYSTRAY)->EnableWindow(TRUE);
     } else {
       // No - Not open - then take initial value as the answer
-      GetDlgItem(IDC_DEFPWHIDESYSTRAY)->EnableWindow(m_InitialHotkeyState);
+      GetDlgItem(IDC_DEFPWHIDESYSTRAY)->EnableWindow(m_InitialHotKeyState);
     }
   }
 }
@@ -355,7 +355,7 @@ void COptionsSystem::OnApplyConfigChanges()
 
 BOOL COptionsSystem::OnSetActive()
 {
-  BOOL enable = (((CButton*)GetDlgItem(IDC_DEFPWUSESYSTRAY))->GetCheck() ==
+  BOOL enable = (((CButton *)GetDlgItem(IDC_DEFPWUSESYSTRAY))->GetCheck() ==
                 BST_CHECKED) ? TRUE : FALSE;
 
   if (enable == TRUE) {
@@ -365,7 +365,7 @@ BOOL COptionsSystem::OnSetActive()
       GetDlgItem(IDC_DEFPWHIDESYSTRAY)->EnableWindow(TRUE);
     } else {
       // No - Not open - then take initial value as the answer
-      GetDlgItem(IDC_DEFPWHIDESYSTRAY)->EnableWindow(m_InitialHotkeyState);
+      GetDlgItem(IDC_DEFPWHIDESYSTRAY)->EnableWindow(m_InitialHotKeyState);
     }
   }
 

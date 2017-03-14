@@ -468,12 +468,13 @@
 #define IDS_URLCOPIED                   5676
 #define IDS_AUTOTYPECOPIED              5677
 #define IDS_RUNCMDCOPIED                5678
+#define IDS_COL_ENTRY                   5679
 #define IDS_COL_MENUITEM                5680
 #define IDS_COL_SHORTCUT                5681
-#define IDS_SHCT_TOOLTIP                5682
-#define IDS_SHCT_WARNING1               5684
-#define IDS_SHCT_WARNING2               5685
-#define IDS_SHCT_WARNING3               5686
+#define IDS_SHORTCUTLISTHELP            5682
+#define IDS_SHORTCUT_WARNING1           5684
+#define IDS_SHORTCUT_WARNING2           5685
+#define IDS_SHORTCUT_CONFLICT1          5686
 #define IDS_CTRLP                       5687
 #define IDS_ALTP                        5688
 #define IDS_SHIFTP                      5689
@@ -543,8 +544,8 @@
 #define IDS_NORECYCLEBINTITLE           5766
 #define IDS_NORECYCLEBINMSG             5767
 #define IDS_EBCONTINUE                  5768
-#define IDC_EBDELETE                    5769
-#define IDC_EBSELECT                    5770
+#define IDS_EBDELETE                    5769
+#define IDS_EBSELECT                    5770
 #define IDS_EBEXIT                      5771
 #define IDS_EBLISTCTRL                  5772
 #define IDS_EBLISTCTRLROW1              5773
@@ -671,7 +672,7 @@
 #define IDS_NOT_USED                    5908
 #define IDS_COMPPOLICYNAME              5909
 #define IDS_POLICY_VIEWENTRY            5910
-#define IDC_DETAILS                     5911
+#define IDS_DETAILS                     5911
 #define IDS_LIST                        5912
 #define IDS_EDIT_DEFAULT_POLICY         5913
 #define IDS_ADD_NAMED_POLICY            5914
@@ -712,11 +713,10 @@
 #define IDS_KBS_CANTADD                 5949
 #define IDS_KBS_INUSEBYENTRY            5950
 #define IDS_KBS_INUSEBYMENU             5951
-#define IDS_KBS_TOOLTIP0                5952
-#define IDS_KBS_TOOLTIP1                5953
+#define IDS_ENTKBSHCTHOTKEYHELP         5952
+#define IDS_ENTKBSHCTHOTKEYHELP2        5953
 #define IDS_KBS_SAMEASAPP               5954
-#define IDS_APPHOTKEY_OVERRIDE          5955
-#define IDS_ENTRYKBST_OVERRIDE          5956
+#define IDS_APPHOTKEY                   5955
 #define IDS_EMPTY_DB                    5957
 #define IDS_TOOMANYTRIES                5958
 #define IDS_EXPORTENT2DB                5959
@@ -757,6 +757,7 @@
 #define IDS_ADDEDITFONT                 5996
 #define IDS_SHORTCUT_WARNING            5997
 #define IDS_NOIBACKUP3                  5998
+#define IDS_SHORTCUT_CONFLICT           5999
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001
@@ -793,3 +794,9 @@
 #define IDS_LIST_OF_SHORTCUTS           6045
 #define IDS_EXT_EDITOR_ACTIVE           6046
 #define IDS_CANCEL_EXT_EDITOR           6047
+#define IDS_APPHOTKEYHELP               6048
+#define IDS_AUTOTYPEHOTKEYHELP          6049
+#define IDS_AUTOTYPE_HOTKEY             6050
+#define IDS_KBS_SHORTCUT                6051
+#define IDS_KBS_RESET                   6052
+#define IDS_KBS_SAMEASAT                6053

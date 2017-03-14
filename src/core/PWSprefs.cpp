@@ -125,12 +125,13 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("LockDBOnIdleTimeout"), true, ptDatabase},            // database
   {_T("HighlightChanges"), true, ptApplication},            // application
   {_T("HideSystemTray"), false, ptApplication},             // application
-  {_T("UsePrimarySelectionForClipboard"), false, ptApplication}, //application
+  {_T("UsePrimarySelectionForClipboard"), false, ptApplication}, //application - Only under X-Windows
   {_T("CopyPasswordWhenBrowseToURL"), false, ptDatabase},   // database
-  {_T("UseAltAutoType"), false, ptApplication},             //application
-  {_T("IgnoreHelpLoadError"), false, ptApplication},        //application
-  {_T("VKPlaySound"), false, ptApplication},                //application
+  {_T("UseAltAutoType"), false, ptApplication},             //application - Only under X-Windows
+  {_T("IgnoreHelpLoadError"), false, ptApplication},        //application - Only wxWidgets build
+  {_T("VKPlaySound"), false, ptApplication},                //application - Only under Windows
   {_T("ListSortAscending"), true, ptApplication},           //application
+  {_T("AutotypeHotKeyEnabled"), false, ptApplication},      //application
 };
 
 // Default value = -1 means set at runtime
@@ -147,7 +148,8 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("IdleTimeout"), 5, ptDatabase, 1, 120},                       // database
   {_T("DoubleClickAction"), DoubleClickCopyPassword, ptApplication,
                             minDCA, maxDCA},                        // application
-  {_T("HotKey"), 0, ptApplication, -1, -1}, // 0=disabled, >0=keycode. // application
+  // application HotKey: 0=disabled, >0=keycode;
+  {_T("HotKey"), 0, ptApplication, -1, -1},                         // application
   // MaxREItems maximum = (ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1)
   {_T("MaxREItems"), 25, ptApplication, 0, 25},                     // application
   {_T("TreeDisplayStatusAtOpen"), AllCollapsed, ptDatabase,
@@ -170,12 +172,14 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
                             1, 60000},                              // application
   {_T("DlgOrientation"), AUTO, ptApplication, AUTO, WIDE},          // application
   {_T("TimedTaskChainDelay"), 100, ptApplication, -1, -1},          // application
-  {_T("AutotypeSelectAllKeyCode"), 0, ptApplication, 0, 255},       // application
-  {_T("AutotypeSelectAllModMask"), 0, ptApplication, 0, 255},       // application
+  {_T("AutotypeSelectAllKeyCode"), 0, ptApplication, 0, 255},       // application - Unix only
+  {_T("AutotypeSelectAllModMask"), 0, ptApplication, 0, 255},       // application - Unix only
   {_T("TreeFontPtSz"), 0, ptApplication, 0, -1},                    // application
   {_T("PasswordFontPtSz"), 0, ptApplication, 0, -1},                // application
   {_T("NotesFontPtSz"), 0, ptApplication, 0, -1},                   // application
   {_T("AddEditFontPtSz"), 0, ptApplication, 0, -1},                 // application
+  // Autotype HotKey: 0=disabled, >0=keycode;
+  {_T("AutotypeHotKey"), 0, ptApplication, -1, -1},                 // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
@@ -1483,9 +1487,10 @@ void PWSprefs::SaveApplicationPreferences()
 {
   PWS_LOGIT;
 
-  int i;
   if (!m_prefs_changed[APP_PREF])
     return;
+
+  int i;
 
   if (m_ConfigOption == CF_FILE_RW ||
       m_ConfigOption == CF_FILE_RW_NEW) {

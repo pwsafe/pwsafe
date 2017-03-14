@@ -1252,7 +1252,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     if (i_Offset[URL] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[URL]))
       ci_temp.SetURL(tokens[i_Offset[URL]].c_str());
     if (i_Offset[AUTOTYPE] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[AUTOTYPE]))
-      ci_temp.SetAutoType(tokens[i_Offset[AUTOTYPE]].c_str());
+      ci_temp.SetAutotype(tokens[i_Offset[AUTOTYPE]].c_str());
     if (i_Offset[CTIME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[CTIME]))
       if (!ci_temp.SetCTime(tokens[i_Offset[CTIME]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(CTIME), numlines);
@@ -1369,6 +1369,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     ci_temp.GetKBShortcut(iKBShortcut);
     
     if (iKBShortcut != 0) {
+      // First check if an entry already uses it
       CUUID existingUUID = GetKBShortcut(iKBShortcut);
       if (existingUUID != CUUID::NullUUID()) {
         // Remove it
@@ -1388,7 +1389,9 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         rpt.WriteLine(sxTemp.c_str());
         numshortcutsremoved++;
       }
-      if (m_iAppHotKey == iKBShortcut) {
+
+      // Now check against the Application HotKey
+      if (m_iAppHotKey != 0 && m_iAppHotKey == iKBShortcut) {
         // Remove it
         ci_temp.SetKBShortcut(0);
 
@@ -1396,6 +1399,19 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         StringX sx_imported;
         LoadAString(sx_imported, IDSC_IMPORTED);
         Format(sxTemp, IDSC_KBSHORTCUT_USEBYAPP, sx_imported.c_str(), sxImportedEntry.c_str());
+        rpt.WriteLine(sxTemp.c_str());
+        numshortcutsremoved++;
+      }
+
+      // Now check against the Autotype HotKey
+      if (m_iAutotypeHotKey != 0 && m_iAutotypeHotKey == iKBShortcut) {
+        // Remove it
+        ci_temp.SetKBShortcut(0);
+
+        // Tell the user via the report
+        StringX sx_imported;
+        LoadAString(sx_imported, IDSC_IMPORTED);
+        Format(sxTemp, IDSC_KBSHORTCUT_RESERVED, sx_imported.c_str(), sxImportedEntry.c_str());
         rpt.WriteLine(sxTemp.c_str());
         numshortcutsremoved++;
       }

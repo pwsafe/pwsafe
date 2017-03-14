@@ -61,7 +61,7 @@ void FileV3Test::SetUp()
   fullItem.SetNotes(notes);
   fullItem.SetGroup(group);
   fullItem.SetURL(url);
-  fullItem.SetAutoType(at);
+  fullItem.SetAutotype(at);
   fullItem.SetEmail(email);
   fullItem.SetPolicyName(polname);
   fullItem.SetSymbols(symbols);

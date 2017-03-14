@@ -295,7 +295,7 @@ void COptionsMisc::SetupCombo(CComboBox *pcbox)
 
   cs_text.LoadString(IDSC_DCAAUTOTYPE);
   nIndex = pcbox->AddString(cs_text);
-  pcbox->SetItemData(nIndex, PWSprefs::DoubleClickAutoType);
+  pcbox->SetItemData(nIndex, PWSprefs::DoubleClickAutotype);
 
   cs_text.LoadString(IDSC_DCABROWSE);
   nIndex = pcbox->AddString(cs_text);

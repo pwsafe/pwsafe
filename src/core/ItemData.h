@@ -97,7 +97,7 @@ public:
   const pws_os::CUUID GetAttUUID() const {return GetUUID(CItemData::ATTREF);}
   StringX GetGroup() const {return GetField(GROUP);} // V20
   StringX GetURL() const {return GetField(URL);} // V30
-  StringX GetAutoType() const {return GetField(AUTOTYPE);} // V30
+  StringX GetAutotype() const {return GetField(AUTOTYPE);} // V30
   StringX GetATime() const {return GetTime(ATIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
   StringX GetCTime() const {return GetTime(CTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
   StringX GetXTime() const {return GetTime(XTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
@@ -176,7 +176,7 @@ public:
   void ClearAttUUID() {ClearField(CItemData::ATTREF);}
   void SetGroup(const StringX &group) {CItem::SetField(GROUP, group);} // V20
   void SetURL(const StringX &url) {CItem::SetField(URL, url);} // V30
-  void SetAutoType(const StringX &autotype) {CItem::SetField(AUTOTYPE, autotype);} // V30
+  void SetAutotype(const StringX &autotype) {CItem::SetField(AUTOTYPE, autotype);} // V30
   void SetATime() {SetTime(ATIME);}  // V30
   void SetATime(time_t t) {CItem::SetTime(ATIME, t);}  // V30
   bool SetATime(const stringT &time_str) {return SetTime(ATIME, time_str);}  // V30

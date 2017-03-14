@@ -44,6 +44,9 @@ is locked to enable their undo after the database has been unlocked.
 [] User selected font sizes are now saved in points in the configuration file so that the
 same size of font is used across different user systems if sharing the configuration file. This
 helps where the different systems have different resolutions.
+[] At PasswordSafe startup and when opening a database. if either of the HotKeys are
+enabled, checks are made to ensure that there are no conflicts with menu or entry
+shortcuts.  If any are found, the appropriate HotKey will be disabled.
 [819] A duplicated entry's creation time is set to the time of duplication.
 All other times are copied from the original.
 [816] Set installed version in uninstall section of Registry for Windows version.
@@ -54,6 +57,11 @@ New Features for 3.41.1
 last Find. Access via the View menu or Ctrl+K shortcut.
 [] PasswordSafe now supports the "long press" as the equivalent of a right mouse click
 on Windows systems with touch screens running Windows 7 and later.
+[824] A new HotKey has been implemented, Autotype, that will perform Autotype into
+the selected field in another Window/application as long as an entry in the database
+has been selected and the database is not locked. A value of "Ctrl+Alt+T" is
+suggested as the Autotype shortcut is "Ctrl+T" but "Ctrl+Shift+T" is used by most
+browsers to "Reopen the last closed tab").
 [822] An open database can now be locked via the File menu or a Toolbar button
 irrespective of whether the System Tray is used or not.
 [821] A new symbol for protected entries (locked padlock - Unicode U+01F512)

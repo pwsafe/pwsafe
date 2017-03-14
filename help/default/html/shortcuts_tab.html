@@ -13,27 +13,68 @@
 
 <h2>Shortcuts Tab</h2>
 
-<img src="images/options/shortcuts_tab.jpg" style="width: 400px; height: 512px;" alt="Shortcuts tab"><br>
+<img src="images/options/shortcuts_tab.jpg" style="width: 400px; height: 512px;" alt="Shortcuts tab">
 
-<b>Password Safe</b> allows you to define key sequences (shortcuts) that perform specific operations in the application. This tab allows you to control and review the shortcuts, as follows. 
+<p><b>Password Safe</b> allows you to define key sequences (shortcuts) that perform specific operations in the application. This tab allows you to control and review the shortcuts, as follows.</p>
 
 <h3>Application Hot Key</h3>
 
 <p>When checked, pressing the keys in the sequence to the right will
 restore <b>Password Safe</b> from the system tray, if minimized, or bring it to
-the front, if obscured by other applications. The sequence may be
-changed when the option is checked.</p>
+the front, if obscured by other applications.</p>
+
+<h3>Autotype HotKey</h3>
+
+<p>When checked, pressing the keys in the sequence to the right will perform
+Autotype into the selected field in another Window/application
+as long as an entry in the database has been selected and the database is
+not locked.  If you enable "Minimize after Autotype" in the
+<a href="misc_tab.html">Misc Tab</a> and "Lock password database on minimize" 
+in the <a href="security_tab.html">Security Tab</a>, you will have to unlock
+the database after Autotype has been performed in order to use this hotkey again.</p>
+
+<h3>HotKey In Use</h3>
+
+<p>HotKeys can be defined and registered by any Windows application. However, Windows works on
+a "first come, first served basis" so that if you run multiple instances of <b>Password Safe</b>
+then the first instance started will get notified by Windows if its HotKey is used. In addition,
+if another application has already registered your assigned HotKey before <b>Password Safe</b>
+starts, then it will continue to 'own' it. HotKeys are released when the owning application
+either unregisters it or ends but this will not automatically register it to another - there
+is no "waiting list".   The image below is an example where a second instance of
+<b>Password Safe</b> is started and both HotKeys are active.</p>
+
+<img src="images/hotkeys_in_use.jpg" alt="HotKeys In Use">
+
+<h3>HotKey and Shortcut Conflicts</h3>
+
+<p>Versions of <b>Password Safe</b> prior to 3.42 allowed HotKey and Shortcut values to be
+defined for menu items even though they were already assigned to the application HotKey
+or an entry. There were uncertainties as to which menu or entry would be selected on using
+the shortcut.  From version 3.42, conflicts will not be able to be defined.</p>
+
+<p>At start-up, <b>Password Safe</b> will check for conflicts and warn the user.  If a HotKey
+has a conflict, it will be disabled.  The image below is an extreme example.</p>
+
+<img src="images/hotkeys_conflict.jpg" alt="KotKey Conflict">
+
+<p>When a database is opened, conflicts will also be detected and, in this case, any menu
+shortcut that is also assigned to an entry will be temporarily removed.  Once the database is
+closed, it will be reinstated.</p>
+
+<img src="images/shortcut_conflict.jpg" alt="Shortcut Conflict">
+
 
 <h3>Program Shortcuts</h3>
 
- To change a shortcut (or add a new one), select the
+<p>To change a shortcut (or add a new one), select the
 row with the action you'd like to change, then click on the 'Shortcut
 Key' field for that entry. Any key combination that you select will be
 defined as the shortcut for this action. For example, to get the File
 Properties dialog box to appear when Control, Alt and 'p' are pressed,
 select the "File&nbsp;&gt;&gt;&nbsp;Properties" row, click on the 'Shortcut
 Key' field, and then press the Control Alt and p key. The text
-'Ctrl+Alt+P' will appear in the Shortcut Key field, and once you press
+'Ctrl + Alt + P' will appear in the Shortcut Key field, and once you press
 OK, the change will take effect. For more details on the keys that
 can (and cannot) be defined as shortcuts, see <a href="Shortcut_Keys.html">here</a>.</p>
 

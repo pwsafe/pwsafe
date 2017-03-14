@@ -1392,7 +1392,7 @@ bool CCompareResultsDlg::CompareEntries(st_CompareData *pst_data)
                      m_bTreatWhiteSpaceasEmpty))
     bsConflicts.flip(CItemData::URL);
   if (m_bsFields.test(CItemData::AUTOTYPE) &&
-      FieldsNotEqual(currentItem.GetAutoType(), compItem.GetAutoType(),
+      FieldsNotEqual(currentItem.GetAutotype(), compItem.GetAutotype(),
                      m_bTreatWhiteSpaceasEmpty))
     bsConflicts.flip(CItemData::AUTOTYPE);
   if (m_bsFields.test(CItemData::PWHIST) &&

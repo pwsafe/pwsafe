@@ -80,8 +80,8 @@ struct st_Opt_master_data {
   uint32 HashIters;
 
   // Shortcut Data
-  int32 AppHotKeyValue;
-  BOOL AppHotKeyEnabled;
+  int32 AppHotKeyValue, ATHotKeyValue;
+  BOOL AppHotKeyEnabled, ATHotKeyEnabled;
   int ColWidth;
   int DefColWidth;
 
@@ -106,7 +106,7 @@ public:
   virtual BOOL OnQueryCancel();
 
   // Retrieve DoubleClickAction or ClearClipboardOnMimimize
-  // or if Hot Key set
+  // or if HotKey set
   // Make sure no overlap with 'PP_' enum in CPWPropertyPage
   enum {PPOPT_GET_DCA = 10, PPOPT_GET_CCOM, PPOPT_HOTKEY_SET};
 
@@ -175,6 +175,8 @@ public:
   // Shortcut Data
   inline int32 &M_AppHotKey_Value() {return m_OPTMD.AppHotKeyValue;}
   inline BOOL &M_AppHotKeyEnabled() {return m_OPTMD.AppHotKeyEnabled;}
+  inline int32 &M_ATHotKey_Value() {return m_OPTMD.ATHotKeyValue;}
+  inline BOOL &M_ATHotKeyEnabled() {return m_OPTMD.ATHotKeyEnabled;}
   inline int &M_ColWidth() {return m_OPTMD.ColWidth;}
   inline int &M_DefColWidth() {return m_OPTMD.DefColWidth;}
 

@@ -193,24 +193,24 @@ void SetHotKeyComment(pugi::xml_node &node, const stringT &sValue)
 
   if (wVirtualKeyCode != 0) {
     stringT sKeyName;
-    sKeyName = CKeySend::GetKeyName(wVirtualKeyCode, (wHKModifiers & PWS_HOTKEYF_EXT) == PWS_HOTKEYF_EXT);
+    sKeyName = CKeySend::GetKeyName(wVirtualKeyCode, (wHKModifiers & HOTKEYF_EXT) == HOTKEYF_EXT);
 
     if (!sKeyName.empty()) {
       stringT sModifier(_T(""));
-      if (wHKModifiers & PWS_HOTKEYF_CONTROL)
-        sModifier = _T("Ctrl + ");
-      if (wHKModifiers & PWS_HOTKEYF_ALT)
-        sModifier += _T("Alt + ");
-      if (wHKModifiers & PWS_HOTKEYF_SHIFT)
-        sModifier += _T("Shift + ");
+      if (wHKModifiers & HOTKEYF_CONTROL)
+        sModifier = _T("Ctrl+");
+      if (wHKModifiers & HOTKEYF_ALT)
+        sModifier += _T("Alt+");
+      if (wHKModifiers & HOTKEYF_SHIFT)
+        sModifier += _T("Shift+");
 
       // wxWidgets only - set values but do not use in Windows MFC
       if (wHKModifiers & PWS_HOTKEYF_META)
-        sModifier += _T("Meta + ");
+        sModifier += _T("Meta+");
       if (wHKModifiers & PWS_HOTKEYF_WIN)
-        sModifier += _T("Win + ");
+        sModifier += _T("Win+");
       if (wHKModifiers & PWS_HOTKEYF_CMD)
-        sModifier += _T("Cmd + ");
+        sModifier += _T("Cmd+");
 
       stringT sComment;
       Format(sComment, _T("%s%s"), sModifier.c_str(), sKeyName.c_str());
@@ -278,9 +278,21 @@ int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue)
   if (!prefnode.set_value(sValue.c_str())) {
     iRetVal = XML_PUT_TEXT_FAILED;
   } else {
-    if (_tcscmp(sPath.substr(sPath.size() - 7).c_str(), _T("\\HotKey")) == 0) {
+#ifdef WIN32
+    // Add attribute in HotKey preference making it easier to read
+    TCHAR *sAppHotKey = _T("\\HotKey");
+    TCHAR *sATHotKey = _T("\\AutotypeHotKey");
+    size_t iAppHKPLen = _tcslen(sAppHotKey);
+    size_t iATHKPLen = _tcslen(sATHotKey);
+    if (iAppHKPLen < sPath.length() && 
+        _tcscmp(sPath.substr(sPath.length() - iAppHKPLen).c_str(), sAppHotKey) == 0) {
       SetHotKeyComment(node, sValue);
     }
+    if (iATHKPLen < sPath.length() &&
+        _tcscmp(sPath.substr(sPath.length() - iATHKPLen).c_str(), sATHotKey) == 0) {
+      SetHotKeyComment(node, sValue);
+    }
+#endif
   }
 
   return iRetVal;

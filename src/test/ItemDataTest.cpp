@@ -56,7 +56,7 @@ void ItemDataTest::SetUp()
   fullItem.SetNotes(notes);
   fullItem.SetGroup(group);
   fullItem.SetURL(url);
-  fullItem.SetAutoType(at);
+  fullItem.SetAutotype(at);
   fullItem.SetEmail(email);
   fullItem.SetPolicyName(polname);
   fullItem.SetSymbols(symbols);
@@ -117,7 +117,7 @@ TEST_F(ItemDataTest, Getters_n_Setters)
   EXPECT_EQ(notes, fullItem.GetNotes());
   EXPECT_EQ(group, fullItem.GetGroup());
   EXPECT_EQ(url, fullItem.GetURL());
-  EXPECT_EQ(at, fullItem.GetAutoType());
+  EXPECT_EQ(at, fullItem.GetAutotype());
   EXPECT_EQ(email, fullItem.GetEmail());
   EXPECT_EQ(polname, fullItem.GetPolicyName());
   EXPECT_EQ(symbols, fullItem.GetSymbols());

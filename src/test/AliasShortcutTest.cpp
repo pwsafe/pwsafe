@@ -40,7 +40,7 @@ void AliasShortcutTest::SetUp()
   base.SetNotes(L"base-notes");
   base.SetGroup(L"G");
   base.SetURL(L"http://base-url.com");
-  base.SetAutoType(L"base-autotype");
+  base.SetAutotype(L"base-autotype");
   base.SetEmail(L"email@base.com");
   base.SetRunCommand(L"Run base, run");
 }
@@ -56,7 +56,7 @@ TEST_F(AliasShortcutTest, Alias)
   al.SetNotes(L"alias-notes");
   al.SetGroup(L"Galias");
   al.SetURL(L"http://alias-url.com");
-  al.SetAutoType(L"alias-autotype");
+  al.SetAutotype(L"alias-autotype");
   al.SetEmail(L"email@alias.com");
   al.SetRunCommand(L"Run alias, run");
   al.SetAlias();
@@ -86,7 +86,7 @@ TEST_F(AliasShortcutTest, Alias)
   EXPECT_EQ(sx_notes, al.GetNotes());
   EXPECT_EQ(sx_url, al.GetURL());
   EXPECT_EQ(sx_email, al.GetEmail());
-  EXPECT_EQ(sx_autotype, al.GetAutoType());
+  EXPECT_EQ(sx_autotype, al.GetAutotype());
   EXPECT_EQ(sx_runcmd, al.GetRunCommand());
 }
 
@@ -126,6 +126,6 @@ TEST_F(AliasShortcutTest, Shortcut)
   EXPECT_EQ(sx_notes, base.GetNotes());
   EXPECT_EQ(sx_url, base.GetURL());
   EXPECT_EQ(sx_email, base.GetEmail());
-  EXPECT_EQ(sx_autotype, base.GetAutoType());
+  EXPECT_EQ(sx_autotype, base.GetAutotype());
   EXPECT_EQ(sx_runcmd, base.GetRunCommand());
 }

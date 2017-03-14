@@ -184,5 +184,5 @@ private:
   // These columns are optional
   static struct OptionalColumns {
     CItemData::FieldType ft; UINT ids;
-  }   OptCols[LAST - PASSWORD];
+  } OptCols[LAST - PASSWORD];
 };

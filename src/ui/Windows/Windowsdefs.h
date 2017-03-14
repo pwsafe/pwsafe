@@ -98,8 +98,9 @@ rectangle.
 // DragBar time interval 
 #define TIMER_DRAGBAR_TIME 100
 
-// Hotkey value ID to maximum value allowed by Windows for an app.
+// HotKey values ID starting at maximum value allowed by Windows for an app.
 #define PWS_HOTKEY_ID      0xBFFF
+#define PWS_AT_HOTKEY_ID   0xBFFE
 
 // Arbitrary string to mean that the saved DB preferences are empty.
 #define EMPTYSAVEDDBPREFS L"#Empty#"

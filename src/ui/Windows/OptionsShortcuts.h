@@ -16,6 +16,7 @@
 #include "Options_PropertyPage.h"
 #include "MenuShortcuts.h"
 #include "SHCTListCtrl.h"
+#include "SHCTHotKey.h"
 #include "PWHdrCtrlNoChng.h"
 #include "ControlExtns.h"
 #include "TBMStatic.h"
@@ -35,19 +36,6 @@
 
 // COptionsShortcuts dialog
 
-class CAppHotKey : public CHotKeyCtrl
-{
-public:
-
-protected:
-  afx_msg void OnKillFocus(CWnd* pNewWnd);
-
-  DECLARE_MESSAGE_MAP()
-private:
-  friend class COptionsShortcuts;
-  COptionsShortcuts *m_pParent;
-};
-
 class COptionsShortcuts : public COptions_PropertyPage
 {
 public:
@@ -63,46 +51,51 @@ public:
                     const std::vector<UINT> &ExcludedMenuItems,
                     const std::vector<st_MenuShortcut> &ReservedShortcuts);
 
-  MapMenuShortcuts GetMaps() {return m_MapMenuShortcuts;}
+  MapMenuShortcuts GetMaps() {return m_OSMapMenuShortcuts;}
 
   bool GetMapMenuShortcutsIter(const UINT &id, MapMenuShortcutsIter &iter);
   
-  void OnMenuShortcutKillFocus(const int item, const UINT id,
-                             const WORD wVirtualKeyCode, const WORD wModifiers);
+  bool OnMenuShortcutKillFocus(const int item, const UINT id,
+                               const WORD wVirtualKeyCode, const WORD wModifiers);
 
   pws_os::CUUID &GetKBShortcutUUID(int lParam)
-  {return m_KBShortcutMap[lParam];}
+  {return m_OSKBShortcutMap[lParam];}
 
-  void RefreshKBShortcuts();
-  int CheckAppHotKey();
+  void OnHotKeyKillFocus(WORD &wVirtualKeyCode, WORD &wHKModifiers);
 
 protected:
   // Dialog Data
   //{{AFX_DATA(COptionsShortcuts)
   enum { IDD = IDD_PS_SHORTCUTS, IDD_SHORT = IDD_PS_SHORTCUTS_SHORT };
 
-  // 0 is Best, > 0 is OK, < 0 is Bad
-  enum {APPHOTKEY_IN_USE_BY_ENTRY   = -1,
-        APPHOTKEY_UNIQUE            =  0,
-        APPHOTKEY_MADE_UNIQUE       =  1,
-        APPHOTKEY_IN_USE_BY_MENU    =  2,        
-        APPHOTKEY_CANT_MAKE_UNIQUE  =  3};
+  // 0 is Best, > 0 is OK, < 0 is Bad (negative values much larger than positive)
+  enum {
+        HOTKEY_IN_USE_BY_MENU       = -20,
+        HOTKEY_IN_USE_BY_ENTRY      = -10,
+        HOTKEY_UNIQUE               =  0,
+        HOTKEY_MADE_UNIQUE          =  1,
+        HOTKEY_CANT_MAKE_UNIQUE     =  2
+  };
 
-  CAppHotKey m_AppHotKeyCtrl;
+  // MFC seems to have a MAJOR issue with more than one CHotKeyCtrl per dialog
+  // and so we do the same as for the menu shortcut CListctrl -
+  // we only have one which we move around depending where we need it.
+  CSHCTHotKey *m_pHotKey;
+
   CSHCTListCtrl m_ShortcutLC;
   CListCtrl m_EntryShortcutLC;
   //}}AFX_DATA
 
-  int32 m_AppHotKeyValue;
+  int32 m_AppHotKeyValue, m_ATHotKeyValue;
   int m_iColWidth, m_iDefColWidth;
-  BOOL m_bAppHotKeyEnabled;
+  BOOL m_bOS_AppHotKeyEnabled, m_bOS_ATHotKeyEnabled;
 
-  CTBMStatic m_Help1, m_Help2;
+  CStatic m_stcAppHKText, m_stcATHKText;
+  CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4;
 
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsShortcuts)
-
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   BOOL PreTranslateMessage(MSG* pMsg);
@@ -114,32 +107,59 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsShortcuts)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
+  afx_msg void OnWindowPosChanged(WINDOWPOS *lpwndpos);
+  afx_msg void OnContextMenu(CWnd *, CPoint point);
+
   afx_msg void OnHelp();
+  afx_msg void OnAppHotKeyClicked();
+  afx_msg void OnATHotKeyClicked();
   afx_msg void OnEnableAppHotKey();
+  afx_msg void OnEnableATHotKey();
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS);
   afx_msg void OnResetAll();
   afx_msg void OnHeaderNotify(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnHeaderRClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnResetColumnWidth();
-  afx_msg void OnKBShortcutDoulbleClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnKBShortcutDoubleClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnHotKeyChanged();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
 private:
+  friend class CAppHotKey;      // To access "CheckHotKey"
+  friend class CSHCTListCtrlX;  // To access "CheckHotKey"
+
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   static int CALLBACK CKBSHCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
-  MapMenuShortcuts m_MapMenuShortcuts, m_MapSaveMenuShortcuts;
-  std::vector<UINT> m_ExcludedMenuItems;
-  std::vector<st_MenuShortcut> m_ReservedShortcuts;
+  void RefreshKBShortcuts();
+  int CheckHotKey(WORD &wVirtualKeyCode, WORD &wHKModifiers, int iWhichHotKey);
 
-  KBShortcutMap m_KBShortcutMap;
+  MapMenuShortcuts m_OSMapMenuShortcuts, m_OSMapSaveMenuShortcuts;
+  std::vector<UINT> m_OSExcludedMenuItems;
+  std::vector<st_MenuShortcut> m_OSReservedShortcuts;
 
-  int32 m_iOldAppHotKey;
-  bool m_bShortcutsChanged, m_bWarnUserKBShortcut;
+  KBShortcutMap m_OSKBShortcutMap;
+
+  CFont *m_pHK_Font;
+
+  int32 m_iOldAppHotKey, m_iOldATHotKey;
+  bool m_bShortcutsChanged, m_bHotKeyActive;
   UINT m_id;
   int m_iSortedColumn, m_iKBSortedColumn;
+  int m_PrevItem;
   bool m_bSortAscending, m_bKBSortAscending;
+  bool m_bFirstShown, m_bConflictDetected;
+
+  int m_iWhichHotKey;
+  WORD m_wAppVirtualKeyCode, m_wAppHKModifiers;
+  WORD m_wATVirtualKeyCode, m_wATHKModifiers;
+
+  CString m_csSavedAppHotKeyValue;
+  WORD m_wAppSavedVirtualKeyCode, m_wAppSavedHKModifiers;
+  WORD m_wATSavedVirtualKeyCode, m_wATSavedHKModifiers;
+
+  COLORREF m_crWindowText;
 };

@@ -43,19 +43,19 @@ namespace PWSAuxParse {
                             StringX::size_type &st_column,
                             bool &bURLSpecial);
 
-  StringX GetAutoTypeString(const StringX &sxAutoCmd,
+  StringX GetAutotypeString(const StringX &sxAutoCmd,
                             const StringX &sxgroup, const StringX &sxtitle,
                             const StringX &sxuser,
                             const StringX &sxpwd, const StringX &sxlastpwd,
                             const StringX &sxnotes, const StringX &sx_url,
                             const StringX &sx_email,
                             std::vector<size_t> &vactionverboffsets);
-  StringX GetAutoTypeString(const CItemData &ci,
+  StringX GetAutotypeString(const CItemData &ci,
                             const PWScore &core,
                             std::vector<size_t> &vactionverboffsets);
   // Do some runtime parsing (mainly delay commands) and send it to PC
   // as keystrokes:
-  void SendAutoTypeString(const StringX &sx_autotype,
+  void SendAutotypeString(const StringX &sx_autotype,
                           const std::vector<size_t> &vactionverboffsets);
 }
 

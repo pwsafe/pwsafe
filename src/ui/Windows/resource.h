@@ -391,6 +391,8 @@
 #define IDB_EMPTY_DISABLED              549
 #define IDB_REDEXCLAMATION              550
 #define IDB_LOCK_CLASSIC                551
+#define IDD_HOTKEYCONFLICTDLG           552
+#define IDD_SHORTCUTCONFLICTDLG         553
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -403,8 +405,6 @@
 #define IDC_USERNAME                    1010
 #define IDC_NOTES                       1011
 #define IDC_ITEMLIST                    1012
-#define IDC_HIDDEN_NOTES                1012
-#define IDC_NOTES2                      1012
 #define IDC_ITEMTREE                    1013
 #define IDC_SHOWPASSWORD                1014
 #define IDC_CLEARCHECK                  1015
@@ -414,6 +414,7 @@
 #define IDC_CONFIRMDELETE               1019
 #define IDC_APPBUILTON                  1020
 #define IDC_CONFIRMCOPY                 1021
+#define IDC_HIDDEN_NOTES                1022
 #define IDC_GENERATEPASSWORD            1025
 #define IDC_LOCKONMINIMIZE              1026
 #define IDC_DEFPWSHOWINEDIT             1028
@@ -467,8 +468,8 @@
 #define IDC_YES_GROUP                   1084
 #define IDC_GROUP_NAME                  1085
 #define IDC_READONLY                    1086
-#define IDC_APPHOTKEY_CTRL              1087
 #define IDC_APPHOTKEY_ENABLE            1088
+#define IDC_ATHOTKEY_ENABLE             1089
 #define IDC_DEFIMPDELIM                 1090
 #define IDC_QUERYSETEXPDELIM            1091
 #define IDC_WZDEFEXPDELIM               1092
@@ -686,7 +687,7 @@
 #define IDC_STATIC_DTSTATS              1364
 #define IDC_SHORTCUTLIST                1367
 #define IDC_RESETALLSHORTCUTS           1368
-#define IDC_SHORTCUTHOTKEY              1369
+#define IDC_HOTKEY                      1369
 #define IDC_STATIC_SHCTWARNING          1370
 #define IDC_SHORTCUTLC_HEADER           1371
 #define IDC_VKB                         1372
@@ -868,14 +869,34 @@
 #define IDC_PWHHELP                     1560
 #define IDC_STATIC_HOSTUSER             1561
 #define IDC_STATIC_DEPENDENT            1562
+#define IDC_AUTOTYPEHOTKEYHELP          1563
+#define IDC_STATIC_AUTOTYPEHOTKEY       1564
+#define IDC_STATIC_APPMENU              1565
+#define IDC_APPHOTKEYHELP               1565
+#define IDC_AUTOTYPEHOTKEYHELP2         1565
+#define IDC_STATIC_APPENTRY             1566
+#define IDC_STATIC_ATMENU               1567
+#define IDC_STATIC_APPMENU4             1568
+#define IDC_STATIC_ATENTRY              1569
+#define IDC_STATIC_MESSAGE              1570
+#define IDC_STATIC_APPHK                1571
+#define IDC_STATIC_ATHK                 1572
+#define IDC_AUTOTYPEHELP2               1573
+#define IDC_RUNCMDHELP                  1574
+#define IDC_ENTKBSHCTHOTKEYHELP         1575
+#define IDC_STATIC_KBD                  1576
+#define IDC_SHORTCUTCONFLICTLIST        1577
+#define IDC_SHORTCUTLIST_HEADER         1578
+#define IDC_STATIC_APPHOTKEY            1579
+#define IDC_STATIC_ATHOTKEY             1580
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        552
+#define _APS_NEXT_RESOURCE_VALUE        553
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1563
-#define _APS_NEXT_SYMED_VALUE           552
+#define _APS_NEXT_CONTROL_VALUE         1581
+#define _APS_NEXT_SYMED_VALUE           554
 #endif
 #endif

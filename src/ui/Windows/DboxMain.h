@@ -210,7 +210,7 @@ public:
   void CalcHeaderWidths();
   void UnFindItem();
   void SetLocalStrings();
-  void PerformAutoType(); // 'public' version called by Tree/List
+  void PerformAutotype(); // 'public' version called by Tree/List
 
   void UpdateToolBarROStatus(const bool bIsRO);
   void UpdateToolBarForSelectedItem(const CItemData *pci);
@@ -287,7 +287,7 @@ public:
   void ClearFilter();
   void ExportFilters(PWSFilters &MapFilters);
 
-  void DoAutoType(const StringX &sx_autotype, 
+  void DoAutotype(const StringX &sx_autotype, 
                   const std::vector<size_t> &vactionverboffsets);
   void UpdateLastClipboardAction(const int iaction);
   void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
@@ -394,8 +394,8 @@ public:
 
   wchar_t *m_eye_catcher;
 
-  bool m_bDoAutoType;
-  StringX m_sxAutoType;
+  bool m_bDoAutotype;
+  StringX m_sxAutotype;
   std::vector<size_t> m_vactionverboffsets;
 
   // Used in Add & Edit & PasswordPolicyDlg
@@ -411,9 +411,9 @@ public:
   void GetAllGroups(std::vector<std::wstring> &vGroups) const;
 
   // Process Special Shortcuts for Tree & List controls
-  bool CheckPreTranslateDelete(MSG* pMsg);
-  bool CheckPreTranslateRename(MSG* pMsg);
-  bool CheckPreTranslateAutoType(MSG* pMsg);
+  bool CheckPreTranslateDelete(MSG *pMsg);
+  bool CheckPreTranslateRename(MSG *pMsg);
+  bool CheckPreTranslateAutotype(MSG *pMsg);
 
   void SetSetup() {m_bSetup = true;}                     // called when '--setup' passed
   void NoValidation() {m_bNoValidation = true;}          // called when '--novalidate' passed
@@ -427,7 +427,8 @@ public:
   const std::vector<UINT> &GetExcludedMenuItems() {return m_ExcludedMenuItems;}
   const std::vector<st_MenuShortcut> &GetReservedShortcuts() {return m_ReservedShortcuts;}
   const unsigned int GetMenuShortcut(const unsigned short int &siVirtKey,
-                                     const unsigned char &cModifier, StringX &sxMenuItemName);
+                                     const unsigned char &cModifier, StringX &sxMenuItemName,
+                                     MapMenuShortcuts *pMapMenuShortcuts = NULL);
   
   bool ChangeMode(bool promptUser); // r-o <-> r/w
 
@@ -437,7 +438,12 @@ public:
   void BlockLogoffShutdown(const bool bChanged);
 
   std::set<StringX> GetAllMediaTypes() const
-  {return m_core.GetAllMediaTypes();}
+  { return m_core.GetAllMediaTypes(); }
+
+  int CheckShortcuts();
+  int SetAndCheckHotKeys(bool bSetHotKey);
+  bool IsAppHotKeyEnabled() { return m_bAppHotKeyEnabled; }
+  bool IsATHotKeyEnabled() { return m_bATHotKeyEnabled; }
 
  protected:
    // ClassWizard generated virtual function overrides
@@ -543,7 +549,7 @@ public:
   LRESULT CopyAllCompareResult(WPARAM wParam);
   LRESULT SynchAllCompareResult(WPARAM wParam);
   LRESULT OnToolBarFindMessage(WPARAM wParam, LPARAM lParam);
-  LRESULT OnDragAutoType(WPARAM wParam, LPARAM lParam);
+  LRESULT OnDragAutotype(WPARAM wParam, LPARAM lParam);
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);
   LRESULT OnApplyEditChanges(WPARAM wParam, LPARAM lParam);
   LRESULT OnDroppedFile(WPARAM wParam, LPARAM lParam);
@@ -576,7 +582,7 @@ public:
   int RestoreSafe(void);
   int New(void);
 
-  void AutoType(const CItemData &ci);
+  void Autotype(const CItemData &ci);
   void UpdateEntry(CAddEdit_PropertySheet *pentry_psh);
   bool EditShortcut(CItemData *pci, PWScore *pcore = NULL);
   void SetFindToolBar(bool bShow);
@@ -605,8 +611,8 @@ public:
   afx_msg void OnUpdateTrayBrowse(CCmdUI *pCmdUI);
   afx_msg void OnTrayDeleteEntry(UINT nID);
   afx_msg void OnUpdateTrayDeleteEntry(CCmdUI *pCmdUI);
-  afx_msg void OnTrayAutoType(UINT nID);
-  afx_msg void OnUpdateTrayAutoType(CCmdUI *pCmdUI);
+  afx_msg void OnTrayAutotype(UINT nID);
+  afx_msg void OnUpdateTrayAutotype(CCmdUI *pCmdUI);
   afx_msg void OnTrayCopyURL(UINT nID);
   afx_msg void OnUpdateTrayCopyURL(CCmdUI *pCmdUI);
   afx_msg void OnTrayRunCommand(UINT nID);
@@ -710,7 +716,7 @@ public:
   afx_msg void OnMinimize();
   afx_msg void OnRestore();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
-  afx_msg void OnAutoType();
+  afx_msg void OnAutotype();
   afx_msg void OnGotoBaseEntry();
   afx_msg void OnEditBaseEntry();
   afx_msg void OnViewAttachment();
@@ -803,6 +809,7 @@ private:
   int m_nSaveColumnHeaderWidthByType[CItem::LAST_DATA];
   int m_iheadermaxwidth;
   int m_iListHBarPos, m_iTreeHBarPos;
+  bool m_bAppHotKeyEnabled, m_bATHotKeyEnabled;
 
   pws_os::CUUID m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
   pws_os::CUUID m_TUUIDSelectedAtMinimize; // to restore Tree entry selection upon un-minimize
@@ -880,10 +887,12 @@ private:
   StringX GetListViewItemText(CItemData &ci, const int &icolumn);
   void DoCommand(Command *pcmd = NULL, PWScore *pcore = NULL, const bool bUndo = true);
   bool IsCharacterSupported(std::wstring &sProtect);
+
+  void RestoreMenuShortcuts();
   
   static const struct UICommandTableEntry {
     UINT ID;
-    enum {InOpenRW=0, InOpenRO=1, InEmpty=2, InClosed=3, bOK_LAST};
+    enum { InOpenRW = 0, InOpenRO = 1, InEmpty = 2, InClosed = 3, bOK_LAST };
     bool bOK[bOK_LAST];
   } m_UICommandTable[];
 
@@ -915,6 +924,7 @@ private:
 
   // Menu Shortcuts
   MapMenuShortcuts m_MapMenuShortcuts;
+  MapMenuShortcuts m_MapDeletedShortcuts;
 
   // Menu items we don't allow the user to modify or see in Options
   // Shortcuts CListCtrl
@@ -938,7 +948,7 @@ private:
   PSBR_CREATE m_pfcnShutdownBlockReasonCreate;
   PSBR_DESTROY m_pfcnShutdownBlockReasonDestroy;
 
-  // Delete/Rename/AutoType Shortcuts
+  // Delete/Rename/Autotype Shortcuts
   WPARAM m_wpDeleteMsg, m_wpDeleteKey;
   WPARAM m_wpRenameMsg, m_wpRenameKey;
   WPARAM m_wpAutotypeUPMsg, m_wpAutotypeDNMsg, m_wpAutotypeKey;

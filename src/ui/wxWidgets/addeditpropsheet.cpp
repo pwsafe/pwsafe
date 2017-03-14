@@ -768,7 +768,7 @@ void AddEditPropSheet::SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool i
 {
 static struct {short pv; wxString name;}
  dcaMapping[] =
-   {{PWSprefs::DoubleClickAutoType, _("Auto Type")},
+   {{PWSprefs::DoubleClickAutotype, _("Auto Type")},
     {PWSprefs::DoubleClickBrowse, _("Browse")},
     {PWSprefs::DoubleClickBrowsePlus, _("Browse + Auto Type")},
     {PWSprefs::DoubleClickCopyNotes, _("Copy Notes")},
@@ -929,7 +929,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   else
     style &= ~wxTE_WORDWRAP;
   m_noteTX->SetExtraStyle(style);
-  m_autotype = m_item.GetAutoType().c_str();
+  m_autotype = m_item.GetAutotype().c_str();
   m_runcmd = m_item.GetRunCommand().c_str();
 
   // double-click actions:
@@ -1240,7 +1240,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
                      m_notes      != m_item.GetNotes().c_str()       ||
                      m_url        != m_item.GetURL().c_str()         ||
                      m_email      != m_item.GetEmail().c_str()       ||
-                     m_autotype   != m_item.GetAutoType().c_str()    ||
+                     m_autotype   != m_item.GetAutotype().c_str()    ||
                      m_runcmd     != m_item.GetRunCommand().c_str()  ||
                      m_DCA        != lastDCA                         ||
                      m_ShiftDCA   != lastShiftDCA                    ||
@@ -1281,7 +1281,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         m_item.SetNotes(tostringx(m_notes));
         m_item.SetURL(tostringx(m_url));
         m_item.SetEmail(tostringx(m_email));
-        m_item.SetAutoType(tostringx(m_autotype));
+        m_item.SetAutotype(tostringx(m_autotype));
         m_item.SetRunCommand(tostringx(m_runcmd));
         m_item.SetPWHistory(tostringx(m_PWHistory));
         wxString polName;
@@ -1335,7 +1335,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       m_item.SetURL(tostringx(m_url));
       m_item.SetEmail(tostringx(m_email));
       m_item.SetPassword(password);
-      m_item.SetAutoType(tostringx(m_autotype));
+      m_item.SetAutotype(tostringx(m_autotype));
       m_item.SetRunCommand(tostringx(m_runcmd));
       m_item.SetDCA(m_DCA);
       m_item.SetShiftDCA(m_ShiftDCA);

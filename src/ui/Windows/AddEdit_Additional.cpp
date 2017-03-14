@@ -34,13 +34,14 @@ using pws_os::CUUID;
 
 IMPLEMENT_DYNAMIC(CAddEdit_Additional, CAddEdit_PropertyPage)
 
-CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEMD)
+CAddEdit_Additional::CAddEdit_Additional(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_Additional::IDD, CAddEdit_Additional::IDD_SHORT,
                           pAEMD),
   m_bClearPWHistory(false), m_bSortAscending(true),
   m_bInitdone(false), m_iSortedColumn(-1),
-  m_bWarnUserKBShortcut(false), m_iOldHotKey(0)
+  m_bWarnUserKBShortcut(false), m_iOldHotKey(0),
+  m_bAE_AppHotKeyEnabled(false), m_bAE_ATHotKeyEnabled(false)
 {
   if (M_MaxPWHistory() == 0)
     M_MaxPWHistory() = PWSprefs::GetInstance()->
@@ -52,13 +53,67 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEM
   m_wAppVirtualKeyCode = iAppHotKeyValue & 0xff;
   m_wAppWindowsModifiers = ConvertModifersMFC2Windows(wHKModifiers);
 
-  // Can't be enabled if not set!
-  if (iAppHotKeyValue == 0) {
-    m_bAppHotKeyEnabled = false;
-    m_iAppHotKey = 0;
-  } else {
-    m_bAppHotKeyEnabled = PWSprefs::GetInstance()->GetPref(PWSprefs::HotKeyEnabled);
+  // Save Autotype HotKey info
+  int32 iATHotKeyValue = int32(PWSprefs::GetInstance()->GetPref(PWSprefs::AutotypeHotKey));
+  WORD wATHKModifiers = iATHotKeyValue >> 16;
+  m_wATVirtualKeyCode = iATHotKeyValue & 0xff;
+  m_wATWindowsModifiers = ConvertModifersMFC2Windows(wATHKModifiers);
+
+  // Only set that the hotkeys are set if they are rather than what the user's
+  // preferences indicate (they might have been disabled due to conflicts)
+  DboxMain *dbox = GetMainDlg();
+  m_bPWSAppHotKeyEnabled = dbox->IsAppHotKeyEnabled();
+  m_bPWSATHotKeyEnabled = dbox->IsATHotKeyEnabled();
+
+  if (m_bPWSAppHotKeyEnabled) {
     m_iAppHotKey = (m_wAppWindowsModifiers << 16) + m_wAppVirtualKeyCode;
+  }
+
+  if (m_bPWSATHotKeyEnabled) {
+    m_iATHotKey = (m_wATWindowsModifiers << 16) + m_wATVirtualKeyCode;
+  }
+
+  if (m_bPWSAppHotKeyEnabled) {
+    // If PWS Application has an active HotKey, disable it when user
+    // is potentially editing this entry's HotKey
+    BOOL brc = UnregisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID);
+    ASSERT(brc);
+    pws_os::Trace(L"DboxMain::OnOptions - AppHotKey Unregister %s\n",
+      brc == TRUE ? L"succeeded" : L"failed");
+  }
+
+  if (m_bPWSATHotKeyEnabled) {
+    // If PWS Application has an active HotKey, disable it when user
+    // is potentially editing this entry's HotKey
+    BOOL brc = UnregisterHotKey(GetMainDlg()->m_hWnd, PWS_AT_HOTKEY_ID);
+    ASSERT(brc);
+    pws_os::Trace(L"DboxMain::OnOptions - ATHotKey Unregister %s\n",
+      brc == TRUE ? L"succeeded" : L"failed");
+  }
+
+  m_KBShortcutCtrl.SetMyParent(this);
+}
+
+CAddEdit_Additional::~CAddEdit_Additional()
+{
+  // If PWS Application had an active HotKey before the user edited
+  // this entry, put it back
+  if (m_bPWSAppHotKeyEnabled && !m_bAE_AppHotKeyEnabled &&
+      m_wAppWindowsModifiers != 0 && m_wAppVirtualKeyCode != 0) {
+    m_bAE_AppHotKeyEnabled = RegisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID,
+        UINT(m_wAppWindowsModifiers), UINT(m_wAppVirtualKeyCode)) == TRUE;
+    pws_os::Trace(L"CAddEdit_Additional::~CAddEdit_Additional - AppHotKey Register %s\n",
+      m_bAE_AppHotKeyEnabled ? L"succeeded" : L"failed");
+  }
+
+  // If PWS Application had the Autotype hotkey active before the user edited
+  // this entry, put it back
+  if (m_bPWSATHotKeyEnabled && !m_bAE_ATHotKeyEnabled &&
+      m_wATWindowsModifiers != 0 && m_wATWindowsModifiers != 0) {
+    m_bAE_ATHotKeyEnabled = RegisterHotKey(GetMainDlg()->m_hWnd, PWS_AT_HOTKEY_ID,
+        UINT(m_wATWindowsModifiers), UINT(m_wATWindowsModifiers)) == TRUE;
+    pws_os::Trace(L"CAddEdit_Additional::~CAddEdit_Additional - ATHotKey Register %s\n",
+      m_bAE_ATHotKeyEnabled ? L"succeeded" : L"failed");
   }
 }
 
@@ -89,19 +144,24 @@ void CAddEdit_Additional::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_STATIC_SHCTWARNING, m_stc_warning);
 
   DDX_Control(pDX, IDC_AUTOTYPEHELP, m_Help1);
-  DDX_Control(pDX, IDC_PWHHELP, m_Help2);
+  DDX_Control(pDX, IDC_AUTOTYPEHELP2, m_Help2);
+  DDX_Control(pDX, IDC_RUNCMDHELP, m_Help3);
+  DDX_Control(pDX, IDC_ENTKBSHCTHOTKEYHELP, m_Help4);
+  DDX_Control(pDX, IDC_PWHHELP, m_Help5);
   //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_Additional)
   ON_WM_CTLCOLOR()
+  ON_WM_CONTEXTMENU()
+
   ON_BN_CLICKED(ID_HELP, OnHelp)
-  ON_BN_CLICKED(IDC_AUTOTYPEHELP, OnAutoTypeHelp)
+  ON_BN_CLICKED(IDC_AUTOTYPEHELP, OnAutotypeHelp)
 
   ON_EN_CHANGE(IDC_AUTOTYPE, OnChanged)
   ON_EN_CHANGE(IDC_MAXPWHISTORY, OnChanged)
-  ON_EN_CHANGE(IDC_RUNCMD, OnChanged)
+  ON_EN_CHANGE(IDC_RUNCMD, OnRunCmdChanged)
   ON_EN_CHANGE(IDC_ENTKBSHCTHOTKEY, OnHotKeyChanged)
 
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_AUTO, IDC_STATIC_RUNCMD, OnSTCExClicked)
@@ -162,17 +222,8 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   GetDlgItem(IDC_DEFAULTAUTOTYPE)->SetWindowText(cs_dats);
 
-  if (InitToolTip()) {
-    AddTool(IDC_STATIC_AUTO, IDS_CLICKTOCOPYEXPAND);
-    AddTool(IDC_STATIC_RUNCMD, IDS_CLICKTOCOPYEXPAND);
-    AddTool(IDC_ENTKBSHCTHOTKEY, IDS_KBS_TOOLTIP0);
-    ActivateToolTip();
-  }
-
-    m_stc_autotype.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-    m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-
-  m_KBShortcutCtrl.SetMyParent(this);
+  m_stc_autotype.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+  m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
 
   // These wil be zero for Add entry
   WORD wVirtualKeyCode = M_KBShortcut() & 0xff;
@@ -182,6 +233,13 @@ BOOL CAddEdit_Additional::OnInitDialog()
   WORD wHKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
 
   m_KBShortcutCtrl.SetHotKey(wVirtualKeyCode, wHKModifiers);
+
+  // Save current values in case we have to revert
+  m_wSavedVirtualKeyCode = wVirtualKeyCode;
+  m_wSavedModifiers = wHKModifiers;
+
+  // Check shortcut in case Options have changed
+  CheckKeyboardShortcut();
 
   // We could do this to ensure user has at least Alt or Ctrl key
   // But it gets changed without the user knowing - so we do it elsewhere
@@ -245,13 +303,32 @@ BOOL CAddEdit_Additional::OnInitDialog()
   if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
     m_Help1.Init(IDB_QUESTIONMARK);
     m_Help2.Init(IDB_QUESTIONMARK);
+    m_Help3.Init(IDB_QUESTIONMARK);
+    m_Help4.Init(IDB_QUESTIONMARK);
+    m_Help5.Init(IDB_QUESTIONMARK);
 
     // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
-    AddTool(IDC_PWHHELP, IDS_PWHHELP);
-    AddTool(IDC_AUTOTYPEHELP, IDS_AUTOTYPEHELP);
+    CString cs_LabelText, cs_Tooltip;
+    GetDlgItem(IDC_STATIC_AUTO)->GetWindowText(cs_LabelText);
+    cs_LabelText.Remove(L'&');
+    cs_LabelText.Remove(L':');
+    cs_Tooltip.Format(IDS_CLICKTOCOPYEXPAND, static_cast<LPCWSTR>(cs_LabelText));
+    AddTool(IDC_AUTOTYPEHELP2, cs_Tooltip);
 
-    // Note: clicking on IDC_AUTOTYPEHELP opens AutoType Help rather than
-    // showing a Tooltip
+    GetDlgItem(IDC_STATIC_RUNCMD)->GetWindowText(cs_LabelText);
+    cs_LabelText.Remove(L'&');
+    cs_LabelText.Remove(L':');
+    cs_Tooltip.Format(IDS_CLICKTOCOPYEXPAND, static_cast<LPCWSTR>(cs_LabelText));
+    AddTool(IDC_RUNCMDHELP, cs_Tooltip);
+
+    if (M_runcommand().IsEmpty()) {
+      m_Help3.EnableWindow(FALSE);
+      m_Help3.ShowWindow(SW_HIDE);
+    }
+
+    AddTool(IDC_ENTKBSHCTHOTKEYHELP, IDS_ENTKBSHCTHOTKEYHELP);
+    AddTool(IDC_AUTOTYPEHELP, IDS_AUTOTYPEHELP);
+    AddTool(IDC_PWHHELP, IDS_PWHHELP);
 
     ActivateToolTip();
   } else {
@@ -259,6 +336,12 @@ BOOL CAddEdit_Additional::OnInitDialog()
     m_Help1.ShowWindow(SW_HIDE);
     m_Help2.EnableWindow(FALSE);
     m_Help2.ShowWindow(SW_HIDE);
+    m_Help3.EnableWindow(FALSE);
+    m_Help3.ShowWindow(SW_HIDE);
+    m_Help4.EnableWindow(FALSE);
+    m_Help4.ShowWindow(SW_HIDE);
+    m_Help5.EnableWindow(FALSE);
+    m_Help5.ShowWindow(SW_HIDE);
   }
 
   UpdatePasswordHistoryLC();
@@ -270,9 +353,6 @@ BOOL CAddEdit_Additional::OnInitDialog()
     GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);
   }
 
-  m_stc_warning.SetColour(RGB(255, 0, 0));
-  m_stc_warning.ShowWindow(SW_HIDE);
-
   UpdateData(FALSE);
   m_bInitdone = true;
   return TRUE;
@@ -281,7 +361,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
 void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)
 {
   const struct {int res; int pref;} ResPref[] = {
-    {IDSC_DCAAUTOTYPE,        PWSprefs::DoubleClickAutoType},
+    {IDSC_DCAAUTOTYPE,        PWSprefs::DoubleClickAutotype},
     {IDSC_DCABROWSE,          PWSprefs::DoubleClickBrowse},
     {IDSC_DCABROWSEPLUS,      PWSprefs::DoubleClickBrowsePlus},
     {IDSC_DCACOPYNOTES,       PWSprefs::DoubleClickCopyNotes},
@@ -326,6 +406,20 @@ void CAddEdit_Additional::OnChanged()
   m_ae_psh->SetChanged(true);
 }
 
+void CAddEdit_Additional::OnRunCmdChanged()
+{
+  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
+    return;
+
+  UpdateData(TRUE);
+
+  BOOL bRunCmdEmpty = M_runcommand().IsEmpty();
+  m_Help3.EnableWindow(bRunCmdEmpty == TRUE ? FALSE : TRUE);
+  m_Help3.ShowWindow(bRunCmdEmpty == TRUE ? SW_HIDE : SW_SHOW);
+
+  m_ae_psh->SetChanged(true);
+}
+
 void CAddEdit_Additional::OnHotKeyChanged()
 {
   if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
@@ -335,13 +429,32 @@ void CAddEdit_Additional::OnHotKeyChanged()
 
   WORD wVirtualKeyCode, wHKModifiers, wPWSModifiers;
   m_KBShortcutCtrl.GetHotKey(wVirtualKeyCode, wHKModifiers);
-  
-  // Translate from PWS to CHotKeyCtrl modifiers
-  wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
-  int32 iKBShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
+  if (wVirtualKeyCode != 0 && wHKModifiers != 0) {
+    // Translate from PWS to CHotKeyCtrl modifiers
+    wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
+    int32 iKBShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
 
-  if (M_KBShortcut() != iKBShortcut)
-    m_ae_psh->SetChanged(true);
+    if (CheckKeyboardShortcut() == KBSHORTCUT_UNIQUE) {
+      m_wSavedVirtualKeyCode = wVirtualKeyCode;
+      m_wSavedModifiers = wHKModifiers;
+
+      if (M_KBShortcut() != iKBShortcut) {
+        m_ae_psh->SetChanged(true);
+      }
+    }
+  
+    if (wVirtualKeyCode == m_wAppVirtualKeyCode && wHKModifiers == m_wAppWindowsModifiers) {
+      // Same as PWS Application HotKey - Restore last saved values
+      m_KBShortcutCtrl.SetHotKey(m_wSavedVirtualKeyCode, m_wSavedModifiers);
+      return;
+    }
+
+    if (wVirtualKeyCode == m_wATVirtualKeyCode && wHKModifiers == m_wATWindowsModifiers) {
+      // Same as PWS Autotype HotKey - Restore last saved values
+      m_KBShortcutCtrl.SetHotKey(m_wSavedVirtualKeyCode, m_wSavedModifiers);
+      return;
+    }
+  }
 }
 
 void CAddEdit_Additional::OnHelp()
@@ -349,7 +462,7 @@ void CAddEdit_Additional::OnHelp()
   ShowHelp(L"::/html/entering_pwd_add.html");
 }
 
-void CAddEdit_Additional::OnAutoTypeHelp()
+void CAddEdit_Additional::OnAutotypeHelp()
 {
   ShowHelp(L"::/html/autotype.html");
 }
@@ -418,27 +531,7 @@ BOOL CAddEdit_Additional::OnKillActive()
 
 void CAddEdit_Additional::OnEntryHotKeyKillFocus()
 {
-  if (m_bAppHotKeyEnabled || m_wAppWindowsModifiers == 0 || m_wAppVirtualKeyCode == 0)
-    return;
-
-  // If PWS Application had an active Hot Key before the user edited
-  // this entry's Hot Key, put it back
-  BOOL brc = RegisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID,
-                      UINT(m_wAppWindowsModifiers), UINT(m_wAppVirtualKeyCode));
-  if (brc)
-    m_bAppHotKeyEnabled = true;
-}
-
-void CAddEdit_Additional::OnEntryHotKeySetFocus()
-{
-  if (!m_bAppHotKeyEnabled)
-    return;
-  
-  // If PWS Application has an active Hot Key, disable it when user
-  // is potentially editing this entry's Hot Key
-  VERIFY(UnregisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID));
-
-  m_bAppHotKeyEnabled = false;
+  CheckKeyboardShortcut();
 }
 
 int CAddEdit_Additional::CheckKeyboardShortcut()
@@ -478,9 +571,21 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       return KBSHORTCUT_INVALID_CHARACTER;
     }
 
-    if (m_iAppHotKey == iKBShortcut) {
+    if (m_bAE_AppHotKeyEnabled && m_iAppHotKey == iKBShortcut) {
       // Same as PWS application HotKey
       cs_msg.LoadString(IDS_KBS_SAMEASAPP);
+      m_stc_warning.SetWindowText(cs_msg);
+      m_stc_warning.ShowWindow(SW_SHOW);
+
+      // Reset keyboard shortcut
+      wVirtualKeyCode = wHKModifiers = wPWSModifiers = 0;
+      m_KBShortcutCtrl.SetHotKey(wVirtualKeyCode, wHKModifiers);
+      return KBSHORTCUT_IN_USE_BY_PWS;
+    }
+
+    if (m_bAE_ATHotKeyEnabled && m_iATHotKey == iKBShortcut) {
+      // Same as PWS application HotKey2
+      cs_msg.LoadString(IDS_KBS_SAMEASAT);
       m_stc_warning.SetWindowText(cs_msg);
       m_stc_warning.ShowWindow(SW_SHOW);
 
@@ -510,7 +615,7 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       
       // Try them in order
       int iChange, ierror(IDS_KBS_CANTADD);
-      for (iChange = 0; iChange < sizeof(wValidModifierCombos)/sizeof(WORD); iChange++) {
+      for (iChange = 0; iChange < sizeof(wValidModifierCombos) / sizeof(WORD); iChange++) {
         int iNewKBShortcut = ((wPWSModifiers | wValidModifierCombos[iChange]) << 16) + wVirtualKeyCode;
         chk_uuid = M_pcore()->GetKBShortcut(iNewKBShortcut);
         if (chk_uuid == CUUID::NullUUID() || chk_uuid == M_entry_uuid()) {
@@ -550,10 +655,13 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       const StringX sxGroup = iter->second.GetGroup();
       const StringX sxTitle = iter->second.GetTitle();
       const StringX sxUser  = iter->second.GetUser();
+      CString cs_Reset(MAKEINTRESOURCE(IDS_KBS_RESET));
+
       cs_errmsg.Format(IDS_KBS_INUSEBYENTRY, static_cast<LPCWSTR>(cs_HotKey),
                        static_cast<LPCWSTR>(sxGroup.c_str()),
                        static_cast<LPCWSTR>(sxTitle.c_str()),
-                       static_cast<LPCWSTR>(sxUser.c_str()));
+                       static_cast<LPCWSTR>(sxUser.c_str()),
+                       static_cast<LPCWSTR>(cs_Reset));
       m_stc_warning.SetWindowText(cs_errmsg);
       m_stc_warning.ShowWindow(SW_SHOW);
 
@@ -576,10 +684,8 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       // Warn user that it is already in use for a menu item
       // (on this instance for this user!)
       Remove(sxMenuItemName, L'&');
-      CString cs_override(MAKEINTRESOURCE(IDS_ENTRYKBST_OVERRIDE));
       cs_errmsg.Format(IDS_KBS_INUSEBYMENU, static_cast<LPCWSTR>(cs_HotKey),
-                       static_cast<LPCWSTR>(sxMenuItemName.c_str()),
-                       static_cast<LPCWSTR>(cs_override));
+                       static_cast<LPCWSTR>(sxMenuItemName.c_str()));
       m_stc_warning.SetWindowText(cs_errmsg);
       m_stc_warning.ShowWindow(SW_SHOW);
       // We have warned them - so now accept
@@ -607,7 +713,7 @@ LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
         return 1L;
       switch (M_uicaller()) {
         case IDS_EDITENTRY:
-          if (M_autotype()    != M_pci()->GetAutoType()   ||
+          if (M_autotype()    != M_pci()->GetAutotype()   ||
               M_runcommand()  != M_pci()->GetRunCommand() ||
               M_DCA()         != M_oldDCA()               ||
               M_ShiftDCA()    != M_oldShiftDCA()          ||
@@ -658,11 +764,11 @@ BOOL CAddEdit_Additional::OnApply()
     //Check Run Command parses - don't substitute
     std::wstring errmsg;
     size_t st_column;
-    bool bAutoType(false);
+    bool bAutotype(false);
     StringX sxAutotype(L"");
     bool bURLSpecial;
     PWSAuxParse::GetExpandedString(M_runcommand(), L"", NULL, NULL,
-                                   bAutoType, sxAutotype, errmsg, st_column,
+                                   bAutotype, sxAutotype, errmsg, st_column,
                                    bURLSpecial);
     if (errmsg.length() > 0) {
       CGeneralMsgBox gmb;
@@ -789,7 +895,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
           sLastPassword = pciA->GetPreviousPassword();
         }
 
-        sxData = PWSAuxParse::GetAutoTypeString(M_autotype(),
+        sxData = PWSAuxParse::GetAutotypeString(M_autotype(),
                                                 M_group(),
                                                 M_title(),
                                                 M_username(),
@@ -827,8 +933,8 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
         sxData = PWSAuxParse::GetExpandedString(M_runcommand(),
                                                 M_currentDB(),
                                                 M_pci(), pbci,
-                                                GetMainDlg()->m_bDoAutoType,
-                                                GetMainDlg()->m_sxAutoType,
+                                                GetMainDlg()->m_bDoAutotype,
+                                                GetMainDlg()->m_sxAutotype,
                                                 errmsg, st_column, bURLSpecial);
         if (errmsg.length() > 0) {
           CGeneralMsgBox gmb;
@@ -843,8 +949,11 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
     default:
       ASSERT(0);
   }
-  GetMainDlg()->SetClipboardData(sxData);
-  GetMainDlg()->UpdateLastClipboardAction(iaction);
+
+  if (iaction != 0) {
+    GetMainDlg()->SetClipboardData(sxData);
+    GetMainDlg()->UpdateLastClipboardAction(iaction);
+  }
 }
 
 void CAddEdit_Additional::OnCheckedSavePasswordHistory()
@@ -871,8 +980,8 @@ void CAddEdit_Additional::OnClearPWHist()
   GetDlgItem(IDC_PWH_COPY_ALL)->EnableWindow(FALSE);
 
   // Help no longer needed
-  m_Help2.EnableWindow(FALSE);
-  m_Help2.ShowWindow(SW_HIDE);
+  m_Help5.EnableWindow(FALSE);
+  m_Help5.ShowWindow(SW_HIDE);
 }
 
 void CAddEdit_Additional::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -1036,6 +1145,37 @@ void CAddEdit_Additional::UpdatePasswordHistoryLC()
   GetDlgItem(IDC_STATIC_PWH_ADD)->ShowWindow(SW_HIDE);
 
   // Help no longer needed
-  m_Help2.EnableWindow(bEntriesPresent ? TRUE : FALSE);
-  m_Help2.ShowWindow(bEntriesPresent ? SW_SHOW : SW_HIDE);
+  m_Help5.EnableWindow(bEntriesPresent ? TRUE : FALSE);
+  m_Help5.ShowWindow(bEntriesPresent ? SW_SHOW : SW_HIDE);
+}
+
+void CAddEdit_Additional::OnContextMenu(CWnd *, CPoint point)
+{
+  CRect rect;
+
+  m_KBShortcutCtrl.GetWindowRect(&rect);
+  if (rect.PtInRect(point)) {
+    WORD wVirtualKeyCode, wHKModifiers;
+    m_KBShortcutCtrl.GetHotKey(wVirtualKeyCode, wHKModifiers);
+
+    if (wVirtualKeyCode == 0 && wHKModifiers == 0)
+      return;
+
+    CMenu PopupMenu;
+    PopupMenu.LoadMenu(IDR_POPRESETSHORTCUT);
+    CMenu *pContextMenu = PopupMenu.GetSubMenu(0);
+    pContextMenu->RemoveMenu(ID_MENUITEM_REMOVESHORTCUT, MF_BYCOMMAND);
+
+    int nID = pContextMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RETURNCMD,
+                                           point.x, point.y, this);
+
+    if (nID == ID_MENUITEM_RESETSHORTCUT) {
+      // Reset HotKey
+      m_KBShortcutCtrl.SetHotKey(0, 0);
+
+      // Clear any warnings
+      m_stc_warning.SetWindowText(L"");
+      m_stc_warning.ShowWindow(SW_HIDE);
+    }
+  }
 }

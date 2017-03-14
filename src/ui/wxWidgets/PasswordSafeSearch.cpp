@@ -119,10 +119,12 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
       m_searchPointer.Clear();
 
       if (!m_toolbar->GetToolState(ID_FIND_ADVANCED_OPTIONS))
-        FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, begin, end, afn);
+        FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer,
+                    begin, end, afn);
       else
         FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer,
-                      m_criteria->GetSelectedFields(), m_criteria->HasSubgroupRestriction(), m_criteria->SubgroupSearchText(),
+                      m_criteria->GetSelectedFields(), m_criteria->HasSubgroupRestriction(),
+                      m_criteria->SubgroupSearchText(),
                       m_criteria->SubgroupObject(), m_criteria->SubgroupFunction(),
                       m_criteria->CaseSensitive(), begin, end, afn);
 
@@ -502,7 +504,7 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
                           {CItemData::URL,       &CItemData::GetURL},
                           {CItemData::EMAIL,     &CItemData::GetEmail},
                           {CItemData::RUNCMD,    &CItemData::GetRunCommand},
-                          {CItemData::AUTOTYPE,  &CItemData::GetAutoType},
+                          {CItemData::AUTOTYPE,  &CItemData::GetAutotype},
                           {CItemData::XTIME_INT, &CItemData::GetXTimeInt},
 
                       };

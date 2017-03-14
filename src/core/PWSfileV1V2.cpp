@@ -224,7 +224,7 @@ static StringX ReMergeNotes(const CItemData &item)
   if (!url.empty()) {
     notes += _T("\r\n"); notes += url;
   }
-  const StringX at(item.GetAutoType());
+  const StringX at(item.GetAutotype());
   if (!at.empty()) {
     stringT cs_autotype;
     LoadAString(cs_autotype, IDSC_AUTOTYPE);
@@ -447,7 +447,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
               ExtractURL(tempdata, URLStr);
               item.SetNotes(tempdata);
               if (!autotypeStr.empty())
-                item.SetAutoType(autotypeStr);
+                item.SetAutotype(autotypeStr);
               if (!URLStr.empty())
                 item.SetURL(URLStr);
               break;

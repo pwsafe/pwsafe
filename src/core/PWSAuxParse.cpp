@@ -332,7 +332,7 @@ static bool GetSpecialCommand(const StringX &sx_autotype, size_t &n, WORD &wVK,
   return true;
 }
 
-StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
+StringX PWSAuxParse::GetAutotypeString(const StringX &sx_in_autotype,
                                        const StringX &sx_group,
                                        const StringX &sx_title,
                                        const StringX &sx_user,
@@ -581,7 +581,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
   return sxtmp;
 }
 
-StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
+StringX PWSAuxParse::GetAutotypeString(const CItemData &ci,
                                        const PWScore &core,
                                        std::vector<size_t> &vactionverboffsets)
 {
@@ -612,13 +612,13 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
       }
     }
   }
-  return PWSAuxParse::GetAutoTypeString(sx_autotype, sx_group,
+  return PWSAuxParse::GetAutotypeString(sx_autotype, sx_group,
                                         sx_title, sx_user, sx_pswd, sx_lastpswd,
                                         sx_notes, sx_url, sx_email,
                                         vactionverboffsets);
 }
 
-void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
+void PWSAuxParse::SendAutotypeString(const StringX &sx_autotype,
                                      const std::vector<size_t> &vactionverboffsets)
 {
   // Accepts string and vector indicating location(s) of command(s)

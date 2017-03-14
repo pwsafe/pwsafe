@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "SHCTHotKey.h"
 #include "SHCTListCtrl.h"
+#include "OptionsShortcuts.h"
 
 #include "resource.h"
 
@@ -19,7 +20,7 @@
 IMPLEMENT_DYNAMIC(CSHCTHotKey, CHotKeyCtrl)
 
 CSHCTHotKey::CSHCTHotKey()
-: m_pParent(NULL), m_bHandled(false)
+: m_pLCParent(NULL), m_pOSParent(NULL), m_bHandled(false)
 {
 }
 
@@ -35,17 +36,25 @@ END_MESSAGE_MAP()
 
 void CSHCTHotKey::OnKillFocus(CWnd *)
 {
-  if (m_pParent != NULL) {
+  if (m_pLCParent != NULL) {
     WORD wVirtualKeyCode, wHKModifiers;
     GetHotKey(wVirtualKeyCode, wHKModifiers);
-    m_pParent->OnMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers);
+    if (!m_pLCParent->OnLCMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers)) {
+      wVirtualKeyCode = wHKModifiers = 0;
+    }
+  }
+
+  if (m_pOSParent != NULL) {
+    WORD wVirtualKeyCode, wHKModifiers;
+    GetHotKey(wVirtualKeyCode, wHKModifiers);
+    m_pOSParent->OnHotKeyKillFocus(wVirtualKeyCode, wHKModifiers);
   }
 }
 
 BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
 {
   // This is all to allow user to add special characters like ENTER, DELETE into
-  // their assigned Hotkey
+  // their assigned HotKey
   if (pMsg->message == WM_KEYDOWN || pMsg->message == WM_KEYUP) {
     const UINT_PTR nChar = pMsg->wParam;
     if ((nChar == VK_RETURN && 
@@ -67,7 +76,7 @@ BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
       WORD wVirtualKeyCode, wHKModifiers;
       GetHotKey(wVirtualKeyCode, wHKModifiers);
 
-      // Enter sets the Hotkey unless user did Ctrl+Enter, or
+      // Enter sets the HotKey unless user did Ctrl+Enter, or
       // Alt+Enter or Ctrl+Alt+Enter, in which is taken as a HotKey
       if (nChar == VK_RETURN && 
           ((wHKModifiers & HOTKEYF_CONTROL) != HOTKEYF_CONTROL &&
@@ -87,7 +96,11 @@ BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
       SetHotKey(wVirtualKeyCode, wHKModifiers);
 
       // Just in case parent requires notification of a change
-      m_pParent->SendMessage(WM_COMMAND, MAKEWPARAM(IDC_SHORTCUTHOTKEY, EN_CHANGE), 0);
+      if (m_pLCParent)
+        m_pLCParent->SendMessage(WM_COMMAND, MAKEWPARAM(IDC_HOTKEY, EN_CHANGE), 0);
+      else
+        m_pOSParent->SendMessage(WM_COMMAND, MAKEWPARAM(IDC_HOTKEY, EN_CHANGE), 0); 
+      
       return TRUE;
     }
   }

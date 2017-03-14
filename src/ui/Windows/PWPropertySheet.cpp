@@ -105,9 +105,9 @@ LRESULT CPWPropertySheet::OnMenuChar(UINT nChar, UINT nFlags, CMenu *pMenu)
   // Stop beeps when presing Alt+<key> in the HotKeyCtrls
   const int nID = GetFocus()->GetDlgCtrlID();
 
-  // IDs correspond to AddEdit_Additional Entry Keyboard Shortcut Hotkey and
+  // IDs correspond to AddEdit_Additional Entry Keyboard Shortcut HotKey and
   // OptionsShortcuts PWS shortcut HotKeys
-  if (nID == IDC_ENTKBSHCTHOTKEY || nID == IDC_SHORTCUTHOTKEY)
+  if (nID == IDC_ENTKBSHCTHOTKEY || nID == IDC_HOTKEY)
     return MNC_CLOSE << 16;
 
  return CPropertySheet::OnMenuChar(nChar, nFlags, pMenu);

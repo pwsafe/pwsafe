@@ -27,7 +27,7 @@ BEGIN
   IDSC_FLDNMUSERNAME     "Username"
   IDSC_FLDNMPASSWORD     "Password"
   IDSC_FLDNMURL          "URL"
-  IDSC_FLDNMAUTOTYPE     "AutoType"
+  IDSC_FLDNMAUTOTYPE     "Autotype"
   IDSC_FLDNMCTIME        "Created Time"
   IDSC_FLDNMPMTIME       "Password Modified Time"
   IDSC_FLDNMATIME        "Last Access Time"
@@ -95,7 +95,7 @@ END
 STRINGTABLE
 BEGIN
   IDSC_NUMPROCESSED       "Number of entries processed: %d\n\nNumber of invalid UUIDs fixed: %d\n\nNumber of duplicate UUIDs fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d.\n\nRecommend that the database is now saved."
-  IDSC_AUTOTYPE           "autotype:"
+  IDSC_AUTOTYPE           "Autotype:"
   IDSC_NOCONFIGLOCK       "Unable to get configuration file lock.\n\nWill use registry."
   IDSC_CANTCREATEXMLCFG   "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
   IDSC_CANTUPDATEXMLCFG   "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
@@ -383,6 +383,7 @@ BEGIN
   IDSC_ENTRIES_POLICIES    "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%ls) appended:%ls"
   IDSC_KBSHORTCUT_REMOVED  "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been removed from the %ls entry."
   IDSC_KBSHORTCUT_USEBYAPP "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application. It has been removed from the entry."
+  IDSC_KBSHORTCUT_RESERVED "Entry keyboard shortcut %ls entry %ls is reserved for the PasswordSafe Autotype HotKey. It has been removed from the entry."
   IDSC_REMOVEDKBSHORTCUTS  "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %ls entries."
   IDSC_IMPORTEDEMPTYGROUPS "including %d empty group(s)."
   IDSC_FILTERSEXPORTEDTODB "Current database filters have been exported to this database."

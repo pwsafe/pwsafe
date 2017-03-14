@@ -831,7 +831,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
            user + separator +
            csPassword + separator +
            url + separator +
-           GetAutoType() + separator +
+           GetAutotype() + separator +
            GetCTimeExp() + separator +
            GetPMTimeExp() + separator +
            GetATimeExp() + separator +
@@ -865,7 +865,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
     if (bsFields.test(CItemData::URL))
       ret += url + separator;
     if (bsFields.test(CItemData::AUTOTYPE))
-      ret += GetAutoType() + separator;
+      ret += GetAutotype() + separator;
     if (bsFields.test(CItemData::CTIME))
       ret += GetCTimeExp() + separator;
     if (bsFields.test(CItemData::PMTIME))
@@ -989,7 +989,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   ConditionalWriteXML(CItemData::URL, bsExport, "url", GetURL(),
                       oss, utf8conv, bXMLErrorsFound);
-  ConditionalWriteXML(CItemData::AUTOTYPE, bsExport, "autotype", GetAutoType(),
+  ConditionalWriteXML(CItemData::AUTOTYPE, bsExport, "autotype", GetAutotype(),
                       oss, utf8conv, bXMLErrorsFound);
 
   tmp = GetNotes();
@@ -2110,7 +2110,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   push(v, PASSWORD, tmp);
   push(v, NOTES, GetNotes());
   push(v, URL, GetURL());
-  push(v, AUTOTYPE, GetAutoType());
+  push(v, AUTOTYPE, GetAutotype());
 
   GetCTime(t);   push(v, CTIME, t);
   GetPMTime(t);  push(v, PMTIME, t);

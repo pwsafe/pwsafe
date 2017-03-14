@@ -28,6 +28,8 @@
 #include "AddEdit_DateTimes.h"
 #include "PasskeyEntry.h"
 #include "PWSFaultHandler.h"
+#include "HotKeyConflictDlg.h"
+#include "HKModifiers.h"
 
 #include "WZPropertySheet.h"
 
@@ -426,6 +428,9 @@ int DboxMain::NewFile(StringX &newfilename)
   // Clear application data
   ClearAppData();
 
+  // If we temporarily removed menu shortcuts due to conflicts - put them back
+  RestoreMenuShortcuts();
+
   const StringX &oldfilename = m_core.GetCurFile();
   // The only way we're the locker is if it's locked & we're !readonly
   if (!oldfilename.empty() &&
@@ -502,6 +507,9 @@ int DboxMain::Close(const bool bTrySave)
   // Clear application data
   ClearAppData();
 
+  // If we temporarily removed menu shortcuts due to conflicts - put them back
+  RestoreMenuShortcuts();
+
   // Set closed before anything else thinks there is data still here
   m_bOpen = false;
 
@@ -549,7 +557,26 @@ int DboxMain::Close(const bool bTrySave)
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
 
+  // If we temporarily removed menu shortcuts due to conflicts - put them back
+  RestoreMenuShortcuts();
+
   return PWScore::SUCCESS;
+}
+
+void DboxMain::RestoreMenuShortcuts()
+{
+  // If we temporarily removed menu shortcuts due to conflicts - put them back
+  for (auto iter = m_MapDeletedShortcuts.begin(); iter != m_MapDeletedShortcuts.end(); iter++) {
+    MapMenuShortcutsIter skit = m_MapMenuShortcuts.find(iter->first);
+    if (skit != m_MapMenuShortcuts.end()) {
+      skit->second.siVirtKey = iter->second.siDefVirtKey;
+      skit->second.cModifier = iter->second.cModifier;
+    }
+  }
+
+  m_MapDeletedShortcuts.clear();
+
+  return;
 }
 
 void DboxMain::OnOpen()
@@ -786,6 +813,9 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   // Clear application data
   ClearAppData();
 
+  // If we temporarily removed menu shortcuts due to conflicts - put them back
+  RestoreMenuShortcuts();
+
   // Reset saved DB preferences
   m_savedDBprefs = EMPTYSAVEDDBPREFS;
 
@@ -947,6 +977,9 @@ void DboxMain::PostOpenProcessing()
   m_iListHBarPos = m_iTreeHBarPos = 0;
   m_ctlItemList.Scroll(CSize(SB_HORZ, 0));
   m_ctlItemTree.SetScrollPos(SB_HORZ, 0);
+
+  // Check if there are any HotKey conflicts
+  SetAndCheckHotKeys(true);
 }
 
 int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
@@ -4133,6 +4166,9 @@ void DboxMain::CleanUpAndExit(const bool bNormalExit)
 
   // Clear application data
   ClearAppData();
+
+  // If we temporarily removed menu shortcuts due to conflicts - put them back
+  RestoreMenuShortcuts();
 
   // Cleanup here - doesn't work in ~DboxMain or ~CCoolMenuManager
   m_menuManager.Cleanup();

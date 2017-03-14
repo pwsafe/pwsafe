@@ -184,7 +184,7 @@ void DboxMain::OnTrayBrowse(UINT nID)
 
   if (!sx_url.empty()) {
     std::vector<size_t> vactionverboffsets;
-    StringX sxAutotype = PWSAuxParse::GetAutoTypeString(sx_autotype,
+    StringX sxAutotype = PWSAuxParse::GetAutotypeString(sx_autotype,
                                   sx_group, sx_title, sx_user,
                                   sx_pswd, sx_lastpswd,
                                   sx_notes, sx_url, sx_email,
@@ -339,7 +339,7 @@ void DboxMain::OnUpdateTrayDeleteEntry(CCmdUI *)
 {
 }
 
-void DboxMain::OnTrayAutoType(UINT nID)
+void DboxMain::OnTrayAutotype(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYAUTOTYPE1) && (nID <= ID_MENUITEM_TRAYAUTOTYPEMAX));
 
@@ -348,15 +348,15 @@ void DboxMain::OnTrayAutoType(UINT nID)
     return;
 
   m_bInAT = true;
-  AutoType(ci);
+  Autotype(ci);
 
-  // Unclear what AutoType is going to reference from entry, if a shortcut,
+  // Unclear what Autotype is going to reference from entry, if a shortcut,
   // and what from the base so just update the entry access time
   UpdateAccessTime(ci.GetUUID());
   m_bInAT = false;
 }
 
-void DboxMain::OnUpdateTrayAutoType(CCmdUI *)
+void DboxMain::OnUpdateTrayAutotype(CCmdUI *)
 {
 }
 
@@ -422,7 +422,7 @@ void DboxMain::OnTrayRunCommand(UINT nID)
   bool bURLSpecial;
   sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_runcmd,
                                                   m_core.GetCurFile(), &ci, pbci,
-                                                  m_bDoAutoType, m_sxAutoType,
+                                                  m_bDoAutotype, m_sxAutotype,
                                                   errmsg, st_column, bURLSpecial);
 
   if (!errmsg.empty()) {
@@ -435,10 +435,10 @@ void DboxMain::OnTrayRunCommand(UINT nID)
   }
 
   // if no autotype value in run command's $a(value), start with item's (bug #1078)
-  if (m_sxAutoType.empty())
-    m_sxAutoType = ci.GetAutoType();
+  if (m_sxAutotype.empty())
+    m_sxAutotype = ci.GetAutotype();
 
-  m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType,
+  m_sxAutotype = PWSAuxParse::GetAutotypeString(m_sxAutotype,
                                                 sx_group, sx_title, sx_user,
                                                 sx_pswd, sx_lastpswd,
                                                 sx_notes, sx_url, sx_email,
@@ -468,10 +468,10 @@ void DboxMain::OnTrayRunCommand(UINT nID)
       sx_Expanded_ES = sxAltBrowser + StringX(L" ") + sx_Expanded_ES;
   }
 
-  bool rc = m_runner.runcmd(sx_Expanded_ES, !m_sxAutoType.empty());
+  bool rc = m_runner.runcmd(sx_Expanded_ES, !m_sxAutotype.empty());
   if (!rc) {
-    m_bDoAutoType = false;
-    m_sxAutoType = L"";
+    m_bDoAutotype = false;
+    m_sxAutotype = L"";
     return;
   }
 }

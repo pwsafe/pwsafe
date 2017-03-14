@@ -1673,7 +1673,7 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
     DCA = itemDCA;
 
   switch (DCA) {
-  case PWSprefs::DoubleClickAutoType:
+  case PWSprefs::DoubleClickAutotype:
     DoAutotype(item);
     break;
   case PWSprefs::DoubleClickBrowse:

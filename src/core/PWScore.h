@@ -431,6 +431,8 @@ public:
   const KBShortcutMap &GetAllKBShortcuts() { return m_KBShortcutMap; }
   int32 GetAppHotKey() const {return m_iAppHotKey;}
   void SetAppHotKey(const int32 &iAppHotKey) { m_iAppHotKey = iAppHotKey; }
+  int32 GetAutotypeHotKey() const { return m_iAutotypeHotKey; }
+  void SetAutotypeHotKey(const int32 &iAutotypeHotKey) { m_iAutotypeHotKey = iAutotypeHotKey; }
 
   uint32 GetHashIters() const;
   void SetHashIters(uint32 value);
@@ -655,7 +657,7 @@ private:
   PWSFilters m_InitialMapDBFilters;
 
   KBShortcutMap m_KBShortcutMap;
-  int32 m_iAppHotKey;
+  int32 m_iAppHotKey, m_iAutotypeHotKey;
 
   // ValidateKBShortcut() returns true if data modified, false if all OK
   bool ValidateKBShortcut(int32 &iKBShortcut);

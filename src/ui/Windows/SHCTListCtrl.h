@@ -29,9 +29,9 @@ public:
   void Init(COptionsShortcuts *pParent);
 
   void SaveHotKey();
-  bool IsHotKeyActive() {return m_bHotKeyActive;}
+  bool IsMenuHotKeyActive() {return m_bMenuHotKeyActive;}
 
-  void OnMenuShortcutKillFocus(const WORD wVirtualKeyCode, const WORD wModifiers);
+  bool OnLCMenuShortcutKillFocus(WORD &wVirtualKeyCode, WORD &wModifiers);
 
 protected:
   //{{AFX_MSG(CSHCTListCtrlX)
@@ -48,10 +48,10 @@ protected:
 private:
   COptionsShortcuts *m_pParent;
 
-  CSHCTHotKey *m_pHotKey;
+  CSHCTHotKey *m_pMenuHotKey;
   int m_item;
   UINT m_id;
-  bool m_bHotKeyActive;
+  bool m_bMenuHotKeyActive;
   COLORREF m_crWindowText, m_crRedText;
 };
 

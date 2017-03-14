@@ -274,8 +274,8 @@ BOOL CPWTreeCtrlX::PreTranslateMessage(MSG *pMsg)
     return TRUE; // DO NOT process further
   }
 
-  // Process User's AutoType shortcut
-  if (app.GetMainDlg()->CheckPreTranslateAutoType(pMsg))
+  // Process User's Autotype shortcut
+  if (app.GetMainDlg()->CheckPreTranslateAutotype(pMsg))
     return TRUE;
 
   // Process User's Delete shortcut

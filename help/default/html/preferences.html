@@ -315,7 +315,7 @@ to inactivity</td>
 <tr>
 <td>DefaultAutotypeString</td>
 <td>\u\t\p\t\n</td>
-<td>The database's default AutoType string. Note that each entry may override this value</td>
+<td>The database's default Autotype string. Note that each entry may override this value</td>
 </tr>
 
 <tr>
@@ -361,6 +361,15 @@ These preferences apply to all databases on a given machine by a given user.</p>
 <td>AlwaysOnTop</td>
 <td>false</td>
 <td>Main window always on top</td>
+</tr>
+
+<tr>
+<td>AutoTypeHotKeyEnabled</td>
+<td>false</td>
+<td>True if the user has defined a Hot Key to get quick access to Autotype.
+As long as an entry is selected and the database is not locked, pressing
+this key combination will perform Autotype into the selected field in
+another Window/application.</td>
 </tr>
 
 <tr>
@@ -460,7 +469,7 @@ user has already set a Hot Key</td>
 <tr>
 <td>MinimizeOnAutotype</td>
 <td>true</td>
-<td>Minimize <b>Password Safe</b> during AutoType. Database may also be locked
+<td>Minimize <b>Password Safe</b> during Autotype. Database may also be locked
 depending on the setting to lock it on minimize</td>
 </tr>
 
@@ -567,6 +576,16 @@ characters will be displayed)</td>
 <td>0</td>
 <td>n/a</td>
 <td>Add/Edit font size in tenths of a point</td>
+</tr>
+
+<tr>
+<td>AutotypeHotKey</td>
+<td>none</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>The AutotypeHot Key value. (This is stored as a decimal integer created from
+the virtual keycode for the character in the lower word plus the Microsoft
+Foundation Class CHotKeyCtrl modifier flags in the higher word.)</td>
 </tr>
 
 <tr>

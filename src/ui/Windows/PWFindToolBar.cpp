@@ -218,8 +218,8 @@ BOOL CPWFindToolBar::PreTranslateMessage(MSG *pMsg)
 {
   CWnd *pWnd = FromHandle(pMsg->hwnd);
 
-  // Process User's AutoType shortcut
-  if (app.GetMainDlg()->CheckPreTranslateAutoType(pMsg))
+  // Process User's Autotype shortcut
+  if (app.GetMainDlg()->CheckPreTranslateAutotype(pMsg))
     return TRUE;
 
   if (pWnd->GetDlgCtrlID() == ID_TOOLBUTTON_FINDEDITCTRL) {

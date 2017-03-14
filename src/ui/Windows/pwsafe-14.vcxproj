@@ -576,6 +576,7 @@
     <ClCompile Include="FontsDialog.cpp" />
     <ClCompile Include="GeneralMsgBox.cpp" />
     <ClCompile Include="GridListCtrl.cpp" />
+    <ClCompile Include="HotKeyConflictDlg.cpp" />
     <ClCompile Include="ImportTextDlg.cpp" />
     <ClCompile Include="ImportXMLDlg.cpp" />
     <ClCompile Include="InfoDisplay.cpp" />
@@ -641,6 +642,7 @@
     <ClCompile Include="SHCTHotKey.cpp" />
     <ClCompile Include="SHCTListCtrl.cpp" />
     <ClCompile Include="Shortcut.cpp" />
+    <ClCompile Include="ShortcutConflictDlg.cpp" />
     <ClCompile Include="ShowCompareDlg.cpp" />
     <ClCompile Include="SingleInstance.cpp" />
     <ClCompile Include="SMemFile.cpp" />
@@ -713,6 +715,7 @@
     <ClInclude Include="GeneralMsgBox.h" />
     <ClInclude Include="GridListCtrl.h" />
     <ClInclude Include="HKModifiers.h" />
+    <ClInclude Include="HotKeyConflictDlg.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXMLDlg.h" />
     <ClInclude Include="InfoDisplay.h" />
@@ -777,6 +780,7 @@
     <ClInclude Include="SHCTHotKey.h" />
     <ClInclude Include="SHCTListCtrl.h" />
     <ClInclude Include="Shortcut.h" />
+    <ClInclude Include="ShortcutConflictDlg.h" />
     <ClInclude Include="ShowCompareDlg.h" />
     <ClInclude Include="SingleInstance.h" />
     <ClInclude Include="SMemFile.h" />

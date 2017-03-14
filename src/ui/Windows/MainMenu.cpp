@@ -56,7 +56,7 @@ struct CreateAccelTable {
 
 private:
   ACCEL *m_pacceltbl;
-  unsigned char m_ucAutotypeKey; // AutoType shortcut key
+  unsigned char m_ucAutotypeKey; // Autotype shortcut key
 };
 
 static bool IsExtended(int code)
@@ -360,7 +360,7 @@ void DboxMain::SetUpInitialMenuStrings()
   // change shortcuts as per preferences
   std::vector<st_prefShortcut> vShortcuts(PWSprefs::GetInstance()->GetPrefShortcuts());
 
-  // We need to convert from PWS to Hotkey modifiers
+  // We need to convert from PWS to HotKey modifiers
   for (size_t i = 0; i < vShortcuts.size(); i++) {
     WORD wPWSModifiers = vShortcuts[i].cModifier;
     // Translate from CHotKeyCtrl to PWS modifiers
@@ -433,7 +433,7 @@ void DboxMain::UpdateAccelTable()
   // Add on space of 3 reserved shortcuts (Ctrl-Q, F4, F1)
   numscs = (int)std::count_if(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(),
                          cntscs) + 3;
-  // But take off 1 if there is a shortcut for AutoType
+  // But take off 1 if there is a shortcut for Autotype
   if (m_wpAutotypeKey != 0)
     numscs--;
 
@@ -1590,21 +1590,25 @@ bool DboxMain::ProcessLanguageMenu(CMenu *pPopupMenu)
 
 const unsigned int DboxMain::GetMenuShortcut(const unsigned short int &siVirtKey,
                                              const unsigned char &cModifier,
-                                             StringX &sxMenuItemName)
+                                             StringX &sxMenuItemName,
+                                             MapMenuShortcuts *pMapMenuShortcuts)
 {
   unsigned int nControlID(0);
   sxMenuItemName.empty();
   MapMenuShortcutsIter inuse_iter;
 
+  if (pMapMenuShortcuts == NULL)
+    pMapMenuShortcuts = &m_MapMenuShortcuts;
+
   st_MenuShortcut st_mst;
   st_mst.siVirtKey = siVirtKey;
   st_mst.cModifier = cModifier;
   
-  inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
-                            m_MapMenuShortcuts.end(),
+  inuse_iter = std::find_if(pMapMenuShortcuts->begin(),
+                            pMapMenuShortcuts->end(),
                             already_inuse(st_mst));
 
-  if (inuse_iter != m_MapMenuShortcuts.end()) {
+  if (inuse_iter != pMapMenuShortcuts->end()) {
     nControlID = inuse_iter->first;
     sxMenuItemName = inuse_iter->second.name.c_str();
   }

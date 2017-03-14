@@ -56,6 +56,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/GeneralMsgBox.h
             src/ui/Windows/GridListCtrl.h
             src/ui/Windows/HKModifiers.h
+            src/ui/Windows/HotKeyConflictDlg.h
             src/ui/Windows/ImgStatic.h
             src/ui/Windows/ImportTextDlg.h
             src/ui/Windows/ImportXMLDlg.h
@@ -115,6 +116,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/SHCTHotKey.h
             src/ui/Windows/SHCTListCtrl.h
             src/ui/Windows/Shortcut.h
+            src/ui/Windows/ShortcutConflictDlg.h
             src/ui/Windows/ShowCompareDlg.h
             src/ui/Windows/SingleInstance.h
             src/ui/Windows/SMemFile.h
@@ -198,6 +200,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/FontsDialog.cpp
             src/ui/Windows/GeneralMsgBox.cpp
             src/ui/Windows/GridListCtrl.cpp
+            src/ui/Windows/HotKeyConflictDlg.cpp
             src/ui/Windows/ImgStatic.cpp
             src/ui/Windows/ImportTextDlg.cpp
             src/ui/Windows/ImportXMLDlg.cpp
@@ -259,6 +262,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/SHCTHotKey.cpp
             src/ui/Windows/SHCTListCtrl.cpp
             src/ui/Windows/Shortcut.cpp
+            src/ui/Windows/ShortcutConflictDlg.cpp
             src/ui/Windows/ShowCompareDlg.cpp
             src/ui/Windows/SingleInstance.cpp
             src/ui/Windows/SMemFile.cpp
