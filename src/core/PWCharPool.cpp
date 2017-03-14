@@ -214,7 +214,7 @@ charT CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, unsigned i
 charT CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t) const
 {
   PWSrand *ri = PWSrand::GetInstance();
-  uint r = ri->RangeRand(static_cast<uint>(m_lengths[t]));
+  uint r = ri->RangeRand(m_lengths[t]);
   return GetRandomChar(t, r);
 }
 
@@ -277,7 +277,7 @@ StringX CPasswordCharPool::MakePassword() const
       cat += m_char_arrays[i];
 
   random_shuffle(cat.begin(), cat.end(),
-                 [](unsigned int i)
+                 [](size_t i)
                  {
                    return PWSrand::GetInstance()->RangeRand(i);
                  });
@@ -288,7 +288,7 @@ StringX CPasswordCharPool::MakePassword() const
   // If 'at least' values were non-zero, we have some unwanted order,
   // so we mix things up a bit:
   random_shuffle(retval.begin(), retval.end(),
-                 [](unsigned int i)
+                 [](size_t i)
                  {
                    return PWSrand::GetInstance()->RangeRand(i);
                  });
@@ -374,7 +374,7 @@ StringX CPasswordCharPool::MakePronounceable() const
      generates "mmitify" even though no word in my dictionary
      begins with mmi. So what.) */
   sumfreq = sigma;  // sigma calculated by loadtris
-  ranno = static_cast<long>(pwsrnd->RangeRand(sumfreq+1)); // Weight by sum of frequencies
+  ranno = static_cast<long>(pwsrnd->RangeRand((size_t)(sumfreq + 1))); // Weight by sum of frequencies
   sum = 0;
   for (c1 = 0; c1 < 26; c1++) {
     for (c2 = 0; c2 < 26; c2++) {
@@ -405,7 +405,7 @@ StringX CPasswordCharPool::MakePronounceable() const
       break;  // Break while nchar loop & print what we have.
     }
     /* Choose a continuation. */
-    ranno = static_cast<long>(pwsrnd->RangeRand(sumfreq+1)); // Weight by sum of frequencies
+    ranno = static_cast<long>(pwsrnd->RangeRand((size_t)(sumfreq + 1))); // Weight by sum of frequencies
     sum = 0;
     for (c3 = 0; c3 < 26; c3++) {
       sum += tris[int(c1)][int(c2)][int(c3)];
@@ -433,7 +433,7 @@ StringX CPasswordCharPool::MakePronounceable() const
       unsigned int rn = pwsrnd->RangeRand(sc.size() - 1)/2 + 1;
       // replace some of them
       random_shuffle(sc.begin(), sc.end(),
-                     [](unsigned int i)
+                     [](size_t i)
                      {
                        return PWSrand::GetInstance()->RangeRand(i);
                      });
@@ -464,7 +464,7 @@ StringX CPasswordCharPool::MakeHex() const
 {
   StringX password = _T("");
   for (uint i = 0; i < m_pwlen; i++) {
-      unsigned int rand = PWSrand::GetInstance()->RangeRand(static_cast<unsigned int>(m_sumlengths));
+      unsigned int rand = PWSrand::GetInstance()->RangeRand(m_sumlengths);
       charT ch = GetRandomChar(HEXDIGIT, rand);
       password += ch;
   }

@@ -19,8 +19,10 @@
 #include "os/typedefs.h"
 #include "os/sleep.h"
 #include "os/debug.h"
+#include "os/KeySend.h"
 
 #include <vector>
+#include <algorithm>
 
 /////////////////////////////////////////////////////////////////////////////
 // CXMLprefs
@@ -62,7 +64,7 @@ bool CXMLprefs::CreateXML(bool bLoad)
     return m_pXMLDoc != NULL;
 }
 
-bool CXMLprefs::Load()
+bool CXMLprefs::XML_Load()
 {
   // Already loaded?
   if (m_pXMLDoc != NULL)
@@ -108,11 +110,27 @@ bool CXMLprefs::Load()
   return true;
 }
 
-bool CXMLprefs::Store()
+static void SortPreferences(pugi::xml_node &parent)
+{
+  // Sort the application preferences of this host/user (case insensitive)
+  std::vector<pugi::xml_node> children(parent.begin(), parent.end());
+
+  std::sort(children.begin(), children.end(),
+    [](pugi::xml_node l, pugi::xml_node r) {
+          return _tcsicmp(l.name(), r.name()) < 0;
+        });
+
+  for (pugi::xml_node n : children) {
+    parent.append_move(n);
+  }
+}
+
+bool CXMLprefs::XML_Store(const stringT &csBaseKeyName)
 {
   bool retval = false;
   bool alreadyLocked = m_bIsLocked;
   pugi::xml_node decl;
+  pugi::xml_node nodePrefs;
 
   if (!alreadyLocked) {
     stringT locker;
@@ -141,6 +159,10 @@ bool CXMLprefs::Store()
   decl.append_attribute(_T("encoding")) = _T("utf-8");
   decl.append_attribute(_T("standalone")) = _T("yes");
 
+  nodePrefs = m_pXMLDoc->first_element_by_path(csBaseKeyName.c_str(), _T('\\'));
+  if (nodePrefs != NULL)
+    SortPreferences(nodePrefs);
+
   retval = m_pXMLDoc->save_file(m_csConfigFile.c_str(), _T("  "),
                          pugi::format_default | pugi::format_write_bom,
                          pugi::encoding_utf8);
@@ -155,6 +177,47 @@ exit:
     m_Reason.clear();
 
   return retval;
+}
+
+void SetHotKeyComment(pugi::xml_node &node, const stringT &sValue)
+{
+  int iValue = 0;
+  istringstreamT is(sValue);
+  is >> iValue;
+  
+  WORD wVirtualKeyCode = iValue & 0xff;
+  WORD wHKModifiers = iValue >> 16;
+  
+  // Remove attribure
+  node.remove_attribute(_T("Value"));
+
+  if (wVirtualKeyCode != 0) {
+    stringT sKeyName;
+    sKeyName = CKeySend::GetKeyName(wVirtualKeyCode, (wHKModifiers & PWS_HOTKEYF_EXT) == PWS_HOTKEYF_EXT);
+
+    if (!sKeyName.empty()) {
+      stringT sModifier(_T(""));
+      if (wHKModifiers & PWS_HOTKEYF_CONTROL)
+        sModifier = _T("Ctrl + ");
+      if (wHKModifiers & PWS_HOTKEYF_ALT)
+        sModifier += _T("Alt + ");
+      if (wHKModifiers & PWS_HOTKEYF_SHIFT)
+        sModifier += _T("Shift + ");
+
+      // wxWidgets only - set values but do not use in Windows MFC
+      if (wHKModifiers & PWS_HOTKEYF_META)
+        sModifier += _T("Meta + ");
+      if (wHKModifiers & PWS_HOTKEYF_WIN)
+        sModifier += _T("Win + ");
+      if (wHKModifiers & PWS_HOTKEYF_CMD)
+        sModifier += _T("Cmd + ");
+
+      stringT sComment;
+      Format(sComment, _T("%s%s"), sModifier.c_str(), sKeyName.c_str());
+      pugi::xml_attribute attrib = node.append_attribute(_T("Value"));
+      attrib = sComment.c_str();
+    }
+  }
 }
 
 int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue)
@@ -212,8 +275,13 @@ int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue)
   pugi::xml_node prefnode = (node.first_child().type() == pugi::node_pcdata) ?
      node.first_child() : node.append_child(pugi::node_pcdata);
 
-  if (!prefnode.set_value(sValue.c_str()))
-     iRetVal = XML_PUT_TEXT_FAILED;
+  if (!prefnode.set_value(sValue.c_str())) {
+    iRetVal = XML_PUT_TEXT_FAILED;
+  } else {
+    if (_tcscmp(sPath.substr(sPath.size() - 7).c_str(), _T("\\HotKey")) == 0) {
+      SetHotKeyComment(node, sValue);
+    }
+  }
 
   return iRetVal;
 }
@@ -375,7 +443,7 @@ std::vector<st_prefShortcut> CXMLprefs::GetShortcuts(const stringT &csBaseKeyNam
     cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_SHIFT;
 
     // wxWidgets only - set values so not lost in XML file 
-    // but not use them in Windows MFC - they are never tested in MFC code
+    // but not used in Windows MFC - they are never tested in MFC code
     // when creating the necessary hotkeys/shortcuts
     itemp = shortcut.attribute(_T("Win")).as_int();
     cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_WIN;
@@ -435,6 +503,7 @@ int CXMLprefs::SetShortcuts(const stringT &csBaseKeyName,
       return XML_PUT_TEXT_FAILED;
       
     shortcut.set_value(_T(""));
+    stringT sModifiers(_T(""));
     
     pugi::xml_attribute attrib;
 
@@ -443,24 +512,63 @@ int CXMLprefs::SetShortcuts(const stringT &csBaseKeyName,
     attrib = shortcut.append_attribute(_T("Ctrl"));
     attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_CONTROL) ==
                        PWS_HOTKEYF_CONTROL ? 1 : 0;
+    sModifiers += (v_shortcuts[i].cModifier & PWS_HOTKEYF_CONTROL) ==
+                       PWS_HOTKEYF_CONTROL ? _T("Ctrl+") : _T("");
+    
     attrib = shortcut.append_attribute(_T("Alt"));
     attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_ALT) ==
                        PWS_HOTKEYF_ALT ? 1 : 0;
+    sModifiers += (v_shortcuts[i].cModifier & PWS_HOTKEYF_ALT) ==
+                       PWS_HOTKEYF_ALT ? _T("Alt+") : _T("");
+    
     attrib = shortcut.append_attribute(_T("Shift"));
     attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_SHIFT) ==
                        PWS_HOTKEYF_SHIFT ? 1 : 0;
+    sModifiers += (v_shortcuts[i].cModifier & PWS_HOTKEYF_SHIFT) ==
+                       PWS_HOTKEYF_SHIFT ? _T("Shift+") : _T("");
+   
     // wxWidgets only - set values but do not use in Windows MFC
     attrib = shortcut.append_attribute(_T("Meta"));
     attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_META) ==
                        PWS_HOTKEYF_META ? 1 : 0;
+    sModifiers += (v_shortcuts[i].cModifier & PWS_HOTKEYF_META) ==
+                       PWS_HOTKEYF_META ? _T("Meta+") : _T("");
+    
     attrib = shortcut.append_attribute(_T("Win"));
     attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_WIN) ==
                        PWS_HOTKEYF_WIN ? 1 : 0;
+    sModifiers += (v_shortcuts[i].cModifier & PWS_HOTKEYF_WIN) ==
+                       PWS_HOTKEYF_WIN ? _T("Win+") : _T("");
+    
     attrib = shortcut.append_attribute(_T("Cmd"));
     attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_CMD) ==
                        PWS_HOTKEYF_CMD ? 1 : 0;
+    sModifiers += (v_shortcuts[i].cModifier & PWS_HOTKEYF_CMD) ==
+                       PWS_HOTKEYF_CMD ? _T("Cmd+") : _T("");
+    
     attrib = shortcut.append_attribute(_T("Key"));
     attrib = v_shortcuts[i].siVirtKey;
+
+    // Add a comment if we know the menu
+    if (!v_shortcuts[i].Menu_Name.empty()) {
+      stringT sComment;
+
+      if (v_shortcuts[i].siVirtKey == 0) {
+        Format(sComment, _T(" Shortcut to '%s' Removed "), v_shortcuts[i].Menu_Name.c_str());
+      } else {
+        stringT sKeyName;
+        sKeyName = CKeySend::GetKeyName(v_shortcuts[i].siVirtKey,
+                          (v_shortcuts[i].cModifier & PWS_HOTKEYF_EXT) == PWS_HOTKEYF_EXT);
+        
+        if (!sKeyName.empty()) {
+          Format(sComment, _T(" Shortcut to '%s' is '%s%s' "), v_shortcuts[i].Menu_Name.c_str(),
+                        sModifiers.c_str(), sKeyName.c_str());
+        }
+      }
+      if (!sComment.empty()) {
+        all_shortcuts.insert_child_before(pugi::node_comment, shortcut).set_value(sComment.c_str());
+      }
+    }
   }
   return iRetVal;
 }

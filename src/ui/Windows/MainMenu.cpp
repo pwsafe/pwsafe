@@ -381,11 +381,13 @@ void DboxMain::SetUpInitialMenuStrings()
         stxst.id == ID_MENUITEM_RENAMEGROUP) {
       continue;
     }
+
     iter = m_MapMenuShortcuts.find(stxst.id);
     if (iter == m_MapMenuShortcuts.end()) {
       // Unknown Control ID - ignore - maybe used by a later version of PWS
       continue;
     }
+
     // Check not already in use (ignore if deleting current shortcut)
     if (stxst.siVirtKey != 0) {
       st_mst.siVirtKey = stxst.siVirtKey;
@@ -400,9 +402,10 @@ void DboxMain::SetUpInitialMenuStrings()
         continue;
       }
     }
+
     if ((iter->second.siVirtKey  != stxst.siVirtKey  ||
          iter->second.cModifier != stxst.cModifier)) {
-      // User changed a added or shortcut
+      // User changed or added a shortcut
       iter->second.siVirtKey  = stxst.siVirtKey;
       iter->second.cModifier = stxst.cModifier;
     }

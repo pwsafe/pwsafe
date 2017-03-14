@@ -417,3 +417,26 @@ bool CKeySend::LookupVirtualKey(const StringX &kname, WORD &kval)
     return true;
   }
 }
+
+stringT CKeySend::GetKeyName(WORD wVirtualKeyCode, bool bExtended)
+{
+  stringT sKeyName;
+
+  if (wVirtualKeyCode != 0) {
+    TCHAR lpString[256];
+    LPARAM lParam;
+
+    // Get scan code
+    UINT sc = MapVirtualKey(wVirtualKeyCode, 0);
+    lParam = sc << 16;
+
+    lParam |= 0x1 << 25;
+    if (bExtended)
+      lParam |= 0x1 << 24;
+
+    if (GetKeyNameText((LONG)lParam, lpString, sizeof(lpString) / sizeof(TCHAR)) != 0)
+      sKeyName = lpString;
+  }
+
+  return sKeyName;
+}

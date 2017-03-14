@@ -1,0 +1,436 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Demo|Win32">
+      <Configuration>Demo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Demo|x64">
+      <Configuration>Demo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>core</ProjectName>
+    <ProjectGuid>{261882E8-80AF-4373-A8CC-A8D52E24BF27}</ProjectGuid>
+    <RootNamespace>core</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Demo|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ui\Windows\UserVariables-15.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ui\Windows\UserVariables-15.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ui\Windows\UserVariables-15.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ui\Windows\UserVariables-15.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ui\Windows\UserVariables-15.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Demo|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ui\Windows\UserVariables-15.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(PWSLib)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(PWSLib)64\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">$(PWSLib)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">$(PWSLib)64\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(PWSLib)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(PWSLib)64\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(PWSobj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(PWSobj)64\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">$(PWSobj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">$(PWSobj)64\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(PWSobj)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(PWSobj)64\$(ProjectName)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">core</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">core</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">core</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">core</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">core</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">core</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">
+    <PreBuildEvent>
+      <Message>Pre-build event command script</Message>
+      <Command>cscript pre_build.vbs //Nologo</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;DEMO;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeaderOutputFile>$(PWSobj)\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(PWSobj)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>$(PWSobj)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>$(PWSobj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040d</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>$(PWSLib)\core.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Demo|x64'">
+    <PreBuildEvent>
+      <Message>Pre-build event command script</Message>
+      <Command>cscript pre_build.vbs //Nologo</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;DEMO;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeaderOutputFile>$(PWSobj)64\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(PWSobj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>$(PWSobj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>$(PWSobj)64\$(ProjectName)/</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040d</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>$(PWSLib)64\core.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent>
+      <Message>Pre-build event command script</Message>
+      <Command>cscript pre_build.vbs //Nologo</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeaderOutputFile>$(PWSobj)\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(PWSobj)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>$(PWSobj)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>$(PWSobj)\$(ProjectName)/$(ProjectName).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040d</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>$(PWSLib)\core.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PreBuildEvent>
+      <Message>Pre-build event command script</Message>
+      <Command>cscript pre_build.vbs //Nologo</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeaderOutputFile>$(PWSobj)64\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(PWSobj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>$(PWSobj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>$(PWSobj)64\$(ProjectName)/$(ProjectName).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040d</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>$(PWSLib)64\core.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreBuildEvent>
+      <Message>Pre-build event command script</Message>
+      <Command>cscript pre_build.vbs //Nologo</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeaderOutputFile>$(PWSobj)\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(PWSobj)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>$(PWSobj)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>$(PWSobj)\$(ProjectName)/</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040d</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>$(PWSLib)\core.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PreBuildEvent>
+      <Message>Pre-build event command script</Message>
+      <Command>cscript pre_build.vbs //Nologo</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=MSXML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeaderOutputFile>$(PWSobj)64\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(PWSobj)64\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>$(PWSobj)64\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>$(PWSobj)64\$(ProjectName)/</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040d</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>$(PWSLib)64\core.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AES.cpp" />
+    <ClCompile Include="BlowFish.cpp" />
+    <ClCompile Include="CheckVersion.cpp" />
+    <ClCompile Include="Command.cpp" />
+    <ClCompile Include="CoreOtherDB.cpp" />
+    <ClCompile Include="CoreImpExp.cpp" />
+    <ClCompile Include="core_st.cpp" />
+    <ClCompile Include="ExpiredList.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemAtt.cpp" />
+    <ClCompile Include="ItemData.cpp" />
+    <ClCompile Include="ItemField.cpp" />
+    <ClCompile Include="KeyWrap.cpp" />
+    <ClCompile Include="Match.cpp" />
+    <ClCompile Include="pbkdf2.cpp" />
+    <ClCompile Include="pugixml\pugixml.cpp" />
+    <ClCompile Include="PWSfileHeader.cpp" />
+    <ClCompile Include="PWSfileV4.cpp" />
+    <ClCompile Include="PWSLog.cpp" />
+    <ClCompile Include="PWStime.cpp" />
+    <ClCompile Include="RUEList.cpp" />
+    <ClCompile Include="XML\MSXML\MFileSAX2Handlers.cpp" />
+    <ClCompile Include="XML\MSXML\MFileValidator.cpp" />
+    <ClCompile Include="XML\MSXML\MFileXMLProcessor.cpp" />
+    <ClCompile Include="XML\MSXML\MFilterSAX2Handlers.cpp" />
+    <ClCompile Include="XML\MSXML\MFilterXMLProcessor.cpp" />
+    <ClCompile Include="PWCharPool.cpp" />
+    <ClCompile Include="PWHistory.cpp" />
+    <ClCompile Include="PWPolicy.cpp" />
+    <ClCompile Include="PWSAuxParse.cpp" />
+    <ClCompile Include="PWScore.cpp" />
+    <ClCompile Include="PWSdirs.cpp" />
+    <ClCompile Include="PWSfile.cpp" />
+    <ClCompile Include="PWSfileV1V2.cpp" />
+    <ClCompile Include="PWSfileV3.cpp" />
+    <ClCompile Include="PWSFilters.cpp" />
+    <ClCompile Include="PWSprefs.cpp" />
+    <ClCompile Include="PWSrand.cpp" />
+    <ClCompile Include="Report.cpp" />
+    <ClCompile Include="sha1.cpp" />
+    <ClCompile Include="sha256.cpp" />
+    <ClCompile Include="StringX.cpp" />
+    <ClCompile Include="SysInfo.cpp" />
+    <ClCompile Include="TwoFish.cpp" />
+    <ClCompile Include="UnknownField.cpp" />
+    <ClCompile Include="UTF8Conv.cpp" />
+    <ClCompile Include="Util.cpp" />
+    <ClCompile Include="VerifyFormat.cpp" />
+    <ClCompile Include="XML\XMLFileHandlers.cpp" />
+    <ClCompile Include="XML\XMLFileValidation.cpp" />
+    <ClCompile Include="XMLprefs.cpp" />
+    <ClCompile Include="XML\XERCES\XSecMemMgr.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AES.h" />
+    <ClInclude Include="BlowFish.h" />
+    <ClInclude Include="CheckVersion.h" />
+    <ClInclude Include="Command.h" />
+    <ClInclude Include="CommandInterface.h" />
+    <ClInclude Include="coredefs.h" />
+    <ClInclude Include="core.h" />
+    <ClInclude Include="core_st.h" />
+    <ClInclude Include="DBCompareData.h" />
+    <ClInclude Include="ExpiredList.h" />
+    <ClInclude Include="Fish.h" />
+    <ClInclude Include="hmac.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemAtt.h" />
+    <ClInclude Include="ItemData.h" />
+    <ClInclude Include="ItemField.h" />
+    <ClInclude Include="KeyWrap.h" />
+    <ClInclude Include="Match.h" />
+    <ClInclude Include="pbkdf2.h" />
+    <ClInclude Include="pugixml\pugiconfig.hpp" />
+    <ClInclude Include="pugixml\pugixml.hpp" />
+    <ClInclude Include="PWSfileHeader.h" />
+    <ClInclude Include="PWSfileV4.h" />
+    <ClInclude Include="PWSLog.h" />
+    <ClInclude Include="PWStime.h" />
+    <ClInclude Include="RUEList.h" />
+    <ClInclude Include="XML\MSXML\MFileSAX2Handlers.h" />
+    <ClInclude Include="XML\MSXML\MFileValidator.h" />
+    <ClInclude Include="XML\MSXML\MFileXMLProcessor.h" />
+    <ClInclude Include="XML\MSXML\MFilterSAX2Handlers.h" />
+    <ClInclude Include="XML\MSXML\MFilterXMLProcessor.h" />
+    <ClInclude Include="Proxy.h" />
+    <ClInclude Include="PWCharPool.h" />
+    <ClInclude Include="PWHistory.h" />
+    <ClInclude Include="PWPolicy.h" />
+    <ClInclude Include="PWSAuxParse.h" />
+    <ClInclude Include="PWScore.h" />
+    <ClInclude Include="PWSdirs.h" />
+    <ClInclude Include="PWSfile.h" />
+    <ClInclude Include="PWSfileV1V2.h" />
+    <ClInclude Include="PWSfileV3.h" />
+    <ClInclude Include="PWSFilters.h" />
+    <ClInclude Include="PwsPlatform.h" />
+    <ClInclude Include="PWSprefs.h" />
+    <ClInclude Include="PWSrand.h" />
+    <ClInclude Include="Report.h" />
+    <ClInclude Include="sha1.h" />
+    <ClInclude Include="sha256.h" />
+    <ClInclude Include="StringX.h" />
+    <ClInclude Include="StringXStream.h" />
+    <ClInclude Include="SysInfo.h" />
+    <ClInclude Include="trigram.h" />
+    <ClInclude Include="TwoFish.h" />
+    <ClInclude Include="UIinterface.h" />
+    <ClInclude Include="UnknownField.h" />
+    <ClInclude Include="UTF8Conv.h" />
+    <ClInclude Include="Util.h" />
+    <ClInclude Include="VerifyFormat.h" />
+    <ClInclude Include="XML\XMLDefs.h" />
+    <ClInclude Include="XML\XMLFileHandlers.h" />
+    <ClInclude Include="XML\XMLFileValidation.h" />
+    <ClInclude Include="XMLprefs.h" />
+    <ClInclude Include="XML\XERCES\XSecMemMgr.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
