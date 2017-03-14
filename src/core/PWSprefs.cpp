@@ -1367,7 +1367,7 @@ bool PWSprefs::LoadProfileFromFile()
   stringT ts, csSubkey;
 
   m_pXML_Config = new CXMLprefs(m_configfilename.c_str());
-  if (!m_pXML_Config->Load()) {
+  if (!m_pXML_Config->XML_Load()) {
     if (!m_pXML_Config->getReason().empty() &&
         m_pReporter != NULL)
       (*m_pReporter)(m_pXML_Config->getReason()); // show what went wrong
@@ -1502,7 +1502,7 @@ void PWSprefs::SaveApplicationPreferences()
     } else { // acquired lock
       // if file exists, load to get other values
       if (pws_os::FileExists(m_configfilename.c_str()))
-        m_pXML_Config->Load(); // we ignore failures here. why bother?
+        m_pXML_Config->XML_Load(); // we ignore failures here. why bother?
     }
   }
   UpdateTimeStamp();
@@ -1639,7 +1639,7 @@ void PWSprefs::SaveApplicationPreferences()
 
   if (m_ConfigOption == CF_FILE_RW ||
       m_ConfigOption == CF_FILE_RW_NEW) {
-    if (m_pXML_Config->Store()) // can't be new after succ. store
+    if (m_pXML_Config->XML_Store(m_csHKCU_PREF)) // can't be new after succ. store
       m_ConfigOption = CF_FILE_RW;
     else
     if (!m_pXML_Config->getReason().empty() &&
@@ -1674,7 +1674,7 @@ void PWSprefs::SaveShortcuts()
     } else { // acquired lock
       // if file exists, load to get other values
       if (pws_os::FileExists(m_configfilename.c_str()))
-        m_pXML_Config->Load(); // we ignore failures here. why bother?
+        m_pXML_Config->XML_Load(); // we ignore failures here. why bother?
     }
   }
 
@@ -1692,7 +1692,7 @@ void PWSprefs::SaveShortcuts()
 
   if (m_ConfigOption == CF_FILE_RW ||
       m_ConfigOption == CF_FILE_RW_NEW) {
-    if (m_pXML_Config->Store()) // can't be new after succ. store
+    if (m_pXML_Config->XML_Store(m_csHKCU_PREF)) // can't be new after succ. store
       m_ConfigOption = CF_FILE_RW;
     else
     if (!m_pXML_Config->getReason().empty() &&

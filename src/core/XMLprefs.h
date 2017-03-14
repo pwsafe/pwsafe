@@ -35,8 +35,8 @@ public:
   ~CXMLprefs() { UnloadXML(); }
 
   // Implementation
-  bool Load();
-  bool Store();
+  bool XML_Load();
+  bool XML_Store(const stringT &csBaseKeyName);
   bool Lock(stringT &locker); // if fails, locker points to culprit
   void Unlock();
 
@@ -63,7 +63,7 @@ public:
   // Remove a host/user from current configuration file
   bool RemoveHostnameUsername(const stringT &sHost, const stringT &sUser,
                               bool &bNoMoreNodes);
-  
+
   enum {XML_SUCCESS = 0,
         XML_LOAD_FAILED,
         XML_NODE_NOT_FOUND,

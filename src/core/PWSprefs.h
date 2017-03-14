@@ -42,6 +42,7 @@ struct st_prefShortcut {
   unsigned int id;
   unsigned short int siVirtKey;
   unsigned char cModifier;
+  stringT Menu_Name;
 };
 
 // Bool preferences unknown to this version

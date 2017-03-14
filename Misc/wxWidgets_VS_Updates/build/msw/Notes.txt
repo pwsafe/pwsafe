@@ -45,3 +45,33 @@ VS2005
 ======
 
 If you continue to use VS2005, you should put the static libraries built by it in \lib\vc8_lib.
+
+VS2017
+======
+
+The file "wxBuild_wxWidgets.bat" will NOT build wxWidgets for VS2017 as batch
+compilation variable VS150COMNTOOLS is no longer provided. Instead please build
+using the supplied solution and project files in VS2017_Project_Files.zip file,
+which should be extracted into folder: "..\wxWidgets-3.0.2\build\msw".  Also,
+there will be a number of C4457 warnings produced due to the new checking in VS2017.
+
+Prior to building, set "core" as the Startup Project.
+
+In addition, the setup.h in "..\wxWidgets-3.0.2\include\msvc\wx" needs to be updated
+for VS2017 from:
+
+    #elif _MSC_VER == 1900
+        #define wxCOMPILER_PREFIX vc140
+    #else
+        #error "Unknown MSVC compiler version, please report to wx-dev."
+    #endif
+
+to:
+
+    #elif _MSC_VER == 1900
+        #define wxCOMPILER_PREFIX vc140
+    #elif _MSC_VER == 1910
+        #define wxCOMPILER_PREFIX vc141
+    #else
+        #error "Unknown MSVC compiler version, please report to wx-dev."
+    #endif
