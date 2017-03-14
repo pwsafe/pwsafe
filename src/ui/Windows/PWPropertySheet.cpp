@@ -107,7 +107,7 @@ LRESULT CPWPropertySheet::OnMenuChar(UINT nChar, UINT nFlags, CMenu *pMenu)
 
   // IDs correspond to AddEdit_Additional Entry Keyboard Shortcut HotKey and
   // OptionsShortcuts PWS shortcut HotKeys
-  if (nID == IDC_ENTKBSHCTHOTKEY || nID == IDC_SHORTCUTHOTKEY)
+  if (nID == IDC_ENTKBSHCTHOTKEY || nID == IDC_HOTKEY)
     return MNC_CLOSE << 16;
 
  return CPropertySheet::OnMenuChar(nChar, nFlags, pMenu);

@@ -80,9 +80,8 @@ struct st_Opt_master_data {
   uint32 HashIters;
 
   // Shortcut Data
-  int32 AppHotKeyValue;
-  BOOL AppHotKeyEnabled;
-  BOOL AutotypeHotKeyEnabled;
+  int32 AppHotKeyValue, ATHotKeyValue;
+  BOOL AppHotKeyEnabled, ATHotKeyEnabled;
   int ColWidth;
   int DefColWidth;
 
@@ -176,7 +175,8 @@ public:
   // Shortcut Data
   inline int32 &M_AppHotKey_Value() {return m_OPTMD.AppHotKeyValue;}
   inline BOOL &M_AppHotKeyEnabled() {return m_OPTMD.AppHotKeyEnabled;}
-  inline BOOL &M_AutotypeHotKeyEnabled() { return m_OPTMD.AutotypeHotKeyEnabled; }
+  inline int32 &M_ATHotKey_Value() {return m_OPTMD.ATHotKeyValue;}
+  inline BOOL &M_ATHotKeyEnabled() {return m_OPTMD.ATHotKeyEnabled;}
   inline int &M_ColWidth() {return m_OPTMD.ColWidth;}
   inline int &M_DefColWidth() {return m_OPTMD.DefColWidth;}
 

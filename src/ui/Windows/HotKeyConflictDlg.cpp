@@ -73,20 +73,20 @@ BOOL CHotKeyConflictDlg::OnInitDialog()
 
   // Update Group text with Application HotKey value
   if (!m_csAPPVALUE.IsEmpty()) {
-    CWnd *pWndAPP = GetDlgItem(IDC_STATIC_APPHK);
+    CWnd *pWndAPPGRP = GetDlgItem(IDC_STATIC_APPHK);
     CString csText;
-    pWndAPP->GetWindowText(csText);
+    pWndAPPGRP->GetWindowText(csText);
     csText += L" (" + m_csAPPVALUE + L")";
-    pWndAPP->SetWindowText(csText);
+    pWndAPPGRP->SetWindowText(csText);
   }
 
   // Update Group text with Autotype HotKey value
-  {
-    CWnd *pWndAT = GetDlgItem(IDC_STATIC_ATHK);
+  if (!m_csATVALUE.IsEmpty()) {
+    CWnd *pWndATGRP = GetDlgItem(IDC_STATIC_ATHK);
     CString csText;
-    pWndAT->GetWindowText(csText);
+    pWndATGRP->GetWindowText(csText);
     csText += L" (" + m_csATVALUE + L")";
-    pWndAT->SetWindowText(csText);
+    pWndATGRP->SetWindowText(csText);
   }
 
   if ((m_iRC & HKE_APP) == 0 && (m_iRC & HKE_AT) == 0) {

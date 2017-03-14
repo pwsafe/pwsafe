@@ -32,15 +32,19 @@ public:
   DECLARE_DYNAMIC(COptions_PropertySheet)
 
   MapMenuShortcuts GetMaps() const {return m_pp_shortcuts->GetMaps();}
-  int32 GetHotKeyValue() const {return m_OPTMD.AppHotKeyValue;}
+  int32 GetAppHotKeyValue() const {return m_OPTMD.AppHotKeyValue;}
+  int32 GetATHotKeyValue() const {return m_OPTMD.ATHotKeyValue;}
+
+  bool GetAppHotKeyState() const {return m_OPTMD.AppHotKeyEnabled == TRUE;}
+  bool GetATHotKeyState() const {return m_OPTMD.ATHotKeyEnabled == TRUE;}
+
   int GetDCA() const {return m_OPTMD.DoubleClickAction;}
   int GetMaxMRUItems() const {return m_OPTMD.MaxMRUItems;}
   int GetMaxREItems() const {return m_OPTMD.MaxREItems;}
   int GetTrayIconColour() const {return m_OPTMD.TrayIconColour;}
   int GetPWHAction() const {return m_OPTMD.PWHAction;}
   int GetPWHistoryMax() const {return m_OPTMD.PWHistoryNumDefault;}
-  bool GetHotKeyState() const {return m_OPTMD.AppHotKeyEnabled == TRUE;}
-  bool GetAutotypeHotKeyState() const { return m_OPTMD.AutotypeHotKeyEnabled == TRUE; }
+
   bool GetEnableGrid() const {return m_OPTMD.EnableGrid == TRUE;}
   bool GetNotesAsTips() const {return m_OPTMD.ShowNotesAsTipsInViews == TRUE;}
   bool RefreshViews() {return m_bRefreshViews;}

@@ -364,6 +364,15 @@ These preferences apply to all databases on a given machine by a given user.</p>
 </tr>
 
 <tr>
+<td>AutoTypeHotKeyEnabled</td>
+<td>false</td>
+<td>True if the user has defined a Hot Key to get quick access to Autotype.
+As long as an entry is selected and the database is not locked, pressing
+this key combination will perform Autotype into the selected field in
+another Window/application.</td>
+</tr>
+
+<tr>
 <td>BackupBeforeEverySave</td>
 <td>true</td>
 <td>Rename current database following the Backup settings before saving any
@@ -405,15 +414,6 @@ ends</td>
 <td>dontaskquestion</td>
 <td>false</td>
 <td>Don't ask for confirmation when copying password to clipboard</td>
-</tr>
-
-<tr>
-<td>EnableAutoTypeHotKey</td>
-<td>false</td>
-<td>Enables the Autotype HotKey, which is fixed as key combination
-"Shift + Ctrl + T". As long as an entry is selected and the database is
-not locked, pressing this key combination will perform Autotype into 
-the selected field in another Window/application.</td>
 </tr>
 
 <tr>
@@ -576,6 +576,16 @@ characters will be displayed)</td>
 <td>0</td>
 <td>n/a</td>
 <td>Add/Edit font size in tenths of a point</td>
+</tr>
+
+<tr>
+<td>AutotypeHotKey</td>
+<td>none</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>The AutotypeHot Key value. (This is stored as a decimal integer created from
+the virtual keycode for the character in the lower word plus the Microsoft
+Foundation Class CHotKeyCtrl modifier flags in the higher word.)</td>
 </tr>
 
 <tr>

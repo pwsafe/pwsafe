@@ -99,16 +99,16 @@ BOOL CShortcutConflictDlg::OnInitDialog()
   int iItem(0);
   for (auto iter = m_vConflicts.begin(); iter != m_vConflicts.end(); iter++) {
     WORD wVirtualKeyCode = iter->iShortcut & 0xff;
-    WORD wHKModifiers = iter->iShortcut >> 16;
+    WORD wPWSModifiers = iter->iShortcut >> 16;
 
-    CString cs_ShortcutValue = CHotKeyCtrl::GetKeyName(wVirtualKeyCode, wHKModifiers & HOTKEYF_EXT);
+    CString cs_ShortcutValue = CHotKeyCtrl::GetKeyName(wVirtualKeyCode, wPWSModifiers & PWS_HOTKEYF_EXT);
     if (cs_ShortcutValue.GetLength() == 1)
       cs_ShortcutValue.MakeUpper();
-    if ((wHKModifiers & HOTKEYF_SHIFT) == HOTKEYF_SHIFT)
+    if ((wPWSModifiers & PWS_HOTKEYF_SHIFT) == PWS_HOTKEYF_SHIFT)
       cs_ShortcutValue = CS_SHIFTP + cs_ShortcutValue;
-    if ((wHKModifiers & HOTKEYF_CONTROL) == HOTKEYF_CONTROL)
+    if ((wPWSModifiers & PWS_HOTKEYF_CONTROL) == PWS_HOTKEYF_CONTROL)
       cs_ShortcutValue = CS_CTRLP + cs_ShortcutValue;
-    if ((wHKModifiers & HOTKEYF_ALT) == HOTKEYF_ALT)
+    if ((wPWSModifiers & PWS_HOTKEYF_ALT) == PWS_HOTKEYF_ALT)
       cs_ShortcutValue = CS_ALTP + cs_ShortcutValue;
 
     CString cs_entry;

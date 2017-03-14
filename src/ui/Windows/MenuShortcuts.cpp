@@ -29,15 +29,15 @@ CString CMenuShortcut::FormatShortcut(WORD wHKModifiers, WORD wVirtualKeyCode)
   CString str(L"");
 
   if (wVirtualKeyCode && IsNormalShortcut(wHKModifiers, wVirtualKeyCode)){
-    str = CHotKeyCtrl::GetKeyName(wVirtualKeyCode, wHKModifiers & HOTKEYF_EXT);
+    str = CHotKeyCtrl::GetKeyName(wVirtualKeyCode, (wHKModifiers & HOTKEYF_EXT) == HOTKEYF_EXT);
     if (str.GetLength() == 1)
       str.MakeUpper();
-    if ((wHKModifiers & HOTKEYF_SHIFT) == HOTKEYF_SHIFT)
-      str = CS_SHIFTP + str;
     if ((wHKModifiers & HOTKEYF_CONTROL) == HOTKEYF_CONTROL)
       str = CS_CTRLP + str;
     if ((wHKModifiers & HOTKEYF_ALT) == HOTKEYF_ALT)
       str = CS_ALTP + str;
+    if ((wHKModifiers & HOTKEYF_SHIFT) == HOTKEYF_SHIFT)
+      str = CS_SHIFTP + str;
   }
   return str;
 }

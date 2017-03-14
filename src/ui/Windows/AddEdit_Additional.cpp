@@ -41,7 +41,7 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd *pParent, st_AE_master_data *pAEMD
   m_bClearPWHistory(false), m_bSortAscending(true),
   m_bInitdone(false), m_iSortedColumn(-1),
   m_bWarnUserKBShortcut(false), m_iOldHotKey(0),
-  m_bAE_AppHotKeyEnabled(false), m_bAE_AutotypeHotKeyEnabled(false)
+  m_bAE_AppHotKeyEnabled(false), m_bAE_ATHotKeyEnabled(false)
 {
   if (M_MaxPWHistory() == 0)
     M_MaxPWHistory() = PWSprefs::GetInstance()->
@@ -53,14 +53,24 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd *pParent, st_AE_master_data *pAEMD
   m_wAppVirtualKeyCode = iAppHotKeyValue & 0xff;
   m_wAppWindowsModifiers = ConvertModifersMFC2Windows(wHKModifiers);
 
+  // Save Autotype HotKey info
+  int32 iATHotKeyValue = int32(PWSprefs::GetInstance()->GetPref(PWSprefs::AutotypeHotKey));
+  WORD wATHKModifiers = iATHotKeyValue >> 16;
+  m_wATVirtualKeyCode = iATHotKeyValue & 0xff;
+  m_wATWindowsModifiers = ConvertModifersMFC2Windows(wATHKModifiers);
+
   // Only set that the hotkeys are set if they are rather than what the user's
   // preferences indicate (they might have been disabled due to conflicts)
   DboxMain *dbox = GetMainDlg();
   m_bPWSAppHotKeyEnabled = dbox->IsAppHotKeyEnabled();
-  m_bPWSAutotypeHotKeyEnabled = dbox->IsAutotypeHotKeyEnabled();
+  m_bPWSATHotKeyEnabled = dbox->IsATHotKeyEnabled();
 
   if (m_bPWSAppHotKeyEnabled) {
     m_iAppHotKey = (m_wAppWindowsModifiers << 16) + m_wAppVirtualKeyCode;
+  }
+
+  if (m_bPWSATHotKeyEnabled) {
+    m_iATHotKey = (m_wATWindowsModifiers << 16) + m_wATVirtualKeyCode;
   }
 
   if (m_bPWSAppHotKeyEnabled) {
@@ -68,13 +78,17 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd *pParent, st_AE_master_data *pAEMD
     // is potentially editing this entry's HotKey
     BOOL brc = UnregisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID);
     ASSERT(brc);
+    pws_os::Trace(L"DboxMain::OnOptions - AppHotKey Unregister %s\n",
+      brc == TRUE ? L"succeeded" : L"failed");
   }
 
-  if (m_bPWSAutotypeHotKeyEnabled) {
+  if (m_bPWSATHotKeyEnabled) {
     // If PWS Application has an active HotKey, disable it when user
     // is potentially editing this entry's HotKey
     BOOL brc = UnregisterHotKey(GetMainDlg()->m_hWnd, PWS_AT_HOTKEY_ID);
     ASSERT(brc);
+    pws_os::Trace(L"DboxMain::OnOptions - ATHotKey Unregister %s\n",
+      brc == TRUE ? L"succeeded" : L"failed");
   }
 
   m_KBShortcutCtrl.SetMyParent(this);
@@ -82,23 +96,24 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd *pParent, st_AE_master_data *pAEMD
 
 CAddEdit_Additional::~CAddEdit_Additional()
 {
-  if (m_bAE_AppHotKeyEnabled || m_bAE_AutotypeHotKeyEnabled ||
-      m_wAppWindowsModifiers == 0 || m_wAppVirtualKeyCode == 0)
-    return;
-
   // If PWS Application had an active HotKey before the user edited
   // this entry, put it back
   if (m_bPWSAppHotKeyEnabled && !m_bAE_AppHotKeyEnabled &&
-    m_wAppWindowsModifiers != 0 && m_wAppVirtualKeyCode != 0) {
+      m_wAppWindowsModifiers != 0 && m_wAppVirtualKeyCode != 0) {
     m_bAE_AppHotKeyEnabled = RegisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID,
-      UINT(m_wAppWindowsModifiers), UINT(m_wAppVirtualKeyCode)) == TRUE;
+        UINT(m_wAppWindowsModifiers), UINT(m_wAppVirtualKeyCode)) == TRUE;
+    pws_os::Trace(L"CAddEdit_Additional::~CAddEdit_Additional - AppHotKey Register %s\n",
+      m_bAE_AppHotKeyEnabled ? L"succeeded" : L"failed");
   }
 
   // If PWS Application had the Autotype hotkey active before the user edited
   // this entry, put it back
-  if (m_bPWSAutotypeHotKeyEnabled && !m_bAE_AutotypeHotKeyEnabled) {
-    m_bAE_AutotypeHotKeyEnabled = RegisterHotKey(GetMainDlg()->m_hWnd, PWS_AT_HOTKEY_ID,
-      UINT(AUTOTYPE_HOTKEY_MODIFIERS), UINT(AUTOTYPE_HOTKEY_KEYCODE)) == TRUE;
+  if (m_bPWSATHotKeyEnabled && !m_bAE_ATHotKeyEnabled &&
+      m_wATWindowsModifiers != 0 && m_wATWindowsModifiers != 0) {
+    m_bAE_ATHotKeyEnabled = RegisterHotKey(GetMainDlg()->m_hWnd, PWS_AT_HOTKEY_ID,
+        UINT(m_wATWindowsModifiers), UINT(m_wATWindowsModifiers)) == TRUE;
+    pws_os::Trace(L"CAddEdit_Additional::~CAddEdit_Additional - ATHotKey Register %s\n",
+      m_bAE_ATHotKeyEnabled ? L"succeeded" : L"failed");
   }
 }
 
@@ -434,7 +449,7 @@ void CAddEdit_Additional::OnHotKeyChanged()
       return;
     }
 
-    if (wVirtualKeyCode == AUTOTYPE_HOTKEY_KEYCODE && wHKModifiers == AUTOTYPE_HOTKEY_MODIFIERS) {
+    if (wVirtualKeyCode == m_wATVirtualKeyCode && wHKModifiers == m_wATWindowsModifiers) {
       // Same as PWS Autotype HotKey - Restore last saved values
       m_KBShortcutCtrl.SetHotKey(m_wSavedVirtualKeyCode, m_wSavedModifiers);
       return;
@@ -568,20 +583,15 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       return KBSHORTCUT_IN_USE_BY_PWS;
     }
 
-    if (m_bAE_AutotypeHotKeyEnabled &&
-        wVirtualKeyCode == AUTOTYPE_HOTKEY_KEYCODE &&
-        wHKModifiers == AUTOTYPE_HOTKEY_MODIFIERS) {
+    if (m_bAE_ATHotKeyEnabled && m_iATHotKey == iKBShortcut) {
       // Same as PWS application HotKey2
-      CString csHotKey(MAKEINTRESOURCE(IDS_AUTOTYPE_HOTKEY_VALUE));
-      CString cs_Reset(MAKEINTRESOURCE(IDS_KBS_RESET));
-      cs_msg.Format(IDS_AUTOTYPE_RESERVED, static_cast<LPCWSTR>(csHotKey),
-        static_cast<LPCWSTR>(cs_Reset));
+      cs_msg.LoadString(IDS_KBS_SAMEASAT);
       m_stc_warning.SetWindowText(cs_msg);
       m_stc_warning.ShowWindow(SW_SHOW);
 
-      //// Reset keyboard shortcut
-      //wVirtualKeyCode = wHKModifiers = wPWSModifiers = 0;
-      //m_KBShortcutCtrl.SetHotKey(wVirtualKeyCode, wHKModifiers);
+      // Reset keyboard shortcut
+      wVirtualKeyCode = wHKModifiers = wPWSModifiers = 0;
+      m_KBShortcutCtrl.SetHotKey(wVirtualKeyCode, wHKModifiers);
       return KBSHORTCUT_IN_USE_BY_PWS;
     }
 

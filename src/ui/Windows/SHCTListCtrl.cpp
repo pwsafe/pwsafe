@@ -26,17 +26,17 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CSHCTListCtrlX::CSHCTListCtrlX()
-: m_pParent(NULL), m_pHotKey(NULL), m_bHotKeyActive(false),
+: m_pParent(NULL), m_pMenuHotKey(NULL), m_bMenuHotKeyActive(false),
   m_crRedText(RGB(168, 0, 0))
 {
-  m_pHotKey = new CSHCTHotKey;
+  m_pMenuHotKey = new CSHCTHotKey;
   m_crWindowText = ::GetSysColor(COLOR_WINDOWTEXT);
 }
 
 CSHCTListCtrlX::~CSHCTListCtrlX()
 {
-  m_pHotKey->DestroyWindow();
-  delete m_pHotKey;
+  m_pMenuHotKey->DestroyWindow();
+  delete m_pMenuHotKey;
 }
 
 BEGIN_MESSAGE_MAP(CSHCTListCtrlX, CGridListCtrl)
@@ -53,18 +53,18 @@ END_MESSAGE_MAP()
 
 void CSHCTListCtrlX::Init(COptionsShortcuts *pParent)
 {
-  if (m_pHotKey->GetSafeHwnd() == NULL) {
+  if (m_pMenuHotKey->GetSafeHwnd() == NULL) {
     CRect itemrect(0, 0, 0, 0);
-    m_pHotKey->Create(0, itemrect, this, IDC_SHORTCUTHOTKEY);
-    m_pHotKey->ModifyStyle(WS_BORDER, 0, 0);
+    m_pMenuHotKey->Create(0, itemrect, this, IDC_HOTKEY);
+    m_pMenuHotKey->ModifyStyle(WS_BORDER, 0, 0);
     // Would like to change the default font (e.g. smaller and not bold) but it gets ignored
   }
 
-  m_pHotKey->SetMyParent(dynamic_cast<CSHCTListCtrl *>(this));
+  m_pMenuHotKey->SetLCParent(dynamic_cast<CSHCTListCtrl *>(this));
   m_pParent = pParent;
 }
 
-void CSHCTListCtrlX::OnLButtonDown(UINT , CPoint point)
+void CSHCTListCtrlX::OnLButtonDown(UINT nFlags, CPoint point)
 {
   MapMenuShortcutsIter iter;
   CRect subitemrect;
@@ -78,8 +78,10 @@ void CSHCTListCtrlX::OnLButtonDown(UINT , CPoint point)
 
   m_item = lvhti.iItem;
   iSubItem = lvhti.iSubItem;
-  if (m_item < 0 || iSubItem != SHCT_SHORTCUTKEYS)
+  if (m_item < 0 || iSubItem != SHCT_SHORTCUTKEYS) {
+    CListCtrl::OnLButtonDown(nFlags, point);
     return;
+  }
 
   // GetSubItemRect for the first column gives the total width
   // Therefore need to get it from GetColmnWidth
@@ -89,19 +91,19 @@ void CSHCTListCtrlX::OnLButtonDown(UINT , CPoint point)
   subitemrect.right = iColWidth - (iColWidth < 4 ? 0 : 2);
   subitemrect.top += 2;
   subitemrect.bottom -= 2;
-  m_pHotKey->MoveWindow(&subitemrect);
+  m_pMenuHotKey->MoveWindow(&subitemrect);
 
   m_id = (UINT)LOWORD(GetItemData(m_item));
   if (m_pParent->GetMapMenuShortcutsIter(m_id, iter)) {
     WORD vModifiers = iter->second.cModifier;
-    m_pHotKey->SetHotKey(iter->second.siVirtKey, vModifiers);
+    m_pMenuHotKey->SetHotKey(iter->second.siVirtKey, vModifiers);
   }
 
-  m_pHotKey->EnableWindow(TRUE);
-  m_pHotKey->ShowWindow(SW_SHOW);
-  m_pHotKey->BringWindowToTop();
-  m_pHotKey->SetFocus();
-  m_bHotKeyActive = true;
+  m_pMenuHotKey->EnableWindow(TRUE);
+  m_pMenuHotKey->ShowWindow(SW_SHOW);
+  m_pMenuHotKey->BringWindowToTop();
+  m_pMenuHotKey->SetFocus();
+  m_bMenuHotKeyActive = true;
 
   if (m_item >= 0)
     SetItemState(m_item, 0, LVIS_SELECTED | LVIS_DROPHILITED);
@@ -181,9 +183,9 @@ exit:
 
 void CSHCTListCtrlX::SaveHotKey()
 {
-  if (m_bHotKeyActive) {
+  if (m_bMenuHotKeyActive) {
     WORD wVirtualKeyCode, wHKModifiers;
-    m_pHotKey->GetHotKey(wVirtualKeyCode, wHKModifiers);
+    m_pMenuHotKey->GetHotKey(wVirtualKeyCode, wHKModifiers);
     OnLCMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers);
   }
 }
@@ -191,8 +193,8 @@ void CSHCTListCtrlX::SaveHotKey()
 bool CSHCTListCtrlX::OnLCMenuShortcutKillFocus(WORD &wVirtualKeyCode,
                                                WORD &wHKModifiers)
 {
-  m_pHotKey->EnableWindow(FALSE);
-  m_pHotKey->ShowWindow(SW_HIDE);
+  m_pMenuHotKey->EnableWindow(FALSE);
+  m_pMenuHotKey->ShowWindow(SW_HIDE);
   bool brc(false);
 
   if (m_pParent != NULL) {
@@ -200,13 +202,14 @@ bool CSHCTListCtrlX::OnLCMenuShortcutKillFocus(WORD &wVirtualKeyCode,
                                  wVirtualKeyCode, wHKModifiers);
   }
 
-  m_bHotKeyActive = false;
+  m_bMenuHotKeyActive = false;
   return brc;
 }
 
 void CSHCTListCtrlX::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
   SaveHotKey();
+
   CGridListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
   UpdateWindow();
 }
@@ -214,6 +217,7 @@ void CSHCTListCtrlX::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 void CSHCTListCtrlX::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
   SaveHotKey();
+
   CGridListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
   UpdateWindow();
 }
@@ -221,6 +225,7 @@ void CSHCTListCtrlX::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 BOOL CSHCTListCtrlX::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
   SaveHotKey();
+
   BOOL brc = CGridListCtrl::OnMouseWheel(nFlags, zDelta, pt);
   UpdateWindow();
   return brc;

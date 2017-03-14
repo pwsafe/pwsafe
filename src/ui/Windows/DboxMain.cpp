@@ -157,7 +157,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_bFindToolBarVisibleAtLock(false), m_bSuspendGUIUpdates(false), m_iNeedRefresh(NONE),
-  m_bAppHotKeyEnabled(false), m_bAutotypeHotKeyEnabled(false)
+  m_bAppHotKeyEnabled(false), m_bATHotKeyEnabled(false)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::LOAD_LIBRARY_SYS));
@@ -1121,7 +1121,6 @@ void DboxMain::InitPasswordSafe()
 
 int DboxMain::SetAndCheckHotKeys(bool bSetHotKey)
 {
-  const CString cs_AutotypeHotKeyValue(MAKEINTRESOURCE(IDS_AUTOTYPE_HOTKEY_VALUE));
   const CString CS_CTRLP(MAKEINTRESOURCE(IDS_CTRLP));
   const CString CS_ALTP(MAKEINTRESOURCE(IDS_ALTP));
   const CString CS_SHIFTP(MAKEINTRESOURCE(IDS_SHIFTP));
@@ -1133,36 +1132,58 @@ int DboxMain::SetAndCheckHotKeys(bool bSetHotKey)
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
-  const int32 iPWSHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
-  WORD wVirtualKeyCode = iPWSHotKeyValue & 0xff;
-  WORD wHKModifiers = iPWSHotKeyValue >> 16;
+  const int32 iPWSAppHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
+  WORD wAppVirtualKeyCode = iPWSAppHotKeyValue & 0xff;
+  WORD wAppHKModifiers = iPWSAppHotKeyValue >> 16;
 
   // Translate from CHotKeyCtrl to CWnd & PWS modifiers
-  WORD wModifiers = ConvertModifersMFC2Windows(wHKModifiers);
-  WORD wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
-  int iAppShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
+  WORD wAppModifiers = ConvertModifersMFC2Windows(wAppHKModifiers);
+  WORD wAppPWSModifiers = ConvertModifersMFC2PWS(wAppHKModifiers);
+  int iAppHotKey = (wAppPWSModifiers << 16) + wAppVirtualKeyCode;
 
   // Set the HotKey
-  if (bSetHotKey && iAppShortcut != 0) {
-    m_core.SetAppHotKey(iAppShortcut);
+  if (bSetHotKey && iAppHotKey != 0) {
+    m_core.SetAppHotKey(iAppHotKey);
   }
 
-  WORD wATPWSModifiers = ConvertModifersMFC2PWS(AUTOTYPE_HOTKEY_MODIFIERS);
-  int iAutotypeShortcut = (wATPWSModifiers << 16) + AUTOTYPE_HOTKEY_KEYCODE;
-  m_core.SetAutotypeHotKey(iAutotypeShortcut);
+  const int32 iPWSATHotKeyValue = int32(prefs->GetPref(PWSprefs::AutotypeHotKey));
+  WORD wATVirtualKeyCode = iPWSATHotKeyValue & 0xff;
+  WORD wATHKModifiers = iPWSATHotKeyValue >> 16;
 
-  CString cs_AppHotKeyValue = CHotKeyCtrl::GetKeyName(wVirtualKeyCode, wHKModifiers & HOTKEYF_EXT);
+  // Translate from CHotKeyCtrl to CWnd & PWS modifiers
+  WORD wATModifiers = ConvertModifersMFC2Windows(wATHKModifiers);
+  WORD wATPWSModifiers = ConvertModifersMFC2PWS(wATHKModifiers);
+  int iATHotKey = (wATPWSModifiers << 16) + wATVirtualKeyCode;
+
+  // Set the HotKey
+  if (bSetHotKey && iATHotKey != 0) {
+    m_core.SetAppHotKey(iATHotKey);
+  }
+
+  CString cs_AppHotKeyValue = CHotKeyCtrl::GetKeyName(wAppVirtualKeyCode,
+                                  wAppHKModifiers & HOTKEYF_EXT);
   if (cs_AppHotKeyValue.GetLength() == 1)
     cs_AppHotKeyValue.MakeUpper();
-  if ((wHKModifiers & HOTKEYF_SHIFT) == HOTKEYF_SHIFT)
+  if ((wAppHKModifiers & HOTKEYF_SHIFT) == HOTKEYF_SHIFT)
     cs_AppHotKeyValue = CS_SHIFTP + cs_AppHotKeyValue;
-  if ((wHKModifiers & HOTKEYF_CONTROL) == HOTKEYF_CONTROL)
+  if ((wAppHKModifiers & HOTKEYF_CONTROL) == HOTKEYF_CONTROL)
     cs_AppHotKeyValue = CS_CTRLP + cs_AppHotKeyValue;
-  if ((wHKModifiers & HOTKEYF_ALT) == HOTKEYF_ALT)
+  if ((wAppHKModifiers & HOTKEYF_ALT) == HOTKEYF_ALT)
     cs_AppHotKeyValue = CS_ALTP + cs_AppHotKeyValue;
 
+  CString cs_ATHotKeyValue = CHotKeyCtrl::GetKeyName(wATVirtualKeyCode,
+                                       wATHKModifiers & HOTKEYF_EXT);
+  if (cs_ATHotKeyValue.GetLength() == 1)
+    cs_ATHotKeyValue.MakeUpper();
+  if ((wATHKModifiers & HOTKEYF_SHIFT) == HOTKEYF_SHIFT)
+    cs_ATHotKeyValue = CS_SHIFTP + cs_ATHotKeyValue;
+  if ((wATHKModifiers & HOTKEYF_CONTROL) == HOTKEYF_CONTROL)
+    cs_ATHotKeyValue = CS_CTRLP + cs_ATHotKeyValue;
+  if ((wATHKModifiers & HOTKEYF_ALT) == HOTKEYF_ALT)
+    cs_ATHotKeyValue = CS_ALTP + cs_ATHotKeyValue;
+
   if (prefs->GetPref(PWSprefs::HotKeyEnabled)) {
-    nCID = GetMenuShortcut(wVirtualKeyCode, (unsigned char)wHKModifiers, sxMenuItemName);
+    nCID = GetMenuShortcut(wAppVirtualKeyCode, (unsigned char)wAppHKModifiers, sxMenuItemName);
     if (nCID != 0) {
       // Warn user that it is already in use for a menu item
       // (on this instance for this user!)
@@ -1175,7 +1196,6 @@ int DboxMain::SetAndCheckHotKeys(bool bSetHotKey)
     }
 
     if (m_bOpen && m_core.GetNumEntries() > 0) {
-      int32 iAppHotKey = (wModifiers << 16) + wVirtualKeyCode;
       pws_os::CUUID uuid = m_core.GetKBShortcut(iAppHotKey);
 
       if (uuid != pws_os::CUUID::NullUUID()) {
@@ -1197,23 +1217,21 @@ int DboxMain::SetAndCheckHotKeys(bool bSetHotKey)
   }
 
   // Autotype HotKey
-  if (prefs->GetPref(PWSprefs::EnableAutotypeHotKey)) {
-    WORD wATModifiers = ConvertModifersPWS2MFC(AUTOTYPE_HOTKEY_MODIFIERS);
-    nCID = GetMenuShortcut(AUTOTYPE_HOTKEY_KEYCODE, (unsigned char)wATModifiers, sxMenuItemName);
+  if (prefs->GetPref(PWSprefs::AutotypeHotKeyEnabled)) {
+    nCID = GetMenuShortcut(wATVirtualKeyCode, (unsigned char)wATHKModifiers, sxMenuItemName);
     if (nCID != 0) {
       // Warn user that it is already in use for a menu item
       // (on this instance for this user!)
       Remove(sxMenuItemName, L'&');
 
-      cs_ATMENU.Format(IDS_KBS_INUSEBYMENU, static_cast<LPCWSTR>(cs_AutotypeHotKeyValue),
+      cs_ATMENU.Format(IDS_KBS_INUSEBYMENU, static_cast<LPCWSTR>(cs_ATHotKeyValue),
         static_cast<LPCWSTR>(sxMenuItemName.c_str()));
 
       iRC += CHotKeyConflictDlg::HKE_ATMENU;
     }
 
     if (m_bOpen && m_core.GetNumEntries() > 0) {
-      int32 iAutotypeHotKey = (AUTOTYPE_HOTKEY_MODIFIERS << 16) + AUTOTYPE_HOTKEY_KEYCODE;
-      pws_os::CUUID uuid = m_core.GetKBShortcut(iAutotypeHotKey);
+      pws_os::CUUID uuid = m_core.GetKBShortcut(iATHotKey);
 
       if (uuid != pws_os::CUUID::NullUUID()) {
         // Tell user that it already exists as an entry keyboard shortcut
@@ -1222,7 +1240,7 @@ int DboxMain::SetAndCheckHotKeys(bool bSetHotKey)
         const StringX sxTitle = iter->second.GetTitle();
         const StringX sxUser = iter->second.GetUser();
 
-        cs_ATENTRY.Format(IDS_KBS_INUSEBYENTRY, static_cast<LPCWSTR>(cs_AutotypeHotKeyValue),
+        cs_ATENTRY.Format(IDS_KBS_INUSEBYENTRY, static_cast<LPCWSTR>(cs_ATHotKeyValue),
           static_cast<LPCWSTR>(sxGroup.c_str()),
           static_cast<LPCWSTR>(sxTitle.c_str()),
           static_cast<LPCWSTR>(sxUser.c_str()),
@@ -1236,8 +1254,10 @@ int DboxMain::SetAndCheckHotKeys(bool bSetHotKey)
   if (prefs->GetPref(PWSprefs::HotKeyEnabled) && (iRC & CHotKeyConflictDlg::HKE_APP) == 0) {
     // No conflicts and user wants the HotKey - do it unless already registered
     if (!m_bAppHotKeyEnabled) {
-      m_bAppHotKeyEnabled = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID, UINT(wModifiers),
-        UINT(wVirtualKeyCode)) == TRUE;
+      m_bAppHotKeyEnabled = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID, UINT(wAppModifiers),
+                                UINT(wAppVirtualKeyCode)) == TRUE;
+      pws_os::Trace(L"DboxMain::SetAndCheckHotKeys - AppHotKey Register %s\n",
+        m_bAppHotKeyEnabled ? L"succeeded" : L"failed");
     }
 
     if (!m_bAppHotKeyEnabled) {
@@ -1255,28 +1275,30 @@ int DboxMain::SetAndCheckHotKeys(bool bSetHotKey)
     m_core.SetAppHotKey(0);
   }
 
-  if (prefs->GetPref(PWSprefs::EnableAutotypeHotKey) && (iRC & CHotKeyConflictDlg::HKE_AT) == 0) {
+  if (prefs->GetPref(PWSprefs::AutotypeHotKeyEnabled) && (iRC & CHotKeyConflictDlg::HKE_AT) == 0) {
     // No conflicts and user wants the HotKey - do it unless already registered
-    if (!m_bAutotypeHotKeyEnabled) {
-      m_bAutotypeHotKeyEnabled = RegisterHotKey(m_hWnd, PWS_AT_HOTKEY_ID, UINT(AUTOTYPE_HOTKEY_MODIFIERS),
-        UINT(AUTOTYPE_HOTKEY_KEYCODE)) == TRUE;
+    if (!m_bATHotKeyEnabled) {
+      m_bATHotKeyEnabled = RegisterHotKey(m_hWnd, PWS_AT_HOTKEY_ID, UINT(wATModifiers),
+                               UINT(wATVirtualKeyCode)) == TRUE;
+      pws_os::Trace(L"DboxMain::SetAndCheckHotKeys - ATHotKey Register %s\n",
+        m_bATHotKeyEnabled ? L"succeeded" : L"failed");
     }
 
-    if (!m_bAutotypeHotKeyEnabled) {
+    if (!m_bATHotKeyEnabled) {
       // Couldn't register HotKey
       cs_ATMENU.LoadString(IDS_NOHOTKEY);
       iRC += CHotKeyConflictDlg::HKE_ATINUSE;
     }
   }
 
-  if (prefs->GetPref(PWSprefs::EnableAutotypeHotKey) && (iRC & CHotKeyConflictDlg::HKE_AT) != 0) {
+  if (prefs->GetPref(PWSprefs::AutotypeHotKeyEnabled) && (iRC & CHotKeyConflictDlg::HKE_AT) != 0) {
     // User wanted the HotKey - do there are conflicts - disable it
-    prefs->SetPref(PWSprefs::EnableAutotypeHotKey, FALSE);
+    prefs->SetPref(PWSprefs::AutotypeHotKeyEnabled, FALSE);
   }
 
   if (iRC != CHotKeyConflictDlg::HKE_NONE) {
     // Tell user
-    CHotKeyConflictDlg dlg((CWnd *)this, iRC, cs_AppHotKeyValue, cs_AutotypeHotKeyValue,
+    CHotKeyConflictDlg dlg((CWnd *)this, iRC, cs_AppHotKeyValue, cs_ATHotKeyValue,
       cs_APPMENU, cs_APPENTRY, cs_ATMENU, cs_ATENTRY);
 
     // Tell the user!
@@ -1334,10 +1356,6 @@ LRESULT DboxMain::OnHotKey(WPARAM wParam, LPARAM)
 
 int DboxMain::CheckShortcuts()
 {
-  const CString CS_CTRLP(MAKEINTRESOURCE(IDS_CTRLP));
-  const CString CS_ALTP(MAKEINTRESOURCE(IDS_ALTP));
-  const CString CS_SHIFTP(MAKEINTRESOURCE(IDS_SHIFTP));
-
   StringX sxMenuItemName;
   unsigned int nCID;
 
@@ -1352,10 +1370,6 @@ int DboxMain::CheckShortcuts()
       nCID = GetMenuShortcut(wVirtualKeyCode, (unsigned char)wHKModifiers, sxMenuItemName);
       if (nCID != 0) {
         st_Conflicts stcf;
-
-        // Get Shortcut value
-
-
         // Get Menu info
         Remove(sxMenuItemName, L'&');
 

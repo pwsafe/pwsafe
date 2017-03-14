@@ -16,6 +16,7 @@
 #include "Options_PropertyPage.h"
 #include "MenuShortcuts.h"
 #include "SHCTListCtrl.h"
+#include "SHCTHotKey.h"
 #include "PWHdrCtrlNoChng.h"
 #include "ControlExtns.h"
 #include "TBMStatic.h"
@@ -60,6 +61,8 @@ public:
   pws_os::CUUID &GetKBShortcutUUID(int lParam)
   {return m_OSKBShortcutMap[lParam];}
 
+  void OnHotKeyKillFocus(WORD &wVirtualKeyCode, WORD &wHKModifiers);
+
 protected:
   // Dialog Data
   //{{AFX_DATA(COptionsShortcuts)
@@ -74,15 +77,20 @@ protected:
         HOTKEY_CANT_MAKE_UNIQUE     =  2
   };
 
-  CHotKeyCtrl m_AppHotKeyCtrl;
+  // MFC seems to have a MAJOR issue with more than one CHotKeyCtrl per dialog
+  // and so we do the same as for the menu shortcut CListctrl -
+  // we only have one which we move around depending where we need it.
+  CSHCTHotKey *m_pHotKey;
+
   CSHCTListCtrl m_ShortcutLC;
   CListCtrl m_EntryShortcutLC;
   //}}AFX_DATA
 
-  int32 m_AppHotKeyValue;
+  int32 m_AppHotKeyValue, m_ATHotKeyValue;
   int m_iColWidth, m_iDefColWidth;
-  BOOL m_bOS_AppHotKeyEnabled, m_bOS_AutotypeHotKeyEnabled;
+  BOOL m_bOS_AppHotKeyEnabled, m_bOS_ATHotKeyEnabled;
 
+  CStatic m_stcAppHKText, m_stcATHKText;
   CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4;
 
   // Overrides
@@ -103,16 +111,18 @@ protected:
   afx_msg void OnContextMenu(CWnd *, CPoint point);
 
   afx_msg void OnHelp();
+  afx_msg void OnAppHotKeyClicked();
+  afx_msg void OnATHotKeyClicked();
   afx_msg void OnEnableAppHotKey();
-  afx_msg void OnEnableAutotypeHotKey();
+  afx_msg void OnEnableATHotKey();
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS);
   afx_msg void OnResetAll();
   afx_msg void OnHeaderNotify(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnHeaderRClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnResetColumnWidth();
-  afx_msg void OnKBShortcutDoulbleClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  afx_msg void OnAppHotKeyChanged();
+  afx_msg void OnKBShortcutDoubleClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnHotKeyChanged();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -133,14 +143,23 @@ private:
 
   KBShortcutMap m_OSKBShortcutMap;
 
-  int32 m_iOldAppHotKey;
-  bool m_bShortcutsChanged;
+  CFont *m_pHK_Font;
+
+  int32 m_iOldAppHotKey, m_iOldATHotKey;
+  bool m_bShortcutsChanged, m_bHotKeyActive;
   UINT m_id;
   int m_iSortedColumn, m_iKBSortedColumn;
   int m_PrevItem;
   bool m_bSortAscending, m_bKBSortAscending;
   bool m_bFirstShown, m_bConflictDetected;
-  WORD m_wAppVirtualKeyCode, m_wAppModifiers;
 
-  CFont *m_pAutotype_HK_Font;
+  int m_iWhichHotKey;
+  WORD m_wAppVirtualKeyCode, m_wAppHKModifiers;
+  WORD m_wATVirtualKeyCode, m_wATHKModifiers;
+
+  CString m_csSavedAppHotKeyValue;
+  WORD m_wAppSavedVirtualKeyCode, m_wAppSavedHKModifiers;
+  WORD m_wATSavedVirtualKeyCode, m_wATSavedHKModifiers;
+
+  COLORREF m_crWindowText;
 };

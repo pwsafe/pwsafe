@@ -110,12 +110,15 @@ private:
   bool m_bInitdone;
   bool m_bWarnUserKBShortcut;
 
-  int32 m_iAppHotKey, m_iOldHotKey;
-  WORD m_wAppVirtualKeyCode, m_wAppVirtualKeyCode2;
-  WORD m_wAppWindowsModifiers;
   WORD m_wSavedVirtualKeyCode, m_wSavedModifiers;
-  bool m_bAE_AppHotKeyEnabled, m_bAE_AutotypeHotKeyEnabled;
-  bool m_bPWSAppHotKeyEnabled, m_bPWSAutotypeHotKeyEnabled;
+
+  int32 m_iAppHotKey, m_iOldHotKey;
+  int32 m_iATHotKey;
+  WORD m_wAppVirtualKeyCode, m_wATVirtualKeyCode;
+  WORD m_wAppWindowsModifiers, m_wATWindowsModifiers;
+
+  bool m_bAE_AppHotKeyEnabled, m_bAE_ATHotKeyEnabled;
+  bool m_bPWSAppHotKeyEnabled, m_bPWSATHotKeyEnabled;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

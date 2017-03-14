@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "SHCTHotKey.h"
 #include "SHCTListCtrl.h"
+#include "OptionsShortcuts.h"
 
 #include "resource.h"
 
@@ -19,7 +20,7 @@
 IMPLEMENT_DYNAMIC(CSHCTHotKey, CHotKeyCtrl)
 
 CSHCTHotKey::CSHCTHotKey()
-: m_pParent(NULL), m_bHandled(false)
+: m_pLCParent(NULL), m_pOSParent(NULL), m_bHandled(false)
 {
 }
 
@@ -35,12 +36,18 @@ END_MESSAGE_MAP()
 
 void CSHCTHotKey::OnKillFocus(CWnd *)
 {
-  if (m_pParent != NULL) {
+  if (m_pLCParent != NULL) {
     WORD wVirtualKeyCode, wHKModifiers;
     GetHotKey(wVirtualKeyCode, wHKModifiers);
-    if (!m_pParent->OnLCMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers)) {
+    if (!m_pLCParent->OnLCMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers)) {
       wVirtualKeyCode = wHKModifiers = 0;
     }
+  }
+
+  if (m_pOSParent != NULL) {
+    WORD wVirtualKeyCode, wHKModifiers;
+    GetHotKey(wVirtualKeyCode, wHKModifiers);
+    m_pOSParent->OnHotKeyKillFocus(wVirtualKeyCode, wHKModifiers);
   }
 }
 
@@ -89,7 +96,11 @@ BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
       SetHotKey(wVirtualKeyCode, wHKModifiers);
 
       // Just in case parent requires notification of a change
-      m_pParent->SendMessage(WM_COMMAND, MAKEWPARAM(IDC_SHORTCUTHOTKEY, EN_CHANGE), 0);
+      if (m_pLCParent)
+        m_pLCParent->SendMessage(WM_COMMAND, MAKEWPARAM(IDC_HOTKEY, EN_CHANGE), 0);
+      else
+        m_pOSParent->SendMessage(WM_COMMAND, MAKEWPARAM(IDC_HOTKEY, EN_CHANGE), 0); 
+      
       return TRUE;
     }
   }

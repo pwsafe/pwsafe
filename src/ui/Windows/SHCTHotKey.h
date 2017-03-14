@@ -20,8 +20,12 @@ public:
   CSHCTHotKey();
   virtual ~CSHCTHotKey();
 
-  void SetMyParent(CSHCTListCtrl *pParent)
-  {m_pParent = pParent;}
+  void SetLCParent(CSHCTListCtrl *pParent)
+  {m_pLCParent = pParent;}
+  void SetOSParent(COptionsShortcuts *pParent)
+  {m_pOSParent = pParent;}
+
+  void KillFocus() { OnKillFocus(NULL); }
 
 protected:
   BOOL PreTranslateMessage(MSG* pMsg);
@@ -30,6 +34,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CSHCTListCtrl *m_pParent;
+  CSHCTListCtrl *m_pLCParent;
+  COptionsShortcuts *m_pOSParent;
   bool m_bHandled;
 };

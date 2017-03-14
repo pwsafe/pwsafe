@@ -102,10 +102,6 @@ rectangle.
 #define PWS_HOTKEY_ID      0xBFFF
 #define PWS_AT_HOTKEY_ID   0xBFFE
 
-// Autotype HotKey (fixed) Shift+Ctrl+T [In Windows format as defined in HKModifiers.h]
-#define AUTOTYPE_HOTKEY_MODIFIERS  6
-#define AUTOTYPE_HOTKEY_KEYCODE    0x54
-
 // Arbitrary string to mean that the saved DB preferences are empty.
 #define EMPTYSAVEDDBPREFS L"#Empty#"
 

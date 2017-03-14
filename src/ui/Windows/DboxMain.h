@@ -443,7 +443,7 @@ public:
   int CheckShortcuts();
   int SetAndCheckHotKeys(bool bSetHotKey);
   bool IsAppHotKeyEnabled() { return m_bAppHotKeyEnabled; }
-  bool IsAutotypeHotKeyEnabled() { return m_bAutotypeHotKeyEnabled; }
+  bool IsATHotKeyEnabled() { return m_bATHotKeyEnabled; }
 
  protected:
    // ClassWizard generated virtual function overrides
@@ -809,7 +809,7 @@ private:
   int m_nSaveColumnHeaderWidthByType[CItem::LAST_DATA];
   int m_iheadermaxwidth;
   int m_iListHBarPos, m_iTreeHBarPos;
-  bool m_bAppHotKeyEnabled, m_bAutotypeHotKeyEnabled;
+  bool m_bAppHotKeyEnabled, m_bATHotKeyEnabled;
 
   pws_os::CUUID m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
   pws_os::CUUID m_TUUIDSelectedAtMinimize; // to restore Tree entry selection upon un-minimize

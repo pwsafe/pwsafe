@@ -20,6 +20,7 @@
     MOD_ALT             0x01
     MOD_CONTROL         0x02
     MOD_SHIFT           0x04
+    MOD_WIN             0x08
 
   Used by CHotKeyCtrl to Get/Set the HotKey in the control
     HOTKEYF_SHIFT       0x01 

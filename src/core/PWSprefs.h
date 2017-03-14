@@ -124,10 +124,10 @@ public:
     UsePrimarySelectionForClipboard,  // Only under X-Windows
     CopyPasswordWhenBrowseToURL,
     UseAltAutoType,  // Only under X-Windows
-    IgnoreHelpLoadError, // Only under WX
+    IgnoreHelpLoadError, // Only wxWidgets build
     VKPlaySound, // Windows only
     ListSortAscending,
-    EnableAutotypeHotKey,
+    AutotypeHotKeyEnabled,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
@@ -138,8 +138,9 @@ public:
     PWLowercaseMinLength, PWSymbolMinLength, PWUppercaseMinLength,
     OptShortcutColumnWidth, ShiftDoubleClickAction, DefaultAutotypeDelay,
     DlgOrientation, TimedTaskChainDelay,
-    AutotypeSelectAllKeyCode, AutotypeSelectAllModMask, //X only
+    AutotypeSelectAllKeyCode, AutotypeSelectAllModMask, // X only
     TreeFontPtSz, PasswordFontPtSz, NotesFontPtSz, AddEditFontPtSz,
+    AutotypeHotKey,
     NumIntPrefs};
 
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,

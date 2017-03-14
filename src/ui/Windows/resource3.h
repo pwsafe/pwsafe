@@ -794,10 +794,9 @@
 #define IDS_LIST_OF_SHORTCUTS           6045
 #define IDS_EXT_EDITOR_ACTIVE           6046
 #define IDS_CANCEL_EXT_EDITOR           6047
-#define IDS_AUTOTYPE_RESERVED           6048
-#define IDS_APPHOTKEYHELP               6049
-#define IDS_AUTOTYPEHOTKEYHELP          6050
-#define IDS_AUTOTYPE_HOTKEY             6051
-#define IDS_AUTOTYPE_HOTKEY_VALUE       6052
-#define IDS_KBS_SHORTCUT                6053
-#define IDS_KBS_RESET                   6054
+#define IDS_APPHOTKEYHELP               6048
+#define IDS_AUTOTYPEHOTKEYHELP          6049
+#define IDS_AUTOTYPE_HOTKEY             6050
+#define IDS_KBS_SHORTCUT                6051
+#define IDS_KBS_RESET                   6052
+#define IDS_KBS_SAMEASAT                6053

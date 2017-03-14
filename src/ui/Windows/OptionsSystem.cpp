@@ -355,7 +355,7 @@ void COptionsSystem::OnApplyConfigChanges()
 
 BOOL COptionsSystem::OnSetActive()
 {
-  BOOL enable = (((CButton*)GetDlgItem(IDC_DEFPWUSESYSTRAY))->GetCheck() ==
+  BOOL enable = (((CButton *)GetDlgItem(IDC_DEFPWUSESYSTRAY))->GetCheck() ==
                 BST_CHECKED) ? TRUE : FALSE;
 
   if (enable == TRUE) {
