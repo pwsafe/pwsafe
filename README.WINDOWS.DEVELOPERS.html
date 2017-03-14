@@ -34,7 +34,7 @@ Community Edition</a></li>
 their MFC (Microsoft's Foundation Classes), unlike the previous Express editions,
 enabling Password Safe to be built using it. They have also released the same edition
 with the new Visual Studio 2017 (see <a href="#InstallingVS2017">note</a>
-below re: minimum installation requirements for Visual Studio 2017.</p>
+below re: minimum installation requirements for Visual Studio 2017).</p>
 <ol>
 <li>Development tools: Microsoft's Visual Studio <i>2015</i> (referred to as 'VS2015' below)
 is currently the main development environment, and pwsafe-14.sln is the main top level "solution"
@@ -43,15 +43,15 @@ file (the <em>14</em> refers to the version of the C++ compiler).</li>
 been provided but Password Safe is not currently being built using this for official releases.
 The associated files end with <i>15</i> (see <a href="#Versions">note</a> below re: Microsoft's insane
 numbering system).</li>
-<li>pwsafe_wx-14.sln is used to build the wxWidgets version under Windows, although this version is not
-formally supported under Windows. Note: the wxWidgets library must be built with the same version of
+<li>pwsafe_wx-14.sln is used to build the wxWidgets version under Windows, although this build is not
+formally. Note: the wxWidgets library must be built with the same version of
 Visual Studio as being used to build Password Safe or you will receive numerous compatibility
 error messages during the link phase.</li>
 <li>The current version of wxWidgets for Windows is 3.0.2</li>
-<li>Previous versions i.e. Visual Studio 2005 (MSVS8), 2010 (MSVS10), 2012 (MSVC11) and 2013 (MSVS12)
-are no longer maintained but their solution and project files have been retained in the "old-sln"
-directory. <i>However, they are no longer able to build either the MFC or wxWidgets versions
-of Password Safe due to the use of newer C++11 and C++14 features used within the code.</i></li>
+<li>Previous versions of Visual Studio, i.e., Visual Studio 2005 (MSVS8), 2010 (MSVS10), 2012 (MSVC11) and 2013 (MSVS12)
+are no longer maintained, but their solution and project files have been retained in the "old-sln"
+directory. <i>Note, however, that they are no longer able to build the current MFC or wxWidgets versions
+of Password Safe due to the use of newer C++11 and C++14 features within the code.</i></li>
 <li>User interface library: The currently supported version of Password Safe for Windows
 is built upon MFC (Microsoft's Foundation Classes). The wxWidgets version, which provides cross
 platform support can also be built on Windows and corresponds to that used on other platforms i.e.
@@ -73,7 +73,7 @@ XML parser. This will build the required DLLs using their Release configuration
 the base resource DLL (pwsafe_base.dll used to create non-English language support).</p>
 
 <p>The Visual Studio 2015 and 2017 projects have been updated to be able to generate the 64-bit
-versions of both the MFC and wxWidgets. <b>This has only been tested on a 64-bit Windows
+versions of both the MFC and wxWidgets Password Safe executable. <b>This has only been tested on a 64-bit Windows
 environment with the VC14 64-bit compiler. It has not been tested on a 32-bit Windows
 environment with a cross-compiler.</b> For wxWidgets, you will need the 64-bit static
 libraries and they should be placed in a new directory 'lib64\vc140_lib' corresponding to
