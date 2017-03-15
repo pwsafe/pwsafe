@@ -17,6 +17,7 @@
 #include "pugixml/pugixml.hpp"
 
 #include "os/typedefs.h"
+#include "os/pws_tchar.h"
 #include "os/sleep.h"
 #include "os/debug.h"
 #include "os/KeySend.h"
@@ -278,7 +279,7 @@ int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue)
   if (!prefnode.set_value(sValue.c_str())) {
     iRetVal = XML_PUT_TEXT_FAILED;
   } else {
-    if (_tcscmp(sPath.substr(sPath.size() - 7).c_str(), _T("\\HotKey")) == 0) {
+    if (sPath.substr(sPath.size() - 7) == _T("\\HotKey")) {
       SetHotKeyComment(node, sValue);
     }
   }
