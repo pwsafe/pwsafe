@@ -7,7 +7,7 @@
 # Currently supported values are
 # * 11 for Visual Studio 2012
 # * 12 for Visual Studio 2013
-# * 14 for Visual Studio 2015
+# * 14 for Visual Studio 2015 (current default)
 # This can be set by a higher-level Makefile
 
 MSVSVER ?= 14

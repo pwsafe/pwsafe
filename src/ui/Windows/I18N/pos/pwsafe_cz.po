@@ -91,6 +91,10 @@ msgstr " 'Čas vytvoření'"
 msgid " 'DCA'"
 msgstr " 'DCA'"
 
+#. Resource IDs: (5720)
+msgid " 'Email'"
+msgstr ""
+
 #. Resource IDs: (5541)
 msgid " 'Group'"
 msgstr " 'Skupina'"
@@ -162,10 +166,6 @@ msgstr " 'URL'"
 #. Resource IDs: (5543)
 msgid " 'User'"
 msgstr " 'Uživatel'"
-
-#. Resource IDs: (5720)
-msgid " 'email'"
-msgstr " 'email'"
 
 #. Resource IDs: (5864)
 msgid " 'protected'"
@@ -696,6 +696,10 @@ msgstr "&Ponechat"
 msgid "&List"
 msgstr "&Seznam"
 
+#. Resource IDs: (32027 - MenuEx)
+msgid "&Lock"
+msgstr ""
+
 #. Resource IDs: (32150 - PopupMenuEx)
 msgid "&Manage"
 msgstr "&Organizovat"
@@ -837,8 +841,8 @@ msgid "&Select"
 msgstr "&Vyber"
 
 #. Resource IDs: (5722)
-msgid "&Send email"
-msgstr "&Pošli mail"
+msgid "&Send Email"
+msgstr ""
 
 #. Resource IDs: (5605)
 msgid "&Set current"
@@ -851,6 +855,10 @@ msgstr "&Zobraz"
 #. Resource IDs: (1090)
 msgid "&Size:"
 msgstr "&Velikost:"
+
+#. Resource IDs: (32141 - PopupMenuEx)
+msgid "&Subviews"
+msgstr ""
 
 #. Resource IDs: (32128 - MenuEx)
 msgid "&Synchronize"
@@ -876,6 +884,10 @@ msgstr "&Zpět"
 msgid "&Unprotect All Entries"
 msgstr ""
 
+#. Resource IDs: (32127 - MenuEx)
+msgid "&Unsaved Changes"
+msgstr ""
+
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
 msgstr "&Uživatelské jméno:"
@@ -887,10 +899,6 @@ msgstr "&Zkontrolovat"
 #. Resource IDs: (32101 - PopupMenuEx)
 msgid "&View"
 msgstr "&Zobrazit"
-
-#. Resource IDs: (1268)
-msgid "&View Aliases"
-msgstr "&Zobraz aliasy"
 
 #. Resource IDs: (32097 - Menu, 32097 - MenuEx)
 msgid "&View Attachment"
@@ -967,10 +975,6 @@ msgstr "(citlivý na velikosta znaku)"
 #. Resource IDs: (1286, 1288, 1290, 1292)
 msgid ")"
 msgstr ")"
-
-#. Resource IDs: (5858)
-msgid "* means that the database has been modified since last save"
-msgstr "* znamená že databáze byle od posledního uložení změněna"
 
 #. Resource IDs: (3451)
 msgid "*** Invalid XML characters found - see exported XML file for more details ***"
@@ -1503,24 +1507,8 @@ msgid "An alias cannot refer to itself!"
 msgstr "Alias nesmí odkazovat sám na sebe!"
 
 #. Resource IDs: (5251)
-#, c-format
-msgid "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
-msgstr "Záznam ve skupině \"%s\", název \"%s\" a jménem uživatele \"%s\" již existuje."
-
-#. Resource IDs: (5695)
-#, c-format
-msgid "An entry with Group \"%s\", Title \"%s\" and empty User Name already exists."
-msgstr "Záznam ve skupině  \"%s\", název \"%s\" s prázdným jménem již existuje."
-
-#. Resource IDs: (5419)
-#, c-format
-msgid "An entry with an empty Group, Title \"%s\" and User Name \"%s\" already exists."
-msgstr "Záznam bez skupiny, se jménem \"%s\" a uživatelem \"%s\" již existuje."
-
-#. Resource IDs: (5696)
-#, c-format
-msgid "An entry with an empty Group, Title \"%s\" and empty User Name already exists."
-msgstr "Záznam bez skupiny, se jménem \"%s\" a prázdným uživatelem již existuje."
+msgid "An entry or shortcut with the same Group, Title and Username already exists."
+msgstr ""
 
 #. Resource IDs: (61862)
 #, c-format
@@ -1911,6 +1899,10 @@ msgstr ""
 msgid "Change database mode?"
 msgstr "Změnit režim databáze?"
 
+#. Resource IDs: (5858)
+msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
+msgstr ""
+
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
 msgstr "Změň/zobraz výchozí politiku hesel."
@@ -2044,8 +2036,8 @@ msgid "Click to remove this row"
 msgstr "Klikni pro odebrání řádku"
 
 #. Resource IDs: (5717)
-msgid "Click to send email to this address"
-msgstr "Klikni pro odeslání emailu na tuto adresu"
+msgid "Click to send Email to this address"
+msgstr ""
 
 #. Resource IDs: (5620)
 msgid "Click to set criteria for matching the field"
@@ -2251,6 +2243,10 @@ msgstr "Kopíruj &Uživatelské jméno do schránky"
 msgid "Copy All"
 msgstr "Kopíruj vše"
 
+#. Resource IDs: (32071 - Menu, 32071 - MenuEx, 5723)
+msgid "Copy Email to Clipboard"
+msgstr ""
+
 #. Resource IDs: (32270 - Menu)
 msgid "Copy Here"
 msgstr "Kopíruj sem"
@@ -2270,10 +2266,6 @@ msgstr "Kopíruj URL do schránk"
 #. Resource IDs: (32223 - Menu)
 msgid "Copy all entries to Original"
 msgstr "Kopíruj všechny záznamy do Originální"
-
-#. Resource IDs: (32071 - Menu, 32071 - MenuEx, 5723)
-msgid "Copy email to Clipboard"
-msgstr "Kopíruj email do schránky"
 
 #. Resource IDs: (4003)
 msgid "Copy notes to clipboard"
@@ -2700,8 +2692,8 @@ msgid "Double-Click on entry to Run Command"
 msgstr "Dvojklikem na záznam spustit příkaz"
 
 #. Resource IDs: (4032)
-msgid "Double-Click on entry to Send email"
-msgstr "Dvojklikem na záznam poslat emailem"
+msgid "Double-Click on entry to Send Email"
+msgstr ""
 
 #. Resource IDs: (4026)
 msgid "Double-Click on entry to View/Edit it"
@@ -2793,6 +2785,10 @@ msgstr "Uprav/&Zobraz záznam..."
 #. Resource IDs: (3243)
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
 msgstr "Pole Skupina/Název nebo Heslo chybí. Žádné záznamy nebyly importovány."
+
+#. Resource IDs: (5718)
+msgid "Email copied "
+msgstr ""
 
 #. Resource IDs: (3261)
 #, c-format
@@ -2932,6 +2928,10 @@ msgstr ""
 #. Resource IDs: (1480)
 msgid "Entries using selected policy:"
 msgstr "Záznamy používající vybranou politiku:"
+
+#. Resource IDs: (32131 - MenuEx)
+msgid "Entries with E&xpiry dates"
+msgstr ""
 
 #. Resource IDs: (3348)
 msgid "Entries with a password expiry"
@@ -3635,6 +3635,11 @@ msgstr "Historie"
 msgid "History entry"
 msgstr "Záznam historie"
 
+#. Resource IDs: (6043)
+#, c-format
+msgid "Host: %s; User: %s"
+msgstr ""
+
 #. Resource IDs: (1087)
 msgid "HotKey1"
 msgstr "Klávesová zkratka 1"
@@ -3666,6 +3671,10 @@ msgstr "ID:32005:V C +S"
 #. Accelerator Entry for Menu ID:32021; 'E&xit'
 msgid "ID:32021:V C +Q"
 msgstr "ID:32021:V C +Q"
+
+#. Accelerator Entry for Menu ID:32027; '&Lock'
+msgid "ID:32027:V CS+L"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32051; '&Add Entry...'
 msgid "ID:32051:V C +A"
@@ -3703,7 +3712,7 @@ msgstr "ID:32072:V C +L"
 msgid "ID:32073:VA  +L"
 msgstr "ID:32073:VA  +L"
 
-#. Accelerator Entry for Menu ID:32074; 'Send &email'
+#. Accelerator Entry for Menu ID:32074; 'Send &Email'
 msgid "ID:32074:V C +E"
 msgstr "ID:32074:V C +E"
 
@@ -3730,6 +3739,10 @@ msgstr "ID:32082:V C +Z"
 #. Accelerator Entry for Menu ID:32083; 'Redo'
 msgid "ID:32083:V C +Y"
 msgstr "ID:32083:V C +Y"
+
+#. Accelerator Entry for Menu ID:32140; 'Last Find results'
+msgid "ID:32140:V C +K"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32154; '&Options...'
 msgid "ID:32154:V C +M"
@@ -4081,6 +4094,10 @@ msgstr "Poslední přístup"
 msgid "Last Accessed"
 msgstr "Poslední přístup"
 
+#. Resource IDs: (32140 - MenuEx)
+msgid "Last Find results"
+msgstr ""
+
 #. Resource IDs: (5232)
 msgid "Last Modified"
 msgstr "Poslední úprava"
@@ -4096,6 +4113,10 @@ msgstr "Poslední přístup:"
 #. Resource IDs: (5856)
 msgid "Last clipboard action"
 msgstr "Poslední akce se schránkou"
+
+#. Resource IDs: (3461)
+msgid "Last found entries"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Last saved by:"
@@ -4166,6 +4187,14 @@ msgstr "Seznam"
 msgid "List entries using this policy"
 msgstr ""
 
+#. Resource IDs: (6044)
+msgid "List of aliases:"
+msgstr ""
+
+#. Resource IDs: (6045)
+msgid "List of shortcuts:"
+msgstr ""
+
 #. Resource IDs: (1012, 1257, 1303, 1347, 1477, 1478)
 msgid "List1"
 msgstr "Seznam1"
@@ -4199,7 +4228,7 @@ msgid "Lock password database on workstation lock"
 msgstr "Zamkni program při zamčení počítače"
 
 #. Resource IDs: (5113)
-msgid "Locking clears the memory, including undo information."
+msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
 msgstr ""
 
 #. Resource IDs: (1413)
@@ -5690,16 +5719,16 @@ msgid "Send"
 msgstr "Poslat"
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx)
-msgid "Send &email"
-msgstr "Poslat &email"
+msgid "Send &Email"
+msgstr ""
+
+#. Resource IDs: (4010)
+msgid "Send Email"
+msgstr ""
 
 #. Resource IDs: (61842)
 msgid "Send Mail failed to send message."
 msgstr "Odeslaní emailu se nezdařilo."
-
-#. Resource IDs: (4010)
-msgid "Send email"
-msgstr "Poslat email"
 
 #. Resource IDs: (8276)
 msgid "Serbian (Cyrillic)"
@@ -5859,10 +5888,6 @@ msgstr "Zkratky"
 msgid "Show"
 msgstr "Ukázat"
 
-#. Resource IDs: (32127 - MenuEx)
-msgid "Show &Unsaved Changes"
-msgstr "Ukázat ne&uložené změny"
-
 #. Resource IDs: (5653)
 msgid "Show Notes"
 msgstr "Zobraz poznámku"
@@ -5898,10 +5923,6 @@ msgstr "Zobrazit virtuální klávesnici"
 #. Resource IDs: (159)
 msgid "Show a subset of the Password"
 msgstr "Zobrazit podmnožinu hesla"
-
-#. Resource IDs: (32131 - MenuEx)
-msgid "Show entries with E&xpiry dates"
-msgstr "Zobrazit záznamy s datem e&xpirace"
 
 #. Resource IDs: (1262)
 msgid "Show entries with identical compared fields (Note: Unknown fields were not compared.)"
@@ -6031,7 +6052,7 @@ msgstr "Začít ukládat historii hesel pro všechny záznamy."
 msgid "Start saving previous passwords"
 msgstr "Začít ukládat předchozí hesla"
 
-#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 8103)
+#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 8103)
 msgid "Static"
 msgstr "Statické"
 
@@ -6478,11 +6499,6 @@ msgstr "Tento záznam má následující %d %ls:\n%ls\nProsím potvrďte pro pok
 msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
 msgstr "Tento záznam má následující %d %ls:\n%ls\nProsím potvrďte pro pokračování (heslo alias záznamu bude nahrazeno heslem tohoto záznamu)."
 
-#. Resource IDs: (5452)
-#, c-format
-msgid "This entry has the following %d %s:\n%s"
-msgstr "Tento záznam má následující %d %s:\n%s"
-
 #. Resource IDs: (5248)
 msgid "This entry must have a password."
 msgstr "Tento záznam musí mít heslo."
@@ -6507,7 +6523,7 @@ msgstr "Toto je DeadKey. Stisknete to a poté vyberte jeden z kombinovaných kl�
 msgid "This is a shortcut base entry."
 msgstr "Toto je zkratka k základnímu záznamu."
 
-#. Resource IDs: (1071, 1294)
+#. Resource IDs: (1294)
 msgid "This is a shortcut to base entry:"
 msgstr ""
 
@@ -6536,6 +6552,14 @@ msgstr ""
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
+msgstr ""
+
+#. Resource IDs: (1071)
+msgid "This will be a shortcut to base entry:"
+msgstr ""
+
+#. Resource IDs: (6047)
+msgid "This will cancel the edit of the Notes field but leaving it in your external editor and on disk. Do you wish to cancel?"
 msgstr ""
 
 #. Resource IDs: (5103)
@@ -6703,8 +6727,8 @@ msgid "Unable to save configuration file"
 msgstr "Nelze uložit konfigurační soubor"
 
 #. Resource IDs: (5484)
-msgid "Unable to send email"
-msgstr "Nelze odeslat email"
+msgid "Unable to send Email"
+msgstr ""
 
 #. Resource IDs: (3030)
 msgid "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
@@ -6799,6 +6823,10 @@ msgstr "Odemknout všechny záznamy"
 msgid "Unprotect Entry"
 msgstr "Odemknout záznam"
 
+#. Resource IDs: (5001)
+msgid "Unrecognised command line argument found"
+msgstr ""
+
 #. Resource IDs: (3349)
 msgid "Unsaved changes"
 msgstr "Neuložené změny"
@@ -6830,7 +6858,7 @@ msgid "Urdu"
 msgstr "Urdština"
 
 #. Resource IDs: (5000)
-msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
+msgid "Usage:\npwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
 msgstr ""
 
 #. Resource IDs: (1029)
@@ -6978,10 +7006,6 @@ msgstr "Vietnamština"
 msgid "View"
 msgstr "Zobraz"
 
-#. Resource IDs: (5503)
-msgid "View Aliases"
-msgstr "Zobraz přezdívky"
-
 #. Resource IDs: (548, 6025)
 msgid "View Attachment"
 msgstr ""
@@ -7002,10 +7026,6 @@ msgstr "Zobraz výstup"
 #. Resource IDs: (5502)
 msgid "View Shortcut"
 msgstr "Zobraz zkratku"
-
-#. Resource IDs: (5504)
-msgid "View Shortcuts"
-msgstr "Zobraz zkratky"
 
 #. Resource IDs: (4006, 5301)
 msgid "View/Edit selected entry"
@@ -7035,6 +7055,10 @@ msgstr "Pozor"
 #. Resource IDs: (1362, 3330)
 msgid "Warning"
 msgstr "Varování"
+
+#. Resource IDs: (6046)
+msgid "Warning - Notes being externally edited"
+msgstr ""
 
 #. Resource IDs: (5793)
 msgid "Warning - field too long"
@@ -7348,13 +7372,17 @@ msgstr "\nDuplikovat skupinu"
 msgid "\nEdit Base entry"
 msgstr "\nEditovat základná záznam"
 
+#. Resource IDs: (32052)
+msgid "\nEdit Entry"
+msgstr ""
+
 #. Resource IDs: (32113)
 msgid "\nEdit Filters"
 msgstr "\nEditovat filtry"
 
-#. Resource IDs: (32052)
-msgid "\nEdit an Entry"
-msgstr "\nEditovat záznam"
+#. Resource IDs: (5517)
+msgid "\nEmail: "
+msgstr ""
 
 #. Resource IDs: (3052)
 #, c-format
@@ -7425,6 +7453,10 @@ msgstr "\nNajít další"
 msgid "\nFind Previous"
 msgstr "\nNajít předchozí"
 
+#. Resource IDs: (32079)
+msgid "\nFind..."
+msgstr ""
+
 #. Resource IDs: (32157)
 msgid "\nGenerate Password"
 msgstr "\nVytvoř heslo"
@@ -7446,8 +7478,12 @@ msgid "\nImport XML"
 msgstr "\nImportovat XML"
 
 #. Resource IDs: (32260)
-msgid "\nList View/Tree View"
-msgstr "\nZobrazení seznam/strom"
+msgid "\nList or Tree View"
+msgstr ""
+
+#. Resource IDs: (32027)
+msgid "\nLock Database"
+msgstr ""
 
 #. Resource IDs: (32003)
 msgid "\nMake New Database"
@@ -7524,8 +7560,8 @@ msgid "\nSelect Entry"
 msgstr "\nUložit záznam"
 
 #. Resource IDs: (32074)
-msgid "\nSend email"
-msgstr "\nPoslat email"
+msgid "\nSend Email"
+msgstr ""
 
 #. Resource IDs: (32114)
 msgid "\nSet/Clear Filters"
@@ -7538,6 +7574,10 @@ msgstr "\nZobrazit neuložené změny"
 #. Resource IDs: (32131)
 msgid "\nShow entries with Password Expiry dates"
 msgstr "\nZobrazit záznamy s omezenou dobou platnosti hesla"
+
+#. Resource IDs: (32140)
+msgid "\nShow only found entries"
+msgstr ""
 
 #. Resource IDs: (5339)
 #, c-format
@@ -7563,10 +7603,6 @@ msgstr "\nNásledující %ls %ls aktualizováno:"
 msgid "\nThe following new %ls %ls merged into this database:"
 msgstr "\nNásledující nové %ls %ls sloučeno do databáze:"
 
-#. Resource IDs: (5448)
-msgid "\nThis field is being edited in your\ndefault text editor."
-msgstr "\nToto pole je editováno va vašem\nvýchozím textovím editoru."
-
 #. Resource IDs: (32082)
 msgid "\nUndo"
 msgstr "\nZpět"
@@ -7589,6 +7625,10 @@ msgstr "\nPřesto použít?"
 
 #. Resource IDs: (32097)
 msgid "\nView Attachment"
+msgstr ""
+
+#. Resource IDs: (32053)
+msgid "\nView Entry"
 msgstr ""
 
 #. Resource IDs: (32261)
@@ -7615,10 +7655,6 @@ msgstr "\n\nDatabáze jsou identický, když se porovnávají vybraná nebo výc
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\nNeznámá pole budou zkpírována spolu se záznamem."
 
-#. Resource IDs: (5517)
-msgid "\nemail: "
-msgstr "\nemail:"
-
 #. Resource IDs: (5784)
 #, c-format
 msgid "\nwith Password History errors %d"
@@ -7627,6 +7663,10 @@ msgstr "\ns %d chybami historie hesel"
 #. Resource IDs: (5867)
 msgid "\nwith warnings"
 msgstr "\ns varováním"
+
+#. Resource IDs: (5448)
+msgid "\r\nThis field is being edited in your default text editor.\r\nPlease complete this action before continuing.\r\n\r\n(You may cancel this edit using the Close [X] button above)"
+msgstr ""
 
 #. Resource IDs: (5526)
 #, c-format
@@ -7841,10 +7881,6 @@ msgstr "není roven"
 #. Resource IDs: (3065)
 msgid "e-mail"
 msgstr "e-mail"
-
-#. Resource IDs: (5718)
-msgid "email copied "
-msgstr "mail je zkopírován"
 
 #. Resource IDs: (3457)
 msgid "empty group"

@@ -555,10 +555,9 @@ void CPWToolBarX::SetupImageList(const GuiRecord *guiInfo,
     if (bmID == 0)
       continue; // skip over separator
 
-    BOOL brc = bmNormal.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(bmID), RT_BITMAP),
-                               MAKEINTRESOURCE(bmID), IMAGE_BITMAP, 0, 0,
-                               (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
-    ASSERT(brc);
+    VERIFY(bmNormal.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(bmID), RT_BITMAP),
+                                       MAKEINTRESOURCE(bmID), IMAGE_BITMAP, 0, 0,
+                                       (LR_DEFAULTSIZE | LR_CREATEDIBSECTION))));
     SetBitmapBackground(bmNormal, crCOLOR_3DFACE);
     m_ImageLists[nImageList].Add(&bmNormal, crCOLOR_3DFACE);
     bmNormal.DeleteObject();

@@ -91,6 +91,10 @@ msgstr " '创建时间'"
 msgid " 'DCA'"
 msgstr " 'DCA'"
 
+#. Resource IDs: (5720)
+msgid " 'Email'"
+msgstr ""
+
 #. Resource IDs: (5541)
 msgid " 'Group'"
 msgstr " '组'"
@@ -162,10 +166,6 @@ msgstr " '网址'"
 #. Resource IDs: (5543)
 msgid " 'User'"
 msgstr " '用户'"
-
-#. Resource IDs: (5720)
-msgid " 'email'"
-msgstr " '电子邮箱'"
 
 #. Resource IDs: (5864)
 msgid " 'protected'"
@@ -696,6 +696,10 @@ msgstr "保存(&K)"
 msgid "&List"
 msgstr ""
 
+#. Resource IDs: (32027 - MenuEx)
+msgid "&Lock"
+msgstr ""
+
 #. Resource IDs: (32150 - PopupMenuEx)
 msgid "&Manage"
 msgstr "管理(&M)"
@@ -837,8 +841,8 @@ msgid "&Select"
 msgstr "选择(&S)"
 
 #. Resource IDs: (5722)
-msgid "&Send email"
-msgstr "发送邮件(&S)"
+msgid "&Send Email"
+msgstr ""
 
 #. Resource IDs: (5605)
 msgid "&Set current"
@@ -851,6 +855,10 @@ msgstr "显示(&S)"
 #. Resource IDs: (1090)
 msgid "&Size:"
 msgstr "大小(&S):"
+
+#. Resource IDs: (32141 - PopupMenuEx)
+msgid "&Subviews"
+msgstr ""
 
 #. Resource IDs: (32128 - MenuEx)
 msgid "&Synchronize"
@@ -876,6 +884,10 @@ msgstr "撤销(&U)"
 msgid "&Unprotect All Entries"
 msgstr ""
 
+#. Resource IDs: (32127 - MenuEx)
+msgid "&Unsaved Changes"
+msgstr ""
+
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
 msgstr "用户名(&U):"
@@ -887,10 +899,6 @@ msgstr "验证(&V)"
 #. Resource IDs: (32101 - PopupMenuEx)
 msgid "&View"
 msgstr "查看(&V)"
-
-#. Resource IDs: (1268)
-msgid "&View Aliases"
-msgstr "查看别名(&V)"
 
 #. Resource IDs: (32097 - Menu, 32097 - MenuEx)
 msgid "&View Attachment"
@@ -967,10 +975,6 @@ msgstr "(区分大小写)"
 #. Resource IDs: (1286, 1288, 1290, 1292)
 msgid ")"
 msgstr ")"
-
-#. Resource IDs: (5858)
-msgid "* means that the database has been modified since last save"
-msgstr ""
 
 #. Resource IDs: (3451)
 msgid "*** Invalid XML characters found - see exported XML file for more details ***"
@@ -1503,24 +1507,8 @@ msgid "An alias cannot refer to itself!"
 msgstr "不能引用别名自身！"
 
 #. Resource IDs: (5251)
-#, c-format
-msgid "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
-msgstr "项目所用组“%s”，标题“%s”和用户名“%s”已经存在！"
-
-#. Resource IDs: (5695)
-#, c-format
-msgid "An entry with Group \"%s\", Title \"%s\" and empty User Name already exists."
-msgstr "项目组 \"%s\", 标题 \"%s\" 和空用户名已存在！"
-
-#. Resource IDs: (5419)
-#, c-format
-msgid "An entry with an empty Group, Title \"%s\" and User Name \"%s\" already exists."
-msgstr "项目空白组/标题“%s”和用户名“%s”已经存在！"
-
-#. Resource IDs: (5696)
-#, c-format
-msgid "An entry with an empty Group, Title \"%s\" and empty User Name already exists."
-msgstr "空白项目组，标题 \"%s\" 和空白用户名已经存在！"
+msgid "An entry or shortcut with the same Group, Title and Username already exists."
+msgstr ""
 
 #. Resource IDs: (61862)
 #, c-format
@@ -1911,6 +1899,10 @@ msgstr ""
 msgid "Change database mode?"
 msgstr ""
 
+#. Resource IDs: (5858)
+msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
+msgstr ""
+
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
 msgstr ""
@@ -2044,8 +2036,8 @@ msgid "Click to remove this row"
 msgstr "单击删除该行"
 
 #. Resource IDs: (5717)
-msgid "Click to send email to this address"
-msgstr "单击为发送邮件到该地址"
+msgid "Click to send Email to this address"
+msgstr ""
 
 #. Resource IDs: (5620)
 msgid "Click to set criteria for matching the field"
@@ -2251,6 +2243,10 @@ msgstr "复制用户名到剪贴板(&U)"
 msgid "Copy All"
 msgstr "全部复制"
 
+#. Resource IDs: (32071 - Menu, 32071 - MenuEx, 5723)
+msgid "Copy Email to Clipboard"
+msgstr ""
+
 #. Resource IDs: (32270 - Menu)
 msgid "Copy Here"
 msgstr "复制这里"
@@ -2270,10 +2266,6 @@ msgstr "复制网址到剪贴板"
 #. Resource IDs: (32223 - Menu)
 msgid "Copy all entries to Original"
 msgstr ""
-
-#. Resource IDs: (32071 - Menu, 32071 - MenuEx, 5723)
-msgid "Copy email to Clipboard"
-msgstr "复制邮箱到剪贴板"
 
 #. Resource IDs: (4003)
 msgid "Copy notes to clipboard"
@@ -2700,8 +2692,8 @@ msgid "Double-Click on entry to Run Command"
 msgstr "双击项目运行命令"
 
 #. Resource IDs: (4032)
-msgid "Double-Click on entry to Send email"
-msgstr "双击项目发送邮件"
+msgid "Double-Click on entry to Send Email"
+msgstr ""
 
 #. Resource IDs: (4026)
 msgid "Double-Click on entry to View/Edit it"
@@ -2793,6 +2785,10 @@ msgstr "编辑/查看项目(&V)..."
 #. Resource IDs: (3243)
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
 msgstr "组/标题或密码栏目缺少，没有导入记录！"
+
+#. Resource IDs: (5718)
+msgid "Email copied "
+msgstr ""
 
 #. Resource IDs: (3261)
 #, c-format
@@ -2931,6 +2927,10 @@ msgstr ""
 
 #. Resource IDs: (1480)
 msgid "Entries using selected policy:"
+msgstr ""
+
+#. Resource IDs: (32131 - MenuEx)
+msgid "Entries with E&xpiry dates"
 msgstr ""
 
 #. Resource IDs: (3348)
@@ -3635,6 +3635,11 @@ msgstr "历史"
 msgid "History entry"
 msgstr ""
 
+#. Resource IDs: (6043)
+#, c-format
+msgid "Host: %s; User: %s"
+msgstr ""
+
 #. Resource IDs: (1087)
 msgid "HotKey1"
 msgstr "热键1"
@@ -3665,6 +3670,10 @@ msgstr "ID:32005:V C +S"
 
 #. Accelerator Entry for Menu ID:32021; 'E&xit'
 msgid "ID:32021:V C +Q"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32027; '&Lock'
+msgid "ID:32027:V CS+L"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32051; '&Add Entry...'
@@ -3703,7 +3712,7 @@ msgstr "ID:32072:V C +L"
 msgid "ID:32073:VA  +L"
 msgstr "ID:32073:VA  +L"
 
-#. Accelerator Entry for Menu ID:32074; 'Send &email'
+#. Accelerator Entry for Menu ID:32074; 'Send &Email'
 msgid "ID:32074:V C +E"
 msgstr "ID:32074:V C +E"
 
@@ -3730,6 +3739,10 @@ msgstr "ID:32082:V C +Z"
 #. Accelerator Entry for Menu ID:32083; 'Redo'
 msgid "ID:32083:V C +Y"
 msgstr "ID:32083:V C +Y"
+
+#. Accelerator Entry for Menu ID:32140; 'Last Find results'
+msgid "ID:32140:V C +K"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32154; '&Options...'
 msgid "ID:32154:V C +M"
@@ -4081,6 +4094,10 @@ msgstr "最后访问时间"
 msgid "Last Accessed"
 msgstr "最后访问时间"
 
+#. Resource IDs: (32140 - MenuEx)
+msgid "Last Find results"
+msgstr ""
+
 #. Resource IDs: (5232)
 msgid "Last Modified"
 msgstr "最后修改时间"
@@ -4095,6 +4112,10 @@ msgstr "最后访问时间:"
 
 #. Resource IDs: (5856)
 msgid "Last clipboard action"
+msgstr ""
+
+#. Resource IDs: (3461)
+msgid "Last found entries"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -4166,6 +4187,14 @@ msgstr "列表"
 msgid "List entries using this policy"
 msgstr ""
 
+#. Resource IDs: (6044)
+msgid "List of aliases:"
+msgstr ""
+
+#. Resource IDs: (6045)
+msgid "List of shortcuts:"
+msgstr ""
+
 #. Resource IDs: (1012, 1257, 1303, 1347, 1477, 1478)
 msgid "List1"
 msgstr "列表1"
@@ -4199,7 +4228,7 @@ msgid "Lock password database on workstation lock"
 msgstr "锁定密码数据库在工作站界面"
 
 #. Resource IDs: (5113)
-msgid "Locking clears the memory, including undo information."
+msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
 msgstr ""
 
 #. Resource IDs: (1413)
@@ -5690,16 +5719,16 @@ msgid "Send"
 msgstr "发送"
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx)
-msgid "Send &email"
-msgstr "发送邮件(&E)"
+msgid "Send &Email"
+msgstr ""
+
+#. Resource IDs: (4010)
+msgid "Send Email"
+msgstr ""
 
 #. Resource IDs: (61842)
 msgid "Send Mail failed to send message."
 msgstr "未能发送邮件！"
-
-#. Resource IDs: (4010)
-msgid "Send email"
-msgstr "发送邮件"
 
 #. Resource IDs: (8276)
 msgid "Serbian (Cyrillic)"
@@ -5859,10 +5888,6 @@ msgstr "快捷方式"
 msgid "Show"
 msgstr ""
 
-#. Resource IDs: (32127 - MenuEx)
-msgid "Show &Unsaved Changes"
-msgstr "显示未保存更改(&U)"
-
 #. Resource IDs: (5653)
 msgid "Show Notes"
 msgstr "显示备注"
@@ -5898,10 +5923,6 @@ msgstr "显示虚拟键盘"
 #. Resource IDs: (159)
 msgid "Show a subset of the Password"
 msgstr "显示一个密码子集"
-
-#. Resource IDs: (32131 - MenuEx)
-msgid "Show entries with E&xpiry dates"
-msgstr "显示具有失效日期的项目(&X)"
 
 #. Resource IDs: (1262)
 msgid "Show entries with identical compared fields (Note: Unknown fields were not compared.)"
@@ -6031,7 +6052,7 @@ msgstr "为所有项目启动保存历史密码到上面的项目数量！"
 msgid "Start saving previous passwords"
 msgstr "开始保存早期密码"
 
-#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 8103)
+#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 8103)
 msgid "Static"
 msgstr "Static"
 
@@ -6478,11 +6499,6 @@ msgstr ""
 msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
 msgstr ""
 
-#. Resource IDs: (5452)
-#, c-format
-msgid "This entry has the following %d %s:\n%s"
-msgstr "该项目已有下列 %d %s:\n%s"
-
 #. Resource IDs: (5248)
 msgid "This entry must have a password."
 msgstr "该项目必须有一个密码！"
@@ -6507,7 +6523,7 @@ msgstr "这是一个无用键，按住它，然后组合一个键则显示添加
 msgid "This is a shortcut base entry."
 msgstr "这是一个基于项目的快捷方式！"
 
-#. Resource IDs: (1071, 1294)
+#. Resource IDs: (1294)
 msgid "This is a shortcut to base entry:"
 msgstr ""
 
@@ -6536,6 +6552,14 @@ msgstr ""
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
+msgstr ""
+
+#. Resource IDs: (1071)
+msgid "This will be a shortcut to base entry:"
+msgstr ""
+
+#. Resource IDs: (6047)
+msgid "This will cancel the edit of the Notes field but leaving it in your external editor and on disk. Do you wish to cancel?"
 msgstr ""
 
 #. Resource IDs: (5103)
@@ -6703,8 +6727,8 @@ msgid "Unable to save configuration file"
 msgstr "不能保存配置文件！"
 
 #. Resource IDs: (5484)
-msgid "Unable to send email"
-msgstr "不能发送邮件！"
+msgid "Unable to send Email"
+msgstr ""
 
 #. Resource IDs: (3030)
 msgid "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
@@ -6799,6 +6823,10 @@ msgstr "解除所有保护项目"
 msgid "Unprotect Entry"
 msgstr "解除保护项目"
 
+#. Resource IDs: (5001)
+msgid "Unrecognised command line argument found"
+msgstr ""
+
 #. Resource IDs: (3349)
 msgid "Unsaved changes"
 msgstr ""
@@ -6830,7 +6858,7 @@ msgid "Urdu"
 msgstr "乌尔都语"
 
 #. Resource IDs: (5000)
-msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
+msgid "Usage:\npwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
 msgstr ""
 
 #. Resource IDs: (1029)
@@ -6978,10 +7006,6 @@ msgstr "越南语"
 msgid "View"
 msgstr "查看"
 
-#. Resource IDs: (5503)
-msgid "View Aliases"
-msgstr "查看别名"
-
 #. Resource IDs: (548, 6025)
 msgid "View Attachment"
 msgstr ""
@@ -7001,10 +7025,6 @@ msgstr "查看报告"
 
 #. Resource IDs: (5502)
 msgid "View Shortcut"
-msgstr "查看快捷方式"
-
-#. Resource IDs: (5504)
-msgid "View Shortcuts"
 msgstr "查看快捷方式"
 
 #. Resource IDs: (4006, 5301)
@@ -7035,6 +7055,10 @@ msgstr "提前"
 #. Resource IDs: (1362, 3330)
 msgid "Warning"
 msgstr "警告"
+
+#. Resource IDs: (6046)
+msgid "Warning - Notes being externally edited"
+msgstr ""
 
 #. Resource IDs: (5793)
 msgid "Warning - field too long"
@@ -7348,13 +7372,17 @@ msgstr "\n复制组"
 msgid "\nEdit Base entry"
 msgstr "\n编辑基本项目"
 
+#. Resource IDs: (32052)
+msgid "\nEdit Entry"
+msgstr ""
+
 #. Resource IDs: (32113)
 msgid "\nEdit Filters"
 msgstr "\n编辑筛选"
 
-#. Resource IDs: (32052)
-msgid "\nEdit an Entry"
-msgstr "\n编辑一个项目"
+#. Resource IDs: (5517)
+msgid "\nEmail: "
+msgstr ""
 
 #. Resource IDs: (3052)
 #, c-format
@@ -7425,6 +7453,10 @@ msgstr "\n查找下一个"
 msgid "\nFind Previous"
 msgstr "\n查找上一个"
 
+#. Resource IDs: (32079)
+msgid "\nFind..."
+msgstr ""
+
 #. Resource IDs: (32157)
 msgid "\nGenerate Password"
 msgstr "\n生成密码"
@@ -7446,8 +7478,12 @@ msgid "\nImport XML"
 msgstr "\n导入 XML"
 
 #. Resource IDs: (32260)
-msgid "\nList View/Tree View"
-msgstr "\n列表查看/树状目录"
+msgid "\nList or Tree View"
+msgstr ""
+
+#. Resource IDs: (32027)
+msgid "\nLock Database"
+msgstr ""
 
 #. Resource IDs: (32003)
 msgid "\nMake New Database"
@@ -7524,8 +7560,8 @@ msgid "\nSelect Entry"
 msgstr "\n选择项目"
 
 #. Resource IDs: (32074)
-msgid "\nSend email"
-msgstr "\n发送邮件"
+msgid "\nSend Email"
+msgstr ""
 
 #. Resource IDs: (32114)
 msgid "\nSet/Clear Filters"
@@ -7538,6 +7574,10 @@ msgstr "\n显示未保存的更改"
 #. Resource IDs: (32131)
 msgid "\nShow entries with Password Expiry dates"
 msgstr "\n显示具有密码失效日期的项目"
+
+#. Resource IDs: (32140)
+msgid "\nShow only found entries"
+msgstr ""
 
 #. Resource IDs: (5339)
 #, c-format
@@ -7563,10 +7603,6 @@ msgstr "\n下列 %ls %ls 已更新:"
 msgid "\nThe following new %ls %ls merged into this database:"
 msgstr "\n新建 %ls %ls 合并到下面数据库中:"
 
-#. Resource IDs: (5448)
-msgid "\nThis field is being edited in your\ndefault text editor."
-msgstr "\n该字段正在你的默认文本编辑器中编辑！"
-
 #. Resource IDs: (32082)
 msgid "\nUndo"
 msgstr "\n撤销"
@@ -7589,6 +7625,10 @@ msgstr "\n总是使用它？"
 
 #. Resource IDs: (32097)
 msgid "\nView Attachment"
+msgstr ""
+
+#. Resource IDs: (32053)
+msgid "\nView Entry"
 msgstr ""
 
 #. Resource IDs: (32261)
@@ -7615,10 +7655,6 @@ msgstr "\n\n经过比较所选及默认字段，数据库内容均相同！"
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\n未知字段将同样被复制在项目中！"
 
-#. Resource IDs: (5517)
-msgid "\nemail: "
-msgstr "\n电子邮箱:"
-
 #. Resource IDs: (5784)
 #, c-format
 msgid "\nwith Password History errors %d"
@@ -7626,6 +7662,10 @@ msgstr "\n密码历史错误%d"
 
 #. Resource IDs: (5867)
 msgid "\nwith warnings"
+msgstr ""
+
+#. Resource IDs: (5448)
+msgid "\r\nThis field is being edited in your default text editor.\r\nPlease complete this action before continuing.\r\n\r\n(You may cancel this edit using the Close [X] button above)"
 msgstr ""
 
 #. Resource IDs: (5526)
@@ -7841,10 +7881,6 @@ msgstr "不等于"
 #. Resource IDs: (3065)
 msgid "e-mail"
 msgstr "电子邮件"
-
-#. Resource IDs: (5718)
-msgid "email copied "
-msgstr "复制电子邮箱"
 
 #. Resource IDs: (3457)
 msgid "empty group"

@@ -1,5 +1,5 @@
-Password Safe 3.41.1 Release Notes ???????? 2017
-================================================
+Password Safe 3.42pre Release March 2017
+========================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -13,8 +13,8 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
 
-Bugs fixed in 3.41.1
-====================
+Bugs fixed in 3.42pre
+=====================
 [] Fix issue when locking database when not using the System Tray.
 [] Fix empty group validation on DB open.
 [G288] Changes to default password policy now persistent under V4 databases.
@@ -37,8 +37,8 @@ line when it is reshown after being hidden.
 [1275] The scroll positions of the Tree and List views are now saved on minimize and
 used to set the window position when it is restored..
 
-Changes to Existing Features in 3.41.1
-======================================
+Changes to Existing Features in 3.42pre
+=======================================
 [] Previous commands, e.g. edit or delete an entry, are no longer cleared when the database
 is locked to enable their undo after the database has been unlocked.
 [] User selected font sizes are now saved in points in the configuration file so that the
@@ -48,8 +48,8 @@ helps where the different systems have different resolutions.
 All other times are copied from the original.
 [816] Set installed version in uninstall section of Registry for Windows version.
 
-New Features for 3.41.1
-=======================
+New Features for 3.42pre
+========================
 [] A new internal filter has been implemented to show only those entries from
 last Find. Access via the View menu or Ctrl+K shortcut.
 [] PasswordSafe now supports the "long press" as the equivalent of a right mouse click
