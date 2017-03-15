@@ -16,6 +16,9 @@ else
 endif
 RELEASE_SPECIAL := $(VER_SPECIAL)
 
+# Can be either x86 or x64. Latter is WiP
+ARCH=x86
+
 RELEASENAME= $(RELEASENUM)$(RELEASE_SPECIAL)
 
 RELEASEDIR := /cygdrive/c/local/src/PasswordSafe/Releases
@@ -144,18 +147,16 @@ signatures:
 installables: nsis msi
 
 nsis:
-	$(MAKENSIS) /DVERSION=$(RELEASENAME) install/windows/pwsafe.nsi
+	$(MAKENSIS) /DVERSION=$(RELEASENAME) /DARCH=$(ARCH) install/windows/pwsafe.nsi
 	(cd install/windows; $(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe-$(RELEASENAME).exe)
 	$(MV) install/windows/pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
 
 msi:
-	$(SED) 's/PWSAFE_VERSION/$(RELEASENUM)/' \
-		< install/windows/pwsafe-template.wxs > install/pwsafe.wxs
-	$(CANDLE) install/pwsafe.wxs
+	$(CANDLE) install/windows/pwsafe.wxs -dPWSAFE_VERSION=$(RELEASENUM) -dPlatform=$(ARCH)
 	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe.wixobj \
 					-out pwsafe.msi
 	$(MV) pwsafe.msi $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
-	$(RM) pwsafe.wixobj install/pwsafe.wxs
+	$(RM) pwsafe.wixobj
 
 release:  i18n bin-release src-release
 
