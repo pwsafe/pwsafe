@@ -7,14 +7,17 @@
 # Currently supported values are
 # * 11 for Visual Studio 2012
 # * 12 for Visual Studio 2013
+# * 14 for Visual Studio 2015 (current default)
 # This can be set by a higher-level Makefile
 
-MSVSVER ?= 12
+MSVSVER ?= 14
 
 ifeq ($(MSVSVER),11)
 VCBUILD = /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v4.0.30319/MSBuild.exe
 else ifeq ($(MSVSVER),12)
 VCBUILD = "/cygdrive/c/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
+else ifeq ($(MSVSVER),14)
+VCBUILD = "/cygdrive/c/Program Files (x86)/MSBuild/14.0/Bin/MSBuild.exe"
 else
 $(error "Unsupported MSVSVER")
 endif
