@@ -117,6 +117,10 @@ msgstr " 'Skapad den'"
 msgid " 'DCA'"
 msgstr " 'DCA'"
 
+#. Resource IDs: (5720)
+msgid " 'Email'"
+msgstr ""
+
 #. Resource IDs: (5541)
 msgid " 'Group'"
 msgstr " 'Grupp'"
@@ -188,10 +192,6 @@ msgstr " 'URL'"
 #. Resource IDs: (5543)
 msgid " 'User'"
 msgstr " 'Användare'"
-
-#. Resource IDs: (5720)
-msgid " 'email'"
-msgstr " 'e-post'"
 
 #. Resource IDs: (5864)
 msgid " 'protected'"
@@ -722,6 +722,10 @@ msgstr "&Behåll"
 msgid "&List"
 msgstr "&Lista"
 
+#. Resource IDs: (32027 - MenuEx)
+msgid "&Lock"
+msgstr ""
+
 #. Resource IDs: (32150 - PopupMenuEx)
 msgid "&Manage"
 msgstr "Ha&ntera"
@@ -863,8 +867,8 @@ msgid "&Select"
 msgstr "&Välj"
 
 #. Resource IDs: (5722)
-msgid "&Send email"
-msgstr "&Skicka e-post"
+msgid "&Send Email"
+msgstr ""
 
 #. Resource IDs: (5605)
 msgid "&Set current"
@@ -877,6 +881,10 @@ msgstr "&Visa"
 #. Resource IDs: (1090)
 msgid "&Size:"
 msgstr "&Storlek:"
+
+#. Resource IDs: (32141 - PopupMenuEx)
+msgid "&Subviews"
+msgstr ""
 
 #. Resource IDs: (32128 - MenuEx)
 msgid "&Synchronize"
@@ -902,6 +910,10 @@ msgstr "&Ångra"
 msgid "&Unprotect All Entries"
 msgstr "&Ta bort alla postskydd"
 
+#. Resource IDs: (32127 - MenuEx)
+msgid "&Unsaved Changes"
+msgstr ""
+
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
 msgstr "&Användarnamn:"
@@ -913,10 +925,6 @@ msgstr "&Validera"
 #. Resource IDs: (32101 - PopupMenuEx)
 msgid "&View"
 msgstr "&Visa"
-
-#. Resource IDs: (1268)
-msgid "&View Aliases"
-msgstr "&Visa alias"
 
 #. Resource IDs: (32097 - Menu, 32097 - MenuEx)
 msgid "&View Attachment"
@@ -993,10 +1001,6 @@ msgstr "(storlekskänslig)"
 #. Resource IDs: (1286, 1288, 1290, 1292)
 msgid ")"
 msgstr ")"
-
-#. Resource IDs: (5858)
-msgid "* means that the database has been modified since last save"
-msgstr "* betyder att databasen har ändrats sedan senaste spara"
 
 #. Resource IDs: (3451)
 msgid "*** Invalid XML characters found - see exported XML file for more details ***"
@@ -1529,24 +1533,8 @@ msgid "An alias cannot refer to itself!"
 msgstr "En alias kan inte referera till sig själv!"
 
 #. Resource IDs: (5251)
-#, c-format
-msgid "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
-msgstr "En post med Grupp\"%s\", Titel \"%s\" och Användarnamn \"%s\" finns redan."
-
-#. Resource IDs: (5695)
-#, c-format
-msgid "An entry with Group \"%s\", Title \"%s\" and empty User Name already exists."
-msgstr "En post med Grupp\"%s\", Titel \"%s\" och tomt Användarnamn finns redan."
-
-#. Resource IDs: (5419)
-#, c-format
-msgid "An entry with an empty Group, Title \"%s\" and User Name \"%s\" already exists."
-msgstr "En post med en tom Grupp, Titel \"%s\" och Användarnamn \"%s\" finns redan."
-
-#. Resource IDs: (5696)
-#, c-format
-msgid "An entry with an empty Group, Title \"%s\" and empty User Name already exists."
-msgstr "En post med en tom Grupp, Titel \"%s\" och tomt Användarnamn finns redan."
+msgid "An entry or shortcut with the same Group, Title and Username already exists."
+msgstr ""
 
 #. Resource IDs: (61862)
 #, c-format
@@ -1937,6 +1925,10 @@ msgstr "Byta ett %s till ett %s"
 msgid "Change database mode?"
 msgstr "Byt databasläge?"
 
+#. Resource IDs: (5858)
+msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
+msgstr ""
+
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
 msgstr "Byt/visa databasens standard lösenordspolicy"
@@ -2070,8 +2062,8 @@ msgid "Click to remove this row"
 msgstr "Klicka för att ta bort raden"
 
 #. Resource IDs: (5717)
-msgid "Click to send email to this address"
-msgstr "Klicka för att skicka e-post till adressen"
+msgid "Click to send Email to this address"
+msgstr ""
 
 #. Resource IDs: (5620)
 msgid "Click to set criteria for matching the field"
@@ -2277,6 +2269,10 @@ msgstr "Kopiera &användarnamnet till Urklipp"
 msgid "Copy All"
 msgstr "Kopiera allt"
 
+#. Resource IDs: (32071 - Menu, 32071 - MenuEx, 5723)
+msgid "Copy Email to Clipboard"
+msgstr ""
+
 #. Resource IDs: (32270 - Menu)
 msgid "Copy Here"
 msgstr "Kopiera här"
@@ -2296,10 +2292,6 @@ msgstr "Kopiera URL till Urklipp"
 #. Resource IDs: (32223 - Menu)
 msgid "Copy all entries to Original"
 msgstr "Kopiera alla poster till originalet"
-
-#. Resource IDs: (32071 - Menu, 32071 - MenuEx, 5723)
-msgid "Copy email to Clipboard"
-msgstr "Kopiera e-post till Urklipp"
 
 #. Resource IDs: (4003)
 msgid "Copy notes to clipboard"
@@ -2726,8 +2718,8 @@ msgid "Double-Click on entry to Run Command"
 msgstr "Dubbelklicka på posten för att köra kommandot"
 
 #. Resource IDs: (4032)
-msgid "Double-Click on entry to Send email"
-msgstr "Dubbelklicka på posten för att skicka e-post"
+msgid "Double-Click on entry to Send Email"
+msgstr ""
 
 #. Resource IDs: (4026)
 msgid "Double-Click on entry to View/Edit it"
@@ -2819,6 +2811,10 @@ msgstr "Redigera/&visa post..."
 #. Resource IDs: (3243)
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
 msgstr "Endera av eller både grupp-/titel- och lösenords-kolumner saknas. Ingenting har importerades."
+
+#. Resource IDs: (5718)
+msgid "Email copied "
+msgstr ""
 
 #. Resource IDs: (3261)
 #, c-format
@@ -2958,6 +2954,10 @@ msgstr "Poster som använder namngiven lösenordspolicy:"
 #. Resource IDs: (1480)
 msgid "Entries using selected policy:"
 msgstr "Poster som använder vald standard:"
+
+#. Resource IDs: (32131 - MenuEx)
+msgid "Entries with E&xpiry dates"
+msgstr ""
 
 #. Resource IDs: (3348)
 msgid "Entries with a password expiry"
@@ -3661,6 +3661,11 @@ msgstr "Historik"
 msgid "History entry"
 msgstr "Posthistorik"
 
+#. Resource IDs: (6043)
+#, c-format
+msgid "Host: %s; User: %s"
+msgstr ""
+
 #. Resource IDs: (1087)
 msgid "HotKey1"
 msgstr "HotKey1"
@@ -3692,6 +3697,10 @@ msgstr "ID:32005:V C +S"
 #. Accelerator Entry for Menu ID:32021; 'E&xit'
 msgid "ID:32021:V C +Q"
 msgstr "ID:32021:V C +Q"
+
+#. Accelerator Entry for Menu ID:32027; '&Lock'
+msgid "ID:32027:V CS+L"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32051; '&Add Entry...'
 msgid "ID:32051:V C +A"
@@ -3729,7 +3738,7 @@ msgstr "ID:32072:V C +L"
 msgid "ID:32073:VA  +L"
 msgstr "ID:32072:VA  +L"
 
-#. Accelerator Entry for Menu ID:32074; 'Send &email'
+#. Accelerator Entry for Menu ID:32074; 'Send &Email'
 msgid "ID:32074:V C +E"
 msgstr "ID:32074:V C +E"
 
@@ -3756,6 +3765,10 @@ msgstr "ID:32082:V C +Z"
 #. Accelerator Entry for Menu ID:32083; 'Redo'
 msgid "ID:32083:V C +Y"
 msgstr "ID:32083:V C +Y"
+
+#. Accelerator Entry for Menu ID:32140; 'Last Find results'
+msgid "ID:32140:V C +K"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32154; '&Options...'
 msgid "ID:32154:V C +M"
@@ -4107,6 +4120,10 @@ msgstr "Senaste åtkomsttid"
 msgid "Last Accessed"
 msgstr "Senast använd"
 
+#. Resource IDs: (32140 - MenuEx)
+msgid "Last Find results"
+msgstr ""
+
 #. Resource IDs: (5232)
 msgid "Last Modified"
 msgstr "Senast ändrad"
@@ -4122,6 +4139,10 @@ msgstr "Senast använt den:"
 #. Resource IDs: (5856)
 msgid "Last clipboard action"
 msgstr "Senaste Urklippsvalet"
+
+#. Resource IDs: (3461)
+msgid "Last found entries"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Last saved by:"
@@ -4192,6 +4213,14 @@ msgstr "Lista"
 msgid "List entries using this policy"
 msgstr "Lista poster med denna policy"
 
+#. Resource IDs: (6044)
+msgid "List of aliases:"
+msgstr ""
+
+#. Resource IDs: (6045)
+msgid "List of shortcuts:"
+msgstr ""
+
 #. Resource IDs: (1012, 1257, 1303, 1347, 1477, 1478)
 msgid "List1"
 msgstr "Lista1"
@@ -4225,8 +4254,8 @@ msgid "Lock password database on workstation lock"
 msgstr "Lås lösenordsdatabasen då datorn stängs av"
 
 #. Resource IDs: (5113)
-msgid "Locking clears the memory, including undo information."
-msgstr "Låsning rensar minnet, inklusive ångra information."
+msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
+msgstr ""
 
 #. Resource IDs: (1413)
 msgid "MBytes"
@@ -5716,16 +5745,16 @@ msgid "Send"
 msgstr "Skicka"
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx)
-msgid "Send &email"
-msgstr "Skicka &e-post"
+msgid "Send &Email"
+msgstr ""
+
+#. Resource IDs: (4010)
+msgid "Send Email"
+msgstr ""
 
 #. Resource IDs: (61842)
 msgid "Send Mail failed to send message."
 msgstr "Att skicka e-post misslyckades."
-
-#. Resource IDs: (4010)
-msgid "Send email"
-msgstr "Skicka e-post"
 
 #. Resource IDs: (8276)
 msgid "Serbian (Cyrillic)"
@@ -5885,10 +5914,6 @@ msgstr "Genvägar"
 msgid "Show"
 msgstr "Visa"
 
-#. Resource IDs: (32127 - MenuEx)
-msgid "Show &Unsaved Changes"
-msgstr "Visa &icke sparade ändringar"
-
 #. Resource IDs: (5653)
 msgid "Show Notes"
 msgstr "Visa noteringar"
@@ -5924,10 +5949,6 @@ msgstr "Visa virtuellt tangentbord"
 #. Resource IDs: (159)
 msgid "Show a subset of the Password"
 msgstr "Visa en del(ar) av lösenordet"
-
-#. Resource IDs: (32131 - MenuEx)
-msgid "Show entries with E&xpiry dates"
-msgstr "Visa poster med &utgångsdatum"
 
 #. Resource IDs: (1262)
 msgid "Show entries with identical compared fields (Note: Unknown fields were not compared.)"
@@ -6057,7 +6078,7 @@ msgstr "Börja spara lösenordshistorik för alla poster upp till antalet poster
 msgid "Start saving previous passwords"
 msgstr "Börja spara lösenordshistorik"
 
-#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 8103)
+#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 8103)
 msgid "Static"
 msgstr "Statisk"
 
@@ -6504,11 +6525,6 @@ msgstr "Denna post har följande %d %ls:\n%ls\nVänligen, bekräfta för att for
 msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
 msgstr "Denna post har följande %d %ls:\n%ls\nVänligen, bekräfta för att fortsätta (alias posts lösenord kommer att ersättas med denna posts lösenord)?"
 
-#. Resource IDs: (5452)
-#, c-format
-msgid "This entry has the following %d %s:\n%s"
-msgstr "Denna post har följande %d %s:\n%s"
-
 #. Resource IDs: (5248)
 msgid "This entry must have a password."
 msgstr "Denna post måste ha ett lösenord."
@@ -6533,7 +6549,7 @@ msgstr "Detta är en icke fungerande tangent. Tryck på den så kommer kopplade 
 msgid "This is a shortcut base entry."
 msgstr "Detta är genvägens baspost."
 
-#. Resource IDs: (1071, 1294)
+#. Resource IDs: (1294)
 msgid "This is a shortcut to base entry:"
 msgstr "Detta är en genväg till baspost:"
 
@@ -6563,6 +6579,14 @@ msgstr "Denna genvägs mål [%s:%s:%s] är inte en normal post."
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
 msgstr "Detta tillåter att Du migrerar Dina inställningar från konfigurationsfilen i Password Safes installationsmapp till en fil i Din egen lokala applikationsdatamapp vid nästa öppning av PasswordSafe."
+
+#. Resource IDs: (1071)
+msgid "This will be a shortcut to base entry:"
+msgstr ""
+
+#. Resource IDs: (6047)
+msgid "This will cancel the edit of the Notes field but leaving it in your external editor and on disk. Do you wish to cancel?"
+msgstr ""
 
 #. Resource IDs: (5103)
 msgid "This will clear all traces of Password Safe from the machine's registry. It may also cause old versions of Password Safe to revert to default values for some settings."
@@ -6729,8 +6753,8 @@ msgid "Unable to save configuration file"
 msgstr "Kan inte spara konfigurationsfilen"
 
 #. Resource IDs: (5484)
-msgid "Unable to send email"
-msgstr "Kan inte skicka e-post"
+msgid "Unable to send Email"
+msgstr ""
 
 #. Resource IDs: (3030)
 msgid "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
@@ -6825,6 +6849,10 @@ msgstr "Tag bort alla posters skydd"
 msgid "Unprotect Entry"
 msgstr "Tag bort postskyddet"
 
+#. Resource IDs: (5001)
+msgid "Unrecognised command line argument found"
+msgstr ""
+
 #. Resource IDs: (3349)
 msgid "Unsaved changes"
 msgstr "Icke sparade ändringar"
@@ -6856,8 +6884,8 @@ msgid "Urdu"
 msgstr "Urdu"
 
 #. Resource IDs: (5000)
-msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
-msgstr "Användning: pwsafe [-r|-v] [lösenordsdatabas]\neller pwsafe [-e|-d] filnamn\neller pwsafe [-c]\neller pwsafe [-s] [lösenordsdatabas]\neller pwsafe -m\n\n där:\n  -r = öppna läs-bara\n  -v = validera & reparera\n  -e/d = kryptera/dekryptera filen\n  -c = starta stängd, alltså ingen öppen databas\n  -s = starta tyst (minimerad)\n  -m = starta minimerad & stängd\n\nI tillägg, följande flaggor måste användas:\n -u användare (använd användarens preferenser istället för användarnamn)\n -h värd (använd värden för att söka efter preferenser istället för maskinens namn)\n -g konfigurationsfil (använd konfigurationsfil istället för pwsafe.cfg)\n -q (meddela inte om saknade fonter, dlls, etc.)\nSe online hjälp för fler alternativ."
+msgid "Usage:\npwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
+msgstr ""
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -7004,10 +7032,6 @@ msgstr "Vietnamesiskt"
 msgid "View"
 msgstr "Visa"
 
-#. Resource IDs: (5503)
-msgid "View Aliases"
-msgstr "Visa alias"
-
 #. Resource IDs: (548, 6025)
 msgid "View Attachment"
 msgstr "Visa bilag"
@@ -7028,10 +7052,6 @@ msgstr "Rapport"
 #. Resource IDs: (5502)
 msgid "View Shortcut"
 msgstr "Visa genväg"
-
-#. Resource IDs: (5504)
-msgid "View Shortcuts"
-msgstr "Visa genvägar"
 
 #. Resource IDs: (4006, 5301)
 msgid "View/Edit selected entry"
@@ -7061,6 +7081,10 @@ msgstr "Varna"
 #. Resource IDs: (1362, 3330)
 msgid "Warning"
 msgstr "Varning"
+
+#. Resource IDs: (6046)
+msgid "Warning - Notes being externally edited"
+msgstr ""
 
 #. Resource IDs: (5793)
 msgid "Warning - field too long"
@@ -7374,13 +7398,17 @@ msgstr "\nDuplicera gruppen"
 msgid "\nEdit Base entry"
 msgstr "\nRedigera basposten"
 
+#. Resource IDs: (32052)
+msgid "\nEdit Entry"
+msgstr ""
+
 #. Resource IDs: (32113)
 msgid "\nEdit Filters"
 msgstr "\nRedigera filter"
 
-#. Resource IDs: (32052)
-msgid "\nEdit an Entry"
-msgstr "\nRedigera en post"
+#. Resource IDs: (5517)
+msgid "\nEmail: "
+msgstr ""
 
 #. Resource IDs: (3052)
 #, c-format
@@ -7451,6 +7479,10 @@ msgstr "\nSök nästa"
 msgid "\nFind Previous"
 msgstr "\nHitta tidigare"
 
+#. Resource IDs: (32079)
+msgid "\nFind..."
+msgstr ""
+
 #. Resource IDs: (32157)
 msgid "\nGenerate Password"
 msgstr "\nGenerera lösenord"
@@ -7472,8 +7504,12 @@ msgid "\nImport XML"
 msgstr "\nImporterad XML"
 
 #. Resource IDs: (32260)
-msgid "\nList View/Tree View"
-msgstr "\nTabell/Trädstruktur"
+msgid "\nList or Tree View"
+msgstr ""
+
+#. Resource IDs: (32027)
+msgid "\nLock Database"
+msgstr ""
 
 #. Resource IDs: (32003)
 msgid "\nMake New Database"
@@ -7550,8 +7586,8 @@ msgid "\nSelect Entry"
 msgstr "\nVälj post"
 
 #. Resource IDs: (32074)
-msgid "\nSend email"
-msgstr "\nSkicka e-post"
+msgid "\nSend Email"
+msgstr ""
 
 #. Resource IDs: (32114)
 msgid "\nSet/Clear Filters"
@@ -7564,6 +7600,10 @@ msgstr "\nVisa icke sparade ändringar"
 #. Resource IDs: (32131)
 msgid "\nShow entries with Password Expiry dates"
 msgstr "\nVisa poster med lösenords utgångsdatum"
+
+#. Resource IDs: (32140)
+msgid "\nShow only found entries"
+msgstr ""
 
 #. Resource IDs: (5339)
 #, c-format
@@ -7589,10 +7629,6 @@ msgstr "\nFöljande %ls %ls uppdaterades:"
 msgid "\nThe following new %ls %ls merged into this database:"
 msgstr "\nFöljande nya %ls %ls slogs samman med denna databas:"
 
-#. Resource IDs: (5448)
-msgid "\nThis field is being edited in your\ndefault text editor."
-msgstr "\nDetta fält redigeras i din\nförvalda texteditor."
-
 #. Resource IDs: (32082)
 msgid "\nUndo"
 msgstr "\nÅngra"
@@ -7616,6 +7652,10 @@ msgstr "\nAnvänd ändå?"
 #. Resource IDs: (32097)
 msgid "\nView Attachment"
 msgstr "\nVisa bilaga"
+
+#. Resource IDs: (32053)
+msgid "\nView Entry"
+msgstr ""
 
 #. Resource IDs: (32261)
 msgid "\nView Reports"
@@ -7641,10 +7681,6 @@ msgstr "\n\nDatabaserna är identiska vid jämförelse av de valda eller förval
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\nOkända fält kommer också att kopieras med posten."
 
-#. Resource IDs: (5517)
-msgid "\nemail: "
-msgstr "\ne-post: "
-
 #. Resource IDs: (5784)
 #, c-format
 msgid "\nwith Password History errors %d"
@@ -7653,6 +7689,10 @@ msgstr "\nmed lösenordshistoriska fel %d"
 #. Resource IDs: (5867)
 msgid "\nwith warnings"
 msgstr "\nmed varningar"
+
+#. Resource IDs: (5448)
+msgid "\r\nThis field is being edited in your default text editor.\r\nPlease complete this action before continuing.\r\n\r\n(You may cancel this edit using the Close [X] button above)"
+msgstr ""
 
 #. Resource IDs: (5526)
 #, c-format
@@ -7867,10 +7907,6 @@ msgstr "är inte lika med"
 #. Resource IDs: (3065)
 msgid "e-mail"
 msgstr "e-post"
-
-#. Resource IDs: (5718)
-msgid "email copied "
-msgstr "e-posten kopierad"
 
 #. Resource IDs: (3457)
 msgid "empty group"
