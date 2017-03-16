@@ -111,8 +111,10 @@ bool CXMLprefs::XML_Load()
   return true;
 }
 
-static void SortPreferences(pugi::xml_node &parent)
+static void SortPreferences(pugi::xml_node parent)
 {
+  // Note: pugi::xml_node is really a pointer and so this routine
+  // doesn't need its argument defined as a reference
   // Sort the application preferences of this host/user (case insensitive)
   std::vector<pugi::xml_node> children(parent.begin(), parent.end());
 
