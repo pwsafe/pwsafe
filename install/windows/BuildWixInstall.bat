@@ -50,8 +50,8 @@ echo.
 echo ***Building pwsafe.msi for version %version_mfc%
 echo.
 
-candle -dPWSAFE_VERSION=%version_mfc% -dPlatform=x86 install\windows\pwsafe-template.wxs
-light -ext WixUIExtension -cultures:en-us pwsafe-template.wixobj -out pwsafe.msi
+candle -dPWSAFE_VERSION=%version_mfc% -dPlatform=x86 install\windows\pwsafe.wxs
+light -ext WixUIExtension -cultures:en-us pwsafe.wixobj -out pwsafe.msi
 if $%1 == $x86 goto :exit
 
 :buildx64
@@ -60,8 +60,8 @@ echo.
 echo ***Building pwsafe64.msi for version %version_mfc%
 echo.
 
-candle -dPWSAFE_VERSION=%version_mfc% -dPlatform=x64 -arch x64 install\windows\pwsafe-template.wxs
-light -ext WixUIExtension -cultures:en-us pwsafe-template.wixobj -out pwsafe64.msi
+candle -dPWSAFE_VERSION=%version_mfc% -dPlatform=x64 -arch x64 install\windows\pwsafe.wxs
+light -ext WixUIExtension -cultures:en-us pwsafe.wixobj -out pwsafe64.msi
 goto :exit
 
 :exit

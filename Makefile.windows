@@ -202,20 +202,20 @@ nsis-64:
 	$(MV) install/windows/pwsafe64-$(RELEASENAME).exe $(RELEASEDIR)
 
 msi:
-	$(CANDLE) -dPWSAFE_VERSION=$(RELEASENUM) -dPlatform=x86 install/windows/pwsafe-template.wxs
-	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe-template.wixobj \
+	$(CANDLE) -dPWSAFE_VERSION=$(RELEASENUM) -dPlatform=x86 install/windows/pwsafe.wxs
+	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe.wixobj \
 					-out pwsafe.msi
 	$(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe-$(RELEASENAME).msi
 	$(MV) pwsafe.msi $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
-	$(RM) pwsafe-template.wixobj
+	$(RM) pwsafe.wixobj
 
 msi-64:
-	$(CANDLE) -dPWSAFE_VERSION=$(RELEASENUM) -dPlatform=x64 -arch x64 install/windows/pwsafe-template.wxs
-	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe-template.wixobj \
+	$(CANDLE) -dPWSAFE_VERSION=$(RELEASENUM) -dPlatform=x64 -arch x64 install/windows/pwsafe.wxs
+	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe.wixobj \
 					-out pwsafe64.msi
 	$(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe64-$(RELEASENAME).msi
 	$(MV) pwsafe64.msi $(RELEASEDIR)/pwsafe64-$(RELEASENAME).msi
-	$(RM) pwsafe-template.wixobj
+	$(RM) pwsafe.wixobj
 
 release:  i18n bin-release bin-release-64 src-release
 
