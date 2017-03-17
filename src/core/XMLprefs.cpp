@@ -239,6 +239,15 @@ int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue)
 
   if (!prefnode.set_value(sValue.c_str())) {
     iRetVal = XML_PUT_TEXT_FAILED;
+  } else {
+    pugi::xml_node parentnode = prefnode.parent();
+    // Delete all existing attributes
+    pugi::xml_attribute attrib_next, attrib = parentnode.first_attribute();
+    do {
+      attrib_next = attrib.next_attribute();
+      parentnode.remove_attribute(attrib);
+      attrib = attrib_next;
+    } while (attrib != NULL);
   }
 
   return iRetVal;
@@ -391,14 +400,18 @@ std::vector<st_prefShortcut> CXMLprefs::GetShortcuts(const stringT &csBaseKeyNam
 
     cur.cModifier = 0;
     cur.id = shortcut.attribute(_T("id")).as_uint();
+
     itemp = shortcut.attribute(_T("Key")).as_int();
     cur.siVirtKey = static_cast<short int>(itemp);
+
     itemp = shortcut.attribute(_T("Ctrl")).as_int();
     cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_CONTROL;
     itemp = shortcut.attribute(_T("Alt")).as_int();
     cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_ALT;
     itemp = shortcut.attribute(_T("Shift")).as_int();
     cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_SHIFT;
+    itemp = shortcut.attribute(_T("Ext")).as_int();
+    cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_EXT;
 
     // wxWidgets only - set values so not lost in XML file 
     // but not used in Windows MFC - they are never tested in MFC code
@@ -459,51 +472,64 @@ int CXMLprefs::SetShortcuts(const stringT &csBaseKeyName,
     // If we can't add this - give up!
     if (shortcut == NULL)
       return XML_PUT_TEXT_FAILED;
-      
+
+    // Delete all existing attributes
+    pugi::xml_attribute attrib_next, attrib = shortcut.first_attribute();
+    do {
+      attrib_next = attrib.next_attribute();
+      shortcut.remove_attribute(attrib);
+      attrib = attrib_next;
+    } while (attrib != NULL);
+
     shortcut.set_value(_T(""));
     stringT sModifiers(_T(""));
-    
-    pugi::xml_attribute attrib;
 
     attrib = shortcut.append_attribute(_T("id"));
     attrib = v_shortcuts[i].id;
-    attrib = shortcut.append_attribute(_T("Ctrl"));
-    attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_CONTROL) ==
-                       PWS_HOTKEYF_CONTROL ? 1 : 0;
-    sModifiers += (v_shortcuts[i].cModifier & PWS_HOTKEYF_CONTROL) ==
-                       PWS_HOTKEYF_CONTROL ? _T("Ctrl+") : _T("");
-    
-    attrib = shortcut.append_attribute(_T("Alt"));
-    attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_ALT) ==
-                       PWS_HOTKEYF_ALT ? 1 : 0;
-    sModifiers += (v_shortcuts[i].cModifier & PWS_HOTKEYF_ALT) ==
-                       PWS_HOTKEYF_ALT ? _T("Alt+") : _T("");
-    
-    attrib = shortcut.append_attribute(_T("Shift"));
-    attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_SHIFT) ==
-                       PWS_HOTKEYF_SHIFT ? 1 : 0;
-    sModifiers += (v_shortcuts[i].cModifier & PWS_HOTKEYF_SHIFT) ==
-                       PWS_HOTKEYF_SHIFT ? _T("Shift+") : _T("");
-   
+
+    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_CONTROL) {
+      attrib = shortcut.append_attribute(_T("Ctrl"));
+      attrib = 1;
+      sModifiers += _T("Ctrl+");
+    }
+
+    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_ALT) {
+      attrib = shortcut.append_attribute(_T("Alt"));
+      attrib = 1;
+      sModifiers += _T("Alt+");
+    }
+
+    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_SHIFT) {
+      attrib = shortcut.append_attribute(_T("Shift"));
+      attrib = 1;
+      sModifiers += _T("Shift+");
+    }
+
+    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_EXT) {
+      attrib = shortcut.append_attribute(_T("Ext"));
+      attrib = 1;
+      sModifiers += _T("Ext+");
+    }
+
     // wxWidgets only - set values but do not use in Windows MFC
-    attrib = shortcut.append_attribute(_T("Meta"));
-    attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_META) ==
-                       PWS_HOTKEYF_META ? 1 : 0;
-    sModifiers += (v_shortcuts[i].cModifier & PWS_HOTKEYF_META) ==
-                       PWS_HOTKEYF_META ? _T("Meta+") : _T("");
-    
-    attrib = shortcut.append_attribute(_T("Win"));
-    attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_WIN) ==
-                       PWS_HOTKEYF_WIN ? 1 : 0;
-    sModifiers += (v_shortcuts[i].cModifier & PWS_HOTKEYF_WIN) ==
-                       PWS_HOTKEYF_WIN ? _T("Win+") : _T("");
-    
-    attrib = shortcut.append_attribute(_T("Cmd"));
-    attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_CMD) ==
-                       PWS_HOTKEYF_CMD ? 1 : 0;
-    sModifiers += (v_shortcuts[i].cModifier & PWS_HOTKEYF_CMD) ==
-                       PWS_HOTKEYF_CMD ? _T("Cmd+") : _T("");
-    
+    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_META) {
+      attrib = shortcut.append_attribute(_T("Meta"));
+      attrib = 1;
+      sModifiers += _T("Meta+");
+    }
+
+    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_WIN) {
+      attrib = shortcut.append_attribute(_T("Win"));
+      attrib = 1;
+      sModifiers += _T("Win+");
+    }
+
+    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_CMD) {
+      attrib = shortcut.append_attribute(_T("Cmd"));
+      attrib = 1;
+      sModifiers += _T("Cmd+");
+    }
+      
     attrib = shortcut.append_attribute(_T("Key"));
     attrib = v_shortcuts[i].siVirtKey;
 
