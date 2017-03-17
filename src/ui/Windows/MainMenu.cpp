@@ -388,6 +388,11 @@ void DboxMain::SetUpInitialMenuStrings()
       continue;
     }
 
+    // Update Menu name in vector
+    stringT name = iter->second.name;
+    Remove(name, L'&');
+    vShortcuts[i].Menu_Name = name;
+
     // Check not already in use (ignore if deleting current shortcut)
     if (stxst.siVirtKey != 0) {
       st_mst.siVirtKey = stxst.siVirtKey;
@@ -410,6 +415,9 @@ void DboxMain::SetUpInitialMenuStrings()
       iter->second.cModifier = stxst.cModifier;
     }
   }
+
+  // Update Menu names for later XML comment
+  PWSprefs::GetInstance()->SetPrefShortcuts(vShortcuts);
 
   // Set up the shortcuts based on the main entry
   // for View, Delete and Rename
