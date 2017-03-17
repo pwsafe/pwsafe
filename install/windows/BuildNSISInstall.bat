@@ -13,7 +13,7 @@
 if $%1 == $-h goto :help
 if $%1 == $--help goto :help
 
-:: Add Wix toolset to path. The Wix location may vary depending on 
+:: Add NSIS tool (makensis) to path. The location may vary depending on 
 :: the version installed.
 setlocal
 set PATH="%ProgramFiles(x86)%\NSIS";%PATH%
