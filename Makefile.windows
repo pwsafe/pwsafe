@@ -1,5 +1,5 @@
-# This makefile automates the build of releases for sourceforge
-# The RELEASENAME should be changed per release
+# This makefile automates the release build process.
+# RELEASENUM and RELEASENAME are derived from the contents of version.mfc.
 # The RELEASEDIR should be set to whatever works for you.
 #
 # 'make' or 'make release'
@@ -7,6 +7,10 @@
 # bin-release or src-release will build only what their names imply.
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
+
+RELEASEDIR := /cygdrive/c/local/src/PasswordSafe/Releases
+
+# Shouldn't need to change anything below this line
 
 include version.mfc
 ifeq ($(VER_REV),)
@@ -17,11 +21,6 @@ endif
 RELEASE_SPECIAL := $(VER_SPECIAL)
 
 RELEASENAME= $(RELEASENUM)$(RELEASE_SPECIAL)
-
-RELEASEDIR := /cygdrive/c/local/src/PasswordSafe/Releases
-
-# Shouldn't need to change anything below this line
-
 BINRELNAME := pwsafe-$(RELEASENAME)-bin
 BINRELNAME64 := pwsafe64-$(RELEASENAME)-bin
 SRCRELNAME := pwsafe-$(RELEASENAME)-src
@@ -205,7 +204,7 @@ msi:
 	$(CANDLE) -dPWSAFE_VERSION=$(RELEASENUM) -dPlatform=x86 install/windows/pwsafe.wxs
 	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe.wixobj \
 					-out pwsafe.msi
-	$(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe-$(RELEASENAME).msi
+	$(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe.msi
 	$(MV) pwsafe.msi $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
 	$(RM) pwsafe.wixobj
 
@@ -213,7 +212,7 @@ msi-64:
 	$(CANDLE) -dPWSAFE_VERSION=$(RELEASENUM) -dPlatform=x64 -arch x64 install/windows/pwsafe.wxs
 	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe.wixobj \
 					-out pwsafe64.msi
-	$(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe64-$(RELEASENAME).msi
+	$(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe64.msi
 	$(MV) pwsafe64.msi $(RELEASEDIR)/pwsafe64-$(RELEASENAME).msi
 	$(RM) pwsafe.wixobj
 
