@@ -427,19 +427,22 @@ void DboxMain::OnOptions()
         }
 
         // Now only those different from default
-        if (iter->second.siVirtKey  != iter->second.siDefVirtKey  ||
-            iter->second.cModifier != iter->second.cDefModifier) {
+        if (iter->second.siVirtKey != iter->second.siDefVirtKey ||
+          iter->second.cModifier != iter->second.cDefModifier) {
           iter_parent = m_MapMenuShortcuts.find(iter->second.uiParentID);
-          std::wstring name;
-          if (iter_parent != m_MapMenuShortcuts.end()) {
-            name = iter_parent->second.name;
-          }
+          std::wstring name(L"");
+          do {
+            name = iter_parent->second.name + std::wstring(L"->") + name;
+            iter_parent = m_MapMenuShortcuts.find(iter_parent->second.uiParentID);
+          } while (iter_parent != m_MapMenuShortcuts.end());
+
+          name += iter->second.name;
+          Remove(name, L'&');
+
           st_prefShortcut stxst;
           stxst.id = iter->first;
           stxst.siVirtKey = iter->second.siVirtKey;
           stxst.cModifier = iter->second.cModifier;
-          name += std::wstring(L"->") + iter->second.name;
-          Remove(name, L'&');
           stxst.Menu_Name = name;
           vShortcuts.push_back(stxst);
         }

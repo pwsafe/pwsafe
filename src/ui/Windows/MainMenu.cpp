@@ -390,11 +390,13 @@ void DboxMain::SetUpInitialMenuStrings()
 
     // Update Menu name in vector
     iter_parent = m_MapMenuShortcuts.find(iter->second.uiParentID);
-    std::wstring name;
-    if (iter_parent != m_MapMenuShortcuts.end()) {
-      name = iter_parent->second.name;
-    }
-    name += std::wstring(L"->") + iter->second.name;
+    std::wstring name(L"");
+    do {
+      name = iter_parent->second.name + std::wstring(L"->") + name;
+      iter_parent = m_MapMenuShortcuts.find(iter_parent->second.uiParentID);
+    } while (iter_parent != m_MapMenuShortcuts.end());
+
+    name += iter->second.name;
     Remove(name, L'&');
     vShortcuts[i].Menu_Name = name;
 
