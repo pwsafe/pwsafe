@@ -50,7 +50,7 @@ MV = /usr/bin/mv
 
 BASE_DLL = ../../../../build/bin/pwsafe/release/pwsafe_base.dll
 
-.PHONY: update-pos dlls tools clean help check dest_dir
+.PHONY: update-pos dlls dlls_32 dlls_64 tools clean help check dest_dir
 
 update-pos: tools $(POS)
 
