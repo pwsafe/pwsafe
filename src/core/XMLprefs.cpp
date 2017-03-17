@@ -242,12 +242,9 @@ int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue)
   } else {
     pugi::xml_node parentnode = prefnode.parent();
     // Delete all existing attributes
-    pugi::xml_attribute attrib_next, attrib = parentnode.first_attribute();
-    do {
-      attrib_next = attrib.next_attribute();
+    while (pugi::xml_attribute attrib = parentnode.first_attribute()) {
       parentnode.remove_attribute(attrib);
-      attrib = attrib_next;
-    } while (attrib != NULL);
+    }
   }
 
   return iRetVal;
@@ -474,16 +471,14 @@ int CXMLprefs::SetShortcuts(const stringT &csBaseKeyName,
       return XML_PUT_TEXT_FAILED;
 
     // Delete all existing attributes
-    pugi::xml_attribute attrib_next, attrib = shortcut.first_attribute();
-    do {
-      attrib_next = attrib.next_attribute();
+    while (pugi::xml_attribute attrib = shortcut.first_attribute()) {
       shortcut.remove_attribute(attrib);
-      attrib = attrib_next;
-    } while (attrib != NULL);
+    }
 
     shortcut.set_value(_T(""));
     stringT sModifiers(_T(""));
 
+    pugi::xml_attribute attrib;
     attrib = shortcut.append_attribute(_T("id"));
     attrib = v_shortcuts[i].id;
 
