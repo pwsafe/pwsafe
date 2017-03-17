@@ -182,47 +182,6 @@ exit:
   return retval;
 }
 
-void SetHotKeyComment(pugi::xml_node &node, const stringT &sValue)
-{
-  int iValue = 0;
-  istringstreamT is(sValue);
-  is >> iValue;
-  
-  WORD wVirtualKeyCode = iValue & 0xff;
-  WORD wHKModifiers = iValue >> 16;
-  
-  // Remove attribure
-  node.remove_attribute(_T("Value"));
-
-  if (wVirtualKeyCode != 0) {
-    stringT sKeyName;
-    sKeyName = CKeySend::GetKeyName(wVirtualKeyCode, (wHKModifiers & PWS_HOTKEYF_EXT) == PWS_HOTKEYF_EXT);
-
-    if (!sKeyName.empty()) {
-      stringT sModifier(_T(""));
-      if (wHKModifiers & PWS_HOTKEYF_CONTROL)
-        sModifier = _T("Ctrl + ");
-      if (wHKModifiers & PWS_HOTKEYF_ALT)
-        sModifier += _T("Alt + ");
-      if (wHKModifiers & PWS_HOTKEYF_SHIFT)
-        sModifier += _T("Shift + ");
-
-      // wxWidgets only - set values but do not use in Windows MFC
-      if (wHKModifiers & PWS_HOTKEYF_META)
-        sModifier += _T("Meta + ");
-      if (wHKModifiers & PWS_HOTKEYF_WIN)
-        sModifier += _T("Win + ");
-      if (wHKModifiers & PWS_HOTKEYF_CMD)
-        sModifier += _T("Cmd + ");
-
-      stringT sComment;
-      Format(sComment, _T("%s%s"), sModifier.c_str(), sKeyName.c_str());
-      pugi::xml_attribute attrib = node.append_attribute(_T("Value"));
-      attrib = sComment.c_str();
-    }
-  }
-}
-
 int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue)
 {
   // Find the node specified by the path, creating it if it does not already exist
@@ -280,10 +239,6 @@ int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue)
 
   if (!prefnode.set_value(sValue.c_str())) {
     iRetVal = XML_PUT_TEXT_FAILED;
-  } else {
-    if (sPath.substr(sPath.size() - 7) == _T("\\HotKey")) {
-      SetHotKeyComment(node, sValue);
-    }
   }
 
   return iRetVal;
