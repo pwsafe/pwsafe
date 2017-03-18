@@ -309,7 +309,7 @@ void DboxMain::SetUpInitialMenuStrings()
 
   // Now that we have all menu strings - go get current accelerator strings
   // and update Map
-  MapMenuShortcutsIter iter, iter_entry, inuse_iter;
+  MapMenuShortcutsIter iter, iter_entry, iter_parent, inuse_iter;
   HACCEL curacctbl = app.m_ghAccelTable;
   //if (curacctbl != NULL) {
   //  DestroyAcceleratorTable(app.m_ghAccelTable);
@@ -388,6 +388,18 @@ void DboxMain::SetUpInitialMenuStrings()
       continue;
     }
 
+    // Update Menu name in vector
+    iter_parent = m_MapMenuShortcuts.find(iter->second.uiParentID);
+    std::wstring name(L"");
+    do {
+      name = iter_parent->second.name + std::wstring(L"->") + name;
+      iter_parent = m_MapMenuShortcuts.find(iter_parent->second.uiParentID);
+    } while (iter_parent != m_MapMenuShortcuts.end());
+
+    name += iter->second.name;
+    Remove(name, L'&');
+    vShortcuts[i].Menu_Name = name;
+
     // Check not already in use (ignore if deleting current shortcut)
     if (stxst.siVirtKey != 0) {
       st_mst.siVirtKey = stxst.siVirtKey;
@@ -410,6 +422,9 @@ void DboxMain::SetUpInitialMenuStrings()
       iter->second.cModifier = stxst.cModifier;
     }
   }
+
+  // Update Menu names for later XML comment
+  PWSprefs::GetInstance()->SetPrefShortcuts(vShortcuts);
 
   // Set up the shortcuts based on the main entry
   // for View, Delete and Rename
