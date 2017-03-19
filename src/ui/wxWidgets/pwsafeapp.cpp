@@ -354,7 +354,7 @@ bool PwsafeApp::OnInit()
   }
   m_core.SetCurFile(tostringx(filename));
   m_core.SetApplicationNameAndVersion(tostdstring(progName),
-                                      MAKEWORD(MINORVERSION, MAJORVERSION));
+                                      MAKELONG(MINORVERSION, MAJORVERSION));
 
   static wxSingleInstanceChecker appInstance;
   if (!prefs->GetPref(PWSprefs::MultipleInstances) &&
