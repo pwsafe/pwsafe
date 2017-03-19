@@ -32,6 +32,7 @@
 #include "version.h"
 #include "core/core.h"
 #include "core/PWSdirs.h"
+#include "core/PWSprefs.h"
 #include "os/file.h"
 
 #ifndef NO_YUBI
@@ -144,7 +145,7 @@ CSafeCombinationEntry::~CSafeCombinationEntry()
 
 void CSafeCombinationEntry::Init()
 {
-  m_readOnly = m_core.IsReadOnly();
+  m_readOnly = m_core.IsReadOnly() || PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
   m_filename = m_core.GetCurFile().c_str();
 ////@begin CSafeCombinationEntry member initialisation
   m_version = NULL;
@@ -530,11 +531,12 @@ void CSafeCombinationEntry::UpdateReadOnlyCheckbox()
 
   // Do nothing if the file doesn't exist
   if ( fn.FileExists() ) {
-    const bool writeable = fn.IsFileWritable();
+    bool writeable = fn.IsFileWritable();
+    bool defaultRO = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
     wxCheckBox *ro = wxDynamicCast(FindWindow(ID_READONLY), wxCheckBox);
-    ro->SetValue( writeable? m_core.IsReadOnly(): true );
+    ro->SetValue( writeable? (m_core.IsReadOnly() || defaultRO) : true );
     ro->Enable(writeable);
-    UpdateNew(!writeable);
+    UpdateNew(!writeable || defaultRO);
   }
 }
 
