@@ -1943,7 +1943,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case wxID_DELETE:
-      evt.Enable(!bFileIsReadOnly && pci && !pci->IsProtected());
+      evt.Enable(!bFileIsReadOnly && ((pci && !pci->IsProtected()) || bGroupSelected));
       break;
 
     case ID_DUPLICATEENTRY:
