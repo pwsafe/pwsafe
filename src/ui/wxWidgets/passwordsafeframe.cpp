@@ -235,6 +235,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI(ID_CHANGECOMBO,     PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_IMPORTMENU,      PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_PROTECT,         PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_FILTERMENU,      PasswordSafeFrame::OnUpdateUI ) // To mark unimplemented
+  EVT_UPDATE_UI(ID_CUSTOMIZETOOLBAR,PasswordSafeFrame::OnUpdateUI ) // To mark unimplemented
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -1967,6 +1969,12 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!bFileIsReadOnly && pci && !pci->IsShortcut());
       evt.Check(pci && pci->IsProtected());
       break;
+
+  case ID_FILTERMENU:
+  case ID_CUSTOMIZETOOLBAR:
+    evt.Enable(false); // Mark unimplemented
+    break;
+
   default:
       break;
   }
