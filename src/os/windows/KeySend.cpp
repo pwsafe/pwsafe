@@ -420,6 +420,13 @@ bool CKeySend::LookupVirtualKey(const StringX &kname, WORD &kval)
 
 stringT CKeySend::GetKeyName(WORD wVirtualKeyCode, bool bExtended)
 {
+  /*
+    Note the KeyName is taken from the current keyboard.  It is also the name 
+    of the UNSHIFTED character and so the actual key is keyboard dependent.
+    For example, UK keyboards have the double quote (") as SHIFT+2 and US keyboards
+    have the AT symbol (@) symbol as SHIFT+2.  This shouldn't be a problem for the user
+    as they rarely change keyboards!
+  */
   stringT sKeyName;
 
   if (wVirtualKeyCode != 0) {

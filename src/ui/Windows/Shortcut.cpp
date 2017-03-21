@@ -225,7 +225,8 @@ BOOL CShortcut::isLinkExist(const CString &LnkName,
   sSpecialFolder += LnkName + L"." + L"lnk";
 
   BOOL brc = CFile::GetStatus(sSpecialFolder, cfStatus);
-  pws_os::Trace(L"%s = %s\n", brc == TRUE ? L"Full file name" : L"File NOT available", cfStatus.m_szFullName);
+  pws_os::Trace(L"%s = %s\n", brc == TRUE ? L"Full file name" : L"File NOT available", 
+                cfStatus.m_szFullName);
   return brc;
 }
 

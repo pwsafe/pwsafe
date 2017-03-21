@@ -476,53 +476,60 @@ int CXMLprefs::SetShortcuts(const stringT &csBaseKeyName,
     }
 
     shortcut.set_value(_T(""));
-    stringT sModifiers(_T(""));
-
+    stringT sModifiers(_T("")), sKeyName;
     pugi::xml_attribute attrib;
-    attrib = shortcut.append_attribute(_T("id"));
-    attrib = v_shortcuts[i].id;
 
-    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_CONTROL) {
-      attrib = shortcut.append_attribute(_T("Ctrl"));
-      attrib = 1;
-      sModifiers += _T("Ctrl+");
-    }
+    if (v_shortcuts[i].siVirtKey != 0) {
+      attrib = shortcut.append_attribute(_T("id"));
+      attrib = v_shortcuts[i].id;
 
-    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_ALT) {
-      attrib = shortcut.append_attribute(_T("Alt"));
-      attrib = 1;
-      sModifiers += _T("Alt+");
-    }
+      if (v_shortcuts[i].cModifier & PWS_HOTKEYF_CONTROL) {
+        attrib = shortcut.append_attribute(_T("Ctrl"));
+        attrib = 1;
+        sModifiers += _T("Ctrl+");
+      }
 
-    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_SHIFT) {
-      attrib = shortcut.append_attribute(_T("Shift"));
-      attrib = 1;
-      sModifiers += _T("Shift+");
-    }
+      if (v_shortcuts[i].cModifier & PWS_HOTKEYF_ALT) {
+        attrib = shortcut.append_attribute(_T("Alt"));
+        attrib = 1;
+        sModifiers += _T("Alt+");
+      }
 
-    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_EXT) {
-      attrib = shortcut.append_attribute(_T("Ext"));
-      attrib = 1;
-      sModifiers += _T("Ext+");
-    }
+      if (v_shortcuts[i].cModifier & PWS_HOTKEYF_SHIFT) {
+        attrib = shortcut.append_attribute(_T("Shift"));
+        attrib = 1;
+        sModifiers += _T("Shift+");
+      }
 
-    // wxWidgets only - set values but do not use in Windows MFC
-    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_META) {
-      attrib = shortcut.append_attribute(_T("Meta"));
-      attrib = 1;
-      sModifiers += _T("Meta+");
-    }
+      if (v_shortcuts[i].cModifier & PWS_HOTKEYF_EXT) {
+        attrib = shortcut.append_attribute(_T("Ext"));
+        attrib = 1;
+        sModifiers += _T("Ext+");
+      }
 
-    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_WIN) {
-      attrib = shortcut.append_attribute(_T("Win"));
-      attrib = 1;
-      sModifiers += _T("Win+");
-    }
+      // wxWidgets only - set values but do not use in Windows MFC
+      if (v_shortcuts[i].cModifier & PWS_HOTKEYF_META) {
+        attrib = shortcut.append_attribute(_T("Meta"));
+        attrib = 1;
+        sModifiers += _T("Meta+");
+      }
 
-    if (v_shortcuts[i].cModifier & PWS_HOTKEYF_CMD) {
-      attrib = shortcut.append_attribute(_T("Cmd"));
-      attrib = 1;
-      sModifiers += _T("Cmd+");
+      if (v_shortcuts[i].cModifier & PWS_HOTKEYF_WIN) {
+        attrib = shortcut.append_attribute(_T("Win"));
+        attrib = 1;
+        sModifiers += _T("Win+");
+      }
+
+      if (v_shortcuts[i].cModifier & PWS_HOTKEYF_CMD) {
+        attrib = shortcut.append_attribute(_T("Cmd"));
+        attrib = 1;
+        sModifiers += _T("Cmd+");
+      }
+
+      attrib = shortcut.append_attribute(_T("KeyName"));
+      sKeyName = CKeySend::GetKeyName(v_shortcuts[i].siVirtKey,
+        (v_shortcuts[i].cModifier & PWS_HOTKEYF_EXT) == PWS_HOTKEYF_EXT);
+      attrib.set_value(sKeyName.c_str());
     }
       
     attrib = shortcut.append_attribute(_T("Key"));
@@ -535,10 +542,6 @@ int CXMLprefs::SetShortcuts(const stringT &csBaseKeyName,
       if (v_shortcuts[i].siVirtKey == 0) {
         Format(sComment, _T(" Shortcut to '%s' Removed "), v_shortcuts[i].Menu_Name.c_str());
       } else {
-        stringT sKeyName;
-        sKeyName = CKeySend::GetKeyName(v_shortcuts[i].siVirtKey,
-                          (v_shortcuts[i].cModifier & PWS_HOTKEYF_EXT) == PWS_HOTKEYF_EXT);
-        
         if (!sKeyName.empty()) {
           Format(sComment, _T(" Shortcut to '%s' is '%s%s' "), v_shortcuts[i].Menu_Name.c_str(),
                         sModifiers.c_str(), sKeyName.c_str());

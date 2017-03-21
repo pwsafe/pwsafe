@@ -152,18 +152,15 @@ void CDDStatic::Init(const UINT nImageID, const UINT nDisabledImageID)
   m_nID = GetDlgCtrlID();
 
   // Load bitmap
-  BOOL brc;
-  brc = m_OKbitmap.Attach(::LoadImage(
+  VERIFY(m_OKbitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
-  ASSERT(brc);
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
 
-  brc = m_NOTOKbitmap.Attach(::LoadImage(
+  VERIFY(m_NOTOKbitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nDisabledImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nDisabledImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
-  ASSERT(brc);
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
 
   const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
   SetBitmapBackground(m_OKbitmap, crCOLOR_3DFACE);
@@ -180,18 +177,15 @@ void CDDStatic::ReInit(const UINT nImageID, const UINT nDisabledImageID)
   m_OKbitmap.Detach();
   m_NOTOKbitmap.Detach();
 
-  BOOL brc;
-  brc = m_OKbitmap.Attach(::LoadImage(
+  VERIFY(m_OKbitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
-  ASSERT(brc);
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
   
-  brc = m_NOTOKbitmap.Attach(::LoadImage(
+  VERIFY(m_NOTOKbitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nDisabledImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nDisabledImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
-  ASSERT(brc);
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
 
   const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
   SetBitmapBackground(m_OKbitmap, crCOLOR_3DFACE);

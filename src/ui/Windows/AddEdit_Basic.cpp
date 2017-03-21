@@ -427,10 +427,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   m_iLineCount = m_ex_notes.GetLineCount();
 
-  // Set initial Word Wrap
-  m_ex_notes.SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
-  m_ex_notes.UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
-
   // Load copy password bitmap
   UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
     IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
@@ -449,7 +445,14 @@ BOOL CAddEdit_Basic::OnInitDialog()
       pBtn->SetBitmap(m_CopyPswdBitmap);
   }
 
+
+  // Update data data before setting initial Word Wrap
   UpdateData(FALSE);
+
+  // Set initial Word Wrap
+  m_ex_notes.SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
+  m_ex_notes.UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
+
   m_bInitdone = true;
   return TRUE;
 }
@@ -1181,6 +1184,8 @@ LRESULT CAddEdit_Basic::OnWordWrap(WPARAM, LPARAM)
   m_ex_notes.SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
 
   m_ex_notes.UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
+
+  UpdateData(FALSE);
 
   return 0L;
 }
