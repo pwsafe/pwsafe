@@ -90,7 +90,6 @@ void InsertShortcuts(CMenu *pMenu, MapMenuShortcuts &mms,
   // if parentID == 0, we're processing a toplevel menu,
   // else, we're passed the menu in which the desired
   // submenu resides.
-  BOOL brc;
   wchar_t tcMenuString[_MAX_PATH + 1];
   CMenuShortcut mst;
   MENUITEMINFO miteminfo;
@@ -119,8 +118,7 @@ void InsertShortcuts(CMenu *pMenu, MapMenuShortcuts &mms,
     miteminfo.cch = _MAX_PATH;
     miteminfo.dwTypeData = tcMenuString;
 
-    brc = pSCTMenu->GetMenuItemInfo(ui, &miteminfo, TRUE);
-    ASSERT(brc != 0);
+    VERIFY(pSCTMenu->GetMenuItemInfo(ui, &miteminfo, TRUE));
 
     if (miteminfo.wID >= 1) {
       std::pair< MapMenuShortcutsIter, bool > pr;
@@ -140,7 +138,6 @@ void DboxMain::SetUpInitialMenuStrings()
   UINT uiCount;
 
   CString sKeyName;
-  BOOL brc;
 
   // Following are excluded from list of user-configurable
   // shortcuts
@@ -174,8 +171,7 @@ void DboxMain::SetUpInitialMenuStrings()
                              excludedMenuItems + _countof(excludedMenuItems));
 
   pMainMenu = new CMenu;
-  brc = pMainMenu->LoadMenu(IDR_MAINMENU);
-  ASSERT(brc != 0);
+  VERIFY(pMainMenu->LoadMenu(IDR_MAINMENU));
 
   wchar_t tcMenuString[_MAX_PATH + 1];
 
@@ -201,8 +197,7 @@ void DboxMain::SetUpInitialMenuStrings()
     miteminfo.dwTypeData = tcMenuString;
     miteminfo.cch = _MAX_PATH;
 
-    brc = pMainMenu->GetMenuItemInfo(ui, &miteminfo, TRUE);
-    ASSERT(brc != 0);
+    VERIFY(pMainMenu->GetMenuItemInfo(ui, &miteminfo, TRUE));
 
     if (miteminfo.wID >= 1) {
       CString csMainMenuItem = tcMenuString;
@@ -289,12 +284,10 @@ void DboxMain::SetUpInitialMenuStrings()
   InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_HELPMENU);
 
   // Don't need main menu again here
-  brc = pMainMenu->DestroyMenu();
-  ASSERT(brc != 0);
+  VERIFY(pMainMenu->DestroyMenu());
 
   // Do Find toolbar menu items not on a menu!
-  brc = pMainMenu->LoadMenu(IDR_POPFIND);
-  ASSERT(brc != 0);
+  VERIFY(pMainMenu->LoadMenu(IDR_POPFIND));
 
   // Again a parent menu (uiParentID == 0)
   InsertShortcuts(pMainMenu, m_MapMenuShortcuts, 0);
@@ -302,8 +295,7 @@ void DboxMain::SetUpInitialMenuStrings()
   InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_FINDMENU);
 
   // No longer need any menus
-  brc = pMainMenu->DestroyMenu();
-  ASSERT(brc != 0);
+  VERIFY(pMainMenu->DestroyMenu());
 
   delete pMainMenu;
 
@@ -486,7 +478,6 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
   // format, Popup menus can have IDs
   ASSERT_VALID(pPopupMenu);
 
-  BOOL brc;
   MENUITEMINFO miteminfo = {0};
 
   MapMenuShortcutsIter iter;
@@ -499,8 +490,7 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
     miteminfo.cbSize = sizeof(miteminfo);
     miteminfo.fMask = MIIM_ID | MIIM_STATE;
 
-    brc = pPopupMenu->GetMenuItemInfo(ui, &miteminfo, TRUE);
-    ASSERT(brc != 0);
+    VERIFY(pPopupMenu->GetMenuItemInfo(ui, &miteminfo, TRUE));
 
     // Exit & Help never changed and their shortcuts are in the menu text
     if (miteminfo.wID >= 1 &&
@@ -1050,13 +1040,11 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   // (ID_EDITMENU).
   ASSERT_VALID(pPopupMenu);
 
-  BOOL brc;
   MENUINFO minfo = {0};
   minfo.cbSize = sizeof(MENUINFO);
   minfo.fMask = MIM_MENUDATA;
 
-  brc = pPopupMenu->GetMenuInfo(&minfo);
-  ASSERT(brc != 0);
+  VERIFY(pPopupMenu->GetMenuInfo(&minfo));
 
   // Need to update the main menu if the shortcuts have been changed or
   // if the Edit or View menu.  The Edit menu is completely rebuilt each time
@@ -1097,6 +1085,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     // disable the menu item.
     int iLangPos = app.FindMenuItem(pPopupMenu, ID_LANGUAGEMENU);
     if (iLangPos >= 0) {
+      BOOL brc;
       CMenu *pSubMenu = pPopupMenu->GetSubMenu(iLangPos);
       brc = ProcessLanguageMenu(pSubMenu);
       pPopupMenu->EnableMenuItem(iLangPos, MF_BYPOSITION | (brc ? MF_ENABLED : MF_GRAYED));
@@ -1185,8 +1174,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   minfo.fMask = MIM_STYLE;
   minfo.dwStyle = MNS_CHECKORBMP | MNS_AUTODISMISS;
 
-  brc = pPopupMenu->SetMenuInfo(&minfo);
-  ASSERT(brc != 0);
+  VERIFY(pPopupMenu->SetMenuInfo(&minfo));
 
   MENUITEMINFO miteminfo = {0};
   CRUEItemData *pmd;
@@ -1199,8 +1187,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     miteminfo.cbSize = sizeof(miteminfo);
     miteminfo.fMask = MIIM_FTYPE | MIIM_DATA;
 
-    brc = pPopupMenu->GetMenuItemInfo(pos, &miteminfo, TRUE);
-    ASSERT(brc != 0);
+    VERIFY(pPopupMenu->GetMenuItemInfo(pos, &miteminfo, TRUE));
 
     pmd = (CRUEItemData *)miteminfo.dwItemData;
     if (pmd && pmd->IsRUEID() && !(miteminfo.fType & MFT_OWNERDRAW) &&
@@ -1211,8 +1198,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
       miteminfo.hbmpItem = HBMMENU_CALLBACK;
       miteminfo.fType = MFT_STRING;
 
-      brc = pPopupMenu->SetMenuItemInfo(pos, &miteminfo, TRUE);
-      ASSERT(brc != 0);
+      VERIFY(pPopupMenu->SetMenuItemInfo(pos, &miteminfo, TRUE));
     }
   }
 }
@@ -1222,7 +1208,6 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 {
   const DWORD dwTrackPopupFlags = TPM_LEFTALIGN | TPM_RIGHTBUTTON;
 
-  BOOL brc;
   CPoint client;
   int item = -1;
   const CItemData *pci(NULL), *pbci(NULL);
@@ -1274,8 +1259,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       mp.y > rect.top && mp.y < rect.bottom) {
     if (menu.LoadMenu(IDR_POPCUSTOMIZETOOLBAR)) {
       minfo.dwMenuData = IDR_POPCUSTOMIZETOOLBAR;
-      brc = menu.SetMenuInfo(&minfo);
-      ASSERT(brc != 0);
+      VERIFY(menu.SetMenuInfo(&minfo));
 
       CMenu *pPopup = menu.GetSubMenu(0);
       ASSERT_VALID(pPopup);
@@ -1375,9 +1359,8 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       // not over anything
       if (menu.LoadMenu(IDR_POPTREE)) {  // "Add Group"
         minfo.dwMenuData = IDR_POPTREE;
-        brc = menu.SetMenuInfo(&minfo);
-        ASSERT(brc != 0);
-        CMenu* pPopup = menu.GetSubMenu(0);
+        VERIFY(menu.SetMenuInfo(&minfo));
+        CMenu *pPopup = menu.GetSubMenu(0);
         ASSERT_VALID(pPopup);
         
         ti = m_ctlItemTree.GetSelectedItem();
@@ -1402,12 +1385,10 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 
     // Only compare entries if 2 entries are selected - List view only
     if (m_IsListView && m_ctlItemList.GetSelectedCount() == 2) {
-      brc = menu.LoadMenu(IDR_POPCOMPAREENTRIES);
-      ASSERT(brc != 0);
+      VERIFY(menu.LoadMenu(IDR_POPCOMPAREENTRIES));
 
       minfo.dwMenuData = IDR_POPCOMPAREENTRIES;
-      brc = menu.SetMenuInfo(&minfo);
-      ASSERT(brc != 0);
+      VERIFY(menu.SetMenuInfo(&minfo));
 
       pPopup = menu.GetSubMenu(0);
       ASSERT_VALID(pPopup);
@@ -1418,12 +1399,10 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
     }
 
     ASSERT(pci != NULL);
-    brc = menu.LoadMenu(IDR_POPEDITMENU);
-    ASSERT(brc != 0);
+    VERIFY(menu.LoadMenu(IDR_POPEDITMENU));
 
     minfo.dwMenuData = IDR_POPEDITMENU;
-    brc = menu.SetMenuInfo(&minfo);
-    ASSERT(brc != 0);
+    VERIFY(menu.SetMenuInfo(&minfo));
 
     pPopup = menu.GetSubMenu(0);
     ASSERT_VALID(pPopup);

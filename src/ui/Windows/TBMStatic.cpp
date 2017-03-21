@@ -28,12 +28,10 @@ void CTBMStatic::Init(const UINT nImageID)
   m_nID = GetDlgCtrlID();
 
   // Load bitmap
-  BOOL brc;
-  brc = m_Bitmap.Attach(::LoadImage(
+  VERIFY(m_Bitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
-  ASSERT(brc);
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
 
   const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
   SetBitmapBackground(m_Bitmap, crCOLOR_3DFACE);

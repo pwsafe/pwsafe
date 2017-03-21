@@ -293,11 +293,13 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
       // Load bitmap
       UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
         IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
-      BOOL brc = m_CopyPswdBitmap.Attach(::LoadImage(
-                                                     ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
-                                                     MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                                                     (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+      BOOL brc = m_CopyPswdBitmap.Attach(
+                    ::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+                    MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+                    (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+
       ASSERT(brc);
+
       if (brc) {
         FixBitmapBackground(m_CopyPswdBitmap);
         CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);

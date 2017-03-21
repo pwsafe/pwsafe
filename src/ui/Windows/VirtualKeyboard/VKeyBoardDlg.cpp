@@ -414,9 +414,7 @@ CVKeyBoardDlg::~CVKeyBoardDlg()
   pws_os::FreeLibrary(m_OSK_module);
 
   // Reset double click mouse interval
-  BOOL brc;
-  brc = SetDoubleClickTime(m_uiMouseDblClkTime);
-  ASSERT(brc != 0);
+  VERIFY(SetDoubleClickTime(m_uiMouseDblClkTime));
 }
 
 void CVKeyBoardDlg::OnPostNcDestroy()
@@ -507,13 +505,11 @@ END_MESSAGE_MAP()
 
 void CVKeyBoardDlg::OnActivate(UINT nState, CWnd* , BOOL )
 {
-  BOOL brc;
   if (nState == WA_INACTIVE) {
-    brc = SetDoubleClickTime(m_uiMouseDblClkTime);
+    VERIFY(SetDoubleClickTime(m_uiMouseDblClkTime));
   } else {
-    brc = SetDoubleClickTime(1);
+    VERIFY(SetDoubleClickTime(1));
   }
-  ASSERT(brc != 0);
 }
 
 BOOL CVKeyBoardDlg::OnInitDialog()
