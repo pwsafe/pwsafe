@@ -86,7 +86,7 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 
   // If a separator is pressed, update displayed password subset
   if (bSeparator || nChar == VK_RETURN || LineLength(LineIndex(0)) == 0)
-    GetParent()->SendMessage(WM_DISPLAYPASSWORDSUBSET);
+    GetParent()->SendMessage(PWS_MSG_DISPLAYPASSWORDSUBSET);
 }
 
 //-----------------------------------------------------------------------------
@@ -116,7 +116,9 @@ void CPasswordSubsetDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CPasswordSubsetDlg, CPWDialog)
   //{{AFX_MSG_MAP(CPasswordSubsetDlg)
   ON_WM_CTLCOLOR()
-  ON_MESSAGE(WM_DISPLAYPASSWORDSUBSET, OnDisplayStatus)
+
+  ON_MESSAGE(PWS_MSG_DISPLAYPASSWORDSUBSET, OnDisplayStatus)
+
   ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopy)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()

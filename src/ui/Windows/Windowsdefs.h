@@ -25,6 +25,9 @@
 // Equivalent one from Expired Password dialog
 #define PWS_MSG_EXPIRED_PASSWORD_EDIT   (WM_APP + 32)
 
+// Copy subset of password to clipboard
+#define PWS_MSG_DISPLAYPASSWORDSUBSET   (WM_APP + 33)
+
 // Edit/Add extra context menu messages
 #define PWS_MSG_CALL_EXTERNAL_EDITOR    (WM_APP + 40)
 #define PWS_MSG_EXTERNAL_EDITOR_ENDED   (WM_APP + 41)

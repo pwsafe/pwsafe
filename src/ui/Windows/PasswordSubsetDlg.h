@@ -15,8 +15,6 @@
 #include "ControlExtns.h"
 #include "afxwin.h"
 
-#define WM_DISPLAYPASSWORDSUBSET (WM_APP + 1)
-
 // Simple class to ensure only numbers, space, comma and semi-colons
 // are entered
 class CNumEdit : public CEdit
@@ -60,10 +58,10 @@ private:
   const StringX m_passwd;
   CNumEdit m_ne_subset;
   CStaticExtn m_stcwarningmsg;
-  CBitmap m_CopyPswdBitmap;
+  CBitmap m_CopyPswdBitmap, m_DisabledCopyPswdBitmap;
   CEdit m_results;
   CString m_subset, m_warningmsg;
-  bool m_bshown;
+  bool m_bshown, m_bCopyPasswordEnabled;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
