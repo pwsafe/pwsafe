@@ -167,8 +167,6 @@ public:
   void ChangeColour() {m_bIsFocused = TRUE;}
   void UpdateState(const int message_number, const bool new_state);
 
-  void GetSel(long &nStartChar, long &nEndChar);
-  void SetSel(long nStartChar, long nEndChar);
   void EnableMenuItem(const int message_number, const bool bEnable);
 
 protected:
@@ -176,7 +174,6 @@ protected:
   afx_msg void OnSetFocus(CWnd *pOldWnd);
   afx_msg void OnKillFocus(CWnd *pNewWnd);
   afx_msg void OnContextMenu(CWnd *pWnd, CPoint point);
-  afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   afx_msg BOOL OnSetCursor(CWnd *pWnd, UINT nHitTest, UINT message);
   afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
   //}}AFX_MSG
@@ -188,8 +185,6 @@ private:
   BOOL m_bIsFocused;
   const COLORREF m_crefInFocus;
 
-  int m_nScrollHPos, m_nScrollVPos;
-  long m_nStartChar, m_nEndChar;
   std::vector<st_context_menu> m_vmenu_items;
   
   bool m_bContextMenu;
