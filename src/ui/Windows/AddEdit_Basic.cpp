@@ -1176,6 +1176,16 @@ LRESULT CAddEdit_Basic::OnWordWrap(WPARAM, LPARAM)
 
   m_ex_notes.UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
 
+  // No idea why this is necessary but fixes the issue of no horizontaol
+  // scroll bar active after turning off Word Wrap if the preferences
+  // are Word Wrap and Hidden Notes. Without this "fix", user would have to
+  // ensure that the Notes field looses focus by clicking on another field.
+  m_ex_notes.EnableWindow(FALSE);
+  m_ex_notes.EnableWindow(TRUE);
+
+  if (m_isNotesHidden)
+    ShowNotes();
+
   return 0L;
 }
 
