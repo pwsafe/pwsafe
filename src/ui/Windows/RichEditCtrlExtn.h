@@ -11,6 +11,9 @@
 // CRichEditControlExtn.h : header file
 // Extensions to standard CRichEditCtrl Control
 
+// Used in AboutDlg and GeneralMsgBox ONLY where html links are required
+// NOT used in AddEdit_Basic for Notes - it uses CRichEditExtn defined in "ControlExtns.h"
+
 #include <algorithm>
 #include <vector>
 #include <string>
@@ -21,6 +24,8 @@ class CRichEditCtrlExtn : public CRichEditCtrl
   // Construction
 public:
   CRichEditCtrlExtn();
+  virtual ~CRichEditCtrlExtn();
+
   void SetWindowText(LPCWSTR lpszString);
 
   // (Un)Register to be notified if the link clicked
@@ -34,6 +39,19 @@ public:
     int iEnd;
     wchar_t tcszURL[_MAX_PATH];
   };
+
+protected:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CRichEditCtrlExtn)
+  //}}AFX_VIRTUAL
+
+  // Generated message map functions
+  //{{AFX_MSG(CRichEditCtrlExtn)
+  afx_msg void OnLink(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
 
 private:
   // HTML formatting functions
@@ -67,26 +85,4 @@ private:
   // Callback returns "true" if it processed the link
   bool (*m_pfcnNotifyLinkClicked) (const CString &, const CString &, LPARAM);
   LPARAM m_NotifyInstance;
-
-  // Attributes
-private:
-
-  // Operations
-public:
-
-  // Overrides
-  // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CRichEditCtrlExtn)
-  //}}AFX_VIRTUAL
-
-  // Implementation
-public:
-  virtual ~CRichEditCtrlExtn();
-
-  // Generated message map functions
-protected:
-  //{{AFX_MSG(CRichEditCtrlExtn)
-  afx_msg void OnLink(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  //}}AFX_MSG
-  DECLARE_MESSAGE_MAP()
 };
