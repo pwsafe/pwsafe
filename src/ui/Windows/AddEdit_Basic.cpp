@@ -127,7 +127,7 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   m_ex_notes.SetContextMenu(vmenu_items);
 }
 
-void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
+void CAddEdit_Basic::DoDataExchange(CDataExchange *pDX)
 {
   CAddEdit_PropertyPage::DoDataExchange(pDX);
 
@@ -413,8 +413,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
     ShowNotes(true);
   } else {
     HideNotes(true);
-    m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, false);
-    m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, false);
   }
 
   // Get current font size
@@ -445,14 +443,11 @@ BOOL CAddEdit_Basic::OnInitDialog()
       pBtn->SetBitmap(m_CopyPswdBitmap);
   }
 
-
-  // Update data data before setting initial Word Wrap
-  UpdateData(FALSE);
-
   // Set initial Word Wrap
   m_ex_notes.SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
   m_ex_notes.UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
 
+  UpdateData(FALSE);
   m_bInitdone = true;
   return TRUE;
 }
@@ -1016,10 +1011,6 @@ void CAddEdit_Basic::HideNotes(const bool bForceHide)
     m_ex_notes.EnableWindow(FALSE);
     m_ex_hidden_notes.ShowWindow(SW_SHOW);
     m_ex_hidden_notes.EnableWindow(TRUE);
-
-    // Disable zoom of hidden text
-    m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, false);
-    m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, false);
   }
 }
 
@@ -1185,7 +1176,15 @@ LRESULT CAddEdit_Basic::OnWordWrap(WPARAM, LPARAM)
 
   m_ex_notes.UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
 
-  UpdateData(FALSE);
+  // No idea why this is necessary but fixes the issue of no horizontaol
+  // scroll bar active after turning off Word Wrap if the preferences
+  // are Word Wrap and Hidden Notes. Without this "fix", user would have to
+  // ensure that the Notes field looses focus by clicking on another field.
+  m_ex_notes.EnableWindow(FALSE);
+  m_ex_notes.EnableWindow(TRUE);
+
+  if (m_isNotesHidden)
+    ShowNotes();
 
   return 0L;
 }

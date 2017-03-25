@@ -8,8 +8,13 @@
 // RichEditCtrlExtns.cpp
 //
 
+// Used in AboutDlg and GeneralMsgBox ONLY where html links are required
+// NOT used in AddEdit_Basic for Notes - it uses CRichEditExtn defined in "ControlExtns.h"
+
 #include "stdafx.h"
+
 #include "RichEditCtrlExtn.h"
+
 #include <algorithm>
 #include <vector>
 #include <string>
