@@ -726,7 +726,7 @@ msgstr "&Файл"
 
 #. Resource IDs: (32112 - PopupMenuEx)
 msgid "&Filters"
-msgstr "&Фильтры"
+msgstr "&Фильтры пользователя"
 
 # Элемент меню отчётов
 #. Resource IDs: (32121 - MenuEx)
@@ -953,7 +953,7 @@ msgstr "&Размер:"
 #. Resource IDs: (32141 - PopupMenuEx)
 #, fuzzy
 msgid "&Subviews"
-msgstr "Под&виды"
+msgstr "С&тандартные фильтры"
 
 #. Resource IDs: (32128 - MenuEx)
 msgid "&Synchronize"
