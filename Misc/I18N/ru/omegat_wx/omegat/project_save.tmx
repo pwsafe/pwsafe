@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="OmegaT-3.6.0" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.1_0_9688" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -2291,6 +2291,14 @@ This version of PasswordSafe does not support more than %d entries in a database
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Are you sure you want to delete the selected group?</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Подтверждаете удаление выбранной группы?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>At least a title and a
 password are required.</seg>
       </tuv>
@@ -3867,6 +3875,14 @@ Action:</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Щёлкните дважды для копирования связанной команды</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Double-Click on entry to Send Email</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Щёлкните дважды для отправки письма по этому адресу</seg>
       </tuv>
     </tu>
     <tu>
@@ -5526,6 +5542,14 @@ username field.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Последнее обращение:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Last found entries</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Найденные элементы</seg>
       </tuv>
     </tu>
     <tu>
@@ -7734,6 +7758,32 @@ Content-Transfer-Encoding: 8bitr</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2017-03-26 19:02+0300
+PO-Revision-Date: 2017-03-26 15:22+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T161141Z" creationid="pm_kan" creationdate="20170326T161141Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: &lt;pm_kan@users.sourceforge.net&gt;
+POT-Creation-Date: 2017-03-26 19:11+0300
+PO-Revision-Date: 2017-03-26 19:11+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: 
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bitr</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Pronounceable passwords</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -7746,6 +7796,14 @@ Content-Transfer-Encoding: 8bitr</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Свойства</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Protect Entry</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Защитить элемент</seg>
       </tuv>
     </tu>
     <tu>
