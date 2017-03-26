@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="OmegaT-3.6.0" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.1_0_9688" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -266,6 +266,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T175252Z">
         <seg>«Password» — пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>"Subviews" are predefined filters that when selected, show only the entries that match their criteria.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T171929Z" creationid="pm_kan" creationdate="20170326T171929Z">
+        <seg>Здесь располагаются фильтры с некоторыми наперёд заданными условиями.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1944,14 +1952,6 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Note: By default, passwords are obscured.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T140337Z">
-        <seg>Примечание. По умолчанию пароль скрыт.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>Note: By pressing the Ctrl key down whilst clicking on the AutoType and Run Command labels, variables will not be substituted in the strings before copying to the clipboard.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T192825Z">
@@ -2176,6 +2176,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Note: If this filter is active, as it is based on displaying entries in the database found during the last Find operation and only these, i.e. the Find operation is not redone should the database be changed.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T173934Z" creationid="pm_kan" creationdate="20170326T173642Z">
+        <seg>Примечание. Т.␣к. фильтр учитывает элементы, которые были отобраны при выполнении последней операции поиска (поиск не выполняется повторно), список отображаемых элементов не изменится, если после этого элементы были изменены.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Notes: Free-form general notes field</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T102902Z">
@@ -2200,6 +2208,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Password Safe Format</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T181914Z" creationid="pm_kan" creationdate="20170326T181914Z">
+        <seg>Формат Password Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Password Safe Preferences</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T171645Z">
@@ -2217,17 +2233,17 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Password Safe allows you to define filters, and display only those entries that match a given filter.</seg>
+        <seg>Password Safe allows you to define filters and display only those entries that match a given filter.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T160300Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T174521Z" creationid="pm_kan" creationdate="20170326T174521Z">
         <seg>Password Safe позволяет определить фильтры и отобразить лишь те элементы, которые удовлетворяют заданным в них условиям.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Password Safe allows you to define filters, and display only those entries that matches a given filter.</seg>
+        <seg>Password Safe allows you to define filters, and display only those entries that match a given filter.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T211056Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T160300Z">
         <seg>Password Safe позволяет определить фильтры и отобразить лишь те элементы, которые удовлетворяют заданным в них условиям.</seg>
       </tuv>
     </tu>
@@ -2745,14 +2761,6 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>This is the same as the '-c' option, with the addition that the application is started as minimized.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T121555Z">
-        <seg>Параметр аналогичен «-c», но, дополнительно, запуск производится в свёрнутом виде.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>Note: The file can be any file.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T112133Z">
@@ -3161,14 +3169,6 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>See also Exporting Entries for more information.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20101004T191452Z">
-        <seg>Для получения дополнительной информации см. Экспорт элементов.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>Note: The report may contain sensitive data and care should be taken when selecting the "save to disk" option.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T161306Z">
@@ -3393,6 +3393,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>A group cannot be renamed to multiple groups through the Rename Group menu item or shortcut, i.e., group "a" cannot be renamed to "x.y".</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T185212Z" creationid="pm_kan" creationdate="20170326T185212Z">
+        <seg>При использовании пункта меню Переименовать группу или горячей клавиши невозможно переименовать группу так, чтобы получилось несколько вложенных групп (например, группа не может быть переименована в «x.y»).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>A list of currently in use entry keyboard shortcuts will be displayed below the Password Safe program related menu shortcuts on the OptionsShortcuts tab via "Manage → Options → Shortcuts".</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175205Z" creationid="pm_kan" creationdate="20140113T140129Z">
@@ -3601,10 +3609,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Add a New Group</seg>
+        <seg>Add a New Group via Tree View</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20101017T203152Z">
-        <seg>Добавление новой группы</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T184834Z" creationid="pm_kan" creationdate="20170326T184834Z">
+        <seg>Добавление новой группы в древовидном списке</seg>
       </tuv>
     </tu>
     <tu>
@@ -3637,6 +3645,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T081949Z">
         <seg>Редактирование/просмотр элемента и функция создания паролей</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Add/Edit font size in tenths of a point</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165836Z" creationid="pm_kan" creationdate="20170326T165836Z">
+        <seg>Размер шрифта в диалоге вставки/редактирования в десятых долях пункта</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>AddEditFontPtSz</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165739Z" creationid="pm_kan" creationdate="20170326T165739Z">
+        <seg>AddEditFontPtSz</seg>
       </tuv>
     </tu>
     <tu>
@@ -3961,6 +3985,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Also by default, passwords are obscured when editing the entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T183943Z" creationid="pm_kan" creationdate="20170326T183943Z">
+        <seg>При редактировании пароль по умолчанию скрыт.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Also, please see above on possible issues when using the '\z' field.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T160355Z" creationid="pm_kan" creationdate="20161105T160355Z">
@@ -4257,6 +4289,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>As all filters, they can be cleared by double-clicking the red and white striped "filter active" indicator at the bottom right of the Status Bar, as can be seen in the following images where the filter is active.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T172500Z" creationid="pm_kan" creationdate="20170326T172015Z">
+        <seg>Как и любые другие фильтры, они могут быть сброшены двойным щелчком по индикатору активного фильтра (заштрихованный квадрат в правом углу строки состояния), который можно увидеть на иллюстрациях ниже.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>As entry keyboard shortcuts cannot change the database when used, unlike say a menu item shortcut that could delete an entry, as a safety measure, entry keyboard shortcuts take precedence over menu item shortcuts.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T134719Z" creationid="pm_kan" creationdate="20140113T134719Z">
@@ -4309,14 +4349,6 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T160131Z">
         <seg>Начиная с версии 3.05 настройки были разбиты на две группы: связанных с контейнером (хранятся в контейнере) и связанные с пользователем/машиной (хранятся в отдельном файле настроек).</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>As part of the clearing process, the undo/redo log is also erased, as this may also contain sensitive information.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T152926Z" creationid="pm_kan" creationdate="20161105T152926Z">
-        <seg>При очистке памяти удаляется и журнал отката/повтора действий, т. к. он может содержать защищаемую информацию.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4569,18 +4601,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Before exporting, you will be asked to input the Master Password as confirmation that you intend to export data from the database into an unencrypted text file.</seg>
+        <seg>Before exporting, you will be asked to input the Master Passphrase as confirmation that you intend to export data from the database into an unencrypted XML file.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161128T172740Z" creationid="pm_kan" creationdate="20161128T172740Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T181811Z" creationid="pm_kan" creationdate="20170326T181811Z">
+        <seg>Для подтверждения экспорта данных в незашифрованный XML файл, будет предложено ввести мастер-пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Before exporting, you will be asked to input the Master Passphrase as confirmation that you intend to export data from the database into an unencrypted text file.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T181618Z" creationid="pm_kan" creationdate="20170326T181618Z">
         <seg>Для подтверждения экспорта данных в незашифрованный файл, будет предложено ввести мастер-пароль.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Before exporting, you will be asked to input the Master password as confirmation that you intend to export data from the database into an unencrypted XML file.</seg>
+        <seg>Before exporting, you will be asked to input the Master Passphrase as confirmation that you intend to export data from the database into another Password Safe database.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T161049Z">
-        <seg>Для подтверждения экспорта данных в незашифрованный XML-файл, будет предложено ввести мастер-пароль.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T182037Z" creationid="pm_kan" creationdate="20170326T182023Z">
+        <seg>Для подтверждения экспорта данных в другой контейнер Password Safe, будет предложено ввести мастер-пароль.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4725,6 +4765,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T211030Z">
         <seg>При обновлении версии существующий файл настроек не переносится автоматически («если что-то работает, не трогай это»).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>By default, usernames and passwords are not displayed in the Tree View.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T183617Z" creationid="pm_kan" creationdate="20170326T183617Z">
+        <seg>По умолчанию имя пользователя и пароль не отображаются в дереве.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5595,9 +5643,8 @@
       <tuv lang="EN-US">
         <seg>Copy the entry's password to the clipboard when invoking the entry's "Browse to URL"</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T183451Z">
-        <seg>При переходе по ссылке копировать пароль в буфер обмена
----------</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T185648Z">
+        <seg>При переходе по ссылке копировать пароль в буфер обмена</seg>
       </tuv>
     </tu>
     <tu>
@@ -6034,6 +6081,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Depending on whether the user has enable the use of the System Tray, this locks the currently open password safe database either to the Task Bar (left-click to show dialog to unlock) or into the System Tray (right-click to show the context menu where you can restore the database or just unlock it).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T164157Z" creationid="pm_kan" creationdate="20170326T163028Z">
+        <seg>Если включено сворачивание в область уведомлений, для разблокировки в контекстном меню значка нужно будет выбрать пункт «Разблокировать» или «Восстановить». В противном случае нужно нажать левой кнопкой мыши по кнопке приложения в панели задач.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Depending on your language, certain keys with the Alt key are reserved.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T102947Z" creationid="pm_kan" creationdate="20140113T102829Z">
@@ -6166,6 +6221,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101004T183705Z">
         <seg>Показать часть пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Displaying the username and the password are controlled by preferences (see: Display Tab).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T183732Z" creationid="pm_kan" creationdate="20170326T183651Z">
+        <seg>Включить отображение можно в настройках (см.␣вкладку Вид).</seg>
       </tuv>
     </tu>
     <tu>
@@ -6482,6 +6545,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Editing Existing Entries via the Tree View</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T182353Z" creationid="pm_kan" creationdate="20170326T182353Z">
+        <seg>Редактирование элементов в древовидном списке</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Editing an entry is disabled if the database is opened read-only.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T155848Z">
@@ -6746,6 +6817,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Expiry dates</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T172857Z" creationid="pm_kan" creationdate="20170326T172857Z">
+        <seg>Элементы с заданными датами истечения пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>ExplorerTypeTree</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T182608Z">
@@ -6754,18 +6833,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Export Entry in XML format</seg>
+        <seg>Export Entry or Group</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T212913Z">
-        <seg>Экспортировать элемент в XML формат</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>Export Entry to Plain Text</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20101004T191157Z">
-        <seg>Экспортировать элемент в простой текст</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T181331Z" creationid="pm_kan" creationdate="20170326T181331Z">
+        <seg>Экспорт элемента или группы</seg>
       </tuv>
     </tu>
     <tu>
@@ -7004,8 +7075,8 @@
       <tuv lang="EN-US">
         <seg>Filter Menu</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T151343Z">
-        <seg>Меню «Фильтры»</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T161450Z">
+        <seg>Меню «Фильтры пользователя»</seg>
       </tuv>
     </tu>
     <tu>
@@ -7086,6 +7157,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T212745Z">
         <seg>Поиск</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Find Next (F3) and Find Previous (Shift-F3) will still be available.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T173655Z" creationid="pm_kan" creationdate="20170326T173419Z">
+        <seg>Но сочетания клавиш для перехода к предыдущему (Shift+F3) и следующему (F3) элементу продолжают работать.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7594,14 +7673,6 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Groups do not exist in their own right.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T140621Z">
-        <seg>Группы не существуют как таковые.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>Heading</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T202405Z">
@@ -7882,6 +7953,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>However, the undo/redo log is retained so that changes can be undone (or redone) after unlocking.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T170739Z" creationid="pm_kan" creationdate="20170326T170739Z">
+        <seg>Но, чтобы была возможность откатить правки после разблокировки контейнера, данные журнала отката/повтора не уничтожаются.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>However, there is no facility to also export the values contained in these Named Password Policies.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T131536Z">
@@ -7902,6 +7981,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T183501Z">
         <seg>Но мы предоставляем XSL-файлы для преобразования их в совместимый формат (KPV1_to_PWS.xslt и KPV2_to_PWS.xslt).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>However, you may clear the username field, as long as it is being displayed, by entering "[]" during the rename implying an empty value.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T184304Z" creationid="pm_kan" creationdate="20170326T184304Z">
+        <seg>Чтобы сбросить имя пользователя при переименовании, введите «[]».</seg>
       </tuv>
     </tu>
     <tu>
@@ -7958,6 +8045,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T162902Z">
         <seg>Если заголовок не совпадает ни с одним из указанных, данные из этого столбца игнорируются.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If a Find hadn't been performed or it had been cleared, then this menu item will be grayed out.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T173020Z" creationid="pm_kan" creationdate="20170326T173020Z">
+        <seg>Пункт меню неактивен, если поиск не выполнялся или был отменён.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8038,6 +8133,30 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135606Z" creationid="pm_kan" creationdate="20140113T135606Z">
         <seg>Элементы был добавлен при слиянии контейнеров.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If an entry is deleted, it will be removed from the display.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T174142Z" creationid="pm_kan" creationdate="20170326T174142Z">
+        <seg>Если элемент был удалён, он не будет отображён.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If an entry is duplicated, the new copy will not be included in the display.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T174121Z" creationid="pm_kan" creationdate="20170326T174121Z">
+        <seg>Если была создана копия элемента, она не будет отображена после применения фильтра.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If an entry is edited so that it no longer satisfies the previous Find, it will still be displayed.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T174027Z" creationid="pm_kan" creationdate="20170326T174027Z">
+        <seg>Элемент продолжает отображаться, даже если он был отредактирован и больше не удовлетворяет исходным условиям поиска.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8234,10 +8353,18 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>If item Save database immediately after Edit or Add in menu Manage → Options → Backups is unchecked, changed item will not be saved, but they will be shown in a different colour.</seg>
+        <seg>If item Save database immediately after Edit or Add in menu Manage → Options → Backups is unchecked, changed item will not be saved immediately, but they will be shown in a different colour.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T175516Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T172550Z" creationid="pm_kan" creationdate="20170326T172550Z">
         <seg>Если на вкладке Сервис→Настройки→Резервные копии снят флажок Сохранять контейнер после вставки или редактирования, изменения не сохраняются автоматически, а выделяются цветом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If just a filename is given, without a path, it will be searched for in the directory in which the application was invoked unless overridden by the PWS_PREFSDIR environment variable (see its description in the Preferences Section).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T185956Z" creationid="pm_kan" creationdate="20170326T174821Z">
+        <seg>Если указано только имя файла (без пути), то поиск файла производится в каталоге, из которого было запущено приложение, но каталог может быть переопределён через переменную окружения PWS_PREFSDIR (см.␣описание в разделе Настройки).</seg>
       </tuv>
     </tu>
     <tu>
@@ -8254,6 +8381,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152729Z">
         <seg>В противном случае строка URL подставляется в поле «Ссылка» с предварительной заменой только последовательностей вида {S:FieldName}.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If new entries are added either directly or, say, via Merge, these will also not be displayed as they were not in the database when the last Find operation was performed.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T174351Z" creationid="pm_kan" creationdate="20170326T174351Z">
+        <seg>Если элементы были добавлены явно. или через операцию слияния, они не будут отображены, т.␣к. их не было на момент выполнения операции поиска.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8286,6 +8421,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T132729Z" creationid="pm_kan" creationdate="20140113T132729Z">
         <seg>Иначе, при недостатке ширины, будет отображаться горизонтальная полоса прокрутки.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If not, a "u" will be prefixed to the username and a "h" will be prefixed to the hostname as appropriate.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T180319Z" creationid="pm_kan" creationdate="20170326T180319Z">
+        <seg>Если это не выполняется, будет добавлена приставка: «u» к имени пользователя, «h» к имени ПК.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8334,6 +8477,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T135127Z" creationid="pm_kan" creationdate="20140113T135127Z">
         <seg>Если ни Alt, ни Ctrl не присутствуют в комбинации, для получения уникальной комбинации проверяются все комбинации модификаторов Ctrl, Alt и Shift (в порядке Alt; Alt+Shift; Ctrl; Ctrl+Shift, Alt+Ctrl; Alt+Ctrl+Shift).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If other characters are present, they will be replaced by the underscore ("_").</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T181211Z" creationid="pm_kan" creationdate="20170326T181211Z">
+        <seg>Любые другие символы будут заменены на подчёркивание.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8426,6 +8577,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>If the Find Toolbar was visible when this filter was activated, it will be closed, since no new Finds can be performed whilst this filter is active.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T173303Z" creationid="pm_kan" creationdate="20170326T173303Z">
+        <seg>Пока данный фильтр активен, условие поиска не может быть изменено, поэтому при его активации скрывается панель поиска.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If the Notes field contains more than one line, it will include any embedded carriage return (CR) or line feed (LF).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174819Z" creationid="pm_kan" creationdate="20160617T174819Z">
@@ -8438,6 +8597,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20160617T174706Z" creationid="pm_kan" creationdate="20160617T174706Z">
         <seg>Если строка URL начинается с «\\» или «cmd://» (независимо от регистра), то значение помещается в поле «Выполнить», но перед этим производится подстановка ключевых последовательностей (см. ниже).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If the above deleted entry is reinstated, i.e. via Undo (Ctrl-Z), the entry will again be displayed.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T174238Z" creationid="pm_kan" creationdate="20170326T174238Z">
+        <seg>Если элемент будет восстановлен с помощью операции отката (Ctrl+Z), он снова будет показан.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8622,6 +8789,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T223441Z">
         <seg>Если поле заполнено, становится активной кнопка «Отправить».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If this filter is active and you save your database changes, it will be cancelled and the full database will be displayed.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T172738Z" creationid="pm_kan" creationdate="20170326T172738Z">
+        <seg>Если при активном фильтре сохранить контейнер, он будет снят и отобразятся  все элементы.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8858,9 +9033,17 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>If you select this menu item, only entries with an expiry date will be shown in the list.</seg>
+        <seg>If you select this menu item, only entries that were found during the last Find operation will be shown.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110307T102206Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T172953Z" creationid="pm_kan" creationdate="20170326T172953Z">
+        <seg>Если выбран этот пункт меню, в списке отображаются только те элементы, которые были отобраны при последней операции поиска.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you select this menu item, only entries with a defined expiry date will be shown in the list.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T172909Z" creationid="pm_kan" creationdate="20170326T172909Z">
         <seg>Если выбран этот пункт меню, в списке отображаются только те элементы, у которых задана дата истечения пароля.</seg>
       </tuv>
     </tu>
@@ -8988,7 +9171,7 @@
       <tuv lang="EN-US">
         <seg>If, however, the PWS_PREFSDIR environment variable is set, pwsafe will use the configuration file stored there.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161128T173753Z" creationid="pm_kan" creationdate="20161128T173753Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165317Z" creationid="pm_kan" creationdate="20170326T165317Z">
         <seg>Но, если задана переменная окружения PWS_PREFSDIR, Password Safe будет использовать файл настроек, указанный в ней.</seg>
       </tuv>
     </tu>
@@ -8996,8 +9179,8 @@
       <tuv lang="EN-US">
         <seg>If, however, you find that you have several filters that you wish to use repeatedly, then you can store them and manage them effectively via the "View → Filter → Manage..." dialog box.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180117Z">
-        <seg>Если же у вас есть фильтры, которые хотелось бы использовать повторно, их можно сохранить воспользовавшись пунктом меню Вид→Фильтры→Управление.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T161617Z">
+        <seg>Если же у вас есть фильтры, которые хотелось бы использовать повторно, их можно сохранить воспользовавшись пунктом меню Вид→Фильтры пользователя→Управление.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9098,10 +9281,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>In Windows Vista or Windows 7, the pwsafe.cfg file can be found in: "C:\Users\&lt;username&gt;\AppData\Local\PasswordSafe" and in Windows XP, it can be found in: "C:\Documents and Settings\&lt;username&gt;\Application Data\PasswordSafe".</seg>
+        <seg>In Windows Vista and later, the pwsafe.cfg file can be found in: "C:\Users\&lt;username&gt;\AppData\Local\PasswordSafe" but, in Windows XP, it can be found in: "C:\Documents and Settings\&lt;username&gt;\Application Data\PasswordSafe".</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161128T173937Z" creationid="pm_kan" creationdate="20161128T173844Z">
-        <seg>В Windows Vista и Windows 7 файл «pwsafe.cfg» находится в каталоге C:\Users\&lt;имя_пользователя&gt;\AppData\Local\PasswordSafe, а в Windows XP — в каталоге C:\Documents and Settings\&lt;имя_пользователя&gt;\Application Data\PasswordSafe.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165718Z" creationid="pm_kan" creationdate="20170326T165718Z">
+        <seg>В Windows Vista и последующих версиях файл «pwsafe.cfg» находится в каталоге C:\Users\&lt;имя_пользователя&gt;\AppData\Local\PasswordSafe, а в Windows XP — в каталоге C:\Documents and Settings\&lt;имя_пользователя&gt;\Application Data\PasswordSafe.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9430,6 +9613,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T152741Z">
         <seg>Добавляются в поле «Заметки» в виде:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Instead, you must Edit the entry either via the Edit menu or by the right-click context menu as indicated above.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T184751Z" creationid="pm_kan" creationdate="20170326T184751Z">
+        <seg>В этом случае для изменения потребуется использовать диалог редактирования, который можно открыть через контекстное меню или меню «Правка», как описано выше.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9826,6 +10017,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Last Find Filter</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T174357Z" creationid="pm_kan" creationdate="20170326T174357Z">
+        <seg>Результаты последнего поиска</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Last Find results</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T172918Z" creationid="pm_kan" creationdate="20170326T172918Z">
+        <seg>Результаты последнего поиска</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Last view selected: Tree or List view ("tree" or "list")</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T191536Z">
@@ -9922,6 +10129,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Lock</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T161704Z" creationid="pm_kan" creationdate="20170326T161704Z">
+        <seg>Заблокировать</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Lock Password Safe database when the user locks their Windows session</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T180643Z">
@@ -9982,6 +10197,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T182332Z">
         <seg>LockOnWindowLock</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Locks the current safe.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165236Z" creationid="pm_kan" creationdate="20170326T165236Z">
+        <seg>Заблокировать текущий контейнер</seg>
       </tuv>
     </tu>
     <tu>
@@ -10762,9 +10985,9 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Note that this sets a &gt;preference, so it's enough to use this flag once on a given machine.</seg>
+        <seg>Note that this sets a preference, so it's enough to use this flag once on a given machine.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20151004T163108Z" creationid="pm_kan" creationdate="20151004T163108Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T181257Z" creationid="pm_kan" creationdate="20170326T181257Z">
         <seg>Эти три параметра изменяют настройки приложения, поэтому, для установки предпочтений на данной машине достаточно запустить Password Safe с требуемым параметром один раз.</seg>
       </tuv>
     </tu>
@@ -10858,6 +11081,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Note: As the configuration file uses XML, the username and hostname must satisfy the XML standards:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T175247Z" creationid="pm_kan" creationdate="20170326T175247Z">
+        <seg>Примечание. Т.␣к. файл настроек использует формат XML, имя пользователя и имя ПК должны соответствовать требованиям стандарта:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Note: Setting non-standard keys may make these particular shortcuts unavailable if you then use another computer with a keyboard that does not have these keys.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T202356Z">
@@ -10906,10 +11137,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Note: all entry information in these commands remain encrypted in memory.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T170901Z" creationid="pm_kan" creationdate="20170326T170901Z">
+        <seg>Примечание. Указанная информация об элементах хранится в памяти в зашифрованном виде.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Notes</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T105831Z">
         <seg>Заметки</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Notes font size in tenths of a point</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165904Z" creationid="pm_kan" creationdate="20170326T165904Z">
+        <seg>Размер шрифта для заметок в десятых долях пункта</seg>
       </tuv>
     </tu>
     <tu>
@@ -10926,6 +11173,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100920T173501Z">
         <seg>Примечания:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>NotesFontPtSz</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165844Z" creationid="pm_kan" creationdate="20170326T165844Z">
+        <seg>NotesFontPtSz</seg>
       </tuv>
     </tu>
     <tu>
@@ -11698,6 +11953,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Password font size in tenths of a point</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165924Z" creationid="pm_kan" creationdate="20170326T165924Z">
+        <seg>Размер шрифта для отображения пароля в десятых долях пункта</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Password generation policy - convert generated passwords to be more pronounceable</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T175037Z">
@@ -11794,6 +12057,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>PasswordFontPtSz</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165910Z" creationid="pm_kan" creationdate="20170326T165910Z">
+        <seg>PasswordFontPtSz</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Path and name of last backup file</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T203507Z">
@@ -11839,6 +12110,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T200838Z">
         <seg>Ключевые подстановки регистронезависимы.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Plain Text</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T181349Z" creationid="pm_kan" creationdate="20170326T181349Z">
+        <seg>Простой текст</seg>
       </tuv>
     </tu>
     <tu>
@@ -11967,6 +12246,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T124615Z">
         <seg>Подготовка нового письма по данным, указанным в поле E-mail.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Press the shortcut key to rename (default F2) and overtype the displayed text (format is "title [username] {password}").</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T183523Z" creationid="pm_kan" creationdate="20170326T183409Z">
+        <seg>Нажмите комбинацию клавиш для переименования (по умолчанию F2) и измените отображаемое значение (оно имеет формат «заголовок [имя пользователя] {пароль}»).</seg>
       </tuv>
     </tu>
     <tu>
@@ -12419,10 +12706,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Right-click on the group and select Rename Group from the drop down list</seg>
+        <seg>Right-click on a group and select Rename Group from the context menu OR</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T231758Z">
-        <seg>Щёлкните правой кнопкой мыши на имени группы и в контекстном меню выберите пункт Переименовать группу.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T183025Z" creationid="pm_kan" creationdate="20170326T183025Z">
+        <seg>Щёлкните правой кнопкой мыши на имени группы и в контекстном меню выберите пункт Переименовать группу или</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Right-click on the entry and select Edit/View Entry from the context menu</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T182841Z" creationid="pm_kan" creationdate="20170326T182841Z">
+        <seg>Щёлкните правкой кнопкой мыши по элементу для вывода контекстного меню, после чего выберите там Редактирование/просмотр элемента</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Right-click on the group and select Rename Group from the context menu or</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T184908Z" creationid="pm_kan" creationdate="20170326T184908Z">
+        <seg>Щёлкните правой кнопкой мыши на имени группы и в контекстном меню выберите пункт Переименовать группу  или</seg>
       </tuv>
     </tu>
     <tu>
@@ -12771,10 +13074,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>See also the description of PWS_PREFSDIR in the Preferences Section.</seg>
+        <seg>See also Exporting Entries for more information.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140716T120118Z" creationid="pm_kan" creationdate="20140716T120118Z">
-        <seg>См. также описание переменной окружения PWS_PREFSDIR в разделе Настройки Password Safe.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T182146Z" creationid="pm_kan" creationdate="20170326T182146Z">
+        <seg>Для получения дополнительной информации см. Экспорт элементов.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12907,6 +13210,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Select Edit/View Entry from the Edit menu OR</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T182500Z" creationid="pm_kan" creationdate="20170326T182500Z">
+        <seg>В меню Правка нажмите Редактирование/просмотр элемента или</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Select Nested Tree or Flattened List</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101106T171921Z">
@@ -12955,10 +13266,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Select the password entry to edit from the list</seg>
+        <seg>Select the entry to edit from the list</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T231553Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T191541Z" creationid="pm_kan" creationdate="20170326T182219Z">
         <seg>Выберите элемент для редактирования.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Select the entry to edit from the list then:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T191716Z" creationid="pm_kan" creationdate="20170326T182431Z">
+        <seg>Выделите элемент для редактирования.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Select the group and press the shortcut to rename (default F2) and overtype the group name.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T185013Z" creationid="pm_kan" creationdate="20170326T185013Z">
+        <seg>Выделите группу и нажмите комбинацию клавиш для переименования (по умолчанию F2), после чего укажите новое имя.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13316,14 +13643,6 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Show entries with Expiry dates</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110307T101840Z">
-        <seg>Показать элементы с заданными датами истечения пароля</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>Show grid lines in list view</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181828Z">
@@ -13352,15 +13671,6 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T182217Z">
         <seg>При запуске Password Safe отображать панель поиска</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>Show unsaved changes</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181220Z">
-        <seg>
-Показать несохранённые изменения</seg>
       </tuv>
     </tu>
     <tu>
@@ -13457,6 +13767,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T092220Z">
         <seg>Для отображения подсказки достаточно навести мышку на значок.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Since square and curly brackets are used to delimit the username and password, it is NOT possible to rename an entry in place (e.g. using F2) if the title, username (if displayed) or password (if displayed) contain any of these characters.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T184611Z" creationid="pm_kan" creationdate="20170326T184611Z">
+        <seg>Так как квадратные и фигурные скобки используются для отделения имени пользователя и пароля, невозможно изменить элемент переименованием (например, по кнопке F2), если отображаемое имя или пароль содержат одну из таких скобок.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13625,6 +13943,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T113622Z">
         <seg>Внешние фильтры удобны тем, что их можно использовать в нескольких контейнерах, а фильтры сохранённые внутри контейнера не разглашают потенциально важную информацию, заданную в условиях (части имён, паролей и пр.).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Subviews</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T171433Z" creationid="pm_kan" creationdate="20170326T171433Z">
+        <seg>Стандартные фильтры</seg>
       </tuv>
     </tu>
     <tu>
@@ -14069,10 +14395,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The Lock button can also be placed on the Toolbar using the Toolbar Customization (right-click on the Toolbar).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165143Z" creationid="pm_kan" creationdate="20170326T164344Z">
+        <seg>Кнопка блокировки также может быть добавлена на панель инструментов (щёлкните правой кнопкой по панели для доступа к настройкам).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The Manage Filters dialog box has two tables.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T181122Z">
         <seg>Диалоговое окно управления фильтрами содержит две таблицы.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The Master Passphrase will be required to reopen/unlock the database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T164326Z" creationid="pm_kan" creationdate="20170326T164326Z">
+        <seg>Затем потребуется ввести мастер-пароль.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14489,6 +14831,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T162931Z">
         <seg>Поля должны быть разделены определённым символом, который указывается в диалоге импорта.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The first character must be alphanumeric.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T180019Z" creationid="pm_kan" creationdate="20170326T180019Z">
+        <seg>Начинаться с буквы или цифры.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15093,26 +15443,34 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The selected entry or all entries within the selected group will be exported as a new Password Safe database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T182005Z" creationid="pm_kan" creationdate="20170326T182005Z">
+        <seg>Выбранный элемент (все элементы выбранной группы) экспортируются в новый контейнер Password Safe.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The selected entry or all entries within the selected group will be exported as plain text.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T181523Z" creationid="pm_kan" creationdate="20170326T181523Z">
+        <seg>Выбранный элемент (все элементы выбранной группы) экспортируются в текстовый файл.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The selected entry or all entries within the selected group will be exported in XML format.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T181751Z" creationid="pm_kan" creationdate="20170326T181751Z">
+        <seg>Выбранный элемент (все элементы выбранной группы) экспортируются в файл формата XML.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The selected entry or group of entries will be protected.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110307T093929Z">
         <seg>Выбранный элемент или группа элементов будут защищены.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>The selected entry will be exported as plain text.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T212057Z">
-        <seg>Экспорт выбранного элемента в текстовый файл.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>The selected entry will be exported in XML format.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T212157Z">
-        <seg>Экспорт выбранного элемента в XML формат.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15153,14 +15511,6 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T202651Z">
         <seg>Комбинации клавиш сохраняются в файле настроек и будут доступны при последующих запусках Password Safe.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>The simplest method of ensuring a new group remains is to create a new entry and type in the new group path in the group field (groups are separated by periods ('.')).</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T141402Z" creationid="pm_kan" creationdate="20140113T141402Z">
-        <seg>Для того, чтобы новая группа гарантированно сохранилась, можно создать новый элемент и набрать требуемое имя в поле «Группа» (вложенные группы разделяются точкой «.»).</seg>
       </tuv>
     </tu>
     <tu>
@@ -15233,6 +15583,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T202723Z">
         <seg>Время хранится вместе с элементом и может быть просмотрено в диалоге редактирования/просмотра элемента.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The title and password are the only mandatory fields for an entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T184135Z" creationid="pm_kan" creationdate="20170326T184135Z">
+        <seg>Только поля «заголовок» и «пароль» являются обязательными.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15429,10 +15787,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Therefore, if you add a group and the database is saved before you add an entry in it or its sub-group, it will disappear.</seg>
+        <seg>Therefore, if they are ommited during rename, they will retain their previous values.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T141425Z">
-        <seg>Таким образом, если сохранить контейнер сразу после создания группы (до того, как в группу или её подгруппу будут добавлены элементы), группа исчезнет.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T184214Z" creationid="pm_kan" creationdate="20170326T184214Z">
+        <seg>Но, если их не указать при переименовании, будут использоваться их предыдущие значения.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15565,10 +15923,18 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>They exist by virtue of an entry being present with within it or within a sub-group of the group.</seg>
+        <seg>They must only contain alphanumeric characters or one or more of the underscore, hyphen, colon or full stop characters ("_-:.").</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T141253Z">
-        <seg>Группа существует только если внутри неё или её подгруппы есть элементы.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T181028Z" creationid="pm_kan" creationdate="20170326T181028Z">
+        <seg>Другие символы должны быть цифрами, буквами, или одним из следующих символов: подчёркивание («_»), дефис («-»), двоеточие («:») или точка («.»).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>They work in a hierachy i.e. passwords can only be displayed if usernames are displayed.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T183854Z" creationid="pm_kan" creationdate="20170326T183854Z">
+        <seg>Параметры отображения являются зависимыми: включить отображение паролей можно только когда выводятся имена пользователей.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15895,8 +16261,8 @@
       <tuv lang="EN-US">
         <seg>This is equivalent to selecting the "View → Filter → New/Edit Filter" menu entry.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180240Z">
-        <seg>Это равносильно выбору пункта меню Вид→Фильтры→Создать/Редактировать фильтр.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T161540Z">
+        <seg>Это равносильно выбору пункта меню Вид→Фильтры пользователя→Создать/Редактировать фильтр.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15918,6 +16284,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This is the same as the '-c' option, with the addition that the application is started as minimized.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T174623Z" creationid="pm_kan" creationdate="20170326T174623Z">
+        <seg>Параметр аналогичен «-c», но, запуск производится в свёрнутом виде.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This is the way Microsoft's HotKey processing works and is not a Password Safe restriction.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T202400Z">
@@ -15926,10 +16300,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>This is useful for cases where write permissions to the pwsafe.exe install directory is restricted (See also the description of the -g option in the Command Line Arguments Section).</seg>
+        <seg>This is useful for cases where write permissions to the pwsafe.exe install directory are restricted (See also the description of the -g option in the Command Line Arguments Section) and in a "wrapper" script/batch file on a portable device (e.g., disk-on-key) by setting the configuration Folder/directory as needed.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161128T173822Z" creationid="pm_kan" creationdate="20161128T173822Z">
-        <seg>Может пригодится если доступ к каталогу, в котором установлен pwsafe.exe ограничен (см. также описание параметра -g в разделе Параметры командной строки).</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165602Z" creationid="pm_kan" creationdate="20170326T165602Z">
+        <seg>Может пригодится если доступ к каталогу, в котором установлен pwsafe.exe ограничен (см. также описание параметра -g в разделе Параметры командной строки) или требуется запустить программу через скрипт-обёртку со сменного носителя.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15994,14 +16368,6 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T111521Z">
         <seg>Это удобно, если нужно использовать некоторый набор фильтров во всех контейнерах, и нет желания загружать их вручную каждый раз.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>This is useful in a "wrapper" script/batch file on a portable device (e.g., disk-on-key), setting the config dir as needed.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140716T120952Z" creationid="pm_kan" creationdate="20140716T115653Z">
-        <seg>Параметр может пригодиться при написании скриптов для запуска с портативного устройства (например, флеш-накопителя).</seg>
       </tuv>
     </tu>
     <tu>
@@ -16090,14 +16456,6 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T203751Z">
         <seg>Поэтому, на некоторых клавиатурах часть комбинаций клавиш может быть недоступна.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>This means that undo/redo of pre-lock changes will not be available upon unlock.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T152944Z" creationid="pm_kan" creationdate="20161105T152944Z">
-        <seg>По этой причине после разблокировки контейнера недоступен откат действий, произведённых до блокировки.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16478,9 +16836,9 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Those stored in the database apply only to that database.</seg>
+        <seg>Those stored in the database apply only to that particular database.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T172529Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165631Z" creationid="pm_kan" creationdate="20170326T165631Z">
         <seg>Настройки, сохраняемые в контейнере, применяются только к нему.</seg>
       </tuv>
     </tu>
@@ -16648,8 +17006,8 @@
       <tuv lang="EN-US">
         <seg>To define a new filter, select the "View → Filter → New/Edit  Filter" menu entry.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T180114Z">
-        <seg>Для создания нового фильтра выберите пункт меню Вид→Фильтры→Создать/Редактировать фильтр.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T161534Z">
+        <seg>Для создания нового фильтра выберите пункт меню Вид→Фильтры пользователя→Создать/Редактировать фильтр.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16666,6 +17024,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181134Z">
         <seg>Для отображения или скрытия панели инструментов поставьте или снимите отметку с пункта меню Панель инструментов.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>To do so:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T191725Z" creationid="pm_kan" creationdate="20170326T182935Z">
+        <seg>Для этого:</seg>
       </tuv>
     </tu>
     <tu>
@@ -16790,10 +17156,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>To see the password associated with the Entry click Show Password.</seg>
+        <seg>To see the password associated with the entry click Show Password when editing it.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T231718Z">
-        <seg>Для просмотра связанного с этим элементом пароля нажмите кнопку Показать.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T184039Z" creationid="pm_kan" creationdate="20170326T184039Z">
+        <seg>Для просмотра пароля редактируемого элемента нажмите кнопку Показать.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16894,10 +17260,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Tree &amp; List View font size in tenths of a point</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T170000Z" creationid="pm_kan" creationdate="20170326T170000Z">
+        <seg>Размер шрифта для элементов дерева/списка в десятых долях пункта</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>TreeDisplayStatusAtOpen</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T182724Z">
         <seg>TreeDisplayStatusAtOpen</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>TreeFontPtSz</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165929Z" creationid="pm_kan" creationdate="20170326T165929Z">
+        <seg>TreeFontPtSz</seg>
       </tuv>
     </tu>
     <tu>
@@ -16986,6 +17368,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T101119Z" creationid="pm_kan" creationdate="20140113T101119Z">
         <seg>Сложность перебора для мастер-пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Unsaved changes</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T172506Z" creationid="pm_kan" creationdate="20170326T172506Z">
+        <seg>Несохранённые изменения</seg>
       </tuv>
     </tu>
     <tu>
@@ -17194,6 +17584,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T221438Z">
         <seg>Имена пользователей, пароли и группы: политика создания паролей</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>User defined Filters</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T174458Z" creationid="pm_kan" creationdate="20170326T174458Z">
+        <seg>Фильтры пользователя</seg>
       </tuv>
     </tu>
     <tu>
@@ -18103,6 +18501,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>XML format</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T181934Z" creationid="pm_kan" creationdate="20170326T181631Z">
+        <seg>XML формат</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Y</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T202430Z">
@@ -18119,10 +18525,10 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>You can also expand or collapse all the groups displayed in the Nested Tree view, filter the entries displayed to match any criteria, select the font in which the entries are displayed and display reports of merge, compare, import and other advanced operations.</seg>
+        <seg>You can also expand or collapse all the groups displayed in the Nested Tree view, display subsets of the entries, filter the entries displayed to match any criteria, select the font in which the entries are displayed and display reports of merge, compare, import and other advanced operations.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T213559Z">
-        <seg>Кроме того, вы можете свернуть или развернуть все группы в дереве, отфильтровать элементы по какому-либо условию, выбрать шрифт для отображения элементов или просмотреть отчёты о сложных операциях, таких как слияние, сравнение, импорт.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T171116Z" creationid="pm_kan" creationdate="20170326T171116Z">
+        <seg>Кроме того, вы можете свернуть или развернуть все группы в дереве, выбрать подмножества элементов, отфильтровать их по какому-либо условию, выбрать шрифт для отображения элементов или просмотреть отчёты о сложных операциях, таких как слияние, сравнение, импорт.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18175,6 +18581,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>You can change the fields that are displayed in the tree view directly.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T182932Z" creationid="pm_kan" creationdate="20170326T182932Z">
+        <seg>Также возможно редактирование полей прямо из древовидного списка.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>You can change the number of recent passwords that are kept.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T215403Z">
@@ -18191,9 +18605,9 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>You can choose whether or not to display a toolbar, and if so, if to use the 'Classic' or 'New Toolbar' icons.</seg>
+        <seg>You can choose whether or not to display a toolbar, and if so, whether to use the 'Classic' or 'New' toolbar icons.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181020Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T171003Z" creationid="pm_kan" creationdate="20170326T171003Z">
         <seg>Также здесь можно скрыть или показать панель инструментов и выбрать стиль значков для неё.</seg>
       </tuv>
     </tu>
@@ -18239,9 +18653,9 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>You can switch between how your entries' user names and passwords are shown: either as a single list (Flattened List) or organized by category (Nested Tree).</seg>
+        <seg>You can switch between how your entries are shown: either as a single list (Flattened List) or organized by category (Nested Tree).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T204605Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T170938Z" creationid="pm_kan" creationdate="20170326T170938Z">
         <seg>Здесь можно выбрать режим отображения элементов: в виде простого списка (Простой список) или сгруппированного по категориям (Древовидный список).</seg>
       </tuv>
     </tu>
@@ -18499,6 +18913,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110208T201639Z">
         <seg>Вы также можете ограничить список полей для рассмотрения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>You will also be required to provide a new passphrase for the new Password Safe database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T182123Z" creationid="pm_kan" creationdate="20170326T182123Z">
+        <seg>Также потребуется указать пароль для нового контейнера Password Safe.</seg>
       </tuv>
     </tu>
     <tu>
@@ -19903,6 +20325,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>images/edit_export.jpg</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T181345Z" creationid="pm_kan" creationdate="20170326T181345Z">
+        <seg>images/edit_export.png</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>images/edit_g_menu.jpg</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T100004Z">
@@ -20119,6 +20549,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>images/last_find_filter.jpg</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T174408Z" creationid="pm_kan" creationdate="20170326T174408Z">
+        <seg>images/last_find_filter.png</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>images/locked_tray.jpg</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T205833Z">
@@ -20303,6 +20741,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>images/subviews_menu.jpg</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T171449Z" creationid="pm_kan" creationdate="20170326T171449Z">
+        <seg>images/subviews_menu.png</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>images/toolbar/classic/add.jpg</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T152331Z">
@@ -20467,6 +20913,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T152335Z">
         <seg>images/toolbar/classic/listtree.jpg</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>images/toolbar/classic/lock_database.jpg</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165208Z" creationid="pm_kan" creationdate="20170326T165208Z">
+        <seg>images/toolbar/classic/lock_database.jpg</seg>
       </tuv>
     </tu>
     <tu>
@@ -20771,6 +21225,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T152336Z">
         <seg>images/toolbar/new/listtree.jpg</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>images/toolbar/new/lock_database.jpg</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T165215Z" creationid="pm_kan" creationdate="20170326T165215Z">
+        <seg>images/toolbar/new/lock_database.jpg</seg>
       </tuv>
     </tu>
     <tu>
