@@ -107,7 +107,7 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CPasskeyChangeDlg::yubiInserted(void)

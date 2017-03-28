@@ -91,7 +91,7 @@ BOOL CPasskeySetup::OnInitDialog()
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CPasskeySetup::OnCancel() 

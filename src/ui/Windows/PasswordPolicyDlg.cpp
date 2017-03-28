@@ -400,7 +400,7 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
   }
 
   // Set appropriate focus
-  GetDlgItem(m_uicaller == IDS_GENERATEPASSWORD ? IDC_GENERATEPASSWORD : IDCANCEL)->SetFocus();
+  GotoDlgCtrl(GetDlgItem(m_uicaller == IDS_GENERATEPASSWORD ? IDC_GENERATEPASSWORD : IDCANCEL));
   return FALSE;
 }
 

@@ -449,7 +449,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   UpdateData(FALSE);
   m_bInitdone = true;
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CAddEdit_Basic::OnHelp()

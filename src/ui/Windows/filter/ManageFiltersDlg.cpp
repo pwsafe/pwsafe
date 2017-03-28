@@ -263,7 +263,7 @@ BOOL CManageFiltersDlg::OnInitDialog()
 
   UpdateData(FALSE);
 
-  return FALSE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)

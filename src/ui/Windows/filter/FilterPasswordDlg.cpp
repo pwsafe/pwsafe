@@ -132,7 +132,7 @@ BOOL CFilterPasswordDlg::OnInitDialog()
 
   UpdateData(FALSE);
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CFilterPasswordDlg::OnCbnSelchangePasswordRule()

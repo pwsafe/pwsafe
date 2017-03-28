@@ -114,7 +114,7 @@ BOOL CAboutDlg::OnInitDialog()
     GetDlgItem(IDC_TAKETESTDUMP)->EnableWindow();
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 bool CAboutDlg::OnCheckVersion(const CString &URL, const CString & /* lpszFName */, LPARAM instance)

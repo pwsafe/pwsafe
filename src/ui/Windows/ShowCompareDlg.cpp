@@ -94,7 +94,7 @@ BOOL CShowCompareDlg::OnInitDialog()
     m_pNotesDisplay = NULL;
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 CString ConvertKeyBoardShortcut(int32 &iKBShortcut)

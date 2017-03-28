@@ -175,7 +175,7 @@ BOOL COptionsMisc::OnInitDialog()
     m_Help3.ShowWindow(SW_HIDE);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)

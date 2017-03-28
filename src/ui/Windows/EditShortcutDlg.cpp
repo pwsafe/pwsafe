@@ -165,7 +165,8 @@ BOOL CEditShortcutDlg::OnInitDialog()
 
   UpdateData(FALSE);
   m_ex_group.ChangeColour();
-  return TRUE;
+  
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CEditShortcutDlg::OnHelp() 

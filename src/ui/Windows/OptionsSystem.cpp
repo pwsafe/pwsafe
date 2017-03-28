@@ -209,7 +209,6 @@ BOOL COptionsSystem::OnInitDialog()
   }
 
   return TRUE;  // return TRUE unless you set the focus to a control
-  // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 LRESULT COptionsSystem::OnQuerySiblings(WPARAM wParam, LPARAM )

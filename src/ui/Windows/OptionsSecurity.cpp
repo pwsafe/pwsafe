@@ -145,7 +145,7 @@ BOOL COptionsSecurity::OnInitDialog()
     m_Help3.ShowWindow(SW_HIDE);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void COptionsSecurity::UpdateHashIter()
