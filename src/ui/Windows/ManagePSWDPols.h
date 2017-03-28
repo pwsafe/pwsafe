@@ -98,7 +98,11 @@ private:
 
   GTUSet m_setGTU;
 
-  CBitmap m_CopyPswdBitmap;
+  CBitmap m_CopyPswdBitmap, m_DisabledCopyPswdBitmap;
+  CButton *m_pCopyBtn;
+
+  bool m_bCopyPasswordEnabled;
+  BOOL m_bImageLoaded, m_bDisabledImageLoaded;
   
   int m_iSortNamesIndex, m_iSortEntriesIndex;
   bool m_bSortNamesAscending, m_bSortEntriesAscending;
