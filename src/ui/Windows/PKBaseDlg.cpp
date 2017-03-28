@@ -124,7 +124,7 @@ BOOL CPKBaseDlg::OnInitDialog(void)
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 BOOL CPKBaseDlg::PreTranslateMessage(MSG* pMsg)

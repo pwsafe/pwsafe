@@ -137,7 +137,7 @@ BOOL CAddEdit_Attachment::OnInitDialog()
 
   m_bInitdone = true;
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 BOOL CAddEdit_Attachment::OnKillActive()

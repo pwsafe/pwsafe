@@ -352,8 +352,6 @@ BOOL CWZSelectDB::OnInitDialog()
   CString cs_tmp(MAKEINTRESOURCE(m_pWZPSH->GetButtonID()));
   m_pWZPSH->GetDlgItem(ID_WIZNEXT)->SetWindowText(cs_tmp);
 
-  GetDlgItem(IDC_DATABASE)->SetFocus();
-
   // Yubi-related initializations:
   m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
   m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);
@@ -384,6 +382,8 @@ BOOL CWZSelectDB::OnInitDialog()
     ((CButton*)ybn)->SetBitmap(m_yubiLogoDisabled);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
   }
+
+  GotoDlgCtrl(GetDlgItem(IDC_DATABASE));
 
   return FALSE;
 }

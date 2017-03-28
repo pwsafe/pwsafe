@@ -86,7 +86,7 @@ BOOL CWZFinish::OnInitDialog()
 
   m_bInitDone = true;
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CWZFinish::OnAbort()

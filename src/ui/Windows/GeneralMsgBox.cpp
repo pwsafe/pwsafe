@@ -451,13 +451,13 @@ BOOL CGeneralMsgBox::OnInitDialog()
 
   // Focusing and setting the default button
   if (m_uiDefCmdId != (UINT)IDC_STATIC) {
-    GetDlgItem(m_uiDefCmdId)->SetFocus();
+    GotoDlgCtrl(GetDlgItem(m_uiDefCmdId));
     SetDefID(m_uiDefCmdId);
 
     return FALSE;
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 BOOL CGeneralMsgBox::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, 

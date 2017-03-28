@@ -203,7 +203,8 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
       GetDlgItem(ID_APPLY_NOW)->EnableWindow(m_bChanged || m_bSymbolsChanged ? TRUE : FALSE);
       break;
   }
-  return TRUE;
+  
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CAddEdit_PropertySheet::SetSymbolsChanged(bool bSymbolsChanged)

@@ -209,7 +209,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   // Refresh dialog
   m_bInitdone = true;
   UpdateStats();
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 BOOL CAddEdit_DateTimes::OnKillActive()

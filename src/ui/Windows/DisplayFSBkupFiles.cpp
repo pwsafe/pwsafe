@@ -179,7 +179,7 @@ BOOL CDisplayFSBkupFiles::OnInitDialog()
   GetDlgItem(IDC_SELECT)->EnableWindow(FALSE);
   GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 BOOL CDisplayFSBkupFiles::PreTranslateMessage(MSG* pMsg)

@@ -200,7 +200,7 @@ BOOL CExpPWListDlg::OnInitDialog()
   // Redraw
   m_expPWListCtrl.SetRedraw(TRUE);
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CExpPWListDlg::OnOK()

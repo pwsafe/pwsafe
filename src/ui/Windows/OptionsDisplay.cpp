@@ -143,7 +143,6 @@ BOOL COptionsDisplay::OnInitDialog()
   pspin->SetPos(m_PreExpiryWarnDays);
 
   return TRUE;  // return TRUE unless you set the focus to a control
-  // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 LRESULT COptionsDisplay::OnQuerySiblings(WPARAM wParam, LPARAM )

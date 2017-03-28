@@ -271,7 +271,7 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   m_symbols.SetWindowText(M_symbols());
 
   m_bInitdone = true;
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CAddEdit_PasswordPolicy::OnChanged()

@@ -238,7 +238,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
     GetDlgItem(IDC_STATIC_PWH_EDIT)->ShowWindow(SW_HIDE);
     UpdateData(FALSE);
     m_bInitdone = true;
-    return TRUE;
+    return TRUE;  // return TRUE unless you set the focus to a control
   }
 
   // Initialise m_Help2 MUST be performed before calling UpdatePasswordHistory
@@ -275,7 +275,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   UpdateData(FALSE);
   m_bInitdone = true;
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)

@@ -1282,7 +1282,7 @@ BOOL DboxMain::OnInitDialog()
           sPasskey = dbox_pksetup.GetPassKey();
         else {
           PostQuitMessage(0);
-          return FALSE;
+          return TRUE;  // return TRUE unless you set the focus to a control
         }
 
         m_core.SetCurFile(fname.c_str());
@@ -1295,7 +1295,7 @@ BOOL DboxMain::OnInitDialog()
           cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
           gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
           PostQuitMessage(0); // can we do something better here?
-          return FALSE;
+          return TRUE;  // return TRUE unless you set the focus to a control
         }
       } // first install
     } else
@@ -1306,7 +1306,7 @@ BOOL DboxMain::OnInitDialog()
   // Check if user cancelled
   if (bOOI == FALSE) {
     PostQuitMessage(0);
-    return FALSE;
+    return TRUE;  // return TRUE unless you set the focus to a control
   }
 
   SetInitialDatabaseDisplay();
@@ -3126,8 +3126,7 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
         }
       }
     }
-  }
-  else {
+  } else {
     // Just this group - used for Export Group
     const HTREEITEM hNextSibling = m_ctlItemTree.GetNextSiblingItem(hItem);
 

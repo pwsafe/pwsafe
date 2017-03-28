@@ -196,7 +196,7 @@ BOOL COptionsBackup::OnInitDialog()
     m_Help4.ShowWindow(SW_HIDE);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 LRESULT COptionsBackup::OnQuerySiblings(WPARAM wParam, LPARAM )

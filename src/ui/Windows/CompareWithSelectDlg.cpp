@@ -124,7 +124,8 @@ BOOL CCompareWithSelectDlg::OnInitDialog()
   
   // Disable OK button until an entry is selected
   GetDlgItem(IDOK)->EnableWindow(FALSE);
-  return TRUE;
+  
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CCompareWithSelectDlg::OnItemDblClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
