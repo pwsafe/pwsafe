@@ -35,16 +35,6 @@ BEGIN_MESSAGE_MAP(CWZPropertyPage, CPropertyPage)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-BOOL CWZPropertyPage::OnInitDialog()
-{
-  CPropertyPage::OnInitDialog();
-
-  // Set up buttons
-  OnSetActive();
-
-  return TRUE;
-}
-
 BOOL CWZPropertyPage::OnSetActive()
 {
   CString cs_text;
