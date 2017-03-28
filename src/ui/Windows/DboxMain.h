@@ -334,13 +334,17 @@ public:
 
   std::wstring DoMerge(PWScore *pothercore,
                   const bool bAdvanced, CReport *prpt, bool *pbCancel);
+  
   bool DoCompare(PWScore *pothercore,
                  const bool bAdvanced, CReport *prpt, bool *pbCancel);
+  
   void DoSynchronize(PWScore *pothercore,
                      const bool bAdvanced, int &numUpdated, CReport *prpt, bool *pbCancel);
+  
   int DoExportText(const StringX &sx_Filename, const UINT nID,
                    const wchar_t &delimiter, const bool bAdvanced,
                    int &numExported, CReport *prpt);
+  
   int DoExportXML(const StringX &sx_Filename, const UINT nID,
                   const wchar_t &delimiter, const bool bAdvanced,
                   int &numExported, CReport *prpt);
