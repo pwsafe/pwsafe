@@ -3166,13 +3166,13 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
   const UINT imenuflags = bOpen ? MF_ENABLED : MF_DISABLED | MF_GRAYED;
 
   // Change Main Menus if a database is Open or not
-  CWnd* pMain = AfxGetMainWnd();
-  CMenu* xmainmenu = pMain->GetMenu();
+  CWnd *pMain = AfxGetMainWnd();
+  CMenu *xmainmenu = pMain->GetMenu();
 
   // Look for "File" menu - no longer language dependent
   int pos = app.FindMenuItem(xmainmenu, ID_FILEMENU);
 
-  CMenu* xfilesubmenu = xmainmenu->GetSubMenu(pos);
+  CMenu *xfilesubmenu = xmainmenu->GetSubMenu(pos);
   if (xfilesubmenu != NULL) {
     // Disable/enable Export and Import menu items
     xfilesubmenu->EnableMenuItem(ID_EXPORTMENU, imenuflags);

@@ -15,7 +15,6 @@
 
 #include "resource.h"
 
-#include "afxwin.h"
 #include "atlimage.h" // for CImage
 
 class CAddEdit_Attachment : public CAddEdit_PropertyPage

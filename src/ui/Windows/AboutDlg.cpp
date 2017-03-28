@@ -186,6 +186,7 @@ void CAboutDlg::CheckNewVer()
   m_RECExNewVerStatus.SetWindowText(m_newVerStatus);
   m_RECExNewVerStatus.Invalidate();
   UpdateData(FALSE);
+
   GetDlgItem(IDOK)->SetFocus();
 }
 

@@ -19,8 +19,8 @@ extern const wchar_t *EYE_CATCHER;
 IMPLEMENT_DYNAMIC(CWZPropertyPage, CPropertyPage)
 
 CWZPropertyPage::CWZPropertyPage(UINT nID, UINT nIDCaption, const int nType)
-: CPropertyPage(nID, nIDCaption), m_nID(nID), m_nType(nType),
-m_pToolTipCtrl(NULL)
+  : CPropertyPage(nID, nIDCaption), m_nID(nID), m_nType(nType),
+  m_pToolTipCtrl(NULL)
 {
 }
 
@@ -30,8 +30,8 @@ void CWZPropertyPage::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CWZPropertyPage, CPropertyPage)
-  ON_WM_CTLCOLOR()
   //{{AFX_MSG_MAP(CWZPropertyPage)
+  ON_WM_CTLCOLOR()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -89,8 +89,9 @@ LRESULT CWZPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
   if (app.GetMainDlg()->m_eye_catcher != NULL &&
       wcscmp(app.GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
     app.GetMainDlg()->ResetIdleLockCounter(message);
-    } else
+  } else {
     pws_os::Trace(L"CWZPropertyPage::WindowProc - couldn't find DboxMain ancestor\n");
+  }
 
   return CPropertyPage::WindowProc(message, wParam, lParam);
 }
