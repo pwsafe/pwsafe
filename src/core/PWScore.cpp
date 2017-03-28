@@ -705,7 +705,7 @@ struct ExportRecordWriter {
       StringX sx_exported;
       Format(sx_exported, GROUPTITLEUSERINCHEVRONS,
         item.GetGroup().c_str(), item.GetTitle().c_str(), item.GetUser().c_str());
-      m_pRpt->WriteLine(sx_exported.c_str(), false);
+      m_pRpt->WriteLine(sx_exported.c_str(), true);
     }
   }
 
