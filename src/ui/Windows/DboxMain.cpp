@@ -2451,7 +2451,7 @@ void DboxMain::OnHelp()
   }
 }
 
-BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
+BOOL DboxMain::PreTranslateMessage(MSG *pMsg)
 {
   // Don't do anything if in AutoType
   if (m_bInAT)

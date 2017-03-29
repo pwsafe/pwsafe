@@ -33,12 +33,10 @@ public:
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CImportXMLDlg)
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
-
   // Generated message map functions
   //{{AFX_MSG(CImportXMLDlg)
   afx_msg void OnNoGroup();
@@ -47,5 +45,6 @@ protected:
   afx_msg void OnHelp();
   virtual void OnOK();
   //}}AFX_MSG
+
   DECLARE_MESSAGE_MAP()
 };

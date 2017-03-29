@@ -34,9 +34,6 @@ class CPKBaseDlg : public CPWDialog , public CYubiMixin {
 public:
   CPKBaseDlg(int id, CWnd *pParent);
   virtual ~CPKBaseDlg();
-  BOOL OnInitDialog(void);
-  BOOL PreTranslateMessage(MSG* pMsg);
-  void DoDataExchange(CDataExchange* pDX);
 
   const CSecString &GetPassKey() const {return m_passkey;}
 
@@ -49,6 +46,10 @@ protected:
   static const wchar_t PSSWDCHAR;
   int m_index;
   bool m_bVKAvailable;
+
+  virtual BOOL OnInitDialog(void);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
+  virtual void DoDataExchange(CDataExchange *pDX);
 
   // Generated message map functions
   //{{AFX_MSG(CPKBaseDlg)

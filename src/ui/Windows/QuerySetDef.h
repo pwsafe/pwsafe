@@ -31,12 +31,10 @@ public:
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CQuerySetDef)
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
-
   //{{AFX_MSG(CQuerySetDef)
   virtual void OnOK();
   virtual void OnCancel();

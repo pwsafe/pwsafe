@@ -108,7 +108,7 @@ static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
   }
 }
 
-BOOL CAddEdit_DateTimes::PreTranslateMessage(MSG* pMsg)
+BOOL CAddEdit_DateTimes::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);

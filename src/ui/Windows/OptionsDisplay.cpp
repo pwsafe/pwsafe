@@ -199,7 +199,7 @@ BOOL COptionsDisplay::OnApply()
   return COptions_PropertyPage::OnApply();
 }
 
-BOOL COptionsDisplay::PreTranslateMessage(MSG* pMsg)
+BOOL COptionsDisplay::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);

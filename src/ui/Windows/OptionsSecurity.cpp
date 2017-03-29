@@ -256,7 +256,7 @@ BOOL COptionsSecurity::OnApply()
   return COptions_PropertyPage::OnApply();
 }
 
-BOOL COptionsSecurity::PreTranslateMessage(MSG* pMsg)
+BOOL COptionsSecurity::PreTranslateMessage(MSG *pMsg)
 {
   RelayToolTipEvent(pMsg);
 

@@ -30,7 +30,7 @@ protected:
   CStatic m_stc_name;
   CStatic m_stc_description;
 
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   virtual BOOL PreTranslateMessage(MSG *pMsg);
 

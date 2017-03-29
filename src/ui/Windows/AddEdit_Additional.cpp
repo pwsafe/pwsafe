@@ -120,7 +120,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CAddEdit_Additional message handlers
 
-BOOL CAddEdit_Additional::PreTranslateMessage(MSG* pMsg)
+BOOL CAddEdit_Additional::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);

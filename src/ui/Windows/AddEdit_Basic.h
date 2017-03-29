@@ -79,9 +79,8 @@ public:
   // ClassWizard generate virtual function overrides
 
 protected:
-  BOOL PreTranslateMessage(MSG *pMsg);
-
   //{{AFX_VIRTUAL(CAddEdit_Basic)
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
   virtual BOOL OnInitDialog();
   virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnApply();

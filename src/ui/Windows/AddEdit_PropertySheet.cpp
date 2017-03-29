@@ -541,7 +541,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
   return TRUE;
 }
 
-BOOL CAddEdit_PropertySheet::PreTranslateMessage(MSG* pMsg)
+BOOL CAddEdit_PropertySheet::PreTranslateMessage(MSG *pMsg)
 {
   // In View mode, there is no 'Cancel' button and 'OK' is renamed 'Close'
   // Make Escape key still work as designed

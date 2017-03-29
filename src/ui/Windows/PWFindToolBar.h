@@ -79,7 +79,7 @@ public:
   int GetLastSelectedFoundItem(pws_os::CUUID &entry_uuid);
 
 protected:
-  BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   //{{AFX_MSG(CPWFindToolBar)
   afx_msg void OnDestroy();

@@ -22,11 +22,11 @@ public:
   CDumpSelect(CWnd* pParent = NULL);   // standard constructor
   ~CDumpSelect();
 
-// Dialog Data
+  // Dialog Data
   enum { IDD = IDD_DUMPSELECTOR };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
 
   afx_msg void OnBnClickedOK();
   afx_msg void OnBnClickedCancel();

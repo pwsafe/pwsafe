@@ -127,7 +127,7 @@ BOOL CPKBaseDlg::OnInitDialog(void)
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
-BOOL CPKBaseDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CPKBaseDlg::PreTranslateMessage(MSG *pMsg)
 {
   // Show/hide caps lock indicator
   CWnd *pCapsLock = GetDlgItem(IDC_CAPSLOCK);

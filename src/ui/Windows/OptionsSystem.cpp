@@ -257,7 +257,7 @@ BOOL COptionsSystem::OnApply()
   return COptions_PropertyPage::OnApply();
 }
 
-BOOL COptionsSystem::PreTranslateMessage(MSG* pMsg)
+BOOL COptionsSystem::PreTranslateMessage(MSG *pMsg)
 {
   RelayToolTipEvent(pMsg);
 

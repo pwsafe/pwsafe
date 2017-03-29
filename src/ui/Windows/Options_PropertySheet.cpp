@@ -104,7 +104,7 @@ BOOL COptions_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
   return CPWPropertySheet::OnCommand(wParam, lParam);
 }
 
-BOOL COptions_PropertySheet::PreTranslateMessage(MSG* pMsg) 
+BOOL COptions_PropertySheet::PreTranslateMessage(MSG *pMsg) 
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     COptions_PropertyPage *pp = (COptions_PropertyPage *)GetActivePage();

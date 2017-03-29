@@ -253,7 +253,7 @@ BOOL CManagePSWDPols::OnInitDialog()
   return FALSE;
 }
 
-BOOL CManagePSWDPols::PreTranslateMessage(MSG* pMsg)
+BOOL CManagePSWDPols::PreTranslateMessage(MSG *pMsg)
 {
   // Do tooltips
   if (pMsg->message == WM_MOUSEMOVE) {

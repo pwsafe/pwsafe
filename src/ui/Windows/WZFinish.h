@@ -26,7 +26,7 @@ public:
   void DisableAbort();
 
 protected:
-  BOOL OnInitDialog();
+  virtual BOOL OnInitDialog();
 
   // Generated message map functions
   //{{AFX_MSG(CWZFinish)

@@ -24,7 +24,7 @@ public:
   {m_pParent = pParent;}
 
 protected:
-  BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   // Needed to Add/Remove application HotKey
   afx_msg void OnKillFocus(CWnd *pWnd);

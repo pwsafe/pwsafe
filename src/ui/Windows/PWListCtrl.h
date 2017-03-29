@@ -38,6 +38,9 @@ public:
   void UpdateRowHeight(bool bInvalidate);
 
 protected:
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
+  virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+
   //{{AFX_MSG(CPWListCtrlX)
   afx_msg void OnDestroy();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -54,8 +57,6 @@ protected:
   //}}AFX_MSG
 
   LRESULT OnCharItemlist(WPARAM wParam, LPARAM lParam);
-  BOOL PreTranslateMessage(MSG* pMsg);
-  virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 
   DECLARE_MESSAGE_MAP()
 

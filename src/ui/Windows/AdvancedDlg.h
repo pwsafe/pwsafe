@@ -42,11 +42,10 @@ protected:
   // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CAdvancedDlg)
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   //}}AFX_VIRTUAL
-
-  BOOL PreTranslateMessage(MSG* pMsg);
 
   Type m_iIndex;
   static int dialog_lookup[LAST];
