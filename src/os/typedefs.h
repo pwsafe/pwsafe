@@ -48,6 +48,15 @@ typedef wchar_t charT;
 #define PWS_HOTKEYF_WIN     0x20
 #define PWS_HOTKEYF_CMD     0x40
 
+// Define the MFC HotKey values if not built under Windows
+#ifndef HOTKEYF_SHIFT
+// Windows MFC HotKey values
+#define HOTKEYF_SHIFT           0x01
+#define HOTKEYF_CONTROL         0x02
+#define HOTKEYF_ALT             0x04
+#define HOTKEYF_EXT             0x08
+#endif
+
 #ifdef _WIN32
 #include "TCHAR.h"
 typedef char    int8;

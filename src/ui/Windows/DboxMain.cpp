@@ -820,19 +820,17 @@ void DboxMain::InitPasswordSafe()
 
   m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
 
-  const int32 iPWSHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
-  WORD wVirtualKeyCode =  iPWSHotKeyValue & 0xff;
-  WORD wHKModifiers = iPWSHotKeyValue >> 16;
-    
-  // Translate from CHotKeyCtrl to CWnd & PWS modifiers
-  WORD wModifiers = ConvertModifersMFC2Windows(wHKModifiers);
-  WORD wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
-  int iAppShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
-  m_core.SetAppHotKey(iAppShortcut);
+  const int32 iAppHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
+  m_core.SetAppHotKey(iAppHotKeyValue);
 
   // Set Hotkey, if active
   if (prefs->GetPref(PWSprefs::HotKeyEnabled)) {
-    RegisterHotKey(m_hWnd, PWS_HOTKEY_ID, UINT(wModifiers), UINT(wVirtualKeyCode));
+    WORD wAppVirtualKeyCode = iAppHotKeyValue & 0xff;
+    WORD wAppPWSModifiers = iAppHotKeyValue >> 16;
+    // Translate from PWS to Windows modifiers
+    WORD wAppModifiers = ConvertModifersPWS2Windows(wAppPWSModifiers);
+
+    RegisterHotKey(m_hWnd, PWS_HOTKEY_ID, UINT(wAppModifiers), UINT(wAppVirtualKeyCode));
     // Registration might fail if combination already registered elsewhere,
     // but don't see any elegant way to notify the user here, so fail silently
   } else {
@@ -2502,17 +2500,17 @@ BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
     WORD wVirtualKeyCode = siKeyStateVirtualKeyCode & 0xff;
 
     if (wVirtualKeyCode != 0) {
-      WORD wModifiers(0);
+      WORD wWinModifiers(0);
       if (GetKeyState(VK_CONTROL) & 0x8000)
-        wModifiers |= MOD_CONTROL;
+        wWinModifiers |= MOD_CONTROL;
 
       if (GetKeyState(VK_MENU) & 0x8000)
-        wModifiers |= MOD_ALT;
+        wWinModifiers |= MOD_ALT;
 
       if (GetKeyState(VK_SHIFT) & 0x8000)
-        wModifiers |= MOD_SHIFT;
+        wWinModifiers |= MOD_SHIFT;
 
-      if (!ProcessEntryShortcut(wVirtualKeyCode, wModifiers))
+      if (!ProcessEntryShortcut(wVirtualKeyCode, wWinModifiers))
         return TRUE;
     }
   }
@@ -2521,7 +2519,7 @@ exit:
   return CDialog::PreTranslateMessage(pMsg);
 }
 
-BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers)
+BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wWinModifiers)
 {
   static const wchar_t *tcValidKeys = 
           L"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -2534,7 +2532,7 @@ BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers)
     return 1L;
 
   // Get PWS modifiers
-  WORD wPWSModifiers = ConvertModifersWindows2PWS(wModifiers);
+  WORD wPWSModifiers = ConvertModifersWindows2PWS(wWinModifiers);
 
   // If non-zero - see if it is an entry keyboard shortcut
   if (wPWSModifiers != 0) {
@@ -2679,17 +2677,17 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     WORD wVirtualKeyCode = siKeyStateVirtualKeyCode & 0xff;
 
     if (wVirtualKeyCode != 0) {
-      WORD wModifiers(0);
+      WORD wWinModifiers(0);
       if (GetKeyState(VK_CONTROL) & 0x8000)
-        wModifiers |= MOD_CONTROL;
+        wWinModifiers |= MOD_CONTROL;
 
       if (GetKeyState(VK_MENU) & 0x8000)
-        wModifiers |= MOD_ALT;
+        wWinModifiers |= MOD_ALT;
 
       if (GetKeyState(VK_SHIFT) & 0x8000)
-        wModifiers |= MOD_SHIFT;
+        wWinModifiers |= MOD_SHIFT;
 
-      if (!ProcessEntryShortcut(wVirtualKeyCode, wModifiers))
+      if (!ProcessEntryShortcut(wVirtualKeyCode, wWinModifiers))
         return 0;
     }
   }
