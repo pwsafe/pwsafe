@@ -796,3 +796,4 @@
 #define IDS_PASSWORDCOPIED              6048
 #define IDS_COPYPASSWORDHELP1           6049
 #define IDS_COPYPASSWORDHELP2           6050
+#define IDS_WSSLCT_FILTERED             6051

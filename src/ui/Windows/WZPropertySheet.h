@@ -93,10 +93,8 @@ public:
   int WZPSHDoExportDB(const StringX &sx_Filename, const UINT nID,
                       const bool bExportDBFilters,
                       const StringX &sx_ExportKey, int &numExported, CReport *prpt)
-  {
-    return app.GetMainDlg()->DoExportDB(sx_Filename, nID,
-                                        bExportDBFilters, sx_ExportKey, numExported, prpt);
-  }
+  {return app.GetMainDlg()->DoExportDB(sx_Filename, nID,
+                                       bExportDBFilters, sx_ExportKey, numExported, prpt);}
 
   void WZPSHViewReport(CReport &prpt)
   {app.GetMainDlg()->ViewReport(prpt);}

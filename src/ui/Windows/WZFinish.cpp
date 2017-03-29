@@ -143,6 +143,7 @@ static UINT WZExecuteThread(LPVOID pParam)
       break;
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
+    case ID_MENUITEM_EXPORTFILTERED2DB:
       status = pthdpms->pWZPSH->WZPSHDoExportDB(pthdpms->sx_Filename,
                    pthdpms->nID, pthdpms->bExportDBFilters,
                    pthdpms->sx_exportpasskey,
@@ -185,6 +186,7 @@ BOOL CWZFinish::OnSetActive()
     case ID_MENUITEM_EXPORTGRP2XML:
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
+    case ID_MENUITEM_EXPORTFILTERED2DB:
       uifilemsg = IDS_WZEXPORTFILE;
       break;
     default:
@@ -228,6 +230,7 @@ int CWZFinish::ExecuteAction()
     case ID_MENUITEM_EXPORTGRP2XML:
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
+    case ID_MENUITEM_EXPORTFILTERED2DB:
       break;
     default:
       ASSERT(0);
@@ -370,6 +373,7 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
       case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
       case ID_MENUITEM_EXPORTENT2DB:
       case ID_MENUITEM_EXPORTGRP2DB:
+      case ID_MENUITEM_EXPORTFILTERED2DB:
         cs_results.Format(IDS_EXPORTED, m_thdpms.numProcessed);
         break;
       case ID_MENUITEM_EXPORT2XML:
