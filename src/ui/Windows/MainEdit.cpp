@@ -1827,8 +1827,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
     {
       //Remind the user about clipboard security
       CClearQuestionDlg clearDlg(this);
-      if (clearDlg.m_dontaskquestion == FALSE &&
-          clearDlg.DoModal() == IDCANCEL)
+      if (clearDlg.AskQuestion() && clearDlg.DoModal() == IDCANCEL)
         return;
       if (bSpecial) {
         OnMinimize();

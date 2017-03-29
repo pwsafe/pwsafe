@@ -27,9 +27,9 @@ public:
 
 protected:
   //{{AFX_VIRTUAL(CInputBox)
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
-  virtual BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
   //}}AFX_VIRTUAL
 
   // Generated message map functions
@@ -37,13 +37,13 @@ protected:
   afx_msg void OnOK();
   afx_msg void OnInputChanged();
   afx_msg void OnActivate(UINT nState, CWnd *pWndOther, BOOL bMinimized);
-    //}}AFX_MSG
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
 
   CEdit m_edText;
   UINT m_nIDCaption;
   CString m_csText;
   int m_maxlen;
   bool m_bReadOnly, m_bInitDone;
-
-  DECLARE_MESSAGE_MAP()
 };

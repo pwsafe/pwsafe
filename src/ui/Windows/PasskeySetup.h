@@ -33,7 +33,7 @@ protected:
 
   virtual BOOL OnInitDialog();
   //{{AFX_VIRTUAL(CPasskeySetup)
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
 
   // Implementation

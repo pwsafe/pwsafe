@@ -88,13 +88,12 @@ public:
   void ResetKeyboard();
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-  BOOL OnInitDialog();
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   int m_phrasecount;
   CComboBox m_cbxKeyBoards;
-
-  BOOL PreTranslateMessage(MSG* pMsg);
 
   //{{AFX_MSG(CVKeyBoardDlg)
   afx_msg void OnPostNcDestroy();
@@ -124,6 +123,7 @@ protected:
   afx_msg void OnKeyPressPlaySound();
   afx_msg void OnShowPassphrase();
   //}}AFX_MSG
+
   DECLARE_MESSAGE_MAP()
 
   int m_iKeyboard;

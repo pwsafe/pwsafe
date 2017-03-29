@@ -663,7 +663,7 @@ void CAdvancedDlg::OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResul
 // Override PreTranslateMessage() so RelayEvent() can be
 // called to pass a mouse message to CPWSOptions's
 // tooltip control for processing.
-BOOL CAdvancedDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CAdvancedDlg::PreTranslateMessage(MSG *pMsg)
 {
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);

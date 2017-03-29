@@ -39,10 +39,9 @@ public:
   enum { IDD = IDD_PASSWORDSUBSET };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-  BOOL OnInitDialog();
-  BOOL PreTranslateMessage(MSG* pMsg);
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
   virtual void OnCancel();
 
   //{{AFX_MSG(CPasswordSubsetDlg)

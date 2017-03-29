@@ -323,7 +323,7 @@ void CPWFiltersDlg::UpdateStatusText()
   m_RSDStatusBar.UpdateWindow();
 }
 
-BOOL CPWFiltersDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CPWFiltersDlg::PreTranslateMessage(MSG *pMsg)
 {
   // CListCtrl accelerator processing
   if (pMsg->hwnd == m_FilterLC.m_hWnd &&

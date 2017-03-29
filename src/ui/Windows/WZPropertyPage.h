@@ -28,7 +28,7 @@ protected:
   CWZPropertySheet *m_pWZPSH;
   CToolTipCtrl *m_pToolTipCtrl;
 
-  virtual void DoDataExchange(CDataExchange* pDX);
+  virtual void DoDataExchange(CDataExchange *pDX);
   virtual BOOL OnSetActive();
   void ShowHelp(const CString &topicFile);
 

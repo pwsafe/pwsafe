@@ -126,12 +126,15 @@ public:
   {DB_version = current_ver;}
   PWSfile::VERSION GetDBVersion() {return DB_version;}
 
-  BOOL PreTranslateMessage(MSG* pMsg);
+  // Needs to be public for access by DboxMain (MainFile.cpp)
+  virtual INT_PTR DoModal();
+
+protected:
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
   // Following override to stop accelerators interfering
-  virtual INT_PTR DoModal();
   virtual void PreSubclassWindow();
 
   DECLARE_MESSAGE_MAP()

@@ -55,7 +55,7 @@ void CEBListCtrl::PreSubclassWindow()
   }
 }
 
-BOOL CEBListCtrl::PreTranslateMessage(MSG* pMsg)
+BOOL CEBListCtrl::PreTranslateMessage(MSG *pMsg)
 {
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);

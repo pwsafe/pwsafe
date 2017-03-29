@@ -131,7 +131,7 @@ void CPWListCtrlX::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
   app.GetMainDlg()->SaveGUIStatusEx(DboxMain::LISTONLY);
 }
 
-BOOL CPWListCtrlX::PreTranslateMessage(MSG* pMsg)
+BOOL CPWListCtrlX::PreTranslateMessage(MSG *pMsg)
 {
   // Process User's AutoType shortcut
   if (app.GetMainDlg()->CheckPreTranslateAutoType(pMsg))

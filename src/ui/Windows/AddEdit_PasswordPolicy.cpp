@@ -155,7 +155,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CAddEdit_PasswordPolicy message handlers
 
-BOOL CAddEdit_PasswordPolicy::PreTranslateMessage(MSG* pMsg)
+BOOL CAddEdit_PasswordPolicy::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);

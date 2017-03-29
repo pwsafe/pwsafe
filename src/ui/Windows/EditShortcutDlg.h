@@ -50,9 +50,9 @@ private:
   static bool m_bShowUUID;
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
+
   afx_msg void OnHelp();
   afx_msg void OnOK();
 

@@ -54,8 +54,8 @@ public:
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(CAddEdit_PasswordPolicy)
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-  BOOL PreTranslateMessage(MSG* pMsg);
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
   virtual BOOL OnApply();
   virtual BOOL OnKillActive();
   //}}AFX_VIRTUAL

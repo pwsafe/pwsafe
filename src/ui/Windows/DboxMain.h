@@ -442,9 +442,10 @@ public:
  protected:
    // ClassWizard generated virtual function overrides
    //{{AFX_VIRTUAL(DboxMain)
+   virtual BOOL PreTranslateMessage(MSG *pMsg);
    virtual BOOL OnInitDialog();
    virtual void OnCancel();
-   virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
+   virtual void DoDataExchange(CDataExchange *pDX);  // DDX/DDV support
    // override following to reset idle timeout on any event
    virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
    //}}AFX_VIRTUAL
@@ -547,8 +548,6 @@ public:
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);
   LRESULT OnApplyEditChanges(WPARAM wParam, LPARAM lParam);
   LRESULT OnDroppedFile(WPARAM wParam, LPARAM lParam);
-
-  BOOL PreTranslateMessage(MSG* pMsg);
 
   void UpdateAlwaysOnTop();
   void ClearAppData(const bool bClearMRE = true);

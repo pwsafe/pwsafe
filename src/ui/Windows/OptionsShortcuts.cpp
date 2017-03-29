@@ -304,7 +304,7 @@ BOOL COptionsShortcuts::OnApply()
   return COptions_PropertyPage::OnApply();
 }
 
-BOOL COptionsShortcuts::PreTranslateMessage(MSG* pMsg)
+BOOL COptionsShortcuts::PreTranslateMessage(MSG *pMsg)
 {
   RelayToolTipEvent(pMsg);
 

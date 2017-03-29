@@ -42,12 +42,11 @@ public:
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CreateShortcutDlg)
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
-  virtual BOOL OnInitDialog();
   // Generated message map functions
   //{{AFX_MSG(CAddDlg)
   virtual void OnCancel();

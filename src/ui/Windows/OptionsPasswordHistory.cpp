@@ -182,7 +182,7 @@ BOOL COptionsPasswordHistory::OnApply()
   return COptions_PropertyPage::OnApply();
 }
 
-BOOL COptionsPasswordHistory::PreTranslateMessage(MSG* pMsg)
+BOOL COptionsPasswordHistory::PreTranslateMessage(MSG *pMsg)
 {
   RelayToolTipEvent(pMsg);
 

@@ -59,7 +59,7 @@ void CExpPswdLC::PreSubclassWindow()
   }
 }
 
-BOOL CExpPswdLC::PreTranslateMessage(MSG* pMsg)
+BOOL CExpPswdLC::PreTranslateMessage(MSG *pMsg)
 {
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);
