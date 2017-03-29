@@ -5183,12 +5183,12 @@ bool DboxMain::GetShortCut(const unsigned int &uiMenuItem,
     return false;
 
   if (iter->second.siVirtKey  != iter->second.siDefVirtKey ||
-      iter->second.cModifier != iter->second.cDefModifier) {
+      iter->second.cPWSModifier != iter->second.cDefPWSModifier) {
     siVirtKey = iter->second.siVirtKey;
-    cModifier = iter->second.cModifier;
+    cModifier = iter->second.cPWSModifier;
   } else {
     siVirtKey = iter->second.siDefVirtKey;
-    cModifier = iter->second.cDefModifier;
+    cModifier = iter->second.cDefPWSModifier;
   }
 
   return true;
@@ -5226,11 +5226,8 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
       if (iKBShortcut != 0) {
         WORD wVirtualKeyCode = iKBShortcut & 0xff;
         WORD wPWSModifiers = iKBShortcut >> 16;
-        
-        // Translate from PWS modifiers to HotKey
-        WORD wHKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
 
-        sx_fielddata = CMenuShortcut::FormatShortcut(wHKModifiers, wVirtualKeyCode);
+        sx_fielddata = CMenuShortcut::FormatShortcut(wPWSModifiers, wVirtualKeyCode);
       }
       break;
     }

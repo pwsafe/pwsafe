@@ -436,7 +436,7 @@ public:
   bool ChangeMode(bool promptUser); // r-o <-> r/w
 
   // If we have processed it returns 0 else 1
-  BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers);
+  BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wWinModifiers);
   bool IsWorkstationLocked() const;
   void BlockLogoffShutdown(const bool bChanged);
 

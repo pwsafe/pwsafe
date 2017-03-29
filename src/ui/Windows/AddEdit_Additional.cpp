@@ -47,18 +47,15 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEM
                            GetPref(PWSprefs::NumPWHistoryDefault);
 
   // Save PWS HotKey info
-  int32 iAppHotKeyValue = int32(PWSprefs::GetInstance()->GetPref(PWSprefs::HotKey));
-  WORD wHKModifiers = iAppHotKeyValue >> 16;
-  m_wAppVirtualKeyCode = iAppHotKeyValue & 0xff;
-  m_wAppWindowsModifiers = ConvertModifersMFC2Windows(wHKModifiers);
+  m_iAppHotKey = int32(PWSprefs::GetInstance()->GetPref(PWSprefs::HotKey));
+  m_wAppVirtualKeyCode = m_iAppHotKey & 0xff;
+  m_wAppPWSModifiers = m_iAppHotKey >> 16;
 
   // Can't be enabled if not set!
-  if (iAppHotKeyValue == 0) {
+  if (m_iAppHotKey == 0) {
     m_bAppHotKeyEnabled = false;
-    m_iAppHotKey = 0;
   } else {
     m_bAppHotKeyEnabled = PWSprefs::GetInstance()->GetPref(PWSprefs::HotKeyEnabled);
-    m_iAppHotKey = (m_wAppWindowsModifiers << 16) + m_wAppVirtualKeyCode;
   }
 }
 
@@ -418,13 +415,14 @@ BOOL CAddEdit_Additional::OnKillActive()
 
 void CAddEdit_Additional::OnEntryHotKeyKillFocus()
 {
-  if (m_bAppHotKeyEnabled || m_wAppWindowsModifiers == 0 || m_wAppVirtualKeyCode == 0)
+  if (m_bAppHotKeyEnabled || m_wAppVirtualKeyCode == 0 || m_wAppPWSModifiers == 0)
     return;
 
   // If PWS Application had an active Hot Key before the user edited
   // this entry's Hot Key, put it back
+  WORD wAppWindowsModifiers = ConvertModifersPWS2Windows(m_wAppPWSModifiers);
   BOOL brc = RegisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID,
-                      UINT(m_wAppWindowsModifiers), UINT(m_wAppVirtualKeyCode));
+                      UINT(wAppWindowsModifiers), UINT(m_wAppVirtualKeyCode));
   if (brc)
     m_bAppHotKeyEnabled = true;
 }
@@ -566,7 +564,7 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
     }
     
     StringX sxMenuItemName;
-    unsigned char ucModifiers = wHKModifiers & 0xff;
+    unsigned char ucModifiers = wPWSModifiers & 0xff;
     unsigned int nCID = GetMainDlg()->GetMenuShortcut(wVirtualKeyCode,
                                                       ucModifiers, sxMenuItemName);
     if (nCID != 0) {
@@ -650,7 +648,7 @@ BOOL CAddEdit_Additional::OnApply()
   WORD wVirtualKeyCode, wHKModifiers, wPWSModifiers;
   m_KBShortcutCtrl.GetHotKey(wVirtualKeyCode, wHKModifiers);
   
-  // Translate from PWS to CHotKeyCtrl modifiers
+  // Translate from CHotKeyCtrl to PWS modifiers
   wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
   M_KBShortcut() = (wPWSModifiers << 16) + wVirtualKeyCode;
 
