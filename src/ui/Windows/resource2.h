@@ -58,6 +58,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_EXPORT2V3FORMAT     32025
 #define ID_MENUITEM_EXPORT2V4FORMAT     32026
 #define ID_MENUITEM_LOCK                32027
+#define ID_MENUITEM_EXPORTFILTERED2DB   32028
 
 // Edit menu
 #define ID_EDITMENU                     32050
