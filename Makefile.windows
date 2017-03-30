@@ -122,15 +122,17 @@ upload-sf:
 	 $(BINRELNAME).zip $(SRCRELNAME).zip \
 	 pwsafe-$(RELEASENAME).msi \
 	 pwsafe-$(RELEASENAME)-map+pdb.zip \
-	 pwsafe64-$(RELEASENAME).exe \
-	 pwsafe64-$(RELEASENAME).msi \
-	 pwsafe64-$(RELEASENAME)-map+pdb.zip \
 	$(RELNOTES) \
 	 pwsafe-$(RELEASENAME).msi.sig \
 	 pwsafe-$(RELEASENAME).exe.sig \
+	 $(BINRELNAME).zip.sig $(SRCRELNAME).zip.sig \
+	 pwsafe64-$(RELEASENAME).exe \
+	 pwsafe64-$(RELEASENAME).msi \
+	 pwsafe64-$(RELEASENAME)-map+pdb.zip \
+	 $(BINRELNAME64).zip $(BINRELNAME64).zip.sig \
 	 pwsafe64-$(RELEASENAME).msi.sig \
 	 pwsafe64-$(RELEASENAME).exe.sig \
-	 $(BINRELNAME).zip.sig $(SRCRELNAME).zip.sig $(SF_UPLOAD_DST))
+	 $(SF_UPLOAD_DST))
 
 upload-github:
 ifeq ($(GITHUB_TOKEN),)
@@ -148,6 +150,8 @@ endif
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe64-$(RELEASENAME).msi.sig -f pwsafe64-$(RELEASENAME).msi.sig; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME).zip -f $(BINRELNAME).zip; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME).zip.sig -f $(BINRELNAME).zip.sig; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME64).zip -f $(BINRELNAME64).zip; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME64).zip.sig -f $(BINRELNAME64).zip.sig; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME)-map+pdb.zip \
 			-f pwsafe-$(RELEASENAME)-map+pdb.zip) \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe64-$(RELEASENAME)-map+pdb.zip \
@@ -235,8 +239,8 @@ save-map:
 bin-release-64: save-map-64
 	@-mkdir $(RELEASEDIR)/$(BINRELNAME64)
 
-	$(CP) $(BIN_MANIFEST) $(RELEASEDIR)/$(BINRELNAME64)
-	$(CP) $(I18N_MANIFEST) $(RELEASEDIR)/$(BINRELNAME64)
+	$(CP) $(BIN_MANIFEST_64) $(RELEASEDIR)/$(BINRELNAME64)
+	$(CP) $(I18N_MANIFEST_64) $(RELEASEDIR)/$(BINRELNAME64)
 	(cd $(RELEASEDIR); $(ZIP) -9 -r  foo ./$(BINRELNAME64); \
 	$(MV) foo.zip $(BINRELNAME64).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME64)
