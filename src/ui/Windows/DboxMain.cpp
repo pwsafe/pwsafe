@@ -2632,6 +2632,7 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
   const WORD wNCode = HIWORD(wParam);
   const WORD wID = LOWORD(wParam);
+
   /*
     wNCode = Notification Code if from a control, 1 if from an accelerator
              and 0 if from a menu.
@@ -2688,12 +2689,330 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
         wWinModifiers |= MOD_SHIFT;
 
       if (!ProcessEntryShortcut(wVirtualKeyCode, wWinModifiers))
-        return 0;
+        return 0L;
     }
+  }
+
+  // Check if command is from an accelerator but the menu item has been removed
+  if (message == WM_COMMAND &&  wNCode == 1 && wID < ID_LANGUAGES) {
+    if (CheckCommand(wID))
+      return 1L;
   }
 
 exit:
   return CDialog::WindowProc(message, wParam, lParam);
+}
+
+bool DboxMain::CheckCommand(const WORD wID)
+{
+  // The following menu item *may* have been removed in MainMenu
+  // If so, don't process the accelerator!
+  // The logic here is identical to DboxMain::CustomiseMenu for
+  // either appending or rmeoving menu items.
+  // Whilst it could be tidied up, leaving it as a direct equivalent to the
+  // code in CustomiseMenu allows for easier maintenance when CustomiseMenu
+  // is updated.
+
+  // This *ONLY* happens to the Edit menu - we can ignore Context menus
+  // which can't have accelerators.
+  if (wID <= ID_EDITMENU || wID >= ID_VIEWMENU)
+    return false;
+
+  bool bGroupSelected(false);
+  const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
+  const bool bItemSelected = (SelItemOk() == TRUE);
+  const bool bReadOnly = m_core.IsReadOnly();
+  const CItemData *pci(NULL), *pbci(NULL);
+
+  if (bItemSelected) {
+    pci = getSelectedItem();
+    ASSERT(pci != NULL);
+    if (pci->IsDependent())
+      pbci = m_core.GetBaseEntry(pci);
+  }
+
+  if (bTreeView) {
+    HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
+    bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeaf(hi));
+  }
+
+  // Save original entry type before possibly changing pci
+  const CItemData::EntryType etype_original =
+    pci == NULL ? CItemData::ET_INVALID : pci->GetEntryType();
+
+  // Scenario 1 - Nothing selected
+  if (pci == NULL && !bGroupSelected) {
+    if (m_IsListView) {
+      if (!bReadOnly && wID == ID_MENUITEM_ADD) {
+        return false;
+      }
+    } else {
+      if (!bReadOnly && (wID == ID_MENUITEM_ADD || wID == ID_MENUITEM_ADDGROUP)) {
+        return false;
+      }
+    }
+
+    // Add Find Next/Previous if find entries were found
+    if (m_FindToolBar.EntriesFound() && (wID == ID_MENUITEM_FIND || wID == ID_MENUITEM_FINDUP)) {
+      return false;
+    }
+
+    // Only add "Find..." if find filter not active
+    if (!(m_bFilterActive && m_bFindFilterDisplayed) && wID == ID_MENUITEM_FINDELLIPSIS) {
+      return false;
+    }
+
+    if (m_core.AnyToUndo() || m_core.AnyToRedo() && (wID == ID_MENUITEM_UNDO || wID == ID_MENUITEM_REDO)) {
+      return false;
+    }
+
+    if (wID == ID_MENUITEM_CLEARCLIPBOARD) {
+      return false;
+    }
+
+    // Menu item not there - don't process
+    return true;
+  }
+
+  // Scenario 2 - Group selected (Tree view only)
+  if (!m_IsListView && bGroupSelected) {
+    if (!m_IsListView && bGroupSelected) {
+      if (!bReadOnly && wID == ID_MENUITEM_ADD) {
+        return false;
+      }
+
+      // Add Find Next/Previous if find entries were found
+      if (m_FindToolBar.EntriesFound() && (wID == ID_MENUITEM_FIND || wID == ID_MENUITEM_FINDUP)) {
+        return false;
+      }
+
+      // Only add "Find..." if find filter not active
+      if (!(m_bFilterActive && m_bFindFilterDisplayed) && wID == ID_MENUITEM_FINDELLIPSIS) {
+        return false;
+      }
+
+      if (wID == ID_MENUITEM_GROUPENTER) {
+        return false;
+      }
+
+      if (!bReadOnly) {
+        switch (wID) {
+        case ID_MENUITEM_DELETEGROUP:
+        case ID_MENUITEM_RENAMEGROUP:
+        case ID_MENUITEM_ADDGROUP:
+        case ID_MENUITEM_DUPLICATEGROUP:
+          return false;
+        }
+
+        int numProtected, numUnprotected;
+        bool bProtect = GetSubtreeEntriesProtectedStatus(numProtected, numUnprotected);
+        if (bProtect) {
+          if (numUnprotected > 0 && wID == ID_MENUITEM_PROTECTGROUP)
+            return false;
+          if (numProtected > 0 && wID == ID_MENUITEM_UNPROTECTGROUP)
+            return false;
+        }
+      }
+
+      // Only allow export of a group to anything if non-empty
+      if (m_ctlItemTree.CountLeafChildren(m_ctlItemTree.GetSelectedItem()) != 0) {
+        switch (wID) {
+        case IDS_EXPORTENT2PLAINTEXT:
+        case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
+        case ID_MENUITEM_EXPORTGRP2XML:
+        case ID_MENUITEM_EXPORTGRP2DB:
+          return false;
+        }
+      }
+
+      if (m_core.AnyToUndo() || m_core.AnyToRedo() && (wID == ID_MENUITEM_UNDO || wID == ID_MENUITEM_REDO)) {
+        return false;
+      }
+
+      if (wID == ID_MENUITEM_CLEARCLIPBOARD) {
+        return false;
+      }
+
+      // Menu item not there - don't process
+      return true;
+    }
+  }
+
+  // Scenario 3 - Entry selected
+  if (pci != NULL) {
+    // Deal with multi-selection
+    // More than 2 is meaningless in List view
+    if (m_IsListView && m_ctlItemList.GetSelectedCount() > 2)
+      return true;
+
+    // If exactly 2 selected - show compare entries menu
+    if (m_IsListView  && m_ctlItemList.GetSelectedCount() == 2 && wID == ID_MENUITEM_COMPARE_ENTRIES) {
+      return false;
+    }
+
+    if (!bReadOnly && wID == ID_MENUITEM_ADD) {
+      return false;
+    }
+
+    if (wID == ((bReadOnly || pci->IsProtected()) ? ID_MENUITEM_VIEWENTRY : ID_MENUITEM_EDITENTRY)) {
+      return false;
+    }
+
+    if (!bReadOnly) {
+      if (wID == ID_MENUITEM_DELETEENTRY) {
+        return false;
+      }
+      if (!m_IsListView && wID == ID_MENUITEM_RENAMEENTRY) {
+        return false;
+      }
+    }
+
+    // Only have Find Next/Previous if find entries were found
+    if (m_FindToolBar.EntriesFound() && (wID == ID_MENUITEM_FIND || wID == ID_MENUITEM_FINDUP)) {
+      return false;
+    }
+
+    // Only add "Find..." if find filter not active
+    if (!(m_bFilterActive && m_bFindFilterDisplayed) && wID == ID_MENUITEM_FINDELLIPSIS) {
+      return false;
+    }
+
+    if (!bReadOnly) {
+      if (wID == ID_MENUITEM_DUPLICATEENTRY) {
+        return false;
+      }
+      if (!m_IsListView && wID == ID_MENUITEM_ADDGROUP) {
+        return false;
+      }
+
+      if (m_core.AnyToUndo() || m_core.AnyToRedo() &&
+          (wID == ID_MENUITEM_UNDO || wID == ID_MENUITEM_REDO)) {
+        return false;
+      }
+
+      if (wID == ID_MENUITEM_CLEARCLIPBOARD || wID == ID_MENUITEM_PASSWORDSUBSET) {
+        return false;
+      }
+
+      if (!pci->IsFieldValueEmpty(CItemData::USER, pbci) && wID == ID_MENUITEM_COPYUSERNAME) {
+        return false;
+      }
+
+      if (!pci->IsFieldValueEmpty(CItemData::NOTES, pbci) && wID == ID_MENUITEM_COPYNOTESFLD) {
+        return false;
+      }
+
+      /*
+      *  Rules:
+      *    1. If email field is not empty, add email menuitem.
+      *    2. If URL is not empty and is NOT an email address, add browse menuitem
+      *    3. If URL is not empty and is an email address, add email menuitem
+      *       (if not already added)
+      */
+      bool bAddCopyEmail = !pci->IsFieldValueEmpty(CItemData::EMAIL, pbci);
+      bool bAddSendEmail = bAddCopyEmail ||
+        (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && pci->IsURLEmail(pbci));
+      bool bAddURL = !pci->IsFieldValueEmpty(CItemData::URL, pbci);
+
+      // Add copies in order
+      if (bAddURL && wID == ID_MENUITEM_COPYURL) {
+        return false;
+      }
+
+      if (bAddCopyEmail && wID == ID_MENUITEM_COPYEMAIL) {
+        return false;
+      }
+
+      if (!pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci) && wID == ID_MENUITEM_COPYRUNCOMMAND)
+        return false;
+
+      // Add actions in order
+      if (bAddURL && !pci->IsURLEmail(pbci) &&
+          (wID == ID_MENUITEM_BROWSEURL || wID == ID_MENUITEM_BROWSEURLPLUS)) {
+        return false;
+      }
+
+      if (bAddSendEmail && wID == ID_MENUITEM_SENDEMAIL) {
+        return false;
+      }
+
+      if (!pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci) && wID == ID_MENUITEM_RUNCOMMAND) {
+        return false;
+      }
+
+      if (wID == ID_MENUITEM_AUTOTYPE) {
+        return false;
+      }
+
+
+      switch (etype_original) {
+      case CItemData::ET_NORMAL:
+      case CItemData::ET_SHORTCUTBASE:
+        // Allow creation of a shortcut
+        if (!bReadOnly && wID == ID_MENUITEM_CREATESHORTCUT) {
+          return false;
+        }
+        break;
+      case CItemData::ET_ALIASBASE:
+        // Can't have a shortcut to an AliasBase entry + can't goto base
+        break;
+      case CItemData::ET_ALIAS:
+      case CItemData::ET_SHORTCUT:
+        // Allow going to/editing the appropriate base entry
+        if (m_bFilterActive) {
+          // If a filter is active, then might not be able to go to
+          // entry's base entry as not in Tree or List view
+          pws_os::CUUID uuidBase = pci->GetBaseUUID();
+          auto iter = m_MapEntryToGUI.find(uuidBase);
+          ASSERT(iter != m_MapEntryToGUI.end());
+          if (iter->second.list_index != -1 &&
+              (wID == ID_MENUITEM_GOTOBASEENTRY || wID == ID_MENUITEM_EDITBASEENTRY)) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+        return false;
+      default:
+        ASSERT(0);
+      }
+
+      if (pci->IsShortcut() ? pbci->HasAttRef() : pci->HasAttRef() && wID == ID_MENUITEM_VIEWATTACHMENT) {
+        return false;
+      }
+
+      switch (wID) {
+      case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+      case ID_MENUITEM_EXPORTENT2XML:
+      case ID_MENUITEM_EXPORTENT2DB:
+        return false;
+      }
+
+      if (pci->IsShortcut() ? pbci->HasAttRef() : pci->HasAttRef() &&
+          wID == ID_MENUITEM_EXPORT_ATTACHMENT) {
+        return false;
+      }
+
+      if (!bReadOnly && etype_original != CItemData::ET_SHORTCUT &&
+          pci->IsProtected() ? ID_MENUITEM_UNPROTECT : ID_MENUITEM_PROTECT) {
+        return false;
+      }
+
+      // Tree view and command flag present only
+      if (!m_IsListView && m_bCompareEntries &&
+        etype_original != CItemData::ET_SHORTCUT && wID == ID_MENUITEM_COMPARE_ENTRIES) {
+        return false;
+      }
+    } else {
+      // Must be List view with no entry selected
+      if (wID == ID_MENUITEM_CLEARCLIPBOARD) {
+        return false;
+      }
+    }
+  }
+
+  // We dropped through and so menu item not there - don't process accelerator
+  return true;
 }
 
 void DboxMain::SetLanguage(LCID lcid)
