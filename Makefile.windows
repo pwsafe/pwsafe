@@ -166,12 +166,9 @@ upload-latest: latest.xml
 	sftp -b putlatest.tmp pwsafe.org
 	$(RM) putlatest.tmp latest.xml
 
-latest.xml: src/ui/Windows/version.h src/ui/wxWidgets/version.h
+latest.xml: version.mfc version.wx
 	Misc/make-latest-xml.pl $^ > $@
-	chmod 644 $@
-
-src/ui/wxWidgets/version.h:
-	Misc/mkversion.pl src/ui/wxWidgets/version.in $@
+	@chmod 644 $@
 
 sha1sums:
 	(cd $(RELEASEDIR); \
