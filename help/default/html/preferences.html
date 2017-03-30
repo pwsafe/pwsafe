@@ -653,9 +653,13 @@ was last exited</td>
 <td>none</td>
 <td>n/a</td>
 <td>n/a</td>
-<td>The Hot Key value. (This is stored as a decimal integer created from
-the virtual keycode for the character in the lower word plus the Microsoft
-Foundation Class CHotKeyCtrl modifier flags in the higher word.)</td>
+<td>The Hot Key value. For V3.42 and earlier, this is stored as a decimal integer
+created from the virtual keycode for the character in the lower word plus the Microsoft
+Foundation Class CHotKeyCtrl modifier flags in the higher word. As this was Microsoft
+specific, post V3.42, whilst this value calculation remains to provide backward
+compatibility, the preference now has XML attributes that sets the virtual key code
+and modifier flags e.g. Ctrl="1" Key="30" etc. to the internal <b>Password Safe</b> format
+that can be used across other platforms.</td>
 </tr>
 
 <tr>
