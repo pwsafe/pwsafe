@@ -696,44 +696,35 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     if (pci == NULL && !bGroupSelected) {
       if (m_IsListView) {
         if (!bReadOnly) {
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_ADD, tc_dummy);
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_ADD, tc_dummy);
           pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
         }
       } else {
         if (!bReadOnly) {
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_ADD, tc_dummy);
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_ADDGROUP, tc_dummy);
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_ADD, tc_dummy);
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_ADDGROUP, tc_dummy);
           pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
         }
       }
       
       // Add Find Next/Previous if find entries were found
       if (m_FindToolBar.EntriesFound()) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_FIND, tc_dummy);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_FINDUP, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FIND, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FINDUP, tc_dummy);
       } 
 
       // Only add "Find..." if find filter not active
       if (!(m_bFilterActive && m_bFindFilterDisplayed)) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                ID_MENUITEM_FINDELLIPSIS, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FINDELLIPSIS, tc_dummy);
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
 
       if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_UNDO, tc_dummy);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_REDO, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_UNDO, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_REDO, tc_dummy);
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       goto exit;
     }
 
@@ -741,46 +732,35 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     //   Add Entry, Find, Sep, <Group Items>, Sep, Clear Clipboard
     if (!m_IsListView && bGroupSelected) {
       if (!bReadOnly) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_ADD, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_ADD, tc_dummy);
       }
 
       // Add Find Next/Previous if find entries were found
       if (m_FindToolBar.EntriesFound()) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_FIND, tc_dummy);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_FINDUP, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FIND, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FINDUP, tc_dummy);
       } 
 
       // Only add "Find..." if find filter not active
       if (!(m_bFilterActive && m_bFindFilterDisplayed)) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                ID_MENUITEM_FINDELLIPSIS, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FINDELLIPSIS, tc_dummy);
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
 
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_GROUPENTER, tc_dummy);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_GROUPENTER, tc_dummy);
       
       if (!bReadOnly) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_DELETEGROUP, tc_dummy);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_RENAMEGROUP, tc_dummy);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_ADDGROUP, tc_dummy);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_DUPLICATEGROUP, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_DELETEGROUP, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_RENAMEGROUP, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_ADDGROUP, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_DUPLICATEGROUP, tc_dummy);
         int numProtected, numUnprotected;
         bool bProtect = GetSubtreeEntriesProtectedStatus(numProtected, numUnprotected);
         if (bProtect) {
           if (numUnprotected > 0)
-            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                   ID_MENUITEM_PROTECTGROUP, tc_dummy);
+            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_PROTECTGROUP, tc_dummy);
           if (numProtected > 0)
-            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                   ID_MENUITEM_UNPROTECTGROUP, tc_dummy);
+            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_UNPROTECTGROUP, tc_dummy);
         }
       }
 
@@ -791,28 +771,22 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         GGsubMenu.CreatePopupMenu();
         // Re-use entry menu texts
         GGstr.LoadString(IDS_EXPORTENT2PLAINTEXT);
-        GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
-          ID_MENUITEM_EXPORTGRP2PLAINTEXT, GGstr);
+        GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_EXPORTGRP2PLAINTEXT, GGstr);
         GGstr.LoadString(IDS_EXPORTENT2XML);
-        GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
-          ID_MENUITEM_EXPORTGRP2XML, GGstr);
+        GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_EXPORTGRP2XML, GGstr);
         GGstr.LoadString(IDS_EXPORTENT2DB);
-        GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
-          ID_MENUITEM_EXPORTGRP2DB, GGstr);
+        GGsubMenu.AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_EXPORTGRP2DB, GGstr);
         GGstr.LoadString(IDS_EXPORTGRPMENU);
         pPopupMenu->AppendMenu(MF_POPUP, (UINT_PTR)GGsubMenu.Detach(), GGstr);
       }
 
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_UNDO, tc_dummy);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_REDO, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_UNDO, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_REDO, tc_dummy);
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       goto exit;
     }
 
@@ -833,14 +807,12 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       if (m_IsListView  && m_ctlItemList.GetSelectedCount() == 2) {
         CString cs_txt(MAKEINTRESOURCE(ID_MENUITEM_COMPARE_ENTRIES));
         cs_txt.TrimLeft();  // Remove leading newline
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_COMPARE_ENTRIES, cs_txt);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COMPARE_ENTRIES, cs_txt);
         return;
       }
 
       if (!bReadOnly) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_ADD, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_ADD, tc_dummy);
       }
 
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
@@ -849,60 +821,47 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                              tc_dummy);
 
       if (!bReadOnly) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_DELETEENTRY, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_DELETEENTRY, tc_dummy);
         if (!m_IsListView) {
           // Rename not valid in List View
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_RENAMEENTRY, tc_dummy);
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_RENAMEENTRY, tc_dummy);
         }
       }
 
       // Only have Find Next/Previous if find entries were found
       if (m_FindToolBar.EntriesFound()) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_FIND, tc_dummy);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_FINDUP, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FIND, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FINDUP, tc_dummy);
       }
 
       // Only add "Find..." if find filter not active
       if (!(m_bFilterActive && m_bFindFilterDisplayed)) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                ID_MENUITEM_FINDELLIPSIS, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FINDELLIPSIS, tc_dummy);
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
 
       if (!bReadOnly) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_DUPLICATEENTRY, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_DUPLICATEENTRY, tc_dummy);
         if (!m_IsListView) {
           pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_ADDGROUP, tc_dummy);
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_ADDGROUP, tc_dummy);
         }
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
       
       if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_UNDO, tc_dummy);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_REDO, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_UNDO, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_REDO, tc_dummy);
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
 
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_COPYPASSWORD, tc_dummy);
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_PASSWORDSUBSET, tc_dummy);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COPYPASSWORD, tc_dummy);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_PASSWORDSUBSET, tc_dummy);
 
       if (!pci->IsFieldValueEmpty(CItemData::USER, pbci))
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_COPYUSERNAME, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COPYUSERNAME, tc_dummy);
 
       if (!pci->IsFieldValueEmpty(CItemData::NOTES, pbci))
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
@@ -922,49 +881,40 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
 
       // Add copies in order
       if (bAddURL) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_COPYURL, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COPYURL, tc_dummy);
       }
 
       if (bAddCopyEmail) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_COPYEMAIL, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COPYEMAIL, tc_dummy);
       }
 
       if (!pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci))
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_COPYRUNCOMMAND, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COPYRUNCOMMAND, tc_dummy);
 
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
 
       // Add actions in order
       if (bAddURL && !pci->IsURLEmail(pbci)) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_BROWSEURL, tc_dummy);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_BROWSEURLPLUS, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURL, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURLPLUS, tc_dummy);
       }
 
       if (bAddSendEmail) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_SENDEMAIL, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_SENDEMAIL, tc_dummy);
       }
 
       if (!pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci)) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_RUNCOMMAND, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_RUNCOMMAND, tc_dummy);
       }
 
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_AUTOTYPE, tc_dummy);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_AUTOTYPE, tc_dummy);
 
       switch (etype_original) {
         case CItemData::ET_NORMAL:
         case CItemData::ET_SHORTCUTBASE:
           // Allow creation of a shortcut
           if (!bReadOnly) {
-            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                   ID_MENUITEM_CREATESHORTCUT, tc_dummy);
+            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_CREATESHORTCUT, tc_dummy);
           }
           break;
         case CItemData::ET_ALIASBASE:
@@ -973,38 +923,41 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         case CItemData::ET_ALIAS:
         case CItemData::ET_SHORTCUT:
           // Allow going to/editing the appropriate base entry
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_GOTOBASEENTRY, tc_dummy); 
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_EDITBASEENTRY, tc_dummy);
-         break;
+          if (m_bFilterActive) {
+            // If a filter is active, then might not be able to go to
+            // entry's base entry as not in Tree or List view
+            pws_os::CUUID uuidBase = pci->GetBaseUUID();
+            auto iter = m_MapEntryToGUI.find(uuidBase);
+            ASSERT(iter != m_MapEntryToGUI.end());
+            if (iter->second.list_index == -1) {
+              break;
+            }
+          }
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_GOTOBASEENTRY, tc_dummy);
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_EDITBASEENTRY, tc_dummy);
+          break;
         default:
           ASSERT(0);
       }
 
       if (pci->IsShortcut() ? pbci->HasAttRef() : pci->HasAttRef()) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_VIEWATTACHMENT, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_VIEWATTACHMENT, tc_dummy);
       }
 
       CMenu EEsubMenu;
       CString EEstr;
       EEsubMenu.CreatePopupMenu();
       EEstr.LoadString(IDS_EXPORTENT2PLAINTEXT);
-      EEsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
-                           ID_MENUITEM_EXPORTENT2PLAINTEXT, EEstr); 
+      EEsubMenu.AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_EXPORTENT2PLAINTEXT, EEstr); 
       EEstr.LoadString(IDS_EXPORTENT2XML);
-      EEsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
-                          ID_MENUITEM_EXPORTENT2XML, EEstr);
+      EEsubMenu.AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_EXPORTENT2XML, EEstr);
       EEstr.LoadString(IDS_EXPORTENT2DB);
-      EEsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
-                           ID_MENUITEM_EXPORTENT2DB, EEstr);
+      EEsubMenu.AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_EXPORTENT2DB, EEstr);
       EEstr.LoadString(IDS_EXPORTENTMENU);
       pPopupMenu->AppendMenu(MF_POPUP, (UINT_PTR)EEsubMenu.Detach(), EEstr);
 
       if (pci->IsShortcut() ? pbci->HasAttRef() : pci->HasAttRef()) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-          ID_MENUITEM_EXPORT_ATTACHMENT, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_EXPORT_ATTACHMENT, tc_dummy);
       }
 
       if (!bReadOnly && etype_original != CItemData::ET_SHORTCUT)
@@ -1015,13 +968,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       // Tree view and command flag present only
       if (!m_IsListView && m_bCompareEntries &&
            etype_original != CItemData::ET_SHORTCUT)
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_COMPARE_ENTRIES, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COMPARE_ENTRIES, tc_dummy);
     } else {
       // Must be List view with no entry selected
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
     }
   }  // Edit menu
 
