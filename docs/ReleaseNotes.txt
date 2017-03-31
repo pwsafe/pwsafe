@@ -1,5 +1,5 @@
-Password Safe 3.42.0 Release March 2017
-=======================================
+Password Safe 3.42.1Pre Release April 2017
+==========================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
