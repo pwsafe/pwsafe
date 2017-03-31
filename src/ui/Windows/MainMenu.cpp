@@ -843,10 +843,12 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_ADD, tc_dummy);
       }
 
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             m_core.IsReadOnly() || pci->IsProtected() ?
-                                 ID_MENUITEM_VIEWENTRY : ID_MENUITEM_EDITENTRY,
-                             tc_dummy);
+      if (m_core.IsReadOnly() || pci->IsProtected()) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_VIEWENTRY, tc_dummy);
+      } else {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_EDITENTRY, tc_dummy);
+      }
+
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_DELETEENTRY, tc_dummy);
@@ -1406,6 +1408,14 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 
     pPopup = menu.GetSubMenu(0);
     ASSERT_VALID(pPopup);
+
+    if (m_core.IsReadOnly() || pci->IsProtected()) {
+      CString csMenu(MAKEINTRESOURCE(ID_MENUITEM_VIEWENTRY));
+      pPopup->ModifyMenu(ID_MENUITEM_EDITENTRY, MF_BYCOMMAND, ID_MENUITEM_VIEWENTRY, csMenu);
+    } else {
+      CString csMenu(MAKEINTRESOURCE(ID_MENUITEM_EDITENTRY));
+      pPopup->ModifyMenu(ID_MENUITEM_EDITENTRY, MF_BYCOMMAND, ID_MENUITEM_EDITENTRY, csMenu);
+    }
 
     const CItemData::EntryType etype_original = pci->GetEntryType();
     switch (etype_original) {
