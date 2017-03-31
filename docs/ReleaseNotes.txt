@@ -1,4 +1,4 @@
-Password Safe 3.42.0 Release March 2017
+Password Safe 3.42.1 Release March 2017
 =======================================
 
 This note describes the new features, fixed bugs and known problems
@@ -12,6 +12,10 @@ Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
 SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
+
+Bugs fixed in 3.42.1
+====================
+[1404] View Entry now enabled again when a database is opened in Read Only mode.
 
 Bugs fixed in 3.42.0
 ====================

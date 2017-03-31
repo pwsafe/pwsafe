@@ -483,7 +483,8 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
         if (nIndex != -1) {
           mainTBCtrl.SetCmdID(nIndex, ID_MENUITEM_VIEWENTRY);
         }
-      } else {
+      }
+      if (!m_core.IsReadOnly() && !pci_entry->IsProtected()) {
         // View should become Edit
         int nIndex = m_MainToolBar.CommandToIndex(ID_MENUITEM_VIEWENTRY);
         if (nIndex != -1) {
