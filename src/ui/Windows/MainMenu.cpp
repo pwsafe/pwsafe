@@ -843,11 +843,10 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_ADD, tc_dummy);
       }
 
-      if (m_core.IsReadOnly() || pci->IsProtected()) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_VIEWENTRY, tc_dummy);
-      } else {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_EDITENTRY, tc_dummy);
-      }
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ((m_core.IsReadOnly() || pci->IsProtected()) ?
+                              ID_MENUITEM_VIEWENTRY : ID_MENUITEM_EDITENTRY),
+                             tc_dummy);
 
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
