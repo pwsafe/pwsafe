@@ -17,6 +17,8 @@ Bugs fixed in 3.42.1
 ====================
 [1404] Regression: In read-only mode, Entry popup menu's View Entry
 item restored (was mistakenly disabled).
+[1266] Regression: Toolbar elements display correctly on high-resolution monitors
+under Windows 8.1 and later now supported in 64-bit builds.
 
 Bugs fixed in 3.42.0
 ====================
