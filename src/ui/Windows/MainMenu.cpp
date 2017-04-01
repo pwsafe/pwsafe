@@ -882,9 +882,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
           pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                  ID_MENUITEM_ADDGROUP, tc_dummy);
         }
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
-
-      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       
       if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
