@@ -355,18 +355,19 @@ void PasswordSafeFrame::Init()
 */
 void PasswordSafeFrame::RegisterLanguageMenuItems() {
   // Using unlocalized language names here, it will be translated in AddLanguageMenu
-  AddLanguage( ID_LANGUAGE_CHINESE, wxLANGUAGE_CHINESE, L"Chinese"  );  /* code: 'zh' */
-  AddLanguage( ID_LANGUAGE_DANISH,  wxLANGUAGE_DANISH,  L"Danish"   );  /* code: 'da' */
-  AddLanguage( ID_LANGUAGE_DUTCH,   wxLANGUAGE_DUTCH,   L"Dutch"    );  /* code: 'nl' */
-  AddLanguage( ID_LANGUAGE_ENGLISH, wxLANGUAGE_ENGLISH, L"English"  );  /* code: 'en' */
-  AddLanguage( ID_LANGUAGE_FRENCH,  wxLANGUAGE_FRENCH,  L"French"   );  /* code: 'fr' */
-  AddLanguage( ID_LANGUAGE_GERMAN,  wxLANGUAGE_GERMAN,  L"German"   );  /* code: 'de' */
-  AddLanguage( ID_LANGUAGE_ITALIAN, wxLANGUAGE_ITALIAN, L"Italian"  );  /* code: 'it' */
-  AddLanguage( ID_LANGUAGE_KOREAN,  wxLANGUAGE_KOREAN,  L"Korean"   );  /* code: 'ko' */
-  AddLanguage( ID_LANGUAGE_POLISH,  wxLANGUAGE_POLISH,  L"Polish"   );  /* code: 'pl' */
-  AddLanguage( ID_LANGUAGE_RUSSIAN, wxLANGUAGE_RUSSIAN, L"Russian"  );  /* code: 'ru' */
-  AddLanguage( ID_LANGUAGE_SPANISH, wxLANGUAGE_SPANISH, L"Spanish"  );  /* code: 'es' */
-  AddLanguage( ID_LANGUAGE_SWEDISH, wxLANGUAGE_SWEDISH, L"Swedish"  );  /* code: 'sv' */
+  AddLanguage( ID_LANGUAGE_CHINESE,   wxLANGUAGE_CHINESE, L"Chinese"  );  /* code: 'zh' */
+  AddLanguage( ID_LANGUAGE_DANISH,    wxLANGUAGE_DANISH,  L"Danish"   );  /* code: 'da' */
+  AddLanguage( ID_LANGUAGE_DUTCH,     wxLANGUAGE_DUTCH,   L"Dutch"    );  /* code: 'nl' */
+  AddLanguage( ID_LANGUAGE_ENGLISH,   wxLANGUAGE_ENGLISH, L"English"  );  /* code: 'en' */
+  AddLanguage( ID_LANGUAGE_FRENCH,    wxLANGUAGE_FRENCH,  L"French"   );  /* code: 'fr' */
+  AddLanguage( ID_LANGUAGE_GERMAN,    wxLANGUAGE_GERMAN,  L"German"   );  /* code: 'de' */
+  AddLanguage( ID_LANGUAGE_HUNGARIAN, wxLANGUAGE_HUNGARIAN, L"Hungarian"  );  /* code: 'hu' */
+  AddLanguage( ID_LANGUAGE_ITALIAN,   wxLANGUAGE_ITALIAN, L"Italian"  );  /* code: 'it' */
+  AddLanguage( ID_LANGUAGE_KOREAN,    wxLANGUAGE_KOREAN,  L"Korean"   );  /* code: 'ko' */
+  AddLanguage( ID_LANGUAGE_POLISH,    wxLANGUAGE_POLISH,  L"Polish"   );  /* code: 'pl' */
+  AddLanguage( ID_LANGUAGE_RUSSIAN,   wxLANGUAGE_RUSSIAN, L"Russian"  );  /* code: 'ru' */
+  AddLanguage( ID_LANGUAGE_SPANISH,   wxLANGUAGE_SPANISH, L"Spanish"  );  /* code: 'es' */
+  AddLanguage( ID_LANGUAGE_SWEDISH,   wxLANGUAGE_SWEDISH, L"Swedish"  );  /* code: 'sv' */
 
   m_selectedLanguage = ID_LANGUAGE_ENGLISH;
   wxLanguage current_language = wxGetApp().GetSelectedLanguage();
