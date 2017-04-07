@@ -423,8 +423,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
   ASSERT((cf.dwMask & CFM_SIZE) == CFM_SIZE);
   m_iPointSize = cf.yHeight / 20;
 
-  m_iLineCount = m_ex_notes.GetLineCount();
-
   // Load copy password bitmap
   UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
     IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
@@ -1079,13 +1077,6 @@ void CAddEdit_Basic::OnENChangeNotes()
     if (current_notes == M_notes())
       return;
   }
-
-  // Try to scroll as lines added or deleted
-  int iLineCount = m_ex_notes.GetLineCount();
-  if (m_iLineCount != iLineCount) {
-    m_ex_notes.LineScroll(iLineCount - m_iLineCount);
-  }
-  m_iLineCount = iLineCount;
 
   m_ae_psh->SetChanged(true);
   m_ae_psh->SetNotesChanged(true); // Needed if Notes field is long and will be truncated
