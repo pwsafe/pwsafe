@@ -588,7 +588,6 @@ private:
   const ItemMMap &GetBase2ShortcutsMmap() const {return m_base2shortcuts_mmap;}
   void SetBase2ShortcutsMmap(ItemMMap &b2smm) {m_base2shortcuts_mmap = b2smm;}
   
- 
   // Following are private in PWScore, public in CommandInterface:
   void AddChangedNodes(StringX path);
 

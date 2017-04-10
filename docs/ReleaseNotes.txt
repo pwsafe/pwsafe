@@ -30,6 +30,9 @@ New Features for 3.42.2
 editor used to edit the Notes field from the Add/Edit Basic dialog. 
 [] Implement the ability to export the currently filtered entries to a PasswordSafe
 database.
+[833] The right-click context menu for a base entry now allows the user to quickly
+select any one of its dependants, i.e. alias or shortcut. See Help file for more
+information.
 
 Bugs fixed in 3.42.1
 ====================

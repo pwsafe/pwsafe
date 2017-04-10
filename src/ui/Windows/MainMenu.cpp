@@ -716,6 +716,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_REDO, tc_dummy);
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
+
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       goto exit;
     }
@@ -778,6 +779,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_REDO, tc_dummy);
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
+
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       goto exit;
     }
@@ -1359,19 +1361,125 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
     }
 
     const CItemData::EntryType etype_original = pci->GetEntryType();
+
+    if (pci->IsDependent()) {
+      pbci = m_core.GetBaseEntry(pci);
+    }
+
+    // Get list of UUIDs of a base's dependants.
+    // Add entry's [g:t:u] and its display position into a map, which will
+    // sort the entries.
+    UUIDVector tlist;
+    std::map<StringX, int> mapDependants;
+    int iMaxVisibleEntries(0);
+
+    if (etype_original == CItemData::ET_SHORTCUTBASE || etype_original == CItemData::ET_ALIASBASE) {
+      m_core.GetAllDependentEntries(pci->GetUUID(), tlist,
+        etype_original == CItemData::ET_SHORTCUTBASE ? CItemData::ET_SHORTCUT : CItemData::ET_ALIAS);
+
+      for (size_t i = 0; i < tlist.size(); i++) {
+        ItemListIter iter = Find(tlist[i]);
+        DisplayInfo *pdi = GetEntryGUIInfo(iter->second, true);
+
+        // Check in Tree (filter may be active and so may not be there)
+        int index = pdi->list_index;
+        if (pdi == NULL) {
+          index = -1;
+        } else {
+          iMaxVisibleEntries++;
+        }
+
+        StringX sxGroup = iter->second.GetGroup();
+        StringX sxTitle = iter->second.GetTitle();
+        StringX sxUser = iter->second.GetUser();
+        StringX sxEntry;
+        Format(sxEntry, L"\xab%s\xbb \xab%s\xbb \xab%s\xbb", sxGroup.c_str(),
+          sxTitle.c_str(), sxUser.c_str());
+
+        // Add to map which will sort by entry name
+        mapDependants.insert(make_pair(sxEntry, pdi->list_index));
+      }
+    }
+
+    // Set up "Go to Aliases/Shortcuts"
+    int nID = ID_MENUITEM_GOTODEPENDANT1;
+    m_vGotoDependants.clear();
+
+    // Find popup menu for this - not can't have a command ID for context menu
+    // popups and so must go by position. This is after "Edit Base Entry"
+    int isubmenu_pos = app.FindMenuItem(pPopup, ID_MENUITEM_EDITBASEENTRY) + 1;
+
+    // Get pointer to this popup
+    CMenu *pGotoDpdPopup = pPopup->GetSubMenu(isubmenu_pos);
+
     switch (etype_original) {
-      case CItemData::ET_NORMAL:
       case CItemData::ET_SHORTCUTBASE:
+      {
+        // Need to change menu text
+        CString csMenuText1(MAKEINTRESOURCE(IDS_GOTOSHORTCUTS));
+        pPopup->ModifyMenu(isubmenu_pos, MF_BYPOSITION, 0, csMenuText1);
+
+        // Remove dummy separator in menu definition
+        pGotoDpdPopup->RemoveMenu(0, MF_BYPOSITION);
+
+        // Got through shortcuts and add to popup menu
+        // Fill the dependant vector with its corresponding position to be used
+        // by the command to select it if the user selects it
+        for (auto iter = mapDependants.begin(); iter != mapDependants.end(); iter++) {
+          StringX sxEntry = iter->first;
+
+          if (iter->second == -1 || nID > ID_MENUITEM_GOTODEPENDANTMAX) {
+            // Dependant is NOT available or reached maximum
+            pGotoDpdPopup->InsertMenu((UINT)-1, MF_BYPOSITION | MF_STRING | MF_GRAYED,
+                                      0, sxEntry.c_str());
+          } else {
+            // Dependant is visible
+            m_vGotoDependants.push_back(iter->second);
+            pGotoDpdPopup->InsertMenu((UINT)-1, MF_BYPOSITION | MF_STRING, nID, sxEntry.c_str());
+            nID++;
+          }
+        }
+
+        // As a base entry - remove menu items for a base
+        pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+        pPopup->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
+        break;
+      }
+      case CItemData::ET_NORMAL:
+        // As a normal entry - remove menu items for a base
+        pPopup->RemoveMenu(isubmenu_pos, MF_BYPOSITION);
         pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
         pPopup->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
         break;
       case CItemData::ET_ALIASBASE:
+        // Remove dummy separator in menu definition
+        pGotoDpdPopup->RemoveMenu(0, MF_BYPOSITION);
+
+        // Got throogh aliases and add to popup menu
+        // Fill the dependant vector with its corresponding position to be used
+        // by the command to select it if the user selects it
+        for (auto iter = mapDependants.begin(); iter != mapDependants.end(); iter++) {
+          StringX sxEntry = iter->first;
+          if (iter->second == -1 || nID > ID_MENUITEM_GOTODEPENDANTMAX) {
+            // Dependant is NOT available or reached maximum
+            pGotoDpdPopup->InsertMenu((UINT)-1, MF_BYPOSITION | MF_STRING | MF_GRAYED,
+              0, sxEntry.c_str());
+          } else {
+            // Dependant is visible
+            m_vGotoDependants.push_back(iter->second);
+            pGotoDpdPopup->InsertMenu((UINT)-1, MF_BYPOSITION | MF_STRING, nID, sxEntry.c_str());
+            nID++;
+          }
+        }
+
+        // As a base entry - remove menu items for a base - also can't have a shoretcut to an alias
         pPopup->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
         pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
         pPopup->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
         break;
       case CItemData::ET_ALIAS:
       case CItemData::ET_SHORTCUT:
+        pPopup->RemoveMenu(isubmenu_pos, MF_BYPOSITION);
         pPopup->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
         if (m_bFilterActive) {
           // If a filter is active, then might not be able to go to
@@ -1383,21 +1491,28 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
             pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
             pPopup->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
           }
+        } else {
+          if (m_core.IsReadOnly() || pbci->IsProtected()) {
+            CString csMenuText(MAKEINTRESOURCE(IDS_VIEWBASEENTRY));
+            pPopup->ModifyMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND, 
+                               ID_MENUITEM_EDITBASEENTRY, csMenuText);
+          }
         }
         break;
       default:
         ASSERT(0);
     }
 
+    // Clear up list of dependant UUIDs and map between the dependant [g:t:u] and
+    // display position in list
+    tlist.clear();
+    mapDependants.clear();
+
     if (m_core.IsReadOnly() || pci->IsShortcut()) {
       pPopup->RemoveMenu(ID_MENUITEM_PROTECT, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_UNPROTECT, MF_BYCOMMAND);
     } else {
       pPopup->RemoveMenu(pci->IsProtected() ? ID_MENUITEM_PROTECT : ID_MENUITEM_UNPROTECT, MF_BYCOMMAND);
-    }
-
-    if (pci->IsDependent()) {
-      pbci = m_core.GetBaseEntry(pci);
     }
 
     bool bCopyEmail = !pci->IsFieldValueEmpty(CItemData::EMAIL, pbci);
