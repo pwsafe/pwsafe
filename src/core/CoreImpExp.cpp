@@ -934,7 +934,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   to = 0;
   do {
     // make sure EXPORTHEADER has correct field names, though we have some resiliency below
-    ASSERT( vs_Header[itoken] == CItemData::FieldName(fieldMap[itoken].itemField));  
+    ASSERT( vs_Header[itoken] == CItemData::EngFieldName(fieldMap[itoken].itemField));
     from = s_header.find_first_not_of(pSeps, to);
     if (from == string::npos)
       break;
@@ -947,7 +947,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       i_Offset[it - vs_Header.begin()] = itoken;
       num_found++;
     }
-    else if ( token == CItemData::FieldName(fieldMap[itoken].itemField) ) {
+    else if ( token == CItemData::EngFieldName(fieldMap[itoken].itemField) ) {
       // Column header might not match if it was exported from a version where EXPORTHEADER didn't
       // name the column titles correctly.  So compare directly with the corresponding field name.
       // Note that we are not searching here, unlike the above if block. The incorrect title has to
