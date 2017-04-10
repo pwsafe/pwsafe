@@ -2764,7 +2764,11 @@ bool DboxMain::CheckCommand(const WORD wID)
       return false;
     }
 
-    if (m_core.AnyToUndo() || m_core.AnyToRedo() && (wID == ID_MENUITEM_UNDO || wID == ID_MENUITEM_REDO)) {
+    if (m_core.AnyToUndo() && wID == ID_MENUITEM_UNDO) {
+      return false;
+    }
+
+    if (m_core.AnyToRedo() && wID == ID_MENUITEM_REDO) {
       return false;
     }
 
@@ -2827,7 +2831,11 @@ bool DboxMain::CheckCommand(const WORD wID)
         }
       }
 
-      if (m_core.AnyToUndo() || m_core.AnyToRedo() && (wID == ID_MENUITEM_UNDO || wID == ID_MENUITEM_REDO)) {
+      if (m_core.AnyToUndo() && wID == ID_MENUITEM_UNDO) {
+        return false;
+      }
+
+      if (m_core.AnyToRedo() && wID == ID_MENUITEM_REDO) {
         return false;
       }
 
@@ -2887,8 +2895,11 @@ bool DboxMain::CheckCommand(const WORD wID)
         return false;
       }
 
-      if (m_core.AnyToUndo() || m_core.AnyToRedo() &&
-          (wID == ID_MENUITEM_UNDO || wID == ID_MENUITEM_REDO)) {
+      if (m_core.AnyToUndo() && wID == ID_MENUITEM_UNDO) {
+        return false;
+      }
+
+      if (m_core.AnyToRedo() && wID == ID_MENUITEM_REDO) {
         return false;
       }
 

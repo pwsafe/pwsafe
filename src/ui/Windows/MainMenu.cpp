@@ -1209,6 +1209,12 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       CMenu *pPopup = menu.GetSubMenu(0);
       ASSERT_VALID(pPopup);
 
+      // Shouldn't end menu with a separator
+      int i = pPopup->GetMenuItemCount();
+      if (i > 0 && pPopup->GetMenuItemID(i - 1) == 0) {
+        pPopup->RemoveMenu(i - 1, MF_BYPOSITION);
+      }
+
       // Use this DboxMain for commands
       pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
     }
@@ -1296,6 +1302,12 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
           if (!bProtect || numProtected == 0)
             pPopup->RemoveMenu(ID_MENUITEM_UNPROTECTGROUP, MF_BYCOMMAND);
 
+          // Shouldn't end menu with a separator
+          int i = pPopup->GetMenuItemCount();
+          if (i > 0 && pPopup->GetMenuItemID(i - 1) == 0) {
+            pPopup->RemoveMenu(i - 1, MF_BYPOSITION);
+          }
+
           // Use this DboxMain for commands
           pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
         }
@@ -1311,6 +1323,12 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
         ti = m_ctlItemTree.GetSelectedItem();
         if (ti == NULL || (ti != NULL && (CItemData *)m_ctlItemTree.GetItemData(ti) != NULL))
           pPopup->RemoveMenu(ID_MENUITEM_DUPLICATEGROUP, MF_BYCOMMAND);
+
+        // Shouldn't end menu with a separator
+        int i = pPopup->GetMenuItemCount();
+        if (i > 0 && pPopup->GetMenuItemID(i - 1) == 0) {
+          pPopup->RemoveMenu(i - 1, MF_BYPOSITION);
+        }
 
         // Use this DboxMain for commands
         m_bWhitespaceRightClick = true;
@@ -1338,6 +1356,12 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       pPopup = menu.GetSubMenu(0);
       ASSERT_VALID(pPopup);
 
+      // Shouldn't end menu with a separator
+      int i = pPopup->GetMenuItemCount();
+      if (i > 0 && pPopup->GetMenuItemID(i - 1) == 0) {
+        pPopup->RemoveMenu(i - 1, MF_BYPOSITION);
+      }
+
       // Use this DboxMain for commands
       pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
       return;
@@ -1355,9 +1379,17 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
     if (m_core.IsReadOnly() || pci->IsProtected()) {
       CString csMenu(MAKEINTRESOURCE(ID_MENUITEM_VIEWENTRY));
       pPopup->ModifyMenu(ID_MENUITEM_EDITENTRY, MF_BYCOMMAND, ID_MENUITEM_VIEWENTRY, csMenu);
-    } else {
-      CString csMenu(MAKEINTRESOURCE(ID_MENUITEM_EDITENTRY));
-      pPopup->ModifyMenu(ID_MENUITEM_EDITENTRY, MF_BYCOMMAND, ID_MENUITEM_EDITENTRY, csMenu);
+
+      if (m_core.IsReadOnly()) {
+        // Remove "changing" menu actions
+        pPopup->RemoveMenu(ID_MENUITEM_RENAMEENTRY, MF_BYCOMMAND);
+        pPopup->RemoveMenu(ID_MENUITEM_DUPLICATEENTRY, MF_BYCOMMAND);
+        pPopup->RemoveMenu(ID_MENUITEM_DELETEENTRY, MF_BYCOMMAND);
+        pPopup->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
+        pPopup->RemoveMenu(ID_MENUITEM_ADD, MF_BYCOMMAND);
+        pPopup->RemoveMenu(ID_MENUITEM_ADDGROUP, MF_BYCOMMAND);
+        pPopup->RemoveMenu(ID_MENUITEM_DUPLICATEGROUP, MF_BYCOMMAND);
+      }
     }
 
     const CItemData::EntryType etype_original = pci->GetEntryType();
@@ -1562,6 +1594,12 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
     if (m_IsListView || !m_bCompareEntries ||
         etype_original == CItemData::ET_SHORTCUT)
         pPopup->RemoveMenu(ID_MENUITEM_COMPARE_ENTRIES, MF_BYCOMMAND);
+
+    // Shouldn't end menu with a separator
+    int i = pPopup->GetMenuItemCount();
+    if (i > 0  && pPopup->GetMenuItemID(i - 1) == 0) {
+      pPopup->RemoveMenu(i - 1, MF_BYPOSITION);
+    }
 
     // Use this DboxMain for commands
     pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
