@@ -418,7 +418,7 @@ void DboxMain::OnOptions()
            iter++) {
         // User should not have these sub-entries in their config file
         if (iter->first == ID_MENUITEM_GROUPENTER  ||
-            iter->first == ID_MENUITEM_VIEWENTRY        || 
+            iter->first == ID_MENUITEM_VIEWENTRY   || 
             iter->first == ID_MENUITEM_DELETEENTRY ||
             iter->first == ID_MENUITEM_DELETEGROUP ||
             iter->first == ID_MENUITEM_RENAMEENTRY ||

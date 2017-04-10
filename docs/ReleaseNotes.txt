@@ -17,6 +17,12 @@ Bugs fixed in 3.42.2
 ====================
 None
 
+New Features for 3.42.2
+=======================
+[833] The right-click context menu for a base entry now allows the user to quickly
+select any one of its dependants, i.e. alias or shortcut. See Help file for more
+information.
+
 Bugs fixed in 3.42.1
 ====================
 [1404] Regression: In read-only mode, Entry popup menu's View Entry

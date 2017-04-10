@@ -281,6 +281,9 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_TRAYSELECT1         33451
 #define ID_MENUITEM_TRAYSELECTMAX       33475
 
+#define ID_MENUITEM_GOTODEPENDANT1      33476
+#define ID_MENUITEM_GOTODEPENDANTMAX    33500
+
 // Following for CEditExtn context menu
 // Really string constants, but "logically" they're menus...
 #define IDS_MENUSTRING_UNDO             34100
