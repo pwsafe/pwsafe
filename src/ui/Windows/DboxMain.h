@@ -30,6 +30,7 @@
 #include "MenuShortcuts.h"
 #include "AdvancedDlg.h"
 #include "FontsDialog.h"
+#include "FRHdrCtrl.h"  // For st_FRResults
 
 #include "core/UIinterface.h"
 #include "core/PWScore.h"
@@ -443,6 +444,14 @@ public:
   std::set<StringX> GetAllMediaTypes() const
   {return m_core.GetAllMediaTypes();}
 
+  size_t DoFindReplaceSearch(const CItem::FieldType &ft, const PWSMatch::MatchRule &rule,
+    const StringX &sxOldText, const bool &bCaseSensitive,
+    std::vector<st_FRResults> &vFRResults);
+
+  size_t DoFindReplaceEdit(const CItem::FieldType &ft, const PWSMatch::MatchRule &rule,
+    const StringX &sxOldText, const StringX &sxNewText, const bool &bCaseSensitive,
+    std::vector<st_FRResults> &vFRResults);
+
  protected:
    // ClassWizard generated virtual function overrides
    //{{AFX_VIRTUAL(DboxMain)
@@ -681,6 +690,7 @@ public:
   afx_msg void OnDuplicateEntry();
   afx_msg void OnOptions();
   afx_msg void OnManagePasswordPolicies();
+  afx_msg void OnFindReplace();
   afx_msg void OnGeneratePassword();
   afx_msg void OnYubikey();
   afx_msg void OnSave();

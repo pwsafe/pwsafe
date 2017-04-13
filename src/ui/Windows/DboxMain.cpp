@@ -451,6 +451,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_GENERATEPASSWORD, OnGeneratePassword)
   ON_COMMAND(ID_MENUITEM_YUBIKEY, OnYubikey)
   ON_COMMAND(ID_MENUITEM_PSWD_POLICIES, OnManagePasswordPolicies)
+  ON_COMMAND(ID_MENUITEM_FINDREPLACE, OnFindReplace)
 
   // Help Menu
   ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
@@ -682,6 +683,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
   {ID_MENUITEM_YUBIKEY, true, false, true, false},
   {ID_MENUITEM_PSWD_POLICIES, true, true, true, false},
+  {ID_MENUITEM_FINDREPLACE, true, false, true, false},
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
   {ID_MENUITEM_ABOUT, true, true, true, true},
@@ -3013,6 +3015,10 @@ bool DboxMain::CheckCommand(const WORD wID)
       // Tree view and command flag present only
       if (!m_IsListView && m_bCompareEntries &&
         etype_original != CItemData::ET_SHORTCUT && wID == ID_MENUITEM_COMPARE_ENTRIES) {
+        return false;
+      }
+
+      if ((!bReadOnly && GetNumEntries() > 1) && wID == ID_MENUITEM_FINDREPLACE) {
         return false;
       }
     } else {

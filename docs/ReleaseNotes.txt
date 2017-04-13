@@ -33,6 +33,9 @@ database.
 [833] The right-click context menu for a base entry now allows the user to quickly
 select any one of its dependants, i.e. alias or shortcut. See Help file for more
 information.
+[830] A Find & Replace feature has been added to change text fields for all entries within
+the database. Editable fields are restricted to: Autotype, Email, Notes, Password Policy Name,
+Run Command and URL.
 
 Bugs fixed in 3.42.1
 ====================

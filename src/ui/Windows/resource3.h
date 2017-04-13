@@ -799,4 +799,13 @@
 #define IDS_WSSLCT_FILTERED             6051
 #define IDS_GOTOSHORTCUTS               6052
 #define IDS_VIEWBASEENTRY               6053
-
+#define IDS_FINDREPLACE                 6054
+#define IDS_CURRENT_VALUE               6055
+#define IDS_NEW_VALUE                   6056
+#define IDS_NO_MATCHES                  6057
+#define IDS_NO_CHANGES_MADE             6058
+#define IDS_CHANGES_MADE                6059
+#define IDS_FINDREPLACERULEHELP         6060
+#define IDS_FINDREPLACENEWTEXTHELP      6061
+#define IDS_FINDREPLACECHANGEHELP       6062
+#define IDS_FINDREPLACESEARCHHELP       6063

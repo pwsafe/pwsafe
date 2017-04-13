@@ -392,6 +392,9 @@
 #define IDB_REDEXCLAMATION              550
 #define IDB_LOCK_CLASSIC                551
 #define IDB_COPYPASSWORD_CLASSIC_D      552
+#define IDD_FINDREPLACE                 553
+#define IDB_FINDREPLACEIMAGES           554
+#define IDD_FINDREPLACECHANGES          555
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -403,6 +406,7 @@
 #define IDC_TITLE                       1009
 #define IDC_USERNAME                    1010
 #define IDC_NOTES                       1011
+#define IDC_TITLE2                      1011
 #define IDC_ITEMLIST                    1012
 #define IDC_HIDDEN_NOTES                1012
 #define IDC_NOTES2                      1012
@@ -873,14 +877,28 @@
 #define IDC_COPYPASSWORDHELP2           1565
 #define IDC_STATIC_MESSAGE              1566
 #define IDC_ALTEDITOR_CMDLINE           1567
+#define IDC_FIELD                       1568
+#define IDC_OLDTEXT                     1569
+#define IDC_NEWTEXT                     1570
+#define IDC_CHANGELIST                  1571
+#define IDC_SEARCH                      1572
+#define IDC_FINDREPLACERULEHELP         1573
+#define IDC_FINDREPLACENEWTEXTHELP      1574
+#define IDC_FINDREPLACECHANGEHELP       1575
+#define IDC_CHANGELISTHEADER            1576
+#define IDC_FINDREPLACESEARCHHELP       1576
+#define IDC_CHANGESELECTED              1577
+#define IDC_ORIGINAL_TEXT               1578
+#define IDC_NEW_TEXT                    1579
+#define IDC_STATIC_ENTRY                1580
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        555
+#define _APS_NEXT_RESOURCE_VALUE        556
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1568
-#define _APS_NEXT_SYMED_VALUE           553
+#define _APS_NEXT_CONTROL_VALUE         1581
+#define _APS_NEXT_SYMED_VALUE           555
 #endif
 #endif
