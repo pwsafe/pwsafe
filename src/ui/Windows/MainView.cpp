@@ -1507,7 +1507,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
       // PWSprefs::DatabaseClear == Lock DB on minimize but
       // only bother if currently unlocked
-      if (app.GetSystemTrayState() == ThisMfcApp::UNLOCKED && 
+      if (app.GetSystemTrayState() == ThisMfcApp::UNLOCKED &&
           prefs->GetPref(PWSprefs::DatabaseClear)) {
         if (!LockDataBase()) {
           // Failed to save - abort minimize and clearing of data
@@ -2795,22 +2795,43 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
   }
 }
 
-void DboxMain::UpdateSystemTray(const STATE s)
+void DboxMain::UpdateSystemTray(const DBSTATE s)
 {
+  CString csTooltip;
+  if (!m_core.GetCurFile().empty()) {
+    std::wstring cdrive, cdir, cFilename, cExtn;
+    pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, cFilename, cExtn);
+
+    if (m_iDBIndex == 0) {
+      if (s == ThisMfcApp::LOCKED) {
+        csTooltip.Format(L"[%s\n%s]", (cdrive + cdir).c_str(),
+          (cFilename + cExtn).c_str());
+      } else {
+        csTooltip.Format(L"%s\n%s", (cdrive + cdir).c_str(),
+          (cFilename + cExtn).c_str());
+      }
+    } else {
+      if (s == ThisMfcApp::LOCKED) {
+        csTooltip.Format(L"%2d: [%s\n    %s]", m_iDBIndex, (cdrive + cdir).c_str(),
+          (cFilename + cExtn).c_str());
+      } else {
+        csTooltip.Format(L"%2d:%s\n    %s", m_iDBIndex, (cdrive + cdir).c_str(),
+          (cFilename + cExtn).c_str());
+      }
+    }
+  }
+
   switch (s) {
     case LOCKED:
       app.SetSystemTrayState(ThisMfcApp::LOCKED);
-      if (!m_core.GetCurFile().empty()) {
-        CString ttt(L"[");
-        ttt += m_core.GetCurFile().c_str();
-        ttt += L"]";
-        app.SetTooltipText(ttt);
+      if (!csTooltip.IsEmpty()) {
+        app.SetTooltipText(csTooltip);
       }
       break;
     case UNLOCKED:
       app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
-      if (!m_core.GetCurFile().empty())
-        app.SetTooltipText(m_core.GetCurFile().c_str());
+      if (!csTooltip.IsEmpty())
+        app.SetTooltipText(csTooltip);
       break;
     case CLOSED:
       app.SetSystemTrayState(ThisMfcApp::CLOSED);

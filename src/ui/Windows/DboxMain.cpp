@@ -154,7 +154,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
-  m_bFindToolBarVisibleAtLock(false), m_bSuspendGUIUpdates(false), m_iNeedRefresh(NONE)
+  m_bFindToolBarVisibleAtLock(false), m_bSuspendGUIUpdates(false), m_iNeedRefresh(NONE),
+  m_iDBIndex(0), m_hMutexDBIndex(NULL)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::LOAD_LIBRARY_SYS));
@@ -448,6 +449,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
   ON_COMMAND(ID_MENUITEM_GENERATEPASSWORD, OnGeneratePassword)
   ON_COMMAND(ID_MENUITEM_YUBIKEY, OnYubikey)
+  ON_COMMAND(ID_MENUITEM_SETDBINDEX, OnSetDBIndex)
   ON_COMMAND(ID_MENUITEM_PSWD_POLICIES, OnManagePasswordPolicies)
 
   // Help Menu
@@ -676,6 +678,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_OPTIONS, true, true, true, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
   {ID_MENUITEM_YUBIKEY, true, false, true, false},
+  {ID_MENUITEM_SETDBINDEX, true, true, true, false},
   {ID_MENUITEM_PSWD_POLICIES, true, true, true, false},
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},

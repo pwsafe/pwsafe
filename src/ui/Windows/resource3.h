@@ -793,3 +793,4 @@
 #define IDS_LIST_OF_SHORTCUTS           6045
 #define IDS_EXT_EDITOR_ACTIVE           6046
 #define IDS_CANCEL_EXT_EDITOR           6047
+#define IDS_DBINDEXINUSE                6048

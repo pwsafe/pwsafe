@@ -17,6 +17,13 @@ Bugs fixed in 3.42.2
 ====================
 None
 
+New Features for 3.42.2
+=======================
+[832] If many databases are open at the same time, after opening a database, the user
+can specify a database index (1-99) that will be superimposed on the System Tray icon
+to aid identification. In addition, the System Tray icon tooltip has been enhanced
+to show more of the database name.
+
 Bugs fixed in 3.42.1
 ====================
 [1404] Regression: In read-only mode, Entry popup menu's View Entry

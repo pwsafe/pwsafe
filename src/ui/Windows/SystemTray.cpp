@@ -80,7 +80,10 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(CSystemTray, CWnd)
 
-static const size_t MAX_TTT_LEN = 40; // Max tooltip text length for systray TT
+// Max tooltip text length for System Tray Tooltip
+// Note: Prior to Vista, the actual maximum was 64 characters, Vista and later
+// this was increased to 128.  We use 40 but 2 lines!
+static const size_t MAX_TTT_LEN = 40;
 
 UINT CSystemTray::m_nIDEvent = 4567;
 const UINT CSystemTray::m_nTaskbarCreatedMsg = ::RegisterWindowMessage(L"TaskbarCreated");
@@ -232,7 +235,7 @@ BOOL CSystemTray::SetIconList(UINT uFirstIconID, UINT uLastIconID)
   return retval;
 }
 
-BOOL CSystemTray::SetIconList(HICON* pHIconList, UINT nNumIcons)
+BOOL CSystemTray::SetIconList(HICON *pHIconList, UINT nNumIcons)
 {
   for (int i = 0; i < m_IconList.GetCount(); i++) {
    HICON& hicon = m_IconList.ElementAt(i);
@@ -308,7 +311,18 @@ BOOL CSystemTray::SetTooltipText(LPCWSTR pszTip)
   if (!m_bEnabled)
     return FALSE;
 
-  StringX ttt = PWSUtil::NormalizeTTT(pszTip, MAX_TTT_LEN);
+  StringX ttt;
+  StringX tooltip = pszTip;
+  size_t n = tooltip.find_first_of(L"\n");
+  if (n != StringX::npos) {
+    StringX t1, t2;
+    t1 = PWSUtil::NormalizeTTT(tooltip.substr(0, n).c_str(), MAX_TTT_LEN);
+    t2 = PWSUtil::NormalizeTTT(tooltip.substr(n).c_str(), MAX_TTT_LEN);
+    ttt = t1 + t2;
+  } else {
+    ttt = PWSUtil::NormalizeTTT(pszTip, MAX_TTT_LEN);
+  }
+
   m_tnd.uFlags = NIF_TIP;
   wcsncpy_s(m_tnd.szTip, sizeof(m_tnd.szTip), ttt.c_str(), ttt.length());
 
@@ -523,7 +537,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       return 0L;
  
     int iPopupPos(2);
-    const ThisMfcApp::STATE app_state = app.GetSystemTrayState();
+    const ThisMfcApp::DBSTATE app_state = app.GetSystemTrayState();
     switch (app_state) {
       case ThisMfcApp::UNLOCKED:
       {

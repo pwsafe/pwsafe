@@ -391,6 +391,7 @@
 #define IDB_EMPTY_DISABLED              549
 #define IDB_REDEXCLAMATION              550
 #define IDB_LOCK_CLASSIC                551
+#define IDD_SETDBINDEX                  552
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -868,14 +869,15 @@
 #define IDC_PWHHELP                     1560
 #define IDC_STATIC_HOSTUSER             1561
 #define IDC_STATIC_DEPENDENT            1562
+#define IDC_DBINDEX                     1563
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        552
+#define _APS_NEXT_RESOURCE_VALUE        553
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1563
-#define _APS_NEXT_SYMED_VALUE           552
+#define _APS_NEXT_SYMED_VALUE           553
 #endif
 #endif
