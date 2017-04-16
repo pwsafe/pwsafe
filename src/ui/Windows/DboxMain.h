@@ -381,6 +381,8 @@ public:
   void SetRenameGroups(const StringX sxNewPath)
   { m_sxNewPath = sxNewPath; }
 
+  int GetDBIndex() { return m_iDBIndex; }
+
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
   CPWListCtrl m_ctlItemList;
@@ -537,9 +539,9 @@ public:
 
   void ConfigureSystemMenu();
 
-  // 'STATE' also defined in ThisMfcApp.h - ensure identical
-  enum STATE { LOCKED, UNLOCKED, CLOSED };
-  void UpdateSystemTray(const STATE s);
+  // 'DBSTATE' also defined in ThisMfcApp.h - ensure identical
+  enum DBSTATE { LOCKED, UNLOCKED, CLOSED };
+  void UpdateSystemTray(const DBSTATE s);
 
   LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
   LRESULT OnCCToHdrDragComplete(WPARAM wParam, LPARAM lParam);
@@ -693,6 +695,7 @@ public:
   afx_msg void OnFindReplace();
   afx_msg void OnGeneratePassword();
   afx_msg void OnYubikey();
+  afx_msg void OnSetDBIndex();
   afx_msg void OnSave();
   afx_msg void OnAdd();
   afx_msg void OnAddGroup();
@@ -997,6 +1000,10 @@ private:
   void SetLanguage(LCID lcid);
   int m_ilastaction;  // Last action
   void SetDragbarToolTips();
+
+  // Database index on Tray icon
+  int m_iDBIndex;
+  HANDLE m_hMutexDBIndex;
 
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?

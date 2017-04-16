@@ -72,10 +72,10 @@ public:
   void ShowIcon() {m_pTrayIcon->ShowIcon();}
   void HideIcon() {m_pTrayIcon->HideIcon();}
 
-  // 'STATE' also defined in DboxMain.h - ensure identical
-  enum STATE {LOCKED, UNLOCKED, CLOSED};
-  void SetSystemTrayState(STATE);
-  STATE GetSystemTrayState() const {return m_TrayLockedState;}
+  // 'DBSTATE' also defined in DboxMain.h - ensure identical
+  enum DBSTATE { LOCKED, UNLOCKED, CLOSED };
+  void SetSystemTrayState(DBSTATE s);
+  DBSTATE GetSystemTrayState() const {return m_TrayLockedState;}
   int SetClosedTrayIcon(int &icon, bool bSet = true);
 
   bool WasHotKeyPressed() {return m_HotKeyPressed;}
@@ -113,6 +113,8 @@ private:
   bool GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost, StringX &sxUser);
   void LoadLocalizedStuff();
   void SetupMenu();
+  void CreateIcon(const HICON &hIcon, const int &iIndex);
+
   static BOOL CALLBACK searcher(HWND hWnd, LPARAM lParam);
 
   DboxMain *m_pDbx;
@@ -128,8 +130,10 @@ private:
   HICON m_LockedIcon;
   HICON m_UnLockedIcon;
   HICON m_ClosedIcon;
+  HICON m_IndexIcon;
+
   CSystemTray *m_pTrayIcon; // DboxMain needs to be constructed first
-  STATE m_TrayLockedState;
+  DBSTATE m_TrayLockedState;
   bool m_HotKeyPressed, m_bACCEL_Table_Created;
   DWORD m_dwMajorMinor;
   DWORD m_dwBuildRevision;
@@ -137,6 +141,8 @@ private:
   CString m_csCopyrightString;
   CString m_csHelpFile;
   int m_AppLangID, m_ResLangID;
+
+  int m_iAppDBIndex;
 
   BOOL m_mruonfilemenu;
 

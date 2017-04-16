@@ -10,6 +10,8 @@
 // Windowsdefs.h
 //-----------------------------------------------------------------------------
 
+#define UNIQUE_PWS_GUID L"PasswordSafe-{3FE0D665-1AE6-49b2-8359-326407D56470}"
+
 // Custom message event used for system tray handling
 #define PWS_MSG_ICON_NOTIFY             (WM_APP + 10)
 

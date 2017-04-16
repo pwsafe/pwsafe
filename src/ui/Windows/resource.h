@@ -395,6 +395,7 @@
 #define IDD_FINDREPLACE                 553
 #define IDB_FINDREPLACEIMAGES           554
 #define IDD_FINDREPLACECHANGES          555
+#define IDD_SETDBINDEX                  556
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -891,14 +892,15 @@
 #define IDC_NEW_TEXT                    1579
 #define IDC_STATIC_ENTRY                1580
 #define IDC_SHOWCOMBINATION             1581
+#define IDC_DBINDEX                     1582
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        556
+#define _APS_NEXT_RESOURCE_VALUE        557
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1582
-#define _APS_NEXT_SYMED_VALUE           555
+#define _APS_NEXT_CONTROL_VALUE         1583
+#define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif

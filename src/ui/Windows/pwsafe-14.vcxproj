@@ -544,6 +544,7 @@
     <ClCompile Include="ExpPswdLC.cpp" />
     <ClCompile Include="ExpPWListDlg.cpp" />
     <ClCompile Include="ExtThread.cpp" />
+    <ClCompile Include="FieldChangesDlg.cpp" />
     <ClCompile Include="filter\FilterBaseDlg.cpp" />
     <ClCompile Include="filter\FilterBoolDlg.cpp" />
     <ClCompile Include="filter\FilterDateDlg.cpp" />
@@ -580,7 +581,6 @@
     <ClCompile Include="MenuShortcuts.cpp" />
     <ClCompile Include="MenuTipper.cpp" />
     <ClCompile Include="MigratePrefs.cpp" />
-    <ClCompile Include="FieldChangesDlg.cpp" />
     <ClCompile Include="Options_PropertyPage.cpp" />
     <ClCompile Include="Options_PropertySheet.cpp" />
     <ClCompile Include="OptionsBackup.cpp" />
@@ -621,6 +621,7 @@
     <ClCompile Include="QuerySetDef.cpp" />
     <ClCompile Include="RichEditCtrlExtn.cpp" />
     <ClCompile Include="SampleTextDlg.cpp" />
+    <ClCompile Include="SBIndexDlg.cpp" />
     <ClCompile Include="SCWListCtrl.cpp" />
     <ClCompile Include="SecString.cpp" />
     <ClCompile Include="filter\SetFiltersDlg.cpp" />
@@ -686,6 +687,7 @@
     <ClInclude Include="ExpPswdLC.h" />
     <ClInclude Include="ExpPWListDlg.h" />
     <ClInclude Include="ExtThread.h" />
+    <ClInclude Include="FieldChangesDlg.h" />
     <ClInclude Include="filter\FilterBoolDlg.h" />
     <ClInclude Include="filter\FilterDateDlg.h" />
     <ClInclude Include="filter\FilterDCADlg.h" />
@@ -713,7 +715,6 @@
     <ClInclude Include="MenuShortcuts.h" />
     <ClInclude Include="MenuTipper.h" />
     <ClInclude Include="MFCmessages.h" />
-    <ClInclude Include="FieldChangesDlg.h" />
     <ClInclude Include="Options_PropertyPage.h" />
     <ClInclude Include="Options_PropertySheet.h" />
     <ClInclude Include="OptionsBackup.h" />
@@ -759,6 +760,7 @@
     <ClInclude Include="resource3.h" />
     <ClInclude Include="RichEditCtrlExtn.h" />
     <ClInclude Include="SampleTextDlg.h" />
+    <ClInclude Include="SBIndexDlg.h" />
     <ClInclude Include="SCWListCtrl.h" />
     <ClInclude Include="SecString.h" />
     <ClInclude Include="filter\SetFiltersDlg.h" />

@@ -62,8 +62,6 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define UNIQUE_PWS_GUID L"PasswordSafe-{3FE0D665-1AE6-49b2-8359-326407D56470}"
-
 const UINT ThisMfcApp::m_uiRegMsg   = RegisterWindowMessage(UNIQUE_PWS_GUID);
 const UINT ThisMfcApp::m_uiWH_SHELL = RegisterWindowMessage(UNIQUE_PWS_SHELL);
 
@@ -87,7 +85,7 @@ ThisMfcApp::ThisMfcApp() :
   m_ghAccelTable(NULL), m_pMainMenu(NULL),
   m_bACCEL_Table_Created(false), m_noSysEnvWarnings(false),
   m_bPermitTestdump(false), m_hInstResDLL(NULL), m_ResLangID(0),
-  m_pMRUMenu(NULL)
+  m_pMRUMenu(NULL), m_iAppDBIndex(0)
 {
   // Get my Thread ID
   m_nBaseThreadID = AfxGetThread()->m_nThreadID;
@@ -127,12 +125,16 @@ ThisMfcApp::ThisMfcApp() :
 
   // Set this process to be one of the first to be shut down:
   SetProcessShutdownParameters(0x3ff, 0);
+
   PWSprefs::SetReporter(&aReporter);
   PWScore::SetReporter(&aReporter);
   PWScore::SetAsker(&anAsker);
+
   EnableHtmlHelp();
+
   CoInitializeEx(NULL, COINIT_APARTMENTTHREADED); // Initializes the COM library
   //                                                 (for XML and Yubikeyprocessing)
+  
   AfxEnableControlContainer();
   AfxOleInit();
 }
@@ -1194,6 +1196,7 @@ BOOL ThisMfcApp::InitInstance()
   //ASSERT(stIcon != NULL);
   m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
   m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
+
   int iData = prefs->GetPref(PWSprefs::ClosedTrayIconColour);
   SetClosedTrayIcon(iData);
   m_pTrayIcon = new CSystemTray(m_pDbx, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
@@ -1223,6 +1226,7 @@ BOOL ThisMfcApp::InitInstance()
   ::DestroyIcon(m_LockedIcon);
   ::DestroyIcon(m_UnLockedIcon);
   ::DestroyIcon(m_ClosedIcon);
+  ::DestroyIcon(m_IndexIcon);
 
   // Since the dialog has been closed, return FALSE so that we exit the
   // application, rather than start the application's message pump.
@@ -1321,14 +1325,90 @@ int ThisMfcApp::SetClosedTrayIcon(int &iData, bool bSet)
   return icon;
 }
 
-void ThisMfcApp::SetSystemTrayState(STATE s)
+void ThisMfcApp::CreateIcon(const HICON &hIcon, const int &iIndex)
+{
+  ::DestroyIcon(m_IndexIcon);
+
+  CString csValue;
+  csValue.Format(L"%2d", iIndex);
+  
+  const COLORREF clrText = RGB(255, 255, 0);
+
+  HDC hDc = ::GetDC(NULL);
+  HDC hMemDC = ::CreateCompatibleDC(hDc);
+
+  // Load up background icon
+  ICONINFO ii = { 0 };
+  ::GetIconInfo(hIcon, &ii);
+
+  HGDIOBJ hOldBmp = ::SelectObject(hMemDC, ii.hbmColor);
+
+  // Create font
+  LOGFONT lf = { 0 };
+  lf.lfHeight = -24;
+  lf.lfWeight = FW_NORMAL;
+  lf.lfOutPrecision = PROOF_QUALITY; // OUT_TT_PRECIS;
+  lf.lfQuality = ANTIALIASED_QUALITY;
+  wmemset(lf.lfFaceName, 0, LF_FACESIZE);
+  lstrcpy(lf.lfFaceName, L"Arial Black");
+
+  HFONT hFont = ::CreateFontIndirect(&lf);
+  HGDIOBJ hOldFont = ::SelectObject(hMemDC, hFont);
+
+  // Write text - Do NOT use SetTextAlign
+  ::SetBkMode(hMemDC, TRANSPARENT);
+  ::SetTextColor(hMemDC, clrText);
+  ::TextOut(hMemDC, 0, 0, (LPCWSTR)csValue, 2);
+
+  // Set up mask
+  HDC hMaskDC = ::CreateCompatibleDC(hDc);
+  HGDIOBJ hOldMaskBmp = ::SelectObject(hMaskDC, ii.hbmMask);
+
+  // Also write text on here - Do NOT use SetTextAlign
+  HGDIOBJ hOldMaskFont = ::SelectObject(hMaskDC, hFont);
+  ::SetBkMode(hMaskDC, TRANSPARENT);
+  ::SetTextColor(hMaskDC, clrText);
+  ::TextOut(hMaskDC, 0, 0, (LPCWSTR)csValue, 2);
+
+  HBITMAP hMaskBmp = (HBITMAP)::SelectObject(hMaskDC, hOldMaskBmp);
+
+  ICONINFO ii2 = { 0 };
+  ii2.fIcon = TRUE;
+  ii2.hbmMask = hMaskBmp;
+  ii2.hbmColor = ii.hbmColor;
+
+  // Create updated icon
+  m_IndexIcon = ::CreateIconIndirect(&ii2);
+
+  // Cleanup bitmap mask
+  ::DeleteObject(hMaskBmp);
+  ::DeleteDC(hMaskDC);
+
+  // Cleanup font
+  ::SelectObject(hMaskDC, hOldMaskFont);
+  ::SelectObject(hMemDC, hOldFont);
+  ::DeleteObject(hFont);
+
+  // Release background bitmap
+  ::SelectObject(hMemDC, hOldBmp);
+
+  // Delete background icon bitmap info
+  ::DeleteObject(ii.hbmColor);
+  ::DeleteObject(ii.hbmMask);
+
+  ::DeleteDC(hMemDC);
+  ::ReleaseDC(NULL, hDc);
+}
+
+void ThisMfcApp::SetSystemTrayState(DBSTATE state)
 {
   // need to protect against null m_pTrayIcon due to
   // tricky initialization order
-  if (m_pTrayIcon != NULL && s != m_TrayLockedState) {
-    m_TrayLockedState = s;
+  int iDBIndex = GetMainDlg()->GetDBIndex();
+  if (m_pTrayIcon != NULL && (m_TrayLockedState != state || m_iAppDBIndex != iDBIndex)) {
+    m_TrayLockedState = state;
     HICON hIcon(m_LockedIcon);
-    switch (s) {
+    switch (state) {
       case LOCKED:
         hIcon = m_LockedIcon;
         break;
@@ -1337,11 +1417,19 @@ void ThisMfcApp::SetSystemTrayState(STATE s)
         break;
       case CLOSED:
         hIcon = m_ClosedIcon;
+        m_iAppDBIndex = 0;
         break;
       default:
         break;
     }
-    m_pTrayIcon->SetIcon(hIcon);
+
+    if (iDBIndex != 0 && state != CLOSED) {
+      m_iAppDBIndex = iDBIndex;
+      CreateIcon(hIcon, iDBIndex);
+      m_pTrayIcon->SetIcon(m_IndexIcon);
+    } else {
+      m_pTrayIcon->SetIcon(hIcon);
+    }
   }
 }
 

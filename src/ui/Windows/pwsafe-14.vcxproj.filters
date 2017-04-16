@@ -342,6 +342,9 @@
     <ClCompile Include="SampleTextDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SBIndexDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="SCWListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -424,12 +427,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="YubiMixin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SyncScrollRichEdit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FieldChangesDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -537,6 +534,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExtThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldChangesDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="filter\FilterBoolDlg.h">
@@ -728,6 +728,9 @@
     <ClInclude Include="PWToolBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PWTouch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="PWTreeCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -747,6 +750,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SampleTextDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SBIndexDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SCWListCtrl.h">
@@ -789,6 +795,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Subclass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SyncScrollRichEdit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SysColStatic.h">
@@ -849,15 +858,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Windowsdefs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWTouch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SyncScrollRichEdit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FieldChangesDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
