@@ -406,7 +406,6 @@
 #define IDC_TITLE                       1009
 #define IDC_USERNAME                    1010
 #define IDC_NOTES                       1011
-#define IDC_TITLE2                      1011
 #define IDC_ITEMLIST                    1012
 #define IDC_HIDDEN_NOTES                1012
 #define IDC_NOTES2                      1012
@@ -891,6 +890,7 @@
 #define IDC_ORIGINAL_TEXT               1578
 #define IDC_NEW_TEXT                    1579
 #define IDC_STATIC_ENTRY                1580
+#define IDC_SHOWCOMBINATION             1581
 
 // Next default values for new objects
 // 
@@ -898,7 +898,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        556
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1581
+#define _APS_NEXT_CONTROL_VALUE         1582
 #define _APS_NEXT_SYMED_VALUE           555
 #endif
 #endif

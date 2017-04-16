@@ -43,7 +43,7 @@ static char THIS_FILE[] = __FILE__;
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core)
   : CPKBaseDlg(CPasskeySetup::IDD, pParent),
-    m_LastFocus(IDC_PASSKEY), m_core(core)
+    m_LastFocus(IDC_PASSKEY), m_core(core), m_btnShowCombination(FALSE)
 {
   m_verify = L"";
   m_pctlVerify = new CSecEditExtn;
@@ -62,13 +62,17 @@ void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
   m_pctlVerify->DoDDX(pDX, m_verify);
 
   DDX_Control(pDX, IDC_VERIFY, *m_pctlVerify);
+
+  DDX_Check(pDX, IDC_SHOWCOMBINATION, m_btnShowCombination);
 }
 
 BEGIN_MESSAGE_MAP(CPasskeySetup, CPKBaseDlg)
   ON_WM_TIMER()
-  ON_BN_CLICKED(ID_HELP, OnHelp)
+
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
+  ON_BN_CLICKED(IDC_SHOWCOMBINATION, OnShowCombination)
 
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_VERIFY, OnVerifykeySetfocus)
@@ -104,7 +108,7 @@ void CPasskeySetup::OnOK()
   UpdateData(TRUE);
 
   CGeneralMsgBox gmb;
-  if (m_passkey != m_verify) {
+  if (m_btnShowCombination == FALSE && m_passkey != m_verify) {
     gmb.AfxMessageBox(IDS_ENTRIESDONOTMATCH);
     ((CEdit*)GetDlgItem(IDC_VERIFY))->SetFocus();
     return;
@@ -234,6 +238,29 @@ LRESULT CPasskeySetup::OnInsertBuffer(WPARAM, LPARAM)
   SetWindowPos(&wndTop, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
 
   return 0L;
+}
+
+void CPasskeySetup::OnShowCombination()
+{
+  UpdateData(TRUE);
+
+  m_pctlPasskey->SetSecure(m_btnShowCombination == TRUE ? FALSE : TRUE);
+
+  if (m_btnShowCombination == TRUE) {
+    m_pctlPasskey->SetPasswordChar(0);
+    m_pctlPasskey->SetWindowText(m_passkey);
+
+    m_pctlVerify->SetPasswordChar(0);
+    m_pctlVerify->EnableWindow(FALSE);
+    m_pctlVerify->SetWindowText(L"");
+  } else {
+    m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+    m_pctlPasskey->SetSecureText(m_passkey);
+
+    m_pctlVerify->SetPasswordChar(PSSWDCHAR);
+    m_pctlVerify->EnableWindow(TRUE);
+    m_pctlVerify->SetWindowText(L"");
+  }
 }
 
 void CPasskeySetup::OnYubikeyBtn()
