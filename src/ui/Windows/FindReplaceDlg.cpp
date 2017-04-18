@@ -446,7 +446,7 @@ void CFindReplaceDlg::SetAllSelected(FRState new_state)
 
   for (int iItem = 0; iItem < m_lctChanges.GetItemCount(); iItem++) {
     size_t iresult = m_lctChanges.GetItemData(iItem);
-    if (m_vFRResults[iresult].state != FR_CHANGED) {
+    if (m_vFRResults[iresult].state != FR_CHANGED && m_vFRResults[iresult].state != FR_PROTECTED) {
       m_vFRResults[iresult].state = new_state;
       m_lctChanges.Update(iItem);
     }
@@ -465,7 +465,11 @@ void CFindReplaceDlg::SetAllSelected(FRState new_state)
       [](const st_FRResults& st_fr) {
       return st_fr.state == FR_CHANGED; });
 
-    if (numselected == 0 || (numselected + numchanged) == m_vFRResults.size()) {
+    size_t numprotected = std::count_if(m_vFRResults.begin(), m_vFRResults.end(),
+      [](const st_FRResults& st_fr) {
+      return st_fr.state == FR_PROTECTED; });
+
+    if (numselected == 0 || (numselected + numchanged + numprotected) == m_vFRResults.size()) {
       if (numchanged == m_vFRResults.size()) {
         m_lctChanges.SetHeaderImage(FR_CHANGED);
       } else {
@@ -571,7 +575,7 @@ void CFindReplaceDlg::OnChangeRowClicked(NMHDR *pNotifyStruct, LRESULT *pLResult
   ASSERT(result_state != FR_INVALID);
 
   // Ignore if row disabled
-  if (result_state == FR_CHANGED)
+  if (result_state == FR_CHANGED || result_state == FR_PROTECTED)
     return;
 
   // Toggle checked/unchecked and update entry
@@ -587,7 +591,11 @@ void CFindReplaceDlg::OnChangeRowClicked(NMHDR *pNotifyStruct, LRESULT *pLResult
     [](const st_FRResults& st_fr) {
     return st_fr.state == FR_CHANGED; });
 
-  if (numselected == 0 || (numselected + numchanged) == m_vFRResults.size()) {
+  size_t numprotected = std::count_if(m_vFRResults.begin(), m_vFRResults.end(),
+    [](const st_FRResults& st_fr) {
+    return st_fr.state == FR_PROTECTED; });
+
+  if (numselected == 0 || (numselected + numchanged + numprotected) == m_vFRResults.size()) {
     if (numchanged == m_vFRResults.size()) {
       m_lctChanges.SetHeaderImage(FR_CHANGED);
     } else {
@@ -647,7 +655,7 @@ void CFindReplaceDlg::OnChangeRowChanging(NMHDR *pNotifyStruct, LRESULT *pLResul
   size_t iresult = m_lctChanges.GetItemData(pNMIA->iItem);
 
   // Don't allow any changes to a disabled row
-  if (GetResultState(iresult) == FR_CHANGED)
+  if (GetResultState(iresult) == FR_CHANGED || GetResultState(iresult) == FR_PROTECTED)
     *pLResult = 1;
 }
 

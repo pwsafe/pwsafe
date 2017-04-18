@@ -79,14 +79,14 @@ void CFRListCtrl::Init(CFindReplaceDlg *pGERdlg)
   VERIFY(m_CheckHeadCtrl.SubclassWindow(pHeadCtrl->GetSafeHwnd()));
 
   // Set users Current font
-  CFont *pFont = Fonts::GetInstance()->GetCurrentFont();
-  SetFont(pFont);
+  m_pModifiedFont = Fonts::GetInstance()->GetModifiedFont();
+  m_pCurrentFont = Fonts::GetInstance()->GetCurrentFont();
+  SetFont(m_pCurrentFont);
+  m_CheckHeadCtrl.SetFont(m_pCurrentFont);
 
-  m_CheckHeadCtrl.SetFont(pFont);
-
-  // Load all images into list GERSTate FR_UNCHECKED, FR_CHECKED & FR_CHANGED
+  // Load all images into list GERSTate FR_UNCHECKED, FR_CHECKED, FR_CHANGED & FR_PROTECTED
   m_pCheckImageList = new CImageList;
-  VERIFY(m_pCheckImageList->Create(IDB_FINDREPLACEIMAGES, 16, 3, RGB(255, 0, 255)));
+  VERIFY(m_pCheckImageList->Create(IDB_FINDREPLACEIMAGES, 16, 4, RGB(255, 0, 255)));
 
   // Set our images
   SetImageList(m_pCheckImageList, LVSIL_SMALL);
@@ -165,6 +165,9 @@ void CFRListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   const int iSubItem = pLVCD->iSubItem;
   const DWORD_PTR dwData = pLVCD->nmcd.lItemlParam;
 
+  static bool bchanged_subitem_font(false);
+  static CDC *pDC = NULL;
+
   const FRState result_state = m_pGEDlg->GetResultState((int)pLVCD->nmcd.lItemlParam);
 
   if (result_state == FR_INVALID)
@@ -172,6 +175,8 @@ void CFRListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   switch (pLVCD->nmcd.dwDrawStage) {
   case CDDS_PREPAINT:
+    bchanged_subitem_font = false;
+    pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
     *pLResult = CDRF_NOTIFYITEMDRAW;
     break;
   case CDDS_ITEMPREPAINT:
@@ -191,14 +196,20 @@ void CFRListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
         // Disable text
         pLVCD->clrText = m_clrDisabled;
       }
+
+      if (result_state == FR_PROTECTED) {
+        // Disable text and make italic
+        pLVCD->clrText = m_clrDisabled;
+        bchanged_subitem_font = true;
+        pDC->SelectObject(m_pModifiedFont);
+        *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
+      }
       break;
     }
 
     CRect rect1;
     GetSubItemRect(iItem, 1, LVIR_BOUNDS, rect1);
     rect.right = rect1.left;
-
-    CDC *pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
 
     // Overpaint any ghost images
     pDC->FillSolidRect(&rect, GetBkColor());
@@ -216,6 +227,24 @@ void CFRListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
     *pLResult = CDRF_SKIPDEFAULT;
     break;
   }
+
+  case CDDS_ITEMPOSTPAINT | CDDS_SUBITEM:
+    // Sub-item PostPaint - restore old font if any
+    if (bchanged_subitem_font) {
+      bchanged_subitem_font = false;
+      pDC->SelectObject(m_pCurrentFont);
+      *pLResult |= CDRF_NEWFONT;
+    }
+    break;
+
+    /*
+    case CDDS_PREERASE:
+    case CDDS_POSTERASE:
+    case CDDS_ITEMPREERASE:
+    case CDDS_ITEMPOSTERASE:
+    case CDDS_ITEMPOSTPAINT:
+    case CDDS_POSTPAINT:
+    */
   default:
     break;
   }

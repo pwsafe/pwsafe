@@ -1678,7 +1678,7 @@ size_t  DboxMain::DoFindReplaceSearch(const CItem::FieldType &ft, const PWSMatch
 
     if (m_FilterManager.PassesFiltering(ci, ft, rule, sxOldText, bCaseSensitive)) {
       st_FRResults st_fr;
-      st_fr.state = FR_UNCHECKED;
+      st_fr.state = ci.IsProtected() ? FR_PROTECTED : FR_UNCHECKED;
       st_fr.pci = &ci;
 
       vFRResults.push_back(st_fr);

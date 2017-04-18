@@ -47,6 +47,7 @@ private:
   bool bInitdone;
   int m_ibmHeight;
   COLORREF m_clrDisabled;
+  CFont *m_pCurrentFont, *m_pModifiedFont;
 
   CImageList *m_pCheckImageList;
   CFindReplaceDlg *m_pGEDlg;

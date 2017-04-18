@@ -16,7 +16,7 @@
 class CFindReplaceDlg;
 class CItemData;
 
-enum FRState { FR_INVALID = -1, FR_UNCHECKED, FR_CHECKED, FR_CHANGED };
+enum FRState { FR_INVALID = -1, FR_UNCHECKED, FR_CHECKED, FR_CHANGED, FR_PROTECTED };
 
 struct st_FRResults {
   CItemData *pci;
