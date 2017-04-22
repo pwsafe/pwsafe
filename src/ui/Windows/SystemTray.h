@@ -40,6 +40,8 @@
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray window
 
+class DboxMain;
+
 class CSystemTray : public CWnd
 {
   // Construction/destruction
@@ -122,5 +124,5 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CWnd *m_pParent;
+  DboxMain *m_pParent;
 };

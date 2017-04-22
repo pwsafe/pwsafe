@@ -1541,7 +1541,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
       // PWSprefs::DatabaseClear == Lock DB on minimize but
       // only bother if currently unlocked
-      if (app.GetSystemTrayState() == ThisMfcApp::UNLOCKED &&
+      if (m_TrayLockedState == UNLOCKED &&
           prefs->GetPref(PWSprefs::DatabaseClear)) {
         if (!LockDataBase()) {
           // Failed to save - abort minimize and clearing of data
@@ -1569,9 +1569,9 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         if (prefs->GetPref(PWSprefs::HideSystemTray) && 
             prefs->GetPref(PWSprefs::HotKeyEnabled) &&
             prefs->GetPref(PWSprefs::HotKey) > 0)
-          app.HideIcon();
-        else if (app.IsIconVisible() == FALSE)
-          app.ShowIcon();
+          HideIcon();
+        else if (IsIconVisible() == FALSE)
+          ShowIcon();
       }
       break;
     case SIZE_MAXIMIZED:
@@ -1606,8 +1606,8 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
         RestoreGUIStatusEx();
 
-        if (prefs->GetPref(PWSprefs::UseSystemTray) && app.IsIconVisible() == FALSE) {      
-          app.ShowIcon();
+        if (prefs->GetPref(PWSprefs::UseSystemTray) && IsIconVisible() == FALSE) {      
+          ShowIcon();
         }
       } else { // m_bSizing == true: here if size changed
         WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
@@ -2553,7 +2553,7 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
     case WTS_CONSOLE_DISCONNECT:
     case WTS_REMOTE_DISCONNECT:
     case WTS_SESSION_LOCK:
-      if (m_bOpen && app.GetSystemTrayState() == UNLOCKED) {
+      if (m_bOpen && m_TrayLockedState == UNLOCKED) {
         m_bWSLocked = true;
 
         if (prefs->GetPref(PWSprefs::LockOnWindowLock) &&
@@ -2900,48 +2900,59 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
 
 void DboxMain::UpdateSystemTray(const DBSTATE s)
 {
-  CString csTooltip;
+  CString csTooltip(L"");
   if (!m_core.GetCurFile().empty()) {
     std::wstring cdrive, cdir, cFilename, cExtn;
     pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, cFilename, cExtn);
 
     if (m_iDBIndex == 0) {
-      if (s == ThisMfcApp::LOCKED) {
+      switch (s) {
+      case LOCKED:
         csTooltip.Format(L"[%s\n%s]", (cdrive + cdir).c_str(),
           (cFilename + cExtn).c_str());
-      } else {
+        break;
+      case UNLOCKED:
         csTooltip.Format(L"%s\n%s", (cdrive + cdir).c_str(),
           (cFilename + cExtn).c_str());
+        break;
+      case CLOSED:
+        break;
       }
     } else {
-      if (s == ThisMfcApp::LOCKED) {
+      switch (s) {
+      case LOCKED:
         csTooltip.Format(L"%2d: [%s\n    %s]", m_iDBIndex, (cdrive + cdir).c_str(),
           (cFilename + cExtn).c_str());
-      } else {
+        break;
+      case UNLOCKED:
         csTooltip.Format(L"%2d:%s\n    %s", m_iDBIndex, (cdrive + cdir).c_str(),
           (cFilename + cExtn).c_str());
+        break;
+      case CLOSED:
+        break;
       }
     }
   }
 
   switch (s) {
     case LOCKED:
-      app.SetSystemTrayState(ThisMfcApp::LOCKED);
+      SetSystemTrayState(LOCKED);
       if (!csTooltip.IsEmpty()) {
-        app.SetTooltipText(csTooltip);
+        SetTooltipText(csTooltip);
       }
       break;
     case UNLOCKED:
-      app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
+      SetSystemTrayState(UNLOCKED);
       if (!csTooltip.IsEmpty())
-        app.SetTooltipText(csTooltip);
+        SetTooltipText(csTooltip);
       break;
     case CLOSED:
-      app.SetSystemTrayState(ThisMfcApp::CLOSED);
+      SetSystemTrayState(CLOSED);
         break;
     default:
     ASSERT(0);
   }
+
   UpdateStatusBar();
 }
 
@@ -4861,7 +4872,7 @@ void DboxMain::SaveGUIStatusEx(const ViewType iView)
   if (m_bInRefresh || m_bInRestoreWindows)
     return;
 
-  if (!m_bOpen || app.GetSystemTrayState() != UNLOCKED || IsIconic())
+  if (!m_bOpen || m_TrayLockedState != UNLOCKED || IsIconic())
     return;
 
   if (m_core.GetNumEntries() == 0 && m_core.GetEmptyGroups().empty())
