@@ -61,7 +61,6 @@
 
 #include "stdafx.h"
 #include "SystemTray.h"
-#include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "PWDialog.h" // for access to CPWDialogTracker
 
@@ -91,10 +90,10 @@ const UINT CSystemTray::m_nTaskbarCreatedMsg = ::RegisterWindowMessage(L"Taskbar
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray construction/creation/destruction
 
-CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCWSTR szToolTip,
+CSystemTray::CSystemTray(CWnd *pParent, UINT uCallbackMessage, LPCWSTR szToolTip,
                          HICON icon, CRUEList &RUEList,
                          UINT uID, UINT menuID)
-  : m_RUEList(RUEList), m_pParent(pParent), m_bEnabled(FALSE),
+  : m_RUEList(RUEList), m_pParent((DboxMain *)pParent), m_bEnabled(FALSE),
   m_bHidden(FALSE), m_uIDTimer(0), m_hSavedIcon(NULL), m_DefaultMenuItemID(ID_MENUITEM_RESTORE),
   m_DefaultMenuItemByPos(FALSE), m_pTarget(NULL), m_menuID(0)
 {
@@ -396,7 +395,7 @@ void CSystemTray::OnTimer(UINT_PTR )
 }
 
 // Helper function to set up recent entry submenu based on entry's attributes
-static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pci)
+static BOOL SetupRecentEntryMenu(DboxMain *pDbx, CMenu *&pMenu, const int i, const CItemData *pci)
 {
   BOOL brc;
   CString cs_text, cs_select;
@@ -424,7 +423,7 @@ static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pc
   if (brc == 0) goto exit;
   ipos++;
 
-  const CItemData *pbci = pci->IsDependent() ? app.GetMainDlg()->GetBaseEntry(pci) : NULL;
+  const CItemData *pbci = pci->IsDependent() ? pDbx->GetBaseEntry(pci) : NULL;
 
   if (!pci->IsFieldValueEmpty(CItemData::USER, pbci)) {
     cs_text.LoadString(IDS_TRAYCOPYUSERNAME);
@@ -519,7 +518,7 @@ exit:
 
 LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam) 
 {
-  //Return quickly if its not for this tray icon
+  // Return quickly if its not for this tray icon
   if (wParam != m_tnd.uID)
     return 0L;
 
@@ -537,9 +536,9 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       return 0L;
  
     int iPopupPos(2);
-    const ThisMfcApp::DBSTATE app_state = app.GetSystemTrayState();
+    const DboxMain::DBSTATE app_state = m_pParent->GetSystemTrayState();
     switch (app_state) {
-      case ThisMfcApp::UNLOCKED:
+      case DboxMain::UNLOCKED:
       {
         if (m_pParent->IsWindowVisible()) {
           // unlocked & visible, remove "Unlock" menu item
@@ -553,7 +552,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         }
         break;
       }
-      case ThisMfcApp::LOCKED:
+      case DboxMain::LOCKED:
       { // ensure 1st item is "Unlock"
         const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
         pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
@@ -562,7 +561,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         pContextMenu->RemoveMenu(ID_MENUITEM_MINIMIZE, MF_BYCOMMAND);
         break;
       }
-      case ThisMfcApp::CLOSED:
+      case DboxMain::CLOSED:
         // Remove separator and then Recent Entries popup menu
         pContextMenu->RemoveMenu(1, MF_BYPOSITION);
         pContextMenu->RemoveMenu(1, MF_BYPOSITION);
@@ -596,7 +595,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     miteminfo.cbSize = sizeof(miteminfo);
     miteminfo.fMask = MIIM_DATA;
 
-    if (app_state != ThisMfcApp::CLOSED) {
+    if (app_state != DboxMain::CLOSED) {
       pMainRecentEntriesMenu = pContextMenu->GetSubMenu(iPopupPos);
 
       MENUINFO minfo;
@@ -618,12 +617,12 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       } 
 
       // No point in doing Recent Entries if database is locked
-      if (num_recent_entries != 0 && app_state == ThisMfcApp::UNLOCKED) {
+      if (num_recent_entries != 0 && app_state == DboxMain::UNLOCKED) {
         // Build extra popup menus (1 per entry in list)
         typedef CMenu* CMenuPtr;
         ppNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
         m_RUEList.GetAllMenuItemStrings(m_menulist);
-        const bool bGUIEmpty = app.GetMainDlg()->IsGUIEmpty();
+        const bool bGUIEmpty = m_pParent->IsGUIEmpty();
 
         for (size_t i = 0; i < num_recent_entries; i++) {
           ppNewRecentEntryMenu[i] = NULL;  // Ensure empty
@@ -635,7 +634,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
             continue;
           }
 
-          BOOL brc = SetupRecentEntryMenu(ppNewRecentEntryMenu[i], (int)i, pci);
+          BOOL brc = SetupRecentEntryMenu(m_pParent, ppNewRecentEntryMenu[i], (int)i, pci);
           if (brc == 0) {
             pws_os::Trace(L"CSystemTray::OnTrayNotification: SetupRecentEntryMenu - ppNewRecentEntryMenu[%d] failed\n", i);
             continue;
@@ -659,8 +658,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
           }
 
           pmd = new CRUEItemData;
-          pmd->nImage = app.GetMainDlg()->
-            GetEntryImage(*m_menulist[i].pci); // Needed by OnInitMenuPopup
+          pmd->nImage = m_pParent->GetEntryImage(*m_menulist[i].pci); // Needed by OnInitMenuPopup
           miteminfo.dwItemData = (ULONG_PTR)pmd;
           irc = pMainRecentEntriesMenu->SetMenuItemInfo((int)i + 4, &miteminfo, TRUE);
           if (irc == 0) {
@@ -684,7 +682,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     // BUGFIX: See "PRB: Menus for Notification Icons Don't Work Correctly"
     m_pTarget->PostMessage(WM_NULL, 0, 0);
 
-    if (num_recent_entries != 0 && app_state == ThisMfcApp::UNLOCKED && ppNewRecentEntryMenu != NULL) {
+    if (num_recent_entries != 0 && app_state == DboxMain::UNLOCKED && ppNewRecentEntryMenu != NULL) {
       for (size_t i = 0; i < num_recent_entries; i++) {
         if (ppNewRecentEntryMenu[i] == NULL)
           continue;

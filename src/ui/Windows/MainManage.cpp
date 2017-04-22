@@ -251,7 +251,7 @@ int DboxMain::RestoreSafe()
   m_bRestoredDBUnsaved = true;
 
   m_titlebar.LoadString(IDS_UNTITLEDRESTORE);
-  app.SetTooltipText(L"PasswordSafe");
+  SetTooltipText(L"PasswordSafe");
   
   ChangeOkUpdate();
   RefreshViews();
@@ -349,7 +349,7 @@ void DboxMain::OnOptions()
                             SBPS_STRETCH, NULL);
 
     int iTrayColour = pOptionsPS->GetTrayIconColour();
-    app.SetClosedTrayIcon(iTrayColour);
+    SetClosedTrayIcon(iTrayColour);
 
     UpdateSystemMenu();
     
@@ -480,11 +480,11 @@ void DboxMain::OnOptions()
       if (prefs->GetPref(PWSprefs::HideSystemTray) && 
           prefs->GetPref(PWSprefs::HotKeyEnabled) &&
           prefs->GetPref(PWSprefs::HotKey) > 0)
-        app.HideIcon();
-      else if (app.IsIconVisible() == FALSE)
-        app.ShowIcon();
+        HideIcon();
+      else if (IsIconVisible() == FALSE)
+        ShowIcon();
     } else {
-      app.HideIcon();
+      HideIcon();
     }
 
     if (pOptionsPS->CheckExpired()) {
@@ -714,7 +714,7 @@ void DboxMain::OnSetDBIndex()
     m_hMutexDBIndex = SBIdlg.GetMutexHandle();
 
     m_iDBIndex = (int)rc;
-    UpdateSystemTray(app.GetSystemTrayState() == ThisMfcApp::LOCKED ? LOCKED : UNLOCKED);
+    UpdateSystemTray(m_TrayLockedState == LOCKED ? LOCKED : UNLOCKED);
   }
 }
 

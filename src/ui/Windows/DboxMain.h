@@ -30,6 +30,7 @@
 #include "MenuShortcuts.h"
 #include "AdvancedDlg.h"
 #include "FontsDialog.h"
+#include "SystemTray.h"
 
 #include "core/UIinterface.h"
 #include "core/PWScore.h"
@@ -119,6 +120,8 @@ public:
 
   enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, ST_SAVEIMMEDIATELY,
                  ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
+
+  enum DBSTATE { LOCKED, UNLOCKED, CLOSED };
 
   // Find entry by title and user name, exact match
   ItemListIter Find(const StringX &a_group,
@@ -382,6 +385,9 @@ public:
 
   int GetDBIndex() { return m_iDBIndex; }
 
+  DBSTATE GetSystemTrayState() const { return m_TrayLockedState; }
+  BOOL IsIconVisible() const { return m_pTrayIcon->Visible(); }
+
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
   CPWListCtrl m_ctlItemList;
@@ -529,9 +535,16 @@ public:
 
   void ConfigureSystemMenu();
 
-  // 'DBSTATE' also defined in ThisMfcApp.h - ensure identical
-  enum DBSTATE { LOCKED, UNLOCKED, CLOSED };
   void UpdateSystemTray(const DBSTATE s);
+  BOOL SetTooltipText(LPCWSTR ttt) { return m_pTrayIcon->SetTooltipText(ttt); }
+  void ShowIcon() { m_pTrayIcon->ShowIcon(); }
+  void HideIcon() { m_pTrayIcon->HideIcon(); }
+
+  void SetSystemTrayState(DBSTATE s);
+  int SetClosedTrayIcon(int &icon, bool bSet = true);
+  void SetSystemTrayTarget(CWnd *pWnd) { m_pTrayIcon->SetTarget(pWnd); }
+
+  HICON CreateIcon(const HICON &hIcon, const int &iIndex);
 
   LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
   LRESULT OnCCToHdrDragComplete(WPARAM wParam, LPARAM lParam);
@@ -566,7 +579,7 @@ public:
   void UpdateMenuAndToolBar(const bool bOpen);
   void SortListView();
 
-  //Version of message functions with return values
+  // Version of message functions with return values
   int Save(const SaveType savetype = DboxMain::ST_INVALID);
   int SaveAs();
   int Open(const UINT uiTitle = IDS_CHOOSEDATABASE);
@@ -789,6 +802,14 @@ private:
   PWScore &m_core;
 
   CPasskeyEntry *m_pPasskeyEntryDlg;
+
+  CSystemTray *m_pTrayIcon; // DboxMain needs to be constructed first
+  DBSTATE m_TrayLockedState;
+
+  HICON m_LockedIcon;
+  HICON m_UnLockedIcon;
+  HICON m_ClosedIcon;
+  HICON m_IndexIcon;
 
   bool m_IsStartSilent;
   bool m_IsStartClosed;

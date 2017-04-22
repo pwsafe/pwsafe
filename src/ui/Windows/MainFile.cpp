@@ -521,7 +521,7 @@ int DboxMain::Close(const bool bTrySave)
   m_DDemail.SetStaticState(false);
   m_DDAutotype.SetStaticState(false);
 
-  app.SetTooltipText(L"PasswordSafe");
+  SetTooltipText(L"PasswordSafe");
 
   m_iDBIndex = 0;
   if (m_hMutexDBIndex != NULL) {
@@ -1502,7 +1502,7 @@ int DboxMain::SaveAs()
       (cFilename + cExtn).c_str());
   }
 
-  app.SetTooltipText(csTooltip);
+  SetTooltipText(csTooltip);
 
   // Reset all indications entry times changed
   m_bEntryTimestampsChanged = false;
@@ -4158,6 +4158,11 @@ void DboxMain::CleanUpAndExit(const bool bNormalExit)
 
   // Clear out filters
   m_MapAllFilters.clear();
+
+  if (m_pTrayIcon != NULL) {
+    m_pTrayIcon->DestroyWindow();
+    delete m_pTrayIcon;
+  }
 
   // If we are called normally, then exit gracefully. If not, force the issue
   // after the caller has processed the current message by posting another message
