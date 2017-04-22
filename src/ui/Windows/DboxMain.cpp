@@ -4087,6 +4087,10 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
       iEnable = (m_bOpen && m_core.GetReadFileVersion() >= PWSfile::VCURRENT && !bFileIsReadOnly) ? TRUE : FALSE;
       break;
+    case ID_MENUITEM_SETDBINDEX:
+      // Disable SetDBIndex if System Tray not in use
+      iEnable = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray);
+      break;
     default:
       break;
   }
