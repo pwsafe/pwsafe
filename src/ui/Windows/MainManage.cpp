@@ -703,15 +703,22 @@ void DboxMain::OnSetDBIndex()
 
   INT_PTR rc = SBIdlg.DoModal();
   
-  if (rc != -1 && m_iDBIndex != rc) {
-    // Clear current one if it exists
-    if (m_hMutexDBIndex != NULL) {
-      CloseHandle(m_hMutexDBIndex);
-      m_hMutexDBIndex = NULL;
+  if (rc != -1) {
+    // Index may have changed
+    if (m_iDBIndex != rc) {
+      // Clear current one if it exists
+      if (m_hMutexDBIndex != NULL) {
+        CloseHandle(m_hMutexDBIndex);
+        m_hMutexDBIndex = NULL;
+      }
+
+      // Remember mutex handle to close on DB close or assignment of new index
+      m_hMutexDBIndex = SBIdlg.GetMutexHandle();
     }
 
-    // Remember mutex handle to close on DB close or assignment of new index
-    m_hMutexDBIndex = SBIdlg.GetMutexHandle();
+    // Colour may have changed
+    m_DBLockedIndexColour = SBIdlg.GetLockedIndexColour();
+    m_DBUnlockedIndexColour = SBIdlg.GetUnlockedIndexColour();
 
     m_iDBIndex = (int)rc;
     UpdateSystemTray(m_TrayLockedState == LOCKED ? LOCKED : UNLOCKED);
