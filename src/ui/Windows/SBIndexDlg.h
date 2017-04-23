@@ -15,6 +15,8 @@
 
 // CSBIndexDlg dialog
 
+class DboxMain;
+
 class CNPEdit : public CEdit
 {
   // Even though CEdit supports ES_NUMBER, this only works for
@@ -42,19 +44,38 @@ public:
 	enum { IDD = IDD_SETDBINDEX };
 
   HANDLE GetMutexHandle() { return m_hMutexDBIndex; }
+  COLORREF GetLockedIndexColour() { return m_clrLockedTextColour; }
+  COLORREF GetUnlockedIndexColour() { return m_clrUnlockedTextColour; }
 
 protected:
   virtual BOOL OnInitDialog();
 	virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
 
+  afx_msg void OnDestroy();
   afx_msg void OnOK();
   afx_msg void OnCancel();
   afx_msg void OnHelp();
+  afx_msg void OnSetLockedColour(UINT nID);
+  afx_msg void OnSetUnlockedColour(UINT nID);
+  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
 
 	DECLARE_MESSAGE_MAP()
 
   CNPEdit m_edtSBIndex;
-  int m_iDBIndex, m_iInitialDBIndex;
+  CStatic m_stLockedImage, m_stUnlockedImage;
+  int m_iDBIndex, m_iInitialDBIndex, m_iLockedTextColour, m_iUnLockedTextColour;
 
   HANDLE m_hMutexDBIndex;
+ 
+private:
+  void SetBitmapBackground(CBitmap &bm);
+  void CreateIndexBitmap(const int iIndex, const COLORREF clrText, const bool bLocked);
+
+  COLORREF m_clrLockedTextColour, m_clrUnlockedTextColour, m_clrBackground;
+  COLORREF m_clrLockedTextOptions[4], m_clrUnlockedTextOptions[4];
+
+  CBitmap m_bmLocked, m_bmUnlocked;
+  CBrush  m_Brush;
+  bool m_bInitDone;
+  DboxMain *m_pParent;
 };

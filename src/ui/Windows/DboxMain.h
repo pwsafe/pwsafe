@@ -385,6 +385,8 @@ public:
   { m_sxNewPath = sxNewPath; }
 
   int GetDBIndex() { return m_iDBIndex; }
+  COLORREF GetLockedIndexColour() { return m_DBLockedIndexColour; }
+  COLORREF GetUnlockedIndexColour() { return m_DBUnlockedIndexColour; }
 
   DBSTATE GetSystemTrayState() const { return m_TrayLockedState; }
   BOOL IsIconVisible() const { return m_pTrayIcon->Visible(); }
@@ -461,6 +463,8 @@ public:
     std::vector<st_FRResults> &vFRResults);
 
  protected:
+   friend class CSBIndexDlg;  // To access icon creation etc.
+
    // ClassWizard generated virtual function overrides
    //{{AFX_VIRTUAL(DboxMain)
    virtual BOOL PreTranslateMessage(MSG *pMsg);
@@ -554,7 +558,8 @@ public:
   int SetClosedTrayIcon(int &icon, bool bSet = true);
   void SetSystemTrayTarget(CWnd *pWnd) { m_pTrayIcon->SetTarget(pWnd); }
 
-  HICON CreateIcon(const HICON &hIcon, const int &iIndex);
+  HICON CreateIcon(const HICON &hIcon, const int &iIndex,
+                   const COLORREF clrText = RGB(255, 255, 0));
 
   LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
   LRESULT OnCCToHdrDragComplete(WPARAM wParam, LPARAM lParam);
@@ -1024,6 +1029,7 @@ private:
 
   // Database index on Tray icon
   int m_iDBIndex;
+  COLORREF m_DBLockedIndexColour, m_DBUnlockedIndexColour;
   HANDLE m_hMutexDBIndex;
 
   // The following is for saving information over an execute/undo/redo
