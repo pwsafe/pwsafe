@@ -1277,8 +1277,12 @@ void DboxMain::RefreshViews(const ViewType iView)
     CItemData &ci = m_core.GetEntry(listPos);
     DisplayInfo *pdi = GetEntryGUIInfo(ci, true);
     if (pdi != NULL) {
-      pdi->list_index = -1;
-      pdi->tree_item = 0;
+      if (iView & LISTONLY) {
+        pdi->list_index = -1;
+      }
+      if (iView & TREEONLY) {
+        pdi->tree_item = 0;
+      }
     }
 
     InsertItemIntoGUITreeList(ci, -1, false, iView);
@@ -1912,6 +1916,10 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     }
 
     m_ctlItemList.SetItemData(iResult, (DWORD_PTR)&ci);
+  }
+
+  if (di.list_index == -1 || di.tree_item == NULL) {
+    ASSERT(0);
   }
 
   SetEntryGUIInfo(ci, di);
