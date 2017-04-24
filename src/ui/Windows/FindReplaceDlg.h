@@ -55,6 +55,7 @@ protected:
   afx_msg void OnEdtChangeNewText();
   afx_msg void OnCase();
   afx_msg void OnSearch();
+  afx_msg void OnExit();
   afx_msg void OnChangeSelected();
   afx_msg void OnChangeRowClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnChangeRowChanging(NMHDR *pNotifyStruct, LRESULT *pLResult);
@@ -80,7 +81,7 @@ private:
   CFRListCtrl m_lctChanges;
   CComboBox m_cbxRule, m_cbxField;
   CEdit m_edtOldText, m_edtNewText;
-  CButton m_btnCase, m_btnSearch, m_btnChangeSelected;
+  CButton m_btnCase, m_btnSearch, m_btnChangeSelected, m_btnExit;
   CSecString m_secOldText, m_secNewText, m_secOldTextOld;
   CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4;
 

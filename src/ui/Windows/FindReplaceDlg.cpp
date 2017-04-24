@@ -49,6 +49,7 @@ void CFindReplaceDlg::DoDataExchange(CDataExchange *pDX)
   DDX_Control(pDX, IDC_STRINGCASE, m_btnCase);
   DDX_Control(pDX, IDC_SEARCH, m_btnSearch);
   DDX_Control(pDX, IDC_CHANGESELECTED, m_btnChangeSelected);
+  DDX_Control(pDX, IDC_EXIT, m_btnExit);
 
   DDX_Control(pDX, IDC_FINDREPLACERULEHELP, m_Help1);
   DDX_Control(pDX, IDC_FINDREPLACENEWTEXTHELP, m_Help2);
@@ -64,7 +65,7 @@ BEGIN_MESSAGE_MAP(CFindReplaceDlg, CPWDialog)
   ON_EN_CHANGE(IDC_OLDTEXT, OnEdtChangeOldText)
   ON_EN_CHANGE(IDC_NEWTEXT, OnEdtChangeNewText)
 
-  ON_BN_CLICKED(IDOK, OnOK)
+  ON_BN_CLICKED(IDC_EXIT, OnExit)
   ON_BN_CLICKED(IDC_STRINGCASE, OnCase)
   ON_BN_CLICKED(IDC_SEARCH, OnSearch)
   ON_BN_CLICKED(IDC_CHANGESELECTED, OnChangeSelected)
@@ -185,14 +186,18 @@ BOOL CFindReplaceDlg::PreTranslateMessage(MSG *pMsg)
 {
   RelayToolTipEvent(pMsg);
 
-  // Don't allow Enter of Escape prematurely close dialog
-  if (pMsg->message == WM_KEYDOWN && pMsg->hwnd != m_btnSearch.GetSafeHwnd()) {
-    if (pMsg->wParam == VK_RETURN || pMsg->wParam == VK_ESCAPE) {
-      return TRUE;
-    }
+  // Sllow Escape to close dialog
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
+    CPWDialog::OnOK();
+    return TRUE;
   }
 
   return CPWDialog::PreTranslateMessage(pMsg);
+}
+
+void CFindReplaceDlg::OnExit()
+{
+  CPWDialog::OnOK();
 }
 
 void CFindReplaceDlg::OnCase()
@@ -667,7 +672,7 @@ void CFindReplaceDlg::UpdateButtons(const BOOL bEnable)
   m_edtNewText.EnableWindow(bEnable);
   m_lctChanges.EnableWindow(bEnable);
   m_btnCase.EnableWindow(bEnable);
-  GetDlgItem(IDOK)->EnableWindow(bEnable);
+  m_btnExit.EnableWindow(bEnable);
 }
 
 StringX CFindReplaceDlg::ChangeField(StringX &sxOldFieldValue, StringX &sxOldText, StringX &sxNewText,
