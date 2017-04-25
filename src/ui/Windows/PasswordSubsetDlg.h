@@ -23,6 +23,9 @@ class CNumEdit : public CEdit
 protected:
   //{{AFX_MSG(CNumEdit)
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+  afx_msg void OnPaste();
+  afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+  afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 
