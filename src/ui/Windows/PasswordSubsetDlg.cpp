@@ -37,8 +37,27 @@ CNumEdit::CNumEdit()
 BEGIN_MESSAGE_MAP(CNumEdit, CEdit)
   //{{AFX_MSG_MAP(CNumEdit)
   ON_WM_CHAR()
+  ON_WM_PASTE()
+  ON_WM_RBUTTONDOWN()
+  ON_WM_RBUTTONUP()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+void CNumEdit::OnPaste()
+{
+  // Do nothing as processing text pasted in the middle of current text
+  // would be unnecessarily complicated (see processing in OnChar).
+  // Not really a loss to the user in this function
+}
+
+void CNumEdit::OnRButtonDown(UINT /*nFlags*/, CPoint /*point*/)
+{
+  // Do nothing to prevent context menu and paste
+}
+void CNumEdit::OnRButtonUp(UINT /*nFlags*/, CPoint /*point*/)
+{
+  // Do nothing to prevent context menu and paste
+}
 
 void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
