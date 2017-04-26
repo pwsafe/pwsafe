@@ -857,11 +857,39 @@ void DboxMain::OnDelete()
   int num_children = 0;
   m_sxOriginalGroup = L""; // Needed if deleting a groups due to Delete recusrsion
 
+  // Entry to be selected after deletion
+  bool bSelectNext(false), bSelectPrev(false);
+  CItemData *pci_next(NULL), *pci_prev(NULL);
+  StringX sxNextGroup(L""), sxPrevGroup(L"");
+
   // Find number of child items, ask for confirmation if > 0
   StringX sxGroup(L""), sxTitle(L""), sxUser(L"");
   CItemData *pci(NULL);
   if (m_ctlItemTree.IsWindowVisible()) {
     HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
+
+    // Check that it wasn't the bottom entry in the tree (can't select next)
+    HTREEITEM hNextSelectedItem = m_ctlItemTree.GetNextItem(hStartItem, TVGN_NEXTVISIBLE);
+    if (hNextSelectedItem != NULL) {
+      bSelectNext = true;
+      pci_next = (CItemData *)m_ctlItemTree.GetItemData(hNextSelectedItem);
+      if (pci_next == NULL) {
+        // It is a group - save full path
+        sxNextGroup = m_ctlItemTree.GetGroup(hNextSelectedItem);
+      }
+    }
+
+    // Check that it wasn't the top entry in the tree (can't select next)
+    HTREEITEM hPrevSelectedItem = m_ctlItemTree.GetNextItem(hStartItem, TVGN_PREVIOUSVISIBLE);
+    if (hPrevSelectedItem != NULL) {
+      bSelectPrev = true;
+      pci_prev = (CItemData *)m_ctlItemTree.GetItemData(hPrevSelectedItem);
+      if (pci_prev == NULL) {
+        // It is a group - save full path
+        sxPrevGroup = m_ctlItemTree.GetGroup(hPrevSelectedItem);
+      }
+    }
+
     if (hStartItem != NULL) {
       if (m_ctlItemTree.GetItemData(hStartItem) == NULL) {  // group node
         // ALWAYS ask if deleting a group - unless it is empty or
@@ -915,6 +943,18 @@ void DboxMain::OnDelete()
     POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
     if (pos != NULL) {
       pci = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos - 1);
+
+      // Check that it wasn't the bottom entry in the list (can't select next)
+      if ((int)pos < m_ctlItemList.GetItemCount()) {
+        bSelectNext = true;
+        pci_next = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos);
+      }
+
+      // Check that it wasn't the top entry in the list (can't select previous)
+      if ((int)pos > 1) {
+        bSelectPrev = true;
+        pci_prev = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos - 2);
+      }
     }
   }
 
@@ -970,6 +1010,48 @@ void DboxMain::OnDelete()
 
     ChangeOkUpdate();
   }
+
+  CItemData *pci_select(NULL);
+  DisplayInfo *pdi;
+  HTREEITEM hItem(NULL);
+  int item(-1);
+
+  if (bSelectNext) {
+    pci_select = pci_next;
+    if (pci_next != NULL) {
+      pdi = GetEntryGUIInfo(*pci_next);
+      hItem = pdi->tree_item;
+      item = pdi->list_index;
+    } else {
+      if (!sxNextGroup.empty() &&
+          m_mapGroupToTreeItem.find(sxNextGroup) != m_mapGroupToTreeItem.end()) {
+        hItem = m_mapGroupToTreeItem[sxNextGroup];
+      }
+    }
+  } else   
+  if (bSelectPrev) {
+    pci_select = pci_prev;
+    if (pci_prev != NULL) {
+      pdi = GetEntryGUIInfo(*pci_prev);
+      hItem = pdi->tree_item;
+      item = pdi->list_index;
+    } else {
+      if (!sxPrevGroup.empty() &&
+          m_mapGroupToTreeItem.find(sxPrevGroup) != m_mapGroupToTreeItem.end()) {
+        hItem = m_mapGroupToTreeItem[sxPrevGroup];
+      }
+    }
+  }
+
+  // Now select the deleted item's (group's) next or previous entry
+  if (m_ctlItemTree.IsWindowVisible() && hItem != NULL) {
+    m_ctlItemTree.SelectItem(hItem);
+  } else if (item != -1) {
+    m_ctlItemList.SetItemState(item, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
+  }
+
+  // Update Toolbar & Dragbar
+  UpdateToolBarForSelectedItem(pci_select);
 }
 
 void DboxMain::Delete(MultiCommands *pmcmd)
