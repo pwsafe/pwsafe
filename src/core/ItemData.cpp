@@ -2212,7 +2212,7 @@ stringT CItemData::EngFieldName(FieldType ft)
   case XTIME_INT:  return _T("Password Expiry Interval");
   case RUNCMD:     return _T("Run Command");
   case DCA:        return _T("DCA");
-  case SHIFTDCA:   return _T("Shift-DCA");
+  case SHIFTDCA:   return _T("Shift+DCA");
   case EMAIL:      return _T("e-mail");
   case PROTECTED:  return _T("Protected");
   case SYMBOLS:    return _T("Symbols");

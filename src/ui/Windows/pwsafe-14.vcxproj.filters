@@ -117,6 +117,9 @@
     <ClCompile Include="ExtThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FieldChangesDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="filter\FilterBaseDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -150,13 +153,25 @@
     <ClCompile Include="filter\FilterStringDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FindReplaceDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Fonts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FontsDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FRListCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FRHdrCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="GeneralMsgBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GridListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImgStatic.cpp">
@@ -330,6 +345,9 @@
     <ClCompile Include="SampleTextDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SBIndexDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="SCWListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -367,6 +385,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Subclass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SyncScrollRichEdit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SysColStatic.cpp">
@@ -412,9 +433,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="YubiMixin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GridListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -524,6 +542,9 @@
     <ClInclude Include="ExtThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FieldChangesDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="filter\FilterBoolDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -561,6 +582,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneralMsgBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GridListCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HKModifiers.h">
@@ -710,6 +734,9 @@
     <ClInclude Include="PWToolBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PWTouch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="PWTreeCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -729,6 +756,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SampleTextDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SBIndexDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SCWListCtrl.h">
@@ -771,6 +801,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Subclass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SyncScrollRichEdit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SysColStatic.h">
@@ -831,12 +864,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Windowsdefs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWTouch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GridListCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1734,6 +1761,39 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="graphics\toolbar\classic\lock_database.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\toolbar\classic\copypassword_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\checked_black.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\findreplace.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\black.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\red.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\green.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\white.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\yellow.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\toolbar\new\bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\locked_tray_index.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\unlocked_tray_index.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

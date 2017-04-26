@@ -104,7 +104,7 @@ BOOL COptions_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
   return CPWPropertySheet::OnCommand(wParam, lParam);
 }
 
-BOOL COptions_PropertySheet::PreTranslateMessage(MSG* pMsg) 
+BOOL COptions_PropertySheet::PreTranslateMessage(MSG *pMsg) 
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     COptions_PropertyPage *pp = (COptions_PropertyPage *)GetActivePage();
@@ -192,10 +192,12 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
   m_OPTMD.OtherBrowserLocation =
       prefs->GetPref(PWSprefs::AltBrowser).c_str();
-  m_OPTMD.BrowserCmdLineParms =
+  m_OPTMD.OtherBrowserCmdLineParms =
       prefs->GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
   m_OPTMD.OtherEditorLocation =
-      prefs->GetPref(PWSprefs::AltNotesEditor).c_str();
+      prefs->GetPref(PWSprefs::AltNotesEditor).c_str(); // 
+  m_OPTMD.OtherEditorCmdLineParms =
+      prefs->GetPref(PWSprefs::AltNotesEditorCmdLineParms).c_str();
   CString cs_dats =
       prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
   if (cs_dats.IsEmpty())
@@ -335,9 +337,11 @@ void COptions_PropertySheet::UpdateCopyPreferences()
   prefs->SetPref(PWSprefs::AltBrowser,
                  LPCWSTR(m_OPTMD.OtherBrowserLocation), true);
   prefs->SetPref(PWSprefs::AltBrowserCmdLineParms,
-                 LPCWSTR(m_OPTMD.BrowserCmdLineParms), true);
+                 LPCWSTR(m_OPTMD.OtherBrowserCmdLineParms), true);
   prefs->SetPref(PWSprefs::AltNotesEditor,
                  LPCWSTR(m_OPTMD.OtherEditorLocation), true);
+  prefs->SetPref(PWSprefs::AltNotesEditorCmdLineParms,
+                 LPCWSTR(m_OPTMD.OtherEditorCmdLineParms), true);
   prefs->SetPref(PWSprefs::MinimizeOnAutotype,
                  m_OPTMD.MinAuto == TRUE, true);
 

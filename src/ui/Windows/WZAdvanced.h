@@ -47,11 +47,10 @@ public:
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CWZAdvanced)
 protected:
-  void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-  BOOL OnInitDialog();
-  BOOL PreTranslateMessage(MSG* pMsg);
+  void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
   LRESULT OnWizardNext();
-  afx_msg void OnHelp();
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -60,6 +59,7 @@ protected:
 
   // Generated message map functions
   //{{AFX_MSG(CWZAdvanced)
+  afx_msg void OnHelp();
   afx_msg void OnSetSubGroup();
   afx_msg void OnSelectSome();
   afx_msg void OnSelectAll();

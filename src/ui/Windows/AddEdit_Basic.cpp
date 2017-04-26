@@ -80,7 +80,9 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
 
   m_password = m_password2 = M_realpassword();
 
-  if (M_notes().GetLength() > MAXTEXTCHARS) {
+  if ((!M_pcore()->IsReadOnly() && M_protected() == 0) && 
+      M_notes().GetLength() > MAXTEXTCHARS) {
+    // Only truncate if in Edit mode
     M_notes() = M_notes().Left(MAXTEXTCHARS);
 
     CGeneralMsgBox gmb;
@@ -423,8 +425,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
   ASSERT((cf.dwMask & CFM_SIZE) == CFM_SIZE);
   m_iPointSize = cf.yHeight / 20;
 
-  m_iLineCount = m_ex_notes.GetLineCount();
-
   // Load copy password bitmap
   UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
     IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
@@ -449,7 +449,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   UpdateData(FALSE);
   m_bInitdone = true;
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CAddEdit_Basic::OnHelp()
@@ -1080,13 +1080,6 @@ void CAddEdit_Basic::OnENChangeNotes()
       return;
   }
 
-  // Try to scroll as lines added or deleted
-  int iLineCount = m_ex_notes.GetLineCount();
-  if (m_iLineCount != iLineCount) {
-    m_ex_notes.LineScroll(iLineCount - m_iLineCount);
-  }
-  m_iLineCount = iLineCount;
-
   m_ae_psh->SetChanged(true);
   m_ae_psh->SetNotesChanged(true); // Needed if Notes field is long and will be truncated
   UpdateData(TRUE);
@@ -1276,6 +1269,8 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   wchar_t lpPathBuffer[4096];
   DWORD dwBufSize(4096);
 
+  StringX sxEditorCmdLineParms = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditorCmdLineParms);
+
   StringX sxEditor = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditor);
   if (sxEditor.empty()) {
     // Find out the users default editor for "txt" files
@@ -1363,7 +1358,9 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   CString cs_CommandLine;
 
   // Make the command line = "<program>" "file"
-  cs_CommandLine.Format(L"\"%s\" \"%s\"", sxEditor.c_str(), self->m_szTempName);
+  cs_CommandLine.Format(L"\"%s\" \"%s\" %s", sxEditor.c_str(), self->m_szTempName,
+                               sxEditorCmdLineParms.c_str());
+
   int ilen = cs_CommandLine.GetLength();
   LPWSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
 
@@ -1484,7 +1481,8 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
   // Close file before invoking editor
   fclose(fd);
 
-  if (sNewNotes.length() > MAXTEXTCHARS) {
+  if ((!M_pcore()->IsReadOnly() && M_protected() == 0) &&
+      sNewNotes.length() > MAXTEXTCHARS) {
     sNewNotes = sNewNotes.substr(0, MAXTEXTCHARS);
 
     CGeneralMsgBox gmb;

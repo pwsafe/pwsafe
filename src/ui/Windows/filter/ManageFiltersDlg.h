@@ -70,10 +70,9 @@ public:
   enum CheckImage { CHECKED = 0, CHECKED_DISABLED, EMPTY, EMPTY_DISABLED };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-  BOOL OnInitDialog();
-  BOOL PreTranslateMessage(MSG* pMsg);
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   //{{AFX_MSG(CManageFiltersDlg)
   afx_msg void OnFilterNew();

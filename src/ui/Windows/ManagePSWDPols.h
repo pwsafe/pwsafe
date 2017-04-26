@@ -54,9 +54,9 @@ protected:
   CSecEditExtn m_ex_password;
   CSecString m_password;
 
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
-  virtual BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   afx_msg void OnHelp();
   afx_msg void OnCancel();
@@ -98,7 +98,11 @@ private:
 
   GTUSet m_setGTU;
 
-  CBitmap m_CopyPswdBitmap;
+  CBitmap m_CopyPswdBitmap, m_DisabledCopyPswdBitmap;
+  CButton *m_pCopyBtn;
+
+  bool m_bCopyPasswordEnabled;
+  BOOL m_bImageLoaded, m_bDisabledImageLoaded;
   
   int m_iSortNamesIndex, m_iSortEntriesIndex;
   bool m_bSortNamesAscending, m_bSortEntriesAscending;

@@ -30,6 +30,8 @@
 #include "MenuShortcuts.h"
 #include "AdvancedDlg.h"
 #include "FontsDialog.h"
+#include "FRHdrCtrl.h"  // For st_FRResults
+#include "SystemTray.h"
 
 #include "core/UIinterface.h"
 #include "core/PWScore.h"
@@ -119,6 +121,8 @@ public:
 
   enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, ST_SAVEIMMEDIATELY,
                  ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
+
+  enum DBSTATE { LOCKED, UNLOCKED, CLOSED };
 
   // Find entry by title and user name, exact match
   ItemListIter Find(const StringX &a_group,
@@ -334,13 +338,17 @@ public:
 
   std::wstring DoMerge(PWScore *pothercore,
                   const bool bAdvanced, CReport *prpt, bool *pbCancel);
+  
   bool DoCompare(PWScore *pothercore,
                  const bool bAdvanced, CReport *prpt, bool *pbCancel);
+  
   void DoSynchronize(PWScore *pothercore,
                      const bool bAdvanced, int &numUpdated, CReport *prpt, bool *pbCancel);
+  
   int DoExportText(const StringX &sx_Filename, const UINT nID,
                    const wchar_t &delimiter, const bool bAdvanced,
                    int &numExported, CReport *prpt);
+  
   int DoExportXML(const StringX &sx_Filename, const UINT nID,
                   const wchar_t &delimiter, const bool bAdvanced,
                   int &numExported, CReport *prpt);
@@ -375,6 +383,13 @@ public:
   void ResetInAddGroup() {m_bInAddGroup = false;}
   void SetRenameGroups(const StringX sxNewPath)
   { m_sxNewPath = sxNewPath; }
+
+  int GetDBIndex() { return m_iDBIndex; }
+  COLORREF GetLockedIndexColour() { return m_DBLockedIndexColour; }
+  COLORREF GetUnlockedIndexColour() { return m_DBUnlockedIndexColour; }
+
+  DBSTATE GetSystemTrayState() const { return m_TrayLockedState; }
+  BOOL IsIconVisible() const { return m_pTrayIcon->Visible(); }
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -432,19 +447,30 @@ public:
   bool ChangeMode(bool promptUser); // r-o <-> r/w
 
   // If we have processed it returns 0 else 1
-  BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers);
+  BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wWinModifiers);
   bool IsWorkstationLocked() const;
   void BlockLogoffShutdown(const bool bChanged);
 
   std::set<StringX> GetAllMediaTypes() const
   {return m_core.GetAllMediaTypes();}
 
+  size_t DoFindReplaceSearch(const CItem::FieldType &ft, const PWSMatch::MatchRule &rule,
+    const StringX &sxOldText, const bool &bCaseSensitive,
+    std::vector<st_FRResults> &vFRResults);
+
+  size_t DoFindReplaceEdit(const CItem::FieldType &ft, const PWSMatch::MatchRule &rule,
+    const StringX &sxOldText, const StringX &sxNewText, const bool &bCaseSensitive,
+    std::vector<st_FRResults> &vFRResults);
+
  protected:
+   friend class CSBIndexDlg;  // To access icon creation etc.
+
    // ClassWizard generated virtual function overrides
    //{{AFX_VIRTUAL(DboxMain)
+   virtual BOOL PreTranslateMessage(MSG *pMsg);
    virtual BOOL OnInitDialog();
    virtual void OnCancel();
-   virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
+   virtual void DoDataExchange(CDataExchange *pDX);  // DDX/DDV support
    // override following to reset idle timeout on any event
    virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
    //}}AFX_VIRTUAL
@@ -518,13 +544,22 @@ public:
   // For UPDATE_UI
   int OnUpdateMenuToolbar(const UINT nID);
   int OnUpdateViewReports(const int nID);
-  void OnUpdateMRU(CCmdUI* pCmdUI);
+  void OnUpdateMRU(CCmdUI *pCmdUI);
+  bool CheckCommand(const WORD wID);
 
   void ConfigureSystemMenu();
 
-  // 'STATE' also defined in ThisMfcApp.h - ensure identical
-  enum STATE { LOCKED, UNLOCKED, CLOSED };
-  void UpdateSystemTray(const STATE s);
+  void UpdateSystemTray(const DBSTATE s);
+  BOOL SetTooltipText(LPCWSTR ttt) { return m_pTrayIcon->SetTooltipText(ttt); }
+  void ShowIcon() { m_pTrayIcon->ShowIcon(); }
+  void HideIcon() { m_pTrayIcon->HideIcon(); }
+
+  void SetSystemTrayState(DBSTATE s);
+  int SetClosedTrayIcon(int &icon, bool bSet = true);
+  void SetSystemTrayTarget(CWnd *pWnd) { m_pTrayIcon->SetTarget(pWnd); }
+
+  HICON CreateIcon(const HICON &hIcon, const int &iIndex,
+                   const COLORREF clrText = RGB(255, 255, 0));
 
   LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
   LRESULT OnCCToHdrDragComplete(WPARAM wParam, LPARAM lParam);
@@ -548,8 +583,6 @@ public:
   LRESULT OnApplyEditChanges(WPARAM wParam, LPARAM lParam);
   LRESULT OnDroppedFile(WPARAM wParam, LPARAM lParam);
 
-  BOOL PreTranslateMessage(MSG* pMsg);
-
   void UpdateAlwaysOnTop();
   void ClearAppData(const bool bClearMRE = true);
   int NewFile(StringX &filename);
@@ -561,7 +594,7 @@ public:
   void UpdateMenuAndToolBar(const bool bOpen);
   void SortListView();
 
-  //Version of message functions with return values
+  // Version of message functions with return values
   int Save(const SaveType savetype = DboxMain::ST_INVALID);
   int SaveAs();
   int Open(const UINT uiTitle = IDS_CHOOSEDATABASE);
@@ -617,6 +650,8 @@ public:
   afx_msg void OnUpdateTraySendEmail(CCmdUI *pCmdUI);
   afx_msg void OnTraySelect(UINT nID);
   afx_msg void OnUpdateTraySelect(CCmdUI *pCmdUI);
+  afx_msg void OnGotoDependant(UINT nID);
+  afx_msg void OnUpdateGotoDependant(CCmdUI *pCmdUI);
 
   afx_msg LRESULT OnAreYouMe(WPARAM, LPARAM);
   afx_msg LRESULT OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam);
@@ -675,8 +710,10 @@ public:
   afx_msg void OnDuplicateEntry();
   afx_msg void OnOptions();
   afx_msg void OnManagePasswordPolicies();
+  afx_msg void OnFindReplace();
   afx_msg void OnGeneratePassword();
   afx_msg void OnYubikey();
+  afx_msg void OnSetDBIndex();
   afx_msg void OnSave();
   afx_msg void OnAdd();
   afx_msg void OnAddGroup();
@@ -700,6 +737,7 @@ public:
   afx_msg void OnViewReportsByID(UINT nID);  // From View->Reports menu
   afx_msg void OnViewReports();
   afx_msg void OnManageFilters(); // From Toolbar button
+  afx_msg void OnExportFilteredDB();
   afx_msg void OnCancelFilter();
   afx_msg void OnApplyFilter();
   afx_msg void OnSetFilter();
@@ -784,6 +822,14 @@ private:
 
   CPasskeyEntry *m_pPasskeyEntryDlg;
 
+  CSystemTray *m_pTrayIcon; // DboxMain needs to be constructed first
+  DBSTATE m_TrayLockedState;
+
+  HICON m_LockedIcon;
+  HICON m_UnLockedIcon;
+  HICON m_ClosedIcon;
+  HICON m_IndexIcon;
+
   bool m_IsStartSilent;
   bool m_IsStartClosed;
   bool m_bStartHiddenAndMinimized;
@@ -813,6 +859,9 @@ private:
  
   // Here lies the mapping between an entry and its place on the GUI (Tree/List views)
   std::map<pws_os::CUUID, DisplayInfo, std::less<pws_os::CUUID> > m_MapEntryToGUI;
+
+  // Mapping between visible dependants and their base (might not be visible if filter active)
+  std::vector<int> m_vGotoDependants;
   
   // Set link between entry and GUI
   void SetEntryGUIInfo(const CItemData &ci, const DisplayInfo &di)
@@ -977,6 +1026,11 @@ private:
   void SetLanguage(LCID lcid);
   int m_ilastaction;  // Last action
   void SetDragbarToolTips();
+
+  // Database index on Tray icon
+  int m_iDBIndex;
+  COLORREF m_DBLockedIndexColour, m_DBUnlockedIndexColour;
+  HANDLE m_hMutexDBIndex;
 
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?

@@ -66,9 +66,9 @@ protected:
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(CAddEdit_Additional)
-  BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
   virtual BOOL OnInitDialog();
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnApply();
   virtual BOOL OnKillActive();
   //}}AFX_VIRTUAL
@@ -110,7 +110,7 @@ private:
 
   int32 m_iAppHotKey, m_iOldHotKey;
   WORD m_wAppVirtualKeyCode;
-  WORD m_wAppWindowsModifiers; // Values using Windows definition of control keys.
+  WORD m_wAppPWSModifiers;
   bool m_bAppHotKeyEnabled;
 };
 //-----------------------------------------------------------------------------

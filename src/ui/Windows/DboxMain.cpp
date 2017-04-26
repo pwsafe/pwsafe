@@ -117,6 +117,7 @@ void DboxMain::SetLocalStrings()
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
   : CDialog(DboxMain::IDD, pParent),
+  m_TrayLockedState(LOCKED), m_pTrayIcon(NULL),
   m_pPasskeyEntryDlg(NULL), m_bSizing(false), m_bDBNeedsReading(true), m_bInitDone(false),
   m_toolbarsSetup(FALSE),
   m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
@@ -154,7 +155,9 @@ DboxMain::DboxMain(CWnd* pParent)
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
-  m_bFindToolBarVisibleAtLock(false), m_bSuspendGUIUpdates(false), m_iNeedRefresh(NONE)
+  m_bFindToolBarVisibleAtLock(false), m_bSuspendGUIUpdates(false), m_iNeedRefresh(NONE),
+  m_iDBIndex(0), m_hMutexDBIndex(NULL),
+  m_DBLockedIndexColour(RGB(255, 255, 0)), m_DBUnlockedIndexColour(RGB(255, 255, 0))
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::LOAD_LIBRARY_SYS));
@@ -410,6 +413,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2XML, OnExportGroupXML)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2DB, OnExportGroupDB)
   ON_COMMAND(ID_MENUITEM_EXPORT_ATTACHMENT, OnExportAttachment)
+  ON_COMMAND(ID_MENUITEM_EXPORTFILTERED2DB, OnExportFilteredDB)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -434,7 +438,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_CLEARFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_EDITFILTER, OnSetFilter)
-  ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters)
+  ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters) 
+  ON_COMMAND(ID_MENUITEM_EXPORTFILTERED2DB, OnExportFilteredDB)
   ON_COMMAND(ID_MENUITEM_PASSWORDSUBSET, OnDisplayPswdSubset)
   ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
   ON_COMMAND(ID_MENUITEM_SHOWHIDE_UNSAVED, OnShowUnsavedEntries)
@@ -448,7 +453,9 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
   ON_COMMAND(ID_MENUITEM_GENERATEPASSWORD, OnGeneratePassword)
   ON_COMMAND(ID_MENUITEM_YUBIKEY, OnYubikey)
+  ON_COMMAND(ID_MENUITEM_SETDBINDEX, OnSetDBIndex)
   ON_COMMAND(ID_MENUITEM_PSWD_POLICIES, OnManagePasswordPolicies)
+  ON_COMMAND(ID_MENUITEM_FINDREPLACE, OnFindReplace)
 
   // Help Menu
   ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
@@ -559,6 +566,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYSENDEMAIL1, ID_MENUITEM_TRAYSENDEMAILMAX, OnUpdateTraySendEmail)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnTraySelect)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnUpdateTraySelect)
+  ON_COMMAND_RANGE(ID_MENUITEM_GOTODEPENDANT1, ID_MENUITEM_GOTODEPENDANTMAX, OnGotoDependant)
+  ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_GOTODEPENDANT1, ID_MENUITEM_GOTODEPENDANTMAX, OnUpdateGotoDependant)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXT, 0, 0xFFFF, OnToolTipText)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -664,6 +673,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_APPLYFILTER, true, true, false, false},
   {ID_MENUITEM_CLEARFILTER, true, true, false, false},
   {ID_MENUITEM_MANAGEFILTERS, true, true, true, true},
+  {ID_MENUITEM_EXPORTFILTERED2DB, true, true, false, false},
   {ID_MENUITEM_PASSWORDSUBSET, true, true, false, false},
   {ID_MENUITEM_REFRESH, true, true, false, false},
   {ID_MENUITEM_SHOWHIDE_UNSAVED, true, false, false, false},
@@ -676,7 +686,9 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_OPTIONS, true, true, true, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
   {ID_MENUITEM_YUBIKEY, true, false, true, false},
+  {ID_MENUITEM_SETDBINDEX, true, true, true, false},
   {ID_MENUITEM_PSWD_POLICIES, true, true, true, false},
+  {ID_MENUITEM_FINDREPLACE, true, false, true, false},
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
   {ID_MENUITEM_ABOUT, true, true, true, true},
@@ -813,23 +825,21 @@ void DboxMain::InitPasswordSafe()
   // ... same for UseSystemTray
   // StartSilent trumps preference (but StartClosed doesn't)
   if (!m_IsStartSilent && !prefs->GetPref(PWSprefs::UseSystemTray))
-    app.HideIcon();
+    HideIcon();
 
   m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
 
-  const int32 iPWSHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
-  WORD wVirtualKeyCode =  iPWSHotKeyValue & 0xff;
-  WORD wHKModifiers = iPWSHotKeyValue >> 16;
-    
-  // Translate from CHotKeyCtrl to CWnd & PWS modifiers
-  WORD wModifiers = ConvertModifersMFC2Windows(wHKModifiers);
-  WORD wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
-  int iAppShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
-  m_core.SetAppHotKey(iAppShortcut);
+  const int32 iAppHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
+  m_core.SetAppHotKey(iAppHotKeyValue);
 
   // Set Hotkey, if active
   if (prefs->GetPref(PWSprefs::HotKeyEnabled)) {
-    RegisterHotKey(m_hWnd, PWS_HOTKEY_ID, UINT(wModifiers), UINT(wVirtualKeyCode));
+    WORD wAppVirtualKeyCode = iAppHotKeyValue & 0xff;
+    WORD wAppPWSModifiers = iAppHotKeyValue >> 16;
+    // Translate from PWS to Windows modifiers
+    WORD wAppModifiers = ConvertModifersPWS2Windows(wAppPWSModifiers);
+
+    RegisterHotKey(m_hWnd, PWS_HOTKEY_ID, UINT(wAppModifiers), UINT(wAppVirtualKeyCode));
     // Registration might fail if combination already registered elsewhere,
     // but don't see any elegant way to notify the user here, so fail silently
   } else {
@@ -1144,7 +1154,7 @@ LRESULT DboxMain::OnHotKey(WPARAM wParam, LPARAM )
 
     // Because LockDataBase actually doesn't minimize the window,
     // have to also use the current state i.e. Locked
-    if (app.GetSystemTrayState() == LOCKED || IsIconic()) {
+    if (m_TrayLockedState == LOCKED || IsIconic()) {
       SendMessage(WM_COMMAND, ID_MENUITEM_RESTORE);
     }
 
@@ -1226,6 +1236,17 @@ BOOL DboxMain::OnInitDialog()
 
   CDialog::OnInitDialog();
 
+  m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
+  m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
+
+  int iData = PWSprefs::GetInstance()->GetPref(PWSprefs::ClosedTrayIconColour);
+  SetClosedTrayIcon(iData);
+  m_pTrayIcon = new CSystemTray(this, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
+                                m_LockedIcon, m_RUEList,
+                                PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
+  
+  m_pTrayIcon->SetTarget(this);
+
   // Set up UPDATE_UI data map.
   const int num_CommandTable_entries = _countof(m_UICommandTable);
   for (int i = 0; i < num_CommandTable_entries; i++)
@@ -1282,7 +1303,7 @@ BOOL DboxMain::OnInitDialog()
           sPasskey = dbox_pksetup.GetPassKey();
         else {
           PostQuitMessage(0);
-          return FALSE;
+          return TRUE;  // return TRUE unless you set the focus to a control
         }
 
         m_core.SetCurFile(fname.c_str());
@@ -1295,7 +1316,7 @@ BOOL DboxMain::OnInitDialog()
           cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
           gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
           PostQuitMessage(0); // can we do something better here?
-          return FALSE;
+          return TRUE;  // return TRUE unless you set the focus to a control
         }
       } // first install
     } else
@@ -1306,7 +1327,7 @@ BOOL DboxMain::OnInitDialog()
   // Check if user cancelled
   if (bOOI == FALSE) {
     PostQuitMessage(0);
-    return FALSE;
+    return TRUE;  // return TRUE unless you set the focus to a control
   }
 
   SetInitialDatabaseDisplay();
@@ -1333,6 +1354,144 @@ BOOL DboxMain::OnInitDialog()
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
 
   return TRUE;  // return TRUE unless you set the focus to a control
+}
+
+int DboxMain::SetClosedTrayIcon(int &iData, bool bSet)
+{
+  int icon;
+  switch (iData) {
+  case PWSprefs::stiBlack:
+    icon = IDI_TRAY;  // This is black.
+    break;
+  case PWSprefs::stiBlue:
+    icon = IDI_TRAY_BLUE;
+    break;
+  case PWSprefs::stiWhite:
+    icon = IDI_TRAY_WHITE;
+    break;
+  case PWSprefs::stiYellow:
+    icon = IDI_TRAY_YELLOW;
+    break;
+  default:
+    iData = PWSprefs::stiBlack;
+    icon = IDI_TRAY;
+    break;
+  }
+  if (bSet) {
+    ::DestroyIcon(m_ClosedIcon);
+    m_ClosedIcon = app.LoadIcon(icon);
+  }
+
+  return icon;
+}
+
+HICON DboxMain::CreateIcon(const HICON &hIcon, const int &iIndex, const COLORREF clrText)
+{
+  CString csValue;
+  csValue.Format(L"%2d", iIndex);
+
+  HDC hDc = ::GetDC(NULL);
+  HDC hMemDC = ::CreateCompatibleDC(hDc);
+
+  // Load up background icon
+  ICONINFO ii = { 0 };
+  ::GetIconInfo(hIcon, &ii);
+
+  HGDIOBJ hOldBmp = ::SelectObject(hMemDC, ii.hbmColor);
+
+  // Create font
+  LOGFONT lf = { 0 };
+  lf.lfHeight = -22;
+  lf.lfWeight = FW_NORMAL;
+  lf.lfOutPrecision = PROOF_QUALITY;
+  lf.lfQuality = ANTIALIASED_QUALITY;
+  wmemset(lf.lfFaceName, 0, LF_FACESIZE);
+  lstrcpy(lf.lfFaceName, L"Arial Black");
+
+  HFONT hFont = ::CreateFontIndirect(&lf);
+  HGDIOBJ hOldFont = ::SelectObject(hMemDC, hFont);
+
+  // Write text - Do NOT use SetTextAlign
+  ::SetBkMode(hMemDC, TRANSPARENT);
+  ::SetTextColor(hMemDC, clrText);
+  ::TextOut(hMemDC, 0, 0, (LPCWSTR)csValue, 2);
+
+  // Set up mask
+  HDC hMaskDC = ::CreateCompatibleDC(hDc);
+  HGDIOBJ hOldMaskBmp = ::SelectObject(hMaskDC, ii.hbmMask);
+
+  // Also write text on here - Do NOT use SetTextAlign
+  HGDIOBJ hOldMaskFont = ::SelectObject(hMaskDC, hFont);
+  ::SetBkMode(hMaskDC, TRANSPARENT);
+  ::SetTextColor(hMaskDC, clrText);
+  ::TextOut(hMaskDC, 0, 0, (LPCWSTR)csValue, 2);
+
+  HBITMAP hMaskBmp = (HBITMAP)::SelectObject(hMaskDC, hOldMaskBmp);
+
+  ICONINFO ii2 = { 0 };
+  ii2.fIcon = TRUE;
+  ii2.hbmMask = hMaskBmp;
+  ii2.hbmColor = ii.hbmColor;
+
+  // Create updated icon
+  HICON hIndexIcon = ::CreateIconIndirect(&ii2);
+
+  // Cleanup bitmap mask
+  ::DeleteObject(hMaskBmp);
+  ::DeleteDC(hMaskDC);
+
+  // Cleanup font
+  ::SelectObject(hMaskDC, hOldMaskFont);
+  ::SelectObject(hMemDC, hOldFont);
+  ::DeleteObject(hFont);
+
+  // Release background bitmap
+  ::SelectObject(hMemDC, hOldBmp);
+
+  // Delete background icon bitmap info
+  ::DeleteObject(ii.hbmColor);
+  ::DeleteObject(ii.hbmMask);
+
+  ::DeleteDC(hMemDC);
+  ::ReleaseDC(NULL, hDc);
+
+  return hIndexIcon;
+}
+
+void DboxMain::SetSystemTrayState(DBSTATE state)
+{
+  // need to protect against null m_pTrayIcon due to
+  // tricky initialization order
+  int iDBIndex = GetDBIndex();
+  if (m_pTrayIcon != NULL) {
+    m_TrayLockedState = state;
+    HICON hIcon(m_LockedIcon);
+    switch (state) {
+    case LOCKED:
+      hIcon = m_LockedIcon;
+      break;
+    case UNLOCKED:
+      hIcon = m_UnLockedIcon;
+      break;
+    case CLOSED:
+      hIcon = m_ClosedIcon;
+      m_iDBIndex = 0;
+      break;
+    default:
+      break;
+    }
+
+    if (iDBIndex != 0 && state != CLOSED) {
+      m_iDBIndex = iDBIndex;
+      ::DestroyIcon(m_IndexIcon);
+
+      COLORREF clrText = state == LOCKED ? m_DBLockedIndexColour : m_DBUnlockedIndexColour;
+      m_IndexIcon = CreateIcon(hIcon, iDBIndex, clrText);
+      m_pTrayIcon->SetIcon(m_IndexIcon);
+    } else {
+      m_pTrayIcon->SetIcon(hIcon);
+    }
+  }
 }
 
 void DboxMain::SetDragbarToolTips()
@@ -1425,6 +1584,11 @@ void DboxMain::SetInitialDatabaseDisplay()
 
 void DboxMain::OnDestroy()
 {
+  ::DestroyIcon(m_LockedIcon);
+  ::DestroyIcon(m_UnLockedIcon);
+  ::DestroyIcon(m_ClosedIcon);
+  ::DestroyIcon(m_IndexIcon);
+
   const std::wstring filename(m_core.GetCurFile().c_str());
 
   // The only way we're the locker is if it's locked & we're !readonly
@@ -1916,7 +2080,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
   // Ensure blank DboxMain dialog is not shown if user double-clicks
   // on SystemTray icon when being prompted for passphrase
-  app.SetSystemTrayTarget(m_pPasskeyEntryDlg);
+  SetSystemTrayTarget(m_pPasskeyEntryDlg);
   
   INT_PTR rc = m_pPasskeyEntryDlg->DoModal();
 
@@ -2063,7 +2227,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   }
 
   // Put us back
-  app.SetSystemTrayTarget(this);
+  SetSystemTrayTarget(this);
 
   delete m_pPasskeyEntryDlg;
   m_pPasskeyEntryDlg = NULL;
@@ -2179,7 +2343,7 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
       break;
     case SC_MAXIMIZE:
     case SC_RESTORE:
-      if (app.GetSystemTrayState() == ThisMfcApp::LOCKED &&
+      if (m_TrayLockedState == LOCKED &&
           !RestoreWindowsData(nSysID == SC_RESTORE))
         return; // password bad or cancel pressed
       break;
@@ -2236,10 +2400,10 @@ void DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
   }
 }
 
-LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM)
+LRESULT DboxMain::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 {
-#if 0
-  return m_pTrayIcon.OnTrayNotification(wParam, lParam);
+#if 1
+  return m_pTrayIcon->OnTrayNotification(wParam, lParam);
 #else
   return 0L;
 #endif
@@ -2292,7 +2456,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   // Case 1 - data available but is currently locked
   // By definition - data available implies m_bInitDone
   if (!m_bDBNeedsReading &&
-      (app.GetSystemTrayState() == ThisMfcApp::LOCKED) &&
+      (m_TrayLockedState == LOCKED) &&
       (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
 
     StringX passkey;
@@ -2303,7 +2467,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       goto exit;  // return false - don't even think of restoring window!
     }
 
-    app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
+    SetSystemTrayState(UNLOCKED);
     if (bUpdateWindows) {
       RefreshViews();
       ShowWindow(SW_RESTORE);
@@ -2450,7 +2614,7 @@ void DboxMain::OnHelp()
   }
 }
 
-BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
+BOOL DboxMain::PreTranslateMessage(MSG *pMsg)
 {
   // Don't do anything if in AutoType
   if (m_bInAT)
@@ -2499,17 +2663,17 @@ BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
     WORD wVirtualKeyCode = siKeyStateVirtualKeyCode & 0xff;
 
     if (wVirtualKeyCode != 0) {
-      WORD wModifiers(0);
+      WORD wWinModifiers(0);
       if (GetKeyState(VK_CONTROL) & 0x8000)
-        wModifiers |= MOD_CONTROL;
+        wWinModifiers |= MOD_CONTROL;
 
       if (GetKeyState(VK_MENU) & 0x8000)
-        wModifiers |= MOD_ALT;
+        wWinModifiers |= MOD_ALT;
 
       if (GetKeyState(VK_SHIFT) & 0x8000)
-        wModifiers |= MOD_SHIFT;
+        wWinModifiers |= MOD_SHIFT;
 
-      if (!ProcessEntryShortcut(wVirtualKeyCode, wModifiers))
+      if (!ProcessEntryShortcut(wVirtualKeyCode, wWinModifiers))
         return TRUE;
     }
   }
@@ -2518,7 +2682,7 @@ exit:
   return CDialog::PreTranslateMessage(pMsg);
 }
 
-BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers)
+BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wWinModifiers)
 {
   static const wchar_t *tcValidKeys = 
           L"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -2531,7 +2695,7 @@ BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers)
     return 1L;
 
   // Get PWS modifiers
-  WORD wPWSModifiers = ConvertModifersWindows2PWS(wModifiers);
+  WORD wPWSModifiers = ConvertModifersWindows2PWS(wWinModifiers);
 
   // If non-zero - see if it is an entry keyboard shortcut
   if (wPWSModifiers != 0) {
@@ -2631,6 +2795,7 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
   const WORD wNCode = HIWORD(wParam);
   const WORD wID = LOWORD(wParam);
+
   /*
     wNCode = Notification Code if from a control, 1 if from an accelerator
              and 0 if from a menu.
@@ -2676,23 +2841,355 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     WORD wVirtualKeyCode = siKeyStateVirtualKeyCode & 0xff;
 
     if (wVirtualKeyCode != 0) {
-      WORD wModifiers(0);
+      WORD wWinModifiers(0);
       if (GetKeyState(VK_CONTROL) & 0x8000)
-        wModifiers |= MOD_CONTROL;
+        wWinModifiers |= MOD_CONTROL;
 
       if (GetKeyState(VK_MENU) & 0x8000)
-        wModifiers |= MOD_ALT;
+        wWinModifiers |= MOD_ALT;
 
       if (GetKeyState(VK_SHIFT) & 0x8000)
-        wModifiers |= MOD_SHIFT;
+        wWinModifiers |= MOD_SHIFT;
 
-      if (!ProcessEntryShortcut(wVirtualKeyCode, wModifiers))
-        return 0;
+      if (!ProcessEntryShortcut(wVirtualKeyCode, wWinModifiers))
+        return 0L;
     }
+  }
+
+  // Check if command is from an accelerator but the menu item has been removed
+  if (message == WM_COMMAND &&  wNCode == 1 && wID < ID_LANGUAGES) {
+    if (CheckCommand(wID))
+      return 1L;
   }
 
 exit:
   return CDialog::WindowProc(message, wParam, lParam);
+}
+
+bool DboxMain::CheckCommand(const WORD wID)
+{
+  // The following menu item *may* have been removed in MainMenu
+  // If so, don't process the accelerator!
+  // The logic here is identical to DboxMain::CustomiseMenu for
+  // either appending or rmeoving menu items.
+  // Whilst it could be tidied up, leaving it as a direct equivalent to the
+  // code in CustomiseMenu allows for easier maintenance when CustomiseMenu
+  // is updated.
+
+  // This *ONLY* happens to the Edit menu - we can ignore Context menus
+  // which can't have accelerators.
+  if (wID <= ID_EDITMENU || wID >= ID_VIEWMENU)
+    return false;
+
+  bool bGroupSelected(false);
+  const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
+  const bool bItemSelected = (SelItemOk() == TRUE);
+  const bool bReadOnly = m_core.IsReadOnly();
+  const CItemData *pci(NULL), *pbci(NULL);
+
+  if (bItemSelected) {
+    pci = getSelectedItem();
+    ASSERT(pci != NULL);
+    if (pci->IsDependent())
+      pbci = m_core.GetBaseEntry(pci);
+  }
+
+  if (bTreeView) {
+    HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
+    bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeaf(hi));
+  }
+
+  // Save original entry type before possibly changing pci
+  const CItemData::EntryType etype_original =
+    pci == NULL ? CItemData::ET_INVALID : pci->GetEntryType();
+
+  // Scenario 1 - Nothing selected
+  if (pci == NULL && !bGroupSelected) {
+    if (m_IsListView) {
+      if (!bReadOnly && wID == ID_MENUITEM_ADD) {
+        return false;
+      }
+    } else {
+      if (!bReadOnly && (wID == ID_MENUITEM_ADD || wID == ID_MENUITEM_ADDGROUP)) {
+        return false;
+      }
+    }
+
+    // Add Find Next/Previous if find entries were found
+    if (m_FindToolBar.EntriesFound() && (wID == ID_MENUITEM_FIND || wID == ID_MENUITEM_FINDUP)) {
+      return false;
+    }
+
+    // Only add "Find..." if find filter not active
+    if (!(m_bFilterActive && m_bFindFilterDisplayed) && wID == ID_MENUITEM_FINDELLIPSIS) {
+      return false;
+    }
+
+    if (m_core.AnyToUndo() && wID == ID_MENUITEM_UNDO) {
+      return false;
+    }
+
+    if (m_core.AnyToRedo() && wID == ID_MENUITEM_REDO) {
+      return false;
+    }
+
+    if (wID == ID_MENUITEM_CLEARCLIPBOARD) {
+      return false;
+    }
+
+    // Menu item not there - don't process
+    return true;
+  }
+
+  // Scenario 2 - Group selected (Tree view only)
+  if (!m_IsListView && bGroupSelected) {
+    if (!m_IsListView && bGroupSelected) {
+      if (!bReadOnly && wID == ID_MENUITEM_ADD) {
+        return false;
+      }
+
+      // Add Find Next/Previous if find entries were found
+      if (m_FindToolBar.EntriesFound() && (wID == ID_MENUITEM_FIND || wID == ID_MENUITEM_FINDUP)) {
+        return false;
+      }
+
+      // Only add "Find..." if find filter not active
+      if (!(m_bFilterActive && m_bFindFilterDisplayed) && wID == ID_MENUITEM_FINDELLIPSIS) {
+        return false;
+      }
+
+      if (wID == ID_MENUITEM_GROUPENTER) {
+        return false;
+      }
+
+      if (!bReadOnly) {
+        switch (wID) {
+        case ID_MENUITEM_DELETEGROUP:
+        case ID_MENUITEM_RENAMEGROUP:
+        case ID_MENUITEM_ADDGROUP:
+        case ID_MENUITEM_DUPLICATEGROUP:
+          return false;
+        }
+
+        int numProtected, numUnprotected;
+        bool bProtect = GetSubtreeEntriesProtectedStatus(numProtected, numUnprotected);
+        if (bProtect) {
+          if (numUnprotected > 0 && wID == ID_MENUITEM_PROTECTGROUP)
+            return false;
+          if (numProtected > 0 && wID == ID_MENUITEM_UNPROTECTGROUP)
+            return false;
+        }
+      }
+
+      // Only allow export of a group to anything if non-empty
+      if (m_ctlItemTree.CountLeafChildren(m_ctlItemTree.GetSelectedItem()) != 0) {
+        switch (wID) {
+        case IDS_EXPORTENT2PLAINTEXT:
+        case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
+        case ID_MENUITEM_EXPORTGRP2XML:
+        case ID_MENUITEM_EXPORTGRP2DB:
+          return false;
+        }
+      }
+
+      if (m_core.AnyToUndo() && wID == ID_MENUITEM_UNDO) {
+        return false;
+      }
+
+      if (m_core.AnyToRedo() && wID == ID_MENUITEM_REDO) {
+        return false;
+      }
+
+      if (wID == ID_MENUITEM_CLEARCLIPBOARD) {
+        return false;
+      }
+
+      // Menu item not there - don't process
+      return true;
+    }
+  }
+
+  // Scenario 3 - Entry selected
+  if (pci != NULL) {
+    // Deal with multi-selection
+    // More than 2 is meaningless in List view
+    if (m_IsListView && m_ctlItemList.GetSelectedCount() > 2)
+      return true;
+
+    // If exactly 2 selected - show compare entries menu
+    if (m_IsListView  && m_ctlItemList.GetSelectedCount() == 2 && wID == ID_MENUITEM_COMPARE_ENTRIES) {
+      return false;
+    }
+
+    if (!bReadOnly && wID == ID_MENUITEM_ADD) {
+      return false;
+    }
+
+    if (wID == ((bReadOnly || pci->IsProtected()) ? ID_MENUITEM_VIEWENTRY : ID_MENUITEM_EDITENTRY)) {
+      return false;
+    }
+
+    if (!bReadOnly) {
+      if (wID == ID_MENUITEM_DELETEENTRY) {
+        return false;
+      }
+      if (!m_IsListView && wID == ID_MENUITEM_RENAMEENTRY) {
+        return false;
+      }
+    }
+
+    // Only have Find Next/Previous if find entries were found
+    if (m_FindToolBar.EntriesFound() && (wID == ID_MENUITEM_FIND || wID == ID_MENUITEM_FINDUP)) {
+      return false;
+    }
+
+    // Only add "Find..." if find filter not active
+    if (!(m_bFilterActive && m_bFindFilterDisplayed) && wID == ID_MENUITEM_FINDELLIPSIS) {
+      return false;
+    }
+
+    if (!bReadOnly) {
+      if (wID == ID_MENUITEM_DUPLICATEENTRY) {
+        return false;
+      }
+      if (!m_IsListView && wID == ID_MENUITEM_ADDGROUP) {
+        return false;
+      }
+
+      if (m_core.AnyToUndo() && wID == ID_MENUITEM_UNDO) {
+        return false;
+      }
+
+      if (m_core.AnyToRedo() && wID == ID_MENUITEM_REDO) {
+        return false;
+      }
+
+      if (wID == ID_MENUITEM_CLEARCLIPBOARD || wID == ID_MENUITEM_PASSWORDSUBSET) {
+        return false;
+      }
+
+      if (!pci->IsFieldValueEmpty(CItemData::USER, pbci) && wID == ID_MENUITEM_COPYUSERNAME) {
+        return false;
+      }
+
+      if (!pci->IsFieldValueEmpty(CItemData::NOTES, pbci) && wID == ID_MENUITEM_COPYNOTESFLD) {
+        return false;
+      }
+
+      /*
+      *  Rules:
+      *    1. If email field is not empty, add email menuitem.
+      *    2. If URL is not empty and is NOT an email address, add browse menuitem
+      *    3. If URL is not empty and is an email address, add email menuitem
+      *       (if not already added)
+      */
+      bool bAddCopyEmail = !pci->IsFieldValueEmpty(CItemData::EMAIL, pbci);
+      bool bAddSendEmail = bAddCopyEmail ||
+        (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && pci->IsURLEmail(pbci));
+      bool bAddURL = !pci->IsFieldValueEmpty(CItemData::URL, pbci);
+
+      // Add copies in order
+      if (bAddURL && wID == ID_MENUITEM_COPYURL) {
+        return false;
+      }
+
+      if (bAddCopyEmail && wID == ID_MENUITEM_COPYEMAIL) {
+        return false;
+      }
+
+      if (!pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci) && wID == ID_MENUITEM_COPYRUNCOMMAND)
+        return false;
+
+      // Add actions in order
+      if (bAddURL && !pci->IsURLEmail(pbci) &&
+          (wID == ID_MENUITEM_BROWSEURL || wID == ID_MENUITEM_BROWSEURLPLUS)) {
+        return false;
+      }
+
+      if (bAddSendEmail && wID == ID_MENUITEM_SENDEMAIL) {
+        return false;
+      }
+
+      if (!pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci) && wID == ID_MENUITEM_RUNCOMMAND) {
+        return false;
+      }
+
+      if (wID == ID_MENUITEM_AUTOTYPE) {
+        return false;
+      }
+
+      switch (etype_original) {
+      case CItemData::ET_NORMAL:
+      case CItemData::ET_SHORTCUTBASE:
+        // Allow creation of a shortcut
+        if (!bReadOnly && wID == ID_MENUITEM_CREATESHORTCUT) {
+          return false;
+        }
+        break;
+      case CItemData::ET_ALIASBASE:
+        // Can't have a shortcut to an AliasBase entry + can't goto base
+        break;
+      case CItemData::ET_ALIAS:
+      case CItemData::ET_SHORTCUT:
+        // Allow going to/editing the appropriate base entry
+        if (m_bFilterActive) {
+          // If a filter is active, then might not be able to go to
+          // entry's base entry as not in Tree or List view
+          pws_os::CUUID uuidBase = pci->GetBaseUUID();
+          auto iter = m_MapEntryToGUI.find(uuidBase);
+          ASSERT(iter != m_MapEntryToGUI.end());
+          if (iter->second.list_index != -1 &&
+              (wID == ID_MENUITEM_GOTOBASEENTRY || wID == ID_MENUITEM_EDITBASEENTRY)) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+        return false;
+      default:
+        ASSERT(0);
+      }
+
+      if (pci->IsShortcut() ? pbci->HasAttRef() : pci->HasAttRef() && wID == ID_MENUITEM_VIEWATTACHMENT) {
+        return false;
+      }
+
+      switch (wID) {
+      case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+      case ID_MENUITEM_EXPORTENT2XML:
+      case ID_MENUITEM_EXPORTENT2DB:
+        return false;
+      }
+
+      if (pci->IsShortcut() ? pbci->HasAttRef() : pci->HasAttRef() &&
+          wID == ID_MENUITEM_EXPORT_ATTACHMENT) {
+        return false;
+      }
+
+      if (!bReadOnly && etype_original != CItemData::ET_SHORTCUT &&
+          pci->IsProtected() ? ID_MENUITEM_UNPROTECT : ID_MENUITEM_PROTECT) {
+        return false;
+      }
+
+      // Tree view and command flag present only
+      if (!m_IsListView && m_bCompareEntries &&
+        etype_original != CItemData::ET_SHORTCUT && wID == ID_MENUITEM_COMPARE_ENTRIES) {
+        return false;
+      }
+
+      if ((!bReadOnly && GetNumEntries() > 1) && wID == ID_MENUITEM_FINDREPLACE) {
+        return false;
+      }
+    } else {
+      // Must be List view with no entry selected
+      if (wID == ID_MENUITEM_CLEARCLIPBOARD) {
+        return false;
+      }
+    }
+  }
+
+  // We dropped through and so menu item not there - don't process accelerator
+  return true;
 }
 
 void DboxMain::SetLanguage(LCID lcid)
@@ -2776,7 +3273,7 @@ void DboxMain::CheckExpireList(const bool bAtOpen)
   int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
   ExpiredList expiredEntries = m_core.GetExpired(idays);
 
-  if (!expiredEntries.empty() && (app.GetSystemTrayState() == LOCKED || IsIconic() == TRUE || bAtOpen))
+  if (!expiredEntries.empty() && (m_TrayLockedState == LOCKED || IsIconic() == TRUE || bAtOpen))
     m_bTellUserExpired = true;
 }
 
@@ -3115,7 +3612,7 @@ private:
 // Returns a list of entries as they appear in tree in DFS order
 void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
 {
-  // Walk the Tree - either complete tree or only this group!
+  // Walk the Tree - either complete tree or only this group
   if (hItem == NULL) {
     // The whole tree
     while (NULL != (hItem = const_cast<DboxMain *>(this)->m_ctlItemTree.GetNextTreeItem(hItem))) {
@@ -3123,11 +3620,20 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
         CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
         if (pci != NULL) {
           OIL.push_back(*pci);
+
+          // This is for exporting Filtered Entries ONLY
+          // Walk the reduced Tree but include base entries even if not in the filtered results
+          if (m_bFilterActive && pci->IsDependent()) {
+            pci = GetBaseEntry(pci);
+
+            // Only add the base entry once
+            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
+              OIL.push_back(*pci);
+          }
         }
       }
     }
-  }
-  else {
+  } else {
     // Just this group - used for Export Group
     const HTREEITEM hNextSibling = m_ctlItemTree.GetNextSiblingItem(hItem);
 
@@ -3146,6 +3652,8 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
 
           if (pci->IsDependent()) {
             pci = GetBaseEntry(pci);
+
+            // Only add the base entry once
             if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
               OIL.push_back(*pci);
           }
@@ -3167,13 +3675,13 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
   const UINT imenuflags = bOpen ? MF_ENABLED : MF_DISABLED | MF_GRAYED;
 
   // Change Main Menus if a database is Open or not
-  CWnd* pMain = AfxGetMainWnd();
-  CMenu* xmainmenu = pMain->GetMenu();
+  CWnd *pMain = AfxGetMainWnd();
+  CMenu *xmainmenu = pMain->GetMenu();
 
   // Look for "File" menu - no longer language dependent
   int pos = app.FindMenuItem(xmainmenu, ID_FILEMENU);
 
-  CMenu* xfilesubmenu = xmainmenu->GetSubMenu(pos);
+  CMenu *xfilesubmenu = xmainmenu->GetSubMenu(pos);
   if (xfilesubmenu != NULL) {
     // Disable/enable Export and Import menu items
     xfilesubmenu->EnableMenuItem(ID_EXPORTMENU, imenuflags);
@@ -3228,12 +3736,11 @@ void DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
     case ID_MENUITEM_TRAYUNLOCK:
     case ID_MENUITEM_TRAYLOCK:
     {
-      const int i_state = app.GetSystemTrayState();
-      switch (i_state) {
-        case ThisMfcApp::UNLOCKED:
-        case ThisMfcApp::LOCKED:
+      switch (m_TrayLockedState) {
+        case UNLOCKED:
+        case LOCKED:
           break;
-        case ThisMfcApp::CLOSED:
+        case CLOSED:
         {
           const CString csClosed(MAKEINTRESOURCE(IDS_NOSAFE));
           pCmdUI->SetText(csClosed);
@@ -3249,7 +3756,7 @@ void DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
           ASSERT(0);
           break;
       }
-      if (i_state != ThisMfcApp::CLOSED) {
+      if (m_TrayLockedState != CLOSED) {
         // If dialog visible - obviously unlocked and no need to have option to lock
         iEnable = this->IsWindowVisible() == FALSE ? TRUE : FALSE;
       }
@@ -3262,7 +3769,7 @@ void DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
         // CCmdUI::Enable is a no-op for this case, so we
         //   must do what it would have done.
         pCmdUI->m_pMenu->EnableMenuItem(pCmdUI->m_nIndex, MF_BYPOSITION |
-          (app.GetSystemTrayState() == ThisMfcApp::UNLOCKED ? MF_ENABLED : MF_GRAYED));
+          (m_TrayLockedState == UNLOCKED ? MF_ENABLED : MF_GRAYED));
         return;
       }
       // otherwise enable
@@ -3354,6 +3861,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_COPYPASSWORD:
     case ID_MENUITEM_AUTOTYPE:
     case ID_MENUITEM_EDITENTRY:
+    case ID_MENUITEM_VIEWENTRY:
     case ID_MENUITEM_PASSWORDSUBSET:
       if (bGroupSelected)
         iEnable = FALSE;
@@ -3571,11 +4079,19 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       if (m_bUnsavedDisplayed)
         iEnable = FALSE;
       break;
+    case ID_MENUITEM_EXPORTFILTERED2DB:
+      if (!m_bFilterActive)
+        iEnable = FALSE;
+      break;
     case ID_MENUITEM_CHANGEMODE:
       // For prior versions, no DB open or file is R-O on disk -
       //  don't give the user the option to change to R/W
       pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
       iEnable = (m_bOpen && m_core.GetReadFileVersion() >= PWSfile::VCURRENT && !bFileIsReadOnly) ? TRUE : FALSE;
+      break;
+    case ID_MENUITEM_SETDBINDEX:
+      // Disable SetDBIndex if System Tray not in use
+      iEnable = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray);
       break;
     default:
       break;

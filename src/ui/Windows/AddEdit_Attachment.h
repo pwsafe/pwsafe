@@ -15,7 +15,6 @@
 
 #include "resource.h"
 
-#include "afxwin.h"
 #include "atlimage.h" // for CImage
 
 class CAddEdit_Attachment : public CAddEdit_PropertyPage
@@ -37,9 +36,9 @@ protected:
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(CAddEdit_Attachment)
-  BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
   virtual BOOL OnInitDialog();
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnApply();
   virtual BOOL OnKillActive();
   //}}AFX_VIRTUAL

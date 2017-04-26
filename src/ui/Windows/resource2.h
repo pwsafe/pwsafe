@@ -58,6 +58,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_EXPORT2V3FORMAT     32025
 #define ID_MENUITEM_EXPORT2V4FORMAT     32026
 #define ID_MENUITEM_LOCK                32027
+#define ID_MENUITEM_EXPORTFILTERED2DB   32028
 
 // Edit menu
 #define ID_EDITMENU                     32050
@@ -108,6 +109,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_EXPORTGRP2DB        32095
 #define ID_MENUITEM_EXPORT_ATTACHMENT   32096
 #define ID_MENUITEM_VIEWATTACHMENT      32097
+#define ID_MENUITEM_FINDREPLACE         32098
 
 // View menu
 #define ID_VIEWMENU                     32101
@@ -162,6 +164,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_LANGUAGEMENU                 32158
 #define ID_MENUITEM_PSWD_POLICIES       32159
 #define ID_MENUITEM_YUBIKEY             32160
+#define ID_MENUITEM_SETDBINDEX          32161
 
 // Help menu
 #define ID_HELPMENU                     32200
@@ -280,6 +283,9 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 
 #define ID_MENUITEM_TRAYSELECT1         33451
 #define ID_MENUITEM_TRAYSELECTMAX       33475
+
+#define ID_MENUITEM_GOTODEPENDANT1      33476
+#define ID_MENUITEM_GOTODEPENDANTMAX    33500
 
 // Following for CEditExtn context menu
 // Really string constants, but "logically" they're menus...

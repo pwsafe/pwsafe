@@ -57,7 +57,7 @@ open('https://github.com/pwsafe/pwsafe/issues/'+ ID +'/',
 
 <body>
 
-<h1 align="center">Password Safe 3.42.1 Release April 2017</h1>
+<h1 align="center">Password Safe 3.42.2 Release ????? 2017</h1>
 
 <p>This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -78,6 +78,91 @@ Information about older versions may be found <a href="https://pwsafe.org/histor
 <br>
 <hr>
 
+<h4><a name="V3.42.2BugsFixed"></a>Bugs fixed in V3.42.2</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1409);return false;">1409</a></td>
+<td>An entry is now correctly re-selected after editing if the preference "Save database
+immediately after any change" is disabled.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1403);return false;">1403</a></td>
+<td>Help has been updated to document that an entry's Notes field has a size limit of 30,000
+characters.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1402);return false;">1402</a></td>
+<td>Group image is now correct after dragging an empty sub-group to the next higher
+level.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1401);return false;">1401</a></td>
+<td>After deleting an entry, the next visible entry (if present) is selected. If not present,
+then the previous entry (if present) will be selected.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1400);return false;">1400</a></td>
+<td>The Toolbar now correctly disables buttons when a Group is selected.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1399);return false;">1399</a></td>
+<td>A disabled image is now shown when no characters to copy are available.
+This has also been implemented wherever the "Copy Password" button is used outside
+the Toolbar.</td>
+</tr>
+</tbody>
+</table>
+
+<h4><a name="V3.42.2Changes"></a>Changes to Existing Features in V3.42.2</h4>
+<p>None</p>
+
+<h4><a name="V3.42.2New"></a>New Features for V3.42.2</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Implement the ability to export the currently filtered entries to a PasswordSafe
+database.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>It is now possible to specify additional command line parameters to the external
+editor used to edit the Notes field from the Add/Edit Basic dialog.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(834);return false;">834</a></td>
+<td>It is now possible to view the safe combination when entering during database
+creation, opening and change of combination.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(833);return false;">833</a></td>
+<td>The right-click context menu for a base entry now allows the user to quickly
+select any one of its dependants, i.e. alias or shortcut. See Help file for more
+information.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(832);return false;">832</a></td>
+<td>If many databases are open at the same time, after opening a database, the user
+can specify a database index (1-99) that will be superimposed on the System Tray icon
+to aid identification. In addition, the System Tray icon tooltip has been enhanced
+to show more of the database name.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(830);return false;">830</a></td>
+<td>A Find &amp; Replace feature has been added to change text fields for all entries within
+the database. Editable fields are restricted to: Autotype, Email, Notes, Password Policy Name,
+Run Command and URL.</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+<hr>
+
+<h3><a name="V3.42.1"></a>Version V3.42.1</h3>
+<hr>
+
 <h4><a name="V3.42.1BugsFixed"></a>Bugs fixed in V3.42.1</h4>
 <table>
 <tbody>
@@ -89,9 +174,17 @@ Information about older versions may be found <a href="https://pwsafe.org/histor
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1266);return false;">1266</a></td>
 <td>Regression: Toolbar elements display correctly on high-resolution monitors
 under Windows 8.1 and later now supported in 64-bit builds.</td>
-</tr>
-</tbody>
 </table>
+</tbody>
+
+<h4><a name="V3.42.1Changes"></a>Changes to Existing Features in V3.42.1</h4>
+<p>None</p>
+
+<h4><a name="V3.42.1New"></a>New Features for V3.42.1</h4>
+<p>None</p>
+
+<br>
+<hr>
 
 <h3><a name="V3.42.0"></a>Version V3.42.0</h3>
 <hr>
@@ -221,8 +314,10 @@ it and the user is not running Windows 10, then the old symbol ('#') will be use
 
 <br>
 <hr>
+
 <h3><a name="V3.41.0"></a>Version V3.41.0</h3>
 <hr>
+
 <h4><a name="V3.41.0BugsFixed"></a>Bugs fixed in V3.41.0</h4>
 <table>
 <tbody>
@@ -371,8 +466,12 @@ see Help for details.</td>
 </tbody>
 </table>
 
+<br>
+<hr>
+
 <h3><a name="V3.40"></a>Version V3.40</h3>
 <hr>
+
 <h4><a name="V3.40BugsFixed"></a>Bugs fixed in V3.40</h4>
 <table>
 <tbody>
@@ -512,8 +611,12 @@ entry and the Create Shortcut dialogs.</td>
 </tbody>
 </table>
 
+<br>
+<hr>
+
 <h3><a name="V3.39.1"></a>Version V3.39.1</h3>
 <hr>
+
 <h4><a name="V3.39.1BugsFixed"></a>Bugs fixed in V3.39.1</h4>
 <table>
 <tbody>
@@ -523,11 +626,12 @@ entry and the Create Shortcut dialogs.</td>
 </tr>
 </tbody>
 </table>
-
 <br>
 <hr>
+
 <h3><a name="V3.39"></a>Version V3.39</h3>
 <hr>
+
 <h4><a name="V3.39New"></a>New Features for V3.39</h4>
 <table>
 <tbody>
@@ -601,9 +705,11 @@ standard Microsoft processing in their products.</td>
 
 <br>
 <hr>
+
 <h2><a name="prev-vers"></a>Previous Versions Described in this Document</h2>
 <h3><a name="V3.38.2"></a>Version V3.38.2</h3>
 <hr>
+
 <h4><a name="V3.38.2BugsFixed"></a>Bugs fixed in V3.38.2</h4>
 <table>
 <tbody>
@@ -638,8 +744,10 @@ against the tutorial text at the top of the dialog for wide displays.</td>
 
 <br>
 <hr>
+
 <h3><a name="V3.38.1"></a>Version V3.38.1</h3>
 <hr>
+
 <h4><a name="V3.38.1BugsFixed"></a>Bugs fixed in V3.38.1</h4>
 <table>
 <tbody>
@@ -697,8 +805,10 @@ is moved to it via editing.</td>
 
 <br>
 <hr>
+
 <h3><a name="V3.38"></a>Version V3.38</h3>
 <hr>
+
 <h4><a name="V3.38BugsFixed"></a>Bugs fixed in V3.38</h4>
 <table>
 <tbody>
@@ -729,8 +839,10 @@ under Windows 8.1 and later.</td>
 
 <br>
 <hr>
+
 <h3><a name="V3.37.1"></a>Version V3.37.1</h3>
 <hr>
+
 <h4><a name="V3.37.1BugsFixed"></a>Bugs fixed in V3.37.1</h4>
 <table>
 <tbody>
@@ -743,8 +855,10 @@ under Windows 8.1 and later.</td>
 
 <br>
 <hr>
+
 <h3><a name="V3.37"></a>Version V3.37</h3>
 <hr>
+
 <h4><a name="V3.37New"></a>New Features for V3.37</h4>
 <table>
 <tbody>
@@ -854,8 +968,10 @@ be changed.</td>
 
 <br>
 <hr>
+
 <h3><a name="V3.36"></a>Version V3.36</h3>
 <hr>
+
 <h4><a name="V3.36New"></a>New Features for V3.36</h4>
 <table>
 <tbody>
@@ -918,8 +1034,10 @@ consistent UI.</td>
 
 <br>
 <hr>
+
 <h3><a name="V3.35"></a>Version V3.35</h3>
 <hr>
+
 <h4><a name="V3.35BugsFixed"></a>Bugs fixed in V3.35</h4>
 <table>
 <tbody>
@@ -962,8 +1080,10 @@ last database is set as default for next invocation.</td>
 
 <br>
 <hr>
+
 <h3><a name="V3.34.1"></a>Version V3.34.1</h3>
 <hr>
+
 <h4><a name="V3.34.1New"></a>New Features for V3.34.1</h4>
 <table>
 <tbody>
@@ -1034,8 +1154,10 @@ last database is set as default for next invocation.</td>
 
 <br>
 <hr>
+
 <h3><a name="V3.32"></a>Version V3.32</h3>
 <hr>
+
 <h4><a name="V3.32New"></a>New Features for V3.32</h4>
 <table>
 <tbody>
@@ -1119,8 +1241,10 @@ Please see Help entry for more details.</td>
 
 <br>
 <hr>
+
 <h3><a name="V3.33"></a>Version V3.33</h3>
 <hr>
+
 <h4><a name="V3.33New"></a>New Features for V3.33</h4>
 <table>
 <tbody>

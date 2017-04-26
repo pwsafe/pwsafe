@@ -6,7 +6,6 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #pragma once
-#include "afxwin.h"
 
 // PasswordPolicyDlg.h : header file
 //
@@ -15,6 +14,7 @@
 // CPasswordPolicyDlg dialog
 #include "PWDialog.h"
 #include "ControlExtns.h"
+#include "TBMStatic.h"
 
 #include "core/coredefs.h"
 #include "core/PWPolicy.h"
@@ -43,6 +43,7 @@ protected:
   CSymbolEdit m_SymbolsEdit;
   CEdit m_PolicyNameEdit;
   CComboBox m_cbxPolicyNames;
+  CStaticExtn m_stcMessage;
 
   UINT m_uicaller;
   BOOL m_PWUseLowercase, m_oldPWUseLowercase;
@@ -63,6 +64,8 @@ protected:
   PWPolicy m_default_pwp;
   CSecString m_password;
   CSecEditExtn m_ex_password;
+
+  CTBMStatic m_Help1;
   
   CString m_Symbols, m_oldSymbols;
   CString m_policyname, m_oldpolicyname;
@@ -70,10 +73,9 @@ protected:
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(CPasswordPolicyDlg)
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
-  virtual BOOL PreTranslateMessage(MSG* pMsg);
-
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -133,7 +135,10 @@ private:
   PSWDPolicyMapIter m_iter;
 
   bool m_bReadOnly;
+  CButton *m_pCopyBtn;
 
   bool m_bLongPPs;
-  CBitmap m_CopyPswdBitmap;
+  CBitmap m_CopyPswdBitmap, m_DisabledCopyPswdBitmap;
+  BOOL m_bImageLoaded, m_bDisabledImageLoaded;
+  bool m_bCopyPasswordEnabled;
 };

@@ -35,7 +35,8 @@ protected:
   CString m_DefUsername;
   CString m_OtherBrowserLocation;
   CString m_OtherEditorLocation;
-  CString m_BrowserCmdLineParms;
+  CString m_OtherBrowserCmdLineParms;
+  CString m_OtherEditorCmdLineParms;
   CString m_AutotypeText;
   unsigned m_AutotypeDelay;
 
@@ -56,9 +57,9 @@ protected:
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsMisc)
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
-  BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
   virtual BOOL OnApply();
   //}}AFX_VIRTUAL
 

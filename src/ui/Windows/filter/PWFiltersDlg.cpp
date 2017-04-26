@@ -125,7 +125,7 @@ BOOL CPWFiltersDlg::OnInitDialog()
   if (m_iType == DFTYPE_MAIN)
     GetDlgItem(IDC_APPLY)->EnableWindow(m_pfilters->num_Mactive == 0 ? FALSE : TRUE);
 
-  return FALSE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CPWFiltersDlg::DoDataExchange(CDataExchange* pDX)
@@ -323,7 +323,7 @@ void CPWFiltersDlg::UpdateStatusText()
   m_RSDStatusBar.UpdateWindow();
 }
 
-BOOL CPWFiltersDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CPWFiltersDlg::PreTranslateMessage(MSG *pMsg)
 {
   // CListCtrl accelerator processing
   if (pMsg->hwnd == m_FilterLC.m_hWnd &&

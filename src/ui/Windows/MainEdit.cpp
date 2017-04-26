@@ -26,6 +26,7 @@
 #include "CompareWithSelectDlg.h"
 #include "ShowCompareDlg.h"
 #include "ViewAttachmentDlg.h"
+#include "FindReplaceDlg.h"
 
 #include "core/pwsprefs.h"
 #include "core/PWSAuxParse.h"
@@ -856,11 +857,39 @@ void DboxMain::OnDelete()
   int num_children = 0;
   m_sxOriginalGroup = L""; // Needed if deleting a groups due to Delete recusrsion
 
+  // Entry to be selected after deletion
+  bool bSelectNext(false), bSelectPrev(false);
+  CItemData *pci_next(NULL), *pci_prev(NULL);
+  StringX sxNextGroup(L""), sxPrevGroup(L"");
+
   // Find number of child items, ask for confirmation if > 0
   StringX sxGroup(L""), sxTitle(L""), sxUser(L"");
   CItemData *pci(NULL);
   if (m_ctlItemTree.IsWindowVisible()) {
     HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
+
+    // Check that it wasn't the bottom entry in the tree (can't select next)
+    HTREEITEM hNextSelectedItem = m_ctlItemTree.GetNextItem(hStartItem, TVGN_NEXTVISIBLE);
+    if (hNextSelectedItem != NULL) {
+      bSelectNext = true;
+      pci_next = (CItemData *)m_ctlItemTree.GetItemData(hNextSelectedItem);
+      if (pci_next == NULL) {
+        // It is a group - save full path
+        sxNextGroup = m_ctlItemTree.GetGroup(hNextSelectedItem);
+      }
+    }
+
+    // Check that it wasn't the top entry in the tree (can't select next)
+    HTREEITEM hPrevSelectedItem = m_ctlItemTree.GetNextItem(hStartItem, TVGN_PREVIOUSVISIBLE);
+    if (hPrevSelectedItem != NULL) {
+      bSelectPrev = true;
+      pci_prev = (CItemData *)m_ctlItemTree.GetItemData(hPrevSelectedItem);
+      if (pci_prev == NULL) {
+        // It is a group - save full path
+        sxPrevGroup = m_ctlItemTree.GetGroup(hPrevSelectedItem);
+      }
+    }
+
     if (hStartItem != NULL) {
       if (m_ctlItemTree.GetItemData(hStartItem) == NULL) {  // group node
         // ALWAYS ask if deleting a group - unless it is empty or
@@ -914,6 +943,18 @@ void DboxMain::OnDelete()
     POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
     if (pos != NULL) {
       pci = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos - 1);
+
+      // Check that it wasn't the bottom entry in the list (can't select next)
+      if ((int)pos < m_ctlItemList.GetItemCount()) {
+        bSelectNext = true;
+        pci_next = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos);
+      }
+
+      // Check that it wasn't the top entry in the list (can't select previous)
+      if ((int)pos > 1) {
+        bSelectPrev = true;
+        pci_prev = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos - 2);
+      }
     }
   }
 
@@ -969,6 +1010,48 @@ void DboxMain::OnDelete()
 
     ChangeOkUpdate();
   }
+
+  CItemData *pci_select(NULL);
+  DisplayInfo *pdi;
+  HTREEITEM hItem(NULL);
+  int item(-1);
+
+  if (bSelectNext) {
+    pci_select = pci_next;
+    if (pci_next != NULL) {
+      pdi = GetEntryGUIInfo(*pci_next);
+      hItem = pdi->tree_item;
+      item = pdi->list_index;
+    } else {
+      if (!sxNextGroup.empty() &&
+          m_mapGroupToTreeItem.find(sxNextGroup) != m_mapGroupToTreeItem.end()) {
+        hItem = m_mapGroupToTreeItem[sxNextGroup];
+      }
+    }
+  } else   
+  if (bSelectPrev) {
+    pci_select = pci_prev;
+    if (pci_prev != NULL) {
+      pdi = GetEntryGUIInfo(*pci_prev);
+      hItem = pdi->tree_item;
+      item = pdi->list_index;
+    } else {
+      if (!sxPrevGroup.empty() &&
+          m_mapGroupToTreeItem.find(sxPrevGroup) != m_mapGroupToTreeItem.end()) {
+        hItem = m_mapGroupToTreeItem[sxPrevGroup];
+      }
+    }
+  }
+
+  // Now select the deleted item's (group's) next or previous entry
+  if (m_ctlItemTree.IsWindowVisible() && hItem != NULL) {
+    m_ctlItemTree.SelectItem(hItem);
+  } else if (item != -1) {
+    m_ctlItemList.SetItemState(item, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
+  }
+
+  // Update Toolbar & Dragbar
+  UpdateToolBarForSelectedItem(pci_select);
 }
 
 void DboxMain::Delete(MultiCommands *pmcmd)
@@ -1660,6 +1743,95 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
   return false;
 }
 
+void DboxMain::OnFindReplace()
+{
+  CFindReplaceDlg dlg(this);
+  dlg.DoModal();
+}
+
+size_t  DboxMain::DoFindReplaceSearch(const CItem::FieldType &ft, const PWSMatch::MatchRule &rule,
+                                      const StringX &sxOldText, const bool &bCaseSensitive,
+                                      std::vector<st_FRResults> &vFRResults)
+{
+  vFRResults.clear();
+
+  for (auto listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter(); listPos++) {
+    CItemData &ci = m_core.GetEntry(listPos);
+
+    if (m_FilterManager.PassesFiltering(ci, ft, rule, sxOldText, bCaseSensitive)) {
+      st_FRResults st_fr;
+      st_fr.state = ci.IsProtected() ? FR_PROTECTED : FR_UNCHECKED;
+      st_fr.pci = &ci;
+
+      vFRResults.push_back(st_fr);
+    }
+  }
+
+  return vFRResults.size();
+}
+
+size_t DboxMain::DoFindReplaceEdit(const CItem::FieldType &ft, const PWSMatch::MatchRule &rule,
+                                   const StringX &sxOldText, const StringX &sxNewText,
+                                   const bool &bCaseSensitive,
+                                   std::vector<st_FRResults> &vFRResults)
+{
+  // Readony or nothing to do - we shouldn't be here
+  if (m_core.IsReadOnly() || vFRResults.empty())
+    return 0;
+
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+  for (size_t i = 0; i < vFRResults.size(); i++) {
+    st_FRResults &st_fr = vFRResults[i];
+
+    if (st_fr.state == FR_CHECKED) {
+      StringX sxOldFieldValue = st_fr.pci->GetFieldValue(ft);
+      StringX sxNewFieldValue;
+
+      size_t lenField = sxOldFieldValue.length();
+      size_t lenOldText = sxOldText.length();
+
+      switch (rule) {
+      case PWSMatch::MR_EQUALS:
+        sxNewFieldValue = sxNewText;
+        break;
+      case PWSMatch::MR_BEGINS:
+        sxNewFieldValue = sxNewText + sxOldFieldValue.substr(lenOldText);
+        break;
+      case PWSMatch::MR_ENDS:
+        sxNewFieldValue = sxOldFieldValue.substr(lenField - lenOldText) + sxNewText;
+        break;
+      case PWSMatch::MR_CONTAINS:
+        if (bCaseSensitive) {
+          sxNewFieldValue = sxOldFieldValue;
+          Replace(sxNewFieldValue, sxOldText, sxNewText);
+        } else {
+          sxNewFieldValue = sxOldFieldValue;
+          ReplaceNoCase(sxNewFieldValue, sxOldText, sxNewText);
+        }
+        break;
+      default:
+        ASSERT(0);
+      }
+        Command *pcmd = UpdateEntryCommand::Create(&m_core, *st_fr.pci,
+                                                   ft, sxNewFieldValue);
+        pmulticmds->Add(pcmd);
+
+        // Disabled as now changed
+        st_fr.state = FR_CHANGED;
+    }
+  }
+
+  if (!pmulticmds->IsEmpty()) {
+    Execute(pmulticmds);
+  } else {
+    delete pmulticmds;
+    return 0;
+  }
+
+  return (pmulticmds->GetSize());
+}
+
 // Duplicate selected entry but make title unique
 void DboxMain::OnDuplicateEntry()
 {
@@ -1827,8 +1999,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
     {
       //Remind the user about clipboard security
       CClearQuestionDlg clearDlg(this);
-      if (clearDlg.m_dontaskquestion == FALSE &&
-          clearDlg.DoModal() == IDCANCEL)
+      if (clearDlg.AskQuestion() && clearDlg.DoModal() == IDCANCEL)
         return;
       if (bSpecial) {
         OnMinimize();

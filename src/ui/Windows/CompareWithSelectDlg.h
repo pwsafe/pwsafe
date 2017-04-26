@@ -32,8 +32,8 @@ public:
 
 protected:
   virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
-
   virtual BOOL OnInitDialog();
+
   afx_msg void OnDestroy();
   afx_msg void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnItemDblClick(NMHDR *pNotifyStruct, LRESULT *pLResult);

@@ -196,7 +196,7 @@ BOOL COptionsBackup::OnInitDialog()
     m_Help4.ShowWindow(SW_HIDE);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 LRESULT COptionsBackup::OnQuerySiblings(WPARAM wParam, LPARAM )
@@ -244,7 +244,7 @@ BOOL COptionsBackup::OnApply()
   return COptions_PropertyPage::OnApply();
 }
 
-BOOL COptionsBackup::PreTranslateMessage(MSG* pMsg)
+BOOL COptionsBackup::PreTranslateMessage(MSG *pMsg)
 {
   RelayToolTipEvent(pMsg);
 

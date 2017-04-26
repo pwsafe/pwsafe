@@ -33,6 +33,7 @@
 #include "ManagePSWDPols.h"
 #include "HKModifiers.h"
 #include "YubiCfgDlg.h"
+#include "SBIndexDlg.h"
 
 #include "core/core.h"
 #include "core/pwsprefs.h"
@@ -250,7 +251,7 @@ int DboxMain::RestoreSafe()
   m_bRestoredDBUnsaved = true;
 
   m_titlebar.LoadString(IDS_UNTITLEDRESTORE);
-  app.SetTooltipText(L"PasswordSafe");
+  SetTooltipText(L"PasswordSafe");
   
   ChangeOkUpdate();
   RefreshViews();
@@ -269,9 +270,9 @@ void DboxMain::OnOptions()
 
   // Save Hotkey info
   BOOL bAppHotKeyEnabled;
-  int32 iPWSHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
+  int32 iAppHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
   // Can't be enabled if not set!
-  if (iPWSHotKeyValue == 0)
+  if (iAppHotKeyValue == 0)
     bAppHotKeyEnabled = FALSE;
   else
     bAppHotKeyEnabled = prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
@@ -310,7 +311,7 @@ void DboxMain::OnOptions()
     // Get updated Hotkey information as we will either re-instate the original or
     // set these new values
     bAppHotKeyEnabled = pOptionsPS->GetHotKeyState();
-    iPWSHotKeyValue = pOptionsPS->GetHotKeyValue();
+    iAppHotKeyValue = pOptionsPS->GetHotKeyValue();
 
     // Update status bar
     UINT uiMessage(IDSC_STATCOMPANY);
@@ -348,7 +349,7 @@ void DboxMain::OnOptions()
                             SBPS_STRETCH, NULL);
 
     int iTrayColour = pOptionsPS->GetTrayIconColour();
-    app.SetClosedTrayIcon(iTrayColour);
+    SetClosedTrayIcon(iTrayColour);
 
     UpdateSystemMenu();
     
@@ -418,7 +419,7 @@ void DboxMain::OnOptions()
            iter++) {
         // User should not have these sub-entries in their config file
         if (iter->first == ID_MENUITEM_GROUPENTER  ||
-            iter->first == ID_MENUITEM_VIEWENTRY        || 
+            iter->first == ID_MENUITEM_VIEWENTRY   || 
             iter->first == ID_MENUITEM_DELETEENTRY ||
             iter->first == ID_MENUITEM_DELETEGROUP ||
             iter->first == ID_MENUITEM_RENAMEENTRY ||
@@ -427,8 +428,8 @@ void DboxMain::OnOptions()
         }
 
         // Now only those different from default
-        if (iter->second.siVirtKey != iter->second.siDefVirtKey ||
-          iter->second.cModifier != iter->second.cDefModifier) {
+        if (iter->second.siVirtKey  != iter->second.siDefVirtKey  ||
+            iter->second.cPWSModifier != iter->second.cDefPWSModifier) {
           iter_parent = m_MapMenuShortcuts.find(iter->second.uiParentID);
           std::wstring name(L"");
           do {
@@ -442,18 +443,10 @@ void DboxMain::OnOptions()
           st_prefShortcut stxst;
           stxst.id = iter->first;
           stxst.siVirtKey = iter->second.siVirtKey;
-          stxst.cModifier = iter->second.cModifier;
+          stxst.cPWSModifier = iter->second.cPWSModifier;
           stxst.Menu_Name = name;
           vShortcuts.push_back(stxst);
         }
-      }
-
-      // We need to convert from MFC HotKey modifiers to PWS modifiers
-      for (size_t i = 0; i < vShortcuts.size(); i++) {
-        WORD wHKModifiers = vShortcuts[i].cModifier;
-        // Translate from CHotKeyCtrl to PWS modifiers
-        WORD wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
-        vShortcuts[i].cModifier = (unsigned char)wPWSModifiers;
       }
 
       prefs->SetPrefShortcuts(vShortcuts);
@@ -479,11 +472,11 @@ void DboxMain::OnOptions()
       if (prefs->GetPref(PWSprefs::HideSystemTray) && 
           prefs->GetPref(PWSprefs::HotKeyEnabled) &&
           prefs->GetPref(PWSprefs::HotKey) > 0)
-        app.HideIcon();
-      else if (app.IsIconVisible() == FALSE)
-        app.ShowIcon();
+        HideIcon();
+      else if (IsIconVisible() == FALSE)
+        ShowIcon();
     } else {
-      app.HideIcon();
+      HideIcon();
     }
 
     if (pOptionsPS->CheckExpired()) {
@@ -625,20 +618,19 @@ void DboxMain::OnOptions()
   }
 
   // Restore hotkey as it was or as user changed it - if user pressed OK
-  WORD wVirtualKeyCode = iPWSHotKeyValue & 0xff;
-  WORD wHKModifiers = iPWSHotKeyValue >> 16;
-    
-  // Translate from CHotKeyCtrl to CWnd & PWS modifiers
-  WORD wModifiers = ConvertModifersMFC2Windows(wHKModifiers);
-  WORD wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
-  int32 iAppShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
-  m_core.SetAppHotKey(iAppShortcut);
+  m_core.SetAppHotKey(iAppHotKeyValue);
 
   if (bAppHotKeyEnabled == TRUE) {
+    WORD wVirtualKeyCode = iAppHotKeyValue & 0xff;
+    WORD wPWSModifiers = iAppHotKeyValue >> 16;
+
+    // Translate from PWS modifer to Windows modifiers
+    WORD wWinModifiers = ConvertModifersPWS2Windows(wPWSModifiers);
+
     // Only set if valid i.e. a character plus at least Alt or Ctrl
-    if (wVirtualKeyCode != 0 && (wModifiers & (MOD_ALT | MOD_CONTROL)) != 0) {
+    if (wVirtualKeyCode != 0 && (wWinModifiers & (MOD_ALT | MOD_CONTROL)) != 0) {
       BOOL brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
-                                UINT(wModifiers), UINT(wVirtualKeyCode));
+                                UINT(wWinModifiers), UINT(wVirtualKeyCode));
       if (brc == FALSE) {
         CGeneralMsgBox gmb;
         gmb.AfxMessageBox(IDS_NOHOTKEY, MB_OK);
@@ -694,6 +686,34 @@ void DboxMain::OnYubikey()
   CYubiCfgDlg dlg(this, m_core);
   dlg.DoModal();
 #endif /* NO_YUBI */
+}
+
+void DboxMain::OnSetDBIndex()
+{
+  CSBIndexDlg SBIdlg((CWnd *)this, m_iDBIndex);
+
+  INT_PTR rc = SBIdlg.DoModal();
+  
+  if (rc != -1) {
+    // Index may have changed
+    if (m_iDBIndex != rc) {
+      // Clear current one if it exists
+      if (m_hMutexDBIndex != NULL) {
+        CloseHandle(m_hMutexDBIndex);
+        m_hMutexDBIndex = NULL;
+      }
+
+      // Remember mutex handle to close on DB close or assignment of new index
+      m_hMutexDBIndex = SBIdlg.GetMutexHandle();
+    }
+
+    // Colour may have changed
+    m_DBLockedIndexColour = SBIdlg.GetLockedIndexColour();
+    m_DBUnlockedIndexColour = SBIdlg.GetUnlockedIndexColour();
+
+    m_iDBIndex = (int)rc;
+    UpdateSystemTray(m_TrayLockedState == LOCKED ? LOCKED : UNLOCKED);
+  }
 }
 
 void DboxMain::OnManagePasswordPolicies()

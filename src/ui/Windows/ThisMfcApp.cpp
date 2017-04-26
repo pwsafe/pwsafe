@@ -62,8 +62,6 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define UNIQUE_PWS_GUID L"PasswordSafe-{3FE0D665-1AE6-49b2-8359-326407D56470}"
-
 const UINT ThisMfcApp::m_uiRegMsg   = RegisterWindowMessage(UNIQUE_PWS_GUID);
 const UINT ThisMfcApp::m_uiWH_SHELL = RegisterWindowMessage(UNIQUE_PWS_SHELL);
 
@@ -82,7 +80,7 @@ extern wchar_t *wcCaption;
 
 ThisMfcApp::ThisMfcApp() :
   m_bUseAccelerator(true),
-  m_pMRU(NULL), m_TrayLockedState(LOCKED), m_pTrayIcon(NULL),
+  m_pMRU(NULL),
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
   m_ghAccelTable(NULL), m_pMainMenu(NULL),
   m_bACCEL_Table_Created(false), m_noSysEnvWarnings(false),
@@ -127,12 +125,16 @@ ThisMfcApp::ThisMfcApp() :
 
   // Set this process to be one of the first to be shut down:
   SetProcessShutdownParameters(0x3ff, 0);
+
   PWSprefs::SetReporter(&aReporter);
   PWScore::SetReporter(&aReporter);
   PWScore::SetAsker(&anAsker);
+
   EnableHtmlHelp();
+
   CoInitializeEx(NULL, COINIT_APARTMENTTHREADED); // Initializes the COM library
   //                                                 (for XML and Yubikeyprocessing)
+  
   AfxEnableControlContainer();
   AfxOleInit();
 }
@@ -1190,17 +1192,6 @@ BOOL ThisMfcApp::InitInstance()
   m_pDbx = &dbox;
   m_pMainWnd = m_pDbx;
 
-  //HICON stIcon = app.LoadIcon(IDI_TRAY);
-  //ASSERT(stIcon != NULL);
-  m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
-  m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
-  int iData = prefs->GetPref(PWSprefs::ClosedTrayIconColour);
-  SetClosedTrayIcon(iData);
-  m_pTrayIcon = new CSystemTray(m_pDbx, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
-                                m_LockedIcon, dbox.m_RUEList,
-                                PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
-  m_pTrayIcon->SetTarget(&dbox);
-
   CLWnd ListenerWnd(dbox);
   if (SysInfo::IsUnderU3()) {
     // See comment under CLWnd to understand this.
@@ -1215,14 +1206,6 @@ BOOL ThisMfcApp::InitInstance()
 
   // Run dialog - note that we don't particularly care what the response was
   dbox.DoModal();
-
-  if (m_pTrayIcon != NULL)
-    m_pTrayIcon->DestroyWindow();
-  delete m_pTrayIcon;
-
-  ::DestroyIcon(m_LockedIcon);
-  ::DestroyIcon(m_UnLockedIcon);
-  ::DestroyIcon(m_ClosedIcon);
 
   // Since the dialog has been closed, return FALSE so that we exit the
   // application, rather than start the application's message pump.
@@ -1289,59 +1272,6 @@ void ThisMfcApp::ClearMRU()
       pFile_Submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
 
     return;
-  }
-}
-
-int ThisMfcApp::SetClosedTrayIcon(int &iData, bool bSet)
-{
-  int icon;
-  switch (iData) {
-    case PWSprefs::stiBlack:
-      icon = IDI_TRAY;  // This is black.
-      break;
-    case PWSprefs::stiBlue:
-      icon = IDI_TRAY_BLUE;
-      break;
-    case PWSprefs::stiWhite:
-      icon = IDI_TRAY_WHITE;
-      break;
-    case PWSprefs::stiYellow:
-      icon = IDI_TRAY_YELLOW;
-      break;
-    default:
-      iData = PWSprefs::stiBlack;
-      icon = IDI_TRAY;
-      break;
-  }
-  if (bSet) {
-    ::DestroyIcon(m_ClosedIcon);
-    m_ClosedIcon = app.LoadIcon(icon);
-  }
-
-  return icon;
-}
-
-void ThisMfcApp::SetSystemTrayState(STATE s)
-{
-  // need to protect against null m_pTrayIcon due to
-  // tricky initialization order
-  if (m_pTrayIcon != NULL && s != m_TrayLockedState) {
-    m_TrayLockedState = s;
-    HICON hIcon(m_LockedIcon);
-    switch (s) {
-      case LOCKED:
-        hIcon = m_LockedIcon;
-        break;
-      case UNLOCKED:
-        hIcon = m_UnLockedIcon;
-        break;
-      case CLOSED:
-        hIcon = m_ClosedIcon;
-        break;
-      default:
-        break;
-    }
-    m_pTrayIcon->SetIcon(hIcon);
   }
 }
 

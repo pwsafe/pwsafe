@@ -34,7 +34,8 @@ BOOL CSampleTextDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  ((CEdit*)GetDlgItem(IDC_SAMPLETEXT))->SetFocus();
+  GotoDlgCtrl(GetDlgItem(IDC_SAMPLETEXT));
+
   return FALSE;
 }
 

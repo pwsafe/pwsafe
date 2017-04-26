@@ -25,10 +25,9 @@ public:
   //}}AFX_DATA
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-protected:
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
+
   // Generated message map functions
   //{{AFX_MSG(CAboutDlg)
   afx_msg void OnTakeTestdump();

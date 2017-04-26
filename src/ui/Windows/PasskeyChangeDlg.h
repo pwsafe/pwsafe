@@ -28,17 +28,18 @@ public:
   CSecString m_oldpasskey;
   CSecString m_newpasskey;
   CSecString m_confirmnew;
+
+  BOOL m_btnShowCombination;
   //}}AFX_DATA
 
   // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CPasskeyChangeDlg)
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
   // Generated message map functions
   //{{AFX_MSG(CPasskeyChangeDlg)
   virtual BOOL OnInitDialog();
@@ -48,6 +49,7 @@ protected:
   afx_msg void OnPasskeySetfocus();
   afx_msg void OnNewPasskeySetfocus();
   afx_msg void OnConfirmNewSetfocus();
+  afx_msg void OnShowCombination();
   afx_msg void OnOldVK();
   afx_msg void OnNewVK();
   afx_msg void OnConfirmVK();
@@ -57,12 +59,13 @@ protected:
   afx_msg void OnYubikeyBtn();
   //}}AFX_MSG
 
+  DECLARE_MESSAGE_MAP()
+
   void ProcessPhrase();
 
   // Override base class yubi callbacks:
   void yubiInserted(void);
   void yubiRemoved(void);
-  DECLARE_MESSAGE_MAP()
 
 private:
   CSecEditExtn *m_pctlNewPasskey;

@@ -49,6 +49,9 @@ END_MESSAGE_MAP()
 
 BOOL CConfirmDeleteDlg::OnInitDialog()
 {
+
+  CPWDialog::OnInitDialog();
+
   CString cs_text;
   if (m_numchildren > 0) {
     // Group delete
@@ -86,10 +89,11 @@ BOOL CConfirmDeleteDlg::OnInitDialog()
     // Allow user to select not to be asked again
     GetDlgItem(IDC_CLEARCHECK)->EnableWindow(TRUE);
   }
+
   cs_text.LoadString((m_numchildren > 0) ? IDS_DELGRP : IDS_DELENT);
   GetDlgItem(IDC_DELITEM)->SetWindowText(cs_text);
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CConfirmDeleteDlg::OnCancel() 

@@ -39,7 +39,8 @@ public:
 
 protected:
   virtual BOOL OnInitDialog();
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   CString m_cstitle;
   CWnd *m_pParent;
@@ -51,18 +52,14 @@ protected:
   const std::set<StringX> *m_psMediaTypes;
 
   //{{AFX_MSG(CPWFiltersDlg)
+  afx_msg void OnOk();
+  afx_msg void OnHelp();
   afx_msg void OnFNameKillFocus();
   afx_msg void OnProcessKey(UINT nID);
   afx_msg void OnSize(UINT nType, int cx, int cy);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-
-  BOOL PreTranslateMessage(MSG* pMsg);
-  
- public:
-  afx_msg void OnOk();
-  afx_msg void OnHelp();
 
 private:
   CPWFilterLC m_FilterLC;

@@ -79,9 +79,8 @@ public:
   // ClassWizard generate virtual function overrides
 
 protected:
-  BOOL PreTranslateMessage(MSG *pMsg);
-
   //{{AFX_VIRTUAL(CAddEdit_Basic)
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
   virtual BOOL OnInitDialog();
   virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnApply();
@@ -149,7 +148,6 @@ private:
   bool m_bInitdone;
   bool m_bUsingNotesExternalEditor;
   int m_iPointSize;
-  int m_iLineCount;
 
   CBitmap m_CopyPswdBitmap;
 };

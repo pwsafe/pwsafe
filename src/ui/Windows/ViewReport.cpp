@@ -143,7 +143,7 @@ BOOL CViewReport::OnInitDialog()
   // Set ours
   m_editreport.SetHandle(h);
 
-  return FALSE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CViewReport::Save()

@@ -81,7 +81,8 @@ BOOL CPWPropertySheet::OnInitDialog()
   // It's OK - show it
   m_bKeepHidden = false;
   ShowWindow(SW_SHOW);
-  return TRUE;
+  
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 INT_PTR CPWPropertySheet::DoModal()

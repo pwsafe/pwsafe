@@ -29,13 +29,13 @@ public:
 
 protected:
   virtual BOOL OnInitDialog();
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+
+  afx_msg void OnCbnSelchangeIntegerRule();
+  afx_msg void OnBnClickedOk();
 
   DECLARE_MESSAGE_MAP()
 
-public:
-  afx_msg void OnCbnSelchangeIntegerRule();
-  afx_msg void OnBnClickedOk();
   CComboBox m_cbxRule;
   CEdit m_edtInteger1, m_edtInteger2;
   CStatic m_stcAnd, m_stcStatus;

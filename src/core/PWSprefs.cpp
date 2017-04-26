@@ -206,6 +206,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("AutotypeTaskDelays"), _T("100,100,100"), ptApplication},     // application
   {_T("AddEditFont"), _T(""), ptApplication },                      // application
   {_T("AddEditSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},  // application
+  {_T("AltNotesEditorCmdLineParms"), _T(""), ptApplication},        // application
 };
 
 PWSprefs *PWSprefs::GetInstance()
@@ -771,9 +772,10 @@ struct shortcut_less {
 
 bool equal_shortcuts(st_prefShortcut a, st_prefShortcut b)
 {
-  return (a.id        == b.id &&
+  return (a.id == b.id &&
           a.siVirtKey == b.siVirtKey &&
-          a.cModifier == b.cModifier);
+          a.cPWSModifier == b.cPWSModifier &&
+          a.Menu_Name == b.Menu_Name);
 }
 
 void PWSprefs::SetPrefShortcuts(const std::vector<st_prefShortcut> &vShortcuts)

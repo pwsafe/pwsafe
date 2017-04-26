@@ -263,7 +263,7 @@ BOOL CManageFiltersDlg::OnInitDialog()
 
   UpdateData(FALSE);
 
-  return FALSE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -1342,7 +1342,7 @@ void CManageFiltersDlg::SortFilterView()
   phctrl->SetItem(m_iSortColumn, &hdi);
 }
 
-BOOL CManageFiltersDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CManageFiltersDlg::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     OnHelp();

@@ -40,7 +40,7 @@ static char THIS_FILE[] = __FILE__;
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
   : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent),
     m_LastFocus(IDC_PASSKEY), m_Yubi1pressed(false), m_Yubi2pressed(false),
-    m_oldpasskeyConfirmed(false)
+    m_oldpasskeyConfirmed(false), m_btnShowCombination(FALSE)
 {
   m_newpasskey = L"";
   m_confirmnew = L"";
@@ -66,15 +66,19 @@ void CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_CONFIRMNEW, *m_pctlConfirmNew);
   DDX_Control(pDX, IDC_NEWPASSKEY, *m_pctlNewPasskey);
   DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
+
+  DDX_Check(pDX, IDC_SHOWCOMBINATION, m_btnShowCombination);
 }
 
 BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
   ON_WM_TIMER()
 
-  ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
+
+  ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_YUBIKEY2_BTN, OnYubikey2Btn)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
+  ON_BN_CLICKED(IDC_SHOWCOMBINATION, OnShowCombination)
 
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_NEWPASSKEY, OnNewPasskeySetfocus)
@@ -87,6 +91,7 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
 {
   CPKBaseDlg::OnInitDialog();
 
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
 
@@ -107,7 +112,7 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CPasskeyChangeDlg::yubiInserted(void)
@@ -140,7 +145,7 @@ void CPasskeyChangeDlg::OnOK()
     gmb.AfxMessageBox(IDS_WRONGOLDPHRASE);
   else if (rc == PWScore::CANT_OPEN_FILE)
     gmb.AfxMessageBox(IDS_CANTVERIFY);
-  else if (m_confirmnew != m_newpasskey)
+  else if (m_btnShowCombination == FALSE && m_confirmnew != m_newpasskey)
     gmb.AfxMessageBox(IDS_NEWOLDDONOTMATCH);
   else if (m_newpasskey.IsEmpty())
     gmb.AfxMessageBox(IDS_CANNOTBEBLANK);
@@ -193,6 +198,36 @@ void CPasskeyChangeDlg::OnNewPasskeySetfocus()
 void CPasskeyChangeDlg::OnConfirmNewSetfocus()
 {
   m_LastFocus = IDC_CONFIRMNEW;
+}
+
+void CPasskeyChangeDlg::OnShowCombination()
+{
+  UpdateData(TRUE);
+
+  m_pctlPasskey->SetSecure(m_btnShowCombination == TRUE ? FALSE : TRUE);
+  m_pctlNewPasskey->SetSecure(m_btnShowCombination == TRUE ? FALSE : TRUE);
+
+  if (m_btnShowCombination == TRUE) {
+    m_pctlPasskey->SetPasswordChar(0);
+    m_pctlPasskey->SetWindowText(m_passkey);
+
+    m_pctlNewPasskey->SetPasswordChar(0);
+    m_pctlNewPasskey->SetWindowText(m_newpasskey);
+
+    m_pctlConfirmNew->SetPasswordChar(0);
+    m_pctlConfirmNew->EnableWindow(FALSE);
+    m_pctlConfirmNew->SetWindowText(L"");
+  } else {
+    m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+    m_pctlPasskey->SetSecureText(m_passkey);
+
+    m_pctlNewPasskey->SetPasswordChar(PSSWDCHAR);
+    m_pctlNewPasskey->SetSecureText(m_newpasskey);
+
+    m_pctlConfirmNew->SetPasswordChar(PSSWDCHAR);
+    m_pctlConfirmNew->EnableWindow(TRUE);
+    m_pctlConfirmNew->SetWindowText(L"");
+  }
 }
 
 void CPasskeyChangeDlg::OnVirtualKeyboard()
@@ -280,6 +315,7 @@ void CPasskeyChangeDlg::OnYubikeyBtn()
 {
   // This is for existing password verification
   UpdateData(TRUE);
+
   m_Yubi1pressed = true;
   yubiRequestHMACSha1(m_passkey);
 }
@@ -287,7 +323,8 @@ void CPasskeyChangeDlg::OnYubikeyBtn()
 void CPasskeyChangeDlg::OnYubikey2Btn()
 {
   UpdateData(TRUE);
-  if (m_confirmnew != m_newpasskey) {
+
+  if (m_btnShowCombination == FALSE && m_confirmnew != m_newpasskey) {
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_NEWOLDDONOTMATCH);
   } else {

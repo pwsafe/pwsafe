@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2009 David Kelvin <c-273@users.sourceforge.net>.
+* Copyright (c) 2009-2017 David Kelvin <c-273@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -734,7 +734,7 @@ BOOL CVKeyBoardDlg::OnInitDialog()
 
   UpdateData(FALSE);
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CVKeyBoardDlg::OnInsert()

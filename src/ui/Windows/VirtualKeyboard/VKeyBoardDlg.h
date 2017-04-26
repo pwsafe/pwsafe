@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2009 David Kelvin <c-273@users.sourceforge.net>.
+* Copyright (c) 2009-2017 David Kelvin <c-273@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -88,13 +88,12 @@ public:
   void ResetKeyboard();
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-  BOOL OnInitDialog();
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   int m_phrasecount;
   CComboBox m_cbxKeyBoards;
-
-  BOOL PreTranslateMessage(MSG* pMsg);
 
   //{{AFX_MSG(CVKeyBoardDlg)
   afx_msg void OnPostNcDestroy();
@@ -124,6 +123,7 @@ protected:
   afx_msg void OnKeyPressPlaySound();
   afx_msg void OnShowPassphrase();
   //}}AFX_MSG
+
   DECLARE_MESSAGE_MAP()
 
   int m_iKeyboard;

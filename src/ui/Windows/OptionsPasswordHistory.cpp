@@ -145,7 +145,6 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   }
 
   return TRUE;  // return TRUE unless you set the focus to a control
-  // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 LRESULT COptionsPasswordHistory::OnQuerySiblings(WPARAM wParam, LPARAM )
@@ -183,7 +182,7 @@ BOOL COptionsPasswordHistory::OnApply()
   return COptions_PropertyPage::OnApply();
 }
 
-BOOL COptionsPasswordHistory::PreTranslateMessage(MSG* pMsg)
+BOOL COptionsPasswordHistory::PreTranslateMessage(MSG *pMsg)
 {
   RelayToolTipEvent(pMsg);
 

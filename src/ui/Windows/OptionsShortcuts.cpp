@@ -101,7 +101,13 @@ BOOL COptionsShortcuts::OnInitDialog()
 
   m_AppHotKeyCtrl.m_pParent = this;
 
-  m_AppHotKeyCtrl.SetHotKey(LOWORD(m_AppHotKeyValue),HIWORD(m_AppHotKeyValue));
+  WORD wAppVirtualKeyCode = m_AppHotKeyValue & 0xff;
+  WORD wAppPWSModifiers = m_AppHotKeyValue >> 16;
+
+  // Translate from PWS modifer to CHotKeyCtrl modifiers
+  WORD wAppHKModifiers = ConvertModifersPWS2MFC(wAppPWSModifiers);
+
+  m_AppHotKeyCtrl.SetHotKey(wAppVirtualKeyCode, wAppHKModifiers);
   if (m_bAppHotKeyEnabled == FALSE)
     m_AppHotKeyCtrl.EnableWindow(FALSE);
 
@@ -190,10 +196,7 @@ BOOL COptionsShortcuts::OnInitDialog()
     WORD wVirtualKeyCode = iKBShortcut & 0xff;
     WORD wPWSModifiers = iKBShortcut >> 16;
 
-    // Translate from PWS modifiers to HotKey
-    WORD wHKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
-
-    str = CMenuShortcut::FormatShortcut(wHKModifiers, wVirtualKeyCode);
+    str = CMenuShortcut::FormatShortcut(wPWSModifiers, wVirtualKeyCode);
 
     ItemListIter iter = app.GetCore()->Find(kbiter->second);
     const StringX sxGroup = iter->second.GetGroup();
@@ -229,13 +232,13 @@ BOOL COptionsShortcuts::OnInitDialog()
     m_Help2.ShowWindow(SW_HIDE);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 bool shortcutmaps_equal (MapMenuShortcutsPair p1, MapMenuShortcutsPair p2)
 {
   return (p1.first == p2.first && 
-          p1.second.cModifier == p2.second.cModifier &&
+          p1.second.cPWSModifier == p2.second.cPWSModifier &&
           p1.second.siVirtKey == p2.second.siVirtKey);
 }
 
@@ -246,7 +249,7 @@ LRESULT COptionsShortcuts::OnQuerySiblings(WPARAM wParam, LPARAM )
   // Have any of my fields been changed?
   switch (wParam) {
     case PP_DATA_CHANGED:
-      if (M_AppHotKeyEnabled()     != m_bAppHotKeyEnabled            ||
+      if (M_AppHotKeyEnabled()      != m_bAppHotKeyEnabled           ||
           M_AppHotKey_Value()       != m_AppHotKeyValue              ||
           m_MapMenuShortcuts.size() != m_MapSaveMenuShortcuts.size() ||
           !std::equal(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(), m_MapSaveMenuShortcuts.begin(),
@@ -285,9 +288,13 @@ BOOL COptionsShortcuts::OnApply()
   if (CheckAppHotKey() < 0 || m_bWarnUserKBShortcut)
     return FALSE;
 
-  WORD wVirtualKeyCode, wHKModifiers;
+  WORD wVirtualKeyCode, wHKModifiers, wPWSModifiers;
+
   m_AppHotKeyCtrl.GetHotKey(wVirtualKeyCode, wHKModifiers);
-  m_AppHotKeyValue = (wHKModifiers << 16) + wVirtualKeyCode;
+
+  // Translate from CHotKeyCtrl to PWS modifiers
+  wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
+  m_AppHotKeyValue = (wPWSModifiers << 16) + wVirtualKeyCode;
 
   if (m_MapMenuShortcuts.size() != m_MapSaveMenuShortcuts.size() ||
       !std::equal(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(),
@@ -304,7 +311,7 @@ BOOL COptionsShortcuts::OnApply()
   return COptions_PropertyPage::OnApply();
 }
 
-BOOL COptionsShortcuts::PreTranslateMessage(MSG* pMsg)
+BOOL COptionsShortcuts::PreTranslateMessage(MSG *pMsg)
 {
   RelayToolTipEvent(pMsg);
 
@@ -363,7 +370,7 @@ void COptionsShortcuts::OnResetAll()
 
     iter = m_MapMenuShortcuts.find(id);
     iter->second.siVirtKey = iter->second.siDefVirtKey;
-    iter->second.cModifier = iter->second.cDefModifier;
+    iter->second.cPWSModifier = iter->second.cDefPWSModifier;
   
     str = CMenuShortcut::FormatShortcut(iter);
     m_ShortcutLC.SetItemText(i, 0, str);  // SHCT_SHORTCUTKEYS
@@ -441,8 +448,8 @@ void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
 // Tortuous route to get here!
 // Menu m_HotKey looses focus and calls parent (CListCtrl) that calls here
 void COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
-                                              const WORD wVirtualKeyCode, 
-                                              const WORD wHKModifiers)
+                                                const WORD wVirtualKeyCode, 
+                                                const WORD wPWSModifiers)
 {
   CString str(L"");
   CString cs_warning;
@@ -450,7 +457,7 @@ void COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
   st_MenuShortcut st_mst;
 
   st_mst.siVirtKey  = wVirtualKeyCode;
-  st_mst.cModifier = wVirtualKeyCode == 0 ? 0 : (unsigned char)wHKModifiers;
+  st_mst.cPWSModifier = wVirtualKeyCode == 0 ? 0 : (unsigned char)wPWSModifiers;
 
   // Stop compiler complaining - put this here even if not needed
   already_inuse inuse(st_mst);
@@ -488,7 +495,7 @@ void COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
 
   // Not reserved and not already in use - implement
   iter->second.siVirtKey = st_mst.siVirtKey;
-  iter->second.cModifier = st_mst.cModifier;
+  iter->second.cPWSModifier = st_mst.cPWSModifier;
 
   m_ShortcutLC.SetItemText(item, 0, str);  // SHCT_SHORTCUTKEYS
   m_ShortcutLC.RedrawItems(item, item);    // SHCT_MENUITEMTEXT
@@ -649,9 +656,7 @@ void COptionsShortcuts::OnKBShortcutDoulbleClick(NMHDR *pNotifyStruct, LRESULT *
     wVirtualKeyCode = iKBShortcut & 0xff;
     wPWSModifiers = iKBShortcut >> 16;
 
-    // Translate from PWS modifiers to HotKey
-    WORD wHKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
-    CString str = CMenuShortcut::FormatShortcut(wHKModifiers, wVirtualKeyCode);
+    CString str = CMenuShortcut::FormatShortcut(wPWSModifiers, wVirtualKeyCode);
 
     const StringX sxGroup = iter->second.GetGroup();
     const StringX sxTitle = iter->second.GetTitle();
@@ -769,7 +774,7 @@ int COptionsShortcuts::CheckAppHotKey()
     }
     
     StringX sxMenuItemName;
-    unsigned char ucModifiers = wHKModifiers & 0xff;
+    unsigned char ucModifiers = wPWSModifiers & 0xff;
     unsigned int nCID = GetMainDlg()->GetMenuShortcut(wVirtualKeyCode,
                                                   ucModifiers, sxMenuItemName);
     if (nCID != 0) {

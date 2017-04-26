@@ -99,6 +99,8 @@ public:
   { return m_sProtectSymbol; }
 
 protected:
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
+
   //{{AFX_MSG(CPWTreeCtrlX)
   afx_msg void OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult);
@@ -116,7 +118,6 @@ protected:
   afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
   //}}AFX_MSG
 
-  BOOL PreTranslateMessage(MSG* pMsg);
   BOOL OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal);
   BOOL RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal);
   BOOL RenderAllData(HGLOBAL* phGlobal);

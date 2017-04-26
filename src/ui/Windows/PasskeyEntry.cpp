@@ -63,6 +63,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_tries(0),
   m_status(TAR_INVALID),
   m_btnReadOnly((bReadOnly || bFileReadOnly) ? TRUE : FALSE),
+  m_btnShowCombination(FALSE),
   m_bFileReadOnly(bFileReadOnly),
   m_bForceReadOnly(bForceReadOnly),
   m_bHideReadOnly(bHideReadOnly),
@@ -112,8 +113,11 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
   }
 
   DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
+
   DDX_Text(pDX, IDC_SELECTED_DATABASE, m_SelectedDatabase);
+
   DDX_Check(pDX, IDC_READONLY, m_btnReadOnly);
+  DDX_Check(pDX, IDC_SHOWCOMBINATION, m_btnShowCombination);
   DDX_Control(pDX, IDOK, m_ctlOK);
   //}}AFX_DATA_MAP
 }
@@ -128,6 +132,7 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   ON_BN_CLICKED(IDC_EXIT, OnExit)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
   ON_BN_CLICKED(IDC_READONLY, OnBnClickedReadonly)
+  ON_BN_CLICKED(IDC_SHOWCOMBINATION, OnShowCombination)
   ON_BN_CLICKED(IDC_BTN_BROWSE, OnOpenFileBrowser)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
 
@@ -244,8 +249,6 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     // Reset it
     app.SetHotKeyPressed(false);
     // Ensures focus is on password entry field, where it belongs.
-    // Do NOT use SetFocus in OnInitDialog as it bypasses the Dialog manager
-    //m_pctlPasskey->SetFocus();
     GotoDlgCtrl(m_pctlPasskey);
     return FALSE;
   }
@@ -262,13 +265,11 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   if (m_index == GCP_FIRST && !m_filespec.IsEmpty()) {
     m_MRU_combo.SetEditSel(-1, -1);
     // Ensures focus is on password entry field, where it belongs.
-    // Do NOT use SetFocus in OnInitDialog as it bypasses the Dialog manager
-    //m_pctlPasskey->SetFocus();
     GotoDlgCtrl(m_pctlPasskey);
     return FALSE;
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CPasskeyEntry::OnCreateDb()
@@ -476,6 +477,21 @@ void CPasskeyEntry::OnBnClickedReadonly()
   CWnd *create_bn = GetDlgItem(IDC_CREATE_DB);
   if (create_bn) // not always there
     create_bn->EnableWindow(!m_btnReadOnly);
+}
+
+void CPasskeyEntry::OnShowCombination()
+{
+  UpdateData(TRUE);
+
+  m_pctlPasskey->SetSecure(m_btnShowCombination == TRUE ? FALSE : TRUE);
+
+  if (m_btnShowCombination == TRUE) {
+    m_pctlPasskey->SetPasswordChar(0);
+    m_pctlPasskey->SetWindowText(m_passkey);
+  } else {
+    m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+    m_pctlPasskey->SetSecureText(m_passkey);
+  }
 }
 
 void CPasskeyEntry::OnComboSelChange()

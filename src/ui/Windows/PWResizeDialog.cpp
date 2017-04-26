@@ -135,7 +135,7 @@ BOOL CPWResizeDialog::OnInitDialog()
     pwnd->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
   }
 
-  GetDlgItem(m_viBottomButtons[m_iFocus])->SetFocus();
+  GotoDlgCtrl(GetDlgItem(m_viBottomButtons[m_iFocus]));
 
   m_bInitDone = true;
 

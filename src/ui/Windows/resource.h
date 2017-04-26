@@ -391,6 +391,18 @@
 #define IDB_EMPTY_DISABLED              549
 #define IDB_REDEXCLAMATION              550
 #define IDB_LOCK_CLASSIC                551
+#define IDB_COPYPASSWORD_CLASSIC_D      552
+#define IDD_FINDREPLACE                 553
+#define IDB_FINDREPLACEIMAGES           554
+#define IDD_FINDREPLACECHANGES          555
+#define IDD_SETDBINDEX                  556
+#define IDB_BLACK                       557
+#define IDB_RED                         558
+#define IDB_GREEN                       559
+#define IDB_WHITE                       560
+#define IDB_YELLOW                      561
+#define IDB_LOCKED_TRAY_INDEX           562
+#define IDB_UNLOCKED_TRAY_INDEX         563
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -678,7 +690,7 @@
 #define IDC_STATIC_EMAIL                1356
 #define IDC_STATIC_AUTO                 1357
 #define IDC_STATIC_RUNCMD               1358
-#define IDC_SUBSET                      1359
+#define IDC_SUBSETPOSITIONS             1359
 #define IDC_GETSUBSET                   1360
 #define IDC_SUBSETRESULTS               1361
 #define IDC_STATICSUBSETWARNING         1362
@@ -792,7 +804,6 @@
 #define IDC_STATIC_NAMEDPOLICY          1482
 #define IDC_POLICYNAMES_HEADER          1483
 #define IDC_POLICYENTRIES_HEADER        1484
-#define IDC_STATIC_COPYPSWD             1485
 #define IDC_UNDO                        1486
 #define IDC_REDO                        1487
 #define IDC_CLEARPWHISTORY              1488
@@ -868,14 +879,46 @@
 #define IDC_PWHHELP                     1560
 #define IDC_STATIC_HOSTUSER             1561
 #define IDC_STATIC_DEPENDENT            1562
+#define IDC_COPYPASSWORDHELP            1563
+#define IDC_COPYPASSWORDHELP1           1564
+#define IDC_COPYPASSWORDHELP2           1565
+#define IDC_STATIC_MESSAGE              1566
+#define IDC_ALTEDITOR_CMDLINE           1567
+#define IDC_FIELD                       1568
+#define IDC_OLDTEXT                     1569
+#define IDC_NEWTEXT                     1570
+#define IDC_CHANGELIST                  1571
+#define IDC_SEARCH                      1572
+#define IDC_FINDREPLACERULEHELP         1573
+#define IDC_FINDREPLACENEWTEXTHELP      1574
+#define IDC_FINDREPLACECHANGEHELP       1575
+#define IDC_CHANGELISTHEADER            1576
+#define IDC_FINDREPLACESEARCHHELP       1576
+#define IDC_CHANGESELECTED              1577
+#define IDC_ORIGINAL_TEXT               1578
+#define IDC_NEW_TEXT                    1579
+#define IDC_STATIC_ENTRY                1580
+#define IDC_SHOWCOMBINATION             1581
+#define IDC_DBINDEX                     1582
+#define IDC_SETCOLOUR                   1583
+#define IDC_UNLOCKEDIMAGE               1584
+#define IDC_LOCKEDIMAGE                 1585
+#define IDC_DBINDEX_TEXTCOLOURL0        1587
+#define IDC_DBINDEX_TEXTCOLOURL1        1588
+#define IDC_DBINDEX_TEXTCOLOURL2        1589
+#define IDC_DBINDEX_TEXTCOLOURL3        1590
+#define IDC_DBINDEX_TEXTCOLOURUL0       1591
+#define IDC_DBINDEX_TEXTCOLOURUL1       1592
+#define IDC_DBINDEX_TEXTCOLOURUL2       1593
+#define IDC_DBINDEX_TEXTCOLOURUL3       1594
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        552
+#define _APS_NEXT_RESOURCE_VALUE        564
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1563
-#define _APS_NEXT_SYMED_VALUE           552
+#define _APS_NEXT_CONTROL_VALUE         1595
+#define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif

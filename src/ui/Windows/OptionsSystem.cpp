@@ -209,7 +209,6 @@ BOOL COptionsSystem::OnInitDialog()
   }
 
   return TRUE;  // return TRUE unless you set the focus to a control
-  // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 LRESULT COptionsSystem::OnQuerySiblings(WPARAM wParam, LPARAM )
@@ -258,7 +257,7 @@ BOOL COptionsSystem::OnApply()
   return COptions_PropertyPage::OnApply();
 }
 
-BOOL COptionsSystem::PreTranslateMessage(MSG* pMsg)
+BOOL COptionsSystem::PreTranslateMessage(MSG *pMsg)
 {
   RelayToolTipEvent(pMsg);
 

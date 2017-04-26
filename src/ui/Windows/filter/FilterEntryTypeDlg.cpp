@@ -114,7 +114,7 @@ BOOL CFilterEntryTypeDlg::OnInitDialog()
     m_cbxEType.SetCurSel(-1);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CFilterEntryTypeDlg::OnCbnSelchangeEntryTypeRule()

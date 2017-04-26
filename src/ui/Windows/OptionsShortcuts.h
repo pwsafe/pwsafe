@@ -68,7 +68,7 @@ public:
   bool GetMapMenuShortcutsIter(const UINT &id, MapMenuShortcutsIter &iter);
   
   void OnMenuShortcutKillFocus(const int item, const UINT id,
-                             const WORD wVirtualKeyCode, const WORD wModifiers);
+                             const WORD wVirtualKeyCode, const WORD wPWSModifiers);
 
   pws_os::CUUID &GetKBShortcutUUID(int lParam)
   {return m_KBShortcutMap[lParam];}
@@ -102,10 +102,9 @@ protected:
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsShortcuts)
-
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
-  BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
   virtual BOOL OnApply();
   virtual BOOL OnKillActive();
   //}}AFX_VIRTUAL

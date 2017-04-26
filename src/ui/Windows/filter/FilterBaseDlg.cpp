@@ -22,6 +22,7 @@ CFilterBaseDlg::CFilterBaseDlg(UINT nIDTemplate, CWnd* pParentWnd)
 BOOL CFilterBaseDlg::OnInitDialog()
 {
   BOOL retval = CPWDialog::OnInitDialog();
+
   if (retval == TRUE) {
     if (m_bFirst) {
       GetWindowText(m_oldtitle);
