@@ -2687,7 +2687,7 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
       if (GetKeyState(VK_SHIFT) & 0x8000)
         wModifiers |= MOD_SHIFT;
 
-      if (!ProcessEntryShortcut(wVirtualKeyCode, wWinModifiers))
+      if (!ProcessEntryShortcut(wVirtualKeyCode, wModifiers))
         return 0L;
     }
   }
