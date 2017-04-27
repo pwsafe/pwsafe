@@ -17,6 +17,11 @@ Bugs fixed in 3.42.2
 ====================
 None
 
+New Features for 3.42.2
+=======================
+[834] It is now possible to view the safe combination when entering during database
+creation, opening and change of combination.
+
 Bugs fixed in 3.42.1
 ====================
 [1404] Regression: In read-only mode, Entry popup menu's View Entry

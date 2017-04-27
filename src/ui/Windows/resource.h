@@ -868,6 +868,7 @@
 #define IDC_PWHHELP                     1560
 #define IDC_STATIC_HOSTUSER             1561
 #define IDC_STATIC_DEPENDENT            1562
+#define IDC_SHOWCOMBINATION             1563
 
 // Next default values for new objects
 // 
