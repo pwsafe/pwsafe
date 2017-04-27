@@ -15,7 +15,7 @@ The ReleaseNotes.html file has links to the relevant tickets/issues.
 
 Bugs fixed in 3.42.2
 ====================
-None
+[1400] The Toolbar now correctly disables buttons when a Group is selected.
 
 Bugs fixed in 3.42.1
 ====================
