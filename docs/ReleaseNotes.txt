@@ -31,7 +31,6 @@ None
 New Features for 3.42.1
 =======================
 None
->>>>>>> 77c42e526... Bump to 3.42.1
 
 Bugs fixed in 3.42.0
 ====================
