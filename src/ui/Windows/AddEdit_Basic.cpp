@@ -1276,6 +1276,8 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   wchar_t lpPathBuffer[4096];
   DWORD dwBufSize(4096);
 
+  StringX sxEditorCmdLineParms = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditorCmdLineParms);
+
   StringX sxEditor = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditor);
   if (sxEditor.empty()) {
     // Find out the users default editor for "txt" files
@@ -1363,7 +1365,9 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   CString cs_CommandLine;
 
   // Make the command line = "<program>" "file"
-  cs_CommandLine.Format(L"\"%s\" \"%s\"", sxEditor.c_str(), self->m_szTempName);
+  cs_CommandLine.Format(L"\"%s\" \"%s\" %s", sxEditor.c_str(), self->m_szTempName,
+                               sxEditorCmdLineParms.c_str());
+
   int ilen = cs_CommandLine.GetLength();
   LPWSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
 

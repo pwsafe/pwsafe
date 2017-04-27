@@ -868,6 +868,7 @@
 #define IDC_PWHHELP                     1560
 #define IDC_STATIC_HOSTUSER             1561
 #define IDC_STATIC_DEPENDENT            1562
+#define IDC_ALTEDITOR_CMDLINE           1563
 
 // Next default values for new objects
 // 
@@ -875,7 +876,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        552
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1563
+#define _APS_NEXT_CONTROL_VALUE         1564
 #define _APS_NEXT_SYMED_VALUE           552
 #endif
 #endif

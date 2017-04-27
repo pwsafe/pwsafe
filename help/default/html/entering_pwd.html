@@ -59,7 +59,18 @@ password entry:</p>
 <li><b>Notes</b>: Free-form general notes field</li>
 </ul>
 
-<p><i>Only the <b>title</b> and <b>password</b> fields are required; all others are optional.</i></p>
+<p><i>Only the <b>Title</b> and <b>Password</b> fields are required; all others are optional.</i></p>
+
+<p>The <b>Notes</b> field contents may be edited using an external editor by
+right-clicking on the field. Note however, that <i>the contents will
+saved temporarily on disk in clear text</i>. In addition, some external
+editors will use an existing instance to edit the temporary text file
+and this will cause <b>Password Safe</b> to immediately return leaving
+the data unchanged even though the temporary text file is still available
+in the external editor. If the external editor supports it, it is possible
+to specify command line parameters to force a new instance for editing
+the Notes field to prevent this (for example: "-multiInst" for the
+Notepad++ editor). See <a href="misc_tab.html">"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Misc."</a>.</p>
 
 <p>In addition, the following fields may be set in this tab:</p>
 
