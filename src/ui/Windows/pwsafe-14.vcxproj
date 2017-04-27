@@ -556,6 +556,9 @@
     <ClCompile Include="filter\FilterPasswordDlg.cpp" />
     <ClCompile Include="filter\FilterStringDlg.cpp" />
     <ClCompile Include="filter\SetAttachmentFiltersDlg.cpp" />
+    <ClCompile Include="FindReplaceDlg.cpp" />
+    <ClCompile Include="FRHdrCtrl.cpp" />
+    <ClCompile Include="FRListCtrl.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FontsDialog.cpp" />
     <ClCompile Include="GeneralMsgBox.cpp" />
@@ -577,6 +580,7 @@
     <ClCompile Include="MenuShortcuts.cpp" />
     <ClCompile Include="MenuTipper.cpp" />
     <ClCompile Include="MigratePrefs.cpp" />
+    <ClCompile Include="FieldChangesDlg.cpp" />
     <ClCompile Include="Options_PropertyPage.cpp" />
     <ClCompile Include="Options_PropertySheet.cpp" />
     <ClCompile Include="OptionsBackup.cpp" />
@@ -629,6 +633,7 @@
     <ClCompile Include="SingleInstance.cpp" />
     <ClCompile Include="SMemFile.cpp" />
     <ClCompile Include="Subclass.cpp" />
+    <ClCompile Include="SyncScrollRichEdit.cpp" />
     <ClCompile Include="SysColStatic.cpp" />
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="TBMStatic.cpp" />
@@ -708,6 +713,7 @@
     <ClInclude Include="MenuShortcuts.h" />
     <ClInclude Include="MenuTipper.h" />
     <ClInclude Include="MFCmessages.h" />
+    <ClInclude Include="FieldChangesDlg.h" />
     <ClInclude Include="Options_PropertyPage.h" />
     <ClInclude Include="Options_PropertySheet.h" />
     <ClInclude Include="OptionsBackup.h" />
@@ -766,6 +772,7 @@
     <ClInclude Include="SMemFile.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="Subclass.h" />
+    <ClInclude Include="SyncScrollRichEdit.h" />
     <ClInclude Include="SysColStatic.h" />
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="TBMStatic.h" />
@@ -1095,8 +1102,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="graphics\checked_black.bmp" />
     <Image Include="graphics\checked_disabled.bmp" />
     <Image Include="graphics\empty_disabled.bmp" />
+    <Image Include="graphics\findreplace.bmp" />
     <Image Include="graphics\question_mark.bmp" />
     <Image Include="graphics\red_exclamation.bmp" />
     <Image Include="graphics\toolbar\classic\exportDB.bmp" />

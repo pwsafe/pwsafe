@@ -150,13 +150,25 @@
     <ClCompile Include="filter\FilterStringDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FindReplaceDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Fonts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FontsDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FRListCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FRHdrCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="GeneralMsgBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GridListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImgStatic.cpp">
@@ -414,7 +426,10 @@
     <ClCompile Include="YubiMixin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GridListCtrl.cpp">
+    <ClCompile Include="SyncScrollRichEdit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FieldChangesDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -561,6 +576,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneralMsgBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GridListCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HKModifiers.h">
@@ -836,7 +854,10 @@
     <ClInclude Include="PWTouch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GridListCtrl.h">
+    <ClInclude Include="SyncScrollRichEdit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldChangesDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1734,6 +1755,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="graphics\toolbar\classic\lock_database.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\checked_black.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\findreplace.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

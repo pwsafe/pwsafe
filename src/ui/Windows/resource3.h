@@ -793,3 +793,15 @@
 #define IDS_LIST_OF_SHORTCUTS           6045
 #define IDS_EXT_EDITOR_ACTIVE           6046
 #define IDS_CANCEL_EXT_EDITOR           6047
+#define IDS_GOTOSHORTCUTS               6048
+#define IDS_VIEWBASEENTRY               6049
+#define IDS_FINDREPLACE                 6050
+#define IDS_CURRENT_VALUE               6051
+#define IDS_NEW_VALUE                   6052
+#define IDS_NO_MATCHES                  6053
+#define IDS_NO_CHANGES_MADE             6054
+#define IDS_CHANGES_MADE                6055
+#define IDS_FINDREPLACERULEHELP         6056
+#define IDS_FINDREPLACENEWTEXTHELP      6057
+#define IDS_FINDREPLACECHANGEHELP       6058
+#define IDS_FINDREPLACESEARCHHELP       6059

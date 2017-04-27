@@ -1088,8 +1088,7 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci, const PWScore &core)
 
     int tests(0);
     bool thisgroup_rc = false;
-    for (auto iter = group.begin();
-         iter != group.end(); iter++) {
+    for (auto iter = group.begin(); iter != group.end(); iter++) {
       const int &num = *iter;
       if (num == -1) // Padding to ensure group size is correct for FT_PWHIST & FT_POLICY
         continue;
@@ -1293,6 +1292,30 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci, const PWScore &core)
 
   // We finished all the groups and haven't found one that is true - exclude entry.
   return false;
+}
+
+bool PWSFilterManager::PassesFiltering(const CItemData &ci, const CItem::FieldType &ft,
+                                       const PWSMatch::MatchRule &rule,
+                                       const StringX &string, const bool &bCaseSensitive)
+{
+  if (ci.GetEntryType() == CItemData::ET_SHORTCUT) {
+    return false;
+  }
+
+  switch (ft) {
+  case FT_NOTES:
+  case FT_URL:
+  case FT_AUTOTYPE:
+  case FT_RUNCMD:
+  case FT_EMAIL:
+  case FT_POLICYNAME:
+    break;
+  default:
+    ASSERT(0);
+    return false;
+  }
+
+  return ci.Matches(string.c_str(), (int)ft, bCaseSensitive ? -rule : rule);
 }
 
 bool PWSFilterManager::PassesEmptyGroupFiltering(const StringX &sxGroup)

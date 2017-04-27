@@ -725,6 +725,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
 
+      if (!bReadOnly && GetNumEntries() > 1) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FINDREPLACE, tc_dummy);
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      }
+
       if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_UNDO, tc_dummy);
@@ -760,8 +765,12 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
 
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_GROUPENTER, tc_dummy);
+      if (!bReadOnly && GetNumEntries() > 1) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FINDREPLACE, tc_dummy);
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      }
+
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_GROUPENTER, tc_dummy);
       
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
@@ -870,6 +879,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       if (!(m_bFilterActive && m_bFindFilterDisplayed)) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                 ID_MENUITEM_FINDELLIPSIS, tc_dummy);
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      }
+
+      if (!bReadOnly && GetNumEntries() > 1) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FINDREPLACE, tc_dummy);
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
 
