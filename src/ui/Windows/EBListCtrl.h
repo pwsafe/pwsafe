@@ -19,7 +19,7 @@ public:
 protected:
   WCHAR *m_pwchTip;
 
-  virtual BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
   virtual void PreSubclassWindow();
 
   //{{AFX_MSG(CEBListCtrl)

@@ -31,7 +31,7 @@ public:
 
   virtual BOOL OnInitDialog();
   virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-  virtual BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   //{{AFX_MSG(CAddEdit_PropertySheet)
   //}}AFX_MSG

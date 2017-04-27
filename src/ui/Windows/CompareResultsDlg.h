@@ -123,7 +123,7 @@ protected:
   // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CCompareResultsDlg)
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   //}}AFX_VIRTUAL
 

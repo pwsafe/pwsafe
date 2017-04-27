@@ -609,7 +609,7 @@ BOOL CWZAdvanced::OnInitDialog()
   cs_ToolTip.LoadString(IDS_ADVANCED_DESELECTALL);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTALL), cs_ToolTip);
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -990,7 +990,7 @@ void CWZAdvanced::OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult
 // Override PreTranslateMessage() so RelayEvent() can be
 // called to pass a mouse message to CPWSOptions's
 // tooltip control for processing.
-BOOL CWZAdvanced::PreTranslateMessage(MSG* pMsg)
+BOOL CWZAdvanced::PreTranslateMessage(MSG *pMsg)
 {
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);

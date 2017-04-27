@@ -26,14 +26,13 @@ public:
 
 protected:
   virtual BOOL OnInitDialog();
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
 
-  DECLARE_MESSAGE_MAP()
-
-public:
   afx_msg void OnCbnSelchangeDCARule();
   afx_msg void OnCbnSelchangeDCA1();
   afx_msg void OnBnClickedOk();
+
+  DECLARE_MESSAGE_MAP()
 
   CComboBox m_cbxRule, m_cbxDCA;
 

@@ -298,7 +298,7 @@ load_error:
   return TRUE;
 }
 
-BOOL CViewAttachmentDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CViewAttachmentDlg::PreTranslateMessage(MSG *pMsg)
 {
   if (m_pToolTipCtrl != NULL) {
     m_pToolTipCtrl->RelayEvent(pMsg);

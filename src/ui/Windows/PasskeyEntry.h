@@ -81,7 +81,7 @@ protected:
   // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CPasskeyEntry)
-  virtual void DoDataExchange(CDataExchange* pDX);
+  virtual void DoDataExchange(CDataExchange *pDX);
   //}}AFX_VIRTUAL
 
   int m_tries;

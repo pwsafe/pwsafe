@@ -19,14 +19,18 @@ public:
   CClearQuestionDlg(CWnd* pParent = NULL);   // standard constructor
 
   enum { IDD = IDD_SECURECLEAR };
-  bool m_dontaskquestion;
+
+  bool AskQuestion() { return !m_dontaskquestion; }
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual void OnCancel();
   virtual void OnOK();
 
   DECLARE_MESSAGE_MAP()
+
+private:
+  bool m_dontaskquestion;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

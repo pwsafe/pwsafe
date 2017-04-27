@@ -133,7 +133,7 @@ private:
   virtual BOOL OnInitDialog();
   virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT *pLResult);
   virtual BOOL OnCmdMsg(UINT uiID, int nCode, void *pExtra, AFX_CMDHANDLERINFO *pHandlerInfo);
-  virtual BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   // Utility - creating the nested controls
   void CreateRtfCtrl();

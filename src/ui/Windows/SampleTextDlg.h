@@ -27,8 +27,9 @@ public:
   CString m_sampletext;
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
+
   //{{AFX_MSG(CSampleTextDlg)
   afx_msg void OnOK();
   //}}AFX_MSG

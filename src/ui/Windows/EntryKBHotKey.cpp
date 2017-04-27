@@ -34,7 +34,7 @@ END_MESSAGE_MAP()
 
 // EntryKBHotKey message handlers
 
-BOOL CEntryKBHotKey::PreTranslateMessage(MSG* pMsg)
+BOOL CEntryKBHotKey::PreTranslateMessage(MSG *pMsg)
 {
   static const wchar_t *wcValidKeys = 
              L"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";

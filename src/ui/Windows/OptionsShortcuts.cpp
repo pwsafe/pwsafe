@@ -229,7 +229,7 @@ BOOL COptionsShortcuts::OnInitDialog()
     m_Help2.ShowWindow(SW_HIDE);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 bool shortcutmaps_equal (MapMenuShortcutsPair p1, MapMenuShortcutsPair p2)
@@ -304,7 +304,7 @@ BOOL COptionsShortcuts::OnApply()
   return COptions_PropertyPage::OnApply();
 }
 
-BOOL COptionsShortcuts::PreTranslateMessage(MSG* pMsg)
+BOOL COptionsShortcuts::PreTranslateMessage(MSG *pMsg)
 {
   RelayToolTipEvent(pMsg);
 

@@ -29,18 +29,20 @@ public:
   enum { IDD = IDD_YUBIKEY };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   
-  DECLARE_MESSAGE_MAP()
   CString m_YubiSN;
   CSecString m_YubiSK;
   CSecEditExtn m_ex_YubiSK;
-public:
+
   afx_msg void OnYubiGenBn();
   afx_msg void OnBnClickedOk();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnHelp();
+
+  DECLARE_MESSAGE_MAP()
+
  private:
   void ReadYubiSN();
   bool IsYubiInserted() const;

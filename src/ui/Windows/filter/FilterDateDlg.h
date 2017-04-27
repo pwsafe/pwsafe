@@ -45,7 +45,7 @@ public:
 
 protected:
   virtual BOOL OnInitDialog();
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
 
   afx_msg void OnCbnSelchangeDateRule();
   afx_msg void OnCancel();

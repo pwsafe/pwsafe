@@ -80,7 +80,7 @@ BOOL CPWPListEntries::OnInitDialog()
   m_PolicyEntries.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
   m_PolicyEntries.SetColumnWidth(2, LVSCW_AUTOSIZE_USEHEADER);
 
-  return FALSE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CPWPListEntries::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult)

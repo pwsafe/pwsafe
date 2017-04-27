@@ -83,7 +83,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Attachment, CAddEdit_PropertyPage)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-BOOL CAddEdit_Attachment::PreTranslateMessage(MSG* pMsg)
+BOOL CAddEdit_Attachment::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
@@ -137,7 +137,7 @@ BOOL CAddEdit_Attachment::OnInitDialog()
 
   m_bInitdone = true;
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 BOOL CAddEdit_Attachment::OnKillActive()

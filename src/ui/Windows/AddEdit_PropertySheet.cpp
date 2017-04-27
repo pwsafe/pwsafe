@@ -203,7 +203,8 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
       GetDlgItem(ID_APPLY_NOW)->EnableWindow(m_bChanged || m_bSymbolsChanged ? TRUE : FALSE);
       break;
   }
-  return TRUE;
+  
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CAddEdit_PropertySheet::SetSymbolsChanged(bool bSymbolsChanged)
@@ -540,7 +541,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
   return TRUE;
 }
 
-BOOL CAddEdit_PropertySheet::PreTranslateMessage(MSG* pMsg)
+BOOL CAddEdit_PropertySheet::PreTranslateMessage(MSG *pMsg)
 {
   // In View mode, there is no 'Cancel' button and 'OK' is renamed 'Close'
   // Make Escape key still work as designed

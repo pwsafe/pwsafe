@@ -218,7 +218,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
 
   WriteReportData();
   UpdateStatusBar();
-  return FALSE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CCompareResultsDlg::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)

@@ -175,7 +175,7 @@ BOOL COptionsMisc::OnInitDialog()
     m_Help3.ShowWindow(SW_HIDE);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
@@ -264,7 +264,7 @@ BOOL COptionsMisc::OnApply()
   return COptions_PropertyPage::OnApply();
 }
 
-BOOL COptionsMisc::PreTranslateMessage(MSG* pMsg)
+BOOL COptionsMisc::PreTranslateMessage(MSG *pMsg)
 {
   RelayToolTipEvent(pMsg);
 

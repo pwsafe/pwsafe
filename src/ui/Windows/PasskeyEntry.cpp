@@ -244,8 +244,6 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     // Reset it
     app.SetHotKeyPressed(false);
     // Ensures focus is on password entry field, where it belongs.
-    // Do NOT use SetFocus in OnInitDialog as it bypasses the Dialog manager
-    //m_pctlPasskey->SetFocus();
     GotoDlgCtrl(m_pctlPasskey);
     return FALSE;
   }
@@ -262,13 +260,11 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   if (m_index == GCP_FIRST && !m_filespec.IsEmpty()) {
     m_MRU_combo.SetEditSel(-1, -1);
     // Ensures focus is on password entry field, where it belongs.
-    // Do NOT use SetFocus in OnInitDialog as it bypasses the Dialog manager
-    //m_pctlPasskey->SetFocus();
     GotoDlgCtrl(m_pctlPasskey);
     return FALSE;
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CPasskeyEntry::OnCreateDb()

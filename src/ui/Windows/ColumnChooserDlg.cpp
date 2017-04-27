@@ -55,7 +55,7 @@ BOOL CColumnChooserDlg::OnInitDialog()
   // Initialise DropTarget
   m_ccListCtrl.Initialize(&m_ccListCtrl);
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CColumnChooserDlg::OnSysCommand(UINT nID, LPARAM lParam)

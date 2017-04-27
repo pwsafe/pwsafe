@@ -36,9 +36,11 @@ CCryptKeyEntry::CCryptKeyEntry(bool isEncrypt, CWnd* pParent)
 BOOL CCryptKeyEntry::OnInitDialog()
 {
   CDialog::OnInitDialog();
+  
   GetDlgItem(IDC_VERIFY)->ShowWindow(m_encrypt);
   GetDlgItem(IDC_CRYPTKEY2)->ShowWindow(m_encrypt);
-  return TRUE;
+  
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CCryptKeyEntry::DoDataExchange(CDataExchange* pDX)

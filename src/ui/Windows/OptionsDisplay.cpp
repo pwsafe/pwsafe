@@ -143,7 +143,6 @@ BOOL COptionsDisplay::OnInitDialog()
   pspin->SetPos(m_PreExpiryWarnDays);
 
   return TRUE;  // return TRUE unless you set the focus to a control
-  // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 LRESULT COptionsDisplay::OnQuerySiblings(WPARAM wParam, LPARAM )
@@ -200,7 +199,7 @@ BOOL COptionsDisplay::OnApply()
   return COptions_PropertyPage::OnApply();
 }
 
-BOOL COptionsDisplay::PreTranslateMessage(MSG* pMsg)
+BOOL COptionsDisplay::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);

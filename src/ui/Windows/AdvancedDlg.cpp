@@ -310,7 +310,7 @@ BOOL CAdvancedDlg::OnInitDialog()
     pws_os::Trace(L"Unable To create Advanced Dialog ToolTip\n");
     delete m_pToolTipCtrl;
     m_pToolTipCtrl = NULL;
-    return TRUE;
+    return TRUE;  // return TRUE unless you set the focus to a control
   }
 
   // Tooltips
@@ -335,7 +335,7 @@ BOOL CAdvancedDlg::OnInitDialog()
   cs_ToolTip.LoadString(IDS_ADVANCED_DESELECTALL);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTALL), cs_ToolTip);
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -663,7 +663,7 @@ void CAdvancedDlg::OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResul
 // Override PreTranslateMessage() so RelayEvent() can be
 // called to pass a mouse message to CPWSOptions's
 // tooltip control for processing.
-BOOL CAdvancedDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CAdvancedDlg::PreTranslateMessage(MSG *pMsg)
 {
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);

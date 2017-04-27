@@ -1663,7 +1663,6 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   INT_PTR rc;
   PWScore export_core;
 
-  CGeneralMsgBox gmb;
   OrderedItemList OIL;
   CString cs_temp;
   std::vector<StringX> vEmptyGroups;
@@ -2025,6 +2024,7 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const UINT nID,
   prpt->EndReport();
   return rc;
 }
+
 
 void DboxMain::OnExportAttachment()
 {

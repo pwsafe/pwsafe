@@ -334,13 +334,17 @@ public:
 
   std::wstring DoMerge(PWScore *pothercore,
                   const bool bAdvanced, CReport *prpt, bool *pbCancel);
+  
   bool DoCompare(PWScore *pothercore,
                  const bool bAdvanced, CReport *prpt, bool *pbCancel);
+  
   void DoSynchronize(PWScore *pothercore,
                      const bool bAdvanced, int &numUpdated, CReport *prpt, bool *pbCancel);
+  
   int DoExportText(const StringX &sx_Filename, const UINT nID,
                    const wchar_t &delimiter, const bool bAdvanced,
                    int &numExported, CReport *prpt);
+  
   int DoExportXML(const StringX &sx_Filename, const UINT nID,
                   const wchar_t &delimiter, const bool bAdvanced,
                   int &numExported, CReport *prpt);
@@ -442,9 +446,10 @@ public:
  protected:
    // ClassWizard generated virtual function overrides
    //{{AFX_VIRTUAL(DboxMain)
+   virtual BOOL PreTranslateMessage(MSG *pMsg);
    virtual BOOL OnInitDialog();
    virtual void OnCancel();
-   virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
+   virtual void DoDataExchange(CDataExchange *pDX);  // DDX/DDV support
    // override following to reset idle timeout on any event
    virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
    //}}AFX_VIRTUAL
@@ -547,8 +552,6 @@ public:
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);
   LRESULT OnApplyEditChanges(WPARAM wParam, LPARAM lParam);
   LRESULT OnDroppedFile(WPARAM wParam, LPARAM lParam);
-
-  BOOL PreTranslateMessage(MSG* pMsg);
 
   void UpdateAlwaysOnTop();
   void ClearAppData(const bool bClearMRE = true);

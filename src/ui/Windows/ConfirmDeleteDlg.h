@@ -20,24 +20,19 @@ public:
       const StringX sxGroup = L"", const StringX sxTitle = L"",
       const StringX sxUser = L"");
 
-private:
   // Dialog Data
   //{{AFX_DATA(CConfirmDeleteDlg)
   enum { IDD = IDD_CONFIRMDELETE_DIALOG };
-  bool m_dontaskquestion;
-  int m_numchildren;
   //}}AFX_DATA
 
   // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CConfirmDeleteDlg)
-
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
   // Generated message map functions
   //{{AFX_MSG(CConfirmDeleteDlg)
   virtual BOOL OnInitDialog();
@@ -48,6 +43,9 @@ protected:
 
 private:
   StringX m_sxGroup, m_sxTitle, m_sxUser;
+
+  bool m_dontaskquestion;
+  int m_numchildren;
 };
 
 //-----------------------------------------------------------------------------

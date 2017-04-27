@@ -26,9 +26,6 @@ public:
   COptions_PropertySheet(UINT nID, CWnd *pParent, const bool bLongPPs);
   ~COptions_PropertySheet();
 
-  virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-  BOOL PreTranslateMessage(MSG* pMsg);
-
   DECLARE_DYNAMIC(COptions_PropertySheet)
 
   MapMenuShortcuts GetMaps() const {return m_pp_shortcuts->GetMaps();}
@@ -61,6 +58,9 @@ public:
                                               m_bStartupShortcutExists;}
   
 protected:
+  virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
+
   st_Opt_master_data m_OPTMD;
 
 private:

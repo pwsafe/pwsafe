@@ -180,7 +180,7 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
       pBtn->SetBitmap(m_CopyPswdBitmap);
   }
   ShowWindow(SW_SHOW);
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 BOOL CPasswordSubsetDlg::PreTranslateMessage(MSG* pMsg)

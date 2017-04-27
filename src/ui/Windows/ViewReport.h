@@ -28,7 +28,7 @@ public:
   enum { IDD = IDD_VIEWREPORT };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
 
   CReport *m_pRpt;

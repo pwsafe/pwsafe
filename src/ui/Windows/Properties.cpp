@@ -98,7 +98,7 @@ BOOL CProperties::OnInitDialog()
     GetDlgItem(IDC_CHANGE_DESCRIPTION)->ShowWindow(SW_HIDE);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 BOOL CProperties::PreTranslateMessage(MSG *pMsg)

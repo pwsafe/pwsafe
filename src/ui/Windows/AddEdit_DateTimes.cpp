@@ -108,7 +108,7 @@ static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
   }
 }
 
-BOOL CAddEdit_DateTimes::PreTranslateMessage(MSG* pMsg)
+BOOL CAddEdit_DateTimes::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
@@ -209,7 +209,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   // Refresh dialog
   m_bInitdone = true;
   UpdateStats();
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 BOOL CAddEdit_DateTimes::OnKillActive()

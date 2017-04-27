@@ -84,9 +84,9 @@ public:
   void SetZoomEditValue(int nPos);
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
-  BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   //{{AFX_MSG(CViewAttachmentDlg)
   afx_msg void OnOK();

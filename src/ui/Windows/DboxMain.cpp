@@ -1282,7 +1282,7 @@ BOOL DboxMain::OnInitDialog()
           sPasskey = dbox_pksetup.GetPassKey();
         else {
           PostQuitMessage(0);
-          return FALSE;
+          return TRUE;  // return TRUE unless you set the focus to a control
         }
 
         m_core.SetCurFile(fname.c_str());
@@ -1295,7 +1295,7 @@ BOOL DboxMain::OnInitDialog()
           cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
           gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
           PostQuitMessage(0); // can we do something better here?
-          return FALSE;
+          return TRUE;  // return TRUE unless you set the focus to a control
         }
       } // first install
     } else
@@ -1306,7 +1306,7 @@ BOOL DboxMain::OnInitDialog()
   // Check if user cancelled
   if (bOOI == FALSE) {
     PostQuitMessage(0);
-    return FALSE;
+    return TRUE;  // return TRUE unless you set the focus to a control
   }
 
   SetInitialDatabaseDisplay();
@@ -2450,7 +2450,7 @@ void DboxMain::OnHelp()
   }
 }
 
-BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
+BOOL DboxMain::PreTranslateMessage(MSG *pMsg)
 {
   // Don't do anything if in AutoType
   if (m_bInAT)
@@ -3126,8 +3126,7 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
         }
       }
     }
-  }
-  else {
+  } else {
     // Just this group - used for Export Group
     const HTREEITEM hNextSibling = m_ctlItemTree.GetNextSiblingItem(hItem);
 
@@ -3167,13 +3166,13 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
   const UINT imenuflags = bOpen ? MF_ENABLED : MF_DISABLED | MF_GRAYED;
 
   // Change Main Menus if a database is Open or not
-  CWnd* pMain = AfxGetMainWnd();
-  CMenu* xmainmenu = pMain->GetMenu();
+  CWnd *pMain = AfxGetMainWnd();
+  CMenu *xmainmenu = pMain->GetMenu();
 
   // Look for "File" menu - no longer language dependent
   int pos = app.FindMenuItem(xmainmenu, ID_FILEMENU);
 
-  CMenu* xfilesubmenu = xmainmenu->GetSubMenu(pos);
+  CMenu *xfilesubmenu = xmainmenu->GetSubMenu(pos);
   if (xfilesubmenu != NULL) {
     // Disable/enable Export and Import menu items
     xfilesubmenu->EnableMenuItem(ID_EXPORTMENU, imenuflags);

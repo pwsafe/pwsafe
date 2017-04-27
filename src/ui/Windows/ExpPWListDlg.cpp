@@ -95,7 +95,7 @@ END_MESSAGE_MAP()
 
 // CExpPWListDlg message handlers
 
-BOOL CExpPWListDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CExpPWListDlg::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
@@ -200,7 +200,7 @@ BOOL CExpPWListDlg::OnInitDialog()
   // Redraw
   m_expPWListCtrl.SetRedraw(TRUE);
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CExpPWListDlg::OnOK()

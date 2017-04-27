@@ -42,7 +42,7 @@ void CSHCTHotKey::OnKillFocus(CWnd *)
   }
 }
 
-BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
+BOOL CSHCTHotKey::PreTranslateMessage(MSG *pMsg)
 {
   // This is all to allow user to add special characters like ENTER, DELETE into
   // their assigned Hotkey
