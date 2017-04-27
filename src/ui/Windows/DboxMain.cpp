@@ -156,7 +156,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_bFindToolBarVisibleAtLock(false), m_bSuspendGUIUpdates(false), m_iNeedRefresh(NONE),
-  m_iDBIndex(0), m_hMutexDBIndex(NULL)
+  m_iDBIndex(0), m_hMutexDBIndex(NULL),
+  m_DBLockedIndexColour(RGB(255, 255, 0)), m_DBUnlockedIndexColour(RGB(255, 255, 0))
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::LOAD_LIBRARY_SYS));
@@ -1379,7 +1380,7 @@ int DboxMain::SetClosedTrayIcon(int &iData, bool bSet)
   return icon;
 }
 
-HICON DboxMain::CreateIcon(const HICON &hIcon, const int &iIndex)
+HICON DboxMain::CreateIcon(const HICON &hIcon, const int &iIndex, const COLORREF clrText)
 {
   CString csValue;
   csValue.Format(L"%2d", iIndex);
@@ -1397,7 +1398,7 @@ HICON DboxMain::CreateIcon(const HICON &hIcon, const int &iIndex)
   LOGFONT lf = { 0 };
   lf.lfHeight = -22;
   lf.lfWeight = FW_NORMAL;
-  lf.lfOutPrecision = PROOF_QUALITY; // OUT_TT_PRECIS;
+  lf.lfOutPrecision = PROOF_QUALITY;
   lf.lfQuality = ANTIALIASED_QUALITY;
   wmemset(lf.lfFaceName, 0, LF_FACESIZE);
   lstrcpy(lf.lfFaceName, L"Arial Black");
@@ -1407,7 +1408,7 @@ HICON DboxMain::CreateIcon(const HICON &hIcon, const int &iIndex)
 
   // Write text - Do NOT use SetTextAlign
   ::SetBkMode(hMemDC, TRANSPARENT);
-  ::SetTextColor(hMemDC, RGB(255, 255, 0));
+  ::SetTextColor(hMemDC, clrText);
   ::TextOut(hMemDC, 0, 0, (LPCWSTR)csValue, 2);
 
   // Set up mask
@@ -1417,7 +1418,7 @@ HICON DboxMain::CreateIcon(const HICON &hIcon, const int &iIndex)
   // Also write text on here - Do NOT use SetTextAlign
   HGDIOBJ hOldMaskFont = ::SelectObject(hMaskDC, hFont);
   ::SetBkMode(hMaskDC, TRANSPARENT);
-  ::SetTextColor(hMaskDC, RGB(255, 255, 0));
+  ::SetTextColor(hMemDC, clrText);
   ::TextOut(hMaskDC, 0, 0, (LPCWSTR)csValue, 2);
 
   HBITMAP hMaskBmp = (HBITMAP)::SelectObject(hMaskDC, hOldMaskBmp);
@@ -1480,7 +1481,8 @@ void DboxMain::SetSystemTrayState(DBSTATE state)
       ::DestroyIcon(m_IndexIcon);
 
       m_IndexIcon = CreateIcon(hIcon, iDBIndex);
-      m_pTrayIcon->SetIcon(m_IndexIcon);
+      COLORREF clrText = state == LOCKED ? m_DBLockedIndexColour : m_DBUnlockedIndexColour;
+      m_IndexIcon = CreateIcon(hIcon, iDBIndex, clrText);
     } else {
       m_pTrayIcon->SetIcon(hIcon);
     }

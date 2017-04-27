@@ -117,9 +117,6 @@
     <ClCompile Include="ExtThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FieldChangesDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="filter\FilterBaseDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -378,9 +375,6 @@
     <ClCompile Include="Subclass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SyncScrollRichEdit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SysColStatic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -531,9 +525,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExtThread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FieldChangesDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="filter\FilterBoolDlg.h">
@@ -792,9 +783,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Subclass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SyncScrollRichEdit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SysColStatic.h">
@@ -1773,6 +1761,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="graphics\unlocked_tray_index.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\checked_black.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\findreplace.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
