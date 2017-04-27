@@ -973,10 +973,22 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         case CItemData::ET_ALIAS:
         case CItemData::ET_SHORTCUT:
           // Allow going to/editing the appropriate base entry
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_GOTOBASEENTRY, tc_dummy); 
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_EDITBASEENTRY, tc_dummy);
+          if (m_bFilterActive) {
+            // If a filter is active, then might not be able to go to
+            // entry's base entry as not in Tree or List view
+            pws_os::CUUID uuidBase = pci->GetBaseUUID();
+            auto iter = m_MapEntryToGUI.find(uuidBase);
+            ASSERT(iter != m_MapEntryToGUI.end());
+            if (iter->second.list_index != -1) {
+              pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                ID_MENUITEM_GOTOBASEENTRY, tc_dummy);
+              pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                ID_MENUITEM_EDITBASEENTRY, tc_dummy);
+            } else {
+              pPopupMenu->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+              pPopupMenu->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
+            }
+          }
          break;
         default:
           ASSERT(0);
@@ -1430,6 +1442,17 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       case CItemData::ET_ALIAS:
       case CItemData::ET_SHORTCUT:
         pPopup->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
+        if (m_bFilterActive) {
+          // If a filter is active, then might not be able to go to
+          // entry's base entry as not in Tree or List view
+          pws_os::CUUID uuidBase = pci->GetBaseUUID();
+          auto iter = m_MapEntryToGUI.find(uuidBase);
+          ASSERT(iter != m_MapEntryToGUI.end());
+          if (iter->second.list_index == -1) {
+            pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+            pPopup->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
+          }
+        }
         break;
       default:
         ASSERT(0);

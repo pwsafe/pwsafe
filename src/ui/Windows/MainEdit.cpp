@@ -2064,6 +2064,21 @@ void DboxMain::OnGotoBaseEntry()
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
 
+    if (m_bFilterActive) {
+      // Although the menu entry may have been removed if the base entry
+      // is not in the view, this won't stop the accelerator key working
+      // as TranslateAccelerator only ignores a menu entry if disabled but
+      // doesn't check that it has been removed.
+
+      // If a filter is active, then might not be able to go to
+      // entry's base entry as not in Tree or List view
+      pws_os::CUUID uuidBase = pci->GetBaseUUID();
+      auto iter = m_MapEntryToGUI.find(uuidBase);
+      ASSERT(iter != m_MapEntryToGUI.end());
+      if (iter->second.list_index == -1)
+        return;
+    }
+
     const CItemData *pbci = GetBaseEntry(pci);
     if (pbci != NULL) {
       DisplayInfo *pdi = GetEntryGUIInfo(*pbci);
