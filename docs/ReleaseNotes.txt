@@ -15,6 +15,11 @@ The ReleaseNotes.html file has links to the relevant tickets/issues.
 
 Bugs fixed in 3.42.2
 ====================
+[1403] Help has been updated to document that an entry's Notes field has a
+size limit of 30,000 characters.
+
+New Features for 3.42.2
+=======================
 None
 
 Bugs fixed in 3.42.1
