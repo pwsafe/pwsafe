@@ -12,6 +12,8 @@
 #include "SHCTHotKey.h"
 #include "SHCTListCtrl.h"
 
+#include "HKModifiers.h"
+
 #include "resource.h"
 
 // SHCTHotKey
@@ -36,9 +38,10 @@ END_MESSAGE_MAP()
 void CSHCTHotKey::OnKillFocus(CWnd *)
 {
   if (m_pParent != NULL) {
-    WORD wVirtualKeyCode, wHKModifiers;
+    WORD wVirtualKeyCode, wHKModifiers, wPWSModifiers;
     GetHotKey(wVirtualKeyCode, wHKModifiers);
-    m_pParent->OnMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers);
+    wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
+    m_pParent->OnMenuShortcutKillFocus(wVirtualKeyCode, wPWSModifiers);
   }
 }
 

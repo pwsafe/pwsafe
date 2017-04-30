@@ -771,9 +771,10 @@ struct shortcut_less {
 
 bool equal_shortcuts(st_prefShortcut a, st_prefShortcut b)
 {
-  return (a.id        == b.id &&
+  return (a.id == b.id &&
           a.siVirtKey == b.siVirtKey &&
-          a.cModifier == b.cModifier);
+          a.cPWSModifier == b.cPWSModifier &&
+          a.Menu_Name == b.Menu_Name);
 }
 
 void PWSprefs::SetPrefShortcuts(const std::vector<st_prefShortcut> &vShortcuts)

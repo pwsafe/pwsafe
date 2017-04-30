@@ -84,10 +84,10 @@ st_prefShortcut MenuItemData::ToPrefShortcut() const
   sc.id = m_menuId;
   wxASSERT_MSG(sc.id != 0, wxT("Trying to save shortcut with NULL menu item id"));
   sc.siVirtKey = ae.GetKeyCode();
-  sc.cModifier = 0;
+  sc.cPWSModifier = 0;
   for (size_t idx = 0; idx < WXSIZEOF(g_modmap); ++idx)
     if ((ae.GetFlags() & g_modmap[idx].wxmod) != 0)
-      sc.cModifier |= g_modmap[idx].prefsmod;
+      sc.cPWSModifier |= g_modmap[idx].prefsmod;
 
   return sc;
 }
@@ -96,7 +96,7 @@ void MenuItemData::SetUserShortcut(const st_prefShortcut& prefAccel, bool setdir
 {
   int flags = 0;
   for (size_t idx = 0; idx < WXSIZEOF(g_modmap); ++idx)
-    if ((prefAccel.cModifier & g_modmap[idx].prefsmod) != 0)
+    if ((prefAccel.cPWSModifier & g_modmap[idx].prefsmod) != 0)
       flags |= g_modmap[idx].wxmod;
 
   SetUserShortcut( wxAcceleratorEntry(flags, prefAccel.siVirtKey, prefAccel.id), setdirty );
@@ -440,7 +440,7 @@ void PWSMenuShortcuts::ReadApplyUserShortcuts()
     }
     else {
       pws_os::Trace(L"Could not find menu item id=[%d], for saved shortcut {key=[%d], mods=[%d]}",
-                    usrItr->id, usrItr->siVirtKey, usrItr->cModifier);
+                    usrItr->id, usrItr->siVirtKey, usrItr->cPWSModifier);
     }
   }
 }
