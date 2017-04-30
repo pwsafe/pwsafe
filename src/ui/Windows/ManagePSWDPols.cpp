@@ -32,7 +32,8 @@ CManagePSWDPols::CManagePSWDPols(CWnd* pParent, const bool bLongPPs)
   : CPWDialog(CManagePSWDPols::IDD, pParent),
   m_iSelectedItem(-1), m_bChanged(false), m_iSortEntriesIndex(0),
   m_bSortEntriesAscending(true), m_iSortNamesIndex(0), m_bSortNamesAscending(true),
-  m_bViewPolicy(true), m_bLongPPs(bLongPPs), m_iundo_pos(-1)
+  m_bViewPolicy(true), m_bLongPPs(bLongPPs), m_iundo_pos(-1), m_pCopyBtn(NULL),
+  m_bCopyPasswordEnabled(false), m_bImageLoaded(FALSE), m_bDisabledImageLoaded(FALSE)
 {
   ASSERT(pParent != NULL);
 
@@ -48,7 +49,11 @@ CManagePSWDPols::CManagePSWDPols(CWnd* pParent, const bool bLongPPs)
 
 CManagePSWDPols::~CManagePSWDPols()
 {
-  m_CopyPswdBitmap.Detach();
+  if (m_bImageLoaded)
+    m_CopyPswdBitmap.Detach();
+
+  if (m_bDisabledImageLoaded)
+    m_DisabledCopyPswdBitmap.Detach();
 }
 
 void CManagePSWDPols::DoDataExchange(CDataExchange* pDX)
@@ -88,6 +93,8 @@ END_MESSAGE_MAP()
 BOOL CManagePSWDPols::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
+
+  m_pCopyBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
 
   if (m_bReadOnly) {
     GetDlgItem(IDC_NEW)->EnableWindow(FALSE);
@@ -210,30 +217,39 @@ BOOL CManagePSWDPols::OnInitDialog()
     GetDlgItem(IDC_NEW)->EnableWindow(FALSE);
 
   // Load bitmap
-  BOOL brc;
   UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
     IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
 
-  brc = m_CopyPswdBitmap.Attach(::LoadImage(
+  m_bImageLoaded = m_CopyPswdBitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
                   (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
   
-  ASSERT(brc);
-
-  if (brc) {
+  ASSERT(m_bImageLoaded);
+  if (m_bImageLoaded) {
     FixBitmapBackground(m_CopyPswdBitmap);
-    CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
-    ASSERT(pBtn != NULL);
-    if (pBtn != NULL)
-      pBtn->SetBitmap(m_CopyPswdBitmap);
   }
+
+  nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
+    IDB_COPYPASSWORD_NEW_D : IDB_COPYPASSWORD_CLASSIC_D;
+
+  m_bDisabledImageLoaded = m_DisabledCopyPswdBitmap.Attach(
+    ::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+      MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+      (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+
+  ASSERT(m_bDisabledImageLoaded);
+  if (m_bDisabledImageLoaded) {
+    FixBitmapBackground(m_DisabledCopyPswdBitmap);
+    m_pCopyBtn->SetBitmap(m_DisabledCopyPswdBitmap);
+  }
+
   // No changes yet
   GetDlgItem(IDC_UNDO)->EnableWindow(FALSE);
   GetDlgItem(IDC_REDO)->EnableWindow(FALSE);
 
   // Set focus on the policy names CListCtrl and so return FALSE
-  m_PolicyNames.SetFocus();
+  GotoDlgCtrl(GetDlgItem(IDC_POLICYLIST));
   return FALSE;
 }
 
@@ -255,6 +271,17 @@ BOOL CManagePSWDPols::PreTranslateMessage(MSG *pMsg)
       m_pToolTipCtrl->Activate(TRUE);
       m_pToolTipCtrl->RelayEvent(&msg);
     }
+  }
+
+  // Don't even look like it was pressed if it should be disabled
+  if (pMsg->message == WM_LBUTTONDOWN && pMsg->hwnd == m_pCopyBtn->GetSafeHwnd() &&
+    !m_bCopyPasswordEnabled) {
+    return TRUE;
+  }
+
+  // Don't even process double click - looks bad
+  if (pMsg->message == WM_LBUTTONDBLCLK && pMsg->hwnd == m_pCopyBtn->GetSafeHwnd()) {
+    return TRUE;
   }
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
@@ -279,6 +306,7 @@ BOOL CManagePSWDPols::PreTranslateMessage(MSG *pMsg)
       // Tell Windows we have processed it
       return TRUE;
     }
+
     if (m_bRedoShortcut && pMsg->wParam == m_siRedoVirtKey) {
       if (((m_cRedoModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL &&
           (GetKeyState(VK_CONTROL) & 0x8000) == 0) || 
@@ -576,10 +604,18 @@ void CManagePSWDPols::OnGeneratePassword()
   m_password = passwd.c_str();
   m_ex_password.SetWindowText(m_password);
   m_ex_password.Invalidate();
+
+  m_bCopyPasswordEnabled = m_password.GetLength() > 0;
+
+  // Enable/Disable Copy to Clipboard
+  m_pCopyBtn->SetBitmap(m_bCopyPasswordEnabled ? m_CopyPswdBitmap : m_DisabledCopyPswdBitmap);
 }
 
 void CManagePSWDPols::OnCopyPassword()
 {
+  if (!m_bCopyPasswordEnabled)
+    return;
+
   UpdateData(TRUE);
 
   GetMainDlg()->SetClipboardData(m_password);
