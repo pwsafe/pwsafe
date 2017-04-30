@@ -148,7 +148,6 @@ private:
   bool m_bInitdone;
   bool m_bUsingNotesExternalEditor;
   int m_iPointSize;
-  int m_iLineCount;
 
   CBitmap m_CopyPswdBitmap;
 };
