@@ -1043,12 +1043,21 @@ CString CPWTreeCtrlX::GetGroup(HTREEITEM hItem)
   if (hItem == TVI_ROOT)
     return retval;
 
-  while (hItem != NULL) {
-    nodeText = GetItemText(hItem);
+  HTREEITEM hi(hItem);
+
+  // Determine if an entry - if so - ignore first item text which will
+  // be the entry's title and potentially its username and password
+  if (IsLeaf(hi)) {
+    hi = GetParentItem(hi);
+  }
+
+  while (hi != NULL) {
+    nodeText = GetItemText(hi);
     if (!retval.IsEmpty())
       nodeText += GROUP_SEP;
+
     retval = nodeText + retval;
-    hItem = GetParentItem(hItem);
+    hi = GetParentItem(hi);
   }
   return retval;
 }
@@ -1203,6 +1212,7 @@ bool CPWTreeCtrlX::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTRE
   } else {
     // Group processing
     // If original group was empty, need to update the vector of empty groups
+    // UNLESS that group already exists as a non-empty group
     CSecString sOldGroup(GetGroup(hitemDrag));
     if (app.GetMainDlg()->IsEmptyGroup(sOldGroup)) {
       CSecString sNewGroup, DropPrefix;
@@ -1216,8 +1226,12 @@ bool CPWTreeCtrlX::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTRE
       else
         sNewGroup = DropPrefix + CSecString(GROUP_SEP2) + CSecString(GetItemText(hitemDrag));
 
-      pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(),
-        sOldGroup, sNewGroup, DBEmptyGroupsCommand::EG_RENAME));
+      // We mustn't rename an empty group if it already exists as a non-empty group
+      auto iter = app.GetMainDlg()->m_mapGroupToTreeItem.find(sNewGroup);
+      if (iter == app.GetMainDlg()->m_mapGroupToTreeItem.end()) {
+        pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(),
+          sOldGroup, sNewGroup, DBEmptyGroupsCommand::EG_RENAME));
+      }
     }
   }
 

@@ -80,7 +80,9 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
 
   m_password = m_password2 = M_realpassword();
 
-  if (M_notes().GetLength() > MAXTEXTCHARS) {
+  if ((!M_pcore()->IsReadOnly() && M_protected() == 0) && 
+      M_notes().GetLength() > MAXTEXTCHARS) {
+    // Only truncate if in Edit mode
     M_notes() = M_notes().Left(MAXTEXTCHARS);
 
     CGeneralMsgBox gmb;
@@ -1484,7 +1486,8 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
   // Close file before invoking editor
   fclose(fd);
 
-  if (sNewNotes.length() > MAXTEXTCHARS) {
+  if ((!M_pcore()->IsReadOnly() && M_protected() == 0) &&
+      sNewNotes.length() > MAXTEXTCHARS) {
     sNewNotes = sNewNotes.substr(0, MAXTEXTCHARS);
 
     CGeneralMsgBox gmb;
