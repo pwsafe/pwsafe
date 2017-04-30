@@ -880,7 +880,7 @@ void DboxMain::OnDelete()
       }
     }
 
-    // Check that it wasn't the top entry in the tree (can't select next)
+    // Check that it wasn't the top entry in the tree (can't select previous)
     HTREEITEM hPrevSelectedItem = m_ctlItemTree.GetNextItem(hStartItem, TVGN_PREVIOUSVISIBLE);
     if (hPrevSelectedItem != NULL) {
       bSelectPrev = true;
@@ -932,7 +932,7 @@ void DboxMain::OnDelete()
           m_TreeViewGroup = L"";
 
           ChangeOkUpdate();
-          goto Seclect_Next_Prev;
+          goto Select_Next_Prev;
         }
       } else {
         pci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
@@ -1016,7 +1016,7 @@ void DboxMain::OnDelete()
     ChangeOkUpdate();
   }
 
-Seclect_Next_Prev:
+Select_Next_Prev:
   // Now reselect the next/previous item
   CItemData *pci_select(NULL);
   DisplayInfo *pdi;
