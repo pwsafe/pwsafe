@@ -1099,6 +1099,7 @@
     <Image Include="graphics\empty_disabled.bmp" />
     <Image Include="graphics\question_mark.bmp" />
     <Image Include="graphics\red_exclamation.bmp" />
+    <Image Include="graphics\toolbar\classic\copypassword_disabled.bmp" />
     <Image Include="graphics\toolbar\classic\exportDB.bmp" />
     <Image Include="graphics\toolbar\classic\exportV1.bmp" />
     <Image Include="graphics\toolbar\classic\exportV2.bmp" />

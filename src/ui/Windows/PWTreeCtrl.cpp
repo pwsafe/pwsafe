@@ -1043,12 +1043,21 @@ CString CPWTreeCtrlX::GetGroup(HTREEITEM hItem)
   if (hItem == TVI_ROOT)
     return retval;
 
-  while (hItem != NULL) {
-    nodeText = GetItemText(hItem);
+  HTREEITEM hi(hItem);
+
+  // Determine if an entry - if so - ignore first item text which will
+  // be the entry's title and potentially its username and password
+  if (IsLeaf(hi)) {
+    hi = GetParentItem(hi);
+  }
+
+  while (hi != NULL) {
+    nodeText = GetItemText(hi);
     if (!retval.IsEmpty())
       nodeText += GROUP_SEP;
+
     retval = nodeText + retval;
-    hItem = GetParentItem(hItem);
+    hi = GetParentItem(hi);
   }
   return retval;
 }
