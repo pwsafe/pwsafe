@@ -90,12 +90,11 @@ void SystemTray::SetTrayStatus(TrayStatus status)
 {
   m_status = status;
 
-#if wxCHECK_VERSION(2,9,0)
-  if (!wxTaskBarIcon::IsAvailable())
-    return;
-#endif
-
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+#if wxCHECK_VERSION(2,9,0)
+    if (!wxTaskBarIcon::IsAvailable())
+      return;
+#endif
      switch(status) {
        case TRAY_CLOSED:
          int closedIconColour;

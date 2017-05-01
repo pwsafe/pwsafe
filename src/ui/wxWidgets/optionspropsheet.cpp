@@ -803,10 +803,12 @@ void COptions::PrefsToPropSheet()
   m_sysmaxREitemsSB->SetValue(prefs->GetPref(PWSprefs::MaxREItems));
   m_sysusesystrayCB->SetValue(prefs->GetPref(PWSprefs::UseSystemTray));
   m_systrayclosediconcolourRB->SetSelection(prefs->GetPref(PWSprefs::ClosedTrayIconColour));
+#if 0 // wxTaskBarIcon::IsAvailable() Segfaults under Fedora25
   if (!wxTaskBarIcon::IsAvailable()) {
     m_systrayWarning->Show();
     Layout();
   }
+#endif
   m_sysstartup = false; // XXX TBD
   m_sysmaxmru = prefs->GetPref(PWSprefs::MaxMRUItems);
   m_sysmruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
