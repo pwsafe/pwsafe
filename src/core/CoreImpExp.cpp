@@ -1392,6 +1392,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         rpt.WriteLine(sxTemp.c_str());
         numshortcutsremoved++;
       }
+
       if (m_iAppHotKey == iKBShortcut) {
         // Remove it
         ci_temp.SetKBShortcut(0);
