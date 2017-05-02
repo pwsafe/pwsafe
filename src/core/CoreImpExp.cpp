@@ -938,7 +938,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 #undef HDR_MAP_ENTRY2
     };
     
-    // make sure all elements are there
+  // make sure all elements are there
   static_assert((NumberOf(fieldMap) == NUMFIELDS), "Mismatch between fieldMap size and NUMFIELDS");
 
   to = 0;
