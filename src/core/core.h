@@ -71,6 +71,7 @@
 #define IDSC_FLDNMSHIFTDCA              3071
 #define IDSC_FLDNMPWPOLICYNAME          3072
 #define IDSC_FLDNMKBSHORTCUT            3073
+#define IDSC_FLDNMATTREF                3074
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231
