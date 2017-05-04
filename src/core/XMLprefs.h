@@ -25,6 +25,12 @@
 //    DeleteSetting()s, Store(), Unlock()
 /////////////////////////////////////////////////////////////////////////////
 
+// For preferences that have attributes
+struct st_prefAttribs {
+  stringT name;
+  stringT value;
+};
+
 class CXMLprefs
 {
   // Construction & Destruction
@@ -50,6 +56,11 @@ public:
   int Set(const stringT &csBaseKeyName, const stringT &csValueName,
           const stringT &csValue);
 
+  int GetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName,
+                        int iDefaultValue);
+  int SetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName,
+                        const int &iValue);
+
   std::vector<st_prefShortcut> GetShortcuts(const stringT &csBaseKeyName);
   int SetShortcuts(const stringT &csBaseKeyName, 
                    std::vector<st_prefShortcut> v_shortcuts);
@@ -71,7 +82,8 @@ public:
         XML_SAVE_FAILED};
 
 private:
-  int SetPreference(const stringT &sPath, const stringT &sValue);
+  int SetPreference(const stringT &sPath, const stringT &sValue,
+                    std::vector<st_prefAttribs> *pvprefAttribs = NULL);
 
   pugi::xml_document *m_pXMLDoc;
   stringT m_csConfigFile;

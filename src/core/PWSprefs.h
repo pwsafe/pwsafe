@@ -41,7 +41,7 @@ extern int s_cfgLockCount;
 struct st_prefShortcut {
   unsigned int id;
   unsigned short int siVirtKey;
-  unsigned char cModifier;
+  unsigned char cPWSModifier;
   stringT Menu_Name;
 };
 

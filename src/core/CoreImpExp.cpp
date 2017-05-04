@@ -580,14 +580,18 @@ int PWScore::WriteXMLFile(const StringX &filename,
     }
 
     ostringstreamT os;
-    os << "\t<EmptyGroups>" << endl;
-    for (size_t n = 0; n < vsubemptygroups.size(); n++) {
-      stringT sTemp = PWSUtil::GetSafeXMLString(vsubemptygroups[n]);
-      os << "\t\t<EGName>" << sTemp << "</EGName>" << endl;
+
+    // Don't write out XML empty groups if there aren't any!
+    if (!vsubemptygroups.empty()) {
+      os << "\t<EmptyGroups>" << endl;
+      for (size_t n = 0; n < vsubemptygroups.size(); n++) {
+        stringT sTemp = PWSUtil::GetSafeXMLString(vsubemptygroups[n]);
+        os << "\t\t<EGName>" << sTemp << "</EGName>" << endl;
+      }
+      os << "\t</EmptyGroups>" << endl << endl;
+      conv.ToUTF8(os.str().c_str(), utf8, utf8Len);
+      ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
     }
-    os << "\t</EmptyGroups>" << endl << endl;
-    conv.ToUTF8(os.str().c_str(), utf8, utf8Len);
-    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
   }
 
   bool bStartComment(false);
@@ -1388,6 +1392,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         rpt.WriteLine(sxTemp.c_str());
         numshortcutsremoved++;
       }
+
       if (m_iAppHotKey == iKBShortcut) {
         // Remove it
         ci_temp.SetKBShortcut(0);

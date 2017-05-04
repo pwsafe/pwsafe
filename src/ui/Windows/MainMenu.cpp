@@ -45,9 +45,9 @@ struct CreateAccelTable {
   {
     if (p.second.siVirtKey != 0 && p.second.siVirtKey != m_ucAutotypeKey) {
       m_pacceltbl->fVirt = FVIRTKEY |
-               ((p.second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL ? FCONTROL : 0) |
-               ((p.second.cModifier & HOTKEYF_ALT)     == HOTKEYF_ALT     ? FALT     : 0) |
-               ((p.second.cModifier & HOTKEYF_SHIFT)   == HOTKEYF_SHIFT   ? FSHIFT   : 0);
+               ((p.second.cPWSModifier & PWS_HOTKEYF_CONTROL) == PWS_HOTKEYF_CONTROL ? FCONTROL : 0) |
+               ((p.second.cPWSModifier & PWS_HOTKEYF_ALT)     == PWS_HOTKEYF_ALT     ? FALT     : 0) |
+               ((p.second.cPWSModifier & PWS_HOTKEYF_SHIFT)   == PWS_HOTKEYF_SHIFT   ? FSHIFT   : 0);
       m_pacceltbl->key = (WORD)p.second.siVirtKey;
       m_pacceltbl->cmd = (WORD)p.first;
       m_pacceltbl++;
@@ -144,7 +144,8 @@ void DboxMain::SetUpInitialMenuStrings()
   UINT excludedMenuItems[] = {
   // Add user Excluded Menu Items - anything that is a Popup Menu
     ID_FILEMENU, ID_EXPORTMENU, ID_IMPORTMENU, ID_EDITMENU,
-    ID_VIEWMENU, ID_SUBVIEWMENU, ID_FILTERMENU, ID_CHANGEFONTMENU, ID_REPORTSMENU,
+    ID_VIEWMENU, ID_SUBVIEWMENU, ID_FILTERMENU,
+    ID_CHANGEFONTMENU, ID_REPORTSMENU,
     ID_MANAGEMENU, ID_LANGUAGEMENU, ID_HELPMENU, ID_FINDMENU,
     ID_EXPORTENTMENU, ID_EXPORTGROUPMENU,
 
@@ -186,7 +187,7 @@ void DboxMain::SetUpInitialMenuStrings()
 
   st_MenuShortcut st_mst;
   st_mst.siVirtKey;
-  st_mst.cModifier = HOTKEYF_ALT;
+  st_mst.cPWSModifier = PWS_HOTKEYF_ALT;
 
   for (UINT ui = 0; ui < uiCount; ui++) {
     SecureZeroMemory(tcMenuString, sizeof(tcMenuString));
@@ -213,17 +214,17 @@ void DboxMain::SetUpInitialMenuStrings()
   // Add 3 special keys F1 (for Help), Ctrl+Q/Alt+F4 (Exit)
   st_mst.nControlID = ID_MENUITEM_HELP;
   st_mst.siVirtKey = VK_F1;
-  st_mst.cModifier = 0;
+  st_mst.cPWSModifier = 0;
   m_ReservedShortcuts.push_back(st_mst);
 
   st_mst.nControlID = ID_MENUITEM_EXIT;
   st_mst.siVirtKey = 'Q';
-  st_mst.cModifier = HOTKEYF_CONTROL;
+  st_mst.cPWSModifier = PWS_HOTKEYF_CONTROL;
   m_ReservedShortcuts.push_back(st_mst);
 
   st_mst.nControlID = ID_MENUITEM_EXIT;
   st_mst.siVirtKey = VK_F4;
-  st_mst.cModifier = HOTKEYF_ALT;
+  st_mst.cPWSModifier = PWS_HOTKEYF_ALT;
   m_ReservedShortcuts.push_back(st_mst);
 
   // Now get all other Menu items
@@ -334,11 +335,11 @@ void DboxMain::SetUpInitialMenuStrings()
       if (iter != m_MapMenuShortcuts.end()) {
         iter->second.siDefVirtKey = iter->second.siVirtKey = 
           (unsigned char)paccel->key;
-          iter->second.cDefModifier = iter->second.cModifier =
-          ((paccel->fVirt & FCONTROL) == FCONTROL ? HOTKEYF_CONTROL : 0) |
-          ((paccel->fVirt & FALT)     == FALT     ? HOTKEYF_ALT     : 0) |
-          ((paccel->fVirt & FSHIFT)   == FSHIFT   ? HOTKEYF_SHIFT   : 0) |
-          (IsExtended((int)paccel->key)           ? HOTKEYF_EXT     : 0);
+          iter->second.cDefPWSModifier = iter->second.cPWSModifier =
+          ((paccel->fVirt & FCONTROL) == FCONTROL ? PWS_HOTKEYF_CONTROL : 0) |
+          ((paccel->fVirt & FALT)     == FALT     ? PWS_HOTKEYF_ALT     : 0) |
+          ((paccel->fVirt & FSHIFT)   == FSHIFT   ? PWS_HOTKEYF_SHIFT   : 0) |
+          (IsExtended((int)paccel->key)           ? PWS_HOTKEYF_EXT     : 0);
       }
       paccel++;
     }
@@ -352,15 +353,7 @@ void DboxMain::SetUpInitialMenuStrings()
   // change shortcuts as per preferences
   std::vector<st_prefShortcut> vShortcuts(PWSprefs::GetInstance()->GetPrefShortcuts());
 
-  // We need to convert from PWS to Hotkey modifiers
-  for (size_t i = 0; i < vShortcuts.size(); i++) {
-    WORD wPWSModifiers = vShortcuts[i].cModifier;
-    // Translate from CHotKeyCtrl to PWS modifiers
-    WORD wHKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
-    vShortcuts[i].cModifier = (unsigned char)wHKModifiers;
-  }
-      
-  size_t N = vShortcuts.size();
+  const size_t N = vShortcuts.size();
   for (size_t i = 0; i < N; i++) {
     const st_prefShortcut &stxst = vShortcuts[i];
     // User should not have these sub-entries in their config file
@@ -395,7 +388,7 @@ void DboxMain::SetUpInitialMenuStrings()
     // Check not already in use (ignore if deleting current shortcut)
     if (stxst.siVirtKey != 0) {
       st_mst.siVirtKey = stxst.siVirtKey;
-      st_mst.cModifier = stxst.cModifier;
+      st_mst.cPWSModifier = stxst.cPWSModifier;
       already_inuse inuse(st_mst);
       inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
                                 m_MapMenuShortcuts.end(),
@@ -408,10 +401,10 @@ void DboxMain::SetUpInitialMenuStrings()
     }
 
     if ((iter->second.siVirtKey  != stxst.siVirtKey  ||
-         iter->second.cModifier != stxst.cModifier)) {
+         iter->second.cPWSModifier != stxst.cPWSModifier)) {
       // User changed or added a shortcut
       iter->second.siVirtKey  = stxst.siVirtKey;
-      iter->second.cModifier = stxst.cModifier;
+      iter->second.cPWSModifier = stxst.cPWSModifier;
     }
   }
 
@@ -973,10 +966,22 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         case CItemData::ET_ALIAS:
         case CItemData::ET_SHORTCUT:
           // Allow going to/editing the appropriate base entry
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_GOTOBASEENTRY, tc_dummy); 
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_EDITBASEENTRY, tc_dummy);
+          if (m_bFilterActive) {
+            // If a filter is active, then might not be able to go to
+            // entry's base entry as not in Tree or List view
+            pws_os::CUUID uuidBase = pci->GetBaseUUID();
+            auto iter = m_MapEntryToGUI.find(uuidBase);
+            ASSERT(iter != m_MapEntryToGUI.end());
+            if (iter->second.list_index != -1) {
+              pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                ID_MENUITEM_GOTOBASEENTRY, tc_dummy);
+              pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                ID_MENUITEM_EDITBASEENTRY, tc_dummy);
+            } else {
+              pPopupMenu->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+              pPopupMenu->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
+            }
+          }
          break;
         default:
           ASSERT(0);
@@ -1430,6 +1435,17 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       case CItemData::ET_ALIAS:
       case CItemData::ET_SHORTCUT:
         pPopup->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
+        if (m_bFilterActive) {
+          // If a filter is active, then might not be able to go to
+          // entry's base entry as not in Tree or List view
+          pws_os::CUUID uuidBase = pci->GetBaseUUID();
+          auto iter = m_MapEntryToGUI.find(uuidBase);
+          ASSERT(iter != m_MapEntryToGUI.end());
+          if (iter->second.list_index == -1) {
+            pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+            pPopup->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
+          }
+        }
         break;
       default:
         ASSERT(0);
@@ -1513,11 +1529,11 @@ void DboxMain::SetupSpecialShortcuts()
     iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEGROUP);
     iter_group->second.SetKeyFlags(iter->second);
 
-    m_wpDeleteMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ?
+    m_wpDeleteMsg = ((iter->second.cPWSModifier & PWS_HOTKEYF_ALT) == PWS_HOTKEYF_ALT) ?
                            WM_SYSKEYDOWN : WM_KEYDOWN;
     m_wpDeleteKey = iter->second.siVirtKey;
-    m_bDeleteCtrl = (iter->second.cModifier  & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
-    m_bDeleteShift = (iter->second.cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
+    m_bDeleteCtrl = (iter->second.cPWSModifier  & PWS_HOTKEYF_CONTROL) == PWS_HOTKEYF_CONTROL;
+    m_bDeleteShift = (iter->second.cPWSModifier & PWS_HOTKEYF_SHIFT) == PWS_HOTKEYF_SHIFT;
   } else {
     m_wpDeleteKey = 0;
   }
@@ -1532,11 +1548,11 @@ void DboxMain::SetupSpecialShortcuts()
     iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEGROUP);
     iter_group->second.SetKeyFlags(iter->second);
 
-    m_wpRenameMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ?
+    m_wpRenameMsg = ((iter->second.cPWSModifier & PWS_HOTKEYF_ALT) == PWS_HOTKEYF_ALT) ?
                            WM_SYSKEYDOWN : WM_KEYDOWN;
     m_wpRenameKey = iter->second.siVirtKey;
-    m_bRenameCtrl = (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
-    m_bRenameShift = (iter->second.cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
+    m_bRenameCtrl = (iter->second.cPWSModifier & PWS_HOTKEYF_CONTROL) == PWS_HOTKEYF_CONTROL;
+    m_bRenameShift = (iter->second.cPWSModifier & PWS_HOTKEYF_SHIFT) == PWS_HOTKEYF_SHIFT;
   } else {
     m_wpRenameKey = 0;
   }
@@ -1546,13 +1562,13 @@ void DboxMain::SetupSpecialShortcuts()
   
   // Save for CTreeCtrl & CListCtrl PreTranslateMessage
   if (iter != m_MapMenuShortcuts.end()) {
-    m_wpAutotypeDNMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ?
+    m_wpAutotypeDNMsg = ((iter->second.cPWSModifier & PWS_HOTKEYF_ALT) == PWS_HOTKEYF_ALT) ?
                                WM_SYSKEYDOWN : WM_KEYDOWN;
-    m_wpAutotypeUPMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ?
+    m_wpAutotypeUPMsg = ((iter->second.cPWSModifier & PWS_HOTKEYF_ALT) == PWS_HOTKEYF_ALT) ?
                                WM_SYSKEYUP : WM_KEYUP;
     m_wpAutotypeKey = iter->second.siVirtKey;
-    m_bAutotypeCtrl = (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
-    m_bAutotypeShift = (iter->second.cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
+    m_bAutotypeCtrl = (iter->second.cPWSModifier & PWS_HOTKEYF_CONTROL) == PWS_HOTKEYF_CONTROL;
+    m_bAutotypeShift = (iter->second.cPWSModifier & PWS_HOTKEYF_SHIFT) == PWS_HOTKEYF_SHIFT;
   } else {
     m_wpAutotypeKey = 0;
   }
@@ -1591,7 +1607,7 @@ bool DboxMain::ProcessLanguageMenu(CMenu *pPopupMenu)
 }
 
 const unsigned int DboxMain::GetMenuShortcut(const unsigned short int &siVirtKey,
-                                             const unsigned char &cModifier,
+                                             const unsigned char &cPWSModifier,
                                              StringX &sxMenuItemName)
 {
   unsigned int nControlID(0);
@@ -1600,7 +1616,7 @@ const unsigned int DboxMain::GetMenuShortcut(const unsigned short int &siVirtKey
 
   st_MenuShortcut st_mst;
   st_mst.siVirtKey = siVirtKey;
-  st_mst.cModifier = cModifier;
+  st_mst.cPWSModifier = cPWSModifier;
   
   inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
                             m_MapMenuShortcuts.end(),

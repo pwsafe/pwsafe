@@ -793,4 +793,7 @@
 #define IDS_LIST_OF_SHORTCUTS           6045
 #define IDS_EXT_EDITOR_ACTIVE           6046
 #define IDS_CANCEL_EXT_EDITOR           6047
-#define IDS_WSSLCT_FILTERED             6048
+#define IDS_PASSWORDCOPIED              6048
+#define IDS_COPYPASSWORDHELP1           6049
+#define IDS_COPYPASSWORDHELP2           6050
+#define IDS_WSSLCT_FILTERED             6051

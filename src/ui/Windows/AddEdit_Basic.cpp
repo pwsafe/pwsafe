@@ -80,7 +80,9 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
 
   m_password = m_password2 = M_realpassword();
 
-  if (M_notes().GetLength() > MAXTEXTCHARS) {
+  if ((!M_pcore()->IsReadOnly() && M_protected() == 0) && 
+      M_notes().GetLength() > MAXTEXTCHARS) {
+    // Only truncate if in Edit mode
     M_notes() = M_notes().Left(MAXTEXTCHARS);
 
     CGeneralMsgBox gmb;
@@ -422,8 +424,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
   m_ex_notes.GetDefaultCharFormat(cf);
   ASSERT((cf.dwMask & CFM_SIZE) == CFM_SIZE);
   m_iPointSize = cf.yHeight / 20;
-
-  m_iLineCount = m_ex_notes.GetLineCount();
 
   // Load copy password bitmap
   UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
@@ -1080,13 +1080,6 @@ void CAddEdit_Basic::OnENChangeNotes()
       return;
   }
 
-  // Try to scroll as lines added or deleted
-  int iLineCount = m_ex_notes.GetLineCount();
-  if (m_iLineCount != iLineCount) {
-    m_ex_notes.LineScroll(iLineCount - m_iLineCount);
-  }
-  m_iLineCount = iLineCount;
-
   m_ae_psh->SetChanged(true);
   m_ae_psh->SetNotesChanged(true); // Needed if Notes field is long and will be truncated
   UpdateData(TRUE);
@@ -1484,7 +1477,8 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
   // Close file before invoking editor
   fclose(fd);
 
-  if (sNewNotes.length() > MAXTEXTCHARS) {
+  if ((!M_pcore()->IsReadOnly() && M_protected() == 0) &&
+      sNewNotes.length() > MAXTEXTCHARS) {
     sNewNotes = sNewNotes.substr(0, MAXTEXTCHARS);
 
     CGeneralMsgBox gmb;

@@ -15,6 +15,21 @@ The ReleaseNotes.html file has links to the relevant tickets/issues.
 
 Bugs fixed in 3.42.2
 ====================
+[1409] An entry is now correctly re-selected after editing if the preference
+"Save database immediately after any change" is disabled.
+[1403] Help has been updated to document that an entry's Notes field has a
+size limit of 30,000 characters.
+[1402] Group image is now correct after dragging an empty sub-group to the next
+higher level.
+[1400] The Toolbar now correctly disables buttons when a Group is selected.
+[1401] After deleting an entry, the next visible entry (if present) is
+selected. If not present, then the previous entry (if present) will be selected.
+[1399] A disabled image is now shown when no characters to copy are available.
+This has also been implemented wherever the "Copy Password" button is used outside
+the Toolbar.
+
+New Features for 3.42.2
+=======================
 None
 
 New Features for 3.42.2

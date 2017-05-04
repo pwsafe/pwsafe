@@ -1736,5 +1736,8 @@
     <Image Include="graphics\toolbar\classic\lock_database.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="graphics\toolbar\classic\copypassword_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

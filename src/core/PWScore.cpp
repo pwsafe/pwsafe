@@ -705,7 +705,7 @@ struct ExportRecordWriter {
       StringX sx_exported;
       Format(sx_exported, GROUPTITLEUSERINCHEVRONS,
         item.GetGroup().c_str(), item.GetTitle().c_str(), item.GetUser().c_str());
-      m_pRpt->WriteLine(sx_exported.c_str(), false);
+      m_pRpt->WriteLine(sx_exported.c_str(), true);
     }
   }
 
@@ -2130,7 +2130,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
            uc < static_cast<unsigned char>(CItem::LAST_DATA); uc++) {
         if (CItemData::IsTextField(uc)) {
           StringX sxvalue = ci.GetFieldValue(static_cast<CItemData::FieldType>(uc));
-          if (sxvalue.length() > iMAXCHARS) {
+          if (sxvalue.length() > iMAXCHARS && (!m_bIsReadOnly && !ci.IsProtected())) {
             bEntryHasBigField = true;
             //  We don't truncate the field, but if we did, then the the code would be:
             //  fixedItem.SetFieldValue((CItemData::FieldType)uc, sxvalue.substr(0, iMAXCHARS))
@@ -2138,6 +2138,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
           }
         }
       }
+
       if (bEntryHasBigField) {
         uimaxsize = std::max(uimaxsize, ci.GetSize());
         vGTU_TEXT.push_back(st_GroupTitleUser(sxgroup, sxtitle, sxuser));

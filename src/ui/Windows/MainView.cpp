@@ -458,15 +458,16 @@ void DboxMain::UpdateToolBarROStatus(const bool bIsRO)
 
 void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
 {
+  const int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
+                     ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, 
+                     ID_MENUITEM_RUNCOMMAND,   ID_MENUITEM_EDITENTRY,
+                     ID_MENUITEM_PASSWORDSUBSET};
+
   // Following test required since this can be called on exit, with a pci
   // from ItemData that's already been deleted. Ugh.
   if (m_core.GetNumEntries() != 0) {
     const CItemData *pci_entry(pci), *pbci(NULL);
-    BOOL State = (pci_entry == NULL) ? FALSE : TRUE; // Entry vs Group
-    int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
-                 ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, 
-                 ID_MENUITEM_RUNCOMMAND, ID_MENUITEM_EDITENTRY,
-                 ID_MENUITEM_PASSWORDSUBSET};
+    BOOL State = (pci_entry == NULL) ? FALSE : TRUE; // Group vs Entry
 
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
     for (int i = 0; i < _countof(IDs); i++) {
@@ -483,13 +484,28 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
         if (nIndex != -1) {
           mainTBCtrl.SetCmdID(nIndex, ID_MENUITEM_VIEWENTRY);
         }
+
+        // But enabled
+        mainTBCtrl.EnableButton(ID_MENUITEM_VIEWENTRY, TRUE);
       } else {
         // View should become Edit
         int nIndex = m_MainToolBar.CommandToIndex(ID_MENUITEM_VIEWENTRY);
         if (nIndex != -1) {
           mainTBCtrl.SetCmdID(nIndex, ID_MENUITEM_EDITENTRY);
         }
+
+        // But enabled
+        mainTBCtrl.EnableButton(ID_MENUITEM_EDITENTRY, TRUE);
       }
+    } else {
+      // Group selected - Edit should become View
+      int nIndex = m_MainToolBar.CommandToIndex(ID_MENUITEM_EDITENTRY);
+      if (nIndex != -1) {
+        mainTBCtrl.SetCmdID(nIndex, ID_MENUITEM_VIEWENTRY);
+      }
+
+      // But disabled
+      mainTBCtrl.EnableButton(ID_MENUITEM_VIEWENTRY, FALSE);
     }
 
     if (pci_entry != NULL && pci_entry->IsDependent()) {
@@ -553,6 +569,24 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
         m_DDAutotype.SetStaticState(true);
       }
     }
+  } else {
+    // NO entries - could be because last one was deleted
+    CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
+    for (int i = 0; i < _countof(IDs); i++) {
+      mainTBCtrl.EnableButton(IDs[i], FALSE);
+    }
+
+    mainTBCtrl.EnableButton(ID_MENUITEM_UNDO, m_core.AnyToUndo() ? TRUE : FALSE);
+    mainTBCtrl.EnableButton(ID_MENUITEM_REDO, m_core.AnyToRedo() ? TRUE : FALSE);
+
+    m_DDGroup.SetStaticState(false);
+    m_DDTitle.SetStaticState(false);
+    m_DDPassword.SetStaticState(false);
+    m_DDUser.SetStaticState(false);
+    m_DDNotes.SetStaticState(false);
+    m_DDURL.SetStaticState(false);
+    m_DDemail.SetStaticState(false);
+    m_DDAutotype.SetStaticState(false);
   }
 }
 
@@ -1277,8 +1311,12 @@ void DboxMain::RefreshViews(const ViewType iView)
     CItemData &ci = m_core.GetEntry(listPos);
     DisplayInfo *pdi = GetEntryGUIInfo(ci, true);
     if (pdi != NULL) {
-      pdi->list_index = -1;
-      pdi->tree_item = 0;
+      if (iView & LISTONLY) {
+        pdi->list_index = -1;
+      }
+      if (iView & TREEONLY) {
+        pdi->tree_item = 0;
+      }
     }
 
     InsertItemIntoGUITreeList(ci, -1, false, iView);
@@ -1734,10 +1772,42 @@ void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
       if (!m_ctlItemTree.IsLeaf(hItem)) {
         // If on indent or button
         if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
-          m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
+          // The group may be expanded or collapsed.
+          const UINT uiState = m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED | TVIS_SELECTED);
+          m_ctlItemTree.Expand(hItem, TVE_TOGGLE);
 
           // Update display state
           SaveGroupDisplayState();
+
+          // If this group wasn't the currently selected item AND
+          // it was expanded and so now collapsed - we might select something else!
+          if ((uiState & TVIS_SELECTED) == 0 && (uiState & TVIS_EXPANDED) != 0) {
+            // We have just collapsed the group
+            // If the currently selected entry is NOT within this group - do nothing
+            // If the currently selected entry IS within this group - select the group
+
+            // Unselect TreeView entry and select group being collapsed
+            HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+
+            if (ti != NULL) {
+              // Something selected
+              CSecString scSelectedItemPath = m_ctlItemTree.GetGroup(ti);
+              CSecString scCollapsedGroupPath = m_ctlItemTree.GetGroup(htinfo.hItem);
+              const int iSelectLen = scSelectedItemPath.GetLength();
+              const int iGroupLenP1 = scCollapsedGroupPath.GetLength() + 1;
+
+              if (scSelectedItemPath == scCollapsedGroupPath ||
+                  (iSelectLen > iGroupLenP1 &&
+                    scSelectedItemPath.Left(iGroupLenP1) == (scCollapsedGroupPath + L"."))) {
+                // Selected item is in this group or subgroup
+                m_ctlItemTree.SetItemState(ti, 0, TVIS_SELECTED);
+                m_ctlItemTree.SetItemState(htinfo.hItem, TVIS_SELECTED, TVIS_SELECTED);
+
+                // Update Toolbar & Dragbar for a group
+                UpdateToolBarForSelectedItem(NULL);
+              }
+            }
+          }
 
           *pLResult = 1L; // We have toggled the group
           return;
@@ -1914,6 +1984,10 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     m_ctlItemList.SetItemData(iResult, (DWORD_PTR)&ci);
   }
 
+  if (di.list_index == -1 || di.tree_item == NULL) {
+    ASSERT(0);
+  }
+
   SetEntryGUIInfo(ci, di);
   return iResult;
 }
@@ -2046,6 +2120,7 @@ void DboxMain::ReSelectItems(pws_os::CUUID entry_uuid,
     }
   }
 }
+
 void DboxMain::ClearAppData(const bool bClearMRE)
 {
   PWS_LOGIT;
@@ -2394,9 +2469,45 @@ void DboxMain::OnExpandAll()
 
 void DboxMain::OnCollapseAll()
 {
+
+  // GetSelected Item
+  HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+
   m_ctlItemTree.OnCollapseAll();
 
   SaveGroupDisplayState();
+
+  if (ti == NULL) {
+    // Nothing selected - do nothing more
+    return;
+  }
+
+  CSecString scSelectedItemPath = m_ctlItemTree.GetGroup(ti);
+
+  int iDelimiterPosition = scSelectedItemPath.Find(L".");
+  ASSERT(iDelimiterPosition != 0);  // Group name can't start with a delimiter!
+
+  // Entry in root or a top level group - leave selected
+  if ((m_ctlItemTree.IsLeaf(ti) && scSelectedItemPath.IsEmpty()) ||
+      (!m_ctlItemTree.IsLeaf(ti) && iDelimiterPosition == -1)) {
+     return;
+  }
+
+  // Unselect old selected item
+  m_ctlItemTree.SetItemState(ti, 0, TVIS_SELECTED);
+
+  // Get its root level group
+  StringX sxRootGroup = iDelimiterPosition == -1 ? scSelectedItemPath : scSelectedItemPath.Left(iDelimiterPosition);
+
+  // Find it in the Tree
+  auto iter = m_mapGroupToTreeItem.find(sxRootGroup);
+  ASSERT(iter != m_mapGroupToTreeItem.end());
+
+  // Now selected it
+  m_ctlItemTree.SetItemState(iter->second, TVIS_SELECTED, TVIS_SELECTED);
+
+  // Update for group
+  UpdateToolBarForSelectedItem(NULL);
 }
 
 void DboxMain::OnTimer(UINT_PTR nIDEvent)
@@ -5183,12 +5294,12 @@ bool DboxMain::GetShortCut(const unsigned int &uiMenuItem,
     return false;
 
   if (iter->second.siVirtKey  != iter->second.siDefVirtKey ||
-      iter->second.cModifier != iter->second.cDefModifier) {
+      iter->second.cPWSModifier != iter->second.cDefPWSModifier) {
     siVirtKey = iter->second.siVirtKey;
-    cModifier = iter->second.cModifier;
+    cModifier = iter->second.cPWSModifier;
   } else {
     siVirtKey = iter->second.siDefVirtKey;
-    cModifier = iter->second.cDefModifier;
+    cModifier = iter->second.cDefPWSModifier;
   }
 
   return true;
@@ -5226,11 +5337,8 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
       if (iKBShortcut != 0) {
         WORD wVirtualKeyCode = iKBShortcut & 0xff;
         WORD wPWSModifiers = iKBShortcut >> 16;
-        
-        // Translate from PWS modifiers to HotKey
-        WORD wHKModifiers = ConvertModifersPWS2MFC(wPWSModifiers);
 
-        sx_fielddata = CMenuShortcut::FormatShortcut(wHKModifiers, wVirtualKeyCode);
+        sx_fielddata = CMenuShortcut::FormatShortcut(wPWSModifiers, wVirtualKeyCode);
       }
       break;
     }
