@@ -410,6 +410,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2XML, OnExportGroupXML)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2DB, OnExportGroupDB)
   ON_COMMAND(ID_MENUITEM_EXPORT_ATTACHMENT, OnExportAttachment)
+  ON_COMMAND(ID_MENUITEM_EXPORTFILTERED2DB, OnExportFilteredDB)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -434,7 +435,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_CLEARFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_EDITFILTER, OnSetFilter)
-  ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters)
+  ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters) 
+  ON_COMMAND(ID_MENUITEM_EXPORTFILTERED2DB, OnExportFilteredDB)
   ON_COMMAND(ID_MENUITEM_PASSWORDSUBSET, OnDisplayPswdSubset)
   ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
   ON_COMMAND(ID_MENUITEM_SHOWHIDE_UNSAVED, OnShowUnsavedEntries)
@@ -664,6 +666,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_APPLYFILTER, true, true, false, false},
   {ID_MENUITEM_CLEARFILTER, true, true, false, false},
   {ID_MENUITEM_MANAGEFILTERS, true, true, true, true},
+  {ID_MENUITEM_EXPORTFILTERED2DB, true, true, false, false},
   {ID_MENUITEM_PASSWORDSUBSET, true, true, false, false},
   {ID_MENUITEM_REFRESH, true, true, false, false},
   {ID_MENUITEM_SHOWHIDE_UNSAVED, true, false, false, false},
@@ -3113,7 +3116,7 @@ private:
 // Returns a list of entries as they appear in tree in DFS order
 void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
 {
-  // Walk the Tree - either complete tree or only this group!
+  // Walk the Tree - either complete tree or only this group
   if (hItem == NULL) {
     // The whole tree
     while (NULL != (hItem = const_cast<DboxMain *>(this)->m_ctlItemTree.GetNextTreeItem(hItem))) {
@@ -3121,6 +3124,16 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
         CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
         if (pci != NULL) {
           OIL.push_back(*pci);
+
+          // This is for exporting Filtered Entries ONLY
+          // Walk the reduced Tree but include base entries even if not in the filtered results
+          if (m_bFilterActive && pci->IsDependent()) {
+            pci = GetBaseEntry(pci);
+
+            // Only add the base entry once
+            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
+              OIL.push_back(*pci);
+          }
         }
       }
     }
@@ -3143,6 +3156,8 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
 
           if (pci->IsDependent()) {
             pci = GetBaseEntry(pci);
+
+            // Only add the base entry once
             if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
               OIL.push_back(*pci);
           }
@@ -3566,6 +3581,10 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_EDITFILTER:
     case ID_MENUITEM_MANAGEFILTERS:
       if (m_bUnsavedDisplayed)
+        iEnable = FALSE;
+      break;
+    case ID_MENUITEM_EXPORTFILTERED2DB:
+      if (!m_bFilterActive)
         iEnable = FALSE;
       break;
     case ID_MENUITEM_CHANGEMODE:

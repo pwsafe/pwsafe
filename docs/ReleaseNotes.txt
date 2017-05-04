@@ -32,6 +32,11 @@ New Features for 3.42.2
 =======================
 None
 
+New Features for 3.42.2
+=======================
+[] It is now possible to export the currently filtered entries to a PasswordSafe
+database.
+
 Bugs fixed in 3.42.1
 ====================
 [1404] Regression: In read-only mode, Entry popup menu's View Entry
