@@ -872,6 +872,7 @@
 #define IDC_COPYPASSWORDHELP1           1564
 #define IDC_COPYPASSWORDHELP2           1565
 #define IDC_STATIC_MESSAGE              1566
+#define IDC_ALTEDITOR_CMDLINE           1567
 
 // Next default values for new objects
 // 
@@ -879,7 +880,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        555
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1567
+#define _APS_NEXT_CONTROL_VALUE         1568
 #define _APS_NEXT_SYMED_VALUE           553
 #endif
 #endif

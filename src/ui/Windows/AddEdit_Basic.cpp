@@ -1269,6 +1269,8 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   wchar_t lpPathBuffer[4096];
   DWORD dwBufSize(4096);
 
+  StringX sxEditorCmdLineParms = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditorCmdLineParms);
+
   StringX sxEditor = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditor);
   if (sxEditor.empty()) {
     // Find out the users default editor for "txt" files
@@ -1355,8 +1357,15 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   CString cs_CommandLine;
 
-  // Make the command line = "<program>" "file"
-  cs_CommandLine.Format(L"\"%s\" \"%s\"", sxEditor.c_str(), self->m_szTempName);
+  // Make the command line = "<program>" <parameters> "filename"
+  // Note: the parameters reproduce the user's input as-is - it is up to them
+  // to add quotes or not as required by their chosen external editor.
+  // We add double quotes around the full path to the program and its name and
+  // similarly for the temporary file name e.g.
+  // "C:\somewhere\editor.exe" paramters "C:\somewhere_else\temp.txt"
+  cs_CommandLine.Format(L"\"%s\" %s \"%s\"", sxEditor.c_str(),
+                               sxEditorCmdLineParms.c_str(), self->m_szTempName);
+
   int ilen = cs_CommandLine.GetLength();
   LPWSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
 
