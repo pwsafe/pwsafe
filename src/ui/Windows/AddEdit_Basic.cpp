@@ -1364,9 +1364,14 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   CString cs_CommandLine;
 
-  // Make the command line = "<program>" "file"
-  cs_CommandLine.Format(L"\"%s\" \"%s\" %s", sxEditor.c_str(), self->m_szTempName,
-                               sxEditorCmdLineParms.c_str());
+  // Make the command line = "<program>" <parameters> "filename"
+  // Note: the parameters reproduce the user's input as-is - it is up to them
+  // to add quotes or not as required by their chosen external editor.
+  // We add double quotes around the full path to the program and its name and
+  // similarly for the temporary file name e.g.
+  // "C:\somewhere\editor.exe" paramters "C:\somewhere_else\temp.txt"
+  cs_CommandLine.Format(L"\"%s\" %s \"%s\"", sxEditor.c_str(),
+                               sxEditorCmdLineParms.c_str(), self->m_szTempName);
 
   int ilen = cs_CommandLine.GetLength();
   LPWSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
