@@ -68,7 +68,7 @@ public:
   bool GetMapMenuShortcutsIter(const UINT &id, MapMenuShortcutsIter &iter);
   
   void OnMenuShortcutKillFocus(const int item, const UINT id,
-                             const WORD wVirtualKeyCode, const WORD wModifiers);
+                             const WORD wVirtualKeyCode, const WORD wPWSModifiers);
 
   pws_os::CUUID &GetKBShortcutUUID(int lParam)
   {return m_KBShortcutMap[lParam];}
