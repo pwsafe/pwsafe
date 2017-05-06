@@ -2707,7 +2707,7 @@ bool DboxMain::CheckCommand(const WORD wID)
   // The following menu item *may* have been removed in MainMenu
   // If so, don't process the accelerator!
   // The logic here is identical to DboxMain::CustomiseMenu for
-  // either appending or rmeoving menu items.
+  // either appending or removing menu items.
   // Whilst it could be tidied up, leaving it as a direct equivalent to the
   // code in CustomiseMenu allows for easier maintenance when CustomiseMenu
   // is updated.
@@ -3334,7 +3334,7 @@ void DboxMain::UpdateStatusBar()
     m_StatusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, m_lastclipboardaction);
 
     s = m_core.HasDBChanged() ? L"*" : L" ";
-    s += m_core.HaveDBPrefsChanged() ? L"°" : L" ";
+    s += m_core.HaveDBPrefsChanged() ? L"Â°" : L" ";
     dc.DrawText(s, &rectPane, DT_CALCRECT);
     m_StatusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
     m_StatusBar.SetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, rectPane.Width());
