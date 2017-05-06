@@ -945,19 +945,20 @@ void DboxMain::OnDelete()
 
     POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
     if (pos != NULL) {
-      pci = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos - 1);
+      const int nItem = m_ctlItemList.GetNextSelectedItem(pos);
+      pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
 
       // Check that it wasn't the bottom entry in the list (can't select next)
-      if ((int)pos < m_ctlItemList.GetItemCount()) {
+      if (nItem < (m_ctlItemList.GetItemCount() - 1)) {
         bSelectNext = true;
-        CItemData *pci_next = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos);
+        CItemData *pci_next = (CItemData *)m_ctlItemList.GetItemData(nItem + 1);
         nextUUID = pci_next->GetUUID();
       }
 
       // Check that it wasn't the top entry in the list (can't select previous)
-      if ((int)pos > 1) {
+      if (nItem > 0) {
         bSelectPrev = true;
-        CItemData *pci_prev = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos - 2);
+        CItemData *pci_prev = (CItemData *)m_ctlItemList.GetItemData(nItem - 1);
         prevUUID = pci_prev->GetUUID();
       }
     }
