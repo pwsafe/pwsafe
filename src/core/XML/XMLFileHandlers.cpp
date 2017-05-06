@@ -951,6 +951,7 @@ void XMLFileHandlers::AddXMLEntries()
         m_prpt->WriteLine(sxTemp.c_str());
         m_numShortcutsRemoved++;
       }
+
       // Check if already in use as an the PaswordSafe Application HotKey
       if (m_pXMLcore->GetAppHotKey() == iKBShortcut) {
         // Remove it

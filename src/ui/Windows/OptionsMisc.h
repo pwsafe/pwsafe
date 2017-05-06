@@ -35,7 +35,8 @@ protected:
   CString m_DefUsername;
   CString m_OtherBrowserLocation;
   CString m_OtherEditorLocation;
-  CString m_BrowserCmdLineParms;
+  CString m_OtherBrowserCmdLineParms;
+  CString m_OtherEditorCmdLineParms;
   CString m_AutotypeText;
   unsigned m_AutotypeDelay;
 

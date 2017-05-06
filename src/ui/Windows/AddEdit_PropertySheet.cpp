@@ -591,8 +591,9 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.iownsymbols = m_AEMD.ioldownsymbols;
   m_AEMD.pci->GetProtected(m_AEMD.ucprotected);
 
-  if (m_AEMD.notes.GetLength() > MAXTEXTCHARS) {
-    // Limit the Notes field to what can be displayed
+  if ((!m_AEMD.pcore->IsReadOnly() && m_AEMD.ucprotected == 0) &&
+      m_AEMD.notes.GetLength() > MAXTEXTCHARS) {
+    // Limit the Notes field to what can be displayed in Edit mode
     m_AEMD.notes =  m_AEMD.notes.Left(MAXTEXTCHARS);
     m_AEMD.originalnotesTRC = m_AEMD.notes;
     CGeneralMsgBox gmb;

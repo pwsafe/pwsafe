@@ -391,6 +391,7 @@
 #define IDB_EMPTY_DISABLED              549
 #define IDB_REDEXCLAMATION              550
 #define IDB_LOCK_CLASSIC                551
+#define IDB_COPYPASSWORD_CLASSIC_D      552
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -678,7 +679,7 @@
 #define IDC_STATIC_EMAIL                1356
 #define IDC_STATIC_AUTO                 1357
 #define IDC_STATIC_RUNCMD               1358
-#define IDC_SUBSET                      1359
+#define IDC_SUBSETPOSITIONS             1359
 #define IDC_GETSUBSET                   1360
 #define IDC_SUBSETRESULTS               1361
 #define IDC_STATICSUBSETWARNING         1362
@@ -792,7 +793,6 @@
 #define IDC_STATIC_NAMEDPOLICY          1482
 #define IDC_POLICYNAMES_HEADER          1483
 #define IDC_POLICYENTRIES_HEADER        1484
-#define IDC_STATIC_COPYPSWD             1485
 #define IDC_UNDO                        1486
 #define IDC_REDO                        1487
 #define IDC_CLEARPWHISTORY              1488
@@ -868,14 +868,19 @@
 #define IDC_PWHHELP                     1560
 #define IDC_STATIC_HOSTUSER             1561
 #define IDC_STATIC_DEPENDENT            1562
+#define IDC_COPYPASSWORDHELP            1563
+#define IDC_COPYPASSWORDHELP1           1564
+#define IDC_COPYPASSWORDHELP2           1565
+#define IDC_STATIC_MESSAGE              1566
+#define IDC_ALTEDITOR_CMDLINE           1567
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        552
+#define _APS_NEXT_RESOURCE_VALUE        555
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1563
-#define _APS_NEXT_SYMED_VALUE           552
+#define _APS_NEXT_CONTROL_VALUE         1568
+#define _APS_NEXT_SYMED_VALUE           553
 #endif
 #endif

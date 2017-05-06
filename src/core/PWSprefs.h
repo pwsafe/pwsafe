@@ -41,7 +41,7 @@ extern int s_cfgLockCount;
 struct st_prefShortcut {
   unsigned int id;
   unsigned short int siVirtKey;
-  unsigned char cModifier;
+  unsigned char cPWSModifier;
   stringT Menu_Name;
 };
 
@@ -147,7 +147,7 @@ public:
     MainToolBarButtons, PasswordFont, TreeListSampleText, PswdSampleText,
     LastUsedKeyboard, VKeyboardFontName, VKSampleText, AltNotesEditor,
     LanguageFile, DefaultSymbols, NotesFont, NotesSampleText, AutotypeTaskDelays,
-    AddEditFont, AddEditSampleText,
+    AddEditFont, AddEditSampleText, AltNotesEditorCmdLineParms,
     NumStringPrefs};
 
   // for DoubleClickAction and ShiftDoubleClickAction

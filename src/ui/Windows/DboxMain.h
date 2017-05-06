@@ -436,7 +436,7 @@ public:
   bool ChangeMode(bool promptUser); // r-o <-> r/w
 
   // If we have processed it returns 0 else 1
-  BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers);
+  BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wWinModifiers);
   bool IsWorkstationLocked() const;
   void BlockLogoffShutdown(const bool bChanged);
 
@@ -704,6 +704,7 @@ public:
   afx_msg void OnViewReportsByID(UINT nID);  // From View->Reports menu
   afx_msg void OnViewReports();
   afx_msg void OnManageFilters(); // From Toolbar button
+  afx_msg void OnExportFilteredDB();
   afx_msg void OnCancelFilter();
   afx_msg void OnApplyFilter();
   afx_msg void OnSetFilter();

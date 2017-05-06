@@ -113,17 +113,17 @@ LRESULT CFindEditCtrl::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     WORD wVirtualKeyCode = siKeyStateVirtualKeyCode & 0xff;
 
     if (wVirtualKeyCode != 0) {
-      WORD wModifiers(0);
+      WORD wWinModifiers(0);
       if (GetKeyState(VK_CONTROL) & 0x8000)
-        wModifiers |= MOD_CONTROL;
+        wWinModifiers |= MOD_CONTROL;
 
       if (GetKeyState(VK_MENU) & 0x8000)
-        wModifiers |= MOD_ALT;
+        wWinModifiers |= MOD_ALT;
 
       if (GetKeyState(VK_SHIFT) & 0x8000)
-        wModifiers |= MOD_SHIFT;
+        wWinModifiers |= MOD_SHIFT;
 
-      if (!app.GetMainDlg()->ProcessEntryShortcut(wVirtualKeyCode, wModifiers))
+      if (!app.GetMainDlg()->ProcessEntryShortcut(wVirtualKeyCode, wWinModifiers))
         return 0;
     }
   }

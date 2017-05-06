@@ -11,6 +11,8 @@
 #include "SHCTHotKey.h"
 #include "OptionsShortcuts.h"
 
+#include "HKModifiers.h"
+
 #include <algorithm>
 
 #include "resource2.h"
@@ -91,8 +93,8 @@ void CSHCTListCtrlX::OnLButtonDown(UINT , CPoint point)
 
   m_id = (UINT)LOWORD(GetItemData(m_item));
   if (m_pParent->GetMapMenuShortcutsIter(m_id, iter)) {
-    WORD vModifiers = iter->second.cModifier;
-    m_pHotKey->SetHotKey(iter->second.siVirtKey, vModifiers);
+    WORD vHKModifiers = ConvertModifersPWS2MFC(iter->second.cPWSModifier);
+    m_pHotKey->SetHotKey(iter->second.siVirtKey, vHKModifiers);
   }
   m_pHotKey->EnableWindow(TRUE);
   m_pHotKey->ShowWindow(SW_SHOW);
@@ -139,7 +141,7 @@ void CSHCTListCtrlX::OnRButtonDown(UINT , CPoint point)
     pContextMenu->RemoveMenu(ID_MENUITEM_REMOVESHORTCUT, MF_BYCOMMAND);
 
   if (iter->second.siVirtKey   == iter->second.siDefVirtKey &&
-      iter->second.cModifier  == iter->second.cDefModifier)
+      iter->second.cPWSModifier  == iter->second.cDefPWSModifier)
     pContextMenu->RemoveMenu(ID_MENUITEM_RESETSHORTCUT, MF_BYCOMMAND);
 
   if (pContextMenu->GetMenuItemCount() == 0)
@@ -153,7 +155,7 @@ void CSHCTListCtrlX::OnRButtonDown(UINT , CPoint point)
 
   if (nID == ID_MENUITEM_REMOVESHORTCUT) {
     iter->second.siVirtKey = 0;
-    iter->second.cModifier = 0;
+    iter->second.cPWSModifier = 0;
     str = L"";
     goto update;
   }
@@ -162,7 +164,7 @@ void CSHCTListCtrlX::OnRButtonDown(UINT , CPoint point)
     goto exit;
 
   iter->second.siVirtKey = iter->second.siDefVirtKey;
-  iter->second.cModifier = iter->second.cDefModifier;
+  iter->second.cPWSModifier = iter->second.cDefPWSModifier;
 
   str = CMenuShortcut::FormatShortcut(iter);
 
@@ -179,21 +181,24 @@ exit:
 void CSHCTListCtrlX::SaveHotKey()
 {
   if (m_bHotKeyActive) {
-    WORD wVirtualKeyCode, wHKModifiers;
+    WORD wVirtualKeyCode, wHKModifiers, wPWSModifiers;
     m_pHotKey->GetHotKey(wVirtualKeyCode, wHKModifiers);
-    OnMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers);
+
+    // Translate from CHotKeyCtrl to PWS modifiers
+    wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
+    OnMenuShortcutKillFocus(wVirtualKeyCode, wPWSModifiers);
   }
 }
 
 void CSHCTListCtrlX::OnMenuShortcutKillFocus(const WORD wVirtualKeyCode,
-                                          const WORD wHKModifiers)
+                                             const WORD wPWSModifiers)
 {
   m_pHotKey->EnableWindow(FALSE);
   m_pHotKey->ShowWindow(SW_HIDE);
 
   if (m_pParent != NULL) {
     m_pParent->OnMenuShortcutKillFocus(m_item, m_id, 
-                                 wVirtualKeyCode, wHKModifiers);
+                                 wVirtualKeyCode, wPWSModifiers);
   }
 
   m_bHotKeyActive = false;
@@ -243,7 +248,8 @@ void CSHCTListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       switch (iSubItem) {
         case SHCT_MENUITEMTEXT:
           if ( m_pParent->GetMapMenuShortcutsIter(id, iter) && 
-              ( (iter->second.siVirtKey != iter->second.siDefVirtKey) || (iter->second.cModifier != iter->second.cDefModifier) ))
+              ((iter->second.siVirtKey != iter->second.siDefVirtKey) ||
+               (iter->second.cPWSModifier != iter->second.cDefPWSModifier)))
             pLVCD->clrText = m_crRedText;
           break;
         case SHCT_SHORTCUTKEYS:

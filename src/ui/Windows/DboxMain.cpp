@@ -410,6 +410,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2XML, OnExportGroupXML)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2DB, OnExportGroupDB)
   ON_COMMAND(ID_MENUITEM_EXPORT_ATTACHMENT, OnExportAttachment)
+  ON_COMMAND(ID_MENUITEM_EXPORTFILTERED2DB, OnExportFilteredDB)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -434,7 +435,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_CLEARFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_EDITFILTER, OnSetFilter)
-  ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters)
+  ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters) 
+  ON_COMMAND(ID_MENUITEM_EXPORTFILTERED2DB, OnExportFilteredDB)
   ON_COMMAND(ID_MENUITEM_PASSWORDSUBSET, OnDisplayPswdSubset)
   ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
   ON_COMMAND(ID_MENUITEM_SHOWHIDE_UNSAVED, OnShowUnsavedEntries)
@@ -664,6 +666,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_APPLYFILTER, true, true, false, false},
   {ID_MENUITEM_CLEARFILTER, true, true, false, false},
   {ID_MENUITEM_MANAGEFILTERS, true, true, true, true},
+  {ID_MENUITEM_EXPORTFILTERED2DB, true, true, false, false},
   {ID_MENUITEM_PASSWORDSUBSET, true, true, false, false},
   {ID_MENUITEM_REFRESH, true, true, false, false},
   {ID_MENUITEM_SHOWHIDE_UNSAVED, true, false, false, false},
@@ -817,19 +820,17 @@ void DboxMain::InitPasswordSafe()
 
   m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
 
-  const int32 iPWSHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
-  WORD wVirtualKeyCode =  iPWSHotKeyValue & 0xff;
-  WORD wHKModifiers = iPWSHotKeyValue >> 16;
-    
-  // Translate from CHotKeyCtrl to CWnd & PWS modifiers
-  WORD wModifiers = ConvertModifersMFC2Windows(wHKModifiers);
-  WORD wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
-  int iAppShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
-  m_core.SetAppHotKey(iAppShortcut);
+  const int32 iAppHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
+  m_core.SetAppHotKey(iAppHotKeyValue);
 
   // Set Hotkey, if active
   if (prefs->GetPref(PWSprefs::HotKeyEnabled)) {
-    RegisterHotKey(m_hWnd, PWS_HOTKEY_ID, UINT(wModifiers), UINT(wVirtualKeyCode));
+    WORD wAppVirtualKeyCode = iAppHotKeyValue & 0xff;
+    WORD wAppPWSModifiers = iAppHotKeyValue >> 16;
+    // Translate from PWS to Windows modifiers
+    WORD wAppModifiers = ConvertModifersPWS2Windows(wAppPWSModifiers);
+
+    RegisterHotKey(m_hWnd, PWS_HOTKEY_ID, UINT(wAppModifiers), UINT(wAppVirtualKeyCode));
     // Registration might fail if combination already registered elsewhere,
     // but don't see any elegant way to notify the user here, so fail silently
   } else {
@@ -2499,17 +2500,17 @@ BOOL DboxMain::PreTranslateMessage(MSG *pMsg)
     WORD wVirtualKeyCode = siKeyStateVirtualKeyCode & 0xff;
 
     if (wVirtualKeyCode != 0) {
-      WORD wModifiers(0);
+      WORD wWinModifiers(0);
       if (GetKeyState(VK_CONTROL) & 0x8000)
-        wModifiers |= MOD_CONTROL;
+        wWinModifiers |= MOD_CONTROL;
 
       if (GetKeyState(VK_MENU) & 0x8000)
-        wModifiers |= MOD_ALT;
+        wWinModifiers |= MOD_ALT;
 
       if (GetKeyState(VK_SHIFT) & 0x8000)
-        wModifiers |= MOD_SHIFT;
+        wWinModifiers |= MOD_SHIFT;
 
-      if (!ProcessEntryShortcut(wVirtualKeyCode, wModifiers))
+      if (!ProcessEntryShortcut(wVirtualKeyCode, wWinModifiers))
         return TRUE;
     }
   }
@@ -2518,7 +2519,7 @@ exit:
   return CDialog::PreTranslateMessage(pMsg);
 }
 
-BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers)
+BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wWinModifiers)
 {
   static const wchar_t *tcValidKeys = 
           L"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -2531,7 +2532,7 @@ BOOL DboxMain::ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers)
     return 1L;
 
   // Get PWS modifiers
-  WORD wPWSModifiers = ConvertModifersWindows2PWS(wModifiers);
+  WORD wPWSModifiers = ConvertModifersWindows2PWS(wWinModifiers);
 
   // If non-zero - see if it is an entry keyboard shortcut
   if (wPWSModifiers != 0) {
@@ -2677,17 +2678,17 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     WORD wVirtualKeyCode = siKeyStateVirtualKeyCode & 0xff;
 
     if (wVirtualKeyCode != 0) {
-      WORD wModifiers(0);
+      WORD wWinModifiers(0);
       if (GetKeyState(VK_CONTROL) & 0x8000)
-        wModifiers |= MOD_CONTROL;
+        wWinModifiers |= MOD_CONTROL;
 
       if (GetKeyState(VK_MENU) & 0x8000)
-        wModifiers |= MOD_ALT;
+        wWinModifiers |= MOD_ALT;
 
       if (GetKeyState(VK_SHIFT) & 0x8000)
-        wModifiers |= MOD_SHIFT;
+        wWinModifiers |= MOD_SHIFT;
 
-      if (!ProcessEntryShortcut(wVirtualKeyCode, wModifiers))
+      if (!ProcessEntryShortcut(wVirtualKeyCode, wWinModifiers))
         return 0L;
     }
   }
@@ -3445,7 +3446,7 @@ private:
 // Returns a list of entries as they appear in tree in DFS order
 void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
 {
-  // Walk the Tree - either complete tree or only this group!
+  // Walk the Tree - either complete tree or only this group
   if (hItem == NULL) {
     // The whole tree
     while (NULL != (hItem = const_cast<DboxMain *>(this)->m_ctlItemTree.GetNextTreeItem(hItem))) {
@@ -3453,6 +3454,16 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
         CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
         if (pci != NULL) {
           OIL.push_back(*pci);
+
+          // This is for exporting Filtered Entries ONLY
+          // Walk the reduced Tree but include base entries even if not in the filtered results
+          if (m_bFilterActive && pci->IsDependent()) {
+            pci = GetBaseEntry(pci);
+
+            // Only add the base entry once
+            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
+              OIL.push_back(*pci);
+          }
         }
       }
     }
@@ -3475,6 +3486,8 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
 
           if (pci->IsDependent()) {
             pci = GetBaseEntry(pci);
+
+            // Only add the base entry once
             if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
               OIL.push_back(*pci);
           }
@@ -3898,6 +3911,10 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_EDITFILTER:
     case ID_MENUITEM_MANAGEFILTERS:
       if (m_bUnsavedDisplayed)
+        iEnable = FALSE;
+      break;
+    case ID_MENUITEM_EXPORTFILTERED2DB:
+      if (!m_bFilterActive)
         iEnable = FALSE;
       break;
     case ID_MENUITEM_CHANGEMODE:

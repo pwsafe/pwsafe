@@ -110,7 +110,7 @@ private:
 
   int32 m_iAppHotKey, m_iOldHotKey;
   WORD m_wAppVirtualKeyCode;
-  WORD m_wAppWindowsModifiers; // Values using Windows definition of control keys.
+  WORD m_wAppPWSModifiers;
   bool m_bAppHotKeyEnabled;
 };
 //-----------------------------------------------------------------------------
