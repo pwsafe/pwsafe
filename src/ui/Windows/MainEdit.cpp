@@ -179,6 +179,11 @@ void DboxMain::OnAdd()
     ItemListIter iter = m_core.Find(newentry_uuid);
     UpdateToolBarForSelectedItem(&iter->second);
 
+    // Now select item
+    DisplayInfo *pdi = GetEntryGUIInfo(iter->second);
+    ASSERT(pdi->list_index != -1);
+    SelectEntry(pdi->list_index);
+
     m_RUEList.AddRUEntry(newentry_uuid);
 
     // May need to update menu/toolbar if database was previously empty
