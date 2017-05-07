@@ -797,3 +797,5 @@
 #define IDS_COPYPASSWORDHELP1           6049
 #define IDS_COPYPASSWORDHELP2           6050
 #define IDS_WSSLCT_FILTERED             6051
+#define IDS_GOTOSHORTCUTS               6052
+#define IDS_VIEWBASEENTRY               6053
