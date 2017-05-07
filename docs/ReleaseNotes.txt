@@ -34,10 +34,12 @@ None
 
 New Features for 3.42.2
 =======================
-[] It is now possible to specify additional command line parameters to the external
-editor used to edit the Notes field from the Add/Edit Basic dialog. 
-[] It is now possible to export the currently filtered entries to a PasswordSafe
-database.
+[] You can now specify additional command line parameters to the
+external editor used to edit the Notes field from the Add/Edit Basic dialog. 
+[] It is now possible to export the currently filtered entries to a
+new PasswordSafe database.
+[833] Right-clicking on a base entry now allows you to select any one
+of its dependants, i.e. alias or shortcut.
 
 Bugs fixed in 3.42.1
 ====================
