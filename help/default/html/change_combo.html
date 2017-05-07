@@ -6,125 +6,132 @@
     <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
     <script language="javascript" src="html/popups.js">
 </script><link rel="stylesheet" type="text/css" href="style.css">
-  </head>
-  <body>
-    <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
-    </object>
-    <!-- Popup Source File -->
-    <h2>Changing Master Passwords</h2>
-    
-    <p>To change a master password ("Safe Combination"), first open up
-      the database whose
-      password you wish to change. Once opened, go to the <b>Manage</b>
-      menu and select <b>Change Safe Combination</b>. The following window will be displayed:
-    </p>
-	<img alt="Key Change dialog box" src="images/combo_change.jpg">
-	<p><b>Note:</b> If you do not have a <a href="about_pws_yubi.html">YubiKey</a>, then the YubiKey buttons will not be displayed,
-	and you can ignore the description of their use below.</p>
-	<p>To change a master password ("Safe Combination"), first open up the database whose
-	password you wish to change. Once opened, go to the <b>Manage</b>
-	menu and select <b>Change Safe Combination</b>. You should
-	enter the current master password, and then the new master password
-	(twice, for confirmation). The master password can be entered using the physical or virtual keyboard.</p>
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+</object>
+<!-- Popup Source File -->
 
-	<p><b>Password Safe</b> has a built in check for what it considers to
-	be weak master passwords. In general, a master password (like any
-	password) should consist of mixed case characters with at least one
-	number or <a href="javascript:popup.TextPopup(strSpecialChars,popFont,9,9,-1,-1)">special character</a> (such
-	as those found above the number keys on a keyboard). If a master
-	password is entered that the program considers weak, it will prompt for
-	confirmation. You may the option to accept the originally
-	entered (weak) password, or to enter a new one.</p>
-	
-	
-    <p>For <strong>YubiKey</strong> users: In addition to changing the master password as described above,
-	this window allows you to add or remove YubiKey authentication, add
-    or remove additional password authentication, as well as switch the
-    YubiKey that is used to access the current database. Following are
-    instructions for each of these actions:</p>
-    <h3>Adding YubiKey Authentication</h3>
-    To convert a Password Safe database that is accessed using a Master
-    Password (Safe Combination) to YubiKey access:<br>
-    <ol>
-      <li>Enter the current Master Password in the Old Safe Combination
-        field</li>
-      <li>Insert you YubiKey</li>
-      <li>If you wish, enter (and confirm) a password in the New Safe
-        Combination and Confirmation fields.</li>
-      <li>Click on the <strong>lower </strong>Yubikey button, and then
-        activate your YubiKey.<br>
-      </li>
-    </ol>
-    <h3>Removing YubiKey Authentication <br>
-    </h3>
-    To change the PasswordSafe database so that it is only protected by
-    a master password:<br>
-    <ol>
-      <li>Insert your YubiKey</li>
-      <li>If you currently have a password associated with this
-        database, enter it in the Old Safe Combination field</li>
-      <li>Click on the <strong>upper </strong>Yubikey button, and then
-        activate your YubiKey</li>
-      <li>Set the New Safe Combination (and the Confirmation) to the
-        desired value.</li>
-      <li>Click on <strong>OK</strong>.</li>
-    </ol>
-    <h3>Adding/Removing/Changing Password Authentication <br>
-    </h3>
-    Password Safe can use YubiKey as the only access mechanism, or along
-    with a conventional password. To change from one to another:<br>
-    <ol>
-      <li>Insert your YubiKey</li>
-      <li>If you currently have a password associated with this
-        database, enter it in the Old Safe Combination field</li>
-      <li>Click on the <strong>upper </strong>Yubikey button, and then
-        activate your YubiKey</li>
-      <li>Set the New Safe Combination (and the Confirmation) to the
-        desired value: Blank to remove the password, or a new password
-        to add or replace the password.</li>
-      <li>Click on the <strong>lower </strong>Yubikey button, and then
-        activate your YubiKey.</li>
-    </ol>
-    <h3>Changing YubiKeys</h3>
-    <p>To switch from one YubiKey to another:
-    <ol>
-      <li>Insert the old YubiKey</li>
-      <li>If you have a password associated with this database as well,
-        enter it in the Old Safe Combination field</li>
-      <li>Click on the <strong>upper </strong>Yubikey button, and then
-        activate your YubiKey</li>
-      <li>Remove the old YubiKey, insert the new one</li>
-      <li>If you wish, enter (and confirm) a password in the New Safe
-        Combination and Confirmation fields.</li>
-      <li>Click on the <strong>lower </strong>Yubikey button, and then
-        activate your YubiKey.<br>
-      </li>
-    </ol>
-    </p>
-    
-    <hr> <small><b>Notes:</b></small><br>
-    <ul>
-      <li><small><b><span style="color: rgb(255, 0, 0);">There is no
-              mechanism within
-              Password Safe to retrieve lost or forgotten safe passwords</span></b><span
-            style="color: rgb(255, 0, 0);">.<br>
-          </span>This is a deliberate design decision, since any
-          mechanism for
-          retrieving lost passwords poses a security hole that can be
-          exploited.</small></li>
-      <li><small>Please choose a difficult-to-guess password. A trivial
-          password, such as "password" or your name is easy to guess,
-          and negates
-          the security that <b>Password Safe</b> provides.<br>
-        </small></li>
-    </ul>
-    <hr><!-- Added some white space at the bottom for natural scrolling -->
-    <br>
-    <br>
-    <br>
-    <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-      <param name="Keyword" value="Change Master Password">
-	  <param name="Keyword" value="YubiKey">
-    </object>
-  </body>
+<h2>Changing Master Passwords</h2>
+
+<p>To change a master password ("Safe Combination"), first open up
+the database whose password you wish to change. Once opened, go to the <b>Manage</b>
+menu and select <b>Change Safe Combination</b>. The following window will be displayed:</p>
+
+<img alt="Key Change dialog box" src="images/combo_change.jpg">
+
+<p><b>Note:</b> If you do not have a <a href="about_pws_yubi.html">YubiKey</a>,
+then the YubiKey buttons will not be displayed,
+and you can ignore the description of their use below.</p>
+
+<p>To change a master password ("Safe Combination"), first open up the database whose
+password you wish to change. Once opened, go to the <b>Manage</b> menu and
+select <b>Change Safe Combination</b>. You should enter the current master
+password, and then the new master password (twice, for confirmation). The master
+password can be entered using the physical or virtual keyboard.</p>
+
+<p><b>Password Safe</b> has a built in check for what it considers to be weak
+master passwords. In general, a master password (like any password) should consist
+of mixed case characters with at least one number or
+<a href="javascript:popup.TextPopup(strSpecialChars,popFont,9,9,-1,-1)">special character</a>
+(such as those found above the number keys on a keyboard). If a master password
+is entered that the program considers weak, it will prompt for confirmation.
+You may the option to accept the originally entered (weak) password, or to enter
+a new one.</p>
+
+<p>On checking the "Show Combination" box, the contents of old and new combination
+will be visible in clear and the confirmation combination edit box is disabled as
+no longer necessary.</p>
+
+<p>For <strong>YubiKey</strong> users: In addition to changing the master
+password as described above, this window allows you to add or remove YubiKey
+authentication, add or remove additional password authentication, as well as
+switch the YubiKey that is used to access the current database. Following are
+instructions for each of these actions:</p>
+
+<h3>Adding YubiKey Authentication</h3>
+
+<p>To convert a Password Safe database that is accessed using a Master
+Password (Safe Combination) to YubiKey access:<br>
+<ol>
+<li>Enter the current Master Password in the Old Safe Combination field</li>
+<li>Insert you YubiKey</li>
+<li>If you wish, enter (and confirm) a password in the New Safe
+Combination and Confirmation fields.</li>
+<li>Click on the <strong>lower </strong>Yubikey button, and then
+activate your YubiKey.<li>
+</ol>
+
+<h3>Removing YubiKey Authentication</h3>
+
+<p>To change the PasswordSafe database so that it is only protected by
+a master password:</p>
+<ol>
+<li>Insert your YubiKey</li>
+<li>If you currently have a password associated with this
+database, enter it in the Old Safe Combination field</li>
+<li>Click on the <strong>upper </strong>Yubikey button, and then
+activate your YubiKey</li>
+<li>Set the New Safe Combination (and the Confirmation) to the
+desired value.</li>
+<li>Click on <strong>OK</strong>.</li>
+</ol>
+
+<h3>Adding/Removing/Changing Password Authentication</h3>
+
+<p>Password Safe can use YubiKey as the only access mechanism, or along
+with a conventional password. To change from one to another:</p>
+<ol>
+<li>Insert your YubiKey</li>
+<li>If you currently have a password associated with this
+database, enter it in the Old Safe Combination field</li>
+<li>Click on the <strong>upper </strong>Yubikey button, and then
+activate your YubiKey</li>
+<li>Set the New Safe Combination (and the Confirmation) to the
+desired value: Blank to remove the password, or a new password
+to add or replace the password.</li>
+<li>Click on the <strong>lower </strong>Yubikey button, and then
+activate your YubiKey.</li>
+</ol>
+
+<h3>Changing YubiKeys</h3>
+
+<p>To switch from one YubiKey to another:</p>
+<ol>
+<li>Insert the old YubiKey</li>
+<li>If you have a password associated with this database as well,
+enter it in the Old Safe Combination field</li>
+<li>Click on the <strong>upper </strong>Yubikey button, and then
+activate your YubiKey</li>
+<li>Remove the old YubiKey, insert the new one</li>
+<li>If you wish, enter (and confirm) a password in the New Safe
+Combination and Confirmation fields.</li>
+<li>Click on the <strong>lower </strong>Yubikey button, and then
+activate your YubiKey.<br>
+</li>
+</ol>
+
+<hr>
+<p><small><b>Notes:</b></small></p>
+<ul>
+<li><small><b><span style="color: rgb(255, 0, 0);">There is no mechanism within
+Password Safe to retrieve lost or forgotten safe passwords</span></b>.
+This is a deliberate design decision, since any mechanism for retrieving
+lost passwords poses a security hole that can be exploited.</small></li>
+<li><small>Please choose a difficult-to-guess password. A trivial
+password, such as "password" or your name is easy to guess,
+and negates
+the security that <b>Password Safe</b> provides.<br>
+</small></li>
+</ul>
+
+<hr><!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Change Master Password">
+<param name="Keyword" value="YubiKey">
+</object>
+</body>
 </html>
