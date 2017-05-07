@@ -28,13 +28,19 @@ protected:
   // Dialog Data
   //{{AFX_DATA(CPasskeySetup)
   enum { IDD = IDD_PASSKEYSETUP };
-  CSecString m_verify;
   //}}AFX_DATA
+
+  CSecString m_verify;
+  BOOL m_btnShowCombination;
 
   virtual BOOL OnInitDialog();
   //{{AFX_VIRTUAL(CPasskeySetup)
   virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
+
+  void ProcessPhrase(); // Check the passphrase, call OnOK, OnCancel or just return
+  void YubiFailed(); // If YubiKey failed, offer to initialize it.
+  void YubiInitialize(); // called if YubiFailed and user confirmed
 
   // Implementation
   // Generated message map functions
@@ -46,9 +52,7 @@ protected:
   afx_msg void OnVerifykeySetfocus();
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnYubikeyBtn();
-  void ProcessPhrase(); // Check the passphrase, call OnOK, OnCancel or just return
-  void YubiFailed(); // If YubiKey failed, offer to initialize it.
-  void YubiInitialize(); // called if YubiFailed and user confirmed
+  afx_msg void OnShowCombination();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
 

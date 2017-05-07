@@ -40,6 +40,8 @@ external editor used to edit the Notes field from the Add/Edit Basic dialog.
 new PasswordSafe database.
 [833] Right-clicking on a base entry now allows you to select any one
 of its dependants, i.e. alias or shortcut.
+[834] We've added the option of displaying the safe combination when
+entering during database creation, opening and change of combination.
 
 Bugs fixed in 3.42.1
 ====================
