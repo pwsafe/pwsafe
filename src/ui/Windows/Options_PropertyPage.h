@@ -55,8 +55,9 @@ struct st_Opt_master_data {
 
   CSecString DefUsername;
   CSecString OtherBrowserLocation;
-  CSecString BrowserCmdLineParms;
+  CSecString OtherBrowserCmdLineParms;
   CSecString OtherEditorLocation;
+  CSecString OtherEditorCmdLineParms;
   CSecString AutotypeText;
   unsigned AutotypeDelay;
   BOOL UseDefuser;
@@ -148,8 +149,9 @@ public:
 
   inline CSecString &M_DefUsername() {return m_OPTMD.DefUsername;}
   inline CString &M_OtherBrowserLocation() {return m_OPTMD.OtherBrowserLocation;}
-  inline CString &M_BrowserCmdLineParms() {return m_OPTMD.BrowserCmdLineParms;}
+  inline CString &M_OtherBrowserCmdLineParms() {return m_OPTMD.OtherBrowserCmdLineParms;}
   inline CString &M_OtherEditorLocation() {return m_OPTMD.OtherEditorLocation;}
+  inline CString &M_OtherEditorCmdLineParms() {return m_OPTMD.OtherEditorCmdLineParms;}
   inline CString &M_AutotypeText() {return m_OPTMD.AutotypeText;}
   inline unsigned &M_AutotypeDelay() {return m_OPTMD.AutotypeDelay;}
   inline BOOL &M_UseDefUsername() {return m_OPTMD.UseDefuser;}

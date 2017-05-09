@@ -31,15 +31,15 @@ public:
   void SaveHotKey();
   bool IsHotKeyActive() {return m_bHotKeyActive;}
 
-  void OnMenuShortcutKillFocus(const WORD wVirtualKeyCode, const WORD wModifiers);
+  void OnMenuShortcutKillFocus(const WORD wVirtualKeyCode, const WORD wPWSModifiers);
 
 protected:
   //{{AFX_MSG(CSHCTListCtrlX)
   afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-  afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-  afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+  afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+  afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
   afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
   //}}AFX_MSG
 

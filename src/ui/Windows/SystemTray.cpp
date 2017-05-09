@@ -403,7 +403,7 @@ static BOOL SetupRecentEntryMenu(DboxMain *pDbx, CMenu *&pMenu, const int i, con
   brc = pMenu->CreatePopupMenu();
   if (brc == 0) goto exit;
 
-  cs_text.LoadStringW(ID_MENUITEM_TRAYSELECT);
+  cs_text.LoadString(ID_MENUITEM_TRAYSELECT);
   cs_select = cs_text.Mid(1);
   brc = pMenu->InsertMenu(0, MF_BYPOSITION | MF_STRING,
                           ID_MENUITEM_TRAYSELECT1 + i,

@@ -1769,5 +1769,8 @@
     <Image Include="graphics\findreplace.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="graphics\toolbar\classic\copypassword_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

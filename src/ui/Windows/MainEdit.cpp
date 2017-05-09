@@ -179,6 +179,11 @@ void DboxMain::OnAdd()
     ItemListIter iter = m_core.Find(newentry_uuid);
     UpdateToolBarForSelectedItem(&iter->second);
 
+    // Now select item
+    DisplayInfo *pdi = GetEntryGUIInfo(iter->second);
+    ASSERT(pdi->list_index != -1);
+    SelectEntry(pdi->list_index);
+
     m_RUEList.AddRUEntry(newentry_uuid);
 
     // May need to update menu/toolbar if database was previously empty
@@ -856,11 +861,43 @@ void DboxMain::OnDelete()
   int num_children = 0;
   m_sxOriginalGroup = L""; // Needed if deleting a groups due to Delete recusrsion
 
+  // Entry to be selected after deletion
+  bool bSelectNext(false), bSelectPrev(false);
+  pws_os::CUUID nextUUID(pws_os::CUUID::NullUUID()), prevUUID(pws_os::CUUID::NullUUID());
+  StringX sxNextGroup(L""), sxPrevGroup(L"");
+
   // Find number of child items, ask for confirmation if > 0
   StringX sxGroup(L""), sxTitle(L""), sxUser(L"");
   CItemData *pci(NULL);
   if (m_ctlItemTree.IsWindowVisible()) {
     HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
+
+    // Check that it wasn't the bottom entry in the tree (can't select next)
+    HTREEITEM hNextSelectedItem = m_ctlItemTree.GetNextItem(hStartItem, TVGN_NEXTVISIBLE);
+    if (hNextSelectedItem != NULL) {
+      bSelectNext = true;
+      CItemData *pci_next = (CItemData *)m_ctlItemTree.GetItemData(hNextSelectedItem);
+      if (pci_next == NULL) {
+        // It is a group - save full path
+        sxNextGroup = m_ctlItemTree.GetGroup(hNextSelectedItem);
+      } else {
+        nextUUID = pci_next->GetUUID();
+      }
+    }
+
+    // Check that it wasn't the top entry in the tree (can't select previous)
+    HTREEITEM hPrevSelectedItem = m_ctlItemTree.GetNextItem(hStartItem, TVGN_PREVIOUSVISIBLE);
+    if (hPrevSelectedItem != NULL) {
+      bSelectPrev = true;
+      CItemData * pci_prev = (CItemData *)m_ctlItemTree.GetItemData(hPrevSelectedItem);
+      if (pci_prev == NULL) {
+        // It is a group - save full path
+        sxPrevGroup = m_ctlItemTree.GetGroup(hPrevSelectedItem);
+      } else {
+        prevUUID = pci_prev->GetUUID();
+      }
+    }
+
     if (hStartItem != NULL) {
       if (m_ctlItemTree.GetItemData(hStartItem) == NULL) {  // group node
         // ALWAYS ask if deleting a group - unless it is empty or
@@ -900,7 +937,7 @@ void DboxMain::OnDelete()
           m_TreeViewGroup = L"";
 
           ChangeOkUpdate();
-          return;
+          goto Select_Next_Prev;
         }
       } else {
         pci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
@@ -913,7 +950,22 @@ void DboxMain::OnDelete()
 
     POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
     if (pos != NULL) {
-      pci = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos - 1);
+      const int nItem = m_ctlItemList.GetNextSelectedItem(pos);
+      pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
+
+      // Check that it wasn't the bottom entry in the list (can't select next)
+      if (nItem < (m_ctlItemList.GetItemCount() - 1)) {
+        bSelectNext = true;
+        CItemData *pci_next = (CItemData *)m_ctlItemList.GetItemData(nItem + 1);
+        nextUUID = pci_next->GetUUID();
+      }
+
+      // Check that it wasn't the top entry in the list (can't select previous)
+      if (nItem > 0) {
+        bSelectPrev = true;
+        CItemData *pci_prev = (CItemData *)m_ctlItemList.GetItemData(nItem - 1);
+        prevUUID = pci_prev->GetUUID();
+      }
     }
   }
 
@@ -969,6 +1021,65 @@ void DboxMain::OnDelete()
 
     ChangeOkUpdate();
   }
+
+Select_Next_Prev:
+  // Now reselect the next/previous item
+  CItemData *pci_select(NULL);
+  DisplayInfo *pdi;
+  HTREEITEM hItem(NULL);
+  int item(-1);
+  bool bFoundSelected(false);
+
+  if (bSelectNext) {
+    // Have to be careful if deleting a group as the next item might be a member
+    // of that group and so no longer there!
+    if (nextUUID != pws_os::CUUID::NullUUID()) {
+      ItemListIter iter = Find(nextUUID);
+      if (iter != End()) {
+        pdi = GetEntryGUIInfo(iter->second);
+        hItem = pdi->tree_item;
+        item = pdi->list_index;
+        pci_select = &iter->second;
+        bFoundSelected = true;
+      }
+    } else {
+      if (!sxNextGroup.empty() &&
+          m_mapGroupToTreeItem.find(sxNextGroup) != m_mapGroupToTreeItem.end()) {
+        hItem = m_mapGroupToTreeItem[sxNextGroup];
+        bFoundSelected = true;
+      }
+    }
+  }   
+  if (bSelectPrev && !bFoundSelected) {
+    if (prevUUID != pws_os::CUUID::NullUUID()) {
+      ItemListIter iter = Find(prevUUID);
+      if (iter != End()) {
+        pdi = GetEntryGUIInfo(iter->second);
+        hItem = pdi->tree_item;
+        item = pdi->list_index;
+        pci_select = &iter->second;
+        bFoundSelected = true;
+      }
+    } else {
+      if (!sxPrevGroup.empty() &&
+          m_mapGroupToTreeItem.find(sxPrevGroup) != m_mapGroupToTreeItem.end()) {
+        hItem = m_mapGroupToTreeItem[sxPrevGroup];
+        bFoundSelected = true;
+      }
+    }
+  }
+
+  // Now select the deleted item's (group's) next or previous entry
+  if (bFoundSelected) {
+    if (m_ctlItemTree.IsWindowVisible() && hItem != NULL) {
+      m_ctlItemTree.SelectItem(hItem);
+    } else if (item != -1) {
+      m_ctlItemList.SetItemState(item, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
+    }
+  }
+
+  // Update Toolbar & Dragbar
+  UpdateToolBarForSelectedItem(pci_select);
 }
 
 void DboxMain::Delete(MultiCommands *pmcmd)
@@ -2063,6 +2174,21 @@ void DboxMain::OnGotoBaseEntry()
   if (SelItemOk() == TRUE) {
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
+
+    if (m_bFilterActive) {
+      // Although the menu entry may have been removed if the base entry
+      // is not in the view, this won't stop the accelerator key working
+      // as TranslateAccelerator only ignores a menu entry if disabled but
+      // doesn't check that it has been removed.
+
+      // If a filter is active, then might not be able to go to
+      // entry's base entry as not in Tree or List view
+      pws_os::CUUID uuidBase = pci->GetBaseUUID();
+      auto iter = m_MapEntryToGUI.find(uuidBase);
+      ASSERT(iter != m_MapEntryToGUI.end());
+      if (iter->second.list_index == -1)
+        return;
+    }
 
     const CItemData *pbci = GetBaseEntry(pci);
     if (pbci != NULL) {

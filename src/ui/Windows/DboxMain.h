@@ -446,7 +446,7 @@ public:
   bool ChangeMode(bool promptUser); // r-o <-> r/w
 
   // If we have processed it returns 0 else 1
-  BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wModifiers);
+  BOOL ProcessEntryShortcut(WORD &wVirtualKeyCode, WORD &wWinModifiers);
   bool IsWorkstationLocked() const;
   void BlockLogoffShutdown(const bool bChanged);
 
@@ -640,6 +640,8 @@ public:
   afx_msg void OnUpdateTraySendEmail(CCmdUI *pCmdUI);
   afx_msg void OnTraySelect(UINT nID);
   afx_msg void OnUpdateTraySelect(CCmdUI *pCmdUI);
+  afx_msg void OnGotoDependant(UINT nID);
+  afx_msg void OnUpdateGotoDependant(CCmdUI *pCmdUI);
 
   afx_msg LRESULT OnAreYouMe(WPARAM, LPARAM);
   afx_msg LRESULT OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam);
@@ -724,6 +726,7 @@ public:
   afx_msg void OnViewReportsByID(UINT nID);  // From View->Reports menu
   afx_msg void OnViewReports();
   afx_msg void OnManageFilters(); // From Toolbar button
+  afx_msg void OnExportFilteredDB();
   afx_msg void OnCancelFilter();
   afx_msg void OnApplyFilter();
   afx_msg void OnSetFilter();
@@ -845,6 +848,9 @@ private:
  
   // Here lies the mapping between an entry and its place on the GUI (Tree/List views)
   std::map<pws_os::CUUID, DisplayInfo, std::less<pws_os::CUUID> > m_MapEntryToGUI;
+
+  // Mapping between visible dependants and their base (might not be visible if filter active)
+  std::vector<int> m_vGotoDependants;
   
   // Set link between entry and GUI
   void SetEntryGUIInfo(const CItemData &ci, const DisplayInfo &di)

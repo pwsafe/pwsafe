@@ -1695,11 +1695,11 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
 
-  if (nID == ID_MENUITEM_EXPORTGRP2DB) {
+  if (nID == ID_MENUITEM_EXPORTGRP2DB || nID == ID_MENUITEM_EXPORTFILTERED2DB) {
     // Note: MakeOrderedItemList gets its members by walking the
     // tree therefore, if a filter is active, it will ONLY export
     // those being displayed.
-    MakeOrderedItemList(OIL, m_ctlItemTree.GetSelectedItem());
+      MakeOrderedItemList(OIL, (nID == ID_MENUITEM_EXPORTGRP2DB) ? m_ctlItemTree.GetSelectedItem() : NULL);
 
     // Get empty groups being exported
     std::vector<StringX> vAllEmptyGroups;
@@ -1853,8 +1853,7 @@ int DboxMain::DoExportText(const StringX &sx_Filename, const UINT nID,
     // Note: MakeOrderedItemList gets its members by walking the
     // tree therefore, if a filter is active, it will ONLY export
     // those being displayed.
-    HTREEITEM hi = nID == ID_MENUITEM_EXPORTGRP2PLAINTEXT ? m_ctlItemTree.GetSelectedItem() : NULL;
-    MakeOrderedItemList(OIL, hi);
+    MakeOrderedItemList(OIL, (nID == ID_MENUITEM_EXPORTGRP2PLAINTEXT) ? m_ctlItemTree.GetSelectedItem() : NULL);
   } else {
     // Note: Only selected entry but...
     // if Alias - use entry with base's password
@@ -2243,6 +2242,19 @@ void DboxMain::OnExportAttachment()
     const CString cs_errmsg = L"Unable to open newly exported file to set file times.";
     gmb.AfxMessageBox(cs_errmsg);
   }
+}
+
+void DboxMain::OnExportFilteredDB()
+{
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORTFILTERED2DB,
+    this, WZAdvanced::INVALID, NULL);
+
+  wizard.SetDBVersion(m_core.GetReadFileVersion());
+
+  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
+  wizard.DoModal();
+  m_bWizardActive = false;
 }
 
 void DboxMain::OnImportText()

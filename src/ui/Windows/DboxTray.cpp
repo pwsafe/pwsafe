@@ -479,3 +479,17 @@ void DboxMain::OnTrayRunCommand(UINT nID)
 void DboxMain::OnUpdateTrayRunCommand(CCmdUI *)
 {
 }
+
+void DboxMain::OnGotoDependant(UINT nID)
+{
+  ASSERT((nID >= ID_MENUITEM_GOTODEPENDANT1) && (nID <= ID_MENUITEM_GOTODEPENDANTMAX));
+
+  if ((nID - ID_MENUITEM_GOTODEPENDANT1 + 1) > m_vGotoDependants.size())
+    return;
+
+  SelectEntry(m_vGotoDependants[nID - ID_MENUITEM_GOTODEPENDANT1], TRUE);
+}
+
+void DboxMain::OnUpdateGotoDependant(CCmdUI *)
+{
+}

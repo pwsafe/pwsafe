@@ -7,41 +7,40 @@
     <!-- Modified: 15/06/2005 --><!--Popup control -->
     <script language="javascript" src="html/popups.js">
 </script><link rel="stylesheet" type="text/css" href="style.css">
-  </head>
-  <body>
-    <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
-    <!-- Popup Source File -->
-    <h2>Exporting Entries</h2>
-    <p><b>Password Safe</b> supports exporting (and importing)
-of the stored passwords to (and from) various formats. To export
-  password entries use the
-"File&nbsp;&rarr;&nbsp;Export To" menu. The supported formats are:</p>
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
 
-    <ul>
-      <li>Password Safe v1 (for use by versions 1.x of Password Safe)</li>
-      <li>Password Safe v2 (for use by versions 2.x of Password Safe)</li>
-      <li><a href="#te">Plain text</a></li>
-      <li><a href="#xml">XML</a></li>
-    </ul>
-    <p>For previous versions of <b>Password Safe</b>, just select the
-      desired
-      format and specify the name of the database file you wish to
-      create.</p>
-    <p>In addition, to 'export' a subset of entries to another Password
-      Safe database,
-      just start <b>Password Safe</b> (assuming you permit multiple
-      instances via
-      <a href="system_tab.html">"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;System"</a>
-      tab) and create a new database, whilst having your normal database
-      open in another instance.
-      Then you can simply drag and drop any entries or groups from your
-      open database
-      to this 'export' database.</p>
-    <p>Export uses a Wizard interface. You may also select the Advanced
-      field selection in order to restrict which entries you export and
-      which
-      field of these entries you export from your current database.
-      See <a href="wzselectdb.html">here</a> for more details.</p>
+<h2>Exporting Entries</h2>
+<p><b>Password Safe</b> supports exporting (and importing)
+of the stored passwords to (and from) various formats. To export
+password entries use the "File&nbsp;&rarr;&nbsp;Export To" menu.
+The supported formats are:</p>
+
+<ul>
+<li>Password Safe v1 (for use by versions 1.x of Password Safe)</li>
+<li>Password Safe v2 (for use by versions 2.x of Password Safe)</li>
+<li><a href="#text">Plain text</a></li>
+<li><a href="#xml">XML</a></li>
+<li><a href="#subset">Subsets of the database</a></li>
+</ul>
+
+<p>For previous versions of <b>Password Safe</b>, just select the desired
+format and specify the name of the database file you wish to create.</p>
+
+<p>In addition, to 'export' a subset of entries to another Password
+Safe database, just start <b>Password Safe</b> (assuming you permit multiple
+instances via
+<a href="system_tab.html">"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;System"</a>
+tab) and create a new database, whilst having your normal database
+open in another instance. Then you can simply drag and drop any entries or groups from your
+open database to this 'export' database.</p>
+
+<p>Export uses a Wizard interface. You may also select the Advanced
+field selection in order to restrict which entries you export and which
+field of these entries you export from your current database.
+See <a href="wzselectdb.html">here</a> for more details.</p>
 
 <p>A report of the actions taken will be available on completion and this may be copied
 to the clipboard or saved to disk as a text file in the same directory as the database.
@@ -50,136 +49,150 @@ used to view the reports at a later date. The name of the report file is fixed a
 dependent on the function that created it. If the same function is repeated
 and its report saved to disk, any existing report for this function will be
 overwritten. <span style="color=red;"><b>Note:</b> The report may contain sensitive data and
-        care should be taken when selecting the "save to disk" option.</span></p>
-    <h3><a name="te"></a>Text Export</h3>
-    <hr>
-    <small>
-      <span style="color: rgb(255, 0, 0);"><b>Note:</b> The exported
-        text is an
-        unprotected copy of the specified password entries. Deleting
-        this copy after use is
-        <b>not</b> sufficient for making it inaccessible to a determined
-        attacker
-        and in effect bypasses the security of the program. Please <b>DO
-          NOT</b>
-        use this function unless you understand and accept the risks.</span><br>
-    </small>
-    <hr>
-    <p><b>Password Safe</b> allows you to export password entries to
-      text files.
-      These files may then be used or modified by other applications.</p>
-    <p>You will be asked to enter the master password (safe combination)
-      to confirm that you may export the database into a clear text
-      unencrypted file before you can export its contents. If you're
-      using YubiKey authentication, click on the Yubikey button, then
-      activate your YubiKey. You will also be required to supply the
-      name of the new file and to confirm overwriting of it if a file of
-      the same name if it already exists in the directory you specified.</p>
-    <img alt="Export Text" src="images/export.jpg">
-	<p><small><b>Note:</b> If you do not have a <a href="about_pws_yubi.html">YubiKey</a>, the screen shown above will not have the YubiKey
-	button and text displayed.</small></p>
-    <p>You can also specify some options:</p>
-    <ul>
-      <li>Password entries will be exported with a tab character between
-        fields i.e., between the Group.Title, Username, Password and the
-        Notes fields. The "Group.Title" is considered a single field.
-        Any field containing a blank will be output inside double
-        quotation characters. Only the Notes field can contain multiple
-        line entries. The normal processing is to place each Notes line
-        on a separate line in the exported text field. However, this
-        makes it difficult to sort or to use when comparing two
-        different export files. To overcome this, you may specify a
-        delimiter to separate multiple lines when exporting them. If you
-        are going to import a text file created with such a delimiter,
-        then it must be specified, all the Notes lines will appear as
-        one single line in the resulting database.<br>
-        If required, tick that you want to put all separate lines
-        in the Notes field onto one line and enter the character to be
-        used as
-        the delimiter. Since the whole Notes field is enclosed between
-        double
-        quotation marks, this character is prohibited from being
-        selected as
-        the multi-line delimiter.
-      </li>
-    </ul>
-    <p><img alt="Advanced Text Export Options" src="images/export_text_adv.jpg"></p>
-    <p>Selecting "Advanced field selection" will display this Wizard
-      page
-      to allow you to export only some of the entries,
-      based on the text in specified fields, and/or specify which fields
-      are
-      to be exported. See <a href="wzselectdb.html">here</a> for more
-      details.</p>
-    <hr style="width: 100%; height: 2px;">
+care should be taken when selecting the "save to disk" option.</span></p>
+
+<h3><a name="text"></a>Text Export</h3>
+
+<hr>
+<small>
+<span style="color: rgb(255, 0, 0);"><b>Note:</b> The exported text is an
+unprotected copy of the specified password entries. Deleting
+this copy after use is <b>not</b> sufficient for making it inaccessible
+to a determined attacker and in effect bypasses the security of the program
+Please <b>DO NOT</b> use this function unless you understand and accept the risks.</span>
+</small>
+<hr>
+
+<p><b>Password Safe</b> allows you to export password entries to text files.
+These files may then be used or modified by other applications.</p>
+<p>You will be asked to enter the master password (safe combination)
+to confirm that you may export the database into a clear text
+unencrypted file before you can export its contents. If you're
+using YubiKey authentication, click on the Yubikey button, then
+activate your YubiKey. You will also be required to supply the
+name of the new file and to confirm overwriting of it if a file of
+the same name if it already exists in the directory you specified.</p>
+
+<img alt="Export Text" src="images/export.jpg">
+
+<p><small><b>Note:</b> If you do not have a <a href="about_pws_yubi.html">YubiKey</a>,
+the screen shown above will not have the YubiKey button and text displayed.</small></p>
+
+<p>You can also specify some options:</p>
+<ul>
+<li>Password entries will be exported with a tab character between
+fields i.e., between the Group.Title, Username, Password and the
+Notes fields. The "Group.Title" is considered a single field.
+Any field containing a blank will be output inside double
+quotation characters. Only the Notes field can contain multiple
+line entries. The normal processing is to place each Notes line
+on a separate line in the exported text field. However, this
+makes it difficult to sort or to use when comparing two
+different export files. To overcome this, you may specify a
+delimiter to separate multiple lines when exporting them. If you
+are going to import a text file created with such a delimiter,
+then it must be specified, all the Notes lines will appear as
+one single line in the resulting database.<br>
+If required, tick that you want to put all separate lines
+in the Notes field onto one line and enter the character to be used as
+the delimiter. Since the whole Notes field is enclosed between double
+quotation marks, this character is prohibited from being selected as
+the multi-line delimiter.</li>
+</ul>
+
+<p><img alt="Advanced Text Export Options" src="images/export_text_adv.jpg"></p>
+
+<p>Selecting "Advanced field selection" will display this Wizard page
+to allow you to export only some of the entries, based on the text in
+specified fields, and/or specify which fields are to be exported.
+See <a href="wzselectdb.html">here</a> for more details.</p>
+
+<hr>
 <small><b>Note:</b> Details on the format of the exported text file may be found in the
 "<a href="imp_exp_text_details.html">Plain Text Export &amp; Import Format</a>" section.</small>
-    <hr style="width: 100%; height: 2px;">
-    <h3><a name="xml"></a>XML</h3>
-    <p>XML (eXtensible Markup Language) is a popular format for
-      transferring
-      data between applications. <b>Password Safe</b> can export (and
-      import) the
-      database entries to this format. The structure (or <i>schema</i>)
-      against which the data is exported and validated is defined in the
-      file <i>pwsafe.xsd</i>,
-      which is provided as part of the distribution. This file is used
-      by
-      <b>Password Safe</b> when XML data is imported, and should be
-      provided to
-      applications that wish to use the exported data.<br>
-    </p>
-    <hr style="width: 100%; height: 2px;">
-    <small>
-      <span style="color: rgb(255, 0, 0);">
-        <b>Note:</b> The exported text is an unprotected copy of the
-        specified password entries.
-        Deleting this copy after use is <b>not</b> sufficient for
-        making it inaccessible to a determined
-        attacker and in effect bypasses the security of the program.
-        Please <b>DO NOT</b> use this function
-        unless you understand and accept the risks.
-      </span>
-    </small>
-    <hr style="width: 100%; height: 2px;">
-    <p>The display of XML files is specified by <i>pwsafe.xsl</i>
-      - an eXtensible Stylesheet Language file. A sample file, which may
-      be
-      modified for your own needs, is supplied as part of the
-      distribution.
-      This file is only an example and you can easily modify it to
-      display
-      whatever fields you want to show. As this only displays the data
-      and will not alter it, you will still be able to import it into
-      <b>Password Safe</b> at some later time.</p>
-    <p>As in the Text Export option, you can control what entries and
-      field to
-      export to the XML file by selecting the "Advanced field
-      selection".
-      This will display the following Wizard page:</p>
-    <p>
-      <img alt="Advanced XML Export Options" src="images/export_xml_adv.jpg"><br>
-    </p>
-    <p>Selecting "Advanced field selection" will display this Wizard
-      page
-      to allow you to export only some of the entries, based on the text
-      in
-      specified fields, and/or specify which fields are to be exported.
-      <b>Note:</b>
-      that the XML schema <u>requires</u> the Title and Password
-      fields, hence these
-      cannot be deselected. See <a href="wzselectdb.html">here</a> for
-      more details.</p>
-    <p></p>
-    <!-- Added some white space at the bottom for natural scrolling -->
-    <br>
-    <br>
-    <br>
-    <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-      <param name="Keyword" value="Export Password Entries">
-      <param name="Keyword" value="Import Password Entries">
-      <param name="Keyword" value="Excel Password Data">
-      <param name="Keyword" value="Converting Existing Password Data">
-    </object>
-  </body>
+<hr>
+
+<h3><a name="xml"></a>XML</h3>
+
+<p>XML (eXtensible Markup Language) is a popular format for transferring
+data between applications. <b>Password Safe</b> can export (and import) the
+database entries to this format. The structure (or <i>schema</i>)
+against which the data is exported and validated is defined in the
+file <i>pwsafe.xsd</i>, which is provided as part of the distribution. This file is used
+by <b>Password Safe</b> when XML data is imported, and should be provided to
+applications that wish to use the exported data.</p>
+
+<hr>
+<small>
+<span style="color: rgb(255, 0, 0);">
+<b>Note:</b> The exported text is an unprotected copy of the specified password
+entries. Deleting this copy after use is <b>not</b> sufficient for making it
+inaccessible to a determined attacker and in effect bypasses the security of
+the program. Please <b>DO NOT</b> use this function unless you understand
+and accept the risks.
+</span>
+</small>
+<hr>
+
+<p>The display of XML files is specified by <i>pwsafe.xsl</i>
+- an eXtensible Stylesheet Language file. A sample file, which may be
+modified for your own needs, is supplied as part of the distribution.
+This file is only an example and you can easily modify it to display
+whatever fields you want to show. As this only displays the data
+and will not alter it, you will still be able to import it into
+<b>Password Safe</b> at some later time.</p>
+
+<p>As in the Text Export option, you can control what entries and field to
+export to the XML file by selecting the "Advanced field selection".
+This will display the following Wizard page:</p>
+
+<p><img alt="Advanced XML Export Options" src="images/export_xml_adv.jpg"></p>
+
+<p>Selecting "Advanced field selection" will display this Wizard page
+to allow you to export only some of the entries, based on the text in
+specified fields, and/or specify which fields are to be exported. <b>Note:</b>
+that the XML schema <u>requires</u> the Title and Password fields, hence these
+cannot be deselected. See <a href="wzselectdb.html">here</a> for
+more details.</p>
+
+<h3><a name="subset"></a>Subsets of the database</h3>
+
+<p>It is also possible to export a single entry or the members of a group to Plain Text,
+XML or to a current version of a <b>Password Safe</b>.  In this case, right-click on
+the entry of group and select the form of output from the "Export Entry To" or
+"Export Group To" menu.</p>
+
+<p>For Text and XML export, the options available are exactly the same as exporting the
+complete database above.</p>
+
+<p>Lastly, if a filter is active, it is possible to export the entries that satisfy 
+this filter to a current version of a <b>Password Safe</b>. This can also be found on
+the main "Export To" menu off the File menu.</p>
+
+<p><u>Notes:</u>
+<ol>
+<li>When exporting only members of a group or the results of the current filter,
+if any of the included entries are aliases or shortcuts, then the associated base entries
+will also be exported even if it is not in the group or filtered results. This ensures that
+the resulting exported file is consistent.</li>
+<li>When exporting a single entry:</li>
+<ol type="A">
+<li>If the entry is an alias, the password of the exported entry will be that of its
+base entry.</li>
+<li>If the entry  is a shortcut, then only its base entry will be exported.</li>
+</ol>
+</ol>
+</p>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+  <param name="Keyword" value="Export Password Entries">
+  <param name="Keyword" value="Import Password Entries">
+  <param name="Keyword" value="Excel Password Data">
+  <param name="Keyword" value="Converting Existing Password Data">
+</object>
+</body>
 </html>

@@ -10,19 +10,26 @@
 // PasswordSubsetDlg.h : header file
 //-----------------------------------------------------------------------------
 
-#include "core/PwsPlatform.h"
 #include "PWDialog.h"
 #include "ControlExtns.h"
-#include "afxwin.h"
+#include "TBMStatic.h"
+
+#include "core/PwsPlatform.h"
 
 // Simple class to ensure only numbers, space, comma and semi-colons
 // are entered
 class CNumEdit : public CEdit
 {
+public:
+  CNumEdit();
+
   // Generated message map functions
 protected:
   //{{AFX_MSG(CNumEdit)
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+  afx_msg void OnPaste();
+  afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+  afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 
@@ -44,6 +51,8 @@ protected:
   virtual BOOL PreTranslateMessage(MSG *pMsg);
   virtual void OnCancel();
 
+  CTBMStatic m_Help1, m_Help2;
+
   //{{AFX_MSG(CPasswordSubsetDlg)
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   afx_msg void OnCopy();
@@ -54,13 +63,16 @@ protected:
 private:
   LRESULT OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lParam */);
 
-  const StringX m_passwd;
-  CNumEdit m_ne_subset;
-  CStaticExtn m_stcwarningmsg;
+  CNumEdit m_neSubsetPositions;
+  CStaticExtn m_stcWarningMsg;
   CBitmap m_CopyPswdBitmap, m_DisabledCopyPswdBitmap;
-  CEdit m_results;
-  CString m_subset, m_warningmsg;
-  bool m_bshown, m_bCopyPasswordEnabled;
+  CEdit m_edResults;
+  CButton *m_pCopyBtn;
+
+  const StringX m_sxPassword;
+  CString m_csSubsetPositions, m_csWarningMsg;
+  bool m_bShown, m_bCopyPasswordEnabled;
+  BOOL m_bImageLoaded, m_bDisabledImageLoaded;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
