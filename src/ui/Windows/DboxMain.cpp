@@ -1421,7 +1421,7 @@ HICON DboxMain::CreateIcon(const HICON &hIcon, const int &iIndex, const COLORREF
   // Also write text on here - Do NOT use SetTextAlign
   HGDIOBJ hOldMaskFont = ::SelectObject(hMaskDC, hFont);
   ::SetBkMode(hMaskDC, TRANSPARENT);
-  ::SetTextColor(hMemDC, clrText);
+  ::SetTextColor(hMaskDC, clrText);
   ::TextOut(hMaskDC, 0, 0, (LPCWSTR)csValue, 2);
 
   HBITMAP hMaskBmp = (HBITMAP)::SelectObject(hMaskDC, hOldMaskBmp);
@@ -1483,9 +1483,9 @@ void DboxMain::SetSystemTrayState(DBSTATE state)
       m_iDBIndex = iDBIndex;
       ::DestroyIcon(m_IndexIcon);
 
-      m_IndexIcon = CreateIcon(hIcon, iDBIndex);
       COLORREF clrText = state == LOCKED ? m_DBLockedIndexColour : m_DBUnlockedIndexColour;
       m_IndexIcon = CreateIcon(hIcon, iDBIndex, clrText);
+      m_pTrayIcon->SetIcon(m_IndexIcon);
     } else {
       m_pTrayIcon->SetIcon(hIcon);
     }
@@ -2793,6 +2793,7 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
   const WORD wNCode = HIWORD(wParam);
   const WORD wID = LOWORD(wParam);
+
   /*
     wNCode = Notification Code if from a control, 1 if from an accelerator
              and 0 if from a menu.
