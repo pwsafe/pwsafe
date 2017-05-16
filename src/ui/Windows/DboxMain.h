@@ -535,7 +535,7 @@ public:
   // For UPDATE_UI
   int OnUpdateMenuToolbar(const UINT nID);
   int OnUpdateViewReports(const int nID);
-  void OnUpdateMRU(CCmdUI* pCmdUI);
+  void OnUpdateMRU(CCmdUI *pCmdUI);
 
   void ConfigureSystemMenu();
 

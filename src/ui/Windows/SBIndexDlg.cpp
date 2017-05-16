@@ -77,13 +77,13 @@ CSBIndexDlg::CSBIndexDlg(CWnd *pParent, int iDBIndex)
   m_clrLockedTextOptions[0] = RGB(255, 255,   0); // Yellow - default
   m_clrLockedTextOptions[1] = RGB(255,   0,   0); // Red
   m_clrLockedTextOptions[2] = RGB(254, 254, 254); // White-ish (if white then would come out transparent)
-  m_clrLockedTextOptions[3] = RGB(  0,   0,   0); // Black
+  m_clrLockedTextOptions[3] = RGB(  1,   1,   1); // Black-ish (if black then would come out transparent)
 
   // Unlocked
   m_clrUnlockedTextOptions[0] = RGB(255, 255,   0); // Yellow - default
   m_clrUnlockedTextOptions[1] = RGB(  0, 255,   0); // Green
   m_clrUnlockedTextOptions[2] = RGB(254, 254, 254); // White-ish (if white then would come out transparent)
-  m_clrUnlockedTextOptions[3] = RGB(  0,   0,   0); // Black-ish
+  m_clrUnlockedTextOptions[3] = RGB(  1,   1,   1); // Black-ish (if black then would come out transparent)
 }
 
 CSBIndexDlg::~CSBIndexDlg()
@@ -231,7 +231,9 @@ void CSBIndexDlg::OnOK()
 {
   UpdateData(TRUE);
 
+  // Has user changed the index?
   if (m_iInitialDBIndex != m_iDBIndex) {
+    // Has user disabled index feature?
     if (m_iDBIndex != 0) {
       // Try to get this index
       wchar_t szName[MAX_PATH];

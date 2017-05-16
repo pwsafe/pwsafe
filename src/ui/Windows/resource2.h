@@ -163,7 +163,6 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_LANGUAGEMENU                 32158
 #define ID_MENUITEM_PSWD_POLICIES       32159
 #define ID_MENUITEM_YUBIKEY             32160
-#define ID_MENUITEM_SETDBINDEX          32161
 
 // Help menu
 #define ID_HELPMENU                     32200
@@ -192,6 +191,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_MINIMIZE            32253
 #define ID_MENUITEM_RESTORE             32254
 #define ID_MENUITEM_TRAYSELECT          32255
+#define ID_MENUITEM_SETDBINDEX          32256
 
 // Main Toolbar - only those items not also menu items
 // or only on mouse right-click popup menu

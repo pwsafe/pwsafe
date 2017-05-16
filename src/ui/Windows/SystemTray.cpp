@@ -64,6 +64,9 @@
 #include "DboxMain.h"
 #include "PWDialog.h" // for access to CPWDialogTracker
 
+#include "ThisMfcApp.h"  // for app.FindMenuItem
+#include "PasswordSafe.h"
+
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
@@ -559,6 +562,14 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
                                  ID_MENUITEM_TRAYUNLOCK, csUnLock);
         // Can't do Minimize if locked
         pContextMenu->RemoveMenu(ID_MENUITEM_MINIMIZE, MF_BYCOMMAND);
+        // Don't allow set/unset/change of DB index if locked. Would like to disable it...
+        // but MFC seems to make this difficult - delete it and following separator instead
+        int pos = app.FindMenuItem(pContextMenu, ID_MENUITEM_SETDBINDEX);
+        if (pos > -1) {
+          // Delete the menu item and its following separator
+          pContextMenu->RemoveMenu(pos, MF_BYPOSITION);
+          pContextMenu->RemoveMenu(pos, MF_BYPOSITION);
+        }
         break;
       }
       case DboxMain::CLOSED:

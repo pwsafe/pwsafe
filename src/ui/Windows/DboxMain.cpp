@@ -28,6 +28,7 @@
 #include "GeneralMsgBox.h"
 #include "InfoDisplay.h"
 #include "PasskeySetup.h"
+#include "SBIndexDlg.h"
 
 // Set Ctrl/Alt/Shift strings for menus
 #include "MenuShortcuts.h"
@@ -1381,6 +1382,34 @@ int DboxMain::SetClosedTrayIcon(int &iData, bool bSet)
   }
 
   return icon;
+}
+
+void DboxMain::OnSetDBIndex()
+{
+  CSBIndexDlg SBIdlg((CWnd *)this, m_iDBIndex);
+
+  INT_PTR rc = SBIdlg.DoModal();
+
+  if (rc != -1) {
+    // Index may have changed
+    if (m_iDBIndex != rc) {
+      // Clear current one if it exists
+      if (m_hMutexDBIndex != NULL) {
+        CloseHandle(m_hMutexDBIndex);
+        m_hMutexDBIndex = NULL;
+      }
+
+      // Remember mutex handle to close on DB close or assignment of new index
+      m_hMutexDBIndex = SBIdlg.GetMutexHandle();
+    }
+
+    // Colour may have changed
+    m_DBLockedIndexColour = SBIdlg.GetLockedIndexColour();
+    m_DBUnlockedIndexColour = SBIdlg.GetUnlockedIndexColour();
+
+    m_iDBIndex = (int)rc;
+    UpdateSystemTray(m_TrayLockedState == LOCKED ? LOCKED : UNLOCKED);
+  }
 }
 
 HICON DboxMain::CreateIcon(const HICON &hIcon, const int &iIndex, const COLORREF clrText)
@@ -3754,10 +3783,6 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       //  don't give the user the option to change to R/W
       pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
       iEnable = (m_bOpen && m_core.GetReadFileVersion() >= PWSfile::VCURRENT && !bFileIsReadOnly) ? TRUE : FALSE;
-      break;
-    case ID_MENUITEM_SETDBINDEX:
-      // Disable SetDBIndex if System Tray not in use
-      iEnable = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray);
       break;
     default:
       break;

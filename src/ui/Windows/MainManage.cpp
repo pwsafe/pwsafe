@@ -33,7 +33,6 @@
 #include "ManagePSWDPols.h"
 #include "HKModifiers.h"
 #include "YubiCfgDlg.h"
-#include "SBIndexDlg.h"
 
 #include "core/core.h"
 #include "core/pwsprefs.h"
@@ -686,34 +685,6 @@ void DboxMain::OnYubikey()
   CYubiCfgDlg dlg(this, m_core);
   dlg.DoModal();
 #endif /* NO_YUBI */
-}
-
-void DboxMain::OnSetDBIndex()
-{
-  CSBIndexDlg SBIdlg((CWnd *)this, m_iDBIndex);
-
-  INT_PTR rc = SBIdlg.DoModal();
-  
-  if (rc != -1) {
-    // Index may have changed
-    if (m_iDBIndex != rc) {
-      // Clear current one if it exists
-      if (m_hMutexDBIndex != NULL) {
-        CloseHandle(m_hMutexDBIndex);
-        m_hMutexDBIndex = NULL;
-      }
-
-      // Remember mutex handle to close on DB close or assignment of new index
-      m_hMutexDBIndex = SBIdlg.GetMutexHandle();
-    }
-
-    // Colour may have changed
-    m_DBLockedIndexColour = SBIdlg.GetLockedIndexColour();
-    m_DBUnlockedIndexColour = SBIdlg.GetUnlockedIndexColour();
-
-    m_iDBIndex = (int)rc;
-    UpdateSystemTray(m_TrayLockedState == LOCKED ? LOCKED : UNLOCKED);
-  }
 }
 
 void DboxMain::OnManagePasswordPolicies()
