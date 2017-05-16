@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<title>System Tray</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control --><script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>System Tray</h2>
+
+<table class="MsoNormalTable" style="border: medium none ; border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td ;="" align="center">Unlocked Database</td>
+<td style="width: 10px;"></td>
+<td ;="" align="center">Locked Database</td>
+</tr>
+<tr>
+<td><img alt="Unlocked System Tray" src="images/system_tray_unlocked.jpg"></td>
+<td></td>
+<td><img alt="Locked System Tray" src="images/system_tray_locked.jpg"></td>
+</tr>
+</tbody>
+</table>
+
+<p>The <b>System Tray</b> context menu gives access to recently used entries (if the
+database is unlocked) and to unlock the database if locked. It can also minimize
+the main <b>PasswordSafe</b> window and restore it if already minimized but
+not locked.</p>
+
+<h3><a name="SetDBIndex"></a>Set Database Index</h3>
+
+<p>If you regularly have a number of databases open, after opening a database, you may
+set a unique temporary index (a number between 1 and 99) that will be superimposed on top of
+the System Tray icon. Setting an index of zero will remove this image. An index is reserved
+once assigned to an open database but will be free to be used again either when a new index
+is assigned or the database closed. In addition, the System Tray tooltip has been enhanced
+to show this index and make the text multiline to display the database name.</p>
+
+<p>Notes:
+<ul>
+<li>If the database is locked, the database name will be shown between square brackets.</li>
+<li>The database index can only be changed if the database is unlocked.</li>
+</ul>
+
+<img alt="Database Index" src="images/database_index.jpg">
+<img alt="Database Index2" src="images/database_index2.jpg">
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+</object>
+
+</body>
+</html>
