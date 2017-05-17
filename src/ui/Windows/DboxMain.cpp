@@ -454,7 +454,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
   ON_COMMAND(ID_MENUITEM_GENERATEPASSWORD, OnGeneratePassword)
   ON_COMMAND(ID_MENUITEM_YUBIKEY, OnYubikey)
-  ON_COMMAND(ID_MENUITEM_SETDBID, OnSetDBIndex)
+  ON_COMMAND(ID_MENUITEM_SETDBID, OnSetDBID)
   ON_COMMAND(ID_MENUITEM_PSWD_POLICIES, OnManagePasswordPolicies)
 
   // Help Menu
@@ -1384,7 +1384,7 @@ int DboxMain::SetClosedTrayIcon(int &iData, bool bSet)
   return icon;
 }
 
-void DboxMain::OnSetDBIndex()
+void DboxMain::OnSetDBID()
 {
   CSetDBID SBIdlg((CWnd *)this, m_iDBIndex);
 

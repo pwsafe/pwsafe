@@ -702,7 +702,7 @@ public:
   afx_msg void OnManagePasswordPolicies();
   afx_msg void OnGeneratePassword();
   afx_msg void OnYubikey();
-  afx_msg void OnSetDBIndex();
+  afx_msg void OnSetDBID();
   afx_msg void OnSave();
   afx_msg void OnAdd();
   afx_msg void OnAddGroup();
