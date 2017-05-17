@@ -13,14 +13,18 @@
 <table class="MsoNormalTable" style="border: medium none ; border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
 <tbody>
 <tr>
-<td ;="" align="center">Unlocked Database</td>
+<td align="center">No database open</td>
 <td style="width: 10px;"></td>
-<td ;="" align="center">Locked Database</td>
+<td align="center">Locked database</td>
+<td style="width: 10px;"></td>
+<td align="center">Unlocked database</td>
 </tr>
 <tr>
-<td><img alt="Unlocked System Tray" src="images/system_tray_unlocked.jpg"></td>
+<td><img alt="Locked System Tray" src="images/system_tray_nodb.jpg"></td>
 <td></td>
-<td><img alt="Locked System Tray" src="images/system_tray_locked.jpg"></td>
+<td><img alt="Unlocked System Tray" src="images/system_tray_locked.jpg"></td>
+<td></td>
+<td><img alt="Locked System Tray" src="images/system_tray_unlocked.jpg"></td>
 </tr>
 </tbody>
 </table>
@@ -30,20 +34,36 @@ database is unlocked) and to unlock the database if locked. It can also minimize
 the main <b>PasswordSafe</b> window and restore it if already minimized but
 not locked.</p>
 
-<h3><a name="SetDBIndex"></a>Set Database Index</h3>
+<h3>Set Database ID</h3>
 
 <p>If you regularly have a number of databases open, after opening a database, you may
-set a unique temporary index (a number between 1 and 99) that will be superimposed on top of
-the System Tray icon. Setting an index of zero will remove this image. An index is reserved
-once assigned to an open database but will be free to be used again either when a new index
-is assigned or the database closed. In addition, the System Tray tooltip has been enhanced
-to show this index and make the text multiline to display the database name.</p>
+set a unique temporary ID (a number between 1 and 99) that will be superimposed on top of
+the System Tray icon. Setting an ID of zero will free up the previous ID and 
+remove the number from this image.</p>
 
-<p>Notes:
+<p>An ID is reserved once assigned to an open database but will be free to be used again
+either when a new ID is assigned or the database is closed. In addition, the System Tray
+tooltip has been enhanced to show this ID and make the text multiline to display the database name.
+
+<br>
+<br>
+
+Notes:
 <ul>
-<li>If the database is locked, the database name will be shown between square brackets.</li>
+<li>An ID can only be assigned to an opened database. When the database is closed, the ID
+is free to be assigned to another open database.</li>
+<li>An ID can't be assigned to two opened databases at the same time.</li>
 <li>The database index can only be changed if the database is unlocked.</li>
+<li>The association of an ID to a particular database is not persistent (remembered) and
+must be reassigned to a database every time it is opened.</li>
+<li>Due to the changes made by Microsoft to the color of the Windows Taskbar and Notification
+Area between releases of Windows and the ability using some applications to change this color,
+a limited number of text colors for the ID are provided to enable the user to select the best
+visible for their environment.</li>
+<li>In the enhanced tooltip, if the database is locked, the database name will be shown between
+square brackets as shown below.</li>
 </ul>
+</p>
 
 <img alt="Database Index" src="images/database_index.jpg">
 <img alt="Database Index2" src="images/database_index2.jpg">

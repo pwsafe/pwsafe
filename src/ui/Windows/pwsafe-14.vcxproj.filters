@@ -333,9 +333,6 @@
     <ClCompile Include="SampleTextDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SBIndexDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SCWListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -418,6 +415,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="YubiMixin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetDBID.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -740,9 +740,6 @@
     <ClInclude Include="SampleTextDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SBIndexDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SCWListCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -843,6 +840,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Windowsdefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SetDBID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,12 +6,12 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-// SBIndexDlg.cpp : implementation file
+// SetDBID.cpp : implementation file
 //
 
 #include "stdafx.h"
 
-#include "SBIndexDlg.h"
+#include "SetDBID.h"
 #include "DboxMain.h"
 #include "ThisMfcApp.h"
 #include "SingleInstance.h"
@@ -64,11 +64,11 @@ LRESULT CNPEdit::OnPaste(WPARAM, LPARAM)
   return 1L;
 }
 
-// CSBIndexDlg dialog
+// CSetDBID dialog
 
-IMPLEMENT_DYNAMIC(CSBIndexDlg, CPWDialog)
+IMPLEMENT_DYNAMIC(CSetDBID, CPWDialog)
 
-CSBIndexDlg::CSBIndexDlg(CWnd *pParent, int iDBIndex)
+CSetDBID::CSetDBID(CWnd *pParent, int iDBIndex)
 	: CPWDialog(IDD_SETDBINDEX, pParent), m_pParent((DboxMain *)pParent),
   m_iInitialDBIndex(iDBIndex), m_iDBIndex(iDBIndex), m_iLockedTextColour(0),
   m_iUnLockedTextColour(0), m_bInitDone(false)
@@ -86,11 +86,11 @@ CSBIndexDlg::CSBIndexDlg(CWnd *pParent, int iDBIndex)
   m_clrUnlockedTextOptions[3] = RGB(  1,   1,   1); // Black-ish (if black then would come out transparent)
 }
 
-CSBIndexDlg::~CSBIndexDlg()
+CSetDBID::~CSetDBID()
 {
 }
 
-void CSBIndexDlg::DoDataExchange(CDataExchange* pDX)
+void CSetDBID::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 
@@ -105,7 +105,7 @@ void CSBIndexDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_UNLOCKEDIMAGE, m_stUnlockedImage);
 }
 
-BEGIN_MESSAGE_MAP(CSBIndexDlg, CDialog)
+BEGIN_MESSAGE_MAP(CSetDBID, CDialog)
   ON_WM_DESTROY()
   ON_WM_CTLCOLOR()
 
@@ -116,9 +116,9 @@ BEGIN_MESSAGE_MAP(CSBIndexDlg, CDialog)
   ON_COMMAND_RANGE(IDC_DBINDEX_TEXTCOLOURUL0, IDC_DBINDEX_TEXTCOLOURUL3, OnSetUnlockedColour)
 END_MESSAGE_MAP()
 
-// CSBIndexDlg message handlers
+// CSetDBID message handlers
 
-BOOL CSBIndexDlg::OnInitDialog()
+BOOL CSetDBID::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
@@ -191,7 +191,7 @@ BOOL CSBIndexDlg::OnInitDialog()
   return FALSE;  // return TRUE unless you set the focus to a control
 }
 
-void CSBIndexDlg::OnDestroy()
+void CSetDBID::OnDestroy()
 {
   if (m_bInitDone) {
     m_bmLocked.Detach();
@@ -201,12 +201,12 @@ void CSBIndexDlg::OnDestroy()
   }
 }
 
-void CSBIndexDlg::OnHelp()
+void CSetDBID::OnHelp()
 {
-  ShowHelp(L"::/html/manage_menu.html#SetDBIndex");
+  ShowHelp(L"::/html/system_tray.html");
 }
 
-HBRUSH CSBIndexDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
+HBRUSH CSetDBID::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   HBRUSH hbr = CPWDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
@@ -227,7 +227,7 @@ HBRUSH CSBIndexDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   return hbr;
 }
 
-void CSBIndexDlg::OnOK()
+void CSetDBID::OnOK()
 {
   UpdateData(TRUE);
 
@@ -257,12 +257,12 @@ void CSBIndexDlg::OnOK()
   CPWDialog::EndDialog(m_iDBIndex);
 }
 
-void CSBIndexDlg::OnCancel()
+void CSetDBID::OnCancel()
 {
   CPWDialog::EndDialog(-1);
 }
 
-void CSBIndexDlg::OnSetLockedColour(UINT /*nID*/)
+void CSetDBID::OnSetLockedColour(UINT /*nID*/)
 {
   UpdateData(TRUE);
 
@@ -276,7 +276,7 @@ void CSBIndexDlg::OnSetLockedColour(UINT /*nID*/)
   }
 }
 
-void CSBIndexDlg::OnSetUnlockedColour(UINT /*nID*/)
+void CSetDBID::OnSetUnlockedColour(UINT /*nID*/)
 {
   UpdateData(TRUE);
 
@@ -290,7 +290,7 @@ void CSBIndexDlg::OnSetUnlockedColour(UINT /*nID*/)
   }
 }
 
-void CSBIndexDlg::SetBitmapBackground(CBitmap &bm)
+void CSetDBID::SetBitmapBackground(CBitmap &bm)
 {
   // Get how many pixels in the bitmap
   BITMAP bmInfo;
@@ -318,7 +318,7 @@ void CSBIndexDlg::SetBitmapBackground(CBitmap &bm)
   }
 }
 
-void CSBIndexDlg::CreateIndexBitmap(const int iIndex, const COLORREF clrText, const bool bLocked)
+void CSetDBID::CreateIndexBitmap(const int iIndex, const COLORREF clrText, const bool bLocked)
 {
   CString csValue;
   csValue.Format(L"%2d", iIndex);

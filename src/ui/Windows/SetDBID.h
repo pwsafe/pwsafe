@@ -7,13 +7,13 @@
 */
 #pragma once
 
-/// \file SBIndexDlg.h
+/// \file SetDBID.h
 //
 
 #include "PWDialog.h"
 #include "ControlExtns.h"
 
-// CSBIndexDlg dialog
+// CSetDBID dialog
 
 class DboxMain;
 
@@ -32,13 +32,13 @@ protected:
   DECLARE_MESSAGE_MAP()
 };
 
-class CSBIndexDlg : public CPWDialog
+class CSetDBID : public CPWDialog
 {
-	DECLARE_DYNAMIC(CSBIndexDlg)
+	DECLARE_DYNAMIC(CSetDBID)
 
 public:
-	CSBIndexDlg(CWnd *pParent, int iIndex = 0);
-	virtual ~CSBIndexDlg();
+	CSetDBID(CWnd *pParent, int iIndex = 0);
+	virtual ~CSetDBID();
 
 // Dialog Data
 	enum { IDD = IDD_SETDBINDEX };

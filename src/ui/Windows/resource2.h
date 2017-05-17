@@ -191,7 +191,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_MINIMIZE            32253
 #define ID_MENUITEM_RESTORE             32254
 #define ID_MENUITEM_TRAYSELECT          32255
-#define ID_MENUITEM_SETDBINDEX          32256
+#define ID_MENUITEM_SETDBID             32256
 
 // Main Toolbar - only those items not also menu items
 // or only on mouse right-click popup menu

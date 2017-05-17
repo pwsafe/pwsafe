@@ -617,7 +617,7 @@
     <ClCompile Include="QuerySetDef.cpp" />
     <ClCompile Include="RichEditCtrlExtn.cpp" />
     <ClCompile Include="SampleTextDlg.cpp" />
-    <ClCompile Include="SBIndexDlg.cpp" />
+    <ClCompile Include="SetDBID.cpp" />
     <ClCompile Include="SCWListCtrl.cpp" />
     <ClCompile Include="SecString.cpp" />
     <ClCompile Include="filter\SetFiltersDlg.cpp" />
@@ -754,7 +754,7 @@
     <ClInclude Include="resource3.h" />
     <ClInclude Include="RichEditCtrlExtn.h" />
     <ClInclude Include="SampleTextDlg.h" />
-    <ClInclude Include="SBIndexDlg.h" />
+    <ClInclude Include="SetDBID.h" />
     <ClInclude Include="SCWListCtrl.h" />
     <ClInclude Include="SecString.h" />
     <ClInclude Include="filter\SetFiltersDlg.h" />

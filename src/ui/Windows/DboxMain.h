@@ -454,7 +454,7 @@ public:
   {return m_core.GetAllMediaTypes();}
 
  protected:
-   friend class CSBIndexDlg;  // To access icon creation etc.
+   friend class CSetDBID;  // To access icon creation etc.
 
    // ClassWizard generated virtual function overrides
    //{{AFX_VIRTUAL(DboxMain)

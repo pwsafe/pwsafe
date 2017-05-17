@@ -28,7 +28,7 @@
 #include "GeneralMsgBox.h"
 #include "InfoDisplay.h"
 #include "PasskeySetup.h"
-#include "SBIndexDlg.h"
+#include "SetDBID.h"
 
 // Set Ctrl/Alt/Shift strings for menus
 #include "MenuShortcuts.h"
@@ -454,7 +454,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
   ON_COMMAND(ID_MENUITEM_GENERATEPASSWORD, OnGeneratePassword)
   ON_COMMAND(ID_MENUITEM_YUBIKEY, OnYubikey)
-  ON_COMMAND(ID_MENUITEM_SETDBINDEX, OnSetDBIndex)
+  ON_COMMAND(ID_MENUITEM_SETDBID, OnSetDBIndex)
   ON_COMMAND(ID_MENUITEM_PSWD_POLICIES, OnManagePasswordPolicies)
 
   // Help Menu
@@ -686,7 +686,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_OPTIONS, true, true, true, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
   {ID_MENUITEM_YUBIKEY, true, false, true, false},
-  {ID_MENUITEM_SETDBINDEX, true, true, true, false},
+  {ID_MENUITEM_SETDBID, true, true, true, false},
   {ID_MENUITEM_PSWD_POLICIES, true, true, true, false},
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
@@ -1386,7 +1386,7 @@ int DboxMain::SetClosedTrayIcon(int &iData, bool bSet)
 
 void DboxMain::OnSetDBIndex()
 {
-  CSBIndexDlg SBIdlg((CWnd *)this, m_iDBIndex);
+  CSetDBID SBIdlg((CWnd *)this, m_iDBIndex);
 
   INT_PTR rc = SBIdlg.DoModal();
 

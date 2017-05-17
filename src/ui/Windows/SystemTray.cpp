@@ -562,14 +562,6 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
                                  ID_MENUITEM_TRAYUNLOCK, csUnLock);
         // Can't do Minimize if locked
         pContextMenu->RemoveMenu(ID_MENUITEM_MINIMIZE, MF_BYCOMMAND);
-        // Don't allow set/unset/change of DB index if locked. Would like to disable it...
-        // but MFC seems to make this difficult - delete it and following separator instead
-        int pos = app.FindMenuItem(pContextMenu, ID_MENUITEM_SETDBINDEX);
-        if (pos > -1) {
-          // Delete the menu item and its following separator
-          pContextMenu->RemoveMenu(pos, MF_BYPOSITION);
-          pContextMenu->RemoveMenu(pos, MF_BYPOSITION);
-        }
         break;
       }
       case DboxMain::CLOSED:
@@ -581,6 +573,18 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         break;
       default:
         break;
+    }
+
+    if (app_state == DboxMain::LOCKED || app_state == DboxMain::CLOSED) {
+      // Don't allow set/unset/change of DB ID if locked. Would like to disable it...
+      // but MFC seems to make this difficult - delete it and following separator instead
+      // Also, don't allow a DB ID if no DB is open!
+      int pos = app.FindMenuItem(pContextMenu, ID_MENUITEM_SETDBID);
+      if (pos > -1) {
+        // Delete the menu item and its following separator
+        pContextMenu->RemoveMenu(pos, MF_BYPOSITION);
+        pContextMenu->RemoveMenu(pos, MF_BYPOSITION);
+      }
     }
 
     if (CPWDialog::GetDialogTracker()->AnyOpenDialogs()) {
