@@ -391,7 +391,15 @@
 #define IDB_EMPTY_DISABLED              549
 #define IDB_REDEXCLAMATION              550
 #define IDB_LOCK_CLASSIC                551
-#define IDB_COPYPASSWORD_CLASSIC_D      552
+#define IDD_SETDBINDEX                  552
+#define IDB_BLACK                       553
+#define IDB_RED                         554
+#define IDB_GREEN                       555
+#define IDB_WHITE                       556
+#define IDB_YELLOW                      557
+#define IDB_LOCKED_TRAY_INDEX           558
+#define IDB_UNLOCKED_TRAY_INDEX         559
+#define IDB_COPYPASSWORD_CLASSIC_D      560
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -868,20 +876,32 @@
 #define IDC_PWHHELP                     1560
 #define IDC_STATIC_HOSTUSER             1561
 #define IDC_STATIC_DEPENDENT            1562
-#define IDC_COPYPASSWORDHELP            1563
-#define IDC_COPYPASSWORDHELP1           1564
-#define IDC_COPYPASSWORDHELP2           1565
-#define IDC_STATIC_MESSAGE              1566
-#define IDC_ALTEDITOR_CMDLINE           1567
-#define IDC_SHOWCOMBINATION             1568
+#define IDC_DBINDEX                     1563
+#define IDC_SETCOLOUR                   1564
+#define IDC_UNLOCKEDIMAGE               1565
+#define IDC_LOCKEDIMAGE                 1566
+#define IDC_DBINDEX_TEXTCOLOURL0        1567
+#define IDC_DBINDEX_TEXTCOLOURL1        1568
+#define IDC_DBINDEX_TEXTCOLOURL2        1579
+#define IDC_DBINDEX_TEXTCOLOURL3        1580
+#define IDC_DBINDEX_TEXTCOLOURUL0       1581
+#define IDC_DBINDEX_TEXTCOLOURUL1       1582
+#define IDC_DBINDEX_TEXTCOLOURUL2       1583
+#define IDC_DBINDEX_TEXTCOLOURUL3       1584
+#define IDC_COPYPASSWORDHELP            1585
+#define IDC_COPYPASSWORDHELP1           1586
+#define IDC_COPYPASSWORDHELP2           1587
+#define IDC_STATIC_MESSAGE              1588
+#define IDC_ALTEDITOR_CMDLINE           1589
+#define IDC_SHOWCOMBINATION             1590
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        555
+#define _APS_NEXT_RESOURCE_VALUE        561
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1569
-#define _APS_NEXT_SYMED_VALUE           553
+#define _APS_NEXT_CONTROL_VALUE         1591
+#define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif

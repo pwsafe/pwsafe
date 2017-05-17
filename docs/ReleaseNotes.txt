@@ -38,6 +38,10 @@ New Features for 3.42.2
 external editor used to edit the Notes field from the Add/Edit Basic dialog. 
 [] It is now possible to export the currently filtered entries to a
 new PasswordSafe database.
+[832] If many databases are open at the same time, after opening a database, the user
+can specify a database index (1-99) that will be superimposed on the System Tray icon
+to aid identification. In addition, the System Tray icon tooltip has been enhanced
+to show more of the database name.
 [833] Right-clicking on a base entry now allows you to select any one
 of its dependants, i.e. alias or shortcut.
 [834] We've added the option of displaying the safe combination when

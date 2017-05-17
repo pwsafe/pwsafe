@@ -40,6 +40,8 @@
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray window
 
+class DboxMain;
+
 class CSystemTray : public CWnd
 {
   // Construction/destruction
@@ -87,7 +89,7 @@ public:
   
   // Change or retrieve the window to send notification messages to
   BOOL SetNotificationWnd(CWnd *NotifyWnd);
-  CWnd* GetNotificationWnd() const;
+  CWnd *GetNotificationWnd() const;
 
   // Default handler for tray notification message
   virtual LRESULT OnTrayNotification(WPARAM uID, LPARAM lEvent);
@@ -97,7 +99,7 @@ protected:
 
   BOOL m_bEnabled;   // does O/S support tray icon?
   BOOL m_bHidden;    // Has the icon been hidden?
-  NOTIFYICONDATA  m_tnd;
+  NOTIFYICONDATA m_tnd;
 
   CArray<HICON, HICON> m_IconList;
   static UINT m_nIDEvent;
@@ -122,5 +124,5 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CWnd *m_pParent;
+  DboxMain *m_pParent;
 };

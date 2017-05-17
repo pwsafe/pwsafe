@@ -112,6 +112,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/SampleTextDlg.h
             src/ui/Windows/SCWListCtrl.h
             src/ui/Windows/SecString.h
+            src/ui/Windows/SetDBID.h
             src/ui/Windows/SHCTHotKey.h
             src/ui/Windows/SHCTListCtrl.h
             src/ui/Windows/Shortcut.h
@@ -256,6 +257,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/SampleTextDlg.cpp
             src/ui/Windows/SCWListCtrl.cpp
             src/ui/Windows/SecString.cpp
+            src/ui/Windows/SetDBID.cpp
             src/ui/Windows/SHCTHotKey.cpp
             src/ui/Windows/SHCTListCtrl.cpp
             src/ui/Windows/Shortcut.cpp

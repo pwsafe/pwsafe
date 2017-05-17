@@ -30,6 +30,7 @@
 #include "MenuShortcuts.h"
 #include "AdvancedDlg.h"
 #include "FontsDialog.h"
+#include "SystemTray.h"
 
 #include "core/UIinterface.h"
 #include "core/PWScore.h"
@@ -119,6 +120,8 @@ public:
 
   enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, ST_SAVEIMMEDIATELY,
                  ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
+
+  enum DBSTATE { LOCKED, UNLOCKED, CLOSED };
 
   // Find entry by title and user name, exact match
   ItemListIter Find(const StringX &a_group,
@@ -380,6 +383,13 @@ public:
   void SetRenameGroups(const StringX sxNewPath)
   { m_sxNewPath = sxNewPath; }
 
+  int GetDBIndex() { return m_iDBIndex; }
+  COLORREF GetLockedIndexColour() { return m_DBLockedIndexColour; }
+  COLORREF GetUnlockedIndexColour() { return m_DBUnlockedIndexColour; }
+
+  DBSTATE GetSystemTrayState() const { return m_TrayLockedState; }
+  BOOL IsIconVisible() const { return m_pTrayIcon->Visible(); }
+
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
   CPWListCtrl m_ctlItemList;
@@ -444,6 +454,8 @@ public:
   {return m_core.GetAllMediaTypes();}
 
  protected:
+   friend class CSetDBID;  // To access icon creation etc.
+
    // ClassWizard generated virtual function overrides
    //{{AFX_VIRTUAL(DboxMain)
    virtual BOOL PreTranslateMessage(MSG *pMsg);
@@ -523,13 +535,21 @@ public:
   // For UPDATE_UI
   int OnUpdateMenuToolbar(const UINT nID);
   int OnUpdateViewReports(const int nID);
-  void OnUpdateMRU(CCmdUI* pCmdUI);
+  void OnUpdateMRU(CCmdUI *pCmdUI);
 
   void ConfigureSystemMenu();
 
-  // 'STATE' also defined in ThisMfcApp.h - ensure identical
-  enum STATE { LOCKED, UNLOCKED, CLOSED };
-  void UpdateSystemTray(const STATE s);
+  void UpdateSystemTray(const DBSTATE s);
+  BOOL SetTooltipText(LPCWSTR ttt) { return m_pTrayIcon->SetTooltipText(ttt); }
+  void ShowIcon() { m_pTrayIcon->ShowIcon(); }
+  void HideIcon() { m_pTrayIcon->HideIcon(); }
+
+  void SetSystemTrayState(DBSTATE s);
+  int SetClosedTrayIcon(int &icon, bool bSet = true);
+  void SetSystemTrayTarget(CWnd *pWnd) { m_pTrayIcon->SetTarget(pWnd); }
+
+  HICON CreateIcon(const HICON &hIcon, const int &iIndex,
+                   const COLORREF clrText = RGB(255, 255, 0));
 
   LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
   LRESULT OnCCToHdrDragComplete(WPARAM wParam, LPARAM lParam);
@@ -564,7 +584,7 @@ public:
   void UpdateMenuAndToolBar(const bool bOpen);
   void SortListView();
 
-  //Version of message functions with return values
+  // Version of message functions with return values
   int Save(const SaveType savetype = DboxMain::ST_INVALID);
   int SaveAs();
   int Open(const UINT uiTitle = IDS_CHOOSEDATABASE);
@@ -682,6 +702,7 @@ public:
   afx_msg void OnManagePasswordPolicies();
   afx_msg void OnGeneratePassword();
   afx_msg void OnYubikey();
+  afx_msg void OnSetDBID();
   afx_msg void OnSave();
   afx_msg void OnAdd();
   afx_msg void OnAddGroup();
@@ -789,6 +810,14 @@ private:
   PWScore &m_core;
 
   CPasskeyEntry *m_pPasskeyEntryDlg;
+
+  CSystemTray *m_pTrayIcon; // DboxMain needs to be constructed first
+  DBSTATE m_TrayLockedState;
+
+  HICON m_LockedIcon;
+  HICON m_UnLockedIcon;
+  HICON m_ClosedIcon;
+  HICON m_IndexIcon;
 
   bool m_IsStartSilent;
   bool m_IsStartClosed;
@@ -986,6 +1015,11 @@ private:
   void SetLanguage(LCID lcid);
   int m_ilastaction;  // Last action
   void SetDragbarToolTips();
+
+  // Database index on Tray icon
+  int m_iDBIndex;
+  COLORREF m_DBLockedIndexColour, m_DBUnlockedIndexColour;
+  HANDLE m_hMutexDBIndex;
 
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?

@@ -521,7 +521,14 @@ int DboxMain::Close(const bool bTrySave)
   m_DDemail.SetStaticState(false);
   m_DDAutotype.SetStaticState(false);
 
-  app.SetTooltipText(L"PasswordSafe");
+  SetTooltipText(L"PasswordSafe");
+
+  m_iDBIndex = 0;
+  if (m_hMutexDBIndex != NULL) {
+    CloseHandle(m_hMutexDBIndex);
+    m_hMutexDBIndex = NULL;
+  }
+
   UpdateSystemTray(CLOSED);
 
   // Call UpdateMenuAndToolBar before UpdateStatusBar
@@ -1483,7 +1490,19 @@ int DboxMain::SaveAs()
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
-  app.SetTooltipText(m_core.GetCurFile().c_str());
+
+  std::wstring cdrive, cdir, cFilename, cExtn;
+  pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, cFilename, cExtn);
+  
+  CString csTooltip;
+  if (m_iDBIndex == 0) {
+    csTooltip.Format(L"%s\n%s", (cdrive + cdir).c_str(), (cFilename + cExtn).c_str());
+  } else {
+    csTooltip.Format(L"%2d: %s\n    %s", m_iDBIndex, (cdrive + cdir).c_str(),
+      (cFilename + cExtn).c_str());
+  }
+
+  SetTooltipText(csTooltip);
 
   // Reset all indications entry times changed
   m_bEntryTimestampsChanged = false;
@@ -4151,6 +4170,11 @@ void DboxMain::CleanUpAndExit(const bool bNormalExit)
 
   // Clear out filters
   m_MapAllFilters.clear();
+
+  if (m_pTrayIcon != NULL) {
+    m_pTrayIcon->DestroyWindow();
+    delete m_pTrayIcon;
+  }
 
   // If we are called normally, then exit gracefully. If not, force the issue
   // after the caller has processed the current message by posting another message

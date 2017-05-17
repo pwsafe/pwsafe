@@ -28,6 +28,7 @@
 #include "GeneralMsgBox.h"
 #include "InfoDisplay.h"
 #include "PasskeySetup.h"
+#include "SetDBID.h"
 
 // Set Ctrl/Alt/Shift strings for menus
 #include "MenuShortcuts.h"
@@ -117,6 +118,7 @@ void DboxMain::SetLocalStrings()
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
   : CDialog(DboxMain::IDD, pParent),
+  m_TrayLockedState(LOCKED), m_pTrayIcon(NULL),
   m_pPasskeyEntryDlg(NULL), m_bSizing(false), m_bDBNeedsReading(true), m_bInitDone(false),
   m_toolbarsSetup(FALSE),
   m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
@@ -154,7 +156,9 @@ DboxMain::DboxMain(CWnd* pParent)
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
-  m_bFindToolBarVisibleAtLock(false), m_bSuspendGUIUpdates(false), m_iNeedRefresh(NONE)
+  m_bFindToolBarVisibleAtLock(false), m_bSuspendGUIUpdates(false), m_iNeedRefresh(NONE),
+  m_iDBIndex(0), m_hMutexDBIndex(NULL),
+  m_DBLockedIndexColour(RGB(255, 255, 0)), m_DBUnlockedIndexColour(RGB(255, 255, 0))
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::LOAD_LIBRARY_SYS));
@@ -450,6 +454,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
   ON_COMMAND(ID_MENUITEM_GENERATEPASSWORD, OnGeneratePassword)
   ON_COMMAND(ID_MENUITEM_YUBIKEY, OnYubikey)
+  ON_COMMAND(ID_MENUITEM_SETDBID, OnSetDBID)
   ON_COMMAND(ID_MENUITEM_PSWD_POLICIES, OnManagePasswordPolicies)
 
   // Help Menu
@@ -681,6 +686,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_OPTIONS, true, true, true, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
   {ID_MENUITEM_YUBIKEY, true, false, true, false},
+  {ID_MENUITEM_SETDBID, true, true, true, false},
   {ID_MENUITEM_PSWD_POLICIES, true, true, true, false},
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
@@ -818,7 +824,7 @@ void DboxMain::InitPasswordSafe()
   // ... same for UseSystemTray
   // StartSilent trumps preference (but StartClosed doesn't)
   if (!m_IsStartSilent && !prefs->GetPref(PWSprefs::UseSystemTray))
-    app.HideIcon();
+    HideIcon();
 
   m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
 
@@ -1147,7 +1153,7 @@ LRESULT DboxMain::OnHotKey(WPARAM wParam, LPARAM )
 
     // Because LockDataBase actually doesn't minimize the window,
     // have to also use the current state i.e. Locked
-    if (app.GetSystemTrayState() == LOCKED || IsIconic()) {
+    if (m_TrayLockedState == LOCKED || IsIconic()) {
       SendMessage(WM_COMMAND, ID_MENUITEM_RESTORE);
     }
 
@@ -1228,6 +1234,17 @@ BOOL DboxMain::OnInitDialog()
   PWS_LOGIT;
 
   CDialog::OnInitDialog();
+
+  m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
+  m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
+
+  int iData = PWSprefs::GetInstance()->GetPref(PWSprefs::ClosedTrayIconColour);
+  SetClosedTrayIcon(iData);
+  m_pTrayIcon = new CSystemTray(this, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
+                                m_LockedIcon, m_RUEList,
+                                PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
+  
+  m_pTrayIcon->SetTarget(this);
 
   // Set up UPDATE_UI data map.
   const int num_CommandTable_entries = _countof(m_UICommandTable);
@@ -1338,6 +1355,172 @@ BOOL DboxMain::OnInitDialog()
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
+int DboxMain::SetClosedTrayIcon(int &iData, bool bSet)
+{
+  int icon;
+  switch (iData) {
+  case PWSprefs::stiBlack:
+    icon = IDI_TRAY;  // This is black.
+    break;
+  case PWSprefs::stiBlue:
+    icon = IDI_TRAY_BLUE;
+    break;
+  case PWSprefs::stiWhite:
+    icon = IDI_TRAY_WHITE;
+    break;
+  case PWSprefs::stiYellow:
+    icon = IDI_TRAY_YELLOW;
+    break;
+  default:
+    iData = PWSprefs::stiBlack;
+    icon = IDI_TRAY;
+    break;
+  }
+  if (bSet) {
+    ::DestroyIcon(m_ClosedIcon);
+    m_ClosedIcon = app.LoadIcon(icon);
+  }
+
+  return icon;
+}
+
+void DboxMain::OnSetDBID()
+{
+  CSetDBID SBIdlg((CWnd *)this, m_iDBIndex);
+
+  INT_PTR rc = SBIdlg.DoModal();
+
+  if (rc != -1) {
+    // Index may have changed
+    if (m_iDBIndex != rc) {
+      // Clear current one if it exists
+      if (m_hMutexDBIndex != NULL) {
+        CloseHandle(m_hMutexDBIndex);
+        m_hMutexDBIndex = NULL;
+      }
+
+      // Remember mutex handle to close on DB close or assignment of new index
+      m_hMutexDBIndex = SBIdlg.GetMutexHandle();
+    }
+
+    // Colour may have changed
+    m_DBLockedIndexColour = SBIdlg.GetLockedIndexColour();
+    m_DBUnlockedIndexColour = SBIdlg.GetUnlockedIndexColour();
+
+    m_iDBIndex = (int)rc;
+    UpdateSystemTray(m_TrayLockedState == LOCKED ? LOCKED : UNLOCKED);
+  }
+}
+
+HICON DboxMain::CreateIcon(const HICON &hIcon, const int &iIndex, const COLORREF clrText)
+{
+  CString csValue;
+  csValue.Format(L"%2d", iIndex);
+
+  HDC hDc = ::GetDC(NULL);
+  HDC hMemDC = ::CreateCompatibleDC(hDc);
+
+  // Load up background icon
+  ICONINFO ii = { 0 };
+  ::GetIconInfo(hIcon, &ii);
+
+  HGDIOBJ hOldBmp = ::SelectObject(hMemDC, ii.hbmColor);
+
+  // Create font
+  LOGFONT lf = { 0 };
+  lf.lfHeight = -22;
+  lf.lfWeight = FW_NORMAL;
+  lf.lfOutPrecision = PROOF_QUALITY;
+  lf.lfQuality = ANTIALIASED_QUALITY;
+  wmemset(lf.lfFaceName, 0, LF_FACESIZE);
+  lstrcpy(lf.lfFaceName, L"Arial Black");
+
+  HFONT hFont = ::CreateFontIndirect(&lf);
+  HGDIOBJ hOldFont = ::SelectObject(hMemDC, hFont);
+
+  // Write text - Do NOT use SetTextAlign
+  ::SetBkMode(hMemDC, TRANSPARENT);
+  ::SetTextColor(hMemDC, clrText);
+  ::TextOut(hMemDC, 0, 0, (LPCWSTR)csValue, 2);
+
+  // Set up mask
+  HDC hMaskDC = ::CreateCompatibleDC(hDc);
+  HGDIOBJ hOldMaskBmp = ::SelectObject(hMaskDC, ii.hbmMask);
+
+  // Also write text on here - Do NOT use SetTextAlign
+  HGDIOBJ hOldMaskFont = ::SelectObject(hMaskDC, hFont);
+  ::SetBkMode(hMaskDC, TRANSPARENT);
+  ::SetTextColor(hMaskDC, clrText);
+  ::TextOut(hMaskDC, 0, 0, (LPCWSTR)csValue, 2);
+
+  HBITMAP hMaskBmp = (HBITMAP)::SelectObject(hMaskDC, hOldMaskBmp);
+
+  ICONINFO ii2 = { 0 };
+  ii2.fIcon = TRUE;
+  ii2.hbmMask = hMaskBmp;
+  ii2.hbmColor = ii.hbmColor;
+
+  // Create updated icon
+  HICON hIndexIcon = ::CreateIconIndirect(&ii2);
+
+  // Cleanup bitmap mask
+  ::DeleteObject(hMaskBmp);
+  ::DeleteDC(hMaskDC);
+
+  // Cleanup font
+  ::SelectObject(hMaskDC, hOldMaskFont);
+  ::SelectObject(hMemDC, hOldFont);
+  ::DeleteObject(hFont);
+
+  // Release background bitmap
+  ::SelectObject(hMemDC, hOldBmp);
+
+  // Delete background icon bitmap info
+  ::DeleteObject(ii.hbmColor);
+  ::DeleteObject(ii.hbmMask);
+
+  ::DeleteDC(hMemDC);
+  ::ReleaseDC(NULL, hDc);
+
+  return hIndexIcon;
+}
+
+void DboxMain::SetSystemTrayState(DBSTATE state)
+{
+  // need to protect against null m_pTrayIcon due to
+  // tricky initialization order
+  int iDBIndex = GetDBIndex();
+  if (m_pTrayIcon != NULL) {
+    m_TrayLockedState = state;
+    HICON hIcon(m_LockedIcon);
+    switch (state) {
+    case LOCKED:
+      hIcon = m_LockedIcon;
+      break;
+    case UNLOCKED:
+      hIcon = m_UnLockedIcon;
+      break;
+    case CLOSED:
+      hIcon = m_ClosedIcon;
+      m_iDBIndex = 0;
+      break;
+    default:
+      break;
+    }
+
+    if (iDBIndex != 0 && state != CLOSED) {
+      m_iDBIndex = iDBIndex;
+      ::DestroyIcon(m_IndexIcon);
+
+      COLORREF clrText = state == LOCKED ? m_DBLockedIndexColour : m_DBUnlockedIndexColour;
+      m_IndexIcon = CreateIcon(hIcon, iDBIndex, clrText);
+      m_pTrayIcon->SetIcon(m_IndexIcon);
+    } else {
+      m_pTrayIcon->SetIcon(hIcon);
+    }
+  }
+}
+
 void DboxMain::SetDragbarToolTips()
 {
   // Remove it if already present
@@ -1428,6 +1611,11 @@ void DboxMain::SetInitialDatabaseDisplay()
 
 void DboxMain::OnDestroy()
 {
+  ::DestroyIcon(m_LockedIcon);
+  ::DestroyIcon(m_UnLockedIcon);
+  ::DestroyIcon(m_ClosedIcon);
+  ::DestroyIcon(m_IndexIcon);
+
   const std::wstring filename(m_core.GetCurFile().c_str());
 
   // The only way we're the locker is if it's locked & we're !readonly
@@ -1919,7 +2107,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
   // Ensure blank DboxMain dialog is not shown if user double-clicks
   // on SystemTray icon when being prompted for passphrase
-  app.SetSystemTrayTarget(m_pPasskeyEntryDlg);
+  SetSystemTrayTarget(m_pPasskeyEntryDlg);
   
   INT_PTR rc = m_pPasskeyEntryDlg->DoModal();
 
@@ -2066,7 +2254,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   }
 
   // Put us back
-  app.SetSystemTrayTarget(this);
+  SetSystemTrayTarget(this);
 
   delete m_pPasskeyEntryDlg;
   m_pPasskeyEntryDlg = NULL;
@@ -2182,7 +2370,7 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
       break;
     case SC_MAXIMIZE:
     case SC_RESTORE:
-      if (app.GetSystemTrayState() == ThisMfcApp::LOCKED &&
+      if (m_TrayLockedState == LOCKED &&
           !RestoreWindowsData(nSysID == SC_RESTORE))
         return; // password bad or cancel pressed
       break;
@@ -2239,10 +2427,10 @@ void DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
   }
 }
 
-LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM)
+LRESULT DboxMain::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 {
-#if 0
-  return m_pTrayIcon.OnTrayNotification(wParam, lParam);
+#if 1
+  return m_pTrayIcon->OnTrayNotification(wParam, lParam);
 #else
   return 0L;
 #endif
@@ -2295,7 +2483,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   // Case 1 - data available but is currently locked
   // By definition - data available implies m_bInitDone
   if (!m_bDBNeedsReading &&
-      (app.GetSystemTrayState() == ThisMfcApp::LOCKED) &&
+      (m_TrayLockedState == LOCKED) &&
       (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
 
     StringX passkey;
@@ -2306,7 +2494,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       goto exit;  // return false - don't even think of restoring window!
     }
 
-    app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
+    SetSystemTrayState(UNLOCKED);
     if (bUpdateWindows) {
       RefreshViews();
       ShowWindow(SW_RESTORE);
@@ -2634,6 +2822,7 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
   const WORD wNCode = HIWORD(wParam);
   const WORD wID = LOWORD(wParam);
+
   /*
     wNCode = Notification Code if from a control, 1 if from an accelerator
              and 0 if from a menu.
@@ -2779,7 +2968,7 @@ void DboxMain::CheckExpireList(const bool bAtOpen)
   int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
   ExpiredList expiredEntries = m_core.GetExpired(idays);
 
-  if (!expiredEntries.empty() && (app.GetSystemTrayState() == LOCKED || IsIconic() == TRUE || bAtOpen))
+  if (!expiredEntries.empty() && (m_TrayLockedState == LOCKED || IsIconic() == TRUE || bAtOpen))
     m_bTellUserExpired = true;
 }
 
@@ -3242,12 +3431,11 @@ void DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
     case ID_MENUITEM_TRAYUNLOCK:
     case ID_MENUITEM_TRAYLOCK:
     {
-      const int i_state = app.GetSystemTrayState();
-      switch (i_state) {
-        case ThisMfcApp::UNLOCKED:
-        case ThisMfcApp::LOCKED:
+      switch (m_TrayLockedState) {
+        case UNLOCKED:
+        case LOCKED:
           break;
-        case ThisMfcApp::CLOSED:
+        case CLOSED:
         {
           const CString csClosed(MAKEINTRESOURCE(IDS_NOSAFE));
           pCmdUI->SetText(csClosed);
@@ -3263,7 +3451,7 @@ void DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
           ASSERT(0);
           break;
       }
-      if (i_state != ThisMfcApp::CLOSED) {
+      if (m_TrayLockedState != CLOSED) {
         // If dialog visible - obviously unlocked and no need to have option to lock
         iEnable = this->IsWindowVisible() == FALSE ? TRUE : FALSE;
       }
@@ -3276,7 +3464,7 @@ void DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
         // CCmdUI::Enable is a no-op for this case, so we
         //   must do what it would have done.
         pCmdUI->m_pMenu->EnableMenuItem(pCmdUI->m_nIndex, MF_BYPOSITION |
-          (app.GetSystemTrayState() == ThisMfcApp::UNLOCKED ? MF_ENABLED : MF_GRAYED));
+          (m_TrayLockedState == UNLOCKED ? MF_ENABLED : MF_GRAYED));
         return;
       }
       // otherwise enable

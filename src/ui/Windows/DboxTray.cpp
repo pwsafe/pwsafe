@@ -49,13 +49,13 @@ void DboxMain::OnTrayLockUnLock()
 {
   PWS_LOGIT;
 
-  switch(app.GetSystemTrayState()) {
-    case ThisMfcApp::LOCKED:            // User clicked UnLock!
+  switch(m_TrayLockedState) {
+    case LOCKED:            // User clicked UnLock!
       // This only unlocks the database - it does not restore the window
       if (RestoreWindowsData(false, false))
         TellUserAboutExpiredPasswords();
       break;
-    case ThisMfcApp::UNLOCKED:          // User clicked Lock!
+    case UNLOCKED:          // User clicked Lock!
       UpdateSystemTray(LOCKED);
       ClearClipboardData();
       if (!IsIconic())
@@ -74,7 +74,7 @@ void DboxMain::OnTrayLockUnLock()
           ShowWindow(SW_MINIMIZE);
       }
       break;
-    case ThisMfcApp::CLOSED:
+    case CLOSED:
       break;
     default:
       ASSERT(0);
