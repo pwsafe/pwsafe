@@ -123,14 +123,49 @@ template<class T> int Replace(T &s, const T &from, const T &to)
   do {
    typename T::size_type j = s.find(from, i);
     r.append(s, i, j - i);
-    if (j != StringX::npos) {
+    if (j != T::npos) {
       r.append(to);
       retval++;
       i = j + from.length();
     } else
       i = j;
-  } while (i != StringX::npos);
+  } while (i != T::npos);
   s = r;
+  return retval;
+}
+
+template<class T> int ReplaceNoCase(T &s, const T &from, const T &to)
+{
+  T r(s);
+  int retval = 0;
+
+  // lowercase-versions to search in.
+  T in_lower(s);
+  T from_lower(from);
+  ToLower(in_lower);
+  ToLower(from_lower);
+  const typename T::size_type from_len = from.length();
+
+  // Search in the lowercase versions, but replace in the original-case version.
+  typename T::size_type pos = 0;
+
+  for (;;) {
+    pos = in_lower.find(from_lower, pos);
+    if (pos == T::npos)
+      break;
+
+    in_lower.erase(pos, from_len);
+    in_lower.insert(pos, to);
+
+    r.erase(pos, from_len);
+    r.insert(pos, to);
+
+    pos += to.length();
+    retval++;
+  }
+
+  s = r;
+
   return retval;
 }
 
@@ -217,6 +252,8 @@ template int Replace(StringX &s, TCHAR from, TCHAR to);
 template int Replace(stringT &s, TCHAR from, TCHAR to);
 template int Replace(StringX &s, const StringX &from, const StringX &to);
 template int Replace(stringT &s, const stringT &from, const stringT &to);
+template int ReplaceNoCase(StringX &s, const StringX &from, const StringX &to);
+template int ReplaceNoCase(stringT &s, const stringT &from, const stringT &to);
 template int Remove(StringX &s, TCHAR c);
 template int Remove(stringT &s, TCHAR c);
 template void LoadAString(stringT &s, int id);
