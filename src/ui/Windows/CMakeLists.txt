@@ -33,6 +33,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/ExpPswdLC.h
             src/ui/Windows/ExpPWListDlg.h
             src/ui/Windows/ExtThread.h
+            src/ui/Windows/Fieldchanges.h
             src/ui/Windows/filter/FilterBaseDlg.h
             src/ui/Windows/filter/FilterBoolDlg.h
             src/ui/Windows/filter/FilterDateDlg.h
@@ -51,8 +52,11 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/filter/SetFiltersDlg.h
             src/ui/Windows/filter/SetHistoryFiltersDlg.h
             src/ui/Windows/filter/SetPolicyFiltersDlg.h
+            src/ui/Windows/FindReplaceDlg.h
             src/ui/Windows/Fonts.h
             src/ui/Windows/FontsDialog.h
+            src/ui/Windows/FRHdrCtrl.h
+            src/ui/Windows/FRListCtrl.h
             src/ui/Windows/GeneralMsgBox.h
             src/ui/Windows/GridListCtrl.h
             src/ui/Windows/HKModifiers.h
@@ -121,6 +125,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/SMemFile.h
             src/ui/Windows/StdAfx.h
             src/ui/Windows/Subclass.h
+            src/ui/Windows/SyncScrollRichEdit.h
             src/ui/Windows/SysColStatic.h
             src/ui/Windows/SystemTray.h
             src/ui/Windows/TBMStatic.h
@@ -177,6 +182,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/ExpPswdLC.cpp
             src/ui/Windows/ExpPWListDlg.cpp
             src/ui/Windows/ExtThread.cpp
+            src/ui/Windows/Fieldchanges.cpp
             src/ui/Windows/filter/FilterBaseDlg.cpp
             src/ui/Windows/filter/FilterBoolDlg.cpp
             src/ui/Windows/filter/FilterDateDlg.cpp
@@ -195,8 +201,11 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/filter/SetFiltersDlg.cpp
             src/ui/Windows/filter/SetHistoryFiltersDlg.cpp
             src/ui/Windows/filter/SetPolicyFiltersDlg.cpp
+            src/ui/Windows/FindReplaceDlg.cpp
             src/ui/Windows/Fonts.cpp
             src/ui/Windows/FontsDialog.cpp
+            src/ui/Windows/FRHdrCtrl.cpp
+            src/ui/Windows/FRListCtrl.cpp
             src/ui/Windows/GeneralMsgBox.cpp
             src/ui/Windows/GridListCtrl.cpp
             src/ui/Windows/ImgStatic.cpp
@@ -266,6 +275,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/SMemFile.cpp
             src/ui/Windows/StdAfx.cpp
             src/ui/Windows/Subclass.cpp
+            src/ui/Windows/SyncScrollRichEdit.cpp
             src/ui/Windows/SysColStatic.cpp
             src/ui/Windows/SystemTray.cpp
             src/ui/Windows/TBMStatic.cpp

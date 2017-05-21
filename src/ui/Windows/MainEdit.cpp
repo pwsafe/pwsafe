@@ -26,6 +26,7 @@
 #include "CompareWithSelectDlg.h"
 #include "ShowCompareDlg.h"
 #include "ViewAttachmentDlg.h"
+#include "FindReplaceDlg.h"
 
 #include "core/pwsprefs.h"
 #include "core/PWSAuxParse.h"
@@ -1769,6 +1770,95 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
     return true;
   } // rc == IDOK
   return false;
+}
+
+void DboxMain::OnFindReplace()
+{
+  CFindReplaceDlg dlg(this);
+  dlg.DoModal();
+}
+
+size_t  DboxMain::DoFindReplaceSearch(const CItem::FieldType &ft, const PWSMatch::MatchRule &rule,
+                                      const StringX &sxOldText, const bool &bCaseSensitive,
+                                      std::vector<st_FRResults> &vFRResults)
+{
+  vFRResults.clear();
+
+  for (auto listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter(); listPos++) {
+    CItemData &ci = m_core.GetEntry(listPos);
+
+    if (m_FilterManager.PassesFiltering(ci, ft, rule, sxOldText, bCaseSensitive)) {
+      st_FRResults st_fr;
+      st_fr.state = ci.IsProtected() ? FR_PROTECTED : FR_UNCHECKED;
+      st_fr.pci = &ci;
+
+      vFRResults.push_back(st_fr);
+    }
+  }
+
+  return vFRResults.size();
+}
+
+size_t DboxMain::DoFindReplaceEdit(const CItem::FieldType &ft, const PWSMatch::MatchRule &rule,
+                                   const StringX &sxOldText, const StringX &sxNewText,
+                                   const bool &bCaseSensitive,
+                                   std::vector<st_FRResults> &vFRResults)
+{
+  // Readony or nothing to do - we shouldn't be here
+  if (m_core.IsReadOnly() || vFRResults.empty())
+    return 0;
+
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+  for (size_t i = 0; i < vFRResults.size(); i++) {
+    st_FRResults &st_fr = vFRResults[i];
+
+    if (st_fr.state == FR_CHECKED) {
+      StringX sxOldFieldValue = st_fr.pci->GetFieldValue(ft);
+      StringX sxNewFieldValue;
+
+      size_t lenField = sxOldFieldValue.length();
+      size_t lenOldText = sxOldText.length();
+
+      switch (rule) {
+      case PWSMatch::MR_EQUALS:
+        sxNewFieldValue = sxNewText;
+        break;
+      case PWSMatch::MR_BEGINS:
+        sxNewFieldValue = sxNewText + sxOldFieldValue.substr(lenOldText);
+        break;
+      case PWSMatch::MR_ENDS:
+        sxNewFieldValue = sxOldFieldValue.substr(lenField - lenOldText) + sxNewText;
+        break;
+      case PWSMatch::MR_CONTAINS:
+        if (bCaseSensitive) {
+          sxNewFieldValue = sxOldFieldValue;
+          Replace(sxNewFieldValue, sxOldText, sxNewText);
+        } else {
+          sxNewFieldValue = sxOldFieldValue;
+          ReplaceNoCase(sxNewFieldValue, sxOldText, sxNewText);
+        }
+        break;
+      default:
+        ASSERT(0);
+      }
+        Command *pcmd = UpdateEntryCommand::Create(&m_core, *st_fr.pci,
+                                                   ft, sxNewFieldValue);
+        pmulticmds->Add(pcmd);
+
+        // Disabled as now changed
+        st_fr.state = FR_CHANGED;
+    }
+  }
+
+  if (!pmulticmds->IsEmpty()) {
+    Execute(pmulticmds);
+  } else {
+    delete pmulticmds;
+    return 0;
+  }
+
+  return (pmulticmds->GetSize());
 }
 
 // Duplicate selected entry but make title unique

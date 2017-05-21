@@ -168,6 +168,7 @@ template<class T> T &Trim(T &s, const TCHAR *set = NULL);
 template<class T> void EmptyIfOnlyWhiteSpace(T &s);
 template<class T> int Replace(T &s, TCHAR from, TCHAR to);
 template<class T> int Replace(T &s, const T &from, const T &to);
+template<class T> int ReplaceNoCase(T &s, const T &from, const T &to);
 template<class T> int Remove(T &s, TCHAR c);
 template<class T> void Format(T &s, const TCHAR *fmt, ...);
 template<class T> void Format(T &s, int fmt, ...);
