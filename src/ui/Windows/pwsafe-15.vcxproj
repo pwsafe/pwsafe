@@ -544,6 +544,7 @@
     <ClCompile Include="ExpPswdLC.cpp" />
     <ClCompile Include="ExpPWListDlg.cpp" />
     <ClCompile Include="ExtThread.cpp" />
+    <ClCompile Include="FieldChangesDlg.cpp" />
     <ClCompile Include="filter\FilterBaseDlg.cpp" />
     <ClCompile Include="filter\FilterBoolDlg.cpp" />
     <ClCompile Include="filter\FilterDateDlg.cpp" />
@@ -556,8 +557,11 @@
     <ClCompile Include="filter\FilterPasswordDlg.cpp" />
     <ClCompile Include="filter\FilterStringDlg.cpp" />
     <ClCompile Include="filter\SetAttachmentFiltersDlg.cpp" />
+    <ClCompile Include="FindReplaceDlg.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FontsDialog.cpp" />
+    <ClCompile Include="FRHdrCtrl.cpp" />
+    <ClCompile Include="FRListCtrl.cpp" />
     <ClCompile Include="GeneralMsgBox.cpp" />
     <ClCompile Include="GridListCtrl.cpp" />
     <ClCompile Include="ImportTextDlg.cpp" />
@@ -619,6 +623,7 @@
     <ClCompile Include="SampleTextDlg.cpp" />
     <ClCompile Include="SCWListCtrl.cpp" />
     <ClCompile Include="SecString.cpp" />
+    <ClCompile Include="SetDBID.cpp" />
     <ClCompile Include="filter\SetFiltersDlg.cpp" />
     <ClCompile Include="filter\SetHistoryFiltersDlg.cpp" />
     <ClCompile Include="filter\SetPolicyFiltersDlg.cpp" />
@@ -629,6 +634,7 @@
     <ClCompile Include="SingleInstance.cpp" />
     <ClCompile Include="SMemFile.cpp" />
     <ClCompile Include="Subclass.cpp" />
+    <ClCompile Include="SyncScrollRichEdit.cpp" />
     <ClCompile Include="SysColStatic.cpp" />
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="TBMStatic.cpp" />
@@ -681,6 +687,7 @@
     <ClInclude Include="ExpPswdLC.h" />
     <ClInclude Include="ExpPWListDlg.h" />
     <ClInclude Include="ExtThread.h" />
+    <ClInclude Include="FieldChangesDlg.h" />
     <ClInclude Include="filter\FilterBoolDlg.h" />
     <ClInclude Include="filter\FilterDateDlg.h" />
     <ClInclude Include="filter\FilterDCADlg.h" />
@@ -692,8 +699,11 @@
     <ClInclude Include="filter\FilterPasswordDlg.h" />
     <ClInclude Include="filter\FilterStringDlg.h" />
     <ClInclude Include="filter\SetAttachmentFiltersDlg.h" />
+    <ClInclude Include="FindReplaceDlg.h" />
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="FontsDialog.h" />
+    <ClInclude Include="FRHdrCtrl.h" />
+    <ClInclude Include="FRListCtrl.h" />
     <ClInclude Include="GeneralMsgBox.h" />
     <ClInclude Include="GridListCtrl.h" />
     <ClInclude Include="HKModifiers.h" />
@@ -755,6 +765,7 @@
     <ClInclude Include="SampleTextDlg.h" />
     <ClInclude Include="SCWListCtrl.h" />
     <ClInclude Include="SecString.h" />
+    <ClInclude Include="SetDBID.h" />
     <ClInclude Include="filter\SetFiltersDlg.h" />
     <ClInclude Include="filter\SetHistoryFiltersDlg.h" />
     <ClInclude Include="filter\SetPolicyFiltersDlg.h" />
@@ -766,6 +777,7 @@
     <ClInclude Include="SMemFile.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="Subclass.h" />
+    <ClInclude Include="SyncScrollRichEdit.h" />
     <ClInclude Include="SysColStatic.h" />
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="TBMStatic.h" />
