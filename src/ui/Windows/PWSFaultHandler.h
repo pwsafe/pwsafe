@@ -36,31 +36,8 @@ void InstallFaultHandler(const int major, const int minor, const int build,
                          const wchar_t *revision, const DWORD timestamp);
 void LocalizeFaultHandler(HINSTANCE inst);
 
-LONG TakeMiniDump(struct _EXCEPTION_POINTERS *ExInfo, const int type,
-                  struct st_invp *pinvp = NULL);
-
 LONG Win32FaultHandler(struct _EXCEPTION_POINTERS *ExInfo);
 void RemoveFaultHandler(bool bFreeLibrary = true);
 void PopulateMinidumpUserStreams(PWSprefs *prefs, bool bOpen, bool bRW, UserStream iStream);
-
-static void __cdecl terminate_dumphandler();
-static void __cdecl unexpected_dumphandler();
-static void __cdecl purecall_dumphandler();
-static int  __cdecl new_dumphandler(size_t);
-static void __cdecl bad_parameter_dumphandler(const wchar_t* expression,
-                const wchar_t* function, const wchar_t* file,
-                unsigned int line, uintptr_t pReserved);
-static void signal_dumphandler(int);
-
-// Exception types
-enum {WIN32_STRUCTURED_EXCEPTION, TERMINATE_CALL, UNEXPECTED_CALL,
-      NEW_OPERATOR_ERROR, PURE_CALL_ERROR, INVALID_PARAMETER_ERROR,
-      SIGNAL_ABORT, SIGNAL_ILLEGAL_INST_FAULT, SIGNAL_TERMINATION,
-      END_FAULTS};
-
-typedef BOOL (WINAPI *PMDWD) (HANDLE, DWORD, HANDLE, MINIDUMP_TYPE,
-                              PMINIDUMP_EXCEPTION_INFORMATION,
-                              PMINIDUMP_USER_STREAM_INFORMATION,
-                              PMINIDUMP_CALLBACK_INFORMATION);
 
 #endif

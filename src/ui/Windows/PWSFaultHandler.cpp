@@ -43,8 +43,33 @@
 #define MSGSIZEx4      4096
 #define USERSTREAMSIZE 1024
 
+// Exception types
+enum {WIN32_STRUCTURED_EXCEPTION, TERMINATE_CALL, UNEXPECTED_CALL,
+      NEW_OPERATOR_ERROR, PURE_CALL_ERROR, INVALID_PARAMETER_ERROR,
+      SIGNAL_ABORT, SIGNAL_ILLEGAL_INST_FAULT, SIGNAL_TERMINATION,
+      END_FAULTS};
+
+typedef BOOL (WINAPI *PMDWD) (HANDLE, DWORD, HANDLE, MINIDUMP_TYPE,
+                              PMINIDUMP_EXCEPTION_INFORMATION,
+                              PMINIDUMP_USER_STREAM_INFORMATION,
+                              PMINIDUMP_CALLBACK_INFORMATION);
+
+// Some forward declarations:
 static PMDWD pfcnMiniDumpWriteDump(NULL);
 static HMODULE hDbgHelp(NULL);
+static LONG TakeMiniDump(struct _EXCEPTION_POINTERS *ExInfo, const int type,
+                         struct st_invp *pinvp = NULL);
+static void __cdecl terminate_dumphandler();
+static void __cdecl unexpected_dumphandler();
+static int __cdecl new_dumphandler(size_t);
+static void __cdecl purecall_dumphandler();
+static void __cdecl bad_parameter_dumphandler(const wchar_t* expression,
+                                              const wchar_t* function,
+                                              const wchar_t* file,
+                                              unsigned int line,
+                                              uintptr_t /* pReserved */);
+static void signal_dumphandler(int isignal);
+
 
 // Make nearly everything static so that it is available when needed and
 // we do not have to allocate memory
@@ -165,31 +190,31 @@ LONG Win32FaultHandler(struct _EXCEPTION_POINTERS *pExInfo)
   return TakeMiniDump(pExInfo, WIN32_STRUCTURED_EXCEPTION, NULL);
 }
 
-void __cdecl terminate_dumphandler()
+static void __cdecl terminate_dumphandler()
 {
   TakeMiniDump(NULL, TERMINATE_CALL);
   exit(1); // Terminate program
 }
 
-void __cdecl unexpected_dumphandler()
+static void __cdecl unexpected_dumphandler()
 {
   TakeMiniDump(NULL, UNEXPECTED_CALL);
   exit(1); // Terminate program
 }
 
-int __cdecl new_dumphandler(size_t)
+static int __cdecl new_dumphandler(size_t)
 {
   TakeMiniDump(NULL, NEW_OPERATOR_ERROR);
   exit(1); // Terminate program
 }
 
-void __cdecl purecall_dumphandler()
+static void __cdecl purecall_dumphandler()
 {
   TakeMiniDump(NULL, PURE_CALL_ERROR);
   exit(1); // Terminate program
 }
 
-void __cdecl bad_parameter_dumphandler(const wchar_t* expression,
+static void __cdecl bad_parameter_dumphandler(const wchar_t* expression,
                 const wchar_t* function, const wchar_t* file,
                 unsigned int line, uintptr_t /* pReserved */)
 {
@@ -202,7 +227,7 @@ void __cdecl bad_parameter_dumphandler(const wchar_t* expression,
   exit(1); // Terminate program
 }
 
-void signal_dumphandler(int isignal)
+static void signal_dumphandler(int isignal)
 {
   int itype;
   switch (isignal) {
@@ -274,8 +299,8 @@ void PopulateMinidumpUserStreams(PWSprefs *prefs, bool bOpen, bool bRW, UserStre
   }
 }
 
-LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
-                  st_invp *pinvp)
+static LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
+                         st_invp *pinvp)
 {
   // Use standard functions as much as possible
   // Remove all handlers - but don't free the library just yet
