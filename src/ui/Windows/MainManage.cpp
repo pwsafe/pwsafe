@@ -224,9 +224,7 @@ int DboxMain::RestoreSafe()
   }
 
   // unlock the file we're leaving
-  if (!m_core.GetCurFile().empty()) {
-    m_core.UnlockFile(m_core.GetCurFile().c_str());
-  }
+  m_core.SafeUnlockCurFile();
 
   // Reset core and clear ALL associated data
   m_core.ReInit();

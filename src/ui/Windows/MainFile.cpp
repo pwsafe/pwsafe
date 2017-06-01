@@ -425,14 +425,7 @@ int DboxMain::NewFile(StringX &newfilename)
 
   // Clear application data
   ClearAppData();
-
-  const StringX &oldfilename = m_core.GetCurFile();
-  // The only way we're the locker is if it's locked & we're !readonly
-  if (!oldfilename.empty() &&
-      !m_core.IsReadOnly() &&
-      m_core.IsLockedFile(oldfilename.c_str()))
-    m_core.UnlockFile(oldfilename.c_str());
-
+  m_core.SafeUnlockCurFile();
   m_core.SetCurFile(newfilename);
 
   // Now lock the new file
@@ -488,11 +481,8 @@ int DboxMain::Close(const bool bTrySave)
   if (m_bUnsavedDisplayed)
     OnShowUnsavedEntries();
 
-  // Unlock the current file
-  if (!m_core.GetCurFile().empty()) {
-    m_core.UnlockFile(m_core.GetCurFile().c_str());
-    m_core.SetCurFile(L"");
-  }
+  m_core.SafeUnlockCurFile();
+  m_core.SetCurFile(L"");
 
   CAddEdit_DateTimes::m_bShowUUID = false;
 
@@ -738,9 +728,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
 
   // If we were using a different file, unlock it do this before
   // GetAndCheckPassword() as that routine gets a lock on the new file
-  if (!m_core.GetCurFile().empty()) {
-    m_core.UnlockFile(m_core.GetCurFile().c_str());
-  }
+  m_core.SafeUnlockCurFile();
 
   const int flags = (bReadOnly ? GCP_READONLY : 0) | (bHideReadOnly ? GCP_HIDEREADONLY : 0);
   rc = GetAndCheckPassword(sx_Filename, passkey, GCP_NORMAL, flags);  // OK, CANCEL, HELP
@@ -1480,8 +1468,7 @@ int DboxMain::SaveAs()
 
   BlockLogoffShutdown(false);
 
-  if (!m_core.GetCurFile().empty())
-    m_core.UnlockFile(m_core.GetCurFile().c_str());
+  m_core.SafeUnlockCurFile();
 
   // Move the newfile lock to the right place
   m_core.MoveLock();

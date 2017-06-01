@@ -395,9 +395,7 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
 
   // Tidy up other core
   if (m_pothercore != NULL) {
-    if (m_pothercore->IsLockedFile(m_pothercore->GetCurFile().c_str()))
-      m_pothercore->UnlockFile(m_pothercore->GetCurFile().c_str());
-
+    m_pothercore->SafeUnlockCurFile();
     m_pothercore->ClearDBData();
     m_pothercore->SetCurFile(L"");
     delete m_pothercore;

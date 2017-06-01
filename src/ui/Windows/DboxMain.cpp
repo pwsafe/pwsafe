@@ -1616,11 +1616,7 @@ void DboxMain::OnDestroy()
   ::DestroyIcon(m_ClosedIcon);
   ::DestroyIcon(m_IndexIcon);
 
-  const std::wstring filename(m_core.GetCurFile().c_str());
-
-  // The only way we're the locker is if it's locked & we're !readonly
-  if (!filename.empty() && !m_core.IsReadOnly() && m_core.IsLockedFile(filename))
-    m_core.UnlockFile(filename);
+  m_core.SafeUnlockCurFile();
 
   // Get rid of hotkey
   UnregisterHotKey(GetSafeHwnd(), PWS_HOTKEY_ID);
@@ -2567,7 +2563,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
         rc_readdatabase = PWScore::NOT_SUCCESS;
         break;
       case PWScore::USER_EXIT:
-        m_core.UnlockFile(m_core.GetCurFile().c_str());
+        m_core.SafeUnlockCurFile();
         PostQuitMessage(0);
         return false;
       default:
