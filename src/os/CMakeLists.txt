@@ -34,6 +34,7 @@ if (NOT NO_YUBI)
 endif ()
   elseif (APPLE)
   set (OS_SRCS
+    mac/cleanup.cpp
     mac/debug.cpp
     mac/dir.cpp
     mac/env.cpp
@@ -56,6 +57,7 @@ endif ()
   set (OS_SRCS
     unix/KeySend.cpp
     unix/UUID.cpp
+    unix/cleanup.cpp
     unix/debug.cpp
     unix/dir.cpp
     unix/env.cpp

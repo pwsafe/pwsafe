@@ -359,17 +359,28 @@ void CSafeCombinationEntry::ProcessPhrase()
   int status = m_core.CheckPasskey(tostringx(m_filename), m_password);
   wxString errmess;
   switch (status) {
-  case PWScore::SUCCESS:
+  case PWScore::SUCCESS: {
+    const stringT fname(m_filename.c_str());
+    stringT locker(L"");
+    if (!m_core.LockFile(fname, locker)) {
+      errmess = _("Could not lock file, opening read-only\nLocked by ");
+      errmess += locker.c_str();
+      wxMessageDialog warn(this, errmess,
+                           _("Warning"), wxOK | wxICON_WARNING);
+      warn.ShowModal();
+      m_readOnly = true;
+    }
     m_core.SetReadOnly(m_readOnly);
     m_core.SetCurFile(tostringx(m_filename));
     wxGetApp().recentDatabases().AddFileToHistory(m_filename);
     EndModal(wxID_OK);
     return;
-  case PWScore::CANT_OPEN_FILE:
-    { stringT str;
-      LoadAString(str, IDSC_FILE_UNREADABLE);
-      errmess = str.c_str();
-    }
+  }
+  case PWScore::CANT_OPEN_FILE: {
+    stringT str;
+    LoadAString(str, IDSC_FILE_UNREADABLE);
+    errmess = str.c_str();
+  }
     break;
   case PWScore::WRONG_PASSWORD:
   default:

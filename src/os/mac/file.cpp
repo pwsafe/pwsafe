@@ -234,7 +234,16 @@ static stringT GetLockFileName(const stringT &filename)
 {
   assert(!filename.empty());
   // derive lock filename from filename
-  stringT retval(filename, 0, filename.find_last_of(TCHAR('.')));
+  /*
+   * If the filename ends with .cfg, then we add .plk to it, e.g., foo.cfg.plk
+   * otherwise we replace the suffix with .plk, e.g., foo.psafe3 -> foo.plk
+   * This fixes a bug while maintaining bwd compat.
+   */
+  stringT retval;
+  if (filename.length() > 4 && filename.substr(filename.length() - 4) == _T(".cfg"))
+    retval = filename;
+  else
+    retval = filename.substr(0, filename.find_last_of(TCHAR('.')));
   retval += _T(".plk");
   return retval;
 }

@@ -35,7 +35,7 @@ YUBI_SRC=PWYubi.cpp
 YBPERSFLAGS=$(shell pkg-config --cflags ykpers-1)
 endif
 
-LIBSRC          = debug.cpp dir.cpp env.cpp \
+LIBSRC          = cleanup.cpp debug.cpp dir.cpp env.cpp \
                   file.cpp logit.cpp media.cpp \
 									mem.cpp pws_str.cpp \
                   pws_time.cpp rand.cpp run.cpp\

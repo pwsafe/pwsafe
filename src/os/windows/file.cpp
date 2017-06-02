@@ -150,9 +150,8 @@ void pws_os::FindFiles(const stringT &filter, std::vector<stringT> &res)
 * with Posix semantics (using open(_O_CREATE|_O_EXCL) to detect
 * an existing lock.
 * This fails to check liveness of the locker process, specifically,
-* if a user just turns of her PC, the lock file will remain.
-* So, I'm keeping the Posix code under ifdef POSIX_FILE_LOCK,
-* and re-implementing using the Win32 API, whose semantics
+* if a user just turns off her PC, the lock file will remain.
+* So, I'm  re-implementing using the Win32 API, whose semantics
 * supposedly protect against this scenario.
 * Thanks to Frank (xformer) for discussion on the subject.
 */
@@ -161,7 +160,16 @@ static stringT GetLockFileName(const stringT &filename)
 {
   ASSERT(!filename.empty());
   // derive lock filename from filename
-  stringT retval(filename, 0, filename.find_last_of(TCHAR('.')));
+  /*
+   * If the filename ends with .cfg, then we add .plk to it, e.g., foo.cfg.plk
+   * otherwise we replace the suffix with .plk, e.g., foo.psafe3 -> foo.plk
+   * This fixes a bug while maintaining bwd compat.
+   */
+  stringT retval;
+  if (filename.length() > 4 && filename.substr(filename.length() - 4) == _T(".cfg"))
+    retval = filename;
+  else
+    retval = filename.substr(0, filename.find_last_of(TCHAR('.')));
   retval += _T(".plk");
   return retval;
 }

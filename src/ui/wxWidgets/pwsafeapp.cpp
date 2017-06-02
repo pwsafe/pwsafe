@@ -36,6 +36,7 @@ using namespace std;
 #include "core/SysInfo.h"
 #include "core/PWSprefs.h"
 #include "core/PWSrand.h"
+#include "os/cleanup.h"
 #include "pwsclip.h"
 #include <wx/timer.h>
 #include <wx/html/helpctrl.h>
@@ -133,6 +134,15 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
 static wxReporter aReporter;
 static wxAsker    anAsker;
 
+static void cleanup_handler(int /*signum */, void *p)
+{
+  // Called if we get a signal - don't try to save, since we don't
+  // know what's valid, if anything. Just unlock file, if any.
+  PWScore *pcore = static_cast<PWScore *>(p);
+  pcore->SafeUnlockCurFile();
+  exit(1);
+}
+
 /*!
  * Application instance implementation
  */
@@ -194,6 +204,7 @@ PwsafeApp::~PwsafeApp()
 
 void PwsafeApp::Init()
 {
+  pws_os::install_cleanup_handler(cleanup_handler, &m_core);
   m_locale = new wxLocale;
   wxLocale::AddCatalogLookupPathPrefix(L"/usr/share/locale");
   wxLocale::AddCatalogLookupPathPrefix(L"/usr");
