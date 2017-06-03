@@ -202,10 +202,9 @@ static stringT GetLockFileName(const stringT &filename)
 }
 
 bool pws_os::LockFile(const stringT &filename, stringT &locker, 
-                      HANDLE &lockFileHandle, int &LockCount)
+                      HANDLE &lockFileHandle)
 {
   UNREFERENCED_PARAMETER(lockFileHandle);
-  UNREFERENCED_PARAMETER(LockCount);
   const stringT lock_filename = GetLockFileName(filename);
   bool retval = false;
   size_t lfs = wcstombs(NULL, lock_filename.c_str(), lock_filename.length()) + 1;
@@ -263,11 +262,9 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
   return retval;
 }
 
-void pws_os::UnlockFile(const stringT &filename,
-                        HANDLE &lockFileHandle, int &LockCount)
+void pws_os::UnlockFile(const stringT &filename, HANDLE &lockFileHandle)
 {
   UNREFERENCED_PARAMETER(lockFileHandle);
-  UNREFERENCED_PARAMETER(LockCount);
   stringT lock_filename = GetLockFileName(filename);
   size_t lfs = wcstombs(NULL, lock_filename.c_str(), lock_filename.length()) + 1;
   char *lfn = new char[lfs];

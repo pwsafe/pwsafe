@@ -248,8 +248,7 @@ static stringT GetLockFileName(const stringT &filename)
   return retval;
 }
 
-bool pws_os::LockFile(const stringT &filename, stringT &locker, 
-                      HANDLE &, int &)
+bool pws_os::LockFile(const stringT &filename, stringT &locker, HANDLE &)
 {
   const stringT lock_filename = GetLockFileName(filename);
   stringT s_locker;
@@ -314,8 +313,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
   }
 }
 
-void pws_os::UnlockFile(const stringT &filename,
-                        HANDLE &, int &)
+void pws_os::UnlockFile(const stringT &filename, HANDLE &)
 {
   stringT lock_filename = GetLockFileName(filename);
 #ifndef UNICODE

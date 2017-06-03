@@ -212,7 +212,7 @@ static void GetLocker(const stringT &lock_filename, stringT &locker)
 }
 
 bool pws_os::LockFile(const stringT &filename, stringT &locker, 
-                      HANDLE &lockFileHandle, int &LockCount)
+                      HANDLE &lockFileHandle)
 {
   const stringT lock_filename = GetLockFileName(filename);
   stringT s_locker;
@@ -220,25 +220,13 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
   const stringT host = pws_os::gethostname();
   const stringT pid = pws_os::getprocessid();
 
-  // Use Win32 API for locking - supposedly better at
-  // detecting dead locking processes
   if (lockFileHandle != INVALID_HANDLE_VALUE) {
-    // here if we've open another (or same) dbase previously,
-    // need to unlock it. A bit inelegant...
-    // If app was minimized and ClearData() called, we've a small
-    // potential for a TOCTTOU issue here. Worse case, lock
-    // will fail.
-
-    const stringT cs_me = user + _T("@") + host + _T(":") + pid;
-    GetLocker(lock_filename, s_locker);
-
-    if (cs_me == s_locker) {
-      LockCount++;
-      locker.clear();
-      return true;
-    } else {
-      pws_os::UnlockFile(filename, lockFileHandle, LockCount);
+    if (FileExists(filename)) { // Can this be false?
+      GetLocker(filename, locker);
+      return false;
     }
+    // here if file not found but handle appears valid - unlock and then lock.
+    pws_os::UnlockFile(filename, lockFileHandle);
   }
 
   // Since ::CreateFile can't create directories, we need to check it exists
@@ -336,13 +324,12 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
                                 &numWrit, NULL);
     sumWrit += numWrit;
     ASSERT(sumWrit > 0);
-    LockCount++;
     return (write_status == TRUE);
   }
 }
 
 void pws_os::UnlockFile(const stringT &filename,
-                        HANDLE &lockFileHandle, int &LockCount)
+                        HANDLE &lockFileHandle)
 {
   const stringT user = pws_os::getusername();
   const stringT host = pws_os::gethostname();
@@ -356,14 +343,9 @@ void pws_os::UnlockFile(const stringT &filename,
     const stringT cs_me = user + _T("@") + host + _T(":") + pid;
     GetLocker(lock_filename, locker);
 
-    if (cs_me == locker && LockCount > 1) {
-      LockCount--;
-    } else {
-      LockCount = 0;
-      CloseHandle(lockFileHandle);
-      lockFileHandle = INVALID_HANDLE_VALUE;
-      DeleteFile(lock_filename.c_str());
-    }
+    CloseHandle(lockFileHandle);
+    lockFileHandle = INVALID_HANDLE_VALUE;
+    DeleteFile(lock_filename.c_str());
   }
 }
 

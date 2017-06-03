@@ -43,7 +43,6 @@ const stringT Software(_T("Software"));
 const stringT OldSubKey(_T("Counterpane Systems"));
 
 HANDLE s_cfglockFileHandle = INVALID_HANDLE_VALUE;
-int s_cfgLockCount = 0;
 
 PWSprefs *PWSprefs::self = NULL;
 stringT PWSprefs::m_configfilename = _T(""); // may be set before singleton created
@@ -1861,13 +1860,12 @@ stringT PWSprefs::GetXMLPreferences()
 bool PWSprefs::LockCFGFile(const stringT &filename, stringT &locker)
 {
   return pws_os::LockFile(filename, locker,
-                          s_cfglockFileHandle, s_cfgLockCount);
+                          s_cfglockFileHandle);
 }
 
 void PWSprefs::UnlockCFGFile(const stringT &filename)
 {
-  return pws_os::UnlockFile(filename,
-                            s_cfglockFileHandle, s_cfgLockCount);
+  return pws_os::UnlockFile(filename, s_cfglockFileHandle);
 }
 
 bool PWSprefs::IsLockedCFGFile(const stringT &filename)

@@ -251,8 +251,7 @@ public:
   bool LockFile2(const stringT &filename, stringT &locker);
   void UnlockFile2(const stringT &filename);
   void MoveLock()
-  {m_lockFileHandle = m_lockFileHandle2; m_lockFileHandle2 = INVALID_HANDLE_VALUE;
-   m_LockCount = m_LockCount2; m_LockCount2 = 0;}
+  {m_lockFileHandle = m_lockFileHandle2; m_lockFileHandle2 = INVALID_HANDLE_VALUE;}
 
   // Set application data
   void SetApplicationNameAndVersion(const stringT &appName, DWORD dwMajorMinor,
@@ -555,8 +554,6 @@ private:
 
   HANDLE m_lockFileHandle;
   HANDLE m_lockFileHandle2;
-  int m_LockCount;
-  int m_LockCount2;
 
   stringT m_AppNameAndVersion;
   PWSfile::VERSION m_ReadFileVersion;
