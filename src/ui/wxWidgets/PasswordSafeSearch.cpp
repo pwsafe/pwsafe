@@ -126,10 +126,11 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
         ::FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_criteria->GetSelectedFields(),
                       m_criteria->HasSubgroupRestriction(), tostdstring(m_criteria->SubgroupSearchText()),
                       m_criteria->SubgroupObject(), m_criteria->SubgroupFunction(),
-                    m_criteria->CaseSensitive(), begin, end, afn, [this, afn](Iter itr) {
+                    m_criteria->CaseSensitive(), begin, end, afn, [this, afn](Iter itr, bool *keep_going) {
                       uuid_array_t uuid;
                       afn(itr).GetUUID(uuid);
                       m_searchPointer.Add(pws_os::CUUID(uuid));
+                      *keep_going = true;
                     });
       }
 
@@ -472,10 +473,11 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
   bsFields.set();
 
   return ::FindMatches(searchText, fCaseSensitive, bsFields, false, stringT{}, CItemData::END, PWSMatch::MR_INVALID, false, begin, end, afn,
-                     [&searchPtr, afn](Iter itr) {
+                     [&searchPtr, afn](Iter itr, bool *keep_going) {
                        uuid_array_t uuid;
                        afn(itr).GetUUID(uuid);
                        searchPtr.Add(pws_os::CUUID(uuid));
+                       *keep_going = true;
                      });
 }
 

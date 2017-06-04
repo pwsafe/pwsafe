@@ -23,7 +23,7 @@ int Export(PWScore &core, const UserArgs &ua)
   CItemData::FieldBits all(~0L);
   int N;
   return ua.Format == UserArgs::XML?
-    core.WriteXMLFile(std2stringx(ua.opArg), all, L"", 0, 0, L' ', N):
+    core.WriteXMLFile(std2stringx(ua.opArg), all, L"", 0, 0, L' ', L"", N):
       core.WritePlaintextFile(std2stringx(ua.opArg), all, L"", 0, 0, L' ', N);
 }
 
@@ -118,7 +118,7 @@ ImportXML(PWScore &core, const stringT &fname)
   std::wstring dir;
   std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
   int numValidated(0), numImported(0), numSkipped(0), numRenamed(0), numPWHErrors(0);
-  int numNoPolicy(0), numRenamedPolicies(0), numShortcutsRemoved(0);
+	int numNoPolicy(0), numRenamedPolicies(0), numShortcutsRemoved(0), numEmptyGroupsImported{0};
   bool bImportPSWDsOnly = false;
 
 
@@ -139,6 +139,7 @@ ImportXML(PWScore &core, const stringT &fname)
                               strRenameList, numValidated, numImported,
                               numSkipped, numPWHErrors, numRenamed,
                               numNoPolicy, numRenamedPolicies, numShortcutsRemoved,
+							  numEmptyGroupsImported,
                               rpt, pcmd);
 
   switch (rc) {
