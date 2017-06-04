@@ -45,11 +45,13 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libcore.a
 OBJ       = $(LIBOBJ)
 
-CPPFLAGS := $(CXXFLAGS) -fPIC -Wall -I.. -DLINUX $(CPPFLAGS)
+CPPFLAGS := $(CXXFLAGS) -fPIC -Wall -I.. $(CPPFLAGS)
 
 ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
 	    XERCESCPPFLAGS=
+		CPPFLAGS += -std=c++11
 else
+		CPPFLAGS += -DLINUX
 	    XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 endif
 
