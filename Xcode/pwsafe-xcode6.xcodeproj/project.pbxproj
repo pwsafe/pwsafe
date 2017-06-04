@@ -48,6 +48,7 @@
 		E66FB84D13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */; };
 		E683B21A150481DF0013D588 /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E683B218150481DF0013D588 /* pugixml.cpp */; };
 		E6889E001EE44AA60023E376 /* impexp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E61C265C1D3FD0C000CA0370 /* impexp.cpp */; };
+		E6889E021EE4640F0023E376 /* cleanup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6889E011EE4640F0023E376 /* cleanup.cpp */; };
 		E690B55F12984A1B007EA508 /* pwsafe_filter.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */; };
 		E690B56012984A1B007EA508 /* pwsafe.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55D12984A1A007EA508 /* pwsafe.xsd */; };
 		E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */ = {isa = PBXBuildFile; fileRef = E690B55E12984A1A007EA508 /* pwsafe.xsl */; };
@@ -279,6 +280,7 @@
 		E683B217150481DF0013D588 /* pugiconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugiconfig.hpp; sourceTree = "<group>"; };
 		E683B218150481DF0013D588 /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pugixml.cpp; sourceTree = "<group>"; };
 		E683B219150481DF0013D588 /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugixml.hpp; sourceTree = "<group>"; };
+		E6889E011EE4640F0023E376 /* cleanup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cleanup.cpp; path = unix/cleanup.cpp; sourceTree = "<group>"; };
 		E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe_filter.xsd; path = ../xml/pwsafe_filter.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55D12984A1A007EA508 /* pwsafe.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsd; path = ../xml/pwsafe.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55E12984A1A007EA508 /* pwsafe.xsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsl; path = ../xml/pwsafe.xsl; sourceTree = SOURCE_ROOT; };
@@ -1292,6 +1294,7 @@
 		E6EE837D11E87CD200B01518 /* os */ = {
 			isa = PBXGroup;
 			children = (
+				E6889E011EE4640F0023E376 /* cleanup.cpp */,
 				E698273C14C01ABC0043C243 /* logit.h */,
 				E698273D14C01ABC0043C243 /* logit.cpp */,
 				E6C6876C137C3EFA00A916C1 /* UUID.h */,
@@ -1720,6 +1723,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6889E021EE4640F0023E376 /* cleanup.cpp in Sources */,
 				E6C1254811E1B2BA00D22D92 /* debug.cpp in Sources */,
 				E6C1254911E1B2BA00D22D92 /* dir.cpp in Sources */,
 				E6C1254A11E1B2BA00D22D92 /* env.cpp in Sources */,
