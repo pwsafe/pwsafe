@@ -29,7 +29,7 @@ export CPPFLAGS += -std=c++11
 ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
 	XERCESCPPFLAGS=
 	PLATFORM=mac
-	EXTLIBS=-framework gtest
+	EXTLIBS=-framework gtest -framework CoreFoundation -framework CoreGraphics
 else
 	XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 	PLATFORM=unix
