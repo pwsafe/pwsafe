@@ -51,7 +51,7 @@ int SaveAfterSearch(PWScore &core, const UserArgs &ua)
     case UserArgs::Delete:
     case UserArgs::ClearFields:
     case UserArgs::ChangePassword:
-      if ( core.IsChanged() ) return core.WriteCurFile();
+      if ( core.HasDBChanged() ) return core.WriteCurFile();
       break;
     case UserArgs::Print:
       break;

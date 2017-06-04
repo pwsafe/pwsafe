@@ -42,7 +42,7 @@ class SearchTest : public ::testing::Test {
   virtual void TearDown() {
     // Code here will be called immediately after each test (right
     // before the destructor).
-    core.ClearData();
+    core.ClearDBData();
   }
 
   // Objects declared here can be used by all tests in the test case for SearchTest.
