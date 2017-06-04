@@ -62,7 +62,6 @@ wostream & operator<<( std::wostream &os, const st_GroupTitleUser &gtu)
   if ( !gtu.group.empty() )
     os << gtu.group << L" >> ";
 
-  assert( !gtu.title.empty() );
   os << gtu.title;
 
   if ( !gtu.user.empty() ) {
