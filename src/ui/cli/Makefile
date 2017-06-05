@@ -37,7 +37,7 @@ else
 	GTEST_HEADERS=/usr/include/gtest/*.h /usr/include/gtest/internal/*.h
 	GTEST_SRCS=$(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 	GTEST_OBJ = $(OBJPATH)/gtest-all.o
-	EXTLIBS=-luuid -lxerces-c -lpthread $(GTEST_OBJ)
+	EXTLIBS=-luuid -lxerces-c -lpthread -lXtst -lX11
 endif
 
 CXXFLAGS += $(CPPFLAGS) -Wall -I$(COREPATH) -I../.. $(XERCESCPPFLAGS) -DUNICODE
@@ -81,4 +81,4 @@ $(GTEST_OBJ): $(GTEST_SRCS_) $(GTEST_HEADERS)
 
 $(TESTEXE): $(LIBS) $(TESTOBJ)
 	$(CXX) -v -g $(CXXFLAGS) $(filter %.o,$^)  -o $@  $(LD_FLAGS) \
-	-L$(LIBPATH) -lcore -los -lcore $(EXTLIBS)
+	-L$(LIBPATH) -lcore -los -lcore $(EXTLIBS) $(GTEST_OBJ)
