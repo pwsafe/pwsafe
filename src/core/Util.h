@@ -269,7 +269,7 @@ class get_second {
   public:
     typedef typename PairAssociativeContainer::mapped_type mapped_type;
     typedef typename PairAssociativeContainer::const_iterator const_iterator;
-    const mapped_type& operator()(const_iterator val) { return val->second; }
+    const mapped_type& operator()(const_iterator val) const { return val->second; }
 };
 
 template <typename SequenceContainer>
@@ -277,10 +277,16 @@ class dereference {
   public:
     typedef typename SequenceContainer::value_type value_type;
     typedef typename SequenceContainer::const_iterator const_iterator;
-    const value_type& operator()(const_iterator itr) { return *itr; }
+    const value_type& operator()(const_iterator itr) const { return *itr; }
 };
 
 extern unsigned int GetStringBufSize(const TCHAR *fmt, va_list args);
+
+bool FindNoCase( const StringX& src, const StringX& dest);
+
+
+std::string toutf8(const std::wstring &w);
+
 #endif /* __UTIL_H */
 //-----------------------------------------------------------------------------
 // Local variables:

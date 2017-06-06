@@ -78,9 +78,7 @@ void SendString(CFStringRef str, unsigned delayMS)
 
 void pws_os::SendString(const char* str, unsigned delayMS)
 {
-  //GetApplicationTextEncoding call here certainly seems wrong.  We should store the keyboard layout
-  //and string encoding in password db.  But this works for now.
-  CFStringRef cfstr = CFStringCreateWithCString(kCFAllocatorDefault, str, GetApplicationTextEncoding());
+  CFStringRef cfstr = CFStringCreateWithCString(kCFAllocatorDefault, str, kCFStringEncodingUTF8);
   SendString(cfstr, delayMS);
   CFRelease(cfstr);
 }
