@@ -145,7 +145,3 @@ bool CKeySend::LookupVirtualKey(const StringX &kname, WORD &kval)
   }
 }
 
-stringT CKeySend::GetKeyName(WORD , bool)
-{
-  return stringT(_T(""));
-}
