@@ -62,6 +62,7 @@ endif ()
     unix/dir.cpp
     unix/env.cpp
     unix/file.cpp
+    unix/keyname.cpp
     unix/logit.cpp
     unix/media.cpp
     unix/mem.cpp
