@@ -40,7 +40,7 @@ LIBSRC          = cleanup.cpp debug.cpp dir.cpp env.cpp \
 									mem.cpp pws_str.cpp \
                   pws_time.cpp rand.cpp run.cpp\
                   utf8conv.cpp KeySend.cpp\
-                  sleep.cpp xsendstring.cpp\
+                  sleep.cpp xsendstring.cpp keyname.cpp \
                   registry.cpp UUID.cpp\
                   unicode2keysym.cpp $(YUBI_SRC)
 

@@ -129,6 +129,8 @@
     <File Name="../src/ui/wxWidgets/TimedTaskChain.cpp"/>
     <File Name="../src/ui/wxWidgets/TimedTaskChain.h"/>
     <File Name="../src/ui/wxWidgets/mainView.cpp"/>
+    <File Name="../src/ui/wxWidgets/passwordsubset.cpp"/>
+    <File Name="../src/ui/wxWidgets/passwordsubset.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>

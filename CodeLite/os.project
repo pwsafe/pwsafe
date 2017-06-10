@@ -53,6 +53,8 @@
     <File Name="../src/os/unix/unicode2keysym.h"/>
     <File Name="../src/os/unix/logit.cpp"/>
     <File Name="../src/os/unix/media.cpp"/>
+    <File Name="../src/os/unix/cleanup.cpp"/>
+    <File Name="../src/os/unix/keyname.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="os">
     <File Name="../src/os/env.h"/>
