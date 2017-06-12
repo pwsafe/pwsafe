@@ -673,11 +673,11 @@ int DboxMain::Open(const UINT uiTitle)
     }
 
     const bool last_ro = m_core.IsReadOnly(); // restore if user cancels
-    m_core.SetReadOnly(fd.GetReadOnlyPref() == TRUE);
+    m_core.SetReadOnly(m_bDBInitiallyRO || fd.GetReadOnlyPref() == TRUE);
     if (rc2 == IDOK) {
       sx_Filename = LPCWSTR(fd.GetPathName());
 
-      rc = Open(sx_Filename, fd.GetReadOnlyPref() == TRUE, uiTitle == IDS_CHOOSEDATABASEV);
+      rc = Open(sx_Filename, m_core.IsReadOnly(), uiTitle == IDS_CHOOSEDATABASEV);
 
       if (rc == PWScore::SUCCESS) {
         UpdateSystemTray(UNLOCKED);
@@ -730,7 +730,8 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   // GetAndCheckPassword() as that routine gets a lock on the new file
   m_core.SafeUnlockCurFile();
 
-  const int flags = (bReadOnly ? GCP_READONLY : 0) | (bHideReadOnly ? GCP_HIDEREADONLY : 0);
+  const int flags = ((bReadOnly ? GCP_READONLY : 0) | (bHideReadOnly ? GCP_HIDEREADONLY : 0) |
+                     (m_bDBInitiallyRO ? GCP_FORCEREADONLY : 0));
   rc = GetAndCheckPassword(sx_Filename, passkey, GCP_NORMAL, flags);  // OK, CANCEL, HELP
 
   // Just need file extension
