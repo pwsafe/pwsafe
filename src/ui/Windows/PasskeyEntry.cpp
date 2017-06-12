@@ -374,8 +374,11 @@ void CPasskeyEntry::OnOK()
 
   if (!pws_os::FileExists(m_filespec.GetString())) {
     gmb.AfxMessageBox(IDS_FILEPATHNOTFOUND);
-    if (m_MRU_combo.IsWindowVisible())
+    if (m_index == GCP_FIRST) {
       m_MRU_combo.SetFocus();
+    } else {
+      CPWDialog::OnCancel();
+    }
     return;
   }
 
