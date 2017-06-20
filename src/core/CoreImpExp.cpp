@@ -404,11 +404,13 @@ struct XMLRecordWriter {
                                bforce_normal_entry, bXMLErrorsFound);
 
       if (bXMLErrorsFound) {
-        m_pRpt->WriteLine(_T("\t"), false);
-        m_pRpt->WriteLine(strXMLErrors.c_str());
+        if (m_pRpt != NULL) {
+          m_pRpt->WriteLine(_T("\t"), false);
+          m_pRpt->WriteLine(strXMLErrors.c_str());
+        }
         m_numXMLErrors++;
       } else
-        m_pRpt->WriteLine();
+        if (m_pRpt != NULL) m_pRpt->WriteLine();
 
       m_ofs.write(xml.c_str(),
                  static_cast<streamsize>(xml.length()));
