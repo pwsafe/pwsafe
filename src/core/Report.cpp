@@ -172,14 +172,14 @@ void CReport::WriteLine(LPCTSTR tc_line, bool bCRLF)
 {
   m_osxs << tc_line;
   if (bCRLF) {
-    m_osxs << CRLF;
+    m_osxs << std::endl;
   }
 }
 
 // Write a new line
 void CReport::WriteLine()
 {
-  m_osxs << CRLF;
+  m_osxs << std::endl;
 }
 
 //  EndReport writes a "End Report" record and closes the report file.
