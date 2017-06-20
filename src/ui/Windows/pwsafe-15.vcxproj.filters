@@ -117,6 +117,9 @@
     <ClCompile Include="ExtThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FieldChangesDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="filter\FilterBaseDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -153,10 +156,22 @@
     <ClCompile Include="Fonts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FindReplaceDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="FontsDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FRHdrCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FRListCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="GeneralMsgBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GridListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImgStatic.cpp">
@@ -336,6 +351,9 @@
     <ClCompile Include="SecString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SetDBID.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="filter\SetAttachmentFiltersDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -367,6 +385,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Subclass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SyncScrollRichEdit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SysColStatic.cpp">
@@ -412,9 +433,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="YubiMixin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GridListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -524,6 +542,9 @@
     <ClInclude Include="ExtThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FieldChangesDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="filter\FilterBoolDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -554,10 +575,19 @@
     <ClInclude Include="filter\FilterStringDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FindReplaceDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Fonts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FontsDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FRHdrCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FRListCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneralMsgBox.h">
@@ -737,6 +767,9 @@
     <ClInclude Include="SecString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SetDBID.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="filter\SetAttachmentFiltersDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -771,6 +804,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Subclass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SyncScrollRichEdit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SysColStatic.h">

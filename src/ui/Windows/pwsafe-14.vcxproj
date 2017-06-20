@@ -556,6 +556,10 @@
     <ClCompile Include="filter\FilterPasswordDlg.cpp" />
     <ClCompile Include="filter\FilterStringDlg.cpp" />
     <ClCompile Include="filter\SetAttachmentFiltersDlg.cpp" />
+    <ClCompile Include="FieldChangesDlg.cpp" />
+    <ClCompile Include="FindReplaceDlg.cpp" />
+    <ClCompile Include="FRHdrCtrl.cpp" />
+    <ClCompile Include="FRListCtrl.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FontsDialog.cpp" />
     <ClCompile Include="GeneralMsgBox.cpp" />
@@ -630,6 +634,7 @@
     <ClCompile Include="SingleInstance.cpp" />
     <ClCompile Include="SMemFile.cpp" />
     <ClCompile Include="Subclass.cpp" />
+    <ClCompile Include="SyncScrollRichEdit.cpp" />
     <ClCompile Include="SysColStatic.cpp" />
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="TBMStatic.cpp" />
@@ -682,6 +687,7 @@
     <ClInclude Include="ExpPswdLC.h" />
     <ClInclude Include="ExpPWListDlg.h" />
     <ClInclude Include="ExtThread.h" />
+    <ClInclude Include="FieldChangesDlg.h" />
     <ClInclude Include="filter\FilterBoolDlg.h" />
     <ClInclude Include="filter\FilterDateDlg.h" />
     <ClInclude Include="filter\FilterDCADlg.h" />
@@ -768,6 +774,7 @@
     <ClInclude Include="SMemFile.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="Subclass.h" />
+    <ClInclude Include="SyncScrollRichEdit.h" />
     <ClInclude Include="SysColStatic.h" />
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="TBMStatic.h" />

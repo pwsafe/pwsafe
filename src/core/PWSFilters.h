@@ -392,6 +392,9 @@ class PWSFilterManager {
   PWSFilterManager();
   void CreateGroups();
   bool PassesFiltering(const CItemData &ci, const PWScore &core);
+  bool PassesFiltering(const CItemData &ci, const CItem::FieldType &ft,
+    const PWSMatch::MatchRule &rule, const StringX &string,
+    const bool &bCaseSensitive);
   bool PassesEmptyGroupFiltering(const StringX &sxGroup);
   void SetFindFilter(const bool &bFilter) { m_bFindFilterActive = bFilter; }
   void SetFilterFindEntries(std::vector<pws_os::CUUID> *pvFoundUUIDs);
