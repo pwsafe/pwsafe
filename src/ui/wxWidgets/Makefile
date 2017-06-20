@@ -101,15 +101,18 @@ OUTPUTPATH=GCCUnicodeDebug
 OBJECTPATH=GCCUnicodeDebug
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11 -l$(YBPERS_LIBS)
+LIBS=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --libs` -lcore -los -lcore -l$(YBPERS_LIBS)
+ifneq ($(findstring Darwin, $(shell uname -s)), Darwin)
+		LIBS += -luuid -lXtst -lX11
+		XERCESLIBFLAGS=-lxerces-c
+		XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
+endif
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
 DEBUGFLAGS=-ggdb -D_DEBUG
 LIBPATH=../../../lib/unicodedebug
 CPPINC=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --cxxflags` -DUNICODE
-XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
-XERCESLIBFLAGS=-lxerces-c
 GCCFLAGS=-fPIC
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildDebugGTK2Unicode/lib/wx/include/gtk2-unicode-debug-static-2.6"
 MACPACKAGEINFO=
@@ -129,15 +132,18 @@ OUTPUTPATH=GCCUnicodeRelease
 OBJECTPATH=GCCUnicodeRelease
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11 -l$(YBPERS_LIBS)
+LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs` -lcore -los -lcore -l$(YBPERS_LIBS)
+ifneq ($(findstring Darwin, $(shell uname -s)), Darwin)
+		LIBS += -luuid -lXtst -lX11
+		XERCESLIBFLAGS=-lxerces-c
+		XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
+endif
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
 DEBUGFLAGS=
 LIBPATH=../../../lib/unicoderelease
 CPPINC=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --cxxflags` -DUNICODE -DNDEBUG
-XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
-XERCESLIBFLAGS=-lxerces-c
 GCCFLAGS=-fPIC
 override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(LDFLAGS)
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2Unicode/lib/wx/include/gtk2-unicode-release-static-2.6"
@@ -157,6 +163,9 @@ endif
 
 override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)
 CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS) $(CPPFLAGS)
+ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
+		CPPFLAGS += -std=c++11
+endif
 
 SOURCES= passwordsafeframe.cpp \
 	pwsafeapp.cpp safecombinationentry.cpp \
