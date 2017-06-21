@@ -16,7 +16,6 @@ set (CLI_TEST_SRC
   argutils.cpp
   searchaction.cpp
   strutils.cpp
-	trim-test.cpp
   search-test.cpp
   search.cpp)
 

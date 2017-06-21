@@ -57,7 +57,8 @@ static String2FieldTypeMap  InitFieldTypeMap()
 CItemData::FieldType String2FieldType(const stringT& str)
 {
   static const String2FieldTypeMap ftmap = InitFieldTypeMap();
-  auto itr = ftmap.find(trim(str));
+  stringT s{str}; // Trim requires non-const
+  auto itr = ftmap.find(Trim(s));
   if (itr != ftmap.end())
     return itr->second;
   throw std::invalid_argument("Invalid field: " + toutf8(str));
