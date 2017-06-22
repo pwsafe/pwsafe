@@ -640,6 +640,10 @@ msgstr "导出(&E)"
 msgid "&File"
 msgstr "文件(&F)"
 
+#. Resource IDs: (32028 - MenuEx)
+msgid "&Filtered entries to PasswordSafe..."
+msgstr ""
+
 #. Resource IDs: (32112 - PopupMenuEx)
 msgid "&Filters"
 msgstr "筛选(&F)"
@@ -900,7 +904,7 @@ msgstr "验证(&V)"
 msgid "&View"
 msgstr "查看(&V)"
 
-#. Resource IDs: (32097 - Menu, 32097 - MenuEx)
+#. Resource IDs: (32097 - Menu)
 msgid "&View Attachment"
 msgstr ""
 
@@ -1900,7 +1904,7 @@ msgid "Change database mode?"
 msgstr ""
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
+msgid "Change status since last save:\n* indicates the database has been changed\nÂ° indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)
@@ -2782,6 +2786,10 @@ msgstr "编辑快捷方式"
 msgid "Edit/&View Entry..."
 msgstr "编辑/查看项目(&V)..."
 
+#. Resource IDs: (65535)
+msgid "Editor Command Line parameters:"
+msgstr ""
+
 #. Resource IDs: (3243)
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
 msgstr "组/标题或密码栏目缺少，没有导入记录！"
@@ -2880,6 +2888,10 @@ msgstr "输入一个正整数"
 #. Resource IDs: (61723)
 msgid "Enter a time."
 msgstr "输入一个时间"
+
+#. Resource IDs: (65535)
+msgid "Enter a value between 0 and 99 (a value of 0 disables icon overlay):"
+msgstr ""
 
 #. Resource IDs: (61714)
 #, c-format
@@ -3522,6 +3534,14 @@ msgstr "浏览"
 #. Resource IDs: (5667)
 msgid "Go "
 msgstr "浏览"
+
+#. Resource IDs: (65535 - PopupMenu)
+msgid "Go to Aliases..."
+msgstr ""
+
+#. Resource IDs: (6052)
+msgid "Go to Shortcuts..."
+msgstr ""
 
 #. Resource IDs: (5668)
 msgid "Go+"
@@ -4951,6 +4971,10 @@ msgstr "Password Safe x.xx"
 msgid "Password [Mandatory Field]"
 msgstr "密码 [强制字段]"
 
+#. Resource IDs: (6048)
+msgid "Password copied to clipboard"
+msgstr ""
+
 #. Resource IDs: (5455)
 msgid "Password implies this is an alias entry, but "
 msgstr "密码暗示这是一个别名项目，但"
@@ -5205,8 +5229,8 @@ msgstr "葡萄牙语"
 msgid "Portuguese (Brazilian ABNT)"
 msgstr "葡萄牙语(巴西 ABNT)"
 
-#. Resource IDs: (65535)
-msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character."
+#. Resource IDs: (6049)
+msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character. Positions must be separated by either spaces, commas or semi-colons to be recognised. There must also be a space, comma or semi-colon at the end of the list."
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -5678,9 +5702,17 @@ msgstr "选择键盘:"
 msgid "Select Location for Intermediate Backups"
 msgstr "选定中间备份位置"
 
+#. Resource IDs: (65535)
+msgid "Select Locked Text Color:"
+msgstr ""
+
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
 msgstr "选择测试转储类型"
+
+#. Resource IDs: (65535)
+msgid "Select Unlocked Text Color:"
+msgstr ""
 
 #. Resource IDs: (61717)
 msgid "Select a button."
@@ -5753,6 +5785,14 @@ msgstr ""
 #. Resource IDs: (5992)
 #, c-format
 msgid "Set Attachment Filters: %d Added; %d Active"
+msgstr ""
+
+#. Resource IDs: (32256 - Menu)
+msgid "Set Database ID"
+msgstr ""
+
+#. Resource IDs: (552)
+msgid "Set Database Index to overlay on System Tray icon"
 msgstr ""
 
 #. Resource IDs: (5295)
@@ -5886,6 +5926,10 @@ msgstr "快捷方式"
 
 #. Resource IDs: (1471)
 msgid "Show"
+msgstr ""
+
+#. Resource IDs: (1590)
+msgid "Show Combination"
 msgstr ""
 
 #. Resource IDs: (5653)
@@ -6025,11 +6069,11 @@ msgid "Spanish Variation"
 msgstr "西班牙语(变种)"
 
 #. Resource IDs: (5109)
-msgid "Specify a program for editing an entry's Notes field via the right-click context menu during Add/Edit."
+msgid "Specify a program for editing an entry's Notes field via the right-click context menu during Add/Edit. You can specify command line options to the external editor via the external  editor command line parameters field. Do not enclose this value in single or double quotes unless your chosen external editor requires them."
 msgstr ""
 
 #. Resource IDs: (5108)
-msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
+msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'. You can specify command line options to the browser via the Browser command line parameters field. Do not enclose this value in single or double quotes unless your chosen browser requires them."
 msgstr ""
 
 #. Resource IDs: (1497)
@@ -6052,7 +6096,7 @@ msgstr "为所有项目启动保存历史密码到上面的项目数量！"
 msgid "Start saving previous passwords"
 msgstr "开始保存早期密码"
 
-#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 8103)
+#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 1588, 8103)
 msgid "Static"
 msgstr "Static"
 
@@ -6255,7 +6299,7 @@ msgid "The Ctrl key has been added."
 msgstr ""
 
 #. Resource IDs: (3424)
-msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
+msgid "The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
 msgstr ""
 
 #. Resource IDs: (6003)
@@ -6418,8 +6462,8 @@ msgstr ""
 
 #. Resource IDs: (5792)
 #, c-format
-msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either copy it to an editor via the clipboard or export this entry to XML before changing it."
-msgstr "该项目的备注字段已超过可被显示的文字数量。所更改字段和保存的项目将导致该字段在 %d 字符之后被截去的结果。要查看完全的内容，在更改它们之前通过剪贴板复制到外部编辑器或导出这些内容为 XML 文件。"
+msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either export this entry to XML before changing it or open the database in read-only mode and copy it to an editor via the clipboard."
+msgstr ""
 
 #. Resource IDs: (5284)
 msgid "The old safe combination is not correct"
@@ -6514,6 +6558,10 @@ msgstr "该项目必须有一个有效目标项目！"
 #. Resource IDs: (5632)
 msgid "This filter already exists"
 msgstr "该筛选已经存在！"
+
+#. Resource IDs: (6054)
+msgid "This index is currently in use. Please select another."
+msgstr ""
 
 #. Resource IDs: (8170)
 msgid "This is a DeadKey. Press it and then one of the combined keys then shown to add that new character to the Passphrase."
@@ -7006,8 +7054,12 @@ msgstr "越南语"
 msgid "View"
 msgstr "查看"
 
-#. Resource IDs: (548, 6025)
+#. Resource IDs: (32097 - MenuEx, 548, 6025)
 msgid "View Attachment"
+msgstr ""
+
+#. Resource IDs: (6053)
+msgid "View Base entry"
 msgstr ""
 
 #. Resource IDs: (32220 - Menu, 5261)
@@ -7075,6 +7127,10 @@ msgstr "保存什么？"
 
 #. Resource IDs: (1518)
 msgid "Whatever"
+msgstr ""
+
+#. Resource IDs: (6050)
+msgid "When a subset is visible and there is no warning message, the button will be enabled and can be clicked to copy the subset to the clipboard."
 msgstr ""
 
 #. Resource IDs: (5761)
@@ -7443,6 +7499,10 @@ msgstr "\n导出为 XML"
 
 #. Resource IDs: (32026)
 msgid "\nExport to v4 database (EXPERIMENTAL)"
+msgstr ""
+
+#. Resource IDs: (32028)
+msgid "\nFiltered entries to PasswordSafe..."
 msgstr ""
 
 #. Resource IDs: (32061)
@@ -8103,6 +8163,10 @@ msgstr "下列文本:"
 
 #. Resource IDs: (5966)
 msgid "the passwords and data of all entries in this group"
+msgstr ""
+
+#. Resource IDs: (6051)
+msgid "the passwords and data of these filtered entries"
 msgstr ""
 
 #. Resource IDs: (5815)

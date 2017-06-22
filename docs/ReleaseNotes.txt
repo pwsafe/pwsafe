@@ -1,5 +1,5 @@
-Password Safe 3.42.2 Release ????? 2017
-=======================================
+Password Safe 3.423pre Release June 2017
+========================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -13,8 +13,8 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
 
-Bugs fixed in 3.42.2
-====================
+Bugs fixed in 3.43pre
+=====================
 [1410] Don't forget '-r' flag when database not found, and needs to be
 searched.
 [1409] An entry is now correctly re-selected after editing if the preference
@@ -30,12 +30,12 @@ selected. If not present, then the previous entry (if present) will be selected.
 This has also been implemented wherever the "Copy Password" button is used outside
 the Toolbar.
 
-New Features for 3.42.2
-=======================
+Changes to Existing Features in 3.42pre
+=======================================
 None
 
-New Features for 3.42.2
-=======================
+New Features for 3.43pre
+========================
 [] You can now specify additional command line parameters to the
 external editor used to edit the Notes field from the Add/Edit Basic dialog. 
 [] It is now possible to export the currently filtered entries to a
