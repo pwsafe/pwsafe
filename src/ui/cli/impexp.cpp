@@ -163,7 +163,7 @@ ImportXML(PWScore &core, const stringT &fname)
     rpt.WriteLine(strXMLErrors.c_str());
     str_text = L"File ";
     str_text += fname.c_str();
-    str_text += L" validated but hadd errors during import.";
+    str_text += L" validated but had errors during import.";
     delete pcmd;
     break;
   case PWScore::SUCCESS:
@@ -209,7 +209,7 @@ ImportXML(PWScore &core, const stringT &fname)
 
       wostringstream os2;
       os2 << L"File " << fname << L" was imported (entries validated"
-          << numValidated << L" / imported " << numImported
+          << numValidated << L" / imported " << numImported << L")"
           << cs_skipped <<  cs_renamed << cs_PWHErrors;
       str_text = os2.str();
     } else {

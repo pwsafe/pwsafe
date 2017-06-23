@@ -153,7 +153,7 @@ int AddEntryWithFields(PWScore &core, const UserArgs::FieldUpdates &fieldValues,
   }
 
   if ( !got_passwd ) {
-    // User didnot specify a password on command-line. Generate one
+    // User didn't specify a password on command-line. Generate one
     PWPolicy pwp;
     InitPWPolicy(pwp, core, fieldValues);
     item.SetFieldValue(CItemData::PASSWORD, pwp.MakeRandomPassword());

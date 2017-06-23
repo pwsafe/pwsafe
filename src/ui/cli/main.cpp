@@ -59,7 +59,7 @@ const map<UserArgs::OpType, pws_op> pws_ops = {
   { UserArgs::Search,     {OpenCore,        Search,     SaveAfterSearch}},
   { UserArgs::Diff,       {OpenCore,        Diff,       null_op}},
   { UserArgs::Sync,       {OpenCore,        Sync,       SaveCore}},
-  { UserArgs::Merge,       {OpenCore,       Merge,      SaveCore}},
+  { UserArgs::Merge,      {OpenCore,        Merge,      SaveCore}},
 };
 
 
