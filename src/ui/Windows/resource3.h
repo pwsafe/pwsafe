@@ -2,27 +2,17 @@
 
 //  Usage
 #define IDS_USAGE                       5000
+#define IDS_INVALIDCOMMANDLINE          5001
 
 // Window state
 #define IDS_ALWAYSONTOP                 5010
 
 // Status bar
-#define IDS_STATCOMPANY                 5020
-#define IDS_STATAUTOTYPE                5021
-#define IDS_STATBROWSE                  5022
-#define IDS_STATCOPYNOTES               5023
-#define IDS_STATCOPYPASSWORD            5024
-#define IDS_STATCOPYUSERNAME            5025
-#define IDS_STATVIEWEDIT                5026
-#define IDS_STATCOPYPASSWORDMIN         5027
 #define IDS_READ_ONLY                   5028
 #define IDS_BLANK                       5029
-#define IDS_STATBROWSEPLUS              5030
-#define IDS_STATRUN                     5031
-#define IDS_STATSENDEMAIL               5032
 #define IDS_READ_WRITE                  5033
 
-// File Dailog filters
+// File Dialog filters
 #define IDS_FDF_V3_ALL                  5050
 #define IDS_FDF_DB_ALL                  5051
 #define IDS_FDF_DB_BU_ALL               5052
@@ -51,6 +41,15 @@
 #define IDS_OTHEREDITORLOCATION         5109
 #define IDS_MIGRATETOAPPDATA            5110
 #define IDS_CLEARPWHISTORY              5111
+#define IDS_SAVEIMMEDIATELY             5112
+#define IDS_DBLOCK                      5113
+#define IDS_USERBACKUPOTHERLOCATION2    5114
+#define IDS_SMARTLABELHELP              5115
+#define IDS_PASSWORDHELP                5116
+#define IDS_NOTESHELP                   5117
+#define IDS_AUTOTYPEHELP                5118
+#define IDS_PWHHELP                     5119
+#define IDS_PASSWORDHELP2               5120
 
 // Program strings
 #define IDS_FILEERROR1                  5210
@@ -234,7 +233,6 @@
 #define IDS_MENURENAMEGROUP             5406
 #define IDS_MAXNUMDAYSEXCEEDED          5407
 #define IDS_HELPMENU                    5408
-#define IDS_U3PURCHASE                  5409
 #define IDS_INVALIDEXPIRYWARNDAYS       5410
 #define IDS_DRAGNUMBER                  5411
 #define IDS_STRICT_LOCKED               5412
@@ -244,7 +242,6 @@
 #define IDS_MERGEX                      5416
 #define IDS_EXPORT_TEXTX                5417
 #define IDS_EXPORT_XMLX                 5418
-#define IDS_ENTRYEXISTS2                5419
 #define IDS_ADVANCED_TITLETEXT          5420
 #define IDS_ADVANCED_PASSWORDTEXT       5421
 #define IDS_ADVANCED_GROUPTEXT          5422
@@ -275,7 +272,6 @@
 #define IDS_CPF_TVDD                    5449
 #define IDS_RECORDUNKNOWNFIELDS         5450
 #define IDS_IMPORTFILE                  5451
-#define IDS_VIEWDEPENDENTS              5452
 #define IDS_EXPORTFILE                  5453
 #define IDS_ALIASNOTFOUNDA              5455
 #define IDS_ALIASNOTFOUND0A             5456
@@ -317,8 +313,6 @@
 #define IDS_SBASEINVALID                5500
 #define IDS_MUSTHAVETARGET              5501
 #define IDS_VIEWSHORTCUTS               5502
-#define IDS_VIEWALIASESBTN              5503
-#define IDS_VIEWSHORTCUTSBTN            5504
 #define IDS_MULTIPLETARGETSFOUND        5505
 #define IDS_TARGETNOTFOUND              5506
 #define IDS_PROVISMUTUALLYEXCL          5507
@@ -426,9 +420,6 @@
 #define IDS_VIEW                        5624
 #define IDS_FILTERSEXPORTEDOK           5625
 #define IDS_FILTERSIMPORTEDOK           5626
-#define IDS_SELECTFROMSTORE             5627
-#define IDS_DELETEFROMSTORE             5628
-#define IDS_VIEWFROMSTORE               5629
 #define IDS_CANTAUTOIMPORTFILTERS       5630
 #define IDS_REPLACEFILTER               5631
 #define IDS_FILTEREXISTS                5632
@@ -479,8 +470,7 @@
 #define IDS_RUNCMDCOPIED                5678
 #define IDS_COL_MENUITEM                5680
 #define IDS_COL_SHORTCUT                5681
-#define IDS_SHCT_TOOLTIP0               5682
-#define IDS_SHCT_TOOLTIP1               5683
+#define IDS_SHCT_TOOLTIP                5682
 #define IDS_SHCT_WARNING1               5684
 #define IDS_SHCT_WARNING2               5685
 #define IDS_SHCT_WARNING3               5686
@@ -492,8 +482,6 @@
 #define IDS_TREEFONT                    5692
 #define IDS_PSWDFONT                    5693
 #define IDS_OSK_NO_UNICODE_FONT         5694
-#define IDS_ENTRYEXISTS1                5695
-#define IDS_ENTRYEXISTS3                5696
 #define IDS_DRAGTOCOPY                  5697
 #define IDS_ADDENTRY                    5698
 #define IDS_EDITENTRY                   5699
@@ -530,7 +518,6 @@
 #define IDS_NO_ENTRIES_PROCESSED        5737
 #define IDS_DCALONG                     5738
 #define IDS_ENTRYSTATUS                 5739
-#define IDS_NONSAVEDCHANGES             5740
 #define IDS_RECORDSUPDATED              5741
 #define IDS_FILEWRITEFAILURE            5742
 #define IDS_GENERATEPASSWORD            5743
@@ -616,7 +603,6 @@
 #define IDS_EXP_SBASE                   5829
 #define IDS_EXP_SBASE_WARN              5830
 #define IDS_EXP_SBASE_EXP               5831
-#define IDS_EXPIREPASSWORDS             5832
 #define IDS_WZEXPORTTEXT                5833
 #define IDS_WZEXPORTXML                 5834
 #define IDS_WZCOMPARE                   5835
@@ -662,6 +648,7 @@
 #define IDS_ENTER_NEW_DB_NAME           5875
 #define IDS_ENTER_NEW_DB_DESCRIPTION    5876
 #define IDS_INPUTBOX_CHAR_COUNT         5877
+#define IDS_NUMGROUPS_E                 5878
 #define IDS_POLICYNAME                  5879
 #define IDS_NEWPOLICY                   5880
 #define IDS_EDITPOLICY                  5881
@@ -765,6 +752,11 @@
 #define IDS_SETATTACHMENTFILTER         5991
 #define IDS_AFILTERINFO                 5992
 #define IDS_NOMEDIATYPE                 5993
+#define IDS_CLICKTOLISTENTRIES          5994
+#define IDS_NUMEMPTYGROUPS              5995
+#define IDS_ADDEDITFONT                 5996
+#define IDS_SHORTCUT_WARNING            5997
+#define IDS_NOIBACKUP3                  5998
 
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001
@@ -772,3 +764,39 @@
 #define IDS_YUBI_UNINITIALIZED          6003
 #define IDS_YUBI_INIT_FAILED            6004
 #define IDS_YUBI_INIT_SUCCESS           6005
+
+#define IDS_STATIC_DB_PREFS_RO_WARNING  6020
+#define IDS_DB_READ_ONLY                6021
+#define IDS_NO_DB                       6022
+#define IDS_SAVEDRESTOREDDB             6023
+#define IDS_UNSAVEDRESTOREDDB           6024
+#define IDS_VIEWATTACHMENT              6025
+#define IDS_IMAGE_SAVE_FAILED           6026
+#define IDS_IMAGE_LOAD_FAILED           6027
+#define IDS_IMAGE_LIMIT_1               6028
+#define IDS_IMAGE_IMPORT_FAILED         6029
+#define IDS_MEM_ALLOC_FAILED            6030
+#define IDS_MEM_LOCK_FAILED             6031
+#define IDS_CLEARMRU                    6032
+#define IDS_CONFIRMCLEARMRU             6033
+#define IDS_OPTBACKUPNODRIVE            6034
+#define IDS_EXPANDPATH                  6035
+#define IDS_CANT_EXPANDPATH             6036
+#define IDS_PWHISTORYCOPIED             6037
+#define IDS_OLDPSWDCOPIED               6038
+#define IDS_CHANGINGBASEENTRY           6039
+#define IDS_CHANGINGBASEENTRY1          6040
+#define IDS_CHANGINGBASEENTRY2          6041
+#define IDS_EXP_ALIAS                   6042
+#define IDS_HOSTUSER                    6043
+#define IDS_LIST_OF_ALIASES             6044
+#define IDS_LIST_OF_SHORTCUTS           6045
+#define IDS_EXT_EDITOR_ACTIVE           6046
+#define IDS_CANCEL_EXT_EDITOR           6047
+#define IDS_PASSWORDCOPIED              6048
+#define IDS_COPYPASSWORDHELP1           6049
+#define IDS_COPYPASSWORDHELP2           6050
+#define IDS_WSSLCT_FILTERED             6051
+#define IDS_GOTOSHORTCUTS               6052
+#define IDS_VIEWBASEENTRY               6053
+#define IDS_DBINDEXINUSE                6054

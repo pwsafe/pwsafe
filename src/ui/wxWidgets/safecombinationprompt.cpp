@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -40,13 +40,11 @@
 
 #include "./graphics/cpane.xpm"
 
-
 /*!
  * CSafeCombinationPrompt type definition
  */
 
 IMPLEMENT_CLASS( CSafeCombinationPrompt, wxDialog )
-
 
 /*!
  * CSafeCombinationPrompt event table definition
@@ -68,7 +66,6 @@ EVT_TIMER(POLLING_TIMER_ID, CSafeCombinationPrompt::OnPollingTimer)
 
 END_EVENT_TABLE()
 
-
 /*!
  * CSafeCombinationPrompt constructors
  */
@@ -83,7 +80,6 @@ CSafeCombinationPrompt::CSafeCombinationPrompt(wxWindow* parent, PWScore &core,
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * CSafeCombinationPrompt creator
@@ -110,7 +106,6 @@ bool CSafeCombinationPrompt::Create( wxWindow* parent, wxWindowID id, const wxSt
   return true;
 }
 
-
 /*!
  * CSafeCombinationPrompt destructor
  */
@@ -123,7 +118,6 @@ CSafeCombinationPrompt::~CSafeCombinationPrompt()
   delete m_pollingTimer;
 #endif
 }
-
 
 /*!
  * Member initialisation
@@ -140,7 +134,6 @@ void CSafeCombinationPrompt::Init()
 
 ////@end CSafeCombinationPrompt member initialisation
 }
-
 
 /*!
  * Control creation for CSafeCombinationPrompt
@@ -217,7 +210,6 @@ void CSafeCombinationPrompt::CreateControls()
   }
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -262,7 +254,6 @@ wxIcon CSafeCombinationPrompt::GetIconResource( const wxString& WXUNUSED(name) )
   return wxNullIcon;
 ////@end CSafeCombinationPrompt icon retrieval
 }
-
 
 void CSafeCombinationPrompt::ProcessPhrase()
 {
@@ -311,7 +302,6 @@ void CSafeCombinationPrompt::OnOkClick( wxCommandEvent& /* evt */ )
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
@@ -323,7 +313,6 @@ void CSafeCombinationPrompt::OnCancelClick( wxCommandEvent& /* evt */ )
   EndModal(wxID_CANCEL);
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationPrompt.
 }
-
 
 #ifndef NO_YUBI
 /*!

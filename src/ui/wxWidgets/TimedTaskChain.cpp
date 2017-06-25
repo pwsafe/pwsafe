@@ -15,7 +15,6 @@ int TimedTaskChain::DefaultTaskDelay()
     return defaultDelay;
 }
 
-
 // static
 TimedTaskChain& TimedTaskChain::CreateTaskChain(std::initializer_list<TaskType> tasks)
 {
@@ -33,7 +32,6 @@ TimedTaskChain& TimedTaskChain::CreateTaskChain(std::initializer_list<TaskWithIn
 {
     return *new TimedTaskChain(tasks);
 }
-
 
 TimedTaskChain::TimedTaskChain(std::initializer_list<TaskType> tasks):   m_errorHandler(nullptr)
 {
@@ -84,8 +82,6 @@ void TimedTaskChain::Notify()
     RunTask();
 }
 
-
-
 #ifdef __TESTING_TIMEDTASKCHAIN__
 #include <wx/app.h>
 #include <iostream>
@@ -101,7 +97,6 @@ void TimedTaskChain::Notify()
  *
  *
  */
-
 
 class TaskApp: public wxApp
 {

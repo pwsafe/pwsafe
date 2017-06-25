@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -196,7 +196,6 @@ struct st_FilterRow {
     return *this;
   }
 
-
   bool operator==(const st_FilterRow &that) const
   {
     if (this != &that) {
@@ -259,10 +258,7 @@ struct st_filters {
   // Filter name
   stringT fname;
   // Counters
-  int num_Mactive;
-  int num_Hactive;
-  int num_Pactive;
-  int num_Aactive;
+  int num_Mactive, num_Hactive, num_Pactive, num_Aactive;
   // Main filters
   vFilterRows vMfldata;
   // PW history filters
@@ -320,6 +316,9 @@ struct st_filters {
   bool operator!=(const st_filters &that) const
   {return !(*this == that);}
 
+  bool IsActive() const {return (num_Mactive + num_Hactive +
+                                 num_Pactive + num_Aactive) != 0;}
+
   void Empty()
   {
     fname = _T("");
@@ -337,6 +336,21 @@ enum FilterPool {FPOOL_DATABASE = 1, FPOOL_AUTOLOAD, FPOOL_IMPORTED, FPOOL_SESSI
 struct st_Filterkey {
   FilterPool fpool;
   stringT cs_filtername;
+
+  bool operator==(const st_Filterkey& that) const
+  {
+    if (this != &that) {
+      if (fpool != that.fpool &&
+          cs_filtername != that.cs_filtername)
+        return false;
+    }
+    return true;
+  }
+
+  bool operator!=(const st_Filterkey& that) const
+  {
+    return !(*this == that);
+  }
 };
 
 // Following is for map<> compare function
@@ -351,6 +365,7 @@ struct ltfk {
 };
 
 struct PWSfileHeader;
+class PWScore;
 
 class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
  public:
@@ -370,6 +385,40 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
  private:
   std::string GetFilterXMLHeader(const StringX &currentfile,
                                  const PWSfileHeader &hdr);
+};
+
+class PWSFilterManager {
+ public:
+  PWSFilterManager();
+  void CreateGroups();
+  bool PassesFiltering(const CItemData &ci, const PWScore &core);
+  bool PassesEmptyGroupFiltering(const StringX &sxGroup);
+  void SetFindFilter(const bool &bFilter) { m_bFindFilterActive = bFilter; }
+  void SetFilterFindEntries(std::vector<pws_os::CUUID> *pvFoundUUIDs);
+
+  // predefined filters accessors, use by assigning to m_currentfilter
+  const st_filters &GetExpireFilter() const {return m_expirefilter;}
+  const st_filters &GetUnsavedFilter() const {return m_unsavedfilter;}
+  const st_filters &GetFoundFilter() const { return m_lastfoundfilter; }
+
+  st_filters m_currentfilter;
+  size_t GetFindFilterSize() { return m_vFltrFoundUUIDs.size(); }
+  
+ private:
+   bool PassesPWHFiltering(const CItemData *pci) const;
+   bool PassesPWPFiltering(const CItemData *pci) const;
+   bool PassesAttFiltering(const CItemData *pci, const PWScore &core) const;
+
+   vfiltergroups m_vMflgroups, m_vHflgroups, m_vPflgroups, m_vAflgroups;
+
+   // predefined filters, set up at c'tor
+   st_filters m_expirefilter, m_unsavedfilter, m_lastfoundfilter;
+
+   // Filter on Find results
+   bool m_bFindFilterActive;
+   // Vector of found entries' UUID for advance search to display only those
+   // entries satisfying a search
+   std::vector<pws_os::CUUID> m_vFltrFoundUUIDs;
 };
 
 #endif  /* __PWSFILTERS_H */

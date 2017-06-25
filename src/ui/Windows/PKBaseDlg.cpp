@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,7 +13,6 @@
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
 #include "resource.h"
-
 
 #include "core/pwsprefs.h"
 #include "core/core.h" // for IDSC_UNKNOWN_ERROR
@@ -125,13 +124,11 @@ BOOL CPKBaseDlg::OnInitDialog(void)
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
-BOOL CPKBaseDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CPKBaseDlg::PreTranslateMessage(MSG *pMsg)
 {
-  RelayToolTipEvent(pMsg);
-
   // Show/hide caps lock indicator
   CWnd *pCapsLock = GetDlgItem(IDC_CAPSLOCK);
   if (pCapsLock != NULL) {
@@ -164,7 +161,7 @@ void CPKBaseDlg::yubiShowChallengeSent()
 {
   // A request's in the air, setup GUI to wait for reply
   m_yubi_status.ShowWindow(SW_HIDE);
-  m_yubi_status.SetWindowText(_T(""));
+  m_yubi_status.SetWindowText(L"");
   m_yubi_timeout.ShowWindow(SW_SHOW);
   m_yubi_timeout.SetPos(15);
 }
@@ -176,8 +173,8 @@ void CPKBaseDlg::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYT
     m_yubi_status.ShowWindow(SW_SHOW);
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_timeout.SetPos(0);
-    m_yubi_status.SetWindowText(_T(""));
-    TRACE(_T("yubiCheckCompleted: YKLIB_OK"));
+    m_yubi_status.SetWindowText(L"");
+    pws_os::Trace(L"yubiCheckCompleted: YKLIB_OK");
     m_passkey = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
     // The returned hash is the passkey
     ProcessPhrase();
@@ -203,7 +200,7 @@ void CPKBaseDlg::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYT
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_status.ShowWindow(SW_SHOW);
     // Generic error message
-    TRACE(_T("yubiCompleted(%d)\n"), yrc);
+    pws_os::Trace(L"yubiCompleted(%d)\n", yrc);
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDSC_UNKNOWN_ERROR)));
     break;
   }

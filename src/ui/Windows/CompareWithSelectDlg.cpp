@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -84,10 +84,9 @@ BOOL CCompareWithSelectDlg::OnInitDialog()
 
   m_pImageList = new CImageList();
 
-  BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight,
-                                     ILC_MASK | ILC_COLORDDB,
-                                     CCWTreeCtrl::NUM_IMAGES, 0);
-  ASSERT(status != 0);
+  VERIFY(m_pImageList->Create(bm.bmWidth, bm.bmHeight,
+                              ILC_MASK | ILC_COLORDDB,
+                              CCWTreeCtrl::NUM_IMAGES, 0) != 0);
 
   // Order of LoadBitmap() calls matches CCWTreeCtrl public enum
   //bitmap.LoadBitmap(IDB_GROUP); - already loaded above to get width
@@ -115,7 +114,7 @@ BOOL CCompareWithSelectDlg::OnInitDialog()
   for (listPos = m_pcore->GetEntryIter(); listPos != m_pcore->GetEntryEndIter();
        listPos++) {
     CItemData &ci = m_pcore->GetEntry(listPos);
-    // Don't add shortuts our ourselves
+    // Don't add shortcuts our ourselves
     if (ci.GetEntryType() != CItemData::ET_SHORTCUT &&
         m_pci->GetUUID() != ci.GetUUID())
       InsertItemIntoGUITree(ci);
@@ -125,7 +124,8 @@ BOOL CCompareWithSelectDlg::OnInitDialog()
   
   // Disable OK button until an entry is selected
   GetDlgItem(IDOK)->EnableWindow(FALSE);
-  return TRUE;
+  
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CCompareWithSelectDlg::OnItemDblClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -208,7 +208,7 @@ void CCompareWithSelectDlg::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResu
   if (m_pSelected->GetGroup() == m_group && m_pSelected->GetTitle() == m_title &&
       m_pSelected->GetUser() == m_username) {
     // Unselect it
-    m_cwItemTree.SetItemState(hItem, 0, LVIS_SELECTED);
+    m_cwItemTree.SetItemState(hItem, 0, TVIS_SELECTED);
 
     m_pSelected = NULL;
     GetDlgItem(IDOK)->EnableWindow(FALSE);

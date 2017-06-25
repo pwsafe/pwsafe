@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -36,6 +36,7 @@ using namespace std;
 #include "core/SysInfo.h"
 #include "core/PWSprefs.h"
 #include "core/PWSrand.h"
+#include "os/cleanup.h"
 #include "pwsclip.h"
 #include <wx/timer.h>
 #include <wx/html/helpctrl.h>
@@ -50,7 +51,6 @@ using namespace std;
 #if defined(__X__) || defined(__WXGTK__)
 #include "pwsclip.h"
 #endif
-
 
 #include <wx/spinctrl.h>
 #include <wx/taskbar.h>
@@ -73,7 +73,6 @@ using namespace std;
 #else
 #define STR(s) wxT(s)
 #endif
-
 
 // wx debug messages (a) don't really interest us, and
 // (b) manage to crash wx 3.0.2 under Windows due to some
@@ -135,6 +134,15 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
 static wxReporter aReporter;
 static wxAsker    anAsker;
 
+static void cleanup_handler(int /*signum */, void *p)
+{
+  // Called if we get a signal - don't try to save, since we don't
+  // know what's valid, if anything. Just unlock file, if any.
+  PWScore *pcore = static_cast<PWScore *>(p);
+  pcore->SafeUnlockCurFile();
+  exit(1);
+}
+
 /*!
  * Application instance implementation
  */
@@ -143,13 +151,11 @@ static wxAsker    anAsker;
 IMPLEMENT_APP( PwsafeApp )
 ////@end implement app
 
-
 /*!
  * PwsafeApp type definition
  */
 
 IMPLEMENT_CLASS( PwsafeApp, wxApp )
-
 
 /*!
  * PwsafeApp event table definition
@@ -198,6 +204,7 @@ PwsafeApp::~PwsafeApp()
 
 void PwsafeApp::Init()
 {
+  pws_os::install_cleanup_handler(cleanup_handler, &m_core);
   m_locale = new wxLocale;
   wxLocale::AddCatalogLookupPathPrefix(L"/usr/share/locale");
   wxLocale::AddCatalogLookupPathPrefix(L"/usr");
@@ -222,7 +229,6 @@ void PwsafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func
                  << (msg? msg: L"") << endl;
 }
 #endif
-
 
 /** Activate help subsystem for given language
 * @param language help language for activation (if not found, default will be used)
@@ -274,8 +280,6 @@ bool PwsafeApp::OnInit()
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
 
   SetAppName(pwsafeAppName);
-  m_core.SetApplicationNameAndVersion(tostdstring(pwsafeAppName),
-                                      DWORD((MINORVERSION << 16) | MAJORVERSION));
   PWSprefs::SetReporter(&aReporter);
   PWScore::SetReporter(&aReporter);
   PWScore::SetAsker(&anAsker);
@@ -361,7 +365,7 @@ bool PwsafeApp::OnInit()
   }
   m_core.SetCurFile(tostringx(filename));
   m_core.SetApplicationNameAndVersion(tostdstring(progName),
-                                      MAKEWORD(MINORVERSION, MAJORVERSION));
+                                      MAKELONG(MINORVERSION, MAJORVERSION));
 
   static wxSingleInstanceChecker appInstance;
   if (!prefs->GetPref(PWSprefs::MultipleInstances) &&
@@ -398,7 +402,6 @@ bool PwsafeApp::OnInit()
   m_appIcons.AddIcon(pwsafe16);
   m_appIcons.AddIcon(pwsafe32);
   m_appIcons.AddIcon(pwsafe48);
-
 
   if (!m_helpController){ // helpController (re)created  on language activation
     std::wcerr << L"Could not initialize help subsystem." << std::endl;
@@ -520,7 +523,6 @@ wxLanguage PwsafeApp::GetSelectedLanguage() {
   }
 }
 
-
 /*!
  * Activates a language.
  *
@@ -628,7 +630,7 @@ CRecentDBList &PwsafeApp::recentDatabases()
 {
   // we create an instance of m_recentDatabases
   // as late as possible in order to make
-  // sure that prefs' is set correcly (user, machine, etc.)
+  // sure that prefs' is set correctly (user, machine, etc.)
   if (m_recentDatabases == NULL)
     m_recentDatabases = new CRecentDBList;
   return *m_recentDatabases;

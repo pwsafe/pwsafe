@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -22,8 +22,13 @@ namespace pws_os {
   extern stringT getprocessid();
 
 #if defined(_MSC_VER)
-  // Windows only - MFC or wxWidgts
+  // Windows only - MFC or wxWidgets
+  extern bool    RtlGetVersion(DWORD &dwMajor, DWORD &dwMinor, DWORD &dwBuild);
   extern bool    IsWindowsVistaOrGreater();
+  extern bool    IsWindows7OrGreater();
+  extern bool    IsWindows8OrGreater();
+  extern bool    IsWindows81OrGreater();
+  extern bool    IsWindows10OrGreater();
 #endif
 }
 #endif /* __ENV_H */

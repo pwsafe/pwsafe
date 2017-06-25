@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -12,6 +12,7 @@
 #include "SysInfo.h"
 #include "core.h"
 #include "os/file.h"
+#include "os/dir.h"  // for splitpath
 
 #include "sha1.h" // for simple encrypt/decrypt
 #include "PWSrand.h"
@@ -65,7 +66,7 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
         break;
       case NEWFILE:
         ASSERT(0);
-        // deliberate fallthru
+        // deliberate fallthrough
       case UNKNOWN_VERSION:
         status = FAILURE;
       } // inner switch
@@ -80,7 +81,6 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
   }
   return retval;
 }
-
 
 PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename, const StringX &passkey)
 {
@@ -101,7 +101,7 @@ PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename, const StringX &pa
 PWSfile::PWSfile(const StringX &filename, RWmode mode, VERSION v)
   : m_filename(filename), m_passkey(_T("")), m_fd(NULL),
   m_curversion(v), m_rw(mode), m_defusername(_T("")),
-    m_fish(NULL), m_terminal(NULL), m_status(SUCCESS),
+  m_fish(NULL), m_terminal(NULL), m_status(SUCCESS),
   m_nRecordsWithUnknownFields(0)
 {
 }
@@ -143,12 +143,14 @@ int PWSfile::Close()
 {
   delete m_fish;
   m_fish = NULL;
+  int rc(SUCCESS);
+
   if (m_fd != NULL) {
-    fflush(m_fd);
-    fclose(m_fd);
+    rc = pws_os::FClose(m_fd, m_rw == Write);
     m_fd = NULL;
   }
-  return SUCCESS;
+
+  return rc;
 }
 
 size_t PWSfile::WriteCBC(unsigned char type, const unsigned char *data,
@@ -232,6 +234,13 @@ void PWSfile::SetUnknownHeaderFields(UnknownFieldList &UHFL)
     m_UHFL = UHFL;
   else
     m_UHFL.clear();
+}
+
+long PWSfile::GetOffset() const
+{
+  long retval = ftell(m_fd);
+  ASSERT(ulong64(retval) <= pws_os::fileLength(m_fd));
+  return retval;
 }
 
 // Following for 'legacy' use of pwsafe as file encryptor/decryptor
@@ -346,7 +355,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   SAFE_FWRITE(ipthing, 1, 8, out);
 
   ConvertString(passwd, pwd, passlen);
-  fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<int &>(passlen), thesalt, SaltLength);
+  fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<unsigned int &>(passlen), thesalt, SaltLength);
   trashMemory(pwd, passlen);
   delete[] pwd; // gross - ConvertString allocates.
   try {
@@ -411,7 +420,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     unsigned char *pwd = NULL;
     size_t passlen = 0;
     ConvertString(passwd, pwd, passlen);
-    Fish *fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<int &>(passlen), salt, SaltLength);
+    Fish *fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<unsigned int &>(passlen), salt, SaltLength);
     trashMemory(pwd, passlen);
     delete[] pwd; // gross - ConvertString allocates.
     if (_readcbc(in, buf, len,dummyType, fish, ipthing, 0, file_len) == 0) {

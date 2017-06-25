@@ -896,7 +896,7 @@ msgid "See LICENSE for open source details."
 msgstr "공개 소스에 대해 알고싶으시다면 LICENSE를 읽으십시오."
 
 #: ../../../ui/wxWidgets/about.cpp:184
-msgid "Copyright (c) 2003-2016 by Rony Shapiro"
+msgid "Copyright (c) 2003-2017 by Rony Shapiro"
 msgstr ""
 
 #: ../../../ui/wxWidgets/about.cpp:192 ../../../ui/wxWidgets/yubicfg.cpp:206

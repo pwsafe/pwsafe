@@ -2,7 +2,7 @@
 #
 #
 #
-# Uncomment the corret TARGET and RELDIR below:
+# Uncomment the correct TARGET and RELDIR below:
 #TARGET=pwsafe
 #TARGET=pwsafe-i386
 TARGET=pwsafe64

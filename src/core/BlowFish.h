@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -16,8 +16,8 @@
 class BlowFish : public Fish
 {
 public:
-  static BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
-                                const unsigned char *salt, int saltlen);
+  static BlowFish *MakeBlowFish(const unsigned char *pass, unsigned int passlen,
+                                const unsigned char *salt, unsigned int saltlen);
 // Simple version for protecting ItemFields in memory:
   static BlowFish *MakeBlowFish(const unsigned char *key, int keylen) {
     return new BlowFish(key, keylen);

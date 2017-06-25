@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,6 +13,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSystem dialog
 #include "Options_PropertyPage.h"
+#include "TBMStatic.h"
 
 class COptionsSystem : public COptions_PropertyPage
 {
@@ -38,14 +39,16 @@ protected:
   BOOL m_DeleteRegistry, m_saveDeleteRegistry;
   BOOL m_Migrate2Appdata, m_saveMigrate2Appdata;
   BOOL m_InitialHotkeyState;
+
+  CTBMStatic m_Help1, m_Help2;
   //}}AFX_DATA
 
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsSystem)
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
-  BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
   virtual BOOL OnApply();
   virtual BOOL OnKillActive();
   //}}AFX_VIRTUAL
@@ -65,7 +68,4 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-
-private:
-  static bool m_bShowConfigFile;
 };

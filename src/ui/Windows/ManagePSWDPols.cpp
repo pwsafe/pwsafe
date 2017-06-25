@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -14,6 +14,7 @@
 
 #include "ManagePSWDPols.h"
 #include "PasswordPolicyDlg.h"
+#include "PWPListEntries.h"
 
 #include "GeneralMsgBox.h"
 #include "Fonts.h"
@@ -31,7 +32,8 @@ CManagePSWDPols::CManagePSWDPols(CWnd* pParent, const bool bLongPPs)
   : CPWDialog(CManagePSWDPols::IDD, pParent),
   m_iSelectedItem(-1), m_bChanged(false), m_iSortEntriesIndex(0),
   m_bSortEntriesAscending(true), m_iSortNamesIndex(0), m_bSortNamesAscending(true),
-  m_bViewPolicy(true), m_bLongPPs(bLongPPs), m_iundo_pos(-1)
+  m_bViewPolicy(true), m_bLongPPs(bLongPPs), m_iundo_pos(-1), m_pCopyBtn(NULL),
+  m_bCopyPasswordEnabled(false), m_bImageLoaded(FALSE), m_bDisabledImageLoaded(FALSE)
 {
   ASSERT(pParent != NULL);
 
@@ -47,7 +49,11 @@ CManagePSWDPols::CManagePSWDPols(CWnd* pParent, const bool bLongPPs)
 
 CManagePSWDPols::~CManagePSWDPols()
 {
-  m_CopyPswdBitmap.Detach();
+  if (m_bImageLoaded)
+    m_CopyPswdBitmap.Detach();
+
+  if (m_bDisabledImageLoaded)
+    m_DisabledCopyPswdBitmap.Detach();
 }
 
 void CManagePSWDPols::DoDataExchange(CDataExchange* pDX)
@@ -72,11 +78,14 @@ BEGIN_MESSAGE_MAP(CManagePSWDPols, CPWDialog)
   ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
 
   ON_NOTIFY(NM_CLICK, IDC_POLICYLIST, OnPolicySelected)
+  ON_NOTIFY(NM_RCLICK, IDC_POLICYLIST, OnPolicyRightClick)
   ON_NOTIFY(LVN_KEYDOWN, IDC_POLICYLIST, OnPolicySelected)
   ON_NOTIFY(NM_DBLCLK, IDC_POLICYENTRIES, OnEntryDoubleClicked)
 
   ON_NOTIFY(HDN_ITEMCLICK, IDC_POLICYNAMES_HEADER, OnColumnNameClick)
   ON_NOTIFY(HDN_ITEMCLICK, IDC_POLICYENTRIES_HEADER, OnColumnEntryClick)
+
+  ON_COMMAND(ID_MENUITEM_LISTENTRIES, OnListEntries)
 END_MESSAGE_MAP()
 
 // CManagePSWDPols message handlers
@@ -84,6 +93,8 @@ END_MESSAGE_MAP()
 BOOL CManagePSWDPols::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
+
+  m_pCopyBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
 
   if (m_bReadOnly) {
     GetDlgItem(IDC_NEW)->EnableWindow(FALSE);
@@ -130,6 +141,8 @@ BOOL CManagePSWDPols::OnInitDialog()
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_GENERATEPASSWORD), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_CLICKTOCOPYGENPSWD);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
+    cs_ToolTip.LoadString(IDS_CLICKTOLISTENTRIES);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_POLICYLIST), cs_ToolTip);
 
     if (!m_bReadOnly) {
       cs_ToolTip.LoadString(IDS_CANCELPOLICYCHANGES);
@@ -204,31 +217,43 @@ BOOL CManagePSWDPols::OnInitDialog()
     GetDlgItem(IDC_NEW)->EnableWindow(FALSE);
 
   // Load bitmap
-  BOOL brc;
   UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
-        IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
-  brc = m_CopyPswdBitmap.Attach(::LoadImage(
+    IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
+
+  m_bImageLoaded = m_CopyPswdBitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
                   (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
-  ASSERT(brc);
-  if (brc) {
+  
+  ASSERT(m_bImageLoaded);
+  if (m_bImageLoaded) {
     FixBitmapBackground(m_CopyPswdBitmap);
-    CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
-    ASSERT(pBtn != NULL);
-    if (pBtn != NULL)
-      pBtn->SetBitmap(m_CopyPswdBitmap);
   }
+
+  nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
+    IDB_COPYPASSWORD_NEW_D : IDB_COPYPASSWORD_CLASSIC_D;
+
+  m_bDisabledImageLoaded = m_DisabledCopyPswdBitmap.Attach(
+    ::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+      MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+      (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+
+  ASSERT(m_bDisabledImageLoaded);
+  if (m_bDisabledImageLoaded) {
+    FixBitmapBackground(m_DisabledCopyPswdBitmap);
+    m_pCopyBtn->SetBitmap(m_DisabledCopyPswdBitmap);
+  }
+
   // No changes yet
   GetDlgItem(IDC_UNDO)->EnableWindow(FALSE);
   GetDlgItem(IDC_REDO)->EnableWindow(FALSE);
 
   // Set focus on the policy names CListCtrl and so return FALSE
-  m_PolicyNames.SetFocus();
+  GotoDlgCtrl(GetDlgItem(IDC_POLICYLIST));
   return FALSE;
 }
 
-BOOL CManagePSWDPols::PreTranslateMessage(MSG* pMsg)
+BOOL CManagePSWDPols::PreTranslateMessage(MSG *pMsg)
 {
   // Do tooltips
   if (pMsg->message == WM_MOUSEMOVE) {
@@ -246,6 +271,17 @@ BOOL CManagePSWDPols::PreTranslateMessage(MSG* pMsg)
       m_pToolTipCtrl->Activate(TRUE);
       m_pToolTipCtrl->RelayEvent(&msg);
     }
+  }
+
+  // Don't even look like it was pressed if it should be disabled
+  if (pMsg->message == WM_LBUTTONDOWN && pMsg->hwnd == m_pCopyBtn->GetSafeHwnd() &&
+    !m_bCopyPasswordEnabled) {
+    return TRUE;
+  }
+
+  // Don't even process double click - looks bad
+  if (pMsg->message == WM_LBUTTONDBLCLK && pMsg->hwnd == m_pCopyBtn->GetSafeHwnd()) {
+    return TRUE;
   }
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
@@ -270,6 +306,7 @@ BOOL CManagePSWDPols::PreTranslateMessage(MSG* pMsg)
       // Tell Windows we have processed it
       return TRUE;
     }
+
     if (m_bRedoShortcut && pMsg->wParam == m_siRedoVirtKey) {
       if (((m_cRedoModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL &&
           (GetKeyState(VK_CONTROL) & 0x8000) == 0) || 
@@ -489,7 +526,6 @@ void CManagePSWDPols::OnList()
   else
     UpdateEntryList();
 
-
   CString cs_label(MAKEINTRESOURCE(m_bViewPolicy ? IDS_LIST : IDC_DETAILS));
   GetDlgItem(IDC_LIST_POLICYENTRIES)->SetWindowText(cs_label);
 }
@@ -568,10 +604,18 @@ void CManagePSWDPols::OnGeneratePassword()
   m_password = passwd.c_str();
   m_ex_password.SetWindowText(m_password);
   m_ex_password.Invalidate();
+
+  m_bCopyPasswordEnabled = m_password.GetLength() > 0;
+
+  // Enable/Disable Copy to Clipboard
+  m_pCopyBtn->SetBitmap(m_bCopyPasswordEnabled ? m_CopyPswdBitmap : m_DisabledCopyPswdBitmap);
 }
 
 void CManagePSWDPols::OnCopyPassword()
 {
+  if (!m_bCopyPasswordEnabled)
+    return;
+
   UpdateData(TRUE);
 
   GetMainDlg()->SetClipboardData(m_password);
@@ -638,8 +682,8 @@ void CManagePSWDPols::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Do not allow delete of policy if use count is non-zero
       GetDlgItem(IDC_DELETE)->EnableWindow(((citer == m_MapPSWDPLC.end()) || citer->second.usecount != 0 || m_bReadOnly) ? FALSE : TRUE);
       // Do not allow list of associated items if use count is zero
-      GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(((citer == m_MapPSWDPLC.end()) || (citer->second.usecount == 0)) ?
-                                         FALSE : TRUE);
+      GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(((citer == m_MapPSWDPLC.end()) ||
+        (citer->second.usecount == 0)) ? FALSE : TRUE);
       break;
   }
   
@@ -648,6 +692,65 @@ void CManagePSWDPols::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   m_bViewPolicy = true;
   UpdateDetails(); 
+}
+
+void CManagePSWDPols::OnPolicyRightClick(NMHDR * /*pNotifyStruct*/, LRESULT *pLResult)
+{
+  *pLResult = 0; // Perform default processing on return
+  POSITION pos = m_PolicyNames.GetFirstSelectedItemPosition();
+
+  if (pos == NULL)
+    return;
+
+  int nItem = m_PolicyNames.GetNextSelectedItem(pos);
+
+  // Ignore is default policy (first entry)
+  if (nItem == 0)
+    return;
+
+  const StringX sxPolicyName = m_PolicyNames.GetItemText(nItem, 0);
+
+  // Ignore if no entries using this policy
+  if (m_MapPSWDPLC[sxPolicyName].usecount == 0)
+    return;
+
+  PWScore *pcore = (PWScore *)GetMainDlg()->GetCore();
+  m_ventries.clear();
+  // Ignore if can't find any even if there should be!
+  if (!pcore->GetEntriesUsingNamedPasswordPolicy(sxPolicyName, m_ventries))
+    return;
+
+  CPoint msg_pt = ::GetMessagePos();
+  CMenu menu;
+  int ipopup = IDR_POPLISTENTRIES;
+
+  if (menu.LoadMenu(ipopup)) {
+    MENUINFO minfo = { 0 };
+    minfo.cbSize = sizeof(MENUINFO);
+    minfo.fMask = MIM_MENUDATA;
+    minfo.dwMenuData = ipopup;
+    VERIFY(menu.SetMenuInfo(&minfo));
+
+    CMenu *pPopup = menu.GetSubMenu(0);
+    ASSERT(pPopup != NULL);
+
+    pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, msg_pt.x, msg_pt.y, this);
+  }
+}
+
+void CManagePSWDPols::OnListEntries()
+{
+  POSITION pos = m_PolicyNames.GetFirstSelectedItemPosition();
+  int nItem = m_PolicyNames.GetNextSelectedItem(pos);
+  const StringX sxPolicyName = m_PolicyNames.GetItemText(nItem, 0);
+
+  CPWPListEntries dlg(NULL, sxPolicyName, &m_ventries);
+
+  // SHow the user which entries are using this named password policy
+  dlg.DoModal();
+
+  // Clear the data
+  m_ventries.clear();
 }
 
 void CManagePSWDPols::OnEntryDoubleClicked(NMHDR *, LRESULT *pLResult)
@@ -707,7 +810,7 @@ void CManagePSWDPols::OnColumnNameClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
   if (iIndex == m_iSortNamesIndex) {
     m_bSortNamesAscending = !m_bSortNamesAscending;
   } else {
-    // Turn off all previous sort arrrows
+    // Turn off all previous sort arrows
     for (int i = 0; i < pHdrCtrl->GetItemCount(); i++) {
       pHdrCtrl->GetItem(i, &hdi);
       if ((hdi.fmt & (HDF_SORTUP | HDF_SORTDOWN)) != 0) {
@@ -745,7 +848,7 @@ void CManagePSWDPols::OnColumnEntryClick(NMHDR *pNotifyStruct, LRESULT *pLResult
   if (iIndex == m_iSortEntriesIndex) {
     m_bSortEntriesAscending = !m_bSortEntriesAscending;
   } else {
-    // Turn off all previous sort arrrows
+    // Turn off all previous sort arrows
     for (int i = 0; i < pHdrCtrl->GetItemCount(); i++) {
       pHdrCtrl->GetItem(i, &hdi);
       if ((hdi.fmt & (HDF_SORTUP | HDF_SORTDOWN)) != 0) {
@@ -800,7 +903,7 @@ void CManagePSWDPols::UpdateNames()
   m_PolicyNames.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
 }
 
-static void WindowsRowPutter(int row, const stringT &name, const stringT &value,
+static void WindowsRowPutter(int row, const std::wstring &name, const std::wstring &value,
                              void *table)
 {
   // Callback function used by st_PSWDPolicy::Policy2Table

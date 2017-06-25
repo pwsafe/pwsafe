@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -21,8 +21,10 @@
 
 #include <dirent.h>
 #include <fnmatch.h>
+
 #include "../file.h"
 #include "../env.h"
+
 #include "../../core/core.h"
 #include "../../core/StringXStream.h"
 #include "../../core/PwsPlatform.h"
@@ -232,13 +234,21 @@ static stringT GetLockFileName(const stringT &filename)
 {
   assert(!filename.empty());
   // derive lock filename from filename
-  stringT retval(filename, 0, filename.find_last_of(TCHAR('.')));
+  /*
+   * If the filename ends with .cfg, then we add .plk to it, e.g., foo.cfg.plk
+   * otherwise we replace the suffix with .plk, e.g., foo.psafe3 -> foo.plk
+   * This fixes a bug while maintaining bwd compat.
+   */
+  stringT retval;
+  if (filename.length() > 4 && filename.substr(filename.length() - 4) == _T(".cfg"))
+    retval = filename;
+  else
+    retval = filename.substr(0, filename.find_last_of(TCHAR('.')));
   retval += _T(".plk");
   return retval;
 }
 
-bool pws_os::LockFile(const stringT &filename, stringT &locker, 
-                      HANDLE &, int &)
+bool pws_os::LockFile(const stringT &filename, stringT &locker, HANDLE &)
 {
   const stringT lock_filename = GetLockFileName(filename);
   stringT s_locker;
@@ -303,8 +313,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
   }
 }
 
-void pws_os::UnlockFile(const stringT &filename,
-                        HANDLE &, int &)
+void pws_os::UnlockFile(const stringT &filename, HANDLE &)
 {
   stringT lock_filename = GetLockFileName(filename);
 #ifndef UNICODE
@@ -350,6 +359,19 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   delete[] cmode;
 #endif
   return retval;
+}
+
+int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
+{
+  if (fd != NULL) {
+    if (bIsWrite) {
+      // Flush the data buffers
+      fflush(fd);
+    }
+    // Now close file
+    return fclose(fd);
+  }
+  return 0;
 }
 
 ulong64 pws_os::fileLength(std::FILE *fp)

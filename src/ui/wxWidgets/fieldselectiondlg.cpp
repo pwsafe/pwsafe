@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -19,7 +19,6 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
-
 
 #include "./fieldselectiondlg.h"
 #include "./fieldselectionpanel.h"
@@ -50,7 +49,6 @@ BEGIN_EVENT_TABLE( FieldSelectionDlg, wxDialog )
   EVT_INIT_DIALOG(FieldSelectionDlg::OnInitDialog)
   EVT_COMMAND(wxID_ANY, EVT_RELAYOUT_DLG, FieldSelectionDlg::OnRelayoutDlg)
 END_EVENT_TABLE()
-
 
 FieldSelectionDlg::FieldSelectionDlg(wxWindow* parent,
                                      const CItemData::FieldType* available, size_t navail,

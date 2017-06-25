@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2013-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2013-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -83,7 +83,6 @@ PWSfileV4::CKeyBlocks PWSfileV4::CKeyBlocks::operator=(const PWSfileV4::CKeyBloc
   }
   return *this;
 }
-
 
 PWSfileV4::PWSfileV4(const StringX &filename, RWmode mode, VERSION version)
   : PWSfile(filename, mode, version),
@@ -252,7 +251,7 @@ size_t PWSfileV4::WriteCBC(unsigned char type, const unsigned char *data,
 
   m_hmac.Update(&type, 1);
   m_hmac.Update(buf, sizeof(buf));
-  m_hmac.Update(data, len32);
+  m_hmac.Update(data, (unsigned long)length);
 
   return PWSfile::WriteCBC(type, data, length);
 }
@@ -274,7 +273,7 @@ int PWSfileV4::WriteRecord(const CItemAtt &att)
   // Following writes AttIV, AttEK, AttAK, AttContent
   // and AttContentHMAC per format spec.
   // All except the content are generated internally.
-int PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
+size_t PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
 {
   if (len == 0)
     return SUCCESS;
@@ -311,7 +310,7 @@ int PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
   _writecbc(m_fd, content, len, &fish, IV);
 
   // update content's HMAC
-  hmac.Update(content, len);
+  hmac.Update(content, (unsigned long)len);
 
   // write content's HMAC
   unsigned char digest[SHA256::HASHLEN];
@@ -345,7 +344,7 @@ size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
 
     m_hmac.Update(&type, 1);
     m_hmac.Update(buf, sizeof(buf));
-    m_hmac.Update(data, len32);
+    m_hmac.Update(data, (unsigned long)length);
   }
 
   return numRead;
@@ -380,7 +379,7 @@ int PWSfileV4::ReadRecord(CItemData &item)
       RestoreState();
       status = WRONG_RECORD;
     }
-  } else if (unsigned(fpos) == m_effectiveFileLength)
+  } else if (fpos == m_effectiveFileLength)
     status = END_OF_FILE;
   else // fpos >= effectiveFileLength !?
     status = READ_FAIL;
@@ -391,7 +390,7 @@ int PWSfileV4::ReadRecord(CItemAtt &att)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V40);
-  if (unsigned(ftell(m_fd)) < m_effectiveFileLength)
+  if (unsigned(GetOffset()) < m_effectiveFileLength)
     return att.Read(this);
   else
     return END_OF_FILE;
@@ -412,7 +411,7 @@ void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,
 
   HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> hmac;
   ConvertString(passkey, pstr, passLen);
-  pbkdf2(pstr, passLen, salt, saltLen, N, &hmac, Ptag, &PtagLen);
+  pbkdf2(pstr, (unsigned long)passLen, salt, saltLen, N, &hmac, Ptag, &PtagLen);
 
 #ifdef UNICODE
   trashMemory(pstr, passLen);
@@ -492,7 +491,6 @@ void PWSfileV4::ComputeEndKB(const unsigned char hnonce[SHA256::HASHLEN],
   m_hmac.Update(hnonce, SHA256::HASHLEN);
   m_hmac.Final(digest);
 }
-
 
 #define SAFE_FWRITE(p, sz, cnt, stream) \
   { \
@@ -643,17 +641,17 @@ int PWSfileV4::WriteHeader()
                         m_hdr.m_whatlastsaved);
   if (numWritten <= 0) { status = FAILURE; goto end; }
 
-  if (!m_hdr.m_dbname.empty()) {
-    numWritten = WriteCBC(HDR_DBNAME, m_hdr.m_dbname);
+  if (!m_hdr.m_DB_Name.empty()) {
+    numWritten = WriteCBC(HDR_DBNAME, m_hdr.m_DB_Name);
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
-  if (!m_hdr.m_dbdesc.empty()) {
-    numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_dbdesc);
+  if (!m_hdr.m_DB_Description.empty()) {
+    numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_DB_Description);
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
-  if (!m_MapFilters.empty()) {
+  if (!m_MapDBFilters.empty()) {
     coStringXStream oss;  // XML is always char not wchar_t
-    m_MapFilters.WriteFilterXMLFile(oss, m_hdr, _T(""));
+    m_MapDBFilters.WriteFilterXMLFile(oss, m_hdr, _T(""));
     numWritten = WriteCBC(HDR_FILTERS,
                           reinterpret_cast<const unsigned char *>(oss.str().c_str()),
                           oss.str().length());
@@ -665,7 +663,7 @@ int PWSfileV4::WriteHeader()
     if (num > 255)
       num = 255;  // Only save up to max as defined by FormatV3.
 
-    int buflen = (num * sizeof(uuid_array_t)) + 1;
+    size_t buflen = (num * sizeof(uuid_array_t)) + 1;
     unsigned char *buf = new unsigned char[buflen];
     buf[0] = (unsigned char)num;
     unsigned char *buf_ptr = buf + 1;
@@ -709,7 +707,7 @@ int PWSfileV4::WriteHeader()
 
     // Allocate buffer in calculated size
     unsigned char *buf = new unsigned char[totlen];
-    memset(buf, 0, totlen); // in case we trucate some names, don't leak info.
+    memset(buf, 0, totlen); // in case we truncate some names, don't leak info.
 
     // fill buffer
     buf[0] = (unsigned char)numPols;
@@ -838,10 +836,10 @@ bool PWSfileV4::VerifyKeyBlocks()
   unsigned char ReadEndKB[SHA256::HASHLEN];
   unsigned char CalcEndKB[SHA256::HASHLEN];
 
-  int nRead = fread(hnonce, sizeof(hnonce), 1, m_fd);
+  int nRead = (int)fread(hnonce, sizeof(hnonce), 1, m_fd);
   if (nRead != 1)
     return false;
-  nRead = fread(ReadEndKB, sizeof(ReadEndKB), 1, m_fd);
+  nRead = (int)fread(ReadEndKB, sizeof(ReadEndKB), 1, m_fd);
   if (nRead != 1)
     return false;
 
@@ -887,7 +885,7 @@ int PWSfileV4::ParseKeyBlocks(const StringX &passkey)
 
   do {
     status = ReadKeyBlock();
-    // status is either SUCESS or END_OF_FILE
+    // status is either SUCCESS or END_OF_FILE
     if (status == END_OF_FILE) {
       return status;
     }
@@ -962,7 +960,7 @@ bool PWSfileV4::CKeyBlocks::RemoveKeyBlock(const StringX &passkey)
     return false;
 
   KeyBlockFinder find_kb(passkey);
-  const unsigned old_size = m_kbs.size();
+  const unsigned long old_size = (unsigned long)m_kbs.size();
   m_kbs.erase(remove_if(m_kbs.begin(), m_kbs.end(), find_kb),
                m_kbs.end());
 
@@ -1086,13 +1084,13 @@ int PWSfileV4::ReadHeader()
     case HDR_DBNAME:
       if (utf8 != NULL) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-      m_hdr.m_dbname = text;
+      m_hdr.m_DB_Name = text;
       break;
 
     case HDR_DBDESC:
       if (utf8 != NULL) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-      m_hdr.m_dbdesc = text;
+      m_hdr.m_DB_Description = text;
       break;
 
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
@@ -1123,7 +1121,7 @@ int PWSfileV4::ReadHeader()
           m_UHFL.push_back(unkhfe);
           break;
         }
-        int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
+        int rc = m_MapDBFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
                                                   XSDFilename.c_str(),
                                                   strErrors, m_pAsker);
         if (rc != PWScore::SUCCESS) {
@@ -1258,6 +1256,9 @@ int PWSfileV4::ReadHeader()
     }
     delete[] utf8; utf8 = NULL; utf8Len = 0;
   } while (fieldType != HDR_END);
+
+  // Now sort it for when we compare.
+  std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
 
   return SUCCESS;
 }

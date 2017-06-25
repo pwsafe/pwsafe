@@ -27,7 +27,7 @@ are:
   3. Convert each TAB to 2 spaces
 
 One way to adjust these settings in CodeLite is from  its  Global
-Editor  Preferences.  Go to Settngs menu ‐> Global Editor Prefer‐
+Editor  Preferences.  Go to Settings menu ‐> Global Editor Prefer‐
 ences, under General category ‐> Indentation section:
   1. uncheck "Use tabs in indentation"
   2. set "Columns per indentation level" to 2

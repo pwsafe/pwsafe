@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -30,7 +30,7 @@ public:
   virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT *pResult);
 
   void SetFilterStatus(const bool bStatus)
-  {m_bFilterStatus = bStatus;}
+  {m_bSTBFilterStatus = bStatus;}
 
   int GetBitmapWidth()
   {return m_bmWidth;}
@@ -52,7 +52,7 @@ private:
   bool ShowToolTip(int nPane, const bool bVisible);
 
   CInfoDisplay *m_pSBToolTips;
-  bool m_bFilterStatus;
+  bool m_bSTBFilterStatus;
   int m_bmHeight, m_bmWidth;
   CBitmap m_FilterBitmap;
 

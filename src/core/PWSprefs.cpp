@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -43,7 +43,6 @@ const stringT Software(_T("Software"));
 const stringT OldSubKey(_T("Counterpane Systems"));
 
 HANDLE s_cfglockFileHandle = INVALID_HANDLE_VALUE;
-int s_cfgLockCount = 0;
 
 PWSprefs *PWSprefs::self = NULL;
 stringT PWSprefs::m_configfilename = _T(""); // may be set before singleton created
@@ -71,7 +70,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("AlwaysOnTop"), false, ptApplication},                // application
   {_T("ShowPWDefault"), false, ptDatabase},                 // database
   {_T("ShowPasswordInTree"), false, ptDatabase},            // database
-  {_T("SortAscending"), true, ptDatabase},                  // database
+  {_T("SortAscending"), true, ptObsolete},                  // obsolete in 3.40 - replaced by new app pref
   {_T("UseDefaultUser"), false, ptDatabase},                // database
   {_T("SaveImmediately"), true, ptDatabase},                // database
   {_T("PWUseLowercase"), true, ptDatabase},                 // database
@@ -89,7 +88,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("QuerySetDef"), true, ptApplication},                 // application
   {_T("UseNewToolbar"), true, ptApplication},               // application
   #ifdef __linux__
-  {_T("UseSystemTray"), false, ptApplication},               // application
+  {_T("UseSystemTray"), false, ptApplication},              // application
   #else
   {_T("UseSystemTray"), true, ptApplication},               // application
   #endif
@@ -130,17 +129,18 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("UseAltAutoType"), false, ptApplication},             //application
   {_T("IgnoreHelpLoadError"), false, ptApplication},        //application
   {_T("VKPlaySound"), false, ptApplication},                //application
+  {_T("ListSortAscending"), true, ptApplication},           //application
 };
 
 // Default value = -1 means set at runtime
 // Extra two values for Integer - min and max acceptable values (ignored if = -1)
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
-  {_T("column1width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
-  {_T("column2width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
-  {_T("column3width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
-  {_T("column4width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
+  {_T("column1width"), static_cast<unsigned int>(-1), ptApplication, -1, -1}, // application
+  {_T("column2width"), static_cast<unsigned int>(-1), ptApplication, -1, -1}, // application
+  {_T("column3width"), static_cast<unsigned int>(-1), ptApplication, -1, -1}, // application
+  {_T("column4width"), static_cast<unsigned int>(-1), ptApplication, -1, -1}, // application
   {_T("sortedcolumn"), 0, ptApplication, 0, 15},                    // application
-  {_T("PWDefaultLength"), 12, ptDatabase, 4, 1024},                  // database
+  {_T("PWDefaultLength"), 12, ptDatabase, 4, 1024},                 // database
   // maxmruitems maximum = (ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1)
   {_T("maxmruitems"), 4, ptApplication, 0, 20},                     // application
   {_T("IdleTimeout"), 5, ptDatabase, 1, 120},                       // database
@@ -167,8 +167,14 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
                             minDCA, maxDCA},                        // application
   {_T("DefaultAutotypeDelay"), 10, ptApplication,
                             1, 60000},                              // application
-  {_T("DlgOrientation"), AUTO, ptApplication, AUTO, WIDE},         // application
-  {_T("TimedTaskChainDelay"), 100, ptApplication, -1, -1},         // application
+  {_T("DlgOrientation"), AUTO, ptApplication, AUTO, WIDE},          // application
+  {_T("TimedTaskChainDelay"), 100, ptApplication, -1, -1},          // application
+  {_T("AutotypeSelectAllKeyCode"), 0, ptApplication, 0, 255},       // application
+  {_T("AutotypeSelectAllModMask"), 0, ptApplication, 0, 255},       // application
+  {_T("TreeFontPtSz"), 0, ptApplication, 0, -1},                    // application
+  {_T("PasswordFontPtSz"), 0, ptApplication, 0, -1},                // application
+  {_T("NotesFontPtSz"), 0, ptApplication, 0, -1},                   // application
+  {_T("AddEditFontPtSz"), 0, ptApplication, 0, -1},                 // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
@@ -197,6 +203,9 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("NotesFont"), _T(""), ptApplication},                         // application
   {_T("NotesSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},    // application
   {_T("AutotypeTaskDelays"), _T("100,100,100"), ptApplication},     // application
+  {_T("AddEditFont"), _T(""), ptApplication },                      // application
+  {_T("AddEditSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},  // application
+  {_T("AltNotesEditorCmdLineParms"), _T(""), ptApplication},        // application
 };
 
 PWSprefs *PWSprefs::GetInstance()
@@ -762,9 +771,10 @@ struct shortcut_less {
 
 bool equal_shortcuts(st_prefShortcut a, st_prefShortcut b)
 {
-  return (a.id        == b.id &&
+  return (a.id == b.id &&
           a.siVirtKey == b.siVirtKey &&
-          a.cModifier == b.cModifier);
+          a.cPWSModifier == b.cPWSModifier &&
+          a.Menu_Name == b.Menu_Name);
 }
 
 void PWSprefs::SetPrefShortcuts(const std::vector<st_prefShortcut> &vShortcuts)
@@ -1124,7 +1134,6 @@ void PWSprefs::InitializePreferences()
             m_configfilename.c_str(),
             isRO ? L"R/O" : L"R/W");
 
-
   // Does the registry entry exist for this user?
   m_bRegistryKeyExists = CheckRegistryExists();
 
@@ -1359,7 +1368,7 @@ bool PWSprefs::LoadProfileFromFile()
   stringT ts, csSubkey;
 
   m_pXML_Config = new CXMLprefs(m_configfilename.c_str());
-  if (!m_pXML_Config->Load()) {
+  if (!m_pXML_Config->XML_Load()) {
     if (!m_pXML_Config->getReason().empty() &&
         m_pReporter != NULL)
       (*m_pReporter)(m_pXML_Config->getReason()); // show what went wrong
@@ -1494,7 +1503,7 @@ void PWSprefs::SaveApplicationPreferences()
     } else { // acquired lock
       // if file exists, load to get other values
       if (pws_os::FileExists(m_configfilename.c_str()))
-        m_pXML_Config->Load(); // we ignore failures here. why bother?
+        m_pXML_Config->XML_Load(); // we ignore failures here. why bother?
     }
   }
   UpdateTimeStamp();
@@ -1631,7 +1640,7 @@ void PWSprefs::SaveApplicationPreferences()
 
   if (m_ConfigOption == CF_FILE_RW ||
       m_ConfigOption == CF_FILE_RW_NEW) {
-    if (m_pXML_Config->Store()) // can't be new after succ. store
+    if (m_pXML_Config->XML_Store(m_csHKCU_PREF)) // can't be new after succ. store
       m_ConfigOption = CF_FILE_RW;
     else
     if (!m_pXML_Config->getReason().empty() &&
@@ -1666,7 +1675,7 @@ void PWSprefs::SaveShortcuts()
     } else { // acquired lock
       // if file exists, load to get other values
       if (pws_os::FileExists(m_configfilename.c_str()))
-        m_pXML_Config->Load(); // we ignore failures here. why bother?
+        m_pXML_Config->XML_Load(); // we ignore failures here. why bother?
     }
   }
 
@@ -1684,7 +1693,7 @@ void PWSprefs::SaveShortcuts()
 
   if (m_ConfigOption == CF_FILE_RW ||
       m_ConfigOption == CF_FILE_RW_NEW) {
-    if (m_pXML_Config->Store()) // can't be new after succ. store
+    if (m_pXML_Config->XML_Store(m_csHKCU_PREF)) // can't be new after succ. store
       m_ConfigOption = CF_FILE_RW;
     else
     if (!m_pXML_Config->getReason().empty() &&
@@ -1851,13 +1860,12 @@ stringT PWSprefs::GetXMLPreferences()
 bool PWSprefs::LockCFGFile(const stringT &filename, stringT &locker)
 {
   return pws_os::LockFile(filename, locker,
-                          s_cfglockFileHandle, s_cfgLockCount);
+                          s_cfglockFileHandle);
 }
 
 void PWSprefs::UnlockCFGFile(const stringT &filename)
 {
-  return pws_os::UnlockFile(filename,
-                            s_cfglockFileHandle, s_cfgLockCount);
+  return pws_os::UnlockFile(filename, s_cfglockFileHandle);
 }
 
 bool PWSprefs::IsLockedCFGFile(const stringT &filename)
@@ -1870,4 +1878,26 @@ void PWSprefs::ClearUnknownPrefs()
   m_vUnknownBPrefs.clear();
   m_vUnknownIPrefs.clear();
   m_vUnknownSPrefs.clear();
+}
+
+stringT PWSprefs::GetDCAdescription(int dca)
+{
+  const int ids[maxDCA+1] = {
+    IDSC_STATCOPYPASSWORD,    // DoubleClickCopyPassword = 0
+    IDSC_STATVIEWEDIT,        // DoubleClickViewEdit = 1
+    IDSC_STATAUTOTYPE,        // DoubleClickAutoType = 2
+    IDSC_STATBROWSE,          // DoubleClickBrowse = 3
+    IDSC_STATCOPYNOTES,       // DoubleClickCopyNotes = 4
+    IDSC_STATCOPYUSERNAME,    // DoubleClickCopyUsername = 5
+    IDSC_STATCOPYPASSWORDMIN, // DoubleClickCopyPasswordMinimize = 6
+    IDSC_STATBROWSEPLUS,      // DoubleClickBrowsePlus = 7
+    IDSC_STATRUN,             // DoubleClickRun = 8
+    IDSC_STATSENDEMAIL,       // DoubleClickSendEmail = 9
+  };
+
+  int id = (dca >= minDCA && dca <= maxDCA) ? ids[dca] : IDSC_STATCOMPANY;
+
+  stringT retval;
+  LoadAString(retval, id);
+  return retval;
 }

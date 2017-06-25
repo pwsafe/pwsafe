@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -22,7 +22,6 @@
 // Note: Option "SI_TRUSTEE_UNIQUE" (Allow one instance per user account)
 // has been implemented for Password Safe
 
-
 #include "stdafx.h"
 #include "SingleInstance.h"
 
@@ -38,8 +37,8 @@
 // pszGUID:    Copied to the beginning of pszBuffer, should be an GUID
 // pszBuffer:  Buffer for unique name.
 // iBuffLen:   Buffer length (in chararcters) must be >= MAX_PATH
-// nMode:    Information, that should be used to create the unique name.
-//        Can be one of the following values:
+// nMode:      Information, that should be used to create the unique name.
+//             Can be one of the following values:
 //
 //
 //        SI_SESSION_UNIQUE            - Allow one instance per login session
@@ -81,9 +80,9 @@ LPWSTR CreateUniqueName(const LPCWSTR pszGUID, LPWSTR pszBuffer, const int iBuff
       // Call will fail on Win9x
       wcsncat_s(pszBuffer, iBuffLen, L"Win9x", cchDesk);
   }
+
   if (nMode & SI_SESSION_UNIQUE) {
     // Name should be session unique, so add current session id
-    
     HANDLE hToken = NULL;
     // Try to open the token (fails on Win9x) and check necessary buffer size
     if (OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken) &&
@@ -103,12 +102,13 @@ LPWSTR CreateUniqueName(const LPCWSTR pszGUID, LPWSTR pszBuffer, const int iBuff
       }
     }
   }
+
   if (nMode & SI_TRUSTEE_UNIQUE) {
     // Name should be unique to the current user
     wchar_t szUser[64] = {0};
     wchar_t szDomain[64] = {0};
-    DWORD cchUser  = 64;
-    DWORD cchDomain  = 64;
+    DWORD cchUser = 64;
+    DWORD cchDomain = 64;
 
     if (GetUserName(szUser, &cchUser)) {
       // Since NetApi() calls are quite time consuming

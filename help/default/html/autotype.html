@@ -1,164 +1,256 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<title>AutoType</title>
+<html> 
+<head> <title>AutoType</title>
 <!-- pwsafe version: 3.18.1--><!-- Modified: 4/08/2009 --><!--Popup control -->
 <script language="javascript" src="html/popups.js">
 </script>
-<link rel="stylesheet" type="text/css" href="style.css"></head>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
 <body>
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
-<!-- Popup Source File -->
+<!-- Popup Source File --> 
 
-<h2>AutoType</h2>
+<style>
+li:not(:last-child) {
+    margin-bottom: 5px;
+}
+</style>
 
-<p><b>AutoType</b> provides a means for you to easily and quickly
-enter user name and password information. With a single click, the user
-name and password are entered and the data is submitted to the host for
-approval. By default, the formula followed by the automated keystrokes
-is as follows: <a name="defautotext">the user name, followed by a tab
-key, followed by the password, another tab, and then the enter key</a>
-(<i>username</i> <b>TAB</b> <i>password</i> <b>TAB ENTER</b>). This works
-fine for most web sites that require username/password authentication.</p>
+<h2>AutoType</h2> 
 
-<p>For web sites or applications that require different data, you can tailor the AutoType behaviour as described in the
-<a href="#autotype_details">Customizing AutoType</a> section below.
-Note that you can also customize the <i><a href="#defautotext">default</a></i>
-AutoType text via the <i><a href="misc_tab.html">Misc.</a></i> tab in
-the Options dialog box. This can be useful if, for example, the default 
-AutoType timing is too fast for your machine.</p>
+<p><b>AutoType</b> provides a means for you to easily and quickly enter 
+user name and password information. With a single click, the user name 
+and password are entered and the data is submitted to the host for 
+approval. By default, the formula followed by the automated keystrokes 
+is as follows: <a name="defautotext">the user name, followed by a tab 
+key, followed by the password, another tab, and then the enter key</a> 
+(<i>username</i> <b>TAB</b> <i>password</i> <b>TAB ENTER</b>). This 
+works fine for most web sites that require username/password 
+authentication.</p> 
 
-<p>In addition, you can invoke AutoType after running an arbitrary command specified in the entry's <a href="run_command.html">Run Cmd</a> field.
-This is a very convenient combination.</p>
+<p>For web sites or applications that require different data, you can 
+tailor the AutoType behaviour as described in the <a 
+href="#autotype_details">Customizing AutoType</a> section below. Note 
+that you can also customize the <i><a 
+href="#defautotext">default</a></i> AutoType text via the <i><a 
+href="misc_tab.html">Misc.</a></i> tab in the Options dialog box. This 
+can be useful if, for example, the default AutoType timing is too fast 
+for your machine.</p> 
 
-<h3>Using AutoType</h3>
+<p>In addition, you can invoke AutoType after running an arbitrary 
+command specified in the entry's <a href="run_command.html">Run Cmd</a> 
+field. This is a very convenient combination.</p> 
+
+<h3>Using AutoType</h3> 
 
 <ol>
 <li>Place cursor in the form's username field</li>
-<li>Maximize or open <b>Password Safe</b></li>
-<li>Select a password entry</li>
-<li><b>Ctrl+T</b> or right-click and select <b>Perform AutoType</b>
-or click on the Toolbar button to initiate.</li>
-</ol>
+<li>Maximize or 
+open <b>Password Safe</b></li>
+<li>Select a password entry</li> 
+<li><b>Ctrl+T</b> or right-click and select <b>Perform AutoType</b> or 
+click on the Toolbar button to initiate.</li> </ol> 
 
-<h3><a name="autotype_details"></a>Customizing AutoType</h3>
+<h3><a name="autotype_details"></a>Customizing AutoType</h3> 
 
-<p>For web sites or applications that do not have the username
-field followed by the password field followed by the login button,
-you can modify the behaviour by filling in the <a href="#N1">"AutoType" field</a>
-with text that specifies the desired behavior as follows:</p>
+<p>For web sites or applications that do not have the username field 
+followed by the password field followed by the login button, you can 
+modify the behavior by filling in the entry's <a href="#N1">"AutoType" 
+field</a> with text that specifies the desired behavior as follows:</p> 
 <ul>
 <li><b>\u</b> is replaced by the username associated with the entry.</li>
 <li><b>\p</b> is replaced by the password associated with the entry.</li>
+<li><b>\q</b> is replaced by the last password associated with the entry from
+the entry's password history as long as this entry's password history is still
+active. If not active or if there are no current old passwords, the field is
+removed but not replaced with anything.</li>
 <li><b>\g</b> is replaced by the group associated with the entry.</li>
 <li><b>\i</b> is replaced by the title associated with the entry.</li>
-<li><b>\l</b> is replaced by the URL associated with the entry (that's the letter ell, not the digit '1').</li>
+<li><b>\l</b> is replaced by the URL associated with the entry (that's the letter
+ell, not the digit '1').</li>
 <li><b>\m</b> is replaced by the e-mail associated with the entry.</li>
-<li><b>\o</b> is replaced by the contents of the (possibly multilined) Notes field.</li>
+<li><b>\o</b> is replaced by the contents of the (possibly multilined) Notes field.</li> 
 <ul>
-<li>Any end of line characters '\n', '\r' or '\r\n' are converted to '\r'
-(carriage return).</li>
-<li>No substitution is made to escape sequences within the Notes field 
-(e.g. '\u', '\p' etc.) except for the '\t' sequence, which is replaced by
-the Tab character and '\s' sequence, which is replaced by "Shift+Tab".</li>
+<li>Any end of line characters '\n', '\r' or '\r\n' are converted to '\r' (carriage return).</li>
+<li>No substitution is made to escape sequences within the Notes field
+(e.g. '\u', '\p' etc.) except for the '\t' sequence, which is replaced by the Tab
+character and '\s' sequence, which is replaced by "Shift+Tab".</li>
 </ul>
-<li><b>\o<i>NNN</i></b> is replaced by the contents of the n<sup>th</sup>
-line of the Notes field</li>
+<li><b>\o<i>NNN</i></b> is replaced by the contents of the n<sup>th</sup> line
+of the Notes field</li>
 <ul>
-<li><i>NNN</i> can be one to three digits (e.g., \o5 for the 5<sup>th</sup>
-line, \o45 for the 45<sup>th</sup>, etc.</li>
-<li>End of line characters are <i>not </i> included.</li>
-<li>if <i>NNN </i>is larger than the number of lines in the notes field,
-then this has no effect.</li>
+<li><i>NNN</i> can be one to three digits (e.g., \o5 for 
+the 5<sup>th</sup> line, \o45 for the 45<sup>th</sup>, etc.</li>
+<li>if <i>NNN</i> is larger than the number of lines in the notes field, then
+this has no effect and no lines from the Notes field are copied.</li>
+<li>if <i>NNN</i> is zero then all lines are copied i.e. \o0 is equivalent to \o.</li>
+<li>End of line characters are <i>not</i> included.</li>
 </ul>
+
+<hr> 
+<small><b>Note</b> that this is a convenient way to support autotyping 
+for applications that require a second password or other arbitrary text 
+as part of the authentication process.</small> 
 <hr>
 
-<small><b>Note</b> that this is a convenient way to support
-autotyping for applications that require a second password or other
-arbitrary text as part of the authentication process.</small>
-
-<hr>
 <li><b>\b</b> is replaced by the backspace key.</li>
-<li><b>\t</b> is replaced by the Tab key, in effect skipping a field.</li>
-<li><b>\s</b> is replaced by the "Shift+Tab", in effect back-tabbing to the previous field.</li>
+<li><b>\t</b> is replaced by the Tab key, in effect skipping a field on the website's form.</li> 
+<li><b>\s</b> is replaced by the "Shift+Tab", in effect back-tabbing to 
+the previous field.</li>
 <li><b>\n</b> is replaced by the enter key, in effect pressing a button.</li>
 <li><b>\\</b> is replaced by the backslash (\) key.</li>
-<li><b>\d<i>NNN</i></b> sets the delay between characters to <i>NNN</i>
-milliseconds, instead of 10 (the default). This changes the delay for the current and
-all subsequent characters. For example, "fast\d500slow" will result in
-'fast' being typed with the default delay, and the letters 's', 'l',
-'o', and 'w' typed with a half-second pause before each. if you want to
-put in a one-time delay that does not affect the speed of the following
-characters, use '\w' or '\W', as described below.</li>
+<li><b>\d<i>NNN</i></b> sets the delay between characters to <i>NNN</i> milliseconds,
+instead of 10 (the default). This changes the delay for the current and all
+subsequent characters. For example, "fast\d500slow" will result in 'fast' being 
+typed with the default delay, and the letters 's', 'l', 'o', and 'w' typed with a 
+half-second pause before each. if you want to put in a one-time delay 
+that does not affect the speed of the following characters, use '\w' or 
+'\W', as described below.<br>
+Note that <em>NNN</em> is limited to a maximum of three digits.</li>
 <li><b>\w<i>NNN</i> or <i>\WNNN</i></b> introduces a delay of <i>NNN</i> milliseconds
-for \w, or seconds if \W is used. For example, "how\w500now" will cause
-'how' to be typed (at the default rate or that specified by the last
-\d), followed by a half-second pause, followed by 'now' typed at the
-same rate as 'how'). Likewise, "how\W2now" will introduce a two second
-pause between the two words. This is useful for fine-tuning the timing with certain web pages.</li>
-<li>Note that <em>NNN</em> in the above is limited to three digits, so that, for example, \w5000 will create a half-second delay
-and then emit the letter '0', which is probably not what you intended (\W5 would do the trick, though).</li>
-<li><b>\z</b> invokes the old AutoType mechanism.  This mechanism may handle
-non-Latin characters incorrectly, but can make AutoType work on certain problematical web sites.
-<i><u>If you find that AutoType does not work properly on a particular web site, try this code
-at the beginning of the AutoType command field.</u></i></li>
-<li><b>\c</b> (Linux only) generates the key events that cause a platform-specific Select-All
-command. It is useful when autotype conflicts with browser's autofill, where the two texts
-combine instead of autotype'd text replacing the auto-filled text.  Generating a <b>\c</b> at
-the start of autotyping inside a field (at the very beginning of autotype string, or just after
-a <b>\t</b>) ensures that the autofill'ed text gets replaced by the autotype'd text. For some
-sites, you might also need to autotype <i>slowly</i>, for which put <b>\d100</b> at the begining
-of your autotype string. So your autotype string could look like
+for \w, or seconds if \W is used. For example, "how\w500now" will cause 'how' to
+be typed (at the default rate or that specified by the last \d), followed by a 
+half-second pause, followed by 'now' typed at the same rate as 'how'). 
+Likewise, "how\W2now" will introduce a two second pause between the two 
+words. This is useful for fine-tuning the timing with certain web pages.<br>
+Note that <em>NNN</em> is limited to a maximum of three 
+digits, so that, for example, \w5000 will create a half-second delay and 
+then emit the letter '0', which is probably not what you intended (\W5 
+would do the trick, though).</li>
+<a name="z"></a><li><b>\z</b> (Windows only) invokes the old AutoType mechanism. 
+This mechanism may handle non-Latin characters incorrectly, but can make AutoType 
+work on certain problematical web sites. <i><u>If you find that AutoType does not 
+work properly on a particular web site, try this code at the beginning of the 
+AutoType command field. However, if this field is specified 
+<b>anywhere</b> in the AutoType string, it applies to the whole string.</u></i></li> 
+<li><b>\&#35;</b> (Windows only) is exactly the same as \z above except that
+it toggles using the old AutoType mechanism on/off for the part of the AutoType
+string between these codes. The use of \# instead of \z <i>may</i> prevent issues 
+with sending non-Latin characters in other parts of the AutoType string as can 
+happen when using the \z field.  <i><u>However, \&#35; will be ignored if the \z 
+field has been specified <b>anywhere</b> in the AutoType string.</u></i>. For 
+example, the following will switch to the old mechanism to just send a tab and a 
+space:
+<pre>
+\&#35;\t \&#35;
+</pre></li>
+<li><b>\c</b> (Linux only) generates the key events that cause a platform-specific
+Select-All command. It is useful when autotype conflicts with browser's autofill,
+where the two texts combine instead of autotype'd text replacing the auto-filled 
+text. 
+Generating a <b>\c</b> at the start of autotyping inside a field (at the 
+very beginning of autotype string, or just after a <b>\t</b>) ensures 
+that the autofill'ed text gets replaced by the autotype'd text. For some 
+sites, you might also need to autotype <i>slowly</i>, for which put 
+<b>\d100</b> at the beginning of your autotype string. So your autotype 
+string could look like
 <pre>
 \d100\c\u\t\c\p\n
 </pre>
-</li>
-<li><b>\j</b> (Linux only) starts generating independent key events for modifier keys like ALT,
-SHIFT, etc.</li>
-<li><b>\k</b> (Linux only) stops generating independent keystrokes for modifier keys and only
-simulates the modifications (like making things uppercase) with flags to main key events.</li>
-<li><b>\j</b> and <b>\k</b> could be useful when you find that autotype is not maintaining case-sensitivity of autotyped text, or is producing the lower keys (3 instead of #).</li>
-<li>All other text is typed as-is.</li>
-</ul>
+</li> 
+<li><b>\j</b> (Linux only) starts generating independent key events for 
+modifier keys like ALT, SHIFT, etc.</li>
+<li><b>\k</b> (Linux only) stops generating independent keystrokes for modifier
+keys and only simulates the modifications (like making things uppercase) with
+flags to main key events.</li>
+<li><b>\j</b> and <b>\k</b> could be useful when you find that autotype is not
+maintaining case-sensitivity of autotyped text, or is producing the lower keys
+(3 instead of #).</li>
+<li><u>All other text is typed as-is.</u></li>
+</ul> 
 
-<p>The default autotype sequence in Password Safe is \u\t\p\n. This default can be changed
-via the Manage/Options menu (Misc. tab).</p>
+<p>For <u>Windows only</u>, the following special control codes are also 
+implemented:</p> <table style="margin-left:20px; border-spacing:5px"> 
+<tr><td><b>\{Enter}</b></td><td>Enter key</td></tr> 
+<tr><td><b>\{Up}</b></td><td>Up-arrow key</td></tr> 
+<tr><td><b>\{Down}</b></td><td>Down-arrow key</td></tr> 
+<tr><td><b>\{Left}</b></td><td>Left-arrow key</td></tr> 
+<tr><td><b>\{Right}</b></td><td>Right-arrow key</td></tr> 
+<tr><td><b>\{Home}</b></td><td>Home key</td></tr> 
+<tr><td><b>\{End}</b></td><td>End key</td></tr> 
+<tr><td><b>\{PgUp}</b></td><td>Page-up key</td></tr> 
+<tr><td><b>\{PgDn}</b></td><td>Page-down key</td></tr> 
+<tr><td><b>\{Tab}</b></td><td>Tab key</td></tr> 
+<tr><td><b>\{Space}</b></td><td>Space bar</td></tr> </table> 
 
-<p><b>Example 1:</b>
-The following can be used where the bank account number (12345) must be
-entered before the user and password:<a name="N1"></a>
+<p>The special control code between the curley brackets is not case 
+sensitive and is unaffected by the presence of the "\z" AutoType field.</p> 
+
+<p>In addition, the following modifiers can be combined with 
+the above special control codes. These <u>must</u> precede the code and 
+can be combined in any order. They are:</p> <table 
+style="margin-left:20px; border-spacing:10px"> 
+<tr><td><b>!</b></td><td>Alt key</td></tr> 
+<tr><td><b>^</b></td><td>Control key</td></tr> 
+<tr><td><b>+</b></td><td>Shift key</td></tr> </table> 
+
+<p>For example:<br> "\{+Tab}" is equivalent to "Shift+Tab"<br> "\{+^Tab}" is
+equivalent to "Ctrl+Shift+Tab"<br> "\{^Home}" is equivalent to "Control+Home".</p> 
+
+<h3>Shortcuts and Aliases</h3>
+
+<h4>Shortcuts</h4>
+
+<p>AutoType of a shortcut uses the AutoType string of its base
+  entry. The values substituded in that string, e.g., \p for password, come for
+  the shortcut's base entry, <u>except</u> for the fields that can be set
+  for the shortcut itself, namely its group, title and user.</p>
+
+<h4>Aliases</h4>
+
+<p>The AutoType string and all entry variables <u>except</u> the current password 
+(\p) and previous password (\q) come from the alias entry.
+These come from the alias's base entry.</p>
+
+<h3>Default AutoType</h3>
+
+<p>The default autotype sequence in Password Safe is \u\t\p\n. This 
+default can be changed via the Manage/Options menu (Misc. tab).</p> 
+
+<h3>Examples</h3> 
+
+<p><b>Example 1:</b> The following can be used where the bank account 
+number (12345) must be entered before the user and password:
+<a name="N1"></a>
 <pre>
-    <i>12345\t\u\t\p\t\n</i>
+<i>12345\t\u\t\p\t\n</i>
+</pre> 
+</p>
+
+<p><b>Example 2:</b> The following, sent in by a user, clears the username field before username and password
+autotype begins. Non-empty username fields are very common. Some 
+sites remember the username even when the user does not want it to or 
+user forgets to clear the don't remember username and, because of 
+browser cookies, it is remembered anyway, or if login fails for whatever 
+reason on the first attempt the username would still remain. This 
+autotype sequence is meant to ensure that the user doesn't have to clear the username field first.
+<pre>
+<i>\t\s\u\t\p\n</i>
 </pre>
 </p>
 
-<p><b>Example 2:</b>
-The following sequence has been suggested by a user as it should clear the username field first
-before username and password autotype begins. Non-empty username fields occur all the time.
-Some sites remember the username even when the user does not want it to or user forgets to clear
-the don't remember username and, because of browser cookies, it is remembered anyway, or if login
-fails for whatever reason on the first attempt the username would still remain. This autotype
-sequence should ensure that the user doesn't have to clear a non-empty username field first.
-<pre>
-    <i>\t\s\b\u\t\p\n</i>
-</pre>
-</p>
+<p><b>Example 3:</b> The following sequence, also sent in by a user,
+ toggles a checkbox (e.g., disables keeping you logged in):
+<pre> 
+<i>\&#35;\t \&#35;</i>
+</pre> Note: You may need more tabs ('\t') in order to get to the desired
+checkbox on any particular webpage. Also, please see <a href="#z">above</a> on possible issues
+when using the '\z' field. </p> 
 
 <hr>
-<small><b>Note:</b> If you are having problems with AutoType, you might want to disable
-3rd-party popup-blockers. Users have reported problems with the
-interaction of popup-blockers with the AutoType functionality.</small>
-<hr>
+<small><b>Note:</b> If you are having problems with AutoType, you 
+might want to disable 3rd-party popup-blockers. Users have reported 
+problems with the interaction of popup-blockers with the AutoType 
+functionality.</small>
+<hr> 
 
-<!-- Added some white space at the bottom for natural scrolling -->
-<br>
-<br>
-<br>
+<!-- Added some white space at the bottom for natural scrolling --> <br> 
+<br> <br> 
 
-<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-<param name="Keyword" value="AutoType">
-<param name="Keyword" value="Using AutoType">
-</object>
+<object type="application/x-oleobject" 
+classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="AutoType"> <param name="Keyword" value="Using AutoType">
+</object> 
 
 </body>
-</html>
+</html> 

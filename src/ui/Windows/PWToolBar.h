@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -10,18 +10,20 @@
 
 // CPWToolBar
 
+#include "PWTouch.h"
+
 #include <map>
 
 typedef std::map<UINT, UINT> ID2ImageMap;
 typedef ID2ImageMap::iterator ID2ImageMapIter;
 
-class CPWToolBar : public CToolBar
+class CPWToolBarX : public CToolBar
 {
-  DECLARE_DYNAMIC(CPWToolBar)
+  DECLARE_DYNAMIC(CPWToolBarX)
 
 public:
-  CPWToolBar();
-  virtual ~CPWToolBar();
+  CPWToolBarX();
+  virtual ~CPWToolBarX();
 
   void Init(const int NumBits, const bool bRefresh = false);
   void LoadDefaultToolBar(const int toolbarMode);
@@ -37,7 +39,7 @@ public:
   void RefreshImages();
 
 protected:
-  //{{AFX_MSG(CPWToolBar)
+  //{{AFX_MSG(CPWToolBarX)
   afx_msg void OnToolBarGetButtonInfo(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnToolBarQueryInsert(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult);
@@ -59,7 +61,8 @@ private:
     UINT GetNewBM() const {return newBM;}
     UINT GetDisBM() const {return disBM;}
   };
-  // member fuction pointer typedef for above getters
+
+  // member function pointer typedef for above getters
   typedef UINT (GuiRecord::*GuiRecordGetter)() const;
   
   // Following needed for std::find_if
@@ -90,3 +93,9 @@ private:
   bool m_bIsDefault;
   int m_iBrowseURL_BM_offset, m_iSendEmail_BM_offset;
 };
+
+/**
+* typedef to hide the fact that CPWToolBar is really a mixin.
+*/
+
+typedef CPWTouch< CPWToolBarX > CPWToolBar;

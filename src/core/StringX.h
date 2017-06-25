@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -27,6 +27,11 @@
 
 #include "../os/typedefs.h"
 #include "./PwsPlatform.h"
+
+// Using extern definition here instead of including "Util.h" because Util.h
+// references the StringX class and by including "Util.h" here, the StringX
+// class isn't fully defined yet.
+extern void trashMemory(void *buffer, size_t length);
 
 namespace S_Alloc
 {
@@ -93,7 +98,6 @@ namespace S_Alloc
       pointer allocate(size_type n, const_pointer hint = 0) {
         UNREFERENCED_PARAMETER(hint);
         pointer p = static_cast<pointer>(std::malloc(n * sizeof(T)));
-        // pws_os::Trace(_T("Securely Allocated %d bytes at %p\n"), n * sizeof(T), p);
         if (p == NULL)
           throw std::bad_alloc();
         return p;
@@ -115,9 +119,7 @@ namespace S_Alloc
 
         if (n > 0) {
           const size_type N = n * sizeof(T);
-          std::memset(p, 0x55, N);
-          std::memset(p, 0xAA, N);
-          std::memset(p,    0, N);
+          trashMemory((void *)p, N);
         }
         std::free(p);
       }

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -17,7 +17,7 @@ class CFontsDialog : public CFontDialog
   DECLARE_DYNAMIC(CFontsDialog)
 
 public:
-  enum FontType { PASSWORDFONT, TREELISTFONT, NOTESFONT, VKEYBOARDFONT };
+  enum FontType { PASSWORDFONT, TREELISTFONT, ADDEDITFONT, NOTESFONT, VKEYBOARDFONT };
 
   CFontsDialog(LPLOGFONT lplfInitial = NULL,
                  DWORD dwFlags = CF_EFFECTS | CF_SCREENFONTS,
@@ -41,7 +41,7 @@ public:
 
   CString m_sampletext, m_title;
   LOGFONT m_dfltVKBDFont;
-  int m_iType;
+  FontType m_iType;
   bool m_bReset;
 
   // Dialog Data

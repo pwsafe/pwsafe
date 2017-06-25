@@ -45,11 +45,11 @@ void CStringFileInfo::FromStringFileInfo(StringFileInfo* pStringFI)
   ASSERT(pStringFI);
 
   StringTable* pStringTable = (StringTable*) DWORDALIGN(&pStringFI->szKey[wcslen(pStringFI->szKey)+1]);
-  while ((DWORD)pStringTable < ((DWORD) pStringFI + pStringFI->wLength)) {
+  while ((DWORD_PTR)pStringTable < ((DWORD_PTR) pStringFI + pStringFI->wLength)) {
     CStringTable* pObStringTable = new CStringTable(pStringTable);
     AddStringTable(pObStringTable);
 
-    pStringTable = (StringTable*) DWORDALIGN((DWORD)pStringTable + pStringTable->wLength);
+    pStringTable = (StringTable*) DWORDALIGN((DWORD_PTR)pStringTable + pStringTable->wLength);
 
   }
 }
@@ -94,7 +94,7 @@ BOOL CStringFileInfo::IsEmpty()
 
 DWORD CStringFileInfo::GetStringTableCount()
 {
-  return m_lstStringTables.GetCount();
+  return (DWORD)m_lstStringTables.GetCount();
 }
 
 CStringTable& CStringFileInfo::GetFirstStringTable()

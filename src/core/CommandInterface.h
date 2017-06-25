@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -22,13 +22,8 @@ class CommandInterface {
  public:
   CommandInterface() {}
   // Methods used both by PWScore and Commands:
-  virtual bool IsChanged() const = 0;
   virtual bool IsReadOnly() const = 0;
-  virtual void SetDBChanged(bool bDBChanged, bool bNotify = true) = 0;
-  virtual void SetDBPrefsChanged(bool bDBprefschanged) = 0;
-  virtual bool HaveHeaderPreferencesChanged(const StringX &prefString) = 0;
 
-  virtual void SetUniqueGTUValidated(bool bState) = 0;
   virtual bool GetUniqueGTUValidated() const = 0;
 
   virtual ItemListIter Find(const pws_os::CUUID &entry_uuid) = 0;
@@ -59,7 +54,7 @@ class CommandInterface {
                                     SaveTypePWMap *pmapSaveTypePW = NULL) = 0;
   virtual void UndoAddDependentEntries(ItemList *pmapDeletedItems,
                                        SaveTypePWMap *pmapSaveTypePW) = 0;
-  virtual void DoMoveDependentEntries(const pws_os::CUUID &from_baseuuid, 
+  virtual bool DoMoveDependentEntries(const pws_os::CUUID &from_baseuuid, 
                                       const pws_os::CUUID &to_baseuuid, 
                                       const CItemData::EntryType type) = 0;
 
@@ -67,11 +62,14 @@ class CommandInterface {
                                       SavePWHistoryMap &mapSavedHistory) = 0;
   virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory) = 0;
 
-  virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
-  virtual void UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
+  virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath,
+                            MultiCommands * &pmulticmds) = 0;
+  virtual void UndoRenameGroup(MultiCommands *pmulticmds) = 0;
 
-  virtual const std::vector<StringX> &GetVnodesModified() const = 0;
-  virtual void SetVnodesModified(const std::vector<StringX> &) = 0;
+  virtual int DoChangeHeader(const StringX &sxNewValue, const PWSfile::HeaderType ht) = 0;
+  virtual void UndoChangeHeader(const StringX &sxOldValue, const PWSfile::HeaderType ht) = 0;
+  virtual StringX GetHeaderItem(PWSfile::HeaderType ht) = 0;
+
   virtual void AddChangedNodes(StringX path) = 0;
   
   virtual const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const = 0;
@@ -82,8 +80,9 @@ class CommandInterface {
 
   virtual void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action,
                                       const pws_os::CUUID &,
-                                      CItemData::FieldType ft = CItemData::START,
-                                      bool bUpdateGUI = true) = 0;
+                                      CItemData::FieldType ft = CItemData::START) = 0;
+  virtual void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
+                                      const std::vector<StringX> &vGroups) = 0;
 
   virtual void AddExpiryEntry(const CItemData &ci) = 0;
   virtual void UpdateExpiryEntry(const CItemData &ci) = 0;
@@ -92,18 +91,31 @@ class CommandInterface {
   virtual void RemoveExpiryEntry(const CItemData &ci) = 0;
 
   virtual const PSWDPolicyMap &GetPasswordPolicies() = 0;
-  virtual void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) = 0;
-  virtual void AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
+  virtual bool SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) = 0;
+  virtual bool AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
                          const bool bAllowReplace = false) = 0;
   virtual bool GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) const = 0;
 
-  virtual void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) = 0;
+  virtual bool SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) = 0;
   virtual bool AddEmptyGroup(const StringX &sxEmptyGroup) = 0;
   virtual bool RemoveEmptyGroup(const StringX &sxEmptyGroup) = 0;
-  virtual void RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
-  virtual const std::vector<StringX> & GetEmptyGroups() = 0;
+  virtual bool RenameEmptyGroup(const StringX &sxOldGroup, const StringX &sxNewGroup) = 0;
+  virtual bool RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
+  virtual const std::vector<StringX> & GetEmptyGroups() const = 0;
+
+  virtual const PWSFilters &GetDBFilters() = 0;
+  virtual bool SetDBFilters(const PWSFilters &MapDBFilters) = 0;
+
+  std::vector<StringX> &GetModifiedNodes() { return m_vModifiedNodes; }
+  void SetModifiedNodes(const std::vector<StringX> &saved_vNodes_Modified)
+  { m_vModifiedNodes = saved_vNodes_Modified; }
+
   
   virtual ~CommandInterface() {}
+
+ protected:
+  // Changed groups
+  std::vector<StringX> m_vModifiedNodes;
 };
 
 #endif /* __COMMANDINTERFACE_H */

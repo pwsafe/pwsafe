@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -79,16 +79,16 @@ BOOL CPWResizeDialog::OnInitDialog()
     VERIFY(0);
 
   // Add the status bar
-  if (m_statusBar.CreateEx(this, SBARS_SIZEGRIP)) {
-    m_statusBar.SetIndicators(m_pstatustext, m_numsbpanes);
+  if (m_RSDStatusBar.CreateEx(this, SBARS_SIZEGRIP)) {
+    m_RSDStatusBar.SetIndicators(m_pstatustext, m_numsbpanes);
     UINT style;
     if (m_bTextVisible)
       style = SBPS_STRETCH;
     else
       style = SBPS_DISABLED | SBPS_NOBORDERS;
 
-    m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), style, NULL);
-    m_statusBar.UpdateWindow();
+    m_RSDStatusBar.SetPaneInfo(0, m_RSDStatusBar.GetItemID(0), style, NULL);
+    m_RSDStatusBar.UpdateWindow();
 
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
     m_bStatusBarOK = true;
@@ -104,7 +104,7 @@ BOOL CPWResizeDialog::OnInitDialog()
   m_DialogMinWidth = dlgRect.Width();
   m_DialogMinHeight = dlgRect.Height();
 
-  m_statusBar.GetWindowRect(&sbRect);
+  m_RSDStatusBar.GetWindowRect(&sbRect);
   ScreenToClient(&sbRect);
 
   m_pMainCtrl->GetWindowRect(&mainCtrlRect);
@@ -135,7 +135,7 @@ BOOL CPWResizeDialog::OnInitDialog()
     pwnd->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
   }
 
-  GetDlgItem(m_viBottomButtons[m_iFocus])->SetFocus();
+  GotoDlgCtrl(GetDlgItem(m_viBottomButtons[m_iFocus]));
 
   m_bInitDone = true;
 
@@ -191,12 +191,12 @@ void CPWResizeDialog::SetControls(int cx, int cy)
   }
 
   // Now move the status bar
-  m_statusBar.GetWindowRect(&sbRect);
+  m_RSDStatusBar.GetWindowRect(&sbRect);
   pt_top.x = sbRect.left;
   pt_top.y = sbRect.top;
   ScreenToClient(&pt_top);
 
-  m_statusBar.MoveWindow(pt_top.x, cy - sbRect.Height(),
+  m_RSDStatusBar.MoveWindow(pt_top.x, cy - sbRect.Height(),
                          cx - (2 * pt_top.x),
                          sbRect.Height(), TRUE);
 

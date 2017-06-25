@@ -1,5 +1,5 @@
       /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -85,11 +85,11 @@ BOOL CFilterDCADlg::OnInitDialog()
       case PWSprefs::DoubleClickBrowsePlus:           ui_dca = IDSC_DCABROWSEPLUS;      break;
       case PWSprefs::DoubleClickRun:                  ui_dca = IDSC_DCARUN;             break;
       case PWSprefs::DoubleClickSendEmail:            ui_dca = IDSC_DCASENDEMAIL;       break;
-      default:                                        ui_dca = IDS_STATCOMPANY;
+      default:                                        ui_dca = IDSC_STATCOMPANY;
     }
 
     cs_dca.LoadString(ui_dca);
-    cs_text.Format(IDSC_CURRENTDEFAULTDCA, cs_dca);
+    cs_text.Format(IDSC_CURRENTDEFAULTDCA, static_cast<LPCWSTR>(cs_dca));
     iItem = m_cbxDCA.AddString(cs_text);
     m_cbxDCA.SetItemData(iItem, (DWORD)-1);  // Default!
 
@@ -150,7 +150,7 @@ BOOL CFilterDCADlg::OnInitDialog()
 
   UpdateData(FALSE);
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CFilterDCADlg::OnCbnSelchangeDCARule()
@@ -178,4 +178,3 @@ void CFilterDCADlg::OnBnClickedOk()
 
   CFilterBaseDlg::OnOK();
 }
-

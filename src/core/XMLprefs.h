@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -25,6 +25,12 @@
 //    DeleteSetting()s, Store(), Unlock()
 /////////////////////////////////////////////////////////////////////////////
 
+// For preferences that have attributes
+struct st_prefAttribs {
+  stringT name;
+  stringT value;
+};
+
 class CXMLprefs
 {
   // Construction & Destruction
@@ -35,8 +41,8 @@ public:
   ~CXMLprefs() { UnloadXML(); }
 
   // Implementation
-  bool Load();
-  bool Store();
+  bool XML_Load();
+  bool XML_Store(const stringT &csBaseKeyName);
   bool Lock(stringT &locker); // if fails, locker points to culprit
   void Unlock();
 
@@ -49,6 +55,11 @@ public:
           int iValue);
   int Set(const stringT &csBaseKeyName, const stringT &csValueName,
           const stringT &csValue);
+
+  int GetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName,
+                        int iDefaultValue);
+  int SetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName,
+                        const int &iValue);
 
   std::vector<st_prefShortcut> GetShortcuts(const stringT &csBaseKeyName);
   int SetShortcuts(const stringT &csBaseKeyName, 
@@ -63,7 +74,7 @@ public:
   // Remove a host/user from current configuration file
   bool RemoveHostnameUsername(const stringT &sHost, const stringT &sUser,
                               bool &bNoMoreNodes);
-  
+
   enum {XML_SUCCESS = 0,
         XML_LOAD_FAILED,
         XML_NODE_NOT_FOUND,
@@ -71,7 +82,8 @@ public:
         XML_SAVE_FAILED};
 
 private:
-  int SetPreference(const stringT &sPath, const stringT &sValue);
+  int SetPreference(const stringT &sPath, const stringT &sValue,
+                    std::vector<st_prefAttribs> *pvprefAttribs = NULL);
 
   pugi::xml_document *m_pXMLDoc;
   stringT m_csConfigFile;
@@ -80,6 +92,6 @@ private:
   // CreateXML - bLoad will skip creation of root element
   bool CreateXML(bool bLoad);
   void UnloadXML();
-  stringT m_Reason; // why something bad happenned
+  stringT m_Reason; // why something bad happened
 };
 #endif /* __XMLPREFS_H */

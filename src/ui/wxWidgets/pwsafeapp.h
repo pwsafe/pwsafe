@@ -5,13 +5,12 @@
 // Modified by:
 // Created:     Wed 14 Jan 2009 10:11:39 PM IST
 // RCS-ID:
-// Copyright:   Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>
+// Copyright:   Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>
 // Licence:
 /////////////////////////////////////////////////////////////////////////////
 
 #ifndef _PWSAFEAPP_H_
 #define _PWSAFEAPP_H_
-
 
 /*!
  * Includes

@@ -2,7 +2,7 @@ include(CheckLibraryExists)
 
 if (WIN32)
   set (OS_SRCS
-    indows/debug.cpp
+    windows/debug.cpp
     windows/dir.cpp
     windows/env.cpp
     windows/file.cpp
@@ -17,15 +17,24 @@ if (WIN32)
     windows/sleep.cpp
     windows/utf8conv.cpp
     windows/UUID.cpp
-    windows/pws_autotype/pws_at.cpp
-    windows/pws_autotype/stdafx.cpp
-    windows/pws_osk/pws_osk.cpp
-    windows/pws_osk/stdafx.cpp
-    windows/yubi/stdafx.cpp
-    windows/yubi/YkLib.cpp
     )
+if (NOT NO_YUBI)
+    list(APPEND OS_SRCS
+        windows/yubi/stdafx.cpp
+        windows/yubi/YkLib.cpp)
+endif ()
+
+if (NOT WX_WINDOWS)
+    add_subdirectory (windows/pws_autotype)
+    add_subdirectory (windows/pws_osk)
+endif (NOT WX_WINDOWS)
+
+if (NOT NO_YUBI)
+    add_subdirectory (windows/yubi)
+endif ()
   elseif (APPLE)
   set (OS_SRCS
+    mac/cleanup.cpp
     mac/debug.cpp
     mac/dir.cpp
     mac/env.cpp
@@ -42,29 +51,32 @@ if (WIN32)
     mac/sleep.cpp
     mac/utf8conv.cpp
     mac/UUID.cpp
+    mac/media.cpp
     )
-  elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  elseif (${CMAKE_SYSTEM_NAME} MATCHES "(Linux|FreeBSD)")
   set (OS_SRCS
-    linux/KeySend.cpp
-    linux/UUID.cpp
-    linux/debug.cpp
-    linux/dir.cpp
-    linux/env.cpp
-    linux/file.cpp
-    linux/logit.cpp
-    linux/media.cpp
-    linux/mem.cpp
-    linux/pws_str.cpp
-    linux/pws_time.cpp
-    linux/rand.cpp
-    linux/registry.cpp
-    linux/run.cpp
-    linux/sleep.cpp
-    linux/unicode2keysym.cpp
-    linux/utf8conv.cpp
-    linux/xsendstring.cpp
+    unix/KeySend.cpp
+    unix/UUID.cpp
+    unix/cleanup.cpp
+    unix/debug.cpp
+    unix/dir.cpp
+    unix/env.cpp
+    unix/file.cpp
+    unix/keyname.cpp
+    unix/logit.cpp
+    unix/media.cpp
+    unix/mem.cpp
+    unix/pws_str.cpp
+    unix/pws_time.cpp
+    unix/rand.cpp
+    unix/registry.cpp
+    unix/run.cpp
+    unix/sleep.cpp
+    unix/unicode2keysym.cpp
+    unix/utf8conv.cpp
+    unix/xsendstring.cpp
     )
-  set (OS_YUBI_SRC linux/PWYubi.cpp)
+  set (OS_YUBI_SRC unix/PWYubi.cpp)
 else()
   message (FATAL_ERROR "Unsupported OS "
     ${CMAKE_SYSTEM_NAME}

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -26,14 +26,13 @@ public:
 
 protected:
   virtual BOOL OnInitDialog();
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
 
-  DECLARE_MESSAGE_MAP()
-
-public:
   afx_msg void OnCbnSelchangeDCARule();
   afx_msg void OnCbnSelchangeDCA1();
   afx_msg void OnBnClickedOk();
+
+  DECLARE_MESSAGE_MAP()
 
   CComboBox m_cbxRule, m_cbxDCA;
 

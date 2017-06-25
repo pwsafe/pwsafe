@@ -1,17 +1,18 @@
 
 # Toplevel Makefile for Linux build of PasswordSafe
 
-export VER_MAJOR := 0
-export VER_MINOR := 98
-export VER_SPECIAL := BETA
 
-# Since we use wxWidgets 3.x, while many distros still provide 2.8
+# Since we use wxWidgets 3.x, while some distros still provide 2.8
 # The following need to be set to point to the local build of wxWidgets.
 # Alternately, you can just set WX_CONFIG in your shell environment
 # export WX_CONFIG=$(HOME)/src/wxWidgets-3.0.2/wx-config
 
-# Shouldn't change anything below here
-
+# version numbers are defined in version.wx
+include version.wx
+export VER_MAJOR
+export VER_MINOR
+export VER_REV
+export VER_SPECIAL
 export RELEASENUM := $(VER_MAJOR).$(VER_MINOR)
 export RELEASE_SPECIAL := $(VER_SPECIAL)
 export RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
@@ -19,7 +20,7 @@ export RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
 .PHONY:    all clean debug-clean release-clean debug release \
 	unicodedebug unicoderelease deb rpm rpmbuild tar signatures \
 	dist sha1sums upload upload-sf upload-src-sf upload-github git-tag I18N \
-	help test
+	help test debug-test release-test
 
 RELEASEDIR := ./Releases/
 
@@ -46,7 +47,7 @@ export CPPFLAGS += -std=c++11
 all: I18N unicodedebug unicoderelease
 
 unicodedebug unicoderelease:
-	$(MAKE) -C src/os/linux $@
+	$(MAKE) -C src/os/unix $@
 	$(MAKE) -C src/core $@
 	$(MAKE) -C src/ui/wxWidgets CONFIG=$@
 
@@ -60,14 +61,16 @@ release:
 clean: debug-clean release-clean
 
 debug-clean:
-	$(MAKE) CONFIG=unicodedebug -C src/os/linux clean
+	$(MAKE) CONFIG=unicodedebug -C src/os/unix clean
 	$(MAKE) CONFIG=unicodedebug -C src/core clean
 	$(MAKE) CONFIG=unicodedebug -C src/ui/wxWidgets clean
+	$(MAKE) CONFIG=unicodedebug -C src/test clean
 
 release-clean:
-	$(MAKE) CONFIG=unicoderelease -C src/os/linux clean
+	$(MAKE) CONFIG=unicoderelease -C src/os/unix clean
 	$(MAKE) CONFIG=unicoderelease -C src/core clean
 	$(MAKE) CONFIG=unicoderelease -C src/ui/wxWidgets clean
+	$(MAKE) CONFIG=unicoderelease -C src/test clean
 
 # dist prepares stuff for upload - deprecated for Linux, until
 # we find an elegant way to tell deb and rpm distros apart.
@@ -107,20 +110,20 @@ signatures:
 upload: upload-sf upload-src-sf upload-github
 
 upload-sf:
-	$(UPLOAD_CMD) \
+	$(SF_UPLOAD_CMD) \
 	$(wildcard $(RELEASEDIR)/passwordsafe-*$(RELEASENAME)*) \
 	$(wildcard $(RELEASEDIR)/pwsafe-*$(RELEASENAME)*) \
-	$(UPLOAD_DST)
+	$(SF_UPLOAD_DST)
 
 upload-github:
 	@echo $@ TBD
 
 # Uploading source is a separate target as we only want to do this once,
-# as oppoded to uploading the compiled package, which we need to do per distro.
+# as opposed to uploading the compiled package, which we need to do per distro.
 upload-src-sf:
-	$(UPLOAD_CMD) \
+	$(SF_UPLOAD_CMD) \
 	$(wildcard $(RELEASEDIR)/pwsafe-*$(RELEASENAME)-src*) \
-	$(UPLOAD_DST)
+	$(SF_UPLOAD_DST)
 
 git-tag:
 	$(GIT) tag -u $(GPG_KEY) -m "tag wx $(RELEASENAME) release" $(RELEASENAME)
@@ -131,8 +134,14 @@ I18N:
 help:
 	$(MAKE) -C help
 
-test:
-	$(MAKE) -C src/test test
+test: debug-test
+
+debug-test:
+	$(MAKE) CONFIG=unicodedebug -C src/test
+
+release-test:
+	$(MAKE) CONFIG=unicoderelease -C src/test
+
 
 # Local variables:
 # mode: makefile

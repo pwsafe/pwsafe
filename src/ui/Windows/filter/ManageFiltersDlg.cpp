@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -35,50 +35,53 @@ CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
                                PWSFilters &mapfilters,
                                bool bCanHaveAttachments)
   : CPWDialog(CManageFiltersDlg::IDD, pParent),
-  m_bFilterActive(bFilterActive), m_MapFilters(mapfilters),
+  m_bMFFilterActive(bFilterActive), m_MapMFDFilters(mapfilters),
   m_selectedfilterpool(FPOOL_LAST), m_selectedfiltername(L""),
   m_activefilterpool(FPOOL_LAST), m_activefiltername(L""),
   m_selectedfilter(-1), m_activefilter(-1),
   m_bDBFiltersChanged(false),
   m_num_to_export(0), m_num_to_copy(0),
   m_pCheckImageList(NULL), m_pImageList(NULL),
-  m_iSortColumn(-1), m_bSortAscending(-1),
+  m_iSortColumn(-1), m_bSortAscending(-1), m_bDBReadOnly(false),
   m_bCanHaveAttachments(bCanHaveAttachments)
 {
   PWSFilters::iterator mf_iter;
 
-  for (mf_iter = m_MapFilters.begin();
-       mf_iter != m_MapFilters.end();
+  for (mf_iter = m_MapMFDFilters.begin();
+       mf_iter != m_MapMFDFilters.end();
        mf_iter++) {
     m_vcs_filters.push_back(mf_iter->first);
   }
 
   const COLORREF crTransparent = RGB(192, 192, 192);
+
+  // Load all images as list in enum CheckImage and in the order specified in it
   CBitmap bitmap;
   BITMAP bm;
   bitmap.LoadBitmap(IDB_CHECKED);
   bitmap.GetBitmap(&bm); // should be 13 x 13
 
   m_pCheckImageList = new CImageList;
-  BOOL status = m_pCheckImageList->Create(bm.bmWidth, bm.bmHeight,
-                                     ILC_MASK | ILC_COLOR, 3, 0);
-  ASSERT(status != 0);
+  VERIFY(m_pCheckImageList->Create(bm.bmWidth, bm.bmHeight,
+                                   ILC_MASK | ILC_COLOR, 4, 0));
 
   m_pCheckImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_UNCHECKED);
+  bitmap.LoadBitmap(IDB_CHECKED_DISABLED);
   m_pCheckImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_EMPTY);
   m_pCheckImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_BLANK);
+  bitmap.LoadBitmap(IDB_EMPTY_DISABLED);
   m_pCheckImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
 
   if (m_bCanHaveAttachments) {
     m_sMediaTypes = GetMainDlg()->GetAllMediaTypes();
   }
+
+  m_bDBReadOnly = GetMainDlg()->IsDBReadOnly();
 }
 
 CManageFiltersDlg::~CManageFiltersDlg()
@@ -115,13 +118,16 @@ void CManageFiltersDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CManageFiltersDlg, CPWDialog)
   ON_WM_DESTROY()
+
+  ON_COMMAND(IDHELP, OnHelp)
+
   ON_BN_CLICKED(IDC_FILTERNEW, OnFilterNew)
   ON_BN_CLICKED(IDC_FILTEREDIT, OnFilterEdit)
   ON_BN_CLICKED(IDC_FILTERCOPY, OnFilterCopy)
   ON_BN_CLICKED(IDC_FILTERDELETE, OnFilterDelete)
   ON_BN_CLICKED(IDC_FILTERIMPORT, OnFilterImport)
   ON_BN_CLICKED(IDC_FILTEREXPORT, OnFilterExport)
-  ON_COMMAND(IDHELP, OnHelp)
+
   ON_NOTIFY(NM_CLICK, IDC_FILTERLC, OnClick)
   ON_NOTIFY(NM_CLICK, IDC_FILTERPROPERTIES, OnClick)
   ON_NOTIFY(NM_CUSTOMDRAW, IDC_FILTERLC, OnCustomDraw)
@@ -135,6 +141,10 @@ END_MESSAGE_MAP()
 BOOL CManageFiltersDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
+
+  if (m_bDBReadOnly) {
+    GetDlgItem(IDC_FILTERCOPY)->EnableWindow(FALSE);
+  }
 
   // Make some columns centered
   LVCOLUMN lvc;
@@ -182,7 +192,7 @@ BOOL CManageFiltersDlg::OnInitDialog()
     pflt_idata->flt_key.cs_filtername = L".";
     pflt_idata->flt_key.fpool = FPOOL_SESSION;
     pflt_idata->flt_flags = MFLT_REQUEST_COPY_TO_DB | MFLT_REQUEST_EXPORT | MFLT_INUSE;
-    m_FilterLC.SetItemData(iItem, (DWORD)pflt_idata);
+    m_FilterLC.SetItemData(iItem, (DWORD_PTR)pflt_idata);
   }
 
   // Set row height to take image by adding a dummy ImageList
@@ -190,8 +200,8 @@ BOOL CManageFiltersDlg::OnInitDialog()
   m_FilterLC.GetItemRect(0, &rect, LVIR_BOUNDS);
   IMAGEINFO imageinfo;
   m_pCheckImageList->GetImageInfo(0, &imageinfo);
-  int irowheight = max(rect.Height(),
-                       abs(imageinfo.rcImage.top - imageinfo.rcImage.bottom));
+  int irowheight = std::max(rect.Height(),
+                       (int)abs(imageinfo.rcImage.top - imageinfo.rcImage.bottom));
   m_pImageList = new CImageList;
   m_pImageList->Create(1, irowheight, ILC_COLOR4, 1, 1);
   m_FilterLC.SetImageList(m_pImageList, LVSIL_SMALL);
@@ -246,9 +256,14 @@ BOOL CManageFiltersDlg::OnInitDialog()
   GetDlgItem(IDC_FILTEREDIT)->EnableWindow(FALSE);
   GetDlgItem(IDC_FILTERDELETE)->EnableWindow(FALSE);
 
+  // Don't import if we can't validate
+#ifndef USE_XML_LIBRARY
+  GetDlgItem(IDC_FILTERIMPORT)->EnableWindow(FALSE);
+#endif
+
   UpdateData(FALSE);
 
-  return FALSE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -296,15 +311,17 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
       }
       break;
     case MFLC_COPYTODATABASE:
-      if (bOnImage == TRUE && pflt_idata->flt_key.fpool != FPOOL_DATABASE) {
-        if ((pflt_idata->flt_flags & MFLT_REQUEST_COPY_TO_DB) == MFLT_REQUEST_COPY_TO_DB) {
-          pflt_idata->flt_flags &= ~MFLT_REQUEST_COPY_TO_DB;
-          m_num_to_copy--;
-        } else {
-          pflt_idata->flt_flags |= MFLT_REQUEST_COPY_TO_DB;
-          m_num_to_copy++;
+      if (!m_bDBReadOnly) {
+        if (bOnImage == TRUE && pflt_idata->flt_key.fpool != FPOOL_DATABASE) {
+          if ((pflt_idata->flt_flags & MFLT_REQUEST_COPY_TO_DB) == MFLT_REQUEST_COPY_TO_DB) {
+            pflt_idata->flt_flags &= ~MFLT_REQUEST_COPY_TO_DB;
+            m_num_to_copy--;
+          } else {
+            pflt_idata->flt_flags |= MFLT_REQUEST_COPY_TO_DB;
+            m_num_to_copy++;
+          }
+          GetDlgItem(IDC_FILTERCOPY)->EnableWindow(m_num_to_copy > 0);
         }
-        GetDlgItem(IDC_FILTERCOPY)->EnableWindow(m_num_to_copy > 0);
       }
       break;
     case MFLC_EXPORT:
@@ -331,8 +348,8 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
   flt_key.fpool = m_selectedfilterpool;
   flt_key.cs_filtername = m_selectedfiltername;
 
-  mf_iter = m_MapFilters.find(flt_key);
-  if (mf_iter == m_MapFilters.end())
+  mf_iter = m_MapMFDFilters.find(flt_key);
+  if (mf_iter == m_MapMFDFilters.end())
     return;
 
   st_filters *pfilters = &mf_iter->second;
@@ -356,10 +373,10 @@ do_edit:
 
   if (bCreated) {
     PWSFilters::const_iterator mf_citer;
-    mf_citer = m_MapFilters.find(flt_key);
+    mf_citer = m_MapMFDFilters.find(flt_key);
 
     // Check if already there (i.e. ask user if to replace)
-    if (mf_citer != m_MapFilters.end()) {
+    if (mf_citer != m_MapMFDFilters.end()) {
       CGeneralMsgBox gmb;
       CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
       CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
@@ -369,16 +386,16 @@ do_edit:
       if (rc == IDNO)
         goto do_edit;
 
-      m_MapFilters.erase(flt_key);
+      m_MapMFDFilters.erase(flt_key);
 
       // If this was active, we need to clear it and re-apply
-      if (m_bFilterActive && 
+      if (m_bMFFilterActive &&
           m_activefilterpool == FPOOL_SESSION && 
           m_activefiltername == filters.fname.c_str()) {
         bJustDoIt = true;
       }
     }
-    m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
+    m_MapMFDFilters.insert(PWSFilters::Pair(flt_key, filters));
 
     // Update DboxMain
     GetMainDlg()->SetFilter(FPOOL_SESSION, filters.fname.c_str());
@@ -401,8 +418,8 @@ void CManageFiltersDlg::OnFilterEdit()
   flt_key.fpool = m_selectedfilterpool;
   flt_key.cs_filtername = m_selectedfiltername;
 
-  mf_iter = m_MapFilters.find(flt_key);
-  if (mf_iter == m_MapFilters.end())
+  mf_iter = m_MapMFDFilters.find(flt_key);
+  if (mf_iter == m_MapMFDFilters.end())
     return;
 
   // Pass a copy of (not reference to) of the current filter in case 
@@ -421,10 +438,10 @@ do_edit:
       flt_otherkey.fpool = m_selectedfilterpool;
       flt_otherkey.cs_filtername = filters.fname;
 
-      mf_citer = m_MapFilters.find(flt_otherkey);
+      mf_citer = m_MapMFDFilters.find(flt_otherkey);
 
       // Check if already there (i.e. ask user if to replace)
-      if (mf_citer != m_MapFilters.end()) {
+      if (mf_citer != m_MapMFDFilters.end()) {
         CGeneralMsgBox gmb;
         CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
         CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
@@ -442,7 +459,7 @@ do_edit:
       m_bDBFiltersChanged = true;
 
     // If the original was active, we need to clear it and re-apply
-    if (m_bFilterActive && 
+    if (m_bMFFilterActive &&
         m_activefilterpool == flt_key.fpool && 
         m_activefiltername == m_selectedfiltername) {
       bJustDoIt = true;
@@ -450,9 +467,9 @@ do_edit:
 
     // User may have changed name (and so key) - delete and add again
     // Have to anyway, even if name not changed.
-    m_MapFilters.erase(bReplacedOther ? flt_otherkey : flt_key);
+    m_MapMFDFilters.erase(bReplacedOther ? flt_otherkey : flt_key);
     flt_key.cs_filtername = filters.fname;
-    m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
+    m_MapMFDFilters.insert(PWSFilters::Pair(flt_key, filters));
     m_selectedfiltername = flt_key.cs_filtername.c_str();
 
     // Update DboxMain's current filter
@@ -479,18 +496,18 @@ void CManageFiltersDlg::OnFilterCopy()
     st_Filterkey flt_key;
     flt_key = pflt_idata->flt_key;
 
-    mf_iter = m_MapFilters.find(flt_key);
-    if (mf_iter == m_MapFilters.end())
+    mf_iter = m_MapMFDFilters.find(flt_key);
+    if (mf_iter == m_MapMFDFilters.end())
       return;
 
     PWSFilters::const_iterator mf_citer;
     st_Filterkey flt_keydb;
     flt_keydb.fpool = FPOOL_DATABASE;
     flt_keydb.cs_filtername = flt_key.cs_filtername;
-    mf_citer = m_MapFilters.find(flt_keydb);
+    mf_citer = m_MapMFDFilters.find(flt_keydb);
 
     // Check if already there (i.e. ask user if to replace)
-    if (mf_citer != m_MapFilters.end()) {
+    if (mf_citer != m_MapMFDFilters.end()) {
       CGeneralMsgBox gmb;
       CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
       CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
@@ -499,9 +516,9 @@ void CManageFiltersDlg::OnFilterCopy()
         continue;  // skip this one
 
       // User agrees to replace
-      m_MapFilters.erase(flt_keydb);
+      m_MapMFDFilters.erase(flt_keydb);
     }
-    m_MapFilters.insert(PWSFilters::Pair(flt_keydb, mf_iter->second));
+    m_MapMFDFilters.insert(PWSFilters::Pair(flt_keydb, mf_iter->second));
 
     // Turn off copy flag
     pflt_idata->flt_flags &= ~MFLT_REQUEST_COPY_TO_DB;
@@ -510,7 +527,6 @@ void CManageFiltersDlg::OnFilterCopy()
   }
   if (bCopied) {
     m_bDBFiltersChanged = true;
-    GetMainDlg()->SetChanged(DboxMain::Data);
     GetMainDlg()->ChangeOkUpdate();
   }
 
@@ -530,8 +546,8 @@ void CManageFiltersDlg::OnFilterDelete()
   flt_key.fpool = m_selectedfilterpool;
   flt_key.cs_filtername = cs_selected;
 
-  mf_iter = m_MapFilters.find(flt_key);
-  if (mf_iter == m_MapFilters.end())
+  mf_iter = m_MapMFDFilters.find(flt_key);
+  if (mf_iter == m_MapMFDFilters.end())
     return;
 
   cs_pool = GetFilterPoolName(flt_key.fpool);
@@ -539,14 +555,14 @@ void CManageFiltersDlg::OnFilterDelete()
   // Now to confirm with user:
   CString cs_msg;
   CGeneralMsgBox gmb;
-  cs_msg.Format(IDS_CONFIRMFILTERDELETE, cs_pool, cs_selected);
+  cs_msg.Format(IDS_CONFIRMFILTERDELETE, static_cast<LPCWSTR>(cs_pool),
+                static_cast<LPCWSTR>(cs_selected));
   if (gmb.AfxMessageBox(cs_msg, NULL, MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES)
     return;
 
-  m_MapFilters.erase(flt_key);
+  m_MapMFDFilters.erase(flt_key);
   if (m_selectedfilterpool == FPOOL_DATABASE) {
     m_bDBFiltersChanged = true;
-    GetMainDlg()->SetChanged(DboxMain::Data);
     GetMainDlg()->ChangeOkUpdate();
   }
 
@@ -597,8 +613,8 @@ void CManageFiltersDlg::OnFilterExport()
       continue;
 
     PWSFilters::iterator mf_iter;
-    mf_iter = m_MapFilters.find(pflt_idata->flt_key);
-    if (mf_iter == m_MapFilters.end())
+    mf_iter = m_MapMFDFilters.find(pflt_idata->flt_key);
+    if (mf_iter == m_MapMFDFilters.end())
       continue;
 
     Filters.insert(PWSFilters::Pair(pflt_idata->flt_key, mf_iter->second));
@@ -629,7 +645,7 @@ void CManageFiltersDlg::SetFilter()
   // Now add flag to new selected and active filter
   pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
   pflt_idata->flt_flags |= MFLT_INUSE;
-  m_bFilterActive = true;
+  m_bMFFilterActive = true;
 
   m_FilterLC.Invalidate();  // Ensure selected statement updated
 }
@@ -644,7 +660,7 @@ void CManageFiltersDlg::ClearFilter()
   if (pflt_idata != NULL)
     pflt_idata->flt_flags &= ~MFLT_INUSE;
   m_activefilter = -1;
-  m_bFilterActive = false;
+  m_bMFFilterActive = false;
 
   m_FilterLC.Invalidate();  // Ensure selected statement updated
 }
@@ -806,7 +822,7 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     int iw1 =  m_FilterProperties.GetColumnWidth(j);
     m_FilterProperties.SetColumnWidth(j, LVSCW_AUTOSIZE_USEHEADER);
     int iw2 =  m_FilterProperties.GetColumnWidth(j);
-    m_FilterProperties.SetColumnWidth(j, max(iw1, iw2));
+    m_FilterProperties.SetColumnWidth(j, std::max(iw1, iw2));
   }
   m_FilterProperties.SetColumnWidth(MFPRP_CRITERIA_TEXT, LVSCW_AUTOSIZE_USEHEADER);
   m_FilterProperties.SetRedraw(TRUE);
@@ -832,8 +848,8 @@ void CManageFiltersDlg::UpdateFilterList()
   i = 0;
   m_selectedfilter = -1;
 
-  for (mf_iter = m_MapFilters.begin();
-       mf_iter != m_MapFilters.end();
+  for (mf_iter = m_MapMFDFilters.begin();
+       mf_iter != m_MapMFDFilters.end();
        mf_iter++) {
     m_vcs_filters.push_back(mf_iter->first);
 
@@ -848,7 +864,7 @@ void CManageFiltersDlg::UpdateFilterList()
     m_FilterLC.SetItemText(iItem, MFLC_COPYTODATABASE, L".");
     m_FilterLC.SetItemText(iItem, MFLC_EXPORT, L".");
 
-    if (m_bFilterActive &&
+    if (m_bMFFilterActive &&
         mf_iter->first.fpool == m_activefilterpool &&
         mf_iter->first.cs_filtername.c_str() == m_activefiltername) {
       m_activefilter = iItem;
@@ -862,7 +878,7 @@ void CManageFiltersDlg::UpdateFilterList()
     pflt_idata->flt_flags = (m_activefilter == iItem) ? MFLT_INUSE : 0;
     if (m_selectedfilter == iItem)
       pflt_idata->flt_flags |= MFLT_SELECTED;
-    m_FilterLC.SetItemData(iItem, (DWORD)pflt_idata);
+    m_FilterLC.SetItemData(iItem, (DWORD_PTR)pflt_idata);
     i++;
   }
 
@@ -893,13 +909,13 @@ void CManageFiltersDlg::ResetColumns()
   iw1 = m_FilterLC.GetColumnWidth(MFLC_FILTER_NAME) + 6;
   m_FilterLC.SetColumnWidth(MFLC_FILTER_NAME, LVSCW_AUTOSIZE_USEHEADER);
   iw2 = m_FilterLC.GetColumnWidth(MFLC_FILTER_NAME);
-  m_FilterLC.SetColumnWidth(MFLC_FILTER_NAME, max(iw1, iw2));
+  m_FilterLC.SetColumnWidth(MFLC_FILTER_NAME, std::max(iw1, iw2));
 
   m_FilterLC.SetColumnWidth(MFLC_FILTER_SOURCE, LVSCW_AUTOSIZE);
   iw1 = m_FilterLC.GetColumnWidth(MFLC_FILTER_SOURCE);
   m_FilterLC.SetColumnWidth(MFLC_FILTER_SOURCE, LVSCW_AUTOSIZE_USEHEADER);
   iw2 = m_FilterLC.GetColumnWidth(MFLC_FILTER_SOURCE);
-  m_FilterLC.SetColumnWidth(MFLC_FILTER_SOURCE, max(iw1, iw2));
+  m_FilterLC.SetColumnWidth(MFLC_FILTER_SOURCE, std::max(iw1, iw2));
 
   m_FilterLC.SetColumnWidth(MFLC_INUSE, LVSCW_AUTOSIZE_USEHEADER);
   m_FilterLC.SetColumnWidth(MFLC_COPYTODATABASE, LVSCW_AUTOSIZE_USEHEADER);
@@ -1014,7 +1030,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
             iy = inner_rect.CenterPoint().y;
             // The '7' below is ~ half the bitmap size of 13.
             inner_rect.SetRect(ix - 7, iy - 7, ix + 7, iy + 7);
-            DrawImage(pDC, inner_rect, bActive ? 0 : 2);
+            DrawImage(pDC, inner_rect, bActive ? CHECKED : EMPTY);
             *pLResult = CDRF_SKIPDEFAULT;
             break;
           case MFLC_COPYTODATABASE:
@@ -1033,7 +1049,13 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
             iy = inner_rect.CenterPoint().y;
             // The '7' below is ~ half the bitmap size of 13.
             inner_rect.SetRect(ix - 7, iy - 7, ix + 7, iy + 7);
-            DrawImage(pDC, inner_rect, bCopy ? 0 : 2);
+            // Set image according to DB being R-O or not
+            CheckImage nImage;
+            if (m_bDBReadOnly)
+              nImage = bCopy ? CHECKED_DISABLED : EMPTY_DISABLED;
+            else
+              nImage = bCopy ? CHECKED : EMPTY;
+            DrawImage(pDC, inner_rect, nImage);
             break;
           case MFLC_EXPORT:
             // Make text 'invisible'
@@ -1047,7 +1069,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
             iy = inner_rect.CenterPoint().y;
             // The '7' below is ~ half the bitmap size of 13.
             inner_rect.SetRect(ix - 7, iy - 7, ix + 7, iy + 7);
-            DrawImage(pDC, inner_rect, bExport ? 0 : 2);
+            DrawImage(pDC, inner_rect, bExport ? CHECKED : EMPTY);
             *pLResult = CDRF_SKIPDEFAULT;
             break;
           default:
@@ -1060,7 +1082,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   }
 }
 
-void CManageFiltersDlg::DrawImage(CDC *pDC, CRect &rect, int nImage)
+void CManageFiltersDlg::DrawImage(CDC *pDC, CRect &rect, CheckImage nImage)
 {
   // Draw check image in given rectangle
   if (rect.IsRectEmpty() || nImage < 0) {
@@ -1284,7 +1306,7 @@ void CManageFiltersDlg::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
   if (m_iSortColumn == iIndex) {
     m_bSortAscending = !m_bSortAscending;
   } else {
-    // Turn off all previous sort arrrows
+    // Turn off all previous sort arrows
     CHeaderCtrl *phctrl = m_FilterLC.GetHeaderCtrl();
     for (int i = 0; i < phctrl->GetItemCount(); i++) {
       phctrl->GetItem(i, &hdi);
@@ -1320,8 +1342,7 @@ void CManageFiltersDlg::SortFilterView()
   phctrl->SetItem(m_iSortColumn, &hdi);
 }
 
-
-BOOL CManageFiltersDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CManageFiltersDlg::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     OnHelp();
@@ -1335,4 +1356,3 @@ void CManageFiltersDlg::OnHelp()
 {
   ShowHelp(L"::/html/filters.html#ManagingFilters");
 }
-

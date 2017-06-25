@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -8,9 +8,11 @@
 /// \file PWHistory.cpp
 //-----------------------------------------------------------------------------
 #include "PWHistory.h"
+#include "StringXStream.h"
+
 #include <sstream>
 #include <iomanip>
-#include "StringXStream.h"
+#include <algorithm> // for sort
 
 using namespace std;
 
@@ -93,7 +95,7 @@ bool CreatePWHistoryList(const StringX &pwh_str,
     iStringXStream ist(StringX(pwh_s, offset, 8)); // time in 4 byte hex
     ist >> hex >> t;
     // Note: t == 0 - means time is unknown - quite possible for the
-    // oldest saved ppassword
+    // oldest saved password
     if (!ist) {
       // Invalid time of password change
       num_err++;
@@ -133,6 +135,30 @@ bool CreatePWHistoryList(const StringX &pwh_str,
 
   num_err += n - pwhl.size();
   return bStatus;
+}
+
+StringX GetPreviousPassword(const StringX &pwh_str)
+{
+  if (pwh_str == _T("0") || pwh_str == _T("00000")) {
+    return _T("");
+  } else {
+    // Get all history entries
+    size_t num_err, MaxPWHistory;
+    PWHistList pwhistlist;
+    CreatePWHistoryList(pwh_str, MaxPWHistory, num_err, pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
+
+    // If none yet saved, then don't return anything
+    if (pwhistlist.empty())
+      return _T("");
+
+    // Sort in date order and return last saved
+    std::sort(pwhistlist.begin(), pwhistlist.end(),
+              [](const PWHistEntry &pwhe1, const PWHistEntry &pwhe2) -> bool
+              {
+                return pwhe1.changetttdate > pwhe2.changetttdate;
+              });
+    return pwhistlist[0].password;
+  }
 }
 
 StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num)

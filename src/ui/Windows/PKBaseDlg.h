@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -34,9 +34,6 @@ class CPKBaseDlg : public CPWDialog , public CYubiMixin {
 public:
   CPKBaseDlg(int id, CWnd *pParent);
   virtual ~CPKBaseDlg();
-  BOOL OnInitDialog(void);
-  BOOL PreTranslateMessage(MSG* pMsg);
-  void DoDataExchange(CDataExchange* pDX);
 
   const CSecString &GetPassKey() const {return m_passkey;}
 
@@ -50,7 +47,9 @@ protected:
   int m_index;
   bool m_bVKAvailable;
 
-  CToolTipCtrl *m_pToolTipCtrl;
+  virtual BOOL OnInitDialog(void);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
+  virtual void DoDataExchange(CDataExchange *pDX);
 
   // Generated message map functions
   //{{AFX_MSG(CPKBaseDlg)

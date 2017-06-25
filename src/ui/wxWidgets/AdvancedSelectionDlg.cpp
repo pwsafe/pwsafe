@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -45,7 +45,6 @@ BEGIN_EVENT_TABLE( AdvancedSelectionPanel, wxPanel )
   EVT_BUTTON( ID_REMOVE_SOME, AdvancedSelectionPanel::OnRemoveSome )
   EVT_BUTTON( ID_REMOVE_ALL, AdvancedSelectionPanel::OnRemoveAll )
 END_EVENT_TABLE()
-
 
 AdvancedSelectionPanel::AdvancedSelectionPanel(wxWindow* parentWnd,
                                                SelectionCriteria* existingCriteria,
@@ -178,7 +177,7 @@ bool AdvancedSelectionPanel::TransferDataToWindow()
         if (IsUsableField(ft)) {
           if ( (criteriaChanged && m_criteria->IsFieldSelected(ft)) ||
                               (!criteriaChanged && IsPreselectedField(ft)) ) {
-            const wxString title = SelectionCriteria::GetSelectableFieldName(ft) + (IsMandatoryField(ft)? _(" [Mandatory Field]"): wxT(""));
+            const wxString title = SelectionCriteria::GetSelectableFieldName(ft) + (IsMandatoryField(ft)? _(" [Mandatory Field]"): wxS(""));
             lbSelected->Append(title, reinterpret_cast<void *>(idx));
           }
           else {

@@ -9,7 +9,7 @@
 </OBJECT>
 <UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Wikommen">
+		<param name="Name" value="Willkommen">
 		<param name="Local" value="html\Welcome.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
@@ -29,7 +29,7 @@
 			<param name="Local" value="html\create_new_db.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Arbeiten mit gespeicherte Passw&ouml;rter">
+			<param name="Name" value="Arbeiten mit gespeicherten Passw&ouml;rtern">
 			<param name="Local" value="html\retrieve_pwd.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
@@ -165,7 +165,7 @@
 			<param name="Local" value="html\password_history_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Passwortrichtline">
+			<param name="Name" value="Passwortrichtlinie">
 			<param name="Local" value="html\password_policies.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">

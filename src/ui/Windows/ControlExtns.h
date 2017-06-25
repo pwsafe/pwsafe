@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "PWTouch.h"
 #include "SecString.h"        // for CSecEditExtn
 #include <vector>             // for Listbox Tooltips & EditExtn menus
 
@@ -108,14 +109,14 @@ struct st_context_menu {
   }
 };
 
-class CEditExtn : public CEdit
+class CEditExtnX : public CEdit
 {
   // Construction
 public:
-  CEditExtn(COLORREF focusColor = (RGB(222, 255, 222))); // light green
-  CEditExtn(std::vector<st_context_menu> vmenu_items, 
+  CEditExtnX(COLORREF focusColor = (RGB(222, 255, 222))); // light green
+  CEditExtnX(std::vector<st_context_menu> vmenu_items, 
             COLORREF focusColor = (RGB(222, 255, 222))); //light green
-  virtual ~CEditExtn();
+  virtual ~CEditExtnX();
 
   void ChangeColour() {m_bIsFocused = TRUE;}
   void UpdateState(const int message_number, const bool new_state);
@@ -127,7 +128,7 @@ public:
   void EnableMenuItem(const int message_number, const bool bEnable);
 
 protected:
-  //{{AFX_MSG(CEditExtn)
+  //{{AFX_MSG(CEditExtnX)
   afx_msg void OnSetFocus(CWnd* pOldWnd);
   afx_msg void OnKillFocus(CWnd* pNewWnd);
   afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
@@ -149,27 +150,30 @@ private:
   std::vector<st_context_menu> m_vmenu_items;
 };
 
-class CRichEditExtn : public CRichEditCtrl
+/**
+* typedef to hide the fact that CEditExtn is really a mixin.
+*/
+
+typedef CPWTouch< CEditExtnX > CEditExtn;
+
+class CRichEditExtnX : public CRichEditCtrl
 {
   // Construction
 public:
-  CRichEditExtn(COLORREF focusColor = (RGB(222, 255, 222))); // light green
-  virtual ~CRichEditExtn();
+  CRichEditExtnX(COLORREF focusColor = (RGB(222, 255, 222))); // light green
+  virtual ~CRichEditExtnX();
 
   void SetContextMenu(const std::vector<st_context_menu> &vmenu_items);
   void ChangeColour() {m_bIsFocused = TRUE;}
   void UpdateState(const int message_number, const bool new_state);
 
-  void GetSel(long &nStartChar, long &nEndChar);
-  void SetSel(long nStartChar, long nEndChar);
   void EnableMenuItem(const int message_number, const bool bEnable);
 
 protected:
-  //{{AFX_MSG(CRichEditExtn)
+  //{{AFX_MSG(CRichEditExtnX)
   afx_msg void OnSetFocus(CWnd *pOldWnd);
   afx_msg void OnKillFocus(CWnd *pNewWnd);
   afx_msg void OnContextMenu(CWnd *pWnd, CPoint point);
-  afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   afx_msg BOOL OnSetCursor(CWnd *pWnd, UINT nHitTest, UINT message);
   afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
   //}}AFX_MSG
@@ -181,12 +185,17 @@ private:
   BOOL m_bIsFocused;
   const COLORREF m_crefInFocus;
 
-  long m_lastposition, m_nStartChar, m_nEndChar;
   std::vector<st_context_menu> m_vmenu_items;
   
   bool m_bContextMenu;
   HCURSOR m_hCursor;
 };
+
+/**
+* typedef to hide the fact that CRichEditExtn is really a mixin.
+*/
+
+typedef CPWTouch< CRichEditExtnX > CRichEditExtn;
 
 // Following is meant for sensitive information that you really don't
 // want to be in memory more than necessary, such as master passwords
@@ -194,7 +203,7 @@ private:
 // avoid #including stuff here that really shouldn't be of interest to
 // users of these classes
 
-class CSecEditExtn : public CEditExtn
+class CSecEditExtn : public CEditExtnX
 {
 public:
   CSecEditExtn();
@@ -304,7 +313,7 @@ public:
   void SetBottomMargin(int iMargin) { m_nBottomMargin = iMargin; }
   void SetHorizontalMargin(int iMargin) { m_nHorizontalMargin = iMargin; }
 
-  CEditExtn m_edit;
+  CEditExtnX m_edit;
   CListBoxExtn m_listbox;
   void ChangeColour();
 
@@ -332,7 +341,7 @@ class CSymbolEdit : public CEdit
   // Construction
 public:
   CSymbolEdit();
-  void SetValidSym(const stringT &s);
+  void SetValidSym(const std::wstring &s);
 
 protected:
   //{{AFX_MSG(CSymbolEdit)
@@ -342,7 +351,7 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 private:
-  stringT m_validSym; // defaults to CPasswordCharPool::GetDefaultSymbols()
+  std::wstring m_validSym; // defaults to CPasswordCharPool::GetDefaultSymbols()
 };
 
 /////////////////////////////////////////////////////////////////////////////

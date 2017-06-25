@@ -1,5 +1,5 @@
-# This makefile automates the build of releases for sourceforge
-# The RELEASENAME should be changed per release
+# This makefile automates the release build process.
+# RELEASENUM and RELEASENAME are derived from the contents of version.mfc.
 # The RELEASEDIR should be set to whatever works for you.
 #
 # 'make' or 'make release'
@@ -8,16 +8,21 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENUM := 3.38.2
-RELEASE_SPECIAL := 
-
-RELEASENAME= $(RELEASENUM)$(RELEASE_SPECIAL)
-
 RELEASEDIR := /cygdrive/c/local/src/PasswordSafe/Releases
 
 # Shouldn't need to change anything below this line
 
+include version.mfc
+ifeq ($(VER_REV),)
+	RELEASENUM := $(VER_MAJOR).$(VER_MINOR)
+else
+	RELEASENUM := $(VER_MAJOR).$(VER_MINOR).$(VER_REV)
+endif
+RELEASE_SPECIAL := $(VER_SPECIAL)
+
+RELEASENAME= $(RELEASENUM)$(RELEASE_SPECIAL)
 BINRELNAME := pwsafe-$(RELEASENAME)-bin
+BINRELNAME64 := pwsafe64-$(RELEASENAME)-bin
 SRCRELNAME := pwsafe-$(RELEASENAME)-src
 
 RM := /usr/bin/rm
@@ -48,9 +53,11 @@ RELTAG = V$(subst .,_,$(RELEASENAME))
 
 I18N_DIR := ./src/ui/Windows/I18N
 I18N_DLL_DIR := ./build/bin/pwsafe/I18N
+I18N_DLL_DIR_64 := ./build/bin/pwsafe/I18N64
 POT_FILE := $(I18N_DIR)/pwsafe.pot
 HELP_DIR := ./help
-BIN_DIR := ./build/bin/pwsafe/releasem
+BIN_DIR := ./build/bin/pwsafe/release
+BIN_DIR_64 := ./build/bin/pwsafe/release64
 TMPDIR := /cygdrive/c/tmp
 RELNOTES := $(CURDIR)/docs/ReleaseNotes.txt
 
@@ -64,18 +71,46 @@ I18N_HELPS := $(foreach i,\
 I18N_DLLS := $(foreach i,\
 								CZ DE ES PL RU SV ZH FR DA KO NL,\
 								$(I18N_DLL_DIR)/pwsafe$(i).dll)
+I18N_DLLS_64 := $(foreach i,\
+								CZ DE ES PL RU SV ZH FR DA KO NL,\
+								$(I18N_DLL_DIR_64)/pwsafe$(i).dll)
 
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
     $(XMLS) \
 		docs/ChangeLog.txt $(BIN_DIR)/pwsafe.exe $(BIN_DIR)/pws_at.dll \
 		$(BIN_DIR)/pws_osk.dll help/default/pwsafe.chm \
 		docs/pad_file.xml
+BIN_MANIFEST_64 = README.txt docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
+    $(XMLS) \
+		docs/ChangeLog.txt $(BIN_DIR_64)/pwsafe.exe $(BIN_DIR_64)/pws_at.dll \
+		$(BIN_DIR_64)/pws_osk.dll help/default/pwsafe.chm \
+		docs/pad_file.xml
 
 I18N_MANIFEST := $(I18N_HELPS) $(I18N_DLLS)
+I18N_MANIFEST_64 := $(I18N_HELPS) $(I18N_DLLS_64)
 
-.PHONY: all release bin-release src-release installables signatures \
-	upload upload-sf upload-github upload-latest sha1sums msi nsis update-pos i18n save-map help \
-	git-tag
+# MSVSVER is the version of Visual Studio
+# Currently supported values are
+# * 11 for Visual Studio 2012
+# * 12 for Visual Studio 2013
+# * 14 for Visual Studio 2015
+# This can be set by a higher-level Makefile
+
+MSVSVER ?= 14
+
+ifeq ($(MSVSVER),11)
+VCBUILD = /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v4.0.30319/MSBuild.exe
+else ifeq ($(MSVSVER),12)
+VCBUILD = "/cygdrive/c/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
+else ifeq ($(MSVSVER),14)
+VCBUILD = "/cygdrive/c/Program Files (x86)/MSBuild/14.0/Bin/MSBuild.exe"
+else
+$(error "Unsupported MSVSVER")
+endif
+
+.PHONY: all release bin-release bin-release-64 src-release installables signatures \
+	upload upload-sf upload-github upload-latest sha1sums msi msi-64 nsis nsis-64 \
+	update-pos i18n save-map save-map-64 help git-tag build
 
 all: help release installables signatures sha1sums
 
@@ -90,22 +125,37 @@ upload-sf:
 	$(RELNOTES) \
 	 pwsafe-$(RELEASENAME).msi.sig \
 	 pwsafe-$(RELEASENAME).exe.sig \
-	 $(BINRELNAME).zip.sig $(SRCRELNAME).zip.sig $(SF_UPLOAD_DST))
+	 $(BINRELNAME).zip.sig $(SRCRELNAME).zip.sig \
+	 pwsafe64-$(RELEASENAME).exe \
+	 pwsafe64-$(RELEASENAME).msi \
+	 pwsafe64-$(RELEASENAME)-map+pdb.zip \
+	 $(BINRELNAME64).zip $(BINRELNAME64).zip.sig \
+	 pwsafe64-$(RELEASENAME).msi.sig \
+	 pwsafe64-$(RELEASENAME).exe.sig \
+	 $(SF_UPLOAD_DST))
 
 upload-github:
 ifeq ($(GITHUB_TOKEN),)
 	$(error "GITHUB_TOKEN not set")
 endif
-	-$(GH_UPLOAD_CMD) release -t $(RELEASENAME) -d "PasswordSafe release $(RELEASEAME)"
+	-$(GH_UPLOAD_CMD) release -t $(RELEASENAME) -d "PasswordSafe release $(RELEASENAME)"
 	(cd $(RELEASEDIR); \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).exe -f pwsafe-$(RELEASENAME).exe; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).exe.sig -f pwsafe-$(RELEASENAME).exe.sig; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).msi -f pwsafe-$(RELEASENAME).msi; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME).msi.sig -f pwsafe-$(RELEASENAME).msi.sig; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe64-$(RELEASENAME).exe -f pwsafe64-$(RELEASENAME).exe; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe64-$(RELEASENAME).exe.sig -f pwsafe64-$(RELEASENAME).exe.sig; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe64-$(RELEASENAME).msi -f pwsafe64-$(RELEASENAME).msi; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe64-$(RELEASENAME).msi.sig -f pwsafe64-$(RELEASENAME).msi.sig; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME).zip -f $(BINRELNAME).zip; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME).zip.sig -f $(BINRELNAME).zip.sig; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME64).zip -f $(BINRELNAME64).zip; \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME64).zip.sig -f $(BINRELNAME64).zip.sig; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME)-map+pdb.zip \
-			-f pwsafe-$(RELEASENAME)-map+pdb.zip)
+			-f pwsafe-$(RELEASENAME)-map+pdb.zip) \
+		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe64-$(RELEASENAME)-map+pdb.zip \
+			-f pwsafe64-$(RELEASENAME)-map+pdb.zip)
 	(cd docs; $(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n ReleaseNotes.txt -f ReleaseNotes.txt)
 
 upload-latest: latest.xml
@@ -116,43 +166,58 @@ upload-latest: latest.xml
 	sftp -b putlatest.tmp pwsafe.org
 	$(RM) putlatest.tmp latest.xml
 
-latest.xml: src/ui/Windows/version.h src/ui/wxWidgets/version.h
+latest.xml: version.mfc version.wx
 	Misc/make-latest-xml.pl $^ > $@
-	chmod 644 $@
-
-
-src/ui/wxWidgets/version.h:
-	Misc/mkversion.pl src/ui/wxWidgets/version.in $@
+	@chmod 644 $@
 
 sha1sums:
 	(cd $(RELEASEDIR); \
 	 $(SHA1SUM) pwsafe-$(RELEASENAME).exe \
 	 pwsafe-$(RELEASENAME).msi \
-	 $(BINRELNAME).zip $(SRCRELNAME).zip)
+	 pwsafe64-$(RELEASENAME).exe \
+	 pwsafe64-$(RELEASENAME).msi \
+	 $(BINRELNAME).zip \
+	 $(BINRELNAME64).zip \
+	 $(SRCRELNAME).zip)
 
 signatures:
 	$(GPG_SIGN) $(RELEASEDIR)/pwsafe-$(RELEASENAME).exe
+	$(GPG_SIGN) $(RELEASEDIR)/pwsafe64-$(RELEASENAME).exe
 	$(GPG_SIGN) $(RELEASEDIR)/$(BINRELNAME).zip
+	$(GPG_SIGN) $(RELEASEDIR)/$(BINRELNAME64).zip
 	$(GPG_SIGN) $(RELEASEDIR)/$(SRCRELNAME).zip
 	$(GPG_SIGN) $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
+	$(GPG_SIGN) $(RELEASEDIR)/pwsafe64-$(RELEASENAME).msi
 
-installables: nsis msi
+installables: nsis msi nsis-64 msi-64
 
 nsis:
-	$(MAKENSIS) /DVERSION=$(RELEASENAME) install/windows/pwsafe.nsi
+	$(MAKENSIS) /DVERSION=$(RELEASENAME) /DARCH=x86 install/windows/pwsafe.nsi
 	(cd install/windows; $(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe-$(RELEASENAME).exe)
 	$(MV) install/windows/pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
 
+nsis-64:
+	$(MAKENSIS) /DVERSION=$(RELEASENAME) /DARCH=x64 install/windows/pwsafe.nsi
+	(cd install/windows; $(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe64-$(RELEASENAME).exe)
+	$(MV) install/windows/pwsafe64-$(RELEASENAME).exe $(RELEASEDIR)
+
 msi:
-	$(SED) 's/PWSAFE_VERSION/$(RELEASENUM)/' \
-		< install/windows/pwsafe-template.wxs > install/pwsafe.wxs
-	$(CANDLE) install/pwsafe.wxs
+	$(CANDLE) -dPWSAFE_VERSION=$(RELEASENUM) -dPlatform=x86 install/windows/pwsafe.wxs
 	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe.wixobj \
 					-out pwsafe.msi
+	$(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe.msi
 	$(MV) pwsafe.msi $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
-	$(RM) pwsafe.wixobj install/pwsafe.wxs
+	$(RM) pwsafe.wixobj
 
-release:  i18n bin-release src-release
+msi-64:
+	$(CANDLE) -dPWSAFE_VERSION=$(RELEASENUM) -dPlatform=x64 -arch x64 install/windows/pwsafe.wxs
+	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe.wixobj \
+					-out pwsafe64.msi
+	$(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe64.msi
+	$(MV) pwsafe64.msi $(RELEASEDIR)/pwsafe64-$(RELEASENAME).msi
+	$(RM) pwsafe.wixobj
+
+release:  i18n bin-release bin-release-64 src-release
 
 bin-release: save-map
 	@-mkdir $(RELEASEDIR)/$(BINRELNAME)
@@ -168,6 +233,20 @@ save-map:
 	 $(BIN_DIR)/pwsafe.map $(BIN_DIR)/pwsafe.pdb \
    $(BIN_DIR)/pws_*.pdb		
 
+bin-release-64: save-map-64
+	@-mkdir $(RELEASEDIR)/$(BINRELNAME64)
+
+	$(CP) $(BIN_MANIFEST_64) $(RELEASEDIR)/$(BINRELNAME64)
+	$(CP) $(I18N_MANIFEST_64) $(RELEASEDIR)/$(BINRELNAME64)
+	(cd $(RELEASEDIR); $(ZIP) -9 -r  foo ./$(BINRELNAME64); \
+	$(MV) foo.zip $(BINRELNAME64).zip)
+	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME64)
+
+save-map-64:
+	$(ZIP) -9 $(RELEASEDIR)/pwsafe64-$(RELEASENAME)-map+pdb.zip \
+	 $(BIN_DIR_64)/pwsafe.map $(BIN_DIR_64)/pwsafe.pdb \
+   $(BIN_DIR_64)/pws_*.pdb		
+
 src-release: ChangeLog $(POT_FILE)
 	@$(MKDIR) $(RELEASEDIR)/$(SRCRELNAME)
 	$(GIT) archive HEAD | $(TAR) -x -C $(RELEASEDIR)/$(SRCRELNAME)
@@ -177,6 +256,11 @@ src-release: ChangeLog $(POT_FILE)
 	(cd $(RELEASEDIR); $(ZIP) -9 -r  bar ./$(SRCRELNAME); \
 	$(MV) bar.zip $(SRCRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
+
+# Builds 32 and 64 bit versions of pwsafe
+build:
+	$(VCBUILD) /t:rebuild /p:Configuration=Release /p:Platform=x86 pwsafe-$(MSVSVER).sln
+	$(VCBUILD) /t:rebuild /p:Configuration=Release /p:Platform=x64 pwsafe-$(MSVSVER).sln
 
 ChangeLog:
 	$(GIT) --no-pager log --format="%ai %aN %n%n%x09* %s%d%n" > $@

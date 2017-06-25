@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -156,7 +156,7 @@ bool PWSRun::runcmd(const StringX &run_command, const bool &bAutotype) const
   }
 
   // tokenize into separate elements using % as the field separator.
-  // If this corresponds to a set envrionmental variable - replace it
+  // If this corresponds to a set environment variable - replace it
   // and rebuild the command
   for (StringX::size_type st_startpos = 0;
        st_startpos < first_part.size();
@@ -245,7 +245,7 @@ StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound) const
 {
   // 1. If first parameter is in quotes - assume fully qualified - don't search.
   // 2. If first parameter starts with '%, assume it is going to be replaced by the
-  // corresponding environmental variable - no need to search directories.
+  // corresponding environment variable - no need to search directories.
   // 3. If the first parameter ends in '.xxx', and '.xxx' is in the PATHEXT variable,
   // search for it as-is.  If not, append each of the known extensions to it and then
   // search.
@@ -387,8 +387,13 @@ StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound) const
     // Ensure directory ends in a '/'
     for (StringX::size_type id = 0; id < vpaths.size(); id++) {
       sx_dirs = vpaths[id];
+      if (sx_dirs.empty()) {
+        // Prevent out of bounds if string is empty
+        sx_dirs += _T("\\");
+      } else
       if (sx_dirs[sx_dirs.length() - 1] != _T('\\'))
         sx_dirs += _T("\\");
+
       if (bsearch_extns) {
         for (StringX::size_type ie = 0; ie < vextns.size(); ie++) {
           sx_extns = vextns[ie];

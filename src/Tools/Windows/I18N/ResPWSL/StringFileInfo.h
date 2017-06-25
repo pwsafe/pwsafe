@@ -50,7 +50,7 @@ public:
   const CStringTable& operator [] (const CString &strKey) const;
   CStringTable &operator [] (const CString &strKey);
 
-  // Checks if string table for specified key allready defined
+  // Checks if string table for specified key already defined
   BOOL HasStringTable(const CString &strKey) const;
 
   // Add new String table

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -34,13 +34,11 @@
 #include "graphics/toolbar/new/copypassword_disabled.xpm"
 ////@end XPM images
 
-
 /*!
  * CManagePasswordPolicies type definition
  */
 
 IMPLEMENT_CLASS( CManagePasswordPolicies, wxDialog )
-
 
 /*!
  * CManagePasswordPolicies event table definition
@@ -77,11 +75,9 @@ BEGIN_EVENT_TABLE( CManagePasswordPolicies, wxDialog )
 
 END_EVENT_TABLE()
 
-
 /*!
  * CManagePasswordPolicies constructor
  */
-
 
 CManagePasswordPolicies::CManagePasswordPolicies( wxWindow* parent,  PWScore &core, wxWindowID id,
               const wxString& caption, const wxPoint& pos,
@@ -93,7 +89,6 @@ CManagePasswordPolicies::CManagePasswordPolicies( wxWindow* parent,  PWScore &co
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * CManagePasswordPolicies creator
@@ -115,7 +110,6 @@ bool CManagePasswordPolicies::Create( wxWindow* parent, wxWindowID id, const wxS
   return true;
 }
 
-
 /*!
  * CManagePasswordPolicies destructor
  */
@@ -125,7 +119,6 @@ CManagePasswordPolicies::~CManagePasswordPolicies()
 ////@begin CManagePasswordPolicies destruction
 ////@end CManagePasswordPolicies destruction
 }
-
 
 /*!
  * Member initialisation
@@ -144,7 +137,6 @@ void CManagePasswordPolicies::Init()
 
   m_st_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
 }
-
 
 /*!
  * Control creation for CManagePasswordPolicies
@@ -263,7 +255,7 @@ void CManagePasswordPolicies::CreateControls()
     FindWindow(wxID_CANCEL)->Show(false);
 
     FindWindow(wxID_OK)->SetLabel(_("Close"));
-    FindWindow(wxID_EDIT)->SetLabel(_("View"));
+    FindWindow(ID_EDIT_PP)->SetLabel(_("View"));
   }
 
   // We have 2 grids, but we show only one at a time,
@@ -304,7 +296,6 @@ void CManagePasswordPolicies::CreateControls()
 
   m_PolicyNames->SetFocus();
 }
-
 
 /*!
  * Should we show tooltips?
@@ -358,7 +349,6 @@ bool CManagePasswordPolicies::Show(bool show)
   return wxDialog::Show(show);
 }
 
-
 void CManagePasswordPolicies::ShowPolicyDetails()
 {
   m_bViewPolicy = true;
@@ -401,7 +391,7 @@ void CManagePasswordPolicies::UpdateNames()
     m_PolicyNames->SetCellValue(nPos, 0, iter->first.c_str());
     wxString useCount;
     if (iter->second.usecount != 0)
-      useCount.Printf(wxT("%d"),iter->second.usecount);
+      useCount << iter->second.usecount;
     else
       useCount = _("Not used");
     m_PolicyNames->SetCellValue(nPos, 1, useCount);
@@ -533,7 +523,7 @@ void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
 {
   CPasswordPolicy ppdlg(this, m_core, m_MapPSWDPLC);
   PWPolicy st_pp = m_st_default_pp;
-  ppdlg.SetPolicyData(wxT(""), st_pp);
+  ppdlg.SetPolicyData(wxEmptyString, st_pp);
   if (ppdlg.ShowModal() == wxID_OK) {
     wxString policyname;
 
@@ -541,7 +531,6 @@ void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
     UpdatePolicy(policyname, st_pp, CPP_ADD);
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_EDIT
@@ -576,7 +565,6 @@ void CManagePasswordPolicies::OnEditPpClick( wxCommandEvent& )
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_DELETE
  */
@@ -588,7 +576,6 @@ void CManagePasswordPolicies::OnDeleteClick( wxCommandEvent& event )
   event.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_DELETE in CManagePasswordPolicies.
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_LIST
@@ -602,7 +589,6 @@ void CManagePasswordPolicies::OnListClick( wxCommandEvent&  )
     ShowPolicyDetails();
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_UNDO
  */
@@ -614,7 +600,6 @@ void CManagePasswordPolicies::OnUndoClick( wxCommandEvent& event )
   event.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_UNDO in CManagePasswordPolicies.
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_REDO
@@ -628,7 +613,6 @@ void CManagePasswordPolicies::OnRedoClick( wxCommandEvent& event )
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_REDO in CManagePasswordPolicies.
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
@@ -636,8 +620,8 @@ void CManagePasswordPolicies::OnRedoClick( wxCommandEvent& event )
 void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
 {
   /*
-   * User may have changed default poliicy, named policy, none or both.
-   * If anything has changed, we trat the change as atomic, creating a multicommand
+   * User may have changed default policy, named policy, none or both.
+   * If anything has changed, we treat the change as atomic, creating a multicommand
    * s.t. Undo/Redo will work as expected.
    */
   PWPolicy olddefpol(PWSprefs::GetInstance()->GetDefaultPolicy());
@@ -670,7 +654,6 @@ void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
   EndModal(wxID_OK);
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
@@ -683,7 +666,6 @@ void CManagePasswordPolicies::OnCancelClick( wxCommandEvent& event )
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CManagePasswordPolicies.
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
  */
@@ -695,7 +677,6 @@ void CManagePasswordPolicies::OnHelpClick( wxCommandEvent& event )
   event.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CManagePasswordPolicies.
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GENERATE_PASSWORD
@@ -710,7 +691,6 @@ void CManagePasswordPolicies::OnGeneratePasswordClick( wxCommandEvent& event )
   m_passwordCtrl->SetValue(passwd.c_str());
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON
  */
@@ -719,7 +699,6 @@ void CManagePasswordPolicies::OnCopyPasswordClick( wxCommandEvent& )
 {
   PWSclipboard::GetInstance()->SetData(tostringx(m_passwordCtrl->GetValue()));
 }
-
 
 /*!
  * wxEVT_GRID_SELECT_CELL event handler for ID_POLICYLIST
@@ -732,4 +711,3 @@ void CManagePasswordPolicies::OnSelectCell( wxGridEvent& evt )
     UpdateDetails();
   }
 }
-

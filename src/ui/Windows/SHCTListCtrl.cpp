@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -8,7 +8,10 @@
 
 #include "stdafx.h"
 #include "SHCTListCtrl.h"
+#include "SHCTHotKey.h"
 #include "OptionsShortcuts.h"
+
+#include "HKModifiers.h"
 
 #include <algorithm>
 
@@ -23,24 +26,22 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CSHCTListCtrl::CSHCTListCtrl()
-: m_pParent(NULL), m_pHotKey(NULL), m_pwchTip(NULL),
-  m_bHotKeyActive(false)
+CSHCTListCtrlX::CSHCTListCtrlX()
+: m_pParent(NULL), m_pHotKey(NULL), m_bHotKeyActive(false)
 {
   m_pHotKey = new CSHCTHotKey;
   m_crWindowText = ::GetSysColor(COLOR_WINDOWTEXT);
   m_crRedText    = RGB(168, 0, 0);
 }
 
-CSHCTListCtrl::~CSHCTListCtrl()
+CSHCTListCtrlX::~CSHCTListCtrlX()
 {
   m_pHotKey->DestroyWindow();
   delete m_pHotKey;
-  delete m_pwchTip;
 }
 
-BEGIN_MESSAGE_MAP(CSHCTListCtrl, CListCtrl)
-  //{{AFX_MSG_MAP(CSHCTListCtrl)
+BEGIN_MESSAGE_MAP(CSHCTListCtrlX, CGridListCtrl)
+  //{{AFX_MSG_MAP(CSHCTListCtrlX)
   ON_WM_LBUTTONDOWN()
   ON_WM_RBUTTONDOWN()
   ON_WM_HSCROLL()
@@ -48,11 +49,10 @@ BEGIN_MESSAGE_MAP(CSHCTListCtrl, CListCtrl)
   ON_WM_MOUSEWHEEL()
 
   ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
-  ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-void CSHCTListCtrl::Init(COptionsShortcuts *pParent)
+void CSHCTListCtrlX::Init(COptionsShortcuts *pParent)
 {
   if (m_pHotKey->GetSafeHwnd() == NULL) {
     CRect itemrect(0, 0, 0, 0);
@@ -60,12 +60,11 @@ void CSHCTListCtrl::Init(COptionsShortcuts *pParent)
     m_pHotKey->ModifyStyle(WS_BORDER, 0, 0);
     // Would like to change the default font (e.g. smaller and not bold) but it gets ignored
   }
-  m_pHotKey->SetMyParent(this);
+  m_pHotKey->SetMyParent(dynamic_cast<CSHCTListCtrl *>(this));
   m_pParent = pParent;
-  EnableToolTips(TRUE);
 }
 
-void CSHCTListCtrl::OnLButtonDown(UINT , CPoint point)
+void CSHCTListCtrlX::OnLButtonDown(UINT , CPoint point)
 {
   MapMenuShortcutsIter iter;
   CRect subitemrect;
@@ -82,9 +81,6 @@ void CSHCTListCtrl::OnLButtonDown(UINT , CPoint point)
   if (m_item < 0 || iSubItem != SHCT_SHORTCUTKEYS)
     return;
 
-  if (m_pParent != NULL)
-    m_pParent->ClearWarning();
-
   // GetSubItemRect for the first column gives the total width
   // Therefore need to get it from GetColmnWidth
   const int iColWidth = GetColumnWidth(0);
@@ -97,8 +93,8 @@ void CSHCTListCtrl::OnLButtonDown(UINT , CPoint point)
 
   m_id = (UINT)LOWORD(GetItemData(m_item));
   if (m_pParent->GetMapMenuShortcutsIter(m_id, iter)) {
-    WORD vModifiers = iter->second.cModifier;
-    m_pHotKey->SetHotKey(iter->second.siVirtKey, vModifiers);
+    WORD vHKModifiers = ConvertModifersPWS2MFC(iter->second.cPWSModifier);
+    m_pHotKey->SetHotKey(iter->second.siVirtKey, vHKModifiers);
   }
   m_pHotKey->EnableWindow(TRUE);
   m_pHotKey->ShowWindow(SW_SHOW);
@@ -112,7 +108,7 @@ void CSHCTListCtrl::OnLButtonDown(UINT , CPoint point)
   UpdateWindow();
 }
 
-void CSHCTListCtrl::OnRButtonDown(UINT , CPoint point)
+void CSHCTListCtrlX::OnRButtonDown(UINT , CPoint point)
 {
   CMenu PopupMenu;
   MapMenuShortcutsIter iter;
@@ -145,7 +141,7 @@ void CSHCTListCtrl::OnRButtonDown(UINT , CPoint point)
     pContextMenu->RemoveMenu(ID_MENUITEM_REMOVESHORTCUT, MF_BYCOMMAND);
 
   if (iter->second.siVirtKey   == iter->second.siDefVirtKey &&
-      iter->second.cModifier  == iter->second.cDefModifier)
+      iter->second.cPWSModifier  == iter->second.cDefPWSModifier)
     pContextMenu->RemoveMenu(ID_MENUITEM_RESETSHORTCUT, MF_BYCOMMAND);
 
   if (pContextMenu->GetMenuItemCount() == 0)
@@ -159,7 +155,7 @@ void CSHCTListCtrl::OnRButtonDown(UINT , CPoint point)
 
   if (nID == ID_MENUITEM_REMOVESHORTCUT) {
     iter->second.siVirtKey = 0;
-    iter->second.cModifier = 0;
+    iter->second.cPWSModifier = 0;
     str = L"";
     goto update;
   }
@@ -168,7 +164,7 @@ void CSHCTListCtrl::OnRButtonDown(UINT , CPoint point)
     goto exit;
 
   iter->second.siVirtKey = iter->second.siDefVirtKey;
-  iter->second.cModifier = iter->second.cDefModifier;
+  iter->second.cPWSModifier = iter->second.cDefPWSModifier;
 
   str = CMenuShortcut::FormatShortcut(iter);
 
@@ -178,59 +174,59 @@ update:
   UpdateWindow();
 
 exit:
-  if (m_pParent != NULL)
-    m_pParent->ClearWarning();
-
   if (m_item >= 0)
     SetItemState(m_item, SHCT_SHORTCUTKEYS, LVIS_SELECTED | LVIS_DROPHILITED);
 }
 
-void CSHCTListCtrl::SaveHotKey()
+void CSHCTListCtrlX::SaveHotKey()
 {
   if (m_bHotKeyActive) {
-    WORD wVirtualKeyCode, wHKModifiers;
+    WORD wVirtualKeyCode, wHKModifiers, wPWSModifiers;
     m_pHotKey->GetHotKey(wVirtualKeyCode, wHKModifiers);
-    OnMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers);
+
+    // Translate from CHotKeyCtrl to PWS modifiers
+    wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
+    OnMenuShortcutKillFocus(wVirtualKeyCode, wPWSModifiers);
   }
 }
 
-void CSHCTListCtrl::OnMenuShortcutKillFocus(const WORD wVirtualKeyCode, 
-                                          const WORD wHKModifiers)
+void CSHCTListCtrlX::OnMenuShortcutKillFocus(const WORD wVirtualKeyCode,
+                                             const WORD wPWSModifiers)
 {
   m_pHotKey->EnableWindow(FALSE);
   m_pHotKey->ShowWindow(SW_HIDE);
 
   if (m_pParent != NULL) {
     m_pParent->OnMenuShortcutKillFocus(m_item, m_id, 
-                                 wVirtualKeyCode, wHKModifiers);
+                                 wVirtualKeyCode, wPWSModifiers);
   }
 
   m_bHotKeyActive = false;
 }
 
-void CSHCTListCtrl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+void CSHCTListCtrlX::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
   SaveHotKey();
-  CListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
+  CGridListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
   UpdateWindow();
 }
 
-void CSHCTListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+void CSHCTListCtrlX::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
   SaveHotKey();
-  CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
+  CGridListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
   UpdateWindow();
 }
 
-BOOL CSHCTListCtrl::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+BOOL CSHCTListCtrlX::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
   SaveHotKey();
-  BOOL brc = CListCtrl::OnMouseWheel(nFlags, zDelta, pt);
+  BOOL brc = CGridListCtrl::OnMouseWheel(nFlags, zDelta, pt);
   UpdateWindow();
   return brc;
 }
 
-void CSHCTListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CSHCTListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
@@ -252,7 +248,8 @@ void CSHCTListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       switch (iSubItem) {
         case SHCT_MENUITEMTEXT:
           if ( m_pParent->GetMapMenuShortcutsIter(id, iter) && 
-              ( (iter->second.siVirtKey != iter->second.siDefVirtKey) || (iter->second.cModifier != iter->second.cDefModifier) ))
+              ((iter->second.siVirtKey != iter->second.siDefVirtKey) ||
+               (iter->second.cPWSModifier != iter->second.cDefPWSModifier)))
             pLVCD->clrText = m_crRedText;
           break;
         case SHCT_SHORTCUTKEYS:
@@ -264,103 +261,4 @@ void CSHCTListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
     default:
       break;
   }
-}
-
-INT_PTR CSHCTListCtrl::OnToolHitTest(CPoint point, TOOLINFO *pTI) const
-{
-  LVHITTESTINFO lvhti;
-  lvhti.pt = point;
-
-  int item = ListView_SubItemHitTest(this->m_hWnd, &lvhti);
-  if (item < 0)
-    return -1;
-
-  int nSubItem = lvhti.iSubItem;
-
-  // nFlags is 0 if the SubItemHitTest fails
-  // Therefore, 0 & <anything> will equal false
-  if (lvhti.flags & LVHT_ONITEMLABEL) {
-    // get the client (area occupied by this control
-    RECT rcClient;
-    GetClientRect(&rcClient);
-
-    // fill in the TOOLINFO structure
-    pTI->hwnd = m_hWnd;
-    pTI->uId = (UINT) (nSubItem + 1);
-    pTI->lpszText = LPSTR_TEXTCALLBACK;
-    pTI->rect = rcClient;
-
-    return pTI->uId;  // By returning a unique value per listItem,
-              // we ensure that when the mouse moves over another
-              // list item, the tooltip will change
-  } else {
-    //Otherwise, we aren't interested, so let the message propagate
-    return -1;
-  }
-}
-
-BOOL CSHCTListCtrl::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLResult)
-{
-  UINT_PTR nID = pNotifyStruct->idFrom;
-
-  // check if this is the automatic tooltip of the control
-  if (nID == 0) 
-    return TRUE;  // do not allow display of automatic tooltip,
-                  // or our tooltip will disappear
-
-  TOOLTIPTEXTW *pTTTW = (TOOLTIPTEXTW *)pNotifyStruct;
-
-  *pLResult = 0;
-
-  // get the mouse position
-  const MSG* pMessage;
-  pMessage = GetCurrentMessage();
-  ASSERT(pMessage);
-  CPoint pt;
-  pt = pMessage->pt;    // get the point from the message
-  ScreenToClient(&pt);  // convert the point's coords to be relative to this control
-
-  // see if the point falls onto a list item
-  LVHITTESTINFO lvhti;
-  lvhti.pt = pt;
-  
-  SubItemHitTest(&lvhti);
-  int nSubItem = lvhti.iSubItem;
-
-  // nFlags is 0 if the SubItemHitTest fails
-  // Therefore, 0 & <anything> will equal false
-  if (lvhti.flags & LVHT_ONITEMLABEL) {
-    // If it did fall on a list item,
-    // and it was also hit one of the
-    // item specific subitems we wish to show tooltips for
-    
-    switch (nSubItem) {
-      case SHCT_MENUITEMTEXT:
-        nID = IDS_SHCT_TOOLTIP0;
-        break;
-      case SHCT_SHORTCUTKEYS:
-        nID = IDS_SHCT_TOOLTIP1;
-        break;
-      default:
-        return FALSE;
-    }
-    // If there was a CString associated with the list item,
-    // copy it's text (up to 80 characters worth, limitation 
-    // of the TOOLTIPTEXT structure) into the TOOLTIPTEXT 
-    // structure's szText member
-
-    CString cs_TipText(MAKEINTRESOURCE(nID));
-
-    delete m_pwchTip;
-
-    m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
-    wcsncpy_s(m_pwchTip, cs_TipText.GetLength() + 1,
-                cs_TipText, _TRUNCATE);
-    pTTTW->lpszText = (LPWSTR)m_pwchTip;
-
-    return TRUE;   // we found a tool tip,
-  }
-  
-  return FALSE;  // we didn't handle the message, let the 
-                 // framework continue propagating the message
 }

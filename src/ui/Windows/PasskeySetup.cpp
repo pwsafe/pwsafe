@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -12,7 +12,6 @@
 
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
-#include "DboxMain.h"
 #include "GeneralMsgBox.h"
 #include "Options_PropertySheet.h"
 #include "PasskeySetup.h"
@@ -41,11 +40,10 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core)
   : CPKBaseDlg(CPasskeySetup::IDD, pParent),
-    m_LastFocus(IDC_PASSKEY), m_core(core)
+    m_LastFocus(IDC_PASSKEY), m_core(core), m_btnShowCombination(FALSE)
 {
   m_verify = L"";
   m_pctlVerify = new CSecEditExtn;
@@ -64,16 +62,22 @@ void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
   m_pctlVerify->DoDDX(pDX, m_verify);
 
   DDX_Control(pDX, IDC_VERIFY, *m_pctlVerify);
+
+  DDX_Check(pDX, IDC_SHOWCOMBINATION, m_btnShowCombination);
 }
 
 BEGIN_MESSAGE_MAP(CPasskeySetup, CPKBaseDlg)
-  ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_WM_TIMER()
+
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
-  ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
+  ON_BN_CLICKED(IDC_SHOWCOMBINATION, OnShowCombination)
+
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_VERIFY, OnVerifykeySetfocus)
-  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
-  ON_WM_TIMER()
+
+  ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
 END_MESSAGE_MAP()
 
 BOOL CPasskeySetup::OnInitDialog() 
@@ -91,7 +95,7 @@ BOOL CPasskeySetup::OnInitDialog()
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CPasskeySetup::OnCancel() 
@@ -104,7 +108,7 @@ void CPasskeySetup::OnOK()
   UpdateData(TRUE);
 
   CGeneralMsgBox gmb;
-  if (m_passkey != m_verify) {
+  if (m_btnShowCombination == FALSE && m_passkey != m_verify) {
     gmb.AfxMessageBox(IDS_ENTRIESDONOTMATCH);
     ((CEdit*)GetDlgItem(IDC_VERIFY))->SetFocus();
     return;
@@ -125,7 +129,7 @@ void CPasskeySetup::OnOK()
   StringX errmess;
   if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {
     CString cs_msg, cs_text;
-    cs_msg.Format(IDS_WEAKPASSPHRASE, errmess.c_str());
+    cs_msg.Format(IDS_WEAKPASSPHRASE, static_cast<LPCWSTR>(errmess.c_str()));
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
     cs_text.LoadString(IDS_USEITANYWAY);
     cs_msg += cs_text;
@@ -149,7 +153,6 @@ void CPasskeySetup::OnHelp()
   ShowHelp(L"::/html/create_new_db.html");
 }
 
-
 void CPasskeySetup::OnPasskeySetfocus()
 {
   m_LastFocus = IDC_PASSKEY;
@@ -168,7 +171,7 @@ void CPasskeySetup::OnVirtualKeyboard()
 
   if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->IsWindowVisible()) {
     // Already there - move to top
-    m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    m_pVKeyBoardDlg->SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     return;
   }
 
@@ -182,7 +185,7 @@ void CPasskeySetup::OnVirtualKeyboard()
   }
 
   // Now show it and make it top
-  m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+  m_pVKeyBoardDlg->SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
 
   return;
 }
@@ -237,6 +240,29 @@ LRESULT CPasskeySetup::OnInsertBuffer(WPARAM, LPARAM)
   return 0L;
 }
 
+void CPasskeySetup::OnShowCombination()
+{
+  UpdateData(TRUE);
+
+  m_pctlPasskey->SetSecure(m_btnShowCombination == TRUE ? FALSE : TRUE);
+
+  if (m_btnShowCombination == TRUE) {
+    m_pctlPasskey->SetPasswordChar(0);
+    m_pctlPasskey->SetWindowText(m_passkey);
+
+    m_pctlVerify->SetPasswordChar(0);
+    m_pctlVerify->EnableWindow(FALSE);
+    m_pctlVerify->SetWindowText(L"");
+  } else {
+    m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+    m_pctlPasskey->SetSecureText(m_passkey);
+
+    m_pctlVerify->SetPasswordChar(PSSWDCHAR);
+    m_pctlVerify->EnableWindow(TRUE);
+    m_pctlVerify->SetWindowText(L"");
+  }
+}
+
 void CPasskeySetup::OnYubikeyBtn()
 {
   UpdateData(TRUE);
@@ -257,7 +283,7 @@ void CPasskeySetup::ProcessPhrase()
 {
   // OnOK clears the passkey, so we save it
   const CSecString save_passkey = m_passkey;
-  TRACE(_T("CPasskeySetup::ProcessPhrase(%s)\n"), m_passkey);
+  TRACE(L"CPasskeySetup::ProcessPhrase(%s)\n", static_cast<LPCWSTR>(m_passkey));
   CPKBaseDlg::OnOK();
   m_passkey = save_passkey;
 }
@@ -274,6 +300,7 @@ void CPasskeySetup::YubiFailed()
 
 void CPasskeySetup::YubiInitialize()
 {
+#ifndef NO_YUBI
   CGeneralMsgBox gmb;
   CYubiCfgDlg ycd(this, m_core);
   unsigned char sk[CYubiCfgDlg::YUBI_SK_LEN];
@@ -287,4 +314,5 @@ void CPasskeySetup::YubiInitialize()
     gmb.AfxMessageBox(IDS_YUBI_INIT_FAILED,
                       MB_OK | MB_ICONERROR);
   }
+#endif /* NO_YUBI */
 }

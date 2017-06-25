@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -39,7 +39,8 @@ public:
 
 protected:
   virtual BOOL OnInitDialog();
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   CString m_cstitle;
   CWnd *m_pParent;
@@ -51,18 +52,14 @@ protected:
   const std::set<StringX> *m_psMediaTypes;
 
   //{{AFX_MSG(CPWFiltersDlg)
+  afx_msg void OnOk();
+  afx_msg void OnHelp();
   afx_msg void OnFNameKillFocus();
   afx_msg void OnProcessKey(UINT nID);
   afx_msg void OnSize(UINT nType, int cx, int cy);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-
-  BOOL PreTranslateMessage(MSG* pMsg);
-  
- public:
-  afx_msg void OnOk();
-  afx_msg void OnHelp();
 
 private:
   CPWFilterLC m_FilterLC;
@@ -72,5 +69,5 @@ private:
   HACCEL m_hAccel;
 
   int m_numfilters;
-  int m_iType;
+  FilterType m_iType;
 };

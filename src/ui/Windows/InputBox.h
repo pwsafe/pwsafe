@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -26,20 +26,24 @@ public:
   enum { IDD = IDD_INPUTBOX };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  //{{AFX_VIRTUAL(CInputBox)
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
-  virtual BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
+  //}}AFX_VIRTUAL
 
+  // Generated message map functions
+  //{{AFX_MSG(CInputBox)
   afx_msg void OnOK();
   afx_msg void OnInputChanged();
   afx_msg void OnActivate(UINT nState, CWnd *pWndOther, BOOL bMinimized);
+  //}}AFX_MSG
 
+  DECLARE_MESSAGE_MAP()
 
   CEdit m_edText;
   UINT m_nIDCaption;
   CString m_csText;
   int m_maxlen;
   bool m_bReadOnly, m_bInitDone;
-
-  DECLARE_MESSAGE_MAP()
 };

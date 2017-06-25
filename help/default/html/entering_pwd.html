@@ -59,26 +59,47 @@ password entry:</p>
 <li><b>Notes</b>: Free-form general notes field</li>
 </ul>
 
-<p><i>Only the <b>title</b> and <b>password</b> fields are required; all others are optional.</i></p>
+<p><i>Only the <b>Title</b> and <b>Password</b> fields are required; all others are optional.</i></p>
+  
+<p>The <b>Notes</b> field is intended for a <i>short/brief amount of text and has a character
+limit of 30,000</i>. Whilst it is possible to add more than this limit when the entry is added,
+warnings will be issued when the database is re-opened. The Notes field will be truncated
+to this limit if the entry is edited. However, if the entry is protected or the database is opened
+in read-only mode, then it can be viewed without any truncation.</p>
+
+<a name="notes_external_editor"></a>
+<p>The <b>Notes</b> field contents may be edited using an external editor by
+right-clicking on the field. Note however, that <i>the contents will saved
+temporarily on disk in clear text</i>. In addition, some external editors will
+use an existing instance to edit the temporary text file and this will cause
+<b>Password Safe</b> to immediately return leaving the data unchanged even though
+the temporary text file is still available in the external editor. If the external
+editor supports it, it is possible to specify command line parameters to force a
+new instance for editing the Notes field to prevent this (for example: "-multiInst"
+for the Notepad++ editor).
+See <a href="misc_tab.html">"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Misc."</a>.
+If you do specify command line paramters, do <b>not</b> enclose them in quotes unless your
+chosen external editor requires them.  The value you specify will be used <i>as-is</i>
+with no changes.</p>
 
 <p>In addition, the following fields may be set in this tab:</p>
 
 <ul>
 <li><b>URL</b>: The URL associated with the entry. If this field is not empty, then the "Go" button
 is enabled. If the protocol is not specified, then "http://" is assumed
-(e.g., "www.foo.net" is the same as "http://www.foo.net"). The<b>Go</b> button to the right
+(e.g., "www.foo.net" is the same as "http://www.foo.net"). The <b>Go</b> button to the right
 of the <b>URL</b> field is enabled if the URL field is not empty. Clicking with the Control key
 pressed (Ctrl+Click) will, in addition, invoke the <a href="autotype.html">AutoType</a>
 function on the opened browser page. See the <a href="#URL_details">following notes</a>
 for more information.</li>
 <li><b>email</b>: The email address associated with this entry. Note
-  that this is meant for keeping an e-mail address associated with the
-  site, e.g., support@myvendor.com. If the site requires an e-mail
-  address as your login, it's much easier to set your email address in
-  the Username field. <br/>
-  If this field is not
-empty, then the "Send" button is enabled. Clicking on this button will invoke the default mail
-program with the To: field set to the specified address. See the <a href="#email_details">following notes</a>
+that this is meant for keeping an e-mail address associated with the
+site, e.g., support@myvendor.com. If the site requires an e-mail
+address as your login, it's much easier to set your email address in
+the Username field. <br/>
+If this field is not empty, then the "Send" button is enabled. Clicking on this button will
+invoke the default mail program with the To: field set to the specified address.
+See the <a href="#email_details">following notes</a>
 for more options.</li>
 </ul>
 
@@ -90,7 +111,7 @@ URLs are handled in more detail:</b>
 <ul>
 <li>By default, <b>Password Safe</b> will use the browser that your
 PC usually opens web pages with. If desired, you can specify an
-<i>alternate browser </i>by
+<i>alternate browser</i> by
 putting '[alt]' before the URL, e.g., "[alt]http://www.foo.net". This
 is useful, for example, if your default browser is Firefox, and you
 wish to access a website that works best with Internet Explorer. To
@@ -170,26 +191,63 @@ entries, and is explained in detail <a href="aliases.html">here</a>.
 <h3>Editing Existing Entries</h3>
 
 <ol>
-<li>Select the password entry to edit from the list</li>
+<li>Select the entry to edit from the list</li>
 <li>Select <b>Edit/View Entry</b> from the <b>Edit</b> menu</li>
 </ol>
 
 <hr>
+<h3>Editing Existing Entries via the Tree View</h3>
 
-<small><b>Note:</b> By default, passwords are obscured. To see
-the password associated with the Entry click <b>Show Password</b>.</small><br>
+<ol>
+<li>Select the entry to edit from the list then:</li>
+<li>Select <b>Edit/View Entry</b> from the <b>Edit</b> menu <b>OR</b></li>
+<li>Right-click on the entry and select <b>Edit/View Entry</b>
+from the context menu</li>
+<li>You can change the fields that are displayed in the tree view
+  directly. To do so:
+<ul>
+<li>Right-click on a group and select <b>Rename Group</b> from the
+context menu <b>OR</b></li>
+<li>Press the shortcut key to rename (default F2) and overtype the
+displayed text (format is "title [username] {password}").</li>
+</ul>
+</ol>
+
+<hr>
+<small>
+<b>Notes:</b>
+<ol>
+<li>By default, usernames and passwords are not displayed in the Tree View. Displaying
+the username and the password are controlled by preferences (see:
+<a href="display_tab.html">Display Tab</a>). They work in a hierachy i.e. passwords can
+only be displayed if usernames are displayed.</li>
+<li>Also by default, passwords are obscured when editing the entry. To see
+the password associated with the entry click <b>Show Password</b> when editing it.
+<li>The title and password are the only mandatory fields for an entry. Therefore, if
+they are ommited during rename, they will retain their previous values.
+However, you may clear the username field, as long as it is being displayed,
+by entering "[]" during the rename implying an empty value.</li>
+<li><i>Since square and curly brackets are used to delimit the username and password,
+it is <b>NOT</b> possible to rename an entry in place (e.g. using F2) if the title, username
+(if displayed) or password (if displayed) contain any of these characters.  Instead, you must
+Edit the entry either via the Edit menu or by the right-click context menu as indicated
+above.</i></li>
+</ol>
+</small>
 <hr>
 
-<h3>Add a New Group</h3>
-
+<h3>Add a New Group via Tree View</h3>
 <ol>
 <li>Select <b>Add Group</b> from the <b>Edit</b> menu</li>
 <li>Enter the Group name</li>
 </ol>
+
 <h3>Edit a Group Name</h3>
 <ul>
 <li>Right-click on the group and select <b>Rename Group</b>
-from the drop down list</li>
+from the context menu or</li>
+<li>Select the group and press the shortcut to rename (default F2) and overtype the
+group name.</li>
 </ul>
 
 <hr>
@@ -198,11 +256,8 @@ from the drop down list</li>
 <b>Notes:</b>
 <ol>
 <li>Group names can be "nested" i.e. placing a group name within/under another group name.</li>
-<li>Groups do <b>not</b> exist in their own right. They exist by virtue of an entry being
-present with within it or within a sub-group of the group.  Therefore, if you add a group
-and the database is saved before you add an entry in it or its sub-group, it will disappear.
-The simplest method of ensuring a new group remains is to create a new entry and type
-in the new group path in the group field (groups are separated by periods ('.')).</li>
+<li>A group cannot be renamed to multiple groups through the <b>Rename Group</b> menu item or
+shortcut, i.e., group "a" cannot be renamed to "x.y".</li>
 </ol>
 </small>
 

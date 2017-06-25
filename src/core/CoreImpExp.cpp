@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -404,11 +404,13 @@ struct XMLRecordWriter {
                                bforce_normal_entry, bXMLErrorsFound);
 
       if (bXMLErrorsFound) {
-        m_pRpt->WriteLine(_T("\t"), false);
-        m_pRpt->WriteLine(strXMLErrors.c_str());
+        if (m_pRpt != NULL) {
+          m_pRpt->WriteLine(_T("\t"), false);
+          m_pRpt->WriteLine(strXMLErrors.c_str());
+        }
         m_numXMLErrors++;
       } else
-        m_pRpt->WriteLine();
+        if (m_pRpt != NULL) m_pRpt->WriteLine();
 
       m_ofs.write(xml.c_str(),
                  static_cast<streamsize>(xml.length()));
@@ -445,9 +447,10 @@ int PWScore::WriteXMLFile(const StringX &filename,
                           const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name,
                           const int &subgroup_object, const int &subgroup_function,
-                          const TCHAR &delimiter, int &numExported,
+                          const TCHAR &delimiter, const stringT &exportgroup, int &numExported,
                           const OrderedItemList *il,
-                          const bool &bFilterActive, CReport *pRpt)
+                          const bool &bFilterActive,
+                          CReport *pRpt)
 {
   numExported = 0;
 
@@ -526,7 +529,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
     ofs << "\"" << endl;
   }
 
-  CUUID huuid(*m_hdr.m_file_uuid.GetARep(), true); // true to print canoncally
+  CUUID huuid(*m_hdr.m_file_uuid.GetARep(), true); // true to print canonically
 
   ofs << "Database_uuid=\"" << huuid << "\"" << endl;
   ofs << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;
@@ -561,19 +564,36 @@ int PWScore::WriteXMLFile(const StringX &filename,
 
     conv.ToUTF8(pwpolicies.c_str(), utf8, utf8Len);
     ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    ofs << endl;
   }
 
   if (!m_vEmptyGroups.empty()) {
     // Write out empty groups stored in database
-    ostringstreamT os;
-    os << "\t<EmptyGroups>" << endl;
-    for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
-      stringT sTemp = PWSUtil::GetSafeXMLString(m_vEmptyGroups[n]);
-      os << "\t\t<EGName>" << sTemp << "</EGName>" << endl;
+    // However, if exporting a group, only export empty groups
+    // contained within it
+    std::vector<StringX> vsubemptygroups;
+    if (!exportgroup.empty()) {
+      for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
+        if (m_vEmptyGroups[n].substr(0, exportgroup.length()) == StringX(exportgroup.c_str()))
+          vsubemptygroups.push_back(m_vEmptyGroups[n]);
+      }
+    } else {
+      vsubemptygroups = m_vEmptyGroups;
     }
-    os << "\t</EmptyGroups>" << endl << endl;
-    conv.ToUTF8(os.str().c_str(), utf8, utf8Len);
-    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+
+    ostringstreamT os;
+
+    // Don't write out XML empty groups if there aren't any!
+    if (!vsubemptygroups.empty()) {
+      os << "\t<EmptyGroups>" << endl;
+      for (size_t n = 0; n < vsubemptygroups.size(); n++) {
+        stringT sTemp = PWSUtil::GetSafeXMLString(vsubemptygroups[n]);
+        os << "\t\t<EGName>" << sTemp << "</EGName>" << endl;
+      }
+      os << "\t</EmptyGroups>" << endl << endl;
+      conv.ToUTF8(os.str().c_str(), utf8, utf8Len);
+      ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    }
   }
 
   bool bStartComment(false);
@@ -667,8 +687,8 @@ int PWScore::WriteXMLFile(const StringX &filename,
   if (bStartComment) {
     bStartComment = false;
     ofs << " --> " << endl;
+    ofs << endl;
   }
-  ofs << endl;
 
   // Write what we have and reset the buffer
   fwrite(ofs.str().c_str(), 1, ofs.str().length(), xmlfile);
@@ -706,7 +726,7 @@ int PWScore::ImportXMLFile(const stringT & /*ImportedPrefix*/,
                            int & /*numValidated*/, int & /*numImported*/, int & /*numSkipped*/,
                            int & /*numPWHErrors*/, int & /*numRenamed*/,
                            int & /*numNoPolicy*/,  int & /*numRenamedPolicies*/,
-                           int & /*numShortcutsRemoved*/,
+                           int & /*numShortcutsRemoved*/, int & /* numEmptyGroupsImported */,
                            CReport & /*rpt*/, Command *& /*pcommand*/)
 {
   return UNIMPLEMENTED;
@@ -719,7 +739,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                            int &numValidated, int &numImported, int &numSkipped,
                            int &numPWHErrors, int &numRenamed,
                            int &numNoPolicy, int &numRenamedPolicies,
-                           int &numShortcutsRemoved,
+                           int &numShortcutsRemoved, int &numEmptyGroupsImported,
                            CReport &rpt, Command *&pcommand)
 {
   UUIDVector Possible_Aliases, Possible_Shortcuts;
@@ -743,6 +763,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   if (!status) {
     return XML_FAILED_VALIDATION;
   }
+
   numValidated = iXML.getNumEntriesValidated();
 
   validation = false;
@@ -756,6 +777,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   numNoPolicy = iXML.getNumNoPolicies();
   numRenamedPolicies = iXML.getNumRenamedPolicies();
   numShortcutsRemoved = iXML.getNumShortcutsRemoved();
+  numEmptyGroupsImported = iXML.getNumEmptyGroupsImported();
 
   strXMLErrors = iXML.getXMLErrors();
   strSkippedList = iXML.getSkippedList();
@@ -767,9 +789,6 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
     pcommand = NULL;
     return XML_FAILED_IMPORT;
   }
-
-  if (numImported > 0)
-    SetDBChanged(true);
 
   return ((numRenamed + numPWHErrors) == 0) ? SUCCESS : OK_WITH_ERRORS;
 }
@@ -902,7 +921,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 #define HDR_MAP_ENTRY(e) {e, CItemData::e},
 #define HDR_MAP_ENTRY2(e, ie) {e, CItemData::ie},
     
-        // These must be defined in the same order as Fields enum above, or it will assesrt below
+        // These must be defined in the same order as Fields enum above, or it will assert below
       
         HDR_MAP_ENTRY(GROUPTITLE) HDR_MAP_ENTRY(USER)               HDR_MAP_ENTRY(PASSWORD)  HDR_MAP_ENTRY(URL)
         HDR_MAP_ENTRY(AUTOTYPE)   HDR_MAP_ENTRY(CTIME)              HDR_MAP_ENTRY(PMTIME)    HDR_MAP_ENTRY(ATIME)
@@ -921,7 +940,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   to = 0;
   do {
     // make sure EXPORTHEADER has correct field names, though we have some resiliency below
-    ASSERT( vs_Header[itoken] == CItemData::FieldName(fieldMap[itoken].itemField));  
+    ASSERT( vs_Header[itoken] == CItemData::EngFieldName(fieldMap[itoken].itemField));
     from = s_header.find_first_not_of(pSeps, to);
     if (from == string::npos)
       break;
@@ -934,7 +953,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       i_Offset[it - vs_Header.begin()] = itoken;
       num_found++;
     }
-    else if ( token == CItemData::FieldName(fieldMap[itoken].itemField) ) {
+    else if ( token == CItemData::EngFieldName(fieldMap[itoken].itemField) ) {
       // Column header might not match if it was exported from a version where EXPORTHEADER didn't
       // name the column titles correctly.  So compare directly with the corresponding field name.
       // Note that we are not searching here, unlike the above if block. The incorrect title has to
@@ -1351,9 +1370,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       ci_temp.SetStatus(CItemData::ES_ADDED);
     }
 
-    // Get GUI to populate its field
-    GUISetupDisplayInfo(ci_temp);
-
     // Need to check that entry keyboard shortcut not already in use!
     int32 iKBShortcut;
     ci_temp.GetKBShortcut(iKBShortcut);
@@ -1378,6 +1394,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         rpt.WriteLine(sxTemp.c_str());
         numshortcutsremoved++;
       }
+
       if (m_iAppHotKey == iKBShortcut) {
         // Remove it
         ci_temp.SetKBShortcut(0);
@@ -1437,9 +1454,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                             UpdateGUICommand::GUI_REDO_IMPORT);
   pmulticmds->Add(pcmd2);
 
-  if (numImported > 0)
-    SetDBChanged(true);
-
   return ((numSkipped + numRenamed + numPWHErrors + numshortcutsremoved)) == 0 ?
              SUCCESS : OK_WITH_ERRORS;
 }
@@ -1455,7 +1469,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
   The checkbox "Encode/replace newline characters by '\n'" MUST be selected bu the
   user during the export or this import will fail and may give unexpected results.
 
-  The line that starts with '[' and ends with ']' is equivalant to the Title field.
+  The line that starts with '[' and ends with ']' is equivalent to the Title field.
 
   The following entries are supported:
      "Group: ", "Group Tree: ", "User Name: ", "URL: ", "Password: ",
@@ -1797,7 +1811,6 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
 
     ci_temp.SetStatus(CItemData::ES_ADDED);
 
-    GUISetupDisplayInfo(ci_temp);
     Command *pcmd = AddEntryCommand::Create(this, ci_temp);
     pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);
@@ -1810,7 +1823,6 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
     rpt.WriteLine(sx_imported.c_str());
   }
 
-  SetDBChanged(true);
   return SUCCESS;
 }
 
@@ -1981,7 +1993,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   for (size_t i = 0; i < hdr_tokens.size(); i++) {
     vector<StringX>::iterator it(std::find(vs_Header.begin(), vs_Header.end(), hdr_tokens[i]));
     if (it != vs_Header.end()) {
-      i_Offset[it - vs_Header.begin()] = i;
+      i_Offset[it - vs_Header.begin()] = (int)i;
       num_found++;
     }
   }
@@ -2280,9 +2292,6 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
 
     ci_temp.SetStatus(CItemData::ES_ADDED);
 
-    // Get GUI to populate its field
-    GUISetupDisplayInfo(ci_temp);
-
     // Add to commands to execute
     Command *pcmd = AddEntryCommand::Create(this, ci_temp);
     pcmd->SetNoGUINotify();
@@ -2295,9 +2304,6 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
                         sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
     rpt.WriteLine(sx_imported.c_str());
   } // file processing for (;;) loop
-
-  if (numImported > 0)
-    SetDBChanged(true);
 
   return ((numSkipped + numRenamed)) == 0 ? SUCCESS : OK_WITH_ERRORS;
 }
@@ -2312,21 +2318,21 @@ stringT PWScore::GetXMLPWPolicies(const OrderedItemList *pOIL)
 
   std::vector<StringX> vPWPolicies;
   const bool bSubset = pOIL->size() != GetNumEntries();
+  bool bNamedPasswordPolicies = !bSubset;
+  PSWDPolicyMapCIter iter;
+
   if (bSubset) {
     // If not exporting the whole database, only get referenced Password Policies
     PopulatePWPVector pwpv(&vPWPolicies);
     for_each(pOIL->begin(), pOIL->end(), pwpv);
-  }
 
-  bool bNamedPasswordPolicies(false);
-
-  PSWDPolicyMapCIter iter;
-  for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
-    // If OrderedList (i.e. not the whole database), only export a Password Policy
-    // if it is referenced by one of the entries being exported
-    if (bSubset && std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) != vPWPolicies.end()) {
-      bNamedPasswordPolicies = true;
-      break;
+    for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
+      // If OrderedList (i.e. not the whole database), only export a Password Policy
+      // if it is referenced by one of the entries being exported
+      if (std::find(vPWPolicies.begin(), vPWPolicies.end(), iter->first) != vPWPolicies.end()) {
+        bNamedPasswordPolicies = true;
+        break;
+      }
     }
   }
 

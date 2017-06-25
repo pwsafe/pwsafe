@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -39,7 +39,8 @@ struct st_SaveTypePW {
   }  
 };
 
-// Used to verify uniqueness of GTU using std::set
+// Used to verify uniqueness of GTU using std::set and
+// retrieving all entries using a given Named Password Policy
 struct st_GroupTitleUser {
   StringX group;
   StringX title;

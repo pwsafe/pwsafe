@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -7,7 +7,7 @@
  */
 
 /** \file dragbar.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
@@ -44,11 +44,9 @@ END_EVENT_TABLE()
 
 IMPLEMENT_CLASS( CDragBar, wxControl )
 
-
-
-CDragBar::CDragBar(wxFrame* parent, IDragSourceTextProvider* provider, 
-                                wxOrientation orient /*= wxHORIZONTAL*/) : 
-                                                wxControl(parent, wxID_ANY), 
+CDragBar::CDragBar(wxFrame* parent, IDragSourceTextProvider* provider,
+                                wxOrientation orient /*= wxHORIZONTAL*/) :
+                                                wxControl(parent, wxID_ANY),
                                                 m_margins(5, 3),
                                                 m_orientation(orient),
                                                 m_bmpWidth(0),
@@ -67,12 +65,12 @@ void CDragBar::OnLeftDown(wxMouseEvent& evt)
   const int idx = FindToolFromCoords(evt.GetPosition());
   if (idx == -1)
     return;
-    
+
   wxASSERT(idx >= 0 && size_t(idx) < m_items.size());
-  
+
   wxString text = m_provider->GetText(m_items[idx].id);
   if (!text.IsEmpty()) {
-    wxTextDataObject dataObj(text);
+    wxTextDataObjectEx dataObj(text);
     wxDropSource source(dataObj, this);//, wxDROP_ICON(DragbarElements[idx].name));
     switch (source.DoDragDrop()) {
       case wxDragError:
@@ -97,7 +95,7 @@ void CDragBar::OnLeftDown(wxMouseEvent& evt)
   }
 }
 
-void CDragBar::AddTool(int id, const wxBitmap& bmp, const wxString& tooltip /*= wxEmptyString*/, 
+void CDragBar::AddTool(int id, const wxBitmap& bmp, const wxString& tooltip /*= wxEmptyString*/,
                                     const wxBitmap& bmpDisabled /*= wxNullBitmap*/)
 {
   //all bitmaps must be same size
@@ -106,32 +104,32 @@ void CDragBar::AddTool(int id, const wxBitmap& bmp, const wxString& tooltip /*= 
   else {
     wxASSERT(m_bmpWidth == bmp.GetWidth());
   }
-  
+
   if (m_bmpHeight == 0)
     m_bmpHeight = bmp.GetHeight();
   else {
     wxASSERT(m_bmpHeight == bmp.GetHeight());
   }
-  
+
   if (bmpDisabled.IsOk()) {
     wxASSERT(m_bmpWidth == bmpDisabled.GetWidth());
     wxASSERT(m_bmpHeight == bmpDisabled.GetHeight());
   }
-  
+
   DragBarItem item;
   item.id = id;
   item.bmp = bmp;
   item.bmpDisabled = bmpDisabled;
   item.tooltip = tooltip;
   item.enabled = true;
-  
+
   m_items.push_back( item );
 }
 
 int CDragBar::FindToolFromCoords(const wxPoint& pt)
 {
   int idx = -1;
-  
+
   switch(m_orientation) {
     case wxHORIZONTAL:
     {
@@ -141,7 +139,7 @@ int CDragBar::FindToolFromCoords(const wxPoint& pt)
       else
         idx = pt.x/w;
       break;
-      
+
     }
     case wxVERTICAL:
     {
@@ -156,7 +154,7 @@ int CDragBar::FindToolFromCoords(const wxPoint& pt)
       wxFAIL_MSG(wxT("Unknown type of dragbar orientation"));
       return -1;
   }
-  
+
   return (idx < 0 || size_t(idx) >= m_items.size()) ? -1 : idx;
 }
 
@@ -168,14 +166,14 @@ wxSize CDragBar::GetInvalidatedIconRange(const wxRect& rect)
       int first = FindToolFromCoords(rect.GetTopLeft());
       if (first == -1)
         first = FindToolFromCoords(rect.GetTopLeft() + wxSize(m_margins.GetWidth(), 0));
-      
+
       int last = FindToolFromCoords(rect.GetTopRight());
       if (last == -1) {
         last = FindToolFromCoords(rect.GetTopRight() - wxSize(m_margins.GetWidth(), 0));
         if (last == -1)
           last = static_cast<int>(m_items.size() - 1);
       }
-      
+
       return wxSize(first, last);
     }
     case wxVERTICAL:
@@ -183,14 +181,14 @@ wxSize CDragBar::GetInvalidatedIconRange(const wxRect& rect)
       int first = FindToolFromCoords(rect.GetTopLeft());
       if (first == -1)
         first = FindToolFromCoords(rect.GetTopLeft() + wxSize(0, m_margins.GetHeight()));
-      
+
       int last = FindToolFromCoords(rect.GetBottomLeft());
       if (last == -1) {
         last = FindToolFromCoords(rect.GetBottomLeft() - wxSize(0, m_margins.GetHeight()));
         if (last == -1)
           last = static_cast<int>(m_items.size() - 1);
       }
-        
+
       return wxSize(first, last);
     }
     default:
@@ -205,7 +203,7 @@ void CDragBar::OnPaint(wxPaintEvent& /*evt*/)
 
   wxPen shadow(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNSHADOW));
   dc.SetPen(shadow);
-  
+
   //draw a shadow along the bottom or the right edge, depending on orientation
   wxRect rcWin = GetRect(); //draw along the entire window rect, since clipping rect is always (0, 0, -1, -1)
   if (m_orientation == wxHORIZONTAL)
@@ -215,27 +213,27 @@ void CDragBar::OnPaint(wxPaintEvent& /*evt*/)
 
   //remove the shadown pen
   dc.SetPen(wxNullPen);
-  
+
   wxRect rc;
   dc.GetClippingBox(rc);
   //wxLogDebug(wxT("Clipping box = [(%d, %d) (%d %d)]"), rc.GetLeft(), rc.GetTop(), rc.GetRight(), rc.GetBottom());
-  
+
   wxSize range = GetInvalidatedIconRange(rc);
-  
+
   wxASSERT(range.x == -1 || (range.x >= 0 && size_t(range.x) < m_items.size()));
   wxASSERT(range.y == -1 || (range.y >= range.x && size_t(range.y) < m_items.size()));
 
   if (range.x >= 0) {
     //wxLogDebug(wxT("Painting dragbar icons %d - %d"), range.x + 1, range.y + 1);
     for (int idx = range.x; idx <= range.y; ++idx) {
-      dc.DrawBitmap(m_items[idx].enabled? m_items[idx].bmp : m_items[idx].bmpDisabled, 
+      dc.DrawBitmap(m_items[idx].enabled? m_items[idx].bmp : m_items[idx].bmpDisabled,
                           GetToolX(idx), GetToolY(idx), true);
     }
   }
   else {
     //wxLogDebug(wxT("all dragbar icons valid"));
   }
-  
+
 }
 
 wxSize CDragBar::DoGetBestSize() const

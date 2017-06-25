@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -39,7 +39,7 @@ class SystemTray : protected wxTaskBarIcon
     using wxTaskBarIcon::RemoveIcon;
 
   protected:
-    //overriden from wxTaskBarIcon, called by framework on r-click
+    //overridden from wxTaskBarIcon, called by framework on r-click
     virtual wxMenu* CreatePopupMenu();
 
   private:
@@ -55,4 +55,3 @@ class SystemTray : protected wxTaskBarIcon
 };
 
 #endif /* _SYSTEMTRAY_H_ */
-

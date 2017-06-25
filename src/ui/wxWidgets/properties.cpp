@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -33,13 +33,11 @@
 ////@begin XPM images
 ////@end XPM images
 
-
 /*!
  * CProperties type definition
  */
 
 IMPLEMENT_CLASS( CProperties, wxDialog )
-
 
 /*!
  * CProperties event table definition
@@ -54,7 +52,6 @@ BEGIN_EVENT_TABLE( CProperties, wxDialog )
 
 END_EVENT_TABLE()
 
-
 /*!
  * CProperties constructors
  */
@@ -67,7 +64,6 @@ CProperties::CProperties(wxWindow* parent, const PWScore &core,
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * CProperties creator
@@ -89,7 +85,6 @@ bool CProperties::Create( wxWindow* parent, wxWindowID id, const wxString& capti
   return true;
 }
 
-
 /*!
  * CProperties destructor
  */
@@ -99,7 +94,6 @@ CProperties::~CProperties()
 ////@begin CProperties destruction
 ////@end CProperties destruction
 }
-
 
 /*!
  * Member initialisation
@@ -114,8 +108,10 @@ void CProperties::Init()
                                       m_core.GetHeader().m_nCurrentMajorVersion,
                                       m_core.GetHeader().m_nCurrentMinorVersion);
   std::vector<stringT> aryGroups;
-  m_core.GetUniqueGroups(aryGroups);
-  m_numgroups << aryGroups.size();
+  m_core.GetAllGroups(aryGroups);
+  auto nEmptyGroups = m_core.GetEmptyGroups().size();
+  m_numgroups << aryGroups.size()
+              << wxT(" (") << nEmptyGroups << _(" empty)");
 
   m_numentries << m_core.GetNumEntries();
 
@@ -171,7 +167,6 @@ void CProperties::Init()
     m_unknownfields = _("None");
   }
 }
-
 
 /*!
  * Control creation for CProperties
@@ -269,7 +264,6 @@ void CProperties::CreateControls()
 ////@end CProperties content construction
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -303,7 +297,6 @@ wxIcon CProperties::GetIconResource( const wxString& WXUNUSED(name) )
 ////@end CProperties icon retrieval
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
@@ -315,4 +308,3 @@ void CProperties::OnOkClick( wxCommandEvent& /* evt */ )
   EndModal(wxID_OK);
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CProperties.
 }
-

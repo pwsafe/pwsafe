@@ -32,9 +32,6 @@ typedef OSK_API int  (* LP_OSK_GetVersion) ();
 
 enum {USER_FONT, ARIALMS_FONT, ARIAL_FONT, LUCIDA_FONT};
 
-// See DboxMain.h as well, since all PWS messages are either defined or documented there
-#define PWS_MSG_INSERTBUFFER (WM_APP + 70)
-
 enum eJapanese {ENGLISH = 0, JAPANESE};    // Used for m_Kana
 enum eHK       {HIRAGANA = 0, KATAKANA};   // Used for m_Hiragana
 enum eSize     {HALF = 0, FULL};           // Used for m_Size
@@ -91,13 +88,12 @@ public:
   void ResetKeyboard();
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-  BOOL OnInitDialog();
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   int m_phrasecount;
   CComboBox m_cbxKeyBoards;
-
-  BOOL PreTranslateMessage(MSG* pMsg);
 
   //{{AFX_MSG(CVKeyBoardDlg)
   afx_msg void OnPostNcDestroy();
@@ -127,6 +123,7 @@ protected:
   afx_msg void OnKeyPressPlaySound();
   afx_msg void OnShowPassphrase();
   //}}AFX_MSG
+
   DECLARE_MESSAGE_MAP()
 
   int m_iKeyboard;
@@ -182,9 +179,10 @@ private:
   bool m_bAltNum, m_bAltGr, m_bCapsLock, m_bRandom;
   bool m_bShift, m_bLCtrl, m_bRCtrl;
   bool m_bSaveShift, m_bSaveLCtrl, m_bSaveRCtrl, m_bSaveAltGr, m_bSaveCapsLock;
-  bool m_bLCtrlChars, m_bAltGrChars, m_bRCtrlChars, m_bDeadKeyActive;
+  bool m_bLCtrlChars, m_bAltGrChars, m_bRCtrlChars;
   bool m_bAllow_bC, m_bAllow_bS, m_bAllow_lC, m_bAllow_lS;
   bool m_bAllow_gC, m_bAllow_gS, m_bAllow_rC, m_bAllow_rS;
+  bool m_bDeadKeyActive, m_bDeadKeySaved;
 
   static int m_iFont;
   static bool m_bUserSpecifiedFont;

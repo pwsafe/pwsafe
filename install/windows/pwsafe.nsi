@@ -3,7 +3,7 @@
 ; Password Safe Installation Script
 ;
 ; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
-; Copyright 2005-2007 Rony Shapiro <ronys@pwsafe.org>
+; Copyright 2005-2017 Rony Shapiro <ronys@pwsafe.org>
 ; 2009 extended by Karel Van der Gucht for multiple language use
 ; This script may be redistributed and/or modified under the Artistic
 ; License 2.0 terms as available at 
@@ -29,7 +29,7 @@
 ; In general, use of this installer is not mandatory. pwsafe.exe, the
 ; executable for Password Safe, can be placed in any location and run
 ; without any registration of DLLs, creation of directories, or entry
-; of registry values.  When Password Safe intializes, any necessary
+; of registry values.  When Password Safe initializes, any necessary
 ; setup will be performed by pwsafe.exe.  So, what is the purpose of
 ; this installer?
 ;
@@ -58,7 +58,7 @@
 ; This is useful for installing to disk-on-key, and where company policy
 ; and/or user permissions disallow writing to the registry. Also, Green
 ; installation doesn't create an Uninstall.exe or entry in Add/Remove
-; Software in the control panel - to unistall, just delete the install
+; Software in the control panel - to uninstall, just delete the install
 ; directory...
 ;
 ; USE
@@ -69,7 +69,11 @@
 ;    2.0 should be used.  This script is compatible with version 2.0
 ;    of NSIS.
 ;
-; 2. Make sure that makensis.exe is on your path.  This is only to make
+; 2. Install the nsProcess NSIS plug in. This can be found at
+;    http://nsis.sourceforge.net/NsProcess_plugin
+;    Choose version 1.6 or later. 
+;
+; 3. Make sure that makensis.exe is on your path.  This is only to make
 ;    easier step 3 of the creation process detailed below.  This script
 ;    does not recursively call makensis.exe, so this step is merely for
 ;    convenience sake.
@@ -77,8 +81,9 @@
 ; After the above requirements are fulfilled, the following steps 
 ; should be followed each time you want to create a release:
 ;
-; 1. Compile Password Safe in release mode.  The script relies on 
-;    pwsafe.exe existing in the ReleaseM subdirectory.
+; 1. Compile Password Safe in Release and Release64 mode.  The script 
+;    relies on pwsafe.exe existing in the Release and Release64 
+;    subdirectory.
 ;
 ; 2. Compile the help files for Password Safe.  The script relies on 
 ;    the English pwsafe.chm existing in the help/default subdirectory,
@@ -87,14 +92,19 @@
 ; 3. At the command line (or in a build script such as the .dsp file,
 ;    makefile, or other scripted build process), execute the following:
 ;
-;        makensis.exe /DVERSION=X.XX pwsafe.nsi
+;        makensis.exe /DVERSION=X.XX /DARCH=x86 pwsafe.nsi
+;        makensis.exe /DVERSION=X.XX /DARCH=x64 pwsafe.nsi
 ;
 ;    where X.XX is the version number of the current build of Password
 ;    Safe.
 ;
-; The output from the above process should be pwsafe-X.XX.exe.  This is
-; the installer.  It can be placed, by itself, on a publicly available
-; location.
+; The output from the above process should be:
+;
+;    pwsafe-X.XX.exe (the 32-bit version) 
+;    pwsafe64-X.XX.exe (the 64-bit version) 
+;
+; These are the installers.  They can be placed on a publicly 
+; available location.
 ; 
 ; The script is setup for several languages, and ready for others.
 ; Just remove the comments ";-L-" where appropriate.
@@ -134,13 +144,21 @@
 ; Hopefully, this file will be compiled via the following command line
 ; command:
 ;
-; makensis.exe /DVERSION=X.XX pwsafe.nsi
+; makensis.exe /DVERSION=X.XX /DARCH=xNN pwsafe.nsi
 ;
-; where X.XX is the version number of Password Safe.
+; where X.XX is the version number of Password Safe and
+; xNN is x86 or x64.
 
   !ifndef VERSION
-    !error "VERSION undefined. Usage: makensis.exe /DVERSION=X.XX pwsafe.nsi"
+    !error "VERSION undefined. Usage: makensis.exe /DVERSION=X.XX /DARCH=[x86|x64] pwsafe.nsi"
   !endif
+
+;--------------------------------
+; Installer architecture x86 or x64
+
+!ifndef ARCH
+  !error "ARCH undefined. Usage: makensis.exe /DVERSION=X.XX /DARCH=[x86|x64] pwsafe.nsi"
+!endif  
 
 ;--------------------------------
 ;Variables
@@ -166,14 +184,30 @@
 ;--------------------------------
 ; General
 
-  ; Name and file
-  Name "Password Safe ${VERSION}"
-  BrandingText "PasswordSafe ${VERSION} Installer"
-
-  OutFile "pwsafe-${VERSION}.exe"
-
-  ; Default installation folder
-  InstallDir "$PROGRAMFILES\Password Safe"
+  ; Default installation folder based on chosen architecture
+  !if ${ARCH} == "x86"
+    OutFile "pwsafe-${VERSION}.exe"
+    InstallDir "$PROGRAMFILES\Password Safe"
+    ; Name and file
+    Name "Password Safe ${VERSION} (32-bit)"
+    BrandingText "PasswordSafe ${VERSION} (32-bit) Installer"
+    !define LANG_DLL "..\..\build\bin\pwsafe\I18N"
+    !define BIN_DIR "..\..\build\bin\pwsafe\release"
+    !define TARGET_ARCH "(32-bit)"
+    !echo "Building x86 installer"
+  !else if ${ARCH} == "x64" 
+    OutFile "pwsafe64-${VERSION}.exe"
+    InstallDir "$PROGRAMFILES64\Password Safe"
+    ; Name and file
+    Name "Password Safe ${VERSION} (64-bit)"
+    BrandingText "PasswordSafe ${VERSION} (64-bit) Installer"
+    !define LANG_DLL "..\..\build\bin\pwsafe\I18N64"
+    !define BIN_DIR "..\..\build\bin\pwsafe\release64"
+    !define TARGET_ARCH "(64-bit)"
+    !echo "Building x64 installer"
+  !else
+    !error "ARCH must be either x86 or x64"
+  !endif
   
   ; Get installation folder from registry if available
   InstallDirRegKey HKCU "Software\Password Safe\Password Safe" "installdir"
@@ -308,10 +342,10 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   SetOutPath "$INSTDIR"
   
   ; Get all of the files.  This list should be modified when additional
-  ; files are added to the release.
-  File "..\..\build\bin\pwsafe\releasem\pwsafe.exe"
-  File "..\..\build\bin\pwsafe\releasem\pws_at.dll"
-  File "..\..\build\bin\pwsafe\releasem\pws_osk.dll"
+  ; files are added to the install.
+  File "${BIN_DIR}\pwsafe.exe"
+  File "${BIN_DIR}\pws_at.dll"
+  File "${BIN_DIR}\pws_osk.dll"
   File "..\..\help\default\pwsafe.chm"
   File "..\..\LICENSE"
   File "..\..\README.TXT"
@@ -343,9 +377,13 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   ; current user doesn't have permission to write to HKLM, then the
   ; uninstaller will not appear in the Add or Remove Programs window.
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
-        "DisplayName" "Password Safe"
+        "DisplayName" "Password Safe ${TARGET_ARCH}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
         "DisplayIcon" "$INSTDIR\pwsafe.exe"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
+        "DisplayVersion" "${VERSION}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
+        "Publisher" "Rony Shapiro"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
          "UninstallString" '"$INSTDIR\Uninstall.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
@@ -365,77 +403,77 @@ Section  "$(ENGLISH_SUPPORT)" EnglishSection
 SectionEnd
 Section /o "$(CHINESE_CN_SUPPORT)" ChineseSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeZH.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeZH.dll"
   File /nonfatal "..\..\help\pwsafeZH\pwsafeZH.chm"
 SectionEnd
 Section /o "$(CHINESE_TW_SUPPORT)" ChineseTWSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeZH_TW.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeZH_TW.dll"
   File /nonfatal "..\..\help\pwsafeZH\pwsafeZH_TW.chm"
 SectionEnd
 Section /o "$(GERMAN_SUPPORT)" GermanSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeDE.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeDE.dll"
   File /nonfatal "..\..\help\pwsafeDE\pwsafeDE.chm"
 SectionEnd
 Section /o "$(SPANISH_SUPPORT)" SpanishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeES.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeES.dll"
   File /nonfatal "..\..\help\pwsafeES\pwsafeES.chm"
 SectionEnd
 Section /o "$(SWEDISH_SUPPORT)" SwedishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeSV.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeSV.dll"
   File /nonfatal "..\..\help\pwsafeSV\pwsafeSV.chm"
 SectionEnd
 Section /o "$(DUTCH_SUPPORT)" DutchSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeNL.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeNL.dll"
   File /nonfatal "..\..\help\pwsafeNL\pwsafeNL.chm"
 SectionEnd
 Section /o "$(FRENCH_SUPPORT)" FrenchSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeFR.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeFR.dll"
   File /nonfatal "..\..\help\pwsafeFR\pwsafeFR.chm"
 SectionEnd
 Section /o "$(RUSSIAN_SUPPORT)" RussianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeRU.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeRU.dll"
   File /nonfatal "..\..\help\pwsafeRU\pwsafeRU.chm"
 SectionEnd
 Section /o "$(POLISH_SUPPORT)" PolishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafePL.dll"
+  File /nonfatal "${LANG_DLL}\pwsafePL.dll"
   File /nonfatal "..\..\help\pwsafePL\pwsafePL.chm"
 SectionEnd
 Section /o "$(ITALIAN_SUPPORT)" ItalianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeIT.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeIT.dll"
   File /nonfatal "..\..\help\pwsafeIT\pwsafeIT.chm"
 SectionEnd
 Section /o "$(DANISH_SUPPORT)" DanishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeDA.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeDA.dll"
   File /nonfatal "..\..\help\pwsafeDA\pwsafeDA.chm"
 SectionEnd
 Section /o "$(KOREAN_SUPPORT)" KoreanSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeKO.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeKO.dll"
   File /nonfatal "..\..\help\pwsafeKO\pwsafeKO.chm"
 SectionEnd
 Section /o "$(CZECH_SUPPORT)" CzechSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeCZ.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeCZ.dll"
   File /nonfatal "..\..\help\pwsafeCZ\pwsafeCZ.chm"
 SectionEnd
 Section /o "$(TURKISH_SUPPORT)" TurkishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeTR.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeTR.dll"
   File /nonfatal "..\..\help\pwsafeTR\pwsafeTR.chm"
 SectionEnd
 Section /o "$(HUNGARIAN_SUPPORT)" HungarianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "..\..\build\bin\pwsafe\I18N\pwsafeHU.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeHU.dll"
   File /nonfatal "..\..\help\pwsafeHU\pwsafeHU.chm"
 SectionEnd
 SectionGroupEnd
@@ -670,7 +708,7 @@ FunctionEnd
 
 Function GreenOrRegular
   !insertmacro MUI_HEADER_TEXT "$(TEXT_GC_TITLE)" "$(TEXT_GC_SUBTITLE)"
-  ; english is in "pws-install.ini" by default, so no writing necesarry
+  ; english is in "pws-install.ini" by default, so no writing necessary
   !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Settings" "Title" $(RESERVE_TITLE)
   !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Field 1" "Text" $(RESERVE_FIELD1)
   !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Field 2" "Text" $(RESERVE_FIELD2)

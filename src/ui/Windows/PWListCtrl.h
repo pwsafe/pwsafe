@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -16,16 +16,17 @@
 
 #pragma once
 
+#include "PWTouch.h"
 #include "SecString.h"
 #include "Fonts.h"
 
 class CItemData;
 
-class CPWListCtrl : public CListCtrl
+class CPWListCtrlX : public CListCtrl
 {
 public:
-  CPWListCtrl();
-  ~CPWListCtrl();
+  CPWListCtrlX();
+  ~CPWListCtrlX();
 
   void Initialize();
   void ActivateND(const bool bActivate);
@@ -35,8 +36,12 @@ public:
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
   void UpdateRowHeight(bool bInvalidate);
+
 protected:
-  //{{AFX_MSG(CPWListCtrl)
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
+  virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+
+  //{{AFX_MSG(CPWListCtrlX)
   afx_msg void OnDestroy();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
@@ -52,8 +57,6 @@ protected:
   //}}AFX_MSG
 
   LRESULT OnCharItemlist(WPARAM wParam, LPARAM lParam);
-  BOOL PreTranslateMessage(MSG* pMsg);
-  virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 
   DECLARE_MESSAGE_MAP()
 
@@ -68,9 +71,18 @@ private:
   CPoint m_HoverNDPoint;
   bool m_bShowNotes, m_bMouseInWindow;
 
+  // Determine if Notes column displayed in List View
+  bool IsNotesColumnPresent();
+
   // Filter
-  bool m_bFilterActive;
+  bool m_bListFilterActive;
 
   CFont *GetFontBasedOnStatus(CItemData *pci, COLORREF &cf);
   bool m_bUseHighLighting;
 };
+
+/**
+* typedef to hide the fact that CPWListCtrl is really a mixin.
+*/
+
+typedef CPWTouch< CPWListCtrlX > CPWListCtrl;

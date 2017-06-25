@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -11,6 +11,8 @@
 #include "stdafx.h"
 
 #include "ThisMfcApp.h"
+#include "fonts.h"
+
 #include "ConfirmDeleteDlg.h"
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
@@ -45,8 +47,11 @@ void CConfirmDeleteDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CConfirmDeleteDlg, CPWDialog)
 END_MESSAGE_MAP()
 
-BOOL CConfirmDeleteDlg::OnInitDialog(void)
+BOOL CConfirmDeleteDlg::OnInitDialog()
 {
+
+  CPWDialog::OnInitDialog();
+
   CString cs_text;
   if (m_numchildren > 0) {
     // Group delete
@@ -73,6 +78,10 @@ BOOL CConfirmDeleteDlg::OnInitDialog(void)
               L"\xab" + m_sxUser  + L"\xbb";
     GetDlgItem(IDC_ENTRY)->SetWindowText(sxEntry.c_str());
 
+    // Get Add/Edit font
+    CFont *pFont = Fonts::GetInstance()->GetAddEditFont();
+    GetDlgItem(IDC_ENTRY)->SetFont(pFont);
+
     // Disable/hide children info - n/a for a single entry
     GetDlgItem(IDC_DELETECHILDREN)->EnableWindow(FALSE);
     GetDlgItem(IDC_DELETECHILDREN)->ShowWindow(SW_HIDE);
@@ -80,9 +89,11 @@ BOOL CConfirmDeleteDlg::OnInitDialog(void)
     // Allow user to select not to be asked again
     GetDlgItem(IDC_CLEARCHECK)->EnableWindow(TRUE);
   }
+
   cs_text.LoadString((m_numchildren > 0) ? IDS_DELGRP : IDS_DELENT);
   GetDlgItem(IDC_DELITEM)->SetWindowText(cs_text);
-  return TRUE;
+
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CConfirmDeleteDlg::OnCancel() 

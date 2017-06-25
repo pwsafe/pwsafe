@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -60,9 +60,9 @@ inline errno_t memcpy_s(void *dst, size_t dst_size, const void *src, size_t cnt)
   }
 }
 
-#define _mkgmtime32(ts) mktime(ts)
+#define _mktime32(ts) mktime(ts)
 
-inline errno_t _gmtime64_s(struct tm* _tm, const __time64_t* time)
+inline errno_t _localtime64_s(struct tm* _tm, const __time64_t* time)
 {
   if (!_tm) {
     return EINVAL;
@@ -72,7 +72,7 @@ inline errno_t _gmtime64_s(struct tm* _tm, const __time64_t* time)
     _tm->tm_wday=_tm->tm_yday=_tm->tm_isdst=-1;
     return EINVAL;
   }
-  return gmtime64_r(time, _tm) ? 0 : EINVAL;
+  return localtime64_r(time, _tm) ? 0 : EINVAL;
 }
 
 #include <cwchar>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -99,8 +99,6 @@ class TestDialog: public wxDialog, IGridSizer
   DECLARE_EVENT_TABLE()
 
 };
-
-
 
 enum { MAX_ROWS = 10000, MAX_COLS = 500, NUM_ROWS = 200, NUM_COLS = 50 };
 enum { ID_GRID = 100, ID_SPIN_ROW, ID_SPIN_COL, ID_COLLPANE, ID_POPULATE, ID_LOGSIZES };
@@ -349,4 +347,3 @@ void TestDialog::OnPopulate(wxCommandEvent& evt)
   log << wxT("Client size: ") << GetClientSize() << wxT(", window size: ") << GetSize() << wxT("\n");
   wxLogDebug( log );
 }
-

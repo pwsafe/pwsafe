@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -48,7 +48,7 @@ int PWSfileV1V2::WriteV2Header()
   // and compare it directly to VersionString to check version - a small
   // mistake that would cause a pre-2.14 executable to barf reading a database
   // written by 2.14 and later.
-  // #idef-ing this out, while correcting the code
+  // #ifdef-ing this out, while correcting the code
   // in ReadV2Header. Perhaps this can be fixed a year from now?
 #ifdef BREAK_PRE_2_14_COMPATIBILITY
   unsigned int rlen = RangeRand(62) + 2; // 64 is a trade-off...
@@ -152,7 +152,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
     PWSrand::GetInstance()->GetRandomData( m_ipthing, 8);
     SAFE_FWRITE(m_ipthing, 1, 8, m_fd);
 
-    m_fish = BlowFish::MakeBlowFish(pstr, reinterpret_cast<int &>(passLen),
+    m_fish = BlowFish::MakeBlowFish(pstr, reinterpret_cast<unsigned int &>(passLen),
                                     m_salt, SaltLength);
     if (m_curversion == V20) {
       status = WriteV2Header();
@@ -168,7 +168,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
     fread(m_salt, 1, SaltLength, m_fd);
     fread(m_ipthing, 1, 8, m_fd);
 
-    m_fish = BlowFish::MakeBlowFish(pstr, reinterpret_cast<int &>(passLen),
+    m_fish = BlowFish::MakeBlowFish(pstr, reinterpret_cast<unsigned int &>(passLen),
                                     m_salt, SaltLength);
     if (m_curversion == V20)
       status = ReadV2Header();

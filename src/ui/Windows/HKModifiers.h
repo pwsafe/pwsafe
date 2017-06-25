@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -51,15 +51,15 @@ inline WORD ConvertModifersPWS2MFC(const WORD &wPWSModifiers)
   return wHKModifiers;
 }
 
-inline WORD ConvertModifersWindows2MFC(const WORD &wModifiers)
+inline WORD ConvertModifersWindows2MFC(const WORD &wWinModifiers)
 {
   WORD wHKModifiers(0);
 
-  if (wModifiers & MOD_ALT)
+  if (wWinModifiers & MOD_ALT)
     wHKModifiers |= HOTKEYF_ALT;
-  if (wModifiers & MOD_CONTROL)
+  if (wWinModifiers & MOD_CONTROL)
     wHKModifiers |= HOTKEYF_CONTROL;
-  if (wModifiers & MOD_SHIFT)
+  if (wWinModifiers & MOD_SHIFT)
     wHKModifiers |= HOTKEYF_SHIFT;
     
   return wHKModifiers;
@@ -67,43 +67,43 @@ inline WORD ConvertModifersWindows2MFC(const WORD &wModifiers)
 
 inline WORD ConvertModifersPWS2Windows(const WORD &wPWSModifiers)
 {
-  WORD wModifiers(0);
+  WORD wWinModifiers(0);
 
   if (wPWSModifiers & PWS_HOTKEYF_ALT)
-    wModifiers |= MOD_ALT;
+    wWinModifiers |= MOD_ALT;
   if (wPWSModifiers & PWS_HOTKEYF_CONTROL)
-    wModifiers |= MOD_CONTROL;
+    wWinModifiers |= MOD_CONTROL;
   if (wPWSModifiers & PWS_HOTKEYF_SHIFT)
-    wModifiers |= MOD_SHIFT;
+    wWinModifiers |= MOD_SHIFT;
   // No MOD_EXT !
     
-  return wModifiers;
+  return wWinModifiers;
 }
 
 inline WORD ConvertModifersMFC2Windows(const WORD &wHKModifiers)
 {
-  WORD wModifiers(0);
+  WORD wWinModifiers(0);
 
   if (wHKModifiers & HOTKEYF_ALT)
-    wModifiers |= MOD_ALT;
+    wWinModifiers |= MOD_ALT;
   if (wHKModifiers & HOTKEYF_CONTROL)
-    wModifiers |= MOD_CONTROL;
+    wWinModifiers |= MOD_CONTROL;
   if (wHKModifiers & HOTKEYF_SHIFT)
-    wModifiers |= MOD_SHIFT;
+    wWinModifiers |= MOD_SHIFT;
   // No MOD_EXT !
     
-  return wModifiers;
+  return wWinModifiers;
 }
 
-inline WORD ConvertModifersWindows2PWS(const WORD &wModifiers)
+inline WORD ConvertModifersWindows2PWS(const WORD &wWinModifiers)
 {
   WORD wPWSModifiers(0);
 
-  if (wModifiers & MOD_ALT)
+  if (wWinModifiers & MOD_ALT)
     wPWSModifiers |= PWS_HOTKEYF_ALT;
-  if (wModifiers & MOD_CONTROL)
+  if (wWinModifiers & MOD_CONTROL)
     wPWSModifiers |= PWS_HOTKEYF_CONTROL;
-  if (wModifiers & MOD_SHIFT)
+  if (wWinModifiers & MOD_SHIFT)
     wPWSModifiers |= PWS_HOTKEYF_SHIFT;
   // No MOD_EXT
      

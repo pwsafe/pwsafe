@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CodeLite_Project Name="core" InternalType="Library">
   <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00060001N0005Debug0000000000000001N0006DebugE0000000000000001N0006DebugX0000000000000001N0007Release0000000000000001N0008ReleaseE0000000000000001N0008ReleaseX000000000000]]>
+    </Plugin>
     <Plugin Name="CMakePlugin">
       <![CDATA[[{
   "name": "DebugX",
@@ -21,9 +24,6 @@
   "arguments": [],
   "parentProject": ""
  }]]]>
-    </Plugin>
-    <Plugin Name="qmake">
-      <![CDATA[00060001N0005Debug0000000000000001N0006DebugE0000000000000001N0006DebugX0000000000000001N0007Release0000000000000001N0008ReleaseE0000000000000001N0008ReleaseX000000000000]]>
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="XML">
@@ -130,6 +130,22 @@
     <File Name="../src/core/DBCompareData.h"/>
     <File Name="../src/core/PWSLog.cpp"/>
     <File Name="../src/core/PWSLog.h"/>
+    <File Name="../src/core/Item.cpp"/>
+    <File Name="../src/core/Item.h"/>
+    <File Name="../src/core/ItemAtt.cpp"/>
+    <File Name="../src/core/ItemAtt.h"/>
+    <File Name="../src/core/PWSfileV4.cpp"/>
+    <File Name="../src/core/PWSfileV4.h"/>
+    <File Name="../src/core/PWStime.cpp"/>
+    <File Name="../src/core/PWStime.h"/>
+    <File Name="../src/core/PWSfileHeader.cpp"/>
+    <File Name="../src/core/PWSfileHeader.h"/>
+    <File Name="../src/core/KeyWrap.cpp"/>
+    <File Name="../src/core/KeyWrap.h"/>
+    <File Name="../src/core/pbkdf2.cpp"/>
+    <File Name="../src/core/pbkdf2.h"/>
+    <File Name="../src/core/RUEList.cpp"/>
+    <File Name="../src/core/RUEList.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release"/>
   <Dependencies Name="Debug"/>

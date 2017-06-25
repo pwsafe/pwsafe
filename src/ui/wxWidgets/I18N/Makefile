@@ -7,10 +7,10 @@ SRCS := $(wildcard $(SRC_BASE)/ui/wxWidgets/*.cpp) \
 	$(wildcard $(SRC_BASE)/ui/wxWidgets/*.h) \
 	$(wildcard $(SRC_BASE)/core/*.cpp) \
 	$(wildcard $(SRC_BASE)/core/*.h) \
-	$(wildcard $(SRC_BASE)/os/linux/*.cpp) \
-	$(wildcard $(SRC_BASE)/os/linux/*.h)
+	$(wildcard $(SRC_BASE)/os/unix/*.cpp) \
+	$(wildcard $(SRC_BASE)/os/unix/*.h)
 
-LANGS := de da es fr it ko nl pl ru sv zh
+LANGS := de da es fr hu it ko nl pl ru sv zh
 
 POS := $(patsubst %,pos/pwsafe_%.po,$(LANGS))
 
@@ -21,7 +21,7 @@ MOS := $(patsubst %,mos/%/LC_MESSAGES/pwsafe.mo,$(LANGS))
 help:
 	@echo "pot - update po template $(POT) from source code"
 	@echo "pos - update translated po files from pot file (to send to xlators)"
-	@echo "mos - regenerate compiled catralog files from translations"
+	@echo "mos - regenerate compiled catalog files from translations"
 
 
 pot: $(POT)

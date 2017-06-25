@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -98,21 +98,32 @@ bool PerformConfigMigration()
   bRetVal = false;
   bool bNoMoreNodes(false);
   CXMLprefs newXMLConfig(wsExecDirCfgFile.c_str()); // for migrating user/host to new
-  CXMLprefs oldXMLConfig(wsExecDirCfgFile.c_str()); // for reomving user/host from old
+  CXMLprefs oldXMLConfig(wsExecDirCfgFile.c_str()); // for removing user/host from old
 
   // Create the new one from it just containing our host/user
-  if (!newXMLConfig.Load())
+  if (!newXMLConfig.XML_Load())
     return false; // WTF?!?
+
   const SysInfo *si = SysInfo::GetInstance();
-  bool rc = newXMLConfig.MigrateSettings(wsDefaultCfgFile,
-                                         si->GetEffectiveHost(), si->GetEffectiveUser());
+  stringT hn = si->GetEffectiveHost();
+  PWSprefs::XMLify(charT('H'), hn);
+  stringT un = si->GetEffectiveUser();
+  PWSprefs::XMLify(charT('u'), un);
+
+  stringT csHKCU_PREF = _T("Pwsafe_Settings\\");
+  csHKCU_PREF += hn.c_str();
+  csHKCU_PREF += _T("\\");
+  csHKCU_PREF += un.c_str();
+  csHKCU_PREF += _T("\\Preferences");
+
+  bool rc = newXMLConfig.MigrateSettings(wsDefaultCfgFile, hn, un);
   if (rc) {
     // That worked, now remove us from the old one config file
     // in the Installation directory
     newXMLConfig.Unlock();
 
     // Since we now have new config file, remove host/user from old.
-    if (!oldXMLConfig.Load()) {
+    if (!oldXMLConfig.XML_Load()) {
       rc = false;
       if (!oldXMLConfig.getReason().empty()) {
         CGeneralMsgBox gmb;
@@ -133,11 +144,9 @@ bool PerformConfigMigration()
     // Now remove this hostname/username from old configuration file in the
     // installation directory (as long as everything OK and it is not R-O)
     if (rc && !bExecCFRO) {
-      rc = oldXMLConfig.RemoveHostnameUsername(si->GetEffectiveHost(),
-                                               si->GetEffectiveUser(), bNoMoreNodes);
+      rc = oldXMLConfig.RemoveHostnameUsername(hn, un, bNoMoreNodes);
       if (rc) {
-        // Save it
-        oldXMLConfig.Store();
+        oldXMLConfig.XML_Store(csHKCU_PREF);
 
         // However, if no more host/user nodes in this file - delete the
         // configuration file from the installation directory!

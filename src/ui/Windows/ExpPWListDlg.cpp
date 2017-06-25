@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -9,6 +9,7 @@
 //
 
 #include "stdafx.h"
+
 #include "ExpPWListDlg.h"
 #include "DboxMain.h"
 #include "SecString.h"
@@ -87,15 +88,14 @@ void CExpPWListDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CExpPWListDlg, CPWDialog)
   ON_BN_CLICKED(IDOK, OnOK)
   ON_BN_CLICKED(ID_HELP, OnIconHelp)
-  ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
-  ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
+  ON_NOTIFY(HDN_ITEMCLICK, 0, OnHeaderClicked)
   ON_NOTIFY(NM_DBLCLK, IDC_EXPIRED_PASSWORD_LIST, OnItemDoubleClick)
   ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // CExpPWListDlg message handlers
 
-BOOL CExpPWListDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CExpPWListDlg::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
@@ -135,11 +135,9 @@ BOOL CExpPWListDlg::OnInitDialog()
 
   m_pImageList = new CImageList();
   // Number (12) corresponds to number in CPWTreeCtrl public enum
-  BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight,
-                                     ILC_MASK | ILC_COLORDDB,
-                                     CPWTreeCtrl::NUM_IMAGES, 0);
-  ASSERT(status != 0);
-
+  VERIFY(m_pImageList->Create(bm.bmWidth, bm.bmHeight,
+                              ILC_MASK | ILC_COLORDDB,
+                              CPWTreeCtrl::NUM_IMAGES, 0));
   // Order of LoadBitmap() calls matches CPWTreeCtrl public enum
   // Also now used by CListCtrl!
   //bitmap.LoadBitmap(IDB_GROUP); - already loaded above to get width
@@ -196,13 +194,13 @@ BOOL CExpPWListDlg::OnInitDialog()
     int nColumnWidth = m_expPWListCtrl.GetColumnWidth(i);
     m_expPWListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
     int nHeaderWidth = m_expPWListCtrl.GetColumnWidth(i);
-    m_expPWListCtrl.SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
+    m_expPWListCtrl.SetColumnWidth(i, std::max(nColumnWidth, nHeaderWidth));
   }
 
   // Redraw
   m_expPWListCtrl.SetRedraw(TRUE);
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CExpPWListDlg::OnOK()
@@ -224,17 +222,6 @@ void CExpPWListDlg::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult)
     m_iSortedColumn = phdn->iItem;
     m_expPWListCtrl.SortItems(ExpPWCompareFunc, (LPARAM)this);
 
-    // Note: WINVER defines the minimum system level for which this is program compiled and
-    // NOT the level of system it is running on!
-    // In this case, these values are defined in Windows XP and later and supported
-    // by V6 of comctl32.dll (supplied with Windows XP) and later.
-    // They should be ignored by earlier levels of this dll or .....
-    //     we can check the dll version (code available on request)!
-
-#if (WINVER < 0x0501)  // These are already defined for WinXP and later
-#define HDF_SORTUP 0x0400
-#define HDF_SORTDOWN 0x0200
-#endif
     HDITEM HeaderItem;
     HeaderItem.mask = HDI_FORMAT;
     m_expPWListCtrl.GetHeaderCtrl()->GetItem(m_iSortedColumn, &HeaderItem);

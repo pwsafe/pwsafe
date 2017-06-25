@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -26,22 +26,31 @@ DboxMain *CPWPropertyPage::GetMainDlg() const
   return app.GetMainDlg();
 }
 
-void CPWPropertyPage::InitToolTip(int Flags, int delayTimeFactor)
+bool CPWPropertyPage::InitToolTip(int Flags, int delayTimeFactor)
 {
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, Flags)) {
     pws_os::Trace(L"Unable To create ToolTip\n");
     delete m_pToolTipCtrl;
     m_pToolTipCtrl = NULL;
+    return false;
   } else {
     EnableToolTips();
     // Delay initial show & reshow
-    int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-    m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, iTime);
-    m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, iTime);
-    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, iTime * delayTimeFactor);
+    if (delayTimeFactor == 0) {
+      // Special case for Question Mark 'button'
+      m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, 0);
+      m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, 0);
+      m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 30000);
+    } else {
+      int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+      m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, iTime);
+      m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, iTime);
+      m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, iTime * delayTimeFactor);
+    }
     m_pToolTipCtrl->SetMaxTipWidth(300);
   }
+  return true;
 }
 
 void CPWPropertyPage::AddTool(int DlgItemID, int ResID)
@@ -85,4 +94,3 @@ LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
   return CPropertyPage::WindowProc(message, wParam, lParam);
 }
-

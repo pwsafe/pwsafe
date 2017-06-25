@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -71,7 +71,6 @@ bool CKeySend::SimulateApplicationSwitch(void)
 }
 #endif
 
-
 void CKeySend::SelectAll() const
 {
   const bool selectedAll = pws_os::SelectAll();
@@ -86,4 +85,21 @@ void CKeySend::EmulateMods(bool /*emulate*/)
 bool CKeySend::IsEmulatingMods() const
 {
   return false;
+}
+
+void CKeySend::SendVirtualKey(WORD, bool, bool, bool)
+{
+}
+void CKeySend::SetOldSendMethod(bool)
+{
+}
+
+bool CKeySend::LookupVirtualKey(const StringX &, WORD &)
+{
+  return false;
+}
+
+stringT CKeySend::GetKeyName(WORD , bool)
+{
+  return stringT(_T(""));
 }

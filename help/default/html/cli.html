@@ -57,8 +57,8 @@ is meant for starting the application upon login, via a shortcut in the user's
 Startup folder). <b>Note:</b> This implicitly puts the application in the system tray.</li>
 
 <li><i>pwsafe</i> <b>-m</b><br>
-<big><span style="width: 500px;"><font size="-1"><big>This is the same as the '<b>-c</b>' option, with the
-addition that the application is started as minimized.</big></font></span></big></li>
+This is the same as the '<b>-c</b>' option, with the addition that the application
+is started as minimized.</li>
 </ul>
 
 <p>In addition, the following options are accepted and may be useful if you wish to
@@ -75,23 +75,31 @@ This will cause the application to read and write preferences under the specifie
 <i>hostname</i>, instead of under the machine's name.</li>
 
 <li><b>-g</b> <i>config_file</i><br>
-This will cause the specified file to be used for loading and storing
-preferences, instead of the default pwsafe.cfg. If just a filename is
-given, without a path, it will be searched for in the directory in which the
-application was invoked. Note that if the filename and/or path has
-spaces, it should be enclosed in double quotes. This is useful in a
-  "wrapper" script/batch file on a portable device (e.g., disk-on-key),
-  setting the config dir as needed. See also the description of
-  <b>PWS_PREFSDIR</b> in
-  the <a href="preferences.html">Preferences</a> Section.</li> 
+This will cause the specified file to be used for loading and storing preferences,
+instead of the default pwsafe.cfg. If just a filename is given, without a path,
+it will be searched for in the directory in which the application was invoked
+unless overridden by the <b>PWS_PREFSDIR</b> environment variable (see its description
+in the <a href="preferences.html">Preferences</a> Section). Note that if the filename
+and/or path has spaces, it should be enclosed in double quotes.</li> 
 </ul>
+
+<p>Note: As the configuration file uses XML, the username and hostname must satisfy the
+XML standards:
+<ul>
+<li>The first character must be alphanumeric. If not, a "u" will be prefixed to the username
+and a "h" will be prefixed to the hostname as appropriate.</li>
+<li>They must only contain alphanumeric characters or one or more of the underscore, hyphen,
+colon or full stop characters ("_-:."). If other characters are present, they will be replaced by the
+underscore ("_").</li>
+</ul>
+</p>
 
 <p>Finally, there are some special command line flags beginning with "--".  They are:
 </p>
 
 <ul>
 <li><b>--do-tall, --do-wide, --do-auto</b><br>
-By default, <b>Password Safe</b> will check the screen dimensions and choose tall or wide versions of the larger dialog screens. Specifying <b>--do-tall</b> or <b>--do-wide</b> forces the choice, and <b>--do-auto</b> resets the system to use its internal logic. Note that this sets a <a href="preferences.html">>preference</a>, so it's enough to use this flag once on a given machine.</li>
+By default, <b>Password Safe</b> will check the screen dimensions and choose tall or wide versions of the larger dialog screens. Specifying <b>--do-tall</b> or <b>--do-wide</b> forces the choice, and <b>--do-auto</b> resets the system to use its internal logic. Note that this sets a <a href="preferences.html">preference</a>, so it's enough to use this flag once on a given machine.</li>
 <li><b>--novalidate</b><br>
 This will prevent <b>Password Safe</b> validating databases automatically when they are
 opened.  Some validation is always required e.g. uniqueness of the entry's ID and the
@@ -99,14 +107,14 @@ group/title/username combination.</li>
 
 <li><b>--testdump</b><br>
 This allows testers to verify the mini-dump production when <b>Password Safe</b> has
-a problem to help developers resolve the isssue.</li>
+a problem to help developers resolve the issue.</li>
 
 <li><b>--cetreeview</b><br>
 A new feature allows two entries to be selected and compared either via the Edit menu or
 by right-clicking on either.  Selecting more than one entry is natively supported
 in the List view but not in the Tree view.  This flag enables "Compare Entries"
 in the Tree view via an extra dialog to select the "other" entry.  Supporting
-multiple selction in the Tree view is under development.  Once supported,
+multiple selection in the Tree view is under development.  Once supported,
 this flag will be ignored.</li>
 </ul>
 

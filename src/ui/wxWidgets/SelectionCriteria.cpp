@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -33,8 +33,8 @@ CItemData::FieldType subgroups[] = {  CItemData::GROUP,
 struct _subgroupFunctions {
   const wxString name;
   PWSMatch::MatchRule function;
-  // Following ctor's required to shut up some compier warnings
-  _subgroupFunctions() : name(wxT("")), function(PWSMatch::MR_INVALID) {}
+  // Following ctor's required to shut up some compiler warnings
+  _subgroupFunctions() : name(wxEmptyString), function(PWSMatch::MR_INVALID) {}
   _subgroupFunctions(const wxString &aname, PWSMatch::MatchRule afunction) :
     name(aname), function(afunction) {}
 } subgroupFunctions[] = {                         {_("equals"),              PWSMatch::MR_EQUALS},
@@ -104,9 +104,9 @@ wxString SelectionCriteria::GetGroupSelectionDescription() const
   if (!m_fUseSubgroups)
     return _("All entries");
   else
-    return wxString(_("Entries whose ")) << GetSelectableFieldName(subgroups[m_subgroupObject]) << wxT(' ')
-            << subgroupFunctions[m_subgroupFunction].name << wxT(" \"") << m_subgroupText
-            << wxT("\" [") << (m_fCaseSensitive? wxT("") : _("not ")) << _("case-sensitive]");
+    return wxString(_("Entries whose ")) << GetSelectableFieldName(subgroups[m_subgroupObject]) << wxS(' ')
+            << subgroupFunctions[m_subgroupFunction].name << wxS(" \"") << m_subgroupText
+                                         << wxS("\" [") << (m_fCaseSensitive? wxS("") : _("not ")) << _("case-sensitive]");
 }
 
 //static
@@ -139,4 +139,3 @@ bool SelectionCriteria::GetFieldSelection(wxArrayString& selectedFields, wxArray
   }
   return m_bsFields.count() == NumberOf(selectableFields);
 }
-

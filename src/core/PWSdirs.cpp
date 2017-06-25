@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -15,7 +15,7 @@
 * The functions here return values that cause the application
 * to default to current behaviour, UNLESS the U3 (www.u3.com) env. vars
 * are defined, in which case values corresponding to the U3 layout are used,
-* as follows (corrsponding to the layout in the .u3p package):
+* as follows (corresponding to the layout in the .u3p package):
 *
 * GetSafeDir()   Default database directory:
 *                U3_DEVICE_DOCUMENT_PATH\My Safes\

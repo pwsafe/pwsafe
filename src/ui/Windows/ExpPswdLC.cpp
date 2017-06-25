@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -34,7 +34,7 @@ CExpPswdLC::~CExpPswdLC()
 BEGIN_MESSAGE_MAP(CExpPswdLC, CListCtrl)
   //{{AFX_MSG_MAP(CExpPswdLC)
   ON_WM_MOUSEMOVE()
-  ON_NOTIFY_EX(TTN_NEEDTEXTW, 0, OnToolTipText)
+  ON_NOTIFY_EX(TTN_NEEDTEXT, 0, OnToolTipText)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -59,7 +59,7 @@ void CExpPswdLC::PreSubclassWindow()
   }
 }
 
-BOOL CExpPswdLC::PreTranslateMessage(MSG* pMsg)
+BOOL CExpPswdLC::PreTranslateMessage(MSG *pMsg)
 {
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);
@@ -172,7 +172,7 @@ BOOL CExpPswdLC::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLRes
     else
       return FALSE;  // no tooltip
   } else {
-    return FALSE;  // no ooltip
+    return FALSE;  // no tooltip
   }
 
   wcsncpy_s(pTTTW->szText, _countof(pTTTW->szText),

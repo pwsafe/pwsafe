@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -21,6 +21,7 @@
 #include "PWSfile.h"
 #include "PWSfileV4.h"
 #include "PWStime.h"
+#include "PWHistory.h"
 
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
@@ -400,8 +401,6 @@ int CItemData::WriteUnknowns(PWSfile *out) const
   return PWSfile::SUCCESS;
 }
 
-
-
 //-----------------------------------------------------------------------------
 // Accessors
 
@@ -409,64 +408,105 @@ StringX CItemData::GetFieldValue(FieldType ft) const
 {
   if (IsTextField(static_cast<unsigned char>(ft)) && ft != GROUPTITLE &&
       ft != NOTES && ft != PWHIST) {
+    // Standard String fields
     return GetField(ft);
   } else {
+    // Non-string fields or string fields that need special processing
     StringX str(_T(""));
     switch (ft) {
-    case GROUPTITLE: /* 00 */
+    case GROUPTITLE:  /* 0x00 */
       str = GetGroup() + TCHAR('.') + GetTitle();
       break;
-    case UUID:       /* 01 */
-      {
-        uuid_array_t uuid_array = {0};
-        GetUUID(uuid_array);
-        str = CUUID(uuid_array, true);
-        break;
-      }
-    case NOTES:      /* 05 */
-      return GetNotes();
-    case CTIME:      /* 07 */
-      return GetCTimeL();
-    case PMTIME:     /* 08 */
-      return GetPMTimeL();
-    case ATIME:      /* 09 */
-      return GetATimeL();
-    case XTIME:      /* 0a */
-      {
-        int32 xint(0);
-        str = GetXTimeL();
-        GetXTimeInt(xint);
-        if (xint != 0)
-          str += _T(" *");
-        return str;
-      }
-    case RESERVED:   /* 0b */
+    case UUID:        /* 0x01 */
+    {
+      uuid_array_t uuid_array = {0};
+      GetUUID(uuid_array);
+      str = CUUID(uuid_array, true);
       break;
-    case RMTIME:     /* 0c */
+    }
+    case NOTES:        /* 0x05 */
+      return GetNotes();
+    case CTIME:        /* 0x07 */
+      return GetCTimeL();
+    case PMTIME:       /* 0x08 */
+      return GetPMTimeL();
+    case ATIME:        /* 0x09 */
+      return GetATimeL();
+    case XTIME:        /* 0x0a */
+    {
+      int32 xint(0);
+      str = GetXTimeL();
+      GetXTimeInt(xint);
+      if (xint != 0)
+        str += _T(" *");
+      return str;
+    }
+    case RESERVED:     /* 0x0b */
+      break;
+    case RMTIME:       /* 0x0c */
       return GetRMTimeL();
-    case PWHIST:     /* 0f */
+    case PWHIST:       /* 0x0f */
       return GetPWHistory();
-    case XTIME_INT:  /* 11 */
+    case XTIME_INT:    /* 0x11 */
       return GetXTimeInt();
-    case DCA:        /* 13 */
+    case DCA:          /* 0x13 */
       return GetDCA();
-    case PROTECTED:  /* 15 */
-      {
-        unsigned char uc;
-        StringX sxProtected = _T("");
-        GetProtected(uc);
-        if (uc != 0)
-          LoadAString(sxProtected, IDSC_YES);
-        return sxProtected;
-      }
-    case SHIFTDCA:   /* 17 */
+    case PROTECTED:    /* 0x15 */
+    {
+      unsigned char uc;
+      StringX sxProtected = _T("");
+      GetProtected(uc);
+      if (uc != 0)
+        LoadAString(sxProtected, IDSC_YES);
+      return sxProtected;
+    }
+    case SHIFTDCA:     /* 0x17 */
       return GetShiftDCA();
-    case KBSHORTCUT: /* 19 */
+    case KBSHORTCUT:   /* 0x19 */
       return GetKBShortcut();
+    case ATTREF:       /* 0x1a */
+    case BASEUUID:     /* 0x41 */
+    case ALIASUUID:    /* 0x42 */
+    case SHORTCUTUUID: /* 0x43 */
+    {
+      uuid_array_t uuid_array = { 0 };
+      GetUUID(uuid_array, ft);
+      str = CUUID(uuid_array, true);
+      break;
+    }
     default:
       ASSERT(0);
     }
     return str;
+  }
+}
+
+StringX CItemData::GetEffectiveFieldValue(FieldType ft, const CItemData *pbci) const
+{
+  if (IsNormal() || IsBase())
+    return GetField(ft);
+
+  // Here if we're a dependent;
+  ASSERT(IsDependent());
+  ASSERT(pbci != NULL);
+
+  if (IsAlias()) {
+    // Only current and password history are taken from base entry
+    // Everything else is from the actual entry
+    if (ft == PASSWORD || ft == PWHIST)
+      return pbci->GetField(ft);
+    else
+      return GetField(ft);
+  } else if (IsShortcut()) {
+    // For a shortcut everything is taken from its base entry,
+    // except the group, title and user.
+    if (ft == GROUP || ft == TITLE || ft == USER)
+      return GetField(ft);
+    else
+      return pbci->GetField(ft);
+  } else {
+    ASSERT(0);
+    return _T("");
   }
 }
 
@@ -524,9 +564,10 @@ void CItemData::GetUUID(uuid_array_t &uuid_array, FieldType ft) const
   if (fiter == m_fields.end()) {
     pws_os::Trace(_T("CItemData::GetUUID(uuid_array_t) - no UUID found!\n"));
     memset(uuid_array, 0, length);
-  } else
+  } else {
     CItem::GetField(fiter->second,
                     static_cast<unsigned char *>(uuid_array), length);
+  }
 }
 
 const CUUID CItemData::GetUUID(FieldType ft) const
@@ -700,6 +741,11 @@ StringX CItemData::GetPWHistory() const
   if (ret == _T("0") || ret == _T("00000"))
     ret = _T("");
   return ret;
+}
+
+StringX CItemData::GetPreviousPassword() const
+{
+  return ::GetPreviousPassword(GetField(PWHIST));
 }
 
 StringX CItemData::GetPlaintext(const TCHAR &separator,
@@ -1120,7 +1166,7 @@ void CItemData::SplitName(const StringX &name,
     }
   } else {
     /*
-    * There should never ever be both a SPLITCHR and a DEFUSERCHR in
+    * There should never ever be both a SPLTCHR and a DEFUSERCHR in
     * the same string
     */
     StringX temp;
@@ -1353,6 +1399,33 @@ bool CItemData::SetTime(int whichtime, const stringT &time_str)
         return true;
       }
   return false;
+}
+
+void CItemData::SetDuplicateTimes(const CItemData &src)
+{
+  // As per FR819
+  // Note: potential date/time inconsistencies that should not be "fixed"
+  // during open validation i.e. fields changed before the entry was created!
+
+  // Set creation time to now but keep all others unchanged.
+  // (ignore last access time as will be updated if the user has requested
+  // that these are maintained).
+  SetCTime();
+
+  time_t original_creation_time, t;
+  original_creation_time = src.GetCTime(original_creation_time);
+
+  // If the password & entry modification times are zero, they haven't
+  // been changed since the entry was created.  Use original creation times.
+  if (!src.IsShortcut()) {
+    // Shortcuts don't have a password that a user can change
+    t = src.GetPMTime(t);
+    SetPMTime(t == 0 ? original_creation_time : t);
+  }
+
+  // Set record modification time
+  t = src.GetRMTime(t);
+  SetRMTime(t == 0 ? original_creation_time : t);
 }
 
 void CItemData::SetXTimeInt(int32 xint)
@@ -1653,7 +1726,7 @@ bool CItemData::Matches(int num1, int num2, int iObject,
       GetSize(reinterpret_cast<size_t &>(iValue));
       break;
     case PASSWORDLEN:
-      iValue = GetPasswordLength();
+      iValue = (int)GetPasswordLength();
       break;
     case KBSHORTCUT:
       GetKBShortcut(iValue);
@@ -1692,7 +1765,7 @@ bool CItemData::Matches(int16 dca, int iFunction, const bool bShift) const
   return false;
 }
 
-bool CItemData::Matches(time_t time1, time_t time2, int iObject,
+bool CItemData::MatchesTime(time_t time1, time_t time2, int iObject,
                         int iFunction) const
 {
   //   Check time values are selected
@@ -1933,7 +2006,7 @@ bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t l
       break;
     default:
       // unknowns!
-      SetUnknownField(char(type), len, data);
+      SetUnknownField(type, len, data);
       break;
   }
   return true;
@@ -1999,7 +2072,6 @@ static void push(vector<char> &v, char type,
       pws_os::Trace(_T("ItemData.cpp: push(%ls): ToUTF8 failed!\n"), str.c_str());
   }
 }
-
 
 void CItemData::SerializePlainText(vector<char> &v,
                                    const CItemData *pcibase)  const
@@ -2140,7 +2212,7 @@ stringT CItemData::EngFieldName(FieldType ft)
   case XTIME_INT:  return _T("Password Expiry Interval");
   case RUNCMD:     return _T("Run Command");
   case DCA:        return _T("DCA");
-  case SHIFTDCA:   return _T("Shift-DCA");
+  case SHIFTDCA:   return _T("Shift+DCA");
   case EMAIL:      return _T("e-mail");
   case PROTECTED:  return _T("Protected");
   case SYMBOLS:    return _T("Symbols");
@@ -2155,4 +2227,3 @@ stringT CItemData::EngFieldName(FieldType ft)
     return _T("");
   };
 }
-

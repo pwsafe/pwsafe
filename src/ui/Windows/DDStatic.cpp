@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -67,7 +67,6 @@ public:
     //  Only process the request if data has been dropped.
     SCODE sCode = COleDropSource::QueryContinueDrag(bEscapePressed, dwKeyState);
     if (sCode == DRAGDROP_S_DROP) {
-      pws_os::Trace(L"CStaticDropSource::QueryContinueDrag - dropped\n");
       m_DDstatic.EndDrop();
     }
     return sCode;
@@ -90,26 +89,18 @@ public:
 
   DROPEFFECT StartDragging(RECT *rClient)
   {
-    //pws_os::Trace(L"CStaticDataSource::StartDragging\n");
-
     DelayRenderData(CF_UNICODETEXT);
     DelayRenderData(CF_TEXT);
 
-    //pws_os::Trace(L"CStaticDataSource::StartDragging - calling DoDragDrop\n");
     DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY, rClient, m_pDropSource);
 
-    //pws_os::Trace(L"CStaticDataSource::StartDragging - returned from DoDragDrop, dropEffect=%d\n",
-    //  dropEffect);
-
     if (m_DDstatic.m_hgDataTXT != NULL) {
-      //pws_os::Trace(L"CStaticDataSource::StartDragging - Unlock/Free m_hgDataTXT\n");
       GlobalUnlock(m_DDstatic.m_hgDataTXT);
       GlobalFree(m_DDstatic.m_hgDataTXT);
       m_DDstatic.m_hgDataTXT = NULL;
     }
 
     if (m_DDstatic.m_hgDataUTXT != NULL) {
-      //pws_os::Trace(L"CStaticDataSource::StartDragging - Unlock/Free m_hgDataUTXT\n");
       GlobalUnlock(m_DDstatic.m_hgDataUTXT);
       GlobalFree(m_DDstatic.m_hgDataUTXT);
       m_DDstatic.m_hgDataUTXT = NULL;
@@ -144,10 +135,13 @@ CDDStatic::~CDDStatic()
 {
   m_pDropTarget->Revoke();
 
-  // see comment in constructor re these member variables
+  // Don't delete m_pDataSource but first release all references and
+  // this routine will delete it when the references get to 0.
+  m_pDataSource->InternalRelease();
+
+  // delete the Drop Target & Source
   delete m_pDropTarget;
   delete m_pDropSource;
-  delete m_pDataSource;
 }
 
 void CDDStatic::Init(const UINT nImageID, const UINT nDisabledImageID)
@@ -158,18 +152,15 @@ void CDDStatic::Init(const UINT nImageID, const UINT nDisabledImageID)
   m_nID = GetDlgCtrlID();
 
   // Load bitmap
-  BOOL brc;
-  brc = m_OKbitmap.Attach(::LoadImage(
+  VERIFY(m_OKbitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
-  ASSERT(brc);
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
 
-  brc = m_NOTOKbitmap.Attach(::LoadImage(
+  VERIFY(m_NOTOKbitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nDisabledImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nDisabledImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
-  ASSERT(brc);
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
 
   const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
   SetBitmapBackground(m_OKbitmap, crCOLOR_3DFACE);
@@ -186,18 +177,15 @@ void CDDStatic::ReInit(const UINT nImageID, const UINT nDisabledImageID)
   m_OKbitmap.Detach();
   m_NOTOKbitmap.Detach();
 
-  BOOL brc;
-  brc = m_OKbitmap.Attach(::LoadImage(
+  VERIFY(m_OKbitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
-  ASSERT(brc);
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
   
-  brc = m_NOTOKbitmap.Attach(::LoadImage(
+  VERIFY(m_NOTOKbitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nDisabledImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nDisabledImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
-  ASSERT(brc);
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
 
   const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
   SetBitmapBackground(m_OKbitmap, crCOLOR_3DFACE);
@@ -311,7 +299,6 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
 
     // Start dragging
     m_bDropped = false;
-    //pws_os::Trace(L"CDDStatic::OnMouseMove: call m_pDataSource->StartDragging\n");
     DROPEFFECT de = m_pDataSource->StartDragging(&rClient);
 
     if (de == DROPEFFECT_NONE) {
@@ -338,7 +325,6 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
       }
       pws_os::Trace(L"m_pDataSource->StartDragging() failed\n");
     } else {
-      pws_os::Trace(L"CDDStatic::OnMouseMove() show cursor\n");
       while (ShowCursor(TRUE) < 0)
         ;
     }
@@ -414,23 +400,17 @@ void CDDStatic::SendToClipboard()
 
 BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
 {
-  pws_os::Trace(L"CDDStatic::OnRenderGlobalData: %s; ci == %p\n",
-          lpFormatEtc->cfFormat == CF_UNICODETEXT ? L"CF_UNICODETEXT" : L"CF_TEXT",
-          m_pci);
-
   if (lpFormatEtc->cfFormat != CF_UNICODETEXT &&
       lpFormatEtc->cfFormat != CF_TEXT)
     return FALSE;
 
   if (m_hgDataTXT != NULL) {
-    pws_os::Trace(L"CDDStatic::OnRenderGlobalData - Unlock/Free m_hgDataTXT\n");
     GlobalUnlock(m_hgDataTXT);
     GlobalFree(m_hgDataTXT);
     m_hgDataTXT = NULL;
   }
 
   if (m_hgDataUTXT != NULL) {
-    pws_os::Trace(L"CDDStatic::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n");
     GlobalUnlock(m_hgDataUTXT);
     GlobalFree(m_hgDataUTXT);
     m_hgDataUTXT = NULL;
@@ -439,7 +419,6 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   StringX cs_dragdata;
   if (m_pci == NULL) {
     if (m_groupname.empty()) {
-      pws_os::Trace(L"CDDStatic::OnRenderGlobalData - mpci == NULL\n");
       return FALSE;
     } else {
       cs_dragdata = m_groupname;
@@ -473,7 +452,6 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     // So is requested data!
     dwBufLen = (DWORD)((ilen + 1) * sizeof(wchar_t));
     lpszW = new WCHAR[ilen + 1];
-    //pws_os::Trace(L"lpszW allocated %p, size %d\n", lpszW, dwBufLen);
     if (ilen == 0) {
       lpszW[ilen] = L'\0';
     } else {
@@ -490,7 +468,6 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
       dwBufLen = WideCharToMultiByte(CP_ACP, 0, lpszW, -1, NULL, 0, NULL, NULL);
       ASSERT(dwBufLen != 0);
       lpszA = new char[dwBufLen];
-      pws_os::Trace(L"lpszA allocated %p, size %d\n", lpszA, dwBufLen);
       WideCharToMultiByte(CP_ACP, 0, lpszW, -1, lpszA, dwBufLen, NULL, NULL);
       lpszW = NULL;
     }
@@ -509,7 +486,6 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
 
   BOOL retval(FALSE);
   if (*phGlobal == NULL) {
-    //pws_os::Trace(L"CDDStatic::OnRenderGlobalData - Alloc global memory\n");
     *phgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwBufLen);
     ASSERT(*phgData != NULL);
     if (*phgData == NULL)
@@ -533,7 +509,6 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
       pws_os::Trace(L"CDDStatic::OnRenderGlobalData - NOT enough room - FAIL\n");
     } else {
       // Enough room - copy our data into supplied area
-      pws_os::Trace(L"CDDStatic::OnRenderGlobalData - enough room - copy our data\n");
       LPVOID pInGlobalLock = GlobalLock(*phGlobal);
       ASSERT(pInGlobalLock != NULL);
       if (pInGlobalLock == NULL)
@@ -549,9 +524,7 @@ bad_return:
   // Finished with buffer - trash it
   trashMemory(lpDataBuffer, dwBufLen);
   // Free the strings (only one is actually in use)
-  //pws_os::Trace(L"lpszA freed %p\n", lpszA);
   delete[] lpszA;
-  //pws_os::Trace(L"lpszW freed %p\n", lpszW);
   delete[] lpszW;
   // Since lpDataBuffer pointed to one of the above - just zero the pointer
   lpDataBuffer = NULL;
@@ -565,13 +538,16 @@ bad_return:
       *phgData = NULL;
     }
   } else {
+    /*
     pws_os::Trace(L"CDDStatic::OnRenderGlobalData - D&D Data:");
     if (lpFormatEtc->cfFormat == CF_UNICODETEXT) {
       pws_os::Trace(L"\"%ls\"\n", (LPWSTR)lpData);  // data is Unicode
     } else {
-      pws_os::Trace(L"\"%hs\"\n", (LPSTR)lpData);  // data is NOT Unicode
+      pws_os::Trace(L"\"%hs\"\n", (LPSTR)lpData);   // data is NOT Unicode
     }
+    */
   }
+
   // Unlock our buffer
   if (lpData != NULL)
     GlobalUnlock(*phgData);

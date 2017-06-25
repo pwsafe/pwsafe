@@ -78,7 +78,7 @@ debtree:
 	@$(CHMOD) 0755 debian/usr/bin/pwsafe
 	@strip debian/usr/bin/pwsafe
 	@$(CP) $(DOCS) debian/usr/share/doc/passwordsafe
-	@$(CAT) ../copyright ../../LICENSE > \
+	@$(CP) copyright.debian \
 		debian/usr/share/doc/passwordsafe/copyright
 	@$(CP) ./changelog.Debian debian/usr/share/doc/passwordsafe
 	@(cd debian/usr/share/doc/passwordsafe; \

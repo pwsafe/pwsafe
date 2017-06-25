@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string>pwsafe.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.pwsafe.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -23,7 +23,7 @@
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>© 2003-2016 Copyright Rony Shapiro
+	<string>© 2003-2017 Copyright Rony Shapiro
 All rights reserved</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>

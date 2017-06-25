@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -24,7 +24,7 @@
 #include <sstream>
 
 #include "YubiMixin.h"
-#include "os/linux/PWYubi.h"
+#include "os/unix/PWYubi.h"
 #include "os/sleep.h"
 
 void CYubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
@@ -38,7 +38,6 @@ void CYubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
   if (m_btn != NULL) m_btn->Show(yubiExists());
   if (m_status != NULL) m_status->Show(yubiExists());
 }
-
 
 bool CYubiMixin::yubiExists() const
 {
@@ -169,7 +168,6 @@ bool CYubiMixin::PerformChallengeResponse(wxWindow *win,
   return retval;
 }
 
-
 StringX CYubiMixin::Bin2Hex(const unsigned char *buf, int len) const
 {
   std::wostringstream os;
@@ -180,4 +178,3 @@ StringX CYubiMixin::Bin2Hex(const unsigned char *buf, int len) const
   }
   return StringX(os.str().c_str());
 }
-

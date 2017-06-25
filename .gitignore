@@ -4,12 +4,16 @@ deps
 lib
 obj
 build
-_build
+_build*
 ipch
 *.sdf
 *.opensdf
 *.suo
 *.wixpdb
+*.wixobj
+pwsafe*.msi
 *.props
 *.stackdump
+*.vc.opendb
 /.vs
+*.VC.db

@@ -1,0 +1,9 @@
+# This file uniquely determines version of wxWidgets build
+# for all build systems
+# VER_MAJOR and VER_MINOR are mandatory, all except VER_SPECIAL must
+# be integers
+
+VER_MAJOR = 1
+VER_MINOR = 02
+VER_REV = 0
+VER_SPECIAL = BETA

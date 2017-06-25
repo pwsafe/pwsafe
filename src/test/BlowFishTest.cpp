@@ -1,6 +1,6 @@
 
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -196,4 +196,3 @@ c=05044B62FA52D080 k[24]=F0E1D2C3B4A5968778695A4B3C2D1E0F0011223344556677
       EXPECT_TRUE(memcmp(tmp, plaintext_vk[i], 8) == 0) << "Test vector " << i;
     }
   }
-

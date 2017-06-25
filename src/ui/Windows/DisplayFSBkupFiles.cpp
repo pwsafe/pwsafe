@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -90,20 +90,22 @@ BOOL CDisplayFSBkupFiles::OnInitDialog()
   m_RFListCtrl.InsertColumn(2, cs_text, LVCFMT_CENTER);
   cs_text.LoadString(IDS_NUMGROUPS);
   m_RFListCtrl.InsertColumn(3, cs_text, LVCFMT_CENTER);
-  cs_text.LoadString(IDS_NUMENTRIES);
+  cs_text.LoadString(IDS_NUMEMPTYGROUPS);
   m_RFListCtrl.InsertColumn(4, cs_text, LVCFMT_CENTER);
-  cs_text.LoadString(IDS_NUMATTACHMENTS);
+  cs_text.LoadString(IDS_NUMENTRIES);
   m_RFListCtrl.InsertColumn(5, cs_text, LVCFMT_CENTER);
+  cs_text.LoadString(IDS_NUMATTACHMENTS);
+  m_RFListCtrl.InsertColumn(6, cs_text, LVCFMT_CENTER);
   cs_text.LoadString(IDS_WHENSAVED);
-  m_RFListCtrl.InsertColumn(6, cs_text);
-  cs_text.LoadString(IDS_WHOSAVED);
   m_RFListCtrl.InsertColumn(7, cs_text);
-  cs_text.LoadString(IDS_WHATSAVED);
+  cs_text.LoadString(IDS_WHOSAVED);
   m_RFListCtrl.InsertColumn(8, cs_text);
-  cs_text.LoadString(IDS_FILEUUID);
+  cs_text.LoadString(IDS_WHATSAVED);
   m_RFListCtrl.InsertColumn(9, cs_text);
+  cs_text.LoadString(IDS_FILEUUID);
+  m_RFListCtrl.InsertColumn(10, cs_text);
   cs_text.LoadString(IDS_UNKNFLDS);
-  m_RFListCtrl.InsertColumn(10, cs_text, LVCFMT_CENTER);
+  m_RFListCtrl.InsertColumn(11, cs_text, LVCFMT_CENTER);
 
   int nPos = 0;
 
@@ -113,13 +115,14 @@ BOOL CDisplayFSBkupFiles::OnInitDialog()
   m_RFListCtrl.SetItemText(nPos, 1, cs_text);
   m_RFListCtrl.SetItemText(nPos, 2, m_st_dbpcore.databaseformat.c_str());
   m_RFListCtrl.SetItemText(nPos, 3, m_st_dbpcore.numgroups.c_str());
-  m_RFListCtrl.SetItemText(nPos, 4, m_st_dbpcore.numentries.c_str());
-  m_RFListCtrl.SetItemText(nPos, 5, m_st_dbpcore.numattachments.c_str());
-  m_RFListCtrl.SetItemText(nPos, 6, m_st_dbpcore.whenlastsaved.c_str());
-  m_RFListCtrl.SetItemText(nPos, 7, m_st_dbpcore.wholastsaved.c_str());
-  m_RFListCtrl.SetItemText(nPos, 8, m_st_dbpcore.whatlastsaved.c_str());
-  m_RFListCtrl.SetItemText(nPos, 9, m_st_dbpcore.file_uuid.c_str());
-  m_RFListCtrl.SetItemText(nPos, 10, m_st_dbpcore.unknownfields.c_str());
+  m_RFListCtrl.SetItemText(nPos, 4, m_st_dbpcore.numemptygroups.c_str());
+  m_RFListCtrl.SetItemText(nPos, 5, m_st_dbpcore.numentries.c_str());
+  m_RFListCtrl.SetItemText(nPos, 6, m_st_dbpcore.numattachments.c_str());
+  m_RFListCtrl.SetItemText(nPos, 7, m_st_dbpcore.whenlastsaved.c_str());
+  m_RFListCtrl.SetItemText(nPos, 8, m_st_dbpcore.wholastsaved.c_str());
+  m_RFListCtrl.SetItemText(nPos, 9, m_st_dbpcore.whatlastsaved.c_str());
+  m_RFListCtrl.SetItemText(nPos, 10, m_st_dbpcore.file_uuid.c_str());
+  m_RFListCtrl.SetItemText(nPos, 11, m_st_dbpcore.unknownfields.c_str());
 
   // Load constants and trim off leading ampersand
   std::wstring wsYES, wsNO;
@@ -141,13 +144,14 @@ BOOL CDisplayFSBkupFiles::OnInitDialog()
       m_RFListCtrl.SetItemText(nPos, 1, wsYES.c_str());
       m_RFListCtrl.SetItemText(nPos, 2, st_rf.dbp.databaseformat.c_str());
       m_RFListCtrl.SetItemText(nPos, 3, st_rf.dbp.numgroups.c_str());
-      m_RFListCtrl.SetItemText(nPos, 4, st_rf.dbp.numentries.c_str());
-      m_RFListCtrl.SetItemText(nPos, 5, st_rf.dbp.numattachments.c_str());
-      m_RFListCtrl.SetItemText(nPos, 6, st_rf.dbp.whenlastsaved.c_str());
-      m_RFListCtrl.SetItemText(nPos, 7, st_rf.dbp.wholastsaved.c_str());
-      m_RFListCtrl.SetItemText(nPos, 8, st_rf.dbp.whatlastsaved.c_str());
-      m_RFListCtrl.SetItemText(nPos, 9, st_rf.dbp.file_uuid.c_str());
-      m_RFListCtrl.SetItemText(nPos, 10, st_rf.dbp.unknownfields.c_str());
+      m_RFListCtrl.SetItemText(nPos, 4, m_st_dbpcore.numgroups.c_str());
+      m_RFListCtrl.SetItemText(nPos, 5, st_rf.dbp.numentries.c_str());
+      m_RFListCtrl.SetItemText(nPos, 6, st_rf.dbp.numattachments.c_str());
+      m_RFListCtrl.SetItemText(nPos, 7, st_rf.dbp.whenlastsaved.c_str());
+      m_RFListCtrl.SetItemText(nPos, 8, st_rf.dbp.wholastsaved.c_str());
+      m_RFListCtrl.SetItemText(nPos, 9, st_rf.dbp.whatlastsaved.c_str());
+      m_RFListCtrl.SetItemText(nPos, 10, st_rf.dbp.file_uuid.c_str());
+      m_RFListCtrl.SetItemText(nPos, 11, st_rf.dbp.unknownfields.c_str());
     } else {
       m_RFListCtrl.SetItemText(nPos, 1, wsNO.c_str());
       m_RFListCtrl.SetItemText(nPos, 2, L"-");
@@ -175,10 +179,10 @@ BOOL CDisplayFSBkupFiles::OnInitDialog()
   GetDlgItem(IDC_SELECT)->EnableWindow(FALSE);
   GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
-BOOL CDisplayFSBkupFiles::PreTranslateMessage(MSG* pMsg)
+BOOL CDisplayFSBkupFiles::PreTranslateMessage(MSG *pMsg)
 {
   // Do tooltips
   if (pMsg->message == WM_MOUSEMOVE) {
@@ -222,7 +226,7 @@ void CDisplayFSBkupFiles::OnDelete()
 {
   // Delete selected item - but allow undo via Recycle Bin
   // NOTE: There are no Recycle Bins on network drives, or
-  // (most) removeable drives (floppy disks, USB pen drives, CD/DVD - no,
+  // (most) removable drives (floppy disks, USB pen drives, CD/DVD - no,
   // USB hard disks - yes).
   // Must not delete first entry (current database)
   if (m_iSelectedItem < 1)

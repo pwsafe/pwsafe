@@ -7,6 +7,8 @@ compiler features that are supported in all of the versions of MSVS.
 
 Files under MSVS8 correspond to Visual Studio 2005.
 Files under MSVS10 correspond to Visual Studio 2010.
+Files under MSVS11 correspond to Visual Studio 2012.
+Files under MSVS12 correspond to Visual Studio 2013.
 
 Files with "_wx" in their name name are used for the WxWidgets build
 on Windows (not formally supported).

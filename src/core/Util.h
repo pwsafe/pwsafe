@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -70,7 +70,6 @@ extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
 extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
                         Fish *Algorithm, unsigned char *cbcbuffer);
 
-
 // The following can be used directly or via template functions getInt<> / putInt<>
 
 /*
@@ -100,7 +99,7 @@ inline int32 getInt32(const unsigned char buf[4])
   return *reinterpret_cast<const int32 *>(buf);
 #elif defined(PWS_BIG_ENDIAN)
 #if defined(_DEBUG)
-  // Folowing code works for big or little endian architectures but we'll warn anyway
+  // Following code works for big or little endian architectures but we'll warn anyway
   // if CPU is really little endian
   if ( *reinterpret_cast<const int32 *>(buf) == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
@@ -228,7 +227,6 @@ T inline getInt(const unsigned char *buf) { return GetPutImpl<T, sizeof(T)>::Get
 template<typename T>
 void inline putInt(unsigned char *buf, const T val) { GetPutImpl<T, sizeof(T)>::PutInt(buf, val); }
 
-
 bool operator==(const std::string& str1, const stringT& str2);
 inline bool operator==(const stringT& str1, const std::string &str2) { return str2 == str1; }
 
@@ -271,7 +269,7 @@ class get_second {
   public:
     typedef typename PairAssociativeContainer::mapped_type mapped_type;
     typedef typename PairAssociativeContainer::const_iterator const_iterator;
-    const mapped_type& operator()(const_iterator val) { return val->second; }
+    const mapped_type& operator()(const_iterator val) const { return val->second; }
 };
 
 template <typename SequenceContainer>
@@ -279,10 +277,16 @@ class dereference {
   public:
     typedef typename SequenceContainer::value_type value_type;
     typedef typename SequenceContainer::const_iterator const_iterator;
-    const value_type& operator()(const_iterator itr) { return *itr; }
+    const value_type& operator()(const_iterator itr) const { return *itr; }
 };
 
-extern int GetStringBufSize(const TCHAR *fmt, va_list args);
+extern unsigned int GetStringBufSize(const TCHAR *fmt, va_list args);
+
+bool FindNoCase( const StringX& src, const StringX& dest);
+
+
+std::string toutf8(const std::wstring &w);
+
 #endif /* __UTIL_H */
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -21,7 +21,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: ui/wxWidgets\n"
 "X-Poedit-SearchPath-1: core\n"
-"X-Poedit-SearchPath-2: os/linux\n"
+"X-Poedit-SearchPath-2: os/unix\n"
 
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:155
 msgid ""
@@ -839,7 +839,7 @@ msgstr "Siehe LICENSE für Open Source Details."
 
 # no translation needed
 #: ../../../ui/wxWidgets/about.cpp:184
-msgid "Copyright (c) 2003-2016 by Rony Shapiro"
+msgid "Copyright (c) 2003-2017 by Rony Shapiro"
 msgstr ""
 
 #: ../../../ui/wxWidgets/about.cpp:192 ../../../ui/wxWidgets/yubicfg.cpp:206

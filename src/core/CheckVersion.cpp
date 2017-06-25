@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -16,13 +16,12 @@
  * And is of the form:
  * <VersionInfo>
  *  <Product name="PasswordSafe" variant="PC" major="3" minor="28" build="0" rev="4786" />
- *  <Product name="PasswordSafe" variant="PPc" major="1" minor="9" build="2" rev="100" />
- *  <Product name="PasswordSafe" variant="U3" major="3" minor="28" build="0" rev="4786" />
+ *  <Product name="PasswordSafe" variant="PPc" major="1" minor="9" build="2" rev="100" /> <!-- obsolete -->
+ *  <Product name="PasswordSafe" variant="U3" major="3" minor="28" build="0" rev="4786" /> <!-- obsolete -->
  *  <Product name="PasswordSafe" variant="Linux" major="0" minor="7" build="0" rev="4527:4532" />
  * </VersionInfo>
  *
- * Note: The "rev" is the svn commit number. Not using it (for now),
- *       as I think it's too volatile.
+ * Note: The "rev" is the git commit number. Displayed, not used.
  */
 
 #include "CheckVersion.h"
@@ -72,17 +71,17 @@ CheckVersion::CheckLatestVersion(const stringT &xml, stringT &latest) const
             const int xmajor = it->attribute(_T("major")).as_int();
             const int xminor = it->attribute(_T("minor")).as_int();
             const int xbuild = it->attribute(_T("build")).as_int();
-            const int xrevision = it->attribute(_T("rev")).as_int();
+            const TCHAR *xrevision = it->attribute(_T("rev")).as_string(_T("0"));
             // Not using svn rev info - too volatile
             if ((xmajor > m_nMajor) ||
                 (xmajor == m_nMajor && xminor > m_nMinor) ||
                 (xmajor == m_nMajor && xminor == m_nMinor &&
                  xbuild > m_nBuild)) {
                 if (xbuild == 0) { // hide build # if zero (formal release)
-                  Format(latest, L"PasswordSafe V%d.%02d (%d)",
+                  Format(latest, L"PasswordSafe V%d.%02d (%s)",
                          xmajor, xminor, xrevision);
                 } else {
-                  Format(latest, L"PasswordSafe V%d.%02d.%02d (%d)",
+                  Format(latest, L"PasswordSafe V%d.%02d.%02d (%s)",
                          xmajor, xminor, xbuild, xrevision);
                 }
                 return NEWER_AVAILABLE;

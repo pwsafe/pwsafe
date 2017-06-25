@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -164,7 +164,7 @@ template<class T> void Format(T &s, const TCHAR *fmt, ...)
   va_list args;
   va_start(args, fmt);
 
-  int len = GetStringBufSize(fmt, args);
+  unsigned int len = GetStringBufSize(fmt, args);
   va_end(args);//after using args we should reset list
   va_start(args, fmt);
 
@@ -184,7 +184,7 @@ template<class T> void Format(T &s, int fmt, ...)
   T fmt_str;
   LoadAString(fmt_str, fmt);
 
-  int len = GetStringBufSize(fmt_str.c_str(), args);
+  unsigned int len = GetStringBufSize(fmt_str.c_str(), args);
   va_end(args);//after using args we should reset list
   va_start(args, fmt);
 
@@ -195,7 +195,6 @@ template<class T> void Format(T &s, int fmt, ...)
   delete[] buffer;
   va_end(args);
 }
-
 
 // instantiations for StringX & stringT
 template int CompareNoCase(const StringX &s1, const StringX &s2);

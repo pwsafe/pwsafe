@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -10,6 +10,7 @@
 /// CompareResultsDlg.h
 //-----------------------------------------------------------------------------
 
+#include "PWTouch.h"
 #include "PWResizeDialog.h"
 #include "core/ItemData.h"
 #include "SecString.h"
@@ -22,11 +23,11 @@ class CCompareResultsDlg;
 // Trivial class for results CListCtrl for detecting left mouse click and 
 // performing custom draw
 
-class CCPListCtrl : public CListCtrl
+class CCPListCtrlX : public CListCtrl
 {
 public:
-  CCPListCtrl();
-  ~CCPListCtrl();
+  CCPListCtrlX();
+  ~CCPListCtrlX();
 
   virtual BOOL PreTranslateMessage(MSG *pMsg);
 
@@ -46,6 +47,12 @@ protected:
 private:
   int m_row, m_column;
 };
+
+/**
+* typedef to hide the fact that CCPListCtrl is really a mixin.
+*/
+
+typedef CPWTouch< CCPListCtrlX > CCPListCtrl;
 
 // The following structure is needed for compare to send back data
 // to allow copying, viewing, editing and synching of entries
@@ -106,7 +113,7 @@ public:
   //}}AFX_DATA
 
   bool m_bOriginalDBReadOnly, m_bComparisonDBReadOnly;
-  bool m_OriginalDBChanged, m_ComparisonDBChanged;
+  bool m_OriginalDBChanged;
   bool m_bTreatWhiteSpaceasEmpty;
   CString GetResults() {return m_results;}
 
@@ -116,7 +123,7 @@ protected:
   // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CCompareResultsDlg)
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   //}}AFX_VIRTUAL
 
@@ -169,6 +176,7 @@ private:
   size_t m_numOnlyInCurrent, m_numOnlyInComp, m_numConflicts, m_numIdentical;
   int m_nCols;
   bool m_bFirstInCompare;
+  bool m_bDBNotificationState;
 
   // These columns always shown
   static const UINT FixedCols[USER + 1];

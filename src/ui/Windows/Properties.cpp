@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -11,6 +11,8 @@
 #include "stdafx.h"
 #include "Properties.h"
 #include "InputBox.h"
+
+#include "DboxMain.h"
 
 // CProperties dialog
 
@@ -46,9 +48,14 @@ BOOL CProperties::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
+  CString ngroups;
+  ngroups.Format(IDS_NUMGROUPS_E,
+                 static_cast<LPCWSTR>(m_pdbp->numgroups.c_str()),
+                 static_cast<LPCWSTR>(m_pdbp->numemptygroups.c_str()));
+
   GetDlgItem(IDC_DATABASENAME)->SetWindowText(m_pdbp->database.c_str());
   GetDlgItem(IDC_DATABASEFORMAT)->SetWindowText(m_pdbp->databaseformat.c_str());
-  GetDlgItem(IDC_NUMGROUPS)->SetWindowText(m_pdbp->numgroups.c_str());
+  GetDlgItem(IDC_NUMGROUPS)->SetWindowText(ngroups);
   GetDlgItem(IDC_NUMENTRIES)->SetWindowText(m_pdbp->numentries.c_str());
   GetDlgItem(IDC_NUMATTACHMENTS)->SetWindowText(m_pdbp->numattachments.c_str());
   GetDlgItem(IDC_SAVEDON)->SetWindowText(m_pdbp->whenlastsaved.c_str());
@@ -91,7 +98,7 @@ BOOL CProperties::OnInitDialog()
     GetDlgItem(IDC_CHANGE_DESCRIPTION)->ShowWindow(SW_HIDE);
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 BOOL CProperties::PreTranslateMessage(MSG *pMsg)

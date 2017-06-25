@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -54,7 +54,6 @@
 
 IMPLEMENT_DYNAMIC_CLASS( COptions, wxPropertySheetDialog )
 
-
 /*!
  * COptions event table definition
  */
@@ -89,25 +88,25 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
 END_EVENT_TABLE()
 
 const wxString BUSuffix[] = {
-  L"None",
-  L"YYYYMMMDD_HHMMSS",
-  L"Incremented Number [001-999]",
+  _("None"),
+  _("YYYYMMMDD_HHMMSS"),
+  _("Incremented Number [001-999]"),
 };
 
 enum {NO_SFX, TS_SFX, INC_SFX}; // For backup file suffix name
 
 // Following in enum order (see PWSprefs.h)
 const wxString DCAStrings[] = {
-  L"Copy password to clipboard",
-  L"Edit/View selected entry",
-  L"Autotype",
-  L"Browse to URL",
-  L"Copy notes to clipboard",
-  L"Copy username to clipboard",
-  L"Copy password to clipboard, minimize",
-  L"Browse to URL + Autotype",
-  L"Run Command",
-  L"Send email",
+  _("Copy password to clipboard"),
+  _("Edit/View selected entry"),
+  _("Autotype"),
+  _("Browse to URL"),
+  _("Copy notes to clipboard"),
+  _("Copy username to clipboard"),
+  _("Copy password to clipboard, minimize"),
+  _("Browse to URL + Autotype"),
+  _("Run Command"),
+  _("Send email"),
 };
 
 /*!
@@ -124,7 +123,6 @@ COptions::COptions( wxWindow* parent, wxWindowID id, const wxString& caption, co
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * COptions creator
@@ -152,7 +150,6 @@ bool COptions::Create( wxWindow* parent, wxWindowID id, const wxString& caption,
   return true;
 }
 
-
 /*!
  * COptions destructor
  */
@@ -162,7 +159,6 @@ COptions::~COptions()
 ////@begin COptions destruction
 ////@end COptions destruction
 }
-
 
 /*!
  * Member initialisation
@@ -200,7 +196,6 @@ void COptions::Init()
 ////@end COptions member initialisation
 }
 
-
 /*!
  * Control creation for COptions
  */
@@ -212,7 +207,7 @@ void COptions::CreateControls()
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   itemPanel2->SetSizer(itemBoxSizer3);
 
-  wxCheckBox* itemCheckBox4 = new wxCheckBox( itemPanel2, ID_CHECKBOX10, _("Save database immediately after Edit or Add"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* itemCheckBox4 = new wxCheckBox( itemPanel2, ID_CHECKBOX10, _("Save database immediately after any change"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox4->SetValue(false);
   itemBoxSizer3->Add(itemCheckBox4, 0, wxALIGN_LEFT|wxALL, 5);
 
@@ -252,7 +247,7 @@ void COptions::CreateControls()
   itemStaticBoxSizer7->Add(itemBoxSizer15, 0, wxGROW|wxALL, 0);
   wxArrayString m_busuffixCBStrings;
   for (int i = 0; i < int(sizeof(BUSuffix)/sizeof(BUSuffix[0])); ++i) {
-    m_busuffixCBStrings.Add(_(BUSuffix[i]));
+    m_busuffixCBStrings.Add(BUSuffix[i]);
   }
   m_busuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_busuffixCBStrings, wxCB_READONLY );
   itemBoxSizer15->Add(m_busuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -380,7 +375,7 @@ void COptions::CreateControls()
   wxArrayString m_DCACBStrings;
   wxArrayString m_SDCACBStrings;
   for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i) {
-    wxString tmp = _(DCAStrings[i]);
+    wxString tmp = DCAStrings[i];
     m_DCACBStrings.Add(tmp);
     m_SDCACBStrings.Add(tmp);
   }
@@ -553,6 +548,16 @@ void COptions::CreateControls()
 
   GetBookCtrl()->AddPage(itemPanel86, _("Security"));
 
+  wxPanel* itemPanel123 = new wxPanel(GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER | wxTAB_TRAVERSAL);
+  wxGrid* itemGrid124 = new wxGrid(itemPanel123, ID_GRID1, wxDefaultPosition, itemPanel123->ConvertDialogToPixels(wxSize(200, 150)), wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL);
+  itemGrid124->SetDefaultColSize(100);
+  itemGrid124->SetDefaultRowSize(25);
+  itemGrid124->SetColLabelSize(25);
+  itemGrid124->SetRowLabelSize(50);
+  itemGrid124->CreateGrid(50, 2, wxGrid::wxGridSelectCells);
+
+  GetBookCtrl()->AddPage(itemPanel123, _("Shortcuts"));
+
   wxPanel* itemPanel104 = new wxPanel( GetBookCtrl(), ID_PANEL6, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer105 = new wxBoxSizer(wxVERTICAL);
   itemPanel104->SetSizer(itemBoxSizer105);
@@ -636,16 +641,6 @@ void COptions::CreateControls()
 
   GetBookCtrl()->AddPage(itemPanel104, _("System"));
 
-  wxPanel* itemPanel123 = new wxPanel( GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
-  wxGrid* itemGrid124 = new wxGrid( itemPanel123, ID_GRID1, wxDefaultPosition, itemPanel123->ConvertDialogToPixels(wxSize(200, 150)), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
-  itemGrid124->SetDefaultColSize(100);
-  itemGrid124->SetDefaultRowSize(25);
-  itemGrid124->SetColLabelSize(25);
-  itemGrid124->SetRowLabelSize(50);
-  itemGrid124->CreateGrid(50, 2, wxGrid::wxGridSelectCells);
-
-  GetBookCtrl()->AddPage(itemPanel123, _("Shortcuts"));
-
   // Set validators
   itemCheckBox4->SetValidator( wxGenericValidator(& m_saveimmediate) );
   itemCheckBox6->SetValidator( wxGenericValidator(& m_backupb4save) );
@@ -687,7 +682,6 @@ void COptions::CreateControls()
   m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), NULL, this);
 ////@end COptions content construction
 }
-
 
 /*!
  * Should we show tooltips?
@@ -766,12 +760,12 @@ void COptions::PrefsToPropSheet()
   if (m_doubleclickaction < 0 ||
       m_doubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
     m_doubleclickaction = 0;
-  m_DCACB->SetValue(_(DCAStrings[m_doubleclickaction]));
+  m_DCACB->SetValue(DCAStrings[m_doubleclickaction]);
   m_shiftdoubleclickaction = prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
   if (m_shiftdoubleclickaction < 0 ||
       m_shiftdoubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
     m_shiftdoubleclickaction = 0;
-  m_SDCACB->SetValue(_(DCAStrings[m_shiftdoubleclickaction]));
+  m_SDCACB->SetValue(DCAStrings[m_shiftdoubleclickaction]);
   m_minauto = prefs->GetPref(PWSprefs::MinimizeOnAutotype);
   m_autotypeStr = prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
   if (m_autotypeStr.empty())
@@ -827,7 +821,7 @@ void COptions::PrefsToPropSheet()
 static int DCAStr2Int(const wxString &str)
 {
   for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i)
-    if (str == _(DCAStrings[i])) {
+    if (str == DCAStrings[i]) {
       return i;
     }
   ASSERT(0);
@@ -937,7 +931,7 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::DefaultUsername, tostringx(m_defusernameTXT->GetValue()), true);
 
   if (m_autotypeStr.empty() || m_autotypeStr == DEFAULT_AUTOTYPE)
-      prefs->SetPref(PWSprefs::DefaultAutotypeString, wxT(""), true);
+      prefs->SetPref(PWSprefs::DefaultAutotypeString, wxEmptyString, true);
   else
     prefs->SetPref(PWSprefs::DefaultAutotypeString, tostringx(m_autotypeStr), true);
 
@@ -957,7 +951,6 @@ void COptions::OnOk(wxCommandEvent& /* evt */)
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX11
  */
@@ -973,7 +966,6 @@ void COptions::OnBackupB4SaveClick( wxCommandEvent& /* evt */ )
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4
  */
@@ -982,7 +974,6 @@ void COptions::OnBuPrefix( wxCommandEvent& evt )
 {
   evt.Skip();
 }
-
 
 /*!
  * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL9
@@ -993,7 +984,6 @@ void COptions::OnBuPrefixTxtSetFocus( wxFocusEvent& /* evt */ )
   m_dfltbuprefixRB->SetValue(false);
   m_usrbuprefixRB->SetValue(true);
 }
-
 
 /*!
  * wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_COMBOBOX2
@@ -1036,7 +1026,6 @@ void COptions::OnSuffixCBSet( wxCommandEvent& /* evt */ )
   m_suffixExample->SetLabel(example);
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON
  */
@@ -1049,7 +1038,6 @@ void COptions::OnBuDirBrowseClick( wxCommandEvent& /* evt */ )
     m_usrbudirTxt->SetValue(dirdlg.GetPath());
 }
 
-
 /*!
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON6
  */
@@ -1060,8 +1048,6 @@ void COptions::OnBuDirRB( wxCommandEvent& /* evt */ )
     m_usrbudirTxt->Enable(enable);
     m_buDirBN->Enable(enable);
 }
-
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX13
@@ -1076,7 +1062,6 @@ void COptions::OnShowUsernameInTreeCB( wxCommandEvent& /* evt */ )
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX19
  */
@@ -1087,7 +1072,6 @@ void COptions::OnPreExpiryWarnClick( wxCommandEvent& /* evt */ )
     m_preexpirywarndaysSB->Enable(m_preexpirywarn);
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX24
@@ -1100,7 +1084,6 @@ void COptions::OnUseDefaultUserClick( wxCommandEvent& /* evt */ )
     m_defusernameLBL->Enable(m_usedefuser);
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON8
@@ -1127,7 +1110,6 @@ void COptions::OnPWHistSaveClick( wxCommandEvent& /* evt */ )
   m_pwhistnumdfltSB->Enable(m_pwhistsaveCB->GetValue());
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE
  */
@@ -1139,7 +1121,6 @@ void COptions::OnPWHistApply( wxCommandEvent& evt )
   evt.Skip();
 }
 
-
 /*!
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON8
  */
@@ -1150,7 +1131,6 @@ void COptions::OnPWHistRB( wxCommandEvent& evt )
   m_pwhistapplyBN->Enable(id != ID_PWHISTNOCHANGE);
 }
 
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX29
  */
@@ -1159,7 +1139,6 @@ void COptions::OnLockOnIdleClick( wxCommandEvent& /* evt */)
 {
   m_secidletimeoutSB->Enable(m_seclockonidleCB->GetValue());
 }
-
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
@@ -1183,4 +1162,3 @@ void COptions::OnPageChanging(wxBookCtrlEvent& evt)
       evt.Veto();
   }
 }
-

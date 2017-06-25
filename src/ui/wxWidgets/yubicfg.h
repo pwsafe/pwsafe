@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -10,10 +10,8 @@
 * 
 */
 
-
 #ifndef _YUBICFG_H_
 #define _YUBICFG_H_
-
 
 /*!
  * Includes
@@ -54,7 +52,6 @@ class PWScore;
 #define SYMBOL_YUBICFGDLG_SIZE wxSize(400, 300)
 #define SYMBOL_YUBICFGDLG_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * YubiCfgDlg class declaration

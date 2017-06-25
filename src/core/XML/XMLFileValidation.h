@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -43,7 +43,7 @@ enum XLE_PASSWORDSAFE {
   XLE_PREF_START,
   XLE_PREF_SHOWPWDEFAULT = XLE_PREF_START,
   XLE_PREF_SHOWPASSWORDINTREE,
-  XLE_PREF_SORTASCENDING,
+  XLE_PREF_SORTASCENDING,  // Obsolete in 3.40
   XLE_PREF_USEDEFAULTUSER,
   XLE_PREF_SAVEIMMEDIATELY,
   XLE_PREF_PWUSELOWERCASE,
@@ -139,7 +139,6 @@ struct st_file_element_data {
   unsigned short int element_code /* XLE_PASSWORDSAFE */;
   unsigned short int element_entry_code /* XLE_PASSWORDSAFE  - entry values*/;
 };
-
 
 class XMLFileValidation
 {

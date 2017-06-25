@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2013-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2013-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -11,7 +11,6 @@
 // PWSfileV4.h
 // Abstract the gory details of reading and writing an encrypted database
 //-----------------------------------------------------------------------------
-
 
 #include "PWSfile.h"
 #include "TwoFish.h"
@@ -48,7 +47,7 @@ public:
   // Following writes AttIV, AttEK, AttAK, AttContent
   // and AttContentHMAC per format spec.
   // All except the content are generated internally.
-  int WriteContentFields(unsigned char *content, size_t len);
+  size_t WriteContentFields(unsigned char *content, size_t len);
   // Following allocates content, caller responsible for deallocating
   size_t ReadContent(Fish *fish, unsigned char *cbcbuffer,
                      unsigned char *&content, size_t clen);
@@ -61,7 +60,7 @@ public:
 
   // Following unique to V4
 
-  // Following needs to be public so that we can mainpulate it
+  // Following needs to be public so that we can manipulate it
   // prior to writing the database.
   class CKeyBlocks {
   public:
@@ -97,7 +96,7 @@ public:
     KeyBlock &at(unsigned i) {return m_kbs.at(i);}
     const KeyBlock &at(unsigned i) const {return m_kbs.at(i);}
     bool empty() const {return m_kbs.empty();}
-    unsigned size() const {return m_kbs.size();}
+    unsigned size() const {return (unsigned)m_kbs.size();}
     const size_t KBLEN = PWSaltLength + sizeof(uint32) + KWLEN + KWLEN;
   };
 

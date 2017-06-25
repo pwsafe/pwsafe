@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -12,11 +12,11 @@
 #include "ControlExtns.h"
 #include "InfoDisplay.h"      // for Listbox Tooltips
 
-#include "core/ItemField.h" // for CSecEditExtn
-#include "core/BlowFish.h"  // ditto
-#include "core/PWSrand.h"   // ditto
-#include "core/PWCharPool.h" // for CSymbolEdit
-#include "resource2.h"     // for CEditExtn context menu
+#include "core/ItemField.h"   // for CSecEditExtn
+#include "core/BlowFish.h"    // ditto
+#include "core/PWSrand.h"     // ditto
+#include "core/PWCharPool.h"  // for CSymbolEdit
+#include "resource2.h"        // for CRichEditExtnX context menu
 
 #include "vsstyle.h"
 
@@ -154,9 +154,9 @@ HBRUSH CStaticExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CEditExtn
+// CEditExtnX
 
-CEditExtn::CEditExtn(COLORREF focusColor)
+CEditExtnX::CEditExtnX(COLORREF focusColor)
   : m_bIsFocused(FALSE), m_lastposition(-1),
     m_crefInFocus(focusColor)
 {
@@ -166,8 +166,8 @@ CEditExtn::CEditExtn(COLORREF focusColor)
   m_vmenu_items.clear();
 }
 
-CEditExtn::CEditExtn(std::vector<st_context_menu> vmenu_items,
-                     COLORREF focusColor)
+CEditExtnX::CEditExtnX(std::vector<st_context_menu> vmenu_items,
+                       COLORREF focusColor)
   : m_bIsFocused(FALSE), m_lastposition(-1),
     m_crefInFocus(focusColor)
 {
@@ -181,14 +181,14 @@ CEditExtn::CEditExtn(std::vector<st_context_menu> vmenu_items,
   }
 }
 
-CEditExtn::~CEditExtn()
+CEditExtnX::~CEditExtnX()
 {
   m_brInFocus.DeleteObject();
   m_brNoFocus.DeleteObject();
 }
 
-BEGIN_MESSAGE_MAP(CEditExtn, CEdit)
-  //{{AFX_MSG_MAP(CEditExtn)
+BEGIN_MESSAGE_MAP(CEditExtnX, CEdit)
+  //{{AFX_MSG_MAP(CEditExtnX)
   ON_WM_SETFOCUS()
   ON_WM_KILLFOCUS()
   ON_WM_CTLCOLOR_REFLECT()
@@ -198,9 +198,9 @@ BEGIN_MESSAGE_MAP(CEditExtn, CEdit)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CEditExtn message handlers
+// CEditExtnX message handlers
 
-DWORD CEditExtn::GetSel()
+DWORD CEditExtnX::GetSel()
 {
   DWORD dwSelection = CEdit::GetSel();
   m_nStartChar = LOWORD(dwSelection);
@@ -208,49 +208,55 @@ DWORD CEditExtn::GetSel()
   return dwSelection;
 }
 
-void CEditExtn::GetSel(int &nStartChar, int &nEndChar)
+void CEditExtnX::GetSel(int &nStartChar, int &nEndChar)
 {
   CEdit::GetSel(nStartChar, nEndChar);
   m_nStartChar = nStartChar;
   m_nEndChar = nEndChar;
 }
 
-void CEditExtn::SetSel(DWORD dwSelection, BOOL bNoScroll)
+void CEditExtnX::SetSel(DWORD dwSelection, BOOL bNoScroll)
 {
   m_nStartChar = LOWORD(dwSelection);
   m_nEndChar = HIWORD(dwSelection);
   CEdit::SetSel(dwSelection, bNoScroll);
 }
 
-void CEditExtn::SetSel(int nStartChar, int nEndChar, BOOL bNoScroll)
+void CEditExtnX::SetSel(int nStartChar, int nEndChar, BOOL bNoScroll)
 {
   m_nStartChar = nStartChar;
   m_nEndChar = nEndChar;
   CEdit::SetSel(nStartChar, nEndChar, bNoScroll);
 }
 
-void CEditExtn::OnSetFocus(CWnd* pOldWnd)
+void CEditExtnX::OnSetFocus(CWnd* pOldWnd)
 {
   m_bIsFocused = TRUE;
   CEdit::OnSetFocus(pOldWnd);
+
   if (m_lastposition >= 0) {
     int iLine = LineFromChar(m_lastposition);
     LineScroll(iLine);
     SetSel(m_nStartChar, m_nEndChar); 
   }
   Invalidate(TRUE);
+
+  ShowCaret();
 }
 
-void CEditExtn::OnKillFocus(CWnd* pNewWnd)
+void CEditExtnX::OnKillFocus(CWnd* pNewWnd)
 {
   m_bIsFocused = FALSE;
   m_lastposition = LineIndex();
   GetSel(m_nStartChar, m_nEndChar);
-  CEdit::OnKillFocus(pNewWnd);
+
+  // Force update colour via CtlColor
   Invalidate(TRUE);
+
+  CEdit::OnKillFocus(pNewWnd);
 }
 
-void CEditExtn::OnLButtonDown(UINT nFlags, CPoint point)
+void CEditExtnX::OnLButtonDown(UINT nFlags, CPoint point)
 {
   // Get the scroll bar position.
   int nScrollHPos = GetScrollPos(SB_HORZ);
@@ -273,7 +279,7 @@ void CEditExtn::OnLButtonDown(UINT nFlags, CPoint point)
   SetSel(m_nStartChar, m_nEndChar);
 }
 
-HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
+HBRUSH CEditExtnX::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 {
   if (!this->IsWindowEnabled())
     return NULL;
@@ -288,7 +294,7 @@ HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
   }
 }
 
-// Following structure used by both CEditExtn and CRichEditExtn for
+// Following structure used by both CEditExtnX and CRichEditExtnX for
 // finding menu items in the supplied extra vector based on command message number
 struct equal_cmd {
   equal_cmd(UINT_PTR const& nCmd) : m_nCmd(nCmd) {}
@@ -300,7 +306,7 @@ private:
   UINT_PTR m_nCmd;
 };
 
-void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
+void CEditExtnX::OnContextMenu(CWnd* pWnd, CPoint point)
 {
   if (m_vmenu_items.empty()) {
     CEdit::OnContextMenu(pWnd, point);
@@ -394,7 +400,7 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   }
 }
 
-void CEditExtn::UpdateState(const int message_number, const bool new_state)
+void CEditExtnX::UpdateState(const int message_number, const bool new_state)
 {
   std::vector<st_context_menu>::iterator iter;
   iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
@@ -406,7 +412,7 @@ void CEditExtn::UpdateState(const int message_number, const bool new_state)
   }
 }
 
-void CEditExtn::EnableMenuItem(const int message_number, const bool bEnable)
+void CEditExtnX::EnableMenuItem(const int message_number, const bool bEnable)
 {
   std::vector<st_context_menu>::iterator iter;
   iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
@@ -418,17 +424,15 @@ void CEditExtn::EnableMenuItem(const int message_number, const bool bEnable)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CRichEditExtn
+// CRichEditExtnX
 
-CRichEditExtn::CRichEditExtn(COLORREF focusColor)
-  : m_bIsFocused(FALSE), m_lastposition(-1), m_crefInFocus(focusColor),
-  m_bContextMenu(false)
+CRichEditExtnX::CRichEditExtnX(COLORREF focusColor)
+  : m_bIsFocused(FALSE), m_crefInFocus(focusColor), m_bContextMenu(false)
 {
   m_vmenu_items.clear();
 }
 
-
-void CRichEditExtn::SetContextMenu(const std::vector<st_context_menu> &vmenu_items)
+void CRichEditExtnX::SetContextMenu(const std::vector<st_context_menu> &vmenu_items)
 {
   // Don't allow if menu string is empty.
   if (vmenu_items.empty()) {
@@ -440,39 +444,24 @@ void CRichEditExtn::SetContextMenu(const std::vector<st_context_menu> &vmenu_ite
   m_hCursor = LoadCursor(NULL, IDC_ARROW);
 }
 
-CRichEditExtn::~CRichEditExtn()
+CRichEditExtnX::~CRichEditExtnX()
 {
 }
 
-BEGIN_MESSAGE_MAP(CRichEditExtn, CRichEditCtrl)
-  //{{AFX_MSG_MAP(CRichEditExtn)
+BEGIN_MESSAGE_MAP(CRichEditExtnX, CRichEditCtrl)
+  //{{AFX_MSG_MAP(CRichEditExtnX)
   ON_WM_SETFOCUS()
   ON_WM_KILLFOCUS()
   ON_WM_CONTEXTMENU()
-  ON_WM_LBUTTONDOWN()
   ON_WM_SETCURSOR()
   ON_WM_LBUTTONDBLCLK()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CRichEditExtn message handlers
+// CRichEditExtnX message handlers
 
-void CRichEditExtn::GetSel(long &nStartChar, long &nEndChar)
-{
-  CRichEditCtrl::GetSel(nStartChar, nEndChar);
-  m_nStartChar = nStartChar;
-  m_nEndChar = nEndChar;
-}
-
-void CRichEditExtn::SetSel(long nStartChar, long nEndChar)
-{
-  m_nStartChar = nStartChar;
-  m_nEndChar = nEndChar;
-  CRichEditCtrl::SetSel(nStartChar, nEndChar);
-}
-
-void CRichEditExtn::OnLButtonDblClk(UINT nFlags, CPoint point)
+void CRichEditExtnX::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
   long nStartChar, nEndChar;
 
@@ -490,55 +479,26 @@ void CRichEditExtn::OnLButtonDblClk(UINT nFlags, CPoint point)
   SetSel(nStartChar, nStartChar + csTemp.GetLength());
 }
 
-void CRichEditExtn::OnSetFocus(CWnd* pOldWnd)
+void CRichEditExtnX::OnSetFocus(CWnd *pOldWnd)
 {
   m_bIsFocused = TRUE;
   CRichEditCtrl::OnSetFocus(pOldWnd);
-  if (m_lastposition >= 0) {
-    int iLine = LineFromChar(m_lastposition);
-    LineScroll(iLine);
-    SetSel(m_nStartChar, m_nEndChar); 
-  }
 
   SetBackgroundColor(FALSE, m_crefInFocus);
   Invalidate(TRUE);
 }
 
-void CRichEditExtn::OnKillFocus(CWnd* pNewWnd)
+void CRichEditExtnX::OnKillFocus(CWnd *pNewWnd)
 {
   m_bIsFocused = FALSE;
-  m_lastposition = LineIndex();
-  GetSel(m_nStartChar, m_nEndChar);
+
   CRichEditCtrl::OnKillFocus(pNewWnd);
 
   SetBackgroundColor(FALSE, crefNoFocus);
   Invalidate(TRUE);
 }
 
-void CRichEditExtn::OnLButtonDown(UINT nFlags, CPoint point)
-{
-  // Get the scroll bar position.
-  int nScrollHPos = GetScrollPos(SB_HORZ);
-  int nScrollVPos = GetScrollPos(SB_VERT);
-
-  int n = CharFromPos(point);
-  m_lastposition = HIWORD(n);
-  m_nStartChar = m_nEndChar = LOWORD(n);
-
-  CRichEditCtrl::OnLButtonDown(nFlags, point);
-
-  // Reset the scroll bar position.
-  SetScrollPos(SB_HORZ, nScrollHPos);
-  SetScrollPos(SB_VERT, nScrollVPos);
-
-  // Reset the display scroll position.
-  SendMessage(WM_HSCROLL, MAKEWPARAM(SB_THUMBTRACK, nScrollHPos), 0);
-  SendMessage(WM_VSCROLL, MAKEWPARAM(SB_THUMBTRACK, nScrollVPos), 0);
-
-  SetSel(m_nStartChar, m_nEndChar);
-}
-
-BOOL CRichEditExtn::OnSetCursor(CWnd *pWnd, UINT nHitTest, UINT message)
+BOOL CRichEditExtnX::OnSetCursor(CWnd *pWnd, UINT nHitTest, UINT message)
 {
   if (m_bContextMenu) {
     ::SetCursor(m_hCursor);
@@ -547,10 +507,10 @@ BOOL CRichEditExtn::OnSetCursor(CWnd *pWnd, UINT nHitTest, UINT message)
   return CRichEditCtrl::OnSetCursor(pWnd, nHitTest, message);
 }
 
-void CRichEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
+void CRichEditExtnX::OnContextMenu(CWnd* pWnd, CPoint point)
 {
   if (m_vmenu_items.empty()) {
-    CRichEditExtn::OnContextMenu(pWnd, point);
+    CRichEditExtnX::OnContextMenu(pWnd, point);
     return;
   }
 
@@ -650,7 +610,7 @@ void CRichEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   }
 }
 
-void CRichEditExtn::UpdateState(const int message_number, const bool new_state)
+void CRichEditExtnX::UpdateState(const int message_number, const bool new_state)
 {
   std::vector<st_context_menu>::iterator iter;
   iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
@@ -662,7 +622,7 @@ void CRichEditExtn::UpdateState(const int message_number, const bool new_state)
   }
 }
 
-void CRichEditExtn::EnableMenuItem(const int message_number, const bool bEnable)
+void CRichEditExtnX::EnableMenuItem(const int message_number, const bool bEnable)
 {
   std::vector<st_context_menu>::iterator iter;
   iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
@@ -975,7 +935,6 @@ void CComboBoxExtn::AdjustItemHeight(int nInc)
   SetItemHeight(0, GetItemHeight(0) + nInc);
 }
 
-
 //-----------------------------------------------------------------
 // CSecEditExtn is meant for sensitive information that you really don't
 // want to be in memory more than necessary, such as master passwords
@@ -999,26 +958,25 @@ struct CSecEditExtn::Impl {
     // Following to clear the keyboard buffer
     BYTE bytKeyBoardState[256] = {0};
     
-    BOOL brc = ::SetKeyboardState(bytKeyBoardState);
-    ASSERT(brc);
+    VERIFY(::SetKeyboardState(bytKeyBoardState));
   }
   CItemField m_field;
   BlowFish *m_bf;
 };
 
 CSecEditExtn::CSecEditExtn()
-  : CEditExtn((RGB(255, 222, 222))), // light red
+  : CEditExtnX((RGB(255, 222, 222))), // light red
     m_pImpl(new Impl), m_secure(true), m_in_recursion(false)
 {
 }
 
 CSecEditExtn::CSecEditExtn(std::vector<st_context_menu> vmenu_items)
-  : CEditExtn(vmenu_items, (RGB(255, 222, 222))),
+  : CEditExtnX(vmenu_items, (RGB(255, 222, 222))),
     m_pImpl(new Impl), m_secure(true), m_in_recursion(false)
 {
 }
 
-BEGIN_MESSAGE_MAP(CSecEditExtn, CEditExtn)
+BEGIN_MESSAGE_MAP(CSecEditExtn, CEditExtnX)
   //{{AFX_MSG_MAP(CSecEditExtn)
   ON_CONTROL_REFLECT(EN_UPDATE, OnUpdate)
   //}}AFX_MSG_MAP
@@ -1166,7 +1124,7 @@ CSymbolEdit::CSymbolEdit() : CEdit(), m_validSym(CPasswordCharPool::GetDefaultSy
 {
 }
 
-void CSymbolEdit::SetValidSym(const stringT &s)
+void CSymbolEdit::SetValidSym(const std::wstring &s)
 {
   // Set the member variable.
   // it's the caller's responsibility to decide
@@ -1290,16 +1248,16 @@ void CButtonExtn::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   // in MS's Forum: "Visual Studio Developer Center > Visual Studio vNext Forums > Visual C++ General"
   // Modified for MFC, Checkbox and Radio buttons by DK
 
-  LPNMCUSTOMDRAW lpNMCustomDraw = (LPNMCUSTOMDRAW)pNotifyStruct;
+  NMCUSTOMDRAW *pLVCD = (NMCUSTOMDRAW *)pNotifyStruct;
   *pLResult = CDRF_DODEFAULT;
 
-  switch (lpNMCustomDraw->dwDrawStage) {
+  switch (pLVCD->dwDrawStage) {
     case CDDS_PREPAINT:
       BOOL fChecked = GetCheck() & BST_CHECKED;
-      BOOL fHot = lpNMCustomDraw->uItemState & CDIS_HOT;
-      BOOL fFocus = lpNMCustomDraw->uItemState & CDIS_FOCUS;
-      DrawButton(lpNMCustomDraw->hdr.hwndFrom, lpNMCustomDraw->hdc,
-                 &lpNMCustomDraw->rc, fChecked, fHot, fFocus);
+      BOOL fHot = pLVCD->uItemState & CDIS_HOT;
+      BOOL fFocus = pLVCD->uItemState & CDIS_FOCUS;
+      DrawButton(pLVCD->hdr.hwndFrom, pLVCD->hdc,
+                 &pLVCD->rc, fChecked, fHot, fFocus);
   }
 }
 

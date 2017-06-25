@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -12,7 +12,6 @@
 
 #ifndef _SAFECOMBINATIONCHANGE_H_
 #define _SAFECOMBINATIONCHANGE_H_
-
 
 /*!
  * Includes
@@ -57,7 +56,6 @@ class wxTimer;
 #define SYMBOL_CSAFECOMBINATIONCHANGE_SIZE wxSize(400, 300)
 #define SYMBOL_CSAFECOMBINATIONCHANGE_POSITION wxDefaultPosition
 ////@end control identifiers
-
 
 /*!
  * CSafeCombinationChange class declaration

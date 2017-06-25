@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -36,11 +36,12 @@ CCryptKeyEntry::CCryptKeyEntry(bool isEncrypt, CWnd* pParent)
 BOOL CCryptKeyEntry::OnInitDialog()
 {
   CDialog::OnInitDialog();
+  
   GetDlgItem(IDC_VERIFY)->ShowWindow(m_encrypt);
   GetDlgItem(IDC_CRYPTKEY2)->ShowWindow(m_encrypt);
-  return TRUE;
+  
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
-
 
 void CCryptKeyEntry::DoDataExchange(CDataExchange* pDX)
 {

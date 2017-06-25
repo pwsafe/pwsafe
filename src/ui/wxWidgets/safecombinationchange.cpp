@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -46,7 +46,6 @@
 
 IMPLEMENT_CLASS( CSafeCombinationChange, wxDialog )
 
-
 /*!
  * CSafeCombinationChange event table definition
  */
@@ -68,11 +67,9 @@ BEGIN_EVENT_TABLE( CSafeCombinationChange, wxDialog )
 ////@end CSafeCombinationChange event table entries
 END_EVENT_TABLE()
 
-
 /*!
  * CSafeCombinationChange constructors
  */
-
 
 CSafeCombinationChange::CSafeCombinationChange(wxWindow* parent, PWScore &core,
                                                wxWindowID id, const wxString& caption,
@@ -83,7 +80,6 @@ CSafeCombinationChange::CSafeCombinationChange(wxWindow* parent, PWScore &core,
   Init();
   Create(parent, id, caption, pos, size, style);
 }
-
 
 /*!
  * CSafeCombinationChange creator
@@ -113,7 +109,6 @@ bool CSafeCombinationChange::Create( wxWindow* parent, wxWindowID id, const wxSt
   return true;
 }
 
-
 /*!
  * CSafeCombinationChange destructor
  */
@@ -126,7 +121,6 @@ CSafeCombinationChange::~CSafeCombinationChange()
   delete m_pollingTimer;
 #endif
 }
-
 
 /*!
  * Member initialisation
@@ -145,7 +139,6 @@ void CSafeCombinationChange::Init()
 #endif
 ////@end CSafeCombinationChange member initialisation
 }
-
 
 /*!
  * Control creation for CSafeCombinationChange
@@ -224,7 +217,6 @@ void CSafeCombinationChange::CreateControls()
 ////@end CSafeCombinationChange content construction
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -264,7 +256,6 @@ wxIcon CSafeCombinationChange::GetIconResource( const wxString& WXUNUSED(name) )
   return wxNullIcon;
 ////@end CSafeCombinationChange icon retrieval
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
@@ -317,7 +308,6 @@ void CSafeCombinationChange::OnOkClick( wxCommandEvent& /* evt */ )
   }
 }
 
-
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
@@ -329,7 +319,6 @@ void CSafeCombinationChange::OnCancelClick( wxCommandEvent& /* evt */ )
   EndModal(wxID_CANCEL);
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationChange.
 }
-
 
 #ifndef NO_YUBI
 /*!
@@ -363,7 +352,6 @@ void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& /* event */ )
     }
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2

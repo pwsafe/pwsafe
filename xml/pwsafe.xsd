@@ -5,7 +5,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
 
 <xs:annotation>
   <xs:documentation xml:lang="en">
-    This XML Schema corresponds to V3.29 of Password Safe.
+    This XML Schema corresponds to V3.40 of Password Safe.
     As each new version is a 'superset' of previous versions, the current version of Password Safe
     will be able to import XML files created by all prior versions.
     However, in V3.13 element 'ltime' has been replaced by 'xtime' for the Password Expiry Time.
@@ -170,40 +170,41 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
           <xs:complexType>
             <xs:all>
               <!-- Boolean Preferences -->
-              <xs:element name="DisplayExpandedAddEditDlg" type="boolType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="MaintainDateTimeStamps" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CopyPasswordWhenBrowseToURL" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="LockDBOnIdleTimeout" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MaintainDateTimeStamps" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PWMakePronounceable" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="PWUseDigits" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="PWUseEasyVision" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="PWUseHexDigits" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="PWUseLowercase" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="PWUseSymbols" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="PWUseUppercase" type="boolType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="PWMakePronounceable" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="SaveImmediately" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="SavePasswordHistory" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="ShowNotesDefault" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="ShowPWDefault" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="ShowPasswordInTree" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="ShowUsernameInTree" type="boolType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="SortAscending" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="UseDefaultUser" type="boolType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="CopyPasswordWhenBrowseToURL" type="boolType" minOccurs="0" maxOccurs="1" />
   
               <!-- Integer Preferences -->
-              <xs:element name="PWDefaultLength" type="passwordlengthType" minOccurs="0" maxOccurs="1" />
               <xs:element name="IdleTimeout" type="timeoutType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="TreeDisplayStatusAtOpen" type="displaystatusType" minOccurs="0" maxOccurs="1" />
               <xs:element name="NumPWHistoryDefault" type="pwhistoryType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PWDefaultLength" type="passwordlengthType" minOccurs="0" maxOccurs="1" />
               <xs:element name="PWDigitMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
               <xs:element name="PWLowercaseMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
               <xs:element name="PWSymbolMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
               <xs:element name="PWUppercaseMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+              <xs:element name="TreeDisplayStatusAtOpen" type="displaystatusType" minOccurs="0" maxOccurs="1" />
   
               <!-- String Preferences -->
               <xs:element name="DefaultUsername" type="stringType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="DefaultAutotypeString" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="DefaultSymbols" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="DefaultAutotypeString" type="stringType" minOccurs="0" maxOccurs="1" />
+              
+              <!-- Obsolete DB Preferences since 3.20 - Kept so no errors importing -->
+              <xs:element name="SortAscending" type="boolType" minOccurs="0" maxOccurs="1" />
             </xs:all>
           </xs:complexType>
         <!-- End Database Preferences -->

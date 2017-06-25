@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -76,7 +76,6 @@ void CItemAtt::CreateUUID()
   CUUID uuid;
   SetUUID(uuid);
 }
-
 
 void CItemAtt::SetUUID(const CUUID &uuid)
 {
@@ -261,7 +260,6 @@ int CItemAtt::Export(const stringT &fname) const
   return status;
 }
 
-
 bool CItemAtt::SetField(unsigned char type, const unsigned char *data,
                         size_t len)
 {
@@ -433,7 +431,7 @@ int CItemAtt::Read(PWSfile *in)
     trashMemory(AK, sizeof(AK));
     
     // calculate HMAC
-    hmac.Update(content, content_len);
+    hmac.Update(content, (unsigned long)content_len);
     hmac.Final(calculated_digest);
 
     if (memcmp(expected_digest, calculated_digest,
@@ -453,6 +451,7 @@ int CItemAtt::Read(PWSfile *in)
   delete[] utf8; // if here via goto exit
 
   if (numread > 0) {
+    m_offset = in->GetOffset();
     return status;
   } else
     return PWSfile::READ_FAIL;

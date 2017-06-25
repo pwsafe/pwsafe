@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -172,14 +172,14 @@ void CReport::WriteLine(LPCTSTR tc_line, bool bCRLF)
 {
   m_osxs << tc_line;
   if (bCRLF) {
-    m_osxs << CRLF;
+    m_osxs << std::endl;
   }
 }
 
 // Write a new line
 void CReport::WriteLine()
 {
-  m_osxs << CRLF;
+  m_osxs << std::endl;
 }
 
 //  EndReport writes a "End Report" record and closes the report file.

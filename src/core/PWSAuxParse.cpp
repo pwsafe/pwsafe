@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -15,6 +15,7 @@
 #include <algorithm>
 
 #include "PWSAuxParse.h"
+#include "PWHistory.h"
 #include "PWSprefs.h"
 #include "core.h"
 #include "ItemData.h"
@@ -76,6 +77,35 @@ static void ParseNotes(StringX &sxNotes,
 //-----------------------------------------------------------------
 // Externally visible functions
 //-----------------------------------------------------------------
+
+bool PWSAuxParse::GetEffectiveValues(const CItemData *pci, const CItemData *pbci,
+                                     StringX &sx_group, StringX &sx_title, StringX &sx_user,
+                                     StringX &sx_pswd, StringX &sx_lastpswd,
+                                     StringX &sx_notes, StringX &sx_url,
+                                     StringX &sx_email, StringX &sx_autotype, StringX &sx_runcmd)
+{
+  // The one place to get the values needed for AutoType & RunCmd based on entry type
+
+  if (pci->IsDependent()) {
+    ASSERT(pbci != NULL);
+    if (pbci == NULL)
+      return false;
+  }
+
+  sx_group    = pci->GetEffectiveFieldValue(CItem::GROUP, pbci);
+  sx_title    = pci->GetEffectiveFieldValue(CItem::TITLE, pbci);
+  sx_user     = pci->GetEffectiveFieldValue(CItem::USER, pbci);
+  sx_pswd     = pci->GetEffectiveFieldValue(CItem::PASSWORD, pbci);
+  sx_lastpswd = ::GetPreviousPassword(pci->GetEffectiveFieldValue(CItem::PWHIST, pbci));
+  sx_notes    = pci->GetEffectiveFieldValue(CItem::NOTES, pbci);
+  sx_url      = pci->GetEffectiveFieldValue(CItem::URL, pbci);
+  sx_email    = pci->GetEffectiveFieldValue(CItem::EMAIL, pbci);
+  sx_autotype = pci->GetEffectiveFieldValue(CItem::AUTOTYPE, pbci);
+  sx_runcmd   = pci->GetEffectiveFieldValue(CItem::RUNCMD, pbci);
+
+  return true;
+}
+
 StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
                                        const StringX &sxCurrentDB, 
                                        const CItemData *pci, const CItemData *pbci,
@@ -86,7 +116,7 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
 {
   std::vector<st_RunCommandTokens> v_rctokens;
   std::vector<st_RunCommandTokens>::iterator rc_iter;
-  StringX sxretval(_T("")), sxurl;
+  StringX sxretval(_T(""));
   stringT spath, sdrive, sdir, sfname, sextn;
   stringT sdbdir;
   bURLSpecial = false;
@@ -105,6 +135,20 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   spath = sxCurrentDB.c_str();
   pws_os::splitpath(spath, sdrive, sdir, sfname, sextn);
   sdbdir = pws_os::makepath(sdrive, sdir, _T(""), _T(""));
+
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+
+  // GetEffectiveFieldValue() encapsulates what we take from where depending in the entry type (alias, shortcut, etc.)
+  sx_group    = pci->GetEffectiveFieldValue(CItem::GROUP, pbci);
+  sx_title    = pci->GetEffectiveFieldValue(CItem::TITLE, pbci);
+  sx_user     = pci->GetEffectiveFieldValue(CItem::USER, pbci);
+  sx_pswd     = pci->GetEffectiveFieldValue(CItem::PASSWORD, pbci);
+  sx_lastpswd = ::GetPreviousPassword(pci->GetEffectiveFieldValue(CItem::PWHIST, pbci));
+  sx_notes    = pci->GetEffectiveFieldValue(CItem::NOTES, pbci);
+  sx_url      = pci->GetEffectiveFieldValue(CItem::URL, pbci);
+  sx_email    = pci->GetEffectiveFieldValue(CItem::EMAIL, pbci);
+  sx_autotype = pci->GetEffectiveFieldValue(CItem::AUTOTYPE, pbci);
+  sx_runcmd   = pci->GetEffectiveFieldValue(CItem::RUNCMD, pbci);
 
   for (rc_iter = v_rctokens.begin(); rc_iter < v_rctokens.end(); rc_iter++) {
     st_RunCommandTokens &st_rctoken = *rc_iter;
@@ -130,10 +174,10 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       sxretval += sextn.c_str();
     } else
     if (st_rctoken.sxname == _T("g") || st_rctoken.sxname == _T("group")) {
-      sxretval += pci->GetGroup();
+      sxretval += sx_group;
     } else
     if (st_rctoken.sxname == _T("G") || st_rctoken.sxname == _T("GROUP")) {
-      StringX sxg = pci->GetGroup();
+      StringX sxg = sx_group;
       StringX::size_type st_index;
       st_index = sxg.rfind(_T("."));
       if (st_index != StringX::npos) {
@@ -142,27 +186,22 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       sxretval += sxg;
     } else
     if (st_rctoken.sxname == _T("t") || st_rctoken.sxname == _T("title")) {
-      sxretval += pci->GetTitle();
+      sxretval += sx_title;
     } else
     if (st_rctoken.sxname == _T("u") || st_rctoken.sxname == _T("user")) {
-      sxretval += pci->GetUser();
+      sxretval += sx_user;
     } else
     if (st_rctoken.sxname == _T("p") || st_rctoken.sxname == _T("password")) {
-      if (pci->IsAlias()) {
-        ASSERT(pbci != NULL);
-        sxretval += pbci->GetPassword();
-      } else {
-        sxretval += pci->GetPassword();
-      }
+      sxretval += sx_pswd;
     } else
       if (st_rctoken.sxname == _T("e") || st_rctoken.sxname == _T("email")) {
-      sxretval += pci->GetEmail();
+      sxretval += sx_email;
     } else
     if (st_rctoken.sxname == _T("a") || st_rctoken.sxname == _T("autotype")) {
       // Do nothing - autotype variable handled elsewhere
     } else
     if (st_rctoken.sxname == _T("url")) {
-      sxurl = pci->GetURL();
+      StringX sxurl = sx_url;
       if (sxurl.length() > 0) {
         // Remove 'Browse to' specifics
         StringX::size_type ipos;
@@ -193,8 +232,6 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       }
     } else
     if (st_rctoken.sxname == _T("n") || st_rctoken.sxname == _T("notes")) {
-      StringX sx_notes = pci->GetNotes();
-
       if (st_rctoken.index == 0) {
         sxretval += sx_notes;
       } else {
@@ -225,11 +262,82 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   return sxretval;
 }
 
+static bool GetSpecialCommand(const StringX &sx_autotype, size_t &n, WORD &wVK,
+                              bool &bAlt, bool &bCtrl, bool &bShift)
+{
+  // Currently support special characters (note codes are NOT case sensitive)
+  // In addition the following prefixes are supported
+  // Alt = '!'; Ctrl = '^'; Shift = '+' such that {+Tab} == Shift+Tab
+  /*
+    {Enter} Enter key
+    {Up}    Up-arrow key
+    {Down}  Down-arrow down key
+    {Left}  Left-arrow key
+    {Right} Right-arrow key
+    {Home}  Home key
+    {End}   End key
+    {PgUp}  Page-up key
+    {PgDn}  Page-down key
+    {Tab}   Tab key
+    {Space} Space key
+  */
+  
+  bAlt = bCtrl = bShift = false;
+ 
+  TCHAR curChar = sx_autotype[n];
+  if (curChar != TCHAR('{')) {
+    ASSERT(0);
+    return false;
+  }
+
+  // Find ending curly bracket
+  StringX::size_type iEndBracket = sx_autotype.find_first_of(TCHAR('}'), n);
+  if (iEndBracket == StringX::npos)
+    return false;
+
+  StringX sxCode = sx_autotype.substr(n + 1, iEndBracket - n - 1);
+  ToUpper(sxCode);
+
+  // Detect leading Alt, Ctrl or Shift
+  StringX sxfound;
+  std::size_t found = sxCode.find_first_of(_T("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+
+  if (found == StringX::npos)
+    return false;
+
+  if (found != 0) {
+    // We have special characters
+    for (size_t iSpecial = 0; iSpecial < found; iSpecial++) {
+      if (sxCode.substr(0, 1) == _T("!") && sxCode.length() > 1) {
+        bAlt = true;
+        sxCode.erase(0, 1);
+        continue;
+      }
+      if (sxCode.substr(0, 1) == _T("^") && sxCode.length() > 1) {
+        bCtrl = true;
+        sxCode.erase(0, 1);
+        continue;
+      }
+      if (sxCode.substr(0, 1) == _T("+") && sxCode.length() > 1) {
+        bShift = true;
+        sxCode.erase(0, 1);
+        continue;
+      }
+    }
+  }
+
+  if (!CKeySend::LookupVirtualKey(sxCode, wVK))
+    return false;
+  n = iEndBracket - 1;
+  return true;
+}
+
 StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
                                        const StringX &sx_group,
                                        const StringX &sx_title,
                                        const StringX &sx_user,
                                        const StringX &sx_pwd,
+                                       const StringX &sx_lastpwd,
                                        const StringX &sx_notes,
                                        const StringX &sx_url,
                                        const StringX &sx_email,
@@ -309,7 +417,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
 
   const size_t N = sx_autotype.length();
   const StringX sxZeroes = _T("000");
-  int gNumIts;
+  unsigned int gNumIts;
 
   for (size_t n = 0; n < N; n++){
     curChar = sx_autotype[n];
@@ -344,6 +452,9 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
         case TCHAR('p'):
           sxtmp += sx_pwd;
           break;
+        case TCHAR('q'):
+          sxtmp += sx_lastpwd;
+          break;
         case TCHAR('l'):
           sxtmp += sx_url;
           break;
@@ -353,31 +464,44 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
 
         case TCHAR('o'):
         {
+          StringX sxN;
+          bool bSendNotes(true);
           if (n == (N - 1)) {
             // This was the last character - send the lot!
-            sxtmp += sxNotes;
-            break;
-          }
-          size_t line_number(0);
-          gNumIts = 0;
-          for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
-            if (_istdigit(sx_autotype[n])) {
-              line_number *= 10;
-              line_number += (sx_autotype[n] - TCHAR('0'));
-            } else
-              break; // for loop
-          }
-          if (line_number == 0) {
-            // Send the lot
-            sxtmp += sx_notes;
-          } else
-          if (line_number <= vsxnotes_lines.size()) {
-            // User specifies a too big a line number - ignore the lot
-            sxtmp += vsxnotes_lines[line_number - 1];
+            sxN = sxNotes;
+          } else {
+            size_t line_number(0);
+            gNumIts = 0;
+            for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
+              if (_istdigit(sx_autotype[n])) {
+                line_number *= 10;
+                line_number += (sx_autotype[n] - TCHAR('0'));
+              } else
+                break; // for loop
+            }
+
+            if (line_number == 0) {
+              // Send the lot
+              sxN = sxNotes;
+            } else {
+              if (line_number <= vsxnotes_lines.size()) {
+                // Only copy if user has specified a valid Notes line number
+
+                sxN = vsxnotes_lines[line_number - 1];
+              } else {
+                bSendNotes = false;
+              }
+            }
+            // Backup the extra character that delimited the \oNNN string
+            n--;
           }
 
-          // Backup the extra character that delimited the \oNNN string
-          n--;
+          if (bSendNotes) {
+            // As per help '\n' & '\r\n' replaced by '\r'
+            Replace(sxN, StringX(_T("\r\n")), StringX(_T("\r")));
+            Replace(sxN, _T('\n'), _T('\r'));
+            sxtmp += sxN;
+          }
           break; // case 'o'
         }
 
@@ -394,6 +518,11 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
           sxtmp += _T("\\");
           sxtmp += curChar;
           break; // case 'b' & 'z'
+
+        case TCHAR('#'):  // Use older method but allow on/off
+          sxtmp += _T("\\");
+          sxtmp += curChar;
+          break; // case '#'
 
         case TCHAR('d'):  // Delay
         case TCHAR('w'):  // Wait milli-seconds
@@ -415,6 +544,22 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
           break; // case 'd', 'w' & 'W'
         }
 
+        case TCHAR('{'):
+        {
+          // Special processing of particular commands - could be expanded later
+          sxtmp += _T("\\");
+          sxtmp += curChar;
+          WORD wVK;
+          bool bAlt, bCtrl, bShift;
+          if (GetSpecialCommand(sx_autotype, n, wVK, bAlt, bCtrl, bShift)) {
+            if (bAlt) sxtmp += _T('!');
+            if (bCtrl) sxtmp += _T('^');
+            if (bShift) sxtmp += _T('+');
+            sxtmp += wVK;
+          }
+          break;
+        }
+
         // Also copy explicit control characters to output string unchanged.
         case TCHAR('a'): // bell (can't hear it during testing!)
         case TCHAR('v'): // vertical tab
@@ -422,7 +567,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
         case TCHAR('e'): // escape
         case TCHAR('x'): // hex digits (\xNN)
         // and any others we have forgotten!
-        // '\cC', '\uXXXX', '\OOO', '\<any other charatcer not recognised above>'
+        // '\cC', '\uXXXX', '\OOO', '\<any other character not recognised above>'
         default:
           sxtmp += L'\\';
           sxtmp += curChar;
@@ -440,57 +585,36 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
                                        const PWScore &core,
                                        std::vector<size_t> &vactionverboffsets)
 {
-  // Set up all the data (a shortcut entry will change some of them!)
-  StringX sxgroup = ci.GetGroup();
-  StringX sxtitle = ci.GetTitle();
-  StringX sxuser = ci.GetUser();
-  StringX sxpwd = ci.GetPassword();
-  StringX sxnotes = ci.GetNotes();
-  StringX sxurl = ci.GetURL();
-  StringX sxemail = ci.GetEmail();
-  StringX sxautotype = ci.GetAutoType();
+  const CItemData *pbci(NULL);
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
-  if (ci.IsAlias()) {
-    const CItemData *pbci = core.GetBaseEntry(&ci);
-    if (pbci != NULL) {
-      sxpwd = pbci->GetPassword();
-    } else { // Problem - alias entry without a base!
-      ASSERT(0);
-    }
-  } else if (ci.IsShortcut()) {
-    const CItemData *pbci = core.GetBaseEntry(&ci);
-    if (pbci != NULL) {
-      // Use shortcut's group, title and username [BR1124],
-      // pick up the rest from base
-      sxpwd = pbci->GetPassword();
-      sxnotes = pbci->GetNotes();
-      sxurl = pbci->GetURL();
-      sxemail = pbci->GetEmail();
-      sxautotype = pbci->GetAutoType();
-    } else { // Problem - shortcut entry without a base!
-      ASSERT(0);
-    }
-  } // ci.IsShortcut()
+  if (ci.IsDependent()) {
+    pbci = core.GetBaseEntry(&ci);
+  }
+
+  GetEffectiveValues(&ci, pbci, sx_group, sx_title, sx_user,
+                     sx_pswd, sx_lastpswd,
+                     sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd);
 
   // If empty, try the database default
-  if (sxautotype.empty()) {
-    sxautotype = PWSprefs::GetInstance()->
+  if (sx_autotype.empty()) {
+    sx_autotype = PWSprefs::GetInstance()->
               GetPref(PWSprefs::DefaultAutotypeString);
 
     // If still empty, take this default
-    if (sxautotype.empty()) {
+    if (sx_autotype.empty()) {
       // checking for user and password for default settings
-      if (!sxpwd.empty()){
-        if (!sxuser.empty())
-          sxautotype = DEFAULT_AUTOTYPE;
+      if (!sx_pswd.empty()){
+        if (!sx_user.empty())
+          sx_autotype = DEFAULT_AUTOTYPE;
         else
-          sxautotype = _T("\\p\\n");
+          sx_autotype = _T("\\p\\n");
       }
     }
   }
-  return PWSAuxParse::GetAutoTypeString(sxautotype, sxgroup,
-                                        sxtitle, sxuser, sxpwd,
-                                        sxnotes, sxurl, sxemail,
+  return PWSAuxParse::GetAutoTypeString(sx_autotype, sx_group,
+                                        sx_title, sx_user, sx_pswd, sx_lastpswd,
+                                        sx_notes, sx_url, sx_email,
                                         vactionverboffsets);
 }
 
@@ -500,12 +624,12 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   // Accepts string and vector indicating location(s) of command(s)
   // as returned by GetAutoTypeString()
   // processes the later whilst sending the former
-  // Commands parsed here involve time (\d, \w, \W) or old-method override (\z)
+  // Commands parsed here involve time (\d, \w, \W) or old-method override (\z,  \# & \-#)
   StringX sxtmp(_T(""));
   StringX sxautotype(sx_autotype);
   wchar_t curChar;
  
-  bool bForceOldMethod(false), bCapsLock(false);
+  bool bForceOldMethod(false), bForceOldMethod2(false), bCapsLock(false);
  
   StringX::size_type st_index = sxautotype.find(_T("\\z"));
 
@@ -575,9 +699,11 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
 
           // Delay is going to change - send what we have with old delay
           ks.SendString(sxtmp);
+
           // start collecting new delay
-          sxtmp = _T("");
-          int newdelay = 0;
+          sxtmp.clear();
+
+          unsigned int newdelay = 0;
           gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
             if (_istdigit(sxautotype[n])) {
@@ -596,6 +722,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
 
           break; // case 'd', 'w' & 'W'
         }
+
         case L'z':
           if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
               vactionverboffsets.end()) {
@@ -604,6 +731,26 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
             sxtmp += curChar;
           }
           break;
+
+        case L'#':
+          // This toggles using the OldMethod as long as \z not specified ANYWHERE
+          // in the Autotype string
+          if (bForceOldMethod) {
+            // User has already used '\z' - ignore this \# - treat as-is
+            sxtmp += L'\\';
+            sxtmp += curChar;
+          } else {
+            // Send what we have
+            if (sxtmp.length() > 0) {
+              ks.SendString(sxtmp);
+              sxtmp.clear();
+            }
+            // Toggle
+            bForceOldMethod2 = !bForceOldMethod2;
+            ks.SetOldSendMethod(bForceOldMethod2);
+          }
+          break;
+
         case L'b':
           if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
               vactionverboffsets.end()) {
@@ -614,6 +761,53 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
             sxtmp += L'\b';
           }
           break;
+
+        case L'{':
+        {
+          // Send what we have
+          if (sxtmp.length() > 0) {
+            ks.SendString(sxtmp);
+            sxtmp.clear();
+          }
+
+          // Get this field
+          StringX sxSpecial = sxautotype.substr(n + 1);
+          StringX::size_type iEndBracket = sxSpecial.find(_T('}'));
+          sxSpecial.erase(iEndBracket);
+          StringX::size_type iModifiersLength = sxSpecial.find_last_of(_T("!^+"));
+
+          bool bAlt(false), bCtrl(false), bShift(false);
+          if (iModifiersLength != StringX::npos) {
+            iModifiersLength++;
+            for (size_t i = 0; i < iModifiersLength; i++) {
+              if (sxSpecial[0] == _T('!')) {
+                bAlt = true;
+                sxSpecial.erase(0, 1);
+                continue;
+              }
+              if (sxSpecial[0] == _T('^')) {
+                bCtrl = true;
+                sxSpecial.erase(0, 1);
+                continue;
+              }
+              if (sxSpecial[0] == _T('+')) {
+                bShift = true;
+                sxSpecial.erase(0, 1);
+                continue;
+              }
+            }
+          } else {
+            iModifiersLength = 0;
+          }
+
+          // Get Virtual Key code
+          WORD wVK = sxautotype[n + iModifiersLength + 1];
+          ks.SendVirtualKey(wVK, bAlt, bCtrl, bShift);
+
+          // Skip over modifiers, VK and closing bracket
+          n += iEndBracket + 1;
+          break;
+        }
         default:
           sxtmp += L'\\';
           sxtmp += curChar;
@@ -622,7 +816,9 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
     } else
       sxtmp += curChar;
   }
+
   ks.SendString(sxtmp);
+
   // If we turned off CAPSLOCK, put it back
   if (bCapsLock)
     ks.SetCapsLock(true);
@@ -643,7 +839,6 @@ static UINT ParseRunCommand(const StringX &sxInputString,
                             stringT &serrmsg, StringX::size_type &st_column)
 {
   // tokenize into separate elements
-  std::vector<st_RunCommandTokens>::iterator rc_iter;
   std::vector<size_t> v_pos;
   StringX::iterator str_Iter;
   st_RunCommandTokens st_rctoken;
@@ -684,7 +879,7 @@ static UINT ParseRunCommand(const StringX &sxInputString,
       st_rctoken.sxname = sxInputString.substr(st_startpos, st_next - st_startpos);
       st_rctoken.sxindex = _T("");
       st_rctoken.index = 0;
-      st_rctoken.is_variable  = st_startpos == 0 ? false : true;
+      st_rctoken.is_variable  = st_startpos != 0;
       st_rctoken.has_brackets = false;
       v_rctokens.push_back(st_rctoken);
       v_pos.push_back(st_startpos);

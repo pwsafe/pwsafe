@@ -1,5 +1,5 @@
 '
-' Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+' Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 ' All rights reserved. Use of the code is allowed under the
 ' Artistic License 2.0 terms, as specified in the LICENSE file
 ' distributed with this code, or available from
@@ -50,8 +50,8 @@ End If
 Set oReg = Nothing
 
 ' Set defaults
-strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.2-x86-windows-vc-14.0"
-strXerces64Dir = "C:\Program Files\xerces-c-3.1.2-x86_64-windows-vc-14.0"
+strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.3-x86-windows-vc-14.0"
+strXerces64Dir = "C:\Program Files\xerces-c-3.1.3-x86_64-windows-vc-14.0"
 strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-3.0.2"
 strWDKDir = "C:\Program Files (x86)\Windows Kits\8.1"
 strGtestIncDir = "C:\...\gtest-1.7.0\include"
@@ -171,6 +171,10 @@ objOutputFile.WriteLine("    <PWSLib>..\..\build\lib\pwsafe\$(Configuration)</PW
 objOutputFile.WriteLine("    <PWSObj>..\..\build\obj\pwsafe\$(Configuration)</PWSObj>")
 objOutputFile.WriteLine("  </PropertyGroup>")
 objOutputFile.WriteLine("  <ItemGroup>")
+objOutputFile.WriteLine("    <BuildMacro Include=""SolutionDir"">")
+objOutputFile.WriteLine("      <Value>$(SolutionDir)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
 objOutputFile.WriteLine("    <BuildMacro Include=""ProjectDir"">")
 objOutputFile.WriteLine("      <Value>$(ProjectDir)</Value>")
 objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")

@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 #
-# Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+# Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 # All rights reserved. Use of the code is allowed under the
 # Artistic License 2.0 terms, as specified in the LICENSE file
 # distributed with this code, or available from
@@ -16,7 +16,7 @@
 #
 # keysymdef.h is usually in /usr/include/X11
 #
-# Output is written to stdout.  For pwsafe, it should go to src/os/linux/unicode2keysym.cpp
+# Output is written to stdout.  For pwsafe, it should go to src/os/unix/unicode2keysym.cpp
 #
 use strict;
 use warnings;
@@ -68,7 +68,7 @@ while (<>) {
   }
 }
 
-# sort the keys to generate same output everytime unless keysymdefs.h changes
+# sort the keys to generate same output every time unless keysymdefs.h changes
 foreach my $wchar (sort keys %charsymmap) {
 	print "\tcase 0x$wchar: return 0x$charsymmap{$wchar}{keysym};\t\t// $charsymmap{$wchar}{symname}\n";
 }
@@ -78,7 +78,7 @@ foreach my $wchar (sort keys %charsymmap) {
 sub StartFile {
   print << "EOT";
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys\@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys\@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2013-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2013-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -515,7 +515,6 @@ static int rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
             break;
         }
 
-
         s0 =
             Td0(byte(t0, 3)) ^
             Td1(byte(t3, 2)) ^
@@ -578,7 +577,6 @@ static int rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
 
     return CRYPT_OK;
 }
-
 
 #ifdef LTC_CLEAN_STACK
 static int rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,

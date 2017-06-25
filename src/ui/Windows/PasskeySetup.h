@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,13 +28,19 @@ protected:
   // Dialog Data
   //{{AFX_DATA(CPasskeySetup)
   enum { IDD = IDD_PASSKEYSETUP };
-  CSecString m_verify;
   //}}AFX_DATA
+
+  CSecString m_verify;
+  BOOL m_btnShowCombination;
 
   virtual BOOL OnInitDialog();
   //{{AFX_VIRTUAL(CPasskeySetup)
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
+
+  void ProcessPhrase(); // Check the passphrase, call OnOK, OnCancel or just return
+  void YubiFailed(); // If YubiKey failed, offer to initialize it.
+  void YubiInitialize(); // called if YubiFailed and user confirmed
 
   // Implementation
   // Generated message map functions
@@ -46,9 +52,7 @@ protected:
   afx_msg void OnVerifykeySetfocus();
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnYubikeyBtn();
-  void ProcessPhrase(); // Check the passphrase, call OnOK, OnCancel or just return
-  void YubiFailed(); // If YubiKey failed, offer to initialize it.
-  void YubiInitialize(); // called if YubiFailed and user confirmed
+  afx_msg void OnShowCombination();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
 

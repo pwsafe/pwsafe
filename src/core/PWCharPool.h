@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -108,12 +108,7 @@ private:
   struct typeFreq_s {
     uint numchars;
     StringX vchars;
-  typeFreq_s(const CPasswordCharPool *parent, CharType ct, uint nc)
-  : numchars(nc) {
-    vchars.resize(parent->m_pwlen);
-    std::generate(vchars.begin(), vchars.end(),
-                  [this, parent, ct] () {return parent->GetRandomChar(ct);});
-  }
+    typeFreq_s(const CPasswordCharPool *parent, CharType ct, uint nc);
   };
 
   CPasswordCharPool &operator=(const CPasswordCharPool &);

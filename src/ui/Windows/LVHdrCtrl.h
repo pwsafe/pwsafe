@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -43,8 +43,10 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CDataSource m_HdrDataSource;
-  CDropTarget m_HdrDropTarget;
+  CDataSource *m_pHdrDataSource;
+  CDropTarget *m_pHdrDropTarget;
+  COleDropSource *m_pHdrDropSource;
+
   CImageList* m_pDragImage;
   LPARAM m_dwHDRType;
   int m_iDDType;

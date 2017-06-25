@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -38,7 +38,7 @@ public:
   CSecString(const CSecString& stringSrc) : m_mystring(stringSrc.m_mystring) {}
   CSecString(const CString& stringSrc) : m_mystring(stringSrc) {}
   CSecString(const StringX& sx) : m_mystring(sx.c_str()) {}
-  CSecString(const stringT& st) : m_mystring(st.c_str()) {}
+  CSecString(const std::wstring& st) : m_mystring(st.c_str()) {}
 
   ~CSecString() {trashstring();}
 
@@ -52,7 +52,7 @@ public:
   void SetAt(int nIndex, wchar_t ch) {m_mystring.SetAt(nIndex,ch);}
   operator LPCWSTR() const {return static_cast<LPCWSTR>(m_mystring);}
   operator StringX() const {return static_cast<LPCWSTR>(*this);}
-  operator stringT() const {return static_cast<LPCWSTR>(*this);}
+  operator std::wstring() const {return static_cast<LPCWSTR>(*this);}
   BOOL IsEmpty() const {return m_mystring.IsEmpty();}
   LPWSTR GetBuffer(int nMinBufLength) {return m_mystring.GetBuffer(nMinBufLength);}
   LPWSTR GetBuffer() {return m_mystring.GetBuffer();}
@@ -175,4 +175,3 @@ inline bool operator!=(LPCWSTR s1, const CSecString& s2)
 // Local variables:
 // mode: c++
 // End:
-

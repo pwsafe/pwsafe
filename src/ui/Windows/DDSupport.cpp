@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -35,13 +35,10 @@ void CDDObject::DDUnSerializeEntry(CSMemFile &inDDmemfile)
 {
   // Deserialize an entry
   size_t len = 0;
-  size_t lenlen = inDDmemfile.Read(&len, sizeof(len));
-  ASSERT(lenlen == sizeof(len) && len != 0);
+  VERIFY(inDDmemfile.Read(&len, sizeof(len)) == sizeof(len) && len != 0);
   vector<char> v(len);
-  size_t lenRead = inDDmemfile.Read(&(*v.begin()), (UINT)len);
-  ASSERT(lenRead == len);
-  bool status = m_item.DeSerializePlainText(v);
-  ASSERT(status);
+  VERIFY(inDDmemfile.Read(&(*v.begin()), (UINT)len) == len);
+  VERIFY(m_item.DeSerializePlainText(v));
   trashMemory(&(*v.begin()), v.size());
 }
 

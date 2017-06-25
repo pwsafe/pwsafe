@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -15,6 +15,7 @@
 #include "core.h"
 #include "StringXStream.h"
 #include "PWPolicy.h"
+#include "./UTF8Conv.h"
 
 #include "Util.h"
 
@@ -23,7 +24,6 @@
 #include "os/dir.h"
 
 #include <stdio.h>
-#include <time.h>
 #ifdef _WIN32
 #include <sys/timeb.h>
 #else
@@ -61,6 +61,12 @@ void trashMemory(void *buffer, size_t length)
     std::memset(buffer, 0x55, length);
     std::memset(buffer, 0xAA, length);
     std::memset(buffer,    0, length);
+#ifdef __GNUC__
+    // break compiler optimization of this function for gcc
+    // see trick used in google's boring ssl:
+    // https://boringssl.googlesource.com/boringssl/+/ad1907fe73334d6c696c8539646c21b11178f20f%5E!/#F0
+    __asm__ __volatile__("" : : "r"(buffer) : "memory");
+#endif
   }
 }
 #ifdef _WIN32
@@ -70,7 +76,6 @@ void trashMemory(LPTSTR buffer, size_t length)
 {
   trashMemory(reinterpret_cast<unsigned char *>(buffer), length * sizeof(buffer[0]));
 }
-
 
 /**
 Burn some stack memory
@@ -706,7 +711,6 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
   const unsigned char *utf8 = NULL;
   size_t utf8Len = 0;
 
-
   for (i = 0; i < indent; i++) oss << "\t";
   oss << "<" << name << ">" ;
   utf8conv.ToUTF8(tmp.substr(0, 10), utf8, utf8Len);
@@ -724,11 +728,11 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
  * @param[in] args - arguments for format string
  * @return buffer size including NULL-terminating character
 */
-int GetStringBufSize(const TCHAR *fmt, va_list args)
+unsigned int GetStringBufSize(const TCHAR *fmt, va_list args)
 {
   TCHAR *buffer=NULL;
 
-  int len=0;
+  unsigned int len = 0;
 
 #ifdef _WIN32
   len = _vsctprintf(fmt, args) + 1;
@@ -736,16 +740,18 @@ int GetStringBufSize(const TCHAR *fmt, va_list args)
   va_list ar;
   va_copy(ar, args);
   // Linux doesn't do this correctly :-(
-  int guess = 16;
+  unsigned int guess = 16;
+  int nBytes = -1;
   while (1) {
     len = guess;
     buffer = new TCHAR[len];
-    len = _vstprintf_s(buffer, len, fmt, ar);
+    nBytes = _vstprintf_s(buffer, len, fmt, ar);
     va_end(ar);//after using args we should reset list
     va_copy(ar, args);
-    if (len++ > 0)
+    if (nBytes++ > 0) {
+      len = nBytes;
       break;
-    else { // too small, resize & try again
+    } else { // too small, resize & try again
       delete[] buffer;
       buffer = NULL;
       guess *= 2;
@@ -756,7 +762,6 @@ int GetStringBufSize(const TCHAR *fmt, va_list args)
   if (buffer)
     delete[] buffer;
 
-  ASSERT(len > 0);
   return len;
 }
 
@@ -841,18 +846,38 @@ bool PWSUtil::pull_time(time_t &t, const unsigned char *data, size_t len)
     memcpy(buf, data, len);
     t = getInt<time_t>(buf);
   } else { // convert from 40 or 64 bit time to 32 bit
-    // XXX Change to use localtime, not GMT
     unsigned char buf[sizeof(__time64_t)] = {0};
     memcpy(buf, data, len); // not needed if len == 8, but no harm
     struct tm ts;
     const __time64_t t64 = getInt<__time64_t>(buf);
-    if (_gmtime64_s(&ts, &t64) != 0) {
+    if (_localtime64_s(&ts, &t64) != 0) {
       ASSERT(0); return false;
     }
-    t = _mkgmtime32(&ts);
+    t = _mktime32(&ts);
     if (t == time_t(-1)) { // time is past 2038!
       t = 0; return false;
     }
   }
   return true;
+}
+
+bool FindNoCase( const StringX& src, const StringX& dest)
+{
+    StringX srcLower = src;
+    ToLower(srcLower);
+
+    StringX destLower = dest;
+    ToLower(destLower);
+
+    return destLower.find(srcLower) != StringX::npos;
+}
+
+std::string toutf8(const std::wstring &w)
+{
+  CUTF8Conv conv;
+  const unsigned char *utf8str = nullptr;
+  size_t length = 0;
+  if (conv.ToUTF8(std2stringx(w), utf8str, length))
+    return string{ reinterpret_cast<const char *>(utf8str), length};
+  return string{};
 }

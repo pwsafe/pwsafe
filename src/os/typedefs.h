@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -48,6 +48,15 @@ typedef wchar_t charT;
 #define PWS_HOTKEYF_WIN     0x20
 #define PWS_HOTKEYF_CMD     0x40
 
+// Define the MFC HotKey values if not built under Windows
+#ifndef HOTKEYF_SHIFT
+// Windows MFC HotKey values
+#define HOTKEYF_SHIFT           0x01
+#define HOTKEYF_CONTROL         0x02
+#define HOTKEYF_ALT             0x04
+#define HOTKEYF_EXT             0x08
+#endif
+
 #ifdef _WIN32
 #include "TCHAR.h"
 typedef char    int8;
@@ -67,7 +76,7 @@ typedef unsigned int uint;
 
 typedef void *HANDLE;
 
-// Folllowing not defined by Windows - needed by _access mode
+// Following not defined by Windows - needed by _access mode
 #define F_OK 00
 #define W_OK 02
 #define R_OK 04
@@ -153,7 +162,7 @@ typedef int HANDLE;
 
 /* These two files require the above definitions */
 #include "debug.h"
-#include "linux/pws_time.h"
+#include "unix/pws_time.h"
 #endif /* _WIN32 */
 
 // Compile-time check that our sized types are correct:

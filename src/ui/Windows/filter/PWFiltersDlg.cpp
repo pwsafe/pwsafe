@@ -1,6 +1,6 @@
 /*
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -125,7 +125,7 @@ BOOL CPWFiltersDlg::OnInitDialog()
   if (m_iType == DFTYPE_MAIN)
     GetDlgItem(IDC_APPLY)->EnableWindow(m_pfilters->num_Mactive == 0 ? FALSE : TRUE);
 
-  return FALSE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CPWFiltersDlg::DoDataExchange(CDataExchange* pDX)
@@ -152,7 +152,6 @@ void CPWFiltersDlg::OnOk()
 {
   if (UpdateData(TRUE) == FALSE)
     return;
-
 
   if (m_iType == DFTYPE_MAIN && m_filtername.IsEmpty()) {
     CGeneralMsgBox gmb;
@@ -319,12 +318,12 @@ void CPWFiltersDlg::UpdateStatusText()
       ASSERT(0);
   }
 
-  m_statusBar.SetPaneText(0, s, TRUE);
-  m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
-  m_statusBar.UpdateWindow();
+  m_RSDStatusBar.SetPaneText(0, s, TRUE);
+  m_RSDStatusBar.SetPaneInfo(0, m_RSDStatusBar.GetItemID(0), SBPS_STRETCH, NULL);
+  m_RSDStatusBar.UpdateWindow();
 }
 
-BOOL CPWFiltersDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CPWFiltersDlg::PreTranslateMessage(MSG *pMsg)
 {
   // CListCtrl accelerator processing
   if (pMsg->hwnd == m_FilterLC.m_hWnd &&
@@ -382,8 +381,8 @@ void CPWFiltersDlg::UpdateDialogMaxWidth()
     int iw1 =  m_FilterLC.GetColumnWidth(i);
     m_FilterLC.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
     int iw2 =  m_FilterLC.GetColumnWidth(i);
-    m_FilterLC.SetColumnWidth(i, max(iw1, iw2));
-    itotalwidth += max(iw1, iw2);
+    m_FilterLC.SetColumnWidth(i, std::max(iw1, iw2));
+    itotalwidth += std::max(iw1, iw2);
   }
   m_FilterLC.SetColumnWidth(FLC_NUM_COLUMNS - 1, LVSCW_AUTOSIZE_USEHEADER);
   itotalwidth += m_FilterLC.GetColumnWidth(FLC_NUM_COLUMNS - 1);

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,7 +13,6 @@
 
 #include "PasswordSafe.h"
 #include "stdafx.h"
-#include "SystemTray.h"
 #include "PWSRecentFileList.h"
 #include "PWSFaultHandler.h"
 
@@ -29,7 +28,7 @@
 struct LANGHELPFILE {
   LCID lcid;                 // LCID for the language
   std::wstring wsLL;         // 2-character language code
-  std::wstring wsCC;         // 2-chharacter country code if needed
+  std::wstring wsCC;         // 2-character country code if needed
   std::wstring wsLanguage;   // Name of language for menu item
 
   /*
@@ -67,17 +66,6 @@ public:
   void DisableAccelerator() { m_bUseAccelerator = false; }
   bool IsAcceleratorEnabled() { return m_bUseAccelerator;}
 
-  BOOL SetTooltipText(LPCWSTR ttt) {return m_pTrayIcon->SetTooltipText(ttt);}
-  BOOL IsIconVisible() const {return m_pTrayIcon->Visible();}
-  void ShowIcon() {m_pTrayIcon->ShowIcon();}
-  void HideIcon() {m_pTrayIcon->HideIcon();}
-
-  // 'STATE' also defined in DboxMain.h - ensure identical
-  enum STATE {LOCKED, UNLOCKED, CLOSED};
-  void SetSystemTrayState(STATE);
-  STATE GetSystemTrayState() const {return m_TrayLockedState;}
-  int SetClosedTrayIcon(int &icon, bool bSet = true);
-
   bool WasHotKeyPressed() {return m_HotKeyPressed;}
   void SetHotKeyPressed(bool state) {m_HotKeyPressed = state;}
   int FindMenuItem(CMenu* Menu, UINT MenuID);
@@ -95,8 +83,6 @@ public:
   DWORD GetBaseThreadID() {return m_nBaseThreadID;}
   void GetLanguageFiles();
   void SetLanguage();
-  void SetSystemTrayTarget(CWnd *pWnd) {m_pTrayIcon->SetTarget(pWnd);}
-
   void SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserStream iStream = usAll);
 
   DWORD GetOSMajorMinor() { return m_dwMajorMinor; }
@@ -110,8 +96,10 @@ protected:
 
 private:
   bool ParseCommandLine(DboxMain &dbox, bool &allDone);
+  bool GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost, StringX &sxUser);
   void LoadLocalizedStuff();
   void SetupMenu();
+
   static BOOL CALLBACK searcher(HWND hWnd, LPARAM lParam);
 
   DboxMain *m_pDbx;
@@ -124,11 +112,6 @@ private:
   HANDLE m_hMutexOneInstance;
   HINSTANCE m_hInstResDLL;
 
-  HICON m_LockedIcon;
-  HICON m_UnLockedIcon;
-  HICON m_ClosedIcon;
-  CSystemTray *m_pTrayIcon; // DboxMain needs to be constructed first
-  STATE m_TrayLockedState;
   bool m_HotKeyPressed, m_bACCEL_Table_Created;
   DWORD m_dwMajorMinor;
   DWORD m_dwBuildRevision;

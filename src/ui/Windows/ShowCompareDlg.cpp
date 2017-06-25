@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -94,12 +94,12 @@ BOOL CShowCompareDlg::OnInitDialog()
     m_pNotesDisplay = NULL;
   }
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 CString ConvertKeyBoardShortcut(int32 &iKBShortcut)
 {
-  CString kbs(_T(""));
+  CString kbs(L"");
   if (iKBShortcut != 0) {
     CString cs_temp;
     WORD wVirtualKeyCode = iKBShortcut & 0xff;
@@ -319,7 +319,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
     time_t t1(0), t2(0);
     short int si1, si2;
     StringX sxValue1, sxValue2;
-    stringT sFieldName = pci->FieldName((CItemData::FieldType)i);
+    std::wstring sFieldName = pci->FieldName((CItemData::FieldType)i);
 
     // Get field values
     // For aliases - use base entry passwords
@@ -515,7 +515,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
         }
 
         LoadAString(sFieldName, IDS_PWHENTRY);
-        size_t maxentries = max(pwhistlist1.size(), pwhistlist2.size());
+        size_t maxentries = std::max(pwhistlist1.size(), pwhistlist2.size());
         StringX sxBlank = L" ";
         for (size_t n = 0; n < maxentries; n++) {
           m_ListCtrl.SetItemData(iPos, LVCFMT_RIGHT);
@@ -529,7 +529,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
             sxValue2 = L"";
 
           if (bShowAll || sxValue1 != sxValue2) {
-            stringT str;
+            std::wstring str;
             Format(str, L"%s - %d", sFieldName.c_str(), n+1);
             iPos = m_ListCtrl.InsertItem(iPos, str.c_str());
             m_ListCtrl.SetItemText(iPos, 1, sxValue1.c_str());
@@ -590,7 +590,7 @@ CString CShowCompareDlg::GetDCAString(int iValue, bool isShift) const
   CString cs(MAKEINTRESOURCE(ui));
   if (iValue == -1) {
     CString cs1(cs);
-    cs.Format(IDS_APP_DEFAULT, cs1);
+    cs.Format(IDS_APP_DEFAULT, static_cast<LPCWSTR>(cs1));
   }
   return cs;
 }

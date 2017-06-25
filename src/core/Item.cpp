@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -25,16 +25,13 @@ CItem::CItem()
 
 CItem::CItem(const CItem &that) :
   m_fields(that.m_fields),
-  m_URFL(that.m_URFL),
-  m_display_info(that.m_display_info == NULL ?
-                 NULL : that.m_display_info->clone())
+  m_URFL(that.m_URFL)
 {
   memcpy(m_key, that.m_key, sizeof(m_key));
 }
 
 CItem::~CItem()
 {
-  delete m_display_info;
   delete m_blowfish;
   // Following protects against possible use-after-delete
   // bug, since new BF will be created, rather than
@@ -48,9 +45,6 @@ CItem& CItem::operator=(const CItem &that)
     m_fields = that.m_fields;
     m_URFL = that.m_URFL;
 
-    delete m_display_info;
-    m_display_info = that.m_display_info == NULL ?
-      NULL : that.m_display_info->clone();
     memcpy(m_key, that.m_key, sizeof(m_key));
     delete m_blowfish;
     m_blowfish = nullptr;
@@ -167,8 +161,6 @@ void CItem::GetUnknownField(unsigned char &type, size_t &length,
   GetField(item, pdata, flength);
 }
 
-
-
 void CItem::Clear()
 {
   m_fields.clear();
@@ -274,7 +266,7 @@ void CItem::GetTime(int whichtime, time_t &t) const
 {
   FieldConstIter fiter = m_fields.find(whichtime);
   if (fiter != m_fields.end()) {
-    unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+    unsigned char in[TwoFish::BLOCKSIZE] = {0}; // required by GetField
     size_t tlen = sizeof(in); // ditto
 
     CItem::GetField(fiter->second, in, tlen);

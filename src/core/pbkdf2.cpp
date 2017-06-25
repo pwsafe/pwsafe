@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2013-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2013-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -8,10 +8,6 @@
 // Implementation of PBKDF2 (RFC2898 Section 5.2)
 // Based on LibTomCrypt by
 // Tom St Denis, tomstdenis@iahu.ca, http://libtomcrypt.org
-
-/*
- */
-
 
 #include "PwsPlatform.h"
 #include "hmac.h"
@@ -38,14 +34,13 @@ void pbkdf2(const unsigned char *password, unsigned long password_len,
   ulong32  blkno;
   unsigned long stored, left, x, y;
   unsigned char *buf[2];
-  const int BlockSize = hmac->GetBlockSize();
+  const unsigned int BlockSize = hmac->GetBlockSize();
 
   ASSERT(password != NULL);
   ASSERT(salt     != NULL);
   ASSERT(out      != NULL);
   ASSERT(hmac     != NULL);
   ASSERT(outlen   != NULL);
-
 
   buf[0] = new unsigned char[BlockSize * 2];
   if (buf[0] == NULL) {
@@ -83,7 +78,7 @@ void pbkdf2(const unsigned char *password, unsigned long password_len,
       }
     }
 
-    /* now emit upto x bytes of buf[1] to output */
+    /* now emit up to x bytes of buf[1] to output */
     for (y = 0; y < x && left != 0; ++y) {
       out[stored++] = buf[1][y];
       --left;

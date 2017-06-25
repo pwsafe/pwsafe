@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -81,10 +81,8 @@ CWZPropertySheet::CWZPropertySheet(UINT nID, CWnd* pParent, WZAdvanced::AdvType 
       uimsgid_finish = IDS_WZEXPORTXML;
       break;
     case ID_MENUITEM_EXPORTENT2DB:
-      uimsgid_select = IDS_NAMEDBFILE;
-      uimsgid_finish = IDS_WZEXPORTDB;
-      break;
     case ID_MENUITEM_EXPORTGRP2DB:
+    case ID_MENUITEM_EXPORTFILTERED2DB:
       uimsgid_select = IDS_NAMEDBFILE;
       uimsgid_finish = IDS_WZEXPORTDB;
       break;
@@ -98,7 +96,8 @@ CWZPropertySheet::CWZPropertySheet(UINT nID, CWnd* pParent, WZAdvanced::AdvType 
           CWZPropertyPage::START);
   AddPage(m_pp_selectdb);
 
-  if (nID != ID_MENUITEM_EXPORTENT2DB && nID != ID_MENUITEM_EXPORTGRP2DB) {
+  if (nID != ID_MENUITEM_EXPORTENT2DB && nID != ID_MENUITEM_EXPORTGRP2DB &&
+      nID != ID_MENUITEM_EXPORTFILTERED2DB) {
     m_pp_advanced = new CWZAdvanced(this, uimsgid_advanced, CWZPropertyPage::PENULTIMATE,
                                     iadv_type, m_pst_SADV);
     AddPage(m_pp_advanced);

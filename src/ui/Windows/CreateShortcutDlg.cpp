@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -24,9 +24,10 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CCreateShortcutDlg::CCreateShortcutDlg(CWnd* pParent, 
-  const CSecString &cs_tg, const CSecString &cs_tt, const CSecString &cs_tu)
+  const CSecString &cs_basegroup, const CSecString &cs_basetitle, const CSecString &cs_baseuser)
   : CPWDialog(CCreateShortcutDlg::IDD, pParent),
-  m_tg(cs_tg), m_tt(cs_tt), m_tu(cs_tu), m_group(cs_tg), m_username(cs_tu)
+  m_basegroup(cs_basegroup), m_basetitle(cs_basetitle), m_baseuser(cs_baseuser),
+  m_group(cs_basegroup), m_username(cs_baseuser)
 {
 }
 
@@ -34,33 +35,40 @@ BOOL CCreateShortcutDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
+  // Get Add/Edit font
+  CFont *pFont = Fonts::GetInstance()->GetAddEditFont();
+
+  // Change font size of the group, title & username fields and the base entry name
+  m_ex_group.SetFont(pFont);
+  m_ex_title.SetFont(pFont);
+  m_ex_username.SetFont(pFont);
+  GetDlgItem(IDC_MYBASE)->SetFont(pFont);
+
   // Populate the combo box
   m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
-  std::vector<std::wstring> aryGroups;
-  app.GetCore()->GetUniqueGroups(aryGroups);
-  for (std::vector<std::wstring>::iterator iter = aryGroups.begin();
-       iter != aryGroups.end(); ++iter) {
+  std::vector<std::wstring> vGroups;
+  app.GetCore()->GetAllGroups(vGroups);
+  for (std::vector<std::wstring>::iterator iter = vGroups.begin();
+       iter != vGroups.end(); ++iter) {
     m_ex_group.AddString(iter->c_str());
   }
 
   // Make sure Group combobox is wide enough
   SetGroupComboBoxWidth();
 
-  m_title.Format(IDS_SCTARGET, m_tt);
+  m_title.Format(IDS_SCTARGET, static_cast<LPCWSTR>(m_basetitle));
 
-  CSecString cs_target(L"");
-  if (!m_tg.IsEmpty())
-    cs_target = m_tg + L".";
-  cs_target += m_tt;
-  if (!m_tu.IsEmpty())
-    cs_target += L"." + m_tu;
-  GetDlgItem(IDC_MYBASE)->SetWindowText(cs_target);
+  CSecString cs_base(L"");
+  cs_base = L"\xab" + m_basegroup + L"\xbb " +
+            L"\xab" + m_basetitle + L"\xbb " +
+            L"\xab" + m_baseuser  + L"\xbb";
+  GetDlgItem(IDC_MYBASE)->SetWindowText(cs_base);
 
   m_ex_group.ChangeColour();
 
   UpdateData(FALSE);
 
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CCreateShortcutDlg::DoDataExchange(CDataExchange* pDX)
@@ -109,12 +117,7 @@ void CCreateShortcutDlg::OnOK()
 
   // If there is a matching entry in our list, tell the user to try again.
   if (GetMainDlg()->Find(m_group, m_title, m_username) != app.GetMainDlg()->End()) {
-    CSecString temp;
-    if (m_group.IsEmpty())
-      temp.Format(IDS_ENTRYEXISTS2, m_title, m_username);
-    else
-      temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
-    gmb.AfxMessageBox(temp);
+    gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
     return;

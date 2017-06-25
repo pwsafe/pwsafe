@@ -37,8 +37,8 @@ ifeq ($(CONFIG),debug)
 WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2d
 WXVERSION:=$(shell echo `$(WX_CONFIG) --version`)
-CXX=g++
-CC=gcc
+CXX?=g++
+CC?=gcc
 RESCOMP=windres.exe
 RCFILEOBJ=pwsafe_rc.o
 RCFILESRC=pwsafe.rc
@@ -47,7 +47,7 @@ OUTPUTPATH=GCCDebug
 OBJECTPATH=GCCDebug
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=yes --unicode=no --libs` -lcore -los -lcore -luuid -lXtst -lX11 -l$(YBPERS_LIBS)
+LIBS=`$(WX_CONFIG) --debug=yes --unicode=no --libs` -lcore -los -lcore -luuid -lXtst -lX11 -l$(YBPERS_LIBS) ${LIBCXX_LD_EXTRA_FLAGS}
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
@@ -64,8 +64,8 @@ ifeq ($(CONFIG),release)
 WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2
 WXVERSION:=$(shell echo `$(WX_CONFIG) --debug=no --unicode=no --version`)
-CXX=g++
-CC=gcc
+CXX?=g++
+CC?=gcc
 RESCOMP=windres.exe
 RCFILEOBJ=pwsafe_rc.o
 RCFILESRC=pwsafe.rc
@@ -91,8 +91,8 @@ ifeq ($(CONFIG),unicodedebug)
 WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2ud
 WXVERSION:=$(shell echo `$(WX_CONFIG) --debug=yes --unicode=yes --version`)
-CXX=g++
-CC=gcc
+CXX?=g++
+CC?=gcc
 RESCOMP=windres.exe
 RCFILEOBJ=pwsafe_rc.o
 RCFILESRC=pwsafe.rc
@@ -101,15 +101,18 @@ OUTPUTPATH=GCCUnicodeDebug
 OBJECTPATH=GCCUnicodeDebug
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11 -l$(YBPERS_LIBS)
+LIBS=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --libs` -lcore -los -lcore -l$(YBPERS_LIBS)
+ifneq ($(findstring Darwin, $(shell uname -s)), Darwin)
+		LIBS += -luuid -lXtst -lX11
+		XERCESLIBFLAGS=-lxerces-c
+		XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
+endif
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
 DEBUGFLAGS=-ggdb -D_DEBUG
 LIBPATH=../../../lib/unicodedebug
 CPPINC=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --cxxflags` -DUNICODE
-XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
-XERCESLIBFLAGS=-lxerces-c
 GCCFLAGS=-fPIC
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildDebugGTK2Unicode/lib/wx/include/gtk2-unicode-debug-static-2.6"
 MACPACKAGEINFO=
@@ -119,8 +122,8 @@ else
 WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2u
 WXVERSION:=$(shell echo `$(WX_CONFIG) --debug=no --unicode=yes --version`)
-CXX=g++
-CC=gcc
+CXX?=g++
+CC?=gcc
 RESCOMP=windres.exe
 RCFILEOBJ=pwsafe_rc.o
 RCFILESRC=pwsafe.rc
@@ -129,15 +132,18 @@ OUTPUTPATH=GCCUnicodeRelease
 OBJECTPATH=GCCUnicodeRelease
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11 -l$(YBPERS_LIBS)
+LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs` -lcore -los -lcore -l$(YBPERS_LIBS)
+ifneq ($(findstring Darwin, $(shell uname -s)), Darwin)
+		LIBS += -luuid -lXtst -lX11
+		XERCESLIBFLAGS=-lxerces-c
+		XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
+endif
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
 DEBUGFLAGS=
 LIBPATH=../../../lib/unicoderelease
 CPPINC=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --cxxflags` -DUNICODE -DNDEBUG
-XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
-XERCESLIBFLAGS=-lxerces-c
 GCCFLAGS=-fPIC
 override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(LDFLAGS)
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2Unicode/lib/wx/include/gtk2-unicode-release-static-2.6"
@@ -157,6 +163,9 @@ endif
 
 override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)
 CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS) $(CPPFLAGS)
+ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
+		CPPFLAGS += -std=c++11
+endif
 
 SOURCES= passwordsafeframe.cpp \
 	pwsafeapp.cpp safecombinationentry.cpp \
@@ -169,7 +178,7 @@ SOURCES= passwordsafeframe.cpp \
 	optionspropsheet.cpp PasswordSafeSearch.cpp \
 	deleteconfirmation.cpp editshortcut.cpp \
 	createshortcutdlg.cpp SystemTray.cpp \
-	RUEList.cpp guiinfo.cpp ImportTextDlg.cpp \
+	guiinfo.cpp ImportTextDlg.cpp \
 	ImportXmlDlg.cpp OpenFilePickerValidator.cpp \
 	SafeCombinationCtrl.cpp ExportTextWarningDlg.cpp \
 	AdvancedSelectionDlg.cpp ViewReport.cpp dragbar.cpp \
@@ -179,7 +188,7 @@ SOURCES= passwordsafeframe.cpp \
 	fieldselectionpanel.cpp fieldselectiondlg.cpp pwsmenushortcuts.cpp \
 	$(YUBI_SRC) \
 	ManagePwdPolicies.cpp PasswordPolicy.cpp SelectionCriteria.cpp \
-	TimedTaskChain.cpp
+	TimedTaskChain.cpp mainView.cpp passwordsubset.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
@@ -240,9 +249,13 @@ $(DEPDIR)/%.d: %.cpp version.h
 	$(RM) $@.$$$$
 
 version.h: always
-	@../../../Misc/mkversion.pl MAJOR=$(VER_MAJOR) MINOR=$(VER_MINOR) SPECIAL=$(VER_SPECIAL) \
-     version.in $@
-
+ifdef VER_REV
+	@../../../Misc/mkversion.pl MAJOR=$(VER_MAJOR) MINOR=$(VER_MINOR) REV=$(VER_REV) \
+															SPECIAL=$(VER_SPECIAL) version.in $@
+else
+	@../../../Misc/mkversion.pl MAJOR=$(VER_MAJOR) MINOR=$(VER_MINOR) \
+															SPECIAL=$(VER_SPECIAL) version.in $@
+endif
 -include $(SOURCES:%.cpp=$(DEPDIR)/%.d)
 
 

@@ -73,8 +73,6 @@
     <File Name="../src/ui/wxWidgets/editshortcut.cpp"/>
     <File Name="../src/ui/wxWidgets/properties.cpp"/>
     <File Name="../src/ui/wxWidgets/pwsafeapp.h"/>
-    <File Name="../src/ui/wxWidgets/RUEList.cpp"/>
-    <File Name="../src/ui/wxWidgets/RUEList.h"/>
     <File Name="../src/ui/wxWidgets/guiinfo.cpp"/>
     <File Name="../src/ui/wxWidgets/guiinfo.h"/>
     <File Name="../src/ui/wxWidgets/RecentDBList.h"/>
@@ -130,6 +128,9 @@
     <File Name="../src/ui/wxWidgets/SelectionCriteria.cpp"/>
     <File Name="../src/ui/wxWidgets/TimedTaskChain.cpp"/>
     <File Name="../src/ui/wxWidgets/TimedTaskChain.h"/>
+    <File Name="../src/ui/wxWidgets/mainView.cpp"/>
+    <File Name="../src/ui/wxWidgets/passwordsubset.cpp"/>
+    <File Name="../src/ui/wxWidgets/passwordsubset.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
@@ -209,7 +210,7 @@
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
 	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
       </AdditionalRules>
-      <Completion EnableCpp11="no">
+      <Completion EnableCpp11="no" EnableCpp14="no">
         <ClangCmpFlagsC/>
         <ClangCmpFlags/>
         <ClangPP/>
@@ -263,10 +264,9 @@ dir /usr/src/gtk+2.0-2.18.3/gdk
 #dummy line to keep CodeLite from stripping the TAB from the next line
 	
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
-	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h
-</CustomPreBuild>
+	../Misc/mkversion.pl MAJOR=0 MINOR=98 SPECIAL=BETA ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
       </AdditionalRules>
-      <Completion EnableCpp11="no">
+      <Completion EnableCpp11="no" EnableCpp14="no">
         <ClangCmpFlagsC/>
         <ClangCmpFlags/>
         <ClangPP/>
@@ -317,7 +317,7 @@ dir /usr/src/gtk+2.0-2.18.3/gdk
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
 	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
       </AdditionalRules>
-      <Completion EnableCpp11="no">
+      <Completion EnableCpp11="no" EnableCpp14="no">
         <ClangCmpFlagsC/>
         <ClangCmpFlags/>
         <ClangPP/>
@@ -370,9 +370,10 @@ dir ../wx/src</StartupCommands>
 #dummy line to prevent CodeLite from stripping the TAB from the next line
 	
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
-	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
+	../Misc/mkversion.pl MAJOR=0 MINOR=98 SPECIAL=BETA ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h
+</CustomPreBuild>
       </AdditionalRules>
-      <Completion EnableCpp11="no">
+      <Completion EnableCpp11="no" EnableCpp14="no">
         <ClangCmpFlagsC/>
         <ClangCmpFlags/>
         <ClangPP/>

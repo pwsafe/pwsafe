@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -109,7 +109,6 @@ private:
     void PrintLabel(const TCHAR* prefix = 0);
 };
 
-
 /*!
  * PasswordSafeSearch class declaration
  */
@@ -146,12 +145,6 @@ public:
 private:
   template <class Iter, class Accessor>
   void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr, Iter begin, Iter end, Accessor afn);
-
-  template <class Iter, class Accessor>
-  void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr,
-                     const CItemData::FieldBits& bsFields, bool fUseSubgroups, const wxString& subgroupText,
-                     CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction,
-                     bool subgroupFunctionCaseSensitive, Iter begin, Iter end, Accessor afn);
 
   void CreateSearchBar(void);
   void HideSearchToolbar();

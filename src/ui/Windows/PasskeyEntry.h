@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -68,7 +68,8 @@ protected:
   CSysColStatic m_ctlLogo;
   CSysColStatic m_ctlLogoText;
   CButton m_ctlOK;
-  BOOL m_PKE_ReadOnly;
+
+  BOOL m_btnReadOnly, m_btnShowCombination;
   bool m_bFileReadOnly;
   bool m_bForceReadOnly;
   bool m_bHideReadOnly;
@@ -81,11 +82,12 @@ protected:
   // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CPasskeyEntry)
-  virtual void DoDataExchange(CDataExchange* pDX);
+  virtual void DoDataExchange(CDataExchange *pDX);
   //}}AFX_VIRTUAL
 
   int m_tries;
   int m_status;
+  BOOL m_PKE_ReadOnly;
 
   HICON m_hIcon;
 
@@ -100,6 +102,7 @@ protected:
   afx_msg void OnComboEditChange();
   afx_msg void OnComboSelChange();
   afx_msg void OnBnClickedReadonly();
+  afx_msg void OnShowCombination();
   afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnYubikeyBtn();

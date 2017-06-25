@@ -922,7 +922,7 @@ namespace KeyboardLayouts {
       KLID_Exclude_List.Add("00000454");  // Lao
       KLID_Exclude_List.Add("0000045B");  // Sinhala
       KLID_Exclude_List.Add("00000461");  // Nepali
-      KLID_Exclude_List.Add("00000463");  // Pashto (Afganistan)
+      KLID_Exclude_List.Add("00000463");  // Pashto (Afghanistan)
       KLID_Exclude_List.Add("0000046D");  // Bashkir
       KLID_Exclude_List.Add("0000046E");  // Luxembourgish
       KLID_Exclude_List.Add("0000046F");  // Greenlandic

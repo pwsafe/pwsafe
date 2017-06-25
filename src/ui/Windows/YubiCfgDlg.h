@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -29,18 +29,20 @@ public:
   enum { IDD = IDD_YUBIKEY };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   
-  DECLARE_MESSAGE_MAP()
   CString m_YubiSN;
   CSecString m_YubiSK;
   CSecEditExtn m_ex_YubiSK;
-public:
+
   afx_msg void OnYubiGenBn();
   afx_msg void OnBnClickedOk();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnHelp();
+
+  DECLARE_MESSAGE_MAP()
+
  private:
   void ReadYubiSN();
   bool IsYubiInserted() const;

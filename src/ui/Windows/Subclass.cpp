@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -107,7 +107,7 @@ LRESULT CSubclassWnd::Default()
 {
   // MFC stores current MSG in thread state
   MSG& curMsg = AfxGetThreadState()->m_lastSentMsg;
-  // Note: must explicitly call CSubclassWnd::WindowProc to avoid infinte
+  // Note: must explicitly call CSubclassWnd::WindowProc to avoid infinite
   // recursion on virtual function
   return CSubclassWnd::WindowProc(curMsg.message, curMsg.wParam, curMsg.lParam);
 }
@@ -163,7 +163,7 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
   LRESULT lr;
   if (msg == WM_NCDESTROY) {
     // Window is being destroyed: unhook all hooks (for this window)
-    // and pass msg to orginal window proc
+    // and pass msg to original window proc
     //
     LONG_PTR wndproc = pSubclassWnd->m_pOldWndProc;
     theHookMap.RemoveAll(hwnd);

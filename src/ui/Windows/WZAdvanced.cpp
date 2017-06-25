@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -609,8 +609,7 @@ BOOL CWZAdvanced::OnInitDialog()
   cs_ToolTip.LoadString(IDS_ADVANCED_DESELECTALL);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTALL), cs_ToolTip);
 
-
-  return TRUE;
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -844,7 +843,7 @@ LRESULT CWZAdvanced::OnWizardNext()
 
       CString cs_msg;
       cs_temp.LoadString(uimsg);
-      cs_msg.Format(IDS_NO_ENTRIES_PROCESSED, cs_temp);
+      cs_msg.Format(IDS_NO_ENTRIES_PROCESSED, static_cast<LPCWSTR>(cs_temp));
       cs_title.LoadString(IDS_NO_ENTRIES_SELECTED);
       gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONWARNING);
       return -1;
@@ -991,7 +990,7 @@ void CWZAdvanced::OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult
 // Override PreTranslateMessage() so RelayEvent() can be
 // called to pass a mouse message to CPWSOptions's
 // tooltip control for processing.
-BOOL CWZAdvanced::PreTranslateMessage(MSG* pMsg)
+BOOL CWZAdvanced::PreTranslateMessage(MSG *pMsg)
 {
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);

@@ -1,0 +1,60 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "src\core\core_wx-15.vcxproj", "{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwsafe", "src\ui\wxWidgets\pwsafe_wx-15.vcxproj", "{45779F00-D0DD-477B-B1E1-F624B6C86AB9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73} = {D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os", "src\os\windows\os_wx-15.vcxproj", "{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YkLib22", "src\os\windows\yubi\YkLib22_wx-15.vcxproj", "{326058EE-494B-4E51-BB34-1F4505E368B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debugwx|x64 = Debugwx|x64
+		Debugwx|x86 = Debugwx|x86
+		Releasewx|x64 = Releasewx|x64
+		Releasewx|x86 = Releasewx|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Debugwx|x64.ActiveCfg = Debugwx|x64
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Debugwx|x64.Build.0 = Debugwx|x64
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Debugwx|x86.ActiveCfg = Debugwx|Win32
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Debugwx|x86.Build.0 = Debugwx|Win32
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Releasewx|x64.ActiveCfg = Releasewx|x64
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Releasewx|x64.Build.0 = Releasewx|x64
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Releasewx|x86.ActiveCfg = Releasewx|Win32
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Releasewx|x86.Build.0 = Releasewx|Win32
+		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Debugwx|x64.ActiveCfg = Debugwx|x64
+		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Debugwx|x64.Build.0 = Debugwx|x64
+		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Debugwx|x86.ActiveCfg = Debugwx|Win32
+		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Debugwx|x86.Build.0 = Debugwx|Win32
+		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Releasewx|x64.ActiveCfg = Releasewx|x64
+		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Releasewx|x64.Build.0 = Releasewx|x64
+		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Releasewx|x86.ActiveCfg = Releasewx|Win32
+		{45779F00-D0DD-477B-B1E1-F624B6C86AB9}.Releasewx|x86.Build.0 = Releasewx|Win32
+		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.Debugwx|x64.ActiveCfg = Debugwx|x64
+		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.Debugwx|x64.Build.0 = Debugwx|x64
+		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.Debugwx|x86.ActiveCfg = Debugwx|Win32
+		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.Debugwx|x86.Build.0 = Debugwx|Win32
+		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.Releasewx|x64.ActiveCfg = Releasewx|x64
+		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.Releasewx|x64.Build.0 = Releasewx|x64
+		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.Releasewx|x86.ActiveCfg = Releasewx|Win32
+		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.Releasewx|x86.Build.0 = Releasewx|Win32
+		{326058EE-494B-4E51-BB34-1F4505E368B7}.Debugwx|x64.ActiveCfg = Debugwx|x64
+		{326058EE-494B-4E51-BB34-1F4505E368B7}.Debugwx|x64.Build.0 = Debugwx|x64
+		{326058EE-494B-4E51-BB34-1F4505E368B7}.Debugwx|x86.ActiveCfg = Debugwx|Win32
+		{326058EE-494B-4E51-BB34-1F4505E368B7}.Debugwx|x86.Build.0 = Debugwx|Win32
+		{326058EE-494B-4E51-BB34-1F4505E368B7}.Releasewx|x64.ActiveCfg = Releasewx|x64
+		{326058EE-494B-4E51-BB34-1F4505E368B7}.Releasewx|x64.Build.0 = Releasewx|x64
+		{326058EE-494B-4E51-BB34-1F4505E368B7}.Releasewx|x86.ActiveCfg = Releasewx|Win32
+		{326058EE-494B-4E51-BB34-1F4505E368B7}.Releasewx|x86.Build.0 = Releasewx|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

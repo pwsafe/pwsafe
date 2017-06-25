@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,7 +28,7 @@ namespace pws_os {
                          const char *src, size_t srclen, bool isUTF8 = true);
 #ifndef _WIN32
   // General conversion from/to char* to/from std::wstring routine
-  // for use in os/linux
+  // for use in os/unix
   extern std::wstring towc(const char *val);
   extern std::string tomb(const stringT& val);
 #endif

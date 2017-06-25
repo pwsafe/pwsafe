@@ -1,4 +1,4 @@
-# Makefile for Linux os-dependent library of
+# Makefile for Mac os-dependent library of
 # pwsafe
 #
 
@@ -11,12 +11,12 @@ DEPDIR= ./deps
 
 NAME=os
 
-LIBSRC          = debug.cpp dir.cpp env.cpp \
+LIBSRC          = cleanup.cpp debug.cpp dir.cpp env.cpp \
                   file.cpp logit.cpp mem.cpp pws_str.cpp \
                   pws_time.cpp rand.cpp run.cpp\
                   utf8conv.cpp KeySend.cpp\
                   sleep.cpp macsendstring.cpp\
-									registry.cpp UUID.cpp
+									registry.cpp UUID.cpp media.cpp
 
 SRC             = $(LIBSRC)
 

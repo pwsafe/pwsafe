@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -30,6 +30,8 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+bool CEditShortcutDlg::m_bShowUUID = false;
+
 CEditShortcutDlg::CEditShortcutDlg(CItemData *pci, CWnd* pParent,
   const CSecString &cs_tg, const CSecString &cs_tt, const CSecString &cs_tu)
   : CPWDialog(CEditShortcutDlg::IDD, pParent),
@@ -46,6 +48,10 @@ CEditShortcutDlg::CEditShortcutDlg(CItemData *pci, CWnd* pParent,
   m_locPMTime = pci->GetPMTimeL();
   m_locATime = pci->GetATimeL();
   m_locRMTime = pci->GetRMTimeL();
+
+#ifdef DEBUG
+  m_bShowUUID = true;
+#endif
 }
 
 CEditShortcutDlg::~CEditShortcutDlg()
@@ -77,6 +83,15 @@ END_MESSAGE_MAP()
 BOOL CEditShortcutDlg::OnInitDialog() 
 {
   CPWDialog::OnInitDialog();
+
+  // Get Add/Edit font
+  CFont *pFont = Fonts::GetInstance()->GetAddEditFont();
+
+  // Change font size of the group, title & username fields and the base entry name
+  m_ex_group.SetFont(pFont);
+  m_ex_title.SetFont(pFont);
+  m_ex_username.SetFont(pFont);
+  GetDlgItem(IDC_MYBASE)->SetFont(pFont);
 
   CString cs_text;
   CSecString cs_target(L"\xab");
@@ -117,10 +132,10 @@ BOOL CEditShortcutDlg::OnInitDialog()
   } else { // !read-only
     // Populate the groups combo box
     m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
-    std::vector<std::wstring> aryGroups;
-    app.GetCore()->GetUniqueGroups(aryGroups);
-    for (std::vector<std::wstring>::iterator iter = aryGroups.begin();
-         iter != aryGroups.end(); ++iter) {
+    std::vector<std::wstring> vGroups;
+    app.GetCore()->GetAllGroups(vGroups);
+    for (std::vector<std::wstring>::iterator iter = vGroups.begin();
+         iter != vGroups.end(); ++iter) {
       m_ex_group.AddString(iter->c_str());
     }
   } // !read-only
@@ -131,9 +146,27 @@ BOOL CEditShortcutDlg::OnInitDialog()
   // Show base entry
   GetDlgItem(IDC_MYBASE)->SetWindowText(cs_target);
 
+  if (m_bShowUUID) {
+    CString cs_uuid(MAKEINTRESOURCE(IDS_NA));
+    pws_os::CUUID entry_uuid = m_pci->GetUUID();
+    if (entry_uuid != pws_os::CUUID::NullUUID()) {
+      ostringstreamT os;
+      pws_os::CUUID huuid(*entry_uuid.GetARep(), true);
+      os << std::uppercase << huuid;
+      cs_uuid = os.str().c_str();
+    }
+    GetDlgItem(IDC_UUID)->SetWindowText(cs_uuid);
+    GetDlgItem(IDC_STATIC_UUID)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_UUID)->ShowWindow(SW_SHOW);
+  } else {
+    GetDlgItem(IDC_STATIC_UUID)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_UUID)->ShowWindow(SW_HIDE);
+  }
+
   UpdateData(FALSE);
   m_ex_group.ChangeColour();
-  return TRUE;
+  
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void CEditShortcutDlg::OnHelp() 
@@ -185,9 +218,7 @@ void CEditShortcutDlg::OnOK()
     bool notSame = listItem.GetUUID() != m_pci->GetUUID();
     if (notSame) {
       CGeneralMsgBox gmb;
-      CSecString temp;
-      temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
-      gmb.AfxMessageBox(temp);
+      gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
       goto dont_close;

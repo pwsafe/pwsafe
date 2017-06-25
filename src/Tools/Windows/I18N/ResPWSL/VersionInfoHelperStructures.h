@@ -18,7 +18,7 @@
 
 #pragma once
 
-#define DWORDALIGN(p) (((DWORD)(LPBYTE) p + 3) & ~3)
+#define DWORDALIGN(p) (((DWORD_PTR)(LPBYTE) p + 3) & ~3)
 
 struct BaseVersionStruct {
   WORD        wLength; 
@@ -43,7 +43,6 @@ struct StringTable: public BaseVersionStruct {
 struct Var: public BaseVersionStruct { 
   DWORD Value[1]; 
 }; 
-
 
 struct BaseFileInfo: public BaseVersionStruct 
 { 

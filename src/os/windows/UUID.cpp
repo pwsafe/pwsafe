@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -18,8 +18,6 @@
 #include "../../core/StringXStream.h"
 #include <iomanip>
 #include <assert.h>
-
-#include <Winsock.h> /* for htonl, htons */
 
 using namespace std;
 

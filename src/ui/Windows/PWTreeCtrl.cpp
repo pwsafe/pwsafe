@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -7,6 +7,7 @@
 */
 
 #include "stdafx.h"
+
 #include "PWTreeCtrl.h"
 #include "DboxMain.h"
 #include "ThisMfcApp.h"
@@ -46,10 +47,10 @@ static const int OLE_HDR_LEN = 18;
 
 /*
 * Following classes are used to "Fake" multiple inheritance:
-* Ideally, CPWTreeCtrl should derive from CTreeCtrl, COleDropTarget
+* Ideally, CPWTreeCtrlX should derive from CTreeCtrl, COleDropTarget
 * and COleDropSource. However, since m'soft, in their infinite
 * wisdom, couldn't get this common use-case straight,
-* we use the following classes as proxies: CPWTreeCtrl
+* we use the following classes as proxies: CPWTreeCtrlX
 * has a member var for each, registers said member appropriately
 * for D&D, and member calls parent's method to do the grunt work.
 */
@@ -57,7 +58,7 @@ static const int OLE_HDR_LEN = 18;
 class CPWTDropTarget : public COleDropTarget
 {
 public:
-  CPWTDropTarget(CPWTreeCtrl *parent) : m_tree(*parent) {}
+  CPWTDropTarget(CPWTreeCtrlX *parent) : m_tree(*parent) {}
 
   DROPEFFECT OnDragEnter(CWnd* pWnd , COleDataObject* pDataObject,
                          DWORD dwKeyState, CPoint point)
@@ -75,13 +76,13 @@ public:
   {return m_tree.OnDrop(pWnd, pDataObject, dropEffect, point);}
 
 private:
-  CPWTreeCtrl &m_tree;
+  CPWTreeCtrlX &m_tree;
 };
 
 class CPWTDropSource : public COleDropSource
 {
 public:
-  CPWTDropSource(CPWTreeCtrl *parent) : m_tree(*parent) {}
+  CPWTDropSource(CPWTreeCtrlX *parent) : m_tree(*parent) {}
 
   virtual SCODE QueryContinueDrag(BOOL bEscapePressed, DWORD dwKeyState)
   {
@@ -89,7 +90,6 @@ public:
     //  Only process the request if data has been dropped.
     SCODE sCode = COleDropSource::QueryContinueDrag(bEscapePressed, dwKeyState);
     if (sCode == DRAGDROP_S_DROP) {
-      pws_os::Trace(L"CStaticDropSource::QueryContinueDrag - dropped\n");
       m_tree.EndDrop();
     }
     return sCode;
@@ -99,14 +99,14 @@ public:
   {return m_tree.GiveFeedback(dropEffect);}
 
 private:
-  CPWTreeCtrl &m_tree;
+  CPWTreeCtrlX &m_tree;
 };
 
 class CPWTDataSource : public COleDataSource
 {
 public:
-  CPWTDataSource(CPWTreeCtrl *parent, COleDropSource *ds)
-    : m_tree(*parent), m_DropSource(ds) {}
+  CPWTDataSource(CPWTreeCtrlX *parent, COleDropSource *ds)
+    : m_tree(*parent), m_pDropSource(ds) {}
 
   DROPEFFECT StartDragging(CLIPFORMAT cpfmt, LPCRECT rClient)
   {
@@ -115,14 +115,12 @@ public:
     DelayRenderData(CF_TEXT);
 
     m_tree.m_cfdropped = 0;
-    //pws_os::Trace(L"CPWTDataSource::StartDragging - calling DoDragDrop\n");
     DROPEFFECT de = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
-                               rClient, m_DropSource);
+                               rClient, m_pDropSource);
     // Cleanup:
     // Standard processing is for the recipient to do this!!!
     if (de == DROPEFFECT_NONE) {
       if (m_tree.m_hgDataALL != NULL) {
-        //pws_os::Trace(L"CPWTDataSource::StartDragging - Unlock/Free m_hgDataALL\n");
         LPVOID lpData = GlobalLock(m_tree.m_hgDataALL);
         SIZE_T memsize = GlobalSize(m_tree.m_hgDataALL);
         if (lpData != NULL && memsize > 0) {
@@ -133,7 +131,6 @@ public:
         m_tree.m_hgDataALL = NULL;
       }
       if (m_tree.m_hgDataTXT != NULL) {
-        //pws_os::Trace(L"CPWTDataSource::StartDragging - Unlock/Free m_hgDataTXT\n");
         LPVOID lpData = GlobalLock(m_tree.m_hgDataTXT);
         SIZE_T memsize = GlobalSize(m_tree.m_hgDataTXT);
         if (lpData != NULL && memsize > 0) {
@@ -144,7 +141,6 @@ public:
         m_tree.m_hgDataTXT = NULL;
       }
       if (m_tree.m_hgDataUTXT != NULL) {
-        //pws_os::Trace(L"CPWTDataSource::StartDragging - Unlock/Free m_hgDataUTXT\n");
         LPVOID lpData = GlobalLock(m_tree.m_hgDataUTXT);
         SIZE_T memsize = GlobalSize(m_tree.m_hgDataUTXT);
         if (lpData != NULL && memsize > 0) {
@@ -162,19 +158,19 @@ public:
   {return m_tree.OnRenderGlobalData(lpFormatEtc, phGlobal);}
 
 private:
-  CPWTreeCtrl &m_tree;
-  COleDropSource *m_DropSource;
+  CPWTreeCtrlX &m_tree;
+  COleDropSource *m_pDropSource;
 };
 
 /**
-* Implementation of CPWTreeCtrl begins here
+* Implementation of CPWTreeCtrlX begins here
 */
 
-CPWTreeCtrl::CPWTreeCtrl()
+CPWTreeCtrlX::CPWTreeCtrlX()
   : m_isRestoring(false), m_bWithinThisInstance(true),
   m_bMouseInWindow(false), m_nHoverNDTimerID(0), m_nShowNDTimerID(0),
   m_hgDataALL(NULL), m_hgDataTXT(NULL), m_hgDataUTXT(NULL),
-  m_bFilterActive(false), m_bUseHighLighting(false)
+  m_bTreeFilterActive(false), m_bUseHighLighting(false), m_bUseNew(true)
 {
   // Register a clipboard format for column drag & drop.
   // Note that it's OK to register same format more than once:
@@ -185,26 +181,32 @@ CPWTreeCtrl::CPWTreeCtrl()
   m_tcddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
   ASSERT(m_tcddCPFID != 0);
 
-  // instantiate "proxy" objects for D&D.
+  // Instantiate "proxy" objects for D&D.
+
   // The members are currently pointers mainly to hide
   // their implementation from the header file. If this changes,
   // e.g., if we make them nested classes, then they should
   // be non-pointers.
-  m_DropTarget = new CPWTDropTarget(this);
-  m_DropSource = new CPWTDropSource(this);
-  m_DataSource = new CPWTDataSource(this, m_DropSource);
+  m_pDropTarget = new CPWTDropTarget(this);
+  m_pDropSource = new CPWTDropSource(this);
+  m_pDataSource = new CPWTDataSource(this, m_pDropSource);
 }
 
-CPWTreeCtrl::~CPWTreeCtrl()
+CPWTreeCtrlX::~CPWTreeCtrlX()
 {
-  // see comment in constructor re these member variables
-  delete m_DropTarget;
-  delete m_DropSource;
-  delete m_DataSource;
+  // See comment in constructor re these member variables
+
+  // Don't delete m_pDataSource but first release all references and
+  // this routine will delete it when the references get to 0.
+  m_pDataSource->InternalRelease();
+
+  // delete the Drop Target & Source
+  delete m_pDropTarget;
+  delete m_pDropSource;
 }
 
-BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
-  //{{AFX_MSG_MAP(CPWTreeCtrl)
+BEGIN_MESSAGE_MAP(CPWTreeCtrlX, CTreeCtrl)
+  //{{AFX_MSG_MAP(CPWTreeCtrlX)
   ON_NOTIFY_REFLECT(TVN_BEGINLABELEDIT, OnBeginLabelEdit)
   ON_NOTIFY_REFLECT(TVN_ENDLABELEDIT, OnEndLabelEdit)
   ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
@@ -223,14 +225,14 @@ BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-void CPWTreeCtrl::Initialize()
+void CPWTreeCtrlX::Initialize()
 {
   // This should really be in OnCreate(), but for some reason,
   // it was never called.
-  m_DropTarget->Register(this);
+  m_pDropTarget->Register(this);
 }
 
-void CPWTreeCtrl::ActivateND(const bool bActivate)
+void CPWTreeCtrlX::ActivateND(const bool bActivate)
 {
   m_bShowNotes = bActivate;
   if (!m_bShowNotes) {
@@ -238,31 +240,31 @@ void CPWTreeCtrl::ActivateND(const bool bActivate)
   }
 }
 
-void CPWTreeCtrl::OnDestroy()
+void CPWTreeCtrlX::OnDestroy()
 {
   CImageList *pimagelist = GetImageList(TVSIL_NORMAL);
   if (pimagelist != NULL) {
     pimagelist->DeleteImageList();
     delete pimagelist;
   }
-  m_DropTarget->Revoke();
+  m_pDropTarget->Revoke();
 }
 
-void CPWTreeCtrl::OnPaint()
+void CPWTreeCtrlX::OnPaint()
 {
   CTreeCtrl::OnPaint();
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
 
-void CPWTreeCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+void CPWTreeCtrlX::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
   CTreeCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
 
-BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
+BOOL CPWTreeCtrlX::PreTranslateMessage(MSG *pMsg)
 {
   // When an item is being edited make sure the edit control
   // receives certain important key strokes
@@ -294,17 +296,16 @@ BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
   return CTreeCtrl::PreTranslateMessage(pMsg);
 }
 
-SCODE CPWTreeCtrl::GiveFeedback(DROPEFFECT )
+SCODE CPWTreeCtrlX::GiveFeedback(DROPEFFECT )
 {
   app.GetMainDlg()->ResetIdleLockCounter();
   return DRAGDROP_S_USEDEFAULTCURSORS;
 }
 
-DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* pDataObject,
+DROPEFFECT CPWTreeCtrlX::OnDragEnter(CWnd *, COleDataObject *pDataObject,
                                     DWORD dwKeyState, CPoint )
 {
   if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {
-    pws_os::Trace(L"CPWTreeCtrl::OnDragEnter() Found a file!\n");
     return DROPEFFECT_MOVE;
   }
 
@@ -316,7 +317,6 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* pDataObject,
   POINT p, hs;
   CImageList* pil = CImageList::GetDragImage(&p, &hs);
   if (pil != NULL) {
-    pws_os::Trace(L"CPWTreeCtrl::OnDragEnter() hide cursor\n");
     while (ShowCursor(FALSE) >= 0)
       ;
   }
@@ -326,11 +326,10 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* pDataObject,
          DROPEFFECT_COPY : DROPEFFECT_MOVE;
 }
 
-DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* pDataObject,
+DROPEFFECT CPWTreeCtrlX::OnDragOver(CWnd *pWnd, COleDataObject *pDataObject,
                                    DWORD dwKeyState, CPoint point)
 {
   if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {
-    pws_os::Trace(L"CPWTreeCtrl::OnDragOver() Found a file!\n");
     return DROPEFFECT_MOVE;
   }
 
@@ -338,7 +337,7 @@ DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* pDataObject,
   if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL)) 
     return DROPEFFECT_NONE;
 
-  CPWTreeCtrl *pDestTreeCtrl = (CPWTreeCtrl *)pWnd;
+  CPWTreeCtrlX *pDestTreeCtrl = (CPWTreeCtrlX *)pWnd;
   HTREEITEM hHitItem(NULL);
 
   POINT p, hs;
@@ -427,24 +426,24 @@ DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* pDataObject,
   return dropeffectRet;
 }
 
-void CPWTreeCtrl::OnDragLeave()
+void CPWTreeCtrlX::OnDragLeave()
 {
   m_TickCount = 0;
   m_bWithinThisInstance = false;
   //We leave or window, so we need to clean DropTarget selection
   SelectDropTarget(NULL);
+
   // ShowCursor's semantics are VERY odd - RTFM
-  pws_os::Trace(L"CPWTreeCtrl::OnDragLeave() show cursor\n");
   while (ShowCursor(TRUE) < 0)
     ;
 }
 
-void CPWTreeCtrl::SetUpFont()
+void CPWTreeCtrlX::SetUpFont()
 {
   Fonts::GetInstance()->SetUpFont(this, Fonts::GetInstance()->GetCurrentFont());
 }
 
-void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWTreeCtrlX::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNotifyStruct;
 
@@ -458,7 +457,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   m_bEditLabelCompleted = false;
 
   /*
-    Allowed formats:
+    Allowed formats for an entry are:
     1.   title
       If preference ShowUsernameInTree is set:
       2.   title [username]
@@ -497,6 +496,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       currentPassword.FindOneOf(L"[]{}") != -1)
       return;
   }
+
   // In case we have to revert:
   m_eLabel = CSecString(GetItemText(ti));
   // Allow in-place editing
@@ -504,9 +504,11 @@ void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 }
 
 static bool splitLeafText(const wchar_t *lt, StringX &newTitle, 
-                          StringX &newUser, StringX &newPassword)
+                          StringX &newUser, StringX &newPassword,
+                          bool &bUserSet)
 {
   bool bPasswordSet(false);
+  bUserSet = false;
 
   newTitle = newUser = newPassword = L"";
 
@@ -570,6 +572,7 @@ static bool splitLeafText(const wchar_t *lt, StringX &newTitle,
     newUser = cs_leafText.Mid(OpenSquareBraceIndex + 1, 
                               CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
     Trim(newUser);
+    bUserSet = true;
     goto final_check;
   }
 
@@ -591,6 +594,7 @@ static bool splitLeafText(const wchar_t *lt, StringX &newTitle,
     newUser = cs_leafText.Mid(OpenSquareBraceIndex + 1, 
                               CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
     Trim(newUser);
+    bUserSet = true;
     newPassword = cs_leafText.Mid(OpenCurlyBraceIndex + 1, 
                                   CloseCurlyBraceIndex - OpenCurlyBraceIndex - 1);
     Trim(newPassword);
@@ -611,7 +615,7 @@ final_check:
   return bRC;
 }
 
-void CPWTreeCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWTreeCtrlX::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0;
   
@@ -619,13 +623,13 @@ void CPWTreeCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
   
   // Don't bother if no entries or not via the keyboard/mouse (check this first
   // as more likely than no entries).
-   if (pNMTreeView->action != TVC_BYKEYBOARD || GetCount() == 0)
+   if (pNMTreeView->action == TVC_UNKNOWN || GetCount() == 0)
      return;
 
   app.GetMainDlg()->OnItemSelected(pNotifyStruct, pLResult, true);
 }
 
-void CPWTreeCtrl::OnDeleteItem(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWTreeCtrlX::OnDeleteItem(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0;
   // Clear pointer to CItemData of item being deleted so no other
@@ -635,34 +639,34 @@ void CPWTreeCtrl::OnDeleteItem(NMHDR *pNotifyStruct, LRESULT *pLResult)
     SetItemData(hItem, 0);
 }
 
-void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWTreeCtrlX::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   if (app.GetMainDlg()->IsDBReadOnly())
     return; // don't edit in read-only mode
 
   // Initial verification performed in OnBeginLabelEdit - so some events may not get here!
   // Only items visible will be changed - e.g. if password is not shown and the user
-  // puts a new password in the new dispay text, it will be ignored.
+  // puts a new password in the new display text, it will be ignored.
 
-  /* Allowed formats:
-  1.   title
-  If preference ShowUsernameInTree is set:
-    2.   title [username]
-    If preferences ShowUsernameInTree and ShowPasswordInTree are set:
-      3.   title [username] {password}
+  /* Allowed formats for an entry:
+    1.   title
+    If preference ShowUsernameInTree is set:
+      2.   title [username]
+      If preferences ShowUsernameInTree and ShowPasswordInTree are set:
+        3.   title [username] {password}
 
-  There can only be one of each:
-      open square brace
-      close square brace
-      open curly brace
-      close curly brace
+    There can only be one of each:
+        open square brace
+        close square brace
+        open curly brace
+        close curly brace
 
-  If pos_xtb = position of x = open/close, t = square/curly brackes, then
+    If pos_xtb = position of x = open/close, t = square/curly brackes, then
 
-  pos_osb < pos_csb < pos_ocb < pos_ccb
+    pos_osb < pos_csb < pos_ocb < pos_ccb
 
-  Title and Password are mandatory fields within the PWS database and so, if specified,
-  these fields cannot be empty.
+    Title and Password are mandatory fields within the PWS database and so, if specified,
+    these fields cannot be empty.
   */
 
   CommandInterface *pcore = (CommandInterface *)app.GetCore();
@@ -693,6 +697,8 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Do it
       app.GetMainDlg()->Execute(pmulticmds);
 
+      app.GetMainDlg()->ChangeOkUpdate();
+
       app.GetMainDlg()->ResetInAddGroup();
       *pLResult = TRUE;
     }
@@ -719,36 +725,37 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
     pci = (CItemData *)GetItemData(ti);
     ASSERT(pci != NULL);
 
-    if (!splitLeafText(sxNewText.c_str(), sxNewTitle, sxNewUser, sxNewPassword)) {
+    bool bUserSet;
+    if (!splitLeafText(sxNewText.c_str(), sxNewTitle, sxNewUser, sxNewPassword, bUserSet)) {
       // errors in user's input - restore text and refresh display
       goto bad_exit;
+    }
+
+    // The user can change any of Title, User & Password via rename
+    // but ONLY if that field is being displayed.
+    if (sxNewTitle.empty()) {
+      // Title empty - change ignored as mandatory field
+      sxNewTitle = pci->GetTitle();
+    }
+
+    if (!bShowUsernameInTree || !bUserSet) {
+      // Username not visible - changed ignored - OR
+      // Username visible but  user hasn't explicitly changed it
+      sxNewUser = pci->GetUser();
+    }
+
+    if (!bShowPasswordInTree || sxNewPassword.empty()) {
+      // Password change ignored if not visible or empty as mandatory field
+      sxNewPassword = pci->GetPassword();
     }
 
     StringX sxGroup = pci->GetGroup();
     if ((sxNewTitle != pci->GetTitle() || sxNewUser != pci->GetUser()) &&
         app.GetMainDlg()->Find(sxGroup, sxNewTitle, sxNewUser) != app.GetMainDlg()->End()) {
       CGeneralMsgBox gmb;
-      CSecString temp;
-      if (sxGroup.empty()) {
-        if (sxNewUser.empty())
-          temp.Format(IDS_ENTRYEXISTS3, sxNewTitle.c_str());
-        else
-          temp.Format(IDS_ENTRYEXISTS2, sxNewTitle.c_str(), sxNewUser.c_str());
-      } else {
-        if (sxNewUser.empty())
-          temp.Format(IDS_ENTRYEXISTS1, sxGroup.c_str(), sxNewTitle.c_str());
-        else
-          temp.Format(IDS_ENTRYEXISTS, sxGroup.c_str(), sxNewTitle.c_str(),
-                      sxNewUser.c_str());
-      }
-      gmb.AfxMessageBox(temp);
+      gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
       goto bad_exit;
     }
-
-    if (sxNewUser.empty())
-      sxNewUser = pci->GetUser();
-    if (sxNewPassword.empty())
-      sxNewPassword = pci->GetPassword();
 
     StringX treeDispString = sxNewTitle;
     if (bShowUsernameInTree) {
@@ -773,8 +780,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
     ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = L'\0';
 
     // update corresponding List mode text - but  only those visible in Tree
-    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-    ASSERT(pdi != NULL);
+    DisplayInfo *pdi = app.GetMainDlg()->GetEntryGUIInfo(*pci);
     int lindex = pdi->list_index;
 
     if (sxNewTitle != pci->GetTitle()) {
@@ -807,7 +813,6 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       hSibling = GetNextSiblingItem(hSibling);
     } while (hSibling != NULL);
     // If we made it here, then name's unique.
-
 
     // PR2407325: If the user edits a group name so that it has
     // a GROUP_SEP, all hell breaks loose.
@@ -842,10 +847,21 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
         sxNewPath = StringX(prefix) + StringX(GROUP_SEP2) + sxNewText;
       }
 
-      if (app.GetMainDlg()->IsEmptyGroup(sxOldPath))
-        pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath));
-      else
-        app.GetMainDlg()->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
+      if (app.GetMainDlg()->IsEmptyGroup(sxOldPath)) {
+        // Rename single empty group
+        pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath,
+                        DBEmptyGroupsCommand::EG_RENAME));
+      } else {
+        if (!app.GetMainDlg()->IsInAddGroup()) {
+          // Rename any empty groups within this group
+          // Get current empty groups
+          pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath,
+            DBEmptyGroupsCommand::EG_RENAMEPATH));
+
+          // Update map of groups
+          app.GetMainDlg()->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
+        }
+      }
 
     } // good group name (no GROUP_SEP)
   } // !IsLeaf
@@ -867,6 +883,19 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
                                                    CItemData::PASSWORD, sxNewPassword));
       }
     }
+
+    if (!pmulticmds->IsEmpty()) {
+      // We refresh the Tree view as rename may alter entry's posiition
+      Command *pcmd_undo = UpdateGUICommand::Create(pcore,
+                                          UpdateGUICommand::WN_UNDO,
+                                          UpdateGUICommand::GUI_REFRESH_TREE);
+      pmulticmds->Insert(pcmd_undo, 0);
+
+      Command *pcmd_redo = UpdateGUICommand::Create(pcore,
+                                          UpdateGUICommand::WN_EXECUTE_REDO,
+                                          UpdateGUICommand::GUI_REFRESH_TREE);
+      pmulticmds->Add(pcmd_redo);
+    }
   } else {
     // Group
     if (app.GetMainDlg()->IsInAddGroup()) {
@@ -880,7 +909,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
         StringX sxParent = sxNewPath.substr(0, iLast_Group_Separator);
         if (app.GetMainDlg()->IsEmptyGroup(sxParent)) {
           pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxParent,
-            DBEmptyGroupsCommand::EG_DELETE));
+                          DBEmptyGroupsCommand::EG_DELETE));
         }
       }
 
@@ -890,7 +919,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // We refresh the view
       Command *pcmd_undo = UpdateGUICommand::Create(pcore,
                                                 UpdateGUICommand::WN_UNDO,
-                                                UpdateGUICommand::GUI_REFRESH_TREE);
+                                                UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
       pmulticmds->Add(pcmd_undo);
 
       // Update Group
@@ -899,18 +928,16 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // We refresh the view
       Command *pcmd_redo = UpdateGUICommand::Create(pcore,
                                               UpdateGUICommand::WN_EXECUTE_REDO,
-                                              UpdateGUICommand::GUI_REFRESH_TREE);
+                                              UpdateGUICommand::GUI_REFRESH_BOTHVIEWS);
       pmulticmds->Add(pcmd_redo);
     }
   }
 
-  if (pmulticmds->GetSize() > 0)
+  if (!pmulticmds->IsEmpty())
     app.GetMainDlg()->Execute(pmulticmds);
   else
     delete pmulticmds;
 
-  // Mark database as modified
-  app.GetMainDlg()->SetChanged(DboxMain::Data);
   app.GetMainDlg()->ChangeOkUpdate();
 
   // put edited text in right order by sorting
@@ -919,9 +946,6 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   // OK
   *pLResult = TRUE;
   m_bEditLabelCompleted = true;
-
-  // Update view
-  app.GetMainDlg()->RefreshViews();
 
   return;
 
@@ -933,7 +957,7 @@ bad_exit:
   *pLResult = FALSE;
 }
 
-bool CPWTreeCtrl::IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent) const
+bool CPWTreeCtrlX::IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent) const
 {
   do {
     if (hitemChild == hitemSuspectedParent)
@@ -943,24 +967,26 @@ bool CPWTreeCtrl::IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedPa
   return (hitemChild != NULL);
 }
 
-bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem) const
+bool CPWTreeCtrlX::IsLeaf(HTREEITEM hItem) const
 {
   // ItemHasChildren() won't work in the general case
   int i, dummy;
   BOOL status = GetItemImage(hItem, i, dummy);
-  ASSERT(status);
-  return (i != GROUP && i != EMPTY_GROUP);
+  // if on empty space, hItem's NULL, status is false
+  return (status && i != GROUP && i != EMPTY_GROUP);
 }
 
 // Returns the number of children of this group
-int CPWTreeCtrl::CountChildren(HTREEITEM hStartItem) const
+// If bRecurse is true - also count grandchildren, great-grandchildren etc. etc.
+// Otherwise only immediate children
+int CPWTreeCtrlX::CountChildren(HTREEITEM hStartItem, bool bRecurse) const
 {
   // Walk the Tree!
   int num = 0;
   if (hStartItem != NULL && ItemHasChildren(hStartItem)) {
     HTREEITEM hChildItem = GetChildItem(hStartItem);
     while (hChildItem != NULL) {
-      if (ItemHasChildren(hChildItem)) {
+      if (ItemHasChildren(hChildItem) && bRecurse) {
         num += CountChildren(hChildItem);
       } else {
         num++;
@@ -971,7 +997,28 @@ int CPWTreeCtrl::CountChildren(HTREEITEM hStartItem) const
   return num;
 }
 
-void CPWTreeCtrl::DeleteWithParents(HTREEITEM hItem)
+// Returns the number of non-node children of this group
+int CPWTreeCtrlX::CountLeafChildren(HTREEITEM hStartItem) const
+{
+  // Walk the Tree!
+  int num = 0;
+  if (hStartItem != NULL && ItemHasChildren(hStartItem)) {
+    HTREEITEM hChildItem = GetChildItem(hStartItem);
+    while (hChildItem != NULL) {
+      if (ItemHasChildren(hChildItem)) {
+        num += CountLeafChildren(hChildItem);
+      } else {
+        // Only add if this is a leaf
+        if (GetItemData(hChildItem) != NULL)
+          num++;
+      }
+      hChildItem = GetNextSiblingItem(hChildItem);
+    }
+  }
+  return num;
+}
+
+void CPWTreeCtrlX::DeleteWithParents(HTREEITEM hItem)
 {
   // We don't want nodes that have no children to remain
   HTREEITEM parent;
@@ -982,6 +1029,7 @@ void CPWTreeCtrl::DeleteWithParents(HTREEITEM hItem)
     if (ItemHasChildren(parent))
       break;
     app.GetMainDlg()->m_mapGroupToTreeItem.erase(sxPath);
+    app.GetMainDlg()->m_mapTreeItemToGroup.erase(hItem);
     hItem = parent;
   } while (parent != TVI_ROOT && parent != NULL);
 }
@@ -989,18 +1037,27 @@ void CPWTreeCtrl::DeleteWithParents(HTREEITEM hItem)
 // If passed an entry, return the full path leading up to a given item, but
 // not including the name of the item itself.
 // If passed a Group, return full path including this group.
-CString CPWTreeCtrl::GetGroup(HTREEITEM hItem)
+CString CPWTreeCtrlX::GetGroup(HTREEITEM hItem)
 {
   CString retval(L""), nodeText;
   if (hItem == TVI_ROOT)
     return retval;
 
-  while (hItem != NULL) {
-    nodeText = GetItemText(hItem);
+  HTREEITEM hi(hItem);
+
+  // Determine if an entry - if so - ignore first item text which will
+  // be the entry's title and potentially its username and password
+  if (IsLeaf(hi)) {
+    hi = GetParentItem(hi);
+  }
+
+  while (hi != NULL) {
+    nodeText = GetItemText(hi);
     if (!retval.IsEmpty())
       nodeText += GROUP_SEP;
+
     retval = nodeText + retval;
-    hItem = GetParentItem(hItem);
+    hi = GetParentItem(hi);
   }
   return retval;
 }
@@ -1036,7 +1093,7 @@ static StringX GetFirstPathElem(StringX &sxPath)
   return sxElement;
 }
 
-bool CPWTreeCtrl::ExistsInTree(HTREEITEM &node, const CSecString &s, HTREEITEM &si) const
+bool CPWTreeCtrlX::ExistsInTree(HTREEITEM &node, const CSecString &s, HTREEITEM &si) const
 {
   // returns true iff s is a direct descendant of node
   HTREEITEM ti = GetChildItem(node);
@@ -1053,7 +1110,7 @@ bool CPWTreeCtrl::ExistsInTree(HTREEITEM &node, const CSecString &s, HTREEITEM &
   return false;
 }
 
-HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
+HTREEITEM CPWTreeCtrlX::AddGroup(const CString &group, bool &bAlreadyExists)
 {
   // Add a group at the end of path
   HTREEITEM ti = TVI_ROOT;
@@ -1072,21 +1129,23 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
 
       if (!ExistsInTree(ti, sxTemp, si)) {
         ti = InsertItem(sxTemp.c_str(), ti, TVI_SORT);
-        SetItemImage(ti, CPWTreeCtrl::GROUP, CPWTreeCtrl::GROUP);
+        SetItemImage(ti, CPWTreeCtrlX::GROUP, CPWTreeCtrlX::GROUP);
         bAlreadyExists = false;
       } else
         ti = si;
+
       app.GetMainDlg()->m_mapGroupToTreeItem[sxPath2Root] = ti;
+      app.GetMainDlg()->m_mapTreeItemToGroup[ti] = sxPath2Root;
     } while (!sxPath.empty());
 
     if (app.GetMainDlg()->IsEmptyGroup(StringX(group)))
-      SetItemImage(ti, CPWTreeCtrl::EMPTY_GROUP, CPWTreeCtrl::EMPTY_GROUP);
+      SetItemImage(ti, CPWTreeCtrlX::EMPTY_GROUP, CPWTreeCtrlX::EMPTY_GROUP);
   }
   return ti;
 }
 
-bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREEITEM hitemDrop,
-                           const StringX &sxPrefix)
+bool CPWTreeCtrlX::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREEITEM hitemDrop,
+                           const CSecString &sPrefix)
 {
   TV_INSERTSTRUCT  tvstruct;
   wchar_t sztBuffer[260];  // max visible
@@ -1111,8 +1170,7 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
   if (itemData != 0) { // Non-NULL itemData implies Leaf
     CItemData *pci = (CItemData *)itemData;
 
-    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-    ASSERT(pdi != NULL);
+    DisplayInfo *pdi = app.GetMainDlg()->GetEntryGUIInfo(*pci);
     ASSERT(pdi->list_index >= 0);
 
     // Update Group
@@ -1154,17 +1212,32 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
   } else {
     // Group processing
     // If original group was empty, need to update the vector of empty groups
-    StringX sxOldGroup(GetGroup(hitemDrag));
-    if (app.GetMainDlg()->IsEmptyGroup(sxOldGroup)) {
-      StringX sxNewGroup = sxPrefix + StringX(GROUP_SEP2) + sxOldGroup;
-      pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(),
-        sxOldGroup, sxNewGroup));
+    // UNLESS that group already exists as a non-empty group
+    CSecString sOldGroup(GetGroup(hitemDrag));
+    if (app.GetMainDlg()->IsEmptyGroup(sOldGroup)) {
+      CSecString sNewGroup, DropPrefix;
+      if (IsLeaf(hitemDrop))
+        DropPrefix = GetPrefix(hitemDrop);
+      else
+        DropPrefix = CSecString(GetGroup(hitemDrop));
+
+      if (DropPrefix.IsEmpty())
+        sNewGroup = CSecString(GetItemText(m_hitemDrag));
+      else
+        sNewGroup = DropPrefix + CSecString(GROUP_SEP2) + CSecString(GetItemText(hitemDrag));
+
+      // We mustn't rename an empty group if it already exists as a non-empty group
+      auto iter = app.GetMainDlg()->m_mapGroupToTreeItem.find(sNewGroup);
+      if (iter == app.GetMainDlg()->m_mapGroupToTreeItem.end()) {
+        pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(),
+          sOldGroup, sNewGroup, DBEmptyGroupsCommand::EG_RENAME));
+      }
     }
   }
 
   HTREEITEM hFirstChild;
   while ((hFirstChild = GetChildItem(hitemDrag)) != NULL) {
-    MoveItem(pmulticmds, hFirstChild, hNewItem, sxPrefix);  // recursively move all the items
+    MoveItem(pmulticmds, hFirstChild, hNewItem, sPrefix);  // recursively move all the items
   }
 
   // We are moving it - so now delete original from TreeCtrl
@@ -1175,26 +1248,45 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
   return true;
 }
 
-bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
-                           const CSecString &prefix)
+bool CPWTreeCtrlX::CopyItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREEITEM hitemDrop,
+                           const CSecString &Prefix)
 {
   DWORD_PTR itemData = GetItemData(hitemDrag);
 
   if (itemData == 0) { // we're dragging a group
-    HTREEITEM hChild = GetChildItem(hitemDrag);
+    // Are we copying an empty group?
+    if (CountChildren(hitemDrag) == 0) {
+      // Yes - add new empty group in the right place
+      CSecString sxPath, DropPrefix;
+      if (IsLeaf(hitemDrop))
+        DropPrefix = GetPrefix(hitemDrop);
+      else
+        DropPrefix = CSecString(GetGroup(hitemDrop));
 
-    while (hChild != NULL) {
-      CopyItem(hChild, hitemDrop, prefix);
-      hChild = GetNextItem(hChild, TVGN_NEXT);
+      if (DropPrefix.IsEmpty())
+        sxPath = CSecString(GetItemText(hitemDrag));
+      else
+        sxPath = DropPrefix + CSecString(GROUP_SEP2) + CSecString(GetItemText(hitemDrag));
+
+      pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxPath,
+        DBEmptyGroupsCommand::EG_ADD));
+    } else {
+      // No - copy items
+      HTREEITEM hChild = GetChildItem(hitemDrag);
+
+      while (hChild != NULL) {
+        CopyItem(pmulticmds, hChild, hitemDrop, Prefix);
+        hChild = GetNextItem(hChild, TVGN_NEXT);
+      }
     }
   } else { // we're dragging a leaf
     CItemData *pci = (CItemData *)itemData;
     CItemData ci_temp(*pci); // copy construct a duplicate
 
     // Update Group: chop away prefix, replace
-    CSecString oldPath(ci_temp.GetGroup());
-    if (!prefix.IsEmpty()) {
-      oldPath = oldPath.Right(oldPath.GetLength() - prefix.GetLength() - 1);
+    CSecString sOldPath(ci_temp.GetGroup());
+    if (!Prefix.IsEmpty()) {
+      sOldPath = sOldPath.Right(sOldPath.GetLength() - Prefix.GetLength() - 1);
     }
     // with new path
     CSecString path, elem;
@@ -1212,26 +1304,24 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         break;
     } while (1);
 
-    CSecString newPath;
+    CSecString sNewPath;
     if (path.IsEmpty())
-      newPath = oldPath;
+      sNewPath = sOldPath;
     else {
-      newPath = path;
-      if (!oldPath.IsEmpty())
-        newPath += GROUP_SEP + oldPath;
+      sNewPath = path;
+      if (!sOldPath.IsEmpty())
+        sNewPath += GROUP_SEP + sOldPath;
     }
     // Get information from current selected entry
     CSecString ci_user = pci->GetUser();
     CSecString ci_title0 = pci->GetTitle();
-    CSecString ci_title = app.GetMainDlg()->GetUniqueTitle(newPath, ci_title0,
+    CSecString ci_title = app.GetMainDlg()->GetUniqueTitle(sNewPath, ci_title0,
                                                  ci_user, IDS_DRAGNUMBER);
 
     ci_temp.CreateUUID(); // Copy needs its own UUID
-    ci_temp.SetGroup(newPath);
+    ci_temp.SetGroup(sNewPath);
     ci_temp.SetTitle(ci_title);
-    ci_temp.SetDisplayInfo(new DisplayInfo);
 
-    Command *pcmd(NULL);
     CItemData::EntryType temp_et = ci_temp.GetEntryType();
     switch (temp_et) {
     case CItemData::ET_ALIASBASE:
@@ -1240,65 +1330,66 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
       ci_temp.SetNormal();
       // Deliberate fall-thru
     case CItemData::ET_NORMAL:
-      pcmd = AddEntryCommand::Create(app.GetCore(), ci_temp);
+      pmulticmds->Add(AddEntryCommand::Create(app.GetCore(), ci_temp));
       break;
     case CItemData::ET_ALIAS:
       ci_temp.SetPassword(CSecString(L"[Alias]"));
       // Get base of original alias and make this copy point to it
-      pcmd = AddEntryCommand::Create(app.GetCore(), ci_temp,
-                                     app.GetMainDlg()->GetBaseEntry(pci)->GetUUID());
+      pmulticmds->Add(AddEntryCommand::Create(app.GetCore(), ci_temp,
+                                     app.GetMainDlg()->GetBaseEntry(pci)->GetUUID()));
       break;
     case CItemData::ET_SHORTCUT:
       ci_temp.SetPassword(CSecString(L"[Shortcut]"));
       // Get base of original shortcut and make this copy point to it
-      pcmd = AddEntryCommand::Create(app.GetCore(), ci_temp,
-                                     app.GetMainDlg()->GetBaseEntry(pci)->GetUUID());
+      pmulticmds->Add(AddEntryCommand::Create(app.GetCore(), ci_temp,
+                                     app.GetMainDlg()->GetBaseEntry(pci)->GetUUID()));
       break;
     default:
       ASSERT(0);
     }
-    app.GetMainDlg()->Execute(pcmd);
   } // leaf handling
   return true;
 }
 
-BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
+BOOL CPWTreeCtrlX::OnDrop(CWnd *, COleDataObject *pDataObject,
                          DROPEFFECT dropEffect, CPoint point)
 {
   // We need to cancel DropTarget (SelectDropTarget(NULL)) selection 
-  // before every return, otherwise next mouse/keybord selection 
+  // before every return, otherwise next mouse/keyboard selection 
   // will be treated as drop target selections
 
   if (pDataObject->IsDataAvailable(CF_HDROP, NULL)) {
     HGLOBAL hg;
     HDROP hdrop;
     UINT nFiles;
-    TCHAR szDraggedFile[MAX_PATH];
+    wchar_t szDraggedFile[MAX_PATH];
 
-    pws_os::Trace(L"CPWTreeCtrl::OnDrop() Found a file!\n");
     hg = pDataObject->GetGlobalData(CF_HDROP);
     if (hg == NULL) {
-      pws_os::Trace(L"CPWTreeCtrl::OnDrop() No global data\n");
+      pws_os::Trace(L"CPWTreeCtrlX::OnDrop() No global data\n");
       goto done;
     }
+
     hdrop = HDROP(GlobalLock(hg));
     if (hdrop == NULL) {
-      pws_os::Trace(L"CPWTreeCtrl::OnDrop() Could not lock global data\n");
+      pws_os::Trace(L"CPWTreeCtrlX::OnDrop() Could not lock global data\n");
       GlobalUnlock(hg);
       goto done;
     }
+
     nFiles = DragQueryFile(hdrop, UINT(-1), NULL, 0);
     // Support exactly one file being dropped
     if (nFiles != 1) {
-      pws_os::Trace(L"CPWTreeCtrl::OnDrop(): %d files dropped\n", nFiles);
+      pws_os::Trace(L"CPWTreeCtrlX::OnDrop(): %d files dropped\n", nFiles);
       GlobalUnlock(hg);
       goto done;
     }
+
     DragQueryFile(hdrop, 0, szDraggedFile, MAX_PATH);
-    pws_os::Trace(L"CPWTreeCtrl::OnDrop(): %s was dropped\n", szDraggedFile);
     GlobalUnlock(hg);
     m_droppedFile = szDraggedFile;
     app.GetMainDlg()->PostMessage(PWS_MSG_DROPPED_FILE);
+
   done:
     SelectDropTarget(NULL);
     return FALSE;
@@ -1311,9 +1402,9 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
   }
 
   m_TickCount = 0;
-  pws_os::Trace(L"CPWTreeCtrl::OnDrop() show cursor\n");
   while (ShowCursor(TRUE) < 0)
     ;
+
   POINT p, hs;
   CImageList* pil = CImageList::GetDragImage(&p, &hs);
   // pil will be NULL if we're the target of inter-process D&D
@@ -1331,7 +1422,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
 
   if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL)) {
     SelectDropTarget(NULL);
-    return FALSE;
+    return FALSE; // don't drop if not ours
   }
 
   UINT uFlags;
@@ -1442,7 +1533,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
           itemData = GetItemData(m_hitemDrag);
           ASSERT(itemData != NULL);
           pci = (CItemData *)itemData;
-          cs_title.Format(IDS_SCTARGET, pci->GetTitle().c_str());
+          cs_title.Format(IDS_SCTARGET, static_cast<LPCWSTR>(pci->GetTitle().c_str()));
           cs_user = pci->GetUser();
 
           // If there is a matching entry in our list, generate unique one
@@ -1478,33 +1569,97 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
   if (m_bWithinThisInstance) {
     // from me! - easy
     HTREEITEM parent = GetParentItem(m_hitemDrag);
+    
+    // Only interested in children of the parent - not grand-children etc.
+    const int numchildren = CountChildren(parent, false);
+
     if (m_hitemDrag != hitemDrop &&
         !IsChildNodeOf(hitemDrop, m_hitemDrag) &&
         parent != hitemDrop) {
-      // drag operation allowed
-      if (dropEffect == DROPEFFECT_MOVE) {
-        const StringX sxPrefix = GetGroup(hitemDrop);
+      // Drag operation allowed
+      if (dropEffect == DROPEFFECT_MOVE || dropEffect == DROPEFFECT_COPY) {
+
         MultiCommands *pmulticmds = MultiCommands::Create(app.GetCore());
-        MoveItem(pmulticmds, m_hitemDrag, hitemDrop, sxPrefix);
-        
+        pmulticmds->Add(UpdateGUICommand::Create(app.GetCore(),
+          UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
+
         // Make sure that the folder to which drag is performed will 
         // be removed from the vector of empty groups
         StringX sxGroup(GetGroup(hitemDrop));
         if (app.GetMainDlg()->IsEmptyGroup(sxGroup)) {
           pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxGroup,
-                                                       DBEmptyGroupsCommand::EG_DELETE));
+            DBEmptyGroupsCommand::EG_DELETE));
         }
-        
-        app.GetMainDlg()->Execute(pmulticmds);
-      } else
-        if (dropEffect == DROPEFFECT_COPY) {
-          CopyItem(m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
+
+        StringX sxDropGroup(L"");
+        bool bEmptyGroup(false);
+
+        switch (dropEffect) {
+        case DROPEFFECT_MOVE:
+          // If item was last entry in the parent group, be it a leaf or a node,
+          // make it an empty group
+          if (numchildren == 1) {
+            const StringX sxPath = GetGroup(parent);
+            pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxPath,
+              DBEmptyGroupsCommand::EG_ADD));
+          }
+
+          if (IsLeaf(m_hitemDrop)) {
+            CItemData *pci = (CItemData *)GetItemData(m_hitemDrop);
+            ASSERT(pci != NULL);
+            sxDropGroup = pci->GetGroup();
+          } else {
+            sxDropGroup = GetGroup(m_hitemDrag);
+            if (app.GetCore()->IsEmptyGroup(sxDropGroup)) {
+              bEmptyGroup = true;
+            }
+          }
+
+          if (bEmptyGroup) {
+            // Move empty group
+            // If it is, then the user has selected the last entry (groups
+            // before it are, by definition, not empty)
+
+            // Delete it from list of empty groups
+            pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxDropGroup,
+              DBEmptyGroupsCommand::EG_DELETE));
+
+            // Add it in its new location
+            CSecString sxPath, DropPrefix;
+            if (IsLeaf(hitemDrop))
+              DropPrefix = GetPrefix(hitemDrop);
+            else
+              DropPrefix = CSecString(GetGroup(hitemDrop));
+
+            if (DropPrefix.IsEmpty())
+              sxPath = CSecString(GetItemText(m_hitemDrag));
+            else
+              sxPath = DropPrefix + CSecString(GROUP_SEP2) + CSecString(GetItemText(m_hitemDrag));
+
+            pmulticmds->Add(DBEmptyGroupsCommand::Create(app.GetCore(), sxPath,
+              DBEmptyGroupsCommand::EG_ADD));
+          } else {
+            // Move tree item (entry or non-empty group)
+            MoveItem(pmulticmds, m_hitemDrag, hitemDrop, sxDropGroup);
+          }
+          break;
+        case DROPEFFECT_COPY:
+          CopyItem(pmulticmds, m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
           SortTree(hitemDrop);
+          break;
         }
-      SelectItem(hitemDrop);
-      retval = TRUE;
+
+        pmulticmds->Add(UpdateGUICommand::Create(app.GetCore(),
+          UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
+
+        // Do it
+        app.GetMainDlg()->Execute(pmulticmds);
+
+        SelectItem(hitemDrop);
+        retval = TRUE;
+      }
     } else {
-      // drag failed or cancelled, revert to last selected
+      // Drag failed or cancelled, revert to last selected
       SelectItem(m_hitemDrag);
       goto exit;
     }
@@ -1523,8 +1678,8 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
 exit:
   SelectDropTarget(NULL);
   GlobalUnlock(hGlobal);
+
   if (retval == TRUE) {
-    app.GetMainDlg()->SetChanged(DboxMain::Data);
     app.GetMainDlg()->ChangeOkUpdate();
     if (app.GetMainDlg()->IsFilterActive())
       app.GetMainDlg()->RefreshViews();
@@ -1532,7 +1687,7 @@ exit:
   return retval;
 }
 
-void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWTreeCtrlX::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // This sets the whole D&D mechanism in motion...
   if (pNotifyStruct->code == TVN_BEGINDRAG)
@@ -1562,7 +1717,6 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
   pil->DragMove(ptAction);
   pil->DragEnter(this, ptAction);
 
-  pws_os::Trace(L"CPWTreeCtrl::OnBeginDrag() hide cursor\n");
   while (ShowCursor(FALSE) >= 0)
     ;
   SetCapture();
@@ -1579,13 +1733,19 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   // Start dragging
   m_bDropped = false;
-  DROPEFFECT de = m_DataSource->StartDragging(m_tcddCPFID, &rClient);
+  DROPEFFECT de = m_pDataSource->StartDragging(m_tcddCPFID, &rClient);
 
   // If inter-process Move, we need to delete original
   if (m_cfdropped == m_tcddCPFID &&
       (de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
       !m_bWithinThisInstance && !app.GetMainDlg()->IsDBReadOnly()) {
-    app.GetMainDlg()->Delete(); // XXX assume we've a selected item here!
+    MultiCommands *pmcmd = MultiCommands::Create(app.GetMainDlg()->GetCore());
+    app.GetMainDlg()->Delete(pmcmd); // XXX assume we've a selected item here!
+   
+    // Now do it
+    if (!pmcmd->IsEmpty()) {
+      app.GetMainDlg()->Execute(pmcmd);
+    }
   }
 
   // wrong place to clean up imagelist?
@@ -1595,7 +1755,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
   delete pil;
 
   if (de == DROPEFFECT_NONE) {
-    pws_os::Trace(L"m_DataSource->StartDragging() failed\n");
+    pws_os::Trace(L"m_pDataSource->StartDragging() failed\n");
     // Do cleanup - otherwise this is the responsibility of the recipient!
     if (m_hgDataALL != NULL) {
       LPVOID lpData = GlobalLock(m_hgDataALL);
@@ -1629,7 +1789,6 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
     }
   }
 
-  pws_os::Trace(L"CPWTreeCtrl::OnBeginDrag() show cursor\n");
   while (ShowCursor(TRUE) < 0)
     ;
 
@@ -1637,7 +1796,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
   ReleaseCapture();
 }
 
-void CPWTreeCtrl::OnTimer(UINT_PTR nIDEvent)
+void CPWTreeCtrlX::OnTimer(UINT_PTR nIDEvent)
 {
   switch (nIDEvent) {
     case TIMER_ND_HOVER:
@@ -1663,7 +1822,7 @@ void CPWTreeCtrl::OnTimer(UINT_PTR nIDEvent)
   }
 }
 
-void CPWTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
+void CPWTreeCtrlX::OnMouseMove(UINT nFlags, CPoint point)
 {
   app.GetMainDlg()->ResetIdleLockCounter();
   if (!m_bShowNotes)
@@ -1696,7 +1855,7 @@ void CPWTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
   CTreeCtrl::OnMouseMove(nFlags, point);
 }
 
-LRESULT CPWTreeCtrl::OnMouseLeave(WPARAM, LPARAM)
+LRESULT CPWTreeCtrlX::OnMouseLeave(WPARAM, LPARAM)
 {
   KillTimer(m_nHoverNDTimerID);
   KillTimer(m_nShowNDTimerID);
@@ -1707,51 +1866,57 @@ LRESULT CPWTreeCtrl::OnMouseLeave(WPARAM, LPARAM)
   return 0L;
 }
 
-void CPWTreeCtrl::OnExpandCollapse(NMHDR *, LRESULT *)
+void CPWTreeCtrlX::OnExpandCollapse(NMHDR *, LRESULT *)
 {
   // We need to update the parent's state vector of expanded nodes
-  // so that it will be persistent across miminize, lock, save, etc.
+  // so that it will be persistent across minimize, lock, save, etc.
   // (unless we're in the middle of restoring the state!)
 
   if (!m_isRestoring) {
-    app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+    app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
   }
 }
 
-void CPWTreeCtrl::OnExpandAll() 
+void CPWTreeCtrlX::OnExpandAll() 
 {
   // Updated to test for zero entries!
   HTREEITEM hItem = this->GetRootItem();
   if (hItem == NULL)
     return;
-  SetRedraw(FALSE);
-  do {
-    Expand(hItem,TVE_EXPAND);
-    hItem = GetNextItem(hItem,TVGN_NEXTVISIBLE);
-  } while (hItem);
-  EnsureVisible(GetSelectedItem());
-  SetRedraw(TRUE);
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  CWaitCursor wait;
+
+  //SetRedraw(FALSE);
+  do {
+    Expand(hItem, TVE_EXPAND);
+  } while ((hItem = GetNextItem(hItem, TVGN_NEXTVISIBLE)) != NULL);
+
+  EnsureVisible(GetSelectedItem());
+  //SetRedraw(TRUE);
+
+  wait.Restore();
+
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
 
-void CPWTreeCtrl::OnCollapseAll() 
+void CPWTreeCtrlX::OnCollapseAll() 
 {
   // Courtesy of Zafir Anjum from www.codeguru.com
   // Updated to test for zero entries!
   HTREEITEM hItem = GetRootItem();
   if (hItem == NULL)
     return;
-  SetRedraw(FALSE);
+
+  //SetRedraw(FALSE);
   do {
     CollapseBranch(hItem);
   } while((hItem = GetNextSiblingItem(hItem)) != NULL);
-  SetRedraw(TRUE);
+  //SetRedraw(TRUE);
 
-  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::iTreeOnly);
+  app.GetMainDlg()->SaveGUIStatusEx(DboxMain::TREEONLY);
 }
 
-void CPWTreeCtrl::CollapseBranch(HTREEITEM hItem)
+void CPWTreeCtrlX::CollapseBranch(HTREEITEM hItem)
 {
   // Courtesy of Zafir Anjumfrom www.codeguru.com
   if (ItemHasChildren(hItem)) {
@@ -1763,7 +1928,7 @@ void CPWTreeCtrl::CollapseBranch(HTREEITEM hItem)
   }
 }
 
-HTREEITEM CPWTreeCtrl::GetNextTreeItem(HTREEITEM hItem) 
+HTREEITEM CPWTreeCtrlX::GetNextTreeItem(HTREEITEM hItem) 
 {
   if (NULL == hItem)
     return GetRootItem(); 
@@ -1787,7 +1952,7 @@ HTREEITEM CPWTreeCtrl::GetNextTreeItem(HTREEITEM hItem)
   return hReturn;
 } 
 
-void CPWTreeCtrl::Iterate(HTREEITEM hItem, TreeItemFunctor &functor)
+void CPWTreeCtrlX::Iterate(HTREEITEM hItem, TreeItemFunctor &functor)
 {
   if (hItem) {
     // Start at supplied entry
@@ -1807,10 +1972,11 @@ void CPWTreeCtrl::Iterate(HTREEITEM hItem, TreeItemFunctor &functor)
   }
 }
 
-bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
+bool CPWTreeCtrlX::CollectData(BYTE * &out_buffer, long &outLen)
 {
   DWORD_PTR itemData = GetItemData(m_hitemDrag);
   CItemData *pci = (CItemData *)itemData;
+  std::vector<StringX> vEmptyGroups;
 
   CDDObList out_oblist;
 
@@ -1820,25 +1986,87 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
     out_oblist.m_bDragNode = false;
     GetEntryData(out_oblist, pci);
   } else {
-    m_nDragPathLen = GetGroup(GetParentItem(m_hitemDrag)).GetLength();
-    out_oblist.m_bDragNode = true;
-    GetGroupEntriesData(out_oblist, m_hitemDrag);
+    const StringX DragPathParent = GetGroup(GetParentItem(m_hitemDrag));
+    m_nDragPathLen = (int)DragPathParent.length();
+
+    StringX DragPath = GetGroup(m_hitemDrag);
+    // Check if this is an empty group
+    if (app.GetMainDlg()->IsEmptyGroup(DragPath)) {
+      // Don't bother looking for children
+      vEmptyGroups.push_back(DragPath.substr(m_nDragPathLen == 0 ? m_nDragPathLen : m_nDragPathLen + 1));
+    } else {
+      out_oblist.m_bDragNode = true;
+      GetGroupEntriesData(out_oblist, m_hitemDrag);
+
+      // Get all empty groups within original drag group
+      std::vector<StringX> vAllEmptyGroups;
+      vAllEmptyGroups = app.GetCore()->GetEmptyGroups();
+
+      DragPath += StringX(L".");
+      const size_t draglen = DragPath.length();
+
+      for (size_t i = 0; i < vAllEmptyGroups.size(); i++) {
+        if (CompareNoCase(vAllEmptyGroups[i].substr(0, draglen), DragPath) == 0) {
+          StringX veg = vAllEmptyGroups[i].substr(m_nDragPathLen == 0 ? 0 : m_nDragPathLen + 1,
+                 StringX::npos);
+          vEmptyGroups.push_back(veg);
+        }
+      }
+    }
   }
 
   CSMemFile outDDmemfile;
   out_oblist.DDSerialize(outDDmemfile);
 
-  outLen = (long)outDDmemfile.GetLength();
-  out_buffer = (BYTE *)outDDmemfile.Detach();
-
   while (!out_oblist.IsEmpty()) {
     delete (CDDObject *)out_oblist.RemoveHead();
-  } 
+  }
+
+  // Now process empty groups
+  if (!vEmptyGroups.empty()) {
+    if (outDDmemfile.GetLength() == 0) {
+      // No entries written but as we are going to write empty groups
+      // we need to put a zero count
+      int nCount(0);
+      outDDmemfile.Write((void *)&nCount, sizeof(nCount));
+      outDDmemfile.Write((void *)&out_oblist.m_bDragNode, sizeof(bool));
+    }
+
+    // Add special field to ensure we recognise the extra data correctly
+    // when dropping
+    outDDmemfile.Write("egrp", 4);
+
+    size_t nemptygroups = vEmptyGroups.size();
+    outDDmemfile.Write((void *)&nemptygroups, sizeof(nemptygroups));
+    for (size_t i = 0; i < nemptygroups; i++) {
+      CUTF8Conv conv;
+      const unsigned char *utf8;
+      size_t utf8Len;
+
+      if (conv.ToUTF8(vEmptyGroups[i].c_str(), utf8, utf8Len)) {
+        outDDmemfile.Write((void *)&utf8Len, sizeof(utf8Len));
+        outDDmemfile.Write(reinterpret_cast<const char *>(utf8), (UINT)utf8Len);
+      } else {
+        ASSERT(0);
+      }
+    }
+
+    outDDmemfile.Flush();
+    long len = (long)outDDmemfile.GetLength();
+    unsigned char *buffer = new unsigned char[len];
+    outDDmemfile.SeekToBegin();
+    outDDmemfile.Read(buffer, len);
+    //pws_os::HexDump(buffer, len, L"", 32);
+    delete[] buffer;
+  }
+
+  outLen = (long)outDDmemfile.GetLength();
+  out_buffer = (BYTE *)outDDmemfile.Detach();
 
   return (outLen > 0);
 }
 
-bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen,
+bool CPWTreeCtrlX::ProcessData(BYTE *in_buffer, const long &inLen,
                               const CSecString &DropGroup)
 {
 #ifdef DUMP_DATA
@@ -1856,21 +2084,63 @@ bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen,
 
   inDDmemfile.Attach((BYTE *)in_buffer, inLen);
 
+  // Get all the entries
   in_oblist.DDUnSerialize(inDDmemfile);
 
-  inDDmemfile.Detach();
+  // Now check if empty group list is appended to the item data
+  // Empty groups have a dummy header of 'egrp' to check it is ours
+  // Note: No EOF indication in CFile and hence CMemfile only to check
+  // we have read in is what we wanted!
+  std::vector<StringX> vsxEmptyGroups;
+  StringX sxDropGroup(L"");
+  if (!DropGroup.IsEmpty())
+    sxDropGroup = StringX(LPCWSTR(DropGroup)) + StringX(L".");
 
-  if (!in_oblist.IsEmpty()) {
-    app.GetMainDlg()->AddDDEntries(in_oblist, DropGroup);
+  char chdr[5] = { 0 };
+  UINT num_chars = inDDmemfile.Read(chdr, 4);
+  if (num_chars == 4 && strcmp(chdr, "egrp") == 0) {
+    // It is ours - now process the empty groups being dropped
+    size_t nemptygroups, utf8Len, buffer_size = 512;
+    unsigned char *utf8 = new unsigned char[buffer_size];
+    inDDmemfile.Read((void *)&nemptygroups, sizeof(nemptygroups));
+    for (size_t i = 0; i < nemptygroups; i++) {
+      StringX sxEmptyGroup;
+      CUTF8Conv conv;
+      UINT num_read;
+
+      num_read = inDDmemfile.Read((void *)&utf8Len, sizeof(utf8Len));
+      ASSERT(num_read == sizeof(utf8Len));
+      if (utf8Len > buffer_size) {
+        delete[] utf8;
+        utf8 = new unsigned char[utf8Len * 2];
+        buffer_size = utf8Len * 2;
+      }
+
+      // Clear buffer
+      memset(utf8, 0, buffer_size);
+      num_read = inDDmemfile.Read(utf8, (UINT)utf8Len);
+      ASSERT(num_read == utf8Len);        
+        
+      conv.FromUTF8(utf8, utf8Len, sxEmptyGroup);
+      vsxEmptyGroups.push_back(sxDropGroup + sxEmptyGroup);
+    }
+    delete[] utf8;
+  }
+
+  if (!in_oblist.IsEmpty() || !vsxEmptyGroups.empty()) {
+    app.GetMainDlg()->AddDDEntries(in_oblist, DropGroup, vsxEmptyGroups);
 
     while (!in_oblist.IsEmpty()) {
       delete (CDDObject *)in_oblist.RemoveHead();
     }
   }
+
+  // All finished
+  inDDmemfile.Detach();
   return (inLen > 0);
 }
 
-void CPWTreeCtrl::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
+void CPWTreeCtrlX::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
 {
   if (IsLeaf(hItem)) {
     DWORD_PTR itemData = GetItemData(hItem);
@@ -1887,7 +2157,7 @@ void CPWTreeCtrl::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
   }
 }
 
-void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *pci)
+void CPWTreeCtrlX::GetEntryData(CDDObList &out_oblist, CItemData *pci)
 {
   ASSERT(pci != NULL);
   CDDObject *pDDObject = new CDDObject;
@@ -1912,9 +2182,9 @@ void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *pci)
   out_oblist.AddTail(pDDObject);
 }
 
-CSecString CPWTreeCtrl::GetPrefix(HTREEITEM hItem) const
+CSecString CPWTreeCtrlX::GetPrefix(HTREEITEM hItem) const
 {
-  // return all path components beween hItem and root.
+  // return all path components between hItem and root.
   // e.g., if hItem is X in a.b.c.X.y.z, then return a.b.c
   CSecString retval;
   HTREEITEM p = GetParentItem(hItem);
@@ -1922,12 +2192,12 @@ CSecString CPWTreeCtrl::GetPrefix(HTREEITEM hItem) const
     retval = CSecString(GetItemText(p)) + retval;
     p = GetParentItem(p);
     if (p != NULL)
-      retval = CSecString(GROUP_SEP) + retval;
+      retval = CSecString(GROUP_SEP2) + retval;
   }
   return retval;
 }
 
-CSecString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
+CSecString CPWTreeCtrlX::MakeTreeDisplayString(const CItemData &ci) const
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
@@ -1945,8 +2215,11 @@ CSecString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
       treeDispString += L"}";
     }
   }
-  if (ci.IsProtected())
-    treeDispString += L" #";
+
+  if (ci.IsProtected()) {
+    treeDispString += L" ";
+    treeDispString +=  m_bUseNew ? m_sProtectSymbol.c_str() : L"#";
+  }
 
   if (ci.HasAttRef())
     treeDispString += L" +";
@@ -1978,7 +2251,7 @@ static int CALLBACK ExplorerCompareProc(LPARAM lParam1, LPARAM lParam2,
   return iResult;
 }
 
-void CPWTreeCtrl::SortTree(const HTREEITEM htreeitem)
+void CPWTreeCtrlX::SortTree(const HTREEITEM htreeitem)
 {
   TVSORTCB tvs;
   HTREEITEM hti(htreeitem);
@@ -1993,7 +2266,6 @@ void CPWTreeCtrl::SortTree(const HTREEITEM htreeitem)
 
   // here iff user prefers "explorer type view", that is,
   // groups first.
-
 
   // unbelievable, but we have to recurse ourselves!
   // foreach child of hti
@@ -2016,17 +2288,17 @@ void CPWTreeCtrl::SortTree(const HTREEITEM htreeitem)
   SortChildrenCB(&tvs);
 }
 
-void CPWTreeCtrl::SetFilterState(bool bState)
+void CPWTreeCtrlX::SetFilterState(bool bState)
 {
-  m_bFilterActive = bState;
+  m_bTreeFilterActive = bState;
 
   // Red if filter active, black if not
-  SetTextColor(m_bFilterActive ? RGB(168, 0, 0) : RGB(0, 0, 0));
+  SetTextColor(m_bTreeFilterActive ? RGB(168, 0, 0) : RGB(0, 0, 0));
 }
 
-BOOL CPWTreeCtrl::OnEraseBkgnd(CDC* pDC)
+BOOL CPWTreeCtrlX::OnEraseBkgnd(CDC* pDC)
 {
-  if (m_bFilterActive && app.GetMainDlg()->GetNumPassedFiltering() == 0) {
+  if (m_bTreeFilterActive && app.GetMainDlg()->GetNumPassedFiltering() == 0) {
     int nSavedDC = pDC->SaveDC(); //save the current DC state
 
     // Set up variables
@@ -2064,10 +2336,9 @@ BOOL CPWTreeCtrl::OnEraseBkgnd(CDC* pDC)
   return TRUE;
 }
 
-BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
+BOOL CPWTreeCtrlX::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
 {
   if (m_hgDataALL != NULL) {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataALL\n");
     LPVOID lpData = GlobalLock(m_hgDataALL);
     SIZE_T memsize = GlobalSize(m_hgDataALL);
     if (lpData != NULL && memsize > 0) {
@@ -2079,7 +2350,6 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   }
 
   if (m_hgDataTXT != NULL) {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataTXT\n");
     LPVOID lpData = GlobalLock(m_hgDataTXT);
     SIZE_T memsize = GlobalSize(m_hgDataTXT);
     if (lpData != NULL && memsize > 0) {
@@ -2091,7 +2361,6 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   }
 
   if (m_hgDataUTXT != NULL) {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n");
     LPVOID lpData = GlobalLock(m_hgDataUTXT);
     SIZE_T memsize = GlobalSize(m_hgDataUTXT);
     if (lpData != NULL && memsize > 0) {
@@ -2115,10 +2384,10 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   return retval;
 }
     
-BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
+BOOL CPWTreeCtrlX::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
 {
   if (!IsLeaf(m_hitemDrag)) {
-    pws_os::Trace(L"CPWTreeCtrl::RenderTextData - not a leaf!\n");
+    pws_os::Trace(L"CPWTreeCtrlX::RenderTextData - not a leaf!\n");
     return FALSE;
   }
 
@@ -2151,7 +2420,6 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
     // So is requested data!
     dwBufLen = (ilen + 1) * sizeof(wchar_t);
     lpszW = new WCHAR[ilen + 1];
-    //pws_os::Trace(L"lpszW allocated %p, size %d\n", lpszW, dwBufLen);
     (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata, ilen);
   } else {
     // They want it in ASCII - use lpszW temporarily
@@ -2159,7 +2427,6 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
     dwBufLen = WideCharToMultiByte(CP_ACP, 0, lpszW, -1, NULL, 0, NULL, NULL);
     ASSERT(dwBufLen != 0);
     lpszA = new char[dwBufLen];
-    pws_os::Trace(L"lpszA allocated %p, size %d\n", lpszA, dwBufLen);
     WideCharToMultiByte(CP_ACP, 0, lpszW, -1, lpszA, dwBufLen, NULL, NULL);
     cs_dragdata.ReleaseBuffer();
     lpszW = NULL;
@@ -2178,7 +2445,6 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
 
   BOOL retval(FALSE);
   if (*phGlobal == NULL) {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderTextData - Alloc global memory\n");
     *phgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwBufLen);
     ASSERT(*phgData != NULL);
     if (*phgData == NULL)
@@ -2195,15 +2461,14 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
     GlobalUnlock(*phgData);
     retval = TRUE;
   } else {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderTextData - *phGlobal NOT NULL!\n");
+    pws_os::Trace(L"CPWTreeCtrlX::OnRenderTextData - *phGlobal NOT NULL!\n");
     SIZE_T inSize = GlobalSize(*phGlobal);
     SIZE_T ourSize = GlobalSize(*phgData);
     if (inSize < ourSize) {
       // Pre-allocated space too small.  Not allowed to increase it - FAIL
-      pws_os::Trace(L"CPWTreeCtrl::OnRenderTextData - NOT enough room - FAIL\n");
+      pws_os::Trace(L"CPWTreeCtrlX::OnRenderTextData - NOT enough room - FAIL\n");
     } else {
       // Enough room - copy our data into supplied area
-      pws_os::Trace(L"CPWTreeCtrl::OnRenderTextData - enough room - copy our data\n");
       LPVOID pInGlobalLock = GlobalLock(*phGlobal);
       ASSERT(pInGlobalLock != NULL);
       if (pInGlobalLock == NULL)
@@ -2219,9 +2484,7 @@ bad_return:
   // Finished with buffer - trash it
   trashMemory(lpDataBuffer, dwBufLen);
   // Free the strings (only one is actually in use)
-  //pws_os::Trace(L"lpszA freed %p\n", lpszA);
   delete[] lpszA;
-  //pws_os::Trace(L"lpszW freed %p\n", lpszW);
   delete[] lpszW;
   // Since lpDataBuffer pointed to one of the above - just zero the pointer
   lpDataBuffer = NULL;
@@ -2229,7 +2492,7 @@ bad_return:
   // If retval == TRUE, recipient is responsible for freeing the global memory
   // if D&D succeeds (see after StartDragging in OnMouseMove)
   if (retval == FALSE) {
-    pws_os::Trace(L"CPWTreeCtrl::RenderTextData - returning FALSE!\n");
+    pws_os::Trace(L"CPWTreeCtrlX::RenderTextData - returning FALSE!\n");
     if (*phgData != NULL) {
       lpData = GlobalLock(*phgData);
       SIZE_T memsize = GlobalSize(*phgData);
@@ -2241,12 +2504,14 @@ bad_return:
       *phgData = NULL;
     }
   } else {
-    pws_os::Trace(L"CPWTreeCtrl::RenderTextData - D&D Data:");
+    /*
+    pws_os::Trace(L"CPWTreeCtrlX::RenderTextData - D&D Data:\n");
     if (cfFormat == CF_UNICODETEXT) {
-      pws_os::Trace(L"\"%ls\"\n", (LPWSTR)lpData);  // data is Unicode
+      pws_os::Trace(L"\t\"%ls\"\n", (LPWSTR)lpData);  // data is Unicode
     } else {
-      pws_os::Trace(L"\"%hs\"\n", (LPSTR)lpData);  // data is NOT Unicode
+      pws_os::Trace(L"\t\"%hs\"\n", (LPSTR)lpData);  // data is NOT Unicode
     }
+    */
   }
 
   if (lpData != NULL)
@@ -2255,7 +2520,7 @@ bad_return:
     return retval;
 }
 
-BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
+BOOL CPWTreeCtrlX::RenderAllData(HGLOBAL* phGlobal)
 {
   long lBufLen;
   BYTE *buffer = NULL;
@@ -2292,7 +2557,6 @@ BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
 
   BOOL retval(FALSE);
   if (*phGlobal == NULL) {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderAllData - Alloc global memory\n");
     m_hgDataALL = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwBufLen);
     ASSERT(m_hgDataALL != NULL);
     if (m_hgDataALL == NULL)
@@ -2308,15 +2572,14 @@ BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
     *phGlobal = m_hgDataALL;
     retval = TRUE;
   } else {
-    pws_os::Trace(L"CPWTreeCtrl::OnRenderAllData - *phGlobal NOT NULL!\n");
+    pws_os::Trace(L"CPWTreeCtrlX::OnRenderAllData - *phGlobal NOT NULL!\n");
     SIZE_T inSize = GlobalSize(*phGlobal);
     SIZE_T ourSize = GlobalSize(m_hgDataALL);
     if (inSize < ourSize) {
       // Pre-allocated space too small.  Not allowed to increase it - FAIL
-      pws_os::Trace(L"CPWTreeCtrl::OnRenderAllData - NOT enough room - FAIL\n");
+      pws_os::Trace(L"CPWTreeCtrlX::OnRenderAllData - NOT enough room - FAIL\n");
     } else {
       // Enough room - copy our data into supplied area
-      pws_os::Trace(L"CPWTreeCtrl::OnRenderAllData - enough room - copy our data\n");
       LPVOID pInGlobalLock = GlobalLock(*phGlobal);
       ASSERT(pInGlobalLock != NULL);
       if (pInGlobalLock == NULL)
@@ -2338,7 +2601,7 @@ bad_return:
   // If retval == TRUE, recipient is responsible for freeing the global memory
   // if D&D succeeds
   if (retval == FALSE) {
-    pws_os::Trace(L"CPWTreeCtrl::RenderAllData - returning FALSE!\n");
+    pws_os::Trace(L"CPWTreeCtrlX::RenderAllData - returning FALSE!\n");
     if (m_hgDataALL != NULL) {
       lpData = GlobalLock(m_hgDataALL);
       SIZE_T memsize = GlobalSize(m_hgDataALL);
@@ -2357,7 +2620,7 @@ bad_return:
   return retval;
 }
 
-CFont *CPWTreeCtrl::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORREF &cf)
+CFont *CPWTreeCtrlX::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORREF &cf)
 {
   Fonts *pFonts = Fonts::GetInstance();
   if (pci == NULL) {
@@ -2380,23 +2643,24 @@ CFont *CPWTreeCtrl::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLOR
   return NULL;
 }
 
-void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWTreeCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMTVCUSTOMDRAW *pNMTVCUSTOMDRAW = (NMTVCUSTOMDRAW *)pNotifyStruct;
+  NMTVCUSTOMDRAW *pTVCD = reinterpret_cast<NMTVCUSTOMDRAW *>(pNotifyStruct);
 
   *pLResult = CDRF_DODEFAULT;
 
   static bool bchanged_item_font(false);
+  static bool bitem_selected(false);
   static CFont *pcurrentfont;
   static CDC *pDC = NULL;
   
-  HTREEITEM hItem = (HTREEITEM)pNMTVCUSTOMDRAW->nmcd.dwItemSpec;
-  CItemData *pci = (CItemData *)pNMTVCUSTOMDRAW->nmcd.lItemlParam;
+  HTREEITEM hItem = (HTREEITEM)pTVCD->nmcd.dwItemSpec;
+  CItemData *pci = (CItemData *)pTVCD->nmcd.lItemlParam;
 
-  switch (pNMTVCUSTOMDRAW->nmcd.dwDrawStage) {
+  switch (pTVCD->nmcd.dwDrawStage) {
     case CDDS_PREPAINT:
       // PrePaint
-      pDC = CDC::FromHandle(pNMTVCUSTOMDRAW->nmcd.hdc);
+      pDC = CDC::FromHandle(pTVCD->nmcd.hdc);
       bchanged_item_font = false;
       pcurrentfont = Fonts::GetInstance()->GetCurrentFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
@@ -2404,6 +2668,7 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
     case CDDS_ITEMPREPAINT:
       // Item PrePaint
+      bitem_selected = (GetItemState(hItem, TVIS_SELECTED) & TVIS_SELECTED) != 0;
       if (m_bUseHighLighting) {
         COLORREF cf;
         CFont *uFont = GetFontBasedOnStatus(hItem, pci, cf);
@@ -2411,8 +2676,8 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
           bchanged_item_font = true;
           pDC->SelectObject(uFont);
           // Set text color only when current node isn't selected
-          if ( (GetItemState(hItem, TVIS_SELECTED) & TVIS_SELECTED) == 0)
-            pNMTVCUSTOMDRAW->clrText = cf;
+          if (!bitem_selected)
+            pTVCD->clrText = cf;
           *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
         }
       }
@@ -2421,8 +2686,8 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
     case CDDS_ITEMPOSTPAINT:
       // Item PostPaint - restore old font if any
       if (bchanged_item_font) {
-        bchanged_item_font = false;
-        SelectObject(pNMTVCUSTOMDRAW->nmcd.hdc, (HFONT)pcurrentfont);
+        bchanged_item_font = bitem_selected = false;
+        SelectObject(pTVCD->nmcd.hdc, (HFONT)pcurrentfont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;
@@ -2439,7 +2704,7 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   }
 }
 
-HTREEITEM CPWTreeCtrl::FindItem(const CString &path, HTREEITEM hRoot)
+HTREEITEM CPWTreeCtrlX::FindItem(const CString &path, HTREEITEM hRoot)
 {
   // check whether the current item is the searched one
   CString cs_thispath = GetGroup(hRoot);// + GROUP_SEP2 + GetItemText(hRoot);

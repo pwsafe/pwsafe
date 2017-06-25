@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -11,7 +11,6 @@
 
 #ifndef _PWSTREECTRL_H_
 #define _PWSTREECTRL_H_
-
 
 /*!
  * Includes
@@ -76,6 +75,9 @@ public:
 
 ////@begin PWSTreeCtrl event handler declarations
 
+  /// wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL
+  void OnTreectrlSelChanged( wxTreeEvent& event );
+
   /// wxEVT_COMMAND_TREE_ITEM_ACTIVATED event handler for ID_TREECTRL
   void OnTreectrlItemActivated( wxTreeEvent& evt);
 
@@ -117,9 +119,10 @@ public:
   wxString GetItemGroup(const wxTreeItemId& item) const;
   bool ItemIsGroup(const wxTreeItemId& item) const ;
   void AddEmptyGroup(const StringX& group) { AddGroup(group); }
+  void SetFilterState(bool state);
 
  private:
-  //overriden from base for case-insensitive sort
+  //overridden from base for case-insensitive sort
   virtual int OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2);
   bool ExistsInTree(wxTreeItemId node,
                     const StringX &s, wxTreeItemId &si) const;

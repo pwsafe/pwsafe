@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 #
-# Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+# Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 # All rights reserved. Use of the code is allowed under the
 # Artistic License 2.0 terms, as specified in the LICENSE file
 # distributed with this code, or available from
@@ -18,7 +18,6 @@
 
 use strict;
 use warnings;
-use locale;
 use File::Basename;
 
 sub usage {
@@ -43,7 +42,7 @@ $HFILE = "${PATHNAME}_st.h";
 
 # Get last modified dates to see if we need to recreate the files.
 # If we do re-create them when they haven't changed, then VS will
-# want to rebuild the core libray for no reason
+# want to rebuild the core library for no reason
 my $dateRC2;
 my $dateCPP;
 my $dateH;
@@ -56,7 +55,7 @@ if (-e $RC2FILE) {
     exit 1;
 }
 
-# Verify that the source and neader files are newer than the rc file
+# Verify that the source and header files are newer than the rc file
 # However, need to also verify that the source file contains good info
 # even if newer.  Size should be ~21KB not the default one of < 1KB.
 if (-e $CPPFILE) {

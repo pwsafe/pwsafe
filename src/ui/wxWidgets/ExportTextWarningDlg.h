@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -12,10 +12,18 @@
 #include <wx/dialog.h> // Base class: wxDialog
 
 #include "./AdvancedSelectionDlg.h"
+#ifndef NO_YUBI
+#include "YubiMixin.h"
+#endif
 
 struct SelectionCriteria;
 
-class CExportTextWarningDlgBase : public wxDialog {
+#ifndef NO_YUBI
+class CExportTextWarningDlgBase : public wxDialog, private CYubiMixin
+#else
+class CExportTextWarningDlgBase : public wxDialog
+#endif
+{
 
   DECLARE_CLASS( CExportTextWarningDlgBase )
   DECLARE_EVENT_TABLE()
@@ -32,9 +40,10 @@ public:
   StringX           passKey;
   wxString          delimiter;
 private:
+#ifndef NO_YUBI
   void OnYubibtnClick( wxCommandEvent& event );
   void OnPollingTimer(wxTimerEvent& timerEvent);
-
+#endif
   const wxString defDelim;
   CSafeCombinationCtrl* m_combinationEntry;
   wxBitmapButton* m_YubiBtn;

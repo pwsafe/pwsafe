@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -30,6 +30,7 @@
 #include <errno.h>
 #include <iomanip>
 #include <type_traits> // for static_assert
+#include <algorithm> // for sort
 
 using namespace std;
 using pws_os::CUUID;
@@ -54,7 +55,6 @@ using pws_os::CUUID;
  *         V3.29Y          0x030C
  *         V3.30           0x030D
 */
-
 
 const short VersionNum = 0x030D;
 
@@ -480,17 +480,17 @@ int PWSfileV3::WriteHeader()
                         m_hdr.m_whatlastsaved);
   if (numWritten <= 0) { m_status = FAILURE; goto end; }
 
-  if (!m_hdr.m_dbname.empty()) {
-    numWritten = WriteCBC(HDR_DBNAME, m_hdr.m_dbname);
+  if (!m_hdr.m_DB_Name.empty()) {
+    numWritten = WriteCBC(HDR_DBNAME, m_hdr.m_DB_Name);
     if (numWritten <= 0) { m_status = FAILURE; goto end; }
   }
-  if (!m_hdr.m_dbdesc.empty()) {
-    numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_dbdesc);
+  if (!m_hdr.m_DB_Description.empty()) {
+    numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_DB_Description);
     if (numWritten <= 0) { m_status = FAILURE; goto end; }
   }
-  if (!m_MapFilters.empty()) {
+  if (!m_MapDBFilters.empty()) {
     coStringXStream oss;  // XML is always char not wchar_t
-    m_MapFilters.WriteFilterXMLFile(oss, m_hdr, _T(""));
+    m_MapDBFilters.WriteFilterXMLFile(oss, m_hdr, _T(""));
     numWritten = WriteCBC(HDR_FILTERS,
                           reinterpret_cast<const unsigned char *>(oss.str().c_str()),
                           oss.str().length());
@@ -715,7 +715,7 @@ int PWSfileV3::ReadHeader()
           if (utf8status) {
             StringX tlen = text.substr(0, 4);
             iStringXStream is(tlen);
-            int ulen = 0;
+            unsigned int ulen = 0;
             is >> hex >> ulen;
             StringX uh = text.substr(4);
             m_hdr.m_lastsavedby = uh.substr(0, ulen);
@@ -750,13 +750,13 @@ int PWSfileV3::ReadHeader()
       case HDR_DBNAME:
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        m_hdr.m_dbname = text;
+        m_hdr.m_DB_Name = text;
         break;
 
       case HDR_DBDESC:
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        m_hdr.m_dbdesc = text;
+        m_hdr.m_DB_Description = text;
         break;
 
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
@@ -787,9 +787,9 @@ int PWSfileV3::ReadHeader()
           m_UHFL.push_back(unkhfe);
           break;
         }
-        int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
-                                                  XSDFilename.c_str(),
-                                                  strErrors, m_pAsker);
+        int rc = m_MapDBFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
+                                                    XSDFilename.c_str(),
+                                                    strErrors, m_pAsker);
         if (rc != PWScore::SUCCESS) {
           // Can't parse it - treat as an unknown field,
           // Notify user that filter won't be available
@@ -880,7 +880,7 @@ int PWSfileV3::ReadHeader()
             for (int n = 0; n < num; n++) {
               if (j > recordlength) break;  // Error
 
-              int namelength, symbollength;
+              unsigned int namelength, symbollength;
 
               sxTemp = text.substr(j, 2) + sxBlank;
               iStringXStream tmp_is(sxTemp);
@@ -913,7 +913,7 @@ int PWSfileV3::ReadHeader()
 
               pair< map<StringX, PWPolicy>::iterator, bool > pr;
               pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, pwp));
-              if (pr.second == false) break; // Error
+              if (!pr.second) break; // Error
             }
           }
         } else { // Looks like YUBI_OLD_SK: field length is exactly YUBI_SK_LEN
@@ -954,6 +954,9 @@ int PWSfileV3::ReadHeader()
       }
       delete[] utf8; utf8 = NULL; utf8Len = 0;
     } while (fieldType != HDR_END);
+
+  // Now sort it for when we compare.
+  std::sort(m_vEmptyGroups.begin(), m_vEmptyGroups.end());
 
     return SUCCESS;
   }

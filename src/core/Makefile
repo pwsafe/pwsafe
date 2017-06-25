@@ -22,7 +22,7 @@ LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
                   PWSFilters.cpp PWSLog.cpp PWSprefs.cpp \
                   Command.cpp PWSrand.cpp Report.cpp \
                   sha1.cpp sha256.cpp core_st.cpp\
-		  pbkdf2.cpp KeyWrap.cpp \
+								  pbkdf2.cpp KeyWrap.cpp RUEList.cpp \
                   StringX.cpp SysInfo.cpp \
                   TwoFish.cpp UnknownField.cpp  \
                   UTF8Conv.cpp Util.cpp CoreOtherDB.cpp \
@@ -32,7 +32,8 @@ LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
                   XML/XMLFileHandlers.cpp XML/XMLFileValidation.cpp \
                   XML/Xerces/XFileSAX2Handlers.cpp XML/Xerces/XFileValidator.cpp \
                   XML/Xerces/XFileXMLProcessor.cpp XML/Xerces/XFilterSAX2Handlers.cpp \
-                  XML/Xerces/XFilterXMLProcessor.cpp XML/Xerces/XSecMemMgr.cpp PWSLog.cpp
+                  XML/Xerces/XFilterXMLProcessor.cpp XML/Xerces/XSecMemMgr.cpp PWSLog.cpp \
+				  RUEList.cpp
 
 SRC             = $(LIBSRC)
 
@@ -44,7 +45,15 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libcore.a
 OBJ       = $(LIBOBJ)
 
-CPPFLAGS := $(CXXFLAGS) -fPIC -Wall -I.. -DLINUX $(CPPFLAGS)
+CPPFLAGS := $(CXXFLAGS) -fPIC -Wall -I.. $(CPPFLAGS)
+
+ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
+	    XERCESCPPFLAGS=
+		CPPFLAGS += -std=c++11
+else
+		CPPFLAGS += -DLINUX
+	    XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
+endif
 
 ifeq ($(CONFIG),debug)
 CPPFLAGS += -O0 -g -ggdb -D_DEBUG -DDEBUG
@@ -52,11 +61,10 @@ CPPFLAGS += -O0 -g -ggdb -D_DEBUG -DDEBUG
 else ifeq ($(CONFIG),release)
 CPPFLAGS += -O -DNDEBUG
 else ifeq ($(CONFIG),unicodedebug)
-CPPFLAGS += -O0 -g -ggdb -DUNICODE -DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH \
-			-D_DEBUG -DDEBUG
+CPPFLAGS += -O0 -g -ggdb -DUNICODE $(XERCESCPPFLAGS) -D_DEBUG -DDEBUG
 CFLAGS += -g
 else ifeq ($(CONFIG),unicoderelease)
-CPPFLAGS += -O -DUNICODE -DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH -DNDEBUG
+CPPFLAGS += -O -DUNICODE $(XERCESCPPFLAGS) -DNDEBUG
 endif
 
 # rules

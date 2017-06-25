@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -38,7 +38,7 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
              bool showMsgbox /*= true*/, wxWindow* msgboxParent /*= NULL*/,
         bool setupCopy /*= false*/)
 {
-  othercore.ClearData();
+  othercore.ClearDBData();
 
   StringX dbpath(tostringx(file));
   int rc = othercore.ReadFile(dbpath, combination);
@@ -73,7 +73,6 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
   return rc;
 }
 
-
 void HideWindowRecursively(wxTopLevelWindow* win, wxWindowList& hiddenWindows)
 {
   if (!win)
@@ -84,7 +83,7 @@ void HideWindowRecursively(wxTopLevelWindow* win, wxWindowList& hiddenWindows)
       HideWindowRecursively(wxDynamicCast(*itr, wxTopLevelWindow), hiddenWindows);
     }
   }
-  //Don't call Hide() here, which just calls Show(false), which is overriden in
+  //Don't call Hide() here, which just calls Show(false), which is overridden in
   //derived classes, and wxDialog actually cancels the modal loop and closes the window
   win->wxWindow::Show(false);
   //push_front ensures we Show() in the reverse order of Hide()'ing

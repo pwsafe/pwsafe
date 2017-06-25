@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -60,7 +60,8 @@ CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongP
                                        bool bReadOnly, PWPolicy &st_default_pp)
   : CPWDialog(bLongPPs ? CPasswordPolicyDlg::IDD : CPasswordPolicyDlg::IDD_SHORT, pParent),
   m_uicaller(uicaller), m_bReadOnly(bReadOnly), m_password(L""),
-  m_UseNamedPolicy(FALSE), m_st_default_pp(st_default_pp), m_bLongPPs(bLongPPs)
+  m_UseNamedPolicy(FALSE), m_st_default_pp(st_default_pp), m_bLongPPs(bLongPPs), m_pCopyBtn(NULL),
+  m_bCopyPasswordEnabled(false), m_bImageLoaded(FALSE), m_bDisabledImageLoaded(FALSE)
 {
   m_PWUseLowercase = m_oldPWUseLowercase =
     (m_st_default_pp.flags & PWPolicy::UseLowercase) != 0;
@@ -87,7 +88,7 @@ CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongP
     m_Symbols = m_oldSymbols = m_st_default_pp.symbols.c_str();
   else {
     // empty, set to appropriate default
-    stringT st_symbols;
+    std::wstring st_symbols;
     if (m_PWEasyVision == TRUE)
       st_symbols = CPasswordCharPool::GetEasyVisionSymbols();
     else if (m_PWMakePronounceable == TRUE)
@@ -109,7 +110,11 @@ CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongP
 
 CPasswordPolicyDlg::~CPasswordPolicyDlg()
 {
-  m_CopyPswdBitmap.Detach();
+  if (m_bImageLoaded)
+    m_CopyPswdBitmap.Detach();
+
+  if (m_bDisabledImageLoaded) 
+    m_DisabledCopyPswdBitmap.Detach();
 }
 
 void CPasswordPolicyDlg::DoDataExchange(CDataExchange* pDX)
@@ -138,6 +143,9 @@ void CPasswordPolicyDlg::DoDataExchange(CDataExchange* pDX)
 
     DDX_Control(pDX, IDC_POLICYNAME, m_PolicyNameEdit);
     DDX_Control(pDX, IDC_POLICYLIST, m_cbxPolicyNames);
+
+    DDX_Control(pDX, IDC_STATIC_MESSAGE, m_stcMessage);
+    DDX_Control(pDX, IDC_COPYPASSWORDHELP, m_Help1);
     //}}AFX_DATA_MAP
 }
 
@@ -154,19 +162,18 @@ BEGIN_MESSAGE_MAP(CPasswordPolicyDlg, CPWDialog)
   ON_BN_CLICKED(IDC_USESYMBOLS, OnUseSymbols)
   ON_BN_CLICKED(IDC_EASYVISION, OnEasyVision)
   ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
+  ON_BN_CLICKED(IDC_USENAMED_POLICY, OnUseNamedPolicy)
+  ON_BN_CLICKED(IDC_RESET_SYMBOLS, OnSymbolReset)
 
   // Because we can show the generated password when used from Manage->Generate
   ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
   ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
   ON_EN_CHANGE(IDC_PASSWORD, OnENChangePassword)
 
-  ON_BN_CLICKED(IDC_USENAMED_POLICY, OnUseNamedPolicy)
-
   ON_EN_KILLFOCUS(IDC_POLICYNAME, OnENChangePolicyName)
   ON_EN_KILLFOCUS(IDC_OWNSYMBOLS, OnENOwnSymbols)
 
   ON_CBN_SELCHANGE(IDC_POLICYLIST, OnNamesComboChanged)
-  ON_BN_CLICKED(IDC_RESET_SYMBOLS, &CPasswordPolicyDlg::OnSymbolReset)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -190,9 +197,13 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
   // If started with Tall and won't fit - return to be called again with Wide
   if (m_bLongPPs && !GetMainDlg()->LongPPs(this)) {
     EndDialog(-1);
-    return FALSE;
+    return TRUE;
   }
   
+  m_pCopyBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
+
+  m_stcMessage.SetWindowText(L"");
+
   if (m_bReadOnly && m_uicaller != IDS_GENERATEPASSWORD) {
     // Change OK button test
     CString cs_close(MAKEINTRESOURCE(IDS_CLOSE));
@@ -211,10 +222,10 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
     SetWindowText(cs_title);
 
     // These are only used in Manage -> Generate Password or Add/Edit Policy names
+    m_pCopyBtn->EnableWindow(FALSE);
+    m_pCopyBtn->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
     GetDlgItem(IDC_GENERATEPASSWORD)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(FALSE);
-    GetDlgItem(IDC_COPYPASSWORD)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
     GetDlgItem(IDC_PASSWORD)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_POLICYNAME)->EnableWindow(FALSE);
@@ -290,20 +301,31 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
       // Remove password character so that the password is displayed
       m_ex_password.SetPasswordChar(0);
 
-      // Load bitmap
+      // Load bitmaps
       UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
         IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
-      BOOL brc = m_CopyPswdBitmap.Attach(::LoadImage(
-                                                     ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
-                                                     MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                                                     (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
-      ASSERT(brc);
-      if (brc) {
+      m_bImageLoaded = m_CopyPswdBitmap.Attach(
+                    ::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+                    MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+                    (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+
+      ASSERT(m_bImageLoaded);
+      if (m_bImageLoaded) {
         FixBitmapBackground(m_CopyPswdBitmap);
-        CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
-        ASSERT(pBtn != NULL);
-        if (pBtn != NULL)
-          pBtn->SetBitmap(m_CopyPswdBitmap);
+      }
+
+      nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
+        IDB_COPYPASSWORD_NEW_D : IDB_COPYPASSWORD_CLASSIC_D;
+
+      m_bDisabledImageLoaded = m_DisabledCopyPswdBitmap.Attach(
+        ::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+          MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+          (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+
+      ASSERT(m_bDisabledImageLoaded);
+      if (m_bDisabledImageLoaded) {
+        FixBitmapBackground(m_DisabledCopyPswdBitmap);
+        m_pCopyBtn->SetBitmap(m_DisabledCopyPswdBitmap);
       }
       break;
     }
@@ -313,10 +335,10 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
     SetWindowText(cs_title);
 
     // These are only used in Manage -> Password Policy
+    m_pCopyBtn->EnableWindow(FALSE);
+    m_pCopyBtn->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
     GetDlgItem(IDC_GENERATEPASSWORD)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(FALSE);
-    GetDlgItem(IDC_COPYPASSWORD)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
     GetDlgItem(IDC_PASSWORD)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_POLICYLIST)->EnableWindow(FALSE);
@@ -365,6 +387,7 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
   else
     if (m_PWMakePronounceable == TRUE)
       iSet = EVPR_PR;
+
   do_easyorpronounceable(iSet);
 
   GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(m_PWUseSymbols);
@@ -376,36 +399,38 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
     // Disable Specific policy controls as default is to use a named policy (database default)
     SetSpecificPolicyControls(FALSE);
 
-    m_pToolTipCtrl = new CToolTipCtrl;
-    if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
-      pws_os::Trace(L"Unable To create Advanced Dialog ToolTip\n");
-      delete m_pToolTipCtrl;
-      m_pToolTipCtrl = NULL;
-      return TRUE;
+    // Set up Tooltips
+    if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+      m_Help1.Init(IDB_QUESTIONMARK);
+
+      AddTool(IDC_COPYPASSWORDHELP, IDS_CLICKTOCOPYGENPSWD);
+      ActivateToolTip();
+    } else {
+      m_Help1.EnableWindow(FALSE);
+      m_Help1.ShowWindow(SW_HIDE);
     }
-
-    // Tooltips
-    EnableToolTips();
-
-    // Activate the tooltip control.
-    m_pToolTipCtrl->Activate(TRUE);
-    m_pToolTipCtrl->SetMaxTipWidth(300);
-    // Quadruple the time to allow reading by user
-    int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
-
-    AddTool(IDC_COPYPASSWORD, IDS_CLICKTOCOPY);
   }
 
   // Set appropriate focus
-  GetDlgItem(m_uicaller == IDS_GENERATEPASSWORD ? IDC_GENERATEPASSWORD : IDCANCEL)->SetFocus();
+  GotoDlgCtrl(GetDlgItem(m_uicaller == IDS_GENERATEPASSWORD ? IDC_GENERATEPASSWORD : IDCANCEL));
   return FALSE;
 }
 
-BOOL CPasswordPolicyDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CPasswordPolicyDlg::PreTranslateMessage(MSG *pMsg)
 {
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
+  RelayToolTipEvent(pMsg);
+
+  // Don't even look like it was pressed if it should be disabled
+  if (pMsg->message == WM_LBUTTONDOWN && pMsg->hwnd == m_pCopyBtn->GetSafeHwnd() &&
+      !m_bCopyPasswordEnabled) {
+    return TRUE;
+  }
+
+  // Don't even process double click - looks bad
+  if (pMsg->message == WM_LBUTTONDBLCLK && pMsg->hwnd == m_pCopyBtn->GetSafeHwnd()) {
+    return TRUE;
+  }
+
 
   if (pMsg->message == WM_KEYDOWN && 
       (pMsg->wParam == VK_F1 || pMsg->wParam == VK_ESCAPE)) {
@@ -901,15 +926,26 @@ void CPasswordPolicyDlg::OnGeneratePassword()
   m_ex_password.SetWindowText(m_password);
   m_ex_password.Invalidate();
 
+  m_bCopyPasswordEnabled = m_password.GetLength() > 0;
+
+  // Enable/Disable Copy to Clipboard
+  m_pCopyBtn->SetBitmap(m_bCopyPasswordEnabled ? m_CopyPswdBitmap : m_DisabledCopyPswdBitmap);
+
   UpdateData(FALSE);
 }
 
 void CPasswordPolicyDlg::OnCopyPassword()
 {
+  if (!m_bCopyPasswordEnabled)
+    return;
+
   UpdateData(TRUE);
 
   GetMainDlg()->SetClipboardData(m_password);
   GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
+
+  CString csMessage(MAKEINTRESOURCE(IDS_PASSWORDCOPIED));
+  m_stcMessage.SetWindowText(csMessage);
 }
 
 void CPasswordPolicyDlg::OnENChangePassword()
@@ -917,6 +953,13 @@ void CPasswordPolicyDlg::OnENChangePassword()
   UpdateData(TRUE);
 
   m_ex_password.GetWindowText((CString &)m_password);
+
+  m_bCopyPasswordEnabled = m_password.GetLength() > 0;
+
+  // Enable/Disable Copy to Clipboard
+  m_pCopyBtn->SetBitmap(m_bCopyPasswordEnabled ? m_CopyPswdBitmap : m_DisabledCopyPswdBitmap);
+
+  m_stcMessage.SetWindowText(L"");
 }
 
 void CPasswordPolicyDlg::OnENChangePolicyName()
@@ -933,7 +976,7 @@ void CPasswordPolicyDlg::OnENOwnSymbols()
   CString cs_symbols;
   m_SymbolsEdit.GetWindowText(cs_symbols);
 
-  // Check if user about to leave own symbols emtpy
+  // Check if user about to leave own symbols empty
   if (cs_symbols.GetLength() == 0) {
     // Tell user
     CGeneralMsgBox gmb;
@@ -1094,7 +1137,6 @@ void CPasswordPolicyDlg::UnselectNamedPolicy()
   m_cbxPolicyNames.EnableWindow(FALSE);
 }
 
-
 void CPasswordPolicyDlg::OnSymbolReset()
 {
   do_reset_symbols(true);
@@ -1102,7 +1144,7 @@ void CPasswordPolicyDlg::OnSymbolReset()
 
 void CPasswordPolicyDlg::do_reset_symbols(bool restore_defaults)
 {
-  stringT st_symbols;
+  std::wstring st_symbols;
   if (m_PWEasyVision == TRUE)
     st_symbols = CPasswordCharPool::GetEasyVisionSymbols();
   else if (m_PWMakePronounceable == TRUE)

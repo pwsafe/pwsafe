@@ -1,5 +1,15 @@
 # Toplevel Makefile for Mac OS X build of PasswordSafe
 
+include version.wx
+export VER_MAJOR
+export VER_MINOR
+export VER_REV
+export VER_SPECIAL
+export RELEASENUM := $(VER_MAJOR).$(VER_MINOR)
+export RELEASE_SPECIAL := $(VER_SPECIAL)
+export RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
+
+
 all clean unicodedebug unicoderelease:
 	$(MAKE) -C src/os/mac $@
 	$(MAKE) -C src/core $@

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -39,13 +39,6 @@
 
 #include "RichEditCtrlExtn.h"
 #include "PWDialog.h"
-
-// If not compiled for Windows XP or later
-#if (WINVER < 0x0501)
-#ifndef IDTIMEOUT
-#define IDTIMEOUT 32000
-#endif
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CGeneralMsgBox
@@ -140,7 +133,7 @@ private:
   virtual BOOL OnInitDialog();
   virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT *pLResult);
   virtual BOOL OnCmdMsg(UINT uiID, int nCode, void *pExtra, AFX_CMDHANDLERINFO *pHandlerInfo);
-  virtual BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   // Utility - creating the nested controls
   void CreateRtfCtrl();

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -11,6 +11,8 @@
 #include "stdafx.h"
 #include "SHCTHotKey.h"
 #include "SHCTListCtrl.h"
+
+#include "HKModifiers.h"
 
 #include "resource.h"
 
@@ -36,13 +38,14 @@ END_MESSAGE_MAP()
 void CSHCTHotKey::OnKillFocus(CWnd *)
 {
   if (m_pParent != NULL) {
-    WORD wVirtualKeyCode, wHKModifiers;
+    WORD wVirtualKeyCode, wHKModifiers, wPWSModifiers;
     GetHotKey(wVirtualKeyCode, wHKModifiers);
-    m_pParent->OnMenuShortcutKillFocus(wVirtualKeyCode, wHKModifiers);
+    wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
+    m_pParent->OnMenuShortcutKillFocus(wVirtualKeyCode, wPWSModifiers);
   }
 }
 
-BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
+BOOL CSHCTHotKey::PreTranslateMessage(MSG *pMsg)
 {
   // This is all to allow user to add special characters like ENTER, DELETE into
   // their assigned Hotkey

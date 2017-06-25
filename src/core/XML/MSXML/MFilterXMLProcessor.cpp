@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,7 +28,7 @@
 
 MFilterXMLProcessor::MFilterXMLProcessor(PWSFilters &mapfilters, const FilterPool fpool,
                                          Asker *pAsker)
-  : m_MapFilters(mapfilters), m_FPool(fpool), m_pAsker(pAsker)
+  : m_MapXMLFilters(mapfilters), m_FPool(fpool), m_pAsker(pAsker)
 {
 }
 
@@ -74,7 +74,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
   //  Create ErrorHandlerImpl object
   MFilterSAX2ErrorHandler *pEH = new MFilterSAX2ErrorHandler;
 
-  pCH->SetVariables(m_pAsker, &m_MapFilters, m_FPool, m_bValidation);
+  pCH->SetVariables(m_pAsker, &m_MapXMLFilters, m_FPool, m_bValidation);
 
   //  Set Content Handler
   hr = pSAX2Reader->putContentHandler(pCH);

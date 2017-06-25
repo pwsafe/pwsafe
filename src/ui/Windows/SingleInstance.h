@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -31,5 +31,3 @@ const int SI_SYSTEM_UNIQUE  = 0x0000;  // Allow only one instance at all (on the
 
 LPWSTR CreateUniqueName(const LPCWSTR pszGUID, LPWSTR pszBuffer, const int iBuffLen,
                         const int nMode = SI_DESKTOP_UNIQUE);
-
-

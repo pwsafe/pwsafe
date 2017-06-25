@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -441,7 +441,7 @@ void BlowFish::Decrypt(const unsigned char *in, unsigned char *out) const
 }
 
 /*
-* Returns a BlowFish object set up for encryption or decrytion.
+* Returns a BlowFish object set up for encryption or decryption.
 *
 * The main issue here is that the BlowFish key is SHA1(passphrase|salt)
 * Aside from saving duplicate code, we win here by minimizing the exposure
@@ -453,8 +453,8 @@ void BlowFish::Decrypt(const unsigned char *in, unsigned char *out) const
 * Note that it's the caller's responsibility to delete the BlowFish object allocated here
 */
 
-BlowFish *BlowFish::MakeBlowFish(const unsigned char *pass, int passlen,
-                                 const unsigned char *salt, int saltlen)
+BlowFish *BlowFish::MakeBlowFish(const unsigned char *pass, unsigned int passlen,
+                                 const unsigned char *salt, unsigned int saltlen)
 {
   unsigned char passkey[SHA1::HASHLEN];
   pws_os::mlock(passkey, sizeof(passkey));

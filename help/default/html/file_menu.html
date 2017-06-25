@@ -39,6 +39,15 @@ switch modes instead of double-clicking on the Status Bar.</p>
 
 <p>Closes the currently open password safe database without exiting the application.</p>
 
+<h3>Lock</h3>
+
+<p>Depending on whether the user has enable the use of the System Tray, this locks
+the currently open password safe database either to the Task Bar (left-click to show
+dialog to unlock) or into the System Tray (right-click to show the context menu where
+you can restore the database or just unlock it). The Master Passphrase will be
+required to reopen/unlock the database. The Lock button can also be placed on the Toolbar
+using the Toolbar Customization (right-click on the Toolbar).</p>
+
 <h3>Recent</h3>
 
 <p>This section of the file menu may list the recently
@@ -73,10 +82,13 @@ choice will be greyed-out.</p>
 <h3>Export To</h3>
 
 <p>Export the contents of the current database to an
-<a href="JavaScript:popup.TextPopup(strExternalFile,popFont,9,9,-1,-1)">external
-file</a> in either an old <b>Password Safe</b> database format,
-XML, or as text. See <a href="export.html">here</a> for
-more information on exporting the database to other formats.</p>
+external file in either an old <b>Password Safe</b> database format,
+XML, or as text. If a filter is active, you can export those satisfying
+the filter conditions to a <b>Password Safe</b> database in the current format.
+In this case, if an alias or shortcut is included in the filter results, its base
+entry will also be exported even if it does not satisfy those conditons.
+See <a href="export.html">here</a> for more information on exporting the database
+to other formats.</p>
 
 <h3>Import From</h3>
 

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,8 +28,8 @@
 #include "../file.h"
 #include "../dir.h"
 #include "../env.h"
+#include "../debug.h"
 
-#include "../../core/StringX.h"
 #include "../../core/core.h"
 
 const TCHAR pws_os::PathSeparator = _T('\\');
@@ -150,9 +150,8 @@ void pws_os::FindFiles(const stringT &filter, std::vector<stringT> &res)
 * with Posix semantics (using open(_O_CREATE|_O_EXCL) to detect
 * an existing lock.
 * This fails to check liveness of the locker process, specifically,
-* if a user just turns of her PC, the lock file will remain.
-* So, I'm keeping the Posix code under idef POSIX_FILE_LOCK,
-* and re-implementing using the Win32 API, whose semantics
+* if a user just turns off her PC, the lock file will remain.
+* So, I'm  re-implementing using the Win32 API, whose semantics
 * supposedly protect against this scenario.
 * Thanks to Frank (xformer) for discussion on the subject.
 */
@@ -161,7 +160,16 @@ static stringT GetLockFileName(const stringT &filename)
 {
   ASSERT(!filename.empty());
   // derive lock filename from filename
-  stringT retval(filename, 0, filename.find_last_of(TCHAR('.')));
+  /*
+   * If the filename ends with .cfg, then we add .plk to it, e.g., foo.cfg.plk
+   * otherwise we replace the suffix with .plk, e.g., foo.psafe3 -> foo.plk
+   * This fixes a bug while maintaining bwd compat.
+   */
+  stringT retval;
+  if (filename.length() > 4 && filename.substr(filename.length() - 4) == _T(".cfg"))
+    retval = filename;
+  else
+    retval = filename.substr(0, filename.find_last_of(TCHAR('.')));
   retval += _T(".plk");
   return retval;
 }
@@ -204,7 +212,7 @@ static void GetLocker(const stringT &lock_filename, stringT &locker)
 }
 
 bool pws_os::LockFile(const stringT &filename, stringT &locker, 
-                      HANDLE &lockFileHandle, int &LockCount)
+                      HANDLE &lockFileHandle)
 {
   const stringT lock_filename = GetLockFileName(filename);
   stringT s_locker;
@@ -212,25 +220,13 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
   const stringT host = pws_os::gethostname();
   const stringT pid = pws_os::getprocessid();
 
-  // Use Win32 API for locking - supposedly better at
-  // detecting dead locking processes
   if (lockFileHandle != INVALID_HANDLE_VALUE) {
-    // here if we've open another (or same) dbase previously,
-    // need to unlock it. A bit inelegant...
-    // If app was minimized and ClearData() called, we've a small
-    // potential for a TOCTTOU issue here. Worse case, lock
-    // will fail.
-
-    const stringT cs_me = user + _T("@") + host + _T(":") + pid;
-    GetLocker(lock_filename, s_locker);
-
-    if (cs_me == s_locker) {
-      LockCount++;
-      locker.clear();
-      return true;
-    } else {
-      pws_os::UnlockFile(filename, lockFileHandle, LockCount);
+    if (FileExists(filename)) { // Can this be false?
+      GetLocker(filename, locker);
+      return false;
     }
+    // here if file not found but handle appears valid - unlock and then lock.
+    pws_os::UnlockFile(filename, lockFileHandle);
   }
 
   // Since ::CreateFile can't create directories, we need to check it exists
@@ -286,7 +282,8 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
       GetLocker(lock_filename, s_locker);
       locker = s_locker.c_str();
       break;
-    default: {
+    default:
+    {
       // Give detailed error message, if possible
       LPTSTR lpMsgBuf = NULL;
       if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
@@ -298,10 +295,10 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
         locker = lpMsgBuf;
         LocalFree(lpMsgBuf);
       } else { // should never happen!
-        LoadAString(locker, IDSC_NOLOCKACCESS); // berrer than nothing
+        LoadAString(locker, IDSC_NOLOCKACCESS); // better than nothing
       }
-    }
       break;
+    }
     } // switch (error)
     return false;
   } else { // valid filehandle, write our info
@@ -327,13 +324,12 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
                                 &numWrit, NULL);
     sumWrit += numWrit;
     ASSERT(sumWrit > 0);
-    LockCount++;
     return (write_status == TRUE);
   }
 }
 
 void pws_os::UnlockFile(const stringT &filename,
-                        HANDLE &lockFileHandle, int &LockCount)
+                        HANDLE &lockFileHandle)
 {
   const stringT user = pws_os::getusername();
   const stringT host = pws_os::gethostname();
@@ -347,14 +343,9 @@ void pws_os::UnlockFile(const stringT &filename,
     const stringT cs_me = user + _T("@") + host + _T(":") + pid;
     GetLocker(lock_filename, locker);
 
-    if (cs_me == locker && LockCount > 1) {
-      LockCount--;
-    } else {
-      LockCount = 0;
-      CloseHandle(lockFileHandle);
-      lockFileHandle = INVALID_HANDLE_VALUE;
-      DeleteFile(lock_filename.c_str());
-    }
+    CloseHandle(lockFileHandle);
+    lockFileHandle = INVALID_HANDLE_VALUE;
+    DeleteFile(lock_filename.c_str());
   }
 }
 
@@ -399,6 +390,42 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   std::FILE *fd = NULL;
   _tfopen_s(&fd, filename.c_str(), mode);
   return fd;
+}
+
+int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
+{
+  if (fd != NULL) {
+    if (bIsWrite) {
+      // Flush the data buffers
+      // fflush returns 0 if the buffer was successfully flushed.
+      // A return value of EOF indicates an error.
+      int rc = fflush(fd);
+
+      // Don't bother trying FlushFileBuffers if fflush failed
+      if (rc == 0) {
+        // Windows FlushFileBuffers == Linux fsync
+        int ifileno = _fileno(fd);
+
+        if (ifileno != INVALID_FILE_DESCRIPTOR) {
+          intptr_t iosfhandle = _get_osfhandle(ifileno);
+
+          if ((HANDLE)iosfhandle != INVALID_HANDLE_VALUE) {
+            BOOL brc = FlushFileBuffers((HANDLE)iosfhandle);
+
+            if (brc == FALSE) {
+              pws_os::IssueError(_T("FlushFileBuffers on close of file on removable device"), false);
+            }
+          } // iosfhandle
+        } // ifileno
+      }  // fflush rc
+    }
+
+    // Now close file
+    // fclose returns 0 if the stream is successfully closed or EOF to indicate an error.
+    return fclose(fd);
+  } else {
+    return 0;
+  }
 }
 
 ulong64 pws_os::fileLength(std::FILE *fp) {

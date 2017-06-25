@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2016 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -26,11 +26,11 @@
 #define _istspace(x) iswspace(x)
 #include <wchar.h>
 #ifdef __linux__
-#include "linux/pws_time.h"
+#include "unix/pws_time.h"
 #define _tcsdup(s) wcsdup(s)
 #endif
 #ifdef __FreeBSD__
-#include "linux/pws_time.h"
+#include "unix/pws_time.h"
 #define _tcsdup(s) wcsdup(s)
 #endif // __FreeBSD__
 #include "funcwrap.h"
@@ -55,7 +55,7 @@
 #define _tcsdup pws_os::wcsdup
 #else
 #define _tcsicmp(s1, s2) wcscasecmp(s1, s2)
-# include "linux/pws_str.h"
+# include "unix/pws_str.h"
 #endif
 #define _ttoi(s) pws_os::wctoi(s)
 #define _tstoi(s) pws_os::wctoi(s)

@@ -1,4 +1,10 @@
 'Update the Resource Only DLLs for each language we support
+'
+' This script uses the 32-bit languageDLL to update PO files.
+' A 64-bit version of this action is not required, because the 
+' resources in the PO file and languageDLL are not architecture
+' dependent.
+'
 
 Option Explicit
 
@@ -10,6 +16,12 @@ If Instr(1, WScript.FullName, "cscript.exe", vbTextCompare) = 0 then
     ' return error code to caller
     Wscript.Quit(99)
 End If
+
+IncludeFile("Translations.vbs")
+
+' Load up the list of active translations
+Dim TransList
+TransList = BuildTranslationList()
 
 Dim TOOLS, RESTEXT, BASE_DLL, DO_ALL, DO_COUNTRY
 Dim objFSO
@@ -51,146 +63,38 @@ If (objFSO.FileExists("pos\Update_POs.log")) Then
   objFSO.DeleteFile "pos\Update_POs.log"
 End If
 
-Dim objStdOut, DoneSome
+Dim objStdOut
 Set objStdOut = WScript.StdOut
 
-DoneSome = false
-
-' Now do them
-If (DO_ALL = True Or DO_COUNTRY = "CZ") Then
-  If (objFSO.FileExists("pos\pwsafe_cz.po")) Then
-    objStdOut.WriteLine " Updating Czech Language PO"
+If DO_ALL = True Then
+  Dim t
+  For Each t in TransList
+    If (objFSO.FileExists("pos\" & t.fileName)) Then
+      objStdOut.WriteLine " Updating " & t.FileName
+    Else
+      objStdOut.WriteLine " Creating " & t.FileName
+    End If
+    UpdatePO t.FileName
+  Next
+Else
+  ' Do one country
+  Wscript.Echo "Updating PO file for country", DO_COUNTRY
+  Dim OneTranslation
+  Set OneTranslation = FindCountry(TransList, DO_COUNTRY)
+  If Not OneTranslation Is Nothing Then
+    If (objFSO.FileExists("pos\" & OneTranslation.FileName)) Then
+      objStdOut.WriteLine " Updating " & OneTranslation.FileName
+    Else
+      objStdOut.WriteLine " Creating " & OneTranslation.FileName
+    End If
+    UpdatePO OneTranslation.FileName
   Else
-    objStdOut.WriteLine " Creating Czech Language PO"
+    WScript.Echo "Error:", DO_COUNTRY, "is not a valid language"
+    WScript.Quit(99)
   End If
-  Call UpdatePO("CZ")
-  DoneSome = true
 End If
 
-If (DO_ALL = True Or DO_COUNTRY = "DE") Then
-  If (objFSO.FileExists("pos\pwsafe_de.po")) Then
-    objStdOut.WriteLine " Updating German Language PO"
-  Else
-    objStdOut.WriteLine " Creating German Language PO"
-  End If
-  Call UpdatePO("DE")
-  DoneSome = true
-End If
-
-If (DO_ALL = True Or DO_COUNTRY = "DK") Then
-  If (objFSO.FileExists("pos\pwsafe_dk.po")) Then
-    objStdOut.WriteLine " Updating Danish Language PO"
-  Else
-    objStdOut.WriteLine " Creating Danish Language PO"
-  End If
-  Call UpdatePO("DK")
-  DoneSome = true
-End If
-
-If (DO_ALL = True Or DO_COUNTRY = "ES") Then
-  If (objFSO.FileExists("pos\pwsafe_es.po")) Then
-    objStdOut.WriteLine " Updating Spanish Language PO"
-  Else
-    objStdOut.WriteLine " Creating Spanish Language PO"
-  End If
-  Call UpdatePO("ES")
-  DoneSome = true
-End If
-
-If (DO_ALL = True Or DO_COUNTRY = "FR") Then
-  If (objFSO.FileExists("pos\pwsafe_fr.po")) Then
-    objStdOut.WriteLine " Updating French Language PO"
-  Else
-    objStdOut.WriteLine " Creating French Language PO"
-  End If
-  Call UpdatePO("FR")
-  DoneSome = true
-End If
-
-If (DO_ALL = True Or DO_COUNTRY = "IT") Then
-  If (objFSO.FileExists("pos\pwsafe_it.po")) Then
-    objStdOut.WriteLine " Updating Italian Language PO"
-  Else
-    objStdOut.WriteLine " Creating Italian Language PO"
-  End If
-  Call UpdatePO("IT")
-  DoneSome = true
-End If
-
-If (DO_ALL = True Or DO_COUNTRY = "KR") Then
-  If (objFSO.FileExists("pos\pwsafe_kr.po")) Then
-    objStdOut.WriteLine " Updating Korean Language PO"
-  Else
-    objStdOut.WriteLine " Creating Korean Language PO"
-  End If
-  Call UpdatePO("KR")
-  DoneSome = true
-End If
-
-If (DO_ALL = True Or DO_COUNTRY = "NL") Then
-  If (objFSO.FileExists("pos\pwsafe_nl.po")) Then
-    objStdOut.WriteLine " Updating Dutch Language PO"
-  Else
-    objStdOut.WriteLine " Creating Dutch Language PO"
-  End If
-  Call UpdatePO("NL")
-  DoneSome = true
-End If
-
-If (DO_ALL = True Or DO_COUNTRY = "PL") Then
-  If (objFSO.FileExists("pos\pwsafe_pl.po")) Then
-    objStdOut.WriteLine " Updating Polish Language PO"
-  Else
-    objStdOut.WriteLine " Creating Polish Language PO"
-  End If
-  Call UpdatePO("PL")
-  DoneSome = true
-End If
-
-If (DO_ALL = True Or DO_COUNTRY = "RU") Then
-  If (objFSO.FileExists("pos\pwsafe_ru.po")) Then
-    objStdOut.WriteLine " Updating Russian Language PO"
-  Else
-    objStdOut.WriteLine " Creating Russian Language PO"
-  End If
-  Call UpdatePO("RU")
-  DoneSome = true
-End If
-
-If (DO_ALL = True Or DO_COUNTRY = "SV") Then
-  If (objFSO.FileExists("pos\pwsafe_sv.po")) Then
-    objStdOut.WriteLine " Updating Swedish Language PO"
-  Else
-    objStdOut.WriteLine " Creating Swedish Language PO"
-  End If
-  Call UpdatePO("SV")
-  DoneSome = true
-End If
-
-If (DO_ALL = True Or DO_COUNTRY = "ZH") Then
-  If (objFSO.FileExists("pos\pwsafe_zh.po")) Then
-    objStdOut.WriteLine " Updating Chinese (Simplified) Language PO"
-  Else
-    objStdOut.WriteLine " Creating Chinese (Simplified) Language PO"
-  End If
-  Call UpdatePO("ZH")
-  DoneSome = true
-End If
-
-If (DoneSome = false) Then
-  ' Unknown country and no country yet processed - just do it
-  If (objFSO.FileExists("pos\pwsafe_" & DO_COUNTRY & ".po")) Then
-    objStdOut.WriteLine " Updating New Country '" & DO_COUNTRY & "' Language PO"
-  Else
-    objStdOut.WriteLine " Creating New Country '" & DO_COUNTRY & "' Language PO"
-  End If
-  Call UpdatePO(DO_COUNTRY)
-  DoneSome = true
-End If
-
-If DoneSome Then
-  objStdOut.WriteLine " Processing Completed"
-End If
+objStdOut.WriteLine " Processing Completed"
 
 ' Delete FileSystemObject
 Set objFSO = Nothing
@@ -199,50 +103,69 @@ Set objStdOut = Nothing
 WScript.Quit(0)
 
 Sub UpdatePO(PO)
-' Parameters:
-'   PO suffix of file in sub-directory "pos" e.g. 'zh' for "pwsafe_zh.po"
+  ' Parameters:
+  '   PO translation file in sub-directory "pos" e.g. "pwsafe_zh.po"
 
-Dim WshShell, oExec, objTextFile, strLine
-Set WshShell = CreateObject("WScript.Shell")
+  Dim WshShell, oExec, objTextFile, strLine
+  Set WshShell = CreateObject("WScript.Shell")
 
-' Update PO
-Set oExec = WshShell.Exec(RESTEXT & " extract " & BASE_DLL & " pos\pwsafe_" & PO & ".po")
+  ' Update PO
+  Set oExec = WshShell.Exec(RESTEXT & " extract " & BASE_DLL & " pos\" & PO)
 
-Do While oExec.Status = 0
-  objStdOut.Write ".."
-  WScript.Sleep 100
-Loop
+  objStdOut.Write " "
+  Do While oExec.Status = 0
+    objStdOut.Write ".."
+    WScript.Sleep 100
+  Loop
 
-' OpenTextFile Method needs a Const value
-' ForAppending = 8 ForReading = 1, ForWriting = 2
-Const ForAppending = 8
+  ' OpenTextFile Method needs a Const value
+  ' ForAppending = 8 ForReading = 1, ForWriting = 2
+  Const ForAppending = 8
 
-Set objTextFile = objFSO.OpenTextFile("pos\Update_POs.log", ForAppending, True)
-objTextFile.WriteLine("Processing: pos\pwsafe_" & PO & ".po")
+  Set objTextFile = objFSO.OpenTextFile("pos\Update_POs.log", ForAppending, True)
+  objTextFile.WriteLine("Processing: pos\" & PO)
 
-Do Until oExec.StdOut.AtEndOfStream
-  strLine = oExec.StdOut.ReadLine()
-  objTextFile.WriteLine(" " & strLine)
-Loop
+  Do Until oExec.StdOut.AtEndOfStream
+    strLine = oExec.StdOut.ReadLine()
+    objTextFile.WriteLine(" " & strLine)
+  Loop
 
-objTextFile.WriteLine("")
-objTextFile.Close
+  objTextFile.WriteLine("")
+  objTextFile.Close
 
-Set objTextFile = Nothing
-Set oExec = Nothing
-Set WshShell = Nothing
+  Set objTextFile = Nothing
+  Set oExec = Nothing
+  Set WshShell = Nothing
 
-objStdOut.WriteLine "   Done"
+  objStdOut.WriteLine "   Done"
 
 End Sub
 
 Sub Usage
-  MsgBox "This script must be executed by cscript.exe in a Command window, either:" & vbCRLF & _
-         "'cscript UpdatePOs.vbs' to update all supported language POs, or" & vbCRLF & _
-         "'cscript UpdatePOs.vbs country-code' to update a specific supported language PO" & vbCRLF & _
-         "e.g 'cscript UpdatePOs.vbs DE' for German/Germany, or" & vbCRLF & _
-         "'cscript UpdatePOs.vbs /Help' for this message", _
+  MsgBox "This script must be executed by cscript.exe in a Command window:" & vbCRLF & _
+         " " & vbCRLF & _
+         "cscript UpdatePOs.vbs [CC | /help | /?]" & vbCRLF & _
+         "    CC - two letter country code" & vbCRLF & _
+         "    /help, /? - show this help dialog" & vbCRLF & _
+         "    Default - Update all languages" & vbCRLF & _
+         " " & vbCRLF & _
+         "Available languages are defined in Translations.txt", _
          vbInformation, _
-         "Help: " & Wscript.ScriptFullName
+         "Help: " & Wscript.ScriptName
 
+End Sub
+
+' Loads a VBScript file (like a C++ include)
+Sub IncludeFile (fspec)
+  Dim fileSys, file, fileData
+  set fileSys = createObject ("Scripting.FileSystemObject")
+  set file = fileSys.openTextFile (fspec)
+  fileData = ""
+  While Not file.AtEndOfStream
+    fileData = fileData & file.readAll ()
+  Wend
+  file.close
+  ExecuteGlobal fileData
+  set file = nothing
+  set fileSys = nothing
 End Sub
