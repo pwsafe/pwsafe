@@ -118,7 +118,7 @@ BOOL COptionsSecurity::OnInitDialog()
 
   pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
   pspin->SetBuddy(GetDlgItem(IDC_IDLE_TIMEOUT));
-  pspin->SetRange(1, 120);
+  pspin->SetRange(1, PWSprefs::MAX_IDLE_TIMEOUT);
   pspin->SetBase(10);
   pspin->SetPos(m_IdleTimeOut);
 
@@ -213,7 +213,7 @@ BOOL COptionsSecurity::OnApply()
   m_IdleTimeOut = _wtoi(csText);
 
   // Check that options, as set, are valid.
-  if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > 120)) {
+  if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > PWSprefs::MAX_IDLE_TIMEOUT)) {
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_INVALIDTIMEOUT);
     ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
@@ -277,7 +277,7 @@ BOOL COptionsSecurity::OnKillActive()
   m_IdleTimeOut = _wtoi(csText);
 
   // Check that options, as set, are valid.
-  if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > 120)) {
+  if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > PWSprefs::MAX_IDLE_TIMEOUT)) {
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_INVALIDTIMEOUT);
     ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();

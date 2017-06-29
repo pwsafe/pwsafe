@@ -7705,8 +7705,8 @@ msgstr ""
 "Datei unwiederbringlich gelöscht."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 120 minutes."
-msgstr "Die Dauer des Time-out muss zwischen 1 und 120 Minuten liegen."
+msgid "Timeout period must be between 1 and 600 minutes."
+msgstr "Die Dauer des Time-out muss zwischen 1 und 600 Minuten liegen."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

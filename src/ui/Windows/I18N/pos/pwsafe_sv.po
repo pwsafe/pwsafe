@@ -7156,8 +7156,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Detta kommer att radera den valda felsäkra backup-filen. Om den aktuella enheten har en Papperskorg, kommer den att flyttas dit. Om inte, raderas den permanent."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 120 minutes."
-msgstr "Avbrottstiden måste vara mellan 1 och 120 minuter."
+msgid "Timeout period must be between 1 and 600 minutes."
+msgstr "Avbrottstiden måste vara mellan 1 och 600 minuter."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

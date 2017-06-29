@@ -8022,8 +8022,8 @@ msgstr "Modifier le raccourci"
 #~ "Ceci supprimera la copie de sauvegarde. Si le disque courant contien une "
 #~ "Corbeille, il y sera déplacé sinon il sera supprimé définitivement"
 
-#~ msgid "Time out period must be between 1 and 120 minutes."
-#~ msgstr "La période de la session doit être entre 1 et 120 minutes."
+#~ msgid "Time out period must be between 1 and 600 minutes."
+#~ msgstr "La période de la session doit être entre 1 et 600 minutes."
 
 #~ msgid "Title [Mandatory Field]"
 #~ msgstr "Titre [champ obligatoire]"

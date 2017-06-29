@@ -6667,8 +6667,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Ceci supprimera la copie de sauvegarde. Si le disque courant contien une Corbeille, il y sera déplacé sinon il sera supprimé définitivement"
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 120 minutes."
-msgstr "La période de temps mort doit être enntre 1 et 120 minutes."
+msgid "Timeout period must be between 1 and 600 minutes."
+msgstr "La période de temps mort doit être enntre 1 et 600 minutes."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

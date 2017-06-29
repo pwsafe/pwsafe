@@ -9298,8 +9298,8 @@ msgstr "Да: не менее %d из %ls: %ls"
 #~ "Аварийная резервная копия будет удалена. Если на данном носителе есть "
 #~ "«Корзина», файл будет перемещён туда, иначе он будет удалён насовсем."
 
-#~ msgid "Timeout period must be between 1 and 120 minutes."
-#~ msgstr "Время ожидания может быть от 1 до 120 минут."
+#~ msgid "Timeout period must be between 1 and 600 minutes."
+#~ msgstr "Время ожидания может быть от 1 до 600 минут."
 
 #~ msgid "Title [Mandatory Field]"
 #~ msgstr "Заголовок [Обязательное поле]"

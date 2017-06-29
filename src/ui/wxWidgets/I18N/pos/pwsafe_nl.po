@@ -7938,8 +7938,8 @@ msgstr "Bewerk Snelkoppeling"
 #~ "een Prullenbak heeft, zal het bestand daarheen verplaatst worden. Zo "
 #~ "niet, dan wordt het bestand permanent verwijderd."
 
-#~ msgid "Time out period must be between 1 and 120 minutes."
-#~ msgstr "Pauze tijd moet tussen de 1 en 120 minuten zijn."
+#~ msgid "Time out period must be between 1 and 600 minutes."
+#~ msgstr "Pauze tijd moet tussen de 1 en 600 minuten zijn."
 
 #~ msgid "Title [Mandatory Field]"
 #~ msgstr "Titel [Verplicht Veld]"

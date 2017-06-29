@@ -7191,8 +7191,8 @@ msgstr "Rediger Genvej"
 #~ "Dette vil slette en post som er inden i denne gruppe og/eller dens "
 #~ "undergrupper."
 
-#~ msgid "Time out period must be between 1 and 120 minutes."
-#~ msgstr "Pause perioden skal være mellem 1 og 120 minutter."
+#~ msgid "Time out period must be between 1 and 600 minutes."
+#~ msgstr "Pause perioden skal være mellem 1 og 600 minutter."
 
 #~ msgid "Title [Mandatory Field]"
 #~ msgstr "Titel [Oblikatorisk Felt]"

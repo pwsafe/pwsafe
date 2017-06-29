@@ -7937,8 +7937,8 @@ msgstr "Editar acceso directo"
 #~ "compatible con papelera de reciclaje, se moverá allí. En otro caso, se "
 #~ "borrará definitivamente."
 
-#~ msgid "Time out period must be between 1 and 120 minutes."
-#~ msgstr "El tiempo de espera debe estar entre 1 y 120 minutos."
+#~ msgid "Time out period must be between 1 and 600 minutes."
+#~ msgstr "El tiempo de espera debe estar entre 1 y 600 minutos."
 
 #~ msgid "Title [Mandatory Field]"
 #~ msgstr "Título [Campo Requerido]"

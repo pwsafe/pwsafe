@@ -6628,8 +6628,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Questo cancellerà il file selezionato di copia di sicurezza in modalità sicura. Se l'unità corrente possiede un cestino, verrà spostato là. Se no, sarà cancellato in modo permanente."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 120 minutes."
-msgstr "L'intervallo di scadenza deve essere tra 1 e 120 minuti."
+msgid "Timeout period must be between 1 and 600 minutes."
+msgstr "L'intervallo di scadenza deve essere tra 1 e 600 minuti."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

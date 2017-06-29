@@ -7410,8 +7410,8 @@ msgstr "编辑快捷方式"
 #~ "This will delete an entry which is within this group and/or its subgroups."
 #~ msgstr "该操作将删除组 和/或 它的分组中的一个项目！"
 
-#~ msgid "Time out period must be between 1 and 120 minutes."
-#~ msgstr "超时周期必须设置在 1 和 120 分钟之间！"
+#~ msgid "Time out period must be between 1 and 600 minutes."
+#~ msgstr "超时周期必须设置在 1 和 600 分钟之间！"
 
 #~ msgid "Title [Mandatory Field]"
 #~ msgstr "标题 [强制字段]"

@@ -7928,8 +7928,8 @@ msgstr "Redigera genväg"
 #~ "enheten har en Papperskorg, kommer den att flyttas dit. Om inte, raderas "
 #~ "den permanent."
 
-#~ msgid "Time out period must be between 1 and 120 minutes."
-#~ msgstr "Time out perioden måste vara mellan 1 och 120 minuter."
+#~ msgid "Time out period must be between 1 and 600 minutes."
+#~ msgstr "Time out perioden måste vara mellan 1 och 600 minuter."
 
 #~ msgid "Title [Mandatory Field]"
 #~ msgstr "Titel [Obligatorisk post]"

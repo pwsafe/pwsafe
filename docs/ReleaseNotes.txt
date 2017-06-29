@@ -32,7 +32,7 @@ the Toolbar.
 
 Changes to Existing Features in 3.42pre
 =======================================
-None
+[809] Maximum configurable idle timeout increased to 10 hours.
 
 New Features for 3.43pre
 ========================

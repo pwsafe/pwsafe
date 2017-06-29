@@ -6628,8 +6628,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "To skasuje wybraną kopię zapasową Failsafe.  Jeśli aktualny dysk ma Kosz, kopia zostanie tam przeniesiona. Jeśli nie, zostanie usunięta na zawsze."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 120 minutes."
-msgstr "Czas wygaśnięcie powninen być pomiędzy 1 minutą, a 120 minutami."
+msgid "Timeout period must be between 1 and 600 minutes."
+msgstr "Czas wygaśnięcie powninen być pomiędzy 1 minutą, a 600 minutami."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

@@ -7749,9 +7749,9 @@ msgstr "Verknüpfung bearbeiten"
 #~ "Medium den Papierkorb unterstützt, wird sie dahin geschoben. Wenn nicht, "
 #~ "wird die Datei unwiederbringlich gelöscht."
 
-#~ msgid "Time out period must be between 1 and 120 minutes."
+#~ msgid "Time out period must be between 1 and 600 minutes."
 #~ msgstr ""
-#~ "Die Dauer der Zeitüberschreitung muss zwischen 1 und 120 Minuten liegen."
+#~ "Die Dauer der Zeitüberschreitung muss zwischen 1 und 600 Minuten liegen."
 
 #~ msgid "Title [Mandatory Field]"
 #~ msgstr "Titel [Pflichtfeld]"

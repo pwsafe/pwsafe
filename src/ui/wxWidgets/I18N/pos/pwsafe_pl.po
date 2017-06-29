@@ -8024,8 +8024,8 @@ msgstr "Edytuj Skrót"
 #~ "To skasuje wybraną kopię zapasową Failsafe.  Jeśli aktualny dysk ma Kosz, "
 #~ "kopia zostanie tam przeniesiona. Jeśli nie, zostanie usunięta na zawsze."
 
-#~ msgid "Time out period must be between 1 and 120 minutes."
-#~ msgstr "Limit czasu musi być między 1 i 120 minut."
+#~ msgid "Time out period must be between 1 and 600 minutes."
+#~ msgstr "Limit czasu musi być między 1 i 600 minut."
 
 #~ msgid "Title [Mandatory Field]"
 #~ msgstr "Tytuł [Pole Obowiązkowe]"

@@ -7564,7 +7564,7 @@ msgstr "바로가기 편집"
 #~ "This will delete an entry which is within this group and/or its subgroups."
 #~ msgstr "이 그룹 그리고/혹은 내부 그룹 내에 있는 항목들을 지우게 됩니다."
 
-#~ msgid "Time out period must be between 1 and 120 minutes."
+#~ msgid "Time out period must be between 1 and 600 minutes."
 #~ msgstr "시간제한 간격은 반드시 1분에서 120분 사이여야 합니다."
 
 #~ msgid "Title [Mandatory Field]"

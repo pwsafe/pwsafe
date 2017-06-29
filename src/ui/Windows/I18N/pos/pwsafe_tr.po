@@ -6628,8 +6628,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Bu, seçili Hatasız Yedek dosyasını silecek. Geçerli sürücünün Geri Dönüşüm Kutusu varsa oraya taşınacak, yoksa tamamen silinecek."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 120 minutes."
-msgstr "Zamanaşımı aralığı 1 ila 120 dakika arasında olmalıdır."
+msgid "Timeout period must be between 1 and 600 minutes."
+msgstr "Zamanaşımı aralığı 1 ila 600 dakika arasında olmalıdır."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

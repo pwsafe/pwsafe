@@ -6628,8 +6628,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Toto smaže vybranou zálohu. Pokud má součansý disk Koš, bude přesunuta tam. Pokud ne, bude permanentně smazána."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 120 minutes."
-msgstr "Časový limit musí být mezi 1 a 120 minutami."
+msgid "Timeout period must be between 1 and 600 minutes."
+msgstr "Časový limit musí být mezi 1 a 600 minutami."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

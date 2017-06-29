@@ -257,6 +257,9 @@ public:
 
   void ClearUnknownPrefs(); // Clear unknown preferences vectors
 
+  // Not prefs, but rather limits on prefs, enforced elsewhere
+  static const int MAX_IDLE_TIMEOUT = 600; // minutes
+
 private:
   PWSprefs();
   ~PWSprefs();
