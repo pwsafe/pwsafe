@@ -2480,12 +2480,12 @@ msgid "&Clear Recent History"
 msgstr "清除最近历史密码(&C)"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:188
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "备注: 项目格式为 »组»标题»用户名»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "备注: 项目格式为 «组» «标题» «用户名»"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:189
-msgid "Note: Empty fields are shown as »*»"
-msgstr "备注: 空白字段显示为 »*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "备注: 空白字段显示为 « »"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:213
 #, fuzzy

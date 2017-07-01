@@ -4622,12 +4622,12 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr ""
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as »*»"
-msgstr "Bemærk: Tomme felter er vist som »*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "Bemærk: Tomme felter er vist som « »"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "Bemærk: Post formatet er »Gruppe»Titel»Brugernavn»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "Bemærk: Post formatet er «Gruppe» «Titel» «Brugernavn»"
 
 #. Resource IDs: (3428)
 msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."

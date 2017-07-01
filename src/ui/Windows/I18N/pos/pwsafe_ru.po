@@ -4850,11 +4850,11 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr "Допускается использование переменных окружения, например, %TEMP%"
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as »*»"
-msgstr "Примечание. Пустые поля отображаются как «*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "Примечание. Пустые поля отображаются как « »"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is »Group»Title»Username»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
 msgstr "Примечание. Формат элемента: «Группа» «Заголовок» «Имя пользователя»"
 
 #. Resource IDs: (3428)

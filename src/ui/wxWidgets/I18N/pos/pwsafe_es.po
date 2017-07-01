@@ -2533,11 +2533,11 @@ msgid "&Clear Recent History"
 msgstr "&Limpiar el historial reciente"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:188
-msgid "Note: Entry format is »Group»Title»Username»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
 msgstr "Nota: El formato de la entrada es «Grupo» «Título» «Usuario»"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:189
-msgid "Note: Empty fields are shown as »*»"
+msgid "Note: Empty fields are shown as « »"
 msgstr "Nota: Los campos vacíos se muestran como « »"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:213

@@ -4622,11 +4622,11 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr ""
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as »*»"
+msgid "Note: Empty fields are shown as « »"
 msgstr "Nota: Los campos vacíos se muestran como « »"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is »Group»Title»Username»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
 msgstr "Nota: El formato de la entrada es «Grupo» «Título» «Usuario»"
 
 #. Resource IDs: (3428)

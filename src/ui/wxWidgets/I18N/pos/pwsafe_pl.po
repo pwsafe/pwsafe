@@ -2439,12 +2439,12 @@ msgid "&Clear Recent History"
 msgstr "Wy&czyść ostatnią historię"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:188
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "Uwaga: Format wpisu to »grupa»nazwa»nazwa użytkownika»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "Uwaga: Format wpisu to «grupa» «nazwa» «nazwa użytkownika»"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:189
-msgid "Note: Empty fields are shown as »*»"
-msgstr "Uwaga: puste pola są pokazywane jako »*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "Uwaga: puste pola są pokazywane jako « »"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:213
 #, fuzzy

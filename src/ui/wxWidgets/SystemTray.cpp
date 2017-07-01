@@ -185,8 +185,8 @@ wxMenu* SystemTray::GetRecentHistory()
   wxMenu* menu = new wxMenu;
 
   menu->Append(ID_SYSTRAY_CLEAR_RUE, _("&Clear Recent History"));
-  menu->Append(ID_TRAYRECENT_ENTRY_HELP1, _("Note: Entry format is »Group»Title»Username»"));
-  menu->Append(ID_TRAYRECENT_ENTRY_HELP2, _("Note: Empty fields are shown as »*»"));
+  menu->Append(ID_TRAYRECENT_ENTRY_HELP1, _("Note: Entry format is «Group» «Title» «Username»"));
+  menu->Append(ID_TRAYRECENT_ENTRY_HELP2, _("Note: Empty fields are shown as « »"));
   menu->AppendSeparator();
 
   menu->Enable(ID_TRAYRECENT_ENTRY_HELP1, false);

@@ -4661,12 +4661,12 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr "Notez que vous pouvez utiliser des variables d'environnement, ex. %TEMP%"
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as »*»"
-msgstr "Note: les champs vides sont montrés sous la forme de »*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "Note: les champs vides sont montrés sous la forme de « »"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "Note: le format d'entrée est »Groupe»Titre»Nom d'utilisateur»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "Note: le format d'entrée est «Groupe» «Titre» «Nom d'utilisateur»"
 
 #. Resource IDs: (3428)
 msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."

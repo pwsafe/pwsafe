@@ -4622,12 +4622,12 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr ""
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as »*»"
-msgstr "备注: 空白字段显示为 »*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "备注: 空白字段显示为 « »"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "备注: 项目格式为 »组»标题»用户名»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "备注: 项目格式为 «组» «标题» «用户名»"
 
 #. Resource IDs: (3428)
 msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."

@@ -2341,12 +2341,12 @@ msgid "&Clear Recent History"
 msgstr "Svuota Cronologia &Recente"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:188
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "Nota: il formato delle voci è »Gruppo»Titolo»Nome utente»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "Nota: il formato delle voci è «Gruppo» «Titolo» «Nome utente»"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:189
-msgid "Note: Empty fields are shown as »*»"
-msgstr "Nota: I campi vuoti sono mostrati come »*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "Nota: I campi vuoti sono mostrati come « »"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:213
 msgid "&Copy Password to clipboard"

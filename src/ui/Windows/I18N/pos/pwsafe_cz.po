@@ -4622,12 +4622,12 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr ""
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as »*»"
-msgstr "Poznámka: Prázdná pole jsou zobrazena jako »*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "Poznámka: Prázdná pole jsou zobrazena jako « »"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "Poznámka: Formát záznamu je »Skupina»Název»Uživatelské jméno"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "Poznámka: Formát záznamu je «Skupina» «Název» «Uživatelské jméno»"
 
 #. Resource IDs: (3428)
 msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."

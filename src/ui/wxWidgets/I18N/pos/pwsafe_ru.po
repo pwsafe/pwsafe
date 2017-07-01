@@ -3549,12 +3549,12 @@ msgid "&Clear Recent History"
 msgstr "&Очистить историю"
 
 #: ../../../../src/ui/wxWidgets/SystemTray.cpp:188
-msgid "Note: Entry format is »Group»Title»Username»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
 msgstr "Примечание. Формат элемента: «Группа» «Заголовок» «Имя пользователя»"
 
 #: ../../../../src/ui/wxWidgets/SystemTray.cpp:189
-msgid "Note: Empty fields are shown as »*»"
-msgstr "Примечание. Пустые поля отображаются как «*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "Примечание. Пустые поля отображаются как « »"
 
 #: ../../../../src/ui/wxWidgets/SystemTray.cpp:213
 msgid "&Copy Password to clipboard"

@@ -4948,12 +4948,12 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr "Observera att Du kan använda en miljövariabel också, t ex, %TEMP%"
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as »*»"
-msgstr "Notera: Tomma fält visas som »*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "Notera: Tomma fält visas som « »"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "Notera: Postformatet är»Grupp»Titel»Användarnamn»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "Notera: Postformatet är «Grupp» «Titel» «Användarnamn»"
 
 #. Resource IDs: (3428)
 msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."

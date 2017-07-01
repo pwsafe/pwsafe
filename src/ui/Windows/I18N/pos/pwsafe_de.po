@@ -5189,12 +5189,12 @@ msgstr ""
 "Beachten Sie dass man auch Umgebungsvariablen verwenden kann z.B. %TEMP%"
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as »*»"
-msgstr "Hinweis: leere Felder werden durch »*» gekennzeichnet"
+msgid "Note: Empty fields are shown as « »"
+msgstr "Hinweis: leere Felder werden durch « » gekennzeichnet"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "Hinweis: Format eines Eintrages ist »Gruppe»Titel»Benutzername»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "Hinweis: Format eines Eintrages ist «Gruppe» «Titel» «Benutzername»"
 
 #. Resource IDs: (3428)
 msgid ""

@@ -4622,12 +4622,12 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr ""
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as »*»"
-msgstr "노트: 비어있는 필드는 »*»으로 보이게 됩니다"
+msgid "Note: Empty fields are shown as « »"
+msgstr "노트: 비어있는 필드는 « »으로 보이게 됩니다"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "알림: 항목의 형식은 »Group»Title»Username»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "알림: 항목의 형식은 «Group» «Title» «Username»"
 
 #. Resource IDs: (3428)
 msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."

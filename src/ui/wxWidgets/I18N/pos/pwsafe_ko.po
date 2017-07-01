@@ -2508,12 +2508,12 @@ msgid "&Clear Recent History"
 msgstr "최근 내역 삭제(&C)"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:188
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "알림: 항목의 형식은 »Group»Title»Username»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "알림: 항목의 형식은 «Group» «Title» «Username»"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:189
-msgid "Note: Empty fields are shown as »*»"
-msgstr "노트: 비어있는 필드는 »*»으로 보이게 됩니다"
+msgid "Note: Empty fields are shown as « »"
+msgstr "노트: 비어있는 필드는 « »으로 보이게 됩니다"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:213
 #, fuzzy

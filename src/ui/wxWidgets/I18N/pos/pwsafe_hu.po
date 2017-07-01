@@ -3218,12 +3218,12 @@ msgid "&Clear Recent History"
 msgstr "&Előzmények törlése"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:188
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "Megjegyzés: A bejegyzás formátuma: »Csoport»Megnevezés»Felhasználónév»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "Megjegyzés: A bejegyzás formátuma: «Csoport «Megnevezés» «Felhasználónév»"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:189
-msgid "Note: Empty fields are shown as »*»"
-msgstr "Megjegyzés: az üres mezők így vannak jelölve: »*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "Megjegyzés: az üres mezők így vannak jelölve: « »"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:213
 #, fuzzy

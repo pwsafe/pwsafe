@@ -2464,12 +2464,12 @@ msgid "&Clear Recent History"
 msgstr "&Slet Seneste Historik"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:188
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "Bemærk: Post formatet er »Gruppe»Titel»Brugernavn»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "Bemærk: Post formatet er «Gruppe» «Titel» «Brugernavn»"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:189
-msgid "Note: Empty fields are shown as »*»"
-msgstr "Bemærk: Tomme felter er vist som »*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "Bemærk: Tomme felter er vist som « »"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:213
 #, fuzzy

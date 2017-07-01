@@ -2527,12 +2527,12 @@ msgid "&Clear Recent History"
 msgstr "&Rensa aktuell historik"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:188
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "Notera: Postformatet är»Grupp»Titel»Användarnamn»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "Notera: Postformatet är «Grupp» «Titel» «Användarnamn»"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:189
-msgid "Note: Empty fields are shown as »*»"
-msgstr "Notera: Tomma fält visas som »*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "Notera: Tomma fält visas som « »"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:213
 #, fuzzy
