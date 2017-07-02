@@ -153,7 +153,7 @@ BOOL COptionsMisc::OnInitDialog()
   GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_OtherBrowserLocation);
   GetDlgItem(IDC_OTHEREDITORLOCATION)->SetWindowText(m_OtherEditorLocation);
 
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_DADSPIN);
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_DADSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_DB_DEF_AUTOTYPE_DELAY));
   pspin->SetRange32(1, 60000);

@@ -141,6 +141,9 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::BackupDir).c_str();
   m_OPTMD.BackupLocation = cs_backupDir.IsEmpty() ? 0 : 1;
   m_OPTMD.UserBackupOtherLocation = (LPCWSTR)cs_backupDir;
+  // Preferences min/max
+  m_OPTMD.prefminBackupIncrement = (short)prefs->GetPrefMinVal(PWSprefs::BackupMaxIncremented);
+  m_OPTMD.prefmaxBackupIncrement = (short)prefs->GetPrefMaxVal(PWSprefs::BackupMaxIncremented);
 
   // Display Data
   m_OPTMD.AlwaysOnTop =
@@ -171,6 +174,9 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::ClosedTrayIconColour);
   m_OPTMD.HighlightChanges = m_save_bHighlightChanges =
       prefs->GetPref(PWSprefs::HighlightChanges);
+  // Preferences min/max
+  m_OPTMD.prefminExpiryDays = (short)prefs->GetPrefMinVal(PWSprefs::PreExpiryWarnDays);
+  m_OPTMD.prefmaxExpiryDays = (short)prefs->GetPrefMaxVal(PWSprefs::PreExpiryWarnDays);
   
   // Misc Data
   m_OPTMD.ConfirmDelete =
@@ -214,6 +220,9 @@ void COptions_PropertySheet::SetupInitialValues()
   m_OPTMD.PWHistoryNumDefault =
       prefs->GetPref(PWSprefs::NumPWHistoryDefault);
   m_OPTMD.PWHAction = 0;
+  // Preferences min/max values
+  m_OPTMD.prefminPWHNumber = (short)prefs->GetPrefMinVal(PWSprefs::NumPWHistoryDefault);
+  m_OPTMD.prefmaxPWHNumber = (short)prefs->GetPrefMaxVal(PWSprefs::NumPWHistoryDefault);
 
   // Security Data
   m_OPTMD.ClearClipboardOnMinimize =
@@ -233,6 +242,9 @@ void COptions_PropertySheet::SetupInitialValues()
   m_OPTMD.HashIters = GetMainDlg()->GetHashIters();
   m_OPTMD.CopyPswdBrowseURL =
       prefs->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL) ? TRUE : FALSE;
+  // Preferences min/max values
+  m_OPTMD.prefminIdleTimeout = (short)prefs->GetPrefMinVal(PWSprefs::IdleTimeout);
+  m_OPTMD.prefmaxIdleTimeout = (short)prefs->GetPrefMaxVal(PWSprefs::IdleTimeout);
   
   // Shortcut Data
   m_OPTMD.AppHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
@@ -266,6 +278,11 @@ void COptions_PropertySheet::SetupInitialValues()
   m_OPTMD.DefaultOpenRO = prefs->GetPref(PWSprefs::DefaultOpenRO) ? TRUE : FALSE;
   m_OPTMD.MultipleInstances =
       prefs->GetPref(PWSprefs::MultipleInstances) ? TRUE : FALSE;
+  // Preferences min/max values
+  m_OPTMD.prefminREItems = (short)prefs->GetPrefMinVal(PWSprefs::MaxREItems);
+  m_OPTMD.prefmaxREItems = (short)prefs->GetPrefMaxVal(PWSprefs::MaxREItems);
+  m_OPTMD.prefminMRU = (short)prefs->GetPrefMinVal(PWSprefs::MaxMRUItems);
+  m_OPTMD.prefmaxMRU = (short)prefs->GetPrefMaxVal(PWSprefs::MaxMRUItems);
 }
 
 void COptions_PropertySheet::UpdateCopyPreferences()

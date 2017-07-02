@@ -1793,8 +1793,8 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "File CSV (*.csv)|*.csv|Tutti i file (*.*)|*.*||"
 
 #. Resource IDs: (5410)
-msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "Si può avvisare solo tra 1 e 30 giorni prima della scadenza della password"
+msgid "Can only warn between %d and %d days before passwords expire"
+msgstr "Si può avvisare solo tra %d e %d giorni prima della scadenza della password"
 
 #. Resource IDs: (3345)
 #, c-format
@@ -2540,8 +2540,8 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr ""
 
 #. Resource IDs: (5294)
-msgid "Default number of saved password history entries must be between 1 and 255."
-msgstr "Il numero predefinito di voci salvate nello storico della password deve essere tra 1 e 255."
+msgid "Default number of saved password history entries must be between %d and %d."
+msgstr "Il numero predefinito di voci salvate nello storico della password deve essere tra %d e %d."
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -4305,8 +4305,8 @@ msgid "Maximum"
 msgstr "Massimo"
 
 #. Resource IDs: (5392)
-msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
-msgstr "Il mumero massimo di copie di sicurezza tenuto usando il numero incrementale di suffisso\ndeve essere tra 1 e 999."
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
+msgstr "Il mumero massimo di copie di sicurezza tenuto usando il numero incrementale di suffisso\ndeve essere tra %d e %d."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -5000,8 +5000,8 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "La lunghezza della password è inferiore alla somma dei limiti 'come minimo'"
 
 #. Resource IDs: (5293)
-msgid "Password length must be between 4 and 1024 characters."
-msgstr "La lunghezza della password deve essere compresa tra i 4 e i 1024 caratteri."
+msgid "Password length must be between %d and %d characters."
+msgstr "La lunghezza della password deve essere compresa tra i %d e i %d caratteri."
 
 #. Resource IDs: (1400, 1448)
 msgid "Password length:"
@@ -6628,8 +6628,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Questo cancellerà il file selezionato di copia di sicurezza in modalità sicura. Se l'unità corrente possiede un cestino, verrà spostato là. Se no, sarà cancellato in modo permanente."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 600 minutes."
-msgstr "L'intervallo di scadenza deve essere tra 1 e 600 minuti."
+msgid "Timeout period must be between %d and %d minutes."
+msgstr "L'intervallo di scadenza deve essere tra %d e %d minuti."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

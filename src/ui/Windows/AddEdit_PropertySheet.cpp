@@ -47,6 +47,12 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
   m_AEMD.default_pwp = prefs->GetDefaultPolicy();
   m_AEMD.default_symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
 
+  // Preferences min/max values
+  m_AEMD.prefminPWLength = (short)prefs->GetPrefMinVal(PWSprefs::PWDefaultLength);
+  m_AEMD.prefmaxPWLength = (short)prefs->GetPrefMaxVal(PWSprefs::PWDefaultLength);
+  m_AEMD.prefminPWHNumber = (short)prefs->GetPrefMinVal(PWSprefs::NumPWHistoryDefault);
+  m_AEMD.prefmaxPWHNumber = (short)prefs->GetPrefMaxVal(PWSprefs::NumPWHistoryDefault);
+
   // Set up data used by all Property Pages, as appropriate
   if (m_AEMD.uicaller == IDS_ADDENTRY) {
     // Basic initialisation

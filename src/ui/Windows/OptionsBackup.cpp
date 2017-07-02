@@ -159,10 +159,9 @@ BOOL COptionsBackup::OnInitDialog()
 
   GetDlgItem(IDC_BACKUPEXAMPLE)->SetWindowText(L"");
 
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_BKPMAXINCSPIN);
-
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_BKPMAXINCSPIN);
   pspin->SetBuddy(GetDlgItem(IDC_BACKUPMAXINC));
-  pspin->SetRange(1, 999);
+  pspin->SetRange(M_prefminBackupIncrement(), M_prefmaxBackupIncrement());
   pspin->SetBase(10);
   pspin->SetPos(m_MaxNumIncBackups);
 
@@ -277,7 +276,7 @@ BOOL COptionsBackup::VerifyFields()
   // Check that correct fields are non-blank.
   if (m_BackupPrefix == 1 && m_UserBackupPrefix.IsEmpty()) {
     gmb.AfxMessageBox(IDS_OPTBACKUPPREF);
-    ((CEdit*)GetDlgItem(IDC_USERBACKUPPREFIXVALUE))->SetFocus();
+    ((CEdit *)GetDlgItem(IDC_USERBACKUPPREFIXVALUE))->SetFocus();
     return FALSE;
   }
 
@@ -286,7 +285,7 @@ BOOL COptionsBackup::VerifyFields()
 
     if (m_UserBackupOtherLocation.IsEmpty()) {
       gmb.AfxMessageBox(IDS_OPTBACKUPLOCATION);
-      ((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
+      ((CEdit *)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
       return FALSE;
     }
 
@@ -315,25 +314,32 @@ BOOL COptionsBackup::VerifyFields()
 
     if (cdrive.length() == 0) {
       gmb.AfxMessageBox(IDS_OPTBACKUPNODRIVE);
-      ((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
+      ((CEdit *)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
       return FALSE;
     }
 
     if (PathIsDirectory(csBackupPath) == FALSE) {
       gmb.AfxMessageBox(IDS_OPTBACKUPNOLOC);
-      ((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
+      ((CEdit *)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
       return FALSE;
     }
   }
 
+  // Update variable from text box
+  CString csText;
+  ((CEdit *)GetDlgItem(IDC_BACKUPMAXINC))->GetWindowText(csText);
+  m_MaxNumIncBackups = _wtoi(csText);
+
   if (m_BackupSuffix == PWSprefs::BKSFX_IncNumber &&
-      ((m_MaxNumIncBackups < 1) || (m_MaxNumIncBackups > 999))) {
-    gmb.AfxMessageBox(IDS_OPTBACKUPMAXNUM);
-    ((CEdit*)GetDlgItem(IDC_BACKUPMAXINC))->SetFocus();
+      ((m_MaxNumIncBackups < M_prefminBackupIncrement()) ||
+       (m_MaxNumIncBackups > M_prefmaxBackupIncrement()))) {
+    csText.Format(IDS_OPTBACKUPMAXNUM, M_prefminBackupIncrement(), M_prefmaxBackupIncrement());
+    gmb.AfxMessageBox(csText);
+    ((CEdit *)GetDlgItem(IDC_BACKUPMAXINC))->SetFocus();
     return FALSE;
   }
-
   //End check
+
   return TRUE;
 }
 

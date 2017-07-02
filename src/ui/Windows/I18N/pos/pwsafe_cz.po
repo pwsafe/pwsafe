@@ -1793,8 +1793,8 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "CSV soubory (*.csv)|*.csv|Všechny soubory (*.*)|*.*||"
 
 #. Resource IDs: (5410)
-msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "Může upozornit pouze mezi jedním a třiceti dny před vypršením hesla"
+msgid "Can only warn between %d and %d days before passwords expire"
+msgstr "Může upozornit pouze mezi %d a %d dny před vypršením hesla"
 
 #. Resource IDs: (3345)
 #, c-format
@@ -2540,8 +2540,8 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr ""
 
 #. Resource IDs: (5294)
-msgid "Default number of saved password history entries must be between 1 and 255."
-msgstr "Výchozí počet uložených hesel v historii musí být mezi 1 a 255."
+msgid "Default number of saved password history entries must be between %d and %d."
+msgstr "Výchozí počet uložených hesel v historii musí být mezi %d a %d."
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -4305,8 +4305,8 @@ msgid "Maximum"
 msgstr "Maximum"
 
 #. Resource IDs: (5392)
-msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
-msgstr "Maximální počet uchovávaných záloh, které používají postupně se zvyšující číselnou příponu, \nmusí být mezi 1 a 999."
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
+msgstr "Maximální počet uchovávaných záloh, které používají postupně se zvyšující číselnou příponu, \nmusí být mezi %d a %d."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -5000,8 +5000,8 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Délka hesla je menší než suma 'alespoň' omezení"
 
 #. Resource IDs: (5293)
-msgid "Password length must be between 4 and 1024 characters."
-msgstr "Délka hesla musí být mezi 4 a 1024 znaky."
+msgid "Password length must be between %d and %d characters."
+msgstr "Délka hesla musí být mezi %d a %d znaky."
 
 #. Resource IDs: (1400, 1448)
 msgid "Password length:"
@@ -6628,8 +6628,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Toto smaže vybranou zálohu. Pokud má součansý disk Koš, bude přesunuta tam. Pokud ne, bude permanentně smazána."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 600 minutes."
-msgstr "Časový limit musí být mezi 1 a 600 minutami."
+msgid "Timeout period must be between %d and %d minutes."
+msgstr "Časový limit musí být mezi %d a %d minutami."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

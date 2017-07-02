@@ -57,7 +57,7 @@ COptionsDisplay::~COptionsDisplay()
 {
 }
 
-void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
+void COptionsDisplay::DoDataExchange(CDataExchange *pDX)
 {
   COptions_PropertyPage::DoDataExchange(pDX);
 
@@ -135,10 +135,10 @@ BOOL COptionsDisplay::OnInitDialog()
   }
 
   OnPreWarn();
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PREWARNEXPIRYSPIN);
 
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PREWARNEXPIRYSPIN);
   pspin->SetBuddy(GetDlgItem(IDC_PREEXPIRYWARNDAYS));
-  pspin->SetRange(1, 30);
+  pspin->SetRange(M_prefminExpiryDays(), M_prefmaxExpiryDays());
   pspin->SetBase(10);
   pspin->SetPos(m_PreExpiryWarnDays);
 
@@ -212,10 +212,17 @@ BOOL COptionsDisplay::PreTranslateMessage(MSG *pMsg)
 BOOL COptionsDisplay::OnKillActive()
 {
   CGeneralMsgBox gmb;
+
+  // Update variable from text box
+  CString csText;
+  ((CEdit *)GetDlgItem(IDC_PREEXPIRYWARNDAYS))->GetWindowText(csText);
+  m_PreExpiryWarnDays = _wtoi(csText);
+
   // Check that options, as set, are valid.
-  if ((m_PreExpiryWarnDays < 1) || (m_PreExpiryWarnDays > 30)) {
-    gmb.AfxMessageBox(IDS_INVALIDEXPIRYWARNDAYS);
-    ((CEdit*)GetDlgItem(IDC_PREEXPIRYWARNDAYS))->SetFocus();
+  if ((m_PreExpiryWarnDays < M_prefminExpiryDays()) || (m_PreExpiryWarnDays > M_prefmaxExpiryDays())) {
+    csText.Format(IDS_INVALIDEXPIRYWARNDAYS, M_prefminExpiryDays(), M_prefmaxExpiryDays());
+    gmb.AfxMessageBox(csText);
+    ((CEdit *)GetDlgItem(IDC_PREEXPIRYWARNDAYS))->SetFocus();
     return FALSE;
   }
 

@@ -1929,8 +1929,8 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "CSV filer (*.csv)|*.csv|Alla filer (*.*)|*.*||"
 
 #. Resource IDs: (5410)
-msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "Kan bara varna mellan 1 och 30 dagar innan lösenord går ut"
+msgid "Can only warn between %d and %d days before passwords expire"
+msgstr "Kan bara varna mellan %d och %d dagar innan lösenord går ut"
 
 #. Resource IDs: (3345)
 #, c-format
@@ -2760,8 +2760,8 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr "Förvalet är samma mapp som databasen. Om det ändras försäkra Dig om att Du har skrivrättigheter i mappen."
 
 #. Resource IDs: (5294)
-msgid "Default number of saved password history entries must be between 1 and 255."
-msgstr "Förvalt antal sparade posters historiska lösenord måste vara mellan 1 och 255."
+msgid "Default number of saved password history entries must be between %d and %d."
+msgstr "Förvalt antal sparade posters historiska lösenord måste vara mellan %d och %d."
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -4629,10 +4629,10 @@ msgstr "Max"
 #. Resource IDs: (5392)
 msgid ""
 "Maximum number of backups kept using incremented number suffix\n"
-"must be between 1 and 999."
+"must be between %d and %d."
 msgstr ""
 "Maximala antalet sparade säkerhetskopior med inkrementella suffixtal\n"
-"måste vara mellan 1 och 999."
+"måste vara mellan %d och %d."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -5365,8 +5365,8 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Lösenordets längd är kortare än summan av minimikraven"
 
 #. Resource IDs: (5293)
-msgid "Password length must be between 4 and 1024 characters."
-msgstr "Lösenordslängden måste vara mellan 4 och 1024 tecken."
+msgid "Password length must be between %d and %d characters."
+msgstr "Lösenordslängden måste vara mellan %d och %d tecken."
 
 #. Resource IDs: (1400, 1448)
 msgid "Password length:"
@@ -7156,8 +7156,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Detta kommer att radera den valda felsäkra backup-filen. Om den aktuella enheten har en Papperskorg, kommer den att flyttas dit. Om inte, raderas den permanent."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 600 minutes."
-msgstr "Avbrottstiden måste vara mellan 1 och 600 minuter."
+msgid "Timeout period must be between %d and %d minutes."
+msgstr "Avbrottstiden måste vara mellan %d och %d minuter."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

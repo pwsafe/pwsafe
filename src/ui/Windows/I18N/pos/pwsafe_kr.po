@@ -1793,8 +1793,8 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (5410)
-msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "비밀번호 만료 전 1~30일 사이에만 경고할 수 있습니다."
+msgid "Can only warn between %d and %d days before passwords expire"
+msgstr "비밀번호 만료 전 %d~%d일 사이에만 경고할 수 있습니다."
 
 #. Resource IDs: (3345)
 #, c-format
@@ -2540,8 +2540,8 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr ""
 
 #. Resource IDs: (5294)
-msgid "Default number of saved password history entries must be between 1 and 255."
-msgstr "저장된 비밀번호 내역 항목 수의 기본값은 반드시 1에서 255 사이"
+msgid "Default number of saved password history entries must be between %d and %d."
+msgstr "저장된 비밀번호 내역 항목 수의 기본값은 반드시 %d 에서 %d 사이"
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -4305,8 +4305,8 @@ msgid "Maximum"
 msgstr ""
 
 #. Resource IDs: (5392)
-msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
-msgstr "계속 가능한 백업 파일본의 개수는\n반드시 1에서 999사이여야 합니다."
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
+msgstr "계속 가능한 백업 파일본의 개수는\n반드시 %d 에서 %d 사이여야 합니다."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -5000,7 +5000,7 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "비밀번호 길이가 최소 규칙들의 합보다 적습니다"
 
 #. Resource IDs: (5293)
-msgid "Password length must be between 4 and 1024 characters."
+msgid "Password length must be between %d and %d characters."
 msgstr ""
 
 #. Resource IDs: (1400, 1448)
@@ -6628,7 +6628,7 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr ""
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 600 minutes."
+msgid "Timeout period must be between %d and %d minutes."
 msgstr ""
 
 #. Resource IDs: (3056, 5222, 5981)

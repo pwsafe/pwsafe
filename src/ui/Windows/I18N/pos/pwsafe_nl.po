@@ -1793,8 +1793,8 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "CSVbestanden (*.csv)|*.csv|Alle bestanden (*.*)|*.*||"
 
 #. Resource IDs: (5410)
-msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "Kan alleen tussen 1 en 30 dagen voor het wachtwoord verloop waarschuwen"
+msgid "Can only warn between %d and %d days before passwords expire"
+msgstr "Kan alleen tussen %d en %d dagen voor het wachtwoord verloop waarschuwen"
 
 #. Resource IDs: (3345)
 #, c-format
@@ -2540,8 +2540,8 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr ""
 
 #. Resource IDs: (5294)
-msgid "Default number of saved password history entries must be between 1 and 255."
-msgstr "Standaard aantal bewaarde wachtwoorden voor de wachtwoord geschiedenis moet tussen de 1 en 255 zijn."
+msgid "Default number of saved password history entries must be between %d and %d."
+msgstr "Standaard aantal bewaarde wachtwoorden voor de wachtwoord geschiedenis moet tussen de %d en %d zijn."
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -4305,8 +4305,8 @@ msgid "Maximum"
 msgstr "Maximum"
 
 #. Resource IDs: (5392)
-msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
-msgstr "Maximum aantal back-ups dat bewaard wordt, bij het gebruik van een achtervoegsel met een getal dat opgehoogd wordt,\nmoet tussen 1 en 999 liggen."
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
+msgstr "Maximum aantal back-ups dat bewaard wordt, bij het gebruik van een achtervoegsel met een getal dat opgehoogd wordt,\nmoet tussen %d en %d liggen."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -5000,8 +5000,8 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Wachtwoord lengte is minder dan de som van de \"tenminste\" randvoorwaardes"
 
 #. Resource IDs: (5293)
-msgid "Password length must be between 4 and 1024 characters."
-msgstr "Wachtwoord lengte moet tussen de 4 en 1024 tekens zijn."
+msgid "Password length must be between %d and %d characters."
+msgstr "Wachtwoord lengte moet tussen de %d en %d tekens zijn."
 
 #. Resource IDs: (1400, 1448)
 msgid "Password length:"
@@ -6628,8 +6628,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Dit verwijdert de gekozen Veilige Back-up bestand. Als de huidige schijf een Prullenbak heeft, zal het bestand daarheen verplaatst worden. Zo niet, dan wordt het bestand permanent verwijderd."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 600 minutes."
-msgstr "De timeout periode moet tussen de 1 en 600 minuten zijn."
+msgid "Timeout period must be between %d and %d minutes."
+msgstr "De timeout periode moet tussen de %d en %d minuten zijn."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

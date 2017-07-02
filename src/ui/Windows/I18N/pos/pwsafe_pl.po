@@ -1793,8 +1793,8 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "Pliki CSV (*.csv)|*.csv|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (5410)
-msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "Ostrzeżenia są tylko możliwe w okresie od 1 do 30 dni zanim hasło wygaśnie"
+msgid "Can only warn between %d and %d days before passwords expire"
+msgstr "Ostrzeżenia są tylko możliwe w okresie od %d do %d dni zanim hasło wygaśnie"
 
 #. Resource IDs: (3345)
 #, c-format
@@ -2540,8 +2540,8 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr ""
 
 #. Resource IDs: (5294)
-msgid "Default number of saved password history entries must be between 1 and 255."
-msgstr "Domyślna liczba zapisanych wpisów historii haseł musi być między 1 i 255."
+msgid "Default number of saved password history entries must be between %d and %d."
+msgstr "Domyślna liczba zapisanych wpisów historii haseł musi być między %d i %d."
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -4305,8 +4305,8 @@ msgid "Maximum"
 msgstr "Maksimum"
 
 #. Resource IDs: (5392)
-msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
-msgstr "Maksymalna liczba kopii zapasowych używa wartości przyrostowych\nz zakresu pomiędzy 1 i 999."
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
+msgstr "Maksymalna liczba kopii zapasowych używa wartości przyrostowych\nz zakresu pomiędzy %d i %d."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -5000,8 +5000,8 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Liczba znaków w haśle jest większa niż suma ograniczeń określonych opcją 'przynajmniej'"
 
 #. Resource IDs: (5293)
-msgid "Password length must be between 4 and 1024 characters."
-msgstr "Hasło musi mieć od 4 do 1024 znaków."
+msgid "Password length must be between %d and %d characters."
+msgstr "Hasło musi mieć od %d do %d znaków."
 
 #. Resource IDs: (1400, 1448)
 msgid "Password length:"
@@ -6628,8 +6628,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "To skasuje wybraną kopię zapasową Failsafe.  Jeśli aktualny dysk ma Kosz, kopia zostanie tam przeniesiona. Jeśli nie, zostanie usunięta na zawsze."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 600 minutes."
-msgstr "Czas wygaśnięcie powninen być pomiędzy 1 minutą, a 600 minutami."
+msgid "Timeout period must be between %d and %d minutes."
+msgstr "Czas wygaśnięcie powninen być pomiędzy %d minutą, a %d minutami."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

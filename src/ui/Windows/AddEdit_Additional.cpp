@@ -166,8 +166,8 @@ BOOL CAddEdit_Additional::OnInitDialog()
     ActivateToolTip();
   }
 
-    m_stc_autotype.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-    m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+  m_stc_autotype.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+  m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
 
   m_KBShortcutCtrl.SetMyParent(this);
 
@@ -224,7 +224,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
-  pspin->SetRange(1, 255);
+  pspin->SetRange(M_prefminPWHNumber(), M_prefmaxPWHNumber());
   pspin->SetBase(10);
   pspin->SetPos((int)M_MaxPWHistory());
 
@@ -701,9 +701,11 @@ BOOL CAddEdit_Additional::OnApply()
   }
 
   if (M_SavePWHistory() == TRUE &&
-      (M_MaxPWHistory() < 1 || M_MaxPWHistory() > 255)) {
+      ((int)M_MaxPWHistory() < M_prefminPWHNumber() || (int)M_MaxPWHistory() > M_prefmaxPWHNumber())) {
     CGeneralMsgBox gmb;
-    gmb.AfxMessageBox(IDS_DEFAULTNUMPWH);
+    CString csText;
+    csText.Format(IDS_DEFAULTNUMPWH, M_prefminPWHNumber(), M_prefmaxPWHNumber());
+    gmb.AfxMessageBox(csText);
     pFocus = GetDlgItem(IDC_MAXPWHISTORY);
     goto error;
   }
