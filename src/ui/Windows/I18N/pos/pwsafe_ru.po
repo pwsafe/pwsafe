@@ -1883,8 +1883,8 @@ msgstr "CSV-файлы (*.csv)|*.csv|Все файлы (*.*)|*.*||"
 
 # MessageBox при редактировании настроек контейнера
 #. Resource IDs: (5410)
-msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "Предупреждение об истечении срока действия пароля возможно только за период от 1 до 30 дней"
+msgid "Can only warn between %d and %d days before passwords expire"
+msgstr "Предупреждение об истечении срока действия пароля возможно только за период от %d до %d дней"
 
 #. Resource IDs: (3345)
 #, c-format
@@ -2659,8 +2659,8 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr "По умолчанию сохранение происходит в каталоге, где находится открытый контейнер. При изменении убедитесь, что есть возможность записи в указываемый каталог."
 
 #. Resource IDs: (5294)
-msgid "Default number of saved password history entries must be between 1 and 255."
-msgstr "Количество сохраняемых в истории паролей должно быть от 1 до 255."
+msgid "Default number of saved password history entries must be between %d and %d."
+msgstr "Количество сохраняемых в истории паролей должно быть от %d до %d."
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -4152,8 +4152,8 @@ msgid "Incorrect password"
 msgstr "Неверный пароль"
 
 #. Resource IDs: (5387)
-msgid "Incremented Number [001-999]"
-msgstr "Автонумератор [001-999]"
+msgid "Incremented Number [%d-%d]"
+msgstr "Автонумератор [%d-%d]"
 
 # message for core
 #. Resource IDs: (3356)
@@ -4518,8 +4518,8 @@ msgid "Maximum"
 msgstr "максимальная"
 
 #. Resource IDs: (5392)
-msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
-msgstr "Максимальное количество сохраняемых резервных копий при использовании автонумератора должно быть от 1 до 999."
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
+msgstr "Максимальное количество сохраняемых резервных копий при использовании автонумератора должно быть от %d до %d."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -5249,8 +5249,8 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Длина пароля меньше, чем сумма ограничений вида «не менее»"
 
 #. Resource IDs: (5293)
-msgid "Password length must be between 4 and 1024 characters."
-msgstr "Длина пароля должна быть от 4 до 1024 символов."
+msgid "Password length must be between %d and %d characters."
+msgstr "Длина пароля должна быть от %d до %d символов."
 
 #. Resource IDs: (1400, 1448)
 msgid "Password length:"
@@ -6929,8 +6929,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Аварийная резервная копия будет удалена. Если на данном носителе есть «Корзина», файл будет перемещён туда, иначе он будет удалён насовсем."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 600 minutes."
-msgstr "Время ожидания может быть от 1 до 600 минут."
+msgid "Timeout period must be between %d and %d minutes."
+msgstr "Время ожидания может быть от %d до %d минут."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

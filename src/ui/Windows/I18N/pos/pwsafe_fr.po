@@ -1832,8 +1832,8 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "Fichier CVS (*.cvs)|*.cvs|Tous les fichiers (*.*)|*.*||"
 
 #. Resource IDs: (5410)
-msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "Peut seulement avertir entre 1 et 30 jours avant que le mot de passe n'expire"
+msgid "Can only warn between %d and %d days before passwords expire"
+msgstr "Peut seulement avertir entre %d et %d jours avant que le mot de passe n'expire"
 
 #. Resource IDs: (3345)
 #, c-format
@@ -2579,8 +2579,8 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr "La valeur par défaut est le même répertoire où ce trouve ce fichier. Si vous le modifiez assurez-vous d'avoir les permissions d'écriture dans ce répertoire."
 
 #. Resource IDs: (5294)
-msgid "Default number of saved password history entries must be between 1 and 255."
-msgstr "Le nombre par défaut des entrées de  l'historique doit être entre 1 et 255."
+msgid "Default number of saved password history entries must be between %d and %d."
+msgstr "Le nombre par défaut des entrées de  l'historique doit être entre %d et %d."
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -3995,8 +3995,8 @@ msgid "Incorrect password"
 msgstr "Mot de passe incorrect"
 
 #. Resource IDs: (5387)
-msgid "Incremented Number [001-999]"
-msgstr "Nombre incrémenté [001-999]"
+msgid "Incremented Number [%d-%d]"
+msgstr "Nombre incrémenté [%d-%d]"
 
 #. Resource IDs: (3356)
 msgid "Index is invalid or missing"
@@ -4344,8 +4344,8 @@ msgid "Maximum"
 msgstr "Maximum"
 
 #. Resource IDs: (5392)
-msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
-msgstr "Le nombre maximum de copies de sauvegarde conservées utilisant\n le suffixe numérique doit être entre 1 et 999."
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
+msgstr "Le nombre maximum de copies de sauvegarde conservées utilisant\n le suffixe numérique doit être entre %d et %d."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -5039,8 +5039,8 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "La taille du mot de passe est moindre que la somme des contraintes minimum"
 
 #. Resource IDs: (5293)
-msgid "Password length must be between 4 and 1024 characters."
-msgstr "Longueur de mot de passe doit être entre 4 et 1024 caractères."
+msgid "Password length must be between %d and %d characters."
+msgstr "Longueur de mot de passe doit être entre %d et %d caractères."
 
 #. Resource IDs: (1400, 1448)
 msgid "Password length:"
@@ -6667,8 +6667,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Ceci supprimera la copie de sauvegarde. Si le disque courant contien une Corbeille, il y sera déplacé sinon il sera supprimé définitivement"
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 600 minutes."
-msgstr "La période de temps mort doit être enntre 1 et 600 minutes."
+msgid "Timeout period must be between %d and %d minutes."
+msgstr "La période de temps mort doit être enntre %d et %d minutes."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

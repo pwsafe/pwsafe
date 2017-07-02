@@ -111,9 +111,8 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   }
 
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
-
   pspin->SetBuddy(GetDlgItem(IDC_DEFPWHNUM));
-  pspin->SetRange(1, 255);
+  pspin->SetRange(M_prefminPWHNumber(), M_prefmaxPWHNumber());
   pspin->SetBase(10);
   pspin->SetPos(m_PWHistoryNumDefault);
 
@@ -196,11 +195,22 @@ BOOL COptionsPasswordHistory::PreTranslateMessage(MSG *pMsg)
 
 BOOL COptionsPasswordHistory::OnKillActive()
 {
-  CGeneralMsgBox gmb;
+  if (UpdateData(TRUE) == FALSE)
+    return FALSE;
+
+  // Update variable from text box
+  CString csText;
+  ((CEdit *)GetDlgItem(IDC_DEFPWHNUM))->GetWindowText(csText);
+  m_PWHistoryNumDefault = _wtoi(csText);
+
   // Check that options, as set, are valid.
-  if (m_SavePWHistory && ((m_PWHistoryNumDefault < 1) || (m_PWHistoryNumDefault > 255))) {
-    gmb.AfxMessageBox(IDS_DEFAULTNUMPWH);
-    ((CEdit*)GetDlgItem(IDC_DEFPWHNUM))->SetFocus();
+  if (m_SavePWHistory &&
+      ((m_PWHistoryNumDefault < M_prefminPWHNumber()) ||
+       (m_PWHistoryNumDefault > M_prefmaxPWHNumber()))) {
+    CGeneralMsgBox gmb;
+    csText.Format(IDS_DEFAULTNUMPWH, M_prefminPWHNumber(), M_prefmaxPWHNumber());
+    gmb.AfxMessageBox(csText);
+    ((CEdit *)GetDlgItem(IDC_DEFPWHNUM))->SetFocus();
     return FALSE;
   }
   //End check

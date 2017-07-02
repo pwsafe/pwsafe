@@ -1793,8 +1793,8 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "CSV dosyaları (*.csv)|*.csv|Tüm dosyalar (*.*)|*.*||"
 
 #. Resource IDs: (5410)
-msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "Şifre sona ermeden sadece 1-30 arası gün önce uyarabilir"
+msgid "Can only warn between %d and %d days before passwords expire"
+msgstr "Şifre sona ermeden sadece %d-%d arası gün önce uyarabilir"
 
 #. Resource IDs: (3345)
 #, c-format
@@ -2540,8 +2540,8 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr ""
 
 #. Resource IDs: (5294)
-msgid "Default number of saved password history entries must be between 1 and 255."
-msgstr "Kaydedilmiş şifre geçmişi girdilerinin varsayılan adedi 1 ve 255 arasında olmalıdır."
+msgid "Default number of saved password history entries must be between %d and %d."
+msgstr "Kaydedilmiş şifre geçmişi girdilerinin varsayılan adedi %d ve %d arasında olmalıdır."
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -3956,8 +3956,8 @@ msgid "Incorrect password"
 msgstr "Hatalı şifre"
 
 #. Resource IDs: (5387)
-msgid "Incremented Number [001-999]"
-msgstr "Artan Numaralar [001-999]"
+msgid "Incremented Number [%d-%d]"
+msgstr "Artan Numaralar [%d-%d]"
 
 #. Resource IDs: (3356)
 msgid "Index is invalid or missing"
@@ -4305,8 +4305,8 @@ msgid "Maximum"
 msgstr ""
 
 #. Resource IDs: (5392)
-msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
-msgstr "Artan numara son eki kullanılarak tutulan en fazla yedek sayısı\n1 ila 999 arasında olmalıdır."
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
+msgstr "Artan numara son eki kullanılarak tutulan en fazla yedek sayısı\n%d ila %d arasında olmalıdır."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -5000,8 +5000,8 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Şifre uzunluğu 'en az' zorunlulukların toplamından küçük"
 
 #. Resource IDs: (5293)
-msgid "Password length must be between 4 and 1024 characters."
-msgstr "Şifre uzunluğu 4 ve 1024 karakter arasında olmalı."
+msgid "Password length must be between %d and %d characters."
+msgstr "Şifre uzunluğu %d ve %d karakter arasında olmalı."
 
 #. Resource IDs: (1400, 1448)
 msgid "Password length:"
@@ -6628,8 +6628,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Bu, seçili Hatasız Yedek dosyasını silecek. Geçerli sürücünün Geri Dönüşüm Kutusu varsa oraya taşınacak, yoksa tamamen silinecek."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 600 minutes."
-msgstr "Zamanaşımı aralığı 1 ila 600 dakika arasında olmalıdır."
+msgid "Timeout period must be between %d and %d minutes."
+msgstr "Zamanaşımı aralığı %d ila %d dakika arasında olmalıdır."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

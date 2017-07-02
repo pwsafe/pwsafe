@@ -1979,8 +1979,8 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "CSV Dateien (*.csv)|*.csv|Alle Dateien (*.*)|*.*||"
 
 #. Resource IDs: (5410)
-msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "Nur von 1 bis 30 Tage kann gewarnt werden bevor das Passwort abläuft"
+msgid "Can only warn between %d and %d days before passwords expire"
+msgstr "Nur von %d bis %d Tage kann gewarnt werden bevor das Passwort abläuft"
 
 #. Resource IDs: (3345)
 #, c-format
@@ -2854,9 +2854,9 @@ msgstr ""
 
 #. Resource IDs: (5294)
 msgid ""
-"Default number of saved password history entries must be between 1 and 255."
+"Default number of saved password history entries must be between %d and %d."
 msgstr ""
-"Standard Anzahl der gespeicherten Passworthistorien muss zwischen 1 und 255 "
+"Standard Anzahl der gespeicherten Passworthistorien muss zwischen %d und %d "
 "sein."
 
 #. Resource IDs: (5622)
@@ -4480,8 +4480,8 @@ msgid "Incorrect password"
 msgstr "Falsches Passwort"
 
 #. Resource IDs: (5387)
-msgid "Incremented Number [001-999]"
-msgstr "Hochgezählte Nummer [001-999]"
+msgid "Incremented Number [%d-%d]"
+msgstr "Hochgezählte Nummer [%d-%d]"
 
 #. Resource IDs: (3356)
 msgid "Index is invalid or missing"
@@ -4860,10 +4860,10 @@ msgstr "Maximum"
 #. Resource IDs: (5392)
 msgid ""
 "Maximum number of backups kept using incremented number suffix\n"
-"must be between 1 and 999."
+"must be between %d and %d."
 msgstr ""
 "Maximale Anzahl an Sicherungsdateien mit fortlaufender Nummerierung\n"
-"muss zwischen 1 und 999 liegen."
+"muss zwischen %d und %d liegen."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -5651,8 +5651,8 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Passwort ist kürzer als Mindestlängenbedingung"
 
 #. Resource IDs: (5293)
-msgid "Password length must be between 4 and 1024 characters."
-msgstr "Die Passwortlänge muss zwischen 4 und 1024 Zeichen liegen."
+msgid "Password length must be between %d and %d characters."
+msgstr "Die Passwortlänge muss zwischen %d und %d Zeichen liegen."
 
 #. Resource IDs: (1400, 1448)
 msgid "Password length:"
@@ -7705,8 +7705,8 @@ msgstr ""
 "Datei unwiederbringlich gelöscht."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 600 minutes."
-msgstr "Die Dauer des Time-out muss zwischen 1 und 600 Minuten liegen."
+msgid "Timeout period must be between %d and %d minutes."
+msgstr "Die Dauer des Time-out muss zwischen %d und %d Minuten liegen."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"

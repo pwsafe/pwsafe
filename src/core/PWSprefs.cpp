@@ -143,7 +143,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("PWDefaultLength"), 12, ptDatabase, 4, 1024},                 // database
   // maxmruitems maximum = (ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1)
   {_T("maxmruitems"), 4, ptApplication, 0, 20},                     // application
-  {_T("IdleTimeout"), 5, ptDatabase, 1, 120},                       // database
+  {_T("IdleTimeout"), 5, ptDatabase, 1, 600},                       // database
   {_T("DoubleClickAction"), DoubleClickCopyPassword, ptApplication,
                             minDCA, maxDCA},                        // application
   {_T("HotKey"), 0, ptApplication, -1, -1}, // 0=disabled, >0=keycode. // application
@@ -288,6 +288,16 @@ unsigned int PWSprefs::GetPrefDefVal(IntPrefs pref_enum) const
 StringX PWSprefs::GetPrefDefVal(StringPrefs pref_enum) const
 {
   return m_string_prefs[pref_enum].defVal;
+}
+
+int PWSprefs::GetPrefMinVal(IntPrefs pref_enum) const
+{
+  return m_int_prefs[pref_enum].minVal;
+}
+
+int PWSprefs::GetPrefMaxVal(IntPrefs pref_enum) const
+{
+  return m_int_prefs[pref_enum].maxVal;
 }
 
 StringX PWSprefs::GetAllBoolPrefs(const bool bUseCopy)

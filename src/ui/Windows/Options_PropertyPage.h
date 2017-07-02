@@ -30,6 +30,9 @@ struct st_Opt_master_data {
   int BackupLocation;
   int BackupSuffix;
   int MaxNumIncBackups;
+  // Preferences min/max values
+  short prefminBackupIncrement;
+  short prefmaxBackupIncrement;
 
   // Display Data
   BOOL AlwaysOnTop;
@@ -46,6 +49,9 @@ struct st_Opt_master_data {
   int PreExpiryWarnDays;
   int TreeDisplayStatusAtOpen;
   int TrayIconColour;
+  // Preferences min/max values
+  short prefminExpiryDays;
+  short prefmaxExpiryDays;
   
   // Misc Data
   BOOL ConfirmDelete;
@@ -68,6 +74,9 @@ struct st_Opt_master_data {
   BOOL SavePWHistory;
   int PWHistoryNumDefault;
   int PWHAction;
+  // Preferences min/max values
+  short prefminPWHNumber;
+  short prefmaxPWHNumber;
 
   // Security Data
   BOOL ClearClipboardOnMinimize;
@@ -79,6 +88,9 @@ struct st_Opt_master_data {
   BOOL CopyPswdBrowseURL;
   int IdleTimeOut;
   uint32 HashIters;
+  // Preferences min/max values
+  short prefminIdleTimeout;
+  short prefmaxIdleTimeout;
 
   // Shortcut Data
   int32 AppHotKeyValue;
@@ -95,6 +107,11 @@ struct st_Opt_master_data {
   BOOL MultipleInstances;
   int MaxREItems;
   int MaxMRUItems;
+  // Preferences min/max values
+  short prefminREItems;
+  short prefmaxREItems;
+  short prefminMRU;
+  short prefmaxMRU;
 };
 
 class COptions_PropertyPage : public CPWPropertyPage
@@ -123,6 +140,9 @@ public:
   inline int &M_BackupLocation() {return m_OPTMD.BackupLocation;}
   inline int &M_BackupSuffix() {return m_OPTMD.BackupSuffix;}
   inline int &M_MaxNumIncBackups() {return m_OPTMD.MaxNumIncBackups;}
+  // Preferences min/max values
+  inline short &M_prefminBackupIncrement() { return m_OPTMD.prefminBackupIncrement; }
+  inline short &M_prefmaxBackupIncrement() { return m_OPTMD.prefmaxBackupIncrement; }
 
   // Display Data
   inline BOOL &M_AlwaysOnTop() {return m_OPTMD.AlwaysOnTop;}
@@ -139,6 +159,9 @@ public:
   inline int &M_PreExpiryWarnDays() {return m_OPTMD.PreExpiryWarnDays;}
   inline int &M_TreeDisplayStatusAtOpen() {return m_OPTMD.TreeDisplayStatusAtOpen;}
   inline int &M_TrayIconColour() {return m_OPTMD.TrayIconColour;}
+  // Preferences min/max values
+  inline short &M_prefminExpiryDays() { return m_OPTMD.prefminExpiryDays; }
+  inline short &M_prefmaxExpiryDays() { return m_OPTMD.prefmaxExpiryDays; }
   
   // Misc Data
   inline BOOL &M_ConfirmDelete() {return m_OPTMD.ConfirmDelete;}
@@ -162,6 +185,9 @@ public:
   inline BOOL &M_SavePWHistory() {return m_OPTMD.SavePWHistory;}
   inline int &M_PWHistoryNumDefault() {return m_OPTMD.PWHistoryNumDefault;}
   inline int &M_PWHAction() {return m_OPTMD.PWHAction;}
+  // Preferences min/max values
+  inline short &M_prefminPWHNumber() { return m_OPTMD.prefminPWHNumber; }
+  inline short &M_prefmaxPWHNumber() { return m_OPTMD.prefmaxPWHNumber; }
 
   // Security Data
   inline BOOL &M_ClearClipboardOnMinimize() {return m_OPTMD.ClearClipboardOnMinimize;}
@@ -173,6 +199,9 @@ public:
   inline BOOL &M_CopyPswdBrowseURL() {return m_OPTMD.CopyPswdBrowseURL;}
   inline int &M_IdleTimeOut() {return m_OPTMD.IdleTimeOut;}
   inline uint32 &M_HashIters() {return m_OPTMD.HashIters;}
+  // Preferences min/max values
+  inline short &M_prefminIdleTimeout() { return m_OPTMD.prefminIdleTimeout; }
+  inline short &M_prefmaxIdleTimeout() { return m_OPTMD.prefmaxIdleTimeout; }
 
   // Shortcut Data
   inline int32 &M_AppHotKey_Value() {return m_OPTMD.AppHotKeyValue;}
@@ -189,6 +218,11 @@ public:
   inline BOOL &M_MultipleInstances() {return m_OPTMD.MultipleInstances;}
   inline int &M_MaxREItems() {return m_OPTMD.MaxREItems;}
   inline int &M_MaxMRUItems() {return m_OPTMD.MaxMRUItems;}
+  // Preferences min/max values
+  inline short &M_prefminREItems() { return m_OPTMD.prefminREItems; }
+  inline short &M_prefmaxREItems() { return m_OPTMD.prefmaxREItems; }
+  inline short &M_prefminMRU() { return m_OPTMD.prefminMRU; }
+  inline short &M_prefmaxMRU() { return m_OPTMD.prefmaxMRU; }
 
 protected:
   COptions_PropertySheet *m_options_psh;

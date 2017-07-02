@@ -58,6 +58,9 @@ struct st_AE_master_data {
   CSecString autotype;
   CSecString runcommand;
   short DCA, oldDCA, ShiftDCA, oldShiftDCA;
+  // Preferences min/max values
+  short prefminPWHNumber;
+  short prefmaxPWHNumber;
 
   // Date & Time related stuff
   CSecString locCTime;
@@ -82,6 +85,9 @@ struct st_AE_master_data {
   CSecString oldsymbols;
   CSecString policyname;
   CSecString oldpolicyname;
+  // Preferences min/max values
+  size_t prefminPWLength;
+  size_t prefmaxPWLength;
 
   // Keyboard shortcut
   int KBShortcut, oldKBShortcut;
@@ -149,6 +155,9 @@ public:
   short &M_oldDCA() {return m_AEMD.oldDCA;}
   short &M_ShiftDCA() {return m_AEMD.ShiftDCA;}
   short &M_oldShiftDCA() {return m_AEMD.oldShiftDCA;}
+  // Preferences min/max values
+  short &M_prefminPWHNumber() { return m_AEMD.prefminPWHNumber; }
+  short &M_prefmaxPWHNumber() { return m_AEMD.prefmaxPWHNumber; }
   
   // Date & Time related stuff
   CSecString &M_locCTime() {return m_AEMD.locCTime;}
@@ -171,6 +180,9 @@ public:
   size_t &M_oldMaxPWHistory() {return m_AEMD.oldMaxPWHistory;}
   BOOL &M_SavePWHistory() {return m_AEMD.SavePWHistory;}
   BOOL &M_oldSavePWHistory() {return m_AEMD.oldSavePWHistory;}
+  // Preferences min/max values
+  size_t &M_prefminPWLength() { return m_AEMD.prefminPWLength; }
+  size_t &M_prefmaxPWLength() { return m_AEMD.prefmaxPWLength; }
 
   // Password Policy
   PWPolicy &M_pwp() {return m_AEMD.pwp;}

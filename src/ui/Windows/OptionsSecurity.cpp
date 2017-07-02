@@ -114,11 +114,11 @@ BOOL COptionsSecurity::OnInitDialog()
   }
 
   OnLockOnIdleTimeout();
-  CSpinButtonCtrl *pspin;
 
+  CSpinButtonCtrl *pspin;
   pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
   pspin->SetBuddy(GetDlgItem(IDC_IDLE_TIMEOUT));
-  pspin->SetRange(1, PWSprefs::MAX_IDLE_TIMEOUT);
+  pspin->SetRange(M_prefminIdleTimeout(), M_prefmaxIdleTimeout());
   pspin->SetBase(10);
   pspin->SetPos(m_IdleTimeOut);
 
@@ -209,14 +209,15 @@ BOOL COptionsSecurity::OnApply()
   UpdateData(TRUE);
 
   CString csText;
-  ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->GetWindowText(csText);
+  ((CEdit *)GetDlgItem(IDC_IDLE_TIMEOUT))->GetWindowText(csText);
   m_IdleTimeOut = _wtoi(csText);
 
   // Check that options, as set, are valid.
-  if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > PWSprefs::MAX_IDLE_TIMEOUT)) {
+  if ((m_IdleTimeOut < M_prefminIdleTimeout()) || (m_IdleTimeOut > M_prefmaxIdleTimeout())) {
     CGeneralMsgBox gmb;
-    gmb.AfxMessageBox(IDS_INVALIDTIMEOUT);
-    ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
+    csText.Format(IDS_INVALIDTIMEOUT, M_prefminIdleTimeout(), M_prefmaxIdleTimeout());
+    gmb.AfxMessageBox(csText);
+    ((CEdit *)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
     return FALSE;
   }
 
@@ -270,21 +271,24 @@ BOOL COptionsSecurity::PreTranslateMessage(MSG *pMsg)
 
 BOOL COptionsSecurity::OnKillActive()
 {
-  COptions_PropertyPage::OnKillActive();
+  if (UpdateData(TRUE) == FALSE)
+    return FALSE;
 
+  // Update variable from text box
   CString csText;
-  ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->GetWindowText(csText);
+  ((CEdit *)GetDlgItem(IDC_IDLE_TIMEOUT))->GetWindowText(csText);
   m_IdleTimeOut = _wtoi(csText);
 
   // Check that options, as set, are valid.
-  if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > PWSprefs::MAX_IDLE_TIMEOUT)) {
+  if ((m_IdleTimeOut < M_prefminIdleTimeout()) || (m_IdleTimeOut > M_prefmaxIdleTimeout())) {
     CGeneralMsgBox gmb;
-    gmb.AfxMessageBox(IDS_INVALIDTIMEOUT);
-    ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
+    csText.Format(IDS_INVALIDTIMEOUT, M_prefminIdleTimeout(), M_prefmaxIdleTimeout());
+    gmb.AfxMessageBox(csText);
+    ((CEdit *)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
     return FALSE;
   }
 
-  return TRUE;
+  return COptions_PropertyPage::OnKillActive();
 }
 
 void COptionsSecurity::OnHelp()

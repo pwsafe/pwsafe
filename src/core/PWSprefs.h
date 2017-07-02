@@ -205,6 +205,9 @@ public:
   unsigned int GetPrefDefVal(IntPrefs pref_enum) const;
   StringX GetPrefDefVal(StringPrefs pref_enum) const;
 
+  int GetPrefMinVal(IntPrefs pref_enum) const;
+  int GetPrefMaxVal(IntPrefs pref_enum) const;
+
   // Get all preferences for minidump user stream
   StringX GetAllBoolPrefs(const bool bUseCopy = false);
   StringX GetAllIntPrefs(const bool bUseCopy = false);
@@ -256,9 +259,6 @@ public:
   static bool IsLockedCFGFile(const stringT &filename);
 
   void ClearUnknownPrefs(); // Clear unknown preferences vectors
-
-  // Not prefs, but rather limits on prefs, enforced elsewhere
-  static const int MAX_IDLE_TIMEOUT = 600; // minutes
 
 private:
   PWSprefs();
