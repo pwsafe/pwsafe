@@ -4152,8 +4152,8 @@ msgid "Incorrect password"
 msgstr "Неверный пароль"
 
 #. Resource IDs: (5387)
-msgid "Incremented Number [001-999]"
-msgstr "Автонумератор [001-999]"
+msgid "Incremented Number [%d-%d]"
+msgstr "Автонумератор [%d-%d]"
 
 # message for core
 #. Resource IDs: (3356)

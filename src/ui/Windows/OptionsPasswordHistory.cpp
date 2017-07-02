@@ -195,12 +195,19 @@ BOOL COptionsPasswordHistory::PreTranslateMessage(MSG *pMsg)
 
 BOOL COptionsPasswordHistory::OnKillActive()
 {
+  if (UpdateData(TRUE) == FALSE)
+    return FALSE;
+
+  // Update variable from text box
+  CString csText;
+  ((CEdit *)GetDlgItem(IDC_DEFPWHNUM))->GetWindowText(csText);
+  m_PWHistoryNumDefault = _wtoi(csText);
+
   // Check that options, as set, are valid.
   if (m_SavePWHistory &&
       ((m_PWHistoryNumDefault < M_prefminPWHNumber()) ||
        (m_PWHistoryNumDefault > M_prefmaxPWHNumber()))) {
     CGeneralMsgBox gmb;
-    CString csText;
     csText.Format(IDS_DEFAULTNUMPWH, M_prefminPWHNumber(), M_prefmaxPWHNumber());
     gmb.AfxMessageBox(csText);
     ((CEdit *)GetDlgItem(IDC_DEFPWHNUM))->SetFocus();

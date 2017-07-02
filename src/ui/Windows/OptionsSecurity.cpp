@@ -271,8 +271,10 @@ BOOL COptionsSecurity::PreTranslateMessage(MSG *pMsg)
 
 BOOL COptionsSecurity::OnKillActive()
 {
-  COptions_PropertyPage::OnKillActive();
+  if (UpdateData(TRUE) == FALSE)
+    return FALSE;
 
+  // Update variable from text box
   CString csText;
   ((CEdit *)GetDlgItem(IDC_IDLE_TIMEOUT))->GetWindowText(csText);
   m_IdleTimeOut = _wtoi(csText);
@@ -286,7 +288,7 @@ BOOL COptionsSecurity::OnKillActive()
     return FALSE;
   }
 
-  return TRUE;
+  return COptions_PropertyPage::OnKillActive();
 }
 
 void COptionsSecurity::OnHelp()

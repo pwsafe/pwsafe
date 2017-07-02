@@ -4480,8 +4480,8 @@ msgid "Incorrect password"
 msgstr "Falsches Passwort"
 
 #. Resource IDs: (5387)
-msgid "Incremented Number [001-999]"
-msgstr "Hochgezählte Nummer [001-999]"
+msgid "Incremented Number [%d-%d]"
+msgstr "Hochgezählte Nummer [%d-%d]"
 
 #. Resource IDs: (3356)
 msgid "Index is invalid or missing"

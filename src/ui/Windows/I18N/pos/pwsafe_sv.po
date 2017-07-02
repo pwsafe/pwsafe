@@ -4268,8 +4268,8 @@ msgid "Incorrect password"
 msgstr "Fel lösenord"
 
 #. Resource IDs: (5387)
-msgid "Incremented Number [001-999]"
-msgstr "Ökande tal [001-999]"
+msgid "Incremented Number [%d-%d]"
+msgstr "Ökande tal [%d-%d]"
 
 #. Resource IDs: (3356)
 msgid "Index is invalid or missing"

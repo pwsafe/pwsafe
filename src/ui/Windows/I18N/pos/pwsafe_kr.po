@@ -3956,8 +3956,8 @@ msgid "Incorrect password"
 msgstr "일치하지 않는 비밀번호"
 
 #. Resource IDs: (5387)
-msgid "Incremented Number [001-999]"
-msgstr "증가수 [001-999]"
+msgid "Incremented Number [%d-%d]"
+msgstr "증가수 [%d-%d]"
 
 #. Resource IDs: (3356)
 msgid "Index is invalid or missing"

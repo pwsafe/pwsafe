@@ -3995,8 +3995,8 @@ msgid "Incorrect password"
 msgstr "Mot de passe incorrect"
 
 #. Resource IDs: (5387)
-msgid "Incremented Number [001-999]"
-msgstr "Nombre incrémenté [001-999]"
+msgid "Incremented Number [%d-%d]"
+msgstr "Nombre incrémenté [%d-%d]"
 
 #. Resource IDs: (3356)
 msgid "Index is invalid or missing"

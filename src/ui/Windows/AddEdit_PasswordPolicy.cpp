@@ -346,7 +346,11 @@ bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
 
 BOOL CAddEdit_PasswordPolicy::OnKillActive()
 {
+  if (UpdateData(TRUE) == FALSE)
+    return FALSE;
+
   CWnd *pFocus(NULL);
+
   if (ValidatePolicy(pFocus)) {
     SetPolicyFromVariables();
   } else {

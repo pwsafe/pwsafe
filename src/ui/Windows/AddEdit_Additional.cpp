@@ -407,6 +407,21 @@ BOOL CAddEdit_Additional::OnKillActive()
   if (UpdateData(TRUE) == FALSE)
     return FALSE;
 
+  // Update variable from text box
+  CString csText;
+  ((CEdit *)GetDlgItem(IDC_MAXPWHISTORY))->GetWindowText(csText);
+  int maxpwh = _wtoi(csText);
+
+  if (maxpwh < M_prefminPWHNumber() || maxpwh > M_prefmaxPWHNumber()) {
+    CGeneralMsgBox gmb;
+    csText.Format(IDS_DEFAULTNUMPWH, M_prefminPWHNumber(), M_prefmaxPWHNumber());
+    gmb.AfxMessageBox(csText);
+    ((CEdit *)GetDlgItem(IDC_MAXPWHISTORY))->SetFocus();
+    return FALSE;
+  }
+
+  M_MaxPWHistory() = maxpwh;
+
   if (CheckKeyboardShortcut() < 0 || m_bWarnUserKBShortcut)
     return FALSE;
 

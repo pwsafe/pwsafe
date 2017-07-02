@@ -211,7 +211,8 @@ BOOL COptionsDisplay::PreTranslateMessage(MSG *pMsg)
 
 BOOL COptionsDisplay::OnKillActive()
 {
-  CGeneralMsgBox gmb;
+  if (UpdateData(TRUE) == FALSE)
+    return FALSE;
 
   // Update variable from text box
   CString csText;
@@ -219,8 +220,10 @@ BOOL COptionsDisplay::OnKillActive()
   m_PreExpiryWarnDays = _wtoi(csText);
 
   // Check that options, as set, are valid.
-  if ((m_PreExpiryWarnDays < M_prefminExpiryDays()) || (m_PreExpiryWarnDays > M_prefmaxExpiryDays())) {
+  if (m_PreExpiryWarn == TRUE &&
+      (m_PreExpiryWarnDays < M_prefminExpiryDays() || m_PreExpiryWarnDays > M_prefmaxExpiryDays())) {
     csText.Format(IDS_INVALIDEXPIRYWARNDAYS, M_prefminExpiryDays(), M_prefmaxExpiryDays());
+    CGeneralMsgBox gmb;
     gmb.AfxMessageBox(csText);
     ((CEdit *)GetDlgItem(IDC_PREEXPIRYWARNDAYS))->SetFocus();
     return FALSE;

@@ -149,7 +149,7 @@ BOOL COptionsBackup::OnInitDialog()
     m_backupsuffix_cbox.SetItemData(nIndex, PWSprefs::BKSFX_DateTime);
     m_BKSFX_to_Index[PWSprefs::BKSFX_DateTime] = nIndex;
 
-    cs_text.LoadString(IDS_INCREMENTNUM);
+    cs_text.Format(IDS_INCREMENTNUM, M_prefminBackupIncrement(), M_prefmaxBackupIncrement());
     nIndex = m_backupsuffix_cbox.AddString(cs_text);
     m_backupsuffix_cbox.SetItemData(nIndex, PWSprefs::BKSFX_IncNumber);
     m_BKSFX_to_Index[PWSprefs::BKSFX_IncNumber] = nIndex;
@@ -257,6 +257,9 @@ BOOL COptionsBackup::PreTranslateMessage(MSG *pMsg)
 
 BOOL COptionsBackup::OnKillActive()
 {
+  if (UpdateData(TRUE) == FALSE)
+    return FALSE;
+
   m_bKillActiveInProgress = true;
 
   COptions_PropertyPage::OnKillActive();
