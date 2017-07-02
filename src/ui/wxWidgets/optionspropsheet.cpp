@@ -522,7 +522,7 @@ void COptions::CreateControls()
   m_seclockonidleCB->SetValue(false);
   itemBoxSizer93->Add(m_seclockonidleCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_secidletimeoutSB = new wxSpinCtrl( itemPanel86, ID_SPINCTRL12, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, PWSprefs::MAX_IDLE_TIMEOUT, 0 );
+  m_secidletimeoutSB = new wxSpinCtrl( itemPanel86, ID_SPINCTRL12, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::IdleTimeout), 0 );
   itemBoxSizer93->Add(m_secidletimeoutSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText96 = new wxStaticText( itemPanel86, wxID_STATIC, _("minutes idle"), wxDefaultPosition, wxDefaultSize, 0 );
