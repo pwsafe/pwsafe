@@ -2301,8 +2301,6 @@ void DboxMain::OnRunCommand()
                                                 sx_pswd, sx_lastpswd,
                                                 sx_notes, sx_url, sx_email,
                                                 m_vactionverboffsets);
-  SetClipboardData(sx_pswd);
-  UpdateLastClipboardAction(CItemData::PASSWORD);
   UpdateAccessTime(uuid);
 
   // Now honour presence of [alt], {alt} or [ssh] in the url if present
