@@ -42,12 +42,11 @@ public:
   BOOL m_pweasyvision;
   BOOL m_pwmakepronounceable;
 
-  size_t m_pwdefaultlength;
-  size_t m_pwdigitminlength;
-  size_t m_pwlowerminlength;
-  size_t m_pwsymbolminlength;
-  size_t m_pwupperminlength;
-
+  int m_pwdefaultlength;
+  int m_pwdigitminlength;
+  int m_pwlowerminlength;
+  int m_pwsymbolminlength;
+  int m_pwupperminlength;
   //}}AFX_DATA
 
   // Overrides

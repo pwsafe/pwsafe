@@ -156,7 +156,7 @@ BOOL COptionsMisc::OnInitDialog()
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_DADSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_DB_DEF_AUTOTYPE_DELAY));
-  pspin->SetRange32(1, 60000);
+  pspin->SetRange32(M_prefminAutotypeDelay(), M_prefmaxAutotypeDelay());
   pspin->SetBase(10);
   pspin->SetPos(m_AutotypeDelay);
 

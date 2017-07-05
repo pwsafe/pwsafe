@@ -166,16 +166,16 @@ BOOL CAddEdit_PasswordPolicy::PreTranslateMessage(MSG *pMsg)
 }
 
 // Following is also in PasswordPolicDlg.cpp. Move to common mixin?
-static void setupBuddy(CWnd *p, int spinid, int id, size_t &length, PWSprefs::IntPrefs iPref)
+static void setupBuddy(CWnd *p, int spinid, int id, int &length, PWSprefs::IntPrefs iPref)
 {
-  const short minValue = (short)PWSprefs::GetInstance()->GetPrefMinVal(iPref);
-  const short maxValue = (short)PWSprefs::GetInstance()->GetPrefMaxVal(iPref);
+  const int minValue = PWSprefs::GetInstance()->GetPrefMinVal(iPref);
+  const int maxValue = PWSprefs::GetInstance()->GetPrefMaxVal(iPref);
 
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)p->GetDlgItem(spinid);
   pspin->SetBuddy(p->GetDlgItem(id));
-  pspin->SetRange(minValue, maxValue);
+  pspin->SetRange32(minValue, maxValue);
   pspin->SetBase(10);
-  pspin->SetPos((int)length);
+  pspin->SetPos(length);
 }
 
 BOOL CAddEdit_PasswordPolicy::OnInitDialog()

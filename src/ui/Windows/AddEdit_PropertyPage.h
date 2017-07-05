@@ -86,8 +86,8 @@ struct st_AE_master_data {
   CSecString policyname;
   CSecString oldpolicyname;
   // Preferences min/max values
-  size_t prefminPWLength;
-  size_t prefmaxPWLength;
+  int prefminPWLength;
+  int prefmaxPWLength;
 
   // Keyboard shortcut
   int KBShortcut, oldKBShortcut;
@@ -181,8 +181,8 @@ public:
   BOOL &M_SavePWHistory() {return m_AEMD.SavePWHistory;}
   BOOL &M_oldSavePWHistory() {return m_AEMD.oldSavePWHistory;}
   // Preferences min/max values
-  size_t &M_prefminPWLength() { return m_AEMD.prefminPWLength; }
-  size_t &M_prefmaxPWLength() { return m_AEMD.prefmaxPWLength; }
+  int &M_prefminPWLength() { return m_AEMD.prefminPWLength; }
+  int &M_prefmaxPWLength() { return m_AEMD.prefmaxPWLength; }
 
   // Password Policy
   PWPolicy &M_pwp() {return m_AEMD.pwp;}

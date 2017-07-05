@@ -189,6 +189,8 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::DoubleClickAction);
   m_OPTMD.ShiftDoubleClickAction =
       prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
+  m_OPTMD.prefminAutotypeDelay = prefs->GetPrefMinVal(PWSprefs::DefaultAutotypeDelay);
+  m_OPTMD.prefmaxAutotypeDelay = prefs->GetPrefMaxVal(PWSprefs::DefaultAutotypeDelay);
 
   m_OPTMD.UseDefuser =
       prefs->GetPref(PWSprefs::UseDefaultUser) ? TRUE : FALSE;

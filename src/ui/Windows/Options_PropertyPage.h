@@ -69,6 +69,9 @@ struct st_Opt_master_data {
   BOOL UseDefuser;
   BOOL QuerySetDef;
   BOOL MinAuto;
+  // Preferences min/max values
+  int prefminAutotypeDelay;
+  int prefmaxAutotypeDelay;
 
   // Password History Data
   BOOL SavePWHistory;
@@ -180,6 +183,9 @@ public:
   inline BOOL &M_UseDefUsername() {return m_OPTMD.UseDefuser;}
   inline BOOL &M_QuerySetDefUsername() {return m_OPTMD.QuerySetDef;}
   inline BOOL &M_AutotypeMinimize() {return m_OPTMD.MinAuto;}
+  // Preferences min/max values
+  inline int &M_prefminAutotypeDelay() { return m_OPTMD.prefminAutotypeDelay; }
+  inline int &M_prefmaxAutotypeDelay() { return m_OPTMD.prefmaxAutotypeDelay; }
 
   // Password History Data
   inline BOOL &M_SavePWHistory() {return m_OPTMD.SavePWHistory;}
