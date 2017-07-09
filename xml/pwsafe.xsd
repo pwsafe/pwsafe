@@ -86,7 +86,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
 <xs:simpleType name="timeoutType">
   <xs:restriction base="xs:int">
     <xs:minInclusive value="1" />
-    <xs:maxInclusive value="120" />
+    <xs:maxInclusive value="600" />
   </xs:restriction>
 </xs:simpleType>
 
