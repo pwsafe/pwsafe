@@ -16,7 +16,7 @@ ready for pasting.
 3. Open Source: The source code for the project is available for
 inspection. For more information, see https://pwsafe.org.
 
-The current version of Password Safe currently runs on Windows XP and
+The current version of Password Safe currently runs on Windows 7 and
 later. Older versions are still available supporting Windows 95, 98,
 ME, NT, 2000, as well as PocketPC. Support for additional platforms 
 is planned for future releases. 
