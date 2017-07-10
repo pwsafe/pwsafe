@@ -10,6 +10,11 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/statline.h>
+
+#include <qrencode.h>
+
+#include "../../core/UTF8Conv.h"
 #include "./pwsqrcodedlg.h"
 #include "./wxutils.h"
 
@@ -24,6 +29,50 @@ IMPLEMENT_CLASS( PWSQRCodeDlg, wxDialog )
 BEGIN_EVENT_TABLE(PWSQRCodeDlg, wxDialog)
 	EVT_BUTTON(wxID_CLOSE, PWSQRCodeDlg::OnClose)
 END_EVENT_TABLE()
+
+/*
+ * caller must check for null bitmap for errors
+ */
+wxBitmap QRCodeBitmap( const StringX &data )
+{
+
+	using QRcodePtr = std::unique_ptr<QRcode, decltype(&QRcode_free)>;
+
+
+	CUTF8Conv conv;
+	const unsigned char *utf8str = nullptr;
+	size_t utf8len = 0;
+	if ( !conv.ToUTF8(data, utf8str, utf8len) )
+		return wxBitmap();
+
+	auto qc_data = reinterpret_cast<const char *>(utf8str);
+	QRcodePtr qc(QRcode_encodeString8bit(qc_data, 0, QR_ECLEVEL_H), &QRcode_free);
+
+	const size_t nbytes = (qc->width + 7)/8;
+	std::vector<char> xbmp(nbytes);
+
+	const auto max_idx = std::min(nbytes, static_cast<size_t>(qc->width/8));
+	for (auto n = 0; n < max_idx; ++n) {
+		auto start = n*8;
+		xbmp[n] = 	((qc->data[start+0] & 1) << 0) |
+					((qc->data[start+1] & 1) << 1) |
+					((qc->data[start+2] & 1) << 2) |
+					((qc->data[start+3] & 1) << 3) |
+					((qc->data[start+4] & 1) << 4) |
+					((qc->data[start+5] & 1) << 5) |
+					((qc->data[start+6] & 1) << 6) |
+					((qc->data[start+7] & 1) << 7);
+	}
+
+	if (nbytes > max_idx) {
+		for (auto i = 0; i < qc->width%8; ++i) {
+			xbmp[nbytes-1] |= (qc->data[max_idx*8 + i] & 1);
+		}
+	}
+
+	const int height = qc->width;
+	return wxBitmap( xbmp.data(), qc->width, height);
+}
 
 PWSQRCodeDlg::PWSQRCodeDlg(wxWindow* parent,
 		                   const StringX &data,
@@ -46,9 +95,20 @@ void PWSQRCodeDlg::CreateControls(const StringX &data, const wxString &descripti
 
 	dlgSizer->Add( new wxStaticText(this, wxID_ANY, description) );
 
+	dlgSizer->Add( new wxStaticLine(this) );
+
 	dlgSizer->AddSpacer(RowSeparation);
 
-	dlgSizer->Add( new wxButton(this, wxID_CLOSE) );
+	wxBitmap bmp = QRCodeBitmap(data);
+	if (bmp.IsOk() ) {
+		dlgSizer->Add( new wxStaticBitmap(this, wxID_ANY, bmp), wxSizerFlags().Expand() );
+	}
+	else
+		dlgSizer->Add( new wxStaticText(this, wxID_ANY, _T("Could not generate QR code")) );
+
+	dlgSizer->AddSpacer(RowSeparation);
+	dlgSizer->Add( new wxStaticLine(this) );
+	dlgSizer->Add( new wxButton(this, wxID_CLOSE), wxSizerFlags().Right().Bottom() );
 
 	SetSizerAndFit(dlgSizer);
 }
