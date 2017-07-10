@@ -25,7 +25,7 @@ HELPDIR := ../../help
 MODIR   := ../../src/ui/wxWidgets/I18N/mos
 
 PWSAFE-BIN := $(RELDIR)/pwsafe
-DOCS := ../../README.txt $(DOCSDIR)/ReleaseNotes.txt \
+DOCS := ../../README.md $(DOCSDIR)/ReleaseNotes.txt \
 	$(DOCSDIR)/ChangeLog.txt
 MANPAGE := $(DOCSDIR)/pwsafe.1
 XMLFILES := $(foreach i,\

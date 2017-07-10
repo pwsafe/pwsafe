@@ -21,7 +21,7 @@ RELEASENAME := 0.9.0
 SRCDIR=./dmg/
 DMGNAME = ../../$(TARGET)-$(RELEASENAME).dmg
 PWSAFE-APP=$(TARGET).app
-DOCS := ../../README.txt ../../docs/LICENSE.rtf ../../docs/ReleaseNotes.txt 
+DOCS := ../../README.md ../../docs/LICENSE.rtf ../../docs/ReleaseNotes.txt 
 
 all: dist
 
@@ -38,7 +38,7 @@ dist:
 			--volicon ../../src/ui/wxWidgets/graphics/pwsafe.icns \
 			--icon "$(PWSAFE-APP)" 100 95 \
 			--app-drop-link 220 95 \
-			--icon "README.txt" 60  250 \
+			--icon "README.md" 60  250 \
 			--icon "ReleaseNotes.txt" 150 250 \
 			--icon "LICENSE.rtf" 250 250 \
 		$(DMGNAME) \
