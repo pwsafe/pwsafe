@@ -55,7 +55,7 @@ wxBitmap QRCodeBitmap( const StringX &data )
 		return wxBitmap();
 
 	auto qc_data = reinterpret_cast<const char *>(utf8str);
-	QRcodePtr qc(QRcode_encodeString8bit(qc_data, 2, QR_ECLEVEL_H), &QRcode_free);
+	QRcodePtr qc(QRcode_encodeString8bit(qc_data, 0, QR_ECLEVEL_L), &QRcode_free);
 	if ( !qc || !qc->width )
 		return wxBitmap();
 
