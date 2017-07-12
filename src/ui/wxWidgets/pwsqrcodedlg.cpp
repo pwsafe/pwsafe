@@ -32,14 +32,21 @@ BEGIN_EVENT_TABLE(PWSQRCodeDlg, wxDialog)
 	EVT_BUTTON(wxID_CLOSE, PWSQRCodeDlg::OnClose)
 END_EVENT_TABLE()
 
+
 /*
- * caller must check for null bitmap for errors
+ * converts the data to UTF8, generates the QR code
+ * and creates xbmp data out of it, which is used to
+ * generate a wxBitmap
+ *
+ * See https://en.wikipedia.org/wiki/X_BitMap
+ *
+ * Caller must check for null bitmap for errors.
+ * No return codes. Sorry
  */
 wxBitmap QRCodeBitmap( const StringX &data )
 {
-
 	using QRcodePtr = std::unique_ptr<QRcode, decltype(&QRcode_free)>;
-
+	using std::vector;
 
 	CUTF8Conv conv;
 	const unsigned char *utf8str = nullptr;
@@ -50,98 +57,54 @@ wxBitmap QRCodeBitmap( const StringX &data )
 	auto qc_data = reinterpret_cast<const char *>(utf8str);
 	QRcodePtr qc(QRcode_encodeString8bit(qc_data, 2, QR_ECLEVEL_H), &QRcode_free);
 
-	//constexpr auto intendedImageWidth = 300;
 	constexpr auto margin = 24;
-	constexpr int scale = 8;//(intendedImageWidth - 2*margin)/qc->width;
-	//scale = scale <= 0? 1: scale;
-	const int imageWidth = 2*margin + scale*qc->width;
+	constexpr auto scale = 8;
 
+	// This is only for the ease of computation, to avoid filling and
+	// tracking bytes partially while generating the xbm data
+	static_assert( scale % 8 == 0, "QRcode must scale up by a factor of 8");
+	static_assert( margin % scale == 0, "margin must be a multiple of scale");
 
-	const size_t nbytes = (imageWidth*imageWidth + 7)/8;
-	std::cout << "QR code width: " << qc->width << ", version " << qc->version << '\n'
-			<<	"image bytes: " << nbytes << '\n'
-			<<	"image width: " << imageWidth << '\n';
+	// in pixels
+	const auto imageWidth = 2*margin + scale*qc->width;
 
-	//wxASSERT_MSG(imageWidth*imageWidth == nbytes, _T("QRcode image width calculation is incorrect"));
+	const vector<char> pxTopMargin( (imageWidth*margin)/8, 0 );
+	const vector<char> pxSideMargin( margin/8, 0);
 
-	std::vector<char> xbmp(nbytes);
-
-	auto write_bits = [&xbmp](size_t start, size_t count, int bitval) {
-		constexpr char rbits[] = {0, 0b1, 0b11, 0b111, 0b1111, 0b11111, 0b111111, 0b1111111};
-
-		if (start % 8) {
-			// num bits set in the last byte
-			const auto nset = start%8;
-			const auto last_byte = start/8;
-			// clear out the leftmost bits to be set now
-			const char b = (rbits[nset] & xbmp[last_byte]);
-			if (bitval) {
-				const auto mask = (rbits[8 - nset] << nset);
-				xbmp[last_byte] |= mask ;
-			}
-		}
-
-		const char byte = bitval? 0xff: 0;
-		for (size_t n = 0; n < count/8; n++)
-			xbmp[start/8 + n] = byte;
-
-		if ((start + count) % 8) {
-			xbmp[start/8 + count/8 + 1] = rbits[count%8];
-		}
+	// This converts a line of QR data to a line of scaled-up pixels
+	// The last bit of QR byte, if 0 => white, else black
+	auto qr2xbmp = [&qc, scale](int line) {
+		vector<char> pixels(qc->width*scale/8);
+		auto fill_index = pixels.begin();
+		auto from = qc->data + line*qc->width;
+		auto to = from + qc->width;
+		std::for_each(from, to, [&](char byte) {
+				const auto bytesToFill = scale/8;
+				// All bits in these bytes are for the same pixel, so
+				// its either all 1s, or all 0s
+				std::fill_n(fill_index, bytesToFill, byte & 1? 0xff: 0);
+				std::advance(fill_index, bytesToFill);
+		});
+		return pixels;
 	};
 
-	using std::fill_n;
-	using std::copy_n;
+	vector<char> xbmp(pxTopMargin);
 
-	// fill top margin
-	write_bits(0, imageWidth*margin, 0);
-	std::cout << "Top margin covers " << imageWidth*margin << '\n';
-
-	const int height = qc->width;
-	for (auto row = 0; row < height; ++row) {
-
-		const auto bmpRowStart = (8*row + margin)*imageWidth;
-		std::cout << "Image row " << row << ": " << bmpRowStart << '\n';
-
-		wxASSERT_MSG(bmpRowStart < nbytes*8 - imageWidth, _T("QRcode image width calculation is incorrect"));
-		
-		// left margin
-		write_bits(bmpRowStart, margin, 0);
-
-		auto bmpQRDataIndex = bmpRowStart + margin;
-		for (auto col = 0; col < qc->width; ++col) {
-			wxASSERT(bmpQRDataIndex < bmpRowStart + imageWidth);
-			const auto qcrow = row;
-			const auto qcidx = qcrow*qc->width + col;
-			const auto bit = qc->data[qcidx] & 1;
-
-			// This relies on the fact that scale is 8
-			//const auto byte = bit? 0xff: 0;
-			//xbmp[bmpQRDataIndex + col] = byte;
-			//bmpQRDataIndex++;
-			write_bits(bmpQRDataIndex + col, scale, bit);
-			bmpQRDataIndex += scale;
-		}
-
-		// right margin
-		//fill_n(xbmp.begin() + bmpQRDataIndex, (imageWidth - (bmpQRDataIndex - bmpRowStart))/8, 0);
-		write_bits(bmpQRDataIndex, imageWidth - (bmpQRDataIndex - bmpRowStart), 0);
-
-		// copy the row "scale -1" times over
-		for (auto s = 1; s < scale; ++s) {
-			auto src = bmpRowStart/8;
-			auto dst = bmpRowStart/8 + s*imageWidth/8;
-			const auto nbytes = imageWidth/8;
-			std::cout << "copying " << nbytes << " bytes in image row " << s << " : " << src << " => " << dst <<  '\n';
-			copy_n(xbmp.begin() + src, nbytes, xbmp.begin() + dst);
-		}
-
+	// For each line of QR data, generate a line of pixels
+	for (auto line = 0; line < qc->width; ++line) {
+		vector<char> pxline(pxSideMargin);
+		const auto qrdata = qr2xbmp(line);
+		wxASSERT( qrdata.size() == (imageWidth - 2*margin)/8 );
+		pxline.insert(pxline.end(), qrdata.begin(), qrdata.end());
+		pxline.insert(pxline.end(), pxSideMargin.begin(), pxSideMargin.end());
+		wxASSERT( pxline.size() == imageWidth/8 );
+		// And repeat that line "scale" times
+		for (auto n = 0; n < scale; ++n)
+			xbmp.insert(xbmp.end(), pxline.begin(), pxline.end());
 	}
+	xbmp.insert(xbmp.end(), pxTopMargin.begin(), pxTopMargin.end());
 
-	// fill bottom margin
-	write_bits(nbytes - imageWidth*margin, imageWidth*margin, 0);
-
-	return wxBitmap( xbmp.data(), imageWidth, imageWidth);
+	return wxBitmap(xbmp.data(), imageWidth, imageWidth);
 }
 
 PWSQRCodeDlg::PWSQRCodeDlg(wxWindow* parent,
@@ -197,7 +160,7 @@ void PWSQRCodeDlg::OnClose(wxCommandEvent &evt)
 // build it like this
 // g++ -D__TEST_QR_CODE__ -o qrtest
 //                  `/usr/bin/wx-config-3.0 --debug=yes --unicode=yes --inplace --cxxflags --libs`
-//                  -DUNICODE -I../.. pwsqrcodedlg.cpp  -lcore -los -lcore -L../../../lib/unicodedebug
+//                  -DUNICODE -I../.. pwsqrcodedlg.cpp  -lcore -los -lcore -lqrencode -L../../../lib/unicodedebug
 //
 #include <wx/cmdline.h>
 class QRTestApp: public wxApp {
