@@ -141,8 +141,9 @@ void PWSQRCodeDlg::CreateControls(const StringX &data, const wxString &descripti
 	dlgSizer->AddSpacer(RowSeparation);
 	dlgSizer->Add( CreateSeparatedButtonSizer(wxCLOSE), wxSizerFlags().Expand() );
 	dlgSizer->AddSpacer(BottomMargin);
-
-	SetSizerAndFit(dlgSizer);
+	wxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
+	hSizer->Add(dlgSizer, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand().Proportion(1));
+	SetSizerAndFit(hSizer);
 }
 
 void PWSQRCodeDlg::OnClose(wxCommandEvent &evt)
