@@ -139,12 +139,7 @@ void PWSQRCodeDlg::CreateControls(const StringX &data, const wxString &descripti
 		dlgSizer->Add( new wxStaticText(this, wxID_ANY, _T("Could not generate QR code")) );
 
 	dlgSizer->AddSpacer(RowSeparation);
-	dlgSizer->Add( new wxStaticLine(this), wxSizerFlags().Expand() );
-	dlgSizer->AddSpacer(RowSeparation);
-	wxStdDialogButtonSizer *btnSizer = new wxStdDialogButtonSizer;
-	btnSizer->AddButton( new wxButton(this, wxID_CLOSE) );
-	btnSizer->Realize();
-	dlgSizer->Add( btnSizer, wxSizerFlags().Expand() );
+	dlgSizer->Add( CreateSeparatedButtonSizer(wxCLOSE), wxSizerFlags().Expand() );
 	dlgSizer->AddSpacer(BottomMargin);
 
 	SetSizerAndFit(dlgSizer);
