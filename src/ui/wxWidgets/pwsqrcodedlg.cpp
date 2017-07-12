@@ -91,10 +91,12 @@ wxBitmap QRCodeBitmap( const StringX &data )
 	};
 
 	vector<char> xbmp(pxTopMargin);
+	xbmp.reserve( imageWidth*imageWidth/8 );
 
 	// For each line of QR data, generate a line of pixels
 	for (auto line = 0; line < qc->width; ++line) {
 		vector<char> pxline(pxSideMargin);
+		pxline.reserve( imageWidth/8 );
 		const auto qrdata = qr2xbmp(line);
 		wxASSERT( qrdata.size() == (imageWidth - 2*margin)/8 );
 		pxline.insert(pxline.end(), qrdata.begin(), qrdata.end());
