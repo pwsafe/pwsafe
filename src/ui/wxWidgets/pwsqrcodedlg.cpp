@@ -59,8 +59,8 @@ wxBitmap QRCodeBitmap( const StringX &data )
 	if ( !qc || !qc->width )
 		return wxBitmap();
 
-	constexpr auto margin = 24;
-	constexpr auto scale = 8;
+	constexpr unsigned margin = 24;
+	constexpr unsigned scale = 8;
 
 	// This is only for the ease of computation, to avoid filling and
 	// tracking bytes partially while generating the xbm data
@@ -68,7 +68,7 @@ wxBitmap QRCodeBitmap( const StringX &data )
 	static_assert( margin % scale == 0, "margin must be a multiple of scale");
 
 	// in pixels
-	const auto imageWidth = 2*margin + scale*qc->width;
+	const unsigned imageWidth = 2*margin + scale*qc->width;
 
 	const vector<char> pxTopMargin( (imageWidth*margin)/8, 0 );
 	const vector<char> pxSideMargin( margin/8, 0);
@@ -103,7 +103,7 @@ wxBitmap QRCodeBitmap( const StringX &data )
 		pxline.insert(pxline.end(), pxSideMargin.begin(), pxSideMargin.end());
 		wxASSERT( pxline.size() == imageWidth/8 );
 		// And repeat that line "scale" times
-		for (auto n = 0; n < scale; ++n)
+		for (unsigned n = 0; n < scale; ++n)
 			xbmp.insert(xbmp.end(), pxline.begin(), pxline.end());
 	}
 	xbmp.insert(xbmp.end(), pxTopMargin.begin(), pxTopMargin.end());
