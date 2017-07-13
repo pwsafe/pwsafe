@@ -38,6 +38,7 @@ make
 pkg-config
 uuid-dev
 zip
+libqrencode-dev
 
 The script Misc/setup-deb-dev-env.sh can be run (sudo or as root) to
 install these and setup the gtest library.
@@ -55,6 +56,7 @@ make
 wxGTK3-devel
 xerces-c-devel
 ykpers-devel (see note 3 below)
+qrencode-devel
 
 To compile without Yubikey support, set the NO_YUBI flag
 for make, e.g.,
