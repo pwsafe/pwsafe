@@ -26,7 +26,7 @@ class PWSQRCodeDlg : public wxDialog {
 public:
   PWSQRCodeDlg(wxWindow* parent,
 		  	   const StringX &data,
-			   const wxString& description,  //something like "search", or "merge" or "compare"
+			   const wxString& description,
 			   const int seconds = 15,
 			   const wxString &dlgTitle = wxT("Scan the QR code quickly"),
 			   const wxPoint &pos=wxDefaultPosition,
