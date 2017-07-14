@@ -30,6 +30,8 @@ IMPLEMENT_CLASS( PWSQRCodeDlg, wxDialog )
 
 BEGIN_EVENT_TABLE(PWSQRCodeDlg, wxDialog)
 	EVT_BUTTON(wxID_CLOSE, PWSQRCodeDlg::OnClose)
+	EVT_INIT_DIALOG(PWSQRCodeDlg::OnInitDialog)
+	EVT_TIMER(wxID_ANY, PWSQRCodeDlg::OnTimer)
 END_EVENT_TABLE()
 
 
@@ -113,24 +115,27 @@ wxBitmap QRCodeBitmap( const StringX &data )
 
 PWSQRCodeDlg::PWSQRCodeDlg(wxWindow* parent,
 		                   const StringX &data,
-						   const wxString& description,
+						   const wxString& dlgTitle,
 					       const int seconds,
-					       const wxString &dlgTitle,
 					       const wxPoint &pos,
 					       const wxSize &size,
 					       long style,
-					       const wxString &name): wxDialog(parent, wxID_ANY, dlgTitle, pos, size, style, name)
+					       const wxString &name): wxDialog(parent, wxID_ANY, dlgTitle, pos, size, style, name), timer(this), secondsRemaining(seconds)
 {
-	CreateControls(data, description);
+	CreateControls(data);
 }
  
-void PWSQRCodeDlg::CreateControls(const StringX &data, const wxString &description)
+void PWSQRCodeDlg::CreateControls(const StringX &data)
 {
 	wxSizer *dlgSizer = new wxBoxSizer(wxVERTICAL);
 
 	dlgSizer->AddSpacer(TopMargin);
 
-	dlgSizer->Add( new wxStaticText(this, wxID_ANY, description) );
+	wxBoxSizer *promptSizer = new wxBoxSizer(wxHORIZONTAL);
+	promptSizer->Add( new wxStaticText(this, wxID_ANY, _T("Closing in ")) );
+	promptSizer->Add( secondsText = new wxStaticText(this, wxID_ANY, _T("")) );
+	dlgSizer->Add(promptSizer);
+
 	dlgSizer->AddSpacer(RowSeparation);
 	dlgSizer->Add( new wxStaticLine(this), wxSizerFlags().Expand() );
 	dlgSizer->AddSpacer(RowSeparation);
@@ -154,6 +159,29 @@ void PWSQRCodeDlg::OnClose(wxCommandEvent &evt)
 {
 	EndModal(wxID_CLOSE);
 }
+
+void PWSQRCodeDlg::OnTimer(wxTimerEvent &/*evt*/)
+{
+	if ( --secondsRemaining > 0 ) {
+		UpdateTimeRemaining();
+		timer.Start(1000);
+	} else {
+		EndModal(0);
+	}
+}
+
+void PWSQRCodeDlg::OnInitDialog(wxInitDialogEvent &/*evt*/)
+{
+	// true => oneshot. We don't want to be called every millisecond
+	timer.Start( 1000, true );
+	UpdateTimeRemaining();
+}
+
+void PWSQRCodeDlg::UpdateTimeRemaining()
+{
+	secondsText->SetLabel( wxString::Format(_T("%d seconds"), secondsRemaining) );
+}
+
 
 #ifdef __TEST_QR_CODE__
 ///////////////////////////////////////////////////////

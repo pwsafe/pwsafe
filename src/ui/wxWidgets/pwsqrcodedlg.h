@@ -15,6 +15,8 @@
  */
 
 #include <wx/dialog.h>
+#include <wx/timer.h>
+#include <wx/stattext.h>
 
 #include "../../core/StringX.h"
 
@@ -23,12 +25,17 @@ class PWSQRCodeDlg : public wxDialog {
   DECLARE_CLASS(PWSQRCodeDlg)
   DECLARE_EVENT_TABLE()
 
+  wxTimer timer;
+  int secondsRemaining;
+  wxStaticText *secondsText = nullptr;
+
+  void UpdateTimeRemaining();
+
 public:
   PWSQRCodeDlg(wxWindow* parent,
 		  	   const StringX &data,
-			   const wxString& description,
+			   const wxString& title,
 			   const int seconds = 15,
-			   const wxString &dlgTitle = wxT("Scan the QR code quickly"),
 			   const wxPoint &pos=wxDefaultPosition,
 			   const wxSize &size=wxDefaultSize,
 			   long style=wxDEFAULT_DIALOG_STYLE,
@@ -38,7 +45,9 @@ public:
   
   //void OnInitDialog(wxInitDialogEvent& evt)  override;
   //void OnRelayoutDlg(wxCommandEvent& evt)  override;  
-  void CreateControls(const StringX &data, const wxString &description);
+  void CreateControls(const StringX &data);
   void OnClose(wxCommandEvent & evt);
+  void OnTimer(wxTimerEvent &evt);
+  void OnInitDialog(wxInitDialogEvent &evt);
 };
 
