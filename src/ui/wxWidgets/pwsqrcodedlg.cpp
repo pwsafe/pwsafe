@@ -144,8 +144,9 @@ void PWSQRCodeDlg::CreateControls(const StringX &data)
 	if (bmp.IsOk() ) {
 		dlgSizer->Add( new wxStaticBitmap(this, wxID_ANY, bmp), wxSizerFlags().Expand().Proportion(1) );
 	}
-	else
+	else {
 		dlgSizer->Add( new wxStaticText(this, wxID_ANY, _T("Could not generate QR code")) );
+	}
 
 	dlgSizer->AddSpacer(RowSeparation);
 	dlgSizer->Add( CreateSeparatedButtonSizer(wxCLOSE), wxSizerFlags().Expand() );
@@ -155,7 +156,7 @@ void PWSQRCodeDlg::CreateControls(const StringX &data)
 	SetSizerAndFit(hSizer);
 }
 
-void PWSQRCodeDlg::OnClose(wxCommandEvent &evt)
+void PWSQRCodeDlg::OnClose(wxCommandEvent &/*evt*/)
 {
 	EndModal(wxID_CLOSE);
 }
