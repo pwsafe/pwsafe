@@ -51,3 +51,11 @@ public:
   void OnInitDialog(wxInitDialogEvent &evt);
 };
 
+constexpr bool HasQRCode() {
+#ifdef __linux
+	return true;
+#else
+	return false;
+#endif
+}
+

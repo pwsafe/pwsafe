@@ -63,6 +63,7 @@
 #include "../../core/core.h"
 #include "../../core/PWScore.h"
 #include "./SelectionCriteria.h"
+#include "./pwsqrcodedlg.h"
 
 // main toolbar images
 #include "./PwsToolbarButtons.h"
@@ -1756,7 +1757,9 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     itemEditMenu.Append(ID_COPYUSERNAME,   _("Copy &Username to Clipboard"));
     itemEditMenu.Append(ID_COPYPASSWORD,   _("&Copy Password to Clipboard"));
     itemEditMenu.Append(ID_PASSWORDSUBSET, _("Display subset of Password"));
-    itemEditMenu.Append(ID_PASSWORDQRCODE, _("Display Password as &QR code"));
+	if (HasQRCode()) {
+		itemEditMenu.Append(ID_PASSWORDQRCODE, _("Display Password as &QR code"));
+	}
     itemEditMenu.Append(ID_COPYNOTESFLD,   _("Copy &Notes to Clipboard"));
     itemEditMenu.Append(ID_COPYURL,        _("Copy UR&L to Clipboard"));
     itemEditMenu.Append(ID_COPYEMAIL,      _("Copy email to Clipboard"));

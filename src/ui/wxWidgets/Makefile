@@ -103,7 +103,7 @@ BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
 LIBS=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --libs` -lcore -los -lcore -l$(YBPERS_LIBS)
 ifneq ($(findstring Darwin, $(shell uname -s)), Darwin)
-		LIBS += -luuid -lXtst -lX11 -lqrencode
+		LIBS += -luuid -lXtst -lX11
 		XERCESLIBFLAGS=-lxerces-c
 		XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 endif
@@ -134,7 +134,7 @@ BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
 LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs` -lcore -los -lcore -l$(YBPERS_LIBS)
 ifneq ($(findstring Darwin, $(shell uname -s)), Darwin)
-		LIBS += -luuid -lXtst -lX11 -lqrencode
+		LIBS += -luuid -lXtst -lX11
 		XERCESLIBFLAGS=-lxerces-c
 		XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 endif
@@ -159,6 +159,10 @@ CPPINC += -I../..
 ifndef NO_YUBI
 YBPERS_LIBPATH?=$(LIBPATH)
 YBPERS_LIBPATH_FLAGS=-L$(YBPERS_LIBPATH)
+endif
+
+ifeq ($(findstring Linux, $(shell uname -s)), Linux)
+		LIBS += -lqrencode
 endif
 
 override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)
@@ -188,7 +192,11 @@ SOURCES= passwordsafeframe.cpp \
 	fieldselectionpanel.cpp fieldselectiondlg.cpp pwsmenushortcuts.cpp \
 	$(YUBI_SRC) \
 	ManagePwdPolicies.cpp PasswordPolicy.cpp SelectionCriteria.cpp \
-	TimedTaskChain.cpp mainView.cpp passwordsubset.cpp pwsqrcodedlg.cpp
+	TimedTaskChain.cpp mainView.cpp passwordsubset.cpp
+
+ifeq ($(findstring Linux, $(shell uname -s)), Linux)
+		SOURCES += pwsqrcodedlg.cpp
+endif
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
