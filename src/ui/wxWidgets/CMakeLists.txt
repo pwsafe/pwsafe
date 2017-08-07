@@ -110,6 +110,11 @@ if(HAVE_YKPERS_H)
   list(APPEND PWSAFE_HDR_LIST src/ui/wxWidgets/yubicfg.h src/ui/wxWidgets/YubiMixin.h)
 endif(HAVE_YKPERS_H)
 
+if (NOT NO_QR)
+  list(APPEND PWSAFE_SRC_LIST src/ui/wxWidgets/pwsqrcodedlg.cpp)
+  list(APPEND PWSAFE_HDR_LIST src/ui/wxWidgets/yubicfg.h src/ui/wxWidgets/pwsqrcodedlg.h)
+endif(NOT NO_QR)
+
 set (PWSAFE_SRCS ${PWSAFE_SRC_LIST} PARENT_SCOPE)
 set (PWSAFE_HDRS ${PWSAFE_HDR_LIST} PARENT_SCOPE)
 

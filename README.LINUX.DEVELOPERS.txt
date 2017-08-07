@@ -26,6 +26,7 @@ g++
 gettext
 git
 libgtest-dev
+libqrencode-dev
 libuuid1
 libwxgtk3.0-dbg (See note 2 below)
 libwxgtk3.0-dev (See note 2 below)
@@ -38,7 +39,6 @@ make
 pkg-config
 uuid-dev
 zip
-libqrencode-dev
 
 The script Misc/setup-deb-dev-env.sh can be run (sudo or as root) to
 install these and setup the gtest library.

@@ -52,10 +52,10 @@ public:
 };
 
 constexpr bool HasQRCode() {
-#ifdef __linux
-	return true;
+#ifndef NO_QR
+  return true;
 #else
-	return false;
+  return false;
 #endif
 }
 
