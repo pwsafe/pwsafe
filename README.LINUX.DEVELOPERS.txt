@@ -50,6 +50,7 @@ git
 gtest-devel
 libXt-devel
 libXtst-devel
+libqrencode-devel
 libuuid-devel
 libyubikey-devel
 make
