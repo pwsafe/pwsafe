@@ -101,6 +101,16 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  option (NO_QR "Set ON to disable QR support" OFF)
+  if (NOT NO_QR)
+    CHECK_INCLUDE_FILE("qrencode.h" HAVE_LIBQRENCODE_DEV)
+    if(NOT HAVE_LIBQRENCODE_DEV)
+      unset(HAVE_LIBQRENCODE_DEV CACHE)
+      message( FATAL_ERROR "libqrencode-dev(el) not installed: install or select NO_QR")
+    endif(NOT HAVE_LIBQRENCODE_DEV)
+  else (NOT NO_QR)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_QR")
+  endif (NOT NO_QR)
   set (GTEST_ROOT "/usr/src/gtest/build"
     CACHE PATH "The root directory of the gtest install prefix")
 else(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
@@ -331,6 +341,9 @@ elseif (WIN32)
       ${YUBILIB} ${PWS_DLL_LIBS} version Rpcrt4 htmlhelp SetupAPI Hid usp10
       Dbghelp Urlmon gdiplus ${MSXML_LIB} ${CMAKE_REQUIRED_LIBRARIES})
 else ()
+  if (NOT NO_QR)
+    target_link_libraries(pwsafe qrencode  ${CMAKE_REQUIRED_LIBRARIES})
+  endif (NOT NO_QR)
   target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11
   ${CMAKE_REQUIRED_LIBRARIES})
 endif()
@@ -402,12 +415,12 @@ set (CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://pwsafe.org/")
 set (CPACK_DEBIAN_PACKAGE_CONTROL_STRICT_PERMISSION "TRUE")
 if (${LSB_RELEASE_ID_SHORT} STREQUAL "Ubuntu")
 	## Ubuntu-specific
-	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c3.1 (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0-1)")
+	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c3.1 (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1)")
 endif (${LSB_RELEASE_ID_SHORT} STREQUAL "Ubuntu")
 
 if (${LSB_RELEASE_ID_SHORT} STREQUAL "Debian")
 	## Debian-specific:
-	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.7-18lenny4), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2) | libwxgtk3.0-0v5 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.7.0-1)")
+	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.7-18lenny4), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2) | libwxgtk3.0-0v5 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1+b2)")
 endif (${LSB_RELEASE_ID_SHORT} STREQUAL "Debian")
 
 if (${LSB_RELEASE_ID_SHORT} STREQUAL "LinuxMint")
@@ -422,7 +435,7 @@ set (CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
 endif (EXISTS "/etc/debian_version")
 
 ## RPM-specific
-set (CPACK_RPM_PACKAGE_REQUIRES "wxBase3, wxGTK3, xerces-c, ykpers")
+set (CPACK_RPM_PACKAGE_REQUIRES "wxBase3, wxGTK3, xerces-c, ykpers, qrencode-lib")
 set (CPACK_RPM_PACKAGE_URL "https://pwsafe.org/")
 set (CPACK_RPM_PACKAGE_LICENSE "Artistic2.0")
 set (CPACK_RPM_PACKAGE_GROUP "Applications/Utils")
