@@ -513,7 +513,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_TOOLBUTTON_LISTTREE, OnToggleView)
   ON_COMMAND(ID_TOOLBUTTON_VIEWREPORTS, OnViewReports)
 
-  ON_COMMAND(ID_TOOLBUTTON_CLOSEFIND, OnHideFindToolBar)
+  ON_COMMAND(ID_TOOLBUTTON_CLOSEFIND, OnHideFindToolbar)
   ON_COMMAND(ID_MENUITEM_FIND, OnToolBarFind)
   ON_COMMAND(ID_MENUITEM_FINDUP, OnToolBarFindUp)
   ON_COMMAND(ID_TOOLBUTTON_FINDCASE, OnToolBarFindCase)
@@ -1232,9 +1232,9 @@ BOOL DboxMain::OnInitDialog()
 
   SetInitialDatabaseDisplay();
   if (m_bOpen && PWSprefs::GetInstance()->GetPref(PWSprefs::ShowFindToolBarOnOpen))
-    SetFindToolBar(true);
+    OnShowFindToolbar();
   else
-    OnHideFindToolBar();
+    OnHideFindToolbar();
 
   if (m_bOpen) {
     SelectFirstEntry();
@@ -2531,7 +2531,7 @@ BOOL DboxMain::PreTranslateMessage(MSG *pMsg)
       {
         // If Find Toolbar visible, close it and do not pass the ESC along.
         if (m_FindToolBar.IsVisible()) {
-          OnHideFindToolBar();
+          OnHideFindToolbar();
           return TRUE;
         }
         // Do NOT pass the ESC along if preference EscExits is false.
@@ -3311,7 +3311,7 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
     }
 
     if (m_FindToolBar.IsVisible() && !bOpen) {
-      OnHideFindToolBar();
+      OnHideFindToolbar();
     }
   }
 }

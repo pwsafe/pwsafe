@@ -719,7 +719,6 @@ public:
   afx_msg void OnShowHideDragbar();
   afx_msg void OnOldToolbar();
   afx_msg void OnNewToolbar();
-  afx_msg void OnShowFindToolbar();
   afx_msg void OnExpandAll();
   afx_msg void OnCollapseAll();
   afx_msg void OnChangeTreeFont();
@@ -779,7 +778,8 @@ public:
   afx_msg void OnToolBarFindAdvanced();
   afx_msg void OnToolBarFindReport();
   afx_msg void OnToolBarClearFind();
-  afx_msg void OnHideFindToolBar();
+  afx_msg void OnShowFindToolbar();
+  afx_msg void OnHideFindToolbar();
 
   afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
@@ -832,6 +832,7 @@ private:
   bool m_bInRefresh, m_bInRestoreWindows;
   bool m_bDBInitiallyRO;
   bool m_bViaDCA;
+  bool m_bFindBarShown;
   int m_iDateTimeFieldWidth;
   int m_nColumns;
   int m_nColumnIndexByOrder[CItem::LAST_DATA];
