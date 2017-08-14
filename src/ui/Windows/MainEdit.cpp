@@ -2107,13 +2107,24 @@ void DboxMain::PerformAutoType()
 void DboxMain::OnAutoType()
 {
   CItemData *pci(NULL);
+
+  CItemData *pci_selected = getSelectedItem();
+
   if (m_ctlItemTree.IsWindowVisible() && m_LastFoundTreeItem != NULL) {
     pci = (CItemData *)m_ctlItemTree.GetItemData(m_LastFoundTreeItem);
   } else
   if (m_ctlItemList.IsWindowVisible() && m_LastFoundListItem >= 0) {
     pci = (CItemData *)m_ctlItemList.GetItemData(m_LastFoundListItem);
-  } else {
-    pci = getSelectedItem();
+  }
+
+  /*
+    BR1432 - If the user has selected an entry, which is not the previous result of
+    a Find request, then use the selected item.
+
+    Otherwise, use the last found item (if present)
+  */
+  if (pci_selected != NULL && pci != pci_selected) {
+    pci = pci_selected;
   }
 
   if (pci == NULL)
