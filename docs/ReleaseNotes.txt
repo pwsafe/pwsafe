@@ -22,6 +22,7 @@ warning preference to be enabled), the database will be saved if the 'Save datab
 immediately after any change' preference is enabled. After the open is complete,
 these changes can be undone/redone if required.
 [1429] Tree and List views now retain focus when a shortcut entry is created.
+[1428] Remember Find toolbar state when restoring from minimized.
 [1420] The virtual keyboard font size setting is now persistent.
 [1398] Remember if PasswordSafe was maximized when exited.
 

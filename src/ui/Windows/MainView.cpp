@@ -1475,13 +1475,13 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
   if (!m_bInitDone) 
     return;
 
-  BOOL bFindBarShown = m_FindToolBar.IsWindowVisible();
+  m_bFindBarShown = m_FindToolBar.IsWindowVisible() == TRUE;
 
   if (nType != SIZE_MINIMIZED) {
     // Position the control bars - don't bother if just been minimized
 
     // If Find toolbar active - hide it until after we move
-    if (bFindBarShown)
+    if (m_bFindBarShown)
       SetFindToolBar(false);
 
     CRect rect, dragrect;
@@ -1630,7 +1630,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
   } // nType switch statement
 
     // If Find toolbar was active - reshow it
-  if (bFindBarShown && !m_FindToolBar.IsWindowVisible())
+  if (m_bFindBarShown && !m_FindToolBar.IsWindowVisible())
     SetFindToolBar(true);
 
   m_bSizing = false;
@@ -1676,6 +1676,10 @@ void DboxMain::OnRestore()
   m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
 
   m_ctlItemTree.SetRestoreMode(false);
+
+  // If Find toolbar was active - reshow it
+  if (m_bFindBarShown && !m_FindToolBar.IsWindowVisible())
+    SetFindToolBar(true);
 
   TellUserAboutExpiredPasswords();
 }
@@ -2201,7 +2205,7 @@ void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
     m_bSortAscending = true;
   }
   SortListView();
-  OnHideFindToolBar();
+  OnHideFindToolbar();
 
   *pLResult = TRUE;
 }
@@ -2321,14 +2325,14 @@ void DboxMain::OnListView()
 {
   SetListView();
   if (m_FindToolBar.IsVisible())
-    OnHideFindToolBar();
+    OnHideFindToolbar();
 }
 
 void DboxMain::OnTreeView() 
 {
   SetTreeView();
   if (m_FindToolBar.IsVisible())
-    OnHideFindToolBar();
+    OnHideFindToolbar();
 }
 
 void DboxMain::SetListView()
@@ -3945,7 +3949,7 @@ void DboxMain::OnRefreshWindow()
   // Stop Find Toolbar during refresh
   BOOL bFindVisible = m_FindToolBar.IsWindowVisible();
   if (bFindVisible)
-    OnHideFindToolBar();
+    OnHideFindToolbar();
 
   // Useful for users if they are using a filter and have edited an entry
   // so it no longer passes
@@ -3996,7 +4000,7 @@ void DboxMain::OnShowFindToolbar()
     SetFindToolBar(true);
 }
 
-void DboxMain::OnHideFindToolBar()
+void DboxMain::OnHideFindToolbar()
 {
   SetFindToolBar(false);
 
@@ -4010,12 +4014,16 @@ void DboxMain::OnHideFindToolBar()
     m_ctlItemTree.SetFocus();
     m_ctlItemTree.Select(m_LastFoundTreeItem, TVGN_CARET);
   }
+
+  m_bFindBarShown = false;
 }
 
 void DboxMain::SetFindToolBar(bool bShow)
 {
   if (m_FindToolBar.GetSafeHwnd() == NULL)
     return;
+
+  SetToolBarPositions();
 
   if (!m_FindToolBar.IsWindowVisible() && !bShow)
     return;  // Nothing to do if not visible
@@ -4734,7 +4742,7 @@ void DboxMain::OnShowFoundEntries()
     m_bUnsavedDisplayed = m_bExpireDisplayed = false;
 
     // Hide Find toolbar
-    OnHideFindToolBar();
+    OnHideFindToolbar();
 
     // Now set this filter
     m_bFilterActive = m_bFindFilterDisplayed = true;
