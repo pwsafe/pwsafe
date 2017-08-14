@@ -31,6 +31,12 @@ YUBIFLAGS=-DNO_YUBI
 YBPERS_LIBS=core
 endif
 
+ifndef NO_QR
+QR_SRC=pwsqrcodedlg.cpp
+else
+QRFLAGS=-DNO_QR
+endif
+
 # debug
 ifeq ($(CONFIG),debug)
 #Override - debug isn't standard
@@ -161,8 +167,14 @@ YBPERS_LIBPATH?=$(LIBPATH)
 YBPERS_LIBPATH_FLAGS=-L$(YBPERS_LIBPATH)
 endif
 
+ifndef NO_QR
+ifeq ($(findstring Linux, $(shell uname -s)), Linux)
+		LIBS += -lqrencode
+endif
+endif
+
 override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)
-CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS) $(CPPFLAGS)
+CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS) $(QRFLAGS) $(CPPFLAGS)
 ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
 		CPPFLAGS += -std=c++11
 endif
@@ -186,7 +198,7 @@ SOURCES= passwordsafeframe.cpp \
 	PwsSync.cpp DbSelectionPanel.cpp CompareDlg.cpp \
 	wxutils.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \
 	fieldselectionpanel.cpp fieldselectiondlg.cpp pwsmenushortcuts.cpp \
-	$(YUBI_SRC) \
+	$(YUBI_SRC) $(QR_SRC) \
 	ManagePwdPolicies.cpp PasswordPolicy.cpp SelectionCriteria.cpp \
 	TimedTaskChain.cpp mainView.cpp passwordsubset.cpp
 
