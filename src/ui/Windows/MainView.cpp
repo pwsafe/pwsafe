@@ -2814,6 +2814,22 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       dflt_lf = {-16, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L""};
       lf = dflt_lf;
 
+      // Get resolution
+      HDC hDC = ::GetWindowDC(GetSafeHwnd());
+      const int Ypixels = GetDeviceCaps(hDC, LOGPIXELSY);
+      ::ReleaseDC(GetSafeHwnd(), hDC);
+
+      // See if user has set a point size
+      iFontSize = PWSprefs::GetInstance()->GetPref(PWSprefs::VKFontPtSz);
+      if (iFontSize == 0) {
+        // Use default
+        iFontSize = MulDiv(16, 72, Ypixels) * 10;
+        PWSprefs::GetInstance()->SetPref(PWSprefs::VKFontPtSz, iFontSize);
+      }
+
+      // Update font point size
+      lf.lfHeight = -MulDiv(iFontSize / 10, Ypixels, 72);
+
       // Get VKeyboard font in case the user wants to change this.
       cs_FontName = prefs->GetPref(PWSprefs::VKeyboardFontName);
       if (cs_FontName.length() != 0 && cs_FontName.length() <= LF_FACESIZE) {
@@ -2829,8 +2845,8 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
   CFontsDialog fontdlg(&lf, dwFlags, NULL, NULL, iType);
 
   if (iType == CFontsDialog::VKEYBOARDFONT) {
-    fontdlg.m_cf.nSizeMin = 10;
-    fontdlg.m_cf.nSizeMax = 14;
+    fontdlg.m_cf.nSizeMin = 8;
+    fontdlg.m_cf.nSizeMax = 16;
   }
 
   fontdlg.m_sampletext = cs_SampleText.c_str();
@@ -2887,6 +2903,8 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
         break;
       case CFontsDialog::VKEYBOARDFONT:
         // Note Virtual Keyboard font is not kept in Fonts class - so set manually
+        prefs->SetPref(PWSprefs::VKFontPtSz, iFontSize);
+
         if (csfn.IsEmpty()) {
           // Delete config VKeyboard font face name
           prefs->ResetPref(pref_Font);

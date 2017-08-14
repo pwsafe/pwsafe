@@ -2111,9 +2111,21 @@ void CVKeyBoardDlg::ApplyUnicodeFont(CWnd* pDlgItem)
 
     // Initialize a CFont object with the characteristics given
     // in a LOGFONT structure.
+    // Get resolution
+    HDC hDC = ::GetWindowDC(GetSafeHwnd());
+    const int Ypixels = GetDeviceCaps(hDC, LOGPIXELSY);
+    ::ReleaseDC(GetSafeHwnd(), hDC);
+
+    int iFontSize = PWSprefs::GetInstance()->GetPref(PWSprefs::VKFontPtSz);
+    if (iFontSize == 0) {
+      // Use default
+      iFontSize = MulDiv(16, 72, Ypixels) * 10;
+      PWSprefs::GetInstance()->SetPref(PWSprefs::VKFontPtSz, iFontSize);
+    }
+
     LOGFONT lf;
     SecureZeroMemory(&lf, sizeof(lf));
-    lf.lfHeight = -16;
+    lf.lfHeight = -MulDiv(iFontSize / 10, Ypixels, 72);
     lf.lfWeight = FW_NORMAL;
     lf.lfCharSet = DEFAULT_CHARSET;
     wcsncpy_s(lf.lfFaceName, LF_FACESIZE, pszFont, wcslen(pszFont));
