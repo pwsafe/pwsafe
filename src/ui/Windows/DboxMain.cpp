@@ -1127,8 +1127,7 @@ BOOL DboxMain::OnInitDialog()
   m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
   m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
 
-  int iData = PWSprefs::GetInstance()->GetPref(PWSprefs::ClosedTrayIconColour);
-  SetClosedTrayIcon(iData);
+  m_ClosedIcon = app.LoadIcon(IDI_CORNERICON);
   m_pTrayIcon = new CSystemTray(this, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
                                 m_LockedIcon, m_RUEList,
                                 PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
@@ -1145,7 +1144,7 @@ BOOL DboxMain::OnInitDialog()
   m_menuTipManager.Install(this);
 
   // Subclass the ListView HeaderCtrl
-  CHeaderCtrl* pHeader = m_ctlItemList.GetHeaderCtrl();
+  CHeaderCtrl *pHeader = m_ctlItemList.GetHeaderCtrl();
   if (pHeader && pHeader->GetSafeHwnd()) {
     m_LVHdrCtrl.SubclassWindow(pHeader->GetSafeHwnd());
   }
@@ -1242,35 +1241,6 @@ BOOL DboxMain::OnInitDialog()
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
 
   return TRUE;  // return TRUE unless you set the focus to a control
-}
-
-int DboxMain::SetClosedTrayIcon(int &iData, bool bSet)
-{
-  int icon;
-  switch (iData) {
-  case PWSprefs::stiBlack:
-    icon = IDI_TRAY;  // This is black.
-    break;
-  case PWSprefs::stiBlue:
-    icon = IDI_TRAY_BLUE;
-    break;
-  case PWSprefs::stiWhite:
-    icon = IDI_TRAY_WHITE;
-    break;
-  case PWSprefs::stiYellow:
-    icon = IDI_TRAY_YELLOW;
-    break;
-  default:
-    iData = PWSprefs::stiBlack;
-    icon = IDI_TRAY;
-    break;
-  }
-  if (bSet) {
-    ::DestroyIcon(m_ClosedIcon);
-    m_ClosedIcon = app.LoadIcon(icon);
-  }
-
-  return icon;
 }
 
 void DboxMain::OnSetDBID()

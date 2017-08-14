@@ -190,7 +190,6 @@ void COptions::Init()
   m_seclockonidleCB = NULL;
   m_secidletimeoutSB = NULL;
   m_sysusesystrayCB = NULL;
-  m_systrayclosediconcolourRB = NULL;
   m_sysmaxREitemsSB = NULL;
   m_systrayWarning = NULL;
 ////@end COptions member initialisation
@@ -630,15 +629,6 @@ void COptions::CreateControls()
   itemBoxSizer105->Add(itemCheckBox122, 0, wxALIGN_LEFT|wxALL, 5);
 #endif
 
-  wxArrayString itemRadioBox125Strings;
-  itemRadioBox125Strings.Add(_("Black"));
-  itemRadioBox125Strings.Add(_("Cyan"));
-  itemRadioBox125Strings.Add(_("White"));
-  itemRadioBox125Strings.Add(_("Yellow"));
-  m_systrayclosediconcolourRB = new wxRadioBox( itemPanel104, ID_RADIOBOX, _("Initial tray icon color"), wxDefaultPosition, wxDefaultSize, itemRadioBox125Strings, 1, wxRA_SPECIFY_ROWS );
-  m_systrayclosediconcolourRB->SetSelection(0);
-  itemBoxSizer105->Add(m_systrayclosediconcolourRB, 0, wxGROW|wxALL, 5);
-
   GetBookCtrl()->AddPage(itemPanel104, _("System"));
 
   // Set validators
@@ -802,7 +792,6 @@ void COptions::PrefsToPropSheet()
   // System preferences
   m_sysmaxREitemsSB->SetValue(prefs->GetPref(PWSprefs::MaxREItems));
   m_sysusesystrayCB->SetValue(prefs->GetPref(PWSprefs::UseSystemTray));
-  m_systrayclosediconcolourRB->SetSelection(prefs->GetPref(PWSprefs::ClosedTrayIconColour));
   if (!IsTaskBarIconAvailable()) {
     m_systrayWarning->Show();
     Layout();
@@ -897,7 +886,6 @@ void COptions::PropSheetToPrefs()
   // System preferences
   prefs->SetPref(PWSprefs::MaxREItems, m_sysmaxREitemsSB->GetValue());
   prefs->SetPref(PWSprefs::UseSystemTray, m_sysusesystrayCB->GetValue());
-  prefs->SetPref(PWSprefs::ClosedTrayIconColour, m_systrayclosediconcolourRB->GetSelection());
   m_sysstartup = false; // XXX TBD
   prefs->SetPref(PWSprefs::MaxMRUItems, m_sysmaxmru);
   prefs->SetPref(PWSprefs::MRUOnFileMenu, m_sysmruonfilemenu);
@@ -1147,7 +1135,6 @@ void COptions::OnLockOnIdleClick( wxCommandEvent& /* evt */)
 void COptions::OnUseSystrayClick( wxCommandEvent& /* evt */)
 {
   m_sysmaxREitemsSB->Enable(m_sysusesystrayCB->GetValue());
-  m_systrayclosediconcolourRB->Enable(m_sysusesystrayCB->GetValue());
 }
 
 void COptions::OnPageChanging(wxBookCtrlEvent& evt)

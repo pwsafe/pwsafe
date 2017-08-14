@@ -545,7 +545,6 @@ public:
   void HideIcon() { m_pTrayIcon->HideIcon(); }
 
   void SetSystemTrayState(DBSTATE s);
-  int SetClosedTrayIcon(int &icon, bool bSet = true);
   void SetSystemTrayTarget(CWnd *pWnd) { m_pTrayIcon->SetTarget(pWnd); }
 
   HICON CreateIcon(const HICON &hIcon, const int &iIndex,

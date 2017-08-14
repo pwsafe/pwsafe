@@ -33,7 +33,6 @@ public:
   int GetDCA() const {return m_OPTMD.DoubleClickAction;}
   int GetMaxMRUItems() const {return m_OPTMD.MaxMRUItems;}
   int GetMaxREItems() const {return m_OPTMD.MaxREItems;}
-  int GetTrayIconColour() const {return m_OPTMD.TrayIconColour;}
   int GetPWHAction() const {return m_OPTMD.PWHAction;}
   int GetPWHistoryMax() const {return m_OPTMD.PWHistoryNumDefault;}
   bool GetHotKeyState() const {return m_OPTMD.AppHotKeyEnabled == TRUE;}

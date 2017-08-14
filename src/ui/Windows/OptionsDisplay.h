@@ -42,7 +42,6 @@ protected:
   BOOL m_HighlightChanges;
   int m_TreeDisplayStatusAtOpen;
   int m_PreExpiryWarnDays;
-  int m_TrayIconColour;
   //}}AFX_DATA
 
   CButtonExtn m_chkbox[4];

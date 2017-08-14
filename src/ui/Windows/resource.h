@@ -83,10 +83,6 @@
 #define IDI_SBASE_EXPIRED               194
 #define IDI_SBASE_WARNEXPIRED           195
 #define IDI_SHORTCUT                    196
-#define IDI_TRAY                        205
-#define IDI_TRAY_BLUE                   206
-#define IDI_TRAY_WHITE                  207
-#define IDI_TRAY_YELLOW                 208
 #define IDI_UNLOCKEDICON                209
 #define IDR_POPLANGUAGES                210
 #define IDR_POPCOPYALLTOORIGINAL        211
@@ -611,10 +607,6 @@
 #define IDC_STATIC_ISANALIAS            1269
 #define IDC_NEWVER_STATUS               1272
 #define IDC_VISIT_WEBSITE               1273
-#define IDC_RST_BLK                     1276
-#define IDC_RST_BLUE                    1277
-#define IDC_RST_WHITE                   1278
-#define IDC_RST_YELLOW                  1279
 #define IDC_SAMPLETEXT                  1283
 #define IDC_TREATWHITESPACEASEMPTY      1284
 #define IDC_STATIC_LC1                  1285
