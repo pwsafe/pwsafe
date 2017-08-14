@@ -15,6 +15,7 @@ The ReleaseNotes.html file has links to the relevant tickets/issues.
 
 Bugs Fixed in 3.43.1
 ====================
+[1432] Perform autotype of correct entry when the user changes the selection made by a Find.
 [1431] The protected entry padlock symbol is now used in all places where a
 protected entry is listed in any dialog.
 [1430] If an expired or about to be expired entry is edited at database open (requires
