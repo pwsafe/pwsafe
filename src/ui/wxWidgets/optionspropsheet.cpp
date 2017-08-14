@@ -482,7 +482,7 @@ void COptions::CreateControls()
   itemRadioButton83->SetValue(false);
   itemStaticBoxSizer80->Add(itemRadioButton83, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxRadioButton* itemRadioButton84 = new wxRadioButton( itemPanel74, ID_PWHISTSETMAX, _("Set maximum number of paswords saved to above value"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxRadioButton* itemRadioButton84 = new wxRadioButton( itemPanel74, ID_PWHISTSETMAX, _("Set maximum number of passwords saved to above value"), wxDefaultPosition, wxDefaultSize, 0 );
   itemRadioButton84->SetValue(false);
   itemStaticBoxSizer80->Add(itemRadioButton84, 0, wxALIGN_LEFT|wxALL, 5);
 
