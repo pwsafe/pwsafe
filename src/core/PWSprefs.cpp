@@ -130,6 +130,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("IgnoreHelpLoadError"), false, ptApplication},        //application
   {_T("VKPlaySound"), false, ptApplication},                //application
   {_T("ListSortAscending"), true, ptApplication},           //application
+  {_T("EnableWindowTransparency"), false, ptApplication },  //application
 };
 
 // Default value = -1 means set at runtime
@@ -174,6 +175,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("PasswordFontPtSz"), 0, ptApplication, 0, -1},                // application
   {_T("NotesFontPtSz"), 0, ptApplication, 0, -1},                   // application
   {_T("AddEditFontPtSz"), 0, ptApplication, 0, -1},                 // application
+  {_T("WindowTransparency"), 0, ptApplication, 0, 50},              // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

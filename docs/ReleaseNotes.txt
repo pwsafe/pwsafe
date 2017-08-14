@@ -44,6 +44,8 @@ Windows 10, then the old symbol ('+') will be used.
 [839] The list of expired entries now shows protected entries in
 italics, indicating that they must be unprotected before they can be
 updated.
+[828] The main window can now be set to be partially transparent via
+Manage->Options->Display.
 
 Bugs fixed in 3.43.0
 ====================

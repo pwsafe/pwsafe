@@ -453,6 +453,11 @@ public:
   std::set<StringX> GetAllMediaTypes() const
   {return m_core.GetAllMediaTypes();}
 
+  // For latered Windows
+  PSLWA GetSetLayeredWindowAttributes() { return m_pfcnSetLayeredWindowAttributes; }
+  bool GetInitialTransparencyState() { return m_bOnStartupTransparancyEnabled; }
+  bool SetLayered(CWnd *pWnd, const int value = -1);
+
  protected:
    friend class CSetDBID;  // To access icon creation etc.
 
@@ -974,6 +979,9 @@ private:
   PSBR_CREATE m_pfcnShutdownBlockReasonCreate;
   PSBR_DESTROY m_pfcnShutdownBlockReasonDestroy;
 
+  // For Layered Windows
+  PSLWA m_pfcnSetLayeredWindowAttributes;
+
   // Delete/Rename/AutoType Shortcuts
   WPARAM m_wpDeleteMsg, m_wpDeleteKey;
   WPARAM m_wpRenameMsg, m_wpRenameKey;
@@ -981,6 +989,7 @@ private:
   bool m_bDeleteCtrl, m_bDeleteShift;
   bool m_bRenameCtrl, m_bRenameShift;
   bool m_bAutotypeCtrl, m_bAutotypeShift;
+  bool m_bOnStartupTransparancyEnabled;
 
   // Do Autotype
   bool m_bInAT;

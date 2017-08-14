@@ -46,12 +46,15 @@ struct st_Opt_master_data {
   BOOL WordWrapNotes;
   BOOL PreExpiryWarn;
   BOOL HighlightChanges;
+  BOOL EnableTransparency;
   int PreExpiryWarnDays;
   int TreeDisplayStatusAtOpen;
-  int TrayIconColour;
+  int PercentTransparency;
   // Preferences min/max values
   short prefminExpiryDays;
   short prefmaxExpiryDays;
+  short prefminPercentTransparency;
+  short prefmaxPercentTransparency;
   
   // Misc Data
   BOOL ConfirmDelete;
@@ -159,8 +162,10 @@ public:
   inline BOOL &M_WordWrapNotes() {return m_OPTMD.WordWrapNotes;}
   inline BOOL &M_PreExpiryWarn() {return m_OPTMD.PreExpiryWarn;}
   inline BOOL &M_HighlightChanges() {return m_OPTMD.HighlightChanges;}
+  inline BOOL &M_EnableTransparency() {return m_OPTMD.EnableTransparency;}
   inline int &M_PreExpiryWarnDays() {return m_OPTMD.PreExpiryWarnDays;}
   inline int &M_TreeDisplayStatusAtOpen() {return m_OPTMD.TreeDisplayStatusAtOpen;}
+  inline int &M_PercentTransparency() { return m_OPTMD.PercentTransparency; }
   // Preferences min/max values
   inline short &M_prefminExpiryDays() { return m_OPTMD.prefminExpiryDays; }
   inline short &M_prefmaxExpiryDays() { return m_OPTMD.prefmaxExpiryDays; }
@@ -171,6 +176,8 @@ public:
   inline BOOL &M_EscExits() {return m_OPTMD.EscExits;}
   inline int &M_DoubleClickAction() {return m_OPTMD.DoubleClickAction;}
   inline int &M_ShiftDoubleClickAction() {return m_OPTMD.ShiftDoubleClickAction;}
+  inline short &M_prefminPercentTransparency() { return m_OPTMD.prefminPercentTransparency; }
+  inline short &M_prefmaxPercentTransparency() { return m_OPTMD.prefmaxPercentTransparency; }
 
   inline CSecString &M_DefUsername() {return m_OPTMD.DefUsername;}
   inline CString &M_OtherBrowserLocation() {return m_OPTMD.OtherBrowserLocation;}
