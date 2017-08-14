@@ -110,6 +110,12 @@ INT_PTR CPWDialog::DoModal()
   return rc;
 }
 
+static const char szDialog[] = "Dialog";
+static const char szPropertySheet[] = "PropertySheet";
+
+static const size_t len_Dialog = strlen(szDialog);
+static const size_t len_PropertySheet = strlen(szPropertySheet);
+
 CPWDialogTracker *CPWDialog::GetDialogTracker()
 {
   return sm_tracker;
@@ -157,6 +163,42 @@ void CPWDialogTracker::Apply(void (*f)(CWnd *))
   std::for_each(dialogs.begin(), dialogs.end(), std::ptr_fun(f));
 }
 
+bool CPWDialogTracker::VerifyCanCloseDialogs()
+{
+  // we operate on a copy of the list of dialogs,
+  // to avoid deadlocks and other nastiness
+  std::list<CWnd *> dialogs;
+  m_mutex.Lock();
+  dialogs = m_dialogs;
+  m_mutex.Unlock();
+
+  for (auto *pWnd : dialogs) {
+    CRuntimeClass *prt = pWnd->GetRuntimeClass();
+    size_t len_classname = strlen(prt->m_lpszClassName);
+    bool bCanDo(false);
+
+    if (len_classname > len_Dialog) {
+      const char *last_chars = &prt->m_lpszClassName[len_classname - len_Dialog];
+      if (strcmp(last_chars, szDialog) == 0) {
+        bCanDo = true;
+      }
+    }
+
+    if (len_classname > len_PropertySheet) {
+      const char *last_chars = &prt->m_lpszClassName[len_classname - len_PropertySheet];
+      if (strcmp(last_chars, szPropertySheet) == 0) {
+        bCanDo = true;
+      }
+    }
+
+    if (!bCanDo)
+      return bCanDo;
+  }
+  //std::for_each(dialogs.begin(), dialogs.end(), std::ptr_fun(f));
+
+  return true;
+}
+
 namespace {
   void Shower(CWnd *pWnd)
   {
@@ -166,6 +208,26 @@ namespace {
   void Hider(CWnd *pWnd)
   {
     pWnd->ShowWindow(SW_HIDE);
+  }
+
+  void Closer(CWnd *pWnd)
+  {
+    CRuntimeClass *prt = pWnd->GetRuntimeClass();
+    size_t len_classname = strlen(prt->m_lpszClassName);
+
+    if (len_classname > len_Dialog) {
+      const char *last_chars = &prt->m_lpszClassName[len_classname - len_Dialog];
+      if (strcmp(last_chars, szDialog) == 0) {
+        ((CDialog *)pWnd)->EndDialog(IDCANCEL);
+      }
+    }
+
+    if (len_classname > len_PropertySheet) {
+      const char *last_chars = &prt->m_lpszClassName[len_classname - len_PropertySheet];
+      if (strcmp(last_chars, szPropertySheet) == 0) {
+        ((CPropertySheet *)pWnd)->EndDialog(IDCANCEL);
+      }
+    }
   }
 }
 
@@ -177,4 +239,12 @@ void CPWDialogTracker::ShowOpenDialogs()
 void CPWDialogTracker::HideOpenDialogs()
 {
   Apply(Hider);
+}
+
+void CPWDialogTracker::CloseOpenDialogs()
+{
+  // Only close them if DB is R-O
+  if (app.GetMainDlg()->IsDBReadOnly()) {
+    Apply(Closer);
+  }
 }
