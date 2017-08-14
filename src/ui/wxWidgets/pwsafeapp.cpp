@@ -388,7 +388,7 @@ bool PwsafeApp::OnInit()
     m_core.SetCurFile(L"");
   }
   if (cmd_silent) {
-    if ( wxTaskBarIcon::IsAvailable() ) {
+    if ( IsTaskBarIconAvailable() ) {
       // start silent implies use system tray.
       // Note that if UseSystemTray is already true, then pwsafe will try to run silently anyway
       PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);
