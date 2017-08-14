@@ -661,7 +661,7 @@ void DboxMain::setupBars()
                             SBPS_STRETCH, NULL);
   }
 
-  CDC* pDC = this->GetDC();
+  CDC *pDC = this->GetDC();
   int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
   m_MainToolBar.Init(NumBits);
   m_FindToolBar.Init(NumBits, PWS_MSG_TOOLBAR_FIND,
@@ -676,6 +676,7 @@ void DboxMain::setupBars()
     pws_os::Trace(L"Failed to create Main toolbar\n");
     return;      // fail to create
   }
+
   DWORD dwStyle = m_MainToolBar.GetBarStyle();
   dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP   |
                       CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
@@ -691,6 +692,7 @@ void DboxMain::setupBars()
     pws_os::Trace(L"Failed to create Find toolbar\n");
     return;      // fail to create
   }
+
   dwStyle = m_FindToolBar.GetBarStyle();
   dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP |
                       CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
@@ -2415,8 +2417,7 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
     }
     m_MainToolBar.LoadDefaultToolBar(m_toolbarMode);
     m_FindToolBar.LoadDefaultToolBar(m_toolbarMode);
-    CString csButtonNames = PWSprefs::GetInstance()->
-      GetPref(PWSprefs::MainToolBarButtons).c_str();
+    CString csButtonNames = PWSprefs::GetInstance()->GetPref(PWSprefs::MainToolBarButtons).c_str();
     m_MainToolBar.CustomizeButtons(csButtonNames);
   } else { // !bInit - changing bitmaps
     m_MainToolBar.ChangeImages(m_toolbarMode);
@@ -5409,4 +5410,34 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
       sx_fielddata = ci.GetFieldValue(ft);
   }
   return sx_fielddata;
+}
+
+bool DboxMain::SetLayered(CWnd *pWnd, const int value)
+{
+  if (m_pfcnSetLayeredWindowAttributes && m_bOnStartupTransparancyEnabled) {
+    HWND hWnd = pWnd->GetSafeHwnd();
+
+    // Set Layered if not already
+    LONG lstyle = GetWindowLong(hWnd, GWL_EXSTYLE);
+    if ((lstyle & WS_EX_LAYERED) == 0) {
+      SetWindowLong(hWnd, GWL_EXSTYLE, lstyle | WS_EX_LAYERED);
+    }
+
+    const BYTE bytePercentTransparency = (value != -1) ? (BYTE)value :
+      (BYTE)PWSprefs::GetInstance()->GetPref(PWSprefs::WindowTransparency);
+
+    const BYTE byteWindowTransparency = (100 - bytePercentTransparency) * 255 / 100;
+
+    // Set final transparency
+    BOOL brc = m_pfcnSetLayeredWindowAttributes(hWnd, 0, byteWindowTransparency, LWA_ALPHA);
+
+    if (brc == 0) {
+      pws_os::IssueError(L"SetLayeredWindowAttributes", false);
+    }
+
+    return brc != 0;
+  }
+
+  // Couldn't do it
+  return false;
 }

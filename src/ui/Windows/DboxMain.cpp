@@ -156,7 +156,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_bFindToolBarVisibleAtLock(false), m_bSuspendGUIUpdates(false), m_iNeedRefresh(NONE),
   m_iDBIndex(0), m_hMutexDBIndex(NULL),
-  m_DBLockedIndexColour(RGB(255, 255, 0)), m_DBUnlockedIndexColour(RGB(255, 255, 0))
+  m_DBLockedIndexColour(RGB(255, 255, 0)), m_DBUnlockedIndexColour(RGB(255, 255, 0)),
+  m_bOnStartupTransparancyEnabled(false)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::LOAD_LIBRARY_SYS));
@@ -165,13 +166,17 @@ DboxMain::DboxMain(CWnd* pParent)
                                                                       "ShutdownBlockReasonCreate"));
     m_pfcnShutdownBlockReasonDestroy = PSBR_DESTROY(pws_os::GetFunction(m_hUser32, "ShutdownBlockReasonDestroy"));
 
+    m_pfcnSetLayeredWindowAttributes = PSLWA(pws_os::GetFunction(m_hUser32, "SetLayeredWindowAttributes"));
+
     // Do not free library until the end or the addresses may become invalid
     // On the other hand - if either of these addresses are NULL, why keep it?
     if (m_pfcnShutdownBlockReasonCreate == NULL || 
-        m_pfcnShutdownBlockReasonDestroy == NULL) {
-      // Make both NULL in case only one was
+        m_pfcnShutdownBlockReasonDestroy == NULL ||
+        m_pfcnSetLayeredWindowAttributes == NULL) {
+      // Make all NULL in case only one was
       m_pfcnShutdownBlockReasonCreate = NULL;
       m_pfcnShutdownBlockReasonDestroy = NULL;
+      m_pfcnSetLayeredWindowAttributes = NULL;
       pws_os::FreeLibrary(m_hUser32);
       m_hUser32 = NULL;
     }
@@ -1123,6 +1128,14 @@ BOOL DboxMain::OnInitDialog()
   PWS_LOGIT;
 
   CDialog::OnInitDialog();
+
+  if (m_pfcnSetLayeredWindowAttributes) {
+    m_bOnStartupTransparancyEnabled =
+      PWSprefs::GetInstance()->GetPref(PWSprefs::EnableWindowTransparency);
+  }
+
+  // Only do after above OnInitDialog otherwise window will not have been created
+  SetLayered((CWnd *)this);
 
   m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
   m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);

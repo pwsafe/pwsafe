@@ -47,7 +47,7 @@ protected:
   int m_index;
   bool m_bVKAvailable;
 
-  virtual BOOL OnInitDialog(void);
+  virtual BOOL OnInitDialog();
   virtual BOOL PreTranslateMessage(MSG *pMsg);
   virtual void DoDataExchange(CDataExchange *pDX);
 

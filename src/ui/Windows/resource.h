@@ -886,6 +886,12 @@
 #define IDC_STATIC_MESSAGE              1588
 #define IDC_ALTEDITOR_CMDLINE           1589
 #define IDC_SHOWCOMBINATION             1590
+#define IDC_ENABLETRANSPARENCY          1591
+#define IDC_TRANSPARENCY                1592
+#define IDC_TRANSPARENCYHELP            1593
+#define IDC_STATIC_MAXTRANSPARENCY      1594
+#define IDC_STATIC_MINTRANSPARENCY      1595
+#define IDC_TESTTRANSPARENCY            1596
 
 // Next default values for new objects
 // 
@@ -893,7 +899,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        561
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1591
+#define _APS_NEXT_CONTROL_VALUE         1597
 #define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif

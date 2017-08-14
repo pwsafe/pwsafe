@@ -127,6 +127,7 @@ public:
     IgnoreHelpLoadError, // Only under WX
     VKPlaySound, // Windows only
     ListSortAscending,
+    EnableWindowTransparency,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
@@ -139,6 +140,7 @@ public:
     DlgOrientation, TimedTaskChainDelay,
     AutotypeSelectAllKeyCode, AutotypeSelectAllModMask, //X only
     TreeFontPtSz, PasswordFontPtSz, NotesFontPtSz, AddEditFontPtSz,
+    WindowTransparency,
     NumIntPrefs};
 
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,

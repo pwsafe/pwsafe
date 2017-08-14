@@ -114,3 +114,6 @@ rectangle.
 // Although this limit can be changed to up to 2GB of characters
 // (4GB memory if Unicode), it would make the database size absolutely enormous!
 #define MAXTEXTCHARS       30000
+
+// For Layered Windows
+typedef DWORD(WINAPI *PSLWA) (HWND, DWORD, BYTE, DWORD);
