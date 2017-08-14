@@ -345,9 +345,6 @@ void DboxMain::OnOptions()
                             m_StatusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
                             SBPS_STRETCH, NULL);
 
-    int iTrayColour = pOptionsPS->GetTrayIconColour();
-    SetClosedTrayIcon(iTrayColour);
-
     UpdateSystemMenu();
     
     if (pOptionsPS->GetMaxMRUItems() == 0)

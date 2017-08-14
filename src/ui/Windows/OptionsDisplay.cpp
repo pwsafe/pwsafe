@@ -50,7 +50,6 @@ COptionsDisplay::COptionsDisplay(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_HighlightChanges = M_HighlightChanges();
   m_PreExpiryWarnDays = M_PreExpiryWarnDays();
   m_TreeDisplayStatusAtOpen = M_TreeDisplayStatusAtOpen();
-  m_TrayIconColour = M_TrayIconColour();
 }
 
 COptionsDisplay::~COptionsDisplay()
@@ -76,7 +75,6 @@ void COptionsDisplay::DoDataExchange(CDataExchange *pDX)
   DDX_Check(pDX, IDC_PREWARNEXPIRY, m_PreExpiryWarn);
   DDX_Text(pDX, IDC_PREEXPIRYWARNDAYS, m_PreExpiryWarnDays);
   DDX_Check(pDX, IDC_HIGHLIGHTCHANGES, m_HighlightChanges);
-  DDX_Radio(pDX, IDC_RST_BLK, m_TrayIconColour); // only first!
 
   DDX_Control(pDX, IDC_DEFUNSHOWINTREE, m_chkbox[0]);
   DDX_Control(pDX, IDC_DEFPWSHOWINTREE, m_chkbox[1]);
@@ -164,7 +162,6 @@ LRESULT COptionsDisplay::OnQuerySiblings(WPARAM wParam, LPARAM )
           (m_PreExpiryWarn            == TRUE &&
            M_PreExpiryWarnDays()      != m_PreExpiryWarnDays)      ||
           M_TreeDisplayStatusAtOpen() != m_TreeDisplayStatusAtOpen ||
-          M_TrayIconColour()          != m_TrayIconColour          ||
           M_HighlightChanges()        != m_HighlightChanges)
         return 1L;
       break;
@@ -194,7 +191,6 @@ BOOL COptionsDisplay::OnApply()
   M_HighlightChanges() = m_HighlightChanges;
   M_PreExpiryWarnDays() = m_PreExpiryWarnDays;
   M_TreeDisplayStatusAtOpen() = m_TreeDisplayStatusAtOpen;
-  M_TrayIconColour() = m_TrayIconColour;
 
   return COptions_PropertyPage::OnApply();
 }

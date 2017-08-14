@@ -156,8 +156,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("BackupSuffix"), BKSFX_IncNumber, ptApplication, minBKSFX, maxBKSFX}, // application
   {_T("BackupMaxIncremented"), 3, ptApplication, 1, 999},           // application
   {_T("PreExpiryWarnDays"), 1, ptApplication, 1, 30},               // application
-  {_T("ClosedTrayIconColour"), stiBlack, ptApplication,
-                               stiBlack, stiYellow},                // application
+  {_T("ClosedTrayIconColour"), 0, ptObsolete, -1, -1},              // obsolete in 3.43.1
   {_T("PWDigitMinLength"), 0, ptDatabase, 0, 1024},                 // database
   {_T("PWLowercaseMinLength"), 0, ptDatabase, 0, 1024},             // database
   {_T("PWSymbolMinLength"), 0, ptDatabase, 0, 1024},                // database

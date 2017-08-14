@@ -22,6 +22,9 @@ protected entry is listed in any dialog.
 
 Changes to Existing Features in 3.43.1
 ======================================
+[] The option that allows you to change the color of the system tray icon
+displayed when Password Safe is initially started and when there's no open database
+has been removed. The standard PasswordSafe brown icon will be used.
 [] Use the Add/Edit font in preference to the Tree/List font outside
 the actual Tree/List views (since the Tree/List fonts may be too large).
 

@@ -170,8 +170,6 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::PreExpiryWarnDays);
   m_OPTMD.TreeDisplayStatusAtOpen =
       prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen);
-  m_OPTMD.TrayIconColour =
-      prefs->GetPref(PWSprefs::ClosedTrayIconColour);
   m_OPTMD.HighlightChanges = m_save_bHighlightChanges =
       prefs->GetPref(PWSprefs::HighlightChanges);
   // Preferences min/max

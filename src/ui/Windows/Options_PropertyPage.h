@@ -161,7 +161,6 @@ public:
   inline BOOL &M_HighlightChanges() {return m_OPTMD.HighlightChanges;}
   inline int &M_PreExpiryWarnDays() {return m_OPTMD.PreExpiryWarnDays;}
   inline int &M_TreeDisplayStatusAtOpen() {return m_OPTMD.TreeDisplayStatusAtOpen;}
-  inline int &M_TrayIconColour() {return m_OPTMD.TrayIconColour;}
   // Preferences min/max values
   inline short &M_prefminExpiryDays() { return m_OPTMD.prefminExpiryDays; }
   inline short &M_prefmaxExpiryDays() { return m_OPTMD.prefmaxExpiryDays; }

@@ -169,9 +169,6 @@ public:
   enum {minBKSFX = 0, BKSFX_None = 0, BKSFX_DateTime = 1, BKSFX_IncNumber = 2,
     maxBKSFX = 2};
 
-  // for System Tray icon color
-  enum {stiBlack = 0, stiBlue = 1, stiWhite = 2, stiYellow = 3};
-
   // For Password Policy
   // Preferences changed (Database or Application or Shortcuts)
   enum {DB_PREF = 0, APP_PREF = 1, SHC_PREF = 2};
