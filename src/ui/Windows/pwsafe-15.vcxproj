@@ -619,6 +619,7 @@
     <ClCompile Include="SampleTextDlg.cpp" />
     <ClCompile Include="SCWListCtrl.cpp" />
     <ClCompile Include="SecString.cpp" />
+    <ClCompile Include="SetDBID.cpp" />
     <ClCompile Include="filter\SetFiltersDlg.cpp" />
     <ClCompile Include="filter\SetHistoryFiltersDlg.cpp" />
     <ClCompile Include="filter\SetPolicyFiltersDlg.cpp" />
@@ -755,6 +756,7 @@
     <ClInclude Include="SampleTextDlg.h" />
     <ClInclude Include="SCWListCtrl.h" />
     <ClInclude Include="SecString.h" />
+    <ClInclude Include="SetDBID.h" />
     <ClInclude Include="filter\SetFiltersDlg.h" />
     <ClInclude Include="filter\SetHistoryFiltersDlg.h" />
     <ClInclude Include="filter\SetPolicyFiltersDlg.h" />
