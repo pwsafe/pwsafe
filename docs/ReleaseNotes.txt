@@ -42,6 +42,7 @@ they will be noted in the Export report.
 an attachment (V4 databases only) has been implemented but, if the currently
 selected Tree/List font does not support it and the user is not running
 Windows 10, then the old symbol ('+') will be used.
+[841] Close/exit is now allowed via System Tray icon when the database is open in read-only mode.
 [839] The list of expired entries now shows protected entries in
 italics, indicating that they must be unprotected before they can be
 updated.

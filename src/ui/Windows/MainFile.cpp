@@ -470,6 +470,18 @@ void DboxMain::OnClose()
 {
   PWS_LOGIT;
 
+  // We will allow DB Close to close open dialogs IFF the DB is open in R-O and any open
+  // dialogs can be closed
+  bool bCloseOpenDialogs = IsDBReadOnly();
+  if (bCloseOpenDialogs && CPWDialog::GetDialogTracker()->AnyOpenDialogs()) {
+    bCloseOpenDialogs = CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
+  }
+
+  if (bCloseOpenDialogs) {
+    // Close all open dialogs - R-O mode ONLY + as above
+    CPWDialog::GetDialogTracker()->CloseOpenDialogs();
+  }
+
   Close();
 }
 
@@ -3976,6 +3988,18 @@ void DboxMain::OnOK()
   PWS_LOGIT;
 
   SavePreferencesOnExit();
+
+  // We will allow pgm Exit to close open dialogs IFF the DB is open in R-O and any open
+  // dialogs can be closed
+  bool bCloseOpenDialogs = IsDBReadOnly();
+  if (bCloseOpenDialogs && CPWDialog::GetDialogTracker()->AnyOpenDialogs()) {
+    bCloseOpenDialogs = CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
+  }
+
+  if (bCloseOpenDialogs) {
+    // Close all open dialogs - R-O mode ONLY + as above
+    CPWDialog::GetDialogTracker()->CloseOpenDialogs();
+  }
 
   int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
   if (rc == PWScore::SUCCESS || rc == PWScore::USER_EXIT) {
