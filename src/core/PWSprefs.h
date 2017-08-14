@@ -139,7 +139,7 @@ public:
     OptShortcutColumnWidth, ShiftDoubleClickAction, DefaultAutotypeDelay,
     DlgOrientation, TimedTaskChainDelay,
     AutotypeSelectAllKeyCode, AutotypeSelectAllModMask, //X only
-    TreeFontPtSz, PasswordFontPtSz, NotesFontPtSz, AddEditFontPtSz,
+    TreeFontPtSz, PasswordFontPtSz, NotesFontPtSz, AddEditFontPtSz, VKFontPtSz,
     WindowTransparency,
     NumIntPrefs};
 

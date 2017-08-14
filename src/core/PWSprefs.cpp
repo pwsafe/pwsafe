@@ -175,6 +175,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("PasswordFontPtSz"), 0, ptApplication, 0, -1},                // application
   {_T("NotesFontPtSz"), 0, ptApplication, 0, -1},                   // application
   {_T("AddEditFontPtSz"), 0, ptApplication, 0, -1},                 // application
+  {_T("VKFontPtSz"), 0, ptApplication, 0, -1},                      // application
   {_T("WindowTransparency"), 0, ptApplication, 0, 50},              // application
 };
 
