@@ -789,11 +789,6 @@ static struct {short pv; wxString name;}
   short defDCA =  short(PWSprefs::GetInstance()->
       GetPref(isShift ?
         PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction));
-  if (useDefault) {
-    iDCA = defDCA;
-  } else {
-    iDCA = dca;
-  }
   // Following loop:
   // - sets CB's client data to pref value
   // - Adds " (default)" to default string
@@ -804,8 +799,11 @@ static struct {short pv; wxString name;}
       wxString dv = dcaMapping[i].name;
       dv += L" ("; dv += _("default"); dv += L")";
       pcbox->SetString(i, dv);
+      if (useDefault || iDCA == defDCA) {
+        pcbox->SetValue(dv);
+      }
     }
-    if (iDCA == dcaMapping[i].pv)
+    else if (iDCA == dcaMapping[i].pv)
       pcbox->SetValue(dcaMapping[i].name);
   }
 }
