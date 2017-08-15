@@ -22,11 +22,11 @@
 #endif
 
 inline wxString& operator << ( wxString& str, const wxPoint& pt) {
-  return str << wxT('[') << pt.x << wxT(',') << pt.y << wxT(']');
+  return str << L'[' << pt.x << L',' << pt.y << L']';
 }
 
 inline wxString& operator << ( wxString& str, const wxSize& sz) {
-  return str << wxT('[') << sz.GetWidth() << wxT(',') << sz.GetHeight() << wxT(']');
+  return str << L'[' << sz.GetWidth() << L',' << sz.GetHeight() << L']';
 }
 
 inline wxString towxstring(const StringX& str) {
@@ -143,7 +143,7 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
 
 inline const wxChar* ToStr(const wxString& s) {
   if (s == wxEmptyString) {
-    return wxT("wxEmptyString");
+    return L"wxEmptyString";
   }
   else {
     return s.GetData();
@@ -151,7 +151,7 @@ inline const wxChar* ToStr(const wxString& s) {
 }
 
 inline const wxChar* ToStr(bool b) {
-  return b? wxT("True"): wxT("False");
+  return b? L"True": L"False";
 }
 
 void HideWindowRecursively(wxTopLevelWindow* win, wxWindowList& hiddenWindows);
@@ -215,12 +215,12 @@ public:
 
   void OnHookedEvent(evtClass& evt) {
     evt.Skip();
-    wxCHECK_RET(!evt.GetClientData(), wxT("Command event already has client data"));
+    wxCHECK_RET(!evt.GetClientData(), L"Command event already has client data");
     evt.SetClientData(m_clientData);
     if (m_oneShot) {
       wxCHECK_RET(m_evtSource->Disconnect(m_windowId, m_eventType,
                               (wxObjectEventFunction)&EventDataInjector::OnHookedEvent,
-                              NULL, this), wxT("Could not remove dynamic event parameter injection hook"));
+                              NULL, this), L"Could not remove dynamic event parameter injection hook");
     }
   }
 };
@@ -315,7 +315,7 @@ public:
   virtual void GetAllFormats(wxDataFormat *formats, Direction dir = Get) const wxOVERRIDE {
     wxTextDataObject::GetAllFormats(formats, dir);
     // set type for new format (for some reason "text/plain;charset=utf-8" don't work)
-    formats[wxTextDataObject::GetFormatCount(dir)].SetId("text/plain");
+    formats[wxTextDataObject::GetFormatCount(dir)].SetId(L"text/plain");
   }
   // No need to override SetData, wxTextDataObject put "preferred format" text
   // into all formats

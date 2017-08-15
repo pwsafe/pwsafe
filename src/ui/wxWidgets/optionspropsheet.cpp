@@ -255,7 +255,7 @@ void COptions::CreateControls()
   wxStaticText* itemStaticText17 = new wxStaticText( itemPanel2, wxID_STATIC, _("Max."), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer15->Add(itemStaticText17, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_bumaxinc = new wxSpinCtrl( itemPanel2, ID_SPINCTRL9, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_bumaxinc = new wxSpinCtrl( itemPanel2, ID_SPINCTRL9, L"0", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
   itemBoxSizer15->Add(m_bumaxinc, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer19 = new wxBoxSizer(wxHORIZONTAL);
@@ -332,7 +332,7 @@ void COptions::CreateControls()
   m_preexpirywarnCB->SetValue(false);
   itemBoxSizer39->Add(m_preexpirywarnCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_preexpirywarndaysSB = new wxSpinCtrl( itemPanel29, ID_SPINCTRL10, _T("1"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 30, 1 );
+  m_preexpirywarndaysSB = new wxSpinCtrl( itemPanel29, ID_SPINCTRL10, L"1", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 30, 1 );
   itemBoxSizer39->Add(m_preexpirywarndaysSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText42 = new wxStaticText( itemPanel29, wxID_STATIC, _("days before passwords expire"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -462,7 +462,7 @@ void COptions::CreateControls()
   m_pwhistsaveCB->SetValue(false);
   itemBoxSizer76->Add(m_pwhistsaveCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwhistnumdfltSB = new wxSpinCtrl( itemPanel74, ID_SPINCTRL11, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwhistnumdfltSB = new wxSpinCtrl( itemPanel74, ID_SPINCTRL11, L"0", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
   itemBoxSizer76->Add(m_pwhistnumdfltSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText79 = new wxStaticText( itemPanel74, wxID_STATIC, _("previous passwords per entry"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -522,7 +522,7 @@ void COptions::CreateControls()
   m_seclockonidleCB->SetValue(false);
   itemBoxSizer93->Add(m_seclockonidleCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_secidletimeoutSB = new wxSpinCtrl( itemPanel86, ID_SPINCTRL12, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::IdleTimeout), 0 );
+  m_secidletimeoutSB = new wxSpinCtrl( itemPanel86, ID_SPINCTRL12, L"0", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::IdleTimeout), 0 );
   itemBoxSizer93->Add(m_secidletimeoutSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText96 = new wxStaticText( itemPanel86, wxID_STATIC, _("minutes idle"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -574,7 +574,7 @@ void COptions::CreateControls()
   wxStaticText* itemStaticText109 = new wxStaticText( itemPanel104, wxID_STATIC, _("  Remember last"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer108->Add(itemStaticText109, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_sysmaxREitemsSB = new wxSpinCtrl( itemPanel104, ID_SPINCTRL13, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_sysmaxREitemsSB = new wxSpinCtrl( itemPanel104, ID_SPINCTRL13, L"0", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
   itemBoxSizer108->Add(m_sysmaxREitemsSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText111 = new wxStaticText( itemPanel104, wxID_STATIC, _("used entries in System Tray menu"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -597,7 +597,7 @@ void COptions::CreateControls()
   wxStaticText* itemStaticText115 = new wxStaticText( itemPanel104, wxID_STATIC, _("  Remember last"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer114->Add(itemStaticText115, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxSpinCtrl* itemSpinCtrl116 = new wxSpinCtrl( itemPanel104, ID_SPINCTRL, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  wxSpinCtrl* itemSpinCtrl116 = new wxSpinCtrl( itemPanel104, ID_SPINCTRL, L"0", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
   itemBoxSizer114->Add(itemSpinCtrl116, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText117 = new wxStaticText( itemPanel104, wxID_STATIC, _("databases"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -995,7 +995,7 @@ void COptions::OnSuffixCBSet( wxCommandEvent& /* evt */ )
   wxString example = m_usrbuprefixTxt->GetValue();
 
   if (example.empty())
-    example = wxT("pwsafe"); // XXXX get current file's basename!
+    example = L"pwsafe"; // XXXX get current file's basename!
 
   m_bumaxinc->Enable(suffixIndex == INC_SFX);
   switch (suffixIndex) {
@@ -1007,18 +1007,18 @@ void COptions::OnSuffixCBSet( wxCommandEvent& /* evt */ )
     time(&now);
     wxString datetime = PWSUtil::ConvertToDateTimeString(now,
                                                          PWSUtil::TMC_EXPORT_IMPORT).c_str();
-      example += wxT("_");
+      example += L"_";
       example = example + datetime.Left(4) +  // YYYY
         datetime.Mid(5,2) +  // MM
         datetime.Mid(8,2) +  // DD
-        wxT("_") +
+        L"_" +
         datetime.Mid(11,2) +  // HH
         datetime.Mid(14,2) +  // MM
         datetime.Mid(17,2);   // SS
   }
     break;
   case INC_SFX:
-    example += wxT("_001");
+    example += L"_001";
     break;
   default:
     break;

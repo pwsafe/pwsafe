@@ -171,7 +171,7 @@ void CSafeCombinationChange::CreateControls()
   itemFlexGridSizer4->Add(m_oldPasswdEntry, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
 #ifndef NO_YUBI
-  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
+  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(L"graphics/Yubikey-button.xpm"), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
   itemFlexGridSizer4->Add(m_YubiBtn, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
 #endif
 
@@ -182,7 +182,7 @@ void CSafeCombinationChange::CreateControls()
   itemFlexGridSizer4->Add(m_newPasswdEntry, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
 #ifndef NO_YUBI
-  m_YubiBtn2 = new wxBitmapButton( itemDialog1, ID_YUBIBTN2, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
+  m_YubiBtn2 = new wxBitmapButton( itemDialog1, ID_YUBIBTN2, itemDialog1->GetBitmapResource(L"graphics/Yubikey-button.xpm"), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
   itemFlexGridSizer4->Add(m_YubiBtn2, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
 #endif
 
@@ -235,7 +235,7 @@ wxBitmap CSafeCombinationChange::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
 ////@begin CSafeCombinationChange bitmap retrieval
-  if (name == _T("graphics/Yubikey-button.xpm"))
+  if (name == L"graphics/Yubikey-button.xpm")
   {
     wxBitmap bitmap(Yubikey_button_xpm);
     return bitmap;
@@ -287,10 +287,10 @@ void CSafeCombinationChange::OnOkClick( wxCommandEvent& /* evt */ )
     // (also used in CPasskeySetup)
     } else if (!CPasswordCharPool::CheckPassword(m_newpasswd, errmess)) {
       wxString msg = _("Weak passphrase:");
-      msg += wxT("\n\n");
+      msg += L"\n\n";
       msg += errmess.c_str();
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
-      msg += wxT("\n");
+      msg += L"\n";
       msg += _("Use it anyway?");
       wxMessageDialog err(this, msg,
                           _("Error"), wxYES_NO | wxICON_HAND);

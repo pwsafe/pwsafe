@@ -100,7 +100,7 @@ int ComparisonGridTable::GetNumberCols()
   //GetSelectedFields() will return at-least G+T+U
   //We club T & U and display only Group + title[user] + fields
   //Hence return one less
-  return m_criteria->GetNumSelectedFields() - 1; 
+  return m_criteria->GetNumSelectedFields() - 1;
 }
 
 void ComparisonGridTable::SetValue(int /*row*/, int /*col*/, const wxString& /*value*/)
@@ -115,8 +115,8 @@ wxString ComparisonGridTable::GetColLabelValue(int col)
     case 1:
     {
       wxString label;
-      label << CItemData::FieldName(CItemData::TITLE) << wxT('[') 
-                        << CItemData::FieldName(CItemData::USER) << wxT(']');
+      label << CItemData::FieldName(CItemData::TITLE) << L'['
+                        << CItemData::FieldName(CItemData::USER) << L']';
       return label;
     }
     default:
@@ -176,7 +176,7 @@ void ComparisonGridTable::RefreshRow(int row) const
 ///////////////////////////////////////////////////////////////
 //UniSafeCompareGridTable
 //
-UniSafeCompareGridTable::UniSafeCompareGridTable(SelectionCriteria* criteria, 
+UniSafeCompareGridTable::UniSafeCompareGridTable(SelectionCriteria* criteria,
                                                  CompareData* data,
                                                  PWScore* core,
                                                  uuid_ptr pu,
@@ -219,7 +219,7 @@ bool UniSafeCompareGridTable::IsEmptyCell(int row, int col)
     const CItemData& item = itr->second;
     AvailableFunction available = col == 0? &CItemData::IsGroupSet: m_colFields[col-2].available;
     const bool empty = !(item.*available)();
-//    wxLogDebug(wxT("UniSafeCompareGridTable::IsEmptyCell returning %ls for %d, %d"), ToStr(retval), row, col);
+//    wxLogDebug(L"UniSafeCompareGridTable::IsEmptyCell returning %ls for %d, %d", ToStr(retval), row, col);
     return empty;
   }
   return true;
@@ -235,7 +235,7 @@ wxString UniSafeCompareGridTable::GetValue(int row, int col)
         break;
       case 1:
       {
-        retval << m_compData->at(row).title << wxT('[') <<  m_compData->at(row).user << wxT(']');
+        retval << m_compData->at(row).title << L'[' <<  m_compData->at(row).user << L']';
         break;
       }
       default:
@@ -248,13 +248,13 @@ wxString UniSafeCompareGridTable::GetValue(int row, int col)
       }
     }
   }
-//  wxLogDebug(wxT("UniSafeCompareGridTable::GetValue returning %ls for %d, %d"), ToStr(retval), row, col);
+//  wxLogDebug(L"UniSafeCompareGridTable::GetValue returning %ls for %d, %d", ToStr(retval), row, col);
   return retval;
 }
 
 wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int /*row*/, int /*col*/, wxGridCellAttr::wxAttrKind /*kind*/)
 {
-  //wxLogDebug(wxT("UniSafeCompareGridTable::GetAttr called for %d, %d"), row, col);
+  //wxLogDebug(L"UniSafeCompareGridTable::GetAttr called for %d, %d", row, col);
   m_gridAttr->IncRef();
   return m_gridAttr;
 }
@@ -273,7 +273,7 @@ int UniSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid) const
 pws_os::CUUID UniSafeCompareGridTable::GetSelectedItemId(bool readOnly)
 {
   wxArrayInt selection = GetView()->GetSelectedRows();
-  wxCHECK_MSG(!selection.IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Trying to retrieve selected item id when nothing is selected"));
+  wxCHECK_MSG(!selection.IsEmpty(), pws_os::CUUID::NullUUID(), L"Trying to retrieve selected item id when nothing is selected");
   if (readOnly)
     return m_compData->at(selection[0]).uuid1;
   else
@@ -286,7 +286,7 @@ bool UniSafeCompareGridTable::DeleteRows(size_t pos, size_t numRows)
 
   if (pos > curNumRows) {
     wxFAIL_MSG( wxString::Format(
-                 wxT("Called UniSafeCompareGridTable::DeleteRows(pos=%lu, N=%lu)\nPos value is invalid for present table with %lu rows"),
+                 L"Called UniSafeCompareGridTable::DeleteRows(pos=%lu, N=%lu)\nPos value is invalid for present table with %lu rows",
                  static_cast<unsigned int>(pos),
                  static_cast<unsigned int>(numRows),
                  static_cast<unsigned int>(curNumRows)
@@ -311,15 +311,15 @@ bool UniSafeCompareGridTable::DeleteRows(size_t pos, size_t numRows)
     GetView()->ProcessTableMessage(msg);
   }
 
-  return true;  
+  return true;
 }
 
 bool UniSafeCompareGridTable::AppendRows(size_t numRows/*=1*/)
 {
   if (GetView()) {
-    wxCHECK_MSG(m_compData->size() == GetView()->GetNumberRows() + numRows, 
+    wxCHECK_MSG(m_compData->size() == GetView()->GetNumberRows() + numRows,
                 false,
-                wxT("Items must be added to UnisafeComparisonGridTable's data before adding rows"));
+                L"Items must be added to UnisafeComparisonGridTable's data before adding rows");
     wxGridTableMessage msg(this,
                            wxGRIDTABLE_NOTIFY_ROWS_APPENDED,
                            reinterpret_cast<int &>(numRows));
@@ -390,7 +390,7 @@ bool MultiSafeCompareGridTable::IsEmptyCell(int row, int col)
     const CItemData& item = itr->second;
     AvailableFunction available = col == 0? &CItemData::IsGroupSet: m_colFields[col-2].available;
     bool empty = !(item.*available)();
-//    wxLogDebug(wxT("MultiSafeCompareGridTable::IsEmptyCell returning %ls for %d, %d"), ToStr(retval), row, col);
+//    wxLogDebug(L"MultiSafeCompareGridTable::IsEmptyCell returning %ls for %d, %d", ToStr(retval), row, col);
     return empty;
   }
 
@@ -412,7 +412,7 @@ wxString MultiSafeCompareGridTable::GetValue(int row, int col)
         break;
       case 1:
       {
-        retval << m_compData->at(row).title << wxT('[') <<  m_compData->at(row).user << wxT(']');
+        retval << m_compData->at(row).title << L'[' <<  m_compData->at(row).user << L']';
         break;
       }
       default:
@@ -426,13 +426,13 @@ wxString MultiSafeCompareGridTable::GetValue(int row, int col)
       }
     }
   }
-//  wxLogDebug(wxT("MultiSafeCompareGridTable::GetValue returning %ls for %d, %d"), ToStr(retval), row, col);
+//  wxLogDebug(L"MultiSafeCompareGridTable::GetValue returning %ls for %d, %d", ToStr(retval), row, col);
   return retval;
 }
 
 wxGridCellAttr* MultiSafeCompareGridTable::GetAttr(int row, int col, wxGridCellAttr::wxAttrKind /*kind*/)
 {
-  //wxLogDebug(wxT("MultiSafeCompareGridTable::GetAttr called for %d, %d"), row, col);
+  //wxLogDebug(L"MultiSafeCompareGridTable::GetAttr called for %d, %d", row, col);
   wxGridCellAttr* attr = ( row%2 == 0? m_currentAttr: m_comparisonAttr );
   int idx = row/2;
   if (m_compData->at(idx).bsDiffs.test(ColumnToField(col))) {
@@ -468,7 +468,7 @@ int MultiSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid) const
 pws_os::CUUID MultiSafeCompareGridTable::GetSelectedItemId(bool readOnly)
 {
   wxArrayInt selection = GetView()->GetSelectedRows();
-  wxCHECK_MSG(!selection.IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Trying to retrieve selected item id when nothing is selected"));
+  wxCHECK_MSG(!selection.IsEmpty(), pws_os::CUUID::NullUUID(), L"Trying to retrieve selected item id when nothing is selected");
   if (readOnly)
     return m_compData->at(selection[0]/2).uuid1;
   else
@@ -485,7 +485,7 @@ bool MultiSafeCompareGridTable::DeleteRows(size_t pos, size_t numRows)
 
   if (datapos > curNumRows) {
     wxFAIL_MSG( wxString::Format(
-                 wxT("Called MultiSafeCompareGridTable::DeleteRows(pos=%lu, N=%lu)\nPos value is invalid for present table with %lu rows"),
+                 L"Called MultiSafeCompareGridTable::DeleteRows(pos=%lu, N=%lu)\nPos value is invalid for present table with %lu rows",
                  static_cast<unsigned int>(pos),
                  static_cast<unsigned int>(numRows),
                  static_cast<unsigned int>(curNumRows)
@@ -512,7 +512,7 @@ bool MultiSafeCompareGridTable::DeleteRows(size_t pos, size_t numRows)
     GetView()->ProcessTableMessage(msg);
   }
 
-  return true;  
+  return true;
 }
 
 //////////////////////////////////////////////////////////////////

@@ -68,12 +68,6 @@ using namespace std;
 
 ////@end XPM images
 
-#if wxCHECK_VERSION(2,9,0)
-#define STR(s) s
-#else
-#define STR(s) wxT(s)
-#endif
-
 // wx debug messages (a) don't really interest us, and
 // (b) manage to crash wx 3.0.2 under Windows due to some
 // odd initialization sequence error, so we just shut them up.
@@ -83,47 +77,47 @@ using namespace std;
 class RestrainLog {
 public:
   RestrainLog(wxLogLevel level) {
-    wxLog::SetComponentLevel(wxT("wx"), level);
+    wxLog::SetComponentLevel(L"wx", level);
   }
 };
 
 static RestrainLog restLog(wxLOG_Info);
 
 static const wxCmdLineEntryDesc cmdLineDesc[] = {
-  {wxCMD_LINE_SWITCH, STR("?"), STR("help"),
-   STR("displays command line usage"),
+  {wxCMD_LINE_SWITCH, "?", "help",
+   "displays command line usage",
    wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
-  {wxCMD_LINE_SWITCH, STR("r"), STR("read-only"),
-   STR("open database read-only"),
+  {wxCMD_LINE_SWITCH, "r", "read-only",
+   "open database read-only",
    wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, STR("v"), STR("validate"),
-   STR("validate (and repair) database"),
+  {wxCMD_LINE_OPTION, "v", "validate",
+   "validate (and repair) database",
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, STR("e"), STR("encrypt"),
-   STR("encrypt a file"),
+  {wxCMD_LINE_OPTION, "e", "encrypt",
+   "encrypt a file",
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, STR("d"), STR("decrypt"),
-   STR("decrypt a file"),
+  {wxCMD_LINE_OPTION, "d", "decrypt",
+   "decrypt a file",
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_SWITCH, STR("c"), STR("close"),
-   STR("start 'closed', without prompting for database"),
+  {wxCMD_LINE_SWITCH, "c", "close",
+   "start 'closed', without prompting for database",
    wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_SWITCH, STR("s"), STR("silent"),
-   STR("start 'silently', minimized and with no database"),
+  {wxCMD_LINE_SWITCH, "s", "silent",
+   "start 'silently', minimized and with no database",
    wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_SWITCH, STR("m"), STR("minimized"),
-   STR("like '-c', plus start minimized"),
+  {wxCMD_LINE_SWITCH, "m", "minimized",
+   "like '-c', plus start minimized",
    wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, STR("u"), STR("username"),
-   STR("use specified user preferences instead of current user"),
+  {wxCMD_LINE_OPTION, "u", "username",
+   "use specified user preferences instead of current user",
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, STR("h"), STR("hostname"),
-   STR("use specified host preferences instead of current host"),
+  {wxCMD_LINE_OPTION, "h", "hostname",
+   "use specified host preferences instead of current host",
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, STR("g"), STR("config_file"),
-   STR("use specified configuration file instead of default"),
+  {wxCMD_LINE_OPTION, "g", "config_file",
+   "use specified configuration file instead of default",
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_PARAM, NULL, NULL, STR("database"),
+  {wxCMD_LINE_PARAM, NULL, NULL, "database",
    wxCMD_LINE_VAL_STRING,
    (wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE)},
   {wxCMD_LINE_NONE, NULL, NULL, NULL, wxCMD_LINE_VAL_NONE, 0}
@@ -311,16 +305,16 @@ bool PwsafeApp::OnInit()
 
   // Parse command line options:
   wxString filename, user, host, cfg_file;
-  bool cmd_ro = cmdParser.Found(wxT("r"));
+  bool cmd_ro = cmdParser.Found(L"r");
   // Next variable currently not referenced
-  bool cmd_encrypt = cmdParser.Found(wxT("e"), &filename);
-  bool cmd_decrypt = cmdParser.Found(wxT("d"), &filename);
-  bool cmd_closed = cmdParser.Found(wxT("c"));
-  bool cmd_silent = cmdParser.Found(wxT("s"));
-  bool cmd_minimized = cmdParser.Found(wxT("m"));
-  bool cmd_user = cmdParser.Found(wxT("u"), &user);
-  bool cmd_host = cmdParser.Found(wxT("h"), &host);
-  bool cmd_cfg = cmdParser.Found(wxT("g"), &cfg_file);
+  bool cmd_encrypt = cmdParser.Found(L"e", &filename);
+  bool cmd_decrypt = cmdParser.Found(L"d", &filename);
+  bool cmd_closed = cmdParser.Found(L"c");
+  bool cmd_silent = cmdParser.Found(L"s");
+  bool cmd_minimized = cmdParser.Found(L"m");
+  bool cmd_user = cmdParser.Found(L"u", &user);
+  bool cmd_host = cmdParser.Found(L"h", &host);
+  bool cmd_cfg = cmdParser.Found(L"g", &cfg_file);
   bool file_in_cmd = false;
   size_t count = cmdParser.GetParamCount();
   if (count == 1) {
@@ -369,7 +363,7 @@ bool PwsafeApp::OnInit()
 
   static wxSingleInstanceChecker appInstance;
   if (!prefs->GetPref(PWSprefs::MultipleInstances) &&
-        (appInstance.Create(wxT("pwsafe.lck"), towxstring(pws_os::getuserprefsdir())) &&
+        (appInstance.Create(L"pwsafe.lck", towxstring(pws_os::getuserprefsdir())) &&
          appInstance.IsAnotherRunning()))
   {
     wxMessageBox(_("Another instance of Password Safe is already running"), _("Password Safe"),
@@ -434,12 +428,12 @@ bool PwsafeApp::OnInit()
     if (returnValue != wxID_OK) {
       return false;
     }
-    wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));
+    wxASSERT_MSG(!m_frame, L"Frame window created unexpectedly");
     m_frame = new PasswordSafeFrame(NULL, m_core);
     m_frame->Load(initWindow->GetPassword());
   }
   else {
-    wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));
+    wxASSERT_MSG(!m_frame, L"Frame window created unexpectedly");
     m_frame = new PasswordSafeFrame(NULL, m_core);
   }
 
@@ -485,16 +479,16 @@ wxLanguage PwsafeApp::GetSystemLanguage()
     std::wcerr << L"Couldn't detect locale. Trying to skip empty env. variables." << std::endl;
     // Undefine empty environment variables and try again
     wxString langFull;
-    if (wxGetEnv(wxT("LC_ALL"), &langFull) && !langFull) {
-      wxUnsetEnv(wxT("LC_ALL"));
+    if (wxGetEnv(L"LC_ALL", &langFull) && !langFull) {
+      wxUnsetEnv(L"LC_ALL");
       std::wcerr << L"Empty LC_ALL variable was dropped" << std::endl;
     }
-    if (wxGetEnv(wxT("LC_MESSAGES"), &langFull) && !langFull) {
-      wxUnsetEnv(wxT("LC_MESSAGES"));
+    if (wxGetEnv(L"LC_MESSAGES", &langFull) && !langFull) {
+      wxUnsetEnv(L"LC_MESSAGES");
       std::wcerr << L"Empty LC_MESSAGES variable was dropped" << std::endl;
     }
-    if (wxGetEnv(wxT("LANG"), &langFull) && !langFull) {
-      wxUnsetEnv(wxT("LANG"));
+    if (wxGetEnv(L"LANG", &langFull) && !langFull) {
+      wxUnsetEnv(L"LANG");
       std::wcerr << L"Empty LANG variable was dropped" << std::endl;
     }
     language = wxLocale::GetSystemLanguage();
@@ -771,14 +765,14 @@ void PwsafeApp::OnHelp(wxCommandEvent& evt)
     if (propSheet) {
       const wxString dlgName = win->GetClassInfo()->GetClassName();
       const wxString pageName = propSheet->GetBookCtrl()->GetPageText(propSheet->GetBookCtrl()->GetSelection());
-      keyName = dlgName + wxT('#') + pageName;
+      keyName = dlgName + L'#' + pageName;
       msg << _("Missing help definition for page \"") << pageName
           << _("\" of \"") << dlgName
-          << wxT("\".\n");
+          << L"\".\n";
     } else { // !propSheet
       keyName = win->GetClassInfo()->GetClassName();
       msg << _("Missing help definition for window \"") << keyName
-          << wxT("\".\n");
+          << L"\".\n";
     }
 
     StringToStringMap& helpmap = GetHelpMap();
@@ -808,7 +802,7 @@ PwsafeApp::StringToStringMap& PwsafeApp::GetHelpMap()
 
   if (!initialized) {
 #define DLG_HELP(dlgname, htmlfile) helpMap[wxSTRINGIZE_T(dlgname)] = wxSTRINGIZE_T(htmlfile);
-#define PROPSHEET_HELP(sheet, page, htmlfile) helpMap[wxString(wxSTRINGIZE_T(sheet) wxT("#")) + page] = wxSTRINGIZE_T(htmlfile);
+#define PROPSHEET_HELP(sheet, page, htmlfile) helpMap[wxString(wxSTRINGIZE_T(sheet) L"#") + page] = wxSTRINGIZE_T(htmlfile);
 #include "helpmap.h"
 #undef DLG_HELP
 #undef PROPSHEET_HELP

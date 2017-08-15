@@ -59,7 +59,7 @@ CImportTextDlg::CImportTextDlg(wxWindow* parent) :  wxDialog(parent,
                                                     delimiterTab(true), //this is the pwsafe's default for export
                                                     delimiterSemicolon(false),
                                                     delimiterOther(false),
-                                                    strDelimiterLine(wxT("\xbb")),
+                                                    strDelimiterLine(L"\xbb"),
                                                     importUnderGroup(false),
                                                     importPasswordsOnly(false)
 {
@@ -209,20 +209,20 @@ void CImportTextDlg::CreateControls()
 TCHAR CImportTextDlg::FieldSeparator() const
 {
   if (delimiterComma)
-    return wxT(',');
+    return L',';
 
   if (delimiterSpace)
-    return wxT(' ');
+    return L' ';
 
   if (delimiterTab)
-    return wxT('\t');
+    return L'\t';
 
   if (delimiterSemicolon)
-    return wxT(';');
+    return L';';
 
   if (delimiterOther)
     return strDelimiterOther[0];
 
-  wxFAIL_MSG(wxT("No delimiter selected"));
-  return  wxT(',');
+  wxFAIL_MSG(L"No delimiter selected");
+  return  L',';
 }

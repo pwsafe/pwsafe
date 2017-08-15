@@ -65,20 +65,20 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
   GdkWindow* window = widget->window;
   int xwinid = GDK_WINDOW_XWINDOW(window);
 #endif
-  wxString command = wxString(wxT("xvkbd"));
-  
+  wxString command = wxString(L"xvkbd");
+
   switch(wxExecute(command, wxEXEC_ASYNC, NULL)) //NULL => we don't want a wxProcess as callback
   {
     case 0:
-      wxMessageBox(_("Could not launch xvkbd.  Please make sure it's in your PATH"), 
+      wxMessageBox(_("Could not launch xvkbd.  Please make sure it's in your PATH"),
                     _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);
       break;
-      
+
     case -1:    //only if ASYNC
-      wxMessageBox(_("Could not launch a new process for xvkbd.  Simultaneous execution disabled?"), 
+      wxMessageBox(_("Could not launch a new process for xvkbd.  Simultaneous execution disabled?"),
                     _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);
       break;
-      
+
     default:
       break;
   }

@@ -7,16 +7,16 @@
  */
 //-----------------------------------------------------------------------------
 /*
- * This code creates a wxGrid inside a wxCollapsiblePane, along with controls to set the number 
+ * This code creates a wxGrid inside a wxCollapsiblePane, along with controls to set the number
  * of rows and columns in the grid dynamically.  If a large number of rows and columns are added
- * to the grid while the pane is collapsed, the grid and the top-level dialog window become too 
+ * to the grid while the pane is collapsed, the grid and the top-level dialog window become too
  * big to fit on the screen when the collapsible pane is expanded.  It might not be possible to
  * access the rows at the bottom or columns to the right.
- * 
+ *
  * However, if the rows & columns are added to the grid with the collapsible pane already expanded,
- * the grid doesn't resize.  If required, scrollboxes appear automatically and the grid remains the 
+ * the grid doesn't resize.  If required, scrollboxes appear automatically and the grid remains the
  * same size.
- * 
+ *
  * To build - g++ -o gridpane `wx-config --cxxflags` gridpane.cpp `wx-config --libs`
  *
  */
@@ -32,7 +32,7 @@
 #include <wx/spinctrl.h>
 #include <wx/display.h>
 
-wxSize GetCurrentUsableDisplaySize(wxWindow* win) 
+wxSize GetCurrentUsableDisplaySize(wxWindow* win)
 {
   const int disp_id = wxDisplay::GetFromPoint(win->GetScreenPosition());
   const wxSize disp_size = (disp_id == wxNOT_FOUND? ::wxGetClientDisplayRect().GetSize()
@@ -41,7 +41,7 @@ wxSize GetCurrentUsableDisplaySize(wxWindow* win)
 }
 
 wxString& operator<<(wxString& str, const wxSize& size) {
-  return str << wxT('[') << size.x << wxT(',') << size.y << wxT(']');
+  return str << L'[' << size.x << L',' << size.y << L']';
 }
 
 class TestApp: public wxApp
@@ -119,33 +119,33 @@ bool TestApp::OnInit()
   return false;
 }
 
-TestDialog::TestDialog( bool use_testgrid ) : wxDialog(static_cast<wxWindow*>(0), wxID_ANY, wxString(wxT("Pane-in-the-Grid Test Application"))), m_collapsedSize(wxDefaultSize)
+TestDialog::TestDialog( bool use_testgrid ) : wxDialog(static_cast<wxWindow*>(0), wxID_ANY, wxString(L"Pane-in-the-Grid Test Application")), m_collapsedSize(wxDefaultSize)
 {
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
 
   // Create controls to set the number of rows and columns in the grid
   wxBoxSizer* rowcolSizer = new wxBoxSizer(wxHORIZONTAL);
-  rowcolSizer->Add(new wxStaticText(this, wxID_ANY, wxT("Rows: ")), wxSizerFlags().Border());
+  rowcolSizer->Add(new wxStaticText(this, wxID_ANY, L"Rows: ", wxSizerFlags().Border());
   wxSpinCtrl* rowSpin = new wxSpinCtrl(this, ID_SPIN_ROW);
   rowSpin->SetRange(1, MAX_ROWS); rowSpin->SetValue(NUM_ROWS);
   rowcolSizer->Add(rowSpin, wxSizerFlags().Border().Proportion(1));
   rowcolSizer->AddSpacer(20);
-  rowcolSizer->Add(new wxStaticText(this, wxID_ANY, wxT("Columns: ")), wxSizerFlags().Border());
+  rowcolSizer->Add(new wxStaticText(this, wxID_ANY, L"Columns: ", wxSizerFlags().Border());
   wxSpinCtrl* colSpin = new wxSpinCtrl(this, ID_SPIN_COL);
   colSpin->SetRange(1, MAX_COLS); colSpin->SetValue(NUM_COLS);
   rowcolSizer->Add(colSpin, wxSizerFlags().Border().Proportion(1));
   rowcolSizer->AddSpacer(20);
-  wxButton* populateButton = new wxButton(this, ID_POPULATE, wxT("&Set Rows and Columns"));
+  wxButton* populateButton = new wxButton(this, ID_POPULATE, L"&Set Rows and Columns");
   rowcolSizer->Add(populateButton, wxSizerFlags().Right().Border());
   rowcolSizer->AddSpacer(20);
-  rowcolSizer->Add(new wxButton(this, ID_LOGSIZES, wxT("Log sizes")), wxSizerFlags().Right().Border());
+  rowcolSizer->Add(new wxButton(this, ID_LOGSIZES, L"Log sizes", wxSizerFlags().Right().Border());
 
   dlgSizer->Add(rowcolSizer, wxSizerFlags().Border());
 
   int style = wxCP_DEFAULT_STYLE | (use_testgrid? 0: wxCP_NO_TLW_RESIZE);
 
   //create the collapsible pane
-  wxCollapsiblePane* pane = new wxCollapsiblePane(this, ID_COLLPANE, wxT("Expand/Collapse to see/hide the grid"), wxDefaultPosition,
+  wxCollapsiblePane* pane = new wxCollapsiblePane(this, ID_COLLPANE, L"Expand/Collapse to see/hide the grid", wxDefaultPosition,
                           wxDefaultSize, style);
 
   if (!use_testgrid)
@@ -193,14 +193,14 @@ wxSize TestDialog::GetGridBestSize( const wxGrid *grid, const wxSize &size )
   wxSize finalGridSize, finalClientSize;
   AdjustPanelBestSize( size, finalGridSize, finalClientSize );
   wxString log;
-  log << wxT("\nAdjusted size of grid from ") << size << wxT(" to ") << finalGridSize ;
+  log << L"\nAdjusted size of grid from " << size << L" to " << finalGridSize ;
   wxLogDebug( log );
   return finalGridSize;
 }
 
 void TestDialog::DoResize(wxCommandEvent& evt)
 {
-  LogSizes( wxT("Before resizing") );
+  LogSizes(L"Before resizing");
 
   wxCollapsiblePane *cpane = wxDynamicCast( FindWindow(ID_COLLPANE), wxCollapsiblePane );
 
@@ -209,23 +209,23 @@ void TestDialog::DoResize(wxCommandEvent& evt)
   // This is how big the grid wants to be
   const wxSize panelBestSize = cpane->GetPane()->GetBestSize();
 
-  log << wxT("\nThe grid wants to become ") << panelBestSize;
+  log << L"\nThe grid wants to become " << panelBestSize;
   wxLogDebug (log );
 
   wxSize finalPanelSize, finalClientSize;
 
   AdjustPanelBestSize( panelBestSize, finalPanelSize, finalClientSize );
 
-  LogSizes( wxT("Before setting panel size") );
+  LogSizes(L"Before setting panel size");
   cpane->GetPane()->SetSize(finalPanelSize);
-  LogSizes( wxT("After setting panel size") );
+  LogSizes(L"After setting panel size");
   //cpane->GetPane()->Layout();
-  //LogSizes( wxT("After panel layout") );
+  //LogSizes(L"After panel layout");
   SetClientSize(finalClientSize);
-  LogSizes( wxT("After setting dialog client size") );
+  LogSizes(L"After setting dialog client size");
 
   //Layout();
-  //LogSizes( wxT("After dialog layout") );
+  //LogSizes(L"After dialog layout");
 }
 
 void TestDialog::AdjustPanelBestSize( const wxSize & panelBestSize, wxSize &finalPanelSize, wxSize &finalClientSize)
@@ -233,14 +233,14 @@ void TestDialog::AdjustPanelBestSize( const wxSize & panelBestSize, wxSize &fina
   wxString log;
   const wxSize clientSize = GetClientSize();
 
-  log << wxT("\nClient size is ") << clientSize;
+  log << L"\nClient size is " << clientSize;
 
   wxCollapsiblePane *cpane = wxDynamicCast( FindWindow(ID_COLLPANE), wxCollapsiblePane );
 
   // size of borders, margins and other controls
   const wxSize restSize = clientSize - cpane->GetSize();
 
-  log << wxT("\nSize of dialog minus collpane is ") << restSize;
+  log << L"\nSize of dialog minus collpane is " << restSize;
 
   // For that, this is how big the dialog has to be.  If expected client width is less that current width, we keep
   // the same width.  For height, we just add the height required by the panel to our current client height since
@@ -248,36 +248,36 @@ void TestDialog::AdjustPanelBestSize( const wxSize & panelBestSize, wxSize &fina
   const wxSize dlgBestClientSize( clientSize.x > panelBestSize.x? clientSize.x: panelBestSize.x + restSize.x,
                     panelBestSize.y + clientSize.y );
 
-  log << wxT("\nFor that, the dialog has to be ") << dlgBestClientSize;
+  log << L"\nFor that, the dialog has to be " << dlgBestClientSize;
 
   // Available screen size (minus any app bars, status bars, etc
   const wxSize dispSize = GetCurrentUsableDisplaySize(this);
 
-  log << wxT("\nBut the display size is only ") << dispSize;
+  log << L"\nBut the display size is only " << dispSize;
 
   wxSize decoSize( GetSize() - clientSize );
-  log << wxT("\nWindow decorations are ") << GetSize() << wxT(" minus ") << clientSize << wxT(", that is ") << decoSize;
+  log << L"\nWindow decorations are " << GetSize() << L" minus " << clientSize << L", that is " << decoSize;
 
   if ( decoSize.x == 0 )
     decoSize.x = 2*wxSystemSettings::GetMetric( wxSYS_BORDER_X, this);
   if (decoSize.y == 0 )
     decoSize.y = 2*wxSystemSettings::GetMetric( wxSYS_BORDER_Y, this) + wxSystemSettings::GetMetric(wxSYS_CAPTION_Y, this);
 
-  log << wxT("\nFinal Window decorations are ") << decoSize;
+  log << L"\nFinal Window decorations are " << decoSize;
 
   // This is how big the client size could be.  Basically, the entire screen minus all window decorations
   const wxSize maxClientSize = dispSize - decoSize;
 
-  log << wxT("\nSo the max possible client size is ") << maxClientSize;
+  log << L"\nSo the max possible client size is " << maxClientSize;
 
   // We only get as big as we need to be, so as to not cover up the entire screen unnecessarily
   finalClientSize.Set( wxMin(maxClientSize.x, dlgBestClientSize.x), wxMin(maxClientSize.y, dlgBestClientSize.y) );
 
-  log << wxT("\nSo the final client size is ") << finalClientSize;
+  log << L"\nSo the final client size is " << finalClientSize;
 
   finalPanelSize.Set( wxMin( (finalClientSize.x - restSize.x), panelBestSize.x), finalClientSize.y - restSize.y - cpane->GetSize().y );
 
-  log << wxT("\nSo the final panel size is ") << finalPanelSize;
+  log << L"\nSo the final panel size is " << finalPanelSize;
   wxLogDebug(log);
 }
 
@@ -287,17 +287,17 @@ void TestDialog::LogSizes(const wxString& when)
   wxCollapsiblePane *cpane = wxDynamicCast( FindWindow(ID_COLLPANE), wxCollapsiblePane );
   wxWindow *panel = cpane->GetPane();
   wxString log;
-  log << when << wxT(":\n")     << wxT("grid")     << wxT("\t\t")   << grid->GetSize()   << wxT('\t') << grid->GetBestSize()   << wxT("\n")
-                  << wxT("CollPane")   << wxT("\t")   << cpane->GetSize() << wxT('\t') << cpane->GetBestSize()   << wxT("\n")
-                  << wxT("Panel")   << wxT("\t\t")   << panel->GetSize() << wxT('\t') << panel->GetBestSize()   << wxT("\n")
-                  << wxT("Dialog")   << wxT("\t\t")   << GetSize()     << wxT('\t') << GetBestSize()       << wxT("\n");
+  log << when << L":\n"     << L"grid"     << L"\t\t"   << grid->GetSize()   << L'\t' << grid->GetBestSize()   << L"\n"
+                  << L"CollPane"   << L"\t"   << cpane->GetSize() << L'\t' << cpane->GetBestSize()   << L"\n"
+                  << L"Panel"   << L"\t\t"   << panel->GetSize() << L'\t' << panel->GetBestSize()   << L"\n"
+                  << L"Dialog"   << L"\t\t"   << GetSize()     << L'\t' << GetBestSize()       << L"\n";
 
   wxLogDebug(log);
 }
 
 void TestDialog::OnLogSizes(wxCommandEvent& evt)
 {
-  LogSizes( wxT("On Demand") );
+  LogSizes(L"On Demand");
 }
 
 void TestDialog::OnPopulate(wxCommandEvent& evt)
@@ -318,7 +318,7 @@ void TestDialog::OnPopulate(wxCommandEvent& evt)
   for(size_t row = 0; row < num_rows; ++row) {
     for(size_t col=0; col < num_cols; ++col) {
       wxString data;
-      data << wxT("Row ") << row << wxT(", col ") << col;
+      data << L"Row " << row << L", col " << col;
       grid->SetCellValue(row, col, data);
     }
   }
@@ -329,21 +329,21 @@ void TestDialog::OnPopulate(wxCommandEvent& evt)
   if ( cpane->IsCollapsed() && !m_collapsedSize.IsFullySpecified() )
       m_collapsedSize = GetClientSize(); // remember the collapsed size, but only once
 
-  LogSizes( wxT("Before Invalidation") );
+  LogSizes(L"Before Invalidation");
 
   cpane->InvalidateBestSize();
   panel->InvalidateBestSize();
   grid->InvalidateBestSize();
   InvalidateBestSize();
 
-  LogSizes( wxT("After-Invalidation") );
+  LogSizes(L"After-Invalidation");
 
   panel->GetSizer()->Layout();
   GetSizer()->Layout();
 
-  LogSizes( wxT("After-layout") );
+  LogSizes(L"After-layout");
 
   wxString log;
-  log << wxT("Client size: ") << GetClientSize() << wxT(", window size: ") << GetSize() << wxT("\n");
+  log << L"Client size: " << GetClientSize() << L", window size: " << GetSize() << L"\n";
   wxLogDebug( log );
 }

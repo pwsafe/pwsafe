@@ -101,14 +101,14 @@ PWSGridTable::~PWSGridTable()
  */
 
 int PWSGridTable::GetNumberRows()
-{    
+{
   const size_t N = m_pwsgrid->GetNumItems();
   assert(N <= size_t(std::numeric_limits<int>::max()));
   return int(N);
 }
 
 int PWSGridTable::GetNumberCols()
-{    
+{
   return NumberOf(PWSGridCellData);
 }
 
@@ -116,11 +116,11 @@ bool PWSGridTable::IsEmptyCell(int row, int col)
 {
   const wxString val = GetValue(row, col);
 
-  return val == wxEmptyString || val.empty() || val.IsSameAs(wxT("Unknown"));
+  return val == wxEmptyString || val.empty() || val.IsSameAs(L"Unknown");
 }
 
 wxString PWSGridTable::GetColLabelValue(int col)
-{    
+{
   return (size_t(col) < NumberOf(PWSGridCellData)) ?
     towxstring(CItemData::FieldName(PWSGridCellData[col].ft)) : wxString();
 }
@@ -174,13 +174,13 @@ void PWSGridTable::SetView(wxGrid* newGrid)
       if (PWSGridCellData[idx].visible) {
         if (PWSGridCellData[idx].width != wxDefaultCoord)
           newGrid->SetColSize(idx, PWSGridCellData[idx].width);
-          
+
         newGrid->SetColPos(idx, PWSGridCellData[idx].position);
       }
     }
   }
   else {
-    wxCHECK_RET(oldGrid, wxT("Both old and new grid views are NULL"));
+    wxCHECK_RET(oldGrid, L"Both old and new grid views are NULL");
     //This gridtable is about to be deleted.  Save current settings
     for (size_t idx = 0; idx < WXSIZEOF(PWSGridCellData); ++idx) {
 
@@ -201,9 +201,9 @@ void PWSGridTable::SetView(wxGrid* newGrid)
 bool PWSGridTable::DeleteRows(size_t pos, size_t numRows)
 {
   size_t curNumRows = m_pwsgrid->GetNumItems();
-  
+
   if (pos >= curNumRows) {
-    wxFAIL_MSG( wxString(wxT("PWSGridTable::DeleteRows(")) << "pos= " << pos << ", numRows= " << numRows << ") call is invalid\nPos value is invalid for present table with " << curNumRows << " rows");
+    wxFAIL_MSG( wxString(L"PWSGridTable::DeleteRows(") << L"pos= " << pos << L", numRows= " << numRows << L") call is invalid\nPos value is invalid for present table with " << curNumRows << L" rows");
     return false;
   }
 
@@ -218,7 +218,7 @@ bool PWSGridTable::DeleteRows(size_t pos, size_t numRows)
                            reinterpret_cast<int &>(numRows));
     GetView()->ProcessTableMessage(msg);
   }
-    
+
   return true;
 }
 
@@ -249,7 +249,7 @@ bool PWSGridTable::InsertRows(size_t pos/*=0*/, size_t numRows/*=1*/)
 int PWSGridTable::GetColumnFieldType(int colID)
 {
   wxCHECK_MSG(colID >= 0 && size_t(colID) < WXSIZEOF(PWSGridCellData), CItemData::END,
-                wxT("column ID is greater than the number of columns in PWSGrid"));
+                L"column ID is greater than the number of columns in PWSGrid");
   return PWSGridCellData[colID].ft;
 }
 
@@ -278,8 +278,8 @@ void PWSGridTable::SaveSettings(void) const
       continue;
 #endif
 
-    colShown << GetColumnFieldType(colID) << wxT(',');
-    colWidths << grid->GetColSize(colID) << wxT(',');
+    colShown << GetColumnFieldType(colID) << L',';
+    colWidths << grid->GetColSize(colID) << L',';
   }
 
   if (!colShown.IsEmpty())
@@ -298,9 +298,9 @@ void PWSGridTable::RestoreSettings(void) const
   wxString colShown = towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::ListColumns));
   wxString colWidths = towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::ColumnWidths));
 
-  wxArrayString colShownArray = wxStringTokenize(colShown, wxT(" \r\n\t,"), wxTOKEN_STRTOK);
-  wxArrayString colWidthArray = wxStringTokenize(colWidths, wxT(" \r\n\t,"), wxTOKEN_STRTOK);
-  
+  wxArrayString colShownArray = wxStringTokenize(colShown, L" \r\n\t,", wxTOKEN_STRTOK);
+  wxArrayString colWidthArray = wxStringTokenize(colWidths, L" \r\n\t,", wxTOKEN_STRTOK);
+
   if (colShownArray.Count() != colWidthArray.Count() || colShownArray.Count() == 0)
     return;
 

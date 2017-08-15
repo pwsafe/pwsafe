@@ -93,7 +93,7 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
   wxString wxbf = wxFileSelector(title,
                                  dir,
                                  currbackup.GetFullName(),
-                                 wxT("bak"),
+                                 L"bak",
                                  _("Password Safe Backups (*.bak)|*.bak"),
                                  wxFD_SAVE|wxFD_OVERWRITE_PROMPT,
                                  this);
@@ -120,7 +120,7 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
   if (!backupfile.empty()) {  //i.e. if user didn't cancel
     if (m_core.WriteFile(backupfile, m_core.GetReadFileVersion(),
                          false) == PWScore::CANT_OPEN_FILE) {
-      wxMessageBox( wxbf << wxT("\n\n") << _("Could not open file for writing!"),
+      wxMessageBox( wxbf << L"\n\n" << _("Could not open file for writing!"),
                     _("Write Error"), wxOK|wxICON_ERROR, this);
     }
 
@@ -147,7 +147,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
   wxString wxbf = wxFileSelector(_("Please Choose a Backup to Restore:"),
                                  dir,
                                  currbackup.GetFullName(),
-                                 wxT("bak"),
+                                 L"bak",
                                  _("Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"),
                                  wxFD_OPEN|wxFD_FILE_MUST_EXIST,
                                  this);
@@ -179,7 +179,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
     ClearAppData();
 
     if (m_core.ReadFile(tostringx(wxbf), passkey, true, MAXTEXTCHARS) == PWScore::CANT_OPEN_FILE) {
-      wxMessageBox(wxbf << wxT("\n\n") << _("Could not open file for reading!"),
+      wxMessageBox(wxbf << L"\n\n" << _("Could not open file for reading!"),
                       _("File Read Error"), wxOK | wxICON_ERROR, this);
       return /*PWScore::CANT_OPEN_FILE*/;
     }

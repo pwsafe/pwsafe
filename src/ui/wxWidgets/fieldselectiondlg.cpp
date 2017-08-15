@@ -31,15 +31,15 @@
 wxString defValidationTitle();
 
 wxString ValidationMessage(const wxString& msg, const wxString& operation) {
-  return msg == wxEmptyString? (_T("You must select some fields to ") + operation) : msg;
+  return msg == wxEmptyString? (L"You must select some fields to " + operation) : msg;
 }
 
 wxString FieldSelTitle(const wxString& title, const wxString& operation) {
-  return title == wxEmptyString? (operation + _T(" items")) : title;
+  return title == wxEmptyString? (operation + L" items") : title;
 }
 
 wxString FieldSelText(const wxString& txt, const wxString& operation) {
-  return txt == wxEmptyString? (_T("Select fields to ") + operation) : txt;
+  return txt == wxEmptyString? (L"Select fields to " + operation) : txt;
 }
 
 DECLARE_EVENT_TYPE(EVT_RELAYOUT_DLG, -1)
@@ -57,13 +57,13 @@ FieldSelectionDlg::FieldSelectionDlg(wxWindow* parent,
                                      const wxString& operation,
                                      const wxString& dlgtitle/* = wxEmptyString*/,
                                      const wxString& dlgText/* = wxEmptyString*/,
-                                     const wxString& vMsg/* = wxEmptyString*/, 
+                                     const wxString& vMsg/* = wxEmptyString*/,
                                      const wxString& vTitle/* = wxEmptyString*/)
                                       :wxDialog(parent, wxID_ANY, FieldSelTitle(dlgtitle, operation),
                                                 wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
-  
+
   dlgSizer->AddSpacer(TopMargin);
   dlgSizer->Add(new wxStaticText(this, wxID_ANY, FieldSelText(dlgText, operation)), wxSizerFlags(0).Expand().Border(wxLEFT|wxRIGHT, SideMargin));
   dlgSizer->AddSpacer(RowSeparation);
@@ -75,7 +75,7 @@ FieldSelectionDlg::FieldSelectionDlg(wxWindow* parent,
                                             ,
                                             FieldSelTitle(vTitle, operation));
   fsp->SetValidator(fspValidator);
-  
+
   dlgSizer->Add(fsp, wxSizerFlags(1).Expand().Border(wxLEFT|wxRIGHT, SideMargin));
   dlgSizer->AddSpacer(TopMargin);
   wxSizer* btnSizer = CreateSeparatedButtonSizer(wxOK|wxCANCEL);
@@ -98,10 +98,10 @@ void InvalidateBestSizeRecursively(wxWindow* win)
   wxWindowList& children = win->GetChildren();
   for (wxWindowList::iterator itr = children.begin(); itr != children.end(); ++itr)
     InvalidateBestSizeRecursively(*itr);
-  
+
 }
 
-void FieldSelectionDlg::OnRelayoutDlg(wxCommandEvent& /*evt*/)  
+void FieldSelectionDlg::OnRelayoutDlg(wxCommandEvent& /*evt*/)
 {
   InvalidateBestSizeRecursively(this);
   GetSizer()->RecalcSizes();

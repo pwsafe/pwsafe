@@ -104,14 +104,14 @@ void CProperties::Init()
 ////@begin CProperties member initialisation
 ////@end CProperties member initialisation
   m_database = m_core.GetCurFile().c_str();
-  m_databaseformat = wxString::Format(_T("%d.%02d"),
+  m_databaseformat = wxString::Format(L"%d.%02d",
                                       m_core.GetHeader().m_nCurrentMajorVersion,
                                       m_core.GetHeader().m_nCurrentMinorVersion);
   std::vector<stringT> aryGroups;
   m_core.GetAllGroups(aryGroups);
   auto nEmptyGroups = m_core.GetEmptyGroups().size();
   m_numgroups << aryGroups.size()
-              << wxT(" (") << nEmptyGroups << _(" empty)");
+              << L" (" << nEmptyGroups << _(" empty)");
 
   m_numentries << m_core.GetNumEntries();
 
@@ -128,9 +128,9 @@ void CProperties::Init()
     m_wholastsaved = _("Unknown");
   } else {
     wxString user = m_core.GetHeader().m_lastsavedby.empty() ?
-      _T("?") : m_core.GetHeader().m_lastsavedby.c_str();
+      L"?" : m_core.GetHeader().m_lastsavedby.c_str();
     wxString host = m_core.GetHeader().m_lastsavedon.empty() ?
-      _T("?") : m_core.GetHeader().m_lastsavedon.c_str();
+      L"?" : m_core.GetHeader().m_lastsavedon.c_str();
     m_wholastsaved = wxString::Format(_("%ls on %ls"), user.c_str(), host.c_str());
   }
 
@@ -142,7 +142,7 @@ void CProperties::Init()
 
   pws_os::CUUID file_uuid = m_core.GetFileUUID();
   if (file_uuid == pws_os::CUUID::NullUUID())
-    m_file_uuid = _T("N/A");
+    m_file_uuid = _("N/A");
   else {
     ostringstreamT os;
     pws_os::CUUID huuid(*file_uuid.GetARep(),
@@ -160,7 +160,7 @@ void CProperties::Init()
     if (num == 0)
       m_unknownfields += _("No)");
     else {
-      wls = wxString::Format(wxT("%d)"), num);
+      wls = wxString::Format(L"%d", num);
       m_unknownfields += wls;
     }
   } else {
@@ -216,30 +216,30 @@ void CProperties::CreateControls()
   wxBoxSizer* dataVertSizer = new wxBoxSizer(wxVERTICAL);
   horizSizer->Add(dataVertSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* dbFormatText = new wxStaticText( currDialog, wxID_DATABASEFORMAT, wxT("9.99"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* dbFormatText = new wxStaticText( currDialog, wxID_DATABASEFORMAT, L"9.99", wxDefaultPosition, wxDefaultSize, 0 );
   dataVertSizer->Add(dbFormatText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* numGroupsText = new wxStaticText( currDialog, wxID_NUMGROUPS, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* numGroupsText = new wxStaticText( currDialog, wxID_NUMGROUPS, L"999", wxDefaultPosition, wxDefaultSize, 0 );
   dataVertSizer->Add(numGroupsText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* entriesText = new wxStaticText( currDialog, wxID_NUMENTRIES, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* entriesText = new wxStaticText( currDialog, wxID_NUMENTRIES, L"999", wxDefaultPosition, wxDefaultSize, 0 );
   dataVertSizer->Add(entriesText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* lastSavedUserText = new wxStaticText( currDialog, wxID_WHOLASTSAVED, wxT("user on host"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* lastSavedUserText = new wxStaticText( currDialog, wxID_WHOLASTSAVED, L"user on host", wxDefaultPosition, wxDefaultSize, 0 );
   dataVertSizer->Add(lastSavedUserText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* lastSavedDateText = new wxStaticText( currDialog, wxID_WHENLASTSAVED, wxT("dd.mm.yyyy"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* lastSavedDateText = new wxStaticText( currDialog, wxID_WHENLASTSAVED, L"dd.mm.yyyy", wxDefaultPosition, wxDefaultSize, 0 );
   dataVertSizer->Add(lastSavedDateText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* lastSavedAppText = new wxStaticText( currDialog, wxID_WHATLASTSAVED, wxT("application & version"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* lastSavedAppText = new wxStaticText( currDialog, wxID_WHATLASTSAVED, L"application & version", wxDefaultPosition, wxDefaultSize, 0 );
   dataVertSizer->Add(lastSavedAppText, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStaticText* uuidText = new wxStaticText( currDialog, wxID_FILEUUID,
-                                            wxT("12345678-90AB-CDEF-1234-567890ABCDEF"), // need to use different digits/letters to correctly calculate size because of kerning
+                                            L"12345678-90AB-CDEF-1234-567890ABCDEF", // need to use different digits/letters to correctly calculate size because of kerning
                                             wxDefaultPosition, wxDefaultSize, 0 );
   dataVertSizer->Add(uuidText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* unknownFieldsText = new wxStaticText( currDialog, wxID_UNKNOWFIELDS, wxT("x"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* unknownFieldsText = new wxStaticText( currDialog, wxID_UNKNOWFIELDS, L"x", wxDefaultPosition, wxDefaultSize, 0 );
   dataVertSizer->Add(unknownFieldsText, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStdDialogButtonSizer* buttonsSizer = new wxStdDialogButtonSizer;

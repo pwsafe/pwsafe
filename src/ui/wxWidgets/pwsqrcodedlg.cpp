@@ -124,7 +124,7 @@ PWSQRCodeDlg::PWSQRCodeDlg(wxWindow* parent,
 {
 	CreateControls(data);
 }
- 
+
 void PWSQRCodeDlg::CreateControls(const StringX &data)
 {
 	wxSizer *dlgSizer = new wxBoxSizer(wxVERTICAL);
@@ -132,8 +132,8 @@ void PWSQRCodeDlg::CreateControls(const StringX &data)
 	dlgSizer->AddSpacer(TopMargin);
 
 	wxBoxSizer *promptSizer = new wxBoxSizer(wxHORIZONTAL);
-	promptSizer->Add( new wxStaticText(this, wxID_ANY, _T("Closing in ")) );
-	promptSizer->Add( secondsText = new wxStaticText(this, wxID_ANY, _T("")) );
+	promptSizer->Add( new wxStaticText(this, wxID_ANY, L"Closing in ") );
+	promptSizer->Add( secondsText = new wxStaticText(this, wxID_ANY, wxEmptyString) );
 	dlgSizer->Add(promptSizer);
 
 	dlgSizer->AddSpacer(RowSeparation);
@@ -145,7 +145,7 @@ void PWSQRCodeDlg::CreateControls(const StringX &data)
 		dlgSizer->Add( new wxStaticBitmap(this, wxID_ANY, bmp), wxSizerFlags().Expand().Proportion(1) );
 	}
 	else {
-		dlgSizer->Add( new wxStaticText(this, wxID_ANY, _T("Could not generate QR code")) );
+		dlgSizer->Add( new wxStaticText(this, wxID_ANY, L"Could not generate QR code") );
 	}
 
 	dlgSizer->AddSpacer(RowSeparation);
@@ -180,7 +180,7 @@ void PWSQRCodeDlg::OnInitDialog(wxInitDialogEvent &/*evt*/)
 
 void PWSQRCodeDlg::UpdateTimeRemaining()
 {
-	secondsText->SetLabel( wxString::Format(_T("%d seconds"), secondsRemaining) );
+	secondsText->SetLabel( wxString::Format(L"%d seconds", secondsRemaining) );
 }
 
 

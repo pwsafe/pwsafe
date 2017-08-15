@@ -267,13 +267,13 @@ PwsSyncWizard::~PwsSyncWizard()
 void PwsSyncWizard::OnWizardPageChanging(wxWizardEvent& evt)
 {
   if (evt.GetDirection()) {
-    ;//wxMessageBox(wxT("In wizard: Going forward"));
+    ;//wxMessageBox(L"In wizard: Going forward");
   }
   else {
-    ;//wxMessageBox(wxT("In wizard: Going backward"));
+    ;//wxMessageBox(L"In wizard: Going backward");
   }
   SyncWizardPage* page = wxDynamicCast(evt.GetPage(), SyncWizardPage);
-  wxCHECK_RET(page, wxT("Wizard pages in Sync wizard not derived from SyncWizardPage"));
+  wxCHECK_RET(page, L"Wizard pages in Sync wizard not derived from SyncWizardPage");
   page->SaveData(m_syncData);
 }
 
@@ -319,7 +319,7 @@ SyncWizardPage::SyncWizardPage(wxWizard* parent, SyncData* data,
 void SyncWizardPage::OnWizardPageChanging(wxWizardEvent& evt)
 {
   SyncWizardPage* page = wxDynamicCast(evt.GetPage(), SyncWizardPage);
-  wxASSERT_MSG(page, wxT("Sync wizard page not derived from SyncWizardPage class"));
+  wxASSERT_MSG(page, L"Sync wizard page not derived from SyncWizardPage class");
 
   if (!page->OnPageLeave(evt.GetDirection()? FORWARD: BACKWARD))
     evt.Veto();
@@ -331,7 +331,7 @@ void SyncWizardPage::OnWizardPageChanging(wxWizardEvent& evt)
 void SyncWizardPage::OnWizardPageChanged(wxWizardEvent& evt)
 {
   SyncWizardPage* page = wxDynamicCast(evt.GetPage(), SyncWizardPage);
-  wxASSERT_MSG(page, wxT("Sync wizard page not derived from SyncWizardPage class"));
+  wxASSERT_MSG(page, L"Sync wizard page not derived from SyncWizardPage class");
 
   page->OnPageEnter(evt.GetDirection()? FORWARD: BACKWARD);
 
@@ -379,7 +379,7 @@ SyncStartPage::SyncStartPage(wxWizard* parent, SyncData* data) : SyncWizardPage(
 DbSelectionPage::DbSelectionPage(wxWizard* parent, SyncData* data):
                              SyncWizardPage(parent, data, _("Select another database"))
 {
-  const wxString filePrompt(wxString(_("Choose Database to Synchronize with \"")) << towxstring(data->core->GetCurFile()) << wxT("\""));
+  const wxString filePrompt(wxString(_("Choose Database to Synchronize with \"")) << towxstring(data->core->GetCurFile()) << L"\"");
   const wxString filePickerCtrlTitle(_("Please Choose a Database to Synchronize with current database"));
 
   wxBoxSizer* sizer = m_pageSizer;
@@ -470,7 +470,7 @@ void SyncOptionsSummaryPage::OnPageEnter(PageDirection dir)
 
   wxString description = m_syncData->selCriteria.GetGroupSelectionDescription();
   description << _(" will be updated with corresponding entries from \"")
-              << m_syncData->otherDB.GetFullPath() << wxT('"');
+              << m_syncData->otherDB.GetFullPath() << L'"';
   FindWindow(ID_DESC)->SetLabel( description);
 
   wxArrayString fieldsSelected, fieldsNotSelected;
@@ -480,15 +480,15 @@ void SyncOptionsSummaryPage::OnPageEnter(PageDirection dir)
     FindWindow(ID_NOT_UPDATED_TXT)->SetLabel(wxEmptyString);
   }
   else {
-    wxCHECK_RET(fieldsSelected.Count() > 0, wxT("None of the fields have been selected"));
-    wxCHECK_RET(fieldsNotSelected.Count() > 0, wxT("None of the fields have been un-selected"));
+    wxCHECK_RET(fieldsSelected.Count() > 0, L"None of the fields have been selected");
+    wxCHECK_RET(fieldsNotSelected.Count() > 0, L"None of the fields have been un-selected");
     FindWindow(ID_UPDATED_TXT)->SetLabel(_("Following fields in matching entries will be updated:"));
     for( size_t idx = 0; idx < fieldsSelected.Count(); ++idx) {
-      m_updatedFieldsGrid->Add(new wxStaticText(this, wxID_ANY, wxT("* ") + fieldsSelected[idx]));
+      m_updatedFieldsGrid->Add(new wxStaticText(this, wxID_ANY, L"* " + fieldsSelected[idx]));
     }
     FindWindow(ID_NOT_UPDATED_TXT)->SetLabel(_("Following fields will not be updated:"));
     for( size_t idx = 0; idx < fieldsNotSelected.Count(); ++idx) {
-      m_notUpdatedFieldsGrid->Add(new wxStaticText(this, wxID_ANY, wxT("* ") + fieldsNotSelected[idx]));
+      m_notUpdatedFieldsGrid->Add(new wxStaticText(this, wxID_ANY, L"* " + fieldsNotSelected[idx]));
     }
 
     // Set the wxSizer Proportion of the two grids of field lists to the number
@@ -517,7 +517,7 @@ SyncStatusPage::SyncStatusPage(wxWizard* parent, SyncData* data): SyncWizardPage
   midSizer->Add(new wxStaticText(this, ID_PROGRESS_TXT, wxEmptyString), wxSizerFlags().Expand().Proportion(1));
   midSizer->AddSpacer(RowSeparation);
   size_t range = data->core->GetNumEntries();
-  wxCHECK2_MSG(range <= INT_MAX, range = INT_MAX, wxT("Too many entries in db for wxGauge"));
+  wxCHECK2_MSG(range <= INT_MAX, range = INT_MAX, L"Too many entries in db for wxGauge");
   midSizer->Add(new wxGauge(this, ID_GAUGE, int(range)), wxSizerFlags().Expand().Proportion(0));
   sizer->Add(midSizer, flags.Proportion(1));
 
@@ -559,7 +559,7 @@ void SyncStatusPage::OnPageEnter(PageDirection dir)
                                     false, this);
     if (rc == PWScore::SUCCESS) {
       if (DbHasNoDuplicates(othercore) && DbHasNoDuplicates(m_syncData->core)) {
-        SetHeaderText(_("Your database is being synchronized with \"") + otherDBPath + _T('"'));
+        SetHeaderText(_("Your database is being synchronized with \"") + otherDBPath + L'"');
         Connect(GetId(), wxEVT_SYNC_START, wxCommandEventHandler(SyncStatusPage::OnSyncStartEvent));
         wxCommandEvent evt(wxEVT_SYNC_START, GetId());
         evt.SetClientData(reinterpret_cast<wxClientData*>(othercore));
@@ -580,7 +580,7 @@ void SyncStatusPage::OnPageEnter(PageDirection dir)
 void SyncStatusPage::OnSyncStartEvent(wxCommandEvent& evt)
 {
   PWScore* otherCore = reinterpret_cast<PWScore*>(evt.GetClientData());
-  wxASSERT_MSG(otherCore, wxT("Sync Start Event did not arrive with the other PWScore"));
+  wxASSERT_MSG(otherCore, L"Sync Start Event did not arrive with the other PWScore");
   Synchronize(m_syncData->core, otherCore);
 
   SetHeaderText(wxString::Format(_("Your database has been synchronized with \"%ls\""), otherCore->GetCurFile().c_str()));
@@ -674,12 +674,12 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
     const StringX otherTitle = otherItem.GetTitle();
     const StringX otherUser = otherItem.GetUser();
 
-    const StringX sx_updated = StringX(wxT("\xab")) +
-                           otherGroup + StringX(wxT("\xbb \xab")) +
-                           otherTitle + StringX(wxT("\xbb \xab")) +
-                           otherUser  + StringX(wxT("\xbb"));
+    const StringX sx_updated = StringX(L"\xab") +
+                           otherGroup + StringX(L"\xbb \xab") +
+                           otherTitle + StringX(L"\xbb \xab") +
+                           otherUser  + StringX(L"\xbb");
 
-    SetProgressText((wxString() << currentIndex << wxT(": ")) + towxstring(sx_updated));
+    SetProgressText((wxString() << currentIndex << L": ") + towxstring(sx_updated));
     wxSafeYield();
 
     if (criteria.HasSubgroupRestriction() && !otherItem.Matches(subgroup_name, criteria.SubgroupObject(), criteria.SubgroupFunctionWithCase()))
@@ -696,7 +696,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
       curItem.GetUUID(current_uuid);
       otherItem.GetUUID(other_uuid);
       if (memcmp((void *)current_uuid, (void *)other_uuid, sizeof(uuid_array_t)) != 0) {
-        pws_os::Trace(wxT("Synchronize: Mis-match UUIDs for [%ls:%ls:%ls]\n"), otherGroup.c_str(), otherTitle.c_str(), otherUser.c_str());
+        pws_os::Trace(L"Synchronize: Mis-match UUIDs for [%ls:%ls:%ls]\n", otherGroup.c_str(), otherTitle.c_str(), otherUser.c_str());
       }
 
       bool bUpdated(false);
@@ -734,7 +734,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
                                                 cs_singular_plural_verb);
     rpt.WriteLine(resultStr.c_str());
     for (size_t i = 0; i < vs_updated.size(); i++) {
-      const wxString fieldName = wxString::Format(wxT("\t%ls"), vs_updated[i].c_str());
+      const wxString fieldName = wxString::Format(L"\t%ls", vs_updated[i].c_str());
       rpt.WriteLine(fieldName.c_str());
     }
   }
@@ -757,7 +757,7 @@ void SyncStatusPage::ReportAdvancedOptions(CReport* rpt, const wxString& operati
 {
   wxString line = m_syncData->selCriteria.GetGroupSelectionDescription();
   line << _(" were ") << operation << _(" with corresponding entries from \"")
-              << m_syncData->otherDB.GetFullPath() << wxT('"');
+              << m_syncData->otherDB.GetFullPath() << L'"';
   rpt->WriteLine(line.c_str());
 
   wxArrayString fieldsSelected, fieldsNotSelected;
@@ -770,7 +770,7 @@ void SyncStatusPage::ReportAdvancedOptions(CReport* rpt, const wxString& operati
     line.Printf(_("The following fields were %ls"), operation);
     rpt->WriteLine(line.c_str());
     for( size_t idx = 0; idx < fieldsSelected.Count(); ++idx) {
-      line.Printf(wxT("\t* %ls"), fieldsSelected[idx]);
+      line.Printf(L"\t* %ls", fieldsSelected[idx]);
       rpt->WriteLine(line.c_str());
     }
   }

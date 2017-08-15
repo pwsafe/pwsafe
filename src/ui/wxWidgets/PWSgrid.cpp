@@ -289,13 +289,13 @@ size_t PWSGrid::GetNumItems() const
   //receives a paint event between the time an entry is erased from
   //its maps and the corresponding row is erased from the grid UI
   if(!m_uuid_map.empty() && uuid_map_size != numEntries) {
-    //wxFAIL_MSG(wxString() << wxT("uuid map has ") << uuid_map_size
-    //                      << wxT(" entries, but core has ") << numEntries);
+    //wxFAIL_MSG(wxString() << L"uuid map has " << uuid_map_size
+    //                      << L" entries, but core has " << numEntries);
   }
 
   if (!m_row_map.empty() && row_map_size != numEntries) {
-    //wxFAIL_MSG(wxString() << wxT("row map has ") << row_map_size
-    //                      << wxT(" entries, but core has ") << numEntries);
+    //wxFAIL_MSG(wxString() << L"row map has " << row_map_size
+    //                      << L" entries, but core has " << numEntries);
   }
   //this is the most meaningful, to keep wxGrid from asking us
   //about rows that we don't have

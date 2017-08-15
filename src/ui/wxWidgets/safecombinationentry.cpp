@@ -171,7 +171,7 @@ void CSafeCombinationEntry::CreateControls()
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
-  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("graphics/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
+  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(L"graphics/cpane.xpm"), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
   itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
@@ -180,10 +180,10 @@ void CSafeCombinationEntry::CreateControls()
   wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("graphics/psafetxt.xpm")), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(L"graphics/psafetxt.xpm"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemStaticBitmap6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_version = new wxStaticText( itemDialog1, wxID_STATIC, wxT("VX.YY"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_version = new wxStaticText( itemDialog1, wxID_STATIC, L"VX.YY", wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(m_version, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Open Password Database:"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -196,7 +196,7 @@ void CSafeCombinationEntry::CreateControls()
   m_filenameCB = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_filenameCBStrings, wxCB_DROPDOWN );
   itemBoxSizer9->Add(m_filenameCB, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0);
 
-  wxButton* itemButton11 = new wxButton( itemDialog1, ID_ELLIPSIS, wxT("..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
+  wxButton* itemButton11 = new wxButton( itemDialog1, ID_ELLIPSIS, L"...", wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
   itemBoxSizer9->Add(itemButton11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText12 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe Combination:"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -221,7 +221,7 @@ void CSafeCombinationEntry::CreateControls()
   itemBoxSizer4->Add(itemBoxSizer18, 0, wxGROW|wxALL, 5);
 
 #ifndef NO_YUBI
-  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
+  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(L"graphics/Yubikey-button.xpm"), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
   itemBoxSizer18->Add(m_YubiBtn, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
 
   m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -250,10 +250,10 @@ void CSafeCombinationEntry::CreateControls()
   m_combinationEntry->SetValidatorTarget(& m_password);
 
 #if (REVISION == 0)
-  m_version->SetLabel(wxString::Format(wxT("V%d.%.2d %ls"),
+  m_version->SetLabel(wxString::Format(L"V%d.%.2d %ls",
                                        MAJORVERSION, MINORVERSION, SPECIALBUILD));
 #else
-  m_version->SetLabel(wxString::Format(wxT("V%d.%d.%.2d %ls"),
+  m_version->SetLabel(wxString::Format(L"V%d.%d.%.2d %ls",
                                        MAJORVERSION, MINORVERSION,
                                        REVISION, SPECIALBUILD));
 #endif
@@ -296,18 +296,18 @@ wxBitmap CSafeCombinationEntry::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
 ////@begin CSafeCombinationEntry bitmap retrieval
-  if (name == _T("graphics/cpane.xpm"))
+  if (name == L"graphics/cpane.xpm")
   {
     wxBitmap bitmap(cpane_xpm);
     return bitmap;
   }
-  else if (name == _T("graphics/psafetxt.xpm"))
+  else if (name == L"graphics/psafetxt.xpm")
   {
     wxBitmap bitmap(psafetxt_xpm);
     return bitmap;
   }
 #ifndef NO_YUBI
-  else if (name == _T("graphics/Yubikey-button.xpm"))
+  else if (name == L"graphics/Yubikey-button.xpm")
   {
     wxBitmap bitmap(Yubikey_button_xpm);
     return bitmap;
@@ -443,8 +443,8 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
   // 3. Set m_filespec && m_passkey to returned value!
   wxString newfile;
 
-  wxString cf(wxT("pwsafe")); // reasonable default for first time user
-  stringT v3FileName = PWSUtil::GetNewFileName(tostdstring(cf), wxT("psafe3"));
+  wxString cf(L"pwsafe"); // reasonable default for first time user
+  stringT v3FileName = PWSUtil::GetNewFileName(tostdstring(cf), L"psafe3");
   stringT dir = PWSdirs::GetSafeDir();
 
   // Following is since I couldn't get UpdateNew() to work correctly
@@ -490,7 +490,7 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
     EndModal(wxID_OK);
   }
   else {
-    wxMessageBox(wxString()<< newfile << wxT("\n\n") << _("Could not open file for writing!"),
+    wxMessageBox(wxString()<< newfile << L"\n\n" << _("Could not open file for writing!"),
                  _("Write Error"), wxOK | wxICON_ERROR, this);
   }
 }

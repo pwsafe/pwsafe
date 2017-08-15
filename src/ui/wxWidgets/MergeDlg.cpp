@@ -38,7 +38,7 @@ MergeDlg::MergeDlg(wxWindow* parent, PWScore* core) :
                       m_core(core), m_selection(new SelectionCriteria), m_dbPanel(0)
 {
   const wxString filePrompt(wxString(_("Choose Database to Merge into \"")) <<
-                                          towxstring(m_core->GetCurFile()) << wxT("\""));
+                                          towxstring(m_core->GetCurFile()) << L"\"");
   const wxString filePickerCtrlTitle(_("Please Choose a Database to Merge into current database"));
 
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
@@ -83,12 +83,12 @@ struct AdvancedMergeOptions {
   }
 
   static bool IsPreselectedField(CItemData::FieldType /*field*/) {
-    wxFAIL_MSG(wxT("Advanced field pre-selection options are not available for Merge"));
+    wxFAIL_MSG(L"Advanced field pre-selection options are not available for Merge");
     return true;
   }
 
   static bool IsUsableField(CItemData::FieldType /*field*/) {
-    wxFAIL_MSG(wxT("Advanced field usability options are not available for Merge"));
+    wxFAIL_MSG(L"Advanced field usability options are not available for Merge");
     return true;
   }
 

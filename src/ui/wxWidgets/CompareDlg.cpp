@@ -206,7 +206,7 @@ struct CompareDlgType {
 wxCollapsiblePane* CompareDlg::CreateDBSelectionPanel(wxSizer* dlgSizer)
 {
   wxString paneTitle = wxString() << _("Select a database to compare with current database (")
-                                    << m_currentCore->GetCurFile() << wxT(')');
+                                    << m_currentCore->GetCurFile() << L')';
 
   wxCollapsiblePane* pane = new wxCollapsiblePane(this, wxID_ANY, paneTitle);
   wxWindow* paneWindow = pane->GetPane();
@@ -258,7 +258,7 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
   else
     cd->grid = new wxGrid(sizedPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0); //don't have wxWANTS_CHARS
   //create a way to get to the ComparisonData object from the grid, which is the only thing we have in events
-  wxASSERT_MSG(cd->grid->GetClientData() == 0, wxT("wxGrid::ClientData is not NULL on creation.  Need to use that for our purposes"));
+  wxASSERT_MSG(cd->grid->GetClientData() == 0, L"wxGrid::ClientData is not NULL on creation.  Need to use that for our purposes");
   cd->grid->SetClientData(cd);
 #ifndef __WXMSW__
   wxFont monospacedFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
@@ -362,7 +362,7 @@ void CompareDlg::DoCompare(wxCommandEvent& /*evt*/)
     /*
     // wxCollapsiblePane::GetLabel() doesn't work
     wxString newLabel(pane->GetLabel());
-    newLabel << wxT(" (") << sections[idx].cd->data.size() << wxT(")");
+    newLabel << L" (" << sections[idx].cd->data.size() << L")";
     pane->SetLabel(newLabel);
     */
     if (!sections[idx].cd->data.empty()) {
@@ -389,7 +389,7 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
     return;
   }
   ComparisonData* cd = reinterpret_cast<ComparisonData*>(grid->GetClientData());
-  wxCHECK_RET(cd, wxT("ClientData object not found in grid"));
+  wxCHECK_RET(cd, L"ClientData object not found in grid");
 
   ContextMenuData menuContext;
   menuContext.cdata = cd;
@@ -409,17 +409,17 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   size_t selectionCount = menuContext.selectedRows.GetCount();
   if (menuContext.cdata == m_conflicts) {
     selectionCount /= 2;
-    wxCHECK_RET(menuContext.selectedItems.GetCount()%2 ==0, wxT("Conflicts grid should always select an even numer of items"));
+    wxCHECK_RET(menuContext.selectedItems.GetCount()%2 ==0, L"Conflicts grid should always select an even numer of items");
     //Our algorithm requires the indexes to be in order, and sometimes these are actually unsorted
     menuContext.selectedItems.Sort(pless);
     for( size_t idx = 1; idx <= selectionCount; ++idx) {
-      wxCHECK_RET(menuContext.selectedItems[idx]%2 != 0, wxT("Selection indexes not in expected order"));
-      wxLogDebug( wxString() << wxT("Removing index ") << menuContext.selectedItems.Item(idx) << wxT(" from selection at index ") << idx << wxT('\n'));
+      wxCHECK_RET(menuContext.selectedItems[idx]%2 != 0, L"Selection indexes not in expected order");
+      wxLogDebug( wxString() << L"Removing index " << menuContext.selectedItems.Item(idx) << L" from selection at index " << idx << L'\n');
       menuContext.selectedItems.RemoveAt(idx, 1);
     }
     for( size_t idx = 0; idx < selectionCount; ++idx) {
-      wxLogDebug(wxString() << wxT("Found index ") << menuContext.selectedItems.Item(idx) << wxT(" from selection at ") << idx << wxT('\n'));
-      wxCHECK_RET(menuContext.selectedItems[idx]%2 == 0, wxT("Conflicts grid selection should only have even indexes after normalization"));
+      wxLogDebug(wxString() << L"Found index " << menuContext.selectedItems.Item(idx) << L" from selection at " << idx << L'\n');
+      wxCHECK_RET(menuContext.selectedItems[idx]%2 == 0, L"Conflicts grid selection should only have even indexes after normalization");
       menuContext.selectedItems[idx] /= 2;
     }
   }
@@ -427,9 +427,9 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   stringT itemStr;
   LoadAString(itemStr, selectionCount > 1? IDSC_ENTRIES: IDSC_ENTRY);
 
-  wxString selCountStr(wxT(" "));
+  wxString selCountStr(L" ");
   if (selectionCount > 1)
-    selCountStr << selectionCount << wxT(" ");
+    selCountStr << selectionCount << L" ";
 
   wxMenu itemEditMenu;
 
@@ -527,7 +527,7 @@ void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
       table.RefreshRow(table.GetItemRow(uuid));
     }
     else {
-      wxFAIL_MSG(wxT("Could not find entry in core after editing it"));
+      wxFAIL_MSG(L"Could not find entry in core after editing it");
     }
   }
 }
@@ -537,7 +537,7 @@ void CompareDlg::OnViewInComparisonDB(wxCommandEvent& evt)
   ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
   const ComparisonGridTable& table = *wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   const pws_os::CUUID& uuid = table[menuContext->selectedRows[0]].uuid1;
-  wxCHECK_RET(ViewEditEntry(m_otherCore, uuid, true) == false, wxT("Should not need to refresh grid for just viewing entry"));
+  wxCHECK_RET(ViewEditEntry(m_otherCore, uuid, true) == false, L"Should not need to refresh grid for just viewing entry");
 }
 
 bool CompareDlg::ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly)
@@ -574,13 +574,13 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
   ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
   wxGridTableBase* baseTable = menuContext->cdata->grid->GetTable();
   ComparisonGridTable* ptable = wxDynamicCast(baseTable, ComparisonGridTable);
-  wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
+  wxCHECK_RET(ptable, L"Could not find ComparisonGridTable derived object in comparison grid");
   const ComparisonGridTable& table = *ptable;
   MultiCommandsPtr pmulticmds(MultiCommands::Create(m_currentCore));
   for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
     const int row = menuContext->selectedRows[idx];
     ItemListIter itrOther = m_otherCore->Find(table[row].uuid1);
-    wxCHECK_RET(itrOther != m_otherCore->GetEntryEndIter(), wxT("Could not find item to be added in comparison core"));
+    wxCHECK_RET(itrOther != m_otherCore->GetEntryEndIter(), L"Could not find item to be added in comparison core");
     if (m_currentCore->Find(itrOther->second.GetUUID()) != m_currentCore->GetEntryEndIter()) {
       // if you copy an item from comparison grid to current db, edit the copy in current db and
       // change its GTU, it will appear in a different grid if you compare again, but have
@@ -633,13 +633,13 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
   ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
   wxGridTableBase* baseTable = menuContext->cdata->grid->GetTable();
   ComparisonGridTable* ptable = wxDynamicCast(baseTable, ComparisonGridTable);
-  wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
+  wxCHECK_RET(ptable, L"Could not find ComparisonGridTable derived object in comparison grid");
   const ComparisonGridTable& table = *ptable;
   MultiCommandsPtr pmulticmds(MultiCommands::Create(m_currentCore));
   for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
     const int row = menuContext->selectedRows[idx];
     ItemListIter itr = m_currentCore->Find(table[row].uuid0);
-    wxCHECK_RET( itr != m_currentCore->GetEntryEndIter(), wxT("Could not find item to be deleted in current core"));
+    wxCHECK_RET( itr != m_currentCore->GetEntryEndIter(), L"Could not find item to be deleted in current core");
     DeleteEntryCommand* cmd = DeleteEntryCommand::Create(m_currentCore, itr->second);
     pmulticmds->Add(cmd);
   }
@@ -659,7 +659,7 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
     }
     else {
       wxCHECK_RET(menuContext->cdata == m_identical || menuContext->cdata == m_conflicts,
-                      wxT("If deleted item was not in comparison grid, it should have been in conflicts or identicals grid"));
+                      L"If deleted item was not in comparison grid, it should have been in conflicts or identicals grid");
       // move items to comparison grid, and then delete the item
       for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
         const int row = menuContext->selectedRows[idx] - idx;
@@ -689,18 +689,18 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
 void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
 {
   ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
-  wxCHECK_RET(menuContext, wxT("No menu context available"));
+  wxCHECK_RET(menuContext, L"No menu context available");
   ComparisonGridTable* ptable = wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
-  wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
+  wxCHECK_RET(ptable, L"Could not find ComparisonGridTable derived object in comparison grid");
   const ComparisonGridTable& table = *ptable;
   MultiCommandsPtr pmulticmds(MultiCommands::Create(m_currentCore));
   for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
     const int row = menuContext->selectedRows[idx];
     ItemListIter itrOther = m_otherCore->Find(table[row].uuid1);
-    wxCHECK_RET( itrOther != m_otherCore->GetEntryEndIter(), wxT("Could not find item to be modified in current core"));
+    wxCHECK_RET( itrOther != m_otherCore->GetEntryEndIter(), L"Could not find item to be modified in current core");
     const CItemData& otherItem = itrOther->second;
     ItemListIter itrCurrent = m_currentCore->Find(table[row].uuid0);
-    wxCHECK_RET(itrCurrent != m_currentCore->GetEntryEndIter(), wxT("Could not find item to be modified in current core"));
+    wxCHECK_RET(itrCurrent != m_currentCore->GetEntryEndIter(), L"Could not find item to be modified in current core");
     const CItemData& currentItem = itrCurrent->second;
     UpdateEntryCommand* cmd = UpdateEntryCommand::Create(m_currentCore, currentItem,
                                                         menuContext->field,
@@ -747,11 +747,11 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
                         NULL, 0, //no fields are left unselected by default
                         NULL, 0, //But no fields are mandatory
                         userSelection,
-                        _T("Synchronize"));
+                        L"Synchronize");
   if (dlg.ShowModal() == wxID_OK) {
-    wxCHECK_RET(userSelection.size() > 0, wxT("User did not select any fields to sync?"));
+    wxCHECK_RET(userSelection.size() > 0, L"User did not select any fields to sync?");
     ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
-    wxCHECK_RET(menuContext, wxT("No menu context available"));
+    wxCHECK_RET(menuContext, L"No menu context available");
     //start with the selected items
     wxArrayInt syncIndexes(menuContext->selectedItems);
     if (evt.GetId() == ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB) {
@@ -763,18 +763,18 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
         syncIndexes.Add(i);
     }
     else {
-      wxCHECK_RET(evt.GetId() == ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, wxT("Sync menu id is neither for all nor for selected items"));
+      wxCHECK_RET(evt.GetId() == ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, L"Sync menu id is neither for all nor for selected items");
     }
 
     //use a wxScopedPtr to clean up the heap object if we trip on any of the wxCHECK_RETs below
     MultiCommandsPtr pMultiCmds(MultiCommands::Create(m_currentCore));
     for (size_t idx = 0; idx < syncIndexes.Count(); ++idx) {
       ItemListIter fromPos = m_otherCore->Find(menuContext->cdata->data[syncIndexes[idx]].uuid1);
-      wxCHECK_RET(fromPos != m_otherCore->GetEntryEndIter(), wxT("Could not find sync item in other db"));
+      wxCHECK_RET(fromPos != m_otherCore->GetEntryEndIter(), L"Could not find sync item in other db");
       const CItemData *pfromEntry = &fromPos->second;
 
       ItemListIter toPos = m_currentCore->Find(menuContext->cdata->data[syncIndexes[idx]].uuid0);
-      wxCHECK_RET(toPos != m_currentCore->GetEntryEndIter(), wxT("Could not find sync item in current db"));
+      wxCHECK_RET(toPos != m_currentCore->GetEntryEndIter(), L"Could not find sync item in current db");
       CItemData *ptoEntry = &toPos->second;
       CItemData updtEntry(*ptoEntry);
 
@@ -799,9 +799,9 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
     if (pMultiCmds->GetSize() > 0) {
       m_currentCore->Execute(pMultiCmds.release());
       ComparisonGridTable* ptable = wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
-      wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
+      wxCHECK_RET(ptable, L"Could not find ComparisonGridTable derived object in comparison grid");
       const ComparisonGridTable& table = *ptable;
-      wxCHECK_RET(menuContext->cdata == m_conflicts, wxT("Sync happened in unexpected grid"));
+      wxCHECK_RET(menuContext->cdata == m_conflicts, L"Sync happened in unexpected grid");
       for( size_t idx = 0; idx < syncIndexes.Count(); ++idx) {
         //refresh every even-numbered row
         table.RefreshRow(syncIndexes[idx]*2);

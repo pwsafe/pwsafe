@@ -97,7 +97,7 @@ void PasswordSafeFrame::DoEdit(CItemData item)
       UpdateStatusBar();
     }
     else {
-      wxFAIL_MSG(wxT("Item being edited not found in currently loaded DB"));
+      wxFAIL_MSG(L"Item being edited not found in currently loaded DB");
     }
   }
 }
@@ -211,7 +211,7 @@ Command *PasswordSafeFrame::Delete(wxTreeItemId tid)
         retval->Add(delLeafCmd);
     }
     else {
-      wxASSERT_MSG(m_tree->ItemIsGroup(tid), wxT("Childless item without CItemData must be an empty group"));
+      wxASSERT_MSG(m_tree->ItemIsGroup(tid), L"Childless item without CItemData must be an empty group");
       StringX sxGroup = tostringx(m_tree->GetItemGroup(tid));
       Command *delGrp = DBEmptyGroupsCommand::Create(&m_core, sxGroup, DBEmptyGroupsCommand::EG_DELETE);
       if (delGrp)
@@ -431,10 +431,10 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
       const CItemData *pbci = m_core.GetBaseEntry(pci);
       if (pbci != NULL) {
         StringX cs_tmp;
-        cs_tmp = wxT("[") +
-          pbci->GetGroup() + wxT(":") +
-          pbci->GetTitle() + wxT(":") +
-          pbci->GetUser()  + wxT("]");
+        cs_tmp = L"[" +
+          pbci->GetGroup() + L":" +
+          pbci->GetTitle() + L":" +
+          pbci->GetUser()  + L"]";
         ci2.SetPassword(cs_tmp);
         pcmd = AddEntryCommand::Create(&m_core, ci2, pbci->GetUUID());
       }
@@ -497,7 +497,7 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
   UpdateAccessTime(ci);
 
   const wxString intervalStr = towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::AutotypeTaskDelays));
-  const wxArrayString tokens = wxStringTokenize(intervalStr, wxT(" ,:;\t"), wxTOKEN_STRTOK);
+  const wxArrayString tokens = wxStringTokenize(intervalStr, L" ,:;\t", wxTOKEN_STRTOK);
   const int stdInterval = PWSprefs::GetInstance()->GetPref(PWSprefs::TimedTaskChainDelay);
 
   std::array<int, 3> intervals;
@@ -516,7 +516,7 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
                      MaybeRestoreUI(false, wxEmptyString);
                   }, intervals[2])
                   .OnError( [this](const std::exception& e) {
-                     MaybeRestoreUI(true, e.what());
+                     MaybeRestoreUI(true, pws_os::towc(e.what()));
                   });
 
 }
@@ -561,7 +561,7 @@ void PasswordSafeFrame::MaybeRestoreUI(bool autotype_err, wxString autotype_err_
     }
   }
   if (autotype_err)
-    wxMessageBox(_("There was an error autotyping.  ") + autotype_err_msg, _T("Autotype error"), wxOK|wxICON_ERROR, this);
+    wxMessageBox(_("There was an error autotyping.  ") + autotype_err_msg, L"Autotype error", wxOK|wxICON_ERROR, this);
 }
 
 /*
@@ -745,21 +745,21 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
    * to understand what this code is doing, and why.
    */
   wxString theURL(csURL);
-  theURL.Replace(wxT("\n\t\r"), wxEmptyString, true); //true => replace all
+  theURL.Replace(L"\n\t\r", wxEmptyString, true); //true => replace all
 
-  const bool isMailto = (theURL.Find(wxT("mailto:")) != wxNOT_FOUND);
+  const bool isMailto = (theURL.Find(L"mailto:") != wxNOT_FOUND);
   const wxString errMsg = isMailto ? _("Unable to send email") : _("Unable to display URL");
 
-  const size_t altReplacements = theURL.Replace(wxT("[alt]"), wxEmptyString);
-  const size_t alt2Replacements = (theURL.Replace(wxT("[ssh]"), wxEmptyString) +
-                          theURL.Replace(wxT("{alt}"), wxEmptyString));
+  const size_t altReplacements = theURL.Replace(L"[alt]", wxEmptyString);
+  const size_t alt2Replacements = (theURL.Replace(L"[ssh]", wxEmptyString) +
+                          theURL.Replace(L"{alt}", wxEmptyString));
 #ifdef NOT_YET
-  const size_t autotypeReplacements = theURL.Replace(wxT("[autotype]"), wxEmptyString);
-  const size_t no_autotype = theURL.Replace(wxT("[xa]"), wxEmptyString);
+  const size_t autotypeReplacements = theURL.Replace(L"[autotype]", wxEmptyString);
+  const size_t no_autotype = theURL.Replace(L"[xa]", wxEmptyString);
 #endif
 
-  if (alt2Replacements == 0 && !isMailto && theURL.Find(wxT("://")) == wxNOT_FOUND)
-    theURL = wxT("http://") + theURL;
+  if (alt2Replacements == 0 && !isMailto && theURL.Find(L"://") == wxNOT_FOUND)
+    theURL = L"http://" + theURL;
 
   const wxString sxAltBrowser(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::AltBrowser)));
   const bool useAltBrowser = ((altReplacements > 0 || alt2Replacements > 0) && !sxAltBrowser.empty());
@@ -774,7 +774,7 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
                            GetPref(PWSprefs::AltBrowserCmdLineParms)));
 
     if (!sxCmdLineParms.empty())
-      sxParameters = sxCmdLineParms + wxT(" ") + theURL;
+      sxParameters = sxCmdLineParms + L" " + theURL;
     else
       sxParameters = theURL;
   }
@@ -803,7 +803,7 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
 #else
   bool rc;
   if (useAltBrowser) {
-    const wxString cmdLine(sxFile + wxT(" ") + sxParameters);
+    const wxString cmdLine(sxFile + L" " + sxParameters);
     rc = (::wxExecute(cmdLine, wxEXEC_ASYNC) != 0);
   }
   else {
@@ -873,10 +873,10 @@ void PasswordSafeFrame::OnPasswordQRCode(wxCommandEvent &evt)
     if (item != NULL) {
 #ifndef NO_QR
     PWSQRCodeDlg dlg(this, item->GetPassword(),
-              towxstring(CItemData::FieldName(CItem::PASSWORD)) + _T(" of ") +
+              towxstring(CItemData::FieldName(CItem::PASSWORD)) + L" of " +
               towxstring(item->GetGroup()) +
-              _T('[') + towxstring(item->GetTitle()) + _T(']') +
-              _T(':') + towxstring(item->GetUser()));
+              L'[' + towxstring(item->GetTitle()) + L']' +
+              L':' + towxstring(item->GetUser()));
       dlg.ShowModal();
 #endif
     }

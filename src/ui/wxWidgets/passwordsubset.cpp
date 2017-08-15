@@ -118,7 +118,7 @@ void CPasswordSubset::Init()
  */
 
 void CPasswordSubset::CreateControls()
-{    
+{
 ////@begin CPasswordSubset content construction
   CPasswordSubset* itemDialog1 = this;
 
@@ -145,14 +145,14 @@ void CPasswordSubset::CreateControls()
   m_vals = new wxTextCtrl( itemDialog1, ID_TEXTCTRL_VAL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
   itemGridSizer4->Add(m_vals, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxBitmapButton* itemBitmapButton10 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-  wxBitmap itemBitmapButton10BitmapSel(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
+  wxBitmapButton* itemBitmapButton10 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, itemDialog1->GetBitmapResource(L"graphics/toolbar/new/copypassword.xpm"), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+  wxBitmap itemBitmapButton10BitmapSel(itemDialog1->GetBitmapResource(L"graphics/toolbar/new/copypassword.xpm"));
   itemBitmapButton10->SetBitmapSelected(itemBitmapButton10BitmapSel);
-  wxBitmap itemBitmapButton10BitmapFocus(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
+  wxBitmap itemBitmapButton10BitmapFocus(itemDialog1->GetBitmapResource(L"graphics/toolbar/new/copypassword.xpm"));
   itemBitmapButton10->SetBitmapFocus(itemBitmapButton10BitmapFocus);
-  wxBitmap itemBitmapButton10BitmapDisabled(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword_disabled.xpm")));
+  wxBitmap itemBitmapButton10BitmapDisabled(itemDialog1->GetBitmapResource(L"graphics/toolbar/new/copypassword_disabled.xpm"));
   itemBitmapButton10->SetBitmapDisabled(itemBitmapButton10BitmapDisabled);
-  wxBitmap itemBitmapButton10BitmapHover(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
+  wxBitmap itemBitmapButton10BitmapHover(itemDialog1->GetBitmapResource(L"graphics/toolbar/new/copypassword.xpm"));
   itemBitmapButton10->SetBitmapHover(itemBitmapButton10BitmapHover);
   if (CPasswordSubset::ShowToolTips())
     itemBitmapButton10->SetToolTip(_("Copy values"));
@@ -188,12 +188,12 @@ wxBitmap CPasswordSubset::GetBitmapResource( const wxString& name )
   // Bitmap retrieval
 ////@begin CPasswordSubset bitmap retrieval
   wxUnusedVar(name);
-  if (name == wxT("graphics/toolbar/new/copypassword.xpm"))
+  if (name == L"graphics/toolbar/new/copypassword.xpm")
   {
     wxBitmap bitmap(copypassword_xpm);
     return bitmap;
   }
-  else if (name == wxT("graphics/toolbar/new/copypassword_disabled.xpm"))
+  else if (name == L"graphics/toolbar/new/copypassword_disabled.xpm")
   {
     wxBitmap bitmap(copypassword_disabled_xpm);
     return bitmap;
@@ -236,17 +236,17 @@ void CPasswordSubset::OnChar( wxKeyEvent& event )
       pos_str += uc; // since accepted char will only be added to control later
       // could have used xwStringTokenizer in following, but this way we also convert to int
       // and catch bad usage of '-'
-      seps.Replace(&pos_str, wxT(" ")); // replace ';' and ',' with ' ' for stream tokenizing
+      seps.Replace(&pos_str, L" "); // replace ';' and ',' with ' ' for stream tokenizing
       m_vals->Clear();
       m_error->SetLabel(wxEmptyString);
-      
+
       std::wistringstream is(pos_str.wc_str());
       int pos;
       while (is >> pos) {
 	if (pos > 0 && pos <= N)
-	  *m_vals << m_password[pos - 1] << wxT(" ");
+	  *m_vals << m_password[pos - 1] << L" ";
 	else if (pos < 0 && pos >= -N)
-	  *m_vals << m_password[N + pos] << wxT(" ");
+	  *m_vals << m_password[N + pos] << L" ";
 	else {
 	  m_error->SetLabel(_("Invalid position"));
 	}

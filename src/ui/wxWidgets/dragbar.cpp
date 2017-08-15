@@ -151,7 +151,7 @@ int CDragBar::FindToolFromCoords(const wxPoint& pt)
       break;
     }
     default:
-      wxFAIL_MSG(wxT("Unknown type of dragbar orientation"));
+      wxFAIL_MSG(L"Unknown type of dragbar orientation");
       return -1;
   }
 
@@ -192,7 +192,7 @@ wxSize CDragBar::GetInvalidatedIconRange(const wxRect& rect)
       return wxSize(first, last);
     }
     default:
-      wxFAIL_MSG(wxT("m_orientation not initialized correctly"));
+      wxFAIL_MSG(L"m_orientation not initialized correctly");
       return wxSize(0, 0);
   }
 }
@@ -216,7 +216,7 @@ void CDragBar::OnPaint(wxPaintEvent& /*evt*/)
 
   wxRect rc;
   dc.GetClippingBox(rc);
-  //wxLogDebug(wxT("Clipping box = [(%d, %d) (%d %d)]"), rc.GetLeft(), rc.GetTop(), rc.GetRight(), rc.GetBottom());
+  //wxLogDebug(L"Clipping box = [(%d, %d) (%d %d)]", rc.GetLeft(), rc.GetTop(), rc.GetRight(), rc.GetBottom());
 
   wxSize range = GetInvalidatedIconRange(rc);
 
@@ -224,14 +224,14 @@ void CDragBar::OnPaint(wxPaintEvent& /*evt*/)
   wxASSERT(range.y == -1 || (range.y >= range.x && size_t(range.y) < m_items.size()));
 
   if (range.x >= 0) {
-    //wxLogDebug(wxT("Painting dragbar icons %d - %d"), range.x + 1, range.y + 1);
+    //wxLogDebug(L"Painting dragbar icons %d - %d", range.x + 1, range.y + 1);
     for (int idx = range.x; idx <= range.y; ++idx) {
       dc.DrawBitmap(m_items[idx].enabled? m_items[idx].bmp : m_items[idx].bmpDisabled,
                           GetToolX(idx), GetToolY(idx), true);
     }
   }
   else {
-    //wxLogDebug(wxT("all dragbar icons valid"));
+    //wxLogDebug(L"all dragbar icons valid");
   }
 
 }
@@ -244,7 +244,7 @@ wxSize CDragBar::DoGetBestSize() const
     case wxVERTICAL:
       return wxSize(2*m_margins.GetWidth() + m_bmpWidth + 1, std::max(GetParent()->GetSize().GetHeight(), GetToolY(m_items.size())));
     default:
-      wxFAIL_MSG(wxT("m_orientation not initialized correctly"));
+      wxFAIL_MSG(L"m_orientation not initialized correctly");
       return wxDefaultSize;
   }
 }
@@ -264,12 +264,12 @@ void CDragBar::OnMouseMove(wxMouseEvent& evt)
       SetToolTip(m_items[idx].tooltip);
     else {
       RemoveToolTip(this);
-      //wxLogDebug(wxT("Removed tooltip, idx was %d"), idx);
+      //wxLogDebug(L"Removed tooltip, idx was %d", idx);
     }
   }
   else {
     RemoveToolTip(this);
-    //wxLogDebug(wxT("Removed tooltip for dragging"));
+    //wxLogDebug(L"Removed tooltip for dragging");
   }
 }
 
@@ -277,7 +277,7 @@ void CDragBar::OnMouseLeave(wxMouseEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
   RemoveToolTip(this);
-  //wxLogDebug(wxT("Removed tooltip since mouse left the window"));
+  //wxLogDebug(L"Removed tooltip since mouse left the window");
 }
 
 void CDragBar::OnUpdateUI(wxUpdateUIEvent& evt)

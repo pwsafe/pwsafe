@@ -40,7 +40,7 @@ class SafeCombinationValidator: public wxValidator
 public:
   SafeCombinationValidator(StringX* str): m_str(str), m_allowBlank(false) {}
   virtual ~SafeCombinationValidator() { m_str = 0; }
-  
+
   virtual wxObject *Clone() const { return new SafeCombinationValidator(m_str); }
 
   // This function can pop up an error message.
@@ -61,14 +61,14 @@ private:
 
 //
 // Right now, we only validate if the user entered something in the combination box
-// Maybe we could hook it up with the wxFilePickerCtrl and validate the safe 
+// Maybe we could hook it up with the wxFilePickerCtrl and validate the safe
 // combination itself
 //
 bool SafeCombinationValidator::Validate(wxWindow* parent)
 {
   bool retval = true;
   wxTextCtrl* win = wxDynamicCast(GetWindow(), wxTextCtrl);
-  wxCHECK_MSG(win, false, wxT("You must associate a wxTextCtrl window with SafeCombinationValidator"));
+  wxCHECK_MSG(win, false, L"You must associate a wxTextCtrl window with SafeCombinationValidator");
   if (!m_allowBlank && win->IsEmpty()) {
     wxMessageBox(_("The combination cannot be blank."), _("Error"), wxOK | wxICON_EXCLAMATION, parent);
     win->SetFocus();
@@ -82,7 +82,7 @@ bool SafeCombinationValidator::TransferToWindow()
 {
   if (m_str) {
     wxTextCtrl* win = wxDynamicCast(GetWindow(), wxTextCtrl);
-    wxCHECK_MSG(win, false, wxT("You must associate a wxTextCtrl window with SafeCombinationValidator"));
+    wxCHECK_MSG(win, false, L"You must associate a wxTextCtrl window with SafeCombinationValidator");
     wxString tmp = towxstring(*m_str);
     win->SetValue(tmp);
     //clear out the memory.  Is there a way to prevent this from getting optimized away?
@@ -96,7 +96,7 @@ bool SafeCombinationValidator::TransferFromWindow()
 {
   if (m_str) {
     wxTextCtrl* win = wxDynamicCast(GetWindow(), wxTextCtrl);
-    wxCHECK_MSG(win, false, wxT("You must associate a wxTextCtrl window with SafeCombinationValidator"));
+    wxCHECK_MSG(win, false, L"You must associate a wxTextCtrl window with SafeCombinationValidator");
     wxString tmp = win->GetValue();
     *m_str = tostringx(tmp);
     //clear out the memory.  Is there a way to prevent this from getting optimized away?
@@ -106,19 +106,19 @@ bool SafeCombinationValidator::TransferFromWindow()
   return true;
 }
 
-void CSafeCombinationCtrl::Init(wxWindow* parent, 
+void CSafeCombinationCtrl::Init(wxWindow* parent,
                                 wxWindowID textCtrlID /*= wxID_ANY*/,
                                 StringX* valPtr /*= 0*/,
                                 const wxPoint& pos /* = wxDefaultPosition*/,
                                 const wxSize& size /* = wxDefaultSize */)
 {
   SafeCombinationValidator scValidator(valPtr);
-  textCtrl = new wxTextCtrl(parent, textCtrlID, wxEmptyString, pos, size, 
+  textCtrl = new wxTextCtrl(parent, textCtrlID, wxEmptyString, pos, size,
                                                 wxTE_PASSWORD,
                                                 scValidator);
   ApplyPasswordFont(textCtrl);
   Add(textCtrl, wxSizerFlags().Proportion(1).Expand());
-  
+
   ExternalKeyboardButton* vkbdButton = new ExternalKeyboardButton(parent);
   Add(vkbdButton, wxSizerFlags().Border(wxLEFT));
 }

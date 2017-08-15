@@ -395,7 +395,7 @@ void AddEditPropSheet::CreateControls()
   itemCheckBox51->SetValue(false);
   itemBoxSizer50->Add(itemCheckBox51, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_MaxPWHistCtrl = new wxSpinCtrl( itemPanel38, ID_SPINCTRL, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_MaxPWHistCtrl = new wxSpinCtrl( itemPanel38, ID_SPINCTRL, L"0", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
   itemBoxSizer50->Add(m_MaxPWHistCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText53 = new wxStaticText( itemPanel38, wxID_STATIC, _("last passwords"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -447,7 +447,7 @@ void AddEditPropSheet::CreateControls()
 
   wxBoxSizer* itemBoxSizer68 = new wxBoxSizer(wxHORIZONTAL);
   itemFlexGridSizer63->Add(itemBoxSizer68, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-  m_ExpTimeCtrl = new wxSpinCtrl( itemPanel59, ID_SPINCTRL2, _T("90"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 3650, 90 );
+  m_ExpTimeCtrl = new wxSpinCtrl( itemPanel59, ID_SPINCTRL2, L"90", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 3650, 90 );
   itemBoxSizer68->Add(m_ExpTimeCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText70 = new wxStaticText( itemPanel59, wxID_STATIC, _("days"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -531,7 +531,7 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText96 = new wxStaticText( itemPanel87, wxID_STATIC, _("Password length: "), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer95->Add(itemStaticText96, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpLenCtrl = new wxSpinCtrl( itemPanel87, ID_SPINCTRL3, _T("12"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 1024, 12 );
+  m_pwpLenCtrl = new wxSpinCtrl( itemPanel87, ID_SPINCTRL3, L"12", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 1024, 12 );
   itemBoxSizer95->Add(m_pwpLenCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwMinsGSzr = new wxGridSizer(0, 2, 0, 0);
@@ -545,7 +545,7 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText101 = new wxStaticText( itemPanel87, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumLCbox->Add(itemStaticText101, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpLCSpin = new wxSpinCtrl( itemPanel87, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpLCSpin = new wxSpinCtrl( itemPanel87, ID_SPINCTRL5, L"0", wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumLCbox->Add(m_pwpLCSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText103 = new wxStaticText( itemPanel87, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -560,7 +560,7 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText106 = new wxStaticText( itemPanel87, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumUCbox->Add(itemStaticText106, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpUCSpin = new wxSpinCtrl( itemPanel87, ID_SPINCTRL6, _T("0"), wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpUCSpin = new wxSpinCtrl( itemPanel87, ID_SPINCTRL6, L"0", wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumUCbox->Add(m_pwpUCSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText108 = new wxStaticText( itemPanel87, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -575,7 +575,7 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText111 = new wxStaticText( itemPanel87, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumDigbox->Add(itemStaticText111, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpDigSpin = new wxSpinCtrl( itemPanel87, ID_SPINCTRL7, _T("0"), wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpDigSpin = new wxSpinCtrl( itemPanel87, ID_SPINCTRL7, L"0", wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumDigbox->Add(m_pwpDigSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText113 = new wxStaticText( itemPanel87, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -590,7 +590,7 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText116 = new wxStaticText( itemPanel87, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumSymbox->Add(itemStaticText116, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpSymSpin = new wxSpinCtrl( itemPanel87, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpSymSpin = new wxSpinCtrl( itemPanel87, ID_SPINCTRL8, L"0", wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumSymbox->Add(m_pwpSymSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText118 = new wxStaticText( itemPanel87, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -802,7 +802,7 @@ static struct {short pv; wxString name;}
     pcbox->SetClientData(i, reinterpret_cast<void *>(dcaMapping[i].pv));
     if (dcaMapping[i].pv == defDCA) {
       wxString dv = dcaMapping[i].name;
-      dv += wxT(" ("); dv += _("default"); dv += wxT(")");
+      dv += L" ("; dv += _("default"); dv += L")";
       pcbox->SetString(i, dv);
     }
     if (iDCA == dcaMapping[i].pv)
@@ -1212,13 +1212,13 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       PWHistList::iterator iter;
       for (iter = pwhl.begin(); iter != pwhl.end() && numEntries > 0; iter++, numEntries--) {
         StringX buffer;
-        Format(buffer, _T("%08x%04x%ls"),
+        Format(buffer, L"%08x%04x%ls",
                static_cast<long>(iter->changetttdate), iter->password.length(),
                iter->password.c_str());
         m_PWHistory += towxstring(buffer);
       }
 
-      wxASSERT_MSG(numEntries ==0, wxT("Could not save existing password history entries"));
+      wxASSERT_MSG(numEntries ==0, L"Could not save existing password history entries");
 
       PWPolicy oldPWP, pwp;
       // get item's effective policy:
@@ -1358,7 +1358,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         uuid_array_t alias_uuid;
         m_item.GetUUID(alias_uuid);
         m_AEMD.pcore->AddDependentEntry(m_AEMD.base_uuid, alias_uuid, CItemData::ET_ALIAS);
-        m_item.SetPassword(_T("[Alias]"));
+        m_item.SetPassword(L"[Alias]");
         m_item.SetAlias();
         ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
         if (iter != m_AEMD.pDbx->End()) {
@@ -1552,7 +1552,7 @@ void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& /* evt */ )
 
 PWPolicy AddEditPropSheet::GetPWPolicyFromUI()
 {
-  wxASSERT_MSG(m_ourPWPRB->GetValue() && !m_defPWPRB->GetValue(), wxT("Trying to get Password policy from UI when db defaults are to be used"));
+  wxASSERT_MSG(m_ourPWPRB->GetValue() && !m_defPWPRB->GetValue(), L"Trying to get Password policy from UI when db defaults are to be used");
 
   PWPolicy pwp;
 
@@ -1577,7 +1577,7 @@ PWPolicy AddEditPropSheet::GetPWPolicyFromUI()
     pwp.symbolminlength = m_pwpSymSpin->GetValue();
   }
 
-  wxASSERT_MSG(!m_pwpEasyCtrl->GetValue() || !m_pwpPronounceCtrl->GetValue(), wxT("UI Bug: both pronounceable and easy-to-read are set"));
+  wxASSERT_MSG(!m_pwpEasyCtrl->GetValue() || !m_pwpPronounceCtrl->GetValue(), L"UI Bug: both pronounceable and easy-to-read are set");
 
   if (m_pwpEasyCtrl->GetValue())
     pwp.flags |= PWPolicy::UseEasyVision;
@@ -1755,7 +1755,7 @@ void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
     policy = PWSprefs::GetInstance()->GetDefaultPolicy();
   } else {
     if (!m_core.GetPolicyFromName(tostringx(polName), policy)) {
-      pws_os::Trace(wxT("Couldn't find policy %ls\n"), ToStr(polName));
+      pws_os::Trace(L"Couldn't find policy %ls\n", ToStr(polName));
       return;
     }
   }

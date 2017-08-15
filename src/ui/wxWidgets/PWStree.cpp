@@ -302,17 +302,17 @@ wxString PWSTreeCtrl::ItemDisplayString(const CItemData &item) const
     const wxString user = item.GetUser().c_str();
     // User is NOT a mandatory field - but show not present by empty brackets i.e. []
     // if user wants it displayed
-    disp += wxT(" [") + user + wxT("]");
+    disp += L" [" + user + L"]";
   }
 
   if (prefs->GetPref(PWSprefs::ShowPasswordInTree)) {
     const wxString passwd = item.GetPassword().c_str();
     // Password is a mandatory field - no need to worry if empty
-    disp += wxT(" {") + passwd + wxT("}");
+    disp += L" {" + passwd + L"}";
   }
 
-  if (item.IsProtected()) { 
-    disp += wxT(" #");
+  if (item.IsProtected()) {
+    disp += L" #";
 #ifdef NOTYET
     wxUniChar padlock(0x1f512);
     disp +=padlock;
@@ -337,7 +337,7 @@ wxString PWSTreeCtrl::GetPath(const wxTreeItemId &node) const
   for(iter = v.rbegin(); iter != v.rend(); iter++) {
     retval += *iter;
     if ((iter + 1) != v.rend())
-      retval += wxT(".");
+      retval += L".";
   }
   return retval;
 }
@@ -352,7 +352,7 @@ wxString PWSTreeCtrl::GetItemGroup(const wxTreeItemId& item) const
     if (path.IsEmpty())//parent is root
       return name; //group under root
     else
-      return path + wxT(".") + name; //sub-group of some (non-root) group
+      return path + L"." + name; //sub-group of some (non-root) group
   }
   else
     return GetPath(item);
@@ -483,7 +483,7 @@ wxTreeItemId PWSTreeCtrl::Find(const CItemData &item) const
 
 wxTreeItemId PWSTreeCtrl::Find(const wxString &path, wxTreeItemId subtree) const
 {
-  wxArrayString elems(::wxStringTokenize(path, wxT('.')));
+  wxArrayString elems(::wxStringTokenize(path, L'.'));
   for( size_t idx = 0; idx < elems.Count(); ++idx) {
     wxTreeItemId next;
     if (ExistsInTree(subtree, tostringx(elems[idx]), next))
@@ -620,7 +620,7 @@ void EditTreeLabel(wxTreeCtrl* tree, const wxTreeItemId& id)
   wxTextCtrl* edit = tree->EditLabel(id);
   if (edit) {
     wxTextValidator val(wxFILTER_EXCLUDE_CHAR_LIST);
-    const wxChar* dot = wxT(".");
+    const wxChar* dot = L".";
     val.SetExcludes(wxArrayString(1, &dot));
     edit->SetValidator(val);
     edit->SelectAll();
@@ -628,9 +628,9 @@ void EditTreeLabel(wxTreeCtrl* tree, const wxTreeItemId& id)
 }
 void PWSTreeCtrl::OnAddGroup(wxCommandEvent& /*evt*/)
 {
-  wxCHECK_RET(IsShown(), wxT("Group can only be added while in tree view"));
+  wxCHECK_RET(IsShown(), L"Group can only be added while in tree view");
   wxTreeItemId parentId = GetSelection();
-  wxString newItemPath = (!parentId || parentId == GetRootItem() || !ItemIsGroup(parentId))? wxString(_("New Group")): GetItemGroup(parentId) + wxT(".") + _("New Group");
+  wxString newItemPath = (!parentId || parentId == GetRootItem() || !ItemIsGroup(parentId))? wxString(_("New Group")): GetItemGroup(parentId) + L"." + _("New Group");
   wxTreeItemId newItem = AddGroup(tostringx(newItemPath));
   wxCHECK_RET(newItem.IsOk(), _("Could not add empty group item to tree"));
   // mark it as a new group that is still under construction.  wxWidgets would delete it
@@ -664,7 +664,7 @@ void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
   switch (evt.GetId()) {
     case ID_TREECTRL:
     {
-      if (label.Find(wxT('.')) == wxNOT_FOUND) {
+      if (label.Find(L'.') == wxNOT_FOUND) {
       // Not safe to modify the tree ctrl in any way.  Wait for the stack to unwind.
       wxTreeEvent newEvt(evt);
       newEvt.SetId(ID_TREECTRL_1);
@@ -693,7 +693,7 @@ void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
       break;
     }
     default:
-      wxFAIL_MSG(wxString::Format(wxT("End Label Edit handler received an unexpected identifier: %d"), evt.GetId()));
+      wxFAIL_MSG(wxString::Format(L"End Label Edit handler received an unexpected identifier: %d", evt.GetId()));
       break;
   }
 }
@@ -709,7 +709,7 @@ void PWSTreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
     wxString groupName = evt.GetLabel();
     for (wxTreeItemId parent = GetItemParent(groupItem);
                       parent != GetRootItem(); parent = GetItemParent(parent)) {
-      groupName = GetItemText(parent) + wxT(".") + groupName;
+      groupName = GetItemText(parent) + L"." + groupName;
     }
     StringX sxGroup = tostringx(groupName);
 
@@ -730,7 +730,7 @@ void PWSTreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
 
 void PWSTreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, const wxString& oldPath)
 {
-  wxCHECK_RET(ItemIsGroup(groupItem), wxT("Cannot handle renaming of non-group items"));
+  wxCHECK_RET(ItemIsGroup(groupItem), L"Cannot handle renaming of non-group items");
 
   if (evt.IsEditCancelled())
     return;
@@ -753,7 +753,7 @@ void PWSTreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, 
   // But we have to do the empty groups ourselves because EG_RENAME is not recursive
   typedef std::vector<StringX> EmptyGroupsArray;
   const EmptyGroupsArray& emptyGroups = m_core.GetEmptyGroups();
-  StringX sxOldPathWithDot = sxOldPath + _T('.');
+  StringX sxOldPathWithDot = sxOldPath + L'.';
   for( EmptyGroupsArray::const_iterator itr = emptyGroups.begin(); itr != emptyGroups.end(); ++itr)
   {
     if (*itr == sxOldPath || itr->find(sxOldPathWithDot) == 0) {

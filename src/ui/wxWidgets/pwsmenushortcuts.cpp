@@ -82,7 +82,7 @@ st_prefShortcut MenuItemData::ToPrefShortcut() const
   st_prefShortcut sc;
 
   sc.id = m_menuId;
-  wxASSERT_MSG(sc.id != 0, wxT("Trying to save shortcut with NULL menu item id"));
+  wxASSERT_MSG(sc.id != 0, L"Trying to save shortcut with NULL menu item id");
   sc.siVirtKey = ae.GetKeyCode();
   sc.cPWSModifier = 0;
   for (size_t idx = 0; idx < WXSIZEOF(g_modmap); ++idx)
@@ -155,16 +155,16 @@ void MenuItemData::ApplyEffectiveShortcut()
     if (wxIsStockID(m_menuId))
       currentLabel = wxGetStockLabel(m_menuId, wxSTOCK_WITH_MNEMONIC);
     else {
-      wxFAIL_MSG(wxT("empty menu item label, and not a stock item either"));
+      wxFAIL_MSG(L"empty menu item label, and not a stock item either");
     }
   }
 
   if (HasEffectiveShortcut()) {
     wxAcceleratorEntry ae(GetEffectiveShortcut());
-    m_item->SetItemLabel(currentLabel.BeforeFirst(wxT('\t')) + wxT('\t') + ae.ToString());
+    m_item->SetItemLabel(currentLabel.BeforeFirst(L'\t') + L'\t' + ae.ToString());
   }
   else {
-    m_item->SetItemLabel(currentLabel.BeforeFirst(wxT('\t')));
+    m_item->SetItemLabel(currentLabel.BeforeFirst(L'\t'));
   }
 }
 
@@ -194,17 +194,17 @@ bool MenuItemData::IsCustom() const
 wxAcceleratorEntry MenuItemData::GetEffectiveShortcut() const
 {
   if (m_status.ischanged()) {
-    wxASSERT_MSG(IsNotNull(m_userShortcut), wxT("Changed shortcut has invalid user-shortcut"));
+    wxASSERT_MSG(IsNotNull(m_userShortcut), L"Changed shortcut has invalid user-shortcut");
     return m_userShortcut;
   }
   else if (m_status.isdeleted()) {
-    wxASSERT_MSG(IsNotNull(m_origShortcut), wxT("Deleted shortcuts should have valid original shortcuts"));
-    wxASSERT_MSG(IsNull(m_userShortcut), wxT("Deleted shortcuts should invalidate user-shortcuts"));
+    wxASSERT_MSG(IsNotNull(m_origShortcut), L"Deleted shortcuts should have valid original shortcuts");
+    wxASSERT_MSG(IsNull(m_userShortcut), L"Deleted shortcuts should invalidate user-shortcuts");
     return wxAcceleratorEntry(0, 0, m_menuId);
   }
   else {
-    wxASSERT_MSG(m_status.isorig(), wxT("Unexpected shortcut status"));
-    wxASSERT_MSG(IsNull(m_userShortcut), wxT("Shortcuts not changed or deleted should have invalid user-shortcuts"));
+    wxASSERT_MSG(m_status.isorig(), L"Unexpected shortcut status");
+    wxASSERT_MSG(IsNull(m_userShortcut), L"Shortcuts not changed or deleted should have invalid user-shortcuts");
     return m_origShortcut;
   }
 }
@@ -249,7 +249,7 @@ void GetShortcutsFromMenu(wxMenu* menu, Iter cont_itr, const wxString& menuLabel
       wxASSERT(wxIsStockID(item->GetId()));
       menuItemLabel = wxGetStockLabel(item->GetId(), wxSTOCK_NOFLAGS);
     }
-    const wxString longLabel = menuLabel + wxT(" \xbb ") + menuItemLabel;
+    const wxString longLabel = menuLabel + L" \xbb " + menuItemLabel;
     if (item->IsSubMenu()) {
       GetShortcutsFromMenu(item->GetSubMenu(), cont_itr, longLabel);
     }
@@ -282,7 +282,7 @@ bool IsFunctionKey(int keycode)
 
 void SetFont(wxGrid *grid, int row)
 {
-  wxCHECK_RET(row >= 0 && unsigned(row) < PWSMenuShortcuts::GetShortcutsManager()->Count(), wxT("Invalid row in ShortcutsAttrProvider"));
+  wxCHECK_RET(row >= 0 && unsigned(row) < PWSMenuShortcuts::GetShortcutsManager()->Count(), L"Invalid row in ShortcutsAttrProvider");
   MenuItemData::ShortcutStatus status = PWSMenuShortcuts::GetShortcutsManager()->GetGridShortcutStatusAt(unsigned(row));
 
   struct FontAttr {
@@ -302,7 +302,7 @@ void SetFont(wxGrid *grid, int row)
   else if (status.isdeleted())
     idx_status = 2;
   else {
-    wxFAIL_MSG(wxT("Unexpected shortcut status"));
+    wxFAIL_MSG(L"Unexpected shortcut status");
     return;
   }
 
@@ -343,14 +343,14 @@ PWSMenuShortcuts* g_pShortcutsManager = 0;
 
 PWSMenuShortcuts* PWSMenuShortcuts::CreateShortcutsManager(wxMenuBar* menubar)
 {
-  wxCHECK_MSG(g_pShortcutsManager == 0, g_pShortcutsManager, wxT("Shortcuts manager being created multiple times"));
+  wxCHECK_MSG(g_pShortcutsManager == 0, g_pShortcutsManager, L"Shortcuts manager being created multiple times");
   g_pShortcutsManager = new PWSMenuShortcuts(menubar);
   return g_pShortcutsManager;
 }
 
 PWSMenuShortcuts* PWSMenuShortcuts::GetShortcutsManager()
 {
-  wxASSERT_MSG(g_pShortcutsManager, wxT("Shortcuts manager being used before creation or after destruction"));
+  wxASSERT_MSG(g_pShortcutsManager, L"Shortcuts manager being used before creation or after destruction");
   return g_pShortcutsManager;
 }
 
@@ -362,37 +362,37 @@ void PWSMenuShortcuts::DestroyShortcutsManager()
 
 wxString PWSMenuShortcuts::MenuLabelAt(size_t index) const
 {
-  wxCHECK_MSG(index < Count(), wxEmptyString, wxT("Index for menu label exceeds number of menu items retrieved"));
+  wxCHECK_MSG(index < Count(), wxEmptyString, L"Index for menu label exceeds number of menu items retrieved");
   return m_midata[index].GetLabel();
 }
 
 wxAcceleratorEntry PWSMenuShortcuts::EffectiveShortcutAt(size_t index) const
 {
-  wxCHECK_MSG(index < Count(), nullAccel, wxT("Invalid index for effective shortcut"));
+  wxCHECK_MSG(index < Count(), nullAccel, L"Invalid index for effective shortcut");
   return m_midata[index].GetEffectiveShortcut();
 }
 
 wxAcceleratorEntry PWSMenuShortcuts::OriginalShortcutAt(size_t index) const
 {
-  wxCHECK_MSG(index < Count(), nullAccel, wxT("Invalid index for original shortcut"));
+  wxCHECK_MSG(index < Count(), nullAccel, L"Invalid index for original shortcut");
   return m_midata[index].GetOriginalShortcut();
 }
 
 wxMenuItem* PWSMenuShortcuts::MenuItemAt(size_t index) const
 {
-  wxCHECK_MSG(index < Count(), 0, wxT("Index for menuitem exceeds number of menu items retrieved"));
+  wxCHECK_MSG(index < Count(), 0, L"Index for menuitem exceeds number of menu items retrieved");
   return m_midata[index].GetMenuItem();
 }
 
 int PWSMenuShortcuts::MenuIdAt(size_t index) const
 {
-  wxCHECK_MSG(index < Count(), 0, wxT("Index for menuitem exceeds number of menu items retrieved"));
+  wxCHECK_MSG(index < Count(), 0, L"Index for menuitem exceeds number of menu items retrieved");
   return m_midata[index].GetMenuId();
 }
 
 void PWSMenuShortcuts::ChangeShortcutAt(size_t idx, const wxAcceleratorEntry& newEntry)
 {
-  wxCHECK_RET(idx < Count(), wxT("Index for new shortcut exceeds number of menu items retrieved"));
+  wxCHECK_RET(idx < Count(), L"Index for new shortcut exceeds number of menu items retrieved");
 
   m_midata[idx].SetUserShortcut(newEntry);
 }
@@ -475,7 +475,7 @@ void PWSMenuShortcuts::GridResetAllShortcuts()
     if (itr->ischanged() || itr->isdeleted()) {
       itr->setorig();
       const size_t index = std::distance(m_shortcutGridStatus.begin(), itr);
-      wxCHECK2_MSG(index < m_midata.size(), continue, wxT("ShortcutStatusArray is not the same size as menu item data"));
+      wxCHECK2_MSG(index < m_midata.size(), continue, L"ShortcutStatusArray is not the same size as menu item data");
       wxAcceleratorEntry origShortcut = OriginalShortcutAt(index);
       if (IsNotNull(origShortcut))
         m_shortcutsGrid->SetCellValue(index, COL_SHORTCUT_KEY, origShortcut.ToString());
@@ -491,7 +491,7 @@ void PWSMenuShortcuts::GridResetAllShortcuts()
  */
 void PWSMenuShortcuts::GridResetOrRemoveShortcut(wxGrid* grid, size_t index)
 {
-  wxCHECK_RET(index < m_shortcutGridStatus.size(), wxT("Invalid index for shortcut reset"));
+  wxCHECK_RET(index < m_shortcutGridStatus.size(), L"Invalid index for shortcut reset");
   MenuItemData::ShortcutStatus& status = m_shortcutGridStatus[index];
   if (status.ischanged() || status.isdeleted()) {
     status.setorig();
@@ -509,19 +509,19 @@ void PWSMenuShortcuts::GridResetOrRemoveShortcut(wxGrid* grid, size_t index)
 
 bool PWSMenuShortcuts::IsShortcutCustomizedAt(size_t idx) const
 {
-  wxCHECK_MSG(idx < Count(), false, wxT("Invalid index for shortcut customization check"));
+  wxCHECK_MSG(idx < Count(), false, L"Invalid index for shortcut customization check");
   return m_midata[idx].IsCustom();
 }
 
 bool PWSMenuShortcuts::HasEffectiveShortcutAt(size_t index) const
 {
-  wxCHECK_MSG(index < Count(), false, wxT("Invalid index for effective shortcut check"));
+  wxCHECK_MSG(index < Count(), false, L"Invalid index for effective shortcut check");
   return m_midata[index].HasEffectiveShortcut();
 }
 
 MenuItemData::ShortcutStatus PWSMenuShortcuts::GetGridShortcutStatusAt(size_t index) const
 {
-  wxCHECK_MSG(index < Count(), MenuItemData::ShortcutStatus(), wxT("Invalid index for shortcut status"));
+  wxCHECK_MSG(index < Count(), MenuItemData::ShortcutStatus(), L"Invalid index for shortcut status");
   return m_shortcutGridStatus[index];
 }
 
@@ -531,7 +531,7 @@ MenuItemData::ShortcutStatus PWSMenuShortcuts::GetGridShortcutStatusAt(size_t in
  */
 void PWSMenuShortcuts::RemoveShortcutAt(size_t idx)
 {
-  wxCHECK_RET(idx < Count(), wxT("Index for deleting shortcut exceeds number of menu items retrieved"));
+  wxCHECK_RET(idx < Count(), L"Index for deleting shortcut exceeds number of menu items retrieved");
 
   m_midata[idx].SetUserShortcut(wxAcceleratorEntry());
 }
@@ -563,14 +563,14 @@ void PWSMenuShortcuts::SetShorcutsGridEventHandlers(wxGrid* grid, wxButton* rese
 void PWSMenuShortcuts::OnShortcutChange(wxGridEvent& evt)
 {
   wxGrid* grid = wxDynamicCast(evt.GetEventObject(), wxGrid);
-  wxCHECK_RET(grid, wxT("Could not get grid from wxGridEvent"));
-  wxASSERT_MSG(grid == m_shortcutsGrid, wxT("Events from unexpected grid"));
+  wxCHECK_RET(grid, L"Could not get grid from wxGridEvent");
+  wxASSERT_MSG(grid == m_shortcutsGrid, L"Events from unexpected grid");
   wxGridCellCoords cell(evt.GetRow(), evt.GetCol());
   wxString newStr = grid->GetCellValue(cell);
   if (newStr.IsEmpty())
     return;
   wxAcceleratorEntry newAccel;
-  if (!newAccel.FromString(wxT('\t') + newStr)) {
+  if (!newAccel.FromString(L'\t' + newStr)) {
     grid->SetCellTextColour(cell.GetRow(), cell.GetCol(), *wxRED);
   }
   else {
@@ -589,14 +589,14 @@ void PWSMenuShortcuts::OnShortcutKey(wxKeyEvent& evt)
 {
   wxWindow* gridWindow = wxDynamicCast(evt.GetEventObject(), wxWindow);
   wxGrid* grid = wxDynamicCast(gridWindow->GetParent(), wxGrid);
-  wxCHECK_RET(grid, wxT("Could not get grid from wxKeyEvent"));
-  wxASSERT_MSG(grid == m_shortcutsGrid, wxT("Events from unexpected grid"));
+  wxCHECK_RET(grid, L"Could not get grid from wxKeyEvent");
+  wxASSERT_MSG(grid == m_shortcutsGrid, L"Events from unexpected grid");
   const int col = grid->GetGridCursorCol();
   //unless there are modifiers, don't attempt anything
   if ((evt.GetModifiers() || IsFunctionKey(evt.GetKeyCode()))
                 && col == COL_SHORTCUT_KEY) {
     wxAcceleratorEntry accel(ModifiersToAccelFlags(evt.GetModifiers()), evt.GetKeyCode(), 0);
-    wxCHECK_RET(IsNotNull(accel), wxT("Could not create accelerator from wxKeyEvent"));
+    wxCHECK_RET(IsNotNull(accel), L"Could not create accelerator from wxKeyEvent");
     const int row = grid->GetGridCursorRow();
     grid->SetCellValue(row, col, accel.ToString());
     grid->SetCellTextColour(row, col, grid->GetDefaultCellTextColour());
@@ -617,8 +617,8 @@ void PWSMenuShortcuts::OnKeyChar(wxKeyEvent& evt)
 {
   wxWindow* gridWindow = wxDynamicCast(evt.GetEventObject(), wxWindow);
   wxGrid* grid = wxDynamicCast(gridWindow->GetParent(), wxGrid);
-  wxCHECK_RET(grid, wxT("Could not get grid from wxKeyEvent"));
-  wxASSERT_MSG(grid == m_shortcutsGrid, wxT("Events from unexpected grid"));
+  wxCHECK_RET(grid, L"Could not get grid from wxKeyEvent");
+  wxASSERT_MSG(grid == m_shortcutsGrid, L"Events from unexpected grid");
   if (!evt.GetModifiers() && evt.GetKeyCode() == WXK_DELETE) {
     const int row = grid->GetGridCursorRow();
     GridResetOrRemoveShortcut(grid, row);
@@ -644,10 +644,10 @@ void PWSMenuShortcuts::OnShortcutRightClick( wxGridEvent& evt )
   shortcutsMenu.Append(wxID_ANY, _("&Reset/Remove shortcut\tDel"));
 
   wxCHECK_RET(evt.GetRow() >= 0 && unsigned(evt.GetRow()) < m_midata.size(),
-                wxString::Format(wxT("Invalid index [%d] for reset/remove shortcut"),
+                wxString::Format(L"Invalid index [%d] for reset/remove shortcut",
                                   evt.GetRow()).c_str());
   GridAndIndex gr = { wxDynamicCast(evt.GetEventObject(), wxGrid), size_t(evt.GetRow()) };
-  wxCHECK_RET(gr.grid, wxT("Could not get grid from right-click grid event"));
+  wxCHECK_RET(gr.grid, L"Could not get grid from right-click grid event");
 
   shortcutsMenu.SetClientData(reinterpret_cast<void*>(&gr));
   shortcutsMenu.Connect( shortcutsMenu.FindItemByPosition(0)->GetId(),
@@ -664,9 +664,9 @@ void PWSMenuShortcuts::OnShortcutRightClick( wxGridEvent& evt )
 void PWSMenuShortcuts::OnResetRemoveShortcut( wxCommandEvent& evt )
 {
   wxMenu* shortcutsMenu = wxDynamicCast(evt.GetEventObject(), wxMenu);
-  wxCHECK_RET(shortcutsMenu, wxT("Could not get shortcuts reset/remove menu from event"));
+  wxCHECK_RET(shortcutsMenu, L"Could not get shortcuts reset/remove menu from event");
   GridAndIndex* gr = reinterpret_cast<GridAndIndex*>(shortcutsMenu->GetClientData());
-  wxCHECK_RET(gr, wxT("Could not find internal data in reset/remove handler"));
+  wxCHECK_RET(gr, L"Could not find internal data in reset/remove handler");
   GridResetOrRemoveShortcut(gr->grid, gr->index);
 }
 
@@ -685,13 +685,13 @@ bool ShortcutsGridValidator::TransferFromWindow()
   bool success = true;
 
   wxGrid* grid = wxDynamicCast(GetWindow(), wxGrid);
-  wxCHECK_MSG(grid, false, wxT("ShortcutsGridValidator attached to a non-wxGrid derived window?"));
+  wxCHECK_MSG(grid, false, L"ShortcutsGridValidator attached to a non-wxGrid derived window?");
 
   for( unsigned row = 0; row < m_shortcuts.Count(); ++row) {
     wxString newStr = grid->GetCellValue(row, COL_SHORTCUT_KEY);
     if (!newStr.IsEmpty()) {
       wxAcceleratorEntry newAccel;
-      if (newAccel.FromString(wxT('\t')+newStr)) {
+      if (newAccel.FromString(L'\t'+newStr)) {
         const wxAcceleratorEntry& oldAccel = m_shortcuts.EffectiveShortcutAt(row);
         if (!IsSameShortcut(newAccel, oldAccel)) {
           //set the remaining fields in the new accelerator entry, so they get written to pwsafe.cfg
@@ -715,12 +715,12 @@ bool ShortcutsGridValidator::TransferFromWindow()
 bool ShortcutsGridValidator::TransferToWindow()
 {
   wxGrid* grid = wxDynamicCast(GetWindow(), wxGrid);
-  wxCHECK_MSG(grid, false, wxT("ShortcutsGridValidator attached to a non-wxGrid derived window?"));
+  wxCHECK_MSG(grid, false, L"ShortcutsGridValidator attached to a non-wxGrid derived window?");
 
   wxFrame* frame = wxDynamicCast(wxGetApp().GetTopWindow(), wxFrame);
-  wxCHECK_MSG(frame, false, wxT("Could not get frame window from wxApp"));
+  wxCHECK_MSG(frame, false, L"Could not get frame window from wxApp");
   wxMenuBar* menuBar = frame->GetMenuBar();
-  wxCHECK_MSG(menuBar, false, wxT("Could not get menu bar from frame"));
+  wxCHECK_MSG(menuBar, false, L"Could not get menu bar from frame");
 
   if (m_shortcuts.Count() > unsigned(grid->GetNumberRows())) {
     grid->AppendRows(m_shortcuts.Count() - grid->GetNumberRows());
@@ -732,9 +732,9 @@ bool ShortcutsGridValidator::TransferToWindow()
   for( unsigned row = 0; row < m_shortcuts.Count(); ++row) {
     MenuItemData::ShortcutStatus scs = m_shortcuts.GetGridShortcutStatusAt(row);
     if (scs.ischanged()) {
-      wxCHECK2_MSG(m_shortcuts.HasEffectiveShortcutAt(row), continue, wxT("shortcut with status changed has not effective shortcut!"));
+      wxCHECK2_MSG(m_shortcuts.HasEffectiveShortcutAt(row), continue, L"shortcut with status changed has not effective shortcut!");
       wxAcceleratorEntry ae = m_shortcuts.EffectiveShortcutAt(row);
-      wxCHECK2_MSG(IsNotNull(ae), continue, wxT("shortcut with status changed has null keycode!"));
+      wxCHECK2_MSG(IsNotNull(ae), continue, L"shortcut with status changed has null keycode!");
       grid->SetCellValue(row, COL_SHORTCUT_KEY, ae.ToString());
     }
     else if (scs.isorig()){
@@ -753,14 +753,14 @@ bool ShortcutsGridValidator::TransferToWindow()
 bool ShortcutsGridValidator::Validate(wxWindow* parent)
 {
   wxGrid* grid = wxDynamicCast(GetWindow(), wxGrid);
-  wxCHECK_MSG(grid, false, wxT("ShortcutsGridValidator attached to a non-wxGrid derived window?"));
+  wxCHECK_MSG(grid, false, L"ShortcutsGridValidator attached to a non-wxGrid derived window?");
 
   for( unsigned row = 0; row < m_shortcuts.Count(); ++row) {
     wxString newStr = grid->GetCellValue(row, COL_SHORTCUT_KEY);
     if (!newStr.IsEmpty()) {
-      if (!wxAcceleratorEntry().FromString(wxT('\t')+newStr)) {
+      if (!wxAcceleratorEntry().FromString(L'\t'+newStr)) {
         wxString msg(_("Shortcut # "));
-        msg << (row + 1) << wxT(" [") << newStr << wxT("] ") << _("is not a valid shortcut");
+        msg << (row + 1) << L" [" << newStr << L"] " << _("is not a valid shortcut");
         wxMessageBox(msg, _("Invalid shortcut"), wxOK | wxICON_ERROR, parent);
         grid->SetGridCursor(row, COL_SHORTCUT_KEY);
         return false;

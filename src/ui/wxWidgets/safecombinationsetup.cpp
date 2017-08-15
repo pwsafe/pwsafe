@@ -165,7 +165,7 @@ void CSafeCombinationSetup::CreateControls()
   itemGridSizer4->Add(itemTextCtrl8, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
 #ifndef NO_YUBI
-  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
+  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(L"graphics/Yubikey-button.xpm"), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
   itemGridSizer4->Add(m_YubiBtn, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
 
   m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -210,7 +210,7 @@ wxBitmap CSafeCombinationSetup::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
 ////@begin CSafeCombinationSetup bitmap retrieval
-  if (name == _T("graphics/Yubikey-button.xpm"))
+  if (name == L"graphics/Yubikey-button.xpm")
   {
     wxBitmap bitmap(Yubikey_button_xpm);
     return bitmap;
@@ -262,10 +262,10 @@ void CSafeCombinationSetup::OnOkClick( wxCommandEvent& /* evt */ )
     if (!CPasswordCharPool::CheckPassword(tostringx(m_password), errmess)) {
       wxString cs_msg;
       cs_msg = _("Weak passphrase:");
-      cs_msg += wxT("\n\n");
+      cs_msg += L"\n\n";
       cs_msg += errmess.c_str();
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
-      cs_msg += wxT("\n");
+      cs_msg += L"\n";
       cs_msg += _("Use it anyway?");
       wxMessageDialog mb(this, cs_msg, _("Warning"),
                       wxYES_NO | wxNO_DEFAULT | wxICON_HAND);
@@ -273,7 +273,7 @@ void CSafeCombinationSetup::OnOkClick( wxCommandEvent& /* evt */ )
     if (rc == wxID_NO)
       return;
 #else
-    cs_msg += wxT("\n");
+    cs_msg += L"\n";
     cs_msg += _("Please try another");
     wxMessageDialog mb(this, cs_msg, _("Error"), wxOK | wxICON_HAND);
     mb.ShowModal();

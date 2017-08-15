@@ -83,7 +83,7 @@ public:
     void Clear() { m_indices.clear() ; m_currentIndex = m_indices.end(); PrintLabel(); }
     bool IsEmpty() const { return m_indices.empty(); }
     const pws_os::CUUID& operator*() const {
-      wxCHECK_MSG(!IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Empty search pointer dereferenced"));
+      wxCHECK_MSG(!IsEmpty(), pws_os::CUUID::NullUUID(), L"Empty search pointer dereferenced");
       return *m_currentIndex;
     }
     size_t Size() const { return m_indices.size(); }

@@ -55,12 +55,12 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
 
     case PWScore::CANT_OPEN_FILE:
       if (showMsgbox)
-        wxMessageBox(wxString(file) << wxT("\n\n") << _("Could not open file for reading!"),
+        wxMessageBox(wxString(file) << L"\n\n" << _("Could not open file for reading!"),
                     _("File Read Error"), wxOK | wxICON_ERROR, msgboxParent );
       break;
 
     case PWScore::BAD_DIGEST:
-      if (showMsgbox && wxMessageBox(wxString(file) << wxT("\n\n") << _("File corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"),
+      if (showMsgbox && wxMessageBox(wxString(file) << L"\n\n" << _("File corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"),
             _("File Read Error"), wxYES_NO | wxICON_QUESTION, msgboxParent) == wxYES) {
         rc = PWScore::SUCCESS;
       }
@@ -68,7 +68,7 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
 
     default:
       if (showMsgbox)
-        wxMessageBox( wxString(file) << wxT("\n\n") << _("Unknown error"), _("File Read Error"), wxOK | wxICON_ERROR, msgboxParent);
+        wxMessageBox( wxString(file) << L"\n\n" << _("Unknown error"), _("File Read Error"), wxOK | wxICON_ERROR, msgboxParent);
       break;
   }
 
@@ -156,12 +156,12 @@ bool MultiCheckboxValidator::Validate(wxWindow* parent)
           }
         }
         else {
-          wxFAIL_MSG(wxString::Format(wxT("Child(id %d) is not a checkbox"), m_ids[idx]));
+          wxFAIL_MSG(wxString::Format(L"Child(id %d) is not a checkbox", m_ids[idx]));
         }
       }
     }
     else {
-      wxFAIL_MSG(wxString::Format(wxT("No child with id (%d) found in MultiCheckboxValidator"), m_ids[idx]));
+      wxFAIL_MSG(wxString::Format(L"No child with id (%d) found in MultiCheckboxValidator", m_ids[idx]));
     }
   }
   if (allDisabled)
@@ -205,7 +205,7 @@ bool IsTaskBarIconAvailable()
 {
 #ifdef __WXGTK__
   const wxLinuxDistributionInfo ldi = wxGetLinuxDistributionInfo();
-  if (ldi.Id.IsEmpty() || ldi.Id == wxT("Ubuntu") || ldi.Id == wxT("Fedora"))
+  if (ldi.Id.IsEmpty() || ldi.Id == L"Ubuntu" || ldi.Id == L"Fedora")
     return false;
 #endif
   return wxTaskBarIcon::IsAvailable();

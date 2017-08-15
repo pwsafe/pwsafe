@@ -197,7 +197,7 @@ void PasswordSafeSearch::OnSearchClose(wxCommandEvent& /* evt */)
 void PasswordSafeSearch::OnSearchClear(wxCommandEvent& /* evt */)
 {
   wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
-  wxCHECK_RET(txtCtrl, wxT("Could not get search ctrl from toolbar"));
+  wxCHECK_RET(txtCtrl, L"Could not get search ctrl from toolbar");
   txtCtrl->Clear();
   m_searchPointer.Clear();
   ClearToolbarStatusArea();
@@ -224,7 +224,7 @@ void PasswordSafeSearch::HideSearchToolbar()
 void PasswordSafeSearch::ClearToolbarStatusArea()
 {
   wxStaticText* statusArea = wxDynamicCast(m_toolbar->FindWindow(ID_FIND_STATUS_AREA), wxStaticText);
-  wxCHECK_RET(statusArea, wxT("Could not retrieve status area from search bar"));
+  wxCHECK_RET(statusArea, L"Could not retrieve status area from search bar");
   statusArea->SetLabel(wxEmptyString);
 }
 
@@ -336,7 +336,7 @@ void PasswordSafeSearch::RefreshButtons(void)
 }
 
 /**
- * Recreates the search bar with the last state 
+ * Recreates the search bar with the last state
  * regarding its visibility on the UI.
  */
 void PasswordSafeSearch::ReCreateSearchBar(void)
@@ -368,7 +368,7 @@ void PasswordSafeSearch::CreateSearchBar()
   wxPanel *panel = new wxPanel(m_parentFrame, wxID_ANY);
   wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(panelSizer);
-  m_toolbar = new wxToolBar(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxTB_BOTTOM | wxTB_HORIZONTAL,  wxT("SearchBar"));
+  m_toolbar = new wxToolBar(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxTB_BOTTOM | wxTB_HORIZONTAL,  L"SearchBar");
   panelSizer->Add(m_toolbar, wxSizerFlags().Proportion(1).Expand());
 
   m_toolbar->AddTool(ID_FIND_CLOSE, wxEmptyString, wxBitmap(findclose_xpm), wxNullBitmap, wxITEM_NORMAL, _("Close SearchBar"));
@@ -458,7 +458,7 @@ void PasswordSafeSearch::Activate(void)
     }
   }
 
-  wxCHECK_RET(m_toolbar, wxT("Could not create or retrieve search bar"));
+  wxCHECK_RET(m_toolbar, L"Could not create or retrieve search bar");
 
   m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
   ClearToolbarStatusArea();
@@ -530,8 +530,8 @@ void SearchPointer::PrintLabel(const TCHAR* prefix /*= 0*/)
     // need a const object so we get both args to distance() as const iterators
     const SearchIndices& idx = m_indices;
     m_label.Clear();
-    m_label << std::distance(idx.begin(), m_currentIndex)+1 << '/' << m_indices.size() << wxT(" matches");
+    m_label << std::distance(idx.begin(), m_currentIndex)+1 << '/' << m_indices.size() << L" matches";
     if (prefix)
-      m_label = wxString(prefix) + wxT(".  ") + m_label;
+      m_label = wxString(prefix) + L".  " + m_label;
   }
 }

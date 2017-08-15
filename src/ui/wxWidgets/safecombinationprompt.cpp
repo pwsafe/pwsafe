@@ -150,7 +150,7 @@ void CSafeCombinationPrompt::CreateControls()
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  wxStaticBitmap* itemStaticBitmap4 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("./graphics/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
+  wxStaticBitmap* itemStaticBitmap4 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(L"./graphics/cpane.xpm"), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
   itemBoxSizer3->Add(itemStaticBitmap4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxVERTICAL);
@@ -175,7 +175,7 @@ void CSafeCombinationPrompt::CreateControls()
   itemBoxSizer5->Add(itemBoxSizer11, 0, wxGROW|wxALL, 5);
 
 #ifndef NO_YUBI
-  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
+  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(L"graphics/Yubikey-button.xpm"), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
   itemBoxSizer11->Add(m_YubiBtn, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
 #endif
 
@@ -227,13 +227,13 @@ wxBitmap CSafeCombinationPrompt::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
 ////@begin CSafeCombinationPrompt bitmap retrieval
-  if (name == _T("./graphics/cpane.xpm"))
+  if (name == L"./graphics/cpane.xpm")
   {
     wxBitmap bitmap(cpane_xpm);
     return bitmap;
   }
 #ifndef NO_YUBI
-  else if (name == _T("graphics/Yubikey-button.xpm"))
+  else if (name == L"graphics/Yubikey-button.xpm")
   {
     wxBitmap bitmap(Yubikey_button_xpm);
     return bitmap;

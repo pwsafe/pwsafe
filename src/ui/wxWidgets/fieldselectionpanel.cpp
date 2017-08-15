@@ -86,13 +86,13 @@ FieldSelectionPanel::FieldSelectionPanel(wxWindow* parent): wxPanel(parent),
 
   wxBoxSizer* buttonBox = new wxBoxSizer(wxVERTICAL);
   buttonBox->AddStretchSpacer();
-  buttonBox->Add( new wxButton(this, ID_SELECT_SOME, wxT(">")) );
+  buttonBox->Add( new wxButton(this, ID_SELECT_SOME, L">") );
   buttonBox->AddSpacer(RowSeparation);
-  buttonBox->Add( new wxButton(this, ID_SELECT_ALL, wxT(">>")) );
+  buttonBox->Add( new wxButton(this, ID_SELECT_ALL, L">>") );
   buttonBox->AddSpacer(RowSeparation*2);
-  buttonBox->Add( new wxButton(this, ID_REMOVE_SOME, wxT("<")) );
+  buttonBox->Add( new wxButton(this, ID_REMOVE_SOME, L"<") );
   buttonBox->AddSpacer(RowSeparation);
-  buttonBox->Add( new wxButton(this, ID_REMOVE_ALL, wxT("<<")) );
+  buttonBox->Add( new wxButton(this, ID_REMOVE_ALL, L"<<") );
   buttonBox->AddStretchSpacer();
 
   grid->Add(buttonBox, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
@@ -110,24 +110,24 @@ FieldSelectionPanel::~FieldSelectionPanel()
 
 void FieldSelectionPanel::AddField(CItemData::FieldType ft, bool selected, bool mandatory)
 {
-  wxCHECK_RET(!mandatory || selected, wxT("A mandatory field must also be pre-selected"));
+  wxCHECK_RET(!mandatory || selected, L"A mandatory field must also be pre-selected");
 
   const wxString fieldName(towxstring(CItemData::FieldName(ft)));
 
   if (FindField(ft, selected? m_lbSelected: m_lbAvailable) != wxNOT_FOUND) {
-    wxLogDebug(wxT("%ls already in %ls list, not adding it again"),
+    wxLogDebug(L"%ls already in %ls list, not adding it again",
                     fieldName,
-                    selected? wxT("selected"): wxT("available"));
+                    selected? L"selected": L"available");
     return;
   }
 
   //if the field is already in another listbox, just move it
   const int index = FindField(ft, selected? m_lbAvailable: m_lbSelected);
   if (index != wxNOT_FOUND) {
-    wxLogDebug(wxT("%ls already in %ls list, moving it to %ls"),
+    wxLogDebug(L"%ls already in %ls list, moving it to %ls",
                     fieldName,
-                    selected? wxT("available"): wxT("selected"),
-                    selected? wxT("selected"): wxT("available"));
+                    selected? L"available": L"selected",
+                    selected? L"selected": L"available");
     MoveItem(index, selected? m_lbAvailable: m_lbSelected, selected? m_lbSelected: m_lbAvailable);
     return;
   }
@@ -278,7 +278,7 @@ bool FieldSelectionPanelValidator::TransferFromWindow()
     FieldSelectionPanel* fsp = wxDynamicCast(GetWindow(), FieldSelectionPanel);
     for (size_t idx = 0; idx < fsp->GetNumSelectedFields(); ++idx) {
       CItemData::FieldType ft = fsp->GetSelectedFieldAt(idx);
-      wxCHECK2_MSG(ft != CItemData::END, continue, wxT("Unexpected field type in selected item"));
+      wxCHECK2_MSG(ft != CItemData::END, continue, L"Unexpected field type in selected item");
       m_userSelectedFields.insert(ft);
     }
     return true;

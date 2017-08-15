@@ -80,7 +80,7 @@ size_t SelectionCriteria::GetNumSubgroups(void) {
 
 //static
 CItemData::FieldType SelectionCriteria::GetSubgroup(size_t idx) {
-  wxASSERT_MSG(idx < GetNumSubgroups(), wxT("Invalid index for GetSubgroups"));
+  wxASSERT_MSG(idx < GetNumSubgroups(), L"Invalid index for GetSubgroups");
   return subgroups[idx];
 }
 
@@ -95,7 +95,7 @@ size_t SelectionCriteria::GetNumFieldsSelectable() {
 }
 
 CItemData::FieldType SelectionCriteria::GetSelectableField(size_t idx) {
-  wxASSERT_MSG(idx < GetNumFieldsSelectable(), wxT("Invalid index for GetSelectableField"));
+  wxASSERT_MSG(idx < GetNumFieldsSelectable(), L"Invalid index for GetSelectableField");
   return selectableFields[idx];
 }
 
@@ -118,13 +118,13 @@ size_t SelectionCriteria::GetNumSubgroupFunctions()
 //static
 wxString SelectionCriteria::GetSubgroupFunctionName(size_t idx)
 {
-  wxASSERT_MSG(idx < GetNumSubgroupFunctions(), wxT("Invalid index for GetSubgroupFunctionName"));
+  wxASSERT_MSG(idx < GetNumSubgroupFunctions(), L"Invalid index for GetSubgroupFunctionName");
   return subgroupFunctions[idx].name;
 }
 //static
 PWSMatch::MatchRule SelectionCriteria::GetSubgroupFunction(size_t idx)
 {
-  wxASSERT_MSG(idx < GetNumSubgroupFunctions(), wxT("Invalid index for GetSubgroupFunction"));
+  wxASSERT_MSG(idx < GetNumSubgroupFunctions(), L"Invalid index for GetSubgroupFunction");
   return subgroupFunctions[idx].function;
 }
 

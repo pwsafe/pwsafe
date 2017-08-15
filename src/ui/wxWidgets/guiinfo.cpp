@@ -43,7 +43,7 @@ void CollectExpandedNodes(PWSTreeCtrl* tree, wxTreeItemId root, wxArrayString& e
 {
   if ( !tree || tree->GetCount() == 0 )
     return;
-  
+
   wxTreeItemIdValue cookie;
   for( wxTreeItemId id = tree->GetFirstChild(root, cookie); id.IsOk(); id = tree->GetNextChild(root, cookie))
   {
@@ -53,7 +53,7 @@ void CollectExpandedNodes(PWSTreeCtrl* tree, wxTreeItemId root, wxArrayString& e
     }
   }
 }
-      
+
 void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
 {
   //save the first visible item
@@ -68,18 +68,18 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
     }
     else {
       m_treeTop.Clear();
-      wxFAIL_MSG(wxString(wxT("Tree item \'")) << tree->GetItemText(treeItem) << wxT("\' found with no children and no CItemData"));
+      wxFAIL_MSG(wxString(L"Tree item \'") << tree->GetItemText(treeItem) << L"\' found with no children and no CItemData");
     }
   }
   else {
     m_treeTop.Clear();
   }
-  
+
   m_expanded.Empty();
 
   //find out all the expanded groups in a depth-first manner
   CollectExpandedNodes(tree, tree->GetRootItem(), m_expanded);
- 
+
   //save the selected item
   wxTreeItemId selection = tree->GetSelection();
   if (selection.IsOk() && selection != tree->GetRootItem()) {
@@ -95,7 +95,7 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
       }
       else {
         m_treeSelection.Clear();
-        wxFAIL_MSG(wxString(wxT("tree item \'")) << tree->GetItemText(selection) << wxT("\' found with no CItemData attached"));
+        wxFAIL_MSG(wxString(L"tree item \'") << tree->GetItemText(selection) << L"\' found with no CItemData attached");
       }
     }
   }
@@ -117,7 +117,7 @@ void GUIInfo::SaveGridViewInfo(PWSGrid* grid)
       m_gridTop = item->GetUUID();
     }
     else {
-      wxFAIL_MSG(wxString(wxT("Top grid row ")) << row << wxT(" has no CItemData attached"));
+      wxFAIL_MSG(wxString(L"Top grid row ") << row << L" has no CItemData attached");
       m_gridTop = pws_os::CUUID::NullUUID();
     }
   }
@@ -132,7 +132,7 @@ void GUIInfo::SaveGridViewInfo(PWSGrid* grid)
       m_gridSelection = item->GetUUID();
     }
     else {
-      wxFAIL_MSG(wxString(wxT("Selected grid row ")) << selection << wxT(" has no CItemData attached"));
+      wxFAIL_MSG(wxString(L"Selected grid row ") << selection << L" has no CItemData attached");
       m_gridSelection = pws_os::CUUID::NullUUID();
     }
   }
@@ -178,8 +178,8 @@ void RestoreTreeItem(PWSTreeCtrl* tree, const string_or_uuid& val, TreeFunc func
 }
 
 struct SelectItem {
-  void operator()(PWSTreeCtrl* tree, const wxTreeItemId& id) { 
-      tree->wxTreeCtrl::SelectItem(id, true); 
+  void operator()(PWSTreeCtrl* tree, const wxTreeItemId& id) {
+      tree->wxTreeCtrl::SelectItem(id, true);
   }
 };
 
@@ -199,13 +199,13 @@ void GUIInfo::RestoreTreeViewInfo(PWSTreeCtrl* tree)
     else {
       // It is possible that the group with single item was deleted when item was moved to another group
       // We need to prevent that from happening.  But for now, it will assert too much
-      wxLogDebug( wxString(wxT("Could not find group \"")) << m_expanded[idx] << wxT("\" to expand") );
+      wxLogDebug( wxString(L"Could not find group \"") << m_expanded[idx] << L"\" to expand" );
     }
   }
 
   // Then restore the "Top" item
   RestoreTreeItem(tree, m_treeTop, BringItemToTop());
-  
+
   // Finally select the previously "selected" item
   RestoreTreeItem(tree, m_treeSelection, SelectItem());
 }
