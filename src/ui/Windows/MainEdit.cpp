@@ -237,6 +237,7 @@ void DboxMain::OnCreateShortcut()
       if (rc2 == IDOK) {
         // Initialise a copy of the DB preferences
         prefs->SetupCopyPrefs();
+
         // Update Copy with new values
         prefs->SetPref(PWSprefs::UseDefaultUser, true, true);
         prefs->SetPref(PWSprefs::DefaultUsername, dlg_createshortcut.m_username, true);
@@ -256,6 +257,12 @@ void DboxMain::OnCreateShortcut()
     CreateShortcutEntry(pci, dlg_createshortcut.m_group,
                         dlg_createshortcut.m_title,
                         dlg_createshortcut.m_username, sxNewDBPrefsString);
+
+    // Ensure selected item looks selected as focus may have been lost
+    if (m_ctlItemTree.IsWindowVisible())
+      m_ctlItemTree.SetFocus();
+    else
+      m_ctlItemList.SetFocus();
   }
 }
 
