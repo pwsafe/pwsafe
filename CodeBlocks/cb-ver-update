@@ -1,11 +1,11 @@
 #!/bin/sh
 # simple script for updating version info
+set -e
+
 GIT_ROOT=`git rev-parse --show-toplevel`
 
-# just define version values here (will extract them for CMakeLists later)
-VER_MAJOR=0
-VER_MINOR=98
-VER_REV=0
-VER_SPEC="BETA"
-
-${GIT_ROOT}/Misc/mkversion.pl MAJOR=${VER_MAJOR} MINOR=${VER_MINOR} REV=${VER_REV} SPECIAL=${VER_SPEC} ${GIT_ROOT}/src/ui/wxWidgets/version.in ${GIT_ROOT}/src/ui/wxWidgets/version.h
+sed 's/\s*=\s*/=/g' < "${GIT_ROOT}/version.wx" > "${GIT_ROOT}/version.wx.tmp"
+. "${GIT_ROOT}/version.wx.tmp"
+rm "${GIT_ROOT}/version.wx.tmp"
+rm  ${GIT_ROOT}/src/ui/wxWidgets/version.h
+${GIT_ROOT}/Misc/mkversion.pl MAJOR=${VER_MAJOR} MINOR=${VER_MINOR} REV=${VER_REV} SPECIAL=${VER_SPECIAL} "${GIT_ROOT}/src/ui/wxWidgets/version.in" "${GIT_ROOT}/src/ui/wxWidgets/version.h"
