@@ -284,7 +284,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 
   CreateMenubar();
   CreateControls();
-  SetIcon(GetIconResource(L"../graphics/wxWidgets/cpane.xpm"));
+  SetIcon(GetIconResource(L"graphics/cpane.xpm"));
   Centre();
 ////@end PasswordSafeFrame creation
   m_search = new PasswordSafeSearch(this);
@@ -759,7 +759,7 @@ wxIcon PasswordSafeFrame::GetIconResource( const wxString& name )
     // Icon retrieval
 ////@begin PasswordSafeFrame icon retrieval
   wxUnusedVar(name);
-  if (name == L"../graphics/wxWidgets/cpane.xpm")
+  if (name == L"graphics/cpane.xpm")
   {
     wxIcon icon(cpane_xpm);
     return icon;

@@ -129,7 +129,7 @@ void CAbout::CreateControls()
   wxBoxSizer* mainSizer = new wxBoxSizer(wxHORIZONTAL);
   aboutDialog->SetSizer(mainSizer);
 
-  wxStaticBitmap* logoBitmap = new wxStaticBitmap(aboutDialog, wxID_STATIC, aboutDialog->GetBitmapResource(L"./graphics/cpane.xpm"), wxDefaultPosition, wxDefaultSize, 0);
+  wxStaticBitmap* logoBitmap = new wxStaticBitmap(aboutDialog, wxID_STATIC, aboutDialog->GetBitmapResource(L"graphics/cpane.xpm"), wxDefaultPosition, wxDefaultSize, 0);
   mainSizer->Add(logoBitmap, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* rightSizer = new wxBoxSizer(wxVERTICAL);
@@ -207,7 +207,7 @@ bool CAbout::ShowToolTips()
 wxBitmap CAbout::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
-  if (name == L"./graphics/cpane.xpm")
+  if (name == L"graphics/cpane.xpm")
   {
     wxBitmap bitmap(cpane_xpm);
     return bitmap;
