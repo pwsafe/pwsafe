@@ -799,4 +799,4 @@
 #define IDS_WSSLCT_FILTERED             6051
 #define IDS_GOTOSHORTCUTS               6052
 #define IDS_VIEWBASEENTRY               6053
-#define IDS_DBINDEXINUSE                6054
+#define IDS_DBIDINUSE                   6054
