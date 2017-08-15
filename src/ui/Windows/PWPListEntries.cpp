@@ -12,6 +12,7 @@
 #include "stdafx.h"
 #include "PWPListEntries.h"
 #include "SecString.h"
+#include "Fonts.h"
 
 #include "resource.h"
 #include "resource3.h"
@@ -55,6 +56,7 @@ BOOL CPWPListEntries::OnInitDialog()
   dwExtendedStyle |= LVS_EX_GRIDLINES;
   m_PolicyEntries.SetExtendedStyle(dwExtendedStyle);
 
+  m_PolicyEntries.SetFont(Fonts::GetInstance()->GetCurrentFont());
   // Add columns
   CString cs_text;
   cs_text.LoadString(IDS_GROUP);
