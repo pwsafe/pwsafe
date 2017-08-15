@@ -7,17 +7,17 @@
  */
 
 /** \file pwsgridtable.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
@@ -28,8 +28,8 @@
 #include "PWSgridtable.h"
 #include "passwordsafeframe.h"
 #include "PWSgrid.h"
-#include "../../core/ItemData.h"
-#include "../../core/PWScore.h"
+#include "core/ItemData.h"
+#include "core/PWScore.h"
 #include <wx/tokenzr.h>
 
 #ifdef __WXMSW__

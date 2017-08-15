@@ -13,16 +13,16 @@
  */
 
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
-#include "wx/utils.h" // for wxLaunchDefaultBrowser
+#include <wx/utils.h> // for wxLaunchDefaultBrowser
 
 #include "PWSgrid.h"
 #include "PWStree.h"
@@ -37,15 +37,15 @@
 #include "wxutils.h"
 #include "guiinfo.h"
 #include "passwordsubset.h"
-#include "./pwsqrcodedlg.h"
+#include "pwsqrcodedlg.h"
 
-#include "../../core/PWSAuxParse.h"
-#include "../../core/Util.h"
-#include "../../os/KeySend.h"
-#include "../../os/run.h"
-#include "../../os/sleep.h"
-#include "../../os/utf8conv.h"
-#include "./TimedTaskChain.h"
+#include "core/Util.h"
+#include "core/PWSAuxParse.h"
+#include "os/KeySend.h"
+#include "os/run.h"
+#include "os/sleep.h"
+#include "os/utf8conv.h"
+#include "TimedTaskChain.h"
 #include <wx/tokenzr.h>
 #include <array>
 

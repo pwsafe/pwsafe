@@ -8,19 +8,19 @@
  */
 
 /** \file guiinfo.cpp
-* 
+*
 */
 
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
-#include "./guiinfo.h"
-#include "./passwordsafeframe.h"
-#include "./PWStree.h"
-#include "./PWSgrid.h"
+#include "guiinfo.h"
+#include "passwordsafeframe.h"
+#include "PWStree.h"
+#include "PWSgrid.h"
 #include <functional>
 
 #ifdef __WXMSW__

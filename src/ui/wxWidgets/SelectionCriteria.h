@@ -9,15 +9,15 @@
 #ifndef __SELECTIONCRITERIA_H__
 #define __SELECTIONCRITERIA_H__
 
-#include "../../core/ItemData.h"
-#include "./wxutils.h"
+#include "core/ItemData.h"
+#include "wxutils.h"
 
 /*
  * SelectionCriteria data structure backs the AdvancedSelectionPanel widget
- * 
+ *
  */
 
-struct SelectionCriteria 
+struct SelectionCriteria
 {
   SelectionCriteria() : m_fCaseSensitive(false),
                         m_fUseSubgroups(false),
@@ -27,7 +27,7 @@ struct SelectionCriteria
   {
     SelectAllFields();
   }
-  
+
   SelectionCriteria(const SelectionCriteria& other):  m_fCaseSensitive(other.m_fCaseSensitive),
                                                       m_bsFields(other.m_bsFields),
                                                       m_subgroupText(other.m_subgroupText),
@@ -49,7 +49,7 @@ private:
 public:
   bool IsDirty(void) const { return m_fDirty; }
   void Clean(void) { m_fDirty = false; }
-  
+
   bool HasSubgroupRestriction() const             { return m_fUseSubgroups; }
   CItemData::FieldBits GetSelectedFields() const  { return m_bsFields; }
   size_t GetNumSelectedFields() const             { return m_bsFields.count(); }
@@ -58,7 +58,7 @@ public:
   CItemData::FieldType SubgroupObject() const     { return GetSubgroup(m_subgroupObject);}
   PWSMatch::MatchRule  SubgroupFunction() const   { return GetSubgroupFunction(m_subgroupFunction); }
   int  SubgroupFunctionWithCase() const           { return m_fCaseSensitive? -SubgroupFunction(): SubgroupFunction(); }
-  void SelectAllFields()                          { for(size_t idx = 0; idx < GetNumFieldsSelectable(); ++idx) 
+  void SelectAllFields()                          { for(size_t idx = 0; idx < GetNumFieldsSelectable(); ++idx)
                                                       m_bsFields.set(GetSelectableField(idx));
                                                   }
   void SelectField(CItemData::FieldType ft)       { m_bsFields.set(ft); }
@@ -71,7 +71,7 @@ public:
     //could be very inefficient in a loop across the entire DB
     return !m_fUseSubgroups || item.Matches(tostdstring(m_subgroupText), SubgroupObject(), SubgroupFunction());
   }
-  
+
   wxString GetGroupSelectionDescription() const;
   //returns true if all fields have been selected
   bool GetFieldSelection(wxArrayString& selectedFields, wxArrayString& unselectedFields);
@@ -83,9 +83,9 @@ SelectionCriteria& operator=(const SelectionCriteria& data) {
     m_fUseSubgroups     = data.m_fUseSubgroups;
     m_subgroupObject    = data.m_subgroupObject;
     m_subgroupFunction  = data.m_subgroupFunction;
-    
+
     m_fDirty = true;
-    
+
     return *this;
   }
   friend class AdvancedSelectionPanel;
@@ -105,12 +105,12 @@ SelectionCriteria& operator=(const SelectionCriteria& data) {
 
 inline bool operator!=(const SelectionCriteria& a, const SelectionCriteria& b)
 {
-  return a.m_bsFields         != b.m_bsFields         || 
+  return a.m_bsFields         != b.m_bsFields         ||
          a.m_fCaseSensitive   != b.m_fCaseSensitive   ||
          a.m_fUseSubgroups    != b.m_fUseSubgroups    ||
          a.m_subgroupFunction != b.m_subgroupFunction ||
          a.m_subgroupText     != b.m_subgroupText     ||
-         a.m_subgroupObject   != b.m_subgroupObject; 
+         a.m_subgroupObject   != b.m_subgroupObject;
 }
 
 #endif

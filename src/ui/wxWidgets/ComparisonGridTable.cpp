@@ -7,25 +7,25 @@
  */
 
 /** \file ComparisonGridTable.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
-#include "./ComparisonGridTable.h"
+#include "ComparisonGridTable.h"
 
-#include "./AdvancedSelectionDlg.h"
-#include "./SelectionCriteria.h"
-#include "../../core/PWScore.h"
-#include "./wxutils.h"
+#include "AdvancedSelectionDlg.h"
+#include "SelectionCriteria.h"
+#include "core/PWScore.h"
+#include "wxutils.h"
 #include <algorithm>
 #include <functional>
 

@@ -12,9 +12,9 @@
 #include <wx/wx.h>
 #endif
 
-#include "./OpenFilePickerValidator.h"
-#include "./wxutils.h"
-#include "../../os/file.h"
+#include "OpenFilePickerValidator.h"
+#include "wxutils.h"
+#include "os/file.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>

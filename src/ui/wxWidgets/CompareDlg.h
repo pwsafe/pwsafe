@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 /** \file
-* 
+*
 */
 
 #ifndef _COMPAREDLG_H_
@@ -14,7 +14,7 @@
 
 #include <wx/dialog.h>
 #include <wx/collpane.h>
-#include "../../core/DBCompareData.h"
+#include "core/DBCompareData.h"
 
 class PWScore;
 class PWSAuxCore;

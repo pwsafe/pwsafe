@@ -13,9 +13,9 @@
 #endif
 
 #include "ViewReport.h"
-#include "./wxutils.h"
+#include "wxutils.h"
 
-#include "../../core/Report.h"
+#include "core/Report.h"
 
 #include "pwsclip.h"
 

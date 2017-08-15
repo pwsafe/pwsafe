@@ -10,14 +10,14 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
@@ -26,7 +26,7 @@
 
 #include "safecombinationprompt.h"
 #include "os/file.h"
-#include "./wxutils.h"
+#include "wxutils.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -38,7 +38,7 @@
 ////@end XPM images
 #endif
 
-#include "./graphics/cpane.xpm"
+#include "graphics/cpane.xpm"
 
 /*!
  * CSafeCombinationPrompt type definition

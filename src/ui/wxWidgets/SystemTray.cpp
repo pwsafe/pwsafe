@@ -12,14 +12,14 @@
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
-#include "./passwordsafeframe.h"
-#include "./SystemTray.h"
-#include "../../core/PWSprefs.h"
-#include "./wxutils.h"
-#include "./SystemTrayMenuId.h"
+#include "passwordsafeframe.h"
+#include "SystemTray.h"
+#include "core/PWSprefs.h"
+#include "wxutils.h"
+#include "SystemTrayMenuId.h"
 
 #include <wx/menu.h>
 
@@ -27,39 +27,39 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-#include "./graphics/tray.xpm"
-#include "./graphics/tray_blue.xpm"
-#include "./graphics/tray_white.xpm"
-#include "./graphics/tray_yellow.xpm"
-#include "./graphics/locked_tray.xpm"
-#include "./graphics/unlocked_tray.xpm"
-#include "./graphics/about.xpm"
-#include "./graphics/exit.xpm"
-#include "./graphics/lock.xpm"
-#include "./graphics/unlock.xpm"
+#include "graphics/tray.xpm"
+#include "graphics/tray_blue.xpm"
+#include "graphics/tray_white.xpm"
+#include "graphics/tray_yellow.xpm"
+#include "graphics/locked_tray.xpm"
+#include "graphics/unlocked_tray.xpm"
+#include "graphics/about.xpm"
+#include "graphics/exit.xpm"
+#include "graphics/lock.xpm"
+#include "graphics/unlock.xpm"
 
-#include "./graphics/toolbar/new/copypassword.xpm"
-#include "./graphics/toolbar/new/copyuser.xpm"
-#include "./graphics/toolbar/new/copynotes.xpm"
-#include "./graphics/toolbar/new/clearclipboard.xpm"
-#include "./graphics/toolbar/new/autotype.xpm"
-#include "./graphics/toolbar/new/browseurl.xpm"
-#include "./graphics/toolbar/new/browseurlplus.xpm"
-#include "./graphics/toolbar/new/sendemail.xpm"
-#include "./graphics/toolbar/new/delete.xpm"
-#include "./graphics/toolbar/new/close.xpm"
+#include "graphics/toolbar/new/copypassword.xpm"
+#include "graphics/toolbar/new/copyuser.xpm"
+#include "graphics/toolbar/new/copynotes.xpm"
+#include "graphics/toolbar/new/clearclipboard.xpm"
+#include "graphics/toolbar/new/autotype.xpm"
+#include "graphics/toolbar/new/browseurl.xpm"
+#include "graphics/toolbar/new/browseurlplus.xpm"
+#include "graphics/toolbar/new/sendemail.xpm"
+#include "graphics/toolbar/new/delete.xpm"
+#include "graphics/toolbar/new/close.xpm"
 
 // Classic icons currently not used
-//#include "./graphics/toolbar/classic/copypassword.xpm"
-//#include "./graphics/toolbar/classic/copyuser.xpm"
-//#include "./graphics/toolbar/classic/copynotes.xpm"
-//#include "./graphics/toolbar/classic/clearclipboard.xpm"
-//#include "./graphics/toolbar/classic/autotype.xpm"
-//#include "./graphics/toolbar/classic/browseurl.xpm"
-//#include "./graphics/toolbar/classic/browseurlplus.xpm"
-//#include "./graphics/toolbar/classic/sendemail.xpm"
-//#include "./graphics/toolbar/classic/delete.xpm"
-//#include "./graphics/toolbar/classic/close.xpm"
+//#include "graphics/toolbar/classic/copypassword.xpm"
+//#include "graphics/toolbar/classic/copyuser.xpm"
+//#include "graphics/toolbar/classic/copynotes.xpm"
+//#include "graphics/toolbar/classic/clearclipboard.xpm"
+//#include "graphics/toolbar/classic/autotype.xpm"
+//#include "graphics/toolbar/classic/browseurl.xpm"
+//#include "graphics/toolbar/classic/browseurlplus.xpm"
+//#include "graphics/toolbar/classic/sendemail.xpm"
+//#include "graphics/toolbar/classic/delete.xpm"
+//#include "graphics/toolbar/classic/close.xpm"
 
 BEGIN_EVENT_TABLE( SystemTray, wxTaskBarIcon )
   EVT_MENU( ID_SYSTRAY_RESTORE, SystemTray::OnSysTrayMenuItem )
@@ -98,7 +98,7 @@ void SystemTray::SetTrayStatus(TrayStatus status)
        case TRAY_CLOSED:
          int closedIconColour;
          closedIconColour = PWSprefs::GetInstance()->GetPref(PWSprefs::ClosedTrayIconColour);
-         switch (closedIconColour) { 
+         switch (closedIconColour) {
            case PWSprefs::stiWhite:
              SetIcon(iconClosedWhite, wxTheApp->GetAppName());
              break;

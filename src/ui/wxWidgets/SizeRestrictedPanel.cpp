@@ -7,20 +7,20 @@
  */
 
 /** \file SizeRestrictedPanel.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
-#include "./SizeRestrictedPanel.h"
+#include "SizeRestrictedPanel.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>

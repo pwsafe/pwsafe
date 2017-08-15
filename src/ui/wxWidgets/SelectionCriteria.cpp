@@ -20,7 +20,7 @@
 #include <wx/wx.h>
 #endif
 
-#include "./SelectionCriteria.h"
+#include "SelectionCriteria.h"
 
 CItemData::FieldType subgroups[] = {  CItemData::GROUP,
                                       CItemData::GROUPTITLE,

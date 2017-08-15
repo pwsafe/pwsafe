@@ -7,7 +7,7 @@
  */
 
 /** \file fieldselectionpanel.cpp
- * 
+ *
  */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
@@ -20,9 +20,9 @@
 #include <wx/wx.h>
 #endif
 
-#include "./fieldselectiondlg.h"
-#include "./fieldselectionpanel.h"
-#include "./wxutils.h"
+#include "fieldselectiondlg.h"
+#include "fieldselectionpanel.h"
+#include "wxutils.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>

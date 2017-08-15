@@ -7,10 +7,10 @@
  */
 
 /** \file PWSDragBar.h
- * 
- * Derives from the generic CDragBar class to provide the interfaces 
- * CDragBar uses to get the drag & drop text.  
- * 
+ *
+ * Derives from the generic CDragBar class to provide the interfaces
+ * CDragBar uses to get the drag & drop text.
+ *
  * That doesn't require it to derive from CDragBar, but derivation
  * lets PasswordSafeFrame deal with just this class alone
  */
@@ -18,21 +18,21 @@
 #ifndef __PWSDRAGBAR_H__
 #define __PWSDRAGBAR_H__
 
-#include "./dragbar.h"
+#include "dragbar.h"
 
 class PasswordSafeFrame;
 
 class PWSDragBar : public CDragBar, public CDragBar::IDragSourceTextProvider
 {
   PasswordSafeFrame* m_frame;
-  
+
 public:
   PWSDragBar(PasswordSafeFrame* frame);
   ~PWSDragBar();
 
   //show the classic or new buttons depending on PWSprefs::UseNewToolbar
   void RefreshButtons();
-  
+
   //PWSDragBar::IDragSourceTextProvider override
   virtual wxString GetText(int id) const;
   virtual bool IsEnabled(int id) const;

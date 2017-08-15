@@ -11,23 +11,23 @@
 */
 
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
-#include "./PwsSync.h"
-#include "./OpenFilePickerValidator.h"
-#include "./SafeCombinationCtrl.h"
-#include "./DbSelectionPanel.h"
-#include "./AdvancedSelectionDlg.h"
-#include "../../core/PWScore.h"
-#include "./SelectionCriteria.h"
+#include "PwsSync.h"
+#include "OpenFilePickerValidator.h"
+#include "SafeCombinationCtrl.h"
+#include "DbSelectionPanel.h"
+#include "AdvancedSelectionDlg.h"
+#include "core/PWScore.h"
+#include "SelectionCriteria.h"
 
 #include <wx/filename.h>
 #include <wx/valgen.h>

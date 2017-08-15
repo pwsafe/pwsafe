@@ -20,7 +20,7 @@
 #include <wx/event.h>
 #include <wx/toolbar.h>
 
-#include "../../core/ItemData.h"
+#include "core/ItemData.h"
 ////@end includes
 
 ////@begin forward declarations

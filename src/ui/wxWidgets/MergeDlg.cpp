@@ -11,13 +11,13 @@
 #include <wx/wx.h>
 #endif
 
-#include "./MergeDlg.h"
-#include "../../core/PWScore.h"
-#include "./wxutils.h"
-#include "./AdvancedSelectionDlg.h"
-#include "../../os/file.h"
-#include "./DbSelectionPanel.h"
-#include "./SelectionCriteria.h"
+#include "MergeDlg.h"
+#include "core/PWScore.h"
+#include "wxutils.h"
+#include "AdvancedSelectionDlg.h"
+#include "os/file.h"
+#include "DbSelectionPanel.h"
+#include "SelectionCriteria.h"
 
 #include <wx/statline.h>
 

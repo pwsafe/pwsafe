@@ -10,7 +10,7 @@
 #define __DBSELECTIONPANEL_H__
 
 #include <wx/panel.h>
-#include "../../core/StringX.h"
+#include "core/StringX.h"
 
 class wxFilePickerCtrl;
 class CSafeCombinationCtrl;
@@ -24,11 +24,11 @@ class wxFileDirPickerEvent;
  * the combination in the second row.  It is meant to be used like
  * a child control by embedding in a wxSizer  See MergeDlg.cpp
  * and PwsSync.cpp for its usage
- * 
+ *
  * filePrompt - the static text displayed just above the file picker ctrl
- * 
+ *
  * filePickerCtrlTitle - the window title of the file picker dialog
- * 
+ *
  * rowsep - the multiplying factor for the separation between the first and second
  * rows.  A small dialog might pass a value of 2, while a wizard page might pass 5
  */
@@ -38,11 +38,11 @@ class DbSelectionPanel : public wxPanel {
   CSafeCombinationCtrl* m_sc;
   bool m_bAutoValidate;
   PWScore* m_core;
-  
+
 public:
   DbSelectionPanel(wxWindow* parent, const wxString& filePrompt,
                     const wxString& filePickerCtrlTitle, bool autoValidate,
-                    PWScore* core, unsigned rowsep); 
+                    PWScore* core, unsigned rowsep);
   ~DbSelectionPanel();
 
   //Set the keyboard focus on combination entry box and select-all

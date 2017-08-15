@@ -7,7 +7,7 @@
  */
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 #include <algorithm>
@@ -16,9 +16,9 @@
 
 #include <qrencode.h>
 
-#include "../../core/UTF8Conv.h"
-#include "./pwsqrcodedlg.h"
-#include "./wxutils.h"
+#include "core/UTF8Conv.h"
+#include "pwsqrcodedlg.h"
+#include "wxutils.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>

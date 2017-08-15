@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 /** \file ComparisonGridTable.h
-* 
+*
 */
 
 #ifndef _COMPARISONGRIDTABLE_H_
@@ -14,8 +14,8 @@
 
 #include <wx/grid.h>
 
-#include "../../core/DBCompareData.h"
-#include "../../core/UIinterface.h"
+#include "core/DBCompareData.h"
+#include "core/UIinterface.h"
 
 #define CurrentBackgroundColor    *wxWHITE
 #define ComparisonBackgroundColor *wxWHITE
@@ -78,31 +78,31 @@ public:
 ///////////////////////////////////////////////////////////////
 //UniSafeCompareGridTable
 //
-//Class to handle display of comparison results which only involve a single 
+//Class to handle display of comparison results which only involve a single
 //safe (uses only a single core)
 class UniSafeCompareGridTable: public ComparisonGridTable
 {
   typedef pws_os::CUUID st_CompareData::*uuid_ptr;
-  
+
   CompareData*            m_compData;
   PWScore*                m_core;
   wxGridCellAttr          *m_gridAttr;
   uuid_ptr                m_uuidptr;
 public:
-  
-  UniSafeCompareGridTable(SelectionCriteria* criteria, 
+
+  UniSafeCompareGridTable(SelectionCriteria* criteria,
                           CompareData* data,
                           PWScore* core,
                           uuid_ptr pu,
                           const wxColour& backgroundColour);
   virtual ~UniSafeCompareGridTable();
-  
+
   //virtual overrides
   int GetNumberRows();
   bool IsEmptyCell(int row, int col);
   wxString GetValue(int row, int col);
   wxGridCellAttr* GetAttr(int row, int col, wxGridCellAttr::wxAttrKind kind);
-  
+
   //virtual override from ComparisonGridTable
   int GetItemRow(const pws_os::CUUID& uuid) const;
   virtual pws_os::CUUID GetSelectedItemId(bool readOnly);
@@ -120,20 +120,20 @@ public:
 //safes (uses both the cores in comparison result)
 class MultiSafeCompareGridTable: public ComparisonGridTable
 {
-  
+
   CompareData*            m_compData;
   PWScore*                m_currentCore;
   PWScore*                m_otherCore;
   wxGridCellAttr          *m_currentAttr, *m_comparisonAttr;
-  
+
 public:
-  
-  MultiSafeCompareGridTable(SelectionCriteria* criteria, 
+
+  MultiSafeCompareGridTable(SelectionCriteria* criteria,
                                CompareData* data,
                                PWScore* current,
                                PWScore* other);
   virtual ~MultiSafeCompareGridTable();
-  
+
   //virtual overrides
   int GetNumberRows();
   bool IsEmptyCell(int row, int col);
@@ -149,7 +149,7 @@ public:
   }
   bool DeleteRows(size_t pos, size_t numRows);
 private:
-  
+
   PWScore* GetRowCore(int row);
 
 };

@@ -9,7 +9,7 @@
 #ifndef __GUIINFO_H__
 #define __GUIINFO_H__
 
-#include "../../os/UUID.h"
+#include "os/UUID.h"
 #include <wx/string.h>
 #include <wx/gdicmn.h>
 #include <wx/arrstr.h>
@@ -22,9 +22,9 @@ class string_or_uuid
 {
   public:
     typedef enum { ITEM_NONE = 0, ITEM_NORMAL, ITEM_GROUP } ItemType;
-    
+
     string_or_uuid() : m_type(ITEM_NONE) {}
-      
+
     ItemType Type() const { return m_type; }
     void Clear() { m_type = ITEM_NONE; }
 
@@ -33,7 +33,7 @@ class string_or_uuid
       m_type  = ITEM_GROUP;
       return *this;
     }
-      
+
     string_or_uuid& operator=(const pws_os::CUUID &uu) {
       m_uu = uu;
       m_type  = ITEM_NORMAL;

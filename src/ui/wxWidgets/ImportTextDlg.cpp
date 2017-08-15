@@ -31,13 +31,13 @@
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 #include <wx/gbsizer.h>
-#include "../../core/StringX.h"
-#include "./wxutils.h"
-#include "../../core/PwsPlatform.h"
+#include "core/StringX.h"
+#include "wxutils.h"
+#include "core/PwsPlatform.h"
 #include <wx/valgen.h>
 #include <wx/filepicker.h>
-#include "../../os/file.h"
-#include "./OpenFilePickerValidator.h"
+#include "os/file.h"
+#include "OpenFilePickerValidator.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>

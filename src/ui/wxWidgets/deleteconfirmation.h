@@ -14,7 +14,7 @@
  */
 
 ////@begin includes
-#include "wx/valgen.h"
+#include <wx/valgen.h>
 ////@end includes
 
 /*!
@@ -47,7 +47,7 @@
  */
 
 class DeleteConfirmation: public wxDialog
-{    
+{
   DECLARE_CLASS( DeleteConfirmation )
   DECLARE_EVENT_TABLE()
 

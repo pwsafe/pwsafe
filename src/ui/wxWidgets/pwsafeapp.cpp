@@ -11,15 +11,15 @@
 */
 
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-#include "wx/cmdline.h"
+#include <wx/wxprec.h>
+#include <wx/cmdline.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
@@ -40,14 +40,14 @@ using namespace std;
 #include "pwsclip.h"
 #include <wx/timer.h>
 #include <wx/html/helpctrl.h>
-#include "../../os/dir.h"
+#include "os/dir.h"
 #include <wx/tokenzr.h>
 #include <wx/fs_arc.h>
 #include <wx/propdlg.h>
 #include <wx/textfile.h>
 #include <wx/snglinst.h>
-#include "../../core/PWSLog.h"
-#include "./pwsmenushortcuts.h"
+#include "core/PWSLog.h"
+#include "pwsmenushortcuts.h"
 #if defined(__X__) || defined(__WXGTK__)
 #include "pwsclip.h"
 #endif
@@ -62,9 +62,9 @@ using namespace std;
 #include <wx/richmsgdlg.h>
 #endif
 ////@begin XPM images
-#include "./graphics/pwsafe16.xpm"
-#include "./graphics/pwsafe32.xpm"
-#include "./graphics/pwsafe48.xpm"
+#include "graphics/pwsafe16.xpm"
+#include "graphics/pwsafe32.xpm"
+#include "graphics/pwsafe48.xpm"
 
 ////@end XPM images
 
@@ -308,7 +308,7 @@ bool PwsafeApp::OnInit()
   // Don't allow ptrace or gdump on release build
   if (!pws_os::DisableDumpAttach())
     return false;
-  
+
   // Parse command line options:
   wxString filename, user, host, cfg_file;
   bool cmd_ro = cmdParser.Found(wxT("r"));
@@ -809,7 +809,7 @@ PwsafeApp::StringToStringMap& PwsafeApp::GetHelpMap()
   if (!initialized) {
 #define DLG_HELP(dlgname, htmlfile) helpMap[wxSTRINGIZE_T(dlgname)] = wxSTRINGIZE_T(htmlfile);
 #define PROPSHEET_HELP(sheet, page, htmlfile) helpMap[wxString(wxSTRINGIZE_T(sheet) wxT("#")) + page] = wxSTRINGIZE_T(htmlfile);
-#include "./helpmap.h"
+#include "helpmap.h"
 #undef DLG_HELP
 #undef PROPSHEET_HELP
     initialized = true;

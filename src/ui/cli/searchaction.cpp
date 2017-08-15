@@ -9,13 +9,13 @@
 
 #include <string>
 
-#include "./searchaction.h"
-#include "./strutils.h"
-#include "./safeutils.h"
+#include "searchaction.h"
+#include "strutils.h"
+#include "safeutils.h"
 
-#include "./argutils.h"
+#include "argutils.h"
 
-#include "../../core/PWScore.h"
+#include "core/PWScore.h"
 
 using namespace std;
 

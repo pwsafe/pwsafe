@@ -7,35 +7,35 @@
  */
 
 /** \file ExternalKeyboardButton.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-#include "../../core/PwsPlatform.h"
+#include <wx/wxprec.h>
+#include "core/PwsPlatform.h"
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
-#include "./ExternalKeyboardButton.h"
+#include "ExternalKeyboardButton.h"
 
-#include "./graphics/vkbd.xpm"
+#include "graphics/vkbd.xpm"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
 
-ExternalKeyboardButton::ExternalKeyboardButton( wxWindow* parent, 
-                                                wxWindowID id, 
+ExternalKeyboardButton::ExternalKeyboardButton( wxWindow* parent,
+                                                wxWindowID id,
                                                 const wxPoint& pos,
-                                                const wxSize& size, 
-                                                long style, 
-                                                const wxValidator& validator, 
-                                                const wxString& name) : wxBitmapButton(parent, 
-                                                                                       id, 
+                                                const wxSize& size,
+                                                long style,
+                                                const wxValidator& validator,
+                                                const wxString& name) : wxBitmapButton(parent,
+                                                                                       id,
                                                                                        wxBitmap(vkbd_xpm),
                                                                                        pos,
                                                                                        size,

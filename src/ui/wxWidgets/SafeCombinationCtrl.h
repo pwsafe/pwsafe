@@ -11,7 +11,7 @@
 
 #include <wx/sizer.h> // Base class: wxBoxSizer
 #include <wx/event.h> // Base class: wxEvtHandler
-#include "../../core/StringX.h"
+#include "core/StringX.h"
 
 //without this class, we get 'pointer to member conversion via virtual base' error
 class CommandEventHandler : public wxEvtHandler {
@@ -33,7 +33,7 @@ public:
   // following common c'tor code for both above
   void Init(wxWindow* parent, wxWindowID textCtrlID, StringX* valPtr, const wxPoint& pos, const wxSize& size);
   ~CSafeCombinationCtrl();
-  
+
   StringX GetCombination() const;
   void SetValidatorTarget(StringX* str);
   void SelectCombinationText() const;

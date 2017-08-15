@@ -28,7 +28,7 @@ DLG_HELP(AdvancedSelectionDlg<FindDlgType>,             html/searching.html)
 
 //
 //for property sheet help, note that the second parameter is a locale-specific string
-//and must be translated at runtime, so make sure you use _(...) and not wxT(...)
+//and must be translated at runtime, so make sure you use _(...) and not wxT(...)/_T/L
 //
 
 //Options dialog

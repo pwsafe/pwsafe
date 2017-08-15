@@ -7,22 +7,22 @@
  */
 
 /** \file SafeCombinationCtrl.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-#include "../../core/PwsPlatform.h"
+#include <wx/wxprec.h>
+#include "core/PwsPlatform.h"
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 #include "SafeCombinationCtrl.h"
-#include "./wxutils.h"
-#include "./ExternalKeyboardButton.h"
+#include "wxutils.h"
+#include "ExternalKeyboardButton.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>

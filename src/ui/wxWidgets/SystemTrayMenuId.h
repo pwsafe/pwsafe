@@ -15,7 +15,7 @@
  * used by the dynamically generated system tray menu.
  *
  * Each item in the recently-used entry generates one sub-menu.  Each
- * of these sub-menus can have a menu entry to 
+ * of these sub-menus can have a menu entry to
  *
  *    1. Copy password to clipboard
  *    2. Copy Username to clipboard (if present)
@@ -31,31 +31,31 @@
  *
  * I'm not sure how many recently-used items could there be, but
  * there has to be a limit (probably 100). The default seems 25
- * 
+ *
  * Precautions to be taken are:
  *
  *   1. The ids must not conflict with wxWidget's pre-defined ids,
  *      that is, they must fall outside wxID_LOWEST(4999) - wxID_HIGHEST (5999)
  *      see wx/defs.h
- *      
+ *
  *   2. The ids must not conflict with the dialogblocks generated ids
  *      defined in passwordsafeframe.h, and some of the hand-defined values
  *      which follow the dialogblocks ids in the same file.  These values
  *      start from 10000 and don't have a defined upper bound as of yet
  *
  * The other problem to be solved is to somehow relate these command-ids to
- * the recently-used items that the submenu refers to, since there seems to 
- * be no way to associate any kind of callback data with menus and menu 
- * events (like MENUINFO and WM_MENUCOMMAND in Win32 api. The only thing we 
+ * the recently-used items that the submenu refers to, since there seems to
+ * be no way to associate any kind of callback data with menus and menu
+ * events (like MENUINFO and WM_MENUCOMMAND in Win32 api. The only thing we
  * have when a menuitem is clicked is the command-id.
  *
  * So a part of the command-id has to represent the recently-used item and
- * the other part has to represent the operation to perform (copy password, 
+ * the other part has to represent the operation to perform (copy password,
  * autotype, etc).
- * 
+ *
  * The solution is to use the lowest 16 bits of the command-id as follows
  *
- *                 0 0 0 0  0 0 0 0    0 0 0 0  0 0 0 0    
+ *                 0 0 0 0  0 0 0 0    0 0 0 0  0 0 0 0
  *                          |     |    |              |
  *                            opn       RUE array index
  *
@@ -72,11 +72,11 @@
  * listed above
  */
 
-#include "../../os/typedefs.h"
+#include "os/typedefs.h"
 
 enum { MIN_RUE_COMMAND_ID = 256, MAX_RUE_COMMAND_ID = 4095 };
 
-inline bool IsRUECommand(int id) { 
+inline bool IsRUECommand(int id) {
   return id >= MIN_RUE_COMMAND_ID && id <= MAX_RUE_COMMAND_ID;
 }
 
@@ -133,7 +133,7 @@ inline int GetFrameCommandId(RUEOperation opn) {
                                  ID_BROWSEURLPLUS,
                                  ID_SENDEMAIL,
                                  ID_RUNCOMMAND };
-                           
+
   wxASSERT(opn > 0 && size_t(opn) <= NumberOf(frameCommands));
   return frameCommands[opn-1];
 }

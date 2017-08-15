@@ -10,14 +10,14 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
@@ -135,7 +135,7 @@ void DeleteConfirmation::CreateControls()
 
   itemBoxSizer2->Add(itemCheckBox4, 0, wxALIGN_LEFT|wxALL, 5);
   itemCheckBox4->Show(m_numchildren == 0); // can't shut this up for group deletes
-  
+
   wxStdDialogButtonSizer* itemStdDialogButtonSizer5 = new wxStdDialogButtonSizer;
 
   itemBoxSizer2->Add(itemStdDialogButtonSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);

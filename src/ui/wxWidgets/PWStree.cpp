@@ -10,18 +10,18 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
-#include "wx/imaglist.h"
+#include <wx/imaglist.h>
 ////@end includes
 #include <utility> // for make_pair
 #include <vector>
@@ -29,7 +29,7 @@
 #include "PWStree.h"
 #include "passwordsafeframe.h"
 #include "core/PWSprefs.h"
-#include "../../core/Command.h"
+#include "core/Command.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -39,18 +39,18 @@
 
 ////@begin XPM images
 ////@end XPM images
-#include "./graphics/abase_exp.xpm"
-#include "./graphics/abase_warn.xpm"
-#include "./graphics/abase.xpm"
-#include "./graphics/alias.xpm"
-#include "./graphics/node.xpm"
-#include "./graphics/normal_exp.xpm"
-#include "./graphics/normal_warn.xpm"
-#include "./graphics/normal.xpm"
-#include "./graphics/sbase_exp.xpm"
-#include "./graphics/sbase_warn.xpm"
-#include "./graphics/sbase.xpm"
-#include "./graphics/shortcut.xpm"
+#include "graphics/abase_exp.xpm"
+#include "graphics/abase_warn.xpm"
+#include "graphics/abase.xpm"
+#include "graphics/alias.xpm"
+#include "graphics/node.xpm"
+#include "graphics/normal_exp.xpm"
+#include "graphics/normal_warn.xpm"
+#include "graphics/normal.xpm"
+#include "graphics/sbase_exp.xpm"
+#include "graphics/sbase_warn.xpm"
+#include "graphics/sbase.xpm"
+#include "graphics/shortcut.xpm"
 
 using pws_os::CUUID;
 

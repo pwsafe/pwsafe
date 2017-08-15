@@ -10,23 +10,23 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
-#include "wx/bookctrl.h"
+#include <wx/bookctrl.h>
 ////@end includes
 
-#include "wx/dirdlg.h"
-#include "wx/msgdlg.h"
-#include "wx/debug.h"
+#include <wx/dirdlg.h>
+#include <wx/msgdlg.h>
+#include <wx/debug.h>
 #include <wx/taskbar.h>
 
 #include "passwordsafeframe.h"
@@ -34,8 +34,8 @@
 #include "core/PWSprefs.h"
 #include "core/Util.h" // for datetime string
 #include "core/PWSAuxParse.h" // for DEFAULT_AUTOTYPE
-#include "./wxutils.h"
-#include "./pwsmenushortcuts.h"
+#include "wxutils.h"
+#include "pwsmenushortcuts.h"
 #include "pwsafeapp.h" // for set/get hashIter
 #if defined(__X__) || defined(__WXGTK__)
 #include "pwsclip.h"

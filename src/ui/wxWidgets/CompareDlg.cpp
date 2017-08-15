@@ -10,27 +10,27 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
-#include "./CompareDlg.h"
-#include "./DbSelectionPanel.h"
-#include "./wxutils.h"
-#include "../../core/PWScore.h"
-#include "./AdvancedSelectionDlg.h"
-#include "./ComparisonGridTable.h"
-#include "./SizeRestrictedPanel.h"
-#include "../../core/core.h"
-#include "./addeditpropsheet.h"
-#include "./fieldselectiondlg.h"
-#include "./SelectionCriteria.h"
+#include "CompareDlg.h"
+#include "DbSelectionPanel.h"
+#include "wxutils.h"
+#include "core/PWScore.h"
+#include "AdvancedSelectionDlg.h"
+#include "ComparisonGridTable.h"
+#include "SizeRestrictedPanel.h"
+#include "core/core.h"
+#include "addeditpropsheet.h"
+#include "fieldselectiondlg.h"
+#include "SelectionCriteria.h"
 
 #include <wx/statline.h>
 #include <wx/grid.h>

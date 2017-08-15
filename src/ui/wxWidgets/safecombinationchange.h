@@ -7,7 +7,7 @@
  */
 
 /** \file safecombinationchange.h
-* 
+*
 */
 
 #ifndef _SAFECOMBINATIONCHANGE_H_
@@ -18,7 +18,7 @@
  */
 
 ////@begin includes
-#include "wx/valgen.h"
+#include <wx/valgen.h>
 ////@end includes
 #include "core/PWScore.h"
 #ifndef NO_YUBI
@@ -62,7 +62,7 @@ class wxTimer;
  */
 
 class CSafeCombinationChange: public wxDialog
-{    
+{
   DECLARE_CLASS( CSafeCombinationChange )
   DECLARE_EVENT_TABLE()
 

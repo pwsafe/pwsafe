@@ -7,7 +7,7 @@
  */
 
 /** \file PasswordPolicy.h
-* 
+*
 */
 
 #ifndef _PASSWORDPOLICY_H_
@@ -18,8 +18,8 @@
  */
 
 ////@begin includes
-#include "wx/valgen.h"
-#include "wx/spinctrl.h"
+#include <wx/valgen.h>
+#include <wx/spinctrl.h>
 ////@end includes
 #include "core/coredefs.h"
 #include "core/PWPolicy.h"
@@ -72,7 +72,7 @@ class wxSpinCtrl;
  */
 
 class CPasswordPolicy: public wxDialog
-{    
+{
   DECLARE_EVENT_TABLE()
 
 public:

@@ -7,17 +7,17 @@
  */
 
 /** \file YubiMixin.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 #include <iomanip>
@@ -121,7 +121,7 @@ bool CYubiMixin::PerformChallengeResponse(wxWindow *win,
     chalLength = BYTE(challenge.length() * sizeof(TCHAR));
     if (chalLength > PWYubi::SHA1_MAX_BLOCK_SIZE)
       chalLength = PWYubi::SHA1_MAX_BLOCK_SIZE;
-  
+
     memcpy(chalBuf, challenge.c_str(), chalLength);
   } else { // emulate Windows challenge
     chalLength = BYTE(challenge.length() * 2);

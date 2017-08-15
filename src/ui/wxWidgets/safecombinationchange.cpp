@@ -10,14 +10,14 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
@@ -26,8 +26,8 @@
 
 #include "safecombinationchange.h"
 #include "core/PWCharPool.h" // for CheckPassword()
-#include "./wxutils.h"          // for ApplyPasswordFont
-#include "./ExternalKeyboardButton.h"
+#include "wxutils.h"          // for ApplyPasswordFont
+#include "ExternalKeyboardButton.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>

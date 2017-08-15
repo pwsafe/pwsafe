@@ -13,7 +13,7 @@
 #endif
 
 #include "ImportXmlDlg.h"
-#include "./OpenFilePickerValidator.h"
+#include "OpenFilePickerValidator.h"
 
 #include <wx/valgen.h>
 #include <wx/statline.h>

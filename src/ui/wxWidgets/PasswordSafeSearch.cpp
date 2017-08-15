@@ -7,37 +7,37 @@
  */
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 #include "PasswordSafeSearch.h"
-#include "../../core/PwsPlatform.h"
-#include "../../core/PWHistory.h"
-#include "../../core/Util.h"
+#include "core/PwsPlatform.h"
+#include "core/PWHistory.h"
+#include "core/Util.h"
 #include "passwordsafeframe.h"
 #include "wxutils.h"
 #include "AdvancedSelectionDlg.h"
-#include "./SelectionCriteria.h"
-#include "./SearchUtils.h"
+#include "SelectionCriteria.h"
+#include "SearchUtils.h"
 
 ////@begin XPM images
-#include "./graphics/findtoolbar/new/find.xpm"
-#include "./graphics/findtoolbar/new/findreport.xpm"
-#include "./graphics/findtoolbar/new/find_disabled.xpm"
-#include "./graphics/findtoolbar/new/findadvanced.xpm"
-#include "./graphics/findtoolbar/new/findcase_i.xpm"
-#include "./graphics/findtoolbar/new/findcase_s.xpm"
-#include "./graphics/findtoolbar/new/findclear.xpm"
-#include "./graphics/findtoolbar/new/findclose.xpm"
+#include "graphics/findtoolbar/new/find.xpm"
+#include "graphics/findtoolbar/new/findreport.xpm"
+#include "graphics/findtoolbar/new/find_disabled.xpm"
+#include "graphics/findtoolbar/new/findadvanced.xpm"
+#include "graphics/findtoolbar/new/findcase_i.xpm"
+#include "graphics/findtoolbar/new/findcase_s.xpm"
+#include "graphics/findtoolbar/new/findclear.xpm"
+#include "graphics/findtoolbar/new/findclose.xpm"
 //-- classic bitmaps...
-#include "./graphics/findtoolbar/classic/find.xpm"
-#include "./graphics/findtoolbar/classic/findreport.xpm"
-#include "./graphics/findtoolbar/classic/find_disabled.xpm"
-#include "./graphics/findtoolbar/classic/findadvanced.xpm"
-#include "./graphics/findtoolbar/classic/findcase_i.xpm"
-#include "./graphics/findtoolbar/classic/findcase_s.xpm"
-#include "./graphics/findtoolbar/classic/findclear.xpm"
-#include "./graphics/findtoolbar/classic/findclose.xpm"
+#include "graphics/findtoolbar/classic/find.xpm"
+#include "graphics/findtoolbar/classic/findreport.xpm"
+#include "graphics/findtoolbar/classic/find_disabled.xpm"
+#include "graphics/findtoolbar/classic/findadvanced.xpm"
+#include "graphics/findtoolbar/classic/findcase_i.xpm"
+#include "graphics/findtoolbar/classic/findcase_s.xpm"
+#include "graphics/findtoolbar/classic/findclear.xpm"
+#include "graphics/findtoolbar/classic/findclose.xpm"
 ////@end XPM images
 #include <wx/statline.h>
 #include <wx/valgen.h>
