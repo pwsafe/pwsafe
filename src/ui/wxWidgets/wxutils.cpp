@@ -205,7 +205,7 @@ bool IsTaskBarIconAvailable()
 {
 #ifdef __WXGTK__
   const wxLinuxDistributionInfo ldi = wxGetLinuxDistributionInfo();
-  if (ldi.Id.IsEmpty() || ldi.Id == L"Ubuntu" || ldi.Id == L"Fedora")
+  if (ldi.Id == L"Ubuntu" || ldi.Id == L"Fedora")
     return false;
 #endif
   return wxTaskBarIcon::IsAvailable();
