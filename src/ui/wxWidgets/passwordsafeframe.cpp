@@ -3318,7 +3318,7 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
 
 void PasswordSafeFrame::OnVisitWebsite(wxCommandEvent&)
 {
-  wxLaunchDefaultBrowser("https://pwsafe.org");
+  wxLaunchDefaultBrowser(L"https://pwsafe.org");
 }
 
 void PasswordSafeFrame::UpdateStatusBar()
