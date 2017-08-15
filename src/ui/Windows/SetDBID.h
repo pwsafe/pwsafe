@@ -41,7 +41,7 @@ public:
 	virtual ~CSetDBID();
 
 // Dialog Data
-	enum { IDD = IDD_SETDBINDEX };
+	enum { IDD = IDD_SETDBID };
 
   HANDLE GetMutexHandle() { return m_hMutexDBIndex; }
   COLORREF GetLockedIndexColour() { return m_clrLockedTextColour; }

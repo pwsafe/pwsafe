@@ -391,7 +391,7 @@
 #define IDB_EMPTY_DISABLED              549
 #define IDB_REDEXCLAMATION              550
 #define IDB_LOCK_CLASSIC                551
-#define IDD_SETDBINDEX                  552
+#define IDD_SETDBID                     552
 #define IDB_BLACK                       553
 #define IDB_RED                         554
 #define IDB_GREEN                       555
