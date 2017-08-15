@@ -206,6 +206,9 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
   FILE *fd = a_fd;
   int retval = SUCCESS;
   SHA256 H;
+  unsigned char Ptag[SHA256::HASHLEN];
+  unsigned char *usedPtag = (aPtag == nullptr) ? Ptag : aPtag;
+
 
   if (fd == NULL) {
     fd = pws_os::FOpen(filename.c_str(), _T("rb"));
@@ -234,14 +237,11 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
 
     if (nITER != NULL)
       *nITER = N;
-    unsigned char Ptag[SHA256::HASHLEN];
-    if (aPtag == NULL)
-      aPtag = Ptag;
 
-    StretchKey(salt, sizeof(salt), passkey, N, aPtag);
+    StretchKey(salt, sizeof(salt), passkey, N, usedPtag);
   }
   unsigned char HPtag[SHA256::HASHLEN];
-  H.Update(aPtag, SHA256::HASHLEN);
+  H.Update(usedPtag, SHA256::HASHLEN);
   H.Final(HPtag);
   unsigned char readHPtag[SHA256::HASHLEN];
   fread(readHPtag, 1, sizeof(readHPtag), fd);
