@@ -23,7 +23,7 @@ DLG_HELP(wxToolBar,                                     html/Welcome.html)
 
 //AdvancedSelectionDlg template
 DLG_HELP(AdvancedSelectionDlg<ExportFullXml>,           html/export.html#xml)
-DLG_HELP(AdvancedSelectionDlg<ExportFullText>,          html/export.html#te)
+DLG_HELP(AdvancedSelectionDlg<ExportFullText>,          html/export.html#text)
 DLG_HELP(AdvancedSelectionDlg<FindDlgType>,             html/searching.html)
 
 //
