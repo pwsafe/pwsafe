@@ -168,7 +168,7 @@ void CAbout::CreateControls()
   wxStaticText* visitSiteStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Please visit the "), wxDefaultPosition, wxDefaultSize, 0);
   visitSiteSizer->Add(visitSiteStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), L"https://pwsafe.org/", wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
+  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
   visitSiteSizer->Add(visitSiteHyperlinkCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* visitSiteStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("See LICENSE for open source details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
@@ -349,13 +349,6 @@ void CAbout::CheckNewVersion()
   m_newVerStatus->Show();
 }
 
-void CAbout::OnVisitSiteClicked(wxHyperlinkEvent& event) {
-  // Do nothing to prevent double open, because GTK control opens URL by itself,
-  // otherwise default handler will call xdg-open to open URL
-#ifndef __WXGTK__
-  // skip this hook and leave default processing for non-GTK builds
-  event.Skip();
-#else
-  wxUnusedVar(event);
-#endif
+void CAbout::OnVisitSiteClicked(wxHyperlinkEvent& WXUNUSED(event)) {
+  wxLaunchDefaultBrowser(L"https://pwsafe.org");
 }
