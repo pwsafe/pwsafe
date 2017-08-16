@@ -299,7 +299,7 @@ void PasswordSafeFrame::CreateDragBar()
   wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
 
   PWSDragBar* dragbar = new PWSDragBar(this);
-  origSizer->Insert(0, dragbar);
+  origSizer->Insert(0, dragbar, 1, wxEXPAND);
 
   const bool bShow = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
   if (!bShow) {
