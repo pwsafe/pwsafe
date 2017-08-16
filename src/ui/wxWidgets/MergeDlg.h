@@ -10,17 +10,17 @@
 #define __MERGEDLG_H__
 
 #include <wx/dialog.h>
-#include "../../core/StringX.h"
+#include "core/StringX.h"
 
 class PWScore;
 struct SelectionCriteria;
 class DbSelectionPanel;
 
 class MergeDlg : public wxDialog {
-  
+
   DECLARE_CLASS( MergeDlg )
   DECLARE_EVENT_TABLE()
-  
+
 public:
   MergeDlg(wxWindow* parent, PWScore* core);
   ~MergeDlg();
@@ -30,7 +30,7 @@ public:
   wxString GetOtherSafePath() const;
   StringX GetOtherSafeCombination() const;
   SelectionCriteria GetSelectionCriteria() const;
-  
+
 private:
   PWScore* m_core;
   SelectionCriteria* m_selection;

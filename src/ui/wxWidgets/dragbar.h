@@ -84,7 +84,7 @@ private:
         return m_margins.GetWidth();
 
       default:
-        wxASSERT(wxT("Invalid orientation")); return -1;
+        wxASSERT(L"Invalid orientation"); return -1;
     }
   }
 
@@ -98,7 +98,7 @@ private:
                     static_cast<int>(idx * (m_margins.GetHeight() + m_bmpHeight));
 
       default:
-        wxASSERT(wxT("Invalid orientation")); return -1;
+        wxASSERT(L"Invalid orientation"); return -1;
     }
   }
 

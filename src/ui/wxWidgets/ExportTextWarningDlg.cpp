@@ -10,14 +10,14 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 #include "SafeCombinationCtrl.h"
@@ -63,7 +63,7 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
   wxString warningTxt(_("Warning! This operation will create an unprotected copy of ALL of the passwords\nin the database. Deleting this copy after use is NOT sufficient."));
   wxString warningTxt2(_("Please do not use this option unless you understand and accept the risks. This option\nbypasses the security provided by this program."));
 
-  wxStaticText* rt = new wxStaticText(this, wxID_ANY, warningTxt + wxT("\n\n") + warningTxt2, wxDefaultPosition,
+  wxStaticText* rt = new wxStaticText(this, wxID_ANY, warningTxt + L"\n\n" + warningTxt2, wxDefaultPosition,
                                               wxSize(-1, 200));
   rt->SetForegroundColour(*wxRED);
   dlgSizer->Add(rt, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(1).Expand());
@@ -89,14 +89,14 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
 #endif
   dlgSizer->AddSpacer(RowSeparation);
 
-  delimiter = wxT('\xbb');
+  delimiter = L'\xbb';
   wxTextValidator delimValidator(wxFILTER_EXCLUDE_CHAR_LIST, &delimiter);
-  const wxChar* excludes[] = {wxT("\""), 0};
+  const wxChar* excludes[] = {L"\"", 0};
   delimValidator.SetExcludes(wxArrayString(1, excludes));
   wxBoxSizer* delimRow = new wxBoxSizer(wxHORIZONTAL);
   delimRow->Add(new wxStaticText(this, wxID_ANY, _("Line delimiter in Notes field:")));
   delimRow->AddSpacer(ColSeparation);
-  delimRow->Add(new wxTextCtrl(this, ID_LINE_DELIMITER, wxT("\xbb"), wxDefaultPosition, wxDefaultSize, 0,
+  delimRow->Add(new wxTextCtrl(this, ID_LINE_DELIMITER, L"\xbb", wxDefaultPosition, wxDefaultSize, 0,
                                 delimValidator));
   delimRow->AddSpacer(ColSeparation);
   delimRow->Add(new wxStaticText(this, wxID_ANY, _("Also used to replace periods in the Title field")));

@@ -7,7 +7,7 @@
  */
 
 /** \file fieldselectiondlg.h
- * 
+ *
  */
 
 /*
@@ -16,8 +16,8 @@
 
 #include <wx/dialog.h>
 
-#include "./fieldselectionpanel.h"
-#include "../../core/ItemData.h"
+#include "fieldselectionpanel.h"
+#include "core/ItemData.h"
 
 class FieldSelectionDlg : public wxDialog {
 
@@ -30,11 +30,11 @@ public:
                     FieldSet& userSelection,
                     const wxString& operation,  //something like "search", or "merge" or "compare"
                     // These would be constructed from 'operation' if not provided explicitly
-                    const wxString& validationMessage = wxEmptyString, 
+                    const wxString& validationMessage = wxEmptyString,
                     const wxString& validationTitle = wxEmptyString,
                     const wxString& title = wxEmptyString,
                     const wxString& staticText = wxEmptyString);
-  
+
   void OnInitDialog(wxInitDialogEvent& evt);
-  void OnRelayoutDlg(wxCommandEvent& evt);  
+  void OnRelayoutDlg(wxCommandEvent& evt);
 };

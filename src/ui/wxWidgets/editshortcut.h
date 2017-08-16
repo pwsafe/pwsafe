@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 /** \file
-* 
+*
 */
 
 #ifndef _EDITSHORTCUT_H_
@@ -17,7 +17,7 @@
  */
 
 ////@begin includes
-#include "wx/valgen.h"
+#include <wx/valgen.h>
 ////@end includes
 #include "core/PWScore.h"
 #include "core/ItemData.h"
@@ -56,7 +56,7 @@ class UIInterFace;
  */
 
 class EditShortcut: public wxDialog
-{    
+{
   DECLARE_CLASS( EditShortcut )
   DECLARE_EVENT_TABLE()
 

@@ -16,10 +16,10 @@ class ExternalKeyboardButton : public wxBitmapButton {
 public:
   ExternalKeyboardButton(wxWindow* parent, wxWindowID id = wxID_ANY,
                                             const wxPoint& pos = wxDefaultPosition,
-                                            const wxSize& size = wxDefaultSize, 
-                                            long style = wxBU_AUTODRAW, 
-                                            const wxValidator& validator = wxDefaultValidator, 
-                                            const wxString& name = wxT("button"));
+                                            const wxSize& size = wxDefaultSize,
+                                            long style = wxBU_AUTODRAW,
+                                            const wxValidator& validator = wxDefaultValidator,
+                                            const wxString& name = L"button");
   ~ExternalKeyboardButton();
 
   void HandleCommandEvent(wxCommandEvent& evt);

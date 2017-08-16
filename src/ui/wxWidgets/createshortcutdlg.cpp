@@ -10,14 +10,14 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
@@ -25,7 +25,7 @@
 
 #include "createshortcutdlg.h"
 #include "core/ItemData.h"
-#include "./wxutils.h"
+#include "wxutils.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -231,7 +231,7 @@ void CreateShortcutDlg::OnOkClick( wxCommandEvent& /* evt */ )
     CItemData shortcut;
     shortcut.SetShortcut();
     shortcut.CreateUUID();
-    shortcut.SetPassword(wxT("[Shortcut]"));
+    shortcut.SetPassword(L"[Shortcut]");
     const wxString group = m_groupCtrl->GetValue();
 
     if (!group.empty())

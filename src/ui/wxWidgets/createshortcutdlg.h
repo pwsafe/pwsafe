@@ -7,7 +7,7 @@
  */
 
 /** \file createshortcutdlg.h
-* 
+*
 */
 
 #ifndef _CREATESHORTCUTDLG_H_
@@ -18,7 +18,7 @@
  */
 
 ////@begin includes
-#include "wx/valgen.h"
+#include <wx/valgen.h>
 ////@end includes
 #include "core/PWScore.h"
 
@@ -55,7 +55,7 @@ class UIInterFace;
  */
 
 class CreateShortcutDlg: public wxDialog
-{    
+{
   DECLARE_CLASS( CreateShortcutDlg )
   DECLARE_EVENT_TABLE()
 

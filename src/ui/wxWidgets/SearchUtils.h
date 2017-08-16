@@ -9,8 +9,8 @@
 #ifndef __pwsafe_xcode6__SearchUtils__
 #define __pwsafe_xcode6__SearchUtils__
 
-#include "../../core/ItemData.h"
-#include "../../core/PWHistory.h"
+#include "core/ItemData.h"
+#include "core/PWHistory.h"
 
 // THIS CODE MUST BE KEPT FREE OF WXWIDGETS EVEN THOUGH ITS IN THE WXWIDGETS FOLDER
 // BECAUSE IT'S ALSO USED BY PWSAFE-CLI WHICH DOES NOT USE WXWIDGETS

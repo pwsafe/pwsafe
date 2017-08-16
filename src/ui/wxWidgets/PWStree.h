@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 /** \file
-* 
+*
 */
 
 #ifndef _PWSTREECTRL_H_
@@ -17,7 +17,7 @@
  */
 
 ////@begin includes
-#include "wx/treectrl.h"
+#include <wx/treectrl.h>
 ////@end includes
 #include "core/ItemData.h"
 #include "core/PWScore.h"
@@ -51,7 +51,7 @@ typedef std::map<pws_os::CUUID, wxTreeItemId, std::less<pws_os::CUUID> > UUIDTIM
  */
 
 class PWSTreeCtrl: public wxTreeCtrl
-{    
+{
   DECLARE_CLASS( PWSTreeCtrl )
   DECLARE_EVENT_TABLE()
 

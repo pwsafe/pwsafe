@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 /** \file
-* 
+*
 */
 
 #ifndef _PWSGRID_H_
@@ -17,7 +17,7 @@
  */
 
 ////@begin includes
-#include "wx/grid.h"
+#include <wx/grid.h>
 ////@end includes
 #include "core/ItemData.h"
 #include "core/PWScore.h"
@@ -52,7 +52,7 @@ typedef std::map<pws_os::CUUID, int, std::less<pws_os::CUUID> > UUIDRowMapT;
  */
 
 class PWSGrid: public wxGrid
-{    
+{
   DECLARE_CLASS( PWSGrid )
   DECLARE_EVENT_TABLE()
 
@@ -74,7 +74,7 @@ public:
 
   /// Creates the controls and sizers
   void CreateControls();
-  
+
   // Notification from PWScore when new data is loaded
   void OnPasswordListModified();
 
@@ -88,7 +88,7 @@ public:
   void DeleteItems(int row, size_t numItems);
   void DeleteAllItems();
   void Clear();
-  
+
 ////@begin PWSGrid event handler declarations
 
   /// wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX
@@ -121,7 +121,7 @@ public:
   static bool ShowToolTips();
 
   CItemData *GetItem(int row) const;
-  
+
   void SelectItem(const pws_os::CUUID& uuid);
 
   int  FindItemRow(const pws_os::CUUID& uu);

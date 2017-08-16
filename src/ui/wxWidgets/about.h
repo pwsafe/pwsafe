@@ -17,7 +17,7 @@
  */
 
 ////@begin includes
-#include "wx/hyperlink.h"
+#include <wx/hyperlink.h>
 ////@end includes
 
 /*!

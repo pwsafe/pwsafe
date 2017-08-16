@@ -7,7 +7,7 @@
  */
 
 /** \file ManagePwdPolicies.h
-* 
+*
 */
 
 #ifndef _MANAGEPWDPOLICIES_H_
@@ -18,7 +18,7 @@
  */
 
 ////@begin includes
-#include "wx/grid.h"
+#include <wx/grid.h>
 ////@end includes
 #include "core/coredefs.h"
 #include "core/PWPolicy.h"
@@ -65,7 +65,7 @@ class wxGrid;
  */
 
 class CManagePasswordPolicies: public wxDialog
-{    
+{
   DECLARE_DYNAMIC_CLASS( CManagePasswordPolicies )
   DECLARE_EVENT_TABLE()
 
@@ -176,7 +176,7 @@ public:
   bool m_bSortNamesAscending, m_bSortEntriesAscending;
 
   bool m_bViewPolicy;
-  
+
   bool m_bUndoShortcut, m_bRedoShortcut;
 };
 

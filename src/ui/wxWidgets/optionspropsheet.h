@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 /** \file
-* 
+*
 */
 
 #ifndef _OPTIONSPROPSHEET_H_
@@ -17,11 +17,11 @@
  */
 
 ////@begin includes
-#include "wx/propdlg.h"
-#include "wx/valgen.h"
-#include "wx/statline.h"
-#include "wx/spinctrl.h"
-#include "wx/grid.h"
+#include <wx/propdlg.h>
+#include <wx/valgen.h>
+#include <wx/statline.h>
+#include <wx/spinctrl.h>
+#include <wx/grid.h>
 ////@end includes
 
 /*!
@@ -121,7 +121,7 @@ class wxBookCtrlEvent;
  */
 
 class COptions: public wxPropertySheetDialog
-{    
+{
   DECLARE_DYNAMIC_CLASS( COptions )
   DECLARE_EVENT_TABLE()
 

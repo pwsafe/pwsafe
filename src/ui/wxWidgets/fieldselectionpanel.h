@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 /** \file fieldselectionpanel.h
-* 
+*
 */
 
 #ifndef __FIELDSELECTIONPANEL__
@@ -14,7 +14,7 @@
 
 #include <wx/panel.h>
 
-#include "../../core/ItemData.h"
+#include "core/ItemData.h"
 #include <set>
 
 typedef std::set<CItemData::FieldType> FieldSet;
@@ -25,7 +25,7 @@ typedef std::set<CItemData::FieldType> FieldSet;
  * embedded in other dialogs and should be used with the custom
  * validator defined below the class
  */
- 
+
 class FieldSelectionPanel : public wxPanel {
 
   DECLARE_EVENT_TABLE()

@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 /** \file
-* 
+*
 */
 
 #ifndef _PROPERTIES_H_
@@ -17,7 +17,7 @@
  */
 
 ////@begin includes
-#include "wx/valgen.h"
+#include <wx/valgen.h>
 ////@end includes
 #include "core/PWScore.h"
 
@@ -59,7 +59,7 @@
  */
 
 class CProperties: public wxDialog
-{    
+{
   DECLARE_CLASS( CProperties )
   DECLARE_EVENT_TABLE()
 

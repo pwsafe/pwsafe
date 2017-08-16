@@ -17,11 +17,11 @@
  */
 
 ////@begin includes
-#include "wx/image.h"
+#include <wx/image.h>
 #include "safecombinationentry.h"
 ////@end includes
 #include "core/PWScore.h"
-#include "./RecentDBList.h"
+#include "RecentDBList.h"
 
 /*!
  * Forward declarations

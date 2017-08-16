@@ -1,7 +1,7 @@
-#include "./TimedTaskChain.h"
+#include "TimedTaskChain.h"
 
 #ifndef __TESTING_TIMEDTASKCHAIN__
-#include "../../core/PWSprefs.h"
+#include "core/PWSprefs.h"
 #endif
 
 // static

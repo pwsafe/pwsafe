@@ -7,7 +7,7 @@
  */
 
 /** \file yubicfg.h
-* 
+*
 */
 
 #ifndef _YUBICFG_H_
@@ -18,7 +18,7 @@
  */
 
 ////@begin includes
-#include "wx/valgen.h"
+#include <wx/valgen.h>
 ////@end includes
 #include "core/PWSfileHeader.h"
 
@@ -58,7 +58,7 @@ class PWScore;
  */
 
 class YubiCfgDlg: public wxDialog
-{    
+{
   DECLARE_CLASS( YubiCfgDlg )
   DECLARE_EVENT_TABLE()
 
@@ -126,7 +126,7 @@ private:
   void ShowSK();
   void HideSK();
 
-  enum { POLLING_TIMER_ID = 66 } ; 
+  enum { POLLING_TIMER_ID = 66 } ;
   wxTimer* m_pollingTimer;
   bool m_present; // key present?
   bool m_isSKHidden;

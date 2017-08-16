@@ -10,14 +10,14 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
@@ -29,7 +29,7 @@
 #include <wx/timer.h>
 #include "yubicfg.h"
 #include "YubiMixin.h" // for POLLING_INTERVAL
-#include "./wxutils.h"
+#include "wxutils.h"
 
 #include "core/StringX.h"
 #include "core/PWScore.h"
@@ -308,7 +308,7 @@ void YubiCfgDlg::OnYkSetClick( wxCommandEvent& WXUNUSED(event) )
       m_core.WriteCurFile();
       trashMemory(yubi_sk_bin, YUBI_SK_LEN);
     } else {
-      m_ykstatus->SetLabel(wxT("Failed to update YubiKey"));
+      m_ykstatus->SetLabel(L"Failed to update YubiKey");
     }
   }
 }
@@ -339,7 +339,7 @@ void YubiCfgDlg::ReadYubiSN()
     m_yksernum = wxEmptyString;
     m_ykstatus->SetLabel(yk.GetErrStr().c_str());
   } else {
-    m_yksernum.Printf(wxT("%u"), serial);
+    m_yksernum.Printf(L"%u", serial);
     m_ykstatus->SetLabel(wxEmptyString);
   }
 }

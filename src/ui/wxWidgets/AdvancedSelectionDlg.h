@@ -9,13 +9,13 @@
 #ifndef __ADVANCEDDSELECTIONDLG_H__
 #define __ADVANCEDDSELECTIONDLG_H__
 
-#include "../../core/ItemData.h"
-#include "./wxutils.h"
+#include "core/ItemData.h"
+#include "wxutils.h"
 
 /*
  *
  * AdvancedSelectionPanel is a composite UI widget which looks like this:
- * 
+ *
  *    +----------------------------------------------------------------------------+
  *    |    +------------------------------------------------------------------+    |
  *    |    |  [x] Restrict to a subset of entries                             |    |
@@ -61,7 +61,7 @@
  */
 
 struct SelectionCriteria;
- 
+
 /*!
  * AdvancedSelectionDlg class declaration
  */
@@ -94,7 +94,7 @@ protected:
   virtual bool IsUsableField(CItemData::FieldType field) const = 0;
   virtual bool ShowFieldSelection() const = 0;
   virtual wxString GetTaskWord() const = 0;
-  
+
 public:
   SelectionCriteria* m_criteria;
   bool m_autoValidate;
@@ -111,7 +111,7 @@ public:
   virtual bool IsMandatoryField(CItemData::FieldType field) const {
     return DlgType::IsMandatoryField(field);
   }
-  
+
   virtual bool IsPreselectedField(CItemData::FieldType field) const {
     return DlgType::IsPreselectedField(field);
   }
@@ -123,7 +123,7 @@ public:
   virtual bool ShowFieldSelection() const {
     return DlgType::ShowFieldSelection();
   }
-  
+
   virtual wxString GetTaskWord() const {
     return DlgType::GetTaskWord();
   }
@@ -140,9 +140,9 @@ class AdvancedSelectionDlg : public wxDialog
 public:
   AdvancedSelectionDlg(wxWindow* parent, SelectionCriteria* existingCriteria): m_panel(0)
   {
-    wxDialog::Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, 
+    wxDialog::Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition,
                             wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
-  
+
 
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
     sizer->AddSpacer(TopMargin);
@@ -150,14 +150,14 @@ public:
     m_panel = new PanelType(this, existingCriteria, true);
     m_panel->CreateControls(this);
     sizer->Add(m_panel, wxSizerFlags().Expand().Proportion(1));
-    
+
     sizer->AddSpacer(RowSeparation);
-    sizer->Add(CreateSeparatedButtonSizer(wxOK|wxCANCEL|wxHELP), 
+    sizer->Add(CreateSeparatedButtonSizer(wxOK|wxCANCEL|wxHELP),
                       wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
     sizer->AddSpacer(BottomMargin);
-    
+
     SetTitle(DlgType::GetAdvancedSelectionTitle());
-    
+
     SetSizerAndFit(sizer);
   }
 };

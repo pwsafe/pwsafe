@@ -10,14 +10,14 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
@@ -27,7 +27,7 @@
 #include "PasswordPolicy.h"
 #include "pwsclip.h"
 #include "core/PWCharPool.h"
-#include "./wxutils.h"
+#include "wxutils.h"
 
 ////@begin XPM images
 #include "graphics/toolbar/new/copypassword.xpm"
@@ -201,8 +201,8 @@ void CManagePasswordPolicies::CreateControls()
   m_passwordCtrl = new wxTextCtrl( itemDialog1, ID_PASSWORD_TXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer16->Add(m_passwordCtrl, 5, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxBitmapButton* itemBitmapButton18 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-  wxBitmap itemBitmapButton18BitmapDisabled(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword_disabled.xpm")));
+  wxBitmapButton* itemBitmapButton18 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, itemDialog1->GetBitmapResource(L"graphics/toolbar/new/copypassword.xpm"), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+  wxBitmap itemBitmapButton18BitmapDisabled(itemDialog1->GetBitmapResource(L"graphics/toolbar/new/copypassword_disabled.xpm"));
   itemBitmapButton18->SetBitmapDisabled(itemBitmapButton18BitmapDisabled);
   if (CManagePasswordPolicies::ShowToolTips())
     itemBitmapButton18->SetToolTip(_("Copy Password to clipboard"));
@@ -314,12 +314,12 @@ wxBitmap CManagePasswordPolicies::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
 ////@begin CManagePasswordPolicies bitmap retrieval
-  if (name == _T("graphics/toolbar/new/copypassword.xpm"))
+  if (name == L"graphics/toolbar/new/copypassword.xpm")
   {
     wxBitmap bitmap(copypassword_xpm);
     return bitmap;
   }
-  else if (name == _T("graphics/toolbar/new/copypassword_disabled.xpm"))
+  else if (name == L"graphics/toolbar/new/copypassword_disabled.xpm")
   {
     wxBitmap bitmap(copypassword_disabled_xpm);
     return bitmap;

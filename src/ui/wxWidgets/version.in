@@ -32,22 +32,22 @@
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
 #ifdef linux
-#define APPNAME _T("PasswordSafe (linux)")
+#define APPNAME L"PasswordSafe (linux)"
 #else
-#define APPNAME _T("PasswordSafe (wxWidgets)")
+#define APPNAME L"PasswordSafe (wxWidgets)"
 #endif
 
 #define MAJORVERSION @pwsafe_VERSION_MAJOR@
 #define MINORVERSION @pwsafe_VERSION_MINOR@
 #define REVISION     @pwsafe_REVISION@
-#define VCS_VERSION "@pwsafe_VERSTRING@"
+#define VCS_VERSION L"@pwsafe_VERSTRING@"
 
 // LINUXPRODVER is for Misc/make-latest-xml.pl
 
 #define LINUXPRODVER MAJORVERSION, MINORVERSION, REVISION, VCS_VERSION
 
 // define following for custom/experimental versions
-#define SPECIALBUILD _T("@pwsafe_SPECIALBUILD@")
+#define SPECIALBUILD L"@pwsafe_SPECIALBUILD@"
 
 extern const wxString pwsafeAppName;
 extern const wxString pwsafeVersionString;

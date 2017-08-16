@@ -7,7 +7,7 @@
  */
 
 /** \file pwsqrcodedlg.h
- * 
+ *
  */
 
 /*
@@ -18,7 +18,7 @@
 #include <wx/timer.h>
 #include <wx/stattext.h>
 
-#include "../../core/StringX.h"
+#include "core/StringX.h"
 
 class PWSQRCodeDlg : public wxDialog {
 
@@ -42,9 +42,9 @@ public:
 			   const wxString &name=wxDialogNameStr);
 
   ~PWSQRCodeDlg() = default;
-  
+
   //void OnInitDialog(wxInitDialogEvent& evt)  override;
-  //void OnRelayoutDlg(wxCommandEvent& evt)  override;  
+  //void OnRelayoutDlg(wxCommandEvent& evt)  override;
   void CreateControls(const StringX &data);
   void OnClose(wxCommandEvent & evt);
   void OnTimer(wxTimerEvent &evt);

@@ -10,14 +10,14 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 #include <wx/url.h>
 
@@ -28,6 +28,7 @@
 #include "version.h"
 #include "passwordsafeframe.h"
 #include "core/CheckVersion.h"
+#include "os/utf8conv.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -128,16 +129,16 @@ void CAbout::CreateControls()
   wxBoxSizer* mainSizer = new wxBoxSizer(wxHORIZONTAL);
   aboutDialog->SetSizer(mainSizer);
 
-  wxStaticBitmap* logoBitmap = new wxStaticBitmap(aboutDialog, wxID_STATIC, aboutDialog->GetBitmapResource(L"./graphics/cpane.xpm"), wxDefaultPosition, wxDefaultSize, 0);
+  wxStaticBitmap* logoBitmap = new wxStaticBitmap(aboutDialog, wxID_STATIC, aboutDialog->GetBitmapResource(L"graphics/cpane.xpm"), wxDefaultPosition, wxDefaultSize, 0);
   mainSizer->Add(logoBitmap, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* rightSizer = new wxBoxSizer(wxVERTICAL);
   mainSizer->Add(rightSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* versionStaticText = new wxStaticText(aboutDialog, wxID_VERSIONSTR, _("Password Safe")+wxT(" vx.yy (abcd)"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+  wxStaticText* versionStaticText = new wxStaticText(aboutDialog, wxID_VERSIONSTR, wxString(_("Password Safe")) + L" vx.yy (abcd)", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(versionStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* buildStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Build date:")+wxT(" Mon dd yyyy hh:mm:ss"), wxDefaultPosition, wxDefaultSize, 0);
+  wxStaticText* buildStaticText = new wxStaticText(aboutDialog, wxID_STATIC, wxString(_("Build date:")) + L" Mon dd yyyy hh:mm:ss", wxDefaultPosition, wxDefaultSize, 0);
   rightSizer->Add(buildStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxBoxSizer* verCheckSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -167,7 +168,7 @@ void CAbout::CreateControls()
   wxStaticText* visitSiteStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Please visit the "), wxDefaultPosition, wxDefaultSize, 0);
   visitSiteSizer->Add(visitSiteStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), L"https://pwsafe.org/", wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
+  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
   visitSiteSizer->Add(visitSiteHyperlinkCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* visitSiteStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("See LICENSE for open source details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
@@ -186,7 +187,7 @@ void CAbout::CreateControls()
 
   const wxString vstring = pwsafeAppName + L" " + pwsafeVersionString;
   versionStaticText->SetLabel(vstring);
-  const wxString dstring = _("Build date:") + wxT(" ") + wxT(__DATE__) + wxT(" ") + wxT(__TIME__);
+  const wxString dstring = wxString(_("Build date:")) + L" " + pws_os::towc(__DATE__) + L" " + pws_os::towc(__TIME__);
   buildStaticText->SetLabel(dstring);
 }
 
@@ -206,7 +207,7 @@ bool CAbout::ShowToolTips()
 wxBitmap CAbout::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
-  if (name == L"./graphics/cpane.xpm")
+  if (name == L"graphics/cpane.xpm")
   {
     wxBitmap bitmap(cpane_xpm);
     return bitmap;
@@ -285,7 +286,7 @@ void CAbout::CheckNewVersion()
   stringT latest_xml;
   if (!url.IsOk()) {
     wxURLError err = url.GetError();
-    pws_os::Trace(wxT("Err:%d\n"),err);
+    pws_os::Trace(L"Err:%d\n", err);
     status = CheckVersion::CANT_READ;
   }
   wxInputStream *in_stream = url.GetInputStream();
@@ -348,13 +349,6 @@ void CAbout::CheckNewVersion()
   m_newVerStatus->Show();
 }
 
-void CAbout::OnVisitSiteClicked(wxHyperlinkEvent& event) {
-  // Do nothing to prevent double open, because GTK control opens URL by itself,
-  // otherwise default handler will call xdg-open to open URL
-#ifndef __WXGTK__
-  // skip this hook and leave default processing for non-GTK builds
-  event.Skip();
-#else
-  wxUnusedVar(event);
-#endif
+void CAbout::OnVisitSiteClicked(wxHyperlinkEvent& WXUNUSED(event)) {
+  wxLaunchDefaultBrowser(L"https://pwsafe.org");
 }

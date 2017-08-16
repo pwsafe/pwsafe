@@ -92,7 +92,7 @@ void AdvancedSelectionPanel::CreateControls(wxWindow* parentWnd)
 
     sizer->Add( new wxStaticText(this, wxID_ANY, _("the &following text:")), wxSizerFlags().Border());
 
-    wxTextCtrl* txtCtrl = new wxTextCtrl(this, wxID_ANY, wxT("*"), wxDefaultPosition, wxSize(200, -1));
+    wxTextCtrl* txtCtrl = new wxTextCtrl(this, wxID_ANY, L"*", wxDefaultPosition, wxSize(200, -1));
     txtCtrl->SetValidator(wxGenericValidator(&m_criteria->m_subgroupText));
     sizer->Add(txtCtrl, wxSizerFlags().Border().Expand().FixedMinSize());
 
@@ -131,13 +131,13 @@ void AdvancedSelectionPanel::CreateControls(wxWindow* parentWnd)
 
       wxBoxSizer* buttonBox = new wxBoxSizer(wxVERTICAL);
       buttonBox->AddStretchSpacer();
-      buttonBox->Add( new wxButton(this, ID_SELECT_SOME, wxT(">")) );
+      buttonBox->Add( new wxButton(this, ID_SELECT_SOME, L">") );
       buttonBox->AddSpacer(RowSeparation);
-      buttonBox->Add( new wxButton(this, ID_SELECT_ALL, wxT(">>")) );
+      buttonBox->Add( new wxButton(this, ID_SELECT_ALL, L">>") );
       buttonBox->AddSpacer(RowSeparation*2);
-      buttonBox->Add( new wxButton(this, ID_REMOVE_SOME, wxT("<")) );
+      buttonBox->Add( new wxButton(this, ID_REMOVE_SOME, L"<") );
       buttonBox->AddSpacer(RowSeparation);
-      buttonBox->Add( new wxButton(this, ID_REMOVE_ALL, wxT("<<")) );
+      buttonBox->Add( new wxButton(this, ID_REMOVE_ALL, L"<<") );
       buttonBox->AddStretchSpacer();
 
       grid->Add(buttonBox, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
@@ -314,7 +314,7 @@ void AdvancedSelectionPanel::OnRemoveAll( wxCommandEvent& /* evt */ )
  */
 void EnableSizerElements(wxSizer* sizer, wxWindow* ignore, bool enable)
 {
-  wxCHECK_RET(sizer, wxT("Null sizer passed to EnableSizerElements"));
+  wxCHECK_RET(sizer, L"Null sizer passed to EnableSizerElements");
 
   wxSizerItemList& items = sizer->GetChildren();
   for (wxSizerItemList::iterator itr = items.begin(); itr != items.end(); ++itr) {
@@ -329,8 +329,8 @@ void EnableSizerElements(wxSizer* sizer, wxWindow* ignore, bool enable)
 void AdvancedSelectionPanel::OnRestrictSearchItems(wxCommandEvent& evt)
 {
   wxWindow* checkbox = wxDynamicCast(evt.GetEventObject(), wxWindow);
-  wxCHECK_RET(checkbox, wxT("Could not get checkbox from check event object"));
+  wxCHECK_RET(checkbox, L"Could not get checkbox from check event object");
   wxSizer* sizer = checkbox->GetContainingSizer();
-  wxCHECK_RET(sizer, wxT("Could not get the sizer owning the checkbox"));
+  wxCHECK_RET(sizer, L"Could not get the sizer owning the checkbox");
   EnableSizerElements(sizer, checkbox, evt.IsChecked());
 }

@@ -7,7 +7,7 @@
  */
 
 /** \file version.cpp
- * 
+ *
  */
 
 #include "version.h"
@@ -24,11 +24,11 @@ const wchar_t *debstr = L"";
 #endif
 
 #if defined(REVISION) && (REVISION != 0)
-const wxString pwsafeVersionString = wxString::Format(wxString(_T("v%d.%.2d.%d (%ls) %ls%ls")),
+const wxString pwsafeVersionString = wxString::Format(wxString(L"v%d.%.2d.%d (%ls) %ls%ls"),
                                                       MAJORVERSION, MINORVERSION, REVISION,
-                                                      _T(VCS_VERSION), debstr, SPECIALBUILD);
+                                                      VCS_VERSION, debstr, SPECIALBUILD);
 #else
-const wxString pwsafeVersionString = wxString::Format(wxString(_T("v%d.%.2d (%ls) %ls%ls")),
+const wxString pwsafeVersionString = wxString::Format(wxString(L"v%d.%.2d (%ls) %ls%ls"),
                                                       MAJORVERSION, MINORVERSION,
-                                                      _T(VCS_VERSION), debstr, SPECIALBUILD);
+                                                      VCS_VERSION, debstr, SPECIALBUILD);
 #endif

@@ -11,7 +11,7 @@
 
 #include <wx/dialog.h> // Base class: wxDialog
 
-#include "./AdvancedSelectionDlg.h"
+#include "AdvancedSelectionDlg.h"
 #ifndef NO_YUBI
 #include "YubiMixin.h"
 #endif

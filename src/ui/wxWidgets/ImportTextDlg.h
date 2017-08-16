@@ -12,7 +12,7 @@
 #include <wx/dialog.h> // Base class: wxDialog
 #include <wx/grid.h>
 #include <wx/collpane.h>
-#include "../../os/typedefs.h"
+#include "os/typedefs.h"
 
 class wxBoxSizer;
 class wxSizerFlags;
@@ -32,7 +32,7 @@ public:
   void CreateControls();
 
   wxString filepath;
-  
+
   bool delimiterComma;
   bool delimiterSpace;
   bool delimiterTab;
@@ -40,14 +40,14 @@ public:
   bool delimiterOther;
   wxString strDelimiterOther;
   wxString strDelimiterLine;
-  
+
   bool importUnderGroup;
   wxString groupName;
-  
+
   bool importPasswordsOnly;
-  
+
   TCHAR FieldSeparator() const;
-  
+
 private:
   wxCollapsiblePane* CreateParsingOptionsPane(wxBoxSizer* dlgSizer);
   wxCollapsiblePane* CreateImportOptionsPane(wxBoxSizer* dlgSizer);

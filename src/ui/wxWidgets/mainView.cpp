@@ -13,17 +13,17 @@
  */
 
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
-#include <wx/fontdlg.h> 
+#include <wx/fontdlg.h>
 
 #include "passwordsafeframe.h"
 #include "PWSgrid.h"
@@ -43,9 +43,9 @@ void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
     PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, evt.GetId() == ID_TOOLBAR_NEW);
     RefreshToolbarButtons();
     PWSDragBar* dragbar = GetDragBar();
-    wxCHECK_RET(dragbar, wxT("Could not find dragbar"));
+    wxCHECK_RET(dragbar, L"Could not find dragbar");
     dragbar->RefreshButtons();
-    wxCHECK_RET(m_search, wxT("Search object not created as expected"));
+    wxCHECK_RET(m_search, L"Search object not created as expected");
     m_search->RefreshButtons();
   }
 }
@@ -56,7 +56,7 @@ void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnListViewClick( wxCommandEvent& /* evt */ )
 {
-  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("list"));
+  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, L"list");
   ShowTree(false);
   ShowGrid(true);
   m_currentView = GRID;
@@ -68,7 +68,7 @@ void PasswordSafeFrame::OnListViewClick( wxCommandEvent& /* evt */ )
 
 void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& /* evt */ )
 {
-  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("tree"));
+  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, L"tree");
   ShowGrid(false);
   ShowTree(true);
   m_currentView = TREE;
@@ -137,7 +137,7 @@ void PasswordSafeFrame::OnShowHideToolBar(wxCommandEvent& evt)
 void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
 {
   PWSDragBar* dragbar = GetDragBar();
-  wxCHECK_RET(dragbar, wxT("Could not find dragbar"));
+  wxCHECK_RET(dragbar, L"Could not find dragbar");
 
   dragbar->Show(evt.IsChecked());
   PWSprefs::GetInstance()->SetPref(PWSprefs::ShowDragbar, evt.IsChecked());

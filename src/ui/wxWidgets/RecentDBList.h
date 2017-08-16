@@ -7,7 +7,7 @@
  */
 
 /** \file RecentDBList.h
- * 
+ *
  */
 
 #ifndef __RECENTDBLIST_H__
@@ -15,13 +15,13 @@
 
 // For wxFileHistory
 #include <wx/docview.h>
-#include "./wxutils.h"
+#include "wxutils.h"
 
 class CRecentDBList : public wxFileHistory
 {
 public:
     CRecentDBList() : wxFileHistory(PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems))
-    {} 
+    {}
 
     void RemoveFile(const wxString& file) {
       for (size_t idx = 0, max = GetCount(); idx < max; ++idx) {
@@ -31,21 +31,21 @@ public:
         }
       }
     }
-    
+
     void GetAll(wxArrayString& sa) const {
       for (size_t idx = 0, max = GetCount(); idx < max; ++idx)
         sa.Add(GetHistoryFile(idx));
     }
-    
+
     void Save() const {
       std::vector<stringT> mruList;
       for (size_t idx = 0, max = GetCount(); idx < max; ++idx) {
         mruList.push_back(stringT(GetHistoryFile(idx)));
       }
-      PWSprefs::GetInstance()->SetMRUList(&mruList[0], static_cast<int>(mruList.size()), 
+      PWSprefs::GetInstance()->SetMRUList(&mruList[0], static_cast<int>(mruList.size()),
                   PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems));
     }
-    
+
     void Load() {
       PWSprefs* prefs = PWSprefs::GetInstance();
       const int nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
@@ -57,7 +57,7 @@ public:
           AddFileToHistory(towxstring(mruList[idx]));
       }
     }
-    
+
     void Clear() {
       while(GetCount() > 0)
         RemoveFileFromHistory(0);
