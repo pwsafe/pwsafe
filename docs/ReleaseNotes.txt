@@ -40,6 +40,9 @@ New Features for 3.43.1
 [] When exporting a group or the results of a filter, if any additional entries have
 been exported (e.g. base entries of aliases or shortcuts already exported),
 they will be noted in the Export report.
+[844] The default font for the password field is now 12pt Consolas.
+[843] The default font for Tree/List views, Add/Edit fields and an
+entry's Notes is now 10pt Segoe UI Symbol.
 [842] A new symbol (paperclip - Unicode U+01F4CE) to indicate that an entry has
 an attachment (V4 databases only) has been implemented but, if the currently
 selected Tree/List font does not support it and the user is not running

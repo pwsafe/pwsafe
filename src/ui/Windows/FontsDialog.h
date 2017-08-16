@@ -10,8 +10,6 @@
 
 // CFontsDialog
 
-extern LOGFONT dfltTreeListFont;
-
 class CFontsDialog : public CFontDialog
 {
   DECLARE_DYNAMIC(CFontsDialog)

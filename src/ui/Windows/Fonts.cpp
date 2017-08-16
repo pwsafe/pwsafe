@@ -27,21 +27,25 @@ static char THIS_FILE[] = __FILE__;
 
 Fonts *Fonts::self = NULL;
 
-/*
-  Only the following set:
-    lf.lfHeight = -16;
-    lf.lfWeight = FW_NORMAL;
-    lf.lfPitchAndFamily = FF_MODERN | FIXED_PITCH;
-    lf.lfFaceName = L"Courier"; // max size = LF_FACESIZE (32)
-*/
+// 12pt Consolas Regular
 static LOGFONT dfltPasswordLogfont = {
   -16, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, FF_MODERN | FIXED_PITCH,
-  L'C', L'o', L'u', L'r', L'i', L'e', L'r', L'\0'};
+  L'C', L'o', L'n', L's', L'o', L'l', L'a', L's', L'\0'};
 
-// Not the best as should be able to get from resource file but difficult
+// 10pt Segoe UI Symbol Regular
+static LOGFONT dfltTreeListFont = {
+  -13, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, FF_MODERN | FF_SWISS,
+  L'S', L'e', L'g', L'o', L'e', L' ', L'U', L'I', L' ', L'S', L'y', L'm', L'b', L'o', L'l', L'\0'};
+
+// 10pt Segoe UI Symbol Regular
 static LOGFONT dfltAddEditLogfont = {
   -13, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, FF_MODERN | FF_SWISS,
-  L'M', L'S', L' ', L'S', L'a', L'n', L's', L' ', L'S', L'e', L'r', L'i', L'f', L'\0' };
+  L'S', L'e', L'g', L'o', L'e', L' ', L'U', L'I', L' ', L'S', L'y', L'm', L'b', L'o', L'l', L'\0'};
+
+// 10pt Segoe UI Symbol Regular
+static LOGFONT dfltNotesLogfont = {
+  -13, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, FF_MODERN | FF_SWISS,
+  L'S', L'e', L'g', L'o', L'e', L' ', L'U', L'I', L' ', L'S', L'y', L'm', L'b', L'o', L'l', L'\0'};
 
 // Bug in MS TreeCtrl and CreateDragImage. During Drag, it doesn't show
 // the entry's text as well as the drag image if the font is not MS Sans Serif !!!!
@@ -237,9 +241,19 @@ void Fonts::GetDefaultPasswordFont(LOGFONT &lf)
   memcpy(&lf, &dfltPasswordLogfont, sizeof(LOGFONT));
 }
 
+void Fonts::GetDefaultTreeListFont(LOGFONT &lf)
+{
+  memcpy(&lf, &dfltTreeListFont, sizeof(LOGFONT));
+}
+
 void Fonts::GetDefaultAddEditFont(LOGFONT &lf)
 {
   memcpy(&lf, &dfltAddEditLogfont, sizeof(LOGFONT));
+}
+
+void Fonts::GetDefaultNotesFont(LOGFONT &lf)
+{
+  memcpy(&lf, &dfltNotesLogfont, sizeof(LOGFONT));
 }
 
 void Fonts::SetPasswordFont(LOGFONT *pLF, const int iPtSz)
@@ -259,7 +273,7 @@ void Fonts::SetPasswordFont(LOGFONT *pLF, const int iPtSz)
   }
 }
 
-void Fonts::ApplyPasswordFont(CWnd* pDlgItem)
+void Fonts::ApplyPasswordFont(CWnd *pDlgItem)
 {
   ASSERT(pDlgItem != NULL);
   if (pDlgItem == NULL)

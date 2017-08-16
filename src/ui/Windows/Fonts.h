@@ -43,10 +43,12 @@ public:
   void GetNotesFont(LOGFONT *pLF);
   void SetNotesFont(LOGFONT *pLF, const int iPtSz);
 
-  void ApplyPasswordFont(CWnd* pLF);
+  void ApplyPasswordFont(CWnd *pLF);
 
   void GetDefaultPasswordFont(LOGFONT &lf);
+  void GetDefaultTreeListFont(LOGFONT &lf);
   void GetDefaultAddEditFont(LOGFONT &lf);
+  void GetDefaultNotesFont(LOGFONT &lf);
 
   bool ExtractFont(const std::wstring& str, LOGFONT &lf);
 

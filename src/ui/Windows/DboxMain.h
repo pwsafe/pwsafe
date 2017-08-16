@@ -615,6 +615,7 @@ public:
   void SaveGUIStatus();
   void RestoreGUIStatus();
 
+  void SetupUserFonts();
   void ChangeFont(const CFontsDialog::FontType iType);
 
   // Generated message map functions

@@ -2787,7 +2787,7 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       pref_FontSampleText = PWSprefs::TreeListSampleText;
       pOldFont = m_ctlItemTree.GetFont();
       pOldFont->GetLogFont(&lf);
-      dflt_lf = dfltTreeListFont;
+      pFonts->GetDefaultTreeListFont(dflt_lf);
       break;
     case CFontsDialog::ADDEDITFONT:
       pref_Font = PWSprefs::AddEditFont;
@@ -2808,7 +2808,7 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       pref_font_point_size = PWSprefs::NotesFontPtSz;
       pref_FontSampleText = PWSprefs::NotesSampleText;
       pFonts->GetNotesFont(&lf);
-      dflt_lf = dfltTreeListFont; // Default Notes font is the default Tree/List font
+      pFonts->GetDefaultNotesFont(dflt_lf);
       break;
     case CFontsDialog::VKEYBOARDFONT:
       // Note Virtual Keyboard font is not kept in Fonts class - so set manually
