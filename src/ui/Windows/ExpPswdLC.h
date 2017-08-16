@@ -30,4 +30,7 @@ protected:
 private:
   CToolTipCtrl *m_pToolTipCtrl;
   int m_LastToolTipRow;
+
+  COLORREF m_clrDisabled;
+  CFont *m_pTreeListFont;
 };

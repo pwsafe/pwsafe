@@ -3333,10 +3333,17 @@ CString DboxMain::ShowCompareResults(const StringX sx_Filename1,
                                      const StringX sx_Filename2,
                                      PWScore *pothercore, CReport *prpt)
 {
+  CString csProtect = m_ctlItemTree.IsUsingNewProtectedSymbol() ?
+    m_ctlItemTree.GetNewProtectedSymbol().c_str() : L"#";
+  CString csAttachment = m_ctlItemTree.IsUsingNewAttachmentSymbol() ?
+    m_ctlItemTree.GetNewAttachmentSymbol().c_str() : L"+";
+
+
   // Can't do UI from a worker thread!
   CCompareResultsDlg CmpRes(this, m_list_OnlyInCurrent, m_list_OnlyInComp,
                             m_list_Conflicts, m_list_Identical,
-                            m_bsFields, &m_core, pothercore, prpt);
+                            m_bsFields, &m_core, pothercore,
+                            csProtect, csAttachment, prpt);
 
   CmpRes.m_scFilename1 = sx_Filename1;
   CmpRes.m_scFilename2 = sx_Filename2;
@@ -3481,11 +3488,8 @@ LRESULT DboxMain::OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM )
     pELLE->sx_group = pci->GetGroup();
     pELLE->sx_title = pci->GetTitle();
     pELLE->sx_user  = pci->GetUser();
-    if (pci->IsProtected())
-      pELLE->sx_title += L" #";
-
-    if (pci->HasAttRef())
-      pELLE->sx_title += L" +";
+    pELLE->bIsProtected = pci->IsProtected();
+    pELLE->bHasAttachment = pci->HasAttRef();
 
     // Update time fields
     time_t tttXTime;

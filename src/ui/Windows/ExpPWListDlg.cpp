@@ -23,10 +23,11 @@
 #include "resource3.h"  // String resources
 
 // CExpPWListDlg dialog
-CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
-                             ExpiredList &expPWList,
-                             const CString& a_filespec)
-  : CPWDialog(CExpPWListDlg::IDD, pParent), m_expPWList(expPWList)
+CExpPWListDlg::CExpPWListDlg(CWnd *pParent,
+  ExpiredList &expPWList, const CString &a_filespec,
+  const CString &csProtect, const CString &csAttachment)
+  : CPWDialog(CExpPWListDlg::IDD, pParent), m_expPWList(expPWList),
+  m_csProtect(csProtect), m_csAttachment(csAttachment)
 {
   m_Database = a_filespec; // Path Ellipsis=true, no length woes
   m_iSortedColumn = 4;
@@ -48,11 +49,8 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
     elle.sx_group = ci.GetGroup();
     elle.sx_title = ci.GetTitle();
     elle.sx_user  = ci.GetUser();
-    if (ci.IsProtected())
-      elle.sx_title += L" #";
-
-    if (ci.HasAttRef())
-      elle.sx_title += L" +";
+    elle.bIsProtected = ci.IsProtected();
+    elle.bHasAttachment = ci.HasAttRef();
 
     // Get XTime and string versions
     elle.expirytttXTime = m_expPWList[i].expirytttXTime;
@@ -172,7 +170,14 @@ BOOL CExpPWListDlg::OnInitDialog()
     int image = GetEntryImage(elle);
 
     // Add to ListCtrl
-    nPos = m_expPWListCtrl.InsertItem(++nPos, NULL, image);
+    cs_text.Empty();
+    if (elle.bIsProtected)
+      cs_text += m_csProtect;
+
+    if (elle.bHasAttachment)
+      cs_text += m_csAttachment;
+
+    nPos = m_expPWListCtrl.InsertItem(++nPos, cs_text, image);
     m_expPWListCtrl.SetItemText(nPos, 1, elle.sx_group.c_str());
     m_expPWListCtrl.SetItemText(nPos, 2, elle.sx_title.c_str());
     m_expPWListCtrl.SetItemText(nPos, 3, elle.sx_user.c_str());

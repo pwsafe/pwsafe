@@ -746,7 +746,12 @@ void DboxMain::OnCompareEntries()
     if (pci != NULL) {
       // Entry - selected - shouldn't be called when group is selected
       // Now get the other entry
-      CCompareWithSelectDlg dlg(pci, &m_core, this);
+      CString csProtect = m_ctlItemTree.IsUsingNewProtectedSymbol() ?
+        m_ctlItemTree.GetNewProtectedSymbol().c_str() : L"#";
+      CString csAttachment = m_ctlItemTree.IsUsingNewAttachmentSymbol() ?
+        m_ctlItemTree.GetNewAttachmentSymbol().c_str() : L"+";
+
+      CCompareWithSelectDlg dlg(this, pci, &m_core, csProtect, csAttachment);
 
       if (dlg.DoModal() == IDOK) {
         // Get UUID of the entry

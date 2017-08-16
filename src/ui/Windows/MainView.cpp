@@ -2696,25 +2696,40 @@ bool DboxMain::IsWorkstationLocked() const
 void DboxMain::OnChangeTreeFont()
 {
   const bool bWasUsingNewProtectSymbol = m_ctlItemTree.IsUsingNewProtectedSymbol();
+  const bool bWasUsingNewAttachmentSymbol = m_ctlItemTree.IsUsingNewAttachmentSymbol();
 
   ChangeFont(CFontsDialog::TREELISTFONT);
 
-  wstring sProtect = m_ctlItemTree.GetNewProtectedSymbol();
-  bool bSupported = IsCharacterSupported(sProtect);
   bool bWindows10 = pws_os::IsWindows10OrGreater();
+  
+  wstring sProtect = m_ctlItemTree.GetNewProtectedSymbol();
+  bool bNewProtectedSymbolSupported = IsCharacterSupported(sProtect);
 
   // If supported - fine - use it
   // If not, use it if running under Windows 10 which seems to handle this nicely
-  m_ctlItemTree.UseNewProtectedSymbol(bSupported ? true : bWindows10);
+  m_ctlItemTree.UseNewProtectedSymbol(bNewProtectedSymbolSupported ? true : bWindows10);
 
-  if (!bSupported) {
+  if (!bNewProtectedSymbolSupported) {
     pws_os::Trace(L"New font does not support the new entry Protected symbol.\n");
   }
 
-  // If we have changed the "protect" symbol, then the Invalidate in the ChangeFont
+  wstring sAttachment = m_ctlItemTree.GetNewAttachmentSymbol();
+  bool bNewAttachmentSymbolSupported = IsCharacterSupported(sAttachment);
+
+  // If supported - fine - use it
+  // If not, use it if running under Windows 10 which seems to handle this nicely
+  m_ctlItemTree.UseNewAttachmentSymbol(bNewAttachmentSymbolSupported ? true : bWindows10);
+
+  if (!bNewAttachmentSymbolSupported) {
+    pws_os::Trace(L"New font does not support the new entry has Attachment symbol.\n");
+  }
+
+  // If we have changed the "protect" or "attachment" symbol, then the Invalidate in the ChangeFont
   // routine is not good enough - we have to change the actual displayed string
-  if (bWasUsingNewProtectSymbol != (bSupported ? true : bWindows10))
+  if ((bWasUsingNewProtectSymbol != (bNewProtectedSymbolSupported ? true : bWindows10)) ||
+      (bWasUsingNewAttachmentSymbol != (bNewAttachmentSymbolSupported ? true : bWindows10))) {
     RefreshViews();
+  }
 }
 
 void DboxMain::OnChangeAddEditFont()
@@ -2826,12 +2841,12 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
     switch (iType) {
       case CFontsDialog::TREELISTFONT:
         // Set current tree/list font
-        pFonts->SetCurrentFont(&lf, iFontSize);
+        pFonts->SetTreeListFont(&lf, iFontSize);
 
         // Transfer the fonts to the tree and list windows
         m_ctlItemTree.SetUpFont();
         m_ctlItemList.SetUpFont();
-        m_LVHdrCtrl.SetFont(pFonts->GetCurrentFont());
+        m_LVHdrCtrl.SetFont(pFonts->GetTreeListFont());
 
         // Recalculate header widths but don't change column widths
         CalcHeaderWidths();

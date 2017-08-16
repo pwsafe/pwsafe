@@ -23,7 +23,8 @@ class CCompareWithSelectDlg : public CPWDialog
 {
 public:
   // default constructor
-  CCompareWithSelectDlg(CItemData *pci, PWScore *pcore, CWnd *pParent);
+  CCompareWithSelectDlg(CWnd *pParent, CItemData *pci, PWScore *pcore,
+                        CString &csProtect, CString &csAttachment);
   virtual ~CCompareWithSelectDlg();
 
   pws_os::CUUID GetUUID();
@@ -52,6 +53,8 @@ private:
 
   PWScore *m_pcore;
   CItemData *m_pci, *m_pSelected;
+  
+  CString m_csProtect, m_csAttachment;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

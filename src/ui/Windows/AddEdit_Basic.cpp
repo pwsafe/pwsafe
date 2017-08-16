@@ -247,8 +247,8 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   // Set Notes font!
   if (prefs->GetPref(PWSprefs::NotesFont).empty()) {
-    m_ex_notes.SetFont(pFonts->GetCurrentFont());
-    m_ex_hidden_notes.SetFont(pFonts->GetCurrentFont());
+    m_ex_notes.SetFont(pFonts->GetTreeListFont());
+    m_ex_hidden_notes.SetFont(pFonts->GetTreeListFont());
   } else {
     m_ex_notes.SetFont(pFonts->GetNotesFont());
     m_ex_hidden_notes.SetFont(pFonts->GetNotesFont());

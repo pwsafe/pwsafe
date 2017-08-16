@@ -213,7 +213,8 @@ HTREEITEM CCWTreeCtrl::GetNextTreeItem(HTREEITEM hItem)
   return hReturn;
 }
 
-CSecString CCWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
+CSecString CCWTreeCtrl::MakeTreeDisplayString(const CItemData &ci,
+                        CString &csProtect, CString &csAttachment) const
 {
   CSecString treeDispString = ci.GetTitle();
 
@@ -222,10 +223,10 @@ CSecString CCWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
   treeDispString += L"]";
 
   if (ci.IsProtected())
-    treeDispString += L" #";
+    treeDispString += CSecString(csProtect);
 
   if (ci.HasAttRef())
-    treeDispString += L" +";
+    treeDispString += CSecString(csAttachment);
 
   return treeDispString;
 }
