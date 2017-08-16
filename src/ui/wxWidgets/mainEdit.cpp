@@ -37,6 +37,7 @@
 #include "wxutils.h"
 #include "guiinfo.h"
 #include "passwordsubset.h"
+#include "./pwsqrcodedlg.h"
 
 #include "../../core/PWSAuxParse.h"
 #include "../../core/Util.h"
@@ -862,6 +863,24 @@ void PasswordSafeFrame::OnPasswordSubset(wxCommandEvent &evt)
   CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item != NULL)
     DoPasswordSubset(*item);
+}
+
+void PasswordSafeFrame::OnPasswordQRCode(wxCommandEvent &evt)
+{
+  if ( /* constexpr */ HasQRCode() ) {
+    CItemData rueItem;
+    CItemData* item = GetSelectedEntry(evt, rueItem);
+    if (item != NULL) {
+#ifndef NO_QR
+    PWSQRCodeDlg dlg(this, item->GetPassword(),
+              towxstring(CItemData::FieldName(CItem::PASSWORD)) + _T(" of ") +
+              towxstring(item->GetGroup()) +
+              _T('[') + towxstring(item->GetTitle()) + _T(']') +
+              _T(':') + towxstring(item->GetUser()));
+      dlg.ShowModal();
+#endif
+    }
+  }
 }
 
 /*!

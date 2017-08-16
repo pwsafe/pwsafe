@@ -90,10 +90,8 @@ void SystemTray::SetTrayStatus(TrayStatus status)
 {
   m_status = status;
 
-#if wxCHECK_VERSION(2,9,0)
-  if (!wxTaskBarIcon::IsAvailable())
+  if (!IsTaskBarIconAvailable())
     return;
-#endif
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
      switch(status) {

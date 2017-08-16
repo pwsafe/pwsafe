@@ -26,6 +26,7 @@ g++
 gettext
 git
 libgtest-dev
+libqrencode-dev
 libuuid1
 libwxgtk3.0-dbg (See note 2 below)
 libwxgtk3.0-dev (See note 2 below)
@@ -49,12 +50,14 @@ git
 gtest-devel
 libXt-devel
 libXtst-devel
+libqrencode-devel
 libuuid-devel
 libyubikey-devel
 make
 wxGTK3-devel
 xerces-c-devel
 ykpers-devel (see note 3 below)
+qrencode-devel
 
 To compile without Yubikey support, set the NO_YUBI flag
 for make, e.g.,

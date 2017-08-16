@@ -101,7 +101,6 @@ BOOL CManagePSWDPols::OnInitDialog()
     GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
 
     // Hide cancel button & change OK button text
-    GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
     GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
 
     // Change button text

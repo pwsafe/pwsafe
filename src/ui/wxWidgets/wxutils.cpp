@@ -29,6 +29,8 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
+#include <wx/taskbar.h>
+
 /*
  * Reads a file into a PWScore object, and displays an appropriate msgbox
  * in case of failure.  Returns PWScore::SUCCESS on success
@@ -196,3 +198,15 @@ void ShowHideText(wxTextCtrl *&txtCtrl, const wxString &text,
 }
 
 int pless(int* first, int* second) { return *first - *second; }
+
+// Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
+// on Fedora or Ubuntu
+bool IsTaskBarIconAvailable()
+{
+#ifdef __WXGTK__
+  const wxLinuxDistributionInfo ldi = wxGetLinuxDistributionInfo();
+  if (ldi.Id.IsEmpty() || ldi.Id == wxT("Ubuntu") || ldi.Id == wxT("Fedora"))
+    return false;
+#endif
+  return wxTaskBarIcon::IsAvailable();
+}

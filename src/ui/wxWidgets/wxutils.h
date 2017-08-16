@@ -324,4 +324,8 @@ public:
 typedef wxTextDataObject wxTextDataObjectEx;
 #endif // __WXGTK20__
 
+// Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
+// on Fedora or Ubuntu
+bool IsTaskBarIconAvailable();
+
 #endif // __WXUTILS_H__
