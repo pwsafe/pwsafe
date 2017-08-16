@@ -20,7 +20,7 @@ public:
 
   void SetUpFont(CWnd *pWnd, CFont *pfont);
 
-  CFont *GetCurrentFont() const { return m_pCurrentFont; }
+  CFont *GetTreeListFont() const { return m_pTreeListFont; }
   CFont *GetAddEditFont() const { return m_pAddEditFont; }
   CFont *GetDragFixFont() const { return m_pDragFixFont; }
   CFont *GetPasswordFont() const { return m_pPasswordFont; }
@@ -29,8 +29,8 @@ public:
 
   COLORREF GetModified_Color() {return MODIFIED_COLOR;}
 
-  void GetCurrentFont(LOGFONT *pLF);
-  void SetCurrentFont(LOGFONT *pLF, const int iPtSz);
+  void GetTreeListFont(LOGFONT *pLF);
+  void SetTreeListFont(LOGFONT *pLF, const int iPtSz);
   void GetAddEditFont(LOGFONT *pLF);
   void SetAddEditFont(LOGFONT *pLF, const int iPtSz);
   void GetPasswordFont(LOGFONT *pLF);
@@ -52,7 +52,7 @@ private:
   ~Fonts() {}
   static Fonts *self; // singleton
 
-  CFont *m_pCurrentFont;
+  CFont *m_pTreeListFont;
   CFont *m_pAddEditFont;
   CFont *m_pModifiedFont;
   CFont *m_pDragFixFont;  // Fix for lack of text during drag!

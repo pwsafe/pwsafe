@@ -35,7 +35,7 @@ void CPWHistListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   *pLResult = CDRF_DODEFAULT;
 
   static bool bchanged_subitem_font(false);
-  static CFont *pCurrentFont = NULL;
+  static CFont *pTreeListFont = NULL;
   static CFont *pPasswordFont = NULL;
   static CDC *pDC = NULL;
 
@@ -43,7 +43,7 @@ void CPWHistListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
     case CDDS_PREPAINT:
       // PrePaint
       bchanged_subitem_font = false;
-      pCurrentFont = Fonts::GetInstance()->GetCurrentFont();
+      pTreeListFont = Fonts::GetInstance()->GetTreeListFont();
       pPasswordFont = Fonts::GetInstance()->GetPasswordFont();
       pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
       *pLResult = CDRF_NOTIFYITEMDRAW;
@@ -67,7 +67,7 @@ void CPWHistListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Sub-item PostPaint - restore old font if any
       if (bchanged_subitem_font) {
         bchanged_subitem_font = false;
-        pDC->SelectObject(pCurrentFont);
+        pDC->SelectObject(pTreeListFont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;

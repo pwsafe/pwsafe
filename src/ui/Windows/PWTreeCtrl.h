@@ -90,13 +90,21 @@ public:
   HTREEITEM FindItem(const CString &path, HTREEITEM hRoot);
   const StringX &GetDroppedFile() const {return m_droppedFile;}
 
-  void UseNewProtectedSymbol(const bool bUseNew)
-  { m_bUseNew = bUseNew; }
-  bool IsUsingNewProtectedSymbol() { return m_bUseNew; }
-  void SetNewProtectedSymbol(const std::wstring sProtectSymbol)
+  void UseNewProtectedSymbol(bool bUseNew)
+  { m_bUseNewProtectedSymbol = bUseNew; }
+  bool IsUsingNewProtectedSymbol() const { return m_bUseNewProtectedSymbol; }
+  void SetNewProtectedSymbol(const std::wstring &sProtectSymbol)
   { m_sProtectSymbol = sProtectSymbol; }
-  std::wstring GetNewProtectedSymbol()
+  std::wstring GetNewProtectedSymbol() const
   { return m_sProtectSymbol; }
+  
+  void UseNewAttachmentSymbol(bool bUseNew)
+  {  m_bUseNewAttachmentSymbol = bUseNew; }
+  bool IsUsingNewAttachmentSymbol() const { return m_bUseNewAttachmentSymbol; }
+  void SetNewAttachmentSymbol(const std::wstring sAttachmentSymbol)
+  { m_sAttachmentSymbol = sAttachmentSymbol; }
+  std::wstring GetNewAttachmentSymbol() const
+  { return m_sAttachmentSymbol; }
 
 protected:
   virtual BOOL PreTranslateMessage(MSG *pMsg);
@@ -180,8 +188,8 @@ private:
   bool m_bUseHighLighting;
   std::vector<StringX> m_vModifiedNodes;
 
-  bool m_bUseNew;
-  std::wstring m_sProtectSymbol;
+  bool m_bUseNewProtectedSymbol, m_bUseNewAttachmentSymbol;
+  std::wstring m_sProtectSymbol, m_sAttachmentSymbol;
 };
 
 /**

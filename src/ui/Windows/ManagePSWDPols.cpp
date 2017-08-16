@@ -165,8 +165,8 @@ BOOL CManagePSWDPols::OnInitDialog()
 
   // BR1108 - Allow user to config these fonts as well
   // Currently use same font as specified for list/tree view
-  m_PolicyNames.SetFont(Fonts::GetInstance()->GetCurrentFont());
-  m_PolicyDetails.SetFont(Fonts::GetInstance()->GetCurrentFont());
+  m_PolicyNames.SetFont(Fonts::GetInstance()->GetTreeListFont());
+  m_PolicyDetails.SetFont(Fonts::GetInstance()->GetTreeListFont());
 
   CString cs_text;
 

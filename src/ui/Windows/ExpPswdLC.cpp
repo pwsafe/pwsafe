@@ -8,7 +8,9 @@
 
 #include "stdafx.h"
 #include "ExpPswdLC.h"
-#include "PWTreeCtrl.h"
+#include "ExpPWListDlg.h"
+#include "Fonts.h"
+#include "PWTreeCtrl.h"  // For images
 
 #include "resource3.h"
 
@@ -23,6 +25,7 @@ static char THIS_FILE[] = __FILE__;
 CExpPswdLC::CExpPswdLC()
   : m_pToolTipCtrl(NULL), m_LastToolTipRow(-1), m_pwchTip(NULL)
 {
+  m_clrDisabled = GetSysColor(COLOR_GRAYTEXT);
 }
 
 CExpPswdLC::~CExpPswdLC()
@@ -41,6 +44,9 @@ END_MESSAGE_MAP()
 void CExpPswdLC::PreSubclassWindow()
 {
   CListCtrl::PreSubclassWindow();
+  
+  m_pTreeListFont = Fonts::GetInstance()->GetTreeListFont();
+  SetFont(m_pTreeListFont);
 
   // Disable the CToolTipCtrl of CListCtrl so it won't disturb our own tooltip-ctrl
   GetToolTips()->Activate(FALSE);

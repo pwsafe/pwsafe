@@ -56,10 +56,10 @@ Fonts *Fonts::GetInstance()
 
 void Fonts::DeleteInstance()
 {
-  if (m_pCurrentFont != NULL) {
-    m_pCurrentFont->DeleteObject();
-    delete m_pCurrentFont;
-    m_pCurrentFont = NULL;
+  if (m_pTreeListFont != NULL) {
+    m_pTreeListFont->DeleteObject();
+    delete m_pTreeListFont;
+    m_pTreeListFont = NULL;
   }
   if (m_pAddEditFont != NULL) {
     m_pAddEditFont->DeleteObject();
@@ -92,7 +92,7 @@ void Fonts::DeleteInstance()
 
 Fonts::Fonts() : MODIFIED_COLOR(RGB(0, 0, 128))
 {
-  m_pCurrentFont = new CFont;
+  m_pTreeListFont = new CFont;
   m_pAddEditFont = new CFont;
   m_pModifiedFont = new CFont;
   m_pDragFixFont = new CFont;
@@ -100,33 +100,33 @@ Fonts::Fonts() : MODIFIED_COLOR(RGB(0, 0, 128))
   m_pNotesFont = new CFont;
 }
 
-void Fonts::GetCurrentFont(LOGFONT *pLF)
+void Fonts::GetTreeListFont(LOGFONT *pLF)
 {
-  ASSERT(pLF != NULL && m_pCurrentFont != NULL);
-  if (pLF == NULL || m_pCurrentFont == NULL)
+  ASSERT(pLF != NULL && m_pTreeListFont != NULL);
+  if (pLF == NULL || m_pTreeListFont == NULL)
     return;
 
-  m_pCurrentFont->GetLogFont(pLF);
+  m_pTreeListFont->GetLogFont(pLF);
 }
 
-void Fonts::SetCurrentFont(LOGFONT *pLF, const int iPtSz)
+void Fonts::SetTreeListFont(LOGFONT *pLF, const int iPtSz)
 {
   ASSERT(pLF != NULL);
   if (pLF == NULL)
     return;
 
-  if (m_pCurrentFont == NULL) {
-    m_pCurrentFont = new CFont;
+  if (m_pTreeListFont == NULL) {
+    m_pTreeListFont = new CFont;
   } else {
-    m_pCurrentFont->DeleteObject();
+    m_pTreeListFont->DeleteObject();
   }
 
   if (iPtSz == 0) {
-    m_pCurrentFont->CreateFontIndirect(pLF);
+    m_pTreeListFont->CreateFontIndirect(pLF);
   } else {
     LOGFONT lf(*pLF);
     lf.lfHeight = iPtSz;
-    m_pCurrentFont->CreatePointFontIndirect(&lf);
+    m_pTreeListFont->CreatePointFontIndirect(&lf);
   }
 }
 
@@ -332,7 +332,7 @@ bool Fonts::ExtractFont(const std::wstring &str, LOGFONT &lf)
 void Fonts::SetUpFont(CWnd *pWnd, CFont *pfont)
 {
   // Set main font
-  m_pCurrentFont = pfont;
+  m_pTreeListFont = pfont;
   pWnd->SetFont(pfont);
 
   // Set up special fonts
@@ -360,7 +360,7 @@ LONG Fonts::CalcHeight(const bool bIncludeNotesFont) const
   TEXTMETRIC tm;
   HDC hDC = ::GetDC(NULL);
 
-  HFONT hFontOld = (HFONT)SelectObject(hDC, m_pCurrentFont->GetSafeHandle());
+  HFONT hFontOld = (HFONT)SelectObject(hDC, m_pTreeListFont->GetSafeHandle());
 
   // Current
   GetTextMetrics(hDC, &tm);

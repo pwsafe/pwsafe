@@ -770,7 +770,7 @@ bool DboxMain::IsCharacterSupported(std::wstring &sProtect)
 
   CDC *ptreeDC = m_ctlItemTree.GetDC();
   HFONT hOldFont;
-  CFont *pFont = Fonts::GetInstance()->GetCurrentFont();
+  CFont *pFont = Fonts::GetInstance()->GetTreeListFont();
   hOldFont = (HFONT)ptreeDC->SelectObject(pFont->GetSafeHandle());
 
   for (int i = 0; i < cItems; i++) {
@@ -930,8 +930,8 @@ void DboxMain::InitPasswordSafe()
   // Get current font (as specified in .rc file for IDD_PASSWORDSAFE_DIALOG) & save it
   // If it's not available, fall back to font used in pre-3.18 versions, rather than
   // 'System' default.
-  CFont *pCurrentFont = GetFont();
-  pCurrentFont->GetLogFont(&dfltTreeListFont);
+  CFont *pTreeListFont = GetFont();
+  pTreeListFont->GetLogFont(&dfltTreeListFont);
 
   std::wstring szTreeFont = prefs->GetPref(PWSprefs::TreeFont).c_str();
   Fonts *pFonts = Fonts::GetInstance();
@@ -953,25 +953,37 @@ void DboxMain::InitPasswordSafe()
       iFontSize = -MulDiv(tree_lf.lfHeight, 72, Ypixels) * 10;
       prefs->SetPref(PWSprefs::TreeFontPtSz, iFontSize);
     }
-    pFonts->SetCurrentFont(&tree_lf, iFontSize);
+    pFonts->SetTreeListFont(&tree_lf, iFontSize);
   } else {
-    pFonts->SetCurrentFont(&dfltTreeListFont, 0);
+    pFonts->SetTreeListFont(&dfltTreeListFont, 0);
     iFontSize = -MulDiv(dfltTreeListFont.lfHeight, 72, Ypixels) * 10;
     prefs->SetPref(PWSprefs::TreeFontPtSz, iFontSize);
   }
 
-  uint32_t newprotectedsymbol = 0x1f512;
+  bool bWindows10 = pws_os::IsWindows10OrGreater();
+  uint32_t newprotectedsymbol = 0x1f512;  // Padlock
 
   // Convert UTF-32 to UTF-16 or a surrogate pair of UTF-16
   std::wstring sProtect = Utf32ToUtf16(newprotectedsymbol);
   m_ctlItemTree.SetNewProtectedSymbol(sProtect);
 
-  bool bSupported = IsCharacterSupported(sProtect);
-  bool bWindows10 = pws_os::IsWindows10OrGreater();
+  bool bNewProtectedSymbolSupported = IsCharacterSupported(sProtect);
 
   // If supported - fine - use it
   // If not, use it if running under Windows 10 which seems to handle this nicely
-  m_ctlItemTree.UseNewProtectedSymbol(bSupported ? true : bWindows10);
+  m_ctlItemTree.UseNewProtectedSymbol(bNewProtectedSymbolSupported ? true : bWindows10);
+
+  uint32_t newattachmentsymbol = 0x1F4CE;  // Paper-clip
+
+  // Convert UTF-32 to UTF-16 or a surrogate pair of UTF-16
+  std::wstring sAttachment = Utf32ToUtf16(newattachmentsymbol);
+  m_ctlItemTree.SetNewAttachmentSymbol(sAttachment);
+
+  bool bNewAttachmentSymbolSupported = IsCharacterSupported(sAttachment);
+
+  // If supported - fine - use it
+  // If not, use it if running under Windows 10 which seems to handle this nicely
+  m_ctlItemTree.UseNewAttachmentSymbol(bNewAttachmentSymbolSupported ? true : bWindows10);
 
   // Set up Add/Edit font too.
   std::wstring szAddEditFont = prefs->GetPref(PWSprefs::AddEditFont).c_str();
@@ -1021,7 +1033,7 @@ void DboxMain::InitPasswordSafe()
     pFonts->SetNotesFont(&LF, iFontSize);
   } else {
     // Not set - use tree/list font set above
-    pFonts->GetCurrentFont(&LF);
+    pFonts->GetTreeListFont(&LF);
     iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
     prefs->SetPref(PWSprefs::NotesFontPtSz, iFontSize);
     pFonts->SetNotesFont(&LF, iFontSize);
@@ -1030,7 +1042,7 @@ void DboxMain::InitPasswordSafe()
   // transfer the fonts to the tree windows
   m_ctlItemTree.SetUpFont();
   m_ctlItemList.SetUpFont();
-  m_LVHdrCtrl.SetFont(pFonts->GetCurrentFont());
+  m_LVHdrCtrl.SetFont(pFonts->GetTreeListFont());
 
   const CString lastView = prefs->GetPref(PWSprefs::LastView).c_str();
   if (lastView != L"list")
@@ -2991,7 +3003,12 @@ void DboxMain::TellUserAboutExpiredPasswords()
     INT_PTR rc = gmb.MessageBox(cs_text, cs_title, MB_ICONEXCLAMATION | MB_YESNO);
 
     if (rc == IDYES) {
-      CExpPWListDlg dlg(this, expiredEntries, m_core.GetCurFile().c_str());
+      CString csProtect = m_ctlItemTree.IsUsingNewProtectedSymbol() ? 
+        m_ctlItemTree.GetNewProtectedSymbol().c_str() : L"#";
+      CString csAttachment = m_ctlItemTree.IsUsingNewAttachmentSymbol() ?
+        m_ctlItemTree.GetNewAttachmentSymbol().c_str() : L"+";
+
+      CExpPWListDlg dlg(this, expiredEntries, m_core.GetCurFile().c_str(), csProtect, csAttachment);
       dlg.DoModal();
     }
   }
