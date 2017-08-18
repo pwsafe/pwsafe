@@ -3333,10 +3333,8 @@ CString DboxMain::ShowCompareResults(const StringX sx_Filename1,
                                      const StringX sx_Filename2,
                                      PWScore *pothercore, CReport *prpt)
 {
-  CString csProtect = m_ctlItemTree.IsUsingNewProtectedSymbol() ?
-    m_ctlItemTree.GetNewProtectedSymbol().c_str() : L"#";
-  CString csAttachment = m_ctlItemTree.IsUsingNewAttachmentSymbol() ?
-    m_ctlItemTree.GetNewAttachmentSymbol().c_str() : L"+";
+  CString csProtect = Fonts::GetInstance()->GetProtectedSymbol().c_str();
+  CString csAttachment = Fonts::GetInstance()->GetAttachmentSymbol().c_str();
 
 
   // Can't do UI from a worker thread!

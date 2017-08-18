@@ -90,23 +90,7 @@ public:
   HTREEITEM FindItem(const CString &path, HTREEITEM hRoot);
   const StringX &GetDroppedFile() const {return m_droppedFile;}
 
-  void UseNewProtectedSymbol(bool bUseNew)
-  { m_bUseNewProtectedSymbol = bUseNew; }
-  bool IsUsingNewProtectedSymbol() const { return m_bUseNewProtectedSymbol; }
-  void SetNewProtectedSymbol(const std::wstring &sProtectSymbol)
-  { m_sProtectSymbol = sProtectSymbol; }
-  std::wstring GetNewProtectedSymbol() const
-  { return m_sProtectSymbol; }
-  
-  void UseNewAttachmentSymbol(bool bUseNew)
-  {  m_bUseNewAttachmentSymbol = bUseNew; }
-  bool IsUsingNewAttachmentSymbol() const { return m_bUseNewAttachmentSymbol; }
-  void SetNewAttachmentSymbol(const std::wstring sAttachmentSymbol)
-  { m_sAttachmentSymbol = sAttachmentSymbol; }
-  std::wstring GetNewAttachmentSymbol() const
-  { return m_sAttachmentSymbol; }
-
-protected:
+ protected:
   virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   //{{AFX_MSG(CPWTreeCtrlX)
