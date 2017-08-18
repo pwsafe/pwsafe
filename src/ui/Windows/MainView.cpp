@@ -2695,39 +2695,34 @@ bool DboxMain::IsWorkstationLocked() const
 
 void DboxMain::OnChangeTreeFont()
 {
-  const bool bWasUsingNewProtectSymbol = m_ctlItemTree.IsUsingNewProtectedSymbol();
-  const bool bWasUsingNewAttachmentSymbol = m_ctlItemTree.IsUsingNewAttachmentSymbol();
+  Fonts *pFonts = Fonts::GetInstance();
+
+  const bool bWasUsingNewProtectSymbol = pFonts->IsSymbolSuported(Fonts::PROTECT, Fonts::TREELIST);
+  const bool bWasUsingNewAttachmentSymbol = pFonts->IsSymbolSuported(Fonts::ATTACHMENT, Fonts::TREELIST);
 
   ChangeFont(CFontsDialog::TREELISTFONT);
-
-  bool bWindows10 = pws_os::IsWindows10OrGreater();
   
-  wstring sProtect = m_ctlItemTree.GetNewProtectedSymbol();
-  bool bNewProtectedSymbolSupported = IsCharacterSupported(sProtect);
+  // Verify protect and attachment symbols supported
+  pFonts->VerifySymbolsSupported();
 
   // If supported - fine - use it
-  // If not, use it if running under Windows 10 which seems to handle this nicely
-  m_ctlItemTree.UseNewProtectedSymbol(bNewProtectedSymbolSupported ? true : bWindows10);
+  bool bNewProtectedSymbolSupported = pFonts->IsSymbolSuported(Fonts::PROTECT, Fonts::TREELIST);
 
   if (!bNewProtectedSymbolSupported) {
     pws_os::Trace(L"New font does not support the new entry Protected symbol.\n");
   }
 
-  wstring sAttachment = m_ctlItemTree.GetNewAttachmentSymbol();
-  bool bNewAttachmentSymbolSupported = IsCharacterSupported(sAttachment);
-
   // If supported - fine - use it
-  // If not, use it if running under Windows 10 which seems to handle this nicely
-  m_ctlItemTree.UseNewAttachmentSymbol(bNewAttachmentSymbolSupported ? true : bWindows10);
+  bool bNewAttachmentSymbolSupported = pFonts->IsSymbolSuported(Fonts::ATTACHMENT, Fonts::TREELIST);
 
-  if (!bNewAttachmentSymbolSupported) {
+  if (!pFonts->IsSymbolSuported(Fonts::ATTACHMENT, Fonts::TREELIST)) {
     pws_os::Trace(L"New font does not support the new entry has Attachment symbol.\n");
   }
 
   // If we have changed the "protect" or "attachment" symbol, then the Invalidate in the ChangeFont
   // routine is not good enough - we have to change the actual displayed string
-  if ((bWasUsingNewProtectSymbol != (bNewProtectedSymbolSupported ? true : bWindows10)) ||
-      (bWasUsingNewAttachmentSymbol != (bNewAttachmentSymbolSupported ? true : bWindows10))) {
+  if ((bWasUsingNewProtectSymbol != bNewProtectedSymbolSupported) ||
+      (bWasUsingNewAttachmentSymbol != bNewAttachmentSymbolSupported)) {
     RefreshViews();
   }
 }
@@ -2735,6 +2730,25 @@ void DboxMain::OnChangeTreeFont()
 void DboxMain::OnChangeAddEditFont()
 {
   ChangeFont(CFontsDialog::ADDEDITFONT);
+
+  Fonts *pFonts = Fonts::GetInstance();
+
+  // Verify protect and attachment symbols supported
+  pFonts->VerifySymbolsSupported();
+
+  // Protected entry symbol
+  bool bNewProtectedSymbolSupported = pFonts->IsSymbolSuported(Fonts::PROTECT, Fonts::ADDEDIT);
+
+  if (!bNewProtectedSymbolSupported) {
+    pws_os::Trace(L"New font does not support the new entry Protected symbol.\n");
+  }
+
+  // Entry has an attachment symbol
+  bool bNewAttachmentSymbolSupported = pFonts->IsSymbolSuported(Fonts::ATTACHMENT, Fonts::ADDEDIT);
+
+  if (!bNewAttachmentSymbolSupported) {
+    pws_os::Trace(L"New font does not support the new entry has Attachment symbol.\n");
+  }
 }
 
 void DboxMain::OnChangeNotesFont()

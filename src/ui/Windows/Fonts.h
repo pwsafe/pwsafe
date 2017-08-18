@@ -15,6 +15,9 @@
 class Fonts
 {
 public:
+  enum Symbol {PROTECT, ATTACHMENT};
+  enum PWSFont {TREELIST, ADDEDIT};
+
   static Fonts *GetInstance(); // singleton
   void DeleteInstance();
 
@@ -24,8 +27,10 @@ public:
   CFont *GetAddEditFont() const { return m_pAddEditFont; }
   CFont *GetDragFixFont() const { return m_pDragFixFont; }
   CFont *GetPasswordFont() const { return m_pPasswordFont; }
-  CFont *GetModifiedFont() const { return m_pModifiedFont; }
   CFont *GetNotesFont() const { return m_pNotesFont; }
+
+  CFont *GetItalicTreeListFont() const { return m_pItalicTreeListFont; }
+  CFont *GetItalicAddEditFont() const { return m_pItalicAddEditFont; }
 
   COLORREF GetModified_Color() {return MODIFIED_COLOR;}
 
@@ -47,19 +52,33 @@ public:
 
   LONG CalcHeight(const bool bIncludeNotesFont = false) const;
 
+  std::wstring GetProtectedSymbol(const PWSFont font = TREELIST);
+  std::wstring GetAttachmentSymbol(const PWSFont font = TREELIST);
+  void VerifySymbolsSupported();
+  bool IsSymbolSuported(const Symbol symbol, const PWSFont font = TREELIST);
+
 private:
   Fonts();
   ~Fonts() {}
+
+  bool IsCharacterSupported(std::wstring &sSymbol, const bool bTreeListFont = true);
+
   static Fonts *self; // singleton
 
   CFont *m_pTreeListFont;
   CFont *m_pAddEditFont;
-  CFont *m_pModifiedFont;
+  CFont *m_pItalicTreeListFont;
+  CFont *m_pItalicAddEditFont;
   CFont *m_pDragFixFont;  // Fix for lack of text during drag!
   CFont *m_pPasswordFont;
   CFont *m_pNotesFont;
 
   const COLORREF MODIFIED_COLOR;
+
+  std::wstring m_sProtect, m_sAttachment;
+
+  bool m_bProtectSymbolSupportedTreeList, m_bProtectSymbolSupportedAddEdit;
+  bool m_bAttachmentSymbolSupportedTreeList, m_bAttachmentSymbolSupportedAddEdit;
 };
 
 //-----------------------------------------------------------------------------

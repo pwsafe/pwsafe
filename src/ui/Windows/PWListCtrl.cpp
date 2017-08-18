@@ -378,7 +378,7 @@ CFont *CPWListCtrlX::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
     case CItemData::ES_ADDED:
     case CItemData::ES_MODIFIED:
       cf = pFonts->GetModified_Color();
-      return pFonts->GetModifiedFont();
+      return pFonts->GetItalicTreeListFont();
     default:
       break;
   }

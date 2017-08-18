@@ -170,8 +170,7 @@ CPWTreeCtrlX::CPWTreeCtrlX()
   : m_isRestoring(false), m_bWithinThisInstance(true),
   m_bMouseInWindow(false), m_nHoverNDTimerID(0), m_nShowNDTimerID(0),
   m_hgDataALL(NULL), m_hgDataTXT(NULL), m_hgDataUTXT(NULL),
-  m_bTreeFilterActive(false), m_bUseHighLighting(false), 
-  m_bUseNewProtectedSymbol(true), m_bUseNewAttachmentSymbol(true)
+  m_bTreeFilterActive(false), m_bUseHighLighting(false)
 {
   // Register a clipboard format for column drag & drop.
   // Note that it's OK to register same format more than once:
@@ -2217,13 +2216,15 @@ CSecString CPWTreeCtrlX::MakeTreeDisplayString(const CItemData &ci) const
     }
   }
 
-  if (ci.IsProtected()) {
+  if (ci.IsProtected() || ci.HasAttRef()) {
     treeDispString += L" ";
-    treeDispString += m_bUseNewProtectedSymbol ? m_sProtectSymbol.c_str() : L"#";
   }
 
-  if (ci.HasAttRef())
-    treeDispString += m_bUseNewAttachmentSymbol ? m_sAttachmentSymbol.c_str() : L"+";
+  if (ci.IsProtected())
+    treeDispString += Fonts::GetInstance()->GetProtectedSymbol();
+
+   if (ci.HasAttRef())
+    treeDispString += Fonts::GetInstance()->GetAttachmentSymbol();
 
   return treeDispString;
 }
@@ -2628,7 +2629,7 @@ CFont *CPWTreeCtrlX::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLO
     StringX path = GetGroup(hItem);
     if (app.GetMainDlg()->IsNodeModified(path)) {
       cf = pFonts->GetModified_Color();
-      return pFonts->GetModifiedFont();
+      return pFonts->GetItalicTreeListFont();
     } else
       return NULL;
   }
@@ -2637,7 +2638,7 @@ CFont *CPWTreeCtrlX::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLO
     case CItemData::ES_ADDED:
     case CItemData::ES_MODIFIED:
       cf = pFonts->GetModified_Color();
-      return pFonts->GetModifiedFont();
+      return pFonts->GetItalicTreeListFont();
     default:
       break;
   }

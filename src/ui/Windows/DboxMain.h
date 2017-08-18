@@ -917,7 +917,6 @@ private:
   void UpdateGroupsInGUI(const std::vector<StringX> &vGroups);
   StringX GetListViewItemText(CItemData &ci, const int &icolumn);
   void DoCommand(Command *pcmd = NULL, PWScore *pcore = NULL, const bool bUndo = true);
-  bool IsCharacterSupported(std::wstring &sProtect);
   
   static const struct UICommandTableEntry {
     UINT ID;

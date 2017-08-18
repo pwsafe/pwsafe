@@ -63,8 +63,6 @@
 #include <bitset>
 #include <algorithm>
 
-#include <usp10.h>    // for support of Unicode character (Uniscribe)
-
 // Need to add Windows SDK 6.0 (or later) 'include' and 'lib' libraries to
 // Visual Studio "VC++ directories" in their respective search orders to find
 // 'WtsApi32.h' and 'WtsApi32.lib'
@@ -725,92 +723,6 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_CUSTOMIZETOOLBAR, true, true, true, true},
 };
 
-std::wstring Utf32ToUtf16(uint32_t codepoint)
-{
-  wchar_t wc[3];
-  if (codepoint < 0x10000) {
-    // Length 1
-    wc[0] = static_cast<wchar_t>(codepoint);
-    wc[1] = wc[2] = 0;
-  } else {
-    if (codepoint <= 0x10FFFF) {
-      codepoint -= 0x10000;
-      // Length 2
-      wc[0] = (unsigned short)(codepoint >> 10) + (unsigned short)0xD800;
-      wc[1] = (unsigned short)(codepoint & 0x3FF) + (unsigned short)0xDC00;
-      wc[2] = 0;
-    } else {
-      // Length 1
-      wc[0] = 0xFFFD;
-      wc[1] = wc[2] = 0;
-    }
-  }
-  std::wstring s = wc;
-  return s;
-}
-
-bool DboxMain::IsCharacterSupported(std::wstring &sProtect)
-{
-  HRESULT hr;
-  int cItems, cMaxItems = 2;
-  bool bSupported(false);
-  SCRIPT_ITEM items[3];  // Number should be (cMaxItems + 1)
-
-  ASSERT(sProtect.length() < 3);
-
-  // Itemize - Uniscribe function
-  hr = ScriptItemize(sProtect.c_str(), (int)sProtect.length(), cMaxItems, NULL, NULL, items, &cItems);
-
-  if (SUCCEEDED(hr) == FALSE)
-    return bSupported;
-
-  ASSERT(cItems == 1);
-
-  SCRIPT_CACHE sc = NULL;
-
-  CDC *ptreeDC = m_ctlItemTree.GetDC();
-  HFONT hOldFont;
-  CFont *pFont = Fonts::GetInstance()->GetTreeListFont();
-  hOldFont = (HFONT)ptreeDC->SelectObject(pFont->GetSafeHandle());
-
-  for (int i = 0; i < cItems; i++) {
-    int idx = items[i].iCharPos;
-    int len = items[i + 1].iCharPos - idx;
-    int cMaxGlyphs = len * 2 + 16;  // As recommended by Uniscribe documentation
-    int cGlyphs = 0;
-
-    WORD *pwLogClust = (WORD *)malloc(sizeof(WORD) * cMaxGlyphs);
-    WORD *pwOutGlyphs = (WORD *)malloc(sizeof(WORD) * cMaxGlyphs);
-    SCRIPT_VISATTR *psva = (SCRIPT_VISATTR *)malloc(sizeof(SCRIPT_VISATTR) * cMaxGlyphs);
-
-    // Shape - Uniscribe function
-    hr = ScriptShape(ptreeDC->GetSafeHdc(), &sc, sProtect.substr(idx).c_str(), len, cMaxGlyphs,
-      &items[i].a, pwOutGlyphs, pwLogClust, psva, &cGlyphs);
-
-    if (SUCCEEDED(hr) == FALSE)
-      goto clean;
-
-    if (pwOutGlyphs[0] != 0)
-      bSupported = true;
-
-  clean:
-    // Free up storage
-    free(pwOutGlyphs);
-    free(pwLogClust);
-    free(psva);
-
-    if (SUCCEEDED(hr) == FALSE)
-      break;
-  }
-
-  // Free cache - Uniscribe function
-  ScriptFreeCache(&sc);
-
-  ptreeDC->SelectObject(hOldFont);
-
-  return bSupported;
-}
-
 void DboxMain::InitPasswordSafe()
 {
   PWS_LOGIT;
@@ -960,31 +872,6 @@ void DboxMain::InitPasswordSafe()
     prefs->SetPref(PWSprefs::TreeFontPtSz, iFontSize);
   }
 
-  bool bWindows10 = pws_os::IsWindows10OrGreater();
-  uint32_t newprotectedsymbol = 0x1f512;  // Padlock
-
-  // Convert UTF-32 to UTF-16 or a surrogate pair of UTF-16
-  std::wstring sProtect = Utf32ToUtf16(newprotectedsymbol);
-  m_ctlItemTree.SetNewProtectedSymbol(sProtect);
-
-  bool bNewProtectedSymbolSupported = IsCharacterSupported(sProtect);
-
-  // If supported - fine - use it
-  // If not, use it if running under Windows 10 which seems to handle this nicely
-  m_ctlItemTree.UseNewProtectedSymbol(bNewProtectedSymbolSupported ? true : bWindows10);
-
-  uint32_t newattachmentsymbol = 0x1F4CE;  // Paper-clip
-
-  // Convert UTF-32 to UTF-16 or a surrogate pair of UTF-16
-  std::wstring sAttachment = Utf32ToUtf16(newattachmentsymbol);
-  m_ctlItemTree.SetNewAttachmentSymbol(sAttachment);
-
-  bool bNewAttachmentSymbolSupported = IsCharacterSupported(sAttachment);
-
-  // If supported - fine - use it
-  // If not, use it if running under Windows 10 which seems to handle this nicely
-  m_ctlItemTree.UseNewAttachmentSymbol(bNewAttachmentSymbolSupported ? true : bWindows10);
-
   // Set up Add/Edit font too.
   std::wstring szAddEditFont = prefs->GetPref(PWSprefs::AddEditFont).c_str();
 
@@ -996,7 +883,7 @@ void DboxMain::InitPasswordSafe()
     }
     pFonts->SetAddEditFont(&LF, iFontSize);
   } else {
-    // Not set - use add/Edit dialog font - difficult to get so use hard
+    // Not set - use Add/Edit dialog font - difficult to get so use hard
     // coded default
     pFonts->GetDefaultAddEditFont(LF);
     iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
@@ -1032,14 +919,17 @@ void DboxMain::InitPasswordSafe()
     }
     pFonts->SetNotesFont(&LF, iFontSize);
   } else {
-    // Not set - use tree/list font set above
+    // Not set - use Tree/List font set above
     pFonts->GetTreeListFont(&LF);
     iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
     prefs->SetPref(PWSprefs::NotesFontPtSz, iFontSize);
     pFonts->SetNotesFont(&LF, iFontSize);
   }
 
-  // transfer the fonts to the tree windows
+  // Verify protect and attachment symbols supported
+  pFonts->VerifySymbolsSupported();
+
+  // Transfer the fonts to the tree windows
   m_ctlItemTree.SetUpFont();
   m_ctlItemList.SetUpFont();
   m_LVHdrCtrl.SetFont(pFonts->GetTreeListFont());
@@ -3003,10 +2893,8 @@ void DboxMain::TellUserAboutExpiredPasswords()
     INT_PTR rc = gmb.MessageBox(cs_text, cs_title, MB_ICONEXCLAMATION | MB_YESNO);
 
     if (rc == IDYES) {
-      CString csProtect = m_ctlItemTree.IsUsingNewProtectedSymbol() ? 
-        m_ctlItemTree.GetNewProtectedSymbol().c_str() : L"#";
-      CString csAttachment = m_ctlItemTree.IsUsingNewAttachmentSymbol() ?
-        m_ctlItemTree.GetNewAttachmentSymbol().c_str() : L"+";
+      CString csProtect = Fonts::GetInstance()->GetProtectedSymbol().c_str();
+      CString csAttachment = Fonts::GetInstance()->GetAttachmentSymbol().c_str();
 
       CExpPWListDlg dlg(this, expiredEntries, m_core.GetCurFile().c_str(), csProtect, csAttachment);
       dlg.DoModal();
