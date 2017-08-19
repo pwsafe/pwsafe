@@ -21,7 +21,8 @@ protected entry is listed in any dialog.
 
 Changes to Existing Features in 3.43.1
 ======================================
-None
+[] Use the Add/Edit font in preference to the Tree/List font outside
+the actual Tree/List views (since the Tree/List fonts may be too large).
 
 New Features for 3.43.1
 =======================

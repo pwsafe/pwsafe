@@ -25,8 +25,7 @@ CPWPListEntries::CPWPListEntries(CWnd* pParent, StringX sxPolicyName,
   std::vector<st_GroupTitleUser> *pventries)
 	: CPWDialog(CPWPListEntries::IDD, pParent), m_sxPolicyName(sxPolicyName),
   m_pventries(pventries), m_iSortedColumn(0),  m_bSortAscending(FALSE),
-  m_pTreeListFont(NULL)
-
+  m_pAddEditFont(NULL)
 {
 }
 
@@ -58,8 +57,8 @@ BOOL CPWPListEntries::OnInitDialog()
   dwExtendedStyle |= LVS_EX_GRIDLINES;
   m_PolicyEntries.SetExtendedStyle(dwExtendedStyle);
 
-  m_pTreeListFont = Fonts::GetInstance()->GetTreeListFont();
-  m_PolicyEntries.SetFont(m_pTreeListFont);
+  m_pAddEditFont = Fonts::GetInstance()->GetAddEditFont();
+  m_PolicyEntries.SetFont(m_pAddEditFont);
 
   // Add columns
   CString cs_text;

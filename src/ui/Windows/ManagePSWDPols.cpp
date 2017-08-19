@@ -165,9 +165,9 @@ BOOL CManagePSWDPols::OnInitDialog()
   m_PolicyEntries.GetHeaderCtrl()->SetDlgCtrlID(IDC_POLICYENTRIES_HEADER);
 
   // BR1108 - Allow user to config these fonts as well
-  // Currently use same font as specified for list/tree view
-  m_PolicyNames.SetFont(Fonts::GetInstance()->GetTreeListFont());
-  m_PolicyDetails.SetFont(Fonts::GetInstance()->GetTreeListFont());
+  // Currently use same font as specified for Add/Edit
+  m_PolicyNames.SetFont(Fonts::GetInstance()->GetAddEditFont());
+  m_PolicyDetails.SetFont(Fonts::GetInstance()->GetAddEditFont());
 
   CString cs_text;
 

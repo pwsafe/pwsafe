@@ -48,9 +48,9 @@ void CExpPswdLC::PreSubclassWindow()
   
   m_pParent = (CExpPWListDlg *)GetParent();
 
-  m_pItalicTreeListFont = Fonts::GetInstance()->GetItalicTreeListFont();
-  m_pTreeListFont = Fonts::GetInstance()->GetTreeListFont();
-  SetFont(m_pTreeListFont);
+  m_pItalicAddEditFont = Fonts::GetInstance()->GetItalicAddEditFont();
+  m_pAddEditFont = Fonts::GetInstance()->GetAddEditFont();
+  SetFont(m_pAddEditFont);
 
   // Disable the CToolTipCtrl of CListCtrl so it won't disturb our own tooltip-ctrl
   GetToolTips()->Activate(FALSE);
@@ -230,7 +230,7 @@ void CExpPswdLC::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
         // Disable text and make italic
         pLVCD->clrText = m_clrDisabled;
         bchanged_subitem_font = true;
-        pDC->SelectObject(m_pItalicTreeListFont);
+        pDC->SelectObject(m_pItalicAddEditFont);
         *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
       }
       break;
@@ -242,7 +242,7 @@ void CExpPswdLC::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
     // Sub-item PostPaint - restore old font if any
     if (bchanged_subitem_font) {
       bchanged_subitem_font = false;
-      pDC->SelectObject(m_pTreeListFont);
+      pDC->SelectObject(m_pAddEditFont);
       *pLResult |= CDRF_NEWFONT;
     }
     break;

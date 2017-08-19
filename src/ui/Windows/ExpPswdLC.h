@@ -35,7 +35,7 @@ private:
   int m_LastToolTipRow;
 
   COLORREF m_clrDisabled;
-  CFont *m_pTreeListFont, *m_pItalicTreeListFont;
+  CFont *m_pAddEditFont, *m_pItalicAddEditFont;
 
   CExpPWListDlg *m_pParent;
 };
