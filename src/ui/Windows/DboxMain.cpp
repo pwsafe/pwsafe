@@ -966,19 +966,6 @@ void DboxMain::InitPasswordSafe()
 
   DragAcceptFiles(TRUE);
 
-  CRect rect;
-  prefs->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
-  
-  HRGN hrgnWork = GetWorkAreaRegion();
-  // also check that window will be visible
-  if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) || !RectInRegion(hrgnWork, rect)){
-    GetWindowRect(&rect);
-    SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
-  } else {
-    PlaceWindow(this, &rect, SW_HIDE);
-  }
-  ::DeleteObject(hrgnWork);
-
   // Now do widths!
   if (!cs_ListColumns.IsEmpty())
     SetColumnWidths(cs_ListColumnsWidths);
