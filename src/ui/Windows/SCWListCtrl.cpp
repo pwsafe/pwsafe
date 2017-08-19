@@ -56,7 +56,7 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   static bool bchanged_subitem_font(false);
   static CDC *pDC = NULL;
   static COLORREF crWindowText;
-  static CFont *pTreeListFont = NULL;
+  static CFont *pAddEditFont = NULL;
   static CFont *pPasswordFont = NULL;
 
   switch (pLVCD->nmcd.dwDrawStage) {
@@ -64,7 +64,7 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // PrePaint
       crWindowText = GetTextColor();
       pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
-      pTreeListFont = Fonts::GetInstance()->GetTreeListFont();
+      pAddEditFont = Fonts::GetInstance()->GetAddEditFont();
       pPasswordFont = Fonts::GetInstance()->GetPasswordFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
@@ -99,7 +99,7 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
         else if (iFormat == LVCFMT_CENTER)
           nFormat |= DT_CENTER;
         pDC->DrawText(str, &rect, nFormat);
-        pDC->SelectObject(pTreeListFont);
+        pDC->SelectObject(pAddEditFont);
       } else {
         // For Password values
         if ((pLVCD->nmcd.lItemlParam & PASSWORDFONT) == PASSWORDFONT) {
@@ -117,7 +117,7 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Sub-item PostPaint - restore old font if any
       if (bchanged_subitem_font) {
         bchanged_subitem_font = false;
-        pDC->SelectObject(pTreeListFont);
+        pDC->SelectObject(pAddEditFont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;

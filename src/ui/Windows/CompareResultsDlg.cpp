@@ -1522,7 +1522,7 @@ void CCPListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   static bool bchanged_subitem_font(false);
   static CDC *pDC = NULL;
-  static CFont *pTreeListFont = NULL;
+  static CFont *pAddEditFont = NULL;
 
   switch (pLVCD->nmcd.dwDrawStage) {
     case CDDS_PREPAINT:
@@ -1534,7 +1534,7 @@ void CCPListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       crSelectedBkgrd = ::GetSysColor(COLOR_HIGHLIGHT);
       
       pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
-      pTreeListFont = Fonts::GetInstance()->GetTreeListFont();
+      pAddEditFont = Fonts::GetInstance()->GetAddEditFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
 
@@ -1545,7 +1545,7 @@ void CCPListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
         pLVCD->clrTextBk = cfNormalTextBkgrd;
         pLVCD->nmcd.uItemState &= ~CDIS_SELECTED;
       }
-      pDC->SelectObject(pTreeListFont);
+      pDC->SelectObject(pAddEditFont);
       bchanged_subitem_font = true;
       *pLResult |= (CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT);
       break;
@@ -1568,7 +1568,7 @@ void CCPListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Sub-item PostPaint - restore old font if any
       if (bchanged_subitem_font) {
         bchanged_subitem_font = false;
-        pDC->SelectObject(pTreeListFont);
+        pDC->SelectObject(pAddEditFont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;

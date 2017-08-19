@@ -47,5 +47,5 @@ private:
 
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
-  CFont *m_pTreeListFont;
+  CFont *m_pAddEditFont;
 };
