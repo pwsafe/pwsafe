@@ -8,6 +8,8 @@
 
 #pragma once
 
+class CExpPWListDlg;
+
 class CExpPswdLC : public CListCtrl
 {
 public:
@@ -23,6 +25,7 @@ protected:
   //{{AFX_MSG(CEBListCtrl)
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg BOOL OnToolTipText(UINT id, NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -32,5 +35,7 @@ private:
   int m_LastToolTipRow;
 
   COLORREF m_clrDisabled;
-  CFont *m_pTreeListFont;
+  CFont *m_pTreeListFont, *m_pItalicTreeListFont;
+
+  CExpPWListDlg *m_pParent;
 };
