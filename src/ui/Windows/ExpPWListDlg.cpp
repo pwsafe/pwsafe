@@ -303,6 +303,12 @@ void CExpPWListDlg::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
   size_t iv = (size_t)m_expPWListCtrl.GetItemData(irow);
   st_ExpLocalListEntry *pELLE = &m_vExpLocalListEntries[iv];
 
+  ItemListIter iter = GetMainDlg()->Find(pELLE->uuid);
+  ASSERT(iter != GetMainDlg()->End());
+  if (iter == GetMainDlg()->End() || iter->second.IsProtected()) {
+    return;
+  }
+
   LRESULT lres = ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
                                    PWS_MSG_EXPIRED_PASSWORD_EDIT,
                                    (WPARAM)pELLE, 0);
