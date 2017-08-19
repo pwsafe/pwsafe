@@ -1452,16 +1452,11 @@ void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 void DboxMain::OnMove(int x, int y)
 {
   CDialog::OnMove(x, y);
-  // turns out that minimizing calls this
-  // with x = y = -32000. Oh joy.
-  if (m_bInitDone && IsWindowVisible() == TRUE &&
-      x >= 0 && y >= 0) {
-    WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
-    GetWindowPlacement(&wp);
-    PWSprefs::GetInstance()->SetPrefRect(wp.rcNormalPosition.top,
-                                         wp.rcNormalPosition.bottom,
-                                         wp.rcNormalPosition.left,
-                                         wp.rcNormalPosition.right);
+  // turns out that minimizing calls this with x = y = -32000. Oh joy.
+  if (m_bInitDone && IsWindowVisible() == TRUE && x >= 0 && y >= 0) {
+    CRect rc;
+    GetWindowRect(&rc);
+    PWSprefs::GetInstance()->SetPrefRect(rc.top, rc.bottom, rc.left, rc.right);
   }
 }
 
@@ -1532,6 +1527,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
   }
 
   PWSprefs *prefs = PWSprefs::GetInstance();
+  CRect rc;
 
   switch (nType) {
     case SIZE_MINIMIZED:
@@ -1578,6 +1574,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           ShowIcon();
       }
       break;
+
     case SIZE_MAXIMIZED:
     case SIZE_RESTORED:
       if (!m_bSizing) { // here if actually restored
@@ -1613,14 +1610,11 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         if (prefs->GetPref(PWSprefs::UseSystemTray) && IsIconVisible() == FALSE) {      
           ShowIcon();
         }
-      } else { // m_bSizing == true: here if size changed
-        WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
-        GetWindowPlacement(&wp);
-        PWSprefs::GetInstance()->SetPrefRect(wp.rcNormalPosition.top,
-                                             wp.rcNormalPosition.bottom,
-                                             wp.rcNormalPosition.left,
-                                             wp.rcNormalPosition.right);
       }
+
+      GetWindowRect(&rc);
+      PWSprefs::GetInstance()->SetPrefRect(rc.top, rc.bottom, rc.left, rc.right);
+
       // Set timer for user-defined idle lockout, if selected (DB preference)
       KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
@@ -1628,8 +1622,8 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
       }
       break;
-    case SIZE_MAXHIDE:
     case SIZE_MAXSHOW:
+    case SIZE_MAXHIDE:
       break;
   } // nType switch statement
 

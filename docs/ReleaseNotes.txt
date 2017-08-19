@@ -18,6 +18,7 @@ Bugs Fixed in 3.43.1
 [1431] The protected entry padlock symbol is now used in all places where a
 protected entry is listed in any dialog.
 [1429] Tree and List views now retain focus when a shortcut entry is created.
+[1398] Remember if PasswordSafe was maximized when exited.
 
 Changes to Existing Features in 3.43.1
 ======================================

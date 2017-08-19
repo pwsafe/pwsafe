@@ -63,6 +63,8 @@ using pws_os::CUUID;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+extern HRGN GetWorkAreaRegion();
+
 static void DisplayFileWriteError(INT_PTR rc, const StringX &cs_newfile)
 {
   ASSERT(rc != PWScore::SUCCESS);
@@ -127,6 +129,7 @@ BOOL DboxMain::OpenOnInit()
   MFCAsker q;
   MFCReporter r;
   CReport Rpt;
+  CRect rect;
 
   if (!bAskerSet)
     m_core.SetAsker(&q);
@@ -252,6 +255,20 @@ BOOL DboxMain::OpenOnInit()
   }
 
   PostOpenProcessing();
+
+  // Now get window sizes
+  PWSprefs::GetInstance()->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
+
+  HRGN hrgnWork = GetWorkAreaRegion();
+  // also check that window will be visible
+  if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) ||
+    !RectInRegion(hrgnWork, rect)) {
+    GetWindowRect(&rect);
+    SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
+  } else {
+    PlaceWindow(this, &rect, SW_HIDE);
+  }
+  ::DeleteObject(hrgnWork);
 
   bool bFileIsReadOnly;
   pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
