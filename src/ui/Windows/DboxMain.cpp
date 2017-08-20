@@ -3193,11 +3193,14 @@ private:
 };
 
 // Returns a list of entries as they appear in tree in DFS order
-void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
+std::vector<pws_os::CUUID> DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
 {
-  // Walk the Tree - either complete tree or only this group
+  std::vector<pws_os::CUUID> vuuidAddedBases;
+
+  // Walk the Tree - either complete tree (may not be the complete DB if a filter is active)
+  // or only the group being exported
   if (hItem == NULL) {
-    // The whole tree
+    // The whole tree (a filter may be active)
     while (NULL != (hItem = const_cast<DboxMain *>(this)->m_ctlItemTree.GetNextTreeItem(hItem))) {
       if (!m_ctlItemTree.ItemHasChildren(hItem)) {
         CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
@@ -3207,17 +3210,26 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
           // This is for exporting Filtered Entries ONLY
           // Walk the reduced Tree but include base entries even if not in the filtered results
           if (m_bFilterActive && pci->IsDependent()) {
-            pci = GetBaseEntry(pci);
+            CItemData *pcibase = GetBaseEntry(pci);
 
             // Only add the base entry once
-            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
-              OIL.push_back(*pci);
+            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pcibase->GetUUID())) == OIL.end()) {
+              OIL.push_back(*pcibase);
+
+              DisplayInfo *pdi = GetEntryGUIInfo(*pcibase);
+              if (pdi == NULL || pdi->list_index == -1) {
+                // The base is not in the filtered results - add to list
+                vuuidAddedBases.push_back(pcibase->GetUUID());
+              }
+            }
           }
         }
       }
     }
   } else {
     // Just this group - used for Export Group
+    const StringX sxThisGroup = m_ctlItemTree.GetGroup(hItem);
+    const StringX sxThisGroupDot = sxThisGroup + L".";
     const HTREEITEM hNextSibling = m_ctlItemTree.GetNextSiblingItem(hItem);
 
     // Get all of the children
@@ -3234,17 +3246,32 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
             OIL.push_back(*pci);
 
           if (pci->IsDependent()) {
-            pci = GetBaseEntry(pci);
+            CItemData *pcibase = GetBaseEntry(pci);
 
             // Only add the base entry once
-            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
-              OIL.push_back(*pci);
+            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pcibase->GetUUID())) == OIL.end()) {
+              OIL.push_back(*pcibase);
+
+              // List this iIncluded base for the report if not in the group being exported
+              StringX sxBaseGroup = pcibase->GetGroup();
+              bool bNotInThisGroup = CompareNoCase(sxThisGroup, sxBaseGroup) != 0;
+              bool bNotInASubgroupOfThisGroup = 
+               sxThisGroupDot.length() < sxBaseGroup.length() ?
+                CompareNoCase(sxThisGroupDot, sxBaseGroup.substr(sxThisGroupDot.length())) != 0 : true;
+             
+              if (bNotInThisGroup && bNotInASubgroupOfThisGroup) {
+                // The base is not in the filtered results - add to list
+                vuuidAddedBases.push_back(pcibase->GetUUID());
+              }
+            }
           }
         }
         hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
       }
     }
   }
+
+  return vuuidAddedBases;
 }
 
 void DboxMain::UpdateMenuAndToolBar(const bool bOpen)

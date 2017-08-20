@@ -364,7 +364,7 @@ public:
   {return m_core.TestSelection(bAdvanced, subgroup_name,
                                subgroup_object, subgroup_function, pOIL);}
 
-  void MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem = NULL);
+  std::vector<pws_os::CUUID> MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem = NULL);
   bool MakeMatchingGTUSet(GTUSet &setGTU, const StringX &sxPolicyName) const
   {return m_core.InitialiseGTU(setGTU, sxPolicyName);}
   CItemData *getSelectedItem();
