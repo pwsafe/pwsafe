@@ -64,6 +64,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 extern HRGN GetWorkAreaRegion();
+extern const TCHAR *GROUPTITLEUSERINCHEVRONS;
 
 static void DisplayFileWriteError(INT_PTR rc, const StringX &cs_newfile)
 {
@@ -1690,6 +1691,7 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   OrderedItemList OIL;
   CString cs_temp;
   std::vector<StringX> vEmptyGroups;
+  std::vector<pws_os::CUUID> vuuidAddedBases;
 
   std::wstring str_text;
   LoadAString(str_text, IDS_RPTEXPORTDB);
@@ -1702,9 +1704,11 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
 
   if (nID == ID_MENUITEM_EXPORTGRP2DB || nID == ID_MENUITEM_EXPORTFILTERED2DB) {
     // Note: MakeOrderedItemList gets its members by walking the
-    // tree therefore, if a filter is active, it will ONLY export
-    // those being displayed.
-      MakeOrderedItemList(OIL, (nID == ID_MENUITEM_EXPORTGRP2DB) ? m_ctlItemTree.GetSelectedItem() : NULL);
+    // tree therefore, if a filter is active, it will only export
+    // those being displayed - except it will include bases of eligible entries
+    // that not in the group or displayed because of the filter.
+    vuuidAddedBases = MakeOrderedItemList(OIL,
+                     (nID == ID_MENUITEM_EXPORTGRP2DB) ? m_ctlItemTree.GetSelectedItem() : NULL);
 
     // Get empty groups being exported
     std::vector<StringX> vAllEmptyGroups;
@@ -1746,7 +1750,7 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   export_core.NewFile(sx_ExportKey);
   export_core.SetApplicationNameAndVersion(AfxGetAppName(), app.GetOSMajorMinor());
   rc = export_core.WriteExportFile(sx_Filename, &OIL, &m_core, m_core.GetReadFileVersion(), 
-                                   vEmptyGroups, bExportDBFilters, prpt);
+                                   vEmptyGroups, bExportDBFilters, vuuidAddedBases, prpt);
 
   OIL.clear();
   export_core.ClearDBData();
@@ -1755,8 +1759,22 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
     DisplayFileWriteError(rc, sx_Filename);
   }
 
-  prpt->EndReport();
+  if (!vuuidAddedBases.empty()) {
+    prpt->WriteLine();
+    CString csMessage(MAKEINTRESOURCE(IDS_INCLUDEDBASES));
+    prpt->WriteLine(csMessage, true);
 
+    for (size_t i = 0; i < vuuidAddedBases.size(); i++) {
+      ItemListIter iter = Find(vuuidAddedBases[i]);
+      StringX sx_exported;
+      Format(sx_exported, GROUPTITLEUSERINCHEVRONS,
+        iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(), iter->second.GetUser().c_str());
+      prpt->WriteLine(sx_exported.c_str(), true);
+    }
+  }
+
+  prpt->EndReport();
+    
   return PWScore::SUCCESS;
 }
 

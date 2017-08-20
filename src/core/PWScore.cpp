@@ -673,8 +673,9 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
 // Writes out subset of records to a PasswordSafe database at the current version
 // Used by Export entry or Export Group
 struct ExportRecordWriter {
-  ExportRecordWriter(PWSfile *pout, PWScore *pcore, CReport *pRpt) :
-    m_pout(pout), m_pcore(pcore), m_pRpt(pRpt) {}
+  ExportRecordWriter(PWSfile *pout, PWScore *pcore, std::vector<pws_os::CUUID> &vuuidAddedBases,
+    CReport *pRpt) :
+    m_pout(pout), m_pcore(pcore), m_vuuidAddedBases(vuuidAddedBases), m_pRpt(pRpt) {}
 
   void operator()(CItemData &item)
   {
@@ -682,6 +683,7 @@ struct ExportRecordWriter {
     StringX uuid_str(savePassword);
     CUUID base_uuid(CUUID::NullUUID());
     CUUID item_uuid = item.GetUUID();
+    bool bAddToReport(true);
 
     if (item.IsAlias()) {
       base_uuid = item.GetBaseUUID();
@@ -695,12 +697,16 @@ struct ExportRecordWriter {
       uuid_str += base_uuid;
       uuid_str += _T("~]");
     }
+    else if (item.IsBase()) {
+      bAddToReport = std::find(m_vuuidAddedBases.begin(), m_vuuidAddedBases.end(), item_uuid) == 
+                       m_vuuidAddedBases.end();
+    }
 
     item.SetPassword(uuid_str);
     m_pout->WriteRecord(item);
     item.SetPassword(savePassword);
 
-    if (m_pRpt != NULL) {
+    if (m_pRpt != NULL && bAddToReport) {
       StringX sx_exported;
       Format(sx_exported, GROUPTITLEUSERINCHEVRONS,
         item.GetGroup().c_str(), item.GetTitle().c_str(), item.GetUser().c_str());
@@ -712,12 +718,15 @@ private:
   PWSfile *m_pout;
   PWScore *m_pcore;
   CReport *m_pRpt;
+  std::vector<pws_os::CUUID> m_vuuidAddedBases;
 };
 
 int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
                              PWScore *pINcore, PWSfile::VERSION version, 
                              std::vector<StringX> &vEmptyGroups,
-                             bool bExportDBFilters, CReport *pRpt)
+                             bool bExportDBFilters,
+                             std::vector<pws_os::CUUID> &vuuidAddedBases,
+                             CReport *pRpt)
 {
   // Writes out subset of database records (as supplied in OrderedItemList)
   // to a PasswordSafe database at the current version
@@ -785,7 +794,7 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
       return status;
     }
 
-    ExportRecordWriter write_record(out, pINcore, pRpt);
+    ExportRecordWriter write_record(out, pINcore, vuuidAddedBases, pRpt);
     for_each(pOIL->begin(), pOIL->end(), write_record);
 
   }
