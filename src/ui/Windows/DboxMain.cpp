@@ -2855,6 +2855,11 @@ void DboxMain::TellUserAboutExpiredPasswords()
 
       CExpPWListDlg dlg(this, expiredEntries, m_core.GetCurFile().c_str(), csProtect, csAttachment);
       dlg.DoModal();
+
+      // If user has changed anything and has "Save database immediately after any change" - save
+      if (m_core.HasDBChanged() && PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+        SaveImmediately();
+      }
     }
   }
 }
