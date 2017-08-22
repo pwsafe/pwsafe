@@ -265,6 +265,10 @@ void DboxMain::OnOptions()
   // Get old DB preferences String value for use later
   const StringX sxOldDBPrefsString(prefs->Store());
 
+  // Save current Window transparency in case we have to change it
+  const BYTE byteOldPercentTransparency = (BYTE)prefs->GetPref(PWSprefs::WindowTransparency);
+  const bool bOldTransparancyEnabled = prefs->GetPref(PWSprefs::EnableWindowTransparency);
+
   // Save Hotkey info
   BOOL bAppHotKeyEnabled;
   int32 iAppHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
@@ -344,9 +348,6 @@ void DboxMain::OnOptions()
     m_StatusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK,
                             m_StatusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
                             SBPS_STRETCH, NULL);
-
-    int iTrayColour = pOptionsPS->GetTrayIconColour();
-    SetClosedTrayIcon(iTrayColour);
 
     UpdateSystemMenu();
     
@@ -610,6 +611,18 @@ void DboxMain::OnOptions()
       } else {
         // Was created but no commands added in the end.
         delete pmulticmds;
+      }
+    }
+  }
+
+    if (m_bOnStartupTransparancyEnabled) {
+    if (!prefs->GetPref(PWSprefs::EnableWindowTransparency)) {
+      // User turned off transparency
+      SetLayered(this, 0);
+    } else {
+      if (byteOldPercentTransparency != (BYTE)prefs->GetPref(PWSprefs::WindowTransparency)) {
+        // User changed transparency
+        SetLayered(this);
       }
     }
   }

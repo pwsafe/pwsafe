@@ -18,6 +18,8 @@
 #include "OptionsShortcuts.h"
 #include "OptionsSystem.h"
 
+#include "ThisMfcApp.h"
+
 #include "core/coredefs.h"
 
 class COptions_PropertySheet : public CPWPropertySheet
@@ -33,7 +35,6 @@ public:
   int GetDCA() const {return m_OPTMD.DoubleClickAction;}
   int GetMaxMRUItems() const {return m_OPTMD.MaxMRUItems;}
   int GetMaxREItems() const {return m_OPTMD.MaxREItems;}
-  int GetTrayIconColour() const {return m_OPTMD.TrayIconColour;}
   int GetPWHAction() const {return m_OPTMD.PWHAction;}
   int GetPWHistoryMax() const {return m_OPTMD.PWHistoryNumDefault;}
   bool GetHotKeyState() const {return m_OPTMD.AppHotKeyEnabled == TRUE;}
@@ -56,7 +57,13 @@ public:
   bool StartupShortcut() const {return m_OPTMD.Startup == TRUE;}
   bool StartupShortcutChanged() const {return m_OPTMD.Startup !=
                                               m_bStartupShortcutExists;}
-  
+  bool EnableTransparencyChanged() const {return m_save_bEnableTransparency !=
+                                          m_OPTMD.EnableTransparency;}
+  bool WindowTransparencyChanged() const {return m_save_iPercentTransparency !=
+                                          m_OPTMD.PercentTransparency;}
+  bool UpdateTransparency(const int value)
+  { return app.GetMainDlg()->SetLayered((CWnd *)this, value); }
+
 protected:
   virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
   virtual BOOL PreTranslateMessage(MSG *pMsg);
@@ -69,11 +76,13 @@ private:
 
   CString m_save_bSymbols;
   int m_save_iPreExpiryWarnDays, m_save_iUseOwnSymbols, m_save_DisplayPreference;
+  int m_save_iPercentTransparency;
   bool m_bIsModified, m_bChanged;
   bool m_bRefreshViews, m_bSaveGroupDisplayState, m_bUpdateShortcuts, m_bCheckExpired;
   BOOL m_save_bSaveImmediately, m_save_bHighlightChanges, m_save_bPreExpiryWarn;
   BOOL m_save_bShowUsernameInTree, m_save_bShowPasswordInTree, m_save_bExplorerTypeTree;
   BOOL m_save_bLockOnWindowLock, m_bStartupShortcutExists;
+  BOOL m_save_bEnableTransparency;
 
   COptionsBackup          *m_pp_backup;
   COptionsDisplay         *m_pp_display;

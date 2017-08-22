@@ -69,7 +69,7 @@ LRESULT CNPEdit::OnPaste(WPARAM, LPARAM)
 IMPLEMENT_DYNAMIC(CSetDBID, CPWDialog)
 
 CSetDBID::CSetDBID(CWnd *pParent, int iDBIndex)
-	: CPWDialog(IDD_SETDBINDEX, pParent), m_pParent((DboxMain *)pParent),
+	: CPWDialog(IDD_SETDBID, pParent), m_pParent((DboxMain *)pParent),
   m_iInitialDBIndex(iDBIndex), m_iDBIndex(iDBIndex), m_iLockedTextColour(0),
   m_iUnLockedTextColour(0), m_bInitDone(false)
 {
@@ -247,7 +247,7 @@ void CSetDBID::OnOK()
       DWORD dwerr = ::GetLastError();
       if (dwerr == ERROR_ALREADY_EXISTS || dwerr == ERROR_ACCESS_DENIED) {
         CGeneralMsgBox gmb;
-        gmb.AfxMessageBox(IDS_DBINDEXINUSE, MB_OK | MB_ICONEXCLAMATION);
+        gmb.AfxMessageBox(IDS_DBIDINUSE, MB_OK | MB_ICONEXCLAMATION);
         m_edtSBIndex.SetFocus();
         return;
       }

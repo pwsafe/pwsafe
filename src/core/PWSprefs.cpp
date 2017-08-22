@@ -130,6 +130,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("IgnoreHelpLoadError"), false, ptApplication},        //application
   {_T("VKPlaySound"), false, ptApplication},                //application
   {_T("ListSortAscending"), true, ptApplication},           //application
+  {_T("EnableWindowTransparency"), false, ptApplication },  //application
 };
 
 // Default value = -1 means set at runtime
@@ -156,8 +157,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("BackupSuffix"), BKSFX_IncNumber, ptApplication, minBKSFX, maxBKSFX}, // application
   {_T("BackupMaxIncremented"), 3, ptApplication, 1, 999},           // application
   {_T("PreExpiryWarnDays"), 1, ptApplication, 1, 30},               // application
-  {_T("ClosedTrayIconColour"), stiBlack, ptApplication,
-                               stiBlack, stiYellow},                // application
+  {_T("ClosedTrayIconColour"), 0, ptObsolete, -1, -1},              // obsolete in 3.43.1
   {_T("PWDigitMinLength"), 0, ptDatabase, 0, 1024},                 // database
   {_T("PWLowercaseMinLength"), 0, ptDatabase, 0, 1024},             // database
   {_T("PWSymbolMinLength"), 0, ptDatabase, 0, 1024},                // database
@@ -175,6 +175,8 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("PasswordFontPtSz"), 0, ptApplication, 0, -1},                // application
   {_T("NotesFontPtSz"), 0, ptApplication, 0, -1},                   // application
   {_T("AddEditFontPtSz"), 0, ptApplication, 0, -1},                 // application
+  {_T("VKFontPtSz"), 0, ptApplication, 0, -1},                      // application
+  {_T("WindowTransparency"), 0, ptApplication, 0, 50},              // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

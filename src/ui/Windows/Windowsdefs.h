@@ -85,6 +85,8 @@ Timer related values (note - all documented her but some defined only where need
 #define TIMER_SB_SHOWING          0x0D */
 // Timer event for daily expired entries check
 #define TIMER_EXPENT              0x0E
+// Timer event number used to to poll the YubiKey when used
+#define TIMER_YUBIKEYPOLL         0x0F
 
 /*
 HOVER_TIME_ND       The length of time the pointer must remain stationary
@@ -114,3 +116,6 @@ rectangle.
 // Although this limit can be changed to up to 2GB of characters
 // (4GB memory if Unicode), it would make the database size absolutely enormous!
 #define MAXTEXTCHARS       30000
+
+// For Layered Windows
+typedef DWORD(WINAPI *PSLWA) (HWND, DWORD, BYTE, DWORD);

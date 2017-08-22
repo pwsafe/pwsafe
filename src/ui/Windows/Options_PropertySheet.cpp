@@ -170,13 +170,17 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::PreExpiryWarnDays);
   m_OPTMD.TreeDisplayStatusAtOpen =
       prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen);
-  m_OPTMD.TrayIconColour =
-      prefs->GetPref(PWSprefs::ClosedTrayIconColour);
   m_OPTMD.HighlightChanges = m_save_bHighlightChanges =
       prefs->GetPref(PWSprefs::HighlightChanges);
+  m_OPTMD.EnableTransparency =
+    prefs->GetPref(PWSprefs::EnableWindowTransparency) ? TRUE : FALSE;
+  m_OPTMD.PercentTransparency =
+      prefs->GetPref(PWSprefs::WindowTransparency);
   // Preferences min/max
   m_OPTMD.prefminExpiryDays = (short)prefs->GetPrefMinVal(PWSprefs::PreExpiryWarnDays);
   m_OPTMD.prefmaxExpiryDays = (short)prefs->GetPrefMaxVal(PWSprefs::PreExpiryWarnDays);
+  m_OPTMD.prefminPercentTransparency = (short)prefs->GetPrefMinVal(PWSprefs::WindowTransparency);
+  m_OPTMD.prefmaxPercentTransparency = (short)prefs->GetPrefMaxVal(PWSprefs::WindowTransparency);
   
   // Misc Data
   m_OPTMD.ConfirmDelete =
@@ -327,10 +331,12 @@ void COptions_PropertySheet::UpdateCopyPreferences()
                  m_OPTMD.PreExpiryWarn == TRUE, true);
   prefs->SetPref(PWSprefs::PreExpiryWarnDays,
                  m_OPTMD.PreExpiryWarnDays, true);
-  prefs->SetPref(PWSprefs::ClosedTrayIconColour,
-                 m_OPTMD.TrayIconColour, true);
   prefs->SetPref(PWSprefs::HighlightChanges,
                   m_OPTMD.HighlightChanges == TRUE, true);
+  prefs->SetPref(PWSprefs::EnableWindowTransparency,
+                  m_OPTMD.EnableTransparency == TRUE, true);
+  prefs->SetPref(PWSprefs::WindowTransparency,
+                  m_OPTMD.PercentTransparency, true);
   
   // Changes are highlighted only if "hightlight changes" is true and 
   // "save immediately" is false.

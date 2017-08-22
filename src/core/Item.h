@@ -76,11 +76,14 @@ public:
     POLICYNAME = 0x18,   // named non-default password policy for item
     KBSHORTCUT = 0x19,   // Keyboard shortcuts
     ATTREF = 0x1a,       // UUID of attachment (v4)
+    LAST_USER_FIELD,     // All "user" fields MUST be before this for entry compare
+
     BASEUUID = 0x41,     // Base UUID of Alias or Shortcut (v4)
     ALIASUUID = 0x42,    // UUID indicates this is an Alias (v4)
     SHORTCUTUUID = 0x43, // UUID indicates this is a Shortcut (v4)
     LAST_DATA,           // Start of unknown fields!
     LAST_ITEM_DATA_FIELD = 0x5f, // beyond this is for other CItem subclasses
+
     START_ATT = 0x60,
     ATTUUID = 0x60,
     ATTTITLE = 0x61,
@@ -98,10 +101,16 @@ public:
     CONTENT = 0x73,
     CONTENTHMAC = 0x74,
     LAST_ATT,
+
     UNKNOWN_TESTING = 0xdf, // for testing forward compatability (unknown field handling)
     END = 0xff,
+
     // Internal fields only - used in filters
-    ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, PASSWORDLEN = 0x103,
+    ENTRYSIZE = 0x100,
+    ENTRYTYPE = 0x101,
+    ENTRYSTATUS  = 0x102,
+    PASSWORDLEN = 0x103,
+
     // 'UNKNOWNFIELDS' should be last
     UNKNOWNFIELDS = 0x104,
     LAST_FIELD

@@ -2157,6 +2157,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   // Convenience: Get the name associated with FieldType
 stringT CItemData::FieldName(FieldType ft)
 {
+  // "User" fields only i.e. ft < CItem::LAST_USER_FIELD
   stringT retval(_T(""));
   switch (ft) {
   case GROUPTITLE:   LoadAString(retval, IDSC_FLDNMGROUPTITLE); break;
@@ -2184,6 +2185,7 @@ stringT CItemData::FieldName(FieldType ft)
   case SYMBOLS:      LoadAString(retval, IDSC_FLDNMSYMBOLS); break;
   case POLICYNAME:   LoadAString(retval, IDSC_FLDNMPWPOLICYNAME); break;
   case KBSHORTCUT:   LoadAString(retval, IDSC_FLDNMKBSHORTCUT); break;
+  case ATTREF:       LoadAString(retval, IDSC_FLDNMATTREF); break;
   default:
     ASSERT(0);
   };
@@ -2193,35 +2195,35 @@ stringT CItemData::FieldName(FieldType ft)
 stringT CItemData::EngFieldName(FieldType ft)
 {
   switch (ft) {
-  case GROUPTITLE: return _T("Group/Title");
-  case UUID:       return _T("UUID");
-  case GROUP:      return _T("Group");
-  case TITLE:      return _T("Title");
-  case USER:       return _T("Username");
-  case NOTES:      return _T("Notes");
-  case PASSWORD:   return _T("Password");
-  case CTIME:      return _T("Created Time");
-  case PMTIME:     return _T("Password Modified Time");
-  case ATIME:      return _T("Last Access Time");
-  case XTIME:      return _T("Password Expiry Date");
-  case RMTIME:     return _T("Record Modified Time");
-  case URL:        return _T("URL");
-  case AUTOTYPE:   return _T("AutoType");
-  case PWHIST:     return _T("History");
-  case POLICY:     return _T("Password Policy");
-  case XTIME_INT:  return _T("Password Expiry Interval");
-  case RUNCMD:     return _T("Run Command");
-  case DCA:        return _T("DCA");
-  case SHIFTDCA:   return _T("Shift+DCA");
-  case EMAIL:      return _T("e-mail");
-  case PROTECTED:  return _T("Protected");
-  case SYMBOLS:    return _T("Symbols");
-  case POLICYNAME: return _T("Password Policy Name");
-  case KBSHORTCUT: return _T("Keyboard Shortcut");
-  case ATTREF:     return _T("Attachment Reference");
-  case BASEUUID:   return _T("Base UUID");
-  case ALIASUUID:  return _T("Alias UUID");
-  case SHORTCUTUUID:return _T("Shortcut UUID");
+  case GROUPTITLE:    return _T("Group/Title");
+  case UUID:          return _T("UUID");
+  case GROUP:         return _T("Group");
+  case TITLE:         return _T("Title");
+  case USER:          return _T("Username");
+  case NOTES:         return _T("Notes");
+  case PASSWORD:      return _T("Password");
+  case CTIME:         return _T("Created Time");
+  case PMTIME:        return _T("Password Modified Time");
+  case ATIME:         return _T("Last Access Time");
+  case XTIME:         return _T("Password Expiry Date");
+  case RMTIME:        return _T("Record Modified Time");
+  case URL:           return _T("URL");
+  case AUTOTYPE:      return _T("AutoType");
+  case PWHIST:        return _T("History");
+  case POLICY:        return _T("Password Policy");
+  case XTIME_INT:     return _T("Password Expiry Interval");
+  case RUNCMD:        return _T("Run Command");
+  case DCA:           return _T("DCA");
+  case SHIFTDCA:      return _T("Shift+DCA");
+  case EMAIL:         return _T("e-mail");
+  case PROTECTED:     return _T("Protected");
+  case SYMBOLS:       return _T("Symbols");
+  case POLICYNAME:    return _T("Password Policy Name");
+  case KBSHORTCUT:    return _T("Keyboard Shortcut");
+  case ATTREF:        return _T("Attachment Reference");
+  case BASEUUID:      return _T("Base UUID");
+  case ALIASUUID:     return _T("Alias UUID");
+  case SHORTCUTUUID:  return _T("Shortcut UUID");
   default:
     ASSERT(0);
     return _T("");

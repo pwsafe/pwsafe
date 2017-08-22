@@ -71,10 +71,16 @@ PWPolicy::PWPolicy(const StringX &str) : usecount(0)
   bother_flags = (flags & (~PWPolicy::UseHexDigits)) != 0;
   total_sublength = digitminlength + lowerminlength + symbolminlength + upperminlength;
 
+  const int maxPWLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDefaultLength);
+  const int maxPWDigitLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDigitMinLength);
+  const int maxPWLowercaseLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWLowercaseMinLength);
+  const int maxPWUppercaseLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWUppercaseMinLength);
+  const int maxPWSymbolLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWSymbolMinLength);
+
   if (flags == 0 || (bhex_flag && bother_flags) ||
-      length > 1024 || total_sublength > length ||
-      digitminlength > 1024 || lowerminlength > 1024 ||
-      symbolminlength > 1024 || upperminlength > 1024) {
+      length > maxPWLength || total_sublength > length ||
+      digitminlength > maxPWDigitLength || lowerminlength > maxPWLowercaseLength ||
+      symbolminlength > maxPWSymbolLength || upperminlength > maxPWUppercaseLength) {
     goto fail;
   }
   return;

@@ -19,6 +19,9 @@ static char THIS_FILE[] = __FILE__;
 #include "Fonts.h"
 
 #include "core/PwsPlatform.h"
+#include "os/env.h"
+
+#include <usp10.h>    // for support of Unicode character (Uniscribe)
 
 #include <vector>
 
@@ -56,20 +59,25 @@ Fonts *Fonts::GetInstance()
 
 void Fonts::DeleteInstance()
 {
-  if (m_pCurrentFont != NULL) {
-    m_pCurrentFont->DeleteObject();
-    delete m_pCurrentFont;
-    m_pCurrentFont = NULL;
+  if (m_pTreeListFont != NULL) {
+    m_pTreeListFont->DeleteObject();
+    delete m_pTreeListFont;
+    m_pTreeListFont = NULL;
   }
   if (m_pAddEditFont != NULL) {
     m_pAddEditFont->DeleteObject();
     delete m_pAddEditFont;
     m_pAddEditFont = NULL;
   }
-  if (m_pModifiedFont != NULL) {
-    m_pModifiedFont->DeleteObject();
-    delete m_pModifiedFont;
-    m_pModifiedFont = NULL;
+  if (m_pItalicTreeListFont != NULL) {
+    m_pItalicTreeListFont->DeleteObject();
+    delete m_pItalicTreeListFont;
+    m_pItalicTreeListFont = NULL;
+  }
+  if (m_pItalicAddEditFont != NULL) {
+    m_pItalicAddEditFont->DeleteObject();
+    delete m_pItalicAddEditFont;
+    m_pItalicAddEditFont = NULL;
   }
   if (m_pDragFixFont != NULL) {
     m_pDragFixFont->DeleteObject();
@@ -90,43 +98,83 @@ void Fonts::DeleteInstance()
   self = NULL;
 }
 
-Fonts::Fonts() : MODIFIED_COLOR(RGB(0, 0, 128))
+std::wstring Utf32ToUtf16(uint32_t codepoint)
 {
-  m_pCurrentFont = new CFont;
+  wchar_t wc[3];
+  if (codepoint < 0x10000) {
+    // Length 1
+    wc[0] = static_cast<wchar_t>(codepoint);
+    wc[1] = wc[2] = 0;
+  } else {
+    if (codepoint <= 0x10FFFF) {
+      codepoint -= 0x10000;
+      // Length 2
+      wc[0] = (unsigned short)(codepoint >> 10) + (unsigned short)0xD800;
+      wc[1] = (unsigned short)(codepoint & 0x3FF) + (unsigned short)0xDC00;
+      wc[2] = 0;
+    } else {
+      // Length 1
+      wc[0] = 0xFFFD;
+      wc[1] = wc[2] = 0;
+    }
+  }
+  std::wstring s = wc;
+  return s;
+}
+
+Fonts::Fonts() : MODIFIED_COLOR(RGB(0, 0, 128)),
+  m_bProtectSymbolSupportedTreeList(true), m_bProtectSymbolSupportedAddEdit(true),
+  m_bAttachmentSymbolSupportedTreeList(true), m_bAttachmentSymbolSupportedAddEdit(true)
+{
+  m_pTreeListFont = new CFont;
   m_pAddEditFont = new CFont;
-  m_pModifiedFont = new CFont;
   m_pDragFixFont = new CFont;
   m_pPasswordFont = new CFont;
   m_pNotesFont = new CFont;
+
+  m_pItalicTreeListFont = new CFont;
+  m_pItalicAddEditFont = new CFont;
+
+  // Protected entry symbol
+  const uint32_t newprotectedsymbol = 0x1f512;  // Padlock
+
+  // Convert UTF-32 to UTF-16 or a surrogate pair of UTF-16
+  m_sProtect = Utf32ToUtf16(newprotectedsymbol);
+
+  // Entry has Attachment symbol
+  const uint32_t newattachmentsymbol = 0x1F4CE;  // Paper-clip
+
+  // Convert UTF-32 to UTF-16 or a surrogate pair of UTF-16
+  m_sAttachment = Utf32ToUtf16(newattachmentsymbol);
 }
 
-void Fonts::GetCurrentFont(LOGFONT *pLF)
+void Fonts::GetTreeListFont(LOGFONT *pLF)
 {
-  ASSERT(pLF != NULL && m_pCurrentFont != NULL);
-  if (pLF == NULL || m_pCurrentFont == NULL)
+  ASSERT(pLF != NULL && m_pTreeListFont != NULL);
+  if (pLF == NULL || m_pTreeListFont == NULL)
     return;
 
-  m_pCurrentFont->GetLogFont(pLF);
+  m_pTreeListFont->GetLogFont(pLF);
 }
 
-void Fonts::SetCurrentFont(LOGFONT *pLF, const int iPtSz)
+void Fonts::SetTreeListFont(LOGFONT *pLF, const int iPtSz)
 {
   ASSERT(pLF != NULL);
   if (pLF == NULL)
     return;
 
-  if (m_pCurrentFont == NULL) {
-    m_pCurrentFont = new CFont;
+  if (m_pTreeListFont == NULL) {
+    m_pTreeListFont = new CFont;
   } else {
-    m_pCurrentFont->DeleteObject();
+    m_pTreeListFont->DeleteObject();
   }
 
   if (iPtSz == 0) {
-    m_pCurrentFont->CreateFontIndirect(pLF);
+    m_pTreeListFont->CreateFontIndirect(pLF);
   } else {
     LOGFONT lf(*pLF);
     lf.lfHeight = iPtSz;
-    m_pCurrentFont->CreatePointFontIndirect(&lf);
+    m_pTreeListFont->CreatePointFontIndirect(&lf);
   }
 }
 
@@ -158,6 +206,21 @@ void Fonts::SetAddEditFont(LOGFONT *pLF, const int iPtSz)
     lf.lfHeight = iPtSz;
     m_pAddEditFont->CreatePointFontIndirect(&lf);
   }
+
+  // Set up Add/Edit italic font
+  if (m_pItalicAddEditFont == NULL) {
+    m_pItalicAddEditFont = new CFont;
+  } else {
+    m_pItalicAddEditFont->DeleteObject();
+  }
+
+  // Get current font - values depend on actions above
+  LOGFONT lf_italic;
+  m_pAddEditFont->GetLogFont(&lf_italic);
+
+  // Make it italic and create "modified" font
+  lf_italic.lfItalic = TRUE;
+  m_pItalicAddEditFont->CreateFontIndirect(&lf_italic);
 }
 
 void Fonts::GetPasswordFont(LOGFONT *pLF)
@@ -332,12 +395,12 @@ bool Fonts::ExtractFont(const std::wstring &str, LOGFONT &lf)
 void Fonts::SetUpFont(CWnd *pWnd, CFont *pfont)
 {
   // Set main font
-  m_pCurrentFont = pfont;
+  m_pTreeListFont = pfont;
   pWnd->SetFont(pfont);
 
   // Set up special fonts
   // Remove old fonts
-  m_pModifiedFont->DeleteObject();
+  m_pItalicTreeListFont->DeleteObject();
   m_pDragFixFont->DeleteObject();
   
   // Get current font
@@ -346,7 +409,7 @@ void Fonts::SetUpFont(CWnd *pWnd, CFont *pfont)
 
   // Make it italic and create "modified" font
   lf.lfItalic = TRUE;
-  m_pModifiedFont->CreateFontIndirect(&lf);
+  m_pItalicTreeListFont->CreateFontIndirect(&lf);
   
   // Make DragFix font same height as user selected font
   DragFixLogfont.lfHeight = lf.lfHeight;
@@ -360,14 +423,14 @@ LONG Fonts::CalcHeight(const bool bIncludeNotesFont) const
   TEXTMETRIC tm;
   HDC hDC = ::GetDC(NULL);
 
-  HFONT hFontOld = (HFONT)SelectObject(hDC, m_pCurrentFont->GetSafeHandle());
+  HFONT hFontOld = (HFONT)SelectObject(hDC, m_pTreeListFont->GetSafeHandle());
 
   // Current
   GetTextMetrics(hDC, &tm);
   LONG height = tm.tmHeight + tm.tmExternalLeading;
 
   // Modified
-  SelectObject(hDC, m_pModifiedFont->GetSafeHandle());
+  SelectObject(hDC, m_pItalicTreeListFont->GetSafeHandle());
   GetTextMetrics(hDC, &tm);
   if (height < tm.tmHeight + tm.tmExternalLeading)
     height = tm.tmHeight + tm.tmExternalLeading;
@@ -391,4 +454,124 @@ LONG Fonts::CalcHeight(const bool bIncludeNotesFont) const
   ::ReleaseDC(NULL, hDC);
 
   return height;
+}
+
+std::wstring Fonts::GetProtectedSymbol(const PWSFont font)
+{
+  if (font == TREELIST) {
+    return m_bProtectSymbolSupportedTreeList ? m_sProtect : L"#";
+  } else {
+    return m_bProtectSymbolSupportedAddEdit ? m_sProtect : L"#";
+  }
+}
+
+std::wstring Fonts::GetAttachmentSymbol(const PWSFont font)
+{
+  if (font == TREELIST) {
+    return m_bProtectSymbolSupportedTreeList ? m_sAttachment : L"+";
+  } else {
+    return m_bProtectSymbolSupportedAddEdit ? m_sAttachment : L"+";
+  }
+}
+
+bool Fonts::IsSymbolSuported(const Symbol symbol, const PWSFont font)
+{
+  if (symbol == PROTECT) {
+    if (font == TREELIST) {
+      return m_bProtectSymbolSupportedTreeList;
+    } else {
+      return m_bProtectSymbolSupportedAddEdit;
+    }
+  } else {
+    if (font == TREELIST) {
+      return m_bAttachmentSymbolSupportedTreeList;
+    } else {
+      return m_bAttachmentSymbolSupportedAddEdit;
+    }
+  }
+}
+
+void Fonts::VerifySymbolsSupported()
+{
+  bool bWindows10 = pws_os::IsWindows10OrGreater();
+
+  // If supported - fine - use it
+  // If not, use it if running under Windows 10 which seems to handle this nicely
+  m_bProtectSymbolSupportedTreeList = IsCharacterSupported(m_sProtect) ? true : bWindows10;
+  m_bProtectSymbolSupportedAddEdit = IsCharacterSupported(m_sProtect, false) ? true : bWindows10;
+
+  // If supported - fine - use it
+  // If not, use it if running under Windows 10 which seems to handle this nicely
+  m_bAttachmentSymbolSupportedTreeList = IsCharacterSupported(m_sAttachment) ? true : bWindows10;
+  m_bAttachmentSymbolSupportedAddEdit = IsCharacterSupported(m_sAttachment, false) ? true : bWindows10;
+}
+
+bool Fonts::IsCharacterSupported(std::wstring &sSymbol, const bool bTreeListFont)
+{
+  HRESULT hr;
+  int cItems, cMaxItems = 2;
+  bool bSupported(false);
+  SCRIPT_ITEM items[3];  // Number should be (cMaxItems + 1)
+
+  ASSERT(sSymbol.length() < 3);
+
+  // Itemize - Uniscribe function
+  hr = ScriptItemize(sSymbol.c_str(), (int)sSymbol.length(), cMaxItems, NULL, NULL, items, &cItems);
+
+  if (SUCCEEDED(hr) == FALSE)
+    return bSupported;
+
+  ASSERT(cItems == 1);
+
+  SCRIPT_CACHE sc = NULL;
+
+  CDC ScreenDC;
+  ScreenDC.CreateCompatibleDC(NULL);
+  HFONT hOldFont;
+  CFont *pFont;
+
+  if (bTreeListFont) {
+    pFont = m_pTreeListFont;
+  } else {
+    pFont = m_pAddEditFont;
+  }
+
+  hOldFont = (HFONT)ScreenDC.SelectObject(pFont->GetSafeHandle());
+
+  for (int i = 0; i < cItems; i++) {
+    int idx = items[i].iCharPos;
+    int len = items[i + 1].iCharPos - idx;
+    int cMaxGlyphs = len * 2 + 16;  // As recommended by Uniscribe documentation
+    int cGlyphs = 0;
+
+    WORD *pwLogClust = (WORD *)malloc(sizeof(WORD) * cMaxGlyphs);
+    WORD *pwOutGlyphs = (WORD *)malloc(sizeof(WORD) * cMaxGlyphs);
+    SCRIPT_VISATTR *psva = (SCRIPT_VISATTR *)malloc(sizeof(SCRIPT_VISATTR) * cMaxGlyphs);
+
+    // Shape - Uniscribe function
+    hr = ScriptShape(ScreenDC.GetSafeHdc(), &sc, sSymbol.substr(idx).c_str(), len, cMaxGlyphs,
+      &items[i].a, pwOutGlyphs, pwLogClust, psva, &cGlyphs);
+
+    if (SUCCEEDED(hr) == FALSE)
+      goto clean;
+
+    if (pwOutGlyphs[0] != 0)
+      bSupported = true;
+
+  clean:
+    // Free up storage
+    free(pwOutGlyphs);
+    free(pwLogClust);
+    free(psva);
+
+    if (SUCCEEDED(hr) == FALSE)
+      break;
+  }
+
+  // Free cache - Uniscribe function
+  ScriptFreeCache(&sc);
+
+  ScreenDC.SelectObject(hOldFont);
+
+  return bSupported;
 }
