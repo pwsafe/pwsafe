@@ -244,7 +244,7 @@ wxSize CDragBar::DoGetBestSize() const
 {
   switch(m_orientation) {
     case wxHORIZONTAL:
-      return wxSize(std::max(GetToolX(m_items.size()), GetParent()->GetSize().GetWidth()), 2*m_margins.GetHeight() + m_bmpHeight + 1);
+      return wxSize(std::max(GetToolX(m_items.size()), GetParent()->GetSize().GetWidth()), 2*m_margins.GetHeight() + m_bmpHeight + 10);
     case wxVERTICAL:
       return wxSize(2*m_margins.GetWidth() + m_bmpWidth + 1, std::max(GetParent()->GetSize().GetHeight(), GetToolY(m_items.size())));
     default:
