@@ -32,6 +32,12 @@
 
 PWPolicy::PWPolicy(const StringX &str) : usecount(0)
 {
+  const int maxPWLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDefaultLength);
+  const int maxPWDigitLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDigitMinLength);
+  const int maxPWLowercaseLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWLowercaseMinLength);
+  const int maxPWUppercaseLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWUppercaseMinLength);
+  const int maxPWSymbolLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWSymbolMinLength);
+
   if (str.empty() || str.length() != POL_STR_ENC_LEN) {
     if (!str.empty()) {
       ASSERT(str.length() == POL_STR_ENC_LEN);
@@ -70,12 +76,6 @@ PWPolicy::PWPolicy(const StringX &str) : usecount(0)
   bhex_flag = (flags & PWPolicy::UseHexDigits) != 0;
   bother_flags = (flags & (~PWPolicy::UseHexDigits)) != 0;
   total_sublength = digitminlength + lowerminlength + symbolminlength + upperminlength;
-
-  const int maxPWLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDefaultLength);
-  const int maxPWDigitLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDigitMinLength);
-  const int maxPWLowercaseLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWLowercaseMinLength);
-  const int maxPWUppercaseLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWUppercaseMinLength);
-  const int maxPWSymbolLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWSymbolMinLength);
 
   if (flags == 0 || (bhex_flag && bother_flags) ||
       length > maxPWLength || total_sublength > length ||
