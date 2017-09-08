@@ -772,7 +772,9 @@ void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const CItemData &ci)
 void DboxMain::UpdateEntryInGUI(CItemData &ci)
 {
   DisplayInfo *pdi = GetEntryGUIInfo(ci);
-  ASSERT(pdi != NULL);
+  ASSERT(pdi != nullptr);
+  if (pdi == nullptr) // BR1435 - not root cause, but at least don't crash...
+    return;
 
   const int iIndex = pdi->list_index;
   const HTREEITEM hItem =  pdi->tree_item;
