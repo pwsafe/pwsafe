@@ -1,5 +1,5 @@
-Password Safe 3.43.1 Release ???? 2017
-======================================
+Password Safe 3.44.0pre Release September 2017
+==============================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -13,8 +13,8 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
 
-Bugs Fixed in 3.43.1
-====================
+Bugs Fixed in 3.44.0pre
+=======================
 [1432] Perform autotype of correct entry when the user changes the selection made by a Find.
 [1431] The protected entry padlock symbol is now used in all places where a
 protected entry is listed in any dialog.
@@ -27,16 +27,16 @@ these changes can be undone/redone if required.
 [1420] The virtual keyboard font size setting is now persistent.
 [1398] Remember if PasswordSafe was maximized when exited.
 
-Changes to Existing Features in 3.43.1
-======================================
+Changes to Existing Features in 3.44.0pre
+=========================================
 [] The option that allows you to change the color of the system tray icon
 displayed when Password Safe is initially started and when there's no open database
 has been removed. The standard PasswordSafe brown icon will be used.
 [] Use the Add/Edit font in preference to the Tree/List font outside
 the actual Tree/List views (since the Tree/List fonts may be too large).
 
-New Features for 3.43.1
-=======================
+New Features for 3.44.0pre
+==========================
 [] When exporting a group or the results of a filter, if any additional entries have
 been exported (e.g. base entries of aliases or shortcuts already exported),
 they will be noted in the Export report.
