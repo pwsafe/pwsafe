@@ -49,7 +49,7 @@ LangString UNINSTALL_SHORTCUT ${LANG_RUSSIAN} "Ярлык для удаления"
 LangString DESC_ProgramFiles ${LANG_RUSSIAN} "Основные файлы, необходимые для работы Password Safe."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
-LangString DESC_LangSupport ${LANG_NEW} "Выберите язык(и) для интерфейса программы"
+LangString DESC_LangSupport ${LANG_RUSSIAN} "Выберите язык(и) для интерфейса программы"
 
 ; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
 LangString DESC_StartUp ${LANG_RUSSIAN} "Запускать Password Safe при старте Windows (входе в систему)."

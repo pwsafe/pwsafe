@@ -348,7 +348,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "${BIN_DIR}\pws_osk.dll"
   File "..\..\help\default\pwsafe.chm"
   File "..\..\LICENSE"
-  File "..\..\README.TXT"
+  File "..\..\README.md"
   File "..\..\docs\ReleaseNotes.txt"
   File "..\..\docs\ReleaseNotes.html"
   File "..\..\docs\ChangeLog.txt"
