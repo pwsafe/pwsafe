@@ -953,8 +953,8 @@ msgid "(Also used to replace periods in Title field)"
 msgstr "(Také používáno k nahrazování teček v poli Titul)"
 
 #. Resource IDs: (65535)
-msgid "(Double-click an entry to edit it)"
-msgstr "(Dvojklik pro editaci)"
+msgid "(Double-click an entry to edit it. Entries in italics are protected and need to be unprotected first.)"
+msgstr ""
 
 #. Resource IDs: (5957)
 msgid "(Empty)"
@@ -963,6 +963,10 @@ msgstr "(Prázdný)"
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
 msgstr "(Vyžaduje restart programu.)"
+
+#. Resource IDs: (65535)
+msgid "(Restart of PasswordSafe required to enable.)"
+msgstr ""
 
 #. Resource IDs: (1285, 1287, 1289, 1291)
 msgid "(at least"
@@ -1597,6 +1601,10 @@ msgstr ""
 msgid "Attachment Properties"
 msgstr ""
 
+#. Resource IDs: (3074)
+msgid "Attachment Reference"
+msgstr ""
+
 #. Resource IDs: (5976)
 msgid "Attachment not found"
 msgstr ""
@@ -1793,6 +1801,7 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "CSV soubory (*.csv)|*.csv|Všechny soubory (*.*)|*.*||"
 
 #. Resource IDs: (5410)
+#, c-format
 msgid "Can only warn between %d and %d days before passwords expire"
 msgstr "Může upozornit pouze mezi %d a %d dny před vypršením hesla"
 
@@ -2540,6 +2549,7 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr ""
 
 #. Resource IDs: (5294)
+#, c-format
 msgid "Default number of saved password history entries must be between %d and %d."
 msgstr "Výchozí počet uložených hesel v historii musí být mezi %d a %d."
 
@@ -2807,6 +2817,10 @@ msgstr "Prázdná řádka %d přeskočena"
 msgid "Enable"
 msgstr "Povolit"
 
+#. Resource IDs: (1591)
+msgid "Enable Transparency"
+msgstr ""
+
 #. Resource IDs: (61866)
 #, c-format
 msgid "Encountered a hardware I/O error while accessing %1."
@@ -2888,10 +2902,6 @@ msgstr "Zadjete kladné celé číslo."
 #. Resource IDs: (61723)
 msgid "Enter a time."
 msgstr "Zadejte čas"
-
-#. Resource IDs: (65535)
-msgid "Enter a value between 0 and 99 (a value of 0 disables icon overlay):"
-msgstr ""
 
 #. Resource IDs: (61714)
 #, c-format
@@ -3956,6 +3966,7 @@ msgid "Incorrect password"
 msgstr "Nesprávné heslo"
 
 #. Resource IDs: (5387)
+#, c-format
 msgid "Incremented Number [%d-%d]"
 msgstr "Zvýšené číslo [%d-%d]"
 
@@ -3980,10 +3991,6 @@ msgstr "Index je meněí než začátek hesla (délka %d)."
 #. Resource IDs: (1542)
 msgid "Initial Tree View"
 msgstr "Počáteční stromové zobrazení"
-
-#. Resource IDs: (65535)
-msgid "Initial system tray icon"
-msgstr "Počáteční ikona v systémové liště"
 
 #. Resource IDs: (3350)
 msgid "Input string is empty"
@@ -4305,6 +4312,7 @@ msgid "Maximum"
 msgstr "Maximum"
 
 #. Resource IDs: (5392)
+#, c-format
 msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
 msgstr "Maximální počet uchovávaných záloh, které používají postupně se zvyšující číselnou příponu, \nmusí být mezi %d a %d."
 
@@ -4767,6 +4775,10 @@ msgstr "Jeden nebo více automaticky uložených bylo nalezeno."
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
 msgstr ""
 
+#. Resource IDs: (1595)
+msgid "Opaque"
+msgstr ""
+
 #. Resource IDs: (61440)
 msgid "Open"
 msgstr "Otevřít"
@@ -5000,6 +5012,7 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Délka hesla je menší než suma 'alespoň' omezení"
 
 #. Resource IDs: (5293)
+#, c-format
 msgid "Password length must be between %d and %d characters."
 msgstr "Délka hesla musí být mezi %d a %d znaky."
 
@@ -5702,17 +5715,9 @@ msgstr "Vybrat klávesnici:"
 msgid "Select Location for Intermediate Backups"
 msgstr "Vybrat umístění přechodných záloh"
 
-#. Resource IDs: (65535)
-msgid "Select Locked Text Color:"
-msgstr ""
-
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
 msgstr "Vybrar typ testovacího výpisu"
-
-#. Resource IDs: (65535)
-msgid "Select Unlocked Text Color:"
-msgstr ""
 
 #. Resource IDs: (61717)
 msgid "Select a button."
@@ -5789,10 +5794,6 @@ msgstr ""
 
 #. Resource IDs: (32256 - Menu)
 msgid "Set Database ID"
-msgstr ""
-
-#. Resource IDs: (552)
-msgid "Set Database Index to overlay on System Tray icon"
 msgstr ""
 
 #. Resource IDs: (5295)
@@ -6372,6 +6373,10 @@ msgstr "Následující VAROVÁNÍ byla detekována - měl byste si je prohlédno
 msgid "The following attachments are not referred to by any entry."
 msgstr ""
 
+#. Resource IDs: (6055)
+msgid "The following base entries have been exported because one or more of their dependents have been included."
+msgstr ""
+
 #. Resource IDs: (3375)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "Následující sloupce byly rozpoznány, ale pouze skupina/název, uživatelské jméno a heslo budou zpracovány:"
@@ -6425,8 +6430,8 @@ msgid "The following entries were duplicates of an existing entry."
 msgstr "Následující záznamy byly duplikáty již existujícího záznamu."
 
 #. Resource IDs: (65535)
-msgid "The following entries' passwords are about to expire or expired:"
-msgstr "Hesla následujících záznamů vypršela nebo brzy vyprší:"
+msgid "The following entries' passwords are about to expire or have already expired:"
+msgstr ""
 
 #. Resource IDs: (5481)
 #, c-format
@@ -6583,6 +6588,11 @@ msgstr "Toto je alias základního záznamu."
 msgid "This is an alias of:"
 msgstr ""
 
+#. Resource IDs: (5121)
+#, c-format
+msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
+msgstr ""
+
 #. Resource IDs: (61710)
 #, c-format
 msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
@@ -6628,6 +6638,7 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Toto smaže vybranou zálohu. Pokud má součansý disk Koš, bude přesunuta tam. Pokud ne, bude permanentně smazána."
 
 #. Resource IDs: (5289)
+#, c-format
 msgid "Timeout period must be between %d and %d minutes."
 msgstr "Časový limit musí být mezi %d a %d minutami."
 
@@ -7148,6 +7159,10 @@ msgstr "Kod uložil"
 #. Resource IDs: (1385)
 msgid "Win32 Unhandled Exception"
 msgstr "Win32 Unhandled Exception"
+
+#. Resource IDs: (65535)
+msgid "Window Transparency"
+msgstr ""
 
 #. Resource IDs: (5799)
 msgid "Windows Registry"
@@ -7858,10 +7873,6 @@ msgstr "začíná "
 msgid "between"
 msgstr "mezi"
 
-#. Resource IDs: (5665)
-msgid "bottom"
-msgstr "spodní"
-
 #. Resource IDs: (3371)
 msgid "changed but not yet saved to database"
 msgstr "změněno ale dosud neuloženo"
@@ -8225,6 +8236,10 @@ msgstr "Vyprší "
 #, c-format
 msgid "within %d day(s)"
 msgstr "během %d dní"
+
+#. Resource IDs: (1594)
+msgid "xx%"
+msgstr ""
 
 #. Resource IDs: (8004)
 msgid "xxxxxx"

@@ -992,8 +992,8 @@ msgid "(Also used to replace periods in Title field)"
 msgstr "(Utilisé aussi pour remplacer les points dans le champ Titre)"
 
 #. Resource IDs: (65535)
-msgid "(Double-click an entry to edit it)"
-msgstr "(Double-clic sur l'entrée pour la modifier)"
+msgid "(Double-click an entry to edit it. Entries in italics are protected and need to be unprotected first.)"
+msgstr ""
 
 #. Resource IDs: (5957)
 msgid "(Empty)"
@@ -1002,6 +1002,10 @@ msgstr "(Vide)"
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
 msgstr "(Requiert un redémarrage de PasswordSafe afin de prendre effet.)"
+
+#. Resource IDs: (65535)
+msgid "(Restart of PasswordSafe required to enable.)"
+msgstr ""
 
 #. Resource IDs: (1285, 1287, 1289, 1291)
 msgid "(at least"
@@ -1636,6 +1640,10 @@ msgstr "Filtre de pièce jointe"
 msgid "Attachment Properties"
 msgstr "Propriétés de pièce jointe"
 
+#. Resource IDs: (3074)
+msgid "Attachment Reference"
+msgstr ""
+
 #. Resource IDs: (5976)
 msgid "Attachment not found"
 msgstr "Pièce jointe non trouvée"
@@ -1832,6 +1840,7 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "Fichier CVS (*.cvs)|*.cvs|Tous les fichiers (*.*)|*.*||"
 
 #. Resource IDs: (5410)
+#, c-format
 msgid "Can only warn between %d and %d days before passwords expire"
 msgstr "Peut seulement avertir entre %d et %d jours avant que le mot de passe n'expire"
 
@@ -2579,6 +2588,7 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr "La valeur par défaut est le même répertoire où ce trouve ce fichier. Si vous le modifiez assurez-vous d'avoir les permissions d'écriture dans ce répertoire."
 
 #. Resource IDs: (5294)
+#, c-format
 msgid "Default number of saved password history entries must be between %d and %d."
 msgstr "Le nombre par défaut des entrées de  l'historique doit être entre %d et %d."
 
@@ -2846,6 +2856,10 @@ msgstr "La ligne vide %d a été sautée"
 msgid "Enable"
 msgstr "Activer"
 
+#. Resource IDs: (1591)
+msgid "Enable Transparency"
+msgstr ""
+
 #. Resource IDs: (61866)
 #, c-format
 msgid "Encountered a hardware I/O error while accessing %1."
@@ -2927,10 +2941,6 @@ msgstr "Entrez un nombre entier positif."
 #. Resource IDs: (61723)
 msgid "Enter a time."
 msgstr "Entrez une heure."
-
-#. Resource IDs: (65535)
-msgid "Enter a value between 0 and 99 (a value of 0 disables icon overlay):"
-msgstr ""
 
 #. Resource IDs: (61714)
 #, c-format
@@ -3995,6 +4005,7 @@ msgid "Incorrect password"
 msgstr "Mot de passe incorrect"
 
 #. Resource IDs: (5387)
+#, c-format
 msgid "Incremented Number [%d-%d]"
 msgstr "Nombre incrémenté [%d-%d]"
 
@@ -4019,10 +4030,6 @@ msgstr "L'index pointe avant le début du mot de passe (longueur %d)."
 #. Resource IDs: (1542)
 msgid "Initial Tree View"
 msgstr "Arborescence initiale"
-
-#. Resource IDs: (65535)
-msgid "Initial system tray icon"
-msgstr "Icône initial de la barre système "
 
 #. Resource IDs: (3350)
 msgid "Input string is empty"
@@ -4344,6 +4351,7 @@ msgid "Maximum"
 msgstr "Maximum"
 
 #. Resource IDs: (5392)
+#, c-format
 msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
 msgstr "Le nombre maximum de copies de sauvegarde conservées utilisant\n le suffixe numérique doit être entre %d et %d."
 
@@ -4806,6 +4814,10 @@ msgstr "Un ou plus d'un document auto-sauvegardé ont été trouvés."
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
 msgstr "Seulement dans l'original: %d; Seulement dans la comparaison: %d; Dans les deux (différence): %d; Dans les deux (identique): %d"
 
+#. Resource IDs: (1595)
+msgid "Opaque"
+msgstr ""
+
 #. Resource IDs: (61440)
 msgid "Open"
 msgstr "Ouvrir"
@@ -5039,6 +5051,7 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "La taille du mot de passe est moindre que la somme des contraintes minimum"
 
 #. Resource IDs: (5293)
+#, c-format
 msgid "Password length must be between %d and %d characters."
 msgstr "Longueur de mot de passe doit être entre %d et %d caractères."
 
@@ -5741,17 +5754,9 @@ msgstr "Sélectionnez un clavier :"
 msgid "Select Location for Intermediate Backups"
 msgstr "Sélectionner le dossier pour les sauvegardes intermédiaires"
 
-#. Resource IDs: (65535)
-msgid "Select Locked Text Color:"
-msgstr ""
-
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
 msgstr "Sélectionner le type du dump de test"
-
-#. Resource IDs: (65535)
-msgid "Select Unlocked Text Color:"
-msgstr ""
 
 #. Resource IDs: (61717)
 msgid "Select a button."
@@ -5828,10 +5833,6 @@ msgstr "Définir les filtres de pièce jointe: %d Ajoutés; %d Actifs"
 
 #. Resource IDs: (32256 - Menu)
 msgid "Set Database ID"
-msgstr ""
-
-#. Resource IDs: (552)
-msgid "Set Database Index to overlay on System Tray icon"
 msgstr ""
 
 #. Resource IDs: (5295)
@@ -6411,6 +6412,10 @@ msgstr "Les AVERTISSEMENTS suivant ont été détectés - vous devriez les revoi
 msgid "The following attachments are not referred to by any entry."
 msgstr "Les pièces jointes suivantes ne sont référencées par aucune entrée."
 
+#. Resource IDs: (6055)
+msgid "The following base entries have been exported because one or more of their dependents have been included."
+msgstr ""
+
 #. Resource IDs: (3375)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "Les colonnes suivantes ont été reconnues mais seulement Groupe/Titre, Nom d'utilisateur et Mot de passe seront traités :"
@@ -6464,8 +6469,8 @@ msgid "The following entries were duplicates of an existing entry."
 msgstr "Les entrées suivantes étaient similaires à une entrée déjà existante."
 
 #. Resource IDs: (65535)
-msgid "The following entries' passwords are about to expire or expired:"
-msgstr "Les mots de passe des entrées suivantes sont expirés ou expireront sous peu:"
+msgid "The following entries' passwords are about to expire or have already expired:"
+msgstr ""
 
 #. Resource IDs: (5481)
 #, c-format
@@ -6622,6 +6627,11 @@ msgstr "Ceci est une entrée de base d'alias."
 msgid "This is an alias of:"
 msgstr "Alias de:"
 
+#. Resource IDs: (5121)
+#, c-format
+msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
+msgstr ""
+
 #. Resource IDs: (61710)
 #, c-format
 msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
@@ -6667,6 +6677,7 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Ceci supprimera la copie de sauvegarde. Si le disque courant contien une Corbeille, il y sera déplacé sinon il sera supprimé définitivement"
 
 #. Resource IDs: (5289)
+#, c-format
 msgid "Timeout period must be between %d and %d minutes."
 msgstr "La période de temps mort doit être enntre %d et %d minutes."
 
@@ -7187,6 +7198,10 @@ msgstr "Qui a enregistré"
 #. Resource IDs: (1385)
 msgid "Win32 Unhandled Exception"
 msgstr "Exception Win32 non gérée"
+
+#. Resource IDs: (65535)
+msgid "Window Transparency"
+msgstr ""
 
 #. Resource IDs: (5799)
 msgid "Windows Registry"
@@ -7897,10 +7912,6 @@ msgstr "commence par"
 msgid "between"
 msgstr "entre"
 
-#. Resource IDs: (5665)
-msgid "bottom"
-msgstr "bas"
-
 #. Resource IDs: (3371)
 msgid "changed but not yet saved to database"
 msgstr "modifié mais pas encore enregistré au fichier"
@@ -8264,6 +8275,10 @@ msgstr "expirera"
 #, c-format
 msgid "within %d day(s)"
 msgstr "dans %d jour(s)"
+
+#. Resource IDs: (1594)
+msgid "xx%"
+msgstr ""
 
 #. Resource IDs: (8004)
 msgid "xxxxxx"
