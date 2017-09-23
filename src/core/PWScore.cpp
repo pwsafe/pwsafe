@@ -133,10 +133,14 @@ PWScore::PWScore() :
                      m_lockFileHandle(INVALID_HANDLE_VALUE),
                      m_lockFileHandle2(INVALID_HANDLE_VALUE),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-                     m_bIsReadOnly(false), m_bIsOpen(false),
+                     m_bIsReadOnly(false),
+                     m_bNotifyDB(false),
+                     m_bIsOpen(false),
                      m_nRecordsWithUnknownFields(0),
-                     m_bNotifyDB(false), m_pUIIF(NULL), m_pFileSig(NULL),
-                     m_iAppHotKey(0), m_DBCurrentState(CLEAN)
+                     m_pUIIF(NULL),
+                     m_DBCurrentState(CLEAN),
+                     m_pFileSig(NULL),
+                     m_iAppHotKey(0)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -675,7 +679,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
 struct ExportRecordWriter {
   ExportRecordWriter(PWSfile *pout, PWScore *pcore, std::vector<pws_os::CUUID> &vuuidAddedBases,
     CReport *pRpt) :
-    m_pout(pout), m_pcore(pcore), m_vuuidAddedBases(vuuidAddedBases), m_pRpt(pRpt) {}
+    m_pout(pout), m_pcore(pcore), m_pRpt(pRpt), m_vuuidAddedBases(vuuidAddedBases) {}
 
   void operator()(CItemData &item)
   {
