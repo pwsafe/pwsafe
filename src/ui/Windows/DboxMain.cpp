@@ -63,8 +63,6 @@
 #include <bitset>
 #include <algorithm>
 
-#include <usp10.h>    // for support of Unicode character (Uniscribe)
-
 // Need to add Windows SDK 6.0 (or later) 'include' and 'lib' libraries to
 // Visual Studio "VC++ directories" in their respective search orders to find
 // 'WtsApi32.h' and 'WtsApi32.lib'
@@ -99,8 +97,6 @@ CString DboxMain::CS_SETFILTERS;
 CString DboxMain::CS_CLEARFILTERS;
 CString DboxMain::CS_READWRITE;
 CString DboxMain::CS_READONLY;
-
-LOGFONT dfltTreeListFont;
 
 void DboxMain::SetLocalStrings()
 {
@@ -158,7 +154,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_bFindToolBarVisibleAtLock(false), m_bSuspendGUIUpdates(false), m_iNeedRefresh(NONE),
   m_iDBIndex(0), m_hMutexDBIndex(NULL),
-  m_DBLockedIndexColour(RGB(255, 255, 0)), m_DBUnlockedIndexColour(RGB(255, 255, 0))
+  m_DBLockedIndexColour(RGB(255, 255, 0)), m_DBUnlockedIndexColour(RGB(255, 255, 0)),
+  m_bOnStartupTransparancyEnabled(false)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::LOAD_LIBRARY_SYS));
@@ -167,13 +164,17 @@ DboxMain::DboxMain(CWnd* pParent)
                                                                       "ShutdownBlockReasonCreate"));
     m_pfcnShutdownBlockReasonDestroy = PSBR_DESTROY(pws_os::GetFunction(m_hUser32, "ShutdownBlockReasonDestroy"));
 
+    m_pfcnSetLayeredWindowAttributes = PSLWA(pws_os::GetFunction(m_hUser32, "SetLayeredWindowAttributes"));
+
     // Do not free library until the end or the addresses may become invalid
     // On the other hand - if either of these addresses are NULL, why keep it?
     if (m_pfcnShutdownBlockReasonCreate == NULL || 
-        m_pfcnShutdownBlockReasonDestroy == NULL) {
-      // Make both NULL in case only one was
+        m_pfcnShutdownBlockReasonDestroy == NULL ||
+        m_pfcnSetLayeredWindowAttributes == NULL) {
+      // Make all NULL in case only one was
       m_pfcnShutdownBlockReasonCreate = NULL;
       m_pfcnShutdownBlockReasonDestroy = NULL;
+      m_pfcnSetLayeredWindowAttributes = NULL;
       pws_os::FreeLibrary(m_hUser32);
       m_hUser32 = NULL;
     }
@@ -510,7 +511,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_TOOLBUTTON_LISTTREE, OnToggleView)
   ON_COMMAND(ID_TOOLBUTTON_VIEWREPORTS, OnViewReports)
 
-  ON_COMMAND(ID_TOOLBUTTON_CLOSEFIND, OnHideFindToolBar)
+  ON_COMMAND(ID_TOOLBUTTON_CLOSEFIND, OnHideFindToolbar)
   ON_COMMAND(ID_MENUITEM_FIND, OnToolBarFind)
   ON_COMMAND(ID_MENUITEM_FINDUP, OnToolBarFindUp)
   ON_COMMAND(ID_TOOLBUTTON_FINDCASE, OnToolBarFindCase)
@@ -725,97 +726,12 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_CUSTOMIZETOOLBAR, true, true, true, true},
 };
 
-std::wstring Utf32ToUtf16(uint32_t codepoint)
-{
-  wchar_t wc[3];
-  if (codepoint < 0x10000) {
-    // Length 1
-    wc[0] = static_cast<wchar_t>(codepoint);
-    wc[1] = wc[2] = 0;
-  } else {
-    if (codepoint <= 0x10FFFF) {
-      codepoint -= 0x10000;
-      // Length 2
-      wc[0] = (unsigned short)(codepoint >> 10) + (unsigned short)0xD800;
-      wc[1] = (unsigned short)(codepoint & 0x3FF) + (unsigned short)0xDC00;
-      wc[2] = 0;
-    } else {
-      // Length 1
-      wc[0] = 0xFFFD;
-      wc[1] = wc[2] = 0;
-    }
-  }
-  std::wstring s = wc;
-  return s;
-}
-
-bool DboxMain::IsCharacterSupported(std::wstring &sProtect)
-{
-  HRESULT hr;
-  int cItems, cMaxItems = 2;
-  bool bSupported(false);
-  SCRIPT_ITEM items[3];  // Number should be (cMaxItems + 1)
-
-  ASSERT(sProtect.length() < 3);
-
-  // Itemize - Uniscribe function
-  hr = ScriptItemize(sProtect.c_str(), (int)sProtect.length(), cMaxItems, NULL, NULL, items, &cItems);
-
-  if (SUCCEEDED(hr) == FALSE)
-    return bSupported;
-
-  ASSERT(cItems == 1);
-
-  SCRIPT_CACHE sc = NULL;
-
-  CDC *ptreeDC = m_ctlItemTree.GetDC();
-  HFONT hOldFont;
-  CFont *pFont = Fonts::GetInstance()->GetCurrentFont();
-  hOldFont = (HFONT)ptreeDC->SelectObject(pFont->GetSafeHandle());
-
-  for (int i = 0; i < cItems; i++) {
-    int idx = items[i].iCharPos;
-    int len = items[i + 1].iCharPos - idx;
-    int cMaxGlyphs = len * 2 + 16;  // As recommended by Uniscribe documentation
-    int cGlyphs = 0;
-
-    WORD *pwLogClust = (WORD *)malloc(sizeof(WORD) * cMaxGlyphs);
-    WORD *pwOutGlyphs = (WORD *)malloc(sizeof(WORD) * cMaxGlyphs);
-    SCRIPT_VISATTR *psva = (SCRIPT_VISATTR *)malloc(sizeof(SCRIPT_VISATTR) * cMaxGlyphs);
-
-    // Shape - Uniscribe function
-    hr = ScriptShape(ptreeDC->GetSafeHdc(), &sc, sProtect.substr(idx).c_str(), len, cMaxGlyphs,
-      &items[i].a, pwOutGlyphs, pwLogClust, psva, &cGlyphs);
-
-    if (SUCCEEDED(hr) == FALSE)
-      goto clean;
-
-    if (pwOutGlyphs[0] != 0)
-      bSupported = true;
-
-  clean:
-    // Free up storage
-    free(pwOutGlyphs);
-    free(pwLogClust);
-    free(psva);
-
-    if (SUCCEEDED(hr) == FALSE)
-      break;
-  }
-
-  // Free cache - Uniscribe function
-  ScriptFreeCache(&sc);
-
-  ptreeDC->SelectObject(hOldFont);
-
-  return bSupported;
-}
-
 void DboxMain::InitPasswordSafe()
 {
   PWS_LOGIT;
 
   PWSprefs *prefs = PWSprefs::GetInstance();
+
   // Real initialization done here
   // Requires OnInitDialog to have passed OK
   UpdateAlwaysOnTop();
@@ -919,118 +835,17 @@ void DboxMain::InitPasswordSafe()
   m_ctlItemTree.Initialize();
 
   // Set up fonts before playing with Tree/List views
-  LOGFONT LF;
-  int iFontSize;
+  SetupUserFonts();
 
-  // Get resolution
-  HDC hDC = ::GetWindowDC(GetSafeHwnd());
-  const int Ypixels = GetDeviceCaps(hDC, LOGPIXELSY);
-  ::ReleaseDC(GetSafeHwnd(), hDC);
-
-  // Get current font (as specified in .rc file for IDD_PASSWORDSAFE_DIALOG) & save it
-  // If it's not available, fall back to font used in pre-3.18 versions, rather than
-  // 'System' default.
-  CFont *pCurrentFont = GetFont();
-  pCurrentFont->GetLogFont(&dfltTreeListFont);
-
-  std::wstring szTreeFont = prefs->GetPref(PWSprefs::TreeFont).c_str();
   Fonts *pFonts = Fonts::GetInstance();
 
-  // If we didn't find font specified in rc, and user didn't select anything
-  // fallback to MS Sans Serif
-  if (CString(dfltTreeListFont.lfFaceName) == L"System" &&
-      szTreeFont.empty()) {
-    const CString MS_SanSerif8 = L"-11,0,0,0,400,0,0,0,177,1,2,1,34,MS Sans Serif";
-    szTreeFont = MS_SanSerif8;
-    pFonts->ExtractFont(szTreeFont, dfltTreeListFont); // Save for 'Reset font' action
-  }
-  
-  LOGFONT tree_lf;
-  // either preference or our own fallback
-  if (!szTreeFont.empty() && pFonts->ExtractFont(szTreeFont, tree_lf)) {
-    iFontSize = prefs->GetPref(PWSprefs::TreeFontPtSz);
-    if (iFontSize == 0) {
-      iFontSize = -MulDiv(tree_lf.lfHeight, 72, Ypixels) * 10;
-      prefs->SetPref(PWSprefs::TreeFontPtSz, iFontSize);
-    }
-    pFonts->SetCurrentFont(&tree_lf, iFontSize);
-  } else {
-    pFonts->SetCurrentFont(&dfltTreeListFont, 0);
-    iFontSize = -MulDiv(dfltTreeListFont.lfHeight, 72, Ypixels) * 10;
-    prefs->SetPref(PWSprefs::TreeFontPtSz, iFontSize);
-  }
+  // Verify protect and attachment symbols supported
+  pFonts->VerifySymbolsSupported();
 
-  uint32_t newprotectedsymbol = 0x1f512;
-
-  // Convert UTF-32 to UTF-16 or a surrogate pair of UTF-16
-  std::wstring sProtect = Utf32ToUtf16(newprotectedsymbol);
-  m_ctlItemTree.SetNewProtectedSymbol(sProtect);
-
-  bool bSupported = IsCharacterSupported(sProtect);
-  bool bWindows10 = pws_os::IsWindows10OrGreater();
-
-  // If supported - fine - use it
-  // If not, use it if running under Windows 10 which seems to handle this nicely
-  m_ctlItemTree.UseNewProtectedSymbol(bSupported ? true : bWindows10);
-
-  // Set up Add/Edit font too.
-  std::wstring szAddEditFont = prefs->GetPref(PWSprefs::AddEditFont).c_str();
-
-  if (!szAddEditFont.empty() && pFonts->ExtractFont(szAddEditFont, LF)) {
-    iFontSize = prefs->GetPref(PWSprefs::AddEditFontPtSz);
-    if (iFontSize == 0) {
-      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
-      prefs->SetPref(PWSprefs::AddEditFontPtSz, iFontSize);
-    }
-    pFonts->SetAddEditFont(&LF, iFontSize);
-  } else {
-    // Not set - use add/Edit dialog font - difficult to get so use hard
-    // coded default
-    pFonts->GetDefaultAddEditFont(LF);
-    iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
-    prefs->SetPref(PWSprefs::AddEditFontPtSz, iFontSize);
-    pFonts->SetAddEditFont(&LF, iFontSize);
-  }
-
-  // Set up Password font too.
-  std::wstring szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont).c_str();
-
-  if (!szPasswordFont.empty() && pFonts->ExtractFont(szPasswordFont, LF)) {
-    iFontSize = prefs->GetPref(PWSprefs::PasswordFontPtSz);
-    if (iFontSize == 0) {
-      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
-      prefs->SetPref(PWSprefs::PasswordFontPtSz, iFontSize);
-    }
-    pFonts->SetPasswordFont(&LF, iFontSize);
-  } else {
-    // Not set - use default password font
-    pFonts->SetPasswordFont(NULL, 0);
-    iFontSize = -MulDiv(-16, 72, Ypixels) * 10;  // Taken from default password font 12pt
-    prefs->SetPref(PWSprefs::PasswordFontPtSz, iFontSize);
-  }
-
-  // Set up Notes font too.
-  std::wstring szNotesFont = prefs->GetPref(PWSprefs::NotesFont).c_str();
-
-  if (!szNotesFont.empty() && pFonts->ExtractFont(szNotesFont, LF)) {
-    iFontSize = prefs->GetPref(PWSprefs::NotesFontPtSz);
-    if (iFontSize == 0) {
-      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
-      prefs->SetPref(PWSprefs::NotesFontPtSz, iFontSize);
-    }
-    pFonts->SetNotesFont(&LF, iFontSize);
-  } else {
-    // Not set - use tree/list font set above
-    pFonts->GetCurrentFont(&LF);
-    iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
-    prefs->SetPref(PWSprefs::NotesFontPtSz, iFontSize);
-    pFonts->SetNotesFont(&LF, iFontSize);
-  }
-
-  // transfer the fonts to the tree windows
+  // Transfer the fonts to the tree windows
   m_ctlItemTree.SetUpFont();
   m_ctlItemList.SetUpFont();
-  m_LVHdrCtrl.SetFont(pFonts->GetCurrentFont());
+  m_LVHdrCtrl.SetFont(pFonts->GetTreeListFont());
 
   const CString lastView = prefs->GetPref(PWSprefs::LastView).c_str();
   if (lastView != L"list")
@@ -1063,19 +878,6 @@ void DboxMain::InitPasswordSafe()
   ChangeOkUpdate();
 
   DragAcceptFiles(TRUE);
-
-  CRect rect;
-  prefs->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
-  
-  HRGN hrgnWork = GetWorkAreaRegion();
-  // also check that window will be visible
-  if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) || !RectInRegion(hrgnWork, rect)){
-    GetWindowRect(&rect);
-    SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
-  } else {
-    PlaceWindow(this, &rect, SW_HIDE);
-  }
-  ::DeleteObject(hrgnWork);
 
   // Now do widths!
   if (!cs_ListColumns.IsEmpty())
@@ -1142,6 +944,92 @@ void DboxMain::InitPasswordSafe()
     }
   }
 #endif
+}
+
+void DboxMain::SetupUserFonts()
+{
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  Fonts *pFonts = Fonts::GetInstance();
+
+  LOGFONT LF;
+  int iFontSize;
+  std::wstring szFontPrefString;
+
+  // Get resolution
+  HDC hDC = ::GetWindowDC(GetSafeHwnd());
+  const int Ypixels = GetDeviceCaps(hDC, LOGPIXELSY);
+  ::ReleaseDC(GetSafeHwnd(), hDC);
+
+  // Set up Tree/list font.
+  szFontPrefString = prefs->GetPref(PWSprefs::TreeFont).c_str();
+
+  if (!szFontPrefString.empty() && pFonts->ExtractFont(szFontPrefString, LF)) {
+    iFontSize = prefs->GetPref(PWSprefs::TreeFontPtSz);
+    if (iFontSize == 0) {
+      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+      prefs->SetPref(PWSprefs::TreeFontPtSz, iFontSize);
+    }
+    pFonts->SetTreeListFont(&LF, iFontSize);
+  } else {
+    // Not set - use Tree/List dialog font
+    pFonts->GetDefaultTreeListFont(LF);
+    iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+    prefs->SetPref(PWSprefs::TreeFontPtSz, iFontSize);
+    pFonts->SetTreeListFont(&LF, iFontSize);
+  }
+
+  // Set up Add/Edit font too.
+  szFontPrefString = prefs->GetPref(PWSprefs::AddEditFont).c_str();
+
+  if (!szFontPrefString.empty() && pFonts->ExtractFont(szFontPrefString, LF)) {
+    iFontSize = prefs->GetPref(PWSprefs::AddEditFontPtSz);
+    if (iFontSize == 0) {
+      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+      prefs->SetPref(PWSprefs::AddEditFontPtSz, iFontSize);
+    }
+    pFonts->SetAddEditFont(&LF, iFontSize);
+  } else {
+    // Not set - use Add/Edit dialog font
+    pFonts->GetDefaultAddEditFont(LF);
+    iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+    prefs->SetPref(PWSprefs::AddEditFontPtSz, iFontSize);
+    pFonts->SetAddEditFont(&LF, iFontSize);
+  }
+
+  // Set up Password font too.
+  szFontPrefString = prefs->GetPref(PWSprefs::PasswordFont).c_str();
+
+  if (!szFontPrefString.empty() && pFonts->ExtractFont(szFontPrefString, LF)) {
+    iFontSize = prefs->GetPref(PWSprefs::PasswordFontPtSz);
+    if (iFontSize == 0) {
+      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+      prefs->SetPref(PWSprefs::PasswordFontPtSz, iFontSize);
+    }
+    pFonts->SetPasswordFont(&LF, iFontSize);
+  } else {
+    // Not set - use default password font
+    pFonts->SetPasswordFont(NULL, 0);
+    iFontSize = -MulDiv(-16, 72, Ypixels) * 10;
+    prefs->SetPref(PWSprefs::PasswordFontPtSz, iFontSize);
+  }
+
+  // Set up Notes font too.
+  szFontPrefString = prefs->GetPref(PWSprefs::NotesFont).c_str();
+
+  if (!szFontPrefString.empty() && pFonts->ExtractFont(szFontPrefString, LF)) {
+    iFontSize = prefs->GetPref(PWSprefs::NotesFontPtSz);
+    if (iFontSize == 0) {
+      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+      prefs->SetPref(PWSprefs::NotesFontPtSz, iFontSize);
+    }
+    pFonts->SetNotesFont(&LF, iFontSize);
+  } else {
+    // Not set - use Add/Edit font set
+    pFonts->GetDefaultAddEditFont(LF);
+    iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+    prefs->SetPref(PWSprefs::NotesFontPtSz, iFontSize);
+    pFonts->SetNotesFont(&LF, iFontSize);
+  }
 }
 
 LRESULT DboxMain::OnHotKey(WPARAM wParam, LPARAM )
@@ -1235,11 +1123,18 @@ BOOL DboxMain::OnInitDialog()
 
   CDialog::OnInitDialog();
 
+  if (m_pfcnSetLayeredWindowAttributes) {
+    m_bOnStartupTransparancyEnabled =
+      PWSprefs::GetInstance()->GetPref(PWSprefs::EnableWindowTransparency);
+  }
+
+  // Only do after above OnInitDialog otherwise window will not have been created
+  SetLayered((CWnd *)this);
+
   m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
   m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
 
-  int iData = PWSprefs::GetInstance()->GetPref(PWSprefs::ClosedTrayIconColour);
-  SetClosedTrayIcon(iData);
+  m_ClosedIcon = app.LoadIcon(IDI_CORNERICON);
   m_pTrayIcon = new CSystemTray(this, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
                                 m_LockedIcon, m_RUEList,
                                 PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
@@ -1256,7 +1151,7 @@ BOOL DboxMain::OnInitDialog()
   m_menuTipManager.Install(this);
 
   // Subclass the ListView HeaderCtrl
-  CHeaderCtrl* pHeader = m_ctlItemList.GetHeaderCtrl();
+  CHeaderCtrl *pHeader = m_ctlItemList.GetHeaderCtrl();
   if (pHeader && pHeader->GetSafeHwnd()) {
     m_LVHdrCtrl.SubclassWindow(pHeader->GetSafeHwnd());
   }
@@ -1331,9 +1226,9 @@ BOOL DboxMain::OnInitDialog()
 
   SetInitialDatabaseDisplay();
   if (m_bOpen && PWSprefs::GetInstance()->GetPref(PWSprefs::ShowFindToolBarOnOpen))
-    SetFindToolBar(true);
+    OnShowFindToolbar();
   else
-    OnHideFindToolBar();
+    OnHideFindToolbar();
 
   if (m_bOpen) {
     SelectFirstEntry();
@@ -1353,35 +1248,6 @@ BOOL DboxMain::OnInitDialog()
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
 
   return TRUE;  // return TRUE unless you set the focus to a control
-}
-
-int DboxMain::SetClosedTrayIcon(int &iData, bool bSet)
-{
-  int icon;
-  switch (iData) {
-  case PWSprefs::stiBlack:
-    icon = IDI_TRAY;  // This is black.
-    break;
-  case PWSprefs::stiBlue:
-    icon = IDI_TRAY_BLUE;
-    break;
-  case PWSprefs::stiWhite:
-    icon = IDI_TRAY_WHITE;
-    break;
-  case PWSprefs::stiYellow:
-    icon = IDI_TRAY_YELLOW;
-    break;
-  default:
-    iData = PWSprefs::stiBlack;
-    icon = IDI_TRAY;
-    break;
-  }
-  if (bSet) {
-    ::DestroyIcon(m_ClosedIcon);
-    m_ClosedIcon = app.LoadIcon(icon);
-  }
-
-  return icon;
 }
 
 void DboxMain::OnSetDBID()
@@ -2659,7 +2525,7 @@ BOOL DboxMain::PreTranslateMessage(MSG *pMsg)
       {
         // If Find Toolbar visible, close it and do not pass the ESC along.
         if (m_FindToolBar.IsVisible()) {
-          OnHideFindToolBar();
+          OnHideFindToolbar();
           return TRUE;
         }
         // Do NOT pass the ESC along if preference EscExits is false.
@@ -2991,8 +2857,16 @@ void DboxMain::TellUserAboutExpiredPasswords()
     INT_PTR rc = gmb.MessageBox(cs_text, cs_title, MB_ICONEXCLAMATION | MB_YESNO);
 
     if (rc == IDYES) {
-      CExpPWListDlg dlg(this, expiredEntries, m_core.GetCurFile().c_str());
+      CString csProtect = Fonts::GetInstance()->GetProtectedSymbol().c_str();
+      CString csAttachment = Fonts::GetInstance()->GetAttachmentSymbol().c_str();
+
+      CExpPWListDlg dlg(this, expiredEntries, m_core.GetCurFile().c_str(), csProtect, csAttachment);
       dlg.DoModal();
+
+      // If user has changed anything and has "Save database immediately after any change" - save
+      if (m_core.HasDBChanged() && PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+        SaveImmediately();
+      }
     }
   }
 }
@@ -3301,11 +3175,14 @@ private:
 };
 
 // Returns a list of entries as they appear in tree in DFS order
-void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
+std::vector<pws_os::CUUID> DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
 {
-  // Walk the Tree - either complete tree or only this group
+  std::vector<pws_os::CUUID> vuuidAddedBases;
+
+  // Walk the Tree - either complete tree (may not be the complete DB if a filter is active)
+  // or only the group being exported
   if (hItem == NULL) {
-    // The whole tree
+    // The whole tree (a filter may be active)
     while (NULL != (hItem = const_cast<DboxMain *>(this)->m_ctlItemTree.GetNextTreeItem(hItem))) {
       if (!m_ctlItemTree.ItemHasChildren(hItem)) {
         CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
@@ -3315,17 +3192,26 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
           // This is for exporting Filtered Entries ONLY
           // Walk the reduced Tree but include base entries even if not in the filtered results
           if (m_bFilterActive && pci->IsDependent()) {
-            pci = GetBaseEntry(pci);
+            CItemData *pcibase = GetBaseEntry(pci);
 
             // Only add the base entry once
-            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
-              OIL.push_back(*pci);
+            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pcibase->GetUUID())) == OIL.end()) {
+              OIL.push_back(*pcibase);
+
+              DisplayInfo *pdi = GetEntryGUIInfo(*pcibase);
+              if (pdi == NULL || pdi->list_index == -1) {
+                // The base is not in the filtered results - add to list
+                vuuidAddedBases.push_back(pcibase->GetUUID());
+              }
+            }
           }
         }
       }
     }
   } else {
     // Just this group - used for Export Group
+    const StringX sxThisGroup = m_ctlItemTree.GetGroup(hItem);
+    const StringX sxThisGroupDot = sxThisGroup + L".";
     const HTREEITEM hNextSibling = m_ctlItemTree.GetNextSiblingItem(hItem);
 
     // Get all of the children
@@ -3342,17 +3228,32 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
             OIL.push_back(*pci);
 
           if (pci->IsDependent()) {
-            pci = GetBaseEntry(pci);
+            CItemData *pcibase = GetBaseEntry(pci);
 
             // Only add the base entry once
-            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
-              OIL.push_back(*pci);
+            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pcibase->GetUUID())) == OIL.end()) {
+              OIL.push_back(*pcibase);
+
+              // List this iIncluded base for the report if not in the group being exported
+              StringX sxBaseGroup = pcibase->GetGroup();
+              bool bNotInThisGroup = CompareNoCase(sxThisGroup, sxBaseGroup) != 0;
+              bool bNotInASubgroupOfThisGroup = 
+               sxThisGroupDot.length() < sxBaseGroup.length() ?
+                CompareNoCase(sxThisGroupDot, sxBaseGroup.substr(sxThisGroupDot.length())) != 0 : true;
+             
+              if (bNotInThisGroup && bNotInASubgroupOfThisGroup) {
+                // The base is not in the filtered results - add to list
+                vuuidAddedBases.push_back(pcibase->GetUUID());
+              }
+            }
           }
         }
         hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
       }
     }
   }
+
+  return vuuidAddedBases;
 }
 
 void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
@@ -3404,7 +3305,7 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
     }
 
     if (m_FindToolBar.IsVisible() && !bOpen) {
-      OnHideFindToolBar();
+      OnHideFindToolbar();
     }
   }
 }

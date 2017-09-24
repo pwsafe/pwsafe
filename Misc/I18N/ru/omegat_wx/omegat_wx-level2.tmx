@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx14.dtd">
 <tmx version="1.4">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.1_0_9688" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.2_1_10060:10062" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -2181,6 +2181,16 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Could not lock file, opening read-only
+Locked by</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170814T194141Z" creationid="pm_kan" creationdate="20170814T194140Z">
+        <seg>Не удалось заблокировать файл, контейнер будет открыт «только для чтения»
+Заблокирован</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Could not open file for reading!</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20121224T112906Z">
@@ -2577,6 +2587,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20161105T144839Z">
         <seg>Вид</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Display Password as &amp;QR code</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170814T193835Z" creationid="pm_kan" creationdate="20170814T193835Z">
+        <seg>Показать &amp;QR-код пароля</seg>
       </tuv>
     </tu>
     <tu>
@@ -4626,15 +4644,15 @@ added or existing entries removed during this process.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Note: Empty fields are shown as »*»</seg>
+        <seg>Note: Empty fields are shown as « »</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Примечание. Пустые поля отображаются как «*»</seg>
+        <seg>Примечание. Пустые поля отображаются как « »</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Note: Entry format is »Group»Title»Username»</seg>
+        <seg>Note: Entry format is «Group» «Title» «Username»</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Примечание. Формат элемента: «Группа» «Заголовок» «Имя пользователя»</seg>
@@ -5563,8 +5581,8 @@ to the base entry</seg>
       <tuv xml:lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2017-03-26 19:02+0300
-PO-Revision-Date: 2017-03-26 15:22+0300
+POT-Creation-Date: 2017-08-14 22:36+0300
+PO-Revision-Date: 2017-07-22 21:47+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: 
@@ -5572,11 +5590,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170326T161141Z" creationid="pm_kan" creationdate="20170326T161141Z">
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170814T193756Z" creationid="pm_kan" creationdate="20170814T193756Z">
         <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: &lt;pm_kan@users.sourceforge.net&gt;
-POT-Creation-Date: 2017-03-26 19:11+0300
-PO-Revision-Date: 2017-03-26 19:11+0300
+POT-Creation-Date: 2017-08-14 22:30+0400
+PO-Revision-Date: 2017-08-14 22:30+0400
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: 
 Language: ru_RU
@@ -6561,10 +6579,10 @@ database with matching entries from the other database.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.</seg>
+        <seg>The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20150418T091740Z">
-        <seg>При экспорте TXT- или CSV-файла не␣были соблюдены все требования, так как данные элемента разбиты на несколько строк.</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170814T194328Z" creationid="pm_kan" creationdate="20170814T194328Z">
+        <seg>При импорте TXT- или CSV-файла не␣были соблюдены все требования, так как данные элемента разбиты на несколько строк.</seg>
       </tuv>
     </tu>
     <tu>

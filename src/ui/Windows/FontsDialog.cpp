@@ -139,11 +139,13 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
           Fonts::GetInstance()->GetDefaultPasswordFont(dfltFont);
           break;
         case CFontsDialog::TREELISTFONT:
-        case CFontsDialog::NOTESFONT:
-          memcpy(&dfltFont, &dfltTreeListFont, sizeof(LOGFONT));
+          Fonts::GetInstance()->GetDefaultTreeListFont(dfltFont);
           break;
         case CFontsDialog::ADDEDITFONT:
           Fonts::GetInstance()->GetDefaultAddEditFont(dfltFont);
+          break;
+        case CFontsDialog::NOTESFONT:
+          Fonts::GetInstance()->GetDefaultNotesFont(dfltFont);
           break;
         case CFontsDialog::VKEYBOARDFONT:
           // Shouldn't get here as processed earlier

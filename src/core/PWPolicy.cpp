@@ -32,6 +32,12 @@
 
 PWPolicy::PWPolicy(const StringX &str) : usecount(0)
 {
+  const int maxPWLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDefaultLength);
+  const int maxPWDigitLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDigitMinLength);
+  const int maxPWLowercaseLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWLowercaseMinLength);
+  const int maxPWUppercaseLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWUppercaseMinLength);
+  const int maxPWSymbolLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWSymbolMinLength);
+
   if (str.empty() || str.length() != POL_STR_ENC_LEN) {
     if (!str.empty()) {
       ASSERT(str.length() == POL_STR_ENC_LEN);
@@ -72,9 +78,9 @@ PWPolicy::PWPolicy(const StringX &str) : usecount(0)
   total_sublength = digitminlength + lowerminlength + symbolminlength + upperminlength;
 
   if (flags == 0 || (bhex_flag && bother_flags) ||
-      length > 1024 || total_sublength > length ||
-      digitminlength > 1024 || lowerminlength > 1024 ||
-      symbolminlength > 1024 || upperminlength > 1024) {
+      length > maxPWLength || total_sublength > length ||
+      digitminlength > maxPWDigitLength || lowerminlength > maxPWLowercaseLength ||
+      symbolminlength > maxPWSymbolLength || upperminlength > maxPWUppercaseLength) {
     goto fail;
   }
   return;

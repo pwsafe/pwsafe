@@ -15,6 +15,7 @@
 #include "DboxMain.h"
 #include "CompareResultsDlg.h"
 #include "ShowCompareDlg.h"
+#include "Fonts.h"
 
 #include "core/core.h"
 #include "core/PWScore.h"
@@ -72,6 +73,7 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
                                        CompareData &Conflicts, CompareData &Identical,
                                        CItemData::FieldBits &bsFields,
                                        PWScore *pcore0, PWScore *pcore1,
+                                       CString &csProtect, CString &csAttachment,
                                        CReport *pRpt)
   : CPWResizeDialog(CCompareResultsDlg::IDD, pParent),
   m_OnlyInCurrent(OnlyInCurrent), m_OnlyInComp(OnlyInComp),
@@ -80,7 +82,8 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
   m_pRpt(pRpt), m_bSortAscending(true), m_iSortedColumn(0),
   m_OriginalDBChanged(false),
   m_bTreatWhiteSpaceasEmpty(false),
-  m_ShowIdenticalEntries(BST_UNCHECKED)
+  m_ShowIdenticalEntries(BST_UNCHECKED),
+  m_csProtect(csProtect), m_csAttachment(csAttachment)
 {
 }
 
@@ -110,13 +113,16 @@ void CCompareResultsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CCompareResultsDlg, CPWResizeDialog)
   ON_WM_SIZE()
   ON_WM_INITMENUPOPUP()
+  
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDOK, OnOK)
   ON_BN_CLICKED(IDC_SHOW_IDENTICAL_ENTRIES, OnShowIdenticalEntries)
+  
   ON_NOTIFY(NM_RCLICK, IDC_RESULTLIST, OnItemRightClick)
   ON_NOTIFY(NM_DBLCLK, IDC_RESULTLIST, OnItemDoubleClick)
   ON_NOTIFY(LVN_ITEMCHANGING, IDC_RESULTLIST, OnItemChanging)
   ON_NOTIFY(HDN_ITEMCLICK, IDC_RESULTLISTHDR, OnColumnClick)
+  
   ON_COMMAND(ID_MENUITEM_COMPVIEWEDIT, OnCompareViewEdit)
   ON_COMMAND(ID_MENUITEM_SYNCHRONIZE, OnCompareSynchronize)
   ON_COMMAND(ID_MENUITEM_COPY_TO_ORIGINAL, OnCompareCopyToOriginalDB)
@@ -152,6 +158,8 @@ BOOL CCompareResultsDlg::OnInitDialog()
   DWORD dwExtendedStyle = m_LCResults.GetExtendedStyle();
   dwExtendedStyle |= (LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
   m_LCResults.SetExtendedStyle(dwExtendedStyle);
+  
+  m_LCResults.UpdateRowHeight(false);
 
   CString cs_header;
   int i;
@@ -249,10 +257,10 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
 
       StringX sxTitle = st_data.title;
       if (st_data.bIsProtected0)
-        sxTitle += L" #";
+        sxTitle += m_csProtect;
 
       if (st_data.bHasAttachment0)
-        sxTitle += L" +";
+        sxTitle += m_csAttachment;
       
       m_LCResults.SetItemText(iItem, TITLE, sxTitle.c_str());
 
@@ -279,10 +287,10 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
       m_LCResults.SetItemText(iItem, GROUP, st_data.group.c_str());
       StringX sxTitle = st_data.title;
       if (st_data.bIsProtected0)
-        sxTitle += L" #";
+        sxTitle += m_csProtect;
 
       if (st_data.bHasAttachment0)
-        sxTitle += L" +";
+        sxTitle += m_csAttachment;
 
       m_LCResults.SetItemText(iItem, TITLE, sxTitle.c_str());
       m_LCResults.SetItemText(iItem, USER, st_data.user.c_str());
@@ -334,10 +342,10 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
       m_LCResults.SetItemText(iItem, GROUP, st_data.group.c_str());
       StringX sxTitle = st_data.title;
       if (st_data.bIsProtected0)
-        sxTitle += L" #";
+        sxTitle += m_csProtect;
 
       if (st_data.bHasAttachment0)
-        sxTitle += L" +";
+        sxTitle += m_csAttachment;
 
       m_LCResults.SetItemText(iItem, TITLE, sxTitle.c_str());
       m_LCResults.SetItemText(iItem, USER, st_data.user.c_str());
@@ -1445,6 +1453,8 @@ CCPListCtrlX::~CCPListCtrlX()
 
 BEGIN_MESSAGE_MAP(CCPListCtrlX, CListCtrl)
   //{{AFX_MSG_MAP(CCPListCtrlX)
+  ON_WM_MEASUREITEM_REFLECT()
+  
   ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -1473,7 +1483,21 @@ BOOL CCPListCtrlX::PreTranslateMessage(MSG *pMsg)
     }
   }
   return CListCtrl::PreTranslateMessage(pMsg);
-} 
+}
+
+void CCPListCtrlX::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+  if (!Fonts::GetInstance())
+    return;
+
+  int padding = 4;
+  if (GetExtendedStyle() & LVS_EX_GRIDLINES)
+    padding += 2;
+
+  lpMeasureItemStruct->itemHeight = Fonts::GetInstance()->CalcHeight() + padding;
+  //Remove LVS_OWNERDRAWFIXED style to apply default DrawItem
+  ModifyStyle(LVS_OWNERDRAWFIXED, 0);
+}
 
 bool CCPListCtrlX::IsSelected(DWORD_PTR iRow)
 {
@@ -1495,14 +1519,22 @@ void CCPListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   static COLORREF crWindowText, cfNormalTextBkgrd, crSelectedText, crSelectedBkgrd;
   bool bIsSelected = IsSelected(pLVCD->nmcd.dwItemSpec);
-  
+
+  static bool bchanged_subitem_font(false);
+  static CDC *pDC = NULL;
+  static CFont *pAddEditFont = NULL;
+
   switch (pLVCD->nmcd.dwDrawStage) {
     case CDDS_PREPAINT:
       // PrePaint
+      bchanged_subitem_font = false;
       crWindowText = GetTextColor();
       cfNormalTextBkgrd = GetTextBkColor();
       crSelectedText = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
       crSelectedBkgrd = ::GetSysColor(COLOR_HIGHLIGHT);
+      
+      pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
+      pAddEditFont = Fonts::GetInstance()->GetAddEditFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
 
@@ -1512,9 +1544,10 @@ void CCPListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
         pLVCD->clrText = crWindowText;
         pLVCD->clrTextBk = cfNormalTextBkgrd;
         pLVCD->nmcd.uItemState &= ~CDIS_SELECTED;
-        *pLResult |= CDRF_NEWFONT;
       }
-      *pLResult |= CDRF_NOTIFYSUBITEMDRAW;
+      pDC->SelectObject(pAddEditFont);
+      bchanged_subitem_font = true;
+      *pLResult |= (CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT);
       break;
 
     case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
@@ -1531,6 +1564,15 @@ void CCPListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
       break;
 
+    case CDDS_ITEMPOSTPAINT | CDDS_SUBITEM:
+      // Sub-item PostPaint - restore old font if any
+      if (bchanged_subitem_font) {
+        bchanged_subitem_font = false;
+        pDC->SelectObject(pAddEditFont);
+        *pLResult |= CDRF_NEWFONT;
+      }
+      break;
+
     /*
     case CDDS_PREERASE:
     case CDDS_POSTERASE:
@@ -1542,5 +1584,28 @@ void CCPListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
     */
     default:
       break;
+  }
+}
+
+void CCPListCtrlX::UpdateRowHeight(bool bInvalidate) {
+  // We need to change WINDOWPOS to trigger MeasureItem 
+  // http://www.codeproject.com/Articles/1401/Changing-Row-Height-in-an-owner-drawn-Control
+  CRect rc;
+  GetWindowRect(&rc);
+  WINDOWPOS wp;
+  wp.hwnd = m_hWnd;
+  wp.cx = rc.Width();
+  wp.cy = rc.Height();
+  wp.flags = SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER;
+
+  //Add LVS_OWNERDRAWFIXED style for generating MeasureItem event
+  ModifyStyle(0, LVS_OWNERDRAWFIXED);
+
+  SendMessage(WM_WINDOWPOSCHANGED, 0, (LPARAM)&wp);
+  if (bInvalidate) {
+    Invalidate();
+    int idx = GetTopIndex();
+    if (idx >= 0)
+      EnsureVisible(idx, FALSE);
   }
 }

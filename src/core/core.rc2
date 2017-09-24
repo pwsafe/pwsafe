@@ -47,6 +47,7 @@ BEGIN
   IDSC_FLDNMSYMBOLS      "Symbols"
   IDSC_FLDNMPWPOLICYNAME "Password Policy Name"
   IDSC_FLDNMKBSHORTCUT   "Keyboard Shortcut"
+  IDSC_FLDNMATTREF       "Attachment Reference"
 END
 
 STRINGTABLE

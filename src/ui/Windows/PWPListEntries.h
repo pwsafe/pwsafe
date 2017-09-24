@@ -46,4 +46,6 @@ private:
   StringX m_sxPolicyName;
 
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+
+  CFont *m_pAddEditFont;
 };

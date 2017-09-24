@@ -21,8 +21,9 @@ PWSfileHeader::PWSfileHeader(const PWSfileHeader &h)
   : m_nCurrentMajorVersion(h.m_nCurrentMajorVersion),
     m_nCurrentMinorVersion(h.m_nCurrentMinorVersion),
     m_file_uuid(h.m_file_uuid),
+    m_prefString(h.m_prefString),
     m_displaystatus(h.m_displaystatus),
-    m_prefString(h.m_prefString), m_whenlastsaved(h.m_whenlastsaved),
+    m_whenlastsaved(h.m_whenlastsaved),
     m_lastsavedby(h.m_lastsavedby), m_lastsavedon(h.m_lastsavedon),
     m_whatlastsaved(h.m_whatlastsaved),
     m_DB_Name(h.m_DB_Name), m_DB_Description(h.m_DB_Description), m_RUEList(h.m_RUEList)

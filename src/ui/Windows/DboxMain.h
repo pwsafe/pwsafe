@@ -364,7 +364,7 @@ public:
   {return m_core.TestSelection(bAdvanced, subgroup_name,
                                subgroup_object, subgroup_function, pOIL);}
 
-  void MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem = NULL);
+  std::vector<pws_os::CUUID> MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem = NULL);
   bool MakeMatchingGTUSet(GTUSet &setGTU, const StringX &sxPolicyName) const
   {return m_core.InitialiseGTU(setGTU, sxPolicyName);}
   CItemData *getSelectedItem();
@@ -452,6 +452,11 @@ public:
 
   std::set<StringX> GetAllMediaTypes() const
   {return m_core.GetAllMediaTypes();}
+
+  // For latered Windows
+  PSLWA GetSetLayeredWindowAttributes() { return m_pfcnSetLayeredWindowAttributes; }
+  bool GetInitialTransparencyState() { return m_bOnStartupTransparancyEnabled; }
+  bool SetLayered(CWnd *pWnd, const int value = -1);
 
  protected:
    friend class CSetDBID;  // To access icon creation etc.
@@ -545,7 +550,6 @@ public:
   void HideIcon() { m_pTrayIcon->HideIcon(); }
 
   void SetSystemTrayState(DBSTATE s);
-  int SetClosedTrayIcon(int &icon, bool bSet = true);
   void SetSystemTrayTarget(CWnd *pWnd) { m_pTrayIcon->SetTarget(pWnd); }
 
   HICON CreateIcon(const HICON &hIcon, const int &iIndex,
@@ -611,6 +615,7 @@ public:
   void SaveGUIStatus();
   void RestoreGUIStatus();
 
+  void SetupUserFonts();
   void ChangeFont(const CFontsDialog::FontType iType);
 
   // Generated message map functions
@@ -715,7 +720,6 @@ public:
   afx_msg void OnShowHideDragbar();
   afx_msg void OnOldToolbar();
   afx_msg void OnNewToolbar();
-  afx_msg void OnShowFindToolbar();
   afx_msg void OnExpandAll();
   afx_msg void OnCollapseAll();
   afx_msg void OnChangeTreeFont();
@@ -775,7 +779,8 @@ public:
   afx_msg void OnToolBarFindAdvanced();
   afx_msg void OnToolBarFindReport();
   afx_msg void OnToolBarClearFind();
-  afx_msg void OnHideFindToolBar();
+  afx_msg void OnShowFindToolbar();
+  afx_msg void OnHideFindToolbar();
 
   afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
@@ -828,6 +833,7 @@ private:
   bool m_bInRefresh, m_bInRestoreWindows;
   bool m_bDBInitiallyRO;
   bool m_bViaDCA;
+  bool m_bFindBarShown;
   int m_iDateTimeFieldWidth;
   int m_nColumns;
   int m_nColumnIndexByOrder[CItem::LAST_DATA];
@@ -917,7 +923,6 @@ private:
   void UpdateGroupsInGUI(const std::vector<StringX> &vGroups);
   StringX GetListViewItemText(CItemData &ci, const int &icolumn);
   void DoCommand(Command *pcmd = NULL, PWScore *pcore = NULL, const bool bUndo = true);
-  bool IsCharacterSupported(std::wstring &sProtect);
   
   static const struct UICommandTableEntry {
     UINT ID;
@@ -976,6 +981,9 @@ private:
   PSBR_CREATE m_pfcnShutdownBlockReasonCreate;
   PSBR_DESTROY m_pfcnShutdownBlockReasonDestroy;
 
+  // For Layered Windows
+  PSLWA m_pfcnSetLayeredWindowAttributes;
+
   // Delete/Rename/AutoType Shortcuts
   WPARAM m_wpDeleteMsg, m_wpDeleteKey;
   WPARAM m_wpRenameMsg, m_wpRenameKey;
@@ -983,6 +991,7 @@ private:
   bool m_bDeleteCtrl, m_bDeleteShift;
   bool m_bRenameCtrl, m_bRenameShift;
   bool m_bAutotypeCtrl, m_bAutotypeShift;
+  bool m_bOnStartupTransparancyEnabled;
 
   // Do Autotype
   bool m_bInAT;

@@ -29,12 +29,12 @@
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
+					<Add option="-fPIC" />
+					<Add option="-m64" />
 					<Add option="-g" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=yes --inplace`" />
-					<Add option="-fPIC" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-m64" />
 					<Add option="-Wpedantic" />
 					<Add option="-Wformat=2" />
 					<Add option="-Wunused" />
@@ -48,11 +48,12 @@
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
+					<Add option="-DNO_QR" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
-					<Add option="`wx-config --libs --unicode=yes --debug=yes --inplace`" />
 					<Add option="-m64" />
+					<Add option="`wx-config --libs --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add library="core64d" />
 					<Add library="os64d" />
@@ -103,6 +104,7 @@
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
 					<Add option="-DwxSIZE_T_IS_UINT" />
+					<Add option="-DNO_QR" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -135,19 +137,20 @@
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
-					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
+					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-Wformat=2" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
+					<Add option="-DNO_QR" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
-					<Add option="`wx-config --libs --unicode=yes --debug=no --inplace`" />
 					<Add option="-m64" />
+					<Add option="`wx-config --libs --unicode=yes --debug=no --inplace`" />
 					<Add library="core64" />
 					<Add library="os64" />
 					<Add library="uuid" />
@@ -183,6 +186,7 @@
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
 					<Add option="-DwxSIZE_T_IS_UINT" />
+					<Add option="-DNO_QR" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -220,12 +224,12 @@
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
+					<Add option="-fPIC" />
+					<Add option="-m64" />
 					<Add option="-g" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=yes --inplace`" />
-					<Add option="-fPIC" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-m64" />
 					<Add option="-Wpedantic" />
 					<Add option="-Wformat=2" />
 					<Add option="-Wunused" />
@@ -242,10 +246,11 @@
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
-					<Add option="`wx-config --libs --unicode=yes --debug=yes --inplace`" />
 					<Add option="-m64" />
+					<Add option="`wx-config --libs --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="`pkg-config --libs ykpers-1`" />
+					<Add option="`pkg-config --libs libqrencode`" />
 					<Add library="core64yd" />
 					<Add library="os64yd" />
 					<Add library="uuid" />
@@ -301,6 +306,7 @@
 					<Add option="`wx-config --libs --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="`pkg-config --libs ykpers-1`" />
+					<Add option="`pkg-config --libs libqrencode`" />
 					<Add library="core32yd" />
 					<Add library="os32yd" />
 					<Add library="uuid" />
@@ -330,9 +336,9 @@
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
-					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
+					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-Wformat=2" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-DNDEBUG" />
@@ -341,9 +347,10 @@
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
-					<Add option="`wx-config --libs --unicode=yes --debug=no --inplace`" />
 					<Add option="-m64" />
+					<Add option="`wx-config --libs --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --libs ykpers-1`" />
+					<Add option="`pkg-config --libs libqrencode`" />
 					<Add library="core64y" />
 					<Add library="os64y" />
 					<Add library="uuid" />
@@ -389,6 +396,7 @@
 					<Add option="-m32" />
 					<Add option="`wx-config --libs --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --libs ykpers-1`" />
+					<Add option="`pkg-config --libs libqrencode`" />
 					<Add library="core32y" />
 					<Add library="os32y" />
 					<Add library="uuid" />
@@ -506,6 +514,18 @@
 		<Unit filename="../../src/ui/wxWidgets/pwsclip.h" />
 		<Unit filename="../../src/ui/wxWidgets/pwsmenushortcuts.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/pwsmenushortcuts.h" />
+		<Unit filename="../../src/ui/wxWidgets/pwsqrcodedlg.cpp">
+			<Option target="Debug_L64Y" />
+			<Option target="Debug_L32Y" />
+			<Option target="Release_L64Y" />
+			<Option target="Release_L32Y" />
+		</Unit>
+		<Unit filename="../../src/ui/wxWidgets/pwsqrcodedlg.h">
+			<Option target="Debug_L64Y" />
+			<Option target="Debug_L32Y" />
+			<Option target="Release_L64Y" />
+			<Option target="Release_L32Y" />
+		</Unit>
 		<Unit filename="../../src/ui/wxWidgets/safecombinationchange.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/safecombinationchange.h" />
 		<Unit filename="../../src/ui/wxWidgets/safecombinationentry.cpp" />

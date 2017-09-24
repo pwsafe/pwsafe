@@ -930,7 +930,7 @@ void PWScore::Synchronize(PWScore *pothercore,
     CItemData::BASEUUID, CItemData::ALIASUUID, CItemData::SHORTCUTUUID };
 
   // Turn them off
-  for (int i = 0; i < sizeof(ftInappropriateSyncFields) / sizeof(CItemData::FieldType); i++) {
+  for (size_t i = 0; i < sizeof(ftInappropriateSyncFields) / sizeof(CItemData::FieldType); i++) {
     bsSyncFields.reset(ftInappropriateSyncFields[i]);
   }
 

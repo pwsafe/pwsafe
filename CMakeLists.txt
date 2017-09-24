@@ -79,6 +79,7 @@ endif (pwsafe_REVISION)
 
 # Configurable options:
 option (NO_YUBI "Set ON to disable YubiKey support" OFF)
+option (NO_GTEST "Set ON to disable gtest unit testing" OFF)
 if (WIN32)
   option (WX_WINDOWS "Build wxWidget under Windows" OFF)
   if (WX_WINDOWS)
@@ -111,14 +112,20 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   else (NOT NO_QR)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_QR")
   endif (NOT NO_QR)
-  set (GTEST_ROOT "/usr/src/gtest/build"
-    CACHE PATH "The root directory of the gtest install prefix")
+  if (NOT NO_GTEST)
+    set (GTEST_ROOT "/usr/src/gtest/build"
+      CACHE PATH "The root directory of the gtest install prefix")
+  endif(NOT NO_GTEST)
 else(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  set (GTEST_MSVC_SEARCH "MT")
-  set (GTEST_ROOT ""
-    CACHE PATH "The root directory of the gtest install prefix")
+  if (NOT NO_GTEST)
+    set (GTEST_MSVC_SEARCH "MT")
+    set (GTEST_ROOT ""
+        CACHE PATH "The root directory of the gtest install prefix")
+  endif(NOT NO_GTEST)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-find_package(GTest REQUIRED)
+if (NOT NO_GTEST)
+   find_package(GTest REQUIRED)
+endif(NOT NO_GTEST)
 
 if (NOT WIN32 OR WX_WINDOWS)
   if (NOT WIN32)
@@ -195,8 +202,9 @@ enable_testing()
 
 # Common configurations
 
-
-include_directories (${GTEST_INCLUDE_DIRS})
+if (NOT NO_GTEST)
+  include_directories (${GTEST_INCLUDE_DIRS})
+endif(NOT NO_GTEST)
 include_directories (${PROJECT_SOURCE_DIR}/src/os)
 include_directories (${PROJECT_SOURCE_DIR}/src/core)
 include_directories (${PROJECT_BINARY_DIR})
@@ -284,7 +292,9 @@ endif (WIN32)
 
 add_subdirectory (src/os) # os-specific library
 add_subdirectory (src/core) # core library
-add_subdirectory (src/test) # tests (gtest framework)
+if (NOT NO_GTEST)
+   add_subdirectory (src/test) # tests (gtest framework)
+endif(NOT NO_GTEST)
 add_subdirectory (help) # online help
 if (WIN32 AND NOT WX_WINDOWS)
   add_subdirectory (src/ui/Windows)
@@ -307,6 +317,7 @@ endif()
 
 if (NOT WIN32)
   add_executable(pwsafe ${PWSAFE_SRCS})
+  set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
   if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   # squash lintian hardening-no-relro warning, probably good for all Linuxen
   set_target_properties(pwsafe PROPERTIES LINK_FLAGS "-z relro")
@@ -325,7 +336,6 @@ else (NOT WIN32)
 #                            LINK_FLAGS "/ENTRY:\"wWinMainCRTStartup\"")
    endif (NOT WX_WINDOWS)
 endif (NOT WIN32)
-set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
 target_link_libraries(pwsafe core os)
 if (XML_XERCESC)
   target_link_libraries(pwsafe ${XercesC_LIBRARY})

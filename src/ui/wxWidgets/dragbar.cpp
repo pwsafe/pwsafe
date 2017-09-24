@@ -198,14 +198,18 @@ wxSize CDragBar::GetInvalidatedIconRange(const wxRect& rect)
 }
 void CDragBar::OnPaint(wxPaintEvent& /*evt*/)
 {
+  wxRect rcWin = GetRect(); //draw along the entire window rect, since clipping rect is always (0, 0, -1, -1)
+
   wxPaintDC dc(this);
   dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE)));
+
+  //draw the dragbar background, which some platforms don't handle automatically
+  dc.DrawRectangle(rcWin);
 
   wxPen shadow(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNSHADOW));
   dc.SetPen(shadow);
 
   //draw a shadow along the bottom or the right edge, depending on orientation
-  wxRect rcWin = GetRect(); //draw along the entire window rect, since clipping rect is always (0, 0, -1, -1)
   if (m_orientation == wxHORIZONTAL)
     dc.DrawLine(rcWin.GetBottomLeft(), rcWin.GetBottomRight());
   else
@@ -240,7 +244,7 @@ wxSize CDragBar::DoGetBestSize() const
 {
   switch(m_orientation) {
     case wxHORIZONTAL:
-      return wxSize(std::max(GetToolX(m_items.size()), GetParent()->GetSize().GetWidth()), 2*m_margins.GetHeight() + m_bmpHeight + 1);
+      return wxSize(std::max(GetToolX(m_items.size()), GetParent()->GetSize().GetWidth()), 2*m_margins.GetHeight() + m_bmpHeight + 10);
     case wxVERTICAL:
       return wxSize(2*m_margins.GetWidth() + m_bmpWidth + 1, std::max(GetParent()->GetSize().GetHeight(), GetToolY(m_items.size())));
     default:

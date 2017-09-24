@@ -953,8 +953,8 @@ msgid "(Also used to replace periods in Title field)"
 msgstr "(주제 필드의 구분자를 대체하기 위해 사용됨)"
 
 #. Resource IDs: (65535)
-msgid "(Double-click an entry to edit it)"
-msgstr "(항목을 더블클릭하여 편집하기)"
+msgid "(Double-click an entry to edit it. Entries in italics are protected and need to be unprotected first.)"
+msgstr ""
 
 #. Resource IDs: (5957)
 msgid "(Empty)"
@@ -963,6 +963,10 @@ msgstr ""
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
 msgstr "(변경사항 반영을 위해 Password Safe를 재시작해야 합니다.)"
+
+#. Resource IDs: (65535)
+msgid "(Restart of PasswordSafe required to enable.)"
+msgstr ""
 
 #. Resource IDs: (1285, 1287, 1289, 1291)
 msgid "(at least"
@@ -1597,6 +1601,10 @@ msgstr ""
 msgid "Attachment Properties"
 msgstr ""
 
+#. Resource IDs: (3074)
+msgid "Attachment Reference"
+msgstr ""
+
 #. Resource IDs: (5976)
 msgid "Attachment not found"
 msgstr ""
@@ -1793,6 +1801,7 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (5410)
+#, c-format
 msgid "Can only warn between %d and %d days before passwords expire"
 msgstr "비밀번호 만료 전 %d~%d일 사이에만 경고할 수 있습니다."
 
@@ -2540,6 +2549,7 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr ""
 
 #. Resource IDs: (5294)
+#, c-format
 msgid "Default number of saved password history entries must be between %d and %d."
 msgstr "저장된 비밀번호 내역 항목 수의 기본값은 반드시 %d 에서 %d 사이"
 
@@ -2807,6 +2817,10 @@ msgstr "비어있는 %d째 줄이 생략됨"
 msgid "Enable"
 msgstr ""
 
+#. Resource IDs: (1591)
+msgid "Enable Transparency"
+msgstr ""
+
 #. Resource IDs: (61866)
 #, c-format
 msgid "Encountered a hardware I/O error while accessing %1."
@@ -2888,10 +2902,6 @@ msgstr "정수를 입력하세요."
 #. Resource IDs: (61723)
 msgid "Enter a time."
 msgstr "시각을 입력하세요."
-
-#. Resource IDs: (65535)
-msgid "Enter a value between 0 and 99 (a value of 0 disables icon overlay):"
-msgstr ""
 
 #. Resource IDs: (61714)
 #, c-format
@@ -3956,6 +3966,7 @@ msgid "Incorrect password"
 msgstr "일치하지 않는 비밀번호"
 
 #. Resource IDs: (5387)
+#, c-format
 msgid "Incremented Number [%d-%d]"
 msgstr "증가수 [%d-%d]"
 
@@ -3980,10 +3991,6 @@ msgstr ""
 #. Resource IDs: (1542)
 msgid "Initial Tree View"
 msgstr "트리 보기 기본값"
-
-#. Resource IDs: (65535)
-msgid "Initial system tray icon"
-msgstr "시스템 트레이 아이콘 기본값"
 
 #. Resource IDs: (3350)
 msgid "Input string is empty"
@@ -4305,6 +4312,7 @@ msgid "Maximum"
 msgstr ""
 
 #. Resource IDs: (5392)
+#, c-format
 msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
 msgstr "계속 가능한 백업 파일본의 개수는\n반드시 %d 에서 %d 사이여야 합니다."
 
@@ -4767,6 +4775,10 @@ msgstr "최소 한 개 이상의 자동저장된 문서가 발견되었습니다
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
 msgstr ""
 
+#. Resource IDs: (1595)
+msgid "Opaque"
+msgstr ""
+
 #. Resource IDs: (61440)
 msgid "Open"
 msgstr "열기"
@@ -5000,6 +5012,7 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "비밀번호 길이가 최소 규칙들의 합보다 적습니다"
 
 #. Resource IDs: (5293)
+#, c-format
 msgid "Password length must be between %d and %d characters."
 msgstr ""
 
@@ -5702,17 +5715,9 @@ msgstr "키보드 배열 선택:"
 msgid "Select Location for Intermediate Backups"
 msgstr "긴급 백업본 저장 위치 지정"
 
-#. Resource IDs: (65535)
-msgid "Select Locked Text Color:"
-msgstr ""
-
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
 msgstr "테스트 덤프 종류 설정"
-
-#. Resource IDs: (65535)
-msgid "Select Unlocked Text Color:"
-msgstr ""
 
 #. Resource IDs: (61717)
 msgid "Select a button."
@@ -5789,10 +5794,6 @@ msgstr ""
 
 #. Resource IDs: (32256 - Menu)
 msgid "Set Database ID"
-msgstr ""
-
-#. Resource IDs: (552)
-msgid "Set Database Index to overlay on System Tray icon"
 msgstr ""
 
 #. Resource IDs: (5295)
@@ -6372,6 +6373,10 @@ msgstr ""
 msgid "The following attachments are not referred to by any entry."
 msgstr ""
 
+#. Resource IDs: (6055)
+msgid "The following base entries have been exported because one or more of their dependents have been included."
+msgstr ""
+
 #. Resource IDs: (3375)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "다음 항목들이 인식되었으나 그룹/제목,  사용자 이름과 비밀번호만 처리됩니다:"
@@ -6425,8 +6430,8 @@ msgid "The following entries were duplicates of an existing entry."
 msgstr "다음 항목은 같은 항목의 복제본입니다."
 
 #. Resource IDs: (65535)
-msgid "The following entries' passwords are about to expire or expired:"
-msgstr "다음 항목들의 비밀번호가 만료될 예정임:"
+msgid "The following entries' passwords are about to expire or have already expired:"
+msgstr ""
 
 #. Resource IDs: (5481)
 #, c-format
@@ -6583,6 +6588,11 @@ msgstr "이 항목은 기본 보조 항목입니다."
 msgid "This is an alias of:"
 msgstr ""
 
+#. Resource IDs: (5121)
+#, c-format
+msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
+msgstr ""
+
 #. Resource IDs: (61710)
 #, c-format
 msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
@@ -6628,6 +6638,7 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr ""
 
 #. Resource IDs: (5289)
+#, c-format
 msgid "Timeout period must be between %d and %d minutes."
 msgstr ""
 
@@ -7148,6 +7159,10 @@ msgstr "Who saved"
 #. Resource IDs: (1385)
 msgid "Win32 Unhandled Exception"
 msgstr "Win32 Unhandled Exception"
+
+#. Resource IDs: (65535)
+msgid "Window Transparency"
+msgstr ""
 
 #. Resource IDs: (5799)
 msgid "Windows Registry"
@@ -7858,10 +7873,6 @@ msgstr "begins with"
 msgid "between"
 msgstr "between"
 
-#. Resource IDs: (5665)
-msgid "bottom"
-msgstr "bottom"
-
 #. Resource IDs: (3371)
 msgid "changed but not yet saved to database"
 msgstr "변경되었지만 데이터베이스에 저장되지 않음"
@@ -8225,6 +8236,10 @@ msgstr "will expire"
 #, c-format
 msgid "within %d day(s)"
 msgstr "within %d day(s)"
+
+#. Resource IDs: (1594)
+msgid "xx%"
+msgstr ""
 
 #. Resource IDs: (8004)
 msgid "xxxxxx"

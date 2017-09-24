@@ -127,6 +127,7 @@ public:
     IgnoreHelpLoadError, // Only under WX
     VKPlaySound, // Windows only
     ListSortAscending,
+    EnableWindowTransparency,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
@@ -138,7 +139,8 @@ public:
     OptShortcutColumnWidth, ShiftDoubleClickAction, DefaultAutotypeDelay,
     DlgOrientation, TimedTaskChainDelay,
     AutotypeSelectAllKeyCode, AutotypeSelectAllModMask, //X only
-    TreeFontPtSz, PasswordFontPtSz, NotesFontPtSz, AddEditFontPtSz,
+    TreeFontPtSz, PasswordFontPtSz, NotesFontPtSz, AddEditFontPtSz, VKFontPtSz,
+    WindowTransparency,
     NumIntPrefs};
 
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
@@ -168,9 +170,6 @@ public:
   // for Backup Mask
   enum {minBKSFX = 0, BKSFX_None = 0, BKSFX_DateTime = 1, BKSFX_IncNumber = 2,
     maxBKSFX = 2};
-
-  // for System Tray icon color
-  enum {stiBlack = 0, stiBlue = 1, stiWhite = 2, stiYellow = 3};
 
   // For Password Policy
   // Preferences changed (Database or Application or Shortcuts)
