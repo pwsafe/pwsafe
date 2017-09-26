@@ -472,10 +472,7 @@ void DboxMain::OnClose()
 
   // We will allow DB Close to close open dialogs IFF the DB is open in R-O and any open
   // dialogs can be closed
-  bool bCloseOpenDialogs = IsDBReadOnly();
-  if (bCloseOpenDialogs && CPWDialog::GetDialogTracker()->AnyOpenDialogs()) {
-    bCloseOpenDialogs = CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
-  }
+  bool bCloseOpenDialogs = IsDBReadOnly() && CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
 
   if (bCloseOpenDialogs) {
     // Close all open dialogs - R-O mode ONLY + as above
@@ -3991,10 +3988,7 @@ void DboxMain::OnOK()
 
   // We will allow pgm Exit to close open dialogs IFF the DB is open in R-O and any open
   // dialogs can be closed
-  bool bCloseOpenDialogs = IsDBReadOnly();
-  if (bCloseOpenDialogs && CPWDialog::GetDialogTracker()->AnyOpenDialogs()) {
-    bCloseOpenDialogs = CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
-  }
+  bool bCloseOpenDialogs = IsDBReadOnly() && CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
 
   if (bCloseOpenDialogs) {
     // Close all open dialogs - R-O mode ONLY + as above
