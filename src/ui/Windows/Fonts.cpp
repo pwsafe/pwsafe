@@ -32,20 +32,20 @@ static LOGFONT dfltPasswordLogfont = {
   -16, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, FF_MODERN | FIXED_PITCH,
   L'C', L'o', L'n', L's', L'o', L'l', L'a', L's', L'\0'};
 
-// 10pt Segoe UI Symbol Regular
+// 10pt Segoe UI Regular
 static LOGFONT dfltTreeListFont = {
   -13, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, FF_MODERN | FF_SWISS,
-  L'S', L'e', L'g', L'o', L'e', L' ', L'U', L'I', L' ', L'S', L'y', L'm', L'b', L'o', L'l', L'\0'};
+  L'S', L'e', L'g', L'o', L'e', L' ', L'U', L'I', L'\0'};
 
-// 10pt Segoe UI Symbol Regular
+// 10pt Segoe UI Regular
 static LOGFONT dfltAddEditLogfont = {
   -13, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, FF_MODERN | FF_SWISS,
-  L'S', L'e', L'g', L'o', L'e', L' ', L'U', L'I', L' ', L'S', L'y', L'm', L'b', L'o', L'l', L'\0'};
+  L'S', L'e', L'g', L'o', L'e', L' ', L'U', L'I', L'\0'};
 
-// 10pt Segoe UI Symbol Regular
+// 10pt Segoe UI Regular
 static LOGFONT dfltNotesLogfont = {
   -13, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, FF_MODERN | FF_SWISS,
-  L'S', L'e', L'g', L'o', L'e', L' ', L'U', L'I', L' ', L'S', L'y', L'm', L'b', L'o', L'l', L'\0'};
+  L'S', L'e', L'g', L'o', L'e', L' ', L'U', L'I', L'\0'};
 
 // Bug in MS TreeCtrl and CreateDragImage. During Drag, it doesn't show
 // the entry's text as well as the drag image if the font is not MS Sans Serif !!!!

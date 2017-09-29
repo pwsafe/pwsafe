@@ -587,15 +587,14 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       }
     }
 
-    // We will allow Close & Exit IFF the DB is open in R-O and any open
-    // dialogs can be closed - otherwise we remove the menu items
-    bool bRemoveMenuItems = !m_pParent->IsDBReadOnly();
-    if (!bRemoveMenuItems) {
-      bRemoveMenuItems = CPWDialog::GetDialogTracker()->AnyOpenDialogs() &&
-                           !CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
-    }
+    // We will allow Close & Exit if there are no open dialogs OR
+    // the DB is open in R-O and any open dialogs can be closed.
+    // Otherwise we remove the menu items
+    bool allowCloseExit = (!CPWDialog::GetDialogTracker()->AnyOpenDialogs() ||
+                           (m_pParent->IsDBReadOnly() &&
+                            CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs()));
 
-    if (bRemoveMenuItems) {
+    if (!allowCloseExit) {
       // Delete Close
       pContextMenu->RemoveMenu(ID_MENUITEM_CLOSE, MF_BYCOMMAND);
       // Delete Exit
