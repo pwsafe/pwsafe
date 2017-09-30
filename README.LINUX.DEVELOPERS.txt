@@ -28,7 +28,7 @@ git
 libgtest-dev
 libqrencode-dev
 libuuid1
-libwxgtk3.0-dbg (See note 2 below)
+libwxgtk3.1-0-unofficial-dbg (See note 2 below)
 libwxgtk3.0-dev (See note 2 below)
 libxerces-c-dev
 libxt-dev
@@ -79,8 +79,11 @@ Note #2 - wxWidgets 3.0
 
 Some distributions still don't provide wxWidgets 3.0. In this case,
 you can either:
-(a) Get the packages from another repository, as described here:
-http://codelite.org/LiteEditor/WxWidgets30Binaries
+(a) Get the packages from an unofficial repository:
+$ apt-key adv --fetch-keys http://repos.codelite.org/CodeLite.asc
+$ apt-add-repository 'deb http://repos.codelite.org/wx3.1.0/debian/ stretch libs' (hint: see http://codelite.org/LiteEditor/WxWidgets31Binaries#toc2 for the correct contents of that line.  Ignore the apt-get and all steps thereafter in that document)
+$ aptitude update
+$ aptitude install libwxgtk3.0-dev libwxbase3.1-0-unofficial-dbg
 or
 (b) Download the sources from here
 http://www.wxwidgets.org/downloads/
