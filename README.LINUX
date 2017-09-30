@@ -11,12 +11,8 @@ Currently Debian 8.0, Ubuntu 13.04 and Fedora 22 are supported, 32 and
 64 bit systems. Slackware is independently supported, see below.
 
 3. Installation on Debian or Ubuntu:
-3.1 Download the .deb file that corresponds to your distribution.
-3.2 Install it using dpkg:
-$ sudo dpkg -i passwordsafe-*.deb
-Dpkg will complain if prerequisite packages are missing. To install
-the missing packages:
-$ sudo aptitude install missing-pkgX missing-pkgY
+The release does not include .deb files.  See README.LINUX.DEVELOPERS.txt
+and follow that process for building your own .deb file, and install it.
 
 4. Installation on Fedora:
 3.1 Download the .rpm file that corresponds to your distribution.
