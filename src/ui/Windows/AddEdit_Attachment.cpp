@@ -116,6 +116,9 @@ BOOL CAddEdit_Attachment::OnInitDialog()
 
     // Get other properties
     m_csMediaType = M_attachment().GetMediaType().c_str();
+    if (m_csMediaType == L"unknown") {
+      m_csMediaType.LoadString(IDS_UNKNOWN);
+    }
 
     wchar_t szFileSize[256];
     StrFormatByteSize(M_attachment().GetContentSize(), szFileSize, 256);
