@@ -16,7 +16,7 @@ respectively.
 If you don't find the package for the distribution of your choice, you
 can contact the developers via https://pwsafe.org/contact.php or build
 it yourself according to the instuctions listed in
-README.LINUX.DEVELOPERS.txt.
+README.LINUX.DEVELOPERS.md.
 Slackware is independently supported, see below.
 
 3. Installation on Debian or Ubuntu:

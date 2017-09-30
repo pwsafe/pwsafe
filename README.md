@@ -22,7 +22,7 @@ ME, NT, 2000, XP, Vista as well as PocketPC. Support for additional
 platforms is planned for future releases.
 
 Linux packages are also available for popular distributions. See
-README.LINUX for more details.
+README.LINUX.md for more details.
 
 FreeBSD is also supported. See README.FREEBSD.
 
