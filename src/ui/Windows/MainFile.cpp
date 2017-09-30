@@ -511,6 +511,8 @@ int DboxMain::Close(const bool bTrySave)
   m_core.SafeUnlockCurFile();
   m_core.SetCurFile(L"");
 
+  SetDBInitiallyRO(false);
+
   CAddEdit_DateTimes::m_bShowUUID = false;
 
   // Reset core and clear ALL associated data
