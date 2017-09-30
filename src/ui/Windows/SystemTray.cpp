@@ -351,7 +351,7 @@ CString CSystemTray::GetTooltipText() const
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray notification window stuff
 
-BOOL CSystemTray::SetNotificationWnd(CWnd* pWnd)
+BOOL CSystemTray::SetNotificationWnd(CWnd *pWnd)
 {
   if (!m_bEnabled) return FALSE;
 
@@ -587,7 +587,14 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       }
     }
 
-    if (CPWDialog::GetDialogTracker()->AnyOpenDialogs()) {
+    // We will allow Close & Exit if there are no open dialogs OR
+    // the DB is open in R-O and any open dialogs can be closed.
+    // Otherwise we remove the menu items
+    bool allowCloseExit = (!CPWDialog::GetDialogTracker()->AnyOpenDialogs() ||
+                           (m_pParent->IsDBReadOnly() &&
+                            CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs()));
+
+    if (!allowCloseExit) {
       // Delete Close
       pContextMenu->RemoveMenu(ID_MENUITEM_CLOSE, MF_BYCOMMAND);
       // Delete Exit

@@ -90,15 +90,7 @@ public:
   HTREEITEM FindItem(const CString &path, HTREEITEM hRoot);
   const StringX &GetDroppedFile() const {return m_droppedFile;}
 
-  void UseNewProtectedSymbol(const bool bUseNew)
-  { m_bUseNew = bUseNew; }
-  bool IsUsingNewProtectedSymbol() { return m_bUseNew; }
-  void SetNewProtectedSymbol(const std::wstring sProtectSymbol)
-  { m_sProtectSymbol = sProtectSymbol; }
-  std::wstring GetNewProtectedSymbol()
-  { return m_sProtectSymbol; }
-
-protected:
+ protected:
   virtual BOOL PreTranslateMessage(MSG *pMsg);
 
   //{{AFX_MSG(CPWTreeCtrlX)
@@ -180,8 +172,8 @@ private:
   bool m_bUseHighLighting;
   std::vector<StringX> m_vModifiedNodes;
 
-  bool m_bUseNew;
-  std::wstring m_sProtectSymbol;
+  bool m_bUseNewProtectedSymbol, m_bUseNewAttachmentSymbol;
+  std::wstring m_sProtectSymbol, m_sAttachmentSymbol;
 };
 
 /**

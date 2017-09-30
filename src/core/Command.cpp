@@ -45,8 +45,8 @@
 using pws_os::CUUID;
 
 Command::Command(CommandInterface *pcomInt)
-:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0), m_CommandDBChange(NONE),
-   m_CommandChangeType(NONE), m_bInMultiCommand(false)
+:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_bInMultiCommand(false),
+   m_RC(0), m_CommandChangeType(NONE), m_CommandDBChange(NONE)
 {
 }
 

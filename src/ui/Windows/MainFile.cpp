@@ -63,6 +63,9 @@ using pws_os::CUUID;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+extern HRGN GetWorkAreaRegion();
+extern const TCHAR *GROUPTITLEUSERINCHEVRONS;
+
 static void DisplayFileWriteError(INT_PTR rc, const StringX &cs_newfile)
 {
   ASSERT(rc != PWScore::SUCCESS);
@@ -127,6 +130,7 @@ BOOL DboxMain::OpenOnInit()
   MFCAsker q;
   MFCReporter r;
   CReport Rpt;
+  CRect rect;
 
   if (!bAskerSet)
     m_core.SetAsker(&q);
@@ -252,6 +256,20 @@ BOOL DboxMain::OpenOnInit()
   }
 
   PostOpenProcessing();
+
+  // Now get window sizes
+  PWSprefs::GetInstance()->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
+
+  HRGN hrgnWork = GetWorkAreaRegion();
+  // also check that window will be visible
+  if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) ||
+    !RectInRegion(hrgnWork, rect)) {
+    GetWindowRect(&rect);
+    SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
+  } else {
+    PlaceWindow(this, &rect, SW_HIDE);
+  }
+  ::DeleteObject(hrgnWork);
 
   bool bFileIsReadOnly;
   pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
@@ -451,6 +469,15 @@ int DboxMain::NewFile(StringX &newfilename)
 void DboxMain::OnClose()
 {
   PWS_LOGIT;
+
+  // We will allow DB Close to close open dialogs IFF the DB is open in R-O and any open
+  // dialogs can be closed
+  bool bCloseOpenDialogs = IsDBReadOnly() && CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
+
+  if (bCloseOpenDialogs) {
+    // Close all open dialogs - R-O mode ONLY + as above
+    CPWDialog::GetDialogTracker()->CloseOpenDialogs();
+  }
 
   Close();
 }
@@ -1673,6 +1700,7 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   OrderedItemList OIL;
   CString cs_temp;
   std::vector<StringX> vEmptyGroups;
+  std::vector<pws_os::CUUID> vuuidAddedBases;
 
   std::wstring str_text;
   LoadAString(str_text, IDS_RPTEXPORTDB);
@@ -1685,9 +1713,11 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
 
   if (nID == ID_MENUITEM_EXPORTGRP2DB || nID == ID_MENUITEM_EXPORTFILTERED2DB) {
     // Note: MakeOrderedItemList gets its members by walking the
-    // tree therefore, if a filter is active, it will ONLY export
-    // those being displayed.
-      MakeOrderedItemList(OIL, (nID == ID_MENUITEM_EXPORTGRP2DB) ? m_ctlItemTree.GetSelectedItem() : NULL);
+    // tree therefore, if a filter is active, it will only export
+    // those being displayed - except it will include bases of eligible entries
+    // that not in the group or displayed because of the filter.
+    vuuidAddedBases = MakeOrderedItemList(OIL,
+                     (nID == ID_MENUITEM_EXPORTGRP2DB) ? m_ctlItemTree.GetSelectedItem() : NULL);
 
     // Get empty groups being exported
     std::vector<StringX> vAllEmptyGroups;
@@ -1729,7 +1759,7 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   export_core.NewFile(sx_ExportKey);
   export_core.SetApplicationNameAndVersion(AfxGetAppName(), app.GetOSMajorMinor());
   rc = export_core.WriteExportFile(sx_Filename, &OIL, &m_core, m_core.GetReadFileVersion(), 
-                                   vEmptyGroups, bExportDBFilters, prpt);
+                                   vEmptyGroups, bExportDBFilters, vuuidAddedBases, prpt);
 
   OIL.clear();
   export_core.ClearDBData();
@@ -1738,8 +1768,22 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
     DisplayFileWriteError(rc, sx_Filename);
   }
 
-  prpt->EndReport();
+  if (!vuuidAddedBases.empty()) {
+    prpt->WriteLine();
+    CString csMessage(MAKEINTRESOURCE(IDS_INCLUDEDBASES));
+    prpt->WriteLine(csMessage, true);
 
+    for (size_t i = 0; i < vuuidAddedBases.size(); i++) {
+      ItemListIter iter = Find(vuuidAddedBases[i]);
+      StringX sx_exported;
+      Format(sx_exported, GROUPTITLEUSERINCHEVRONS,
+        iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(), iter->second.GetUser().c_str());
+      prpt->WriteLine(sx_exported.c_str(), true);
+    }
+  }
+
+  prpt->EndReport();
+    
   return PWScore::SUCCESS;
 }
 
@@ -3333,10 +3377,15 @@ CString DboxMain::ShowCompareResults(const StringX sx_Filename1,
                                      const StringX sx_Filename2,
                                      PWScore *pothercore, CReport *prpt)
 {
+  CString csProtect = Fonts::GetInstance()->GetProtectedSymbol().c_str();
+  CString csAttachment = Fonts::GetInstance()->GetAttachmentSymbol().c_str();
+
+
   // Can't do UI from a worker thread!
   CCompareResultsDlg CmpRes(this, m_list_OnlyInCurrent, m_list_OnlyInComp,
                             m_list_Conflicts, m_list_Identical,
-                            m_bsFields, &m_core, pothercore, prpt);
+                            m_bsFields, &m_core, pothercore,
+                            csProtect, csAttachment, prpt);
 
   CmpRes.m_scFilename1 = sx_Filename1;
   CmpRes.m_scFilename2 = sx_Filename2;
@@ -3481,11 +3530,8 @@ LRESULT DboxMain::OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM )
     pELLE->sx_group = pci->GetGroup();
     pELLE->sx_title = pci->GetTitle();
     pELLE->sx_user  = pci->GetUser();
-    if (pci->IsProtected())
-      pELLE->sx_title += L" #";
-
-    if (pci->HasAttRef())
-      pELLE->sx_title += L" +";
+    pELLE->bIsProtected = pci->IsProtected();
+    pELLE->bHasAttachment = pci->HasAttRef();
 
     // Update time fields
     time_t tttXTime;
@@ -3939,6 +3985,15 @@ void DboxMain::OnOK()
   PWS_LOGIT;
 
   SavePreferencesOnExit();
+
+  // We will allow pgm Exit to close open dialogs IFF the DB is open in R-O and any open
+  // dialogs can be closed
+  bool bCloseOpenDialogs = IsDBReadOnly() && CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
+
+  if (bCloseOpenDialogs) {
+    // Close all open dialogs - R-O mode ONLY + as above
+    CPWDialog::GetDialogTracker()->CloseOpenDialogs();
+  }
 
   int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
   if (rc == PWScore::SUCCESS || rc == PWScore::USER_EXIT) {

@@ -101,7 +101,6 @@ BOOL CManagePSWDPols::OnInitDialog()
     GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
 
     // Hide cancel button & change OK button text
-    GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
     GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
 
     // Change button text
@@ -165,9 +164,9 @@ BOOL CManagePSWDPols::OnInitDialog()
   m_PolicyEntries.GetHeaderCtrl()->SetDlgCtrlID(IDC_POLICYENTRIES_HEADER);
 
   // BR1108 - Allow user to config these fonts as well
-  // Currently use same font as specified for list/tree view
-  m_PolicyNames.SetFont(Fonts::GetInstance()->GetCurrentFont());
-  m_PolicyDetails.SetFont(Fonts::GetInstance()->GetCurrentFont());
+  // Currently use same font as specified for Add/Edit
+  m_PolicyNames.SetFont(Fonts::GetInstance()->GetAddEditFont());
+  m_PolicyDetails.SetFont(Fonts::GetInstance()->GetAddEditFont());
 
   CString cs_text;
 

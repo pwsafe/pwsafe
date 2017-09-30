@@ -67,6 +67,8 @@ public:
   void RemoveOpenDialog(CWnd *dlg);
   void ShowOpenDialogs();
   void HideOpenDialogs();
+  void CloseOpenDialogs();
+  bool VerifyCanCloseDialogs();
 
 private:
   void Apply(void (*f)(CWnd *)); // applies f to all open dialogs

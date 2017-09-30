@@ -17,13 +17,15 @@ public:
 
   CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent, const bool bLongPPs);
 
+  // Following override to stop accelerators interfering (can't be protected as normal)
+  INT_PTR DoModal();
+
+protected:
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
   // Following override to stop accelerators interfering
-  virtual INT_PTR DoModal();
   virtual BOOL OnInitDialog();
 
-protected:
   DECLARE_DYNAMIC(CPWPropertySheet)
 
   DboxMain *GetMainDlg() const;

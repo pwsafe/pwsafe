@@ -284,7 +284,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 
   CreateMenubar();
   CreateControls();
-  SetIcon(GetIconResource(wxT("../graphics/wxWidgets/cpane.xpm")));
+  SetIcon(GetIconResource(L"graphics/cpane.xpm"));
   Centre();
 ////@end PasswordSafeFrame creation
   m_search = new PasswordSafeSearch(this);
@@ -759,7 +759,7 @@ wxIcon PasswordSafeFrame::GetIconResource( const wxString& name )
     // Icon retrieval
 ////@begin PasswordSafeFrame icon retrieval
   wxUnusedVar(name);
-  if (name == wxT("../graphics/wxWidgets/cpane.xpm"))
+  if (name == L"graphics/cpane.xpm")
   {
     wxIcon icon(cpane_xpm);
     return icon;
@@ -1757,9 +1757,9 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     itemEditMenu.Append(ID_COPYUSERNAME,   _("Copy &Username to Clipboard"));
     itemEditMenu.Append(ID_COPYPASSWORD,   _("&Copy Password to Clipboard"));
     itemEditMenu.Append(ID_PASSWORDSUBSET, _("Display subset of Password"));
-	if (HasQRCode()) {
-		itemEditMenu.Append(ID_PASSWORDQRCODE, _("Display Password as &QR code"));
-	}
+    if (HasQRCode()) {
+      itemEditMenu.Append(ID_PASSWORDQRCODE, _("Display Password as &QR code"));
+    }
     itemEditMenu.Append(ID_COPYNOTESFLD,   _("Copy &Notes to Clipboard"));
     itemEditMenu.Append(ID_COPYURL,        _("Copy UR&L to Clipboard"));
     itemEditMenu.Append(ID_COPYEMAIL,      _("Copy email to Clipboard"));
@@ -3318,7 +3318,7 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
 
 void PasswordSafeFrame::OnVisitWebsite(wxCommandEvent&)
 {
-  wxLaunchDefaultBrowser("https://pwsafe.org");
+  wxLaunchDefaultBrowser(L"https://pwsafe.org");
 }
 
 void PasswordSafeFrame::UpdateStatusBar()

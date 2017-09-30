@@ -661,7 +661,7 @@ void DboxMain::setupBars()
                             SBPS_STRETCH, NULL);
   }
 
-  CDC* pDC = this->GetDC();
+  CDC *pDC = this->GetDC();
   int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
   m_MainToolBar.Init(NumBits);
   m_FindToolBar.Init(NumBits, PWS_MSG_TOOLBAR_FIND,
@@ -676,6 +676,7 @@ void DboxMain::setupBars()
     pws_os::Trace(L"Failed to create Main toolbar\n");
     return;      // fail to create
   }
+
   DWORD dwStyle = m_MainToolBar.GetBarStyle();
   dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP   |
                       CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
@@ -691,6 +692,7 @@ void DboxMain::setupBars()
     pws_os::Trace(L"Failed to create Find toolbar\n");
     return;      // fail to create
   }
+
   dwStyle = m_FindToolBar.GetBarStyle();
   dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP |
                       CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
@@ -770,7 +772,9 @@ void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const CItemData &ci)
 void DboxMain::UpdateEntryInGUI(CItemData &ci)
 {
   DisplayInfo *pdi = GetEntryGUIInfo(ci);
-  ASSERT(pdi != NULL);
+  ASSERT(pdi != nullptr);
+  if (pdi == nullptr) // BR1435 - not root cause, but at least don't crash...
+    return;
 
   const int iIndex = pdi->list_index;
   const HTREEITEM hItem =  pdi->tree_item;
@@ -1452,16 +1456,11 @@ void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 void DboxMain::OnMove(int x, int y)
 {
   CDialog::OnMove(x, y);
-  // turns out that minimizing calls this
-  // with x = y = -32000. Oh joy.
-  if (m_bInitDone && IsWindowVisible() == TRUE &&
-      x >= 0 && y >= 0) {
-    WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
-    GetWindowPlacement(&wp);
-    PWSprefs::GetInstance()->SetPrefRect(wp.rcNormalPosition.top,
-                                         wp.rcNormalPosition.bottom,
-                                         wp.rcNormalPosition.left,
-                                         wp.rcNormalPosition.right);
+  // turns out that minimizing calls this with x = y = -32000. Oh joy.
+  if (m_bInitDone && IsWindowVisible() == TRUE && x >= 0 && y >= 0) {
+    CRect rc;
+    GetWindowRect(&rc);
+    PWSprefs::GetInstance()->SetPrefRect(rc.top, rc.bottom, rc.left, rc.right);
   }
 }
 
@@ -1478,13 +1477,13 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
   if (!m_bInitDone) 
     return;
 
-  BOOL bFindBarShown = m_FindToolBar.IsWindowVisible();
+  m_bFindBarShown = m_FindToolBar.IsWindowVisible() == TRUE;
 
   if (nType != SIZE_MINIMIZED) {
     // Position the control bars - don't bother if just been minimized
 
     // If Find toolbar active - hide it until after we move
-    if (bFindBarShown)
+    if (m_bFindBarShown)
       SetFindToolBar(false);
 
     CRect rect, dragrect;
@@ -1532,6 +1531,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
   }
 
   PWSprefs *prefs = PWSprefs::GetInstance();
+  CRect rc;
 
   switch (nType) {
     case SIZE_MINIMIZED:
@@ -1578,6 +1578,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           ShowIcon();
       }
       break;
+
     case SIZE_MAXIMIZED:
     case SIZE_RESTORED:
       if (!m_bSizing) { // here if actually restored
@@ -1613,14 +1614,11 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         if (prefs->GetPref(PWSprefs::UseSystemTray) && IsIconVisible() == FALSE) {      
           ShowIcon();
         }
-      } else { // m_bSizing == true: here if size changed
-        WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
-        GetWindowPlacement(&wp);
-        PWSprefs::GetInstance()->SetPrefRect(wp.rcNormalPosition.top,
-                                             wp.rcNormalPosition.bottom,
-                                             wp.rcNormalPosition.left,
-                                             wp.rcNormalPosition.right);
       }
+
+      GetWindowRect(&rc);
+      PWSprefs::GetInstance()->SetPrefRect(rc.top, rc.bottom, rc.left, rc.right);
+
       // Set timer for user-defined idle lockout, if selected (DB preference)
       KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
@@ -1628,13 +1626,13 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
       }
       break;
-    case SIZE_MAXHIDE:
     case SIZE_MAXSHOW:
+    case SIZE_MAXHIDE:
       break;
   } // nType switch statement
 
     // If Find toolbar was active - reshow it
-  if (bFindBarShown && !m_FindToolBar.IsWindowVisible())
+  if (m_bFindBarShown && !m_FindToolBar.IsWindowVisible())
     SetFindToolBar(true);
 
   m_bSizing = false;
@@ -1680,6 +1678,10 @@ void DboxMain::OnRestore()
   m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
 
   m_ctlItemTree.SetRestoreMode(false);
+
+  // If Find toolbar was active - reshow it
+  if (m_bFindBarShown && !m_FindToolBar.IsWindowVisible())
+    SetFindToolBar(true);
 
   TellUserAboutExpiredPasswords();
 }
@@ -2205,7 +2207,7 @@ void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
     m_bSortAscending = true;
   }
   SortListView();
-  OnHideFindToolBar();
+  OnHideFindToolbar();
 
   *pLResult = TRUE;
 }
@@ -2325,14 +2327,14 @@ void DboxMain::OnListView()
 {
   SetListView();
   if (m_FindToolBar.IsVisible())
-    OnHideFindToolBar();
+    OnHideFindToolbar();
 }
 
 void DboxMain::OnTreeView() 
 {
   SetTreeView();
   if (m_FindToolBar.IsVisible())
-    OnHideFindToolBar();
+    OnHideFindToolbar();
 }
 
 void DboxMain::SetListView()
@@ -2421,8 +2423,7 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
     }
     m_MainToolBar.LoadDefaultToolBar(m_toolbarMode);
     m_FindToolBar.LoadDefaultToolBar(m_toolbarMode);
-    CString csButtonNames = PWSprefs::GetInstance()->
-      GetPref(PWSprefs::MainToolBarButtons).c_str();
+    CString csButtonNames = PWSprefs::GetInstance()->GetPref(PWSprefs::MainToolBarButtons).c_str();
     m_MainToolBar.CustomizeButtons(csButtonNames);
   } else { // !bInit - changing bitmaps
     m_MainToolBar.ChangeImages(m_toolbarMode);
@@ -2695,31 +2696,60 @@ bool DboxMain::IsWorkstationLocked() const
 
 void DboxMain::OnChangeTreeFont()
 {
-  const bool bWasUsingNewProtectSymbol = m_ctlItemTree.IsUsingNewProtectedSymbol();
+  Fonts *pFonts = Fonts::GetInstance();
+
+  const bool bWasUsingNewProtectSymbol = pFonts->IsSymbolSuported(Fonts::PROTECT, Fonts::TREELIST);
+  const bool bWasUsingNewAttachmentSymbol = pFonts->IsSymbolSuported(Fonts::ATTACHMENT, Fonts::TREELIST);
 
   ChangeFont(CFontsDialog::TREELISTFONT);
-
-  wstring sProtect = m_ctlItemTree.GetNewProtectedSymbol();
-  bool bSupported = IsCharacterSupported(sProtect);
-  bool bWindows10 = pws_os::IsWindows10OrGreater();
+  
+  // Verify protect and attachment symbols supported
+  pFonts->VerifySymbolsSupported();
 
   // If supported - fine - use it
-  // If not, use it if running under Windows 10 which seems to handle this nicely
-  m_ctlItemTree.UseNewProtectedSymbol(bSupported ? true : bWindows10);
+  bool bNewProtectedSymbolSupported = pFonts->IsSymbolSuported(Fonts::PROTECT, Fonts::TREELIST);
 
-  if (!bSupported) {
+  if (!bNewProtectedSymbolSupported) {
     pws_os::Trace(L"New font does not support the new entry Protected symbol.\n");
   }
 
-  // If we have changed the "protect" symbol, then the Invalidate in the ChangeFont
+  // If supported - fine - use it
+  bool bNewAttachmentSymbolSupported = pFonts->IsSymbolSuported(Fonts::ATTACHMENT, Fonts::TREELIST);
+
+  if (!pFonts->IsSymbolSuported(Fonts::ATTACHMENT, Fonts::TREELIST)) {
+    pws_os::Trace(L"New font does not support the new entry has Attachment symbol.\n");
+  }
+
+  // If we have changed the "protect" or "attachment" symbol, then the Invalidate in the ChangeFont
   // routine is not good enough - we have to change the actual displayed string
-  if (bWasUsingNewProtectSymbol != (bSupported ? true : bWindows10))
+  if ((bWasUsingNewProtectSymbol != bNewProtectedSymbolSupported) ||
+      (bWasUsingNewAttachmentSymbol != bNewAttachmentSymbolSupported)) {
     RefreshViews();
+  }
 }
 
 void DboxMain::OnChangeAddEditFont()
 {
   ChangeFont(CFontsDialog::ADDEDITFONT);
+
+  Fonts *pFonts = Fonts::GetInstance();
+
+  // Verify protect and attachment symbols supported
+  pFonts->VerifySymbolsSupported();
+
+  // Protected entry symbol
+  bool bNewProtectedSymbolSupported = pFonts->IsSymbolSuported(Fonts::PROTECT, Fonts::ADDEDIT);
+
+  if (!bNewProtectedSymbolSupported) {
+    pws_os::Trace(L"New font does not support the new entry Protected symbol.\n");
+  }
+
+  // Entry has an attachment symbol
+  bool bNewAttachmentSymbolSupported = pFonts->IsSymbolSuported(Fonts::ATTACHMENT, Fonts::ADDEDIT);
+
+  if (!bNewAttachmentSymbolSupported) {
+    pws_os::Trace(L"New font does not support the new entry has Attachment symbol.\n");
+  }
 }
 
 void DboxMain::OnChangeNotesFont()
@@ -2759,7 +2789,7 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       pref_FontSampleText = PWSprefs::TreeListSampleText;
       pOldFont = m_ctlItemTree.GetFont();
       pOldFont->GetLogFont(&lf);
-      dflt_lf = dfltTreeListFont;
+      pFonts->GetDefaultTreeListFont(dflt_lf);
       break;
     case CFontsDialog::ADDEDITFONT:
       pref_Font = PWSprefs::AddEditFont;
@@ -2780,7 +2810,7 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       pref_font_point_size = PWSprefs::NotesFontPtSz;
       pref_FontSampleText = PWSprefs::NotesSampleText;
       pFonts->GetNotesFont(&lf);
-      dflt_lf = dfltTreeListFont; // Default Notes font is the default Tree/List font
+      pFonts->GetDefaultNotesFont(dflt_lf);
       break;
     case CFontsDialog::VKEYBOARDFONT:
       // Note Virtual Keyboard font is not kept in Fonts class - so set manually
@@ -2789,6 +2819,22 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       dwFlags |= CF_LIMITSIZE | CF_NOSCRIPTSEL;
       dflt_lf = {-16, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L""};
       lf = dflt_lf;
+
+      // Get resolution
+      HDC hDC = ::GetWindowDC(GetSafeHwnd());
+      const int Ypixels = GetDeviceCaps(hDC, LOGPIXELSY);
+      ::ReleaseDC(GetSafeHwnd(), hDC);
+
+      // See if user has set a point size
+      iFontSize = PWSprefs::GetInstance()->GetPref(PWSprefs::VKFontPtSz);
+      if (iFontSize == 0) {
+        // Use default
+        iFontSize = MulDiv(16, 72, Ypixels) * 10;
+        PWSprefs::GetInstance()->SetPref(PWSprefs::VKFontPtSz, iFontSize);
+      }
+
+      // Update font point size
+      lf.lfHeight = -MulDiv(iFontSize / 10, Ypixels, 72);
 
       // Get VKeyboard font in case the user wants to change this.
       cs_FontName = prefs->GetPref(PWSprefs::VKeyboardFontName);
@@ -2805,8 +2851,8 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
   CFontsDialog fontdlg(&lf, dwFlags, NULL, NULL, iType);
 
   if (iType == CFontsDialog::VKEYBOARDFONT) {
-    fontdlg.m_cf.nSizeMin = 10;
-    fontdlg.m_cf.nSizeMax = 14;
+    fontdlg.m_cf.nSizeMin = 8;
+    fontdlg.m_cf.nSizeMax = 16;
   }
 
   fontdlg.m_sampletext = cs_SampleText.c_str();
@@ -2826,12 +2872,12 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
     switch (iType) {
       case CFontsDialog::TREELISTFONT:
         // Set current tree/list font
-        pFonts->SetCurrentFont(&lf, iFontSize);
+        pFonts->SetTreeListFont(&lf, iFontSize);
 
         // Transfer the fonts to the tree and list windows
         m_ctlItemTree.SetUpFont();
         m_ctlItemList.SetUpFont();
-        m_LVHdrCtrl.SetFont(pFonts->GetCurrentFont());
+        m_LVHdrCtrl.SetFont(pFonts->GetTreeListFont());
 
         // Recalculate header widths but don't change column widths
         CalcHeaderWidths();
@@ -2863,6 +2909,8 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
         break;
       case CFontsDialog::VKEYBOARDFONT:
         // Note Virtual Keyboard font is not kept in Fonts class - so set manually
+        prefs->SetPref(PWSprefs::VKFontPtSz, iFontSize);
+
         if (csfn.IsEmpty()) {
           // Delete config VKeyboard font face name
           prefs->ResetPref(pref_Font);
@@ -3903,7 +3951,7 @@ void DboxMain::OnRefreshWindow()
   // Stop Find Toolbar during refresh
   BOOL bFindVisible = m_FindToolBar.IsWindowVisible();
   if (bFindVisible)
-    OnHideFindToolBar();
+    OnHideFindToolbar();
 
   // Useful for users if they are using a filter and have edited an entry
   // so it no longer passes
@@ -3954,7 +4002,7 @@ void DboxMain::OnShowFindToolbar()
     SetFindToolBar(true);
 }
 
-void DboxMain::OnHideFindToolBar()
+void DboxMain::OnHideFindToolbar()
 {
   SetFindToolBar(false);
 
@@ -3968,12 +4016,16 @@ void DboxMain::OnHideFindToolBar()
     m_ctlItemTree.SetFocus();
     m_ctlItemTree.Select(m_LastFoundTreeItem, TVGN_CARET);
   }
+
+  m_bFindBarShown = false;
 }
 
 void DboxMain::SetFindToolBar(bool bShow)
 {
   if (m_FindToolBar.GetSafeHwnd() == NULL)
     return;
+
+  SetToolBarPositions();
 
   if (!m_FindToolBar.IsWindowVisible() && !bShow)
     return;  // Nothing to do if not visible
@@ -4692,7 +4744,7 @@ void DboxMain::OnShowFoundEntries()
     m_bUnsavedDisplayed = m_bExpireDisplayed = false;
 
     // Hide Find toolbar
-    OnHideFindToolBar();
+    OnHideFindToolbar();
 
     // Now set this filter
     m_bFilterActive = m_bFindFilterDisplayed = true;
@@ -5386,4 +5438,34 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
       sx_fielddata = ci.GetFieldValue(ft);
   }
   return sx_fielddata;
+}
+
+bool DboxMain::SetLayered(CWnd *pWnd, const int value)
+{
+  if (m_pfcnSetLayeredWindowAttributes && m_bOnStartupTransparancyEnabled) {
+    HWND hWnd = pWnd->GetSafeHwnd();
+
+    // Set Layered if not already
+    LONG lstyle = GetWindowLong(hWnd, GWL_EXSTYLE);
+    if ((lstyle & WS_EX_LAYERED) == 0) {
+      SetWindowLong(hWnd, GWL_EXSTYLE, lstyle | WS_EX_LAYERED);
+    }
+
+    const BYTE bytePercentTransparency = (value != -1) ? (BYTE)value :
+      (BYTE)PWSprefs::GetInstance()->GetPref(PWSprefs::WindowTransparency);
+
+    const BYTE byteWindowTransparency = (100 - bytePercentTransparency) * 255 / 100;
+
+    // Set final transparency
+    BOOL brc = m_pfcnSetLayeredWindowAttributes(hWnd, 0, byteWindowTransparency, LWA_ALPHA);
+
+    if (brc == 0) {
+      pws_os::IssueError(L"SetLayeredWindowAttributes", false);
+    }
+
+    return brc != 0;
+  }
+
+  // Couldn't do it
+  return false;
 }

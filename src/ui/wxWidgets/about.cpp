@@ -128,7 +128,7 @@ void CAbout::CreateControls()
   wxBoxSizer* mainSizer = new wxBoxSizer(wxHORIZONTAL);
   aboutDialog->SetSizer(mainSizer);
 
-  wxStaticBitmap* logoBitmap = new wxStaticBitmap(aboutDialog, wxID_STATIC, aboutDialog->GetBitmapResource(L"./graphics/cpane.xpm"), wxDefaultPosition, wxDefaultSize, 0);
+  wxStaticBitmap* logoBitmap = new wxStaticBitmap(aboutDialog, wxID_STATIC, aboutDialog->GetBitmapResource(L"graphics/cpane.xpm"), wxDefaultPosition, wxDefaultSize, 0);
   mainSizer->Add(logoBitmap, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* rightSizer = new wxBoxSizer(wxVERTICAL);
@@ -167,7 +167,7 @@ void CAbout::CreateControls()
   wxStaticText* visitSiteStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Please visit the "), wxDefaultPosition, wxDefaultSize, 0);
   visitSiteSizer->Add(visitSiteStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), L"https://pwsafe.org/", wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
+  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
   visitSiteSizer->Add(visitSiteHyperlinkCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* visitSiteStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("See LICENSE for open source details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
@@ -206,7 +206,7 @@ bool CAbout::ShowToolTips()
 wxBitmap CAbout::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
-  if (name == L"./graphics/cpane.xpm")
+  if (name == L"graphics/cpane.xpm")
   {
     wxBitmap bitmap(cpane_xpm);
     return bitmap;
@@ -348,13 +348,6 @@ void CAbout::CheckNewVersion()
   m_newVerStatus->Show();
 }
 
-void CAbout::OnVisitSiteClicked(wxHyperlinkEvent& event) {
-  // Do nothing to prevent double open, because GTK control opens URL by itself,
-  // otherwise default handler will call xdg-open to open URL
-#ifndef __WXGTK__
-  // skip this hook and leave default processing for non-GTK builds
-  event.Skip();
-#else
-  wxUnusedVar(event);
-#endif
+void CAbout::OnVisitSiteClicked(wxHyperlinkEvent& WXUNUSED(event)) {
+  wxLaunchDefaultBrowser(L"https://pwsafe.org");
 }

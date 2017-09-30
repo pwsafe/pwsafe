@@ -83,10 +83,6 @@
 #define IDI_SBASE_EXPIRED               194
 #define IDI_SBASE_WARNEXPIRED           195
 #define IDI_SHORTCUT                    196
-#define IDI_TRAY                        205
-#define IDI_TRAY_BLUE                   206
-#define IDI_TRAY_WHITE                  207
-#define IDI_TRAY_YELLOW                 208
 #define IDI_UNLOCKEDICON                209
 #define IDR_POPLANGUAGES                210
 #define IDR_POPCOPYALLTOORIGINAL        211
@@ -391,7 +387,7 @@
 #define IDB_EMPTY_DISABLED              549
 #define IDB_REDEXCLAMATION              550
 #define IDB_LOCK_CLASSIC                551
-#define IDD_SETDBINDEX                  552
+#define IDD_SETDBID                     552
 #define IDB_BLACK                       553
 #define IDB_RED                         554
 #define IDB_GREEN                       555
@@ -611,10 +607,6 @@
 #define IDC_STATIC_ISANALIAS            1269
 #define IDC_NEWVER_STATUS               1272
 #define IDC_VISIT_WEBSITE               1273
-#define IDC_RST_BLK                     1276
-#define IDC_RST_BLUE                    1277
-#define IDC_RST_WHITE                   1278
-#define IDC_RST_YELLOW                  1279
 #define IDC_SAMPLETEXT                  1283
 #define IDC_TREATWHITESPACEASEMPTY      1284
 #define IDC_STATIC_LC1                  1285
@@ -894,6 +886,12 @@
 #define IDC_STATIC_MESSAGE              1588
 #define IDC_ALTEDITOR_CMDLINE           1589
 #define IDC_SHOWCOMBINATION             1590
+#define IDC_ENABLETRANSPARENCY          1591
+#define IDC_TRANSPARENCY                1592
+#define IDC_TRANSPARENCYHELP            1593
+#define IDC_STATIC_MAXTRANSPARENCY      1594
+#define IDC_STATIC_MINTRANSPARENCY      1595
+#define IDC_TESTTRANSPARENCY            1596
 
 // Next default values for new objects
 // 
@@ -901,7 +899,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        561
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1591
+#define _APS_NEXT_CONTROL_VALUE         1597
 #define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif

@@ -735,10 +735,10 @@ int PWSfileV4::WriteHeader()
                                           pwpol.symbols.c_str(), pwpol.symbols.length());
       if (symSetLen > 255) // too bad if too long...
         symSetLen = 255;
-        *buf_ptr++ = (unsigned char)symSetLen;
-        pws_os::wcstombs((char *)buf_ptr, symSetLen,
-                         pwpol.symbols.c_str(), pwpol.symbols.length());
-        buf_ptr += symSetLen;
+      *buf_ptr++ = (unsigned char)symSetLen;
+      pws_os::wcstombs((char *)buf_ptr, symSetLen,
+                       pwpol.symbols.c_str(), pwpol.symbols.length());
+      buf_ptr += symSetLen;
       }
     } // for loop over policies
 
