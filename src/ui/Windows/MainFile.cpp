@@ -2117,7 +2117,7 @@ void DboxMain::OnExportAttachment()
   soutputfile = fullfilename;
 
   // Default suffix should be the same as the original file (skip over leading ".")
-  CString cs_ext = ext + 1;
+  CString cs_ext = ext[0] == '.' ? ext + 1 : ext;
 
   // Get media type
   csMediaType = att.GetMediaType().c_str();

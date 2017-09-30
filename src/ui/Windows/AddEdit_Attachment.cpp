@@ -287,7 +287,7 @@ void CAddEdit_Attachment::OnAttExport()
   _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
 
   // Default suffix should be the same as the original file (skip over leading ".")
-  CString cs_ext = ext + 1;
+  CString cs_ext = ext[0] == '.' ? ext + 1 : ext;
 
   switch (m_attType) {
     case NO_ATTACHMENT:
