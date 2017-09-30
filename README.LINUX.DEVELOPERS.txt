@@ -75,13 +75,13 @@ The cmake build can be configured in the standard manner, e.g, via
 cmake-gui.
 
 --------------------
-Note #2 - wxWidgets 3.0
+Note #2 - wxWidgets
 
-Some distributions still don't provide wxWidgets 3.0. In this case,
-you can either:
-(a) Get the packages from another repository, as described here:
-http://codelite.org/LiteEditor/WxWidgets30Binaries
-or
+Some distributions lag behind the required version of wxWidgets,
+providing a version older than that required by PasswordSafe. If this
+is the case, you can either:
+(a) Get the wxWidgets package from the relevant link in
+http://wxwidgets.org/downloads/ under "Binaries", or
 (b) Download the sources from here
 http://www.wxwidgets.org/downloads/
 and build the libraries yourself. If you do so:
