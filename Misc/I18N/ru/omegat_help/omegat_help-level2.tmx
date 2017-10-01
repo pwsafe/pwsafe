@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx14.dtd">
 <tmx version="1.4">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.2_1_10060:10062" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.2_2_10096:10098" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -935,10 +935,10 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>0 = Black, 1 - Blue, 2 = White and 3 = Yellow</seg>
+        <seg>0% means normal fully opaque and 100% is totally transparent and invisible.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T191050Z">
-        <seg>0 — Чёрный, 1 — Голубой, 2 — Белый, 3 — Жёлтый</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T170614Z" creationid="pm_kan" creationdate="20170930T170614Z">
+        <seg>0 % — нормальный вид (полностью непрозрачно), 100 % — невидимо (полностью прозрачно).</seg>
       </tuv>
     </tu>
     <tu>
@@ -1108,14 +1108,6 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T183737Z">
         <seg>12</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>120</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110215T182712Z">
-        <seg>120</seg>
       </tuv>
     </tu>
     <tu>
@@ -1316,6 +1308,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110620T171618Z">
         <seg>6.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>600</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T164954Z" creationid="pm_kan" creationdate="20170930T164954Z">
+        <seg>600</seg>
       </tuv>
     </tu>
     <tu>
@@ -1900,6 +1900,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110620T130041Z">
         <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>Примечание. Password Safe <ept i="0">&lt;/b0&gt;</ept><bpt i="1" x="1">&lt;i1&gt;</bpt>только предупреждает<ept i="1">&lt;/i1&gt;</ept> об истечении срока действия пароля. </seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>Note:<ept i="0">&lt;/b0&gt;</ept> <it pos="begin" x="1">&lt;i1&gt;</it>If an entry has been selected due to a Find action, then the menu item "Perform AutoType" (and its shortcut if still defined) will use the information of this entry.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T170038Z" creationid="pm_kan" creationdate="20170930T170038Z">
+        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>Примечание.<ept i="0">&lt;/b0&gt;</ept> <it pos="begin" x="1">&lt;i1&gt;</it>Если элемент был выбран в результате выполнения поиска, пункт меню «Автонабор» (и соответствующая комбинация клавиш, если задана) будет использовать данные из этого элемента.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3105,6 +3113,22 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>&lt;none&gt;, which corresponds to Consolas 12pt on Windows</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165557Z" creationid="pm_kan" creationdate="20170930T165557Z">
+        <seg>&lt;none&gt;, на Windows соответствует Consolas 12pt</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>&lt;none&gt;, which corresponds to Segoe UI Symbol 10pt on Windows</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165203Z" creationid="pm_kan" creationdate="20170930T165203Z">
+        <seg>&lt;none&gt;, на Windows соответствует Segoe UI 10pt</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>&lt;notes&gt;</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110620T190822Z">
@@ -3649,10 +3673,26 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>AddEditFont</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165045Z" creationid="pm_kan" creationdate="20170930T165045Z">
+        <seg>AddEditFont</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>AddEditFontPtSz</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170326T165739Z" creationid="pm_kan" creationdate="20170326T165739Z">
         <seg>AddEditFontPtSz</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>AddEditSampleText</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165338Z" creationid="pm_kan" creationdate="20170930T165338Z">
+        <seg>AddEditSampleText</seg>
       </tuv>
     </tu>
     <tu>
@@ -3909,6 +3949,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20100919T202608Z">
         <seg>Все другие торговые марки и названия продуктов являются товарными знаками соответствующих компаний.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>All other dialogs, message boxes and menus will always be fully opaque.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T170729Z" creationid="pm_kan" creationdate="20170930T170729Z">
+        <seg>Все диалоги, окна с сообщениями и меню остаются непрозрачными.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4945,14 +4993,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Change the colour of the closed database <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> icon in the System Tray.<it pos="begin" x="1">&lt;br1&gt;</it></seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T190931Z">
-        <seg>Цвет значка в области уведомлений для заблокированного контейнера <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept>.<it pos="begin" x="1">&lt;br1&gt;</it></seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>Change to R-O / Change to R/W</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140113T141933Z" creationid="pm_kan" creationdate="20140113T141933Z">
@@ -5277,14 +5317,6 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20101031T160413Z">
         <seg>Закрыть</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>ClosedTrayIconColour</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T190828Z">
-        <seg>ClosedTrayIconColour</seg>
       </tuv>
     </tu>
     <tu>
@@ -7969,6 +8001,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>However, if another entry is then selected, even though there is the found entry is still highlighted, the information of the newly selected entry will be used instead.<it pos="end" x="1">&lt;/i1&gt;</it></seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T170247Z" creationid="pm_kan" creationdate="20170930T170247Z">
+        <seg>Но, если был выбран другой элемент, даже если найденный элемент остался выделенным, будут использованы данные из выбранного элемента.<it pos="end" x="1">&lt;/i1&gt;</it></seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>However, if the entry is protected or the database is opened in read-only mode, then it can be viewed without any truncation.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170815T105435Z" creationid="pm_kan" creationdate="20170814T221451Z">
@@ -8445,6 +8485,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140716T134851Z" creationid="pm_kan" creationdate="20140716T134851Z">
         <seg>В окнах других приложений результат зависит от того, как обрабатываются символы Tab и Shift+Tab.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>If enabled, the value specified is the percentage of Window transparency.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T170549Z" creationid="pm_kan" creationdate="20170930T170549Z">
+        <seg>Если включено, указывает уровень прозрачности окна (в процентах).</seg>
       </tuv>
     </tu>
     <tu>
@@ -9729,10 +9777,26 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Information about the font used in the Tree View</seg>
+        <seg>Information about the font used in the Tree &amp; List Views</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T191709Z">
-        <seg>Шрифт, используемый в древовидном списке</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165707Z" creationid="pm_kan" creationdate="20170930T165707Z">
+        <seg>Шрифт, используемый в древовидном и простом списках элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Information about the font used to display fields in the Add/Edit property pages</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165334Z" creationid="pm_kan" creationdate="20170930T165334Z">
+        <seg>Шрифт, используемый в полях диалога добавления/редактирования элемента</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Information about the font used to display the Notes field in the basic Add/Edit property page</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165507Z" creationid="pm_kan" creationdate="20170930T165507Z">
+        <seg>Шрифт, используемый для отображения заметок в диалоге добавления/редактирования элемента</seg>
       </tuv>
     </tu>
     <tu>
@@ -9741,14 +9805,6 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T191734Z">
         <seg>Шрифт, используемый для отображения пароля</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>Initial system tray icon</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20100926T195615Z">
-        <seg>Значок в области уведомлений</seg>
       </tuv>
     </tu>
     <tu>
@@ -9901,6 +9957,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20161105T175422Z">
         <seg>Свой набор символов для создания пароля можно задать через меню <bpt i="0" x="0">&lt;a0&gt;</bpt>Сервис→Политики создания паролей...<ept i="0">&lt;/a0&gt;</ept>.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>It is suggested that a value between 20% and 40% may be most beneficial.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T170902Z" creationid="pm_kan" creationdate="20170930T170902Z">
+        <seg>Обычно значения от 20 % до 40 % являются наиболее предпочтительными.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11369,6 +11433,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Note: This only applies to the main dialog window.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T170635Z" creationid="pm_kan" creationdate="20170930T170635Z">
+        <seg>Примечание. Применяется только к главному окну.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Note: This will also be noted in the Import report.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140113T135547Z" creationid="pm_kan" creationdate="20140113T135547Z">
@@ -11433,10 +11505,26 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>NotesFont</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165439Z" creationid="pm_kan" creationdate="20170930T165439Z">
+        <seg>NotesFont</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>NotesFontPtSz</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170326T165844Z" creationid="pm_kan" creationdate="20170326T165844Z">
         <seg>NotesFontPtSz</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>NotesSampleText</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165510Z" creationid="pm_kan" creationdate="20170930T165510Z">
+        <seg>NotesSampleText</seg>
       </tuv>
     </tu>
     <tu>
@@ -11709,6 +11797,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20140113T111709Z" creationid="pm_kan" creationdate="20140113T111709Z">
         <seg>После того, как вы настроили YubiKey, его можно использовать вместе с мастер-паролем для защиты контейнера <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> (описание приведено в разделе <bpt i="1" x="1">&lt;a1&gt;</bpt>Создание нового контейнера<ept i="1">&lt;/a1&gt;</ept>).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Onced enabled, <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> must be restarted for it to take effect and for a value to be set.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T170507Z" creationid="pm_kan" creationdate="20170930T170507Z">
+        <seg>После включения, для того, чтобы связанные настройки вступили в силу, и можно было настраивать уровень прозрачности, <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> должен быть перезапущен.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13042,6 +13138,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Sample text to use when deciding what font to be used in the Tree &amp; List View</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165715Z" creationid="pm_kan" creationdate="20170930T165715Z">
+        <seg>Текст образца для шрифта, используемого в древовидном и простом списках элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Sample text to use when deciding what font to be used in the Tree View</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T193613Z">
@@ -13062,6 +13166,22 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T193738Z">
         <seg>Текст образца для шрифта, используемого при отображении паролей</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Sample text to use when deciding what font to be used to display the Notes field in the basic Add/Edit property page</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165544Z" creationid="pm_kan" creationdate="20170930T165544Z">
+        <seg>Текст образца для шрифта, используемого для отображения заметок в диалоге добавления/редактирования элемента</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Sample text to use when deciding what font to be used to display when adding or editing entries</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165434Z" creationid="pm_kan" creationdate="20170930T165434Z">
+        <seg>Текст образца для шрифта, используемого в полях диалога добавления/редактирования элемента</seg>
       </tuv>
     </tu>
     <tu>
@@ -15131,6 +15251,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>The default is disabled.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T170306Z" creationid="pm_kan" creationdate="20170930T170306Z">
+        <seg>Выключено по умолчанию.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>The default is to copy the entry's password and username to the clipboard for double-click and shift + double-click, respectively.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20120808T190444Z">
@@ -16383,14 +16511,6 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110216T112526Z">
         <seg>Это позволяет производить некоторые сложные действия, например, запустить программу удалённого доступа (например, <bpt i="1" x="1">&lt;a1&gt;</bpt>PuTTY<ept i="1">&lt;/a1&gt;</ept>) и передать ей имя пользователя и пароль, связанные с элементом.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>This allows you to change the colour of the system tray icon displayed when <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> is initially started and when there's no open database.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110620T123923Z">
-        <seg>Позволяет указать цвет значка <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> в области уведомлений (трее), когда контейнер не открыт.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18196,6 +18316,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>VKFontPtSz</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165001Z" creationid="pm_kan" creationdate="20170930T165001Z">
+        <seg>VKFontPtSz</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>VKSampleText</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T193636Z">
@@ -18232,6 +18360,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T191625Z">
         <seg>Возможные значения: «None» [нет], «datetime» [дата и время] или «incremental number» [по счётчику]</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Values greater than 50% are not supported.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T170621Z" creationid="pm_kan" creationdate="20170930T170621Z">
+        <seg>Значения прозрачности более 50 % не поддерживаются.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18361,6 +18497,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20100926T182732Z">
         <seg>Экранная клавиатура</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Virtual keyboard font size in tenths of a point</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T165038Z" creationid="pm_kan" creationdate="20170930T165038Z">
+        <seg>Размер шрифта для экранной клавиатуры в десятых долях пункта</seg>
       </tuv>
     </tu>
     <tu>
@@ -18913,6 +19057,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110621T173605Z">
         <seg>Несмотря на то, что значения настроек проверяются при чтении, мы не можем гарантировать, что параметры, заданные вручную, не вызовут проблем.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Window Transparency</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20170930T170253Z" creationid="pm_kan" creationdate="20170930T170253Z">
+        <seg>Прозрачность окна</seg>
       </tuv>
     </tu>
     <tu>

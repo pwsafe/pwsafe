@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.2_1_10060:10062" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.2_2_10096:10098" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -2321,6 +2321,14 @@ symbols, hexadecimal) must be permitted.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T114413Z">
         <seg>Хотя бы один из типов символов (прописные, строчные, цифры, знаки, шестнадцатеричные цифры) должен быть разрешён</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Attachment Reference</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170930T164304Z" creationid="pm_kan" creationdate="20170930T164304Z">
+        <seg>Ссылка на вложение</seg>
       </tuv>
     </tu>
     <tu>
@@ -7844,6 +7852,32 @@ Content-Transfer-Encoding: 8bitr</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2017-09-30 19:42+0300
+PO-Revision-Date: 2017-09-29 22:47+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170930T164256Z" creationid="pm_kan" creationdate="20170930T164256Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: &lt;pm_kan@users.sourceforge.net&gt;
+POT-Creation-Date: 2017-09-30 20:00+0300
+PO-Revision-Date: 2017-09-30 20:00+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: 
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bitr</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Pronounceable passwords</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -8425,6 +8459,14 @@ combination:</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20130915T181401Z">
         <seg>Сохранить</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Set maximum number of passwords saved to above value</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Установить максимальное количество сохраняемых паролей равным указанному значению</seg>
       </tuv>
     </tu>
     <tu>
