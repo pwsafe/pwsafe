@@ -881,3 +881,31 @@ std::string toutf8(const std::wstring &w)
     return string{ reinterpret_cast<const char *>(utf8str), length};
   return string{};
 }
+
+bool PWSUtil::loadFile(const StringX &filename, StringXStream &stream) {
+  // We need to use FOpen as the file name/file path may contain non-Latin
+  // characters
+  FILE *fs = pws_os::FOpen(filename.c_str(), _T("rb"));
+  if (fs == nullptr)
+    return false;
+
+  // when using wifstream, each byte will be converted to wchar_t, but we need to load
+  // each n-bytes as one wchar, so read in whole file and put it in a StringXStream
+  const size_t BUFFER_SIZE = 1024;
+
+  wchar_t buffer[BUFFER_SIZE];
+  bool bError(false);
+  while(!feof(fs)) {
+    int count = fread(buffer, sizeof(wchar_t), BUFFER_SIZE, fs);
+    if (ferror(fs)) {
+      bError = true;
+      break;
+    }
+    stream.write(buffer, count);
+  }
+
+  // Close the file
+  fclose(fs);
+
+  return !bError;
+}

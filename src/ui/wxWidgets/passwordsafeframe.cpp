@@ -1128,7 +1128,7 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
     if (rc != PWScore::SUCCESS)
       return;
 
-    m_core.UnlockFile(m_core.GetCurFile().c_str());
+    m_core.SafeUnlockCurFile();
     m_core.SetCurFile(wxEmptyString);
 
     // Reset core and clear ALL associated data
@@ -1379,8 +1379,7 @@ int PasswordSafeFrame::SaveAs()
     DisplayFileWriteError(rc, newfile);
     return PWScore::CANT_OPEN_FILE;
   }
-  if (!m_core.GetCurFile().empty())
-    m_core.UnlockFile(m_core.GetCurFile().c_str());
+  m_core.SafeUnlockCurFile();
 
   // Move the newfile lock to the right place
   m_core.MoveLock();
@@ -1450,8 +1449,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
     }
 
     // Don't leave dangling locks!
-    if (!m_core.GetCurFile().empty())
-      m_core.UnlockFile(m_core.GetCurFile().c_str());
+    m_core.SafeUnlockCurFile();
 
     SaveSettings();
 
