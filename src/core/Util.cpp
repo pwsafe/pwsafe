@@ -22,6 +22,7 @@
 #include "os/debug.h"
 #include "os/pws_tchar.h"
 #include "os/dir.h"
+#include "os/file.h"
 
 #include <stdio.h>
 #ifdef _WIN32
