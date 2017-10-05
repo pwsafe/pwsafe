@@ -139,10 +139,10 @@ bool AddEditPropSheet::Create( wxWindow* parent, wxWindowID id, const wxString& 
   int flags = (m_type == VIEW) ? (wxCLOSE|wxHELP) : (wxOK|wxCANCEL|wxHELP);
   CreateButtons(flags);
   CreateControls();
-  LayoutDialog();
   Centre();
 ////@end AddEditPropSheet creation
   ItemFieldsToPropSheet();
+  LayoutDialog();
   return true;
 }
 

@@ -362,7 +362,7 @@ void CSafeCombinationEntry::ProcessPhrase()
   case PWScore::SUCCESS: {
     const stringT fname(m_filename.c_str());
     stringT locker(L"");
-    if (!m_core.LockFile(fname, locker)) {
+    if (!m_readOnly && !m_core.LockFile(fname, locker)) {
       errmess = _("Could not lock file, opening read-only\nLocked by ");
       errmess += locker.c_str();
       wxMessageDialog warn(this, errmess,

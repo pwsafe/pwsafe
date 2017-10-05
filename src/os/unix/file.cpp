@@ -28,8 +28,9 @@
 #include "../file.h"
 #include "../env.h"
 
-#include "../../core/core.h"
-#include "../../core/StringXStream.h"
+#include "core/core.h"
+#include "core/StringXStream.h"
+#include "core/Util.h"
 
 using namespace std;
 
@@ -201,7 +202,7 @@ static stringT GetLockFileName(const stringT &filename)
   return retval;
 }
 
-bool pws_os::LockFile(const stringT &filename, stringT &locker, 
+bool pws_os::LockFile(const stringT &filename, stringT &locker,
                       HANDLE &lockFileHandle)
 {
   UNREFERENCED_PARAMETER(lockFileHandle);
@@ -223,11 +224,13 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
     case EEXIST: // filename already exists
       {
         // read locker data ("user@machine:nnnnnnnn") from file
-          wifstream is(lfn);
-          stringT lockerStr;
-          if (is >> lockerStr) {
-            locker = lockerStr;
-          }
+        StringXStream lockerStream;
+        if (PWSUtil::loadFile(lock_filename.c_str(), lockerStream)) {
+          locker = stringx2std(lockerStream.str());
+        }
+        else {
+          LoadAString(locker, IDSC_CANTREADLOCKER);
+        }
       } // EEXIST block
         break;
     case EINVAL: // Invalid oflag or pmode argument
@@ -350,6 +353,6 @@ bool pws_os::SetFileTimes(const stringT &filename,
   UNREFERENCED_PARAMETER(ctime);
   UNREFERENCED_PARAMETER(mtime);
   UNREFERENCED_PARAMETER(atime);
-  
+
   return true;
 }

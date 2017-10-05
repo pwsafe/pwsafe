@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.2_1_10060:10062" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.2_2_10096:10098" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -1335,6 +1335,14 @@ password are required.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Attachment Reference</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170930T164304Z" creationid="pm_kan" creationdate="20170930T164304Z">
+        <seg>Ссылка на вложение</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Auto Type</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T103753Z">
@@ -1411,14 +1419,6 @@ password are required.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Основные</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>Black</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T173715Z" creationid="pm_kan" creationdate="20160106T173715Z">
-        <seg>Чёрный</seg>
       </tuv>
     </tu>
     <tu>
@@ -2395,14 +2395,6 @@ Locked by</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T115434Z">
         <seg>Настроить &amp;основную панель инструментов...</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>Cyan</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T173917Z" creationid="pm_kan" creationdate="20160106T173917Z">
-        <seg>Голубой</seg>
       </tuv>
     </tu>
     <tu>
@@ -3887,14 +3879,6 @@ username field.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Вид дерева при старте</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>Initial tray icon color</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T175615Z" creationid="pm_kan" creationdate="20160106T175615Z">
-        <seg>Цвет значка в области уведомлений при запуске</seg>
       </tuv>
     </tu>
     <tu>
@@ -5581,8 +5565,8 @@ to the base entry</seg>
       <tuv lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2017-08-14 22:36+0300
-PO-Revision-Date: 2017-07-22 21:47+0300
+POT-Creation-Date: 2017-09-30 19:42+0300
+PO-Revision-Date: 2017-09-29 22:47+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: 
@@ -5590,11 +5574,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170814T193756Z" creationid="pm_kan" creationdate="20170814T193756Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20170930T164256Z" creationid="pm_kan" creationdate="20170930T164256Z">
         <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: &lt;pm_kan@users.sourceforge.net&gt;
-POT-Creation-Date: 2017-08-14 22:30+0400
-PO-Revision-Date: 2017-08-14 22:30+0400
+POT-Creation-Date: 2017-09-30 20:00+0300
+PO-Revision-Date: 2017-09-30 20:00+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: 
 Language: ru_RU
@@ -6129,9 +6113,9 @@ combination:</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Set maximum number of paswords saved to above value</seg>
+        <seg>Set maximum number of passwords saved to above value</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T113540Z">
+      <tuv lang="RU-RU">
         <seg>Установить максимальное количество сохраняемых паролей равным указанному значению</seg>
       </tuv>
     </tu>
@@ -7723,14 +7707,6 @@ Imported %d %ls</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>White</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T173920Z" creationid="pm_kan" creationdate="20160106T173920Z">
-        <seg>Белый</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>Will use registry.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T134901Z">
@@ -7831,14 +7807,6 @@ Imported %d %ls</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T113343Z">
         <seg>YYYYMMMDD_HHMMSS</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>Yellow</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20160106T173926Z" creationid="pm_kan" creationdate="20160106T173926Z">
-        <seg>Жёлтый</seg>
       </tuv>
     </tu>
     <tu>

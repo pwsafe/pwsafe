@@ -7,8 +7,17 @@ this is good enough to release as an early beta to gather feedback
 from a wider audience.
 
 2. Supported Distributions:
-Currently Debian 8.0, Ubuntu 13.04 and Fedora 22 are supported, 32 and
-64 bit systems. Slackware is independently supported, see below.
+Packages for the versions of Debian, Ubuntu and Fedora that were
+current at the time of release may be found on the Github (primary)
+and SourceForge (secondary) sites under
+https://github.com/pwsafe/pwsafe/releases and
+https://sourceforge.net/projects/passwordsafe/files/Linux-BETA/,
+respectively.
+If you don't find the package for the distribution of your choice, you
+can contact the developers via https://pwsafe.org/contact.php or build
+it yourself according to the instuctions listed in
+README.LINUX.DEVELOPERS.md.
+Slackware is independently supported, see below.
 
 3. Installation on Debian or Ubuntu:
 3.1 Download the .deb file that corresponds to your distribution.

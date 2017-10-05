@@ -472,10 +472,7 @@ void DboxMain::OnClose()
 
   // We will allow DB Close to close open dialogs IFF the DB is open in R-O and any open
   // dialogs can be closed
-  bool bCloseOpenDialogs = IsDBReadOnly();
-  if (bCloseOpenDialogs && CPWDialog::GetDialogTracker()->AnyOpenDialogs()) {
-    bCloseOpenDialogs = CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
-  }
+  bool bCloseOpenDialogs = IsDBReadOnly() && CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
 
   if (bCloseOpenDialogs) {
     // Close all open dialogs - R-O mode ONLY + as above
@@ -513,6 +510,8 @@ int DboxMain::Close(const bool bTrySave)
 
   m_core.SafeUnlockCurFile();
   m_core.SetCurFile(L"");
+
+  SetDBInitiallyRO(false);
 
   CAddEdit_DateTimes::m_bShowUUID = false;
 
@@ -2120,7 +2119,7 @@ void DboxMain::OnExportAttachment()
   soutputfile = fullfilename;
 
   // Default suffix should be the same as the original file (skip over leading ".")
-  CString cs_ext = ext + 1;
+  CString cs_ext = ext[0] == '.' ? ext + 1 : ext;
 
   // Get media type
   csMediaType = att.GetMediaType().c_str();
@@ -3991,10 +3990,7 @@ void DboxMain::OnOK()
 
   // We will allow pgm Exit to close open dialogs IFF the DB is open in R-O and any open
   // dialogs can be closed
-  bool bCloseOpenDialogs = IsDBReadOnly();
-  if (bCloseOpenDialogs && CPWDialog::GetDialogTracker()->AnyOpenDialogs()) {
-    bCloseOpenDialogs = CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
-  }
+  bool bCloseOpenDialogs = IsDBReadOnly() && CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
 
   if (bCloseOpenDialogs) {
     // Close all open dialogs - R-O mode ONLY + as above

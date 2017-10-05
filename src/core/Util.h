@@ -13,6 +13,7 @@
 
 #include "sha256.h"
 #include "StringX.h"
+#include "StringXStream.h"
 #include "Fish.h"
 #include "PwsPlatform.h"
 #include "UTF8Conv.h"
@@ -53,7 +54,7 @@ extern size_t _readcbc(FILE *fp, unsigned char * &buffer,
                        size_t &buffer_len,
                        unsigned char &type, Fish *Algorithm,
                        unsigned char *cbcbuffer,
-                       const unsigned char *TERMINAL_BLOCK = NULL, 
+                       const unsigned char *TERMINAL_BLOCK = NULL,
                        ulong64 file_len = 0);
 
 // typeless version for V4 content (caller pre-allocates buffer)
@@ -258,11 +259,13 @@ namespace PWSUtil {
   stringT GetSafeXMLString(const StringX &sxInString);
 
   bool pull_time(time_t &t, const unsigned char *data, size_t len);
+  // load file to stream
+  bool loadFile(const StringX &filename, StringXStream &stream);
 }
 
 ///////////////////////////////////////////////////////
 // Following two templates lets us use the two types
-// of iterators in a common (templatized) function when 
+// of iterators in a common (templatized) function when
 // all we need to do is to access the underlying value
 template <typename PairAssociativeContainer>
 class get_second {
