@@ -689,16 +689,12 @@ BOOL CAddEdit_Basic::OnApply()
 
   // If there is a matching entry in our list, tell the user to try again.
   listindex = GetMainDlg()->Find(M_group(), M_title(), M_username());
-  if (M_uicaller() == IDS_ADDENTRY) {
-    // Add entry
-    if (listindex != GetMainDlg()->End()) {
+  if (listindex != GetMainDlg()->End()) {
+    if (M_uicaller() == IDS_ADDENTRY) { // Add entry
       gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
       pFocus = &m_ex_title;
       goto error;
-    }
-  } else {
-    // Edit entry
-    if (listindex != GetMainDlg()->End()) {
+    } else { // Edit entry
       const CItemData &listItem = GetMainDlg()->GetEntryAt(listindex);
       if (listItem.GetUUID() != M_pci()->GetUUID()) {
         gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
