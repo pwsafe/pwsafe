@@ -1,5 +1,5 @@
-Password Safe 3.44.0pre Release September 2017
-==============================================
+Password Safe 3.44.0 Release October 2017
+=========================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -13,8 +13,8 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
 
-Bugs Fixed in 3.44.0pre
-=======================
+Bugs Fixed in 3.44.0
+====================
 [1432] Perform autotype of correct entry when the user changes the selection made by a Find.
 [1431] The protected entry padlock symbol is now used in all places where a
 protected entry is listed in any dialog.
@@ -27,16 +27,16 @@ these changes can be undone/redone if required.
 [1420] The virtual keyboard font size setting is now persistent.
 [1398] Remember if PasswordSafe was maximized when exited.
 
-Changes to Existing Features in 3.44.0pre
-=========================================
+Changes to Existing Features in 3.44.0
+======================================
 [] The option that allows you to change the color of the system tray icon
 displayed when Password Safe is initially started and when there's no open database
 has been removed. The standard PasswordSafe brown icon will be used.
 [] Use the Add/Edit font in preference to the Tree/List font outside
 the actual Tree/List views (since the Tree/List fonts may be too large).
 
-New Features for 3.44.0pre
-==========================
+New Features for 3.44.0
+=======================
 [] When exporting a group or the results of a filter, if any additional entries have
 been exported (e.g. base entries of aliases or shortcuts already exported),
 they will be noted in the Export report.
@@ -64,9 +64,9 @@ searched.
 size limit of 30,000 characters.
 [1402] Group image is now correct after dragging an empty sub-group to the next
 higher level.
-[1400] The Toolbar now correctly disables buttons when a Group is selected.
 [1401] After deleting an entry, the next visible entry (if present) is
 selected. If not present, then the previous entry (if present) will be selected.
+[1400] The Toolbar now correctly disables buttons when a Group is selected.
 [1399] A disabled image is now shown when no characters to copy are available.
 This has also been implemented wherever the "Copy Password" button is used outside
 the Toolbar.
