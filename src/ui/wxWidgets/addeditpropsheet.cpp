@@ -1293,6 +1293,18 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         m_item.SetPolicyName(tostringx(polName));
         m_item.SetDCA(m_DCA);
         m_item.SetShiftDCA(m_ShiftDCA);
+        // Check for Group/Username/Title uniqueness
+        auto listindex = m_core.Find(m_item.GetGroup(), m_item.GetTitle(), m_item.GetUser());
+        if (listindex != m_core.GetEntryEndIter()) {
+          auto listItem = m_core.GetEntry(listindex);
+          if (listItem.GetUUID() != m_item.GetUUID()) {
+            wxMessageDialog msg(this,
+                                _("An entry or shortcut with the same Group, Title and Username already exists."),
+                                _("Error"), wxOK|wxICON_ERROR);
+            msg.ShowModal();
+            return;
+          }
+        }
       } // bIsModified
 
       time(&t);
@@ -1329,6 +1341,15 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       m_item.SetUser(m_user.empty() ?
                      PWSprefs::GetInstance()->
                       GetPref(PWSprefs::DefaultUsername).c_str() : m_user.c_str());
+      // Check for Group/Username/Title uniqueness
+      if (m_core.Find(m_item.GetGroup(), m_item.GetTitle(), m_item.GetUser()) !=
+          m_core.GetEntryEndIter()) {
+        wxMessageDialog msg(this,
+                            _("An entry or shortcut with the same Group, Title and Username already exists."),
+                            _("Error"), wxOK|wxICON_ERROR);
+        msg.ShowModal();
+        return;
+      }
       m_item.SetNotes(tostringx(m_notes));
       m_item.SetURL(tostringx(m_url));
       m_item.SetEmail(tostringx(m_email));
