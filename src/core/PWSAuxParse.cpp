@@ -126,7 +126,7 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
                                serrmsg, st_column);
 
   // if called with NULL ci, then we just parse to validate
-  if (uierr > 0 || pci == NULL || sxCurrentDB.empty()) {
+  if (uierr > 0 || pci == NULL) {
     v_rctokens.clear();
     return sxretval;
   }
@@ -136,7 +136,7 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   pws_os::splitpath(spath, sdrive, sdir, sfname, sextn);
   sdbdir = pws_os::makepath(sdrive, sdir, _T(""), _T(""));
 
-  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype;
 
   // GetEffectiveFieldValue() encapsulates what we take from where depending in the entry type (alias, shortcut, etc.)
   sx_group    = pci->GetEffectiveFieldValue(CItem::GROUP, pbci);
@@ -148,7 +148,6 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   sx_url      = pci->GetEffectiveFieldValue(CItem::URL, pbci);
   sx_email    = pci->GetEffectiveFieldValue(CItem::EMAIL, pbci);
   sx_autotype = pci->GetEffectiveFieldValue(CItem::AUTOTYPE, pbci);
-  sx_runcmd   = pci->GetEffectiveFieldValue(CItem::RUNCMD, pbci);
 
   for (rc_iter = v_rctokens.begin(); rc_iter < v_rctokens.end(); rc_iter++) {
     st_RunCommandTokens &st_rctoken = *rc_iter;
@@ -855,7 +854,6 @@ static UINT ParseRunCommand(const StringX &sxInputString,
     uierr = IDSC_EXS_INPUTEMPTY;
     goto exit;
   }
-
   for (StringX::size_type l = 0; l < sxInputString.length(); l++) {
     if (sxInputString[l] == _T('"'))
       st_num_quotes++;
@@ -893,8 +891,10 @@ static UINT ParseRunCommand(const StringX &sxInputString,
     st_RunCommandTokens &st_rctokens = v_rctokens[st_idx - 1];
     StringX::size_type name_len = st_rctokens.sxname.length();
     if (name_len == 0 || (name_len >= 2 &&
-            st_rctokens.sxname.substr(name_len - 2, 2).compare(_T("\\\\")) == 0))
+                          st_rctokens.sxname.substr(name_len - 2, 2).compare(_T("\\\\")) == 0)) {
+      st_rctokens.sxname.erase(name_len - 2, 1);
       continue;
+    }
 
     if (st_rctokens.sxname.substr(name_len - 1, 1).compare(_T("\\")) == 0) {
       st_rctokens.sxname = st_rctokens.sxname.substr(0, name_len - 1) + 

@@ -15,6 +15,7 @@
 #define __PWSAUXPARSE_H
 
 #include "StringX.h"
+#include <vector>
 
 #define DEFAULT_AUTOTYPE _T("\\u\\t\\p\\n")
 
