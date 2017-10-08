@@ -471,7 +471,7 @@ set (CPACK_DEBIAN_PACKAGE_CONTROL_STRICT_PERMISSION "TRUE")
 if (${LSB_RELEASE_ID_SHORT} STREQUAL "Ubuntu")
 	## Ubuntu-specific
   string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.[0-9]+" "\\1.\\2" XercesC_VER ${XercesC_VERSION})
-	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c${XercesC_VER} (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1)")
+	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), libcurl3 (>= 7.47.0-1), libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c${XercesC_VER} (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1)")
 endif (${LSB_RELEASE_ID_SHORT} STREQUAL "Ubuntu")
 
 if (${LSB_RELEASE_ID_SHORT} STREQUAL "Debian")
