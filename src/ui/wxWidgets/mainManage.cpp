@@ -54,9 +54,11 @@ void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
         m_sysTray->ShowIcon();
 
     if (!m_core.GetCurFile().empty() && !m_core.IsReadOnly() &&
-        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-      if (sxOldDBPrefsString != sxNewDBPrefsString) {
-        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+        m_core.GetReadFileVersion() >= PWSfile::V30) { // older versions don't have prefs
+      if (sxOldDBPrefsString != sxNewDBPrefsString ||
+          m_core.GetHashIters() != window->GetHashItersValue()) {
+        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString,
+                                               window->GetHashItersValue());
         if (pcmd) {
             //I don't know why notifications should ever be suspended, but that's how
             //things were before I messed with them, so I want to limit the damage by

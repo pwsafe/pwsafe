@@ -150,16 +150,17 @@ private:
 class DBPrefsCommand : public Command
 {
 public:
+  // Call Create without newHashIters when this hasn't changed.
   static DBPrefsCommand *Create(CommandInterface *pcomInt,
-                                StringX &sxNewDBPrefs)
-  { return new DBPrefsCommand(pcomInt, sxNewDBPrefs); }
+                                StringX &sxNewDBPrefs, uint32 newHashIters = 0)
+  { return new DBPrefsCommand(pcomInt, sxNewDBPrefs, newHashIters); }
   int Execute();
   void Undo();
 
 private:
-  DBPrefsCommand(CommandInterface *pcomInt, StringX &sxNewDBPrefs);
-  StringX m_sxOldDBPrefs;
-  StringX m_sxNewDBPrefs;
+  DBPrefsCommand(CommandInterface *pcomInt, StringX &sxNewDBPrefs, uint32 newHashIters);
+  const StringX m_sxOldDBPrefs, m_sxNewDBPrefs;
+  const uint32 m_oldHashIters, m_newHashIters;
 };
 
 class DBPolicyNamesCommand : public Command

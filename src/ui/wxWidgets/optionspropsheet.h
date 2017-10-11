@@ -301,6 +301,8 @@ public:
   bool GetUseAltAutoType() const { return m_useAltAutoType ; }
   void SetUseAltAutoType(bool value) { m_useAltAutoType = value ; }
 
+  uint32 GetHashItersValue() const { return m_hashIterValue; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -374,6 +376,7 @@ private:
   bool m_wordwrapnotes;
   bool m_useAltAutoType;
 ////@end COptions member variables
+  uint32 m_hashIterValue;
 #if defined(__X__) || defined(__WXGTK__)
   bool m_usePrimarySelection;
 #endif

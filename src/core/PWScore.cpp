@@ -3981,10 +3981,7 @@ uint32 PWScore::GetHashIters() const
 
 void PWScore::SetHashIters(uint32 value)
 {
-  if (value != m_hashIters) {
-    m_hashIters = value;
-    //m_stDBCS.bDBPrefsChanged = true; // Can't do this outside a Command
-  }
+  m_hashIters = value;
 }
 
 void PWScore::RemoveAtt(const pws_os::CUUID &attuuid)

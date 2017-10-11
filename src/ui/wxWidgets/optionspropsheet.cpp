@@ -876,12 +876,11 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::DontAskQuestion, m_secconfrmcpy);
   prefs->SetPref(PWSprefs::LockOnWindowLock, m_seclockonwinlock);
   PwsafeApp *app = dynamic_cast<PwsafeApp *>(wxTheApp);
-  uint32 value = MIN_HASH_ITERATIONS;
+  m_hashIterValue = MIN_HASH_ITERATIONS;
   if (m_hashIterSlider > 0) {
     const int step = MAX_USABLE_HASH_ITERS/100;
-    value = uint32(m_hashIterSlider*step);
+    m_hashIterValue = uint32(m_hashIterSlider*step);
   }
-  app->SetHashIters(value);
 
   // System preferences
   prefs->SetPref(PWSprefs::MaxREItems, m_sysmaxREitemsSB->GetValue());

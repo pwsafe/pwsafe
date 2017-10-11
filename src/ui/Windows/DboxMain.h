@@ -316,7 +316,6 @@ public:
 
   // HashIters relaying
   uint32 GetHashIters() const {return m_core.GetHashIters();}
-  void SetHashIters(uint32 value) {m_core.SetHashIters(value);}
 
   // Need this to be public
   bool LongPPs(CWnd *pWnd);

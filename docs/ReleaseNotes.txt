@@ -1,5 +1,5 @@
-Password Safe 3.44.0 Release October 2017
-=========================================
+Password Safe 3.44.1 Release TBD
+================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -12,6 +12,11 @@ Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
 SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
+
+Bugs Fixed in 3.44.1
+====================
+[1441] Changing unlock difficulty now enables save (regression),
+supported under undo/redo.
 
 Bugs Fixed in 3.44.0
 ====================

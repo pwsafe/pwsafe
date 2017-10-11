@@ -448,8 +448,6 @@ void COptions_PropertySheet::UpdateCopyPreferences()
   prefs->SetPref(PWSprefs::IdleTimeout,
                  m_OPTMD.IdleTimeOut, true);
 
-  GetMainDlg()->SetHashIters(m_OPTMD.HashIters);
-
   // Changing ExplorerTypeTree changes order of items,
   // which DisplayStatus implicitly depends upon
   if (m_save_bExplorerTypeTree != m_OPTMD.ExplorerTypeTree)

@@ -189,6 +189,7 @@ LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
           M_LockOnWindowLock()         != m_LockOnWindowLock         ||
           M_LockOnIdleTimeout()        != m_LockOnIdleTimeout        ||
           M_CopyPswdBrowseURL()        != m_CopyPswdBrowseURL        ||
+          M_HashIters()                != m_HashIter                 ||
           (m_LockOnIdleTimeout         == TRUE &&
            M_IdleTimeOut()             != m_IdleTimeOut))
         return 1L;

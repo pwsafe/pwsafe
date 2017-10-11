@@ -106,6 +106,9 @@ class CommandInterface {
   virtual const PWSFilters &GetDBFilters() = 0;
   virtual bool SetDBFilters(const PWSFilters &MapDBFilters) = 0;
 
+  virtual uint32 GetHashIters() const = 0;
+  virtual void SetHashIters(uint32 value) = 0;
+
   std::vector<StringX> &GetModifiedNodes() { return m_vModifiedNodes; }
   void SetModifiedNodes(const std::vector<StringX> &saved_vNodes_Modified)
   { m_vModifiedNodes = saved_vNodes_Modified; }

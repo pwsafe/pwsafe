@@ -36,6 +36,7 @@ public:
   int GetMaxMRUItems() const {return m_OPTMD.MaxMRUItems;}
   int GetMaxREItems() const {return m_OPTMD.MaxREItems;}
   int GetPWHAction() const {return m_OPTMD.PWHAction;}
+  uint32 GetHashIters() const {return m_OPTMD.HashIters;}
   int GetPWHistoryMax() const {return m_OPTMD.PWHistoryNumDefault;}
   bool GetHotKeyState() const {return m_OPTMD.AppHotKeyEnabled == TRUE;}
   bool GetEnableGrid() const {return m_OPTMD.EnableGrid == TRUE;}
