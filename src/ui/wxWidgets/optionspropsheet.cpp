@@ -36,7 +36,7 @@
 #include "core/PWSAuxParse.h" // for DEFAULT_AUTOTYPE
 #include "./wxutils.h"
 #include "./pwsmenushortcuts.h"
-#include "pwsafeapp.h" // for set/get hashIter
+#include "pwsafeapp.h" // for GetHashIters()
 #if defined(__X__) || defined(__WXGTK__)
 #include "pwsclip.h"
 #endif

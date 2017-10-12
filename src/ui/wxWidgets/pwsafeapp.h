@@ -111,7 +111,6 @@ public:
  public:
     CRecentDBList &recentDatabases();
     uint32 GetHashIters() const {return m_core.GetHashIters();}
-    void SetHashIters(uint32 value) {m_core.SetHashIters(value);}
     bool ActivateLanguage(wxLanguage language, bool tryOnly);
     wxLanguage GetSystemLanguage();
     wxLanguage GetSelectedLanguage();
