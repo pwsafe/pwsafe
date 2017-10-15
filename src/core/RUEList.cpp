@@ -151,14 +151,5 @@ void CRUEList::SetRUEList(const UUIDList &RUElist)
     m_RUEList.resize(m_maxentries);
 }
 
-CRUEList& CRUEList::operator=(const CRUEList &that)
-{
-  if (this != &that) {
-    m_maxentries = that.m_maxentries;
-    m_RUEList = that.m_RUEList;
-  }
-  return *this;
-}
-
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

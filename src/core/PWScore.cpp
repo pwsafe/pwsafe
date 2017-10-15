@@ -1513,7 +1513,7 @@ void PWScore::ChangePasskey(const StringX &newPasskey)
 
 // functor object type for find_if:
 struct FieldsMatch {
-  bool operator()(std::pair<CUUID, CItemData> p) {
+  bool operator()(const std::pair<CUUID, CItemData> &p) {
     const CItemData &item = p.second;
     return (m_group == item.GetGroup() &&
             m_title == item.GetTitle() &&
@@ -1524,7 +1524,7 @@ struct FieldsMatch {
   m_group(a_group), m_title(a_title), m_user(a_user) {}
 
 private:
-  FieldsMatch& operator=(const FieldsMatch&); // Do not implement
+  FieldsMatch& operator=(const FieldsMatch&) = delete;
   const StringX &m_group;
   const StringX &m_title;
   const StringX &m_user;
@@ -1542,7 +1542,7 @@ ItemListIter PWScore::Find(const StringX &a_group,const StringX &a_title,
 }
 
 struct TitleMatch {
-  bool operator()(std::pair<CUUID, CItemData> p) {
+  bool operator()(const std::pair<CUUID, CItemData> &p) {
     const CItemData &item = p.second;
     return (m_title == item.GetTitle());
   }
@@ -1551,7 +1551,7 @@ struct TitleMatch {
     m_title(a_title) {}
 
 private:
-  TitleMatch& operator=(const TitleMatch&); // Do not implement
+  TitleMatch& operator=(const TitleMatch&) = delete;
   const StringX &m_title;
 };
 
@@ -1585,7 +1585,7 @@ ItemListIter PWScore::GetUniqueBase(const StringX &a_title, bool &bMultiple)
 }
 
 struct GroupTitle_TitleUserMatch {
-  bool operator()(std::pair<CUUID, CItemData> p) {
+  bool operator()(const std::pair<CUUID, CItemData> &p) {
     const CItemData &item = p.second;
     return ((m_gt == item.GetGroup() && m_tu == item.GetTitle()) ||
             (m_gt == item.GetTitle() && m_tu == item.GetUser()));
@@ -1596,7 +1596,7 @@ struct GroupTitle_TitleUserMatch {
                             m_gt(a_grouptitle),  m_tu(a_titleuser) {}
 
 private:
-  GroupTitle_TitleUserMatch& operator=(const GroupTitle_TitleUserMatch&); // Do not implement
+  GroupTitle_TitleUserMatch& operator=(const GroupTitle_TitleUserMatch&) = delete;
   const StringX &m_gt;
   const StringX &m_tu;
 };
@@ -1948,6 +1948,9 @@ struct st_GroupTitleUser2 {
     const StringX &n)
   : group(g), title(t), user(u), newtitle(n) {}
 
+  st_GroupTitleUser2(const st_GroupTitleUser2 &other)
+    : group(other.group), title(other.title), user(other.user), newtitle(other.newtitle) {}
+
   st_GroupTitleUser2 &operator=(const st_GroupTitleUser2 &that) {
     if (this != &that) {
       group = that.group; title = that.title; user = that.user;
@@ -1966,6 +1969,9 @@ struct st_AttTitle_Filename {
 
   st_AttTitle_Filename(const StringX &t, const StringX &fn)
     : title(t), filename(fn) {}
+
+  st_AttTitle_Filename(const st_AttTitle_Filename &other)
+    : title(other.title), filename(other.filename) {}
 
   st_AttTitle_Filename &operator=(const st_AttTitle_Filename &that) {
     if (this != &that) {
@@ -3303,15 +3309,14 @@ struct HistoryUpdater {
    m_bExcludeProtected(bExcludeProtected)
   {}
   virtual void operator() (CItemData &ci) = 0;
+  virtual ~HistoryUpdater() {}
+  HistoryUpdater& operator=(const HistoryUpdater&) = delete;
 
 protected:
   int &m_num_altered;
   SavePWHistoryMap &m_mapSavedHistory;
   std::vector<BYTE> m_vSavedEntryStatus;
   bool m_bExcludeProtected;
-
-private:
-  HistoryUpdater& operator=(const HistoryUpdater&); // Do not implement
 };
 
 struct HistoryUpdateResetOff : public HistoryUpdater {
@@ -3337,7 +3342,7 @@ struct HistoryUpdateResetOff : public HistoryUpdater {
   }
 
 private:
-  HistoryUpdateResetOff& operator=(const HistoryUpdateResetOff&); // Do not implement
+  HistoryUpdateResetOff& operator=(const HistoryUpdateResetOff&) = delete;
 };
 
 struct HistoryUpdateResetOn : public HistoryUpdater {
@@ -3370,7 +3375,7 @@ struct HistoryUpdateResetOn : public HistoryUpdater {
   }
 
 private:
-  HistoryUpdateResetOn& operator=(const HistoryUpdateResetOn&); // Do not implement
+  HistoryUpdateResetOn& operator=(const HistoryUpdateResetOn&) = delete;
   StringX m_text;
 };
 
@@ -3407,7 +3412,7 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
   }
 
 private:
-  HistoryUpdateSetMax& operator=(const HistoryUpdateSetMax&); // Do not implement
+  HistoryUpdateSetMax& operator=(const HistoryUpdateSetMax&) = delete;
   int m_new_default_max;
   StringX m_text;
 };
@@ -3435,42 +3440,35 @@ struct HistoryUpdateClearAll : public HistoryUpdater {
   }
 
 private:
-  HistoryUpdateClearAll& operator=(const HistoryUpdateClearAll&); // Do not implement
+  HistoryUpdateClearAll& operator=(const HistoryUpdateClearAll&) = delete;
 };
 
 int PWScore::DoUpdatePasswordHistory(int iAction, int new_default_max,
                                      SavePWHistoryMap &mapSavedHistory)
 {
   int num_altered = 0;
-  HistoryUpdater *updater = NULL;
+  HistoryUpdater *updater = nullptr;
   bool bExcludeProtected(true);
 
   if (iAction < 0)
     bExcludeProtected = false;
 
-  HistoryUpdateResetOff reset_off(num_altered, mapSavedHistory, bExcludeProtected);
-  HistoryUpdateResetOn  reset_on(num_altered, new_default_max, mapSavedHistory,
-                                 bExcludeProtected);
-  HistoryUpdateSetMax   set_max(num_altered, new_default_max, mapSavedHistory,
-                                bExcludeProtected);
-  HistoryUpdateClearAll clearall(num_altered, mapSavedHistory, bExcludeProtected);
-
   switch (iAction) {
     case -1:   // reset off - include protected entries
     case  1:   // reset off - exclude protected entries
-      updater = &reset_off;
+      updater = new HistoryUpdateResetOff(num_altered, mapSavedHistory, bExcludeProtected);
       break;
     case -2:   // reset on - include protected entries
     case  2:   // reset on - exclude protected entries
-      updater = &reset_on;
+      updater = new HistoryUpdateResetOn(num_altered, new_default_max, mapSavedHistory, bExcludeProtected);
       break;
     case -3:   // setmax   - include protected entries
     case  3:   // setmax   - exclude protected entries
-      updater = &set_max;
+      updater = new  HistoryUpdateSetMax(num_altered, new_default_max, mapSavedHistory, bExcludeProtected);
       break;
     case -4:   // clearall - include protected entries
     case  4:   // clearall - exclude protected entries
-      updater = &clearall;
+      updater = new HistoryUpdateClearAll(num_altered, mapSavedHistory, bExcludeProtected);
       break;
     default:
       ASSERT(0);
@@ -3483,8 +3481,8 @@ int PWScore::DoUpdatePasswordHistory(int iAction, int new_default_max,
   * in a temporary copy of the CItemDatum being modified.
   * Couldn't find a handy way to workaround this (e.g.,
   * operator()(pair<...> &p) failed to compile
-  * so reverted to slightly less elegant for loop
-  * using polymorphism for the history updater
+  * so reverted to slightly less elegant for loop.
+  * Using polymorphism for the history updater
   * is an unrelated tweak.
   */
 
@@ -3495,6 +3493,7 @@ int PWScore::DoUpdatePasswordHistory(int iAction, int new_default_max,
       (*updater)(curitem);
     }
   }
+  delete updater;
   return num_altered;
 }
 

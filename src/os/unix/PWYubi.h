@@ -7,6 +7,7 @@
 */
 
 #ifndef __PWYUBI_H
+#define __PWYUBI_H
 
 #include <pthread.h> // for pthread_mutex_*
 #include <string>
@@ -43,8 +44,6 @@ private:
   mutable std::wstring m_ykerrstr;
   RequestStatus m_reqstat;
 };
-#define __PWYUBI_H
-
 #endif /* __PWYUBI_H */
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -66,7 +66,7 @@ struct ExportTester {
   {}
 
   // operator for ItemList
-  bool operator()(pair<CUUID, CItemData> p)
+  bool operator()(const pair<CUUID , CItemData > &p)
   {return operator()(p.second);}
 
   // operator for OrderedItemList
@@ -76,7 +76,7 @@ struct ExportTester {
   }
 
 private:
-  ExportTester& operator=(const ExportTester&); // Do not implement
+  ExportTester& operator=(const ExportTester&) = delete;
   const stringT &m_subgroup_name;
   const int &m_subgroup_object;
   const int &m_subgroup_function;
@@ -224,7 +224,7 @@ struct TextRecordWriter {
   {}
 
   // operator for ItemList
-  void operator()(pair<CUUID, CItemData> p)
+  void operator()(const pair<CUUID, CItemData> &p)
   {operator()(p.second);}
 
   // operator for OrderedItemList
@@ -268,7 +268,7 @@ struct TextRecordWriter {
   }
 
 private:
-  TextRecordWriter& operator=(const TextRecordWriter&); // Do not implement
+  TextRecordWriter& operator=(const TextRecordWriter&) = delete;
   const stringT &m_subgroup_name;
   const int &m_subgroup_object;
   const int &m_subgroup_function;
@@ -360,7 +360,7 @@ struct XMLRecordWriter {
   }
 
   // operator for ItemList
-  void operator()(pair<CUUID, CItemData> p)
+  void operator()(const pair<CUUID, CItemData> &p)
   {operator()(p.second);}
 
   // operator for OrderedItemList
@@ -427,7 +427,7 @@ struct XMLRecordWriter {
   }
 
 private:
-  XMLRecordWriter& operator=(const XMLRecordWriter&); // Do not implement
+  XMLRecordWriter& operator=(const XMLRecordWriter&) = delete;
   const stringT &m_subgroup_name;
   const int m_subgroup_object;
   const int m_subgroup_function;

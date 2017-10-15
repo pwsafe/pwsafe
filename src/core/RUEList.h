@@ -49,9 +49,10 @@ class CRUEList
 public:
   // Construction/Destruction/operators
   CRUEList(PWScore &core) : m_core(core), m_maxentries(0) {}
+  CRUEList(const CRUEList &other) = delete;
   ~CRUEList() {}
 
-  CRUEList& operator=(const CRUEList& second);
+  CRUEList& operator=(const CRUEList& second) = delete;
 
   // Data retrieval
   size_t GetCount() const {return m_RUEList.size();}
