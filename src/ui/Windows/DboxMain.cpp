@@ -1854,6 +1854,9 @@ void DboxMain::SetStartSilent()
 {
   m_IsStartSilent = true;
   // start silent implies use system tray.
+  // Proper way to do this is to save current pref, set to true, call UpdateSystemMenu(),
+  // then restore pref.
+  // Since we're about to remove UpdateSystemMenu(), just documenting this here...
   PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);
   UpdateSystemMenu();
 }
