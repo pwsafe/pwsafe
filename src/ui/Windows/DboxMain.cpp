@@ -1136,7 +1136,7 @@ BOOL DboxMain::OnInitDialog()
 
   m_ClosedIcon = app.LoadIcon(IDI_CORNERICON);
   m_pTrayIcon = new CSystemTray(this, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
-                                m_LockedIcon, m_RUEList,
+                                m_ClosedIcon, m_RUEList,
                                 PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
   
   m_pTrayIcon->SetTarget(this);
@@ -1477,6 +1477,8 @@ void DboxMain::SetInitialDatabaseDisplay()
 
 void DboxMain::OnDestroy()
 {
+  if (m_pTrayIcon != nullptr)
+    m_pTrayIcon->RemoveIcon();
   ::DestroyIcon(m_LockedIcon);
   ::DestroyIcon(m_UnLockedIcon);
   ::DestroyIcon(m_ClosedIcon);
