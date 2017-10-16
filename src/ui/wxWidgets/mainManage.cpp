@@ -69,6 +69,48 @@ void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
         }
       }
     }
+
+    const int pwhistaction = window->GetPwHistAction();
+    const int pwhistnum = window->GetPwHistNumDefault();
+    if (pwhistaction != 0) {
+        Command *pcmd = UpdatePasswordHistoryCommand::Create(&m_core,
+                                                                     pwhistaction,
+                                                                     pwhistnum);
+
+        int num_altered = pcmd->Execute();
+
+        wxString resultmsg;
+
+        switch (pwhistaction) {
+
+            case -1:
+            case  1:
+                resultmsg = wxString::Format(_("Number of entries that had their settings changed to not save password history was: %d"), num_altered);
+                break;
+
+            case -2:
+            case  2:
+                resultmsg = wxString::Format(_("Number of entries that had their settings changed to save password history was: %d"), num_altered);
+                break;
+
+            case -3:
+            case  3:
+                resultmsg = wxString::Format(_("Number of entries that had their 'maximum saved passwords' changed to the new default was %d"), num_altered);
+                break;
+
+            case -4:
+            case  4:
+                resultmsg = wxString::Format(_("Number of entries that had their password history removed was %d"), num_altered);
+                break;
+
+            default:
+                ASSERT(0);
+                break;
+        }
+
+        wxMessageBox( resultmsg, _("Password Safe"), wxOK, this);
+
+    }
   }
   window->Destroy();
 }

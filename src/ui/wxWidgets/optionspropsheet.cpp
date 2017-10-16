@@ -78,6 +78,7 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
   EVT_RADIOBUTTON( ID_PWHISTSTOP, COptions::OnPWHistRB )
   EVT_RADIOBUTTON( ID_PWHISTSTART, COptions::OnPWHistRB )
   EVT_RADIOBUTTON( ID_PWHISTSETMAX, COptions::OnPWHistRB )
+  EVT_RADIOBUTTON( ID_PWHISTCLEAR, COptions::OnPWHistRB )
   EVT_BUTTON( ID_PWHISTNOCHANGE, COptions::OnPWHistApply )
   EVT_CHECKBOX( ID_CHECKBOX29, COptions::OnLockOnIdleClick )
   EVT_CHECKBOX( ID_CHECKBOX30, COptions::OnUseSystrayClick )
@@ -187,6 +188,11 @@ void COptions::Init()
   m_pwhistsaveCB = NULL;
   m_pwhistnumdfltSB = NULL;
   m_pwhistapplyBN = NULL;
+  m_pwhiststopRB = NULL;
+  m_pwhiststartRB = NULL;
+  m_pwhistsetmaxRB = NULL;
+  m_pwhistclearRB = NULL;
+  m_pwhistaction = 0;
   m_seclockonidleCB = NULL;
   m_secidletimeoutSB = NULL;
   m_sysusesystrayCB = NULL;
@@ -474,17 +480,22 @@ void COptions::CreateControls()
   itemRadioButton81->SetValue(false);
   itemStaticBoxSizer80->Add(itemRadioButton81, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxRadioButton* itemRadioButton82 = new wxRadioButton( itemPanel74, ID_PWHISTSTOP, _("Stop saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemRadioButton82->SetValue(false);
-  itemStaticBoxSizer80->Add(itemRadioButton82, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwhiststopRB = new wxRadioButton( itemPanel74, ID_PWHISTSTOP, _("Stop saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwhiststopRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_pwhiststopRB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxRadioButton* itemRadioButton83 = new wxRadioButton( itemPanel74, ID_PWHISTSTART, _("Start saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemRadioButton83->SetValue(false);
-  itemStaticBoxSizer80->Add(itemRadioButton83, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwhiststartRB = new wxRadioButton( itemPanel74, ID_PWHISTSTART, _("Start saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwhiststartRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_pwhiststartRB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxRadioButton* itemRadioButton84 = new wxRadioButton( itemPanel74, ID_PWHISTSETMAX, _("Set maximum number of passwords saved to above value"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemRadioButton84->SetValue(false);
-  itemStaticBoxSizer80->Add(itemRadioButton84, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwhistsetmaxRB = new wxRadioButton( itemPanel74, ID_PWHISTSETMAX, _("Set maximum number of passwords saved to above value"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwhistsetmaxRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_pwhistsetmaxRB, 0, wxALIGN_LEFT|wxALL, 5);
+
+  m_pwhistclearRB = new wxRadioButton( itemPanel74, ID_PWHISTCLEAR, _("Clear password history for ALL entries"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwhistclearRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_pwhistclearRB, 0, wxALIGN_LEFT|wxALL, 5);
+
 
   m_pwhistapplyBN = new wxButton( itemPanel74, ID_PWHISTNOCHANGE, _("Apply"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer80->Add(m_pwhistapplyBN, 0, wxALIGN_LEFT|wxALL, 5);
@@ -662,6 +673,8 @@ void COptions::CreateControls()
   itemCheckBox118->SetValidator( wxGenericValidator(& m_sysmruonfilemenu) );
   itemCheckBox119->SetValidator( wxGenericValidator(& m_sysdefopenro) );
   itemCheckBox120->SetValidator( wxGenericValidator(& m_sysmultinst) );
+  m_pwhistsaveCB->SetValidator( wxGenericValidator(& m_pwhistsave) );
+  m_pwhistnumdfltSB->SetValidator( wxGenericValidator(& m_pwhistnumdflt) );
 #if defined(__WXX11__) || defined(__WXGTK__)
   itemCheckBox121->SetValidator( wxGenericValidator(& m_usePrimarySelection) );
 #endif
@@ -769,8 +782,9 @@ void COptions::PrefsToPropSheet()
   m_otherbrowserparams = prefs->GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
 
   // Password History preferences
-  m_pwhistsaveCB->SetValue(prefs->GetPref(PWSprefs::SavePasswordHistory));
-  m_pwhistnumdfltSB->SetValue(prefs->GetPref(PWSprefs::NumPWHistoryDefault));
+  m_pwhistsave = prefs->GetPref(PWSprefs::SavePasswordHistory);
+  m_pwhistnumdflt = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
+  m_pwhistnumdfltSB->Enable(m_pwhistsave);  //TODO why doesn't this work?
 
   // Security preferences
   m_secclrclponmin = prefs->GetPref(PWSprefs::ClearClipboardOnMinimize);
@@ -868,6 +882,8 @@ void COptions::PropSheetToPrefs()
                  tostringx(m_otherbrowserparams));
 
   // Password History preferences
+  prefs->SetPref(PWSprefs::SavePasswordHistory, m_pwhistsave);
+  prefs->SetPref(PWSprefs::NumPWHistoryDefault, m_pwhistnumdflt);
 
   // Security preferences
   prefs->SetPref(PWSprefs::ClearClipboardOnMinimize, m_secclrclponmin);
@@ -1103,9 +1119,30 @@ void COptions::OnPWHistSaveClick( wxCommandEvent& /* evt */ )
 
 void COptions::OnPWHistApply( wxCommandEvent& evt )
 {
-  // XXX TBD - send this to someone who knows how to deal with it!
 
-  evt.Skip();
+  // TODO add protected items toggle
+
+  if (m_pwhiststopRB->GetValue()) {
+    // Reset entries to HISTORY OFF
+    m_pwhistaction = 1;
+
+  } else if (m_pwhiststartRB->GetValue()) {
+    // Reset entries to HISTORY OFF
+    m_pwhistaction = 2;
+
+  } else if (m_pwhistsetmaxRB->GetValue()) {
+    // Don't reset history setting, but set history number
+    m_pwhistaction = 3;
+
+  } else if (m_pwhistclearRB->GetValue()) {
+    // Don't reset history setting, but clear all history items
+    m_pwhistaction = 4;
+
+  } else {
+    // It shouldn't be possible to get here, but just in case...
+    m_pwhistaction = 0;
+  }
+
 }
 
 /*!

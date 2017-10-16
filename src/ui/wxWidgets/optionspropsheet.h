@@ -88,6 +88,7 @@ class wxBookCtrlEvent;
 #define ID_PWHISTSTOP 10175
 #define ID_PWHISTSTART 10176
 #define ID_PWHISTSETMAX 10177
+#define ID_PWHISTCLEAR 10188
 #define ID_PANEL5 10136
 #define ID_CHECKBOX27 10179
 #define ID_CHECKBOX 10000
@@ -244,6 +245,15 @@ public:
   int GetPwdefaultlength() const { return m_pwdefaultlength ; }
   void SetPwdefaultlength(int value) { m_pwdefaultlength = value ; }
 
+  bool GetPwHistSave() const { return m_pwhistsave ; }
+  void SetPwHistSave(bool value) { m_pwhistsave = value ;}
+
+  int GetPwHistNumDefault() const { return m_pwhistnumdflt ; }
+  void SetPwHistNumDefault(int value) { m_pwhistnumdflt = value ; }
+
+  int GetPwHistAction() const { return m_pwhistaction ; }
+  void SetPwHistAction(int value) { m_pwhistaction = value ; }
+
   bool GetPwshowinedit() const { return m_pwshowinedit ; }
   void SetPwshowinedit(bool value) { m_pwshowinedit = value ; }
 
@@ -333,6 +343,10 @@ public:
   wxStaticText* m_defusernameLBL;
   wxCheckBox* m_pwhistsaveCB;
   wxSpinCtrl* m_pwhistnumdfltSB;
+  wxRadioButton* m_pwhiststopRB;
+  wxRadioButton* m_pwhiststartRB;
+  wxRadioButton* m_pwhistsetmaxRB;
+  wxRadioButton* m_pwhistclearRB;
   wxButton* m_pwhistapplyBN;
   wxCheckBox* m_seclockonidleCB;
   wxSpinCtrl* m_secidletimeoutSB;
@@ -356,6 +370,9 @@ private:
   bool m_preexpirywarn;
   bool m_putgroups1st;
   int m_pwdefaultlength;
+  bool m_pwhistsave;
+  int m_pwhistnumdflt;
+  int m_pwhistaction;
   bool m_pwshowinedit;
   bool m_querysetdef;
   bool m_saveimmediate;
