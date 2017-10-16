@@ -735,7 +735,6 @@ void DboxMain::InitPasswordSafe()
   // Real initialization done here
   // Requires OnInitDialog to have passed OK
   UpdateAlwaysOnTop();
-  UpdateSystemMenu();
 
   // ... same for UseSystemTray
   // StartSilent trumps preference (but StartClosed doesn't)
@@ -1848,17 +1847,6 @@ void DboxMain::OnUpdateNSCommand(CCmdUI *pCmdUI)
   // Use this callback  for commands that need to
   // be disabled if not supported (yet)
   pCmdUI->Enable(FALSE);
-}
-
-void DboxMain::SetStartSilent()
-{
-  m_IsStartSilent = true;
-  // start silent implies use system tray.
-  // Proper way to do this is to save current pref, set to true, call UpdateSystemMenu(),
-  // then restore pref.
-  // Since we're about to remove UpdateSystemMenu(), just documenting this here...
-  PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);
-  UpdateSystemMenu();
 }
 
 void DboxMain::ChangeOkUpdate()
@@ -3264,7 +3252,6 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
   // Initial setup of menu items and toolbar buttons
   // First set new open/close status
   m_bOpen = bOpen;
-  UpdateSystemMenu();
 
   // For open/close
   const UINT imenuflags = bOpen ? MF_ENABLED : MF_DISABLED | MF_GRAYED;
@@ -3773,45 +3760,6 @@ void DboxMain::ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork)
   prc->top = std::max(rc.top, std::min(rc.bottom-h, prc->top));
   prc->right = prc->left + w;
   prc->bottom = prc->top + h;
-}
-
-void DboxMain::UpdateSystemMenu()
-{
-  /**
-   * Currently we leave the system menu untouched, even if the
-   * last entry ("X Close Alt+F4") is a bit ambiguous:
-   * With UseSystemTray, we minimize to the system tray
-   * Without it, we exit the application.
-   *
-   * Leaving this as a 'placeholder' if/when we change out minds.
-   */
-#if 0
-  CMenu *pSysMenu = GetSystemMenu(FALSE);
-  if (pSysMenu == NULL) // docs don't say when this can occur,
-    return;             // but MS's example check this as well!
-  BYTE flag = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray) ? 1 : 0;
-  flag |= m_bOpen ? 2 : 0;
-
-  CString cs_text;
-  switch (flag) {
-    case 0: // Closed + No System Tray : Exit
-      cs_text.LoadString(IDS_EXIT);
-      break;
-    case 1: // Closed +    System Tray : Minimize to System Tray
-      cs_text.LoadString(IDS_MIN2ST);
-      break;
-    case 2: // Open   + No System Tray : Close DB + Exit
-      cs_text.LoadString(IDS_CLOSE_EXIT);
-      break;
-    case 3: // Open   +    System Tray : Minimize to System Tray & maybe lock
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear))
-        cs_text.LoadString(IDS_MIN2STLOCK);
-      else
-        cs_text.LoadString(IDS_MIN2ST);
-      break;
-   }
-   pSysMenu->ModifyMenu(SC_CLOSE, MF_BYCOMMAND, SC_CLOSE, cs_text);
-#endif
 }
 
 bool DboxMain::CheckPreTranslateDelete(MSG* pMsg)

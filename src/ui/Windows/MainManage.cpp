@@ -349,8 +349,6 @@ void DboxMain::OnOptions()
                             m_StatusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
                             SBPS_STRETCH, NULL);
 
-    UpdateSystemMenu();
-    
     if (pOptionsPS->GetMaxMRUItems() == 0)
       app.ClearMRU();  // Clear any currently saved
     

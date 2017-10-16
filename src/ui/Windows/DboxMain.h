@@ -224,7 +224,7 @@ public:
   bool IsDBReadOnly() const {return m_core.IsReadOnly();}
   bool IsDBOpen() const { return m_bOpen; }
   void SetDBprefsState(const bool bState) { m_bDBState = bState; }
-  void SetStartSilent(); // start minimized, forces UseSystemTray
+  void SetStartSilent() {m_IsStartSilent = true;} // start minimized, forces UseSystemTray
   void SetStartClosed() {m_IsStartClosed = true;} // start with no db, w/o password prompt
   void SetDBInitiallyRO(bool state) {m_bDBInitiallyRO = state;}
   void MakeRandomPassword(StringX &password, PWPolicy &pwp, bool bIssueMsg = false);
@@ -909,7 +909,6 @@ private:
   bool GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected);
   void ChangeSubtreeEntriesProtectStatus(const UINT nID);
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSpecial = false);
-  void UpdateSystemMenu();
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
   void CancelPendingPasswordDialog();
 
