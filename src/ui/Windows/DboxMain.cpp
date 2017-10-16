@@ -1850,14 +1850,12 @@ void DboxMain::OnUpdateNSCommand(CCmdUI *pCmdUI)
   pCmdUI->Enable(FALSE);
 }
 
-void DboxMain::SetStartSilent(bool state)
+void DboxMain::SetStartSilent()
 {
-  m_IsStartSilent = state;
-  if (state) {
-    // start silent implies use system tray.
-    PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);
-    UpdateSystemMenu();
-  }
+  m_IsStartSilent = true;
+  // start silent implies use system tray.
+  PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);
+  UpdateSystemMenu();
 }
 
 void DboxMain::ChangeOkUpdate()
