@@ -225,7 +225,7 @@ public:
   bool IsDBOpen() const { return m_bOpen; }
   void SetDBprefsState(const bool bState) { m_bDBState = bState; }
   void SetStartSilent() {m_IsStartSilent = true;} // start minimized, forces UseSystemTray
-  void SetStartClosed() {m_IsStartClosed = true;} // start with no db, w/o password prompt
+  void SetStartNoDB() {m_IsStartNoDB = true;} // start with no db, w/o password prompt
   void SetDBInitiallyRO(bool state) {m_bDBInitiallyRO = state;}
   void MakeRandomPassword(StringX &password, PWPolicy &pwp, bool bIssueMsg = false);
   BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
@@ -824,7 +824,7 @@ private:
   HICON m_IndexIcon;
 
   bool m_IsStartSilent;
-  bool m_IsStartClosed;
+  bool m_IsStartNoDB;
   bool m_bStartHiddenAndMinimized;
   bool m_IsListView;
   bool m_bAlreadyToldUserNoSave;

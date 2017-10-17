@@ -123,7 +123,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_iSessionEndingStatus(IDIGNORE),
   m_pwchTip(NULL),
   m_bOpen(false), 
-  m_IsStartClosed(false), m_IsStartSilent(false),
+  m_IsStartNoDB(false), m_IsStartSilent(false),
   m_bStartHiddenAndMinimized(false),
   m_bAlreadyToldUserNoSave(false), m_inExit(false),
   m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false),
@@ -1167,14 +1167,14 @@ BOOL DboxMain::OnInitDialog()
     m_bStartHiddenAndMinimized = true;
   }
 
-  if (m_IsStartClosed) {
+  if (m_IsStartNoDB) {
     Close();
     if (!m_IsStartSilent)
       ShowWindow(SW_SHOW);
   }
 
   BOOL bOOI(TRUE);
-  if (!m_IsStartClosed && !m_IsStartSilent) {
+  if (!m_IsStartNoDB && !m_IsStartSilent) {
     if (m_bSetup) { // --setup flag passed?
       // If default dbase exists, DO NOT overwrite it, else
       // prompt for new combination, create it.
@@ -2313,7 +2313,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
     if (bUpdateWindows) {
       if (m_IsStartSilent) {
         // Show initial dialog ONCE (if succeeds)
-        if (!m_IsStartClosed) {
+        if (!m_IsStartNoDB) {
           if (OpenOnInit()) {
             m_IsStartSilent = false;
             RefreshViews();
@@ -2321,8 +2321,8 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
             SetInitialDatabaseDisplay();
             UpdateSystemTray(UNLOCKED);
           }
-        } else { // m_IsStartClosed (&& m_IsStartSilent)
-          m_IsStartClosed = m_IsStartSilent = false;
+        } else { // m_IsStartNoDB (&& m_IsStartSilent)
+          m_IsStartNoDB = m_IsStartSilent = false;
           ShowWindow(SW_RESTORE);
         }
         goto exit;  // return false

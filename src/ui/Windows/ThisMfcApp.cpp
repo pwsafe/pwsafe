@@ -965,11 +965,11 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
         } // -e or -d flag
         case L'C': case L'c':
           m_core.SetCurFile(L"");
-          dbox.SetStartClosed();
+          dbox.SetStartNoDB();
           break;
         case L'M': case L'm':// closed & minimized
           m_core.SetCurFile(L"");
-          dbox.SetStartClosed();
+          dbox.SetStartNoDB();
           dbox.SetStartSilent();
           break;
         case L'R': case L'r':
@@ -1015,7 +1015,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
 
     // If start silent && no filename specified, start closed as well
     if (startSilent && !fileGiven)
-      dbox.SetStartClosed();
+      dbox.SetStartNoDB();
   } // Command line not empty
 
   if (!allDone) {
