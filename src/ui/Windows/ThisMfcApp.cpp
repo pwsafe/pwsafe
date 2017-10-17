@@ -388,7 +388,7 @@ void ThisMfcApp::LoadLocalizedStuff()
     pws_os::Trace(L"Could not load language DLLs - using embedded resources.\n");
     // If the requested DLL is not default English, show an error so we know the specifics.
     // At a minimum this will show the actual error code.
-    if (!(cs_LANG == L"EN" && cs_CTRY.IsEmpty())) {
+    if (cs_LANG != L"EN") {
 		  CString errMessage;
 		  errMessage.Format(L"Attempt to load %s", LPCTSTR(cs_ResPath));
 		  pws_os::IssueError(LPCTSTR(errMessage));
