@@ -19,6 +19,7 @@ Bugs Fixed in 3.44.1
 (b) Remove system tray icon when cancelling password entry.
 [1441] Changing unlock difficulty now enables save (regression),
 supported under undo/redo.
+[1442] Fixed regression: -s flag (silent opening) works again.
 
 Bugs Fixed in 3.44.0
 ====================

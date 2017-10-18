@@ -1163,16 +1163,6 @@ BOOL DboxMain::OnInitDialog()
 
   InitPasswordSafe();
 
-  if (m_IsStartSilent) {
-    m_bStartHiddenAndMinimized = true;
-  }
-
-  if (m_IsStartNoDB) {
-    Close();
-    if (!m_IsStartSilent)
-      ShowWindow(SW_SHOW);
-  }
-
   BOOL bOOI(TRUE);
   if (!m_IsStartNoDB && !m_IsStartSilent) {
     if (m_bSetup) { // --setup flag passed?
@@ -1215,7 +1205,17 @@ BOOL DboxMain::OnInitDialog()
     } else
       bOOI = OpenOnInit();
     // No need for another RefreshViews as OpenOnInit does one via PostOpenProcessing
-  }
+  } else { // m_IsStartNoDB or m_IsStartSilent or both
+    // Following is a hack to make the dialog minimize ASAP
+    // when prgram called with '-s' or '-m' flags
+    m_bStartHiddenAndMinimized = m_IsStartSilent;
+
+    if (m_IsStartNoDB) {
+      Close();
+      if (!m_IsStartSilent)
+        ShowWindow(SW_SHOW);
+    }
+  } // m_IsStart* logic
 
   // Check if user cancelled
   if (bOOI == FALSE) {
@@ -1507,11 +1507,12 @@ void DboxMain::OnDestroy()
 void DboxMain::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 {
   if (m_bStartHiddenAndMinimized) {
+    // Here's where we enforce the '-s' / '-m' flag
+    // semantics, causing main window to minimize ASAP.
     lpwndpos->flags |= (SWP_HIDEWINDOW | SWP_NOACTIVATE);
     lpwndpos->flags &= ~SWP_SHOWWINDOW;
     PostMessage(WM_COMMAND, ID_MENUITEM_MINIMIZE);
   }
-
   CDialog::OnWindowPosChanging(lpwndpos);
 }
 

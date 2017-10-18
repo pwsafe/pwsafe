@@ -107,6 +107,10 @@ BOOL DboxMain::OpenOnInit()
     bReadOnly = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
   }
 
+  // This caused initial minimize when program invoked with '-s' or '-m'
+  // If we're here, we no longer need it
+  m_bStartHiddenAndMinimized = false;
+  
   const StringX sxOriginalFileName = m_core.GetCurFile();
   const int flags = (bReadOnly ? GCP_READONLY : 0) |
                     (m_core.IsReadOnly() ? GCP_FORCEREADONLY : 0);

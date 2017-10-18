@@ -1649,9 +1649,6 @@ void DboxMain::OnMinimize()
   // the scroll positions before the GUI is cleared.
   PWS_LOGIT;
 
-  if (m_bStartHiddenAndMinimized)
-    m_bStartHiddenAndMinimized = false;
-
   // Save current horizontal scroll bar position
   if (m_ctlItemList.GetItemCount() == 0) {
     m_iListHBarPos = m_iTreeHBarPos = 0;
