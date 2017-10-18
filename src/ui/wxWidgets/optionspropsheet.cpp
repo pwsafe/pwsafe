@@ -144,8 +144,8 @@ bool COptions::Create( wxWindow* parent, wxWindowID id, const wxString& caption,
   wxCommandEvent dummyEv;
   OnSuffixCBSet(dummyEv);
   OnBuDirRB(dummyEv);
-  OnPWHistSaveClick(dummyEv);
   m_pwhistapplyBN->Enable(false);
+  m_applytoprotectedCB->Enable(false);
   OnLockOnIdleClick(dummyEv);
   OnUseSystrayClick(dummyEv);
   return true;
@@ -193,6 +193,7 @@ void COptions::Init()
   m_pwhistsetmaxRB = NULL;
   m_pwhistclearRB = NULL;
   m_pwhistaction = 0;
+  m_applytoprotectedCB = NULL;
   m_seclockonidleCB = NULL;
   m_secidletimeoutSB = NULL;
   m_sysusesystrayCB = NULL;
@@ -496,6 +497,9 @@ void COptions::CreateControls()
   m_pwhistclearRB->SetValue(false);
   itemStaticBoxSizer80->Add(m_pwhistclearRB, 0, wxALIGN_LEFT|wxALL, 5);
 
+  m_applytoprotectedCB = new wxCheckBox( itemPanel74, ID_APPLYTOPROTECTED, _("Apply these changes to Protected Entries (if required)."), wxDefaultPosition, wxDefaultSize, 0 );
+  m_applytoprotectedCB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_applytoprotectedCB, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER|wxALL, 5);
 
   m_pwhistapplyBN = new wxButton( itemPanel74, ID_PWHISTNOCHANGE, _("Apply"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer80->Add(m_pwhistapplyBN, 0, wxALIGN_LEFT|wxALL, 5);
@@ -784,7 +788,7 @@ void COptions::PrefsToPropSheet()
   // Password History preferences
   m_pwhistsave = prefs->GetPref(PWSprefs::SavePasswordHistory);
   m_pwhistnumdflt = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
-  m_pwhistnumdfltSB->Enable(m_pwhistsave);  //TODO why doesn't this work?
+  m_pwhistnumdfltSB->Enable(m_pwhistsave);
 
   // Security preferences
   m_secclrclponmin = prefs->GetPref(PWSprefs::ClearClipboardOnMinimize);
@@ -1119,28 +1123,30 @@ void COptions::OnPWHistSaveClick( wxCommandEvent& /* evt */ )
 
 void COptions::OnPWHistApply( wxCommandEvent& evt )
 {
+  int applytoprotected = 1;
 
-  // TODO add protected items toggle
+  if (m_applytoprotectedCB->GetValue()) {
+    applytoprotected = -1;
+  }
 
   if (m_pwhiststopRB->GetValue()) {
     // Reset entries to HISTORY OFF
-    m_pwhistaction = 1;
+    m_pwhistaction = 1 * applytoprotected;
 
   } else if (m_pwhiststartRB->GetValue()) {
     // Reset entries to HISTORY OFF
-    m_pwhistaction = 2;
+    m_pwhistaction = 2 * applytoprotected;
 
   } else if (m_pwhistsetmaxRB->GetValue()) {
     // Don't reset history setting, but set history number
-    m_pwhistaction = 3;
+    m_pwhistaction = 3 * applytoprotected;
 
   } else if (m_pwhistclearRB->GetValue()) {
     // Don't reset history setting, but clear all history items
-    m_pwhistaction = 4;
+    m_pwhistaction = 4 * applytoprotected;
 
   } else {
-    // It shouldn't be possible to get here, but just in case...
-    m_pwhistaction = 0;
+    assert(0);
   }
 
 }
@@ -1153,6 +1159,7 @@ void COptions::OnPWHistRB( wxCommandEvent& evt )
 {
   int id = evt.GetId();
   m_pwhistapplyBN->Enable(id != ID_PWHISTNOCHANGE);
+  m_applytoprotectedCB->Enable(id != ID_PWHISTNOCHANGE);
 }
 
 /*!

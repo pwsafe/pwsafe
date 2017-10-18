@@ -89,6 +89,7 @@ class wxBookCtrlEvent;
 #define ID_PWHISTSTART 10176
 #define ID_PWHISTSETMAX 10177
 #define ID_PWHISTCLEAR 10188
+#define ID_APPLYTOPROTECTED 10189
 #define ID_PANEL5 10136
 #define ID_CHECKBOX27 10179
 #define ID_CHECKBOX 10000
@@ -348,6 +349,7 @@ public:
   wxRadioButton* m_pwhistsetmaxRB;
   wxRadioButton* m_pwhistclearRB;
   wxButton* m_pwhistapplyBN;
+  wxCheckBox* m_applytoprotectedCB;
   wxCheckBox* m_seclockonidleCB;
   wxSpinCtrl* m_secidletimeoutSB;
   wxCheckBox* m_sysusesystrayCB;
