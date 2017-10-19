@@ -22,6 +22,7 @@
 #include "wx/statline.h"
 #include "wx/spinctrl.h"
 #include "wx/grid.h"
+#include "core/PWScore.h" // for password history actions
 ////@end includes
 
 /*!
@@ -124,13 +125,13 @@ class wxBookCtrlEvent;
 
 class COptions: public wxPropertySheetDialog
 {    
-  DECLARE_DYNAMIC_CLASS( COptions )
+  DECLARE_CLASS( COptions )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  COptions();
-  COptions( wxWindow* parent, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
+  COptions(PWScore &core);
+  COptions( wxWindow* parent, PWScore &core, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
@@ -252,9 +253,6 @@ public:
   int GetPwHistNumDefault() const { return m_pwhistnumdflt ; }
   void SetPwHistNumDefault(int value) { m_pwhistnumdflt = value ; }
 
-  int GetPwHistAction() const { return m_pwhistaction ; }
-  void SetPwHistAction(int value) { m_pwhistaction = value ; }
-
   bool GetPwshowinedit() const { return m_pwshowinedit ; }
   void SetPwshowinedit(bool value) { m_pwshowinedit = value ; }
 
@@ -374,7 +372,6 @@ private:
   int m_pwdefaultlength;
   bool m_pwhistsave;
   int m_pwhistnumdflt;
-  int m_pwhistaction;
   bool m_pwshowinedit;
   bool m_querysetdef;
   bool m_saveimmediate;
@@ -394,6 +391,7 @@ private:
   bool m_usedefuser;
   bool m_wordwrapnotes;
   bool m_useAltAutoType;
+  PWScore &m_core;
 ////@end COptions member variables
   uint32 m_hashIterValue;
 #if defined(__X__) || defined(__WXGTK__)

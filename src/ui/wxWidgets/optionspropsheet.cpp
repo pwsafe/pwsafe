@@ -52,7 +52,7 @@
  * COptions type definition
  */
 
-IMPLEMENT_DYNAMIC_CLASS( COptions, wxPropertySheetDialog )
+IMPLEMENT_CLASS( COptions, wxPropertySheetDialog )
 
 /*!
  * COptions event table definition
@@ -114,12 +114,13 @@ const wxString DCAStrings[] = {
  * COptions constructors
  */
 
-COptions::COptions()
+COptions::COptions(PWScore &core) : m_core(core)
 {
   Init();
 }
 
-COptions::COptions( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+COptions::COptions( wxWindow* parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+  : m_core(core)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -192,7 +193,6 @@ void COptions::Init()
   m_pwhiststartRB = NULL;
   m_pwhistsetmaxRB = NULL;
   m_pwhistclearRB = NULL;
-  m_pwhistaction = 0;
   m_applytoprotectedCB = NULL;
   m_seclockonidleCB = NULL;
   m_secidletimeoutSB = NULL;
@@ -1123,32 +1123,45 @@ void COptions::OnPWHistSaveClick( wxCommandEvent& /* evt */ )
 
 void COptions::OnPWHistApply( wxCommandEvent& evt )
 {
-  int applytoprotected = 1;
-
-  if (m_applytoprotectedCB->GetValue()) {
-    applytoprotected = -1;
-  }
+  int applytoprotected = m_applytoprotectedCB->GetValue();
+  int pwhistaction = 0;
+  int pwhistnum = m_pwhistnumdfltSB->GetValue();
+  wxString resultmsg;
 
   if (m_pwhiststopRB->GetValue()) {
     // Reset entries to HISTORY OFF
-    m_pwhistaction = 1 * applytoprotected;
+    pwhistaction = (applytoprotected) ? PWHIST_ACTION_STOP_INCL_PROT : PWHIST_ACTION_STOP_EXCL_PROT;
+    resultmsg = _("Number of entries that had their settings changed to not save password history was: %d");
 
   } else if (m_pwhiststartRB->GetValue()) {
-    // Reset entries to HISTORY OFF
-    m_pwhistaction = 2 * applytoprotected;
+    // Reset entries to HISTORY ON
+    pwhistaction = (applytoprotected) ? PWHIST_ACTION_START_INCL_PROT : PWHIST_ACTION_START_EXCL_PROT;
+    resultmsg = _("Number of entries that had their settings changed to save password history was: %d");
 
   } else if (m_pwhistsetmaxRB->GetValue()) {
     // Don't reset history setting, but set history number
-    m_pwhistaction = 3 * applytoprotected;
+    pwhistaction = (applytoprotected) ? PWHIST_ACTION_SETMAX_INCL_PROT : PWHIST_ACTION_SETMAX_EXCL_PROT;
+    resultmsg = _("Number of entries that had their 'maximum saved passwords' changed to the new default was %d");
 
   } else if (m_pwhistclearRB->GetValue()) {
     // Don't reset history setting, but clear all history items
-    m_pwhistaction = 4 * applytoprotected;
+    pwhistaction = (applytoprotected) ? PWHIST_ACTION_CLEAR_INCL_PROT : PWHIST_ACTION_CLEAR_EXCL_PROT;
+    resultmsg = _("Number of entries that had their password history removed was %d");
 
   } else {
     assert(0);
   }
 
+
+  if (pwhistaction != 0) {
+    Command *pcmd = UpdatePasswordHistoryCommand::Create(&m_core,
+                                                                pwhistaction,
+                                                                pwhistnum);
+    int num_altered = pcmd->Execute();
+
+    wxMessageBox( wxString::Format(resultmsg, num_altered), _("Password Safe"), wxOK, this);
+
+  }
 }
 
 /*!
