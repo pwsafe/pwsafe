@@ -52,7 +52,7 @@
  * COptions type definition
  */
 
-IMPLEMENT_DYNAMIC_CLASS( COptions, wxPropertySheetDialog )
+IMPLEMENT_CLASS( COptions, wxPropertySheetDialog )
 
 /*!
  * COptions event table definition
@@ -78,6 +78,7 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
   EVT_RADIOBUTTON( ID_PWHISTSTOP, COptions::OnPWHistRB )
   EVT_RADIOBUTTON( ID_PWHISTSTART, COptions::OnPWHistRB )
   EVT_RADIOBUTTON( ID_PWHISTSETMAX, COptions::OnPWHistRB )
+  EVT_RADIOBUTTON( ID_PWHISTCLEAR, COptions::OnPWHistRB )
   EVT_BUTTON( ID_PWHISTNOCHANGE, COptions::OnPWHistApply )
   EVT_CHECKBOX( ID_CHECKBOX29, COptions::OnLockOnIdleClick )
   EVT_CHECKBOX( ID_CHECKBOX30, COptions::OnUseSystrayClick )
@@ -113,12 +114,13 @@ const wxString DCAStrings[] = {
  * COptions constructors
  */
 
-COptions::COptions()
+COptions::COptions(PWScore &core) : m_core(core)
 {
   Init();
 }
 
-COptions::COptions( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+COptions::COptions( wxWindow* parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+  : m_core(core)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -143,8 +145,8 @@ bool COptions::Create( wxWindow* parent, wxWindowID id, const wxString& caption,
   wxCommandEvent dummyEv;
   OnSuffixCBSet(dummyEv);
   OnBuDirRB(dummyEv);
-  OnPWHistSaveClick(dummyEv);
   m_pwhistapplyBN->Enable(false);
+  m_applytoprotectedCB->Enable(false);
   OnLockOnIdleClick(dummyEv);
   OnUseSystrayClick(dummyEv);
   return true;
@@ -187,6 +189,11 @@ void COptions::Init()
   m_pwhistsaveCB = NULL;
   m_pwhistnumdfltSB = NULL;
   m_pwhistapplyBN = NULL;
+  m_pwhiststopRB = NULL;
+  m_pwhiststartRB = NULL;
+  m_pwhistsetmaxRB = NULL;
+  m_pwhistclearRB = NULL;
+  m_applytoprotectedCB = NULL;
   m_seclockonidleCB = NULL;
   m_secidletimeoutSB = NULL;
   m_sysusesystrayCB = NULL;
@@ -474,17 +481,25 @@ void COptions::CreateControls()
   itemRadioButton81->SetValue(false);
   itemStaticBoxSizer80->Add(itemRadioButton81, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxRadioButton* itemRadioButton82 = new wxRadioButton( itemPanel74, ID_PWHISTSTOP, _("Stop saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemRadioButton82->SetValue(false);
-  itemStaticBoxSizer80->Add(itemRadioButton82, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwhiststopRB = new wxRadioButton( itemPanel74, ID_PWHISTSTOP, _("Stop saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwhiststopRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_pwhiststopRB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxRadioButton* itemRadioButton83 = new wxRadioButton( itemPanel74, ID_PWHISTSTART, _("Start saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemRadioButton83->SetValue(false);
-  itemStaticBoxSizer80->Add(itemRadioButton83, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwhiststartRB = new wxRadioButton( itemPanel74, ID_PWHISTSTART, _("Start saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwhiststartRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_pwhiststartRB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxRadioButton* itemRadioButton84 = new wxRadioButton( itemPanel74, ID_PWHISTSETMAX, _("Set maximum number of passwords saved to above value"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemRadioButton84->SetValue(false);
-  itemStaticBoxSizer80->Add(itemRadioButton84, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwhistsetmaxRB = new wxRadioButton( itemPanel74, ID_PWHISTSETMAX, _("Set maximum number of passwords saved to above value"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwhistsetmaxRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_pwhistsetmaxRB, 0, wxALIGN_LEFT|wxALL, 5);
+
+  m_pwhistclearRB = new wxRadioButton( itemPanel74, ID_PWHISTCLEAR, _("Clear password history for ALL entries"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwhistclearRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_pwhistclearRB, 0, wxALIGN_LEFT|wxALL, 5);
+
+  m_applytoprotectedCB = new wxCheckBox( itemPanel74, ID_APPLYTOPROTECTED, _("Apply these changes to Protected Entries (if required)."), wxDefaultPosition, wxDefaultSize, 0 );
+  m_applytoprotectedCB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_applytoprotectedCB, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER|wxALL, 5);
 
   m_pwhistapplyBN = new wxButton( itemPanel74, ID_PWHISTNOCHANGE, _("Apply"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer80->Add(m_pwhistapplyBN, 0, wxALIGN_LEFT|wxALL, 5);
@@ -662,6 +677,8 @@ void COptions::CreateControls()
   itemCheckBox118->SetValidator( wxGenericValidator(& m_sysmruonfilemenu) );
   itemCheckBox119->SetValidator( wxGenericValidator(& m_sysdefopenro) );
   itemCheckBox120->SetValidator( wxGenericValidator(& m_sysmultinst) );
+  m_pwhistsaveCB->SetValidator( wxGenericValidator(& m_pwhistsave) );
+  m_pwhistnumdfltSB->SetValidator( wxGenericValidator(& m_pwhistnumdflt) );
 #if defined(__WXX11__) || defined(__WXGTK__)
   itemCheckBox121->SetValidator( wxGenericValidator(& m_usePrimarySelection) );
 #endif
@@ -769,8 +786,9 @@ void COptions::PrefsToPropSheet()
   m_otherbrowserparams = prefs->GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
 
   // Password History preferences
-  m_pwhistsaveCB->SetValue(prefs->GetPref(PWSprefs::SavePasswordHistory));
-  m_pwhistnumdfltSB->SetValue(prefs->GetPref(PWSprefs::NumPWHistoryDefault));
+  m_pwhistsave = prefs->GetPref(PWSprefs::SavePasswordHistory);
+  m_pwhistnumdflt = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
+  m_pwhistnumdfltSB->Enable(m_pwhistsave);
 
   // Security preferences
   m_secclrclponmin = prefs->GetPref(PWSprefs::ClearClipboardOnMinimize);
@@ -868,6 +886,8 @@ void COptions::PropSheetToPrefs()
                  tostringx(m_otherbrowserparams));
 
   // Password History preferences
+  prefs->SetPref(PWSprefs::SavePasswordHistory, m_pwhistsave);
+  prefs->SetPref(PWSprefs::NumPWHistoryDefault, m_pwhistnumdflt);
 
   // Security preferences
   prefs->SetPref(PWSprefs::ClearClipboardOnMinimize, m_secclrclponmin);
@@ -1103,9 +1123,45 @@ void COptions::OnPWHistSaveClick( wxCommandEvent& /* evt */ )
 
 void COptions::OnPWHistApply( wxCommandEvent& evt )
 {
-  // XXX TBD - send this to someone who knows how to deal with it!
+  int applytoprotected = m_applytoprotectedCB->GetValue();
+  int pwhistaction = 0;
+  int pwhistnum = m_pwhistnumdfltSB->GetValue();
+  wxString resultmsg;
 
-  evt.Skip();
+  if (m_pwhiststopRB->GetValue()) {
+    // Reset entries to HISTORY OFF
+    pwhistaction = (applytoprotected) ? PWHIST_ACTION_STOP_INCL_PROT : PWHIST_ACTION_STOP_EXCL_PROT;
+    resultmsg = _("Number of entries that had their settings changed to not save password history was: %d");
+
+  } else if (m_pwhiststartRB->GetValue()) {
+    // Reset entries to HISTORY ON
+    pwhistaction = (applytoprotected) ? PWHIST_ACTION_START_INCL_PROT : PWHIST_ACTION_START_EXCL_PROT;
+    resultmsg = _("Number of entries that had their settings changed to save password history was: %d");
+
+  } else if (m_pwhistsetmaxRB->GetValue()) {
+    // Don't reset history setting, but set history number
+    pwhistaction = (applytoprotected) ? PWHIST_ACTION_SETMAX_INCL_PROT : PWHIST_ACTION_SETMAX_EXCL_PROT;
+    resultmsg = _("Number of entries that had their 'maximum saved passwords' changed to the new default was %d");
+
+  } else if (m_pwhistclearRB->GetValue()) {
+    // Don't reset history setting, but clear all history items
+    pwhistaction = (applytoprotected) ? PWHIST_ACTION_CLEAR_INCL_PROT : PWHIST_ACTION_CLEAR_EXCL_PROT;
+    resultmsg = _("Number of entries that had their password history removed was %d");
+
+  } else {
+    assert(0);
+  }
+
+
+  if (pwhistaction != 0) {
+    Command *pcmd = UpdatePasswordHistoryCommand::Create(&m_core,
+                                                                pwhistaction,
+                                                                pwhistnum);
+    int num_altered = pcmd->Execute();
+
+    wxMessageBox( wxString::Format(resultmsg, num_altered), _("Password Safe"), wxOK, this);
+
+  }
 }
 
 /*!
@@ -1116,6 +1172,7 @@ void COptions::OnPWHistRB( wxCommandEvent& evt )
 {
   int id = evt.GetId();
   m_pwhistapplyBN->Enable(id != ID_PWHISTNOCHANGE);
+  m_applytoprotectedCB->Enable(id != ID_PWHISTNOCHANGE);
 }
 
 /*!

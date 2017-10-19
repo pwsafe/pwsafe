@@ -46,7 +46,7 @@ void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
 {
   PWSprefs* prefs = PWSprefs::GetInstance();
   const StringX sxOldDBPrefsString(prefs->Store());
-  COptions *window = new COptions(this);
+  COptions *window = new COptions(this, m_core);
   if (window->ShowModal() == wxID_OK) {
     StringX sxNewDBPrefsString(prefs->Store(true));
     // Update system tray icon if visible so changes show up immediately

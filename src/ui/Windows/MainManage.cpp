@@ -569,20 +569,20 @@ void DboxMain::OnOptions()
         if (pmulticmds->GetRC(ipwh_exec, num_altered)) {
           UINT uimsg_id(0);
           switch (iAction) {
-          case -1:   // reset off - include protected entries
-          case  1:   // reset off - exclude protected entries
+          case PWHIST_ACTION_STOP_INCL_PROT:   // reset off - include protected entries
+          case PWHIST_ACTION_STOP_EXCL_PROT:   // reset off - exclude protected entries
             uimsg_id = IDS_ENTRIESCHANGEDSTOP;
             break;
-          case -2:   // reset on - include protected entries
-          case  2:   // reset on - exclude protected entries
+          case PWHIST_ACTION_START_INCL_PROT:   // reset on - include protected entries
+          case PWHIST_ACTION_START_EXCL_PROT:   // reset on - exclude protected entries
             uimsg_id = IDS_ENTRIESCHANGEDSAVE;
             break;
-          case -3:   // setmax - include protected entries
-          case  3:   // setmax - exclude protected entries
+          case PWHIST_ACTION_SETMAX_INCL_PROT:   // setmax - include protected entries
+          case PWHIST_ACTION_SETMAX_EXCL_PROT:   // setmax - exclude protected entries
             uimsg_id = IDS_ENTRIESRESETMAX;
             break;
-          case -4:   // clearall - include protected entries
-          case  4:   // clearall - exclude protected entries
+          case PWHIST_ACTION_CLEAR_INCL_PROT:   // clearall - include protected entries
+          case PWHIST_ACTION_CLEAR_EXCL_PROT:   // clearall - exclude protected entries
             uimsg_id = IDS_ENTRIESCLEARALL;
             break;
           default:
