@@ -1130,22 +1130,22 @@ void COptions::OnPWHistApply( wxCommandEvent& evt )
 
   if (m_pwhiststopRB->GetValue()) {
     // Reset entries to HISTORY OFF
-    pwhistaction = (applytoprotected) ? PWHIST_ACTION_STOP_INCL_PROT : PWHIST_ACTION_STOP_EXCL_PROT;
+    pwhistaction = (applytoprotected) ? PWHist::STOP_INCL_PROT : PWHist::STOP_EXCL_PROT;
     resultmsg = _("Number of entries that had their settings changed to not save password history was: %d");
 
   } else if (m_pwhiststartRB->GetValue()) {
     // Reset entries to HISTORY ON
-    pwhistaction = (applytoprotected) ? PWHIST_ACTION_START_INCL_PROT : PWHIST_ACTION_START_EXCL_PROT;
+    pwhistaction = (applytoprotected) ? PWHist::START_INCL_PROT : PWHist::START_EXCL_PROT;
     resultmsg = _("Number of entries that had their settings changed to save password history was: %d");
 
   } else if (m_pwhistsetmaxRB->GetValue()) {
     // Don't reset history setting, but set history number
-    pwhistaction = (applytoprotected) ? PWHIST_ACTION_SETMAX_INCL_PROT : PWHIST_ACTION_SETMAX_EXCL_PROT;
+    pwhistaction = (applytoprotected) ? PWHist::SETMAX_INCL_PROT : PWHist::SETMAX_EXCL_PROT;
     resultmsg = _("Number of entries that had their 'maximum saved passwords' changed to the new default was %d");
 
   } else if (m_pwhistclearRB->GetValue()) {
     // Don't reset history setting, but clear all history items
-    pwhistaction = (applytoprotected) ? PWHIST_ACTION_CLEAR_INCL_PROT : PWHIST_ACTION_CLEAR_EXCL_PROT;
+    pwhistaction = (applytoprotected) ? PWHist::CLEAR_INCL_PROT : PWHist::CLEAR_EXCL_PROT;
     resultmsg = _("Number of entries that had their password history removed was %d");
 
   } else {

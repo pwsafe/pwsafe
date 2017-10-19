@@ -3454,20 +3454,20 @@ int PWScore::DoUpdatePasswordHistory(int iAction, int new_default_max,
     bExcludeProtected = false;
 
   switch (iAction) {
-    case PWHIST_ACTION_STOP_INCL_PROT:   // reset off - include protected entries
-    case PWHIST_ACTION_STOP_EXCL_PROT:   // reset off - exclude protected entries
+    case PWHist::STOP_INCL_PROT:   // reset off - include protected entries
+    case PWHist::STOP_EXCL_PROT:   // reset off - exclude protected entries
       updater = new HistoryUpdateResetOff(num_altered, mapSavedHistory, bExcludeProtected);
       break;
-    case PWHIST_ACTION_START_INCL_PROT:   // reset on - include protected entries
-    case PWHIST_ACTION_START_EXCL_PROT:   // reset on - exclude protected entries
+    case PWHist::START_INCL_PROT:   // reset on - include protected entries
+    case PWHist::START_EXCL_PROT:   // reset on - exclude protected entries
       updater = new HistoryUpdateResetOn(num_altered, new_default_max, mapSavedHistory, bExcludeProtected);
       break;
-    case PWHIST_ACTION_SETMAX_INCL_PROT:   // setmax   - include protected entries
-    case PWHIST_ACTION_SETMAX_EXCL_PROT:   // setmax   - exclude protected entries
+    case PWHist::SETMAX_INCL_PROT:   // setmax   - include protected entries
+    case PWHist::SETMAX_EXCL_PROT:   // setmax   - exclude protected entries
       updater = new  HistoryUpdateSetMax(num_altered, new_default_max, mapSavedHistory, bExcludeProtected);
       break;
-    case PWHIST_ACTION_CLEAR_INCL_PROT:   // clearall - include protected entries
-    case PWHIST_ACTION_CLEAR_EXCL_PROT:   // clearall - exclude protected entries
+    case PWHist::CLEAR_INCL_PROT:   // clearall - include protected entries
+    case PWHist::CLEAR_EXCL_PROT:   // clearall - exclude protected entries
       updater = new HistoryUpdateClearAll(num_altered, mapSavedHistory, bExcludeProtected);
       break;
     default:

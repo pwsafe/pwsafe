@@ -68,6 +68,23 @@ PWHistEntry(const PWHistEntry &that) :
   }
 };
 
+namespace PWHist {
+  // Following values are used in the Manage Options
+  // to bulk modify the password histories.
+  // The origin of these values is in how they were
+  // implemented in Windows - do not change.
+  enum Action {NOCHANGE = 0,
+               STOP_INCL_PROT = -1,
+               STOP_EXCL_PROT  = 1,
+               START_INCL_PROT = -2,
+               START_EXCL_PROT  = 2,
+               SETMAX_INCL_PROT = -3,
+               SETMAX_EXCL_PROT  = 3,
+               CLEAR_INCL_PROT = -4,
+               CLEAR_EXCL_PROT  = 4,
+  };
+};
+
 typedef std::vector<PWHistEntry> PWHistList;
 
 // Parses a password history string as defined
