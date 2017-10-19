@@ -25,6 +25,17 @@
 
 #include "coredefs.h"
 
+
+#define PWHIST_ACTION_NOCHANGE 0
+#define PWHIST_ACTION_STOP_INCL_PROT -1
+#define PWHIST_ACTION_STOP_EXCL_PROT  1
+#define PWHIST_ACTION_START_INCL_PROT -2
+#define PWHIST_ACTION_START_EXCL_PROT  2
+#define PWHIST_ACTION_SETMAX_INCL_PROT -3
+#define PWHIST_ACTION_SETMAX_EXCL_PROT  3
+#define PWHIST_ACTION_CLEAR_INCL_PROT -4
+#define PWHIST_ACTION_CLEAR_EXCL_PROT  4
+
 // Parameter list for ParseBaseEntryPWD
 struct BaseEntryParms {
   // All fields except "InputType" are 'output'.
