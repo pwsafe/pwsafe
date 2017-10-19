@@ -1665,6 +1665,7 @@ void DboxMain::OnRestore()
 {
   PWS_LOGIT;
 
+  m_bStartHiddenAndMinimized = false; // don't hide dboxmain any more.
   m_ctlItemTree.SetRestoreMode(true);
 
   // Called when the System Tray Restore menu option is used
