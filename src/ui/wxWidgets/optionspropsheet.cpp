@@ -34,6 +34,7 @@
 #include "core/PWSprefs.h"
 #include "core/Util.h" // for datetime string
 #include "core/PWSAuxParse.h" // for DEFAULT_AUTOTYPE
+#include "core/PWHistory.h" // for history actions
 #include "./wxutils.h"
 #include "./pwsmenushortcuts.h"
 #include "pwsafeapp.h" // for GetHashIters()
