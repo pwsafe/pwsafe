@@ -124,7 +124,6 @@ DboxMain::DboxMain(CWnd* pParent)
   m_pwchTip(NULL),
   m_bOpen(false), 
   m_IsStartNoDB(false), m_IsStartSilent(false),
-  m_bStartHiddenAndMinimized(false),
   m_bAlreadyToldUserNoSave(false), m_inExit(false),
   m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false),
   m_lastclipboardaction(L""), m_pNotesDisplay(NULL),
@@ -1206,10 +1205,6 @@ BOOL DboxMain::OnInitDialog()
       bOOI = OpenOnInit();
     // No need for another RefreshViews as OpenOnInit does one via PostOpenProcessing
   } else { // m_IsStartNoDB or m_IsStartSilent or both
-    // Following is a hack to make the dialog minimize ASAP
-    // when prgram called with '-s' or '-m' flags
-    m_bStartHiddenAndMinimized = m_IsStartSilent;
-
     if (m_IsStartNoDB) {
       Close();
       if (!m_IsStartSilent)
@@ -1506,7 +1501,7 @@ void DboxMain::OnDestroy()
 
 void DboxMain::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 {
-  if (m_bStartHiddenAndMinimized) {
+  if (m_IsStartSilent) {
     // Here's where we enforce the '-s' / '-m' flag
     // semantics, causing main window to minimize ASAP.
     lpwndpos->flags |= (SWP_HIDEWINDOW | SWP_NOACTIVATE);
@@ -2324,7 +2319,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
           }
         } else { // m_IsStartNoDB (&& m_IsStartSilent)
           m_IsStartNoDB = m_IsStartSilent = false;
-          ShowWindow(SW_RESTORE);
+          ShowWindow(SW_SHOWNORMAL);
         }
         goto exit;  // return false
       } // m_IsStartSilent

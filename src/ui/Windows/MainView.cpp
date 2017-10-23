@@ -1665,7 +1665,9 @@ void DboxMain::OnRestore()
 {
   PWS_LOGIT;
 
-  m_bStartHiddenAndMinimized = false; // don't hide dboxmain any more.
+
+  // This caused initial minimize when program invoked with '-s' or '-m':
+  m_IsStartSilent = false; // don't hide dboxmain any more.
   m_ctlItemTree.SetRestoreMode(true);
 
   // Called when the System Tray Restore menu option is used

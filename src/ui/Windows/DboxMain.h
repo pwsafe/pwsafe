@@ -825,7 +825,6 @@ private:
 
   bool m_IsStartSilent;
   bool m_IsStartNoDB;
-  bool m_bStartHiddenAndMinimized;
   bool m_IsListView;
   bool m_bAlreadyToldUserNoSave;
   bool m_bPasswordColumnShowing;
