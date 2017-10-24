@@ -619,15 +619,14 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
   out->Close();
   delete out;
 
-  // Update info only if written version is same as read version
-  // (otherwise we're exporting, not saving)
-  if (version == m_ReadFileVersion) {
+  // Update info if we're saving or upgrading.
+  if (version >= m_ReadFileVersion) {
     // Set/Reset everything as "unchanged"
     SetInitialValues();
 
     m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
-  } else {
-    m_hdr = saved_hdr;  // Exporting - restore saved header
+  } else { // Exporting to older version - restore saved header
+    m_hdr = saved_hdr;
   }
 
   // Create new signature if required
