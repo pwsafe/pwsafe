@@ -380,7 +380,7 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
 
     //edge cases can make wc bigger than buffer, so calculate the size needed
     size_t wcsize = pws_os::mbstowcs(NULL, 0,
-                                     reinterpret_cast<const char *>(buffer), 0) + 1;
+                                     reinterpret_cast<const char *>(buffer), buffer_len) + 1;
 
     wchar_t *wc = new wchar_t[wcsize+1];
 
