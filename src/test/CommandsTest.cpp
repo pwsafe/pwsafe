@@ -267,7 +267,7 @@ TEST_F(CommandsTest, UpdatePassword)
   it.SetPassword(sxOldPassword);
   it.SetPWHistory(L"10300");  // On and save 3
   it.SetPMTime(tPMtime);       // Say password set yesterday
-  it.SetXTimeInt(i1day * 10);
+  it.SetXTimeInt(10);
   it.SetXTime(t - i1day * 2); // Say expired 2 days ago
 
   Command *pcmd = AddEntryCommand::Create(&core, it);
