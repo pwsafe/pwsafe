@@ -2072,6 +2072,7 @@
 					DEBUG,
 					_DEBUG,
 					NO_YUBI,
+					NO_QR,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
@@ -2096,6 +2097,7 @@
 					NDEBUG,
 					NO_YUBI,
 					"wxDEBUG_LEVEL=0",
+					NO_QR,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
