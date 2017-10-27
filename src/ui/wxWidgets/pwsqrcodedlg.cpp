@@ -113,6 +113,7 @@ void PWSQRCodeDlg::UpdateTimeRemaining()
 //                  -DUNICODE -I../.. pwsqrcodedlg.cpp  -lcore -los -lcore -lqrencode -L../../../lib/unicodedebug
 //
 #include <wx/cmdline.h>
+#include <wx/filename.h>
 class QRTestApp: public wxApp {
 	public:
 
@@ -131,7 +132,7 @@ class QRTestApp: public wxApp {
 				return false;
 
 			if ( this->argc != 2 ) {
-				std::cerr << "usage: " << basename(argv[0]) << " <text to generate qr code for>\n";
+				std::cerr << "usage: " << wxFileName(argv[0]).GetFullName() << " <text to generate qr code for>\n";
 				return false;
 			} else {
 				PWSQRCodeDlg dlg(nullptr, StringX(argv[1]), "Scan this QR Code and comapre with the program argument" );
