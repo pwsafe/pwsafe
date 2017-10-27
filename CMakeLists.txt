@@ -14,8 +14,11 @@ include(CheckLibraryExists)
 include(CheckIncludeFile)
 
 # IPO = interprocedural optimisation, not initial public offering (unfortunately)
-include(CheckIPOSupported)
-check_ipo_supported(RESULT IPO_SUPPORTED)
+include(CheckIPOSupported OPTIONAL RESULT_VARIABLE CHECK_IPO_FOUND)
+if (${CHECK_IPO_FOUND} STREQUAL "NOTFOUND")
+else (${CHECK_IPO_FOUND} STREQUAL "NOTFOUND")
+  check_ipo_supported(RESULT IPO_SUPPORTED)
+endif (${CHECK_IPO_FOUND} STREQUAL "NOTFOUND")
 
 if (NOT WIN32)
 include(FindUnixCommands)
