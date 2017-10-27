@@ -5,9 +5,17 @@ else (WIN32)
 endif (WIN32)
 project (passwordsafe CXX C)
 
+if (POLICY CMP0069)
+  cmake_policy(SET CMP0069 NEW)
+endif (POLICY CMP0069)
+
 # prerequisites
 include(CheckLibraryExists)
 include(CheckIncludeFile)
+
+# IPO = interprocedural optimisation, not initial public offering (unfortunately)
+include(CheckIPOSupported)
+check_ipo_supported(RESULT IPO_SUPPORTED)
 
 if (NOT WIN32)
 include(FindUnixCommands)
@@ -315,9 +323,12 @@ else()
   endif (NOT WIN32)
 endif()
 
+if (IPO_SUPPORTED)
+  set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
+endif (IPO_SUPPORTED)
+
 if (NOT WIN32)
   add_executable(pwsafe ${PWSAFE_SRCS})
-  set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
   if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   # squash lintian hardening-no-relro warning, probably good for all Linuxen
   set_target_properties(pwsafe PROPERTIES LINK_FLAGS "-z relro")
