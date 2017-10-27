@@ -32,7 +32,7 @@ YBPERS_LIBS=core
 endif
 
 ifndef NO_QR
-QR_SRC=pwsqrcodedlg.cpp
+QR_SRC=pwsqrcodedlg.cpp pwsqrencode-linux.cpp
 else
 QRFLAGS=-DNO_QR
 endif
