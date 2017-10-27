@@ -896,7 +896,7 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::DatabaseClear, m_seclockonmin);
   prefs->SetPref(PWSprefs::DontAskQuestion, m_secconfrmcpy);
   prefs->SetPref(PWSprefs::LockOnWindowLock, m_seclockonwinlock);
-  PwsafeApp *app = dynamic_cast<PwsafeApp *>(wxTheApp);
+
   m_hashIterValue = MIN_HASH_ITERATIONS;
   if (m_hashIterSlider > 0) {
     const int step = MAX_USABLE_HASH_ITERS/100;
