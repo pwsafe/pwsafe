@@ -38,11 +38,12 @@ wxSize SizeRestrictedPanel::GetWindowSizeForVirtualSize(const wxSize& size) cons
   wxSize screenSize = ::wxGetClientDisplayRect().GetSize();
   wxSize currentSize = this->GetSize();
   wxSize parentSize = ::wxGetTopLevelParent(const_cast<SizeRestrictedPanel*>(this))->GetSize();
-  if (currentSize.GetWidth() == 0 || currentSize.GetHeight() == 0 || !IsShown()
-      || currentSize.GetWidth() > parentSize.GetWidth() || currentSize.GetHeight() > parentSize.GetHeight())
+  if (currentSize.GetWidth() == 0 || currentSize.GetHeight() == 0 ||
+      !IsShown() ||
+      currentSize.GetWidth() > parentSize.GetWidth() || currentSize.GetHeight() > parentSize.GetHeight())
     currentSize = m_sizingParent->GetSize();
 
-    wxSize sizeDiff = parentSize - currentSize;
+  wxSize sizeDiff = parentSize - currentSize;
 
   if (bestSize.GetWidth() > (screenSize.GetWidth() - sizeDiff.GetWidth())) {
 //    wxLogDebug(wxT("Adjusting best width from %d, screen width is %d, parent width is %d, current width is %d, diff is %d"),
