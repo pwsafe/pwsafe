@@ -782,7 +782,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
   StringX history(_T(""));
   if (bsFields.test(CItemData::PWHIST)) {
     // History exported as "00000" if empty, to make parsing easier
-    BOOL pwh_status;
+    bool pwh_status;
     size_t pwh_max, num_err;
     PWHistList pwhistlist;
 

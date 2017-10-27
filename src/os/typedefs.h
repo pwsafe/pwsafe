@@ -122,7 +122,6 @@ typedef wchar_t TCHAR;
 // mimic Microsoft conventional typdefs:
 typedef TCHAR *LPTSTR;
 typedef const TCHAR *LPCTSTR;
-typedef bool BOOL;
 typedef unsigned char BYTE;
 typedef uint16_t WORD;
 typedef uint32_t DWORD;

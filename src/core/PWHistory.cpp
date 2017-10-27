@@ -161,7 +161,7 @@ StringX GetPreviousPassword(const StringX &pwh_str)
   }
 }
 
-StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num)
+StringX MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num)
 {
   const size_t MAX_PWHISTORY = 255;
   if (pwh_max > MAX_PWHISTORY)
