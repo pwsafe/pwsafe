@@ -19,24 +19,55 @@ wxBitmap QRCodeBitmap( const StringX &data )
 	CIFilter *qrFilter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
 	if ( qrFilter ) {
 		
+    [qrFilter setDefaults];
+
 		CUTF8Conv conv;
 		const unsigned char *utf8bytes = nullptr;
 		size_t nBytes = 0;
 		
 		if ( conv.ToUTF8(data, utf8bytes, nBytes) ) {
+      NSData *qrData = nil;
 			NSString * utf8str = [[NSString alloc] initWithBytes:utf8bytes length:nBytes encoding:NSUTF8StringEncoding ];
-			if (utf8str) {
-				NSData *data = [utf8str dataUsingEncoding:NSISOLatin1StringEncoding];
+      if (utf8str) {
+        // This will probably fail for most multibyte charsets
+				qrData = [utf8str dataUsingEncoding:NSISOLatin1StringEncoding];
+        [utf8str release];
+      }
 
-				if ( data ) {
-          [qrFilter setValue:data forKey:@"inputMessage"];
-					CIImage *qrImage = qrFilter.outputImage;
-					CGAffineTransform xform = CGAffineTransformMakeScale(8, 8);
-					CIImage *scaledImage = [qrImage imageByApplyingTransform: xform];
-          CGImage *renderedImage = [[CIContext context] createCGImage:scaledImage fromRect:scaledImage.extent];
-					return wxBitmap(renderedImage);
-				}
-			}
+      if (qrData == nil) return wxBitmap();
+
+      [qrFilter setValue:qrData forKey:@"inputMessage"];
+      [qrFilter setValue:@"H" forKey:@"inputCorrectionLevel"];
+      CIImage *qrImage = qrFilter.outputImage;
+
+      // This code scales the image without interpolation so its not blurry
+      CGColorSpaceRef csref = CGColorSpaceCreateDeviceGray();
+      if ( csref ) {
+
+        CGContextRef bmpCtxt = CGBitmapContextCreate(nil, CGRectGetWidth(qrImage.extent)*8,
+                                                          CGRectGetHeight(qrImage.extent)*8,
+                                                          8,  // bpp. This is the min, even though we logically need 1 bpp for b/w image
+                                                          0,  // bytes per row. 0 => calculate automatically
+                                                          csref,
+                                                          (CGBitmapInfo)kCGImageAlphaNone);
+        if (bmpCtxt) {
+
+          CGContextSetInterpolationQuality(bmpCtxt, kCGInterpolationNone);
+          CGContextScaleCTM(bmpCtxt, 8.0f, 8.0f);
+
+          CIContext *ctx = [CIContext context];
+          CGImageRef bitmap = [ctx createCGImage:qrImage fromRect:qrImage.extent];
+
+          CGContextDrawImage(bmpCtxt, qrImage.extent, bitmap);
+          CGImageRef scaledBitmap = CGBitmapContextCreateImage(bmpCtxt);
+
+          CGContextRelease(bmpCtxt);
+
+          return wxBitmap(scaledBitmap);
+        }
+
+        CGColorSpaceRelease(csref);
+      }
 		}
 	}
 	return wxBitmap();
