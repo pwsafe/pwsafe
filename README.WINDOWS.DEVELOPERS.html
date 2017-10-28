@@ -329,112 +329,20 @@ ensures that the data eventually hitting the SAX2 content handlers is
 correct and just needs placing in the appropriate fields.</p>
 
 <h3><a name="Gtest"></a> Gtest framework</h3>
-
-<p>The following instructions were written for version 1.7.0 of gtest.</p>
-
-<p>Password Safe uses the <a href="https://github.com/google/googletest" target="_blank">gtest</a>
-framework in the Debug build - specifically the Debug build of the coretest project.</p>
-
-<p>To generate the required library, open gtest.sln in the "msvc" sub-directory in the gtest
-directory. For Visual Studio 2017, its solution and project files are supplied a zip file in the
-Misc/gtest sub-directory. They have already been converted for VS2017 and should be extracted
-as described in the Notes.txt file.</p>
-<p>You only need to build the Debug version of gtest library (gtestd.lib) in the gtest project of the
-solution "gtest.sln". <b>However</b>, if you use the CMake process, it does require the "gtest_maind.lib"
-library <b>and</b> their Release equivalents. In this case, it is probably easier to right-click on the
-gtest_main project and build both configurations since this project builds both libraries.</p>
-
-<p>Password Safe does not use the "gtest-md.sln" solution nor following projects
-in gtest.sln:</p>
-<ol type="a">
- <li>gtest_main (except if you use CMake as above)</li>
- <li>gtest_prod_test</li>
- <li>gtest_unittest</li>
-</ol> 
-<p>The following changes should be made to the (converted) project file:</p>
-<ol>
- <li> Configuration Properties: General: (where NN is 14 for VS2015 &amp; 15 for VS2017)
-  <ul>
-   <li> All configurations:<br>
-     Output directory:    ..\build-vcNN/$(Configuration)\<br>
-     Intermediate Directory: $(Configuration)/$(ProjectName)\
-   </li>
-   <li>Debug configuration:<br>
-     Target Name:      $(ProjectName)d
-   </li>
-   <li>Release configuration (not used by Password Safe):<br>
-     Target Name:      $(ProjectName)
-   </li>
-  </ul>
- </li>
-
- <li>Configuration Properties: C/C++: General
-  <ul>
-   <li>Debug configuration:<br>
-     Debug Information Format: Program Database (/Zi)
-   </li>
-  </ul>
- </li>
-  
- <li>Configuration Properties: C/C++: Output Files
-  <ul>
-   <li>Debug configuration:<br>
-     Program Database File Name: $(OutDir)\$(ProjectName)d.pdb
-   </li>
-   <li>Release configuration (not used by Password Safe):<br>
-     Program Database File Name: $(OutDir)\$(ProjectName).pdb
-   </li>
-  </ul>
- </li>
-</ol>
-
-<p>If you wish to build the 64-bit version, you will first have to create a new
-platform x64 and then make similar changes as above. Note: When creating the new
-platform via the Configuration Manager, it is easier to select copy from the
-current x86 platform and then just make the changes marked in bold below but
-do not forget to add WIN64 to the C pre-processor definitions for the x64 platform:</p>
-<ol>
- <li> Configuration Properties: General: (where NN is 14 for VS2015 &amp; 15 for VS2017)
-  <ul>
-   <li> All configurations:<br>
-     Output directory:    ..\build-vcNN/$(Configuration)<b>64</b>\<br>
-     Intermediate Directory: $(Configuration)/$(ProjectName)<b>64</b>\
-   </li>
-   <li>Debug configuration:<br>
-     Target Name:      $(ProjectName)d
-   </li>
-   <li>Release configuration (not used by Password Safe):<br>
-     Target Name:      $(ProjectName)
-   </li>
-  </ul>
- </li>
-
- <li>Configuration Properties: C/C++: General
-  <ul>
-   <li>Debug configuration:<br>
-     Debug Information Format: Program Database (/Zi)
-   </li>
-  </ul>
- </li>
-  
- <li>Configuration Properties: C/C++: Output Files
-  <ul>
-   <li>Debug configuration:<br>
-     Program Database File Name: $(OutDir)\$(ProjectName)d.pdb
-   </li>
-   <li>Release configuration (not used by Password Safe):<br>
-     Program Database File Name: $(OutDir)\$(ProjectName).pdb
-   </li>
-  </ul>
- </li>
-</ol>
-
-<p>Please remember to (re-)run the Password Safe configure-14.vbs or configure-15.vbs script to set
-the necessary gtest include and library directories. These would normally be the subdirectories
-"include" and either "build-vc14" or "build-vc15" of the "gtest-1.7.0" directory.</p>
-
-<p>Note: you can also make the similar changes to those above in the projects not used by
-Password Safe in gtest.sln if you wish to run the gtest Test programs.</p>
+<p><a href="https://github.com/google/googletest"
+      target="_blank">Google Test (gtest)</a> is a popular unit
+  testing framework for C++ programs. PasswordSafe uses this
+  framework in the 'coretest' project for unit and regression
+  testing of the core functionality.<br/>
+  The recommended way to use gtest is via the Cmake build:
+  Generating the .sln file using cmake will add the gtest project under
+  PasswordSafe and support building the 'coretest' project that uses it
+  for unit tests of the core library.<br/>
+  It is possible to build gtest externally and link coretest into the
+  gtest library. This requires setting up the compilation flags on
+  gtest to match those used by PasswordSafe, and 'pointing'
+  PasswordSafe to the include files and libraries via the
+  configure-NN.vbs script</p>
 
 <h3><a name="Xerces"></a> Building Xerces XML Parser for Windows</h3>
 

@@ -91,6 +91,7 @@ endif (pwsafe_REVISION)
 # Configurable options:
 option (NO_YUBI "Set ON to disable YubiKey support" OFF)
 option (NO_GTEST "Set ON to disable gtest unit testing" OFF)
+
 if (WIN32)
   option (WX_WINDOWS "Build wxWidget under Windows" OFF)
   if (WX_WINDOWS)
@@ -123,20 +124,8 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   else (NOT NO_QR)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_QR")
   endif (NOT NO_QR)
-  if (NOT NO_GTEST)
-    set (GTEST_ROOT "/usr/src/gtest/build"
-      CACHE PATH "The root directory of the gtest install prefix")
-  endif(NOT NO_GTEST)
 else(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  if (NOT NO_GTEST)
-    set (GTEST_MSVC_SEARCH "MT")
-    set (GTEST_ROOT ""
-        CACHE PATH "The root directory of the gtest install prefix")
-  endif(NOT NO_GTEST)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-if (NOT NO_GTEST)
-   find_package(GTest REQUIRED)
-endif(NOT NO_GTEST)
 
 if (NOT WIN32 OR WX_WINDOWS)
   if (NOT WIN32)
@@ -213,9 +202,6 @@ enable_testing()
 
 # Common configurations
 
-if (NOT NO_GTEST)
-  include_directories (${GTEST_INCLUDE_DIRS})
-endif(NOT NO_GTEST)
 include_directories (${PROJECT_SOURCE_DIR}/src/os)
 include_directories (${PROJECT_SOURCE_DIR}/src/core)
 include_directories (${PROJECT_BINARY_DIR})
@@ -244,7 +230,7 @@ set_property (GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(CMAKE_CXX_FLAGS
   "${CMAKE_CXX_FLAGS} /MP /GS /analyze- /W4 /Gy /Zc:wchar_t /Zi /Gm-
-  /O2 /Ob1 /fp:precise /D WIN32 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0601 /D _USING_V110_SDK71_ /D UNICODE /D _UNICODE /GF /WX- /Zc:forScope /RTC1 /Gd /Oy-")
+  /Ob1 /fp:precise /D WIN32 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1 /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1 /D WINVER=0x0601 /D _USING_V110_SDK71_ /D UNICODE /D _UNICODE /GF /WX- /Zc:forScope /RTC1 /Gd /Oy-")
 
 if (NO_YUBI)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
@@ -268,6 +254,30 @@ if (USE_ASAN)
     "${CMAKE_CXX_FLAGS_DEBUG} -gdwarf-4 -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address")
 endif (USE_ASAN)
 endif (MSVC)
+
+if (NOT NO_GTEST)
+   # Download and unpack googletest at configure time
+   # See https://crascit.com/2015/07/25/cmake-gtest/
+   configure_file(Misc/CMakeLists.gtest.txt.in googletest-download/CMakeLists.txt)
+   execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+       WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
+   execute_process(COMMAND "${CMAKE_COMMAND}" --build .
+       WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
+
+   # Prevent GoogleTest from overriding our compiler/linker options
+   # when building with Visual Studio
+   set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+   # Add googletest directly to our build. This adds
+   # the following targets: gtest, gtest_main, gmock
+   # and gmock_main
+   add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
+                    "${CMAKE_BINARY_DIR}/googletest-build")
+
+   include_directories("${gtest_SOURCE_DIR}/include"
+#                       "${gmock_SOURCE_DIR}/include"
+                       )
+endif(NOT NO_GTEST)
 
 if (WIN32 AND NOT WX_WINDOWS)
   set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/Windows/version.in")
