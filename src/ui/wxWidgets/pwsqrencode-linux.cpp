@@ -12,6 +12,10 @@
 
 #include "../../core/UTF8Conv.h"
 
+#include <wx/bitmap.h>
+#include <vector>
+#include <algorithm>
+
 /*
  * converts the data to UTF8, generates the QR code
  * and creates xbmp data out of it, which is used to
