@@ -38,7 +38,7 @@ wxBitmap QRCodeBitmap( const StringX &data )
 
       [qrFilter setValue:qrData forKey:@"inputMessage"];
       [qrFilter setValue:@"H" forKey:@"inputCorrectionLevel"];
-      CIImage *qrImage = qrFilter.outputImage;
+      CIImage *qrImage = [qrFilter outputImage];
 
       // This code scales the image without interpolation so its not blurry
       CGColorSpaceRef csref = CGColorSpaceCreateDeviceGray();
