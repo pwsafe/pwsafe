@@ -32,7 +32,10 @@ YBPERS_LIBS=core
 endif
 
 ifndef NO_QR
-QR_SRC=pwsqrcodedlg.cpp pwsqrencode-linux.cpp
+QR_SRC=pwsqrcodedlg.cpp
+ifeq ($(findstring Linux, $(shell uname -s)), Linux)
+QR_SRC=$(QR_SRC) pwsqrencode-linux.cpp
+endif
 else
 QRFLAGS=-DNO_QR
 endif
@@ -173,11 +176,12 @@ ifeq ($(findstring Linux, $(shell uname -s)), Linux)
 endif
 endif
 
-override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)
-CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS) $(QRFLAGS) $(CPPFLAGS)
 ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
 		CPPFLAGS += -std=c++11
+		override LIBS += -framework QuartzCore
 endif
+override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)
+CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS) $(QRFLAGS) $(CPPFLAGS)
 
 SOURCES= passwordsafeframe.cpp \
 	pwsafeapp.cpp safecombinationentry.cpp \
@@ -205,7 +209,13 @@ SOURCES= passwordsafeframe.cpp \
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
 OBJECTS += $(RESOURCEOBJECT)
+ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
+	OBJECTS += $(OBJECTPATH)/pwsqrencode-mac.o
+endif
 
+
+$(OBJECTPATH)/pwsqrencode-mac.o: pwsqrencode-mac.mm
+	clang -x objective-c++ -stdlib=libc++ -mmacosx-version-min=10.7 $(CPPFLAGS) -c $< -o $@
 
 all:	$(BUILDPATHS) $(MACPACKAGEINFO) $(OUTPUTPATH)/$(PROGRAM)
 	@echo building "$(CONFIG)" "$@"
@@ -257,6 +267,12 @@ $(OUTPUTPATH)/$(PROGRAM).app/Contents/PkgInfo: $(OUTPUTPATH)/$(PROGRAM) $(INFOPL
 $(DEPDIR)/%.d: %.cpp version.h
 	@set -e; mkdir -p $(DEPDIR); $(RM) $@; \
 	$(CXX) -MM $(CPPFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
+	$(RM) $@.$$$$
+
+$(DEPDIR)/pwsqrencode-mac.d: pwsqrencode-mac.mm
+	@set -e; mkdir -p $(DEPDIR); $(RM) $@; \
+	clang -x objective-c++ -stdlib=libc++ -mmacosx-version-min=10.7 -MM $(CPPFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
 	$(RM) $@.$$$$
 
