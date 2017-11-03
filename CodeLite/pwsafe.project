@@ -133,6 +133,8 @@
     <File Name="../src/ui/wxWidgets/passwordsubset.h"/>
     <File Name="../src/ui/wxWidgets/pwsqrcodedlg.cpp"/>
     <File Name="../src/ui/wxWidgets/pwsqrcodedlg.h"/>
+    <File Name="../src/ui/wxWidgets/pwsqrencode.cpp"/>
+    <File Name="../src/ui/wxWidgets/pwsqrencode.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>

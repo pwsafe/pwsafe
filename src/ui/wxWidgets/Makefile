@@ -32,7 +32,11 @@ YBPERS_LIBS=core
 endif
 
 ifndef NO_QR
+ifeq ($(findstring Linux, $(shell uname -s)), Linux)
+QR_SRC=pwsqrcodedlg.cpp pwsqrencode.cpp
+else
 QR_SRC=pwsqrcodedlg.cpp
+endif
 else
 QRFLAGS=-DNO_QR
 endif
@@ -173,11 +177,12 @@ ifeq ($(findstring Linux, $(shell uname -s)), Linux)
 endif
 endif
 
-override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)
-CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS) $(QRFLAGS) $(CPPFLAGS)
 ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
 		CPPFLAGS += -std=c++11
+		override LIBS += -framework QuartzCore
 endif
+override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)
+CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS) $(QRFLAGS) $(CPPFLAGS)
 
 SOURCES= passwordsafeframe.cpp \
 	pwsafeapp.cpp safecombinationentry.cpp \
@@ -206,6 +211,13 @@ SOURCES= passwordsafeframe.cpp \
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
 OBJECTS += $(RESOURCEOBJECT)
 
+ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
+	OBJECTS += $(OBJECTPATH)/pwsqrencode.o
+
+
+$(OBJECTPATH)/pwsqrencode.o: pwsqrencode.mm
+	clang -x objective-c++ -stdlib=libc++ -mmacosx-version-min=10.7 $(CPPFLAGS) -c $< -o $@
+endif
 
 all:	$(BUILDPATHS) $(MACPACKAGEINFO) $(OUTPUTPATH)/$(PROGRAM)
 	@echo building "$(CONFIG)" "$@"
@@ -259,6 +271,14 @@ $(DEPDIR)/%.d: %.cpp version.h
 	$(CXX) -MM $(CPPFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
 	$(RM) $@.$$$$
+
+ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
+$(DEPDIR)/pwsqrencode.d: pwsqrencode.mm
+	@set -e; mkdir -p $(DEPDIR); $(RM) $@; \
+	clang -x objective-c++ -stdlib=libc++ -mmacosx-version-min=10.7 -MM $(CPPFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
+	$(RM) $@.$$$$
+endif
 
 version.h: always
 ifdef VER_REV

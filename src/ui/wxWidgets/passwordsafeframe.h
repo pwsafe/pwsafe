@@ -515,7 +515,7 @@ public:
                               const bool bTitleRenamed, wxString &timeStr,
                               const CItemData::EntryType et,
                               std::vector<StringX> &vs_added);
-  BOOL LaunchBrowser(const wxString &csURL, const StringX &sxAutotype,
+  bool LaunchBrowser(const wxString &csURL, const StringX &sxAutotype,
                      const std::vector<size_t> &vactionverboffsets, bool bDoAutotype);
 
   // Do* member functions for right-click and menu-accessible actions

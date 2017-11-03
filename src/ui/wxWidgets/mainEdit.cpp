@@ -736,7 +736,7 @@ void PasswordSafeFrame::DoBrowse(CItemData &item, bool bAutotype)
   }
 }
 
-BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sxAutotype*/,
+bool PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sxAutotype*/,
                              const std::vector<size_t> &/*vactionverboffsets*/,
                              bool /*bDoAutotype*/)
 {
