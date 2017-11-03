@@ -33,7 +33,7 @@ endif
 
 ifndef NO_QR
 ifeq ($(findstring Linux, $(shell uname -s)), Linux)
-QR_SRC=pwsqrcodedlg.cpp pwsqrencode-linux.cpp
+QR_SRC=pwsqrcodedlg.cpp pwsqrencode.cpp
 else
 QR_SRC=pwsqrcodedlg.cpp
 endif
@@ -212,10 +212,10 @@ OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
 OBJECTS += $(RESOURCEOBJECT)
 
 ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
-	OBJECTS += $(OBJECTPATH)/pwsqrencode-mac.o
+	OBJECTS += $(OBJECTPATH)/pwsqrencode.o
 
 
-$(OBJECTPATH)/pwsqrencode-mac.o: pwsqrencode-mac.mm
+$(OBJECTPATH)/pwsqrencode.o: pwsqrencode.mm
 	clang -x objective-c++ -stdlib=libc++ -mmacosx-version-min=10.7 $(CPPFLAGS) -c $< -o $@
 endif
 
@@ -273,7 +273,7 @@ $(DEPDIR)/%.d: %.cpp version.h
 	$(RM) $@.$$$$
 
 ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
-$(DEPDIR)/pwsqrencode-mac.d: pwsqrencode-mac.mm
+$(DEPDIR)/pwsqrencode.d: pwsqrencode.mm
 	@set -e; mkdir -p $(DEPDIR); $(RM) $@; \
 	clang -x objective-c++ -stdlib=libc++ -mmacosx-version-min=10.7 -MM $(CPPFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
