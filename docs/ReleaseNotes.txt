@@ -17,6 +17,7 @@ Bugs Fixed in 3.44.1
 ====================
 [G360] (a) System tray icon starts out brown, not green.
 (b) Remove system tray icon when cancelling password entry.
+[G357] Russian installation text displays correctly.
 [1441] Changing unlock difficulty now enables save (regression),
 supported under undo/redo.
 [1442] Fixed regression: -s flag (silent opening) works again.
