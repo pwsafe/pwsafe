@@ -764,7 +764,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
         case L'{':
         {
           // Send what we have
-          if (sxtmp.length() > 0) {
+          if (!sxtmp.empty()) {
             ks.SendString(sxtmp);
             sxtmp.clear();
           }
@@ -772,6 +772,11 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
           // Get this field
           StringX sxSpecial = sxautotype.substr(n + 1);
           StringX::size_type iEndBracket = sxSpecial.find(_T('}'));
+          if (iEndBracket == StringX::npos) { // malformed - no '}'
+            sxtmp += L'\\';
+            sxtmp += curChar;
+            break;
+          }
           sxSpecial.erase(iEndBracket);
           StringX::size_type iModifiersLength = sxSpecial.find_last_of(_T("!^+"));
 
@@ -795,7 +800,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
                 continue;
               }
             }
-          } else {
+          } else { // no modifier
             iModifiersLength = 0;
           }
 
