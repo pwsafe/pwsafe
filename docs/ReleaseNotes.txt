@@ -19,6 +19,7 @@ Bugs Fixed in 3.44.1
 (b) Remove system tray icon when cancelling password entry.
 [G357] Russian installation text displays correctly.
 [1445] Fixed crash on autotype with malformed text.
+[1444] Fixed crash in display of Password Policies in Czech.
 [1442] Fixed regression: -s flag (silent opening) works again.
 [1441] Changing unlock difficulty now enables save (regression),
 supported under undo/redo.

@@ -7248,7 +7248,7 @@ msgstr "Ano (alespoň %d)"
 #. Resource IDs: (4107)
 #, c-format
 msgid "Yes - At least %d from %ls: %ls"
-msgstr ""Ano - alespoň %d z %ls: %l"
+msgstr ""Ano - alespoň %d z %ls: %ls"
 
 #. Resource IDs: (4105)
 #, c-format
