@@ -10865,6 +10865,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Misc. Options</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20171111T163555Z" creationid="pm_kan" creationdate="20171111T163555Z">
+        <seg>Прочие настройки</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Most labels in the Basic and Additional Property Pages are Smart Labels.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T191844Z">
