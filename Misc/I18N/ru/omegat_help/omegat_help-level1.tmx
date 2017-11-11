@@ -4761,6 +4761,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Browse to the site that you want to login to.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20171111T151328Z" creationid="pm_kan" creationdate="20171111T151328Z">
+        <seg>Откройте в браузере сайт, для которого нужно осуществить вход.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>By checking this item, only changed and unsaved items will be shown.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T214514Z">
@@ -4835,7 +4843,7 @@
       <tuv lang="EN-US">
         <seg>By default, the formula followed by the automated keystrokes is as follows: the user name, followed by a tab key, followed by the password, another tab, and then the enter key (username TAB password TAB ENTER).</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T113001Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20171111T152646Z" creationid="pm_kan" creationdate="20171111T152619Z">
         <seg>По умолчанию используется следующая последовательность нажатий клавиш: имя пользователя, затем табуляция, пароль, ещё одна табуляция, и Enter (имя пользователя TAB пароль TAB ENTER).</seg>
       </tuv>
     </tu>
@@ -5245,6 +5253,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T120754Z" creationid="pm_kan" creationdate="20140113T120754Z">
         <seg>Нажмите кнопку с надписью YubiKey.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Click on the first field that needs to be filled (typically the 'username' or 'login' field).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20171111T151929Z" creationid="pm_kan" creationdate="20171111T151929Z">
+        <seg>Щёлкните в первом поле для ввода имени пользователя (например, «логин»).</seg>
       </tuv>
     </tu>
     <tu>
@@ -9897,6 +9913,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Invoke AutoType (via Control-T or right-click and selecting 'Perform Autotype'.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20171111T152225Z" creationid="pm_kan" creationdate="20171111T152225Z">
+        <seg>Запустите автонабор (используя комбинацию клавиш Ctrl+T или через пункт контекстного меню «Автонабор»).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Invoking Password Safe with no arguments will cause the application to prompt you for the combination of the last database that was opened, or for the combination of a new database if none was previously opened on your machine (e.g., the first time you use Password Safe).</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T121141Z">
@@ -12425,6 +12449,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>PasswordSafe uses the</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20171111T140547Z" creationid="pm_kan" creationdate="20171111T140547Z">
+        <seg>Password Safe использует</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Path and name of last backup file</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T203507Z">
@@ -14459,6 +14491,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Switch to Password Safe, select the entry corresponding to the website</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20171111T152007Z" creationid="pm_kan" creationdate="20171111T152007Z">
+        <seg>Переключитесь в Password Safe и выберите элемент, соответствующий этому сайту.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Switching Between Menu Icon Views</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T094638Z">
@@ -16067,6 +16107,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The slider sets the number of iterations of the stretching, between 2048 and 222.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20171111T151201Z" creationid="pm_kan" creationdate="20171111T151201Z">
+        <seg>Ползунок задаёт количество итераций для алгоритма от 2048 до 222.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The special control code between the curley brackets is not case sensitive and is unaffected by the presence of the "\z" AutoType field.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T155317Z" creationid="pm_kan" creationdate="20161105T155317Z">
@@ -16651,6 +16699,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This causes the user name and password to be entered and submitted.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20171111T152413Z" creationid="pm_kan" creationdate="20171111T152413Z">
+        <seg>После этого имя пользователя и пароль будут введены и отправлены.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This changes the delay for the current and all subsequent characters.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T114405Z">
@@ -16703,6 +16759,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20170814T203015Z" creationid="pm_kan" creationdate="20170814T203015Z">
         <seg>Это необходимо для согласованности экспортируемых данных.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This feature is typically used as follows:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20171111T151300Z" creationid="pm_kan" creationdate="20171111T151242Z">
+        <seg>Данная функция обычно используется следующим образом:</seg>
       </tuv>
     </tu>
     <tu>
@@ -19069,14 +19133,6 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>With a single click, the user name and password are entered and the data is submitted to the host for approval.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110207T203802Z">
-        <seg>Нажатия одной кнопки достаточно, чтобы заполнить поля для ввода имени пользователя и пароля и произвести вход.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>With this option, you can determine by site policy who will have write-access to a given database.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101105T194141Z">
@@ -20697,6 +20753,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T184251Z">
         <seg>http://www.pugixml.org</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>http://www.schneier.com/paper-low-entropy.pdf</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20171111T140550Z" creationid="pm_kan" creationdate="20171111T140550Z">
+        <seg>http://www.schneier.com/paper-low-entropy.pdf</seg>
       </tuv>
     </tu>
     <tu>
@@ -22353,6 +22417,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T130327Z">
         <seg>now</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>original Key Stretching algorithm published by Bruce Schneier, which expands the password to contain more entropy to make it significantly harder to employ brute-force processing.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20171111T151046Z" creationid="pm_kan" creationdate="20171111T151046Z">
+        <seg>алгоритм «растягивания ключа» (Key Stretching), описанный в работе Брюса Шнайера. Это позволяет увеличить энтропию и заметно усложнить атаки, использующие полный перебор.</seg>
       </tuv>
     </tu>
     <tu>
