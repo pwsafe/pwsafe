@@ -1,8 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <HTML>
 <head>
-    <!-- must use cp1251, hhw dosn't support utf-8 in index  -->
-    <meta http-equiv="content-type" content="text/html; charset=cp1251"><!-- Sitemap 1.0 -->
+    <meta http-equiv="content-type" content="text/html; charset=Windows-1251"><!-- Sitemap 1.0 -->
 <meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
 
 </HEAD><BODY>
