@@ -18,6 +18,7 @@ addons:
             - "uuid-dev"
             - "pkg-config"
             - "libgtest-dev"
+            - "libqrencode-dev"
 
 language: cpp
 
