@@ -405,7 +405,8 @@ if (NOT WIN32)
 
    install (DIRECTORY ${PROJECT_BINARY_DIR}/help/
      DESTINATION "share/doc/passwordsafe/help"
-     FILES_MATCHING PATTERN "*.zip")
+     FILES_MATCHING PATTERN "*.zip"
+     PATTERN "CMakeFiles" EXCLUDE)
 
 else ()
    install (FILES "xml/pwsafe.xsd" DESTINATION "bin")
