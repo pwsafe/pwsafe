@@ -49,4 +49,4 @@ before_script:
 
 script:
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe; fi
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make unicoderelease && make release-test && mkdir -p dist && cp src/ui/wxWidgets/GCCUnicodeRelease/pwsafe dist/; fi
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir build && cd build && cmake .. && make && make test && cpack -G DEB ..; fi
