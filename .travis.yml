@@ -36,8 +36,13 @@ matrix:
         - os: osx
           env: BUILD_DIR=dist UPLOAD_DIR=linux
 
-before_install:
+    include:
+        - os: linux
+          compiler:
+            - clang
+            - gcc
 
+before_install:
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; fi
 
 install:
