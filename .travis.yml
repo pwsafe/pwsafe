@@ -36,6 +36,10 @@ matrix:
         - os: osx
           env: BUILD_DIR=dist UPLOAD_DIR=linux
 
+before_install:
+
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; fi
+
 install:
 # This just downloads pre-biuilt binaries which are all dylibs
 # TBD: try this forumuale
