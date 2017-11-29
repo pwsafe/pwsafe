@@ -18,6 +18,7 @@ Bugs Fixed in 3.44.1
 [G360] (a) System tray icon starts out brown, not green.
 (b) Remove system tray icon when cancelling password entry.
 [G357] Russian installation text displays correctly.
+[1449] Cleanup statusbar tooltip text.
 [1445] Fixed crash on autotype with malformed text.
 [1444] Fixed crash in display of Password Policies in Czech.
 [1442] Fixed regression: -s flag (silent opening) works again.
