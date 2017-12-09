@@ -205,6 +205,8 @@ void PasswordSafeSearch::OnSearchClear(wxCommandEvent& /* evt */)
 
 void PasswordSafeSearch::HideSearchToolbar()
 {
+  if (m_toolbar == nullptr)
+    return;
   m_toolbar->Show(false);
   m_parentFrame->GetSizer()->Layout();
   m_parentFrame->SetFocus();
