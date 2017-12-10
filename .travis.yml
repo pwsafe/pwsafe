@@ -1,5 +1,5 @@
 os:
-    - osx
+#   - osx
     - linux
 
 before_install:
@@ -38,9 +38,9 @@ matrix:
 
     include:
         - os: linux
-          compiler:
-            - clang
-            - gcc
+          compiler: gcc
+        - os: linux
+          compiler: clang
 
 before_install:
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; fi
