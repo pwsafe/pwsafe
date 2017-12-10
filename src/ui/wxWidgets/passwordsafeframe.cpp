@@ -1139,6 +1139,8 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
 
     SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
+    wxCommandEvent dummyEv;
+    m_search->OnSearchClose(dummyEv); // fix github issue 375
     m_core.SetReadOnly(false);
     UpdateStatusBar();
   }
