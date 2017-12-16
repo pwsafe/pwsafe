@@ -336,10 +336,6 @@ else()
   endif (NOT WIN32)
 endif()
 
-if (IPO_SUPPORTED)
-  set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
-endif (IPO_SUPPORTED)
-
 if (NOT WIN32)
   add_executable(pwsafe ${PWSAFE_SRCS})
   if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
@@ -382,6 +378,10 @@ else ()
   target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11
   ${CMAKE_REQUIRED_LIBRARIES})
 endif()
+
+if (IPO_SUPPORTED)
+  set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
+endif (IPO_SUPPORTED)
 
 # Installation stuff (for 'make install', but mainly for 'make package')
 install (TARGETS pwsafe RUNTIME DESTINATION "bin")
