@@ -502,7 +502,7 @@ void PasswordSafeFrame::CreateMenubar()
   wxMenu* itemMenu74 = new wxMenu;
   itemMenu74->Append(ID_CHANGECOMBO, _("&Change Safe Combination..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu74->AppendSeparator();
-  itemMenu74->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu74->Append(ID_BACKUP, _("Make &Backup...\tCtrl+B"), wxEmptyString, wxITEM_NORMAL);
   itemMenu74->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), wxEmptyString, wxITEM_NORMAL);
   itemMenu74->AppendSeparator();
   itemMenu74->Append(wxID_PREFERENCES, _("&Options...\tCtrl+M"), wxEmptyString, wxITEM_NORMAL);
@@ -1013,7 +1013,7 @@ int PasswordSafeFrame::SaveIfChanged()
   // Deal with unsaved but changed restored DB
   if (m_bRestoredDBUnsaved && m_core.HasDBChanged()) {
     wxMessageDialog dlg(this,
-                        _("Do you wish to save the this restored database as new database?"),
+                        _("Do you wish to save this restored database as new database?"),
                         _("Unsaved restored database"),
                         (wxICON_QUESTION | wxCANCEL |
                          wxYES_NO | wxYES_DEFAULT));
