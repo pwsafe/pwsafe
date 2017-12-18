@@ -28,6 +28,7 @@ file (GLOB I18N_SRCS
   "${SRC_BASE_DIR}/ui/wxWidgets/*.h"
   "${SRC_BASE_DIR}/core/*.cpp"
   "${SRC_BASE_DIR}/core/*.h"
+  "${CMAKE_BINARY_DIR}/src/core/core_st.*"
   "${SRC_BASE_DIR}/os/unix/*.cpp"
   "${SRC_BASE_DIR}/os/unix/*.h"
   )
