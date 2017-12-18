@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-17 18:02+0100\n"
-"PO-Revision-Date: 2017-12-17 20:20+0100\n"
+"POT-Creation-Date: 2017-12-18 20:50+0100\n"
+"PO-Revision-Date: 2017-12-18 21:29+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -702,13 +702,13 @@ msgstr "Richtlinienfehler"
 #: ui/wxWidgets/PasswordPolicy.cpp:568 ui/wxWidgets/addeditpropsheet.cpp:1706
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr ""
-"Tut uns Leid, aber \"aussprechbar\" und \"leicht lesbar\" können nicht "
+"Entschuldigung, aber \"aussprechbar\" und \"leicht lesbar\" können nicht "
 "gemeinsam ausgewählt werden."
 
 #: ui/wxWidgets/PasswordPolicy.cpp:587 ui/wxWidgets/addeditpropsheet.cpp:1679
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr ""
-"Tut uns Leid, aber \"leicht lesbar\" und \"aussprechbar\" können nicht "
+"Entschuldigung, aber \"leicht lesbar\" und \"aussprechbar\" können nicht "
 "gemeinsam ausgewählt werden."
 
 #: ui/wxWidgets/PasswordPolicy.h:64 ui/wxWidgets/addeditpropsheet.cpp:624
@@ -1661,7 +1661,7 @@ msgstr "Passwort"
 
 #: ui/wxWidgets/addeditpropsheet.cpp:1159
 msgid "Passwords do not match"
-msgstr "Die beiden Einträge sind verschieden."
+msgstr "Die beiden Einträge stimmen nicht überein."
 
 #: ui/wxWidgets/addeditpropsheet.cpp:1302
 #: ui/wxWidgets/addeditpropsheet.cpp:1348
@@ -2075,7 +2075,7 @@ msgstr "Nach autom. Eingabe minimieren"
 
 #: ui/wxWidgets/optionspropsheet.cpp:416
 msgid "Default Autotype string:"
-msgstr "Ausführungszeichen bei autom. Eingabe:"
+msgstr "Steuerzeichen für autom. Eingabe:"
 
 #: ui/wxWidgets/optionspropsheet.cpp:422
 msgid "Default Username"
@@ -2155,7 +2155,7 @@ msgstr "Kopieren von Elementen in die Zwischenablage bestätigen"
 
 #: ui/wxWidgets/optionspropsheet.cpp:526
 msgid "Lock password database on minimize"
-msgstr "Passwortdatenbank sperren wenn minimiert"
+msgstr "Passwortdatenbank sperren wenn Anwendung minimiert"
 
 #: ui/wxWidgets/optionspropsheet.cpp:530
 msgid "Lock password database on workstation lock"
@@ -2199,17 +2199,16 @@ msgstr "benutzte Einträge im Infobereich"
 
 #: ui/wxWidgets/optionspropsheet.cpp:598
 msgid "Start PasswordSafe at Login"
-msgstr "Starte Password Safe beim Anmelden"
+msgstr "Password Safe beim Anmelden starten"
 
 #: ui/wxWidgets/optionspropsheet.cpp:602
 msgid ""
 "There appears to be no system tray support in your current environment.\n"
 "Any related functionality may not work as expected."
 msgstr ""
-"Es scheint als würde die verwendete Umgebung keinen Infobereich "
-"unterstützen.\n"
-"Jegliche damit verbundene Funktionalität wird möglicherweise nicht wie "
-"erwartet funktionieren."
+"Die verwendete Umgebung scheint keinen Infobereich zu unterstützen.\n"
+"Jegliche damit verbundene Funktionalität wird möglicherweise nicht "
+"erwartungsgemäß funktionieren."
 
 #: ui/wxWidgets/optionspropsheet.cpp:607
 msgid "Recent PasswordSafe Databases"
@@ -2221,7 +2220,9 @@ msgstr "Datenbanken"
 
 #: ui/wxWidgets/optionspropsheet.cpp:621
 msgid "Recent Databases on File Menu rather than as a sub-menu"
-msgstr "Zuletzt benutzte Datenbanken im Menü Datei und nicht als Untermenü"
+msgstr ""
+"Zuletzt verwendete Datenbanken direkt im Datei-Menü aufführen, anstatt als "
+"Untermenü"
 
 #: ui/wxWidgets/optionspropsheet.cpp:625
 msgid "Open database as read-only by default"
@@ -2233,11 +2234,11 @@ msgstr "Mehrere Instanzen erlauben"
 
 #: ui/wxWidgets/optionspropsheet.cpp:634
 msgid "Use Primary Selection for clipboard"
-msgstr "Verwende primäre Auswahl für Zwischenablage"
+msgstr "Primäre Auswahl für Zwischenablage verwenden"
 
 #: ui/wxWidgets/optionspropsheet.cpp:640
 msgid "Use alternate AutoType method"
-msgstr "Verwende alternative Methode für autom. Eingabe"
+msgstr "Alternative Methode für autom. Eingabe verwenden"
 
 #: ui/wxWidgets/optionspropsheet.cpp:642
 msgid ""
@@ -2323,7 +2324,7 @@ msgstr ""
 
 #: ui/wxWidgets/passwordsafeframe.cpp:430
 msgid "&Plain Text (tab separated)..."
-msgstr "&Volltext (Tabulatortrennung)..."
+msgstr "&Klartext (Tabulatortrennung)..."
 
 #: ui/wxWidgets/passwordsafeframe.cpp:431
 #: ui/wxWidgets/passwordsafeframe.cpp:435
@@ -2336,7 +2337,7 @@ msgstr "E&xportieren nach"
 
 #: ui/wxWidgets/passwordsafeframe.cpp:434
 msgid "&Plain Text..."
-msgstr "&Volltext..."
+msgstr "&Klartext (Tabulatortrennung)..."
 
 #: ui/wxWidgets/passwordsafeframe.cpp:436
 msgid "&KeePass..."
@@ -2441,7 +2442,7 @@ msgstr "&Bearbeiten"
 
 #: ui/wxWidgets/passwordsafeframe.cpp:470
 msgid "Flattened &List"
-msgstr "&Tabellestruktur"
+msgstr "&Tabellenstruktur"
 
 #: ui/wxWidgets/passwordsafeframe.cpp:471
 msgid "Nested &Tree"
@@ -2493,7 +2494,7 @@ msgstr "&Toolleiste anpassen..."
 
 #: ui/wxWidgets/passwordsafeframe.cpp:490
 msgid "&Tree/List Font"
-msgstr "&Baum/Liste Schriftart"
+msgstr "&Baum/Listen Schriftart"
 
 #: ui/wxWidgets/passwordsafeframe.cpp:491
 msgid "&Password Font"
@@ -2536,7 +2537,7 @@ msgid "&Change Safe Combination..."
 msgstr "&Master-Passwort ändern..."
 
 #: ui/wxWidgets/passwordsafeframe.cpp:505
-msgid "Make &Backup\tCtrl+B"
+msgid "Make &Backup...\tCtrl+B"
 msgstr "&Sicherung erstellen...\tCtrl+B"
 
 #: ui/wxWidgets/passwordsafeframe.cpp:506
@@ -2621,7 +2622,7 @@ msgid "File version warning"
 msgstr "Dateiversionswarnung"
 
 #: ui/wxWidgets/passwordsafeframe.cpp:1016
-msgid "Do you wish to save the this restored database as new database?"
+msgid "Do you wish to save this restored database as new database?"
 msgstr ""
 "Möchten Sie die wiederhergestellte Datenbank als neue Passwortdatenbank "
 "speichern?"
