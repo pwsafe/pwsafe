@@ -263,7 +263,9 @@ void AddEditPropSheet::CreateControls()
   itemBoxSizer3->Add(itemStaticText4, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   m_BasicFGSizer = new wxFlexGridSizer(0, 3, 0, 0);
-  itemBoxSizer3->Add(m_BasicFGSizer, 0, wxALIGN_LEFT|wxALL, 5);
+  m_BasicFGSizer->AddGrowableCol(1);
+
+  itemBoxSizer3->Add(m_BasicFGSizer, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   wxStaticText* itemStaticText6 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Group:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
