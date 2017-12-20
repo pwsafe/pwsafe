@@ -44,7 +44,7 @@ msgstr "Master-Passwort:"
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:198
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:171
 msgid "Please insert your YubiKey"
-msgstr "Bitte YubiKey eingeben"
+msgstr "Bitte YubiKey hineinstecken"
 
 # no translation needed
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:192
@@ -179,7 +179,7 @@ msgstr "v&2 Format..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:429
 msgid "v&4 format (EXPERIMENTAL)..."
-msgstr ""
+msgstr "v&4 Format (EXPERIMENTAL)..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:430
 msgid "&Plain Text (tab separated)..."
@@ -3583,7 +3583,7 @@ msgstr "Verknüpfung bearbeiten"
 
 #: ../../../core/core_st.cpp:27
 msgid "<Not Set>"
-msgstr ""
+msgstr "<Nicht festgelegt>"
 
 #: ../../../core/core_st.cpp:28
 msgid ""
@@ -3843,6 +3843,7 @@ msgstr ""
 msgid "End Report"
 msgstr "Bericht Ende"
 
+# no translation needed
 #: ../../../core/core_st.cpp:89
 msgid "--------------------------------------------------------------------------------"
 msgstr ""
@@ -3993,7 +3994,7 @@ msgstr "Letzte Zugriffszeit"
 
 #: ../../../core/core_st.cpp:125
 msgid "Attachment Reference"
-msgstr ""
+msgstr "Referenz zum Anhang"
 
 #: ../../../core/core_st.cpp:126
 msgid "AutoType"
@@ -4692,6 +4693,7 @@ msgstr ""
 "Ein oder mehrere Namen von Passwortrichtlinien befinden sich bereits in dieser "
 "Datenbank, jedoch mit anderen Einstellungen. Diese wurden umbenannt."
 
+# no translation needed
 #: ../../../core/core_st.cpp:265
 #, c-format
 msgid "%ls%ls%ls_Report.txt"
@@ -4726,15 +4728,15 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:273
 msgid "See Attachment filters"
-msgstr ""
+msgstr "Siehe Anhangfilter"
 
 #: ../../../core/core_st.cpp:274
 msgid "See Password History filters"
-msgstr "Siehe Filter Passworthistorie"
+msgstr "Siehe Passworthistoriefilter"
 
 #: ../../../core/core_st.cpp:275
 msgid "See Password Policy filters"
-msgstr "Siehe Passwortrichtlinie Filter"
+msgstr "Siehe Passwortrichtlinienfilter"
 
 #: ../../../core/core_st.cpp:276
 msgid "is set"
@@ -4768,6 +4770,7 @@ msgstr "Eintrag doppelklicken um URL aufzurufen"
 msgid "Double-Click on entry to Browse to URL + Autotype"
 msgstr "Eintrag doppelklicken um URL aufzurufen + autom. Eingabe"
 
+# no translation needed
 #: ../../../core/core_st.cpp:284
 msgid "https://pwsafe.org/"
 msgstr ""
@@ -4824,7 +4827,7 @@ msgstr "Interner Fehler: unerwartete Fehlernummer"
 #: ../../../core/core_st.cpp:302
 #, c-format
 msgid "\tName: %s; Filename: %s"
-msgstr ""
+msgstr "\tName: %s; Dateiname: %s"
 
 #: ../../../core/core_st.cpp:303
 msgid "The following entries had an invalid UUID field.  This has been corrected."
