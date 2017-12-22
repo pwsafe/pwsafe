@@ -203,7 +203,7 @@ int pless(int* first, int* second) { return *first - *second; }
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable()
 {
-#if defined(__WXGTK__) && defined(LINUX)
+#if defined(__WXGTK__)
   const wxLinuxDistributionInfo ldi = wxGetLinuxDistributionInfo();
   if (ldi.Id.IsEmpty() || ldi.Id == wxT("Ubuntu") || ldi.Id == wxT("Fedora"))
     return false;
