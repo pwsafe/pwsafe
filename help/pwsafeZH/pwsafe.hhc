@@ -10,11 +10,11 @@
 <UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="欢迎">
-		<param name="Local" value="html\Welcome.html">
+		<param name="Local" value="html/Welcome.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="关于 Password Safe">
-		<param name="Local" value="html\about_pws.html">
+		<param name="Local" value="html/about_pws.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="使用入门">
@@ -22,19 +22,19 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="创建与打开一个保险箱">
-			<param name="Local" value="html\create_new_db.html">
+			<param name="Local" value="html/create_new_db.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="使用已存储的密码">
-			<param name="Local" value="html\retrieve_pwd.html">
+			<param name="Local" value="html/retrieve_pwd.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="查找一个项目">
-			<param name="Local" value="html\searching.html">
+			<param name="Local" value="html/searching.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="升级早期版本">
-			<param name="Local" value="html\upgrade_from_v1x.html">
+			<param name="Local" value="html/upgrade_from_v1x.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -43,7 +43,7 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="关于主密码">
-			<param name="Local" value="html\about_combinations.html">
+			<param name="Local" value="html/about_combinations.html">
 			</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="用户名、密码和组">
@@ -68,47 +68,47 @@
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="设置一个密码策略">
-			<param name="Local" value="html\password_policies.html">
+			<param name="Local" value="html/password_policies.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="保存历史密码">
-			<param name="Local" value="html\password_history.html">
+			<param name="Local" value="html/password_history.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="更改主密码">
-			<param name="Local" value="html\change_combo.html">
+			<param name="Local" value="html/change_combo.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="使用自动输入">
-			<param name="Local" value="html\autotype.html">
+			<param name="Local" value="html/autotype.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="备份与恢复数据库">
-			<param name="Local" value="html\backup_and_restore.html">
+			<param name="Local" value="html/backup_and_restore.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="自动中间备份">
-			<param name="Local" value="html\backups_tab.html">
+			<param name="Local" value="html/backups_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="自动故障保护备份">
-			<param name="Local" value="html\failsafebackups.html">
+			<param name="Local" value="html/failsafebackups.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="导入项目">
-			<param name="Local" value="html\import.html">
+			<param name="Local" value="html/import.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="导出项目">
-			<param name="Local" value="html\export.html">
+			<param name="Local" value="html/export.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="筛选项目">
-			<param name="Local" value="html\filters.html">
+			<param name="Local" value="html/filters.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="命令行参数">
-			<param name="Local" value="html\cli.html">
+			<param name="Local" value="html/cli.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -117,27 +117,27 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="文件菜单">
-			<param name="Local" value="html\file_menu.html">
+			<param name="Local" value="html/file_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="编辑菜单">
-			<param name="Local" value="html\edit_menu.html">
+			<param name="Local" value="html/edit_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="查看菜单">
-			<param name="Local" value="html\view_menu.html">
+			<param name="Local" value="html/view_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="管理菜单">
-			<param name="Local" value="html\manage_menu.html">
+			<param name="Local" value="html/manage_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="帮助菜单">
-			<param name="Local" value="html\help_menu.html">
+			<param name="Local" value="html/help_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="工具栏菜单">
-			<param name="Local" value="html\menu_toolbar.html">
+			<param name="Local" value="html/menu_toolbar.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -146,31 +146,31 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="备份选项">
-			<param name="Local" value="html\backups_tab.html">
+			<param name="Local" value="html/backups_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="显示选项">
-			<param name="Local" value="html\display_tab.html">
+			<param name="Local" value="html/display_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="杂项">
-			<param name="Local" value="html\misc_tab.html">
+			<param name="Local" value="html/misc_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="密码策略选项">
-			<param name="Local" value="html\password_policies.html">
+			<param name="Local" value="html/password_policies.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="历史密码选项">
-			<param name="Local" value="html\password_history_tab.html">
+			<param name="Local" value="html/password_history_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="安全选项">
-			<param name="Local" value="html\security_tab.html">
+			<param name="Local" value="html/security_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="系统选项">
-			<param name="Local" value="html\system_tab.html">
+			<param name="Local" value="html/system_tab.html">
 			</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="快捷方式">
@@ -183,15 +183,15 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="别名密码">
-			<param name="Local" value="html\aliases.html">
+			<param name="Local" value="html/aliases.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="纯文本导出与导入格式">
-			<param name="Local" value="html\imp_exp_text_details.html">
+			<param name="Local" value="html/imp_exp_text_details.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="参数选择">
-			<param name="Local" value="html\preferences.html">
+			<param name="Local" value="html/preferences.html">
 			</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="运行命令">
@@ -208,7 +208,7 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="程序功劳">
-			<param name="Local" value="html\credits.html">
+			<param name="Local" value="html/credits.html">
 			</OBJECT>
 	</UL>
 </UL>

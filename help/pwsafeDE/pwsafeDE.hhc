@@ -10,15 +10,15 @@
 <UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Willkommen">
-		<param name="Local" value="html\Welcome.html">
+		<param name="Local" value="html/Welcome.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&Uuml;ber Password Safe">
-		<param name="Local" value="html\about_pws.html">
+		<param name="Local" value="html/about_pws.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Password Safe und YubiKey">
-		<param name="Local" value="html\about_pws_yubi.html">
+		<param name="Local" value="html/about_pws_yubi.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Erste Schritte">
@@ -26,19 +26,19 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Erstellen und &Ouml;ffnen eines Safe">
-			<param name="Local" value="html\create_new_db.html">
+			<param name="Local" value="html/create_new_db.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Arbeiten mit gespeicherten Passw&ouml;rtern">
-			<param name="Local" value="html\retrieve_pwd.html">
+			<param name="Local" value="html/retrieve_pwd.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Suchen eines Eintrages">
-			<param name="Local" value="html\searching.html">
+			<param name="Local" value="html/searching.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Upgraden einer &auml;lteren Version">
-			<param name="Local" value="html\upgrade_from_v1x.html">
+			<param name="Local" value="html/upgrade_from_v1x.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -47,7 +47,7 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Ein Wort &uuml;ber Master-Passw&ouml;rter">
-			<param name="Local" value="html\about_combinations.html">
+			<param name="Local" value="html/about_combinations.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Benutzernamen, Passw&ouml;rter und Gruppen">
@@ -55,64 +55,64 @@
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Basis">
-				<param name="Local" value="html\entering_pwd.html">
+				<param name="Local" value="html/entering_pwd.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Zus&auml;tzlich">
-				<param name="Local" value="html\entering_pwd_add.html">
+				<param name="Local" value="html/entering_pwd_add.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Datum und Uhrzeit">
-				<param name="Local" value="html\entering_pwd_date.html">
+				<param name="Local" value="html/entering_pwd_date.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Passwortrichtlinie">
-				<param name="Local" value="html\entering_pwd_pp.html">
+				<param name="Local" value="html/entering_pwd_pp.html">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Setzen der Passwortrichtlinie">
-			<param name="Local" value="html\password_policies.html">
+			<param name="Local" value="html/password_policies.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Aufbewahren der Passworthistorie">
-			<param name="Local" value="html\password_history.html">
+			<param name="Local" value="html/password_history.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&Auml;ndern des Master-Passwortes">
-			<param name="Local" value="html\change_combo.html">
+			<param name="Local" value="html/change_combo.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Autom. Eingabe anwenden">
-			<param name="Local" value="html\autotype.html">
+			<param name="Local" value="html/autotype.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Datenbanken sichern und wiederherstellen">
-			<param name="Local" value="html\backup_and_restore.html">
+			<param name="Local" value="html/backup_and_restore.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Automatische Zwischen-Sicherung">
-			<param name="Local" value="html\backups_tab.html">
+			<param name="Local" value="html/backups_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Automatische Notsicherung">
-			<param name="Local" value="html\failsafebackups.html">
+			<param name="Local" value="html/failsafebackups.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Eintr&auml;ge importieren">
-			<param name="Local" value="html\import.html">
+			<param name="Local" value="html/import.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Eintr&auml;ge exportieren">
-			<param name="Local" value="html\export.html">
+			<param name="Local" value="html/export.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Eintr&auml;ge filtern">
-			<param name="Local" value="html\filters.html">
+			<param name="Local" value="html/filters.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Kommandozeilen Argumente">
-			<param name="Local" value="html\cli.html">
+			<param name="Local" value="html/cli.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -121,27 +121,27 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Men&uuml; Datei">
-			<param name="Local" value="html\file_menu.html">
+			<param name="Local" value="html/file_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Men&uuml; Bearbeiten">
-			<param name="Local" value="html\edit_menu.html">
+			<param name="Local" value="html/edit_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Men&uuml; Ansicht">
-			<param name="Local" value="html\view_menu.html">
+			<param name="Local" value="html/view_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Men&uuml; Verwalten">
-			<param name="Local" value="html\manage_menu.html">
+			<param name="Local" value="html/manage_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Men&uuml; Hilfe">
-			<param name="Local" value="html\help_menu.html">
+			<param name="Local" value="html/help_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Men&uuml; Toolleiste">
-			<param name="Local" value="html\menu_toolbar.html">
+			<param name="Local" value="html/menu_toolbar.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -150,35 +150,35 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Sicherungen">
-			<param name="Local" value="html\backups_tab.html">
+			<param name="Local" value="html/backups_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Anzeige">
-			<param name="Local" value="html\display_tab.html">
+			<param name="Local" value="html/display_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Verschiedenes">
-			<param name="Local" value="html\misc_tab.html">
+			<param name="Local" value="html/misc_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Passworthistorie">
-			<param name="Local" value="html\password_history_tab.html">
+			<param name="Local" value="html/password_history_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Passwortrichtlinie">
-			<param name="Local" value="html\password_policies.html">
+			<param name="Local" value="html/password_policies.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Sicherheit">
-			<param name="Local" value="html\security_tab.html">
+			<param name="Local" value="html/security_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="System">
-			<param name="Local" value="html\system_tab.html">
+			<param name="Local" value="html/system_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Schnelltasten">
-			<param name="Local" value="html\shortcuts_tab.html">
+			<param name="Local" value="html/shortcuts_tab.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -187,27 +187,27 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Alias f&uuml;r Passw&ouml;rter">
-			<param name="Local" value="html\aliases.html">
+			<param name="Local" value="html/aliases.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Text Export &amp; Import Format">
-			<param name="Local" value="html\imp_exp_text_details.html">
+			<param name="Local" value="html/imp_exp_text_details.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Voreinstellungen">
-			<param name="Local" value="html\preferences.html">
+			<param name="Local" value="html/preferences.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Kommando ausf&uuml;hren">
-			<param name="Local" value="html\run_command.html">
+			<param name="Local" value="html/run_command.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Schnelltasten">
-			<param name="Local" value="html\shortcut_keys.html">
+			<param name="Local" value="html/shortcut_keys.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Eintrag Icons">
-			<param name="Local" value="html\images.html">
+			<param name="Local" value="html/images.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -216,7 +216,7 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Programm Danksagung">
-			<param name="Local" value="html\credits.html">
+			<param name="Local" value="html/credits.html">
 			</OBJECT>
 	</UL>
 </UL>

@@ -10,35 +10,35 @@
 <UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="PasswordSafe Introduction">
-		<param name="Local" value="html\pws_intro.htm">
+		<param name="Local" value="html/pws_intro.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="PasswordSafe Overview">
-		<param name="Local" value="html\pws_main.htm">
+		<param name="Local" value="html/pws_main.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Safe Combination Entry">
-		<param name="Local" value="html\pws_combo_entry.htm">
+		<param name="Local" value="html/pws_combo_entry.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Safe Combination Change">
-		<param name="Local" value="html\pws_combo_chg.htm">
+		<param name="Local" value="html/pws_combo_chg.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Safe Combination Entry Error">
-		<param name="Local" value="html\pws_combo_err.htm">
+		<param name="Local" value="html/pws_combo_err.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Add Entry">
-		<param name="Local" value="html\pws_add_data.htm">
+		<param name="Local" value="html/pws_add_data.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Edit/View Entry">
-		<param name="Local" value="html\pws_edit.htm">
+		<param name="Local" value="html/pws_edit.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="PasswordSafe Options">
-		<param name="Local" value="html\pws_opts.htm">
+		<param name="Local" value="html/pws_opts.htm">
 		</OBJECT>
 </UL>
 </BODY></HTML>
