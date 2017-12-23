@@ -210,7 +210,12 @@ void COptions::Init()
 void COptions::CreateControls()
 {
 ////@begin COptions content construction
-  wxPanel* itemPanel2 = new wxPanel( GetBookCtrl(), ID_PANEL, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
+  
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Backups"
+  /////////////////////////////////////////////////////////////////////////////
+  
+  wxPanel* itemPanel2 = new wxPanel( GetBookCtrl(), ID_PANEL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   itemPanel2->SetSizer(itemBoxSizer3);
 
@@ -296,8 +301,12 @@ void COptions::CreateControls()
   itemBoxSizer25->Add(m_buDirBN, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   GetBookCtrl()->AddPage(itemPanel2, _("Backups"));
-
-  wxPanel* itemPanel29 = new wxPanel( GetBookCtrl(), ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
+  
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Display"
+  /////////////////////////////////////////////////////////////////////////////
+  
+  wxPanel* itemPanel29 = new wxPanel( GetBookCtrl(), ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer30 = new wxBoxSizer(wxVERTICAL);
   itemPanel29->SetSizer(itemBoxSizer30);
 
@@ -354,8 +363,12 @@ void COptions::CreateControls()
   itemBoxSizer30->Add(itemRadioBox43, 0, wxGROW|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel29, _("Display"));
+  
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Misc."
+  /////////////////////////////////////////////////////////////////////////////
 
-  wxPanel* itemPanel44 = new wxPanel( GetBookCtrl(), ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
+  wxPanel* itemPanel44 = new wxPanel( GetBookCtrl(), ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer45 = new wxBoxSizer(wxVERTICAL);
   itemPanel44->SetSizer(itemBoxSizer45);
 
@@ -371,13 +384,11 @@ void COptions::CreateControls()
   itemCheckBox48->SetValue(false);
   itemBoxSizer45->Add(itemCheckBox48, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer49 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer45->Add(itemBoxSizer49, 0, wxGROW|wxALL, 0);
+  wxFlexGridSizer* itemFlexGridSizer50 = new wxFlexGridSizer(0, 2, 0, 0);
+  itemBoxSizer45->Add(itemFlexGridSizer50, 0, wxGROW|wxALL, 5);
   wxStaticText* itemStaticText50 = new wxStaticText( itemPanel44, wxID_STATIC, _("Double-click action"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer49->Add(itemStaticText50, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  itemBoxSizer49->Add(20, 13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
+  itemFlexGridSizer50->Add(itemStaticText50, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  
   // Prepare strings for DblClick & Shift+DblClick combos
   wxArrayString m_DCACBStrings;
   wxArrayString m_SDCACBStrings;
@@ -394,15 +405,13 @@ void COptions::CreateControls()
 #endif
 
   m_DCACB = new wxComboBox( itemPanel44, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCACBStrings, cbStyle );
-  itemBoxSizer49->Add(m_DCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemFlexGridSizer50->Add(m_DCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer53 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer45->Add(itemBoxSizer53, 0, wxGROW|wxALL, 0);
   wxStaticText* itemStaticText54 = new wxStaticText( itemPanel44, wxID_STATIC, _("Shift double-click action"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer53->Add(itemStaticText54, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemFlexGridSizer50->Add(itemStaticText54, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_SDCACB = new wxComboBox( itemPanel44, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCACBStrings, cbStyle );
-  itemBoxSizer53->Add(m_SDCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemFlexGridSizer50->Add(m_SDCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer56Static = new wxStaticBox(itemPanel44, wxID_ANY, _("Autotype"));
   wxStaticBoxSizer* itemStaticBoxSizer56 = new wxStaticBoxSizer(itemStaticBoxSizer56Static, wxVERTICAL);
@@ -459,7 +468,11 @@ void COptions::CreateControls()
 
   GetBookCtrl()->AddPage(itemPanel44, _("Misc."));
 
-  wxPanel* itemPanel74 = new wxPanel( GetBookCtrl(), ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Password History"
+  /////////////////////////////////////////////////////////////////////////////
+  
+  wxPanel* itemPanel74 = new wxPanel( GetBookCtrl(), ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer75 = new wxBoxSizer(wxVERTICAL);
   itemPanel74->SetSizer(itemBoxSizer75);
 
@@ -507,7 +520,11 @@ void COptions::CreateControls()
 
   GetBookCtrl()->AddPage(itemPanel74, _("Password History"));
 
-  wxPanel* itemPanel86 = new wxPanel( GetBookCtrl(), ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Security"
+  /////////////////////////////////////////////////////////////////////////////
+  
+  wxPanel* itemPanel86 = new wxPanel( GetBookCtrl(), ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer87 = new wxBoxSizer(wxVERTICAL);
   itemPanel86->SetSizer(itemBoxSizer87);
 
@@ -563,17 +580,30 @@ void COptions::CreateControls()
 
   GetBookCtrl()->AddPage(itemPanel86, _("Security"));
 
-  wxPanel* itemPanel123 = new wxPanel(GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER | wxTAB_TRAVERSAL);
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Shortcuts"
+  /////////////////////////////////////////////////////////////////////////////
+  
+  wxPanel* itemPanel123 = new wxPanel(GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+  wxBoxSizer* itemBoxSizer155 = new wxBoxSizer(wxVERTICAL);
+  itemPanel123->SetSizer(itemBoxSizer155);
+  
   wxGrid* itemGrid124 = new wxGrid(itemPanel123, ID_GRID1, wxDefaultPosition, itemPanel123->ConvertDialogToPixels(wxSize(200, 150)), wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL);
-  itemGrid124->SetDefaultColSize(100);
+  itemGrid124->SetDefaultColSize(150);
   itemGrid124->SetDefaultRowSize(25);
   itemGrid124->SetColLabelSize(25);
   itemGrid124->SetRowLabelSize(50);
   itemGrid124->CreateGrid(50, 2, wxGrid::wxGridSelectCells);
-
+  
+  itemBoxSizer155->Add(itemGrid124, 1, wxGROW|wxALL, 5);
+  
   GetBookCtrl()->AddPage(itemPanel123, _("Shortcuts"));
 
-  wxPanel* itemPanel104 = new wxPanel( GetBookCtrl(), ID_PANEL6, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "System"
+  /////////////////////////////////////////////////////////////////////////////
+  
+  wxPanel* itemPanel104 = new wxPanel( GetBookCtrl(), ID_PANEL6, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer105 = new wxBoxSizer(wxVERTICAL);
   itemPanel104->SetSizer(itemBoxSizer105);
 
@@ -647,6 +677,10 @@ void COptions::CreateControls()
 
   GetBookCtrl()->AddPage(itemPanel104, _("System"));
 
+  /////////////////////////////////////////////////////////////////////////////
+  // End of Tab Creation
+  /////////////////////////////////////////////////////////////////////////////
+  
   // Set validators
   itemCheckBox4->SetValidator( wxGenericValidator(& m_saveimmediate) );
   itemCheckBox6->SetValidator( wxGenericValidator(& m_backupb4save) );
