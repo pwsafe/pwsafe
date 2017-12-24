@@ -877,6 +877,8 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   std::vector<stringT> svec;
   std::vector<stringT>::iterator sviter;
 
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  
   // Populate the group combo box
   m_core.GetAllGroups(svec);
   for (sviter = svec.begin(); sviter != svec.end(); sviter++)
@@ -916,7 +918,6 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
     }
   } // IsAlias
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
   if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
     ShowPassword();
   } else {
@@ -956,9 +957,13 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   // get values from m_item
   if (m_type == ADD) {
     // Get history preferences
-    PWSprefs *prefs1 = PWSprefs::GetInstance();
-    m_keepPWHist = prefs1->GetPref(PWSprefs::SavePasswordHistory);
-    m_maxPWHist = prefs1->GetPref(PWSprefs::NumPWHistoryDefault);
+    m_keepPWHist = prefs->GetPref(PWSprefs::SavePasswordHistory);
+    m_maxPWHist = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
+    
+    // Get default user name preference
+    if (prefs->GetPref(PWSprefs::UseDefaultUser)) {
+      m_user = towxstring(prefs->GetPref(PWSprefs::DefaultUsername));
+    }
   } else { // EDIT or VIEW
     PWHistList pwhl;
     size_t pwh_max, num_err;
@@ -984,9 +989,8 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
       }
     } else { // empty history string
       // Get history preferences
-      PWSprefs *prefs1 = PWSprefs::GetInstance();
-      m_keepPWHist = prefs1->GetPref(PWSprefs::SavePasswordHistory);
-      m_maxPWHist = prefs1->GetPref(PWSprefs::NumPWHistoryDefault);
+      m_keepPWHist = prefs->GetPref(PWSprefs::SavePasswordHistory);
+      m_maxPWHist = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
     }
   } // m_type
 
