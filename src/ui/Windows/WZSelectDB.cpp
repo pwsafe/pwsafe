@@ -291,7 +291,7 @@ BOOL CWZSelectDB::OnInitDialog()
 
       // Potentially allow user to export DB filters
       bool bEnableExportFilters = ((nID == ID_MENUITEM_EXPORTGRP2DB || nID == ID_MENUITEM_EXPORTFILTERED2DB) &&
-                                   app.GetMainDlg()->GetCore()->GetDBFilters().size() > 0);
+                                   !app.GetCore()->GetDBFilters().empty());
       GetDlgItem(IDC_EXPORTFILTERS)->ShowWindow(bEnableExportFilters ? SW_SHOW : SW_HIDE);
       GetDlgItem(IDC_EXPORTFILTERS)->EnableWindow(bEnableExportFilters ? TRUE : FALSE);
 

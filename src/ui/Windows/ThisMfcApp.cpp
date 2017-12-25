@@ -892,7 +892,6 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
            * '--setup' is meant to be used when invoking PasswordSafe at the end of the installation process.
            * It will cause the application to create a new database with the default name at the default location,
            * prompting the user for the safe combination.
-           * State of m_bSetup is accessible via public IsSetup() member function
            */
           dbox.SetSetup();
         } else if ((*arg) == L"--novalidate") {
@@ -1089,7 +1088,7 @@ BOOL ThisMfcApp::InitInstance()
 
   // Do not create dbox before config data obtained as it would create PWSprefs
   // using the potentially incorrect config data
-  DboxMain dbox(NULL);
+  DboxMain dbox(m_core);
 
   std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions;
   bsSupportedFunctions.set(UIInterFace::DATABASEMODIFIED);

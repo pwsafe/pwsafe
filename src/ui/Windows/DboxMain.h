@@ -114,8 +114,7 @@ class DboxMain : public CDialog, public UIInterFace
 public:
   DECLARE_DYNAMIC(DboxMain)
 
-  // default constructor
-  DboxMain(CWnd* pParent = NULL);
+  DboxMain(PWScore &core, CWnd* pParent = NULL);
   ~DboxMain();
 
   enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, ST_SAVEIMMEDIATELY,
@@ -789,8 +788,7 @@ public:
   DECLARE_MESSAGE_MAP()
 
   int GetAndCheckPassword(const StringX &filename, StringX& passkey,
-                          int index, int flags = 0,
-                          PWScore *pcore = NULL);
+                          int index, int flags = 0);
 
 private:
   // UIInterFace implementations:

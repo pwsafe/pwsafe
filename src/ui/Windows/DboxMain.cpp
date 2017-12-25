@@ -112,13 +112,13 @@ void DboxMain::SetLocalStrings()
 }
 
 //-----------------------------------------------------------------------------
-DboxMain::DboxMain(CWnd* pParent)
+DboxMain::DboxMain(PWScore &core, CWnd* pParent)
   : CDialog(DboxMain::IDD, pParent),
   m_TrayLockedState(LOCKED), m_pTrayIcon(NULL),
   m_pPasskeyEntryDlg(NULL), m_bSizing(false), m_bDBNeedsReading(true), m_bInitDone(false),
   m_toolbarsSetup(FALSE),
   m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
-  m_core(*app.GetCore()),
+  m_core(core),
   m_bEntryTimestampsChanged(false),
   m_iSessionEndingStatus(IDIGNORE),
   m_pwchTip(NULL),
@@ -134,7 +134,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bUnsavedDisplayed(false), m_bExpireDisplayed(false), m_bFindFilterDisplayed(false),
-  m_RUEList(*app.GetCore()), m_eye_catcher(_wcsdup(EYE_CATCHER)),
+  m_RUEList(core), m_eye_catcher(_wcsdup(EYE_CATCHER)),
   m_hUser32(NULL), m_bInAddGroup(false), m_bWizardActive(false),
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
   m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
@@ -778,7 +778,7 @@ void DboxMain::InitPasswordSafe()
   bitmap.GetBitmap(&bm);
   
   m_pImageList = new CImageList();
-  // Number (12) corresponds to number in CPWTreeCtrl public enum
+
   BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight, 
                                      ILC_MASK | ILC_COLORDDB, 
                                      CPWTreeCtrl::NUM_IMAGES, 0);
@@ -1893,8 +1893,7 @@ int DboxMain::CheckPasskey(const StringX &filename, const StringX &passkey,
 int DboxMain::GetAndCheckPassword(const StringX &filename,
                                   StringX &passkey,
                                   int index,
-                                  int flags,
-                                  PWScore *pcore)
+                                  int flags)
 {
   PWS_LOGIT_ARGS("index=%d; flags=0x%04x", index, flags);
 
@@ -1903,9 +1902,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   //  GCP_NORMAL        (1) OK, CANCEL & HELP buttons
   //  GCP_RESTORE       (2) OK, CANCEL & HELP buttons
   //  GCP_WITHEXIT      (3) OK, CANCEL, EXIT & HELP buttons
-  //  GCB_CHANGEMODE    (4) OK, CANCEL & HELP buttons
-
-  // for adv_type values, see enum in AdvancedDlg.h
+  //  GCP_CHANGEMODE    (4) OK, CANCEL & HELP buttons
 
   // Called for an existing database. Prompt user
   // for password, verify against file. Lock file to
@@ -1925,9 +1922,6 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     // original thread will continue processing
   }
 
-  if (pcore == 0)
-    pcore = &m_core;
-
   if (!filename.empty()) {
     bool exists = pws_os::FileExists(filename.c_str(), bFileIsReadOnly);
 
@@ -1938,7 +1932,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
   if (bFileIsReadOnly || bForceReadOnly) {
     // As file is read-only, we must honour it and not permit user to change it
-    pcore->SetReadOnly(true);
+    m_core.SetReadOnly(true);
   }
 
   // set all field bits
@@ -1964,7 +1958,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     DBGMSG("PasskeyEntry returns IDOK\n");
 
     const StringX curFile = m_pPasskeyEntryDlg->GetFileName().GetString();
-    pcore->SetCurFile(curFile);
+    m_core.SetCurFile(curFile);
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems) != 0) {
       extern void RelativizePath(std::wstring &);
       std::wstring cf = curFile.c_str(); // relativize and set pref
@@ -1977,26 +1971,26 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
     // This dialog's setting of read-only overrides file dialog
     bool bWantReadOnly = m_pPasskeyEntryDlg->IsReadOnly();  // Requested state
-    bool bWasReadOnly = pcore->IsReadOnly();                // Previous state
+    bool bWasReadOnly = m_core.IsReadOnly();                // Previous state
 
     // Set read-only mode if user explicitly requested it OR
     // if we failed to create a lock file.
     switch (index) {
       case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
-        pcore->SetReadOnly(bWantReadOnly || !pcore->LockFile(curFile.c_str(), locker));
+        m_core.SetReadOnly(bWantReadOnly || !m_core.LockFile(curFile.c_str(), locker));
         break;
       case GCP_NORMAL:
         if (!bWantReadOnly) // !first, lock if !bIsReadOnly
-          pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
+          m_core.SetReadOnly(!m_core.LockFile(curFile.c_str(), locker));
         else
-          pcore->SetReadOnly(bWantReadOnly);
+          m_core.SetReadOnly(bWantReadOnly);
         break;
       case GCP_RESTORE:
       case GCP_WITHEXIT:
         // Only lock if DB was R-O and now isn't otherwise lockcount is
         // increased too much and the lock file won't be deleted on close
         if (!bWantReadOnly && bWasReadOnly)
-          pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
+          m_core.SetReadOnly(!m_core.LockFile(curFile.c_str(), locker));
         break;
       case GCP_CHANGEMODE:
       default:
@@ -2006,7 +2000,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
     // Update to current state
     // This is not necessarily what was wanted if we couldn't get lock for R/W
-    UpdateToolBarROStatus(pcore->IsReadOnly());
+    UpdateToolBarROStatus(m_core.IsReadOnly());
 
     // locker won't be null IFF tried to lock and failed, in which case
     // it shows the current file locker
@@ -2045,12 +2039,12 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       INT_PTR user_choice = gmb.DoModal();
       switch (user_choice) {
         case IDS_READONLY:
-          pcore->SetReadOnly(true);
+          m_core.SetReadOnly(true);
           UpdateToolBarROStatus(true);
           retval = PWScore::SUCCESS;
           break;
         case IDS_READWRITE:
-          pcore->SetReadOnly(false); // Caveat Emptor!
+          m_core.SetReadOnly(false); // Caveat Emptor!
           UpdateToolBarROStatus(false);
           retval = PWScore::SUCCESS;
           break;
@@ -2064,18 +2058,18 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     } else { // locker.IsEmpty() means no lock needed or lock was successful
       if (m_pPasskeyEntryDlg->GetStatus() == TAR_NEW) {
         // Save new file
-        pcore->NewFile(m_pPasskeyEntryDlg->GetPasskey());
-        rc = pcore->WriteCurFile();
+        m_core.NewFile(m_pPasskeyEntryDlg->GetPasskey());
+        rc = m_core.WriteCurFile();
 
         if (rc == PWScore::CANT_OPEN_FILE) {
           CGeneralMsgBox gmbx;
           CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
-          cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile().c_str());
+          cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
           gmbx.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
           retval = PWScore::USER_CANCEL;
         } else {
           // By definition - new files can't be read-only!
-          pcore->SetReadOnly(false); 
+          m_core.SetReadOnly(false); 
           retval = PWScore::SUCCESS;
         }
       } else // no need to create file
