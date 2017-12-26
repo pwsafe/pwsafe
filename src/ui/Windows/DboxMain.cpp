@@ -1159,51 +1159,53 @@ BOOL DboxMain::OnInitDialog()
   SetLocalStrings();
   ConfigureSystemMenu();
   SetMenu(app.GetMainMenu());  // Now show menu...
-
+  SetDragbarToolTips();
+  
   InitPasswordSafe();
 
   BOOL bOOI(TRUE);
-  if (!m_IsStartNoDB && !m_IsStartSilent) {
-    if (m_bSetup) { // --setup flag passed?
-      // If default dbase exists, DO NOT overwrite it, else
-      // prompt for new combination, create it.
-      // Meant for use when running after install
-      CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME));
-      std::wstring fname = PWSUtil::GetNewFileName(LPCWSTR(cf),
-                                                   DEFAULT_SUFFIX);
-      std::wstring dir = PWSdirs::GetSafeDir();
-      if (dir[dir.length()-1] != L'\\') dir += L"\\";
-      fname = dir + fname;
-      if (pws_os::FileExists(fname)) 
-        bOOI = OpenOnInit();
-      else { // really first install!
-        CSecString sPasskey;
-        CPasskeySetup dbox_pksetup(this, m_core);
-        INT_PTR rc = dbox_pksetup.DoModal();
+  if (m_bSetup) { // --setup flag passed?
+    // If default dbase exists, DO NOT overwrite it, else
+    // prompt for new combination, create it.
+    // Meant for use when running after install
+    CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME));
+    std::wstring fname = PWSUtil::GetNewFileName(LPCWSTR(cf),
+                                                 DEFAULT_SUFFIX);
+    std::wstring dir = PWSdirs::GetSafeDir();
+    if (dir[dir.length()-1] != L'\\') dir += L"\\";
+    fname = dir + fname;
+    if (!pws_os::FileExists(fname)) { // really first install!
+      CSecString sPasskey;
+      CPasskeySetup dbox_pksetup(this, m_core);
+      INT_PTR rc = dbox_pksetup.DoModal();
 
-        if (rc == IDOK)
-          sPasskey = dbox_pksetup.GetPassKey();
-        else {
-          PostQuitMessage(0);
-          return TRUE;  // return TRUE unless you set the focus to a control
-        }
+      if (rc == IDOK)
+        sPasskey = dbox_pksetup.GetPassKey();
+      else {
+        PostQuitMessage(0);
+        return TRUE;  // return TRUE unless you set the focus to a control
+      }
 
-        m_core.SetCurFile(fname.c_str());
-        m_core.NewFile(sPasskey);
-        m_core.SetReadOnly(false); 
-        rc = m_core.WriteCurFile();
-        if (rc == PWScore::CANT_OPEN_FILE) {
-          CGeneralMsgBox gmb;
-          CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
-          cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
-          gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-          PostQuitMessage(0); // can we do something better here?
-          return TRUE;  // return TRUE unless you set the focus to a control
-        }
-      } // first install
-    } else
+      m_core.SetCurFile(fname.c_str());
+      m_core.NewFile(sPasskey);
+      m_core.SetReadOnly(false); 
+      rc = m_core.WriteCurFile();
+      if (rc == PWScore::CANT_OPEN_FILE) {
+        CGeneralMsgBox gmb;
+        CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
+        cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
+        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+        PostQuitMessage(0); // can we do something better here?
+        return TRUE;  // return TRUE unless you set the focus to a control
+      }
+    } else { // first install, but file exists - i.e., an upgrade
       bOOI = OpenOnInit();
-    // No need for another RefreshViews as OpenOnInit does one via PostOpenProcessing
+    }
+  } // --setup flag handling
+  
+  if (!m_IsStartNoDB && !m_IsStartSilent) {
+    if (!m_bSetup) // setup case take care of above 
+      bOOI = OpenOnInit();
   } else { // m_IsStartNoDB or m_IsStartSilent or both
     if (m_IsStartNoDB) {
       Close();
@@ -1234,9 +1236,6 @@ BOOL DboxMain::OnInitDialog()
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_CANTLOAD_AUTOTYPEDLL, MB_ICONERROR);
   }
-
-  // Set up DragBar Tooltips
-  SetDragbarToolTips();
 
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
