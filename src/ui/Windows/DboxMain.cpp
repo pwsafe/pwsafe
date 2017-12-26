@@ -1198,6 +1198,7 @@ BOOL DboxMain::OnInitDialog()
         PostQuitMessage(0); // can we do something better here?
         return TRUE;  // return TRUE unless you set the focus to a control
       }
+      PostOpenProcessing();
     } else { // first install, but file exists - i.e., an upgrade
       bOOI = OpenOnInit();
     }
