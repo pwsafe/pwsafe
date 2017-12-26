@@ -175,7 +175,7 @@ void CSafeCombinationEntry::CreateControls()
   itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
-  itemBoxSizer2->Add(itemBoxSizer4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer2->Add(itemBoxSizer4, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
@@ -190,11 +190,11 @@ void CSafeCombinationEntry::CreateControls()
   itemBoxSizer4->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL, 3);
 
   wxBoxSizer* itemBoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemBoxSizer9, 50, wxGROW|wxALL, 5);
+  itemBoxSizer4->Add(itemBoxSizer9, 0, wxGROW|wxALL, 0);
 
   wxArrayString m_filenameCBStrings;
-  m_filenameCB = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_filenameCBStrings, wxCB_DROPDOWN );
-  itemBoxSizer9->Add(m_filenameCB, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0);
+  m_filenameCB = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), m_filenameCBStrings, wxCB_DROPDOWN );
+  itemBoxSizer9->Add(m_filenameCB, 1, wxGROW|wxALIGN_CENTER_VERTICAL|/*wxLEFT|wxRIGHT*/wxTOP|wxBOTTOM, 5);
 
   wxButton* itemButton11 = new wxButton( itemDialog1, ID_ELLIPSIS, wxT("..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
   itemBoxSizer9->Add(itemButton11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -212,7 +212,7 @@ void CSafeCombinationEntry::CreateControls()
   itemCheckBox15->SetValue(false);
   itemBoxSizer14->Add(itemCheckBox15, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
-  itemBoxSizer14->Add(120, 10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer14->AddStretchSpacer();
 
   wxButton* itemButton17 = new wxButton( itemDialog1, ID_NEWDB, _("New..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
   itemBoxSizer14->Add(itemButton17, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxTOP|wxBOTTOM, 5);
@@ -230,7 +230,7 @@ void CSafeCombinationEntry::CreateControls()
 
   wxStdDialogButtonSizer* itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
 
-  itemBoxSizer4->Add(itemStdDialogButtonSizer21, 0, wxGROW|wxALL, 0);
+  itemBoxSizer4->Add(itemStdDialogButtonSizer21, 0, wxGROW|wxALL, 5);
   wxButton* itemButton22 = new wxButton( itemDialog1, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
   itemButton22->SetDefault();
   itemStdDialogButtonSizer21->AddButton(itemButton22);
