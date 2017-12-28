@@ -326,7 +326,7 @@ void PWScore::DoDeleteEntry(const CItemData &item)
   // are implemented as subclasses.
 
   CUUID entry_uuid = item.GetUUID();
-  ItemListIter pos = m_pwlist.find(entry_uuid);
+  auto pos = m_pwlist.find(entry_uuid);
   if (pos != m_pwlist.end()) {
     // Simple cases first: Aliases or shortcuts, update maps
     // and refresh base's display, if changed
@@ -757,7 +757,7 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
   out->SetNHashIters(GetHashIters());
 
   // Write out empty groups
-  if (vEmptyGroups.size() > 0) {
+  if (!vEmptyGroups.empty()) {
     out->SetEmptyGroups(vEmptyGroups);
   }
 
@@ -1013,8 +1013,8 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
     if (t_passkey_len != m_passkey_len) // trivial test
       return WRONG_PASSWORD;
     size_t BlockLength = ((m_passkey_len + 7) / 8) * 8;
-    unsigned char *t_passkey = new unsigned char[BlockLength];
-    LPCTSTR plaintext = LPCTSTR(passkey.c_str());
+    auto *t_passkey = new unsigned char[BlockLength];
+    auto plaintext = passkey.c_str();
     EncryptPassword(reinterpret_cast<const unsigned char *>(plaintext), t_passkey_len, t_passkey);
     if (memcmp(t_passkey, m_passkey, BlockLength) == 0)
       status = PWSfile::SUCCESS;
@@ -1535,9 +1535,7 @@ ItemListIter PWScore::Find(const StringX &a_group,const StringX &a_title,
 {
   FieldsMatch fields_match(a_group, a_title, a_user);
 
-  ItemListIter retval = find_if(m_pwlist.begin(), m_pwlist.end(),
-                                fields_match);
-  return retval;
+  return find_if(m_pwlist.begin(), m_pwlist.end(), fields_match);
 }
 
 struct TitleMatch {
@@ -1556,11 +1554,11 @@ private:
 
 ItemListIter PWScore::GetUniqueBase(const StringX &a_title, bool &bMultiple)
 {
-  ItemListIter retval(m_pwlist.end());
+  auto retval(m_pwlist.end());
   int num(0);
   TitleMatch TitleMatch(a_title);
 
-  ItemListIter found(m_pwlist.begin());
+  auto found(m_pwlist.begin());
   do {
     found = find_if(found, m_pwlist.end(), TitleMatch);
     if (found != m_pwlist.end()) {
@@ -1603,11 +1601,11 @@ private:
 ItemListIter PWScore::GetUniqueBase(const StringX &grouptitle,
                                     const StringX &titleuser, bool &bMultiple)
 {
-  ItemListIter retval(m_pwlist.end());
+  auto retval(m_pwlist.end());
   int num(0);
   GroupTitle_TitleUserMatch GroupTitle_TitleUserMatch(grouptitle, titleuser);
 
-  ItemListIter found(m_pwlist.begin());
+  auto found(m_pwlist.begin());
   do {
     found = find_if(found, m_pwlist.end(), GroupTitle_TitleUserMatch);
     if (found != m_pwlist.end()) {
@@ -1636,7 +1634,7 @@ void PWScore::EncryptPassword(const unsigned char *plaintext, size_t len,
   // Chicken out of an interface change, or just a sanity check?
   // Maybe both...
   ASSERT(len > 0);
-  unsigned int ulen = static_cast<unsigned int>(len);
+  auto ulen = static_cast<unsigned int>(len);
 
   const unsigned int BS = TwoFish::BLOCKSIZE;
 
@@ -1682,7 +1680,7 @@ void PWScore::SetPassKey(const StringX &new_passkey)
 
   size_t BlockLength = ((m_passkey_len + (BS - 1)) / BS) * BS;
   m_passkey = new unsigned char[BlockLength];
-  LPCTSTR plaintext = LPCTSTR(new_passkey.c_str());
+  auto plaintext = new_passkey.c_str();
   EncryptPassword(reinterpret_cast<const unsigned char *>(plaintext), m_passkey_len, m_passkey);
 }
 
@@ -1837,7 +1835,7 @@ bool PWScore::GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) co
     st_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
     return true;
   } else {
-    PSWDPolicyMapCIter iter = m_MapPSWDPLC.find(sxPolicyName);
+    auto iter = m_MapPSWDPLC.find(sxPolicyName);
     if (iter != m_MapPSWDPLC.end()) {
       st_pp = iter->second;
       return true;
@@ -1931,7 +1929,7 @@ bool PWScore::GetEntriesUsingNamedPasswordPolicy(const StringX sxPolicyName,
   // Sort them before displayed in the dialog later
   std::sort(ventries.begin(), ventries.end(), GTUCompareV1);
 
-  return ventries.size() > 0;
+  return !ventries.empty();
 }
 
 // For Validate only
@@ -2143,7 +2141,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
     // Note excessively sized text fields
     if (iMAXCHARS > 0) {
       bool bEntryHasBigField(false);
-      for (unsigned char uc = static_cast<unsigned char>(CItem::GROUP);
+      for (auto uc = static_cast<unsigned char>(CItem::GROUP);
            uc < static_cast<unsigned char>(CItem::LAST_DATA); uc++) {
         if (CItemData::IsTextField(uc)) {
           StringX sxvalue = ci.GetFieldValue(static_cast<CItemData::FieldType>(uc));
@@ -2188,7 +2186,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
     // This remove the empty group if it contains this entry in one of its subgroups
     // Need to use reverse iterator so that can erase elements and still
     // iterate the vector but erase only takes a normal iterator!
-    std::vector<StringX>::reverse_iterator ritEG = m_vEmptyGroups.rbegin();
+    auto ritEG = m_vEmptyGroups.rbegin();
     while (ritEG != m_vEmptyGroups.rend()) {
       StringX sxEGDot = *ritEG + L".";
       ritEG++;
@@ -2603,8 +2601,8 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
     return;
   }
 
-  ItemListIter biter = m_pwlist.find(base_uuid);
-  ItemListIter diter = m_pwlist.find(entry_uuid);
+  auto biter = m_pwlist.find(base_uuid);
+  auto diter = m_pwlist.find(entry_uuid);
   ASSERT(biter != m_pwlist.end());
   ASSERT(diter != m_pwlist.end());
 
@@ -2668,7 +2666,7 @@ void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid,
 
   // Reset base entry to normal if it has no more aliases/shortcuts
   if (pmmap->find(base_uuid) == pmmap->end()) {
-    ItemListIter iter = m_pwlist.find(base_uuid);
+    auto iter = m_pwlist.find(base_uuid);
     if (iter != m_pwlist.end()) {
       iter->second.SetNormal();
 
@@ -2706,7 +2704,7 @@ void PWScore::DoRemoveAllDependentEntries(const CUUID &base_uuid,
   pmmap->erase(base_uuid);
 
   // Reset base entry to normal
-  ItemListIter iter = m_pwlist.find(base_uuid);
+  auto iter = m_pwlist.find(base_uuid);
   if (iter != m_pwlist.end())
     iter->second.SetNormal();
 }
@@ -3148,7 +3146,7 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
   ASSERT(pAliasOrSC != NULL);
   if (pAliasOrSC->IsDependent()) {
     const CUUID base_uuid = pAliasOrSC->GetBaseUUID();
-    ItemListIter iter = Find(base_uuid);
+    auto iter = Find(base_uuid);
     if (iter != GetEntryEndIter())
       return &iter->second;
     else
@@ -3501,7 +3499,7 @@ void PWScore::UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory)
   SavePWHistoryMap::iterator itr;
 
   for (itr = mapSavedHistory.begin(); itr != mapSavedHistory.end(); itr++) {
-    ItemListIter listPos = m_pwlist.find(itr->first);
+    auto listPos = m_pwlist.find(itr->first);
     if (listPos != m_pwlist.end()) {
       listPos->second.SetPWHistory(itr->second.pwh);
       listPos->second.SetStatus(itr->second.es);
@@ -3797,7 +3795,7 @@ bool PWScore::SetDBFilters(const PWSFilters &MapDBFilters)
 
 bool PWScore::IncrementPasswordPolicy(const StringX &sxPolicyName)
 {
-  PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+  auto iter = m_MapPSWDPLC.find(sxPolicyName);
   if (iter == m_MapPSWDPLC.end()) {
     return false;
   } else {
@@ -3808,7 +3806,7 @@ bool PWScore::IncrementPasswordPolicy(const StringX &sxPolicyName)
 
 bool PWScore::DecrementPasswordPolicy(const StringX &sxPolicyName)
 {
-  PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+  auto iter = m_MapPSWDPLC.find(sxPolicyName);
   if (iter == m_MapPSWDPLC.end() || iter->second.usecount == 0) {
     return false;
   } else {
@@ -3821,7 +3819,7 @@ bool PWScore::AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
                         const bool bAllowReplace)
 {
   bool bDoIt(false);
-  PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+  auto iter = m_MapPSWDPLC.find(sxPolicyName);
 
   if (iter == m_MapPSWDPLC.end())
     bDoIt = true;
@@ -3949,7 +3947,7 @@ bool PWScore::AddKBShortcut(const int &iKBShortcut, const pws_os::CUUID &uuid)
 
 bool PWScore::DelKBShortcut(const int32 &iKBShortcut, const pws_os::CUUID &uuid)
 {
-  KBShortcutMapIter iter = m_KBShortcutMap.find(iKBShortcut);
+  auto iter = m_KBShortcutMap.find(iKBShortcut);
 
   if (iter == m_KBShortcutMap.end())
     return false;

@@ -813,10 +813,7 @@ bool CXMLprefs::MigrateSettings(const stringT &sNewFilename,
                          pugi::format_default | pugi::format_write_bom,
                          pugi::encoding_utf8);
 
-  if (!result) {
-    return false;
-  }
-  return true;
+  return result;
 }
 
 bool CXMLprefs::RemoveHostnameUsername(const stringT &sHost, const stringT &sUser,

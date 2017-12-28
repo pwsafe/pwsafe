@@ -48,7 +48,7 @@ public:
     
     void Load() {
       PWSprefs* prefs = PWSprefs::GetInstance();
-      const int nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
+      const auto nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
       std::vector<stringT> mruList(nExpected);
       const int nFound = prefs->GetMRUList(&mruList[0]);
       wxASSERT(nExpected >= nFound);

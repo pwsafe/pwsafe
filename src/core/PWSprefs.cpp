@@ -724,8 +724,7 @@ bool PWSprefs::DeletePref(const StringX &name)
       bRetVal = pws_os::RegDeleteEntry(name.c_str());
       break;
     case CF_FILE_RW:
-      bRetVal = (m_pXML_Config->DeleteSetting(m_csHKCU_PREF,
-                                              name.c_str()) == TRUE);
+      bRetVal = m_pXML_Config->DeleteSetting(m_csHKCU_PREF, name.c_str());
       break;
     case CF_FILE_RW_NEW:
     case CF_FILE_RO:
@@ -943,7 +942,7 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
   unsigned int iuval;
 
   const size_t N = prefString.length(); // safe upper limit on string size
-  TCHAR *buf = new TCHAR[N];
+  auto *buf = new TCHAR[N];
 
   while (is) {
     is >> type >> index;

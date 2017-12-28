@@ -88,7 +88,7 @@ void PasswordSafeFrame::DoEdit(CItemData item)
     item.GetUUID(uuid);
     //Find the item in the database, which might have been loaded afresh
     //after lock/unlock, so the old data structures are no longer valid
-    ItemListIter iter = m_core.Find(uuid);
+    auto iter = m_core.Find(uuid);
     if ( iter != m_core.GetEntryEndIter()) {
       CItemData& origItem = m_core.GetEntry(iter);
       //The Item is updated in DB by AddEditPropSheet
@@ -448,7 +448,7 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
 //    pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
 
     CUUID uuid = ci2.GetUUID();
-    ItemListIter iter = m_core.Find(uuid);
+    auto iter = m_core.Find(uuid);
     ASSERT(iter != m_core.GetEntryEndIter());
     wxUnusedVar(iter); // used in assert only
 //    InsertItemIntoGUITreeList(m_core.GetEntry(iter));
@@ -814,7 +814,7 @@ bool PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
   if (!rc) {
     wxMessageBox(errMsg, wxTheApp->GetAppName(), wxOK|wxICON_STOP, this);
   }
-  return rc ? TRUE : FALSE;
+  return rc;
 }
 
 void PasswordSafeFrame::DoRun(CItemData& item)

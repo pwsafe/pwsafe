@@ -203,7 +203,7 @@ void PWSGrid::UpdateItem(const CItemData &item)
 {
   uuid_array_t uuid;
   item.GetUUID(uuid);
-  UUIDRowMapT::iterator iter = m_uuid_map.find(CUUID(uuid));
+  auto iter = m_uuid_map.find(CUUID(uuid));
   if (iter != m_uuid_map.end()) {
     int row = iter->second;
     DeleteRows(row);
@@ -247,9 +247,8 @@ struct moveup : public std::binary_function<UUIDRowMapT::value_type, int, void> 
 
 void PWSGrid::Remove(const CUUID &uuid)
 {
-  UUIDRowMapT::iterator iter = m_uuid_map.find(uuid);
+  auto iter = m_uuid_map.find(uuid);
   if (iter != m_uuid_map.end()) {
-
     const int row = iter->second;
 
     //The UI element must be removed first, since the entry in m_core is deleted after
@@ -310,15 +309,15 @@ size_t PWSGrid::GetNumItems() const
 void PWSGrid::DeleteItems(int row, size_t numItems)
 {
   for (size_t N = 0; N < numItems; ++N) {
-    RowUUIDMapT::iterator iter = m_row_map.find(row);
+    auto iter = m_row_map.find(row);
     if (iter != m_row_map.end()) {
-      UUIDRowMapT::iterator iter_uuid = m_uuid_map.find(iter->second);
+      auto iter_uuid = m_uuid_map.find(iter->second);
       m_row_map.erase(iter);
       if (iter_uuid != m_uuid_map.end()) {
         uuid_array_t uuid;
         iter_uuid->first.GetARep(uuid);
         m_uuid_map.erase(iter_uuid);
-        ItemListIter citer = m_core.Find(uuid);
+        auto citer = m_core.Find(uuid);
         if (citer != m_core.GetEntryEndIter()){
           m_core.SuspendOnDBNotification();
           m_core.Execute(DeleteEntryCommand::Create(&m_core,
@@ -388,11 +387,11 @@ CItemData *PWSGrid::GetItem(int row) const
 {
   if (row < 0 || row > const_cast<PWSGrid *>(this)->GetNumberRows())
     return NULL;
-  RowUUIDMapT::const_iterator iter = m_row_map.find(row);
+  auto iter = m_row_map.find(row);
   if (iter != m_row_map.end()) {
     uuid_array_t uuid;
     iter->second.GetARep(uuid);
-    ItemListIter itemiter = m_core.Find(uuid);
+    auto itemiter = m_core.Find(uuid);
     if (itemiter == m_core.GetEntryEndIter())
       return NULL;
     return &itemiter->second;
@@ -443,9 +442,9 @@ void PWSGrid::OnChar( wxKeyEvent& evt )
   evt.Skip();
 }
 
-void PWSGrid::SaveSettings(void) const
+void PWSGrid::SaveSettings() const
 {
-  PWSGridTable* table = dynamic_cast<PWSGridTable*>(GetTable());
+  auto *table = dynamic_cast<PWSGridTable*>(GetTable());
   if (table)  //may not have been created/assigned
     table->SaveSettings();
 }

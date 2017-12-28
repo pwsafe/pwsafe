@@ -204,7 +204,7 @@ void PWSTreeCtrl::CreateControls()
   };
   const int Nimages = sizeof(xpmList)/sizeof(xpmList[0]);
 
-  wxImageList *iList = new wxImageList(13, 13, true, Nimages);
+  auto *iList = new wxImageList(13, 13, true, Nimages);
   for (int i = 0; i < Nimages; i++)
     iList->Add(wxBitmap(xpmList[i]));
   AssignImageList(iList);
@@ -418,16 +418,15 @@ CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
   if (!id.IsOk())
     return NULL;
 
-  PWTreeItemData *itemData = dynamic_cast<PWTreeItemData *>(GetItemData(id));
+  auto *itemData = dynamic_cast<PWTreeItemData *>(GetItemData(id));
   // return if a group is selected
   if (itemData == NULL)
     return NULL;
 
-  ItemListIter itemiter = m_core.Find(itemData->GetUUID());
+  auto itemiter = m_core.Find(itemData->GetUUID());
   if (itemiter == m_core.GetEntryEndIter())
     return NULL;
   return &itemiter->second;
-
 }
 
 //overridden from base for case-insensitive sort
@@ -467,7 +466,7 @@ void PWSTreeCtrl::SortChildrenRecursively(const wxTreeItemId& item)
 wxTreeItemId PWSTreeCtrl::Find(const CUUID &uuid) const
 {
   wxTreeItemId fail;
-  UUIDTIMapT::const_iterator iter = m_item_map.find(uuid);
+  auto iter = m_item_map.find(uuid);
   if (iter != m_item_map.end())
     return iter->second;
   else
@@ -608,7 +607,7 @@ void PWSTreeCtrl::OnChar( wxKeyEvent& evt )
 void PWSTreeCtrl::OnDBGUIPrefsChange(wxEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
-  PasswordSafeFrame *pwsframe = dynamic_cast<PasswordSafeFrame *>(GetParent());
+  auto *pwsframe = dynamic_cast<PasswordSafeFrame *>(GetParent());
   wxASSERT(pwsframe != NULL);
   if (pwsframe->IsTreeView())
     pwsframe->RefreshViews();
@@ -680,7 +679,7 @@ void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
     {
       wxTreeItemId groupItem = evt.GetItem();
       if (groupItem.IsOk()) {
-        PWTreeItemData* data = dynamic_cast<PWTreeItemData *>(GetItemData(groupItem));
+        auto *data = dynamic_cast<PWTreeItemData *>(GetItemData(groupItem));
         if (data && data->BeingAdded()) {
           // A new group being added
           FinishAddingGroup(evt, groupItem);

@@ -379,7 +379,7 @@ size_t _readcbc(FILE *fp, unsigned char *buffer,
   ASSERT((buffer_len % BS) == 0);
   size_t nread = 0;
   unsigned char *p = buffer;
-  unsigned char *tmpcbc = new unsigned char[BS];
+  auto *tmpcbc = new unsigned char[BS];
 
   do {
     size_t nr = fread(p, 1, BS, fp);
@@ -743,7 +743,7 @@ unsigned int GetStringBufSize(const TCHAR *fmt, va_list args)
   // Linux doesn't do this correctly :-(
   unsigned int guess = 16;
   int nBytes = -1;
-  while (1) {
+  while (true) {
     len = guess;
     buffer = new TCHAR[len];
     nBytes = _vstprintf_s(buffer, len, fmt, ar);
@@ -850,7 +850,7 @@ bool PWSUtil::pull_time(time_t &t, const unsigned char *data, size_t len)
     unsigned char buf[sizeof(__time64_t)] = {0};
     memcpy(buf, data, len); // not needed if len == 8, but no harm
     struct tm ts;
-    const __time64_t t64 = getInt<__time64_t>(buf);
+    const auto t64 = getInt<__time64_t>(buf);
     if (_localtime64_s(&ts, &t64) != 0) {
       ASSERT(0); return false;
     }
@@ -897,7 +897,7 @@ bool PWSUtil::loadFile(const StringX &filename, StringXStream &stream) {
   wchar_t buffer[BUFFER_SIZE];
   bool bError(false);
   while(!feof(fs)) {
-    int count = fread(buffer, sizeof(wchar_t), BUFFER_SIZE, fs);
+    auto count = fread(buffer, sizeof(wchar_t), BUFFER_SIZE, fs);
     if (ferror(fs)) {
       bError = true;
       break;

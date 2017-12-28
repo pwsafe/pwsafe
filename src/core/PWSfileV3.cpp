@@ -204,7 +204,6 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
   PWS_LOGIT;
 
   FILE *fd = a_fd;
-  int retval = SUCCESS;
   SHA256 H;
   unsigned char Ptag[SHA256::HASHLEN];
   unsigned char *usedPtag = (aPtag == nullptr) ? Ptag : aPtag;
@@ -216,7 +215,7 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
   if (fd == NULL)
     return CANT_OPEN_FILE;
 
-  retval = SanityCheck(fd);
+  int retval = SanityCheck(fd);
   if (retval != SUCCESS)
     goto err;
 
@@ -465,8 +464,8 @@ int PWSfileV3::WriteHeader()
   // Write out who saved it!
   {
     const SysInfo *si = SysInfo::GetInstance();
-    stringT user = si->GetRealUser();
-    stringT sysname = si->GetRealHost();
+    const stringT &user = si->GetRealUser();
+    const stringT &sysname = si->GetRealHost();
     numWritten = WriteCBC(HDR_LASTUPDATEUSER, user.c_str());
     if (numWritten > 0)
       numWritten = WriteCBC(HDR_LASTUPDATEHOST, sysname.c_str());
@@ -503,7 +502,7 @@ int PWSfileV3::WriteHeader()
     if (num > 255)
       num = 255;  // Do not exceed 2 hex character length field
     oss << setw(2) << setfill('0') << hex << num;
-    UUIDListIter iter = m_hdr.m_RUEList.begin();
+    auto iter = m_hdr.m_RUEList.begin();
     // Only save up to max as defined by FormatV3.
     for (size_t n = 0; n < num; n++, iter++) {
       const uuid_array_t *rep = iter->GetARep();
@@ -528,7 +527,7 @@ int PWSfileV3::WriteHeader()
       num = 255;  // Do not exceed 2 hex character length field
 
     oss << setw(2) << hex << num;
-    PSWDPolicyMapIter iter = m_MapPSWDPLC.begin();
+    auto iter = m_MapPSWDPLC.begin();
     for (size_t n = 0; n < num; n++, iter++) {
       // The Policy name is limited to 255 characters.
       // This should have been prevented by the GUI.

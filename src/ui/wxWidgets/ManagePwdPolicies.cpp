@@ -147,13 +147,13 @@ void CManagePasswordPolicies::CreateControls()
 ////@begin CManagePasswordPolicies content construction
   CManagePasswordPolicies* itemDialog1 = this;
 
-  wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
+  auto *itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
   wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("Available Password Policies:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
+  auto *itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer4, 1, wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   m_PolicyNames = new wxGrid( itemDialog1, ID_POLICYLIST, wxDefaultPosition, wxSize(269, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
@@ -164,10 +164,10 @@ void CManagePasswordPolicies::CreateControls()
   m_PolicyNames->CreateGrid(10, 2, wxGrid::wxGridSelectRows);
   itemBoxSizer4->Add(m_PolicyNames, 3, wxEXPAND|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer6 = new wxBoxSizer(wxVERTICAL);
+  auto *itemBoxSizer6 = new wxBoxSizer(wxVERTICAL);
   itemBoxSizer4->Add(itemBoxSizer6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxGridSizer* itemGridSizer7 = new wxGridSizer(0, 2, 0, 0);
+  auto *itemGridSizer7 = new wxGridSizer(0, 2, 0, 0);
   itemBoxSizer6->Add(itemGridSizer7, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   wxButton* itemButton8 = new wxButton( itemDialog1, wxID_NEW, _("&New"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -189,13 +189,13 @@ void CManagePasswordPolicies::CreateControls()
   itemGridSizer7->Add(itemButton13, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer14Static = new wxStaticBox(itemDialog1, wxID_STATIC, _("Test Selected Policy"));
-  wxStaticBoxSizer* itemStaticBoxSizer14 = new wxStaticBoxSizer(itemStaticBoxSizer14Static, wxVERTICAL);
+  auto *itemStaticBoxSizer14 = new wxStaticBoxSizer(itemStaticBoxSizer14Static, wxVERTICAL);
   itemBoxSizer6->Add(itemStaticBoxSizer14, 0, wxGROW|wxALL, 5);
 
   wxButton* itemButton15 = new wxButton( itemDialog1, ID_GENERATE_PASSWORD, _("Generate"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer14->Add(itemButton15, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer16 = new wxBoxSizer(wxHORIZONTAL);
+  auto *itemBoxSizer16 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer14->Add(itemBoxSizer16, 0, wxGROW|wxALL, 5);
 
   m_passwordCtrl = new wxTextCtrl( itemDialog1, ID_PASSWORD_TXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
@@ -211,7 +211,7 @@ void CManagePasswordPolicies::CreateControls()
   m_lowerTableDesc = new wxStaticText( itemDialog1, wxID_STATIC, _("Selected policy details:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer2->Add(m_lowerTableDesc, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer20 = new wxBoxSizer(wxHORIZONTAL);
+  auto *itemBoxSizer20 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer20, 1, wxEXPAND|wxALL, 5);
 
   m_PolicyDetails = new wxGrid( itemDialog1, ID_POLICYPROPERTIES, wxDefaultPosition, wxSize(-1, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
@@ -230,7 +230,7 @@ void CManagePasswordPolicies::CreateControls()
   m_PolicyEntries->CreateGrid(5, 3, wxGrid::wxGridSelectRows);
   itemBoxSizer20->Add(m_PolicyEntries, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer23 = new wxStdDialogButtonSizer;
+  auto *itemStdDialogButtonSizer23 = new wxStdDialogButtonSizer;
 
   itemBoxSizer2->Add(itemStdDialogButtonSizer23, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
   wxButton* itemButton24 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -403,7 +403,7 @@ static void wxRowPutter(int row, const stringT &name, const stringT &value,
                              void *table)
 {
   // Callback function used by PWPolicy::Policy2Table
-  wxGrid *tableControl = (wxGrid *)table;
+  auto *tableControl = (wxGrid *)table;
   tableControl->InsertRows(row);
   tableControl->SetCellValue(row, 0, name.c_str());
   tableControl->SetCellValue(row, 1, value.c_str());
@@ -431,7 +431,7 @@ PWPolicy CManagePasswordPolicies::GetSelectedPolicy() const
   if (row > 0) {
     const wxString policyname = m_PolicyNames->GetCellValue(row, 0);
 
-    PSWDPolicyMapCIter iter = m_MapPSWDPLC.find(tostringx(policyname));
+    auto iter = m_MapPSWDPLC.find(tostringx(policyname));
     if (iter == m_MapPSWDPLC.end())
       return m_st_default_pp;
 
@@ -547,8 +547,8 @@ void CManagePasswordPolicies::OnEditPpClick( wxCommandEvent& )
   if (row == 0) { // 1st row is default
     st_pp = m_st_default_pp;
   } else {
-    PSWDPolicyMapIter mapIter = m_MapPSWDPLC.find(StringX(policyname.c_str()));
-    if (row != 0 && mapIter == m_MapPSWDPLC.end()) {
+    auto mapIter = m_MapPSWDPLC.find(StringX(policyname.c_str()));
+    if (mapIter == m_MapPSWDPLC.end()) {
       ASSERT(0);
       return;
     }
