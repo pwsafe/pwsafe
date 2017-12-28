@@ -40,7 +40,6 @@ using namespace std;
 #include "pwsclip.h"
 #include <wx/timer.h>
 #include <wx/html/helpctrl.h>
-#include <wx/html/helpwnd.h>
 #include "../../os/dir.h"
 #include <wx/tokenzr.h>
 #include <wx/fs_arc.h>
