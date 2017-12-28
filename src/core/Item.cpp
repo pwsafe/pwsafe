@@ -225,7 +225,7 @@ bool CItem::SetTextField(int ft, const unsigned char *value,
     return false;
 }
 
-void CItem::SetTime(int whichtime, time_t t)
+void CItem::SetTime(const int whichtime, time_t t)
 {
   unsigned char buf[sizeof(time_t)];
   putInt(buf, t);
