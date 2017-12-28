@@ -100,7 +100,7 @@ bool pws_os::CopyAFile(const stringT &from, const stringT &to)
     string::size_type start = (cto[0] == '/') ? 1 : 0;
     string::size_type stop;
     do {
-      stop = cto.find_first_of("/", start);
+      stop = cto.find_first_of('/', start);
       if (stop != stringT::npos)
         ::mkdir(cto.substr(start, stop).c_str(), 0700); // fail if already there - who cares?
       start = stop + 1;
@@ -157,7 +157,7 @@ void pws_os::FindFiles(const stringT &filter, vector<stringT> &res)
   delete[] szfilter;
   // start by splitting it up
   string dir;
-  string::size_type last_slash = cfilter.find_last_of("/");
+  string::size_type last_slash = cfilter.find_last_of('/');
   if (last_slash != string::npos) {
     dir = cfilter.substr(0, last_slash);
     filterString = cfilter.substr(last_slash + 1);

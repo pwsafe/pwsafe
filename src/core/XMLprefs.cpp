@@ -573,7 +573,7 @@ bool CXMLprefs::DeleteSetting(const stringT &csBaseKeyName, const stringT &csVal
 
   pugi::xml_node node_parent = base_node.parent();
   if (node_parent != NULL) {
-    size_t last_slash = csKeyName.find_last_of(_T("\\"));
+    size_t last_slash = csKeyName.find_last_of(_T('\\'));
     stringT sKey = csKeyName.substr(last_slash + 1);
     bRetVal = node_parent.remove_child(sKey.c_str());
   }
@@ -665,7 +665,7 @@ int CXMLprefs::SetShortcuts(const stringT &csBaseKeyName,
   // Not there - go up one node and try to add it.
   if (all_shortcuts == NULL) {
     // Add node - go up a level in path
-    size_t last_slash = csKeyName.find_last_of(_T("\\"));
+    size_t last_slash = csKeyName.find_last_of(_T('\\'));
     stringT sPath = csKeyName.substr(0, last_slash);
     stringT sKey = csKeyName.substr(last_slash + 1);
     all_shortcuts = m_pXMLDoc->first_element_by_path(sPath.c_str(), _T('\\'));

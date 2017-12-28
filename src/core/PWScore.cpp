@@ -2807,10 +2807,10 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
         // Remove leading '[['/'[~' & trailing ']]'/'~]'
         tmp = tmp.substr(2, tmp.length() - 4);
         if (std::count(tmp.begin(), tmp.end(), _T(':')) == 2) {
-          sxPwdGroup = tmp.substr(0, tmp.find_first_of(_T(":")));
+          sxPwdGroup = tmp.substr(0, tmp.find_first_of(_T(':')));
           // Skip over 'group:'
           tmp = tmp.substr(sxPwdGroup.length() + 1);
-          sxPwdTitle = tmp.substr(0, tmp.find_first_of(_T(":")));
+          sxPwdTitle = tmp.substr(0, tmp.find_first_of(_T(':')));
           // Skip over 'title:'
           sxPwdUser = tmp.substr(sxPwdTitle.length() + 1);
           iter = Find(sxPwdGroup, sxPwdTitle, sxPwdUser);
@@ -3091,7 +3091,7 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
         // [X:Y] - OK if unique entry [X:Y:u] or [g:X:Y] exists for any value of g or u
         pl.csPwdUser = _T("");
         tmp = Password.substr(1, Password.length() - 2);  // Skip over '[' & ']'
-        pl.csPwdGroup = tmp.substr(0, tmp.find_first_of(_T(":")));
+        pl.csPwdGroup = tmp.substr(0, tmp.find_first_of(_T(':')));
         pl.csPwdTitle = tmp.substr(pl.csPwdGroup.length() + 1);  // Skip over 'group:'
         iter = GetUniqueBase(pl.csPwdGroup, pl.csPwdTitle, pl.bMultipleEntriesFound);
         if (iter != m_pwlist.end()) {
@@ -3104,9 +3104,9 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
       case 3:
         // [X:Y:Z], [X:Y:], [:Y:Z], [:Y:] (title cannot be empty)
         tmp = Password.substr(1, Password.length() - 2);  // Skip over '[' & ']'
-        pl.csPwdGroup = tmp.substr(0, tmp.find_first_of(_T(":")));
+        pl.csPwdGroup = tmp.substr(0, tmp.find_first_of(_T(':')));
         tmp = tmp.substr(pl.csPwdGroup.length() + 1);  // Skip over 'group:'
-        pl.csPwdTitle = tmp.substr(0, tmp.find_first_of(_T(":")));    // Skip over 'title:'
+        pl.csPwdTitle = tmp.substr(0, tmp.find_first_of(_T(':')));    // Skip over 'title:'
         pl.csPwdUser = tmp.substr(pl.csPwdTitle.length() + 1);
         iter = Find(pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
         break;
@@ -3290,7 +3290,7 @@ void PWScore::AddChangedNodes(StringX path)
     if (std::find(m_vModifiedNodes.begin(), m_vModifiedNodes.end(), nextpath) ==
         m_vModifiedNodes.end())
       m_vModifiedNodes.push_back(nextpath);
-    size_t i = nextpath.find_last_of(_T("."));
+    size_t i = nextpath.find_last_of(_T('.'));
     if (i == nextpath.npos)
       i = 0;
     nextpath = nextpath.substr(0, i);

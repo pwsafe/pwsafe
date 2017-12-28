@@ -774,7 +774,7 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
         Format(cs_criteria, L"%ls", cs_rule.c_str());
       else {
         stringT cs_delim(L"");
-        if (cs1.find(L" ") != stringT::npos)
+        if (cs1.find(L' ') != stringT::npos)
           cs_delim = L"'";
         Format(cs_criteria, L"%ls %ls%ls%ls %ls", 
                cs_rule.c_str(), cs_delim.c_str(), 
