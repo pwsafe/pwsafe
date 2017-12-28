@@ -76,7 +76,7 @@ PWSfileV4::CKeyBlocks::~CKeyBlocks()
 {
 }
 
-PWSfileV4::CKeyBlocks PWSfileV4::CKeyBlocks::operator=(const PWSfileV4::CKeyBlocks &that)
+PWSfileV4::CKeyBlocks& PWSfileV4::CKeyBlocks::operator=(const PWSfileV4::CKeyBlocks &that)
 {
   if (this != &that) {
     m_kbs = that.m_kbs;
