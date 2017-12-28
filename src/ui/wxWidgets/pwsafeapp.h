@@ -104,10 +104,12 @@ public:
     //A map of dialog titles (or tab names) vs help sections
     WX_DECLARE_STRING_HASH_MAP( wxString, StringToStringMap );
     StringToStringMap& GetHelpMap();
-    wxHtmlHelpController* m_helpController;
     wxIconBundle m_appIcons;
     wxLocale *m_locale; // set in Init(), deleted in d'tor, unused elsewhere
+    wxString helpFileNamePath;
+    bool isHelpActivated;
     bool ActivateHelp(wxLanguage language);
+    
  public:
     CRecentDBList &recentDatabases();
     uint32 GetHashIters() const {return m_core.GetHashIters();}
