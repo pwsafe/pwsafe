@@ -67,7 +67,7 @@ public:
     CKeyBlocks();
     CKeyBlocks(const CKeyBlocks &ckb);
     ~CKeyBlocks();
-    CKeyBlocks operator=(const CKeyBlocks &that);
+    CKeyBlocks & operator=(const CKeyBlocks &that);
     bool AddKeyBlock(const StringX &current_passkey, const StringX &new_passkey,
                      uint nHashIters = MIN_HASH_ITERATIONS);
     bool RemoveKeyBlock(const StringX &passkey); // fails if m_keyblocks.size() <= 1...

@@ -126,7 +126,7 @@ public:
 
   int  FindItemRow(const pws_os::CUUID& uu);
 
-  void SaveSettings(void) const;
+  void SaveSettings() const;
 
   void SetFilterState(bool state);
 

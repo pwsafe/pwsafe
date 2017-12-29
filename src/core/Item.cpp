@@ -59,8 +59,8 @@ bool CItem::CompareFields(const CItemField &fthis,
       fthis.GetType() != fthat.GetType())
     return false;
   size_t flength = fthis.GetLength() + BlowFish::BLOCKSIZE;
-  unsigned char *dthis = new unsigned char[flength];
-  unsigned char *dthat = new unsigned char[flength];
+  auto *dthis = new unsigned char[flength];
+  auto *dthat = new unsigned char[flength];
   GetField(fthis, dthis, flength);
   flength = fthis.GetLength() + BlowFish::BLOCKSIZE; // GetField updates length, reset
   that.GetField(fthat, dthat, flength);
@@ -225,7 +225,7 @@ bool CItem::SetTextField(int ft, const unsigned char *value,
     return false;
 }
 
-void CItem::SetTime(int whichtime, time_t t)
+void CItem::SetTime(const int whichtime, time_t t)
 {
   unsigned char buf[sizeof(time_t)];
   putInt(buf, t);
@@ -251,7 +251,7 @@ void CItem::GetField(const CItemField &field,
 
 StringX CItem::GetField(const int ft) const
 {
-  FieldConstIter fiter = m_fields.find(ft);
+  auto fiter = m_fields.find(ft);
   return fiter == m_fields.end() ? _T("") : GetField(fiter->second);
 }
 
@@ -264,7 +264,7 @@ StringX CItem::GetField(const CItemField &field) const
 
 void CItem::GetTime(int whichtime, time_t &t) const
 {
-  FieldConstIter fiter = m_fields.find(whichtime);
+  auto fiter = m_fields.find(whichtime);
   if (fiter != m_fields.end()) {
     unsigned char in[TwoFish::BLOCKSIZE] = {0}; // required by GetField
     size_t tlen = sizeof(in); // ditto

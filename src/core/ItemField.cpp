@@ -79,7 +79,7 @@ void CItemField::Set(const unsigned char* value, size_t length,
       return;
     }
 
-    unsigned char *tempmem = new unsigned char[BlockLength];
+    auto *tempmem = new unsigned char[BlockLength];
     // invariant: BlockLength >= plainlength
     memcpy_s(tempmem, BlockLength, value, m_Length);
 
@@ -122,7 +122,7 @@ void CItemField::Get(unsigned char *value, size_t &length, const Fish *bf) const
   } else { // we have data to decrypt
     size_t BlockLength = GetBlockSize(m_Length);
     ASSERT(length >= BlockLength);
-    unsigned char *tempmem = new unsigned char[BlockLength];
+    auto *tempmem = new unsigned char[BlockLength];
 
     size_t x;
     for (x = 0; x < BlockLength; x += 8)
@@ -146,7 +146,7 @@ void CItemField::Get(StringX &value, const Fish *bf) const
     value = _T("");
   } else { // we have data to decrypt
     size_t BlockLength = GetBlockSize(m_Length);
-    unsigned char *tempmem = new unsigned char[BlockLength];
+    auto *tempmem = new unsigned char[BlockLength];
     TCHAR *pt = reinterpret_cast<TCHAR *>(tempmem);
     size_t x;
 

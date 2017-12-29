@@ -127,7 +127,7 @@ CompareDlg::~CompareDlg()
 
 void CompareDlg::CreateControls()
 {
-  wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
+  auto *dlgSizer = new wxBoxSizer(wxVERTICAL);
   dlgSizer->AddSpacer(TopMargin);  //add a margin at the top
 
   m_dbSelectionPane = CreateDBSelectionPanel(dlgSizer);
@@ -157,7 +157,7 @@ void CompareDlg::CreateControls()
 
   dlgSizer->Add(new wxStaticLine(this), wxSizerFlags().Center().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(0));
   dlgSizer->AddSpacer(RowSeparation);
-  wxStdDialogButtonSizer* buttons = new wxStdDialogButtonSizer;
+  auto *buttons = new wxStdDialogButtonSizer;
   buttons->Add(new wxButton(this, wxID_CANCEL));
   wxButton* compareButton = new wxButton(this, ID_BTN_COMPARE, _("&Compare"));
   compareButton->SetDefault();
@@ -211,7 +211,7 @@ wxCollapsiblePane* CompareDlg::CreateDBSelectionPanel(wxSizer* dlgSizer)
   wxCollapsiblePane* pane = new wxCollapsiblePane(this, wxID_ANY, paneTitle);
   wxWindow* paneWindow = pane->GetPane();
 
-  wxBoxSizer* dbPanelSizer = new wxBoxSizer(wxVERTICAL);
+  auto *dbPanelSizer = new wxBoxSizer(wxVERTICAL);
   m_dbPanel = new DbSelectionPanel(paneWindow, wxString(_("Password Database")),
                                                wxString(_("Select a PasswordSafe database to compare")),
                                                true,
@@ -236,7 +236,7 @@ wxCollapsiblePane* CompareDlg::CreateOptionsPanel(wxSizer* dlgSizer)
                                                                                true);
   advPanel->CreateControls(optionsPane->GetPane());
   //Create a vertical box sizer
-  wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+  auto *sizer = new wxBoxSizer(wxVERTICAL);
   //and add the panel to it
   sizer->Add(advPanel, wxSizerFlags().Expand().Proportion(1));
   //Set it as the nested pane's sizer
@@ -250,7 +250,7 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
                                                       bool customGrid /*=false*/)
 {
   cd->pane = new wxCollapsiblePane(this, wxID_ANY, title);
-  SizeRestrictedPanel* sizedPanel = new SizeRestrictedPanel(cd->pane->GetPane(), cd->pane);
+  auto *sizedPanel = new SizeRestrictedPanel(cd->pane->GetPane(), cd->pane);
 
   //create the grid with SizeRestrictedPanel as the parent
   if (customGrid)
@@ -268,7 +268,7 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
   cd->grid->SetDefaultCellFont(wxSystemSettings::GetFont(wxSYS_OEM_FIXED_FONT));
 #endif
   cd->grid->SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_BOTTOM);
-  wxBoxSizer* gridSizer = new wxBoxSizer(wxVERTICAL);
+  auto *gridSizer = new wxBoxSizer(wxVERTICAL);
   gridSizer->Add(cd->grid, wxSizerFlags().Expand().Proportion(1));
   sizedPanel->SetSizer(gridSizer);
 
@@ -388,7 +388,7 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
     evt.Skip();
     return;
   }
-  ComparisonData* cd = reinterpret_cast<ComparisonData*>(grid->GetClientData());
+  auto *cd = reinterpret_cast<ComparisonData*>(grid->GetClientData());
   wxCHECK_RET(cd, wxT("ClientData object not found in grid"));
 
   ContextMenuData menuContext;
@@ -501,14 +501,14 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
 
 void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
 {
-  ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+  auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
   const ComparisonGridTable& table = *wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   const pws_os::CUUID& uuid = table[menuContext->selectedRows[0]].uuid0;
   if (ViewEditEntry(m_currentCore, uuid, false)) {
     int idx = menuContext->selectedRows[0];
     if (menuContext->cdata == m_conflicts)
       idx = idx/2;
-    ItemListIter itr = m_currentCore->Find(uuid);
+    auto itr = m_currentCore->Find(uuid);
     if (itr != m_currentCore->GetEntryEndIter()) {
       const CItemData& item = itr->second;
       //we update these in the grid directly from st_CompareData, so keep track
@@ -534,10 +534,10 @@ void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
 
 void CompareDlg::OnViewInComparisonDB(wxCommandEvent& evt)
 {
-  ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+  auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
   const ComparisonGridTable& table = *wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   const pws_os::CUUID& uuid = table[menuContext->selectedRows[0]].uuid1;
-  wxCHECK_RET(ViewEditEntry(m_otherCore, uuid, true) == false, wxT("Should not need to refresh grid for just viewing entry"));
+  wxCHECK_RET(!ViewEditEntry(m_otherCore, uuid, true), wxT("Should not need to refresh grid for just viewing entry"));
 }
 
 bool CompareDlg::ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly)
@@ -571,7 +571,7 @@ void CompareDlg::OnExpandDataPanels(wxCommandEvent& /*evt*/)
 
 void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
 {
-  ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+  auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
   wxGridTableBase* baseTable = menuContext->cdata->grid->GetTable();
   ComparisonGridTable* ptable = wxDynamicCast(baseTable, ComparisonGridTable);
   wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
@@ -579,7 +579,7 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
   MultiCommandsPtr pmulticmds(MultiCommands::Create(m_currentCore));
   for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
     const int row = menuContext->selectedRows[idx];
-    ItemListIter itrOther = m_otherCore->Find(table[row].uuid1);
+    auto itrOther = m_otherCore->Find(table[row].uuid1);
     wxCHECK_RET(itrOther != m_otherCore->GetEntryEndIter(), wxT("Could not find item to be added in comparison core"));
     if (m_currentCore->Find(itrOther->second.GetUUID()) != m_currentCore->GetEntryEndIter()) {
       // if you copy an item from comparison grid to current db, edit the copy in current db and
@@ -630,7 +630,7 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
 
 void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
 {
-  ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+  auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
   wxGridTableBase* baseTable = menuContext->cdata->grid->GetTable();
   ComparisonGridTable* ptable = wxDynamicCast(baseTable, ComparisonGridTable);
   wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
@@ -638,7 +638,7 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
   MultiCommandsPtr pmulticmds(MultiCommands::Create(m_currentCore));
   for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
     const int row = menuContext->selectedRows[idx];
-    ItemListIter itr = m_currentCore->Find(table[row].uuid0);
+    auto itr = m_currentCore->Find(table[row].uuid0);
     wxCHECK_RET( itr != m_currentCore->GetEntryEndIter(), wxT("Could not find item to be deleted in current core"));
     DeleteEntryCommand* cmd = DeleteEntryCommand::Create(m_currentCore, itr->second);
     pmulticmds->Add(cmd);
@@ -688,7 +688,7 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
 
 void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
 {
-  ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+  auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
   wxCHECK_RET(menuContext, wxT("No menu context available"));
   ComparisonGridTable* ptable = wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
@@ -696,10 +696,10 @@ void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
   MultiCommandsPtr pmulticmds(MultiCommands::Create(m_currentCore));
   for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
     const int row = menuContext->selectedRows[idx];
-    ItemListIter itrOther = m_otherCore->Find(table[row].uuid1);
+    auto itrOther = m_otherCore->Find(table[row].uuid1);
     wxCHECK_RET( itrOther != m_otherCore->GetEntryEndIter(), wxT("Could not find item to be modified in current core"));
     const CItemData& otherItem = itrOther->second;
-    ItemListIter itrCurrent = m_currentCore->Find(table[row].uuid0);
+    auto itrCurrent = m_currentCore->Find(table[row].uuid0);
     wxCHECK_RET(itrCurrent != m_currentCore->GetEntryEndIter(), wxT("Could not find item to be modified in current core"));
     const CItemData& currentItem = itrCurrent->second;
     UpdateEntryCommand* cmd = UpdateEntryCommand::Create(m_currentCore, currentItem,
@@ -749,8 +749,8 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
                         userSelection,
                         _T("Synchronize"));
   if (dlg.ShowModal() == wxID_OK) {
-    wxCHECK_RET(userSelection.size() > 0, wxT("User did not select any fields to sync?"));
-    ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+    wxCHECK_RET(!userSelection.empty(), wxT("User did not select any fields to sync?"));
+    auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
     wxCHECK_RET(menuContext, wxT("No menu context available"));
     //start with the selected items
     wxArrayInt syncIndexes(menuContext->selectedItems);
@@ -769,11 +769,11 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
     //use a wxScopedPtr to clean up the heap object if we trip on any of the wxCHECK_RETs below
     MultiCommandsPtr pMultiCmds(MultiCommands::Create(m_currentCore));
     for (size_t idx = 0; idx < syncIndexes.Count(); ++idx) {
-      ItemListIter fromPos = m_otherCore->Find(menuContext->cdata->data[syncIndexes[idx]].uuid1);
+      auto fromPos = m_otherCore->Find(menuContext->cdata->data[syncIndexes[idx]].uuid1);
       wxCHECK_RET(fromPos != m_otherCore->GetEntryEndIter(), wxT("Could not find sync item in other db"));
       const CItemData *pfromEntry = &fromPos->second;
 
-      ItemListIter toPos = m_currentCore->Find(menuContext->cdata->data[syncIndexes[idx]].uuid0);
+      auto toPos = m_currentCore->Find(menuContext->cdata->data[syncIndexes[idx]].uuid0);
       wxCHECK_RET(toPos != m_currentCore->GetEntryEndIter(), wxT("Could not find sync item in current db"));
       CItemData *ptoEntry = &toPos->second;
       CItemData updtEntry(*ptoEntry);

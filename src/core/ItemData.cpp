@@ -210,13 +210,13 @@ int CItemData::Read(PWSfile *in)
 
 size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
 {
-  FieldConstIter fiter = m_fields.find(ft);
+  auto fiter = m_fields.find(ft);
   size_t retval = 0;
   if (fiter != m_fields.end()) {
     const CItemField &field = fiter->second;
     ASSERT(!field.IsEmpty());
     size_t flength = field.GetLength() + BlowFish::BLOCKSIZE;
-    unsigned char *pdata = new unsigned char[flength];
+    auto *pdata = new unsigned char[flength];
     CItem::GetField(field, pdata, flength);
     if (isUTF8) {
       wchar_t *wpdata = reinterpret_cast<wchar_t *>(pdata);
@@ -313,8 +313,6 @@ int CItemData::WriteCommon(PWSfile *out) const
 
 int CItemData::Write(PWSfile *out) const
 {
-  int status = PWSfile::SUCCESS;
-
   // Map different UUID types (V4 concept) to original V3 UUID
   uuid_array_t item_uuid;
   FieldType ft = END;
@@ -336,11 +334,11 @@ int CItemData::Write(PWSfile *out) const
   // We restore the password afterwards (not that it should matter
   // for a dependent), so logically we're still const.
 
-  CItemData *self = const_cast<CItemData *>(this);
+  auto *self = const_cast<CItemData *>(this);
   const StringX saved_password = GetPassword();
   self->SetSpecialPasswords(); // encode baseuuid in password if IsDependent
 
-  status = WriteCommon(out);
+  int status = WriteCommon(out);
 
   self->SetPassword(saved_password);
   return status;
@@ -348,7 +346,6 @@ int CItemData::Write(PWSfile *out) const
 
 int CItemData::Write(PWSfileV4 *out) const
 {
-  int status = PWSfile::SUCCESS;
   uuid_array_t item_uuid;
 
   ASSERT(HasUUID());
@@ -380,7 +377,7 @@ int CItemData::Write(PWSfileV4 *out) const
     out->WriteField(ATTREF, ref_uuid, sizeof(uuid_array_t));
   }
 
-  status = WriteCommon(out);
+  int status = WriteCommon(out);
 
   return status;
 }
@@ -542,7 +539,7 @@ StringX CItemData::GetTime(int whichtime, PWSUtil::TMC result_format) const
 void CItemData::GetUUID(uuid_array_t &uuid_array, FieldType ft) const
 {
   size_t length = sizeof(uuid_array_t);
-  FieldConstIter fiter = m_fields.end();
+  auto fiter = m_fields.end();
   if (ft != END) { // END means "infer correct UUID from entry type"
     // anything != END is used as-is, no questions asked
     fiter = m_fields.find(ft);
@@ -591,7 +588,7 @@ void CItemData::GetPWPolicy(PWPolicy &pwp) const
 
 int32 CItemData::GetXTimeInt(int32 &xint) const
 {
-  FieldConstIter fiter = m_fields.find(XTIME_INT);
+  auto fiter = m_fields.find(XTIME_INT);
   if (fiter == m_fields.end())
     xint = 0;
   else {
@@ -623,7 +620,7 @@ StringX CItemData::GetXTimeInt() const
 
 void CItemData::GetProtected(unsigned char &ucprotected) const
 {
-  FieldConstIter fiter = m_fields.find(PROTECTED);
+  auto fiter = m_fields.find(PROTECTED);
   if (fiter == m_fields.end())
     ucprotected = 0;
   else {
@@ -653,7 +650,7 @@ StringX CItemData::GetProtected() const
 
 int16 CItemData::GetDCA(int16 &iDCA, const bool bShift) const
 {
-  FieldConstIter fiter = m_fields.find(bShift ? SHIFTDCA : DCA);
+  auto fiter = m_fields.find(bShift ? SHIFTDCA : DCA);
   if (fiter != m_fields.end()) {
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
@@ -681,7 +678,7 @@ StringX CItemData::GetDCA(const bool bShift) const
 
 int32 CItemData::GetKBShortcut(int32 &iKBShortcut) const
 {
-  FieldConstIter fiter = m_fields.find(KBSHORTCUT);
+  auto fiter = m_fields.find(KBSHORTCUT);
   if (fiter != m_fields.end()) {
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
@@ -1682,7 +1679,7 @@ bool CItemData::Matches(const stringT &stValue, int iObject,
   ASSERT(iFunction != 0); // must be positive or negative!
 
   StringX sx_Object;
-  FieldType ft = static_cast<FieldType>(iObject);
+  auto ft = static_cast<FieldType>(iObject);
   switch(ft) {
     case GROUP:
     case TITLE:
@@ -1908,7 +1905,7 @@ static bool pull(unsigned char &value, const unsigned char *data, size_t len)
 
 bool CItemData::DeSerializePlainText(const std::vector<char> &v)
 {
-  vector<char>::const_iterator iter = v.begin();
+  auto iter = v.begin();
   int emergencyExit = 255;
 
   while (iter != v.end()) {
@@ -1942,7 +1939,7 @@ bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t l
   int16 i16;
   unsigned char uc;
 
-  FieldType ft = static_cast<FieldType>(type);
+  auto ft = static_cast<FieldType>(type);
   switch (ft) {
     case NAME:
       ASSERT(0); // not serialized, or in v3 format

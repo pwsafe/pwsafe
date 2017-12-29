@@ -178,7 +178,7 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
     if (st_rctoken.sxname == _T("G") || st_rctoken.sxname == _T("GROUP")) {
       StringX sxg = sx_group;
       StringX::size_type st_index;
-      st_index = sxg.rfind(_T("."));
+      st_index = sxg.rfind(_T('.'));
       if (st_index != StringX::npos) {
         sxg = sxg.substr(st_index + 1);
       }

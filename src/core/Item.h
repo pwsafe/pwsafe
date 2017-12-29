@@ -133,14 +133,14 @@ public:
   CItem();
   CItem(const CItem& stuffhere);
 
-  ~CItem();
+  virtual ~CItem();
 
   void SetUnknownField(unsigned char type, size_t length,
                        const unsigned char *ufield);
   size_t NumberUnknownFields() const {return m_URFL.size();}
 
   CItem& operator=(const CItem& second);
-  void Clear();
+  virtual void Clear();
   void ClearField(int ft) {m_fields.erase(ft);}
 
   bool operator==(const CItem &that) const;
@@ -168,7 +168,7 @@ protected:
   StringX GetField(int ft) const;
   StringX GetField(const CItemField &field) const;
 
-  void SetTime(const int whichtime, time_t t);
+  void SetTime(int whichtime, time_t t);
   void GetTime(int whichtime, time_t &t) const;
 
   bool IsFieldSet(int ft) const {return m_fields.find(ft) != m_fields.end();}
