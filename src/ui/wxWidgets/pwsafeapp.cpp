@@ -242,6 +242,8 @@ bool PwsafeApp::ActivateHelp(wxLanguage language) {
     langSuffix = defaultSuffix;
   }
   
+  helpFileNamePath.Clear();
+  
   wxFileName helpFileName = wxFileName(towxstring(pws_os::gethelpdir()), fileNameBase+langSuffix);
   if (!helpFileName.IsFileReadable()) {
     pws_os::Trace(L"Help file for selected language %ls unavailable. Will retry with default.", ToStr(helpFileName.GetFullPath()));
