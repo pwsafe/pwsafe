@@ -735,8 +735,7 @@ void DboxMain::InitPasswordSafe()
   // Requires OnInitDialog to have passed OK
   UpdateAlwaysOnTop();
 
-  // ... same for UseSystemTray
-  // StartSilent trumps preference (but StartClosed doesn't)
+  // StartSilent trumps preference
   if (!m_IsStartSilent && !prefs->GetPref(PWSprefs::UseSystemTray))
     HideIcon();
 
@@ -1133,8 +1132,9 @@ BOOL DboxMain::OnInitDialog()
   m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
 
   m_ClosedIcon = app.LoadIcon(IDI_CORNERICON);
+  auto initialIcon = m_core.GetCurFile().empty() ? m_ClosedIcon : m_LockedIcon;
   m_pTrayIcon = new CSystemTray(this, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
-                                m_ClosedIcon, m_RUEList,
+                                initialIcon, m_RUEList,
                                 PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
   
   m_pTrayIcon->SetTarget(this);
@@ -1164,10 +1164,12 @@ BOOL DboxMain::OnInitDialog()
   InitPasswordSafe();
 
   BOOL bOOI(TRUE);
-  if (m_bSetup) { // --setup flag passed?
+  if (!m_bSetup) { // --setup flag not passed (common case)
+    if (!m_IsStartSilent)
+      bOOI = OpenOnInit();
+  } else { // --setup flag passed (post install/upgrade)
     // If default dbase exists, DO NOT overwrite it, else
     // prompt for new combination, create it.
-    // Meant for use when running after install
     CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME));
     std::wstring fname = PWSUtil::GetNewFileName(LPCWSTR(cf),
                                                  DEFAULT_SUFFIX);
@@ -1204,16 +1206,10 @@ BOOL DboxMain::OnInitDialog()
     }
   } // --setup flag handling
   
-  if (!m_IsStartNoDB && !m_IsStartSilent) {
-    if (!m_bSetup) // setup case take care of above 
-      bOOI = OpenOnInit();
-  } else { // m_IsStartNoDB or m_IsStartSilent or both
-    if (m_IsStartNoDB) {
-      Close();
-      if (!m_IsStartSilent)
-        ShowWindow(SW_SHOW);
-    }
-  } // m_IsStart* logic
+  //  if (m_IsStartNoDB)
+  //Close();
+  if (!m_IsStartSilent)
+    ShowWindow(SW_SHOW);
 
   // Check if user cancelled
   if (bOOI == FALSE) {
@@ -1506,7 +1502,7 @@ void DboxMain::OnWindowPosChanging(WINDOWPOS* lpwndpos)
     // semantics, causing main window to minimize ASAP.
     lpwndpos->flags |= (SWP_HIDEWINDOW | SWP_NOACTIVATE);
     lpwndpos->flags &= ~SWP_SHOWWINDOW;
-    PostMessage(WM_COMMAND, ID_MENUITEM_MINIMIZE);
+    //    PostMessage(WM_COMMAND, ID_MENUITEM_MINIMIZE);
   }
   CDialog::OnWindowPosChanging(lpwndpos);
 }
@@ -2272,11 +2268,7 @@ void DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
 
 LRESULT DboxMain::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 {
-#if 1
   return m_pTrayIcon->OnTrayNotification(wParam, lParam);
-#else
-  return 0L;
-#endif
 }
 
 bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
@@ -2303,28 +2295,25 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
     if (bUpdateWindows) {
       if (m_IsStartSilent) {
         // Show initial dialog ONCE (if succeeds)
-        if (!m_IsStartNoDB) {
-          if (OpenOnInit()) {
-            m_IsStartSilent = false;
-            RefreshViews();
-            ShowWindow(SW_RESTORE);
-            SetInitialDatabaseDisplay();
-            UpdateSystemTray(UNLOCKED);
-          }
-        } else { // m_IsStartNoDB (&& m_IsStartSilent)
-          m_IsStartNoDB = m_IsStartSilent = false;
-          ShowWindow(SW_SHOWNORMAL);
+        if (OpenOnInit()) {
+          m_IsStartSilent = false;
+          SetInitialDatabaseDisplay();
+          RefreshViews();
+          ShowWindow(SW_RESTORE);
+          brc = true;
         }
-        goto exit;  // return false
+        goto exit;
       } // m_IsStartSilent
       ShowWindow(SW_RESTORE);
+      brc = true;
     } // bUpdateWindows == true
     UpdateSystemTray(CLOSED);
-    goto exit;  // return false
-  }
+    goto exit;
+  } // !m_bOpen
 
+  ASSERT(m_bOpen); // all closed dbase handling should have been done above
+  
   // Case 1 - data available but is currently locked
-  // By definition - data available implies m_bInitDone
   if (!m_bDBNeedsReading &&
       (m_TrayLockedState == LOCKED) &&
       (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {

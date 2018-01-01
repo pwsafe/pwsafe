@@ -1665,25 +1665,22 @@ void DboxMain::OnRestore()
 {
   PWS_LOGIT;
 
-
-  // This caused initial minimize when program invoked with '-s' or '-m':
-  m_IsStartSilent = false; // don't hide dboxmain any more.
   m_ctlItemTree.SetRestoreMode(true);
 
   // Called when the System Tray Restore menu option is used
-  RestoreWindowsData(true);
+  if (RestoreWindowsData(true)) {
+    // Restore current horizontal scroll bar position
+    m_ctlItemList.Scroll(CSize(m_iListHBarPos, 0));
+    m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
 
-  // Restore current horizontal scroll bar position
-  m_ctlItemList.Scroll(CSize(m_iListHBarPos, 0));
-  m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
-
-  m_ctlItemTree.SetRestoreMode(false);
+    m_ctlItemTree.SetRestoreMode(false);
 
   // If Find toolbar was active - reshow it
-  if (m_bFindBarShown && !m_FindToolBar.IsWindowVisible())
-    SetFindToolBar(true);
+    if (m_bFindBarShown && !m_FindToolBar.IsWindowVisible())
+      SetFindToolBar(true);
 
-  TellUserAboutExpiredPasswords();
+    TellUserAboutExpiredPasswords();
+  }
 }
 
 void DboxMain::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult, const bool bTreeView)
