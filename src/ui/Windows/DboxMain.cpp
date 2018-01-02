@@ -123,7 +123,7 @@ DboxMain::DboxMain(PWScore &core, CWnd* pParent)
   m_iSessionEndingStatus(IDIGNORE),
   m_pwchTip(NULL),
   m_bOpen(false), 
-  m_IsStartNoDB(false), m_IsStartSilent(false),
+  m_IsStartNoDB(false),
   m_bAlreadyToldUserNoSave(false), m_inExit(false),
   m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false),
   m_lastclipboardaction(L""), m_pNotesDisplay(NULL),
@@ -735,10 +735,6 @@ void DboxMain::InitPasswordSafe()
   // Requires OnInitDialog to have passed OK
   UpdateAlwaysOnTop();
 
-  // StartSilent trumps preference
-  if (!m_IsStartSilent && !prefs->GetPref(PWSprefs::UseSystemTray))
-    HideIcon();
-
   m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
 
   const int32 iAppHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
@@ -1139,6 +1135,11 @@ BOOL DboxMain::OnInitDialog()
   
   m_pTrayIcon->SetTarget(this);
 
+  // Hide icon if pref not set, unless '-s' in commandline
+  if (m_InitMode != SilentInit &&
+      !PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
+    HideIcon();
+
   // Set up UPDATE_UI data map.
   const int num_CommandTable_entries = _countof(m_UICommandTable);
   for (int i = 0; i < num_CommandTable_entries; i++)
@@ -1165,7 +1166,7 @@ BOOL DboxMain::OnInitDialog()
 
   BOOL bOOI(TRUE);
   if (!m_bSetup) { // --setup flag not passed (common case)
-    if (!m_IsStartSilent)
+    if (m_InitMode != SilentInit)
       bOOI = OpenOnInit();
   } else { // --setup flag passed (post install/upgrade)
     // If default dbase exists, DO NOT overwrite it, else
@@ -1208,7 +1209,7 @@ BOOL DboxMain::OnInitDialog()
   
   //  if (m_IsStartNoDB)
   //Close();
-  if (!m_IsStartSilent)
+  if (m_InitMode != SilentInit)
     ShowWindow(SW_SHOW);
 
   // Check if user cancelled
@@ -1497,12 +1498,13 @@ void DboxMain::OnDestroy()
 
 void DboxMain::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 {
-  if (m_IsStartSilent) {
-    // Here's where we enforce the '-s' / '-m' flag
+  if (m_InitMode == MinimizedInit) {
+    // Here's where we enforce the '-m' flag
     // semantics, causing main window to minimize ASAP.
     lpwndpos->flags |= (SWP_HIDEWINDOW | SWP_NOACTIVATE);
     lpwndpos->flags &= ~SWP_SHOWWINDOW;
-    //    PostMessage(WM_COMMAND, ID_MENUITEM_MINIMIZE);
+    m_InitMode = NormalInit; // make this a one-shot
+    PostMessage(WM_COMMAND, ID_MENUITEM_MINIMIZE);
   }
   CDialog::OnWindowPosChanging(lpwndpos);
 }
@@ -2293,17 +2295,17 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   if (!m_bOpen) {
     // First they may be nothing to do!
     if (bUpdateWindows) {
-      if (m_IsStartSilent) {
+      if (m_InitMode == SilentInit) {
         // Show initial dialog ONCE (if succeeds)
         if (OpenOnInit()) {
-          m_IsStartSilent = false;
+          m_InitMode = NormalInit;
           SetInitialDatabaseDisplay();
           RefreshViews();
           ShowWindow(SW_RESTORE);
           brc = true;
         }
         goto exit;
-      } // m_IsStartSilent
+      } // SilentInit
       ShowWindow(SW_RESTORE);
       brc = true;
     } // bUpdateWindows == true

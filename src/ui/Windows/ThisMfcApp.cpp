@@ -965,11 +965,12 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
         case L'C': case L'c':
           m_core.SetCurFile(L"");
           dbox.SetStartNoDB();
+          dbox.SetStartClosed();
           break;
         case L'M': case L'm':// closed & minimized
           m_core.SetCurFile(L"");
           dbox.SetStartNoDB();
-          dbox.SetStartSilent();
+          dbox.SetStartMinimized();
           break;
         case L'R': case L'r':
           m_core.SetReadOnly(true);

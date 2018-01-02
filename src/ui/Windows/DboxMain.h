@@ -223,7 +223,9 @@ public:
   bool IsDBReadOnly() const {return m_core.IsReadOnly();}
   bool IsDBOpen() const { return m_bOpen; }
   void SetDBprefsState(const bool bState) { m_bDBState = bState; }
-  void SetStartSilent() {m_IsStartSilent = true;} // start minimized, forces UseSystemTray
+  void SetStartSilent() {m_InitMode = SilentInit;} // start minimized, forces UseSystemTray
+  void SetStartClosed() {m_InitMode = ClosedInit;} // start with main window, no password prompt
+  void SetStartMinimized() {m_InitMode = MinimizedInit;} // Like closed, but also minimized
   void SetStartNoDB() {m_IsStartNoDB = true;} // start with no db, w/o password prompt
   void SetDBInitiallyRO(bool state) {m_bDBInitiallyRO = state;}
   void MakeRandomPassword(StringX &password, PWPolicy &pwp, bool bIssueMsg = false);
@@ -791,6 +793,8 @@ public:
                           int index, int flags = 0);
 
 private:
+  enum InitType {NormalInit, SilentInit, ClosedInit, MinimizedInit};
+
   // UIInterFace implementations:
   virtual void DatabaseModified(bool bChanged);
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
@@ -821,7 +825,7 @@ private:
   HICON m_ClosedIcon;
   HICON m_IndexIcon;
 
-  bool m_IsStartSilent;
+  InitType m_InitMode = NormalInit;
   bool m_IsStartNoDB;
   bool m_IsListView;
   bool m_bAlreadyToldUserNoSave;

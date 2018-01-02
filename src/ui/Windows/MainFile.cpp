@@ -245,7 +245,7 @@ BOOL DboxMain::OpenOnInit()
 
   if (rc2 != PWScore::SUCCESS && !go_ahead) {
     // not a good return status, fold.
-    if (!m_IsStartSilent)
+    if (m_InitMode != SilentInit)
       CDialog::OnCancel();
     goto exit;
   }
