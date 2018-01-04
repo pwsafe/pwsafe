@@ -1166,7 +1166,7 @@ BOOL DboxMain::OnInitDialog()
 
   BOOL bOOI(TRUE);
   if (!m_bSetup) { // --setup flag not passed (common case)
-    if (m_InitMode != SilentInit)
+    if (m_InitMode == NormalInit)
       bOOI = OpenOnInit();
   } else { // --setup flag passed (post install/upgrade)
     // If default dbase exists, DO NOT overwrite it, else
@@ -1498,12 +1498,25 @@ void DboxMain::OnDestroy()
 
 void DboxMain::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 {
-  if (m_InitMode == MinimizedInit) {
-    // Here's where we enforce the '-m' flag
+  /**
+   * Following hack is to cause the main window to be minimized upon startup
+   * when so specified by user (-s or -m cli args)
+   * Used to work without countDown/oneShot logic, but something changed
+   * that caused this to be called multiple time before it would actually take effect
+   * hence the current kludge.
+   * The Right Thing would be to separate the startup flows completely, delaying the
+   * creation of the main window until appropriate, but that's major rocket surgery
+   * at this stage...
+   */
+  static int countDown = 5;
+  static bool oneShot = false;
+  if ((m_InitMode == SilentInit || m_InitMode == MinimizedInit) &&
+      !oneShot && --countDown == 0) {
+    oneShot = true;
+    // Here's where we enforce the '-m/s' flag
     // semantics, causing main window to minimize ASAP.
     lpwndpos->flags |= (SWP_HIDEWINDOW | SWP_NOACTIVATE);
     lpwndpos->flags &= ~SWP_SHOWWINDOW;
-    m_InitMode = NormalInit; // make this a one-shot
     PostMessage(WM_COMMAND, ID_MENUITEM_MINIMIZE);
   }
   CDialog::OnWindowPosChanging(lpwndpos);
