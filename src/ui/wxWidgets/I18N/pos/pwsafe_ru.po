@@ -2913,8 +2913,8 @@ msgstr ""
 "о распространении исходного кода."
 
 #: ../../../ui/wxWidgets/about.cpp:176
-msgid "Copyright (c) 2003-2017 by Rony Shapiro"
-msgstr "Copyright (c) 2003-2017 by Rony Shapiro"
+msgid "Copyright (c) 2003-2018 by Rony Shapiro"
+msgstr "Copyright (c) 2003-2018 by Rony Shapiro"
 
 #: ../../../ui/wxWidgets/about.cpp:259
 msgid ""
