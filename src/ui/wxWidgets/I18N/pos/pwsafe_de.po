@@ -1803,7 +1803,7 @@ msgid ""
 "Any related functionality may not work as expected."
 msgstr ""
 "Die verwendete Umgebung scheint keinen Infobereich zu unterstützen.\n"
-"Jegliche damit verbundene Funktionalität wird möglicherweise nicht "
+"Jegliche damit verbundene Funktionalität wird möglicherweise nicht\n"
 "erwartungsgemäß funktionieren."
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:607
@@ -1816,7 +1816,8 @@ msgstr "Datenbanken"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:621
 msgid "Recent Databases on File Menu rather than as a sub-menu"
-msgstr "Zuletzt verwendete Datenbanken direkt im Dateimenü aufführen, anstatt als Untermenü"
+msgstr "Zuletzt verwendete Datenbanken direkt im Dateimenü aufführen,\n"
+"anstatt als Untermenü"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:625
 msgid "Open database as read-only by default"

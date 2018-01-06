@@ -90,25 +90,25 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
 END_EVENT_TABLE()
 
 const wxString BUSuffix[] = {
-  _("None"),
-  _("YYYYMMMDD_HHMMSS"),
-  _("Incremented Number [001-999]"),
+  wxTRANSLATE("None"),
+  wxTRANSLATE("YYYYMMMDD_HHMMSS"),
+  wxTRANSLATE("Incremented Number [001-999]"),
 };
 
 enum {NO_SFX, TS_SFX, INC_SFX}; // For backup file suffix name
 
 // Following in enum order (see PWSprefs.h)
 const wxString DCAStrings[] = {
-  _("Copy password to clipboard"),
-  _("Edit/View selected entry"),
-  _("Autotype"),
-  _("Browse to URL"),
-  _("Copy notes to clipboard"),
-  _("Copy username to clipboard"),
-  _("Copy password to clipboard, minimize"),
-  _("Browse to URL + Autotype"),
-  _("Run Command"),
-  _("Send email"),
+  wxTRANSLATE("Copy password to clipboard"),
+  wxTRANSLATE("Edit/View selected entry"),
+  wxTRANSLATE("Autotype"),
+  wxTRANSLATE("Browse to URL"),
+  wxTRANSLATE("Copy notes to clipboard"),
+  wxTRANSLATE("Copy username to clipboard"),
+  wxTRANSLATE("Copy password to clipboard, minimize"),
+  wxTRANSLATE("Browse to URL + Autotype"),
+  wxTRANSLATE("Run Command"),
+  wxTRANSLATE("Send email"),
 };
 
 /*!
@@ -246,7 +246,7 @@ void COptions::CreateControls()
   m_usrbuprefixRB->SetValue(false);
   itemBoxSizer10->Add(m_usrbuprefixRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_usrbuprefixTxt = new wxTextCtrl( itemPanel2, ID_TEXTCTRL9, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(90, -1)).x, -1), 0 );
+  m_usrbuprefixTxt = new wxTextCtrl( itemPanel2, ID_TEXTCTRL9, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(100, -1)).x, -1), 0 );
   itemBoxSizer10->Add(m_usrbuprefixTxt, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticLine* itemStaticLine13 = new wxStaticLine( itemPanel2, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
@@ -259,7 +259,7 @@ void COptions::CreateControls()
   itemStaticBoxSizer7->Add(itemBoxSizer15, 0, wxGROW|wxALL, 0);
   wxArrayString m_busuffixCBStrings;
   for (int i = 0; i < int(sizeof(BUSuffix)/sizeof(BUSuffix[0])); ++i) {
-    m_busuffixCBStrings.Add(BUSuffix[i]);
+    m_busuffixCBStrings.Add(_(BUSuffix[i]));
   }
   m_busuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_busuffixCBStrings, wxCB_READONLY );
   itemBoxSizer15->Add(m_busuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -294,8 +294,8 @@ void COptions::CreateControls()
   m_usrbudirRB->SetValue(false);
   itemBoxSizer25->Add(m_usrbudirRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_usrbudirTxt = new wxTextCtrl( itemPanel2, ID_TEXTCTRL10, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(90, -1)).x, -1), 0 );
-  itemBoxSizer25->Add(m_usrbudirTxt, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_usrbudirTxt = new wxTextCtrl( itemPanel2, ID_TEXTCTRL10, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer25->Add(m_usrbudirTxt, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_buDirBN = new wxButton( itemPanel2, ID_BUTTON, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer25->Add(m_buDirBN, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
@@ -393,7 +393,7 @@ void COptions::CreateControls()
   wxArrayString m_DCACBStrings;
   wxArrayString m_SDCACBStrings;
   for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i) {
-    wxString tmp = DCAStrings[i];
+    wxString tmp = _(DCAStrings[i]);
     m_DCACBStrings.Add(tmp);
     m_SDCACBStrings.Add(tmp);
   }
@@ -425,8 +425,9 @@ void COptions::CreateControls()
   wxStaticText* itemStaticText59 = new wxStaticText( itemPanel44, wxID_STATIC, _("Default Autotype string:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer58->Add(itemStaticText59, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl60 = new wxTextCtrl( itemPanel44, ID_TEXTCTRL11, wxEmptyString, wxDefaultPosition, wxSize(itemPanel44->ConvertDialogToPixels(wxSize(90, -1)).x, -1), 0 );
-  itemBoxSizer58->Add(itemTextCtrl60, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxTextCtrl* itemTextCtrl60 = new wxTextCtrl( itemPanel44, ID_TEXTCTRL11, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer58->Add(itemTextCtrl60, 2, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer58->AddStretchSpacer();
 
   wxStaticBox* itemStaticBoxSizer61Static = new wxStaticBox(itemPanel44, wxID_ANY, _("Default Username"));
   auto *itemStaticBoxSizer61 = new wxStaticBoxSizer(itemStaticBoxSizer61Static, wxVERTICAL);
@@ -437,11 +438,12 @@ void COptions::CreateControls()
   itemCheckBox63->SetValue(false);
   itemBoxSizer62->Add(itemCheckBox63, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_defusernameTXT = new wxTextCtrl( itemPanel44, ID_TEXTCTRL12, wxEmptyString, wxDefaultPosition, wxSize(itemPanel44->ConvertDialogToPixels(wxSize(90, -1)).x, -1), 0 );
-  itemBoxSizer62->Add(m_defusernameTXT, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_defusernameTXT = new wxTextCtrl( itemPanel44, ID_TEXTCTRL12, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer62->Add(m_defusernameTXT, 2, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_defusernameLBL = new wxStaticText( itemPanel44, wxID_STATIC, _("as default username"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer62->Add(m_defusernameLBL, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer62->Add(m_defusernameLBL, 2, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer62->AddStretchSpacer();
 
   wxCheckBox* itemCheckBox66 = new wxCheckBox( itemPanel44, ID_CHECKBOX25, _("Query user to set default username"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox66->SetValue(false);
@@ -452,19 +454,20 @@ void COptions::CreateControls()
   itemBoxSizer45->Add(itemStaticBoxSizer67, 0, wxGROW|wxALL, 5);
   auto *itemBoxSizer68 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer67->Add(itemBoxSizer68, 0, wxGROW|wxALL, 0);
-  wxTextCtrl* itemTextCtrl69 = new wxTextCtrl( itemPanel44, ID_TEXTCTRL13, wxEmptyString, wxDefaultPosition, wxSize(itemPanel44->ConvertDialogToPixels(wxSize(120, -1)).x, -1), 0 );
-  itemBoxSizer68->Add(itemTextCtrl69, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxTextCtrl* itemTextCtrl69 = new wxTextCtrl( itemPanel44, ID_TEXTCTRL13, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer68->Add(itemTextCtrl69, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxButton* itemButton70 = new wxButton( itemPanel44, ID_BUTTON8, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer68->Add(itemButton70, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemBoxSizer71 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer67->Add(itemBoxSizer71, 0, wxGROW|wxALL, 0);
-  wxTextCtrl* itemTextCtrl72 = new wxTextCtrl( itemPanel44, ID_TEXTCTRL14, wxEmptyString, wxDefaultPosition, wxSize(itemPanel44->ConvertDialogToPixels(wxSize(60, -1)).x, -1), 0 );
-  itemBoxSizer71->Add(itemTextCtrl72, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
+  
   wxStaticText* itemStaticText73 = new wxStaticText( itemPanel44, wxID_STATIC, _("Browser Command Line parameters"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer71->Add(itemStaticText73, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+
+  wxTextCtrl* itemTextCtrl72 = new wxTextCtrl( itemPanel44, ID_TEXTCTRL14, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer71->Add(itemTextCtrl72, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel44, _("Misc."));
 
@@ -802,12 +805,12 @@ void COptions::PrefsToPropSheet()
   if (m_doubleclickaction < 0 ||
       m_doubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
     m_doubleclickaction = 0;
-  m_DCACB->SetValue(DCAStrings[m_doubleclickaction]);
+  m_DCACB->SetValue(_(DCAStrings[m_doubleclickaction]));
   m_shiftdoubleclickaction = prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
   if (m_shiftdoubleclickaction < 0 ||
       m_shiftdoubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
     m_shiftdoubleclickaction = 0;
-  m_SDCACB->SetValue(DCAStrings[m_shiftdoubleclickaction]);
+  m_SDCACB->SetValue(_(DCAStrings[m_shiftdoubleclickaction]));
   m_minauto = prefs->GetPref(PWSprefs::MinimizeOnAutotype);
   m_autotypeStr = prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
   if (m_autotypeStr.empty())
@@ -863,7 +866,7 @@ void COptions::PrefsToPropSheet()
 static int DCAStr2Int(const wxString &str)
 {
   for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i)
-    if (str == DCAStrings[i]) {
+    if (str == _(DCAStrings[i])) {
       return i;
     }
   ASSERT(0);
