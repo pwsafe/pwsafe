@@ -2664,7 +2664,9 @@ bool DboxMain::LockDataBase()
   }
   
   // If DB is currently in R/W and it was opened in R-O mode, now make it R-O
-  if (!IsDBReadOnly() && m_bDBInitiallyRO) {
+  // (FR703)
+  // Unless there's a child dbox open (BR1192)
+  if (!IsDBReadOnly() && m_bDBInitiallyRO && !CPWDialog::GetDialogTracker()->AnyOpenDialogs()) {
     ChangeMode(false);
   }
 

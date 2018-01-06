@@ -24,6 +24,7 @@ Bugs Fixed in 3.44.1
 [1442] Fixed regression: -s flag (silent opening) works again.
 [1441] Changing unlock difficulty now enables save (regression),
 supported under undo/redo.
+[1192] Don't revert to original r-o when locking with an edit box open.
 
 Bugs Fixed in 3.44.0
 ====================
