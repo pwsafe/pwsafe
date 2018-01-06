@@ -194,7 +194,7 @@ void CSafeCombinationEntry::CreateControls()
 
   wxArrayString m_filenameCBStrings;
   m_filenameCB = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), m_filenameCBStrings, wxCB_DROPDOWN );
-  itemBoxSizer9->Add(m_filenameCB, 1, wxGROW|wxALIGN_CENTER_VERTICAL|/*wxLEFT|wxRIGHT*/wxTOP|wxBOTTOM, 5);
+  itemBoxSizer9->Add(m_filenameCB, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5);
 
   wxButton* itemButton11 = new wxButton( itemDialog1, ID_ELLIPSIS, wxT("..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
   itemBoxSizer9->Add(itemButton11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
