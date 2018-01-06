@@ -1913,7 +1913,7 @@ msgid "Change database mode?"
 msgstr "Veritabanı modunu değiştir?"
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* indicates the database has been changed\nÂ° indicates a database preference has been changed"
+msgid "Change status since last save:\n* \n  indicates the database has been changed\n° indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)
@@ -2902,6 +2902,10 @@ msgstr "Pozitif bir tam sayı giriniz."
 #. Resource IDs: (61723)
 msgid "Enter a time."
 msgstr "Saat giriniz."
+
+#. Resource IDs: (65535)
+msgid "Enter a value between 0 and 99 (a value of 0 disables icon overlay):"
+msgstr ""
 
 #. Resource IDs: (61714)
 #, c-format
@@ -5715,9 +5719,17 @@ msgstr "Klavye Seçin:"
 msgid "Select Location for Intermediate Backups"
 msgstr "Ara Yedekler İçin Yer Seçin"
 
+#. Resource IDs: (65535)
+msgid "Select Locked Text Color:"
+msgstr ""
+
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
 msgstr "Test Döküm Tipini Seç"
+
+#. Resource IDs: (65535)
+msgid "Select Unlocked Text Color:"
+msgstr ""
 
 #. Resource IDs: (61717)
 msgid "Select a button."
@@ -5794,6 +5806,10 @@ msgstr ""
 
 #. Resource IDs: (32256 - Menu)
 msgid "Set Database ID"
+msgstr ""
+
+#. Resource IDs: (552)
+msgid "Set Database Index to overlay on System Tray icon"
 msgstr ""
 
 #. Resource IDs: (5295)
