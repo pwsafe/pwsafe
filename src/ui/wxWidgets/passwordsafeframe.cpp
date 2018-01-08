@@ -1723,6 +1723,11 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
 static void FlattenTree(wxTreeItemId id, PWSTreeCtrl* tree, OrderedItemList& olist)
 {
   wxTreeItemIdValue cookie;
+  
+  if (!id.IsOk()) {
+    return;
+  }
+  
   for (wxTreeItemId childId = tree->GetFirstChild(id, cookie); childId.IsOk();
                           childId = tree->GetNextChild(id, cookie)) {
     CItemData* item = tree->GetItem(childId);

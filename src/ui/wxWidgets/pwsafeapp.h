@@ -31,7 +31,6 @@
 ////@end forward declarations
 class wxTimer;
 class PasswordSafeFrame;
-class wxHtmlHelpController;
 class wxLocale;
 
 /*!
