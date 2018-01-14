@@ -1,5 +1,5 @@
 [OPTIONS]
-Auto Index=Yes
+Auto Index=No
 Compatibility=1.1 or later
 Compiled file=pwsafeRU.chm
 Contents file=pwsafeRU.hhc

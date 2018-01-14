@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.2_2_10096:10098" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.3_1_10228" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -5209,6 +5209,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Accelerators</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115304Z" creationid="pm_kan" creationdate="20180114T115304Z">
+        <seg>Горячие клавиши</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Add Entry</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T200428Z">
@@ -5221,6 +5229,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101004T183137Z">
         <seg>Добавить группу</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Add Password Entries</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115052Z" creationid="pm_kan" creationdate="20180114T115052Z">
+        <seg>Добавление элементов</seg>
       </tuv>
     </tu>
     <tu>
@@ -5349,6 +5365,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T095921Z">
         <seg>Создать новый элемент в текущем контейнере</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Advanced Search</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112904Z" creationid="pm_kan" creationdate="20180114T112904Z">
+        <seg>Расширенный поиск</seg>
       </tuv>
     </tu>
     <tu>
@@ -6081,6 +6105,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Artistic License</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113500Z" creationid="pm_kan" creationdate="20180114T113500Z">
+        <seg>Artistic License</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>As all filters, they can be cleared by double-clicking the red and white striped "filter active" indicator at the bottom right of the Status Bar, as can be seen in the following images where the filter is active.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T172500Z" creationid="pm_kan" creationdate="20170326T172015Z">
@@ -6273,6 +6305,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Auto Save Changes</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114637Z" creationid="pm_kan" creationdate="20180114T114603Z">
+        <seg>Автоматическое сохранение изменение</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Auto Type</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100919T202934Z">
@@ -6377,6 +6417,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Backup</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114512Z" creationid="pm_kan" creationdate="20180114T114512Z">
+        <seg>Резервные копии</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Backup (failsafe)</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115018Z" creationid="pm_kan" creationdate="20180114T115018Z">
+        <seg>Аварийная резервная копия</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Backup Directory</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100920T182843Z">
@@ -6397,6 +6453,30 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101106T191035Z">
         <seg>Настройки резервного копирования</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Backup Tab</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114510Z" creationid="pm_kan" creationdate="20180114T114510Z">
+        <seg>Вкладка «Резервные копии»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Backup directory</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112645Z" creationid="pm_kan" creationdate="20180114T112645Z">
+        <seg>Каталог для резервных копий</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Backup name</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115000Z" creationid="pm_kan" creationdate="20180114T115000Z">
+        <seg>Имя для резервной копии</seg>
       </tuv>
     </tu>
     <tu>
@@ -6437,6 +6517,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T182738Z">
         <seg>BackupSuffix</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Backups (intermediate)</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115043Z" creationid="pm_kan" creationdate="20180114T115043Z">
+        <seg>Промежуточная резервная копия</seg>
       </tuv>
     </tu>
     <tu>
@@ -6585,6 +6673,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Browse to</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112612Z" creationid="pm_kan" creationdate="20180114T112612Z">
+        <seg>Переход по ссылке</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Browse to URL</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101004T184634Z">
@@ -6653,6 +6749,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20171111T151328Z" creationid="pm_kan" creationdate="20171111T151328Z">
         <seg>Откройте в браузере сайт, для которого нужно осуществить вход.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Browser</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114519Z" creationid="pm_kan" creationdate="20180114T114519Z">
+        <seg>Браузер</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Bruce Schneier</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115227Z" creationid="pm_kan" creationdate="20180114T115227Z">
+        <seg>Брюсом Шнайер (Bruce Schneier)</seg>
       </tuv>
     </tu>
     <tu>
@@ -6897,6 +7009,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>CLI</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114348Z" creationid="pm_kan" creationdate="20180114T114348Z">
+        <seg>Интерфейс командной строки</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>CSV File</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T182402Z">
@@ -6941,6 +7061,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T202110Z">
         <seg>Изменить язык</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Change Master Password</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T111553Z" creationid="pm_kan" creationdate="20180114T111553Z">
+        <seg>Изменение мастер-пароля</seg>
       </tuv>
     </tu>
     <tu>
@@ -7165,6 +7293,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T182607Z">
         <seg>ClearClipboardOnMinimize</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Clearing the Clipboard</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114036Z" creationid="pm_kan" creationdate="20180114T114036Z">
+        <seg>Очистка буфера обмена</seg>
       </tuv>
     </tu>
     <tu>
@@ -7481,6 +7617,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Combination</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114252Z" creationid="pm_kan" creationdate="20180114T114252Z">
+        <seg>Парольная комбинация</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Command Line Arguments</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100920T184158Z">
@@ -7507,7 +7651,7 @@
       <tuv lang="EN-US">
         <seg>Compare</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T130004Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T120614Z">
         <seg>Сравнить</seg>
       </tuv>
     </tu>
@@ -7561,6 +7705,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Configuration</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113231Z" creationid="pm_kan" creationdate="20180114T113231Z">
+        <seg>Настройки</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Configure options.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T100618Z">
@@ -7573,6 +7725,30 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T110337Z" creationid="pm_kan" creationdate="20140113T110337Z">
         <seg>Настройка YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Confirm Copy to Clipboard</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114744Z" creationid="pm_kan" creationdate="20180114T114744Z">
+        <seg>Подтверждение копирования в буфер обмена</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Confirm Delete</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113121Z" creationid="pm_kan" creationdate="20180114T113121Z">
+        <seg>Подтверждение удаления</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Confirm Save</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113921Z" creationid="pm_kan" creationdate="20180114T113921Z">
+        <seg>Подтверждение сохранения</seg>
       </tuv>
     </tu>
     <tu>
@@ -7629,6 +7805,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101106T171956Z">
         <seg>Управление панелью инструментов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Converting Existing Password Data</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114956Z" creationid="pm_kan" creationdate="20180114T114956Z">
+        <seg>Преобразование существующих записей с паролями</seg>
       </tuv>
     </tu>
     <tu>
@@ -8353,6 +8537,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Deleting Password Entries</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113055Z" creationid="pm_kan" creationdate="20180114T113055Z">
+        <seg>Удаление элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Deleting this copy after use is &lt;/s3&gt;&lt;s4&gt;not &lt;/s4&gt;&lt;s5&gt;sufficient for making it inaccesible to a determined attacker, and in effect bypasses the security of the program.&lt;/s5&gt;&lt;br6&gt;</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T132154Z">
@@ -8921,6 +9113,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Edit Password Entries</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113105Z" creationid="pm_kan" creationdate="20180114T113105Z">
+        <seg>Редактирование элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Edit a Group Name</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101017T203331Z">
@@ -9305,6 +9505,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Excel Password Data</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115205Z" creationid="pm_kan" creationdate="20180114T115205Z">
+        <seg>Обработка записей в Excel</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Exit</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T163130Z">
@@ -9369,6 +9577,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Export</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115231Z" creationid="pm_kan" creationdate="20180114T115231Z">
+        <seg>Экспорт</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Export Entry in XML format</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T212913Z">
@@ -9389,6 +9605,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101004T191157Z">
         <seg>Экспортировать элемент в простой текст</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Export Password Entries</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113641Z" creationid="pm_kan" creationdate="20180114T113641Z">
+        <seg>Экспорт элементов</seg>
       </tuv>
     </tu>
     <tu>
@@ -9617,6 +9841,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Failsafe</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T111304Z" creationid="pm_kan" creationdate="20180114T111304Z">
+        <seg>Отказоустойчивость</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Failsafe Backup Display during Open</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T151643Z">
@@ -9645,6 +9877,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T125009Z">
         <seg>Меню «Файл»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>File decryption</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112152Z" creationid="pm_kan" creationdate="20180114T112152Z">
+        <seg>Расшифрование файла</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>File encryption</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114809Z" creationid="pm_kan" creationdate="20180114T114809Z">
+        <seg>Шифрование файла</seg>
       </tuv>
     </tu>
     <tu>
@@ -9729,6 +9977,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Find</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113645Z" creationid="pm_kan" creationdate="20180114T113645Z">
+        <seg>Поиск</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Find Advanced</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T135630Z">
@@ -9773,6 +10029,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T182601Z">
         <seg>FindWraps</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Finding Password Entries</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114755Z" creationid="pm_kan" creationdate="20180114T114755Z">
+        <seg>Поиск элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Flattened List</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114759Z" creationid="pm_kan" creationdate="20180114T114759Z">
+        <seg>Простой список</seg>
       </tuv>
     </tu>
     <tu>
@@ -10249,6 +10521,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Forgot My Master Password</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112500Z" creationid="pm_kan" creationdate="20180114T112500Z">
+        <seg>Забытый пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>From the &lt;b0&gt;Edit&lt;/b0&gt; menu, select &lt;b1&gt;Add Entry&lt;/b1&gt;</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T174638Z">
@@ -10317,6 +10597,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T091249Z">
         <seg>Создать пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Generating Passwords</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112847Z" creationid="pm_kan" creationdate="20180114T112847Z">
+        <seg>Создание паролей</seg>
       </tuv>
     </tu>
     <tu>
@@ -10461,6 +10749,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T192255Z">
         <seg>Group/Title (группа/заголовок)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Groups</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114325Z" creationid="pm_kan" creationdate="20180114T114325Z">
+        <seg>Группы</seg>
       </tuv>
     </tu>
     <tu>
@@ -12697,10 +12993,34 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Import</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114048Z" creationid="pm_kan" creationdate="20180114T114048Z">
+        <seg>Импорт</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Import From</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T125829Z">
         <seg>Импортировать из</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Import KeePass Entries</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113031Z" creationid="pm_kan" creationdate="20180114T113031Z">
+        <seg>Импорт из KeePass</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Import Password Entries</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113936Z" creationid="pm_kan" creationdate="20180114T113936Z">
+        <seg>Импорт элементов</seg>
       </tuv>
     </tu>
     <tu>
@@ -13625,6 +13945,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>KeePass</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113503Z" creationid="pm_kan" creationdate="20180114T113503Z">
+        <seg>KeePass</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>KeePass (another password management utility)</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T202139Z">
@@ -13793,6 +14121,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Keyboard</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112855Z" creationid="pm_kan" creationdate="20180114T112855Z">
+        <seg>Клавиатура</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Keyboard Shortcut/Accelerator keys</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101105T174339Z">
@@ -13929,6 +14265,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>License Restrictions</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113527Z" creationid="pm_kan" creationdate="20180114T113527Z">
+        <seg>Лицензионные ограничения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Like many applications, &lt;b0&gt;Password Safe&lt;/b0&gt; allows you to configure its behaviour and appearance to best suite your taste and needs.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T171713Z">
@@ -14005,6 +14349,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T180643Z">
         <seg>Блокировать контейнер &lt;b0&gt;Password Safe&lt;/b0&gt; при блокировке компьютера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Lock Database</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112528Z" creationid="pm_kan" creationdate="20180114T112528Z">
+        <seg>Блокировка контейнера</seg>
       </tuv>
     </tu>
     <tu>
@@ -14113,6 +14465,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Logoff</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114501Z" creationid="pm_kan" creationdate="20180114T114501Z">
+        <seg>Выход из системы</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Lost Passwords</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112508Z" creationid="pm_kan" creationdate="20180114T112508Z">
+        <seg>Утерянный пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>MM</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T141730Z">
@@ -14133,6 +14501,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T182400Z">
         <seg>MRUOnFileMenu</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Mailing List</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115242Z" creationid="pm_kan" creationdate="20180114T115242Z">
+        <seg>Список рассылки</seg>
       </tuv>
     </tu>
     <tu>
@@ -14293,6 +14669,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T181356Z">
         <seg>Многие пользователи используют один и тот же контейнер Password Safe на разных машинах (запускают со съёмного диска или сетевого ресурса).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Master Password</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115008Z" creationid="pm_kan" creationdate="20180114T115008Z">
+        <seg>Мастер-пароль</seg>
       </tuv>
     </tu>
     <tu>
@@ -14641,10 +15025,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Nested Tree</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115057Z" creationid="pm_kan" creationdate="20180114T115057Z">
+        <seg>Древовидный список</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>New</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T125149Z">
         <seg>Создать</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>New Releases</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114318Z" creationid="pm_kan" creationdate="20180114T114318Z">
+        <seg>Новая версия</seg>
       </tuv>
     </tu>
     <tu>
@@ -15977,6 +16377,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Opening a Safe</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114825Z" creationid="pm_kan" creationdate="20180114T114825Z">
+        <seg>Открытие контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Opening a database with YubiKey</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T123905Z" creationid="pm_kan" creationdate="20140113T123905Z">
@@ -16209,6 +16617,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Password Expiry</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T111622Z" creationid="pm_kan" creationdate="20180114T111622Z">
+        <seg>Срок действия пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Password Expiry Date</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T192744Z">
@@ -16297,6 +16713,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Password Safe 1.x</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114747Z" creationid="pm_kan" creationdate="20180114T114747Z">
+        <seg>Password Safe 1.x</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Password Safe 2.x</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112803Z" creationid="pm_kan" creationdate="20180114T112803Z">
+        <seg>Password Safe 2.x</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Password Safe About dialog box</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T113921Z">
@@ -16333,6 +16765,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101106T190915Z">
         <seg>Пункты меню Password Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Password Safe Project Page</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T111520Z" creationid="pm_kan" creationdate="20180114T111520Z">
+        <seg>Web-страница проекта Password Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Password Safe RSS Feeds</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112424Z" creationid="pm_kan" creationdate="20180114T112424Z">
+        <seg>RSS-канал Password Safe</seg>
       </tuv>
     </tu>
     <tu>
@@ -16405,6 +16853,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T192158Z">
         <seg>Малоактивный (около одного сообщения в месяц), не содержащий спама, список рассылки Password Safe с &lt;a0&gt;анонсами новых версий&lt;/a0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Password Statistics</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112404Z" creationid="pm_kan" creationdate="20180114T112404Z">
+        <seg>Статистика использования паролей</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Password Subset</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113632Z" creationid="pm_kan" creationdate="20180114T113632Z">
+        <seg>Часть пароля</seg>
       </tuv>
     </tu>
     <tu>
@@ -16569,6 +17033,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Passwords</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114815Z" creationid="pm_kan" creationdate="20180114T114815Z">
+        <seg>Пароли</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Path and name of last backup file</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T203507Z">
@@ -16606,6 +17078,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T095744Z">
         <seg>Выполнить &lt;a0&gt;автонабор&lt;/a0&gt; для текущего элемента</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Picking a Master Password</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113351Z" creationid="pm_kan" creationdate="20180114T113351Z">
+        <seg>Выбор мастер-пароля</seg>
       </tuv>
     </tu>
     <tu>
@@ -16742,6 +17222,22 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T192546Z">
         <seg>На всякий случай проверяйте соответствие созданного пароля указанным требованиям.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Policy History Tab</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T111541Z" creationid="pm_kan" creationdate="20180114T111541Z">
+        <seg>Вкладка «История паролей»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Policy Password Tab</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T111423Z" creationid="pm_kan" creationdate="20180114T111423Z">
+        <seg>Вкладка «Политика создания паролей»</seg>
       </tuv>
     </tu>
     <tu>
@@ -17026,6 +17522,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Read-only</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112907Z" creationid="pm_kan" creationdate="20180114T112907Z">
+        <seg>Только чтение</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Recent</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T160508Z">
@@ -17078,6 +17582,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T102835Z">
         <seg>Сохранять время последнего доступа к записи</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Recovery</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T111312Z" creationid="pm_kan" creationdate="20180114T111312Z">
+        <seg>Восстановление</seg>
       </tuv>
     </tu>
     <tu>
@@ -17186,6 +17698,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Renaming Password Entries</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114729Z" creationid="pm_kan" creationdate="20180114T114729Z">
+        <seg>Переименование элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Repeating Undo will undo the actions in reverse order, from last to earliest.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T124256Z">
@@ -17226,6 +17746,22 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Restart</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114707Z" creationid="pm_kan" creationdate="20180114T114654Z">
+        <seg>Перезапуск компьютера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Restore</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115105Z" creationid="pm_kan" creationdate="20180114T115105Z">
+        <seg>Восстановление</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Restore a backed up password database file.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100920T194445Z">
@@ -17254,6 +17790,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T150250Z">
         <seg>Восстановить из резервной копии</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Retrieving Passwords</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112753Z" creationid="pm_kan" creationdate="20180114T112753Z">
+        <seg>Восстановление паролей</seg>
       </tuv>
     </tu>
     <tu>
@@ -17554,6 +18098,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Save immediately</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114112Z" creationid="pm_kan" creationdate="20180114T114112Z">
+        <seg>Автоматическое сохранение</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Save the code of the last Virtual Keyboard used</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T194706Z">
@@ -17614,6 +18166,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101105T183620Z">
         <seg>Scroll Lock (Scroll)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Search</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114330Z" creationid="pm_kan" creationdate="20180114T114330Z">
+        <seg>Поиск</seg>
       </tuv>
     </tu>
     <tu>
@@ -18378,6 +18938,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Shortcut keys</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114020Z" creationid="pm_kan" creationdate="20180114T114020Z">
+        <seg>Комбинации клавиш</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Shortcut_Keys.html</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T204445Z">
@@ -18479,6 +19047,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T181440Z">
         <seg>Показывать пароль в дереве</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Show Passwords</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113405Z" creationid="pm_kan" creationdate="20180114T113405Z">
+        <seg>Показать пароль</seg>
       </tuv>
     </tu>
     <tu>
@@ -18616,6 +19192,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T173749Z">
         <seg>ShowUsernameInTree</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Shutdown</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114702Z" creationid="pm_kan" creationdate="20180114T114702Z">
+        <seg>Выключение компьютера</seg>
       </tuv>
     </tu>
     <tu>
@@ -18828,6 +19412,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Special Characters</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T111827Z" creationid="pm_kan" creationdate="20180114T111827Z">
+        <seg>Специальные символы</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Special command line parameters for the alternate browser, if specified</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T193156Z">
@@ -18888,6 +19480,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T181758Z">
         <seg>Сохранение фильтров</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Storing Passwords</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115327Z" creationid="pm_kan" creationdate="20180114T115327Z">
+        <seg>Стойкие пароли</seg>
       </tuv>
     </tu>
     <tu>
@@ -18956,6 +19556,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Support</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114008Z" creationid="pm_kan" creationdate="20180114T114008Z">
+        <seg>Поддержка</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Supported fonts include: "Arial Unicode MS" (which comes with Microsoft's Office suite), "Arial Unicode" and "Lucida Sans Unicode", although you may select another using the appropriate menu item.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T152847Z">
@@ -19012,6 +19620,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Switching Toolbar Views</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114401Z" creationid="pm_kan" creationdate="20180114T114401Z">
+        <seg>Переключение стиля отображения значков</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Symbol virtual keyboard</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20100926T182753Z">
@@ -19030,7 +19646,7 @@
       <tuv lang="EN-US">
         <seg>Synchronize</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110214T130023Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T120811Z">
         <seg>Синхронизировать</seg>
       </tuv>
     </tu>
@@ -19096,6 +19712,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20170814T205516Z" creationid="pm_kan" creationdate="20170814T205516Z">
         <seg>Значок в области уведомлений</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Systems Tab</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T111558Z" creationid="pm_kan" creationdate="20180114T111558Z">
+        <seg>Вкладка «Система»</seg>
       </tuv>
     </tu>
     <tu>
@@ -23581,6 +24205,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Toolbar Icons</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113007Z" creationid="pm_kan" creationdate="20180114T113007Z">
+        <seg>Значки панели инструментов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Tree &amp; List View font size in tenths of a point</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20170326T170000Z" creationid="pm_kan" creationdate="20170326T170000Z">
@@ -23625,6 +24257,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T180924Z">
         <seg>True [истина], если назначена горячая клавиша для вызова Pasword Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Twofish</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115228Z" creationid="pm_kan" creationdate="20180114T115228Z">
+        <seg>Twofish</seg>
       </tuv>
     </tu>
     <tu>
@@ -23933,6 +24573,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>User Names</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T113017Z" creationid="pm_kan" creationdate="20180114T113017Z">
+        <seg>Имя пользователя</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>User Names and Passwords</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101004T192205Z">
@@ -24065,6 +24713,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101106T190538Z">
         <seg>Использование Password Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Using Passwords</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T105919Z" creationid="pm_kan" creationdate="20180114T105919Z">
+        <seg>Использование паролей</seg>
       </tuv>
     </tu>
     <tu>
@@ -24325,6 +24981,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>View Password Entries</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114045Z" creationid="pm_kan" creationdate="20180114T114045Z">
+        <seg>Просмотр элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>View Reports</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110622T152857Z">
@@ -24378,6 +25042,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20101104T110149Z">
         <seg>Просмотр/редактирование элемента</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Virtual Keyboard</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112157Z" creationid="pm_kan" creationdate="20180114T112157Z">
+        <seg>Экранная клавиатура</seg>
       </tuv>
     </tu>
     <tu>
@@ -25934,6 +26606,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Yubico</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115207Z" creationid="pm_kan" creationdate="20180114T115207Z">
+        <seg>Yubico</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Yubikey</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T123214Z" creationid="pm_kan" creationdate="20140113T123214Z">
@@ -26626,6 +27306,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T111533Z" creationid="pm_kan" creationdate="20140113T111533Z">
         <seg>create_new_db.html</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>creating complex passwords</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112947Z" creationid="pm_kan" creationdate="20180114T112947Z">
+        <seg>Создание сложных паролей</seg>
       </tuv>
     </tu>
     <tu>
@@ -28886,6 +29574,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>password recovery</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T112301Z" creationid="pm_kan" creationdate="20180114T112301Z">
+        <seg>Восстановление пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>password_history.html</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110209T214359Z">
@@ -29082,6 +29778,14 @@
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20110215T141545Z">
         <seg>сс</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>ssh</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115332Z" creationid="pm_kan" creationdate="20180114T115332Z">
+        <seg>SSH</seg>
       </tuv>
     </tu>
     <tu>
@@ -29512,6 +30216,28 @@
         <seg>Synchronize</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T180616Z">
+        <seg>Синхронизация</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <prop type="file">pwsafe.hhk</prop>
+      <prop type="prev">User Names and Passwords</prop>
+      <prop type="next">File Menu</prop>
+      <tuv lang="EN-US">
+        <seg>Compare</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T120853Z" creationid="pm_kan" creationdate="20180114T120853Z">
+        <seg>Сравнение</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <prop type="file">pwsafe.hhk</prop>
+      <prop type="prev">User Names and Passwords</prop>
+      <prop type="next">File Menu</prop>
+      <tuv lang="EN-US">
+        <seg>Synchronize</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T120823Z" creationid="pm_kan" creationdate="20180114T120823Z">
         <seg>Синхронизация</seg>
       </tuv>
     </tu>
