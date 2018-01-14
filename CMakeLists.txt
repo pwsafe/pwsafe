@@ -267,6 +267,10 @@ if (NOT NO_GTEST)
    # Prevent GoogleTest from overriding our compiler/linker options
    # when building with Visual Studio
    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+   # Set some other gtest configurations:
+   set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
+   set(BUILD_GTEST ON CACHE BOOL "" FORCE)
+   set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
 
    # Add googletest directly to our build. This adds
    # the following targets: gtest, gtest_main, gmock
