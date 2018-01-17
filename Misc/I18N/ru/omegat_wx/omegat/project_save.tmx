@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.2_2_10096:10098" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.3_1_10228" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -2243,6 +2243,14 @@ This version of PasswordSafe does not support more than %d entries in a database
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>An entry or shortcut with the same Group, Title and Username already exists.</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Элемент или ярлык с такими же значениями Группы, Заголовка и Имени пользователя уже существует.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>And</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -2279,6 +2287,14 @@ This version of PasswordSafe does not support more than %d entries in a database
       </tuv>
       <tuv lang="RU-RU">
         <seg>Применить</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Apply these changes to Protected Entries (if required).</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Применить и к защищённым элементам</seg>
       </tuv>
     </tu>
     <tu>
@@ -2701,6 +2717,14 @@ Please copy it from your installation file, or re-install PasswordSafe.</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Очищать буфер обмена при сворачивании</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Clear password history for ALL entries</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Очистить историю паролей у ВСЕХ элементов</seg>
       </tuv>
     </tu>
     <tu>
@@ -3440,6 +3464,14 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Ctrl+B</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180108T145726Z" creationid="pm_kan" creationdate="20180108T145726Z">
+        <seg>Ctrl+B</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Ctrl+Enter</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T114805Z">
@@ -3795,6 +3827,14 @@ Locked by</seg>
         <seg>Do you wish to save the this restored database as new database?</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T141050Z" creationid="pm_kan" creationdate="20161105T141050Z">
+        <seg>Сохранить восстановленный контейнер как новый?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Do you wish to save this restored database as new database?</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180108T145739Z" creationid="pm_kan" creationdate="20180108T145739Z">
         <seg>Сохранить восстановленный контейнер как новый?</seg>
       </tuv>
     </tu>
@@ -5708,6 +5748,14 @@ username field.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Make &amp;Backup...</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180108T151359Z" creationid="pm_kan" creationdate="20180108T145719Z">
+        <seg>Создать &amp;резервную копию...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Make New Database</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20140705T101638Z" creationid="pm_kan" creationdate="20140705T101638Z">
@@ -6253,6 +6301,38 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
 Количество предупреждений о ярлыках %d
 
 Количество элементов с полями, которые не␣могут быть полностью отображены: %d.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Number of entries that had their 'maximum saved passwords' changed to the new default was %d</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Количество элементов у которых значение «количество запоминаемых паролей» было изменено на новое: %d</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Number of entries that had their password history removed was %d</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Количество элементов для которых была удалена история паролей: %d</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Number of entries that had their settings changed to not save password history was: %d</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Количество элементов для которых отключено ведение истории паролей: %d</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Number of entries that had their settings changed to save password history was: %d</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Количество элементов для которых включено ведение истории паролей: %d</seg>
       </tuv>
     </tu>
     <tu>
@@ -7874,6 +7954,58 @@ Language: ru_RU
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bitr</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2018-01-08 17:54+0300
+PO-Revision-Date: 2018-01-08 26:47+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180108T145700Z" creationid="pm_kan" creationdate="20180108T145700Z">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2018-01-08 17:54+0300
+PO-Revision-Date: 2018-01-08 18:00+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2018-01-08 18:12+0300
+PO-Revision-Date: 2018-01-08 26:47+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180108T151458Z" creationid="pm_kan" creationdate="20180108T151458Z">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2018-01-08 18:12+0300
+PO-Revision-Date: 2018-01-08 18:15+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
       </tuv>
     </tu>
     <tu>
