@@ -276,6 +276,14 @@ StringX CPasswordCharPool::MakePassword() const
     if (m_lengths[i] > 0)
       cat += m_char_arrays[i];
 
+  // If the requested password length is > set of chars we collected
+  // in cat, just grow cat until it's big enough (BR1450)
+  if ((m_pwlen - retval.length()) > cat.length()) {
+    const auto cat0 = cat;
+    while ((m_pwlen - retval.length()) > cat.length())
+      cat += cat0;
+  }
+
   random_shuffle(cat.begin(), cat.end(),
                  [](size_t i)
                  {

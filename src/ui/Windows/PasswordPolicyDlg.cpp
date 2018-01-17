@@ -842,7 +842,9 @@ BOOL CPasswordPolicyDlg::Validate()
   int minPWL = PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWDefaultLength);
   int maxPWL = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDefaultLength);
   if ((m_PWDefaultLength < minPWL) || (m_PWDefaultLength > maxPWL)) {
-    gmb.AfxMessageBox(IDS_DEFAULTPWLENGTH);
+    CString errmess;
+    errmess.Format(IDS_DEFAULTPWLENGTH, minPWL, maxPWL);
+    gmb.AfxMessageBox(errmess);
     ((CEdit*)GetDlgItem(IDC_DEFPWLENGTH))->SetFocus();
     return FALSE;
   }
