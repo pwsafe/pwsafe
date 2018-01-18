@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-08 18:12+0300\n"
-"PO-Revision-Date: 2018-01-08 18:15+0300\n"
+"POT-Creation-Date: 2018-01-18 20:36+0300\n"
+"PO-Revision-Date: 2018-01-18 20:36+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru_RU\n"
@@ -915,7 +915,7 @@ msgid "Current safe was opened read-only"
 msgstr "Контейнер открыт «только для чтения»"
 
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/CompareDlg.cpp:729
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2834
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2839
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/PwsSync.cpp:619
 #, c-format
 msgid ""
@@ -1265,7 +1265,7 @@ msgid "Password Safe Backups (*.bak)|*.bak"
 msgstr "Резервные копии Password Safe (*.bak)|*.bak"
 
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/mainManage.cpp:125
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2232
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2237
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/safecombinationentry.cpp:493
 msgid "Could not open file for writing!"
 msgstr "Невозможно открыть файл для записи!"
@@ -1275,7 +1275,7 @@ msgstr "Невозможно открыть файл для записи!"
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:938
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:943
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:948
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2227
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2232
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/safecombinationentry.cpp:494
 msgid "Write Error"
 msgstr "Ошибка записи"
@@ -1294,14 +1294,14 @@ msgstr ""
 "(*.ibak)|*.ibak||"
 
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/mainManage.cpp:182
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2676
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2681
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/wxutils.cpp:58
 msgid "Could not open file for reading!"
 msgstr "Невозможно открыть файл для чтения!"
 
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/mainManage.cpp:183
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2675
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2680
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2685
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/PwsSync.cpp:573
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/wxutils.cpp:59
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/wxutils.cpp:64
@@ -2023,7 +2023,7 @@ msgid "&Duplicate Entry\tCtrl+D"
 msgstr "Ду&блировать элемент\tCtrl+D"
 
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:453
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1781
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1786
 msgid "Protect Entry"
 msgstr "Защитить элемент"
 
@@ -2322,102 +2322,102 @@ msgstr "Ошибка при блокировке файла"
 msgid "Unknown code: %d"
 msgstr "Неизвестный код: %d"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1749
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1754
 msgid "Add &Entry"
 msgstr "Добавить &элемент"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1750
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1755
 msgid "Add &Group"
 msgstr "Добавить &группу"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1751
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1756
 msgid "&Rename Group"
 msgstr "&Переименовать группу"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1752
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1757
 msgid "&Delete Group"
 msgstr "&Удалить группу"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1757
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1762
 msgid "Copy &Username to Clipboard"
 msgstr "Копировать &имя пользователя в буфер обмена"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1758
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1763
 msgid "&Copy Password to Clipboard"
 msgstr "&Копировать пароль в буфер обмена"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1759
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1764
 msgid "Display subset of Password"
 msgstr "Показать часть пароля"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1761
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1766
 msgid "Display Password as &QR code"
 msgstr "Показать &QR-код пароля"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1763
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1768
 msgid "Copy &Notes to Clipboard"
 msgstr "Копировать &заметки в буфер обмена"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1764
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1769
 msgid "Copy UR&L to Clipboard"
 msgstr "Копировать &ссылку в буфер обмена"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1765
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1770
 msgid "Copy email to Clipboard"
 msgstr "Копировать E-mail в буфер обмена"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1766
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1771
 msgid "Copy Run Command to Clipboard"
 msgstr "Копировать команду в буфер обмена"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1768
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1773
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/SystemTray.cpp:203
 msgid "&Browse to URL"
 msgstr "Пе&рейти по ссылке"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1769
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1774
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/SystemTray.cpp:204
 msgid "Browse to URL + &Autotype"
 msgstr "Перейти по ссылке и выполнить &автонабор"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1770
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1775
 msgid "Send &email"
 msgstr "Отправить &письмо"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1771
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1776
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/SystemTray.cpp:211
 msgid "&Run Command"
 msgstr "&Выполнить команду"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1772
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1777
 msgid "Perform Auto &Type"
 msgstr "&Автонабор"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1774
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1779
 msgid "Edit/&View Entry..."
 msgstr "Редактирование/&просмотр элемента..."
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1775
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1780
 msgid "&Duplicate Entry"
 msgstr "Ду&блировать элемент"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1776
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1781
 msgid "Delete Entry"
 msgstr "Удалить элемент"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1777
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1782
 msgid "Create &Shortcut"
 msgstr "Создать &ярлык"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1778
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1783
 msgid "&Go to Base entry"
 msgstr "Перейти &к исходному элементу"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1779
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:1784
 msgid "&Edit Base entry"
 msgstr "&Редактировать исходный элемент"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2235
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2240
 msgid ""
 "Write operation failed!\n"
 "File may have been corrupted.\n"
@@ -2427,145 +2427,145 @@ msgstr ""
 "Возможно, файл повреждён.\n"
 "Попробуйте сохранить файл в другом месте."
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2240
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2245
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/wxutils.cpp:71
 msgid "Unknown error"
 msgstr "Неопознанная ошибка"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2258
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2263
 msgid "Do you want to save changes to the password database: "
 msgstr "Сохранить изменения в контейнер "
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2311
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2316
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/safecombinationentry.cpp:457
 msgid "Please choose a name for the new database"
 msgstr "Укажите имя файла для нового контейнера"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2320
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2325
 msgid "psafe3 files (*.psafe3)|*.psafe3|All files(*.*; *)|*.*;*"
 msgstr "Контейнеры Password Safe (*.psafe3)|*.psafe3|Все файлы (*.*; *)|*.*;*"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2401
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2406
 msgid "Could not re-load database: "
 msgstr "Невозможно перезагрузить контейнер: "
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2402
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2407
 msgid "Error re-loading last database"
 msgstr "Ошибка при загрузке последнего контейнера"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2613
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2618
 msgid "There was an error loading the database: "
 msgstr "Ошибка при загрузке контейнера: "
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2614
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2619
 msgid "Could not load database"
 msgstr "Невозможно загрузить контейнер"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2627
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2632
 msgid ""
 "The current database was opened in read-only mode.  You cannot import into "
 "it."
 msgstr "Контейнер открыт «только для чтения»  Импорт невозможен."
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2628
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2633
 msgid "Import text"
 msgstr "Импорт из простого текста"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2636
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2641
 msgid "The database:"
 msgstr "Контейнер:"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2637
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2642
 msgid "has duplicate entries with the same group/title/user combination."
 msgstr ""
 "содержит дубликаты с совпадающими комбинациями Группа/Заголовок/Имя "
 "пользователя."
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2638
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2643
 msgid "  Please fix by validating database."
 msgstr "  Для исправления запустите проверку."
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2639
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2685
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2644
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2690
 msgid "Import Text failed"
 msgstr "Сбой при импорте из простого текста"
 
 # Часть имени с отчётом. Оставлять без изменений.
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2658
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2663
 msgid "Import_Text"
 msgstr "Import_Text"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2660
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2868
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2665
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2873
 #, c-format
 msgid "%ls file being imported: %ls"
 msgstr "%ls файл импортирован: %ls"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2660
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2665
 msgid "Text"
 msgstr "Текст"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2681
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2686
 msgid "Invalid format"
 msgstr "Недопустимый формат"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2698
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2703
 msgid "Updated "
 msgstr "Обновлено "
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2698
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2703
 msgid "Imported "
 msgstr "Импортировано "
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2699
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2704
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2718
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2709
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2723
 msgid " entry"
 msgstr " элемент"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2699
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2704
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2718
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2709
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2723
 msgid " entries"
 msgstr " элементов"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2704
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2709
 msgid "Skipped "
 msgstr "Пропущено "
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2711
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2716
 msgid "with Password History errors "
 msgstr "с ошибками в истории паролей "
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2718
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2723
 msgid "Renamed "
 msgstr "Переименовано "
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2723
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2815
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2901
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2728
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2820
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2906
 msgid "Completed successfully"
 msgstr "Завершено успешно"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2723
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2815
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2901
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2728
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2820
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2906
 msgid "Completed but ...."
 msgstr "Завершено, но ..."
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2735
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2817
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2965
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3285
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2740
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2822
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2970
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3290
 msgid "Do you wish to see a detailed report?"
 msgstr "Открыть подробный отчёт?"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2747
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2752
 msgid "Please Choose a KeePass Text File to Import"
 msgstr "Укажите текстовый файл KeePass для импорта"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2749
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3041
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2754
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3046
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
 msgstr ""
@@ -2573,21 +2573,21 @@ msgstr ""
 "*)|*.*;*"
 
 # Часть имени с отчётом. Оставлять без изменений.
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2761
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2766
 msgid "Import_KeePassV1_CSV"
 msgstr "Import_KeePassV1_CSV"
 
 # Часть имени с отчётом. Оставлять без изменений.
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2763
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2768
 msgid "Import_KeePassV1_TXT"
 msgstr "Import_KeePassV1_TXT"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2765
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2770
 #, c-format
 msgid "Text file being imported: %ls"
 msgstr "Текстовый файл импортирован: %ls"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2782
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2787
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/PwsSync.cpp:603
 #, c-format
 msgid ""
@@ -2599,11 +2599,11 @@ msgstr ""
 "\n"
 "Невозможно открыть файл для чтения!"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2783
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2788
 msgid "File open error"
 msgstr "Ошибка при открытии файла"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2797
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2802
 #, c-format
 msgid ""
 "%ls\n"
@@ -2614,13 +2614,13 @@ msgstr ""
 "\n"
 "Недопустимый формат"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2798
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2803
 msgid "Import failed"
 msgstr "Сбой при импорте"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2811
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2942
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2943
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2816
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2947
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2948
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/PwsSync.cpp:588
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/PwsSync.cpp:731
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/PwsSync.cpp:748
@@ -2629,9 +2629,9 @@ msgid "entry"
 msgstr "элемент"
 
 # Ex.: 5 entries
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2811
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2942
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2943
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2816
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2947
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2948
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/PwsSync.cpp:588
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/PwsSync.cpp:731
 #: /home/qq/src/passwordsafe/src/ui/wxWidgets/PwsSync.cpp:748
@@ -2639,17 +2639,17 @@ msgstr "элемент"
 msgid "entries"
 msgstr "элементов"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2812
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2817
 #, c-format
 msgid "Imported %d %ls"
 msgstr "Импортировано %d %ls"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2835
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2883
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2840
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2888
 msgid "Import XML failed"
 msgstr "Сбой при импорте из XML"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2845
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2850
 #: /home/qq/src/passwordsafe/src/core/core_st.cpp:233
 #, c-format
 msgid ""
@@ -2659,24 +2659,24 @@ msgstr ""
 "Невозможно найти файл с определением XML-схемы (%ls) в каталоге Password Safe.\n"
 "Скопируйте этот файл из дистрибутива или переустановите Password Safe."
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2846
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2851
 msgid "Missing XSD File - "
 msgstr "XSD-файл не указан — "
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2846
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2851
 msgid " Build"
 msgstr " Сборка"
 
 # Часть имени с отчётом. Оставлять без изменений.
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2867
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2872
 msgid "Import_XML"
 msgstr "Import_XML"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2868
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2873
 msgid "XML"
 msgstr "XML"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2889
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2894
 #, c-format
 msgid ""
 "File: %ls failed validation against XML Schema:\n"
@@ -2687,7 +2687,7 @@ msgstr ""
 "\n"
 "%ls"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2895
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2900
 #, c-format
 msgid ""
 "File: %ls passed Validation but had the following errors during import:\n"
@@ -2698,25 +2698,25 @@ msgstr ""
 "\n"
 "%ls"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2916
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2921
 msgid "The following records were skipped:"
 msgstr "Следующие записи были пропущены:"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2918
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2923
 #, c-format
 msgid " / skipped %d"
 msgstr " / пропущено %d"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2923
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2928
 msgid "The following records had errors in their Password History:"
 msgstr "Указанные записи содержали ошибки в истории паролей:"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2925
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2930
 #, c-format
 msgid " / with Password History errors %d"
 msgstr " / с ошибками в истории паролей %d"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2930
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2935
 msgid ""
 "The following records were renamed as an entry already exists in your "
 "database or in the Import file:"
@@ -2724,12 +2724,12 @@ msgstr ""
 "Указанные записи были переименованы, т. к. такой элемент уже существует в "
 "контейнере или импортируемом файле:"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2932
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2937
 #, c-format
 msgid " / renamed %d"
 msgstr " / переименовано %d"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2937
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2942
 #, c-format
 msgid ""
 "File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
@@ -2738,7 +2738,7 @@ msgstr ""
 "Файл %ls был импортирован (проверено элементов %d / импортировано "
 "%d%ls%ls%ls). Подробная информация находится в отчёте."
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2944
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2949
 #, c-format
 msgid ""
 "Validated %d %ls\n"
@@ -2749,99 +2749,99 @@ msgstr ""
 "\n"
 "Импортировано %d %ls"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2952
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2957
 msgid "XML import not supported in this release"
 msgstr "Данная версия не поддерживает импорт из XML"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2955
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2960
 #, c-format
 msgid "XML import: Unexpected return code(%d)"
 msgstr "Импорт из XML: неизвестный код возврата (%d)"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2988
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2992
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2993
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2997
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*"
 msgstr "Контейнеры Password Safe (*.dat)|*.dat|Все файлы (*.*)|*.*;*"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:2996
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3001
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*"
 msgstr "Контейнеры Password Safe (*.psafe4)|*.psafe4|Все файлы (*.*)|*.*;*"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3007
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3012
 msgid "Please name the exported database"
 msgstr "Укажите имя экспортируемого контейнера"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3024
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3029
 msgid "Could not figure out why PasswordSafeFrame::OnExportVx was invoked"
 msgstr "Неожиданный вызов PasswordSafeFrame::OnExportVx"
 
 # урезано (кнопка в мастере)
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3034
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3039
 msgid "Export Text"
 msgstr "Экспорт"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3038
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3043
 msgid "Export Text failed"
 msgstr "Сбой при экспорте в простой текст"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3040
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3045
 msgid "Please name the plaintext file"
 msgstr "Укажите имя текстового файла"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3051
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3056
 msgid "Advanced Text Export Options"
 msgstr "Расширенные настройки экспорта в простой текст"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3071
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3119
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3076
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3124
 msgid "export"
 msgstr "экспорт"
 
 # урезано (кнопка в мастере)
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3082
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3087
 msgid "Export XML"
 msgstr "Экспорт"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3086
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3091
 msgid "Export XML failed"
 msgstr "Сбой при экспорте в XML"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3088
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3093
 msgid "Please name the XML file"
 msgstr "Укажите имя XML-файла"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3089
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3094
 msgid "XML files (*.xml)|*.xml|All files (*.*; *)|*.*;*"
 msgstr "XML-файлы (*.xml)|*.xml|Все файлы (*.*; *)|*.*;*"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3100
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3105
 msgid "Advanced XML Export Options"
 msgstr "Расширенные настройки экспорта в XML"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3189
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3194
 msgid "Exporting database: "
 msgstr "Экспорт контейнера: "
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3213
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3218
 msgid ""
 "No entries satisfied your selection criteria and so none were exported!"
 msgstr ""
 "Отсутствуют данные для экспорта: нет элементов, удовлетворяющих условиям "
 "фильтра!"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3226
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3231
 msgid "Passkey incorrect"
 msgstr "Неверный пароль"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3270
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3275
 msgid "Merge"
 msgstr "Слияние"
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3271
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3276
 msgid "Merging database: "
 msgstr "Слияние с контейнером: "
 
-#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3286
+#: /home/qq/src/passwordsafe/src/ui/wxWidgets/passwordsafeframe.cpp:3291
 msgid "Merge Complete"
 msgstr "Слияние завершено"
 
@@ -4886,7 +4886,7 @@ msgstr "поле, начинающееся с позиции %d (относит�
 # Password Expiry (Time|Date) - дата истечения пароля (напр. 10.11.2013)
 # Virtual keyboard - экранная клавиатура
 # Base entry - исходный элемент
-# Legacy - с раскладках клавиатуры "традиционная"
+# Legacy - в раскладках клавиатуры "традиционная"
 # Generate password - создать пароль
 # Undo - вернуть
 # Redo - повторить
