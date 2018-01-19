@@ -258,12 +258,12 @@ TEST_F(FileV4Test, CoreRWTest)
   const StringX passkey(L"3rdMambo");
 
   fullItem.SetAttUUID(attItem.GetUUID());
-  EXPECT_EQ(0, attItem.GetRefcount());
+  EXPECT_EQ(0U, attItem.GetRefcount());
 
   core.SetPassKey(passkey);
   core.Execute(AddEntryCommand::Create(&core, fullItem, pws_os::CUUID::NullUUID(), &attItem));
   EXPECT_TRUE(core.HasAtt(attItem.GetUUID()));
-  EXPECT_EQ(1, core.GetAtt(attItem.GetUUID()).GetRefcount());
+  EXPECT_EQ(1U, core.GetAtt(attItem.GetUUID()).GetRefcount());
   EXPECT_EQ(PWSfile::SUCCESS, core.WriteFile(fname.c_str(), PWSfile::V40));
 
   core.ClearDBData();
@@ -278,7 +278,7 @@ TEST_F(FileV4Test, CoreRWTest)
   EXPECT_EQ(attItem.GetUUID(), readFullItem.GetAttUUID());
   EXPECT_EQ(fullItem, readFullItem);
   ASSERT_TRUE(core.HasAtt(attItem.GetUUID()));
-  EXPECT_EQ(1, core.GetAtt(attItem.GetUUID()).GetRefcount());
+  EXPECT_EQ(1U, core.GetAtt(attItem.GetUUID()).GetRefcount());
 
   core.Execute(DeleteEntryCommand::Create(&core, readFullItem));
   ASSERT_EQ(0, core.GetNumEntries());
