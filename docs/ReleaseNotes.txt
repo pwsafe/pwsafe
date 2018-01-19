@@ -1,5 +1,5 @@
-Password Safe 3.45pre Release January 2018
-==========================================
+Password Safe 3.45.0 Release January 2018
+=========================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -13,8 +13,8 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
 
-Bugs Fixed in 3.45pre
-=====================
+Bugs Fixed in 3.45.0
+====================
 [G360] (a) System tray icon starts out brown, not green.
 (b) Remove system tray icon when cancelling password entry.
 [G357] Russian installation text displays correctly.
