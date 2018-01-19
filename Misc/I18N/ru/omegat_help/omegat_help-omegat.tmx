@@ -4539,8 +4539,8 @@
       <tuv lang="EN-US">
         <seg>Auto Save Changes</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T114637Z" creationid="pm_kan" creationdate="20180114T114603Z">
-        <seg>Автоматическое сохранение изменение</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180118T172846Z" creationid="pm_kan" creationdate="20180114T114603Z">
+        <seg>Автоматическое сохранение изменений</seg>
       </tuv>
     </tu>
     <tu>
@@ -4875,8 +4875,8 @@
       <tuv lang="EN-US">
         <seg>Bruce Schneier</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115227Z" creationid="pm_kan" creationdate="20180114T115227Z">
-        <seg>Брюсом Шнайер (Bruce Schneier)</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180118T172829Z" creationid="pm_kan" creationdate="20180114T115227Z">
+        <seg>Брюс Шнайер (Bruce Schneier)</seg>
       </tuv>
     </tu>
     <tu>
@@ -15029,8 +15029,8 @@
       <tuv lang="EN-US">
         <seg>Storing Passwords</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180114T115327Z" creationid="pm_kan" creationdate="20180114T115327Z">
-        <seg>Стойкие пароли</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180118T172910Z" creationid="pm_kan" creationdate="20180114T115327Z">
+        <seg>Хранение паролей</seg>
       </tuv>
     </tu>
     <tu>

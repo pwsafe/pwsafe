@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2018-01-08 26:47+0300\n"
+"POT-Creation-Date: 2018-01-18 20:36+0300\n"
+"PO-Revision-Date: 2018-01-18 20:36+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -60,7 +60,7 @@ msgstr ""
 # Password Expiry (Time|Date) - дата истечения пароля (напр. 10.11.2013)
 # Virtual keyboard - экранная клавиатура
 # Base entry - исходный элемент
-# Legacy - с раскладках клавиатуры "традиционная"
+# Legacy - в раскладках клавиатуры "традиционная"
 # Generate password - создать пароль
 # Undo - вернуть
 # Redo - повторить
@@ -5009,22 +5009,22 @@ msgstr "Обработано элементов: %d\n\nИсправлено не
 #. Resource IDs: (5383)
 #, c-format
 msgid "Number of entries that had their 'maximum saved passwords' changed to the new default was %d"
-msgstr "Количество элементов у которых значение «количество запоминаемых паролей» было изменено на новое: %d"
+msgstr "Количество элементов, у которых значение «количество запоминаемых паролей» было изменено на новое: %d"
 
 #. Resource IDs: (5920)
 #, c-format
 msgid "Number of entries that had their password history removed was %d"
-msgstr "Количество элементов для которых была удалена история паролей: %d"
+msgstr "Количество элементов, для которых была удалена история паролей: %d"
 
 #. Resource IDs: (5381)
 #, c-format
 msgid "Number of entries that had their settings changed to not save password history was: %d"
-msgstr "Количество элементов для которых отключено ведение истории паролей: %d"
+msgstr "Количество элементов, для которых отключено ведение истории паролей: %d"
 
 #. Resource IDs: (5382)
 #, c-format
 msgid "Number of entries that had their settings changed to save password history was: %d"
-msgstr "Количество элементов для которых включено ведение истории паролей: %d"
+msgstr "Количество элементов, для которых включено ведение истории паролей: %d"
 
 #. Resource IDs: (1266)
 msgid "Number of unknown fields:"

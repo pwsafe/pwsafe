@@ -5629,7 +5629,7 @@ to the base entry</seg>
       <tuv xml:lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2018-01-08 18:12+0300
+POT-Creation-Date: 2018-01-18 20:46+0300
 PO-Revision-Date: 2018-01-08 26:47+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
@@ -5638,11 +5638,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20180108T151458Z" creationid="pm_kan" creationdate="20180108T151458Z">
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20180118T174720Z" creationid="pm_kan" creationdate="20180118T174720Z">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2018-01-08 18:12+0300
-PO-Revision-Date: 2018-01-08 18:15+0300
+POT-Creation-Date: 2018-01-18 20:36+0300
+PO-Revision-Date: 2018-01-18 20:36+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: ru_RU
