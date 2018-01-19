@@ -26,6 +26,8 @@
 ////@end includes
 
 #include <iostream> // currently for debugging
+#include <clocale>  // to get the locales specified by the environment 
+                    // for used functions like wcstombs in src/os/file.h
 
 using namespace std;
 
@@ -265,6 +267,11 @@ bool PwsafeApp::ActivateHelp(wxLanguage language) {
 
 bool PwsafeApp::OnInit()
 {
+  // Get the locale environment variable 'LC_CTYPE' specified by the environment
+  // For instance, the behavior of function 'wcstombs' depends on the LC_CTYPE 
+  // category of the selected C locale.
+  setlocale(LC_CTYPE, "");
+  
   //Used by help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
 

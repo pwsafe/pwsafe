@@ -1126,16 +1126,16 @@ void PWSprefs::InitializePreferences()
   bool isRO(true);
 
   FindConfigFile(); // sets m_configfilename
-  bool configFileExists = pws_os::FileExists(m_configfilename.c_str(), isRO);
+  bool configFileExists = pws_os::FileExists(m_configfilename, isRO);
   if (configFileExists) {
     m_ConfigOption = (isRO) ? CF_FILE_RO : CF_FILE_RW;
   } else {
     // Doesn't exist but can we write to the directory?
     // Try and create the file (and delete afterwards if we succeeded)
-    FILE *testfile = pws_os::FOpen(m_configfilename.c_str(), _T("w"));
+    FILE *testfile = pws_os::FOpen(m_configfilename, _T("w"));
     if (testfile != NULL) {
       fclose(testfile);
-      pws_os::DeleteAFile(m_configfilename.c_str());
+      pws_os::DeleteAFile(m_configfilename);
       m_ConfigOption = CF_FILE_RW_NEW;
       isRO = false;
     }
@@ -1378,7 +1378,7 @@ bool PWSprefs::LoadProfileFromFile()
   bool retval;
   stringT ts, csSubkey;
 
-  m_pXML_Config = new CXMLprefs(m_configfilename.c_str());
+  m_pXML_Config = new CXMLprefs(m_configfilename);
   if (!m_pXML_Config->XML_Load()) {
     if (!m_pXML_Config->getReason().empty() &&
         m_pReporter != NULL)
@@ -1504,7 +1504,7 @@ void PWSprefs::SaveApplicationPreferences()
     // Load prefs file in case it was changed elsewhere
     // Here we need to explicitly lock from before
     // load to after store
-    m_pXML_Config = new CXMLprefs(m_configfilename.c_str());
+    m_pXML_Config = new CXMLprefs(m_configfilename);
     stringT locker;
     if (!m_pXML_Config->Lock(locker)) {
       // punt to registry!
@@ -1513,7 +1513,7 @@ void PWSprefs::SaveApplicationPreferences()
       m_pXML_Config = NULL;
     } else { // acquired lock
       // if file exists, load to get other values
-      if (pws_os::FileExists(m_configfilename.c_str()))
+      if (pws_os::FileExists(m_configfilename))
         m_pXML_Config->XML_Load(); // we ignore failures here. why bother?
     }
   }
@@ -1676,7 +1676,7 @@ void PWSprefs::SaveShortcuts()
     // Load prefs file in case it was changed elsewhere
     // Here we need to explicitly lock from before
     // load to after store
-    m_pXML_Config = new CXMLprefs(m_configfilename.c_str());
+    m_pXML_Config = new CXMLprefs(m_configfilename);
     stringT locker;
     if (!m_pXML_Config->Lock(locker)) {
       // punt to registry!
@@ -1685,7 +1685,7 @@ void PWSprefs::SaveShortcuts()
       m_pXML_Config = NULL;
     } else { // acquired lock
       // if file exists, load to get other values
-      if (pws_os::FileExists(m_configfilename.c_str()))
+      if (pws_os::FileExists(m_configfilename))
         m_pXML_Config->XML_Load(); // we ignore failures here. why bother?
     }
   }
