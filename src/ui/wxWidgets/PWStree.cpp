@@ -99,6 +99,7 @@ BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
   EVT_MENU( ID_RENAME, PWSTreeCtrl::OnRenameGroup )
   EVT_TREE_END_LABEL_EDIT( ID_TREECTRL, PWSTreeCtrl::OnEndLabelEdit )
   EVT_TREE_END_LABEL_EDIT( ID_TREECTRL_1, PWSTreeCtrl::OnEndLabelEdit )
+  EVT_TREE_KEY_DOWN( ID_TREECTRL, PWSTreeCtrl::OnKeyDown )
 ////@end PWSTreeCtrl event table entries
 END_EVENT_TABLE()
 
@@ -695,6 +696,21 @@ void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
       wxFAIL_MSG(wxString::Format(wxT("End Label Edit handler received an unexpected identifier: %d"), evt.GetId()));
       break;
   }
+}
+
+void PWSTreeCtrl::OnKeyDown(wxTreeEvent& evt)
+{
+  if (evt.GetKeyCode() == WXK_LEFT) {
+    
+    wxTreeItemId item = GetSelection();
+    
+    if (item.IsOk() && ItemIsGroup(item) && IsExpanded(item)) {
+      Collapse(item);
+      return;
+    }
+  }
+
+  evt.Skip();
 }
 
 void PWSTreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
