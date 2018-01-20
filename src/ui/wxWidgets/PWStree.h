@@ -17,6 +17,7 @@
  */
 
 ////@begin includes
+#include "wx/treebase.h"
 #include "wx/treectrl.h"
 ////@end includes
 #include "core/ItemData.h"
@@ -101,6 +102,9 @@ public:
   void OnRenameGroup(wxCommandEvent& evt);
 
   void OnEndLabelEdit( wxTreeEvent& evt );
+  
+  /// wxEVT_TREE_KEY_DOWN event handler for ID_TREECTRL
+  void OnKeyDown(wxTreeEvent& evt);
 
 ////@begin PWSTreeCtrl member function declarations
 
