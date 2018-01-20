@@ -26,6 +26,7 @@
 #include <utility> // for make_pair
 #include "PWSgrid.h"
 #include "passwordsafeframe.h" // for DispatchDblClickAction()
+#include <wx/headerctrl.h>
 #include <wx/memory.h>
 #include <algorithm>
 #include <functional>
@@ -78,6 +79,18 @@ PWSGrid::PWSGrid(wxWindow* parent, PWScore &core,
 {
   Init();
   Create(parent, id, pos, size, style);
+  
+  // Handler for double click events on column header separator
+  auto *header = wxGrid::GetGridColHeader();
+  
+  if (header) {
+    header->Bind(
+      wxEVT_HEADER_SEPARATOR_DCLICK, 
+      [=](wxHeaderCtrlEvent& event) {
+        wxGrid::AutoSizeColumn(event.GetColumn());
+      }
+    );
+  }
 }
 
 /*!
