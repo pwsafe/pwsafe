@@ -598,7 +598,7 @@ int32 CItemData::GetXTimeInt(int32 &xint) const
     CItem::GetField(fiter->second, in, tlen);
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int32));
-      memcpy(&xint, in, sizeof(int32));
+      xint = getInt<int32>(in);
     } else {
       xint = 0;
     }
@@ -658,7 +658,7 @@ int16 CItemData::GetDCA(int16 &iDCA, const bool bShift) const
 
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int16));
-      memcpy(&iDCA, in, sizeof(int16));
+      iDCA = getInt<int16>(in);
     } else {
       iDCA = -1;
     }
@@ -686,7 +686,7 @@ int32 CItemData::GetKBShortcut(int32 &iKBShortcut) const
 
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int32));
-      memcpy(&iKBShortcut, in, sizeof(int32));
+      iKBShortcut = getInt<int32>(in);
     } else {
       iKBShortcut = 0;
     }
