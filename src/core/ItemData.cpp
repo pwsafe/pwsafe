@@ -1926,8 +1926,37 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
       ASSERT(0);
       return false;
     }
+
+#ifdef PWS_BIG_ENDIAN
+    unsigned char buf[len] = {0};
+
+    switch(type) {
+      case CTIME:
+      case PMTIME:
+      case ATIME:
+      case XTIME:
+      case RMTIME:
+      case DCA:
+      case SHIFTDCA:
+      case KBSHORTCUT:
+      case XTIME_INT:
+
+        memcpy(buf, &(*iter), len);
+        byteswap(buf, buf + len - 1);
+
+        if (!SetField(type, buf, len))
+          return false;
+        break;
+
+      default:
+        if (!SetField(type, reinterpret_cast<const unsigned char *>(&(*iter)), len))
+          return false;
+	break;
+    }
+#else
     if (!SetField(type, reinterpret_cast<const unsigned char *>(&(*iter)), len))
       return false;
+#endif
     iter += len;
   }
   return false; // END tag not found!
