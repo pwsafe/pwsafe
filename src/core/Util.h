@@ -235,6 +235,18 @@ void inline putInt(unsigned char *buf, const T val) { GetPutImpl<T, sizeof(T)>::
 bool operator==(const std::string& str1, const stringT& str2);
 inline bool operator==(const stringT& str1, const std::string &str2) { return str2 == str1; }
 
+inline void byteswap(unsigned char * begin, unsigned char * end) {
+    unsigned char *a = begin;
+    unsigned char *b = end;
+    ASSERT(a < b);
+    unsigned char tmp;
+    while (a < b) {
+        tmp = *a;
+        *a++ = *b;
+        *b-- = tmp;
+    }
+}
+
 namespace PWSUtil {
   // namespace of common utility functions
 
