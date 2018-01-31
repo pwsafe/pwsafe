@@ -268,7 +268,7 @@ size_t PWSfileV3::WriteCBC(unsigned char type, const StringX &data)
 size_t PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
                            size_t length)
 {
-  m_hmac.Update(data, reinterpret_cast<int &>(length));
+  m_hmac.Update(data, static_cast<unsigned long>(length));
   return PWSfile::WriteCBC(type, data, length);
 }
 
