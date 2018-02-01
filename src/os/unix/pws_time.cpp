@@ -15,7 +15,19 @@
 
 int localtime64_r(const __time64_t *timep, struct tm *result)
 {
-  return localtime_r(reinterpret_cast<const time_t *>(timep), result) != 0;
+  const time_t *tp = reinterpret_cast<const time_t *>(timep);
+
+#ifdef PWS_BIG_ENDIAN
+  //handle downsizing cast on 32-bit big-endian systems
+  if (sizeof(time_t) < sizeof(__time64_t)) {
+    //assume alignment
+    assert(sizeof(__time64_t) % sizeof(time_t) == 0);
+    size_t offset = (sizeof(__time64_t)/sizeof(time_t)) - 1;
+    tp = reinterpret_cast<const time_t *>(((time_t*)timep) + offset);
+  }
+#endif
+
+  return localtime_r(tp, result) != 0;
 }
 
 int pws_os::asctime(TCHAR *s, size_t, tm const *t)
