@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -116,6 +116,9 @@ BOOL CAddEdit_Attachment::OnInitDialog()
 
     // Get other properties
     m_csMediaType = M_attachment().GetMediaType().c_str();
+    if (m_csMediaType == L"unknown") {
+      m_csMediaType.LoadString(IDS_UNKNOWN);
+    }
 
     wchar_t szFileSize[256];
     StrFormatByteSize(M_attachment().GetContentSize(), szFileSize, 256);
@@ -287,7 +290,7 @@ void CAddEdit_Attachment::OnAttExport()
   _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
 
   // Default suffix should be the same as the original file (skip over leading ".")
-  CString cs_ext = ext + 1;
+  CString cs_ext = ext[0] == '.' ? ext + 1 : ext;
 
   switch (m_attType) {
     case NO_ATTACHMENT:

@@ -334,6 +334,7 @@
 		</Compiler>
 		<Unit filename="../../src/os/KeySend.h" />
 		<Unit filename="../../src/os/UUID.h" />
+		<Unit filename="../../src/os/cleanup.h" />
 		<Unit filename="../../src/os/debug.h" />
 		<Unit filename="../../src/os/dir.h" />
 		<Unit filename="../../src/os/env.h" />
@@ -365,10 +366,12 @@
 			<Option target="Release_L32Y" />
 		</Unit>
 		<Unit filename="../../src/os/unix/UUID.cpp" />
+		<Unit filename="../../src/os/unix/cleanup.cpp" />
 		<Unit filename="../../src/os/unix/debug.cpp" />
 		<Unit filename="../../src/os/unix/dir.cpp" />
 		<Unit filename="../../src/os/unix/env.cpp" />
 		<Unit filename="../../src/os/unix/file.cpp" />
+		<Unit filename="../../src/os/unix/keyname.cpp" />
 		<Unit filename="../../src/os/unix/logit.cpp" />
 		<Unit filename="../../src/os/unix/media.cpp" />
 		<Unit filename="../../src/os/unix/mem.cpp" />

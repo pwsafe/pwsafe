@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2013-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2013-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -67,7 +67,7 @@ public:
     CKeyBlocks();
     CKeyBlocks(const CKeyBlocks &ckb);
     ~CKeyBlocks();
-    CKeyBlocks operator=(const CKeyBlocks &that);
+    CKeyBlocks & operator=(const CKeyBlocks &that);
     bool AddKeyBlock(const StringX &current_passkey, const StringX &new_passkey,
                      uint nHashIters = MIN_HASH_ITERATIONS);
     bool RemoveKeyBlock(const StringX &passkey); // fails if m_keyblocks.size() <= 1...

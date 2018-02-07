@@ -31,6 +31,16 @@ YUBIFLAGS=-DNO_YUBI
 YBPERS_LIBS=core
 endif
 
+ifndef NO_QR
+ifeq ($(findstring Linux, $(shell uname -s)), Linux)
+QR_SRC=pwsqrcodedlg.cpp pwsqrencode.cpp
+else
+QR_SRC=pwsqrcodedlg.cpp
+endif
+else
+QRFLAGS=-DNO_QR
+endif
+
 # debug
 ifeq ($(CONFIG),debug)
 #Override - debug isn't standard
@@ -161,11 +171,18 @@ YBPERS_LIBPATH?=$(LIBPATH)
 YBPERS_LIBPATH_FLAGS=-L$(YBPERS_LIBPATH)
 endif
 
-override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)
-CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS) $(CPPFLAGS)
+ifndef NO_QR
+ifeq ($(findstring Linux, $(shell uname -s)), Linux)
+		LIBS += -lqrencode
+endif
+endif
+
 ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
 		CPPFLAGS += -std=c++11
+		override LIBS += -framework QuartzCore
 endif
+override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)
+CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS) $(QRFLAGS) $(CPPFLAGS)
 
 SOURCES= passwordsafeframe.cpp \
 	pwsafeapp.cpp safecombinationentry.cpp \
@@ -186,7 +203,7 @@ SOURCES= passwordsafeframe.cpp \
 	PwsSync.cpp DbSelectionPanel.cpp CompareDlg.cpp \
 	wxutils.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \
 	fieldselectionpanel.cpp fieldselectiondlg.cpp pwsmenushortcuts.cpp \
-	$(YUBI_SRC) \
+	$(YUBI_SRC) $(QR_SRC) \
 	ManagePwdPolicies.cpp PasswordPolicy.cpp SelectionCriteria.cpp \
 	TimedTaskChain.cpp mainView.cpp passwordsubset.cpp
 
@@ -194,6 +211,13 @@ SOURCES= passwordsafeframe.cpp \
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
 OBJECTS += $(RESOURCEOBJECT)
 
+ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
+	OBJECTS += $(OBJECTPATH)/pwsqrencode.o
+
+
+$(OBJECTPATH)/pwsqrencode.o: pwsqrencode.mm
+	clang -x objective-c++ -stdlib=libc++ -mmacosx-version-min=10.7 $(CPPFLAGS) -c $< -o $@
+endif
 
 all:	$(BUILDPATHS) $(MACPACKAGEINFO) $(OUTPUTPATH)/$(PROGRAM)
 	@echo building "$(CONFIG)" "$@"
@@ -247,6 +271,14 @@ $(DEPDIR)/%.d: %.cpp version.h
 	$(CXX) -MM $(CPPFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
 	$(RM) $@.$$$$
+
+ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
+$(DEPDIR)/pwsqrencode.d: pwsqrencode.mm
+	@set -e; mkdir -p $(DEPDIR); $(RM) $@; \
+	clang -x objective-c++ -stdlib=libc++ -mmacosx-version-min=10.7 -MM $(CPPFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
+	$(RM) $@.$$$$
+endif
 
 version.h: always
 ifdef VER_REV

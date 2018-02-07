@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -37,6 +37,7 @@
 #include "wxutils.h"
 #include "guiinfo.h"
 #include "passwordsubset.h"
+#include "./pwsqrcodedlg.h"
 
 #include "../../core/PWSAuxParse.h"
 #include "../../core/Util.h"
@@ -87,7 +88,7 @@ void PasswordSafeFrame::DoEdit(CItemData item)
     item.GetUUID(uuid);
     //Find the item in the database, which might have been loaded afresh
     //after lock/unlock, so the old data structures are no longer valid
-    ItemListIter iter = m_core.Find(uuid);
+    auto iter = m_core.Find(uuid);
     if ( iter != m_core.GetEntryEndIter()) {
       CItemData& origItem = m_core.GetEntry(iter);
       //The Item is updated in DB by AddEditPropSheet
@@ -447,7 +448,7 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
 //    pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
 
     CUUID uuid = ci2.GetUUID();
-    ItemListIter iter = m_core.Find(uuid);
+    auto iter = m_core.Find(uuid);
     ASSERT(iter != m_core.GetEntryEndIter());
     wxUnusedVar(iter); // used in assert only
 //    InsertItemIntoGUITreeList(m_core.GetEntry(iter));
@@ -735,7 +736,7 @@ void PasswordSafeFrame::DoBrowse(CItemData &item, bool bAutotype)
   }
 }
 
-BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sxAutotype*/,
+bool PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sxAutotype*/,
                              const std::vector<size_t> &/*vactionverboffsets*/,
                              bool /*bDoAutotype*/)
 {
@@ -813,7 +814,7 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
   if (!rc) {
     wxMessageBox(errMsg, wxTheApp->GetAppName(), wxOK|wxICON_STOP, this);
   }
-  return rc ? TRUE : FALSE;
+  return rc;
 }
 
 void PasswordSafeFrame::DoRun(CItemData& item)
@@ -862,6 +863,24 @@ void PasswordSafeFrame::OnPasswordSubset(wxCommandEvent &evt)
   CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item != NULL)
     DoPasswordSubset(*item);
+}
+
+void PasswordSafeFrame::OnPasswordQRCode(wxCommandEvent &evt)
+{
+  if ( /* constexpr */ HasQRCode() ) {
+    CItemData rueItem;
+    CItemData* item = GetSelectedEntry(evt, rueItem);
+    if (item != NULL) {
+#ifndef NO_QR
+    PWSQRCodeDlg dlg(this, item->GetPassword(),
+              towxstring(CItemData::FieldName(CItem::PASSWORD)) + _T(" of ") +
+              towxstring(item->GetGroup()) +
+              _T('[') + towxstring(item->GetTitle()) + _T(']') +
+              _T(':') + towxstring(item->GetUser()));
+      dlg.ShowModal();
+#endif
+    }
+  }
 }
 
 /*!

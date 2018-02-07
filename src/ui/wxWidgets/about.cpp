@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -128,7 +128,7 @@ void CAbout::CreateControls()
   wxBoxSizer* mainSizer = new wxBoxSizer(wxHORIZONTAL);
   aboutDialog->SetSizer(mainSizer);
 
-  wxStaticBitmap* logoBitmap = new wxStaticBitmap(aboutDialog, wxID_STATIC, aboutDialog->GetBitmapResource(L"./graphics/cpane.xpm"), wxDefaultPosition, wxDefaultSize, 0);
+  wxStaticBitmap* logoBitmap = new wxStaticBitmap(aboutDialog, wxID_STATIC, aboutDialog->GetBitmapResource(L"graphics/cpane.xpm"), wxDefaultPosition, wxDefaultSize, 0);
   mainSizer->Add(logoBitmap, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* rightSizer = new wxBoxSizer(wxVERTICAL);
@@ -167,13 +167,13 @@ void CAbout::CreateControls()
   wxStaticText* visitSiteStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Please visit the "), wxDefaultPosition, wxDefaultSize, 0);
   visitSiteSizer->Add(visitSiteStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), L"https://pwsafe.org/", wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
+  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
   visitSiteSizer->Add(visitSiteHyperlinkCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* visitSiteStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("See LICENSE for open source details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(visitSiteStaticTextEnd, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* copyrightStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Copyright (c) 2003-2017 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+  wxStaticText* copyrightStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Copyright (c) 2003-2018 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(copyrightStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
   m_newVerStatus = new wxTextCtrl(aboutDialog, ID_TEXTCTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxNO_BORDER); //wxSize(aboutDialog->ConvertDialogToPixels(wxSize(120, -1)).x, -1)
@@ -206,7 +206,7 @@ bool CAbout::ShowToolTips()
 wxBitmap CAbout::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
-  if (name == L"./graphics/cpane.xpm")
+  if (name == L"graphics/cpane.xpm")
   {
     wxBitmap bitmap(cpane_xpm);
     return bitmap;
@@ -348,13 +348,6 @@ void CAbout::CheckNewVersion()
   m_newVerStatus->Show();
 }
 
-void CAbout::OnVisitSiteClicked(wxHyperlinkEvent& event) {
-  // Do nothing to prevent double open, because GTK control opens URL by itself,
-  // otherwise default handler will call xdg-open to open URL
-#ifndef __WXGTK__
-  // skip this hook and leave default processing for non-GTK builds
-  event.Skip();
-#else
-  wxUnusedVar(event);
-#endif
+void CAbout::OnVisitSiteClicked(wxHyperlinkEvent& WXUNUSED(event)) {
+  wxLaunchDefaultBrowser(L"https://pwsafe.org");
 }

@@ -19,9 +19,20 @@ li:not(:last-child) {
 <h2>AutoType</h2> 
 
 <p><b>AutoType</b> provides a means for you to easily and quickly enter 
-user name and password information. With a single click, the user name 
-and password are entered and the data is submitted to the host for 
-approval. By default, the formula followed by the automated keystrokes 
+  user name and password information.
+  This feature is typically used as follows:
+  <ol>
+    <li>Browse to the site that you want to login to.</li>
+    <li>Click on the first field that needs to be filled (typically
+      the 'username' or 'login' field).</li>
+    <li>Switch to Password Safe, select the entry corresponding to the
+      website</li>
+    <li>Invoke AutoType (via Control-T or right-click and selecting
+      'Perform Autotype'.</li>
+    <li>This causes the user name and password to be entered and submitted.</li>
+  </ol>
+
+ By default, the formula followed by the automated keystrokes 
 is as follows: <a name="defautotext">the user name, followed by a tab 
 key, followed by the password, another tab, and then the enter key</a> 
 (<i>username</i> <b>TAB</b> <i>password</i> <b>TAB ENTER</b>). This 
@@ -40,6 +51,12 @@ for your machine.</p>
 <p>In addition, you can invoke AutoType after running an arbitrary 
 command specified in the entry's <a href="run_command.html">Run Cmd</a> 
 field. This is a very convenient combination.</p> 
+
+<p><b>Note:</b> <i>If an entry has been selected due to a Find action, then
+the menu item "Perform AutoType" (and its shortcut if still defined) will use
+the information of this entry.  However, if another entry is then selected,
+even though there is the found entry is still highlighted, the information
+of the newly selected entry will be used instead.</i></p>
 
 <h3>Using AutoType</h3> 
 

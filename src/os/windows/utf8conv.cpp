@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -70,10 +70,29 @@ size_t pws_os::mbstowcs(wchar_t *dst, size_t maxdstlen,
     codePage = CP_ACP; flags = MB_PRECOMPOSED;
   }
 
+  /* From MSDN docs:
+     srclen : Size, in bytes, of the string indicated by the lpMultiByteStr parameter.
+     Alternatively, this parameter can be set to -1 if the string is null-terminated.
+     Note that, if cbMultiByte is 0, the function fails.
+
+     If this parameter is -1, the function processes the entire input string,
+     including the terminating null character. Therefore, the resulting Unicode string has
+     a terminating null character, and the length returned by the function includes this character.
+
+     If this parameter is set to a positive integer, the function processes exactly the specified
+     number of bytes. If the provided size does not include a terminating null character,
+     the resulting Unicode string is not null-terminated,
+     and the returned length does not include this character.
+  */
+
   if (dst == NULL || maxdstlen == 0) {
     dst = NULL; maxdstlen = 0; // resolve ambiguity
   }
+
+  int iSrcLen = (srclen == 0) ? -1 : static_cast<int>(srclen);
+  int iMaxDstLen = static_cast<int>(maxdstlen);
+
   return MultiByteToWideChar(codePage, flags,
-                             src, reinterpret_cast<int &>(srclen),
-                             dst, reinterpret_cast<int &>(maxdstlen));
+                             src, iSrcLen,
+                             dst, iMaxDstLen);
 }

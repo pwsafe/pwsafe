@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -165,15 +165,17 @@ BOOL CAddEdit_PasswordPolicy::PreTranslateMessage(MSG *pMsg)
   return CAddEdit_PropertyPage::PreTranslateMessage(pMsg);
 }
 
-static void setupBuddy(CWnd *p, int spinid, int id, size_t &length, short min = 0)
+// Following is also in PasswordPolicDlg.cpp. Move to common mixin?
+static void setupBuddy(CWnd *p, int spinid, int id, int &length, PWSprefs::IntPrefs iPref)
 {
-  CSpinButtonCtrl* pspin;
+  const int minValue = PWSprefs::GetInstance()->GetPrefMinVal(iPref);
+  const int maxValue = PWSprefs::GetInstance()->GetPrefMaxVal(iPref);
 
-  pspin = (CSpinButtonCtrl *)p->GetDlgItem(spinid);
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)p->GetDlgItem(spinid);
   pspin->SetBuddy(p->GetDlgItem(id));
-  pspin->SetRange(min, 1024);
+  pspin->SetRange32(minValue, maxValue);
   pspin->SetBase(10);
-  pspin->SetPos((int)length);
+  pspin->SetPos(length);
 }
 
 BOOL CAddEdit_PasswordPolicy::OnInitDialog()
@@ -242,11 +244,11 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   }
 
   // Set up spin control relationships
-  setupBuddy(this, IDC_PWLENSPIN, IDC_DEFPWLENGTH, m_pwdefaultlength, 4);
-  setupBuddy(this, IDC_SPINDIGITS, IDC_MINDIGITLENGTH, m_pwdigitminlength);
-  setupBuddy(this, IDC_SPINLOWERCASE, IDC_MINLOWERLENGTH, m_pwlowerminlength);
-  setupBuddy(this, IDC_SPINUPPERCASE, IDC_MINUPPERLENGTH, m_pwupperminlength);
-  setupBuddy(this, IDC_SPINSYMBOLS, IDC_MINSYMBOLLENGTH, m_pwsymbolminlength);
+  setupBuddy(this, IDC_PWLENSPIN, IDC_DEFPWLENGTH, m_pwdefaultlength, PWSprefs::PWDefaultLength);
+  setupBuddy(this, IDC_SPINDIGITS, IDC_MINDIGITLENGTH, m_pwdigitminlength, PWSprefs::PWDigitMinLength);
+  setupBuddy(this, IDC_SPINLOWERCASE, IDC_MINLOWERLENGTH, m_pwlowerminlength, PWSprefs::PWLowercaseMinLength);
+  setupBuddy(this, IDC_SPINUPPERCASE, IDC_MINUPPERLENGTH, m_pwupperminlength, PWSprefs::PWUppercaseMinLength);
+  setupBuddy(this, IDC_SPINSYMBOLS, IDC_MINSYMBOLLENGTH, m_pwsymbolminlength, PWSprefs::PWSymbolMinLength);
 
   // Disable controls based on m_ipolicy
   SetPolicyControls();
@@ -321,8 +323,10 @@ bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
     return false;
   }
 
-  if ((m_pwdefaultlength < 4) || (m_pwdefaultlength > 1024)) {
-    gmb.AfxMessageBox(IDS_DEFAULTPWLENGTH);
+  if ((m_pwdefaultlength < M_prefminPWLength()) || (m_pwdefaultlength > M_prefmaxPWLength())) {
+    CString csText;
+    csText.Format(IDS_DEFAULTPWLENGTH, M_prefminPWLength(), M_prefmaxPWLength());
+    gmb.AfxMessageBox(csText);
     pFocus = GetDlgItem(IDC_DEFPWLENGTH);
     return false;
   }
@@ -342,7 +346,11 @@ bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
 
 BOOL CAddEdit_PasswordPolicy::OnKillActive()
 {
+  if (UpdateData(TRUE) == FALSE)
+    return FALSE;
+
   CWnd *pFocus(NULL);
+
   if (ValidatePolicy(pFocus)) {
     SetPolicyFromVariables();
   } else {

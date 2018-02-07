@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -168,16 +168,16 @@ void CSafeCombinationEntry::CreateControls()
 ////@begin CSafeCombinationEntry content construction
   CSafeCombinationEntry* itemDialog1 = this;
 
-  wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
+  auto *itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
   wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("graphics/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
   itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
-  itemBoxSizer2->Add(itemBoxSizer4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto *itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
+  itemBoxSizer2->Add(itemBoxSizer4, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
+  auto *itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("graphics/psafetxt.xpm")), wxDefaultPosition, wxDefaultSize, 0 );
@@ -189,12 +189,12 @@ void CSafeCombinationEntry::CreateControls()
   wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Open Password Database:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer4->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL, 3);
 
-  wxBoxSizer* itemBoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemBoxSizer9, 50, wxGROW|wxALL, 5);
+  auto *itemBoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer4->Add(itemBoxSizer9, 0, wxGROW|wxALL, 0);
 
   wxArrayString m_filenameCBStrings;
-  m_filenameCB = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_filenameCBStrings, wxCB_DROPDOWN );
-  itemBoxSizer9->Add(m_filenameCB, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0);
+  m_filenameCB = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), m_filenameCBStrings, wxCB_DROPDOWN );
+  itemBoxSizer9->Add(m_filenameCB, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5);
 
   wxButton* itemButton11 = new wxButton( itemDialog1, ID_ELLIPSIS, wxT("..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
   itemBoxSizer9->Add(itemButton11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -205,19 +205,19 @@ void CSafeCombinationEntry::CreateControls()
   m_combinationEntry = new CSafeCombinationCtrl( itemDialog1, ID_COMBINATION, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer4->Add(m_combinationEntry, 0, wxGROW|wxRIGHT|wxTOP|wxBOTTOM, 5);
 
-  wxBoxSizer* itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
+  auto *itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer14, 0, wxGROW|wxALL, 5);
 
   wxCheckBox* itemCheckBox15 = new wxCheckBox( itemDialog1, ID_READONLY, _("Open as read-only"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox15->SetValue(false);
   itemBoxSizer14->Add(itemCheckBox15, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
-  itemBoxSizer14->Add(120, 10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer14->AddStretchSpacer();
 
   wxButton* itemButton17 = new wxButton( itemDialog1, ID_NEWDB, _("New..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
   itemBoxSizer14->Add(itemButton17, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxTOP|wxBOTTOM, 5);
 
-  wxBoxSizer* itemBoxSizer18 = new wxBoxSizer(wxHORIZONTAL);
+  auto *itemBoxSizer18 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer18, 0, wxGROW|wxALL, 5);
 
 #ifndef NO_YUBI
@@ -228,9 +228,9 @@ void CSafeCombinationEntry::CreateControls()
   itemBoxSizer18->Add(m_yubiStatusCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 #endif
 
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
+  auto *itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
 
-  itemBoxSizer4->Add(itemStdDialogButtonSizer21, 0, wxGROW|wxALL, 0);
+  itemBoxSizer4->Add(itemStdDialogButtonSizer21, 0, wxGROW|wxALL, 5);
   wxButton* itemButton22 = new wxButton( itemDialog1, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
   itemButton22->SetDefault();
   itemStdDialogButtonSizer21->AddButton(itemButton22);
@@ -362,7 +362,7 @@ void CSafeCombinationEntry::ProcessPhrase()
   case PWScore::SUCCESS: {
     const stringT fname(m_filename.c_str());
     stringT locker(L"");
-    if (!m_core.LockFile(fname, locker)) {
+    if (!m_readOnly && !m_core.LockFile(fname, locker)) {
       errmess = _("Could not lock file, opening read-only\nLocked by ");
       errmess += locker.c_str();
       wxMessageDialog warn(this, errmess,
@@ -396,7 +396,7 @@ void CSafeCombinationEntry::ProcessPhrase()
   wxMessageDialog err(this, errmess,
                       _("Error"), wxOK | wxICON_EXCLAMATION);
   err.ShowModal();
-  wxTextCtrl *txt = (wxTextCtrl *)FindWindow(ID_COMBINATION);
+  auto *txt = (wxTextCtrl *)FindWindow(ID_COMBINATION);
   txt->SetSelection(-1,-1);
   txt->SetFocus();
 }
@@ -426,7 +426,7 @@ void CSafeCombinationEntry::OnEllipsisClick( wxCommandEvent& /* evt */ )
 
   if (fd.ShowModal() == wxID_OK) {
     m_filename = fd.GetPath();
-    wxComboBox *cb = dynamic_cast<wxComboBox *>(FindWindow(ID_DBASECOMBOBOX));
+    auto *cb = dynamic_cast<wxComboBox *>(FindWindow(ID_DBASECOMBOBOX));
     cb->SetValue(m_filename);
     UpdateReadOnlyCheckbox();
   }
@@ -453,7 +453,7 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
   if (m_readOnly)
     return;
 
-  while (1) {
+  while (true) {
     wxFileDialog fd(this, _("Please choose a name for the new database"),
                     dir.c_str(), v3FileName.c_str(),
                     _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|*.*;*"),
@@ -485,7 +485,7 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
 
   m_core.SetReadOnly(false); // new file can't be read-only...
   m_core.NewFile(tostringx(pksetup.GetPassword()));
-  if ((rc = m_core.WriteCurFile()) == PWSfile::SUCCESS) {
+  if (m_core.WriteCurFile() == PWSfile::SUCCESS) {
     wxGetApp().recentDatabases().AddFileToHistory(newfile);
     EndModal(wxID_OK);
   }

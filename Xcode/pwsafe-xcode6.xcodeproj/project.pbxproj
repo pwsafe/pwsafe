@@ -112,6 +112,9 @@
 		E6C1255511E1B2BA00D22D92 /* utf8conv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1254511E1B2BA00D22D92 /* utf8conv.cpp */; };
 		E6C1255B11E1B35600D22D92 /* macsendstring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1255911E1B35600D22D92 /* macsendstring.cpp */; };
 		E6C6876E137C406300A916C1 /* UUID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C6876D137C406300A916C1 /* UUID.cpp */; };
+		E6C94E931FA20593008F0072 /* pwsqrcodedlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C94E911FA20593008F0072 /* pwsqrcodedlg.cpp */; };
+		E6C94E961FA2075B008F0072 /* pwsqrencode.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6C94E951FA2075B008F0072 /* pwsqrencode.mm */; };
+		E6C94E9A1FA33BA6008F0072 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C94E991FA33BA6008F0072 /* QuartzCore.framework */; };
 		E6D17CEE1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D17CEB1411156D003BDBE7 /* fieldselectiondlg.cpp */; };
 		E6DA586511A701AE00D84199 /* guiinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DA586311A701AE00D84199 /* guiinfo.cpp */; };
 		E6DDC6FC138911CB00F0C0D1 /* CompareDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */; };
@@ -611,6 +614,12 @@
 		E6C1255A11E1B35600D22D92 /* macsendstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macsendstring.h; sourceTree = "<group>"; };
 		E6C6876C137C3EFA00A916C1 /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUID.h; sourceTree = "<group>"; };
 		E6C6876D137C406300A916C1 /* UUID.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UUID.cpp; sourceTree = "<group>"; };
+		E6C94E911FA20593008F0072 /* pwsqrcodedlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pwsqrcodedlg.cpp; sourceTree = "<group>"; };
+		E6C94E921FA20593008F0072 /* pwsqrcodedlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwsqrcodedlg.h; sourceTree = "<group>"; };
+		E6C94E941FA205E9008F0072 /* pwsqrencode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwsqrencode.h; sourceTree = "<group>"; };
+		E6C94E951FA2075B008F0072 /* pwsqrencode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "pwsqrencode.mm"; sourceTree = "<group>"; };
+		E6C94E971FA3399F008F0072 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E6C94E991FA33BA6008F0072 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E6CFEE4311EA0AFB001402D8 /* RecentDBList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentDBList.h; sourceTree = "<group>"; };
 		E6D17CEA1411156D003BDBE7 /* fieldselectiondlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fieldselectiondlg.h; sourceTree = "<group>"; };
 		E6D17CEB1411156D003BDBE7 /* fieldselectiondlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fieldselectiondlg.cpp; sourceTree = "<group>"; };
@@ -760,6 +769,7 @@
 				E6B1448212B26CEE00415AAE /* OpenGL.framework in Frameworks */,
 				E6B1448812B26D1500415AAE /* Cocoa.framework in Frameworks */,
 				E6B1449412B26D7E00415AAE /* IOKit.framework in Frameworks */,
+				E6C94E9A1FA33BA6008F0072 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1123,6 +1133,8 @@
 		E6ADB7EE119569CC004E2BE5 = {
 			isa = PBXGroup;
 			children = (
+				E6C94E991FA33BA6008F0072 /* QuartzCore.framework */,
+				E6C94E971FA3399F008F0072 /* CoreGraphics.framework */,
 				E6069D0319FE1CCA0055040F /* Configs */,
 				E690B1031297D76E007EA508 /* Resources */,
 				E6A11A2A1293D20E0060FB35 /* graphics */,
@@ -1155,6 +1167,10 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E6C94E941FA205E9008F0072 /* pwsqrencode.h */,
+				E6C94E911FA20593008F0072 /* pwsqrcodedlg.cpp */,
+				E6C94E921FA20593008F0072 /* pwsqrcodedlg.h */,
+				E6C94E951FA2075B008F0072 /* pwsqrencode.mm */,
 				6FF5D49D1DA14AB20032F5B6 /* passwordsubset.cpp */,
 				6FF5D49E1DA14AB20032F5B6 /* passwordsubset.h */,
 				E6F8DC1E1D132618007DFBEC /* mainView.cpp */,
@@ -1759,6 +1775,8 @@
 				E6ADBA411195709A004E2BE5 /* PasswordSafeSearch.cpp in Sources */,
 				E6ADBA431195709A004E2BE5 /* properties.cpp in Sources */,
 				E6ADBA921195709A004E2BE5 /* pwsafeapp.cpp in Sources */,
+				E6C94E931FA20593008F0072 /* pwsqrcodedlg.cpp in Sources */,
+				E6C94E961FA2075B008F0072 /* pwsqrencode.mm in Sources */,
 				E6ADBA931195709A004E2BE5 /* pwsclip.cpp in Sources */,
 				E6ADBA941195709A004E2BE5 /* PWSgrid.cpp in Sources */,
 				E6ADBA951195709A004E2BE5 /* PWSgridtable.cpp in Sources */,
@@ -2072,6 +2090,7 @@
 					DEBUG,
 					_DEBUG,
 					NO_YUBI,
+					NO_QR,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
@@ -2096,6 +2115,7 @@
 					NDEBUG,
 					NO_YUBI,
 					"wxDEBUG_LEVEL=0",
+					NO_QR,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;

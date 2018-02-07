@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -133,10 +133,14 @@ PWScore::PWScore() :
                      m_lockFileHandle(INVALID_HANDLE_VALUE),
                      m_lockFileHandle2(INVALID_HANDLE_VALUE),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-                     m_bIsReadOnly(false), m_bIsOpen(false),
+                     m_bIsReadOnly(false),
+                     m_bNotifyDB(false),
+                     m_bIsOpen(false),
                      m_nRecordsWithUnknownFields(0),
-                     m_bNotifyDB(false), m_pUIIF(NULL), m_pFileSig(NULL),
-                     m_iAppHotKey(0), m_DBCurrentState(CLEAN)
+                     m_pUIIF(NULL),
+                     m_DBCurrentState(CLEAN),
+                     m_pFileSig(NULL),
+                     m_iAppHotKey(0)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -322,7 +326,7 @@ void PWScore::DoDeleteEntry(const CItemData &item)
   // are implemented as subclasses.
 
   CUUID entry_uuid = item.GetUUID();
-  ItemListIter pos = m_pwlist.find(entry_uuid);
+  auto pos = m_pwlist.find(entry_uuid);
   if (pos != m_pwlist.end()) {
     // Simple cases first: Aliases or shortcuts, update maps
     // and refresh base's display, if changed
@@ -615,15 +619,14 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
   out->Close();
   delete out;
 
-  // Update info only if written version is same as read version
-  // (otherwise we're exporting, not saving)
-  if (version == m_ReadFileVersion) {
+  // Update info if we're saving or upgrading.
+  if (version >= m_ReadFileVersion) {
     // Set/Reset everything as "unchanged"
     SetInitialValues();
 
     m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
-  } else {
-    m_hdr = saved_hdr;  // Exporting - restore saved header
+  } else { // Exporting to older version - restore saved header
+    m_hdr = saved_hdr;
   }
 
   // Create new signature if required
@@ -673,8 +676,9 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
 // Writes out subset of records to a PasswordSafe database at the current version
 // Used by Export entry or Export Group
 struct ExportRecordWriter {
-  ExportRecordWriter(PWSfile *pout, PWScore *pcore, CReport *pRpt) :
-    m_pout(pout), m_pcore(pcore), m_pRpt(pRpt) {}
+  ExportRecordWriter(PWSfile *pout, PWScore *pcore, std::vector<pws_os::CUUID> &vuuidAddedBases,
+    CReport *pRpt) :
+    m_pout(pout), m_pcore(pcore), m_pRpt(pRpt), m_vuuidAddedBases(vuuidAddedBases) {}
 
   void operator()(CItemData &item)
   {
@@ -682,6 +686,7 @@ struct ExportRecordWriter {
     StringX uuid_str(savePassword);
     CUUID base_uuid(CUUID::NullUUID());
     CUUID item_uuid = item.GetUUID();
+    bool bAddToReport(true);
 
     if (item.IsAlias()) {
       base_uuid = item.GetBaseUUID();
@@ -695,12 +700,16 @@ struct ExportRecordWriter {
       uuid_str += base_uuid;
       uuid_str += _T("~]");
     }
+    else if (item.IsBase()) {
+      bAddToReport = std::find(m_vuuidAddedBases.begin(), m_vuuidAddedBases.end(), item_uuid) == 
+                       m_vuuidAddedBases.end();
+    }
 
     item.SetPassword(uuid_str);
     m_pout->WriteRecord(item);
     item.SetPassword(savePassword);
 
-    if (m_pRpt != NULL) {
+    if (m_pRpt != NULL && bAddToReport) {
       StringX sx_exported;
       Format(sx_exported, GROUPTITLEUSERINCHEVRONS,
         item.GetGroup().c_str(), item.GetTitle().c_str(), item.GetUser().c_str());
@@ -712,12 +721,15 @@ private:
   PWSfile *m_pout;
   PWScore *m_pcore;
   CReport *m_pRpt;
+  std::vector<pws_os::CUUID> m_vuuidAddedBases;
 };
 
 int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
                              PWScore *pINcore, PWSfile::VERSION version, 
                              std::vector<StringX> &vEmptyGroups,
-                             bool bExportDBFilters, CReport *pRpt)
+                             bool bExportDBFilters,
+                             std::vector<pws_os::CUUID> &vuuidAddedBases,
+                             CReport *pRpt)
 {
   // Writes out subset of database records (as supplied in OrderedItemList)
   // to a PasswordSafe database at the current version
@@ -745,7 +757,7 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
   out->SetNHashIters(GetHashIters());
 
   // Write out empty groups
-  if (vEmptyGroups.size() > 0) {
+  if (!vEmptyGroups.empty()) {
     out->SetEmptyGroups(vEmptyGroups);
   }
 
@@ -785,7 +797,7 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
       return status;
     }
 
-    ExportRecordWriter write_record(out, pINcore, pRpt);
+    ExportRecordWriter write_record(out, pINcore, vuuidAddedBases, pRpt);
     for_each(pOIL->begin(), pOIL->end(), write_record);
 
   }
@@ -1001,8 +1013,8 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
     if (t_passkey_len != m_passkey_len) // trivial test
       return WRONG_PASSWORD;
     size_t BlockLength = ((m_passkey_len + 7) / 8) * 8;
-    unsigned char *t_passkey = new unsigned char[BlockLength];
-    LPCTSTR plaintext = LPCTSTR(passkey.c_str());
+    auto *t_passkey = new unsigned char[BlockLength];
+    auto plaintext = passkey.c_str();
     EncryptPassword(reinterpret_cast<const unsigned char *>(plaintext), t_passkey_len, t_passkey);
     if (memcmp(t_passkey, m_passkey, BlockLength) == 0)
       status = PWSfile::SUCCESS;
@@ -1500,7 +1512,7 @@ void PWScore::ChangePasskey(const StringX &newPasskey)
 
 // functor object type for find_if:
 struct FieldsMatch {
-  bool operator()(std::pair<CUUID, CItemData> p) {
+  bool operator()(const std::pair<CUUID, CItemData> &p) {
     const CItemData &item = p.second;
     return (m_group == item.GetGroup() &&
             m_title == item.GetTitle() &&
@@ -1511,7 +1523,7 @@ struct FieldsMatch {
   m_group(a_group), m_title(a_title), m_user(a_user) {}
 
 private:
-  FieldsMatch& operator=(const FieldsMatch&); // Do not implement
+  FieldsMatch& operator=(const FieldsMatch&) = delete;
   const StringX &m_group;
   const StringX &m_title;
   const StringX &m_user;
@@ -1523,13 +1535,11 @@ ItemListIter PWScore::Find(const StringX &a_group,const StringX &a_title,
 {
   FieldsMatch fields_match(a_group, a_title, a_user);
 
-  ItemListIter retval = find_if(m_pwlist.begin(), m_pwlist.end(),
-                                fields_match);
-  return retval;
+  return find_if(m_pwlist.begin(), m_pwlist.end(), fields_match);
 }
 
 struct TitleMatch {
-  bool operator()(std::pair<CUUID, CItemData> p) {
+  bool operator()(const std::pair<CUUID, CItemData> &p) {
     const CItemData &item = p.second;
     return (m_title == item.GetTitle());
   }
@@ -1538,17 +1548,17 @@ struct TitleMatch {
     m_title(a_title) {}
 
 private:
-  TitleMatch& operator=(const TitleMatch&); // Do not implement
+  TitleMatch& operator=(const TitleMatch&) = delete;
   const StringX &m_title;
 };
 
 ItemListIter PWScore::GetUniqueBase(const StringX &a_title, bool &bMultiple)
 {
-  ItemListIter retval(m_pwlist.end());
+  auto retval(m_pwlist.end());
   int num(0);
   TitleMatch TitleMatch(a_title);
 
-  ItemListIter found(m_pwlist.begin());
+  auto found(m_pwlist.begin());
   do {
     found = find_if(found, m_pwlist.end(), TitleMatch);
     if (found != m_pwlist.end()) {
@@ -1572,7 +1582,7 @@ ItemListIter PWScore::GetUniqueBase(const StringX &a_title, bool &bMultiple)
 }
 
 struct GroupTitle_TitleUserMatch {
-  bool operator()(std::pair<CUUID, CItemData> p) {
+  bool operator()(const std::pair<CUUID, CItemData> &p) {
     const CItemData &item = p.second;
     return ((m_gt == item.GetGroup() && m_tu == item.GetTitle()) ||
             (m_gt == item.GetTitle() && m_tu == item.GetUser()));
@@ -1583,7 +1593,7 @@ struct GroupTitle_TitleUserMatch {
                             m_gt(a_grouptitle),  m_tu(a_titleuser) {}
 
 private:
-  GroupTitle_TitleUserMatch& operator=(const GroupTitle_TitleUserMatch&); // Do not implement
+  GroupTitle_TitleUserMatch& operator=(const GroupTitle_TitleUserMatch&) = delete;
   const StringX &m_gt;
   const StringX &m_tu;
 };
@@ -1591,11 +1601,11 @@ private:
 ItemListIter PWScore::GetUniqueBase(const StringX &grouptitle,
                                     const StringX &titleuser, bool &bMultiple)
 {
-  ItemListIter retval(m_pwlist.end());
+  auto retval(m_pwlist.end());
   int num(0);
   GroupTitle_TitleUserMatch GroupTitle_TitleUserMatch(grouptitle, titleuser);
 
-  ItemListIter found(m_pwlist.begin());
+  auto found(m_pwlist.begin());
   do {
     found = find_if(found, m_pwlist.end(), GroupTitle_TitleUserMatch);
     if (found != m_pwlist.end()) {
@@ -1624,7 +1634,7 @@ void PWScore::EncryptPassword(const unsigned char *plaintext, size_t len,
   // Chicken out of an interface change, or just a sanity check?
   // Maybe both...
   ASSERT(len > 0);
-  unsigned int ulen = static_cast<unsigned int>(len);
+  auto ulen = static_cast<unsigned int>(len);
 
   const unsigned int BS = TwoFish::BLOCKSIZE;
 
@@ -1670,7 +1680,7 @@ void PWScore::SetPassKey(const StringX &new_passkey)
 
   size_t BlockLength = ((m_passkey_len + (BS - 1)) / BS) * BS;
   m_passkey = new unsigned char[BlockLength];
-  LPCTSTR plaintext = LPCTSTR(new_passkey.c_str());
+  auto plaintext = new_passkey.c_str();
   EncryptPassword(reinterpret_cast<const unsigned char *>(plaintext), m_passkey_len, m_passkey);
 }
 
@@ -1825,7 +1835,7 @@ bool PWScore::GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) co
     st_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
     return true;
   } else {
-    PSWDPolicyMapCIter iter = m_MapPSWDPLC.find(sxPolicyName);
+    auto iter = m_MapPSWDPLC.find(sxPolicyName);
     if (iter != m_MapPSWDPLC.end()) {
       st_pp = iter->second;
       return true;
@@ -1919,7 +1929,7 @@ bool PWScore::GetEntriesUsingNamedPasswordPolicy(const StringX sxPolicyName,
   // Sort them before displayed in the dialog later
   std::sort(ventries.begin(), ventries.end(), GTUCompareV1);
 
-  return ventries.size() > 0;
+  return !ventries.empty();
 }
 
 // For Validate only
@@ -1934,6 +1944,9 @@ struct st_GroupTitleUser2 {
   st_GroupTitleUser2(const StringX &g, const StringX &t, const StringX &u,
     const StringX &n)
   : group(g), title(t), user(u), newtitle(n) {}
+
+  st_GroupTitleUser2(const st_GroupTitleUser2 &other)
+    : group(other.group), title(other.title), user(other.user), newtitle(other.newtitle) {}
 
   st_GroupTitleUser2 &operator=(const st_GroupTitleUser2 &that) {
     if (this != &that) {
@@ -1953,6 +1966,9 @@ struct st_AttTitle_Filename {
 
   st_AttTitle_Filename(const StringX &t, const StringX &fn)
     : title(t), filename(fn) {}
+
+  st_AttTitle_Filename(const st_AttTitle_Filename &other)
+    : title(other.title), filename(other.filename) {}
 
   st_AttTitle_Filename &operator=(const st_AttTitle_Filename &that) {
     if (this != &that) {
@@ -2125,7 +2141,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
     // Note excessively sized text fields
     if (iMAXCHARS > 0) {
       bool bEntryHasBigField(false);
-      for (unsigned char uc = static_cast<unsigned char>(CItem::GROUP);
+      for (auto uc = static_cast<unsigned char>(CItem::GROUP);
            uc < static_cast<unsigned char>(CItem::LAST_DATA); uc++) {
         if (CItemData::IsTextField(uc)) {
           StringX sxvalue = ci.GetFieldValue(static_cast<CItemData::FieldType>(uc));
@@ -2170,7 +2186,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
     // This remove the empty group if it contains this entry in one of its subgroups
     // Need to use reverse iterator so that can erase elements and still
     // iterate the vector but erase only takes a normal iterator!
-    std::vector<StringX>::reverse_iterator ritEG = m_vEmptyGroups.rbegin();
+    auto ritEG = m_vEmptyGroups.rbegin();
     while (ritEG != m_vEmptyGroups.rend()) {
       StringX sxEGDot = *ritEG + L".";
       ritEG++;
@@ -2585,8 +2601,8 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
     return;
   }
 
-  ItemListIter biter = m_pwlist.find(base_uuid);
-  ItemListIter diter = m_pwlist.find(entry_uuid);
+  auto biter = m_pwlist.find(base_uuid);
+  auto diter = m_pwlist.find(entry_uuid);
   ASSERT(biter != m_pwlist.end());
   ASSERT(diter != m_pwlist.end());
 
@@ -2650,7 +2666,7 @@ void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid,
 
   // Reset base entry to normal if it has no more aliases/shortcuts
   if (pmmap->find(base_uuid) == pmmap->end()) {
-    ItemListIter iter = m_pwlist.find(base_uuid);
+    auto iter = m_pwlist.find(base_uuid);
     if (iter != m_pwlist.end()) {
       iter->second.SetNormal();
 
@@ -2688,7 +2704,7 @@ void PWScore::DoRemoveAllDependentEntries(const CUUID &base_uuid,
   pmmap->erase(base_uuid);
 
   // Reset base entry to normal
-  ItemListIter iter = m_pwlist.find(base_uuid);
+  auto iter = m_pwlist.find(base_uuid);
   if (iter != m_pwlist.end())
     iter->second.SetNormal();
 }
@@ -2791,10 +2807,10 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
         // Remove leading '[['/'[~' & trailing ']]'/'~]'
         tmp = tmp.substr(2, tmp.length() - 4);
         if (std::count(tmp.begin(), tmp.end(), _T(':')) == 2) {
-          sxPwdGroup = tmp.substr(0, tmp.find_first_of(_T(":")));
+          sxPwdGroup = tmp.substr(0, tmp.find_first_of(_T(':')));
           // Skip over 'group:'
           tmp = tmp.substr(sxPwdGroup.length() + 1);
-          sxPwdTitle = tmp.substr(0, tmp.find_first_of(_T(":")));
+          sxPwdTitle = tmp.substr(0, tmp.find_first_of(_T(':')));
           // Skip over 'title:'
           sxPwdUser = tmp.substr(sxPwdTitle.length() + 1);
           iter = Find(sxPwdGroup, sxPwdTitle, sxPwdUser);
@@ -3075,7 +3091,7 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
         // [X:Y] - OK if unique entry [X:Y:u] or [g:X:Y] exists for any value of g or u
         pl.csPwdUser = _T("");
         tmp = Password.substr(1, Password.length() - 2);  // Skip over '[' & ']'
-        pl.csPwdGroup = tmp.substr(0, tmp.find_first_of(_T(":")));
+        pl.csPwdGroup = tmp.substr(0, tmp.find_first_of(_T(':')));
         pl.csPwdTitle = tmp.substr(pl.csPwdGroup.length() + 1);  // Skip over 'group:'
         iter = GetUniqueBase(pl.csPwdGroup, pl.csPwdTitle, pl.bMultipleEntriesFound);
         if (iter != m_pwlist.end()) {
@@ -3088,9 +3104,9 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
       case 3:
         // [X:Y:Z], [X:Y:], [:Y:Z], [:Y:] (title cannot be empty)
         tmp = Password.substr(1, Password.length() - 2);  // Skip over '[' & ']'
-        pl.csPwdGroup = tmp.substr(0, tmp.find_first_of(_T(":")));
+        pl.csPwdGroup = tmp.substr(0, tmp.find_first_of(_T(':')));
         tmp = tmp.substr(pl.csPwdGroup.length() + 1);  // Skip over 'group:'
-        pl.csPwdTitle = tmp.substr(0, tmp.find_first_of(_T(":")));    // Skip over 'title:'
+        pl.csPwdTitle = tmp.substr(0, tmp.find_first_of(_T(':')));    // Skip over 'title:'
         pl.csPwdUser = tmp.substr(pl.csPwdTitle.length() + 1);
         iter = Find(pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
         break;
@@ -3130,7 +3146,7 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
   ASSERT(pAliasOrSC != NULL);
   if (pAliasOrSC->IsDependent()) {
     const CUUID base_uuid = pAliasOrSC->GetBaseUUID();
-    ItemListIter iter = Find(base_uuid);
+    auto iter = Find(base_uuid);
     if (iter != GetEntryEndIter())
       return &iter->second;
     else
@@ -3274,7 +3290,7 @@ void PWScore::AddChangedNodes(StringX path)
     if (std::find(m_vModifiedNodes.begin(), m_vModifiedNodes.end(), nextpath) ==
         m_vModifiedNodes.end())
       m_vModifiedNodes.push_back(nextpath);
-    size_t i = nextpath.find_last_of(_T("."));
+    size_t i = nextpath.find_last_of(_T('.'));
     if (i == nextpath.npos)
       i = 0;
     nextpath = nextpath.substr(0, i);
@@ -3290,15 +3306,14 @@ struct HistoryUpdater {
    m_bExcludeProtected(bExcludeProtected)
   {}
   virtual void operator() (CItemData &ci) = 0;
+  virtual ~HistoryUpdater() {}
+  HistoryUpdater& operator=(const HistoryUpdater&) = delete;
 
 protected:
   int &m_num_altered;
   SavePWHistoryMap &m_mapSavedHistory;
   std::vector<BYTE> m_vSavedEntryStatus;
   bool m_bExcludeProtected;
-
-private:
-  HistoryUpdater& operator=(const HistoryUpdater&); // Do not implement
 };
 
 struct HistoryUpdateResetOff : public HistoryUpdater {
@@ -3324,7 +3339,7 @@ struct HistoryUpdateResetOff : public HistoryUpdater {
   }
 
 private:
-  HistoryUpdateResetOff& operator=(const HistoryUpdateResetOff&); // Do not implement
+  HistoryUpdateResetOff& operator=(const HistoryUpdateResetOff&) = delete;
 };
 
 struct HistoryUpdateResetOn : public HistoryUpdater {
@@ -3357,7 +3372,7 @@ struct HistoryUpdateResetOn : public HistoryUpdater {
   }
 
 private:
-  HistoryUpdateResetOn& operator=(const HistoryUpdateResetOn&); // Do not implement
+  HistoryUpdateResetOn& operator=(const HistoryUpdateResetOn&) = delete;
   StringX m_text;
 };
 
@@ -3394,7 +3409,7 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
   }
 
 private:
-  HistoryUpdateSetMax& operator=(const HistoryUpdateSetMax&); // Do not implement
+  HistoryUpdateSetMax& operator=(const HistoryUpdateSetMax&) = delete;
   int m_new_default_max;
   StringX m_text;
 };
@@ -3422,42 +3437,35 @@ struct HistoryUpdateClearAll : public HistoryUpdater {
   }
 
 private:
-  HistoryUpdateClearAll& operator=(const HistoryUpdateClearAll&); // Do not implement
+  HistoryUpdateClearAll& operator=(const HistoryUpdateClearAll&) = delete;
 };
 
 int PWScore::DoUpdatePasswordHistory(int iAction, int new_default_max,
                                      SavePWHistoryMap &mapSavedHistory)
 {
   int num_altered = 0;
-  HistoryUpdater *updater = NULL;
+  HistoryUpdater *updater = nullptr;
   bool bExcludeProtected(true);
 
   if (iAction < 0)
     bExcludeProtected = false;
 
-  HistoryUpdateResetOff reset_off(num_altered, mapSavedHistory, bExcludeProtected);
-  HistoryUpdateResetOn  reset_on(num_altered, new_default_max, mapSavedHistory,
-                                 bExcludeProtected);
-  HistoryUpdateSetMax   set_max(num_altered, new_default_max, mapSavedHistory,
-                                bExcludeProtected);
-  HistoryUpdateClearAll clearall(num_altered, mapSavedHistory, bExcludeProtected);
-
   switch (iAction) {
-    case -1:   // reset off - include protected entries
-    case  1:   // reset off - exclude protected entries
-      updater = &reset_off;
+    case PWHist::STOP_INCL_PROT:   // reset off - include protected entries
+    case PWHist::STOP_EXCL_PROT:   // reset off - exclude protected entries
+      updater = new HistoryUpdateResetOff(num_altered, mapSavedHistory, bExcludeProtected);
       break;
-    case -2:   // reset on - include protected entries
-    case  2:   // reset on - exclude protected entries
-      updater = &reset_on;
+    case PWHist::START_INCL_PROT:   // reset on - include protected entries
+    case PWHist::START_EXCL_PROT:   // reset on - exclude protected entries
+      updater = new HistoryUpdateResetOn(num_altered, new_default_max, mapSavedHistory, bExcludeProtected);
       break;
-    case -3:   // setmax   - include protected entries
-    case  3:   // setmax   - exclude protected entries
-      updater = &set_max;
+    case PWHist::SETMAX_INCL_PROT:   // setmax   - include protected entries
+    case PWHist::SETMAX_EXCL_PROT:   // setmax   - exclude protected entries
+      updater = new  HistoryUpdateSetMax(num_altered, new_default_max, mapSavedHistory, bExcludeProtected);
       break;
-    case -4:   // clearall - include protected entries
-    case  4:   // clearall - exclude protected entries
-      updater = &clearall;
+    case PWHist::CLEAR_INCL_PROT:   // clearall - include protected entries
+    case PWHist::CLEAR_EXCL_PROT:   // clearall - exclude protected entries
+      updater = new HistoryUpdateClearAll(num_altered, mapSavedHistory, bExcludeProtected);
       break;
     default:
       ASSERT(0);
@@ -3470,8 +3478,8 @@ int PWScore::DoUpdatePasswordHistory(int iAction, int new_default_max,
   * in a temporary copy of the CItemDatum being modified.
   * Couldn't find a handy way to workaround this (e.g.,
   * operator()(pair<...> &p) failed to compile
-  * so reverted to slightly less elegant for loop
-  * using polymorphism for the history updater
+  * so reverted to slightly less elegant for loop.
+  * Using polymorphism for the history updater
   * is an unrelated tweak.
   */
 
@@ -3482,6 +3490,7 @@ int PWScore::DoUpdatePasswordHistory(int iAction, int new_default_max,
       (*updater)(curitem);
     }
   }
+  delete updater;
   return num_altered;
 }
 
@@ -3490,7 +3499,7 @@ void PWScore::UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory)
   SavePWHistoryMap::iterator itr;
 
   for (itr = mapSavedHistory.begin(); itr != mapSavedHistory.end(); itr++) {
-    ItemListIter listPos = m_pwlist.find(itr->first);
+    auto listPos = m_pwlist.find(itr->first);
     if (listPos != m_pwlist.end()) {
       listPos->second.SetPWHistory(itr->second.pwh);
       listPos->second.SetStatus(itr->second.es);
@@ -3786,7 +3795,7 @@ bool PWScore::SetDBFilters(const PWSFilters &MapDBFilters)
 
 bool PWScore::IncrementPasswordPolicy(const StringX &sxPolicyName)
 {
-  PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+  auto iter = m_MapPSWDPLC.find(sxPolicyName);
   if (iter == m_MapPSWDPLC.end()) {
     return false;
   } else {
@@ -3797,7 +3806,7 @@ bool PWScore::IncrementPasswordPolicy(const StringX &sxPolicyName)
 
 bool PWScore::DecrementPasswordPolicy(const StringX &sxPolicyName)
 {
-  PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+  auto iter = m_MapPSWDPLC.find(sxPolicyName);
   if (iter == m_MapPSWDPLC.end() || iter->second.usecount == 0) {
     return false;
   } else {
@@ -3810,7 +3819,7 @@ bool PWScore::AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
                         const bool bAllowReplace)
 {
   bool bDoIt(false);
-  PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+  auto iter = m_MapPSWDPLC.find(sxPolicyName);
 
   if (iter == m_MapPSWDPLC.end())
     bDoIt = true;
@@ -3938,7 +3947,7 @@ bool PWScore::AddKBShortcut(const int &iKBShortcut, const pws_os::CUUID &uuid)
 
 bool PWScore::DelKBShortcut(const int32 &iKBShortcut, const pws_os::CUUID &uuid)
 {
-  KBShortcutMapIter iter = m_KBShortcutMap.find(iKBShortcut);
+  auto iter = m_KBShortcutMap.find(iKBShortcut);
 
   if (iter == m_KBShortcutMap.end())
     return false;
@@ -3968,10 +3977,7 @@ uint32 PWScore::GetHashIters() const
 
 void PWScore::SetHashIters(uint32 value)
 {
-  if (value != m_hashIters) {
-    m_hashIters = value;
-    //m_stDBCS.bDBPrefsChanged = true; // Can't do this outside a Command
-  }
+  m_hashIters = value;
 }
 
 void PWScore::RemoveAtt(const pws_os::CUUID &attuuid)

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -153,10 +153,10 @@ BOOL COptionsMisc::OnInitDialog()
   GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_OtherBrowserLocation);
   GetDlgItem(IDC_OTHEREDITORLOCATION)->SetWindowText(m_OtherEditorLocation);
 
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_DADSPIN);
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_DADSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_DB_DEF_AUTOTYPE_DELAY));
-  pspin->SetRange32(1, 60000);
+  pspin->SetRange32(M_prefminAutotypeDelay(), M_prefmaxAutotypeDelay());
   pspin->SetBase(10);
   pspin->SetPos(m_AutotypeDelay);
 

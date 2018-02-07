@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -114,8 +114,7 @@ class DboxMain : public CDialog, public UIInterFace
 public:
   DECLARE_DYNAMIC(DboxMain)
 
-  // default constructor
-  DboxMain(CWnd* pParent = NULL);
+  DboxMain(PWScore &core, CWnd* pParent = NULL);
   ~DboxMain();
 
   enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, ST_SAVEIMMEDIATELY,
@@ -224,8 +223,10 @@ public:
   bool IsDBReadOnly() const {return m_core.IsReadOnly();}
   bool IsDBOpen() const { return m_bOpen; }
   void SetDBprefsState(const bool bState) { m_bDBState = bState; }
-  void SetStartSilent(bool state);
-  void SetStartClosed(bool state) {m_IsStartClosed = state;}
+  void SetStartSilent() {m_InitMode = SilentInit;} // start minimized, forces UseSystemTray
+  void SetStartClosed() {m_InitMode = ClosedInit;} // start with main window, no password prompt
+  void SetStartMinimized() {m_InitMode = MinimizedInit;} // Like closed, but also minimized
+  void SetStartNoDB() {m_IsStartNoDB = true;} // start with no db, w/o password prompt
   void SetDBInitiallyRO(bool state) {m_bDBInitiallyRO = state;}
   void MakeRandomPassword(StringX &password, PWPolicy &pwp, bool bIssueMsg = false);
   BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
@@ -316,7 +317,6 @@ public:
 
   // HashIters relaying
   uint32 GetHashIters() const {return m_core.GetHashIters();}
-  void SetHashIters(uint32 value) {m_core.SetHashIters(value);}
 
   // Need this to be public
   bool LongPPs(CWnd *pWnd);
@@ -364,7 +364,7 @@ public:
   {return m_core.TestSelection(bAdvanced, subgroup_name,
                                subgroup_object, subgroup_function, pOIL);}
 
-  void MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem = NULL);
+  std::vector<pws_os::CUUID> MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem = NULL);
   bool MakeMatchingGTUSet(GTUSet &setGTU, const StringX &sxPolicyName) const
   {return m_core.InitialiseGTU(setGTU, sxPolicyName);}
   CItemData *getSelectedItem();
@@ -452,6 +452,11 @@ public:
 
   std::set<StringX> GetAllMediaTypes() const
   {return m_core.GetAllMediaTypes();}
+
+  // For latered Windows
+  PSLWA GetSetLayeredWindowAttributes() { return m_pfcnSetLayeredWindowAttributes; }
+  bool GetInitialTransparencyState() { return m_bOnStartupTransparancyEnabled; }
+  bool SetLayered(CWnd *pWnd, const int value = -1);
 
  protected:
    friend class CSetDBID;  // To access icon creation etc.
@@ -545,7 +550,6 @@ public:
   void HideIcon() { m_pTrayIcon->HideIcon(); }
 
   void SetSystemTrayState(DBSTATE s);
-  int SetClosedTrayIcon(int &icon, bool bSet = true);
   void SetSystemTrayTarget(CWnd *pWnd) { m_pTrayIcon->SetTarget(pWnd); }
 
   HICON CreateIcon(const HICON &hIcon, const int &iIndex,
@@ -611,6 +615,7 @@ public:
   void SaveGUIStatus();
   void RestoreGUIStatus();
 
+  void SetupUserFonts();
   void ChangeFont(const CFontsDialog::FontType iType);
 
   // Generated message map functions
@@ -715,7 +720,6 @@ public:
   afx_msg void OnShowHideDragbar();
   afx_msg void OnOldToolbar();
   afx_msg void OnNewToolbar();
-  afx_msg void OnShowFindToolbar();
   afx_msg void OnExpandAll();
   afx_msg void OnCollapseAll();
   afx_msg void OnChangeTreeFont();
@@ -775,7 +779,8 @@ public:
   afx_msg void OnToolBarFindAdvanced();
   afx_msg void OnToolBarFindReport();
   afx_msg void OnToolBarClearFind();
-  afx_msg void OnHideFindToolBar();
+  afx_msg void OnShowFindToolbar();
+  afx_msg void OnHideFindToolbar();
 
   afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
@@ -785,10 +790,11 @@ public:
   DECLARE_MESSAGE_MAP()
 
   int GetAndCheckPassword(const StringX &filename, StringX& passkey,
-                          int index, int flags = 0,
-                          PWScore *pcore = NULL);
+                          int index, int flags = 0);
 
 private:
+  enum InitType {NormalInit, SilentInit, ClosedInit, MinimizedInit};
+
   // UIInterFace implementations:
   virtual void DatabaseModified(bool bChanged);
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
@@ -819,15 +825,15 @@ private:
   HICON m_ClosedIcon;
   HICON m_IndexIcon;
 
-  bool m_IsStartSilent;
-  bool m_IsStartClosed;
-  bool m_bStartHiddenAndMinimized;
+  InitType m_InitMode = NormalInit;
+  bool m_IsStartNoDB;
   bool m_IsListView;
   bool m_bAlreadyToldUserNoSave;
   bool m_bPasswordColumnShowing;
   bool m_bInRefresh, m_bInRestoreWindows;
   bool m_bDBInitiallyRO;
   bool m_bViaDCA;
+  bool m_bFindBarShown;
   int m_iDateTimeFieldWidth;
   int m_nColumns;
   int m_nColumnIndexByOrder[CItem::LAST_DATA];
@@ -904,7 +910,6 @@ private:
   bool GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected);
   void ChangeSubtreeEntriesProtectStatus(const UINT nID);
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSpecial = false);
-  void UpdateSystemMenu();
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
   void CancelPendingPasswordDialog();
 
@@ -917,7 +922,6 @@ private:
   void UpdateGroupsInGUI(const std::vector<StringX> &vGroups);
   StringX GetListViewItemText(CItemData &ci, const int &icolumn);
   void DoCommand(Command *pcmd = NULL, PWScore *pcore = NULL, const bool bUndo = true);
-  bool IsCharacterSupported(std::wstring &sProtect);
   
   static const struct UICommandTableEntry {
     UINT ID;
@@ -976,6 +980,9 @@ private:
   PSBR_CREATE m_pfcnShutdownBlockReasonCreate;
   PSBR_DESTROY m_pfcnShutdownBlockReasonDestroy;
 
+  // For Layered Windows
+  PSLWA m_pfcnSetLayeredWindowAttributes;
+
   // Delete/Rename/AutoType Shortcuts
   WPARAM m_wpDeleteMsg, m_wpDeleteKey;
   WPARAM m_wpRenameMsg, m_wpRenameKey;
@@ -983,6 +990,7 @@ private:
   bool m_bDeleteCtrl, m_bDeleteShift;
   bool m_bRenameCtrl, m_bRenameShift;
   bool m_bAutotypeCtrl, m_bAutotypeShift;
+  bool m_bOnStartupTransparancyEnabled;
 
   // Do Autotype
   bool m_bInAT;

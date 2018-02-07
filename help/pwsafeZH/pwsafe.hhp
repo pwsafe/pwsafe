@@ -3,7 +3,7 @@ Auto Index=Yes
 Compatibility=1.1 or later
 Compiled file=pwsafeZH.chm
 Contents file=pwsafe.hhc
-Default topic=html\Welcome.html
+Default topic=html/Welcome.html
 Display compile progress=Yes
 Error log file=pwsafe.log
 Full-text search=Yes
@@ -13,47 +13,47 @@ Title=Password Safe °ïÖúÖ÷Ìâ
 
 
 [FILES]
-html\popups.js
-html\style.css
-html\about_combinations.html
-html\about_pws.html
-html\autotype.html
-html\backup_and_restore.html
-html\backups_tab.html
-html\change_combo.html
-html\create_new_db.html
-html\credits.html
-html\display_tab.html
-html\edit_menu.html
-html\entering_pwd.html
-html\export.html
-html\entering_pwd_add.html
-html\entering_pwd_date.html
-html\entering_pwd_pp.html
-html\failsafebackups.html
-html\run_command.html
-html\Shortcut_Keys.html
-html\shortcuts_tab.html
-html\file_menu.html
-html\filters.html
-html\help_menu.html
-html\imp_exp_text_details.html
-html\import.html
-html\manage_menu.html
-html\menu_toolbar.html
-html\misc_tab.html
-html\password_history.html
-html\password_history_tab.html
-html\password_policies.html
-html\preferences.html
-html\retrieve_pwd.html
-html\searching.html
-html\security_tab.html
-html\system_tab.html
-html\upgrade_from_v1x.html
-html\view_menu.html
-html\Welcome.html
-html\aliases.html
+html/popups.js
+html/style.css
+html/about_combinations.html
+html/about_pws.html
+html/autotype.html
+html/backup_and_restore.html
+html/backups_tab.html
+html/change_combo.html
+html/create_new_db.html
+html/credits.html
+html/display_tab.html
+html/edit_menu.html
+html/entering_pwd.html
+html/export.html
+html/entering_pwd_add.html
+html/entering_pwd_date.html
+html/entering_pwd_pp.html
+html/failsafebackups.html
+html/run_command.html
+html/Shortcut_Keys.html
+html/shortcuts_tab.html
+html/file_menu.html
+html/filters.html
+html/help_menu.html
+html/imp_exp_text_details.html
+html/import.html
+html/manage_menu.html
+html/menu_toolbar.html
+html/misc_tab.html
+html/password_history.html
+html/password_history_tab.html
+html/password_policies.html
+html/preferences.html
+html/retrieve_pwd.html
+html/searching.html
+html/security_tab.html
+html/system_tab.html
+html/upgrade_from_v1x.html
+html/view_menu.html
+html/Welcome.html
+html/aliases.html
 
 [INFOTYPES]
 

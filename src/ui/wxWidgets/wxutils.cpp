@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -28,6 +28,8 @@
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <wx/taskbar.h>
 
 /*
  * Reads a file into a PWScore object, and displays an appropriate msgbox
@@ -196,3 +198,15 @@ void ShowHideText(wxTextCtrl *&txtCtrl, const wxString &text,
 }
 
 int pless(int* first, int* second) { return *first - *second; }
+
+// Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
+// on Fedora or Ubuntu
+bool IsTaskBarIconAvailable()
+{
+#if defined(__WXGTK__)
+  const wxLinuxDistributionInfo ldi = wxGetLinuxDistributionInfo();
+  if (ldi.Id.IsEmpty() || ldi.Id == wxT("Ubuntu") || ldi.Id == wxT("Fedora"))
+    return false;
+#endif
+  return wxTaskBarIcon::IsAvailable();
+}

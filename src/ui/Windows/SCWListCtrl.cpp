@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -36,12 +36,14 @@ void CSCWListCtrl::Initialize()
 
 BEGIN_MESSAGE_MAP(CSCWListCtrl, CListCtrl)
   //{{AFX_MSG_MAP(CSCWListCtrl)
-  ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
-  ON_WM_MOUSEMOVE()
+    ON_WM_MOUSEMOVE()
   ON_WM_TIMER()
-  ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
-  ON_MESSAGE(WM_SETFONT, OnSetFont)
   ON_WM_MEASUREITEM_REFLECT()
+  
+  ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
+  
+  ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
+  ON_MESSAGE(WM_SETFONT, OnSetFont)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -54,7 +56,7 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   static bool bchanged_subitem_font(false);
   static CDC *pDC = NULL;
   static COLORREF crWindowText;
-  static CFont *pCurrentFont = NULL;
+  static CFont *pAddEditFont = NULL;
   static CFont *pPasswordFont = NULL;
 
   switch (pLVCD->nmcd.dwDrawStage) {
@@ -62,7 +64,7 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // PrePaint
       crWindowText = GetTextColor();
       pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
-      pCurrentFont = Fonts::GetInstance()->GetCurrentFont();
+      pAddEditFont = Fonts::GetInstance()->GetAddEditFont();
       pPasswordFont = Fonts::GetInstance()->GetPasswordFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
@@ -87,8 +89,8 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
         rect.DeflateRect(2, 2);
 
         CString str = GetItemText((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem);
-        pDC->SetTextColor(((pLVCD->nmcd.lItemlParam & REDTEXT) == REDTEXT) ?
-                                RGB(255, 0, 0) : crWindowText);
+        pLVCD->clrText = ((pLVCD->nmcd.lItemlParam & REDTEXT) == REDTEXT) ?
+                          RGB(255, 0, 0) : crWindowText;
 
         int iFormat = (pLVCD->nmcd.lItemlParam & 0x0F);
         UINT nFormat = DT_VCENTER | DT_SINGLELINE;
@@ -97,7 +99,7 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
         else if (iFormat == LVCFMT_CENTER)
           nFormat |= DT_CENTER;
         pDC->DrawText(str, &rect, nFormat);
-        *pLResult = CDRF_SKIPDEFAULT;
+        pDC->SelectObject(pAddEditFont);
       } else {
         // For Password values
         if ((pLVCD->nmcd.lItemlParam & PASSWORDFONT) == PASSWORDFONT) {
@@ -105,15 +107,17 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
           pDC->SelectObject(pPasswordFont);
         }
         pLVCD->clrText = crWindowText;
-        *pLResult |= CDRF_NOTIFYPOSTPAINT;
       }
+      
+      bchanged_subitem_font = true;
+      *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
       break;
 
     case CDDS_ITEMPOSTPAINT | CDDS_SUBITEM:
       // Sub-item PostPaint - restore old font if any
       if (bchanged_subitem_font) {
         bchanged_subitem_font = false;
-        pDC->SelectObject(pCurrentFont);
+        pDC->SelectObject(pAddEditFont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;
@@ -227,11 +231,10 @@ void CSCWListCtrl::UpdateRowHeight(bool bInvalidate){
   ModifyStyle(0, LVS_OWNERDRAWFIXED);
 
   SendMessage(WM_WINDOWPOSCHANGED, 0, (LPARAM)&wp);
-  if (bInvalidate)
-  {
+  if (bInvalidate) {
     Invalidate();
     int idx = GetTopIndex();
-    if (idx >=0)
+    if (idx >= 0)
       EnsureVisible(idx, FALSE);
   }
 }

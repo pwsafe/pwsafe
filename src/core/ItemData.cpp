@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -210,13 +210,13 @@ int CItemData::Read(PWSfile *in)
 
 size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
 {
-  FieldConstIter fiter = m_fields.find(ft);
+  auto fiter = m_fields.find(ft);
   size_t retval = 0;
   if (fiter != m_fields.end()) {
     const CItemField &field = fiter->second;
     ASSERT(!field.IsEmpty());
     size_t flength = field.GetLength() + BlowFish::BLOCKSIZE;
-    unsigned char *pdata = new unsigned char[flength];
+    auto *pdata = new unsigned char[flength];
     CItem::GetField(field, pdata, flength);
     if (isUTF8) {
       wchar_t *wpdata = reinterpret_cast<wchar_t *>(pdata);
@@ -313,8 +313,6 @@ int CItemData::WriteCommon(PWSfile *out) const
 
 int CItemData::Write(PWSfile *out) const
 {
-  int status = PWSfile::SUCCESS;
-
   // Map different UUID types (V4 concept) to original V3 UUID
   uuid_array_t item_uuid;
   FieldType ft = END;
@@ -336,11 +334,11 @@ int CItemData::Write(PWSfile *out) const
   // We restore the password afterwards (not that it should matter
   // for a dependent), so logically we're still const.
 
-  CItemData *self = const_cast<CItemData *>(this);
+  auto *self = const_cast<CItemData *>(this);
   const StringX saved_password = GetPassword();
   self->SetSpecialPasswords(); // encode baseuuid in password if IsDependent
 
-  status = WriteCommon(out);
+  int status = WriteCommon(out);
 
   self->SetPassword(saved_password);
   return status;
@@ -348,7 +346,6 @@ int CItemData::Write(PWSfile *out) const
 
 int CItemData::Write(PWSfileV4 *out) const
 {
-  int status = PWSfile::SUCCESS;
   uuid_array_t item_uuid;
 
   ASSERT(HasUUID());
@@ -380,7 +377,7 @@ int CItemData::Write(PWSfileV4 *out) const
     out->WriteField(ATTREF, ref_uuid, sizeof(uuid_array_t));
   }
 
-  status = WriteCommon(out);
+  int status = WriteCommon(out);
 
   return status;
 }
@@ -542,7 +539,7 @@ StringX CItemData::GetTime(int whichtime, PWSUtil::TMC result_format) const
 void CItemData::GetUUID(uuid_array_t &uuid_array, FieldType ft) const
 {
   size_t length = sizeof(uuid_array_t);
-  FieldConstIter fiter = m_fields.end();
+  auto fiter = m_fields.end();
   if (ft != END) { // END means "infer correct UUID from entry type"
     // anything != END is used as-is, no questions asked
     fiter = m_fields.find(ft);
@@ -591,7 +588,7 @@ void CItemData::GetPWPolicy(PWPolicy &pwp) const
 
 int32 CItemData::GetXTimeInt(int32 &xint) const
 {
-  FieldConstIter fiter = m_fields.find(XTIME_INT);
+  auto fiter = m_fields.find(XTIME_INT);
   if (fiter == m_fields.end())
     xint = 0;
   else {
@@ -601,7 +598,7 @@ int32 CItemData::GetXTimeInt(int32 &xint) const
     CItem::GetField(fiter->second, in, tlen);
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int32));
-      memcpy(&xint, in, sizeof(int32));
+      xint = getInt<int32>(in);
     } else {
       xint = 0;
     }
@@ -623,7 +620,7 @@ StringX CItemData::GetXTimeInt() const
 
 void CItemData::GetProtected(unsigned char &ucprotected) const
 {
-  FieldConstIter fiter = m_fields.find(PROTECTED);
+  auto fiter = m_fields.find(PROTECTED);
   if (fiter == m_fields.end())
     ucprotected = 0;
   else {
@@ -653,7 +650,7 @@ StringX CItemData::GetProtected() const
 
 int16 CItemData::GetDCA(int16 &iDCA, const bool bShift) const
 {
-  FieldConstIter fiter = m_fields.find(bShift ? SHIFTDCA : DCA);
+  auto fiter = m_fields.find(bShift ? SHIFTDCA : DCA);
   if (fiter != m_fields.end()) {
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
@@ -661,7 +658,7 @@ int16 CItemData::GetDCA(int16 &iDCA, const bool bShift) const
 
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int16));
-      memcpy(&iDCA, in, sizeof(int16));
+      iDCA = getInt<int16>(in);
     } else {
       iDCA = -1;
     }
@@ -681,7 +678,7 @@ StringX CItemData::GetDCA(const bool bShift) const
 
 int32 CItemData::GetKBShortcut(int32 &iKBShortcut) const
 {
-  FieldConstIter fiter = m_fields.find(KBSHORTCUT);
+  auto fiter = m_fields.find(KBSHORTCUT);
   if (fiter != m_fields.end()) {
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     size_t tlen = sizeof(in); // ditto
@@ -689,7 +686,7 @@ int32 CItemData::GetKBShortcut(int32 &iKBShortcut) const
 
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int32));
-      memcpy(&iKBShortcut, in, sizeof(int32));
+      iKBShortcut = getInt<int32>(in);
     } else {
       iKBShortcut = 0;
     }
@@ -782,7 +779,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
   StringX history(_T(""));
   if (bsFields.test(CItemData::PWHIST)) {
     // History exported as "00000" if empty, to make parsing easier
-    BOOL pwh_status;
+    bool pwh_status;
     size_t pwh_max, num_err;
     PWHistList pwhistlist;
 
@@ -1682,7 +1679,7 @@ bool CItemData::Matches(const stringT &stValue, int iObject,
   ASSERT(iFunction != 0); // must be positive or negative!
 
   StringX sx_Object;
-  FieldType ft = static_cast<FieldType>(iObject);
+  auto ft = static_cast<FieldType>(iObject);
   switch(ft) {
     case GROUP:
     case TITLE:
@@ -1908,7 +1905,7 @@ static bool pull(unsigned char &value, const unsigned char *data, size_t len)
 
 bool CItemData::DeSerializePlainText(const std::vector<char> &v)
 {
-  vector<char>::const_iterator iter = v.begin();
+  auto iter = v.begin();
   int emergencyExit = 255;
 
   while (iter != v.end()) {
@@ -1929,8 +1926,37 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
       ASSERT(0);
       return false;
     }
+
+#ifdef PWS_BIG_ENDIAN
+    unsigned char buf[len] = {0};
+
+    switch(type) {
+      case CTIME:
+      case PMTIME:
+      case ATIME:
+      case XTIME:
+      case RMTIME:
+      case DCA:
+      case SHIFTDCA:
+      case KBSHORTCUT:
+      case XTIME_INT:
+
+        memcpy(buf, &(*iter), len);
+        byteswap(buf, buf + len - 1);
+
+        if (!SetField(type, buf, len))
+          return false;
+        break;
+
+      default:
+        if (!SetField(type, reinterpret_cast<const unsigned char *>(&(*iter)), len))
+          return false;
+	break;
+    }
+#else
     if (!SetField(type, reinterpret_cast<const unsigned char *>(&(*iter)), len))
       return false;
+#endif
     iter += len;
   }
   return false; // END tag not found!
@@ -1942,7 +1968,7 @@ bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t l
   int16 i16;
   unsigned char uc;
 
-  FieldType ft = static_cast<FieldType>(type);
+  auto ft = static_cast<FieldType>(type);
   switch (ft) {
     case NAME:
       ASSERT(0); // not serialized, or in v3 format
@@ -2157,6 +2183,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   // Convenience: Get the name associated with FieldType
 stringT CItemData::FieldName(FieldType ft)
 {
+  // "User" fields only i.e. ft < CItem::LAST_USER_FIELD
   stringT retval(_T(""));
   switch (ft) {
   case GROUPTITLE:   LoadAString(retval, IDSC_FLDNMGROUPTITLE); break;
@@ -2184,6 +2211,7 @@ stringT CItemData::FieldName(FieldType ft)
   case SYMBOLS:      LoadAString(retval, IDSC_FLDNMSYMBOLS); break;
   case POLICYNAME:   LoadAString(retval, IDSC_FLDNMPWPOLICYNAME); break;
   case KBSHORTCUT:   LoadAString(retval, IDSC_FLDNMKBSHORTCUT); break;
+  case ATTREF:       LoadAString(retval, IDSC_FLDNMATTREF); break;
   default:
     ASSERT(0);
   };
@@ -2193,35 +2221,35 @@ stringT CItemData::FieldName(FieldType ft)
 stringT CItemData::EngFieldName(FieldType ft)
 {
   switch (ft) {
-  case GROUPTITLE: return _T("Group/Title");
-  case UUID:       return _T("UUID");
-  case GROUP:      return _T("Group");
-  case TITLE:      return _T("Title");
-  case USER:       return _T("Username");
-  case NOTES:      return _T("Notes");
-  case PASSWORD:   return _T("Password");
-  case CTIME:      return _T("Created Time");
-  case PMTIME:     return _T("Password Modified Time");
-  case ATIME:      return _T("Last Access Time");
-  case XTIME:      return _T("Password Expiry Date");
-  case RMTIME:     return _T("Record Modified Time");
-  case URL:        return _T("URL");
-  case AUTOTYPE:   return _T("AutoType");
-  case PWHIST:     return _T("History");
-  case POLICY:     return _T("Password Policy");
-  case XTIME_INT:  return _T("Password Expiry Interval");
-  case RUNCMD:     return _T("Run Command");
-  case DCA:        return _T("DCA");
-  case SHIFTDCA:   return _T("Shift+DCA");
-  case EMAIL:      return _T("e-mail");
-  case PROTECTED:  return _T("Protected");
-  case SYMBOLS:    return _T("Symbols");
-  case POLICYNAME: return _T("Password Policy Name");
-  case KBSHORTCUT: return _T("Keyboard Shortcut");
-  case ATTREF:     return _T("Attachment Reference");
-  case BASEUUID:   return _T("Base UUID");
-  case ALIASUUID:  return _T("Alias UUID");
-  case SHORTCUTUUID:return _T("Shortcut UUID");
+  case GROUPTITLE:    return _T("Group/Title");
+  case UUID:          return _T("UUID");
+  case GROUP:         return _T("Group");
+  case TITLE:         return _T("Title");
+  case USER:          return _T("Username");
+  case NOTES:         return _T("Notes");
+  case PASSWORD:      return _T("Password");
+  case CTIME:         return _T("Created Time");
+  case PMTIME:        return _T("Password Modified Time");
+  case ATIME:         return _T("Last Access Time");
+  case XTIME:         return _T("Password Expiry Date");
+  case RMTIME:        return _T("Record Modified Time");
+  case URL:           return _T("URL");
+  case AUTOTYPE:      return _T("AutoType");
+  case PWHIST:        return _T("History");
+  case POLICY:        return _T("Password Policy");
+  case XTIME_INT:     return _T("Password Expiry Interval");
+  case RUNCMD:        return _T("Run Command");
+  case DCA:           return _T("DCA");
+  case SHIFTDCA:      return _T("Shift+DCA");
+  case EMAIL:         return _T("e-mail");
+  case PROTECTED:     return _T("Protected");
+  case SYMBOLS:       return _T("Symbols");
+  case POLICYNAME:    return _T("Password Policy Name");
+  case KBSHORTCUT:    return _T("Keyboard Shortcut");
+  case ATTREF:        return _T("Attachment Reference");
+  case BASEUUID:      return _T("Base UUID");
+  case ALIASUUID:     return _T("Alias UUID");
+  case SHORTCUTUUID:  return _T("Shortcut UUID");
   default:
     ASSERT(0);
     return _T("");

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -239,10 +239,10 @@ PwsSyncWizard::PwsSyncWizard(wxWindow* parent, PWScore* core):
 
   m_page1 = new SyncStartPage(this, m_syncData);
 
-  DbSelectionPage*        page2 = new DbSelectionPage(this, m_syncData);
-  SyncFieldSelectionPage* page3 = new SyncFieldSelectionPage(this, m_syncData);
-  SyncOptionsSummaryPage* page4 = new SyncOptionsSummaryPage(this, m_syncData);
-  SyncStatusPage*         page5 = new SyncStatusPage(this, m_syncData);
+  auto *page2 = new DbSelectionPage(this, m_syncData);
+  auto *page3 = new SyncFieldSelectionPage(this, m_syncData);
+  auto *page4 = new SyncOptionsSummaryPage(this, m_syncData);
+  auto *page5 = new SyncStatusPage(this, m_syncData);
 
   m_page1->SetNext(page2);
   page2->SetPrev(m_page1);
@@ -363,7 +363,7 @@ SyncStartPage::SyncStartPage(wxWizard* parent, SyncData* data) : SyncWizardPage(
     _("4. You can undo the operation once it is complete, but won't be\nable to abort it mid-way.")
   };
 
-  wxBoxSizer* paneSizer = new wxBoxSizer(wxVERTICAL);
+  auto *paneSizer = new wxBoxSizer(wxVERTICAL);
   for (size_t idx = 0; idx < NumberOf(helpItems); ++idx) {
     paneSizer->Add(new wxStaticText(pane->GetPane(), wxID_ANY, helpItems[idx]), wxSizerFlags().Expand().Border().Proportion(1));
   }
@@ -513,7 +513,7 @@ SyncStatusPage::SyncStatusPage(wxWizard* parent, SyncData* data): SyncWizardPage
   sizer->Add(new wxStaticText(this, ID_HEADER_TXT, wxEmptyString), flags.Proportion(1));
   sizer->AddSpacer(RowSeparation);
 
-  wxBoxSizer* midSizer = new wxBoxSizer(wxVERTICAL);
+  auto *midSizer = new wxBoxSizer(wxVERTICAL);
   midSizer->Add(new wxStaticText(this, ID_PROGRESS_TXT, wxEmptyString), wxSizerFlags().Expand().Proportion(1));
   midSizer->AddSpacer(RowSeparation);
   size_t range = data->core->GetNumEntries();
@@ -521,7 +521,7 @@ SyncStatusPage::SyncStatusPage(wxWizard* parent, SyncData* data): SyncWizardPage
   midSizer->Add(new wxGauge(this, ID_GAUGE, int(range)), wxSizerFlags().Expand().Proportion(0));
   sizer->Add(midSizer, flags.Proportion(1));
 
-  wxBoxSizer* horizSizer = new wxBoxSizer(wxHORIZONTAL);
+  auto *horizSizer = new wxBoxSizer(wxHORIZONTAL);
   horizSizer->Add(new wxStaticText(this, ID_FINISH_TXT, wxEmptyString), wxSizerFlags().Expand().Proportion(1));
   horizSizer->Add(new wxCheckBox(this, ID_SHOW_REPORT, _("See a detailed report"), wxDefaultPosition,
                       wxDefaultSize, 0, wxGenericValidator(&m_syncData->showReport)),
@@ -553,7 +553,7 @@ void SyncStatusPage::OnPageEnter(PageDirection dir)
 
     FindWindow(ID_SHOW_REPORT)->Hide();
 
-    PWSAuxCore* othercore = new PWSAuxCore;
+    auto *othercore = new PWSAuxCore;
     const wxString otherDBPath = m_syncData->otherDB.GetFullPath();
     const int rc = ReadCore(*othercore, otherDBPath, m_syncData->combination,
                                     false, this);
@@ -579,7 +579,7 @@ void SyncStatusPage::OnPageEnter(PageDirection dir)
 
 void SyncStatusPage::OnSyncStartEvent(wxCommandEvent& evt)
 {
-  PWScore* otherCore = reinterpret_cast<PWScore*>(evt.GetClientData());
+  auto *otherCore = reinterpret_cast<PWScore*>(evt.GetClientData());
   wxASSERT_MSG(otherCore, wxT("Sync Start Event did not arrive with the other PWScore"));
   Synchronize(m_syncData->core, otherCore);
 
@@ -660,10 +660,10 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
   for (otherPos = otherCore->GetEntryIter();
        otherPos != otherCore->GetEntryEndIter();
        otherPos++) {
-    CItemData otherItem = otherCore->GetEntry(otherPos);
+    const CItemData &otherItem = otherCore->GetEntry(otherPos);
     CItemData::EntryType et = otherItem.GetEntryType();
 
-    const size_t currentIndex = std::distance(otherCore->GetEntryIter(), otherPos);
+    const auto currentIndex = std::distance(otherCore->GetEntryIter(), otherPos);
     gauge->SetValue(int(currentIndex));
 
     // Do not process Aliases and Shortcuts
@@ -701,7 +701,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
 
       bool bUpdated(false);
       for (int i = 0; i < (int)criteria.TotalFieldsCount(); i++) {
-        CItemData::FieldType ft = (CItemData::FieldType)i;
+        auto ft = (CItemData::FieldType)i;
         if (criteria.IsFieldSelected(ft)) {
           const StringX sxValue = otherItem.GetFieldValue(ft);
           if (sxValue != updItem.GetFieldValue(ft)) {

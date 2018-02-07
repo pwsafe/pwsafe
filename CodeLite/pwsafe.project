@@ -131,6 +131,10 @@
     <File Name="../src/ui/wxWidgets/mainView.cpp"/>
     <File Name="../src/ui/wxWidgets/passwordsubset.cpp"/>
     <File Name="../src/ui/wxWidgets/passwordsubset.h"/>
+    <File Name="../src/ui/wxWidgets/pwsqrcodedlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/pwsqrcodedlg.h"/>
+    <File Name="../src/ui/wxWidgets/pwsqrencode.cpp"/>
+    <File Name="../src/ui/wxWidgets/pwsqrencode.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
@@ -232,6 +236,7 @@
         <Library Value="Xtst"/>
         <Library Value="xerces-c"/>
         <Library Value="X11"/>
+        <Library Value="qrencode"/>
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./DebugX" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
@@ -340,6 +345,7 @@ dir /usr/src/gtk+2.0-2.18.3/gdk
         <Library Value="Xtst"/>
         <Library Value="xerces-c"/>
         <Library Value="X11"/>
+        <Library Value="qrencode"/>
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./ReleaseX" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>

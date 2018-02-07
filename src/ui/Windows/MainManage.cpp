@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -265,6 +265,10 @@ void DboxMain::OnOptions()
   // Get old DB preferences String value for use later
   const StringX sxOldDBPrefsString(prefs->Store());
 
+  // Save current Window transparency in case we have to change it
+  const BYTE byteOldPercentTransparency = (BYTE)prefs->GetPref(PWSprefs::WindowTransparency);
+  const bool bOldTransparancyEnabled = prefs->GetPref(PWSprefs::EnableWindowTransparency);
+
   // Save Hotkey info
   BOOL bAppHotKeyEnabled;
   int32 iAppHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
@@ -345,11 +349,6 @@ void DboxMain::OnOptions()
                             m_StatusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
                             SBPS_STRETCH, NULL);
 
-    int iTrayColour = pOptionsPS->GetTrayIconColour();
-    SetClosedTrayIcon(iTrayColour);
-
-    UpdateSystemMenu();
-    
     if (pOptionsPS->GetMaxMRUItems() == 0)
       app.ClearMRU();  // Clear any currently saved
     
@@ -503,7 +502,8 @@ void DboxMain::OnOptions()
     }
 
     if (m_core.GetReadFileVersion() >= PWSfile::V30) { // older versions don't have prefs
-      if (sxOldDBPrefsString != sxNewDBPrefsString) {
+      if (sxOldDBPrefsString != sxNewDBPrefsString ||
+          m_core.GetHashIters() != pOptionsPS->GetHashIters()) {
         // Determine whether Tree needs redisplaying due to change
         // in what is shown (e.g. usernames/passwords)
         bool bUserDisplayChanged = pOptionsPS->UserDisplayChanged();
@@ -517,7 +517,7 @@ void DboxMain::OnOptions()
                                                   UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED);
           pmulticmds->Add(pcmd);
         }
-        pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+        pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString, pOptionsPS->GetHashIters());
         pmulticmds->Add(pcmd);
 
         if (bNeedGUITreeUpdate) {
@@ -535,7 +535,7 @@ void DboxMain::OnOptions()
           prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen, true) == PWSprefs::AsPerLastSave)) {
         SaveGroupDisplayState();
       }
-    }
+    } // file version check
 
     const int iAction = pOptionsPS->GetPWHAction();
     const int new_default_max = pOptionsPS->GetPWHistoryMax();
@@ -559,57 +559,66 @@ void DboxMain::OnOptions()
     }
 
     // If DB preferences changed and/or password history options
-    if (pmulticmds != NULL) {
-      int num_altered(0);
-      if (!pmulticmds->IsEmpty()) {
-        // Do it
-        Execute(pmulticmds);
+    int num_altered(0);
+    if (!pmulticmds->IsEmpty()) {
+      // Do it
+      Execute(pmulticmds);
 
-        if (ipwh_exec > 0) {
-          // We did do PWHistory update
-          if (pmulticmds->GetRC(ipwh_exec, num_altered)) {
-            UINT uimsg_id(0);
-            switch (iAction) {
-              case -1:   // reset off - include protected entries
-              case  1:   // reset off - exclude protected entries
-                uimsg_id = IDS_ENTRIESCHANGEDSTOP;
-                break;
-              case -2:   // reset on - include protected entries
-              case  2:   // reset on - exclude protected entries
-                uimsg_id = IDS_ENTRIESCHANGEDSAVE;
-                break;
-              case -3:   // setmax - include protected entries
-              case  3:   // setmax - exclude protected entries
-                uimsg_id = IDS_ENTRIESRESETMAX;
-                break;
-              case -4:   // clearall - include protected entries
-              case  4:   // clearall - exclude protected entries
-                uimsg_id = IDS_ENTRIESCLEARALL;
-                break;
-              default:
-                ASSERT(0);
-                break;
-            } // switch (iAction)
+      if (ipwh_exec > 0) {
+        // We did PWHistory update
+        if (pmulticmds->GetRC(ipwh_exec, num_altered)) {
+          UINT uimsg_id(0);
+          switch (iAction) {
+          case PWHist::STOP_INCL_PROT:   // reset off - include protected entries
+          case PWHist::STOP_EXCL_PROT:   // reset off - exclude protected entries
+            uimsg_id = IDS_ENTRIESCHANGEDSTOP;
+            break;
+          case PWHist::START_INCL_PROT:   // reset on - include protected entries
+          case PWHist::START_EXCL_PROT:   // reset on - exclude protected entries
+            uimsg_id = IDS_ENTRIESCHANGEDSAVE;
+            break;
+          case PWHist::SETMAX_INCL_PROT:   // setmax - include protected entries
+          case PWHist::SETMAX_EXCL_PROT:   // setmax - exclude protected entries
+            uimsg_id = IDS_ENTRIESRESETMAX;
+            break;
+          case PWHist::CLEAR_INCL_PROT:   // clearall - include protected entries
+          case PWHist::CLEAR_EXCL_PROT:   // clearall - exclude protected entries
+            uimsg_id = IDS_ENTRIESCLEARALL;
+            break;
+          default:
+            ASSERT(0);
+            break;
+          } // switch (iAction)
 
-            if (uimsg_id > 0) {
-              CGeneralMsgBox gmb;
-              CString cs_Msg;
-              cs_Msg.Format(uimsg_id, num_altered);
-              gmb.AfxMessageBox(cs_Msg);
-            }
-          }
-
-          if (num_altered > 0) {
-            ChangeOkUpdate();
+          if (uimsg_id > 0) {
+            CGeneralMsgBox gmb;
+            CString cs_Msg;
+            cs_Msg.Format(uimsg_id, num_altered);
+            gmb.AfxMessageBox(cs_Msg);
           }
         }
 
-        // Restore current horizontal scroll bar position
-        m_ctlItemList.Scroll(CSize(m_iListHBarPos, 0));
-        m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
-      } else {
-        // Was created but no commands added in the end.
-        delete pmulticmds;
+        if (num_altered > 0) {
+          ChangeOkUpdate();
+        }
+      } // ipwh_exec > 0
+
+      // Restore current horizontal scroll bar position
+      m_ctlItemList.Scroll(CSize(m_iListHBarPos, 0));
+      m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
+    } else { // multicmds was created but no commands added
+      delete pmulticmds;
+    }
+  } // rc == IDOK
+  
+  if (m_bOnStartupTransparancyEnabled) {
+    if (!prefs->GetPref(PWSprefs::EnableWindowTransparency)) {
+      // User turned off transparency
+      SetLayered(this, 0);
+    } else {
+      if (byteOldPercentTransparency != (BYTE)prefs->GetPref(PWSprefs::WindowTransparency)) {
+        // User changed transparency
+        SetLayered(this);
       }
     }
   }

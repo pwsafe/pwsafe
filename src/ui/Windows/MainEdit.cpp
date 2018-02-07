@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -237,6 +237,7 @@ void DboxMain::OnCreateShortcut()
       if (rc2 == IDOK) {
         // Initialise a copy of the DB preferences
         prefs->SetupCopyPrefs();
+
         // Update Copy with new values
         prefs->SetPref(PWSprefs::UseDefaultUser, true, true);
         prefs->SetPref(PWSprefs::DefaultUsername, dlg_createshortcut.m_username, true);
@@ -256,6 +257,12 @@ void DboxMain::OnCreateShortcut()
     CreateShortcutEntry(pci, dlg_createshortcut.m_group,
                         dlg_createshortcut.m_title,
                         dlg_createshortcut.m_username, sxNewDBPrefsString);
+
+    // Ensure selected item looks selected as focus may have been lost
+    if (m_ctlItemTree.IsWindowVisible())
+      m_ctlItemTree.SetFocus();
+    else
+      m_ctlItemList.SetFocus();
   }
 }
 
@@ -739,7 +746,10 @@ void DboxMain::OnCompareEntries()
     if (pci != NULL) {
       // Entry - selected - shouldn't be called when group is selected
       // Now get the other entry
-      CCompareWithSelectDlg dlg(pci, &m_core, this);
+      CString csProtect = Fonts::GetInstance()->GetProtectedSymbol().c_str();
+      CString csAttachment = Fonts::GetInstance()->GetAttachmentSymbol().c_str();
+
+      CCompareWithSelectDlg dlg(this, pci, &m_core, csProtect, csAttachment);
 
       if (dlg.DoModal() == IDOK) {
         // Get UUID of the entry
@@ -2097,13 +2107,24 @@ void DboxMain::PerformAutoType()
 void DboxMain::OnAutoType()
 {
   CItemData *pci(NULL);
+
+  CItemData *pci_selected = getSelectedItem();
+
   if (m_ctlItemTree.IsWindowVisible() && m_LastFoundTreeItem != NULL) {
     pci = (CItemData *)m_ctlItemTree.GetItemData(m_LastFoundTreeItem);
   } else
   if (m_ctlItemList.IsWindowVisible() && m_LastFoundListItem >= 0) {
     pci = (CItemData *)m_ctlItemList.GetItemData(m_LastFoundListItem);
-  } else {
-    pci = getSelectedItem();
+  }
+
+  /*
+    BR1432 - If the user has selected an entry, which is not the previous result of
+    a Find request, then use the selected item.
+
+    Otherwise, use the last found item (if present)
+  */
+  if (pci_selected != NULL && pci != pci_selected) {
+    pci = pci_selected;
   }
 
   if (pci == NULL)
@@ -2301,8 +2322,6 @@ void DboxMain::OnRunCommand()
                                                 sx_pswd, sx_lastpswd,
                                                 sx_notes, sx_url, sx_email,
                                                 m_vactionverboffsets);
-  SetClipboardData(sx_pswd);
-  UpdateLastClipboardAction(CItemData::PASSWORD);
   UpdateAccessTime(uuid);
 
   // Now honour presence of [alt], {alt} or [ssh] in the url if present

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -114,11 +114,11 @@ BOOL COptionsSecurity::OnInitDialog()
   }
 
   OnLockOnIdleTimeout();
-  CSpinButtonCtrl *pspin;
 
+  CSpinButtonCtrl *pspin;
   pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
   pspin->SetBuddy(GetDlgItem(IDC_IDLE_TIMEOUT));
-  pspin->SetRange(1, 120);
+  pspin->SetRange(M_prefminIdleTimeout(), M_prefmaxIdleTimeout());
   pspin->SetBase(10);
   pspin->SetPos(m_IdleTimeOut);
 
@@ -189,6 +189,7 @@ LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
           M_LockOnWindowLock()         != m_LockOnWindowLock         ||
           M_LockOnIdleTimeout()        != m_LockOnIdleTimeout        ||
           M_CopyPswdBrowseURL()        != m_CopyPswdBrowseURL        ||
+          M_HashIters()                != m_HashIter                 ||
           (m_LockOnIdleTimeout         == TRUE &&
            M_IdleTimeOut()             != m_IdleTimeOut))
         return 1L;
@@ -209,14 +210,15 @@ BOOL COptionsSecurity::OnApply()
   UpdateData(TRUE);
 
   CString csText;
-  ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->GetWindowText(csText);
+  ((CEdit *)GetDlgItem(IDC_IDLE_TIMEOUT))->GetWindowText(csText);
   m_IdleTimeOut = _wtoi(csText);
 
   // Check that options, as set, are valid.
-  if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > 120)) {
+  if ((m_IdleTimeOut < M_prefminIdleTimeout()) || (m_IdleTimeOut > M_prefmaxIdleTimeout())) {
     CGeneralMsgBox gmb;
-    gmb.AfxMessageBox(IDS_INVALIDTIMEOUT);
-    ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
+    csText.Format(IDS_INVALIDTIMEOUT, M_prefminIdleTimeout(), M_prefmaxIdleTimeout());
+    gmb.AfxMessageBox(csText);
+    ((CEdit *)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
     return FALSE;
   }
 
@@ -270,21 +272,24 @@ BOOL COptionsSecurity::PreTranslateMessage(MSG *pMsg)
 
 BOOL COptionsSecurity::OnKillActive()
 {
-  COptions_PropertyPage::OnKillActive();
+  if (UpdateData(TRUE) == FALSE)
+    return FALSE;
 
+  // Update variable from text box
   CString csText;
-  ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->GetWindowText(csText);
+  ((CEdit *)GetDlgItem(IDC_IDLE_TIMEOUT))->GetWindowText(csText);
   m_IdleTimeOut = _wtoi(csText);
 
   // Check that options, as set, are valid.
-  if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > 120)) {
+  if ((m_IdleTimeOut < M_prefminIdleTimeout()) || (m_IdleTimeOut > M_prefmaxIdleTimeout())) {
     CGeneralMsgBox gmb;
-    gmb.AfxMessageBox(IDS_INVALIDTIMEOUT);
-    ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
+    csText.Format(IDS_INVALIDTIMEOUT, M_prefminIdleTimeout(), M_prefmaxIdleTimeout());
+    gmb.AfxMessageBox(csText);
+    ((CEdit *)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
     return FALSE;
   }
 
-  return TRUE;
+  return COptions_PropertyPage::OnKillActive();
 }
 
 void COptionsSecurity::OnHelp()

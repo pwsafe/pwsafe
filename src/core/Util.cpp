@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -22,6 +22,7 @@
 #include "os/debug.h"
 #include "os/pws_tchar.h"
 #include "os/dir.h"
+#include "os/file.h"
 
 #include <stdio.h>
 #ifdef _WIN32
@@ -174,7 +175,7 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length, unsigned 
   // a dictionary attack harder
   PWSrand::GetInstance()->GetRandomData(curblock, BS);
   // block length overwrites 4 bytes of the above randomness.
-  putInt32(curblock, reinterpret_cast<int32 &>(length));
+  putInt32(curblock, static_cast<int32>(length));
 
   // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
   curblock[sizeof(int32)] = type;
@@ -378,7 +379,7 @@ size_t _readcbc(FILE *fp, unsigned char *buffer,
   ASSERT((buffer_len % BS) == 0);
   size_t nread = 0;
   unsigned char *p = buffer;
-  unsigned char *tmpcbc = new unsigned char[BS];
+  auto *tmpcbc = new unsigned char[BS];
 
   do {
     size_t nr = fread(p, 1, BS, fp);
@@ -742,7 +743,7 @@ unsigned int GetStringBufSize(const TCHAR *fmt, va_list args)
   // Linux doesn't do this correctly :-(
   unsigned int guess = 16;
   int nBytes = -1;
-  while (1) {
+  while (true) {
     len = guess;
     buffer = new TCHAR[len];
     nBytes = _vstprintf_s(buffer, len, fmt, ar);
@@ -849,7 +850,7 @@ bool PWSUtil::pull_time(time_t &t, const unsigned char *data, size_t len)
     unsigned char buf[sizeof(__time64_t)] = {0};
     memcpy(buf, data, len); // not needed if len == 8, but no harm
     struct tm ts;
-    const __time64_t t64 = getInt<__time64_t>(buf);
+    const auto t64 = getInt<__time64_t>(buf);
     if (_localtime64_s(&ts, &t64) != 0) {
       ASSERT(0); return false;
     }
@@ -880,4 +881,32 @@ std::string toutf8(const std::wstring &w)
   if (conv.ToUTF8(std2stringx(w), utf8str, length))
     return string{ reinterpret_cast<const char *>(utf8str), length};
   return string{};
+}
+
+bool PWSUtil::loadFile(const StringX &filename, StringXStream &stream) {
+  // We need to use FOpen as the file name/file path may contain non-Latin
+  // characters
+  FILE *fs = pws_os::FOpen(filename.c_str(), _T("rb"));
+  if (fs == nullptr)
+    return false;
+
+  // when using wifstream, each byte will be converted to wchar_t, but we need to load
+  // each n-bytes as one wchar, so read in whole file and put it in a StringXStream
+  const size_t BUFFER_SIZE = 1024;
+
+  wchar_t buffer[BUFFER_SIZE];
+  bool bError(false);
+  while(!feof(fs)) {
+    auto count = fread(buffer, sizeof(wchar_t), BUFFER_SIZE, fs);
+    if (ferror(fs)) {
+      bError = true;
+      break;
+    }
+    stream.write(buffer, count);
+  }
+
+  // Close the file
+  fclose(fs);
+
+  return !bError;
 }

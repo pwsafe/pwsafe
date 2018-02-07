@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -432,7 +432,7 @@ void PWSMenuShortcuts::ReadApplyUserShortcuts()
   typedef std::vector<st_prefShortcut> userShortcut_t;
   const std::vector<st_prefShortcut>& userShortcuts = PWSprefs::GetInstance()->GetPrefShortcuts();
   for (userShortcut_t::const_iterator usrItr = userShortcuts.begin(); usrItr != userShortcuts.end(); ++usrItr) {
-    MenuItemDataArray::iterator itr = std::find_if(m_midata.begin(), m_midata.end(),
+    auto itr = std::find_if(m_midata.begin(), m_midata.end(),
                             std::bind1st(SameShortcutTarget(), *usrItr));
     if (itr != m_midata.end()) {
       itr->SetUserShortcut(*usrItr);
@@ -665,7 +665,7 @@ void PWSMenuShortcuts::OnResetRemoveShortcut( wxCommandEvent& evt )
 {
   wxMenu* shortcutsMenu = wxDynamicCast(evt.GetEventObject(), wxMenu);
   wxCHECK_RET(shortcutsMenu, wxT("Could not get shortcuts reset/remove menu from event"));
-  GridAndIndex* gr = reinterpret_cast<GridAndIndex*>(shortcutsMenu->GetClientData());
+  auto *gr = reinterpret_cast<GridAndIndex*>(shortcutsMenu->GetClientData());
   wxCHECK_RET(gr, wxT("Could not find internal data in reset/remove handler"));
   GridResetOrRemoveShortcut(gr->grid, gr->index);
 }

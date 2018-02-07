@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -149,15 +149,6 @@ void CRUEList::SetRUEList(const UUIDList &RUElist)
   std::copy(RUElist.rbegin(), RUElist.rend(), m_RUEList.begin());
   if (m_RUEList.size() > m_maxentries)
     m_RUEList.resize(m_maxentries);
-}
-
-CRUEList& CRUEList::operator=(const CRUEList &that)
-{
-  if (this != &that) {
-    m_maxentries = that.m_maxentries;
-    m_RUEList = that.m_RUEList;
-  }
-  return *this;
 }
 
 //-----------------------------------------------------------------------------

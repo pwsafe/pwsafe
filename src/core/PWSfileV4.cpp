@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2013-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2013-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -76,7 +76,7 @@ PWSfileV4::CKeyBlocks::~CKeyBlocks()
 {
 }
 
-PWSfileV4::CKeyBlocks PWSfileV4::CKeyBlocks::operator=(const PWSfileV4::CKeyBlocks &that)
+PWSfileV4::CKeyBlocks& PWSfileV4::CKeyBlocks::operator=(const PWSfileV4::CKeyBlocks &that)
 {
   if (this != &that) {
     m_kbs = that.m_kbs;
@@ -210,7 +210,6 @@ int PWSfileV4::CheckPasskey(const StringX &filename,
   PWS_LOGIT;
 
   FILE *fd = a_fd;
-  int retval = SUCCESS;
   SHA256 H;
 
   if (fd == NULL) {
@@ -219,7 +218,7 @@ int PWSfileV4::CheckPasskey(const StringX &filename,
   if (fd == NULL)
     return CANT_OPEN_FILE;
 
-  retval = SanityCheck(fd);
+  int retval = SanityCheck(fd);
   if (retval == SUCCESS) {
     PWSfileV4 pv4(filename, Read, V40);
     pv4.m_fd = fd;
@@ -245,7 +244,7 @@ size_t PWSfileV4::WriteCBC(unsigned char type, const StringX &data)
 size_t PWSfileV4::WriteCBC(unsigned char type, const unsigned char *data,
                            size_t length)
 {
-  int32 len32 = reinterpret_cast<int &>(length);
+  int32 len32 = static_cast<int>(length);
   unsigned char buf[4];
   putInt32(buf, len32);
 
@@ -292,7 +291,7 @@ size_t PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
   WriteField(CItemAtt::ATTAK, AK, sizeof(AK));
 
   // Write content length as the "value" of the content field
-  int32 len32 = reinterpret_cast<int &>(len);
+  int32 len32 = static_cast<int>(len);
   unsigned char buf[4];
   putInt32(buf, len32);
   WriteField(CItemAtt::CONTENT, buf, sizeof(buf));
@@ -338,7 +337,7 @@ size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
   size_t numRead = PWSfile::ReadCBC(type, data, length);
 
   if (numRead > 0) {
-    int32 len32 = reinterpret_cast<int &>(length);
+    int32 len32 = static_cast<int>(length);
     unsigned char buf[4];
     putInt32(buf, len32);
 
@@ -626,8 +625,8 @@ int PWSfileV4::WriteHeader()
   // Write out who saved it!
   {
     const SysInfo *si = SysInfo::GetInstance();
-    stringT user = si->GetRealUser();
-    stringT sysname = si->GetRealHost();
+    const stringT &user = si->GetRealUser();
+    const stringT &sysname = si->GetRealHost();
     numWritten = WriteCBC(HDR_LASTUPDATEUSER, user.c_str());
     if (numWritten > 0)
       numWritten = WriteCBC(HDR_LASTUPDATEHOST, sysname.c_str());
@@ -664,11 +663,11 @@ int PWSfileV4::WriteHeader()
       num = 255;  // Only save up to max as defined by FormatV3.
 
     size_t buflen = (num * sizeof(uuid_array_t)) + 1;
-    unsigned char *buf = new unsigned char[buflen];
+    auto *buf = new unsigned char[buflen];
     buf[0] = (unsigned char)num;
     unsigned char *buf_ptr = buf + 1;
 
-    UUIDListIter iter = m_hdr.m_RUEList.begin();
+    auto iter = m_hdr.m_RUEList.begin();
     
     for (size_t n = 0; n < num; n++, iter++) {
       const uuid_array_t *rep = iter->GetARep();
@@ -706,7 +705,7 @@ int PWSfileV4::WriteHeader()
     }
 
     // Allocate buffer in calculated size
-    unsigned char *buf = new unsigned char[totlen];
+    auto *buf = new unsigned char[totlen];
     memset(buf, 0, totlen); // in case we truncate some names, don't leak info.
 
     // fill buffer
@@ -735,10 +734,10 @@ int PWSfileV4::WriteHeader()
                                           pwpol.symbols.c_str(), pwpol.symbols.length());
       if (symSetLen > 255) // too bad if too long...
         symSetLen = 255;
-        *buf_ptr++ = (unsigned char)symSetLen;
-        pws_os::wcstombs((char *)buf_ptr, symSetLen,
-                         pwpol.symbols.c_str(), pwpol.symbols.length());
-        buf_ptr += symSetLen;
+      *buf_ptr++ = (unsigned char)symSetLen;
+      pws_os::wcstombs((char *)buf_ptr, symSetLen,
+                       pwpol.symbols.c_str(), pwpol.symbols.length());
+      buf_ptr += symSetLen;
       }
     } // for loop over policies
 
@@ -960,7 +959,7 @@ bool PWSfileV4::CKeyBlocks::RemoveKeyBlock(const StringX &passkey)
     return false;
 
   KeyBlockFinder find_kb(passkey);
-  const unsigned long old_size = (unsigned long)m_kbs.size();
+  const auto old_size = m_kbs.size();
   m_kbs.erase(remove_if(m_kbs.begin(), m_kbs.end(), find_kb),
                m_kbs.end());
 
@@ -1188,7 +1187,7 @@ int PWSfileV4::ReadHeader()
 
           int nameLen = *buf_ptr++;
           // need to tack on null byte to name before conversion
-          unsigned char *nmbuf = new unsigned char[nameLen + 1];
+          auto *nmbuf = new unsigned char[nameLen + 1];
           memcpy(nmbuf, buf_ptr, nameLen); nmbuf[nameLen] = 0;
           utf8status = m_utf8conv.FromUTF8(nmbuf, nameLen, sxPolicyName);
           trashMemory(nmbuf, nameLen); delete[] nmbuf;
@@ -1208,7 +1207,7 @@ int PWSfileV4::ReadHeader()
           int symLen = *buf_ptr++;
           if (symLen > 0) {
             // need to tack on null byte to symbols before conversion
-            unsigned char *symbuf = new unsigned char[symLen + 1];
+            auto *symbuf = new unsigned char[symLen + 1];
             memcpy(symbuf, buf_ptr, symLen); symbuf[symLen] = 0;
             utf8status = m_utf8conv.FromUTF8(symbuf, symLen, pwp.symbols);
             trashMemory(symbuf, symLen); delete[] symbuf;
@@ -1220,7 +1219,7 @@ int PWSfileV4::ReadHeader()
             break; // Error
           pair< map<StringX, PWPolicy>::iterator, bool > pr;
           pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, pwp));
-          if (pr.second == false) break; // Error
+          if (!pr.second) break; // Error
         } // iterate over named policies
       }
       break;

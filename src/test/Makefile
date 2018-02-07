@@ -27,7 +27,7 @@ TEST	   = $(BINPATH)/coretest
 OBJS     = $(TESTOBJ) $(GTEST_OBJ)
 
 CXXFLAGS += -DUNICODE -Wall -I$(INCPATH) -std=c++11
-LDFLAGS   = -L$(LIBPATH) -lcore -los -luuid -lxerces-c -pthread
+LDFLAGS  += -L$(LIBPATH) -lcore -los -luuid -lxerces-c -pthread -lX11 -lXtst
 
 # rules
 .PHONY: all clean test run setup

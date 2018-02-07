@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -51,6 +51,9 @@ struct st_GroupTitleUser {
   st_GroupTitleUser(const StringX &g, const StringX &t, const StringX &u)
   : group(g), title(t), user(u) {}
 
+  st_GroupTitleUser(const st_GroupTitleUser &other)
+  : group(other.group), title(other.title), user(other.user) {}
+  
   st_GroupTitleUser &operator=(const st_GroupTitleUser &that) {
     if (this != &that) {
       group = that.group; title = that.title; user = that.user;

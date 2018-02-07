@@ -3,7 +3,7 @@
 ; Password Safe Installation Script
 ;
 ; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
-; Copyright 2005-2017 Rony Shapiro <ronys@pwsafe.org>
+; Copyright 2005-2018 Rony Shapiro <ronys@pwsafe.org>
 ; 2009 extended by Karel Van der Gucht for multiple language use
 ; This script may be redistributed and/or modified under the Artistic
 ; License 2.0 terms as available at 
@@ -348,7 +348,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "${BIN_DIR}\pws_osk.dll"
   File "..\..\help\default\pwsafe.chm"
   File "..\..\LICENSE"
-  File "..\..\README.TXT"
+  File "..\..\README.md"
   File "..\..\docs\ReleaseNotes.txt"
   File "..\..\docs\ReleaseNotes.html"
   File "..\..\docs\ChangeLog.txt"

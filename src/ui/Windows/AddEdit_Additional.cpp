@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -166,8 +166,8 @@ BOOL CAddEdit_Additional::OnInitDialog()
     ActivateToolTip();
   }
 
-    m_stc_autotype.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-    m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+  m_stc_autotype.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+  m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
 
   m_KBShortcutCtrl.SetMyParent(this);
 
@@ -224,7 +224,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
-  pspin->SetRange(1, 255);
+  pspin->SetRange(M_prefminPWHNumber(), M_prefmaxPWHNumber());
   pspin->SetBase(10);
   pspin->SetPos((int)M_MaxPWHistory());
 
@@ -406,6 +406,21 @@ BOOL CAddEdit_Additional::OnKillActive()
 {
   if (UpdateData(TRUE) == FALSE)
     return FALSE;
+
+  // Update variable from text box
+  CString csText;
+  ((CEdit *)GetDlgItem(IDC_MAXPWHISTORY))->GetWindowText(csText);
+  int maxpwh = _wtoi(csText);
+
+  if (maxpwh < M_prefminPWHNumber() || maxpwh > M_prefmaxPWHNumber()) {
+    CGeneralMsgBox gmb;
+    csText.Format(IDS_DEFAULTNUMPWH, M_prefminPWHNumber(), M_prefmaxPWHNumber());
+    gmb.AfxMessageBox(csText);
+    ((CEdit *)GetDlgItem(IDC_MAXPWHISTORY))->SetFocus();
+    return FALSE;
+  }
+
+  M_MaxPWHistory() = maxpwh;
 
   if (CheckKeyboardShortcut() < 0 || m_bWarnUserKBShortcut)
     return FALSE;
@@ -701,9 +716,11 @@ BOOL CAddEdit_Additional::OnApply()
   }
 
   if (M_SavePWHistory() == TRUE &&
-      (M_MaxPWHistory() < 1 || M_MaxPWHistory() > 255)) {
+      ((int)M_MaxPWHistory() < M_prefminPWHNumber() || (int)M_MaxPWHistory() > M_prefmaxPWHNumber())) {
     CGeneralMsgBox gmb;
-    gmb.AfxMessageBox(IDS_DEFAULTNUMPWH);
+    CString csText;
+    csText.Format(IDS_DEFAULTNUMPWH, M_prefminPWHNumber(), M_prefmaxPWHNumber());
+    gmb.AfxMessageBox(csText);
     pFocus = GetDlgItem(IDC_MAXPWHISTORY);
     goto error;
   }

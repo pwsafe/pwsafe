@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -275,6 +275,14 @@ StringX CPasswordCharPool::MakePassword() const
   for (int i = 0; i < NUMTYPES; i++)
     if (m_lengths[i] > 0)
       cat += m_char_arrays[i];
+
+  // If the requested password length is > set of chars we collected
+  // in cat, just grow cat until it's big enough (BR1450)
+  if ((m_pwlen - retval.length()) > cat.length()) {
+    const auto cat0 = cat;
+    while ((m_pwlen - retval.length()) > cat.length())
+      cat += cat0;
+  }
 
   random_shuffle(cat.begin(), cat.end(),
                  [](size_t i)

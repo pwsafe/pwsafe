@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -58,6 +58,9 @@ struct st_AE_master_data {
   CSecString autotype;
   CSecString runcommand;
   short DCA, oldDCA, ShiftDCA, oldShiftDCA;
+  // Preferences min/max values
+  short prefminPWHNumber;
+  short prefmaxPWHNumber;
 
   // Date & Time related stuff
   CSecString locCTime;
@@ -82,6 +85,9 @@ struct st_AE_master_data {
   CSecString oldsymbols;
   CSecString policyname;
   CSecString oldpolicyname;
+  // Preferences min/max values
+  int prefminPWLength;
+  int prefmaxPWLength;
 
   // Keyboard shortcut
   int KBShortcut, oldKBShortcut;
@@ -149,6 +155,9 @@ public:
   short &M_oldDCA() {return m_AEMD.oldDCA;}
   short &M_ShiftDCA() {return m_AEMD.ShiftDCA;}
   short &M_oldShiftDCA() {return m_AEMD.oldShiftDCA;}
+  // Preferences min/max values
+  short &M_prefminPWHNumber() { return m_AEMD.prefminPWHNumber; }
+  short &M_prefmaxPWHNumber() { return m_AEMD.prefmaxPWHNumber; }
   
   // Date & Time related stuff
   CSecString &M_locCTime() {return m_AEMD.locCTime;}
@@ -171,6 +180,9 @@ public:
   size_t &M_oldMaxPWHistory() {return m_AEMD.oldMaxPWHistory;}
   BOOL &M_SavePWHistory() {return m_AEMD.SavePWHistory;}
   BOOL &M_oldSavePWHistory() {return m_AEMD.oldSavePWHistory;}
+  // Preferences min/max values
+  int &M_prefminPWLength() { return m_AEMD.prefminPWLength; }
+  int &M_prefmaxPWLength() { return m_AEMD.prefmaxPWLength; }
 
   // Password Policy
   PWPolicy &M_pwp() {return m_AEMD.pwp;}

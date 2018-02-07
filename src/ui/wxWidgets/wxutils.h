@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -323,5 +323,9 @@ public:
 #else
 typedef wxTextDataObject wxTextDataObjectEx;
 #endif // __WXGTK20__
+
+// Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
+// on Fedora or Ubuntu
+bool IsTaskBarIconAvailable();
 
 #endif // __WXUTILS_H__

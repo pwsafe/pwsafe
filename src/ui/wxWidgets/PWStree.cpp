@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -99,6 +99,7 @@ BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
   EVT_MENU( ID_RENAME, PWSTreeCtrl::OnRenameGroup )
   EVT_TREE_END_LABEL_EDIT( ID_TREECTRL, PWSTreeCtrl::OnEndLabelEdit )
   EVT_TREE_END_LABEL_EDIT( ID_TREECTRL_1, PWSTreeCtrl::OnEndLabelEdit )
+  EVT_TREE_KEY_DOWN( ID_TREECTRL, PWSTreeCtrl::OnKeyDown )
 ////@end PWSTreeCtrl event table entries
 END_EVENT_TABLE()
 
@@ -204,7 +205,7 @@ void PWSTreeCtrl::CreateControls()
   };
   const int Nimages = sizeof(xpmList)/sizeof(xpmList[0]);
 
-  wxImageList *iList = new wxImageList(13, 13, true, Nimages);
+  auto *iList = new wxImageList(13, 13, true, Nimages);
   for (int i = 0; i < Nimages; i++)
     iList->Add(wxBitmap(xpmList[i]));
   AssignImageList(iList);
@@ -418,16 +419,15 @@ CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
   if (!id.IsOk())
     return NULL;
 
-  PWTreeItemData *itemData = dynamic_cast<PWTreeItemData *>(GetItemData(id));
+  auto *itemData = dynamic_cast<PWTreeItemData *>(GetItemData(id));
   // return if a group is selected
   if (itemData == NULL)
     return NULL;
 
-  ItemListIter itemiter = m_core.Find(itemData->GetUUID());
+  auto itemiter = m_core.Find(itemData->GetUUID());
   if (itemiter == m_core.GetEntryEndIter())
     return NULL;
   return &itemiter->second;
-
 }
 
 //overridden from base for case-insensitive sort
@@ -467,7 +467,7 @@ void PWSTreeCtrl::SortChildrenRecursively(const wxTreeItemId& item)
 wxTreeItemId PWSTreeCtrl::Find(const CUUID &uuid) const
 {
   wxTreeItemId fail;
-  UUIDTIMapT::const_iterator iter = m_item_map.find(uuid);
+  auto iter = m_item_map.find(uuid);
   if (iter != m_item_map.end())
     return iter->second;
   else
@@ -608,7 +608,7 @@ void PWSTreeCtrl::OnChar( wxKeyEvent& evt )
 void PWSTreeCtrl::OnDBGUIPrefsChange(wxEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
-  PasswordSafeFrame *pwsframe = dynamic_cast<PasswordSafeFrame *>(GetParent());
+  auto *pwsframe = dynamic_cast<PasswordSafeFrame *>(GetParent());
   wxASSERT(pwsframe != NULL);
   if (pwsframe->IsTreeView())
     pwsframe->RefreshViews();
@@ -680,7 +680,7 @@ void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
     {
       wxTreeItemId groupItem = evt.GetItem();
       if (groupItem.IsOk()) {
-        PWTreeItemData* data = dynamic_cast<PWTreeItemData *>(GetItemData(groupItem));
+        auto *data = dynamic_cast<PWTreeItemData *>(GetItemData(groupItem));
         if (data && data->BeingAdded()) {
           // A new group being added
           FinishAddingGroup(evt, groupItem);
@@ -696,6 +696,21 @@ void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
       wxFAIL_MSG(wxString::Format(wxT("End Label Edit handler received an unexpected identifier: %d"), evt.GetId()));
       break;
   }
+}
+
+void PWSTreeCtrl::OnKeyDown(wxTreeEvent& evt)
+{
+  if (evt.GetKeyCode() == WXK_LEFT) {
+    
+    wxTreeItemId item = GetSelection();
+    
+    if (item.IsOk() && ItemIsGroup(item) && IsExpanded(item)) {
+      Collapse(item);
+      return;
+    }
+  }
+
+  evt.Skip();
 }
 
 void PWSTreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)

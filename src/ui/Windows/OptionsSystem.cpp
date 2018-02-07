@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -168,16 +168,14 @@ BOOL COptionsSystem::OnInitDialog()
   GetDlgItem(IDC_APPLYCONFIGCHANGES)->EnableWindow(FALSE);
 
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_RESPIN);
-
   pspin->SetBuddy(GetDlgItem(IDC_MAXREITEMS));
-  pspin->SetRange(0, ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1);
+  pspin->SetRange(M_prefminREItems(), M_prefmaxREItems());
   pspin->SetBase(10);
   pspin->SetPos(m_MaxREItems);
 
   pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_MRUSPIN);
-
   pspin->SetBuddy(GetDlgItem(IDC_MAXMRUITEMS));
-  pspin->SetRange(0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
+  pspin->SetRange(M_prefminMRU(), M_prefmaxMRU());
   pspin->SetBase(10);
   pspin->SetPos(m_MaxMRUItems);
 

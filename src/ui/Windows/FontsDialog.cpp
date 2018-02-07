@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -139,11 +139,13 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
           Fonts::GetInstance()->GetDefaultPasswordFont(dfltFont);
           break;
         case CFontsDialog::TREELISTFONT:
-        case CFontsDialog::NOTESFONT:
-          memcpy(&dfltFont, &dfltTreeListFont, sizeof(LOGFONT));
+          Fonts::GetInstance()->GetDefaultTreeListFont(dfltFont);
           break;
         case CFontsDialog::ADDEDITFONT:
           Fonts::GetInstance()->GetDefaultAddEditFont(dfltFont);
+          break;
+        case CFontsDialog::NOTESFONT:
+          Fonts::GetInstance()->GetDefaultNotesFont(dfltFont);
           break;
         case CFontsDialog::VKEYBOARDFONT:
           // Shouldn't get here as processed earlier

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -30,7 +30,8 @@ public:
   HTREEITEM AddGroup(const CString &path);
   bool IsLeaf(HTREEITEM hItem) const;
   int CountChildren(HTREEITEM hStartItem) const;
-  CSecString MakeTreeDisplayString(const CItemData &ci) const;
+  CSecString MakeTreeDisplayString(const CItemData &ci,
+             CString &csProtect, CString &csAttachment) const;
   void OnCollapseAll();
   void OnExpandAll();
   HTREEITEM GetNextTreeItem(HTREEITEM hItem);
@@ -47,4 +48,6 @@ private:
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent) const;
   bool ExistsInTree(HTREEITEM &node, const CSecString &s, HTREEITEM &si) const;
   void CollapseBranch(HTREEITEM hItem);
+  
+  CString m_csProtect, m_csAttachment;
 };

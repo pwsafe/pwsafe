@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -141,6 +141,9 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::BackupDir).c_str();
   m_OPTMD.BackupLocation = cs_backupDir.IsEmpty() ? 0 : 1;
   m_OPTMD.UserBackupOtherLocation = (LPCWSTR)cs_backupDir;
+  // Preferences min/max
+  m_OPTMD.prefminBackupIncrement = (short)prefs->GetPrefMinVal(PWSprefs::BackupMaxIncremented);
+  m_OPTMD.prefmaxBackupIncrement = (short)prefs->GetPrefMaxVal(PWSprefs::BackupMaxIncremented);
 
   // Display Data
   m_OPTMD.AlwaysOnTop =
@@ -167,10 +170,17 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::PreExpiryWarnDays);
   m_OPTMD.TreeDisplayStatusAtOpen =
       prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen);
-  m_OPTMD.TrayIconColour =
-      prefs->GetPref(PWSprefs::ClosedTrayIconColour);
   m_OPTMD.HighlightChanges = m_save_bHighlightChanges =
       prefs->GetPref(PWSprefs::HighlightChanges);
+  m_OPTMD.EnableTransparency =
+    prefs->GetPref(PWSprefs::EnableWindowTransparency) ? TRUE : FALSE;
+  m_OPTMD.PercentTransparency =
+      prefs->GetPref(PWSprefs::WindowTransparency);
+  // Preferences min/max
+  m_OPTMD.prefminExpiryDays = (short)prefs->GetPrefMinVal(PWSprefs::PreExpiryWarnDays);
+  m_OPTMD.prefmaxExpiryDays = (short)prefs->GetPrefMaxVal(PWSprefs::PreExpiryWarnDays);
+  m_OPTMD.prefminPercentTransparency = (short)prefs->GetPrefMinVal(PWSprefs::WindowTransparency);
+  m_OPTMD.prefmaxPercentTransparency = (short)prefs->GetPrefMaxVal(PWSprefs::WindowTransparency);
   
   // Misc Data
   m_OPTMD.ConfirmDelete =
@@ -183,6 +193,8 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::DoubleClickAction);
   m_OPTMD.ShiftDoubleClickAction =
       prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
+  m_OPTMD.prefminAutotypeDelay = prefs->GetPrefMinVal(PWSprefs::DefaultAutotypeDelay);
+  m_OPTMD.prefmaxAutotypeDelay = prefs->GetPrefMaxVal(PWSprefs::DefaultAutotypeDelay);
 
   m_OPTMD.UseDefuser =
       prefs->GetPref(PWSprefs::UseDefaultUser) ? TRUE : FALSE;
@@ -214,6 +226,9 @@ void COptions_PropertySheet::SetupInitialValues()
   m_OPTMD.PWHistoryNumDefault =
       prefs->GetPref(PWSprefs::NumPWHistoryDefault);
   m_OPTMD.PWHAction = 0;
+  // Preferences min/max values
+  m_OPTMD.prefminPWHNumber = (short)prefs->GetPrefMinVal(PWSprefs::NumPWHistoryDefault);
+  m_OPTMD.prefmaxPWHNumber = (short)prefs->GetPrefMaxVal(PWSprefs::NumPWHistoryDefault);
 
   // Security Data
   m_OPTMD.ClearClipboardOnMinimize =
@@ -233,6 +248,9 @@ void COptions_PropertySheet::SetupInitialValues()
   m_OPTMD.HashIters = GetMainDlg()->GetHashIters();
   m_OPTMD.CopyPswdBrowseURL =
       prefs->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL) ? TRUE : FALSE;
+  // Preferences min/max values
+  m_OPTMD.prefminIdleTimeout = (short)prefs->GetPrefMinVal(PWSprefs::IdleTimeout);
+  m_OPTMD.prefmaxIdleTimeout = (short)prefs->GetPrefMaxVal(PWSprefs::IdleTimeout);
   
   // Shortcut Data
   m_OPTMD.AppHotKeyValue = int32(prefs->GetPref(PWSprefs::HotKey));
@@ -266,6 +284,11 @@ void COptions_PropertySheet::SetupInitialValues()
   m_OPTMD.DefaultOpenRO = prefs->GetPref(PWSprefs::DefaultOpenRO) ? TRUE : FALSE;
   m_OPTMD.MultipleInstances =
       prefs->GetPref(PWSprefs::MultipleInstances) ? TRUE : FALSE;
+  // Preferences min/max values
+  m_OPTMD.prefminREItems = (short)prefs->GetPrefMinVal(PWSprefs::MaxREItems);
+  m_OPTMD.prefmaxREItems = (short)prefs->GetPrefMaxVal(PWSprefs::MaxREItems);
+  m_OPTMD.prefminMRU = (short)prefs->GetPrefMinVal(PWSprefs::MaxMRUItems);
+  m_OPTMD.prefmaxMRU = (short)prefs->GetPrefMaxVal(PWSprefs::MaxMRUItems);
 }
 
 void COptions_PropertySheet::UpdateCopyPreferences()
@@ -308,10 +331,12 @@ void COptions_PropertySheet::UpdateCopyPreferences()
                  m_OPTMD.PreExpiryWarn == TRUE, true);
   prefs->SetPref(PWSprefs::PreExpiryWarnDays,
                  m_OPTMD.PreExpiryWarnDays, true);
-  prefs->SetPref(PWSprefs::ClosedTrayIconColour,
-                 m_OPTMD.TrayIconColour, true);
   prefs->SetPref(PWSprefs::HighlightChanges,
                   m_OPTMD.HighlightChanges == TRUE, true);
+  prefs->SetPref(PWSprefs::EnableWindowTransparency,
+                  m_OPTMD.EnableTransparency == TRUE, true);
+  prefs->SetPref(PWSprefs::WindowTransparency,
+                  m_OPTMD.PercentTransparency, true);
   
   // Changes are highlighted only if "hightlight changes" is true and 
   // "save immediately" is false.
@@ -422,8 +447,6 @@ void COptions_PropertySheet::UpdateCopyPreferences()
                  m_OPTMD.LockOnIdleTimeout == TRUE, true);
   prefs->SetPref(PWSprefs::IdleTimeout,
                  m_OPTMD.IdleTimeOut, true);
-
-  GetMainDlg()->SetHashIters(m_OPTMD.HashIters);
 
   // Changing ExplorerTypeTree changes order of items,
   // which DisplayStatus implicitly depends upon

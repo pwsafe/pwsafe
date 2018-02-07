@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -48,7 +48,7 @@ public:
     
     void Load() {
       PWSprefs* prefs = PWSprefs::GetInstance();
-      const int nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
+      const auto nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
       std::vector<stringT> mruList(nExpected);
       const int nFound = prefs->GetMRUList(&mruList[0]);
       wxASSERT(nExpected >= nFound);

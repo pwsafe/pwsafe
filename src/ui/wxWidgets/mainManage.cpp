@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -46,7 +46,7 @@ void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
 {
   PWSprefs* prefs = PWSprefs::GetInstance();
   const StringX sxOldDBPrefsString(prefs->Store());
-  COptions *window = new COptions(this);
+  COptions *window = new COptions(this, m_core);
   if (window->ShowModal() == wxID_OK) {
     StringX sxNewDBPrefsString(prefs->Store(true));
     // Update system tray icon if visible so changes show up immediately
@@ -54,9 +54,11 @@ void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
         m_sysTray->ShowIcon();
 
     if (!m_core.GetCurFile().empty() && !m_core.IsReadOnly() &&
-        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-      if (sxOldDBPrefsString != sxNewDBPrefsString) {
-        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+        m_core.GetReadFileVersion() >= PWSfile::V30) { // older versions don't have prefs
+      if (sxOldDBPrefsString != sxNewDBPrefsString ||
+          m_core.GetHashIters() != window->GetHashItersValue()) {
+        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString,
+                                               window->GetHashItersValue());
         if (pcmd) {
             //I don't know why notifications should ever be suspended, but that's how
             //things were before I messed with them, so I want to limit the damage by
@@ -168,9 +170,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
   if (pwdprompt.ShowModal() == wxID_OK) {
     const StringX passkey = pwdprompt.GetPassword();
     // unlock the file we're leaving
-    if (!m_core.GetCurFile().empty()) {
-      m_core.UnlockFile(m_core.GetCurFile().c_str());
-    }
+    m_core.SafeUnlockCurFile();
 
     // Reset core and clear ALL associated data
     m_core.ReInit();

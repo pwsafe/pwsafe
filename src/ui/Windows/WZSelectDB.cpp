@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -291,7 +291,7 @@ BOOL CWZSelectDB::OnInitDialog()
 
       // Potentially allow user to export DB filters
       bool bEnableExportFilters = ((nID == ID_MENUITEM_EXPORTGRP2DB || nID == ID_MENUITEM_EXPORTFILTERED2DB) &&
-                                   app.GetMainDlg()->GetCore()->GetDBFilters().size() > 0);
+                                   !app.GetCore()->GetDBFilters().empty());
       GetDlgItem(IDC_EXPORTFILTERS)->ShowWindow(bEnableExportFilters ? SW_SHOW : SW_HIDE);
       GetDlgItem(IDC_EXPORTFILTERS)->EnableWindow(bEnableExportFilters ? TRUE : FALSE);
 

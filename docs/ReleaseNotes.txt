@@ -1,11 +1,11 @@
-Password Safe 3.423pre Release June 2017
-========================================
+Password Safe 3.45.0 Release January 2018
+=========================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
-Password Safe, please see the accompanying README.txt file. For more
+Password Safe, please see the accompanying README.md file. For more
 information on the product and the project, please visit
-http://passwordsafe.sourceforge.net. Details about changes to older
+https://pwsafe.org/. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
 Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
@@ -13,8 +13,64 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
 
-Bugs fixed in 3.43pre
-=====================
+Bugs Fixed in 3.45.0
+====================
+[G360] (a) System tray icon starts out brown, not green.
+(b) Remove system tray icon when cancelling password entry.
+[G357] Russian installation text displays correctly.
+[1450] Can now generate passwords longer than 94 characters.
+[1449] Cleanup statusbar tooltip text.
+[1445] Fixed crash on autotype with malformed text.
+[1444] Fixed crash in display of Password Policies in Czech.
+[1442] Fixed regression: -s flag (silent opening) works again.
+[1441] Changing unlock difficulty now enables save (regression),
+supported under undo/redo.
+[1192] Don't revert to original r-o when locking with an edit box open.
+
+Bugs Fixed in 3.44.0
+====================
+[1438] Double backslash is now correctly parsed in Run Command.
+[1432] Perform autotype of correct entry when the user changes the selection made by a Find.
+[1431] The protected entry padlock symbol is now used in all places where a
+protected entry is listed in any dialog.
+[1430] If an expired or about to be expired entry is edited at database open (requires
+warning preference to be enabled), the database will be saved if the 'Save database
+immediately after any change' preference is enabled. After the open is complete,
+these changes can be undone/redone if required.
+[1429] Tree and List views now retain focus when a shortcut entry is created.
+[1428] Remember Find toolbar state when restoring from minimized.
+[1420] The virtual keyboard font size setting is now persistent.
+[1398] Remember if PasswordSafe was maximized when exited.
+
+Changes to Existing Features in 3.44.0
+======================================
+[] The option that allows you to change the color of the system tray icon
+displayed when Password Safe is initially started and when there's no open database
+has been removed. The standard PasswordSafe brown icon will be used.
+[] Use the Add/Edit font in preference to the Tree/List font outside
+the actual Tree/List views (since the Tree/List fonts may be too large).
+
+New Features for 3.44.0
+=======================
+[] When exporting a group or the results of a filter, if any additional entries have
+been exported (e.g. base entries of aliases or shortcuts already exported),
+they will be noted in the Export report.
+[844] The default font for the password field is now 12pt Consolas.
+[843] The default font for Tree/List views, Add/Edit fields and an
+entry's Notes is now 10pt Segoe UI.
+[842] A new symbol (paperclip - Unicode U+01F4CE) to indicate that an entry has
+an attachment (V4 databases only) has been implemented but, if the currently
+selected Tree/List font does not support it and the user is not running
+Windows 10, then the old symbol ('+') will be used.
+[841] Close/exit is now allowed via System Tray icon when the database is open in read-only mode.
+[839] The list of expired entries now shows protected entries in
+italics, indicating that they must be unprotected before they can be
+updated.
+[828] The main window can now be set to be partially transparent via
+Manage->Options->Display.
+
+Bugs fixed in 3.43.0
+====================
 [1410] Don't forget '-r' flag when database not found, and needs to be
 searched.
 [1409] An entry is now correctly re-selected after editing if the preference
@@ -23,25 +79,25 @@ searched.
 size limit of 30,000 characters.
 [1402] Group image is now correct after dragging an empty sub-group to the next
 higher level.
-[1400] The Toolbar now correctly disables buttons when a Group is selected.
 [1401] After deleting an entry, the next visible entry (if present) is
 selected. If not present, then the previous entry (if present) will be selected.
+[1400] The Toolbar now correctly disables buttons when a Group is selected.
 [1399] A disabled image is now shown when no characters to copy are available.
 This has also been implemented wherever the "Copy Password" button is used outside
 the Toolbar.
 
-Changes to Existing Features in 3.42pre
-=======================================
-None
+Changes to Existing Features in 3.43.0
+======================================
+[809] Maximum configurable idle timeout increased to 10 hours.
 
-New Features for 3.43pre
-========================
+New Features for 3.43.0
+=======================
 [] You can now specify additional command line parameters to the
 external editor used to edit the Notes field from the Add/Edit Basic dialog. 
 [] It is now possible to export the currently filtered entries to a
 new PasswordSafe database.
 [832] If many databases are open at the same time, after opening a database, the user
-can specify a database index (1-99) that will be superimposed on the System Tray icon
+can specify a database ID (1-99) that will be superimposed on the System Tray icon
 to aid identification. In addition, the System Tray icon tooltip has been enhanced
 to show more of the database name.
 [833] Right-clicking on a base entry now allows you to select any one
@@ -49,7 +105,7 @@ of its dependants, i.e. alias or shortcut.
 [834] We've added the option of displaying the safe combination when
 entering during database creation, opening and change of combination.
 
-Bugs fixed in 3.42.1
+Bugs Fixed in 3.42.1
 ====================
 [1404] Regression: In read-only mode, Entry popup menu's View Entry
 item restored (was mistakenly disabled).
@@ -64,7 +120,7 @@ New Features for 3.42.1
 =======================
 None
 
-Bugs fixed in 3.42.0
+Bugs Fixed in 3.42.0
 ====================
 [] Fix issue when locking database when not using the System Tray.
 [] Fix empty group validation on DB open.
@@ -78,6 +134,8 @@ directory as the executable unless overridden by the PWS_PREFSDIR environment
 variable.
 [1391] Fixed slow opening of a database if the default group display is completely
 collapsed.
+[1388] The Notes scrollbar visibility is retained after the Notes have been edited
+via an external editor.
 [1385] The filter active indicator now shows in Windows 7.
 [1384] Toolbar images and text are now back in sync.
 [1367] Fixed regression in command line arguments -h and -u support.
@@ -111,7 +169,7 @@ irrespective of whether the System Tray is used or not.
 has been implemented but, if the currently selected Tree/List font does not support
 it and the user is not running Windows 10, then the old symbol ('#') will be used.
 
-Bugs fixed in 3.41.0
+Bugs Fixed in 3.41.0
 ====================
 [] Fix crash if Find active when applying a filter, e.g., show entries with expiry dates.
 [] Ensure shortcut is updated in GUI after editing.
@@ -169,7 +227,7 @@ in the entry's password history, via the Autotype field '\q'. In addition, for W
 a number of keyboard keys are supported by specifying the key between '\{' and '}'. Please
 see Help for details.
 
-Bugs fixed in 3.40
+Bugs Fixed in 3.40
 ==================
 [] Correctly import empty groups from a XML file when an imported group has
 been specified.
@@ -226,12 +284,12 @@ set.
 [810] Allow font selection for all the user input fields in the Add/Edit entry
 and the Create Shortcut dialogs.
 
-Bugs fixed in 3.39.1
+Bugs Fixed in 3.39.1
 ====================
 [] Fixed a regression that crept into 3.39, breaking non-English
 language support.
 
-Bugs fixed in 3.39
+Bugs Fixed in 3.39
 ==================
 [1334] An empty group is now correctly changed to a normal group when
 an entry is copied into it via Drag & Drop.
@@ -261,7 +319,7 @@ of PasswordSafe will not recognise or process empty groups.
 [] It is now possible to list entries using a Named Password Policy from
 the Manage Password Policies dialog (right click on the name).
 
-Bugs fixed in 3.38.2
+Bugs Fixed in 3.38.2
 ====================
 [1326] Fixed entry corruption when database locked/unlocked while an
 entry was being edited (and possibly other scenarios).
@@ -273,7 +331,7 @@ New Features for 3.38.2
 =======================
 None
 
-Bugs fixed in 3.38.1
+Bugs Fixed in 3.38.1
 ====================
 [] Fixed regression in alias support
 [] Fixed regression: crash in Linux when incorrect password entered
@@ -295,7 +353,7 @@ visible.  Protected entries now only have this information in the dialog
 caption. The Tooltip on how to unprotect an entry is now shown against the
 tutorial text at the top of the dialog.
 
-Bugs fixed in 3.38
+Bugs Fixed in 3.38
 ==================
 [1289] Uniform behavior for generated password: Can be explicitly
 copied to clipboard whenever generated (no longer copied by default).
@@ -307,7 +365,7 @@ New Features for 3.38
 Experimental support for V4 format. DO NOT USE FOR PRODUCTION ("REAL")
 PASSWORDS.
 
-Bugs fixed in 3.37.1
+Bugs Fixed in 3.37.1
 ====================
 [] Fixed crash when adding/editing an entry with wide version of
 dialog.
@@ -325,7 +383,7 @@ can still be viewed/edited via menu, right-click or just hitting Enter.
 is pressed and add caption to the Space Bar (Partial implementation of
 this Feature Request).
 
-Bugs fixed in 3.37
+Bugs Fixed in 3.37
 ==================
 [1274] References to base entries are now scrollable, no longer
 truncated.
@@ -367,7 +425,7 @@ PasswordSafe file.
 [772] Added a tooltip for the copy-to-clipboard button in the generator.
 [768] Caps Lock indicator added to passphrase entry dialogs.
 
-Bugs fixed in 3.36
+Bugs Fixed in 3.36
 ==================
 [1248] Non-ASCII symbols can now be specified in Password Policies.
 [1245] Asterisk is now accepted as a symbol in Password Policies.
@@ -380,7 +438,7 @@ consistent UI.
 previous versions.
 [1226] Fixed regression in Find toolbar functionality.
 
-Bugs fixed in 3.35
+Bugs Fixed in 3.35
 ==================
 [1221] Support newer YubiKeys in all modes.
 [1212] In the Flattened List view, keep the icon column, if present,
@@ -409,7 +467,7 @@ Changes to Existing Features in 3.34.1
 ======================================
 [397] Clarified use of -g and PWS_PREFSDIR.
 
-Bugs fixed in 3.34.1
+Bugs Fixed in 3.34.1
 ====================
 [1205] 3.34.1 fixes a bug that crept into 3.34: The OK button was
 disabled when a database was selected on the opening window.
@@ -432,7 +490,7 @@ Changes to Existing Features in 3.33
 ====================================
 None
 
-Bugs fixed in 3.33
+Bugs Fixed in 3.33
 ==================
 [1160] Don't create config dir if config file passed in command line.
 [1155] Number of shortcuts is now correctly initialized.

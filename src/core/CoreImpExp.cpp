@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -66,7 +66,7 @@ struct ExportTester {
   {}
 
   // operator for ItemList
-  bool operator()(pair<CUUID, CItemData> p)
+  bool operator()(const pair<CUUID , CItemData > &p)
   {return operator()(p.second);}
 
   // operator for OrderedItemList
@@ -76,7 +76,7 @@ struct ExportTester {
   }
 
 private:
-  ExportTester& operator=(const ExportTester&); // Do not implement
+  ExportTester& operator=(const ExportTester&) = delete;
   const stringT &m_subgroup_name;
   const int &m_subgroup_object;
   const int &m_subgroup_function;
@@ -224,7 +224,7 @@ struct TextRecordWriter {
   {}
 
   // operator for ItemList
-  void operator()(pair<CUUID, CItemData> p)
+  void operator()(const pair<CUUID, CItemData> &p)
   {operator()(p.second);}
 
   // operator for OrderedItemList
@@ -268,7 +268,7 @@ struct TextRecordWriter {
   }
 
 private:
-  TextRecordWriter& operator=(const TextRecordWriter&); // Do not implement
+  TextRecordWriter& operator=(const TextRecordWriter&) = delete;
   const stringT &m_subgroup_name;
   const int &m_subgroup_object;
   const int &m_subgroup_function;
@@ -360,7 +360,7 @@ struct XMLRecordWriter {
   }
 
   // operator for ItemList
-  void operator()(pair<CUUID, CItemData> p)
+  void operator()(const pair<CUUID, CItemData> &p)
   {operator()(p.second);}
 
   // operator for OrderedItemList
@@ -427,7 +427,7 @@ struct XMLRecordWriter {
   }
 
 private:
-  XMLRecordWriter& operator=(const XMLRecordWriter&); // Do not implement
+  XMLRecordWriter& operator=(const XMLRecordWriter&) = delete;
   const stringT &m_subgroup_name;
   const int m_subgroup_object;
   const int m_subgroup_function;
@@ -922,19 +922,23 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 #define HDR_MAP_ENTRY2(e, ie) {e, CItemData::ie},
     
         // These must be defined in the same order as Fields enum above, or it will assert below
-      
-        HDR_MAP_ENTRY(GROUPTITLE) HDR_MAP_ENTRY(USER)               HDR_MAP_ENTRY(PASSWORD)  HDR_MAP_ENTRY(URL)
-        HDR_MAP_ENTRY(AUTOTYPE)   HDR_MAP_ENTRY(CTIME)              HDR_MAP_ENTRY(PMTIME)    HDR_MAP_ENTRY(ATIME)
-        HDR_MAP_ENTRY(XTIME)      HDR_MAP_ENTRY(XTIME_INT)          HDR_MAP_ENTRY(RMTIME)    HDR_MAP_ENTRY(POLICY)
-        HDR_MAP_ENTRY(POLICYNAME) HDR_MAP_ENTRY2(HISTORY, PWHIST)   HDR_MAP_ENTRY(RUNCMD)    HDR_MAP_ENTRY(DCA)
-        HDR_MAP_ENTRY(SHIFTDCA)   HDR_MAP_ENTRY(EMAIL)              HDR_MAP_ENTRY(PROTECTED) HDR_MAP_ENTRY(SYMBOLS)
+        HDR_MAP_ENTRY(GROUPTITLE) HDR_MAP_ENTRY(USER)
+        HDR_MAP_ENTRY(PASSWORD)   HDR_MAP_ENTRY(URL)
+        HDR_MAP_ENTRY(AUTOTYPE)   HDR_MAP_ENTRY(CTIME)
+        HDR_MAP_ENTRY(PMTIME)     HDR_MAP_ENTRY(ATIME)
+        HDR_MAP_ENTRY(XTIME)      HDR_MAP_ENTRY(XTIME_INT)
+        HDR_MAP_ENTRY(RMTIME)     HDR_MAP_ENTRY(POLICY)
+        HDR_MAP_ENTRY(POLICYNAME) HDR_MAP_ENTRY2(HISTORY, PWHIST)
+        HDR_MAP_ENTRY(RUNCMD)     HDR_MAP_ENTRY(DCA)
+        HDR_MAP_ENTRY(SHIFTDCA)   HDR_MAP_ENTRY(EMAIL)
+        HDR_MAP_ENTRY(PROTECTED)  HDR_MAP_ENTRY(SYMBOLS)
         HDR_MAP_ENTRY(KBSHORTCUT) HDR_MAP_ENTRY(NOTES)
 
 #undef HDR_MAP_ENTRY
 #undef HDR_MAP_ENTRY2
     };
     
-    // make sure all elements are there
+  // make sure all elements are there
   static_assert((NumberOf(fieldMap) == NUMFIELDS), "Mismatch between fieldMap size and NUMFIELDS");
 
   to = 0;

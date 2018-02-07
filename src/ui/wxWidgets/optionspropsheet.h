@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -22,6 +22,7 @@
 #include "wx/statline.h"
 #include "wx/spinctrl.h"
 #include "wx/grid.h"
+#include "core/PWScore.h" // for password history actions
 ////@end includes
 
 /*!
@@ -88,6 +89,8 @@ class wxBookCtrlEvent;
 #define ID_PWHISTSTOP 10175
 #define ID_PWHISTSTART 10176
 #define ID_PWHISTSETMAX 10177
+#define ID_PWHISTCLEAR 10188
+#define ID_APPLYTOPROTECTED 10189
 #define ID_PANEL5 10136
 #define ID_CHECKBOX27 10179
 #define ID_CHECKBOX 10000
@@ -122,13 +125,13 @@ class wxBookCtrlEvent;
 
 class COptions: public wxPropertySheetDialog
 {    
-  DECLARE_DYNAMIC_CLASS( COptions )
+  DECLARE_CLASS( COptions )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  COptions();
-  COptions( wxWindow* parent, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
+  COptions(PWScore &core);
+  COptions( wxWindow* parent, PWScore &core, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
@@ -244,6 +247,12 @@ public:
   int GetPwdefaultlength() const { return m_pwdefaultlength ; }
   void SetPwdefaultlength(int value) { m_pwdefaultlength = value ; }
 
+  bool GetPwHistSave() const { return m_pwhistsave ; }
+  void SetPwHistSave(bool value) { m_pwhistsave = value ;}
+
+  int GetPwHistNumDefault() const { return m_pwhistnumdflt ; }
+  void SetPwHistNumDefault(int value) { m_pwhistnumdflt = value ; }
+
   bool GetPwshowinedit() const { return m_pwshowinedit ; }
   void SetPwshowinedit(bool value) { m_pwshowinedit = value ; }
 
@@ -301,6 +310,8 @@ public:
   bool GetUseAltAutoType() const { return m_useAltAutoType ; }
   void SetUseAltAutoType(bool value) { m_useAltAutoType = value ; }
 
+  uint32 GetHashItersValue() const { return m_hashIterValue; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -331,11 +342,15 @@ public:
   wxStaticText* m_defusernameLBL;
   wxCheckBox* m_pwhistsaveCB;
   wxSpinCtrl* m_pwhistnumdfltSB;
+  wxRadioButton* m_pwhiststopRB;
+  wxRadioButton* m_pwhiststartRB;
+  wxRadioButton* m_pwhistsetmaxRB;
+  wxRadioButton* m_pwhistclearRB;
   wxButton* m_pwhistapplyBN;
+  wxCheckBox* m_applytoprotectedCB;
   wxCheckBox* m_seclockonidleCB;
   wxSpinCtrl* m_secidletimeoutSB;
   wxCheckBox* m_sysusesystrayCB;
-  wxRadioBox* m_systrayclosediconcolourRB;
   wxSpinCtrl* m_sysmaxREitemsSB;
   wxString m_otherbrowserparams;
   wxStaticText *m_systrayWarning;
@@ -355,6 +370,8 @@ private:
   bool m_preexpirywarn;
   bool m_putgroups1st;
   int m_pwdefaultlength;
+  bool m_pwhistsave;
+  int m_pwhistnumdflt;
   bool m_pwshowinedit;
   bool m_querysetdef;
   bool m_saveimmediate;
@@ -374,7 +391,9 @@ private:
   bool m_usedefuser;
   bool m_wordwrapnotes;
   bool m_useAltAutoType;
+  PWScore &m_core;
 ////@end COptions member variables
+  uint32 m_hashIterValue;
 #if defined(__X__) || defined(__WXGTK__)
   bool m_usePrimarySelection;
 #endif

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -388,7 +388,7 @@ void ThisMfcApp::LoadLocalizedStuff()
     pws_os::Trace(L"Could not load language DLLs - using embedded resources.\n");
     // If the requested DLL is not default English, show an error so we know the specifics.
     // At a minimum this will show the actual error code.
-    if (!(cs_LANG == L"EN" && cs_CTRY.IsEmpty())) {
+    if (cs_LANG != L"EN") {
 		  CString errMessage;
 		  errMessage.Format(L"Attempt to load %s", LPCTSTR(cs_ResPath));
 		  pws_os::IssueError(LPCTSTR(errMessage));
@@ -892,7 +892,6 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
            * '--setup' is meant to be used when invoking PasswordSafe at the end of the installation process.
            * It will cause the application to create a new database with the default name at the default location,
            * prompting the user for the safe combination.
-           * State of m_bSetup is accessible via public IsSetup() member function
            */
           dbox.SetSetup();
         } else if ((*arg) == L"--novalidate") {
@@ -965,12 +964,13 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
         } // -e or -d flag
         case L'C': case L'c':
           m_core.SetCurFile(L"");
-          dbox.SetStartClosed(true);
+          dbox.SetStartNoDB();
+          dbox.SetStartClosed();
           break;
         case L'M': case L'm':// closed & minimized
           m_core.SetCurFile(L"");
-          dbox.SetStartClosed(true);
-          dbox.SetStartSilent(true);
+          dbox.SetStartNoDB();
+          dbox.SetStartMinimized();
           break;
         case L'R': case L'r':
           m_core.SetReadOnly(true);
@@ -980,7 +980,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
           break;
         case L'S': case L's':
           startSilent = true;
-          dbox.SetStartSilent(true);
+          dbox.SetStartSilent();
           break;
         case L'V': case L'v':
           // Obsolete - databases are always validated during opening unless --novalidate specified
@@ -1015,7 +1015,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
 
     // If start silent && no filename specified, start closed as well
     if (startSilent && !fileGiven)
-      dbox.SetStartClosed(true);
+      dbox.SetStartNoDB();
   } // Command line not empty
 
   if (!allDone) {
@@ -1089,7 +1089,7 @@ BOOL ThisMfcApp::InitInstance()
 
   // Do not create dbox before config data obtained as it would create PWSprefs
   // using the potentially incorrect config data
-  DboxMain dbox(NULL);
+  DboxMain dbox(m_core);
 
   std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions;
   bsSupportedFunctions.set(UIInterFace::DATABASEMODIFIED);

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -35,7 +35,7 @@ void CPWHistListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   *pLResult = CDRF_DODEFAULT;
 
   static bool bchanged_subitem_font(false);
-  static CFont *pCurrentFont = NULL;
+  static CFont *pAddEditFont = NULL;
   static CFont *pPasswordFont = NULL;
   static CDC *pDC = NULL;
 
@@ -43,7 +43,7 @@ void CPWHistListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
     case CDDS_PREPAINT:
       // PrePaint
       bchanged_subitem_font = false;
-      pCurrentFont = Fonts::GetInstance()->GetCurrentFont();
+      pAddEditFont = Fonts::GetInstance()->GetAddEditFont();
       pPasswordFont = Fonts::GetInstance()->GetPasswordFont();
       pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
       *pLResult = CDRF_NOTIFYITEMDRAW;
@@ -67,7 +67,7 @@ void CPWHistListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Sub-item PostPaint - restore old font if any
       if (bchanged_subitem_font) {
         bchanged_subitem_font = false;
-        pDC->SelectObject(pCurrentFont);
+        pDC->SelectObject(pAddEditFont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -8,7 +8,9 @@
 
 #include "stdafx.h"
 #include "ExpPswdLC.h"
-#include "PWTreeCtrl.h"
+#include "ExpPWListDlg.h"
+#include "Fonts.h"
+#include "PWTreeCtrl.h"  // For images
 
 #include "resource3.h"
 
@@ -23,6 +25,7 @@ static char THIS_FILE[] = __FILE__;
 CExpPswdLC::CExpPswdLC()
   : m_pToolTipCtrl(NULL), m_LastToolTipRow(-1), m_pwchTip(NULL)
 {
+  m_clrDisabled = GetSysColor(COLOR_GRAYTEXT);
 }
 
 CExpPswdLC::~CExpPswdLC()
@@ -35,12 +38,19 @@ BEGIN_MESSAGE_MAP(CExpPswdLC, CListCtrl)
   //{{AFX_MSG_MAP(CExpPswdLC)
   ON_WM_MOUSEMOVE()
   ON_NOTIFY_EX(TTN_NEEDTEXT, 0, OnToolTipText)
+  ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 void CExpPswdLC::PreSubclassWindow()
 {
   CListCtrl::PreSubclassWindow();
+  
+  m_pParent = (CExpPWListDlg *)GetParent();
+
+  m_pItalicAddEditFont = Fonts::GetInstance()->GetItalicAddEditFont();
+  m_pAddEditFont = Fonts::GetInstance()->GetAddEditFont();
+  SetFont(m_pAddEditFont);
 
   // Disable the CToolTipCtrl of CListCtrl so it won't disturb our own tooltip-ctrl
   GetToolTips()->Activate(FALSE);
@@ -179,4 +189,73 @@ BOOL CExpPswdLC::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLRes
              cs_tooltip, _TRUNCATE);
 
   return TRUE;   // we found a tool tip,
+}
+
+void CExpPswdLC::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
+{
+  NMLVCUSTOMDRAW *pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
+
+  *pLResult = CDRF_DODEFAULT;
+  const int iItem = (int)pLVCD->nmcd.dwItemSpec;
+  const int iSubItem = pLVCD->iSubItem;
+  const DWORD_PTR dwData = pLVCD->nmcd.lItemlParam;
+
+  static bool bIsProtected;
+  static bool bchanged_subitem_font(false);
+  static CDC *pDC = NULL;
+
+  switch (pLVCD->nmcd.dwDrawStage) {
+  case CDDS_PREPAINT:
+    bchanged_subitem_font = false;
+    pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
+    *pLResult = CDRF_NOTIFYITEMDRAW;
+    break;
+
+  case CDDS_ITEMPREPAINT:
+    bIsProtected = m_pParent->IsExpiryEntryProtected((int)dwData);
+    *pLResult = CDRF_NOTIFYSUBITEMDRAW;
+    break;
+
+  case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
+  {
+    CRect rect;
+    GetSubItemRect(iItem, iSubItem, LVIR_BOUNDS, rect);
+    if (rect.top < 0) {
+      *pLResult = CDRF_SKIPDEFAULT;
+      break;
+    }
+
+    if (iSubItem != 0) {
+      if (bIsProtected) {
+        // Disable text and make italic
+        pLVCD->clrText = m_clrDisabled;
+        bchanged_subitem_font = true;
+        pDC->SelectObject(m_pItalicAddEditFont);
+        *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
+      }
+      break;
+    }
+    break;
+  }
+
+  case CDDS_ITEMPOSTPAINT | CDDS_SUBITEM:
+    // Sub-item PostPaint - restore old font if any
+    if (bchanged_subitem_font) {
+      bchanged_subitem_font = false;
+      pDC->SelectObject(m_pAddEditFont);
+      *pLResult |= CDRF_NEWFONT;
+    }
+    break;
+
+    /*
+    case CDDS_PREERASE:
+    case CDDS_POSTERASE:
+    case CDDS_ITEMPREERASE:
+    case CDDS_ITEMPOSTERASE:
+    case CDDS_ITEMPOSTPAINT:
+    case CDDS_POSTPAINT:
+    */
+  default:
+    break;
+  }
 }

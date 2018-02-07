@@ -1,0 +1,61 @@
+os:
+#   - osx
+    - linux
+
+before_install:
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update; fi
+
+addons:
+    apt:
+        packages:
+            - "libwxgtk3.0-dev"
+            - libuuid1
+            - "libxerces-c-dev" 
+            - "libxt-dev"
+            - "libxtst-dev"
+            - "libykpers-1-dev"
+            - "libyubikey-dev"
+            - "uuid-dev"
+            - "pkg-config"
+            - "libgtest-dev"
+            - "libqrencode-dev"
+
+language: cpp
+
+dist: trusty
+
+env:
+    - BUILD_DIR=dist UPLOAD_DIR=linux
+    - BUILD_DIR=Xcode/installers UPLOAD_DIR=osx
+
+matrix:
+    exclude:
+        - os: linux
+          env: BUILD_DIR=Xcode/installers UPLOAD_DIR=osx
+
+        - os: osx
+          env: BUILD_DIR=dist UPLOAD_DIR=linux
+
+    include:
+        - os: linux
+          compiler: gcc
+        - os: linux
+          compiler: clang
+
+before_install:
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; fi
+
+install:
+# This just downloads pre-biuilt binaries which are all dylibs
+# TBD: try this forumuale
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/wxmac.rb
+# This would take the --with-static args to build static libs
+# We'd have to cache that build using ccache
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxmac; fi
+
+before_script:
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then Xcode/generate-configs-from-homebrew; fi
+
+script:
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe; fi
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir build && cd build && cmake .. && make && make test && cpack -G DEB ..; fi

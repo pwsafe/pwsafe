@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -181,13 +181,16 @@ END_MESSAGE_MAP()
 // CPasswordPolicyDlg message handlers
 
 // Following copied from AddEdit_PasswordPolicy.cpp. Move to common mixin?
-static void setupBuddy(CWnd *p, int spinid, int id, int &length, short min = 0)
+static void setupBuddy(CWnd *p, int spinid, int id, int &length, PWSprefs::IntPrefs iPref)
 {
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)p->GetDlgItem(spinid);
+  const int minValue = PWSprefs::GetInstance()->GetPrefMinVal(iPref);
+  const int maxValue = PWSprefs::GetInstance()->GetPrefMaxVal(iPref);
+
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)p->GetDlgItem(spinid);
   pspin->SetBuddy(p->GetDlgItem(id));
-  pspin->SetRange(min, 1024);
+  pspin->SetRange32(minValue, maxValue);
   pspin->SetBase(10);
-  pspin->SetPos((int)length);
+  pspin->SetPos(length);
 }
 
 BOOL CPasswordPolicyDlg::OnInitDialog()
@@ -360,11 +363,11 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
     break;
   }
 
-  setupBuddy(this, IDC_PWLENSPIN, IDC_DEFPWLENGTH, m_PWDefaultLength, 4);
-  setupBuddy(this, IDC_SPINDIGITS, IDC_MINDIGITLENGTH, m_PWDigitMinLength);
-  setupBuddy(this, IDC_SPINLOWERCASE, IDC_MINLOWERLENGTH, m_PWLowerMinLength);
-  setupBuddy(this, IDC_SPINUPPERCASE, IDC_MINUPPERLENGTH, m_PWUpperMinLength);
-  setupBuddy(this, IDC_SPINSYMBOLS, IDC_MINSYMBOLLENGTH, m_PWSymbolMinLength);
+  setupBuddy(this, IDC_PWLENSPIN, IDC_DEFPWLENGTH, m_PWDefaultLength, PWSprefs::PWDefaultLength);
+  setupBuddy(this, IDC_SPINDIGITS, IDC_MINDIGITLENGTH, m_PWDigitMinLength, PWSprefs::PWDigitMinLength);
+  setupBuddy(this, IDC_SPINLOWERCASE, IDC_MINLOWERLENGTH, m_PWLowerMinLength, PWSprefs::PWLowercaseMinLength);
+  setupBuddy(this, IDC_SPINUPPERCASE, IDC_MINUPPERLENGTH, m_PWUpperMinLength, PWSprefs::PWUppercaseMinLength);
+  setupBuddy(this, IDC_SPINSYMBOLS, IDC_MINSYMBOLLENGTH, m_PWSymbolMinLength, PWSprefs::PWSymbolMinLength);
 
   m_save[SAVE_LOWERCASE] = m_PWUseLowercase;
   m_save[SAVE_UPPERCASE] = m_PWUseUppercase;
@@ -836,8 +839,12 @@ BOOL CPasswordPolicyDlg::Validate()
     return FALSE;
   }
 
-  if ((m_PWDefaultLength < 4) || (m_PWDefaultLength > 1024)) {
-    gmb.AfxMessageBox(IDS_DEFAULTPWLENGTH);
+  int minPWL = PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWDefaultLength);
+  int maxPWL = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDefaultLength);
+  if ((m_PWDefaultLength < minPWL) || (m_PWDefaultLength > maxPWL)) {
+    CString errmess;
+    errmess.Format(IDS_DEFAULTPWLENGTH, minPWL, maxPWL);
+    gmb.AfxMessageBox(errmess);
     ((CEdit*)GetDlgItem(IDC_DEFPWLENGTH))->SetFocus();
     return FALSE;
   }

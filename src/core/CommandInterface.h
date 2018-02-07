@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -105,6 +105,9 @@ class CommandInterface {
 
   virtual const PWSFilters &GetDBFilters() = 0;
   virtual bool SetDBFilters(const PWSFilters &MapDBFilters) = 0;
+
+  virtual uint32 GetHashIters() const = 0;
+  virtual void SetHashIters(uint32 value) = 0;
 
   std::vector<StringX> &GetModifiedNodes() { return m_vModifiedNodes; }
   void SetModifiedNodes(const std::vector<StringX> &saved_vNodes_Modified)

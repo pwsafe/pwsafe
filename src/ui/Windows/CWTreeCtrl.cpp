@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -213,7 +213,8 @@ HTREEITEM CCWTreeCtrl::GetNextTreeItem(HTREEITEM hItem)
   return hReturn;
 }
 
-CSecString CCWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
+CSecString CCWTreeCtrl::MakeTreeDisplayString(const CItemData &ci,
+                        CString &csProtect, CString &csAttachment) const
 {
   CSecString treeDispString = ci.GetTitle();
 
@@ -222,10 +223,10 @@ CSecString CCWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
   treeDispString += L"]";
 
   if (ci.IsProtected())
-    treeDispString += L" #";
+    treeDispString += CSecString(csProtect);
 
   if (ci.HasAttRef())
-    treeDispString += L" +";
+    treeDispString += CSecString(csAttachment);
 
   return treeDispString;
 }

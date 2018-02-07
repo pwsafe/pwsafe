@@ -32,7 +32,7 @@ MKDIR := /usr/bin/mkdir -p
 TAR := /usr/bin/tar
 SED := /usr/bin/sed
 ZIP := /usr/bin/zip
-GIT := "/cygdrive/c/Program Files (x86)/Git/bin/git"
+GIT := /usr/bin/git
 GPG := /usr/bin/gpg
 GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
 SHA1SUM := /usr/bin/sha1sum
@@ -75,12 +75,12 @@ I18N_DLLS_64 := $(foreach i,\
 								CZ DE ES PL RU SV ZH FR DA KO NL,\
 								$(I18N_DLL_DIR_64)/pwsafe$(i).dll)
 
-BIN_MANIFEST = README.txt docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
+BIN_MANIFEST = README.md docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
     $(XMLS) \
 		docs/ChangeLog.txt $(BIN_DIR)/pwsafe.exe $(BIN_DIR)/pws_at.dll \
 		$(BIN_DIR)/pws_osk.dll help/default/pwsafe.chm \
 		docs/pad_file.xml
-BIN_MANIFEST_64 = README.txt docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
+BIN_MANIFEST_64 = README.md docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
     $(XMLS) \
 		docs/ChangeLog.txt $(BIN_DIR_64)/pwsafe.exe $(BIN_DIR_64)/pws_at.dll \
 		$(BIN_DIR_64)/pws_osk.dll help/default/pwsafe.chm \

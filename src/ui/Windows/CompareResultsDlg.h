@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -36,10 +36,12 @@ public:
   void SetRow(const int iRow) {m_row = iRow;}
   void SetColumn(const int iColumn) {m_column = iColumn;}
   bool IsSelected(DWORD_PTR iRow);
+  void UpdateRowHeight(bool bInvalidate);
 
 protected:
   //{{AFX_MSG(CCPListCtrl)
   afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -70,10 +72,11 @@ class CCompareResultsDlg : public CPWResizeDialog
 
   // Construction
 public:
-  CCompareResultsDlg(CWnd* pParent, CompareData &OnlyInCurrent, CompareData &OnlyInComp,
+  CCompareResultsDlg(CWnd *pParent, CompareData &OnlyInCurrent, CompareData &OnlyInComp,
                      CompareData &Conflicts, CompareData &Identical,
                      CItemData::FieldBits &bsFields,
                      PWScore *pcore0, PWScore *pcore1,
+                     CString &csProtect, CString &csAttachment,
                      CReport *pRpt);
 
   virtual ~CCompareResultsDlg();
@@ -177,6 +180,8 @@ private:
   int m_nCols;
   bool m_bFirstInCompare;
   bool m_bDBNotificationState;
+  
+  CString m_csProtect, m_csAttachment;
 
   // These columns always shown
   static const UINT FixedCols[USER + 1];

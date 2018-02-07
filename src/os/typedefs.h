@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -122,7 +122,6 @@ typedef wchar_t TCHAR;
 // mimic Microsoft conventional typdefs:
 typedef TCHAR *LPTSTR;
 typedef const TCHAR *LPCTSTR;
-typedef bool BOOL;
 typedef unsigned char BYTE;
 typedef uint16_t WORD;
 typedef uint32_t DWORD;

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -145,7 +145,8 @@ public:
   int WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
                       PWScore *pINcore, PWSfile::VERSION version,
                       std::vector<StringX> &vEmptyGroups, 
-                      bool bExportDBFilters, CReport *pRpt = NULL);
+                      bool bExportDBFilters,
+                      std::vector<pws_os::CUUID> &vuuidAddedBases, CReport *pRpt = NULL);
   int WriteV17File(const StringX &filename)
   {return WriteFile(filename, PWSfile::V17, false);}
   int WriteV2File(const StringX &filename)

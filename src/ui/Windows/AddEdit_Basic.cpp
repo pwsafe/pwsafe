@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -247,8 +247,8 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   // Set Notes font!
   if (prefs->GetPref(PWSprefs::NotesFont).empty()) {
-    m_ex_notes.SetFont(pFonts->GetCurrentFont());
-    m_ex_hidden_notes.SetFont(pFonts->GetCurrentFont());
+    m_ex_notes.SetFont(pFonts->GetAddEditFont());
+    m_ex_hidden_notes.SetFont(pFonts->GetAddEditFont());
   } else {
     m_ex_notes.SetFont(pFonts->GetNotesFont());
     m_ex_hidden_notes.SetFont(pFonts->GetNotesFont());
@@ -689,16 +689,12 @@ BOOL CAddEdit_Basic::OnApply()
 
   // If there is a matching entry in our list, tell the user to try again.
   listindex = GetMainDlg()->Find(M_group(), M_title(), M_username());
-  if (M_uicaller() == IDS_ADDENTRY) {
-    // Add entry
-    if (listindex != GetMainDlg()->End()) {
+  if (listindex != GetMainDlg()->End()) {
+    if (M_uicaller() == IDS_ADDENTRY) { // Add entry
       gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
       pFocus = &m_ex_title;
       goto error;
-    }
-  } else {
-    // Edit entry
-    if (listindex != GetMainDlg()->End()) {
+    } else { // Edit entry
       const CItemData &listItem = GetMainDlg()->GetEntryAt(listindex);
       if (listItem.GetUUID() != M_pci()->GetUUID()) {
         gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);

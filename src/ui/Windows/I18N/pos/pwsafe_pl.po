@@ -953,8 +953,8 @@ msgid "(Also used to replace periods in Title field)"
 msgstr "(Używane także by zamienić kropki w polu nazwy)"
 
 #. Resource IDs: (65535)
-msgid "(Double-click an entry to edit it)"
-msgstr "(Dwukliknij na wpisie by go zmodyfikowaćDouble-click an entry to edit it)"
+msgid "(Double-click an entry to edit it. Entries in italics are protected and need to be unprotected first.)"
+msgstr ""
 
 #. Resource IDs: (5957)
 msgid "(Empty)"
@@ -963,6 +963,10 @@ msgstr "(Puste)"
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
 msgstr "(Wymaga ponownego uruchomienia programu by zmiany zostały wprowadzone.)"
+
+#. Resource IDs: (65535)
+msgid "(Restart of PasswordSafe required to enable.)"
+msgstr ""
 
 #. Resource IDs: (1285, 1287, 1289, 1291)
 msgid "(at least"
@@ -1597,6 +1601,10 @@ msgstr ""
 msgid "Attachment Properties"
 msgstr ""
 
+#. Resource IDs: (3074)
+msgid "Attachment Reference"
+msgstr ""
+
 #. Resource IDs: (5976)
 msgid "Attachment not found"
 msgstr ""
@@ -1793,8 +1801,9 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "Pliki CSV (*.csv)|*.csv|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (5410)
-msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "Ostrzeżenia są tylko możliwe w okresie od 1 do 30 dni zanim hasło wygaśnie"
+#, c-format
+msgid "Can only warn between %d and %d days before passwords expire"
+msgstr "Ostrzeżenia są tylko możliwe w okresie od %d do %d dni zanim hasło wygaśnie"
 
 #. Resource IDs: (3345)
 #, c-format
@@ -1904,7 +1913,7 @@ msgid "Change database mode?"
 msgstr "Zmienić tryb bazy danych?"
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* indicates the database has been changed\nÂ° indicates a database preference has been changed"
+msgid "Change status since last save:\n* \n  indicates the database has been changed\n° indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)
@@ -2540,8 +2549,9 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr ""
 
 #. Resource IDs: (5294)
-msgid "Default number of saved password history entries must be between 1 and 255."
-msgstr "Domyślna liczba zapisanych wpisów historii haseł musi być między 1 i 255."
+#, c-format
+msgid "Default number of saved password history entries must be between %d and %d."
+msgstr "Domyślna liczba zapisanych wpisów historii haseł musi być między %d i %d."
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -2806,6 +2816,10 @@ msgstr "Opuszczono pustą linię %d"
 #. Resource IDs: (1088)
 msgid "Enable"
 msgstr "Włącz"
+
+#. Resource IDs: (1591)
+msgid "Enable Transparency"
+msgstr ""
 
 #. Resource IDs: (61866)
 #, c-format
@@ -3956,8 +3970,9 @@ msgid "Incorrect password"
 msgstr "Nieprawidłowe hasło"
 
 #. Resource IDs: (5387)
-msgid "Incremented Number [001-999]"
-msgstr "Liczba Przyrostowa [001-999]"
+#, c-format
+msgid "Incremented Number [%d-%d]"
+msgstr "Liczba Przyrostowa [%d-%d]"
 
 #. Resource IDs: (3356)
 msgid "Index is invalid or missing"
@@ -3980,10 +3995,6 @@ msgstr "Pozycja wskazuje przed początek hasła (długość %d)."
 #. Resource IDs: (1542)
 msgid "Initial Tree View"
 msgstr "Wstępny widok drzewa"
-
-#. Resource IDs: (65535)
-msgid "Initial system tray icon"
-msgstr "Ikona w zasobniku"
 
 #. Resource IDs: (3350)
 msgid "Input string is empty"
@@ -4305,8 +4316,9 @@ msgid "Maximum"
 msgstr "Maksimum"
 
 #. Resource IDs: (5392)
-msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
-msgstr "Maksymalna liczba kopii zapasowych używa wartości przyrostowych\nz zakresu pomiędzy 1 i 999."
+#, c-format
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
+msgstr "Maksymalna liczba kopii zapasowych używa wartości przyrostowych\nz zakresu pomiędzy %d i %d."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -4622,12 +4634,12 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr ""
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as »*»"
-msgstr "Uwaga: puste pola są pokazywane jako »*»"
+msgid "Note: Empty fields are shown as « »"
+msgstr "Uwaga: puste pola są pokazywane jako « »"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "Uwaga: Format wpisu to »grupa»nazwa»nazwa użytkownika»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "Uwaga: Format wpisu to «grupa» «nazwa» «nazwa użytkownika»"
 
 #. Resource IDs: (3428)
 msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."
@@ -4765,6 +4777,10 @@ msgstr "Znaleziono automatycznie zachowany dokument."
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
+msgstr ""
+
+#. Resource IDs: (1595)
+msgid "Opaque"
 msgstr ""
 
 #. Resource IDs: (61440)
@@ -5000,8 +5016,9 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Liczba znaków w haśle jest większa niż suma ograniczeń określonych opcją 'przynajmniej'"
 
 #. Resource IDs: (5293)
-msgid "Password length must be between 4 and 1024 characters."
-msgstr "Hasło musi mieć od 4 do 1024 znaków."
+#, c-format
+msgid "Password length must be between %d and %d characters."
+msgstr "Hasło musi mieć od %d do %d znaków."
 
 #. Resource IDs: (1400, 1448)
 msgid "Password length:"
@@ -6372,6 +6389,10 @@ msgstr "Następujące OSTRZEŻENIA zostały wykryte - należy je przejrzeć i na
 msgid "The following attachments are not referred to by any entry."
 msgstr ""
 
+#. Resource IDs: (6055)
+msgid "The following base entries have been exported because one or more of their dependents have been included."
+msgstr ""
+
 #. Resource IDs: (3375)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "Następujące kolumny zostały rozpoznane, ale tylgo Grupa/Tytuł, nazwa użytkownika i hasło będą przetwarzane:"
@@ -6425,8 +6446,8 @@ msgid "The following entries were duplicates of an existing entry."
 msgstr "Następujące wpisy były duplikatami istniejącego wpisu."
 
 #. Resource IDs: (65535)
-msgid "The following entries' passwords are about to expire or expired:"
-msgstr "Hasła następujące wpisów wygasną lub wygasły:"
+msgid "The following entries' passwords are about to expire or have already expired:"
+msgstr ""
 
 #. Resource IDs: (5481)
 #, c-format
@@ -6583,6 +6604,11 @@ msgstr "To jest alias wpisu bazowego."
 msgid "This is an alias of:"
 msgstr ""
 
+#. Resource IDs: (5121)
+#, c-format
+msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
+msgstr ""
+
 #. Resource IDs: (61710)
 #, c-format
 msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
@@ -6628,8 +6654,9 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "To skasuje wybraną kopię zapasową Failsafe.  Jeśli aktualny dysk ma Kosz, kopia zostanie tam przeniesiona. Jeśli nie, zostanie usunięta na zawsze."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 120 minutes."
-msgstr "Czas wygaśnięcie powninen być pomiędzy 1 minutą, a 120 minutami."
+#, c-format
+msgid "Timeout period must be between %d and %d minutes."
+msgstr "Czas wygaśnięcie powninen być pomiędzy %d minutą, a %d minutami."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"
@@ -7148,6 +7175,10 @@ msgstr "Kto zachował"
 #. Resource IDs: (1385)
 msgid "Win32 Unhandled Exception"
 msgstr "Nieobsłużony wyjątek Win32"
+
+#. Resource IDs: (65535)
+msgid "Window Transparency"
+msgstr ""
 
 #. Resource IDs: (5799)
 msgid "Windows Registry"
@@ -7858,10 +7889,6 @@ msgstr "zaczyna się na"
 msgid "between"
 msgstr "między"
 
-#. Resource IDs: (5665)
-msgid "bottom"
-msgstr "poniżej"
-
 #. Resource IDs: (3371)
 msgid "changed but not yet saved to database"
 msgstr "zmieniony, ale jeszcze nie zapisany w bazie danych"
@@ -8225,6 +8252,10 @@ msgstr "wygaśnie"
 #, c-format
 msgid "within %d day(s)"
 msgstr "w przeciągu %d dni(a)"
+
+#. Resource IDs: (1594)
+msgid "xx%"
+msgstr ""
 
 #. Resource IDs: (8004)
 msgid "xxxxxx"

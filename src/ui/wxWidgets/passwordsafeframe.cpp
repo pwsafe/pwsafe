@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -63,6 +63,7 @@
 #include "../../core/core.h"
 #include "../../core/PWScore.h"
 #include "./SelectionCriteria.h"
+#include "./pwsqrcodedlg.h"
 
 // main toolbar images
 #include "./PwsToolbarButtons.h"
@@ -159,6 +160,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_DUPLICATEENTRY, PasswordSafeFrame::OnDuplicateEntry )
 
   EVT_MENU( ID_PASSWORDSUBSET, PasswordSafeFrame::OnPasswordSubset )
+
+  EVT_MENU( ID_PASSWORDQRCODE, PasswordSafeFrame::OnPasswordQRCode )
 
   EVT_MENU( ID_IMPORT_PLAINTEXT, PasswordSafeFrame::OnImportText )
 
@@ -281,7 +284,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 
   CreateMenubar();
   CreateControls();
-  SetIcon(GetIconResource(wxT("../graphics/wxWidgets/cpane.xpm")));
+  SetIcon(GetIconResource(L"graphics/cpane.xpm"));
   Centre();
 ////@end PasswordSafeFrame creation
   m_search = new PasswordSafeSearch(this);
@@ -299,7 +302,7 @@ void PasswordSafeFrame::CreateDragBar()
   wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
 
   PWSDragBar* dragbar = new PWSDragBar(this);
-  origSizer->Insert(0, dragbar);
+  origSizer->Insert(0, dragbar, 0, wxEXPAND);
 
   const bool bShow = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
   if (!bShow) {
@@ -499,7 +502,7 @@ void PasswordSafeFrame::CreateMenubar()
   wxMenu* itemMenu74 = new wxMenu;
   itemMenu74->Append(ID_CHANGECOMBO, _("&Change Safe Combination..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu74->AppendSeparator();
-  itemMenu74->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu74->Append(ID_BACKUP, _("Make &Backup...\tCtrl+B"), wxEmptyString, wxITEM_NORMAL);
   itemMenu74->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), wxEmptyString, wxITEM_NORMAL);
   itemMenu74->AppendSeparator();
   itemMenu74->Append(wxID_PREFERENCES, _("&Options...\tCtrl+M"), wxEmptyString, wxITEM_NORMAL);
@@ -756,7 +759,7 @@ wxIcon PasswordSafeFrame::GetIconResource( const wxString& name )
     // Icon retrieval
 ////@begin PasswordSafeFrame icon retrieval
   wxUnusedVar(name);
-  if (name == wxT("../graphics/wxWidgets/cpane.xpm"))
+  if (name == L"graphics/cpane.xpm")
   {
     wxIcon icon(cpane_xpm);
     return icon;
@@ -1010,7 +1013,7 @@ int PasswordSafeFrame::SaveIfChanged()
   // Deal with unsaved but changed restored DB
   if (m_bRestoredDBUnsaved && m_core.HasDBChanged()) {
     wxMessageDialog dlg(this,
-                        _("Do you wish to save the this restored database as new database?"),
+                        _("Do you wish to save this restored database as new database?"),
                         _("Unsaved restored database"),
                         (wxICON_QUESTION | wxCANCEL |
                          wxYES_NO | wxYES_DEFAULT));
@@ -1125,7 +1128,7 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
     if (rc != PWScore::SUCCESS)
       return;
 
-    m_core.UnlockFile(m_core.GetCurFile().c_str());
+    m_core.SafeUnlockCurFile();
     m_core.SetCurFile(wxEmptyString);
 
     // Reset core and clear ALL associated data
@@ -1136,6 +1139,8 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
 
     SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
+    wxCommandEvent dummyEv;
+    m_search->OnSearchClose(dummyEv); // fix github issue 375
     m_core.SetReadOnly(false);
     UpdateStatusBar();
   }
@@ -1376,8 +1381,7 @@ int PasswordSafeFrame::SaveAs()
     DisplayFileWriteError(rc, newfile);
     return PWScore::CANT_OPEN_FILE;
   }
-  if (!m_core.GetCurFile().empty())
-    m_core.UnlockFile(m_core.GetCurFile().c_str());
+  m_core.SafeUnlockCurFile();
 
   // Move the newfile lock to the right place
   m_core.MoveLock();
@@ -1447,8 +1451,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
     }
 
     // Don't leave dangling locks!
-    if (!m_core.GetCurFile().empty())
-      m_core.UnlockFile(m_core.GetCurFile().c_str());
+    m_core.SafeUnlockCurFile();
 
     SaveSettings();
 
@@ -1720,6 +1723,11 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
 static void FlattenTree(wxTreeItemId id, PWSTreeCtrl* tree, OrderedItemList& olist)
 {
   wxTreeItemIdValue cookie;
+  
+  if (!id.IsOk()) {
+    return;
+  }
+  
   for (wxTreeItemId childId = tree->GetFirstChild(id, cookie); childId.IsOk();
                           childId = tree->GetNextChild(id, cookie)) {
     CItemData* item = tree->GetItem(childId);
@@ -1754,6 +1762,9 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     itemEditMenu.Append(ID_COPYUSERNAME,   _("Copy &Username to Clipboard"));
     itemEditMenu.Append(ID_COPYPASSWORD,   _("&Copy Password to Clipboard"));
     itemEditMenu.Append(ID_PASSWORDSUBSET, _("Display subset of Password"));
+    if (HasQRCode()) {
+      itemEditMenu.Append(ID_PASSWORDQRCODE, _("Display Password as &QR code"));
+    }
     itemEditMenu.Append(ID_COPYNOTESFLD,   _("Copy &Notes to Clipboard"));
     itemEditMenu.Append(ID_COPYURL,        _("Copy UR&L to Clipboard"));
     itemEditMenu.Append(ID_COPYEMAIL,      _("Copy email to Clipboard"));
@@ -1920,6 +1931,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_COPYPASSWORD:
     case ID_AUTOTYPE:
     case ID_PASSWORDSUBSET:
+    case ID_PASSWORDQRCODE:
       evt.Enable(!bGroupSelected && pci);
       break;
 
@@ -3311,7 +3323,7 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
 
 void PasswordSafeFrame::OnVisitWebsite(wxCommandEvent&)
 {
-  wxLaunchDefaultBrowser("https://pwsafe.org");
+  wxLaunchDefaultBrowser(L"https://pwsafe.org");
 }
 
 void PasswordSafeFrame::UpdateStatusBar()

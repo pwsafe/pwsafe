@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -204,8 +204,10 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
   PWS_LOGIT;
 
   FILE *fd = a_fd;
-  int retval = SUCCESS;
   SHA256 H;
+  unsigned char Ptag[SHA256::HASHLEN];
+  unsigned char *usedPtag = (aPtag == nullptr) ? Ptag : aPtag;
+
 
   if (fd == NULL) {
     fd = pws_os::FOpen(filename.c_str(), _T("rb"));
@@ -213,7 +215,7 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
   if (fd == NULL)
     return CANT_OPEN_FILE;
 
-  retval = SanityCheck(fd);
+  int retval = SanityCheck(fd);
   if (retval != SUCCESS)
     goto err;
 
@@ -234,14 +236,11 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
 
     if (nITER != NULL)
       *nITER = N;
-    unsigned char Ptag[SHA256::HASHLEN];
-    if (aPtag == NULL)
-      aPtag = Ptag;
 
-    StretchKey(salt, sizeof(salt), passkey, N, aPtag);
+    StretchKey(salt, sizeof(salt), passkey, N, usedPtag);
   }
   unsigned char HPtag[SHA256::HASHLEN];
-  H.Update(aPtag, SHA256::HASHLEN);
+  H.Update(usedPtag, SHA256::HASHLEN);
   H.Final(HPtag);
   unsigned char readHPtag[SHA256::HASHLEN];
   fread(readHPtag, 1, sizeof(readHPtag), fd);
@@ -269,7 +268,7 @@ size_t PWSfileV3::WriteCBC(unsigned char type, const StringX &data)
 size_t PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
                            size_t length)
 {
-  m_hmac.Update(data, reinterpret_cast<int &>(length));
+  m_hmac.Update(data, static_cast<unsigned long>(length));
   return PWSfile::WriteCBC(type, data, length);
 }
 
@@ -465,8 +464,8 @@ int PWSfileV3::WriteHeader()
   // Write out who saved it!
   {
     const SysInfo *si = SysInfo::GetInstance();
-    stringT user = si->GetRealUser();
-    stringT sysname = si->GetRealHost();
+    const stringT &user = si->GetRealUser();
+    const stringT &sysname = si->GetRealHost();
     numWritten = WriteCBC(HDR_LASTUPDATEUSER, user.c_str());
     if (numWritten > 0)
       numWritten = WriteCBC(HDR_LASTUPDATEHOST, sysname.c_str());
@@ -503,7 +502,7 @@ int PWSfileV3::WriteHeader()
     if (num > 255)
       num = 255;  // Do not exceed 2 hex character length field
     oss << setw(2) << setfill('0') << hex << num;
-    UUIDListIter iter = m_hdr.m_RUEList.begin();
+    auto iter = m_hdr.m_RUEList.begin();
     // Only save up to max as defined by FormatV3.
     for (size_t n = 0; n < num; n++, iter++) {
       const uuid_array_t *rep = iter->GetARep();
@@ -528,7 +527,7 @@ int PWSfileV3::WriteHeader()
       num = 255;  // Do not exceed 2 hex character length field
 
     oss << setw(2) << hex << num;
-    PSWDPolicyMapIter iter = m_MapPSWDPLC.begin();
+    auto iter = m_MapPSWDPLC.begin();
     for (size_t n = 0; n < num; n++, iter++) {
       // The Policy name is limited to 255 characters.
       // This should have been prevented by the GUI.

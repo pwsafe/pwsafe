@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -45,8 +45,8 @@
 using pws_os::CUUID;
 
 Command::Command(CommandInterface *pcomInt)
-:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0), m_CommandDBChange(NONE),
-   m_CommandChangeType(NONE), m_bInMultiCommand(false)
+:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_bInMultiCommand(false),
+   m_RC(0), m_CommandChangeType(NONE), m_CommandDBChange(NONE)
 {
 }
 
@@ -247,16 +247,23 @@ void UpdateGUICommand::Undo()
 // DBPrefsCommand
 // ------------------------------------------------
 
-DBPrefsCommand::DBPrefsCommand(CommandInterface *pcomInt, StringX &sxDBPrefs)
-  : Command(pcomInt), m_sxNewDBPrefs(sxDBPrefs)
+DBPrefsCommand::DBPrefsCommand(CommandInterface *pcomInt, StringX &sxDBPrefs, uint32 newHashIters)
+  : Command(pcomInt),
+    m_sxOldDBPrefs(PWSprefs::GetInstance()->Store()),
+    m_sxNewDBPrefs(sxDBPrefs),
+    m_oldHashIters(pcomInt->GetHashIters()),
+    m_newHashIters(newHashIters)
 {
-  m_sxOldDBPrefs = PWSprefs::GetInstance()->Store();
 }
 
 int DBPrefsCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
     PWSprefs::GetInstance()->Load(m_sxNewDBPrefs);
+    // m_newHashIters may be zero if command created only with pref string,
+    // in places where the value was certainly unchanged.
+    if (m_newHashIters != 0)
+      m_pcomInt->SetHashIters(m_newHashIters);
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
         CUUID::NullUUID());
@@ -270,6 +277,7 @@ void DBPrefsCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DBPREFS) {
     PWSprefs::GetInstance()->Load(m_sxOldDBPrefs);
+    m_pcomInt->SetHashIters(m_oldHashIters);
 
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,

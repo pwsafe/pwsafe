@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -23,8 +23,11 @@ DLG_HELP(wxToolBar,                                     html/Welcome.html)
 
 //AdvancedSelectionDlg template
 DLG_HELP(AdvancedSelectionDlg<ExportFullXml>,           html/export.html#xml)
-DLG_HELP(AdvancedSelectionDlg<ExportFullText>,          html/export.html#te)
+DLG_HELP(AdvancedSelectionDlg<ExportFullText>,          html/export.html#text)
 DLG_HELP(AdvancedSelectionDlg<FindDlgType>,             html/searching.html)
+
+//The help for Manage Password Policies dialog
+DLG_HELP(CManagePasswordPolicies,                       html/named_password_policies.html)
 
 //
 //for property sheet help, note that the second parameter is a locale-specific string

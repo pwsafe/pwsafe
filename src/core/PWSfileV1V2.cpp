@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -377,16 +377,21 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
                     m_fish, m_IV, m_terminal);
 
   if (buffer_len > 0) {
-    wchar_t *wc = new wchar_t[buffer_len+1];
 
-    size_t wcLen = pws_os::mbstowcs(wc, buffer_len + 1,
+    //edge cases can make wc bigger than buffer, so calculate the size needed
+    size_t wcsize = pws_os::mbstowcs(NULL, 0,
+                                     reinterpret_cast<const char *>(buffer), buffer_len) + 1;
+
+    wchar_t *wc = new wchar_t[wcsize+1];
+
+    size_t wcLen = pws_os::mbstowcs(wc, wcsize,
                                     reinterpret_cast<const char *>(buffer),
                                     buffer_len, false);
     ASSERT(wcLen != 0);
-    if (wcLen < buffer_len + 1)
+    if (wcLen < wcsize + 1)
       wc[wcLen] = TCHAR('\0');
     else
-      wc[buffer_len] = TCHAR('\0');
+      wc[wcsize] = TCHAR('\0');
     data = wc;
     trashMemory(wc, wcLen);
     delete[] wc;

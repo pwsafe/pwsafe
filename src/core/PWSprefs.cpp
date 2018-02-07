@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -130,6 +130,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("IgnoreHelpLoadError"), false, ptApplication},        //application
   {_T("VKPlaySound"), false, ptApplication},                //application
   {_T("ListSortAscending"), true, ptApplication},           //application
+  {_T("EnableWindowTransparency"), false, ptApplication },  //application
 };
 
 // Default value = -1 means set at runtime
@@ -143,7 +144,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("PWDefaultLength"), 12, ptDatabase, 4, 1024},                 // database
   // maxmruitems maximum = (ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1)
   {_T("maxmruitems"), 4, ptApplication, 0, 20},                     // application
-  {_T("IdleTimeout"), 5, ptDatabase, 1, 120},                       // database
+  {_T("IdleTimeout"), 5, ptDatabase, 1, 600},                       // database
   {_T("DoubleClickAction"), DoubleClickCopyPassword, ptApplication,
                             minDCA, maxDCA},                        // application
   {_T("HotKey"), 0, ptApplication, -1, -1}, // 0=disabled, >0=keycode. // application
@@ -156,8 +157,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("BackupSuffix"), BKSFX_IncNumber, ptApplication, minBKSFX, maxBKSFX}, // application
   {_T("BackupMaxIncremented"), 3, ptApplication, 1, 999},           // application
   {_T("PreExpiryWarnDays"), 1, ptApplication, 1, 30},               // application
-  {_T("ClosedTrayIconColour"), stiBlack, ptApplication,
-                               stiBlack, stiYellow},                // application
+  {_T("ClosedTrayIconColour"), 0, ptObsolete, -1, -1},              // obsolete in 3.43.1
   {_T("PWDigitMinLength"), 0, ptDatabase, 0, 1024},                 // database
   {_T("PWLowercaseMinLength"), 0, ptDatabase, 0, 1024},             // database
   {_T("PWSymbolMinLength"), 0, ptDatabase, 0, 1024},                // database
@@ -175,6 +175,8 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("PasswordFontPtSz"), 0, ptApplication, 0, -1},                // application
   {_T("NotesFontPtSz"), 0, ptApplication, 0, -1},                   // application
   {_T("AddEditFontPtSz"), 0, ptApplication, 0, -1},                 // application
+  {_T("VKFontPtSz"), 0, ptApplication, 0, -1},                      // application
+  {_T("WindowTransparency"), 0, ptApplication, 0, 50},              // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
@@ -288,6 +290,16 @@ unsigned int PWSprefs::GetPrefDefVal(IntPrefs pref_enum) const
 StringX PWSprefs::GetPrefDefVal(StringPrefs pref_enum) const
 {
   return m_string_prefs[pref_enum].defVal;
+}
+
+int PWSprefs::GetPrefMinVal(IntPrefs pref_enum) const
+{
+  return m_int_prefs[pref_enum].minVal;
+}
+
+int PWSprefs::GetPrefMaxVal(IntPrefs pref_enum) const
+{
+  return m_int_prefs[pref_enum].maxVal;
 }
 
 StringX PWSprefs::GetAllBoolPrefs(const bool bUseCopy)
@@ -712,8 +724,7 @@ bool PWSprefs::DeletePref(const StringX &name)
       bRetVal = pws_os::RegDeleteEntry(name.c_str());
       break;
     case CF_FILE_RW:
-      bRetVal = (m_pXML_Config->DeleteSetting(m_csHKCU_PREF,
-                                              name.c_str()) == TRUE);
+      bRetVal = m_pXML_Config->DeleteSetting(m_csHKCU_PREF, name.c_str());
       break;
     case CF_FILE_RW_NEW:
     case CF_FILE_RO:
@@ -931,7 +942,7 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
   unsigned int iuval;
 
   const size_t N = prefString.length(); // safe upper limit on string size
-  TCHAR *buf = new TCHAR[N];
+  auto *buf = new TCHAR[N];
 
   while (is) {
     is >> type >> index;
@@ -1115,16 +1126,16 @@ void PWSprefs::InitializePreferences()
   bool isRO(true);
 
   FindConfigFile(); // sets m_configfilename
-  bool configFileExists = pws_os::FileExists(m_configfilename.c_str(), isRO);
+  bool configFileExists = pws_os::FileExists(m_configfilename, isRO);
   if (configFileExists) {
     m_ConfigOption = (isRO) ? CF_FILE_RO : CF_FILE_RW;
   } else {
     // Doesn't exist but can we write to the directory?
     // Try and create the file (and delete afterwards if we succeeded)
-    FILE *testfile = pws_os::FOpen(m_configfilename.c_str(), _T("w"));
+    FILE *testfile = pws_os::FOpen(m_configfilename, _T("w"));
     if (testfile != NULL) {
       fclose(testfile);
-      pws_os::DeleteAFile(m_configfilename.c_str());
+      pws_os::DeleteAFile(m_configfilename);
       m_ConfigOption = CF_FILE_RW_NEW;
       isRO = false;
     }
@@ -1367,7 +1378,7 @@ bool PWSprefs::LoadProfileFromFile()
   bool retval;
   stringT ts, csSubkey;
 
-  m_pXML_Config = new CXMLprefs(m_configfilename.c_str());
+  m_pXML_Config = new CXMLprefs(m_configfilename);
   if (!m_pXML_Config->XML_Load()) {
     if (!m_pXML_Config->getReason().empty() &&
         m_pReporter != NULL)
@@ -1493,7 +1504,7 @@ void PWSprefs::SaveApplicationPreferences()
     // Load prefs file in case it was changed elsewhere
     // Here we need to explicitly lock from before
     // load to after store
-    m_pXML_Config = new CXMLprefs(m_configfilename.c_str());
+    m_pXML_Config = new CXMLprefs(m_configfilename);
     stringT locker;
     if (!m_pXML_Config->Lock(locker)) {
       // punt to registry!
@@ -1502,7 +1513,7 @@ void PWSprefs::SaveApplicationPreferences()
       m_pXML_Config = NULL;
     } else { // acquired lock
       // if file exists, load to get other values
-      if (pws_os::FileExists(m_configfilename.c_str()))
+      if (pws_os::FileExists(m_configfilename))
         m_pXML_Config->XML_Load(); // we ignore failures here. why bother?
     }
   }
@@ -1665,7 +1676,7 @@ void PWSprefs::SaveShortcuts()
     // Load prefs file in case it was changed elsewhere
     // Here we need to explicitly lock from before
     // load to after store
-    m_pXML_Config = new CXMLprefs(m_configfilename.c_str());
+    m_pXML_Config = new CXMLprefs(m_configfilename);
     stringT locker;
     if (!m_pXML_Config->Lock(locker)) {
       // punt to registry!
@@ -1674,7 +1685,7 @@ void PWSprefs::SaveShortcuts()
       m_pXML_Config = NULL;
     } else { // acquired lock
       // if file exists, load to get other values
-      if (pws_os::FileExists(m_configfilename.c_str()))
+      if (pws_os::FileExists(m_configfilename))
         m_pXML_Config->XML_Load(); // we ignore failures here. why bother?
     }
   }

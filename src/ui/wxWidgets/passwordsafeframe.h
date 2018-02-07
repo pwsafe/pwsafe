@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -120,6 +120,7 @@ enum {
   ID_EDITMENU_FIND_NEXT  = 10220,
   ID_EDITMENU_FIND_PREVIOUS,
   ID_PASSWORDSUBSET,
+  ID_PASSWORDQRCODE,
   ID_COPYEMAIL,
   ID_RUNCOMMAND,
   ID_COPYRUNCOMMAND,
@@ -393,6 +394,7 @@ public:
   void OnVisitWebsite(wxCommandEvent&);
 
   void OnPasswordSubset(wxCommandEvent& evt);
+  void OnPasswordQRCode(wxCommandEvent& evt);
 
 ////@begin PasswordSafeFrame member function declarations
 
@@ -513,7 +515,7 @@ public:
                               const bool bTitleRenamed, wxString &timeStr,
                               const CItemData::EntryType et,
                               std::vector<StringX> &vs_added);
-  BOOL LaunchBrowser(const wxString &csURL, const StringX &sxAutotype,
+  bool LaunchBrowser(const wxString &csURL, const StringX &sxAutotype,
                      const std::vector<size_t> &vactionverboffsets, bool bDoAutotype);
 
   // Do* member functions for right-click and menu-accessible actions

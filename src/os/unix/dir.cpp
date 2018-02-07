@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,7 +28,7 @@ stringT pws_os::getexecdir()
     return _T("?");
   else {
     stringT retval(pws_os::towc(path));
-    stringT::size_type last_slash = retval.find_last_of(_T("/"));
+    stringT::size_type last_slash = retval.find_last_of(_T('/'));
     return retval.substr(0, last_slash + 1);
   }
 }
@@ -63,12 +63,12 @@ bool pws_os::splitpath(const stringT &path,
   if (path.empty())
     return false;
 
-  stringT::size_type last_slash = path.find_last_of(_T("/"));
+  stringT::size_type last_slash = path.find_last_of(_T('/'));
   dir = path.substr(0, last_slash + 1);
   if (dir.empty())
     dir = _T("./");
   drive = (dir[0] == '/') ? _T("/") : _T("./");
-  stringT::size_type last_dot = path.find_last_of(_T("."));
+  stringT::size_type last_dot = path.find_last_of(_T('.'));
   if (last_dot != stringT::npos && last_dot > last_slash) {
     file = path.substr(last_slash + 1, last_dot - last_slash - 1);
     ext = path.substr(last_dot + 1);

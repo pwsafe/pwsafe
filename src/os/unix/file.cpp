@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,8 +28,9 @@
 #include "../file.h"
 #include "../env.h"
 
-#include "../../core/core.h"
-#include "../../core/StringXStream.h"
+#include "core/core.h"
+#include "core/StringXStream.h"
+#include "core/Util.h"
 
 using namespace std;
 
@@ -99,7 +100,7 @@ bool pws_os::CopyAFile(const stringT &from, const stringT &to)
     string::size_type start = (cto[0] == '/') ? 1 : 0;
     string::size_type stop;
     do {
-      stop = cto.find_first_of("/", start);
+      stop = cto.find_first_of('/', start);
       if (stop != stringT::npos)
         ::mkdir(cto.substr(start, stop).c_str(), 0700); // fail if already there - who cares?
       start = stop + 1;
@@ -156,7 +157,7 @@ void pws_os::FindFiles(const stringT &filter, vector<stringT> &res)
   delete[] szfilter;
   // start by splitting it up
   string dir;
-  string::size_type last_slash = cfilter.find_last_of("/");
+  string::size_type last_slash = cfilter.find_last_of('/');
   if (last_slash != string::npos) {
     dir = cfilter.substr(0, last_slash);
     filterString = cfilter.substr(last_slash + 1);
@@ -201,7 +202,7 @@ static stringT GetLockFileName(const stringT &filename)
   return retval;
 }
 
-bool pws_os::LockFile(const stringT &filename, stringT &locker, 
+bool pws_os::LockFile(const stringT &filename, stringT &locker,
                       HANDLE &lockFileHandle)
 {
   UNREFERENCED_PARAMETER(lockFileHandle);
@@ -223,11 +224,13 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
     case EEXIST: // filename already exists
       {
         // read locker data ("user@machine:nnnnnnnn") from file
-          wifstream is(lfn);
-          stringT lockerStr;
-          if (is >> lockerStr) {
-            locker = lockerStr;
-          }
+        StringXStream lockerStream;
+        if (PWSUtil::loadFile(lock_filename.c_str(), lockerStream)) {
+          locker = stringx2std(lockerStream.str());
+        }
+        else {
+          LoadAString(locker, IDSC_CANTREADLOCKER);
+        }
       } // EEXIST block
         break;
     case EINVAL: // Invalid oflag or pmode argument
@@ -350,6 +353,6 @@ bool pws_os::SetFileTimes(const stringT &filename,
   UNREFERENCED_PARAMETER(ctime);
   UNREFERENCED_PARAMETER(mtime);
   UNREFERENCED_PARAMETER(atime);
-  
+
   return true;
 }

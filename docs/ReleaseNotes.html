@@ -57,11 +57,11 @@ open('https://github.com/pwsafe/pwsafe/issues/'+ ID +'/',
 
 <body>
 
-<h1 align="center">Password Safe 3.43pre Release June 2017</h1>
+<h1 align="center">Password Safe 3.45.0 Release January 2018</h1>
 
 <p>This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
-Password Safe, please see the accompanying README.txt file. For more
+Password Safe, please see the accompanying README.md file. For more
 information on the product and the project, please visit the
 <a href="https://pwsafe.org">PasswordSafe project site</a>.
 Details about changes to older releases may be found in the file
@@ -78,7 +78,167 @@ Information about older versions may be found <a href="https://pwsafe.org/histor
 <br>
 <hr>
 
-<h4><a name="V3.43preBugsFixed"></a>Bugs fixed in V3.43pre</h4>
+<h4><a name="V3.45.0BugsFixed"></a>Bugs Fixed in V3.45.0</h4>
+<table>
+<tbody>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="GH(360);return false;">G360</a></td>
+    <td>(a) System tray icon starts out brown, not green. <br/>
+      (b) Remove system tray icon when cancelling password entry.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="GH(357);return false;">G357</a></td>
+    <td>Russian installation text displays correctly.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="BR(1450);return false;">1450</a></td>
+    <td>Can now generate passwords longer than 94 characters.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="BR(1449);return false;">1449</a></td>
+    <td>Cleanup statusbar tooltip text.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="BR(1445);return false;">1445</a></td>
+    <td>Fixed crash on autotype with malformed text.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="BR(1444);return false;">1444</a></td>
+    <td>Fixed crash in display of Password Policies in Czech.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="BR(1442);return false;">1442</a></td>
+    <td>Fixed regression: -s flag (silent opening) works again.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="BR(1441);return false;">1441</a></td>
+    <td>Changing unlock difficulty now enables save (regression), supported under undo/redo.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="BR(1192);return false;">1192</a></td>
+    <td>Don't revert to original r-o when locking with an edit box open.</td>
+  </tr>
+</tbody>
+</table>
+<br>
+<hr>
+
+<h4><a name="V3.44.0BugsFixed"></a>Bugs Fixed in V3.44.0</h4>
+<table>
+<tbody>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="BR(1438);return false;">1438</a></td>
+    <td>Double backslash is now correctly parsed in Run Command.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="BR(1432);return false;">1432</a></td>
+    <td>Perform autotype of correct entry when the user changes the selection made by a Find.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="BR(1431);return false;">1431</a></td>
+    <td>The protected entry padlock symbol is now used in all places where a
+      protected entry is listed in any dialog.
+    </td>
+  </tr>
+  <tr>
+   <td align="center" width="100"><a href="nojs.html" onclick="BR(1430);return false;">1430</a></td>
+   <td>If an expired or about to be expired entry is edited at database open (requires
+     warning preference to be enabled), the database will be saved if the 'Save database
+     immediately after any change' preference is enabled. After the open is complete,
+     these changes can be undone/redone if required.
+   </td>
+ </tr>
+ <tr>
+   <td align="center" width="100"><a href="nojs.html" onclick="BR(1429);return false;">1429</a></td>
+   <td>Tree and List views now retain focus when a shortcut entry is created.</td>
+ </tr>
+ <tr>
+   <td align="center" width="100"><a href="nojs.html" onclick="BR(1428);return false;">1428</a></td>
+   <td>Remember Find toolbar state when restoring from minimized.</td>
+ </tr>
+ <tr>
+   <td align="center" width="100"><a href="nojs.html" onclick="BR(1420);return false;">1420</a></td>
+   <td>The virtual keyboard font size setting is now persistent.</td>
+ </tr>
+ <tr>
+   <td align="center" width="100"><a href="nojs.html" onclick="BR(1398);return false;">1398</a></td>
+   <td>Remember if PasswordSafe was maximized when exited.</td>
+ </tr>
+</tbody>
+</table>
+
+<br>
+<hr>
+
+<h4><a name="V3.44.0Changes"></a>Changes to Existing Features in V3.44.0</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100">[]</td>
+<td>The option that allows you to change the color of the system tray icon
+displayed when Password Safe is initially started and when there's no open database
+has been removed. The standard PasswordSafe brown icon will be used.</td>
+</tr>
+<tr>
+<td align="center" width="100">[]</td>
+<td>Use the Add/Edit font in preference to the Tree/List font outside
+the actual Tree/List views (since the Tree/List fonts may be too large).</td> 
+</tr>
+</tbody>
+</table>
+
+<br>
+<hr>
+
+<h4><a name="V3.44.0New"></a>New Features for V3.44.0</h4>
+<table>
+<tbody>
+  <tr>
+    <td align="center" width="100">[]</td>
+    <td>When exporting a group or the results of a filter, if any additional entries have
+      been exported (e.g. base entries of aliases or shortcuts already exported),
+      they will be noted in the Export report.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="FR(844);return false;">844</a></td>
+    <td>The default font for the password field is now 12pt Consolas.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="FR(843);return false;">843</a></td>
+    <td>The default font for Tree/List views, Add/Edit fields and an entry's Notes is now 10pt
+      Segoe UI.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="FR(842);return false;">842</a></td>
+    <td>A new symbol (paperclip - Unicode U+01F4CE) to indicate that an entry has
+      an attachment (V4 databases only) has been implemented but, if the currently
+      selected Tree/List font does not support it and the user is not running
+      Windows 10, then the old symbol ('+') will be used.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="FR(841);return false;">841</a></td>
+    <td>Close/exit is now allowed via System Tray icon when the database is open in read-only mode.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="FR(839);return false;">839</a></td>
+    <td>The list of expired entries now shows protected entries in
+      italics, indicating that they must be unprotected before they
+      can be updated.</td>
+  </tr>
+  <tr>
+    <td align="center" width="100"><a href="nojs.html" onclick="FR(828);return false;">828</a></td>
+    <td>The main window can now be set to be partially transparent via
+      Manage->Options->Display.</td>
+  </tr>
+</tbody>
+</table>
+
+<br>
+<hr>
+<h3><a name="V3.43.0"></a>Version V3.43.0</h3>
+<hr>
+
+<h4><a name="V3.43.0BugsFixed"></a>Bugs Fixed in V3.43.0</h4>
 <table>
 <tbody>
 <tr>
@@ -118,16 +278,26 @@ the Toolbar.</td>
 </tbody>
 </table>
 
-<h4><a name="V3.43preChanges"></a>Changes to Existing Features in V3.43pre</h4>
-<p>None</p>
+<h4><a name="V3.43.0Changes"></a>Changes to Existing Features in V3.43.0</h4>
+<table>
+<tbody>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(809);return false;">809</a></td>
+<td>Maximum configurable idle timeout increased to 10 hours.</td>
+</tr>
+</tbody>
+</table>
 
-<h4><a name="V3.43preNew"></a>New Features for V3.43pre</h4>
+<br>
+<hr>
+
+<h4><a name="V3.43.0New"></a>New Features for V3.43.0</h4>
 <table>
 <tbody>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(832);return false;">832</a></td>
 <td>If many databases are open at the same time, after opening a database, the user
-can specify a database index (1-99) that will be superimposed on the System Tray icon
+can specify a database ID (1-99) that will be superimposed on the System Tray icon
 to aid identification. In addition, the System Tray icon tooltip has been enhanced
 to show more of the database name.</td>
 </tr>
@@ -137,6 +307,7 @@ to show more of the database name.</td>
 external editor used to edit the Notes field from the Add/Edit Basic dialog.</td>
 </tr>
 <tr>
+<td align="center" width="100">[]</td>
 <td>It is now possible to export the currently filtered entries to a
 new PasswordSafe database.</td>
 </tr>
@@ -159,7 +330,7 @@ entering during database creation, opening and change of combination.</td>
 <h3><a name="V3.42.1"></a>Version V3.42.1</h3>
 <hr>
 
-<h4><a name="V3.42.1BugsFixed"></a>Bugs fixed in V3.42.1</h4>
+<h4><a name="V3.42.1BugsFixed"></a>Bugs Fixed in V3.42.1</h4>
 <table>
 <tbody>
 <tr>
@@ -185,7 +356,7 @@ under Windows 8.1 and later now supported in 64-bit builds.</td>
 <h3><a name="V3.42.0"></a>Version V3.42.0</h3>
 <hr>
 
-<h4><a name="V3.42.0BugsFixed"></a>Bugs fixed in V3.42.0</h4>
+<h4><a name="V3.42.0BugsFixed"></a>Bugs Fixed in V3.42.0</h4>
 <table>
 <tbody>
 <tr>
@@ -220,6 +391,11 @@ variable.</td>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1391);return false;">1391</a></td>
 <td>Fixed slow opening of a database if the default group display is completely
 collapsed.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(1388);return false;">1388</a></td>
+<td>The Notes scrollbar visibility is retained after the Notes have been edited
+via an external editor.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(1385);return false;">1385</a></td>
@@ -314,7 +490,7 @@ it and the user is not running Windows 10, then the old symbol ('#') will be use
 <h3><a name="V3.41.0"></a>Version V3.41.0</h3>
 <hr>
 
-<h4><a name="V3.41.0BugsFixed"></a>Bugs fixed in V3.41.0</h4>
+<h4><a name="V3.41.0BugsFixed"></a>Bugs Fixed in V3.41.0</h4>
 <table>
 <tbody>
 <tr>
@@ -468,7 +644,7 @@ see Help for details.</td>
 <h3><a name="V3.40"></a>Version V3.40</h3>
 <hr>
 
-<h4><a name="V3.40BugsFixed"></a>Bugs fixed in V3.40</h4>
+<h4><a name="V3.40BugsFixed"></a>Bugs Fixed in V3.40</h4>
 <table>
 <tbody>
 <tr>
@@ -613,7 +789,7 @@ entry and the Create Shortcut dialogs.</td>
 <h3><a name="V3.39.1"></a>Version V3.39.1</h3>
 <hr>
 
-<h4><a name="V3.39.1BugsFixed"></a>Bugs fixed in V3.39.1</h4>
+<h4><a name="V3.39.1BugsFixed"></a>Bugs Fixed in V3.39.1</h4>
 <table>
 <tbody>
 <tr>
@@ -647,7 +823,7 @@ of PasswordSafe will not recognise or process empty groups.</td>
 
 <br>
 <hr>
-<h4><a name="V3.39BugsFixed"></a>Bugs fixed in V3.39</h4>
+<h4><a name="V3.39BugsFixed"></a>Bugs Fixed in V3.39</h4>
 <table>
 <tbody>
 <tr>
@@ -706,7 +882,7 @@ standard Microsoft processing in their products.</td>
 <h3><a name="V3.38.2"></a>Version V3.38.2</h3>
 <hr>
 
-<h4><a name="V3.38.2BugsFixed"></a>Bugs fixed in V3.38.2</h4>
+<h4><a name="V3.38.2BugsFixed"></a>Bugs Fixed in V3.38.2</h4>
 <table>
 <tbody>
 <tr>
@@ -744,7 +920,7 @@ against the tutorial text at the top of the dialog for wide displays.</td>
 <h3><a name="V3.38.1"></a>Version V3.38.1</h3>
 <hr>
 
-<h4><a name="V3.38.1BugsFixed"></a>Bugs fixed in V3.38.1</h4>
+<h4><a name="V3.38.1BugsFixed"></a>Bugs Fixed in V3.38.1</h4>
 <table>
 <tbody>
 <tr>
@@ -805,7 +981,7 @@ is moved to it via editing.</td>
 <h3><a name="V3.38"></a>Version V3.38</h3>
 <hr>
 
-<h4><a name="V3.38BugsFixed"></a>Bugs fixed in V3.38</h4>
+<h4><a name="V3.38BugsFixed"></a>Bugs Fixed in V3.38</h4>
 <table>
 <tbody>
 <tr>
@@ -839,7 +1015,7 @@ under Windows 8.1 and later.</td>
 <h3><a name="V3.37.1"></a>Version V3.37.1</h3>
 <hr>
 
-<h4><a name="V3.37.1BugsFixed"></a>Bugs fixed in V3.37.1</h4>
+<h4><a name="V3.37.1BugsFixed"></a>Bugs Fixed in V3.37.1</h4>
 <table>
 <tbody>
 <tr>
@@ -884,7 +1060,7 @@ add caption to the Space Bar (Partial implementation of this Feature Request).</
 
 <br>
 <hr>
-<h4><a name="V3.37BugsFixed"></a>Bugs fixed in V3.37</h4>
+<h4><a name="V3.37BugsFixed"></a>Bugs Fixed in V3.37</h4>
 <table>
 <tbody>
 <tr>
@@ -992,7 +1168,7 @@ be changed.</td>
 
 <br>
 <hr>
-<h4><a name="V3.36BugsFixed"></a>Bugs fixed in V3.36</h4>
+<h4><a name="V3.36BugsFixed"></a>Bugs Fixed in V3.36</h4>
 <table>
 <tbody>
 <tr>
@@ -1034,7 +1210,7 @@ consistent UI.</td>
 <h3><a name="V3.35"></a>Version V3.35</h3>
 <hr>
 
-<h4><a name="V3.35BugsFixed"></a>Bugs fixed in V3.35</h4>
+<h4><a name="V3.35BugsFixed"></a>Bugs Fixed in V3.35</h4>
 <table>
 <tbody>
 <tr>
@@ -1104,7 +1280,7 @@ last database is set as default for next invocation.</td>
 
 <br>
 <hr>
-<h4><a name="V3.33BugsFixed"></a>Bugs fixed in V3.33</h4>
+<h4><a name="V3.33BugsFixed"></a>Bugs Fixed in V3.33</h4>
 <table>
 <tbody>
 <tr>
@@ -1201,7 +1377,7 @@ Please see Help entry for more details.</td>
 
 <br>
 <hr>
-<h4><a name="V3.34.1BugsFixed"></a>Bugs fixed in V3.34.1</h4>
+<h4><a name="V3.34.1BugsFixed"></a>Bugs Fixed in V3.34.1</h4>
 <table>
 <tbody>
 <tr>
@@ -1265,7 +1441,7 @@ Please see Help entry for more details.</td>
 
 <br>
 <hr>
-<h4><a name="V3.33BugsFixed"></a>Bugs fixed in V3.33</h4>
+<h4><a name="V3.33BugsFixed"></a>Bugs Fixed in V3.33</h4>
 <table>
 <tbody>
 <tr>

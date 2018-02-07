@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -17,6 +17,7 @@
  */
 
 ////@begin includes
+#include "wx/treebase.h"
 #include "wx/treectrl.h"
 ////@end includes
 #include "core/ItemData.h"
@@ -101,6 +102,9 @@ public:
   void OnRenameGroup(wxCommandEvent& evt);
 
   void OnEndLabelEdit( wxTreeEvent& evt );
+  
+  /// wxEVT_TREE_KEY_DOWN event handler for ID_TREECTRL
+  void OnKeyDown(wxTreeEvent& evt);
 
 ////@begin PWSTreeCtrl member function declarations
 
