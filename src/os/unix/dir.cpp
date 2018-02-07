@@ -176,7 +176,7 @@ stringT pws_os::getxmldir(void)
 #ifdef __FreeBSD__
   return _S("/usr/local/share/pwsafe/xml/");
 #else
-  return _S("/usr/share/pwsafe/xml/");
+  return _S("/usr/share/passwordsafe/xml/");
 #endif
 }
 
@@ -185,6 +185,6 @@ stringT pws_os::gethelpdir(void)
 #ifdef __FreeBSD__
   return _S("/usr/local/share/doc/passwordsafe/help/");
 #else
-  return _S("/usr/share/doc/passwordsafe/help/");
+  return _S("/usr/share/passwordsafe/help/");
 #endif
 }
