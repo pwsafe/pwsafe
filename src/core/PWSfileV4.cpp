@@ -244,7 +244,7 @@ size_t PWSfileV4::WriteCBC(unsigned char type, const StringX &data)
 size_t PWSfileV4::WriteCBC(unsigned char type, const unsigned char *data,
                            size_t length)
 {
-  int32 len32 = reinterpret_cast<int &>(length);
+  int32 len32 = static_cast<int>(length);
   unsigned char buf[4];
   putInt32(buf, len32);
 
@@ -291,7 +291,7 @@ size_t PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
   WriteField(CItemAtt::ATTAK, AK, sizeof(AK));
 
   // Write content length as the "value" of the content field
-  int32 len32 = reinterpret_cast<int &>(len);
+  int32 len32 = static_cast<int>(len);
   unsigned char buf[4];
   putInt32(buf, len32);
   WriteField(CItemAtt::CONTENT, buf, sizeof(buf));
@@ -337,7 +337,7 @@ size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
   size_t numRead = PWSfile::ReadCBC(type, data, length);
 
   if (numRead > 0) {
-    int32 len32 = reinterpret_cast<int &>(length);
+    int32 len32 = static_cast<int>(length);
     unsigned char buf[4];
     putInt32(buf, len32);
 

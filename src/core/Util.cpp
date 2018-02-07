@@ -175,7 +175,7 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length, unsigned 
   // a dictionary attack harder
   PWSrand::GetInstance()->GetRandomData(curblock, BS);
   // block length overwrites 4 bytes of the above randomness.
-  putInt32(curblock, reinterpret_cast<int32 &>(length));
+  putInt32(curblock, static_cast<int32>(length));
 
   // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
   curblock[sizeof(int32)] = type;

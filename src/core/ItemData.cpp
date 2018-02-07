@@ -598,7 +598,7 @@ int32 CItemData::GetXTimeInt(int32 &xint) const
     CItem::GetField(fiter->second, in, tlen);
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int32));
-      memcpy(&xint, in, sizeof(int32));
+      xint = getInt<int32>(in);
     } else {
       xint = 0;
     }
@@ -658,7 +658,7 @@ int16 CItemData::GetDCA(int16 &iDCA, const bool bShift) const
 
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int16));
-      memcpy(&iDCA, in, sizeof(int16));
+      iDCA = getInt<int16>(in);
     } else {
       iDCA = -1;
     }
@@ -686,7 +686,7 @@ int32 CItemData::GetKBShortcut(int32 &iKBShortcut) const
 
     if (tlen != 0) {
       ASSERT(tlen == sizeof(int32));
-      memcpy(&iKBShortcut, in, sizeof(int32));
+      iKBShortcut = getInt<int32>(in);
     } else {
       iKBShortcut = 0;
     }
@@ -1926,8 +1926,37 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
       ASSERT(0);
       return false;
     }
+
+#ifdef PWS_BIG_ENDIAN
+    unsigned char buf[len] = {0};
+
+    switch(type) {
+      case CTIME:
+      case PMTIME:
+      case ATIME:
+      case XTIME:
+      case RMTIME:
+      case DCA:
+      case SHIFTDCA:
+      case KBSHORTCUT:
+      case XTIME_INT:
+
+        memcpy(buf, &(*iter), len);
+        byteswap(buf, buf + len - 1);
+
+        if (!SetField(type, buf, len))
+          return false;
+        break;
+
+      default:
+        if (!SetField(type, reinterpret_cast<const unsigned char *>(&(*iter)), len))
+          return false;
+	break;
+    }
+#else
     if (!SetField(type, reinterpret_cast<const unsigned char *>(&(*iter)), len))
       return false;
+#endif
     iter += len;
   }
   return false; // END tag not found!

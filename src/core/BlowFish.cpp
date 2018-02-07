@@ -20,10 +20,19 @@ union aword
   unsigned char byte [4];
   struct
   {
+#if defined PWS_LITTLE_ENDIAN
     unsigned int byte3:8;
     unsigned int byte2:8;
     unsigned int byte1:8;
     unsigned int byte0:8;
+#elif defined PWS_BIG_ENDIAN
+    unsigned int byte0:8;
+    unsigned int byte1:8;
+    unsigned int byte2:8;
+    unsigned int byte3:8;
+#else
+#error Is the target CPU big or little endian?
+#endif
   } w;
 };
 
@@ -428,16 +437,41 @@ void BlowFish::Encrypt(const unsigned char *in, unsigned char *out) const
 {
   for (int x = 0; x < 8; x++)
     out[x] = in[x];
+
+#ifdef PWS_BIG_ENDIAN
+  byteswap(out, out + sizeof(int32) - 1);
+  byteswap(out + sizeof(int32), out + 2*sizeof(int32) - 1);
+#endif
+
   Blowfish_encipher(reinterpret_cast<uint32 *>(out),
     reinterpret_cast<uint32 *>(out + sizeof(uint32)));
+
+#ifdef PWS_BIG_ENDIAN
+  byteswap(out, out + sizeof(int32) - 1);
+  byteswap(out + sizeof(int32), out + 2*sizeof(int32) - 1);
+#endif
+
 }
 
 void BlowFish::Decrypt(const unsigned char *in, unsigned char *out) const
 {
   for (int x = 0; x < 8; x++)
     out[x] = in[x];
+
+#ifdef PWS_BIG_ENDIAN
+  byteswap(out, out + sizeof(int32) - 1);
+  byteswap(out + sizeof(int32), out + 2*sizeof(int32) - 1);
+#endif
+
   Blowfish_decipher(reinterpret_cast<uint32 *>(out),
     reinterpret_cast<uint32 *>(out + sizeof(uint32)));
+
+#ifdef PWS_BIG_ENDIAN
+  byteswap(out, out + sizeof(int32) - 1);
+  byteswap(out + sizeof(int32), out + 2*sizeof(int32) - 1);
+#endif
+
+
 }
 
 /*
