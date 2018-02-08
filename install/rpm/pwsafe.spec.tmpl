@@ -32,8 +32,8 @@ install -d -m 755 ${RPM_BUILD_ROOT}
 install -d -m 755 ${RPM_BUILD_ROOT}/usr/bin
 install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/applications
 install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/48x48/apps
-install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/pwsafe/xml
-install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/doc/passwordsafe/help
+install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/passwordsafe/xml
+install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/passwordsafe/help
 install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/man/man1
 install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/locale
 install -d -m 755 ${RPM_BUILD_ROOT}/tmp
@@ -43,8 +43,8 @@ install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/install/graphics/pwsafe.png $
 install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/README.md ${RPM_BUILD_DIR}/%{name}-%{version}/docs/ReleaseNotes.txt ${RPM_BUILD_DIR}/%{name}-%{version}/docs/ChangeLog.txt ${RPM_BUILD_DIR}/%{name}-%{version}/LICENSE ${RPM_BUILD_DIR}/%{name}-%{version}/install/copyright ${RPM_BUILD_ROOT}/usr/share/doc/passwordsafe
 install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/docs/pwsafe.1 ${RPM_BUILD_ROOT}/usr/share/man/man1
 gzip -9 ${RPM_BUILD_ROOT}/usr/share/man/man1/pwsafe.1
-install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/xml/* ${RPM_BUILD_ROOT}/usr/share/pwsafe/xml
-install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/help/helpEN.zip ${RPM_BUILD_ROOT}/usr/share/doc/passwordsafe/help
+install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/xml/* ${RPM_BUILD_ROOT}/usr/share/passwordsafe/xml
+install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/help/helpEN.zip ${RPM_BUILD_ROOT}/usr/share/passwordsafe/help
 cp -a ${RPM_BUILD_DIR}/%{name}-%{version}/src/ui/wxWidgets/I18N/mos/* ${RPM_BUILD_ROOT}/usr/share/locale
 
 %clean
@@ -58,7 +58,7 @@ rm -rf ${RPM_BUILD_ROOT}
 %ghost docs/*
 
 %files
-%attr(755,root,root) /usr/share/pwsafe
+%attr(755,root,root) /usr/share/passwordsafe
 %attr(755,root,root) /usr/share/doc/passwordsafe
 %attr(644,root,root) /usr/share/locale/de/LC_MESSAGES/pwsafe.mo
 %attr(644,root,root) /usr/share/locale/da/LC_MESSAGES/pwsafe.mo
