@@ -843,7 +843,7 @@ msgstr "&Opties..."
 
 #. Resource IDs: (32118 - MenuEx)
 msgid "&Password Font"
-msgstr "&Wachtwoord Lettertype"
+msgstr "Lettertype &Wachtwoord"
 
 #. Resource IDs: (1353)
 msgid "&Password:"
@@ -887,7 +887,7 @@ msgstr "&Rapporten"
 
 #. Resource IDs: (1374)
 msgid "&Reset"
-msgstr "&Opnieuw Instellen"
+msgstr "&Herstel"
 
 #. Resource IDs: (32254 - Menu)
 msgid "&Restore"
@@ -991,7 +991,7 @@ msgstr "&Bekijk Rapport"
 
 #. Resource IDs: (32126 - MenuEx)
 msgid "&Virtual Keyboard Font"
-msgstr "&Virtueel Toetsenbord Lettertype"
+msgstr "Lettertype &Virtueel Toetsenbord"
 
 #. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
 msgid "&XML format..."
@@ -1663,7 +1663,7 @@ msgstr "Toepassen"
 
 #. Resource IDs: (1489)
 msgid "Apply these changes to Protected Entries (if required)."
-msgstr "Deze wijzigingen aan Beschermde invoeren uitvoeren (als vereist)."
+msgstr "Wijzigingen aan Beschermde invoeren uitvoeren (als vereist)."
 
 #. Resource IDs: (8201)
 msgid "Arabic (101)"
@@ -1778,7 +1778,7 @@ msgstr "Folder voor Back-up"
 
 #. Resource IDs: (65535)
 msgid "Backup Name"
-msgstr "Back-up Naam"
+msgstr "Naam Back-up"
 
 #. Resource IDs: (137, 505)
 msgid "Backups"
@@ -1878,7 +1878,7 @@ msgstr "Bytes"
 
 #. Resource IDs: (32065 - Menu, 32065 - MenuEx)
 msgid "C&lear Clipboard"
-msgstr "&Leeg Klembord"
+msgstr "&Wis Klembord"
 
 #. Resource IDs: (1386)
 msgid "C++ Terminate"
@@ -1993,11 +1993,11 @@ msgstr "Hoofdlettergevoelig zoeken"
 
 #. Resource IDs: (5846)
 msgid "Chan&ge to R-O"
-msgstr "Verander naar Alleen Lezen"
+msgstr "Wissel naar Alleen Lezen"
 
 #. Resource IDs: (5845)
 msgid "Chan&ge to R/W"
-msgstr "Verander naar Lezen/Schrijven"
+msgstr "Wissel naar Lezen/Schrijven"
 
 #. Resource IDs: (32116 - PopupMenuEx)
 msgid "Change &Font"
@@ -2050,7 +2050,7 @@ msgstr "Wijzig/Bekijk het geselecteerde Gelabelde Wachtwoordregels of de databas
 
 #. Resource IDs: (1187)
 msgid "Changes to existing entries will be applied on pressing OK."
-msgstr "Wijzigin aan de bestaande verweldingen worden uitgevoerd na het aanklikken van OK."
+msgstr "Wijziging aan de bestaande invoer worden uitgevoerd na het aanklikken van OK."
 
 #. Resource IDs: (5120)
 msgid "Changing the password of an alias will break the link to its base entry."
@@ -2226,7 +2226,7 @@ msgstr "Sluiten Vind Balk"
 
 #. Resource IDs: (32110 - MenuEx)
 msgid "Collapse All"
-msgstr "Alles Samenvouwen"
+msgstr "Alles Invouwen"
 
 #. Resource IDs: (114, 32210 - Menu)
 msgid "Column Picker"
@@ -2537,7 +2537,7 @@ msgstr "Creeer nieuwe Wachtwoordregels"
 
 #. Resource IDs: (1199)
 msgid "Create intermediate backups (.ibak) before saving"
-msgstr "Maak tussentijdse back-up (.ibak) alvorens het bewaren"
+msgstr "Maak tussentijdse back-up (.ibak) alvorens opslaan"
 
 #. Resource IDs: (32308 - MenuEx)
 msgid "Create report of previous Find search"
@@ -2722,7 +2722,7 @@ msgstr "Standaard"
 
 #. Resource IDs: (65535)
 msgid "Default Autotype delay (mS):"
-msgstr "Standaard vertraging tijdens Autotype (mS):"
+msgstr "Standaard vertraging tijdens Autoinvoer (mS):"
 
 #. Resource IDs: (1447)
 msgid "Default Autotype string:"
@@ -3364,7 +3364,7 @@ msgstr "Vouw pad backupmap"
 
 #. Resource IDs: (32054 - MenuEx)
 msgid "Expand/Collapse Group"
-msgstr "Groep uitvouwen/samenvouwen"
+msgstr "Groep uitvouwen/invouwen"
 
 #. Resource IDs: (119)
 msgid "Expiring Passwords"
@@ -3380,7 +3380,7 @@ msgstr "Exporteer &Text"
 
 #. Resource IDs: (32009 - PopupMenuEx)
 msgid "Export &To"
-msgstr "Exporteren &Naar"
+msgstr "&Exporteren Naar"
 
 #. Resource IDs: (32130 - MenuEx)
 msgid "Export &XML"
@@ -3623,15 +3623,15 @@ msgstr "Bestand is afgekort of op andere wijze beschadigd. SVP een back-up datab
 
 #. Resource IDs: (5330)
 msgid "File lock error"
-msgstr "Fout bij het vergrendelen van het bestand"
+msgstr "Fout bij vergrendelen van bestand"
 
 #. Resource IDs: (5319)
 msgid "File open error"
-msgstr "Fout bij het openen van het bestand"
+msgstr "Fout bij openen van bestand"
 
 #. Resource IDs: (5237)
 msgid "File open error."
-msgstr "Fout bij het openen van het bestand."
+msgstr "Fout bij openen van bestand."
 
 #. Resource IDs: (3024)
 msgid "File or path not found"
@@ -3785,7 +3785,7 @@ msgstr "Maak wachtwoorden die &uit te spreken zijn"
 
 #. Resource IDs: (5743)
 msgid "Generate Password"
-msgstr "Maak wachtwoord"
+msgstr "Genereer wachtwoord"
 
 #. Resource IDs: (5916)
 msgid "Generate Password using selected Password Policy"
@@ -4149,7 +4149,7 @@ msgstr "Negeer alle Veilige Back-up bestanden en ga verder met de geselecteerde 
 
 #. Resource IDs: (32014 - PopupMenuEx)
 msgid "Import &From"
-msgstr "Importeren &van"
+msgstr "&Importeren Van"
 
 #. Resource IDs: (32122 - MenuEx)
 msgid "Import &Text"
@@ -4256,7 +4256,7 @@ msgstr "Verkeerd wachwoord"
 #. Resource IDs: (5387)
 #, c-format
 msgid "Incremented Number [%d-%d]"
-msgstr "Opgehoogd getal [%d-%d]"
+msgstr "Oplopend Getal [%d-%d]"
 
 #. Resource IDs: (3356)
 msgid "Index is invalid or missing"
@@ -4294,7 +4294,7 @@ msgstr "Onvoldoende geheugen om de bewerking uit te voeren."
 
 #. Resource IDs: (65535)
 msgid "Intermediate Backups"
-msgstr "Tussenliggende back-ups"
+msgstr "Tussentijdse back-ups"
 
 #. Resource IDs: (61704)
 msgid "Internal application error."
@@ -4542,15 +4542,15 @@ msgstr "Vergrendel de kluis"
 
 #. Resource IDs: (1077)
 msgid "Lock password database after "
-msgstr "Vergrendelen van de wachtwoord database na "
+msgstr "Vergrendel wachtwoord-database na "
 
 #. Resource IDs: (1026)
 msgid "Lock password database on minimize"
-msgstr "Vergrendelen van de wachtwoord database bij minimaliseren"
+msgstr "Vergrendelen van wachtwoord-database bij minimaliseren"
 
 #. Resource IDs: (1073)
 msgid "Lock password database on workstation lock"
-msgstr "Vergrendelen van de wachtwoord database bij vergrendelen van het werkstation"
+msgstr "Vergrendelen wachtwoord-database bij vergrendelen werkstation"
 
 #. Resource IDs: (5113)
 msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
@@ -4674,7 +4674,7 @@ msgstr "Migreer PasswordSafe configuratie naar gebruikers folder"
 
 #. Resource IDs: (1250)
 msgid "Minimize after Autotype"
-msgstr "Minimaliseren na Automatisch invulen"
+msgstr "Minimaliseren na Automatisch invullen"
 
 #. Resource IDs: (5584)
 msgid "Minimum digits"
@@ -5639,7 +5639,7 @@ msgstr "Programma's (*.exe)|*.exe|Alle bestanden  (*.*)|*.*||"
 
 #. Resource IDs: (4112)
 msgid "Pronounceable passwords"
-msgstr "Wachtwoorden die uit te spreken zijn"
+msgstr "Uitspreekbare Wachtwoorden"
 
 #. Resource IDs: (5918)
 msgid "Pronounceable passwords must contain either lowercase or uppercase characters or both"
@@ -5740,7 +5740,7 @@ msgstr "Wijzigings tijdstip opslaan"
 
 #. Resource IDs: (1121)
 msgid "Record last access times"
-msgstr "Laatste toegangs tijdstippen opslaan"
+msgstr "Bewaar laatste tijdstippen openen"
 
 #. Resource IDs: (62184)
 msgid ""
@@ -6082,7 +6082,7 @@ msgstr "Selecteer toetsenbord:"
 
 #. Resource IDs: (5393)
 msgid "Select Location for Intermediate Backups"
-msgstr "Selecteer de plaats voor de tussenliggende back-ups"
+msgstr "Selecteer de plaats voor de tussentijdse back-ups"
 
 #. Resource IDs: (65535)
 msgid "Select Locked Text Color:"
@@ -6162,7 +6162,7 @@ msgstr "Sessie"
 
 #. Resource IDs: (5996)
 msgid "Set Add/Edit display font"
-msgstr "Instellen Toevoegen/Bewerken-weergavelettertype"
+msgstr "Instellen lettertype Toevoegen/Bewerken"
 
 #. Resource IDs: (5992)
 #, c-format
@@ -6218,11 +6218,11 @@ msgstr "Zet wachtwoordregels filters: %d Toegevoegd; %d Actief"
 
 #. Resource IDs: (5693)
 msgid "Set Password display font"
-msgstr "Zet Wachtwoord schermlettertype"
+msgstr "Zet lettertype"
 
 #. Resource IDs: (1373)
 msgid "Set Sample &Text"
-msgstr "Zet voorbeeld &Tekst"
+msgstr "Wijzig voorbeeld tekst"
 
 #. Resource IDs: (5692)
 msgid "Set Tree/List display font"
@@ -6230,7 +6230,7 @@ msgstr "Zet Boom/Lijst lettertype"
 
 #. Resource IDs: (5709)
 msgid "Set Virtual Keyboard font"
-msgstr "Zet Virtueel toetsenbord lettertype"
+msgstr "Kies lettertype Virtueel toetsenbord"
 
 #. Resource IDs: (1)
 msgid "Set Yubikey"
@@ -6238,7 +6238,7 @@ msgstr "Instellen Yubikey"
 
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
-msgstr "Zet het maximum aantal wachtwoorden dat bewaard wordt op bovnestaande waarde"
+msgstr "Zet het maximum aantal wachtwoorden dat bewaard wordt op bovenstaande waarde"
 
 #. Resource IDs: (8240)
 msgid "Setswana"
@@ -7415,7 +7415,7 @@ msgstr "Ontsluit"
 
 #. Resource IDs: (1543)
 msgid "Unlock Difficulty"
-msgstr "Moeilijkheden bij het ontsluiten"
+msgstr "Moeilijkheid Ontsluiten"
 
 #. Resource IDs: (5258)
 msgid "Unlock Safe"
@@ -8074,7 +8074,7 @@ msgid ""
 "Collapse All"
 msgstr ""
 "\n"
-"Alles samenvouwen"
+"Alles Invouwen"
 
 #. Resource IDs: (32091)
 msgid ""
@@ -8970,7 +8970,7 @@ msgstr "dagen voordat wachtwoord verloopt"
 
 #. Resource IDs: (4109)
 msgid "default symbol set"
-msgstr "standaard symbool gezet"
+msgstr "standaard symboolcollectie"
 
 #. Resource IDs: (3289)
 msgid "does not begin with"
