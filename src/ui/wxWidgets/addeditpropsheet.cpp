@@ -936,7 +936,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   // XXX since PWSRun not yet implemented in Linux, Send button's always disabled:
   sendBtn->Enable(false);
   m_notes = (m_type != ADD && m_isNotesHidden) ?
-    wxString(_("[Notes hidden - click here to display]")) : towxstring(m_item.GetNotes());
+    wxString(_("[Notes hidden - click here to display]")) : towxstring(m_item.GetNotes(TCHAR('\n')));
   // Following has no effect under Linux :-(
   long style = m_noteTX->GetExtraStyle();
   if (prefs->GetPref(PWSprefs::NotesWordWrap))
@@ -1204,7 +1204,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       // Note field can't be modified w/o first getting focus
       // and that we turn off m_isNotesHidden when that happens.
       if (m_type != ADD && m_isNotesHidden)
-        m_notes = m_item.GetNotes().c_str();
+        m_notes = m_item.GetNotes(TCHAR('\n')).c_str();
 
       // Create a new PWHistory string based on settings in this dialog, and compare it
       // with the PWHistory string from the item being edited, to see if the user modified it.
@@ -1254,7 +1254,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       bIsModified = (group        != m_item.GetGroup().c_str()       ||
                      m_title      != m_item.GetTitle().c_str()       ||
                      m_user       != m_item.GetUser().c_str()        ||
-                     m_notes      != m_item.GetNotes().c_str()       ||
+                     m_notes      != m_item.GetNotes(TCHAR('\n')).c_str()       ||
                      m_url        != m_item.GetURL().c_str()         ||
                      m_email      != m_item.GetEmail().c_str()       ||
                      m_autotype   != m_item.GetAutoType().c_str()    ||
@@ -1583,7 +1583,7 @@ void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& /* evt */ )
 {
   if (m_type != ADD && m_isNotesHidden) {
     m_isNotesHidden = false;
-    m_notes = m_item.GetNotes().c_str();
+    m_notes = m_item.GetNotes(TCHAR('\n')).c_str();
     m_noteTX->ChangeValue(m_notes);
   }
 }

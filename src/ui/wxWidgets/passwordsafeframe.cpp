@@ -3347,7 +3347,7 @@ void PasswordSafeFrame::UpdateStatusBar()
     text = m_bFilterActive ? wxT("[F]") : wxT("   ");
     m_statusBar->SetStatusText(text, CPWStatusBar::SB_FILTER);
   } else { // no open file
-    m_statusBar->SetStatusText(PWSprefs::GetDCAdescription(-1), CPWStatusBar::SB_DBLCLICK);
+    m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(-1)), CPWStatusBar::SB_DBLCLICK);
     m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_CLIPBOARDACTION);
     m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_MODIFIED);
     m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_READONLY);
@@ -3365,7 +3365,7 @@ void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
     if (dca == -1)
       dca = PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
   }
-  m_statusBar->SetStatusText(PWSprefs::GetDCAdescription(dca), CPWStatusBar::SB_DBLCLICK);
+  m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(dca)), CPWStatusBar::SB_DBLCLICK);
 }
 
 //-----------------------------------------------------------------

@@ -374,7 +374,7 @@ void PasswordSafeSearch::CreateSearchBar()
   panelSizer->Add(m_toolbar, wxSizerFlags().Proportion(1).Expand());
 
   m_toolbar->AddTool(ID_FIND_CLOSE, wxEmptyString, wxBitmap(findclose_xpm), wxNullBitmap, wxITEM_NORMAL, _("Close SearchBar"));
-  wxSize srchCtrlSize(m_parentFrame->GetSize().GetWidth()/5, wxDefaultSize.GetHeight());
+  wxSize srchCtrlSize(m_parentFrame->GetSize().GetWidth()/3, wxDefaultSize.GetHeight());
   wxSearchCtrl* srchCtrl = new wxSearchCtrl(m_toolbar, ID_FIND_EDITBOX, wxEmptyString, wxDefaultPosition, srchCtrlSize, wxTE_PROCESS_ENTER);
   srchCtrl->ShowCancelButton(true);
   srchCtrl->ShowSearchButton(true);
