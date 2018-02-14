@@ -59,7 +59,7 @@ void PasswordSafeFrame::OnListViewClick( wxCommandEvent& /* evt */ )
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("list"));
   ShowTree(false);
   ShowGrid(true);
-  m_currentView = GRID;
+  SetViewType(ViewType::GRID);
 }
 
 /*!
@@ -71,18 +71,18 @@ void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& /* evt */ )
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("tree"));
   ShowGrid(false);
   ShowTree(true);
-  m_currentView = TREE;
+  SetViewType(ViewType::TREE);
 }
 
 void PasswordSafeFrame::OnExpandAll(wxCommandEvent& /*evt*/)
 {
-  wxASSERT(m_currentView == TREE);
+  wxASSERT(IsTreeView());
   m_tree->ExpandAll();
 }
 
 void PasswordSafeFrame::OnCollapseAll(wxCommandEvent& /*evt*/)
 {
-  wxASSERT(m_currentView == TREE);
+  wxASSERT(IsTreeView());
 
   //we cannot just call wxTreeCtrl::CollapseAll(), since it tries to
   //collapse the invisible root item also, and thus ASSERTs
