@@ -166,6 +166,9 @@ class PasswordSafeFrame: public wxFrame, public UIInterFace
 {
     DECLARE_CLASS( PasswordSafeFrame )
     DECLARE_EVENT_TABLE()
+    
+private:
+    enum class ViewType { TREE, GRID } m_currentView;
 
 public:
     /// Constructors
@@ -424,7 +427,10 @@ public:
 
   void Execute(Command *pcmd, PWScore *pcore = NULL);
 
-  bool IsTreeView() const {return m_currentView == TREE;}
+  void SetViewType(const ViewType& view) { m_currentView = view; }
+  bool IsTreeView() const { return m_currentView == ViewType::TREE; }
+  bool IsGridView() const { return m_currentView == ViewType::GRID; }
+  
   void RefreshViews();
   void FlattenTree(OrderedItemList& olist);
 
@@ -550,7 +556,6 @@ public:
   /// File open, double-click, modify, r-o r/w, filter...
   void UpdateStatusBar();
   PWScore &m_core;
-  enum {TREE, GRID} m_currentView;
   PasswordSafeSearch* m_search;
   SystemTray* m_sysTray;
   bool m_exitFromMenu;
