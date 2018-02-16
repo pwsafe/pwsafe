@@ -869,7 +869,7 @@ std::vector<bool> PWSTreeCtrl::GetGroupDisplayState()
     GetRootItem(), 
     [&]
     (wxTreeItemId itemId) -> void { 
-      IsExpanded(itemId) ? groupstates.push_back(true) : groupstates.push_back(false);
+      groupstates.push_back(IsExpanded(itemId));
     }
   );
   
