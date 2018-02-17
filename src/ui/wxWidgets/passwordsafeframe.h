@@ -592,6 +592,8 @@ public:
   bool m_bShowExpiry, m_bShowUnsaved; // predefined filters
   bool m_bFilterActive;
   void ApplyFilters();
+  
+  bool m_InitialTreeDisplayStatusAtOpen;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()

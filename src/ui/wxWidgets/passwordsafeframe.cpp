@@ -264,7 +264,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
   : m_core(core), m_currentView(ViewType::GRID), m_search(0), m_sysTray(new SystemTray(this)),
     m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
     m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
-    m_bShowExpiry(false), m_bFilterActive(false)
+    m_bShowExpiry(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true)
 {
     Init();
     m_currentView = (PWSprefs::GetInstance()->GetPref(PWSprefs::LastView) == _T("list")) ? ViewType::GRID : ViewType::TREE;
@@ -851,8 +851,6 @@ void PasswordSafeFrame::ShowGrid(bool show)
 
 void PasswordSafeFrame::ShowTree(bool show)
 {
-  static bool initialShowTree = true;
-  
   if (show) {
     m_tree->Clear();
     wxFont font(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::TreeFont)));
@@ -876,27 +874,31 @@ void PasswordSafeFrame::ShowTree(bool show)
     if (!m_tree->IsEmpty()) // avoid assertion!
       m_tree->SortChildrenRecursively(m_tree->GetRootItem());
 
-    m_guiInfo->RestoreTreeViewInfo(m_tree);
+    if (m_InitialTreeDisplayStatusAtOpen) {
+      m_InitialTreeDisplayStatusAtOpen = false;
+      
+      switch (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeDisplayStatusAtOpen)) {
+        case PWSprefs::AllCollapsed:
+          m_tree->SetGroupDisplayStateAllCollapsed();
+          break;
+        case PWSprefs::AllExpanded:
+          m_tree->SetGroupDisplayStateAllExpanded();
+          break;
+        case PWSprefs::AsPerLastSave:
+          m_tree->RestoreGroupDisplayState();
+          break;
+        default:
+          m_tree->SetGroupDisplayStateAllCollapsed();
+      }
+      
+      m_guiInfo->SaveTreeViewInfo(m_tree);
+    }
+    else {
+      m_guiInfo->RestoreTreeViewInfo(m_tree);
+    }
   }
   else {
     m_guiInfo->SaveTreeViewInfo(m_tree);
-  }
-  
-  if (initialShowTree) {
-    switch (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeDisplayStatusAtOpen)) {
-      case PWSprefs::AllCollapsed:
-        m_tree->SetGroupDisplayStateAllCollapsed();
-        break;
-      case PWSprefs::AllExpanded:
-        m_tree->SetGroupDisplayStateAllExpanded();
-        break;
-      case PWSprefs::AsPerLastSave:
-        m_tree->RestoreGroupDisplayState();
-        break;
-      default:
-        m_tree->SetGroupDisplayStateAllCollapsed();
-    }
-    initialShowTree = false;
   }
   
   m_tree->Show(show);
@@ -1214,6 +1216,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
     StringX password = pwdprompt.GetPassword();
     int retval = Load(password);
     if (retval == PWScore::SUCCESS) {
+      m_InitialTreeDisplayStatusAtOpen = true;
       Show();
       wxGetApp().recentDatabases().AddFileToHistory(fname);
     }
