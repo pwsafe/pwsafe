@@ -5023,6 +5023,22 @@ msgstr "Ja - Aussprechbare Symbole: %ls"
 msgid "Yes - At least %d from %ls: %ls"
 msgstr "Ja - Mindestens %d von %ls: %ls"
 
+# Kai, new for MacOS
+msgid "Services"
+msgstr "Dienste"
+
+msgid "Hide Others"
+msgstr "Andere ausblenden"
+
+msgid "Show All"
+msgstr "Alle einblenden"
+
+msgid "Quit %s"
+msgstr "%s beenden"
+
+msgid "Hide %s"
+msgstr "%s ausblenden"
+
 #, fuzzy
 #~ msgid "Initial tray icon color"
 #~ msgstr "Anfängliches Symbol im Infobereich"
