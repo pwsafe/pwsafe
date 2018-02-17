@@ -6,6 +6,9 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
+#include <map>
+#include <tuple>
+
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
@@ -26,87 +29,38 @@ CWZPropertySheet::CWZPropertySheet(UINT nID, CWnd* pParent, WZAdvanced::AdvType 
   m_pst_SADV(pst_SADV), m_bAdvanced(false), m_bCompleted(false),
   m_numProcessed(-1)
 {
-  // common 'other' file processing for Compare, Merge & Synchronize
-  UINT uimsgid_select(0), uimsgid_advanced(0), uimsgid_finish(0);
-  int idd_select(IDD_WZSELECTDB); // change when a pwsafe is input
-  //                                  (merge/compare/sync)
-
-  switch (nID) {
-    case ID_MENUITEM_COMPARE:
-      uimsgid_select = IDS_PICKCOMPAREFILE;
-      uimsgid_advanced = IDS_COMPAREX;
-      uimsgid_finish = IDS_WZCOMPARE;
-      idd_select = IDD_WZINPUTDB;
-      break;
-    case ID_MENUITEM_MERGE:
-      uimsgid_select = IDS_PICKMERGEFILE;
-      uimsgid_advanced = IDS_MERGEX;
-      uimsgid_finish = IDS_WZMERGE;
-      idd_select = IDD_WZINPUTDB;
-      break;
-    case ID_MENUITEM_SYNCHRONIZE:
-      uimsgid_select = IDS_PICKSYNCHRONIZEEFILE;
-      uimsgid_advanced = IDS_SYNCHRONIZEX;
-      uimsgid_finish = IDS_WZSYNCH;
-      idd_select = IDD_WZINPUTDB;
-      break;
-    case ID_MENUITEM_EXPORT2PLAINTEXT:
-      uimsgid_select = IDS_NAMETEXTFILE;
-      uimsgid_advanced = IDS_EXPORT_TEXTX;
-      uimsgid_finish = IDS_WZEXPORTTEXT;
-      break;
-    case ID_MENUITEM_EXPORTENT2PLAINTEXT:
-      uimsgid_select = IDS_NAMETEXTFILE;
-      uimsgid_advanced = IDS_EXPORT_TEXTX_SINGLE;
-      uimsgid_finish = IDS_WZEXPORTTEXT;
-      break;
-    case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
-      uimsgid_select = IDS_NAMETEXTFILE;
-      uimsgid_advanced = IDS_EXPORT_TEXTX_GROUP;
-      uimsgid_finish = IDS_WZEXPORTTEXT;
-      break;
-    case ID_MENUITEM_EXPORT2XML:
-      uimsgid_select = IDS_NAMEXMLFILE;
-      uimsgid_advanced = IDS_EXPORT_XMLX;
-      uimsgid_finish = IDS_WZEXPORTXML;
-      break;
-    case ID_MENUITEM_EXPORTENT2XML:
-      uimsgid_select = IDS_NAMEXMLFILE;
-      uimsgid_advanced = IDS_EXPORT_XMLX_SINGLE;
-      uimsgid_finish = IDS_WZEXPORTXML;
-      break;
-    case ID_MENUITEM_EXPORTGRP2XML:
-      uimsgid_select = IDS_NAMEXMLFILE;
-      uimsgid_advanced = IDS_EXPORT_XMLX_GROUP;
-      uimsgid_finish = IDS_WZEXPORTXML;
-      break;
-    case ID_MENUITEM_EXPORTENT2DB:
-    case ID_MENUITEM_EXPORTGRP2DB:
-    case ID_MENUITEM_EXPORTFILTERED2DB:
-      uimsgid_select = IDS_NAMEDBFILE;
-      uimsgid_finish = IDS_WZEXPORTDB;
-      break;
-    default:
-      ASSERT(0);
-  }
-
+  enum {SELECT_IDS = 0, ADVANCED_IDS = 1, FINISH_IDS = 2, SELECT_IDD = 3};
+  std::map<UINT, std::tuple<UINT, UINT, UINT, UINT>> specifics = {
+    {ID_MENUITEM_COMPARE, {IDS_PICKCOMPAREFILE, IDS_COMPAREX, IDS_WZCOMPARE, IDD_WZINPUTDB}},
+    {ID_MENUITEM_MERGE, {IDS_PICKMERGEFILE, IDS_MERGEX, IDS_WZMERGE, IDD_WZINPUTDB}},
+    {ID_MENUITEM_SYNCHRONIZE, {IDS_PICKSYNCHRONIZEEFILE, IDS_SYNCHRONIZEX, IDS_WZSYNCH, IDD_WZINPUTDB}},
+    {ID_MENUITEM_EXPORT2PLAINTEXT, {IDS_NAMETEXTFILE, IDS_EXPORT_TEXTX, IDS_WZEXPORTTEXT, IDD_WZSELECTDB}},
+    {ID_MENUITEM_EXPORTENT2PLAINTEXT, {IDS_NAMETEXTFILE, IDS_EXPORT_TEXTX_SINGLE, IDS_WZEXPORTTEXT, IDD_WZSELECTDB}},
+    {ID_MENUITEM_EXPORTGRP2PLAINTEXT, {IDS_NAMETEXTFILE, IDS_EXPORT_TEXTX_GROUP, IDS_WZEXPORTTEXT, IDD_WZSELECTDB}},
+    {ID_MENUITEM_EXPORT2XML, {IDS_NAMEXMLFILE, IDS_EXPORT_XMLX, IDS_WZEXPORTXML, IDD_WZSELECTDB}},
+    {ID_MENUITEM_EXPORTENT2XML, {IDS_NAMEXMLFILE, IDS_EXPORT_XMLX_SINGLE, IDS_WZEXPORTXML, IDD_WZSELECTDB}},
+    {ID_MENUITEM_EXPORTGRP2XML, {IDS_NAMEXMLFILE, IDS_EXPORT_XMLX_GROUP, IDS_WZEXPORTXML, IDD_WZSELECTDB}},
+    {ID_MENUITEM_EXPORTENT2DB, {IDS_NAMEDBFILE, 0, IDS_WZEXPORTDB, IDD_WZSELECTDB}},
+    {ID_MENUITEM_EXPORTGRP2DB, {IDS_NAMEDBFILE, 0, IDS_WZEXPORTDB, IDD_WZSELECTDB}},
+    {ID_MENUITEM_EXPORTFILTERED2DB, {IDS_NAMEDBFILE, 0, IDS_WZEXPORTDB, IDD_WZSELECTDB}},
+  };
+  
   // Setup up wizard property pages
-  m_nButtonID = uimsgid_finish;
-  m_pp_selectdb = new CWZSelectDB(this, idd_select, uimsgid_select,
-          CWZPropertyPage::START);
+  m_nButtonID = std::get<FINISH_IDS>(specifics[nID]);
+  m_pp_selectdb = new CWZSelectDB(this, std::get<SELECT_IDD>(specifics[nID]),
+                                  std::get<SELECT_IDS>(specifics[nID]), CWZPropertyPage::START);
   AddPage(m_pp_selectdb);
 
   if (nID != ID_MENUITEM_EXPORTENT2DB && nID != ID_MENUITEM_EXPORTGRP2DB &&
       nID != ID_MENUITEM_EXPORTFILTERED2DB) {
-    m_pp_advanced = new CWZAdvanced(this, uimsgid_advanced, CWZPropertyPage::PENULTIMATE,
-                                    iadv_type, m_pst_SADV);
+    m_pp_advanced = new CWZAdvanced(this, std::get<ADVANCED_IDS>(specifics[nID]),
+                                    CWZPropertyPage::PENULTIMATE, iadv_type, m_pst_SADV);
     AddPage(m_pp_advanced);
-  } else {
-    // No Advanced property page when exporting to current DB format
+  } else { // No Advanced property page when exporting to current DB format
     m_pp_advanced = NULL;
   }
 
-  m_pp_finish   = new CWZFinish(this, uimsgid_finish, CWZPropertyPage::LAST);
+  m_pp_finish   = new CWZFinish(this, std::get<FINISH_IDS>(specifics[nID]), CWZPropertyPage::LAST);
   AddPage(m_pp_finish);
 
   SetWizardMode();
