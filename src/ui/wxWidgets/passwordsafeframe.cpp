@@ -290,6 +290,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   m_search = new PasswordSafeSearch(this);
   CreateMainToolbar();
   CreateDragBar();
+  CreateStatusBar();
   return true;
 }
 
@@ -309,6 +310,13 @@ void PasswordSafeFrame::CreateDragBar()
     dragbar->Hide();
   }
   GetMenuBar()->Check(ID_SHOWHIDE_DRAGBAR, bShow);
+}
+
+void PasswordSafeFrame::CreateStatusBar()
+{
+  m_statusBar = new CPWStatusBar(this, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER);
+  m_statusBar->Setup();
+  SetStatusBar(m_statusBar);
 }
 
 /*!
@@ -521,10 +529,6 @@ void PasswordSafeFrame::CreateMenubar()
   menuBar->Append(itemMenu79, _("&Help"));
   itemFrame1->SetMenuBar(menuBar);
 
-  m_statusBar = new CPWStatusBar( itemFrame1, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER );
-  m_statusBar->SetFieldsCount(6);
-  itemFrame1->SetStatusBar(m_statusBar);
-
 ////@end PasswordSafeFrame content construction
 
   menuBar->Thaw();
@@ -540,7 +544,6 @@ void PasswordSafeFrame::CreateMenubar()
   GetMenuBar()->Check( (m_currentView == TREE) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
   GetMenuBar()->Check( PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
                        ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true );
-  m_statusBar->Setup();
 
 }
 

@@ -504,6 +504,7 @@ public:
   void CreateDragBar();
   void RefreshToolbarButtons();
   PWSDragBar* GetDragBar();
+  void CreateStatusBar();
   bool IsClosed() const;
   void SaveSettings() const;
   void LockDb();
