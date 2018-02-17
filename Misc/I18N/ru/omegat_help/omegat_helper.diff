@@ -337,11 +337,11 @@ diff -bNau ../../html/wzselectdb.html ./source/html/wzselectdb.html
 --- ../../pwsafe.hhc	2017-08-14 13:52:02.118196171 +0300
 +++ ./source/pwsafe.hhc	2017-08-14 22:51:18.155843615 +0300
 @@ -161,7 +161,7 @@
- 			<param name="Local" value="html\display_tab.html">
+ 			<param name="Local" value="html/display_tab.html">
  			</OBJECT>
  		<LI> <OBJECT type="text/sitemap">
 -			<param name="Name" value="Misc. Options">
 +			<param name="Name" value="Misc Options">
- 			<param name="Local" value="html\misc_tab.html">
+ 			<param name="Local" value="html/misc_tab.html">
  			</OBJECT>
  		<LI> <OBJECT type="text/sitemap">
