@@ -114,7 +114,7 @@ CAbout::~CAbout()
 
 void CAbout::Init()
 {
-  m_newVerStatus = NULL;
+  m_newVerStatus = nullptr;
 }
 
 /*!
@@ -289,7 +289,7 @@ void CAbout::CheckNewVersion()
     status = CheckVersion::CANT_READ;
   }
   wxInputStream *in_stream = url.GetInputStream();
-  if (in_stream != NULL) {
+  if (in_stream != nullptr) {
     unsigned char buff[BUFSIZ+1];
     StringX chunk;
     CUTF8Conv conv;

@@ -118,23 +118,23 @@ CPasswordPolicy::~CPasswordPolicy()
 void CPasswordPolicy::Init()
 {
 ////@begin CPasswordPolicy member initialisation
-  m_pwMinsGSzr = NULL;
-  m_pwpUseLowerCtrl = NULL;
-  m_pwNumLCbox = NULL;
-  m_pwpLCSpin = NULL;
-  m_pwpUseUpperCtrl = NULL;
-  m_pwNumUCbox = NULL;
-  m_pwpUCSpin = NULL;
-  m_pwpUseDigitsCtrl = NULL;
-  m_pwNumDigbox = NULL;
-  m_pwpDigSpin = NULL;
-  m_pwpSymCtrl = NULL;
-  m_pwNumSymbox = NULL;
-  m_pwpSymSpin = NULL;
-  m_OwnSymbols = NULL;
-  m_pwpEasyCtrl = NULL;
-  m_pwpPronounceCtrl = NULL;
-  m_pwpHexCtrl = NULL;
+  m_pwMinsGSzr = nullptr;
+  m_pwpUseLowerCtrl = nullptr;
+  m_pwNumLCbox = nullptr;
+  m_pwpLCSpin = nullptr;
+  m_pwpUseUpperCtrl = nullptr;
+  m_pwNumUCbox = nullptr;
+  m_pwpUCSpin = nullptr;
+  m_pwpUseDigitsCtrl = nullptr;
+  m_pwNumDigbox = nullptr;
+  m_pwpDigSpin = nullptr;
+  m_pwpSymCtrl = nullptr;
+  m_pwNumSymbox = nullptr;
+  m_pwpSymSpin = nullptr;
+  m_OwnSymbols = nullptr;
+  m_pwpEasyCtrl = nullptr;
+  m_pwpPronounceCtrl = nullptr;
+  m_pwpHexCtrl = nullptr;
 ////@end CPasswordPolicy member initialisation
 }
 

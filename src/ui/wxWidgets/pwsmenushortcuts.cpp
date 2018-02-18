@@ -82,7 +82,7 @@ st_prefShortcut MenuItemData::ToPrefShortcut() const
   st_prefShortcut sc;
 
   sc.id = m_menuId;
-  wxASSERT_MSG(sc.id != 0, wxT("Trying to save shortcut with NULL menu item id"));
+  wxASSERT_MSG(sc.id != 0, wxT("Trying to save shortcut with nullptr menu item id"));
   sc.siVirtKey = ae.GetKeyCode();
   sc.cPWSModifier = 0;
   for (size_t idx = 0; idx < WXSIZEOF(g_modmap); ++idx)
@@ -103,7 +103,7 @@ void MenuItemData::SetUserShortcut(const st_prefShortcut& prefAccel, bool setdir
 }
 
 /*
- * The only way to change the shortcut.  Specify a NULL accel to remove the user-specified
+ * The only way to change the shortcut.  Specify a nullptr accel to remove the user-specified
  * shortcut, if any, or the original shortcut.
  */
 void MenuItemData::SetUserShortcut(const wxAcceleratorEntry& userAccel, bool setdirty /* = true */)
@@ -546,12 +546,12 @@ void PWSMenuShortcuts::SetShorcutsGridEventHandlers(wxGrid* grid, wxButton* rese
   m_shortcutGridStatus.resize(m_midata.size());
   std::transform(m_midata.begin(), m_midata.end(), m_shortcutGridStatus.begin(), std::mem_fun_ref(&MenuItemData::GetStatus));
 
-  grid->Connect(wxEVT_GRID_CELL_CHANGED, wxGridEventHandler(PWSMenuShortcuts::OnShortcutChange), NULL, this);
-  grid->Connect(wxEVT_GRID_CELL_RIGHT_CLICK, wxGridEventHandler(PWSMenuShortcuts::OnShortcutRightClick), NULL, this);
+  grid->Connect(wxEVT_GRID_CELL_CHANGED, wxGridEventHandler(PWSMenuShortcuts::OnShortcutChange), nullptr, this);
+  grid->Connect(wxEVT_GRID_CELL_RIGHT_CLICK, wxGridEventHandler(PWSMenuShortcuts::OnShortcutRightClick), nullptr, this);
   //let's not directly connect to the grid for key events.  We'll only handle what bubbles up to us
-  grid->GetGridWindow()->Connect(grid->GetGridWindow()->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(PWSMenuShortcuts::OnShortcutKey), NULL, this);
-  grid->GetGridWindow()->Connect(grid->GetGridWindow()->GetId(), wxEVT_CHAR, wxCharEventHandler(PWSMenuShortcuts::OnKeyChar), NULL, this);
-  resetAllButton->Connect(resetAllButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(PWSMenuShortcuts::OnResetAll), NULL, this);
+  grid->GetGridWindow()->Connect(grid->GetGridWindow()->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(PWSMenuShortcuts::OnShortcutKey), nullptr, this);
+  grid->GetGridWindow()->Connect(grid->GetGridWindow()->GetId(), wxEVT_CHAR, wxCharEventHandler(PWSMenuShortcuts::OnKeyChar), nullptr, this);
+  resetAllButton->Connect(resetAllButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(PWSMenuShortcuts::OnResetAll), nullptr, this);
   m_shortcutsGrid = grid;
 }
 
@@ -653,7 +653,7 @@ void PWSMenuShortcuts::OnShortcutRightClick( wxGridEvent& evt )
   shortcutsMenu.Connect( shortcutsMenu.FindItemByPosition(0)->GetId(),
                           wxEVT_COMMAND_MENU_SELECTED,
                           wxCommandEventHandler(PWSMenuShortcuts::OnResetRemoveShortcut),
-                          NULL, this );
+                          nullptr, this );
   gr.grid->PopupMenu(&shortcutsMenu);
 }
 

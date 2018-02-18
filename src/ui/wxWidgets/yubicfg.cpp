@@ -115,9 +115,9 @@ YubiCfgDlg::~YubiCfgDlg()
 void YubiCfgDlg::Init()
 {
 ////@begin YubiCfgDlg member initialisation
-  m_SKSizer = NULL;
-  m_SKCtrl = NULL;
-  m_ykstatus = NULL;
+  m_SKSizer = nullptr;
+  m_SKCtrl = nullptr;
+  m_ykstatus = nullptr;
 ////@end YubiCfgDlg member initialisation
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
@@ -351,7 +351,7 @@ void YubiCfgDlg::yubiInserted(void)
   FindWindow(ID_YKSK)->Enable(true);
   FindWindow(ID_YK_GENERATE)->Enable(true);
   FindWindow(ID_YK_SET)->Enable(true);
-  if (m_core.GetYubiSK() != NULL) {
+  if (m_core.GetYubiSK() != nullptr) {
     HideSK();
     m_yksk = BinSK2HexStr(m_core.GetYubiSK(), YUBI_SK_LEN).c_str();
   } else

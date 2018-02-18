@@ -65,7 +65,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   panelSizer->AddSpacer(RowSeparation*rowsep);
   m_filepicker->Connect( m_filepicker->GetEventType(), 
              wxFileDirPickerEventHandler(DbSelectionPanel::OnFilePicked),
-             NULL, this);
+             nullptr, this);
 
   panelSizer->Add(new wxStaticText(this, wxID_ANY, _("Safe Combination:")), borderFlags);
   panelSizer->AddSpacer(RowSeparation);

@@ -399,17 +399,17 @@ void PWSGrid::OnContextMenu( wxContextMenuEvent& evt )
 CItemData *PWSGrid::GetItem(int row) const
 {
   if (row < 0 || row > const_cast<PWSGrid *>(this)->GetNumberRows())
-    return NULL;
+    return nullptr;
   auto iter = m_row_map.find(row);
   if (iter != m_row_map.end()) {
     uuid_array_t uuid;
     iter->second.GetARep(uuid);
     auto itemiter = m_core.Find(uuid);
     if (itemiter == m_core.GetEntryEndIter())
-      return NULL;
+      return nullptr;
     return &itemiter->second;
   }
-  return NULL;
+  return nullptr;
 }
 
 /*!
@@ -419,7 +419,7 @@ CItemData *PWSGrid::GetItem(int row) const
 void PWSGrid::OnLeftDClick( wxGridEvent& evt )
 {
   CItemData *item = GetItem(evt.GetRow());
-  if (item != NULL)
+  if (item != nullptr)
     dynamic_cast<PasswordSafeFrame *>(GetParent())->
       DispatchDblClickAction(*item);
 }

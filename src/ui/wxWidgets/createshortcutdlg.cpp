@@ -64,8 +64,8 @@ CreateShortcutDlg::CreateShortcutDlg(wxWindow* parent, PWScore &core,
                                      long style)
 : m_core(core), m_base(base), m_ui(dynamic_cast<UIInterFace *>(parent))
 {
-  ASSERT(m_base != NULL);
-  ASSERT(m_ui != NULL);
+  ASSERT(m_base != nullptr);
+  ASSERT(m_ui != nullptr);
   Init();
   Create(parent, id, caption, pos, size, style);
 }
@@ -121,7 +121,7 @@ CreateShortcutDlg::~CreateShortcutDlg()
 void CreateShortcutDlg::Init()
 {
 ////@begin CreateShortcutDlg member initialisation
-  m_groupCtrl = NULL;
+  m_groupCtrl = nullptr;
 ////@end CreateShortcutDlg member initialisation
 }
 

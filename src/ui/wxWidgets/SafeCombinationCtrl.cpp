@@ -147,6 +147,6 @@ void CSafeCombinationCtrl::SelectCombinationText() const
 void CSafeCombinationCtrl::AllowEmptyCombinationOnce()
 {
   SafeCombinationValidator *scValidator = dynamic_cast<SafeCombinationValidator *>(textCtrl->GetValidator());
-  if (scValidator != NULL)
+  if (scValidator != nullptr)
     scValidator->AllowEmptyCombinationOnce();
 }

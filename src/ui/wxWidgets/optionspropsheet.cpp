@@ -170,36 +170,36 @@ COptions::~COptions()
 void COptions::Init()
 {
 ////@begin COptions member initialisation
-  m_dfltbuprefixRB = NULL;
-  m_usrbuprefixRB = NULL;
-  m_usrbuprefixTxt = NULL;
-  m_busuffixCB = NULL;
-  m_bumaxinc = NULL;
-  m_suffixExample = NULL;
-  m_dfltbudirRB = NULL;
-  m_usrbudirRB = NULL;
-  m_usrbudirTxt = NULL;
-  m_buDirBN = NULL;
-  m_showpasswordintreeCB = NULL;
-  m_preexpirywarnCB = NULL;
-  m_preexpirywarndaysSB = NULL;
-  m_DCACB = NULL;
-  m_SDCACB = NULL;
-  m_defusernameTXT = NULL;
-  m_defusernameLBL = NULL;
-  m_pwhistsaveCB = NULL;
-  m_pwhistnumdfltSB = NULL;
-  m_pwhistapplyBN = NULL;
-  m_pwhiststopRB = NULL;
-  m_pwhiststartRB = NULL;
-  m_pwhistsetmaxRB = NULL;
-  m_pwhistclearRB = NULL;
-  m_applytoprotectedCB = NULL;
-  m_seclockonidleCB = NULL;
-  m_secidletimeoutSB = NULL;
-  m_sysusesystrayCB = NULL;
-  m_sysmaxREitemsSB = NULL;
-  m_systrayWarning = NULL;
+  m_dfltbuprefixRB = nullptr;
+  m_usrbuprefixRB = nullptr;
+  m_usrbuprefixTxt = nullptr;
+  m_busuffixCB = nullptr;
+  m_bumaxinc = nullptr;
+  m_suffixExample = nullptr;
+  m_dfltbudirRB = nullptr;
+  m_usrbudirRB = nullptr;
+  m_usrbudirTxt = nullptr;
+  m_buDirBN = nullptr;
+  m_showpasswordintreeCB = nullptr;
+  m_preexpirywarnCB = nullptr;
+  m_preexpirywarndaysSB = nullptr;
+  m_DCACB = nullptr;
+  m_SDCACB = nullptr;
+  m_defusernameTXT = nullptr;
+  m_defusernameLBL = nullptr;
+  m_pwhistsaveCB = nullptr;
+  m_pwhistnumdfltSB = nullptr;
+  m_pwhistapplyBN = nullptr;
+  m_pwhiststopRB = nullptr;
+  m_pwhiststartRB = nullptr;
+  m_pwhistsetmaxRB = nullptr;
+  m_pwhistclearRB = nullptr;
+  m_applytoprotectedCB = nullptr;
+  m_seclockonidleCB = nullptr;
+  m_secidletimeoutSB = nullptr;
+  m_sysusesystrayCB = nullptr;
+  m_sysmaxREitemsSB = nullptr;
+  m_systrayWarning = nullptr;
 ////@end COptions member initialisation
 }
 
@@ -724,7 +724,7 @@ void COptions::CreateControls()
   itemCheckBox122->SetValidator( wxGenericValidator(& m_useAltAutoType) );
 #endif
   // Connect events and objects
-  m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), NULL, this);
+  m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), nullptr, this);
 ////@end COptions content construction
 }
 

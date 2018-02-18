@@ -79,9 +79,9 @@ inline void ApplyPasswordFont(wxWindow* win)
     template <>                                                                         \
     wxClassInfo name<templatename>::ms_classInfo(wxSTRINGIZE_T(name) wxSTRINGIZE_T(<) wxSTRINGIZE_T(templatename) wxSTRINGIZE_T(>),      \
             &basename::ms_classInfo,                                                    \
-            NULL,                                                                       \
+            nullptr,                                                                       \
             (int) sizeof(name),                                                         \
-            (wxObjectConstructorFn) NULL);                                              \
+            (wxObjectConstructorFn) nullptr);                                              \
                                                                                         \
     template <>                                                                         \
     wxClassInfo* name<templatename>::GetClassInfo() const                               \
@@ -139,7 +139,7 @@ public:
 
 class PWScore;
 int ReadCore(PWScore& othercore, const wxString& file, const StringX& combination,
-                bool showMsgbox = true, wxWindow* msgboxParent = NULL, bool setupCopy = false);
+                bool showMsgbox = true, wxWindow* msgboxParent = nullptr, bool setupCopy = false);
 
 inline const wxChar* ToStr(const wxString& s) {
   if (s == wxEmptyString) {
@@ -209,7 +209,7 @@ public:
     evtSource->Connect(winid, evtType,
                   evtType,
                   (wxObjectEventFunction)&EventDataInjector::OnHookedEvent,
-                  NULL, //this is for wxWidgets' private use only
+                  nullptr, //this is for wxWidgets' private use only
                   this);
   }
 
@@ -220,7 +220,7 @@ public:
     if (m_oneShot) {
       wxCHECK_RET(m_evtSource->Disconnect(m_windowId, m_eventType,
                               (wxObjectEventFunction)&EventDataInjector::OnHookedEvent,
-                              NULL, this), wxT("Could not remove dynamic event parameter injection hook"));
+                              nullptr, this), wxT("Could not remove dynamic event parameter injection hook"));
     }
   }
 };

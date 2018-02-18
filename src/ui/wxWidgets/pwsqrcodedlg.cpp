@@ -121,7 +121,7 @@ class QRTestApp: public wxApp {
 			wxAppConsole::OnInitCmdLine(parser);
 			static const wxCmdLineEntryDesc cmdLineDesc[] =
 			{
-				{ wxCMD_LINE_PARAM, NULL, NULL, "secret", wxCMD_LINE_VAL_STRING, 0},
+				{ wxCMD_LINE_PARAM, nullptr, nullptr, "secret", wxCMD_LINE_VAL_STRING, 0},
 				{ wxCMD_LINE_NONE }
 			};
 			parser.SetDesc(cmdLineDesc);

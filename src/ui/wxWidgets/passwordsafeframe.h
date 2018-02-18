@@ -422,7 +422,7 @@ public:
   ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
   ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
 
-  void Execute(Command *pcmd, PWScore *pcore = NULL);
+  void Execute(Command *pcmd, PWScore *pcore = nullptr);
 
   bool IsTreeView() const {return m_currentView == TREE;}
   void RefreshViews();

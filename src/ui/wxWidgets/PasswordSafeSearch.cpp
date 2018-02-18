@@ -310,12 +310,12 @@ void PasswordSafeSearch::RefreshButtons(void)
     const char** bitmap_classic;
     const char** bitmap_classic_disabled;
   } SearchBarButtons[] = {
-          { ID_FIND_CLOSE,            findclose_xpm,    NULL,               classic_findclose_xpm,    NULL                      },
+          { ID_FIND_CLOSE,            findclose_xpm,    nullptr,               classic_findclose_xpm,    nullptr                      },
           { ID_FIND_NEXT,             find_xpm,         find_disabled_xpm,  classic_find_xpm,         classic_find_disabled_xpm },
           { ID_FIND_IGNORE_CASE,      findcase_i_xpm,   findcase_s_xpm,     classic_findcase_i_xpm,   classic_findcase_s_xpm    },
-          { ID_FIND_ADVANCED_OPTIONS, findadvanced_xpm, NULL,               classic_findadvanced_xpm, NULL                      },
-          { ID_FIND_CREATE_REPORT,    findreport_xpm,   NULL,               classic_findreport_xpm,   NULL                      },
-          { ID_FIND_CLEAR,            findclear_xpm,    NULL,               classic_findclear_xpm,    NULL                      },
+          { ID_FIND_ADVANCED_OPTIONS, findadvanced_xpm, nullptr,               classic_findadvanced_xpm, nullptr                      },
+          { ID_FIND_CREATE_REPORT,    findreport_xpm,   nullptr,               classic_findreport_xpm,   nullptr                      },
+          { ID_FIND_CLEAR,            findclear_xpm,    nullptr,               classic_findclear_xpm,    nullptr                      },
   };
 
   const char** _SearchBarInfo::* bitmap_normal;
@@ -404,7 +404,7 @@ void PasswordSafeSearch::CreateSearchBar()
   //This gross hack is the only way I could think of to get ESC keystrokes from the text ctrl user is typing into
   if (wxDynamicCast(static_cast<wxControl*>(srchCtrl), wxTextCtrl)) {
     //searchCtrl is a wxTextCtrl derivative, like on Mac OS X 10.3+
-    wxDynamicCast(static_cast<wxControl*>(srchCtrl), wxTextCtrl)->Connect(wxEVT_CHAR, wxCharEventHandler(PasswordSafeSearch::OnSearchBarTextChar), NULL, this);
+    wxDynamicCast(static_cast<wxControl*>(srchCtrl), wxTextCtrl)->Connect(wxEVT_CHAR, wxCharEventHandler(PasswordSafeSearch::OnSearchBarTextChar), nullptr, this);
   }
   else {
     //The wxTextCtrl is buried inside the wxSearchCtrl
@@ -412,18 +412,18 @@ void PasswordSafeSearch::CreateSearchBar()
     for( wxWindowList::const_iterator itr = srchChildren.begin(); itr != srchChildren.end(); ++itr) {
       wxTextCtrl* txtCtrl = wxDynamicCast(*itr, wxTextCtrl);
       if (txtCtrl) {
-        txtCtrl->Connect(wxEVT_CHAR, wxCharEventHandler(PasswordSafeSearch::OnSearchBarTextChar), NULL, this);
+        txtCtrl->Connect(wxEVT_CHAR, wxCharEventHandler(PasswordSafeSearch::OnSearchBarTextChar), nullptr, this);
         break;
       }
     }
   }
-  srchCtrl->Connect(wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(PasswordSafeSearch::OnSearchTextChanged), NULL, this);
-  srchCtrl->Connect(wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN, wxCommandEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
-  srchCtrl->Connect(wxEVT_COMMAND_TEXT_ENTER, wxTextEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
-  m_toolbar->Connect(ID_FIND_CLOSE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnSearchClose), NULL, this);
-  m_toolbar->Connect(ID_FIND_ADVANCED_OPTIONS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnAdvancedSearchOptions), NULL, this);
-  m_toolbar->Connect(ID_FIND_NEXT, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
-  m_toolbar->Connect(ID_FIND_CLEAR, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnSearchClear), NULL, this);
+  srchCtrl->Connect(wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(PasswordSafeSearch::OnSearchTextChanged), nullptr, this);
+  srchCtrl->Connect(wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN, wxCommandEventHandler(PasswordSafeSearch::OnDoSearch), nullptr, this);
+  srchCtrl->Connect(wxEVT_COMMAND_TEXT_ENTER, wxTextEventHandler(PasswordSafeSearch::OnDoSearch), nullptr, this);
+  m_toolbar->Connect(ID_FIND_CLOSE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnSearchClose), nullptr, this);
+  m_toolbar->Connect(ID_FIND_ADVANCED_OPTIONS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnAdvancedSearchOptions), nullptr, this);
+  m_toolbar->Connect(ID_FIND_NEXT, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnDoSearch), nullptr, this);
+  m_toolbar->Connect(ID_FIND_CLEAR, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnSearchClear), nullptr, this);
 }
 
 void PasswordSafeSearch::OnSearchBarTextChar(wxKeyEvent& evt)

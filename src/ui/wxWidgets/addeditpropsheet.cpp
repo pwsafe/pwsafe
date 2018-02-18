@@ -101,7 +101,7 @@ AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
                                    long style)
 : m_core(core), m_ui(ui), m_selectedGroup(selectedGroup), m_type(type)
 {
-  if (item != NULL)
+  if (item != nullptr)
     m_item = *item; // copy existing item to display values
   else
     m_item.CreateUUID(); // We're adding a new entry
@@ -165,45 +165,45 @@ void AddEditPropSheet::Init()
 ////@begin AddEditPropSheet member initialisation
   m_XTimeInt = 0;
   m_isNotesHidden = !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault);
-  m_BasicPanel = NULL;
-  m_BasicFGSizer = NULL;
-  m_groupCtrl = NULL;
-  m_UsernameCtrl = NULL;
-  m_PasswordCtrl = NULL;
-  m_ShowHideCtrl = NULL;
-  m_Password2Ctrl = NULL;
-  m_noteTX = NULL;
-  m_DCAcomboBox = NULL;
-  m_SDCAcomboBox = NULL;
-  m_MaxPWHistCtrl = NULL;
-  m_PWHgrid = NULL;
-  m_OnRB = NULL;
-  m_ExpDate = NULL;
-  m_InRB = NULL;
-  m_ExpTimeCtrl = NULL;
-  m_RecurringCtrl = NULL;
-  m_NeverRB = NULL;
-  m_defPWPRB = NULL;
-  m_cbxPolicyNames = NULL;
-  m_ourPWPRB = NULL;
-  m_pwpLenCtrl = NULL;
-  m_pwMinsGSzr = NULL;
-  m_pwpUseLowerCtrl = NULL;
-  m_pwNumLCbox = NULL;
-  m_pwpLCSpin = NULL;
-  m_pwpUseUpperCtrl = NULL;
-  m_pwNumUCbox = NULL;
-  m_pwpUCSpin = NULL;
-  m_pwpUseDigitsCtrl = NULL;
-  m_pwNumDigbox = NULL;
-  m_pwpDigSpin = NULL;
-  m_pwpSymCtrl = NULL;
-  m_pwNumSymbox = NULL;
-  m_pwpSymSpin = NULL;
-  m_ownsymbols = NULL;
-  m_pwpEasyCtrl = NULL;
-  m_pwpPronounceCtrl = NULL;
-  m_pwpHexCtrl = NULL;
+  m_BasicPanel = nullptr;
+  m_BasicFGSizer = nullptr;
+  m_groupCtrl = nullptr;
+  m_UsernameCtrl = nullptr;
+  m_PasswordCtrl = nullptr;
+  m_ShowHideCtrl = nullptr;
+  m_Password2Ctrl = nullptr;
+  m_noteTX = nullptr;
+  m_DCAcomboBox = nullptr;
+  m_SDCAcomboBox = nullptr;
+  m_MaxPWHistCtrl = nullptr;
+  m_PWHgrid = nullptr;
+  m_OnRB = nullptr;
+  m_ExpDate = nullptr;
+  m_InRB = nullptr;
+  m_ExpTimeCtrl = nullptr;
+  m_RecurringCtrl = nullptr;
+  m_NeverRB = nullptr;
+  m_defPWPRB = nullptr;
+  m_cbxPolicyNames = nullptr;
+  m_ourPWPRB = nullptr;
+  m_pwpLenCtrl = nullptr;
+  m_pwMinsGSzr = nullptr;
+  m_pwpUseLowerCtrl = nullptr;
+  m_pwNumLCbox = nullptr;
+  m_pwpLCSpin = nullptr;
+  m_pwpUseUpperCtrl = nullptr;
+  m_pwNumUCbox = nullptr;
+  m_pwpUCSpin = nullptr;
+  m_pwpUseDigitsCtrl = nullptr;
+  m_pwNumDigbox = nullptr;
+  m_pwpDigSpin = nullptr;
+  m_pwpSymCtrl = nullptr;
+  m_pwNumSymbox = nullptr;
+  m_pwpSymSpin = nullptr;
+  m_ownsymbols = nullptr;
+  m_pwpEasyCtrl = nullptr;
+  m_pwpPronounceCtrl = nullptr;
+  m_pwpHexCtrl = nullptr;
 ////@end AddEditPropSheet member initialisation
 }
 
@@ -658,8 +658,8 @@ void AddEditPropSheet::CreateControls()
   itemStaticText86->SetValidator( wxGenericValidator(& m_RMTime) );
   m_ownsymbols->SetValidator( wxGenericValidator(& m_symbols) );
   // Connect events and objects
-  m_noteTX->Connect(ID_TEXTCTRL7, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnNoteSetFocus), NULL, this);
-  m_ownsymbols->Connect(IDC_OWNSYMBOLS, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnOwnSymSetFocus), NULL, this);
+  m_noteTX->Connect(ID_TEXTCTRL7, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnNoteSetFocus), nullptr, this);
+  m_ownsymbols->Connect(IDC_OWNSYMBOLS, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnOwnSymSetFocus), nullptr, this);
 ////@end AddEditPropSheet content construction
 
   // Non-DialogBlock initializations:
@@ -712,11 +712,11 @@ static void EnableSizerChildren(wxSizer *sizer, bool enable)
   wxSizerItemList::iterator iter;
   for (iter = items.begin(); iter != items.end(); iter++) {
     wxWindow *childW = (*iter)->GetWindow();
-    if (childW != NULL)
+    if (childW != nullptr)
       childW->Enable(enable);
     else { // if another sizer, recurse!
       wxSizer *childS = (*iter)->GetSizer();
-      if (childS != NULL)
+      if (childS != nullptr)
         EnableSizerChildren(childS, enable);
     }
   }

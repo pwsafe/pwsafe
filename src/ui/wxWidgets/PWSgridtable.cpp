@@ -130,7 +130,7 @@ wxString PWSGridTable::GetValue(int row, int col)
   if (size_t(row) < m_pwsgrid->GetNumItems() &&
       size_t(col) < NumberOf(PWSGridCellData)) {
     const CItemData *pItem = m_pwsgrid->GetItem(row);
-    if (pItem != NULL) {
+    if (pItem != nullptr) {
       if (PWSGridCellData[col].ft != CItemData::POLICY) {
         return towxstring(pItem->GetFieldValue(PWSGridCellData[col].ft));
       } else {
@@ -180,7 +180,7 @@ void PWSGridTable::SetView(wxGrid* newGrid)
     }
   }
   else {
-    wxCHECK_RET(oldGrid, wxT("Both old and new grid views are NULL"));
+    wxCHECK_RET(oldGrid, wxT("Both old and new grid views are nullptr"));
     //This gridtable is about to be deleted.  Save current settings
     for (size_t idx = 0; idx < WXSIZEOF(PWSGridCellData); ++idx) {
 
