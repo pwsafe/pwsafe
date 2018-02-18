@@ -87,7 +87,7 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
   if (m_core.GetCurFile().empty())
     dir = towxstring(PWSdirs::GetSafeDir());
   else {
-    wxFileName::SplitPath(towxstring(m_core.GetCurFile()), &dir, NULL, NULL);
+    wxFileName::SplitPath(towxstring(m_core.GetCurFile()), &dir, nullptr, nullptr);
     wxCHECK_RET(!dir.IsEmpty(), _("Could not parse current file path"));
   }
 
@@ -141,7 +141,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
   if (m_core.GetCurFile().empty())
     dir = towxstring(PWSdirs::GetSafeDir());
   else {
-    wxFileName::SplitPath(towxstring(m_core.GetCurFile()), &dir, NULL, NULL);
+    wxFileName::SplitPath(towxstring(m_core.GetCurFile()), &dir, nullptr, nullptr);
     wxCHECK_RET(!dir.IsEmpty(), _("Could not parse current file path"));
   }
 

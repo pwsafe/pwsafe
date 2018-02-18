@@ -148,12 +148,12 @@ void CSafeCombinationEntry::Init()
   m_readOnly = m_core.IsReadOnly() || PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
   m_filename = m_core.GetCurFile().c_str();
 ////@begin CSafeCombinationEntry member initialisation
-  m_version = NULL;
-  m_filenameCB = NULL;
-  m_combinationEntry = NULL;
+  m_version = nullptr;
+  m_filenameCB = nullptr;
+  m_combinationEntry = nullptr;
 #ifndef NO_YUBI
-  m_YubiBtn = NULL;
-  m_yubiStatusCtrl = NULL;
+  m_YubiBtn = nullptr;
+  m_yubiStatusCtrl = nullptr;
 #endif
   m_postInitDone = false;
 ////@end CSafeCombinationEntry member initialisation

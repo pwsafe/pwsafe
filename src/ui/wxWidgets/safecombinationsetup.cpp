@@ -128,8 +128,8 @@ void CSafeCombinationSetup::Init()
 {
 ////@begin CSafeCombinationSetup member initialisation
 #ifndef NO_YUBI
-  m_YubiBtn = NULL;
-  m_yubiStatusCtrl = NULL;
+  m_YubiBtn = nullptr;
+  m_yubiStatusCtrl = nullptr;
 #endif
 ////@end CSafeCombinationSetup member initialisation
 }

@@ -354,9 +354,9 @@ void PasswordSafeFrame::Init()
 
   m_RUEList.SetMax(PWSprefs::GetInstance()->PWSprefs::MaxREItems);
 ////@begin PasswordSafeFrame member initialisation
-  m_grid = NULL;
-  m_tree = NULL;
-  m_statusBar = NULL;
+  m_grid = nullptr;
+  m_tree = nullptr;
+  m_statusBar = nullptr;
 ////@end PasswordSafeFrame member initialisation
   RegisterLanguageMenuItems();
 }
@@ -569,9 +569,9 @@ void PasswordSafeFrame::CreateControls()
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
   // let the tree ctrl handle ID_ADDGROUP & ID_RENAME all by itself
   Connect(ID_ADDGROUP, wxEVT_COMMAND_MENU_SELECTED,
-                       wxCommandEventHandler(PWSTreeCtrl::OnAddGroup), NULL, m_tree);
+                       wxCommandEventHandler(PWSTreeCtrl::OnAddGroup), nullptr, m_tree);
   Connect(ID_RENAME, wxEVT_COMMAND_MENU_SELECTED,
-                       wxCommandEventHandler(PWSTreeCtrl::OnRenameGroup), NULL, m_tree);
+                       wxCommandEventHandler(PWSTreeCtrl::OnRenameGroup), nullptr, m_tree);
 
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
@@ -1119,7 +1119,7 @@ CItemData *PasswordSafeFrame::GetSelectedEntry() const
     // get selected from grid
     return m_grid->GetItem(m_grid->GetGridCursorRow());
   }
-  return NULL;
+  return nullptr;
 }
 
 // Following is "generalized" GetSelectedEntry to support section via RUE
@@ -1128,7 +1128,7 @@ CItemData *PasswordSafeFrame::GetSelectedEntry(const wxCommandEvent& evt, CItemD
   if (!IsRUEEvent(evt))
     return GetSelectedEntry();
   else
-    return m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL;
+    return m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: nullptr;
 }
 
 /*!
@@ -1264,8 +1264,8 @@ int PasswordSafeFrame::Open(const wxString &fname)
   m_core.SetAsker(&q);
   m_core.SetReporter(&r);
   rc = m_core.ReadFile(pszFilename, passkey);
-  m_core.SetAsker(NULL);
-  m_core.SetReporter(NULL);
+  m_core.SetAsker(nullptr);
+  m_core.SetReporter(nullptr);
   switch (rc) {
     case PWScore::SUCCESS:
       break;
@@ -1640,7 +1640,7 @@ void PasswordSafeFrame::OnEditBase(wxCommandEvent& /*evt*/)
   CItemData* item = GetSelectedEntry();
   if (item && item->IsDependent()) {
     item = m_core.GetBaseEntry(item);
-    ASSERT(item != NULL);
+    ASSERT(item != nullptr);
     DoEdit(*item);
     UpdateAccessTime(*item);
   }
@@ -1780,7 +1780,7 @@ void PasswordSafeFrame::FlattenTree(OrderedItemList& olist)
 // The logic is the same as DboxMain::OnContextMenu in src/ui/Windows/MainMenu.cpp
 void PasswordSafeFrame::OnContextMenu(const CItemData* item)
 {
-  if (item == NULL) {
+  if (item == nullptr) {
     wxMenu groupEditMenu;
     groupEditMenu.Append(wxID_ADD, _("Add &Entry"));
     groupEditMenu.Append(ID_ADDGROUP, _("Add &Group"));
@@ -2049,12 +2049,12 @@ void PasswordSafeFrame::DatabaseModified(bool modified)
   else if (m_core.HasDBChanged()) {  //"else if" => both DB and it's prefs can't change at the same time
     if (m_search) m_search->Invalidate();
     if (IsTreeView()) {
-      if (m_grid != NULL)
+      if (m_grid != nullptr)
         m_grid->OnPasswordListModified();
     }
     else {
 #if 0
-    if (m_tree != NULL)
+    if (m_tree != nullptr)
       m_tree->???
 #endif
     }
@@ -2113,7 +2113,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   // TODO: bUpdateGUI processing in PasswordSafeFrame::UpdateGUI
   UNREFERENCED_PARAMETER(ft);
 
-  CItemData *pci(NULL);
+  CItemData *pci(nullptr);
 
   ItemListIter pos = m_core.Find(entry_uuid);
   if (pos != m_core.GetEntryEndIter()) {
@@ -2131,7 +2131,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
 #endif
   switch (ga) {
     case UpdateGUICommand::GUI_ADD_ENTRY:
-      ASSERT(pci != NULL);
+      ASSERT(pci != nullptr);
       m_tree->AddItem(*pci);
       m_grid->AddItem(*pci);
       break;
@@ -2160,11 +2160,11 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       break;
 #endif
     case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
-      ASSERT(pci != NULL);
+      ASSERT(pci != nullptr);
       RefreshEntryFieldInGUI(*pci, ft);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
-      ASSERT(pci != NULL);
+      ASSERT(pci != nullptr);
       RefreshEntryPasswordInGUI(*pci);
       break;
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
@@ -2276,12 +2276,12 @@ static void DisplayFileWriteError(int rc, const StringX &fname)
     cs_temp += _("Unknown error");
     break;
   }
-  wxMessageDialog(NULL, cs_temp, cs_title, wxOK | wxICON_ERROR);
+  wxMessageDialog(nullptr, cs_temp, cs_title, wxOK | wxICON_ERROR);
 }
 
-void PasswordSafeFrame::Execute(Command *pcmd, PWScore *pcore /*= NULL*/)
+void PasswordSafeFrame::Execute(Command *pcmd, PWScore *pcore /*= nullptr*/)
 {
-  if (pcore == NULL)
+  if (pcore == nullptr)
     pcore = &m_core;
   pcore->Execute(pcmd);
 }
@@ -2499,7 +2499,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
 
 bool PasswordSafeFrame::VerifySafeCombination(StringX& password)
 {
-  CSafeCombinationPrompt scp(NULL, m_core, towxstring(m_core.GetCurFile()));
+  CSafeCombinationPrompt scp(nullptr, m_core, towxstring(m_core.GetCurFile()));
   if (scp.ShowModal() == wxID_OK) {
     password = scp.GetPassword();
     return true;
@@ -2697,7 +2697,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
   rpt.WriteLine(tostdstring(header));
   rpt.WriteLine();
 
-  Command *pcmd = NULL;
+  Command *pcmd = nullptr;
   int rc = m_core.ImportPlaintextFile(ImportedPrefix, tostringx(TxtFileName), fieldSeparator,
                                   delimiter, bImportPSWDsOnly,
                                   strError,
@@ -2727,7 +2727,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
       // deliberate fallthrough
     default:
     {
-      if (pcmd != NULL)
+      if (pcmd != nullptr)
         Execute(pcmd);
 
       rpt.WriteLine();
@@ -2804,7 +2804,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
   int numImported, numSkipped, numRenamed;
   unsigned int uiReasonCode = 0;
   int rc;
-  Command *pcmd = NULL;
+  Command *pcmd = nullptr;
 
   if (ImportType == KeePassCSV)
     rc = m_core.ImportKeePassV1CSVFile(tostringx(KPsFileName), numImported, numSkipped, numRenamed,
@@ -2837,7 +2837,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
     }
     case PWScore::SUCCESS:
     default: // deliberate fallthrough
-      if (pcmd != NULL)
+      if (pcmd != nullptr)
         Execute(pcmd);
       RefreshViews();
 #ifdef NOT_YET
@@ -2904,7 +2904,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   rpt.WriteLine(tostdstring(wxString::Format(_("%ls file being imported: %ls"), _("XML"), XMLFilename.c_str())));
   rpt.WriteLine();
   std::vector<StringX> vgroups;
-  Command *pcmd = NULL;
+  Command *pcmd = nullptr;
 
   int rc = m_core.ImportXMLFile(ImportedPrefix, std::wstring(XMLFilename),
                             tostdstring(XSDFilename.GetFullPath()), bImportPSWDsOnly,
@@ -2935,7 +2935,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
     case PWScore::SUCCESS:
     case PWScore::OK_WITH_ERRORS:
       cs_title = rc == PWScore::SUCCESS ? _("Completed successfully") :  _("Completed but ....");
-      if (pcmd != NULL)
+      if (pcmd != nullptr)
         Execute(pcmd);
 
       if (!strXMLErrors.empty() ||
@@ -3391,7 +3391,7 @@ void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
 {
   int16 dca = -1;
 
-  if (pci != NULL) {
+  if (pci != nullptr) {
     pci->GetDCA(dca);
     if (dca == -1)
       dca = PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);

@@ -37,7 +37,7 @@
  */
 
 int ReadCore(PWScore& othercore, const wxString& file, const StringX& combination,
-             bool showMsgbox /*= true*/, wxWindow* msgboxParent /*= NULL*/,
+             bool showMsgbox /*= true*/, wxWindow* msgboxParent /*= nullptr*/,
         bool setupCopy /*= false*/)
 {
   othercore.ClearDBData();
@@ -185,7 +185,7 @@ void ShowHideText(wxTextCtrl *&txtCtrl, const wxString &text,
   txtCtrl = new wxTextCtrl(parent, id, text,
                            wxDefaultPosition, wxDefaultSize,
                            show ? 0 : wxTE_PASSWORD);
-  if (validator != NULL)
+  if (validator != nullptr)
     txtCtrl->SetValidator(*validator);
   ApplyPasswordFont(txtCtrl);
   sizer->Replace(tmp, txtCtrl);

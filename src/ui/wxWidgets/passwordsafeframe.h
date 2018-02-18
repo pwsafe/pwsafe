@@ -425,7 +425,7 @@ public:
   ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
   ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
 
-  void Execute(Command *pcmd, PWScore *pcore = NULL);
+  void Execute(Command *pcmd, PWScore *pcore = nullptr);
 
   void SetViewType(const ViewType& view) { m_currentView = view; }
   bool IsTreeView() const { return m_currentView == ViewType::TREE; }

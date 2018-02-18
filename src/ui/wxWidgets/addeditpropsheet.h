@@ -124,9 +124,9 @@ class AddEditPropSheet: public wxPropertySheetDialog
 public:
   enum AddOrEdit {ADD, EDIT, VIEW}; // to tweak UI, mainly
   /// Constructor
-  // item is NULL for ADD, otherwise its values are retrieved and displayed
+  // item is nullptr for ADD, otherwise its values are retrieved and displayed
   AddEditPropSheet(wxWindow* parent, PWScore &core,
-                   AddOrEdit type, const CItemData *item = NULL,  UIInterFace* ui = 0,
+                   AddOrEdit type, const CItemData *item = nullptr,  UIInterFace* ui = 0,
                    const wxString& selectedGroup = wxEmptyString,
                    wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME,
                    const wxString& caption = SYMBOL_AUTOPROPSHEET_TITLE,

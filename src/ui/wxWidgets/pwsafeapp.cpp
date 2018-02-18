@@ -125,10 +125,10 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
   {wxCMD_LINE_OPTION, STR("g"), STR("config_file"),
    STR("use specified configuration file instead of default"),
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_PARAM, NULL, NULL, STR("database"),
+  {wxCMD_LINE_PARAM, nullptr, nullptr, STR("database"),
    wxCMD_LINE_VAL_STRING,
    (wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE)},
-  {wxCMD_LINE_NONE, NULL, NULL, NULL, wxCMD_LINE_VAL_NONE, 0}
+  {wxCMD_LINE_NONE, nullptr, nullptr, nullptr, wxCMD_LINE_VAL_NONE, 0}
 };
 
 #undef STR
@@ -403,7 +403,7 @@ bool PwsafeApp::OnInit()
     std::wcerr << L"Could not initialize help subsystem." << std::endl;
     if (!prefs->GetPref(PWSprefs::IgnoreHelpLoadError) && !cmd_silent) {
 #if wxCHECK_VERSION(2,9,2)
-      wxRichMessageDialog dlg(NULL,
+      wxRichMessageDialog dlg(nullptr,
         _("Could not initialize help subsystem. Help will not be available."),
         _("Password Safe: Error initializing help"), wxCENTRE|wxOK|wxICON_EXCLAMATION);
       dlg.ShowCheckBox(_("Don't show this warning again"));
@@ -423,7 +423,7 @@ bool PwsafeApp::OnInit()
   if (!cmd_closed && !cmd_silent && !cmd_minimized) {
     // Get the file, r/w mode and password from user
     // Note that file may be new
-    CSafeCombinationEntry* initWindow = new CSafeCombinationEntry(NULL, m_core);
+    CSafeCombinationEntry* initWindow = new CSafeCombinationEntry(nullptr, m_core);
     int returnValue = initWindow->ShowModal();
 
     initWindow->Destroy();
@@ -432,12 +432,12 @@ bool PwsafeApp::OnInit()
       return false;
     }
     wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));
-    m_frame = new PasswordSafeFrame(NULL, m_core);
+    m_frame = new PasswordSafeFrame(nullptr, m_core);
     m_frame->Load(initWindow->GetPassword());
   }
   else {
     wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));
-    m_frame = new PasswordSafeFrame(NULL, m_core);
+    m_frame = new PasswordSafeFrame(nullptr, m_core);
   }
 
   RestoreFrameCoords();
@@ -612,7 +612,7 @@ void PwsafeApp::ConfigureIdleTimer()
 void PwsafeApp::OnIdleTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == IDLE_TIMER_ID && PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
-    if (m_frame != NULL && !m_frame->GetCurrentSafe().IsEmpty()) {
+    if (m_frame != nullptr && !m_frame->GetCurrentSafe().IsEmpty()) {
       m_frame->HideUI(true);  //true => lock
     }
   }
@@ -629,7 +629,7 @@ CRecentDBList &PwsafeApp::recentDatabases()
   // we create an instance of m_recentDatabases
   // as late as possible in order to make
   // sure that prefs' is set correctly (user, machine, etc.)
-  if (m_recentDatabases == NULL)
+  if (m_recentDatabases == nullptr)
     m_recentDatabases = new CRecentDBList;
   return *m_recentDatabases;
 }

@@ -258,7 +258,7 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
   else
     cd->grid = new wxGrid(sizedPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0); //don't have wxWANTS_CHARS
   //create a way to get to the ComparisonData object from the grid, which is the only thing we have in events
-  wxASSERT_MSG(cd->grid->GetClientData() == 0, wxT("wxGrid::ClientData is not NULL on creation.  Need to use that for our purposes"));
+  wxASSERT_MSG(cd->grid->GetClientData() == 0, wxT("wxGrid::ClientData is not nullptr on creation.  Need to use that for our purposes"));
   cd->grid->SetClientData(cd);
 #ifndef __WXMSW__
   wxFont monospacedFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
@@ -602,7 +602,7 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
     for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
       const int row = menuContext->selectedRows[idx]-idx;
       st_CompareData data = table[row];
-      data.uuid0 = data.uuid1; //so far, uuid0 was NULL since it was not found in current db
+      data.uuid0 = data.uuid1; //so far, uuid0 was nullptr since it was not found in current db
       m_identical->data.push_back(data);
       m_identical->grid->AppendRows(1);
       menuContext->cdata->grid->DeleteRows(row);
@@ -744,8 +744,8 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
 
   //let the user choose which fields to synchronize
   FieldSelectionDlg dlg(this,
-                        NULL, 0, //no fields are left unselected by default
-                        NULL, 0, //But no fields are mandatory
+                        nullptr, 0, //no fields are left unselected by default
+                        nullptr, 0, //But no fields are mandatory
                         userSelection,
                         _T("Synchronize"));
   if (dlg.ShowModal() == wxID_OK) {

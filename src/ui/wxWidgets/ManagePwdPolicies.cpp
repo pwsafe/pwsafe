@@ -127,11 +127,11 @@ CManagePasswordPolicies::~CManagePasswordPolicies()
 void CManagePasswordPolicies::Init()
 {
 ////@begin CManagePasswordPolicies member initialisation
-  m_PolicyNames = NULL;
-  m_passwordCtrl = NULL;
-  m_lowerTableDesc = NULL;
-  m_PolicyDetails = NULL;
-  m_PolicyEntries = NULL;
+  m_PolicyNames = nullptr;
+  m_passwordCtrl = nullptr;
+  m_lowerTableDesc = nullptr;
+  m_PolicyDetails = nullptr;
+  m_PolicyEntries = nullptr;
 ////@end CManagePasswordPolicies member initialisation
   m_MapPSWDPLC = m_core.GetPasswordPolicies();
 

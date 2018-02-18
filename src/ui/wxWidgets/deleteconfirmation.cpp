@@ -108,7 +108,7 @@ DeleteConfirmation::~DeleteConfirmation()
 void DeleteConfirmation::Init()
 {
 ////@begin DeleteConfirmation member initialisation
-  m_areyousure = NULL;
+  m_areyousure = nullptr;
 ////@end DeleteConfirmation member initialisation
 }
 

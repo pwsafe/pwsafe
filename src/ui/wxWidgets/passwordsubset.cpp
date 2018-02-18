@@ -107,9 +107,9 @@ CPasswordSubset::~CPasswordSubset()
 void CPasswordSubset::Init()
 {
 ////@begin CPasswordSubset member initialisation
-  m_pos = NULL;
-  m_vals = NULL;
-  m_error = NULL;
+  m_pos = nullptr;
+  m_vals = nullptr;
+  m_error = nullptr;
 ////@end CPasswordSubset member initialisation
 }
 
@@ -166,7 +166,7 @@ void CPasswordSubset::CreateControls()
   itemBoxSizer2->Add(itemButton12, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   // Connect events and objects
-  m_pos->Connect(ID_TEXTCTRL_POS, wxEVT_CHAR, wxKeyEventHandler(CPasswordSubset::OnChar), NULL, this);
+  m_pos->Connect(ID_TEXTCTRL_POS, wxEVT_CHAR, wxKeyEventHandler(CPasswordSubset::OnChar), nullptr, this);
 ////@end CPasswordSubset content construction
 }
 

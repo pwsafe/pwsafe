@@ -257,7 +257,7 @@ void RemoveToolTip(wxWindow* win)
 {
   //none of these work
   win->SetToolTip(wxEmptyString);
-  win->SetToolTip(NULL); // == UnsetToolTip()
+  win->SetToolTip(nullptr); // == UnsetToolTip()
 }
 
 void CDragBar::OnMouseMove(wxMouseEvent& evt)

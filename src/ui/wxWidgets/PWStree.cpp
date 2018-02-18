@@ -417,16 +417,16 @@ void PWSTreeCtrl::AddItem(const CItemData &item)
 CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
 {
   if (!id.IsOk())
-    return NULL;
+    return nullptr;
 
   auto *itemData = dynamic_cast<PWTreeItemData *>(GetItemData(id));
   // return if a group is selected
-  if (itemData == NULL)
-    return NULL;
+  if (itemData == nullptr)
+    return nullptr;
 
   auto itemiter = m_core.Find(itemData->GetUUID());
   if (itemiter == m_core.GetEntryEndIter())
-    return NULL;
+    return nullptr;
   return &itemiter->second;
 }
 
@@ -556,7 +556,7 @@ void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
   }
   else {
     CItemData *ci = GetItem(item);
-    if (ci != NULL)
+    if (ci != nullptr)
       dynamic_cast<PasswordSafeFrame *>(GetParent())->
         DispatchDblClickAction(*ci);
   }
@@ -585,7 +585,7 @@ void PWSTreeCtrl::OnGetToolTip( wxTreeEvent& evt )
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesAsTooltipsInViews)) {
     wxTreeItemId id = evt.GetItem();
     const CItemData *ci = GetItem(id);
-    if (ci != NULL) {
+    if (ci != nullptr) {
       const wxString note = ci->GetNotes().c_str();
       evt.SetToolTip(note);
     }
@@ -609,7 +609,7 @@ void PWSTreeCtrl::OnDBGUIPrefsChange(wxEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
   auto *pwsframe = dynamic_cast<PasswordSafeFrame *>(GetParent());
-  wxASSERT(pwsframe != NULL);
+  wxASSERT(pwsframe != nullptr);
   if (pwsframe->IsTreeView())
     pwsframe->RefreshViews();
 }

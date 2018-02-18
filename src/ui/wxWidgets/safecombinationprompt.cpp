@@ -126,10 +126,10 @@ CSafeCombinationPrompt::~CSafeCombinationPrompt()
 void CSafeCombinationPrompt::Init()
 {
 ////@begin CSafeCombinationPrompt member initialisation
-  m_scctrl = NULL;
+  m_scctrl = nullptr;
 #ifndef NO_YUBI
-  m_YubiBtn = NULL;
-  m_yubiStatusCtrl = NULL;
+  m_YubiBtn = nullptr;
+  m_yubiStatusCtrl = nullptr;
 #endif
 
 ////@end CSafeCombinationPrompt member initialisation

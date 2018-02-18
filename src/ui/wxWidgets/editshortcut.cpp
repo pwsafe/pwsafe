@@ -63,8 +63,8 @@ EditShortcut::EditShortcut(wxWindow* parent,
                            const wxPoint& pos, const wxSize& size, long style)
 : m_core(core), m_item(item), m_ui(dynamic_cast<UIInterFace *>(parent))
 {
-  ASSERT(m_item != NULL);
-  ASSERT(m_ui != NULL);
+  ASSERT(m_item != nullptr);
+  ASSERT(m_ui != nullptr);
   Init();
   Create(parent, id, caption, pos, size, style);
 }
@@ -113,7 +113,7 @@ void EditShortcut::ItemFieldsToDialog()
   m_lastAccess = m_item->GetATimeL().c_str();
   m_lastAny = m_item->GetRMTimeL().c_str();
   const CItemData *base = m_core.GetBaseEntry(m_item);
-  if (base != NULL) {
+  if (base != nullptr) {
     m_lastChanged = base->GetRMTimeL().c_str();
   } else {
     m_lastChanged = _("Unknown"); // Internal error
@@ -137,7 +137,7 @@ EditShortcut::~EditShortcut()
 void EditShortcut::Init()
 {
 ////@begin EditShortcut member initialisation
-  m_groupCtrl = NULL;
+  m_groupCtrl = nullptr;
 ////@end EditShortcut member initialisation
 }
 

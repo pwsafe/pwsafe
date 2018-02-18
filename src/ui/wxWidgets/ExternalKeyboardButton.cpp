@@ -67,7 +67,7 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
 #endif
   wxString command = wxString(wxT("xvkbd"));
   
-  switch(wxExecute(command, wxEXEC_ASYNC, NULL)) //NULL => we don't want a wxProcess as callback
+  switch(wxExecute(command, wxEXEC_ASYNC, nullptr)) //nullptr => we don't want a wxProcess as callback
   {
     case 0:
       wxMessageBox(_("Could not launch xvkbd.  Please make sure it's in your PATH"), 

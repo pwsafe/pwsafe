@@ -129,13 +129,13 @@ CSafeCombinationChange::~CSafeCombinationChange()
 void CSafeCombinationChange::Init()
 {
 ////@begin CSafeCombinationChange member initialisation
-  m_oldPasswdEntry = NULL;
-  m_newPasswdEntry = NULL;
-  m_confirmEntry = NULL;
+  m_oldPasswdEntry = nullptr;
+  m_newPasswdEntry = nullptr;
+  m_confirmEntry = nullptr;
 #ifndef NO_YUBI
-  m_YubiBtn = NULL;
-  m_YubiBtn2 = NULL;
-  m_yubiStatusCtrl = NULL;
+  m_YubiBtn = nullptr;
+  m_YubiBtn2 = nullptr;
+  m_yubiStatusCtrl = nullptr;
 #endif
 ////@end CSafeCombinationChange member initialisation
 }

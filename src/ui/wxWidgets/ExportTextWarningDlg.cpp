@@ -53,7 +53,7 @@ END_EVENT_TABLE()
 CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxEmptyString,
                       wxDefaultPosition, wxDefaultSize,
                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),
-  selCriteria(new SelectionCriteria), m_combinationEntry(NULL), m_YubiBtn(NULL), m_yubiStatusCtrl(NULL), m_pollingTimer(NULL)
+  selCriteria(new SelectionCriteria), m_combinationEntry(nullptr), m_YubiBtn(nullptr), m_yubiStatusCtrl(nullptr), m_pollingTimer(nullptr)
 {
   enum { TopMargin = 20, BottomMargin = 20, SideMargin = 30, RowSeparation = 10, ColSeparation = 20};
 
