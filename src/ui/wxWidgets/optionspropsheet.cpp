@@ -298,7 +298,7 @@ void COptions::CreateControls()
   itemBoxSizer25->Add(m_usrbudirTxt, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_buDirBN = new wxButton( itemPanel2, ID_BUTTON, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer25->Add(m_buDirBN, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
+  itemBoxSizer25->Add(m_buDirBN, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel2, _("Backups"));
   
