@@ -249,7 +249,7 @@ static void DisplayFileWriteError(int rc, const StringX &fname);
  */
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
-: m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)),
+: m_core(core), m_currentView(ViewType::GRID), m_search(0), m_sysTray(new SystemTray(this)),
   m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
   m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
   m_bShowExpiry(false), m_bFilterActive(false)
@@ -261,13 +261,13 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-  : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)),
+  : m_core(core), m_currentView(ViewType::GRID), m_search(0), m_sysTray(new SystemTray(this)),
     m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
     m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
-    m_bShowExpiry(false), m_bFilterActive(false)
+    m_bShowExpiry(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true)
 {
     Init();
-    m_currentView = (PWSprefs::GetInstance()->GetPref(PWSprefs::LastView) == _T("list")) ? GRID : TREE;
+    m_currentView = (PWSprefs::GetInstance()->GetPref(PWSprefs::LastView) == _T("list")) ? ViewType::GRID : ViewType::TREE;
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
       style |= wxSTAY_ON_TOP;
     Create( parent, id, caption, pos, size, style );
@@ -541,7 +541,7 @@ void PasswordSafeFrame::CreateMenubar()
     menuBar->Refresh();
 
   // Update menu selections
-  GetMenuBar()->Check( (m_currentView == TREE) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
+  GetMenuBar()->Check( (IsTreeView()) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
   GetMenuBar()->Check( PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
                        ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true );
 
@@ -803,8 +803,9 @@ int PasswordSafeFrame::Load(const StringX &passwd)
 
 bool PasswordSafeFrame::Show(bool show)
 {
-  ShowGrid(show && (m_currentView == GRID));
-  ShowTree(show && (m_currentView == TREE));
+  ShowGrid(show && IsGridView());
+  ShowTree(show && IsTreeView());
+  
   return wxFrame::Show(show);
 }
 
@@ -873,12 +874,33 @@ void PasswordSafeFrame::ShowTree(bool show)
     if (!m_tree->IsEmpty()) // avoid assertion!
       m_tree->SortChildrenRecursively(m_tree->GetRootItem());
 
-    m_guiInfo->RestoreTreeViewInfo(m_tree);
+    if (m_InitialTreeDisplayStatusAtOpen) {
+      m_InitialTreeDisplayStatusAtOpen = false;
+      
+      switch (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeDisplayStatusAtOpen)) {
+        case PWSprefs::AllCollapsed:
+          m_tree->SetGroupDisplayStateAllCollapsed();
+          break;
+        case PWSprefs::AllExpanded:
+          m_tree->SetGroupDisplayStateAllExpanded();
+          break;
+        case PWSprefs::AsPerLastSave:
+          m_tree->RestoreGroupDisplayState();
+          break;
+        default:
+          m_tree->SetGroupDisplayStateAllCollapsed();
+      }
+      
+      m_guiInfo->SaveTreeViewInfo(m_tree);
+    }
+    else {
+      m_guiInfo->RestoreTreeViewInfo(m_tree);
+    }
   }
   else {
     m_guiInfo->SaveTreeViewInfo(m_tree);
   }
-
+  
   m_tree->Show(show);
   GetSizer()->Layout();
 }
@@ -914,6 +936,11 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
   prefs->SaveShortcuts();
+  
+  // Save Group Display State
+  if (IsTreeView() && prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen) == PWSprefs::AsPerLastSave) {
+    m_tree->SaveGroupDisplayState();
+  }
 
   if (m_core.GetCurFile().empty())
     return SaveAs();
@@ -1189,6 +1216,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
     StringX password = pwdprompt.GetPassword();
     int retval = Load(password);
     if (retval == PWScore::SUCCESS) {
+      m_InitialTreeDisplayStatusAtOpen = true;
       Show();
       wxGetApp().recentDatabases().AddFileToHistory(fname);
     }
@@ -1620,7 +1648,7 @@ void PasswordSafeFrame::OnEditBase(wxCommandEvent& /*evt*/)
 
 void PasswordSafeFrame::SelectItem(const CUUID& uuid)
 {
-    if (m_currentView == GRID) {
+    if (m_currentView == ViewType::GRID) {
       m_grid->SelectItem(uuid);
     }
     else {
@@ -1758,7 +1786,7 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     groupEditMenu.Append(ID_ADDGROUP, _("Add &Group"));
     groupEditMenu.Append(ID_RENAME, _("&Rename Group"));
     groupEditMenu.Append(wxID_DELETE, _("&Delete Group"));
-    if (m_currentView == TREE)
+    if (IsTreeView())
       m_tree->PopupMenu(&groupEditMenu);
   } else {
     wxMenu itemEditMenu;
@@ -1839,7 +1867,7 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
       itemEditMenu.Delete(ID_RUNCOMMAND);
     }
 
-    if ( m_currentView == TREE )
+    if ( m_currentView == ViewType::TREE )
       m_tree->PopupMenu(&itemEditMenu);
     else
       m_grid->PopupMenu(&itemEditMenu);
@@ -1863,7 +1891,7 @@ CItemData* PasswordSafeFrame::GetBaseEntry(const CItemData *item) const
 //
 void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 {
-  bool bGroupSelected(false), bFileIsReadOnly(false), bTreeView(m_currentView == TREE);
+  bool bGroupSelected(false), bFileIsReadOnly(false), bTreeView(IsTreeView());
   const CItemData *pci(nullptr), *pbci(nullptr);
 
   bFileIsReadOnly = m_core.IsReadOnly();
@@ -2020,7 +2048,7 @@ void PasswordSafeFrame::DatabaseModified(bool modified)
   }
   else if (m_core.HasDBChanged()) {  //"else if" => both DB and it's prefs can't change at the same time
     if (m_search) m_search->Invalidate();
-    if (m_currentView == TREE) {
+    if (IsTreeView()) {
       if (m_grid != NULL)
         m_grid->OnPasswordListModified();
     }
@@ -2163,7 +2191,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action /*ga*/,
 }
 void PasswordSafeFrame::RefreshEntryFieldInGUI(const CItemData& item, CItemData::FieldType ft)
 {
-  if (m_currentView == GRID) {
+  if (m_currentView == ViewType::GRID) {
     m_grid->RefreshItemField(item.GetUUID(), ft);
   }
   else {
@@ -2175,7 +2203,7 @@ void PasswordSafeFrame::RefreshEntryFieldInGUI(const CItemData& item, CItemData:
 
 void PasswordSafeFrame::RefreshEntryPasswordInGUI(const CItemData& item)
 {
-  if (m_currentView == GRID) {
+  if (m_currentView == ViewType::GRID) {
     RefreshEntryFieldInGUI(item, CItemData::PASSWORD);
     //TODO: Update password history
   }
@@ -2191,10 +2219,10 @@ void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item, bool bAllowFail)
   if (item.GetStatus() ==CItemData::ES_DELETED) {
     uuid_array_t uuid;
     item.GetUUID(uuid);
-    if (m_currentView == TREE) { m_tree->Remove(uuid); }
+    if (IsTreeView()) { m_tree->Remove(uuid); }
     else { m_grid->Remove(uuid); }
   } else {
-    if (m_currentView == TREE) { m_tree->UpdateItem(item); }
+    if (IsTreeView()) { m_tree->UpdateItem(item); }
     else { m_grid->UpdateItem(item); }
   }
 }
@@ -2981,7 +3009,7 @@ void PasswordSafeFrame::ViewReport(CReport& rpt)
   CViewReport vr(this, &rpt);
   vr.ShowModal();
 }
-
+ 
 void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
 {
   int rc = PWScore::FAILURE;
