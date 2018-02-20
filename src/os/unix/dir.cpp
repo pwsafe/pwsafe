@@ -182,13 +182,11 @@ stringT pws_os::getxmldir(void)
 
 stringT pws_os::gethelpdir(void)
 {
-#ifdef __FreeBSD__
+#if defined(__FreeBSD__) && !(defined(_DEBUG) || defined(DEBUG))
   return _S("/usr/local/share/doc/passwordsafe/help/");
-#else
-#if defined(_DEBUG) || defined(DEBUG)
+#elif defined(_DEBUG) || defined(DEBUG)
   return _S("help/");
 #else
   return _S("/usr/share/passwordsafe/help/");
-#endif
 #endif
 }
