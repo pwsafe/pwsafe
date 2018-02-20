@@ -158,7 +158,7 @@ int CItemData::Read(PWSfile *in)
 
   Clear();
   do {
-    unsigned char *utf8 = NULL;
+    unsigned char *utf8 = nullptr;
     size_t utf8Len = 0;
     fieldLen = static_cast<signed long>(in->ReadField(type, utf8,
                                                       utf8Len));
@@ -172,7 +172,7 @@ int CItemData::Read(PWSfile *in)
         }
       } else if (IsItemAttField(type)) {
         // Allow rewind and retry
-        if (utf8 != NULL) {
+        if (utf8 != nullptr) {
           trashMemory(utf8, utf8Len * sizeof(utf8[0]));
           delete[] utf8;
         }
@@ -182,9 +182,9 @@ int CItemData::Read(PWSfile *in)
       }
     } // if (fieldLen > 0)
 
-    if (utf8 != NULL) {
+    if (utf8 != nullptr) {
       trashMemory(utf8, utf8Len * sizeof(utf8[0]));
-      delete[] utf8; utf8 = NULL; utf8Len = 0;
+      delete[] utf8; utf8 = nullptr; utf8Len = 0;
     }
   } while (type != END && fieldLen > 0 && --emergencyExit > 0);
 
@@ -222,7 +222,7 @@ size_t CItemData::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
       wchar_t *wpdata = reinterpret_cast<wchar_t *>(pdata);
       size_t srclen = field.GetLength()/sizeof(TCHAR);
       wpdata[srclen] = 0;
-      size_t dstlen = pws_os::wcstombs(NULL, 0, wpdata, srclen);
+      size_t dstlen = pws_os::wcstombs(nullptr, 0, wpdata, srclen);
       ASSERT(dstlen > 0);
       char *dst = new char[dstlen+1];
       dstlen = pws_os::wcstombs(dst, dstlen, wpdata, srclen);
@@ -389,7 +389,7 @@ int CItemData::WriteUnknowns(PWSfile *out) const
        uiter++) {
     unsigned char type;
     size_t length = 0;
-    unsigned char *pdata = NULL;
+    unsigned char *pdata = nullptr;
     GetUnknownField(type, length, pdata, *uiter);
     out->WriteField(type, pdata, length);
     trashMemory(pdata, length);
@@ -485,7 +485,7 @@ StringX CItemData::GetEffectiveFieldValue(FieldType ft, const CItemData *pbci) c
 
   // Here if we're a dependent;
   ASSERT(IsDependent());
-  ASSERT(pbci != NULL);
+  ASSERT(pbci != nullptr);
 
   if (IsAlias()) {
     // Only current and password history are taken from base entry
@@ -803,13 +803,13 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
 
   StringX csPassword;
   if (m_entrytype == ET_ALIAS) {
-    ASSERT(pcibase != NULL);
+    ASSERT(pcibase != nullptr);
     csPassword = _T("[[") +
                  pcibase->GetGroup() + _T(":") +
                  pcibase->GetTitle() + _T(":") +
                  pcibase->GetUser() + _T("]]") ;
   } else if (m_entrytype == ET_SHORTCUT) {
-    ASSERT(pcibase != NULL);
+    ASSERT(pcibase != nullptr);
     csPassword = _T("[~") +
                  pcibase->GetGroup() + _T(":") +
                  pcibase->GetTitle() + _T(":") +
@@ -966,14 +966,14 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   // Password mandatory (see pwsafe.xsd)
   if (m_entrytype == ET_ALIAS) {
-    ASSERT(pcibase != NULL);
+    ASSERT(pcibase != nullptr);
     tmp = _T("[[") +
           pcibase->GetGroup() + _T(":") +
           pcibase->GetTitle() + _T(":") +
           pcibase->GetUser() + _T("]]") ;
   } else
   if (m_entrytype == ET_SHORTCUT) {
-    ASSERT(pcibase != NULL);
+    ASSERT(pcibase != nullptr);
     tmp = _T("[~") +
           pcibase->GetGroup() + _T(":") +
           pcibase->GetTitle() + _T(":") +
@@ -1088,7 +1088,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
         PWHistList::iterator hiter;
         for (hiter = pwhistlist.begin(); hiter != pwhistlist.end();
              hiter++) {
-          const unsigned char *utf8 = NULL;
+          const unsigned char *utf8 = nullptr;
           size_t utf8Len = 0;
 
           oss << "\t\t\t\t<history_entry num=\"" << num << "\">" << endl;
@@ -2123,12 +2123,12 @@ void CItemData::SerializePlainText(vector<char> &v,
 
   if (m_entrytype == ET_ALIAS) {
     // I am an alias entry
-    ASSERT(pcibase != NULL);
+    ASSERT(pcibase != nullptr);
     tmp = _T("[[") + pcibase->GetGroup() + _T(":") + pcibase->GetTitle() + _T(":") + pcibase->GetUser() + _T("]]");
   } else
   if (m_entrytype == ET_SHORTCUT) {
     // I am a shortcut entry
-    ASSERT(pcibase != NULL);
+    ASSERT(pcibase != nullptr);
     tmp = _T("[~") + pcibase->GetGroup() + _T(":") + pcibase->GetTitle() + _T(":") + pcibase->GetUser() + _T("~]");
   } else
     tmp = GetPassword();
@@ -2163,7 +2163,7 @@ void CItemData::SerializePlainText(vector<char> &v,
        vi_IterURFE++) {
     unsigned char type;
     size_t length = 0;
-    unsigned char *pdata = NULL;
+    unsigned char *pdata = nullptr;
     GetUnknownField(type, length, pdata, *vi_IterURFE);
     if (length != 0) {
       v.push_back(static_cast<char>(type));

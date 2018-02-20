@@ -58,7 +58,7 @@ void* XSecMemMgr::allocate(size_t size)
   catch(...) {
     throw OutOfMemoryException();
   }
-  if (preal_mem != NULL) {
+  if (preal_mem != nullptr) {
     // Put user size in header
     XMLSize_t *puser_mem = reinterpret_cast<XMLSize_t*>(preal_mem);
     *puser_mem = size;

@@ -118,7 +118,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
 
   m_passkey = passkey;
   FOpen();
-  if (m_fd == NULL)
+  if (m_fd == nullptr)
     return CANT_OPEN_FILE;
 
   LPCTSTR passstr = m_passkey.c_str();
@@ -190,10 +190,10 @@ int PWSfileV1V2::CheckPasskey(const StringX &filename,
                               const StringX &passkey, FILE *a_fd)
 {
   FILE *fd = a_fd;
-  if (fd == NULL) {
+  if (fd == nullptr) {
     fd = pws_os::FOpen(filename.c_str(), _T("rb"));
   }
-  if (fd == NULL)
+  if (fd == nullptr)
     return CANT_OPEN_FILE;
 
   unsigned char randstuff[StuffSize];
@@ -203,7 +203,7 @@ int PWSfileV1V2::CheckPasskey(const StringX &filename,
   randstuff[8] = randstuff[9] = '\0'; // Gross fugbix
   fread(randhash, 1, 20, fd);
 
-  if (a_fd == NULL) // if we opened the file, we close it...
+  if (a_fd == nullptr) // if we opened the file, we close it...
     fclose(fd);
 
   unsigned char temphash[20]; // HashSize
@@ -253,7 +253,7 @@ size_t PWSfileV1V2::WriteCBC(unsigned char type, const StringX &data)
 
 int PWSfileV1V2::WriteRecord(const CItemData &item)
 {
-  ASSERT(m_fd != NULL);
+  ASSERT(m_fd != nullptr);
   ASSERT(m_curversion != UNKNOWN_VERSION);
   int status = SUCCESS;
 
@@ -368,18 +368,18 @@ static void ExtractURL(StringX &notesStr, StringX &outurl)
 
 size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
 {
-  unsigned char *buffer = NULL;
+  unsigned char *buffer = nullptr;
   size_t buffer_len = 0;
   size_t retval;
 
-  ASSERT(m_fish != NULL && m_IV != NULL);
+  ASSERT(m_fish != nullptr && m_IV != nullptr);
   retval = _readcbc(m_fd, buffer, buffer_len, type,
                     m_fish, m_IV, m_terminal);
 
   if (buffer_len > 0) {
 
     //edge cases can make wc bigger than buffer, so calculate the size needed
-    size_t wcsize = pws_os::mbstowcs(NULL, 0,
+    size_t wcsize = pws_os::mbstowcs(nullptr, 0,
                                      reinterpret_cast<const char *>(buffer), buffer_len) + 1;
 
     wchar_t *wc = new wchar_t[wcsize+1];
@@ -407,7 +407,7 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
 
 int PWSfileV1V2::ReadRecord(CItemData &item)
 {
-  ASSERT(m_fd != NULL);
+  ASSERT(m_fd != nullptr);
   ASSERT(m_curversion != UNKNOWN_VERSION);
 
   StringX tempdata;

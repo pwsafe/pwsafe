@@ -14,11 +14,11 @@ using namespace std;
 
 #define NUM_LOG_ENTRIES 256
 
-PWSLog *PWSLog::self = NULL;
+PWSLog *PWSLog::self = nullptr;
 
 PWSLog *PWSLog::GetLog()
 {
-  if (self == NULL) {
+  if (self == nullptr) {
     self = new PWSLog();
     // The following sets the queue size once, avoiding
     // memory management @ each call to Add(). (reference TBD)
@@ -30,7 +30,7 @@ PWSLog *PWSLog::GetLog()
 void PWSLog::DeleteLog()
 {
   delete self;
-  self = NULL;
+  self = nullptr;
 }
 
 void PWSLog::Add(const stringT &sLogRecord)

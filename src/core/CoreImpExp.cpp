@@ -91,7 +91,7 @@ int PWScore::TestSelection(const bool bAdvanced,
   // Check if any pass restricting criteria
   if (bAdvanced) {
     bool bAnyMatch(false);
-    if (pOIL != NULL) {
+    if (pOIL != nullptr) {
       if (find_if(pOIL->begin(), pOIL->end(),
                   ExportTester(subgroup_name,
                                subgroup_object,
@@ -108,7 +108,7 @@ int PWScore::TestSelection(const bool bAdvanced,
     if (!bAnyMatch)
       return FAILURE;
   } else {
-    if (pOIL != NULL)
+    if (pOIL != nullptr)
       return pOIL->empty() ? NO_ENTRIES_EXPORTED : SUCCESS;
     else
       return m_pwlist.empty() ? NO_ENTRIES_EXPORTED : SUCCESS;
@@ -241,7 +241,7 @@ struct TextRecordWriter {
                              item.GetTitle() + StringX(_T("\xbb \xab")) +
                              item.GetUser()  + StringX(_T("\xbb"));
 
-        if (m_pRpt != NULL)
+        if (m_pRpt != nullptr)
           m_pRpt->WriteLine(sx_exported.c_str());
         m_pcore->UpdateWizard(sx_exported.c_str());
 
@@ -297,19 +297,19 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 
   // Although the MFC UI prevents the user selecting export of an
   // empty database, other UIs might not, so:
-  if ((pOIL != NULL && pOIL->empty()) ||
-      (pOIL == NULL && m_pwlist.empty()))
+  if ((pOIL != nullptr && pOIL->empty()) ||
+      (pOIL == nullptr && m_pwlist.empty()))
     return NO_ENTRIES_EXPORTED;
 
   FILE *txtfile = pws_os::FOpen(filename.c_str(), _T("wt"));
-  if (txtfile == NULL)
+  if (txtfile == nullptr)
     return CANT_OPEN_FILE;
 
   CUTF8Conv conv;
   coStringXStream ofs;
 
   StringX hdr(_T(""));
-  const unsigned char *utf8 = NULL;
+  const unsigned char *utf8 = nullptr;
   size_t utf8Len = 0;
 
   if (bsFields.count() == bsFields.size()) {
@@ -332,7 +332,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
   TextRecordWriter put_text(subgroup_name, subgroup_object, subgroup_function,
                    bsFields, delimiter, ofs, txtfile, numExported, pRpt, this);
 
-  if (pOIL != NULL) {
+  if (pOIL != nullptr) {
     for_each(pOIL->begin(), pOIL->end(), put_text);
   } else {
     for_each(m_pwlist.begin(), m_pwlist.end(), put_text);
@@ -393,7 +393,7 @@ struct XMLRecordWriter {
         }
       }
 
-      if (m_pRpt != NULL)
+      if (m_pRpt != nullptr)
         m_pRpt->WriteLine(sx_exported.c_str(), false);
 
       m_pcore->UpdateWizard(sx_exported.c_str());
@@ -404,13 +404,13 @@ struct XMLRecordWriter {
                                bforce_normal_entry, bXMLErrorsFound);
 
       if (bXMLErrorsFound) {
-        if (m_pRpt != NULL) {
+        if (m_pRpt != nullptr) {
           m_pRpt->WriteLine(_T("\t"), false);
           m_pRpt->WriteLine(strXMLErrors.c_str());
         }
         m_numXMLErrors++;
       } else
-        if (m_pRpt != NULL) m_pRpt->WriteLine();
+        if (m_pRpt != nullptr) m_pRpt->WriteLine();
 
       m_ofs.write(xml.c_str(),
                  static_cast<streamsize>(xml.length()));
@@ -456,16 +456,16 @@ int PWScore::WriteXMLFile(const StringX &filename,
 
   // Although the MFC UI prevents the user selecting export of an
   // empty database, other UIs might not, so:
-  if ((il != NULL && il->empty()) ||
-      (il == NULL && m_pwlist.empty()))
+  if ((il != nullptr && il->empty()) ||
+      (il == nullptr && m_pwlist.empty()))
     return NO_ENTRIES_EXPORTED;
 
   FILE *xmlfile = pws_os::FOpen(filename.c_str(), _T("wt"));
-  if (xmlfile == NULL)
+  if (xmlfile == nullptr)
     return CANT_OPEN_FILE;
 
   CUTF8Conv conv;
-  const unsigned char *utf8 = NULL;
+  const unsigned char *utf8 = nullptr;
   size_t utf8Len = 0;
 
   coStringXStream ofs;
@@ -699,7 +699,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
                           bsFields, delimiter, ofs, xmlfile, numExported, 
                           numXMLErrors, pRpt, this);
 
-  if (il != NULL) {
+  if (il != nullptr) {
     for_each(il->begin(), il->end(), put_xml);
   } else {
     for_each(m_pwlist.begin(), m_pwlist.end(), put_xml);
@@ -786,7 +786,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
 
   if (!status) {
     delete pcommand;
-    pcommand = NULL;
+    pcommand = nullptr;
     return XML_FAILED_IMPORT;
   }
 
@@ -816,13 +816,13 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 {
   stringT cs_error;
   CUTF8Conv conv;
-  pcommand = NULL;
+  pcommand = nullptr;
 
   // We need to use FOpen as the file name/file path may contain non-Latin
   // characters even though we need the file to contain ASCII and UTF-8 characters
   // and not Unicode (wchar_t).
   FILE *fs = pws_os::FOpen(filename.c_str(), _T("rt"));
-  if (fs == NULL)
+  if (fs == nullptr)
     return CANT_OPEN_FILE;
 
   // We need to use file stream I/O but can't with standard FILE I/O
@@ -1486,7 +1486,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
 
   stringT cs_error;
   CUTF8Conv conv;
-  pcommand = NULL;
+  pcommand = nullptr;
   numImported  = numSkipped = numRenamed = 0;
   uiReasonCode = 0;
 
@@ -1494,7 +1494,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
   // characters even though we need the file to contain ASCII and UTF-8 characters
   // and not Unicode (wchar_t).
   FILE *fs = pws_os::FOpen(filename.c_str(), _T("rt"));
-  if (fs == NULL)
+  if (fs == nullptr)
     return CANT_OPEN_FILE;
 
   // We need to use file stream I/O but can't with standard FILE I/O
@@ -1892,7 +1892,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
 {
   stringT strError;
   CUTF8Conv conv;
-  pcommand = NULL;
+  pcommand = nullptr;
   numImported  = numSkipped = numRenamed = 0;
   uiReasonCode = 0;
 
@@ -1900,7 +1900,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   // characters even though we need the file to contain ASCII and UTF-8 characters
   // and not Unicode (wchar_t).
   FILE *fs = pws_os::FOpen(filename.c_str(), _T("rt"));
-  if (fs == NULL)
+  if (fs == nullptr)
     return CANT_OPEN_FILE;
 
   // We need to use file stream I/O but can't with standard FILE I/O

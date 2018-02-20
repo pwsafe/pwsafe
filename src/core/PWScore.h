@@ -101,8 +101,8 @@ public:
   // so that we can inform user of events of interest
   static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
   static void SetAsker(Asker *pAsker) {m_pAsker = pAsker;}
-  static bool IsAskerSet() {return m_pAsker != NULL;}
-  static bool IsReporterSet() {return m_pReporter != NULL;}
+  static bool IsAskerSet() {return m_pAsker != nullptr;}
+  static bool IsReporterSet() {return m_pReporter != nullptr;}
 
   // Get/Set File UUIDs
   void ClearFileUUID() { m_hdr.m_file_uuid = pws_os::CUUID::NullUUID(); }
@@ -128,11 +128,11 @@ public:
   void SetCurFile(const StringX &file) {m_currfile = file;}
 
   int ReadCurFile(const StringX &passkey, const bool bValidate = false,
-                  const size_t iMAXCHARS = 0, CReport *pRpt = NULL)
+                  const size_t iMAXCHARS = 0, CReport *pRpt = nullptr)
   {return ReadFile(m_currfile, passkey, bValidate, iMAXCHARS, pRpt);}
   int ReadFile(const StringX &filename, const StringX &passkey,
                const bool bValidate = false, const size_t iMAXCHARS = 0,
-               CReport *pRpt = NULL);
+               CReport *pRpt = nullptr);
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
   bool BackupCurFile(unsigned int maxNumIncBackups, int backupSuffix,
                      const stringT &userBackupPrefix,
@@ -146,7 +146,7 @@ public:
                       PWScore *pINcore, PWSfile::VERSION version,
                       std::vector<StringX> &vEmptyGroups, 
                       bool bExportDBFilters,
-                      std::vector<pws_os::CUUID> &vuuidAddedBases, CReport *pRpt = NULL);
+                      std::vector<pws_os::CUUID> &vuuidAddedBases, CReport *pRpt = nullptr);
   int WriteV17File(const StringX &filename)
   {return WriteFile(filename, PWSfile::V17, false);}
   int WriteV2File(const StringX &filename)
@@ -174,19 +174,19 @@ public:
                const int &subgroup_object, const int &subgroup_function,
                CompareData &list_OnlyInCurrent, CompareData &list_OnlyInComp,
                CompareData &list_Conflicts, CompareData &list_Identical,
-               bool *pbCancel = NULL);
+               bool *pbCancel = nullptr);
 
   stringT Merge(PWScore *pothercore,
                 const bool &subgroup_bset,
                 const stringT &subgroup_name,
                 const int &subgroup_object, const int &subgroup_function,
-                CReport *pRpt, bool *pbCancel = NULL);
+                CReport *pRpt, bool *pbCancel = nullptr);
 
   void Synchronize(PWScore *pothercore, 
                    const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
                    const stringT &subgroup_name,
                    const int &subgroup_object, const int &subgroup_function,
-                   int &numUpdated, CReport *pRpt, bool *pbCancel = NULL);
+                   int &numUpdated, CReport *pRpt, bool *pbCancel = nullptr);
 
   // Used for Empty Groups during Merge
   bool MatchGroupName(const StringX &stValue, const StringX &subgroup_name,
@@ -197,17 +197,17 @@ public:
                          const CItemData::FieldBits &bsExport,
                          const stringT &subgroup, const int &iObject,
                          const int &iFunction, const TCHAR &delimiter,
-                         int &numExported, const OrderedItemList *pOIL = NULL,
-                         CReport *pRpt = NULL);
+                         int &numExported, const OrderedItemList *pOIL = nullptr,
+                         CReport *pRpt = nullptr);
 
   int WriteXMLFile(const StringX &filename,
                    const CItemData::FieldBits &bsExport,
                    const stringT &subgroup, const int &iObject,
                    const int &iFunction, const TCHAR &delimiter,
                    const stringT &exportgroup,
-                   int &numExported, const OrderedItemList *pOIL = NULL,
+                   int &numExported, const OrderedItemList *pOIL = nullptr,
                    const bool &bFilterActive = false,
-                   CReport *pRpt = NULL);
+                   CReport *pRpt = nullptr);
 
   // Import databases
   // If returned status is SUCCESS, then returned Command * can be executed.
@@ -471,8 +471,8 @@ private:
   virtual int DoAddDependentEntries(UUIDVector &dependentslist, CReport *pRpt, 
                                     const CItemData::EntryType type, 
                                     const int &iVia,
-                                    ItemList *pmapDeletedItems = NULL,
-                                    SaveTypePWMap *pmapSaveTypePW = NULL);
+                                    ItemList *pmapDeletedItems = nullptr,
+                                    SaveTypePWMap *pmapSaveTypePW = nullptr);
   virtual void UndoAddDependentEntries(ItemList *pmapDeletedItems,
                                        SaveTypePWMap *pmapSaveTypePW);
   virtual bool DoMoveDependentEntries(const pws_os::CUUID &from_baseuuid, 
@@ -646,7 +646,7 @@ private:
   void RemoveExpiryEntry(const CItemData &ci)
   {m_ExpireCandidates.Remove(ci);}
 
-  stringT GetXMLPWPolicies(const OrderedItemList *pOIL = NULL);
+  stringT GetXMLPWPolicies(const OrderedItemList *pOIL = nullptr);
   PSWDPolicyMap m_MapPSWDPLC;
   PSWDPolicyMap m_InitialMapPSWDPLC;  // Needed for HavePasswordPolicyNamesChanged
   

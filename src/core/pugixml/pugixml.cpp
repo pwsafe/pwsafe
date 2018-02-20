@@ -5940,7 +5940,7 @@ namespace pugi
 		extra->next = doc->extra_buffers;
 		doc->extra_buffers = extra;
 
-		// name of the root has to be NULL before parsing - otherwise closing node mismatches will not be detected at the top level
+		// name of the root has to be nullptr before parsing - otherwise closing node mismatches will not be detected at the top level
 		impl::name_null_sentry sentry(_root);
 
 		return impl::load_buffer_impl(doc, _root, const_cast<void*>(contents), size, options, encoding, false, false, &extra->buffer);

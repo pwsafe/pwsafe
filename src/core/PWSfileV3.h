@@ -24,8 +24,8 @@ public:
 
   static int CheckPasskey(const StringX &filename,
                           const StringX &passkey,
-                          FILE *a_fd = NULL,
-                          unsigned char *aPtag = NULL, uint32 *nIter = NULL);
+                          FILE *a_fd = nullptr,
+                          unsigned char *aPtag = nullptr, uint32 *nIter = nullptr);
   static bool IsV3x(const StringX &filename, VERSION &v);
 
   PWSfileV3(const StringX &filename, RWmode mode, VERSION version);

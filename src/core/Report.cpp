@@ -60,7 +60,7 @@ static bool isFileUnicode(const stringT &fname)
   bool retval = false;
 
   FILE *fn = pws_os::FOpen(fname, _T("rb"));
-  if (fn == NULL)
+  if (fn == nullptr)
     return false;
   if (pws_os::fileLength(fn) < 2)
     retval = false;
@@ -90,7 +90,7 @@ bool CReport::SaveToDisk()
   Format(m_cs_filename, IDSC_REPORTFILENAME,
          drive.c_str(), dir.c_str(), m_tcAction.c_str());
 
-  if ((fd = pws_os::FOpen(m_cs_filename, _T("a+b"))) == NULL) {
+  if ((fd = pws_os::FOpen(m_cs_filename, _T("a+b"))) == nullptr) {
     pws_os::IssueError(_T("StartReport: Opening log file"));
     return false;
   }
@@ -149,7 +149,7 @@ bool CReport::SaveToDisk()
       pws_os::RenameFile(cs_out, m_cs_filename);
 
       // Re-open file
-      if ((fd = pws_os::FOpen(m_cs_filename, _S("ab"))) == NULL) {
+      if ((fd = pws_os::FOpen(m_cs_filename, _S("ab"))) == nullptr) {
         pws_os::IssueError(_T("StartReport: Opening log file"));
         return false;
       }

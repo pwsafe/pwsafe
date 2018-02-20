@@ -13,11 +13,11 @@
 // such as hostname, username, pid
 //-----------------------------------------------------------------
 
-SysInfo *SysInfo::self = NULL;
+SysInfo *SysInfo::self = nullptr;
 
 SysInfo *SysInfo::GetInstance()
 {
-  if (self == NULL)
+  if (self == nullptr)
     self = new SysInfo;
   return self;
 }
@@ -25,7 +25,7 @@ SysInfo *SysInfo::GetInstance()
 void SysInfo::DeleteInstance()
 {
   delete self;
-  self = NULL;
+  self = nullptr;
 }
 
 SysInfo::SysInfo()

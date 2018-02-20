@@ -74,8 +74,8 @@ static int rijndael_setup(const unsigned char *key, int keylen,
 #ifndef ENCRYPT_ONLY
     ulong32 *rrk;
 #endif    
-    ASSERT(key  != NULL);
-    ASSERT(skey != NULL);
+    ASSERT(key  != nullptr);
+    ASSERT(skey != nullptr);
   
     if (keylen != 16 && keylen != 24 && keylen != 32) {
        return CRYPT_INVALID_KEYSIZE;
@@ -244,9 +244,9 @@ static int rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
     const ulong32 *rk;
     int Nr, r;
    
-    ASSERT(pt != NULL);
-    ASSERT(ct != NULL);
-    ASSERT(skey != NULL);
+    ASSERT(pt != nullptr);
+    ASSERT(ct != nullptr);
+    ASSERT(skey != nullptr);
     
     Nr = skey->Nr;
     rk = skey->eK;
@@ -427,9 +427,9 @@ static int rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
     const ulong32 *rk;
     int Nr, r;
 
-    ASSERT(pt != NULL);
-    ASSERT(ct != NULL);
-    ASSERT(skey != NULL);
+    ASSERT(pt != nullptr);
+    ASSERT(ct != nullptr);
+    ASSERT(skey != nullptr);
     
     Nr = skey->Nr;
     rk = skey->dK;

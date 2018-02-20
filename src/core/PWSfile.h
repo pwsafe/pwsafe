@@ -98,7 +98,7 @@ public:
 
   static PWSfile *MakePWSfile(const StringX &a_filename, const StringX &passkey,
                               VERSION &version, RWmode mode, int &status, 
-                              Asker *pAsker = NULL, Reporter *pReporter = NULL);
+                              Asker *pAsker = nullptr, Reporter *pReporter = nullptr);
 
   static VERSION ReadVersion(const StringX &filename, const StringX &passkey);
   static int CheckPasskey(const StringX &filename,

@@ -51,24 +51,24 @@ bool CXMLprefs::CreateXML(bool bLoad)
 {
   // Call with bLoad set when about to Load, else
   // this just adds the XML declaration and a toplevel root element
-  ASSERT(m_pXMLDoc == NULL);
+  ASSERT(m_pXMLDoc == nullptr);
   m_pXMLDoc = new pugi::xml_document;
   
-  if (!bLoad && m_pXMLDoc != NULL) {
+  if (!bLoad && m_pXMLDoc != nullptr) {
     // Insert
     // <Pwsafe_Settings>
     // </ Pwsafe_Settings>
     
     pugi::xml_node node = m_pXMLDoc->append_child(_T("Pwsafe_Settings"));
-    return node != NULL;
+    return node != nullptr;
   } else
-    return m_pXMLDoc != NULL;
+    return m_pXMLDoc != nullptr;
 }
 
 bool CXMLprefs::XML_Load()
 {
   // Already loaded?
-  if (m_pXMLDoc != NULL)
+  if (m_pXMLDoc != nullptr)
     return true;
 
   bool alreadyLocked = m_bIsLocked;
@@ -98,7 +98,7 @@ bool CXMLprefs::XML_Load()
     Format(m_Reason, IDSC_XMLFILEERROR,
            sErrorDesc.c_str(), m_csConfigFile.c_str(), result.offset);
     delete m_pXMLDoc;
-    m_pXMLDoc = NULL;
+    m_pXMLDoc = nullptr;
     return false;
   } // load failed
 
@@ -147,15 +147,15 @@ bool CXMLprefs::XML_Store(const stringT &csBaseKeyName)
   // Although technically possible, it doesn't make sense
   // to create a toplevel document here, since we'd then
   // be saving an empty document.
-  ASSERT(m_pXMLDoc != NULL);
-  if (m_pXMLDoc == NULL) {
+  ASSERT(m_pXMLDoc != nullptr);
+  if (m_pXMLDoc == nullptr) {
     LoadAString(m_Reason, IDSC_XMLCREATE_CFG_FAILED);
     retval = false;
     goto exit;
   }
 
   decl = m_pXMLDoc->prepend_child(pugi::node_declaration);
-  if (decl == NULL)
+  if (decl == nullptr)
     goto exit;
 
   decl.append_attribute(_T("version")) = _T("1.0");
@@ -163,7 +163,7 @@ bool CXMLprefs::XML_Store(const stringT &csBaseKeyName)
   decl.append_attribute(_T("standalone")) = _T("yes");
 
   nodePrefs = m_pXMLDoc->first_element_by_path(csBaseKeyName.c_str(), _T('\\'));
-  if (nodePrefs != NULL)
+  if (nodePrefs != nullptr)
     SortPreferences(nodePrefs);
 
   retval = m_pXMLDoc->save_file(m_csConfigFile.c_str(), _T("  "),
@@ -199,7 +199,7 @@ int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue,
   // First see if the node already exists
   pugi::xml_node node = m_pXMLDoc->first_element_by_path(sPath.c_str(), _T('\\'));
   
-  if (node == NULL) {
+  if (node == nullptr) {
     // Not there - let's build it
     // Split up path and then add all nodes in the path (if they don't exist)
     // Start at the top
@@ -219,7 +219,7 @@ int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue,
       pugi::xml_node child = node.child(snode.c_str());
 
       // If not there, add it otherwise use it for the next iteration
-      node = (child == NULL) ? node.append_child(snode.c_str()) : child;
+      node = (child == nullptr) ? node.append_child(snode.c_str()) : child;
     
       // Skip delimiter and find next "non-delimiter"
       lastPos = sPath.find_first_not_of(_T('\\'), pos);
@@ -248,7 +248,7 @@ int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue,
     }
 
     pugi::xml_attribute attrib;
-    if (pvprefAttribs != NULL && !pvprefAttribs->empty()) {
+    if (pvprefAttribs != nullptr && !pvprefAttribs->empty()) {
       // Add attributes
       for (size_t i = 0; i < pvprefAttribs->size(); i++) {
         st_prefAttribs &st_pa = (*pvprefAttribs)[i];
@@ -299,7 +299,7 @@ int CXMLprefs::GetWithAttributes(const stringT &csBaseKeyName, const stringT &cs
   pugi::xml_node preference = m_pXMLDoc->first_element_by_path(csKeyName.c_str(), _T('\\'));
 
   // Not there - return default
-  if (preference == NULL) {
+  if (preference == nullptr) {
     return iRevVal;
   }
 
@@ -314,7 +314,7 @@ int CXMLprefs::GetWithAttributes(const stringT &csBaseKeyName, const stringT &cs
     WORD wPWSModifiers(0);
 
     if (iValue != 0) {
-      if (preference.attribute(_T("Key")) == NULL) {
+      if (preference.attribute(_T("Key")) == nullptr) {
         // Attribute NOT defined and so this is the OLD MFC value
         // Convert to PWS format to use throughout comnverting as needed
         if (wHKModifiers & HOTKEYF_ALT)
@@ -365,8 +365,8 @@ int CXMLprefs::GetWithAttributes(const stringT &csBaseKeyName, const stringT &cs
 stringT CXMLprefs::Get(const stringT &csBaseKeyName, const stringT &csValueName, 
                        const stringT &csDefaultValue)
 {
-  ASSERT(m_pXMLDoc != NULL); // shouldn't be called if not loaded
-  if (m_pXMLDoc == NULL) // just in case
+  ASSERT(m_pXMLDoc != nullptr); // shouldn't be called if not loaded
+  if (m_pXMLDoc == nullptr) // just in case
     return csDefaultValue;
 
   stringT csValue = csDefaultValue;
@@ -378,9 +378,9 @@ stringT CXMLprefs::Get(const stringT &csBaseKeyName, const stringT &csValueName,
 
   pugi::xml_node preference = m_pXMLDoc->first_element_by_path(csKeyName.c_str(), _T('\\'));
 
-  if (preference != NULL) {
+  if (preference != nullptr) {
     const TCHAR *val = preference.child_value(); 
-    csValue = (val != NULL) ? val : _T("");
+    csValue = (val != nullptr) ? val : _T("");
   }
 
   return csValue;
@@ -418,10 +418,10 @@ int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName,
 int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName, 
                    const stringT &csValue)
 {
-  // m_pXMLDoc may be NULL if Load() not called before Set,
+  // m_pXMLDoc may be nullptr if Load() not called before Set,
   // or if called & failed
 
-  if (m_pXMLDoc == NULL && !CreateXML(false))
+  if (m_pXMLDoc == nullptr && !CreateXML(false))
     return false;
 
   int iRetVal(XML_SUCCESS);
@@ -440,10 +440,10 @@ int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName,
 int CXMLprefs::SetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName,
                                  const int &iValue)
 {
-  // m_pXMLDoc may be NULL if Load() not called before Set,
+  // m_pXMLDoc may be nullptr if Load() not called before Set,
   // or if called & failed
 
-  if (m_pXMLDoc == NULL && !CreateXML(false))
+  if (m_pXMLDoc == nullptr && !CreateXML(false))
     return false;
 
   int iRetVal(XML_SUCCESS);
@@ -552,10 +552,10 @@ int CXMLprefs::SetWithAttributes(const stringT &csBaseKeyName, const stringT &cs
 // Delete a key or chain of keys
 bool CXMLprefs::DeleteSetting(const stringT &csBaseKeyName, const stringT &csValueName)
 {
-  // m_pXMLDoc may be NULL if Load() not called before DeleteSetting,
+  // m_pXMLDoc may be nullptr if Load() not called before DeleteSetting,
   // or if called & failed
 
-  if (m_pXMLDoc == NULL && !CreateXML(false))
+  if (m_pXMLDoc == nullptr && !CreateXML(false))
     return false;
 
   bool bRetVal = false;
@@ -568,11 +568,11 @@ bool CXMLprefs::DeleteSetting(const stringT &csBaseKeyName, const stringT &csVal
   }
 
   pugi::xml_node base_node = m_pXMLDoc->first_element_by_path(csKeyName.c_str(), _T('\\'));
-  if (base_node == NULL)
+  if (base_node == nullptr)
     return false;
 
   pugi::xml_node node_parent = base_node.parent();
-  if (node_parent != NULL) {
+  if (node_parent != nullptr) {
     size_t last_slash = csKeyName.find_last_of(_T('\\'));
     stringT sKey = csKeyName.substr(last_slash + 1);
     bRetVal = node_parent.remove_child(sKey.c_str());
@@ -584,15 +584,15 @@ bool CXMLprefs::DeleteSetting(const stringT &csBaseKeyName, const stringT &csVal
 void CXMLprefs::UnloadXML()
 {
   delete m_pXMLDoc;
-  m_pXMLDoc = NULL;
+  m_pXMLDoc = nullptr;
 }
 
 std::vector<st_prefShortcut> CXMLprefs::GetShortcuts(const stringT &csBaseKeyName)
 {
   std::vector<st_prefShortcut> v_Shortcuts;
-  ASSERT(m_pXMLDoc != NULL); // shouldn't be called if not loaded
+  ASSERT(m_pXMLDoc != nullptr); // shouldn't be called if not loaded
 
-  if (m_pXMLDoc == NULL)     // just in case
+  if (m_pXMLDoc == nullptr)     // just in case
     return v_Shortcuts;
 
   v_Shortcuts.clear();
@@ -602,7 +602,7 @@ std::vector<st_prefShortcut> CXMLprefs::GetShortcuts(const stringT &csBaseKeyNam
   // Get shortcuts
   pugi::xml_node all_shortcuts = m_pXMLDoc->first_element_by_path(csKeyName.c_str(), _T('\\'));
 
-  if (all_shortcuts == NULL)
+  if (all_shortcuts == nullptr)
     return v_Shortcuts;
 
   pugi::xml_node shortcut;
@@ -645,10 +645,10 @@ std::vector<st_prefShortcut> CXMLprefs::GetShortcuts(const stringT &csBaseKeyNam
 int CXMLprefs::SetShortcuts(const stringT &csBaseKeyName, 
                             std::vector<st_prefShortcut> v_shortcuts)
 {
-  // m_pXMLDoc may be NULL if Load() not called before Set,
+  // m_pXMLDoc may be nullptr if Load() not called before Set,
   // or if called & failed
 
-  if (m_pXMLDoc == NULL && !CreateXML(false))
+  if (m_pXMLDoc == nullptr && !CreateXML(false))
     return XML_LOAD_FAILED;
 
   int iRetVal = XML_SUCCESS;
@@ -663,28 +663,28 @@ int CXMLprefs::SetShortcuts(const stringT &csBaseKeyName,
   pugi::xml_node all_shortcuts = m_pXMLDoc->first_element_by_path(csKeyName.c_str(), _T('\\'));
 
   // Not there - go up one node and try to add it.
-  if (all_shortcuts == NULL) {
+  if (all_shortcuts == nullptr) {
     // Add node - go up a level in path
     size_t last_slash = csKeyName.find_last_of(_T('\\'));
     stringT sPath = csKeyName.substr(0, last_slash);
     stringT sKey = csKeyName.substr(last_slash + 1);
     all_shortcuts = m_pXMLDoc->first_element_by_path(sPath.c_str(), _T('\\'));
     
-    ASSERT(all_shortcuts != NULL);
-    if (all_shortcuts != NULL) {
+    ASSERT(all_shortcuts != nullptr);
+    if (all_shortcuts != nullptr) {
       all_shortcuts = all_shortcuts.append_child(sKey.c_str());
     }
   }
 
-  // If still NULL - give up!!!
-  if (all_shortcuts == NULL)
+  // If still nullptr - give up!!!
+  if (all_shortcuts == nullptr)
     return XML_PUT_TEXT_FAILED;
 
   for (size_t i = 0; i < v_shortcuts.size(); i++) { 
     pugi::xml_node shortcut = all_shortcuts.append_child(_T("Shortcut"));
     
     // If we can't add this - give up!
-    if (shortcut == NULL)
+    if (shortcut == nullptr)
       return XML_PUT_TEXT_FAILED;
 
     // Delete all existing attributes
@@ -776,11 +776,11 @@ bool CXMLprefs::MigrateSettings(const stringT &sNewFilename,
   if (sNewFilename.empty() || sHost.empty() || sUser.empty())
     return false;
 
-  if (m_pXMLDoc == NULL)
+  if (m_pXMLDoc == nullptr)
     return false;
 
   pugi::xml_node root_node = m_pXMLDoc->first_element_by_path(_T("Pwsafe_Settings"), _T('\\'));
-  if (root_node == NULL)
+  if (root_node == nullptr)
     return false;
 
   // Delete all hosts - except the one supplied
@@ -802,7 +802,7 @@ bool CXMLprefs::MigrateSettings(const stringT &sNewFilename,
 
   // Save just host/user in new file
   pugi::xml_node decl = m_pXMLDoc->prepend_child(pugi::node_declaration);
-  if (decl == NULL)
+  if (decl == nullptr)
     return false;
 
   decl.append_attribute(_T("version")) = _T("1.0");
@@ -828,19 +828,19 @@ bool CXMLprefs::RemoveHostnameUsername(const stringT &sHost, const stringT &sUse
   if (sHost.empty() || sUser.empty())
     return false;
 
-  if (m_pXMLDoc == NULL)
+  if (m_pXMLDoc == nullptr)
     return false;
 
   stringT sPath = stringT(_T("Pwsafe_Settings//")) + sHost;
   pugi::xml_node node = m_pXMLDoc->first_element_by_path(sPath.c_str(), _T('\\'));
   
-  if (node == NULL)
+  if (node == nullptr)
     return false;
   
   if (!node.remove_child(sUser.c_str()))
     return false;
 
   // Check if more children
-  bNoMoreNodes = node.first_child() == NULL;
+  bNoMoreNodes = node.first_child() == nullptr;
   return true;
 }

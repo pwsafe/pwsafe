@@ -30,7 +30,7 @@ CItemField::CItemField(const CItemField &that)
     m_Data = new unsigned char[bs];
     memcpy(m_Data, that.m_Data, bs);
   } else {
-    m_Data = NULL;
+    m_Data = nullptr;
   }
 }
 
@@ -45,7 +45,7 @@ CItemField &CItemField::operator=(const CItemField &that)
       m_Data = new unsigned char[bs];
       memcpy(m_Data, that.m_Data, bs);
     } else {
-      m_Data = NULL;
+      m_Data = nullptr;
     }
   }
   return *this;
@@ -53,9 +53,9 @@ CItemField &CItemField::operator=(const CItemField &that)
 
 void CItemField::Empty()
 {
-  if (m_Data != NULL) {
+  if (m_Data != nullptr) {
     delete[] m_Data;
-    m_Data = NULL;
+    m_Data = nullptr;
     m_Length = 0;
   }
 }
@@ -71,10 +71,10 @@ void CItemField::Set(const unsigned char* value, size_t length,
   delete[] m_Data;
 
   if (m_Length == 0) {
-    m_Data = NULL;
+    m_Data = nullptr;
   } else {
     m_Data = new unsigned char[BlockLength];
-    if (m_Data == NULL) { // out of memory - try to fail gracefully
+    if (m_Data == nullptr) { // out of memory - try to fail gracefully
       m_Length = 0; // at least keep structure consistent
       return;
     }
@@ -107,9 +107,9 @@ void CItemField::Set(const StringX &value, const Fish *bf, unsigned char type)
 
 void CItemField::Get(unsigned char *value, size_t &length, const Fish *bf) const
 {
-  // Sanity check: length is 0 iff data ptr is NULL
-  ASSERT((m_Length == 0 && m_Data == NULL) ||
-         (m_Length > 0 && m_Data != NULL));
+  // Sanity check: length is 0 iff data ptr is nullptr
+  ASSERT((m_Length == 0 && m_Data == nullptr) ||
+         (m_Length > 0 && m_Data != nullptr));
   /*
   * length is an in/out parameter:
   * In: size of value array - must be at least BlockLength
@@ -138,9 +138,9 @@ void CItemField::Get(unsigned char *value, size_t &length, const Fish *bf) const
 
 void CItemField::Get(StringX &value, const Fish *bf) const
 {
-  // Sanity check: length is 0 iff data ptr is NULL
-  ASSERT((m_Length == 0 && m_Data == NULL) ||
-         (m_Length > 0 && m_Data != NULL && m_Length % sizeof(TCHAR) == 0));
+  // Sanity check: length is 0 iff data ptr is nullptr
+  ASSERT((m_Length == 0 && m_Data == nullptr) ||
+         (m_Length > 0 && m_Data != nullptr && m_Length % sizeof(TCHAR) == 0));
 
   if (m_Length == 0) {
     value = _T("");

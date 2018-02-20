@@ -132,10 +132,10 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   pSAX2Parser->setContentHandler(pSAX2Handler);
   pSAX2Parser->setErrorHandler(pSAX2Handler);
 
-  pSAX2Handler->SetVariables(m_bValidation ? NULL : m_pXMLcore, m_bValidation,
+  pSAX2Handler->SetVariables(m_bValidation ? nullptr : m_pXMLcore, m_bValidation,
                              ImportedPrefix, m_delimiter, bImportPSWDsOnly,
-                             m_bValidation ? NULL : m_pPossible_Aliases,
-                             m_bValidation ? NULL : m_pPossible_Shortcuts,
+                             m_bValidation ? nullptr : m_pPossible_Aliases,
+                             m_bValidation ? nullptr : m_pPossible_Shortcuts,
                              m_pmulticmds, m_prpt);
   if (!m_bValidation) {
     b_into_empty = m_pXMLcore->GetNumEntries() == 0;

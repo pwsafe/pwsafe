@@ -54,7 +54,7 @@ extern size_t _readcbc(FILE *fp, unsigned char * &buffer,
                        size_t &buffer_len,
                        unsigned char &type, Fish *Algorithm,
                        unsigned char *cbcbuffer,
-                       const unsigned char *TERMINAL_BLOCK = NULL,
+                       const unsigned char *TERMINAL_BLOCK = nullptr,
                        ulong64 file_len = 0);
 
 // typeless version for V4 content (caller pre-allocates buffer)

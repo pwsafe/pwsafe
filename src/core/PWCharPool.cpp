@@ -154,7 +154,7 @@ CPasswordCharPool::CPasswordCharPool(const PWPolicy &policy)
 
 CPasswordCharPool::~CPasswordCharPool()
 {
-  if (m_char_arrays[SYMBOL] != NULL &&
+  if (m_char_arrays[SYMBOL] != nullptr &&
       m_char_arrays[SYMBOL] != std_symbol_chars &&
       m_char_arrays[SYMBOL] != easyvision_symbol_chars)
     free(const_cast<charT*>(m_char_arrays[SYMBOL]));

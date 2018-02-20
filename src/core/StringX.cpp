@@ -48,7 +48,7 @@ template<class T> void ToUpper(T &s)
 template<class T> T &Trim(T &s, const TCHAR *set)
 {
   const TCHAR *ws = _T(" \t\r\n");
-  const TCHAR *tset = (set == NULL) ? ws : set;
+  const TCHAR *tset = (set == nullptr) ? ws : set;
 
   typename T::size_type b = s.find_first_not_of(tset);
   if (b == T::npos) {
@@ -64,7 +64,7 @@ template<class T> T &Trim(T &s, const TCHAR *set)
 template<class T> T &TrimRight(T &s, const TCHAR *set)
 {
   const TCHAR *ws = _T(" \t\r\n");
-  const TCHAR *tset = (set == NULL) ? ws : set;
+  const TCHAR *tset = (set == nullptr) ? ws : set;
 
   typename T::size_type e = s.find_last_not_of(tset);
   if (e == T::npos) {
@@ -79,7 +79,7 @@ template<class T> T &TrimRight(T &s, const TCHAR *set)
 template<class T> T &TrimLeft(T &s, const TCHAR *set)
 {
   const TCHAR *ws = _T(" \t\r\n");
-  const TCHAR *tset = (set == NULL) ? ws : set;
+  const TCHAR *tset = (set == nullptr) ? ws : set;
 
   typename T::size_type b = s.find_first_not_of(tset);
   if (b == T::npos) {

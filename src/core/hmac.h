@@ -42,7 +42,7 @@ public:
   HMAC(const unsigned char *key, unsigned long keylen)
     : HMAC_BASE(), Hash(0)
   {
-    ASSERT(key != NULL);
+    ASSERT(key != nullptr);
     
     memset(K, 0, sizeof(K));
     Init(key, keylen);
@@ -74,12 +74,12 @@ public:
 
   unsigned int GetBlockSize() const {return BLOCKSIZE;}
   unsigned int GetHashLen() const {return HASHLEN;}
-  bool IsInited() const {return Hash != NULL;}
+  bool IsInited() const {return Hash != nullptr;}
 
   void Init(const unsigned char *key, unsigned long keylen)
   {
-    ASSERT(key != NULL);
-    ASSERT(Hash == NULL);
+    ASSERT(key != nullptr);
+    ASSERT(Hash == nullptr);
     Hash = new H; // to ensure state's cleared.
 
     if (keylen > BLOCKSIZE) {
@@ -100,18 +100,18 @@ public:
 
   void Update(const unsigned char *in, unsigned long inlen)
   {
-    ASSERT(Hash != NULL);
+    ASSERT(Hash != nullptr);
     Hash->Update(in, inlen);
   }
 
   void Final(unsigned char digest[HASHLEN])
   {
     unsigned char d[HASHLEN];
-    ASSERT(Hash != NULL);
+    ASSERT(Hash != nullptr);
 
     Hash->Final(d);
     delete(Hash);
-    Hash = NULL;
+    Hash = nullptr;
     unsigned char k_opad[BLOCKSIZE];
     for (unsigned int i = 0; i < BLOCKSIZE; i++)
       k_opad[i] = K[i] ^ 0x5c;

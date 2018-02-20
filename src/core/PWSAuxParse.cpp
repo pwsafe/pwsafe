@@ -87,8 +87,8 @@ bool PWSAuxParse::GetEffectiveValues(const CItemData *pci, const CItemData *pbci
   // The one place to get the values needed for AutoType & RunCmd based on entry type
 
   if (pci->IsDependent()) {
-    ASSERT(pbci != NULL);
-    if (pbci == NULL)
+    ASSERT(pbci != nullptr);
+    if (pbci == nullptr)
       return false;
   }
 
@@ -125,8 +125,8 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
                                bAutoType, sxAutotype, 
                                serrmsg, st_column);
 
-  // if called with NULL ci, then we just parse to validate
-  if (uierr > 0 || pci == NULL) {
+  // if called with nullptr ci, then we just parse to validate
+  if (uierr > 0 || pci == nullptr) {
     v_rctokens.clear();
     return sxretval;
   }
@@ -584,7 +584,7 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
                                        const PWScore &core,
                                        std::vector<size_t> &vactionverboffsets)
 {
-  const CItemData *pbci(NULL);
+  const CItemData *pbci(nullptr);
   StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
   if (ci.IsDependent()) {
