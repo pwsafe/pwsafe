@@ -19,7 +19,7 @@
 struct st_run_impl {
 };
 
-static st_run_impl *run_impl = NULL;
+static st_run_impl *run_impl = nullptr;
 #endif /* 0 */
 
 PWSRun::PWSRun()
@@ -32,7 +32,7 @@ PWSRun::~PWSRun()
 
 bool PWSRun::isValid() const
 {
-  return (pImpl != NULL);
+  return (pImpl != nullptr);
 }
 
 void PWSRun::Set(void *) const

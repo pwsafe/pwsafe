@@ -36,7 +36,7 @@ stringT pws_os::GetMediaType(const stringT &sfilename)
   stringT command = _T("/usr/bin/file -b --mime-type '") + sfilename + _T("'");
 
   // need to convert command to char *
-  size_t clen = pws_os::wcstombs(NULL, 0, command.c_str(), command.length());
+  size_t clen = pws_os::wcstombs(nullptr, 0, command.c_str(), command.length());
   if (clen <= 0)
     return _T("unknown");
   char *cmd = new char[clen+1];
@@ -46,7 +46,7 @@ stringT pws_os::GetMediaType(const stringT &sfilename)
   FILE *pf = popen(cmd, "r");
   delete[] cmd;
   char pret[64];
-  if (fgets(pret, sizeof(pret), pf) == NULL) {
+  if (fgets(pret, sizeof(pret), pf) == nullptr) {
     pclose(pf);
     return _T("unknown");
   }

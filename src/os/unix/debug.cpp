@@ -32,7 +32,7 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   assert(static_cast<int>(num_required) == num_written+1);
   wcbuffer[num_required-1] = L'\0';
 
-  size_t N = wcstombs(NULL, wcbuffer, 0) + 1;
+  size_t N = wcstombs(nullptr, wcbuffer, 0) + 1;
   char *szbuffer = new char[N];
   wcstombs(szbuffer, wcbuffer, N);
   delete[] wcbuffer;
@@ -48,7 +48,7 @@ void pws_os::Trace0(LPCTSTR lpszFormat)
 {
   openlog("pwsafe:", LOG_PID|LOG_PERROR, LOG_USER);
 
-  size_t N = wcstombs(NULL, lpszFormat, 0) + 1;
+  size_t N = wcstombs(nullptr, lpszFormat, 0) + 1;
   char *szbuffer = new char[N];
   wcstombs(szbuffer, lpszFormat, N);
 

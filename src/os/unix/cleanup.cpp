@@ -33,7 +33,7 @@ void pws_os::install_cleanup_handler(pws_os::handler_t h, void *p)
   act.sa_flags = 0;
   sigemptyset(&act.sa_mask);
   for (size_t i = 0; i < sizeof(siglist)/sizeof(siglist[0]); i++)
-    sigaction(siglist[i], &act, NULL);
+    sigaction(siglist[i], &act, nullptr);
 }
 
 void pws_os::uninstall_cleanup_handler()
@@ -47,5 +47,5 @@ void pws_os::uninstall_cleanup_handler()
   act.sa_flags = 0;
   sigemptyset(&act.sa_mask);
   for (size_t i = 0; i < sizeof(siglist)/sizeof(siglist[0]); i++)
-    sigaction(siglist[i], &act, NULL);
+    sigaction(siglist[i], &act, nullptr);
 }
