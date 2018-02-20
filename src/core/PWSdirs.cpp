@@ -83,7 +83,7 @@ stringT PWSdirs::GetHelpDir()
 {
   stringT retval(pws_os::getenv("U3_DEVICE_EXEC_PATH", true));
   if (retval.empty()) {
-    retval = GetOurExecDir();
+    retval = pws_os::gethelpdir();
   }
   return retval;
 }
