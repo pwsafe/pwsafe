@@ -122,11 +122,11 @@ class AddEditPropSheet: public wxPropertySheetDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  enum AddOrEdit {ADD, EDIT, VIEW}; // to tweak UI, mainly
+  enum class SheetType {ADD, EDIT, VIEW}; // to tweak UI, mainly
   /// Constructor
   // item is nullptr for ADD, otherwise its values are retrieved and displayed
   AddEditPropSheet(wxWindow* parent, PWScore &core,
-                   AddOrEdit type, const CItemData *item = nullptr,  UIInterFace* ui = 0,
+                   SheetType type, const CItemData *item = nullptr,  UIInterFace* ui = 0,
                    const wxString& selectedGroup = wxEmptyString,
                    wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME,
                    const wxString& caption = SYMBOL_AUTOPROPSHEET_TITLE,
@@ -354,7 +354,7 @@ private:
   UIInterFace *m_ui;
   wxString m_selectedGroup;  //Group title in tree view user right-clicked on to add an item
 
-  AddOrEdit m_type;
+  SheetType m_type;
   CItemData m_item;
   void ItemFieldsToPropSheet();
   void SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift);
