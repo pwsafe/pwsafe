@@ -94,7 +94,7 @@ END_EVENT_TABLE()
  */
 
 AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
-                                   AddOrEdit type, const CItemData *item, UIInterFace* ui,
+                                   SheetType type, const CItemData *item, UIInterFace* ui,
                                    const wxString& selectedGroup,
                                    wxWindowID id, const wxString& caption,
                                    const wxPoint& pos, const wxSize& size,
@@ -109,13 +109,13 @@ AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
   wxString dlgTitle;
   if (caption == SYMBOL_AUTOPROPSHEET_TITLE) {
     switch(m_type) {
-      case ADD:
+      case SheetType::ADD:
         dlgTitle = SYMBOL_ADDPROPSHEET_TITLE;
         break;
-      case EDIT:
+      case SheetType::EDIT:
         dlgTitle = SYMBOL_EDITPROPSHEET_TITLE;
         break;
-      case VIEW:
+      case SheetType::VIEW:
         dlgTitle = SYMBOL_VIEWPROPSHEET_TITLE;
         break;
       default:
@@ -136,7 +136,7 @@ bool AddEditPropSheet::Create( wxWindow* parent, wxWindowID id, const wxString& 
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
 
-  int flags = (m_type == VIEW) ? (wxCLOSE|wxHELP) : (wxOK|wxCANCEL|wxHELP);
+  int flags = (m_type == SheetType::VIEW) ? (wxCLOSE|wxHELP) : (wxOK|wxCANCEL|wxHELP);
   CreateButtons(flags);
   CreateControls();
   Centre();
@@ -885,7 +885,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
     m_groupCtrl->Append(sviter->c_str());
 
   // select relevant group
-  const StringX group = (m_type == ADD? tostringx(m_selectedGroup): m_item.GetGroup());
+  const StringX group = (m_type == SheetType::ADD ? tostringx(m_selectedGroup): m_item.GetGroup());
   if (!group.empty()) {
     bool foundGroup = false;
     for (size_t igrp = 0; igrp < svec.size(); igrp++) {
@@ -935,7 +935,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
 #endif
   // XXX since PWSRun not yet implemented in Linux, Send button's always disabled:
   sendBtn->Enable(false);
-  m_notes = (m_type != ADD && m_isNotesHidden) ?
+  m_notes = (m_type != SheetType::ADD && m_isNotesHidden) ?
     wxString(_("[Notes hidden - click here to display]")) : towxstring(m_item.GetNotes(TCHAR('\n')));
   // Following has no effect under Linux :-(
   long style = m_noteTX->GetExtraStyle();
@@ -955,7 +955,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
 
   // History: If we're adding, use preferences, otherwise,
   // get values from m_item
-  if (m_type == ADD) {
+  if (m_type == SheetType::ADD) {
     // Get history preferences
     m_keepPWHist = prefs->GetPref(PWSprefs::SavePasswordHistory);
     m_maxPWHist = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
@@ -1183,7 +1183,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
     }
 
     switch (m_type) {
-    case EDIT: {
+    case SheetType::EDIT: {
       bool bIsModified, bIsPSWDModified;
       short lastDCA, lastShiftDCA;
       const PWSprefs *prefs = PWSprefs::GetInstance();
@@ -1203,7 +1203,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       // isn't marked as modified. Relies on fact that
       // Note field can't be modified w/o first getting focus
       // and that we turn off m_isNotesHidden when that happens.
-      if (m_type != ADD && m_isNotesHidden)
+      if (m_type != SheetType::ADD && m_isNotesHidden)
         m_notes = m_item.GetNotes(TCHAR('\n')).c_str();
 
       // Create a new PWHistory string based on settings in this dialog, and compare it
@@ -1354,7 +1354,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
     }
       break;
 
-    case ADD:
+    case SheetType::ADD:
       m_item.SetGroup(tostringx(group));
       m_item.SetTitle(tostringx(m_title));
       m_item.SetUser(m_user.empty() ?
@@ -1418,7 +1418,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         m_item.SetXTime(m_tttXTime);
       }
       break;
-    case VIEW:
+    case SheetType::VIEW:
       // No Update
       break;
     default:
@@ -1581,7 +1581,7 @@ void AddEditPropSheet::OnUseHexCBClick( wxCommandEvent& /* evt */ )
 
 void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& /* evt */ )
 {
-  if (m_type != ADD && m_isNotesHidden) {
+  if (m_type != SheetType::ADD && m_isNotesHidden) {
     m_isNotesHidden = false;
     m_notes = m_item.GetNotes(TCHAR('\n')).c_str();
     m_noteTX->ChangeValue(m_notes);
