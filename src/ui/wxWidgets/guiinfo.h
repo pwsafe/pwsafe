@@ -21,33 +21,40 @@ class PWSGrid;
 class string_or_uuid
 {
   public:
-    typedef enum { ITEM_NONE = 0, ITEM_NORMAL, ITEM_GROUP } ItemType;
+    enum class ItemType { NONE, NORMAL, GROUP };
     
-    string_or_uuid() : m_type(ITEM_NONE) {}
+    string_or_uuid() : m_type(ItemType::NONE) {}
       
     ItemType Type() const { return m_type; }
-    void Clear() { m_type = ITEM_NONE; }
+    
+    void Clear() { m_type = ItemType::NONE; }
 
     string_or_uuid& operator=(const wxString& str) {
       m_str = str;
-      m_type  = ITEM_GROUP;
+      m_type  = ItemType::GROUP;
       return *this;
     }
       
     string_or_uuid& operator=(const pws_os::CUUID &uu) {
       m_uu = uu;
-      m_type  = ITEM_NORMAL;
+      m_type  = ItemType::NORMAL;
       return *this;
     }
 
-    operator wxString () const { wxASSERT(m_type == ITEM_GROUP); return m_str; }
-    operator const pws_os::CUUID() const
-    { wxASSERT(m_type == ITEM_NORMAL); return pws_os::CUUID(m_uu); }
+    operator wxString () const { 
+      wxASSERT(m_type == ItemType::GROUP);
+      return m_str;
+    }
+    
+    operator const pws_os::CUUID() const { 
+      wxASSERT(m_type == ItemType::NORMAL);
+      return pws_os::CUUID(m_uu);
+    }
 
   private:
-    wxString     m_str;
-    pws_os::CUUID     m_uu;
-    ItemType     m_type;
+    wxString       m_str;
+    pws_os::CUUID  m_uu;
+    ItemType       m_type;
 };
 
 class GUIInfo
@@ -69,14 +76,13 @@ class GUIInfo
 
   private:
 
-    string_or_uuid     m_treeTop;
-    string_or_uuid     m_treeSelection;
+    string_or_uuid m_treeTop;
+    string_or_uuid m_treeSelection;
 
-    wxArrayString      m_expanded;                      //expanded elements in treeview
+    wxArrayString  m_expanded;                      //expanded elements in treeview
 
-    pws_os::CUUID           m_gridTop;                       //top element in gridview
-    pws_os::CUUID           m_gridSelection;                 //selected elements, only one per view
-
+    pws_os::CUUID  m_gridTop;                       //top element in gridview
+    pws_os::CUUID  m_gridSelection;                 //selected elements, only one per view
 };
 
 #endif
