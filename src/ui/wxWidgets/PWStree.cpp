@@ -109,22 +109,33 @@ const wchar_t GROUP_SEP = L'.';
 class PWTreeItemData : public wxTreeItemData
 {
 public:
-  PWTreeItemData(): m_state(UNMODIFIED)
-  { pws_os::CUUID::NullUUID().GetARep(m_uuid); }
-  PWTreeItemData(bool): m_state(ADDED)
-  { pws_os::CUUID::NullUUID().GetARep(m_uuid); }
-  PWTreeItemData(const wxString& oldPath): m_state(EDITED), m_oldPath(oldPath)
-  { pws_os::CUUID::NullUUID().GetARep(m_uuid); }
-  PWTreeItemData(const CItemData &item): m_state(UNMODIFIED)
+  PWTreeItemData(): m_state(ItemState::UNMODIFIED)
+  { 
+    pws_os::CUUID::NullUUID().GetARep(m_uuid);
+  }
+  
+  PWTreeItemData(bool): m_state(ItemState::ADDED)
+  { 
+    pws_os::CUUID::NullUUID().GetARep(m_uuid);
+  }
+  
+  PWTreeItemData(const wxString& oldPath): m_state(ItemState::EDITED), m_oldPath(oldPath)
+  { 
+    pws_os::CUUID::NullUUID().GetARep(m_uuid);
+  }
+  
+  PWTreeItemData(const CItemData &item): m_state(ItemState::UNMODIFIED)
   {
     item.GetUUID(m_uuid);
   }
-  const uuid_array_t &GetUUID() const {return m_uuid;}
-  bool BeingAdded() const {return m_state == ADDED; }
-  bool BeingEdited() const {return m_state == EDITED; }
+  
+  const uuid_array_t &GetUUID() const { return m_uuid; }
+  bool BeingAdded() const { return m_state == ItemState::ADDED; }
+  bool BeingEdited() const { return m_state == ItemState::EDITED; }
   wxString GetOldPath() const { return m_oldPath; }
+  
 private:
-  typedef enum { UNMODIFIED, ADDED, EDITED } ItemState;
+  enum class ItemState { UNMODIFIED, ADDED, EDITED };
 
   uuid_array_t m_uuid;
   ItemState    m_state;
