@@ -65,7 +65,7 @@ class SyncWizardPage: public wxWizardPageSimple
 {
 protected:
   SyncData* m_syncData;
-  typedef enum {BACKWARD, FORWARD} PageDirection;
+  enum class PageDirection { BACKWARD, FORWARD };
   wxBoxSizer* m_pageSizer;
 
 public:
@@ -75,9 +75,9 @@ public:
   void OnWizardPageChanging(wxWizardEvent& evt);
   void OnWizardPageChanged(wxWizardEvent& evt);
 
-  virtual void OnPageEnter(PageDirection /*dir*/) {}
+  virtual void OnPageEnter(PageDirection /*direction*/) {}
   //return false to veto the page change
-  virtual bool OnPageLeave(PageDirection /*dir*/) {return true;}
+  virtual bool OnPageLeave(PageDirection /*direction*/) { return true; }
 
   void SetChildWindowText(unsigned id, const wxString& str);
 
@@ -321,7 +321,7 @@ void SyncWizardPage::OnWizardPageChanging(wxWizardEvent& evt)
   SyncWizardPage* page = wxDynamicCast(evt.GetPage(), SyncWizardPage);
   wxASSERT_MSG(page, wxT("Sync wizard page not derived from SyncWizardPage class"));
 
-  if (!page->OnPageLeave(evt.GetDirection()? FORWARD: BACKWARD))
+  if (!page->OnPageLeave(evt.GetDirection() ? PageDirection::FORWARD : PageDirection::BACKWARD))
     evt.Veto();
 
   //must always do this, to let the wizard see the event as well
@@ -333,7 +333,7 @@ void SyncWizardPage::OnWizardPageChanged(wxWizardEvent& evt)
   SyncWizardPage* page = wxDynamicCast(evt.GetPage(), SyncWizardPage);
   wxASSERT_MSG(page, wxT("Sync wizard page not derived from SyncWizardPage class"));
 
-  page->OnPageEnter(evt.GetDirection()? FORWARD: BACKWARD);
+  page->OnPageEnter(evt.GetDirection() ? PageDirection::FORWARD : PageDirection::BACKWARD);
 
   //must always do this, to let the wizard see the event as well
   evt.Skip();
@@ -388,9 +388,9 @@ DbSelectionPage::DbSelectionPage(wxWizard* parent, SyncData* data):
   SetSizerAndFit(sizer);
 }
 
-bool DbSelectionPage::OnPageLeave(PageDirection dir)
+bool DbSelectionPage::OnPageLeave(PageDirection direction)
 {
-  return dir == BACKWARD || m_panel->DoValidation();
+  return (direction == PageDirection::BACKWARD) || m_panel->DoValidation();
 }
 
 void DbSelectionPage::SaveData(SyncData* data)
@@ -413,9 +413,9 @@ SyncFieldSelectionPage::SyncFieldSelectionPage(wxWizard* parent, SyncData* data)
   SetSizerAndFit(sizer);
 }
 
-bool SyncFieldSelectionPage::OnPageLeave(PageDirection dir)
+bool SyncFieldSelectionPage::OnPageLeave(PageDirection direction)
 {
-  return dir == BACKWARD || m_panel->DoValidation();
+  return (direction == PageDirection::BACKWARD) || m_panel->DoValidation();
 }
 
 void SyncFieldSelectionPage::SaveData(SyncData* data)
@@ -460,9 +460,9 @@ SyncOptionsSummaryPage::SyncOptionsSummaryPage(wxWizard* parent, SyncData* data)
   SetSizerAndFit(sizer);
 }
 
-void SyncOptionsSummaryPage::OnPageEnter(PageDirection dir)
+void SyncOptionsSummaryPage::OnPageEnter(PageDirection direction)
 {
-  if (dir == BACKWARD)
+  if (direction == PageDirection::BACKWARD)
     return;
 
   m_updatedFieldsGrid->Clear(true);
@@ -546,9 +546,9 @@ void SyncStatusPage::SetHeaderText(const wxString& str)
   SetChildWindowText(ID_HEADER_TXT, str);
 }
 
-void SyncStatusPage::OnPageEnter(PageDirection dir)
+void SyncStatusPage::OnPageEnter(PageDirection direction)
 {
-  if (dir == FORWARD) {
+  if (direction == PageDirection::FORWARD) {
     //we came here from the previous page
 
     FindWindow(ID_SHOW_REPORT)->Hide();
