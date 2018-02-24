@@ -34,7 +34,7 @@
 
 static bool SafeCompare(const TCHAR *v1, const TCHAR *v2)
 {
-  return (v1 != NULL && v2 != NULL && stringT(v1) == v2);
+  return (v1 != nullptr && v2 != nullptr && stringT(v1) == v2);
 }
 
 CheckVersion::CheckStatus

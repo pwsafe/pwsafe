@@ -275,7 +275,7 @@ public:
   bool HasAttRef() const                   { return IsFieldSet(ATTREF);    }
 
   void SerializePlainText(std::vector<char> &v,
-                          const CItemData *pcibase = NULL) const;
+                          const CItemData *pcibase = nullptr) const;
   bool DeSerializePlainText(const std::vector<char> &v);
 
   EntryType GetEntryType() const {return m_entrytype;}

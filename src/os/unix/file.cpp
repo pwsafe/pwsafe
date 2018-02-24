@@ -40,7 +40,7 @@ bool pws_os::FileExists(const stringT &filename)
 {
   struct stat statbuf;
   int status;
-  size_t N = wcstombs(NULL, filename.c_str(), 0) + 1;
+  size_t N = wcstombs(nullptr, filename.c_str(), 0) + 1;
   char *fn = new char[N];
   wcstombs(fn, filename.c_str(), N);
   status = ::stat(fn, &statbuf);
@@ -52,7 +52,7 @@ bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
 {
   bool retval;
   bReadOnly = false;
-  size_t N = wcstombs(NULL, filename.c_str(), 0) + 1;
+  size_t N = wcstombs(nullptr, filename.c_str(), 0) + 1;
   char *fn = new char[N];
   wcstombs(fn, filename.c_str(), N);
   retval = (::access(fn, R_OK) == 0);
@@ -66,10 +66,10 @@ bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
 bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
 {
   int status;
-  size_t oldN = wcstombs(NULL, oldname.c_str(), 0) + 1;
+  size_t oldN = wcstombs(nullptr, oldname.c_str(), 0) + 1;
   char *oldfn = new char[oldN];
   wcstombs(oldfn, oldname.c_str(), oldN);
-  size_t newN = wcstombs(NULL, newname.c_str(), 0) + 1;
+  size_t newN = wcstombs(nullptr, newname.c_str(), 0) + 1;
   char *newfn = new char[newN];
   wcstombs(newfn, newname.c_str(), newN);
   status = ::rename(oldfn, newfn);
@@ -80,13 +80,13 @@ bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
 
 bool pws_os::CopyAFile(const stringT &from, const stringT &to)
 {
-  const char *szfrom = NULL;
-  const char *szto = NULL;
+  const char *szfrom = nullptr;
+  const char *szto = nullptr;
   bool retval = false;
-  size_t fromsize = wcstombs(NULL, from.c_str(), 0) + 1;
+  size_t fromsize = wcstombs(nullptr, from.c_str(), 0) + 1;
   szfrom = new char[fromsize];
   wcstombs(const_cast<char *>(szfrom), from.c_str(), fromsize);
-  size_t tosize = wcstombs(NULL, to.c_str(), 0) + 1;
+  size_t tosize = wcstombs(nullptr, to.c_str(), 0) + 1;
   assert(tosize > 0);
   szto = new char[tosize];
   wcstombs(const_cast<char *>(szto), to.c_str(), tosize);
@@ -126,7 +126,7 @@ bool pws_os::CopyAFile(const stringT &from, const stringT &to)
 
 bool pws_os::DeleteAFile(const stringT &filename)
 {
-  size_t fnsize = wcstombs(NULL, filename.c_str(), 0) + 1;
+  size_t fnsize = wcstombs(nullptr, filename.c_str(), 0) + 1;
   assert(fnsize > 0);
   const char *szfn = new char[fnsize];
   wcstombs(const_cast<char *>(szfn), filename.c_str(), fnsize);
@@ -149,7 +149,7 @@ void pws_os::FindFiles(const stringT &filter, vector<stringT> &res)
     return;
   // filter is a full path with a filter file name.
   const char *szfilter;
-  size_t fltsize = wcstombs(NULL, filter.c_str(), 0) + 1;
+  size_t fltsize = wcstombs(nullptr, filter.c_str(), 0) + 1;
   assert(fltsize > 0);
   szfilter = new char[fltsize];
   wcstombs(const_cast<char *>(szfilter), filter.c_str(), fltsize);
@@ -172,7 +172,7 @@ void pws_os::FindFiles(const stringT &filter, vector<stringT> &res)
   if (nMatches <= 0)
     return;
   while (nMatches-- != 0) {
-    size_t wname_len = ::mbstowcs(NULL,
+    size_t wname_len = ::mbstowcs(nullptr,
                                   namelist[nMatches]->d_name,
                                   0) + 1;
     wchar_t *wname = new wchar_t[wname_len];
@@ -208,7 +208,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
   UNREFERENCED_PARAMETER(lockFileHandle);
   const stringT lock_filename = GetLockFileName(filename);
   bool retval = false;
-  size_t lfs = wcstombs(NULL, lock_filename.c_str(), lock_filename.length()) + 1;
+  size_t lfs = wcstombs(nullptr, lock_filename.c_str(), lock_filename.length()) + 1;
   char *lfn = new char[lfs];
   wcstombs(lfn, lock_filename.c_str(), lfs);
   int fh = open(lfn, (O_CREAT | O_EXCL | O_WRONLY),
@@ -269,7 +269,7 @@ void pws_os::UnlockFile(const stringT &filename, HANDLE &lockFileHandle)
 {
   UNREFERENCED_PARAMETER(lockFileHandle);
   stringT lock_filename = GetLockFileName(filename);
-  size_t lfs = wcstombs(NULL, lock_filename.c_str(), lock_filename.length()) + 1;
+  size_t lfs = wcstombs(nullptr, lock_filename.c_str(), lock_filename.length()) + 1;
   char *lfn = new char[lfs];
   wcstombs(lfn, lock_filename.c_str(), lfs);
   unlink(lfn);
@@ -284,14 +284,14 @@ bool pws_os::IsLockedFile(const stringT &filename)
 
 std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
 {
-  const char *cfname = NULL;
-  const char *cmode = NULL;
-  size_t fnsize = wcstombs(NULL, filename.c_str(), 0) + 1;
+  const char *cfname = nullptr;
+  const char *cmode = nullptr;
+  size_t fnsize = wcstombs(nullptr, filename.c_str(), 0) + 1;
   assert(fnsize > 1);
   cfname = new char[fnsize];
   wcstombs(const_cast<char *>(cfname), filename.c_str(), fnsize);
 
-  size_t modesize = wcstombs(NULL, mode, 0) + 1;
+  size_t modesize = wcstombs(nullptr, mode, 0) + 1;
   assert(modesize > 0);
   cmode = new char[modesize];
   wcstombs(const_cast<char *>(cmode), mode, modesize);
@@ -303,7 +303,7 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
 
 int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
 {
-  if (fd != NULL) {
+  if (fd != nullptr) {
     if (bIsWrite) {
       // Flush the data buffers
       fflush(fd);
@@ -316,7 +316,7 @@ int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
 
 ulong64 pws_os::fileLength(std::FILE *fp)
 {
-  if (fp == NULL)
+  if (fp == nullptr)
     return -1;
   int fd = fileno(fp);
   if (fd == -1)
@@ -331,7 +331,7 @@ bool pws_os::GetFileTimes(const stringT &filename,
 			time_t &ctime, time_t &mtime, time_t &atime)
 {
   struct stat info;
-  size_t N = wcstombs(NULL, filename.c_str(), 0) + 1;
+  size_t N = wcstombs(nullptr, filename.c_str(), 0) + 1;
   char *fn = new char[N];
   wcstombs(fn, filename.c_str(), N);
   int status = ::stat(fn, &info);

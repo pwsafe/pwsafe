@@ -89,7 +89,7 @@ PWSfileV4::PWSfileV4(const StringX &filename, RWmode mode, VERSION version)
     m_effectiveFileLength(0), m_nHashIters(MIN_HASH_ITERATIONS)
 {
   m_IV = m_ipthing;
-  m_terminal = NULL;
+  m_terminal = nullptr;
   memset(m_key, 0, KLEN);
   memset(m_ell, 0, KLEN);
   memset(m_nonce, 0, NONCELEN);
@@ -114,7 +114,7 @@ int PWSfileV4::Open(const StringX &passkey)
   }
 
   FOpen();
-  if (m_fd == NULL)
+  if (m_fd == nullptr)
     return CANT_OPEN_FILE;
 
   m_passkey = passkey;
@@ -149,7 +149,7 @@ int PWSfileV4::Close()
 {
   PWS_LOGIT;
 
-  if (m_fd == NULL)
+  if (m_fd == nullptr)
     return SUCCESS; // idempotent
 
   if (!m_hmac.IsInited()) {
@@ -193,7 +193,7 @@ int PWSfileV4::Close()
 
 int PWSfileV4::SanityCheck(FILE *stream)
 {
-  ASSERT(stream != NULL);
+  ASSERT(stream != nullptr);
 
   // Is file too small?
   const long min_file_length = 232; // pre + post, no hdr or records
@@ -212,10 +212,10 @@ int PWSfileV4::CheckPasskey(const StringX &filename,
   FILE *fd = a_fd;
   SHA256 H;
 
-  if (fd == NULL) {
+  if (fd == nullptr) {
     fd = pws_os::FOpen(filename.c_str(), _T("rb"));
   }
-  if (fd == NULL)
+  if (fd == nullptr)
     return CANT_OPEN_FILE;
 
   int retval = SanityCheck(fd);
@@ -223,9 +223,9 @@ int PWSfileV4::CheckPasskey(const StringX &filename,
     PWSfileV4 pv4(filename, Read, V40);
     pv4.m_fd = fd;
     retval = pv4.ParseKeyBlocks(passkey);
-    pv4.m_fd = NULL; // s.t. d'tor doesn't fclose()
+    pv4.m_fd = nullptr; // s.t. d'tor doesn't fclose()
   }
-  if (a_fd == NULL) // if we opened the file, we close it...
+  if (a_fd == nullptr) // if we opened the file, we close it...
     fclose(fd);
   return retval;
 }
@@ -257,14 +257,14 @@ size_t PWSfileV4::WriteCBC(unsigned char type, const unsigned char *data,
 
 int PWSfileV4::WriteRecord(const CItemData &item)
 {
-  ASSERT(m_fd != NULL);
+  ASSERT(m_fd != nullptr);
   ASSERT(m_curversion == V40);
   return item.Write(this);
 }
 
 int PWSfileV4::WriteRecord(const CItemAtt &att)
 {
-  ASSERT(m_fd != NULL);
+  ASSERT(m_fd != nullptr);
   ASSERT(m_curversion == V40);
   return att.Write(this);
 }
@@ -276,7 +276,7 @@ size_t PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
 {
   if (len == 0)
     return SUCCESS;
-  ASSERT(content != NULL);
+  ASSERT(content != nullptr);
 
   unsigned char IV[TwoFish::BLOCKSIZE];
   unsigned char EK[KLEN];
@@ -322,7 +322,7 @@ size_t PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
 size_t PWSfileV4::ReadContent(Fish *fish,  unsigned char *cbcbuffer,
                               unsigned char *&content, size_t clen)
 {
-  ASSERT(clen > 0 && fish != NULL && cbcbuffer != NULL);
+  ASSERT(clen > 0 && fish != nullptr && cbcbuffer != nullptr);
   // round up clen to nearest BS:
   const unsigned int BS = fish->GetBlockSize();
   size_t blen = (clen/BS + 1)*BS;
@@ -368,7 +368,7 @@ void PWSfileV4::RestoreState()
 int PWSfileV4::ReadRecord(CItemData &item)
 {
   int status;
-  ASSERT(m_fd != NULL);
+  ASSERT(m_fd != nullptr);
   ASSERT(m_curversion == V40);
   SaveState();
   unsigned fpos = unsigned(ftell(m_fd));
@@ -387,7 +387,7 @@ int PWSfileV4::ReadRecord(CItemData &item)
 
 int PWSfileV4::ReadRecord(CItemAtt &att)
 {
-  ASSERT(m_fd != NULL);
+  ASSERT(m_fd != nullptr);
   ASSERT(m_curversion == V40);
   if (unsigned(GetOffset()) < m_effectiveFileLength)
     return att.Read(this);
@@ -406,7 +406,7 @@ void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,
   */
   ASSERT(N >= MIN_HASH_ITERATIONS); // minimal value we're willing to use
   size_t passLen = 0;
-  unsigned char *pstr = NULL;
+  unsigned char *pstr = nullptr;
 
   HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> hmac;
   ConvertString(passkey, pstr, passLen);
@@ -692,9 +692,9 @@ int PWSfileV4::WriteHeader()
     PSWDPolicyMapIter iter;
     size_t totlen = 1; // 1 byte for num of policies
     for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
-      size_t polNameLen = pws_os::wcstombs(NULL, 0, iter->first.c_str(), iter->first.length());
+      size_t polNameLen = pws_os::wcstombs(nullptr, 0, iter->first.c_str(), iter->first.length());
       size_t symSetLen = ((iter->second.symbols.empty()) ?
-                          0 : pws_os::wcstombs(NULL, 0, iter->second.symbols.c_str(), iter->second.symbols.length()));
+                          0 : pws_os::wcstombs(nullptr, 0, iter->second.symbols.c_str(), iter->second.symbols.length()));
       totlen +=
         1 +                            // length of policy name
         polNameLen +
@@ -712,7 +712,7 @@ int PWSfileV4::WriteHeader()
     buf[0] = (unsigned char)numPols;
     unsigned char *buf_ptr = buf + 1;
     for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
-      size_t polNameLen = pws_os::wcstombs(NULL, 0, iter->first.c_str(), iter->first.length());
+      size_t polNameLen = pws_os::wcstombs(nullptr, 0, iter->first.c_str(), iter->first.length());
       if (polNameLen > 255) // too bad if too long...
         polNameLen = 255;
       *buf_ptr++ = (unsigned char)polNameLen;
@@ -730,7 +730,7 @@ int PWSfileV4::WriteHeader()
       if (pwpol.symbols.empty()) {
         *buf_ptr++ = 0;
       } else {
-        size_t symSetLen = pws_os::wcstombs(NULL, 0,
+        size_t symSetLen = pws_os::wcstombs(nullptr, 0,
                                           pwpol.symbols.c_str(), pwpol.symbols.length());
       if (symSetLen > 255) // too bad if too long...
         symSetLen = 255;
@@ -762,13 +762,13 @@ int PWSfileV4::WriteHeader()
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
-  if (m_hdr.m_yubi_sk != NULL) {
+  if (m_hdr.m_yubi_sk != nullptr) {
     numWritten = WriteCBC(HDR_YUBI_SK, m_hdr.m_yubi_sk, PWSfileHeader::YUBI_SK_LEN);
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
   // Write zero-length end-of-record type item
-  numWritten = WriteCBC(HDR_END, NULL, 0);
+  numWritten = WriteCBC(HDR_END, nullptr, 0);
   if (numWritten <= 0) { status = FAILURE; goto end; }
  end:
   if (status != SUCCESS)
@@ -980,7 +980,7 @@ int PWSfileV4::ReadHeader()
   unsigned char fieldType;
   StringX text;
   bool utf8status;
-  unsigned char *utf8 = NULL;
+  unsigned char *utf8 = nullptr;
   size_t utf8Len = 0;
 
   do {
@@ -1024,7 +1024,7 @@ int PWSfileV4::ReadHeader()
 
     case HDR_NDPREFS: /* Non-default user preferences */
       if (utf8Len != 0) {
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        if (utf8 != nullptr) utf8[utf8Len] = '\0';
         StringX pref;
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, pref);
         m_hdr.m_prefString = pref;
@@ -1035,7 +1035,7 @@ int PWSfileV4::ReadHeader()
       break;
 
     case HDR_DISPSTAT: /* Tree Display Status */
-      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      if (utf8 != nullptr) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
       for (StringX::iterator iter = text.begin(); iter != text.end(); iter++) {
         const TCHAR v = *iter;
@@ -1061,7 +1061,7 @@ int PWSfileV4::ReadHeader()
       break;
 
     case HDR_LASTUPDATEAPPLICATION: /* and by what */
-      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      if (utf8 != nullptr) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
       m_hdr.m_whatlastsaved = text;
       if (!utf8status)
@@ -1069,25 +1069,25 @@ int PWSfileV4::ReadHeader()
       break;
 
     case HDR_LASTUPDATEUSER:
-      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      if (utf8 != nullptr) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
       m_hdr.m_lastsavedby = text;
       break;
 
     case HDR_LASTUPDATEHOST:
-      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      if (utf8 != nullptr) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
       m_hdr.m_lastsavedon = text;
       break;
 
     case HDR_DBNAME:
-      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      if (utf8 != nullptr) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
       m_hdr.m_DB_Name = text;
       break;
 
     case HDR_DBDESC:
-      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      if (utf8 != nullptr) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
       m_hdr.m_DB_Description = text;
       break;
@@ -1098,7 +1098,7 @@ int PWSfileV4::ReadHeader()
       // Will be treated as an 'unknown header field' by the 'default' clause below
 #else
     case HDR_FILTERS:
-      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      if (utf8 != nullptr) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
       if (utf8Len > 0) {
         stringT strErrors;
@@ -1110,7 +1110,7 @@ int PWSfileV4::ReadHeader()
           Format(message, IDSC_MISSINGXSD, _T("pwsafe_filter.xsd"));
           LoadAString(message2, IDSC_FILTERSKEPT);
           message += stringT(_T("\n\n")) + message2;
-          if (m_pReporter != NULL)
+          if (m_pReporter != nullptr)
             (*m_pReporter)(message);
 
           // Treat it as an Unknown field!
@@ -1128,7 +1128,7 @@ int PWSfileV4::ReadHeader()
           // Notify user that filter won't be available
           stringT message;
           LoadAString(message, IDSC_CANTPROCESSDBFILTERS);
-          if (m_pReporter != NULL)
+          if (m_pReporter != nullptr)
             (*m_pReporter)(message);
 
           UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
@@ -1226,7 +1226,7 @@ int PWSfileV4::ReadHeader()
 
     case HDR_EMPTYGROUP:
       {
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        if (utf8 != nullptr) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
         if (utf8status) {
           m_vEmptyGroups.push_back(text);
@@ -1253,7 +1253,7 @@ int PWSfileV4::ReadHeader()
 #endif
       break;
     }
-    delete[] utf8; utf8 = NULL; utf8Len = 0;
+    delete[] utf8; utf8 = nullptr; utf8Len = 0;
   } while (fieldType != HDR_END);
 
   // Now sort it for when we compare.

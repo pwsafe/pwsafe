@@ -9,7 +9,7 @@
 /**
  * \file Linux-specific implementation of registry.h
  *
- * NULL, really, since registry's a Windows-ism
+ * no-op, really, since registry's a Windows-ism
  */
 
 #include "../typedefs.h"

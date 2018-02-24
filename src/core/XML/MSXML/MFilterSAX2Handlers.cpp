@@ -50,7 +50,7 @@ MFilterSAX2ErrorHandler::~MFilterSAX2ErrorHandler()
 
 long __stdcall MFilterSAX2ErrorHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
 {
-  *ppvObject = NULL;
+  *ppvObject = nullptr;
   if (riid == IID_IUnknown ||riid == __uuidof(ISAXContentHandler))
   {
     *ppvObject = static_cast<ISAXErrorHandler *>(this);
@@ -125,10 +125,10 @@ MFilterSAX2ContentHandler::MFilterSAX2ContentHandler()
 {
   m_refCnt = 0;
   m_sxElemContent = _T("");
-  m_pSchema_Version = NULL;
+  m_pSchema_Version = nullptr;
   m_iXMLVersion = -1;
   m_iSchemaVersion = -1;
-  m_pAsker = NULL;
+  m_pAsker = nullptr;
 }
 
 //  -----------------------------------------------------------------------
@@ -138,7 +138,7 @@ MFilterSAX2ContentHandler::~MFilterSAX2ContentHandler()
 
 long __stdcall MFilterSAX2ContentHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
 {
-  *ppvObject = NULL;
+  *ppvObject = nullptr;
   if (riid == IID_IUnknown ||riid == __uuidof(ISAXContentHandler)) {
     *ppvObject = static_cast<ISAXContentHandler *>(this);
   }
@@ -194,7 +194,7 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startElement(
 
   if (m_bValidation && _tcscmp(szCurElement, _T("filters")) == 0) {
     int iAttribs = 0;
-    if (m_pSchema_Version == NULL) {
+    if (m_pSchema_Version == nullptr) {
       LoadAString(m_strXMLErrors, IDSC_MISSING_SCHEMA_VER);
       return E_FAIL;
     }
@@ -285,7 +285,7 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::characters(
   m_sxElemContent += szData;
 
   delete [] szData;
-  szData = NULL;
+  szData = nullptr;
 
   return S_OK;
 }
@@ -335,7 +335,7 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     if (m_MapXMLFilters->find(fk) != m_MapXMLFilters->end()) {
       stringT question;
       Format(question, IDSC_FILTEREXISTS, cur_filter->fname.c_str());
-      if (m_pAsker == NULL || !(*m_pAsker)(question)) {
+      if (m_pAsker == nullptr || !(*m_pAsker)(question)) {
         m_MapXMLFilters->erase(fk);
       }
     }

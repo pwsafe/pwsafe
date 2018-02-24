@@ -17,15 +17,15 @@
 
 CUTF8Conv::~CUTF8Conv()
 {
-  if (m_utf8 != NULL) {
+  if (m_utf8 != nullptr) {
     trashMemory(m_utf8, m_utf8MaxLen * sizeof(m_utf8[0]));
     delete[] m_utf8;
   }
-  if (m_wc != NULL) {
+  if (m_wc != nullptr) {
     trashMemory(m_wc, m_wcMaxLen);
     delete[] m_wc;
   }
-  if (m_tmp != NULL) {
+  if (m_tmp != nullptr) {
     trashMemory(m_tmp, m_tmpMaxLen * sizeof(m_tmp[0]));
     delete[] m_tmp;
   }
@@ -46,7 +46,7 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
   wchar_t *wcPtr = const_cast<wchar_t *>(data.c_str());
   size_t wcLen = data.length()+1;
   // first get needed utf8 buffer size
-  size_t mbLen = pws_os::wcstombs(NULL, 0, wcPtr, wcLen);
+  size_t mbLen = pws_os::wcstombs(nullptr, 0, wcPtr, wcLen);
 
   if (mbLen == 0) { // uh-oh
     ASSERT(0);
@@ -55,7 +55,7 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
   }
   // Allocate buffer (if previous allocation was smaller)
   if (mbLen > m_utf8MaxLen) {
-    if (m_utf8 != NULL)
+    if (m_utf8 != nullptr)
       trashMemory(m_utf8, m_utf8MaxLen);
     delete[] m_utf8;
     m_utf8 = new unsigned char[mbLen];
@@ -86,10 +86,10 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
     return true;
   }
 
-  ASSERT(utf8 != NULL);
+  ASSERT(utf8 != nullptr);
 
   // first get needed wide char buffer size
-  size_t wcLen = pws_os::mbstowcs(NULL, 0,
+  size_t wcLen = pws_os::mbstowcs(nullptr, 0,
                                   reinterpret_cast<const char *>(utf8),
                                   size_t(-1), !m_cp_acp);
   if (wcLen == 0) { // uh-oh
@@ -101,7 +101,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
   }
   // Allocate buffer (if previous allocation was smaller)
   if (wcLen > m_wcMaxLen) {
-    if (m_wc != NULL)
+    if (m_wc != nullptr)
       trashMemory(m_wc, m_wcMaxLen);
     delete[] m_wc;
     m_wc = new wchar_t[wcLen];

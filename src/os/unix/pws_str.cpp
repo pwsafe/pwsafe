@@ -18,12 +18,12 @@
 
 int pws_os::wctoi(const wchar_t *s)
 {
-  return int(wcstol(s, NULL, 10));
+  return int(wcstol(s, nullptr, 10));
 }
 
 double pws_os::wctof(const wchar_t *s)
 {
-  return double(wcstold(s, NULL));
+  return double(wcstold(s, nullptr));
 }
 
 TCHAR* pws_os::pws_itot(int val, TCHAR* out, unsigned base)

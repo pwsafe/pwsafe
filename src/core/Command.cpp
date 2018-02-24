@@ -59,7 +59,7 @@ void Command::SaveDBInformation()
   // Currently only modified nodes are dealt with - could add any other DB information
   // at a later date if required
   // right predicate's only relevant for nested MultiCommands
-  if (!InMultiCommand() || (dynamic_cast<MultiCommands *>(this) != NULL)) {
+  if (!InMultiCommand() || (dynamic_cast<MultiCommands *>(this) != nullptr)) {
     // Only do this if executed outside a MultiCommand or it is the Multicommand itself
     // We could change an entry and so here is where we save DB information
     // just in case.  Currently only modified nodes.
@@ -73,7 +73,7 @@ void Command::RestoreDBInformation()
   // Currently only modified nodes are dealt with - could add any other DB information
   // at a later date if required
   // right predicate's only relevant for nested MultiCommands
-  if (!InMultiCommand() || (dynamic_cast<MultiCommands *>(this) != NULL)) {
+  if (!InMultiCommand() || (dynamic_cast<MultiCommands *>(this) != nullptr)) {
     // Get current modified nodes vector
     std::vector<StringX> vModifiedNodes = m_pcomInt->GetModifiedNodes();
 
@@ -134,7 +134,7 @@ int MultiCommands::Execute()
   std::vector<Command *>::iterator cmd_Iter;
 
   for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
-    if (*cmd_Iter != NULL && (*cmd_Iter)->IsEntryChangeType()) {
+    if (*cmd_Iter != nullptr && (*cmd_Iter)->IsEntryChangeType()) {
       // We could change an entry and so here is where we save DB information
       // just in case.  Currently only modified nodes.
       SaveDBInformation();
@@ -144,7 +144,7 @@ int MultiCommands::Execute()
 
   for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
     int rc(-1);
-    if (*cmd_Iter != NULL) {
+    if (*cmd_Iter != nullptr) {
       rc = (*cmd_Iter)->Execute();
 
       if ((*cmd_Iter)->WasDBChanged())
@@ -161,12 +161,12 @@ void MultiCommands::Undo()
   std::vector<Command *>::reverse_iterator cmd_rIter;
 
   for (cmd_rIter = m_vpcmds.rbegin(); cmd_rIter != m_vpcmds.rend(); cmd_rIter++) {
-    if (*cmd_rIter != NULL)
+    if (*cmd_rIter != nullptr)
       (*cmd_rIter)->Undo();
   }
 
   for (cmd_rIter = m_vpcmds.rbegin(); cmd_rIter != m_vpcmds.rend(); cmd_rIter++) {
-    if (*cmd_rIter != NULL && (*cmd_rIter)->IsEntryChangeType()) {
+    if (*cmd_rIter != nullptr && (*cmd_rIter)->IsEntryChangeType()) {
       // We could change an entry and so here is where we save DB information
       // just in case.  Currently only modified nodes.
       RestoreDBInformation();
@@ -177,7 +177,7 @@ void MultiCommands::Undo()
 
 void MultiCommands::Add(Command *pcmd)
 {
-  ASSERT(pcmd != NULL);
+  ASSERT(pcmd != nullptr);
   pcmd->SetInMultiCommand();
   m_vpcmds.push_back(pcmd);
 }
@@ -186,7 +186,7 @@ void MultiCommands::Insert(Command *pcmd, size_t ioffset)
 {
   // VERY INEFFICIENT - use sparingly to insert commands into the
   // multi-command vector
-  ASSERT(pcmd != NULL);
+  ASSERT(pcmd != nullptr);
   pcmd->SetInMultiCommand();
   m_vpcmds.insert(m_vpcmds.begin() + ioffset, pcmd);
 }
@@ -512,7 +512,7 @@ AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
 {
   m_CommandChangeType = DB;
 
-  if (att != NULL)
+  if (att != nullptr)
     m_att = *att;
 
   if (m_ci.IsDependent()) {
@@ -520,7 +520,7 @@ AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
     m_ci.SetBaseUUID(baseUUID);
   }
 
-  if (pcmd != NULL)
+  if (pcmd != nullptr)
     m_bNotifyGUI = pcmd->GetGUINotify();
 }
 
@@ -582,7 +582,7 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
 {
   m_CommandChangeType = DB;
 
-  if (pcmd != NULL) {
+  if (pcmd != nullptr) {
     m_bNotifyGUI = pcmd->GetGUINotify();
   }
 
@@ -675,7 +675,7 @@ void DeleteEntryCommand::Undo()
       if (m_ci.IsShortcutBase()) { // restore dependents
         for (std::vector<CItemData>::iterator iter = m_vdependents.begin();
              iter != m_vdependents.end(); iter++) {
-          pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL));
+          pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), nullptr));
         }
       } else if (m_ci.IsAliasBase()) {
         // Undeleting an alias base means making all the dependents refer to the alias
@@ -691,7 +691,7 @@ void DeleteEntryCommand::Undo()
           // out with the old...
           pmulticmds->Add(DeleteEntryCommand::Create(m_pcomInt, *iter, this));
           // in with the new!
-          pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL, this));
+          pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), nullptr, this));
         }
       } // IsAliasBase
     } // !IsDependent
@@ -1126,7 +1126,7 @@ void UpdatePasswordHistoryCommand::Undo()
 
 RenameGroupCommand::RenameGroupCommand(CommandInterface *pcomInt,
                                        const StringX sxOldPath, const StringX sxNewPath)
- : Command(pcomInt), m_sxOldPath(sxOldPath), m_sxNewPath(sxNewPath), m_pmulticmds(NULL)
+ : Command(pcomInt), m_sxOldPath(sxOldPath), m_sxNewPath(sxNewPath), m_pmulticmds(nullptr)
 {
   m_CommandChangeType = DB;
 }
@@ -1142,8 +1142,8 @@ int RenameGroupCommand::Execute()
   if (!m_pcomInt->IsReadOnly() && m_sxOldPath != m_sxNewPath) {
     SaveDBInformation();
 
-    if (m_pmulticmds == NULL) {
-      // Execute (will not be NULL if performing a Redo)
+    if (m_pmulticmds == nullptr) {
+      // Execute (will not be nullptr if performing a Redo)
       rc = m_pcomInt->DoRenameGroup(m_sxOldPath, m_sxNewPath, m_pmulticmds);
     }
 

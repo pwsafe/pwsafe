@@ -40,7 +40,7 @@ MFileSAX2ErrorHandler::~MFileSAX2ErrorHandler()
 
 long __stdcall MFileSAX2ErrorHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
 {
-  *ppvObject = NULL;
+  *ppvObject = nullptr;
   if (riid == IID_IUnknown || riid == __uuidof(ISAXContentHandler)) {
     *ppvObject = static_cast<ISAXErrorHandler *>(this);
   }
@@ -123,7 +123,7 @@ MFileSAX2ContentHandler::~MFileSAX2ContentHandler()
 
 long __stdcall MFileSAX2ContentHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
 {
-  *ppvObject = NULL;
+  *ppvObject = nullptr;
   if (riid == IID_IUnknown || riid == __uuidof(ISAXContentHandler)) {
     *ppvObject = static_cast<ISAXContentHandler *>(this);
   }
@@ -188,7 +188,7 @@ TCHAR * FileProcessAttributes(
       return _tcsdup(szValue);
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 //  ---------------------------------------------------------------------------
@@ -209,7 +209,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
     if (wcscmp(szCurElement, L"passwordsafe") == 0) {
       // Only interested in the delimiter
       TCHAR *lpValue = FileProcessAttributes(pAttributes, _T("delimiter"));
-      if (lpValue != NULL) {
+      if (lpValue != nullptr) {
         m_delimiter = lpValue[0];
         free(lpValue);
       }
@@ -228,13 +228,13 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
     case XLE_ENTRY:
       {
         TCHAR *lpValue1 = FileProcessAttributes(pAttributes, _T("normal"));
-        if (lpValue1 != NULL) {
+        if (lpValue1 != nullptr) {
           m_cur_entry->bforce_normal_entry =
                _ttoi(lpValue1) == 1 || _tcscmp(lpValue1, _T("true")) == 0;
           free(lpValue1);
         }
         TCHAR *lpValue2 = FileProcessAttributes(pAttributes, _T("id"));
-        if (lpValue2 != NULL) {
+        if (lpValue2 != nullptr) {
           m_cur_entry->id = _ttoi(lpValue2);
           free(lpValue2);
         }
@@ -262,7 +262,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::characters(
   m_sxElemContent += szData;
 
   delete [] szData;
-  szData = NULL;
+  szData = nullptr;
 
   return S_OK;
 }

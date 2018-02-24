@@ -56,7 +56,7 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
                              ostringstream &oss, bool bFile)
 {
   CUTF8Conv utf8conv;
-  const unsigned char *utf8 = NULL;
+  const unsigned char *utf8 = nullptr;
   size_t utf8Len = 0;
 
   const char *sztab4, *sztab5, *szendl;
@@ -184,7 +184,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
 
   CUTF8Conv utf8conv;
-  const unsigned char *utf8 = NULL;
+  const unsigned char *utf8 = nullptr;
   size_t utf8Len = 0;
   const char *sztab1, *sztab2, *sztab3, *sztab4, *szendl;
   if (bWithFormatting) {
@@ -572,7 +572,7 @@ int PWSFilters::WriteFilterXMLFile(const StringX &filename,
                                    const StringX &currentfile)
 {
   FILE *xmlfile = pws_os::FOpen(filename.c_str(), _T("wt"));
-  if (xmlfile == NULL)
+  if (xmlfile == nullptr)
     return PWScore::CANT_OPEN_FILE;
 
   coStringXStream oss;
@@ -606,7 +606,7 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
                                            const PWSfileHeader &hdr)
 {
   CUTF8Conv utf8conv;
-  const unsigned char *utf8 = NULL;
+  const unsigned char *utf8 = nullptr;
   size_t utf8Len = 0;
 
   ostringstream oss;
@@ -1059,7 +1059,7 @@ void PWSFilterManager::CreateGroups()
 
 void PWSFilterManager::SetFilterFindEntries(std::vector<pws_os::CUUID> *pvFoundUUIDs)
 {
-  if (pvFoundUUIDs == NULL)
+  if (pvFoundUUIDs == nullptr)
     m_vFltrFoundUUIDs.clear();
   else
     m_vFltrFoundUUIDs = *pvFoundUUIDs;

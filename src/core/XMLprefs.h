@@ -36,7 +36,7 @@ class CXMLprefs
   // Construction & Destruction
 public:
   CXMLprefs(const stringT &configFile)
-  : m_pXMLDoc(NULL), m_csConfigFile(configFile), m_bIsLocked(false) {}
+  : m_pXMLDoc(nullptr), m_csConfigFile(configFile), m_bIsLocked(false) {}
 
   ~CXMLprefs() { UnloadXML(); }
 
@@ -83,7 +83,7 @@ public:
 
 private:
   int SetPreference(const stringT &sPath, const stringT &sValue,
-                    std::vector<st_prefAttribs> *pvprefAttribs = NULL);
+                    std::vector<st_prefAttribs> *pvprefAttribs = nullptr);
 
   pugi::xml_document *m_pXMLDoc;
   stringT m_csConfigFile;

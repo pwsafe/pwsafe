@@ -38,7 +38,7 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
     ItemListConstIter pw_listpos = m_core.Find(*iter);
     if (pw_listpos == m_core.GetEntryEndIter()) {
       ruentrydata.string = L"";
-      ruentrydata.pci = NULL;
+      ruentrydata.pci = nullptr;
     } else {
       const CItemData &ci = m_core.GetEntry(pw_listpos);
       StringX group = ci.GetGroup();

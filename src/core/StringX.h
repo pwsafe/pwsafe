@@ -98,7 +98,7 @@ namespace S_Alloc
       pointer allocate(size_type n, const_pointer hint = 0) {
         UNREFERENCED_PARAMETER(hint);
         pointer p = static_cast<pointer>(std::malloc(n * sizeof(T)));
-        if (p == NULL)
+        if (p == nullptr)
           throw std::bad_alloc();
         return p;
       }
@@ -110,11 +110,11 @@ namespace S_Alloc
       // Note that C++ standard defines this function as:
       //   deallocate(pointer p, size_type n).
       void deallocate(pointer p, size_type n) {
-        // assert(p != NULL);
-        // The standard states that p must not be NULL. However, some
+        // assert(p != nullptr);
+        // The standard states that p must not be nullptr. However, some
         // STL implementations fail this requirement, so the check must
         // be made here.
-        if (p == NULL)
+        if (p == nullptr)
           return;
 
         if (n > 0) {
@@ -162,9 +162,9 @@ template<class T> int CompareNoCase(const T &s1, const T &s2);
 template<class T> int CompareCase(const T &s1, const T &s2);
 template<class T> void ToLower(T &s);
 template<class T> void ToUpper(T &s);
-template<class T> T &TrimRight(T &s, const TCHAR *set = NULL);
-template<class T> T &TrimLeft(T &s, const TCHAR *set = NULL);
-template<class T> T &Trim(T &s, const TCHAR *set = NULL);
+template<class T> T &TrimRight(T &s, const TCHAR *set = nullptr);
+template<class T> T &TrimLeft(T &s, const TCHAR *set = nullptr);
+template<class T> T &Trim(T &s, const TCHAR *set = nullptr);
 template<class T> void EmptyIfOnlyWhiteSpace(T &s);
 template<class T> int Replace(T &s, TCHAR from, TCHAR to);
 template<class T> int Replace(T &s, const T &from, const T &to);

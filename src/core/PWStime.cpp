@@ -26,7 +26,7 @@ using namespace std;
 
 PWStime::PWStime()
 {
-  setTime(std::time(NULL));
+  setTime(std::time(nullptr));
 }
 
 PWStime::PWStime(const PWStime &pwt)

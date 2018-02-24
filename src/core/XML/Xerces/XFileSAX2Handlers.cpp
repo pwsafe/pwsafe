@@ -75,7 +75,7 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
     if (XMLString::equals(qname, pwsafe)) {
       // Only interested in the delimiter attribute
       const XMLCh *szValue = attrs.getValue(_A2X("delimiter"));
-      if (szValue != NULL) {
+      if (szValue != nullptr) {
         m_delimiter = szValue[0];
       }
     }
@@ -93,12 +93,12 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
     case XLE_ENTRY:
       {
         const XMLCh *szValue1 = attrs.getValue(_A2X("normal"));
-        if (szValue1 != NULL) {
+        if (szValue1 != nullptr) {
           m_cur_entry->bforce_normal_entry =
                XMLString::equals(szValue1, _A2X("1")) || XMLString::equals(szValue1, _A2X("true"));
         }
         const XMLCh *szValue2 = attrs.getValue(_A2X("id"));
-        if (szValue2 != NULL) {
+        if (szValue2 != nullptr) {
           m_cur_entry->id = XMLString::parseInt(szValue2);
         }
       }

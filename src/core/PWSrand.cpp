@@ -11,11 +11,11 @@
 #include "PwsPlatform.h"
 #include "PWSrand.h"
 
-PWSrand *PWSrand::self = NULL;
+PWSrand *PWSrand::self = nullptr;
 
 PWSrand *PWSrand::GetInstance()
 {
-  if (self == NULL) {
+  if (self == nullptr) {
     self = new PWSrand;
   }
   return self;
@@ -24,7 +24,7 @@ PWSrand *PWSrand::GetInstance()
 void PWSrand::DeleteInstance()
 {
   delete self;
-  self = NULL;
+  self = nullptr;
 }
 
 PWSrand::PWSrand()
@@ -36,7 +36,7 @@ PWSrand::PWSrand()
   unsigned slen = 0;
   unsigned char *p;
 
-  pws_os::GetRandomSeed(NULL, slen);
+  pws_os::GetRandomSeed(nullptr, slen);
   p = new unsigned char[slen];
   pws_os::GetRandomSeed(p, slen);
   s.Update(p, slen);
@@ -50,7 +50,7 @@ PWSrand::~PWSrand()
 
 void PWSrand::AddEntropy(unsigned char *bytes, unsigned int numBytes)
 {
-  ASSERT(bytes != NULL);
+  ASSERT(bytes != nullptr);
 
   SHA256 s;
 
