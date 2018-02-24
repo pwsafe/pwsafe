@@ -1331,7 +1331,7 @@ namespace pugi
 	std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > PUGIXML_FUNCTION as_wide(const std::basic_string<char, std::char_traits<char>, std::allocator<char> >& str);
 #endif
 
-	// Memory allocation function interface; returns pointer to allocated memory or NULL on failure
+	// Memory allocation function interface; returns pointer to allocated memory or nullptr on failure
 	typedef void* (*allocation_function)(size_t size);
 	
 	// Memory deallocation function interface

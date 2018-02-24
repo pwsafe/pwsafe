@@ -34,23 +34,23 @@
 
 stringT pws_os::getenv(const char *env, bool is_path)
 {
-  assert(env != NULL);
+  assert(env != nullptr);
   stringT retval;
   char *value = std::getenv(env);
-  if (value != NULL) {
+  if (value != nullptr) {
     retval = pws_os::towc(value);
     if (is_path) {
       // make sure path has trailing '\'
       if (retval[retval.length()-1] != charT('/'))
         retval += _S("/");
     } // is_path
-  } // value != NULL
+  } // value != nullptr
   return retval;
 }
 
 void pws_os::setenv(const char *name, const char *value)
 {
-  ASSERT(name != NULL && value != NULL);
+  ASSERT(name != nullptr && value != nullptr);
   ::setenv(name, value, 1); // Shouldn't this be under std:: ?
 }
 
@@ -58,7 +58,7 @@ stringT pws_os::getusername()
 {
   stringT retval;
   struct passwd *pw_s = ::getpwuid(::getuid());
-  const char *user = (pw_s != NULL) ? pw_s->pw_name : "?";
+  const char *user = (pw_s != nullptr) ? pw_s->pw_name : "?";
   retval = pws_os::towc(user);
   return retval;
 }

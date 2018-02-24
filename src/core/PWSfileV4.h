@@ -28,8 +28,8 @@ public:
   
   static int CheckPasskey(const StringX &filename,
                           const StringX &passkey,
-                          FILE *a_fd = NULL,
-                          unsigned char *aPtag = NULL, uint32 *nIter = NULL);
+                          FILE *a_fd = nullptr,
+                          unsigned char *aPtag = nullptr, uint32 *nIter = nullptr);
   static bool IsV4x(const StringX &filename, const StringX &passkey, VERSION &v);
 
   PWSfileV4(const StringX &filename, RWmode mode, VERSION version);

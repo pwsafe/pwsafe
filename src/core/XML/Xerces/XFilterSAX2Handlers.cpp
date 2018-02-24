@@ -59,7 +59,7 @@ XFilterSAX2Handlers::XFilterSAX2Handlers()
   m_iXMLVersion = -1;
   m_iSchemaVersion = -1;
   m_bErrors = false;
-  m_pAsker = NULL;
+  m_pAsker = nullptr;
 }
 
 XFilterSAX2Handlers::~XFilterSAX2Handlers()
@@ -80,7 +80,7 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
   USES_XMLCH_STR
 
   if (m_bValidation && XMLString::equals(qname, _A2X("filters"))) {
-    if (m_pSchema_Version == NULL) {
+    if (m_pSchema_Version == nullptr) {
       LoadAString(m_strXMLErrors, IDSC_MISSING_SCHEMA_VER);
       const XMLCh *message = _W2X(m_strXMLErrors.c_str());
       SAXParseException(message, *m_pLocator);
@@ -95,7 +95,7 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
     }
 
     const XMLCh * xmlchValue = attrs.getValue(_A2X("version"));
-    if (xmlchValue != NULL) {
+    if (xmlchValue != nullptr) {
       m_iXMLVersion = XMLString::parseInt(xmlchValue);
     }
     return;
@@ -122,14 +122,14 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
     // Process the attributes we need.
     if (bfilter) {
       const XMLCh * xmlchValue = attrs.getValue(_A2X("filtername"));
-      if (xmlchValue != NULL) {
+      if (xmlchValue != nullptr) {
         cur_filter->fname = stringT(_X2ST(xmlchValue));
       }
     }
 
     if (bfilter_entry) {
       const XMLCh * xmlchValue = attrs.getValue(_A2X("active"));
-      if (xmlchValue != NULL && XMLString::equals(xmlchValue, _A2X("no")))
+      if (xmlchValue != nullptr && XMLString::equals(xmlchValue, _A2X("no")))
         cur_filterentry->bFilterActive = false;
     }
   }
@@ -207,7 +207,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     if (m_MapXMLFilters->find(fk) != m_MapXMLFilters->end()) {
       stringT question;
       Format(question, IDSC_FILTEREXISTS, cur_filter->fname.c_str());
-      if (m_pAsker == NULL || (bAddFilter = (*m_pAsker)(question)) == true) {
+      if (m_pAsker == nullptr || (bAddFilter = (*m_pAsker)(question)) == true) {
         m_MapXMLFilters->erase(fk);
       }
     }

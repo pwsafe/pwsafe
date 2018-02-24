@@ -16,13 +16,13 @@
 
 bool pws_os::mlock(void *p, size_t size)
 {
-  assert(p != NULL);
+  assert(p != nullptr);
   return ::mlock(p, size) == 0;
 }
 
 bool pws_os::munlock(void *p, size_t size)
 {
-  assert(p != NULL);
+  assert(p != nullptr);
   return ::munlock(p, size) == 0;
 }
 

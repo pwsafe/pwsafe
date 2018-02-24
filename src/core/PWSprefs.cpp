@@ -44,10 +44,10 @@ const stringT OldSubKey(_T("Counterpane Systems"));
 
 HANDLE s_cfglockFileHandle = INVALID_HANDLE_VALUE;
 
-PWSprefs *PWSprefs::self = NULL;
+PWSprefs *PWSprefs::self = nullptr;
 stringT PWSprefs::m_configfilename = _T(""); // may be set before singleton created
 PWSprefs::ConfigOption PWSprefs::m_ConfigOption = PWSprefs::CF_NONE;
-Reporter *PWSprefs::m_pReporter = NULL;
+Reporter *PWSprefs::m_pReporter = nullptr;
 bool PWSprefs::m_userSetCfgFile = false; // true iff user set config file (-g command line)
 
 // One place for the config filename:
@@ -212,7 +212,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
 
 PWSprefs *PWSprefs::GetInstance()
 {
-  if (self == NULL) {
+  if (self == nullptr) {
     self = new PWSprefs();
   }
   return self;
@@ -221,7 +221,7 @@ PWSprefs *PWSprefs::GetInstance()
 void PWSprefs::DeleteInstance()
 {
   delete self;
-  self = NULL;
+  self = nullptr;
   SysInfo::DeleteInstance();
 }
 
@@ -232,7 +232,7 @@ bool PWSprefs::SetConfigFile(const stringT &fn)
   return pws_os::FileExists(fn);
 }
 
-PWSprefs::PWSprefs() : m_pXML_Config(NULL)
+PWSprefs::PWSprefs() : m_pXML_Config(nullptr)
 {
   int i;
 
@@ -403,7 +403,7 @@ void PWSprefs::GetPrefPSSRect(long &top, long &bottom,
 
 int PWSprefs::GetMRUList(stringT *MRUFiles) const
 {
-  ASSERT(MRUFiles != NULL);
+  ASSERT(MRUFiles != nullptr);
 
   if (m_ConfigOption == CF_NONE || m_ConfigOption == CF_REGISTRY)
     return 0;
@@ -417,7 +417,7 @@ int PWSprefs::GetMRUList(stringT *MRUFiles) const
 
 int PWSprefs::SetMRUList(const stringT *MRUFiles, int n, int max_MRU)
 {
-  ASSERT(n == 0 || MRUFiles != NULL); // if n is zero, wx passes NULL
+  ASSERT(n == 0 || MRUFiles != nullptr); // if n is zero, wx passes nullptr
 
   if (m_ConfigOption == CF_NONE || m_ConfigOption == CF_REGISTRY ||
       m_ConfigOption == CF_FILE_RO)
@@ -1133,7 +1133,7 @@ void PWSprefs::InitializePreferences()
     // Doesn't exist but can we write to the directory?
     // Try and create the file (and delete afterwards if we succeeded)
     FILE *testfile = pws_os::FOpen(m_configfilename, _T("w"));
-    if (testfile != NULL) {
+    if (testfile != nullptr) {
       fclose(testfile);
       pws_os::DeleteAFile(m_configfilename);
       m_ConfigOption = CF_FILE_RW_NEW;
@@ -1381,7 +1381,7 @@ bool PWSprefs::LoadProfileFromFile()
   m_pXML_Config = new CXMLprefs(m_configfilename);
   if (!m_pXML_Config->XML_Load()) {
     if (!m_pXML_Config->getReason().empty() &&
-        m_pReporter != NULL)
+        m_pReporter != nullptr)
       (*m_pReporter)(m_pXML_Config->getReason()); // show what went wrong
     retval = false;
     goto exit;
@@ -1487,7 +1487,7 @@ bool PWSprefs::LoadProfileFromFile()
 
 exit:
   delete m_pXML_Config;
-  m_pXML_Config = NULL;
+  m_pXML_Config = nullptr;
   return retval;
 }
 
@@ -1510,7 +1510,7 @@ void PWSprefs::SaveApplicationPreferences()
       // punt to registry!
       m_ConfigOption = CF_REGISTRY;
       delete m_pXML_Config;
-      m_pXML_Config = NULL;
+      m_pXML_Config = nullptr;
     } else { // acquired lock
       // if file exists, load to get other values
       if (pws_os::FileExists(m_configfilename))
@@ -1655,12 +1655,12 @@ void PWSprefs::SaveApplicationPreferences()
       m_ConfigOption = CF_FILE_RW;
     else
     if (!m_pXML_Config->getReason().empty() &&
-        m_pReporter != NULL)
+        m_pReporter != nullptr)
       (*m_pReporter)(m_pXML_Config->getReason()); // show what went wrong
 
     m_pXML_Config->Unlock();
     delete m_pXML_Config;
-    m_pXML_Config = NULL;
+    m_pXML_Config = nullptr;
   }
 
   m_prefs_changed[APP_PREF] = false;
@@ -1682,7 +1682,7 @@ void PWSprefs::SaveShortcuts()
       // punt to registry!
       m_ConfigOption = CF_REGISTRY;
       delete m_pXML_Config;
-      m_pXML_Config = NULL;
+      m_pXML_Config = nullptr;
     } else { // acquired lock
       // if file exists, load to get other values
       if (pws_os::FileExists(m_configfilename))
@@ -1708,12 +1708,12 @@ void PWSprefs::SaveShortcuts()
       m_ConfigOption = CF_FILE_RW;
     else
     if (!m_pXML_Config->getReason().empty() &&
-        m_pReporter != NULL)
+        m_pReporter != nullptr)
       (*m_pReporter)(m_pXML_Config->getReason()); // show what went wrong
 
     m_pXML_Config->Unlock();
     delete m_pXML_Config;
-    m_pXML_Config = NULL;
+    m_pXML_Config = nullptr;
   }
   m_prefs_changed[SHC_PREF] = false;
 }

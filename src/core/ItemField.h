@@ -26,7 +26,7 @@ class Fish;
 class CItemField
 {
 public:
-  explicit CItemField(unsigned char type = 0xff): m_Type(type), m_Length(0), m_Data(NULL)
+  explicit CItemField(unsigned char type = 0xff): m_Type(type), m_Length(0), m_Data(nullptr)
   {}
   CItemField(const CItemField &that); // copy ctor
   ~CItemField() {if (m_Length > 0) delete[] m_Data;}

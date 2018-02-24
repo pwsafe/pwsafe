@@ -151,7 +151,7 @@ void CItem::GetUnknownField(unsigned char &type, size_t &length,
                             unsigned char * &pdata,
                             const CItemField &item) const
 {
-  ASSERT(pdata == NULL && length == 0);
+  ASSERT(pdata == nullptr && length == 0);
 
   type = item.GetType();
   size_t flength = item.GetLength();

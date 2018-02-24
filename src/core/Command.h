@@ -232,7 +232,7 @@ class AddEntryCommand : public Command
 public:
   static AddEntryCommand *Create(CommandInterface *pcomInt, const CItemData &ci,
                                  const pws_os::CUUID &baseUUID = pws_os::CUUID::NullUUID(),
-                                 const CItemAtt *att = NULL, const Command *pcmd = NULL)
+                                 const CItemAtt *att = nullptr, const Command *pcmd = nullptr)
   { return new AddEntryCommand(pcomInt, ci, baseUUID, att, pcmd); }
   ~AddEntryCommand();
   int Execute();
@@ -244,7 +244,7 @@ private:
   AddEntryCommand& operator=(const AddEntryCommand&); // Do not implement
   AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
                   const pws_os::CUUID &baseUUID, const CItemAtt *att,
-                  const Command *pcmd = NULL);
+                  const Command *pcmd = nullptr);
   CItemData m_ci;
   CItemAtt m_att;
   bool m_bExpired;
@@ -255,7 +255,7 @@ class DeleteEntryCommand : public Command
 public:
   static DeleteEntryCommand *Create(CommandInterface *pcomInt,
                                     const CItemData &ci,
-                                    const Command *pcmd = NULL)
+                                    const Command *pcmd = nullptr)
   { return new DeleteEntryCommand(pcomInt, ci, pcmd); }
   ~DeleteEntryCommand();
   int Execute();
@@ -266,7 +266,7 @@ public:
 private:
   DeleteEntryCommand& operator=(const DeleteEntryCommand&); // Do not implement
   DeleteEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
-                     const Command *pcmd = NULL);
+                     const Command *pcmd = nullptr);
   const CItemData m_ci;
   CItemAtt m_att;
   pws_os::CUUID m_base_uuid; // for undo of shortcut or alias deletion

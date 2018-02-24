@@ -44,8 +44,8 @@ using pws_os::CUUID;
 
 unsigned char PWScore::m_session_key[32];
 bool PWScore::m_session_initialized = false;
-Asker *PWScore::m_pAsker = NULL;
-Reporter *PWScore::m_pReporter = NULL;
+Asker *PWScore::m_pAsker = nullptr;
+Reporter *PWScore::m_pReporter = nullptr;
 
 // Following structure used in ReadFile and Validate and entries using
 // Named Password Policy
@@ -128,7 +128,7 @@ struct st_ValidateResults {
 PWScore::PWScore() :
                      m_isAuxCore(false),
                      m_currfile(_T("")),
-                     m_passkey(NULL), m_passkey_len(0),
+                     m_passkey(nullptr), m_passkey_len(0),
                      m_hashIters(MIN_HASH_ITERATIONS),
                      m_lockFileHandle(INVALID_HANDLE_VALUE),
                      m_lockFileHandle2(INVALID_HANDLE_VALUE),
@@ -137,9 +137,9 @@ PWScore::PWScore() :
                      m_bNotifyDB(false),
                      m_bIsOpen(false),
                      m_nRecordsWithUnknownFields(0),
-                     m_pUIIF(NULL),
+                     m_pUIIF(nullptr),
                      m_DBCurrentState(CLEAN),
-                     m_pFileSig(NULL),
+                     m_pFileSig(nullptr),
                      m_iAppHotKey(0)
 {
   // following should ideally be wrapped in a mutex
@@ -163,7 +163,7 @@ PWScore::~PWScore()
   if (m_passkey_len > 0) {
     trashMemory(m_passkey, ((m_passkey_len + (BS - 1)) / BS) * BS);
     delete[] m_passkey;
-    m_passkey = NULL;
+    m_passkey = nullptr;
     m_passkey_len = 0;
   }
 
@@ -264,7 +264,7 @@ void PWScore::DoAddEntry(const CItemData &item, const CItemAtt *att)
     IncrementPasswordPolicy(item.GetPolicyName());
   }
 
-  if (att != NULL && att->HasContent()) {
+  if (att != nullptr && att->HasContent()) {
     m_pwlist[item.GetUUID()].SetAttUUID(att->GetUUID());
     if (m_attlist.find(att->GetUUID()) == m_attlist.end())
       m_attlist.insert(std::make_pair(att->GetUUID(), *att));
@@ -280,8 +280,8 @@ void PWScore::DoAddEntry(const CItemData &item, const CItemAtt *att)
 
 bool PWScore::ConfirmDelete(const CItemData *pci)
 {
-  ASSERT(pci != NULL);
-  if (pci->IsBase() && m_pAsker != NULL) {
+  ASSERT(pci != nullptr);
+  if (pci->IsBase() && m_pAsker != nullptr) {
     UUIDVector dependentslist;
     CUUID entry_uuid = pci->GetUUID();
     CItemData::EntryType entrytype = pci->GetEntryType();
@@ -438,10 +438,10 @@ void PWScore::ClearDBData()
   if (m_passkey_len > 0) {
     trashMemory(m_passkey, ((m_passkey_len + (BS - 1)) / BS) * BS);
     delete[] m_passkey;
-    m_passkey = NULL;
+    m_passkey = nullptr;
     m_passkey_len = 0;
   }
-  m_passkey = NULL;
+  m_passkey = nullptr;
 
   //Composed of ciphertext, so doesn't need to be overwritten
   m_pwlist.clear();
@@ -560,7 +560,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
     // since we're writing a new file, the previous sig's
     // about to be invalidated but NOT if a user initiated Backup
     delete m_pFileSig;
-    m_pFileSig = NULL;
+    m_pFileSig = nullptr;
   }
 
   // If writing in a prior version format (ie. exporting) - save the header
@@ -709,7 +709,7 @@ struct ExportRecordWriter {
     m_pout->WriteRecord(item);
     item.SetPassword(savePassword);
 
-    if (m_pRpt != NULL && bAddToReport) {
+    if (m_pRpt != nullptr && bAddToReport) {
       StringX sx_exported;
       Format(sx_exported, GROUPTITLEUSERINCHEVRONS,
         item.GetGroup().c_str(), item.GetTitle().c_str(), item.GetUser().c_str());
@@ -781,7 +781,7 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
 
   if (bExportDBFilters) {
     out->SetDBFilters(pINcore->m_MapDBFilters);
-    if (pRpt != NULL) {
+    if (pRpt != nullptr) {
       StringX sx_exportedfilters;
       LoadAString(sx_exportedfilters, IDSC_FILTERSEXPORTEDTODB);
       pRpt->WriteLine(sx_exportedfilters.c_str(), true);
@@ -1126,7 +1126,7 @@ static void ReportReadErrors(CReport *pRpt,
                              std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
                              std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID)
 {
-  if (pRpt == NULL || (vGTU_INVALID_UUID.empty() && vGTU_DUPLICATE_UUID.empty()))
+  if (pRpt == nullptr || (vGTU_INVALID_UUID.empty() && vGTU_DUPLICATE_UUID.empty()))
     return;
 
   // Here iff we've something to report and somewhere to report it
@@ -1251,9 +1251,9 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   bool go = true;
 
   m_hashIters = in->GetNHashIters();
-  if (in->GetDBFilters() != NULL) m_MapDBFilters = *in->GetDBFilters();
-  if (in->GetPasswordPolicies() != NULL) m_MapPSWDPLC = *in->GetPasswordPolicies();
-  if (in->GetEmptyGroups() != NULL) m_vEmptyGroups = *in->GetEmptyGroups();
+  if (in->GetDBFilters() != nullptr) m_MapDBFilters = *in->GetDBFilters();
+  if (in->GetPasswordPolicies() != nullptr) m_MapPSWDPLC = *in->GetPasswordPolicies();
+  if (in->GetEmptyGroups() != nullptr) m_vEmptyGroups = *in->GetEmptyGroups();
 
   // Set initial values
   SetInitialValues();
@@ -1261,7 +1261,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   // We keep this vector sorted for comparison - other apps may not
   std::sort(m_InitialEmptyGroups.begin(), m_InitialEmptyGroups.end());
 
-  if (pRpt != NULL) {
+  if (pRpt != nullptr) {
     std::wstring cs_title;
     LoadAString(cs_title, IDSC_RPTVALIDATE);
     pRpt->StartReport(cs_title.c_str(), m_currfile.c_str());
@@ -1276,7 +1276,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
         // Show a useful(?) error message - better than
         // silently losing data (but not by much)
         // Best if title intact. What to do if not?
-        if (m_pReporter != NULL) {
+        if (m_pReporter != nullptr) {
           stringT cs_msg, cs_caption;
           LoadAString(cs_caption, IDSC_READ_ERROR);
           Format(cs_msg, IDSC_ENCODING_PROBLEM, ci_temp.GetTitle().c_str());
@@ -1326,7 +1326,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   if (bValidate)
     bValidateRC = Validate(iMAXCHARS, pRpt, st_vr);
 
-  if (pRpt != NULL)
+  if (pRpt != nullptr)
     pRpt->EndReport();
 
   // Setup file signature for checking file integrity upon backup.
@@ -1437,7 +1437,7 @@ bool PWScore::BackupCurFile(unsigned int maxNumIncBackups, int backupSuffix,
 
   // Check if the file we're about to backup is unchanged since
   // we opened it, to avoid overwriting a good file with a bad one
-  if (m_pFileSig != NULL) {
+  if (m_pFileSig != nullptr) {
     PWSFileSig curSig(m_currfile.c_str());
     bool passed = (curSig == *m_pFileSig);
     if (!passed) // XXX yell scream & shout
@@ -2013,11 +2013,11 @@ void PWScore::ParseDependants()
   } // iter over m_pwlist
 
   if (!Possible_Aliases.empty()) {
-    DoAddDependentEntries(Possible_Aliases, NULL, CItemData::ET_ALIAS, CItemData::UUID);
+    DoAddDependentEntries(Possible_Aliases, nullptr, CItemData::ET_ALIAS, CItemData::UUID);
   }
 
   if (!Possible_Shortcuts.empty()) {
-    DoAddDependentEntries(Possible_Shortcuts, NULL, CItemData::ET_SHORTCUT, CItemData::UUID);
+    DoAddDependentEntries(Possible_Shortcuts, nullptr, CItemData::ET_SHORTCUT, CItemData::UUID);
   }
 }
 
@@ -2270,7 +2270,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
   }
 #endif
 
-  if (st_vr.TotalIssues() != 0 && pRpt != NULL) {
+  if (st_vr.TotalIssues() != 0 && pRpt != nullptr) {
     // Only report problems if a. There are some and b. We have a report file
     if ((st_vr.num_invalid_UUIDs == 0 && st_vr.num_duplicate_UUIDs == 0)) {
       // As both zero, we didn't put error header in report - so do it now
@@ -2351,7 +2351,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
     }
 
     if ((!vGTU_ALIASES.empty() || !vGTU_SHORTCUTS.empty() || !vGTU_TEXT.empty()) &&
-        pRpt != NULL) {
+        pRpt != nullptr) {
       // We have warnings
       pRpt->WriteLine();
       LoadAString(cs_Error, IDSC_VALIDATE_WARNINGS);
@@ -2469,7 +2469,7 @@ bool PWScore::ValidateKBShortcut(int32 &iKBShortcut)
     // If there are too many bits in the Modifiers or
     // Not a valid ASCII character (0-9, A-Z) - remove
     if ((wValidModifiers & wPWSModifiers) ||
-          _tcschr(tcValidKeys, wVirtualKeyCode) == NULL) {
+          _tcschr(tcValidKeys, wVirtualKeyCode) == nullptr) {
       // Remove Entry Keyboard Shortcut
       iKBShortcut = 0;
       return true;  // Changed
@@ -2756,7 +2756,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
 {
   // When called during validation of a database  - *pRpt is valid
   // When called during the opening of a database or during drag & drop
-  //   - *pRpt is NULL and no report generated
+  //   - *pRpt is nullptr and no report generated
 
   // type is either CItemData::ET_ALIAS or CItemData::ET_SHORTCUT
 
@@ -2765,10 +2765,10 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
   // If iVia == CItemData::PASSWORD, the password is expected to be in the full format
   // [g:t:u], where g and/or u may be empty.
 
-  if (pmapDeletedItems != NULL)
+  if (pmapDeletedItems != nullptr)
     pmapDeletedItems->clear();
 
-  if (pmapSaveTypePW != NULL)
+  if (pmapSaveTypePW != nullptr)
     pmapSaveTypePW->clear();
 
   ItemMMap *pmmap;
@@ -2827,7 +2827,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
           // Adding shortcuts -> Base must be normal or already a shortcut base
           if (!iter->second.IsNormal() && !iter->second.IsShortcutBase()) {
             // Bad news!
-            if (pRpt != NULL) {
+            if (pRpt != nullptr) {
               if (!bwarnings) {
                 bwarnings = true;
                 LoadAString(strError, IDSC_IMPORTWARNINGHDR);
@@ -2841,7 +2841,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
               pRpt->WriteLine(strError);
             }
             // Invalid - delete!
-            if (pmapDeletedItems != NULL)
+            if (pmapDeletedItems != nullptr)
               pmapDeletedItems->insert(ItemList_Pair(*paiter, *pci_curitem));
             m_pwlist.erase(iter);
             continue;
@@ -2851,7 +2851,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
           // Adding Aliases -> Base must be normal or already a alias base
           if (!iter->second.IsNormal() && !iter->second.IsAliasBase()) {
             // Bad news!
-            if (pRpt != NULL) {
+            if (pRpt != nullptr) {
               if (!bwarnings) {
                 bwarnings = true;
                 LoadAString(strError, IDSC_IMPORTWARNINGHDR);
@@ -2865,7 +2865,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
               pRpt->WriteLine(strError);
             }
             // Invalid - delete!
-            if (pmapDeletedItems != NULL)
+            if (pmapDeletedItems != nullptr)
               pmapDeletedItems->insert(ItemList_Pair(*paiter, *pci_curitem));
             m_pwlist.erase(iter);
             continue;
@@ -2875,7 +2875,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
             // Note: this may be random as who knows the order of reading records?
             CUUID temp_uuid = iter->second.GetUUID();
             base_uuid = iter->second.GetBaseUUID(); // ??? used here ???
-            if (pRpt != NULL) {
+            if (pRpt != nullptr) {
               if (!bwarnings) {
                 bwarnings = true;
                 LoadAString(strError, IDSC_IMPORTWARNINGHDR);
@@ -2887,7 +2887,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
               LoadAString(strError, IDSC_IMPORTWARNING1A);
               pRpt->WriteLine(strError);
             }
-            if (pmapSaveTypePW != NULL) {
+            if (pmapSaveTypePW != nullptr) {
               st_typepw.et = iter->second.GetEntryType();
               st_typepw.sxpw = _T("");
               pmapSaveTypePW->insert(SaveTypePWMap_Pair(*paiter, st_typepw));
@@ -2898,7 +2898,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
         }
         base_uuid = iter->second.GetUUID();
         if (type == CItemData::ET_ALIAS) {
-          if (pmapSaveTypePW != NULL) {
+          if (pmapSaveTypePW != nullptr) {
             st_typepw.et = iter->second.GetEntryType();
             st_typepw.sxpw = _T("");
             pmapSaveTypePW->insert(SaveTypePWMap_Pair(*paiter, st_typepw));
@@ -2906,7 +2906,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
           iter->second.SetAliasBase();
         } else
         if (type == CItemData::ET_SHORTCUT) {
-          if (pmapSaveTypePW != NULL) {
+          if (pmapSaveTypePW != nullptr) {
             st_typepw.et = iter->second.GetEntryType();
             st_typepw.sxpw = _T("");
             pmapSaveTypePW->insert(SaveTypePWMap_Pair(*paiter, st_typepw));
@@ -2916,7 +2916,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
 
         pmmap->insert(ItemMMap_Pair(base_uuid, entry_uuid));
         if (type == CItemData::ET_ALIAS) {
-          if (pmapSaveTypePW != NULL) {
+          if (pmapSaveTypePW != nullptr) {
             st_typepw.et = iter->second.GetEntryType();
             st_typepw.sxpw = pci_curitem->GetPassword();
             pmapSaveTypePW->insert(SaveTypePWMap_Pair(*paiter, st_typepw));
@@ -2925,7 +2925,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
           pci_curitem->SetAlias();
         } else
         if (type == CItemData::ET_SHORTCUT) {
-          if (pmapSaveTypePW != NULL) {
+          if (pmapSaveTypePW != nullptr) {
             st_typepw.et = iter->second.GetEntryType();
             st_typepw.sxpw = pci_curitem->GetPassword();
             pmapSaveTypePW->insert(SaveTypePWMap_Pair(*paiter, st_typepw));
@@ -2935,7 +2935,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
         }
       } else {
         // Specified base does not exist!
-        if (pRpt != NULL) {
+        if (pRpt != nullptr) {
           if (!bwarnings) {
             bwarnings = true;
             LoadAString(strError, IDSC_IMPORTWARNINGHDR);
@@ -2948,10 +2948,10 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
           pRpt->WriteLine(strError);
         }
         if (type == CItemData::ET_SHORTCUT) {
-          if (pmapDeletedItems != NULL)
+          if (pmapDeletedItems != nullptr)
             pmapDeletedItems->insert(ItemList_Pair(*paiter, *pci_curitem));
         } else {
-          if (pmapSaveTypePW != NULL) {
+          if (pmapSaveTypePW != nullptr) {
             st_typepw.et = CItemData::ET_ALIAS;
             st_typepw.sxpw = _T("");
             pmapSaveTypePW->insert(SaveTypePWMap_Pair(*paiter, st_typepw));
@@ -3143,7 +3143,7 @@ const CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC) const
 CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
 {
   // Alas, we need both a const and non-const version.
-  ASSERT(pAliasOrSC != NULL);
+  ASSERT(pAliasOrSC != nullptr);
   if (pAliasOrSC->IsDependent()) {
     const CUUID base_uuid = pAliasOrSC->GetBaseUUID();
     auto iter = Find(base_uuid);
@@ -3152,7 +3152,7 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
     else
       pws_os::Trace(_T("PWScore::GetBaseEntry - Find(base_uuid) failed!\n"));
   }
-  return NULL;
+  return nullptr;
 }
 
 bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
@@ -3184,7 +3184,7 @@ void PWScore::NotifyDBModified()
   // This allows the core to provide feedback to the UI that the Database
   // has changed particularly to invalidate any current Find results and
   // to populate message during Vista and later shutdowns
-  if (m_bNotifyDB && m_pUIIF != NULL &&
+  if (m_bNotifyDB && m_pUIIF != nullptr &&
       m_bsSupportedFunctions.test(UIInterFace::DATABASEMODIFIED))
     m_pUIIF->DatabaseModified(HasDBChanged());
 }
@@ -3195,7 +3195,7 @@ void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
 {
   // This allows the core to provide feedback to the UI that the GUI needs
   // updating due to a field having its value changed
-  if (m_pUIIF != NULL &&
+  if (m_pUIIF != nullptr &&
       m_bsSupportedFunctions.test(UIInterFace::UPDATEGUI))
     m_pUIIF->UpdateGUI(ga, entry_uuid, ft);
 }
@@ -3205,7 +3205,7 @@ void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
 {
   // This allows the core to provide feedback to the UI that the GUI needs
   // updating due to a field having its value changed
-  if (m_pUIIF != NULL &&
+  if (m_pUIIF != nullptr &&
       m_bsSupportedFunctions.test(UIInterFace::UPDATEGUIGROUPS))
     m_pUIIF->UpdateGUI(ga, vGroups);
 }
@@ -3214,7 +3214,7 @@ void PWScore::GUIRefreshEntry(const CItemData &ci, bool bAllowFail)
 {
   // This allows the core to provide feedback to the UI that a particular
   // entry has been modified
-  if (m_pUIIF != NULL &&
+  if (m_pUIIF != nullptr &&
       m_bsSupportedFunctions.test(UIInterFace::GUIREFRESHENTRY))
     m_pUIIF->GUIRefreshEntry(ci, bAllowFail);
 }
@@ -3227,7 +3227,7 @@ void PWScore::UpdateWizard(const stringT &s)
   // string gives the full 'group, title, user' of the entry.
   // It is expected that the UI will implement a pointer or other reference to
   // this control so that it can update the text displayed there (see MFC implementation).
-  if (m_pUIIF != NULL &&
+  if (m_pUIIF != nullptr &&
       m_bsSupportedFunctions.test(UIInterFace::UPDATEWIZARD))
     m_pUIIF->UpdateWizard(s);
 }
@@ -3483,7 +3483,7 @@ int PWScore::DoUpdatePasswordHistory(int iAction, int new_default_max,
   * is an unrelated tweak.
   */
 
-  if (updater != NULL) {
+  if (updater != nullptr) {
     ItemListIter listPos;
     for (listPos = m_pwlist.begin(); listPos != m_pwlist.end(); listPos++) {
       CItemData &curitem = listPos->second;
@@ -3766,8 +3766,8 @@ void PWScore::SetYubiSK(const unsigned char *sk)
   if (m_hdr.m_yubi_sk)
     trashMemory(m_hdr.m_yubi_sk, PWSfileHeader::YUBI_SK_LEN);
   delete[] m_hdr.m_yubi_sk;
-  m_hdr.m_yubi_sk = NULL;
-  if (sk != NULL) {
+  m_hdr.m_yubi_sk = nullptr;
+  if (sk != nullptr) {
     m_hdr.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN];
     memcpy(m_hdr.m_yubi_sk, sk, PWSfileHeader::YUBI_SK_LEN);
   }

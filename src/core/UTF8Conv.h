@@ -19,8 +19,8 @@
 class CUTF8Conv
 {
 public:
-  CUTF8Conv(bool cp_acp=false) : m_utf8(NULL), m_utf8Len(0), m_utf8MaxLen(0),
-                                 m_wc(NULL), m_wcMaxLen(0), m_tmp(NULL),
+  CUTF8Conv(bool cp_acp=false) : m_utf8(nullptr), m_utf8Len(0), m_utf8MaxLen(0),
+                                 m_wc(nullptr), m_wcMaxLen(0), m_tmp(nullptr),
                                  m_tmpMaxLen(0), m_cp_acp(cp_acp) {}
   ~CUTF8Conv();
   // In following, char * is managed internally. Caller must NOT

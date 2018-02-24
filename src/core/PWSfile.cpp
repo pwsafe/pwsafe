@@ -26,11 +26,11 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
                               VERSION &version, RWmode mode, int &status,
                               Asker *pAsker, Reporter *pReporter)
 {
-  PWSfile *retval = NULL;
+  PWSfile *retval = nullptr;
 
   if (mode == Read && !pws_os::FileExists(a_filename.c_str())) {
     status = CANT_OPEN_FILE;
-    return NULL;
+    return nullptr;
   }
 
   switch (version) {
@@ -75,7 +75,7 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
     status = FAILURE;
     ASSERT(0);
   }
-  if (retval != NULL) {
+  if (retval != nullptr) {
     retval->m_pAsker = pAsker;
     retval->m_pReporter = pReporter;
   }
@@ -99,9 +99,9 @@ PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename, const StringX &pa
 }
 
 PWSfile::PWSfile(const StringX &filename, RWmode mode, VERSION v)
-  : m_filename(filename), m_passkey(_T("")), m_fd(NULL),
+  : m_filename(filename), m_passkey(_T("")), m_fd(nullptr),
   m_curversion(v), m_rw(mode), m_defusername(_T("")),
-  m_fish(NULL), m_terminal(NULL), m_status(SUCCESS),
+  m_fish(nullptr), m_terminal(nullptr), m_status(SUCCESS),
   m_nRecordsWithUnknownFields(0)
 {
 }
@@ -131,9 +131,9 @@ void PWSfile::FOpen()
 {
   ASSERT(!m_filename.empty());
   const TCHAR* m = (m_rw == Read) ? _T("rb") : _T("wb");
-  if (m_fd != NULL) {
+  if (m_fd != nullptr) {
     fclose(m_fd);
-    m_fd = NULL;
+    m_fd = nullptr;
   }
   m_fd = pws_os::FOpen(m_filename.c_str(), m);
   m_fileLength = pws_os::fileLength(m_fd);
@@ -142,12 +142,12 @@ void PWSfile::FOpen()
 int PWSfile::Close()
 {
   delete m_fish;
-  m_fish = NULL;
+  m_fish = nullptr;
   int rc(SUCCESS);
 
-  if (m_fd != NULL) {
+  if (m_fd != nullptr) {
     rc = pws_os::FClose(m_fd, m_rw == Write);
-    m_fd = NULL;
+    m_fd = nullptr;
   }
 
   return rc;
@@ -156,31 +156,31 @@ int PWSfile::Close()
 size_t PWSfile::WriteCBC(unsigned char type, const unsigned char *data,
                          size_t length)
 {
-  ASSERT(m_fish != NULL && m_IV != NULL);
+  ASSERT(m_fish != nullptr && m_IV != nullptr);
   return _writecbc(m_fd, data, length, type, m_fish, m_IV);
 }
 
 size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
                         size_t &length)
 {
-  unsigned char *buffer = NULL;
+  unsigned char *buffer = nullptr;
   size_t buffer_len = 0;
   size_t retval;
 
-  ASSERT(m_fish != NULL && m_IV != NULL);
+  ASSERT(m_fish != nullptr && m_IV != nullptr);
   retval = _readcbc(m_fd, buffer, buffer_len, type,
     m_fish, m_IV, m_terminal, m_fileLength);
 
   if (buffer_len > 0) {
-    if (buffer_len < length || data == NULL)
+    if (buffer_len < length || data == nullptr)
       length = buffer_len; // set to length read
     // if buffer_len > length, data is truncated to length
     // probably an error.
-    if (data != NULL) {
+    if (data != nullptr) {
       memcpy(data, buffer, length);
       trashMemory(buffer, buffer_len);
       delete[] buffer;
-    } else { // NULL data means pass buffer directly to caller
+    } else { // nullptr data means pass buffer directly to caller
       data = buffer; // caller must trash & delete[]!
     }
   } else {
@@ -295,16 +295,16 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 {
   ulong64 len = 0;
   size_t slen = 0;
-  unsigned char* buf = NULL;
-  Fish *fish = NULL;
+  unsigned char* buf = nullptr;
+  Fish *fish = nullptr;
   bool status = true;
   const stringT out_fn = fn + CIPHERTEXT_SUFFIX;
-  unsigned char *pwd = NULL;
+  unsigned char *pwd = nullptr;
   size_t passlen = 0;
-  FILE *out = NULL;
+  FILE *out = nullptr;
 
   FILE *in = pws_os::FOpen(fn, _T("rb"));
-  if (in == NULL) {
+  if (in == nullptr) {
     status = false; goto exit;
   }
 
@@ -334,7 +334,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   }
 
   out = pws_os::FOpen(out_fn, _T("wb"));
-  if (out == NULL) {
+  if (out == nullptr) {
     status = false; goto exit;
   }
   unsigned char randstuff[StuffSize];
@@ -379,7 +379,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 {
   ulong64 file_len;
   size_t len;
-  unsigned char* buf = NULL;
+  unsigned char* buf = nullptr;
   bool status = true;
   unsigned char salt[SaltLength];
   unsigned char ipthing[8];
@@ -388,7 +388,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   unsigned char temphash[SHA1::HASHLEN];
 
   FILE *in = pws_os::FOpen(fn, _T("rb"));
-  if (in == NULL) {
+  if (in == nullptr) {
     status = false;
     goto exit;
   }
@@ -417,7 +417,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     fread(ipthing, 1, 8,          in);
 
     unsigned char dummyType;
-    unsigned char *pwd = NULL;
+    unsigned char *pwd = nullptr;
     size_t passlen = 0;
     ConvertString(passwd, pwd, passlen);
     Fish *fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<unsigned int &>(passlen), salt, SaltLength);
@@ -425,7 +425,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     delete[] pwd; // gross - ConvertString allocates.
     if (_readcbc(in, buf, len,dummyType, fish, ipthing, 0, file_len) == 0) {
       delete fish;
-      delete[] buf; // if not yet allocated, delete[] NULL, which is OK
+      delete[] buf; // if not yet allocated, delete[] nullptr, which is OK
       return false;
     }
     delete fish;
@@ -440,7 +440,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     out_fn = out_fn.substr(0,filepath_len - suffix_len);
 
     FILE *out = pws_os::FOpen(out_fn, _T("wb"));
-    if (out != NULL) {
+    if (out != nullptr) {
       size_t fret = fwrite(buf, 1, len, out);
       if (fret != len) {
         int save_errno = errno;
@@ -485,7 +485,7 @@ PWSFileSig::PWSFileSig(const stringT &fname)
   m_iErrorCode = PWSfile::SUCCESS;
   memset(m_digest, 0, sizeof(m_digest));
   FILE *fp = pws_os::FOpen(fname, _T("rb"));
-  if (fp != NULL) {
+  if (fp != nullptr) {
     SHA256 hash;
     m_length = pws_os::fileLength(fp);
     // Not the right place to be worried about min size, as this is format

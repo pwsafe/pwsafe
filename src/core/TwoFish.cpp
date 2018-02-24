@@ -363,8 +363,8 @@ static int twofish_setup(const unsigned char *key, int keylen, int num_rounds, t
   unsigned char tmp[4], tmp2[4], M[8*4];
   uint32 A, B;
 
-  ASSERT(key  != NULL);
-  ASSERT(skey != NULL);
+  ASSERT(key  != nullptr);
+  ASSERT(skey != nullptr);
 
   /* invalid arguments? */
   if (num_rounds != 16 && num_rounds != 0) {
@@ -489,9 +489,9 @@ static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, cons
   const uint32 *S1, *S2, *S3, *S4;
 #endif    
 
-  ASSERT(pt   != NULL);
-  ASSERT(ct   != NULL);
-  ASSERT(skey != NULL);
+  ASSERT(pt   != nullptr);
+  ASSERT(ct   != nullptr);
+  ASSERT(skey != nullptr);
 
 #if !defined(TWOFISH_SMALL) && !defined(__GNUC__)
   S1 = skey->S[0];
@@ -559,9 +559,9 @@ static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, cons
   const uint32 *S1, *S2, *S3, *S4;
 #endif    
 
-  ASSERT(pt   != NULL);
-  ASSERT(ct   != NULL);
-  ASSERT(skey != NULL);
+  ASSERT(pt   != nullptr);
+  ASSERT(ct   != nullptr);
+  ASSERT(skey != nullptr);
 
 #if !defined(TWOFISH_SMALL) && !defined(__GNUC__)
   S1 = skey->S[0];

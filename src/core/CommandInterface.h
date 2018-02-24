@@ -50,8 +50,8 @@ class CommandInterface {
   virtual int DoAddDependentEntries(UUIDVector &dependentslist, CReport *rpt, 
                                     const CItemData::EntryType type, 
                                     const int &iVia,
-                                    ItemList *pmapDeletedItems = NULL,
-                                    SaveTypePWMap *pmapSaveTypePW = NULL) = 0;
+                                    ItemList *pmapDeletedItems = nullptr,
+                                    SaveTypePWMap *pmapSaveTypePW = nullptr) = 0;
   virtual void UndoAddDependentEntries(ItemList *pmapDeletedItems,
                                        SaveTypePWMap *pmapSaveTypePW) = 0;
   virtual bool DoMoveDependentEntries(const pws_os::CUUID &from_baseuuid, 

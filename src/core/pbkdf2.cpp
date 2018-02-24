@@ -36,14 +36,14 @@ void pbkdf2(const unsigned char *password, unsigned long password_len,
   unsigned char *buf[2];
   const unsigned int BlockSize = hmac->GetBlockSize();
 
-  ASSERT(password != NULL);
-  ASSERT(salt     != NULL);
-  ASSERT(out      != NULL);
-  ASSERT(hmac     != NULL);
-  ASSERT(outlen   != NULL);
+  ASSERT(password != nullptr);
+  ASSERT(salt     != nullptr);
+  ASSERT(out      != nullptr);
+  ASSERT(hmac     != nullptr);
+  ASSERT(outlen   != nullptr);
 
   buf[0] = new unsigned char[BlockSize * 2];
-  if (buf[0] == NULL) {
+  if (buf[0] == nullptr) {
     ASSERT(0);
     return;
   }

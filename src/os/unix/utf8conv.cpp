@@ -27,16 +27,16 @@ public:
   Startup() {
     // Since this can fail before main(), we can't rely on cerr etc.
     // being initialized. At least give the user a clue...
-    char *gl = setlocale(LC_ALL, NULL);
+    char *gl = setlocale(LC_ALL, nullptr);
     char *sl = setlocale(LC_ALL, "");
-    if (sl == NULL) {
+    if (sl == nullptr) {
       // Couldn't get environment-specified locale, warn user
       // and punt to default "C"
       char wrnmess[] = "Couldn't load locale, falling back to default\n";
       write(STDERR_FILENO, wrnmess, sizeof(wrnmess)/sizeof(*wrnmess)-1);
       sl = setlocale(LC_ALL, gl);
     }
-    if (sl == NULL) {
+    if (sl == nullptr) {
       // If we can't get the default, we're really FUBARed
       char errmess[] = "Couldn't initialize locale - bailing out\n";
       write(STDERR_FILENO, errmess, sizeof(errmess)/sizeof(*errmess)-1);
@@ -66,7 +66,7 @@ size_t pws_os::mbstowcs(wchar_t *dst, size_t maxdstlen,
 wstring pws_os::towc(const char *val)
 {
   wstring retval(L"");
-  assert(val != NULL);
+  assert(val != nullptr);
   size_t len = strlen(val);
   int wsize;
   const char *p = val;
@@ -85,7 +85,7 @@ wstring pws_os::towc(const char *val)
 std::string pws_os::tomb(const stringT& val)
 {
   if (!val.empty()) {
-    const size_t N = std::wcstombs(NULL, val.c_str(), 0);
+    const size_t N = std::wcstombs(nullptr, val.c_str(), 0);
     assert(N > 0);
     char* szstr = new char[N+1];
     szstr[N] = 0;

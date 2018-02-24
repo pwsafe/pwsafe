@@ -17,7 +17,7 @@ static const TCHAR *sHex = _T("0123456789abcdefABCDEF");
 
 // Our own mktime, differs from libc's via argument overloading
 static time_t mktime(int yyyy, int mon, int dd,
-                     int hh = 0, int min = 0, int sec = 0, int *dow = NULL)
+                     int hh = 0, int min = 0, int sec = 0, int *dow = nullptr)
 {
   struct tm xtm;
   memset(&xtm, 0, sizeof(tm));
@@ -29,7 +29,7 @@ static time_t mktime(int yyyy, int mon, int dd,
   xtm.tm_sec = sec;
   xtm.tm_isdst = -1;
   time_t retval = std::mktime(&xtm);
-  if (dow != NULL)
+  if (dow != nullptr)
     *dow = xtm.tm_wday + 1;
   return retval;
 }
@@ -327,7 +327,7 @@ int VerifyTextImportPWHistoryString(const StringX &PWHistory,
 
   StringX pwh(PWHistory);
   StringX tmp;
-  const TCHAR *lpszPWHistory = NULL;
+  const TCHAR *lpszPWHistory = nullptr;
   size_t len = pwh.length();
 
   if (len < 5) {

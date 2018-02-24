@@ -56,7 +56,7 @@ static void xormem(unsigned char *mem1, const unsigned char *mem2, int length)
 #endif
 void trashMemory(void *buffer, size_t length)
 {
-  ASSERT(buffer != NULL);
+  ASSERT(buffer != nullptr);
   // {kjp} no point in looping around doing nothing is there?
   if (length > 0) {
     std::memset(buffer, 0x55, length);
@@ -100,12 +100,12 @@ void ConvertString(const StringX &text,
 #ifdef _WIN32
   txt = new unsigned char[3 * txtlen]; // safe upper limit
   int len = WideCharToMultiByte(CP_ACP, 0, txtstr, static_cast<int>(txtlen),
-                                LPSTR(txt), static_cast<int>(3 * txtlen), NULL, NULL);
+                                LPSTR(txt), static_cast<int>(3 * txtlen), nullptr, nullptr);
   ASSERT(len != 0);
 #else
   mbstate_t mbs;
   memset(&mbs, 0, sizeof(mbstate_t));
-  size_t len = wcsrtombs(NULL, &txtstr, 0, &mbs);
+  size_t len = wcsrtombs(nullptr, &txtstr, 0, &mbs);
   txt = new unsigned char[len + 1];
   len = wcsrtombs(reinterpret_cast<char *>(txt), &txtstr, len, &mbs);
   ASSERT(len != size_t(-1));
@@ -120,7 +120,7 @@ void GenRandhash(const StringX &a_passkey,
                  unsigned char *a_randhash)
 {
   size_t pkeyLen = 0;
-  unsigned char *pstr = NULL;
+  unsigned char *pstr = nullptr;
 
   ConvertString(a_passkey, pstr, pkeyLen);
 
@@ -166,7 +166,7 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length, unsigned 
   // some trickery to avoid new/delete
   unsigned char block1[16];
 
-  unsigned char *curblock = NULL;
+  unsigned char *curblock = nullptr;
   ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
 
   // First encrypt and write the length of the buffer
@@ -218,7 +218,7 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
   // some trickery to avoid new/delete
   unsigned char block1[16];
 
-  unsigned char *curblock = NULL;
+  unsigned char *curblock = nullptr;
   ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
 
   // First encrypt and write the length of the buffer
@@ -269,7 +269,7 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
 * bytes. This means that any data can be passed, and we don't
 * care at this level if strings are char or wchar_t.
 *
-* If TERMINAL_BLOCK is non-NULL, the first block read is tested against it,
+* If TERMINAL_BLOCK is non-nullptr, the first block read is tested against it,
 * and -1 is returned if it matches. (used in V3)
 */
 size_t _readcbc(FILE *fp,
@@ -285,7 +285,7 @@ size_t _readcbc(FILE *fp,
   unsigned char block1[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   unsigned char block2[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   unsigned char block3[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  unsigned char *lengthblock = NULL;
+  unsigned char *lengthblock = nullptr;
 
   ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
 
@@ -301,7 +301,7 @@ size_t _readcbc(FILE *fp,
     return 0;
   }
 
-  if (TERMINAL_BLOCK != NULL &&
+  if (TERMINAL_BLOCK != nullptr &&
     memcmp(lengthblock, TERMINAL_BLOCK, BS) == 0)
     return static_cast<size_t>(-1);
 
@@ -319,7 +319,7 @@ size_t _readcbc(FILE *fp,
 
   if ((file_len != 0 && length >= file_len)) {
     pws_os::Trace0(_T("_readcbc: Read size larger than file length - aborting\n"));
-    buffer = NULL;
+    buffer = nullptr;
     buffer_len = 0;
     trashMemory(lengthblock, BS);
     return 0;
@@ -503,7 +503,7 @@ void PWSUtil::GetTimeStamp(stringT &sTimeStamp, const bool bShort)
 #else
   struct timeval *ptimebuffer;
   ptimebuffer = new timeval;
-  gettimeofday(ptimebuffer, NULL);
+  gettimeofday(ptimebuffer, nullptr);
   time_t the_time = ptimebuffer->tv_sec;
 #endif
   StringX cmys_now = ConvertToDateTimeString(the_time, TMC_EXPORT_IMPORT);
@@ -648,7 +648,7 @@ bool PWSUtil::WriteXMLField(ostream &os, const char *fname,
                             const StringX &value, CUTF8Conv &utf8conv,
                             const char *tabs)
 {
-  const unsigned char *utf8 = NULL;
+  const unsigned char *utf8 = nullptr;
   size_t utf8Len = 0;
   ostringstream ostInvalidPositions;
   if (!ValidateXMLCharacters(value, ostInvalidPositions)) {
@@ -709,7 +709,7 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
   int i;
   const StringX tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
   ostringstream oss;
-  const unsigned char *utf8 = NULL;
+  const unsigned char *utf8 = nullptr;
   size_t utf8Len = 0;
 
   for (i = 0; i < indent; i++) oss << "\t";
@@ -727,11 +727,11 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
  * Get TCHAR buffer size by format string with parameters
  * @param[in] fmt - format string
  * @param[in] args - arguments for format string
- * @return buffer size including NULL-terminating character
+ * @return buffer size including nullptr-terminating character
 */
 unsigned int GetStringBufSize(const TCHAR *fmt, va_list args)
 {
-  TCHAR *buffer=NULL;
+  TCHAR *buffer=nullptr;
 
   unsigned int len = 0;
 
@@ -754,7 +754,7 @@ unsigned int GetStringBufSize(const TCHAR *fmt, va_list args)
       break;
     } else { // too small, resize & try again
       delete[] buffer;
-      buffer = NULL;
+      buffer = nullptr;
       guess *= 2;
     }
   }

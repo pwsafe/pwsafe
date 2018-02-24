@@ -151,7 +151,7 @@ size_t CItemAtt::GetContentSize() const
 
 bool CItemAtt::GetContent(unsigned char *content, size_t csize) const
 {
-  ASSERT(content != NULL);
+  ASSERT(content != nullptr);
 
   if (!HasContent() || csize < GetContentSize())
     return false;
@@ -176,7 +176,7 @@ int CItemAtt::Import(const stringT &fname)
 
   auto flen = static_cast<size_t>(pws_os::fileLength(fhandle));
   auto *data = new unsigned char[flen];
-  if (data == NULL)
+  if (data == nullptr)
     return PWScore::FAILURE;
 
   size_t nread = fread(data, flen, 1, fhandle);
@@ -237,7 +237,7 @@ int CItemAtt::Export(const stringT &fname) const
 
   size_t flen = field.GetLength() + 8; // Add 8 for block size
   auto *value = new unsigned char[flen];
-  if (value == NULL) {
+  if (value == nullptr) {
     fclose(fhandle);
     return PWScore::FAILURE;
   }
@@ -322,11 +322,11 @@ int CItemAtt::Read(PWSfile *in)
   unsigned char EK[PWSfileV4::KLEN] = {0};
   unsigned char AK[PWSfileV4::KLEN] = {0};
 
-  unsigned char *content = NULL;
+  unsigned char *content = nullptr;
   size_t content_len = 0;
   unsigned char expected_digest[SHA256::HASHLEN] = {0};
 
-  unsigned char *utf8 = NULL;
+  unsigned char *utf8 = nullptr;
   size_t utf8Len = 0;
 
   Clear();
@@ -385,7 +385,7 @@ int CItemAtt::Read(PWSfile *in)
         const unsigned int BS = fish.GetBlockSize();
 
         auto *in4 = dynamic_cast<PWSfileV4 *>(in);
-        ASSERT(in4 != NULL);
+        ASSERT(in4 != nullptr);
         size_t nread = in4->ReadContent(&fish, IV, content, content_len);
         // nread should be content_len rounded up to nearest BS:
         ASSERT(nread == (content_len/BS + 1)*BS);
@@ -411,9 +411,9 @@ int CItemAtt::Read(PWSfile *in)
       } // switch {type)
     } // if (fieldLen > 0)
 
-    if (utf8 != NULL) {
+    if (utf8 != nullptr) {
       trashMemory(utf8, utf8Len * sizeof(utf8[0]));
-      delete[] utf8; utf8 = NULL; utf8Len = 0;
+      delete[] utf8; utf8 = nullptr; utf8Len = 0;
     }
   } while (type != END && fieldLen > 0 && --emergencyExit > 0);
 
@@ -471,7 +471,7 @@ size_t CItemAtt::WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const
       wchar_t *wpdata = reinterpret_cast<wchar_t *>(pdata);
       size_t srclen = field.GetLength()/sizeof(TCHAR);
       wpdata[srclen] = 0;
-      size_t dstlen = pws_os::wcstombs(NULL, 0, wpdata, srclen);
+      size_t dstlen = pws_os::wcstombs(nullptr, 0, wpdata, srclen);
       ASSERT(dstlen > 0);
 
       char *dst = new char[dstlen+1];
@@ -518,7 +518,7 @@ int CItemAtt::Write(PWSfile *out) const
   // XXX TBD - fail if no content, as this is a mandatory field
   if (fiter != m_fields.end()) {
     auto *out4 = dynamic_cast<PWSfileV4 *>(out);
-    ASSERT(out4 != NULL);
+    ASSERT(out4 != nullptr);
 
     size_t clength = fiter->second.GetLength() + BlowFish::BLOCKSIZE;
     auto *content = new unsigned char[clength];

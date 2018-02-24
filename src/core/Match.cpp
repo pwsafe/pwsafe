@@ -306,10 +306,10 @@ PWSMatch::MatchRule PWSMatch::GetRule(const StringX &sx_mnemonic)
     {_T("AF"), MR_AFTER},
     {_T("EX"), MR_EXPIRED},
     {_T("WX"), MR_WILLEXPIRE},
-    {NULL, MR_INVALID}
+    {nullptr, MR_INVALID}
   };
 
-  for (size_t i = 0; table[i].mnemonic != NULL; i++)
+  for (size_t i = 0; table[i].mnemonic != nullptr; i++)
     if (sx_mnemonic == table[i].mnemonic)
       return table[i].mr;
 

@@ -34,8 +34,8 @@ using pws_os::CUUID;
 
 XMLFileHandlers::XMLFileHandlers()
 {
-  m_cur_entry = NULL;
-  m_cur_pwhistory_entry = NULL;
+  m_cur_entry = nullptr;
+  m_cur_pwhistory_entry = nullptr;
   m_sxElemContent = _T("");
 
   m_delimiter = _T('\0');
@@ -134,7 +134,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       if (m_bValidation)
         return false;
 
-      ASSERT(m_cur_pwhistory_entry == NULL);
+      ASSERT(m_cur_pwhistory_entry == nullptr);
       m_cur_pwhistory_entry = new pwhistory_entry;
       m_cur_pwhistory_entry->changed = _T("");
       m_cur_pwhistory_entry->oldpassword = _T("");
@@ -480,20 +480,20 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       m_cur_entry->pwhistory += buffer;
       break;
     case XLE_HISTORY_ENTRY:
-      ASSERT(m_cur_pwhistory_entry != NULL);
+      ASSERT(m_cur_pwhistory_entry != nullptr);
       Format(buffer, _T("\xff%s\xff%04x\xff%s"),
              m_cur_pwhistory_entry->changed.c_str(),
              m_cur_pwhistory_entry->oldpassword.length(),
              m_cur_pwhistory_entry->oldpassword.c_str());
       m_cur_entry->pwhistory += buffer;
       delete m_cur_pwhistory_entry;
-      m_cur_pwhistory_entry = NULL;
+      m_cur_pwhistory_entry = nullptr;
       break;
     case XLE_CHANGEDX:
       m_cur_pwhistory_entry->changed = m_sxElemContent;
       break;
     case XLE_OLDPASSWORD:
-      ASSERT(m_cur_pwhistory_entry != NULL);
+      ASSERT(m_cur_pwhistory_entry != nullptr);
       m_cur_pwhistory_entry->oldpassword = m_sxElemContent;
       break;
     case XLE_ENTRY_PWLENGTH:
