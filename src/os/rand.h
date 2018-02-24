@@ -17,7 +17,7 @@ namespace pws_os {
   
   extern bool GetRandomData(void *p, unsigned long len);
   
-  // Calling following with p == NULL wil return the size of
+  // Calling following with a null p will return the size of
   // the generated seed in byte in slen. A pointer to slen
   // bytes should then be passed, which will be filled with
   // (hopefully) enough entropy to get the ball rolling...
