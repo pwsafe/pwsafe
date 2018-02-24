@@ -925,10 +925,10 @@ PWSDragBar* PasswordSafeFrame::GetDragBar()
 int PasswordSafeFrame::SaveImmediately()
 {
   // Get normal save to do this (code already there for intermediate backups)
-  return Save(ST_SAVEIMMEDIATELY);
+  return Save(SaveType::IMMEDIATELY);
 }
 
-int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
+int PasswordSafeFrame::Save(SaveType savetype /* = SaveType::INVALID*/)
 {
   stringT bu_fname; // used to undo backup if save failed
   PWSprefs *prefs = PWSprefs::GetInstance();
@@ -955,24 +955,29 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
         std::wstring userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
         if (!m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
                                   userBackupPrefix, userBackupDir, bu_fname)) {
-          switch (st) {
-            case ST_NORMALEXIT:
+          switch (savetype) {
+            case SaveType::NORMALEXIT:
               if (wxMessageBox(_("Unable to create intermediate backup.  Save database elsewhere or with another name?\n\nClick 'No' to exit without saving."),
                                _("Write Error"), wxYES_NO | wxICON_EXCLAMATION, this) == wxID_NO)
                 return PWScore::SUCCESS;
               else
                 return SaveAs();
 
-            case ST_SAVEIMMEDIATELY:
+            case SaveType::IMMEDIATELY:
               if (wxMessageBox(_("Unable to create intermediate backup.  Do you wish to save changes to your database without it?"),
                 _("Write Error"), wxYES_NO | wxICON_EXCLAMATION, this) == wxID_NO)
                 return PWScore::USER_CANCEL;
-            case ST_INVALID:
+            case SaveType::INVALID:
               // No particular end of PWS exit i.e. user clicked Save or
               // saving a changed database before opening another
               wxMessageBox(_("Unable to create intermediate backup."), _("Write Error"), wxOK|wxICON_ERROR, this);
               return PWScore::USER_CANCEL;
             default:
+              /*
+               * SaveType::ENDSESSIONEXIT
+               * SaveType::WTSLOGOFFEXIT
+               * SaveType::FAILSAFESAVE
+               */
               break;
           }
           wxMessageBox(_("Unable to create intermediate backup."), _("Write Error"), wxOK|wxICON_ERROR, this);
@@ -1032,7 +1037,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
 //  }
 
   // Only refresh views if not existing
-  if (st != ST_NORMALEXIT)
+  if (savetype != SaveType::NORMALEXIT)
     RefreshViews();
 
   return PWScore::SUCCESS;
