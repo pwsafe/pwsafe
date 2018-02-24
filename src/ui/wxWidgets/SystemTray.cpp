@@ -76,7 +76,7 @@ SystemTray::SystemTray(PasswordSafeFrame* frame) : iconClosed(tray_xpm),
                                                    iconUnlocked(unlocked_tray_xpm),
                                                    iconLocked(locked_tray_xpm),
                                                    m_frame(frame),
-                                                   m_status(TRAY_CLOSED)
+                                                   m_status(TrayStatus::  CLOSED)
 {
 }
 
@@ -89,15 +89,15 @@ void SystemTray::SetTrayStatus(TrayStatus status)
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
      switch(status) {
-       case TRAY_CLOSED:
+       case TrayStatus::CLOSED:
          SetIcon(iconClosed, wxTheApp->GetAppName());
          break;
 
-       case TRAY_UNLOCKED:
+       case TrayStatus::UNLOCKED:
          SetIcon(iconUnlocked, m_frame->GetCurrentSafe());
          break;
 
-       case TRAY_LOCKED:
+       case TrayStatus::LOCKED:
          SetIcon(iconLocked, m_frame->GetCurrentSafe());
          break;
 
@@ -113,15 +113,15 @@ wxMenu* SystemTray::CreatePopupMenu()
   wxMenu* menu = new wxMenu;
 
   switch (m_status) {
-    case TRAY_UNLOCKED:
+    case TrayStatus::UNLOCKED:
         menu->Append(ID_SYSTRAY_LOCK, _("&Lock Safe"))->SetBitmap(wxBitmap(lock_xpm));
       break;
 
-    case TRAY_LOCKED:
+    case TrayStatus::LOCKED:
         menu->Append(ID_SYSTRAY_UNLOCK, _("&Unlock Safe"))->SetBitmap(wxBitmap(unlock_xpm));
         break;
 
-    case TRAY_CLOSED:
+    case TrayStatus::CLOSED:
         menu->Append(wxID_NONE, _("No Safe Open"));
         break;
 
@@ -130,7 +130,7 @@ wxMenu* SystemTray::CreatePopupMenu()
 
   }
 
-  if (m_status != TRAY_CLOSED) {
+  if (m_status != TrayStatus::CLOSED) {
     menu->AppendSeparator();
     menu->Append(wxID_CLOSE, _("&Close"))->SetBitmap(wxBitmap(close_xpm));
     menu->AppendSubMenu(GetRecentHistory(), _("&Recent Entries History"));

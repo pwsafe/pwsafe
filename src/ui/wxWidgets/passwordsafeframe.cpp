@@ -791,11 +791,11 @@ int PasswordSafeFrame::Load(const StringX &passwd)
   if (status == PWScore::SUCCESS) {
     wxGetApp().ConfigureIdleTimer();
     SetTitle(m_core.GetCurFile().c_str());
-    m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+    m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
     m_core.ResumeOnDBNotification();
   } else {
     SetTitle(wxEmptyString);
-    m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
+    m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
   }
   UpdateStatusBar();
   return status;
@@ -1173,7 +1173,7 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
     ClearAppData();
 
     SetTitle(wxEmptyString);
-    m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
+    m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
     wxCommandEvent dummyEv;
     m_search->OnSearchClose(dummyEv); // fix github issue 375
     m_core.SetReadOnly(false);
@@ -2340,7 +2340,7 @@ int PasswordSafeFrame::New()
   }
   SetLabel(PWSUtil::NormalizeTTT(wxT("Password Safe - ") + cs_newfile).c_str());
 
-  m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+  m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
   m_RUEList.ClearEntries();
   wxGetApp().recentDatabases().AddFileToHistory(towxstring(cs_newfile));
   // XXX TODO: Reset IdleLockTimer, as preference has reverted to default
@@ -2442,7 +2442,7 @@ void PasswordSafeFrame::CleanupAfterReloadFailure(bool tellUser)
     wxMessageBox(wxString(_("Could not re-load database: ")) << towxstring(m_core.GetCurFile()),
                      _("Error re-loading last database"), wxOK|wxICON_ERROR, this);
   }
-  m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
+  m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
 }
 
 /**
@@ -2463,7 +2463,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
   if (m_sysTray->IsLocked()) {
     if (VerifySafeCombination(password)) {
       if (ReloadDatabase(password)) {
-        m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+        m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
       }
       else {
         CleanupAfterReloadFailure(true);
@@ -2534,7 +2534,7 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
   if (beingIconized) {
     const bool lockOnMinimize = PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear);
     // if not already locked, lock it if "lock on minimize" is set
-    if (m_sysTray->GetTrayStatus() == SystemTray::TRAY_UNLOCKED && lockOnMinimize) {
+    if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED && lockOnMinimize) {
       pws_os::Trace0(L"OnIconize: will LockDb()\n");
 #if wxCHECK_VERSION(2,9,5)
       CallAfter(&PasswordSafeFrame::LockDb);
@@ -2583,7 +2583,7 @@ void PasswordSafeFrame::HideUI(bool lock)
   m_guiInfo->Save(this);
   wxGetApp().SaveFrameCoords();
 
-  if (lock && m_sysTray->GetTrayStatus() == SystemTray::TRAY_UNLOCKED) {
+  if (lock && m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) {
     LockDb();
   }
 
@@ -2612,17 +2612,17 @@ void PasswordSafeFrame::LockDb()
 
   m_guiInfo->Save(this);
   if (SaveAndClearDatabaseOnLock())
-    m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
+    m_sysTray->SetTrayStatus(SystemTray::TrayStatus::LOCKED);
 }
 
 void PasswordSafeFrame::SetTrayStatus(bool locked)
 {
-  m_sysTray->SetTrayStatus(locked ? SystemTray::TRAY_LOCKED : SystemTray::TRAY_UNLOCKED);
+  m_sysTray->SetTrayStatus(locked ? SystemTray::TrayStatus::LOCKED : SystemTray::TrayStatus::UNLOCKED);
 }
 
 void PasswordSafeFrame::SetTrayClosed()
 {
-  m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
+  m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
 }
 
 void PasswordSafeFrame::ShowTrayIcon()
