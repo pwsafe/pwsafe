@@ -21,14 +21,14 @@ class PasswordSafeFrame;
 class SystemTray : protected wxTaskBarIcon
 {
   public:
-    typedef enum { TRAY_CLOSED, TRAY_UNLOCKED, TRAY_LOCKED } TrayStatus;
+    enum class TrayStatus { CLOSED, UNLOCKED, LOCKED };
 
     SystemTray(PasswordSafeFrame* frame);
 
-    void SetTrayStatus(TrayStatus st);
-    TrayStatus GetTrayStatus() const {return m_status;}
+    void SetTrayStatus(TrayStatus status);
+    TrayStatus GetTrayStatus() const { return m_status; }
     void ShowIcon(void) { SetTrayStatus(m_status); }
-    bool IsLocked(void) const { return m_status == TRAY_LOCKED; }
+    bool IsLocked(void) const { return m_status == TrayStatus::LOCKED; }
     
     /// event handler for a wxEVT_TASKBAR_LEFT_DCLICK
     void OnTaskBarLeftDoubleClick( wxTaskBarIconEvent& evt );
