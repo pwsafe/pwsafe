@@ -25,7 +25,7 @@ class CheckVersion {
  CheckVersion(int nMajor, int nMinor, int nBuild)
    : m_nMajor(nMajor), m_nMinor(nMinor), m_nBuild(nBuild) {}
   
-  enum CheckStatus {UP2DATE, NEWER_AVAILABLE, CANT_CONNECT, CANT_READ};
+  enum class CheckStatus {UP2DATE, NEWER_AVAILABLE, CANT_CONNECT, CANT_READ};
   CheckStatus CheckLatestVersion(const stringT &xml, stringT &latest) const;
  private:
   int m_nMajor, m_nMinor, m_nBuild;

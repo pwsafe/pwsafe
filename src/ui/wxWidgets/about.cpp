@@ -281,12 +281,12 @@ void CAbout::CheckNewVersion()
   *m_newVerStatus << _("Trying to contact server...");
   m_newVerStatus->Show();
   wxURL url(L"https://pwsafe.org/latest.xml");
-  CheckVersion::CheckStatus status = CheckVersion::UP2DATE;
+  CheckVersion::CheckStatus status = CheckVersion::CheckStatus::UP2DATE;
   stringT latest_xml;
   if (!url.IsOk()) {
     wxURLError err = url.GetError();
     pws_os::Trace(wxT("Err:%d\n"),err);
-    status = CheckVersion::CANT_READ;
+    status = CheckVersion::CheckStatus::CANT_READ;
   }
   wxInputStream *in_stream = url.GetInputStream();
   if (in_stream != nullptr) {
@@ -302,7 +302,7 @@ void CAbout::CheckNewVersion()
         if (!conv.FromUTF8(buff, nRead, chunk)) {
           delete in_stream;
           in_stream = 0;
-          status = CheckVersion::CANT_READ;
+          status = CheckVersion::CheckStatus::CANT_READ;
           break;
         } else {
           latest_xml += chunk.c_str();
@@ -311,22 +311,22 @@ void CAbout::CheckNewVersion()
     } while (!in_stream->Eof());
     delete in_stream;
     if (url.GetError() != wxURL_NOERR)
-      status = CheckVersion::CANT_CONNECT;
+      status = CheckVersion::CheckStatus::CANT_CONNECT;
   }
   stringT latest;
-  if (status == CheckVersion::UP2DATE) {
+  if (status == CheckVersion::CheckStatus::UP2DATE) {
     CheckVersion cv(MAJORVERSION, MINORVERSION, REVISION);
     status = cv.CheckLatestVersion(latest_xml, latest);
   }
   m_newVerStatus->Clear();
   switch (status) {
-  case CheckVersion::CANT_CONNECT:
+  case CheckVersion::CheckStatus::CANT_CONNECT:
     *m_newVerStatus << _("Couldn't contact server.");
     break;
-  case CheckVersion::UP2DATE:
+  case CheckVersion::CheckStatus::UP2DATE:
     *m_newVerStatus << _("This is the latest release!");
     break;
-  case CheckVersion::NEWER_AVAILABLE:
+  case CheckVersion::CheckStatus::NEWER_AVAILABLE:
     {
       wxString newer(_("Current version: "));
       newer += pwsafeVersionString + L"\n";
@@ -339,7 +339,7 @@ void CAbout::CheckNewVersion()
       dlg.ShowModal();
       break;
     }
-  case CheckVersion::CANT_READ:
+  case CheckVersion::CheckStatus::CANT_READ:
     *m_newVerStatus << _("Could not read server version data.");
     break;
   default:

@@ -44,12 +44,12 @@ CheckVersion::CheckLatestVersion(const stringT &xml, stringT &latest) const
   pugi::xml_document doc; 
   pugi::xml_parse_result result = doc.load(xml.c_str());
   if (!result)
-    return CANT_READ;
+    return CheckStatus::CANT_READ;
 
   pugi::xml_node Root = doc.first_child();
 
   if (!Root || !SafeCompare(Root.name(), _T("VersionInfo")))
-    return CANT_READ;
+    return CheckStatus::CANT_READ;
 
   for (pugi::xml_node_iterator it = Root.begin(); it != Root.end(); ++it) {
     if (SafeCompare(it->name(), _T("Product"))) {
@@ -84,12 +84,12 @@ CheckVersion::CheckLatestVersion(const stringT &xml, stringT &latest) const
                   Format(latest, L"PasswordSafe V%d.%02d.%02d (%s)",
                          xmajor, xminor, xbuild, xrevision);
                 }
-                return NEWER_AVAILABLE;
+                return CheckStatus::NEWER_AVAILABLE;
             }
-            return UP2DATE;
+            return CheckStatus::UP2DATE;
         } // handled our variant
       } // Product name == PasswordSafe
     } // Product element
   } // IterateChildren
-  return CANT_READ;
+  return CheckStatus::CANT_READ;
 }
