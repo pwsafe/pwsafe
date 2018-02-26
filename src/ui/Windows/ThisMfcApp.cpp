@@ -375,13 +375,13 @@ void ThisMfcApp::LoadLocalizedStuff()
   cs_ResPath.Format(format_string, static_cast<LPCWSTR>(cs_LANG),
                        static_cast<LPCWSTR>(cs_CTRY));
   m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
-                                              pws_os::LOAD_LIBRARY_RESOURCE));
+                                              pws_os::loadLibraryTypes::RESOURCE));
 
   if (m_hInstResDLL == NULL && !cs_CTRY.IsEmpty()) {
     // Now try base
     cs_ResPath.Format(L"pwsafe%s.dll", static_cast<LPCWSTR>(cs_LANG));
     m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
-                                                pws_os::LOAD_LIBRARY_RESOURCE));
+                                                pws_os::loadLibraryTypes::RESOURCE));
   }
 
   if (m_hInstResDLL == NULL) {

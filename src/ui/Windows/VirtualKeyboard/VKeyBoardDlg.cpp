@@ -214,7 +214,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
 #else
   wchar_t *dll_name = L"pws_osk.dll";
 #endif
-  HINSTANCE OSK_module = HINSTANCE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
+  HINSTANCE OSK_module = HINSTANCE(pws_os::LoadLibrary(dll_name, pws_os::loadLibraryTypes::APP));
 
   if (OSK_module == NULL) {
     pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Unable to load OSK DLL. OSK not available.\n");
@@ -364,7 +364,7 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
 #else
   wchar_t *dll_name = L"pws_osk.dll";
 #endif
-  m_OSK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
+  m_OSK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::loadLibraryTypes::APP));
 
   ASSERT(m_OSK_module != NULL);
   m_pGetKBData = LP_OSK_GetKeyboardData(pws_os::GetFunction(m_OSK_module,

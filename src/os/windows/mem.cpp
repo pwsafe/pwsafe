@@ -35,7 +35,7 @@ bool pws_os::mcryptProtect(void *p, size_t size)
   bool res = true;
   //CryptProtectMemory available only in Vista+, so we need to check and load it manually 
   HINSTANCE hCRYPT32 = HINSTANCE(pws_os::LoadLibrary(_T("crypt32.dll"),
-                                                     pws_os::LOAD_LIBRARY_SYS));
+                                                     pws_os::loadLibraryTypes::SYS));
   if (hCRYPT32) {
      LP_CryptProtectMemory protectPtr = (LP_CryptProtectMemory)GetProcAddress(hCRYPT32, "CryptProtectMemory");
      if (protectPtr)
@@ -51,7 +51,7 @@ bool pws_os::mcryptUnprotect(void *p, size_t size)
    bool res = true;
   //CryptProtectMemory available only in Vista+, so we need to check and load it manually 
    HINSTANCE hCRYPT32 = HINSTANCE(pws_os::LoadLibrary(_T("crypt32.dll"),
-                                                      pws_os::LOAD_LIBRARY_SYS));
+                                                      pws_os::loadLibraryTypes::SYS));
   if (hCRYPT32) {
      LP_CryptProtectMemory unprotectPtr =
        LP_CryptProtectMemory(pws_os::GetFunction(hCRYPT32, "CryptUnprotectMemory"));

@@ -14,19 +14,20 @@
 namespace pws_os {
   /**
    * Windows:
-   * LOAD_LIBRARY_SYS -- load from system dir
-   * LOAD_LIBRARY_APP -- load from application dir
-   * LOAD_LIBRARY_CUSTOM -- use specified path (ask system to find it)
+   * loadLibraryTypes::SYS -- load from system dir
+   * loadLibraryTypes::APP -- load from application dir
+   * loadLibraryTypes::CUSTOM -- use specified path (ask system to find it)
+   * loadLibraryTypes::RESOURCE -- language tranalation resource file
    *
    * Linux: 'type' maps to 'flags' for dlopen()
    */
-   enum loadLibraryTypes { 
-	   LOAD_LIBRARY_SYS, 
-	   LOAD_LIBRARY_APP, 
-	   LOAD_LIBRARY_CUSTOM,
-	   LOAD_LIBRARY_RESOURCE
+   enum class loadLibraryTypes { 
+	   SYS, 
+	   APP, 
+	   CUSTOM,
+	   RESOURCE
    };
-   extern void *LoadLibrary(const TCHAR *lib, int type);
+   extern void *LoadLibrary(const TCHAR *lib, loadLibraryTypes type);
    extern void *GetFunction(void *handle, const char *name);
    extern bool FreeLibrary(void *handle);
 }

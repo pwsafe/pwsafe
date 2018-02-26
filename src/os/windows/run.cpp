@@ -48,7 +48,7 @@ struct st_run_impl {
 #else
     TCHAR *dll_name = _T("pws_at.dll");
 #endif
-    m_AT_HK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
+    m_AT_HK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::loadLibraryTypes::APP));
     if (m_AT_HK_module != NULL) {
       pws_os::Trace(_T("st_run_impl::st_run_impl - AutoType DLL Loaded: OK\n"));
       pInit  = AT_PROC_BOOL(pws_os::GetFunction(m_AT_HK_module, "AT_HK_Initialise"));

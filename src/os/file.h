@@ -16,7 +16,7 @@
 #include <vector>
 
 namespace pws_os {
-  enum RWmode { Read, Write };
+  enum class RWmode { Read, Write };
 
   extern void AddDrive(stringT &path);
   extern bool FileExists(const stringT &filename);

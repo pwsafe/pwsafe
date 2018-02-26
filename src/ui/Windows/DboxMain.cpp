@@ -157,7 +157,7 @@ DboxMain::DboxMain(PWScore &core, CWnd* pParent)
   m_bOnStartupTransparancyEnabled(false)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
-  m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::LOAD_LIBRARY_SYS));
+  m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::loadLibraryTypes::SYS));
   if (m_hUser32 != NULL) {
     m_pfcnShutdownBlockReasonCreate = PSBR_CREATE(pws_os::GetFunction(m_hUser32,
                                                                       "ShutdownBlockReasonCreate"));
@@ -231,7 +231,7 @@ void DboxMain::RegisterSessionNotification(const bool bRegister)
   typedef DWORD (WINAPI *PWTS_UnRegSN) (HWND);
 
   m_bWTSRegistered = false;
-  HMODULE hWTSAPI32 = HMODULE(pws_os::LoadLibrary(L"wtsapi32.dll", pws_os::LOAD_LIBRARY_SYS));
+  HMODULE hWTSAPI32 = HMODULE(pws_os::LoadLibrary(L"wtsapi32.dll", pws_os::loadLibraryTypes::SYS));
   if (hWTSAPI32 == NULL)
     return;
 

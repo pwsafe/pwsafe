@@ -152,7 +152,7 @@ bool pws_os::RtlGetVersion(DWORD &dwMajor, DWORD &dwMinor, DWORD &dwBuild)
   RtlGetVersion_FUNC rtl_func;
   dwMajor = dwMinor = dwBuild = 0;
 
-  HMODULE hMod = HMODULE(pws_os::LoadLibrary(L"ntdll.dll", pws_os::LOAD_LIBRARY_SYS));
+  HMODULE hMod = HMODULE(pws_os::LoadLibrary(L"ntdll.dll", pws_os::loadLibraryTypes::SYS));
 
   if (hMod != NULL) {
     rtl_func = (RtlGetVersion_FUNC)GetProcAddress(hMod, "RtlGetVersion");
