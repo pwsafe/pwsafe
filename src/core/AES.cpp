@@ -16,20 +16,20 @@
 
 #define LTC_CLEAN_STACK
 
-enum {
-  CRYPT_OK = 0,           /* Result OK */
-  CRYPT_ERROR,            /* Generic Error */
-  CRYPT_NOP,              /* Not a failure but no operation was performed */
+enum class CryptStatus {
+  OK = 0,           /* Result OK */
+  GENERIC_ERROR,    /* Generic Error */
+  NOP,              /* Not a failure but no operation was performed */
 
-  CRYPT_INVALID_KEYSIZE,  /* Invalid key size given */
-  CRYPT_INVALID_ROUNDS,   /* Invalid number of rounds */
-  CRYPT_FAIL_TESTVECTOR,  /* Algorithm failed test vectors */
+  INVALID_KEYSIZE,  /* Invalid key size given */
+  INVALID_ROUNDS,   /* Invalid number of rounds */
+  FAIL_TESTVECTOR,  /* Algorithm failed test vectors */
 
-  CRYPT_BUFFER_OVERFLOW,  /* Not enough space for output */
+  BUFFER_OVERFLOW,  /* Not enough space for output */
 
-  CRYPT_MEM,              /* Out of memory */
+  MEM,              /* Out of memory */
 
-  CRYPT_INVALID_ARG      /* Generic invalid argument */
+  INVALID_ARG      /* Generic invalid argument */
 };
 
 /** 
@@ -64,10 +64,10 @@ static ulong32 setup_mix2(ulong32 temp)
     @param keylen The key length in bytes
     @param num_rounds The number of rounds desired (0 for default)
     @param skey The key in as scheduled by this function.
-    @return CRYPT_OK if successful
+    @return CryptStatus::OK if successful
  */
-static int rijndael_setup(const unsigned char *key, int keylen,
-                          int num_rounds, rijndael_key *skey)
+static CryptStatus rijndael_setup(const unsigned char *key, int keylen,
+                                  int num_rounds, rijndael_key *skey)
 {
     int i, j;
     ulong32 temp, *rk;
@@ -78,11 +78,11 @@ static int rijndael_setup(const unsigned char *key, int keylen,
     ASSERT(skey != nullptr);
   
     if (keylen != 16 && keylen != 24 && keylen != 32) {
-       return CRYPT_INVALID_KEYSIZE;
+       return CryptStatus::INVALID_KEYSIZE;
     }
     
     if (num_rounds != 0 && num_rounds != (10 + ((keylen/8)-2)*2)) {
-       return CRYPT_INVALID_ROUNDS;
+       return CryptStatus::INVALID_ROUNDS;
     }
     
     skey->Nr = 10 + ((keylen/8)-2)*2;
@@ -156,7 +156,7 @@ static int rijndael_setup(const unsigned char *key, int keylen,
         }
     } else {
        /* this can't happen */
-       return CRYPT_ERROR;
+       return CryptStatus::GENERIC_ERROR;
     }
 
 #ifndef ENCRYPT_ONLY    
@@ -222,7 +222,7 @@ static int rijndael_setup(const unsigned char *key, int keylen,
     *rk   = *rrk;
 #endif /* ENCRYPT_ONLY */
 
-    return CRYPT_OK;   
+    return CryptStatus::OK;   
 }
 
 /**
@@ -230,14 +230,14 @@ static int rijndael_setup(const unsigned char *key, int keylen,
   @param pt The input plaintext (16 bytes)
   @param ct The output ciphertext (16 bytes)
   @param skey The key as scheduled
-  @return CRYPT_OK if successful
+  @return CryptStatus::OK if successful
 */
 #ifdef LTC_CLEAN_STACK
-static int _rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
-                                 const rijndael_key *skey) 
+static CryptStatus _rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
+                                         const rijndael_key *skey) 
 #else
-static int rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
-                                const rijndael_key *skey)
+static CryptStatus rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
+                                        const rijndael_key *skey)
 #endif
 {
     ulong32 s0, s1, s2, s3, t0, t1, t2, t3;
@@ -393,14 +393,14 @@ static int rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
         rk[3];
     STORE32H(s3, ct+12);
 
-    return CRYPT_OK;
+    return CryptStatus::OK;
 }
 
 #ifdef LTC_CLEAN_STACK
-int rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
-                         const rijndael_key *skey) 
+CryptStatus rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
+                                 const rijndael_key *skey) 
 {
-   int err = _rijndael_ecb_encrypt(pt, ct, skey);
+   CryptStatus err = _rijndael_ecb_encrypt(pt, ct, skey);
    burnStack(sizeof(unsigned long)*8 + sizeof(unsigned long*) + sizeof(int)*2);
    return err;
 }
@@ -413,14 +413,14 @@ int rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *ct,
   @param ct The input ciphertext (16 bytes)
   @param pt The output plaintext (16 bytes)
   @param skey The key as scheduled 
-  @return CRYPT_OK if successful
+  @return CryptStatus::OK if successful
 */
 #ifdef LTC_CLEAN_STACK
-static int _rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
-                                 const rijndael_key *skey) 
+static CryptStatus _rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
+                                         const rijndael_key *skey) 
 #else
-static int rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
-                                const rijndael_key *skey)
+static CryptStatus rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
+                                        const rijndael_key *skey)
 #endif
 {
     ulong32 s0, s1, s2, s3, t0, t1, t2, t3;
@@ -575,14 +575,14 @@ static int rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
         rk[3];
     STORE32H(s3, pt+12);
 
-    return CRYPT_OK;
+    return CryptStatus::OK;
 }
 
 #ifdef LTC_CLEAN_STACK
-static int rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
-                                const rijndael_key *skey) 
+static CryptStatus rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
+                                        const rijndael_key *skey) 
 {
-   int err = _rijndael_ecb_decrypt(ct, pt, skey);
+   CryptStatus err = _rijndael_ecb_decrypt(ct, pt, skey);
    burnStack(sizeof(unsigned long)*8 + sizeof(unsigned long*) + sizeof(int)*2);
    return err;
 }
@@ -591,10 +591,10 @@ static int rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt,
 
 AES::AES(const unsigned char* key, int keylen)
 {
-  int status = rijndael_setup(key, keylen, 0, &key_schedule);
+  CryptStatus status = rijndael_setup(key, keylen, 0, &key_schedule);
 
-  ASSERT(status == CRYPT_OK);
-  if (status != CRYPT_OK)
+  ASSERT(status == CryptStatus::OK);
+  if (status != CryptStatus::OK)
     throw status;
 }
 

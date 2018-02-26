@@ -23,7 +23,7 @@ struct rijndael_key {
 class AES : public Fish
 {
 public:
-  enum {BLOCKSIZE=16};
+  static const unsigned int BLOCKSIZE = 16;
   AES(const unsigned char* key, int keylen);
   ~AES();
   void Encrypt(const unsigned char *in, unsigned char *out) const;
