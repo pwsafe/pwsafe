@@ -23,7 +23,7 @@ public:
     return new BlowFish(key, keylen);
   }
 
-  enum {BLOCKSIZE = 8};
+  static const unsigned int  BLOCKSIZE = 8;
 
   BlowFish(const unsigned char* key, int keylen);
   ~BlowFish();
@@ -36,7 +36,7 @@ public:
   unsigned int GetBlockSize() const {return BLOCKSIZE;}
 
 private:
-  enum {bf_N = 16};
+  static const unsigned int bf_N = 16;
   uint32 bf_S[4][256];
   uint32 bf_P[bf_N + 2];
   static const uint32 tempbf_S[4][256];
