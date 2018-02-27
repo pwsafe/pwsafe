@@ -29,7 +29,7 @@ struct twofish_key {
 class TwoFish : public Fish
 {
 public:
-  enum {BLOCKSIZE=16};
+  static const unsigned int BLOCKSIZE = 16;
   TwoFish(const unsigned char* key, int keylen);
   ~TwoFish();
   void Encrypt(const unsigned char *in, unsigned char *out) const;
