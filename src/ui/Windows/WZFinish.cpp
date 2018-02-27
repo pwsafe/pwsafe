@@ -29,11 +29,10 @@
 IMPLEMENT_DYNAMIC(CWZFinish, CWZPropertyPage)
 
 CWZFinish::CWZFinish(CWnd *pParent, UINT nIDCaption, const int nType)
- : CWZPropertyPage(IDD, nIDCaption, nType), m_pothercore(NULL), m_prpt(NULL),
-   m_pExecuteThread(NULL), m_bInProgress(false), m_bComplete(false), 
-   m_bInitDone(false), m_bViewingReport(false), m_status(-1), m_numProcessed(-1)
+ : CWZPropertyPage(IDD, nIDCaption, nType), m_pothercore(nullptr), m_prpt(nullptr),
+   m_pExecuteThread(nullptr), m_bInProgress(false), m_bComplete(false), 
+  m_bInitDone(false), m_bViewingReport(false), m_status(-1), m_numProcessed(-1)
 {
-  // Save pointer to my PropertySheet
   m_pWZPSH = (CWZPropertySheet *)pParent;
 }
 
@@ -302,7 +301,7 @@ int CWZFinish::ExecuteAction()
       m_pothercore->ClearDBData();
       m_pothercore->SetCurFile(L"");
       delete m_pothercore;
-      m_pothercore = NULL;
+      m_pothercore = nullptr;
       return rc;
     }
   }
@@ -313,7 +312,7 @@ int CWZFinish::ExecuteAction()
 
     m_pWZPSH->WZPSHSetUpdateWizardWindow(GetDlgItem(IDC_ENTRY));
 
-    if (m_prpt == NULL)
+    if (m_prpt == nullptr)
       m_prpt = new CReport;
 
     const bool bAdvanced = m_pWZPSH->GetAdvanced();
@@ -332,7 +331,7 @@ int CWZFinish::ExecuteAction()
     m_pExecuteThread = AfxBeginThread(WZExecuteThread, &m_thdpms,
                                 THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
 
-    if (m_pExecuteThread == NULL) {
+    if (m_pExecuteThread == nullptr) {
       pws_os::Trace(L"Unable to create Execute thread\n");
       return PWScore::FAILURE;
     }
@@ -352,7 +351,7 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
 
   // Now tidy up (m_bAutoDelete was set to FALSE)
   delete m_pExecuteThread;
-  m_pExecuteThread = NULL;
+  m_pExecuteThread = nullptr;
 
   m_bComplete = true;
   m_pWZPSH->SetCompleted(true);
@@ -412,12 +411,12 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
   }
 
   // Tidy up other core
-  if (m_pothercore != NULL) {
+  if (m_pothercore != nullptr) {
     m_pothercore->SafeUnlockCurFile();
     m_pothercore->ClearDBData();
     m_pothercore->SetCurFile(L"");
     delete m_pothercore;
-    m_pothercore = NULL;
+    m_pothercore = nullptr;
   }
 
   GetDlgItem(IDC_STATIC_WZRESULTS)->SetWindowText(cs_results);
@@ -432,7 +431,7 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
   // Enable View Report button
   GetDlgItem(IDC_VIEWREPORT)->EnableWindow(TRUE);
 
-  m_pWZPSH->WZPSHSetUpdateWizardWindow(NULL);
+  m_pWZPSH->WZPSHSetUpdateWizardWindow(nullptr);
 
   // In Compare status == 0 means identical, status != 0 means different
   // Details placed in results summary.
@@ -485,7 +484,7 @@ void CWZFinish::OnViewReport()
   if (m_bViewingReport)
     return;
 
-  if (m_prpt != NULL) {
+  if (m_prpt != nullptr) {
     // Stop us doing it again and stop user ending Wizard
     m_bViewingReport = true;
     m_pWZPSH->EnableWindow(FALSE);
