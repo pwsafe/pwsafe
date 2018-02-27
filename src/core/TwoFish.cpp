@@ -17,20 +17,20 @@
 #define LTC_CLEAN_STACK
 #define TWOFISH_ALL_TABLES
 
-enum {
-  CRYPT_OK = 0,           /* Result OK */
-  CRYPT_ERROR,            /* Generic Error */
-  CRYPT_NOP,              /* Not a failure but no operation was performed */
+enum class CryptStatus {
+  OK = 0,           /* Result OK */
+  GENERIC_ERROR,    /* Generic Error */
+  NOP,              /* Not a failure but no operation was performed */
 
-  CRYPT_INVALID_KEYSIZE,  /* Invalid key size given */
-  CRYPT_INVALID_ROUNDS,   /* Invalid number of rounds */
-  CRYPT_FAIL_TESTVECTOR,  /* Algorithm failed test vectors */
+  INVALID_KEYSIZE,  /* Invalid key size given */
+  INVALID_ROUNDS,   /* Invalid number of rounds */
+  FAIL_TESTVECTOR,  /* Algorithm failed test vectors */
 
-  CRYPT_BUFFER_OVERFLOW,  /* Not enough space for output */
+  BUFFER_OVERFLOW,  /* Not enough space for output */
 
-  CRYPT_MEM,              /* Out of memory */
+  MEM,              /* Out of memory */
 
-  CRYPT_INVALID_ARG      /* Generic invalid argument */
+  INVALID_ARG      /* Generic invalid argument */
 };
 
 /** 
@@ -348,12 +348,12 @@ static uint32 g_func(uint32 x, const twofish_key *key)
   @param keylen The key length in bytes
   @param num_rounds The number of rounds desired (0 for default)
   @param skey The key in as scheduled by this function.
-  @return CRYPT_OK if successful
+  @return CryptStatus::OK if successful
 */
 #ifdef LTC_CLEAN_STACK
-static int _twofish_setup(const unsigned char *key, int keylen, int num_rounds, twofish_key *skey)
+static CryptStatus _twofish_setup(const unsigned char *key, int keylen, int num_rounds, twofish_key *skey)
 #else
-static int twofish_setup(const unsigned char *key, int keylen, int num_rounds, twofish_key *skey)
+static CryptStatus twofish_setup(const unsigned char *key, int keylen, int num_rounds, twofish_key *skey)
 #endif
 {
 #ifndef TWOFISH_SMALL
@@ -368,11 +368,11 @@ static int twofish_setup(const unsigned char *key, int keylen, int num_rounds, t
 
   /* invalid arguments? */
   if (num_rounds != 16 && num_rounds != 0) {
-    return CRYPT_INVALID_ROUNDS;
+    return CryptStatus::INVALID_ROUNDS;
   }
 
   if (keylen != 16 && keylen != 24 && keylen != 32) {
-    return CRYPT_INVALID_KEYSIZE;
+    return CryptStatus::INVALID_KEYSIZE;
   }
 
   /* k = keysize/64 [but since our keysize is in bytes...] */
@@ -457,14 +457,13 @@ static int twofish_setup(const unsigned char *key, int keylen, int num_rounds, t
     default: skey->start = 2; break;
   }
 #endif
-  return CRYPT_OK;
+  return CryptStatus::OK;
 }
 
 #ifdef LTC_CLEAN_STACK
-int twofish_setup(const unsigned char *key, int keylen, int num_rounds, twofish_key *skey)
+CryptStatus twofish_setup(const unsigned char *key, int keylen, int num_rounds, twofish_key *skey)
 {
-  int x;
-  x = _twofish_setup(key, keylen, num_rounds, skey);
+  CryptStatus x = _twofish_setup(key, keylen, num_rounds, skey);
   burnStack(sizeof(int32) * 7 + sizeof(unsigned char) * 56 + sizeof(uint32) * 2);
   return x;
 }
@@ -615,10 +614,10 @@ static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, cons
 
 TwoFish::TwoFish(const unsigned char* key, int keylen)
 {
-  int status = twofish_setup(key, keylen, 0, &key_schedule);
+  CryptStatus status = twofish_setup(key, keylen, 0, &key_schedule);
 
-  ASSERT(status == CRYPT_OK);
-  if (status != CRYPT_OK)
+  ASSERT(status == CryptStatus::OK);
+  if (status != CryptStatus::OK)
     throw status;
 }
 
