@@ -79,6 +79,22 @@ BOOL CWZFinish::OnInitDialog()
       m_pWZPSH->GetDlgItem(IDC_ABORT)->SetWindowText(cs_Abort);
       break;
     }
+    // don't show report button when there's nothing to report:
+    // The following export operations cannot fail, hence no sense
+    // in confusing user with report
+    case ID_MENUITEM_EXPORT2PLAINTEXT:
+    case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+    case ID_MENUITEM_EXPORTGRP2PLAINTEXT:
+    case ID_MENUITEM_EXPORTENT2DB:
+    case ID_MENUITEM_EXPORTGRP2DB:
+    case ID_MENUITEM_EXPORTFILTERED2DB:
+      // XML export may fail, so we'll show the report button if so
+      // at the end of the export
+    case ID_MENUITEM_EXPORT2XML:
+    case ID_MENUITEM_EXPORTENT2XML:
+    case ID_MENUITEM_EXPORTGRP2XML:
+      GetDlgItem(IDC_VIEWREPORT)->ShowWindow(SW_HIDE);
+      // deliberate fallthrough
     default:
       m_pWZPSH->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
       m_pWZPSH->GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
@@ -154,9 +170,7 @@ static UINT WZExecuteThread(LPVOID pParam)
       break;
   }
 
-  // Set the thread return code for caller
-  pthdpms->status = status;
-
+  pthdpms->status = status; // Set the thread return code for caller
   pthdpms->pWZFinish->PostMessage(PWS_MSG_WIZARD_EXECUTE_THREAD_ENDED, (WPARAM)pthdpms, 0);
 
   return 0;
@@ -381,6 +395,10 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
       case ID_MENUITEM_EXPORTGRP2XML:
         cs_results.Format(IDS_EXPORTED, m_thdpms.numProcessed);
         if (m_thdpms.status == PWScore::OK_WITH_ERRORS) {
+          // for export we hide the View Report button, but if something went wrong
+          // we show it.
+          // Might be worth adopting this approach in general...
+          GetDlgItem(IDC_VIEWREPORT)->ShowWindow(SW_SHOW);
           CString cs_errors(MAKEINTRESOURCE(IDSC_XMLCHARACTERERRORS));
           cs_results += L"\n\n";
           cs_results += cs_errors;
