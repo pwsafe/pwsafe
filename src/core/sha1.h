@@ -12,7 +12,8 @@
 class SHA1
 {
 public:
-  enum {HASHLEN = 20, BLOCKSIZE = 64};
+  static const unsigned int HASHLEN = 20;
+  static const unsigned int BLOCKSIZE = 64;
   SHA1();
   ~SHA1();
   void Update(const unsigned char* data, unsigned int len);

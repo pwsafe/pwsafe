@@ -18,7 +18,8 @@
 class SHA256
 {
 public:
-  enum {HASHLEN = 32, BLOCKSIZE = 64};
+  static const unsigned int HASHLEN = 32;
+  static const unsigned int BLOCKSIZE = 64;
   SHA256();
   ~SHA256();
   void Update(const unsigned char *in, size_t inlen);
