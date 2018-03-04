@@ -112,23 +112,23 @@ struct PWPolicy {
 //-----------------------------------------------------------------
 // Structure for maintaining history of policy changes for Undo/Redo
 
-// Change flags
-enum  CPP_FLAGS {CPP_INVALID = 0, CPP_ADD = 1, CPP_DELETE = 2, CPP_MODIFIED = 4};
-
 struct st_PSWDPolicyChange {
+  // Change flags
+  enum class Mode {INVALID = 0, ADD = 1, DELETE = 2, MODIFIED = 4};
+
   StringX name;
   PWPolicy st_pp_save;
   PWPolicy st_pp_new;
-  CPP_FLAGS flags;
+  Mode flags;
 
   st_PSWDPolicyChange()
-  : name(_T("")), flags(CPP_INVALID)
+  : name(_T("")), flags(Mode::INVALID)
   {
     st_pp_save.Empty();
     st_pp_new.Empty();
   }
 
-  st_PSWDPolicyChange(const StringX &in_name, CPP_FLAGS in_flags,
+  st_PSWDPolicyChange(const StringX &in_name, Mode in_flags,
           const PWPolicy &in_st_pp_original,
           const PWPolicy &in_st_pp_new)
   : name(in_name), st_pp_save(in_st_pp_original),
@@ -168,7 +168,7 @@ struct st_PSWDPolicyChange {
   void Empty()
   { 
     name = _T("");
-    flags = CPP_INVALID;
+    flags = Mode::INVALID;
     st_pp_save.Empty();
     st_pp_new.Empty();
   }

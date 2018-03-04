@@ -454,7 +454,7 @@ void CManagePasswordPolicies::UpdateDetails()
 }
 
 void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const PWPolicy &pol,
-                                           CPP_FLAGS mode)
+                                           st_PSWDPolicyChange::Mode mode)
 {
   if (polname == _("Default Policy"))
     m_st_default_pp = pol;
@@ -467,14 +467,14 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const PWPoli
     st_change.name = policyname;
     st_change.st_pp_save = m_iSelectedItem != 0 ? m_mapIter->second : m_st_default_pp;
     switch (mode) {
-    case CPP_ADD:
-      break;
-    case CPP_MODIFIED:
-      break;
-    case CPP_DELETE:
-      break;
-    default:
-      ASSERT(0);
+      case st_PSWDPolicyChange::Mode::ADD:
+        break;
+      case st_PSWDPolicyChange::Mode::MODIFIED:
+        break;
+      case st_PSWDPolicyChange::Mode::DELETE:
+        break;
+      default:
+        ASSERT(0);
     }
 
     if (m_iSelectedItem != 0) {
@@ -528,7 +528,7 @@ void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
     wxString policyname;
 
     ppdlg.GetPolicyData(policyname, st_pp);
-    UpdatePolicy(policyname, st_pp, CPP_ADD);
+    UpdatePolicy(policyname, st_pp, st_PSWDPolicyChange::Mode::ADD);
   }
 }
 
@@ -561,7 +561,7 @@ void CManagePasswordPolicies::OnEditPpClick( wxCommandEvent& )
   if (ppdlg.ShowModal() == wxID_OK) {
     ppdlg.GetPolicyData(policyname, st_pp);
     ASSERT(!policyname.IsEmpty());
-    UpdatePolicy(policyname, st_pp, CPP_MODIFIED);
+    UpdatePolicy(policyname, st_pp, st_PSWDPolicyChange::Mode::MODIFIED);
   }
 }
 
