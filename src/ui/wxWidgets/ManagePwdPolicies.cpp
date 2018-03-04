@@ -72,6 +72,8 @@ BEGIN_EVENT_TABLE( CManagePasswordPolicies, wxDialog )
   EVT_BUTTON( wxID_HELP, CManagePasswordPolicies::OnHelpClick )
 
 ////@end CManagePasswordPolicies event table entries
+  
+  EVT_SIZE( CManagePasswordPolicies::OnSize )
 
 END_EVENT_TABLE()
 
@@ -156,11 +158,11 @@ void CManagePasswordPolicies::CreateControls()
   auto *itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer4, 1, wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  m_PolicyNames = new wxGrid( itemDialog1, ID_POLICYLIST, wxDefaultPosition, wxSize(269, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
+  m_PolicyNames = new wxGrid( itemDialog1, ID_POLICYLIST, wxDefaultPosition, wxSize(-1, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
   m_PolicyNames->SetDefaultColSize(100);
   m_PolicyNames->SetDefaultRowSize(25);
   m_PolicyNames->SetColLabelSize(25);
-  m_PolicyNames->SetRowLabelSize(50);
+  m_PolicyNames->SetRowLabelSize(0);
   m_PolicyNames->CreateGrid(10, 2, wxGrid::wxGridSelectRows);
   itemBoxSizer4->Add(m_PolicyNames, 3, wxEXPAND|wxALL, 5);
 
@@ -218,7 +220,7 @@ void CManagePasswordPolicies::CreateControls()
   m_PolicyDetails->SetDefaultColSize(220);
   m_PolicyDetails->SetDefaultRowSize(25);
   m_PolicyDetails->SetColLabelSize(25);
-  m_PolicyDetails->SetRowLabelSize(50);
+  m_PolicyDetails->SetRowLabelSize(0);
   m_PolicyDetails->CreateGrid(8, 2, wxGrid::wxGridSelectRows);
   itemBoxSizer20->Add(m_PolicyDetails, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -226,7 +228,7 @@ void CManagePasswordPolicies::CreateControls()
   m_PolicyEntries->SetDefaultColSize(140);
   m_PolicyEntries->SetDefaultRowSize(25);
   m_PolicyEntries->SetColLabelSize(25);
-  m_PolicyEntries->SetRowLabelSize(50);
+  m_PolicyEntries->SetRowLabelSize(0);
   m_PolicyEntries->CreateGrid(8, 3, wxGrid::wxGridSelectRows);
   itemBoxSizer20->Add(m_PolicyEntries, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -261,12 +263,11 @@ void CManagePasswordPolicies::CreateControls()
   // We have 2 grids, but we show only one at a time,
   // toggle when user clicks on ID_LIST button.
   // Setting these up:
-  m_PolicyNames->SetRowLabelSize(0);
-  int col0Width = m_PolicyNames->GetColSize(0);
-  col0Width += 45;
-  m_PolicyNames->SetColSize(0, col0Width);
   m_PolicyNames->SetColLabelValue(0, _("Policy Name"));
   m_PolicyNames->SetColLabelValue(1, _("Use count"));
+  m_PolicyNames->Fit();
+  m_PolicyNames->InvalidateBestSize();
+  m_PolicyNames->SetClientSize(m_PolicyNames->GetBestSize());
   UpdateNames();
   m_PolicyNames->SelectRow(0);
 
@@ -274,18 +275,21 @@ void CManagePasswordPolicies::CreateControls()
   FindWindow(ID_LIST)->Enable(false);
   FindWindow(wxID_DELETE)->Enable(false);
 
-  m_PolicyDetails->SetRowLabelSize(0);
   m_PolicyDetails->SetColLabelValue(0, _("Policy Field"));
   m_PolicyDetails->SetColLabelValue(1, _("Value"));
+  m_PolicyDetails->Fit();
   UpdateDetails();
 
-  m_PolicyEntries->SetRowLabelSize(0);
   m_PolicyEntries->SetColLabelValue(0, _("Group"));
   m_PolicyEntries->SetColLabelValue(1, _("Title"));
   m_PolicyEntries->SetColLabelValue(2, _("User Name"));
-
+  m_PolicyEntries->Fit();
   ShowPolicyDetails();
 
+  
+  m_ScrollbarWidth = wxSystemSettings::GetMetric(wxSYS_VSCROLL_X, this) - 10;
+
+  
   // Max. of 255 policy names allowed - only 2 hex digits used for number
   if (m_MapPSWDPLC.size() >= 255)
     FindWindow(wxID_NEW)->Enable(false);
@@ -718,4 +722,31 @@ void CManagePasswordPolicies::OnSelectCell( wxGridEvent& evt )
     m_curPolRow = evt.GetRow();
     UpdateDetails();
   }
+}
+
+/**
+ * Event handler (EVT_SIZE) that will be called when the window has been resized.
+ * 
+ * @param event holds information about size change events.
+ * @see <a href="http://docs.wxwidgets.org/3.0/classwx_size_event.html">wxSizeEvent Class Reference</a>
+ */
+void CManagePasswordPolicies::OnSize(wxSizeEvent& event)
+{
+  int width = 0;
+  
+  // First column of policy names grid shall get available space, whereas the second column has fixed size
+  width = m_PolicyNames->GetClientSize().GetWidth() - m_PolicyNames->GetRowLabelSize() - m_PolicyNames->GetColSize(1) - m_ScrollbarWidth;
+  
+  if (width > 0) {
+    m_PolicyNames->SetColSize(0, width);
+  }
+  
+  // Second column of policy details grid shall get available space, whereas the first column has fixed size
+  width = m_PolicyDetails->GetClientSize().GetWidth() - m_PolicyDetails->GetRowLabelSize() - m_PolicyDetails->GetColSize(0) - m_ScrollbarWidth;
+  
+  if (width > 0) {
+    m_PolicyDetails->SetColSize(1, width);
+  }
+  
+  event.Skip();
 }

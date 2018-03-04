@@ -130,6 +130,8 @@ public:
 
 ////@end CManagePasswordPolicies event handler declarations
 
+  void OnSize(wxSizeEvent& event);
+
 ////@begin CManagePasswordPolicies member function declarations
 
   /// Retrieves bitmap resources
@@ -178,6 +180,8 @@ public:
   bool m_bViewPolicy;
   
   bool m_bUndoShortcut, m_bRedoShortcut;
+  
+  int m_ScrollbarWidth;
 };
 
 #endif
