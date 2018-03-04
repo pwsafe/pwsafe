@@ -74,6 +74,8 @@ BEGIN_EVENT_TABLE( CManagePasswordPolicies, wxDialog )
 ////@end CManagePasswordPolicies event table entries
   
   EVT_SIZE( CManagePasswordPolicies::OnSize )
+  
+  EVT_MAXIMIZE( CManagePasswordPolicies::OnMaximize )
 
 END_EVENT_TABLE()
 
@@ -527,6 +529,27 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const PWPoli
   UpdateDetails();
 }
 
+void CManagePasswordPolicies::ResizeGridColumns()
+{
+  int width = 0;
+  
+  // First column of policy names grid shall get available space, whereas the second column has fixed size
+  width = m_PolicyNames->GetClientSize().GetWidth() - m_PolicyNames->GetRowLabelSize() - m_PolicyNames->GetColSize(1) - m_ScrollbarWidth;
+  
+  if (width > 0) {
+    m_PolicyNames->SetColSize(0, width);
+  }
+  
+  // Second column of policy details grid shall get available space, whereas the first column has fixed size
+  width = m_PolicyDetails->GetClientSize().GetWidth() - m_PolicyDetails->GetRowLabelSize() - m_PolicyDetails->GetColSize(0) - m_ScrollbarWidth;
+  
+  if (width > 0) {
+    m_PolicyDetails->SetColSize(1, width);
+  }
+  
+  // TODO: resize of grid columns of m_PolicyEntries when switching between policy details and entries is correctly implemented
+}
+
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEW
  */
@@ -732,21 +755,24 @@ void CManagePasswordPolicies::OnSelectCell( wxGridEvent& evt )
  */
 void CManagePasswordPolicies::OnSize(wxSizeEvent& event)
 {
-  int width = 0;
+  UNREFERENCED_PARAMETER(event);
   
-  // First column of policy names grid shall get available space, whereas the second column has fixed size
-  width = m_PolicyNames->GetClientSize().GetWidth() - m_PolicyNames->GetRowLabelSize() - m_PolicyNames->GetColSize(1) - m_ScrollbarWidth;
+  CallAfter(&CManagePasswordPolicies::ResizeGridColumns); // delayed execution of resizing, until dialog is completely layout
   
-  if (width > 0) {
-    m_PolicyNames->SetColSize(0, width);
-  }
+  event.Skip();
+}
+
+/**
+ * Event handler (EVT_MAXIMIZE) that will be called when the window has been maximized.
+ * 
+ * @param event holds information about size change events.
+ * @see <a href="http://docs.wxwidgets.org/3.0/classwx_maximize_event.html">wxMaximizeEvent Class Reference</a>
+ */
+void CManagePasswordPolicies::OnMaximize(wxMaximizeEvent& event)
+{
+  UNREFERENCED_PARAMETER(event);
   
-  // Second column of policy details grid shall get available space, whereas the first column has fixed size
-  width = m_PolicyDetails->GetClientSize().GetWidth() - m_PolicyDetails->GetRowLabelSize() - m_PolicyDetails->GetColSize(0) - m_ScrollbarWidth;
-  
-  if (width > 0) {
-    m_PolicyDetails->SetColSize(1, width);
-  }
+  CallAfter(&CManagePasswordPolicies::ResizeGridColumns); // delayed execution of resizing, until dialog is completely layout
   
   event.Skip();
 }
