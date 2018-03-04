@@ -159,7 +159,7 @@ public:
  private:
   void UpdateNames();
   void UpdateDetails();
-  void UpdatePolicy(const wxString &polname, const PWPolicy &pol, CPP_FLAGS mode); // called after New/Edit
+  void UpdatePolicy(const wxString &polname, const PWPolicy &pol, st_PSWDPolicyChange::Mode mode); // called after New/Edit
   void ShowPolicyDetails();
   void ShowPolicyEntries();
   PWPolicy GetSelectedPolicy() const;
