@@ -131,6 +131,8 @@ public:
 ////@end CManagePasswordPolicies event handler declarations
 
   void OnSize(wxSizeEvent& event);
+  
+  void OnMaximize(wxMaximizeEvent& event);
 
 ////@begin CManagePasswordPolicies member function declarations
 
@@ -162,6 +164,7 @@ public:
   void ShowPolicyEntries();
   PWPolicy GetSelectedPolicy() const;
   int GetSelectedRow() const;
+  void ResizeGridColumns();
 
   PWScore &m_core;
   // History of current changes for Undo/Redo and index to current change
