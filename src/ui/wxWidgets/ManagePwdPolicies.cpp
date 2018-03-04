@@ -219,7 +219,7 @@ void CManagePasswordPolicies::CreateControls()
   m_PolicyDetails->SetDefaultRowSize(25);
   m_PolicyDetails->SetColLabelSize(25);
   m_PolicyDetails->SetRowLabelSize(50);
-  m_PolicyDetails->CreateGrid(5, 2, wxGrid::wxGridSelectRows);
+  m_PolicyDetails->CreateGrid(8, 2, wxGrid::wxGridSelectRows);
   itemBoxSizer20->Add(m_PolicyDetails, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_PolicyEntries = new wxGrid( itemDialog1, ID_POLICYENTRIES, wxDefaultPosition, wxSize(-1, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
@@ -227,7 +227,7 @@ void CManagePasswordPolicies::CreateControls()
   m_PolicyEntries->SetDefaultRowSize(25);
   m_PolicyEntries->SetColLabelSize(25);
   m_PolicyEntries->SetRowLabelSize(50);
-  m_PolicyEntries->CreateGrid(5, 3, wxGrid::wxGridSelectRows);
+  m_PolicyEntries->CreateGrid(8, 3, wxGrid::wxGridSelectRows);
   itemBoxSizer20->Add(m_PolicyEntries, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemStdDialogButtonSizer23 = new wxStdDialogButtonSizer;
@@ -399,15 +399,23 @@ void CManagePasswordPolicies::UpdateNames()
   }
 }
 
-static void wxRowPutter(int row, const stringT &name, const stringT &value,
-                             void *table)
+/**
+ * Callback function used by PWPolicy::Policy2Table
+ */
+static void wxRowPutter(int row, const stringT &name, const stringT &value, void *table)
 {
-  // Callback function used by PWPolicy::Policy2Table
-  auto *tableControl = (wxGrid *)table;
-  tableControl->InsertRows(row);
-  tableControl->SetCellValue(row, 0, name.c_str());
-  tableControl->SetCellValue(row, 1, value.c_str());
-  tableControl->SetReadOnly(row, 0); tableControl->SetReadOnly(row, 1);
+  auto *tableControl = static_cast<wxGrid *>(table);
+  
+  if (tableControl) {
+    if (tableControl->GetNumberRows() <= row) {
+      tableControl->InsertRows(row);
+    }
+    
+    tableControl->SetCellValue(row, 0, name.c_str());
+    tableControl->SetCellValue(row, 1, value.c_str());
+    tableControl->SetReadOnly(row, 0);
+    tableControl->SetReadOnly(row, 1);
+  }
 }
 
 int CManagePasswordPolicies::GetSelectedRow() const
