@@ -570,10 +570,8 @@ void CManagePasswordPolicies::OnEditPpClick( wxCommandEvent& )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_DELETE
  */
 
-void CManagePasswordPolicies::OnDeleteClick( wxCommandEvent& event )
-{
-  UNREFERENCED_PARAMETER(event);
-  
+void CManagePasswordPolicies::OnDeleteClick( wxCommandEvent& )
+{  
   bool isEmptyCell  = false;
   auto columns      = m_PolicyNames->GetNumberCols();
   auto selectedRows = m_PolicyNames->GetSelectedRows();
