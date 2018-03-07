@@ -72,6 +72,10 @@ BEGIN_EVENT_TABLE( CManagePasswordPolicies, wxDialog )
   EVT_BUTTON( wxID_HELP, CManagePasswordPolicies::OnHelpClick )
 
 ////@end CManagePasswordPolicies event table entries
+  
+  EVT_SIZE( CManagePasswordPolicies::OnSize )
+  
+  EVT_MAXIMIZE( CManagePasswordPolicies::OnMaximize )
 
 END_EVENT_TABLE()
 
@@ -156,11 +160,11 @@ void CManagePasswordPolicies::CreateControls()
   auto *itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer4, 1, wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  m_PolicyNames = new wxGrid( itemDialog1, ID_POLICYLIST, wxDefaultPosition, wxSize(269, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
+  m_PolicyNames = new wxGrid( itemDialog1, ID_POLICYLIST, wxDefaultPosition, wxSize(-1, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
   m_PolicyNames->SetDefaultColSize(100);
   m_PolicyNames->SetDefaultRowSize(25);
   m_PolicyNames->SetColLabelSize(25);
-  m_PolicyNames->SetRowLabelSize(50);
+  m_PolicyNames->SetRowLabelSize(0);
   m_PolicyNames->CreateGrid(10, 2, wxGrid::wxGridSelectRows);
   m_PolicyNames->EnableEditing(false);
   itemBoxSizer4->Add(m_PolicyNames, 3, wxEXPAND|wxALL, 5);
@@ -219,8 +223,8 @@ void CManagePasswordPolicies::CreateControls()
   m_PolicyDetails->SetDefaultColSize(220);
   m_PolicyDetails->SetDefaultRowSize(25);
   m_PolicyDetails->SetColLabelSize(25);
-  m_PolicyDetails->SetRowLabelSize(50);
-  m_PolicyDetails->CreateGrid(5, 2, wxGrid::wxGridSelectRows);
+  m_PolicyDetails->SetRowLabelSize(0);
+  m_PolicyDetails->CreateGrid(8, 2, wxGrid::wxGridSelectRows);
   m_PolicyDetails->EnableEditing(false);
   itemBoxSizer20->Add(m_PolicyDetails, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -228,8 +232,8 @@ void CManagePasswordPolicies::CreateControls()
   m_PolicyEntries->SetDefaultColSize(140);
   m_PolicyEntries->SetDefaultRowSize(25);
   m_PolicyEntries->SetColLabelSize(25);
-  m_PolicyEntries->SetRowLabelSize(50);
-  m_PolicyEntries->CreateGrid(5, 3, wxGrid::wxGridSelectRows);
+  m_PolicyEntries->SetRowLabelSize(0);
+  m_PolicyEntries->CreateGrid(8, 3, wxGrid::wxGridSelectRows);
   m_PolicyEntries->EnableEditing(false);
   itemBoxSizer20->Add(m_PolicyEntries, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -264,12 +268,11 @@ void CManagePasswordPolicies::CreateControls()
   // We have 2 grids, but we show only one at a time,
   // toggle when user clicks on ID_LIST button.
   // Setting these up:
-  m_PolicyNames->SetRowLabelSize(0);
-  int col0Width = m_PolicyNames->GetColSize(0);
-  col0Width += 45;
-  m_PolicyNames->SetColSize(0, col0Width);
   m_PolicyNames->SetColLabelValue(0, _("Policy Name"));
   m_PolicyNames->SetColLabelValue(1, _("Use count"));
+  m_PolicyNames->Fit();
+  m_PolicyNames->InvalidateBestSize();
+  m_PolicyNames->SetClientSize(m_PolicyNames->GetBestSize());
   UpdateNames();
   m_PolicyNames->SelectRow(0);
 
@@ -277,18 +280,21 @@ void CManagePasswordPolicies::CreateControls()
   FindWindow(ID_LIST)->Enable(false);
   FindWindow(wxID_DELETE)->Enable(false);
 
-  m_PolicyDetails->SetRowLabelSize(0);
   m_PolicyDetails->SetColLabelValue(0, _("Policy Field"));
   m_PolicyDetails->SetColLabelValue(1, _("Value"));
+  m_PolicyDetails->Fit();
   UpdateDetails();
 
-  m_PolicyEntries->SetRowLabelSize(0);
   m_PolicyEntries->SetColLabelValue(0, _("Group"));
   m_PolicyEntries->SetColLabelValue(1, _("Title"));
   m_PolicyEntries->SetColLabelValue(2, _("User Name"));
-
+  m_PolicyEntries->Fit();
   ShowPolicyDetails();
 
+  
+  m_ScrollbarWidth = wxSystemSettings::GetMetric(wxSYS_VSCROLL_X, this) - 10;
+
+  
   // Max. of 255 policy names allowed - only 2 hex digits used for number
   if (m_MapPSWDPLC.size() >= 255)
     FindWindow(wxID_NEW)->Enable(false);
@@ -400,15 +406,23 @@ void CManagePasswordPolicies::UpdateNames()
   }
 }
 
-static void wxRowPutter(int row, const stringT &name, const stringT &value,
-                             void *table)
+/**
+ * Callback function used by PWPolicy::Policy2Table
+ */
+static void wxRowPutter(int row, const stringT &name, const stringT &value, void *table)
 {
-  // Callback function used by PWPolicy::Policy2Table
-  auto *tableControl = (wxGrid *)table;
-  tableControl->InsertRows(row);
-  tableControl->SetCellValue(row, 0, name.c_str());
-  tableControl->SetCellValue(row, 1, value.c_str());
-  tableControl->SetReadOnly(row, 0); tableControl->SetReadOnly(row, 1);
+  auto *tableControl = static_cast<wxGrid *>(table);
+  
+  if (tableControl) {
+    if (tableControl->GetNumberRows() <= row) {
+      tableControl->InsertRows(row);
+    }
+    
+    tableControl->SetCellValue(row, 0, name.c_str());
+    tableControl->SetCellValue(row, 1, value.c_str());
+    tableControl->SetReadOnly(row, 0);
+    tableControl->SetReadOnly(row, 1);
+  }
 }
 
 int CManagePasswordPolicies::GetSelectedRow() const
@@ -455,7 +469,7 @@ void CManagePasswordPolicies::UpdateDetails()
 }
 
 void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const PWPolicy &pol,
-                                           CPP_FLAGS mode)
+                                           st_PSWDPolicyChange::Mode mode)
 {
   if (polname == _("Default Policy"))
     m_st_default_pp = pol;
@@ -468,14 +482,14 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const PWPoli
     st_change.name = policyname;
     st_change.st_pp_save = m_iSelectedItem != 0 ? m_mapIter->second : m_st_default_pp;
     switch (mode) {
-    case CPP_ADD:
-      break;
-    case CPP_MODIFIED:
-      break;
-    case CPP_DELETE:
-      break;
-    default:
-      ASSERT(0);
+      case st_PSWDPolicyChange::Mode::ADD:
+        break;
+      case st_PSWDPolicyChange::Mode::MODIFIED:
+        break;
+      case st_PSWDPolicyChange::Mode::DELETE:
+        break;
+      default:
+        ASSERT(0);
     }
 
     if (m_iSelectedItem != 0) {
@@ -516,6 +530,27 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const PWPoli
   UpdateDetails();
 }
 
+void CManagePasswordPolicies::ResizeGridColumns()
+{
+  int width = 0;
+  
+  // First column of policy names grid shall get available space, whereas the second column has fixed size
+  width = m_PolicyNames->GetClientSize().GetWidth() - m_PolicyNames->GetRowLabelSize() - m_PolicyNames->GetColSize(1) - m_ScrollbarWidth;
+  
+  if (width > 0) {
+    m_PolicyNames->SetColSize(0, width);
+  }
+  
+  // Second column of policy details grid shall get available space, whereas the first column has fixed size
+  width = m_PolicyDetails->GetClientSize().GetWidth() - m_PolicyDetails->GetRowLabelSize() - m_PolicyDetails->GetColSize(0) - m_ScrollbarWidth;
+  
+  if (width > 0) {
+    m_PolicyDetails->SetColSize(1, width);
+  }
+  
+  // TODO: resize of grid columns of m_PolicyEntries when switching between policy details and entries is correctly implemented
+}
+
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEW
  */
@@ -529,7 +564,7 @@ void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
     wxString policyname;
 
     ppdlg.GetPolicyData(policyname, st_pp);
-    UpdatePolicy(policyname, st_pp, CPP_ADD);
+    UpdatePolicy(policyname, st_pp, st_PSWDPolicyChange::Mode::ADD);
   }
 }
 
@@ -562,7 +597,7 @@ void CManagePasswordPolicies::OnEditPpClick( wxCommandEvent& )
   if (ppdlg.ShowModal() == wxID_OK) {
     ppdlg.GetPolicyData(policyname, st_pp);
     ASSERT(!policyname.IsEmpty());
-    UpdatePolicy(policyname, st_pp, CPP_MODIFIED);
+    UpdatePolicy(policyname, st_pp, st_PSWDPolicyChange::Mode::MODIFIED);
   }
 }
 
@@ -773,4 +808,34 @@ void CManagePasswordPolicies::OnSelectCell( wxGridEvent& event )
       UpdateDetails();
     }
   }
+}
+
+/**
+ * Event handler (EVT_SIZE) that will be called when the window has been resized.
+ * 
+ * @param event holds information about size change events.
+ * @see <a href="http://docs.wxwidgets.org/3.0/classwx_size_event.html">wxSizeEvent Class Reference</a>
+ */
+void CManagePasswordPolicies::OnSize(wxSizeEvent& event)
+{
+  UNREFERENCED_PARAMETER(event);
+  
+  CallAfter(&CManagePasswordPolicies::ResizeGridColumns); // delayed execution of resizing, until dialog is completely layout
+  
+  event.Skip();
+}
+
+/**
+ * Event handler (EVT_MAXIMIZE) that will be called when the window has been maximized.
+ * 
+ * @param event holds information about size change events.
+ * @see <a href="http://docs.wxwidgets.org/3.0/classwx_maximize_event.html">wxMaximizeEvent Class Reference</a>
+ */
+void CManagePasswordPolicies::OnMaximize(wxMaximizeEvent& event)
+{
+  UNREFERENCED_PARAMETER(event);
+  
+  CallAfter(&CManagePasswordPolicies::ResizeGridColumns); // delayed execution of resizing, until dialog is completely layout
+  
+  event.Skip();
 }
