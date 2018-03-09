@@ -387,7 +387,7 @@ void CManagePSWDPols::OnNew()
     // Save changes for Undo/Redo
     st_PSWDPolicyChange st_change;
     st_change.name = cs_policyname;
-    st_change.flags = CPP_ADD;
+    st_change.flags = st_PSWDPolicyChange::Mode::ADD;
     st_change.st_pp_save.Empty();
 
     // Added a named password policy
@@ -463,7 +463,7 @@ void CManagePSWDPols::OnEdit()
     // Save changes for Undo/Redo
     st_PSWDPolicyChange st_change;
     st_change.name = m_iSelectedItem != 0 ? cs_policyname : L"";
-    st_change.flags = CPP_MODIFIED;
+    st_change.flags = st_PSWDPolicyChange::Mode::MODIFIED;
     st_change.st_pp_save = m_iSelectedItem != 0 ?iter->second : m_st_default_pp;
 
     // Update default (if changed) or the named policies
@@ -547,7 +547,7 @@ void CManagePSWDPols::OnDelete()
   // Save changes for Undo/Redo
   st_PSWDPolicyChange st_change;
   st_change.name = cs_policyname;
-  st_change.flags = CPP_DELETE;
+  st_change.flags = st_PSWDPolicyChange::Mode::REMOVE;
   st_change.st_pp_save.Empty();
   st_change.st_pp_new = iter->second;
 
@@ -1011,7 +1011,7 @@ void CManagePSWDPols::OnUndo()
   bool bDefaultPolicy = st_last_change.name.empty();
 
   switch (st_last_change.flags) {
-    case CPP_ADD:
+    case st_PSWDPolicyChange::Mode::ADD:
     {
       // We added a new policy - delete it
       PSWDPolicyMapIter iter = m_MapPSWDPLC.find(st_last_change.name);
@@ -1022,14 +1022,14 @@ void CManagePSWDPols::OnUndo()
       m_iSelectedItem = 0;
       break;
     }
-    case CPP_DELETE:
+    case st_PSWDPolicyChange::Mode::REMOVE:
       // We deleted a policy - add it
       m_MapPSWDPLC[st_last_change.name] = st_last_change.st_pp_save;
 
       // Select it - but we do not yet know the m_PolicyNames index yet
       m_iSelectedItem = -1;
       break;
-    case CPP_MODIFIED:
+    case st_PSWDPolicyChange::Mode::MODIFIED:
       if (bDefaultPolicy) {
         m_st_default_pp = st_last_change.st_pp_save;
         m_iSelectedItem = 0;
@@ -1077,14 +1077,14 @@ void CManagePSWDPols::OnRedo()
   bool bDefaultPolicy = st_next_change.name.empty();
 
   switch (st_next_change.flags) {
-    case CPP_ADD:
+    case st_PSWDPolicyChange::Mode::ADD:
       // We need to add a new policy
       m_MapPSWDPLC[st_next_change.name] = st_next_change.st_pp_new;
 
       // Select it - but we do not yet know the m_PolicyNames index yet
       m_iSelectedItem = -1;
       break;
-    case CPP_DELETE:
+    case st_PSWDPolicyChange::Mode::REMOVE:
       {
       // We need to delete a policy
       PSWDPolicyMapIter iter = m_MapPSWDPLC.find(st_next_change.name);
@@ -1095,7 +1095,7 @@ void CManagePSWDPols::OnRedo()
       m_iSelectedItem = 0;
       break;
       }
-    case CPP_MODIFIED:
+    case st_PSWDPolicyChange::Mode::MODIFIED:
       if (bDefaultPolicy) {
         m_st_default_pp = st_next_change.st_pp_new;
         m_iSelectedItem = 0;

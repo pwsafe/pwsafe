@@ -485,7 +485,7 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const PWPoli
         break;
       case st_PSWDPolicyChange::Mode::MODIFIED:
         break;
-      case st_PSWDPolicyChange::Mode::DELETE:
+      case st_PSWDPolicyChange::Mode::REMOVE:
         break;
       default:
         ASSERT(0);

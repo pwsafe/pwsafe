@@ -114,7 +114,7 @@ struct PWPolicy {
 
 struct st_PSWDPolicyChange {
   // Change flags
-  enum class Mode {INVALID = 0, ADD = 1, DELETE = 2, MODIFIED = 4};
+  enum class Mode {INVALID = 0, ADD = 1, REMOVE = 2, MODIFIED = 4};
 
   StringX name;
   PWPolicy st_pp_save;
