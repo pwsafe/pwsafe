@@ -113,38 +113,38 @@ struct PWPolicy {
 // Structure for maintaining history of policy changes for Undo/Redo
 
 struct st_PSWDPolicyChange {
-  // Change flags
-  enum class Mode {INVALID = 0, ADD = 1, REMOVE = 2, MODIFIED = 4};
+  // Change mode
+  enum class Mode {INVALID, ADD, REMOVE, MODIFIED};
 
   StringX name;
   PWPolicy st_pp_save;
   PWPolicy st_pp_new;
-  Mode flags;
+  Mode mode;
 
   st_PSWDPolicyChange()
-  : name(_T("")), flags(Mode::INVALID)
+  : name(_T("")), mode(Mode::INVALID)
   {
     st_pp_save.Empty();
     st_pp_new.Empty();
   }
 
-  st_PSWDPolicyChange(const StringX &in_name, Mode in_flags,
+  st_PSWDPolicyChange(const StringX &in_name, Mode in_mode,
           const PWPolicy &in_st_pp_original,
           const PWPolicy &in_st_pp_new)
   : name(in_name), st_pp_save(in_st_pp_original),
-  st_pp_new(in_st_pp_new), flags(in_flags)
+  st_pp_new(in_st_pp_new), mode(in_mode)
   {}
 
   st_PSWDPolicyChange(const st_PSWDPolicyChange &that)
     : name(that.name), st_pp_save(that.st_pp_save),
-    st_pp_new(that.st_pp_new), flags(that.flags)
+    st_pp_new(that.st_pp_new), mode(that.mode)
   {}
 
   st_PSWDPolicyChange &operator=(const st_PSWDPolicyChange &that)
   {
     if (this != &that) {
       name = that.name;
-      flags = that.flags;
+      mode = that.mode;
       st_pp_save = that.st_pp_save;
       st_pp_new = that.st_pp_new;
     }
@@ -168,7 +168,7 @@ struct st_PSWDPolicyChange {
   void Empty()
   { 
     name = _T("");
-    flags = Mode::INVALID;
+    mode = Mode::INVALID;
     st_pp_save.Empty();
     st_pp_new.Empty();
   }

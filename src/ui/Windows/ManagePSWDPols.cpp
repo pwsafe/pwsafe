@@ -387,7 +387,7 @@ void CManagePSWDPols::OnNew()
     // Save changes for Undo/Redo
     st_PSWDPolicyChange st_change;
     st_change.name = cs_policyname;
-    st_change.flags = st_PSWDPolicyChange::Mode::ADD;
+    st_change.mode = st_PSWDPolicyChange::Mode::ADD;
     st_change.st_pp_save.Empty();
 
     // Added a named password policy
@@ -463,7 +463,7 @@ void CManagePSWDPols::OnEdit()
     // Save changes for Undo/Redo
     st_PSWDPolicyChange st_change;
     st_change.name = m_iSelectedItem != 0 ? cs_policyname : L"";
-    st_change.flags = st_PSWDPolicyChange::Mode::MODIFIED;
+    st_change.mode = st_PSWDPolicyChange::Mode::MODIFIED;
     st_change.st_pp_save = m_iSelectedItem != 0 ?iter->second : m_st_default_pp;
 
     // Update default (if changed) or the named policies
@@ -547,7 +547,7 @@ void CManagePSWDPols::OnDelete()
   // Save changes for Undo/Redo
   st_PSWDPolicyChange st_change;
   st_change.name = cs_policyname;
-  st_change.flags = st_PSWDPolicyChange::Mode::REMOVE;
+  st_change.mode = st_PSWDPolicyChange::Mode::REMOVE;
   st_change.st_pp_save.Empty();
   st_change.st_pp_new = iter->second;
 
@@ -1010,7 +1010,7 @@ void CManagePSWDPols::OnUndo()
 
   bool bDefaultPolicy = st_last_change.name.empty();
 
-  switch (st_last_change.flags) {
+  switch (st_last_change.mode) {
     case st_PSWDPolicyChange::Mode::ADD:
     {
       // We added a new policy - delete it
@@ -1076,7 +1076,7 @@ void CManagePSWDPols::OnRedo()
 
   bool bDefaultPolicy = st_next_change.name.empty();
 
-  switch (st_next_change.flags) {
+  switch (st_next_change.mode) {
     case st_PSWDPolicyChange::Mode::ADD:
       // We need to add a new policy
       m_MapPSWDPLC[st_next_change.name] = st_next_change.st_pp_new;

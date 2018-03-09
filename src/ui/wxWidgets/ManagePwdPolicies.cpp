@@ -477,7 +477,7 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const PWPoli
 #ifdef NOTYET
     // Save changes for Undo/Redo
     PWPolicyChange st_change;
-    st_change.flags = mode;
+    st_change.mode = mode;
     st_change.name = policyname;
     st_change.st_pp_save = m_iSelectedItem != 0 ? m_mapIter->second : m_st_default_pp;
     switch (mode) {
