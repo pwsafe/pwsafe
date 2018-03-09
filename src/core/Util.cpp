@@ -23,6 +23,7 @@
 #include "os/pws_tchar.h"
 #include "os/dir.h"
 #include "os/file.h"
+#include "os/utf8conv.h"
 
 #include <stdio.h>
 #ifdef _WIN32
@@ -94,27 +95,21 @@ void ConvertString(const StringX &text,
                    unsigned char *&txt,
                    size_t &txtlen)
 {
+  bool isUTF8 = true;
   LPCTSTR txtstr = text.c_str();
   txtlen = text.length();
 
-#ifdef _WIN32
-  txt = new unsigned char[3 * txtlen]; // safe upper limit
-  int len = WideCharToMultiByte(CP_ACP, 0, txtstr, static_cast<int>(txtlen),
-                                LPSTR(txt), static_cast<int>(3 * txtlen), nullptr, nullptr);
-  ASSERT(len != 0);
-#else
-  mbstate_t mbs;
-  memset(&mbs, 0, sizeof(mbstate_t));
-  size_t len = wcsrtombs(nullptr, &txtstr, 0, &mbs);
-  txt = new unsigned char[len + 1];
-  len = wcsrtombs(reinterpret_cast<char *>(txt), &txtstr, len, &mbs);
-  ASSERT(len != size_t(-1));
-#endif
-  txtlen = len;
-  txt[len] = '\0';
+  size_t dstlen = pws_os::wcstombs(nullptr, 0, txtstr, txtlen, isUTF8) + 1;
+  char *dst = new char[dstlen];
+
+  size_t res = pws_os::wcstombs(dst, dstlen, txtstr, txtlen, isUTF8);
+  ASSERT(res != 0);
+  txt = reinterpret_cast<unsigned char *>(dst);
+  txt[dstlen-1] = '\0'; // not strictly needed, since txtlen returned, but helps debug
 }
 
-//Generates a passkey-based hash from stuff - used to validate the passkey
+// Generates a passkey-based hash from stuff - used to validate the passkey
+// Used by file encryption/decryption and by V1V2 
 void GenRandhash(const StringX &a_passkey,
                  const unsigned char *a_randstuff,
                  unsigned char *a_randhash)
@@ -134,7 +129,7 @@ void GenRandhash(const StringX &a_passkey,
   trashMemory(pstr, pkeyLen);
   delete[] pstr;
 
-  unsigned char tempSalt[20]; // HashSize
+  unsigned char tempSalt[SHA1::HASHLEN];
   keyHash.Final(tempSalt);
 
   /*
