@@ -270,10 +270,10 @@ void CManagePasswordPolicies::CreateControls()
   // Setting these up:
   m_PolicyNames->SetColLabelValue(0, _("Policy Name"));
   m_PolicyNames->SetColLabelValue(1, _("Use count"));
-  m_PolicyNames->Fit();
   m_PolicyNames->InvalidateBestSize();
   m_PolicyNames->SetClientSize(m_PolicyNames->GetBestSize());
   UpdateNames();
+  m_PolicyNames->Fit();
   m_PolicyNames->SelectRow(0);
 
   // Since we select the default policy, disable List & Delete
@@ -282,15 +282,15 @@ void CManagePasswordPolicies::CreateControls()
 
   m_PolicyDetails->SetColLabelValue(0, _("Policy Field"));
   m_PolicyDetails->SetColLabelValue(1, _("Value"));
-  m_PolicyDetails->Fit();
   UpdateDetails();
-
+  m_PolicyDetails->Fit();
+  
   m_PolicyEntries->SetColLabelValue(0, _("Group"));
   m_PolicyEntries->SetColLabelValue(1, _("Title"));
   m_PolicyEntries->SetColLabelValue(2, _("User Name"));
-  m_PolicyEntries->Fit();
   ShowPolicyDetails();
-
+  m_PolicyEntries->Fit();
+  
   
   m_ScrollbarWidth = wxSystemSettings::GetMetric(wxSYS_VSCROLL_X, this) - 10;
 
@@ -820,7 +820,7 @@ void CManagePasswordPolicies::OnSize(wxSizeEvent& event)
 {
   UNREFERENCED_PARAMETER(event);
   
-  CallAfter(&CManagePasswordPolicies::ResizeGridColumns); // delayed execution of resizing, until dialog is completely layout
+  ResizeGridColumns();
   
   event.Skip();
 }
