@@ -409,7 +409,7 @@ void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,
   unsigned char *pstr = nullptr;
 
   HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> hmac;
-  ConvertString(passkey, pstr, passLen);
+  ConvertPasskey(passkey, pstr, passLen);
   pbkdf2(pstr, (unsigned long)passLen, salt, saltLen, N, &hmac, Ptag, &PtagLen);
 
 #ifdef UNICODE

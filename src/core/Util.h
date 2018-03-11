@@ -42,7 +42,7 @@ extern void trashMemory(void *buffer, size_t length);
 extern void trashMemory(LPTSTR buffer, size_t length);
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt
 
-extern void ConvertString(const StringX &text,
+extern void ConvertPasskey(const StringX &text,
                           unsigned char *&txt, size_t &txtlen);
 
 extern void GenRandhash(const StringX &passkey,

@@ -22,6 +22,7 @@
 #include "os/debug.h"
 #include "os/pws_tchar.h"
 #include "os/dir.h"
+#include "os/env.h"
 #include "os/file.h"
 #include "os/utf8conv.h"
 
@@ -91,11 +92,11 @@ void burnStack(unsigned long len)
     burnStack(len - sizeof(buf));
 }
 
-void ConvertString(const StringX &text,
+void ConvertPasskey(const StringX &text,
                    unsigned char *&txt,
                    size_t &txtlen)
 {
-  bool isUTF8 = true;
+  bool isUTF8 = pws_os::getenv("PWS_PK_CP_ACP", false).empty();
   LPCTSTR txtstr = text.c_str();
   txtlen = text.length();
 
@@ -117,7 +118,7 @@ void GenRandhash(const StringX &a_passkey,
   size_t pkeyLen = 0;
   unsigned char *pstr = nullptr;
 
-  ConvertString(a_passkey, pstr, pkeyLen);
+  ConvertPasskey(a_passkey, pstr, pkeyLen);
 
   /*
   tempSalt <- H(a_randstuff + a_passkey)

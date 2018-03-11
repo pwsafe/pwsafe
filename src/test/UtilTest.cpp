@@ -15,17 +15,20 @@ TEST(UtilTest1, convert_test_ascii)
   StringX src(L"abc");
   unsigned char *dst = nullptr;
   size_t dst_size = 0;
-  ConvertString(src, dst, dst_size);
+  ConvertPasskey(src, dst, dst_size);
   EXPECT_EQ(dst_size, 3);
   EXPECT_STREQ("abc", reinterpret_cast<const char *>(dst));
+  delete[] dst;
 }
 
 TEST(UtilTest2, convert_test_nonascii)
 {
-  StringX src(L"אבג");
+  wchar_t src_wchar[] = {0x05d0, 0x05d1, 0x05d2, 0}; // aleph bet gimel unicode
+  StringX src(src_wchar);
   unsigned char *dst = nullptr;
   size_t dst_size = 0;
-  ConvertString(src, dst, dst_size);
+  ConvertPasskey(src, dst, dst_size);
   EXPECT_EQ(dst_size, 3);
   EXPECT_STREQ("אבג", reinterpret_cast<const char *>(dst));
+  delete[] dst;
 }
