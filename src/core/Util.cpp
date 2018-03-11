@@ -100,7 +100,10 @@ void ConvertPasskey(const StringX &text,
   LPCTSTR txtstr = text.c_str();
   txtlen = text.length();
 
-  size_t dstlen = pws_os::wcstombs(nullptr, 0, txtstr, txtlen, isUTF8) + 1;
+  size_t dstlen = pws_os::wcstombs(nullptr, 0, txtstr, txtlen, isUTF8);
+#ifdef _MSC_VER
+  dstlen++; // ugly, but no easy way around this now
+#endif
   char *dst = new char[dstlen];
 
   size_t res = pws_os::wcstombs(dst, dstlen, txtstr, txtlen, isUTF8);
