@@ -28,7 +28,7 @@ TEST(UtilTest2, convert_test_nonascii)
   unsigned char *dst = nullptr;
   size_t dst_size = 0;
   ConvertPasskey(src, dst, dst_size);
-  EXPECT_EQ(dst_size, 3);
+  EXPECT_EQ(dst_size, 6);
   EXPECT_STREQ("אבג", reinterpret_cast<const char *>(dst));
   delete[] dst;
 }

@@ -106,7 +106,8 @@ void ConvertPasskey(const StringX &text,
   size_t res = pws_os::wcstombs(dst, dstlen, txtstr, txtlen, isUTF8);
   ASSERT(res != 0);
   txt = reinterpret_cast<unsigned char *>(dst);
-  txt[dstlen-1] = '\0'; // not strictly needed, since txtlen returned, but helps debug
+  txtlen = dstlen - 1;
+  txt[txtlen] = '\0'; // not strictly needed, since txtlen returned, but helps debug
 }
 
 // Generates a passkey-based hash from stuff - used to validate the passkey
