@@ -101,8 +101,8 @@ public:
                               Asker *pAsker = nullptr, Reporter *pReporter = nullptr);
 
   static VERSION ReadVersion(const StringX &filename, const StringX &passkey);
-  static int CheckPasskey(const StringX &filename,
-                          const StringX &passkey, VERSION &version);
+  static int CheckPasskey(const StringX &filename, const StringX &passkey,
+                          VERSION &version);
 
   // Following for 'legacy' use of pwsafe as file encryptor/decryptor
   static bool Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess);

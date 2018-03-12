@@ -311,7 +311,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   size_t passLen = 0;
   unsigned char *pstr = nullptr;
 
-  ConvertString(passkey, pstr, passLen);
+  ConvertPasskey(passkey, pstr, passLen);
   unsigned char *X = Ptag;
   SHA256 H0;
   H0.Update(pstr, passLen);

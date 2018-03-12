@@ -8,7 +8,7 @@
 #include "../KeySend.h"
 #include "../sleep.h"
 #include "./macsendstring.h"
-#include "../../core/Util.h"
+#include "../../core/UTF8Conv.h"
 
 CKeySend::CKeySend(bool, unsigned defaultDelay)
   : m_delayMS(defaultDelay)
@@ -21,12 +21,12 @@ CKeySend::~CKeySend()
 
 void CKeySend::SendString(const StringX &data)
 {
+  CUTF8Conv conv;
   unsigned char* str = 0;
   size_t len = 0;
-  ConvertString(data, str, len);
+  conv.ToUTF8(data, str, len);
   if (len && str && str[0])
     pws_os::SendString(reinterpret_cast<const char *>(str), m_delayMS);
-  delete [] str;
 }
 
 void CKeySend::SetDelay(unsigned d)

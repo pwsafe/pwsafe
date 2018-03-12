@@ -25,6 +25,7 @@
 #include "os/typedefs.h"
 #include "os/dir.h"
 #include "os/debug.h"
+#include "os/env.h"
 #include "os/file.h"
 #include "os/mem.h"
 #include "os/logit.h"
@@ -578,6 +579,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
   out->SetEmptyGroups(m_vEmptyGroups);
 
   try { // exception thrown on write error
+    pws_os::setenv("PWS_PK_CP_ACP", ""); // safety, in case someone tries to set this globally
     status = out->Open(GetPassKey());
 
     if (status != PWSfile::SUCCESS) {
@@ -736,7 +738,7 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
   // Used by Export entry or Export Group
   int status;
   PWSfile *out = PWSfile::MakePWSfile(filename, GetPassKey(), version,
-    PWSfile::Write, status);
+                                      PWSfile::Write, status);
 
   if (status != PWSfile::SUCCESS) {
     delete out;
@@ -790,6 +792,7 @@ int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
   }
   
   try { // exception thrown on write error
+    pws_os::setenv("PWS_PK_CP_ACP", ""); // safety, in case someone tries to set this globally
     status = out->Open(GetPassKey());
 
     if (status != PWSfile::SUCCESS) {
@@ -1006,9 +1009,15 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
 {
   int status;
 
-  if (!filename.empty())
+  if (!filename.empty()) {
     status = PWSfile::CheckPasskey(filename, passkey, m_ReadFileVersion);
-  else { // can happen if tries to export b4 save
+    if (status == PWSfile::WRONG_PASSWORD) {
+      // See if passkey was encoded incorrectly
+      pws_os::setenv("PWS_PK_CP_ACP", "1");
+      status = PWSfile::CheckPasskey(filename, passkey, m_ReadFileVersion);
+      pws_os::setenv("PWS_PK_CP_ACP", ""); // no unsetenv() in Windows...
+    }
+  } else { // can happen if tries to export b4 save
     size_t t_passkey_len = passkey.length();
     if (t_passkey_len != m_passkey_len) // trivial test
       return WRONG_PASSWORD;
@@ -1190,6 +1199,12 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   }
 
   status = in->Open(a_passkey);
+  if (status == PWSfile::WRONG_PASSWORD) {
+    // See if passkey was encoded incorrectly
+    pws_os::setenv("PWS_PK_CP_ACP", "1");
+    status = in->Open(a_passkey);
+    pws_os::setenv("PWS_PK_CP_ACP", ""); // no unsetenv() in Windows...
+  }
 
   // in the old times we could open even 1.x files
   // for compatibility reasons, we open them again, to see if this is really a "1.x" file

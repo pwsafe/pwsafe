@@ -190,8 +190,7 @@ size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
   return retval;
 }
 
-int PWSfile::CheckPasskey(const StringX &filename,
-                          const StringX &passkey, VERSION &version)
+int PWSfile::CheckPasskey(const StringX &filename, const StringX &passkey, VERSION &version)
 {
   /**
    * We start with V3 because it's the quickest to rule out
@@ -354,10 +353,10 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   PWSrand::GetInstance()->GetRandomData( ipthing, 8 );
   SAFE_FWRITE(ipthing, 1, 8, out);
 
-  ConvertString(passwd, pwd, passlen);
+  ConvertPasskey(passwd, pwd, passlen);
   fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<unsigned int &>(passlen), thesalt, SaltLength);
   trashMemory(pwd, passlen);
-  delete[] pwd; // gross - ConvertString allocates.
+  delete[] pwd; // gross - ConvertPasskey allocates.
   try {
     _writecbc(out, buf, slen, 0, fish, ipthing);
   } catch (...) { // _writecbc throws an exception if it fails to write
@@ -419,10 +418,10 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     unsigned char dummyType;
     unsigned char *pwd = nullptr;
     size_t passlen = 0;
-    ConvertString(passwd, pwd, passlen);
+    ConvertPasskey(passwd, pwd, passlen);
     Fish *fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<unsigned int &>(passlen), salt, SaltLength);
     trashMemory(pwd, passlen);
-    delete[] pwd; // gross - ConvertString allocates.
+    delete[] pwd; // gross - ConvertPasskey allocates.
     if (_readcbc(in, buf, len,dummyType, fish, ipthing, 0, file_len) == 0) {
       delete fish;
       delete[] buf; // if not yet allocated, delete[] nullptr, which is OK

@@ -8,6 +8,7 @@
 #include "PWSfileV1V2.h"
 #include "PWSrand.h"
 #include "core.h"
+#include "sha1.h"
 #include "os/file.h"
 #include "os/utf8conv.h"
 #include "os/UUID.h"
@@ -197,16 +198,16 @@ int PWSfileV1V2::CheckPasskey(const StringX &filename,
     return CANT_OPEN_FILE;
 
   unsigned char randstuff[StuffSize];
-  unsigned char randhash[20];   // HashSize
+  unsigned char randhash[SHA1::HASHLEN];
 
   fread(randstuff, 1, 8, fd);
   randstuff[8] = randstuff[9] = '\0'; // Gross fugbix
-  fread(randhash, 1, 20, fd);
+  fread(randhash, 1, sizeof(randhash), fd);
 
   if (a_fd == nullptr) // if we opened the file, we close it...
     fclose(fd);
 
-  unsigned char temphash[20]; // HashSize
+  unsigned char temphash[SHA1::HASHLEN];
   GenRandhash(passkey, randstuff, temphash);
 
   if (0 != memcmp(reinterpret_cast<char *>(randhash), reinterpret_cast<char *>(temphash),
