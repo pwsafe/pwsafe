@@ -1,5 +1,5 @@
-Password Safe 3.45.0 Release January 2018
-=========================================
+Password Safe 3.46.0pre Release ??? 2018
+========================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -12,6 +12,10 @@ Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
 SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
+
+Bugs Fixed in 3.46.0
+====================
+[1457] Protect Entry / Group now works when language isn't English.
 
 Bugs Fixed in 3.45.0
 ====================
