@@ -1609,7 +1609,11 @@ void CItemData::SetFieldValue(FieldType ft, const StringX &value)
       SetDCA(value.c_str());
       break;
     case PROTECTED:  /* 15 */
-      SetProtected(value.compare(_T("1")) == 0 || value.compare(_T("Yes")) == 0);
+      {
+        StringX sxProtected = _T("");
+        LoadAString(sxProtected, IDSC_YES);
+        SetProtected(value.compare(_T("1")) == 0 || value.compare(sxProtected) == 0);
+      }
       break;
     case SHIFTDCA:   /* 17 */
       SetShiftDCA(value.c_str());
