@@ -216,44 +216,9 @@ void DboxMain::OnCreateShortcut()
   CCreateShortcutDlg dlg_createshortcut(this, pci->GetGroup(),
     pci->GetTitle(), pci->GetUser());
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  if (prefs->GetPref(PWSprefs::UseDefaultUser)) {
-    dlg_createshortcut.m_username = prefs->GetPref(PWSprefs::DefaultUsername).c_str();
-  }
-
   INT_PTR rc = dlg_createshortcut.DoModal();
 
   if (rc == IDOK) {
-    //Check if they wish to set a default username
-    if (!prefs->GetPref(PWSprefs::UseDefaultUser) &&
-        (prefs->GetPref(PWSprefs::QuerySetDef)) &&
-        (!dlg_createshortcut.m_username.IsEmpty())) {
-      CQuerySetDef defDlg(this);
-      defDlg.m_defaultusername.Format(IDS_SETUSERNAME,
-                 static_cast<LPCWSTR>((const CString&)dlg_createshortcut.m_username));
-
-      INT_PTR rc2 = defDlg.DoModal();
-
-      if (rc2 == IDOK) {
-        // Initialise a copy of the DB preferences
-        prefs->SetupCopyPrefs();
-
-        // Update Copy with new values
-        prefs->SetPref(PWSprefs::UseDefaultUser, true, true);
-        prefs->SetPref(PWSprefs::DefaultUsername, dlg_createshortcut.m_username, true);
-        // Get old DB preferences String value (from current preferences) &
-        // new DB preferences String value (from Copy)
-        const StringX sxOldDBPrefsString(prefs->Store());
-        sxNewDBPrefsString = prefs->Store(true);
-        if (sxOldDBPrefsString == sxNewDBPrefsString) {
-          sxNewDBPrefsString = L"";
-        }
-      }
-    }
-    if (dlg_createshortcut.m_username.IsEmpty() &&
-        prefs->GetPref(PWSprefs::UseDefaultUser))
-      dlg_createshortcut.m_username = prefs->GetPref(PWSprefs::DefaultUsername).c_str();
-
     CreateShortcutEntry(pci, dlg_createshortcut.m_group,
                         dlg_createshortcut.m_title,
                         dlg_createshortcut.m_username, sxNewDBPrefsString);

@@ -18,6 +18,8 @@ Bugs Fixed in 3.46.0
 [1458] Fixed compatability issue between Unix and Windows versions
 when master password had non-ASCII characters.
 [1457] Protect Entry / Group now works when language isn't English.
+[1456] Shortcut entries no longer use default username if base entry's
+username is empty.
 
 Bugs Fixed in 3.45.0
 ====================
