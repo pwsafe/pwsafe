@@ -353,9 +353,7 @@ void DboxMain::SetUpInitialMenuStrings()
   // change shortcuts as per preferences
   std::vector<st_prefShortcut> vShortcuts(PWSprefs::GetInstance()->GetPrefShortcuts());
 
-  const size_t N = vShortcuts.size();
-  for (size_t i = 0; i < N; i++) {
-    const st_prefShortcut &stxst = vShortcuts[i];
+  for (auto &stxst : vShortcuts) {
     // User should not have these sub-entries in their config file
     if (stxst.id == ID_MENUITEM_GROUPENTER  ||
         stxst.id == ID_MENUITEM_VIEWENTRY   ||
@@ -383,7 +381,7 @@ void DboxMain::SetUpInitialMenuStrings()
 
     name += iter->second.name;
     Remove(name, L'&');
-    vShortcuts[i].Menu_Name = name;
+    stxst.Menu_Name = name;
 
     // Check not already in use (ignore if deleting current shortcut)
     if (stxst.siVirtKey != 0) {
@@ -406,21 +404,12 @@ void DboxMain::SetUpInitialMenuStrings()
       iter->second.siVirtKey  = stxst.siVirtKey;
       iter->second.cPWSModifier = stxst.cPWSModifier;
     }
-  }
+  } // user preference shortcut handling
 
   // Update Menu names for later XML comment
   PWSprefs::GetInstance()->SetPrefShortcuts(vShortcuts);
 
-  // Set up the shortcuts based on the main entry
-  // for View, Delete and Rename
-  iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDITENTRY);
-  ASSERT(iter != m_MapMenuShortcuts.end());
-  iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEWENTRY);
-  ASSERT(iter_entry != m_MapMenuShortcuts.end());
-  iter_entry->second.SetKeyFlags(iter->second);
-
   SetupSpecialShortcuts();
-
   UpdateAccelTable();
 }
 
@@ -1632,7 +1621,14 @@ void DboxMain::SetupSpecialShortcuts()
 {
   MapMenuShortcutsIter iter, iter_entry, iter_group;
 
-  // Find Delete Shortcut
+  // Set up some shortcuts based on the main entry
+
+  iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDITENTRY);
+  ASSERT(iter != m_MapMenuShortcuts.end());
+  iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEWENTRY);
+  ASSERT(iter_entry != m_MapMenuShortcuts.end());
+  iter_entry->second.SetKeyFlags(iter->second);
+  
   iter = m_MapMenuShortcuts.find(ID_MENUITEM_DELETE);
 
   // Save for CTreeCtrl & CListCtrl PreTranslateMessage
