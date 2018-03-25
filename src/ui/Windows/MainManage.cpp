@@ -448,12 +448,6 @@ void DboxMain::OnOptions()
       prefs->SetPrefShortcuts(vShortcuts);
       prefs->SaveShortcuts();
 
-      // Set up the shortcuts based on the main entry
-      // for View, Delete and Rename
-      iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDITENTRY);
-      iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEWENTRY);
-      iter_entry->second.SetKeyFlags(iter->second);
-
       SetupSpecialShortcuts();
 
       UpdateAccelTable();
