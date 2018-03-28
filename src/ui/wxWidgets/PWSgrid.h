@@ -18,10 +18,12 @@
 
 ////@begin includes
 #include "wx/grid.h"
+#include <wx/headerctrl.h>
 ////@end includes
 #include "core/ItemData.h"
 #include "core/PWScore.h"
 #include "os/UUID.h"
+#include <functional>
 #include <map>
 
 /*!
@@ -81,6 +83,7 @@ public:
   void AddItem(const CItemData &item, int row = -1);
   void UpdateItem(const CItemData &item);
   void RefreshRow(int row);
+  void RefreshItem(const CItemData &item, int row = -1);
   void RefreshItemRow(const pws_os::CUUID& uuid);
   void RefreshItemField(const pws_os::CUUID& uuid, CItemData::FieldType ft);
   void Remove(const pws_os::CUUID &uuid);
@@ -106,6 +109,10 @@ public:
   void OnChar( wxKeyEvent& evt);
 
   void OnDBGUIPrefsChange(wxEvent& evt);
+  
+  /// EVT_HEADER_CLICK
+  void OnHeaderClick(wxHeaderCtrlEvent& event);
+  
 ////@end PWSGrid event handler declarations
 
 ////@begin PWSGrid member function declarations
@@ -129,6 +136,9 @@ public:
   void SaveSettings() const;
 
   void SetFilterState(bool state);
+  
+  template<typename ItemsCollection>
+  void RearrangeItems(ItemsCollection& collection, int column);
 
 ////@begin PWSGrid member variables
 ////@end PWSGrid member variables

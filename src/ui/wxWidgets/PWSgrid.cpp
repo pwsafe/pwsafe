@@ -26,7 +26,6 @@
 #include <utility> // for make_pair
 #include "PWSgrid.h"
 #include "passwordsafeframe.h" // for DispatchDblClickAction()
-#include <wx/headerctrl.h>
 #include <wx/memory.h>
 #include <algorithm>
 #include <functional>
@@ -80,15 +79,23 @@ PWSGrid::PWSGrid(wxWindow* parent, PWScore &core,
   Init();
   Create(parent, id, pos, size, style);
   
-  // Handler for double click events on column header separator
   auto *header = wxGrid::GetGridColHeader();
   
   if (header) {
+    
+    // Handler for double click events on column header separator
     header->Bind(
       wxEVT_HEADER_SEPARATOR_DCLICK, 
       [=](wxHeaderCtrlEvent& event) {
         wxGrid::AutoSizeColumn(event.GetColumn());
       }
+    );
+    
+    // Handler for single click events on column header
+    header->Bind(
+      wxEVT_HEADER_CLICK, 
+      &PWSGrid::OnHeaderClick,
+      this
     );
   }
 }
@@ -210,6 +217,18 @@ void PWSGrid::AddItem(const CItemData &item, int row)
   m_row_map.insert(std::make_pair(row, CUUID(uuid)));
   m_uuid_map.insert(std::make_pair(CUUID(uuid), row));
   InsertRows(row);
+}
+
+void PWSGrid::RefreshItem(const CItemData &item, int row)
+{
+  int nRows = GetNumberRows();
+  if (row == -1)
+    row = nRows;
+  uuid_array_t uuid;
+  item.GetUUID(uuid);
+  m_row_map.insert(std::make_pair(row, CUUID(uuid)));
+  m_uuid_map.insert(std::make_pair(CUUID(uuid), row));
+  RefreshRow(row);
 }
 
 void PWSGrid::UpdateItem(const CItemData &item)
@@ -494,4 +513,43 @@ void PWSGrid::SetFilterState(bool state)
   const wxColour *colour = state ? wxRED : wxBLACK;
   SetDefaultCellTextColour(*colour);
   ForceRefresh();
+}
+
+void PWSGrid::OnHeaderClick(wxHeaderCtrlEvent& event)
+{
+  UnsetSortingColumn();
+  
+  if (IsSortOrderAscending()) {
+    SetSortingColumn(event.GetColumn(), false); // descending sort order
+    
+    std::multimap<wxString, const CItemData*, std::greater<wxString> > collection;
+    
+    RearrangeItems<std::multimap<wxString, const CItemData*, std::greater<wxString> > > (collection, event.GetColumn());
+  }
+  else {
+    SetSortingColumn(event.GetColumn(), true ); // ascending sort order
+    
+    std::multimap<wxString, const CItemData*, std::less<wxString> > collection;
+    
+    RearrangeItems<std::multimap<wxString, const CItemData*, std::less<wxString> > > (collection, event.GetColumn());
+  }
+}
+
+template<typename ItemsCollection>
+void PWSGrid::RearrangeItems(ItemsCollection& collection, int column)
+{
+  int row = 0;
+  
+  for (row = 0; row < GetNumberRows(); row++) {
+    collection.insert(std::pair<wxString, const CItemData*>(GetCellValue(row, column), GetItem(row)));
+  }
+  
+  m_row_map.clear();
+  m_uuid_map.clear();
+  
+  row = 0;
+  
+  for (auto& item : collection) {
+    RefreshItem(*item.second, row++);
+  }
 }
