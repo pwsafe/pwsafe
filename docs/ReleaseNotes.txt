@@ -20,6 +20,7 @@ when master password had non-ASCII characters.
 [1457] Protect Entry / Group now works when language isn't English.
 [1456] Shortcut entries no longer use default username if base entry's
 username is empty.
+[1455] Ctrl+Enter shortcut now works correctly in read-only mode.
 
 Bugs Fixed in 3.45.0
 ====================

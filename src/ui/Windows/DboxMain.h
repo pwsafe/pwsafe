@@ -905,6 +905,7 @@ private:
   void SetUpInitialMenuStrings();
   void UpdateAccelTable();
   void SetupSpecialShortcuts();
+  void UpdateEditViewAccelerator(bool isRO);
   bool ProcessLanguageMenu(CMenu *pPopupMenu);
   void DoBrowse(const bool bDoAutotype, const bool bSendEmail);
   bool GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected);

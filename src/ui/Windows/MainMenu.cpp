@@ -415,6 +415,7 @@ void DboxMain::SetUpInitialMenuStrings()
 
 void DboxMain::UpdateAccelTable()
 {
+  // m)MapMenuShortcuts -> app.m_ghAccelTable
   ACCEL *pacceltbl, *pxatbl;
   int numscs(0);
   CountShortcuts cntscs;
@@ -1623,12 +1624,6 @@ void DboxMain::SetupSpecialShortcuts()
 
   // Set up some shortcuts based on the main entry
 
-  iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDITENTRY);
-  ASSERT(iter != m_MapMenuShortcuts.end());
-  iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEWENTRY);
-  ASSERT(iter_entry != m_MapMenuShortcuts.end());
-  iter_entry->second.SetKeyFlags(iter->second);
-  
   iter = m_MapMenuShortcuts.find(ID_MENUITEM_DELETE);
 
   // Save for CTreeCtrl & CListCtrl PreTranslateMessage
@@ -1683,6 +1678,25 @@ void DboxMain::SetupSpecialShortcuts()
   }
 }
 
+void DboxMain::UpdateEditViewAccelerator(bool isRO)
+{
+  // If isRO, remove Ctrl-Enter from ID_MENUITEM_EDITENTRY, set to ID_MENUITEM_VIEWENTRY
+  // else, vice-versa
+  auto edit_iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDITENTRY);
+  ASSERT(edit_iter != m_MapMenuShortcuts.end());
+  auto view_iter = m_MapMenuShortcuts.find(ID_MENUITEM_VIEWENTRY);
+  ASSERT(view_iter != m_MapMenuShortcuts.end());
+  
+  if (isRO) {
+    view_iter->second.SetKeyFlags(edit_iter->second);
+    edit_iter->second.ClearKeyFlags();
+  } else { // !isRO
+    edit_iter->second.SetKeyFlags(view_iter->second);
+    view_iter->second.ClearKeyFlags();
+  } // !isRO
+  UpdateAccelTable();
+}
+
 bool DboxMain::ProcessLanguageMenu(CMenu *pPopupMenu)
 {
   app.GetLanguageFiles();
@@ -1721,26 +1735,24 @@ const unsigned int DboxMain::GetMenuShortcut(const unsigned short int &siVirtKey
 {
   unsigned int nControlID(0);
   sxMenuItemName.empty();
-  MapMenuShortcutsIter inuse_iter;
 
   st_MenuShortcut st_mst;
   st_mst.siVirtKey = siVirtKey;
   st_mst.cPWSModifier = cPWSModifier;
   
-  inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
-                            m_MapMenuShortcuts.end(),
-                            already_inuse(st_mst));
+  auto inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
+                                 m_MapMenuShortcuts.end(),
+                                 already_inuse(st_mst));
 
   if (inuse_iter != m_MapMenuShortcuts.end()) {
     nControlID = inuse_iter->first;
     sxMenuItemName = inuse_iter->second.name.c_str();
   }
 
-  // std::vector<st_MenuShortcut> m_ReservedShortcuts
+  // is it in the reserved shortcuts?
   if (nControlID == 0) {
-    std::vector<st_MenuShortcut>::iterator iter;
-    iter = std::find_if(m_ReservedShortcuts.begin(), m_ReservedShortcuts.end(),
-                        reserved(st_mst));
+    auto iter = std::find_if(m_ReservedShortcuts.begin(), m_ReservedShortcuts.end(),
+                             reserved(st_mst));
 
     if (iter != m_ReservedShortcuts.end()) {
       nControlID = iter->nControlID;

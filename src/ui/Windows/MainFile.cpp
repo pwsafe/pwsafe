@@ -3083,6 +3083,9 @@ bool DboxMain::ChangeMode(bool promptUser)
     }
   }
 
+  if (bWasRO != IsDBReadOnly())
+    UpdateEditViewAccelerator(IsDBReadOnly());
+
   // Update Minidump user streams - mode is in user stream 0
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), us0);
 
