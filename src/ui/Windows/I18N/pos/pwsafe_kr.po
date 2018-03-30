@@ -1430,6 +1430,10 @@ msgstr ""
 msgid "Advanced field selection criteria"
 msgstr "고급 필드 선택 기준"
 
+#. Resource IDs: (1077)
+msgid "After"
+msgstr ""
+
 #. Resource IDs: (8223)
 msgid "Albanian"
 msgstr "Albanian"
@@ -4246,17 +4250,9 @@ msgstr "Lithuanian Standard"
 msgid "Lock Safe"
 msgstr "Safe 잠그기"
 
-#. Resource IDs: (1077)
-msgid "Lock password database after "
-msgstr "비밀번호 데이터베이스를 다음 시간 이후로 잠금:"
-
-#. Resource IDs: (1026)
-msgid "Lock password database on minimize"
-msgstr "최소화할 때 비밀번호 데이터베이스 잠그기"
-
-#. Resource IDs: (1073)
-msgid "Lock password database on workstation lock"
-msgstr "컴퓨터 잠금 시 비밀번호 데이터베이스 잠금"
+#. Resource IDs: (65535)
+msgid "Lock password database "
+msgstr ""
 
 #. Resource IDs: (5113)
 msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
@@ -4761,6 +4757,14 @@ msgstr "기존 보안 비밀번호:"
 #. Resource IDs: (5265)
 msgid "On"
 msgstr "켜기"
+
+#. Resource IDs: (1026)
+msgid "On minimize"
+msgstr ""
+
+#. Resource IDs: (1073)
+msgid "On workstation lock"
+msgstr ""
 
 #. Resource IDs: (5732)
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"

@@ -1430,6 +1430,10 @@ msgstr ""
 msgid "Advanced field selection criteria"
 msgstr "Zaawansowane kryteria wyboru pól"
 
+#. Resource IDs: (1077)
+msgid "After"
+msgstr ""
+
 #. Resource IDs: (8223)
 msgid "Albanian"
 msgstr "Albański"
@@ -4246,17 +4250,9 @@ msgstr "Litewski standardowy"
 msgid "Lock Safe"
 msgstr "Zablokuj"
 
-#. Resource IDs: (1077)
-msgid "Lock password database after "
-msgstr "Zablokuj bazę danych z hasłami po "
-
-#. Resource IDs: (1026)
-msgid "Lock password database on minimize"
-msgstr "Zablokuj bazę danych przy minimalizowaniu"
-
-#. Resource IDs: (1073)
-msgid "Lock password database on workstation lock"
-msgstr "Zablokuj bazę danych gdy blokuję obszar roboczy"
+#. Resource IDs: (65535)
+msgid "Lock password database "
+msgstr ""
 
 #. Resource IDs: (5113)
 msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
@@ -4761,6 +4757,14 @@ msgstr "Stare Hasło:"
 #. Resource IDs: (5265)
 msgid "On"
 msgstr "Wł."
+
+#. Resource IDs: (1026)
+msgid "On minimize"
+msgstr ""
+
+#. Resource IDs: (1073)
+msgid "On workstation lock"
+msgstr ""
 
 #. Resource IDs: (5732)
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"

@@ -1482,6 +1482,10 @@ msgstr "Avancerade val för XML Grupp-export"
 msgid "Advanced field selection criteria"
 msgstr "Avancerade fälturvalskriteria"
 
+#. Resource IDs: (1077)
+msgid "After"
+msgstr ""
+
 #. Resource IDs: (8223)
 msgid "Albanian"
 msgstr "Albanskt"
@@ -4298,17 +4302,9 @@ msgstr "Litauiskt Standard"
 msgid "Lock Safe"
 msgstr "Lås Safen"
 
-#. Resource IDs: (1077)
-msgid "Lock password database after "
-msgstr "Lås lösenordsdatabasen efter "
-
-#. Resource IDs: (1026)
-msgid "Lock password database on minimize"
-msgstr "Lås lösenordsdatabasen vid Minimera"
-
-#. Resource IDs: (1073)
-msgid "Lock password database on workstation lock"
-msgstr "Lås lösenordsdatabasen då datorn stängs av"
+#. Resource IDs: (65535)
+msgid "Lock password database "
+msgstr ""
 
 #. Resource IDs: (5113)
 msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
@@ -4813,6 +4809,14 @@ msgstr "Gamla Safe-nyckeln:"
 #. Resource IDs: (5265)
 msgid "On"
 msgstr "Den"
+
+#. Resource IDs: (1026)
+msgid "On minimize"
+msgstr ""
+
+#. Resource IDs: (1073)
+msgid "On workstation lock"
+msgstr ""
 
 #. Resource IDs: (5732)
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"

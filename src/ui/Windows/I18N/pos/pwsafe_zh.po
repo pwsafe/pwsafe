@@ -1430,6 +1430,10 @@ msgstr ""
 msgid "Advanced field selection criteria"
 msgstr "高级字段选择标准"
 
+#. Resource IDs: (1077)
+msgid "After"
+msgstr ""
+
 #. Resource IDs: (8223)
 msgid "Albanian"
 msgstr "阿尔巴尼亚"
@@ -4246,17 +4250,9 @@ msgstr "立陶宛语(标准)"
 msgid "Lock Safe"
 msgstr "锁定保险箱"
 
-#. Resource IDs: (1077)
-msgid "Lock password database after "
-msgstr "当密码数据库空闲"
-
-#. Resource IDs: (1026)
-msgid "Lock password database on minimize"
-msgstr "最小化时锁定密码数据库"
-
-#. Resource IDs: (1073)
-msgid "Lock password database on workstation lock"
-msgstr "锁定密码数据库在工作站界面"
+#. Resource IDs: (65535)
+msgid "Lock password database "
+msgstr ""
 
 #. Resource IDs: (5113)
 msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
@@ -4761,6 +4757,14 @@ msgstr "旧密码:"
 #. Resource IDs: (5265)
 msgid "On"
 msgstr "开"
+
+#. Resource IDs: (1026)
+msgid "On minimize"
+msgstr ""
+
+#. Resource IDs: (1073)
+msgid "On workstation lock"
+msgstr ""
 
 #. Resource IDs: (5732)
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"

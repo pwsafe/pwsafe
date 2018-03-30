@@ -1469,6 +1469,10 @@ msgstr "Options avancées d'exportation de groupe XML"
 msgid "Advanced field selection criteria"
 msgstr "Critères avancés de sélection de champ"
 
+#. Resource IDs: (1077)
+msgid "After"
+msgstr ""
+
 #. Resource IDs: (8223)
 msgid "Albanian"
 msgstr "Albanais"
@@ -4285,17 +4289,9 @@ msgstr "Lithuanien Standard"
 msgid "Lock Safe"
 msgstr "&Verrouiller le coffre"
 
-#. Resource IDs: (1077)
-msgid "Lock password database after "
-msgstr "Verrouiller après "
-
-#. Resource IDs: (1026)
-msgid "Lock password database on minimize"
-msgstr "Verrouiller lors de la réduction"
-
-#. Resource IDs: (1073)
-msgid "Lock password database on workstation lock"
-msgstr "Verrouiller au moment du verrouillage de la station de travail"
+#. Resource IDs: (65535)
+msgid "Lock password database "
+msgstr ""
 
 #. Resource IDs: (5113)
 msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
@@ -4800,6 +4796,14 @@ msgstr "Mot de passe actuel :"
 #. Resource IDs: (5265)
 msgid "On"
 msgstr "Le"
+
+#. Resource IDs: (1026)
+msgid "On minimize"
+msgstr ""
+
+#. Resource IDs: (1073)
+msgid "On workstation lock"
+msgstr ""
 
 #. Resource IDs: (5732)
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"

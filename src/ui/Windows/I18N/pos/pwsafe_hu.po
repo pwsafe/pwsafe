@@ -1430,6 +1430,10 @@ msgstr ""
 msgid "Advanced field selection criteria"
 msgstr "Speciális mezőkiválasztási feltételek"
 
+#. Resource IDs: (1077)
+msgid "After"
+msgstr ""
+
 #. Resource IDs: (8223)
 msgid "Albanian"
 msgstr "Albán"
@@ -4246,17 +4250,9 @@ msgstr "Litván Standard"
 msgid "Lock Safe"
 msgstr "Széf zárolása"
 
-#. Resource IDs: (1077)
-msgid "Lock password database after "
-msgstr "Jelszóadatbázis zárolása utána"
-
-#. Resource IDs: (1026)
-msgid "Lock password database on minimize"
-msgstr "Jelszóadatbázis zárolása kicsinyítéskor"
-
-#. Resource IDs: (1073)
-msgid "Lock password database on workstation lock"
-msgstr "Jelszóadatbázis zárolása a számítógép zárolásakor"
+#. Resource IDs: (65535)
+msgid "Lock password database "
+msgstr ""
 
 #. Resource IDs: (5113)
 msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
@@ -4761,6 +4757,14 @@ msgstr "Régi széfkombináció:"
 #. Resource IDs: (5265)
 msgid "On"
 msgstr "Be"
+
+#. Resource IDs: (1026)
+msgid "On minimize"
+msgstr ""
+
+#. Resource IDs: (1073)
+msgid "On workstation lock"
+msgstr ""
 
 #. Resource IDs: (5732)
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
