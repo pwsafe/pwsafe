@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-18 20:36+0300\n"
-"PO-Revision-Date: 2018-01-18 20:36+0300\n"
+"POT-Creation-Date: 2018-03-31 23:36+0300\n"
+"PO-Revision-Date: 2018-03-31 23:36+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1539,6 +1539,11 @@ msgstr "Расширенные настройки экспорта группы 
 #. Resource IDs: (1071)
 msgid "Advanced field selection criteria"
 msgstr "Расширенные условия отбора"
+
+# After nn minutes idle
+#. Resource IDs: (1077)
+msgid "After"
+msgstr "После"
 
 #. Resource IDs: (8223)
 msgid "Albanian"
@@ -4526,16 +4531,8 @@ msgid "Lock Safe"
 msgstr "Заблокировать контейнер"
 
 #. Resource IDs: (1077)
-msgid "Lock password database after "
-msgstr "Блокировать контейнер после "
-
-#. Resource IDs: (1026)
-msgid "Lock password database on minimize"
-msgstr "Блокировать контейнер при сворачивании"
-
-#. Resource IDs: (1073)
-msgid "Lock password database on workstation lock"
-msgstr "Блокировать контейнер при блокировке компьютера"
+msgid "Lock password database "
+msgstr "Блокировать контейнер "
 
 #. Resource IDs: (5113)
 msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
@@ -5064,6 +5061,16 @@ msgstr "Старый пароль:"
 #. Resource IDs: (5265)
 msgid "On"
 msgstr " "
+
+# Lock database ...
+#. Resource IDs: (1026)
+msgid "On minimize"
+msgstr "При сворачивании"
+
+# Lock database ...
+#. Resource IDs: (1073)
+msgid "On workstation lock"
+msgstr "При блокировке компьютера"
 
 #. Resource IDs: (5732)
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
