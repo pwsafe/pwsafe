@@ -526,6 +526,8 @@
 			<Option target="Release_L64Y" />
 			<Option target="Release_L32Y" />
 		</Unit>
+		<Unit filename="../../src/ui/wxWidgets/pwsqrencode.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/pwsqrencode.h" />
 		<Unit filename="../../src/ui/wxWidgets/safecombinationchange.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/safecombinationchange.h" />
 		<Unit filename="../../src/ui/wxWidgets/safecombinationentry.cpp" />
