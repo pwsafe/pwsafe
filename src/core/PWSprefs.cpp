@@ -140,7 +140,11 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("column2width"), static_cast<unsigned int>(-1), ptApplication, -1, -1}, // application
   {_T("column3width"), static_cast<unsigned int>(-1), ptApplication, -1, -1}, // application
   {_T("column4width"), static_cast<unsigned int>(-1), ptApplication, -1, -1}, // application
+#ifdef __linux__
+  {_T("sortedcolumn"), 1, ptApplication, 0, 15},                    // application
+#else
   {_T("sortedcolumn"), 0, ptApplication, 0, 15},                    // application
+#endif
   {_T("PWDefaultLength"), 12, ptDatabase, 4, 1024},                 // database
   // maxmruitems maximum = (ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1)
   {_T("maxmruitems"), 4, ptApplication, 0, 20},                     // application
