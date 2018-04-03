@@ -21,6 +21,7 @@ when master password had non-ASCII characters.
 [1456] Shortcut entries no longer use default username if base entry's
 username is empty.
 [1455] Ctrl+Enter shortcut now works correctly in read-only mode.
+[1454, G411] No longer thinks security preference has changed when it hasn't.
 
 Bugs Fixed in 3.45.0
 ====================
