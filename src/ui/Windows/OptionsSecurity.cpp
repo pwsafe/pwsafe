@@ -150,7 +150,7 @@ BOOL COptionsSecurity::OnInitDialog()
 
 void COptionsSecurity::UpdateHashIter()
 {
-  if (m_HashIterSliderValue == 0) {
+  if (m_HashIterSliderValue <= MinHIslider) {
     m_HashIter = MIN_HASH_ITERATIONS;
   } else {
     const int step = MAX_USABLE_HASH_ITERS/(MaxHIslider - MinHIslider);
@@ -166,6 +166,7 @@ void COptionsSecurity::SetHashIter(uint32 value)
     const int step = MAX_USABLE_HASH_ITERS/(MaxHIslider - MinHIslider);
     m_HashIterSliderValue = int(value) / step;
   }
+  UpdateHashIter();
 }
 
 LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
@@ -182,6 +183,7 @@ LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
       return 1L;
     }
     case PP_DATA_CHANGED:
+      UpdateHashIter();
       if (M_ClearClipboardOnMinimize() != m_ClearClipboardOnMinimize ||
           M_ClearClipboardOnExit()     != m_ClearClipboardOnExit     ||
           M_LockOnMinimize()           != m_LockOnMinimize           ||
