@@ -839,6 +839,8 @@ void PasswordSafeFrame::ShowGrid(bool show)
         m_grid->AddItem(iter->second, i++);
     }
 
+    m_grid->UpdateSorting();
+    
     m_guiInfo->RestoreGridViewInfo(m_grid);
   }
   else {

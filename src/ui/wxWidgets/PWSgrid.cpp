@@ -28,7 +28,6 @@
 #include "passwordsafeframe.h" // for DispatchDblClickAction()
 #include <wx/memory.h>
 #include <algorithm>
-#include <functional>
 #include "./PWSgridtable.h"
 
 #ifdef __WXMSW__
@@ -117,6 +116,9 @@ bool PWSGrid::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const 
   UseNativeColHeader(true);
 #endif
 ////@end PWSGrid creation
+  
+  UpdateSorting();
+  
   return true;
 }
 
@@ -515,23 +517,41 @@ void PWSGrid::SetFilterState(bool state)
   ForceRefresh();
 }
 
+void PWSGrid::UpdateSorting()
+{
+  SortByColumn(
+    PWSprefs::GetInstance()->GetPref(PWSprefs::SortedColumn),
+    PWSprefs::GetInstance()->GetPref(PWSprefs::SortAscending)
+  );
+}
+
 void PWSGrid::OnHeaderClick(wxHeaderCtrlEvent& event)
+{
+  SortByColumn(event.GetColumn(), !IsSortOrderAscending());
+  
+  if (GetSortingColumn() != wxNOT_FOUND) {
+    PWSprefs::GetInstance()->SetPref(PWSprefs::SortedColumn , GetSortingColumn());
+    PWSprefs::GetInstance()->SetPref(PWSprefs::SortAscending, IsSortOrderAscending());
+  }
+}
+
+void PWSGrid::SortByColumn(int column, bool ascending)
 {
   UnsetSortingColumn();
   
-  if (IsSortOrderAscending()) {
-    SetSortingColumn(event.GetColumn(), false); // descending sort order
+  if (ascending) {
+    SetSortingColumn(column, true ); // ascending sort order
     
-    std::multimap<wxString, const CItemData*, std::greater<wxString> > collection;
+    AscendingSortedCollection collection;
     
-    RearrangeItems<std::multimap<wxString, const CItemData*, std::greater<wxString> > > (collection, event.GetColumn());
+    RearrangeItems<AscendingSortedCollection> (collection, column);
   }
   else {
-    SetSortingColumn(event.GetColumn(), true ); // ascending sort order
+    SetSortingColumn(column, false); // descending sort order
     
-    std::multimap<wxString, const CItemData*, std::less<wxString> > collection;
+    DescendingSortedCollection collection;
     
-    RearrangeItems<std::multimap<wxString, const CItemData*, std::less<wxString> > > (collection, event.GetColumn());
+    RearrangeItems<DescendingSortedCollection> (collection, column);
   }
 }
 
