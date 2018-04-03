@@ -209,7 +209,7 @@ bool IsTaskBarIconAvailable()
   int major = verInfo.GetMajor();
   int minor = verInfo.GetMinor();
   int micro = verInfo.GetMicro();
-  if (major < 3 || (minor == 0 && micro < 4) || (minor == 1 && micro < 1)) {
+  if (major < 3 || (major == 3 && ((minor == 0 && micro < 4) || (minor == 1 && micro < 1)))) {
     const wxLinuxDistributionInfo ldi = wxGetLinuxDistributionInfo();
     if (ldi.Id.IsEmpty() || ldi.Id == wxT("Ubuntu") || ldi.Id == wxT("Fedora"))
       return false;
