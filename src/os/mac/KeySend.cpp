@@ -22,7 +22,7 @@ CKeySend::~CKeySend()
 void CKeySend::SendString(const StringX &data)
 {
   CUTF8Conv conv;
-  unsigned char* str = 0;
+  const unsigned char* str = 0;
   size_t len = 0;
   conv.ToUTF8(data, str, len);
   if (len && str && str[0])
