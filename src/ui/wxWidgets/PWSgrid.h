@@ -55,8 +55,8 @@ typedef std::map<pws_os::CUUID, int, std::less<pws_os::CUUID> > UUIDRowMapT;
 
 class PWSGrid: public wxGrid
 {
-  typedef std::multimap<wxString, const CItemData*, std::greater<wxString> > DescendingSortedCollection;
-  typedef std::multimap<wxString, const CItemData*, std::less<wxString> >    AscendingSortedCollection;
+  typedef std::multimap<wxString, const CItemData*, std::greater<wxString> > DescendingSortedMultimap;
+  typedef std::multimap<wxString, const CItemData*, std::less<wxString> >    AscendingSortedMultimap;
   
   DECLARE_CLASS( PWSGrid )
   DECLARE_EVENT_TABLE()
