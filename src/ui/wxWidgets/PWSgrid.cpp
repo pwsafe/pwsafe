@@ -542,14 +542,14 @@ void PWSGrid::SortByColumn(int column, bool ascending)
   SetSortingColumn(column, ascending);
   
   if (ascending) {
-    AscendingSortedCollection collection;
+    AscendingSortedMultimap collection;
     
-    RearrangeItems<AscendingSortedCollection> (collection, column);
+    RearrangeItems<AscendingSortedMultimap> (collection, column);
   }
   else {
-    DescendingSortedCollection collection;
+    DescendingSortedMultimap collection;
     
-    RearrangeItems<DescendingSortedCollection> (collection, column);
+    RearrangeItems<DescendingSortedMultimap> (collection, column);
   }
 }
 
