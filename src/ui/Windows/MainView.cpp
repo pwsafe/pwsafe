@@ -2038,11 +2038,17 @@ void DboxMain::GetSelectedItems(pws_os::CUUID &entry_uuid,
   // Find last found entries (no groups)
   if (m_LastFoundTreeItem != NULL) {
     CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(m_LastFoundTreeItem);
+    ASSERT(pci != nullptr);
+    if (pci == nullptr)
+      return;
     tree_find_entry_uuid = pci->GetUUID();
   }
 
   if (m_LastFoundListItem != -1) {
     CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(m_LastFoundListItem);
+    ASSERT(pci != nullptr);
+    if (pci == nullptr)
+      return;
     list_find_entry_uuid = pci->GetUUID();
   }
 
