@@ -136,8 +136,6 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
     pci = &pos->second;
   }
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
-
   switch (ga) {
     case UpdateGUICommand::GUI_UPDATE_STATUSBAR:
       if (app.GetBaseThreadID() == AfxGetThread()->m_nThreadID) {
@@ -175,7 +173,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       break;
     case UpdateGUICommand::GUI_PWH_CHANGED_IN_DB:
       // During this process, many entries may have been edited (marked modified)
-      if (prefs->GetPref(PWSprefs::HighlightChanges))
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::HighlightChanges))
         RebuildGUI(BOTHVIEWS);
       break;
     case UpdateGUICommand::GUI_REFRESH_TREE:
@@ -202,7 +200,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       // user/password is shown in the Tree view
       KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
       ResetIdleLockCounter();
-      if (prefs->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
         SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
       }
       RebuildGUI(BOTHVIEWS);
