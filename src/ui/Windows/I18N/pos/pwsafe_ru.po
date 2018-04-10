@@ -5007,7 +5007,7 @@ msgid "On workstation lock"
 msgstr "При блокировке компьютера"
 
 #. Resource IDs: (5732)
-msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
+msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Один или несколько параметров были изменены. Вы уверены, что нужно отклонить изменения?"
 
 #. Resource IDs: (5894)

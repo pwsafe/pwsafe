@@ -4806,7 +4806,7 @@ msgid "On workstation lock"
 msgstr ""
 
 #. Resource IDs: (5732)
-msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
+msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Ein oder mehrere Präferenzen wurden geändert. Sind sie sicher Abbrechen zu wollen?"
 
 #. Resource IDs: (5894)
