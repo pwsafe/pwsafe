@@ -1,5 +1,5 @@
-Password Safe 3.46.0pre Release ??? 2018
-========================================
+Password Safe 3.46.0 Release April 2018
+=======================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
