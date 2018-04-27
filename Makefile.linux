@@ -47,8 +47,8 @@ export CPPFLAGS += -std=c++11
 all: I18N unicodedebug unicoderelease
 
 unicodedebug unicoderelease:
-	$(MAKE) -C src/os/unix $@
-	$(MAKE) -C src/core $@
+	$(MAKE) -C src/os/unix CONFIG=$@
+	$(MAKE) -C src/core CONFIG=$@
 	$(MAKE) -C src/ui/wxWidgets CONFIG=$@
 
 
