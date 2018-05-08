@@ -24,6 +24,7 @@
 ////@end includes
 
 #include "PasswordPolicy.h"
+#include "PolicyManager.h"
 #include "core/PWCharPool.h"
 #include "./wxutils.h"
 
@@ -379,6 +380,14 @@ bool CPasswordPolicy::Verify()
     mess = _("Policy name is already in use");
     id = ID_POLICYNAME;
     retval = false;
+  } else if ((m_polname != m_oldpolname) &&
+             (
+               (m_polname == _(stringx2std(PolicyManager::DEFAULT_POLICYNAME))) ||
+               (m_polname == stringx2std(PolicyManager::DEFAULT_POLICYNAME))
+             )) {
+    mess = _("Default policy name is not allowed");
+    id = ID_POLICYNAME;
+    retval = false;
   }
 
   if (!retval) {
@@ -495,6 +504,14 @@ void CPasswordPolicy::SetPolicyData(const wxString &polname, const PWPolicy &pol
   else
     m_Symbols = symbols;
   m_oldSymbols = m_Symbols;
+  
+  // Disallow renaming of default policy
+  if (
+    (m_polname == _(stringx2std(PolicyManager::DEFAULT_POLICYNAME))) ||
+    (m_polname == stringx2std(PolicyManager::DEFAULT_POLICYNAME)) ) 
+  {
+    FindWindow(ID_POLICYNAME)->Enable(false);
+  }
 }
 
 void CPasswordPolicy::CBox2Spin(wxCheckBox *cb, wxSpinCtrl *sp)

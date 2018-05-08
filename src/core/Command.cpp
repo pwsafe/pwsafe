@@ -1235,3 +1235,179 @@ void DBFiltersCommand::Undo()
     }
   }
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// class PolicyCollector
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+PolicyCollector::PolicyCollector(PSWDPolicyMap& policies) : m_Policies(policies)
+{
+  ;
+}
+
+PolicyCollector::~PolicyCollector() = default;
+
+void PolicyCollector::AddPolicy(const StringX& name, const PWPolicy& policy)
+{
+  m_Policies[name] = policy;
+}
+
+void PolicyCollector::RemovePolicy(const StringX& name)
+{
+  m_Policies.erase(name);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// class DefaultPolicyCollector
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+DefaultPolicyCollector::DefaultPolicyCollector(PWPolicy& defaultPolicy) : m_DefaultPolicy(defaultPolicy)
+{
+  ;
+}
+
+DefaultPolicyCollector::~DefaultPolicyCollector() = default;
+
+void DefaultPolicyCollector::AddPolicy(const StringX& name, const PWPolicy& policy)
+{
+  m_Name = name;
+  m_DefaultPolicy = policy;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// class PolicyCommandAdd : public Command, public PolicyCollector
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+PolicyCommandAdd::PolicyCommandAdd(
+  CommandInterface& commandInterface, PSWDPolicyMap& policies, 
+  const stringT& name, const PWPolicy& policy
+)
+: Command(&commandInterface), PolicyCollector(policies)
+, m_Name(std2stringx(name)), m_Policy(policy)
+{
+  ;
+}
+
+PolicyCommandAdd::~PolicyCommandAdd() = default;
+
+int PolicyCommandAdd::Execute()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    AddPolicy(m_Name, m_Policy);
+  }
+  
+  return 0;
+}
+
+void PolicyCommandAdd::Undo()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    RemovePolicy(m_Name);
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// class PolicyCommandRemove : public Command, public PolicyCollector
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+PolicyCommandRemove::PolicyCommandRemove(
+  CommandInterface& commandInterface, PSWDPolicyMap& policies, 
+  const stringT& name, const PWPolicy& policy
+)
+: Command(&commandInterface), PolicyCollector(policies)
+, m_Name(std2stringx(name)), m_Policy(policy)
+{
+  ;
+}
+
+PolicyCommandRemove::~PolicyCommandRemove() = default;
+
+int PolicyCommandRemove::Execute()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    RemovePolicy(m_Name);
+  }
+  
+  return 0;
+}
+
+void PolicyCommandRemove::Undo()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    AddPolicy(m_Name, m_Policy);
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// class PolicyCommandModify : public Command, public Collector
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <typename Collector, typename T>
+PolicyCommandModify<Collector, T>::PolicyCommandModify(
+  CommandInterface& commandInterface, T& data, 
+  const stringT& name, const PWPolicy& original, const PWPolicy& modified
+)
+: Command(&commandInterface), Collector(data)
+, m_Name(std2stringx(name)), m_OriginalPolicy(original), m_ModifiedPolicy(modified)
+{
+  ;
+}
+
+template <typename Collector, typename T>
+PolicyCommandModify<Collector, T>::~PolicyCommandModify() = default;
+
+template <typename Collector, typename T>
+int PolicyCommandModify<Collector, T>::Execute()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    Collector::AddPolicy(m_Name, m_ModifiedPolicy);
+  }
+  
+  return 0;
+}
+
+template <typename Collector, typename T>
+void PolicyCommandModify<Collector, T>::Undo()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    Collector::AddPolicy(m_Name, m_OriginalPolicy);
+  }
+}
+
+template class PolicyCommandModify<DefaultPolicyCollector, PWPolicy     >;
+template class PolicyCommandModify<PolicyCollector,        PSWDPolicyMap>;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// class PolicyCommandRename : public Command, public PolicyCollector
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+PolicyCommandRename::PolicyCommandRename(
+  CommandInterface& commandInterface, PSWDPolicyMap& policies, 
+  const stringT& oldName, const stringT& newName, const PWPolicy& original, const PWPolicy& modified
+)
+: Command(&commandInterface), PolicyCollector(policies)
+, m_OldName(std2stringx(oldName)), m_NewName(std2stringx(newName)), m_OriginalPolicy(original), m_ModifiedPolicy(modified)
+{
+  ;
+}
+
+PolicyCommandRename::~PolicyCommandRename() = default;
+
+int PolicyCommandRename::Execute()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    RemovePolicy(m_OldName);
+    AddPolicy(m_NewName, m_ModifiedPolicy);
+  }
+  
+  return 0;
+}
+
+void PolicyCommandRename::Undo()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    RemovePolicy(m_NewName);
+    AddPolicy(m_OldName, m_OriginalPolicy);
+  }
+}

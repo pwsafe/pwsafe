@@ -15,6 +15,7 @@ set (CORE_SRCS
   KeyWrap.cpp
   Match.cpp
   pbkdf2.cpp
+  PolicyManager.cpp
   PWCharPool.cpp
   PWHistory.cpp
   PWPolicy.cpp
