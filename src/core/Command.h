@@ -543,14 +543,14 @@ public:
  * Provides the ability for the individual policy specific commands 
  * to easily manage policies within a collection.
  */
-class PolicyCollector
+class MultiPolicyCollector
 {
 private:
   PSWDPolicyMap& m_Policies;
   
 protected:
-  PolicyCollector(PSWDPolicyMap& policies);
-  virtual ~PolicyCollector();
+  MultiPolicyCollector(PSWDPolicyMap& policies);
+  virtual ~MultiPolicyCollector();
   
   void AddPolicy(const StringX& name, const PWPolicy& policy);
   void RemovePolicy(const StringX& name);
@@ -561,15 +561,15 @@ protected:
  * 
  * Needed by the policy specific command <code>PolicyCommandModify</code>, only.
  */
-class DefaultPolicyCollector
+class SinglePolicyCollector
 {
 private:
   StringX   m_Name;
   PWPolicy& m_DefaultPolicy;
   
 protected:
-  DefaultPolicyCollector(PWPolicy& defaultPolicy);
-  virtual ~DefaultPolicyCollector();
+  SinglePolicyCollector(PWPolicy& defaultPolicy);
+  virtual ~SinglePolicyCollector();
   
   void AddPolicy(const StringX& name, const PWPolicy& policy);
 };
@@ -577,7 +577,7 @@ protected:
 /**
  * This class implements the command for adding policies into a collection.
  */
-class PolicyCommandAdd : public Command, public PolicyCollector
+class PolicyCommandAdd : public Command, public MultiPolicyCollector
 {
 private:
   StringX  m_Name;
@@ -595,7 +595,7 @@ public:
 /**
  * This class implements the command for removing policies from a collection.
  */
-class PolicyCommandRemove : public Command, public PolicyCollector
+class PolicyCommandRemove : public Command, public MultiPolicyCollector
 {
 private:
   StringX  m_Name;
@@ -649,7 +649,7 @@ public:
  * Assuming always case two, prevents additional checks what exactly has changed.
  * Only the name, only the policy rules or both?!
  */
-class PolicyCommandRename : public Command, public PolicyCollector
+class PolicyCommandRename : public Command, public MultiPolicyCollector
 {
 private:
   StringX  m_OldName;

@@ -56,7 +56,7 @@ void PolicyManager::PolicyModified(const stringT& name, const PWPolicy& original
   ) {
     
     command = std::unique_ptr<Command>(
-      new PolicyCommandModify<DefaultPolicyCollector, PWPolicy>(
+      new PolicyCommandModify<SinglePolicyCollector, PWPolicy>(
         m_CommandInterface, m_DefaultPolicy, 
         name, original, modified
       )
@@ -65,7 +65,7 @@ void PolicyManager::PolicyModified(const stringT& name, const PWPolicy& original
   else {
     
     command = std::unique_ptr<Command>(
-      new PolicyCommandModify<PolicyCollector, PSWDPolicyMap>(
+      new PolicyCommandModify<MultiPolicyCollector, PSWDPolicyMap>(
         m_CommandInterface, m_Policies, 
         name, original, modified
       )

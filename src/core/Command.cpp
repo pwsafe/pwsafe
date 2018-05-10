@@ -1237,38 +1237,38 @@ void DBFiltersCommand::Undo()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// class PolicyCollector
+// class MultiPolicyCollector
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-PolicyCollector::PolicyCollector(PSWDPolicyMap& policies) : m_Policies(policies)
+MultiPolicyCollector::MultiPolicyCollector(PSWDPolicyMap& policies) : m_Policies(policies)
 {
   ;
 }
 
-PolicyCollector::~PolicyCollector() = default;
+MultiPolicyCollector::~MultiPolicyCollector() = default;
 
-void PolicyCollector::AddPolicy(const StringX& name, const PWPolicy& policy)
+void MultiPolicyCollector::AddPolicy(const StringX& name, const PWPolicy& policy)
 {
   m_Policies[name] = policy;
 }
 
-void PolicyCollector::RemovePolicy(const StringX& name)
+void MultiPolicyCollector::RemovePolicy(const StringX& name)
 {
   m_Policies.erase(name);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// class DefaultPolicyCollector
+// class SinglePolicyCollector
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-DefaultPolicyCollector::DefaultPolicyCollector(PWPolicy& defaultPolicy) : m_DefaultPolicy(defaultPolicy)
+SinglePolicyCollector::SinglePolicyCollector(PWPolicy& defaultPolicy) : m_DefaultPolicy(defaultPolicy)
 {
   ;
 }
 
-DefaultPolicyCollector::~DefaultPolicyCollector() = default;
+SinglePolicyCollector::~SinglePolicyCollector() = default;
 
-void DefaultPolicyCollector::AddPolicy(const StringX& name, const PWPolicy& policy)
+void SinglePolicyCollector::AddPolicy(const StringX& name, const PWPolicy& policy)
 {
   m_Name = name;
   m_DefaultPolicy = policy;
@@ -1276,14 +1276,14 @@ void DefaultPolicyCollector::AddPolicy(const StringX& name, const PWPolicy& poli
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// class PolicyCommandAdd : public Command, public PolicyCollector
+// class PolicyCommandAdd : public Command, public MultiPolicyCollector
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 PolicyCommandAdd::PolicyCommandAdd(
   CommandInterface& commandInterface, PSWDPolicyMap& policies, 
   const stringT& name, const PWPolicy& policy
 )
-: Command(&commandInterface), PolicyCollector(policies)
+: Command(&commandInterface), MultiPolicyCollector(policies)
 , m_Name(std2stringx(name)), m_Policy(policy)
 {
   ;
@@ -1308,14 +1308,14 @@ void PolicyCommandAdd::Undo()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// class PolicyCommandRemove : public Command, public PolicyCollector
+// class PolicyCommandRemove : public Command, public MultiPolicyCollector
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 PolicyCommandRemove::PolicyCommandRemove(
   CommandInterface& commandInterface, PSWDPolicyMap& policies, 
   const stringT& name, const PWPolicy& policy
 )
-: Command(&commandInterface), PolicyCollector(policies)
+: Command(&commandInterface), MultiPolicyCollector(policies)
 , m_Name(std2stringx(name)), m_Policy(policy)
 {
   ;
@@ -1375,18 +1375,18 @@ void PolicyCommandModify<Collector, T>::Undo()
   }
 }
 
-template class PolicyCommandModify<DefaultPolicyCollector, PWPolicy     >;
-template class PolicyCommandModify<PolicyCollector,        PSWDPolicyMap>;
+template class PolicyCommandModify<SinglePolicyCollector, PWPolicy     >;
+template class PolicyCommandModify<MultiPolicyCollector,  PSWDPolicyMap>;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// class PolicyCommandRename : public Command, public PolicyCollector
+// class PolicyCommandRename : public Command, public MultiPolicyCollector
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 PolicyCommandRename::PolicyCommandRename(
   CommandInterface& commandInterface, PSWDPolicyMap& policies, 
   const stringT& oldName, const stringT& newName, const PWPolicy& original, const PWPolicy& modified
 )
-: Command(&commandInterface), PolicyCollector(policies)
+: Command(&commandInterface), MultiPolicyCollector(policies)
 , m_OldName(std2stringx(oldName)), m_NewName(std2stringx(newName)), m_OriginalPolicy(original), m_ModifiedPolicy(modified)
 {
   ;
