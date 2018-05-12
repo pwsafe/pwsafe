@@ -380,11 +380,8 @@ bool CPasswordPolicy::Verify()
     mess = _("Policy name is already in use");
     id = ID_POLICYNAME;
     retval = false;
-  } else if ((m_polname != m_oldpolname) &&
-             (
-               (m_polname == _(stringx2std(PolicyManager::DEFAULT_POLICYNAME))) ||
-               (m_polname == stringx2std(PolicyManager::DEFAULT_POLICYNAME))
-             )) {
+  } else if ((m_polname != m_oldpolname) && 
+             PolicyManager::IsDefaultPolicy(m_polname.wc_str())) {
     mess = _("Default policy name is not allowed");
     id = ID_POLICYNAME;
     retval = false;
@@ -506,10 +503,7 @@ void CPasswordPolicy::SetPolicyData(const wxString &polname, const PWPolicy &pol
   m_oldSymbols = m_Symbols;
   
   // Disallow renaming of default policy
-  if (
-    (m_polname == _(stringx2std(PolicyManager::DEFAULT_POLICYNAME))) ||
-    (m_polname == stringx2std(PolicyManager::DEFAULT_POLICYNAME)) ) 
-  {
+  if (PolicyManager::IsDefaultPolicy(m_polname.wc_str())) {
     FindWindow(ID_POLICYNAME)->Enable(false);
   }
 }

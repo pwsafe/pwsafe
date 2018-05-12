@@ -391,7 +391,7 @@ void CManagePasswordPolicies::UpdateNames()
   m_PolicyNames->ClearGrid();
 
   // Add in the default policy as the first entry
-  m_PolicyNames->SetCellValue(row, 0, _(stringx2std(PolicyManager::DEFAULT_POLICYNAME)));
+  m_PolicyNames->SetCellValue(row, 0, _(PolicyManager::DEFAULT_POLICYNAME));
   m_PolicyNames->SetCellValue(row, 1, _("N/A"));
   
   for (const auto& policy : policies) {
@@ -567,7 +567,7 @@ void CManagePasswordPolicies::OnEditClick( wxCommandEvent& )
   PWPolicy modifiedPolicy;
 
   if (row == 0) { // 1st row is default
-    originalPolicyname = stringx2std(PolicyManager::DEFAULT_POLICYNAME);
+    originalPolicyname = _(PolicyManager::DEFAULT_POLICYNAME);
     originalPolicy     = m_PolicyManager->GetDefaultPolicy();
   }
   else {          // All other rows hold user individual policy names
@@ -629,7 +629,7 @@ void CManagePasswordPolicies::OnDeleteClick( wxCommandEvent& )
     m_PolicyManager->PolicyRemoved(policyname.ToStdWstring());
     
     UpdateNames();
-    UpdateSelection(stringx2std(PolicyManager::DEFAULT_POLICYNAME));
+    UpdateSelection(PolicyManager::DEFAULT_POLICYNAME);
     UpdateUndoRedoButtons();
   }
 }
@@ -683,7 +683,6 @@ void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
   const auto& newdefpol = m_PolicyManager->GetDefaultPolicy();
   bool defChanged = (olddefpol != newdefpol);
   
-  m_PolicyManager->RemoveDefaultPolicy();
   auto policies = m_PolicyManager->GetPolicies();
   bool namedChanged = (policies != m_core.GetPasswordPolicies());
 

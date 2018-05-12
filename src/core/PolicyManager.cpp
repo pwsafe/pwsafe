@@ -15,7 +15,7 @@
 // class PolicyManager
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-const StringX PolicyManager::DEFAULT_POLICYNAME = StringX(_S("Default Policy"));
+const stringT PolicyManager::DEFAULT_POLICYNAME(_S("Default Policy"));
 
 PolicyManager::PolicyManager(CommandInterface& commandInterface) : m_CommandInterface(commandInterface)
 {
@@ -50,10 +50,7 @@ void PolicyManager::PolicyModified(const stringT& name, const PWPolicy& original
 {
   std::unique_ptr<Command> command;
   
-  if (
-    (name == stringx2std(PolicyManager::DEFAULT_POLICYNAME)) ||
-    (name == _(stringx2std(PolicyManager::DEFAULT_POLICYNAME)))
-  ) {
+  if (IsDefaultPolicy(name)) {
     
     command = std::unique_ptr<Command>(
       new PolicyCommandModify<SinglePolicyCollector, PWPolicy>(
@@ -86,16 +83,6 @@ void PolicyManager::PolicyRenamed(const stringT& oldName, const stringT& newName
   m_UndoStack.push_back(std::move(command));
 }
 
-void PolicyManager::AddPolicy(const StringX& name, const PWPolicy& policy)
-{
-  m_Policies[name] = policy;
-}
-
-void PolicyManager::RemovePolicy(const StringX& name)
-{
-  m_Policies.erase(name);
-}
-  
 PSWDPolicyMap PolicyManager::GetPolicies() const
 {
   return m_Policies;
@@ -116,9 +103,9 @@ PWPolicy PolicyManager::GetDefaultPolicy() const
   return m_DefaultPolicy;
 }
 
-void PolicyManager::RemoveDefaultPolicy()
+bool PolicyManager::IsDefaultPolicy(const stringT& name)
 {
-  m_Policies.erase(PolicyManager::DEFAULT_POLICYNAME);
+  return (name == _(PolicyManager::DEFAULT_POLICYNAME)) ? true : false;
 }
 
 int PolicyManager::GetNumberOfPolicies() const

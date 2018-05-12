@@ -11,30 +11,14 @@
 class PolicyManager
 {
 private:
-  PWPolicy                              m_DefaultPolicy;
-  PSWDPolicyMap                         m_Policies;  /* The collection of existing policies, on which the policy commands are operating on. */
-  CommandInterface&                     m_CommandInterface;  /* The interface to the Core. */
-  std::vector<std::unique_ptr<Command>> m_UndoStack; /* The lifo stack with undo commands. */
-  std::vector<std::unique_ptr<Command>> m_RedoStack; /* The lifo stack with redo commands. */
-  
-  /**
-   * Adds a policy into the internal collection of policies.
-   * Only, command objects are allowed to add policies.
-   * See list of friendships.
-   */
-  void AddPolicy(const StringX& name, const PWPolicy& policy);
-  
-  /**
-   * Removes a policy from the internal collection of policies.
-   * Only, command objects are allowed to add policies.
-   * See list of friendships.
-   */
-  void RemovePolicy(const StringX& name);
-  
-protected:
+  PWPolicy                              m_DefaultPolicy;    /* The default policy, whose rules can only be modified. */
+  PSWDPolicyMap                         m_Policies;         /* The collection of existing policies, on which the policy commands are operating on. */
+  CommandInterface&                     m_CommandInterface; /* The interface to the Core. */
+  std::vector<std::unique_ptr<Command>> m_UndoStack;        /* The lifo stack with undo commands. */
+  std::vector<std::unique_ptr<Command>> m_RedoStack;        /* The lifo stack with redo commands. */
   
 public:
-  static const StringX DEFAULT_POLICYNAME;                 /* The name of the default policy. */
+  static const stringT DEFAULT_POLICYNAME;                  /* The name of the default policy. */
   
   PolicyManager(CommandInterface& commandInterface);
   ~PolicyManager();
@@ -87,9 +71,9 @@ public:
   PWPolicy GetDefaultPolicy() const;
   
   /**
-   * Removes the default policy from the internal collection of policies.
+   * Compares the given policy name against the default policy name.
    */
-  void RemoveDefaultPolicy();
+  static bool IsDefaultPolicy(const stringT& name);
   
   /**
    * Provides the number of policies within the internal collection of policies.
