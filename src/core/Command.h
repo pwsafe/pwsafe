@@ -533,4 +533,137 @@ public:
   std::vector<int> m_vRCs;
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Policies Management Commands
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Implements the management of policies within a collection.
+ * 
+ * Provides the ability for the individual policy specific commands 
+ * to easily manage policies within a collection.
+ */
+class MultiPolicyCollector
+{
+private:
+  PSWDPolicyMap& m_Policies;
+  
+protected:
+  MultiPolicyCollector(PSWDPolicyMap& policies);
+  virtual ~MultiPolicyCollector();
+  
+  void AddPolicy(const StringX& name, const PWPolicy& policy);
+  void RemovePolicy(const StringX& name);
+};
+
+/**
+ * Implements the management of a single policy, the default policy.
+ * 
+ * Needed by the policy specific command <code>PolicyCommandModify</code>, only.
+ */
+class SinglePolicyCollector
+{
+private:
+  StringX   m_Name;
+  PWPolicy& m_DefaultPolicy;
+  
+protected:
+  SinglePolicyCollector(PWPolicy& defaultPolicy);
+  virtual ~SinglePolicyCollector();
+  
+  void AddPolicy(const StringX& name, const PWPolicy& policy);
+};
+
+/**
+ * This class implements the command for adding policies into a collection.
+ */
+class PolicyCommandAdd : public Command, public MultiPolicyCollector
+{
+private:
+  StringX  m_Name;
+  PWPolicy m_Policy;
+  
+protected:
+public:
+  PolicyCommandAdd(CommandInterface& commandInterface, PSWDPolicyMap& policies, const stringT& name, const PWPolicy& policy);
+  ~PolicyCommandAdd();
+  
+  int Execute() override;
+  void Undo() override;
+};
+
+/**
+ * This class implements the command for removing policies from a collection.
+ */
+class PolicyCommandRemove : public Command, public MultiPolicyCollector
+{
+private:
+  StringX  m_Name;
+  PWPolicy m_Policy;
+  
+protected:
+public:
+  PolicyCommandRemove(CommandInterface& commandInterface, PSWDPolicyMap& policies, const stringT& name, const PWPolicy& policy);
+  ~PolicyCommandRemove();
+  
+  int Execute() override;
+  void Undo() override;
+};
+
+/**
+ * Provides the command template for modifying of existing policy rules.
+ * 
+ * The Collector is responsible for handling the policy data of type T in a type depending manner.
+ */
+template <typename Collector, typename T>
+class PolicyCommandModify : public Command, public Collector
+{
+private:
+  StringX  m_Name;
+  PWPolicy m_OriginalPolicy;
+  PWPolicy m_ModifiedPolicy;
+
+protected:
+public:
+  PolicyCommandModify(CommandInterface& commandInterface, T& data, const stringT& name, const PWPolicy& original, const PWPolicy& modified);
+  ~PolicyCommandModify();
+  
+  int Execute() override;
+  void Undo() override;
+};
+
+/**
+ * This class implements the command for renaming of existing policies in a collection.
+ * 
+ * There are two possible types of changes that could have been applied to a policy.
+ * Case 1) Policy name was changed, only.
+ * Case 2) Policy name but also some policy attributes were changed
+ * 
+ * This class assums always the second case, so that even when only the name was changed 
+ * a backup of the policy is created. That's why beside old and new name also two 
+ * policies are expected.
+ * 
+ * To just fulfill the first case only the old and new name is necessary and the 
+ * affected policy, that got renamed.
+ * 
+ * Assuming always case two, prevents additional checks what exactly has changed.
+ * Only the name, only the policy rules or both?!
+ */
+class PolicyCommandRename : public Command, public MultiPolicyCollector
+{
+private:
+  StringX  m_OldName;
+  StringX  m_NewName;
+  PWPolicy m_OriginalPolicy;
+  PWPolicy m_ModifiedPolicy;
+
+protected:
+public:
+  PolicyCommandRename(CommandInterface& commandInterface, PSWDPolicyMap& policies, const stringT& oldName, const stringT& newName, const PWPolicy& original, const PWPolicy& modified);
+  ~PolicyCommandRename();
+  
+  int Execute() override;
+  void Undo() override;
+};
+
 #endif /*  __COMMAND_H */

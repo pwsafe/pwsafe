@@ -24,6 +24,7 @@
 #include "core/PWPolicy.h"
 #include "core/StringX.h"
 #include "core/PWScore.h"
+#include "core/PolicyManager.h"
 
 #include <vector>
 
@@ -99,7 +100,7 @@ public:
   void OnNewClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_EDIT_PP
-  void OnEditPpClick( wxCommandEvent& event );
+  void OnEditClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_DELETE
   void OnDeleteClick( wxCommandEvent& event );
@@ -159,7 +160,8 @@ public:
  private:
   void UpdateNames();
   void UpdateDetails();
-  void UpdatePolicy(const wxString &polname, const PWPolicy &pol, st_PSWDPolicyChange::Mode mode); // called after New/Edit
+  void UpdateSelection(const wxString& policyname);
+  void UpdateUndoRedoButtons();
   void ShowPolicyDetails();
   void ShowPolicyEntries();
   PWPolicy GetSelectedPolicy() const;
@@ -167,14 +169,7 @@ public:
   void ResizeGridColumns();
 
   PWScore &m_core;
-  // History of current changes for Undo/Redo and index to current change
-  // that can be undone. Note: if this is less that the size of the vector
-  // of saved changes, then there are changes that can be redone.
-  std::vector<st_PSWDPolicyChange> m_vchanges;
-  int m_iundo_pos;
 
-  PSWDPolicyMap m_MapPSWDPLC;
-  PWPolicy m_st_default_pp;
   int m_curPolRow;
 
   int m_iSortNamesIndex, m_iSortEntriesIndex;
@@ -185,6 +180,8 @@ public:
   bool m_bUndoShortcut, m_bRedoShortcut;
   
   int m_ScrollbarWidth;
+  
+  std::unique_ptr<PolicyManager> m_PolicyManager;
 };
 
 #endif
