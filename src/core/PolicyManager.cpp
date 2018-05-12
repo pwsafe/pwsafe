@@ -85,7 +85,7 @@ PWPolicy PolicyManager::GetPolicy(const stringT& name) const
 
 bool PolicyManager::HasPolicy(const stringT& name) const
 {
-  return (m_Policies.find(StringX(name.c_str())) == m_Policies.end()) ? false : true;
+  return (m_Policies.find(StringX(name.c_str())) != m_Policies.end());
 }
 
 PWPolicy PolicyManager::GetDefaultPolicy() const
@@ -95,7 +95,7 @@ PWPolicy PolicyManager::GetDefaultPolicy() const
 
 bool PolicyManager::IsDefaultPolicy(const stringT& name)
 {
-  return (name == PolicyManager::DEFAULT_POLICYNAME) ? true : false;
+  return (name == PolicyManager::DEFAULT_POLICYNAME);
 }
 
 size_t PolicyManager::GetNumberOfPolicies() const
@@ -105,12 +105,12 @@ size_t PolicyManager::GetNumberOfPolicies() const
 
 bool PolicyManager::CanUndo() const
 {
-  return m_UndoStack.empty() ? false : true;
+  return !m_UndoStack.empty();
 }
 
 bool PolicyManager::CanRedo() const
 {
-  return m_RedoStack.empty() ? false : true;
+  return !m_RedoStack.empty();
 }
 
 void PolicyManager::Undo()
