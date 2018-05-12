@@ -1,14 +1,4 @@
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
-#include "wx/wx.h"
-#endif
-
+#include "os/typedefs.h"
 #include "PolicyManager.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,10 +95,10 @@ PWPolicy PolicyManager::GetDefaultPolicy() const
 
 bool PolicyManager::IsDefaultPolicy(const stringT& name)
 {
-  return (name == _(PolicyManager::DEFAULT_POLICYNAME)) ? true : false;
+  return (name == PolicyManager::DEFAULT_POLICYNAME) ? true : false;
 }
 
-int PolicyManager::GetNumberOfPolicies() const
+size_t PolicyManager::GetNumberOfPolicies() const
 {
   return m_Policies.size();
 }

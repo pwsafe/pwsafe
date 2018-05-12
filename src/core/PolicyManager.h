@@ -78,7 +78,7 @@ public:
   /**
    * Provides the number of policies within the internal collection of policies.
    */
-  int GetNumberOfPolicies() const;
+  size_t GetNumberOfPolicies() const;
   
   /**
    * Provides the information whether an undo can be executed, 
