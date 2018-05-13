@@ -240,6 +240,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI(ID_PROTECT,         PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_FILTERMENU,      PasswordSafeFrame::OnUpdateUI ) // To mark unimplemented
   EVT_UPDATE_UI(ID_CUSTOMIZETOOLBAR,PasswordSafeFrame::OnUpdateUI ) // To mark unimplemented
+  EVT_UPDATE_UI(ID_PWDPOLSM,        PasswordSafeFrame::OnUpdateUI )
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -271,6 +272,11 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
       style |= wxSTAY_ON_TOP;
     Create( parent, id, caption, pos, size, style );
+    
+    if (!IsTaskBarIconAvailable()) {
+      Bind(wxEVT_MENU, &PasswordSafeFrame::OnLockSafe,   this, ID_LOCK_SAFE);
+      Bind(wxEVT_MENU, &PasswordSafeFrame::OnUnlockSafe, this, ID_UNLOCK_SAFE);
+    }
 }
 
 /*!
@@ -462,6 +468,11 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu29->AppendSeparator();
   itemMenu29->Append(ID_ADDGROUP, _("Add Group"), wxEmptyString, wxITEM_NORMAL);
   itemMenu29->AppendSeparator();
+  if (!IsTaskBarIconAvailable()) {
+    (itemMenu29->Append(ID_LOCK_SAFE, _("&Lock Safe"), wxEmptyString, wxITEM_NORMAL))->Enable(false);
+    (itemMenu29->Append(ID_UNLOCK_SAFE, _("&Unlock Safe"), wxEmptyString, wxITEM_NORMAL))->Enable(false);
+    itemMenu29->AppendSeparator();
+  }
   itemMenu29->Append(wxID_UNDO);
   itemMenu29->Append(wxID_REDO);
   itemMenu29->Append(ID_CLEARCLIPBOARD, _("C&lear Clipboard\tCtrl+Del"), wxEmptyString, wxITEM_NORMAL);
@@ -798,6 +809,7 @@ int PasswordSafeFrame::Load(const StringX &passwd)
     m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
   }
   UpdateStatusBar();
+  UpdateMenuBar();
   return status;
 }
 
@@ -1180,6 +1192,7 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
     m_search->OnSearchClose(dummyEv); // fix github issue 375
     m_core.SetReadOnly(false);
     UpdateStatusBar();
+    UpdateMenuBar();
   }
 }
 
@@ -2020,6 +2033,10 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!bFileIsReadOnly && pci && !pci->IsShortcut());
       evt.Check(pci && pci->IsProtected());
       break;
+      
+    case ID_PWDPOLSM:
+      (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) ? evt.Enable(true) : evt.Enable(false);
+      break;
 
   case ID_FILTERMENU:
   case ID_CUSTOMIZETOOLBAR:
@@ -2316,6 +2333,7 @@ int PasswordSafeFrame::New()
           return PWScore::CANT_OPEN_FILE;
     case wxID_NO:
       UpdateStatusBar();
+      UpdateMenuBar();
       break;
     default:
       ASSERT(0);
@@ -2445,6 +2463,12 @@ void PasswordSafeFrame::CleanupAfterReloadFailure(bool tellUser)
                      _("Error re-loading last database"), wxOK|wxICON_ERROR, this);
   }
   m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
+}
+
+void PasswordSafeFrame::OnUnlockSafe(wxCommandEvent&)
+{
+  UnlockSafe(false, false);
+  UpdateMenuBar();
 }
 
 /**
@@ -2603,6 +2627,11 @@ void PasswordSafeFrame::HideUI(bool lock)
   }
 }
 
+void PasswordSafeFrame::OnLockSafe(wxCommandEvent&)
+{
+  LockDb();
+}
+
 void PasswordSafeFrame::LockDb()
 {
   wxMutexTryLocker lockMutex(m_dblockMutex);
@@ -2613,8 +2642,11 @@ void PasswordSafeFrame::LockDb()
   }
 
   m_guiInfo->Save(this);
-  if (SaveAndClearDatabaseOnLock())
+  if (SaveAndClearDatabaseOnLock()) {
     m_sysTray->SetTrayStatus(SystemTray::TrayStatus::LOCKED);
+    
+    UpdateMenuBar();
+  }
 }
 
 void PasswordSafeFrame::SetTrayStatus(bool locked)
@@ -3391,6 +3423,36 @@ void PasswordSafeFrame::UpdateStatusBar()
     m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_READONLY);
     m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_NUM_ENT);
     m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_FILTER);
+  }
+}
+
+void PasswordSafeFrame::UpdateMenuBar()
+{
+  /*
+   * Menu Item 'Unlock Safe' and 'Lock Safe'
+   * 
+   * Note: These menu items are only present if system tray is available.
+   */
+  wxMenuItem *lockMenuItem, *unlockMenuItem;
+  
+  lockMenuItem   = GetMenuBar()->FindItem(ID_LOCK_SAFE);
+  unlockMenuItem = GetMenuBar()->FindItem(ID_UNLOCK_SAFE);
+  
+  if ((lockMenuItem != nullptr) && (unlockMenuItem != nullptr)) {
+    if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::LOCKED) {
+      
+      lockMenuItem->Enable(false);
+      unlockMenuItem->Enable(true);
+    }
+    else if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) {
+      
+      lockMenuItem->Enable(true);
+      unlockMenuItem->Enable(false);
+    }
+    else {
+      lockMenuItem->Enable(false);
+      unlockMenuItem->Enable(false);
+    }
   }
 }
 
