@@ -2145,10 +2145,9 @@ msgid ""
 "You can use any keyboard character. The combination is case-sensitive."
 msgstr ""
 "Eine neue Passwortdatenbank wird erstellt.\n"
-"Das Master-Passwort das sie eingeben, wird benutzt um die Passwortdatenbank zu "
-"verschlüsseln.\n"
-"Für das Master-Passwort kann jedes Zeichen der physischen oder der virtuellen "
-"Tastatur benutzt werden. Dabei wird die Groß-/Kleinschreibung beachtet."
+"Das Master-Passwort wird zur Verschlüsselung der Passwortdatenbank verwendet.\n"
+"Für das Master-Passwort darf jedes Zeichen der Tastatur verwendet werden.\n"
+"Dabei wird die Groß-/Kleinschreibung beachtet."
 
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:161
 msgid "Verify:"
