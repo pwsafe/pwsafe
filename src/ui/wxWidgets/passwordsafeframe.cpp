@@ -1553,6 +1553,7 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
 
     // Recreate menubar
     CreateMenubar();
+    UpdateMenuBar();
 
     // Recreate toolbar
     ReCreateMainToolbar();
