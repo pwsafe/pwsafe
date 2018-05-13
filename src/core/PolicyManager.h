@@ -18,7 +18,7 @@ private:
   std::vector<std::unique_ptr<Command>> m_RedoStack;        /* The lifo stack with redo commands. */
   
 public:
-  static const stringT DEFAULT_POLICYNAME;                  /* The name of the default policy. */
+  static const stringT GetDefaultPolicyName();                  /* The name of the default policy. */
   
   PolicyManager(CommandInterface& commandInterface);
   ~PolicyManager();

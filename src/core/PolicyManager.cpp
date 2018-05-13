@@ -1,11 +1,17 @@
-#include "os/typedefs.h"
+#include "StringX.h"
+#include "core.h"
 #include "PolicyManager.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // class PolicyManager
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-const stringT PolicyManager::DEFAULT_POLICYNAME(_S("Default Policy"));
+const stringT PolicyManager::GetDefaultPolicyName()
+{
+  stringT retval;
+  LoadAString(retval, IDSC_DEFAULT_POLICY);
+  return retval;
+}
 
 PolicyManager::PolicyManager(CommandInterface& commandInterface) : m_CommandInterface(commandInterface)
 {
@@ -95,7 +101,7 @@ PWPolicy PolicyManager::GetDefaultPolicy() const
 
 bool PolicyManager::IsDefaultPolicy(const stringT& name)
 {
-  return (name == PolicyManager::DEFAULT_POLICYNAME);
+  return (name == GetDefaultPolicyName());
 }
 
 size_t PolicyManager::GetNumberOfPolicies() const
