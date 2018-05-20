@@ -298,7 +298,7 @@ void CManagePasswordPolicies::CreateControls()
 
   
   // Max. of 255 policy names allowed - only 2 hex digits used for number
-  if (m_PolicyManager->GetNumberOfPolicies() >= 255) {
+  if (m_PolicyManager->HasMaxPolicies()) {
     FindWindow(wxID_NEW)->Enable(false);
   }
 

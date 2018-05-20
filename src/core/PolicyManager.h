@@ -18,7 +18,8 @@ private:
   std::vector<std::unique_ptr<Command>> m_RedoStack;        /* The lifo stack with redo commands. */
   
 public:
-  static const stringT GetDefaultPolicyName();                  /* The name of the default policy. */
+  static const size_t  MAX_POLICIES;                        /* There are only 255 policy names allowed, because only 2 hex digits are used */
+  static const stringT GetDefaultPolicyName();              /* The name of the default policy. */
   
   PolicyManager(CommandInterface& commandInterface);
   ~PolicyManager();
@@ -79,6 +80,11 @@ public:
    * Provides the number of policies within the internal collection of policies.
    */
   size_t GetNumberOfPolicies() const;
+  
+  /**
+   * Provides the information whether the maximum allowed amount of policy entries has been reached.
+   */
+  bool HasMaxPolicies() const;
   
   /**
    * Provides the information whether an undo can be executed, 
