@@ -3432,7 +3432,7 @@ void PasswordSafeFrame::UpdateMenuBar()
   /*
    * Menu Item 'Unlock Safe' and 'Lock Safe'
    * 
-   * Note: These menu items are only present if system tray is available.
+   * Note: These menu items are only present if system tray is unavailable.
    */
   wxMenuItem *lockMenuItem, *unlockMenuItem;
   

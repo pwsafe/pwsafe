@@ -6,6 +6,8 @@
 // class PolicyManager
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+const size_t PolicyManager::MAX_POLICIES = 255;
+
 const stringT PolicyManager::GetDefaultPolicyName()
 {
   stringT retval;
@@ -107,6 +109,11 @@ bool PolicyManager::IsDefaultPolicy(const stringT& name)
 size_t PolicyManager::GetNumberOfPolicies() const
 {
   return m_Policies.size();
+}
+
+bool PolicyManager::HasMaxPolicies() const
+{
+  return (m_Policies.size() >= PolicyManager::MAX_POLICIES);
 }
 
 bool PolicyManager::CanUndo() const
