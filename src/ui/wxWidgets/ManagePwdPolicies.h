@@ -160,6 +160,7 @@ public:
  private:
   void UpdateNames();
   void UpdateDetails();
+  void UpdateEntryList();
   void UpdateSelection(const wxString& policyname);
   void UpdateUndoRedoButtons();
   void ShowPolicyDetails();
@@ -176,6 +177,8 @@ public:
   bool m_bSortNamesAscending, m_bSortEntriesAscending;
 
   bool m_bViewPolicy;
+  
+  bool m_bShowPolicyEntriesInitially;
   
   bool m_bUndoShortcut, m_bRedoShortcut;
   

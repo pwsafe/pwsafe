@@ -88,7 +88,8 @@ CManagePasswordPolicies::CManagePasswordPolicies( wxWindow* parent,  PWScore &co
               const wxSize& size, long style )
 : m_core(core), m_curPolRow(-1),
   m_iSortNamesIndex(0), m_iSortEntriesIndex(0),
-  m_bSortNamesAscending(true), m_bSortEntriesAscending(true), m_bViewPolicy(true)
+  m_bSortNamesAscending(true), m_bSortEntriesAscending(true), m_bViewPolicy(true),
+  m_bShowPolicyEntriesInitially(true)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -287,15 +288,17 @@ void CManagePasswordPolicies::CreateControls()
   m_PolicyEntries->SetColLabelValue(0, _("Group"));
   m_PolicyEntries->SetColLabelValue(1, _("Title"));
   m_PolicyEntries->SetColLabelValue(2, _("User Name"));
-  ShowPolicyDetails();
+  m_PolicyEntries->InvalidateBestSize();
+  m_PolicyEntries->SetClientSize(m_PolicyEntries->GetBestSize());
   m_PolicyEntries->Fit();
-
+  
+  ShowPolicyDetails(); // Show initially table with policy details.
   
   m_ScrollbarWidth = wxSystemSettings::GetMetric(wxSYS_VSCROLL_X, this) - 10;
 
   
   // Max. of 255 policy names allowed - only 2 hex digits used for number
-  if (m_PolicyManager->GetNumberOfPolicies() >= 255) {
+  if (m_PolicyManager->HasMaxPolicies()) {
     FindWindow(wxID_NEW)->Enable(false);
   }
 
@@ -380,6 +383,19 @@ void CManagePasswordPolicies::ShowPolicyEntries()
   m_PolicyDetails->Hide();
   m_PolicyDetails->Enable(false);
   GetSizer()->Layout();
+  
+  if (m_bShowPolicyEntriesInitially) {
+    m_bShowPolicyEntriesInitially = false;
+   
+    // All columns of policy entries shall get the same space (see also CManagePasswordPolicies::ResizeGridColumns)
+    int width = m_PolicyEntries->GetClientSize().GetWidth() - m_PolicyEntries->GetRowLabelSize() - m_ScrollbarWidth;
+    
+    if (width > 0) {
+      m_PolicyEntries->SetColSize(0, width/3);
+      m_PolicyEntries->SetColSize(1, width/3);
+      m_PolicyEntries->SetColSize(2, width/3);
+    }
+  }
 }
 
 void CManagePasswordPolicies::UpdateNames()
@@ -480,6 +496,37 @@ void CManagePasswordPolicies::UpdateDetails()
   st_pp.Policy2Table(wxRowPutter, m_PolicyDetails);
 }
 
+void CManagePasswordPolicies::UpdateEntryList()
+{
+  int row = GetSelectedRow();
+  
+  if (row < 0) {
+    return;
+  }
+  
+  m_PolicyEntries->ClearGrid();
+  
+  GTUSet gtuSet;
+  
+  if (m_core.InitialiseGTU(gtuSet, StringX(m_PolicyNames->GetCellValue(row, 0)))) {
+    
+    row = 0;
+    
+    for (const auto& gtuItem : gtuSet) {
+      
+      // Re-use existing rows and only add a new one if needed
+      if (m_PolicyEntries->GetNumberRows() <= row) {
+        m_PolicyEntries->InsertRows(row);
+      }
+    
+      m_PolicyEntries->SetCellValue(row, 0, gtuItem.group.c_str());
+      m_PolicyEntries->SetCellValue(row, 1, gtuItem.title.c_str());
+      m_PolicyEntries->SetCellValue(row, 2, gtuItem.user.c_str());
+      row++;
+    }
+  }
+}
+
 void CManagePasswordPolicies::UpdateSelection(const wxString& policyname)
 {
   int rows = m_PolicyNames->GetNumberRows();
@@ -496,13 +543,17 @@ void CManagePasswordPolicies::UpdateSelection(const wxString& policyname)
 
 void CManagePasswordPolicies::UpdateUndoRedoButtons()
 {
-  m_PolicyManager->CanUndo() ? FindWindow(wxID_UNDO)->Enable(true) : FindWindow(wxID_UNDO)->Enable(false);
-  m_PolicyManager->CanRedo() ? FindWindow(wxID_REDO)->Enable(true) : FindWindow(wxID_REDO)->Enable(false);
+  FindWindow(wxID_UNDO)->Enable(m_PolicyManager->CanUndo());
+  FindWindow(wxID_REDO)->Enable(m_PolicyManager->CanRedo());
 }
 
 void CManagePasswordPolicies::ResizeGridColumns()
 {
   int width = 0;
+  
+  //
+  // Table with policy names
+  //
   
   // First column of policy names grid shall get available space, whereas the second column has fixed size
   width = m_PolicyNames->GetClientSize().GetWidth() - m_PolicyNames->GetRowLabelSize() - m_PolicyNames->GetColSize(1) - m_ScrollbarWidth;
@@ -510,7 +561,11 @@ void CManagePasswordPolicies::ResizeGridColumns()
   if (width > 0) {
     m_PolicyNames->SetColSize(0, width);
   }
-  
+
+  //
+  // Table with policy details
+  //
+
   // Second column of policy details grid shall get available space, whereas the first column has fixed size
   width = m_PolicyDetails->GetClientSize().GetWidth() - m_PolicyDetails->GetRowLabelSize() - m_PolicyDetails->GetColSize(0) - m_ScrollbarWidth;
   
@@ -518,7 +573,18 @@ void CManagePasswordPolicies::ResizeGridColumns()
     m_PolicyDetails->SetColSize(1, width);
   }
   
-  // TODO: resize of grid columns of m_PolicyEntries when switching between policy details and entries is correctly implemented
+  //
+  // Table with policy entries
+  //
+
+  // All columns of policy entries shall get the same space
+  width = m_PolicyEntries->GetClientSize().GetWidth() - m_PolicyEntries->GetRowLabelSize() - m_ScrollbarWidth;
+  
+  if (width > 0) {
+    m_PolicyEntries->SetColSize(0, width/3);
+    m_PolicyEntries->SetColSize(1, width/3);
+    m_PolicyEntries->SetColSize(2, width/3);
+  }
 }
 
 /*!
@@ -709,6 +775,7 @@ void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
     }
     m_core.Execute(pmulticmds);
   } // defChanged || namedChanged
+  m_bShowPolicyEntriesInitially = true;
   EndModal(wxID_OK);
 }
 
@@ -718,7 +785,9 @@ void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
 
 void CManagePasswordPolicies::OnCancelClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CManagePasswordPolicies.
+  m_bShowPolicyEntriesInitially = true;
+
+  ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CManagePasswordPolicies.
   // Before editing this code, remove the block markers.
   event.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CManagePasswordPolicies.
@@ -776,9 +845,12 @@ void CManagePasswordPolicies::OnSelectCell( wxGridEvent& event )
         FindWindow(ID_EDIT_PP)->Enable(true);
       }
       
+      FindWindow(ID_LIST)->Enable(false);
+      
       // Update details of selected policy
       m_curPolRow = event.GetRow();
       UpdateDetails();
+      UpdateEntryList();
     }
     else if (cellValue.IsEmpty()) { /* Row with an empty cell */
       
@@ -787,6 +859,8 @@ void CManagePasswordPolicies::OnSelectCell( wxGridEvent& event )
         FindWindow(wxID_DELETE)->Enable(false);
         FindWindow(ID_EDIT_PP)->Enable(false);
       }
+      
+      FindWindow(ID_LIST)->Enable(false);
       
       m_PolicyDetails->ClearGrid();
       m_PolicyEntries->ClearGrid();
@@ -802,9 +876,12 @@ void CManagePasswordPolicies::OnSelectCell( wxGridEvent& event )
         FindWindow(ID_EDIT_PP)->Enable(true);
       }
       
+      FindWindow(ID_LIST)->Enable(true);
+      
       // Update details of selected policy
       m_curPolRow = event.GetRow();
       UpdateDetails();
+      UpdateEntryList();
     }
   }
 }
