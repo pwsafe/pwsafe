@@ -32,9 +32,7 @@ public:
   PWSclipboard &operator=(const PWSclipboard &) = delete;
   
 
-  bool SetData(const StringX &data,
-    bool isSensitive = true,
-    CLIPFORMAT cfFormat = CLIPBOARD_TEXT_FORMAT);
+  bool SetData(const StringX &data,  bool isSensitive = true);
   // returns true if succeeded
   bool ClearCBData(); // return true if cleared or if data wasn't ours
 

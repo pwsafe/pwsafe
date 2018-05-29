@@ -31,7 +31,58 @@ PWSclipboard::~PWSclipboard()
   // data after application exit. 
 }
 
-bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfFormat)
+class PWSOleDataSource : public COleDataSource
+{
+public:
+  PWSOleDataSource(HGLOBAL hg, size_t hgLen, bool isSensitive) : COleDataSource()
+  {
+    m_isSensitive = isSensitive;
+    s_hg = hg;
+    s_hgLen = hgLen;
+  }
+  virtual BOOL OnRenderGlobalData(LPFORMATETC,  HGLOBAL* phGlobal)
+  {
+    if (s_hg != NULL) {
+      *phGlobal = s_hg;
+      if (m_isSensitive) {
+        // zap clipboard 3 seconds after paste:
+        AfxGetMainWnd()->SetTimer(TIMER_ID, 3000, timerCallback);
+      }
+      return TRUE;
+    } else
+      return FALSE;
+  }
+  ~PWSOleDataSource()
+  {
+    AfxGetMainWnd()->KillTimer(TIMER_ID);
+  }
+private:
+  bool m_isSensitive;
+  static HGLOBAL s_hg;
+  static size_t s_hgLen;
+  static const UINT TIMER_ID = 576;
+  static void timerCallback(HWND, UINT, UINT_PTR, DWORD);
+};
+
+HGLOBAL PWSOleDataSource::s_hg;
+size_t PWSOleDataSource::s_hgLen;
+void PWSOleDataSource::timerCallback(HWND, UINT, UINT_PTR, DWORD)
+{
+  if (s_hg != NULL) {
+    LPCTSTR pData = (LPCTSTR)::GlobalLock(s_hg);
+    trashMemory((void *)pData, s_hgLen);
+    ::GlobalUnlock(s_hg);
+    ::GlobalFree(s_hg);
+    s_hg = NULL; s_hgLen = 0;
+    StringX blank(L"");
+    PWSclipboard cb;
+    cb.SetData(blank, false);
+  }
+  AfxGetMainWnd()->KillTimer(TIMER_ID);
+}
+
+
+bool PWSclipboard::SetData(const StringX &data, bool isSensitive)
 {
   // Dummy data
   HGLOBAL hDummyGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, 2 * sizeof(wchar_t));
@@ -48,11 +99,11 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
   PWSUtil::strCopy(pGlobalLock, data.length() + 1, data.c_str(), data.length());
   ::GlobalUnlock(hGlobalMemory);
 
-  COleDataSource *pods = new COleDataSource; // deleted automagically by SetClipboard below
+  // Following is deleted automagically by SetClipboard() below
+  COleDataSource *pods = new PWSOleDataSource(hGlobalMemory, uGlobalMemSize, isSensitive);
   pods->CacheGlobalData(CF_CLIPBOARD_VIEWER_IGNORE, hDummyGlobalMemory);
-  pods->CacheGlobalData(cfFormat, hGlobalMemory);
+  pods->DelayRenderData(CLIPBOARD_TEXT_FORMAT); // so we can trigger timer upon paste
   pods->SetClipboard();
-  pods = NULL; // As deleted by SetClipboard above
 
   m_set = isSensitive; // don't set if !isSensitive, so won't be cleared
   if (m_set) {
