@@ -741,7 +741,7 @@ msgstr "&Liste"
 
 #. Resource IDs: (32027 - MenuEx)
 msgid "&Lock"
-msgstr "&Sperre"
+msgstr "&Sperren"
 
 #. Resource IDs: (32150 - PopupMenuEx)
 msgid "&Manage"
