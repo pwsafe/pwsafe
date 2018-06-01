@@ -613,7 +613,7 @@ void PwsafeApp::OnIdleTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == IDLE_TIMER_ID && PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
     if (m_frame != nullptr && !m_frame->GetCurrentSafe().IsEmpty()) {
-      m_frame->HideUI(true);  //true => lock
+      m_frame->IconizeOrHideAndLock();
     }
   }
 }

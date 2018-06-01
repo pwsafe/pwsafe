@@ -140,7 +140,6 @@ enum {
   ID_TOOLBAR_CLASSIC,
   ID_SYNCHRONIZE,
   ID_LOCK_SAFE,
-  ID_UNLOCK_SAFE,
 
   // languages
   ID_LANGUAGE_BEGIN,
@@ -371,9 +370,6 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_LOCK_SAFE
   void OnLockSafe(wxCommandEvent& evt);
 
-  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_UNLOCK_SAFE
-  void OnUnlockSafe(wxCommandEvent& evt);
-  
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_UNDO
   void OnUndo(wxCommandEvent& evt);
 
@@ -452,6 +448,8 @@ public:
   void UnlockSafe(bool restoreUI, bool iconizeOnFailure);
 
   /// Called by app when the inactivity timer arrives
+  void IconizeOrHideAndLock();
+  
   void HideUI(bool lock);
 
   /// Called by system tray unlock the UI (and optionally restore the main window)
