@@ -97,150 +97,140 @@ DEFINE_EVENT_TYPE(wxEVT_GUI_DB_PREFS_CHANGE)
 
 BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
-////@begin PasswordSafeFrame event table entries
   EVT_CLOSE( PasswordSafeFrame::OnCloseWindow )
-  EVT_MENU( wxID_NEW, PasswordSafeFrame::OnNewClick )
-  EVT_MENU( wxID_OPEN, PasswordSafeFrame::OnOpenClick )
-  EVT_MENU( wxID_CLOSE, PasswordSafeFrame::OnCloseClick )
-  EVT_MENU( wxID_SAVE, PasswordSafeFrame::OnSaveClick )
-  EVT_MENU( wxID_SAVEAS, PasswordSafeFrame::OnSaveAsClick )
-  EVT_MENU( wxID_PROPERTIES, PasswordSafeFrame::OnPropertiesClick )
-  EVT_MENU( wxID_EXIT, PasswordSafeFrame::OnExitClick )
-  EVT_MENU( wxID_ADD, PasswordSafeFrame::OnAddClick )
-  EVT_MENU( ID_EDIT, PasswordSafeFrame::OnEditClick )
-  EVT_MENU( wxID_DELETE, PasswordSafeFrame::OnDeleteClick )
-  EVT_MENU( ID_PROTECT, PasswordSafeFrame::OnProtectUnprotectClick )
-  EVT_MENU( ID_CLEARCLIPBOARD, PasswordSafeFrame::OnClearclipboardClick )
-  EVT_MENU( ID_COPYPASSWORD, PasswordSafeFrame::OnCopypasswordClick )
-  EVT_MENU( ID_COPYUSERNAME, PasswordSafeFrame::OnCopyusernameClick )
-  EVT_MENU( ID_COPYNOTESFLD, PasswordSafeFrame::OnCopynotesfldClick )
-  EVT_MENU( ID_COPYURL, PasswordSafeFrame::OnCopyurlClick )
-  EVT_MENU( ID_LIST_VIEW, PasswordSafeFrame::OnListViewClick )
-  EVT_MENU( ID_TREE_VIEW, PasswordSafeFrame::OnTreeViewClick )
-  EVT_MENU( ID_SHOWHIDE_UNSAVED, PasswordSafeFrame::OnShowUnsavedEntriesClick )
-  EVT_MENU( ID_SHOW_ALL_EXPIRY, PasswordSafeFrame::OnShowAllExpiryClick )
-  EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
-  EVT_MENU( wxID_PREFERENCES, PasswordSafeFrame::OnPreferencesClick )
-  EVT_MENU( ID_PWDPOLSM, PasswordSafeFrame::OnPwdPolsMClick )
+  
+  EVT_MENU( wxID_NEW,                   PasswordSafeFrame::OnNewClick )
+  EVT_MENU( wxID_OPEN,                  PasswordSafeFrame::OnOpenClick )
+  EVT_MENU( wxID_CLOSE,                 PasswordSafeFrame::OnCloseClick )
+  EVT_MENU( ID_LOCK_SAFE,               PasswordSafeFrame::OnLockSafe )
+  EVT_MENU( wxID_SAVE,                  PasswordSafeFrame::OnSaveClick )
+  EVT_MENU( wxID_SAVEAS,                PasswordSafeFrame::OnSaveAsClick )
+  EVT_MENU( wxID_PROPERTIES,            PasswordSafeFrame::OnPropertiesClick )
+  EVT_MENU( wxID_EXIT,                  PasswordSafeFrame::OnExitClick )
+  EVT_MENU( wxID_ADD,                   PasswordSafeFrame::OnAddClick )
+  EVT_MENU( ID_EDIT,                    PasswordSafeFrame::OnEditClick )
+  EVT_MENU( wxID_DELETE,                PasswordSafeFrame::OnDeleteClick )
+  EVT_MENU( ID_PROTECT,                 PasswordSafeFrame::OnProtectUnprotectClick )
+  EVT_MENU( ID_CLEARCLIPBOARD,          PasswordSafeFrame::OnClearclipboardClick )
+  EVT_MENU( ID_COPYPASSWORD,            PasswordSafeFrame::OnCopypasswordClick )
+  EVT_MENU( ID_COPYUSERNAME,            PasswordSafeFrame::OnCopyusernameClick )
+  EVT_MENU( ID_COPYNOTESFLD,            PasswordSafeFrame::OnCopynotesfldClick )
+  EVT_MENU( ID_COPYURL,                 PasswordSafeFrame::OnCopyurlClick )
+  EVT_MENU( ID_LIST_VIEW,               PasswordSafeFrame::OnListViewClick )
+  EVT_MENU( ID_TREE_VIEW,               PasswordSafeFrame::OnTreeViewClick )
+  EVT_MENU( ID_SHOWHIDE_UNSAVED,        PasswordSafeFrame::OnShowUnsavedEntriesClick )
+  EVT_MENU( ID_SHOW_ALL_EXPIRY,         PasswordSafeFrame::OnShowAllExpiryClick )
+  EVT_MENU( ID_CHANGECOMBO,             PasswordSafeFrame::OnChangePasswdClick )
+  EVT_MENU( wxID_PREFERENCES,           PasswordSafeFrame::OnPreferencesClick )
+  EVT_MENU( ID_PWDPOLSM,                PasswordSafeFrame::OnPwdPolsMClick )
 
 #ifndef NO_YUBI
-  EVT_MENU( ID_YUBIKEY_MNG, PasswordSafeFrame::OnYubikeyMngClick )
+  EVT_MENU( ID_YUBIKEY_MNG,             PasswordSafeFrame::OnYubikeyMngClick )
 #endif
 
   EVT_MENU_RANGE( ID_LANGUAGE_BEGIN, ID_LANGUAGE_END, PasswordSafeFrame::OnLanguageClick )
 
-  EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
-////@end PasswordSafeFrame event table entries
-  EVT_MENU( ID_COPYEMAIL, PasswordSafeFrame::OnCopyEmailClick )
+  EVT_MENU( wxID_ABOUT,                 PasswordSafeFrame::OnAboutClick )
+  EVT_MENU( ID_COPYEMAIL,               PasswordSafeFrame::OnCopyEmailClick )
+  EVT_MENU( wxID_FIND,                  PasswordSafeFrame::OnFindClick )
 
-  EVT_MENU( wxID_FIND, PasswordSafeFrame::OnFindClick )
+  EVT_MENU( ID_EDITMENU_FIND_NEXT,      PasswordSafeFrame::OnFindNext )
+  EVT_MENU( ID_EDITMENU_FIND_PREVIOUS,  PasswordSafeFrame::OnFindPrevious )
 
-  EVT_MENU( ID_EDITMENU_FIND_NEXT, PasswordSafeFrame::OnFindNext )
+  EVT_MENU( ID_BROWSEURL,               PasswordSafeFrame::OnBrowseURL )
+  EVT_MENU( ID_BROWSEURLPLUS,           PasswordSafeFrame::OnBrowseUrlAndAutotype )
 
-  EVT_MENU( ID_EDITMENU_FIND_PREVIOUS, PasswordSafeFrame::OnFindPrevious )
+  EVT_MENU( ID_SENDEMAIL,               PasswordSafeFrame::OnSendEmail )
 
-  EVT_MENU( ID_BROWSEURL, PasswordSafeFrame::OnBrowseURL )
+  EVT_MENU( ID_COPYRUNCOMMAND,          PasswordSafeFrame::OnCopyRunCmd )
+  EVT_MENU( ID_RUNCOMMAND,              PasswordSafeFrame::OnRunCommand )
 
-  EVT_MENU( ID_BROWSEURLPLUS, PasswordSafeFrame::OnBrowseUrlAndAutotype )
+  EVT_MENU( ID_AUTOTYPE,                PasswordSafeFrame::OnAutoType )
 
-  EVT_MENU( ID_SENDEMAIL, PasswordSafeFrame::OnSendEmail )
+  EVT_MENU( ID_GOTOBASEENTRY,           PasswordSafeFrame::OnGotoBase )
+  EVT_MENU( ID_EDITBASEENTRY,           PasswordSafeFrame::OnEditBase )
+  
+  EVT_MENU( ID_CREATESHORTCUT,          PasswordSafeFrame::OnCreateShortcut )
+  EVT_MENU( ID_DUPLICATEENTRY,          PasswordSafeFrame::OnDuplicateEntry )
 
-  EVT_MENU( ID_COPYRUNCOMMAND, PasswordSafeFrame::OnCopyRunCmd )
+  EVT_MENU( ID_PASSWORDSUBSET,          PasswordSafeFrame::OnPasswordSubset )
+  EVT_MENU( ID_PASSWORDQRCODE,          PasswordSafeFrame::OnPasswordQRCode )
 
-  EVT_MENU( ID_RUNCOMMAND, PasswordSafeFrame::OnRunCommand )
+  EVT_MENU( ID_IMPORT_PLAINTEXT,        PasswordSafeFrame::OnImportText )
+  EVT_MENU( ID_IMPORT_KEEPASS,          PasswordSafeFrame::OnImportKeePass )
+  EVT_MENU( ID_IMPORT_XML,              PasswordSafeFrame::OnImportXML )
 
-  EVT_MENU( ID_AUTOTYPE, PasswordSafeFrame::OnAutoType )
+  EVT_MENU( ID_EXPORT2OLD1XFORMAT,      PasswordSafeFrame::OnExportVx )
+  EVT_MENU( ID_EXPORT2V2FORMAT,         PasswordSafeFrame::OnExportVx )
+  EVT_MENU( ID_EXPORT2V4FORMAT,         PasswordSafeFrame::OnExportVx )
+  EVT_MENU( ID_EXPORT2PLAINTEXT,        PasswordSafeFrame::OnExportPlainText )
+  EVT_MENU( ID_EXPORT2XML,              PasswordSafeFrame::OnExportXml )
 
-  EVT_MENU( ID_GOTOBASEENTRY, PasswordSafeFrame::OnGotoBase )
+  EVT_MENU( wxID_UNDO,                  PasswordSafeFrame::OnUndo )
+  EVT_MENU( wxID_REDO,                  PasswordSafeFrame::OnRedo )
 
-  EVT_MENU( ID_EDITBASEENTRY, PasswordSafeFrame::OnEditBase )
+  EVT_MENU( ID_EXPANDALL,               PasswordSafeFrame::OnExpandAll )
+  EVT_MENU( ID_COLLAPSEALL,             PasswordSafeFrame::OnCollapseAll )
 
-  EVT_MENU( ID_CREATESHORTCUT, PasswordSafeFrame::OnCreateShortcut )
+  EVT_MENU( ID_CHANGETREEFONT,          PasswordSafeFrame::OnChangeTreeFont )
+  EVT_MENU( ID_CHANGEPSWDFONT,          PasswordSafeFrame::OnChangePasswordFont )
 
-  EVT_MENU( ID_DUPLICATEENTRY, PasswordSafeFrame::OnDuplicateEntry )
+  EVT_MENU( ID_SHOWHIDE_TOOLBAR,        PasswordSafeFrame::OnShowHideToolBar )
+  EVT_MENU( ID_SHOWHIDE_DRAGBAR,        PasswordSafeFrame::OnShowHideDragBar )
+  
+  EVT_MENU( ID_TOOLBAR_NEW,             PasswordSafeFrame::OnChangeToolbarType )
+  EVT_MENU( ID_TOOLBAR_CLASSIC,         PasswordSafeFrame::OnChangeToolbarType )
 
-  EVT_MENU( ID_PASSWORDSUBSET, PasswordSafeFrame::OnPasswordSubset )
+  EVT_MENU( ID_MERGE,                   PasswordSafeFrame::OnMergeAnotherSafe )
+  EVT_MENU( ID_SYNCHRONIZE,             PasswordSafeFrame::OnSynchronize )
+  EVT_MENU( ID_COMPARE,                 PasswordSafeFrame::OnCompare )
 
-  EVT_MENU( ID_PASSWORDQRCODE, PasswordSafeFrame::OnPasswordQRCode )
+  EVT_MENU( ID_MENU_CLEAR_MRU,          PasswordSafeFrame::OnClearRecentHistory )
+  EVT_UPDATE_UI( ID_MENU_CLEAR_MRU,     PasswordSafeFrame::OnUpdateClearRecentDBHistory )
 
-  EVT_MENU( ID_IMPORT_PLAINTEXT, PasswordSafeFrame::OnImportText )
+  EVT_MENU( ID_BACKUP,                  PasswordSafeFrame::OnBackupSafe)
+  EVT_MENU( ID_RESTORE,                 PasswordSafeFrame::OnRestoreSafe)
 
-  EVT_MENU( ID_IMPORT_KEEPASS, PasswordSafeFrame::OnImportKeePass )
-
-  EVT_MENU( ID_IMPORT_XML, PasswordSafeFrame::OnImportXML )
-
-  EVT_MENU( ID_EXPORT2OLD1XFORMAT, PasswordSafeFrame::OnExportVx )
-
-  EVT_MENU( ID_EXPORT2V2FORMAT, PasswordSafeFrame::OnExportVx )
-
-  EVT_MENU( ID_EXPORT2V4FORMAT, PasswordSafeFrame::OnExportVx )
-
-  EVT_MENU( ID_EXPORT2PLAINTEXT, PasswordSafeFrame::OnExportPlainText )
-
-  EVT_MENU( ID_EXPORT2XML, PasswordSafeFrame::OnExportXml )
-
-  EVT_MENU(wxID_UNDO,          PasswordSafeFrame::OnUndo )
-  EVT_MENU(wxID_REDO,          PasswordSafeFrame::OnRedo )
-
-  EVT_MENU(ID_EXPANDALL,       PasswordSafeFrame::OnExpandAll )
-  EVT_MENU(ID_COLLAPSEALL,     PasswordSafeFrame::OnCollapseAll )
-
-  EVT_MENU(ID_CHANGETREEFONT,  PasswordSafeFrame::OnChangeTreeFont )
-  EVT_MENU(ID_CHANGEPSWDFONT,  PasswordSafeFrame::OnChangePasswordFont )
-
-  EVT_MENU(ID_SHOWHIDE_TOOLBAR,  PasswordSafeFrame::OnShowHideToolBar )
-  EVT_MENU(ID_SHOWHIDE_DRAGBAR,  PasswordSafeFrame::OnShowHideDragBar )
-  EVT_MENU( ID_TOOLBAR_NEW,     PasswordSafeFrame::OnChangeToolbarType )
-  EVT_MENU( ID_TOOLBAR_CLASSIC, PasswordSafeFrame::OnChangeToolbarType )
-
-  EVT_MENU(ID_MERGE,            PasswordSafeFrame::OnMergeAnotherSafe )
-  EVT_MENU(ID_SYNCHRONIZE,      PasswordSafeFrame::OnSynchronize )
-  EVT_MENU(ID_COMPARE,          PasswordSafeFrame::OnCompare )
-
-  EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
-  EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
-
-  EVT_MENU(ID_BACKUP,      PasswordSafeFrame::OnBackupSafe)
-  EVT_MENU(ID_RESTORE,     PasswordSafeFrame::OnRestoreSafe)
-
-  EVT_MENU(ID_VISITWEBSITE, PasswordSafeFrame::OnVisitWebsite)
+  EVT_MENU( ID_VISITWEBSITE,            PasswordSafeFrame::OnVisitWebsite)
 
   EVT_ICONIZE(PasswordSafeFrame::OnIconize)
 
-  EVT_UPDATE_UI(wxID_SAVE,          PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_ADDGROUP,        PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_RENAME,          PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_COLLAPSEALL,     PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_EXPANDALL,       PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_GOTOBASEENTRY,   PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_EDITBASEENTRY,   PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_BROWSEURL,       PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_BROWSEURLPLUS,   PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_COPYURL,         PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_SENDEMAIL,       PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_COPYEMAIL,       PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_COPYUSERNAME,    PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_COPYNOTESFLD,    PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_RUNCOMMAND,      PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_COPYRUNCOMMAND,  PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_CREATESHORTCUT,  PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_DUPLICATEENTRY,  PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_COPYPASSWORD,    PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_AUTOTYPE,        PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_EDIT,            PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_PASSWORDSUBSET,  PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(wxID_UNDO,          PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(wxID_REDO,          PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_SYNCHRONIZE,     PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(wxID_ADD,           PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(wxID_DELETE,        PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_MERGE,           PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_CHANGECOMBO,     PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_IMPORTMENU,      PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_PROTECT,         PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_FILTERMENU,      PasswordSafeFrame::OnUpdateUI ) // To mark unimplemented
-  EVT_UPDATE_UI(ID_CUSTOMIZETOOLBAR,PasswordSafeFrame::OnUpdateUI ) // To mark unimplemented
-  EVT_UPDATE_UI(ID_PWDPOLSM,        PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( wxID_SAVE,             PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_ADDGROUP,           PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_RENAME,             PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_COLLAPSEALL,        PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_EXPANDALL,          PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_GOTOBASEENTRY,      PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_EDITBASEENTRY,      PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_BROWSEURL,          PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_BROWSEURLPLUS,      PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_COPYURL,            PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_SENDEMAIL,          PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_COPYEMAIL,          PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_COPYUSERNAME,       PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_COPYNOTESFLD,       PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_RUNCOMMAND,         PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_COPYRUNCOMMAND,     PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_CREATESHORTCUT,     PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_DUPLICATEENTRY,     PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_COPYPASSWORD,       PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_AUTOTYPE,           PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_EDIT,               PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_PASSWORDSUBSET,     PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( wxID_UNDO,             PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( wxID_REDO,             PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_SYNCHRONIZE,        PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( wxID_ADD,              PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( wxID_DELETE,           PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_MERGE,              PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_CHANGECOMBO,        PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_IMPORTMENU,         PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_PROTECT,            PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_FILTERMENU,         PasswordSafeFrame::OnUpdateUI ) // To mark unimplemented
+  EVT_UPDATE_UI( ID_CUSTOMIZETOOLBAR,   PasswordSafeFrame::OnUpdateUI ) // To mark unimplemented
+  EVT_UPDATE_UI( ID_PWDPOLSM,           PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_LOCK_SAFE,          PasswordSafeFrame::OnUpdateUI )
+
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -272,11 +262,6 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
       style |= wxSTAY_ON_TOP;
     Create( parent, id, caption, pos, size, style );
-    
-    if (!IsTaskBarIconAvailable()) {
-      Bind(wxEVT_MENU, &PasswordSafeFrame::OnLockSafe,   this, ID_LOCK_SAFE);
-      Bind(wxEVT_MENU, &PasswordSafeFrame::OnUnlockSafe, this, ID_UNLOCK_SAFE);
-    }
 }
 
 /*!
@@ -431,6 +416,7 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu3->Append(wxID_NEW, _("&New..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(wxID_OPEN, _("&Open..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(wxID_CLOSE, _("&Close"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(ID_LOCK_SAFE, _("&Lock Safe"), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
   itemMenu3->Append(ID_MENU_CLEAR_MRU, _("Clear Recent Safe List"), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
@@ -468,11 +454,6 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu29->AppendSeparator();
   itemMenu29->Append(ID_ADDGROUP, _("Add Group"), wxEmptyString, wxITEM_NORMAL);
   itemMenu29->AppendSeparator();
-  if (!IsTaskBarIconAvailable()) {
-    (itemMenu29->Append(ID_LOCK_SAFE, _("&Lock Safe"), wxEmptyString, wxITEM_NORMAL))->Enable(false);
-    (itemMenu29->Append(ID_UNLOCK_SAFE, _("&Unlock Safe"), wxEmptyString, wxITEM_NORMAL))->Enable(false);
-    itemMenu29->AppendSeparator();
-  }
   itemMenu29->Append(wxID_UNDO);
   itemMenu29->Append(wxID_REDO);
   itemMenu29->Append(ID_CLEARCLIPBOARD, _("C&lear Clipboard\tCtrl+Del"), wxEmptyString, wxITEM_NORMAL);
@@ -2036,7 +2017,8 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
       
     case ID_PWDPOLSM:
-      (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) ? evt.Enable(true) : evt.Enable(false);
+    case ID_LOCK_SAFE:
+      evt.Enable(m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED);
       break;
 
   case ID_FILTERMENU:
@@ -2466,12 +2448,6 @@ void PasswordSafeFrame::CleanupAfterReloadFailure(bool tellUser)
   m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
 }
 
-void PasswordSafeFrame::OnUnlockSafe(wxCommandEvent&)
-{
-  UnlockSafe(false, false);
-  UpdateMenuBar();
-}
-
 /**
  * Unlock database
  * @param restoreUI restore opened windows after unlock
@@ -2630,7 +2606,22 @@ void PasswordSafeFrame::HideUI(bool lock)
 
 void PasswordSafeFrame::OnLockSafe(wxCommandEvent&)
 {
-  LockDb();
+  IconizeOrHideAndLock();
+}
+
+void PasswordSafeFrame::IconizeOrHideAndLock()
+{
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+    HideUI(true);
+  }
+  else {
+    TryIconize();
+  }
+  
+  // If not already locked by HideUI or OnIconize due to user preference than do it now
+  if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) {
+    LockDb();
+  }
 }
 
 void PasswordSafeFrame::LockDb()
@@ -2645,7 +2636,7 @@ void PasswordSafeFrame::LockDb()
   m_guiInfo->Save(this);
   if (SaveAndClearDatabaseOnLock()) {
     m_sysTray->SetTrayStatus(SystemTray::TrayStatus::LOCKED);
-    
+
     UpdateMenuBar();
   }
 }
@@ -3429,32 +3420,7 @@ void PasswordSafeFrame::UpdateStatusBar()
 
 void PasswordSafeFrame::UpdateMenuBar()
 {
-  /*
-   * Menu Item 'Unlock Safe' and 'Lock Safe'
-   * 
-   * Note: These menu items are only present if system tray is unavailable.
-   */
-  wxMenuItem *lockMenuItem, *unlockMenuItem;
-  
-  lockMenuItem   = GetMenuBar()->FindItem(ID_LOCK_SAFE);
-  unlockMenuItem = GetMenuBar()->FindItem(ID_UNLOCK_SAFE);
-  
-  if ((lockMenuItem != nullptr) && (unlockMenuItem != nullptr)) {
-    if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::LOCKED) {
-      
-      lockMenuItem->Enable(false);
-      unlockMenuItem->Enable(true);
-    }
-    else if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) {
-      
-      lockMenuItem->Enable(true);
-      unlockMenuItem->Enable(false);
-    }
-    else {
-      lockMenuItem->Enable(false);
-      unlockMenuItem->Enable(false);
-    }
-  }
+  // Add code here for more complex update logic on menu items, otherwise use OnUpdateUI
 }
 
 void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)

@@ -15,6 +15,8 @@
 #include "./graphics/toolbar/new/open_disabled.xpm"
 #include "./graphics/toolbar/new/close.xpm"
 #include "./graphics/toolbar/new/close_disabled.xpm"
+#include "./graphics/toolbar/new/lock.xpm"
+#include "./graphics/toolbar/new/lock_disabled.xpm"
 #include "./graphics/toolbar/new/save.xpm"
 #include "./graphics/toolbar/new/save_disabled.xpm"
 #include "./graphics/toolbar/new/copypassword.xpm"
@@ -91,6 +93,8 @@
 #include "./graphics/toolbar/classic/open_disabled.xpm"
 #include "./graphics/toolbar/classic/close.xpm"
 #include "./graphics/toolbar/classic/close_disabled.xpm"
+#include "./graphics/toolbar/classic/lock.xpm"
+#include "./graphics/toolbar/classic/lock_disabled.xpm"
 #include "./graphics/toolbar/classic/save.xpm"
 #include "./graphics/toolbar/classic/save_disabled.xpm"
 #include "./graphics/toolbar/classic/copypassword.xpm"
@@ -188,6 +192,7 @@ _PwsToolbarInfo(int aid, const wxString &atooltip, const char** abitmap_normal,
           { wxID_NEW,         _("Make New Database"),               PWS_TOOLBAR_BITMAPS(new)            },
           { wxID_OPEN,        _("Open Another Database"),           PWS_TOOLBAR_BITMAPS(open)           },
           { wxID_CLOSE,       _("Close Database"),                  PWS_TOOLBAR_BITMAPS(close)          },
+          { ID_LOCK_SAFE,     _("Lock Database"),                   PWS_TOOLBAR_BITMAPS(lock)           },
           { wxID_SAVE,        _("Save Database"),                   PWS_TOOLBAR_BITMAPS(save)           },
           SEPARATOR,
           { ID_COPYPASSWORD,   _("Copy Password to Clipboard"),     PWS_TOOLBAR_BITMAPS(copypassword)   },
