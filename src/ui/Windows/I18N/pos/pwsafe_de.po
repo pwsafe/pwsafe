@@ -785,7 +785,7 @@ msgstr "&Nein"
 
 #. Resource IDs: (32138 - MenuEx)
 msgid "&Notes Font"
-msgstr "&Anmerkungen Schrifart"
+msgstr "&Anmerkungen Schriftart"
 
 #. Resource IDs: (1354)
 msgid "&Notes:"
@@ -929,7 +929,7 @@ msgstr "&Entsperre alle Einträge"
 
 #. Resource IDs: (32127 - MenuEx)
 msgid "&Unsaved Changes"
-msgstr "&Ungeänderte Äanderungen"
+msgstr "&Ungespeicherte Änderungen"
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
@@ -1001,11 +1001,11 @@ msgstr "(Leer)"
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
-msgstr "(Bedingt ein Wiederstart von PasswordSafe um wirksam zu werden.)"
+msgstr "(Bedingt einen Neustart von PasswordSafe um wirksam zu werden.)"
 
 #. Resource IDs: (65535)
 msgid "(Restart of PasswordSafe required to enable.)"
-msgstr ""
+msgstr "(Zur Aktivierung ist ein Neustart von PasswordSafe nötig)"
 
 #. Resource IDs: (1285, 1287, 1289, 1291)
 msgid "(at least"
@@ -1471,7 +1471,7 @@ msgstr "Erweitertes Feld für Auswahlkriterien"
 
 #. Resource IDs: (1077)
 msgid "After"
-msgstr ""
+msgstr "Nach"
 
 #. Resource IDs: (8223)
 msgid "Albanian"
@@ -1515,7 +1515,7 @@ msgstr "Alle Dateien (*.*)|*.*||"
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
-msgstr "Mehrere Instanzen erlauben (bedingt ein Wiederstart aller Instanzen)"
+msgstr "Mehrere Instanzen erlauben (bedingt einen Neustart aller Instanzen)"
 
 #. Resource IDs: (1434)
 msgid "Also used to replace periods in the Title field."
@@ -1602,7 +1602,7 @@ msgstr "Übernehmen"
 
 #. Resource IDs: (1489)
 msgid "Apply these changes to Protected Entries (if required)."
-msgstr "Wende diese Änderungen auf die geschützten Einträge an (wenn verlangt)."
+msgstr "Änderungen auf die geschützten Einträge anwenden (wenn verlangt)."
 
 #. Resource IDs: (8201)
 msgid "Arabic (101)"
@@ -2013,7 +2013,7 @@ msgstr "Historie löschen"
 
 #. Resource IDs: (6032)
 msgid "Clear Recent Safe list"
-msgstr "Lösche die Liste Aktuelle Sicherung"
+msgstr "Liste aktueller Sicherungen löschen"
 
 #. Resource IDs: (1062)
 msgid "Clear clipboard upon exit"
@@ -2025,7 +2025,7 @@ msgstr "Zwischenablage nach Minimieren löschen"
 
 #. Resource IDs: (1488)
 msgid "Clear password history for ALL entries"
-msgstr "Lösche die Passworthistorie für ALLE Einträge"
+msgstr "Passworthistorie für ALLE Einträge löschen"
 
 #. Resource IDs: (1457, 6000)
 msgid "Click button, then touch your YubiKey"
@@ -2248,11 +2248,11 @@ msgstr "Schließen-Dialog bestätigen"
 
 #. Resource IDs: (1021)
 msgid "Confirm copy of password to clipboard"
-msgstr "Bestätigen Sie das Kopieren des Passwortes in die Zwischenablgae"
+msgstr "Kopieren des Passwortes in die Zwischenablage bestätigen"
 
 #. Resource IDs: (1019)
 msgid "Confirm deletion of items"
-msgstr "Das Löschen von Elementen bestätigen "
+msgstr "Löschen von Elementen bestätigen"
 
 #. Resource IDs: (5930)
 #, c-format
@@ -2573,11 +2573,11 @@ msgstr "Standard"
 
 #. Resource IDs: (65535)
 msgid "Default Autotype delay (mS):"
-msgstr "Autom. Eingabe Standardverzögerung (mS):"
+msgstr "Standardverzögerung (ms) bei autom. Eingabe:"
 
 #. Resource IDs: (1447)
 msgid "Default Autotype string:"
-msgstr "Standardsatz bei autom. Eingabe:"
+msgstr "Standardsteuerzeichen bei autom. Eingabe:"
 
 #. Resource IDs: (4114)
 msgid "Default Policy"
@@ -2585,7 +2585,7 @@ msgstr "Standard Richtlinie"
 
 #. Resource IDs: (65535)
 msgid "Default Username"
-msgstr "Standard-Benutzername"
+msgstr "Standard Benutzername"
 
 #. Resource IDs: (5106)
 msgid "Default is the same directory as the database. If changed, make sure that you have write permission to the directory."
@@ -2841,7 +2841,7 @@ msgstr "Eintrag bearbeiten/&anzeigen..."
 
 #. Resource IDs: (65535)
 msgid "Editor Command Line parameters:"
-msgstr "Kommandozeilen-Parameter Editor"
+msgstr "Editor Kommandozeilenparameter"
 
 #. Resource IDs: (3243)
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
@@ -2862,7 +2862,7 @@ msgstr "Freigeben"
 
 #. Resource IDs: (1591)
 msgid "Enable Transparency"
-msgstr ""
+msgstr "Transparenz aktivieren"
 
 #. Resource IDs: (61866)
 #, c-format
@@ -3141,7 +3141,7 @@ msgstr "Fehler: Datei ist schreibgeschützt"
 
 #. Resource IDs: (1078)
 msgid "Escape key closes application"
-msgstr "Taste Escape schließt die Anwendung"
+msgstr "Anwendung mit Escapetaste beenden"
 
 #. Resource IDs: (8231)
 msgid "Estonian"
@@ -3177,7 +3177,7 @@ msgstr "Exportieren"
 
 #. Resource IDs: (32129 - MenuEx)
 msgid "Export &Text"
-msgstr "Exportiere &Text"
+msgstr "&Text exportieren"
 
 #. Resource IDs: (32009 - PopupMenuEx)
 msgid "Export &To"
@@ -3185,7 +3185,7 @@ msgstr "Exportiere &nach"
 
 #. Resource IDs: (32130 - MenuEx)
 msgid "Export &XML"
-msgstr "Exportiere &XML"
+msgstr "&XML exportieren"
 
 #. Resource IDs: (32096 - Menu, 32096 - MenuEx)
 msgid "Export Attachment..."
@@ -3193,19 +3193,19 @@ msgstr "Anhang exportieren..."
 
 #. Resource IDs: (32135 - MenuEx)
 msgid "Export Current &DB"
-msgstr "Exportiere aktuelle &DB"
+msgstr "Aktuelle &DB exportieren"
 
 #. Resource IDs: (32136 - PopupMenuEx, 5935)
 msgid "Export Entry To"
-msgstr "Exportiere Eintrag nach"
+msgstr "Eintrag exportieren nach"
 
 #. Resource IDs: (32137 - PopupMenuEx, 5960)
 msgid "Export Group To"
-msgstr "Exportiere Gruppe zu"
+msgstr "Gruppe exportieren zu"
 
 #. Resource IDs: (5833)
 msgid "Export Text"
-msgstr "Exportiere Text"
+msgstr "Text exportieren"
 
 #. Resource IDs: (112)
 msgid "Export Text Extra"
@@ -3213,7 +3213,7 @@ msgstr "Text Extra exportieren"
 
 #. Resource IDs: (5834)
 msgid "Export XML"
-msgstr "Exportiere XML"
+msgstr "XML exportieren"
 
 #. Resource IDs: (5810)
 msgid "Export file:"
@@ -3920,11 +3920,11 @@ msgstr "&XML importieren"
 
 #. Resource IDs: (32133 - MenuEx)
 msgid "Import KeePass V1 CSV"
-msgstr "Importiere KeePass V1 CSV"
+msgstr "KeePass V1 CSV importieren"
 
 #. Resource IDs: (32132 - MenuEx)
 msgid "Import KeePass V1 TXT"
-msgstr "Importiere KeePass V1 TXT"
+msgstr "KeePass V1 TXT importieren"
 
 #. Resource IDs: (125)
 msgid "Import Text Settings"
@@ -4170,7 +4170,7 @@ msgstr "Letzter Zugriff"
 
 #. Resource IDs: (32140 - MenuEx)
 msgid "Last Find results"
-msgstr "Zuletzt Gefunden Ergebnisse"
+msgstr "Zuletzt gefundene Ergebnisse"
 
 #. Resource IDs: (5232)
 msgid "Last Modified"
@@ -4291,7 +4291,7 @@ msgstr "Safe sperren"
 
 #. Resource IDs: (65535)
 msgid "Lock password database "
-msgstr ""
+msgstr "Passwortdatenbank sperren"
 
 #. Resource IDs: (5113)
 msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
@@ -4411,7 +4411,7 @@ msgstr "Migriere die PasswordSafe Konfiguration zum Anwenderverzeichnis"
 
 #. Resource IDs: (1250)
 msgid "Minimize after Autotype"
-msgstr "Minimieren nach autom. Eingabe"
+msgstr "Nach autom. Eingabe minimieren"
 
 #. Resource IDs: (5584)
 msgid "Minimum digits"
@@ -4799,11 +4799,11 @@ msgstr "An"
 
 #. Resource IDs: (1026)
 msgid "On minimize"
-msgstr ""
+msgstr "Beim Minimieren"
 
 #. Resource IDs: (1073)
 msgid "On workstation lock"
-msgstr ""
+msgstr "Beim Sperren der Workstation"
 
 #. Resource IDs: (5732)
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
@@ -4824,7 +4824,7 @@ msgstr "Nur im Original: %d; Nur im Vergleich: %d; In beide (unterschiedlich): %
 
 #. Resource IDs: (1595)
 msgid "Opaque"
-msgstr ""
+msgstr "Opak"
 
 #. Resource IDs: (61440)
 msgid "Open"
@@ -4844,7 +4844,7 @@ msgstr "Öffne Datenbank"
 
 #. Resource IDs: (1300)
 msgid "Open database read-only by default"
-msgstr "Datenbank standardmäßig für Nur-Lesen öffnen"
+msgstr "Datenbank standardmäßig schreibgeschützt öffnen"
 
 #. Resource IDs: (5218)
 msgid "Options"
@@ -4876,11 +4876,11 @@ msgstr "Anderer Wert zuletzt geändert am:"
 
 #. Resource IDs: (1081, 1201)
 msgid "Other:"
-msgstr "Andere:"
+msgstr "Sonstiges:"
 
 #. Resource IDs: (1206)
 msgid "Other: "
-msgstr "Andere:"
+msgstr "Sonstiges:"
 
 #. Resource IDs: (61475)
 msgid "Out of memory."
@@ -5167,7 +5167,7 @@ msgstr "Bestätigen Sie die Löschung von %s Filter %s?"
 
 #. Resource IDs: (6033)
 msgid "Please confirm that you wish to clear the recent Safe list."
-msgstr "Bitte bestätigen sie das Löschen der aktuellen Sicherungdliste"
+msgstr "Bitte bestätigen sie das Löschen der aktuellen Sicherungsliste"
 
 #. Resource IDs: (5287)
 msgid "Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n\n"
@@ -5380,7 +5380,7 @@ msgstr "Symbol im Infobereich"
 
 #. Resource IDs: (1030)
 msgid "Query user to set default username"
-msgstr "Benutzer abfragen zum Setzen des Standardbenutzernamens"
+msgstr "Benutzer zum Setzen des Standardbenutzernamens auffordern"
 
 #. Resource IDs: (8010)
 msgid "R Ctrl"
@@ -5420,11 +5420,11 @@ msgstr "Zuletzt"
 
 #. Resource IDs: (1096)
 msgid "Recent Databases on File Menu rather than as a sub-menu."
-msgstr "Zuletzt benutzte Datenbanken im Menü Datei und nicht als Untermenü."
+msgstr "Zuletzt verwendete Datenbanken im Menü Datei, anstatt als Untermenü"
 
 #. Resource IDs: (1095)
 msgid "Recent PasswordSafe Databases"
-msgstr "Zuletzt benutzte Password Safe-Datenbanken"
+msgstr "Zuletzt verwendete PasswordSafe Datenbanken"
 
 #. Resource IDs: (3012)
 msgid "Record Modified Time"
@@ -5432,7 +5432,7 @@ msgstr "Datensatz Änderungszeit"
 
 #. Resource IDs: (1121)
 msgid "Record last access times"
-msgstr "Speichere das Datum des letzten Zugriffs"
+msgstr "Datum des letzten Zugriffs speichern"
 
 #. Resource IDs: (62184)
 msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
@@ -5538,7 +5538,7 @@ msgstr "Diese Verknüpfung rücksetzen"
 
 #. Resource IDs: (32153 - MenuEx)
 msgid "Restore from Backup..."
-msgstr "Wiederherstellen aus Sicherung..."
+msgstr "Aus Sicherung wiederherstellen..."
 
 #. Resource IDs: (1158)
 msgid "Restrict to a subset of entries:"
@@ -5641,11 +5641,11 @@ msgstr "Master-Passwort:"
 
 #. Resource IDs: (1205)
 msgid "Same as database's"
-msgstr "Gleich wie die Datenbank"
+msgstr "Datenbankverzeichnis"
 
 #. Resource IDs: (1178)
 msgid "Same as when last saved"
-msgstr "Gleich wie zuletzt gespeichert"
+msgstr "Wie zuletzt gespeichert"
 
 #. Resource IDs: (8316)
 msgid "Sami Extended Finland-Sweden"
@@ -5690,7 +5690,7 @@ msgstr "Änderungen speichern nach %1?"
 
 #. Resource IDs: (1045)
 msgid "Save database immediately after any change"
-msgstr "Sichere die Datenbank unmittelbar nach jeder Änderung"
+msgstr "Datenbank unmittelbar nach jeder Änderung speichern"
 
 #. Resource IDs: (1094)
 msgid "Sc&ript:"
@@ -5916,7 +5916,7 @@ msgstr "Setze Yubikey"
 
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
-msgstr "Setze die maximale Anzahl an gespeicherten Passwörtern auf obigen Wert"
+msgstr "Maximale Anzahl gespeicherter Passwörter auf obigen Wert limitieren"
 
 #. Resource IDs: (8240)
 msgid "Setswana"
@@ -5932,7 +5932,7 @@ msgstr "Umschalt + Doppelklick Aktion:"
 
 #. Resource IDs: (65535)
 msgid "Shift Double-click action"
-msgstr "Umschalt  Doppelklick Aktion"
+msgstr "Umschalt Doppelklick Aktion"
 
 #. Resource IDs: (5689)
 msgid "Shift+"
@@ -5998,11 +5998,11 @@ msgstr "Notizen anzeigen"
 
 #. Resource IDs: (1296)
 msgid "Show Notes as ToolTips in Tree && List views"
-msgstr "Zeige Notizen in Baum- und Listen-Darstellung als ToolTip"
+msgstr "Notizen in Baum- und Listen-Darstellung als Tooltip anzeigen"
 
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
-msgstr "Zeige Notizen beim Bearbeiten"
+msgstr "Notizen beim Bearbeiten anzeigen"
 
 #. Resource IDs: (8102)
 msgid "Show Passphrase"
@@ -6010,35 +6010,35 @@ msgstr "Zeige Master-Passwort"
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
-msgstr "Zeige Passwort beim Einfügen &und Bearbeiten"
+msgstr "Passwort beim Einfügen &und Bearbeiten anzeigen"
 
 #. Resource IDs: (1031)
 msgid "Show Password in Tree View"
-msgstr "Zeige Passwort in der Baumdarstellung"
+msgstr "Passwort in der Baumdarstellung anzeigen"
 
 #. Resource IDs: (1254)
 msgid "Show Username in Tree View"
-msgstr "Zeige Benutzername in der Baumdarstellung"
+msgstr "Benutzername in der Baumdarstellung anzeigen"
 
 #. Resource IDs: (34106)
 msgid "Show Virtual Keyboard"
-msgstr "Zeige die virtuelle Tastatur"
+msgstr "Virtuelle Tastatur anzeigen"
 
 #. Resource IDs: (159)
 msgid "Show a subset of the Password"
-msgstr "Teilmenge des Passwortes zeigen"
+msgstr "Teilmenge des Passwortes anzeigen"
 
 #. Resource IDs: (1262)
 msgid "Show entries with identical compared fields (Note: Unknown fields were not compared.)"
-msgstr "Zeige Einträge mit identisch-verglichenen Feldern (Hinweis: unbekannte Felder wurden nicht verglichen.)"
+msgstr "Einträge mit identisch-verglichenen Feldern anzeigen (Hinweis: unbekannte Felder wurden nicht verglichen.)"
 
 #. Resource IDs: (1246)
 msgid "Show grid lines in List View"
-msgstr "Zeige Gitterlinien in der Listendarstellung"
+msgstr "Gitterlinien in der Listendarstellung anzeigen"
 
 #. Resource IDs: (1490)
 msgid "Show identical compared fields (Note: Unknown fields were not compared.)"
-msgstr "Zeige identisch verglichene Felder (Hinweis: Unbekannte Felder werden nicht verglichen)."
+msgstr "Identisch verglichene Felder anzeigen (Hinweis: Unbekannte Felder werden nicht verglichen)."
 
 #. Resource IDs: (5755)
 msgid "Shutdown, Restart or Logoff in progress"
@@ -6142,7 +6142,7 @@ msgstr "Normal"
 
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
-msgstr "Starte Password Safe beim Anmelden"
+msgstr "Password Safe beim Anmelden starten"
 
 #. Resource IDs: (3255)
 msgid "Start Report"
@@ -6150,11 +6150,11 @@ msgstr "Starte Bericht"
 
 #. Resource IDs: (5101)
 msgid "Start saving password history for all entries, to the above number of entries."
-msgstr "Beginne mit der Speicherung der Passworthistorie für alle Einträge von obiger Angaben."
+msgstr "Das Speichern der Passworthistorie für alle Einträge mit obiger Anzahl wird durchgeführt."
 
 #. Resource IDs: (1185)
 msgid "Start saving previous passwords"
-msgstr "Beginne mit der Speicherung vorheriger Passwörter"
+msgstr "Speichern vorheriger Passwörter durchführen"
 
 #. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 1588, 8103)
 msgid "Static"
@@ -6178,7 +6178,7 @@ msgstr "Halte das Speichern der Passwortgeschichte sämtlicher Einträge an.\n\n
 
 #. Resource IDs: (1184)
 msgid "Stop saving previous passwords"
-msgstr "Beende das Speichern vorheriger Passwörter"
+msgstr "Speichern vorheriger Passwörter nicht durchführen"
 
 #. Resource IDs: (3347)
 msgid "Stored filters will be unusable until the file's restored."
@@ -7221,7 +7221,7 @@ msgstr "Win32 unbehandelte Ausnahme"
 
 #. Resource IDs: (65535)
 msgid "Window Transparency"
-msgstr ""
+msgstr "Fenstertransparenz"
 
 #. Resource IDs: (5799)
 msgid "Windows Registry"
