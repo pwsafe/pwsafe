@@ -1602,7 +1602,7 @@ msgstr "Übernehmen"
 
 #. Resource IDs: (1489)
 msgid "Apply these changes to Protected Entries (if required)."
-msgstr "Änderungen auf die geschützten Einträge anwenden (wenn verlangt)."
+msgstr "Änderungen auf geschützte Einträge anwenden (wenn verlangt)."
 
 #. Resource IDs: (8201)
 msgid "Arabic (101)"
@@ -5916,7 +5916,7 @@ msgstr "Setze Yubikey"
 
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
-msgstr "Maximale Anzahl gespeicherter Passwörter auf obigen Wert limitieren"
+msgstr "Maximale Anzahl zu speichernder Passwörter auf obigen Wert setzen"
 
 #. Resource IDs: (8240)
 msgid "Setswana"
@@ -6154,7 +6154,7 @@ msgstr "Das Speichern der Passworthistorie für alle Einträge mit obiger Anzahl
 
 #. Resource IDs: (1185)
 msgid "Start saving previous passwords"
-msgstr "Speichern vorheriger Passwörter durchführen"
+msgstr "Speichern vorheriger Passwörter starten"
 
 #. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 1588, 8103)
 msgid "Static"
@@ -6178,7 +6178,7 @@ msgstr "Halte das Speichern der Passwortgeschichte sämtlicher Einträge an.\n\n
 
 #. Resource IDs: (1184)
 msgid "Stop saving previous passwords"
-msgstr "Speichern vorheriger Passwörter nicht durchführen"
+msgstr "Speichern vorheriger Passwörter stoppen"
 
 #. Resource IDs: (3347)
 msgid "Stored filters will be unusable until the file's restored."
