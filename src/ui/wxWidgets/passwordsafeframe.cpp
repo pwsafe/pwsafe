@@ -196,10 +196,17 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_ICONIZE(PasswordSafeFrame::OnIconize)
 
   EVT_UPDATE_UI( wxID_SAVE,             PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( wxID_SAVEAS,           PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( wxID_CLOSE,            PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_LOCK_SAFE,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_ADDGROUP,           PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_RENAME,             PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_LIST_VIEW,          PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_TREE_VIEW,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_COLLAPSEALL,        PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_EXPANDALL,          PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_SHOWHIDE_UNSAVED,   PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_SHOW_ALL_EXPIRY,    PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_GOTOBASEENTRY,      PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_EDITBASEENTRY,      PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_BROWSEURL,          PasswordSafeFrame::OnUpdateUI )
@@ -219,18 +226,28 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_PASSWORDSUBSET,     PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( wxID_UNDO,             PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( wxID_REDO,             PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_CLEARCLIPBOARD,     PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_SYNCHRONIZE,        PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( wxID_PROPERTIES,       PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( wxID_ADD,              PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( wxID_FIND,             PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( wxID_DELETE,           PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_MERGE,              PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_COMPARE,            PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_CHANGECOMBO,        PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_EXPORTMENU,         PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_IMPORTMENU,         PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_PROTECT,            PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_FILTERMENU,         PasswordSafeFrame::OnUpdateUI ) // To mark unimplemented
   EVT_UPDATE_UI( ID_CUSTOMIZETOOLBAR,   PasswordSafeFrame::OnUpdateUI ) // To mark unimplemented
+  EVT_UPDATE_UI( ID_REPORTSMENU,        PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_BACKUP,             PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI( ID_RESTORE,            PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI( ID_PWDPOLSM,           PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI( ID_LOCK_SAFE,          PasswordSafeFrame::OnUpdateUI )
-
+#ifndef NO_YUBI
+  EVT_UPDATE_UI( ID_YUBIKEY_MNG,        PasswordSafeFrame::OnUpdateUI )
+#endif
+  
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -1912,16 +1929,35 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
   switch (evt.GetId()) {
     case wxID_SAVE:
-      evt.Enable(m_core.HasDBChanged() || m_core.HaveDBPrefsChanged());
+      evt.Enable((!m_core.GetCurFile().empty()) && (m_core.HasDBChanged() || m_core.HaveDBPrefsChanged()));
       break;
 
+    case wxID_SAVEAS:
+    case wxID_PROPERTIES:
+    case ID_CLEARCLIPBOARD:
+    case ID_LIST_VIEW:
+    case ID_TREE_VIEW:
+    case ID_REPORTSMENU:
+    case ID_BACKUP:
+    case ID_RESTORE:
+#ifndef NO_YUBI
+    case ID_YUBIKEY_MNG:
+#endif
+      evt.Enable(!m_core.GetCurFile().empty());
+      break;
+      
+    case ID_EXPORTMENU:
+    case ID_COMPARE:
+      evt.Enable(!m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
+      break;
+    
     case ID_ADDGROUP:
-      evt.Enable(bTreeView && !bFileIsReadOnly);
+      evt.Enable(bTreeView && !bFileIsReadOnly && !m_core.GetCurFile().empty());
       break;
 
     case ID_EXPANDALL:
     case ID_COLLAPSEALL:
-      evt.Enable(bTreeView);
+      evt.Enable(bTreeView && !m_core.GetCurFile().empty());
       break;
 
     case ID_RENAME:
@@ -1983,11 +2019,12 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_SYNCHRONIZE:
     case ID_CHANGECOMBO:
+    case wxID_FIND:
       evt.Enable(!bFileIsReadOnly && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
       break;
 
     case wxID_ADD:
-      evt.Enable(!bFileIsReadOnly);
+      evt.Enable(!bFileIsReadOnly && !m_core.GetCurFile().empty());
       break;
 
     case wxID_DELETE:
@@ -1999,16 +2036,16 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SHOWHIDE_UNSAVED:
-      evt.Enable(!m_bShowExpiry);
+      evt.Enable(!m_bShowExpiry && !m_core.GetCurFile().empty());
       break;
 
     case ID_SHOW_ALL_EXPIRY:
-      evt.Enable(!m_bShowUnsaved);
+      evt.Enable(!m_bShowUnsaved && !m_core.GetCurFile().empty());
       break;
 
     case ID_MERGE:
     case ID_IMPORTMENU:
-      evt.Enable(!bFileIsReadOnly);
+      evt.Enable(!bFileIsReadOnly && !m_core.GetCurFile().empty());
       break;
 
     case ID_PROTECT:
@@ -2016,18 +2053,22 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Check(pci && pci->IsProtected());
       break;
       
+    case wxID_CLOSE:
+      evt.Enable(m_sysTray->GetTrayStatus() != SystemTray::TrayStatus::CLOSED);
+      break;
+      
     case ID_PWDPOLSM:
     case ID_LOCK_SAFE:
       evt.Enable(m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED);
       break;
 
-  case ID_FILTERMENU:
-  case ID_CUSTOMIZETOOLBAR:
-    evt.Enable(false); // Mark unimplemented
-    break;
-
-  default:
+    case ID_FILTERMENU:
+    case ID_CUSTOMIZETOOLBAR:
+      evt.Enable(false); // Mark unimplemented
       break;
+
+    default:
+        break;
   }
 }
 
