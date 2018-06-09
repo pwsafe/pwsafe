@@ -2565,6 +2565,12 @@ void PasswordSafeFrame::SetFocus()
 }
 
 void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
+  
+  // If database was closed than there is nothing to do
+  if (m_core.GetCurFile().empty()) {
+    return;
+  }
+  
   const bool beingIconized =
 #if wxCHECK_VERSION(2,9,0)
     evt.IsIconized();
