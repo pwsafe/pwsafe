@@ -37,6 +37,7 @@ namespace pws_os {
       time_t &ctime, time_t &mtime, time_t &atime);
   extern bool SetFileTimes(const stringT &filename,
       time_t ctime, time_t mtime, time_t atime);
+  extern bool ProgramExists(const stringT &filename);
   extern const TCHAR PathSeparator; // slash for Unix, backslash for Windows
 
   // Most stdio.h routines return -1 for an error (not INVALID_HANDLE_VALUE)

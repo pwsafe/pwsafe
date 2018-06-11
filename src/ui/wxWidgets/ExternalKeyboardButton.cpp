@@ -10,14 +10,15 @@
 * 
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 #include "../../core/PwsPlatform.h"
+#include "../../os/file.h"
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 #include "./ExternalKeyboardButton.h"
@@ -66,7 +67,13 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
   int xwinid = GDK_WINDOW_XWINDOW(window);
 #endif
   wxString command = wxString(wxT("xvkbd"));
-  
+
+  if (!pws_os::ProgramExists(command.wc_str())) {
+    wxMessageBox(_("Could not launch xvkbd.  Please make sure it's installed and in your PATH"), 
+                  _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);
+    return;
+  }
+
   switch(wxExecute(command, wxEXEC_ASYNC, nullptr)) //nullptr => we don't want a wxProcess as callback
   {
     case 0:
@@ -83,4 +90,5 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
       break;
   }
 #endif
+
 }
