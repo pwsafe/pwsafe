@@ -18,6 +18,7 @@
 #include <errno.h>
 #include <cassert>
 #include <fstream>
+#include <sstream>
 
 #include <dirent.h>
 #include <fnmatch.h>
@@ -355,4 +356,37 @@ bool pws_os::SetFileTimes(const stringT &filename,
   UNREFERENCED_PARAMETER(atime);
 
   return true;
+}
+
+bool pws_os::ProgramExists(const stringT &filename)
+{
+  stringT pathEnvVar = pws_os::getenv("PATH", false);
+  
+  if (pathEnvVar.empty()) {
+    return false;
+  }
+
+  std::wistringstream wstringstream(pathEnvVar);
+  stringT path;
+
+  while(std::getline(wstringstream, path, _T(':')))
+  {
+    if (path.empty()) {
+      continue;
+    }
+    
+    if (path.back() != pws_os::PathSeparator) {
+      path.append(1, pws_os::PathSeparator);
+      path.append(filename);
+    }
+    else {
+      path.append(filename);
+    }
+    
+    if (pws_os::FileExists(path)) {
+      return true;
+    }
+  }
+  
+  return false;
 }
