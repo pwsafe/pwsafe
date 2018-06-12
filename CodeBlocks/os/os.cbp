@@ -29,20 +29,16 @@
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
+					<Add option="-fPIC" />
+					<Add option="-m64" />
 					<Add option="-g" />
 					<Add option="`../wx-config-filter --unicode=yes --debug=yes --inplace --cxxflags`" />
-					<Add option="-fPIC" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-m64" />
-					<Add option="-Wpedantic" />
-					<Add option="-Wformat=2" />
 					<Add option="-Wunused" />
 					<Add option="-Wuninitialized" />
-					<Add option="-Wcast-qual" />
 					<Add option="-Wlogical-op" />
 					<Add option="-Winvalid-pch" />
-					<Add option="-Wno-unused-local-typedefs" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
@@ -82,14 +78,10 @@
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-Wpedantic" />
-					<Add option="-Wformat=2" />
 					<Add option="-Wunused" />
 					<Add option="-Wuninitialized" />
-					<Add option="-Wcast-qual" />
 					<Add option="-Wlogical-op" />
 					<Add option="-Winvalid-pch" />
-					<Add option="-Wno-unused-local-typedefs" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
@@ -120,12 +112,9 @@
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
-					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
-					<Add option="-Wformat=2" />
-					<Add option="-Wcast-qual" />
-					<Add option="-Wno-unused-local-typedefs" />
+					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DNO_YUBI" />
 					<Add directory="../../src" />
@@ -155,9 +144,6 @@
 					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
-					<Add option="-Wformat=2" />
-					<Add option="-Wcast-qual" />
-					<Add option="-Wno-unused-local-typedefs" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DNO_YUBI" />
 					<Add option="-DwxSIZE_T_IS_UINT" />
@@ -191,20 +177,16 @@
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
+					<Add option="-fPIC" />
+					<Add option="-m64" />
 					<Add option="-g" />
 					<Add option="`../wx-config-filter --unicode=yes --debug=yes --inplace --cxxflags`" />
-					<Add option="-fPIC" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-m64" />
-					<Add option="-Wpedantic" />
-					<Add option="-Wformat=2" />
 					<Add option="-Wunused" />
 					<Add option="-Wuninitialized" />
-					<Add option="-Wcast-qual" />
 					<Add option="-Wlogical-op" />
 					<Add option="-Winvalid-pch" />
-					<Add option="-Wno-unused-local-typedefs" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
@@ -242,14 +224,10 @@
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-Wpedantic" />
-					<Add option="-Wformat=2" />
 					<Add option="-Wunused" />
 					<Add option="-Wuninitialized" />
-					<Add option="-Wcast-qual" />
 					<Add option="-Wlogical-op" />
 					<Add option="-Winvalid-pch" />
-					<Add option="-Wno-unused-local-typedefs" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
@@ -280,12 +258,9 @@
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
-					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
-					<Add option="-Wformat=2" />
-					<Add option="-Wcast-qual" />
-					<Add option="-Wno-unused-local-typedefs" />
+					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-DNDEBUG" />
 					<Add directory="../../src" />
@@ -315,9 +290,6 @@
 					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
-					<Add option="-Wformat=2" />
-					<Add option="-Wcast-qual" />
-					<Add option="-Wno-unused-local-typedefs" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DwxSIZE_T_IS_UINT" />
@@ -330,6 +302,10 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-Wpedantic" />
+			<Add option="-Wformat=2" />
+			<Add option="-Wcast-qual" />
+			<Add option="-Wno-unused-local-typedefs" />
 			<Add option="-DUNICODE" />
 		</Compiler>
 		<Unit filename="../../src/os/KeySend.h" />
