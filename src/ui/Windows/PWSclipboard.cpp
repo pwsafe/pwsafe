@@ -61,7 +61,7 @@ private:
   static HGLOBAL s_hg;
   static size_t s_hgLen;
   static const UINT TIMER_ID = 576;
-  static void timerCallback(HWND, UINT, UINT_PTR, DWORD);
+  static void CALLBACK timerCallback(HWND, UINT, UINT_PTR, DWORD);
 };
 
 HGLOBAL PWSOleDataSource::s_hg;
