@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.3_2_10257" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.5_0_10418" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -2535,6 +2535,14 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Default policy name is not allowed</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180612T140702Z" creationid="pm_kan" creationdate="20180612T140702Z">
+        <seg>Нельзя использовать имя политики по умолчанию</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Delete</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -4251,6 +4259,14 @@ username field.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Lock Database</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180612T140403Z" creationid="pm_kan" creationdate="20180612T140403Z">
+        <seg>Заблокировать контейнер</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Lock password database after</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T113544Z">
@@ -5629,7 +5645,7 @@ to the base entry</seg>
       <tuv lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2018-04-01 12:20+0300
+POT-Creation-Date: 2018-06-12 17:02+0300
 PO-Revision-Date: 2018-03-31 23:36+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
@@ -5638,13 +5654,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180401T092058Z" creationid="pm_kan" creationdate="20180401T092058Z">
-        <seg>Project-Id-Version: PACKAGE VERSION
-Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2018-04-01 12:36+0300
-PO-Revision-Date: 2018-04-01 12:36+0300
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180612T141134Z" creationid="pm_kan" creationdate="20180612T140348Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+POT-Creation-Date: 2018-06-12 17:02+0300
+PO-Revision-Date: 2018-06-12 17:02+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
-Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language-Team: none
 Language: ru_RU
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
