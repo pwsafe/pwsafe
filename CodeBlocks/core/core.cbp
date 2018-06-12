@@ -34,23 +34,21 @@
 					<Add option="-fPIC" />
 					<Add option="-m64" />
 					<Add option="-g" />
+					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-Wpedantic" />
 					<Add option="-Wdouble-promotion" />
-					<Add option="-Wformat=2" />
 					<Add option="-Wunused" />
 					<Add option="-Wuninitialized" />
-					<Add option="-Wcast-qual" />
 					<Add option="-Wlogical-op" />
 					<Add option="-Winvalid-pch" />
-					<Add option="-Wold-style-cast" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-DDEBUG_XMLPREFS" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
+					<Add option="-D__WXDEBUG__" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -86,23 +84,21 @@
 					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="-g" />
+					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-Wpedantic" />
 					<Add option="-Wdouble-promotion" />
-					<Add option="-Wformat=2" />
 					<Add option="-Wunused" />
 					<Add option="-Wuninitialized" />
-					<Add option="-Wcast-qual" />
 					<Add option="-Wlogical-op" />
 					<Add option="-Winvalid-pch" />
-					<Add option="-Wold-style-cast" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-DDEBUG_XMLPREFS" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
+					<Add option="-D__WXDEBUG__" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -131,10 +127,7 @@
 					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
-					<Add option="-Wpedantic" />
-					<Add option="-Wformat=2" />
-					<Add option="-Wcast-qual" />
-					<Add option="-Wold-style-cast" />
+					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
@@ -166,10 +159,7 @@
 					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m32" />
-					<Add option="-Wpedantic" />
-					<Add option="-Wformat=2" />
-					<Add option="-Wcast-qual" />
-					<Add option="-Wold-style-cast" />
+					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
@@ -207,25 +197,23 @@
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
-					<Add option="-g" />
 					<Add option="-fPIC" />
+					<Add option="-m64" />
+					<Add option="-g" />
+					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-m64" />
-					<Add option="-Wpedantic" />
 					<Add option="-Wdouble-promotion" />
-					<Add option="-Wformat=2" />
 					<Add option="-Wunused" />
 					<Add option="-Wuninitialized" />
-					<Add option="-Wcast-qual" />
 					<Add option="-Wlogical-op" />
 					<Add option="-Winvalid-pch" />
-					<Add option="-Wold-style-cast" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-DDEBUG_XMLPREFS" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
+					<Add option="-D__WXDEBUG__" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -261,22 +249,20 @@
 					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="-g" />
+					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-Wpedantic" />
 					<Add option="-Wdouble-promotion" />
-					<Add option="-Wformat=2" />
 					<Add option="-Wunused" />
 					<Add option="-Wuninitialized" />
-					<Add option="-Wcast-qual" />
 					<Add option="-Wlogical-op" />
 					<Add option="-Winvalid-pch" />
-					<Add option="-Wold-style-cast" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-DDEBUG_XMLPREFS" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
+					<Add option="-D__WXDEBUG__" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -305,10 +291,7 @@
 					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
-					<Add option="-Wpedantic" />
-					<Add option="-Wformat=2" />
-					<Add option="-Wcast-qual" />
-					<Add option="-Wold-style-cast" />
+					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
@@ -339,10 +322,7 @@
 					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m32" />
-					<Add option="-Wpedantic" />
-					<Add option="-Wformat=2" />
-					<Add option="-Wcast-qual" />
-					<Add option="-Wold-style-cast" />
+					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
@@ -361,6 +341,10 @@
 			<Add alias="Debug64wx28" targets="Debug_L64;" />
 		</VirtualTargets>
 		<Compiler>
+			<Add option="-Wpedantic" />
+			<Add option="-Wformat=2" />
+			<Add option="-Wcast-qual" />
+			<Add option="-Wold-style-cast" />
 			<Add option="-DUNICODE" />
 		</Compiler>
 		<Unit filename="../../src/core/BlowFish.cpp" />
@@ -420,6 +404,8 @@
 		<Unit filename="../../src/core/PWSrand.h" />
 		<Unit filename="../../src/core/PWStime.cpp" />
 		<Unit filename="../../src/core/PWStime.h" />
+		<Unit filename="../../src/core/PolicyManager.cpp" />
+		<Unit filename="../../src/core/PolicyManager.h" />
 		<Unit filename="../../src/core/Proxy.h" />
 		<Unit filename="../../src/core/PwsPlatform.h" />
 		<Unit filename="../../src/core/RUEList.cpp" />
