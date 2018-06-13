@@ -139,6 +139,23 @@ directory, i.e. where CMakeLists.txt is present.
 * cpack -G DEB ..
 
 
-Install the Debian package
+Install the Debian Package
 ==========================
-* sudo dpkg -i passwordsafe-debian-<version>.<arch>.deb
+* sudo dpkg -i passwordsafe-debian-\<version\>.\<arch\>.deb
+
+Create a RPM Package
+====================
+Based on the procedure for building a Debian package a RPM based package can be created as well.
+
+* mkdir build
+* cd build
+* cmake ..
+* cpack -G RPM ..
+
+Install the RPM Package
+=======================
+To install the RPM package use the following command as root.
+* rpm -ivh filename.rpm
+
+Upgrading an already installed RPM package can be done with the following command as root. This is the same as install, except all other version(s) of the package are removed after the new package is installed.
+* rpm -Uvh filename.rpm
