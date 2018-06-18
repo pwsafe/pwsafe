@@ -83,7 +83,7 @@ static void usage(char *pname)
        << "       " << " = => exactly similar" << endl
        << "       " << " ^ => begins-with" << endl
        << "       " << " $ => ends with" << endl
-       << "       " << " ^ => contains" << endl
+       << "       " << " ~ => contains" << endl
        << "       " << " ! => negation" << endl
        << "       " << "a trailing /i => case insensitive, /I => case sensitive" << endl
        ;
