@@ -254,6 +254,28 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
 // Side-by-side diff
 //////////
 
+using lines_vec = std::vector<std::wstring>;
+lines_vec stream2vec(wstringstream &wss, unsigned int offset, unsigned int columns) {
+    lines_vec vlines;
+    bool first_line = true;
+    do {
+        wstring line;
+        std::getline(wss, line);
+        if (first_line) {
+            line.resize(columns, L' ');
+            vlines.push_back(line);
+            first_line = false;
+        } else {
+            if ( !line.empty() ) {
+                line.resize(columns - offset, L' ');
+                vlines.push_back(wstring(offset, L' ') + line);
+            }
+        }
+    }
+    while( !wss.eof() );
+    return vlines;
+}
+
 // TODO: convert to lambda when using C++14
 template <class left_line_t, class right_line_t>
 void sbs_print(const PWScore &core,
@@ -270,7 +292,19 @@ void sbs_print(const PWScore &core,
     for_each(begin(diff_fields), end(diff_fields), [&](CItemData::FieldType ft) {
       // print the fields if they were actually found to be different
       if (df.test(ft)) {
-        wcout << left_line(ft) << L'|' << right_line(ft) << endl;
+        wstringstream wssl, wssr;
+        wssl << left_line(ft) << flush;
+        wssr << right_line(ft) << flush;
+        const auto value_offset = CItemData::FieldName(ft).length() + 4;
+        lines_vec left_lines{stream2vec(wssl, value_offset, cols)},
+                right_lines{stream2vec(wssr, value_offset, cols)};
+        const int ndiff = left_lines.size() - right_lines.size();
+        if (ndiff < 0)
+            left_lines.insert(left_lines.end(), -ndiff, wstring(cols, L' '));
+        else if (ndiff > 0)
+            right_lines.insert(right_lines.end(), ndiff, wstring(cols, L' '));
+        for (lines_vec::size_type idx = 0; idx < left_lines.size(); ++idx)
+            wcout << left_lines[idx] << L'|' << right_lines[idx] << endl;
       }
     });
   });
@@ -295,7 +329,7 @@ struct field_to_line
     wostringstream os;
     print_field_value(os, L' ', item, ft);
     wstring line{os.str()};
-    line.resize(columns, L' ');
+    if (line.find(L'\n') == wstring::npos ) line.resize(columns, L' ');
     return line;
   }
 };
