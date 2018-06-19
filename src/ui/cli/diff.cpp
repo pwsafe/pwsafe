@@ -282,31 +282,34 @@ void sbs_print(const PWScore &core,
                const PWScore &otherCore,
                const CompareData &matches,
                const CItemData::FieldBits comparedFields,
-               unsigned int cols)
+               unsigned int cols, bool print_fields)
 {
   for_each( matches.cbegin(), matches.cend(), [&](const st_CompareData &cd) {
     const CItemData::FieldBits &df = cd.bsDiffs.any()? cd.bsDiffs: comparedFields;
     left_line_t left_line{core, cd.uuid0, cols};
     right_line_t right_line{otherCore, cd.uuid1, cols};
     wcout << left_line() << L'|' << right_line() << endl;
-    for_each(begin(diff_fields), end(diff_fields), [&](CItemData::FieldType ft) {
-      // print the fields if they were actually found to be different
-      if (df.test(ft)) {
-        wstringstream wssl, wssr;
-        wssl << left_line(ft) << flush;
-        wssr << right_line(ft) << flush;
-        const auto value_offset = CItemData::FieldName(ft).length() + 4;
-        lines_vec left_lines{stream2vec(wssl, value_offset, cols)},
-                right_lines{stream2vec(wssr, value_offset, cols)};
-        const int ndiff = left_lines.size() - right_lines.size();
-        if (ndiff < 0)
-            left_lines.insert(left_lines.end(), -ndiff, wstring(cols, L' '));
-        else if (ndiff > 0)
-            right_lines.insert(right_lines.end(), ndiff, wstring(cols, L' '));
-        for (lines_vec::size_type idx = 0; idx < left_lines.size(); ++idx)
-            wcout << left_lines[idx] << L'|' << right_lines[idx] << endl;
-      }
-    });
+    if ( print_fields ) {
+      for_each(begin(diff_fields), end(diff_fields), [&](CItemData::FieldType ft) {
+        // print the fields if they were actually found to be different
+        if (df.test(ft)) {
+          wstringstream wssl, wssr;
+          wssl << left_line(ft) << flush;
+          wssr << right_line(ft) << flush;
+          const auto value_offset = CItemData::FieldName(ft).length() + 4;
+          lines_vec left_lines{stream2vec(wssl, value_offset, cols)},
+                  right_lines{stream2vec(wssr, value_offset, cols)};
+          const int ndiff = left_lines.size() - right_lines.size();
+          if (ndiff < 0)
+              left_lines.insert(left_lines.end(), -ndiff, wstring(cols, L' '));
+          else if (ndiff > 0)
+              right_lines.insert(right_lines.end(), ndiff, wstring(cols, L' '));
+          for (lines_vec::size_type idx = 0; idx < left_lines.size(); ++idx)
+              wcout << left_lines[idx] << L'|' << right_lines[idx] << endl;
+        }
+      });
+    }
+    wcout << wstring(cols, L' ') << L'|' << endl;
   });
 };
 
@@ -368,7 +371,7 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
   wcout << setw(cols) << setfill(L' ') << left;
 
   // print the orig (left or main) safe in left column
-  sbs_print<field_to_line, blank>(core, otherCore, current, comparedFields, cols);
+  sbs_print<field_to_line, blank>(core, otherCore, current, comparedFields, cols, false);
 
   // print a separator line
   if ( !current.empty() )
@@ -376,14 +379,14 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
 
   // print the conflicting items, one field at a time in one line. Orig safe item's files go to
   // left column, the comparison safe's items to the right.
-  sbs_print<field_to_line, field_to_line>(core, otherCore, conflicts, comparedFields, cols);
+  sbs_print<field_to_line, field_to_line>(core, otherCore, conflicts, comparedFields, cols, true);
 
   // print a separator line
   if ( !conflicts.empty() )
     wcout << setfill(L'-') << setw(2*cols+1) << L'-' << endl;
 
   // print the comparison safe in right column
-  sbs_print<blank, field_to_line>(core, otherCore, comparison, comparedFields, cols);
+  sbs_print<blank, field_to_line>(core, otherCore, comparison, comparedFields, cols, false);
 }
 
 ///////////////////////////////////
