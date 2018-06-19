@@ -13,7 +13,7 @@
 
 #include "../../os/file.h"
 
-#include <iostream>
+#include "../../core/StringXStream.h"
 #include <algorithm>
 #include <iomanip>
 #include <functional>
@@ -58,9 +58,9 @@ inline StringX modtime(const StringX &file) {
   return StringX{};
 }
 
-inline wstring safe_file_hdr(const wchar_t *tag, const PWScore &core)
+inline StringX safe_file_hdr(const wchar_t *tag, const PWScore &core)
 {
-  wstringstream os;
+  StringXStream os;
   os << tag << L' ' << core.GetCurFile() << L" " << modtime(core.GetCurFile());
   return os.str();
 }
@@ -71,9 +71,9 @@ inline wostream& print_field_value(wostream &os, wchar_t tag,
   return os << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft);
 }
 
-inline wstring rmtime(wchar_t tag, const CItemData &i)
+inline StringX rmtime(wchar_t tag, const CItemData &i)
 {
-  wstringstream os;
+  StringXStream os;
   if (i.IsRecordModificationTimeSet())
     os << L' ' << tag << i.GetRMTimeExp();
   return os.str();
@@ -255,7 +255,7 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
 //////////
 
 using lines_vec = std::vector<std::wstring>;
-lines_vec stream2vec(wstringstream &wss, unsigned int offset, unsigned int columns) {
+lines_vec stream2vec(StringXStream &wss, unsigned int offset, unsigned int columns) {
     lines_vec vlines;
     bool first_line = true;
     do {
@@ -293,7 +293,7 @@ void sbs_print(const PWScore &core,
       for_each(begin(diff_fields), end(diff_fields), [&](CItemData::FieldType ft) {
         // print the fields if they were actually found to be different
         if (df.test(ft)) {
-          wstringstream wssl, wssr;
+          StringXStream wssl, wssr;
           wssl << left_line(ft) << flush;
           wssr << right_line(ft) << flush;
           const auto value_offset = CItemData::FieldName(ft).length() + 4;
@@ -320,18 +320,18 @@ struct field_to_line
   field_to_line(const PWScore &core, const pws_os::CUUID& uuid, unsigned int cols)
   : item{core.Find(uuid)->second}, columns{cols}
   {}
-  wstring operator()() const {
-    wostringstream os;
+  StringX operator()() const {
+    oStringXStream os;
     os << st_GroupTitleUser{item.GetGroup(), item.GetTitle(), item.GetUser()}
        << rmtime( L' ', item);
-    wstring hdr{os.str()};
+    StringX hdr{os.str()};
     hdr.resize(columns, L' ');
     return hdr;
   }
-  wstring operator()(CItemData::FieldType ft) const {
-    wostringstream os;
+  StringX operator()(CItemData::FieldType ft) const {
+    oStringXStream os;
     print_field_value(os, L' ', item, ft);
-    wstring line{os.str()};
+    StringX line{os.str()};
     if (line.find(L'\n') == wstring::npos ) line.resize(columns, L' ');
     return line;
   }
@@ -359,7 +359,7 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
     return; // print nothing if safes are identical
 
   // print a header line with safe filenames and modtimes
-  wstring hdr_left{safe_file_hdr(L"", core)}, hdr_right{safe_file_hdr(L"", otherCore)};
+  StringX hdr_left{safe_file_hdr(L"", core)}, hdr_right{safe_file_hdr(L"", otherCore)};
   hdr_left.resize(cols, L' ');
   hdr_right.resize(cols, L' ');
   wcout << hdr_left << L'|' << hdr_right << endl;
