@@ -12,6 +12,7 @@
 #include "./safeutils.h"
 
 #include "../../os/file.h"
+#include "../../core/core.h"
 
 #include "../../core/StringXStream.h"
 #include <algorithm>
@@ -65,10 +66,43 @@ inline StringX safe_file_hdr(const wchar_t *tag, const PWScore &core)
   return os.str();
 }
 
+uint32_t dca2str(uint16 dca) {
+  const std::map<int16_t, uint32_t> dca_id_str = {
+    {PWSprefs::DoubleClickAutoType,             IDSC_DCAAUTOTYPE},
+    {PWSprefs::DoubleClickBrowse,               IDSC_DCABROWSE},
+    {PWSprefs::DoubleClickBrowsePlus,           IDSC_DCABROWSEPLUS},
+    {PWSprefs::DoubleClickCopyNotes,            IDSC_DCACOPYNOTES},
+    {PWSprefs::DoubleClickCopyUsername,         IDSC_DCACOPYUSERNAME},
+    {PWSprefs::DoubleClickCopyPassword,         IDSC_DCACOPYPASSWORD},
+    {PWSprefs::DoubleClickCopyPasswordMinimize, IDSC_DCACOPYPASSWORDMIN},
+    {PWSprefs::DoubleClickRun,                  IDSC_DCARUN},
+    {PWSprefs::DoubleClickSendEmail,            IDSC_DCASENDEMAIL},
+    {PWSprefs::DoubleClickViewEdit,             IDSC_DCAVIEWEDIT}
+  };
+
+  const auto loc = dca_id_str.find(dca);
+  return loc != dca_id_str.end() ? loc->second: IDSC_INVALID;
+}
+
 inline wostream& print_field_value(wostream &os, wchar_t tag,
                                     const CItemData &item, CItemData::FieldType ft)
 {
-  return os << tag << L' ' << item.FieldName(ft) << L": " << item.GetFieldValue(ft);
+  StringX fieldValue;
+  switch (ft) {
+    case CItemData::DCA:
+    case CItemData::SHIFTDCA:
+    {
+      int16 dca = -1;
+      if (item.GetDCA(dca) != -1) {
+        LoadAString(fieldValue, dca2str(dca));
+      }
+      break;
+    }
+    default:
+      fieldValue = item.GetFieldValue(ft);
+      break;
+  }
+  return os << tag << L' ' << item.FieldName(ft) << L": " << fieldValue;
 }
 
 inline StringX rmtime(wchar_t tag, const CItemData &i)
