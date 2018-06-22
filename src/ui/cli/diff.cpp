@@ -13,6 +13,7 @@
 
 #include "../../os/file.h"
 #include "../../core/core.h"
+#include "../../core/PWHistory.h"
 
 #include "../../core/StringXStream.h"
 #include <algorithm>
@@ -95,6 +96,21 @@ inline wostream& print_field_value(wostream &os, wchar_t tag,
       int16 dca = -1;
       if (item.GetDCA(dca) != -1) {
         LoadAString(fieldValue, dca2str(dca));
+      }
+      break;
+    }
+    case CItemData::PWHIST:
+    {
+      const StringX pwh_str = item.GetPWHistory();
+      if (!pwh_str.empty()) {
+        StringXStream value_stream;
+        size_t ignored;
+        PWHistList pwhl;
+        const bool save_pwhistory = CreatePWHistoryList(pwh_str, ignored, ignored, pwhl, PWSUtil::TMC_LOCALE);
+        value_stream << L"Save: " << (save_pwhistory? L"Yes" : L"No");
+        if ( !pwhl.empty() ) value_stream << endl;
+        for( const auto &pwh: pwhl) value_stream << pwh.changedate << L": " << pwh.password << endl;
+        fieldValue = value_stream.str();
       }
       break;
     }
