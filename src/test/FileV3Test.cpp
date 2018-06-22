@@ -111,6 +111,7 @@ TEST_F(FileV3Test, HeaderTest)
   PWSfileHeader hdr1, hdr2;
   hdr1.m_prefString = _T("aPrefString");
   hdr1.m_whenlastsaved = 1413129351; // overwritten in Open()
+  hdr1.m_whenpwdlastchanged = 1529684734;
   hdr1.m_lastsavedby = _T("aUser");
   hdr1.m_lastsavedon = _T("aMachine");
   hdr1.m_whatlastsaved = _T("PasswordSafe test framework");

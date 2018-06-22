@@ -622,6 +622,13 @@ int PWSfileV4::WriteHeader()
     m_hdr.m_whenlastsaved = pwt;
   }
 
+  // Write out last master password change time, if set
+  if (m_hdr.m_whenpwdlastchanged != 0) {
+    PWStime pwt(m_hdr.m_whenpwdlastchanged);
+    numWritten = WriteCBC(HDR_LASTPWDUPDATETIME, pwt, pwt.GetLength());
+    if (numWritten <= 0) { m_status = FAILURE; goto end; }
+  }
+
   // Write out who saved it!
   {
     const SysInfo *si = SysInfo::GetInstance();
@@ -1055,6 +1062,16 @@ int PWSfileV4::ReadHeader()
       }
       break;
 
+    case HDR_LASTPWDUPDATETIME: /* when was master password last changed */
+      ASSERT(utf8Len == PWStime::TIME_LEN); // V4 header only needs to deal with PWStime 40 bit representation
+      if (utf8Len == PWStime::TIME_LEN) { // fail silently in Release build if not 
+        PWStime pwt(utf8);
+        m_hdr.m_whenpwdlastchanged = pwt;
+      } else {
+        m_hdr.m_whenlastsaved = 0;
+      }
+      
+      break;
     case HDR_LASTUPDATEUSERHOST: /* and by whom */
       // DEPRECATED, should never appear in a V4 format file header
       ASSERT(0);

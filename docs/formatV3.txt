@@ -158,10 +158,12 @@ Recently Used Entries       0x0f        Text                         [14]
 Named Password Policies     0x10        Text                         [15]
 Empty Groups                0x11        Text                         [16]
 Yubico                      0x12        Text                         [13]
+Timestamp of last master
+password change             0x13        time_t        Y              [5]
 End of Entry                0xff        [empty]       Y              [17]
 
-[1] The version number of the database format. For this version, the value
-is 0x0310 (stored in little-endian format, that is, 0x10, 0x03).
+[1] The version number of the database format. For example, the value
+0x0310 is stored in little-endian format, that is, 0x10, 0x03.
 PasswordSafe V3.01 introduced Format 0x0300
 PasswordSafe V3.03 introduced Format 0x0301
 PasswordSafe V3.09 introduced Format 0x0302
@@ -176,6 +178,7 @@ PasswordSafe V3.28 introduced Format 0x030A
 PasswordSafe V3.29 introduced Format 0x030B
 PasswordSafe V3.29Y introduced Format 0x030C
 PasswordSafe V3.30 introduced Format 0x030D
+PasswordSafe V3.47 introduced Format 0x030E
 
 [2] A universally unique identifier is needed in order to synchronize
 databases across different machine. Representation is described in

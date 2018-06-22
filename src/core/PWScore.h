@@ -49,6 +49,7 @@ struct st_DBProperties {
   StringX numentries;
   StringX numattachments;
   StringX whenlastsaved;
+  StringX whenpwdlastchanged;
   StringX wholastsaved;
   StringX whatlastsaved;
   StringX file_uuid;

@@ -508,6 +508,7 @@ void PWScore::NewFile(const StringX &passkey)
 {
   ClearDBData();
   SetPassKey(passkey);
+  time(&m_hdr.m_whenpwdlastchanged); // update master password changed timestamp
   m_ReadFileVersion = PWSfile::VCURRENT;
 }
 
@@ -1522,6 +1523,7 @@ bool PWScore::BackupCurFile(unsigned int maxNumIncBackups, int backupSuffix,
 void PWScore::ChangePasskey(const StringX &newPasskey)
 {
   SetPassKey(newPasskey);
+  time(&m_hdr.m_whenpwdlastchanged); // update master password changed timestamp
   WriteCurFile(); // Save immediately!
 }
 
@@ -3602,6 +3604,14 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   } else {
     st_dbp.whenlastsaved = PWSUtil::ConvertToDateTimeString(twls, PWSUtil::TMC_EXPORT_IMPORT);
   }
+
+  time_t tpwdlc = m_hdr.m_whenpwdlastchanged;
+  if (tpwdlc == 0) {
+    LoadAString(st_dbp.whenpwdlastchanged, IDSC_UNKNOWN);
+  } else {
+    st_dbp.whenpwdlastchanged = PWSUtil::ConvertToDateTimeString(tpwdlc, PWSUtil::TMC_EXPORT_IMPORT);
+  }
+  
 
   if (m_hdr.m_lastsavedby.empty() && m_hdr.m_lastsavedon.empty()) {
     LoadAString(st_dbp.wholastsaved, IDSC_UNKNOWN);

@@ -61,6 +61,7 @@ BOOL CProperties::OnInitDialog()
   GetDlgItem(IDC_SAVEDON)->SetWindowText(m_pdbp->whenlastsaved.c_str());
   GetDlgItem(IDC_SAVEDBY)->SetWindowText(m_pdbp->wholastsaved.c_str());
   GetDlgItem(IDC_SAVEDAPP)->SetWindowText(m_pdbp->whatlastsaved.c_str());
+  GetDlgItem(IDC_PWDSETON)->SetWindowText(m_pdbp->whenpwdlastchanged.c_str());
   GetDlgItem(IDC_FILEUUID)->SetWindowText(m_pdbp->file_uuid.c_str());
   GetDlgItem(IDC_UNKNOWNFIELDS)->SetWindowText(m_pdbp->unknownfields.c_str());
 

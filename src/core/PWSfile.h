@@ -93,6 +93,7 @@ public:
                    HDR_PSWDPOLICIES          = 0x10,     // added in format 0x030A
                    HDR_EMPTYGROUP            = 0x11,     // added in format 0x030B
                    HDR_YUBI_SK               = 0x12,     // Yubi-specific: format 0x030c
+                   HDR_LASTPWDUPDATETIME     = 0x13,     // added in format 0x030E
                    HDR_LAST,                             // Start of unknown fields!
                    HDR_END                   = 0xff};    // header field types, per formatV{2,3}.txt
 

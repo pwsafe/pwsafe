@@ -54,9 +54,10 @@ using pws_os::CUUID;
  *         V3.29           0x030B
  *         V3.29Y          0x030C
  *         V3.30           0x030D
+ *         V3.47           0x030E
 */
 
-const short VersionNum = 0x030D;
+const short VersionNum = 0x030E;
 
 static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F',
@@ -461,6 +462,13 @@ int PWSfileV3::WriteHeader()
   if (numWritten <= 0) { m_status = FAILURE; goto end; }
   m_hdr.m_whenlastsaved = time_now;
 
+  // Write out last master password change time, if set
+  if (m_hdr.m_whenpwdlastchanged != 0) {
+    putInt32(buf, static_cast<int32>(m_hdr.m_whenpwdlastchanged));
+    numWritten = WriteCBC(HDR_LASTPWDUPDATETIME, buf, sizeof(buf));
+    if (numWritten <= 0) { m_status = FAILURE; goto end; }
+  }
+
   // Write out who saved it!
   {
     const SysInfo *si = SysInfo::GetInstance();
@@ -706,7 +714,14 @@ int PWSfileV3::ReadHeader()
       }
       break;
 
-      case HDR_LASTUPDATEUSERHOST: /* and by whom */
+    case HDR_LASTPWDUPDATETIME: /* when was master password last changed */
+      m_hdr.m_whenpwdlastchanged = 0;
+      if (!PWSUtil::pull_time(m_hdr.m_whenpwdlastchanged, utf8, utf8Len)) {
+        pws_os::Trace0(_T("Failed to pull_time(m_whenpwdlastchanged)\n"));
+      }
+      break;
+
+    case HDR_LASTUPDATEUSERHOST: /* who last saved */
         // DEPRECATED, but we still know how to read this
         if (!found0302UserHost) { // if new fields also found, don't overwrite
           if (utf8 != nullptr) utf8[utf8Len] = '\0';

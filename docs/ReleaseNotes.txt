@@ -13,6 +13,11 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
 
+New Features in 3.47.0
+======================
+[862] Last time the master password was changed is kept and displayed
+in File->Properties.
+
 Bugs Fixed in 3.47.0
 ====================
 [] Clipboard is more secure - cleared 3 seconds after copied data is

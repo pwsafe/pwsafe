@@ -10,7 +10,7 @@
 PWSfileHeader::PWSfileHeader()
   : m_nCurrentMajorVersion(0), m_nCurrentMinorVersion(0),
     m_file_uuid(pws_os::CUUID::NullUUID()),
-    m_prefString(_T("")), m_whenlastsaved(0),
+    m_prefString(_T("")), m_whenlastsaved(0), m_whenpwdlastchanged(0),
     m_lastsavedby(_T("")), m_lastsavedon(_T("")),
     m_whatlastsaved(_T("")),
     m_DB_Name(_T("")), m_DB_Description(_T("")), m_yubi_sk(nullptr)
@@ -24,6 +24,7 @@ PWSfileHeader::PWSfileHeader(const PWSfileHeader &h)
     m_prefString(h.m_prefString),
     m_displaystatus(h.m_displaystatus),
     m_whenlastsaved(h.m_whenlastsaved),
+    m_whenpwdlastchanged(h.m_whenpwdlastchanged),
     m_lastsavedby(h.m_lastsavedby), m_lastsavedon(h.m_lastsavedon),
     m_whatlastsaved(h.m_whatlastsaved),
     m_DB_Name(h.m_DB_Name), m_DB_Description(h.m_DB_Description), m_RUEList(h.m_RUEList)
@@ -55,6 +56,7 @@ PWSfileHeader &PWSfileHeader::operator=(const PWSfileHeader &h)
     m_lastsavedby = h.m_lastsavedby;
     m_lastsavedon = h.m_lastsavedon;
     m_whatlastsaved = h.m_whatlastsaved;
+    m_whenpwdlastchanged = h.m_whenpwdlastchanged;
     m_DB_Name = h.m_DB_Name;
     m_DB_Description = h.m_DB_Description;
     m_RUEList = h.m_RUEList;
@@ -79,6 +81,7 @@ bool PWSfileHeader::operator==(const PWSfileHeader &h) const
                  m_displaystatus == h.m_displaystatus &&
                  m_prefString == h.m_prefString &&
                  m_whenlastsaved == h.m_whenlastsaved &&
+                 m_whenpwdlastchanged == m_whenpwdlastchanged &&
                  m_lastsavedby == h.m_lastsavedby &&
                  m_lastsavedon == h.m_lastsavedon &&
                  m_whatlastsaved == h.m_whatlastsaved &&

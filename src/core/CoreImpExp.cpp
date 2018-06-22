@@ -529,6 +529,15 @@ int PWScore::WriteXMLFile(const StringX &filename,
     ofs << "\"" << endl;
   }
 
+  if (m_hdr.m_whenpwdlastchanged != 0) {
+    StringX wls = PWSUtil::ConvertToDateTimeString(m_hdr.m_whenpwdlastchanged,
+                                                   PWSUtil::TMC_XML);
+    conv.ToUTF8(wls.c_str(), utf8, utf8Len);
+    ofs << "WhenPwdLastChanged=\"";
+    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    ofs << "\"" << endl;
+  }
+
   CUUID huuid(*m_hdr.m_file_uuid.GetARep(), true); // true to print canonically
 
   ofs << "Database_uuid=\"" << huuid << "\"" << endl;

@@ -553,6 +553,8 @@
 #define IDC_SAVEDAPP                    1197
 #define IDC_NUMATTACHMENTS              1198
 #define IDC_BACKUPBEFORESAVE            1199
+#define IDC_SAVEDON2                    1199
+#define IDC_PWDSETON                    1199
 #define IDC_DFLTBACKUPPREFIX            1200
 #define IDC_USERBACKUPPREFIX            1201
 #define IDC_USERBACKUPPREFIXVALUE       1202

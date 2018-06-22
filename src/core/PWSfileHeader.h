@@ -34,6 +34,7 @@ struct PWSfileHeader {
   StringX m_prefString;                 // Preferences stored in the file
   std::vector<bool> m_displaystatus;    // Tree expansion state vector
   time_t m_whenlastsaved;               // When last saved
+  time_t m_whenpwdlastchanged;          // When last saved
   StringX m_lastsavedby;                // and by whom
   StringX m_lastsavedon;                // and by which machine
   StringX m_whatlastsaved;              // and by what application
