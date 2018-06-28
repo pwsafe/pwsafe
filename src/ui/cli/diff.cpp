@@ -304,20 +304,27 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
 // Side-by-side diff
 //////////
 
-using lines_vec = std::vector<std::wstring>;
-lines_vec stream2vec(StringXStream &wss, unsigned int offset, unsigned int columns) {
+using lines_t = std::wstring;
+using lines_vec = std::vector<lines_t>;
+
+lines_vec resize_lines(lines_vec lines, lines_t::size_type cols ) {
+  std::for_each(lines.begin(), lines.end(), [cols](lines_t &line) {
+    if (line.size() < cols) line.resize(cols, ' ');
+  });
+  return lines;
+}
+
+lines_vec stream2vec(StringXStream &wss, unsigned int offset) {
     lines_vec vlines;
     bool first_line = true;
     do {
         wstring line;
         std::getline(wss, line);
         if (first_line) {
-            line.resize(columns, L' ');
             vlines.push_back(line);
             first_line = false;
         } else {
             if ( !line.empty() ) {
-                line.resize(columns - offset, L' ');
                 vlines.push_back(wstring(offset, L' ') + line);
             }
         }
@@ -347,8 +354,8 @@ void sbs_print(const PWScore &core,
           wssl << left_line(ft) << flush;
           wssr << right_line(ft) << flush;
           const auto value_offset = CItemData::FieldName(ft).length() + 4;
-          lines_vec left_lines{stream2vec(wssl, value_offset, cols)},
-                  right_lines{stream2vec(wssr, value_offset, cols)};
+          lines_vec left_lines{resize_lines(stream2vec(wssl, value_offset), cols)},
+                  right_lines{resize_lines(stream2vec(wssr, value_offset), cols)};
           const int ndiff = left_lines.size() - right_lines.size();
           if (ndiff < 0)
               left_lines.insert(left_lines.end(), -ndiff, wstring(cols, L' '));
