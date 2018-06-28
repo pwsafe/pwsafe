@@ -85,6 +85,20 @@ uint32_t dca2str(uint16 dca) {
   return loc != dca_id_str.end() ? loc->second: IDSC_INVALID;
 }
 
+using line_t = StringX;
+using lines_vec = std::vector<line_t>;
+
+lines_vec stream2vec(StringXStream &wss) {
+    lines_vec vlines;
+    do {
+        StringX line;
+        std::getline(wss, line);
+        if ( !line.empty() ) vlines.push_back(line);
+    }
+    while( !wss.eof() );
+    return vlines;
+}
+
 inline wostream& print_field_value(wostream &os, wchar_t tag,
                                     const CItemData &item, CItemData::FieldType ft)
 {
@@ -118,7 +132,16 @@ inline wostream& print_field_value(wostream &os, wchar_t tag,
       fieldValue = item.GetFieldValue(ft);
       break;
   }
-  return os << tag << L' ' << item.FieldName(ft) << L": " << fieldValue;
+  const StringX sep1{L' '}, sep2{L": "};
+  StringXStream tmpStream;
+  tmpStream << tag << L' ' << item.FieldName(ft) << L": " << fieldValue;
+  const auto offset = 1 /*tag*/ + sep1.size() + sep2.size() + item.FieldName(ft).size();
+  lines_vec lines{ stream2vec(tmpStream)};
+  if ( lines.size() > 1) {
+    std::for_each( lines.begin()+1, lines.end(), [offset](StringX &line) { line.insert(0, offset, L' '); });
+  }
+  for( const auto &line: lines ) os << line << endl;
+  return os;
 }
 
 inline StringX rmtime(wchar_t tag, const CItemData &i)
@@ -145,7 +168,7 @@ void print_unique_items(wchar_t tag, const CompareData &cd, const PWScore &core,
           break;
         default:
           if ( !item.GetFieldValue(ft).empty() ) {
-            print_field_value(wcout, tag, item, ft) << endl;
+            print_field_value(wcout, tag, item, ft);
           }
       }
     });
@@ -222,8 +245,8 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
                       const CItemData::FieldBits &fields,
                       CItemData::FieldType ft ) {
     if (fields.test(ft)) {
-      print_field_value(wcout, L'-', item, ft) << endl;
-      print_field_value(wcout, L'+', otherItem, ft) << endl;
+      print_field_value(wcout, L'-', item, ft);
+      print_field_value(wcout, L'+', otherItem, ft);
     }
   };
 
@@ -290,7 +313,7 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
                      CItemData::FieldType ft ) {
     const wchar_t tag = context_tag(ft, fields, item, otherItem);
     if (tag != L'-') {
-      print_field_value(wcout, tag, tag == L' '? item: otherItem, ft) << endl;
+      print_field_value(wcout, tag, tag == L' '? item: otherItem, ft);
     }
   };
 
@@ -304,33 +327,17 @@ static void context_diff(const PWScore &core, const PWScore &otherCore,
 // Side-by-side diff
 //////////
 
-using lines_t = std::wstring;
-using lines_vec = std::vector<lines_t>;
-
-lines_vec resize_lines(lines_vec lines, lines_t::size_type cols ) {
-  std::for_each(lines.begin(), lines.end(), [cols](lines_t &line) {
-    if (line.size() < cols) line.resize(cols, ' ');
-  });
-  return lines;
+template <class StringType>
+StringType resize(StringType s, typename StringType::size_type len) {
+  if (s.size() < len) s.resize(len, ' ');
+  return s;
 }
 
-lines_vec stream2vec(StringXStream &wss, unsigned int offset) {
-    lines_vec vlines;
-    bool first_line = true;
-    do {
-        wstring line;
-        std::getline(wss, line);
-        if (first_line) {
-            vlines.push_back(line);
-            first_line = false;
-        } else {
-            if ( !line.empty() ) {
-                vlines.push_back(wstring(offset, L' ') + line);
-            }
-        }
-    }
-    while( !wss.eof() );
-    return vlines;
+lines_vec resize_lines(lines_vec lines, line_t::size_type cols ) {
+  std::for_each(lines.begin(), lines.end(), [cols](line_t &line) {
+    line = resize(line, cols);
+  });
+  return lines;
 }
 
 // TODO: convert to lambda when using C++14
@@ -353,25 +360,26 @@ void sbs_print(const PWScore &core,
           StringXStream wssl, wssr;
           wssl << left_line(ft) << flush;
           wssr << right_line(ft) << flush;
-          const auto value_offset = CItemData::FieldName(ft).length() + 4;
-          lines_vec left_lines{resize_lines(stream2vec(wssl, value_offset), cols)},
-                  right_lines{resize_lines(stream2vec(wssr, value_offset), cols)};
+          lines_vec left_lines{resize_lines(stream2vec(wssl), cols)},
+                  right_lines{resize_lines(stream2vec(wssr), cols)};
           const int ndiff = left_lines.size() - right_lines.size();
           if (ndiff < 0)
-              left_lines.insert(left_lines.end(), -ndiff, wstring(cols, L' '));
+              left_lines.insert(left_lines.end(), -ndiff, StringX(cols, L' '));
           else if (ndiff > 0)
-              right_lines.insert(right_lines.end(), ndiff, wstring(cols, L' '));
+              right_lines.insert(right_lines.end(), ndiff, StringX(cols, L' '));
           for (lines_vec::size_type idx = 0; idx < left_lines.size(); ++idx)
               wcout << left_lines[idx] << L'|' << right_lines[idx] << endl;
         }
       });
     }
-    wcout << wstring(cols, L' ') << L'|' << endl;
+    wcout << resize(wstring(cols/5, left_line.sep_char), cols) << L'|'
+          << resize(wstring(cols/5, right_line.sep_char), cols) << endl;
   });
 };
 
 struct field_to_line
 {
+  const wchar_t sep_char = L'-';
   const CItemData &item;
   unsigned int columns;
   field_to_line(const PWScore &core, const pws_os::CUUID& uuid, unsigned int cols)
@@ -396,6 +404,7 @@ struct field_to_line
 
 struct blank
 {
+  const wchar_t sep_char = L' ';
   wstring line;
   blank(const PWScore &, const pws_os::CUUID &, unsigned int cols)
   : line(static_cast<size_t>(cols), L' ')
@@ -430,17 +439,9 @@ static void sidebyside_diff(const PWScore &core, const PWScore &otherCore,
   // print the orig (left or main) safe in left column
   sbs_print<field_to_line, blank>(core, otherCore, current, comparedFields, cols, false);
 
-  // print a separator line
-  if ( !current.empty() )
-    wcout << setfill(L'-') << setw(2*cols+1) << L'-' << endl;
-
   // print the conflicting items, one field at a time in one line. Orig safe item's files go to
   // left column, the comparison safe's items to the right.
   sbs_print<field_to_line, field_to_line>(core, otherCore, conflicts, comparedFields, cols, true);
-
-  // print a separator line
-  if ( !conflicts.empty() )
-    wcout << setfill(L'-') << setw(2*cols+1) << L'-' << endl;
 
   // print the comparison safe in right column
   sbs_print<blank, field_to_line>(core, otherCore, comparison, comparedFields, cols, false);
