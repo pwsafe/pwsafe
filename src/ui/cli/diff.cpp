@@ -218,7 +218,8 @@ void print_conflicts(const CompareData &conflicts, const PWScore &core,
 void unified_print_unique_items(wchar_t tag, const CompareData &cd, const PWScore &core)
 {
   print_unique_items(tag, cd, core, [](const st_CompareData &cd, wchar_t tag) {
-    wcout << tag << st_GroupTitleUser{cd.group, cd.title, cd.user} << endl;
+    wcout << L"***************" << endl
+          << tag << st_GroupTitleUser{cd.group, cd.title, cd.user} << endl;
   });
 }
 
@@ -234,7 +235,8 @@ static void unified_diff(const PWScore &core, const PWScore &otherCore,
   auto hdr_fn = [](const st_CompareData &cd,
                    const CItemData &item,
                    const CItemData &otherItem) {
-    wcout << L"@@ " << st_GroupTitleUser{cd.group, cd.title, cd.user}
+    wcout << L"***************" << endl
+          << L"@@ " << st_GroupTitleUser{cd.group, cd.title, cd.user}
           << rmtime(L'-', item) << rmtime(L'+', otherItem) << L" @@" << endl;
   };
 
