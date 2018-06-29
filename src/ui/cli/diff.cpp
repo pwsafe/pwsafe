@@ -157,10 +157,10 @@ using unique_hdr_func_t = function<void(const st_CompareData &cd, wchar_t tag)>;
 void print_unique_items(wchar_t tag, const CompareData &cd, const PWScore &core,
                             unique_hdr_func_t hdr_fn)
 {
-  for_each(cd.cbegin(), cd.cend(), [tag, &core, &hdr_fn](const st_CompareData &d) {
+  for(const auto &d: cd) {
     hdr_fn(d, tag);
     const CItemData &item = core.Find(d.indatabase == CURRENT? d.uuid0: d.uuid1)->second;
-    for_each( begin(diff_fields), end(diff_fields), [&item, tag](CItemData::FieldType ft) {
+    for( auto ft : diff_fields ) {
       switch(ft) {
         case CItem::GROUP:
         case CItem::TITLE:
@@ -171,8 +171,8 @@ void print_unique_items(wchar_t tag, const CompareData &cd, const PWScore &core,
             print_field_value(wcout, tag, item, ft);
           }
       }
-    });
-  });
+    }
+  }
 }
 
 using item_diff_func_t = function<void(const CItemData &item,
@@ -183,8 +183,7 @@ using item_diff_func_t = function<void(const CItemData &item,
 void print_conflicting_item(const CItemData &item, const CItemData &otherItem,
                             const CItemData::FieldBits &fields, item_diff_func_t diff_fn)
 {
-  for_each( begin(diff_fields), end(diff_fields),
-              [&fields, &item, &otherItem, &diff_fn](CItemData::FieldType ft) {
+  for( auto ft: diff_fields ) {
     switch(ft) {
       case CItem::GROUP:
       case CItem::TITLE:
@@ -194,7 +193,7 @@ void print_conflicting_item(const CItemData &item, const CItemData &otherItem,
         diff_fn(item, otherItem, fields, ft);
         break;
     }
-  });
+  }
 }
 
 using conflict_hdr_func_t = function<void(const st_CompareData &cd,
@@ -205,13 +204,12 @@ void print_conflicts(const CompareData &conflicts, const PWScore &core,
                             const PWScore &otherCore, conflict_hdr_func_t hdr_fn,
                             item_diff_func_t diff_fn)
 {
-  for_each( conflicts.cbegin(), conflicts.cend(),
-                    [&core, &otherCore, &hdr_fn, &diff_fn](const st_CompareData &cd) {
+  for( const auto &cd: conflicts ) {
     const CItemData &item = core.Find(cd.uuid0)->second;
     const CItemData &otherItem = otherCore.Find(cd.uuid1)->second;
     hdr_fn(cd, item, otherItem);
     print_conflicting_item(item, otherItem, cd.bsDiffs, diff_fn);
-  });
+  }
 }
 
 //////////////////////////////////////////////////////////////////
@@ -334,9 +332,7 @@ StringType resize(StringType s, typename StringType::size_type len) {
 }
 
 lines_vec resize_lines(lines_vec lines, line_t::size_type cols ) {
-  std::for_each(lines.begin(), lines.end(), [cols](line_t &line) {
-    line = resize(line, cols);
-  });
+  for( auto &line: lines ) line = resize(line, cols);
   return lines;
 }
 
@@ -348,13 +344,13 @@ void sbs_print(const PWScore &core,
                const CItemData::FieldBits &comparedFields,
                unsigned int cols, bool print_fields)
 {
-  for_each( matches.cbegin(), matches.cend(), [&](const st_CompareData &cd) {
+  for( const auto &cd: matches ) {
     const CItemData::FieldBits &df = cd.bsDiffs.any()? cd.bsDiffs: comparedFields;
     left_line_t left_line{core, cd.uuid0, cols};
     right_line_t right_line{otherCore, cd.uuid1, cols};
     wcout << left_line() << L'|' << right_line() << endl;
     if ( print_fields ) {
-      for_each(begin(diff_fields), end(diff_fields), [&](CItemData::FieldType ft) {
+      for( auto ft: diff_fields ) {
         // print the fields if they were actually found to be different
         if (df.test(ft)) {
           StringXStream wssl, wssr;
@@ -370,11 +366,11 @@ void sbs_print(const PWScore &core,
           for (lines_vec::size_type idx = 0; idx < left_lines.size(); ++idx)
               wcout << left_lines[idx] << L'|' << right_lines[idx] << endl;
         }
-      });
+      }
     }
     wcout << resize(wstring(cols/5, left_line.sep_char), cols) << L'|'
           << resize(wstring(cols/5, right_line.sep_char), cols) << endl;
-  });
+  }
 };
 
 struct field_to_line
@@ -458,12 +454,11 @@ int Diff(PWScore &core, const UserArgs &ua)
 
   CItemData::FieldBits safeFields{ua.fields};
   safeFields.reset(CItem::POLICY);
-  for_each( begin(diff_fields), end(diff_fields),
-                [&ua, &safeFields](CItemData::FieldType ft) {
+  for( auto ft: diff_fields ) {
     if (ua.fields.test(ft) && CItemData::IsTextField(ft)) {
       safeFields.set(ft);
     }
-  });
+  }
   safeFields.reset(CItem::POLICY);
   safeFields.reset(CItem::RMTIME);
 
