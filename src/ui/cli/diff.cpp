@@ -128,6 +128,13 @@ inline wostream& print_field_value(wostream &os, wchar_t tag,
       }
       break;
     }
+    case CItemData::POLICY:
+    {
+        PWPolicy policy;
+        item.GetPWPolicy(policy);
+        fieldValue = policy.GetDisplayString();
+        break;
+    }
     default:
       fieldValue = item.GetFieldValue(ft);
       break;
@@ -180,6 +187,10 @@ using item_diff_func_t = function<void(const CItemData &item,
                                        const CItemData::FieldBits &fields,
                                        CItemData::FieldType ft)>;
 
+inline bool both_empty(const CItemData &item, const CItemData &otherItem) {
+    return item.GetPWPolicy().empty() && otherItem.GetPWPolicy().empty();
+}
+
 void print_conflicting_item(const CItemData &item, const CItemData &otherItem,
                             const CItemData::FieldBits &fields, item_diff_func_t diff_fn)
 {
@@ -190,7 +201,22 @@ void print_conflicting_item(const CItemData &item, const CItemData &otherItem,
       case CItem::USER:
         break;
       default:
-        diff_fn(item, otherItem, fields, ft);
+        if (fields.test(ft)) {
+            switch (ft) {
+                case CItemData::POLICY:
+                {
+                    // Policy comparison compares default policies for the safes if the
+                    // item's policy is empty. We just consider them to be same if empty.
+                    if ( both_empty(item, otherItem) ) {
+                        continue;
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+            diff_fn(item, otherItem, fields, ft);
+        }
         break;
     }
   }
@@ -207,6 +233,8 @@ void print_conflicts(const CompareData &conflicts, const PWScore &core,
   for( const auto &cd: conflicts ) {
     const CItemData &item = core.Find(cd.uuid0)->second;
     const CItemData &otherItem = otherCore.Find(cd.uuid1)->second;
+    if (cd.bsDiffs.count() == 1 && cd.bsDiffs.test(CItemData::POLICY) && both_empty(item, otherItem))
+        continue;
     hdr_fn(cd, item, otherItem);
     print_conflicting_item(item, otherItem, cd.bsDiffs, diff_fn);
   }
@@ -455,13 +483,11 @@ int Diff(PWScore &core, const UserArgs &ua)
   const StringX otherSafe{std2stringx(ua.opArg)};
 
   CItemData::FieldBits safeFields{ua.fields};
-  safeFields.reset(CItem::POLICY);
   for( auto ft: diff_fields ) {
     if (ua.fields.test(ft) && CItemData::IsTextField(ft)) {
       safeFields.set(ft);
     }
   }
-  safeFields.reset(CItem::POLICY);
   safeFields.reset(CItem::RMTIME);
 
   int status = OpenCore(otherCore, otherSafe);
