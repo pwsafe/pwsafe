@@ -345,7 +345,7 @@ template <class left_line_t, class right_line_t>
 void sbs_print(const PWScore &core,
                const PWScore &otherCore,
                const CompareData &matches,
-               const CItemData::FieldBits comparedFields,
+               const CItemData::FieldBits &comparedFields,
                unsigned int cols, bool print_fields)
 {
   for_each( matches.cbegin(), matches.cend(), [&](const st_CompareData &cd) {
@@ -454,7 +454,6 @@ int Diff(PWScore &core, const UserArgs &ua)
 {
   CompareData current, comparison, conflicts, identical;
   PWScore otherCore;
-  constexpr bool treatWhitespacesAsEmpty = false;
   const StringX otherSafe{std2stringx(ua.opArg)};
 
   CItemData::FieldBits safeFields{ua.fields};
@@ -470,6 +469,7 @@ int Diff(PWScore &core, const UserArgs &ua)
 
   int status = OpenCore(otherCore, otherSafe);
   if ( status == PWScore::SUCCESS ) {
+    constexpr bool treatWhitespacesAsEmpty = false;
     core.Compare( &otherCore,
                   safeFields,
                          ua.subset.valid(),
