@@ -174,7 +174,7 @@ void print_unique_items(wchar_t tag, const CompareData &cd, const PWScore &core,
         case CItem::USER:
           break;
         default:
-          if ( !item.GetFieldValue(ft).empty() ) {
+          if ( d.bsDiffs.test(ft) && !item.GetFieldValue(ft).empty() ) {
             print_field_value(wcout, tag, item, ft);
           }
       }
