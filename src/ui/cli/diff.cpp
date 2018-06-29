@@ -187,7 +187,7 @@ using item_diff_func_t = function<void(const CItemData &item,
                                        const CItemData::FieldBits &fields,
                                        CItemData::FieldType ft)>;
 
-inline bool both_empty(const CItemData &item, const CItemData &otherItem) {
+inline bool have_empty_policies(const CItemData &item, const CItemData &otherItem) {
     return item.GetPWPolicy().empty() && otherItem.GetPWPolicy().empty();
 }
 
@@ -207,7 +207,7 @@ void print_conflicting_item(const CItemData &item, const CItemData &otherItem,
                 {
                     // Policy comparison compares default policies for the safes if the
                     // item's policy is empty. We just consider them to be same if empty.
-                    if ( both_empty(item, otherItem) ) {
+                    if ( have_empty_policies(item, otherItem) ) {
                         continue;
                     }
                     break;
@@ -233,7 +233,7 @@ void print_conflicts(const CompareData &conflicts, const PWScore &core,
   for( const auto &cd: conflicts ) {
     const CItemData &item = core.Find(cd.uuid0)->second;
     const CItemData &otherItem = otherCore.Find(cd.uuid1)->second;
-    if (cd.bsDiffs.count() == 1 && cd.bsDiffs.test(CItemData::POLICY) && both_empty(item, otherItem))
+    if (cd.bsDiffs.count() == 1 && cd.bsDiffs.test(CItemData::POLICY) && have_empty_policies(item, otherItem))
         continue;
     hdr_fn(cd, item, otherItem);
     print_conflicting_item(item, otherItem, cd.bsDiffs, diff_fn);
@@ -375,6 +375,10 @@ void sbs_print(const PWScore &core,
                unsigned int cols, bool print_fields)
 {
   for( const auto &cd: matches ) {
+    const CItemData &item = core.Find(cd.uuid0)->second;
+    const CItemData &otherItem = otherCore.Find(cd.uuid1)->second;
+    if (cd.bsDiffs.count() == 1 && cd.bsDiffs.test(CItemData::POLICY) && have_empty_policies(item, otherItem))
+        continue;
     const CItemData::FieldBits &df = cd.bsDiffs.any()? cd.bsDiffs: comparedFields;
     left_line_t left_line{core, cd.uuid0, cols};
     right_line_t right_line{otherCore, cd.uuid1, cols};
@@ -382,7 +386,7 @@ void sbs_print(const PWScore &core,
     if ( print_fields ) {
       for( auto ft: diff_fields ) {
         // print the fields if they were actually found to be different
-        if (df.test(ft)) {
+        if (df.test(ft) && !have_empty_policies(item, otherItem)) {
           StringXStream wssl, wssr;
           wssl << left_line(ft) << flush;
           wssr << right_line(ft) << flush;
