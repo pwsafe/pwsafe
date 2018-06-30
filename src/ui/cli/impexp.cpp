@@ -29,7 +29,7 @@ int Import(PWScore &core, const UserArgs &ua)
 
 int Export(PWScore &core, const UserArgs &ua)
 {
-  CItemData::FieldBits all(~0L);
+  CItemData::FieldBits all(~0UL);
   int N;
   return ua.Format == UserArgs::XML?
     core.WriteXMLFile(std2stringx(ua.opArg), all, L"", 0, 0, L' ', L"", N):

@@ -16,6 +16,7 @@
 #include <iostream>
 #include <algorithm>
 #include <iomanip>
+#include <functional>
 
 using namespace std;
 
@@ -217,7 +218,7 @@ void context_print_unique_items(wchar_t tag, const CompareData &cd, const PWScor
 
 static void context_diff(const PWScore &core, const PWScore &otherCore,
                          const CompareData &current, const CompareData &comparison,
-                         const CompareData &conflicts, const CompareData &identical)
+                         const CompareData &conflicts, const CompareData & /* identical */)
 {
   wcout << safe_file_hdr(L"***", core) << endl;
   wcout << safe_file_hdr(L"---", otherCore) << endl;
@@ -308,7 +309,7 @@ struct blank
   // header
   wstring operator()() const { return line; }
   // fields
-  wstring operator()(CItemData::FieldType ft) const { return line; }
+  wstring operator()(CItemData::FieldType ) const { return line; }
 };
 
 
