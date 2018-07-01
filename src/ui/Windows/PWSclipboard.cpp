@@ -70,13 +70,20 @@ void PWSOleDataSource::timerCallback(HWND, UINT, UINT_PTR, DWORD)
 {
   if (s_hg != NULL) {
     LPCTSTR pData = (LPCTSTR)::GlobalLock(s_hg);
-    trashMemory((void *)pData, s_hgLen);
-    ::GlobalUnlock(s_hg);
-    ::GlobalFree(s_hg);
-    s_hg = NULL; s_hgLen = 0;
-    StringX blank(L"");
-    PWSclipboard cb;
-    cb.SetData(blank, false);
+    if (pData) {
+      trashMemory((void *)pData, s_hgLen);
+      ::GlobalUnlock(s_hg);
+      ::GlobalFree(s_hg);
+
+      s_hg = NULL; s_hgLen = 0;
+      StringX blank(L"");
+      PWSclipboard cb;
+      cb.SetData(blank, false);
+    }
+    else { // already freed by OLE subsys
+      s_hg = NULL; s_hgLen = 0;
+      pws_os::IssueError(L"Clipboard callback: lock failed", false);
+    }
   }
   AfxGetMainWnd()->KillTimer(TIMER_ID);
 }
@@ -85,10 +92,11 @@ void PWSOleDataSource::timerCallback(HWND, UINT, UINT_PTR, DWORD)
 bool PWSclipboard::SetData(const StringX &data, bool isSensitive)
 {
   // Dummy data
-  HGLOBAL hDummyGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, 2 * sizeof(wchar_t));
+  const size_t uDummyLen = 2;
+  HGLOBAL hDummyGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, uDummyLen * sizeof(wchar_t));
   LPTSTR pDummyGlobalLock = (LPTSTR)::GlobalLock(hDummyGlobalMemory);
 
-  PWSUtil::strCopy(pDummyGlobalLock, 2, L"\0" , 1);
+  PWSUtil::strCopy(pDummyGlobalLock, uDummyLen, L"\0" , 1);
   ::GlobalUnlock(hDummyGlobalMemory);
 
   // Real data
@@ -127,23 +135,31 @@ bool PWSclipboard::ClearCBData()
     HANDLE hData = odo.GetGlobalData(CLIPBOARD_TEXT_FORMAT);
     if (hData != NULL) {
       LPCTSTR pData = (LPCTSTR)::GlobalLock(hData);
-      SIZE_T dwlength = ::GlobalSize(hData) - sizeof(wchar_t); // less trailing null
-      if (dwlength < 1)
-        return !m_set;
 
-      // check if the data on the clipboard is the same we put there
-      unsigned char digest[SHA256::HASHLEN];
-      SHA256 ctx;
-      ctx.Update((unsigned char *)pData, dwlength);
-      ctx.Final(digest);
-      if (memcmp(digest, m_digest, SHA256::HASHLEN) == 0) {
-        trashMemory((void *)pData, dwlength);
-        StringX blank(L"");
-        SetData(blank, false);
-        memset(m_digest, 0, SHA256::HASHLEN);
+      if (pData) {
+        SIZE_T dwlength = ::GlobalSize(hData);
+
+        if (dwlength > sizeof(wchar_t) + 1) {
+          dwlength -= sizeof(wchar_t); // skip trailing null
+
+          // check if the data on the clipboard is the same we put there
+          unsigned char digest[SHA256::HASHLEN];
+          SHA256 ctx;
+          ctx.Update((unsigned char *)pData, dwlength);
+          ctx.Final(digest);
+          if (memcmp(digest, m_digest, SHA256::HASHLEN) == 0) {
+            trashMemory((void *)pData, dwlength);
+            StringX blank(L"");
+            SetData(blank, false);
+            memset(m_digest, 0, SHA256::HASHLEN);
+          }
+        }
+        ::GlobalUnlock(hData);
+        ::GlobalFree(hData);
       }
-      ::GlobalUnlock(hData);
-      ::GlobalFree(hData);
+      else { // already freed by OLE subsys
+        pws_os::IssueError(L"ClearCBData: lock failed", false);
+      }
     }
   }
   return !m_set;
