@@ -1919,8 +1919,15 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
       return false;
     }
 
-    if (type == END)
+    if (type == END) {
+      if (IsFieldSet(UUID))
+        m_entrytype = ET_NORMAL; // could be *base, but can't know that here...
+      else if (IsFieldSet(ALIASUUID))
+        m_entrytype = ET_ALIAS;
+      else if (IsFieldSet(SHORTCUTUUID))
+        m_entrytype = ET_SHORTCUT;
       return true; // happy end
+    }
 
     uint32 len = *(reinterpret_cast<const uint32 *>(&(*iter)));
     ASSERT(len < v.size()); // sanity check
@@ -2114,25 +2121,39 @@ void CItemData::SerializePlainText(vector<char> &v,
   unsigned char uc = 0;
 
   v.clear();
-  if (IsFieldSet(UUID)) {
-    GetUUID(uuid_array);
-    v.push_back(UUID);
-    push_length(v, sizeof(uuid_array_t));
-    v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
+
+  // We can be either regular, alias or shortcut, use the right uuid.
+  const FieldType uuidfts[] = {UUID, ALIASUUID, SHORTCUTUUID};
+  for (auto ft : uuidfts) {
+    if (IsFieldSet(ft)) {
+      GetUUID(uuid_array);
+      v.push_back(static_cast<const char>(ft));
+      push_length(v, sizeof(uuid_array_t));
+      v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
+      break;
+    }
   }
 
   push(v, GROUP, GetGroup());
   push(v, TITLE, GetTitle());
   push(v, USER, GetUser());
 
+  if (IsDependent()) {
+    ASSERT(pcibase != nullptr);
+    ASSERT(IsFieldSet(BASEUUID));
+    ASSERT(GetBaseUUID() == pcibase->GetUUID());
+    v.push_back(BASEUUID);
+    GetUUID(uuid_array, BASEUUID);
+    push_length(v, sizeof(uuid_array_t));
+    v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
+  }
+
+  // TODO - Get rid of following [password hack - no longer needed as we have base uuid!
   if (m_entrytype == ET_ALIAS) {
     // I am an alias entry
-    ASSERT(pcibase != nullptr);
     tmp = _T("[[") + pcibase->GetGroup() + _T(":") + pcibase->GetTitle() + _T(":") + pcibase->GetUser() + _T("]]");
-  } else
-  if (m_entrytype == ET_SHORTCUT) {
+  } else if (m_entrytype == ET_SHORTCUT) {
     // I am a shortcut entry
-    ASSERT(pcibase != nullptr);
     tmp = _T("[~") + pcibase->GetGroup() + _T(":") + pcibase->GetTitle() + _T(":") + pcibase->GetUser() + _T("~]");
   } else
     tmp = GetPassword();

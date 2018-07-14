@@ -2348,6 +2348,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     // Only set to false if adding a shortcut where the base isn't there (yet)
     bool bAddToViews = true;
     pDDObject->ToItem(ci_temp);
+    ASSERT(ci_temp.GetBaseUUID() != CUUID::NullUUID());
 
     StringX sxPolicyName = ci_temp.GetPolicyName();
     if (!sxPolicyName.empty()) {
@@ -2436,9 +2437,20 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
       pl.InputType = CItemData::ET_SHORTCUT;
     }
 
-    m_core.ParseBaseEntryPWD(cs_tmp, pl);
+    // If we have BASEUUID, life is simple
+    if (ci_temp.GetBaseUUID() != CUUID::NullUUID()) {
+      pl.ibasedata = 1;
+      pl.base_uuid = ci_temp.GetBaseUUID();
+      pl.TargetType = CItemData::ET_NORMAL;
+    } else {
+      m_core.ParseBaseEntryPWD(cs_tmp, pl);
+    }
     if (pl.ibasedata > 0) {
+      // Add to pwlist
+      pmulticmds->Add(AddEntryCommand::Create(&m_core,
+                                              ci_temp, ci_temp.GetBaseUUID())); // need to do this as well as AddDep...
       CGeneralMsgBox gmb;
+      CString cs_msg;
       // Password in alias/shortcut format AND base entry exists
       if (pl.InputType == CItemData::ET_ALIAS) {
         ItemListIter iter = m_core.Find(pl.base_uuid);
@@ -2446,15 +2458,12 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
         if (pl.TargetType == CItemData::ET_ALIAS) {
           // This base is in fact an alias. ParseBaseEntryPWD already found 'proper base'
           // So dropped entry will point to the 'proper base' and tell the user.
-          CString cs_msg;
           cs_msg.Format(IDS_DDBASEISALIAS, static_cast<LPCWSTR>(sxgroup.c_str()),
                         static_cast<LPCWSTR>(sxtitle.c_str()),
                         static_cast<LPCWSTR>(sxuser.c_str()));
           gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
-        } else
-        if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
+        } else if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
           // Only normal or alias base allowed as target
-          CString cs_msg;
           cs_msg.Format(IDS_ABASEINVALID, static_cast<LPCWSTR>(sxgroup.c_str()),
                         static_cast<LPCWSTR>(sxtitle.c_str()),
                         static_cast<LPCWSTR>(sxuser.c_str()));
@@ -2468,13 +2477,11 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
 
         ci_temp.SetPassword(L"[Alias]");
         ci_temp.SetAlias();
-      } else
-      if (pl.InputType == CItemData::ET_SHORTCUT) {
+      } else if (pl.InputType == CItemData::ET_SHORTCUT) {
         ItemListIter iter = m_core.Find(pl.base_uuid);
         ASSERT(iter != End());
         if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_SHORTCUTBASE) {
           // Only normal or shortcut base allowed as target
-          CString cs_msg;
           cs_msg.Format(IDS_SBASEINVALID, static_cast<LPCWSTR>(sxgroup.c_str()),
                         static_cast<LPCWSTR>(sxtitle.c_str()),
                         static_cast<LPCWSTR>(sxuser.c_str()));
@@ -2490,12 +2497,10 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
         ci_temp.SetPassword(L"[Shortcut]");
         ci_temp.SetShortcut();
       }
-    } else
-    if (pl.ibasedata == 0) {
+    } else if (pl.ibasedata == 0) {
       // Password NOT in alias/shortcut format
       ci_temp.SetNormal();
-    } else
-    if (pl.ibasedata < 0) {
+    } else if (pl.ibasedata < 0) {
       // Password in alias/shortcut format AND base entry does not exist or multiple possible
       // base entries exit.
       // Note: As more entries are added, what was "not exist" may become "OK",
@@ -2503,8 +2508,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
       // Let the code that processes the possible aliases after all have been added sort this out.
       if (pl.InputType == CItemData::ET_ALIAS) {
         Possible_Aliases.push_back(ci_temp.GetUUID());
-      } else
-      if (pl.InputType == CItemData::ET_SHORTCUT) {
+      } else if (pl.InputType == CItemData::ET_SHORTCUT) {
         Possible_Shortcuts.push_back(ci_temp.GetUUID());
         bAddToViews = false;
       }
@@ -2521,17 +2525,18 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
       ci_temp.SetKBShortcut(0);
     }
 
-    // Add to pwlist
-    Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
+    if (!ci_temp.IsDependent()) { // Dependents handled later
+      // Add to pwlist
+      Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
 
-    if (!bAddToViews) {
-      // ONLY Add to pwlist and NOT to Tree or List views
-      // After the call to AddDependentEntries for shortcuts, check if still
-      // in password list and, if so, then add to Tree + List views
-      pcmd->SetNoGUINotify();
+      if (!bAddToViews) {
+        // ONLY Add to pwlist and NOT to Tree or List views
+        // After the call to AddDependentEntries for shortcuts, check if still
+        // in password list and, if so, then add to Tree + List views
+        pcmd->SetNoGUINotify();
+      }
+      pmulticmds->Add(pcmd);
     }
-
-    pmulticmds->Add(pcmd);
   } // iteration over in_oblist
 
   // Now try to add aliases/shortcuts we couldn't add in previous processing
