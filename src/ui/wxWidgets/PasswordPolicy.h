@@ -188,6 +188,7 @@ public:
   /// Should we show tooltips?
   static bool ShowToolTips();
 
+private:
 ////@begin CPasswordPolicy member variables
   wxGridSizer* m_pwMinsGSzr;
   wxCheckBox* m_pwpUseLowerCtrl;
@@ -206,7 +207,7 @@ public:
   wxCheckBox* m_pwpEasyCtrl;
   wxCheckBox* m_pwpPronounceCtrl;
   wxCheckBox* m_pwpHexCtrl;
-private:
+
   wxString m_Symbols;
   wxString m_polname;
   int m_pwDigitMinLength;
