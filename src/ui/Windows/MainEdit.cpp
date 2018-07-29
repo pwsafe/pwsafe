@@ -2327,7 +2327,6 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
   std::map<StringX, StringX> mapRenamedPolicies;
   StringX sxgroup, sxtitle, sxuser;
   POSITION pos;
-  wchar_t *dot;
 
   const StringX sxDD_DateTime = PWSUtil::GetTimeStamp(true).c_str();
 
@@ -2391,7 +2390,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     }
 
     if (in_oblist.m_bDragNode) {
-      dot = (!DropGroup.empty() && !ci_temp.GetGroup().empty()) ? L"." : L"";
+      wchar_t *dot = (!DropGroup.empty() && !ci_temp.GetGroup().empty()) ? L"." : L"";
       sxgroup = DropGroup + dot + ci_temp.GetGroup();
     } else {
       sxgroup = DropGroup;
