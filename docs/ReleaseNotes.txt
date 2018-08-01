@@ -22,3 +22,4 @@ Bugs Fixed in 3.47.0
 ====================
 [] Clipboard is more secure - cleared 3 seconds after copied data is
 first pasted.
+[1453] Fixed regression in tooltip display introduced in fix of BR1449
