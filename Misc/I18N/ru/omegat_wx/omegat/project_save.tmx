@@ -7041,6 +7041,14 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Please make sure it's installed and in your PATH</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180804T164100Z" creationid="pm_kan" creationdate="20180804T164100Z">
+        <seg>Проверьте, что файл доступен по путям, указанным в PATH</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Please make sure its in your PATH</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T112244Z">
@@ -8172,6 +8180,32 @@ Content-Transfer-Encoding: 8bit</seg>
 Report-Msgid-Bugs-To: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 POT-Creation-Date: 2018-06-12 17:02+0300
 PO-Revision-Date: 2018-06-12 17:02+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: none
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2018-08-04 19:38+0300
+PO-Revision-Date: 2018-08-04 17:36+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20180804T164046Z" creationid="pm_kan" creationdate="20180804T164046Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+POT-Creation-Date: 2018-08-04 20:02+0300
+PO-Revision-Date: 2018-08-04 20:02+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
