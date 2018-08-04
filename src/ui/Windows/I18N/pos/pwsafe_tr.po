@@ -269,7 +269,7 @@ msgstr "#uuid"
 msgid "#what"
 msgstr "#ne"
 
-#. Resource IDs: (1196)
+#. Resource IDs: (1196, 1199)
 msgid "#when"
 msgstr "#ne zaman"
 
@@ -1917,7 +1917,7 @@ msgid "Change database mode?"
 msgstr "Veritabanı modunu değiştir?"
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* \n  indicates the database has been changed\n° indicates a database preference has been changed"
+msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)
@@ -2669,7 +2669,7 @@ msgstr "Otomatik kaydedilmiş belgeleri geri getirme\nBelgerlerin son doğrudan 
 msgid "Double click an entry to Edit/View it."
 msgstr ""
 
-#. Resource IDs: (5738)
+#. Resource IDs: (5738, 65535)
 msgid "Double-Click Action"
 msgstr ""
 
@@ -2716,10 +2716,6 @@ msgstr ""
 #. Resource IDs: (4026)
 msgid "Double-Click on entry to View/Edit it"
 msgstr "Girdiyi göstermek/düzenlemek için girdiye çift tıkla"
-
-#. Resource IDs: (65535)
-msgid "Double-click action"
-msgstr "Çift tıklama eylemi"
 
 #. Resource IDs: (5910)
 msgid "Double-click an entry to Edit/View it"
@@ -4303,6 +4299,10 @@ msgstr "Maori Dili"
 msgid "Marathi"
 msgstr "Marathi"
 
+#. Resource IDs: (65535)
+msgid "Master Password last set on:"
+msgstr ""
+
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "Maks."
@@ -4766,10 +4766,6 @@ msgstr ""
 msgid "On workstation lock"
 msgstr ""
 
-#. Resource IDs: (5732)
-msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
-msgstr "Tercihlerden biri değiştirildi. İptal etmek istediğinize emin misiniz?"
-
 #. Resource IDs: (5894)
 msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
 msgstr "Bir ya da daha fazla şifre planı değiştirildi. İptal etmek istediğinize emin misiniz?"
@@ -4777,6 +4773,10 @@ msgstr "Bir ya da daha fazla şifre planı değiştirildi. İptal etmek istediğ
 #. Resource IDs: (62180)
 msgid "One or more auto-saved documents were found."
 msgstr "Bir ya da daha fazla otomatik kaydedilmiş belge bulundu."
+
+#. Resource IDs: (5732)
+msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
+msgstr "Tercihlerden biri değiştirildi. İptal etmek istediğinize emin misiniz?"
 
 #. Resource IDs: (5428)
 #, c-format
@@ -4835,7 +4835,7 @@ msgstr "Oriya Dili"
 msgid "Other value last changed on:"
 msgstr "Diğer değerin son değiştirilme tarihi:"
 
-#. Resource IDs: (1081, 1201)
+#. Resource IDs: (1081, 1201, 1206)
 msgid "Other:"
 msgstr "Diğer:"
 
@@ -5290,6 +5290,10 @@ msgstr ""
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
 msgstr "Programlar (*.exe)|*.exe|Tüm dosyalar (*.*)|*.*||"
 
+#. Resource IDs: (1030)
+msgid "Prompt user for default username"
+msgstr ""
+
 #. Resource IDs: (4112)
 msgid "Pronounceable passwords"
 msgstr "Telaffuz edilebilir şifreler"
@@ -5338,10 +5342,6 @@ msgstr "Ağaç görünümünde grupları başa koy"
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
 msgstr "Bildirim alanına simge yerleştir"
-
-#. Resource IDs: (1030)
-msgid "Query user to set default username"
-msgstr "Kullanıcıya varsayılan kullanıcı adını ayarlaması için sor"
 
 #. Resource IDs: (8010)
 msgid "R Ctrl"
@@ -5888,12 +5888,12 @@ msgid "Shift"
 msgstr "Shift"
 
 #. Resource IDs: (65535)
-msgid "Shift + Double-Click Action:"
-msgstr "Shift + Çift Tıklama Eylemi:"
+msgid "Shift Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Shift Double-click action"
-msgstr "Shift + çift tıklama eylemi"
+msgid "Shift Double-Click Action:"
+msgstr ""
 
 #. Resource IDs: (5689)
 msgid "Shift+"

@@ -269,7 +269,7 @@ msgstr "#uuid"
 msgid "#what"
 msgstr "#co"
 
-#. Resource IDs: (1196)
+#. Resource IDs: (1196, 1199)
 msgid "#when"
 msgstr "#kde"
 
@@ -1917,7 +1917,7 @@ msgid "Change database mode?"
 msgstr "Změnit režim databáze?"
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* \n  indicates the database has been changed\n° indicates a database preference has been changed"
+msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)
@@ -2669,7 +2669,7 @@ msgstr "Neobnovovat automaticky ukládané dokumenty\nPoužít poslední ručně
 msgid "Double click an entry to Edit/View it."
 msgstr ""
 
-#. Resource IDs: (5738)
+#. Resource IDs: (5738, 65535)
 msgid "Double-Click Action"
 msgstr ""
 
@@ -2716,10 +2716,6 @@ msgstr ""
 #. Resource IDs: (4026)
 msgid "Double-Click on entry to View/Edit it"
 msgstr "Dvojklikem na zázanm zobrazit/editovat"
-
-#. Resource IDs: (65535)
-msgid "Double-click action"
-msgstr "Dvojklik"
 
 #. Resource IDs: (5910)
 msgid "Double-click an entry to Edit/View it"
@@ -4303,6 +4299,10 @@ msgstr "Maorština"
 msgid "Marathi"
 msgstr "Maráthština"
 
+#. Resource IDs: (65535)
+msgid "Master Password last set on:"
+msgstr ""
+
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "Max."
@@ -4766,10 +4766,6 @@ msgstr ""
 msgid "On workstation lock"
 msgstr ""
 
-#. Resource IDs: (5732)
-msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
-msgstr "Jedna nebo více předvoleb bylo změněno. Určitě chcete akci zrušit?"
-
 #. Resource IDs: (5894)
 msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
 msgstr "Jedna nebo více politik hesel bylo změněno. Určitě chcete akci zrušit?"
@@ -4777,6 +4773,10 @@ msgstr "Jedna nebo více politik hesel bylo změněno. Určitě chcete akci zru�
 #. Resource IDs: (62180)
 msgid "One or more auto-saved documents were found."
 msgstr "Jeden nebo více automaticky uložených bylo nalezeno."
+
+#. Resource IDs: (5732)
+msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
+msgstr "Jedna nebo více předvoleb bylo změněno. Určitě chcete akci zrušit?"
 
 #. Resource IDs: (5428)
 #, c-format
@@ -4835,7 +4835,7 @@ msgstr "Urijština"
 msgid "Other value last changed on:"
 msgstr "Jiná hodnota naposledy změněna:"
 
-#. Resource IDs: (1081, 1201)
+#. Resource IDs: (1081, 1201, 1206)
 msgid "Other:"
 msgstr "Jiný :"
 
@@ -5290,6 +5290,10 @@ msgstr "Zkratky programu"
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
 msgstr "Programy (*.exe)|*.exe|Všechny soubory (*.*)|*.*||"
 
+#. Resource IDs: (1030)
+msgid "Prompt user for default username"
+msgstr ""
+
 #. Resource IDs: (4112)
 msgid "Pronounceable passwords"
 msgstr "Vyslovitelná hesla"
@@ -5338,10 +5342,6 @@ msgstr "Zobrazit nejdříve skupiny ve stromovém zobrazení"
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
 msgstr "Umístit ikonu do systémové lišty"
-
-#. Resource IDs: (1030)
-msgid "Query user to set default username"
-msgstr "Vyžádat po uživateli nastavení výchozího uživatelského jména"
 
 #. Resource IDs: (8010)
 msgid "R Ctrl"
@@ -5888,12 +5888,12 @@ msgid "Shift"
 msgstr "Shift"
 
 #. Resource IDs: (65535)
-msgid "Shift + Double-Click Action:"
-msgstr "Shift + dvojklik:"
+msgid "Shift Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Shift Double-click action"
-msgstr "Shift + dvojklik"
+msgid "Shift Double-Click Action:"
+msgstr ""
 
 #. Resource IDs: (5689)
 msgid "Shift+"

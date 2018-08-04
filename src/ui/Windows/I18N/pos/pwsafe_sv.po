@@ -321,7 +321,7 @@ msgstr "#uuid"
 msgid "#what"
 msgstr "#vad"
 
-#. Resource IDs: (1196)
+#. Resource IDs: (1196, 1199)
 msgid "#when"
 msgstr "#när"
 
@@ -1969,7 +1969,7 @@ msgid "Change database mode?"
 msgstr "Byt databasläge?"
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* \n  indicates the database has been changed\n° indicates a database preference has been changed"
+msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)
@@ -2721,7 +2721,7 @@ msgstr "Spara inte de auto-sparade dokumenten\nAnvänd de senaste aktivt sparade
 msgid "Double click an entry to Edit/View it."
 msgstr "Dubbelklicka på en post för att redigera/visa den."
 
-#. Resource IDs: (5738)
+#. Resource IDs: (5738, 65535)
 msgid "Double-Click Action"
 msgstr "Dubbelklicksval"
 
@@ -2768,10 +2768,6 @@ msgstr "Dubbelklicka på posten för att skicka e-post"
 #. Resource IDs: (4026)
 msgid "Double-Click on entry to View/Edit it"
 msgstr "Dubbelklicka på posten för att visa/redigera"
-
-#. Resource IDs: (65535)
-msgid "Double-click action"
-msgstr "Dubbelklicksval"
 
 #. Resource IDs: (5910)
 msgid "Double-click an entry to Edit/View it"
@@ -4355,6 +4351,10 @@ msgstr "Maoriskt"
 msgid "Marathi"
 msgstr "Marathi"
 
+#. Resource IDs: (65535)
+msgid "Master Password last set on:"
+msgstr ""
+
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "Max."
@@ -4818,10 +4818,6 @@ msgstr ""
 msgid "On workstation lock"
 msgstr ""
 
-#. Resource IDs: (5732)
-msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
-msgstr "En av fler preferenser har ändrats. Vil du verkligen avsluta?"
-
 #. Resource IDs: (5894)
 msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
 msgstr "En eller fler lösenordspolicy(er) har ändrats. Är du säker på att du vill ångra detta?"
@@ -4829,6 +4825,10 @@ msgstr "En eller fler lösenordspolicy(er) har ändrats. Är du säker på att d
 #. Resource IDs: (62180)
 msgid "One or more auto-saved documents were found."
 msgstr "Ett eller fler autosparade dokument hittades."
+
+#. Resource IDs: (5732)
+msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
+msgstr "En av fler preferenser har ändrats. Vil du verkligen avsluta?"
 
 #. Resource IDs: (5428)
 #, c-format
@@ -4887,7 +4887,7 @@ msgstr "Oriya"
 msgid "Other value last changed on:"
 msgstr "Annat värde som senast ändrats:"
 
-#. Resource IDs: (1081, 1201)
+#. Resource IDs: (1081, 1201, 1206)
 msgid "Other:"
 msgstr "Övrigt:"
 
@@ -5342,6 +5342,10 @@ msgstr "Programgenvägar"
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
 msgstr "Program (*.exe)|*.exe|Alla filer (*.*)|*.*||"
 
+#. Resource IDs: (1030)
+msgid "Prompt user for default username"
+msgstr ""
+
 #. Resource IDs: (4112)
 msgid "Pronounceable passwords"
 msgstr "Uttalbara lösenord"
@@ -5390,10 +5394,6 @@ msgstr "Samla grupper first i Trädvyn"
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
 msgstr "Visa ikon i meddelandefältet"
-
-#. Resource IDs: (1030)
-msgid "Query user to set default username"
-msgstr "Be användaren ange ett förvalt användarnamn"
 
 #. Resource IDs: (8010)
 msgid "R Ctrl"
@@ -5940,12 +5940,12 @@ msgid "Shift"
 msgstr "Skift"
 
 #. Resource IDs: (65535)
-msgid "Shift + Double-Click Action:"
-msgstr "Skift + dubbelklicksval:"
+msgid "Shift Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Shift Double-click action"
-msgstr "Skift dubbelklicksval"
+msgid "Shift Double-Click Action:"
+msgstr ""
 
 #. Resource IDs: (5689)
 msgid "Shift+"

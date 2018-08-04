@@ -295,7 +295,7 @@ msgstr "#uuid"
 msgid "#what"
 msgstr "#wat"
 
-#. Resource IDs: (1196)
+#. Resource IDs: (1196, 1199)
 msgid "#when"
 msgstr "#wanneer"
 
@@ -1943,8 +1943,8 @@ msgid "Change database mode?"
 msgstr "Verander database modus?"
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* \n  indicates the database has been changed\n° indicates a database preference has been changed"
-msgstr "Status verandert sinds laatste opslag:\n*\n betekent dat de database veranderd is\n° betekent dat een databasevoorkeur veranderd is"
+msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
+msgstr ""
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2695,7 +2695,7 @@ msgstr "Niet de automatisch opgeslagen documenten herstellen\nGebruik de laatste
 msgid "Double click an entry to Edit/View it."
 msgstr "Dubbelklik een invoer voor Bewerken/Bekijken."
 
-#. Resource IDs: (5738)
+#. Resource IDs: (5738, 65535)
 msgid "Double-Click Action"
 msgstr "Dubbelklik Actie"
 
@@ -2742,10 +2742,6 @@ msgstr "Dubbelklik invoer om e-mail te versturen"
 #. Resource IDs: (4026)
 msgid "Double-Click on entry to View/Edit it"
 msgstr "Dubbelklik de invoer om het te bekijken/bewerken"
-
-#. Resource IDs: (65535)
-msgid "Double-click action"
-msgstr "Dubbelklik actie"
 
 #. Resource IDs: (5910)
 msgid "Double-click an entry to Edit/View it"
@@ -4329,6 +4325,10 @@ msgstr "Maori"
 msgid "Marathi"
 msgstr "Marathi"
 
+#. Resource IDs: (65535)
+msgid "Master Password last set on:"
+msgstr ""
+
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "Max."
@@ -4793,10 +4793,6 @@ msgstr ""
 msgid "On workstation lock"
 msgstr ""
 
-#. Resource IDs: (5732)
-msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
-msgstr "Een of meer voorkeuren zijn gewijzigd. Weet u zeker dat u wilt annuleren?"
-
 #. Resource IDs: (5894)
 msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
 msgstr "Een of meerdere Wachtwoordenregels zijn veranderd. Weet u zeker dat u wenst te annuleren?"
@@ -4804,6 +4800,10 @@ msgstr "Een of meerdere Wachtwoordenregels zijn veranderd. Weet u zeker dat u we
 #. Resource IDs: (62180)
 msgid "One or more auto-saved documents were found."
 msgstr "Een of meer automatisch bewaarde documenten zijn gevonden."
+
+#. Resource IDs: (5732)
+msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
+msgstr "Een of meer voorkeuren zijn gewijzigd. Weet u zeker dat u wilt annuleren?"
 
 #. Resource IDs: (5428)
 #, c-format
@@ -4862,7 +4862,7 @@ msgstr "Oriya"
 msgid "Other value last changed on:"
 msgstr "Andere waarde het laatst gewijzigd op:"
 
-#. Resource IDs: (1081, 1201)
+#. Resource IDs: (1081, 1201, 1206)
 msgid "Other:"
 msgstr "Anders:"
 
@@ -5317,6 +5317,10 @@ msgstr "Programma snelkoppelingen"
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
 msgstr "Programma's (*.exe)|*.exe|Alle bestanden  (*.*)|*.*||"
 
+#. Resource IDs: (1030)
+msgid "Prompt user for default username"
+msgstr ""
+
 #. Resource IDs: (4112)
 msgid "Pronounceable passwords"
 msgstr "Uitspreekbare Wachtwoorden"
@@ -5365,10 +5369,6 @@ msgstr "Plaats Groepen eerst in Boomweergave"
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
 msgstr "Plaats pictogram in het Systeem Vak"
-
-#. Resource IDs: (1030)
-msgid "Query user to set default username"
-msgstr "Vraag de gebruiker om een standaard gebruikersnaam te zetten"
 
 #. Resource IDs: (8010)
 msgid "R Ctrl"
@@ -5915,12 +5915,12 @@ msgid "Shift"
 msgstr "Shift"
 
 #. Resource IDs: (65535)
-msgid "Shift + Double-Click Action:"
-msgstr "Shift + dubbelklik Actie:"
+msgid "Shift Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Shift Double-click action"
-msgstr "Shift Dubbelklik actie"
+msgid "Shift Double-Click Action:"
+msgstr ""
 
 #. Resource IDs: (5689)
 msgid "Shift+"

@@ -269,7 +269,7 @@ msgstr "#uuid"
 msgid "#what"
 msgstr "#cosa"
 
-#. Resource IDs: (1196)
+#. Resource IDs: (1196, 1199)
 msgid "#when"
 msgstr "#quando"
 
@@ -1917,7 +1917,7 @@ msgid "Change database mode?"
 msgstr "Cambiare la modalità della banca dati?"
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* \n  indicates the database has been changed\n° indicates a database preference has been changed"
+msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)
@@ -2669,7 +2669,7 @@ msgstr "Non recuperare i documenti salvati automaticamente\nUsare l'ultima versi
 msgid "Double click an entry to Edit/View it."
 msgstr ""
 
-#. Resource IDs: (5738)
+#. Resource IDs: (5738, 65535)
 msgid "Double-Click Action"
 msgstr ""
 
@@ -2716,10 +2716,6 @@ msgstr ""
 #. Resource IDs: (4026)
 msgid "Double-Click on entry to View/Edit it"
 msgstr "Cliccare due volte sulla voce per modificarla/visualizzarla"
-
-#. Resource IDs: (65535)
-msgid "Double-click action"
-msgstr "Azione di doppioclick"
 
 #. Resource IDs: (5910)
 msgid "Double-click an entry to Edit/View it"
@@ -4303,6 +4299,10 @@ msgstr "Maori"
 msgid "Marathi"
 msgstr "Marathi"
 
+#. Resource IDs: (65535)
+msgid "Master Password last set on:"
+msgstr ""
+
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "Max."
@@ -4766,10 +4766,6 @@ msgstr ""
 msgid "On workstation lock"
 msgstr ""
 
-#. Resource IDs: (5732)
-msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
-msgstr "Una o più preferenze sono state modificate. Siete certi di volere annullare?"
-
 #. Resource IDs: (5894)
 msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
 msgstr "Una o più regole per le password è stata modificata. Siete certi di volere annullare?"
@@ -4777,6 +4773,10 @@ msgstr "Una o più regole per le password è stata modificata. Siete certi di vo
 #. Resource IDs: (62180)
 msgid "One or more auto-saved documents were found."
 msgstr "Uno o più documenti salvato/i automaticamente è/sono stato/i trovato/i."
+
+#. Resource IDs: (5732)
+msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
+msgstr "Una o più preferenze sono state modificate. Siete certi di volere annullare?"
 
 #. Resource IDs: (5428)
 #, c-format
@@ -4835,7 +4835,7 @@ msgstr "Oriya"
 msgid "Other value last changed on:"
 msgstr "Ultimo cambio di altri valori:"
 
-#. Resource IDs: (1081, 1201)
+#. Resource IDs: (1081, 1201, 1206)
 msgid "Other:"
 msgstr "Altro:"
 
@@ -5290,6 +5290,10 @@ msgstr "Scorciatoie del programma"
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
 msgstr "Programmi (*.exe)|*.exe|Tutti i file (*.*)|*.*||"
 
+#. Resource IDs: (1030)
+msgid "Prompt user for default username"
+msgstr ""
+
 #. Resource IDs: (4112)
 msgid "Pronounceable passwords"
 msgstr "Password pronunciabili"
@@ -5338,10 +5342,6 @@ msgstr "Mostrare i gruppi per primi nella visualizzazione nidificata"
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
 msgstr "Mettere l'icona nel vassoio di sistema"
-
-#. Resource IDs: (1030)
-msgid "Query user to set default username"
-msgstr "Interrogare l'utente per impostare il nome utente predefinito"
 
 #. Resource IDs: (8010)
 msgid "R Ctrl"
@@ -5888,12 +5888,12 @@ msgid "Shift"
 msgstr "Maiusc"
 
 #. Resource IDs: (65535)
-msgid "Shift + Double-Click Action:"
-msgstr "Azione Maiusc + doppio click"
+msgid "Shift Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Shift Double-click action"
-msgstr "Az. Maiusc doppio click"
+msgid "Shift Double-Click Action:"
+msgstr ""
 
 #. Resource IDs: (5689)
 msgid "Shift+"

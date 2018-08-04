@@ -269,7 +269,7 @@ msgstr "#uuid"
 msgid "#what"
 msgstr "#what"
 
-#. Resource IDs: (1196)
+#. Resource IDs: (1196, 1199)
 msgid "#when"
 msgstr "#when"
 
@@ -1917,7 +1917,7 @@ msgid "Change database mode?"
 msgstr ""
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* \n  indicates the database has been changed\n° indicates a database preference has been changed"
+msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)
@@ -2669,7 +2669,7 @@ msgstr "不能恢复自动保存的文档！\n使用最后明确保存版本的�
 msgid "Double click an entry to Edit/View it."
 msgstr ""
 
-#. Resource IDs: (5738)
+#. Resource IDs: (5738, 65535)
 msgid "Double-Click Action"
 msgstr ""
 
@@ -2716,10 +2716,6 @@ msgstr ""
 #. Resource IDs: (4026)
 msgid "Double-Click on entry to View/Edit it"
 msgstr "双击项目查看/编辑"
-
-#. Resource IDs: (65535)
-msgid "Double-click action"
-msgstr "双击操作"
 
 #. Resource IDs: (5910)
 msgid "Double-click an entry to Edit/View it"
@@ -4303,6 +4299,10 @@ msgstr "毛利语"
 msgid "Marathi"
 msgstr "马拉地语"
 
+#. Resource IDs: (65535)
+msgid "Master Password last set on:"
+msgstr ""
+
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "最大"
@@ -4766,10 +4766,6 @@ msgstr ""
 msgid "On workstation lock"
 msgstr ""
 
-#. Resource IDs: (5732)
-msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
-msgstr "多个首选项中的一个已被更改，你是否确认想要取消？"
-
 #. Resource IDs: (5894)
 msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
 msgstr ""
@@ -4777,6 +4773,10 @@ msgstr ""
 #. Resource IDs: (62180)
 msgid "One or more auto-saved documents were found."
 msgstr "找到一个或多个自动保存的文档！"
+
+#. Resource IDs: (5732)
+msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
+msgstr "多个首选项中的一个已被更改，你是否确认想要取消？"
 
 #. Resource IDs: (5428)
 #, c-format
@@ -4835,7 +4835,7 @@ msgstr "奥里亚语"
 msgid "Other value last changed on:"
 msgstr ""
 
-#. Resource IDs: (1081, 1201)
+#. Resource IDs: (1081, 1201, 1206)
 msgid "Other:"
 msgstr "其它:"
 
@@ -5290,6 +5290,10 @@ msgstr ""
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
 msgstr "程序 (*.exe)|*.exe|所有文件 (*.*)|*.*||"
 
+#. Resource IDs: (1030)
+msgid "Prompt user for default username"
+msgstr ""
+
 #. Resource IDs: (4112)
 msgid "Pronounceable passwords"
 msgstr "可发音密码"
@@ -5338,10 +5342,6 @@ msgstr "在树状目录首位放置组"
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
 msgstr "放置图标在系统托盘"
-
-#. Resource IDs: (1030)
-msgid "Query user to set default username"
-msgstr "询问用户设定默认用户名"
 
 #. Resource IDs: (8010)
 msgid "R Ctrl"
@@ -5888,11 +5888,11 @@ msgid "Shift"
 msgstr "Shift"
 
 #. Resource IDs: (65535)
-msgid "Shift + Double-Click Action:"
+msgid "Shift Double-Click Action"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Shift Double-click action"
+msgid "Shift Double-Click Action:"
 msgstr ""
 
 #. Resource IDs: (5689)
