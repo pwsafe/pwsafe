@@ -123,6 +123,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_CHANGECOMBO,             PasswordSafeFrame::OnChangePasswdClick )
   EVT_MENU( wxID_PREFERENCES,           PasswordSafeFrame::OnPreferencesClick )
   EVT_MENU( ID_PWDPOLSM,                PasswordSafeFrame::OnPwdPolsMClick )
+  EVT_MENU( ID_GENERATEPASSWORD,        PasswordSafeFrame::OnGeneratePassword )
 
 #ifndef NO_YUBI
   EVT_MENU( ID_YUBIKEY_MNG,             PasswordSafeFrame::OnYubikeyMngClick )
@@ -524,8 +525,9 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu74->AppendSeparator();
   itemMenu74->Append(wxID_PREFERENCES, _("&Options...\tCtrl+M"), wxEmptyString, wxITEM_NORMAL);
   itemMenu74->Append(ID_PWDPOLSM, _("Password Policies..."), wxEmptyString, wxITEM_NORMAL);
-#ifndef NO_YUBI
   itemMenu74->AppendSeparator();
+  itemMenu74->Append(ID_GENERATEPASSWORD, _("Generate &Password...\tCtrl+P"), _("Generate Password"), wxITEM_NORMAL);
+#ifndef NO_YUBI
   itemMenu74->Append(ID_YUBIKEY_MNG, _("YubiKey..."), _("Configure and backup YubiKeys"), wxITEM_NORMAL);
 #endif
   itemMenu74->AppendSeparator();

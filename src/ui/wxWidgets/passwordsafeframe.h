@@ -105,6 +105,7 @@ class PasswordSafeSearch;
 #define ID_BACKUP 10058
 #define ID_RESTORE 10059
 #define ID_PWDPOLSM 10215
+#define ID_GENERATEPASSWORD 10330
 #define ID_YUBIKEY_MNG 10010
 #define ID_LANGUAGEMENU 10011
 #define ID_VISITWEBSITE 10012
@@ -283,6 +284,9 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
   void OnAboutClick( wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_GENERATE_PASSWORD
+  void OnGeneratePassword( wxCommandEvent& event );
 
 #ifndef NO_YUBI
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_YUBIKEY_MNG
