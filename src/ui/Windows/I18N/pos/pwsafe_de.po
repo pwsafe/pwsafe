@@ -1957,7 +1957,7 @@ msgstr "Datenbank Modus ändern?"
 
 #. Resource IDs: (5858)
 msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
-msgstr ""
+msgstr "Geändert seit dem letzten Speichervorgang:\n* deutet darauf hin, dass die Datenbank gespeichert worden ist\n° deutet darauf hin, dass die Datenbankeinstellungen gespeichert worden sind"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2750,7 +2750,7 @@ msgstr "Eintrag doppelklicken um Kommando auszuführen"
 
 #. Resource IDs: (4032)
 msgid "Double-Click on entry to Send Email"
-msgstr "Doppelklick auf Eintrag zum Senden der E-Mail"
+msgstr "Eintrag doppelklicken um E-Mail zu senden"
 
 #. Resource IDs: (4026)
 msgid "Double-Click on entry to View/Edit it"
@@ -4340,7 +4340,7 @@ msgstr "Marathi"
 
 #. Resource IDs: (65535)
 msgid "Master Password last set on:"
-msgstr ""
+msgstr "Master-Passwort zuletzt geändert am:"
 
 #. Resource IDs: (1212)
 msgid "Max."
@@ -4807,7 +4807,7 @@ msgstr "Beim Sperren der Workstation"
 
 #. Resource IDs: (5894)
 msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
-msgstr "Eins oder mehrere Passwortrichtlinien wurden geändert. Sind Sie sicher Abbrechen zu wollen?"
+msgstr "Eins oder mehrere Passwortrichtlinien wurden geändert. Möchten Sie wirklich Abbrechen?"
 
 #. Resource IDs: (62180)
 msgid "One or more auto-saved documents were found."
@@ -4815,7 +4815,7 @@ msgstr "Es wurden ein oder mehr automatisch gesicherte Dokumente gefunden."
 
 #. Resource IDs: (5732)
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
-msgstr "Ein oder mehrere Präferenzen wurden geändert. Sind sie sicher Abbrechen zu wollen?"
+msgstr "Ein oder mehrere Präferenzen wurden geändert. Möchten Sie wirklich Abbrechen?"
 
 #. Resource IDs: (5428)
 #, c-format
@@ -5331,7 +5331,7 @@ msgstr "Programme (*.exe)|*.exe|Alle Dateien (*.*)|*.*||"
 
 #. Resource IDs: (1030)
 msgid "Prompt user for default username"
-msgstr ""
+msgstr "Benutzer zum Setzen des Standardbenutzernamens auffordern"
 
 #. Resource IDs: (4112)
 msgid "Pronounceable passwords"
@@ -6595,7 +6595,7 @@ msgstr "Das ist die gleiche Datenbank, wie die aktuell geöffnete!"
 
 #. Resource IDs: (5650)
 msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "Dieser Eintrag wurde geändert. Sind sie sicher Abbrechen zu wollen?"
+msgstr "Dieser Eintrag wurde geändert. Möchten Sie wirklich Abbrechen?"
 
 #. Resource IDs: (3404)
 #, c-format
