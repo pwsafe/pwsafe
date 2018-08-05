@@ -29,6 +29,7 @@
 #include "optionspropsheet.h"
 #include "SystemTray.h"
 #include "ManagePwdPolicies.h"
+#include "PasswordPolicy.h"
 #ifndef NO_YUBI
 #include "yubicfg.h"
 #endif
@@ -209,6 +210,25 @@ void PasswordSafeFrame::OnPwdPolsMClick( wxCommandEvent&  )
 {
   CManagePasswordPolicies ppols(this, m_core);
   ppols.ShowModal();
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_GENERATE_PASSWORD
+ */
+
+void PasswordSafeFrame::OnGeneratePassword(wxCommandEvent& WXUNUSED(event))
+{
+  PolicyManager policyManager(m_core);
+  auto customPolicies = policyManager.GetPolicies();
+  auto defaultPolicy  = policyManager.GetDefaultPolicy();
+  auto defaultName    = policyManager.GetDefaultPolicyName();
+
+  customPolicies[std2stringx(defaultName)] = defaultPolicy;
+
+  CPasswordPolicy ppdlg(this, m_core, customPolicies, CPasswordPolicy::DialogType::GENERATOR);
+  ppdlg.SetPolicyData(defaultName, defaultPolicy);
+
+  ppdlg.ShowModal();
 }
 
 #ifndef NO_YUBI
