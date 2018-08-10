@@ -25,3 +25,5 @@ first pasted.
 [1465] Removed possibility of not setting Yubikey in changed
 passphrase by mistake.
 [1453] Fixed regression in tooltip display introduced in fix of BR1449
+[1448] Less confusing behavior when the current safe can't be found
+upon restore.

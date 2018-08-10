@@ -2365,7 +2365,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   // Case 2 - data unavailable
   if (m_bInitDone && m_bDBNeedsReading) {
     StringX passkey;
-    int rc_passphrase(PWScore::USER_CANCEL), rc_readdatabase;
+    int rc_passphrase(PWScore::USER_CANCEL), rc_readdatabase(PWScore::NOT_SUCCESS);
     const bool bUseSysTray = PWSprefs::GetInstance()->
                              GetPref(PWSprefs::UseSystemTray);
 
@@ -2397,11 +2397,36 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
         m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                            m_core.GetCurFile()).c_str();
         break;
-      case PWScore::CANT_OPEN_FILE:
-        cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile().c_str());
+      case PWScore::CANT_OPEN_FILE: {
+        cs_temp.Format(IDS_CANTOPENSAFE, m_core.GetCurFile().c_str());
         cs_title.LoadString(IDS_FILEOPEN);
-        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-        // Drop thorugh to ask for a new database
+        gmb.SetTitle(cs_title);
+        gmb.SetMsg(cs_temp);
+        gmb.SetStandardIcon(MB_ICONQUESTION);
+        gmb.AddButton(IDS_SEARCH, IDS_SEARCH);
+        gmb.AddButton(IDS_RETRY, IDS_RETRY);
+        gmb.AddButton(IDS_NEW, IDS_NEW);
+        gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
+        INT_PTR rc3 = gmb.DoModal();
+        switch (rc3) {
+          case IDS_SEARCH:
+            rc_readdatabase = Open();
+            break;
+          case IDS_RETRY:
+            brc = false;
+            goto exit;
+            break;
+          case IDS_NEW:
+            rc_readdatabase = New();
+            break;
+          case IDS_EXIT:
+            CleanUpAndExit(true);
+            brc = false;
+            goto exit;
+            break;
+          }
+        }
+        break; // just fail with the basic error message.
       case TAR_NEW:
         rc_readdatabase = New();
         break;
