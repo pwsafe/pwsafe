@@ -270,12 +270,13 @@ void CPasskeySetup::OnYubikeyBtn()
   // unlike non-Yubi usage, here we accept empty passwords,
   // which will give token-based authentication.
   // A non-empty password with Yubikey is 2-factor auth.
-  CGeneralMsgBox gmb;
   if (m_passkey != m_verify) {
+    CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_ENTRIESDONOTMATCH);
     ((CEdit*)GetDlgItem(IDC_VERIFY))->SetFocus();
     return;
   }
+  GetDlgItem(IDOK)->EnableWindow(FALSE); // BR1465 - don't allow closing w/o yk press
   yubiRequestHMACSha1(m_passkey);
 }
 

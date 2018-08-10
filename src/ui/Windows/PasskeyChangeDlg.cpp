@@ -332,6 +332,7 @@ void CPasskeyChangeDlg::OnYubikey2Btn()
     m_oldpasskey = m_passkey; // might need for confirmation
     m_passkey = m_newpasskey;
     yubiRequestHMACSha1(m_newpasskey);
+    GetDlgItem(IDOK)->EnableWindow(FALSE); // BR1465 - don't allow closing w/o yk press
   }
 }
 
