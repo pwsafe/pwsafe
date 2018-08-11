@@ -248,6 +248,8 @@
   !include ".\I18N\pwsafe_tr.lng"
   !insertmacro MUI_LANGUAGE "Hungarian"
   !include ".\I18N\pwsafe_hu.lng"
+  !insertmacro MUI_LANGUAGE "Slovenian"
+  !include ".\I18N\pwsafe_sl.lng"
 
 ; English texts here
 ; Note that if we add a string, it needs to be added in all the
@@ -309,6 +311,7 @@ LangString PORTUGUESEBR_SUPPORT ${LANG_ENGLISH} "Portuguese (Brazil)"
 LangString CZECH_SUPPORT ${LANG_ENGLISH} "Czech"
 LangString TURKISH_SUPPORT ${LANG_ENGLISH} "Turkish"
 LangString HUNGARIAN_SUPPORT ${LANG_ENGLISH} "Hungarian"
+LangString SLOVENIAN_SUPPORT ${LANG_ENGLISH} "Slovenian"
 
 LangString LANG_PROGRAM ${LANG_ENGLISH} "Program Language"
 LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
@@ -476,8 +479,12 @@ Section /o "$(HUNGARIAN_SUPPORT)" HungarianSection
   File /nonfatal "${LANG_DLL}\pwsafeHU.dll"
   File /nonfatal "..\..\help\pwsafeHU\pwsafeHU.chm"
 SectionEnd
+Section /o "$(SLOVENIAN_SUPPORT)" SlovenianSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL}\pwsafeSL.dll"
+  File /nonfatal "..\..\help\pwsafeSL\pwsafeSL.chm"
+SectionEnd
 SectionGroupEnd
-
 
 ;--------------------------------
 ; Start with Windows
@@ -496,7 +503,6 @@ Section "$(START_SHOW)" StartMenu
   ; Create shortcuts
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe.lnk" "$INSTDIR\pwsafe.exe"
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help.lnk" "$INSTDIR\pwsafe.chm"
-  
 SectionEnd
 
 ;--------------------------------
@@ -564,29 +570,28 @@ Section "Uninstall"
   Delete "$INSTDIR\ReleaseNotes.txt"
   Delete "$INSTDIR\ReleaseNotes.html"
   Delete "$INSTDIR\ChangeLog.txt"
-  Delete "$INSTDIR\pwsafeDE.dll"
-  Delete "$INSTDIR\pwsafeDE.chm"
-  Delete "$INSTDIR\pwsafeZH.dll"
-  Delete "$INSTDIR\pwsafeZH.chm"
-  Delete "$INSTDIR\pwsafeES.dll"
-  Delete "$INSTDIR\pwsafeES.chm"
-  Delete "$INSTDIR\pwsafeSV.dll"
-  Delete "$INSTDIR\pwsafeSV.chm"
-  Delete "$INSTDIR\pwsafeNL.dll"
-  Delete "$INSTDIR\pwsafeNL.chm"
-  Delete "$INSTDIR\pwsafeFR.dll"
-  Delete "$INSTDIR\pwsafeFR.chm"
-  Delete "$INSTDIR\pwsafeRU.dll"
-  Delete "$INSTDIR\pwsafeRU.chm"
-  Delete "$INSTDIR\pwsafePL.dll"
-  Delete "$INSTDIR\pwsafePL.chm"
-  Delete "$INSTDIR\pwsafeIT.dll"
-  Delete "$INSTDIR\pwsafeIT.chm"
-  Delete "$INSTDIR\pwsafeDA.dll"
   Delete "$INSTDIR\pwsafeDA.chm"
-  Delete "$INSTDIR\pwsafeKO.dll"
+  Delete "$INSTDIR\pwsafeDA.dll"
+  Delete "$INSTDIR\pwsafeDE.chm"
+  Delete "$INSTDIR\pwsafeDE.dll"
+  Delete "$INSTDIR\pwsafeES.chm"
+  Delete "$INSTDIR\pwsafeES.dll"
+  Delete "$INSTDIR\pwsafeFR.chm"
+  Delete "$INSTDIR\pwsafeFR.dll"
+  Delete "$INSTDIR\pwsafeIT.chm"
+  Delete "$INSTDIR\pwsafeIT.dll"
   Delete "$INSTDIR\pwsafeKO.chm"
-
+  Delete "$INSTDIR\pwsafeKO.dll"
+  Delete "$INSTDIR\pwsafeNL.chm"
+  Delete "$INSTDIR\pwsafeNL.dll"
+  Delete "$INSTDIR\pwsafePL.chm"
+  Delete "$INSTDIR\pwsafePL.dll"
+  Delete "$INSTDIR\pwsafeRU.chm"
+  Delete "$INSTDIR\pwsafeRU.dll"
+  Delete "$INSTDIR\pwsafeSV.chm"
+  Delete "$INSTDIR\pwsafeSV.dll"
+  Delete "$INSTDIR\pwsafeZH.chm"
+  Delete "$INSTDIR\pwsafeZH.dll"
 
   ; remove directory if it's empty
   RMDir  "$INSTDIR"
@@ -697,6 +702,8 @@ Function .onInit
   Push "Turkish"
   Push ${LANG_HUNGARIAN}
   Push "Magyar"
+  Push ${LANG_SLOVENIAN}
+  Push "Slovenian"
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
   LangDLL::LangDialog $(LANG_INSTALL) $(LANG_SELECT)

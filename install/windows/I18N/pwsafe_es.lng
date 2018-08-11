@@ -125,6 +125,8 @@ LangString KOREAN_SUPPORT ${LANG_SPANISH} "Coreano"
 LangString CZECH_SUPPORT ${LANG_SPANISH} "Czech"
 LangString TURKISH_SUPPORT ${LANG_SPANISH} "Turco"
 LangString HUNGARIAN_SUPPORT ${Lang_Spanish} "Húngaro"
+LangString SLOVENIAN_SUPPORT ${Lang_Spanish} "Sloveno"
+
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_SPANISH} "Idioma del programa"
 

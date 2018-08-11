@@ -116,6 +116,7 @@ LangString PORTUGUESEBR_SUPPORT ${LANG_RUSSIAN} "Португальский (Б�
 LangString CZECH_SUPPORT ${LANG_RUSSIAN} "Чешский"
 LangString TURKISH_SUPPORT ${LANG_RUSSIAN} "Турецкий"
 LangString HUNGARIAN_SUPPORT ${LANG_RUSSIAN} "Венгерский"
+LangString SLOVENIAN_SUPPORT ${LANG_RUSSIAN} "Sloevenian"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_RUSSIAN} "Язык программы"
