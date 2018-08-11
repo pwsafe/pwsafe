@@ -649,7 +649,7 @@ msgstr "&Nicht mehr erinnern"
 
 #. Resource IDs: (32107 - MenuEx)
 msgid "&Dragbar visible"
-msgstr "&Dragleiste sichtbar"
+msgstr "&Dragleiste anzeigen"
 
 #. Resource IDs: (32063 - Menu, 32063 - MenuEx)
 msgid "&Duplicate Entry"
@@ -2480,7 +2480,7 @@ msgstr "Aktuelle Version:\t%s\nNeueste Version:\t%s\n\nDiese Anschaffung enthäl
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
-msgstr "&Toolleiste anpassen"
+msgstr "&Toolleiste anpassen..."
 
 #. Resource IDs: (32155 - Menu)
 msgid "Customize Main Toolbar"
@@ -3505,7 +3505,7 @@ msgstr "Schriftart Stil:"
 
 #. Resource IDs: (5468)
 msgid "For security, the database must be closed before connecting to the Internet.\nPress OK to close database and continue (Changes will be saved)"
-msgstr "Aus Sicherheitsgründen muss die Datenbank geschlossen werden vor dem Verbinden ins Internet.\nDrücken Sie OK um die Datenbank zu schließen und weiterzumachen (Änderungen werden gespeichert)"
+msgstr "Aus Sicherheitsgründen muss die Datenbank vor dem Internetzugriff geschlossen werden.\nDrücken Sie OK, um die Datenbank zu schließen und fortzufahren. (Änderungen werden gespeichert)"
 
 #. Resource IDs: (3242)
 #, c-format
@@ -3538,7 +3538,7 @@ msgstr "Generiere"
 
 #. Resource IDs: (32157 - MenuEx)
 msgid "Generate &Password"
-msgstr "Generiere &Passwort"
+msgstr "&Passwort generieren..."
 
 #. Resource IDs: (1052)
 msgid "Generate &Pronounceable passwords"
@@ -4199,7 +4199,7 @@ msgstr "Zuletzt gespeichert am:"
 #. Resource IDs: (5470)
 #, c-format
 msgid "Latest version? Click <a href=\"%s\">here</a> to check."
-msgstr "Neueste Version? Klicken Sie <a href=\"%s\">hier</a> um nach zu prüfen."
+msgstr "Neueste Version? Klicken Sie <a href=\"%s\">hier</a> zum Überprüfen."
 
 #. Resource IDs: (8267)
 msgid "Latin American"
@@ -5187,7 +5187,7 @@ msgstr "Bitte das Passwort der NEUEN Datenbank für den/die Eintrag/Einträge ei
 
 #. Resource IDs: (65535)
 msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
-msgstr "Bitte das aktuelle Passwort eingeben, dann das neue Passwort. \r\nDann das neue Passwort wiederholen, als Bestätigung."
+msgstr "Bitte das aktuelle Passwort, gefolgt von einem neuen Passwort, eingeben. \r\nDas neue Passwort anschließend zur Bestätigung wiederholen."
 
 #. Resource IDs: (5255)
 msgid "Please enter the key and verify it."
@@ -5351,11 +5351,11 @@ msgstr "Eigenschaften der aktuell ausgewählten Datenbank."
 
 #. Resource IDs: (32089 - MenuEx)
 msgid "Protect All Entries"
-msgstr "Schütze alle Eintrage"
+msgstr "Alle Einträge schützen"
 
 #. Resource IDs: (32087 - Menu, 32087 - MenuEx)
 msgid "Protect Entry"
-msgstr "Schütze Eintrag"
+msgstr "Eintrag schützen"
 
 #. Resource IDs: (3066, 5801)
 msgid "Protected"
@@ -5364,7 +5364,7 @@ msgstr "Geschützt"
 #. Resource IDs: (5844)
 #, c-format
 msgid "Protected Entry:   «%s» «%s» «%s»"
-msgstr "Geschüztzter Eintrag:   «%s» «%s» «%s»"
+msgstr "Geschützter Eintrag:   «%s» «%s» «%s»"
 
 #. Resource IDs: (5674)
 msgid "Pswd copied "
@@ -5990,7 +5990,7 @@ msgstr "Zeige"
 
 #. Resource IDs: (1590)
 msgid "Show Combination"
-msgstr "Zeige Master-Passwort"
+msgstr "Master-Passwort anzeigen"
 
 #. Resource IDs: (5653)
 msgid "Show Notes"
@@ -6731,7 +6731,7 @@ msgstr "Um den Schutz dieses Eintrags zu entfernen, klicken Sie auf Schliessen, 
 
 #. Resource IDs: (32106 - MenuEx)
 msgid "Toolbar &visible"
-msgstr "Toolleiste &sichtbar"
+msgstr "Toolleiste &anzeigen"
 
 #. Resource IDs: (1284)
 msgid "Treat fields that only contain 'whitespace' as empty"
@@ -7504,11 +7504,11 @@ msgstr "\nBasiseintrag bearbeiten"
 
 #. Resource IDs: (32052)
 msgid "\nEdit Entry"
-msgstr "\nBearbeite Eintrag"
+msgstr "\nEintrag bearbeiten"
 
 #. Resource IDs: (32113)
 msgid "\nEdit Filters"
-msgstr "\nBearbeite Filter"
+msgstr "\nFilter bearbeiten"
 
 #. Resource IDs: (5517)
 msgid "\nEmail: "
