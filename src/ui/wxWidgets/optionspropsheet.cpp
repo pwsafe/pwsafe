@@ -60,33 +60,61 @@ IMPLEMENT_CLASS( COptions, wxPropertySheetDialog )
  */
 
 BEGIN_EVENT_TABLE( COptions, wxPropertySheetDialog )
-EVT_BUTTON( wxID_OK, COptions::OnOk )
+  EVT_BUTTON(      wxID_OK,            COptions::OnOk )
 
 ////@begin COptions event table entries
-  EVT_CHECKBOX( ID_CHECKBOX11, COptions::OnBackupB4SaveClick )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON4, COptions::OnBuPrefix )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON5, COptions::OnBuPrefix )
-  EVT_COMBOBOX( ID_COMBOBOX2, COptions::OnSuffixCBSet )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON6, COptions::OnBuDirRB )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON7, COptions::OnBuDirRB )
-  EVT_BUTTON( ID_BUTTON, COptions::OnBuDirBrowseClick )
-  EVT_CHECKBOX( ID_CHECKBOX13, COptions::OnShowUsernameInTreeCB )
-  EVT_CHECKBOX( ID_CHECKBOX19, COptions::OnPreExpiryWarnClick )
-  EVT_CHECKBOX( ID_CHECKBOX24, COptions::OnUseDefaultUserClick )
-  EVT_BUTTON( ID_BUTTON8, COptions::OnBrowseLocationClick )
-  EVT_CHECKBOX( ID_CHECKBOX26, COptions::OnPWHistSaveClick )
-  EVT_RADIOBUTTON( ID_PWHISTNOCHANGE, COptions::OnPWHistRB )
-  EVT_RADIOBUTTON( ID_PWHISTSTOP, COptions::OnPWHistRB )
-  EVT_RADIOBUTTON( ID_PWHISTSTART, COptions::OnPWHistRB )
-  EVT_RADIOBUTTON( ID_PWHISTSETMAX, COptions::OnPWHistRB )
-  EVT_RADIOBUTTON( ID_PWHISTCLEAR, COptions::OnPWHistRB )
-  EVT_BUTTON( ID_PWHISTNOCHANGE, COptions::OnPWHistApply )
-  EVT_CHECKBOX( ID_CHECKBOX29, COptions::OnLockOnIdleClick )
-  EVT_CHECKBOX( ID_CHECKBOX30, COptions::OnUseSystrayClick )
+  EVT_CHECKBOX(    ID_CHECKBOX11,      COptions::OnBackupB4SaveClick )
+  EVT_RADIOBUTTON( ID_RADIOBUTTON4,    COptions::OnBuPrefix )
+  EVT_RADIOBUTTON( ID_RADIOBUTTON5,    COptions::OnBuPrefix )
+  EVT_COMBOBOX(    ID_COMBOBOX2,       COptions::OnSuffixCBSet )
+  EVT_RADIOBUTTON( ID_RADIOBUTTON6,    COptions::OnBuDirRB )
+  EVT_RADIOBUTTON( ID_RADIOBUTTON7,    COptions::OnBuDirRB )
+  EVT_BUTTON(      ID_BUTTON,          COptions::OnBuDirBrowseClick )
+  EVT_CHECKBOX(    ID_CHECKBOX13,      COptions::OnShowUsernameInTreeCB )
+  EVT_CHECKBOX(    ID_CHECKBOX19,      COptions::OnPreExpiryWarnClick )
+  EVT_CHECKBOX(    ID_CHECKBOX24,      COptions::OnUseDefaultUserClick )
+  EVT_BUTTON(      ID_BUTTON8,         COptions::OnBrowseLocationClick )
+  EVT_CHECKBOX(    ID_CHECKBOX26,      COptions::OnPWHistSaveClick )
+  EVT_BUTTON(      ID_PWHISTAPPLY,     COptions::OnPWHistApply )
+  EVT_CHECKBOX(    ID_CHECKBOX29,      COptions::OnLockOnIdleClick )
+  EVT_CHECKBOX(    ID_CHECKBOX30,      COptions::OnUseSystrayClick )
 ////@end COptions event table entries
 
   EVT_BOOKCTRL_PAGE_CHANGING(wxID_ANY, COptions::OnPageChanging)
   EVT_BOOKCTRL_PAGE_CHANGING(wxID_ANY, COptions::OnPageChanging)
+
+  EVT_UPDATE_UI(   ID_CHECKBOX10,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_CHECKBOX13,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_CHECKBOX14,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_CHECKBOX16,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_CHECKBOX17,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_RADIOBOX,        COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_CHECKBOX21,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_TEXTCTRL11,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_CHECKBOX24,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_TEXTCTRL12,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_STATICTEXT_1,    COptions::OnUpdateUI )
+
+  EVT_UPDATE_UI(   ID_CHECKBOX26,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_SPINCTRL11,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_STATICTEXT_8,    COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_STATICBOX_1,     COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_PWHISTNOCHANGE,  COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_PWHISTSTOP,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_PWHISTSTART,     COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_PWHISTSETMAX,    COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_PWHISTCLEAR,     COptions::OnUpdateUI )
+
+  EVT_UPDATE_UI(   ID_CHECKBOX29,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_SPINCTRL12,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_STATICTEXT_2,    COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_STATICTEXT_3,    COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_SLIDER,          COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_STATICTEXT_4,    COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_STATICTEXT_5,    COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_STATICTEXT_6,    COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_SPINCTRL13,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_STATICTEXT_7,    COptions::OnUpdateUI )
 END_EVENT_TABLE()
 
 const wxString BUSuffix[] = {
@@ -190,6 +218,7 @@ void COptions::Init()
   m_pwhistsaveCB = nullptr;
   m_pwhistnumdfltSB = nullptr;
   m_pwhistapplyBN = nullptr;
+  m_pwhistnochangeRB = nullptr;
   m_pwhiststopRB = nullptr;
   m_pwhiststartRB = nullptr;
   m_pwhistsetmaxRB = nullptr;
@@ -210,11 +239,11 @@ void COptions::Init()
 void COptions::CreateControls()
 {
 ////@begin COptions content construction
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Backups"
   /////////////////////////////////////////////////////////////////////////////
-  
+
   wxPanel* itemPanel2 = new wxPanel( GetBookCtrl(), ID_PANEL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   itemPanel2->SetSizer(itemBoxSizer3);
@@ -301,11 +330,11 @@ void COptions::CreateControls()
   itemBoxSizer25->Add(m_buDirBN, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel2, _("Backups"));
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Display"
   /////////////////////////////////////////////////////////////////////////////
-  
+
   wxPanel* itemPanel29 = new wxPanel( GetBookCtrl(), ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer30 = new wxBoxSizer(wxVERTICAL);
   itemPanel29->SetSizer(itemBoxSizer30);
@@ -322,10 +351,6 @@ void COptions::CreateControls()
   m_showpasswordintreeCB->SetValue(false);
   itemBoxSizer30->Add(m_showpasswordintreeCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox34 = new wxCheckBox( itemPanel29, ID_CHECKBOX15, _("Show Notes as ToolTips in Tree && List views"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox34->SetValue(false);
-  itemBoxSizer30->Add(itemCheckBox34, 0, wxALIGN_LEFT|wxALL, 5);
-
   wxCheckBox* itemCheckBox35 = new wxCheckBox( itemPanel29, ID_CHECKBOX16, _("Show Password in Add && Edit"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox35->SetValue(false);
   itemBoxSizer30->Add(itemCheckBox35, 0, wxALIGN_LEFT|wxALL, 5);
@@ -333,6 +358,10 @@ void COptions::CreateControls()
   wxCheckBox* itemCheckBox36 = new wxCheckBox( itemPanel29, ID_CHECKBOX17, _("Show Notes in Edit"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox36->SetValue(false);
   itemBoxSizer30->Add(itemCheckBox36, 0, wxALIGN_LEFT|wxALL, 5);
+
+  wxCheckBox* itemCheckBox34 = new wxCheckBox( itemPanel29, ID_CHECKBOX15, _("Show Notes as ToolTips in Tree && List views"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemCheckBox34->SetValue(false);
+  itemBoxSizer30->Add(itemCheckBox34, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxCheckBox* itemCheckBox37 = new wxCheckBox( itemPanel29, ID_CHECKBOX18, _("Word Wrap Notes in Add && Edit"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox37->SetValue(false);
@@ -363,7 +392,7 @@ void COptions::CreateControls()
   itemBoxSizer30->Add(itemRadioBox43, 0, wxGROW|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel29, _("Display"));
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Misc."
   /////////////////////////////////////////////////////////////////////////////
@@ -388,7 +417,7 @@ void COptions::CreateControls()
   itemBoxSizer45->Add(itemFlexGridSizer50, 0, wxGROW|wxALL, 5);
   wxStaticText* itemStaticText50 = new wxStaticText( itemPanel44, wxID_STATIC, _("Double-click action"), wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer50->Add(itemStaticText50, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-  
+
   // Prepare strings for DblClick & Shift+DblClick combos
   wxArrayString m_DCACBStrings;
   wxArrayString m_SDCACBStrings;
@@ -441,7 +470,7 @@ void COptions::CreateControls()
   m_defusernameTXT = new wxTextCtrl( itemPanel44, ID_TEXTCTRL12, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer62->Add(m_defusernameTXT, 2, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_defusernameLBL = new wxStaticText( itemPanel44, wxID_STATIC, _("as default username"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_defusernameLBL = new wxStaticText( itemPanel44, ID_STATICTEXT_1, _("as default username"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer62->Add(m_defusernameLBL, 2, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   itemBoxSizer62->AddStretchSpacer();
 
@@ -462,7 +491,7 @@ void COptions::CreateControls()
 
   auto *itemBoxSizer71 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer67->Add(itemBoxSizer71, 0, wxGROW|wxALL, 0);
-  
+
   wxStaticText* itemStaticText73 = new wxStaticText( itemPanel44, wxID_STATIC, _("Browser Command Line parameters"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer71->Add(itemStaticText73, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -474,7 +503,7 @@ void COptions::CreateControls()
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Password History"
   /////////////////////////////////////////////////////////////////////////////
-  
+
   wxPanel* itemPanel74 = new wxPanel( GetBookCtrl(), ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer75 = new wxBoxSizer(wxVERTICAL);
   itemPanel74->SetSizer(itemBoxSizer75);
@@ -488,15 +517,15 @@ void COptions::CreateControls()
   m_pwhistnumdfltSB = new wxSpinCtrl( itemPanel74, ID_SPINCTRL11, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
   itemBoxSizer76->Add(m_pwhistnumdfltSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText79 = new wxStaticText( itemPanel74, wxID_STATIC, _("previous passwords per entry"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText79 = new wxStaticText( itemPanel74, ID_STATICTEXT_8, _("previous passwords per entry"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer76->Add(itemStaticText79, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticBox* itemStaticBoxSizer80Static = new wxStaticBox(itemPanel74, wxID_ANY, _("Manage password history of current entries"));
+  wxStaticBox* itemStaticBoxSizer80Static = new wxStaticBox(itemPanel74, ID_STATICBOX_1, _("Manage password history of current entries"));
   auto *itemStaticBoxSizer80 = new wxStaticBoxSizer(itemStaticBoxSizer80Static, wxVERTICAL);
   itemBoxSizer75->Add(itemStaticBoxSizer80, 0, wxGROW|wxALL, 5);
-  wxRadioButton* itemRadioButton81 = new wxRadioButton( itemPanel74, ID_PWHISTNOCHANGE, _("No change"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemRadioButton81->SetValue(false);
-  itemStaticBoxSizer80->Add(itemRadioButton81, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwhistnochangeRB = new wxRadioButton( itemPanel74, ID_PWHISTNOCHANGE, _("No change"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwhistnochangeRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_pwhistnochangeRB, 0, wxALIGN_LEFT|wxALL, 5);
 
   m_pwhiststopRB = new wxRadioButton( itemPanel74, ID_PWHISTSTOP, _("Stop saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwhiststopRB->SetValue(false);
@@ -518,7 +547,7 @@ void COptions::CreateControls()
   m_applytoprotectedCB->SetValue(false);
   itemStaticBoxSizer80->Add(m_applytoprotectedCB, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER|wxALL, 5);
 
-  m_pwhistapplyBN = new wxButton( itemPanel74, ID_PWHISTNOCHANGE, _("Apply"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwhistapplyBN = new wxButton( itemPanel74, ID_PWHISTAPPLY, _("Apply"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer80->Add(m_pwhistapplyBN, 0, wxALIGN_LEFT|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel74, _("Password History"));
@@ -526,7 +555,7 @@ void COptions::CreateControls()
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Security"
   /////////////////////////////////////////////////////////////////////////////
-  
+
   wxPanel* itemPanel86 = new wxPanel( GetBookCtrl(), ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer87 = new wxBoxSizer(wxVERTICAL);
   itemPanel86->SetSizer(itemBoxSizer87);
@@ -560,12 +589,12 @@ void COptions::CreateControls()
   m_secidletimeoutSB = new wxSpinCtrl( itemPanel86, ID_SPINCTRL12, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::IdleTimeout), 0 );
   itemBoxSizer93->Add(m_secidletimeoutSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText96 = new wxStaticText( itemPanel86, wxID_STATIC, _("minutes idle"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText96 = new wxStaticText( itemPanel86, ID_STATICTEXT_2, _("minutes idle"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer93->Add(itemStaticText96, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemBoxSizer97 = new wxBoxSizer(wxVERTICAL);
   itemBoxSizer87->Add(itemBoxSizer97, 0, wxGROW|wxALL, 5);
-  wxStaticText* itemStaticText98 = new wxStaticText( itemPanel86, wxID_STATIC, _("Unlock Difficulty:"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText98 = new wxStaticText( itemPanel86, ID_STATICTEXT_3, _("Unlock Difficulty:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer97->Add(itemStaticText98, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxSlider* itemSlider99 = new wxSlider( itemPanel86, ID_SLIDER, 0, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_AUTOTICKS );
@@ -573,12 +602,12 @@ void COptions::CreateControls()
 
   auto *itemBoxSizer100 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer97->Add(itemBoxSizer100, 0, wxGROW|wxALL, 5);
-  wxStaticText* itemStaticText101 = new wxStaticText( itemPanel86, wxID_STATIC, _("Standard"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText101 = new wxStaticText( itemPanel86, ID_STATICTEXT_4, _("Standard"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer100->Add(itemStaticText101, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   itemBoxSizer100->Add(10, 13, 10, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText103 = new wxStaticText( itemPanel86, wxID_STATIC, _("Maximum"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText103 = new wxStaticText( itemPanel86, ID_STATICTEXT_5, _("Maximum"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer100->Add(itemStaticText103, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel86, _("Security"));
@@ -586,26 +615,26 @@ void COptions::CreateControls()
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Shortcuts"
   /////////////////////////////////////////////////////////////////////////////
-  
+
   wxPanel* itemPanel123 = new wxPanel(GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
   auto *itemBoxSizer155 = new wxBoxSizer(wxVERTICAL);
   itemPanel123->SetSizer(itemBoxSizer155);
-  
+
   wxGrid* itemGrid124 = new wxGrid(itemPanel123, ID_GRID1, wxDefaultPosition, itemPanel123->ConvertDialogToPixels(wxSize(200, 150)), wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL);
   itemGrid124->SetDefaultColSize(150);
   itemGrid124->SetDefaultRowSize(25);
   itemGrid124->SetColLabelSize(25);
   itemGrid124->SetRowLabelSize(50);
   itemGrid124->CreateGrid(50, 2, wxGrid::wxGridSelectCells);
-  
+
   itemBoxSizer155->Add(itemGrid124, 1, wxGROW|wxALL, 5);
-  
+
   GetBookCtrl()->AddPage(itemPanel123, _("Shortcuts"));
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "System"
   /////////////////////////////////////////////////////////////////////////////
-  
+
   wxPanel* itemPanel104 = new wxPanel( GetBookCtrl(), ID_PANEL6, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer105 = new wxBoxSizer(wxVERTICAL);
   itemPanel104->SetSizer(itemBoxSizer105);
@@ -619,13 +648,13 @@ void COptions::CreateControls()
 
   auto *itemBoxSizer108 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer106->Add(itemBoxSizer108, 0, wxGROW|wxALL, 5);
-  wxStaticText* itemStaticText109 = new wxStaticText( itemPanel104, wxID_STATIC, _("  Remember last"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText109 = new wxStaticText( itemPanel104, ID_STATICTEXT_6, _("  Remember last"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer108->Add(itemStaticText109, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_sysmaxREitemsSB = new wxSpinCtrl( itemPanel104, ID_SPINCTRL13, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
   itemBoxSizer108->Add(m_sysmaxREitemsSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText111 = new wxStaticText( itemPanel104, wxID_STATIC, _("used entries in System Tray menu"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText111 = new wxStaticText( itemPanel104, ID_STATICTEXT_7, _("used entries in System Tray menu"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer108->Add(itemStaticText111, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxCheckBox* itemCheckBox112 = new wxCheckBox( itemPanel104, ID_CHECKBOX31, _("Start PasswordSafe at Login"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -683,7 +712,7 @@ void COptions::CreateControls()
   /////////////////////////////////////////////////////////////////////////////
   // End of Tab Creation
   /////////////////////////////////////////////////////////////////////////////
-  
+
   // Set validators
   itemCheckBox4->SetValidator( wxGenericValidator(& m_saveimmediate) );
   itemCheckBox6->SetValidator( wxGenericValidator(& m_backupb4save) );
@@ -1156,7 +1185,7 @@ void COptions::OnPWHistSaveClick( wxCommandEvent& /* evt */ )
 }
 
 /*!
- * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTAPPLY
  */
 
 void COptions::OnPWHistApply( wxCommandEvent& evt )
@@ -1203,17 +1232,6 @@ void COptions::OnPWHistApply( wxCommandEvent& evt )
 }
 
 /*!
- * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON8
- */
-
-void COptions::OnPWHistRB( wxCommandEvent& evt )
-{
-  int id = evt.GetId();
-  m_pwhistapplyBN->Enable(id != ID_PWHISTNOCHANGE);
-  m_applytoprotectedCB->Enable(id != ID_PWHISTNOCHANGE);
-}
-
-/*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX29
  */
 
@@ -1229,6 +1247,130 @@ void COptions::OnLockOnIdleClick( wxCommandEvent& /* evt */)
 void COptions::OnUseSystrayClick( wxCommandEvent& /* evt */)
 {
   m_sysmaxREitemsSB->Enable(m_sysusesystrayCB->GetValue());
+}
+
+/*!
+ * wxEVT_UPDATE_UI event handler for all command ids
+ */
+
+void COptions::OnUpdateUI(wxUpdateUIEvent& evt)
+{
+  bool dbIsReadOnly = m_core.IsReadOnly();
+
+  switch (evt.GetId()) {
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Backups"
+  /////////////////////////////////////////////////////////////////////////////
+    case ID_CHECKBOX10:
+      evt.Enable(!dbIsReadOnly);
+      break;
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Display"
+  /////////////////////////////////////////////////////////////////////////////
+    case ID_CHECKBOX13:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_CHECKBOX14:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_CHECKBOX16:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_CHECKBOX17:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_RADIOBOX:
+      evt.Enable(!dbIsReadOnly);
+      break;
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Misc."
+  /////////////////////////////////////////////////////////////////////////////
+    case ID_CHECKBOX21:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_TEXTCTRL11:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_CHECKBOX24:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_TEXTCTRL12:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_STATICTEXT_1:
+      evt.Enable(!dbIsReadOnly);
+      break;
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Password History"
+  /////////////////////////////////////////////////////////////////////////////
+    case ID_CHECKBOX26:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_SPINCTRL11:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_STATICTEXT_8:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_STATICBOX_1:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_PWHISTNOCHANGE:
+      m_applytoprotectedCB->Enable(!dbIsReadOnly && !m_pwhistnochangeRB->GetValue());
+      m_pwhistapplyBN->Enable(!dbIsReadOnly && !m_pwhistnochangeRB->GetValue());
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_PWHISTSTOP:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_PWHISTSTART:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_PWHISTSETMAX:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_PWHISTCLEAR:
+      evt.Enable(!dbIsReadOnly);
+      break;
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Security"
+  /////////////////////////////////////////////////////////////////////////////
+    case ID_CHECKBOX29:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_SPINCTRL12:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_STATICTEXT_2:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_STATICTEXT_3:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_SLIDER:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_STATICTEXT_4:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_STATICTEXT_5:
+      evt.Enable(!dbIsReadOnly);
+      break;
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "System"
+  /////////////////////////////////////////////////////////////////////////////
+    case ID_STATICTEXT_6:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_SPINCTRL13:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_STATICTEXT_7:
+      evt.Enable(!dbIsReadOnly);
+      break;
+    default:
+      break;
+  }
 }
 
 void COptions::OnPageChanging(wxBookCtrlEvent& evt)
