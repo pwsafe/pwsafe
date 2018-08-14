@@ -190,9 +190,6 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX26
   void OnPWHistSaveClick( wxCommandEvent& event );
 
-  /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_PWHISTNOCHANGE
-  void OnPWHistRB( wxCommandEvent& event );
-
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTAPPLY
   void OnPWHistApply( wxCommandEvent& event );
 
