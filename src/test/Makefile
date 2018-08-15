@@ -3,6 +3,19 @@
 
 CONFIG ?=unicodedebug
 
+# Following sets WX_CONFIG to 3.0 version if found, else 2.x:
+ifeq ($(PLATFORM),FreeBSD)
+WX2=/usr/local/bin/wxgtk2y-2.8-config
+WX3=/usr/local/bin/wxgtk2u-3.0-config
+else
+WX2=/usr/bin/wx-config
+WX3=/usr/bin/wx-config-3.0
+endif
+
+WX_CONFIG?=$(shell if [ -e $(WX3) ]; then echo $(WX3); else echo $(WX2); fi)
+
+
+
 BUILD			:= $(CONFIG)
 
 TESTSRC         := coretest.cpp $(wildcard *Test.cpp)
@@ -28,6 +41,16 @@ OBJS     = $(TESTOBJ) $(GTEST_OBJ)
 
 CXXFLAGS += -DUNICODE -Wall -I$(INCPATH) -std=c++11
 LDFLAGS  += -L$(LIBPATH) -lcore -los -luuid -lxerces-c -pthread -lX11 -lXtst
+
+ifeq ($(CONFIG),debug)
+LDFLAGS += `$(WX_CONFIG) --debug=yes --unicode=no --libs`
+else ifeq ($(CONFIG),release)
+LDFLAGS += `$(WX_CONFIG) --debug=no --unicode=no --libs`
+else ifeq ($(CONFIG),unicodedebug)
+LDFLAGS += `$(WX_CONFIG) --debug=yes --unicode=yes --libs`
+else ifeq ($(CONFIG),unicoderelease)
+LDFLAGS += `$(WX_CONFIG) --debug=no --unicode=yes --libs`
+endif
 
 # rules
 .PHONY: all clean test run setup
