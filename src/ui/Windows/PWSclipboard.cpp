@@ -45,8 +45,8 @@ public:
     if (s_hg != NULL) {
       *phGlobal = s_hg;
       if (m_isSensitive) {
-        // zap clipboard 3 seconds after paste:
-        AfxGetMainWnd()->SetTimer(TIMER_ID, 3000, timerCallback);
+        // zap clipboard 10 seconds after paste:
+        AfxGetMainWnd()->SetTimer(TIMER_ID, 10000, timerCallback);
       }
       return TRUE;
     } else
