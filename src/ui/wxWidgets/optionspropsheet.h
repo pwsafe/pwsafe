@@ -112,6 +112,16 @@ class wxBookCtrlEvent;
 #define ID_CHECKBOX40 10114
 #define ID_PANEL7 10138
 #define ID_GRID1 10187
+#define ID_STATICTEXT_1 10190
+#define ID_STATICTEXT_2 10191
+#define ID_STATICTEXT_3 10192
+#define ID_STATICTEXT_4 10193
+#define ID_STATICTEXT_5 10194
+#define ID_STATICTEXT_6 10195
+#define ID_STATICTEXT_7 10196
+#define ID_STATICTEXT_8 10197
+#define ID_STATICBOX_1 10198
+#define ID_PWHISTAPPLY 10199
 #define SYMBOL_COPTIONS_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
 #define SYMBOL_COPTIONS_TITLE _("Options")
 #define SYMBOL_COPTIONS_IDNAME ID_OPTIONS
@@ -180,10 +190,7 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX26
   void OnPWHistSaveClick( wxCommandEvent& event );
 
-  /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_PWHISTNOCHANGE
-  void OnPWHistRB( wxCommandEvent& event );
-
-  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTAPPLY
   void OnPWHistApply( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX29
@@ -191,6 +198,9 @@ public:
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
   void OnUseSystrayClick( wxCommandEvent& event );
+
+  /// wxEVT_UPDATE_UI event handler for all command ids
+  void OnUpdateUI(wxUpdateUIEvent& evt);
 
 ////@end COptions event handler declarations
 
@@ -342,6 +352,7 @@ public:
   wxStaticText* m_defusernameLBL;
   wxCheckBox* m_pwhistsaveCB;
   wxSpinCtrl* m_pwhistnumdfltSB;
+  wxRadioButton* m_pwhistnochangeRB;
   wxRadioButton* m_pwhiststopRB;
   wxRadioButton* m_pwhiststartRB;
   wxRadioButton* m_pwhistsetmaxRB;
