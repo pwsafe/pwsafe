@@ -10,12 +10,23 @@ NAME=core
 
 DEPDIR= ./deps
 
+# Following sets WX_CONFIG to 3.0 version if found, else 2.x:
+ifeq ($(PLATFORM),FreeBSD)
+WX2=/usr/local/bin/wxgtk2y-2.8-config
+WX3=/usr/local/bin/wxgtk2u-3.0-config
+else
+WX2=/usr/bin/wx-config
+WX3=/usr/bin/wx-config-3.0
+endif
+
+WX_CONFIG?=$(shell if [ -e $(WX3) ]; then echo $(WX3); else echo $(WX2); fi)
+
 # Following not used in Linux build
 NOTSRC          = PWSclipboard.cpp
 
 LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
                   Item.cpp ItemData.cpp ItemAtt.cpp ItemField.cpp  \
-                  Match.cpp PWCharPool.cpp CoreImpExp.cpp \
+                  Match.cpp PolicyManager.cpp PWCharPool.cpp CoreImpExp.cpp \
                   PWPolicy.cpp PWHistory.cpp PWSAuxParse.cpp \
                   PWScore.cpp PWSdirs.cpp PWSfile.cpp PWSfileHeader.cpp \
                   PWSfileV1V2.cpp PWSfileV3.cpp PWSfileV4.cpp \
@@ -56,15 +67,14 @@ else
 endif
 
 ifeq ($(CONFIG),debug)
-CPPFLAGS += -O0 -g -ggdb -D_DEBUG -DDEBUG
-
+CPPFLAGS += -O0 -g -ggdb -D_DEBUG -DDEBUG `$(WX_CONFIG) --debug=yes --unicode=no --inplace --cxxflags`
 else ifeq ($(CONFIG),release)
-CPPFLAGS += -O -DNDEBUG
+CPPFLAGS += -O -DNDEBUG `$(WX_CONFIG) --debug=no --unicode=no --inplace --libs`
 else ifeq ($(CONFIG),unicodedebug)
-CPPFLAGS += -O0 -g -ggdb -DUNICODE $(XERCESCPPFLAGS) -D_DEBUG -DDEBUG
+CPPFLAGS += -O0 -g -ggdb -DUNICODE $(XERCESCPPFLAGS) -D_DEBUG -DDEBUG `$(WX_CONFIG) --debug=yes --unicode=yes --inplace --cxxflags`
 CFLAGS += -g
 else ifeq ($(CONFIG),unicoderelease)
-CPPFLAGS += -O -DUNICODE $(XERCESCPPFLAGS) -DNDEBUG
+CPPFLAGS += -O -DUNICODE $(XERCESCPPFLAGS) -DNDEBUG `$(WX_CONFIG) --debug=no --unicode=yes --inplace --cxxflags`
 endif
 
 # rules
