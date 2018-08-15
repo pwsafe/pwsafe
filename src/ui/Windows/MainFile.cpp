@@ -941,6 +941,7 @@ void DboxMain::PostOpenProcessing()
   UpdateSystemTray(UNLOCKED);
   UpdateMenuAndToolBar(true); // sets m_bOpen too...
   UpdateToolBarROStatus(m_core.IsReadOnly());
+  UpdateToolBarDoUndo(); // BR1466
   UpdateStatusBar();
 
   CheckExpireList(true);
