@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2018-08-16 06:41+0100\n"
+"PO-Revision-Date: 2018-08-16 19:27+0100\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1070,7 +1070,7 @@ msgstr "(Za uporabo je potreben ponovni zagon Password Safe.)"
 
 #. Resource IDs: (65535)
 msgid "(Restart of PasswordSafe required to enable.)"
-msgstr "(Za omogočitev je zahtevan ponovni zagon Password Safe.)"
+msgstr "(Za omogočanje je potreben ponovni zagon Password Safe.)"
 
 #. Resource IDs: (1285, 1287, 1289, 1291)
 msgid "(at least"
@@ -3412,7 +3412,7 @@ msgstr ""
 "Nastavitve aplikacije ne bodo shranjene.\n"
 "\n"
 "Nastavitve, povezane z zbirko podatkov bodo shranjene v odprti zbirki podatkov, ko bo "
-"ta zaprta, ob predpostavki, da ni samo za branje ali, da jo ni zaklenil drug uporabnik."
+"ta zaprta, ob predpostavki, da ni samo-za-branje ali, da jo ni zaklenil drug uporabnik."
 
 #. Resource IDs: (5661)
 #, c-format
@@ -4626,10 +4626,10 @@ msgid ""
 "The 'Menu item' text will be red if the shortcut differs from its default value."
 msgstr ""
 "Levi klik na vrednost 'Tipka bližnjice' za spremembo vrednost ali desni klik, za njeno "
-"ponastavitev ali odstranitev. Po izboru kombinacije tipk pritisnite ENTER, da jo "
-"nastavite.\n"
+"ponastavitev ali odstranitev. Po izboru kombinacije tipk pritisnite na tipko ENTER, da "
+"jo nastavite.\n"
 "\n"
-"Besedilo 'Menijskega vnosa' bo rdeče, če se bližnjica razlikuje od njene privzete "
+"Besedilo 'Menijski vnos' bo rdeče, če se bližnjica razlikuje od njene privzete "
 "vrednosti."
 
 #. Resource IDs: (5291)
@@ -4847,7 +4847,7 @@ msgstr "Selitev konfiguracija Password Safe v uporabniški imenik"
 
 #. Resource IDs: (1250)
 msgid "Minimize after Autotype"
-msgstr "Minimiraj po samodejni vrsti"
+msgstr "Pomanjšaj po samodejni vrsti"
 
 #. Resource IDs: (5584)
 msgid "Minimum digits"
@@ -4952,7 +4952,7 @@ msgstr "Nova kombinacija Sefa in potrditev se ne ujemata"
 
 #. Resource IDs: (1003)
 msgid "New..."
-msgstr "&Novo..."
+msgstr "&Nova..."
 
 #. Resource IDs: (5813)
 msgid "Next >"
@@ -5626,7 +5626,7 @@ msgstr "Golo besedilo (ločeno s tabulatorji)..."
 
 #. Resource IDs: (8101)
 msgid "Play sound on key press"
-msgstr "Predvajaj zvok ob pritisku tipke"
+msgstr "Predvajaj zvok ob pritisku"
 
 #. Resource IDs: (5376)
 msgid "Please Choose a Backup to restore:"
@@ -5925,7 +5925,7 @@ msgstr "Pundžabščina"
 
 #. Resource IDs: (1235)
 msgid "Put Groups first in Tree View"
-msgstr "Najprej postavite Skupine v prikaz drevesa"
+msgstr "Najprej postavi Skupine v prikaz drevesa"
 
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
@@ -5972,7 +5972,7 @@ msgstr "Nedavno"
 
 #. Resource IDs: (1096)
 msgid "Recent Databases on File Menu rather than as a sub-menu."
-msgstr "Zgodovina nedavnih zbirk podatkov v meniju Datoteka namesto kot podmeni."
+msgstr "Zgodovina nedavnih zbirk podatkov v meniju Datoteka, namesto kot podmeni."
 
 #. Resource IDs: (1095)
 msgid "Recent PasswordSafe Databases"
@@ -6753,10 +6753,10 @@ msgid ""
 "external  editor command line parameters field. Do not enclose this value in single or "
 "double quotes unless your chosen external editor requires them."
 msgstr ""
-"Določite program za urejanje opomb polja Opombe vnosa prek desnega klika pojavnega "
-"menija med Dodaj/Uredi. Lahko določite možnosti ukazne vrstice v zunanjem urejevalniku "
-"prek polj zunanjega urejevalnika ukazne vrstice. Te vrednosti ne ogradite v enojnih "
-"ali dvojnih narekovajih, razen če jih zahteva izbrani zunanji urejevalnik."
+"Določite program za urejanje opomb polja 'Opombe vnosa' prek desnega klika pojavnega "
+"menija med 'Dodaj/Uredi'. Lahko določite možnosti ukazne vrstice, v zunanjem "
+"urejevalniku prek polj zunanjega urejevalnika ukazne vrstice. Te vrednosti ne ogradite "
+"v enojnih ali dvojnih narekovajih razen, če jih zahteva izbrani zunanji urejevalnik."
 
 #. Resource IDs: (5108)
 msgid ""
@@ -6813,14 +6813,14 @@ msgid ""
 "\n"
 "Saved histories will not be removed, but changed passwords will no longer be added."
 msgstr ""
-"Ustavi shranjevanje zgodovine gesel  za vse vnose.\n"
+"Ustavi shranjevanje zgodovine gesel za vse vnose.\n"
 "\n"
-"Shranjene zgodovin ne bo mogoče odstraniti, vendar spremenjena gesla ne bodo več "
+"Shranjenih zgodovin ne bo mogoče odstraniti, vendar spremenjena gesla ne bodo več "
 "dodana."
 
 #. Resource IDs: (1184)
 msgid "Stop saving previous passwords"
-msgstr "Ustavitev shranjevanja prejšnjih gesel"
+msgstr "Zaustavi shranjevanja prejšnjih gesel"
 
 #. Resource IDs: (3347)
 msgid "Stored filters will be unusable until the file's restored."
@@ -7072,7 +7072,7 @@ msgstr ""
 "je očitno uporabljena z:\n"
 "%s%s.\n"
 "\n"
-"Odprem zbirko podatkov Samo za branje ali zapustim?\n"
+"Odprem zbirko podatkov Samo-za-branje ali zapustim?\n"
 "\n"
 "Opomba: Hkrati lahko odpre zbirko podatkov za pisanje en uporabnik."
 
@@ -7097,9 +7097,9 @@ msgstr ""
 "je očitno bila uporabljena z:\n"
 "%s %s.\n"
 "\n"
-"Odprem zbirko podatkov za Samo za branje, Branje in pisanje ali zapustim??\n"
+"Odprem zbirko podatkov za Samo-za-branje, Branje in pisanje ali zapustim??\n"
 "\n"
-"Opomba: Izberite \"Samo za branje\" samo, če ste prepričani, da datoteke ne uporablja "
+"Opomba: Izberite \"Samo-za-branje\" le, če ste prepričani, da datoteke ne uporablja "
 "noben drug,\n"
 "vključno z drugo delujočo kopijo Safe Safe v vašem računalniku."
 
@@ -7543,9 +7543,9 @@ msgid ""
 "This will clear all traces of Password Safe from the machine's registry. It may also "
 "cause old versions of Password Safe to revert to default values for some settings."
 msgstr ""
-"To bo počistilo vse sledi Password Safe registra naprave. Lahko povzroči tudi, da se "
-"za stare različice programa Password Safe, za nekatere nastavitve povrnejo na privzete "
-"vrednosti."
+"To bo počistilo vse sledi Password Safe iz Registra naprave. Lahko tudi povzroči, da "
+"se za stare različice programa Password Safe, za nekatere nastavitve, povrnejo "
+"privzete vrednosti."
 
 #. Resource IDs: (5445)
 #, c-format
@@ -7798,12 +7798,12 @@ msgstr "Datoteke XML ni mogoče potrditi z uporabo XML sheme (XSD) v vašem sist
 
 #. Resource IDs: (61837)
 msgid "Unable to write read-only property."
-msgstr "Lastnosti» 'samo za branje' ni mogoče zapisati."
+msgstr "Lastnosti» 'samo-za-branje' ni mogoče zapisati."
 
 #. Resource IDs: (61732)
 #, c-format
 msgid "Unable to write to %1, it is read-only or opened by someone else."
-msgstr "Ni mogoče zapisati v %1. Jje samo za branje ali pa jo je odprl nekdo drug."
+msgstr "Ni mogoče zapisati v %1. Je samo-za-branje ali pa jo je odprl nekdo drug."
 
 #. Resource IDs: (62177)
 msgid "Uncheck"
@@ -8185,7 +8185,7 @@ msgstr ""
 
 #. Resource IDs: (1232)
 msgid "Warn"
-msgstr "Opozorilo"
+msgstr "Opozori"
 
 #. Resource IDs: (1362, 3330)
 msgid "Warning"
@@ -8303,7 +8303,7 @@ msgstr ""
 
 #. Resource IDs: (5107)
 msgid "Writes the database when an entry was accessed, unless in read-only mode."
-msgstr "Zapiše zbirko podatkov, ko dostopate do vnosa, razen v načinu samo za branje."
+msgstr "Zapiše zbirko podatkov, ko dostopate do vnosa, razen v načinu samo-za-branje."
 
 #. Resource IDs: (1384, 8003)
 msgid "X"
