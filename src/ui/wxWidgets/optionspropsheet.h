@@ -117,7 +117,6 @@ class wxBookCtrlEvent;
 #define ID_STATICTEXT_3 10192
 #define ID_STATICTEXT_4 10193
 #define ID_STATICTEXT_5 10194
-#define ID_STATICTEXT_6 10195
 #define ID_STATICTEXT_7 10196
 #define ID_STATICTEXT_8 10197
 #define ID_STATICBOX_1 10198
@@ -169,9 +168,6 @@ public:
   /// wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_COMBOBOX2
   void OnSuffixCBSet( wxCommandEvent& event );
 
-  /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON6
-  void OnBuDirRB( wxCommandEvent& event );
-
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON
   void OnBuDirBrowseClick( wxCommandEvent& event );
 
@@ -187,17 +183,8 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON8
   void OnBrowseLocationClick( wxCommandEvent& event );
 
-  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX26
-  void OnPWHistSaveClick( wxCommandEvent& event );
-
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTAPPLY
   void OnPWHistApply( wxCommandEvent& event );
-
-  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX29
-  void OnLockOnIdleClick( wxCommandEvent& event );
-
-  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
-  void OnUseSystrayClick( wxCommandEvent& event );
 
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent& evt);

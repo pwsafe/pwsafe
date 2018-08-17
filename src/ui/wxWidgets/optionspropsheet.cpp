@@ -67,23 +67,19 @@ BEGIN_EVENT_TABLE( COptions, wxPropertySheetDialog )
   EVT_RADIOBUTTON( ID_RADIOBUTTON4,    COptions::OnBuPrefix )
   EVT_RADIOBUTTON( ID_RADIOBUTTON5,    COptions::OnBuPrefix )
   EVT_COMBOBOX(    ID_COMBOBOX2,       COptions::OnSuffixCBSet )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON6,    COptions::OnBuDirRB )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON7,    COptions::OnBuDirRB )
   EVT_BUTTON(      ID_BUTTON,          COptions::OnBuDirBrowseClick )
   EVT_CHECKBOX(    ID_CHECKBOX13,      COptions::OnShowUsernameInTreeCB )
   EVT_CHECKBOX(    ID_CHECKBOX19,      COptions::OnPreExpiryWarnClick )
   EVT_CHECKBOX(    ID_CHECKBOX24,      COptions::OnUseDefaultUserClick )
   EVT_BUTTON(      ID_BUTTON8,         COptions::OnBrowseLocationClick )
-  EVT_CHECKBOX(    ID_CHECKBOX26,      COptions::OnPWHistSaveClick )
   EVT_BUTTON(      ID_PWHISTAPPLY,     COptions::OnPWHistApply )
-  EVT_CHECKBOX(    ID_CHECKBOX29,      COptions::OnLockOnIdleClick )
-  EVT_CHECKBOX(    ID_CHECKBOX30,      COptions::OnUseSystrayClick )
 ////@end COptions event table entries
 
   EVT_BOOKCTRL_PAGE_CHANGING(wxID_ANY, COptions::OnPageChanging)
   EVT_BOOKCTRL_PAGE_CHANGING(wxID_ANY, COptions::OnPageChanging)
 
   EVT_UPDATE_UI(   ID_CHECKBOX10,      COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_RADIOBUTTON7,    COptions::OnUpdateUI )
   EVT_UPDATE_UI(   ID_CHECKBOX13,      COptions::OnUpdateUI )
   EVT_UPDATE_UI(   ID_CHECKBOX14,      COptions::OnUpdateUI )
   EVT_UPDATE_UI(   ID_CHECKBOX16,      COptions::OnUpdateUI )
@@ -112,7 +108,6 @@ BEGIN_EVENT_TABLE( COptions, wxPropertySheetDialog )
   EVT_UPDATE_UI(   ID_SLIDER,          COptions::OnUpdateUI )
   EVT_UPDATE_UI(   ID_STATICTEXT_4,    COptions::OnUpdateUI )
   EVT_UPDATE_UI(   ID_STATICTEXT_5,    COptions::OnUpdateUI )
-  EVT_UPDATE_UI(   ID_STATICTEXT_6,    COptions::OnUpdateUI )
   EVT_UPDATE_UI(   ID_SPINCTRL13,      COptions::OnUpdateUI )
   EVT_UPDATE_UI(   ID_STATICTEXT_7,    COptions::OnUpdateUI )
 END_EVENT_TABLE()
@@ -173,11 +168,6 @@ bool COptions::Create( wxWindow* parent, wxWindowID id, const wxString& caption,
   PrefsToPropSheet();
   wxCommandEvent dummyEv;
   OnSuffixCBSet(dummyEv);
-  OnBuDirRB(dummyEv);
-  m_pwhistapplyBN->Enable(false);
-  m_applytoprotectedCB->Enable(false);
-  OnLockOnIdleClick(dummyEv);
-  OnUseSystrayClick(dummyEv);
   return true;
 }
 
@@ -648,7 +638,7 @@ void COptions::CreateControls()
 
   auto *itemBoxSizer108 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer106->Add(itemBoxSizer108, 0, wxGROW|wxALL, 5);
-  wxStaticText* itemStaticText109 = new wxStaticText( itemPanel104, ID_STATICTEXT_6, _("  Remember last"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText109 = new wxStaticText( itemPanel104, wxID_STATIC, _("  Remember last"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer108->Add(itemStaticText109, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_sysmaxREitemsSB = new wxSpinCtrl( itemPanel104, ID_SPINCTRL13, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
@@ -1113,17 +1103,6 @@ void COptions::OnBuDirBrowseClick( wxCommandEvent& /* evt */ )
 }
 
 /*!
- * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON6
- */
-
-void COptions::OnBuDirRB( wxCommandEvent& /* evt */ )
-{
-    bool enable = m_usrbudirRB->GetValue();
-    m_usrbudirTxt->Enable(enable);
-    m_buDirBN->Enable(enable);
-}
-
-/*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX13
  */
 
@@ -1176,15 +1155,6 @@ void COptions::OnBrowseLocationClick( wxCommandEvent& /* evt */ )
 }
 
 /*!
- * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX26
- */
-
-void COptions::OnPWHistSaveClick( wxCommandEvent& /* evt */ )
-{
-  m_pwhistnumdfltSB->Enable(m_pwhistsaveCB->GetValue());
-}
-
-/*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTAPPLY
  */
 
@@ -1232,24 +1202,6 @@ void COptions::OnPWHistApply( wxCommandEvent& evt )
 }
 
 /*!
- * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX29
- */
-
-void COptions::OnLockOnIdleClick( wxCommandEvent& /* evt */)
-{
-  m_secidletimeoutSB->Enable(m_seclockonidleCB->GetValue());
-}
-
-/*!
- * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
- */
-
-void COptions::OnUseSystrayClick( wxCommandEvent& /* evt */)
-{
-  m_sysmaxREitemsSB->Enable(m_sysusesystrayCB->GetValue());
-}
-
-/*!
  * wxEVT_UPDATE_UI event handler for all command ids
  */
 
@@ -1263,6 +1215,10 @@ void COptions::OnUpdateUI(wxUpdateUIEvent& evt)
   /////////////////////////////////////////////////////////////////////////////
     case ID_CHECKBOX10:
       evt.Enable(!dbIsReadOnly);
+      break;
+    case ID_RADIOBUTTON7:
+      m_usrbudirTxt->Enable(m_usrbudirRB->GetValue());
+      m_buDirBN->Enable(m_usrbudirRB->GetValue());
       break;
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Display"
@@ -1307,7 +1263,7 @@ void COptions::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!dbIsReadOnly);
       break;
     case ID_SPINCTRL11:
-      evt.Enable(!dbIsReadOnly);
+      evt.Enable(!dbIsReadOnly && m_pwhistsaveCB->GetValue());
       break;
     case ID_STATICTEXT_8:
       evt.Enable(!dbIsReadOnly);
@@ -1339,7 +1295,7 @@ void COptions::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!dbIsReadOnly);
       break;
     case ID_SPINCTRL12:
-      evt.Enable(!dbIsReadOnly);
+      evt.Enable(!dbIsReadOnly && m_seclockonidleCB->GetValue());
       break;
     case ID_STATICTEXT_2:
       evt.Enable(!dbIsReadOnly);
@@ -1359,14 +1315,11 @@ void COptions::OnUpdateUI(wxUpdateUIEvent& evt)
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "System"
   /////////////////////////////////////////////////////////////////////////////
-    case ID_STATICTEXT_6:
-      evt.Enable(!dbIsReadOnly);
-      break;
     case ID_SPINCTRL13:
-      evt.Enable(!dbIsReadOnly);
+      evt.Enable(m_sysusesystrayCB->GetValue());
       break;
     case ID_STATICTEXT_7:
-      evt.Enable(!dbIsReadOnly);
+      evt.Enable(m_sysusesystrayCB->GetValue());
       break;
     default:
       break;
