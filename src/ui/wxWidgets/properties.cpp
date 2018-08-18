@@ -103,19 +103,56 @@ void CProperties::Init()
 {
 ////@begin CProperties member initialisation
 ////@end CProperties member initialisation
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Property: Database file name
+  /////////////////////////////////////////////////////////////////////////////
+
   m_database = m_core.GetCurFile().c_str();
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Property: Database format
+  /////////////////////////////////////////////////////////////////////////////
+
   m_databaseformat = wxString::Format(_T("%d.%02d"),
                                       m_core.GetHeader().m_nCurrentMajorVersion,
                                       m_core.GetHeader().m_nCurrentMinorVersion);
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Property: Number of groups
+  /////////////////////////////////////////////////////////////////////////////
+
   std::vector<stringT> aryGroups;
   m_core.GetAllGroups(aryGroups);
+
   auto nEmptyGroups = m_core.GetEmptyGroups().size();
+
   m_numgroups << aryGroups.size()
               << wxT(" (") << nEmptyGroups << _(" empty)");
 
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Property: Number of entries
+  /////////////////////////////////////////////////////////////////////////////
+
   m_numentries << m_core.GetNumEntries();
 
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Property: Number of attachments
+  /////////////////////////////////////////////////////////////////////////////
+
+  m_numattachments << m_core.GetNumAtts();
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Property: Date when database was last saved
+  /////////////////////////////////////////////////////////////////////////////
+
   time_t twls = m_core.GetHeader().m_whenlastsaved;
+
   if (twls == 0) {
     m_whenlastsaved = _("Unknown");
   } else {
@@ -123,49 +160,105 @@ void CProperties::Init()
                                                        PWSUtil::TMC_EXPORT_IMPORT).c_str();
   }
 
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Property: Database last saved by user on host
+  /////////////////////////////////////////////////////////////////////////////
+
   if (m_core.GetHeader().m_lastsavedby.empty() &&
       m_core.GetHeader().m_lastsavedon.empty()) {
     m_wholastsaved = _("Unknown");
-  } else {
+  }
+  else {
     wxString user = m_core.GetHeader().m_lastsavedby.empty() ?
       _T("?") : m_core.GetHeader().m_lastsavedby.c_str();
+
     wxString host = m_core.GetHeader().m_lastsavedon.empty() ?
       _T("?") : m_core.GetHeader().m_lastsavedon.c_str();
+
     m_wholastsaved = wxString::Format(_("%ls on %ls"), user.c_str(), host.c_str());
   }
 
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Property: Database saved by application
+  /////////////////////////////////////////////////////////////////////////////
+
   wxString wls = m_core.GetHeader().m_whatlastsaved.c_str();
-  if (wls.empty()) {
-    m_whatlastsaved = _("Unknown");
-  } else
-    m_whatlastsaved = wls;
+
+  m_whatlastsaved = wls.empty() ? _("Unknown") : wls;
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Property: Date when master password last changed
+  /////////////////////////////////////////////////////////////////////////////
+
+  time_t twplc = m_core.GetHeader().m_whenpwdlastchanged;
+
+  if (twplc == 0) {
+    m_whenpwdlastchanged = _("Unknown");
+  } else {
+    m_whenpwdlastchanged = PWSUtil::ConvertToDateTimeString(twplc, PWSUtil::TMC_EXPORT_IMPORT).c_str();
+  }
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Property: Database Unique ID
+  /////////////////////////////////////////////////////////////////////////////
 
   pws_os::CUUID file_uuid = m_core.GetFileUUID();
-  if (file_uuid == pws_os::CUUID::NullUUID())
+
+  if (file_uuid == pws_os::CUUID::NullUUID()) {
     m_file_uuid = _T("N/A");
+  }
   else {
     ostringstreamT os;
-    pws_os::CUUID huuid(*file_uuid.GetARep(),
-      true); // true for canonical format
+    pws_os::CUUID huuid(*file_uuid.GetARep(), true); // true for canonical format
     os << huuid;
     m_file_uuid = os.str().c_str();
   }
 
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Property: Unknown Fields
+  /////////////////////////////////////////////////////////////////////////////
+
   int num = m_core.GetNumRecordsWithUnknownFields();
+
   if (num != 0 || m_core.HasHeaderUnknownFields()) {
     const wxString cs_HdrYesNo = m_core.HasHeaderUnknownFields() ? _("Yes") : _("No");
 
-    m_unknownfields = wxString::Format(_("In Headers(%ls)/In Entries("),
-                                       cs_HdrYesNo.c_str());
-    if (num == 0)
+    m_unknownfields = wxString::Format(_("In Headers(%ls)/In Entries("), cs_HdrYesNo.c_str());
+
+    if (num == 0) {
       m_unknownfields += _("No)");
+    }
     else {
       wls = wxString::Format(wxT("%d)"), num);
       m_unknownfields += wls;
     }
-  } else {
+  }
+  else {
     m_unknownfields = _("None");
   }
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Property: Database Name
+  /////////////////////////////////////////////////////////////////////////////
+
+  wxString dbName = m_core.GetHeader().m_DB_Name.c_str();
+
+  m_DbName = dbName.empty() ? _("N/A") : dbName;
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Property: Database Description
+  /////////////////////////////////////////////////////////////////////////////
+
+  wxString dbDescription = m_core.GetHeader().m_DB_Description.c_str();
+
+  m_DbDescription = dbDescription.empty() ? _("N/A") : dbDescription;
 }
 
 /*!
@@ -198,6 +291,9 @@ void CProperties::CreateControls()
   wxStaticText* itemStaticText8 = new wxStaticText( currDialog, wxID_STATIC, _("Number of Entries:"), wxDefaultPosition, wxDefaultSize, 0 );
   staticVertSizer->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL, 5);
 
+  wxStaticText* itemStaticText14 = new wxStaticText( currDialog, wxID_STATIC, _("Number of Attachments:"), wxDefaultPosition, wxDefaultSize, 0 );
+  staticVertSizer->Add(itemStaticText14, 0, wxALIGN_LEFT|wxALL, 5);
+
   wxStaticText* itemStaticText9 = new wxStaticText( currDialog, wxID_STATIC, _("Last saved by:"), wxDefaultPosition, wxDefaultSize, 0 );
   staticVertSizer->Add(itemStaticText9, 0, wxALIGN_LEFT|wxALL, 5);
 
@@ -207,11 +303,20 @@ void CProperties::CreateControls()
   wxStaticText* itemStaticText11 = new wxStaticText( currDialog, wxID_STATIC, _("Using application:"), wxDefaultPosition, wxDefaultSize, 0 );
   staticVertSizer->Add(itemStaticText11, 0, wxALIGN_LEFT|wxALL, 5);
 
+  wxStaticText* itemStaticText15 = new wxStaticText( currDialog, wxID_STATIC, _("Master Password last set on:"), wxDefaultPosition, wxDefaultSize, 0 );
+  staticVertSizer->Add(itemStaticText15, 0, wxALIGN_LEFT|wxALL, 5);
+
   wxStaticText* itemStaticText12 = new wxStaticText( currDialog, wxID_STATIC, _("Database Unique ID:"), wxDefaultPosition, wxDefaultSize, 0 );
   staticVertSizer->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStaticText* itemStaticText13 = new wxStaticText( currDialog, wxID_STATIC, _("Unknown fields:"), wxDefaultPosition, wxDefaultSize, 0 );
   staticVertSizer->Add(itemStaticText13, 0, wxALIGN_LEFT|wxALL, 5);
+
+  wxStaticText* itemStaticText16 = new wxStaticText( currDialog, wxID_STATIC, _("Name:"), wxDefaultPosition, wxDefaultSize, 0 );
+  staticVertSizer->Add(itemStaticText16, 0, wxALIGN_LEFT|wxALL, 5);
+
+  wxStaticText* itemStaticText17 = new wxStaticText( currDialog, wxID_STATIC, _("Description:"), wxDefaultPosition, wxDefaultSize, 0 );
+  staticVertSizer->Add(itemStaticText17, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxBoxSizer* dataVertSizer = new wxBoxSizer(wxVERTICAL);
   horizSizer->Add(dataVertSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -225,6 +330,9 @@ void CProperties::CreateControls()
   wxStaticText* entriesText = new wxStaticText( currDialog, wxID_NUMENTRIES, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
   dataVertSizer->Add(entriesText, 0, wxALIGN_LEFT|wxALL, 5);
 
+  wxStaticText* attachmentsText = new wxStaticText( currDialog, wxID_NUMATTACHMENTS, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
+  dataVertSizer->Add(attachmentsText, 0, wxALIGN_LEFT|wxALL, 5);
+
   wxStaticText* lastSavedUserText = new wxStaticText( currDialog, wxID_WHOLASTSAVED, wxT("user on host"), wxDefaultPosition, wxDefaultSize, 0 );
   dataVertSizer->Add(lastSavedUserText, 0, wxALIGN_LEFT|wxALL, 5);
 
@@ -234,6 +342,9 @@ void CProperties::CreateControls()
   wxStaticText* lastSavedAppText = new wxStaticText( currDialog, wxID_WHATLASTSAVED, wxT("application & version"), wxDefaultPosition, wxDefaultSize, 0 );
   dataVertSizer->Add(lastSavedAppText, 0, wxALIGN_LEFT|wxALL, 5);
 
+  wxStaticText* lastChangedPwdDateText = new wxStaticText( currDialog, wxID_PWDLASTCHANGED, wxT("dd.mm.yyyy"), wxDefaultPosition, wxDefaultSize, 0 );
+  dataVertSizer->Add(lastChangedPwdDateText, 0, wxALIGN_LEFT|wxALL, 5);
+
   wxStaticText* uuidText = new wxStaticText( currDialog, wxID_FILEUUID,
                                             wxT("12345678-90AB-CDEF-1234-567890ABCDEF"), // need to use different digits/letters to correctly calculate size because of kerning
                                             wxDefaultPosition, wxDefaultSize, 0 );
@@ -241,6 +352,12 @@ void CProperties::CreateControls()
 
   wxStaticText* unknownFieldsText = new wxStaticText( currDialog, wxID_UNKNOWFIELDS, wxT("x"), wxDefaultPosition, wxDefaultSize, 0 );
   dataVertSizer->Add(unknownFieldsText, 0, wxALIGN_LEFT|wxALL, 5);
+
+  wxStaticText* dbNameText = new wxStaticText( currDialog, wxID_DBNAME, wxT("database name"), wxDefaultPosition, wxDefaultSize, 0 );
+  dataVertSizer->Add(dbNameText, 0, wxALIGN_LEFT|wxALL, 5);
+
+  wxStaticText* dbDescriptionText = new wxStaticText( currDialog, wxID_DBDESCRIPTION, wxT("database description"), wxDefaultPosition, wxDefaultSize, 0 );
+  dataVertSizer->Add(dbDescriptionText, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStdDialogButtonSizer* buttonsSizer = new wxStdDialogButtonSizer;
 
@@ -255,11 +372,15 @@ void CProperties::CreateControls()
   dbFormatText->SetValidator( wxGenericValidator(& m_databaseformat) );
   numGroupsText->SetValidator( wxGenericValidator(& m_numgroups) );
   entriesText->SetValidator( wxGenericValidator(& m_numentries) );
+  attachmentsText->SetValidator( wxGenericValidator(& m_numattachments) );
   lastSavedUserText->SetValidator( wxGenericValidator(& m_wholastsaved) );
   lastSavedDateText->SetValidator( wxGenericValidator(& m_whenlastsaved) );
   lastSavedAppText->SetValidator( wxGenericValidator(& m_whatlastsaved) );
+  lastChangedPwdDateText->SetValidator( wxGenericValidator(& m_whenpwdlastchanged) );
   uuidText->SetValidator( wxGenericValidator(& m_file_uuid) );
   unknownFieldsText->SetValidator( wxGenericValidator(& m_unknownfields) );
+  dbNameText->SetValidator( wxGenericValidator(& m_DbName) );
+  dbDescriptionText->SetValidator( wxGenericValidator(& m_DbDescription) );
 
 ////@end CProperties content construction
 }
