@@ -38,11 +38,15 @@
 #define wxID_DATABASEFORMAT 10066
 #define wxID_NUMGROUPS 10067
 #define wxID_NUMENTRIES 10068
+#define wxID_NUMATTACHMENTS 10300
 #define wxID_WHOLASTSAVED 10069
 #define wxID_WHENLASTSAVED 10070
 #define wxID_WHATLASTSAVED 10071
+#define wxID_PWDLASTCHANGED 10301
 #define wxID_FILEUUID 10072
 #define wxID_UNKNOWFIELDS 10073
+#define wxID_DBNAME 10302
+#define wxID_DBDESCRIPTION 10303
 #if WXWIN_COMPATIBILITY_2_6
 #define SYMBOL_CPROPERTIES_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #else
@@ -59,7 +63,7 @@
  */
 
 class CProperties: public wxDialog
-{    
+{
   DECLARE_CLASS( CProperties )
   DECLARE_EVENT_TABLE()
 
@@ -136,11 +140,15 @@ private:
   wxString m_databaseformat;
   wxString m_numgroups;
   wxString m_numentries;
+  wxString m_numattachments;
   wxString m_whenlastsaved;
   wxString m_wholastsaved;
   wxString m_whatlastsaved;
+  wxString m_whenpwdlastchanged;
   wxString m_file_uuid;
   wxString m_unknownfields;
+  wxString m_DbName;
+  wxString m_DbDescription;
 ////@end CProperties member variables
   const PWScore &m_core;
 };
