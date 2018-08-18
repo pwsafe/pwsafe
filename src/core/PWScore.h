@@ -125,6 +125,7 @@ public:
   void ReInit(bool bNewfile = false);
 
   // Following used to read/write databases and Get/Set file name
+  bool IsDbOpen() const { return !m_currfile.empty(); }
   StringX GetCurFile() const {return m_currfile;}
   void SetCurFile(const StringX &file) {m_currfile = file;}
 
