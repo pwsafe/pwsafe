@@ -332,7 +332,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
                                                   L"filters.xml");
   cs_text.LoadString(IDS_NAMEXMLFILE);
   std::wstring dir;
-  if (m_core.GetCurFile().empty())
+  if (m_core.IsDbOpen())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -400,7 +400,7 @@ void DboxMain::ImportFilters()
   }
 
   std::wstring dir;
-  if (m_core.GetCurFile().empty())
+  if (m_core.IsDbOpen())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
