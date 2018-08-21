@@ -956,7 +956,7 @@ int PasswordSafeFrame::Save(SaveType savetype /* = SaveType::INVALID*/)
     m_tree->SaveGroupDisplayState();
   }
 
-  if (m_core.GetCurFile().empty())
+  if (!m_core.IsDbOpen())
     return SaveAs();
 
   switch (m_core.GetReadFileVersion()) {
@@ -1031,7 +1031,7 @@ int PasswordSafeFrame::Save(SaveType savetype /* = SaveType::INVALID*/)
 
   if (rc != PWScore::SUCCESS) { // Save failed!
     // Restore backup, if we have one
-    if (!bu_fname.empty() && !m_core.GetCurFile().empty())
+    if (!bu_fname.empty() && m_core.IsDbOpen())
       pws_os::RenameFile(bu_fname, m_core.GetCurFile().c_str());
     // Show user that we have a problem
     DisplayFileWriteError(rc, m_core.GetCurFile());
@@ -1096,7 +1096,7 @@ int PasswordSafeFrame::SaveIfChanged()
   if ((m_bTSUpdated || m_core.HasDBChanged()) &&
       m_core.GetNumEntries() > 0) {
     wxString prompt(_("Do you want to save changes to the password database"));
-    if (!m_core.GetCurFile().empty()) {
+    if (m_core.IsDbOpen()) {
       prompt += wxT(": ");
       prompt += m_core.GetCurFile().c_str();
     }
@@ -1172,7 +1172,7 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
 
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
-  if( !m_core.GetCurFile().empty() ) {
+  if( m_core.IsDbOpen() ) {
     int rc = SaveIfChanged();
     if (rc != PWScore::SUCCESS)
       return;
@@ -1390,7 +1390,7 @@ int PasswordSafeFrame::SaveAs()
   }
   wxString v3FileName = towxstring(PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX));
 
-  wxString title = (m_core.GetCurFile().empty()? _("Please choose a name for the current (Untitled) database:") :
+  wxString title = (!m_core.IsDbOpen()? _("Please choose a name for the current (Untitled) database:") :
                                     _("Please choose a new name for the current database:"));
   wxFileName filename(v3FileName);
   wxString dir = filename.GetPath();
@@ -1931,7 +1931,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
   switch (evt.GetId()) {
     case wxID_SAVE:
-      evt.Enable((!m_core.GetCurFile().empty()) && (m_core.HasDBChanged() || m_core.HaveDBPrefsChanged()));
+      evt.Enable((m_core.IsDbOpen()) && (m_core.HasDBChanged() || m_core.HaveDBPrefsChanged()));
       break;
 
     case wxID_SAVEAS:
@@ -1945,21 +1945,21 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 #ifndef NO_YUBI
     case ID_YUBIKEY_MNG:
 #endif
-      evt.Enable(!m_core.GetCurFile().empty());
+      evt.Enable(m_core.IsDbOpen());
       break;
       
     case ID_EXPORTMENU:
     case ID_COMPARE:
-      evt.Enable(!m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
+      evt.Enable(m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
       break;
     
     case ID_ADDGROUP:
-      evt.Enable(bTreeView && !bFileIsReadOnly && !m_core.GetCurFile().empty());
+      evt.Enable(bTreeView && !bFileIsReadOnly && m_core.IsDbOpen());
       break;
 
     case ID_EXPANDALL:
     case ID_COLLAPSEALL:
-      evt.Enable(bTreeView && !m_core.GetCurFile().empty());
+      evt.Enable(bTreeView && m_core.IsDbOpen());
       break;
 
     case ID_RENAME:
@@ -2022,11 +2022,11 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_SYNCHRONIZE:
     case ID_CHANGECOMBO:
     case wxID_FIND:
-      evt.Enable(!bFileIsReadOnly && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
+      evt.Enable(!bFileIsReadOnly && m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
       break;
 
     case wxID_ADD:
-      evt.Enable(!bFileIsReadOnly && !m_core.GetCurFile().empty());
+      evt.Enable(!bFileIsReadOnly && m_core.IsDbOpen());
       break;
 
     case wxID_DELETE:
@@ -2038,16 +2038,16 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SHOWHIDE_UNSAVED:
-      evt.Enable(!m_bShowExpiry && !m_core.GetCurFile().empty());
+      evt.Enable(!m_bShowExpiry && m_core.IsDbOpen());
       break;
 
     case ID_SHOW_ALL_EXPIRY:
-      evt.Enable(!m_bShowUnsaved && !m_core.GetCurFile().empty());
+      evt.Enable(!m_bShowUnsaved && m_core.IsDbOpen());
       break;
 
     case ID_MERGE:
     case ID_IMPORTMENU:
-      evt.Enable(!bFileIsReadOnly && !m_core.GetCurFile().empty());
+      evt.Enable(!bFileIsReadOnly && m_core.IsDbOpen());
       break;
 
     case ID_PROTECT:
@@ -2076,7 +2076,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
 bool PasswordSafeFrame::IsClosed() const
 {
-  return (m_core.GetCurFile().empty() && m_core.GetNumEntries() == 0 &&
+  return (!m_core.IsDbOpen() && m_core.GetNumEntries() == 0 &&
           !m_core.HasDBChanged() && !m_core.AnyToUndo() && !m_core.AnyToRedo());
 }
 
@@ -2569,7 +2569,7 @@ void PasswordSafeFrame::SetFocus()
 void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
   
   // If database was closed than there is nothing to do
-  if (m_core.GetCurFile().empty()) {
+  if (!m_core.IsDbOpen()) {
     return;
   }
   
@@ -3407,7 +3407,7 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
 void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
 {
   // disable in read-only mode or empty
-  wxCHECK_RET(!m_core.IsReadOnly() && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0,
+  wxCHECK_RET(!m_core.IsReadOnly() && m_core.IsDbOpen() && m_core.GetNumEntries() != 0,
                 wxT("Synchronize menu enabled for empty or read-only database!"));
 
   PwsSyncWizard wiz(this, &m_core);
@@ -3440,7 +3440,7 @@ void PasswordSafeFrame::OnVisitWebsite(wxCommandEvent&)
 void PasswordSafeFrame::UpdateStatusBar()
 {
 
-  if (!m_core.GetCurFile().empty()) {
+  if (m_core.IsDbOpen()) {
     wxString text;
     // SB_DBLCLICK pane is set per selected entry, not here
 

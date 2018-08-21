@@ -572,7 +572,7 @@ int PwsafeApp::OnExit()
   m_idleTimer->Stop();
   recentDatabases().Save();
   PWSprefs *prefs = PWSprefs::GetInstance();
-  if (!m_core.GetCurFile().empty())
+  if (m_core.IsDbOpen())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
