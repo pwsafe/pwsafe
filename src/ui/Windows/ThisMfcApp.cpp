@@ -1170,7 +1170,7 @@ BOOL ThisMfcApp::InitInstance()
   // PWScore needs it to get into database header if/when saved
   m_core.SetApplicationNameAndVersion(AfxGetAppName(), m_dwMajorMinor, m_dwBuildRevision);
 
-  if (m_core.GetCurFile().empty()) {
+  if (!m_core.IsDbOpen()) {
     std::wstring path = prefs->GetPref(PWSprefs::CurrentFile).c_str();
     pws_os::AddDrive(path);
     m_core.SetCurFile(path.c_str());

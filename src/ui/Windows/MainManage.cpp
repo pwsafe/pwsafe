@@ -81,7 +81,7 @@ int DboxMain::BackupSafe()
   CString cs_temp, cs_title;
 
   std::wstring dir;
-  if (m_core.GetCurFile().empty())
+  if (!m_core.IsDbOpen())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -160,7 +160,7 @@ int DboxMain::RestoreSafe()
   cs_text.LoadString(IDS_PICKRESTORE);
 
   std::wstring dir;
-  if (m_core.GetCurFile().empty())
+  if (!m_core.IsDbOpen())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
