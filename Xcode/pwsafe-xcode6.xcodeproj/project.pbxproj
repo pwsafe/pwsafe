@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		6FF5D4A11DA14EE80032F5B6 /* passwordsubset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* passwordsubset.cpp */; };
+		A29413002132D2F40054535C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
 		A2D181461C8FF86C0018AE03 /* media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D181451C8FF86C0018AE03 /* media.cpp */; };
 		A2FE25801C5ACEFD00210C36 /* AES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE257E1C5ACEFD00210C36 /* AES.cpp */; };
 		A2FE258D1C5ACF7500210C36 /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25811C5ACF7500210C36 /* Item.cpp */; };
@@ -617,7 +618,7 @@
 		E6C94E911FA20593008F0072 /* pwsqrcodedlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pwsqrcodedlg.cpp; sourceTree = "<group>"; };
 		E6C94E921FA20593008F0072 /* pwsqrcodedlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwsqrcodedlg.h; sourceTree = "<group>"; };
 		E6C94E941FA205E9008F0072 /* pwsqrencode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwsqrencode.h; sourceTree = "<group>"; };
-		E6C94E951FA2075B008F0072 /* pwsqrencode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "pwsqrencode.mm"; sourceTree = "<group>"; };
+		E6C94E951FA2075B008F0072 /* pwsqrencode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = pwsqrencode.mm; sourceTree = "<group>"; };
 		E6C94E971FA3399F008F0072 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		E6C94E991FA33BA6008F0072 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E6CFEE4311EA0AFB001402D8 /* RecentDBList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentDBList.h; sourceTree = "<group>"; };
@@ -753,6 +754,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A29413002132D2F40054535C /* Cocoa.framework in Frameworks */,
 				E66D293E1D02B94C00C9BCBF /* Carbon.framework in Frameworks */,
 				E66D293C1D02B92F00C9BCBF /* libcore.a in Frameworks */,
 				E66D293D1D02B92F00C9BCBF /* libos.a in Frameworks */,
@@ -776,6 +778,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A29412FF2132D2F40054535C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E6069D0319FE1CCA0055040F /* Configs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1147,6 +1156,7 @@
 				E6B1448112B26CEE00415AAE /* OpenGL.framework */,
 				E6B1448712B26D1500415AAE /* Cocoa.framework */,
 				E6B1449312B26D7E00415AAE /* IOKit.framework */,
+				A29412FF2132D2F40054535C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1855,6 +1865,7 @@
 /* Begin XCBuildConfiguration section */
 		E66D29331D02B49B00C9BCBF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1900,6 +1911,7 @@
 		};
 		E66D29341D02B49B00C9BCBF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1995,17 +2007,22 @@
 		};
 		E6ADB80511956A93004E2BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
 					DEBUG,
 					_DEBUG,
 				);
-				HEADER_SEARCH_PATHS = ../src/;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					../src/,
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -2016,15 +2033,20 @@
 		};
 		E6ADB80611956A93004E2BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
 					NDEBUG,
 				);
-				HEADER_SEARCH_PATHS = ../src/;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					../src/,
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
