@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		6FF5D4A11DA14EE80032F5B6 /* passwordsubset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* passwordsubset.cpp */; };
+		A260BC952132D49900214C59 /* PolicyManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A260BC932132D49900214C59 /* PolicyManager.cpp */; };
 		A29413002132D2F40054535C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
 		A2D181461C8FF86C0018AE03 /* media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D181451C8FF86C0018AE03 /* media.cpp */; };
 		A2FE25801C5ACEFD00210C36 /* AES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE257E1C5ACEFD00210C36 /* AES.cpp */; };
@@ -240,6 +241,8 @@
 /* Begin PBXFileReference section */
 		6FF5D49D1DA14AB20032F5B6 /* passwordsubset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = passwordsubset.cpp; sourceTree = "<group>"; };
 		6FF5D49E1DA14AB20032F5B6 /* passwordsubset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = passwordsubset.h; sourceTree = "<group>"; };
+		A260BC932132D49900214C59 /* PolicyManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolicyManager.cpp; sourceTree = "<group>"; };
+		A260BC942132D49900214C59 /* PolicyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolicyManager.h; sourceTree = "<group>"; };
 		A2D181451C8FF86C0018AE03 /* media.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = media.cpp; sourceTree = "<group>"; };
 		A2FE257E1C5ACEFD00210C36 /* AES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AES.cpp; sourceTree = "<group>"; };
 		A2FE257F1C5ACEFD00210C36 /* AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AES.h; sourceTree = "<group>"; };
@@ -1350,6 +1353,8 @@
 		E6EE839111E87E9700B01518 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				A260BC932132D49900214C59 /* PolicyManager.cpp */,
+				A260BC942132D49900214C59 /* PolicyManager.h */,
 				E6F8DC201D132657007DFBEC /* RUEList.cpp */,
 				E6F8DC211D132657007DFBEC /* RUEList.h */,
 				A2FE257E1C5ACEFD00210C36 /* AES.cpp */,
@@ -1734,6 +1739,7 @@
 				E6EE845111E87E9800B01518 /* XFilterXMLProcessor.cpp in Sources */,
 				A2FE25901C5ACF7500210C36 /* pbkdf2.cpp in Sources */,
 				E6EE845211E87E9800B01518 /* XSecMemMgr.cpp in Sources */,
+				A260BC952132D49900214C59 /* PolicyManager.cpp in Sources */,
 				E6EE845311E87E9800B01518 /* XMLFileHandlers.cpp in Sources */,
 				E6EE845411E87E9800B01518 /* XMLFileValidation.cpp in Sources */,
 				E6EE845511E87E9800B01518 /* XMLprefs.cpp in Sources */,
