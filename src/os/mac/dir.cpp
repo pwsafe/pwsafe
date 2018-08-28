@@ -161,8 +161,8 @@ static stringT createuserprefsdir(void)
     struct stat statbuf;
     switch (::lstat(pws_os::tomb(cfgdir).c_str(), &statbuf)) {
     case 0:
-      if (!S_ISDIR(statbuf.st_mode))
-        cfgdir.clear();  // not a dir - can't use it.
+      if (!S_ISDIR(statbuf.st_mode) && !S_ISLNK(statbuf.st_mode))
+        cfgdir.clear();  // not a dir or symbolic link - can't use it.
       break;
     case -1:  // dir doesn't exist.  Or should we check errno too?
       {
