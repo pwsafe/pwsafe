@@ -481,7 +481,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_HISTORY_ENTRY:
       ASSERT(m_cur_pwhistory_entry != nullptr);
-      Format(buffer, _T("\xff%s\xff%04x\xff%s"),
+      Format(buffer, _T("\xff%ls\xff%04x\xff%ls"),
              m_cur_pwhistory_entry->changed.c_str(),
              m_cur_pwhistory_entry->oldpassword.length(),
              m_cur_pwhistory_entry->oldpassword.c_str());
@@ -648,7 +648,7 @@ void XMLFileHandlers::AddXMLEntries()
         cs_p = CItemData::EngFieldName(CItemData::PASSWORD);
       }
 
-      Format(cs_tp, _T("%s%s%s"), cs_t.c_str(), num == 2 ? _T(" & ") : _T(""), cs_p.c_str());
+      Format(cs_tp, _T("%ls%ls%ls"), cs_t.c_str(), num == 2 ? _T(" & ") : _T(""), cs_p.c_str());
       stringT::iterator new_end = std::remove(cs_tp.begin(), cs_tp.end(), TCHAR('\t'));
       cs_tp.erase(new_end, cs_tp.end());
 

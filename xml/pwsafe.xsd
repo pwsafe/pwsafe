@@ -282,6 +282,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
       <xs:attribute name="WhatSaved" type="stringType" use="optional" />
       <xs:attribute name="WhoSaved" type="stringType" use="optional" />
       <xs:attribute name="WhenLastSaved" type="xs:dateTime" use="optional" />
+      <xs:attribute name="WhenPwdLastChanged" type="xs:dateTime" use="optional" />
       <xs:attribute name="Database_uuid" type="fileuuidType" use="optional" />
       <!-- End Database Attributes -->
     </xs:complexType>
