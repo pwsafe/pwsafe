@@ -15,7 +15,7 @@ The ReleaseNotes.html file has links to the relevant tickets/issues.
 
 Bugs Fixed in 3.47.1
 ====================
-[] Change clipboard clearing delay from 3 to 10 seconds.
+[] Change clipboard clearing delay from 3 to 30 seconds.
 [1466] Disable Undo/Redo toolbar buttons when opening database (and
 there's nothing to undo/redo).
 [GH474] Resized Properties dialog for non-English texts.
