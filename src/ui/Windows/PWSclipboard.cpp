@@ -44,10 +44,12 @@ public:
   {
     if (s_hg != NULL) {
       *phGlobal = s_hg;
+#ifdef CLEAR_CLIPBOARD_ON_TIMER /* disable for now, as problematic */
       if (m_isSensitive) {
         // zap clipboard 30 seconds after paste:
         AfxGetMainWnd()->SetTimer(TIMER_ID, 30000, timerCallback);
       }
+#endif
       return TRUE;
     } else
       return FALSE;
