@@ -1947,12 +1947,12 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 #endif
       evt.Enable(m_core.IsDbOpen());
       break;
-      
+
     case ID_EXPORTMENU:
     case ID_COMPARE:
       evt.Enable(m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
       break;
-    
+
     case ID_ADDGROUP:
       evt.Enable(bTreeView && !bFileIsReadOnly && m_core.IsDbOpen());
       break;
@@ -2021,8 +2021,11 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_SYNCHRONIZE:
     case ID_CHANGECOMBO:
-    case wxID_FIND:
       evt.Enable(!bFileIsReadOnly && m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
+      break;
+
+    case wxID_FIND:
+      evt.Enable(m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
       break;
 
     case wxID_ADD:
@@ -2054,11 +2057,11 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!bFileIsReadOnly && pci && !pci->IsShortcut());
       evt.Check(pci && pci->IsProtected());
       break;
-      
+
     case wxID_CLOSE:
       evt.Enable(m_sysTray->GetTrayStatus() != SystemTray::TrayStatus::CLOSED);
       break;
-      
+
     case ID_PWDPOLSM:
     case ID_LOCK_SAFE:
       evt.Enable(m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED);
