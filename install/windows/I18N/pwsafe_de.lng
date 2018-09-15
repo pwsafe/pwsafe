@@ -131,5 +131,11 @@ LangString SORRY_NO_ME ${LANG_GERMAN} "Schade, aber Windows ME wieder nicht mehr
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
 LangString SORRY_NO_2K ${LANG_GERMAN} "Schade, aber Windows 2000 wieder nicht mehr unterstützt. Versuchen Sie PasswordSafe 3.18"
 
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_GERMAN} "Password Safe Uninstall"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_GERMAN} "Password Safe Help"
+
 ;=================================================================
 ; End of pwsafe_de.lng

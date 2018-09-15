@@ -146,5 +146,11 @@ LangString SORRY_NO_ME ${LANG_HUNGARIAN} "Sajnálom, a Windows ME már nem támogat
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
 LangString SORRY_NO_2K ${LANG_HUNGARIAN} "Sajnálom, a Windows 2000 már nem támogatott. A használathoz telepítse fel a PasswordSafe 2.16 verzióját"
 
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_HUNGARIAN} "Password Safe Uninstall"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_HUNGARIAN} "Password Safe Help"
+
 ;=================================================================
 ; End of pwsafe_hu.lng

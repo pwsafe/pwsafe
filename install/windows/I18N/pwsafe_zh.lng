@@ -143,5 +143,11 @@ LangString SORRY_NO_ME ${LANG_SIMPCHINESE} "抱歉，Windows ME 不再支持！尝试 Pass
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
 LangString SORRY_NO_2K ${LANG_SIMPCHINESE} "抱歉，Windows 2000 不再支持！尝试 PasswordSafe 3.18。"
 
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_SIMPCHINESE} "Password Safe Uninstall"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_SIMPCHINESE} "Password Safe Help"
+
 ;=================================================================
 ; End of pwsafe_zh.lng

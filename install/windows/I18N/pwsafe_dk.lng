@@ -142,5 +142,11 @@ LangString SORRY_NO_ME ${LANG_DANISH} "Beklager men, Windows ME er ikke længere 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
 LangString SORRY_NO_2K ${LANG_DANISH} "Beklager men, Windows 2000 er ikke længere understøttet. Prøv PasswordSafe 3.18"
 
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_DANISH} "Password Safe Uninstall"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_DANISH} "Password Safe Help"
+
 ;=================================================================
 ; End of pwsafe_dk.lng

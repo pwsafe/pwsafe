@@ -133,5 +133,11 @@ LangString SORRY_NO_ME ${LANG_RUSSIAN} "Извините, Windows ME больш�
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
 LangString SORRY_NO_2K ${LANG_RUSSIAN} "Извините, Windows 2000 больше не поддерживается. Попробуйте версию 3.18"
 
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_RUSSIAN} "Password Safe Uninstall"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_RUSSIAN} "Password Safe Help"
+
 ;=================================================================
 ; End of pwsafe_ru.lng

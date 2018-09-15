@@ -147,5 +147,11 @@ LangString SORRY_NO_ME ${LANG_CZECH} "Omlouváme se, Windows ME již není podporov
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
 LangString SORRY_NO_2K ${LANG_CZECH} "Omlouváme se, Windows 2000 již není podporován. Zkuste Password Safe 3.18"
 
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_CZECH} "Password Safe Uninstall"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_CZECH} "Password Safe Help"
+
 ;=================================================================
 ; End of pwsafe_cz.lng

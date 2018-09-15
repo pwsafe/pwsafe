@@ -281,7 +281,7 @@ LangString DESC_StartUp ${LANG_ENGLISH} "Starts Password Safe as part of Windows
 LangString DESC_StartMenu ${LANG_ENGLISH} "Creates an entry in the start menu for Password Safe."
 LangString DESC_DesktopShortcut ${LANG_ENGLISH} "Places a shortcut to Password Safe on your desktop."
 LangString DESC_UninstallMenu ${LANG_ENGLISH} "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_LangSupport ${LANG_ENGLISH} "Please select the language(s) that Password Safe will use."
+LangString DESC_LangSupport ${LANG_ENGLISH} "Please select the language(s) that PasswordSafe will use."
 
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 LangString TEXT_GC_TITLE ${LANG_ENGLISH} "Installation Type"
@@ -290,7 +290,7 @@ LangString TEXT_GC_SUBTITLE ${LANG_ENGLISH} "Choose Regular for use on a single 
 ; several messages on install, check, ...
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 LangString RUNNING_INSTALL ${LANG_ENGLISH} "The installer is already running."
-LangString RUNNING_APPLICATION ${LANG_ENGLISH} "Please exit all running instances of Password Safe before installing a new version"
+LangString RUNNING_APPLICATION ${LANG_ENGLISH} "Please exit all running instances of PasswordSafe before installing a new version"
 LangString LANG_INSTALL ${LANG_ENGLISH} "Installation Language"
 LangString LANG_SELECT ${LANG_ENGLISH} "Please select the language for the installation"
 LangString LANGUAGE_SUPPORT ${LANG_ENGLISH} "Language Support"
@@ -314,10 +314,13 @@ LangString HUNGARIAN_SUPPORT ${LANG_ENGLISH} "Hungarian"
 LangString SLOVENIAN_SUPPORT ${LANG_ENGLISH} "Slovenian"
 
 LangString LANG_PROGRAM ${LANG_ENGLISH} "Program Language"
-LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported. Try Password Safe 2.16"
-LangString SORRY_NO_98 ${LANG_ENGLISH} "Sorry, Windows 98 is no longer supported. Try Password Safe 2.16"
-LangString SORRY_NO_ME ${LANG_ENGLISH} "Sorry, Windows ME is no longer supported. Try Password Safe 2.16"
-LangString SORRY_NO_2K ${LANG_ENGLISH} "Sorry, Windows 2000 is no longer supported. Try Password Safe 3.18"
+LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_98 ${LANG_ENGLISH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_ME ${LANG_ENGLISH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_2K ${LANG_ENGLISH} "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
+
+LangString Icon_description_Uninstall ${LANG_ENGLISH} "Password Safe Uninstall"
+LangString Icon_description_Help ${LANG_ENGLISH} "Password Safe Help"
 
 ;--------------------------------
 ; Interface Settings
@@ -502,7 +505,7 @@ Section "$(START_SHOW)" StartMenu
 
   ; Create shortcuts
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe.lnk" "$INSTDIR\pwsafe.exe"
-  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help.lnk" "$INSTDIR\pwsafe.chm"
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help).lnk" "$INSTDIR\pwsafe.chm"
 SectionEnd
 
 ;--------------------------------
@@ -515,7 +518,7 @@ Section "$(UNINSTALL_SHORTCUT)" UninstallMenu
   CreateDirectory "$SMPROGRAMS\Password Safe"
 
   ; Create Uninstall icon
-  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Uninstall.lnk" "$INSTDIR\Uninstall.exe"
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Uninstall).lnk" "$INSTDIR\Uninstall.exe"
 
 SectionEnd
 
@@ -607,7 +610,7 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe"
   ; Delete shortcuts, if created
   Delete "$SMPROGRAMS\Password Safe\Password Safe.lnk"
-  Delete "$SMPROGRAMS\Password Safe\Password Safe Help.lnk"
+  Delete "$SMPROGRAMS\Password Safe\$(Icon_description_Help).lnk"
   RMDir /r "$SMPROGRAMS\Password Safe"
   Delete "$DESKTOP\Password Safe.lnk"
   Delete "$SMSTARTUP\Password Safe.lnk"

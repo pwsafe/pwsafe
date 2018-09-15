@@ -128,6 +128,12 @@ LangString SORRY_NO_ME ${LANG_KOREAN} " Windows ME는 더 이상 지원되지 않습니다. 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
 LangString SORRY_NO_2K ${LANG_KOREAN} " Windows 2000은 더 이상 지원되지 않습니다. Password Safe 3.18을 사용해 주십시오."
 
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_KOREAN} "Password Safe Uninstall"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_KOREAN} "Password Safe Help"
+
 ;=================================================================
 ; End of pwsafe_kr.lng
 
