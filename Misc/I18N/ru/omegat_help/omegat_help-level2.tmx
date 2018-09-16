@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx14.dtd">
 <tmx version="1.4">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.5_0_10418" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.5_1_10445:10446" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -22119,8 +22119,8 @@
       <tuv xml:lang="EN-US">
         <seg>images/options/security_tab.jpg</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110215T195636Z">
-        <seg>images/options/security_tab.jpg</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20180916T101235Z">
+        <seg>images/options/security_tab.png</seg>
       </tuv>
     </tu>
     <tu>
