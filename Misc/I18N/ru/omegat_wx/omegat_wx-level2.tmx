@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx14.dtd">
 <tmx version="1.4">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.5_0_10418" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.5_1_10445:10446" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -2375,6 +2375,14 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Ctrl+P</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20180916T102157Z" creationid="pm_kan" creationdate="20180916T102157Z">
+        <seg>Ctrl+P</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Ctrl+R</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20121224T115631Z">
@@ -2595,6 +2603,14 @@ Locked by</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20130428T142350Z">
         <seg>Разделители</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Description:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Описание:</seg>
       </tuv>
     </tu>
     <tu>
@@ -3520,6 +3536,22 @@ Action:</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Generate &amp;Password...</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20180916T102139Z" creationid="pm_kan" creationdate="20180916T102126Z">
+        <seg>Создать &amp;пароль...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Generate Password</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Создать пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Generate pronounceable passwords</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20121224T104518Z">
@@ -4339,6 +4371,14 @@ username field.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Master Password last set on:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Дата смены мастер-пароля:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Max.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -4495,6 +4535,14 @@ username field.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Н/Д</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Name:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Имя:</seg>
       </tuv>
     </tu>
     <tu>
@@ -4736,6 +4784,14 @@ added or existing entries removed during this process.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20130915T181811Z">
         <seg>Нажмите кнопку на YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Number of Attachments:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Количество вложений:</seg>
       </tuv>
     </tu>
     <tu>
@@ -5653,7 +5709,7 @@ to the base entry</seg>
       <tuv xml:lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2018-08-04 19:38+0300
+POT-Creation-Date: 2018-09-16 13:20+0300
 PO-Revision-Date: 2018-08-04 17:36+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
@@ -5662,11 +5718,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20180804T164046Z" creationid="pm_kan" creationdate="20180804T164046Z">
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20180916T102356Z" creationid="pm_kan" creationdate="20180916T102356Z">
         <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
-POT-Creation-Date: 2018-08-04 20:02+0300
-PO-Revision-Date: 2018-08-04 20:02+0300
+POT-Creation-Date: 2018-09-16 13:24+0300
+PO-Revision-Date: 2018-09-16 13:24+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
@@ -7487,6 +7543,14 @@ and User fields match.</seg>
     <tu>
       <tuv xml:lang="EN-US">
         <seg>Use Database Policy</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Использовать политику</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Use Named Policy</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Использовать политику</seg>
