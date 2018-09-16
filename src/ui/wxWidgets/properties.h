@@ -47,6 +47,8 @@
 #define wxID_UNKNOWFIELDS 10073
 #define wxID_DBNAME 10302
 #define wxID_DBDESCRIPTION 10303
+#define wxID_CHANGE_NAME 10304
+#define wxID_CHANGE_DESCRIPTION 10305
 #if WXWIN_COMPATIBILITY_2_6
 #define SYMBOL_CPROPERTIES_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #else
@@ -91,7 +93,13 @@ public:
 ////@begin CProperties event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
-  void OnOkClick( wxCommandEvent& evt);
+  void OnOkClick(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CHANGE_NAME
+  void OnEditName(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CHANGE_DESCRIPTION
+  void OnEditDescription(wxCommandEvent& evt);
 
 ////@end CProperties event handler declarations
 
@@ -124,6 +132,12 @@ public:
   wxString GetUnknownfields() const { return m_unknownfields ; }
   void SetUnknownfields(wxString value) { m_unknownfields = value ; }
 
+  StringX GetNewDbName() const { return m_NewDbName; }
+  StringX GetNewDbDescription() const { return m_NewDbDescription; }
+
+  bool HasDbNameChanged() const { return m_NewDbName != m_core.GetHeader().m_DB_Name; }
+  bool HasDbDescriptionChanged() const { return m_NewDbDescription != m_core.GetHeader().m_DB_Description; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -150,6 +164,8 @@ private:
   wxString m_DbName;
   wxString m_DbDescription;
 ////@end CProperties member variables
+  StringX m_NewDbName;
+  StringX m_NewDbDescription;
   const PWScore &m_core;
 };
 
