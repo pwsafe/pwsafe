@@ -21,6 +21,8 @@
 #endif
 
 ////@begin includes
+#include <wx/grid.h>
+#include <wx/textdlg.h>
 ////@end includes
 
 #include <vector>
@@ -46,7 +48,9 @@ IMPLEMENT_CLASS( CProperties, wxDialog )
 BEGIN_EVENT_TABLE( CProperties, wxDialog )
 
 ////@begin CProperties event table entries
-  EVT_BUTTON( wxID_OK, CProperties::OnOkClick )
+  EVT_BUTTON( wxID_OK,                  CProperties::OnOkClick )
+  EVT_BUTTON( wxID_CHANGE_NAME,         CProperties::OnEditName )
+  EVT_BUTTON( wxID_CHANGE_DESCRIPTION,  CProperties::OnEditDescription )
 
 ////@end CProperties event table entries
 
@@ -250,6 +254,7 @@ void CProperties::Init()
   wxString dbName = m_core.GetHeader().m_DB_Name.c_str();
 
   m_DbName = dbName.empty() ? _("N/A") : dbName;
+  m_NewDbName = m_core.GetHeader().m_DB_Name;
 
 
   /////////////////////////////////////////////////////////////////////////////
@@ -259,6 +264,7 @@ void CProperties::Init()
   wxString dbDescription = m_core.GetHeader().m_DB_Description.c_str();
 
   m_DbDescription = dbDescription.empty() ? _("N/A") : dbDescription;
+  m_NewDbDescription = m_core.GetHeader().m_DB_Description;
 }
 
 /*!
@@ -268,104 +274,105 @@ void CProperties::Init()
 void CProperties::CreateControls()
 {
 ////@begin CProperties content construction
-  CProperties* currDialog = this;
+  auto mainSizer = new wxBoxSizer(wxVERTICAL);
+  this->SetSizer(mainSizer);
 
-  wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
-  currDialog->SetSizer(mainSizer);
+  auto dbPathText = new wxStaticText( this, wxID_DATABASE, _("Static text"), wxDefaultPosition, wxDefaultSize, 0 );
+  mainSizer->Add(dbPathText, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 10);
 
-  wxStaticText* dbPathText = new wxStaticText( currDialog, wxID_DATABASE, _("Static text"), wxDefaultPosition, wxDefaultSize, 0 );
-  mainSizer->Add(dbPathText, 0, wxALIGN_LEFT|wxALL, 5);
+  auto flexGridSizer = new wxFlexGridSizer(3 /*cols*/, 0 /*vgap*/, 0 /*hgap*/);
+  flexGridSizer->AddGrowableCol(1);
+  mainSizer->Add(flexGridSizer, 1, wxALIGN_CENTER_HORIZONTAL|wxALL|wxEXPAND, 5);
 
-  wxBoxSizer* horizSizer = new wxBoxSizer(wxHORIZONTAL);
-  mainSizer->Add(horizSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  auto itemStaticText6 = new wxStaticText( this, wxID_STATIC, _("Database format:"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto dbFormatText = new wxStaticText( this, wxID_DATABASEFORMAT, wxT("9.99"), wxDefaultPosition, wxDefaultSize, 0 );
+  flexGridSizer->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(dbFormatText,    1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
-  wxBoxSizer* staticVertSizer = new wxBoxSizer(wxVERTICAL);
-  horizSizer->Add(staticVertSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto itemStaticText7 = new wxStaticText( this, wxID_STATIC, _("Number of Groups:"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto numGroupsText = new wxStaticText( this, wxID_NUMGROUPS, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
+  flexGridSizer->Add(itemStaticText7, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(numGroupsText  , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
-  wxStaticText* itemStaticText6 = new wxStaticText( currDialog, wxID_STATIC, _("Database format:"), wxDefaultPosition, wxDefaultSize, 0 );
-  staticVertSizer->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALL, 5);
+  auto itemStaticText8 = new wxStaticText( this, wxID_STATIC, _("Number of Entries:"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto entriesText = new wxStaticText( this, wxID_NUMENTRIES, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
+  flexGridSizer->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(entriesText    , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
-  wxStaticText* itemStaticText7 = new wxStaticText( currDialog, wxID_STATIC, _("Number of Groups:"), wxDefaultPosition, wxDefaultSize, 0 );
-  staticVertSizer->Add(itemStaticText7, 0, wxALIGN_LEFT|wxALL, 5);
+  auto itemStaticText14 = new wxStaticText( this, wxID_STATIC, _("Number of Attachments:"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto attachmentsText = new wxStaticText( this, wxID_NUMATTACHMENTS, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
+  flexGridSizer->Add(itemStaticText14, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(attachmentsText , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
-  wxStaticText* itemStaticText8 = new wxStaticText( currDialog, wxID_STATIC, _("Number of Entries:"), wxDefaultPosition, wxDefaultSize, 0 );
-  staticVertSizer->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL, 5);
+  auto itemStaticText9 = new wxStaticText( this, wxID_STATIC, _("Last saved by:"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto lastSavedUserText = new wxStaticText( this, wxID_WHOLASTSAVED, wxT("user on host"), wxDefaultPosition, wxDefaultSize, 0 );
+  flexGridSizer->Add(itemStaticText9  , 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(lastSavedUserText, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
-  wxStaticText* itemStaticText14 = new wxStaticText( currDialog, wxID_STATIC, _("Number of Attachments:"), wxDefaultPosition, wxDefaultSize, 0 );
-  staticVertSizer->Add(itemStaticText14, 0, wxALIGN_LEFT|wxALL, 5);
+  auto itemStaticText10 = new wxStaticText( this, wxID_STATIC, _("Last saved on:"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto lastSavedDateText = new wxStaticText( this, wxID_WHENLASTSAVED, wxT("dd.mm.yyyy"), wxDefaultPosition, wxDefaultSize, 0 );
+  flexGridSizer->Add(itemStaticText10 , 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(lastSavedDateText, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
-  wxStaticText* itemStaticText9 = new wxStaticText( currDialog, wxID_STATIC, _("Last saved by:"), wxDefaultPosition, wxDefaultSize, 0 );
-  staticVertSizer->Add(itemStaticText9, 0, wxALIGN_LEFT|wxALL, 5);
+  auto itemStaticText11 = new wxStaticText( this, wxID_STATIC, _("Using application:"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto lastSavedAppText = new wxStaticText( this, wxID_WHATLASTSAVED, wxT("application & version"), wxDefaultPosition, wxDefaultSize, 0 );
+  flexGridSizer->Add(itemStaticText11, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(lastSavedAppText, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
-  wxStaticText* itemStaticText10 = new wxStaticText( currDialog, wxID_STATIC, _("Last saved on:"), wxDefaultPosition, wxDefaultSize, 0 );
-  staticVertSizer->Add(itemStaticText10, 0, wxALIGN_LEFT|wxALL, 5);
+  auto itemStaticText15 = new wxStaticText( this, wxID_STATIC, _("Master Password last set on:"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto lastChangedPwdDateText = new wxStaticText( this, wxID_PWDLASTCHANGED, wxT("dd.mm.yyyy"), wxDefaultPosition, wxDefaultSize, 0 );
+  flexGridSizer->Add(itemStaticText15      , 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(lastChangedPwdDateText, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
-  wxStaticText* itemStaticText11 = new wxStaticText( currDialog, wxID_STATIC, _("Using application:"), wxDefaultPosition, wxDefaultSize, 0 );
-  staticVertSizer->Add(itemStaticText11, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* itemStaticText15 = new wxStaticText( currDialog, wxID_STATIC, _("Master Password last set on:"), wxDefaultPosition, wxDefaultSize, 0 );
-  staticVertSizer->Add(itemStaticText15, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* itemStaticText12 = new wxStaticText( currDialog, wxID_STATIC, _("Database Unique ID:"), wxDefaultPosition, wxDefaultSize, 0 );
-  staticVertSizer->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* itemStaticText13 = new wxStaticText( currDialog, wxID_STATIC, _("Unknown fields:"), wxDefaultPosition, wxDefaultSize, 0 );
-  staticVertSizer->Add(itemStaticText13, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* itemStaticText16 = new wxStaticText( currDialog, wxID_STATIC, _("Name:"), wxDefaultPosition, wxDefaultSize, 0 );
-  staticVertSizer->Add(itemStaticText16, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* itemStaticText17 = new wxStaticText( currDialog, wxID_STATIC, _("Description:"), wxDefaultPosition, wxDefaultSize, 0 );
-  staticVertSizer->Add(itemStaticText17, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxBoxSizer* dataVertSizer = new wxBoxSizer(wxVERTICAL);
-  horizSizer->Add(dataVertSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  wxStaticText* dbFormatText = new wxStaticText( currDialog, wxID_DATABASEFORMAT, wxT("9.99"), wxDefaultPosition, wxDefaultSize, 0 );
-  dataVertSizer->Add(dbFormatText, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* numGroupsText = new wxStaticText( currDialog, wxID_NUMGROUPS, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
-  dataVertSizer->Add(numGroupsText, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* entriesText = new wxStaticText( currDialog, wxID_NUMENTRIES, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
-  dataVertSizer->Add(entriesText, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* attachmentsText = new wxStaticText( currDialog, wxID_NUMATTACHMENTS, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
-  dataVertSizer->Add(attachmentsText, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* lastSavedUserText = new wxStaticText( currDialog, wxID_WHOLASTSAVED, wxT("user on host"), wxDefaultPosition, wxDefaultSize, 0 );
-  dataVertSizer->Add(lastSavedUserText, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* lastSavedDateText = new wxStaticText( currDialog, wxID_WHENLASTSAVED, wxT("dd.mm.yyyy"), wxDefaultPosition, wxDefaultSize, 0 );
-  dataVertSizer->Add(lastSavedDateText, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* lastSavedAppText = new wxStaticText( currDialog, wxID_WHATLASTSAVED, wxT("application & version"), wxDefaultPosition, wxDefaultSize, 0 );
-  dataVertSizer->Add(lastSavedAppText, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* lastChangedPwdDateText = new wxStaticText( currDialog, wxID_PWDLASTCHANGED, wxT("dd.mm.yyyy"), wxDefaultPosition, wxDefaultSize, 0 );
-  dataVertSizer->Add(lastChangedPwdDateText, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* uuidText = new wxStaticText( currDialog, wxID_FILEUUID,
+  auto itemStaticText12 = new wxStaticText( this, wxID_STATIC, _("Database Unique ID:"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto uuidText = new wxStaticText( this, wxID_FILEUUID,
                                             wxT("12345678-90AB-CDEF-1234-567890ABCDEF"), // need to use different digits/letters to correctly calculate size because of kerning
                                             wxDefaultPosition, wxDefaultSize, 0 );
-  dataVertSizer->Add(uuidText, 0, wxALIGN_LEFT|wxALL, 5);
+  flexGridSizer->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(uuidText        , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
-  wxStaticText* unknownFieldsText = new wxStaticText( currDialog, wxID_UNKNOWFIELDS, wxT("x"), wxDefaultPosition, wxDefaultSize, 0 );
-  dataVertSizer->Add(unknownFieldsText, 0, wxALIGN_LEFT|wxALL, 5);
+  auto itemStaticText13 = new wxStaticText( this, wxID_STATIC, _("Unknown fields:"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto unknownFieldsText = new wxStaticText( this, wxID_UNKNOWFIELDS, wxT("x"), wxDefaultPosition, wxDefaultSize, 0 );
+  flexGridSizer->Add(itemStaticText13 , 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(unknownFieldsText, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
-  wxStaticText* dbNameText = new wxStaticText( currDialog, wxID_DBNAME, wxT("database name"), wxDefaultPosition, wxDefaultSize, 0 );
-  dataVertSizer->Add(dbNameText, 0, wxALIGN_LEFT|wxALL, 5);
+  auto itemStaticText16 = new wxStaticText( this, wxID_STATIC, _("Name:"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto dbNameText = new wxStaticText( this, wxID_DBNAME, wxT("database name"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto onEditNameButton = new wxButton( this, wxID_CHANGE_NAME, wxT("..."), wxDefaultPosition, wxSize(35, 25), 0 );
+  flexGridSizer->Add(itemStaticText16, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(dbNameText      , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  flexGridSizer->Add(onEditNameButton, 0, wxALIGN_LEFT|wxALL         , 5); // Item for 3rd column of wxFlexGridSizer
 
-  wxStaticText* dbDescriptionText = new wxStaticText( currDialog, wxID_DBDESCRIPTION, wxT("database description"), wxDefaultPosition, wxDefaultSize, 0 );
-  dataVertSizer->Add(dbDescriptionText, 0, wxALIGN_LEFT|wxALL, 5);
+  auto itemStaticText17 = new wxStaticText( this, wxID_STATIC, _("Description:"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto dbDescriptionText = new wxStaticText( this, wxID_DBDESCRIPTION, wxT("database description"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto onEditDescriptionButton = new wxButton( this, wxID_CHANGE_DESCRIPTION, wxT("..."), wxDefaultPosition, wxSize(35, 25), 0 );
+  flexGridSizer->Add(itemStaticText17       , 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(dbDescriptionText      , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  flexGridSizer->Add(onEditDescriptionButton, 0, wxALIGN_LEFT|wxALL         , 5); // Item for 3rd column of wxFlexGridSizer
 
-  wxStdDialogButtonSizer* buttonsSizer = new wxStdDialogButtonSizer;
+
+  auto buttonsSizer = new wxStdDialogButtonSizer;
 
   mainSizer->Add(buttonsSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
-  wxButton* okButton = new wxButton( currDialog, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto okButton = new wxButton( this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
   okButton->SetDefault();
   buttonsSizer->AddButton(okButton);
   buttonsSizer->Realize();
+
+  if (m_core.IsReadOnly()) {
+    onEditNameButton->Enable(false);
+    onEditDescriptionButton->Enable(false);
+  }
 
   // Set validators
   dbPathText->SetValidator( wxGenericValidator(& m_database) );
@@ -422,10 +429,68 @@ wxIcon CProperties::GetIconResource( const wxString& WXUNUSED(name) )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CProperties::OnOkClick( wxCommandEvent& /* evt */ )
+void CProperties::OnOkClick( wxCommandEvent& WXUNUSED(evt) )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CProperties.
   // Before editing this code, remove the block markers.
   EndModal(wxID_OK);
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CProperties.
+}
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CHANGE_NAME
+ */
+void CProperties::OnEditName( wxCommandEvent& WXUNUSED(evt) )
+{
+  wxTextEntryDialog textInputDialog(
+    this, _("Name:"), _("Please enter the new database name"), m_NewDbName.c_str(), wxOK|wxCANCEL
+  );
+
+  textInputDialog.SetSize(550, -1);
+
+  if (textInputDialog.ShowModal() == wxID_OK) {
+    m_DbName = textInputDialog.GetValue();
+
+    if (m_DbName.IsEmpty()) { /* Show 'N/A' on the UI in case of an empty string, */
+      m_DbName = _("N/A");    /* but use the empty string as new DB name          */
+
+      if (Validate() && TransferDataToWindow()) {
+        m_NewDbName = std2stringx(_T(""));
+      }
+    }
+    else {
+      if (Validate() && TransferDataToWindow()) {
+        m_NewDbName = std2stringx(m_DbName.wc_str());
+      }
+    }
+  }
+}
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CHANGE_DESCRIPTION
+ */
+void CProperties::OnEditDescription( wxCommandEvent& WXUNUSED(evt) )
+{
+  wxTextEntryDialog textInputDialog(
+    this, _("Description:"), _("Please enter the new database description"), m_NewDbDescription.c_str(), wxOK|wxCANCEL|wxTE_MULTILINE
+  );
+
+  textInputDialog.SetSize(550, 300);
+
+  if (textInputDialog.ShowModal() == wxID_OK) {
+    m_DbDescription = textInputDialog.GetValue();
+
+    if (m_DbDescription.IsEmpty()) { /* Show 'N/A' on the UI in case of an empty string, */
+      m_DbDescription = _("N/A");    /* but use the empty string as new DB description   */
+
+      if (Validate() && TransferDataToWindow()) {
+        m_NewDbDescription = std2stringx(_T(""));
+      }
+    }
+    else {
+      if (Validate() && TransferDataToWindow()) {
+        m_NewDbDescription = std2stringx(m_DbDescription.wc_str());
+      }
+    }
+  }
 }
