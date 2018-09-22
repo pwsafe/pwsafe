@@ -505,7 +505,57 @@ Section "$(START_SHOW)" StartMenu
 
   ; Create shortcuts
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe.lnk" "$INSTDIR\pwsafe.exe"
-  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help).lnk" "$INSTDIR\pwsafe.chm"
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(ENGLISH_SUPPORT)).lnk" "$INSTDIR\pwsafe.chm"
+
+  ; Shortcuts for help in other languages
+  SectionGetFlags ${GermanSection} $0
+  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(GERMAN_SUPPORT)).lnk" "$INSTDIR\pwsafeDE.chm"
+  SectionGetFlags ${ChineseSection} $0
+  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(CHINESE_CN_SUPPORT)).lnk" "$INSTDIR\pwsafeZH.chm"
+;  SectionGetFlags ${ChineseTWSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(CHINESE_TW_SUPPORT)).lnk" "$INSTDIR\pwsafeZH_TW.chm"
+  SectionGetFlags ${SpanishSection} $0
+  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(SPANISH_SUPPORT)).lnk" "$INSTDIR\pwsafeES.chm"
+;  SectionGetFlags ${SwedishSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(SWEDISH_SUPPORT)).lnk" "$INSTDIR\pwsafeSV.chm"
+;  SectionGetFlags ${DutchSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(DUTCH_SUPPORT)).lnk" "$INSTDIR\pwsafeNL.chm"
+  SectionGetFlags ${FrenchSection} $0
+  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(FRENCH_SUPPORT)).lnk" "$INSTDIR\pwsafeFR.chm"
+  SectionGetFlags ${RussianSection} $0
+  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(RUSSIAN_SUPPORT)).lnk" "$INSTDIR\pwsafeRU.chm"
+  SectionGetFlags ${PolishSection} $0
+  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(POLISH_SUPPORT)).lnk" "$INSTDIR\pwsafePL.chm"
+;  SectionGetFlags ${ItalianSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(ITALIAN_SUPPORT)).lnk" "$INSTDIR\pwsafeIT.chm"
+;  SectionGetFlags ${DanishSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(DANISH_SUPPORT)).lnk" "$INSTDIR\pwsafeDA.chm"
+;  SectionGetFlags ${KoreanSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(KOREAN_SUPPORT)).lnk" "$INSTDIR\pwsafeKO.chm"
+;  SectionGetFlags ${CzechSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(CZECH_SUPPORT)).lnk" "$INSTDIR\pwsafeCZ.chm"
+;  SectionGetFlags ${TurkishSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(TURKISH_SUPPORT)).lnk" "$INSTDIR\pwsafeTR.chm"
+;  SectionGetFlags ${HungarianSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(HUNGARIAN_SUPPORT)).lnk" "$INSTDIR\pwsafeHU.chm"
+;  SectionGetFlags ${SlovenianSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(SLOVENIAN_SUPPORT)).lnk" "$INSTDIR\pwsafeSL.chm"
 SectionEnd
 
 ;--------------------------------
@@ -563,37 +613,61 @@ Section "Uninstall"
   Delete "$INSTDIR\pws_at.dll"
   Delete "$INSTDIR\pws_osk.dll"
   Delete "$INSTDIR\pwsafe.chm"
+  Delete "$INSTDIR\pwsafe.chw"
   Delete "$INSTDIR\pwsafe.xsd"
   Delete "$INSTDIR\pwsafe.xsl"
   Delete "$INSTDIR\pwsafe_filter.xsd"
   Delete "$INSTDIR\KPV1_to_PWS.xslt"
   Delete "$INSTDIR\KPV2_to_PWS.xslt"
   Delete "$INSTDIR\LICENSE"
-  Delete "$INSTDIR\README.TXT"
+  Delete "$INSTDIR\README.md"
   Delete "$INSTDIR\ReleaseNotes.txt"
   Delete "$INSTDIR\ReleaseNotes.html"
   Delete "$INSTDIR\ChangeLog.txt"
+  Delete "$INSTDIR\pwsafeCZ.chm"
+  Delete "$INSTDIR\pwsafeCZ.chw"
+  Delete "$INSTDIR\pwsafeCZ.dll"
   Delete "$INSTDIR\pwsafeDA.chm"
+  Delete "$INSTDIR\pwsafeDA.chw"
   Delete "$INSTDIR\pwsafeDA.dll"
   Delete "$INSTDIR\pwsafeDE.chm"
+  Delete "$INSTDIR\pwsafeDE.chw"
   Delete "$INSTDIR\pwsafeDE.dll"
   Delete "$INSTDIR\pwsafeES.chm"
+  Delete "$INSTDIR\pwsafeES.chw"
   Delete "$INSTDIR\pwsafeES.dll"
   Delete "$INSTDIR\pwsafeFR.chm"
+  Delete "$INSTDIR\pwsafeFR.chw"
   Delete "$INSTDIR\pwsafeFR.dll"
+  Delete "$INSTDIR\pwsafeHU.chm"
+  Delete "$INSTDIR\pwsafeHU.chw"
+  Delete "$INSTDIR\pwsafeHU.dll"
   Delete "$INSTDIR\pwsafeIT.chm"
+  Delete "$INSTDIR\pwsafeIT.chw"
   Delete "$INSTDIR\pwsafeIT.dll"
   Delete "$INSTDIR\pwsafeKO.chm"
+  Delete "$INSTDIR\pwsafeKO.chw"
   Delete "$INSTDIR\pwsafeKO.dll"
   Delete "$INSTDIR\pwsafeNL.chm"
+  Delete "$INSTDIR\pwsafeNL.chw"
   Delete "$INSTDIR\pwsafeNL.dll"
   Delete "$INSTDIR\pwsafePL.chm"
+  Delete "$INSTDIR\pwsafePL.chw"
   Delete "$INSTDIR\pwsafePL.dll"
   Delete "$INSTDIR\pwsafeRU.chm"
+  Delete "$INSTDIR\pwsafeRU.chw"
   Delete "$INSTDIR\pwsafeRU.dll"
+  Delete "$INSTDIR\pwsafeSL.chm"
+  Delete "$INSTDIR\pwsafeSL.chw"
+  Delete "$INSTDIR\pwsafeSL.dll"
   Delete "$INSTDIR\pwsafeSV.chm"
+  Delete "$INSTDIR\pwsafeSV.chw"
   Delete "$INSTDIR\pwsafeSV.dll"
+  Delete "$INSTDIR\pwsafeTR.chm"
+  Delete "$INSTDIR\pwsafeTR.chw"
+  Delete "$INSTDIR\pwsafeTR.dll"
   Delete "$INSTDIR\pwsafeZH.chm"
+  Delete "$INSTDIR\pwsafeZH.chw"
   Delete "$INSTDIR\pwsafeZH.dll"
 
   ; remove directory if it's empty
@@ -714,6 +788,39 @@ Function .onInit
   Pop $LANGUAGE
   StrCmp $LANGUAGE "cancel" 0 +2
   Abort
+  ; autoselect language for selected installer language
+  StrCmp $LANGUAGE  ${LANG_GERMAN} 0 +2
+  SectionSetFlags ${GermanSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_SIMPCHINESE} 0 +2
+  SectionSetFlags ${ChineseSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_TRADCHINESE} 0 +2
+  SectionSetFlags ${ChineseTWSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_SPANISH} 0 +2
+  SectionSetFlags ${SpanishSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_SWEDISH} 0 +2
+  SectionSetFlags ${SwedishSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_DUTCH} 0 +2
+  SectionSetFlags ${DutchSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_FRENCH} 0 +2
+  SectionSetFlags ${FrenchSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_RUSSIAN} 0 +2
+  SectionSetFlags ${RussianSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_POLISH} 0 +2
+  SectionSetFlags ${PolishSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_ITALIAN} 0 +2
+  SectionSetFlags ${ItalianSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_DANISH} 0 +2
+  SectionSetFlags ${DanishSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_KOREAN} 0 +2
+  SectionSetFlags ${KoreanSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_CZECH} 0 +2
+  SectionSetFlags ${CzechSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_TURKISH} 0 +2
+  SectionSetFlags ${TurkishSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_HUNGARIAN} 0 +2
+  SectionSetFlags ${HungarianSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_SLOVENIAN} 0 +2
+  SectionSetFlags ${SlovenianSection} ${SF_SELECTED}
 FunctionEnd
 
 Function GreenOrRegular
