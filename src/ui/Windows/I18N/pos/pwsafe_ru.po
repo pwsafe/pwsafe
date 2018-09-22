@@ -4427,10 +4427,10 @@ msgstr "Последнее действие с буфером обмена"
 msgid "Last found entries"
 msgstr "Найденные элементы"
 
-# Урезано из-за ограничения длины поля
+# в свойствах контейнера
 #. Resource IDs: (65535)
 msgid "Last saved by:"
-msgstr "Сохранил:"
+msgstr "Сохранено пользователем:"
 
 # Урезано из-за ограничения длины поля
 #. Resource IDs: (65535)
@@ -4586,7 +4586,7 @@ msgstr "Маратхская"
 # Урезано из-за ограничения длины поля
 #. Resource IDs: (65535)
 msgid "Master Password last set on:"
-msgstr "Дата смены мастер-пароля:"
+msgstr "Дата установки мастер-пароля:"
 
 #. Resource IDs: (1212)
 msgid "Max."
@@ -5153,12 +5153,12 @@ msgstr "Изменения в других полях:"
 # Импорт из TXT (разделитель)
 #. Resource IDs: (1081, 1201, 1206)
 msgid "Other:"
-msgstr "Указано:"
+msgstr "Указанный:"
 
 # (Настройки ->Резервные копии) Каталог для резервных копий (в широком режиме)
 #. Resource IDs: (1206)
 msgid "Other: "
-msgstr "Указано: "
+msgstr "Указанный: "
 
 #. Resource IDs: (61475)
 msgid "Out of memory."
