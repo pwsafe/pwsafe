@@ -148,6 +148,9 @@ public:
   /// Should we show tooltips?
   static bool ShowToolTips();
 
+private:
+  wxString Truncate(const wxString& text);
+
 ////@begin CProperties member variables
 private:
   wxString m_database;
