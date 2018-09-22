@@ -328,4 +328,6 @@ typedef wxTextDataObject wxTextDataObjectEx;
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable();
 
+wxString Truncate(const wxString& text, size_t maxLength, size_t maxTokens);
+
 #endif // __WXUTILS_H__
