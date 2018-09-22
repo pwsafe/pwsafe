@@ -23,6 +23,7 @@
 ////@begin includes
 #include <wx/grid.h>
 #include <wx/textdlg.h>
+#include <wx/tokenzr.h>
 ////@end includes
 
 #include <vector>
@@ -253,7 +254,7 @@ void CProperties::Init()
 
   wxString dbName = m_core.GetHeader().m_DB_Name.c_str();
 
-  m_DbName = dbName.empty() ? _("N/A") : dbName;
+  m_DbName = dbName.empty() ? _("N/A") : Truncate(dbName);
   m_NewDbName = m_core.GetHeader().m_DB_Name;
 
 
@@ -263,7 +264,7 @@ void CProperties::Init()
 
   wxString dbDescription = m_core.GetHeader().m_DB_Description.c_str();
 
-  m_DbDescription = dbDescription.empty() ? _("N/A") : dbDescription;
+  m_DbDescription = dbDescription.empty() ? _("N/A") : Truncate(dbDescription);
   m_NewDbDescription = m_core.GetHeader().m_DB_Description;
 }
 
@@ -354,7 +355,7 @@ void CProperties::CreateControls()
   flexGridSizer->Add(onEditNameButton, 0, wxALIGN_LEFT|wxALL         , 5); // Item for 3rd column of wxFlexGridSizer
 
   auto itemStaticText17 = new wxStaticText( this, wxID_STATIC, _("Description:"), wxDefaultPosition, wxDefaultSize, 0 );
-  auto dbDescriptionText = new wxStaticText( this, wxID_DBDESCRIPTION, wxT("database description"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto dbDescriptionText = new wxStaticText( this, wxID_DBDESCRIPTION, wxT("database description\n\n"), wxDefaultPosition, wxDefaultSize, 0 );
   auto onEditDescriptionButton = new wxButton( this, wxID_CHANGE_DESCRIPTION, wxT("..."), wxDefaultPosition, wxSize(35, 25), 0 );
   flexGridSizer->Add(itemStaticText17       , 0, wxALIGN_LEFT|wxALL         , 5);
   flexGridSizer->Add(dbDescriptionText      , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
@@ -449,19 +450,18 @@ void CProperties::OnEditName( wxCommandEvent& WXUNUSED(evt) )
   textInputDialog.SetSize(550, -1);
 
   if (textInputDialog.ShowModal() == wxID_OK) {
-    m_DbName = textInputDialog.GetValue();
+    auto newDbName = textInputDialog.GetValue();
 
-    if (m_DbName.IsEmpty()) { /* Show 'N/A' on the UI in case of an empty string, */
-      m_DbName = _("N/A");    /* but use the empty string as new DB name          */
-
-      if (Validate() && TransferDataToWindow()) {
-        m_NewDbName = std2stringx(_T(""));
-      }
+    if (newDbName.IsEmpty()) {
+      m_DbName  = _("N/A");     // Show 'N/A' on the UI in case of an empty string,
+      newDbName = _T("");       // but use the empty string as new DB name.
     }
     else {
-      if (Validate() && TransferDataToWindow()) {
-        m_NewDbName = std2stringx(m_DbName.wc_str());
-      }
+      m_DbName = Truncate(newDbName);
+    }
+
+    if (Validate() && TransferDataToWindow()) {
+      m_NewDbName = std2stringx(newDbName.wc_str());
     }
   }
 }
@@ -478,19 +478,59 @@ void CProperties::OnEditDescription( wxCommandEvent& WXUNUSED(evt) )
   textInputDialog.SetSize(550, 300);
 
   if (textInputDialog.ShowModal() == wxID_OK) {
-    m_DbDescription = textInputDialog.GetValue();
+    auto newDbDescription = textInputDialog.GetValue();
 
-    if (m_DbDescription.IsEmpty()) { /* Show 'N/A' on the UI in case of an empty string, */
-      m_DbDescription = _("N/A");    /* but use the empty string as new DB description   */
-
-      if (Validate() && TransferDataToWindow()) {
-        m_NewDbDescription = std2stringx(_T(""));
-      }
+    if (newDbDescription.IsEmpty()) {
+      m_DbDescription = _("N/A");     // Show 'N/A' on the UI in case of an empty string,
+      newDbDescription = _T("");      // but use the empty string as new DB description.
     }
     else {
-      if (Validate() && TransferDataToWindow()) {
-        m_NewDbDescription = std2stringx(m_DbDescription.wc_str());
-      }
+      m_DbDescription = Truncate(newDbDescription);
+    }
+
+    if (Validate() && TransferDataToWindow()) {
+      m_NewDbDescription = std2stringx(newDbDescription.wc_str());
     }
   }
+}
+
+/**
+ * Limits a given string to 30 characters and replaces the remaining characters with '...'.
+ *
+ * A given string that contains newline characters will be tokenized at each such character
+ * and the truncation rule applied on each single token. The processing stops after three
+ * tokens, due to three reserved lines for DB description on the UI.
+ *
+ * @param text the string that should be truncated.
+ */
+wxString CProperties::Truncate(const wxString& text)
+{
+  const size_t MAX_LENGTH = 30;
+
+  size_t tokenCount = 0;
+  wxString truncatedString("");
+  wxStringTokenizer tokenizer(text, wxT("\r\n"));
+
+  if (!tokenizer.HasMoreTokens() && (text.Length() > MAX_LENGTH)) { /* A single string without any newline characters */
+    truncatedString = text;
+    truncatedString = truncatedString.Truncate(MAX_LENGTH) + wxT("...");
+  }
+  else {                                                            /* A string that contains newline characters */
+    while (tokenizer.HasMoreTokens() && (tokenCount < 3)) {
+      tokenCount++;
+
+      auto token = tokenizer.GetNextToken();
+
+      if (token.Length() > MAX_LENGTH) {
+        truncatedString += token.Truncate(MAX_LENGTH) + wxT("...");
+      }
+      else {
+        truncatedString += token;
+      }
+
+      truncatedString += tokenizer.GetLastDelimiter();
+    }
+  }
+
+  return truncatedString;
 }
