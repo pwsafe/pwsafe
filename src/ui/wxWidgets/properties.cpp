@@ -23,11 +23,11 @@
 ////@begin includes
 #include <wx/grid.h>
 #include <wx/textdlg.h>
-#include <wx/tokenzr.h>
 ////@end includes
 
 #include <vector>
 #include "properties.h"
+#include "wxutils.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -254,7 +254,7 @@ void CProperties::Init()
 
   wxString dbName = m_core.GetHeader().m_DB_Name.c_str();
 
-  m_DbName = dbName.empty() ? _("N/A") : Truncate(dbName);
+  m_DbName = dbName.empty() ? _("N/A") : Truncate(dbName, MAX_TEXT_CHARS, MAX_TEXT_LINES);
   m_NewDbName = m_core.GetHeader().m_DB_Name;
 
 
@@ -264,7 +264,7 @@ void CProperties::Init()
 
   wxString dbDescription = m_core.GetHeader().m_DB_Description.c_str();
 
-  m_DbDescription = dbDescription.empty() ? _("N/A") : Truncate(dbDescription);
+  m_DbDescription = dbDescription.empty() ? _("N/A") : Truncate(dbDescription, MAX_TEXT_CHARS, MAX_TEXT_LINES);
   m_NewDbDescription = m_core.GetHeader().m_DB_Description;
 }
 
@@ -457,7 +457,7 @@ void CProperties::OnEditName( wxCommandEvent& WXUNUSED(evt) )
       newDbName = _T("");       // but use the empty string as new DB name.
     }
     else {
-      m_DbName = Truncate(newDbName);
+      m_DbName = Truncate(newDbName, MAX_TEXT_CHARS, MAX_TEXT_LINES);
     }
 
     if (Validate() && TransferDataToWindow()) {
@@ -485,52 +485,11 @@ void CProperties::OnEditDescription( wxCommandEvent& WXUNUSED(evt) )
       newDbDescription = _T("");      // but use the empty string as new DB description.
     }
     else {
-      m_DbDescription = Truncate(newDbDescription);
+      m_DbDescription = Truncate(newDbDescription, MAX_TEXT_CHARS, MAX_TEXT_LINES);
     }
 
     if (Validate() && TransferDataToWindow()) {
       m_NewDbDescription = std2stringx(newDbDescription.wc_str());
     }
   }
-}
-
-/**
- * Limits a given string to 30 characters and replaces the remaining characters with '...'.
- *
- * A given string that contains newline characters will be tokenized at each such character
- * and the truncation rule applied on each single token. The processing stops after three
- * tokens, due to three reserved lines for DB description on the UI.
- *
- * @param text the string that should be truncated.
- */
-wxString CProperties::Truncate(const wxString& text)
-{
-  const size_t MAX_LENGTH = 30;
-
-  size_t tokenCount = 0;
-  wxString truncatedString("");
-  wxStringTokenizer tokenizer(text, wxT("\r\n"));
-
-  if (!tokenizer.HasMoreTokens() && (text.Length() > MAX_LENGTH)) { /* A single string without any newline characters */
-    truncatedString = text;
-    truncatedString = truncatedString.Truncate(MAX_LENGTH) + wxT("...");
-  }
-  else {                                                            /* A string that contains newline characters */
-    while (tokenizer.HasMoreTokens() && (tokenCount < 3)) {
-      tokenCount++;
-
-      auto token = tokenizer.GetNextToken();
-
-      if (token.Length() > MAX_LENGTH) {
-        truncatedString += token.Truncate(MAX_LENGTH) + wxT("...");
-      }
-      else {
-        truncatedString += token;
-      }
-
-      truncatedString += tokenizer.GetLastDelimiter();
-    }
-  }
-
-  return truncatedString;
 }

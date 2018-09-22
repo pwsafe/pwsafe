@@ -148,9 +148,6 @@ public:
   /// Should we show tooltips?
   static bool ShowToolTips();
 
-private:
-  wxString Truncate(const wxString& text);
-
 ////@begin CProperties member variables
 private:
   wxString m_database;
@@ -170,6 +167,9 @@ private:
   StringX m_NewDbName;
   StringX m_NewDbDescription;
   const PWScore &m_core;
+
+  const size_t MAX_TEXT_CHARS = 30;
+  const size_t MAX_TEXT_LINES = 3;
 };
 
 #endif
