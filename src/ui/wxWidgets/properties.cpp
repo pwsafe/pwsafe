@@ -27,7 +27,6 @@
 
 #include <vector>
 #include "properties.h"
-#include "wxutils.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -254,7 +253,7 @@ void CProperties::Init()
 
   wxString dbName = m_core.GetHeader().m_DB_Name.c_str();
 
-  m_DbName = dbName.empty() ? _("N/A") : Truncate(dbName, MAX_TEXT_CHARS, MAX_TEXT_LINES);
+  m_DbName = dbName.empty() ? _("N/A") : dbName;
   m_NewDbName = m_core.GetHeader().m_DB_Name;
 
 
@@ -264,7 +263,7 @@ void CProperties::Init()
 
   wxString dbDescription = m_core.GetHeader().m_DB_Description.c_str();
 
-  m_DbDescription = dbDescription.empty() ? _("N/A") : Truncate(dbDescription, MAX_TEXT_CHARS, MAX_TEXT_LINES);
+  m_DbDescription = dbDescription.empty() ? _("N/A") : dbDescription;
   m_NewDbDescription = m_core.GetHeader().m_DB_Description;
 }
 
@@ -348,14 +347,14 @@ void CProperties::CreateControls()
   flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   auto itemStaticText16 = new wxStaticText( this, wxID_STATIC, _("Name:"), wxDefaultPosition, wxDefaultSize, 0 );
-  auto dbNameText = new wxStaticText( this, wxID_DBNAME, wxT("database name"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto dbNameText = new wxStaticText( this, wxID_DBNAME, wxT("database name"), wxDefaultPosition, wxDefaultSize, wxST_ELLIPSIZE_END );
   auto onEditNameButton = new wxButton( this, wxID_CHANGE_NAME, wxT("..."), wxDefaultPosition, wxSize(35, 25), 0 );
   flexGridSizer->Add(itemStaticText16, 0, wxALIGN_LEFT|wxALL         , 5);
   flexGridSizer->Add(dbNameText      , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   flexGridSizer->Add(onEditNameButton, 0, wxALIGN_LEFT|wxALL         , 5); // Item for 3rd column of wxFlexGridSizer
 
   auto itemStaticText17 = new wxStaticText( this, wxID_STATIC, _("Description:"), wxDefaultPosition, wxDefaultSize, 0 );
-  auto dbDescriptionText = new wxStaticText( this, wxID_DBDESCRIPTION, wxT("database description\n\n"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto dbDescriptionText = new wxStaticText( this, wxID_DBDESCRIPTION, wxT("database description\n\n"), wxDefaultPosition, wxDefaultSize, wxST_ELLIPSIZE_END );
   auto onEditDescriptionButton = new wxButton( this, wxID_CHANGE_DESCRIPTION, wxT("..."), wxDefaultPosition, wxSize(35, 25), 0 );
   flexGridSizer->Add(itemStaticText17       , 0, wxALIGN_LEFT|wxALL         , 5);
   flexGridSizer->Add(dbDescriptionText      , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
@@ -457,7 +456,7 @@ void CProperties::OnEditName( wxCommandEvent& WXUNUSED(evt) )
       newDbName = _T("");       // but use the empty string as new DB name.
     }
     else {
-      m_DbName = Truncate(newDbName, MAX_TEXT_CHARS, MAX_TEXT_LINES);
+      m_DbName = newDbName;
     }
 
     if (Validate() && TransferDataToWindow()) {
@@ -485,7 +484,7 @@ void CProperties::OnEditDescription( wxCommandEvent& WXUNUSED(evt) )
       newDbDescription = _T("");      // but use the empty string as new DB description.
     }
     else {
-      m_DbDescription = Truncate(newDbDescription, MAX_TEXT_CHARS, MAX_TEXT_LINES);
+      m_DbDescription = newDbDescription;
     }
 
     if (Validate() && TransferDataToWindow()) {
