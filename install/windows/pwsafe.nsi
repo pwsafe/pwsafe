@@ -491,6 +491,7 @@ SectionGroupEnd
 
 ;--------------------------------
 ; Start with Windows
+; May be deselected by .onInit
 Section "$(START_AUTO)" StartUp
   CreateShortCut "$SMSTARTUP\Password Safe.lnk" "$INSTDIR\pwsafe.exe" "-s"
 SectionEnd
@@ -821,6 +822,14 @@ Function .onInit
   SectionSetFlags ${HungarianSection} ${SF_SELECTED}
   StrCmp $LANGUAGE ${LANG_SLOVENIAN} 0 +2
   SectionSetFlags ${SlovenianSection} ${SF_SELECTED}
+  ;
+  ; Check if this is an upgrade or not. If so, default "startup" to
+  ; disabled, so as not to create unwanted shortcut
+  IfFileExists "$INSTDIR\pwsafe.exe" 0 NewInstall
+    SectionSetFlags ${StartUp} 0
+NewInstall:
+
+  
 FunctionEnd
 
 Function GreenOrRegular
