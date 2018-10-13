@@ -15,6 +15,7 @@ The ReleaseNotes.html file has links to the relevant tickets/issues.
 
 Bugs Fixed in 3.48pre
 =====================
+[1475] Tweak RNG initialization.
 [1473] Installer will not create startup shortcut by default when upgrading.
 [1243] Installer now selects language support for selected installer language.
 

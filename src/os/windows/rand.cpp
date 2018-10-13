@@ -56,6 +56,10 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
   } else {
     ASSERT(slen == sizeof(t) + sizeof(pid) + sizeof(ticks));
 
+    // BR1475 - if we have a good crypto source, use it here too.
+    if ((pfnGetRandomData != nullptr) && (*pfnGetRandomData)(p, slen) == TRUE)
+      return; // adding a time-based "seed" is wrong when using RtlGenRandom
+
     SYSTEMTIME st;
     struct tm tms;
     GetSystemTime(&st);
