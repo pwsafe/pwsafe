@@ -10,18 +10,18 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
-#include "wx/bookctrl.h"
+#include <wx/bookctrl.h>
 ////@end includes
 #include <wx/datetime.h>
 
@@ -1102,11 +1102,13 @@ void AddEditPropSheet::ShowPassword()
     m_PasswordCtrl->ChangeValue(pwd);
     m_PasswordCtrl->SetModified(true);
   }
+  ApplyPasswordFont(m_PasswordCtrl);
   m_PasswordCtrl->MoveAfterInTabOrder(m_UsernameCtrl);
   m_BasicFGSizer->Replace(tmp, m_PasswordCtrl);
   delete tmp;
   m_BasicFGSizer->Layout();
   // Disable confirmation Ctrl, as the user can see the password entered
+  ApplyPasswordFont(m_Password2Ctrl);
   m_Password2Ctrl->Clear();
   m_Password2Ctrl->Enable(false);
 }
@@ -1134,6 +1136,7 @@ void AddEditPropSheet::HidePassword()
     m_PasswordCtrl->ChangeValue(pwd);
     m_PasswordCtrl->SetModified(true);
   }
+  ApplyPasswordFont(m_Password2Ctrl);
   m_Password2Ctrl->ChangeValue(pwd);
   m_Password2Ctrl->Enable(true);
 }
