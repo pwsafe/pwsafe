@@ -753,7 +753,13 @@ void AddEditPropSheet::UpdatePWPolicyControls(const PWPolicy& pwp)
 
   if (!pwp.symbols.empty()) {
     m_symbols = pwp.symbols.c_str();
-    Validate(); TransferDataToWindow();
+
+    auto policyPanel = FindWindow(ID_PANEL_PPOLICY);
+
+    if (policyPanel) {
+      policyPanel->Validate();
+      policyPanel->TransferDataToWindow();
+    }
   }
 }
 
