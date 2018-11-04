@@ -57,36 +57,64 @@ IMPLEMENT_CLASS( AddEditPropSheet, wxPropertySheetDialog )
 
 BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
 
-  EVT_BUTTON( wxID_OK, AddEditPropSheet::OnOk )
+  EVT_BUTTON(       wxID_OK,          AddEditPropSheet::OnOk                      )
 ////@begin AddEditPropSheet event table entries
-  EVT_BUTTON( ID_BUTTON2, AddEditPropSheet::OnShowHideClick )
-  EVT_BUTTON( ID_BUTTON3, AddEditPropSheet::OnGenerateButtonClick )
-  EVT_BUTTON( ID_GO_BTN, AddEditPropSheet::OnGoButtonClick )
-  EVT_BUTTON( ID_SEND_BTN, AddEditPropSheet::OnSendButtonClick )
-  EVT_CHECKBOX( ID_CHECKBOX1, AddEditPropSheet::OnKeepHistoryClick )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON, AddEditPropSheet::OnExpRadiobuttonSelected )
-  EVT_DATE_CHANGED( ID_DATECTRL, AddEditPropSheet::OnExpDateChanged )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON1, AddEditPropSheet::OnExpRadiobuttonSelected )
-  EVT_SPINCTRL( ID_SPINCTRL2, AddEditPropSheet::OnExpIntervalChanged )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON4, AddEditPropSheet::OnExpRadiobuttonSelected )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON2, AddEditPropSheet::OnPWPRBSelected )
-  EVT_COMBOBOX( ID_POLICYLIST, AddEditPropSheet::OnPolicylistSelected )
-  EVT_RADIOBUTTON( ID_RADIOBUTTON3, AddEditPropSheet::OnPWPRBSelected )
-  EVT_CHECKBOX( ID_CHECKBOX3, AddEditPropSheet::OnLowercaseCB )
-  EVT_CHECKBOX( ID_CHECKBOX4, AddEditPropSheet::OnUppercaseCB )
-  EVT_CHECKBOX( ID_CHECKBOX5, AddEditPropSheet::OnDigitsCB )
-  EVT_CHECKBOX( ID_CHECKBOX6, AddEditPropSheet::OnSymbolsCB )
-  EVT_BUTTON( ID_RESET_SYMBOLS, AddEditPropSheet::OnResetSymbolsClick )
-  EVT_CHECKBOX( ID_CHECKBOX7, AddEditPropSheet::OnEZreadCBClick )
-  EVT_CHECKBOX( ID_CHECKBOX8, AddEditPropSheet::OnPronouceableCBClick )
-  EVT_CHECKBOX( ID_CHECKBOX9, AddEditPropSheet::OnUseHexCBClick )
+  EVT_BUTTON(       ID_BUTTON2,       AddEditPropSheet::OnShowHideClick           )
+  EVT_BUTTON(       ID_BUTTON3,       AddEditPropSheet::OnGenerateButtonClick     )
+  EVT_BUTTON(       ID_GO_BTN,        AddEditPropSheet::OnGoButtonClick           )
+  EVT_BUTTON(       ID_SEND_BTN,      AddEditPropSheet::OnSendButtonClick         )
+  EVT_CHECKBOX(     ID_CHECKBOX1,     AddEditPropSheet::OnKeepHistoryClick        )
+  EVT_RADIOBUTTON(  ID_RADIOBUTTON,   AddEditPropSheet::OnExpRadiobuttonSelected  )
+  EVT_DATE_CHANGED( ID_DATECTRL,      AddEditPropSheet::OnExpDateChanged          )
+  EVT_RADIOBUTTON(  ID_RADIOBUTTON1,  AddEditPropSheet::OnExpRadiobuttonSelected  )
+  EVT_SPINCTRL(     ID_SPINCTRL2,     AddEditPropSheet::OnExpIntervalChanged      )
+  EVT_RADIOBUTTON(  ID_RADIOBUTTON4,  AddEditPropSheet::OnExpRadiobuttonSelected  )
+  EVT_RADIOBUTTON(  ID_RADIOBUTTON2,  AddEditPropSheet::OnPWPRBSelected           )
+  EVT_COMBOBOX(     ID_POLICYLIST,    AddEditPropSheet::OnPolicylistSelected      )
+  EVT_RADIOBUTTON(  ID_RADIOBUTTON3,  AddEditPropSheet::OnPWPRBSelected           )
+  EVT_CHECKBOX(     ID_CHECKBOX3,     AddEditPropSheet::OnLowercaseCB             )
+  EVT_CHECKBOX(     ID_CHECKBOX4,     AddEditPropSheet::OnUppercaseCB             )
+  EVT_CHECKBOX(     ID_CHECKBOX5,     AddEditPropSheet::OnDigitsCB                )
+  EVT_CHECKBOX(     ID_CHECKBOX6,     AddEditPropSheet::OnSymbolsCB               )
+  EVT_BUTTON(       ID_RESET_SYMBOLS, AddEditPropSheet::OnResetSymbolsClick       )
+  EVT_CHECKBOX(     ID_CHECKBOX7,     AddEditPropSheet::OnEZreadCBClick           )
+  EVT_CHECKBOX(     ID_CHECKBOX8,     AddEditPropSheet::OnPronouceableCBClick     )
+  EVT_CHECKBOX(     ID_CHECKBOX9,     AddEditPropSheet::OnUseHexCBClick           )
 ////@end AddEditPropSheet event table entries
-  EVT_SPINCTRL(ID_SPINCTRL5, AddEditPropSheet::OnAtLeastChars)
-  EVT_SPINCTRL(ID_SPINCTRL6, AddEditPropSheet::OnAtLeastChars)
-  EVT_SPINCTRL(ID_SPINCTRL7, AddEditPropSheet::OnAtLeastChars)
-  EVT_SPINCTRL(ID_SPINCTRL8, AddEditPropSheet::OnAtLeastChars)
+  EVT_SPINCTRL(     ID_SPINCTRL5,     AddEditPropSheet::OnAtLeastChars            )
+  EVT_SPINCTRL(     ID_SPINCTRL6,     AddEditPropSheet::OnAtLeastChars            )
+  EVT_SPINCTRL(     ID_SPINCTRL7,     AddEditPropSheet::OnAtLeastChars            )
+  EVT_SPINCTRL(     ID_SPINCTRL8,     AddEditPropSheet::OnAtLeastChars            )
 
-  EVT_BUTTON( ID_BUTTON1,    AddEditPropSheet::OnClearPWHist )
+  EVT_BUTTON(       ID_BUTTON1,       AddEditPropSheet::OnClearPWHist             )
+
+  EVT_UPDATE_UI(    ID_COMBOBOX1,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_BUTTON3,       AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL5,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL1,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL2,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL3,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL4,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL20,    AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL7,     AddEditPropSheet::OnUpdateUI                )
+
+  EVT_UPDATE_UI(    ID_TEXTCTRL6,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL8,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_COMBOBOX,      AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_COMBOBOX2,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_CHECKBOX1,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_SPINCTRL,      AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_GRID,          AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_BUTTON1,       AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_BUTTON4,       AddEditPropSheet::OnUpdateUI                )
+
+  EVT_UPDATE_UI(    ID_RADIOBUTTON,   AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_DATECTRL,      AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_RADIOBUTTON1,  AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_SPINCTRL2,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_STATICTEXT_1,  AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_CHECKBOX2,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_RADIOBUTTON4,  AddEditPropSheet::OnUpdateUI                )
 END_EVENT_TABLE()
 
 /*!
@@ -166,6 +194,8 @@ void AddEditPropSheet::Init()
   m_XTimeInt = 0;
   m_isNotesHidden = !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault);
   m_BasicPanel = nullptr;
+  m_AdditionalPanel = nullptr;
+  m_PasswordPolicyPanel = nullptr;
   m_BasicFGSizer = nullptr;
   m_groupCtrl = nullptr;
   m_UsernameCtrl = nullptr;
@@ -258,7 +288,7 @@ void AddEditPropSheet::CreateControls()
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Basic"
   /////////////////////////////////////////////////////////////////////////////
-  
+
   m_BasicPanel = new wxPanel( GetBookCtrl(), ID_PANEL_BASIC, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   m_BasicPanel->SetSizer(itemBoxSizer3);
@@ -322,7 +352,7 @@ void AddEditPropSheet::CreateControls()
 
   auto *itemBoxSizer27 = new wxBoxSizer(wxHORIZONTAL);
   m_BasicFGSizer->Add(itemBoxSizer27, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-  
+
   wxButton* itemButton29 = new wxButton( m_BasicPanel, ID_GO_BTN, _("Go"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer27->Add(itemButton29, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 20);
 
@@ -334,7 +364,7 @@ void AddEditPropSheet::CreateControls()
 
   auto *itemBoxSizer32 = new wxBoxSizer(wxHORIZONTAL);
   m_BasicFGSizer->Add(itemBoxSizer32, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-  
+
   wxButton* itemButton34 = new wxButton( m_BasicPanel, ID_SEND_BTN, _("Send"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer32->Add(itemButton34, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 20);
 
@@ -346,63 +376,63 @@ void AddEditPropSheet::CreateControls()
 
   m_noteTX = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxSize(-1, m_BasicPanel->ConvertDialogToPixels(wxSize(-1, 50)).y), wxTE_MULTILINE );
   itemBoxSizer35->Add(m_noteTX, 5, wxGROW|wxALL, 3);
-  
+
   GetBookCtrl()->AddPage(m_BasicPanel, _("Basic"));
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Additional"
   /////////////////////////////////////////////////////////////////////////////
-  
-  wxPanel* itemPanel38 = new wxPanel( GetBookCtrl(), ID_PANEL_ADDITIONAL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+
+  m_AdditionalPanel = new wxPanel( GetBookCtrl(), ID_PANEL_ADDITIONAL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer39 = new wxBoxSizer(wxVERTICAL);
-  itemPanel38->SetSizer(itemBoxSizer39);
+  m_AdditionalPanel->SetSizer(itemBoxSizer39);
 
   auto *itemFlexGridSizer40 = new wxFlexGridSizer(0, 2, 0, 0);
   itemBoxSizer39->Add(itemFlexGridSizer40, 0, wxGROW|wxALL, 5);
-  wxStaticText* itemStaticText41 = new wxStaticText( itemPanel38, wxID_STATIC, _("Autotype:"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText41 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Autotype:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer40->Add(itemStaticText41, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl42 = new wxTextCtrl( itemPanel38, ID_TEXTCTRL6, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  wxTextCtrl* itemTextCtrl42 = new wxTextCtrl( m_AdditionalPanel, ID_TEXTCTRL6, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer40->Add(itemTextCtrl42, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText43 = new wxStaticText( itemPanel38, wxID_STATIC, _("Run Cmd:"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText43 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Run Cmd:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer40->Add(itemStaticText43, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl44 = new wxTextCtrl( itemPanel38, ID_TEXTCTRL8, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  wxTextCtrl* itemTextCtrl44 = new wxTextCtrl( m_AdditionalPanel, ID_TEXTCTRL8, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer40->Add(itemTextCtrl44, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText45 = new wxStaticText( itemPanel38, wxID_STATIC, _("Double-Click\nAction:"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText45 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Double-Click\nAction:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer40->Add(itemStaticText45, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString m_DCAcomboBoxStrings;
   setupDCAStrings(m_DCAcomboBoxStrings);
-  m_DCAcomboBox = new wxComboBox( itemPanel38, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCAcomboBoxStrings, wxCB_READONLY );
+  m_DCAcomboBox = new wxComboBox( m_AdditionalPanel, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_DCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText47 = new wxStaticText( itemPanel38, wxID_STATIC, _("Shift-Double-Click\nAction:"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText47 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Shift-Double-Click\nAction:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer40->Add(itemStaticText47, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString m_SDCAcomboBoxStrings;
   setupDCAStrings(m_SDCAcomboBoxStrings);
-  m_SDCAcomboBox = new wxComboBox( itemPanel38, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCAcomboBoxStrings, wxCB_READONLY );
+  m_SDCAcomboBox = new wxComboBox( m_AdditionalPanel, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_SDCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticBox* itemStaticBoxSizer49Static = new wxStaticBox(itemPanel38, wxID_ANY, _("Password History"));
+  wxStaticBox* itemStaticBoxSizer49Static = new wxStaticBox(m_AdditionalPanel, wxID_ANY, _("Password History"));
   auto *itemStaticBoxSizer49 = new wxStaticBoxSizer(itemStaticBoxSizer49Static, wxVERTICAL);
   itemBoxSizer39->Add(itemStaticBoxSizer49, 0, wxGROW|wxALL, 5);
   auto *itemBoxSizer50 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer49->Add(itemBoxSizer50, 0, wxGROW|wxALL, 5);
-  wxCheckBox* itemCheckBox51 = new wxCheckBox( itemPanel38, ID_CHECKBOX1, _("Keep"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* itemCheckBox51 = new wxCheckBox( m_AdditionalPanel, ID_CHECKBOX1, _("Keep"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox51->SetValue(false);
   itemBoxSizer50->Add(itemCheckBox51, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_MaxPWHistCtrl = new wxSpinCtrl( itemPanel38, ID_SPINCTRL, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_MaxPWHistCtrl = new wxSpinCtrl( m_AdditionalPanel, ID_SPINCTRL, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
   itemBoxSizer50->Add(m_MaxPWHistCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText53 = new wxStaticText( itemPanel38, wxID_STATIC, _("last passwords"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText53 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("last passwords"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer50->Add(itemStaticText53, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_PWHgrid = new wxGrid( itemPanel38, ID_GRID, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
+  m_PWHgrid = new wxGrid( m_AdditionalPanel, ID_GRID, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
   m_PWHgrid->SetDefaultColSize(150);
   m_PWHgrid->SetDefaultRowSize(25);
   m_PWHgrid->SetColLabelSize(25);
@@ -412,20 +442,20 @@ void AddEditPropSheet::CreateControls()
 
   auto *itemBoxSizer55 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer49->Add(itemBoxSizer55, 0, wxGROW|wxALL, 5);
-  wxButton* itemButton56 = new wxButton( itemPanel38, ID_BUTTON1, _("Clear History"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxButton* itemButton56 = new wxButton( m_AdditionalPanel, ID_BUTTON1, _("Clear History"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer55->Add(itemButton56, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   itemBoxSizer55->AddStretchSpacer();
 
-  wxButton* itemButton58 = new wxButton( itemPanel38, ID_BUTTON4, _("Copy All"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxButton* itemButton58 = new wxButton( m_AdditionalPanel, ID_BUTTON4, _("Copy All"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer55->Add(itemButton58, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  GetBookCtrl()->AddPage(itemPanel38, _("Additional"));
+  GetBookCtrl()->AddPage(m_AdditionalPanel, _("Additional"));
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Dates and Times"
   /////////////////////////////////////////////////////////////////////////////
-  
+
   wxPanel* itemPanel59 = new wxPanel( GetBookCtrl(), ID_PANEL_DTIME, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer60 = new wxBoxSizer(wxVERTICAL);
   itemPanel59->SetSizer(itemBoxSizer60);
@@ -455,7 +485,7 @@ void AddEditPropSheet::CreateControls()
   m_ExpTimeCtrl = new wxSpinCtrl( itemPanel59, ID_SPINCTRL2, _T("90"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 3650, 90 );
   itemBoxSizer68->Add(m_ExpTimeCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText70 = new wxStaticText( itemPanel59, wxID_STATIC, _("days"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText70 = new wxStaticText( itemPanel59, ID_STATICTEXT_1, _("days"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer68->Add(itemStaticText70, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_RecurringCtrl = new wxCheckBox( itemPanel59, ID_CHECKBOX2, _("Recurring"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -506,139 +536,139 @@ void AddEditPropSheet::CreateControls()
   itemFlexGridSizer78->Add(itemStaticText86, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel59, _("Dates and Times"));
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Password Policy"
   /////////////////////////////////////////////////////////////////////////////
-  
-  wxPanel* itemPanel87 = new wxPanel( GetBookCtrl(), ID_PANEL_PPOLICY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxTAB_TRAVERSAL );
+
+  m_PasswordPolicyPanel = new wxPanel( GetBookCtrl(), ID_PANEL_PPOLICY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxTAB_TRAVERSAL );
   auto *itemBoxSizer61 = new wxBoxSizer(wxVERTICAL);
-  itemPanel87->SetSizer(itemBoxSizer61);
-  
-  wxStaticBox* itemStaticBoxSizer88Static = new wxStaticBox(itemPanel87, wxID_ANY, _("Random password generation rules"));
+  m_PasswordPolicyPanel->SetSizer(itemBoxSizer61);
+
+  wxStaticBox* itemStaticBoxSizer88Static = new wxStaticBox(m_PasswordPolicyPanel, wxID_ANY, _("Random password generation rules"));
   auto *itemStaticBoxSizer88 = new wxStaticBoxSizer(itemStaticBoxSizer88Static, wxVERTICAL);
   itemBoxSizer61->Add(itemStaticBoxSizer88, 0, wxGROW|wxALL, 5);
 
   auto *itemBoxSizer89 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer88->Add(itemBoxSizer89, 0, wxGROW|wxALL, 0);
-  m_defPWPRB = new wxRadioButton( itemPanel87, ID_RADIOBUTTON2, _("Use Database Policy"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+  m_defPWPRB = new wxRadioButton( m_PasswordPolicyPanel, ID_RADIOBUTTON2, _("Use Database Policy"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
   m_defPWPRB->SetValue(false);
   itemBoxSizer89->Add(m_defPWPRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 10);
 
   itemBoxSizer89->AddStretchSpacer();
 
   wxArrayString m_cbxPolicyNamesStrings;
-  m_cbxPolicyNames = new wxComboBox( itemPanel87, ID_POLICYLIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_cbxPolicyNamesStrings, wxCB_READONLY );
+  m_cbxPolicyNames = new wxComboBox( m_PasswordPolicyPanel, ID_POLICYLIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_cbxPolicyNamesStrings, wxCB_READONLY );
   itemBoxSizer89->Add(m_cbxPolicyNames, 0, wxALIGN_TOP|wxALL, 10);
 
-  m_ourPWPRB = new wxRadioButton( itemPanel87, ID_RADIOBUTTON3, _("Use the policy below:"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_ourPWPRB = new wxRadioButton( m_PasswordPolicyPanel, ID_RADIOBUTTON3, _("Use the policy below:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_ourPWPRB->SetValue(false);
   itemStaticBoxSizer88->Add(m_ourPWPRB, 0, wxALIGN_LEFT|wxALL, 10);
 
-  wxStaticLine* itemStaticLine94 = new wxStaticLine( itemPanel87, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+  wxStaticLine* itemStaticLine94 = new wxStaticLine( m_PasswordPolicyPanel, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
   itemStaticBoxSizer88->Add(itemStaticLine94, 0, wxGROW|wxALL, 5);
 
   auto *itemBoxSizer95 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer88->Add(itemBoxSizer95, 0, wxALIGN_LEFT|wxALL, 5);
-  wxStaticText* itemStaticText96 = new wxStaticText( itemPanel87, wxID_STATIC, _("Password length: "), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText96 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _("Password length: "), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer95->Add(itemStaticText96, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5);
 
-  m_pwpLenCtrl = new wxSpinCtrl( itemPanel87, ID_SPINCTRL3, _T("12"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 1024, 12 );
+  m_pwpLenCtrl = new wxSpinCtrl( m_PasswordPolicyPanel, ID_SPINCTRL3, _T("12"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 1024, 12 );
   itemBoxSizer95->Add(m_pwpLenCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 10);
 
   m_pwMinsGSzr = new wxGridSizer(0, 2, 0, 0);
   itemStaticBoxSizer88->Add(m_pwMinsGSzr, 0, wxALIGN_LEFT|wxALL, 5);
-  m_pwpUseLowerCtrl = new wxCheckBox( itemPanel87, ID_CHECKBOX3, _("Use lowercase letters"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpUseLowerCtrl = new wxCheckBox( m_PasswordPolicyPanel, ID_CHECKBOX3, _("Use lowercase letters"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpUseLowerCtrl->SetValue(false);
   m_pwMinsGSzr->Add(m_pwpUseLowerCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwNumLCbox = new wxBoxSizer(wxHORIZONTAL);
   m_pwMinsGSzr->Add(m_pwNumLCbox, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-  wxStaticText* itemStaticText101 = new wxStaticText( itemPanel87, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText101 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumLCbox->Add(itemStaticText101, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpLCSpin = new wxSpinCtrl( itemPanel87, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpLCSpin = new wxSpinCtrl( m_PasswordPolicyPanel, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxSize(m_PasswordPolicyPanel->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumLCbox->Add(m_pwpLCSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
-  wxStaticText* itemStaticText103 = new wxStaticText( itemPanel87, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText103 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumLCbox->Add(itemStaticText103, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpUseUpperCtrl = new wxCheckBox( itemPanel87, ID_CHECKBOX4, _("Use UPPERCASE letters"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpUseUpperCtrl = new wxCheckBox( m_PasswordPolicyPanel, ID_CHECKBOX4, _("Use UPPERCASE letters"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpUseUpperCtrl->SetValue(false);
   m_pwMinsGSzr->Add(m_pwpUseUpperCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwNumUCbox = new wxBoxSizer(wxHORIZONTAL);
   m_pwMinsGSzr->Add(m_pwNumUCbox, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-  wxStaticText* itemStaticText106 = new wxStaticText( itemPanel87, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText106 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumUCbox->Add(itemStaticText106, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpUCSpin = new wxSpinCtrl( itemPanel87, ID_SPINCTRL6, _T("0"), wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpUCSpin = new wxSpinCtrl( m_PasswordPolicyPanel, ID_SPINCTRL6, _T("0"), wxDefaultPosition, wxSize(m_PasswordPolicyPanel->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumUCbox->Add(m_pwpUCSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
-  wxStaticText* itemStaticText108 = new wxStaticText( itemPanel87, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText108 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumUCbox->Add(itemStaticText108, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpUseDigitsCtrl = new wxCheckBox( itemPanel87, ID_CHECKBOX5, _("Use digits"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpUseDigitsCtrl = new wxCheckBox( m_PasswordPolicyPanel, ID_CHECKBOX5, _("Use digits"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpUseDigitsCtrl->SetValue(false);
   m_pwMinsGSzr->Add(m_pwpUseDigitsCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwNumDigbox = new wxBoxSizer(wxHORIZONTAL);
   m_pwMinsGSzr->Add(m_pwNumDigbox, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-  wxStaticText* itemStaticText111 = new wxStaticText( itemPanel87, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText111 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumDigbox->Add(itemStaticText111, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpDigSpin = new wxSpinCtrl( itemPanel87, ID_SPINCTRL7, _T("0"), wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpDigSpin = new wxSpinCtrl( m_PasswordPolicyPanel, ID_SPINCTRL7, _T("0"), wxDefaultPosition, wxSize(m_PasswordPolicyPanel->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumDigbox->Add(m_pwpDigSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
-  wxStaticText* itemStaticText113 = new wxStaticText( itemPanel87, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText113 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumDigbox->Add(itemStaticText113, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpSymCtrl = new wxCheckBox( itemPanel87, ID_CHECKBOX6, _("Use symbols (i.e., ., %, $, etc.)"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpSymCtrl = new wxCheckBox( m_PasswordPolicyPanel, ID_CHECKBOX6, _("Use symbols (i.e., ., %, $, etc.)"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpSymCtrl->SetValue(false);
   m_pwMinsGSzr->Add(m_pwpSymCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwNumSymbox = new wxBoxSizer(wxHORIZONTAL);
   m_pwMinsGSzr->Add(m_pwNumSymbox, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-  wxStaticText* itemStaticText116 = new wxStaticText( itemPanel87, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText116 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumSymbox->Add(itemStaticText116, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpSymSpin = new wxSpinCtrl( itemPanel87, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpSymSpin = new wxSpinCtrl( m_PasswordPolicyPanel, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxSize(m_PasswordPolicyPanel->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumSymbox->Add(m_pwpSymSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
-  wxStaticText* itemStaticText118 = new wxStaticText( itemPanel87, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText118 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumSymbox->Add(itemStaticText118, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_ownsymbols = new wxTextCtrl( itemPanel87, IDC_OWNSYMBOLS, wxEmptyString, wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(120, -1)).x, -1), 0 );
+  m_ownsymbols = new wxTextCtrl( m_PasswordPolicyPanel, IDC_OWNSYMBOLS, wxEmptyString, wxDefaultPosition, wxSize(m_PasswordPolicyPanel->ConvertDialogToPixels(wxSize(120, -1)).x, -1), 0 );
   m_pwMinsGSzr->Add(m_ownsymbols, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxButton* itemButton120 = new wxButton( itemPanel87, ID_RESET_SYMBOLS, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxButton* itemButton120 = new wxButton( m_PasswordPolicyPanel, ID_RESET_SYMBOLS, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwMinsGSzr->Add(itemButton120, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
-  m_pwpEasyCtrl = new wxCheckBox( itemPanel87, ID_CHECKBOX7, _("Use only easy-to-read characters\n(i.e., no 'l', '1', etc.)"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpEasyCtrl = new wxCheckBox( m_PasswordPolicyPanel, ID_CHECKBOX7, _("Use only easy-to-read characters\n(i.e., no 'l', '1', etc.)"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpEasyCtrl->SetValue(false);
   m_pwMinsGSzr->Add(m_pwpEasyCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwMinsGSzr->AddStretchSpacer();
 
-  m_pwpPronounceCtrl = new wxCheckBox( itemPanel87, ID_CHECKBOX8, _("Generate pronounceable passwords"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpPronounceCtrl = new wxCheckBox( m_PasswordPolicyPanel, ID_CHECKBOX8, _("Generate pronounceable passwords"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpPronounceCtrl->SetValue(false);
   m_pwMinsGSzr->Add(m_pwpPronounceCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwMinsGSzr->AddStretchSpacer();
 
-  wxStaticText* itemStaticText125 = new wxStaticText( itemPanel87, wxID_STATIC, _("Or"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText125 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _("Or"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer88->Add(itemStaticText125, 0, wxALIGN_LEFT|wxALL, 10);
 
-  m_pwpHexCtrl = new wxCheckBox( itemPanel87, ID_CHECKBOX9, _("Use hexadecimal digits only (0-9, a-f)"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpHexCtrl = new wxCheckBox( m_PasswordPolicyPanel, ID_CHECKBOX9, _("Use hexadecimal digits only (0-9, a-f)"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpHexCtrl->SetValue(false);
   itemStaticBoxSizer88->Add(m_pwpHexCtrl, 0, wxALIGN_LEFT|wxALL, 10);
 
-  GetBookCtrl()->AddPage(itemPanel87, _("Password Policy"));
+  GetBookCtrl()->AddPage(m_PasswordPolicyPanel, _("Password Policy"));
 
   /////////////////////////////////////////////////////////////////////////////
   // End of Tab Creation
   /////////////////////////////////////////////////////////////////////////////
-  
+
   // Set validators
   itemTextCtrl10->SetValidator( wxGenericValidator(& m_title) );
   m_UsernameCtrl->SetValidator( wxGenericValidator(& m_user) );
@@ -1582,6 +1612,109 @@ void AddEditPropSheet::OnUseHexCBClick( wxCommandEvent& /* evt */ )
    bool useHex = m_pwpHexCtrl->GetValue();
    EnableNonHexCBs(!useHex);
  }
+}
+
+/*!
+ * wxEVT_UPDATE_UI event handler for all command ids
+ */
+
+void AddEditPropSheet::OnUpdateUI(wxUpdateUIEvent& event)
+{
+  bool dbIsReadOnly = m_core.IsReadOnly();
+
+  switch (event.GetId()) {
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Basic"
+  /////////////////////////////////////////////////////////////////////////////
+    case ID_COMBOBOX1:
+    case ID_BUTTON3:
+      event.Enable(!dbIsReadOnly);
+      break;
+    case ID_TEXTCTRL5:
+    case ID_TEXTCTRL1:
+    case ID_TEXTCTRL2:
+    case ID_TEXTCTRL3:
+    case ID_TEXTCTRL4:
+    case ID_TEXTCTRL20:
+    case ID_TEXTCTRL7:
+    {
+      auto window = m_BasicPanel->FindWindow(event.GetId());
+      if (window != nullptr) {
+        auto control = wxDynamicCast(window, wxTextCtrl);
+        if (control != nullptr) {
+          control->SetEditable(!dbIsReadOnly);
+        }
+      }
+      break;
+    }
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Additional"
+  /////////////////////////////////////////////////////////////////////////////
+    case ID_TEXTCTRL6:
+    case ID_TEXTCTRL8:
+    {
+      auto window = m_AdditionalPanel->FindWindow(event.GetId());
+      if (window != nullptr) {
+        auto control = wxDynamicCast(window, wxTextCtrl);
+        if (control != nullptr) {
+          control->SetEditable(!dbIsReadOnly);
+        }
+      }
+      break;
+    }
+    case ID_COMBOBOX:
+    case ID_COMBOBOX2:
+    case ID_CHECKBOX1:
+    case ID_SPINCTRL:
+    case ID_GRID:
+    case ID_BUTTON1:
+    case ID_BUTTON4:
+      event.Enable(!dbIsReadOnly);
+      break;
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Dates and Times"
+  /////////////////////////////////////////////////////////////////////////////
+    case ID_RADIOBUTTON:
+    case ID_DATECTRL:
+    case ID_RADIOBUTTON1:
+    case ID_SPINCTRL2:
+    case ID_STATICTEXT_1:
+    case ID_CHECKBOX2:
+    case ID_RADIOBUTTON4:
+      event.Enable(!dbIsReadOnly);
+      break;
+
+    default:
+      break;
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Password Policy"
+  /////////////////////////////////////////////////////////////////////////////
+
+  if (dbIsReadOnly) {
+    m_PasswordPolicyPanel->Enable(!dbIsReadOnly);
+  }
+
+  //
+  // Iconization of dialog depending on parent frame.
+  //
+  auto parent = GetParent();
+
+  if ((parent != nullptr) && (parent->IsTopLevel())) {
+    auto topLevelWindow = wxDynamicCast(parent, wxTopLevelWindow);
+
+    /*
+     * At some window managers this dialog gets also iconized when the applicaions main frame is iconized.
+     * At KDE for instance, this dialog remains open while the main frame is iconized.
+     * Hence, we iconize this dialog only if it was not already done.
+     */
+    if ((topLevelWindow != nullptr) && topLevelWindow->IsIconized() && !IsIconized()) {
+      Iconize(true);
+    }
+  }
 }
 
 /*!
