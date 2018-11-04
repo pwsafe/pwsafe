@@ -11,7 +11,7 @@
 #include <iostream>
 
 namespace {
-  const int siglist[] = {SIGINT, SIGQUIT, SIGILL, SIGSEGV, SIGTERM, SIGBUS};
+  const int siglist[] = {SIGINT, SIGQUIT, SIGILL, SIGSEGV, SIGTERM, SIGBUS, SIGHUP};
   
   void *closure = nullptr;
   pws_os::handler_t handler = nullptr;
