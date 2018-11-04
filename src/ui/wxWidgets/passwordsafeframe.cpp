@@ -463,7 +463,12 @@ void PasswordSafeFrame::CreateMenubar()
   menuBar->Append(itemMenu3, _("&File"));
   wxMenu* itemMenu29 = new wxMenu;
   itemMenu29->Append(wxID_ADD, _("&Add Entry...\tCtrl+A"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu29->Append(ID_EDIT, _("Edit/&View Entry...\tCtrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+  if (m_core.IsReadOnly()) {
+    itemMenu29->Append(ID_EDIT, _("&View Entry...\tCtrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+  }
+  else {
+    itemMenu29->Append(ID_EDIT, _("Edit Entry...\tCtrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+  }
   itemMenu29->Append(wxID_DELETE, _("&Delete Entry\tDel"), wxEmptyString, wxITEM_NORMAL);
   itemMenu29->Append(ID_RENAME, _("Rename Entry\tF2"), wxEmptyString, wxITEM_NORMAL);
   itemMenu29->Append(wxID_FIND, _("&Find Entry...\tCtrl+F"), wxEmptyString, wxITEM_NORMAL);
@@ -1858,7 +1863,12 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     itemEditMenu.Append(ID_RUNCOMMAND,     _("&Run Command"));
     itemEditMenu.Append(ID_AUTOTYPE,       _("Perform Auto &Type"));
     itemEditMenu.AppendSeparator();
-    itemEditMenu.Append(ID_EDIT,           _("Edit/&View Entry..."));
+    if (m_core.IsReadOnly()) {
+      itemEditMenu.Append(ID_EDIT,           _("&View Entry..."));
+    }
+    else {
+      itemEditMenu.Append(ID_EDIT,           _("Edit Entry..."));
+    }
     itemEditMenu.Append(ID_DUPLICATEENTRY, _("&Duplicate Entry"));
     itemEditMenu.Append(wxID_DELETE,       _("Delete Entry"));
     itemEditMenu.Append(ID_CREATESHORTCUT, _("Create &Shortcut"));

@@ -101,6 +101,7 @@ class UIInterFace;
 #define ID_CHECKBOX7 10122
 #define ID_CHECKBOX8 10123
 #define ID_CHECKBOX9 10124
+#define ID_STATICTEXT_1 11125
 #define SYMBOL_ADDEDITPROPSHEET_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
 #define SYMBOL_ADDEDITPROPSHEET_TITLE _("Edit Entry")
 #define SYMBOL_ADDEDITPROPSHEET_IDNAME ID_ADDEDITPROPSHEET
@@ -208,6 +209,9 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX9
   void OnUseHexCBClick( wxCommandEvent& event );
 
+  /// wxEVT_UPDATE_UI event handler for all command ids
+  void OnUpdateUI(wxUpdateUIEvent& event );
+
 ////@end AddEditPropSheet event handler declarations
   void OnEZreadOrPronounceable( wxCommandEvent& evt);
   void OnClearPWHist(wxCommandEvent& evt);
@@ -285,6 +289,8 @@ public:
 
 ////@begin AddEditPropSheet member variables
   wxPanel* m_BasicPanel;
+  wxPanel* m_AdditionalPanel;
+  wxPanel* m_PasswordPolicyPanel;
   wxFlexGridSizer* m_BasicFGSizer;
   wxComboBox* m_groupCtrl;
   wxTextCtrl* m_UsernameCtrl;
