@@ -57,64 +57,64 @@ IMPLEMENT_CLASS( AddEditPropSheet, wxPropertySheetDialog )
 
 BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
 
-  EVT_BUTTON(       wxID_OK,          AddEditPropSheet::OnOk                      )
+  EVT_BUTTON(       wxID_OK,                 AddEditPropSheet::OnOk                      )
 ////@begin AddEditPropSheet event table entries
-  EVT_BUTTON(       ID_BUTTON2,       AddEditPropSheet::OnShowHideClick           )
-  EVT_BUTTON(       ID_BUTTON3,       AddEditPropSheet::OnGenerateButtonClick     )
-  EVT_BUTTON(       ID_GO_BTN,        AddEditPropSheet::OnGoButtonClick           )
-  EVT_BUTTON(       ID_SEND_BTN,      AddEditPropSheet::OnSendButtonClick         )
-  EVT_CHECKBOX(     ID_CHECKBOX1,     AddEditPropSheet::OnKeepHistoryClick        )
-  EVT_RADIOBUTTON(  ID_RADIOBUTTON,   AddEditPropSheet::OnExpRadiobuttonSelected  )
-  EVT_DATE_CHANGED( ID_DATECTRL,      AddEditPropSheet::OnExpDateChanged          )
-  EVT_RADIOBUTTON(  ID_RADIOBUTTON1,  AddEditPropSheet::OnExpRadiobuttonSelected  )
-  EVT_SPINCTRL(     ID_SPINCTRL2,     AddEditPropSheet::OnExpIntervalChanged      )
-  EVT_RADIOBUTTON(  ID_RADIOBUTTON4,  AddEditPropSheet::OnExpRadiobuttonSelected  )
-  EVT_RADIOBUTTON(  ID_RADIOBUTTON2,  AddEditPropSheet::OnPWPRBSelected           )
-  EVT_COMBOBOX(     ID_POLICYLIST,    AddEditPropSheet::OnPolicylistSelected      )
-  EVT_RADIOBUTTON(  ID_RADIOBUTTON3,  AddEditPropSheet::OnPWPRBSelected           )
-  EVT_CHECKBOX(     ID_CHECKBOX3,     AddEditPropSheet::OnLowercaseCB             )
-  EVT_CHECKBOX(     ID_CHECKBOX4,     AddEditPropSheet::OnUppercaseCB             )
-  EVT_CHECKBOX(     ID_CHECKBOX5,     AddEditPropSheet::OnDigitsCB                )
-  EVT_CHECKBOX(     ID_CHECKBOX6,     AddEditPropSheet::OnSymbolsCB               )
-  EVT_BUTTON(       ID_RESET_SYMBOLS, AddEditPropSheet::OnResetSymbolsClick       )
-  EVT_CHECKBOX(     ID_CHECKBOX7,     AddEditPropSheet::OnEZreadCBClick           )
-  EVT_CHECKBOX(     ID_CHECKBOX8,     AddEditPropSheet::OnPronouceableCBClick     )
-  EVT_CHECKBOX(     ID_CHECKBOX9,     AddEditPropSheet::OnUseHexCBClick           )
+  EVT_BUTTON(       ID_BUTTON2,              AddEditPropSheet::OnShowHideClick           )
+  EVT_BUTTON(       ID_BUTTON_GENERATE,      AddEditPropSheet::OnGenerateButtonClick     )
+  EVT_BUTTON(       ID_GO_BTN,               AddEditPropSheet::OnGoButtonClick           )
+  EVT_BUTTON(       ID_SEND_BTN,             AddEditPropSheet::OnSendButtonClick         )
+  EVT_CHECKBOX(     ID_CHECKBOX_KEEP,        AddEditPropSheet::OnKeepHistoryClick        )
+  EVT_RADIOBUTTON(  ID_RADIOBUTTON_ON,       AddEditPropSheet::OnExpRadiobuttonSelected  )
+  EVT_DATE_CHANGED( ID_DATECTRL_EXP_DATE,    AddEditPropSheet::OnExpDateChanged          )
+  EVT_RADIOBUTTON(  ID_RADIOBUTTON_IN,       AddEditPropSheet::OnExpRadiobuttonSelected  )
+  EVT_SPINCTRL(     ID_SPINCTRL_EXP_TIME,    AddEditPropSheet::OnExpIntervalChanged      )
+  EVT_RADIOBUTTON(  ID_RADIOBUTTON_NEVER,    AddEditPropSheet::OnExpRadiobuttonSelected  )
+  EVT_RADIOBUTTON(  ID_RADIOBUTTON2,         AddEditPropSheet::OnPWPRBSelected           )
+  EVT_COMBOBOX(     ID_POLICYLIST,           AddEditPropSheet::OnPolicylistSelected      )
+  EVT_RADIOBUTTON(  ID_RADIOBUTTON3,         AddEditPropSheet::OnPWPRBSelected           )
+  EVT_CHECKBOX(     ID_CHECKBOX3,            AddEditPropSheet::OnLowercaseCB             )
+  EVT_CHECKBOX(     ID_CHECKBOX4,            AddEditPropSheet::OnUppercaseCB             )
+  EVT_CHECKBOX(     ID_CHECKBOX5,            AddEditPropSheet::OnDigitsCB                )
+  EVT_CHECKBOX(     ID_CHECKBOX6,            AddEditPropSheet::OnSymbolsCB               )
+  EVT_BUTTON(       ID_RESET_SYMBOLS,        AddEditPropSheet::OnResetSymbolsClick       )
+  EVT_CHECKBOX(     ID_CHECKBOX7,            AddEditPropSheet::OnEZreadCBClick           )
+  EVT_CHECKBOX(     ID_CHECKBOX8,            AddEditPropSheet::OnPronouceableCBClick     )
+  EVT_CHECKBOX(     ID_CHECKBOX9,            AddEditPropSheet::OnUseHexCBClick           )
 ////@end AddEditPropSheet event table entries
-  EVT_SPINCTRL(     ID_SPINCTRL5,     AddEditPropSheet::OnAtLeastChars            )
-  EVT_SPINCTRL(     ID_SPINCTRL6,     AddEditPropSheet::OnAtLeastChars            )
-  EVT_SPINCTRL(     ID_SPINCTRL7,     AddEditPropSheet::OnAtLeastChars            )
-  EVT_SPINCTRL(     ID_SPINCTRL8,     AddEditPropSheet::OnAtLeastChars            )
+  EVT_SPINCTRL(     ID_SPINCTRL5,            AddEditPropSheet::OnAtLeastChars            )
+  EVT_SPINCTRL(     ID_SPINCTRL6,            AddEditPropSheet::OnAtLeastChars            )
+  EVT_SPINCTRL(     ID_SPINCTRL7,            AddEditPropSheet::OnAtLeastChars            )
+  EVT_SPINCTRL(     ID_SPINCTRL8,            AddEditPropSheet::OnAtLeastChars            )
 
-  EVT_BUTTON(       ID_BUTTON1,       AddEditPropSheet::OnClearPWHist             )
+  EVT_BUTTON(       ID_BUTTON_CLEAR_HIST,    AddEditPropSheet::OnClearPWHist             )
 
-  EVT_UPDATE_UI(    ID_COMBOBOX1,     AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_BUTTON3,       AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL5,     AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL1,     AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL2,     AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL3,     AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL4,     AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL20,    AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL7,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_COMBOBOX_GROUP,       AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_BUTTON_GENERATE,      AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_TITLE,       AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_USERNAME,    AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_PASSWORD,    AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_PASSWORD2,   AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_URL,         AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_EMAIL,       AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_NOTES,       AddEditPropSheet::OnUpdateUI                )
 
-  EVT_UPDATE_UI(    ID_TEXTCTRL6,     AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL8,     AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_COMBOBOX,      AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_COMBOBOX2,     AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_CHECKBOX1,     AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_SPINCTRL,      AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_GRID,          AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_BUTTON1,       AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_BUTTON4,       AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_AUTOTYPE,    AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_RUN_CMD,     AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_COMBOBOX_DBC_ACTION,  AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_COMBOBOX_SDBC_ACTION, AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_CHECKBOX_KEEP,        AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_SPINCTRL_MAX_PW_HIST, AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_GRID_PW_HIST,         AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_BUTTON_CLEAR_HIST,    AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_BUTTON_COPY_ALL,      AddEditPropSheet::OnUpdateUI                )
 
-  EVT_UPDATE_UI(    ID_RADIOBUTTON,   AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_DATECTRL,      AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_RADIOBUTTON1,  AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_SPINCTRL2,     AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_STATICTEXT_1,  AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_CHECKBOX2,     AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_RADIOBUTTON4,  AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_RADIOBUTTON_ON,       AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_DATECTRL_EXP_DATE,    AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_RADIOBUTTON_IN,       AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_SPINCTRL_EXP_TIME,    AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_STATICTEXT_DAYS,      AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_CHECKBOX_RECURRING,   AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_RADIOBUTTON_NEVER,    AddEditPropSheet::OnUpdateUI                )
 END_EVENT_TABLE()
 
 /*!
@@ -304,28 +304,28 @@ void AddEditPropSheet::CreateControls()
   m_BasicFGSizer->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString m_groupCtrlStrings;
-  m_groupCtrl = new wxComboBox( m_BasicPanel, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_groupCtrlStrings, wxCB_DROPDOWN );
+  m_groupCtrl = new wxComboBox( m_BasicPanel, ID_COMBOBOX_GROUP, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_groupCtrlStrings, wxCB_DROPDOWN );
   m_BasicFGSizer->Add(m_groupCtrl, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   m_BasicFGSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   wxStaticText* itemStaticText9 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemStaticText9, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL5, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_TITLE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemTextCtrl10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   m_BasicFGSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   wxStaticText* itemStaticText12 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_UsernameCtrl = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  m_UsernameCtrl = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_USERNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(m_UsernameCtrl , 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   m_BasicFGSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   wxStaticText* itemStaticText15 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Password:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemStaticText15, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_PasswordCtrl = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  m_PasswordCtrl = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_PASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(m_PasswordCtrl, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemBoxSizer17 = new wxBoxSizer(wxHORIZONTAL);
@@ -334,20 +334,20 @@ void AddEditPropSheet::CreateControls()
   m_ShowHideCtrl = new wxButton( m_BasicPanel, ID_BUTTON2, _("&Hide"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer17->Add(m_ShowHideCtrl, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 20);
 
-  wxButton* itemButton21 = new wxButton( m_BasicPanel, ID_BUTTON3, _("&Generate"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxButton* itemButton21 = new wxButton( m_BasicPanel, ID_BUTTON_GENERATE, _("&Generate"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer17->Add(itemButton21, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 10);
 
   wxStaticText* itemStaticText22 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Confirm:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemStaticText22, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_Password2Ctrl = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+  m_Password2Ctrl = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_PASSWORD2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
   m_BasicFGSizer->Add(m_Password2Ctrl, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   m_BasicFGSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   wxStaticText* itemStaticText25 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("URL:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemStaticText25, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl26 = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL4, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  wxTextCtrl* itemTextCtrl26 = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_URL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemTextCtrl26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemBoxSizer27 = new wxBoxSizer(wxHORIZONTAL);
@@ -359,7 +359,7 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText30 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("email:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemStaticText30, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl31 = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL20, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  wxTextCtrl* itemTextCtrl31 = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_EMAIL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemTextCtrl31, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemBoxSizer32 = new wxBoxSizer(wxHORIZONTAL);
@@ -374,7 +374,7 @@ void AddEditPropSheet::CreateControls()
   itemBoxSizer35->Add(itemStaticText36, 0, wxALIGN_TOP|wxALL, 5);
   itemBoxSizer35->Add(27, 13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_noteTX = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxSize(-1, m_BasicPanel->ConvertDialogToPixels(wxSize(-1, 50)).y), wxTE_MULTILINE );
+  m_noteTX = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_NOTES, wxEmptyString, wxDefaultPosition, wxSize(-1, m_BasicPanel->ConvertDialogToPixels(wxSize(-1, 50)).y), wxTE_MULTILINE );
   itemBoxSizer35->Add(m_noteTX, 5, wxGROW|wxALL, 3);
 
   GetBookCtrl()->AddPage(m_BasicPanel, _("Basic"));
@@ -392,13 +392,13 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText41 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Autotype:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer40->Add(itemStaticText41, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl42 = new wxTextCtrl( m_AdditionalPanel, ID_TEXTCTRL6, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  wxTextCtrl* itemTextCtrl42 = new wxTextCtrl( m_AdditionalPanel, ID_TEXTCTRL_AUTOTYPE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer40->Add(itemTextCtrl42, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText43 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Run Cmd:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer40->Add(itemStaticText43, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl44 = new wxTextCtrl( m_AdditionalPanel, ID_TEXTCTRL8, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  wxTextCtrl* itemTextCtrl44 = new wxTextCtrl( m_AdditionalPanel, ID_TEXTCTRL_RUN_CMD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer40->Add(itemTextCtrl44, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText45 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Double-Click\nAction:"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -406,7 +406,7 @@ void AddEditPropSheet::CreateControls()
 
   wxArrayString m_DCAcomboBoxStrings;
   setupDCAStrings(m_DCAcomboBoxStrings);
-  m_DCAcomboBox = new wxComboBox( m_AdditionalPanel, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCAcomboBoxStrings, wxCB_READONLY );
+  m_DCAcomboBox = new wxComboBox( m_AdditionalPanel, ID_COMBOBOX_DBC_ACTION, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_DCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText47 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Shift-Double-Click\nAction:"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -414,7 +414,7 @@ void AddEditPropSheet::CreateControls()
 
   wxArrayString m_SDCAcomboBoxStrings;
   setupDCAStrings(m_SDCAcomboBoxStrings);
-  m_SDCAcomboBox = new wxComboBox( m_AdditionalPanel, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCAcomboBoxStrings, wxCB_READONLY );
+  m_SDCAcomboBox = new wxComboBox( m_AdditionalPanel, ID_COMBOBOX_SDBC_ACTION, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_SDCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer49Static = new wxStaticBox(m_AdditionalPanel, wxID_ANY, _("Password History"));
@@ -422,17 +422,17 @@ void AddEditPropSheet::CreateControls()
   itemBoxSizer39->Add(itemStaticBoxSizer49, 0, wxGROW|wxALL, 5);
   auto *itemBoxSizer50 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer49->Add(itemBoxSizer50, 0, wxGROW|wxALL, 5);
-  wxCheckBox* itemCheckBox51 = new wxCheckBox( m_AdditionalPanel, ID_CHECKBOX1, _("Keep"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* itemCheckBox51 = new wxCheckBox( m_AdditionalPanel, ID_CHECKBOX_KEEP, _("Keep"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox51->SetValue(false);
   itemBoxSizer50->Add(itemCheckBox51, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_MaxPWHistCtrl = new wxSpinCtrl( m_AdditionalPanel, ID_SPINCTRL, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_MaxPWHistCtrl = new wxSpinCtrl( m_AdditionalPanel, ID_SPINCTRL_MAX_PW_HIST, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
   itemBoxSizer50->Add(m_MaxPWHistCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText53 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("last passwords"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer50->Add(itemStaticText53, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_PWHgrid = new wxGrid( m_AdditionalPanel, ID_GRID, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
+  m_PWHgrid = new wxGrid( m_AdditionalPanel, ID_GRID_PW_HIST, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
   m_PWHgrid->SetDefaultColSize(150);
   m_PWHgrid->SetDefaultRowSize(25);
   m_PWHgrid->SetColLabelSize(25);
@@ -442,12 +442,12 @@ void AddEditPropSheet::CreateControls()
 
   auto *itemBoxSizer55 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer49->Add(itemBoxSizer55, 0, wxGROW|wxALL, 5);
-  wxButton* itemButton56 = new wxButton( m_AdditionalPanel, ID_BUTTON1, _("Clear History"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxButton* itemButton56 = new wxButton( m_AdditionalPanel, ID_BUTTON_CLEAR_HIST, _("Clear History"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer55->Add(itemButton56, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   itemBoxSizer55->AddStretchSpacer();
 
-  wxButton* itemButton58 = new wxButton( m_AdditionalPanel, ID_BUTTON4, _("Copy All"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxButton* itemButton58 = new wxButton( m_AdditionalPanel, ID_BUTTON_COPY_ALL, _("Copy All"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer55->Add(itemButton58, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   GetBookCtrl()->AddPage(m_AdditionalPanel, _("Additional"));
@@ -467,34 +467,34 @@ void AddEditPropSheet::CreateControls()
   itemStaticBoxSizer61->Add(itemBoxSizer62, 0, wxGROW|wxALL, 0);
   auto *itemFlexGridSizer63 = new wxFlexGridSizer(0, 3, 0, 0);
   itemBoxSizer62->Add(itemFlexGridSizer63, 0, wxGROW|wxALL, 5);
-  m_OnRB = new wxRadioButton( itemPanel59, ID_RADIOBUTTON, _("On"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_OnRB = new wxRadioButton( itemPanel59, ID_RADIOBUTTON_ON, _("On"), wxDefaultPosition, wxDefaultSize, 0 );
   m_OnRB->SetValue(false);
   itemFlexGridSizer63->Add(m_OnRB, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_ExpDate = new wxDatePickerCtrl( itemPanel59, ID_DATECTRL, wxDateTime(), wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+  m_ExpDate = new wxDatePickerCtrl( itemPanel59, ID_DATECTRL_EXP_DATE, wxDateTime(), wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
   itemFlexGridSizer63->Add(m_ExpDate, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   itemFlexGridSizer63->AddStretchSpacer();
 
-  m_InRB = new wxRadioButton( itemPanel59, ID_RADIOBUTTON1, _("In"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_InRB = new wxRadioButton( itemPanel59, ID_RADIOBUTTON_IN, _("In"), wxDefaultPosition, wxDefaultSize, 0 );
   m_InRB->SetValue(false);
   itemFlexGridSizer63->Add(m_InRB, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemBoxSizer68 = new wxBoxSizer(wxHORIZONTAL);
   itemFlexGridSizer63->Add(itemBoxSizer68, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-  m_ExpTimeCtrl = new wxSpinCtrl( itemPanel59, ID_SPINCTRL2, _T("90"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 3650, 90 );
+  m_ExpTimeCtrl = new wxSpinCtrl( itemPanel59, ID_SPINCTRL_EXP_TIME, _T("90"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 3650, 90 );
   itemBoxSizer68->Add(m_ExpTimeCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText70 = new wxStaticText( itemPanel59, ID_STATICTEXT_1, _("days"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText70 = new wxStaticText( itemPanel59, ID_STATICTEXT_DAYS, _("days"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer68->Add(itemStaticText70, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_RecurringCtrl = new wxCheckBox( itemPanel59, ID_CHECKBOX2, _("Recurring"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_RecurringCtrl = new wxCheckBox( itemPanel59, ID_CHECKBOX_RECURRING, _("Recurring"), wxDefaultPosition, wxDefaultSize, 0 );
   m_RecurringCtrl->SetValue(false);
   itemFlexGridSizer63->Add(m_RecurringCtrl, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemBoxSizer72 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer62->Add(itemBoxSizer72, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT|wxBOTTOM, 5);
-  m_NeverRB = new wxRadioButton( itemPanel59, ID_RADIOBUTTON4, _("Never"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_NeverRB = new wxRadioButton( itemPanel59, ID_RADIOBUTTON_NEVER, _("Never"), wxDefaultPosition, wxDefaultSize, 0 );
   m_NeverRB->SetValue(false);
   itemBoxSizer72->Add(m_NeverRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -688,7 +688,7 @@ void AddEditPropSheet::CreateControls()
   itemStaticText86->SetValidator( wxGenericValidator(& m_RMTime) );
   m_ownsymbols->SetValidator( wxGenericValidator(& m_symbols) );
   // Connect events and objects
-  m_noteTX->Connect(ID_TEXTCTRL7, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnNoteSetFocus), nullptr, this);
+  m_noteTX->Connect(ID_TEXTCTRL_NOTES, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnNoteSetFocus), nullptr, this);
   m_ownsymbols->Connect(IDC_OWNSYMBOLS, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnOwnSymSetFocus), nullptr, this);
 ////@end AddEditPropSheet content construction
 
@@ -1084,7 +1084,7 @@ void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& /* evt */ )
 }
 
 /*!
- * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON3
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_GENERATE
  */
 
 void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
@@ -1130,7 +1130,7 @@ void AddEditPropSheet::ShowPassword()
   // Following kludge since wxTE_PASSWORD style is immutable
   wxTextCtrl *tmp = m_PasswordCtrl;
   const wxString pwd = m_password.c_str();
-  m_PasswordCtrl = new wxTextCtrl(m_BasicPanel, ID_TEXTCTRL2,
+  m_PasswordCtrl = new wxTextCtrl(m_BasicPanel, ID_TEXTCTRL_PASSWORD,
                                   pwd,
                                   wxDefaultPosition, wxDefaultSize,
                                   0);
@@ -1159,7 +1159,7 @@ void AddEditPropSheet::HidePassword()
   // Need verification as the user can not see the password entered
   wxTextCtrl *tmp = m_PasswordCtrl;
   const wxString pwd = m_password.c_str();
-  m_PasswordCtrl = new wxTextCtrl(m_BasicPanel, ID_TEXTCTRL2,
+  m_PasswordCtrl = new wxTextCtrl(m_BasicPanel, ID_TEXTCTRL_PASSWORD,
                                   pwd,
                                   wxDefaultPosition, wxDefaultSize,
                                   wxTE_PASSWORD);
@@ -1201,7 +1201,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
     if (m_title.IsEmpty() || password.empty()) {
       GetBookCtrl()->SetSelection(0);
       if (m_title.IsEmpty())
-        FindWindow(ID_TEXTCTRL5)->SetFocus();
+        FindWindow(ID_TEXTCTRL_TITLE)->SetFocus();
       else
         m_PasswordCtrl->SetFocus();
 
@@ -1469,7 +1469,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
 }
 
 /*!
- * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX_KEEP
  */
 
 void AddEditPropSheet::OnKeepHistoryClick(wxCommandEvent &)
@@ -1533,7 +1533,7 @@ void AddEditPropSheet::SetXTime(wxObject *src)
 }
 
 /*!
- * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON
+ * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON_ON
  */
 
 void AddEditPropSheet::OnExpRadiobuttonSelected( wxCommandEvent& evt )
@@ -1626,17 +1626,17 @@ void AddEditPropSheet::OnUpdateUI(wxUpdateUIEvent& event)
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Basic"
   /////////////////////////////////////////////////////////////////////////////
-    case ID_COMBOBOX1:
-    case ID_BUTTON3:
+    case ID_COMBOBOX_GROUP:
+    case ID_BUTTON_GENERATE:
       event.Enable(!dbIsReadOnly);
       break;
-    case ID_TEXTCTRL5:
-    case ID_TEXTCTRL1:
-    case ID_TEXTCTRL2:
-    case ID_TEXTCTRL3:
-    case ID_TEXTCTRL4:
-    case ID_TEXTCTRL20:
-    case ID_TEXTCTRL7:
+    case ID_TEXTCTRL_TITLE:
+    case ID_TEXTCTRL_USERNAME:
+    case ID_TEXTCTRL_PASSWORD:
+    case ID_TEXTCTRL_PASSWORD2:
+    case ID_TEXTCTRL_URL:
+    case ID_TEXTCTRL_EMAIL:
+    case ID_TEXTCTRL_NOTES:
     {
       auto window = m_BasicPanel->FindWindow(event.GetId());
       if (window != nullptr) {
@@ -1651,8 +1651,8 @@ void AddEditPropSheet::OnUpdateUI(wxUpdateUIEvent& event)
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Additional"
   /////////////////////////////////////////////////////////////////////////////
-    case ID_TEXTCTRL6:
-    case ID_TEXTCTRL8:
+    case ID_TEXTCTRL_AUTOTYPE:
+    case ID_TEXTCTRL_RUN_CMD:
     {
       auto window = m_AdditionalPanel->FindWindow(event.GetId());
       if (window != nullptr) {
@@ -1663,26 +1663,26 @@ void AddEditPropSheet::OnUpdateUI(wxUpdateUIEvent& event)
       }
       break;
     }
-    case ID_COMBOBOX:
-    case ID_COMBOBOX2:
-    case ID_CHECKBOX1:
-    case ID_SPINCTRL:
-    case ID_GRID:
-    case ID_BUTTON1:
-    case ID_BUTTON4:
+    case ID_COMBOBOX_DBC_ACTION:
+    case ID_COMBOBOX_SDBC_ACTION:
+    case ID_CHECKBOX_KEEP:
+    case ID_SPINCTRL_MAX_PW_HIST:
+    case ID_GRID_PW_HIST:
+    case ID_BUTTON_CLEAR_HIST:
+    case ID_BUTTON_COPY_ALL:
       event.Enable(!dbIsReadOnly);
       break;
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Dates and Times"
   /////////////////////////////////////////////////////////////////////////////
-    case ID_RADIOBUTTON:
-    case ID_DATECTRL:
-    case ID_RADIOBUTTON1:
-    case ID_SPINCTRL2:
-    case ID_STATICTEXT_1:
-    case ID_CHECKBOX2:
-    case ID_RADIOBUTTON4:
+    case ID_RADIOBUTTON_ON:
+    case ID_DATECTRL_EXP_DATE:
+    case ID_RADIOBUTTON_IN:
+    case ID_SPINCTRL_EXP_TIME:
+    case ID_STATICTEXT_DAYS:
+    case ID_CHECKBOX_RECURRING:
+    case ID_RADIOBUTTON_NEVER:
       event.Enable(!dbIsReadOnly);
       break;
 
@@ -1718,7 +1718,7 @@ void AddEditPropSheet::OnUpdateUI(wxUpdateUIEvent& event)
 }
 
 /*!
- * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL7
+ * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL_NOTES
  */
 
 void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& /* evt */ )
@@ -1945,7 +1945,7 @@ void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
 }
 
 /*!
- * wxEVT_DATE_CHANGED event handler for ID_DATECTRL
+ * wxEVT_DATE_CHANGED event handler for ID_DATECTRL_EXP_DATE
  */
 
 void AddEditPropSheet::OnExpDateChanged( wxDateEvent& event )
@@ -1954,7 +1954,7 @@ void AddEditPropSheet::OnExpDateChanged( wxDateEvent& event )
 }
 
 /*!
- * wxEVT_COMMAND_SPINCTRL_UPDATED event handler for ID_SPINCTRL2
+ * wxEVT_COMMAND_SPINCTRL_UPDATED event handler for ID_SPINCTRL_EXP_TIME
  */
 
 void AddEditPropSheet::OnExpIntervalChanged( wxSpinEvent& event )
