@@ -20,10 +20,10 @@
  */
 
 ////@begin includes
-#include "wx/frame.h"
-#include "wx/statusbr.h"
+#include <wx/frame.h>
+#include <wx/statusbr.h>
 ////@end includes
-#include "wx/treebase.h" // for wxTreeItemId
+#include <wx/treebase.h> // for wxTreeItemId
 #include "core/PWScore.h"
 #include "core/UIinterface.h"
 #include "core/RUEList.h"
