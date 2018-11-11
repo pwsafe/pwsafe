@@ -17,7 +17,7 @@
  */
 
 ////@begin includes
-#include "wx/valgen.h"
+#include <wx/valgen.h>
 ////@end includes
 #include "core/PWScore.h"
 
@@ -101,6 +101,9 @@ public:
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
   void OnCancelClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_EXIT
+  void OnExitClick( wxCommandEvent& event );
 
 ////@begin CSafeCombinationPrompt member function declarations
 
