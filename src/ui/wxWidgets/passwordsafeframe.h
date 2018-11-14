@@ -168,7 +168,7 @@ class PasswordSafeFrame: public wxFrame, public UIInterFace
 {
     DECLARE_CLASS( PasswordSafeFrame )
     DECLARE_EVENT_TABLE()
-    
+
 private:
     enum class ViewType { TREE, GRID } m_currentView;
 
@@ -438,7 +438,7 @@ public:
   void SetViewType(const ViewType& view) { m_currentView = view; }
   bool IsTreeView() const { return m_currentView == ViewType::TREE; }
   bool IsGridView() const { return m_currentView == ViewType::GRID; }
-  
+
   void RefreshViews();
   void FlattenTree(OrderedItemList& olist);
 
@@ -453,14 +453,11 @@ public:
 
   /// Called by app when the inactivity timer arrives
   void IconizeOrHideAndLock();
-  
+
   void HideUI(bool lock);
 
   /// Called by system tray unlock the UI (and optionally restore the main window)
   void UnlockUI(bool restoreFrame);
-
-  /// Returns true if the user enters the correct safe combination and presses OK
-  bool VerifySafeCombination(StringX& password);
 
   void GetAllMenuItemStrings(std::vector<RUEntryData>& vec) const { m_RUEList.GetAllMenuItemStrings(vec); };
   void DeleteRUEntry(size_t index) { m_RUEList.DeleteRUEntry(index); }
@@ -603,7 +600,7 @@ public:
   bool m_bShowExpiry, m_bShowUnsaved; // predefined filters
   bool m_bFilterActive;
   void ApplyFilters();
-  
+
   bool m_InitialTreeDisplayStatusAtOpen;
 };
 

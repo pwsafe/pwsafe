@@ -27,36 +27,34 @@
 #include <wx/filename.h>
 #include <wx/fontdlg.h>
 
-////@begin includes
-#include "safecombinationchange.h"
-#include "about.h"
-#include "PWSgrid.h"
-#include "PWStree.h"
-#include "PWStatusBar.h"
-////@end includes
-#include "PWSgridtable.h"
-#include "safecombinationsetup.h"
-
-#include "passwordsafeframe.h"
-#include "safecombinationprompt.h"
-#include "properties.h"
 #include "core/core.h"
 #include "core/PWScore.h"
 #include "core/PWSprefs.h"
 #include "core/PWSdirs.h"
+#include "core/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+#include "os/file.h"
+#include "os/sleep.h"
+
+#include "about.h"
+#include "PWSgrid.h"
+#include "PWStree.h"
+#include "PWStatusBar.h"
+#include "PWSgridtable.h"
+#include "safecombinationchange.h"
+#include "safecombinationsetup.h"
+#include "safecombinationprompt.h"
+#include "passwordsafeframe.h"
+#include "properties.h"
 #include "PasswordSafeSearch.h"
 #include "pwsclip.h"
 #include "SystemTray.h"
 #include "wxutils.h"
 #include "guiinfo.h"
 #include "pwsafeapp.h"
-#include "../../os/file.h"
 #include "./ImportTextDlg.h"
 #include "./ImportXmlDlg.h"
 #include "./ExportTextWarningDlg.h"
-#include "../../os/sleep.h"
 #include "./ViewReport.h"
-#include "../../core/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 #include "./PWSDragBar.h"
 #include "./MergeDlg.h"
 #include "./PwsSync.h"
@@ -100,7 +98,7 @@ DEFINE_EVENT_TYPE(wxEVT_GUI_DB_PREFS_CHANGE)
 BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_CLOSE( PasswordSafeFrame::OnCloseWindow )
-  
+
   EVT_MENU( wxID_NEW,                   PasswordSafeFrame::OnNewClick )
   EVT_MENU( wxID_OPEN,                  PasswordSafeFrame::OnOpenClick )
   EVT_MENU( wxID_CLOSE,                 PasswordSafeFrame::OnCloseClick )
@@ -152,7 +150,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_GOTOBASEENTRY,           PasswordSafeFrame::OnGotoBase )
   EVT_MENU( ID_EDITBASEENTRY,           PasswordSafeFrame::OnEditBase )
-  
+
   EVT_MENU( ID_CREATESHORTCUT,          PasswordSafeFrame::OnCreateShortcut )
   EVT_MENU( ID_DUPLICATEENTRY,          PasswordSafeFrame::OnDuplicateEntry )
 
@@ -180,7 +178,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_SHOWHIDE_TOOLBAR,        PasswordSafeFrame::OnShowHideToolBar )
   EVT_MENU( ID_SHOWHIDE_DRAGBAR,        PasswordSafeFrame::OnShowHideDragBar )
-  
+
   EVT_MENU( ID_TOOLBAR_NEW,             PasswordSafeFrame::OnChangeToolbarType )
   EVT_MENU( ID_TOOLBAR_CLASSIC,         PasswordSafeFrame::OnChangeToolbarType )
 
@@ -250,7 +248,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 #ifndef NO_YUBI
   EVT_UPDATE_UI( ID_YUBIKEY_MNG,        PasswordSafeFrame::OnUpdateUI )
 #endif
-  
+
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -824,7 +822,7 @@ bool PasswordSafeFrame::Show(bool show)
 {
   ShowGrid(show && IsGridView());
   ShowTree(show && IsTreeView());
-  
+
   return wxFrame::Show(show);
 }
 
@@ -859,7 +857,7 @@ void PasswordSafeFrame::ShowGrid(bool show)
     }
 
     m_grid->UpdateSorting();
-    
+
     m_guiInfo->RestoreGridViewInfo(m_grid);
   }
   else {
@@ -897,7 +895,7 @@ void PasswordSafeFrame::ShowTree(bool show)
 
     if (m_InitialTreeDisplayStatusAtOpen) {
       m_InitialTreeDisplayStatusAtOpen = false;
-      
+
       switch (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeDisplayStatusAtOpen)) {
         case PWSprefs::AllCollapsed:
           m_tree->SetGroupDisplayStateAllCollapsed();
@@ -911,7 +909,7 @@ void PasswordSafeFrame::ShowTree(bool show)
         default:
           m_tree->SetGroupDisplayStateAllCollapsed();
       }
-      
+
       m_guiInfo->SaveTreeViewInfo(m_tree);
     }
     else {
@@ -921,7 +919,7 @@ void PasswordSafeFrame::ShowTree(bool show)
   else {
     m_guiInfo->SaveTreeViewInfo(m_tree);
   }
-  
+
   m_tree->Show(show);
   GetSizer()->Layout();
 }
@@ -957,7 +955,7 @@ int PasswordSafeFrame::Save(SaveType savetype /* = SaveType::INVALID*/)
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
   prefs->SaveShortcuts();
-  
+
   // Save Group Display State
   if (IsTreeView() && prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen) == PWSprefs::AsPerLastSave) {
     m_tree->SaveGroupDisplayState();
@@ -1812,11 +1810,11 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
 static void FlattenTree(wxTreeItemId id, PWSTreeCtrl* tree, OrderedItemList& olist)
 {
   wxTreeItemIdValue cookie;
-  
+
   if (!id.IsOk()) {
     return;
   }
-  
+
   for (wxTreeItemId childId = tree->GetFirstChild(id, cookie); childId.IsOk();
                           childId = tree->GetNextChild(id, cookie)) {
     CItemData* item = tree->GetItem(childId);
@@ -2550,35 +2548,40 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
     pws_os::Trace0(L"Skipped parallel attempt to unlock DB");
     return;
   }
-  StringX password;
+
   if (m_sysTray->IsLocked()) {
 
     CSafeCombinationPrompt scp(nullptr, m_core, towxstring(m_core.GetCurFile()));
-    auto selection = scp.ShowModal();
-    if (selection == wxID_OK) {
-      password = scp.GetPassword();
-      if (ReloadDatabase(password)) {
-        m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
+
+    switch (scp.ShowModal()) {
+      case (wxID_OK):
+      {
+        if (ReloadDatabase(scp.GetPassword())) {
+          m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
+        }
+        else {
+          CleanupAfterReloadFailure(true);
+          return;
+        }
+        break;
       }
-      else {
-        CleanupAfterReloadFailure(true);
+      case (wxID_EXIT):
+      {
+        m_exitFromMenu = true; // not an exit request from menu, but OnCloseWindow requires this
+        wxCommandEvent event(wxEVT_CLOSE_WINDOW);
+        wxPostEvent(this, event);
+        return;
+      }
+      default:
+      {
+        if (!IsIconized() && iconizeOnFailure)
+          Iconize();
         return;
       }
     }
-    else if (selection == wxID_EXIT) {
-      m_exitFromMenu = true; // not an exit request from menu, but OnCloseWindow requires this
-      wxCommandEvent event(wxEVT_CLOSE_WINDOW);
-      wxPostEvent(this, event);
-      return;
-    }
-    else {
-      if (!IsIconized() && iconizeOnFailure)
-        Iconize();
-      return;
-    }
+
     if (m_savedDBPrefs != wxEmptyString) {
-      const StringX savedPrefs = tostringx(m_savedDBPrefs);
-      PWSprefs::GetInstance()->Load(savedPrefs);
+      PWSprefs::GetInstance()->Load(tostringx(m_savedDBPrefs));
       m_savedDBPrefs = wxEmptyString;
     }
   }
@@ -2603,16 +2606,6 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
   }
 }
 
-bool PasswordSafeFrame::VerifySafeCombination(StringX& password)
-{
-  CSafeCombinationPrompt scp(nullptr, m_core, towxstring(m_core.GetCurFile()));
-  if (scp.ShowModal() == wxID_OK) {
-    password = scp.GetPassword();
-    return true;
-  }
-  return false;
-}
-
 void PasswordSafeFrame::SetFocus()
 {
   if (IsTreeView())
@@ -2622,12 +2615,12 @@ void PasswordSafeFrame::SetFocus()
 }
 
 void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
-  
+
   // If database was closed than there is nothing to do
   if (!m_core.IsDbOpen()) {
     return;
   }
-  
+
   const bool beingIconized =
 #if wxCHECK_VERSION(2,9,0)
     evt.IsIconized();
@@ -2721,7 +2714,7 @@ void PasswordSafeFrame::IconizeOrHideAndLock()
   else {
     TryIconize();
   }
-  
+
   // If not already locked by HideUI or OnIconize due to user preference than do it now
   if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) {
     LockDb();
@@ -3144,7 +3137,7 @@ void PasswordSafeFrame::ViewReport(CReport& rpt)
   CViewReport vr(this, &rpt);
   vr.ShowModal();
 }
- 
+
 void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
 {
   int rc = PWScore::FAILURE;
