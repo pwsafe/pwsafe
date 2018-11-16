@@ -2766,11 +2766,11 @@ msgstr "Action double-clic de l'entrée courante"
 
 #. Resource IDs: (5697)
 #, c-format
-msgid "Drag this image onto a another window to paste the '%s' field."
+msgid "Drag this image onto another window to paste the '%s' field."
 msgstr "Glissez cette image sur une autre fenêtre pour coller le champ '%s'."
 
 #. Resource IDs: (5862)
-msgid "Drag this image onto a another window to start AutoType from there."
+msgid "Drag this image onto another window to start AutoType from there."
 msgstr "Glissez cette image sur une autre fenêtre pour démarrer l'auto-frappe."
 
 #. Resource IDs: (5464)

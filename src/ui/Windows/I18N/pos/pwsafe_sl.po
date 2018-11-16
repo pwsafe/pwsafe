@@ -3023,11 +3023,11 @@ msgstr "Akcija dvoklika za trenutni vnos"
 
 #. Resource IDs: (5697)
 #, c-format
-msgid "Drag this image onto a another window to paste the '%s' field."
+msgid "Drag this image onto another window to paste the '%s' field."
 msgstr "Povlecite to sliko v drugo okno, da prilepite polje '%s'."
 
 #. Resource IDs: (5862)
-msgid "Drag this image onto a another window to start AutoType from there."
+msgid "Drag this image onto another window to start AutoType from there."
 msgstr "Povlecite to sliko v drugo okno, za začetek samodejne vrste od tam."
 
 #. Resource IDs: (5464)

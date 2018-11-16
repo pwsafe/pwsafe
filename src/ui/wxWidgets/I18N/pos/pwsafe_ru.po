@@ -6886,11 +6886,11 @@ msgstr "Да: не менее %d из %ls: %ls"
 #~ msgid "Doubleclick action for current entry"
 #~ msgstr "Действие по двойному щелчку для текущего элемента"
 
-#~ msgid "Drag this image onto a another window to paste the '%s' field."
+#~ msgid "Drag this image onto another window to paste the '%s' field."
 #~ msgstr ""
 #~ "Перетащите изображение на другое окно, чтобы вставить значение поля «%s»."
 
-#~ msgid "Drag this image onto a another window to start AutoType from there."
+#~ msgid "Drag this image onto another window to start AutoType from there."
 #~ msgstr ""
 #~ "Перетащите изображение на другое окно, чтобы начать автонабор в указанном "
 #~ "месте."

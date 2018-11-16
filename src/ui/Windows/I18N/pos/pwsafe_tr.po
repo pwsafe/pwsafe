@@ -2727,11 +2727,11 @@ msgstr "Geçerli girdi için çift tıklama eylemi"
 
 #. Resource IDs: (5697)
 #, c-format
-msgid "Drag this image onto a another window to paste the '%s' field."
+msgid "Drag this image onto another window to paste the '%s' field."
 msgstr "'%s' alanını yapıştırmak için bu görüntüyü başka bir pencereye sürükleyin."
 
 #. Resource IDs: (5862)
-msgid "Drag this image onto a another window to start AutoType from there."
+msgid "Drag this image onto another window to start AutoType from there."
 msgstr "Otomatik Doldurmanın orada başlaması için bu görüntüyü başka bir pencereye sürükleyin"
 
 #. Resource IDs: (5464)

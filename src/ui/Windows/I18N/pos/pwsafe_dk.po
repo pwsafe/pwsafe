@@ -2727,11 +2727,11 @@ msgstr ""
 
 #. Resource IDs: (5697)
 #, c-format
-msgid "Drag this image onto a another window to paste the '%s' field."
+msgid "Drag this image onto another window to paste the '%s' field."
 msgstr "Træk dette billede over i et andet vindue for at indsætte '%s' feltet."
 
 #. Resource IDs: (5862)
-msgid "Drag this image onto a another window to start AutoType from there."
+msgid "Drag this image onto another window to start AutoType from there."
 msgstr ""
 
 #. Resource IDs: (5464)

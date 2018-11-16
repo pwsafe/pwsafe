@@ -6143,7 +6143,7 @@ msgstr "Verknüpfung bearbeiten"
 #~ msgid "Doubleclick action for current entry"
 #~ msgstr "Doppelklick Aktion für den aktuellen Eintrag"
 
-#~ msgid "Drag this image onto a another window to start AutoType from there."
+#~ msgid "Drag this image onto another window to start AutoType from there."
 #~ msgstr ""
 #~ "Ziehe dieses Bild in ein anderes Fenster um die Autom. Eingabe von dort "
 #~ "aus zu starten."

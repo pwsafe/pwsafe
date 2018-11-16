@@ -6414,7 +6414,7 @@ msgstr "Modifier le raccourci"
 #~ msgid "Doubleclick action for current entry"
 #~ msgstr "Action double-clic de l'entrée courante"
 
-#~ msgid "Drag this image onto a another window to start AutoType from there."
+#~ msgid "Drag this image onto another window to start AutoType from there."
 #~ msgstr ""
 #~ "Glissez cette image sur une autre fenêtre pour démarrer l'auto-frappe."
 

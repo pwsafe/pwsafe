@@ -2727,11 +2727,11 @@ msgstr "Akcja na dwuklik dla aktualnego wpisu"
 
 #. Resource IDs: (5697)
 #, c-format
-msgid "Drag this image onto a another window to paste the '%s' field."
+msgid "Drag this image onto another window to paste the '%s' field."
 msgstr "Przeciągnij ten obraz do innego okna by przenieść pole '%s'."
 
 #. Resource IDs: (5862)
-msgid "Drag this image onto a another window to start AutoType from there."
+msgid "Drag this image onto another window to start AutoType from there."
 msgstr "Przenieś ten obraz do innego okna by zacząć stąd automatyczne uzupełnianie."
 
 #. Resource IDs: (5464)

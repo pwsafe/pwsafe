@@ -2727,11 +2727,11 @@ msgstr ""
 
 #. Resource IDs: (5697)
 #, c-format
-msgid "Drag this image onto a another window to paste the '%s' field."
+msgid "Drag this image onto another window to paste the '%s' field."
 msgstr "'%s' 필드값을 복사하시려면 이 아이큰을 다른 윈도우 위로 드래그하십시오."
 
 #. Resource IDs: (5862)
-msgid "Drag this image onto a another window to start AutoType from there."
+msgid "Drag this image onto another window to start AutoType from there."
 msgstr ""
 
 #. Resource IDs: (5464)

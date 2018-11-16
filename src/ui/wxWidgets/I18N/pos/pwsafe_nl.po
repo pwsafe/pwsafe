@@ -6379,7 +6379,7 @@ msgstr "Bewerk Snelkoppeling"
 #~ msgid "Doubleclick action for current entry"
 #~ msgstr "Dubbel klik actie voor huidige vermelding"
 
-#~ msgid "Drag this image onto a another window to start AutoType from there."
+#~ msgid "Drag this image onto another window to start AutoType from there."
 #~ msgstr ""
 #~ "Versleep dit plaatje naar een ander scherm om Auto Invoer van daaraf te "
 #~ "starten."

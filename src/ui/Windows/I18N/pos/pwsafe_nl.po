@@ -2753,11 +2753,11 @@ msgstr "Dubbelklik actie voor huidige invoer"
 
 #. Resource IDs: (5697)
 #, c-format
-msgid "Drag this image onto a another window to paste the '%s' field."
+msgid "Drag this image onto another window to paste the '%s' field."
 msgstr "Sleep deze afbeelding naar een ander scherm om het '%s' veld te plakken."
 
 #. Resource IDs: (5862)
-msgid "Drag this image onto a another window to start AutoType from there."
+msgid "Drag this image onto another window to start AutoType from there."
 msgstr "Versleep deze afbeelding naar een ander scherm om Auto invul van daaraf te starten."
 
 #. Resource IDs: (5464)

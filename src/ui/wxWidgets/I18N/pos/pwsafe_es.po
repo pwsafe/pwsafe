@@ -6363,7 +6363,7 @@ msgstr "Editar acceso directo"
 #~ msgid "Doubleclick action for current entry"
 #~ msgstr "Acción en doble clic en entrada actual"
 
-#~ msgid "Drag this image onto a another window to start AutoType from there."
+#~ msgid "Drag this image onto another window to start AutoType from there."
 #~ msgstr ""
 #~ "Arrastra esta imagen a otra ventana para iniciar AutoEscritura allí."
 

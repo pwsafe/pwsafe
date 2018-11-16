@@ -5960,7 +5960,7 @@ msgstr "Parancsikon szerkesztése"
 #~ msgid "Doubleclick action for current entry"
 #~ msgstr "Az aktuális bejegyzés duplakattintás eseménye"
 
-#~ msgid "Drag this image onto a another window to start AutoType from there."
+#~ msgid "Drag this image onto another window to start AutoType from there."
 #~ msgstr "Húzza ezt a képet egy másik ablakra az Autogépelés megkezdéséhez."
 
 #~ msgid ""

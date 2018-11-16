@@ -6456,7 +6456,7 @@ msgstr "Edytuj Skrót"
 #~ msgid "Doubleclick action for current entry"
 #~ msgstr "Akcja na dwuklik dla aktualnego wpisu"
 
-#~ msgid "Drag this image onto a another window to start AutoType from there."
+#~ msgid "Drag this image onto another window to start AutoType from there."
 #~ msgstr ""
 #~ "Przeciągnj ten obraz do innego okna by zacząć stąd automatyczne "
 #~ "2012-05-21uzupełnianie."

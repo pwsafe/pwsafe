@@ -6337,7 +6337,7 @@ msgstr "Redigera genväg"
 #~ msgid "Doubleclick action for current entry"
 #~ msgstr "Dubbelklicksval för nuvarande post"
 
-#~ msgid "Drag this image onto a another window to start AutoType from there."
+#~ msgid "Drag this image onto another window to start AutoType from there."
 #~ msgstr ""
 #~ "Drag denna ikon till ett annat fönster för att starta Autoskriv därifrån."
 

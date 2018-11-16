@@ -2779,11 +2779,11 @@ msgstr "Dubbelklicksval för aktuell post"
 
 #. Resource IDs: (5697)
 #, c-format
-msgid "Drag this image onto a another window to paste the '%s' field."
+msgid "Drag this image onto another window to paste the '%s' field."
 msgstr "Drag ikonen till ett fönsterfält för att klistra in '%s'-fältet."
 
 #. Resource IDs: (5862)
-msgid "Drag this image onto a another window to start AutoType from there."
+msgid "Drag this image onto another window to start AutoType from there."
 msgstr "Drag ikonen till ett fönsterfält för att starta Autoskriv där."
 
 #. Resource IDs: (5464)
