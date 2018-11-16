@@ -509,11 +509,14 @@
 #define IDC_RESPIN                      1132
 #define IDC_MRUSPIN                     1133
 #define IDC_PWHSPIN                     1134
+#define IDC_PWHSPIN2                    1135
+#define IDC_DEDSPIN                     1135
 #define IDC_PWHISTORY_LIST              1136
 #define IDC_SAVEPWHISTORY               1137
 #define IDC_MAXPWHISTORY                1138
 #define IDC_DEFPWHNUM                   1139
 #define IDC_COPY_OLDPW_TO_CLIPBOARD     1140
+#define IDC_DEFEXPIRYDAYS               1140
 #define IDC_CLEAR_PWHIST                1141
 #define IDC_SAVE_PWHIST                 1143
 #define IDC_STATIC_OLDPW1               1144
@@ -760,6 +763,7 @@
 #define IDC_STATIC_IDLEMINS             1445
 #define IDC_STATIC_NUMPWSDHIST          1446
 #define IDC_STATIC_DEFAUTOTYPE          1447
+#define IDC_STATIC_DEFEXPIRYDAYS        1447
 #define IDC_STATIC_PSWDLENGTH           1448
 #define IDC_SHIFT_DOUBLE_CLICK_ACTION   1449
 #define IDC_STATIC_PREFERENCES          1451

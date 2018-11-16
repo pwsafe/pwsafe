@@ -13,6 +13,11 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
 
+New Features in 3.48pre
+=======================
+[] Default expiration interval is now configurable via
+Options->Password History, instead of being hardcoded to 90 days.
+
 Bugs Fixed in 3.48pre
 =====================
 [1475] Tweak RNG initialization.

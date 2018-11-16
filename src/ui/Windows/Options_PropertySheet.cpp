@@ -226,6 +226,7 @@ void COptions_PropertySheet::SetupInitialValues()
   m_OPTMD.PWHistoryNumDefault =
       prefs->GetPref(PWSprefs::NumPWHistoryDefault);
   m_OPTMD.PWHAction = 0;
+  m_OPTMD.PWHDefExpDays = prefs->GetPref(PWSprefs::DefaultExpiryDays);
   // Preferences min/max values
   m_OPTMD.prefminPWHNumber = (short)prefs->GetPrefMinVal(PWSprefs::NumPWHistoryDefault);
   m_OPTMD.prefmaxPWHNumber = (short)prefs->GetPrefMaxVal(PWSprefs::NumPWHistoryDefault);
@@ -442,6 +443,8 @@ void COptions_PropertySheet::UpdateCopyPreferences()
   if (m_OPTMD.SavePWHistory == TRUE)
     prefs->SetPref(PWSprefs::NumPWHistoryDefault,
                    m_OPTMD.PWHistoryNumDefault, true);
+
+  prefs->SetPref(PWSprefs::DefaultExpiryDays, m_OPTMD.PWHDefExpDays, true);
 
   prefs->SetPref(PWSprefs::LockDBOnIdleTimeout,
                  m_OPTMD.LockOnIdleTimeout == TRUE, true);

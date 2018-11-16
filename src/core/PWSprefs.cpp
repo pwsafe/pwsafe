@@ -177,6 +177,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("AddEditFontPtSz"), 0, ptApplication, 0, -1},                 // application
   {_T("VKFontPtSz"), 0, ptApplication, 0, -1},                      // application
   {_T("WindowTransparency"), 0, ptApplication, 0, 50},              // application
+  {_T("DefaultExpiryDays"), 90, ptApplication, 1, 3650},            // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

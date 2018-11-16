@@ -482,7 +482,11 @@ void AddEditPropSheet::CreateControls()
 
   auto *itemBoxSizer68 = new wxBoxSizer(wxHORIZONTAL);
   itemFlexGridSizer63->Add(itemBoxSizer68, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-  m_ExpTimeCtrl = new wxSpinCtrl( itemPanel59, ID_SPINCTRL_EXP_TIME, _T("90"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 3650, 90 );
+  m_ExpTimeCtrl = new wxSpinCtrl( itemPanel59, ID_SPINCTRL_EXP_TIME, _T("90"),
+                                  wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
+                                  PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::DefaultExpiryDays),
+                                  PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays),
+                                  PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays) );
   itemBoxSizer68->Add(m_ExpTimeCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText70 = new wxStaticText( itemPanel59, ID_STATICTEXT_DAYS, _("days"), wxDefaultPosition, wxDefaultSize, 0 );

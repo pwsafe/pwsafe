@@ -140,7 +140,7 @@ public:
     DlgOrientation, TimedTaskChainDelay,
     AutotypeSelectAllKeyCode, AutotypeSelectAllModMask, //X only
     TreeFontPtSz, PasswordFontPtSz, NotesFontPtSz, AddEditFontPtSz, VKFontPtSz,
-    WindowTransparency,
+    WindowTransparency, DefaultExpiryDays,
     NumIntPrefs};
 
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,

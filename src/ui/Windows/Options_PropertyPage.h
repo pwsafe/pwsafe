@@ -80,6 +80,7 @@ struct st_Opt_master_data {
   BOOL SavePWHistory;
   int PWHistoryNumDefault;
   int PWHAction;
+  int PWHDefExpDays; // not strictly password history, but in the same tab.
   // Preferences min/max values
   short prefminPWHNumber;
   short prefmaxPWHNumber;
@@ -196,6 +197,7 @@ public:
   // Password History Data
   inline BOOL &M_SavePWHistory() {return m_OPTMD.SavePWHistory;}
   inline int &M_PWHistoryNumDefault() {return m_OPTMD.PWHistoryNumDefault;}
+  inline int &M_PWHDefExpDays() {return m_OPTMD.PWHDefExpDays;}
   inline int &M_PWHAction() {return m_OPTMD.PWHAction;}
   // Preferences min/max values
   inline short &M_prefminPWHNumber() { return m_OPTMD.prefminPWHNumber; }

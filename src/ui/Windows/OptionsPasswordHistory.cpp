@@ -43,6 +43,7 @@ COptionsPasswordHistory::COptionsPasswordHistory(CWnd *pParent, st_Opt_master_da
   m_SavePWHistory = M_SavePWHistory();
   m_PWHistoryNumDefault = M_PWHistoryNumDefault();
   m_PWHAction = M_PWHAction();
+  m_PWHDefExpDays = M_PWHDefExpDays();
 }
 
 void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
@@ -53,6 +54,7 @@ void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_SAVEPWHISTORY, m_SavePWHistory);
   DDX_Check(pDX, IDC_UPDATEPROTECTEDPWH, mApplyToProtected);
   DDX_Text(pDX, IDC_DEFPWHNUM, m_PWHistoryNumDefault);
+  DDX_Text(pDX, IDC_DEFEXPIRYDAYS, m_PWHDefExpDays);
   DDX_Radio(pDX, IDC_PWHISTORYNOACTION, m_PWHAction);
 
   DDX_Control(pDX, IDC_SAVEPWHISTORY, m_chkbox);
@@ -116,6 +118,13 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   pspin->SetBase(10);
   pspin->SetPos(m_PWHistoryNumDefault);
 
+  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_DEDSPIN);
+  pspin->SetBuddy(GetDlgItem(IDC_DEFEXPIRYDAYS));
+  pspin->SetRange(PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::DefaultExpiryDays),
+                  PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays));
+  pspin->SetBase(10);
+  pspin->SetPos(m_PWHDefExpDays);
+
   // Disable text re: PWHistory changes on existing entries to start
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
   GetDlgItem(IDC_UPDATEPROTECTEDPWH)->EnableWindow(FALSE);
@@ -158,7 +167,8 @@ LRESULT COptionsPasswordHistory::OnQuerySiblings(WPARAM wParam, LPARAM )
     case PP_DATA_CHANGED:
       if (M_SavePWHistory()        != m_SavePWHistory        ||
           (m_SavePWHistory         == TRUE &&
-           M_PWHistoryNumDefault() != m_PWHistoryNumDefault))
+           M_PWHistoryNumDefault() != m_PWHistoryNumDefault) ||
+          M_PWHDefExpDays()        != m_PWHDefExpDays)
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:
@@ -177,6 +187,7 @@ BOOL COptionsPasswordHistory::OnApply()
   M_SavePWHistory() = m_SavePWHistory;
   M_PWHistoryNumDefault() = m_PWHistoryNumDefault;
   M_PWHAction() = m_PWHAction * (mApplyToProtected == 0 ? 1 : -1);
+  M_PWHDefExpDays() = m_PWHDefExpDays;
 
   return COptions_PropertyPage::OnApply();
 }

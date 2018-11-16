@@ -32,7 +32,8 @@ protected:
 
   BOOL m_SavePWHistory, mApplyToProtected;
   int m_PWHistoryNumDefault;
-  int  m_PWHAction;
+  int m_PWHAction;
+  int m_PWHDefExpDays;
   //}}AFX_DATA
 
   CButtonExtn m_chkbox;
