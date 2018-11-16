@@ -3165,7 +3165,7 @@ msgstr "Gruppe ausklappen/zuklappen"
 
 #. Resource IDs: (119)
 msgid "Expiring Passwords"
-msgstr "Passwöter die ablaufen"
+msgstr "Ablaufende Passwörter"
 
 #. Resource IDs: (5643, 5962)
 msgid "Export"

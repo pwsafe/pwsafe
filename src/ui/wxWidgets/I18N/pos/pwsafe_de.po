@@ -6293,7 +6293,7 @@ msgstr "Verknüpfung bearbeiten"
 #~ msgstr "Gruppe ausklappen/zuklappen"
 
 #~ msgid "Expiring Passwords"
-#~ msgstr "Passwöter die ablaufen"
+#~ msgstr "Ablaufende Passwörter"
 
 #~ msgid "Export"
 #~ msgstr "Exportieren"
