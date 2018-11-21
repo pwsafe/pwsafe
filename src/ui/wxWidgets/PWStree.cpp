@@ -10,32 +10,32 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
-#include "wx/imaglist.h"
+#include <wx/imaglist.h>
+#include <wx/tokenzr.h>
 ////@end includes
-#include <utility> // for make_pair
-#include <vector>
 
 #include "PWStree.h"
 #include "passwordsafeframe.h"
 #include "core/PWSprefs.h"
 #include "../../core/Command.h"
 
+#include <utility> // for make_pair
+#include <vector>
+
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
-
-#include <wx/tokenzr.h>
 
 ////@begin XPM images
 ////@end XPM images
@@ -92,7 +92,6 @@ BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
   EVT_TREE_SEL_CHANGED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlSelChanged )
   EVT_TREE_ITEM_ACTIVATED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlItemActivated )
   EVT_TREE_ITEM_MENU( ID_TREECTRL, PWSTreeCtrl::OnContextMenu )
-  EVT_CHAR( PWSTreeCtrl::OnChar )
   EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PWSTreeCtrl::OnDBGUIPrefsChange)
   EVT_TREE_ITEM_GETTOOLTIP( ID_TREECTRL, PWSTreeCtrl::OnGetToolTip )
   EVT_MENU( ID_ADDGROUP, PWSTreeCtrl::OnAddGroup )
@@ -601,19 +600,6 @@ void PWSTreeCtrl::OnGetToolTip( wxTreeEvent& evt )
       evt.SetToolTip(note);
     }
   }
-}
-
-/*!
- * wxEVT_CHAR event handler for ID_TREECTRL
- */
-
-void PWSTreeCtrl::OnChar( wxKeyEvent& evt )
-{
-  if (evt.GetKeyCode() == WXK_ESCAPE &&
-      PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
-    GetParent()->Close();
-  }
-  evt.Skip();
 }
 
 void PWSTreeCtrl::OnDBGUIPrefsChange(wxEvent& evt)

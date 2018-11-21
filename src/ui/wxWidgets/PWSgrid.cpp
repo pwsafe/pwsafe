@@ -10,25 +10,27 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
 ////@end includes
 
-#include <utility> // for make_pair
+#include <wx/memory.h>
+
 #include "PWSgrid.h"
 #include "passwordsafeframe.h" // for DispatchDblClickAction()
-#include <wx/memory.h>
-#include <algorithm>
 #include "./PWSgridtable.h"
+
+#include <algorithm>
+#include <utility> // for make_pair
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -55,7 +57,6 @@ BEGIN_EVENT_TABLE( PWSGrid, wxGrid )
   EVT_GRID_CELL_RIGHT_CLICK( PWSGrid::OnCellRightClick )
   EVT_GRID_CELL_LEFT_DCLICK( PWSGrid::OnLeftDClick )
   EVT_GRID_SELECT_CELL( PWSGrid::OnSelectCell )
-  EVT_CHAR( PWSGrid::OnChar )
   EVT_CONTEXT_MENU(PWSGrid::OnContextMenu)
   EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PWSGrid::OnDBGUIPrefsChange)
 ////@end PWSGrid event table entries
@@ -461,19 +462,6 @@ int  PWSGrid::FindItemRow(const CUUID& uu)
        return itr->second;
      }
      return wxNOT_FOUND;
-}
-
-/*!
- * wxEVT_CHAR event handler for ID_LISTBOX
- */
-
-void PWSGrid::OnChar( wxKeyEvent& evt )
-{
-  if (evt.GetKeyCode() == WXK_ESCAPE &&
-      PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
-    GetParent()->Close(true);
-  }
-  evt.Skip();
 }
 
 void PWSGrid::SaveSettings() const

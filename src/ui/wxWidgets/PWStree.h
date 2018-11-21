@@ -17,12 +17,14 @@
  */
 
 ////@begin includes
-#include "wx/treebase.h"
-#include "wx/treectrl.h"
+#include <wx/treebase.h>
+#include <wx/treectrl.h>
 ////@end includes
+
 #include "core/ItemData.h"
 #include "core/PWScore.h"
 #include "os/UUID.h"
+
 #include <map>
 
 /*!
@@ -52,7 +54,7 @@ typedef std::map<pws_os::CUUID, wxTreeItemId, std::less<pws_os::CUUID> > UUIDTIM
  */
 
 class PWSTreeCtrl: public wxTreeCtrl
-{    
+{
   DECLARE_CLASS( PWSTreeCtrl )
   DECLARE_EVENT_TABLE()
 
@@ -85,9 +87,6 @@ public:
   /// wxEVT_TREE_ITEM_MENU event handler for ID_TREECTRL
   void OnContextMenu( wxTreeEvent& evt);
 
-  /// wxEVT_CHAR event handler for ID_TREECTRL
-  void OnChar( wxKeyEvent& evt);
-
 ////@end PWSTreeCtrl event handler declarations
   void OnGetToolTip( wxTreeEvent& evt); // Added manually
 
@@ -102,7 +101,7 @@ public:
   void OnRenameGroup(wxCommandEvent& evt);
 
   void OnEndLabelEdit( wxTreeEvent& evt );
-  
+
   /// wxEVT_TREE_KEY_DOWN event handler for ID_TREECTRL
   void OnKeyDown(wxTreeEvent& evt);
 
@@ -141,10 +140,10 @@ public:
   void SetItemImage(const wxTreeItemId &node, const CItemData &item);
   void FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem);
   void FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, const wxString& oldPath);
-  
+
   std::vector<bool> GetGroupDisplayState();
   void SetGroupDisplayState(const std::vector<bool> &groupstates);
-  
+
   template<typename GroupItemConsumer>
   void TraverseTree(wxTreeItemId itemId, GroupItemConsumer&& consumer);
 ////@begin PWSTreeCtrl member variables
