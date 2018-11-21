@@ -207,6 +207,9 @@ public:
 
   ////@begin PasswordSafeFrame event handler declarations
 
+  /// wxEVT_CHAR_HOOK event handler for WXK_ESCAPE
+  void OnChar( wxKeyEvent& evt );
+
   /// wxEVT_CLOSE_WINDOW event handler for ID_PASSWORDSAFEFRAME
   void OnCloseWindow( wxCloseEvent& event );
 

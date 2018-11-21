@@ -17,12 +17,14 @@
  */
 
 ////@begin includes
-#include "wx/grid.h"
+#include <wx/grid.h>
 #include <wx/headerctrl.h>
 ////@end includes
+
 #include "core/ItemData.h"
 #include "core/PWScore.h"
 #include "os/UUID.h"
+
 #include <functional>
 #include <map>
 
@@ -57,7 +59,7 @@ class PWSGrid: public wxGrid
 {
   typedef std::multimap<wxString, const CItemData*, std::greater<wxString> > DescendingSortedMultimap;
   typedef std::multimap<wxString, const CItemData*, std::less<wxString> >    AscendingSortedMultimap;
-  
+
   DECLARE_CLASS( PWSGrid )
   DECLARE_EVENT_TABLE()
 
@@ -79,7 +81,7 @@ public:
 
   /// Creates the controls and sizers
   void CreateControls();
-  
+
   // Notification from PWScore when new data is loaded
   void OnPasswordListModified();
 
@@ -94,7 +96,7 @@ public:
   void DeleteItems(int row, size_t numItems);
   void DeleteAllItems();
   void Clear();
-  
+
 ////@begin PWSGrid event handler declarations
 
   /// wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX
@@ -108,14 +110,11 @@ public:
   /// wxEVT_GRID_SELECT_CELL event handler for ID_LISTBOX
   void OnSelectCell( wxGridEvent& event );
 
-  /// wxEVT_CHAR event handler for ID_LISTBOX
-  void OnChar( wxKeyEvent& evt);
-
   void OnDBGUIPrefsChange(wxEvent& evt);
-  
+
   /// EVT_HEADER_CLICK
   void OnHeaderClick(wxHeaderCtrlEvent& event);
-  
+
 ////@end PWSGrid event handler declarations
 
 ////@begin PWSGrid member function declarations
@@ -131,7 +130,7 @@ public:
   static bool ShowToolTips();
 
   CItemData *GetItem(int row) const;
-  
+
   void SelectItem(const pws_os::CUUID& uuid);
 
   int  FindItemRow(const pws_os::CUUID& uu);
@@ -139,15 +138,15 @@ public:
   void SaveSettings() const;
 
   void SetFilterState(bool state);
-  
+
   void UpdateSorting();
-  
+
 ////@begin PWSGrid member variables
 ////@end PWSGrid member variables
 
  private:
   void SortByColumn(int column, bool ascending);
-  
+
   template<typename ItemsCollection>
   void RearrangeItems(ItemsCollection& collection, int column);
 
