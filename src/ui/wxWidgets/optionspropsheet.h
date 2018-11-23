@@ -17,11 +17,11 @@
  */
 
 ////@begin includes
-#include "wx/propdlg.h"
-#include "wx/valgen.h"
-#include "wx/statline.h"
-#include "wx/spinctrl.h"
-#include "wx/grid.h"
+#include <wx/propdlg.h>
+#include <wx/valgen.h>
+#include <wx/statline.h>
+#include <wx/spinctrl.h>
+#include <wx/grid.h>
 #include "core/PWScore.h" // for password history actions
 ////@end includes
 
@@ -103,6 +103,7 @@ class wxBookCtrlEvent;
 #define ID_PANEL6 10137
 #define ID_CHECKBOX30 10182
 #define ID_SPINCTRL13 10183
+#define ID_SPINCTRL14 11183
 #define ID_CHECKBOX31 10184
 #define ID_SPINCTRL 10004
 #define ID_CHECKBOX32 10185
@@ -119,6 +120,7 @@ class wxBookCtrlEvent;
 #define ID_STATICTEXT_5 10194
 #define ID_STATICTEXT_7 10196
 #define ID_STATICTEXT_8 10197
+#define ID_STATICTEXT_9 11197
 #define ID_STATICBOX_1 10198
 #define ID_PWHISTAPPLY 10199
 #define SYMBOL_COPTIONS_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
@@ -339,6 +341,7 @@ public:
   wxStaticText* m_defusernameLBL;
   wxCheckBox* m_pwhistsaveCB;
   wxSpinCtrl* m_pwhistnumdfltSB;
+  wxSpinCtrl* m_pwhdefexpdaysSB;
   wxRadioButton* m_pwhistnochangeRB;
   wxRadioButton* m_pwhiststopRB;
   wxRadioButton* m_pwhiststartRB;
@@ -370,6 +373,7 @@ private:
   int m_pwdefaultlength;
   bool m_pwhistsave;
   int m_pwhistnumdflt;
+  int m_pwhdefexpdays;
   bool m_pwshowinedit;
   bool m_querysetdef;
   bool m_saveimmediate;
