@@ -18,13 +18,13 @@
  */
 
 ////@begin includes
-#include "wx/propdlg.h"
-#include "wx/valgen.h"
-#include "wx/spinctrl.h"
-#include "wx/grid.h"
-#include "wx/datectrl.h"
-#include "wx/dateevt.h"
-#include "wx/statline.h"
+#include <wx/propdlg.h>
+#include <wx/valgen.h>
+#include <wx/spinctrl.h>
+#include <wx/grid.h>
+#include <wx/datectrl.h>
+#include <wx/dateevt.h>
+#include <wx/statline.h>
 ////@end includes
 #include "core/ItemData.h"
 #include "core/PWScore.h"
@@ -118,7 +118,7 @@ class UIInterFace;
  */
 
 class AddEditPropSheet: public wxPropertySheetDialog
-{    
+{
   DECLARE_CLASS( AddEditPropSheet )
   DECLARE_EVENT_TABLE()
 
@@ -217,6 +217,8 @@ public:
   void OnClearPWHist(wxCommandEvent& evt);
   void OnOk(wxCommandEvent& evt);
   void OnUpdateResetPWPolicyButton(wxUpdateUIEvent& evt);
+
+  /// wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, ID_SPINCTRL7, ID_SPINCTRL8
   void OnAtLeastChars(wxSpinEvent& evt);
 ////@begin AddEditPropSheet member function declarations
 

@@ -10,14 +10,14 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
@@ -41,6 +41,10 @@
 BEGIN_EVENT_TABLE( CPasswordPolicy, wxDialog )
 
 ////@begin CPasswordPolicy event table entries
+  EVT_SPINCTRL( ID_SPINCTRL5        , CPasswordPolicy::OnAtLeastChars        )
+  EVT_SPINCTRL( ID_SPINCTRL6        , CPasswordPolicy::OnAtLeastChars        )
+  EVT_SPINCTRL( ID_SPINCTRL7        , CPasswordPolicy::OnAtLeastChars        )
+  EVT_SPINCTRL( ID_SPINCTRL8        , CPasswordPolicy::OnAtLeastChars        )
   EVT_CHECKBOX( ID_CHECKBOX41       , CPasswordPolicy::OnUseNamedPolicy      )
   EVT_COMBOBOX( ID_COMBOBOX41       , CPasswordPolicy::OnPolicynameSelection )
   EVT_CHECKBOX( ID_CHECKBOX3        , CPasswordPolicy::OnPwPolUseLowerCase   )
@@ -126,6 +130,7 @@ CPasswordPolicy::~CPasswordPolicy()
 void CPasswordPolicy::Init()
 {
 ////@begin CPasswordPolicy member initialisation
+  m_pwpLenCtrl = nullptr;
   m_pwMinsGSzr = nullptr;
   m_pwpUseLowerCtrl = nullptr;
   m_pwNumLCbox = nullptr;
@@ -211,8 +216,14 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Password length: "), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer7->Add(itemStaticText8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxSpinCtrl* itemSpinCtrl9 = new wxSpinCtrl( itemDialog1, ID_PWLENSB, _T("12"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 1024, 12 );
-  itemBoxSizer7->Add(itemSpinCtrl9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_pwpLenCtrl = new wxSpinCtrl(
+    itemDialog1, ID_PWLENSB, _T("12"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWDefaultLength),
+    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDefaultLength),
+    PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWDefaultLength)
+  );
+
+  itemBoxSizer7->Add(m_pwpLenCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwMinsGSzr = new wxGridSizer(0, 2, 0, 0);
   m_itemStaticBoxSizer6->Add(m_pwMinsGSzr, 0, wxALIGN_LEFT|wxALL, 5);
@@ -227,7 +238,13 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText13 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumLCbox->Add(itemStaticText13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpLCSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL5, wxT("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpLCSpin = new wxSpinCtrl(
+    itemDialog1, ID_SPINCTRL5, wxT("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWLowercaseMinLength),
+    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWLowercaseMinLength),
+    PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWLowercaseMinLength)
+  );
+
   m_pwNumLCbox->Add(m_pwpLCSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText15 = new wxStaticText( itemDialog1, wxID_STATIC, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -243,7 +260,13 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText18 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumUCbox->Add(itemStaticText18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpUCSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL6, wxT("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpUCSpin = new wxSpinCtrl(
+    itemDialog1, ID_SPINCTRL6, wxT("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWUppercaseMinLength),
+    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWUppercaseMinLength),
+    PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWUppercaseMinLength)
+  );
+
   m_pwNumUCbox->Add(m_pwpUCSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText20 = new wxStaticText( itemDialog1, wxID_STATIC, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -259,7 +282,13 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText23 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumDigbox->Add(itemStaticText23, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpDigSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL7, wxT("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpDigSpin = new wxSpinCtrl(
+    itemDialog1, ID_SPINCTRL7, wxT("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWDigitMinLength),
+    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDigitMinLength),
+    PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWDigitMinLength)
+  );
+
   m_pwNumDigbox->Add(m_pwpDigSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText25 = new wxStaticText( itemDialog1, wxID_STATIC, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -275,7 +304,13 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText28 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumSymbox->Add(itemStaticText28, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpSymSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL8, wxT("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpSymSpin = new wxSpinCtrl(
+    itemDialog1, ID_SPINCTRL8, wxT("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWSymbolMinLength),
+    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWSymbolMinLength),
+    PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWSymbolMinLength)
+  );
+
   m_pwNumSymbox->Add(m_pwpSymSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText30 = new wxStaticText( itemDialog1, wxID_STATIC, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -358,7 +393,7 @@ void CPasswordPolicy::CreateControls()
 
   // Set validators
   itemTextCtrl5->SetValidator( wxGenericValidator(& m_polname) );
-  itemSpinCtrl9->SetValidator( wxGenericValidator(& m_pwdefaultlength) );
+  m_pwpLenCtrl->SetValidator( wxGenericValidator(& m_pwdefaultlength) );
   m_pwpUseLowerCtrl->SetValidator( wxGenericValidator(& m_pwUseLowercase) );
   m_pwpLCSpin->SetValidator( wxGenericValidator(& m_pwLowerMinLength) );
   m_pwpUseUpperCtrl->SetValidator( wxGenericValidator(& m_pwUseUppercase) );
@@ -817,4 +852,28 @@ void CPasswordPolicy::OnCopyPassword( wxCommandEvent& WXUNUSED(event) )
   if (!(m_passwordCtrl->GetValue()).IsEmpty()) {
     PWSclipboard::GetInstance()->SetData(tostringx(m_passwordCtrl->GetValue()));
   }
+}
+
+/*
+ * Just trying to give the user some visual indication that
+ * the password length has to be bigger than the sum of all
+ * "at least" lengths.  This is not comprehensive & foolproof
+ * since there are far too many ways to make the password length
+ * smaller than the sum of "at least" lengths, to even think of.
+ *
+ * In OnOk(), we just ensure the password length is greater than
+ * the sum of all enabled "at least" lengths.  We have to do this in the
+ * UI, or else password generation crashes
+ */
+void CPasswordPolicy::OnAtLeastChars( wxSpinEvent& WXUNUSED(event) )
+{
+  wxSpinCtrl* spinCtrls[] = {m_pwpUCSpin, m_pwpLCSpin, m_pwpDigSpin, m_pwpSymSpin};
+  int total = 0;
+  for (size_t idx = 0; idx < WXSIZEOF(spinCtrls); ++idx) {
+    if (spinCtrls[idx]->IsEnabled())
+      total += spinCtrls[idx]->GetValue();
+  }
+
+  if (total > m_pwpLenCtrl->GetValue())
+    m_pwpLenCtrl->SetValue(total);
 }
