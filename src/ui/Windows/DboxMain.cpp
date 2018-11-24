@@ -3185,84 +3185,85 @@ private:
   pws_os::CUUID m_uuid;
 };
 
+// Functor for MakeOrderedItemList
+struct TreeCollector : public CPWTreeCtrlX::TreeItemFunctor {
+  TreeCollector(CPWTreeCtrl &it) : itemTree(it) {}
+  void operator() (HTREEITEM hi) {
+    CItemData *pci = (CItemData *)itemTree.GetItemData(hi);
+    if (pci != nullptr)
+      pcis.push_back(pci);
+  };
+  CPWTreeCtrlX &itemTree;
+  std::vector<CItemData *> pcis;
+};
+
 // Returns a list of entries as they appear in tree in DFS order
 std::vector<pws_os::CUUID> DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
 {
+  TreeCollector tc(m_ctlItemTree);
+  m_ctlItemTree.Iterate(hItem, tc);
+
   std::vector<pws_os::CUUID> vuuidAddedBases;
 
   // Walk the Tree - either complete tree (may not be the complete DB if a filter is active)
   // or only the group being exported
+  // The if() on hItem is due to the evolution of this function. Should probably be eliminated and code
+  // be the same for all cases, e.g., what if someone's exporting a filtered group?
+
   if (hItem == NULL) {
     // The whole tree (a filter may be active)
-    while (NULL != (hItem = const_cast<DboxMain *>(this)->m_ctlItemTree.GetNextTreeItem(hItem))) {
-      if (!m_ctlItemTree.ItemHasChildren(hItem)) {
-        CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
-        if (pci != NULL) {
-          OIL.push_back(*pci);
+    for (auto pci = tc.pcis.begin(); pci != tc.pcis.end(); pci++) {
+      OIL.push_back(**pci);
 
-          // This is for exporting Filtered Entries ONLY
-          // Walk the reduced Tree but include base entries even if not in the filtered results
-          if (m_bFilterActive && pci->IsDependent()) {
-            CItemData *pcibase = GetBaseEntry(pci);
+      // This is for exporting Filtered Entries ONLY
+      // Walk the reduced Tree but include base entries even if not in the filtered results
+      if (m_bFilterActive && (*pci)->IsDependent()) {
+        CItemData *pcibase = GetBaseEntry(*pci);
 
-            // Only add the base entry once
-            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pcibase->GetUUID())) == OIL.end()) {
-              OIL.push_back(*pcibase);
+        // Only add the base entry once
+        if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pcibase->GetUUID())) == OIL.end()) {
+          OIL.push_back(*pcibase);
 
-              DisplayInfo *pdi = GetEntryGUIInfo(*pcibase);
-              if (pdi == NULL || pdi->list_index == -1) {
-                // The base is not in the filtered results - add to list
-                vuuidAddedBases.push_back(pcibase->GetUUID());
-              }
-            }
+          DisplayInfo *pdi = GetEntryGUIInfo(*pcibase);
+          if (pdi == NULL || pdi->list_index == -1) {
+            // The base is not in the filtered results - add to list
+            vuuidAddedBases.push_back(pcibase->GetUUID());
           }
         }
       }
-    }
-  } else {
-    // Just this group - used for Export Group
+    } // iterate over collected pcis
+  } else { // hItem not null, just this group - used for Export Group
     const StringX sxThisGroup = m_ctlItemTree.GetGroup(hItem);
     const StringX sxThisGroupDot = sxThisGroup + L".";
-    const HTREEITEM hNextSibling = m_ctlItemTree.GetNextSiblingItem(hItem);
 
-    // Get all of the children
-    if (m_ctlItemTree.ItemHasChildren(hItem)) {
-      HTREEITEM hNextItem = m_ctlItemTree.GetNextTreeItem(hItem);
+    for (auto pci = tc.pcis.begin(); pci != tc.pcis.end(); pci++) {
+      if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates((*pci)->GetUUID())) == OIL.end())
+        OIL.push_back(**pci);
 
-      while (hNextItem != NULL && hNextItem != hNextSibling) {
-        CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hNextItem);
-        // Include base entires of any aliases or shortcuts
-        // and ensure no duplicates (an entry could have been previously added
-        // if it was the base of a previously added alias/shortcut
-        if (pci != NULL) {
-          if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
-            OIL.push_back(*pci);
+      if ((*pci)->IsDependent()) {
+        // Include base entries of any aliases or shortcuts, but only once
+        // (an entry could have been previously added
+        // if it was the base of a previously added alias/shortcut)
+        CItemData *pcibase = GetBaseEntry(*pci);
 
-          if (pci->IsDependent()) {
-            CItemData *pcibase = GetBaseEntry(pci);
+        if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pcibase->GetUUID())) == OIL.end()) {
+          OIL.push_back(*pcibase);
 
-            // Only add the base entry once
-            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pcibase->GetUUID())) == OIL.end()) {
-              OIL.push_back(*pcibase);
-
-              // List this iIncluded base for the report if not in the group being exported
-              StringX sxBaseGroup = pcibase->GetGroup();
-              bool bNotInThisGroup = CompareNoCase(sxThisGroup, sxBaseGroup) != 0;
-              bool bNotInASubgroupOfThisGroup = 
-               sxThisGroupDot.length() < sxBaseGroup.length() ?
-                CompareNoCase(sxThisGroupDot, sxBaseGroup.substr(sxThisGroupDot.length())) != 0 : true;
+          // List this included base for the report if not in the group being exported
+          StringX sxBaseGroup = pcibase->GetGroup();
+          bool bNotInThisGroup = CompareNoCase(sxThisGroup, sxBaseGroup) != 0;
+          bool bNotInASubgroupOfThisGroup = 
+            sxThisGroupDot.length() < sxBaseGroup.length() ?
+                                      CompareNoCase(sxThisGroupDot, sxBaseGroup.substr(sxThisGroupDot.length())) != 0 : true;
              
-              if (bNotInThisGroup && bNotInASubgroupOfThisGroup) {
-                // The base is not in the filtered results - add to list
-                vuuidAddedBases.push_back(pcibase->GetUUID());
-              }
-            }
+          if (bNotInThisGroup && bNotInASubgroupOfThisGroup) {
+            // The base is not in the filtered results - add to list
+            vuuidAddedBases.push_back(pcibase->GetUUID());
           }
         }
-        hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
-      }
-    }
-  }
+      } // dependent handling
+    } // iterate over collected pcis
+  } // hItem not null
 
   return vuuidAddedBases;
 }

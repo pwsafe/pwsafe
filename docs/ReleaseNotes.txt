@@ -20,6 +20,7 @@ Options->Password History, instead of being hardcoded to 90 days.
 
 Bugs Fixed in 3.48pre
 =====================
+[1481] Export subgroups correctly.
 [1480] Fixed typo in English dragbar tooltip texts.
 [1475] Tweak RNG initialization.
 [1473] Installer will not create startup shortcut by default when upgrading.
