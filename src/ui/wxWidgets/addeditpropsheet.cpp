@@ -25,7 +25,6 @@
 ////@end includes
 #include <wx/datetime.h>
 
-#include <vector>
 #include "core/PWSprefs.h"
 #include "core/PWCharPool.h"
 #include "core/PWHistory.h"
@@ -37,6 +36,7 @@
 #include "./wxutils.h"
 
 #include <algorithm>
+#include <vector>
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -426,7 +426,13 @@ void AddEditPropSheet::CreateControls()
   itemCheckBox51->SetValue(false);
   itemBoxSizer50->Add(itemCheckBox51, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_MaxPWHistCtrl = new wxSpinCtrl( m_AdditionalPanel, ID_SPINCTRL_MAX_PW_HIST, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_MaxPWHistCtrl = new wxSpinCtrl(
+    m_AdditionalPanel, ID_SPINCTRL_MAX_PW_HIST, _T("0"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS,
+    PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::NumPWHistoryDefault),
+    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::NumPWHistoryDefault),
+    PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::NumPWHistoryDefault)
+  );
+
   itemBoxSizer50->Add(m_MaxPWHistCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText53 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("last passwords"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -482,11 +488,14 @@ void AddEditPropSheet::CreateControls()
 
   auto *itemBoxSizer68 = new wxBoxSizer(wxHORIZONTAL);
   itemFlexGridSizer63->Add(itemBoxSizer68, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-  m_ExpTimeCtrl = new wxSpinCtrl( itemPanel59, ID_SPINCTRL_EXP_TIME, _T("90"),
-                                  wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
-                                  PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::DefaultExpiryDays),
-                                  PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays),
-                                  PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays) );
+
+  m_ExpTimeCtrl = new wxSpinCtrl(
+    itemPanel59, ID_SPINCTRL_EXP_TIME, _T("90"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::DefaultExpiryDays),
+    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays),
+    PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::DefaultExpiryDays)
+  );
+
   itemBoxSizer68->Add(m_ExpTimeCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText70 = new wxStaticText( itemPanel59, ID_STATICTEXT_DAYS, _("days"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -577,7 +586,13 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText96 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _("Password length: "), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer95->Add(itemStaticText96, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5);
 
-  m_pwpLenCtrl = new wxSpinCtrl( m_PasswordPolicyPanel, ID_SPINCTRL3, _T("12"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 1024, 12 );
+  m_pwpLenCtrl = new wxSpinCtrl(
+    m_PasswordPolicyPanel, ID_SPINCTRL3, _T("12"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWDefaultLength),
+    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDefaultLength),
+    PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWDefaultLength)
+  );
+
   itemBoxSizer95->Add(m_pwpLenCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 10);
 
   m_pwMinsGSzr = new wxGridSizer(0, 2, 0, 0);
@@ -591,7 +606,13 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText101 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumLCbox->Add(itemStaticText101, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpLCSpin = new wxSpinCtrl( m_PasswordPolicyPanel, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxSize(m_PasswordPolicyPanel->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpLCSpin = new wxSpinCtrl(
+    m_PasswordPolicyPanel, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWLowercaseMinLength),
+    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWLowercaseMinLength),
+    PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWLowercaseMinLength)
+  );
+
   m_pwNumLCbox->Add(m_pwpLCSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText103 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -606,7 +627,13 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText106 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumUCbox->Add(itemStaticText106, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpUCSpin = new wxSpinCtrl( m_PasswordPolicyPanel, ID_SPINCTRL6, _T("0"), wxDefaultPosition, wxSize(m_PasswordPolicyPanel->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpUCSpin = new wxSpinCtrl(
+    m_PasswordPolicyPanel, ID_SPINCTRL6, _T("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWUppercaseMinLength),
+    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWUppercaseMinLength),
+    PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWUppercaseMinLength)
+  );
+
   m_pwNumUCbox->Add(m_pwpUCSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText108 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -621,7 +648,13 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText111 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumDigbox->Add(itemStaticText111, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpDigSpin = new wxSpinCtrl( m_PasswordPolicyPanel, ID_SPINCTRL7, _T("0"), wxDefaultPosition, wxSize(m_PasswordPolicyPanel->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpDigSpin = new wxSpinCtrl(
+    m_PasswordPolicyPanel, ID_SPINCTRL7, _T("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWDigitMinLength),
+    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDigitMinLength),
+    PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWDigitMinLength)
+  );
+
   m_pwNumDigbox->Add(m_pwpDigSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText113 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -636,7 +669,13 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText116 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumSymbox->Add(itemStaticText116, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpSymSpin = new wxSpinCtrl( m_PasswordPolicyPanel, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxSize(m_PasswordPolicyPanel->ConvertDialogToPixels(wxSize(40, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpSymSpin = new wxSpinCtrl(
+    m_PasswordPolicyPanel, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWSymbolMinLength),
+    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWSymbolMinLength),
+    PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWSymbolMinLength)
+  );
+
   m_pwNumSymbox->Add(m_pwpSymSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText118 = new wxStaticText( m_PasswordPolicyPanel, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );

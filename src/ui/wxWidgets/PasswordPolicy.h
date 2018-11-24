@@ -18,8 +18,8 @@
  */
 
 ////@begin includes
-#include "wx/valgen.h"
-#include "wx/spinctrl.h"
+#include <wx/valgen.h>
+#include <wx/spinctrl.h>
 ////@end includes
 #include "core/coredefs.h"
 #include "core/PWPolicy.h"
@@ -149,6 +149,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_COPYPASSWORD2
   void OnCopyPassword( wxCommandEvent& event );
 
+  /// wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, ID_SPINCTRL7, ID_SPINCTRL8
+  void OnAtLeastChars(wxSpinEvent& evt);
+
 ////@end CPasswordPolicy event handler declarations
 
 ////@begin CPasswordPolicy member function declarations
@@ -213,6 +216,7 @@ private:
 
 ////@begin CPasswordPolicy member variables
   /* Controls for DialogType EDITOR */
+  wxSpinCtrl* m_pwpLenCtrl;
   wxGridSizer* m_pwMinsGSzr;
   wxCheckBox* m_pwpUseLowerCtrl;
   wxBoxSizer* m_pwNumLCbox;
