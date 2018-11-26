@@ -41,24 +41,24 @@
 BEGIN_EVENT_TABLE( CPasswordPolicy, wxDialog )
 
 ////@begin CPasswordPolicy event table entries
-  EVT_SPINCTRL( ID_SPINCTRL5        , CPasswordPolicy::OnAtLeastChars        )
-  EVT_SPINCTRL( ID_SPINCTRL6        , CPasswordPolicy::OnAtLeastChars        )
-  EVT_SPINCTRL( ID_SPINCTRL7        , CPasswordPolicy::OnAtLeastChars        )
-  EVT_SPINCTRL( ID_SPINCTRL8        , CPasswordPolicy::OnAtLeastChars        )
-  EVT_CHECKBOX( ID_CHECKBOX41       , CPasswordPolicy::OnUseNamedPolicy      )
-  EVT_COMBOBOX( ID_COMBOBOX41       , CPasswordPolicy::OnPolicynameSelection )
-  EVT_CHECKBOX( ID_CHECKBOX3        , CPasswordPolicy::OnPwPolUseLowerCase   )
-  EVT_CHECKBOX( ID_CHECKBOX4        , CPasswordPolicy::OnPwPolUseUpperCase   )
-  EVT_CHECKBOX( ID_CHECKBOX5        , CPasswordPolicy::OnPwPolUseDigits      )
-  EVT_CHECKBOX( ID_CHECKBOX6        , CPasswordPolicy::OnPwPolUseSymbols     )
-  EVT_BUTTON(   ID_RESET_SYMBOLS    , CPasswordPolicy::OnResetSymbolsClick   )
-  EVT_CHECKBOX( ID_CHECKBOX7        , CPasswordPolicy::OnEZreadCBClick       )
-  EVT_CHECKBOX( ID_CHECKBOX8        , CPasswordPolicy::OnPronouceableCBClick )
-  EVT_BUTTON(   ID_GENERATEPASSWORD2, CPasswordPolicy::OnGeneratePassword    )
-  EVT_BUTTON(   ID_COPYPASSWORD2    , CPasswordPolicy::OnCopyPassword        )
-  EVT_BUTTON(   wxID_OK             , CPasswordPolicy::OnOkClick             )
-  EVT_BUTTON(   wxID_CANCEL         , CPasswordPolicy::OnCancelClick         )
-  EVT_BUTTON(   wxID_HELP           , CPasswordPolicy::OnHelpClick           )
+  EVT_SPINCTRL( ID_SPINCTRL5        , CPasswordPolicy::OnAtLeastPasswordChars )
+  EVT_SPINCTRL( ID_SPINCTRL6        , CPasswordPolicy::OnAtLeastPasswordChars )
+  EVT_SPINCTRL( ID_SPINCTRL7        , CPasswordPolicy::OnAtLeastPasswordChars )
+  EVT_SPINCTRL( ID_SPINCTRL8        , CPasswordPolicy::OnAtLeastPasswordChars )
+  EVT_CHECKBOX( ID_CHECKBOX41       , CPasswordPolicy::OnUseNamedPolicy       )
+  EVT_COMBOBOX( ID_COMBOBOX41       , CPasswordPolicy::OnPolicynameSelection  )
+  EVT_CHECKBOX( ID_CHECKBOX3        , CPasswordPolicy::OnPwPolUseLowerCase    )
+  EVT_CHECKBOX( ID_CHECKBOX4        , CPasswordPolicy::OnPwPolUseUpperCase    )
+  EVT_CHECKBOX( ID_CHECKBOX5        , CPasswordPolicy::OnPwPolUseDigits       )
+  EVT_CHECKBOX( ID_CHECKBOX6        , CPasswordPolicy::OnPwPolUseSymbols      )
+  EVT_BUTTON(   ID_RESET_SYMBOLS    , CPasswordPolicy::OnResetSymbolsClick    )
+  EVT_CHECKBOX( ID_CHECKBOX7        , CPasswordPolicy::OnEZreadCBClick        )
+  EVT_CHECKBOX( ID_CHECKBOX8        , CPasswordPolicy::OnPronouceableCBClick  )
+  EVT_BUTTON(   ID_GENERATEPASSWORD2, CPasswordPolicy::OnGeneratePassword     )
+  EVT_BUTTON(   ID_COPYPASSWORD2    , CPasswordPolicy::OnCopyPassword         )
+  EVT_BUTTON(   wxID_OK             , CPasswordPolicy::OnOkClick              )
+  EVT_BUTTON(   wxID_CANCEL         , CPasswordPolicy::OnCancelClick          )
+  EVT_BUTTON(   wxID_HELP           , CPasswordPolicy::OnHelpClick            )
 ////@end CPasswordPolicy event table entries
 
 END_EVENT_TABLE()
@@ -854,26 +854,34 @@ void CPasswordPolicy::OnCopyPassword( wxCommandEvent& WXUNUSED(event) )
   }
 }
 
-/*
- * Just trying to give the user some visual indication that
- * the password length has to be bigger than the sum of all
- * "at least" lengths.  This is not comprehensive & foolproof
- * since there are far too many ways to make the password length
- * smaller than the sum of "at least" lengths, to even think of.
+/**
+ * wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, 
+ * ID_SPINCTRL7, ID_SPINCTRL8
+ * 
+ * Ensures that the sum of each character class' minimum counts 
+ * doesn't exceed the overall password length, increasing it as 
+ * necessary to give the user some visual indication.
+ * 
+ * This is not comprehensive & foolproof since there are far too 
+ * many ways to make the password length smaller than the sum of 
+ * "at least" lengths, to even think of.
  *
  * In OnOk(), we just ensure the password length is greater than
- * the sum of all enabled "at least" lengths.  We have to do this in the
- * UI, or else password generation crashes
+ * the sum of all enabled "at least" lengths.  We have to do this 
+ * in the UI, or else password generation crashes.
  */
-void CPasswordPolicy::OnAtLeastChars( wxSpinEvent& WXUNUSED(event) )
+void CPasswordPolicy::OnAtLeastPasswordChars( wxSpinEvent& WXUNUSED(event) )
 {
-  wxSpinCtrl* spinCtrls[] = {m_pwpUCSpin, m_pwpLCSpin, m_pwpDigSpin, m_pwpSymSpin};
+  wxSpinCtrl* spinControls[] = { m_pwpUCSpin, m_pwpLCSpin, m_pwpDigSpin, m_pwpSymSpin };
   int total = 0;
-  for (size_t idx = 0; idx < WXSIZEOF(spinCtrls); ++idx) {
-    if (spinCtrls[idx]->IsEnabled())
-      total += spinCtrls[idx]->GetValue();
+
+  // Calculate the sum of each character class' minimum count
+  for (const auto spinControl : spinControls) {
+    total += spinControl->IsEnabled() ? spinControl->GetValue() : 0;
   }
 
-  if (total > m_pwpLenCtrl->GetValue())
+  // Increase password length up to the allowed maximum
+  if ((m_pwpLenCtrl->GetMax() > total) && (total > m_pwpLenCtrl->GetValue())) {
     m_pwpLenCtrl->SetValue(total);
+  }
 }
