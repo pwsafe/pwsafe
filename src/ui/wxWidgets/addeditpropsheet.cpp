@@ -81,10 +81,10 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
   EVT_CHECKBOX(     ID_CHECKBOX8,            AddEditPropSheet::OnPronouceableCBClick     )
   EVT_CHECKBOX(     ID_CHECKBOX9,            AddEditPropSheet::OnUseHexCBClick           )
 ////@end AddEditPropSheet event table entries
-  EVT_SPINCTRL(     ID_SPINCTRL5,            AddEditPropSheet::OnAtLeastChars            )
-  EVT_SPINCTRL(     ID_SPINCTRL6,            AddEditPropSheet::OnAtLeastChars            )
-  EVT_SPINCTRL(     ID_SPINCTRL7,            AddEditPropSheet::OnAtLeastChars            )
-  EVT_SPINCTRL(     ID_SPINCTRL8,            AddEditPropSheet::OnAtLeastChars            )
+  EVT_SPINCTRL(     ID_SPINCTRL5,            AddEditPropSheet::OnAtLeastPasswordChars    )
+  EVT_SPINCTRL(     ID_SPINCTRL6,            AddEditPropSheet::OnAtLeastPasswordChars    )
+  EVT_SPINCTRL(     ID_SPINCTRL7,            AddEditPropSheet::OnAtLeastPasswordChars    )
+  EVT_SPINCTRL(     ID_SPINCTRL8,            AddEditPropSheet::OnAtLeastPasswordChars    )
 
   EVT_BUTTON(       ID_BUTTON_CLEAR_HIST,    AddEditPropSheet::OnClearPWHist             )
 
@@ -1830,32 +1830,42 @@ void AddEditPropSheet::OnUpdateResetPWPolicyButton(wxUpdateUIEvent& evt)
   evt.Enable(m_ourPWPRB->GetValue());
 }
 
-/*
- * Just trying to give the user some visual indication that
- * the password length has to be bigger than the sum of all
- * "at least" lengths.  This is not comprehensive & foolproof
- * since there are far too many ways to make the password length
- * smaller than the sum of "at least" lengths, to even think of.
+/**
+ * wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, 
+ * ID_SPINCTRL7, ID_SPINCTRL8
+ * 
+ * Ensures that the sum of each character class' minimum counts 
+ * doesn't exceed the overall password length, increasing it as 
+ * necessary to give the user some visual indication.
+ * 
+ * This is not comprehensive & foolproof since there are far too 
+ * many ways to make the password length smaller than the sum of 
+ * "at least" lengths, to even think of.
  *
  * In OnOk(), we just ensure the password length is greater than
- * the sum of all enabled "at least" lengths.  We have to do this in the
- * UI, or else password generation crashes
+ * the sum of all enabled "at least" lengths.  We have to do this 
+ * in the UI, or else password generation crashes.
  */
-void AddEditPropSheet::OnAtLeastChars(wxSpinEvent& /*evt*/)
+void AddEditPropSheet::OnAtLeastPasswordChars(wxSpinEvent& WXUNUSED(event))
 {
   const int min = GetRequiredPWLength();
-  //m_pwpLenCtrl->SetRange(min, pwlenCtrl->GetMax());
-  if (min > m_pwpLenCtrl->GetValue())
+
+  // Increase password length up to the allowed maximum
+  if ((m_pwpLenCtrl->GetMax() > min) && (min > m_pwpLenCtrl->GetValue())) {
     m_pwpLenCtrl->SetValue(min);
+  }
 }
 
-int AddEditPropSheet::GetRequiredPWLength() const {
-  wxSpinCtrl* spinCtrls[] = {m_pwpUCSpin, m_pwpLCSpin, m_pwpDigSpin, m_pwpSymSpin};
+int AddEditPropSheet::GetRequiredPWLength() const
+{
+  wxSpinCtrl* spinControls[] = { m_pwpUCSpin, m_pwpLCSpin, m_pwpDigSpin, m_pwpSymSpin };
   int total = 0;
-  for (size_t idx = 0; idx < WXSIZEOF(spinCtrls); ++idx) {
-    if (spinCtrls[idx]->IsEnabled())
-      total += spinCtrls[idx]->GetValue();
+
+  // Calculate the sum of each character class' minimum count
+  for (const auto spinControl : spinControls) {
+    total += spinControl->IsEnabled() ? spinControl->GetValue() : 0;
   }
+
   return total;
 }
 

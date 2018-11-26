@@ -219,7 +219,7 @@ public:
   void OnUpdateResetPWPolicyButton(wxUpdateUIEvent& evt);
 
   /// wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, ID_SPINCTRL7, ID_SPINCTRL8
-  void OnAtLeastChars(wxSpinEvent& evt);
+  void OnAtLeastPasswordChars(wxSpinEvent& evt);
 ////@begin AddEditPropSheet member function declarations
 
   wxString GetATime() const { return m_ATime ; }

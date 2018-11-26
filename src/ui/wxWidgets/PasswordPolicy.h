@@ -150,7 +150,7 @@ public:
   void OnCopyPassword( wxCommandEvent& event );
 
   /// wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, ID_SPINCTRL7, ID_SPINCTRL8
-  void OnAtLeastChars(wxSpinEvent& evt);
+  void OnAtLeastPasswordChars(wxSpinEvent& evt);
 
 ////@end CPasswordPolicy event handler declarations
 
