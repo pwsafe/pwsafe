@@ -415,7 +415,7 @@ void CPasswordPolicy::CreateControls()
     itemStdDialogButtonSizer39->Show(false);
     itemStdDialogButtonSizer40->Show(true);
 
-     EnableSizerChildren(m_itemStaticBoxSizer6, !m_pwpUseNamedPolicyCtrl->IsChecked());
+    EnableSizerChildren(m_itemStaticBoxSizer6, !m_pwpUseNamedPolicyCtrl->IsChecked());
   }
   else {
     itemBoxSizer3->Show(true);
@@ -602,42 +602,32 @@ void CPasswordPolicy::OnHelpClick( wxCommandEvent& event )
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CPasswordPolicy.
 }
 
-void CPasswordPolicy::SetPolicyData(const wxString &polname, const PWPolicy &pol)
+void CPasswordPolicy::SetPolicyData(const wxString &policyname, const PWPolicy &policy)
 {
-  m_polname = m_oldpolname = polname;
+  m_polname             = m_oldpolname             = policyname;
 
-  m_pwUseLowercase = m_oldpwUseLowercase =
-    (pol.flags & PWPolicy::UseLowercase) ==
-                       PWPolicy::UseLowercase;
-  m_pwUseUppercase = m_oldpwUseUppercase =
-    (pol.flags & PWPolicy::UseUppercase) ==
-                       PWPolicy::UseUppercase;
-  m_pwUseDigits = m_oldpwUseDigits =
-    (pol.flags & PWPolicy::UseDigits) ==
-                       PWPolicy::UseDigits;
-  m_pwUseSymbols = m_oldpwUseSymbols =
-    (pol.flags & PWPolicy::UseSymbols) ==
-                       PWPolicy::UseSymbols;
-  m_pwUseHex = m_oldpwUseHex =
-    (pol.flags & PWPolicy::UseHexDigits) ==
-                       PWPolicy::UseHexDigits;
-  m_pwUseEasyVision = m_oldpwUseEasyVision =
-    (pol.flags & PWPolicy::UseEasyVision) ==
-                       PWPolicy::UseEasyVision;
-  m_pwMakePronounceable = m_oldpwMakePronounceable =
-    (pol.flags & PWPolicy::MakePronounceable) ==
-                       PWPolicy::MakePronounceable;
-  m_pwdefaultlength = m_oldpwdefaultlength = pol.length;
-  m_pwDigitMinLength = m_oldpwDigitMinLength = pol.digitminlength;
-  m_pwLowerMinLength = m_oldpwLowerMinLength = pol.lowerminlength;
-  m_pwSymbolMinLength = m_oldpwSymbolMinLength = pol.symbolminlength;
-  m_pwUpperMinLength = m_oldpwUpperMinLength = pol.upperminlength;
+  m_pwUseLowercase      = m_oldpwUseLowercase      = (policy.flags & PWPolicy::UseLowercase)      == PWPolicy::UseLowercase;
+  m_pwUseUppercase      = m_oldpwUseUppercase      = (policy.flags & PWPolicy::UseUppercase)      == PWPolicy::UseUppercase;
+  m_pwUseDigits         = m_oldpwUseDigits         = (policy.flags & PWPolicy::UseDigits)         == PWPolicy::UseDigits;
+  m_pwUseSymbols        = m_oldpwUseSymbols        = (policy.flags & PWPolicy::UseSymbols)        == PWPolicy::UseSymbols;
+  m_pwUseHex            = m_oldpwUseHex            = (policy.flags & PWPolicy::UseHexDigits)      == PWPolicy::UseHexDigits;
+  m_pwUseEasyVision     = m_oldpwUseEasyVision     = (policy.flags & PWPolicy::UseEasyVision)     == PWPolicy::UseEasyVision;
+  m_pwMakePronounceable = m_oldpwMakePronounceable = (policy.flags & PWPolicy::MakePronounceable) == PWPolicy::MakePronounceable;
+  m_pwdefaultlength     = m_oldpwdefaultlength     = policy.length;
+  m_pwLowerMinLength    = m_oldpwLowerMinLength    = policy.lowerminlength;
+  m_pwUpperMinLength    = m_oldpwUpperMinLength    = policy.upperminlength;
+  m_pwDigitMinLength    = m_oldpwDigitMinLength    = policy.digitminlength;
+  m_pwSymbolMinLength   = m_oldpwSymbolMinLength   = policy.symbolminlength;
 
-  wxString symbols = pol.symbols.c_str();
-  if (symbols.empty())
+  wxString symbols = policy.symbols.c_str();
+
+  if (symbols.empty()) {
     SetDefaultSymbolDisplay(false);
-  else
+  }
+  else {
     m_Symbols = symbols;
+  }
+
   m_oldSymbols = m_Symbols;
 
   if (PolicyManager::IsDefaultPolicy(m_polname.wc_str())) {
@@ -646,7 +636,7 @@ void CPasswordPolicy::SetPolicyData(const wxString &polname, const PWPolicy &pol
     FindWindow(ID_POLICYNAME)->Enable(false);
 
     // Select default policy as initial policy in Generator mode (see Init())
-    auto index = m_pwpPoliciesSelectionCtrl->FindString(polname);
+    auto index = m_pwpPoliciesSelectionCtrl->FindString(policyname);
 
     if (index != wxNOT_FOUND) {
       m_pwpPoliciesSelectionCtrl->SetSelection(index);
@@ -657,12 +647,13 @@ void CPasswordPolicy::SetPolicyData(const wxString &polname, const PWPolicy &pol
   }
 }
 
-void CPasswordPolicy::CBox2Spin(wxCheckBox *cb, wxSpinCtrl *sp)
+void CPasswordPolicy::CBox2Spin(wxCheckBox *checkbox, wxSpinCtrl *spinner)
 {
   Validate();
   TransferDataFromWindow();
-  bool checked = cb->GetValue();
-  sp->Enable(checked);
+
+  spinner->Enable(checkbox->GetValue());
+
   Validate();
   TransferDataFromWindow();
 }
@@ -803,6 +794,13 @@ void CPasswordPolicy::OnUseNamedPolicy( wxCommandEvent& event )
 {
   EnableSizerChildren(m_itemStaticBoxSizer6, !event.IsChecked());
   m_pwpPoliciesSelectionCtrl->Enable(event.IsChecked());
+
+  if (!event.IsChecked()) {
+    m_pwpLCSpin->Enable(m_pwpUseLowerCtrl->GetValue());
+    m_pwpUCSpin->Enable(m_pwpUseUpperCtrl->GetValue());
+    m_pwpDigSpin->Enable(m_pwpUseDigitsCtrl->GetValue());
+    m_pwpSymSpin->Enable(m_pwpSymCtrl->GetValue());
+  }
 }
 
 /*!
