@@ -2528,6 +2528,10 @@ msgstr "Dátum/Idő információ"
 msgid "Dates and Times"
 msgstr "Dátumok és idők"
 
+#. Resource IDs: (1447)
+msgid "Defalut password expiration (days)"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Default"
 msgstr "Alapértelmezett"

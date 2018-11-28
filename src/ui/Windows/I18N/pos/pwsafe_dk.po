@@ -2528,6 +2528,10 @@ msgstr "Dato/Tids Oplysninger"
 msgid "Dates and Times"
 msgstr "Datoer og Tider"
 
+#. Resource IDs: (1447)
+msgid "Defalut password expiration (days)"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Default"
 msgstr ""

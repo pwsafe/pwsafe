@@ -2554,6 +2554,10 @@ msgstr "Datum/Tijd Informatie"
 msgid "Dates and Times"
 msgstr "Data en Tijden"
 
+#. Resource IDs: (1447)
+msgid "Defalut password expiration (days)"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Default"
 msgstr "Standaard"

@@ -2528,6 +2528,10 @@ msgstr "Tarih/Saat Bilgisi"
 msgid "Dates and Times"
 msgstr "Tarih ve Saatler"
 
+#. Resource IDs: (1447)
+msgid "Defalut password expiration (days)"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Default"
 msgstr "Varsayılan"

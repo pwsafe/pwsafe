@@ -2528,6 +2528,10 @@ msgstr "Data/Czas"
 msgid "Dates and Times"
 msgstr "Daty i czas"
 
+#. Resource IDs: (1447)
+msgid "Defalut password expiration (days)"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Default"
 msgstr "Domyślny"

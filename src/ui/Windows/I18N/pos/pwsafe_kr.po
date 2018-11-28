@@ -2528,6 +2528,10 @@ msgstr "날짜/시각 정보"
 msgid "Dates and Times"
 msgstr "요일 및 시간"
 
+#. Resource IDs: (1447)
+msgid "Defalut password expiration (days)"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Default"
 msgstr ""
