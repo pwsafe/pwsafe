@@ -2529,7 +2529,7 @@ msgid "Dates and Times"
 msgstr "요일 및 시간"
 
 #. Resource IDs: (1447)
-msgid "Defalut password expiration (days)"
+msgid "Default password expiration (days)"
 msgstr ""
 
 #. Resource IDs: (65535)

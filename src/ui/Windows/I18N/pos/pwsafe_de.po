@@ -2568,7 +2568,7 @@ msgid "Dates and Times"
 msgstr "Datum und Uhrzeit"
 
 #. Resource IDs: (1447)
-msgid "Defalut password expiration (days)"
+msgid "Default password expiration (days)"
 msgstr ""
 
 #. Resource IDs: (65535)

@@ -2650,7 +2650,7 @@ msgid "Dates and Times"
 msgstr "Дата и время"
 
 #. Resource IDs: (1447)
-msgid "Defalut password expiration (days)"
+msgid "Default password expiration (days)"
 msgstr ""
 
 #. Resource IDs: (65535)
