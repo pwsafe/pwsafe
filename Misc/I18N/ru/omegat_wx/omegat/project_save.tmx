@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.5_1_10445:10446" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.5_3_10485" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -1026,6 +1026,14 @@ Unknown error</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20161105T144717Z">
         <seg>&amp;Вид</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&amp;View Entry...</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>&amp;Просмотр элемента...</seg>
       </tuv>
     </tu>
     <tu>
@@ -3688,6 +3696,14 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Default password expiration (days)</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20181208T123547Z" creationid="pm_kan" creationdate="20181208T123547Z">
+        <seg>Срок действия пароля по умолчанию (в днях)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Default policy name is not allowed</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20180612T140702Z" creationid="pm_kan" creationdate="20180612T140702Z">
@@ -4061,6 +4077,14 @@ Action:</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>Редактировать элемент</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Edit Entry...</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Редактировать элемент...</seg>
       </tuv>
     </tu>
     <tu>
@@ -7057,6 +7081,22 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Please enter the new database description</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Введите новое описание контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Please enter the new database name</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>Введите новое имя контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Please enter the safe combination for this password database.</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -8298,6 +8338,32 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2018-12-08 15:32+0300
+PO-Revision-Date: 2018-12-08 14:36+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20181208T123532Z" creationid="pm_kan" creationdate="20181208T123532Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+POT-Creation-Date: 2018-12-08 15:44+0300
+PO-Revision-Date: 2018-12-08 15:44+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: none
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Pronounceable passwords</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -8596,6 +8662,14 @@ combination:</seg>
         <seg>Safe Combination:</seg>
       </tuv>
       <tuv lang="RU-RU">
+        <seg>Пароль:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Safe combination:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20181208T123255Z" creationid="pm_kan" creationdate="20181208T123255Z">
         <seg>Пароль:</seg>
       </tuv>
     </tu>
