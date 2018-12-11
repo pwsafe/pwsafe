@@ -17,8 +17,14 @@
  */
 
 ////@begin includes
-#include "wx/hyperlink.h"
+#include <wx/hyperlink.h>
+#include <wx/event.h>
+#include <wx/thread.h>
 ////@end includes
+
+#include "os/typedefs.h"
+
+#include <curl/curl.h>
 
 /*!
  * Forward declarations
@@ -48,10 +54,22 @@
  * CAbout class declaration
  */
 
-class CAbout: public wxDialog
+class CAbout: public wxDialog, public wxThreadHelper
 {
   DECLARE_CLASS( CAbout )
   DECLARE_EVENT_TABLE()
+
+  void CompareVersionData();
+  bool CheckDatabaseStatus();
+  bool SetupConnection();
+  void Cleanup();
+  wxString GetLibCurlVersion();
+  wxString GetLibWxVersion();
+  static wxCriticalSection& CriticalSection();
+  static size_t WriteCallback(char *receivedData, size_t size, size_t bytes, void *userData);
+
+protected:
+  virtual wxThread::ExitCode Entry();
 
 public:
   /// Constructors
@@ -71,6 +89,7 @@ public:
   void CreateControls();
 
   void CheckNewVersion();
+
 ////@begin CAbout event handler declarations
 
   /// event handler for ID_CHECKNEW
@@ -81,9 +100,15 @@ public:
 #endif
 
   void OnVisitSiteClicked(wxHyperlinkEvent& event);
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
   void OnCloseClick( wxCommandEvent& event );
 
+  /// wxEVT_CLOSE_WINDOW event handler
+  void OnCloseWindow( wxCloseEvent& event );
+
+  /// wxEVT_THREAD event handler for wxID_ANY
+  void OnDownloadCompleted(wxThreadEvent& event);
 ////@end CAbout event handler declarations
 
 ////@begin CAbout member function declarations
@@ -98,9 +123,19 @@ public:
   /// Should we show tooltips?
   static bool ShowToolTips();
 
+private:
 ////@begin CAbout member variables
-  wxTextCtrl* m_newVerStatus;
+  wxTextCtrl* m_VersionStatus;
 ////@end CAbout member variables
+
+  /// The CURL handle with connection specific options for request of version data
+  CURL *m_CurlHandle;
+
+  /// Set to downloaded data by worker thread, resp. WriteCallback, and read by main thread for final version check
+  static wxString s_VersionData;
+
+  static const wstringT s_HOME_URL;
+  static const cstringT s_VERSION_URL;
 };
 
 #endif /* _ABOUT_H_ */

@@ -142,6 +142,9 @@ if (NOT WIN32 OR WX_WINDOWS)
   endif (NOT WIN32)
   find_package(wxWidgets COMPONENTS adv base core html net REQUIRED)
   include(${wxWidgets_USE_FILE})
+
+  find_package(OpenSSL REQUIRED)
+  include_directories(${OPENSSL_INCLUDE_DIR})
 endif (NOT WIN32 OR WX_WINDOWS)
 
 if (NOT WIN32)
@@ -367,7 +370,7 @@ endif (XML_XERCESC)
 
 if (APPLE)
     FIND_LIBRARY(QUARTZCORE_LIBS QuartzCore)
-    target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES} ${QUARTZCORE_LIBS})
+    target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES} ${QUARTZCORE_LIBS} curl ${OPENSSL_SSL_LIBRARY})
 elseif (WIN32)
   if (NOT NO_YUBI)
    set (YUBILIB "YkLib22")
@@ -379,7 +382,7 @@ else ()
   if (NOT NO_QR)
     target_link_libraries(pwsafe qrencode  ${CMAKE_REQUIRED_LIBRARIES})
   endif (NOT NO_QR)
-  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11
+  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 curl ${OPENSSL_SSL_LIBRARY}
   ${CMAKE_REQUIRED_LIBRARIES})
 endif()
 
