@@ -194,7 +194,7 @@ msgstr "&XML Format..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:446
 msgid "Export &To"
-msgstr "E&xportieren nach"
+msgstr "Exportieren &nach"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:448
 msgid "&Plain Text..."
@@ -206,15 +206,15 @@ msgstr "&KeePass..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:451
 msgid "Import &From"
-msgstr "I&mportieren aus"
+msgstr "Importieren &von"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:452
-msgid "Merge..."
-msgstr "Zusammenführen..."
+msgid "&Merge..."
+msgstr "&Zusammenführen..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:453
-msgid "Compare..."
-msgstr "Vergleichen..."
+msgid "&Compare..."
+msgstr "&Vergleichen..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:454
 msgid "S&ynchronize..."

@@ -455,8 +455,8 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu19->Append(ID_IMPORT_XML, _("&XML format..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu19->Append(ID_IMPORT_KEEPASS, _("&KeePass..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(ID_IMPORTMENU, _("Import &From"), itemMenu19);
-  itemMenu3->Append(ID_MERGE, _("Merge..."), wxEmptyString, wxITEM_NORMAL);
-  itemMenu3->Append(ID_COMPARE, _("Compare..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(ID_MERGE, _("&Merge..."), wxEmptyString, wxITEM_NORMAL);
+  itemMenu3->Append(ID_COMPARE, _("&Compare..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(ID_SYNCHRONIZE, _("S&ynchronize..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
   itemMenu3->Append(wxID_PROPERTIES, _("&Properties"), wxEmptyString, wxITEM_NORMAL);
