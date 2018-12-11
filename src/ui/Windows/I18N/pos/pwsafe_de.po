@@ -2569,7 +2569,7 @@ msgstr "Datum und Uhrzeit"
 
 #. Resource IDs: (1447)
 msgid "Default password expiration (days)"
-msgstr ""
+msgstr "Standard Ablaufdatum des Passworts (Tage)"
 
 #. Resource IDs: (65535)
 msgid "Default"
@@ -3908,7 +3908,7 @@ msgstr "Alle Notsicherungsdateien überspringen und mit der aktuell ausgewählte
 
 #. Resource IDs: (32014 - PopupMenuEx)
 msgid "Import &From"
-msgstr "Importieren &aus"
+msgstr "Importieren &von"
 
 #. Resource IDs: (32122 - MenuEx)
 msgid "Import &Text"
