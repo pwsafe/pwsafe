@@ -25,8 +25,9 @@ fakeroot
 g++
 gettext
 git
-libgtest-dev
+libcurl4-openssl-dev
 libqrencode-dev
+libssl-devlibgtest-dev
 libuuid1
 libwxgtk3.0-dbg (See note 2 below)
 libwxgtk3.0-dev (See note 2 below)
@@ -50,10 +51,12 @@ git
 gtest-devel
 libXt-devel
 libXtst-devel
+libcurl-devel
 libqrencode-devel
 libuuid-devel
 libyubikey-devel
 make
+openssl-devel
 wxGTK3-devel
 xerces-c-devel
 ykpers-devel (see note 3 below)

@@ -6,8 +6,9 @@
 # Running this after cloning the git repo (or unpacking the sources)
 # and you should be all set.
 
-dnf install cmake gcc-c++ git gtest-devel libXt-devel libXtst-devel libuuid-devel  \
-	libyubikey-devel make wxGTK3-devel xerces-c-devel ykpers-devel qrencode-devel
+dnf install cmake gcc-c++ git gtest-devel libXt-devel libXtst-devel \
+    libcurl-devel libuuid-devel libyubikey-devel \
+    make openssl-devel wxGTK3-devel xerces-c-devel ykpers-devel qrencode-devel
 
 #cd /usr/src/gtest
 #mkdir build
