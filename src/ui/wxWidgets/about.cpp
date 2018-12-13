@@ -10,14 +10,14 @@
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 #include <wx/url.h>
 
@@ -49,15 +49,22 @@ IMPLEMENT_CLASS( CAbout, wxDialog )
 
 BEGIN_EVENT_TABLE( CAbout, wxDialog )
 
+  EVT_CLOSE(                       CAbout::OnCloseWindow       )
 #if wxCHECK_VERSION(2,9,2)
-  EVT_BUTTON( ID_CHECKNEW, CAbout::OnCheckNewClicked )
+  EVT_BUTTON(    ID_CHECKNEW     , CAbout::OnCheckNewClicked   )
 #else
-  EVT_HYPERLINK( ID_CHECKNEW, CAbout::OnCheckNewClicked )
+  EVT_HYPERLINK( ID_CHECKNEW     , CAbout::OnCheckNewClicked   )
 #endif
-  EVT_HYPERLINK( ID_SITEHYPERLINK, CAbout::OnVisitSiteClicked )
-  EVT_BUTTON( wxID_CLOSE, CAbout::OnCloseClick )
+  EVT_HYPERLINK( ID_SITEHYPERLINK, CAbout::OnVisitSiteClicked  )
+  EVT_BUTTON(    wxID_CLOSE      , CAbout::OnCloseClick        )
+  EVT_THREAD(    wxID_ANY        , CAbout::OnDownloadCompleted )
 
 END_EVENT_TABLE()
+
+wxString CAbout::s_VersionData = wxEmptyString;
+
+const wstringT s_URL_HOME      = L"https://pwsafe.org";
+const cstringT s_URL_VERSION   =  "https://pwsafe.org/latest.xml";
 
 /*!
  * CAbout constructors
@@ -72,6 +79,10 @@ CAbout::CAbout( wxWindow* parent, wxWindowID id, const wxString& caption, const 
 {
   Init();
   Create(parent, id, caption, pos, size, style);
+
+  // Print version information on standard output which might be useful for error reports.
+  pws_os::Trace(GetLibWxVersion());
+  pws_os::Trace(GetLibCurlVersion());
 }
 
 /*!
@@ -114,7 +125,8 @@ CAbout::~CAbout()
 
 void CAbout::Init()
 {
-  m_newVerStatus = nullptr;
+  m_VersionStatus = nullptr;
+  m_CurlHandle = nullptr;
 }
 
 /*!
@@ -176,10 +188,9 @@ void CAbout::CreateControls()
   wxStaticText* copyrightStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Copyright (c) 2003-2018 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(copyrightStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_newVerStatus = new wxTextCtrl(aboutDialog, ID_TEXTCTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxNO_BORDER); //wxSize(aboutDialog->ConvertDialogToPixels(wxSize(120, -1)).x, -1)
-  m_newVerStatus->SetBackgroundColour(wxColour(230, 231, 232));
-  rightSizer->Add(m_newVerStatus, 0, wxALIGN_LEFT|wxALL|wxEXPAND|wxRESERVE_SPACE_EVEN_IF_HIDDEN, 5);
-  m_newVerStatus->Hide();
+  m_VersionStatus = new wxTextCtrl(aboutDialog, ID_TEXTCTRL, wxT("\n\n"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER);
+  rightSizer->Add(m_VersionStatus, 0, wxALIGN_LEFT|wxALL|wxEXPAND|wxRESERVE_SPACE_EVEN_IF_HIDDEN, 5);
+  m_VersionStatus->Hide();
 
   wxButton* closeButton = new wxButton(aboutDialog, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0);
   rightSizer->Add(closeButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
@@ -227,127 +238,464 @@ wxIcon CAbout::GetIconResource( const wxString& WXUNUSED(name) )
 }
 
 /*!
+ * wxEVT_CLOSE_WINDOW event handler
+ */
+
+void CAbout::OnCloseWindow( wxCloseEvent& evt )
+{
+  Cleanup();
+  EndModal(wxID_CLOSE);
+}
+
+/*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
  */
 
 void CAbout::OnCloseClick( wxCommandEvent& WXUNUSED(event) )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in CAbout.
-  // Before editing this code, remove the block markers.
+  Cleanup();
   EndModal(wxID_CLOSE);
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in CAbout.
 }
 
-/*!
- * core routine "CheckVersion::CheckLatestVersion" checks if there is a later version
- * see details in that routine as to format of the downloaded xml file
+/**
+ * Returns a <code>wxCriticalSection</code> object that is used to protect
+ * the shared data <code>s_VersionData</code>, which is accessed by worker
+ * thread and its parent thread.
+ *
+ * @return a static <code>wxCriticalSection</code> instance.
  */
+wxCriticalSection& CAbout::CriticalSection()
+{
+  static wxCriticalSection criticalSectionObject;
+
+  return criticalSectionObject;
+}
+
+/**
+ * Prepare resources that are needed to request version data from server.
+ *
+ * The download of the version information (latest.xml) is performed by the external 
+ * library Curl (libcurl). For the purpose of only downloading a single file the Easy 
+ * API of libcurl is used, which already provides everything needed for this 
+ * task and which keeps the implementation simple.
+ *
+ * The following settings are used.
+ *
+ * - Url      (CURLOPT_URL):           https://pwsafe.org/latest.xml
+ * - Timeout  (CURLOPT_TIMEOUT):       120 seconds
+ * - Callback (CURLOPT_WRITEFUNCTION): WriteCallback
+ *
+ * Once libcurl was successfully initialized and all needed options set a handle 
+ * represents the connection and can be used for further activities during the 
+ * lifetime of the <code>CAbout</code> instance.
+ *
+ * @see https://curl.haxx.se/libcurl/c/curl_easy_setopt.html
+ */
+bool CAbout::SetupConnection()
+{
+  //
+  // Setup Curl by creating a handle and setting options to configure how Curl should behave.
+  // If we already have a handle from a previous call we reuse it.
+  //
+  if (m_CurlHandle == nullptr) {
+
+    //
+    // Curl initialization
+    //
+    CURLcode curlResult = curl_global_init(CURL_GLOBAL_ALL);
+
+    if (curlResult != CURLE_OK) {
+      m_VersionStatus->Clear();
+      *m_VersionStatus << _("Could not initialize the Curl library.\n");
+      *m_VersionStatus << curl_easy_strerror(curlResult);
+      m_VersionStatus->Show();
+      return false;
+    }
+
+    //
+    // Curl handle creation
+    //
+    m_CurlHandle = curl_easy_init();
+
+    if (m_CurlHandle == nullptr) {
+      m_VersionStatus->Clear();
+      *m_VersionStatus << _("Could not create a connection session.\n");
+      *m_VersionStatus << curl_easy_strerror(curlResult);
+      m_VersionStatus->Show();
+      return false;
+    }
+
+    //
+    // Curl options regarding the data connection
+    //
+    curlResult = curl_easy_setopt(m_CurlHandle, CURLOPT_URL, s_URL_VERSION.c_str());
+
+    if (curlResult != CURLE_OK) {
+      m_VersionStatus->Clear();
+      *m_VersionStatus << _("Could not set 'URL' option.\n");
+      *m_VersionStatus << curl_easy_strerror(curlResult);
+      m_VersionStatus->Show();
+      return false;
+    }
+
+    curlResult = curl_easy_setopt(m_CurlHandle, CURLOPT_TIMEOUT, 120L /*sec.*/);
+
+    if (curlResult != CURLE_OK) {
+      m_VersionStatus->Clear();
+      *m_VersionStatus << _("Could not set 'Timeout' option.\n");
+      *m_VersionStatus << curl_easy_strerror(curlResult);
+      m_VersionStatus->Show();
+      return false;
+    }
+
+    //
+    // Callback function to handle received data
+    //
+    curlResult = curl_easy_setopt(m_CurlHandle, CURLOPT_WRITEFUNCTION, CAbout::WriteCallback);
+
+    if (curlResult != CURLE_OK) {
+      m_VersionStatus->Clear();
+      *m_VersionStatus << _("Could not set 'Write Function' option.\n");
+      *m_VersionStatus << curl_easy_strerror(curlResult);
+      m_VersionStatus->Show();
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Releases all resources that has been established to request version data from server.
+ */
+void CAbout::Cleanup()
+{
+  // Stop the worker thread if it is still active
+  if (GetThread() && GetThread()->IsRunning()) {
+    GetThread()->Delete();
+  }
+
+  // Free resources concerning the server connection
+  if (m_CurlHandle != nullptr) {
+    curl_easy_cleanup(m_CurlHandle);
+    curl_global_cleanup();
+    m_CurlHandle = nullptr;
+  }
+}
+
+/**
+ * Provides version information about Curl library.
+ */
+wxString CAbout::GetLibCurlVersion()
+{
+  wxString versionInfo;
+
+  auto curlVersion = curl_version_info(CURLVERSION_NOW);
+
+  versionInfo << "[libcurl] Curl Version: " << curlVersion->version << "\n";
+
+  if (curlVersion->ssl_version != nullptr) {
+    versionInfo << "[libcurl] SSL Version: " << curlVersion->ssl_version << "\n";
+  }
+  else {
+    versionInfo << "[libcurl] SSL Version: no SSL support\n";
+  }
+
+  wxString protocols;
+
+  for (size_t i = 0; i < (sizeof(curlVersion->protocols) / sizeof(curlVersion->protocols[0])); i++) {
+    i == 0 ? protocols = (curlVersion->protocols)[i] : protocols << ", " << (curlVersion->protocols)[i];
+  }
+
+  versionInfo << "[libcurl] Supported Protocols: " << protocols << "\n";
+
+  return versionInfo;
+}
+
+/**
+ * Provides version information about wxWidgets framework.
+ */
+wxString CAbout::GetLibWxVersion()
+{
+  return wxString::Format("[wx] Wx Version:\n%s\n", wxGetLibraryVersionInfo().ToString());
+}
+
+/**
+ * Checks whether database is closed.
+ *
+ * If database is open user is prompted to close the database.
+ *
+ * @return true if database is closed, otherwise false.
+ */
+bool CAbout::CheckDatabaseStatus()
+{
+  PasswordSafeFrame *pwsafe = static_cast<PasswordSafeFrame *>(GetParent());
+
+  if (!pwsafe->IsClosed()) {
+
+    const wxString cs_txt(_(
+      "For security, the database must be closed before connecting to the Internet.\n"
+      "Press OK to close database and continue (Changes will be saved)")
+    );
+
+    const wxString cs_title(
+      _("Confirm Close Dialog")
+    );
+
+    wxMessageDialog dialog(this, cs_txt, cs_title, (wxICON_QUESTION | wxOK | wxCANCEL));
+
+    if (dialog.ShowModal() == wxID_CANCEL) {
+      return false;
+    }
+
+    // Notify PasswordSafeFrame to close database.
+    // If there are any unsaved changes PasswordSafeFrame 
+    // will prompt the user to save them.
+    wxCommandEvent closeEvent(wxEVT_COMMAND_MENU_SELECTED, wxID_CLOSE);
+#if wxCHECK_VERSION(2,9,0)
+    pwsafe->GetEventHandler()->ProcessEvent(closeEvent);
+#else
+    pwsafe->ProcessEvent(closeEvent);
+#endif
+
+    // Check database once again, because user could have cancelled to save changes.
+    if (!pwsafe->IsClosed()) {
+      return false;
+    }
+  }
+
+  // Update UI accordingly to show user that database is closed.
+  pwsafe->Update();
+  ASSERT(pwsafe->GetNumEntries() == 0);
+
+  // Now, database is closed.
+  return true;
+}
 
 /*!
  * wxEVT_COMMAND_HYPERLINK event handler for ID_HYPERLINKCHECK
  */
-
 void CAbout::CheckNewVersion()
 {
-  // Get the latest.xml file from our site, compare to version,
-  // and notify the user
-  // First, make sure database is closed: Sensitive data with an
-  // open socket makes me uneasy...
-  PasswordSafeFrame *pFrm = static_cast<PasswordSafeFrame *>(GetParent());
-
-  if (pFrm->GetNumEntries() != 0) {
-    const wxString cs_txt(_("For security, the database must be closed before connecting to the Internet.\nPress OK to close database and continue (Changes will be saved)"));
-    const wxString cs_title(_("Confirm Close Dialog"));
-    wxMessageDialog dlg(this, cs_txt, cs_title,
-                        (wxICON_QUESTION | wxOK | wxCANCEL));
-    int rc = dlg.ShowModal();
-    if (rc == wxID_CANCEL)
-      return; // no hard feelings
-    // Close database, prompt for save if changed
-    wxCommandEvent closeEvent(wxEVT_COMMAND_MENU_SELECTED, wxID_CLOSE);
-#if wxCHECK_VERSION(2,9,0)
-    pFrm->GetEventHandler()->ProcessEvent(closeEvent);
-#else
-    pFrm->ProcessEvent(closeEvent);
-#endif
-    // User could have cancelled save, need to check if really closed:
-    if (pFrm->GetNumEntries() != 0)
-      return;
+  //
+  // Version check might have been issued already and data transfer in worker thread is still ongoing.
+  // In this case we wait until thread terminates, due to successfully performed transfer, failed transfer
+  // or connection timeout.
+  //
+  if (GetThread() && GetThread()->IsRunning()) {
+    pws_os::Trace(L"Worker thread already created and still running.");
+    return;
   }
-  pFrm->Update(); // show user that we closed database
-  ASSERT(pFrm->GetNumEntries() == 0);
-  // safe to open external connection
-  m_newVerStatus->Clear();
-  *m_newVerStatus << _("Trying to contact server...");
-  m_newVerStatus->Show();
-  wxURL url(L"https://pwsafe.org/latest.xml");
+
+  //
+  // For security reasons database must be closed before opening connection to server.
+  //
+  if (CheckDatabaseStatus() == false) {
+    return;
+  }
+
+  //
+  // Configure connection to server
+  //
+  if (SetupConnection() == false) {
+    return;
+  }
+
+  // Now, the database should be closed and we should have a valid Curl handle to perform
+  // the data transfer, thus worker thread will be created and started to fetch the data.
+  // If thread creation fails the Curl handle still remains valid and can be (re)used.
+  // It will be finally cleaned up when dialog gets closed.
+
+  if (CreateThread(wxTHREAD_JOINABLE) != wxTHREAD_NO_ERROR) {
+    pws_os::Trace(L"Could not create worker thread.");
+    return;
+  }
+
+  m_VersionStatus->Clear();
+  *m_VersionStatus << _("Trying to contact server...");
+  m_VersionStatus->Show();
+
+  //
+  // The download starts right away.
+  //
+  if (GetThread() && (GetThread()->Run() != wxTHREAD_NO_ERROR)) {
+    pws_os::Trace(L"Could not run worker thread.");
+    return;
+  }
+
+  pws_os::Trace(L"Started worker thread to fetch version data.");
+}
+
+/**
+ * Compares the downloaded version data against the one of the application.
+ *
+ * @see core routine <code>CheckVersion::CheckLatestVersion</code> for version 
+ *      check algorithm and details about format of the downloaded xml file.
+ */
+void CAbout::CompareVersionData()
+{
   CheckVersion::CheckStatus status = CheckVersion::CheckStatus::UP2DATE;
   stringT latest_xml;
-  if (!url.IsOk()) {
-    wxURLError err = url.GetError();
-    pws_os::Trace(wxT("Err:%d\n"),err);
+
+  //
+  // Get the downloaded data that worker thread has gathered in static wxString object.
+  //
+  if (CriticalSection().TryEnter()) {
+    latest_xml = s_VersionData;
+    s_VersionData.Empty();
+    CriticalSection().Leave();
+  }
+  else {
+    pws_os::Trace(L"CheckVersion - couldn't enter critical section to access version data");
     status = CheckVersion::CheckStatus::CANT_READ;
   }
-  wxInputStream *in_stream = url.GetInputStream();
-  if (in_stream != nullptr) {
-    unsigned char buff[BUFSIZ+1];
-    StringX chunk;
-    CUTF8Conv conv;
-    do {
-      in_stream->Read(buff, BUFSIZ);
-      size_t nRead = in_stream->LastRead();
-      if (nRead != 0) {
-        buff[nRead] = '\0';
-        // change to widechar representation
-        if (!conv.FromUTF8(buff, nRead, chunk)) {
-          delete in_stream;
-          in_stream = 0;
-          status = CheckVersion::CheckStatus::CANT_READ;
-          break;
-        } else {
-          latest_xml += chunk.c_str();
-        }
-      }
-    } while (!in_stream->Eof());
-    delete in_stream;
-    if (url.GetError() != wxURL_NOERR)
-      status = CheckVersion::CheckStatus::CANT_CONNECT;
-  }
+
+  //
+  // Compare between current version in use and latest available version
+  //
   stringT latest;
   if (status == CheckVersion::CheckStatus::UP2DATE) {
     CheckVersion cv(MAJORVERSION, MINORVERSION, REVISION);
     status = cv.CheckLatestVersion(latest_xml, latest);
   }
-  m_newVerStatus->Clear();
+
+  //
+  // Update UI with determined version status
+  //
+  m_VersionStatus->Clear();
   switch (status) {
-  case CheckVersion::CheckStatus::CANT_CONNECT:
-    *m_newVerStatus << _("Couldn't contact server.");
-    break;
-  case CheckVersion::CheckStatus::UP2DATE:
-    *m_newVerStatus << _("This is the latest release!");
-    break;
-  case CheckVersion::CheckStatus::NEWER_AVAILABLE:
+    case CheckVersion::CheckStatus::CANT_CONNECT:
+      *m_VersionStatus << _("Couldn't contact server.");
+      break;
+
+    case CheckVersion::CheckStatus::UP2DATE:
+      *m_VersionStatus << _("This is the latest release!");
+      break;
+
+    case CheckVersion::CheckStatus::NEWER_AVAILABLE:
     {
       wxString newer(_("Current version: "));
-      newer += pwsafeVersionString + L"\n";
-      newer += _("Latest version:\t"); newer += latest.c_str();
-      newer += L"\n\n";
-      newer += _("Please visit the PasswordSafe website to download the latest version.");
+      newer << pwsafeVersionString << L"\n";
+      newer << _("Latest version:\t") << latest.c_str() << L"\n\n";
+      newer << _("Please visit the PasswordSafe website to download the latest version.");
       const wxString cs_title(_("Newer Version Found!"));
-      *m_newVerStatus << cs_title;
+      *m_VersionStatus << cs_title;
       wxMessageDialog dlg(this, newer, cs_title, wxOK);
       dlg.ShowModal();
       break;
     }
-  case CheckVersion::CheckStatus::CANT_READ:
-    *m_newVerStatus << _("Could not read server version data.");
-    break;
-  default:
-    break;
+    case CheckVersion::CheckStatus::CANT_READ:
+      *m_VersionStatus << _("Could not read server version data.");
+      break;
+
+    default:
+      break;
   }
-  m_newVerStatus->Show();
+  m_VersionStatus->Show();
+}
+
+/**
+ * This is the entry point of the worker thread which handles the file download.
+ *
+ * This function gets executed in the secondary thread context and will use the
+ * blocking function <code>curl_easy_perform</code> to perform the download,
+ * which returns when download was successful, it failed or the configured timeout
+ * occured. After <code>curl_easy_perform</code> completed the worker thread sends
+ * a notification event to its parent thread to inform it about the result. The
+ * parent thread will decide on the received exit code how to proceed.
+ *
+ * @return ExitCode 0 indicates success,
+ *                 -1 indicates that no Curl handle exists,
+ *                 positive values correspond to Curl error codes
+ *
+ * @see method <code>CAbout::WriteCallback(char *receivedData, size_t size, size_t bytes, void *userData)</code>
+ * @see https://curl.haxx.se/libcurl/c/libcurl-errors.html
+ * @see https://curl.haxx.se/libcurl/c/curl_easy_perform.html
+ */
+wxThread::ExitCode CAbout::Entry()
+{
+  CURLcode curlResult;
+  auto event = new wxThreadEvent();
+
+  if (m_CurlHandle != nullptr) {
+    pws_os::Trace(L"Fetching version data...");
+
+    curlResult = curl_easy_perform(m_CurlHandle);
+
+    event->SetInt(curlResult);                        // error code
+    event->SetString(curl_easy_strerror(curlResult)); // description of the error code
+
+    // We are done. Let's inform the parent thread about the status.
+    wxQueueEvent(GetEventHandler(), event);
+
+    return (wxThread::ExitCode)curlResult;
+  }
+  else {
+    // Unexpected case that thread was started while no Curl handle exists
+    event->SetInt(-1);
+    event->SetString(_("No Curl handle to perform download."));
+
+    // We are done. Let's inform the parent thread about the status.
+    wxQueueEvent(GetEventHandler(), event);
+
+    return (wxThread::ExitCode)-1;
+  }
+}
+
+/**
+ * This function is called by the Curl library each time new data is received after
+ * <code>curl_easy_perform</code> was triggered.
+ *
+ * The version data might be received in chunks, which are collected in the static
+ * variable <code>s_VersionData</code>, until data transfer is accomplished.
+ *
+ * @see method <code>CAbout::Entry()</code>
+ * @see https://curl.haxx.se/libcurl/c/CURLOPT_WRITEFUNCTION.html
+ */
+size_t CAbout::WriteCallback(char *receivedData, size_t size, size_t bytes, void *userData)
+{
+  size_t receivedDataSize = size * bytes;
+
+  if (CriticalSection().TryEnter()) {
+
+    pws_os::Trace(wxString::Format("WriteCallback - size: %d / received: '%s'\n", (int)receivedDataSize, receivedData));
+
+    if (receivedDataSize > 0) {
+      s_VersionData += receivedData;
+    }
+    CriticalSection().Leave();
+  }
+  else {
+    pws_os::Trace(L"WriteCallback - couldn't enter critical section to access version data");
+  }
+
+  return receivedDataSize;
+}
+
+/**
+ * wxEVT_THREAD event handler for wxID_ANY
+ *
+ * This event handler is called by worker thread when file download is accomplished.
+ * CURLE_OK is the only acceptable exit code from worker thread to continue with version check.
+ * All other exit codes indicate some sort of occured problem.
+ *
+ * @see method <code>CAbout::Entry()</code> regarding worker thread and its exit codes.
+ */
+void CAbout::OnDownloadCompleted(wxThreadEvent& event)
+{
+  pws_os::Trace(wxString::Format("Got notification from worker thread. Exit Code = %d ; Result = %s", event.GetInt(), event.GetString()));
+
+  if (event.GetInt() == 0 /*CURLE_OK*/) {
+    CompareVersionData();
+  }
+  else {
+    m_VersionStatus->Clear();
+    *m_VersionStatus << _("Could not download version data.\n");
+    *m_VersionStatus << event.GetString();
+    m_VersionStatus->Show();
+  }
 }
 
 void CAbout::OnVisitSiteClicked(wxHyperlinkEvent& WXUNUSED(event)) {
-  wxLaunchDefaultBrowser(L"https://pwsafe.org");
+  wxLaunchDefaultBrowser(s_URL_HOME);
 }

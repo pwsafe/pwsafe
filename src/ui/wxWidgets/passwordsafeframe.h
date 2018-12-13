@@ -479,6 +479,8 @@ public:
   void SetTrayClosed();
   void ShowTrayIcon();
 
+  bool IsClosed() const;
+
   ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;
@@ -521,7 +523,6 @@ public:
   void RefreshToolbarButtons();
   PWSDragBar* GetDragBar();
   void CreateStatusBar();
-  bool IsClosed() const;
   void SaveSettings() const;
   void LockDb();
   void TryIconize(int nAttempts = 5);

@@ -2889,7 +2889,7 @@ msgstr "Schließen-Dialog bestätigen"
 
 #: ../../../ui/wxWidgets/about.cpp:281
 msgid "Trying to contact server..."
-msgstr "Versuche einen Server zu kontaktieren..."
+msgstr "Versuche Server zu kontaktieren..."
 
 #: ../../../ui/wxWidgets/about.cpp:324
 msgid "Couldn't contact server."
@@ -2897,7 +2897,7 @@ msgstr "Konnte Server nicht erreichen."
 
 #: ../../../ui/wxWidgets/about.cpp:327
 msgid "This is the latest release!"
-msgstr "Dies ist die neuste Ausgabe!"
+msgstr "Dies ist die neuste Version!"
 
 #: ../../../ui/wxWidgets/about.cpp:331
 msgid "Current version: "
@@ -2915,7 +2915,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/about.cpp:336
 msgid "Newer Version Found!"
-msgstr "Neue Version verfügbar!"
+msgstr "Eine neue Version ist verfügbar!"
 
 #: ../../../ui/wxWidgets/about.cpp:343
 msgid "Could not read server version data."
@@ -2929,7 +2929,7 @@ msgid ""
 msgstr ""
 "Datei ist beschädigt oder abgeschnitten!\n"
 "Möglicherweise sind Daten verloren oder verändert.\n"
-"Trotzdem weiterfahren?"
+"Trotzdem fortfahren?"
 
 #: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:49
 msgid "You must select a valid file to continue."
