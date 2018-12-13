@@ -276,7 +276,7 @@ wxCriticalSection& CAbout::CriticalSection()
  *
  * The download of the version information (latest.xml) is performed by the external 
  * library Curl (libcurl). For the purpose of only downloading a single file the Easy 
- * API of libcurl is used, which already provides everything what is necessary for this 
+ * API of libcurl is used, which already provides everything needed for this 
  * task and which keeps the implementation simple.
  *
  * The following settings are used.
