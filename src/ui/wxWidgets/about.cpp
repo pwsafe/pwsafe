@@ -50,11 +50,7 @@ IMPLEMENT_CLASS( CAbout, wxDialog )
 BEGIN_EVENT_TABLE( CAbout, wxDialog )
 
   EVT_CLOSE(                       CAbout::OnCloseWindow       )
-#if wxCHECK_VERSION(2,9,2)
-  EVT_BUTTON(    ID_CHECKNEW     , CAbout::OnCheckNewClicked   )
-#else
   EVT_HYPERLINK( ID_CHECKNEW     , CAbout::OnCheckNewClicked   )
-#endif
   EVT_HYPERLINK( ID_SITEHYPERLINK, CAbout::OnVisitSiteClicked  )
   EVT_BUTTON(    wxID_CLOSE      , CAbout::OnCloseClick        )
   EVT_THREAD(    wxID_ANY        , CAbout::OnDownloadCompleted )
@@ -156,34 +152,28 @@ void CAbout::CreateControls()
   rightSizer->Add(verCheckSizer, 0, wxALIGN_LEFT|wxALL, 0);
 
   wxStaticText* latestStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Latest version? Click"), wxDefaultPosition, wxDefaultSize, 0 );
-  verCheckSizer->Add(latestStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-#if wxCHECK_VERSION(2,9,2)
-  // using simple button to prevent Gtk-WARNING and other link processing overhead
-  wxButton* latestCheckButton = new wxButton(aboutDialog, ID_CHECKNEW, _("here"), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE|wxBU_EXACTFIT);
-  wxString markup = wxString(L"<span color='blue'><u>") + _("here") + L"</u></span>";
-  latestCheckButton->SetLabelMarkup(markup);
-#else
+  verCheckSizer->Add(latestStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5);
+
   wxHyperlinkCtrl* latestCheckButton = new wxHyperlinkCtrl(aboutDialog, ID_CHECKNEW, _("here"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxNO_BORDER|wxHL_ALIGN_LEFT);
-  // Force empty URL, because wxHyperlinkCtrl constructor set URL to label if ti's empty
-  // This doesn't prevent "Gtk-WARNING **: Unable to show ", but at lease we don't try to open label text
-  latestCheckButton->SetURL(wxEmptyString);
-#endif
-  verCheckSizer->Add(latestCheckButton, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  verCheckSizer->Add(latestCheckButton, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5);
 
   wxStaticText* latestStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("to check."), wxDefaultPosition, wxDefaultSize, 0);
-  verCheckSizer->Add(latestStaticTextEnd, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  verCheckSizer->Add(latestStaticTextEnd, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5);
 
   wxBoxSizer* visitSiteSizer = new wxBoxSizer(wxHORIZONTAL);
   rightSizer->Add(visitSiteSizer, 0, wxALIGN_LEFT|wxALL, 0);
 
-  wxStaticText* visitSiteStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Please visit the "), wxDefaultPosition, wxDefaultSize, 0);
-  visitSiteSizer->Add(visitSiteStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticText* visitSiteStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Please visit the"), wxDefaultPosition, wxDefaultSize, 0);
+  visitSiteSizer->Add(visitSiteStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5);
 
   wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
-  visitSiteSizer->Add(visitSiteHyperlinkCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  visitSiteSizer->Add(visitSiteHyperlinkCtrl, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5);
 
-  wxStaticText* visitSiteStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("See LICENSE for open source details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
-  rightSizer->Add(visitSiteStaticTextEnd, 0, wxALIGN_LEFT|wxALL, 5);
+  wxStaticText* visitSiteStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("."), wxDefaultPosition, wxDefaultSize, 0);
+  visitSiteSizer->Add(visitSiteStaticTextEnd, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5);
+
+  wxStaticText* licenseStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("See LICENSE for open source details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+  rightSizer->Add(licenseStaticTextEnd, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStaticText* copyrightStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Copyright (c) 2003-2018 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(copyrightStaticText, 0, wxALIGN_LEFT|wxALL, 5);
@@ -241,7 +231,7 @@ wxIcon CAbout::GetIconResource( const wxString& WXUNUSED(name) )
  * wxEVT_CLOSE_WINDOW event handler
  */
 
-void CAbout::OnCloseWindow( wxCloseEvent& evt )
+void CAbout::OnCloseWindow( wxCloseEvent& WXUNUSED(event) )
 {
   Cleanup();
   EndModal(wxID_CLOSE);
@@ -696,6 +686,9 @@ void CAbout::OnDownloadCompleted(wxThreadEvent& event)
   }
 }
 
+/**
+ * wxEVT_HYPERLINK event handler for ID_SITEHYPERLINK
+ */
 void CAbout::OnVisitSiteClicked(wxHyperlinkEvent& WXUNUSED(event)) {
   wxLaunchDefaultBrowser(s_URL_HOME);
 }
