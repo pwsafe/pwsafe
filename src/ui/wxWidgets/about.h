@@ -93,12 +93,9 @@ public:
 ////@begin CAbout event handler declarations
 
   /// event handler for ID_CHECKNEW
-#if wxCHECK_VERSION(2,9,2)
-  void OnCheckNewClicked(wxCommandEvent& WXUNUSED(event)) { CheckNewVersion(); };
-#else
   void OnCheckNewClicked(wxHyperlinkEvent& WXUNUSED(event)) { CheckNewVersion(); };
-#endif
 
+  /// event handler for ID_SITEHYPERLINK
   void OnVisitSiteClicked(wxHyperlinkEvent& event);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
