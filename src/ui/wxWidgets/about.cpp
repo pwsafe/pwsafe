@@ -566,6 +566,7 @@ void CAbout::CompareVersionData()
   switch (status) {
     case CheckVersion::CheckStatus::CANT_CONNECT:
       *m_VersionStatus << _("Couldn't contact server.");
+      pws_os::Trace(wxString::Format("Server URL: %s", s_URL_VERSION));
       break;
 
     case CheckVersion::CheckStatus::UP2DATE:
@@ -586,6 +587,7 @@ void CAbout::CompareVersionData()
     }
     case CheckVersion::CheckStatus::CANT_READ:
       *m_VersionStatus << _("Could not read server version data.");
+      pws_os::Trace(wxString::Format("parsed version data: \n'%s'\n", latest_xml));
       break;
 
     default:
@@ -658,8 +660,6 @@ size_t CAbout::WriteCallback(char *receivedData, size_t size, size_t bytes, void
 
   if (CriticalSection().TryEnter()) {
 
-    pws_os::Trace(wxString::Format("WriteCallback - size: %d / received: '%s'\n", (int)receivedDataSize, receivedData));
-
     if (receivedDataSize > 0) {
       s_VersionData += receivedData;
     }
@@ -693,6 +693,12 @@ void CAbout::OnDownloadCompleted(wxThreadEvent& event)
     *m_VersionStatus << _("Could not download version data.\n");
     *m_VersionStatus << event.GetString();
     m_VersionStatus->Show();
+
+    // Show what we've received so far
+    pws_os::Trace(wxString::Format("received data: \n'%s'\n", s_VersionData));
+
+    // Forget about all the received data in error case
+    s_VersionData.Empty();
   }
 }
 
