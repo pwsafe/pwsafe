@@ -151,22 +151,22 @@ void CAbout::CreateControls()
   wxBoxSizer* verCheckSizer = new wxBoxSizer(wxHORIZONTAL);
   rightSizer->Add(verCheckSizer, 0, wxALIGN_LEFT|wxALL, 0);
 
-  wxStaticText* latestStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Latest version? Click"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* latestStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Latest version? Click "), wxDefaultPosition, wxDefaultSize, 0 );
   verCheckSizer->Add(latestStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5);
 
-  wxHyperlinkCtrl* latestCheckButton = new wxHyperlinkCtrl(aboutDialog, ID_CHECKNEW, _("here"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxNO_BORDER|wxHL_ALIGN_LEFT);
+  wxGenericHyperlinkCtrl* latestCheckButton = new wxGenericHyperlinkCtrl(aboutDialog, ID_CHECKNEW, _("here"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
   verCheckSizer->Add(latestCheckButton, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5);
 
-  wxStaticText* latestStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("to check."), wxDefaultPosition, wxDefaultSize, 0);
+  wxStaticText* latestStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _(" to check."), wxDefaultPosition, wxDefaultSize, 0);
   verCheckSizer->Add(latestStaticTextEnd, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5);
 
   wxBoxSizer* visitSiteSizer = new wxBoxSizer(wxHORIZONTAL);
   rightSizer->Add(visitSiteSizer, 0, wxALIGN_LEFT|wxALL, 0);
 
-  wxStaticText* visitSiteStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Please visit the"), wxDefaultPosition, wxDefaultSize, 0);
+  wxStaticText* visitSiteStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Please visit the "), wxDefaultPosition, wxDefaultSize, 0);
   visitSiteSizer->Add(visitSiteStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5);
 
-  wxHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
+  wxGenericHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxGenericHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("PasswordSafe website"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
   visitSiteSizer->Add(visitSiteHyperlinkCtrl, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5);
 
   wxStaticText* visitSiteStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("."), wxDefaultPosition, wxDefaultSize, 0);
