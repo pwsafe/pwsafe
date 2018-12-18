@@ -19,7 +19,7 @@
 
 using namespace std;
 
-constexpr auto known_fields = {
+constexpr CItemData::FieldType known_fields[] = {
   CItemData::GROUP,
   CItemData::TITLE,
   CItemData::USER,

@@ -65,28 +65,55 @@ const map<UserArgs::OpType, pws_op> pws_ops = {
 
 static void usage(char *pname)
 {
-  wcerr << "Usage: " << pname << " safe --imp[=file] --text|--xml" << endl
-       << "       " << pname << " safe --exp[=file] --text|--xml" << endl
-       << "       " << pname << " safe --new" << endl
-       << "       " << pname << " safe --add=field1=value1,field2=value2,..." << endl
-       << "       " << pname << " safe --search=<text> [--ignore-case]" << endl
-       << "       " << "\t\t\t" << " [--subset=<Field><OP><string>[/iI] [--fields=f1,f2,..]" << endl
-       << "       " << "\t\t\t" << " [--delete|--update=Field1=Value1,Field2=Value2,..|--print] [--yes]" << endl
-       << "       " << pname << " safe --diff=<other-safe>  [--subset=<Field><OP><Value>[/iI] " << endl
-       << "       " << "\t\t\t" << " [--fields=f1,f2,..] [--unified|--context|--sidebyside]" << endl
-       << "       " << "\t\t\t" << " [--colwidth=column-size]" << endl
-       << "       " << pname << " safe --sync=<other-safe>  [--subset=<Field><OP><string>[/iI]]" << endl
-       << "       " << "\t\t\t" << " [--fields=f1,f2,..] [--yes]" << endl
-       << "       " << pname << " safe --merge=<other-safe> [--subset=<Field><OP><Value>[/iI]] [--yes]" << endl
-       << endl
-       << "       " << "where OP is one of ==, !==, ^= !^=, $=, !$=, ~=, !~=" << endl
-       << "       " << " = => exactly similar" << endl
-       << "       " << " ^ => begins-with" << endl
-       << "       " << " $ => ends with" << endl
-       << "       " << " ~ => contains" << endl
-       << "       " << " ! => negation" << endl
-       << "       " << "a trailing /i => case insensitive, /I => case sensitive" << endl
-       ;
+  std::string usage_str = R"usagestring(
+Usage: %PROGNAME% safe --imp[=file] --text|--xml
+
+       %PROGNAME% safe --exp[=file] --text|--xml
+
+       %PROGNAME% safe --new
+
+       %PROGNAME% safe --add=field1=value1,field2=value2,...
+
+       %PROGNAME% safe --search=<text> [--ignore-case]
+                      [--subset=<Field><OP><string>[/iI] [--fields=f1,f2,..]
+                      [--delete | --update=Field1=Value1,Field2=Value2,.. | --print[=field1,field2...] ] [--yes]
+
+       %PROGNAME% safe --diff=<other-safe>  [ --subset=<Field><OP><Value>[/iI] ]
+                      [--fields=f1,f2,..] [--unified | --context | --sidebyside]
+                      [--colwidth=column-size]
+
+       %PROGNAME% safe --sync=<other-safe>  [ --subset=<Field><OP><string>[/iI] ] [ --fields=f1,f2,.. ] [--yes]
+
+       %PROGNAME% safe --merge=<other-safe> [ --subset=<Field><OP><Value>[/iI] ] [--yes]
+
+                        where OP is one of ==, !==, ^= !^=, $=, !$=, ~=, !~=
+                         = => exactly similar
+                         ^ => begins-with
+                         $ => ends with
+                         ~ => contains
+                         ! => negation
+                        a trailing /i => case insensitive, /I => case sensitive
+
+       Valid field names are:
+)usagestring";
+
+	const std::string placeholder{"%PROGNAME%"};
+    const auto pname_len = strlen(pname);
+
+	for( auto itr = usage_str.find(placeholder); itr != std::string::npos; itr = usage_str.find(placeholder, itr + pname_len)) {
+			usage_str.replace(itr, placeholder.length(), pname);
+	}
+
+	cerr << usage_str;
+
+	constexpr auto names_per_line = 5;
+	auto nnames = 0;
+	const auto fieldnames = GetValidFieldNames();
+	for (const stringT &name: fieldnames) {
+		if ( nnames++ % names_per_line == 0 ) cerr << "\n\t\t";
+		wcerr << name << ", ";
+	}
+	cerr << '\n';
 }
 
 constexpr bool no_dup_short_option2(uint32_t bits, const option *p)
