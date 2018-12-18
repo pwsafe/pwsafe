@@ -34,8 +34,16 @@ foreach(split /\s+/, `$wxconfig --libs --unicode=yes --debug=$dbgflag`) {
 }
 print "OTHER_LDFLAGS = -L/usr/local/lib ", $libflags, "\n";
 
-my $cxxflags;
+my @HEADER_SEARCH_PATHS;
+my @GCC_PREPROCESSOR_DEFINITIONS;
 foreach(split /\s+/, `$wxconfig --cxxflags --unicode=yes --debug=$dbgflag`) {
-	$cxxflags .= $1." " if /\A-I(.+)/;
+    if (/\A-I(.+)/) {
+        push @HEADER_SEARCH_PATHS, $1;
+    }
+    if (/\A-D(.+)/) {
+        push @GCC_PREPROCESSOR_DEFINITIONS, $1;
+    }
 }
-print "HEADER_SEARCH_PATHS = ", $cxxflags, "\n";
+print "HEADER_SEARCH_PATHS = ".join(' ', @HEADER_SEARCH_PATHS)."\n";
+print "GCC_PREPROCESSOR_DEFINITIONS = ".join(' ', @GCC_PREPROCESSOR_DEFINITIONS)."\n";
+
