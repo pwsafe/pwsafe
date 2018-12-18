@@ -31,6 +31,8 @@
 		A2FE25911C5ACF7500210C36 /* PWSfileHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25891C5ACF7500210C36 /* PWSfileHeader.cpp */; };
 		A2FE25921C5ACF7500210C36 /* PWSfileV4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE258B1C5ACF7500210C36 /* PWSfileV4.cpp */; };
 		A2FE25951C5ACFBD00210C36 /* PWStime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25931C5ACFBD00210C36 /* PWStime.cpp */; };
+		E0A70B9821C8FF8900A2FEA8 /* PolicyManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */; };
+		E0A70B9B21C905A500A2FEA8 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */; };
 		E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */; };
 		E6112A64131D720E00AA1454 /* ExpiredList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6112A61131D720E00AA1454 /* ExpiredList.cpp */; };
 		E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */; };
@@ -256,6 +258,9 @@
 		A2FE258C1C5ACF7500210C36 /* PWSfileV4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSfileV4.h; sourceTree = "<group>"; };
 		A2FE25931C5ACFBD00210C36 /* PWStime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWStime.cpp; sourceTree = "<group>"; };
 		A2FE25941C5ACFBD00210C36 /* PWStime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWStime.h; sourceTree = "<group>"; };
+		E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolicyManager.cpp; sourceTree = "<group>"; };
+		E0A70B9721C8FF8900A2FEA8 /* PolicyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolicyManager.h; sourceTree = "<group>"; };
+		E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExternalKeyboardButton.cpp; sourceTree = "<group>"; };
 		E60F25D712C4ACEB001E63C4 /* ExternalKeyboardButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalKeyboardButton.h; sourceTree = "<group>"; };
 		E6112A61131D720E00AA1454 /* ExpiredList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExpiredList.cpp; sourceTree = "<group>"; };
@@ -617,7 +622,7 @@
 		E6C94E911FA20593008F0072 /* pwsqrcodedlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pwsqrcodedlg.cpp; sourceTree = "<group>"; };
 		E6C94E921FA20593008F0072 /* pwsqrcodedlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwsqrcodedlg.h; sourceTree = "<group>"; };
 		E6C94E941FA205E9008F0072 /* pwsqrencode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwsqrencode.h; sourceTree = "<group>"; };
-		E6C94E951FA2075B008F0072 /* pwsqrencode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "pwsqrencode.mm"; sourceTree = "<group>"; };
+		E6C94E951FA2075B008F0072 /* pwsqrencode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = pwsqrencode.mm; sourceTree = "<group>"; };
 		E6C94E971FA3399F008F0072 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		E6C94E991FA33BA6008F0072 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E6CFEE4311EA0AFB001402D8 /* RecentDBList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentDBList.h; sourceTree = "<group>"; };
@@ -763,6 +768,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0A70B9B21C905A500A2FEA8 /* libcurl.tbd in Frameworks */,
 				E6ADBB2111957CCB004E2BE5 /* libcore.a in Frameworks */,
 				E6ADBB2211957CD3004E2BE5 /* libos.a in Frameworks */,
 				E6B1447B12B26CB700415AAE /* Carbon.framework in Frameworks */,
@@ -776,6 +782,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E0A70B9921C905A500A2FEA8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E6069D0319FE1CCA0055040F /* Configs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1147,6 +1161,7 @@
 				E6B1448112B26CEE00415AAE /* OpenGL.framework */,
 				E6B1448712B26D1500415AAE /* Cocoa.framework */,
 				E6B1449312B26D7E00415AAE /* IOKit.framework */,
+				E0A70B9921C905A500A2FEA8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1340,6 +1355,8 @@
 		E6EE839111E87E9700B01518 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */,
+				E0A70B9721C8FF8900A2FEA8 /* PolicyManager.h */,
 				E6F8DC201D132657007DFBEC /* RUEList.cpp */,
 				E6F8DC211D132657007DFBEC /* RUEList.h */,
 				A2FE257E1C5ACEFD00210C36 /* AES.cpp */,
@@ -1724,6 +1741,7 @@
 				E6EE845111E87E9800B01518 /* XFilterXMLProcessor.cpp in Sources */,
 				A2FE25901C5ACF7500210C36 /* pbkdf2.cpp in Sources */,
 				E6EE845211E87E9800B01518 /* XSecMemMgr.cpp in Sources */,
+				E0A70B9821C8FF8900A2FEA8 /* PolicyManager.cpp in Sources */,
 				E6EE845311E87E9800B01518 /* XMLFileHandlers.cpp in Sources */,
 				E6EE845411E87E9800B01518 /* XMLFileValidation.cpp in Sources */,
 				E6EE845511E87E9800B01518 /* XMLprefs.cpp in Sources */,
@@ -1855,6 +1873,7 @@
 /* Begin XCBuildConfiguration section */
 		E66D29331D02B49B00C9BCBF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1900,6 +1919,7 @@
 		};
 		E66D29341D02B49B00C9BCBF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1966,6 +1986,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				ENABLE_TESTABILITY = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NO_YUBI,
@@ -1983,6 +2004,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
@@ -1995,6 +2017,7 @@
 		};
 		E6ADB80511956A93004E2BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2004,18 +2027,22 @@
 					_LARGE_FILES,
 					DEBUG,
 					_DEBUG,
+					__WXDEBUG__,
+					__WXMAC__,
+					__WXOSX_COCOA__,
 				);
-				HEADER_SEARCH_PATHS = ../src/;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
 				);
 				PRODUCT_NAME = core;
+				USER_HEADER_SEARCH_PATHS = ../src/;
 			};
 			name = Debug;
 		};
 		E6ADB80611956A93004E2BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2023,13 +2050,15 @@
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
 					NDEBUG,
+					__WXMAC__,
+					WXOSX_COCOA__,
 				);
-				HEADER_SEARCH_PATHS = ../src/;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
 				);
 				PRODUCT_NAME = core;
+				USER_HEADER_SEARCH_PATHS = ../src/;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -2094,6 +2123,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
 				USER_HEADER_SEARCH_PATHS = ../src;
@@ -2119,6 +2149,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
 				USER_HEADER_SEARCH_PATHS = ../src;
