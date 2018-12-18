@@ -29,7 +29,10 @@ export CPPFLAGS += -std=c++11
 ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
 	XERCESCPPFLAGS=
 	PLATFORM=mac
-	EXTLIBS=-framework gtest -framework CoreFoundation -framework CoreGraphics
+	EXTLIBS=-framework CoreFoundation -framework CoreGraphics
+	TEST_EXTLIBS=-framework gtest $(EXTLIBS)
+	# typically installed by homebrew etc.
+	WX_CONFIG?=/usr/local/bin/wx-config
 else
 	XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 	PLATFORM=unix
@@ -38,9 +41,12 @@ else
 	GTEST_SRCS=$(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 	GTEST_OBJ = $(OBJPATH)/gtest-all.o
 	EXTLIBS=-luuid -lxerces-c -lpthread
+	TEST_EXTLIBS=$(EXTLIBS)
+	WX_CONFIG?=/usr/bin/wx-config
 endif
 
 CXXFLAGS += $(CPPFLAGS) -Wall -I$(COREPATH) -I../.. $(XERCESCPPFLAGS) -DUNICODE
+WXLIBS:=`$(WX_CONFIG) --debug=no --unicode=yes --libs`
 
 # rules
 .PHONY: all clean deepclean setup
@@ -55,14 +61,14 @@ all : setup $(EXE) $(TESTEXE)
 
 
 $(LIBCORE): 
-	$(MAKE) -C $(COREPATH)
+	$(MAKE) -C $(COREPATH) WX_CONFIG=$(WX_CONFIG)
 
 $(LIBOS): 
 	$(MAKE) -C $(OSPATH)/$(PLATFORM)
 
 $(EXE): $(LIBS) $(OBJ)
 	$(CXX) -g $(filter %.o,$^)  -o $@ $(LD_FLAGS) \
-	-L$(LIBPATH) -lcore -los -lcore $(EXTLIBS)
+	-L$(LIBPATH) -lcore -los -lcore $(EXTLIBS) $(WXLIBS)
 
 clean:
 	rm -f *~ $(OBJ) $(EXE) $(LIBS) $(DEPENDFILE)
@@ -81,4 +87,4 @@ $(GTEST_OBJ): $(GTEST_SRCS_) $(GTEST_HEADERS)
 
 $(TESTEXE): $(LIBS) $(TESTOBJ)
 	$(CXX) -v -g $(CXXFLAGS) $(filter %.o,$^)  -o $@  $(LD_FLAGS) \
-	-L$(LIBPATH) -lcore -los -lcore $(EXTLIBS) $(GTEST_OBJ)
+	-L$(LIBPATH) -lcore -los -lcore $(TEST_EXTLIBS) $(GTEST_OBJ) $(WXLIBS)
