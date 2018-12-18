@@ -20,37 +20,57 @@ using namespace std;
 
 using String2FieldTypeMap = std::map<stringT, CItemData::FieldType>;
 
+const std::map<int, CItemData::FieldType> id2enum = {
+	{IDSC_FLDNMGROUPTITLE,     CItem::GROUPTITLE},
+	{IDSC_FLDNMUUID,           CItem::UUID},
+	{IDSC_FLDNMGROUP,          CItem::GROUP},
+	{IDSC_FLDNMTITLE,          CItem::TITLE},
+	{IDSC_FLDNMUSERNAME,       CItem::USER},
+	{IDSC_FLDNMNOTES,          CItem::NOTES},
+	{IDSC_FLDNMPASSWORD,       CItem::PASSWORD},
+#undef CTIME
+	{IDSC_FLDNMCTIME,          CItem::CTIME},
+	{IDSC_FLDNMPMTIME,         CItem::PMTIME},
+	{IDSC_FLDNMATIME,          CItem::ATIME},
+	{IDSC_FLDNMXTIME,          CItem::XTIME},
+	{IDSC_FLDNMRMTIME,         CItem::RMTIME},
+	{IDSC_FLDNMURL,            CItem::URL},
+	{IDSC_FLDNMAUTOTYPE,       CItem::AUTOTYPE},
+	{IDSC_FLDNMPWHISTORY,      CItem::PWHIST},
+	{IDSC_FLDNMPWPOLICY,       CItem::POLICY},
+	{IDSC_FLDNMXTIMEINT,       CItem::XTIME_INT},
+	{IDSC_FLDNMRUNCOMMAND,     CItem::RUNCMD},
+	{IDSC_FLDNMDCA,            CItem::DCA},
+	{IDSC_FLDNMSHIFTDCA,       CItem::SHIFTDCA},
+	{IDSC_FLDNMEMAIL,          CItem::EMAIL},
+	{IDSC_FLDNMPROTECTED,      CItem::PROTECTED},
+	{IDSC_FLDNMSYMBOLS,        CItem::SYMBOLS},
+	{IDSC_FLDNMPWPOLICYNAME,   CItem::POLICYNAME},
+	{IDSC_FLDNMKBSHORTCUT,     CItem::KBSHORTCUT},
+};
+
+std::vector<stringT> GetValidFieldNames() {
+	std::vector<stringT> fields;
+	using map_value_type = decltype(*id2enum.begin());
+
+	std::transform( id2enum.begin(), id2enum.end(), std::back_inserter(fields), [](map_value_type itr) {
+			stringT s;
+			LoadAString(s, itr.first);
+			return s;
+	});
+
+	return fields;
+}
+
 // Reverse of CItemData::FieldName
 static String2FieldTypeMap  InitFieldTypeMap()
 {
   String2FieldTypeMap ftmap;
-  stringT retval;
-  LoadAString(retval, IDSC_FLDNMGROUPTITLE);      ftmap[retval] = CItem::GROUPTITLE;
-  LoadAString(retval, IDSC_FLDNMUUID);            ftmap[retval] = CItem::UUID;
-  LoadAString(retval, IDSC_FLDNMGROUP);           ftmap[retval] = CItem::GROUP;
-  LoadAString(retval, IDSC_FLDNMTITLE);           ftmap[retval] = CItem::TITLE;
-  LoadAString(retval, IDSC_FLDNMUSERNAME);        ftmap[retval] = CItem::USER;
-  LoadAString(retval, IDSC_FLDNMNOTES);           ftmap[retval] = CItem::NOTES;
-  LoadAString(retval, IDSC_FLDNMPASSWORD);        ftmap[retval] = CItem::PASSWORD;
-#undef CTIME
-  LoadAString(retval, IDSC_FLDNMCTIME);           ftmap[retval] = CItem::CTIME;
-  LoadAString(retval, IDSC_FLDNMPMTIME);          ftmap[retval] = CItem::PMTIME;
-  LoadAString(retval, IDSC_FLDNMATIME);           ftmap[retval] = CItem::ATIME;
-  LoadAString(retval, IDSC_FLDNMXTIME);           ftmap[retval] = CItem::XTIME;
-  LoadAString(retval, IDSC_FLDNMRMTIME);          ftmap[retval] = CItem::RMTIME;
-  LoadAString(retval, IDSC_FLDNMURL);             ftmap[retval] = CItem::URL;
-  LoadAString(retval, IDSC_FLDNMAUTOTYPE);        ftmap[retval] = CItem::AUTOTYPE;
-  LoadAString(retval, IDSC_FLDNMPWHISTORY);       ftmap[retval] = CItem::PWHIST;
-  LoadAString(retval, IDSC_FLDNMPWPOLICY);        ftmap[retval] = CItem::POLICY;
-  LoadAString(retval, IDSC_FLDNMXTIMEINT);        ftmap[retval] = CItem::XTIME_INT;
-  LoadAString(retval, IDSC_FLDNMRUNCOMMAND);      ftmap[retval] = CItem::RUNCMD;
-  LoadAString(retval, IDSC_FLDNMDCA);             ftmap[retval] = CItem::DCA;
-  LoadAString(retval, IDSC_FLDNMSHIFTDCA);        ftmap[retval] = CItem::SHIFTDCA;
-  LoadAString(retval, IDSC_FLDNMEMAIL);           ftmap[retval] = CItem::EMAIL;
-  LoadAString(retval, IDSC_FLDNMPROTECTED);       ftmap[retval] = CItem::PROTECTED;
-  LoadAString(retval, IDSC_FLDNMSYMBOLS);         ftmap[retval] = CItem::SYMBOLS;
-  LoadAString(retval, IDSC_FLDNMPWPOLICYNAME);    ftmap[retval] = CItem::POLICYNAME;
-  LoadAString(retval, IDSC_FLDNMKBSHORTCUT);      ftmap[retval] = CItem::KBSHORTCUT;
+  for ( auto itr: id2enum ) {
+	  stringT retval;
+	  LoadAString(retval, itr.first);
+	  ftmap[retval] = itr.second;
+  }
   return ftmap;;
 }
 
