@@ -2051,7 +2051,7 @@
 					_LARGE_FILES,
 					NDEBUG,
 					__WXMAC__,
-					WXOSX_COCOA__,
+					__WXOSX_COCOA__,
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
