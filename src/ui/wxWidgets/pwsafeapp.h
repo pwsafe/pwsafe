@@ -5,7 +5,7 @@
 // Modified by:
 // Created:     Wed 14 Jan 2009 10:11:39 PM IST
 // RCS-ID:
-// Copyright:   Copyright (c) 2003-2018 Rony Shapiro <ronys@pwsafe.org>
+// Copyright:   Copyright (c) 2003-2019 Rony Shapiro <ronys@pwsafe.org>
 // Licence:
 /////////////////////////////////////////////////////////////////////////////
 

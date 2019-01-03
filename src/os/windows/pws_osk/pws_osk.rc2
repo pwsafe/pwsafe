@@ -35,8 +35,8 @@ BEGIN
             VALUE "FileDescription", "Password Safe OnScreen Keyboard DLL"
             VALUE "FileVersion", STROSKFILEVER
             VALUE "InternalName", "Password Safe"
-            VALUE "LegalCopyright", "Copyright © 2003-2018 by Rony Shapiro"
-            VALUE "LegalTrademarks", "Copyright © 1997-8 by Counterpane Systems, 2003-2018 by Rony Shapiro"
+            VALUE "LegalCopyright", "Copyright © 2003-2019 Rony Shapiro"
+            VALUE "LegalTrademarks", "Copyright © 1997-8 by Counterpane Systems, 2003-2019 Rony Shapiro"
             VALUE "OriginalFilename", "pws_osk.dll"
             VALUE "ProductName", "Password Safe OnScreen Keyboard DLL"
             VALUE "ProductVersion", STROSKPRODUCTVER

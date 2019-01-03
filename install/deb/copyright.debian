@@ -4,7 +4,7 @@ Source: https://github.com/pwsafe/pwsafe
 
 Files: *
 Copyright:
- Copyright (c) 2003-2018 Rony Shapiro
+ Copyright (c) 2003-2019 Rony Shapiro
 License: Artistic
  On Debian GNU/Linux systems, the complete text of the Artistic
  license can be found in `/usr/share/common-licenses/Artistic'.

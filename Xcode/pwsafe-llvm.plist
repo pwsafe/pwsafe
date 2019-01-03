@@ -23,7 +23,7 @@
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>© 2003-2018 Copyright Rony Shapiro
+	<string>© 2003-2019 Copyright Rony Shapiro
 All rights reserved</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>

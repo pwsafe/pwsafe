@@ -11,7 +11,7 @@
     <bool name="archive_xrc_files">1</bool>
     <string name="author">""</string>
     <string name="configuration">"GCC Debug"</string>
-    <string name="copyright_string">"Copyright (c) 2003-2018 Rony Shapiro &lt;ronys@pwsafe.org&gt;"</string>
+    <string name="copyright_string">"Copyright (c) 2003-2019 Rony Shapiro &lt;ronys@pwsafe.org&gt;"</string>
     <string name="cpp_function_declaration_comment">"	/// %BODY%
 "</string>
     <string name="cpp_function_implementation_comment">"
@@ -60,7 +60,7 @@
 
 "</string>
     <string name="cpp_symbols_file_comment">"*
- * Copyright (c) 2003-2018 Rony Shapiro &lt;ronys@pwsafe.org&gt;.
+ * Copyright (c) 2003-2019 Rony Shapiro &lt;ronys@pwsafe.org&gt;.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -9210,7 +9210,7 @@ Type the new combination once again to confirm it."</string>
                 <string name="proxy-Id name">"wxID_STATIC"</string>
                 <long name="proxy-Id value">5105</long>
                 <string name="proxy-Implementation filename">""</string>
-                <string name="proxy-Label">"Copyright (c) 2003-2018 by Rony Shapiro"</string>
+                <string name="proxy-Label">"Copyright (c) 2003-2019 Rony Shapiro"</string>
                 <string name="proxy-Member variable name">""</string>
                 <string name="proxy-Name">""</string>
                 <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
