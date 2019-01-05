@@ -482,7 +482,7 @@ endif (${LSB_RELEASE_ID_SHORT} STREQUAL "Debian")
 
 if (${LSB_RELEASE_ID_SHORT} STREQUAL "LinuxMint")
   ## Debian-specific:
-  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), libuuid1 (>= 2.17.2-0ubuntu1), libxtst6 (>= 2:1.1.0-2), libxerces-c3.1 (>= 3.1.0-1)")
+  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), libuuid1 (>= 2.17.2-0ubuntu1), libxtst6 (>= 2:1.1.0-2), libxerces-c3.2 (>= 3.1.0-1)")
 endif (${LSB_RELEASE_ID_SHORT} STREQUAL "LinuxMint")
 
 set (CPACK_DEBIAN_PACKAGE_DESCRIPTION "Password Safe is a password database utility. \n Like many other such  products, commercial and otherwise,\n  it stores your passwords in an encrypted file.")
