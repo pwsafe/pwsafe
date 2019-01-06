@@ -146,16 +146,16 @@ void CSafeCombinationPrompt::CreateControls()
 ////@begin CSafeCombinationPrompt content construction
   CSafeCombinationPrompt* itemDialog1 = this;
 
-  wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
+  auto *itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
-  wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
+  auto *itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer3, 1, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   wxStaticBitmap* itemStaticBitmap4 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(L"graphics/cpane.xpm"), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
   itemBoxSizer3->Add(itemStaticBitmap4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxVERTICAL);
+  auto *itemBoxSizer5 = new wxBoxSizer(wxVERTICAL);
   itemBoxSizer3->Add(itemBoxSizer5, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText6 = new wxStaticText( itemDialog1, wxID_STATIC, _("Please enter the safe combination for this password database."), wxDefaultPosition, wxDefaultSize, 0 );
@@ -164,7 +164,7 @@ void CSafeCombinationPrompt::CreateControls()
   wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("filename"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemStaticText7, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
+  auto *itemBoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer5->Add(itemBoxSizer8, 0, wxGROW|wxALL, 5);
 
   wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe combination:"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -173,7 +173,7 @@ void CSafeCombinationPrompt::CreateControls()
   m_scctrl = new CSafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1) );
   itemBoxSizer8->Add(m_scctrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
+  auto *itemBoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer5->Add(itemBoxSizer11, 0, wxGROW|wxALL, 5);
 
 #ifndef NO_YUBI
@@ -208,10 +208,11 @@ void CSafeCombinationPrompt::CreateControls()
     0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5
   );
 
+  auto *okButton = new wxButton(itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
   itemBoxSizer4->Add(
-    new wxButton(itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0), 
-    0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5
+    okButton, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5
   );
+  okButton->SetDefault();
 
   // Set validators
   itemStaticText7->SetValidator( wxGenericValidator(& m_filename) );
@@ -281,7 +282,7 @@ void CSafeCombinationPrompt::ProcessPhrase()
     wxMessageDialog err(this, errmess,
                         _("Error"), wxOK | wxICON_EXCLAMATION);
     err.ShowModal();
-    wxTextCtrl *txt = dynamic_cast<wxTextCtrl *>(FindWindow(ID_PASSWORD));
+    auto *txt = dynamic_cast<wxTextCtrl *>(FindWindow(ID_PASSWORD));
     txt->SetSelection(-1,-1);
     txt->SetFocus();
     return;

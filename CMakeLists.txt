@@ -416,6 +416,18 @@ else ()
    install (FILES "xml/pwsafe_filter.xsd" DESTINATION "bin")
 endif (NOT WIN32)
 
+# uninstall target
+if(NOT TARGET uninstall)
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/install/cmake_uninstall.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+        IMMEDIATE @ONLY)
+
+    add_custom_target(uninstall
+        COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+endif()
+
+
 # Packaging stuff:
 ## Common:
 set (CPACK_PACKAGE_VERSION_MAJOR "${pwsafe_VERSION_MAJOR}")
@@ -470,7 +482,7 @@ endif (${LSB_RELEASE_ID_SHORT} STREQUAL "Debian")
 
 if (${LSB_RELEASE_ID_SHORT} STREQUAL "LinuxMint")
   ## Debian-specific:
-  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), libuuid1 (>= 2.17.2-0ubuntu1), libxtst6 (>= 2:1.1.0-2), libxerces-c3.1 (>= 3.1.0-1)")
+  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), libuuid1 (>= 2.17.2-0ubuntu1), libxtst6 (>= 2:1.1.0-2), libxerces-c3.2 (>= 3.1.0-1)")
 endif (${LSB_RELEASE_ID_SHORT} STREQUAL "LinuxMint")
 
 set (CPACK_DEBIAN_PACKAGE_DESCRIPTION "Password Safe is a password database utility. \n Like many other such  products, commercial and otherwise,\n  it stores your passwords in an encrypted file.")
