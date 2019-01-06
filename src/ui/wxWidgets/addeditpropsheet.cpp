@@ -301,7 +301,7 @@ void AddEditPropSheet::CreateControls()
 
   itemBoxSizer3->Add(m_BasicFGSizer, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   wxStaticText* itemStaticText6 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Group:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicFGSizer->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicFGSizer->Add(itemStaticText6, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString m_groupCtrlStrings;
   m_groupCtrl = new wxComboBox( m_BasicPanel, ID_COMBOBOX_GROUP, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_groupCtrlStrings, wxCB_DROPDOWN );
@@ -309,21 +309,21 @@ void AddEditPropSheet::CreateControls()
   m_BasicFGSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   wxStaticText* itemStaticText9 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicFGSizer->Add(itemStaticText9, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicFGSizer->Add(itemStaticText9, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_TITLE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemTextCtrl10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   m_BasicFGSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   wxStaticText* itemStaticText12 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicFGSizer->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicFGSizer->Add(itemStaticText12, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_UsernameCtrl = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_USERNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(m_UsernameCtrl , 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   m_BasicFGSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   wxStaticText* itemStaticText15 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Password:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicFGSizer->Add(itemStaticText15, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicFGSizer->Add(itemStaticText15, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_PasswordCtrl = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_PASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(m_PasswordCtrl, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -338,14 +338,14 @@ void AddEditPropSheet::CreateControls()
   itemBoxSizer17->Add(itemButton21, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 10);
 
   wxStaticText* itemStaticText22 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Confirm:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicFGSizer->Add(itemStaticText22, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicFGSizer->Add(itemStaticText22, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_Password2Ctrl = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_PASSWORD2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
   m_BasicFGSizer->Add(m_Password2Ctrl, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   m_BasicFGSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   wxStaticText* itemStaticText25 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("URL:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicFGSizer->Add(itemStaticText25, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicFGSizer->Add(itemStaticText25, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl26 = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_URL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemTextCtrl26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -356,8 +356,8 @@ void AddEditPropSheet::CreateControls()
   wxButton* itemButton29 = new wxButton( m_BasicPanel, ID_GO_BTN, _("Go"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer27->Add(itemButton29, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 20);
 
-  wxStaticText* itemStaticText30 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("email:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicFGSizer->Add(itemStaticText30, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticText* itemStaticText30 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("EMail:"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicFGSizer->Add(itemStaticText30, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl31 = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_EMAIL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicFGSizer->Add(itemTextCtrl31, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -371,8 +371,8 @@ void AddEditPropSheet::CreateControls()
   auto *itemBoxSizer35 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer3->Add(itemBoxSizer35, 1, wxGROW|wxALL, 5);
   wxStaticText* itemStaticText36 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Notes:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer35->Add(itemStaticText36, 0, wxALIGN_TOP|wxALL, 5);
   itemBoxSizer35->Add(27, 13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer35->Add(itemStaticText36, 0, wxALIGN_RIGHT|wxALIGN_TOP|wxALL, 5);
 
   m_noteTX = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_NOTES, wxEmptyString, wxDefaultPosition, wxSize(-1, m_BasicPanel->ConvertDialogToPixels(wxSize(-1, 50)).y), wxTE_MULTILINE );
   itemBoxSizer35->Add(m_noteTX, 5, wxGROW|wxALL, 3);
@@ -390,27 +390,27 @@ void AddEditPropSheet::CreateControls()
   auto *itemFlexGridSizer40 = new wxFlexGridSizer(0, 2, 0, 0);
   itemBoxSizer39->Add(itemFlexGridSizer40, 0, wxGROW|wxALL, 5);
   wxStaticText* itemStaticText41 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Autotype:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemFlexGridSizer40->Add(itemStaticText41, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemFlexGridSizer40->Add(itemStaticText41, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl42 = new wxTextCtrl( m_AdditionalPanel, ID_TEXTCTRL_AUTOTYPE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer40->Add(itemTextCtrl42, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText43 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Run Cmd:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemFlexGridSizer40->Add(itemStaticText43, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemFlexGridSizer40->Add(itemStaticText43, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl44 = new wxTextCtrl( m_AdditionalPanel, ID_TEXTCTRL_RUN_CMD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer40->Add(itemTextCtrl44, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText45 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Double-Click\nAction:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemFlexGridSizer40->Add(itemStaticText45, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticText* itemStaticText45 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Double-Click Action:"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemFlexGridSizer40->Add(itemStaticText45, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString m_DCAcomboBoxStrings;
   setupDCAStrings(m_DCAcomboBoxStrings);
   m_DCAcomboBox = new wxComboBox( m_AdditionalPanel, ID_COMBOBOX_DBC_ACTION, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_DCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText47 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Shift-Double-Click\nAction:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemFlexGridSizer40->Add(itemStaticText47, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticText* itemStaticText47 = new wxStaticText( m_AdditionalPanel, wxID_STATIC, _("Shift-Double-Click Action:"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemFlexGridSizer40->Add(itemStaticText47, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString m_SDCAcomboBoxStrings;
   setupDCAStrings(m_SDCAcomboBoxStrings);
