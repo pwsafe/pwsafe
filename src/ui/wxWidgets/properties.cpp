@@ -286,49 +286,49 @@ void CProperties::CreateControls()
 
   auto itemStaticText6 = new wxStaticText( this, wxID_STATIC, _("Database format:"), wxDefaultPosition, wxDefaultSize, 0 );
   auto dbFormatText = new wxStaticText( this, wxID_DATABASEFORMAT, wxT("9.99"), wxDefaultPosition, wxDefaultSize, 0 );
-  flexGridSizer->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(itemStaticText6, 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(dbFormatText,    1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   auto itemStaticText7 = new wxStaticText( this, wxID_STATIC, _("Number of Groups:"), wxDefaultPosition, wxDefaultSize, 0 );
   auto numGroupsText = new wxStaticText( this, wxID_NUMGROUPS, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
-  flexGridSizer->Add(itemStaticText7, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(itemStaticText7, 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(numGroupsText  , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   auto itemStaticText8 = new wxStaticText( this, wxID_STATIC, _("Number of Entries:"), wxDefaultPosition, wxDefaultSize, 0 );
   auto entriesText = new wxStaticText( this, wxID_NUMENTRIES, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
-  flexGridSizer->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(itemStaticText8, 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(entriesText    , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   auto itemStaticText14 = new wxStaticText( this, wxID_STATIC, _("Number of Attachments:"), wxDefaultPosition, wxDefaultSize, 0 );
   auto attachmentsText = new wxStaticText( this, wxID_NUMATTACHMENTS, wxT("999"), wxDefaultPosition, wxDefaultSize, 0 );
-  flexGridSizer->Add(itemStaticText14, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(itemStaticText14, 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(attachmentsText , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   auto itemStaticText9 = new wxStaticText( this, wxID_STATIC, _("Last saved by:"), wxDefaultPosition, wxDefaultSize, 0 );
   auto lastSavedUserText = new wxStaticText( this, wxID_WHOLASTSAVED, wxT("user on host"), wxDefaultPosition, wxDefaultSize, 0 );
-  flexGridSizer->Add(itemStaticText9  , 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(itemStaticText9  , 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(lastSavedUserText, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   auto itemStaticText10 = new wxStaticText( this, wxID_STATIC, _("Last saved on:"), wxDefaultPosition, wxDefaultSize, 0 );
   auto lastSavedDateText = new wxStaticText( this, wxID_WHENLASTSAVED, wxT("dd.mm.yyyy"), wxDefaultPosition, wxDefaultSize, 0 );
-  flexGridSizer->Add(itemStaticText10 , 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(itemStaticText10 , 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(lastSavedDateText, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   auto itemStaticText11 = new wxStaticText( this, wxID_STATIC, _("Using application:"), wxDefaultPosition, wxDefaultSize, 0 );
   auto lastSavedAppText = new wxStaticText( this, wxID_WHATLASTSAVED, wxT("application & version"), wxDefaultPosition, wxDefaultSize, 0 );
-  flexGridSizer->Add(itemStaticText11, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(itemStaticText11, 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(lastSavedAppText, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   auto itemStaticText15 = new wxStaticText( this, wxID_STATIC, _("Master Password last set on:"), wxDefaultPosition, wxDefaultSize, 0 );
   auto lastChangedPwdDateText = new wxStaticText( this, wxID_PWDLASTCHANGED, wxT("dd.mm.yyyy"), wxDefaultPosition, wxDefaultSize, 0 );
-  flexGridSizer->Add(itemStaticText15      , 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(itemStaticText15      , 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(lastChangedPwdDateText, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
@@ -336,27 +336,27 @@ void CProperties::CreateControls()
   auto uuidText = new wxStaticText( this, wxID_FILEUUID,
                                             wxT("12345678-90AB-CDEF-1234-567890ABCDEF"), // need to use different digits/letters to correctly calculate size because of kerning
                                             wxDefaultPosition, wxDefaultSize, 0 );
-  flexGridSizer->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(itemStaticText12, 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(uuidText        , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   auto itemStaticText13 = new wxStaticText( this, wxID_STATIC, _("Unknown fields:"), wxDefaultPosition, wxDefaultSize, 0 );
   auto unknownFieldsText = new wxStaticText( this, wxID_UNKNOWFIELDS, wxT("x"), wxDefaultPosition, wxDefaultSize, 0 );
-  flexGridSizer->Add(itemStaticText13 , 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(itemStaticText13 , 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(unknownFieldsText, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   flexGridSizer->AddStretchSpacer(); // Item for 3rd column of wxFlexGridSizer
 
   auto itemStaticText16 = new wxStaticText( this, wxID_STATIC, _("Name:"), wxDefaultPosition, wxDefaultSize, 0 );
   auto dbNameText = new wxStaticText( this, wxID_DBNAME, wxT("database name"), wxDefaultPosition, wxDefaultSize, wxST_ELLIPSIZE_END );
   auto onEditNameButton = new wxButton( this, wxID_CHANGE_NAME, wxT("..."), wxDefaultPosition, wxSize(35, 25), 0 );
-  flexGridSizer->Add(itemStaticText16, 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(itemStaticText16, 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(dbNameText      , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   flexGridSizer->Add(onEditNameButton, 0, wxALIGN_LEFT|wxALL         , 5); // Item for 3rd column of wxFlexGridSizer
 
   auto itemStaticText17 = new wxStaticText( this, wxID_STATIC, _("Description:"), wxDefaultPosition, wxDefaultSize, 0 );
   auto dbDescriptionText = new wxStaticText( this, wxID_DBDESCRIPTION, wxT("database description\n\n"), wxDefaultPosition, wxDefaultSize, wxST_ELLIPSIZE_END );
   auto onEditDescriptionButton = new wxButton( this, wxID_CHANGE_DESCRIPTION, wxT("..."), wxDefaultPosition, wxSize(35, 25), 0 );
-  flexGridSizer->Add(itemStaticText17       , 0, wxALIGN_LEFT|wxALL         , 5);
+  flexGridSizer->Add(itemStaticText17       , 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(dbDescriptionText      , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   flexGridSizer->Add(onEditDescriptionButton, 0, wxALIGN_LEFT|wxALL         , 5); // Item for 3rd column of wxFlexGridSizer
 
