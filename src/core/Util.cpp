@@ -412,7 +412,7 @@ size_t PWSUtil::strLength(const LPCTSTR str)
   return _tcslen(str);
 }
 
-const TCHAR *PWSUtil::UNKNOWN_XML_TIME_STR = _T("1970-01-01 00:00:00");
+const TCHAR *PWSUtil::UNKNOWN_XML_TIME_STR = _T("1970-01-01T00:00:00");
 const TCHAR *PWSUtil::UNKNOWN_ASC_TIME_STR = _T("Unknown");
 
 StringX PWSUtil::ConvertToDateTimeString(const time_t &t, TMC result_format)
