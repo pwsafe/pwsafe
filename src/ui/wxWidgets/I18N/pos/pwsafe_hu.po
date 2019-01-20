@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: pwsafe\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-06 15:26+0100\n"
-"PO-Revision-Date: 2019-01-12 16:11+0100\n"
+"PO-Revision-Date: 2019-01-20 17:13+0100\n"
 "Last-Translator: Attila Rajmund Nohl <attila.r.nohl@gmail.com>\n"
 "Language-Team: NAR <attila.r.nohl@gmail.com>\n"
 "Language: hu\n"
@@ -262,9 +262,8 @@ msgid "&Plain Text..."
 msgstr "&Egyszerű szöveg..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:456
-#, fuzzy
 msgid "&KeePass..."
-msgstr "KeePass V1 CSV Fájl..."
+msgstr "&KeePass..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:457
 msgid "Import &From"
@@ -1727,15 +1726,15 @@ msgstr "Jelszó megjelenítéséhez használt betűtípus"
 
 #: ../../../ui/wxWidgets/YubiMixin.cpp:32
 msgid "<- Click on button to the left"
-msgstr ""
+msgstr "<- Kattintson a baloldali gombra"
 
 #: ../../../ui/wxWidgets/YubiMixin.cpp:33
 msgid "Now touch your YubiKey's button"
-msgstr ""
+msgstr "Érintse most meg a Yubikey gombját"
 
 #: ../../../ui/wxWidgets/YubiMixin.cpp:158
 msgid "Timeout - please try again"
-msgstr ""
+msgstr "Időtúllépés - kérem próbálja újra"
 
 #: ../../../ui/wxWidgets/YubiMixin.cpp:161
 msgid "Error: Bad response from YubiKey"
@@ -1743,7 +1742,7 @@ msgstr "Hiba: a Yubikey hibás választ adott"
 
 #: ../../../ui/wxWidgets/YubiMixin.cpp:166
 msgid "Error: Unconfigured YubiKey?"
-msgstr ""
+msgstr "Hiba: konfigurálatlan Yubikey?"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:242
 msgid "Save database immediately after any change"
@@ -2365,7 +2364,7 @@ msgstr "Megerősítés:"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:271
 msgid "The old safe combination is not correct"
-msgstr ""
+msgstr "A régi széfkombináció hibás"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:275
 msgid "Cannot verify old safe combination - file gone?"
@@ -2393,10 +2392,11 @@ msgstr "Helytelen YubiKey széfkombináció"
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:349
 msgid "Enter new safe combination (if any) and click on bottom Yubikey button"
 msgstr ""
+"Írja be az új széfkombinációt (ha van) és kattintson a lenti Yubikey gombra"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:372
 msgid "Please confirm existing combination"
-msgstr ""
+msgstr "Kérem erősítse meg a jelenlegi kombinációt"
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:389
 msgid "Current safe combination incorrect"
@@ -2474,11 +2474,8 @@ msgid "Please enter the key and verify it."
 msgstr "Kérem adja meg a kulcsot és ellenőrizze."
 
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:279
-#, fuzzy
 msgid "Please try another"
-msgstr ""
-"\n"
-"Próbáljon másikat"
+msgstr "Kérem próbáljon másikat"
 
 #: ../../../ui/wxWidgets/wxutils.cpp:65
 msgid ""
@@ -2496,9 +2493,8 @@ msgid "synchronize"
 msgstr "szinkronizálva"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:222
-#, fuzzy
 msgid "Synchronize another database with currently open database"
-msgstr "Ennek az adatbázisnak az összefűzése az aktuálissal:"
+msgstr "Egy másik adatbázis szinkronizálása a jelenleg megnyitott adatbázissal"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:350
 msgid "Introduction"
@@ -2509,6 +2505,9 @@ msgid ""
 "Synchronizing with another database will update the entries in your\n"
 "database with matching entries from the other database."
 msgstr ""
+"A másik adatbázissal való szinkronizáció során az Ön adatbázisában levő "
+"bejegyzések\n"
+"frissülni fognak a másik adatbázisból származó egyező bejegyzésekkel"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:357
 msgid "More Info"
@@ -2549,7 +2548,6 @@ msgstr ""
 "Kérem válassza ki az aktuális adatbázissal szinkronizálandó adatbázist \""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:383
-#, fuzzy
 msgid "Please Choose a Database to Synchronize with current database"
 msgstr "Kérem válassza ki az aktuális adatbázissal szinkronizálandó adatbázist"
 
@@ -2583,11 +2581,8 @@ msgid "Following fields in matching entries will be updated:"
 msgstr ""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:489
-#, fuzzy
 msgid "Following fields will not be updated:"
-msgstr ""
-"\n"
-"Az alábbi %ls %ls módosítva:"
+msgstr "Az alábbi mezők nem fognak módosulni:"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:508
 #, fuzzy
@@ -2617,23 +2612,21 @@ msgid "%d %ls updated"
 msgstr ""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:589
-#, fuzzy
 msgid "Synchronization completed successfully"
-msgstr "Sikeresen befejezve"
+msgstr "A szinkronizáció sikeresen befejeződött"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:605
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%ls\n"
 "\n"
 "File corrupt or truncated!\n"
 "Data may have been lost or modified."
 msgstr ""
-"%s\n"
+"%ls\n"
 "\n"
 "A fájl megsérült vagy a tartalma csonkolva van!\n"
-"Adat veszhetett el vagy módosulhatott.\n"
-"Ennek ellenére folytatja?"
+"Adat veszhetett el vagy módosulhatott."
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:607
 #, c-format
@@ -2658,11 +2651,9 @@ msgid "Synchronize"
 msgstr ""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:641
-#, fuzzy, c-format
+#, c-format
 msgid "Synchronizing from database: %ls\n"
-msgstr ""
-"\n"
-"Adatbázisok Szinkronizálása"
+msgstr "Szinkronizáció adatbázisból: %ls\n"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:644
 msgid "synchronized"
@@ -2745,7 +2736,7 @@ msgstr "Készítés dátuma:"
 
 #: ../../../ui/wxWidgets/about.cpp:154
 msgid "Latest version? Click "
-msgstr ""
+msgstr "Legfrissebb verzió? Kattintson"
 
 #: ../../../ui/wxWidgets/about.cpp:157
 #, fuzzy
@@ -2819,21 +2810,19 @@ msgstr "Bezárás megerősítése párbeszédablak"
 
 #: ../../../ui/wxWidgets/about.cpp:505
 msgid "Trying to contact server..."
-msgstr ""
+msgstr "Kapcsolódás a kiszolgálóhoz..."
 
 #: ../../../ui/wxWidgets/about.cpp:558
 msgid "Couldn't contact server."
 msgstr "Nem sikerült kapcsolódni a kiszolgálóhoz."
 
 #: ../../../ui/wxWidgets/about.cpp:563
-#, fuzzy
 msgid "This is the latest release!"
-msgstr "%sEz a legfrisebb verzió!%s"
+msgstr "Ez a legfrissebb verzió!"
 
 #: ../../../ui/wxWidgets/about.cpp:568
-#, fuzzy
 msgid "Current version: "
-msgstr "Aktuális bejegyzés"
+msgstr "Jelenlegi verzió: "
 
 #: ../../../ui/wxWidgets/about.cpp:570
 msgid "Latest version:\t"
@@ -2962,7 +2951,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/PWStree.cpp:672
 msgid "Dots are not allowed in group names"
-msgstr ""
+msgstr "Csoport nevében nem szerepelhet pont"
 
 #: ../../../ui/wxWidgets/PWStree.cpp:672
 msgid "Invalid Character"
@@ -3182,11 +3171,11 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/mainEdit.cpp:751
 msgid "Unable to send email"
-msgstr ""
+msgstr "Az email elküldése nem lehetséges"
 
 #: ../../../ui/wxWidgets/mainEdit.cpp:751
 msgid "Unable to display URL"
-msgstr ""
+msgstr "Az URL megjelenítése nem lehetséges"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:269
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:867
@@ -3453,7 +3442,7 @@ msgstr "nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és felhasználónév
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1568
 #, c-format
 msgid " (every %d days)"
-msgstr ""
+msgstr " (%d naponta)"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1631
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
@@ -3473,9 +3462,8 @@ msgid "Compare current database with another database"
 msgstr "Aktuális adatbázis összehasonlítása másik adatbázissal"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:138
-#, fuzzy
 msgid "Conflicting items"
-msgstr "Erősítse meg a tételek törlését"
+msgstr "Ütköző tételek"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:142
 #, fuzzy
@@ -3489,9 +3477,8 @@ msgstr ""
 "Bejegyzések, amelyek csak az összehasonlítási adatbázisban (%s) szerepelnek:"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:152
-#, fuzzy
 msgid "Identical items"
-msgstr "%d elem"
+msgstr "Megegyező tételek"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:202
 #, fuzzy
@@ -3508,9 +3495,8 @@ msgid "Password Database"
 msgstr "Jelszó adatbázis"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:216
-#, fuzzy
 msgid "Select a PasswordSafe database to compare"
-msgstr "Utoljára megnyitott adatbázisok"
+msgstr "Válasszon egy összehasonlítandó PasswordSafe adatbázist"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:232
 msgid "Advanced Options..."
@@ -3589,9 +3575,8 @@ msgid "&Copy this "
 msgstr "&Másolás"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:722
-#, fuzzy
 msgid "Current safe was opened read-only"
-msgstr "Megnyitás csak olvasásra"
+msgstr "A jelenlegi széf csak olvasásra lett megnyitva"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.h:106
 #: ../../../ui/wxWidgets/addeditpropsheet.h:112
@@ -3607,9 +3592,8 @@ msgid "View Entry"
 msgstr "Bejegyzés megtekintése"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.h:114
-#, fuzzy
 msgid "Add, Edit or View Entry"
-msgstr "Bejegyzés szerkesztése/&Megtekintése"
+msgstr "Bejegyzés hozzáadása, szerkesztése vagy megtekintése"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.h:51
 msgid "Enter Safe Combination"
@@ -3617,9 +3601,8 @@ msgstr "Adja meg a széf kombinációt"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.h:115
 #: ../../../ui/wxWidgets/wxMessages.h:19 ../../../ui/wxWidgets/wxMessages.h:34
-#, fuzzy
 msgid "PasswordSafe"
-msgstr "Password Safe"
+msgstr "PasswordSafe"
 
 #: ../../../ui/wxWidgets/properties.h:57
 msgid "Properties"
@@ -3808,6 +3791,39 @@ msgstr "Igen - könnyen olvasható szimbólumok: %ls"
 
 msgid "Yes - Pronounceable Symbols: %ls"
 msgstr "Igen - könnyen kiejthető szimbólumok: %ls"
+
+msgid "Double-Click on entry to Autotype"
+msgstr "Kattintson duplán a bejegyzésen az Autogépeléshez"
+
+msgid "Double-Click on entry to Browse to URL"
+msgstr "Kattintson duplán a bejegyzésen az URL-re navigáláshoz"
+
+msgid "Double-Click on entry to Browse to URL + Autotype"
+msgstr ""
+"Kattintson duplán a bejegyzésen az URL-re navigáláshoz + Autogépeléshez"
+
+msgid "Double-Click on entry to Copy Notes"
+msgstr "Kattintson duplán a bejegyzésen a megjegyzés vágólapra másolásához"
+
+msgid "Double-Click on entry to Copy Password"
+msgstr "Kattintson duplán a bejegyzésen a jelszó vágólapra másolásához"
+
+msgid "Double-Click on entry to Copy Password and Minimize"
+msgstr ""
+"Kattintson duplán a bejegyzésen a jelszó vágólapra másolásához és a kis "
+"mérethez"
+
+msgid "Double-Click on entry to Copy Username"
+msgstr "Kattintson duplán a bejegyzésen a felhasználónév vágólapra másolásához"
+
+msgid "Double-Click on entry to Send Email"
+msgstr "Kattintson duplán a bejegyzésen e-mail küldéséhez"
+
+msgid "Double-Click on entry to View/Edit it"
+msgstr "Kattintson duplán a bejegyzésen annak megtekintéséhez/szerkesztéséhez"
+
+msgid "Double-Click on entry to Run Command"
+msgstr "Kattintson duplán a bejegyzésen parancs futtatásához"
 
 #~ msgid ""
 #~ "\n"
@@ -4627,43 +4643,8 @@ msgstr "Igen - könnyen kiejthető szimbólumok: %ls"
 #~ msgid "Start Report"
 #~ msgstr "Jelentés vége"
 
-#~ msgid "Double-Click on entry to Autotype"
-#~ msgstr "Kattintson duplán a bejegyzésen az Autogépeléshez"
-
-#~ msgid "Double-Click on entry to Browse to URL"
-#~ msgstr "Kattintson duplán a bejegyzésen az URL-re navigáláshoz"
-
-#~ msgid "Double-Click on entry to Browse to URL + Autotype"
-#~ msgstr ""
-#~ "Kattintson duplán a bejegyzésen az URL-re navigáláshoz + Autogépeléshez"
-
 #~ msgid "https://pwsafe.org/"
 #~ msgstr "https://pwsafe.org/"
-
-#~ msgid "Double-Click on entry to Copy Notes"
-#~ msgstr "Kattintson duplán a bejegyzésen a megjegyzés vágólapra másolásához"
-
-#~ msgid "Double-Click on entry to Copy Password"
-#~ msgstr "Kattintson duplán a bejegyzésen a jelszó vágólapra másolásához"
-
-#~ msgid "Double-Click on entry to Copy Password and Minimize"
-#~ msgstr ""
-#~ "Kattintson duplán a bejegyzésen a jelszó vágólapra másolásához és a kis "
-#~ "mérethez"
-
-#~ msgid "Double-Click on entry to Copy Username"
-#~ msgstr ""
-#~ "Kattintson duplán a bejegyzésen a felhasználónév vágólapra másolásához"
-
-#~ msgid "Double-Click on entry to Run Command"
-#~ msgstr "Kattintson duplán a bejegyzésen parancs futtatásához"
-
-#~ msgid "Double-Click on entry to Send Email"
-#~ msgstr "Kattintson duplán a bejegyzésen az e-mail küldéséhez"
-
-#~ msgid "Double-Click on entry to View/Edit it"
-#~ msgstr ""
-#~ "Kattintson duplán a bejegyzésen annak megtekintéséhez/szerkesztéséhez"
 
 #~ msgid "%ls - Sync'd %ls"
 #~ msgstr "%ls - Szinkronizálva %ls"
