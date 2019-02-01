@@ -52,6 +52,7 @@ class PasswordSafeSearch;
 
 ////@begin control identifiers
 #define ID_PASSWORDSAFEFRAME 10001
+#define ID_RECENTSAFES 10440
 #define ID_MENU_CLEAR_MRU 10011
 #define ID_EXPORTMENU 10013
 #define ID_EXPORT2OLD1XFORMAT 10013
