@@ -437,7 +437,25 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu3->Append(wxID_OPEN, _("&Open..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(wxID_CLOSE, _("&Close"), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(ID_LOCK_SAFE, _("&Lock Safe"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu3->AppendSeparator();
+
+  if (wxGetApp().recentDatabases().GetCount() > 0) {
+
+    // Most recently used DBs listed directly on File menu
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::MRUOnFileMenu)) {
+      wxGetApp().recentDatabases().AddFilesToMenu(itemMenu3);
+    }
+    // Most recently used DBs listed as submenu of File menu
+    else {
+      wxMenu* recentSafesMenu = new wxMenu;
+      wxGetApp().recentDatabases().AddFilesToMenu(recentSafesMenu);
+      itemMenu3->AppendSeparator();
+      itemMenu3->Append(ID_RECENTSAFES, _("&Recent Safes..."), recentSafesMenu);
+    }
+  }
+  else {
+    itemMenu3->AppendSeparator();
+  }
+
   itemMenu3->Append(ID_MENU_CLEAR_MRU, _("Clear Recent Safe List"), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
   itemMenu3->Append(wxID_SAVE, _("&Save..."), wxEmptyString, wxITEM_NORMAL);
@@ -1167,6 +1185,7 @@ void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
 
   if (rc == PWScore::SUCCESS)
     m_core.ResumeOnDBNotification();
+    CreateMenubar(); // Recreate the menu with updated list of most recently used DBs
 }
 
 /*!
@@ -2358,6 +2377,7 @@ void PasswordSafeFrame::OnClearRecentHistory(wxCommandEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
   wxGetApp().recentDatabases().Clear();
+  CreateMenubar(); // Recreate the menu with cleared list of most recently used DBs
 }
 
 void PasswordSafeFrame::OnUpdateClearRecentDBHistory(wxUpdateUIEvent& evt)
@@ -2779,20 +2799,25 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
   {
     case PWScore::SUCCESS:
       m_core.ResumeOnDBNotification();
+      CreateMenubar();  // Recreate the menu with updated list of most recently used DBs
       break;
+
+    case PWScore::ALREADY_OPEN:
+      break;            // An already open DB doesn't need to be removed from history
 
     case PWScore::USER_CANCEL:
       //In case the file doesn't exist, user will have to cancel
       //the safe combination entry box.  In that call, fall through
       //to the default case of removing the file from history
       if (pws_os::FileExists(stringT(dbfile)))
-        break;  //file exists.  don't remove it from history
+        break;          // An existing file doesn't need to be removed from history
 
       //fall through
     default:
       wxMessageBox(wxString(_("There was an error loading the database: ")) << dbfile,
                      _("Could not load database"), wxOK|wxICON_ERROR, this);
       db.RemoveFileFromHistory(index);
+      CreateMenubar();  // Update menu so that not existing file doesn't appear on File menu anymore
       break;
   }
 }
