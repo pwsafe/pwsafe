@@ -1183,9 +1183,10 @@ void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
 {
   int rc = DoOpen(_("Please Choose a Database to Open:"));
 
-  if (rc == PWScore::SUCCESS)
+  if (rc == PWScore::SUCCESS) {
     m_core.ResumeOnDBNotification();
     CreateMenubar(); // Recreate the menu with updated list of most recently used DBs
+  }
 }
 
 /*!
