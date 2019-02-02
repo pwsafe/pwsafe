@@ -110,6 +110,7 @@ BEGIN_EVENT_TABLE( COptions, wxPropertySheetDialog )
   EVT_UPDATE_UI(   ID_STATICTEXT_5,    COptions::OnUpdateUI )
   EVT_UPDATE_UI(   ID_SPINCTRL13,      COptions::OnUpdateUI )
   EVT_UPDATE_UI(   ID_STATICTEXT_7,    COptions::OnUpdateUI )
+  EVT_UPDATE_UI(   ID_STATICTEXT_10,   COptions::OnUpdateUI )
 END_EVENT_TABLE()
 
 const wxString BUSuffix[] = {
@@ -680,7 +681,7 @@ void COptions::CreateControls()
 
   auto *itemBoxSizer108 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer106->Add(itemBoxSizer108, 0, wxGROW|wxALL, 5);
-  wxStaticText* itemStaticText109 = new wxStaticText( itemPanel104, wxID_STATIC, _("  Remember last"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText109 = new wxStaticText( itemPanel104, ID_STATICTEXT_10, _("  Remember last"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer108->Add(itemStaticText109, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_sysmaxREitemsSB = new wxSpinCtrl(
@@ -1373,9 +1374,8 @@ void COptions::OnUpdateUI(wxUpdateUIEvent& evt)
   // Tab: "System"
   /////////////////////////////////////////////////////////////////////////////
     case ID_SPINCTRL13:
-      evt.Enable(m_sysusesystrayCB->GetValue());
-      break;
     case ID_STATICTEXT_7:
+    case ID_STATICTEXT_10:
       evt.Enable(m_sysusesystrayCB->GetValue());
       break;
     default:
