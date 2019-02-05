@@ -1,4 +1,4 @@
-Password Safe 3.48.0 Release Dec 2018
+Password Safe 3.49.0 Release ??? 2019
 =====================================
 
 This note describes the new features, fixed bugs and known problems
@@ -13,27 +13,10 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
 
-New Features in 3.48.0
+New Features in 3.49.0
 ======================
-[] Default expiration interval is now configurable via
-Options->Password History, instead of being hardcoded to 90 days.
+[856] Setting the "Copy password to clipboard upon browse" implies copy
+password upon Run command.
 
-Bugs Fixed in 3.48.0
+Bugs Fixed in 3.49.0
 ====================
-[1481] Export subgroups correctly.
-[1480] Fixed typo in English dragbar tooltip texts.
-[1475] Tweak RNG initialization.
-[1473] Installer will not create startup shortcut by default when upgrading.
-[1243] Installer now selects language support for selected installer language.
-
-Bugs Fixed in 3.47.2
-====================
-[1468] Reverted clipboard timed clearing function introduced in
-3.47.0, as this broke the clipboard functionality on some systems.
-
-Bugs Fixed in 3.47.1
-====================
-[] Change clipboard clearing delay from 3 to 30 seconds.
-[1466] Disable Undo/Redo toolbar buttons when opening database (and
-there's nothing to undo/redo).
-[GH474] Resized Properties dialog for non-English texts.

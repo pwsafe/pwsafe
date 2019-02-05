@@ -57,7 +57,7 @@ open('https://github.com/pwsafe/pwsafe/issues/'+ ID +'/',
 
 <body>
 
-<h1 align="center">Password Safe 3.48.0 Release Dec 2018</h1>
+<h1 align="center">Password Safe 3.49.0 Release ??? 2019</h1>
 
 <p>This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -79,13 +79,13 @@ Information about older versions may be found <a href="https://pwsafe.org/histor
 <br>
 <hr>
 
-<h4><a name="V3.48.0New"></a>New Features for V3.48.0</h4>
+<h4><a name="V3.49.0New"></a>New Features for V3.49.0</h4>
 <table>
   <tbody>
     <tr>
-      <td align="center" width="100">&bull</td>
-      <td>Default expiration interval is now configurable via
-        Options->Password History, instead of being hardcoded to 90 days.</td>
+      <td align="center" width="100"><a href="nojs.html" onclick="FR(856);return false;">856</a></td>
+      <td>Setting the "Copy password to clipboard upon browse" implies
+      copy password upon Run command.</td>
     </tr>
   </tbody>
 </table>
@@ -93,28 +93,12 @@ Information about older versions may be found <a href="https://pwsafe.org/histor
 <br>
 <hr>
 
-<h4><a name="V3.48.0BugsFixed"></a>Bugs Fixed in V3.48.0</h4>
+<h4><a name="V3.49.0BugsFixed"></a>Bugs Fixed in V3.49.0</h4>
 <table>
 <tbody>
   <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1481);return false;">1481</a></td>
-    <td>Export subgroups correctly.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1480);return false;">1480</a></td>
-    <td>Fixed typo in English dragbar tooltip texts.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1475);return false;">1475</a></td>
-    <td>Tweak RNG initialization.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1473);return false;">1473</a></td>
-    <td>Installer will not create startup shortcut by default when upgrading.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1243);return false;">1243</a></td>
-    <td>Installer now selects language support for selected installer language.</td>
+    <td align="center" width="100"><a href="nojs.html" onclick="BR(XXX);return false;">XXX</a></td>
+    <td>TBD</td>
   </tr>
 </tbody>
 </table>
@@ -122,157 +106,6 @@ Information about older versions may be found <a href="https://pwsafe.org/histor
 <br>
 <hr>
 
-<h4><a name="V3.47.2BugsFixed"></a>Bugs Fixed in V3.47.2</h4>
-<table>
-<tbody>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1468);return false;">1468</a></td>
-    <td>Reverted clipboard timed clearing function introduced in
-    3.47.0, as this broke the clipboard functionality on some
-    systems.</td>
-  </tr>
-</tbody>
-</table>
-
-<br>
-<hr>
-
-<h4><a name="V3.47.1BugsFixed"></a>Bugs Fixed in V3.47.1</h4>
-<table>
-<tbody>
-  <tr>
-    <td align="center" width="100">&bull</td>
-    <td>Change clipboard clearing delay from 3 to 30 seconds.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1466);return false;">1466</a></td>
-    <td>Disable Undo/Redo toolbar buttons when opening database (and there's nothing to undo/redo).</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="GH(474);return false;">GH575</a></td>
-    <td>Resized Properties dialog for non-English texts.</td>
-  </tr>
-</tbody>
-</table>
-
-<br>
-<hr>
-<h4><a name="V3.47.0New"></a>New Features for V3.47.0</h4>
-<table>
-  <tbody>
-    <tr>
-      <td align="center" width="100"><a href="nojs.html" onclick="FR(862);return false;">862</a></td>
-      <td>Last time the master password was changed is kept and
-      displayed in File->Properties.</td>
-    </tr>
-  </tbody>
-</table>
-
-<br>
-<hr>
-
-<h4><a name="V3.47.0BugsFixed"></a>Bugs Fixed in V3.47.0</h4>
-<table>
-<tbody>
-  <tr>
-    <td align="center" width="100">&bull</td>
-    <td>Clipboard is more secure - cleared 3 seconds after copied data
-    is first pasted.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1465);return false;">1465</a></td>
-    <td>Removed possibility of not setting Yubikey in changed
-    passphrase by mistake.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1453);return false;">1453</a></td>
-    <td>Fixed regression in tooltip display introduced in fix of BR1449.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1448);return false;">1448</a></td>
-    <td>Less confusing behavior when the current safe can't be found upon restore.</td>
-  </tr>
-</tbody>
-</table>
-
-<br>
-<hr>
-
-<h4><a name="V3.46.0BugsFixed"></a>Bugs Fixed in V3.46.0</h4>
-<table>
-<tbody>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1458);return false;">1458</a></td>
-    <td>Fixed compatability issue between Unix and Windows versions when master password had non-ASCII characters.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1457);return false;">1457</a></td>
-    <td>Protect Entry / Group now works when language isn't English.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1456);return false;">1456</a></td>
-    <td>Shortcut entries no longer use default username if base entry's
-      username is empty.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1455);return false;">1455</a></td>
-    <td>Ctrl+Enter shortcut now works correctly in read-only mode.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100">
-      <a href="nojs.html" onclick="BR(1454);return false;">1454</a>,
-      <a href="nojs.html" onclick="GH(411);return false;">G411</a>
-    </td>
-    <td> No longer thinks security preference has changed when it hasn't.</td>
-  </tr>
-</tbody>
-</table>
-
-<br>
-<hr>
-
-<h4><a name="V3.45.0BugsFixed"></a>Bugs Fixed in V3.45.0</h4>
-<table>
-<tbody>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="GH(360);return false;">G360</a></td>
-    <td>(a) System tray icon starts out brown, not green. <br/>
-      (b) Remove system tray icon when cancelling password entry.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="GH(357);return false;">G357</a></td>
-    <td>Russian installation text displays correctly.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1450);return false;">1450</a></td>
-    <td>Can now generate passwords longer than 94 characters.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1449);return false;">1449</a></td>
-    <td>Cleanup statusbar tooltip text.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1445);return false;">1445</a></td>
-    <td>Fixed crash on autotype with malformed text.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1444);return false;">1444</a></td>
-    <td>Fixed crash in display of Password Policies in Czech.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1442);return false;">1442</a></td>
-    <td>Fixed regression: -s flag (silent opening) works again.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1441);return false;">1441</a></td>
-    <td>Changing unlock difficulty now enables save (regression), supported under undo/redo.</td>
-  </tr>
-  <tr>
-    <td align="center" width="100"><a href="nojs.html" onclick="BR(1192);return false;">1192</a></td>
-    <td>Don't revert to original r-o when locking with an edit box open.</td>
-  </tr>
-</tbody>
-</table>
 
 <br>
 <hr>

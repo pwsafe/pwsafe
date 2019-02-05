@@ -2308,6 +2308,12 @@ void DboxMain::OnRunCommand()
       sx_Expanded_ES = sxAltBrowser + StringX(L" ") + sx_Expanded_ES;
   }
 
+  // FR856 - Copy Password to Clipboard on Run-Command When copy-on-browse set.
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
+    SetClipboardData(sx_pswd);
+    UpdateLastClipboardAction(CItemData::PASSWORD);
+  }
+  
   bool rc = m_runner.runcmd(sx_Expanded_ES, !m_sxAutoType.empty());
   if (!rc) {
     m_bDoAutoType = false;
