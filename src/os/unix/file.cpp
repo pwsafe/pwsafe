@@ -203,6 +203,80 @@ static stringT GetLockFileName(const stringT &filename)
   return retval;
 }
 
+/**
+ * Removes an orphan lock file (*.plk) for the database currently being opened.
+ * 
+ * A lock file contains the information "user@machine:nnnnnnnn".
+ * - user:      Users account name that was used to open a database.
+ * - machine:   The name of the host at which a database was opened.
+ * - nnnnnnnn:  The id of the application's process that opened a database.
+ * 
+ * The lock file is only removed if it has previously been opened by 
+ * the same user and on the same computer. In addition, there must be 
+ * no process with the same process id on the computer.
+ * 
+ * @param filename database filename
+ * @param lockFileHandle lock file handle
+ */
+void pws_os::TryUnlockFile(const stringT &filename, HANDLE &lockFileHandle)
+{
+  // Provides characters from the beginning of str up to given delimiter
+  // and removes them finally from str.
+  const auto getStringToken = [](stringT &str, const stringT &delimiter) -> stringT {
+    stringT token;
+    size_t pos = str.find(delimiter);
+    if (pos != std::string::npos) {
+      token = str.substr(0, pos);
+      str.erase(0, pos + delimiter.length());
+    }
+    return token;
+  };
+
+  const stringT lockFilename = GetLockFileName(filename);
+
+  size_t mbsSize = wcstombs(nullptr, lockFilename.c_str(), lockFilename.length()) + 1;
+  std::unique_ptr<char[]> mbsFilename(new char[mbsSize]);
+  wcstombs(mbsFilename.get(), lockFilename.c_str(), mbsSize);
+
+  int fileHandle = open(mbsFilename.get(), O_RDONLY, (S_IREAD | S_IWRITE));
+
+  // If not failed to open the file read locker data ("user@machine:nnnnnnnn") from it
+  if (fileHandle != -1) {
+
+    StringXStream lockerStream;
+    if (PWSUtil::loadFile(lockFilename.c_str(), lockerStream)) {
+      stringT locker = stringx2std(lockerStream.str());
+
+      const auto plkUser = getStringToken(locker, _T("@"));                 // input -> "user@machine:nnnnnnnn"
+      const auto plkHost = getStringToken(locker, _T(":"));                 // input -> "machine:nnnnnnnn"
+
+      try {
+        int plkPid  = std::stoi(locker);                                    // input -> "nnnnnnnn"
+
+        if (
+          (plkUser == pws_os::getusername()) &&                             // Is it the same user...
+          (plkHost == pws_os::gethostname()) &&                             // at the same machine...
+          (pws_os::processExists(plkPid) == ProcessCheckResult::NOT_FOUND)  // with a newly started application instance?
+        ) {
+          UnlockFile(filename, lockFileHandle);
+          pws_os::Trace(
+            L"Orphan .plk file (%ls) removed of user= %ls @ host= %ls and process= %d", 
+            lockFilename.c_str(), plkUser.c_str(), plkHost.c_str(), plkPid
+          );
+        }
+      }
+      catch (const std::invalid_argument& ex) {
+        pws_os::Trace(L"pws_os::TryUnlockFile - Invalid argument passed to std::stoi: %ls", ex.what());
+      }
+      catch (const std::out_of_range& ex) {
+        pws_os::Trace(L"pws_os::TryUnlockFile - Out of Range error at std::stoi: %ls", ex.what());
+      }
+    }
+
+    close(fileHandle);
+  }
+}
+
 bool pws_os::LockFile(const stringT &filename, stringT &locker,
                       HANDLE &lockFileHandle)
 {

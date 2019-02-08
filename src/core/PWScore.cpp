@@ -3255,6 +3255,12 @@ void PWScore::UpdateWizard(const stringT &s)
 
 bool PWScore::LockFile(const stringT &filename, stringT &locker)
 {
+  // If there is a matching plk file to the database (filename) 
+  // we will try to remove it if it meets the criteria for removal.
+  if (pws_os::IsLockedFile(filename)) {
+    pws_os::TryUnlockFile(filename, m_lockFileHandle);
+  }
+
   return pws_os::LockFile(filename, locker,
                           m_lockFileHandle);
 }
