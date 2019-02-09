@@ -29,6 +29,7 @@ namespace pws_os {
                        HANDLE &lockFileHandle);
   extern bool IsLockedFile(const stringT &filename);
   extern void UnlockFile(const stringT &filename, HANDLE &lockFileHandle);
+  extern void TryUnlockFile(const stringT &filename, HANDLE &lockFileHandle);
 
   extern std::FILE *FOpen(const stringT &filename, const TCHAR *mode);
   extern int FClose(std::FILE *fd, const bool &bIsWrite);
