@@ -204,16 +204,17 @@ static stringT GetLockFileName(const stringT &filename)
 }
 
 /**
- * Removes an orphan lock file (*.plk) for the database currently being opened.
+ * Removes an orphan lock file (*.plk) for the file currently being opened.
  * 
  * A lock file contains the information "user@machine:nnnnnnnn".
  * - user:      Users account name that was used to open a database.
  * - machine:   The name of the host at which a database was opened.
- * - nnnnnnnn:  The id of the application's process that opened a database.
+ * - nnnnnnnn:  The process id of the application that created the lock file.
  * 
- * The lock file is only removed if it has previously been opened by 
- * the same user and on the same computer. In addition, there must be 
- * no process with the same process id on the computer.
+ * The lock file is removed if and only if all of the following conditions are true:
+ * 1. user matches current user
+ * 2. machine matches current machine
+ * 3. process that created the file no longer exists
  * 
  * @param filename database filename
  * @param lockFileHandle lock file handle
@@ -282,6 +283,13 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
 {
   UNREFERENCED_PARAMETER(lockFileHandle);
   const stringT lock_filename = GetLockFileName(filename);
+
+  // If there is a matching plk file to the database (filename) 
+  // we will try to remove it if it meets the criteria for removal.
+  if (pws_os::IsLockedFile(filename)) {
+    pws_os::TryUnlockFile(filename, lockFileHandle);
+  }
+  
   bool retval = false;
   size_t lfs = wcstombs(nullptr, lock_filename.c_str(), lock_filename.length()) + 1;
   char *lfn = new char[lfs];
