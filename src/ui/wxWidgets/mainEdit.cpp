@@ -819,10 +819,88 @@ bool PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
 
 void PasswordSafeFrame::DoRun(CItemData& item)
 {
-  const StringX runee = item.GetRunCommand();
+  const StringX runee   = item.GetRunCommand();
+  const CItemData *pci  = &item;
+  const CItemData *pbci = pci->IsDependent() ? m_core.GetBaseEntry(pci) : nullptr;
+
+  StringX group, title, user, password, lastpassword, notes, url, email, autotype, runcommand;
+
+  if (!PWSAuxParse::GetEffectiveValues(pci, pbci, 
+                                       group, title, 
+                                       user, password, lastpassword, 
+                                       notes, url, email, 
+                                       autotype, runcommand)) {
+    return;
+  }
+
+  if (runcommand.empty()) {
+    return;
+  }
+
+  stringT errorMessage;
+  StringX::size_type columnPosition;
+  bool isSpecialUrl, doAutoType;
+  StringX expandedAutoType;
+
+  StringX expandedES(PWSAuxParse::GetExpandedString(runcommand,
+                                                    m_core.GetCurFile(), pci, pbci,
+                                                    doAutoType, expandedAutoType,
+                                                    errorMessage, columnPosition, isSpecialUrl));
+
+  if (!errorMessage.empty()) {
+    wxMessageBox(
+      wxString::Format(_("Error at column %d:\n\n%s"), (int)columnPosition, errorMessage.c_str()), 
+      _("Error parsing Run Command"), 
+      wxOK|wxICON_ERROR, this);
+
+    return;
+  }
+
+  pws_os::CUUID uuid = pci->GetUUID();
+
+  std::vector<size_t> vactionverboffsets;
+
+  // if no autotype value in run command's $a(value), start with item's (bug #1078)
+  if (expandedAutoType.empty()) {
+    expandedAutoType = pci->GetAutoType();
+  }
+
+  expandedAutoType = PWSAuxParse::GetAutoTypeString(expandedAutoType,
+                                                    group, title, user,
+                                                    password, lastpassword,
+                                                    notes, url, email,
+                                                    vactionverboffsets);
+
+  // Now honour presence of [alt], {alt} or [ssh] in the url if present
+  // in the RunCommand field.  Note: they are all treated the same (unlike
+  // in 'Browse to'.
+  StringX altBrowser(PWSprefs::GetInstance()->GetPref(PWSprefs::AltBrowser));
+
+  if (isSpecialUrl && !altBrowser.empty()) {
+    StringX cmdLineParams(PWSprefs::GetInstance()->GetPref(PWSprefs::AltBrowserCmdLineParms));
+
+    if (altBrowser[0] != L'\'' && altBrowser[0] != L'"') {
+      altBrowser = L"\"" + altBrowser + L"\"";
+    }
+    if (!cmdLineParams.empty()) {
+      expandedES = altBrowser + StringX(L" ") + cmdLineParams + StringX(L" ") + expandedES;
+    }
+    else {
+      expandedES = altBrowser + StringX(L" ") + expandedES;
+    }
+  }
+
+  // FR856 - Copy Password to Clipboard on Run-Command When copy-on-browse set.
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
+    PWSclipboard::GetInstance()->SetData(password);
+    // TODO: UpdateLastClipboardAction(CItemData::PASSWORD);
+  }
+
   PWSRun runner;
-  if (runner.runcmd(runee, false))
+
+  if (runner.runcmd(expandedES, !expandedAutoType.empty())) {
     UpdateAccessTime(item);
+  }
 }
 
 void PasswordSafeFrame::DoEmail(CItemData& item )
