@@ -92,7 +92,7 @@ stringT pws_os::getprocessid()
  * @param pid the id of the process that should be checked for existance
  * @return ProcessCheckResult::FOUND if a process with the given pid exists, 
  *         ProcessCheckResult::NOT_FOUND if it doesn't exists and 
- *         ProcessCheckResult::ERROR on error
+ *         ProcessCheckResult::ERROR_ on error
  * @see http://man7.org/linux/man-pages/man2/kill.2.html
  */
 pws_os::ProcessCheckResult pws_os::processExists(int pid)
@@ -104,13 +104,12 @@ pws_os::ProcessCheckResult pws_os::processExists(int pid)
   if (pid > INIT_PID) {
     if (kill(pid, NO_SIGNAL) == NO_ERROR) {
       return ProcessCheckResult::FOUND;
-    }
-    else {
+    } else {
       if (errno == ESRCH) {
         return ProcessCheckResult::NOT_FOUND;
       }
     }
   }
 
-  return ProcessCheckResult::ERROR;
+  return ProcessCheckResult::ERROR_;
 }

@@ -10,7 +10,7 @@
 #include "typedefs.h"
 
 namespace pws_os {
-  enum class ProcessCheckResult { ERROR, FOUND, NOT_FOUND };
+  enum class ProcessCheckResult { ERROR_, FOUND, NOT_FOUND }; // ERROR is #defined by Windows 
 
   /**
    * getenv return environment value associated with env, empty string if
