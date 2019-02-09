@@ -10,6 +10,8 @@
 #include "typedefs.h"
 
 namespace pws_os {
+  enum class ProcessCheckResult { ERROR, FOUND, NOT_FOUND };
+
   /**
    * getenv return environment value associated with env, empty string if
    * not defined. if is_path is true, the returned value will end with a path
@@ -20,6 +22,7 @@ namespace pws_os {
   extern stringT getusername(); // returns name of current user
   extern stringT gethostname(); // returns name of current machine
   extern stringT getprocessid();
+  extern ProcessCheckResult processExists(int pid);
 
 #if defined(_MSC_VER)
   // Windows only - MFC or wxWidgets
