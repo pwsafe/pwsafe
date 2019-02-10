@@ -33,8 +33,9 @@ class CPWStatusBar : public wxStatusBar
   void Setup()
   {
     const int FIELDS = static_cast<std::underlying_type<Field>::type>(Field::COUNT);
-    const int widths[FIELDS] = { -6, -3, -1, -3, -2, -1 };
+    const int widths[FIELDS] = { -6, -3, -1, -1, -2, -1 };
     SetFieldsCount(FIELDS, widths);
+    SetFont(GetFont().MakeSmaller());
   }
 
   void SetStatusText(const wxString &text, Field field)
