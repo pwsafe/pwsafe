@@ -101,6 +101,7 @@ BEGIN_EVENT_TABLE( COptions, wxPropertySheetDialog )
   EVT_UPDATE_UI(   ID_PWHISTSETMAX,    COptions::OnUpdateUI )
   EVT_UPDATE_UI(   ID_PWHISTCLEAR,     COptions::OnUpdateUI )
 
+  EVT_UPDATE_UI(   ID_CHECKBOX35,      COptions::OnUpdateUI )
   EVT_UPDATE_UI(   ID_CHECKBOX29,      COptions::OnUpdateUI )
   EVT_UPDATE_UI(   ID_SPINCTRL12,      COptions::OnUpdateUI )
   EVT_UPDATE_UI(   ID_STATICTEXT_2,    COptions::OnUpdateUI )
@@ -216,8 +217,8 @@ void COptions::Init()
   m_pwhistsetmaxRB = nullptr;
   m_pwhistclearRB = nullptr;
   m_applytoprotectedCB = nullptr;
-  m_seclockonidleCB = nullptr;
-  m_secidletimeoutSB = nullptr;
+  m_Security_LockOnIdleTimeoutCB = nullptr;
+  m_Security_IdleTimeoutSB = nullptr;
   m_sysusesystrayCB = nullptr;
   m_sysmaxREitemsSB = nullptr;
   m_systrayWarning = nullptr;
@@ -595,9 +596,13 @@ void COptions::CreateControls()
   itemCheckBox89->SetValue(false);
   itemBoxSizer87->Add(itemCheckBox89, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox90 = new wxCheckBox( itemPanel86, ID_CHECKBOX1, _("Confirm item copy to clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* itemCheckBox90 = new wxCheckBox( itemPanel86, ID_CHECKBOX1, _("Confirm copy of password to clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox90->SetValue(false);
   itemBoxSizer87->Add(itemCheckBox90, 0, wxALIGN_LEFT|wxALL, 5);
+
+  wxCheckBox* itemCheckBox93 = new wxCheckBox( itemPanel86, ID_CHECKBOX35, _("'Browse to URL' copies password to clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemCheckBox93->SetValue(false);
+  itemBoxSizer87->Add(itemCheckBox93, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxCheckBox* itemCheckBox91 = new wxCheckBox( itemPanel86, ID_CHECKBOX2, _("Lock password database on minimize"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox91->SetValue(false);
@@ -609,18 +614,18 @@ void COptions::CreateControls()
 
   auto *itemBoxSizer93 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer87->Add(itemBoxSizer93, 0, wxGROW|wxALL, 0);
-  m_seclockonidleCB = new wxCheckBox( itemPanel86, ID_CHECKBOX29, _("Lock password database after"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_seclockonidleCB->SetValue(false);
-  itemBoxSizer93->Add(m_seclockonidleCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Security_LockOnIdleTimeoutCB = new wxCheckBox( itemPanel86, ID_CHECKBOX29, _("Lock password database after"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Security_LockOnIdleTimeoutCB->SetValue(false);
+  itemBoxSizer93->Add(m_Security_LockOnIdleTimeoutCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_secidletimeoutSB = new wxSpinCtrl(
+  m_Security_IdleTimeoutSB = new wxSpinCtrl(
     itemPanel86, ID_SPINCTRL12, _T("0"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::IdleTimeout),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::IdleTimeout),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::IdleTimeout)
   );
 
-  itemBoxSizer93->Add(m_secidletimeoutSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer93->Add(m_Security_IdleTimeoutSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText96 = new wxStaticText( itemPanel86, ID_STATICTEXT_2, _("minutes idle"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer93->Add(itemStaticText96, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -778,11 +783,15 @@ void COptions::CreateControls()
   itemCheckBox63->SetValidator( wxGenericValidator(& m_usedefuser) );
   itemCheckBox66->SetValidator( wxGenericValidator(& m_querysetdef) );
   itemTextCtrl69->SetValidator( wxGenericValidator(& m_otherbrowser) );
-  itemCheckBox88->SetValidator( wxGenericValidator(& m_secclrclponmin) );
-  itemCheckBox89->SetValidator( wxGenericValidator(& m_secclrclponexit) );
-  itemCheckBox90->SetValidator( wxGenericValidator(& m_secconfrmcpy) );
-  itemCheckBox91->SetValidator( wxGenericValidator(& m_seclockonmin) );
-  itemCheckBox92->SetValidator( wxGenericValidator(& m_seclockonwinlock) );
+  // Security Preferences
+  itemCheckBox88->SetValidator( wxGenericValidator(& m_Security_ClearClipboardOnMinimize) );
+  itemCheckBox89->SetValidator( wxGenericValidator(& m_Security_ClearClipboardOnExit) );
+  itemCheckBox90->SetValidator( wxGenericValidator(& m_Security_ConfirmCopy) );
+  itemCheckBox93->SetValidator( wxGenericValidator(& m_Security_CopyPswdBrowseURL) );
+  itemCheckBox91->SetValidator( wxGenericValidator(& m_Security_LockOnMinimize) );
+  itemCheckBox92->SetValidator( wxGenericValidator(& m_Security_LockOnWindowLock) );
+  m_Security_LockOnIdleTimeoutCB->SetValidator( wxGenericValidator(& m_Security_LockOnIdleTimeout) );
+
   itemSlider99->SetValidator( wxGenericValidator(& m_hashIterSlider) );
   itemCheckBox112->SetValidator( wxGenericValidator(& m_sysstartup) );
   itemSpinCtrl116->SetValidator( wxGenericValidator(& m_sysmaxmru) );
@@ -904,14 +913,16 @@ void COptions::PrefsToPropSheet()
   m_pwhistnumdfltSB->Enable(m_pwhistsave);
   m_pwhdefexpdays = prefs->GetPref(PWSprefs::DefaultExpiryDays);
 
-  // Security preferences
-  m_secclrclponmin = prefs->GetPref(PWSprefs::ClearClipboardOnMinimize);
-  m_secclrclponexit = prefs->GetPref(PWSprefs::ClearClipboardOnExit);
-  m_seclockonmin = prefs->GetPref(PWSprefs::DatabaseClear);
-  m_secconfrmcpy = prefs->GetPref(PWSprefs::DontAskQuestion);
-  m_seclockonwinlock = prefs->GetPref(PWSprefs::LockOnWindowLock);
-  m_seclockonidleCB->SetValue(prefs->GetPref(PWSprefs::LockDBOnIdleTimeout));
-  m_secidletimeoutSB->SetValue(prefs->GetPref(PWSprefs::IdleTimeout));
+  // Security Preferences
+  m_Security_ClearClipboardOnMinimize   = prefs->GetPref(PWSprefs::ClearClipboardOnMinimize);
+  m_Security_ClearClipboardOnExit       = prefs->GetPref(PWSprefs::ClearClipboardOnExit);
+  m_Security_ConfirmCopy                = prefs->GetPref(PWSprefs::DontAskQuestion);
+  m_Security_CopyPswdBrowseURL          = prefs->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL);
+  m_Security_LockOnMinimize             = prefs->GetPref(PWSprefs::DatabaseClear);
+  m_Security_LockOnWindowLock           = prefs->GetPref(PWSprefs::LockOnWindowLock);
+  m_Security_LockOnIdleTimeout          = prefs->GetPref(PWSprefs::LockDBOnIdleTimeout);
+  m_Security_IdleTimeoutSB->SetValue(     prefs->GetPref(PWSprefs::IdleTimeout));
+
   auto *app = dynamic_cast<PwsafeApp *>(wxTheApp);
   uint32 hashIters = app->GetHashIters();
   if (hashIters <= MIN_HASH_ITERATIONS) {
@@ -1004,12 +1015,13 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::NumPWHistoryDefault, m_pwhistnumdflt);
   prefs->SetPref(PWSprefs::DefaultExpiryDays, m_pwhdefexpdays);
 
-  // Security preferences
-  prefs->SetPref(PWSprefs::ClearClipboardOnMinimize, m_secclrclponmin);
-  prefs->SetPref(PWSprefs::ClearClipboardOnExit, m_secclrclponexit);
-  prefs->SetPref(PWSprefs::DatabaseClear, m_seclockonmin);
-  prefs->SetPref(PWSprefs::DontAskQuestion, m_secconfrmcpy);
-  prefs->SetPref(PWSprefs::LockOnWindowLock, m_seclockonwinlock);
+  // Security Preferences
+  prefs->SetPref(PWSprefs::ClearClipboardOnMinimize   , m_Security_ClearClipboardOnMinimize);
+  prefs->SetPref(PWSprefs::ClearClipboardOnExit       , m_Security_ClearClipboardOnExit);
+  prefs->SetPref(PWSprefs::DontAskQuestion            , m_Security_ConfirmCopy);
+  prefs->SetPref(PWSprefs::CopyPasswordWhenBrowseToURL, m_Security_CopyPswdBrowseURL);
+  prefs->SetPref(PWSprefs::DatabaseClear              , m_Security_LockOnMinimize);
+  prefs->SetPref(PWSprefs::LockOnWindowLock           , m_Security_LockOnWindowLock);
 
   m_hashIterValue = MIN_HASH_ITERATIONS;
   if (m_hashIterSlider > 0) {
@@ -1057,8 +1069,8 @@ void COptions::PropSheetToPrefs()
   else
     prefs->SetPref(PWSprefs::DefaultAutotypeString, tostringx(m_autotypeStr), true);
 
-  prefs->SetPref(PWSprefs::LockDBOnIdleTimeout, m_seclockonidleCB->GetValue(), true);
-  prefs->SetPref(PWSprefs::IdleTimeout, m_secidletimeoutSB->GetValue(), true);
+  prefs->SetPref(PWSprefs::LockDBOnIdleTimeout, m_Security_LockOnIdleTimeout, true);
+  prefs->SetPref(PWSprefs::IdleTimeout, m_Security_IdleTimeoutSB->GetValue(), true);
   wxGetApp().ConfigureIdleTimer();
 }
 
@@ -1349,11 +1361,14 @@ void COptions::OnUpdateUI(wxUpdateUIEvent& evt)
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Security"
   /////////////////////////////////////////////////////////////////////////////
+    case ID_CHECKBOX35:
+      evt.Enable(!dbIsReadOnly);
+      break;
     case ID_CHECKBOX29:
       evt.Enable(!dbIsReadOnly);
       break;
     case ID_SPINCTRL12:
-      evt.Enable(!dbIsReadOnly && m_seclockonidleCB->GetValue());
+      evt.Enable(!dbIsReadOnly && m_Security_LockOnIdleTimeoutCB->GetValue());
       break;
     case ID_STATICTEXT_2:
       evt.Enable(!dbIsReadOnly);

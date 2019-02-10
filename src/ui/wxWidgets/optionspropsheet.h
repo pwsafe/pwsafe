@@ -109,6 +109,7 @@ class wxBookCtrlEvent;
 #define ID_CHECKBOX32 10185
 #define ID_CHECKBOX33 10186
 #define ID_CHECKBOX34 10005
+#define ID_CHECKBOX35 10336
 #define ID_CHECKBOX39 10010
 #define ID_CHECKBOX40 10114
 #define ID_PANEL7 10138
@@ -262,21 +263,6 @@ public:
   bool GetSaveimmediate() const { return m_saveimmediate ; }
   void SetSaveimmediate(bool value) { m_saveimmediate = value ; }
 
-  bool GetSecclrclponexit() const { return m_secclrclponexit ; }
-  void SetSecclrclponexit(bool value) { m_secclrclponexit = value ; }
-
-  bool GetSecclrclponmin() const { return m_secclrclponmin ; }
-  void SetSecclrclponmin(bool value) { m_secclrclponmin = value ; }
-
-  bool GetSecconfrmcpy() const { return m_secconfrmcpy ; }
-  void SetSecconfrmcpy(bool value) { m_secconfrmcpy = value ; }
-
-  bool GetSeclockonmin() const { return m_seclockonmin ; }
-  void SetSeclockonmin(bool value) { m_seclockonmin = value ; }
-
-  bool GetSeclockonwinlock() const { return m_seclockonwinlock ; }
-  void SetSeclockonwinlock(bool value) { m_seclockonwinlock = value ; }
-
   int GetShiftdoubleclickaction() const { return m_shiftdoubleclickaction ; }
   void SetShiftdoubleclickaction(int value) { m_shiftdoubleclickaction = value ; }
 
@@ -350,8 +336,8 @@ public:
   wxRadioButton* m_pwhistclearRB;
   wxButton* m_pwhistapplyBN;
   wxCheckBox* m_applytoprotectedCB;
-  wxCheckBox* m_seclockonidleCB;
-  wxSpinCtrl* m_secidletimeoutSB;
+  wxCheckBox* m_Security_LockOnIdleTimeoutCB;
+  wxSpinCtrl* m_Security_IdleTimeoutSB;
   wxCheckBox* m_sysusesystrayCB;
   wxSpinCtrl* m_sysmaxREitemsSB;
   wxString m_otherbrowserparams;
@@ -378,11 +364,6 @@ private:
   bool m_pwshowinedit;
   bool m_querysetdef;
   bool m_saveimmediate;
-  bool m_secclrclponexit;
-  bool m_secclrclponmin;
-  bool m_secconfrmcpy;
-  bool m_seclockonmin;
-  bool m_seclockonwinlock;
   int m_shiftdoubleclickaction;
   bool m_shownotesastipsinviews;
   bool m_showusernameintree;
@@ -394,6 +375,15 @@ private:
   bool m_usedefuser;
   bool m_wordwrapnotes;
   bool m_useAltAutoType;
+
+  // Security Preferences
+  bool m_Security_ClearClipboardOnMinimize;
+  bool m_Security_ClearClipboardOnExit;
+  bool m_Security_ConfirmCopy;
+  bool m_Security_CopyPswdBrowseURL;
+  bool m_Security_LockOnMinimize;
+  bool m_Security_LockOnWindowLock;
+  bool m_Security_LockOnIdleTimeout;
   PWScore &m_core;
 ////@end COptions member variables
   uint32 m_hashIterValue;
