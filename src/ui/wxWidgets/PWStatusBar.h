@@ -12,22 +12,35 @@
 
 #ifndef __PWSTATUSBAR_H
 #define __PWSTATUSBAR_H
+
 #include <wx/statusbr.h>
+
 class CPWStatusBar : public wxStatusBar
 {
  public:
-  enum {SB_DBLCLICK = 0, SB_CLIPBOARDACTION,
-        SB_MODIFIED, SB_READONLY, SB_NUM_ENT, SB_FILTER,
-        SB_LAST};
-  CPWStatusBar(wxWindow *parent, wxWindowID id = wxID_ANY, long 	style = wxSTB_DEFAULT_STYLE)
+  enum class Field { 
+    DOUBLECLICK = 0, CLIPBOARDACTION,
+    MODIFIED, READONLY, NUM_ENT, FILTER,
+    COUNT
+  };
+
+  CPWStatusBar(wxWindow *parent, wxWindowID id = wxID_ANY, long style = wxSTB_DEFAULT_STYLE)
     : wxStatusBar(parent, id, style)
     {}
+
   virtual ~CPWStatusBar() {}
 
   void Setup()
   {
-    const int widths[SB_LAST] = {-6, -3, -1, -3, -2, -1};
-    SetFieldsCount(SB_LAST, widths);
+    const int FIELDS = static_cast<std::underlying_type<Field>::type>(Field::COUNT);
+    const int widths[FIELDS] = { -6, -3, -1, -3, -2, -1 };
+    SetFieldsCount(FIELDS, widths);
+  }
+
+  void SetStatusText(const wxString &text, Field field)
+  {
+    wxStatusBar::SetStatusText(text, static_cast<std::underlying_type<Field>::type>(field));
   }
 };
+
 #endif /* __PWSTATUSBAR_H */

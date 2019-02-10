@@ -569,6 +569,7 @@ public:
   /// File open, double-click, modify, r-o r/w, filter...
   void UpdateStatusBar();
   void UpdateMenuBar();
+  void UpdateLastClipboardAction(const CItemData::FieldType field);
   PWScore &m_core;
   PasswordSafeSearch* m_search;
   SystemTray* m_sysTray;
@@ -607,6 +608,9 @@ public:
   void ApplyFilters();
 
   bool m_InitialTreeDisplayStatusAtOpen;
+
+  wxString m_LastClipboardAction;
+  CItem::FieldType m_LastAction;  // TODO: Check how this is used by Windows version
 };
 
 BEGIN_DECLARE_EVENT_TYPES()
@@ -614,5 +618,4 @@ DECLARE_EVENT_TYPE(wxEVT_DB_PREFS_CHANGE, -1)
 DECLARE_EVENT_TYPE(wxEVT_GUI_DB_PREFS_CHANGE, -1)
 END_DECLARE_EVENT_TYPES()
 
-#endif
-    // _PASSWORDSAFEFRAME_H_
+#endif // _PASSWORDSAFEFRAME_H_
