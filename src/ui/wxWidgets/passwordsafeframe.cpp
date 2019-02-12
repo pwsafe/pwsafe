@@ -263,7 +263,8 @@ PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(ViewType::GRID), m_search(0), m_sysTray(new SystemTray(this)),
   m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
   m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
-  m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false)
+  m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
+  m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
 {
     Init();
 }
@@ -275,7 +276,8 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
   : m_core(core), m_currentView(ViewType::GRID), m_search(0), m_sysTray(new SystemTray(this)),
     m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
     m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
-    m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true)
+    m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
+    m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
 {
     Init();
     m_currentView = (PWSprefs::GetInstance()->GetPref(PWSprefs::LastView) == _T("list")) ? ViewType::GRID : ViewType::TREE;
@@ -3534,32 +3536,85 @@ void PasswordSafeFrame::UpdateStatusBar()
     wxString text;
     // SB_DBLCLICK pane is set per selected entry, not here
 
-    //    m_statusBar->SetStatusText(m_lastclipboardaction, CPWStatusBar::SB_CLIPBOARDACTION);
+    m_statusBar->SetStatusText(m_LastClipboardAction, CPWStatusBar::Field::CLIPBOARDACTION);
 
-    text = m_core.HasDBChanged() ? wxT("*") : wxT(" ");
-    m_statusBar->SetStatusText(text, CPWStatusBar::SB_MODIFIED);
+    text  = m_core.HasDBChanged()       ? wxT("*") : wxT(" ");
+    text += m_core.HaveDBPrefsChanged() ? wxT("°") : wxT(" ");
+    m_statusBar->SetStatusText(text, CPWStatusBar::Field::MODIFIED);
 
     text = m_core.IsReadOnly() ? wxT("R-O") : wxT("R/W");
-    m_statusBar->SetStatusText(text, CPWStatusBar::SB_READONLY);
+    m_statusBar->SetStatusText(text, CPWStatusBar::Field::READONLY);
 
     text.Clear(); text <<  m_core.GetNumEntries();
-    m_statusBar->SetStatusText(text, CPWStatusBar::SB_NUM_ENT);
+    m_statusBar->SetStatusText(text, CPWStatusBar::Field::NUM_ENT);
 
     text = m_bFilterActive ? wxT("[F]") : wxT("   ");
-    m_statusBar->SetStatusText(text, CPWStatusBar::SB_FILTER);
-  } else { // no open file
-    m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(-1)), CPWStatusBar::SB_DBLCLICK);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_CLIPBOARDACTION);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_MODIFIED);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_READONLY);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_NUM_ENT);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::SB_FILTER);
+    m_statusBar->SetStatusText(text, CPWStatusBar::Field::FILTER);
+  }
+  else { // no open file
+    m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(-1)), CPWStatusBar::Field::DOUBLECLICK);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::CLIPBOARDACTION);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::MODIFIED);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::READONLY);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::NUM_ENT);
+    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::FILTER);
   }
 }
 
 void PasswordSafeFrame::UpdateMenuBar()
 {
   // Add code here for more complex update logic on menu items, otherwise use OnUpdateUI
+}
+
+void PasswordSafeFrame::UpdateLastClipboardAction(const CItemData::FieldType field)
+{
+  // Note use of CItemData::RESERVED for indicating in the
+  // Status bar that an old password has been copied
+  m_LastClipboardAction = wxEmptyString;
+  switch (field) {
+    case CItemData::FieldType::GROUP:
+      m_LastClipboardAction = _("Group copied ") + wxDateTime::Now().FormatTime();
+      break;
+    case CItemData::FieldType::TITLE:
+      m_LastClipboardAction = _("Title copied ") + wxDateTime::Now().FormatTime();
+      break;
+    case CItemData::FieldType::USER:
+      m_LastClipboardAction = _("User copied ") + wxDateTime::Now().FormatTime();
+      break;
+    case CItemData::FieldType::PASSWORD:
+      m_LastClipboardAction = _("Pswd copied ") + wxDateTime::Now().FormatTime();
+      break;
+    case CItemData::FieldType::NOTES:
+      m_LastClipboardAction = _("Notes copied ") + wxDateTime::Now().FormatTime();
+      break;
+    case CItemData::FieldType::URL:
+      m_LastClipboardAction = _("URL copied ") + wxDateTime::Now().FormatTime();
+      break;
+    case CItemData::FieldType::AUTOTYPE:
+      m_LastClipboardAction = _("Autotype copied ") + wxDateTime::Now().FormatTime();
+      break;
+    case CItemData::FieldType::RUNCMD:
+      m_LastClipboardAction = _("RunCmd copied ") + wxDateTime::Now().FormatTime();
+      break;
+    case CItemData::FieldType::EMAIL:
+      m_LastClipboardAction = _("Email copied ") + wxDateTime::Now().FormatTime();
+      break;
+    case CItemData::FieldType::PWHIST:
+      m_LastClipboardAction = _("Password History copied " ) + wxDateTime::Now().FormatTime();
+      break;
+    case CItemData::FieldType::RESERVED:
+      m_LastClipboardAction = _("Old Pswd copied ") + wxDateTime::Now().FormatTime();
+      break;
+    case CItemData::FieldType::END:
+      m_LastClipboardAction = wxEmptyString;
+      break;
+    default:
+      ASSERT(0);
+      return;
+  }
+
+  m_LastAction = field;
+  UpdateStatusBar();
 }
 
 void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
@@ -3571,7 +3626,7 @@ void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
     if (dca == -1)
       dca = PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
   }
-  m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(dca)), CPWStatusBar::SB_DBLCLICK);
+  m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(dca)), CPWStatusBar::Field::DOUBLECLICK);
 }
 
 //-----------------------------------------------------------------
