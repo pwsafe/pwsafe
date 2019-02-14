@@ -31,8 +31,8 @@
 
 ////@begin forward declarations
 class wxSpinCtrl;
-////@end forward declarations
 class wxBookCtrlEvent;
+////@end forward declarations
 
 /*!
  * Control identifiers
@@ -137,7 +137,7 @@ class wxBookCtrlEvent;
  */
 
 class COptions: public wxPropertySheetDialog
-{    
+{
   DECLARE_CLASS( COptions )
   DECLARE_EVENT_TABLE()
 
@@ -199,103 +199,6 @@ public:
   void OnPageChanging(wxBookCtrlEvent& evt);
 
 ////@begin COptions member function declarations
-
-  bool GetAlwaysontop() const { return m_alwaysontop ; }
-  void SetAlwaysontop(bool value) { m_alwaysontop = value ; }
-
-  wxString GetAutotypeStr() const { return m_autotypeStr ; }
-  void SetAutotypeStr(wxString value) { m_autotypeStr = value ; }
-
-  bool GetBackupb4save() const { return m_backupb4save ; }
-  void SetBackupb4save(bool value) { m_backupb4save = value ; }
-
-  bool GetConfirmdelete() const { return m_confirmdelete ; }
-  void SetConfirmdelete(bool value) { m_confirmdelete = value ; }
-
-  int GetDoubleclickaction() const { return m_doubleclickaction ; }
-  void SetDoubleclickaction(int value) { m_doubleclickaction = value ; }
-
-  bool GetEscexits() const { return m_escexits ; }
-  void SetEscexits(bool value) { m_escexits = value ; }
-
-  int GetHashIterSlider() const { return m_hashIterSlider ; }
-  void SetHashIterSlider(int value) { m_hashIterSlider = value ; }
-
-  int GetInittreeview() const { return m_inittreeview ; }
-  void SetInittreeview(int value) { m_inittreeview = value ; }
-
-  bool GetMaintaindatetimestamps() const { return m_maintaindatetimestamps ; }
-  void SetMaintaindatetimestamps(bool value) { m_maintaindatetimestamps = value ; }
-
-  bool GetMinauto() const { return m_minauto ; }
-  void SetMinauto(bool value) { m_minauto = value ; }
-
-  bool GetNotesshowinedit() const { return m_notesshowinedit ; }
-  void SetNotesshowinedit(bool value) { m_notesshowinedit = value ; }
-
-  wxString GetOtherbrowser() const { return m_otherbrowser ; }
-  void SetOtherbrowser(wxString value) { m_otherbrowser = value ; }
-
-  wxString GetOtherbrowserparams() const { return m_otherbrowserparams ; }
-  void SetOtherbrowserparams(wxString value) { m_otherbrowserparams = value ; }
-
-  bool GetPreexpirywarn() const { return m_preexpirywarn ; }
-  void SetPreexpirywarn(bool value) { m_preexpirywarn = value ; }
-
-  bool GetPutgroups1st() const { return m_putgroups1st ; }
-  void SetPutgroups1st(bool value) { m_putgroups1st = value ; }
-
-  int GetPwdefaultlength() const { return m_pwdefaultlength ; }
-  void SetPwdefaultlength(int value) { m_pwdefaultlength = value ; }
-
-  bool GetPwHistSave() const { return m_pwhistsave ; }
-  void SetPwHistSave(bool value) { m_pwhistsave = value ;}
-
-  int GetPwHistNumDefault() const { return m_pwhistnumdflt ; }
-  void SetPwHistNumDefault(int value) { m_pwhistnumdflt = value ; }
-
-  bool GetPwshowinedit() const { return m_pwshowinedit ; }
-  void SetPwshowinedit(bool value) { m_pwshowinedit = value ; }
-
-  bool GetQuerysetdef() const { return m_querysetdef ; }
-  void SetQuerysetdef(bool value) { m_querysetdef = value ; }
-
-  bool GetSaveimmediate() const { return m_saveimmediate ; }
-  void SetSaveimmediate(bool value) { m_saveimmediate = value ; }
-
-  int GetShiftdoubleclickaction() const { return m_shiftdoubleclickaction ; }
-  void SetShiftdoubleclickaction(int value) { m_shiftdoubleclickaction = value ; }
-
-  bool GetShownotesastipsinviews() const { return m_shownotesastipsinviews ; }
-  void SetShownotesastipsinviews(bool value) { m_shownotesastipsinviews = value ; }
-
-  bool GetShowusernameintree() const { return m_showusernameintree ; }
-  void SetShowusernameintree(bool value) { m_showusernameintree = value ; }
-
-  bool GetSysdefopenro() const { return m_sysdefopenro ; }
-  void SetSysdefopenro(bool value) { m_sysdefopenro = value ; }
-
-  int GetSysmaxmru() const { return m_sysmaxmru ; }
-  void SetSysmaxmru(int value) { m_sysmaxmru = value ; }
-
-  bool GetSysmruonfilemenu() const { return m_sysmruonfilemenu ; }
-  void SetSysmruonfilemenu(bool value) { m_sysmruonfilemenu = value ; }
-
-  bool GetSysmultinst() const { return m_sysmultinst ; }
-  void SetSysmultinst(bool value) { m_sysmultinst = value ; }
-
-  bool GetSysstartup() const { return m_sysstartup ; }
-  void SetSysstartup(bool value) { m_sysstartup = value ; }
-
-  bool GetUsedefuser() const { return m_usedefuser ; }
-  void SetUsedefuser(bool value) { m_usedefuser = value ; }
-
-  bool GetWordwrapnotes() const { return m_wordwrapnotes ; }
-  void SetWordwrapnotes(bool value) { m_wordwrapnotes = value ; }
-
-  bool GetUseAltAutoType() const { return m_useAltAutoType ; }
-  void SetUseAltAutoType(bool value) { m_useAltAutoType = value ; }
-
   uint32 GetHashItersValue() const { return m_hashIterValue; }
 
   /// Retrieves bitmap resources
@@ -309,72 +212,74 @@ public:
   static bool ShowToolTips();
 
 ////@begin COptions member variables
-  wxRadioButton* m_dfltbuprefixRB;
-  wxRadioButton* m_usrbuprefixRB;
-  wxTextCtrl* m_usrbuprefixTxt;
-  wxComboBox* m_busuffixCB;
-  wxSpinCtrl* m_bumaxinc;
-  wxStaticText* m_suffixExample;
-  wxRadioButton* m_dfltbudirRB;
-  wxRadioButton* m_usrbudirRB;
-  wxTextCtrl* m_usrbudirTxt;
-  wxButton* m_buDirBN;
-  wxCheckBox* m_showpasswordintreeCB;
-  wxCheckBox* m_preexpirywarnCB;
-  wxSpinCtrl* m_preexpirywarndaysSB;
-  wxComboBox* m_DCACB;
-  wxComboBox* m_SDCACB;
-  wxTextCtrl* m_defusernameTXT;
-  wxStaticText* m_defusernameLBL;
-  wxCheckBox* m_pwhistsaveCB;
-  wxSpinCtrl* m_pwhistnumdfltSB;
-  wxSpinCtrl* m_pwhdefexpdaysSB;
-  wxRadioButton* m_pwhistnochangeRB;
-  wxRadioButton* m_pwhiststopRB;
-  wxRadioButton* m_pwhiststartRB;
-  wxRadioButton* m_pwhistsetmaxRB;
-  wxRadioButton* m_pwhistclearRB;
-  wxButton* m_pwhistapplyBN;
-  wxCheckBox* m_applytoprotectedCB;
-  wxCheckBox* m_Security_LockOnIdleTimeoutCB;
-  wxSpinCtrl* m_Security_IdleTimeoutSB;
-  wxCheckBox* m_sysusesystrayCB;
-  wxSpinCtrl* m_sysmaxREitemsSB;
-  wxString m_otherbrowserparams;
-  wxStaticText *m_systrayWarning;
 private:
-  bool m_alwaysontop;
-  wxString m_autotypeStr;
-  bool m_backupb4save;
-  bool m_confirmdelete;
-  int m_doubleclickaction;
-  bool m_escexits;
-  int m_hashIterSlider;
-  int m_inittreeview;
-  bool m_maintaindatetimestamps;
-  bool m_minauto;
-  bool m_notesshowinedit;
-  wxString m_otherbrowser;
-  bool m_preexpirywarn;
-  bool m_putgroups1st;
-  int m_pwdefaultlength;
-  bool m_pwhistsave;
-  int m_pwhistnumdflt;
-  int m_pwhdefexpdays;
-  bool m_pwshowinedit;
-  bool m_querysetdef;
-  bool m_saveimmediate;
-  int m_shiftdoubleclickaction;
-  bool m_shownotesastipsinviews;
-  bool m_showusernameintree;
-  bool m_sysdefopenro;
-  int m_sysmaxmru;
-  bool m_sysmruonfilemenu;
-  bool m_sysmultinst;
-  bool m_sysstartup;
-  bool m_usedefuser;
-  bool m_wordwrapnotes;
-  bool m_useAltAutoType;
+  wxRadioButton*  m_Backup_DefaultPrefixRB;
+  wxRadioButton*  m_Backup_UserPrefixRB;
+  wxTextCtrl*     m_Backup_UserPrefixTXT;
+  wxComboBox*     m_Backup_SuffixCB;
+  wxSpinCtrl*     m_Backup_MaxIncrSB;
+  wxStaticText*   m_Backup_SuffixExampleST;
+  wxRadioButton*  m_Backup_DefaultDirRB;
+  wxRadioButton*  m_Backup_UserDirRB;
+  wxTextCtrl*     m_Backup_UserDirTXT;
+  wxButton*       m_Backup_DirBN;
+
+  wxCheckBox*     m_Display_ShowPasswordInTreeCB;
+  wxCheckBox*     m_Display_PreExpiryWarnCB;
+  wxSpinCtrl*     m_Display_PreExpiryWarnDaysSB;
+
+  wxComboBox*     m_Misc_DoubleClickActionCB;
+  wxComboBox*     m_Misc_ShiftDoubleClickActionCB;
+  wxTextCtrl*     m_Misc_DefaultUsernameTXT;
+  wxStaticText*   m_Misc_DefaultUsernameLBL;
+  wxString        m_Misc_OtherBrowserLocationparams;
+
+  wxCheckBox*     m_Security_LockOnIdleTimeoutCB;
+  wxSpinCtrl*     m_Security_IdleTimeoutSB;
+
+  wxCheckBox*     m_System_UseSystemTrayCB;
+  wxSpinCtrl*     m_System_MaxREItemsSB;
+  wxStaticText*   m_System_SystemTrayWarningST;
+
+  wxCheckBox*     m_PasswordHistory_SaveCB;
+  wxSpinCtrl*     m_PasswordHistory_NumDefaultSB;
+  wxSpinCtrl*     m_PasswordHistory_DefaultExpiryDaysSB;
+  wxRadioButton*  m_PasswordHistory_NoChangeRB;
+  wxRadioButton*  m_PasswordHistory_StopRB;
+  wxRadioButton*  m_PasswordHistory_StartRB;
+  wxRadioButton*  m_PasswordHistory_SetMaxRB;
+  wxRadioButton*  m_PasswordHistory_ClearRB;
+  wxButton*       m_PasswordHistory_ApplyBN;
+  wxCheckBox*     m_PasswordHistory_Apply2ProtectedCB;
+
+  uint32 m_hashIterValue;
+  int m_DoubleClickAction;
+  int m_ShiftDoubleClickAction;
+
+  // Backups Preferences
+  bool m_Backup_SaveImmediately;
+  bool m_Backup_BackupBeforeSave;
+
+  // Display Preferences
+  bool m_Display_AlwaysOnTop;
+  bool m_Display_ShowUsernameInTree;
+  bool m_Display_ShowNotesAsTipsInViews;
+  bool m_Display_ShowPasswordInEdit;
+  bool m_Display_ShowNotesInEdit;
+  bool m_Display_WordWrapNotes;
+  bool m_Display_GroupsFirst;
+  bool m_Display_PreExpiryWarn;
+  int  m_Display_TreeDisplayStatusAtOpen;
+
+  // Misc. Preferences
+  bool m_Misc_ConfirmDelete;
+  bool m_Misc_MaintainDatetimeStamps;
+  bool m_Misc_EscExits;
+  bool m_Misc_AutotypeMinimize;
+  wxString m_Misc_AutotypeString;
+  bool m_Misc_UseDefUsername;
+  bool m_Misc_QuerySetDefUsername;
+  wxString m_Misc_OtherBrowserLocation;
 
   // Security Preferences
   bool m_Security_ClearClipboardOnMinimize;
@@ -384,17 +289,31 @@ private:
   bool m_Security_LockOnMinimize;
   bool m_Security_LockOnWindowLock;
   bool m_Security_LockOnIdleTimeout;
+  int  m_Security_HashIterSlider;
+
+  // System Preferences
+  bool m_System_Startup;
+  int  m_System_MaxMRUItems;
+  bool m_System_MRUOnFileMenu;
+  bool m_System_DefaultOpenRO;
+  bool m_System_MultipleInstances;
+  bool m_System_UseAltAutoType;
+#if defined(__X__) || defined(__WXGTK__)
+  bool m_System_UsePrimarySelection;
+#endif
+
+  // Password History Preferences
+  bool m_PasswordHistory_Save;
+  int  m_PasswordHistory_NumDefault;
+  int  m_PasswordHistory_DefaultExpiryDays;
+
   PWScore &m_core;
 ////@end COptions member variables
-  uint32 m_hashIterValue;
-#if defined(__X__) || defined(__WXGTK__)
-  bool m_usePrimarySelection;
-#endif
- private:
+
+private:
   void PrefsToPropSheet();
   void PropSheetToPrefs();
   int GetRequiredPWLength() const;
 };
 
-#endif
-  // _OPTIONSPROPSHEET_H_
+#endif // _OPTIONSPROPSHEET_H_
