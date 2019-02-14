@@ -114,7 +114,7 @@ BEGIN_EVENT_TABLE( COptions, wxPropertySheetDialog )
   EVT_UPDATE_UI(   ID_STATICTEXT_10,   COptions::OnUpdateUI )
 END_EVENT_TABLE()
 
-const wxString BUSuffix[] = {
+const wxString BACKUP_SUFFIX[] = {
   wxTRANSLATE("None"),
   wxTRANSLATE("YYYYMMMDD_HHMMSS"),
   wxTRANSLATE("Incremented Number [001-999]"),
@@ -190,38 +190,43 @@ COptions::~COptions()
 void COptions::Init()
 {
 ////@begin COptions member initialisation
-  m_dfltbuprefixRB = nullptr;
-  m_usrbuprefixRB = nullptr;
-  m_usrbuprefixTxt = nullptr;
-  m_busuffixCB = nullptr;
-  m_bumaxinc = nullptr;
-  m_suffixExample = nullptr;
-  m_dfltbudirRB = nullptr;
-  m_usrbudirRB = nullptr;
-  m_usrbudirTxt = nullptr;
-  m_buDirBN = nullptr;
-  m_showpasswordintreeCB = nullptr;
-  m_preexpirywarnCB = nullptr;
-  m_preexpirywarndaysSB = nullptr;
-  m_DCACB = nullptr;
-  m_SDCACB = nullptr;
-  m_defusernameTXT = nullptr;
-  m_defusernameLBL = nullptr;
-  m_pwhistsaveCB = nullptr;
-  m_pwhistnumdfltSB = nullptr;
-  m_pwhdefexpdaysSB = nullptr;
-  m_pwhistapplyBN = nullptr;
-  m_pwhistnochangeRB = nullptr;
-  m_pwhiststopRB = nullptr;
-  m_pwhiststartRB = nullptr;
-  m_pwhistsetmaxRB = nullptr;
-  m_pwhistclearRB = nullptr;
-  m_applytoprotectedCB = nullptr;
+  m_Backup_DefaultPrefixRB = nullptr;
+  m_Backup_UserPrefixRB = nullptr;
+  m_Backup_UserPrefixTXT = nullptr;
+  m_Backup_SuffixCB = nullptr;
+  m_Backup_MaxIncrSB = nullptr;
+  m_Backup_SuffixExampleST = nullptr;
+  m_Backup_DefaultDirRB = nullptr;
+  m_Backup_UserDirRB = nullptr;
+  m_Backup_UserDirTXT = nullptr;
+  m_Backup_DirBN = nullptr;
+
+  m_Display_ShowPasswordInTreeCB = nullptr;
+  m_Display_PreExpiryWarnCB = nullptr;
+  m_Display_PreExpiryWarnDaysSB = nullptr;
+
+  m_Misc_DoubleClickActionCB = nullptr;
+  m_Misc_ShiftDoubleClickActionCB = nullptr;
+  m_Misc_DefaultUsernameTXT = nullptr;
+  m_Misc_DefaultUsernameLBL = nullptr;
+
+  m_PasswordHistory_SaveCB = nullptr;
+  m_PasswordHistory_NumDefaultSB = nullptr;
+  m_PasswordHistory_DefaultExpiryDaysSB = nullptr;
+  m_PasswordHistory_ApplyBN = nullptr;
+  m_PasswordHistory_NoChangeRB = nullptr;
+  m_PasswordHistory_StopRB = nullptr;
+  m_PasswordHistory_StartRB = nullptr;
+  m_PasswordHistory_SetMaxRB = nullptr;
+  m_PasswordHistory_ClearRB = nullptr;
+  m_PasswordHistory_Apply2ProtectedCB = nullptr;
+
   m_Security_LockOnIdleTimeoutCB = nullptr;
   m_Security_IdleTimeoutSB = nullptr;
-  m_sysusesystrayCB = nullptr;
-  m_sysmaxREitemsSB = nullptr;
-  m_systrayWarning = nullptr;
+
+  m_System_UseSystemTrayCB = nullptr;
+  m_System_MaxREItemsSB = nullptr;
+  m_System_SystemTrayWarningST = nullptr;
 ////@end COptions member initialisation
 }
 
@@ -258,18 +263,18 @@ void COptions::CreateControls()
   wxStaticText* itemStaticText8 = new wxStaticText( itemPanel2, wxID_STATIC, _("Base:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer7->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_dfltbuprefixRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON4, _("Database name"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-  m_dfltbuprefixRB->SetValue(false);
-  itemStaticBoxSizer7->Add(m_dfltbuprefixRB, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Backup_DefaultPrefixRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON4, _("Database name"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+  m_Backup_DefaultPrefixRB->SetValue(false);
+  itemStaticBoxSizer7->Add(m_Backup_DefaultPrefixRB, 0, wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer7->Add(itemBoxSizer10, 0, wxGROW|wxALL, 0);
-  m_usrbuprefixRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON5, _("Other:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_usrbuprefixRB->SetValue(false);
-  itemBoxSizer10->Add(m_usrbuprefixRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Backup_UserPrefixRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON5, _("Other:"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Backup_UserPrefixRB->SetValue(false);
+  itemBoxSizer10->Add(m_Backup_UserPrefixRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_usrbuprefixTxt = new wxTextCtrl( itemPanel2, ID_TEXTCTRL9, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(100, -1)).x, -1), 0 );
-  itemBoxSizer10->Add(m_usrbuprefixTxt, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Backup_UserPrefixTXT = new wxTextCtrl( itemPanel2, ID_TEXTCTRL9, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(100, -1)).x, -1), 0 );
+  itemBoxSizer10->Add(m_Backup_UserPrefixTXT, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticLine* itemStaticLine13 = new wxStaticLine( itemPanel2, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
   itemStaticBoxSizer7->Add(itemStaticLine13, 0, wxGROW|wxALL, 5);
@@ -279,32 +284,32 @@ void COptions::CreateControls()
 
   auto *itemBoxSizer15 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer7->Add(itemBoxSizer15, 0, wxGROW|wxALL, 0);
-  wxArrayString m_busuffixCBStrings;
-  for (int i = 0; i < int(sizeof(BUSuffix)/sizeof(BUSuffix[0])); ++i) {
-    m_busuffixCBStrings.Add(_(BUSuffix[i]));
+  wxArrayString Backup_SuffixCBStrings;
+  for (int i = 0; i < int(sizeof(BACKUP_SUFFIX)/sizeof(BACKUP_SUFFIX[0])); ++i) {
+    Backup_SuffixCBStrings.Add(_(BACKUP_SUFFIX[i]));
   }
-  m_busuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_busuffixCBStrings, wxCB_READONLY );
-  itemBoxSizer15->Add(m_busuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Backup_SuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_Backup_SuffixCBStrings, wxCB_READONLY );
+  itemBoxSizer15->Add(m_Backup_SuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText17 = new wxStaticText( itemPanel2, wxID_STATIC, _("Max."), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer15->Add(itemStaticText17, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_bumaxinc = new wxSpinCtrl(
+  m_Backup_MaxIncrSB = new wxSpinCtrl(
     itemPanel2, ID_SPINCTRL9, _T("0"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::BackupMaxIncremented),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::BackupMaxIncremented),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::BackupMaxIncremented)
   );
 
-  itemBoxSizer15->Add(m_bumaxinc, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer15->Add(m_Backup_MaxIncrSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemBoxSizer19 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer7->Add(itemBoxSizer19, 0, wxGROW|wxALL, 5);
   wxStaticText* itemStaticText20 = new wxStaticText( itemPanel2, wxID_STATIC, _("Example:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer19->Add(itemStaticText20, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_suffixExample = new wxStaticText( itemPanel2, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(160, -1)).x, -1), 0 );
-  itemBoxSizer19->Add(m_suffixExample, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Backup_SuffixExampleST = new wxStaticText( itemPanel2, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(160, -1)).x, -1), 0 );
+  itemBoxSizer19->Add(m_Backup_SuffixExampleST, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticLine* itemStaticLine22 = new wxStaticLine( itemPanel2, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
   itemStaticBoxSizer5->Add(itemStaticLine22, 0, wxGROW|wxALL, 5);
@@ -312,21 +317,21 @@ void COptions::CreateControls()
   wxStaticText* itemStaticText23 = new wxStaticText( itemPanel2, wxID_STATIC, _("Backup directory:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer5->Add(itemStaticText23, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_dfltbudirRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON6, _("Same as database's"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-  m_dfltbudirRB->SetValue(false);
-  itemStaticBoxSizer5->Add(m_dfltbudirRB, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Backup_DefaultDirRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON6, _("Same as database's"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+  m_Backup_DefaultDirRB->SetValue(false);
+  itemStaticBoxSizer5->Add(m_Backup_DefaultDirRB, 0, wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer25 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer5->Add(itemBoxSizer25, 0, wxGROW|wxALL, 0);
-  m_usrbudirRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON7, _("Other:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_usrbudirRB->SetValue(false);
-  itemBoxSizer25->Add(m_usrbudirRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Backup_UserDirRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON7, _("Other:"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Backup_UserDirRB->SetValue(false);
+  itemBoxSizer25->Add(m_Backup_UserDirRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_usrbudirTxt = new wxTextCtrl( itemPanel2, ID_TEXTCTRL10, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer25->Add(m_usrbudirTxt, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Backup_UserDirTXT = new wxTextCtrl( itemPanel2, ID_TEXTCTRL10, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer25->Add(m_Backup_UserDirTXT, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_buDirBN = new wxButton( itemPanel2, ID_BUTTON, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer25->Add(m_buDirBN, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Backup_DirBN = new wxButton( itemPanel2, ID_BUTTON, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer25->Add(m_Backup_DirBN, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel2, _("Backups"));
 
@@ -346,9 +351,9 @@ void COptions::CreateControls()
   itemCheckBox32->SetValue(false);
   itemBoxSizer30->Add(itemCheckBox32, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_showpasswordintreeCB = new wxCheckBox( itemPanel29, ID_CHECKBOX14, _("Show Password in Tree View"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_showpasswordintreeCB->SetValue(false);
-  itemBoxSizer30->Add(m_showpasswordintreeCB, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Display_ShowPasswordInTreeCB = new wxCheckBox( itemPanel29, ID_CHECKBOX14, _("Show Password in Tree View"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Display_ShowPasswordInTreeCB->SetValue(false);
+  itemBoxSizer30->Add(m_Display_ShowPasswordInTreeCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxCheckBox* itemCheckBox35 = new wxCheckBox( itemPanel29, ID_CHECKBOX16, _("Show Password in Add && Edit"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox35->SetValue(false);
@@ -372,18 +377,18 @@ void COptions::CreateControls()
 
   auto *itemBoxSizer39 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer30->Add(itemBoxSizer39, 0, wxGROW|wxALL, 0);
-  m_preexpirywarnCB = new wxCheckBox( itemPanel29, ID_CHECKBOX19, _("Warn"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_preexpirywarnCB->SetValue(false);
-  itemBoxSizer39->Add(m_preexpirywarnCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Display_PreExpiryWarnCB = new wxCheckBox( itemPanel29, ID_CHECKBOX19, _("Warn"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Display_PreExpiryWarnCB->SetValue(false);
+  itemBoxSizer39->Add(m_Display_PreExpiryWarnCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_preexpirywarndaysSB = new wxSpinCtrl(
+  m_Display_PreExpiryWarnDaysSB = new wxSpinCtrl(
     itemPanel29, ID_SPINCTRL10, _T("0"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PreExpiryWarnDays),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PreExpiryWarnDays),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PreExpiryWarnDays)
   );
 
-  itemBoxSizer39->Add(m_preexpirywarndaysSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer39->Add(m_Display_PreExpiryWarnDaysSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText42 = new wxStaticText( itemPanel29, wxID_STATIC, _("days before passwords expire"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer39->Add(itemStaticText42, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -424,12 +429,12 @@ void COptions::CreateControls()
   itemFlexGridSizer50->Add(itemStaticText50, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   // Prepare strings for DblClick & Shift+DblClick combos
-  wxArrayString m_DCACBStrings;
-  wxArrayString m_SDCACBStrings;
+  wxArrayString m_Misc_DoubleClickActionCBStrings;
+  wxArrayString m_Misc_ShiftDoubleClickActionCBStrings;
   for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i) {
     wxString tmp = _(DCAStrings[i]);
-    m_DCACBStrings.Add(tmp);
-    m_SDCACBStrings.Add(tmp);
+    m_Misc_DoubleClickActionCBStrings.Add(tmp);
+    m_Misc_ShiftDoubleClickActionCBStrings.Add(tmp);
   }
 
   // This is to avoid a nasty assert on OSX with wx3.0.2
@@ -438,14 +443,14 @@ void COptions::CreateControls()
   cbStyle |= wxCB_SORT;
 #endif
 
-  m_DCACB = new wxComboBox( itemPanel44, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCACBStrings, cbStyle );
-  itemFlexGridSizer50->Add(m_DCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Misc_DoubleClickActionCB = new wxComboBox( itemPanel44, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_Misc_DoubleClickActionCBStrings, cbStyle );
+  itemFlexGridSizer50->Add(m_Misc_DoubleClickActionCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText54 = new wxStaticText( itemPanel44, wxID_STATIC, _("Shift double-click action"), wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer50->Add(itemStaticText54, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_SDCACB = new wxComboBox( itemPanel44, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCACBStrings, cbStyle );
-  itemFlexGridSizer50->Add(m_SDCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Misc_ShiftDoubleClickActionCB = new wxComboBox( itemPanel44, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_Misc_ShiftDoubleClickActionCBStrings, cbStyle );
+  itemFlexGridSizer50->Add(m_Misc_ShiftDoubleClickActionCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer56Static = new wxStaticBox(itemPanel44, wxID_ANY, _("Autotype"));
   auto *itemStaticBoxSizer56 = new wxStaticBoxSizer(itemStaticBoxSizer56Static, wxVERTICAL);
@@ -472,11 +477,11 @@ void COptions::CreateControls()
   itemCheckBox63->SetValue(false);
   itemBoxSizer62->Add(itemCheckBox63, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_defusernameTXT = new wxTextCtrl( itemPanel44, ID_TEXTCTRL12, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer62->Add(m_defusernameTXT, 2, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Misc_DefaultUsernameTXT = new wxTextCtrl( itemPanel44, ID_TEXTCTRL12, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer62->Add(m_Misc_DefaultUsernameTXT, 2, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_defusernameLBL = new wxStaticText( itemPanel44, ID_STATICTEXT_1, _("as default username"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer62->Add(m_defusernameLBL, 2, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Misc_DefaultUsernameLBL = new wxStaticText( itemPanel44, ID_STATICTEXT_1, _("as default username"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer62->Add(m_Misc_DefaultUsernameLBL, 2, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   itemBoxSizer62->AddStretchSpacer();
 
   wxCheckBox* itemCheckBox66 = new wxCheckBox( itemPanel44, ID_CHECKBOX25, _("Query user to set default username"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -515,18 +520,18 @@ void COptions::CreateControls()
 
   auto *itemBoxSizer76 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer75->Add(itemBoxSizer76, 0, wxGROW|wxALL, 5);
-  m_pwhistsaveCB = new wxCheckBox( itemPanel74, ID_CHECKBOX26, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwhistsaveCB->SetValue(false);
-  itemBoxSizer76->Add(m_pwhistsaveCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_PasswordHistory_SaveCB = new wxCheckBox( itemPanel74, ID_CHECKBOX26, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_PasswordHistory_SaveCB->SetValue(false);
+  itemBoxSizer76->Add(m_PasswordHistory_SaveCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwhistnumdfltSB = new wxSpinCtrl(
+  m_PasswordHistory_NumDefaultSB = new wxSpinCtrl(
     itemPanel74, ID_SPINCTRL11, _T("0"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::NumPWHistoryDefault),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::NumPWHistoryDefault),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::NumPWHistoryDefault)
   );
 
-  itemBoxSizer76->Add(m_pwhistnumdfltSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer76->Add(m_PasswordHistory_NumDefaultSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText79 = new wxStaticText( itemPanel74, ID_STATICTEXT_8, _("previous passwords per entry"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer76->Add(itemStaticText79, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -539,44 +544,44 @@ void COptions::CreateControls()
     0, wxALIGN_CENTER_VERTICAL|wxALL, 5
   );
 
-  m_pwhdefexpdaysSB = new wxSpinCtrl(
+  m_PasswordHistory_DefaultExpiryDaysSB = new wxSpinCtrl(
     itemPanel74, ID_SPINCTRL14, _T("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::DefaultExpiryDays),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::DefaultExpiryDays)
   );
 
-  itemBoxSizer77->Add(m_pwhdefexpdaysSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer77->Add(m_PasswordHistory_DefaultExpiryDaysSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer80Static = new wxStaticBox(itemPanel74, ID_STATICBOX_1, _("Manage password history of current entries"));
   auto *itemStaticBoxSizer80 = new wxStaticBoxSizer(itemStaticBoxSizer80Static, wxVERTICAL);
   itemBoxSizer75->Add(itemStaticBoxSizer80, 0, wxGROW|wxALL, 5);
-  m_pwhistnochangeRB = new wxRadioButton( itemPanel74, ID_PWHISTNOCHANGE, _("No change"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwhistnochangeRB->SetValue(false);
-  itemStaticBoxSizer80->Add(m_pwhistnochangeRB, 0, wxALIGN_LEFT|wxALL, 5);
+  m_PasswordHistory_NoChangeRB = new wxRadioButton( itemPanel74, ID_PWHISTNOCHANGE, _("No change"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_PasswordHistory_NoChangeRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_PasswordHistory_NoChangeRB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_pwhiststopRB = new wxRadioButton( itemPanel74, ID_PWHISTSTOP, _("Stop saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwhiststopRB->SetValue(false);
-  itemStaticBoxSizer80->Add(m_pwhiststopRB, 0, wxALIGN_LEFT|wxALL, 5);
+  m_PasswordHistory_StopRB = new wxRadioButton( itemPanel74, ID_PWHISTSTOP, _("Stop saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_PasswordHistory_StopRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_PasswordHistory_StopRB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_pwhiststartRB = new wxRadioButton( itemPanel74, ID_PWHISTSTART, _("Start saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwhiststartRB->SetValue(false);
-  itemStaticBoxSizer80->Add(m_pwhiststartRB, 0, wxALIGN_LEFT|wxALL, 5);
+  m_PasswordHistory_StartRB = new wxRadioButton( itemPanel74, ID_PWHISTSTART, _("Start saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_PasswordHistory_StartRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_PasswordHistory_StartRB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_pwhistsetmaxRB = new wxRadioButton( itemPanel74, ID_PWHISTSETMAX, _("Set maximum number of passwords saved to above value"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwhistsetmaxRB->SetValue(false);
-  itemStaticBoxSizer80->Add(m_pwhistsetmaxRB, 0, wxALIGN_LEFT|wxALL, 5);
+  m_PasswordHistory_SetMaxRB = new wxRadioButton( itemPanel74, ID_PWHISTSETMAX, _("Set maximum number of passwords saved to above value"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_PasswordHistory_SetMaxRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_PasswordHistory_SetMaxRB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_pwhistclearRB = new wxRadioButton( itemPanel74, ID_PWHISTCLEAR, _("Clear password history for ALL entries"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwhistclearRB->SetValue(false);
-  itemStaticBoxSizer80->Add(m_pwhistclearRB, 0, wxALIGN_LEFT|wxALL, 5);
+  m_PasswordHistory_ClearRB = new wxRadioButton( itemPanel74, ID_PWHISTCLEAR, _("Clear password history for ALL entries"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_PasswordHistory_ClearRB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_PasswordHistory_ClearRB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_applytoprotectedCB = new wxCheckBox( itemPanel74, ID_APPLYTOPROTECTED, _("Apply these changes to Protected Entries (if required)."), wxDefaultPosition, wxDefaultSize, 0 );
-  m_applytoprotectedCB->SetValue(false);
-  itemStaticBoxSizer80->Add(m_applytoprotectedCB, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER|wxALL, 5);
+  m_PasswordHistory_Apply2ProtectedCB = new wxCheckBox( itemPanel74, ID_APPLYTOPROTECTED, _("Apply these changes to Protected Entries (if required)."), wxDefaultPosition, wxDefaultSize, 0 );
+  m_PasswordHistory_Apply2ProtectedCB->SetValue(false);
+  itemStaticBoxSizer80->Add(m_PasswordHistory_Apply2ProtectedCB, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER|wxALL, 5);
 
-  m_pwhistapplyBN = new wxButton( itemPanel74, ID_PWHISTAPPLY, _("Apply"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStaticBoxSizer80->Add(m_pwhistapplyBN, 0, wxALIGN_LEFT|wxALL, 5);
+  m_PasswordHistory_ApplyBN = new wxButton( itemPanel74, ID_PWHISTAPPLY, _("Apply"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStaticBoxSizer80->Add(m_PasswordHistory_ApplyBN, 0, wxALIGN_LEFT|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel74, _("Password History"));
 
@@ -680,23 +685,23 @@ void COptions::CreateControls()
   wxStaticBox* itemStaticBoxSizer106Static = new wxStaticBox(itemPanel104, wxID_ANY, _("System Tray"));
   auto *itemStaticBoxSizer106 = new wxStaticBoxSizer(itemStaticBoxSizer106Static, wxVERTICAL);
   itemBoxSizer105->Add(itemStaticBoxSizer106, 0, wxGROW|wxALL, 5);
-  m_sysusesystrayCB = new wxCheckBox( itemPanel104, ID_CHECKBOX30, _("Put icon in System Tray"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_sysusesystrayCB->SetValue(false);
-  itemStaticBoxSizer106->Add(m_sysusesystrayCB, 0, wxALIGN_LEFT|wxALL, 5);
+  m_System_UseSystemTrayCB = new wxCheckBox( itemPanel104, ID_CHECKBOX30, _("Put icon in System Tray"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_System_UseSystemTrayCB->SetValue(false);
+  itemStaticBoxSizer106->Add(m_System_UseSystemTrayCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer108 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer106->Add(itemBoxSizer108, 0, wxGROW|wxALL, 5);
   wxStaticText* itemStaticText109 = new wxStaticText( itemPanel104, ID_STATICTEXT_10, _("  Remember last"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer108->Add(itemStaticText109, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_sysmaxREitemsSB = new wxSpinCtrl(
+  m_System_MaxREItemsSB = new wxSpinCtrl(
     itemPanel104, ID_SPINCTRL13, _T("0"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::MaxREItems),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::MaxREItems),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::MaxREItems)
   );
 
-  itemBoxSizer108->Add(m_sysmaxREitemsSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer108->Add(m_System_MaxREItemsSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText111 = new wxStaticText( itemPanel104, ID_STATICTEXT_7, _("used entries in System Tray menu"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer108->Add(itemStaticText111, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -705,10 +710,10 @@ void COptions::CreateControls()
   itemCheckBox112->SetValue(false);
   itemStaticBoxSizer106->Add(itemCheckBox112, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_systrayWarning = new wxStaticText( itemPanel104, wxID_STATIC, _("There appears to be no system tray support in your current environment.\nAny related functionality may not work as expected."), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStaticBoxSizer106->Add(m_systrayWarning, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
-  m_systrayWarning->SetForegroundColour(*wxRED);
-  m_systrayWarning->Hide();
+  m_System_SystemTrayWarningST = new wxStaticText( itemPanel104, wxID_STATIC, _("There appears to be no system tray support in your current environment.\nAny related functionality may not work as expected."), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStaticBoxSizer106->Add(m_System_SystemTrayWarningST, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  m_System_SystemTrayWarningST->SetForegroundColour(*wxRED);
+  m_System_SystemTrayWarningST->Hide();
 
   wxStaticBox* itemStaticBoxSizer113Static = new wxStaticBox(itemPanel104, wxID_ANY, _("Recent PasswordSafe Databases"));
   auto *itemStaticBoxSizer113 = new wxStaticBoxSizer(itemStaticBoxSizer113Static, wxVERTICAL);
@@ -763,26 +768,36 @@ void COptions::CreateControls()
   // End of Tab Creation
   /////////////////////////////////////////////////////////////////////////////
 
+
+  /////////////////////////////////////////////////////////////////////////////
   // Set validators
-  itemCheckBox4->SetValidator( wxGenericValidator(& m_saveimmediate) );
-  itemCheckBox6->SetValidator( wxGenericValidator(& m_backupb4save) );
-  itemCheckBox31->SetValidator( wxGenericValidator(& m_alwaysontop) );
-  itemCheckBox32->SetValidator( wxGenericValidator(& m_showusernameintree) );
-  itemCheckBox34->SetValidator( wxGenericValidator(& m_shownotesastipsinviews) );
-  itemCheckBox35->SetValidator( wxGenericValidator(& m_pwshowinedit) );
-  itemCheckBox36->SetValidator( wxGenericValidator(& m_notesshowinedit) );
-  itemCheckBox37->SetValidator( wxGenericValidator(& m_wordwrapnotes) );
-  itemCheckBox38->SetValidator( wxGenericValidator(& m_putgroups1st) );
-  m_preexpirywarnCB->SetValidator( wxGenericValidator(& m_preexpirywarn) );
-  itemRadioBox43->SetValidator( wxGenericValidator(& m_inittreeview) );
-  itemCheckBox46->SetValidator( wxGenericValidator(& m_confirmdelete) );
-  itemCheckBox47->SetValidator( wxGenericValidator(& m_maintaindatetimestamps) );
-  itemCheckBox48->SetValidator( wxGenericValidator(& m_escexits) );
-  itemCheckBox57->SetValidator( wxGenericValidator(& m_minauto) );
-  itemTextCtrl60->SetValidator( wxGenericValidator(& m_autotypeStr) );
-  itemCheckBox63->SetValidator( wxGenericValidator(& m_usedefuser) );
-  itemCheckBox66->SetValidator( wxGenericValidator(& m_querysetdef) );
-  itemTextCtrl69->SetValidator( wxGenericValidator(& m_otherbrowser) );
+  /////////////////////////////////////////////////////////////////////////////
+
+  // Backups Preferences
+  itemCheckBox4->SetValidator( wxGenericValidator(& m_Backup_SaveImmediately) );
+  itemCheckBox6->SetValidator( wxGenericValidator(& m_Backup_BackupBeforeSave) );
+
+  // Display Preferences
+  itemCheckBox31->SetValidator( wxGenericValidator(& m_Display_AlwaysOnTop) );
+  itemCheckBox32->SetValidator( wxGenericValidator(& m_Display_ShowUsernameInTree) );
+  itemCheckBox34->SetValidator( wxGenericValidator(& m_Display_ShowNotesAsTipsInViews) );
+  itemCheckBox35->SetValidator( wxGenericValidator(& m_Display_ShowPasswordInEdit) );
+  itemCheckBox36->SetValidator( wxGenericValidator(& m_Display_ShowNotesInEdit) );
+  itemCheckBox37->SetValidator( wxGenericValidator(& m_Display_WordWrapNotes) );
+  itemCheckBox38->SetValidator( wxGenericValidator(& m_Display_GroupsFirst) );
+  m_Display_PreExpiryWarnCB->SetValidator( wxGenericValidator(& m_Display_PreExpiryWarn) );
+  itemRadioBox43->SetValidator( wxGenericValidator(& m_Display_TreeDisplayStatusAtOpen) );
+
+  // Misc. Preferences
+  itemCheckBox46->SetValidator( wxGenericValidator(& m_Misc_ConfirmDelete) );
+  itemCheckBox47->SetValidator( wxGenericValidator(& m_Misc_MaintainDatetimeStamps) );
+  itemCheckBox48->SetValidator( wxGenericValidator(& m_Misc_EscExits) );
+  itemCheckBox57->SetValidator( wxGenericValidator(& m_Misc_AutotypeMinimize) );
+  itemTextCtrl60->SetValidator( wxGenericValidator(& m_Misc_AutotypeString) );
+  itemCheckBox63->SetValidator( wxGenericValidator(& m_Misc_UseDefUsername) );
+  itemCheckBox66->SetValidator( wxGenericValidator(& m_Misc_QuerySetDefUsername) );
+  itemTextCtrl69->SetValidator( wxGenericValidator(& m_Misc_OtherBrowserLocation) );
+
   // Security Preferences
   itemCheckBox88->SetValidator( wxGenericValidator(& m_Security_ClearClipboardOnMinimize) );
   itemCheckBox89->SetValidator( wxGenericValidator(& m_Security_ClearClipboardOnExit) );
@@ -792,23 +807,26 @@ void COptions::CreateControls()
   itemCheckBox92->SetValidator( wxGenericValidator(& m_Security_LockOnWindowLock) );
   m_Security_LockOnIdleTimeoutCB->SetValidator( wxGenericValidator(& m_Security_LockOnIdleTimeout) );
 
-  itemSlider99->SetValidator( wxGenericValidator(& m_hashIterSlider) );
-  itemCheckBox112->SetValidator( wxGenericValidator(& m_sysstartup) );
-  itemSpinCtrl116->SetValidator( wxGenericValidator(& m_sysmaxmru) );
-  itemCheckBox118->SetValidator( wxGenericValidator(& m_sysmruonfilemenu) );
-  itemCheckBox119->SetValidator( wxGenericValidator(& m_sysdefopenro) );
-  itemCheckBox120->SetValidator( wxGenericValidator(& m_sysmultinst) );
-  m_pwhistsaveCB->SetValidator( wxGenericValidator(& m_pwhistsave) );
-  m_pwhistnumdfltSB->SetValidator( wxGenericValidator(& m_pwhistnumdflt) );
-  m_pwhdefexpdaysSB->SetValidator( wxGenericValidator(& m_pwhdefexpdays) );
+  itemSlider99->SetValidator( wxGenericValidator(& m_Security_HashIterSlider) );
+
+  // System Preferences
+  itemCheckBox112->SetValidator( wxGenericValidator(& m_System_Startup) );
+  itemSpinCtrl116->SetValidator( wxGenericValidator(& m_System_MaxMRUItems) );
+  itemCheckBox118->SetValidator( wxGenericValidator(& m_System_MRUOnFileMenu) );
+  itemCheckBox119->SetValidator( wxGenericValidator(& m_System_DefaultOpenRO) );
+  itemCheckBox120->SetValidator( wxGenericValidator(& m_System_MultipleInstances) );
 #if defined(__WXX11__) || defined(__WXGTK__)
-  itemCheckBox121->SetValidator( wxGenericValidator(& m_usePrimarySelection) );
+  itemCheckBox121->SetValidator( wxGenericValidator(& m_System_UsePrimarySelection) );
+  itemCheckBox122->SetValidator( wxGenericValidator(& m_System_UseAltAutoType) );
 #endif
-#if defined(__WXX11__) || defined(__WXGTK__)
-  itemCheckBox122->SetValidator( wxGenericValidator(& m_useAltAutoType) );
-#endif
+
+  // Password History Preferences
+  m_PasswordHistory_SaveCB->SetValidator( wxGenericValidator(& m_PasswordHistory_Save) );
+  m_PasswordHistory_NumDefaultSB->SetValidator( wxGenericValidator(& m_PasswordHistory_NumDefault) );
+  m_PasswordHistory_DefaultExpiryDaysSB->SetValidator( wxGenericValidator(& m_PasswordHistory_DefaultExpiryDays) );
+
   // Connect events and objects
-  m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), nullptr, this);
+  m_Backup_UserPrefixTXT->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), nullptr, this); // backup
 ////@end COptions content construction
 }
 
@@ -850,68 +868,68 @@ void COptions::PrefsToPropSheet()
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   // Backup-related preferences
-  m_saveimmediate = prefs->GetPref(PWSprefs::SaveImmediately);
-  m_backupb4save = prefs->GetPref(PWSprefs::BackupBeforeEverySave);
+  m_Backup_SaveImmediately = prefs->GetPref(PWSprefs::SaveImmediately);
+  m_Backup_BackupBeforeSave = prefs->GetPref(PWSprefs::BackupBeforeEverySave);
   wxString buprefixValue = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
-  m_dfltbuprefixRB->SetValue(buprefixValue.empty());
-  m_usrbuprefixRB->SetValue(!buprefixValue.empty());
-  m_usrbuprefixTxt->SetValue(buprefixValue);
+  m_Backup_DefaultPrefixRB->SetValue(buprefixValue.empty());
+  m_Backup_UserPrefixRB->SetValue(!buprefixValue.empty());
+  m_Backup_UserPrefixTXT->SetValue(buprefixValue);
   int suffixIndex = prefs->GetPref(PWSprefs::BackupSuffix);
-  m_busuffixCB->Select(suffixIndex);
-  m_bumaxinc->SetValue(prefs->GetPref(PWSprefs::BackupMaxIncremented));
+  m_Backup_SuffixCB->Select(suffixIndex);
+  m_Backup_MaxIncrSB->SetValue(prefs->GetPref(PWSprefs::BackupMaxIncremented));
   wxString budirValue = prefs->GetPref(PWSprefs::BackupDir).c_str();
-  m_dfltbudirRB->SetValue(budirValue.empty());
-  m_usrbudirRB->SetValue(!budirValue.empty());
-  m_usrbudirTxt->SetValue(budirValue);
+  m_Backup_DefaultDirRB->SetValue(budirValue.empty());
+  m_Backup_UserDirRB->SetValue(!budirValue.empty());
+  m_Backup_UserDirTXT->SetValue(budirValue);
 
   // display-related preferences
-  m_alwaysontop = prefs->GetPref(PWSprefs::AlwaysOnTop);
-  m_showusernameintree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
-  m_showpasswordintreeCB->SetValue(m_showusernameintree && prefs->
+  m_Display_AlwaysOnTop = prefs->GetPref(PWSprefs::AlwaysOnTop);
+  m_Display_ShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
+  m_Display_ShowPasswordInTreeCB->SetValue(m_Display_ShowUsernameInTree && prefs->
                                    GetPref(PWSprefs::ShowPasswordInTree));
-  m_showpasswordintreeCB->Enable(m_showusernameintree);
-  m_shownotesastipsinviews = prefs->
+  m_Display_ShowPasswordInTreeCB->Enable(m_Display_ShowUsernameInTree);
+  m_Display_ShowNotesAsTipsInViews = prefs->
     GetPref(PWSprefs::ShowNotesAsTooltipsInViews);
-  m_pwshowinedit = prefs->GetPref(PWSprefs::ShowPWDefault);
-  m_notesshowinedit = prefs->GetPref(PWSprefs::ShowNotesDefault);
-  m_wordwrapnotes = prefs->GetPref(PWSprefs::NotesWordWrap);
-  m_putgroups1st = prefs->GetPref(PWSprefs::ExplorerTypeTree);
-  m_preexpirywarn = prefs->GetPref(PWSprefs::PreExpiryWarn);
-  m_preexpirywarndaysSB->SetValue(prefs->GetPref(PWSprefs::PreExpiryWarnDays));
-  m_preexpirywarndaysSB->Enable(m_preexpirywarn);
-  m_inittreeview = prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen);
+  m_Display_ShowPasswordInEdit = prefs->GetPref(PWSprefs::ShowPWDefault);
+  m_Display_ShowNotesInEdit = prefs->GetPref(PWSprefs::ShowNotesDefault);
+  m_Display_WordWrapNotes = prefs->GetPref(PWSprefs::NotesWordWrap);
+  m_Display_GroupsFirst = prefs->GetPref(PWSprefs::ExplorerTypeTree);
+  m_Display_PreExpiryWarn = prefs->GetPref(PWSprefs::PreExpiryWarn);
+  m_Display_PreExpiryWarnDaysSB->SetValue(prefs->GetPref(PWSprefs::PreExpiryWarnDays));
+  m_Display_PreExpiryWarnDaysSB->Enable(m_Display_PreExpiryWarn);
+  m_Display_TreeDisplayStatusAtOpen = prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen);
 
   // Misc. preferences
-  m_confirmdelete = !prefs->GetPref(PWSprefs::DeleteQuestion);
-  m_maintaindatetimestamps = prefs->GetPref(PWSprefs::MaintainDateTimeStamps);
-  m_escexits = prefs->GetPref(PWSprefs::EscExits);
-  m_doubleclickaction = prefs->GetPref(PWSprefs::DoubleClickAction);
-  if (m_doubleclickaction < 0 ||
-      m_doubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
-    m_doubleclickaction = 0;
-  m_DCACB->SetValue(_(DCAStrings[m_doubleclickaction]));
-  m_shiftdoubleclickaction = prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
-  if (m_shiftdoubleclickaction < 0 ||
-      m_shiftdoubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
-    m_shiftdoubleclickaction = 0;
-  m_SDCACB->SetValue(_(DCAStrings[m_shiftdoubleclickaction]));
-  m_minauto = prefs->GetPref(PWSprefs::MinimizeOnAutotype);
-  m_autotypeStr = prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
-  if (m_autotypeStr.empty())
-    m_autotypeStr = DEFAULT_AUTOTYPE;
-  m_usedefuser = prefs->GetPref(PWSprefs::UseDefaultUser);
-  m_defusernameTXT->SetValue(prefs->GetPref(PWSprefs::DefaultUsername).c_str());
-  m_defusernameTXT->Enable(m_usedefuser);
-  m_defusernameLBL->Enable(m_usedefuser);
-  m_querysetdef = prefs->GetPref(PWSprefs::QuerySetDef);
-  m_otherbrowser = prefs->GetPref(PWSprefs::AltBrowser).c_str();
-  m_otherbrowserparams = prefs->GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
+  m_Misc_ConfirmDelete = !prefs->GetPref(PWSprefs::DeleteQuestion);
+  m_Misc_MaintainDatetimeStamps = prefs->GetPref(PWSprefs::MaintainDateTimeStamps);
+  m_Misc_EscExits = prefs->GetPref(PWSprefs::EscExits);
+  m_DoubleClickAction = prefs->GetPref(PWSprefs::DoubleClickAction);
+  if (m_DoubleClickAction < 0 ||
+      m_DoubleClickAction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
+    m_DoubleClickAction = 0;
+  m_Misc_DoubleClickActionCB->SetValue(_(DCAStrings[m_DoubleClickAction]));
+  m_ShiftDoubleClickAction = prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
+  if (m_ShiftDoubleClickAction < 0 ||
+      m_ShiftDoubleClickAction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
+    m_ShiftDoubleClickAction = 0;
+  m_Misc_ShiftDoubleClickActionCB->SetValue(_(DCAStrings[m_ShiftDoubleClickAction]));
+  m_Misc_AutotypeMinimize = prefs->GetPref(PWSprefs::MinimizeOnAutotype);
+  m_Misc_AutotypeString = prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
+  if (m_Misc_AutotypeString.empty())
+    m_Misc_AutotypeString = DEFAULT_AUTOTYPE;
+  m_Misc_UseDefUsername = prefs->GetPref(PWSprefs::UseDefaultUser);
+  m_Misc_DefaultUsernameTXT->SetValue(prefs->GetPref(PWSprefs::DefaultUsername).c_str());
+  m_Misc_DefaultUsernameTXT->Enable(m_Misc_UseDefUsername);
+  m_Misc_DefaultUsernameLBL->Enable(m_Misc_UseDefUsername);
+  m_Misc_QuerySetDefUsername = prefs->GetPref(PWSprefs::QuerySetDef);
+  m_Misc_OtherBrowserLocation = prefs->GetPref(PWSprefs::AltBrowser).c_str();
+  m_Misc_OtherBrowserLocationparams = prefs->GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
 
   // Password History preferences
-  m_pwhistsave = prefs->GetPref(PWSprefs::SavePasswordHistory);
-  m_pwhistnumdflt = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
-  m_pwhistnumdfltSB->Enable(m_pwhistsave);
-  m_pwhdefexpdays = prefs->GetPref(PWSprefs::DefaultExpiryDays);
+  m_PasswordHistory_Save = prefs->GetPref(PWSprefs::SavePasswordHistory);
+  m_PasswordHistory_NumDefault = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
+  m_PasswordHistory_NumDefaultSB->Enable(m_PasswordHistory_Save);
+  m_PasswordHistory_DefaultExpiryDays = prefs->GetPref(PWSprefs::DefaultExpiryDays);
 
   // Security Preferences
   m_Security_ClearClipboardOnMinimize   = prefs->GetPref(PWSprefs::ClearClipboardOnMinimize);
@@ -926,27 +944,27 @@ void COptions::PrefsToPropSheet()
   auto *app = dynamic_cast<PwsafeApp *>(wxTheApp);
   uint32 hashIters = app->GetHashIters();
   if (hashIters <= MIN_HASH_ITERATIONS) {
-    m_hashIterSlider = 0;
+    m_Security_HashIterSlider = 0;
   } else {
     const int step = MAX_USABLE_HASH_ITERS/100;
-    m_hashIterSlider = uint32(hashIters/step);
+    m_Security_HashIterSlider = uint32(hashIters/step);
   }
 
   // System preferences
-  m_sysmaxREitemsSB->SetValue(prefs->GetPref(PWSprefs::MaxREItems));
-  m_sysusesystrayCB->SetValue(prefs->GetPref(PWSprefs::UseSystemTray));
+  m_System_MaxREItemsSB->SetValue(prefs->GetPref(PWSprefs::MaxREItems));
+  m_System_UseSystemTrayCB->SetValue(prefs->GetPref(PWSprefs::UseSystemTray));
   if (!IsTaskBarIconAvailable()) {
-    m_systrayWarning->Show();
+    m_System_SystemTrayWarningST->Show();
     Layout();
   }
-  m_sysstartup = false; // XXX TBD
-  m_sysmaxmru = prefs->GetPref(PWSprefs::MaxMRUItems);
-  m_sysmruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
-  m_sysdefopenro = prefs->GetPref(PWSprefs::DefaultOpenRO);
-  m_sysmultinst = prefs->GetPref(PWSprefs::MultipleInstances);
+  m_System_Startup = false; // XXX TBD
+  m_System_MaxMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
+  m_System_MRUOnFileMenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
+  m_System_DefaultOpenRO = prefs->GetPref(PWSprefs::DefaultOpenRO);
+  m_System_MultipleInstances = prefs->GetPref(PWSprefs::MultipleInstances);
 #if defined(__X__) || defined(__WXGTK__)
-  m_usePrimarySelection = prefs->GetPref(PWSprefs::UsePrimarySelectionForClipboard);
-  m_useAltAutoType = prefs->GetPref(PWSprefs::UseAltAutoType);
+  m_System_UsePrimarySelection = prefs->GetPref(PWSprefs::UsePrimarySelectionForClipboard);
+  m_System_UseAltAutoType = prefs->GetPref(PWSprefs::UseAltAutoType);
 #endif
 }
 
@@ -964,56 +982,56 @@ void COptions::PropSheetToPrefs()
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Backup-related preferences
-  prefs->SetPref(PWSprefs::BackupBeforeEverySave, m_backupb4save);
+  prefs->SetPref(PWSprefs::BackupBeforeEverySave, m_Backup_BackupBeforeSave);
   wxString buprefixValue;
-  if (m_usrbuprefixRB->GetValue())
-    buprefixValue = m_usrbuprefixTxt->GetValue();
+  if (m_Backup_UserPrefixRB->GetValue())
+    buprefixValue = m_Backup_UserPrefixTXT->GetValue();
   prefs->SetPref(PWSprefs::BackupPrefixValue, tostringx(buprefixValue));
-  int suffixIndex = m_busuffixCB->GetCurrentSelection();
+  int suffixIndex = m_Backup_SuffixCB->GetCurrentSelection();
   prefs->SetPref(PWSprefs::BackupSuffix, suffixIndex);
   if (suffixIndex == INC_SFX)
-    prefs->SetPref(PWSprefs::BackupMaxIncremented, m_bumaxinc->GetValue());
+    prefs->SetPref(PWSprefs::BackupMaxIncremented, m_Backup_MaxIncrSB->GetValue());
   wxString budirValue;
-  if (m_usrbudirRB->GetValue())
-    budirValue = m_usrbudirTxt->GetValue();
+  if (m_Backup_UserDirRB->GetValue())
+    budirValue = m_Backup_UserDirTXT->GetValue();
   prefs->SetPref(PWSprefs::BackupDir, tostringx(budirValue));
 
   // display-related preferences
-  prefs->SetPref(PWSprefs::AlwaysOnTop, m_alwaysontop);
+  prefs->SetPref(PWSprefs::AlwaysOnTop, m_Display_AlwaysOnTop);
   // set/clear wxSTAY_ON_TOP flag accordingly:
   long flags = GetParent()->GetWindowStyleFlag();
-  if (m_alwaysontop)
+  if (m_Display_AlwaysOnTop)
     flags |= wxSTAY_ON_TOP;
   else
     flags &= ~wxSTAY_ON_TOP;
   GetParent()->SetWindowStyleFlag(flags);
 
   prefs->SetPref(PWSprefs::ShowNotesAsTooltipsInViews,
-                 m_shownotesastipsinviews);
-  prefs->SetPref(PWSprefs::NotesWordWrap, m_wordwrapnotes);
-  prefs->SetPref(PWSprefs::ExplorerTypeTree, m_putgroups1st);
-  prefs->SetPref(PWSprefs::PreExpiryWarn, m_preexpirywarn);
-  if (m_preexpirywarn)
+                 m_Display_ShowNotesAsTipsInViews);
+  prefs->SetPref(PWSprefs::NotesWordWrap, m_Display_WordWrapNotes);
+  prefs->SetPref(PWSprefs::ExplorerTypeTree, m_Display_GroupsFirst);
+  prefs->SetPref(PWSprefs::PreExpiryWarn, m_Display_PreExpiryWarn);
+  if (m_Display_PreExpiryWarn)
     prefs->SetPref(PWSprefs::PreExpiryWarnDays,
-                   m_preexpirywarndaysSB->GetValue());
+                   m_Display_PreExpiryWarnDaysSB->GetValue());
 
   // Misc. preferences
-  prefs->SetPref(PWSprefs::DeleteQuestion, !m_confirmdelete);
-  prefs->SetPref(PWSprefs::EscExits, m_escexits);
-  m_doubleclickaction = DCAStr2Int(m_DCACB->GetValue());
-  prefs->SetPref(PWSprefs::DoubleClickAction, m_doubleclickaction);
-  m_shiftdoubleclickaction = DCAStr2Int(m_SDCACB->GetValue());
-  prefs->SetPref(PWSprefs::ShiftDoubleClickAction, m_shiftdoubleclickaction);
-  prefs->SetPref(PWSprefs::MinimizeOnAutotype, m_minauto);
-  prefs->SetPref(PWSprefs::QuerySetDef, m_querysetdef);
-  prefs->SetPref(PWSprefs::AltBrowser, tostringx(m_otherbrowser));
+  prefs->SetPref(PWSprefs::DeleteQuestion, !m_Misc_ConfirmDelete);
+  prefs->SetPref(PWSprefs::EscExits, m_Misc_EscExits);
+  m_DoubleClickAction = DCAStr2Int(m_Misc_DoubleClickActionCB->GetValue());
+  prefs->SetPref(PWSprefs::DoubleClickAction, m_DoubleClickAction);
+  m_ShiftDoubleClickAction = DCAStr2Int(m_Misc_ShiftDoubleClickActionCB->GetValue());
+  prefs->SetPref(PWSprefs::ShiftDoubleClickAction, m_ShiftDoubleClickAction);
+  prefs->SetPref(PWSprefs::MinimizeOnAutotype, m_Misc_AutotypeMinimize);
+  prefs->SetPref(PWSprefs::QuerySetDef, m_Misc_QuerySetDefUsername);
+  prefs->SetPref(PWSprefs::AltBrowser, tostringx(m_Misc_OtherBrowserLocation));
   prefs->SetPref(PWSprefs::AltBrowserCmdLineParms,
-                 tostringx(m_otherbrowserparams));
+                 tostringx(m_Misc_OtherBrowserLocationparams));
 
   // Password History preferences
-  prefs->SetPref(PWSprefs::SavePasswordHistory, m_pwhistsave);
-  prefs->SetPref(PWSprefs::NumPWHistoryDefault, m_pwhistnumdflt);
-  prefs->SetPref(PWSprefs::DefaultExpiryDays, m_pwhdefexpdays);
+  prefs->SetPref(PWSprefs::SavePasswordHistory, m_PasswordHistory_Save);
+  prefs->SetPref(PWSprefs::NumPWHistoryDefault, m_PasswordHistory_NumDefault);
+  prefs->SetPref(PWSprefs::DefaultExpiryDays, m_PasswordHistory_DefaultExpiryDays);
 
   // Security Preferences
   prefs->SetPref(PWSprefs::ClearClipboardOnMinimize   , m_Security_ClearClipboardOnMinimize);
@@ -1024,23 +1042,23 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::LockOnWindowLock           , m_Security_LockOnWindowLock);
 
   m_hashIterValue = MIN_HASH_ITERATIONS;
-  if (m_hashIterSlider > 0) {
+  if (m_Security_HashIterSlider > 0) {
     const int step = MAX_USABLE_HASH_ITERS/100;
-    m_hashIterValue = uint32(m_hashIterSlider*step);
+    m_hashIterValue = uint32(m_Security_HashIterSlider*step);
   }
 
   // System preferences
-  prefs->SetPref(PWSprefs::MaxREItems, m_sysmaxREitemsSB->GetValue());
-  prefs->SetPref(PWSprefs::UseSystemTray, m_sysusesystrayCB->GetValue());
-  m_sysstartup = false; // XXX TBD
-  prefs->SetPref(PWSprefs::MaxMRUItems, m_sysmaxmru);
-  prefs->SetPref(PWSprefs::MRUOnFileMenu, m_sysmruonfilemenu);
-  prefs->SetPref(PWSprefs::DefaultOpenRO, m_sysdefopenro);
-  prefs->SetPref(PWSprefs::MultipleInstances, m_sysmultinst);
+  prefs->SetPref(PWSprefs::MaxREItems, m_System_MaxREItemsSB->GetValue());
+  prefs->SetPref(PWSprefs::UseSystemTray, m_System_UseSystemTrayCB->GetValue());
+  m_System_Startup = false; // XXX TBD
+  prefs->SetPref(PWSprefs::MaxMRUItems, m_System_MaxMRUItems);
+  prefs->SetPref(PWSprefs::MRUOnFileMenu, m_System_MRUOnFileMenu);
+  prefs->SetPref(PWSprefs::DefaultOpenRO, m_System_DefaultOpenRO);
+  prefs->SetPref(PWSprefs::MultipleInstances, m_System_MultipleInstances);
 #if defined(__X__) || defined(__WXGTK__)
-  prefs->SetPref(PWSprefs::UsePrimarySelectionForClipboard, m_usePrimarySelection);
-  PWSclipboard::GetInstance()->UsePrimarySelection(m_usePrimarySelection);
-  prefs->SetPref(PWSprefs::UseAltAutoType, m_useAltAutoType);
+  prefs->SetPref(PWSprefs::UsePrimarySelectionForClipboard, m_System_UsePrimarySelection);
+  PWSclipboard::GetInstance()->UsePrimarySelection(m_System_UsePrimarySelection);
+  prefs->SetPref(PWSprefs::UseAltAutoType, m_System_UseAltAutoType);
 #endif
 
   // Now do a bit of trickery to find the new preferences to be stored in
@@ -1052,22 +1070,22 @@ void COptions::PropSheetToPrefs()
 
   // Update them - last parameter of SetPref and Store is: "bUseCopy = true"
   // In PropertyPage alphabetic order
-  prefs->SetPref(PWSprefs::SaveImmediately, m_saveimmediate, true);
-  prefs->SetPref(PWSprefs::ShowPWDefault, m_pwshowinedit, true);
+  prefs->SetPref(PWSprefs::SaveImmediately, m_Backup_SaveImmediately, true);
+  prefs->SetPref(PWSprefs::ShowPWDefault, m_Display_ShowPasswordInEdit, true);
 
-  prefs->SetPref(PWSprefs::ShowUsernameInTree, m_showusernameintree, true);
-  prefs->SetPref(PWSprefs::ShowPasswordInTree, m_showpasswordintreeCB->GetValue(), true);
+  prefs->SetPref(PWSprefs::ShowUsernameInTree, m_Display_ShowUsernameInTree, true);
+  prefs->SetPref(PWSprefs::ShowPasswordInTree, m_Display_ShowPasswordInTreeCB->GetValue(), true);
 
-  prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, m_inittreeview, true);
-  prefs->SetPref(PWSprefs::ShowNotesDefault, m_notesshowinedit, true);
-  prefs->SetPref(PWSprefs::MaintainDateTimeStamps, m_maintaindatetimestamps, true);
-  prefs->SetPref(PWSprefs::UseDefaultUser, m_usedefuser, true);
-  prefs->SetPref(PWSprefs::DefaultUsername, tostringx(m_defusernameTXT->GetValue()), true);
+  prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, m_Display_TreeDisplayStatusAtOpen, true);
+  prefs->SetPref(PWSprefs::ShowNotesDefault, m_Display_ShowNotesInEdit, true);
+  prefs->SetPref(PWSprefs::MaintainDateTimeStamps, m_Misc_MaintainDatetimeStamps, true);
+  prefs->SetPref(PWSprefs::UseDefaultUser, m_Misc_UseDefUsername, true);
+  prefs->SetPref(PWSprefs::DefaultUsername, tostringx(m_Misc_DefaultUsernameTXT->GetValue()), true);
 
-  if (m_autotypeStr.empty() || m_autotypeStr == DEFAULT_AUTOTYPE)
+  if (m_Misc_AutotypeString.empty() || m_Misc_AutotypeString == DEFAULT_AUTOTYPE)
       prefs->SetPref(PWSprefs::DefaultAutotypeString, wxEmptyString, true);
   else
-    prefs->SetPref(PWSprefs::DefaultAutotypeString, tostringx(m_autotypeStr), true);
+    prefs->SetPref(PWSprefs::DefaultAutotypeString, tostringx(m_Misc_AutotypeString), true);
 
   prefs->SetPref(PWSprefs::LockDBOnIdleTimeout, m_Security_LockOnIdleTimeout, true);
   prefs->SetPref(PWSprefs::IdleTimeout, m_Security_IdleTimeoutSB->GetValue(), true);
@@ -1092,11 +1110,11 @@ void COptions::OnOk(wxCommandEvent& /* evt */)
 void COptions::OnBackupB4SaveClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
-    m_dfltbuprefixRB->Enable(m_backupb4save);
-    m_usrbuprefixRB->Enable(m_backupb4save);
-    m_usrbuprefixTxt->Enable(m_backupb4save);
-    m_busuffixCB->Enable(m_backupb4save);
-    m_bumaxinc->Enable(m_backupb4save);
+    m_Backup_DefaultPrefixRB->Enable(m_Backup_BackupBeforeSave);
+    m_Backup_UserPrefixRB->Enable(m_Backup_BackupBeforeSave);
+    m_Backup_UserPrefixTXT->Enable(m_Backup_BackupBeforeSave);
+    m_Backup_SuffixCB->Enable(m_Backup_BackupBeforeSave);
+    m_Backup_MaxIncrSB->Enable(m_Backup_BackupBeforeSave);
   }
 }
 
@@ -1115,8 +1133,8 @@ void COptions::OnBuPrefix( wxCommandEvent& evt )
 
 void COptions::OnBuPrefixTxtSetFocus( wxFocusEvent& /* evt */ )
 {
-  m_dfltbuprefixRB->SetValue(false);
-  m_usrbuprefixRB->SetValue(true);
+  m_Backup_DefaultPrefixRB->SetValue(false);
+  m_Backup_UserPrefixRB->SetValue(true);
 }
 
 /*!
@@ -1125,16 +1143,16 @@ void COptions::OnBuPrefixTxtSetFocus( wxFocusEvent& /* evt */ )
 
 void COptions::OnSuffixCBSet( wxCommandEvent& /* evt */ )
 {
-  int suffixIndex = m_busuffixCB->GetCurrentSelection();
-  wxString example = m_usrbuprefixTxt->GetValue();
+  int suffixIndex = m_Backup_SuffixCB->GetCurrentSelection();
+  wxString example = m_Backup_UserPrefixTXT->GetValue();
 
   if (example.empty())
     example = wxT("pwsafe"); // XXXX get current file's basename!
 
-  m_bumaxinc->Enable(suffixIndex == INC_SFX);
+  m_Backup_MaxIncrSB->Enable(suffixIndex == INC_SFX);
   switch (suffixIndex) {
   case NO_SFX:
-    m_suffixExample->SetLabel(wxEmptyString);
+    m_Backup_SuffixExampleST->SetLabel(wxEmptyString);
     break;
   case TS_SFX: {
     time_t now;
@@ -1157,7 +1175,7 @@ void COptions::OnSuffixCBSet( wxCommandEvent& /* evt */ )
   default:
     break;
   }
-  m_suffixExample->SetLabel(example);
+  m_Backup_SuffixExampleST->SetLabel(example);
 }
 
 /*!
@@ -1169,7 +1187,7 @@ void COptions::OnBuDirBrowseClick( wxCommandEvent& /* evt */ )
   wxDirDialog dirdlg(this);
   int status = dirdlg.ShowModal();
   if (status == wxID_OK)
-    m_usrbudirTxt->SetValue(dirdlg.GetPath());
+    m_Backup_UserDirTXT->SetValue(dirdlg.GetPath());
 }
 
 /*!
@@ -1179,9 +1197,9 @@ void COptions::OnBuDirBrowseClick( wxCommandEvent& /* evt */ )
 void COptions::OnShowUsernameInTreeCB( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
-    if (!m_showusernameintree)
-      m_showpasswordintreeCB->SetValue(false);
-    m_showpasswordintreeCB->Enable(m_showusernameintree);
+    if (!m_Display_ShowUsernameInTree)
+      m_Display_ShowPasswordInTreeCB->SetValue(false);
+    m_Display_ShowPasswordInTreeCB->Enable(m_Display_ShowUsernameInTree);
   }
 }
 
@@ -1192,7 +1210,7 @@ void COptions::OnShowUsernameInTreeCB( wxCommandEvent& /* evt */ )
 void COptions::OnPreExpiryWarnClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
-    m_preexpirywarndaysSB->Enable(m_preexpirywarn);
+    m_Display_PreExpiryWarnDaysSB->Enable(m_Display_PreExpiryWarn);
   }
 }
 
@@ -1203,8 +1221,8 @@ void COptions::OnPreExpiryWarnClick( wxCommandEvent& /* evt */ )
 void COptions::OnUseDefaultUserClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
-    m_defusernameTXT->Enable(m_usedefuser);
-    m_defusernameLBL->Enable(m_usedefuser);
+    m_Misc_DefaultUsernameTXT->Enable(m_Misc_UseDefUsername);
+    m_Misc_DefaultUsernameLBL->Enable(m_Misc_UseDefUsername);
   }
 }
 
@@ -1216,10 +1234,10 @@ void COptions::OnBrowseLocationClick( wxCommandEvent& /* evt */ )
 {
   wxFileDialog fd(this, _("Select a Browser"));
   if (Validate() && TransferDataFromWindow()) {
-    fd.SetPath(m_otherbrowser);
+    fd.SetPath(m_Misc_OtherBrowserLocation);
   }
   if (fd.ShowModal() == wxID_OK) {
-    m_otherbrowser = fd.GetPath();
+    m_Misc_OtherBrowserLocation = fd.GetPath();
     Validate() && TransferDataToWindow();
   }
 }
@@ -1230,27 +1248,27 @@ void COptions::OnBrowseLocationClick( wxCommandEvent& /* evt */ )
 
 void COptions::OnPWHistApply( wxCommandEvent& evt )
 {
-  int applytoprotected = m_applytoprotectedCB->GetValue();
+  int applytoprotected = m_PasswordHistory_Apply2ProtectedCB->GetValue();
   int pwhistaction = 0;
-  int pwhistnum = m_pwhistnumdfltSB->GetValue();
+  int pwhistnum = m_PasswordHistory_NumDefaultSB->GetValue();
   wxString resultmsg;
 
-  if (m_pwhiststopRB->GetValue()) {
+  if (m_PasswordHistory_StopRB->GetValue()) {
     // Reset entries to HISTORY OFF
     pwhistaction = (applytoprotected) ? PWHist::STOP_INCL_PROT : PWHist::STOP_EXCL_PROT;
     resultmsg = _("Number of entries that had their settings changed to not save password history was: %d");
 
-  } else if (m_pwhiststartRB->GetValue()) {
+  } else if (m_PasswordHistory_StartRB->GetValue()) {
     // Reset entries to HISTORY ON
     pwhistaction = (applytoprotected) ? PWHist::START_INCL_PROT : PWHist::START_EXCL_PROT;
     resultmsg = _("Number of entries that had their settings changed to save password history was: %d");
 
-  } else if (m_pwhistsetmaxRB->GetValue()) {
+  } else if (m_PasswordHistory_SetMaxRB->GetValue()) {
     // Don't reset history setting, but set history number
     pwhistaction = (applytoprotected) ? PWHist::SETMAX_INCL_PROT : PWHist::SETMAX_EXCL_PROT;
     resultmsg = _("Number of entries that had their 'maximum saved passwords' changed to the new default was %d");
 
-  } else if (m_pwhistclearRB->GetValue()) {
+  } else if (m_PasswordHistory_ClearRB->GetValue()) {
     // Don't reset history setting, but clear all history items
     pwhistaction = (applytoprotected) ? PWHist::CLEAR_INCL_PROT : PWHist::CLEAR_EXCL_PROT;
     resultmsg = _("Number of entries that had their password history removed was %d");
@@ -1287,8 +1305,8 @@ void COptions::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!dbIsReadOnly);
       break;
     case ID_RADIOBUTTON7:
-      m_usrbudirTxt->Enable(m_usrbudirRB->GetValue());
-      m_buDirBN->Enable(m_usrbudirRB->GetValue());
+      m_Backup_UserDirTXT->Enable(m_Backup_UserDirRB->GetValue());
+      m_Backup_DirBN->Enable(m_Backup_UserDirRB->GetValue());
       break;
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Display"
@@ -1333,7 +1351,7 @@ void COptions::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!dbIsReadOnly);
       break;
     case ID_SPINCTRL11:
-      evt.Enable(!dbIsReadOnly && m_pwhistsaveCB->GetValue());
+      evt.Enable(!dbIsReadOnly && m_PasswordHistory_SaveCB->GetValue());
       break;
     case ID_STATICTEXT_8:
       evt.Enable(!dbIsReadOnly);
@@ -1342,8 +1360,8 @@ void COptions::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!dbIsReadOnly);
       break;
     case ID_PWHISTNOCHANGE:
-      m_applytoprotectedCB->Enable(!dbIsReadOnly && !m_pwhistnochangeRB->GetValue());
-      m_pwhistapplyBN->Enable(!dbIsReadOnly && !m_pwhistnochangeRB->GetValue());
+      m_PasswordHistory_Apply2ProtectedCB->Enable(!dbIsReadOnly && !m_PasswordHistory_NoChangeRB->GetValue());
+      m_PasswordHistory_ApplyBN->Enable(!dbIsReadOnly && !m_PasswordHistory_NoChangeRB->GetValue());
       evt.Enable(!dbIsReadOnly);
       break;
     case ID_PWHISTSTOP:
@@ -1391,7 +1409,7 @@ void COptions::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_SPINCTRL13:
     case ID_STATICTEXT_7:
     case ID_STATICTEXT_10:
-      evt.Enable(m_sysusesystrayCB->GetValue());
+      evt.Enable(m_System_UseSystemTrayCB->GetValue());
       break;
     default:
       break;
