@@ -288,7 +288,7 @@ void COptions::CreateControls()
   for (int i = 0; i < int(sizeof(BACKUP_SUFFIX)/sizeof(BACKUP_SUFFIX[0])); ++i) {
     Backup_SuffixCBStrings.Add(_(BACKUP_SUFFIX[i]));
   }
-  m_Backup_SuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_Backup_SuffixCBStrings, wxCB_READONLY );
+  m_Backup_SuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), Backup_SuffixCBStrings, wxCB_READONLY );
   itemBoxSizer15->Add(m_Backup_SuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText17 = new wxStaticText( itemPanel2, wxID_STATIC, _("Max."), wxDefaultPosition, wxDefaultSize, 0 );
