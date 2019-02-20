@@ -28,7 +28,7 @@
 
 ////@begin forward declarations
 ////@end forward declarations
-class UIInterFace;
+class Observer;
 
 /*!
  * Control identifiers
@@ -118,7 +118,7 @@ private:
   void ItemFieldsToDialog();
   PWScore &m_core;
   CItemData *m_base;
-  UIInterFace *m_ui;
+  Observer *m_ui;
 };
 
 #endif

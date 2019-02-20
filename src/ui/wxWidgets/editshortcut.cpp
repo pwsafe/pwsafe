@@ -61,7 +61,7 @@ EditShortcut::EditShortcut(wxWindow* parent,
                            PWScore &core, CItemData *item,
                            wxWindowID id, const wxString& caption,
                            const wxPoint& pos, const wxSize& size, long style)
-: m_core(core), m_item(item), m_ui(dynamic_cast<UIInterFace *>(parent))
+: m_core(core), m_item(item), m_ui(dynamic_cast<Observer *>(parent))
 {
   ASSERT(m_item != nullptr);
   ASSERT(m_ui != nullptr);

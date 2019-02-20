@@ -122,7 +122,7 @@ END_EVENT_TABLE()
  */
 
 AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
-                                   SheetType type, const CItemData *item, UIInterFace* ui,
+                                   SheetType type, const CItemData *item, Observer* ui,
                                    const wxString& selectedGroup,
                                    wxWindowID id, const wxString& caption,
                                    const wxPoint& pos, const wxSize& size,
