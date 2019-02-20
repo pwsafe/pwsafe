@@ -358,12 +358,7 @@ PasswordSafeFrame::~PasswordSafeFrame()
 
 void PasswordSafeFrame::Init()
 {
-  std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions;
-  bsSupportedFunctions.set(UIInterFace::DATABASEMODIFIED);
-  bsSupportedFunctions.set(UIInterFace::UPDATEGUI);
-  bsSupportedFunctions.set(UIInterFace::GUIREFRESHENTRY);
-
-  m_core.SetUIInterFace(this, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
+  m_core.RegisterObserver(this);
 
   m_RUEList.SetMax(PWSprefs::GetInstance()->PWSprefs::MaxREItems);
 ////@begin PasswordSafeFrame member initialisation

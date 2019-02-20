@@ -41,7 +41,7 @@ class wxDatePickerCtrl;
 class wxGridSizer;
 class wxBoxSizer;
 ////@end forward declarations
-class UIInterFace;
+class Observer;
 
 #ifndef wxDIALOG_MODAL
 #define wxDIALOG_MODAL 0
@@ -127,7 +127,7 @@ public:
   /// Constructor
   // item is nullptr for ADD, otherwise its values are retrieved and displayed
   AddEditPropSheet(wxWindow* parent, PWScore &core,
-                   SheetType type, const CItemData *item = nullptr,  UIInterFace* ui = 0,
+                   SheetType type, const CItemData *item = nullptr,  Observer* ui = 0,
                    const wxString& selectedGroup = wxEmptyString,
                    wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME,
                    const wxString& caption = SYMBOL_AUTOPROPSHEET_TITLE,
@@ -359,7 +359,7 @@ private:
   StringX m_password;
   bool m_isPWHidden;
   PWScore &m_core;
-  UIInterFace *m_ui;
+  Observer *m_ui;
   wxString m_selectedGroup;  //Group title in tree view user right-clicked on to add an item
 
   SheetType m_type;

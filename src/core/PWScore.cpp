@@ -3172,23 +3172,11 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
   return nullptr;
 }
 
-bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
-                             std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions)
+bool PWScore::RegisterObserver(Observer *pUIIF)
 {
   bool brc(true);
   m_pUIIF = pUIIF;
-  ASSERT(numsupported == UIInterFace::NUM_SUPPORTED);
 
-  m_bsSupportedFunctions.reset();
-  if (numsupported == UIInterFace::NUM_SUPPORTED) {
-    m_bsSupportedFunctions = bsSupportedFunctions;
-  } else {
-    size_t minsupported = std::min(numsupported, size_t(UIInterFace::NUM_SUPPORTED));
-    for (size_t i = 0; i < minsupported; i++) {
-      m_bsSupportedFunctions.set(i, bsSupportedFunctions.test(i));
-    }
-    brc = false;
-  }
   return brc;
 }
 
@@ -3201,8 +3189,7 @@ void PWScore::NotifyDBModified()
   // This allows the core to provide feedback to the UI that the Database
   // has changed particularly to invalidate any current Find results and
   // to populate message during Vista and later shutdowns
-  if (m_bNotifyDB && m_pUIIF != nullptr &&
-      m_bsSupportedFunctions.test(UIInterFace::DATABASEMODIFIED))
+  if (m_bNotifyDB && m_pUIIF != nullptr)
     m_pUIIF->DatabaseModified(HasDBChanged());
 }
 
@@ -3212,8 +3199,7 @@ void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
 {
   // This allows the core to provide feedback to the UI that the GUI needs
   // updating due to a field having its value changed
-  if (m_pUIIF != nullptr &&
-      m_bsSupportedFunctions.test(UIInterFace::UPDATEGUI))
+  if (m_pUIIF != nullptr)
     m_pUIIF->UpdateGUI(ga, entry_uuid, ft);
 }
 
@@ -3222,8 +3208,7 @@ void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
 {
   // This allows the core to provide feedback to the UI that the GUI needs
   // updating due to a field having its value changed
-  if (m_pUIIF != nullptr &&
-      m_bsSupportedFunctions.test(UIInterFace::UPDATEGUIGROUPS))
+  if (m_pUIIF != nullptr)
     m_pUIIF->UpdateGUI(ga, vGroups);
 }
 
@@ -3231,8 +3216,7 @@ void PWScore::GUIRefreshEntry(const CItemData &ci, bool bAllowFail)
 {
   // This allows the core to provide feedback to the UI that a particular
   // entry has been modified
-  if (m_pUIIF != nullptr &&
-      m_bsSupportedFunctions.test(UIInterFace::GUIREFRESHENTRY))
+  if (m_pUIIF != nullptr)
     m_pUIIF->GUIRefreshEntry(ci, bAllowFail);
 }
 
@@ -3244,8 +3228,7 @@ void PWScore::UpdateWizard(const stringT &s)
   // string gives the full 'group, title, user' of the entry.
   // It is expected that the UI will implement a pointer or other reference to
   // this control so that it can update the text displayed there (see MFC implementation).
-  if (m_pUIIF != nullptr &&
-      m_bsSupportedFunctions.test(UIInterFace::UPDATEWIZARD))
+  if (m_pUIIF != nullptr)
     m_pUIIF->UpdateWizard(s);
 }
 

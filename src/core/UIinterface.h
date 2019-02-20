@@ -20,25 +20,10 @@
  * This is the classic 'mixin' design pattern.
  */
 
-class UIInterFace
+class Observer
 {
 public:
-  UIInterFace() {}
-
-  /** Functions that can be supported by the UI.
-   * It is the responsiblity of the UI to tell the core via SetUIInterFace
-   * which ones it supports.  It will not get called for ones that it does not
-   * support.
-   * NOTE: New functions must be placed at the end of the list.
-   * Sequential values must be used as they are used to access positions in
-   * a std::bitset<NUM_SUPPORTED> variable.
-   *
-   * DO NOT change the order of the functions as UIs will fail
-   */
-  enum Functions {
-    DATABASEMODIFIED = 0, UPDATEGUI, GUIREFRESHENTRY,
-    UPDATEWIZARD, UPDATEGUIGROUPS,
-    NUM_SUPPORTED};
+  Observer() {}
 
   /*
    * UpdateGUI(bChanged):
@@ -65,7 +50,7 @@ public:
   // UpdateWizard: called to update text in Wizard during export Text/XML.
   virtual void UpdateWizard(const stringT &s) = 0;
 
-  virtual ~UIInterFace() {}
+  virtual ~Observer() {}
 };
 
 #endif /* __UIINTERFACE_H */
