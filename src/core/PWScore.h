@@ -60,7 +60,7 @@ struct st_DBProperties {
 
 struct st_ValidateResults;
 
-class PWScore : public CommandInterface
+class PWScore : public Observable, public CommandInterface
 {
 public:
   enum {
@@ -94,8 +94,6 @@ public:
 
   PWScore();
   ~PWScore();
-
-  bool RegisterObserver(Observer *pUIIF);
 
   // Set following to a Reporter-derived object
   // so that we can inform user of events of interest
@@ -602,8 +600,6 @@ private:
   UUIDList m_RUEList;
   UUIDList m_InitialRUEList;
 
-  Observer *m_pUIIF; // pointer to UI interface abtraction
-  
   void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action, const pws_os::CUUID &,
                               CItemData::FieldType ft = CItemData::START);
 

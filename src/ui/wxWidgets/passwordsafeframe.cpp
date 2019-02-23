@@ -350,6 +350,7 @@ PasswordSafeFrame::~PasswordSafeFrame()
   m_guiInfo = 0;
 
   m_core.ClearDBData();
+  m_core.UnregisterObserver(this);
 }
 
 /*!

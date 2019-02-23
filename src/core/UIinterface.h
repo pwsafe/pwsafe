@@ -11,6 +11,8 @@
 #include "Command.h"
 #include "ItemData.h"
 
+#include <algorithm>
+
 /**
  * An abstract base class representing all of the UI functionality
  * that core needs to know about.
@@ -51,6 +53,30 @@ public:
   virtual void UpdateWizard(const stringT &s) = 0;
 
   virtual ~Observer() {}
+};
+
+class Observable
+{
+public:
+  void RegisterObserver(Observer* observer)
+  {
+    if (std::find(m_Observers.begin(), m_Observers.end(), observer) == m_Observers.end()) {
+      m_Observers.push_back(observer);
+    }
+  }
+
+  void UnregisterObserver(Observer* observer)
+  {
+    m_Observers.erase(std::remove_if(
+      m_Observers.begin(), m_Observers.end(), 
+      [observer](Observer* registeredObserver){ return registeredObserver == observer; }), 
+      m_Observers.end());
+  }
+  
+  virtual ~Observable() {};
+
+protected:
+  std::vector<Observer*> m_Observers;
 };
 
 #endif /* __UIINTERFACE_H */
