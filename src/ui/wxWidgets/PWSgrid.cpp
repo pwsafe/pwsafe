@@ -78,11 +78,11 @@ PWSGrid::PWSGrid(wxWindow* parent, PWScore &core,
 {
   Init();
   Create(parent, id, pos, size, style);
-  
+
   auto *header = wxGrid::GetGridColHeader();
-  
+
   if (header) {
-    
+
     // Handler for double click events on column header separator
     header->Bind(
       wxEVT_HEADER_SEPARATOR_DCLICK, 
@@ -90,7 +90,7 @@ PWSGrid::PWSGrid(wxWindow* parent, PWScore &core,
         wxGrid::AutoSizeColumn(event.GetColumn());
       }
     );
-    
+
     // Handler for single click events on column header
     header->Bind(
       wxEVT_HEADER_CLICK, 
@@ -117,9 +117,9 @@ bool PWSGrid::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const 
   UseNativeColHeader(true);
 #endif
 ////@end PWSGrid creation
-  
+
   UpdateSorting();
-  
+
   return true;
 }
 
@@ -631,7 +631,7 @@ void PWSGrid::UpdateSorting()
 void PWSGrid::OnHeaderClick(wxHeaderCtrlEvent& event)
 {
   SortByColumn(event.GetColumn(), !IsSortOrderAscending());
-  
+
   if (GetSortingColumn() != wxNOT_FOUND) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::SortedColumn , GetSortingColumn());
     PWSprefs::GetInstance()->SetPref(PWSprefs::SortAscending, IsSortOrderAscending());
@@ -641,17 +641,17 @@ void PWSGrid::OnHeaderClick(wxHeaderCtrlEvent& event)
 void PWSGrid::SortByColumn(int column, bool ascending)
 {
   UnsetSortingColumn();
-  
+
   SetSortingColumn(column, ascending);
-  
+
   if (ascending) {
     AscendingSortedMultimap collection;
-    
+
     RearrangeItems<AscendingSortedMultimap> (collection, column);
   }
   else {
     DescendingSortedMultimap collection;
-    
+
     RearrangeItems<DescendingSortedMultimap> (collection, column);
   }
 }
@@ -660,16 +660,16 @@ template<typename ItemsCollection>
 void PWSGrid::RearrangeItems(ItemsCollection& collection, int column)
 {
   int row = 0;
-  
+
   for (row = 0; row < GetNumberRows(); row++) {
     collection.insert(std::pair<wxString, const CItemData*>(GetCellValue(row, column), GetItem(row)));
   }
-  
+
   m_row_map.clear();
   m_uuid_map.clear();
-  
+
   row = 0;
-  
+
   for (auto& item : collection) {
     RefreshItem(*item.second, row++);
   }

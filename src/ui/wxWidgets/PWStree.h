@@ -106,6 +106,7 @@ public:
   void OnContextMenu( wxTreeEvent& evt);
 
 ////@end PWSTreeCtrl event handler declarations
+
   void OnGetToolTip( wxTreeEvent& evt); // Added manually
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_ADDGROUP
@@ -120,8 +121,8 @@ public:
   void OnKeyDown(wxTreeEvent& evt);
 
 ////@begin PWSTreeCtrl member function declarations
-
 ////@end PWSTreeCtrl member function declarations
+
   void Clear() {DeleteAllItems(); m_item_map.clear();} // consistent name w/PWSgrid
   void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
@@ -143,11 +144,11 @@ public:
   void SaveGroupDisplayState();
   void RestoreGroupDisplayState();
 
- private:
+private:
   void PreferencesChanged();
 
   //overridden from base for case-insensitive sort
-  virtual int OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2);
+  virtual int OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2) override;
   bool ExistsInTree(wxTreeItemId node, const StringX &s, wxTreeItemId &si) const;
   wxTreeItemId AddGroup(const StringX &group);
   wxString ItemDisplayString(const CItemData &item) const;
@@ -161,11 +162,12 @@ public:
 
   template<typename GroupItemConsumer>
   void TraverseTree(wxTreeItemId itemId, GroupItemConsumer&& consumer);
+
 ////@begin PWSTreeCtrl member variables
 ////@end PWSTreeCtrl member variables
+
   PWScore &m_core;
   UUIDTIMapT m_item_map; // given a uuid, find the tree item pronto!
 };
 
-#endif
-  // _PWSTREECTRL_H_
+#endif  // _PWSTREECTRL_H_

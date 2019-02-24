@@ -174,43 +174,43 @@ private:
     enum class ViewType { TREE, GRID } m_currentView;
 
 public:
-    /// Constructors
-    PasswordSafeFrame(PWScore &core);
-    PasswordSafeFrame(wxWindow* parent, PWScore &core,
-                      wxWindowID id = SYMBOL_PASSWORDSAFEFRAME_IDNAME, const wxString& caption = SYMBOL_PASSWORDSAFEFRAME_TITLE, const wxPoint& pos = SYMBOL_PASSWORDSAFEFRAME_POSITION, const wxSize& size = SYMBOL_PASSWORDSAFEFRAME_SIZE, long style = SYMBOL_PASSWORDSAFEFRAME_STYLE );
+  /// Constructors
+  PasswordSafeFrame(PWScore &core);
+  PasswordSafeFrame(wxWindow* parent, PWScore &core,
+                    wxWindowID id = SYMBOL_PASSWORDSAFEFRAME_IDNAME, const wxString& caption = SYMBOL_PASSWORDSAFEFRAME_TITLE, const wxPoint& pos = SYMBOL_PASSWORDSAFEFRAME_POSITION, const wxSize& size = SYMBOL_PASSWORDSAFEFRAME_SIZE, long style = SYMBOL_PASSWORDSAFEFRAME_STYLE );
 
-    bool Create( wxWindow* parent, wxWindowID id = SYMBOL_PASSWORDSAFEFRAME_IDNAME, const wxString& caption = SYMBOL_PASSWORDSAFEFRAME_TITLE, const wxPoint& pos = SYMBOL_PASSWORDSAFEFRAME_POSITION, const wxSize& size = SYMBOL_PASSWORDSAFEFRAME_SIZE, long style = SYMBOL_PASSWORDSAFEFRAME_STYLE );
+  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_PASSWORDSAFEFRAME_IDNAME, const wxString& caption = SYMBOL_PASSWORDSAFEFRAME_TITLE, const wxPoint& pos = SYMBOL_PASSWORDSAFEFRAME_POSITION, const wxSize& size = SYMBOL_PASSWORDSAFEFRAME_SIZE, long style = SYMBOL_PASSWORDSAFEFRAME_STYLE );
 
-    /// Destructor
-    ~PasswordSafeFrame();
+  /// Destructor
+  ~PasswordSafeFrame();
 
-    /// Initialises member variables
-    void Init();
+  /// Initialises member variables
+  void Init();
 
-    /// Creates the controls and sizers
-    void CreateControls();
-    void CreateMenubar();
+  /// Creates the controls and sizers
+  void CreateControls();
+  void CreateMenubar();
 
-    ItemList::size_type GetNumEntries() const {return m_core.GetNumEntries();}
+  ItemList::size_type GetNumEntries() const {return m_core.GetNumEntries();}
 
-    /* Observer Interface Implementation */
+  /* Observer Interface Implementation */
 
-    /// Implements Observer::DatabaseModified(bool)
-    void DatabaseModified(bool bChanged) override;
+  /// Implements Observer::DatabaseModified(bool)
+  void DatabaseModified(bool bChanged) override;
 
-    /// Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
-    void UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft = CItemData::START) override;
+  /// Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
+  void UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft = CItemData::START) override;
 
-    /// Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const std::vector<StringX>&)
-    void UpdateGUI(UpdateGUICommand::GUI_Action ga, const std::vector<StringX> &vGroups) override;
+  /// Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const std::vector<StringX>&)
+  void UpdateGUI(UpdateGUICommand::GUI_Action ga, const std::vector<StringX> &vGroups) override;
 
-    /// Implements Observer::GUIRefreshEntry(const CItemData&, bool)
-    void GUIRefreshEntry(const CItemData &ci, bool bAllowFail = false) override;
+  /// Implements Observer::GUIRefreshEntry(const CItemData&, bool)
+  void GUIRefreshEntry(const CItemData &ci, bool bAllowFail = false) override;
 
-    /// Implements Observer::UpdateWizard(const stringT&)
-    void UpdateWizard(const stringT &s) override;
+  /// Implements Observer::UpdateWizard(const stringT&)
+  void UpdateWizard(const stringT &s) override;
 
-  ////@begin PasswordSafeFrame event handler declarations
+////@begin PasswordSafeFrame event handler declarations
 
   /// wxEVT_CHAR_HOOK event handler for WXK_ESCAPE
   void OnChar( wxKeyEvent& evt );
@@ -301,6 +301,7 @@ public:
   void OnYubikeyMngClick( wxCommandEvent& event );
 #endif /* NO_YUBI */
 ////@end PasswordSafeFrame event handler declarations
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxEVT_FIND
   void OnFindClick( wxCommandEvent& evt);
 
@@ -343,25 +344,25 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_MENU_CLEAR_MRU
   void OnClearRecentHistory(wxCommandEvent& evt);
 
-  /// .wxEVT_COMMAND_MENU_SELECTED event handler for ID_IMPORT_PLAINTEXT
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_IMPORT_PLAINTEXT
   void OnImportText(wxCommandEvent& evt);
 
-  /// .wxEVT_COMMAND_MENU_SELECTED event handler for ID_IMPORT_XML
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_IMPORT_XML
   void OnImportXML(wxCommandEvent& evt);
 
-  /// .wxEVT_COMMAND_MENU_SELECTED event handler for ID_IMPORT_KEEPASS
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_IMPORT_KEEPASS
   void OnImportKeePass(wxCommandEvent& evt);
 
-  /// .wxEVT_COMMAND_MENU_SELECTED event handler for EXPORT2OLD1XFORMAT & ID_EXPORT2V[23]FORMAT
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for EXPORT2OLD1XFORMAT & ID_EXPORT2V[23]FORMAT
   void OnExportVx(wxCommandEvent& evt);
 
-  /// .wxEVT_COMMAND_MENU_SELECTED event handler for ID_EXPORT2PLAINTEXT
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EXPORT2PLAINTEXT
   void OnExportPlainText(wxCommandEvent& evt);
 
-  /// .wxEVT_COMMAND_MENU_SELECTED event handler for ID_EXPORT2XML
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EXPORT2XML
   void OnExportXml(wxCommandEvent& evt);
 
-  /// called when one of the MRU db's is selected from File menu
+  /// Called when one of the MRU db's is selected from File menu
   void OnOpenRecentDB(wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYEMAIL
@@ -389,23 +390,23 @@ public:
   void OnRedo(wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EXPANDALL
-  void OnExpandAll(wxCommandEvent& /*evt*/);
+  void OnExpandAll(wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COLLAPSEALL
-  void OnCollapseAll(wxCommandEvent& /*evt*/);
+  void OnCollapseAll(wxCommandEvent& evt);
 
-  void OnChangeTreeFont(wxCommandEvent& /*evt*/);
-  void OnChangePasswordFont(wxCommandEvent& /*evt*/);
+  void OnChangeTreeFont(wxCommandEvent& evt);
+  void OnChangePasswordFont(wxCommandEvent& evt);
 
-  void OnShowHideToolBar(wxCommandEvent& /*evt*/);
-  void OnShowHideDragBar(wxCommandEvent& /*evt*/);
+  void OnShowHideToolBar(wxCommandEvent& evt);
+  void OnShowHideDragBar(wxCommandEvent& evt);
 
   void OnMergeAnotherSafe(wxCommandEvent& evt);
   void OnSynchronize(wxCommandEvent& evt);
   void OnCompare(wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TOOLBAR_CLASSIC and ID_TOOLBAR_NEW
-  void OnChangeToolbarType(wxCommandEvent& /*evt*/);
+  void OnChangeToolbarType(wxCommandEvent& evt);
 
   void OnBackupSafe(wxCommandEvent& evt);
   void OnRestoreSafe(wxCommandEvent& evt);
@@ -418,10 +419,11 @@ public:
 ////@begin PasswordSafeFrame member function declarations
 
   /// Retrieves bitmap resources
-  wxBitmap GetBitmapResource( const wxString& name );
+  wxBitmap GetBitmapResource(const wxString& name);
 
   /// Retrieves icon resources
-  wxIcon GetIconResource( const wxString& name );
+  wxIcon GetIconResource(const wxString& name);
+
 ////@end PasswordSafeFrame member function declarations
 
 /// Should we show tooltips?
@@ -451,7 +453,7 @@ public:
   void FlattenTree(OrderedItemList& olist);
 
   void DispatchDblClickAction(CItemData &item); // called by grid/tree
-  void UpdateSelChanged(const CItemData *pci); // ditto
+  void UpdateSelChanged(const CItemData *pci);  // ditto
 
   /// Centralized handling of right click in the grid or the tree view
   void OnContextMenu(const CItemData* item);
@@ -486,18 +488,20 @@ public:
 
   bool IsClosed() const;
 
-  ////@begin PasswordSafeFrame member variables
+////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;
   CPWStatusBar* m_statusBar;
-  ////@end PasswordSafeFrame member variables
- private:
+////@end PasswordSafeFrame member variables
+
+private:
+
   enum class SaveType { INVALID = -1, NORMALEXIT = 0, IMMEDIATELY, 
                         ENDSESSIONEXIT, WTSLOGOFFEXIT, FAILSAFESAVE };
 
   //we need to restrict the size of individual text fields, to prevent creating
   //enormous databases.  See the comments in DboxMain.h
-  enum {MAXTEXTCHARS = 30000};
+  enum { MAXTEXTCHARS = 30000 };
 
   int New();
   int NewFile(StringX &fname);

@@ -140,6 +140,7 @@ public:
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
+
 ////@end PWSGrid member function declarations
 
   /// Should we show tooltips?
