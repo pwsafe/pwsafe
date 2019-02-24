@@ -28,7 +28,7 @@
 #include "PWStree.h"
 #include "passwordsafeframe.h"
 #include "core/PWSprefs.h"
-#include "../../core/Command.h"
+#include "core/Command.h"
 
 #include <utility> // for make_pair
 #include <vector>
@@ -92,7 +92,6 @@ BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
   EVT_TREE_SEL_CHANGED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlSelChanged )
   EVT_TREE_ITEM_ACTIVATED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlItemActivated )
   EVT_TREE_ITEM_MENU( ID_TREECTRL, PWSTreeCtrl::OnContextMenu )
-  EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PWSTreeCtrl::OnDBGUIPrefsChange)
   EVT_TREE_ITEM_GETTOOLTIP( ID_TREECTRL, PWSTreeCtrl::OnGetToolTip )
   EVT_MENU( ID_ADDGROUP, PWSTreeCtrl::OnAddGroup )
   EVT_MENU( ID_RENAME, PWSTreeCtrl::OnRenameGroup )
@@ -219,6 +218,121 @@ void PWSTreeCtrl::CreateControls()
   for (int i = 0; i < Nimages; i++)
     iList->Add(wxBitmap(xpmList[i]));
   AssignImageList(iList);
+}
+
+/**
+ * Implements Observer::DatabaseModified(bool)
+ */
+void PWSTreeCtrl::DatabaseModified(bool modified)
+{
+  if (!modified) {
+    return;
+  }
+  pws_os::Trace(wxT("PWSTreeCtrl::DatabaseModified"));
+  if (m_core.HaveDBPrefsChanged()) {
+    // TODO: Anything that needs to be handled here?
+  }
+  else if (m_core.HasDBChanged()) {
+    // TODO: Anything that needs to be handled here?
+  }
+  else {
+    wxFAIL_MSG(wxT("PWSTreeCtrl - What changed in the DB if not entries or preferences?"));
+  }
+}
+
+/**
+ * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
+ */
+void PWSTreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft)
+{
+  CItemData *item = nullptr;
+
+  ItemListIter itemIterator = m_core.Find(entry_uuid);
+
+  if (itemIterator != m_core.GetEntryEndIter()) {
+    item = &itemIterator->second;
+  }
+  else if (ga == UpdateGUICommand::GUI_ADD_ENTRY ||
+           ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
+           ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
+    pws_os::Trace(wxT("PWSTreeCtrl - Couldn't find uuid %ls"), StringX(CUUID(entry_uuid)).c_str());
+    return;
+  }
+
+  switch (ga) {
+    case UpdateGUICommand::GUI_UPDATE_STATUSBAR:
+      // Handled by PasswordSafeFrame
+      break;
+    case UpdateGUICommand::GUI_ADD_ENTRY:
+      ASSERT(item != nullptr);
+      AddItem(*item);
+      break;
+    case UpdateGUICommand::GUI_DELETE_ENTRY:
+      Remove(entry_uuid);
+      break;
+    case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
+    case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
+      ASSERT(item != nullptr);
+      UpdateItemField(*item, ft);
+      break;
+    case UpdateGUICommand::GUI_REDO_IMPORT:
+    case UpdateGUICommand::GUI_UNDO_IMPORT:
+    case UpdateGUICommand::GUI_REDO_MERGESYNC:
+    case UpdateGUICommand::GUI_UNDO_MERGESYNC:
+      // Handled by PasswordSafeFrame
+      break;
+    case UpdateGUICommand::GUI_REFRESH_TREE:
+      // Handled by PasswordSafeFrame
+      break;
+    case UpdateGUICommand::GUI_REFRESH_ENTRY:
+    case UpdateGUICommand::GUI_REFRESH_GROUPS:
+    case UpdateGUICommand::GUI_REFRESH_BOTHVIEWS:
+      // TODO: ???
+      break;
+    case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
+      // Handled also by PasswordSafeFrame
+      PreferencesChanged();
+      break;
+    case UpdateGUICommand::GUI_PWH_CHANGED_IN_DB:
+      // TODO: ???
+      break;
+    default:
+      wxFAIL_MSG(wxT("PWSTreeCtrl - Unsupported GUI action received."));
+      break;
+  }
+}
+
+/**
+ * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const std::vector<StringX>&)
+ */
+void PWSTreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const std::vector<StringX> &vGroups)
+{
+  pws_os::Trace(wxT("PWSTreeCtrl::UpdateGUI - Group Update"));
+}
+
+/**
+ * Implements Observer::GUIRefreshEntry(const CItemData&, bool)
+ */
+void PWSTreeCtrl::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
+{
+  pws_os::Trace(wxT("PWSTreeCtrl::GUIRefreshEntry"));
+
+  if (item.GetStatus() == CItemData::ES_DELETED) {
+    uuid_array_t uuid;
+    item.GetUUID(uuid);
+    Remove(uuid);
+  }
+  else {
+    UpdateItem(item);
+  }
+}
+
+/**
+ * Implements Observer::UpdateWizard(const stringT&)
+ */
+void PWSTreeCtrl::UpdateWizard(const stringT &s)
+{
+  pws_os::Trace(wxT("PWSTreeCtrl::UpdateWizard"));
 }
 
 bool PWSTreeCtrl::ItemIsGroup(const wxTreeItemId& item) const
@@ -602,13 +716,9 @@ void PWSTreeCtrl::OnGetToolTip( wxTreeEvent& evt )
   }
 }
 
-void PWSTreeCtrl::OnDBGUIPrefsChange(wxEvent& evt)
+void PWSTreeCtrl::PreferencesChanged()
 {
-  UNREFERENCED_PARAMETER(evt);
-  auto *pwsframe = dynamic_cast<PasswordSafeFrame *>(GetParent());
-  wxASSERT(pwsframe != nullptr);
-  if (pwsframe->IsTreeView())
-    pwsframe->RefreshViews();
+  pws_os::Trace(wxT("PWSTreeCtrl::PreferencesChanged"));
 }
 
 void EditTreeLabel(wxTreeCtrl* tree, const wxTreeItemId& id)

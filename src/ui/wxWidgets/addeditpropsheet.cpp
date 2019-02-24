@@ -127,7 +127,7 @@ AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
                                    wxWindowID id, const wxString& caption,
                                    const wxPoint& pos, const wxSize& size,
                                    long style)
-: m_core(core), m_ui(ui), m_selectedGroup(selectedGroup), m_type(type)
+: m_core(core), m_selectedGroup(selectedGroup), m_type(type)
 {
   if (item != nullptr)
     m_item = *item; // copy existing item to display values
@@ -1432,8 +1432,6 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       m_core.Execute(EditEntryCommand::Create(&m_core,
                                               m_core.GetEntry(listpos),
                                               m_item));
-      if (m_ui)
-        m_ui->GUIRefreshEntry(m_item);
     }
       break;
 

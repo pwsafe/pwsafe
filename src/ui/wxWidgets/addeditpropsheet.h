@@ -359,7 +359,6 @@ private:
   StringX m_password;
   bool m_isPWHidden;
   PWScore &m_core;
-  Observer *m_ui;
   wxString m_selectedGroup;  //Group title in tree view user right-clicked on to add an item
 
   SheetType m_type;

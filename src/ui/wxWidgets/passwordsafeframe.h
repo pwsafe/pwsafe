@@ -193,18 +193,22 @@ public:
 
     ItemList::size_type GetNumEntries() const {return m_core.GetNumEntries();}
 
-    // UIinterface concrete methods:
-    virtual void DatabaseModified(bool bChanged);
+    /* Observer Interface Implementation */
 
-    virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                           const pws_os::CUUID &entry_uuid,
-                           CItemData::FieldType ft = CItemData::START);
-    virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                           const std::vector<StringX> &vGroups);
+    /// Implements Observer::DatabaseModified(bool)
+    void DatabaseModified(bool bChanged) override;
 
-    virtual void GUIRefreshEntry(const CItemData &ci, bool bAllowFail = false);
+    /// Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
+    void UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft = CItemData::START) override;
 
-    virtual void UpdateWizard(const stringT &s);
+    /// Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const std::vector<StringX>&)
+    void UpdateGUI(UpdateGUICommand::GUI_Action ga, const std::vector<StringX> &vGroups) override;
+
+    /// Implements Observer::GUIRefreshEntry(const CItemData&, bool)
+    void GUIRefreshEntry(const CItemData &ci, bool bAllowFail = false) override;
+
+    /// Implements Observer::UpdateWizard(const stringT&)
+    void UpdateWizard(const stringT &s) override;
 
   ////@begin PasswordSafeFrame event handler declarations
 
@@ -518,8 +522,6 @@ public:
   long GetEventRUEIndex(const wxCommandEvent& evt) const;
   bool IsRUEEvent(const wxCommandEvent& evt) const;
   void RebuildGUI(const int iView = iBothViews);
-  void RefreshEntryFieldInGUI(const CItemData& item, CItemData::FieldType ft);
-  void RefreshEntryPasswordInGUI(const CItemData& item);
   void CreateDragBar();
   void RefreshToolbarButtons();
   PWSDragBar* GetDragBar();
@@ -614,7 +616,6 @@ public:
 };
 
 BEGIN_DECLARE_EVENT_TYPES()
-DECLARE_EVENT_TYPE(wxEVT_DB_PREFS_CHANGE, -1)
 DECLARE_EVENT_TYPE(wxEVT_GUI_DB_PREFS_CHANGE, -1)
 END_DECLARE_EVENT_TYPES()
 

@@ -72,7 +72,7 @@ public:
       [observer](Observer* registeredObserver){ return registeredObserver == observer; }), 
       m_Observers.end());
   }
-  
+
   virtual ~Observable() {};
 
 protected:

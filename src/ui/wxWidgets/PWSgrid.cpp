@@ -28,6 +28,7 @@
 #include "PWSgrid.h"
 #include "passwordsafeframe.h" // for DispatchDblClickAction()
 #include "./PWSgridtable.h"
+#include "core/Command.h"
 
 #include <algorithm>
 #include <utility> // for make_pair
@@ -58,7 +59,6 @@ BEGIN_EVENT_TABLE( PWSGrid, wxGrid )
   EVT_GRID_CELL_LEFT_DCLICK( PWSGrid::OnLeftDClick )
   EVT_GRID_SELECT_CELL( PWSGrid::OnSelectCell )
   EVT_CONTEXT_MENU(PWSGrid::OnContextMenu)
-  EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PWSGrid::OnDBGUIPrefsChange)
 ////@end PWSGrid event table entries
 
 END_EVENT_TABLE()
@@ -160,6 +160,121 @@ void PWSGrid::CreateControls()
   int cw = w/2; // 2 = number of columns
   SetColSize(0, cw);
   SetColSize(1, cw);
+}
+
+/**
+ * Implements Observer::DatabaseModified(bool)
+ */
+void PWSGrid::DatabaseModified(bool modified)
+{
+  if (!modified) {
+    return;
+  }
+  pws_os::Trace(wxT("PWSGrid::DatabaseModified"));
+  if (m_core.HaveDBPrefsChanged()) {
+    // TODO: Anything that needs to be handled here?
+  }
+  else if (m_core.HasDBChanged()) {
+    // TODO: Anything that needs to be handled here?
+  }
+  else {
+    wxFAIL_MSG(wxT("PWSGrid - What changed in the DB if not entries or preferences?"));
+  }
+}
+
+/**
+ * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
+ */
+void PWSGrid::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft)
+{
+  CItemData *item = nullptr;
+
+  ItemListIter itemIterator = m_core.Find(entry_uuid);
+
+  if (itemIterator != m_core.GetEntryEndIter()) {
+    item = &itemIterator->second;
+  }
+  else if (ga == UpdateGUICommand::GUI_ADD_ENTRY ||
+           ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
+           ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
+    pws_os::Trace(wxT("PWSGrid - Couldn't find uuid %ls"), StringX(CUUID(entry_uuid)).c_str());
+    return;
+  }
+
+  switch (ga) {
+    case UpdateGUICommand::GUI_UPDATE_STATUSBAR:
+      // Handled by PasswordSafeFrame
+      break;
+    case UpdateGUICommand::GUI_ADD_ENTRY:
+      ASSERT(item != nullptr);
+      AddItem(*item);
+      break;
+    case UpdateGUICommand::GUI_DELETE_ENTRY:
+      Remove(entry_uuid);
+      break;
+    case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
+    case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
+      ASSERT(item != nullptr);
+      RefreshItemField(item->GetUUID(), ft);
+      break;
+    case UpdateGUICommand::GUI_REDO_IMPORT:
+    case UpdateGUICommand::GUI_UNDO_IMPORT:
+    case UpdateGUICommand::GUI_REDO_MERGESYNC:
+    case UpdateGUICommand::GUI_UNDO_MERGESYNC:
+      // Handled by PasswordSafeFrame
+      break;
+    case UpdateGUICommand::GUI_REFRESH_TREE:
+      // Not relevant for this view
+      break;
+    case UpdateGUICommand::GUI_REFRESH_ENTRY:
+    case UpdateGUICommand::GUI_REFRESH_GROUPS:
+    case UpdateGUICommand::GUI_REFRESH_BOTHVIEWS:
+      // TODO: ???
+      break;
+    case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
+      // Handled also by PasswordSafeFrame
+      PreferencesChanged();
+      break;
+    case UpdateGUICommand::GUI_PWH_CHANGED_IN_DB:
+      // TODO: ???
+      break;
+    default:
+      wxFAIL_MSG(wxT("PWSGrid - Unsupported GUI action received."));
+      break;
+  }
+}
+
+/**
+ * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const std::vector<StringX>&)
+ */
+void PWSGrid::UpdateGUI(UpdateGUICommand::GUI_Action ga, const std::vector<StringX> &vGroups)
+{
+  pws_os::Trace(wxT("PWSGrid::UpdateGUI - Group Update"));
+}
+
+/**
+ * Implements Observer::GUIRefreshEntry(const CItemData&, bool)
+ */
+void PWSGrid::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
+{
+  pws_os::Trace(wxT("PWSGrid::GUIRefreshEntry"));
+
+  if (item.GetStatus() == CItemData::ES_DELETED) {
+    uuid_array_t uuid;
+    item.GetUUID(uuid);
+    Remove(uuid);
+  }
+  else {
+    this->UpdateItem(item);
+  }
+}
+
+/**
+ * Implements Observer::UpdateWizard(const stringT&)
+ */
+void PWSGrid::UpdateWizard(const stringT &s)
+{
+  pws_os::Trace(wxT("PWSGrid::UpdateWizard"));
 }
 
 void PWSGrid::OnPasswordListModified()
@@ -471,9 +586,9 @@ void PWSGrid::SaveSettings() const
     table->SaveSettings();
 }
 
-void PWSGrid::OnDBGUIPrefsChange(wxEvent& evt)
+void PWSGrid::PreferencesChanged()
 {
-  UNREFERENCED_PARAMETER(evt);
+  pws_os::Trace(wxT("PWSGrid::PreferencesChanged"));
   EnableGridLines(PWSprefs::GetInstance()->GetPref(PWSprefs::ListViewGridLines));
 }
 

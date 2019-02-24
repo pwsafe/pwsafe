@@ -660,6 +660,7 @@ void PwsafeApp::OnIdleTimer(wxTimerEvent &evt)
 void PwsafeApp::OnDBGUIPrefsChange(wxEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
+  pws_os::Trace(wxT("PwsafeApp::OnDBGUIPrefsChange"));
   ConfigureIdleTimer();
 }
 
