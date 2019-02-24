@@ -23,6 +23,7 @@
 
 #include "core/ItemData.h"
 #include "core/PWScore.h"
+#include "core/UIinterface.h"
 #include "os/UUID.h"
 
 #include <map>
@@ -53,7 +54,7 @@ typedef std::map<pws_os::CUUID, wxTreeItemId, std::less<pws_os::CUUID> > UUIDTIM
  * PWSTreeCtrl class declaration
  */
 
-class PWSTreeCtrl: public wxTreeCtrl
+class PWSTreeCtrl: public wxTreeCtrl, public Observer
 {
   DECLARE_CLASS( PWSTreeCtrl )
   DECLARE_EVENT_TABLE()
@@ -76,6 +77,23 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
+  /* Observer Interface Implementation */
+
+  /// Implements Observer::DatabaseModified(bool)
+  void DatabaseModified(bool modified) override;
+
+  /// Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
+  void UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft = CItemData::START) override;
+
+  /// Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const std::vector<StringX>&)
+  void UpdateGUI(UpdateGUICommand::GUI_Action ga, const std::vector<StringX> &vGroups) override;
+
+  /// Implements Observer::GUIRefreshEntry(const CItemData&, bool)
+  void GUIRefreshEntry(const CItemData &item, bool bAllowFail = false) override;
+
+  /// Implements Observer::UpdateWizard(const stringT&)
+  void UpdateWizard(const stringT &s) override;
+
 ////@begin PWSTreeCtrl event handler declarations
 
   /// wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL
@@ -89,10 +107,6 @@ public:
 
 ////@end PWSTreeCtrl event handler declarations
   void OnGetToolTip( wxTreeEvent& evt); // Added manually
-
-  //handler for DB's GUI preferences change notifications from core which are
-  //converted to an event by frame
-  void OnDBGUIPrefsChange(wxEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_ADDGROUP
   void OnAddGroup(wxCommandEvent& evt);
@@ -130,10 +144,11 @@ public:
   void RestoreGroupDisplayState();
 
  private:
+  void PreferencesChanged();
+
   //overridden from base for case-insensitive sort
   virtual int OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2);
-  bool ExistsInTree(wxTreeItemId node,
-                    const StringX &s, wxTreeItemId &si) const;
+  bool ExistsInTree(wxTreeItemId node, const StringX &s, wxTreeItemId &si) const;
   wxTreeItemId AddGroup(const StringX &group);
   wxString ItemDisplayString(const CItemData &item) const;
   wxString GetPath(const wxTreeItemId &node) const;

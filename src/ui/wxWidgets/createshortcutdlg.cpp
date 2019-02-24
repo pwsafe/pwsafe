@@ -62,10 +62,9 @@ CreateShortcutDlg::CreateShortcutDlg(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-: m_core(core), m_base(base), m_ui(dynamic_cast<Observer *>(parent))
+: m_core(core), m_base(base)
 {
   ASSERT(m_base != nullptr);
-  ASSERT(m_ui != nullptr);
   Init();
   Create(parent, id, caption, pos, size, style);
 }

@@ -118,7 +118,6 @@ private:
   void ItemFieldsToDialog();
   PWScore &m_core;
   CItemData *m_base;
-  Observer *m_ui;
 };
 
 #endif
