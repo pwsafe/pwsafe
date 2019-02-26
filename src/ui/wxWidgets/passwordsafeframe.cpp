@@ -2289,30 +2289,6 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &
   }
 }
 
-/**
- * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const std::vector<StringX>&)
- */
-void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action WXUNUSED(ga), const std::vector<StringX> & WXUNUSED(vGroups))
-{
-  // TODO
-}
-
-/**
- * Implements Observer::GUIRefreshEntry(const CItemData&, bool)
- */
-void PasswordSafeFrame::GUIRefreshEntry(const CItemData& WXUNUSED(item), bool WXUNUSED(bAllowFail))
-{
-  // Handled by individual views.
-}
-
-/**
- * Implements Observer::UpdateWizard(const stringT&)
- */
-void PasswordSafeFrame::UpdateWizard(const stringT &)
-{
-  // Stub
-}
-
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_NEW
  */

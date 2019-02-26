@@ -201,15 +201,6 @@ public:
   /// Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
   void UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft = CItemData::START) override;
 
-  /// Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const std::vector<StringX>&)
-  void UpdateGUI(UpdateGUICommand::GUI_Action ga, const std::vector<StringX> &vGroups) override;
-
-  /// Implements Observer::GUIRefreshEntry(const CItemData&, bool)
-  void GUIRefreshEntry(const CItemData &ci, bool bAllowFail = false) override;
-
-  /// Implements Observer::UpdateWizard(const stringT&)
-  void UpdateWizard(const stringT &s) override;
-
 ////@begin PasswordSafeFrame event handler declarations
 
   /// wxEVT_CHAR_HOOK event handler for WXK_ESCAPE

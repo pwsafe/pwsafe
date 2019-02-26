@@ -163,26 +163,6 @@ void PWSGrid::CreateControls()
 }
 
 /**
- * Implements Observer::DatabaseModified(bool)
- */
-void PWSGrid::DatabaseModified(bool modified)
-{
-  if (!modified) {
-    return;
-  }
-  pws_os::Trace(wxT("PWSGrid::DatabaseModified"));
-  if (m_core.HaveDBPrefsChanged()) {
-    // TODO: Anything that needs to be handled here?
-  }
-  else if (m_core.HasDBChanged()) {
-    // TODO: Anything that needs to be handled here?
-  }
-  else {
-    wxFAIL_MSG(wxT("PWSGrid - What changed in the DB if not entries or preferences?"));
-  }
-}
-
-/**
  * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
  */
 void PWSGrid::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft)
@@ -245,14 +225,6 @@ void PWSGrid::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &en
 }
 
 /**
- * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const std::vector<StringX>&)
- */
-void PWSGrid::UpdateGUI(UpdateGUICommand::GUI_Action ga, const std::vector<StringX> &vGroups)
-{
-  pws_os::Trace(wxT("PWSGrid::UpdateGUI - Group Update"));
-}
-
-/**
  * Implements Observer::GUIRefreshEntry(const CItemData&, bool)
  */
 void PWSGrid::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
@@ -267,14 +239,6 @@ void PWSGrid::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
   else {
     this->UpdateItem(item);
   }
-}
-
-/**
- * Implements Observer::UpdateWizard(const stringT&)
- */
-void PWSGrid::UpdateWizard(const stringT &s)
-{
-  pws_os::Trace(wxT("PWSGrid::UpdateWizard"));
 }
 
 void PWSGrid::OnPasswordListModified()

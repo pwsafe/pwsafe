@@ -41,7 +41,6 @@ class wxDatePickerCtrl;
 class wxGridSizer;
 class wxBoxSizer;
 ////@end forward declarations
-class Observer;
 
 #ifndef wxDIALOG_MODAL
 #define wxDIALOG_MODAL 0
@@ -127,7 +126,7 @@ public:
   /// Constructor
   // item is nullptr for ADD, otherwise its values are retrieved and displayed
   AddEditPropSheet(wxWindow* parent, PWScore &core,
-                   SheetType type, const CItemData *item = nullptr,  Observer* ui = 0,
+                   SheetType type, const CItemData *item = nullptr,
                    const wxString& selectedGroup = wxEmptyString,
                    wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME,
                    const wxString& caption = SYMBOL_AUTOPROPSHEET_TITLE,

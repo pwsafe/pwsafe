@@ -221,26 +221,6 @@ void PWSTreeCtrl::CreateControls()
 }
 
 /**
- * Implements Observer::DatabaseModified(bool)
- */
-void PWSTreeCtrl::DatabaseModified(bool modified)
-{
-  if (!modified) {
-    return;
-  }
-  pws_os::Trace(wxT("PWSTreeCtrl::DatabaseModified"));
-  if (m_core.HaveDBPrefsChanged()) {
-    // TODO: Anything that needs to be handled here?
-  }
-  else if (m_core.HasDBChanged()) {
-    // TODO: Anything that needs to be handled here?
-  }
-  else {
-    wxFAIL_MSG(wxT("PWSTreeCtrl - What changed in the DB if not entries or preferences?"));
-  }
-}
-
-/**
  * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
  */
 void PWSTreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft)
@@ -303,14 +283,6 @@ void PWSTreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID
 }
 
 /**
- * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const std::vector<StringX>&)
- */
-void PWSTreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const std::vector<StringX> &vGroups)
-{
-  pws_os::Trace(wxT("PWSTreeCtrl::UpdateGUI - Group Update"));
-}
-
-/**
  * Implements Observer::GUIRefreshEntry(const CItemData&, bool)
  */
 void PWSTreeCtrl::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
@@ -325,14 +297,6 @@ void PWSTreeCtrl::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFai
   else {
     UpdateItem(item);
   }
-}
-
-/**
- * Implements Observer::UpdateWizard(const stringT&)
- */
-void PWSTreeCtrl::UpdateWizard(const stringT &s)
-{
-  pws_os::Trace(wxT("PWSTreeCtrl::UpdateWizard"));
 }
 
 bool PWSTreeCtrl::ItemIsGroup(const wxTreeItemId& item) const

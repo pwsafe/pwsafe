@@ -24,7 +24,6 @@
 ////@end includes
 
 #include "editshortcut.h"
-#include "core/UIinterface.h"
 #include "./wxutils.h"
 
 #ifdef __WXMSW__

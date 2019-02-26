@@ -28,7 +28,6 @@
 
 ////@begin forward declarations
 ////@end forward declarations
-class Observer;
 
 /*!
  * Control identifiers
