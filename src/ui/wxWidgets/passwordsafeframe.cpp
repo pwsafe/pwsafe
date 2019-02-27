@@ -597,14 +597,10 @@ void PasswordSafeFrame::CreateControls()
                         wxDefaultSize, wxHSCROLL|wxVSCROLL );
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0).Proportion(1));
 
-  m_core.RegisterObserver(m_grid);
-
   m_tree = new PWSTreeCtrl( this, m_core, ID_TREECTRL, wxDefaultPosition,
                             wxDefaultSize,
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
 
-  m_core.RegisterObserver(m_tree);
-  
   // let the tree ctrl handle ID_ADDGROUP & ID_RENAME all by itself
   Connect(ID_ADDGROUP, wxEVT_COMMAND_MENU_SELECTED,
                        wxCommandEventHandler(PWSTreeCtrl::OnAddGroup), nullptr, m_tree);
@@ -881,9 +877,15 @@ void PasswordSafeFrame::ShowGrid(bool show)
     m_grid->UpdateSorting();
 
     m_guiInfo->RestoreGridViewInfo(m_grid);
+
+    // Register view at core as new observer for notifications
+    m_core.RegisterObserver(m_grid);
   }
   else {
     m_guiInfo->SaveGridViewInfo(m_grid);
+
+    // Unregister the active view at core to not get notifications anymore
+    m_core.UnregisterObserver(m_grid);
   }
 
   m_grid->Show(show);
@@ -937,9 +939,15 @@ void PasswordSafeFrame::ShowTree(bool show)
     else {
       m_guiInfo->RestoreTreeViewInfo(m_tree);
     }
+
+    // Register view at core as new observer for notifications
+    m_core.RegisterObserver(m_tree);
   }
   else {
     m_guiInfo->SaveTreeViewInfo(m_tree);
+
+    // Unregister the active view at core to not get notifications anymore
+    m_core.UnregisterObserver(m_tree);
   }
 
   m_tree->Show(show);

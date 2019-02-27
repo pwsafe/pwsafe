@@ -682,7 +682,7 @@ void PWSTreeCtrl::OnGetToolTip( wxTreeEvent& evt )
 
 void PWSTreeCtrl::PreferencesChanged()
 {
-  pws_os::Trace(wxT("PWSTreeCtrl::PreferencesChanged"));
+  ;
 }
 
 void EditTreeLabel(wxTreeCtrl* tree, const wxTreeItemId& id)

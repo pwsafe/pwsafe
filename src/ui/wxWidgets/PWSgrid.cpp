@@ -552,7 +552,6 @@ void PWSGrid::SaveSettings() const
 
 void PWSGrid::PreferencesChanged()
 {
-  pws_os::Trace(wxT("PWSGrid::PreferencesChanged"));
   EnableGridLines(PWSprefs::GetInstance()->GetPref(PWSprefs::ListViewGridLines));
 }
 
