@@ -120,8 +120,8 @@ BOOL COptionsPasswordHistory::OnInitDialog()
 
   pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_DEDSPIN);
   pspin->SetBuddy(GetDlgItem(IDC_DEFEXPIRYDAYS));
-  pspin->SetRange(PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::DefaultExpiryDays),
-                  PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays));
+  pspin->SetRange(static_cast<short>(PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::DefaultExpiryDays)),
+                  static_cast<short>(PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays)));
   pspin->SetBase(10);
   pspin->SetPos(m_PWHDefExpDays);
 
