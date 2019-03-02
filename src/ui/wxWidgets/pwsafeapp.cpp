@@ -28,6 +28,7 @@
 #include <iostream> // currently for debugging
 #include <clocale>  // to get the locales specified by the environment 
                     // for used functions like wcstombs in src/os/file.h
+#include <functional>
 
 using namespace std;
 
@@ -35,27 +36,30 @@ using namespace std;
 #include "passwordsafeframe.h"
 #include "version.h"
 #include "wxMessages.h"
-#include "core/SysInfo.h"
-#include "core/PWSprefs.h"
-#include "core/PWSrand.h"
-#include "os/cleanup.h"
 #include "pwsclip.h"
-#include <wx/timer.h>
-#include <wx/html/helpctrl.h>
-#include "../../os/dir.h"
-#include <wx/tokenzr.h>
-#include <wx/fs_arc.h>
-#include <wx/propdlg.h>
-#include <wx/textfile.h>
-#include <wx/snglinst.h>
-#include "../../core/PWSLog.h"
-#include "./pwsmenushortcuts.h"
+#include "pwsmenushortcuts.h"
+#include "CryptKeyEntry.h"
 #if defined(__X__) || defined(__WXGTK__)
 #include "pwsclip.h"
 #endif
 
-#include <wx/spinctrl.h>
+#include "os/cleanup.h"
+#include "os/dir.h"
+#include "core/PWSfile.h"
+#include "core/PWSLog.h"
+#include "core/PWSprefs.h"
+#include "core/PWSrand.h"
+#include "core/SysInfo.h"
+
+#include <wx/fs_arc.h>
+#include <wx/html/helpctrl.h>
+#include <wx/propdlg.h>
+#include <wx/snglinst.h>
 #include <wx/taskbar.h>
+#include <wx/textfile.h>
+#include <wx/timer.h>
+#include <wx/tokenzr.h>
+#include <wx/spinctrl.h>
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -304,7 +308,7 @@ bool PwsafeApp::OnInit()
   // Don't allow ptrace or gdump on release build
   if (!pws_os::DisableDumpAttach())
     return false;
-  
+
   // Parse command line options:
   wxString filename, user, host, cfg_file;
   bool cmd_ro = cmdParser.Found(wxT("r"));
@@ -328,18 +332,53 @@ bool PwsafeApp::OnInit()
     return false;
   }
   // check for mutually exclusive options
-  if (((cmd_encrypt + cmd_decrypt) > 1) ||
-      ((cmd_closed + cmd_silent + cmd_minimized) > 1)) {
+  if ((cmd_encrypt && cmd_decrypt) || (cmd_closed && cmd_silent && cmd_minimized)) {
     cmdParser.Usage();
     return false;
   }
 
-  if (cmd_user)
+  // Process encryption/decryption command line arguments
+  if ((cmd_encrypt || cmd_decrypt) && !filename.IsEmpty()) {
+
+    auto processCryption = [&](CryptKeyEntry::Mode mode, std::function<bool(const stringT &fn, const StringX &passwd, stringT &errmess)> func) {
+      stringT errstr;
+
+      CryptKeyEntry dialog(mode);
+
+      if (dialog.ShowModal() == wxID_OK) {
+        if (!func(filename.wc_str(), dialog.getCryptKey(), errstr)) {
+          wxMessageDialog messageBox(
+            nullptr, errstr, _("Error"), wxOK | wxICON_ERROR
+          );
+          messageBox.ShowModal();
+        }
+      }
+    };
+
+    if (cmd_encrypt) {
+      processCryption(
+        CryptKeyEntry::Mode::ENCRYPT,
+        PWSfile::Encrypt
+      );
+    }
+    else {
+      processCryption(
+        CryptKeyEntry::Mode::DECRYPT,
+        PWSfile::Decrypt
+      );
+    }
+    return false;
+  }
+
+  if (cmd_user) {
     SysInfo::GetInstance()->SetEffectiveUser(tostdstring(user));
-  if (cmd_host)
+  }
+  if (cmd_host) {
     SysInfo::GetInstance()->SetEffectiveHost(tostdstring(host));
-  if (cmd_cfg)
+  }
+  if (cmd_cfg) {
     PWSprefs::SetConfigFile(tostdstring(cfg_file));
+  }
 
   m_core.SetReadOnly(cmd_ro);
   // OK to load prefs now
