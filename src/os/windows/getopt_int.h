@@ -19,8 +19,8 @@
 #ifndef _GETOPT_INT_H
 #define _GETOPT_INT_H	1
 
-extern int _getopt_internal (int ___argc, TCHAR *const *___argv,
-			     const TCHAR *__shortopts,
+extern int _getopt_internal (int ___argc, char *const *___argv,
+			     const char *__shortopts,
 		             const struct option *__longopts, int *__longind,
 			     int __long_only, int posixly_correct);
 
@@ -37,7 +37,7 @@ struct _getopt_data
   int optind;
   int opterr;
   int optopt;
-  TCHAR *optarg;
+  char *optarg;
 
   /* Internal members.  */
 
@@ -50,7 +50,7 @@ struct _getopt_data
 
      If this is zero, or a null string, it means resume the scan
      by advancing to the next ARGV-element.  */
-  TCHAR *__nextchar;
+  char *__nextchar;
 
   /* Describe how to deal with options that follow non-option ARGV-elements.
 
@@ -109,19 +109,19 @@ struct _getopt_data
    default values and to clear the initialization flag.  */
 #define _GETOPT_DATA_INITIALIZER	{ 1, 1 }
 
-extern int _getopt_internal_r (int ___argc, TCHAR *const *___argv,
-			       const TCHAR *__shortopts,
+extern int _getopt_internal_r (int ___argc, char *const *___argv,
+			       const char *__shortopts,
 			       const struct option *__longopts, int *__longind,
 			       int __long_only, struct _getopt_data *__data,
 			       int posixly_correct);
 
-extern int _getopt_long_r (int ___argc, TCHAR *const *___argv,
-			   const TCHAR *__shortopts,
+extern int _getopt_long_r (int ___argc, char *const *___argv,
+			   const char *__shortopts,
 			   const struct option *__longopts, int *__longind,
 			   struct _getopt_data *__data);
 
-extern int _getopt_long_only_r (int ___argc, TCHAR *const *___argv,
-				const TCHAR *__shortopts,
+extern int _getopt_long_only_r (int ___argc, char *const *___argv,
+				const char *__shortopts,
 				const struct option *__longopts,
 				int *__longind,
 				struct _getopt_data *__data);

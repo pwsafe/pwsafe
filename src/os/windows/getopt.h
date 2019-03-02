@@ -18,7 +18,6 @@
 
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
-#include <tchar.h>
 #ifndef __need_getopt
 # define _GETOPT_H 1
 #endif
@@ -55,7 +54,7 @@ extern "C" {
    Also, when `ordering' is RETURN_IN_ORDER,
    each non-option ARGV-element is returned here.  */
 
-extern TCHAR *optarg;
+extern char *optarg;
 
 /* Index in ARGV of the next element to be scanned.
    This is used for communication to and from the caller
@@ -104,7 +103,7 @@ extern int optopt;
 
 struct option
 {
-  const TCHAR *name;
+  const char *name;
   /* has_arg can't be an enum because some compilers complain about
      type mismatches in all the code that assumes it is an int.  */
   int has_arg;
@@ -144,15 +143,15 @@ struct option
    arguments to the option '\0'.  This behavior is specific to the GNU
    `getopt'.  */
 
-extern int getopt (int ___argc, TCHAR *const *___argv, const TCHAR *__shortopts)
+extern int getopt (int ___argc, char *const *___argv, const char *__shortopts)
        __THROW;
 
-extern int getopt_long (int ___argc, TCHAR *const *___argv,
-			const TCHAR *__shortopts,
+extern int getopt_long (int ___argc, char *const *___argv,
+			const char *__shortopts,
 		        const struct option *__longopts, int *__longind)
        __THROW;
-extern int getopt_long_only (int ___argc, TCHAR *const *___argv,
-			     const TCHAR *__shortopts,
+extern int getopt_long_only (int ___argc, char *const *___argv,
+			     const char *__shortopts,
 		             const struct option *__longopts, int *__longind)
        __THROW;
 
