@@ -50,6 +50,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/safecombinationprompt.h
     src/ui/wxWidgets/TimedTaskChain.h
     src/ui/wxWidgets/passwordsubset.h
+    src/ui/wxWidgets/CryptKeyEntry.h
     )
 
 
@@ -103,8 +104,9 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/SizeRestrictedPanel.cpp
     src/ui/wxWidgets/TimedTaskChain.cpp
     src/ui/wxWidgets/passwordsubset.cpp
+    src/ui/wxWidgets/CryptKeyEntry.cpp
     )
-  
+
 if(HAVE_YKPERS_H)
   list(APPEND PWSAFE_SRC_LIST src/ui/wxWidgets/yubicfg.cpp src/ui/wxWidgets/YubiMixin.cpp)
   list(APPEND PWSAFE_HDR_LIST src/ui/wxWidgets/yubicfg.h src/ui/wxWidgets/YubiMixin.h)
