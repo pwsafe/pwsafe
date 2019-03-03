@@ -312,7 +312,7 @@ bool PwsafeApp::OnInit()
   // Parse command line options:
   wxString filename, user, host, cfg_file;
   bool cmd_ro = cmdParser.Found(wxT("r"));
-  // Next variable currently not referenced
+
   bool cmd_encrypt = cmdParser.Found(wxT("e"), &filename);
   bool cmd_decrypt = cmdParser.Found(wxT("d"), &filename);
   bool cmd_closed = cmdParser.Found(wxT("c"));

@@ -205,7 +205,8 @@ SOURCES= passwordsafeframe.cpp \
 	fieldselectionpanel.cpp fieldselectiondlg.cpp pwsmenushortcuts.cpp \
 	$(YUBI_SRC) $(QR_SRC) \
 	ManagePwdPolicies.cpp PasswordPolicy.cpp SelectionCriteria.cpp \
-	TimedTaskChain.cpp mainView.cpp passwordsubset.cpp
+	TimedTaskChain.cpp mainView.cpp passwordsubset.cpp \
+  CryptKeyEntry.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
