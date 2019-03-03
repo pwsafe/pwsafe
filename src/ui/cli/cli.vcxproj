@@ -184,9 +184,6 @@
   <ItemGroup>
     <ResourceCompile Include="cli.rc" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\core\core.rc2" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
