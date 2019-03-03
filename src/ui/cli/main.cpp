@@ -6,12 +6,22 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
+#include "stdafx.h"
+#ifdef _WIN32
+#include "resource.h"
+#endif /* _WIN32 */
+
 #include <iostream>
 #include <sstream>
+#ifndef _WIN32
 #include <getopt.h>
-#include <libgen.h>
+#include <libgen.h> // for basename()
+#else
+#include "os/windows/getopt.h"
+#endif
 #include <string>
 #include <map>
+#include <functional>
 
 #include "./search.h"
 #include "./argutils.h"
@@ -21,13 +31,33 @@
 #include "./safeutils.h"
 #include "./impexp.h"
 
-#include "../../core/PWScore.h"
+#include "core/PWScore.h"
 #include "os/file.h"
 #include "core/UTF8Conv.h"
 #include "core/Report.h"
 #include "core/XML/XMLDefs.h"
 
 using namespace std;
+
+
+#ifdef _WIN32
+// Windows doesn't have POSIX basename, so we roll our own:
+
+static char *basename(const char *path)
+{
+  static char retval[_MAX_FNAME];
+  if (_splitpath_s(path,
+                   nullptr, 0, // drive
+                   nullptr, 0, // dir
+                   retval, sizeof(retval),
+                   nullptr, 0 // ext
+                   ) == 0)
+    return retval;
+  else
+    return "";
+}
+#endif
+
 
 int SaveCore(PWScore &core, const UserArgs &);
 
@@ -298,9 +328,36 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
   return true;
 }
 
+#ifdef _WIN32
+
+CWinApp theApp;
+
+static bool winInit()
+{
+  HMODULE hModule = ::GetModuleHandle(nullptr);
+  if (hModule != nullptr) {
+    // initialize MFC and print and error on failure
+    if (!AfxWinInit(hModule, nullptr, ::GetCommandLine(), 0)) {
+      wprintf(L"Fatal Error: MFC initialization failed\n");
+      return false;
+    } else {
+      return true;
+    }
+  } else {
+    wprintf(L"Fatal Error: GetModuleHandle failed\n");
+    return false;
+  }
+}
+#endif // _WIN32
 
 int main(int argc, char *argv[])
 {
+
+#ifdef _WIN32
+  if (!winInit())
+    return 1;
+#endif // _WIN32
+
   UserArgs ua;
   if (!parseArgs(argc, argv, ua)) {
     usage(basename(argv[0]));

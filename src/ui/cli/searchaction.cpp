@@ -7,6 +7,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+#include "stdafx.h"
 #include <string>
 
 #include "./searchaction.h"
@@ -139,7 +140,6 @@ int ChangePasswordOfSearchResults(const ItemPtrVec &items, PWScore &core)
   return PWScore::SUCCESS;
 }
 
-constexpr wchar_t SearchActionTraits<UserArgs::Delete>::prompt[];
-constexpr wchar_t SearchActionTraits<UserArgs::Update>::prompt[];
-constexpr wchar_t SearchActionTraits<UserArgs::ClearFields>::prompt[];
-constexpr wchar_t SearchActionTraits<UserArgs::ChangePassword>::prompt[];
+constexpr wchar_t *SearchActionTraits<UserArgs::Delete>::prompt;
+constexpr wchar_t *SearchActionTraits<UserArgs::Update>::prompt;
+constexpr wchar_t *SearchActionTraits<UserArgs::ClearFields>::prompt;

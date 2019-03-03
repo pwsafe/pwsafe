@@ -7,6 +7,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+#include "stdafx.h"
 #include "argutils.h"
 #include "./strutils.h"
 

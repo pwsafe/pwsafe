@@ -36,25 +36,25 @@ struct SearchActionTraits<UserArgs::Print>
 template <>
 struct SearchActionTraits<UserArgs::Delete>
 {
-  static constexpr wchar_t prompt[] = L"Delete Item";
+  static constexpr wchar_t *prompt = L"Delete Item";
 };
 
 template <>
 struct SearchActionTraits<UserArgs::Update>
 {
-  static constexpr wchar_t prompt[] = L"Update Item";
+  static constexpr wchar_t *prompt = L"Update Item";
 };
 
 template <>
 struct SearchActionTraits<UserArgs::ClearFields>
 {
-  static constexpr wchar_t prompt[] = L"Clear files of item";
+  static constexpr wchar_t *prompt = L"Clear files of item";
 };
 
 template <>
 struct SearchActionTraits<UserArgs::ChangePassword>
 {
-  static constexpr wchar_t prompt[] = L"Change password of item";
+  static constexpr wchar_t *prompt = L"Change password of item";
 };
 
 #endif /* defined(__pwsafe_xcode6__searchaction__) */

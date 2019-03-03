@@ -298,6 +298,7 @@
     <ClInclude Include="..\typedefs.h" />
     <ClInclude Include="..\utf8conv.h" />
     <ClInclude Include="..\UUID.h" />
+    <ClInclude Include="getopt.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="debug.cpp" />

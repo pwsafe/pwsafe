@@ -7,6 +7,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+#include "stdafx.h"
 #include "./search.h"
 #include "./argutils.h"
 #include "./strutils.h"
@@ -15,6 +16,7 @@
 
 #include <vector>
 #include <exception>
+#include <functional>
 
 #include "../../core/Util.h"
 #include "../../core/PWScore.h"
@@ -108,13 +110,13 @@ struct SearchWithConfirmation
       matches.push_back(&data);
     };
 
-    const wchar_t help[] = L"[y]es   - yes for this item\n"
+    const wchar_t *help =  L"[y]es   - yes for this item\n"
                             "[n]o    - no for this item\n"
                             "[a]ll   - yes for this item and all remaining items\n"
                             "[q]uit  - no for this item all remaining items\n"
                             "a[b]ort - abort operation, even for previous items\n";
 
-    wchar_t choice{ ua.confirmed? L'a': 0 };
+    wchar_t choice{ ua.confirmed? L'a': wchar_t(0) };
 
     SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.subset, ua.fields,
         [matchfn, &choice, help](const pws_os::CUUID &uuid,
@@ -156,7 +158,7 @@ struct SearchWithoutConfirmation
     SearchForEntries(core, ua.opArg, ua.ignoreCase, ua.subset, ua.fields,
                      [&matches](const pws_os::CUUID &/*uuid*/,
                                  const CItemData &data,
-                                 bool */*keep_going*/) {
+                                 bool * /*keep_going*/) {
       matches.push_back(&data);
     });
     return afn(matches);
