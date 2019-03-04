@@ -54,15 +54,12 @@ BEGIN_EVENT_TABLE( CSafeCombinationChange, wxDialog )
 
 ////@begin CSafeCombinationChange event table entries
 #ifndef NO_YUBI
-  EVT_BUTTON( ID_YUBIBTN, CSafeCombinationChange::OnYubibtnClick )
-
-  EVT_BUTTON( ID_YUBIBTN2, CSafeCombinationChange::OnYubibtn2Click )
-  EVT_TIMER(CYubiMixin::POLLING_TIMER_ID, CSafeCombinationChange::OnPollingTimer)
+  EVT_BUTTON( ID_YUBIBTN,                   CSafeCombinationChange::OnYubibtnClick  )
+  EVT_BUTTON( ID_YUBIBTN2,                  CSafeCombinationChange::OnYubibtn2Click )
+  EVT_TIMER(  CYubiMixin::POLLING_TIMER_ID, CSafeCombinationChange::OnPollingTimer  )
 #endif
-
-  EVT_BUTTON( wxID_OK, CSafeCombinationChange::OnOkClick )
-
-  EVT_BUTTON( wxID_CANCEL, CSafeCombinationChange::OnCancelClick )
+  EVT_BUTTON( wxID_OK,                      CSafeCombinationChange::OnOkClick       )
+  EVT_BUTTON( wxID_CANCEL,                  CSafeCombinationChange::OnCancelClick   )
 
 ////@end CSafeCombinationChange event table entries
 END_EVENT_TABLE()
@@ -96,6 +93,8 @@ bool CSafeCombinationChange::Create( wxWindow* parent, wxWindowID id, const wxSt
   {
     GetSizer()->SetSizeHints(this);
   }
+  // Allow to resize the dialog in width, only.
+  SetMaxSize(wxSize(wxDefaultCoord, GetMinSize().y));
   Centre();
 ////@end CSafeCombinationChange creation
 #ifndef NO_YUBI
@@ -162,13 +161,14 @@ void CSafeCombinationChange::CreateControls()
 #endif
 
   wxFlexGridSizer* itemFlexGridSizer4 = new wxFlexGridSizer(DLGITEM_COLS, 0, 0);
-  itemBoxSizer2->Add(itemFlexGridSizer4, 0, wxALIGN_LEFT|wxALL, 5);
+  itemFlexGridSizer4->AddGrowableCol(1);
+  itemBoxSizer2->Add(itemFlexGridSizer4, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
   wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Old safe combination:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_oldPasswdEntry = new CSafeCombinationCtrl( itemDialog1, ID_OLDPASSWD, &m_oldpasswd, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1) );
-  itemFlexGridSizer4->Add(m_oldPasswdEntry, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_oldPasswdEntry = new CSafeCombinationCtrl( itemDialog1, ID_OLDPASSWD, &m_oldpasswd, wxDefaultPosition, wxDefaultSize );
+  itemFlexGridSizer4->Add(m_oldPasswdEntry, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
 
 #ifndef NO_YUBI
   m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
@@ -178,8 +178,8 @@ void CSafeCombinationChange::CreateControls()
   wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("New safe combination:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText8, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_newPasswdEntry = new CSafeCombinationCtrl( itemDialog1, ID_NEWPASSWD, &m_newpasswd, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1) );
-  itemFlexGridSizer4->Add(m_newPasswdEntry, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_newPasswdEntry = new CSafeCombinationCtrl( itemDialog1, ID_NEWPASSWD, &m_newpasswd, wxDefaultPosition, wxDefaultSize );
+  itemFlexGridSizer4->Add(m_newPasswdEntry, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
 
 #ifndef NO_YUBI
   m_YubiBtn2 = new wxBitmapButton( itemDialog1, ID_YUBIBTN2, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
@@ -189,8 +189,8 @@ void CSafeCombinationChange::CreateControls()
   wxStaticText* itemStaticText11 = new wxStaticText( itemDialog1, wxID_STATIC, _("Confirmation:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText11, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_confirmEntry = new CSafeCombinationCtrl( itemDialog1, ID_CONFIRM, &m_confirm, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1) );
-  itemFlexGridSizer4->Add(m_confirmEntry, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_confirmEntry = new CSafeCombinationCtrl( itemDialog1, ID_CONFIRM, &m_confirm, wxDefaultPosition, wxDefaultSize );
+  itemFlexGridSizer4->Add(m_confirmEntry, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
 
   itemFlexGridSizer4->Add(10, 10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
