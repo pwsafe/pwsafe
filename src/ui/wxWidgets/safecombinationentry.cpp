@@ -66,18 +66,18 @@ IMPLEMENT_CLASS( CSafeCombinationEntry, wxDialog )
 BEGIN_EVENT_TABLE( CSafeCombinationEntry, wxDialog )
 
 ////@begin CSafeCombinationEntry event table entries
-  EVT_ACTIVATE( CSafeCombinationEntry::OnActivate )
-  EVT_BUTTON( ID_ELLIPSIS, CSafeCombinationEntry::OnEllipsisClick )
-  EVT_BUTTON( ID_NEWDB, CSafeCombinationEntry::OnNewDbClick )
+  EVT_ACTIVATE( CSafeCombinationEntry::OnActivate                              )
+  EVT_BUTTON(   ID_ELLIPSIS,       CSafeCombinationEntry::OnEllipsisClick      )
+  EVT_BUTTON(   ID_NEWDB,          CSafeCombinationEntry::OnNewDbClick         )
 #ifndef NO_YUBI
-  EVT_BUTTON( ID_YUBIBTN, CSafeCombinationEntry::OnYubibtnClick )
-  EVT_TIMER(POLLING_TIMER_ID, CSafeCombinationEntry::OnPollingTimer)
+  EVT_BUTTON(   ID_YUBIBTN,        CSafeCombinationEntry::OnYubibtnClick       )
+  EVT_TIMER(    POLLING_TIMER_ID,  CSafeCombinationEntry::OnPollingTimer       )
 #endif
-  EVT_BUTTON( wxID_OK, CSafeCombinationEntry::OnOk )
-  EVT_BUTTON( wxID_CANCEL, CSafeCombinationEntry::OnCancel )
-  EVT_COMBOBOX(ID_DBASECOMBOBOX, CSafeCombinationEntry::OnDBSelectionChange)
-  EVT_CHECKBOX(ID_READONLY, CSafeCombinationEntry::OnReadonlyClick)
-                ////@end CSafeCombinationEntry event table entries
+  EVT_BUTTON(   wxID_OK,           CSafeCombinationEntry::OnOk                 )
+  EVT_BUTTON(   wxID_CANCEL,       CSafeCombinationEntry::OnCancel             )
+  EVT_COMBOBOX( ID_DBASECOMBOBOX,  CSafeCombinationEntry::OnDBSelectionChange  )
+  EVT_CHECKBOX( ID_READONLY,       CSafeCombinationEntry::OnReadonlyClick      )
+////@end CSafeCombinationEntry event table entries
 END_EVENT_TABLE()
 
 /*!
@@ -116,6 +116,8 @@ bool CSafeCombinationEntry::Create( wxWindow* parent, wxWindowID id, const wxStr
   {
     GetSizer()->SetSizeHints(this);
   }
+  // Allow to resize the dialog in width, only.
+  SetMaxSize(wxSize(wxDefaultCoord, GetMinSize().y));
   Centre();
 ////@end CSafeCombinationEntry creation
 #ifndef NO_YUBI

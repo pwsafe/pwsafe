@@ -54,17 +54,14 @@ BEGIN_EVENT_TABLE( CSafeCombinationPrompt, wxDialog )
 
 #ifndef NO_YUBI
 ////@begin CSafeCombinationPrompt event table entries
-  EVT_BUTTON( ID_YUBIBTN, CSafeCombinationPrompt::OnYubibtnClick )
-
+  EVT_BUTTON( ID_YUBIBTN,  CSafeCombinationPrompt::OnYubibtnClick      )
+  EVT_TIMER(  POLLING_TIMER_ID, CSafeCombinationPrompt::OnPollingTimer )
 ////@end CSafeCombinationPrompt event table entries
-EVT_TIMER(POLLING_TIMER_ID, CSafeCombinationPrompt::OnPollingTimer)
 #endif
 
-  EVT_BUTTON( wxID_OK, CSafeCombinationPrompt::OnOkClick )
-
-  EVT_BUTTON( wxID_CANCEL, CSafeCombinationPrompt::OnCancelClick )
-
-  EVT_BUTTON( wxID_EXIT, CSafeCombinationPrompt::OnExitClick )
+  EVT_BUTTON( wxID_OK,     CSafeCombinationPrompt::OnOkClick           )
+  EVT_BUTTON( wxID_CANCEL, CSafeCombinationPrompt::OnCancelClick       )
+  EVT_BUTTON( wxID_EXIT,   CSafeCombinationPrompt::OnExitClick         )
 
 END_EVENT_TABLE()
 
@@ -98,6 +95,8 @@ bool CSafeCombinationPrompt::Create( wxWindow* parent, wxWindowID id, const wxSt
   {
     GetSizer()->SetSizeHints(this);
   }
+  // Allow to resize the dialog in width, only.
+  SetMaxSize(wxSize(wxDefaultCoord, GetMinSize().y));
   Centre();
 ////@end CSafeCombinationPrompt creation
 #ifndef NO_YUBI
@@ -150,28 +149,28 @@ void CSafeCombinationPrompt::CreateControls()
   itemDialog1->SetSizer(itemBoxSizer2);
 
   auto *itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer3, 1, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  itemBoxSizer2->Add(itemBoxSizer3, 1, wxALIGN_CENTER_HORIZONTAL|wxALL|wxEXPAND, 5);
 
   wxStaticBitmap* itemStaticBitmap4 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(L"graphics/cpane.xpm"), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
-  itemBoxSizer3->Add(itemStaticBitmap4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer3->Add(itemStaticBitmap4, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer5 = new wxBoxSizer(wxVERTICAL);
-  itemBoxSizer3->Add(itemBoxSizer5, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer3->Add(itemBoxSizer5, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxGROW, 5);
 
   wxStaticText* itemStaticText6 = new wxStaticText( itemDialog1, wxID_STATIC, _("Please enter the safe combination for this password database."), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticText6, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  itemBoxSizer5->Add(itemStaticText6, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5);
 
   wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("filename"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemStaticText7, 0, wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer5->Add(itemBoxSizer8, 0, wxGROW|wxALL, 5);
+  itemBoxSizer5->Add(itemBoxSizer8, 0, wxGROW|wxALL|wxEXPAND, 5);
 
   wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe combination:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer8->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_scctrl = new CSafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1) );
-  itemBoxSizer8->Add(m_scctrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_scctrl = new CSafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxDefaultSize );
+  itemBoxSizer8->Add(m_scctrl, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
 
   auto *itemBoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer5->Add(itemBoxSizer11, 0, wxGROW|wxALL, 5);
