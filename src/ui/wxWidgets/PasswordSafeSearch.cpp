@@ -485,23 +485,6 @@ void PasswordSafeSearch::CreateSearchBar()
     wxMessageBox(_("Could not display searchbar"));
   }
 
-  // This gross hack is the only way I could think of to get ESC keystrokes from the text ctrl user is typing into
-  if (wxDynamicCast(static_cast<wxControl*>(srchCtrl), wxTextCtrl)) {
-    // searchCtrl is a wxTextCtrl derivative, like on Mac OS X 10.3+
-    wxDynamicCast(static_cast<wxControl*>(srchCtrl), wxTextCtrl)->Bind(wxEVT_CHAR, &PasswordSafeSearch::OnSearchBarTextChar, this);
-  }
-  else {
-    // The wxTextCtrl is buried inside the wxSearchCtrl
-    wxWindowList& searchChildren = srchCtrl->GetChildren();
-    for (auto& child : searchChildren) {
-      wxTextCtrl* textControl = wxDynamicCast(child, wxTextCtrl);
-      if (textControl) {
-        textControl->Bind(wxEVT_CHAR, &PasswordSafeSearch::OnSearchBarTextChar, this);
-        break;
-      }
-    }
-  }
-
   // Bind Event Handler
   srchCtrl->Bind( wxEVT_COMMAND_TEXT_UPDATED,          &PasswordSafeSearch::OnSearchTextChanged,     this);
   srchCtrl->Bind( wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN, &PasswordSafeSearch::OnDoSearch,              this);
@@ -510,13 +493,14 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED,          &PasswordSafeSearch::OnAdvancedSearchOptions, this, ID_FIND_ADVANCED_OPTIONS);
   m_toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED,          &PasswordSafeSearch::OnDoSearch,              this, ID_FIND_NEXT);
   m_toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED,          &PasswordSafeSearch::OnSearchClear,           this, ID_FIND_CLEAR);
+  m_toolbar->Bind(wxEVT_CHAR_HOOK,                     &PasswordSafeSearch::OnChar,                  this);
   m_parentFrame->Bind(wxEVT_SIZE,                      &PasswordSafeSearch::OnSize,                  this);
 
   CalculateToolsWidth();
   UpdateStatusAreaWidth();
 }
 
-void PasswordSafeSearch::OnSearchBarTextChar(wxKeyEvent& evt)
+void PasswordSafeSearch::OnChar(wxKeyEvent& evt)
 {
   if (evt.GetKeyCode() == WXK_ESCAPE) {
     HideSearchToolbar();
