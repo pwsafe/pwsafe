@@ -20,7 +20,7 @@
 #include <wx/event.h>
 #include <wx/toolbar.h>
 
-#include "../../core/ItemData.h"
+#include "core/ItemData.h"
 ////@end includes
 
 ////@begin forward declarations
@@ -125,29 +125,30 @@ public:
   /// Destructor
   ~PasswordSafeSearch();
 
-  // wxEVT_COMMAND_TEXT_ENTER event handler for ENTER key press in search text box
-  void OnDoSearch( wxCommandEvent& evt );
   void OnSearchClose(wxCommandEvent& evt);
-  void OnAdvancedSearchOptions(wxCommandEvent& evt);
-  void OnChar(wxKeyEvent& evt);
-  void OnSearchClear(wxCommandEvent& evt);
-  void OnSize(wxSizeEvent& event);
-  void FindNext(void);
-  void FindPrevious(void);
-  void UpdateView();
-  void OnSearchBarTextChar(wxKeyEvent& evt);
-  void OnSearchTextChanged(wxCommandEvent& evt);
+  void FindNext();
+  void FindPrevious();
 
-  void Activate(void);
-  void RefreshButtons(void);
-  void Invalidate(void) { m_searchPointer.Clear(); }
-  void ReCreateSearchBar(void);
+  void Activate();
+  void RefreshButtons();
+  void Invalidate() { m_searchPointer.Clear(); }
+  void ReCreateSearchBar();
 
 private:
   template <class Iter, class Accessor>
   void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr, Iter begin, Iter end, Accessor afn);
 
-  void CreateSearchBar(void);
+  // wxEVT_COMMAND_TEXT_ENTER event handler for ENTER key press in search text box
+  void OnDoSearch( wxCommandEvent& evt );
+  void OnAdvancedSearchOptions(wxCommandEvent& evt);
+  void OnChar(wxKeyEvent& evt);
+  void OnSearchClear(wxCommandEvent& evt);
+  void OnSize(wxSizeEvent& event);
+  void UpdateView();
+  void OnSearchBarTextChar(wxKeyEvent& evt);
+  void OnSearchTextChanged(wxCommandEvent& evt);
+
+  void CreateSearchBar();
   void HideSearchToolbar();
   void ClearToolbarStatusArea();
   void CalculateToolsWidth();
@@ -163,4 +164,4 @@ private:
   size_t               m_ToolsWidth;
 };
 
-#endif
+#endif  // __PASSWORDSAFESEARCH_H__
