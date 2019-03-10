@@ -86,6 +86,7 @@ PasswordSafeSearch::~PasswordSafeSearch()
 void PasswordSafeSearch::OnSearchTextChanged(wxCommandEvent& event)
 {
   wxSearchCtrl *srchCtrl = wxDynamicCast(event.GetEventObject(), wxSearchCtrl);
+  wxCHECK_RET(srchCtrl, wxT("Could not get search control of toolbar"));
   srchCtrl->SetModified(true);
 }
 
@@ -206,7 +207,7 @@ void PasswordSafeSearch::OnSearchClose(wxCommandEvent& WXUNUSED(event))
 void PasswordSafeSearch::OnSearchClear(wxCommandEvent& WXUNUSED(event))
 {
   wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
-  wxCHECK_RET(txtCtrl, wxT("Could not get search ctrl from toolbar"));
+  wxCHECK_RET(txtCtrl, wxT("Could not get search control from toolbar"));
   txtCtrl->Clear();
   m_searchPointer.Clear();
   ClearToolbarStatusArea();
