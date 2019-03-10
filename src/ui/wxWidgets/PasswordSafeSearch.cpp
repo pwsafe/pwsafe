@@ -64,7 +64,7 @@ enum {
   ID_FIND_CREATE_REPORT,
   ID_FIND_CLEAR,
   ID_FIND_STATUS_AREA
-};
+}; // see also PasswordSafeSearch::CalculateToolsWidth() in case of updates
 
 PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(0),
                                                                     m_parentFrame(parent),
@@ -160,7 +160,7 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
 
 void PasswordSafeSearch::UpdateView()
 {
-  wxStaticText* statusArea = wxDynamicCast(m_toolbar->FindWindow(ID_FIND_STATUS_AREA), wxStaticText);
+  auto statusArea = m_toolbar->FindControl(ID_FIND_STATUS_AREA);
   wxASSERT(statusArea);
 
   if (!m_searchPointer.IsEmpty()) {
@@ -203,6 +203,65 @@ void PasswordSafeSearch::OnSearchClear(wxCommandEvent& /* evt */)
   ClearToolbarStatusArea();
 }
 
+/**
+ * Event handler (EVT_SIZE) that will be called when the window has been resized.
+ *
+ * @param event holds information about size change events.
+ * @see <a href="http://docs.wxwidgets.org/3.0/classwx_size_event.html">wxSizeEvent Class Reference</a>
+ */
+void PasswordSafeSearch::OnSize(wxSizeEvent& event)
+{
+  UpdateStatusAreaWidth();
+  event.Skip();
+}
+
+/**
+ * Updates the width of status area depending on the available space of the toolbar.
+ * 
+ * @see PasswordSafeSearch::CalculateToolsWidth()
+ */
+void PasswordSafeSearch::UpdateStatusAreaWidth()
+{
+  auto control = m_toolbar->FindControl(ID_FIND_STATUS_AREA);
+
+  if (control) {
+    control->SetSize(
+      (m_toolbar->GetParent()->GetClientSize()).GetWidth() - m_ToolsWidth - 200, -1
+    );
+  }
+}
+
+/**
+ * Calculates the total width of all controls of toolbar without status area.
+ * 
+ * @note This calculation needs to be done only once, because all controls that 
+ *       are located left from status area have a fixed size, which won't change.
+ */
+void PasswordSafeSearch::CalculateToolsWidth()
+{
+  m_ToolsWidth = 0;
+
+  std::vector<size_t> ids = {
+    ID_FIND_CLOSE,
+    ID_FIND_EDITBOX,
+    ID_FIND_NEXT,
+    ID_FIND_IGNORE_CASE,
+    ID_FIND_ADVANCED_OPTIONS,
+    ID_FIND_CREATE_REPORT,
+    ID_FIND_CLEAR
+  };
+
+  if (m_toolbar) {
+    for (auto& id : ids ) {
+      auto control = m_toolbar->FindControl(id);
+
+      if (control) {
+        m_ToolsWidth += (control->GetSize()).GetWidth();
+      }
+    }
+  }
+}
+
 void PasswordSafeSearch::HideSearchToolbar()
 {
   if (m_toolbar == nullptr)
@@ -225,7 +284,7 @@ void PasswordSafeSearch::HideSearchToolbar()
 
 void PasswordSafeSearch::ClearToolbarStatusArea()
 {
-  wxStaticText* statusArea = wxDynamicCast(m_toolbar->FindWindow(ID_FIND_STATUS_AREA), wxStaticText);
+  auto statusArea = m_toolbar->FindControl(ID_FIND_STATUS_AREA);
   wxCHECK_RET(statusArea, wxT("Could not retrieve status area from search bar"));
   statusArea->SetLabel(wxEmptyString);
 }
@@ -368,9 +427,9 @@ void PasswordSafeSearch::CreateSearchBar()
 {
   wxASSERT(m_toolbar == 0);
   wxPanel *panel = new wxPanel(m_parentFrame, wxID_ANY);
-  wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer *panelSizer = new wxBoxSizer(wxHORIZONTAL);
   panel->SetSizer(panelSizer);
-  m_toolbar = new wxToolBar(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxTB_BOTTOM | wxTB_HORIZONTAL,  wxT("SearchBar"));
+  m_toolbar = new wxToolBar(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_BOTTOM | wxTB_DEFAULT_STYLE,  wxT("SearchBar"));
   panelSizer->Add(m_toolbar, wxSizerFlags().Proportion(1).Expand());
 
   m_toolbar->AddTool(ID_FIND_CLOSE, wxEmptyString, wxBitmap(findclose_xpm), wxNullBitmap, wxITEM_NORMAL, _("Close SearchBar"));
@@ -385,7 +444,8 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->AddTool(ID_FIND_ADVANCED_OPTIONS, wxEmptyString, wxBitmap(findadvanced_xpm), wxNullBitmap, wxITEM_CHECK, _("Advanced Find Options"));
   m_toolbar->AddTool(ID_FIND_CREATE_REPORT, wxEmptyString, wxBitmap(findreport_xpm), wxNullBitmap, wxITEM_NORMAL, _("Create report of previous Find search"));
   m_toolbar->AddTool(ID_FIND_CLEAR, wxEmptyString, wxBitmap(findclear_xpm), wxNullBitmap, wxITEM_NORMAL, _("Clear Find"));
-  m_toolbar->AddControl(new wxStaticText(m_toolbar, ID_FIND_STATUS_AREA, wxEmptyString, wxDefaultPosition, srchCtrlSize.Scale(3,1), wxTE_READONLY));
+  m_toolbar->AddSeparator();
+  m_toolbar->AddControl(new wxStaticText(m_toolbar, ID_FIND_STATUS_AREA, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT|wxST_ELLIPSIZE_END));
 
   RefreshButtons();
 
@@ -424,6 +484,10 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->Connect(ID_FIND_ADVANCED_OPTIONS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnAdvancedSearchOptions), nullptr, this);
   m_toolbar->Connect(ID_FIND_NEXT, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnDoSearch), nullptr, this);
   m_toolbar->Connect(ID_FIND_CLEAR, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnSearchClear), nullptr, this);
+  m_parentFrame->Bind(wxEVT_SIZE, &PasswordSafeSearch::OnSize, this);
+
+  CalculateToolsWidth();
+  UpdateStatusAreaWidth();
 }
 
 void PasswordSafeSearch::OnSearchBarTextChar(wxKeyEvent& evt)
