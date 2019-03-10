@@ -68,45 +68,43 @@ private:
  */
 class SearchPointer
 {
-    typedef UUIDVector SearchIndices;
-    SearchIndices m_indices;
+  typedef UUIDVector SearchIndices;
+  SearchIndices m_indices;
 
-    SearchIndices::const_iterator m_currentIndex;
-    wxString m_label;
+  SearchIndices::const_iterator m_currentIndex;
+  wxString m_label;
 
 public:
-    SearchPointer() {
-        m_currentIndex = m_indices.end();
-        PrintLabel();
-    }
+  SearchPointer() {
+    m_currentIndex = m_indices.end();
+    PrintLabel();
+  }
 
-    void Clear() { m_indices.clear() ; m_currentIndex = m_indices.end(); PrintLabel(); }
-    bool IsEmpty() const { return m_indices.empty(); }
-    const pws_os::CUUID& operator*() const {
-      wxCHECK_MSG(!IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Empty search pointer dereferenced"));
-      return *m_currentIndex;
-    }
-    size_t Size() const { return m_indices.size(); }
+  void Clear() { m_indices.clear() ; m_currentIndex = m_indices.end(); PrintLabel(); }
+  bool IsEmpty() const { return m_indices.empty(); }
+  const pws_os::CUUID& operator*() const {
+    wxCHECK_MSG(!IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Empty search pointer dereferenced"));
+    return *m_currentIndex;
+  }
+  size_t Size() const { return m_indices.size(); }
 
-    void InitIndex(void) {
-        m_currentIndex = m_indices.begin();
-    }
+  void InitIndex(void) { m_currentIndex = m_indices.begin(); }
 
-    void Add(const pws_os::CUUID& uuid) {
-      // every time we add to the array, we risk getting the iterators invalidated
-      const bool restart = (m_indices.empty() || m_currentIndex == m_indices.begin());
-      m_indices.push_back(uuid);
-      if (restart) { InitIndex(); }
-      PrintLabel();
-    }
+  void Add(const pws_os::CUUID& uuid) {
+    // every time we add to the array, we risk getting the iterators invalidated
+    const bool restart = (m_indices.empty() || m_currentIndex == m_indices.begin());
+    m_indices.push_back(uuid);
+    if (restart) { InitIndex(); }
+    PrintLabel();
+  }
 
-    SearchPointer& operator++();
-    SearchPointer& operator--();
+  SearchPointer& operator++();
+  SearchPointer& operator--();
 
-    const wxString& GetLabel(void) const { return m_label; }
+  const wxString& GetLabel(void) const { return m_label; }
 
 private:
-    void PrintLabel(const TCHAR* prefix = 0);
+  void PrintLabel(const TCHAR* prefix = 0);
 };
 
 /*!
@@ -145,7 +143,6 @@ private:
   void OnSearchClear(wxCommandEvent& evt);
   void OnSize(wxSizeEvent& event);
   void UpdateView();
-  void OnSearchBarTextChar(wxKeyEvent& evt);
   void OnSearchTextChanged(wxCommandEvent& evt);
 
   void CreateSearchBar();
