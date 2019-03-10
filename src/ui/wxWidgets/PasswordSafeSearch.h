@@ -131,6 +131,7 @@ public:
   void OnAdvancedSearchOptions(wxCommandEvent& evt);
   void OnChar(wxKeyEvent& evt);
   void OnSearchClear(wxCommandEvent& evt);
+  void OnSize(wxSizeEvent& event);
   void FindNext(void);
   void FindPrevious(void);
   void UpdateView();
@@ -149,14 +150,17 @@ private:
   void CreateSearchBar(void);
   void HideSearchToolbar();
   void ClearToolbarStatusArea();
+  void CalculateToolsWidth();
+  void UpdateStatusAreaWidth();
 
   template <class Iter, class Accessor>
   void OnDoSearchT( Iter begin, Iter end, Accessor afn);
 
   wxToolBar*           m_toolbar;
   PasswordSafeFrame*   m_parentFrame;
-  SelectionCriteria*    m_criteria;
+  SelectionCriteria*   m_criteria;
   SearchPointer        m_searchPointer;
+  size_t               m_ToolsWidth;
 };
 
 #endif
