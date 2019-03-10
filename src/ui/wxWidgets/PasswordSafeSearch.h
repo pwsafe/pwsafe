@@ -149,6 +149,7 @@ private:
   void HideSearchToolbar();
   void ClearToolbarStatusArea();
   void CalculateToolsWidth();
+  wxSize CalculateSearchWidth();
   void UpdateStatusAreaWidth();
 
   template <class Iter, class Accessor>

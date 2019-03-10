@@ -234,9 +234,17 @@ void PasswordSafeSearch::UpdateStatusAreaWidth()
   auto control = m_toolbar->FindControl(ID_FIND_STATUS_AREA);
 
   if (control) {
-    control->SetSize(
-      (m_toolbar->GetParent()->GetClientSize()).GetWidth() - m_ToolsWidth - 200, -1
-    );
+    auto statusAreaWidth = (m_toolbar->GetParent()->GetClientSize()).GetWidth() - m_ToolsWidth;
+
+    if (statusAreaWidth < 0) {
+      return;
+    }
+    else if (statusAreaWidth < 200) {
+      control->SetSize(statusAreaWidth, -1);
+    }
+    else {
+      control->SetSize(statusAreaWidth - 200, -1);
+    }
   }
 }
 
@@ -269,6 +277,20 @@ void PasswordSafeSearch::CalculateToolsWidth()
       }
     }
   }
+}
+
+/**
+ * Calculates the width for the search control.
+ * 
+ * The search control shall only grow up to a maximum of 200 pixels,
+ * which should be enough for a long search text. Limited to this width 
+ * more and more space can be made available by the user for the status 
+ * area if applications main frame is further resized.
+ */
+wxSize PasswordSafeSearch::CalculateSearchWidth()
+{
+  auto width = m_parentFrame->GetSize().GetWidth() < 570 ? (m_parentFrame->GetSize().GetWidth() / 3) : 200;
+  return wxSize(width, wxDefaultSize.GetHeight());
 }
 
 void PasswordSafeSearch::HideSearchToolbar()
@@ -451,8 +473,7 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->AddTool(ID_FIND_CLOSE, wxEmptyString, wxBitmap(findclose_xpm), wxNullBitmap, wxITEM_NORMAL, _("Close SearchBar"));
 
   // Search Textfield
-  wxSize srchCtrlSize(m_parentFrame->GetSize().GetWidth()/3, wxDefaultSize.GetHeight());
-  auto srchCtrl = new wxSearchCtrl(m_toolbar, ID_FIND_EDITBOX, wxEmptyString, wxDefaultPosition, srchCtrlSize, wxTE_PROCESS_ENTER);
+  auto srchCtrl = new wxSearchCtrl(m_toolbar, ID_FIND_EDITBOX, wxEmptyString, wxDefaultPosition, CalculateSearchWidth(), wxTE_PROCESS_ENTER);
   srchCtrl->ShowCancelButton(true);
   srchCtrl->ShowSearchButton(true);
   m_toolbar->AddControl(srchCtrl);
@@ -522,8 +543,7 @@ void PasswordSafeSearch::Activate(void)
         m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
     }
     else if (m_toolbar->Show(true)) {
-      wxSize srchCtrlSize(m_parentFrame->GetSize().GetWidth()/5, wxDefaultSize.GetHeight());
-      m_toolbar->FindControl(ID_FIND_EDITBOX)->SetSize(srchCtrlSize);
+      m_toolbar->FindControl(ID_FIND_EDITBOX)->SetSize(CalculateSearchWidth());
       m_parentFrame->GetSizer()->Layout();
     }
     else {
@@ -538,6 +558,8 @@ void PasswordSafeSearch::Activate(void)
 
   m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
   ClearToolbarStatusArea();
+  CalculateToolsWidth();
+  UpdateStatusAreaWidth();
 }
 
 template <class Iter, class Accessor>
