@@ -551,7 +551,7 @@ void PasswordSafeSearch::OnChar(wxKeyEvent& event)
       else {
         // If nothing is marked in search text field,
         // the item's Run Command shall be processed.
-        wxCommandEvent event(wxEVT_MENU, ID_RUNCOMMAND);
+        wxCommandEvent event(wxEVT_MENU, ID_COPYPASSWORD);
         m_parentFrame->GetEventHandler()->AddPendingEvent(event);
       }
     }
