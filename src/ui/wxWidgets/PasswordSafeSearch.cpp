@@ -270,7 +270,7 @@ void PasswordSafeSearch::CalculateToolsWidth()
   };
 
   if (m_toolbar) {
-    for (auto& id : ids ) {
+    for (auto& id : ids) {
       auto control = m_toolbar->FindControl(id);
 
       if (control) {
@@ -522,13 +522,42 @@ void PasswordSafeSearch::CreateSearchBar()
   UpdateStatusAreaWidth();
 }
 
-void PasswordSafeSearch::OnChar(wxKeyEvent& evt)
+/**
+ * Event handler (EVT_CHAR_HOOK) that will be called on keystroke events.
+ * 
+ * The following keystroke events are handled specially.
+ * - Escape Key: Hides the search toolbar.
+ * - Ctrl-C Key: Copyies marked text from search text field or triggers item's Run Command.
+ * 
+ * @param event holds information about key event.
+ * @see <a href="https://docs.wxwidgets.org/3.1/classwx_key_event.html">wxKeyEvent Class Reference</a>
+ */
+void PasswordSafeSearch::OnChar(wxKeyEvent& event)
 {
-  if (evt.GetKeyCode() == WXK_ESCAPE) {
+  if (event.GetKeyCode() == WXK_ESCAPE) {
     HideSearchToolbar();
   }
+  else if ((event.GetModifiers() == wxMOD_CONTROL) && 
+    ((event.GetKeyCode() == wxT('c')) || (event.GetKeyCode() == wxT('C')))) {
+
+    auto control = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
+
+    if (control) {
+      if (control->CanCopy()) {
+        // If the user has marked some text in the search text field,
+        // then normal copy event shall be handled.
+        event.Skip();
+      }
+      else {
+        // If nothing is marked in search text field,
+        // the item's Run Command shall be processed.
+        wxCommandEvent event(wxEVT_MENU, ID_RUNCOMMAND);
+        m_parentFrame->GetEventHandler()->AddPendingEvent(event);
+      }
+    }
+  }
   else {
-    evt.Skip();
+    event.Skip();
   }
 }
 
@@ -537,8 +566,9 @@ void PasswordSafeSearch::OnChar(wxKeyEvent& evt)
  */
 void PasswordSafeSearch::Activate(void)
 {
-  if (!m_toolbar)
+  if (!m_toolbar) {
     CreateSearchBar();
+  }
   else {
     if ( m_toolbar->IsShownOnScreen() ) {
         m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
@@ -613,24 +643,28 @@ SearchPointer& SearchPointer::operator--()
       PrintLabel();
     }
   }
-  else
+  else {
     m_currentIndex = m_indices.end();
+  }
 
   return *this;
 }
 
 void SearchPointer::PrintLabel(const TCHAR* prefix /*= 0*/)
 {
-  if (m_indices.empty())
+  if (m_indices.empty()) {
     m_label = _("No matches found");
-  else if (m_indices.size() == 1)
+  }
+  else if (m_indices.size() == 1) {
     m_label = _("1 match");
+  }
   else {
     // need a const object so we get both args to distance() as const iterators
     const SearchIndices& idx = m_indices;
     m_label.Clear();
     m_label << std::distance(idx.begin(), m_currentIndex)+1 << '/' << m_indices.size() << wxT(" matches");
-    if (prefix)
+    if (prefix) {
       m_label = wxString(prefix) + wxT(".  ") + m_label;
+    }
   }
 }

@@ -123,7 +123,7 @@ public:
   /// Destructor
   ~PasswordSafeSearch();
 
-  void OnSearchClose(wxCommandEvent& evt);
+  void OnSearchClose(wxCommandEvent& event);
   void FindNext();
   void FindPrevious();
 
@@ -137,13 +137,14 @@ private:
   void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr, Iter begin, Iter end, Accessor afn);
 
   // wxEVT_COMMAND_TEXT_ENTER event handler for ENTER key press in search text box
-  void OnDoSearch( wxCommandEvent& evt );
-  void OnAdvancedSearchOptions(wxCommandEvent& evt);
-  void OnChar(wxKeyEvent& evt);
-  void OnSearchClear(wxCommandEvent& evt);
+  void OnDoSearch( wxCommandEvent& event );
+  void OnAdvancedSearchOptions(wxCommandEvent& event);
+  void OnChar(wxKeyEvent& event);
+  void OnSearchClear(wxCommandEvent& event);
   void OnSize(wxSizeEvent& event);
   void UpdateView();
-  void OnSearchTextChanged(wxCommandEvent& evt);
+  void OnSearchTextChanged(wxCommandEvent& event);
+  void OnSearchBarTextChar(wxKeyEvent& event);
 
   void CreateSearchBar();
   void HideSearchToolbar();
