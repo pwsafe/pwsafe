@@ -527,7 +527,7 @@ void PasswordSafeSearch::CreateSearchBar()
  * 
  * The following keystroke events are handled specially.
  * - Escape Key: Hides the search toolbar.
- * - Ctrl-C Key: Copyies marked text from search text field or triggers item's Run Command.
+ * - Ctrl-C Key: Copyies marked text from search text field or password of selected item.
  * 
  * @param event holds information about key event.
  * @see <a href="https://docs.wxwidgets.org/3.1/classwx_key_event.html">wxKeyEvent Class Reference</a>
@@ -550,7 +550,7 @@ void PasswordSafeSearch::OnChar(wxKeyEvent& event)
       }
       else {
         // If nothing is marked in search text field,
-        // the item's Run Command shall be processed.
+        // the item's password shall be copied.
         wxCommandEvent event(wxEVT_MENU, ID_COPYPASSWORD);
         m_parentFrame->GetEventHandler()->AddPendingEvent(event);
       }
@@ -564,7 +564,7 @@ void PasswordSafeSearch::OnChar(wxKeyEvent& event)
 /*!
  * Called when user clicks Find from Edit menu, or presses Ctrl-F
  */
-void PasswordSafeSearch::Activate(void)
+void PasswordSafeSearch::Activate()
 {
   if (!m_toolbar) {
     CreateSearchBar();
