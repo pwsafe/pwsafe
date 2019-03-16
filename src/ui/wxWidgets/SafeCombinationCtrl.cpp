@@ -10,8 +10,8 @@
 * 
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-#include "../../core/PwsPlatform.h"
+#include <wx/wxprec.h>
+
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
@@ -21,8 +21,9 @@
 #endif
 
 #include "SafeCombinationCtrl.h"
-#include "./wxutils.h"
-#include "./ExternalKeyboardButton.h"
+#include "core/PwsPlatform.h"
+#include "wxutils.h"
+#include "ExternalKeyboardButton.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -36,11 +37,12 @@ class SafeCombinationValidator: public wxValidator
 {
   //no default ctor
   SafeCombinationValidator();
-//  DECLARE_NO_COPY_CLASS(SafeCombinationValidator)
+  //DECLARE_NO_COPY_CLASS(SafeCombinationValidator)
+
 public:
   SafeCombinationValidator(StringX* str): m_str(str), m_allowBlank(false) {}
   virtual ~SafeCombinationValidator() { m_str = 0; }
-  
+
   virtual wxObject *Clone() const { return new SafeCombinationValidator(m_str); }
 
   // This function can pop up an error message.
@@ -113,12 +115,12 @@ void CSafeCombinationCtrl::Init(wxWindow* parent,
                                 const wxSize& size /* = wxDefaultSize */)
 {
   SafeCombinationValidator scValidator(valPtr);
-  textCtrl = new wxTextCtrl(parent, textCtrlID, wxEmptyString, pos, size, 
+  m_textCtrl = new wxTextCtrl(parent, textCtrlID, wxEmptyString, pos, size, 
                                                 wxTE_PASSWORD,
                                                 scValidator);
-  ApplyPasswordFont(textCtrl);
-  Add(textCtrl, wxSizerFlags().Proportion(1).Expand());
-  
+  ApplyPasswordFont(m_textCtrl);
+  Add(m_textCtrl, wxSizerFlags().Proportion(1).Expand());
+
   ExternalKeyboardButton* vkbdButton = new ExternalKeyboardButton(parent);
   Add(vkbdButton, wxSizerFlags().Border(wxLEFT));
 }
@@ -129,24 +131,61 @@ CSafeCombinationCtrl::~CSafeCombinationCtrl()
 
 StringX CSafeCombinationCtrl::GetCombination() const
 {
-  return tostringx(textCtrl->GetValue());
+  return tostringx(m_textCtrl->GetValue());
 }
 
 void CSafeCombinationCtrl::SetValidatorTarget(StringX* str)
 {
   SafeCombinationValidator scValidator(str);
-  textCtrl->SetValidator(scValidator);
+  m_textCtrl->SetValidator(scValidator);
 }
 
 void CSafeCombinationCtrl::SelectCombinationText() const
 {
-  textCtrl->SetFocus();
-  textCtrl->SetSelection(-1,-1);
+  m_textCtrl->SetFocus();
+  m_textCtrl->SetSelection(-1,-1);
 }
 
 void CSafeCombinationCtrl::AllowEmptyCombinationOnce()
 {
-  SafeCombinationValidator *scValidator = dynamic_cast<SafeCombinationValidator *>(textCtrl->GetValidator());
+  SafeCombinationValidator *scValidator = dynamic_cast<SafeCombinationValidator *>(m_textCtrl->GetValidator());
   if (scValidator != nullptr)
     scValidator->AllowEmptyCombinationOnce();
+}
+
+/**
+ * Changes the textual representation of the password in the text entry field
+ * between asterisks and normal character representation.
+ * 
+ * @param secured if true, than textuel input is represented by asterisks
+ *                otherwise by normal characters.
+ * 
+ * @note Changing the style during runtime of an already created wxTextCtrl is 
+ *       not supported on all platforms, hence the existing control will be replaced
+ *       by a newly created one.
+ */
+void CSafeCombinationCtrl::SecureTextfield(bool secured)
+{
+  if (m_textCtrl) {
+
+    auto newTextCtrl = new wxTextCtrl(
+      m_textCtrl->GetParent(),
+      m_textCtrl->GetId(),
+      m_textCtrl->GetValue(),
+      m_textCtrl->GetPosition(),
+      m_textCtrl->GetSize(),
+      secured ? wxTE_PASSWORD : 0,
+      *(m_textCtrl->GetValidator())
+    );
+
+    Replace(m_textCtrl, newTextCtrl);
+
+    if (m_textCtrl->Destroy()) {
+      m_textCtrl = newTextCtrl;
+      Layout();
+    }
+    else {
+      pws_os::Trace(wxT("CSafeCombinationCtrl - Couldn't destroy text entry control."));
+    }
+  }
 }
