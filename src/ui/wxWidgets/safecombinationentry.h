@@ -20,7 +20,7 @@
  */
 
 ////@begin includes
-#include "wx/valgen.h"
+#include <wx/valgen.h>
 ////@end includes
 #include "core/PWScore.h"
 #ifndef NO_YUBI
@@ -49,6 +49,7 @@ class wxTimer;
 #define ID_ELLIPSIS 10003
 #define ID_COMBINATION 10004
 #define ID_READONLY 10005
+#define ID_SHOWCOMBINATION 10505
 #define ID_NEWDB 10006
 #define ID_YUBIBTN 10229
 #define ID_YUBISTATUS 10230
@@ -98,6 +99,9 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_READONLY
   void OnReadonlyClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_SHOWCOMBINATION
+  void OnShowCombination( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEWDB
   void OnNewDbClick( wxCommandEvent& event );
 
@@ -136,7 +140,7 @@ public:
 
   /// Should we show tooltips?
   static bool ShowToolTips();
-  
+
   wxStaticText* m_version;
   wxComboBox* m_filenameCB;
   CSafeCombinationCtrl* m_combinationEntry;
