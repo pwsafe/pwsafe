@@ -157,12 +157,12 @@ void CSafeCombinationCtrl::AllowEmptyCombinationOnce()
  * Changes the textual representation of the password in the text entry field
  * between asterisks and normal character representation.
  * 
- * @param secured if true, than textuel input is represented by asterisks
- *                otherwise by normal characters.
+ * @param secured if true, then textual input is represented by asterisks
+ *                else by normal characters.
  * 
- * @note Changing the style during runtime of an already created wxTextCtrl is 
- *       not supported on all platforms, hence the existing control will be replaced
- *       by a newly created one.
+ * @note Since changing the style an already created wxTextCtrl in runtime is 
+ *       not supported on all platforms, we replace the existing control with
+ *       a newly created one having the desired style.
  */
 void CSafeCombinationCtrl::SecureTextfield(bool secured)
 {
