@@ -21,6 +21,7 @@
 #include <wx/propdlg.h>
 #include <wx/valgen.h>
 #include <wx/spinctrl.h>
+#include <wx/gbsizer.h>
 #include <wx/grid.h>
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
@@ -83,9 +84,8 @@ class wxBoxSizer;
 #define ID_CHECKBOX_RECURRING 10112
 #define ID_RADIOBUTTON_NEVER 10001
 #define ID_PANEL_PPOLICY 10087
-#define ID_RADIOBUTTON2 10115
+#define ID_CHECKBOX42 10115
 #define ID_POLICYLIST 10063
-#define ID_RADIOBUTTON3 10116
 #define ID_SPINCTRL3 10117
 #define ID_CHECKBOX3 10118
 #define ID_SPINCTRL5 10126
@@ -175,8 +175,8 @@ public:
   /// wxEVT_COMMAND_SPINCTRL_UPDATED event handler for ID_SPINCTRL_EXP_TIME
   void OnExpIntervalChanged( wxSpinEvent& event );
 
-  /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
-  void OnPWPRBSelected( wxCommandEvent& event );
+  /// wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_CHECKBOX42
+  void OnPasswordPolicySelected( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_POLICYLIST
   void OnPolicylistSelected( wxCommandEvent& event );
@@ -215,7 +215,6 @@ public:
   void OnEZreadOrPronounceable( wxCommandEvent& evt);
   void OnClearPWHist(wxCommandEvent& evt);
   void OnOk(wxCommandEvent& evt);
-  void OnUpdateResetPWPolicyButton(wxUpdateUIEvent& evt);
 
   /// wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, ID_SPINCTRL7, ID_SPINCTRL8
   void OnAtLeastPasswordChars(wxSpinEvent& evt);
@@ -292,7 +291,7 @@ public:
   wxPanel* m_BasicPanel;
   wxPanel* m_AdditionalPanel;
   wxPanel* m_PasswordPolicyPanel;
-  wxFlexGridSizer* m_BasicFGSizer;
+  wxGridBagSizer* m_BasicGBSizer;
   wxComboBox* m_groupCtrl;
   wxTextCtrl* m_UsernameCtrl;
   wxTextCtrl* m_PasswordCtrl;
@@ -309,9 +308,8 @@ public:
   wxSpinCtrl* m_ExpTimeCtrl;
   wxCheckBox* m_RecurringCtrl;
   wxRadioButton* m_NeverRB;
-  wxRadioButton* m_defPWPRB;
+  wxCheckBox* m_UseDatabasePolicyCtrl;
   wxComboBox* m_cbxPolicyNames;
-  wxRadioButton* m_ourPWPRB;
   wxSpinCtrl* m_pwpLenCtrl;
   wxGridSizer* m_pwMinsGSzr;
   wxCheckBox* m_pwpUseLowerCtrl;
