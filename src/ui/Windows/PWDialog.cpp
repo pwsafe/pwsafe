@@ -96,6 +96,7 @@ LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 INT_PTR CPWDialog::DoModal()
 {
+  GetMainDlg()->SetThreadDpiAwarenessContext();
   bool bAccEn = app.IsAcceleratorEnabled();
   if (bAccEn)
     app.DisableAccelerator();

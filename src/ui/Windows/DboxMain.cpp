@@ -214,6 +214,12 @@ DboxMain::~DboxMain()
   free(m_eye_catcher);
 }
 
+INT_PTR DboxMain::DoModal()
+{
+	SetThreadDpiAwarenessContext();
+	return CDialog::DoModal();
+}
+
 LRESULT DboxMain::OnAreYouMe(WPARAM, LPARAM)
 {
   return (LRESULT)app.m_uiRegMsg;
