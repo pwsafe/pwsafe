@@ -49,10 +49,20 @@
 #include <list>
 #include <stack>
 
+// TODO: Remove once winver support increased
+#ifndef _DPI_AWARENESS_CONTEXTS_
+#define _DPI_AWARENESS_CONTEXTS_
+DECLARE_HANDLE(DPI_AWARENESS_CONTEXT);
+#endif
+
+#ifndef DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2
+#define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2  ((DPI_AWARENESS_CONTEXT)-4)
+#endif
+
 // For ShutdownBlockReasonCreate & ShutdownBlockReasonDestroy
 typedef BOOL (WINAPI *PSBR_CREATE) (HWND, LPCWSTR);
-typedef BOOL (WINAPI *PSBR_DESTROY) (HWND);
-typedef DPI_AWARENESS_CONTEXT (WINAPI *PSBR_DPIAWARE) (DPI_AWARENESS_CONTEXT);
+typedef BOOL(WINAPI *PSBR_DESTROY) (HWND);
+typedef DPI_AWARENESS_CONTEXT(WINAPI *PSBR_DPIAWARE) (DPI_AWARENESS_CONTEXT);
 
 // Entry to GUI mapping
 // Following used to keep track of display vs data

@@ -174,14 +174,4 @@ static_assert(sizeof(uint32) == 4, "uint32 misdefined");
 static_assert(sizeof(int64) == 8, "int64 misdefined");
 static_assert(sizeof(uint64) == 8, "uint64 misdefined");
 
-// TODO: Remove once winver support increased
-#ifndef _DPI_AWARENESS_CONTEXTS_
-#define _DPI_AWARENESS_CONTEXTS_
-DECLARE_HANDLE(DPI_AWARENESS_CONTEXT);
-#endif
-
-#ifndef DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2
-#define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2  ((DPI_AWARENESS_CONTEXT)-4)
-#endif
-
 #endif /* _TYPEDEFS_H */
