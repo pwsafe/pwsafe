@@ -51,7 +51,8 @@
 
 // For ShutdownBlockReasonCreate & ShutdownBlockReasonDestroy
 typedef BOOL (WINAPI *PSBR_CREATE) (HWND, LPCWSTR);
-typedef BOOL (WINAPI *PSBR_DESTROY) (HWND);
+typedef BOOL(WINAPI *PSBR_DESTROY) (HWND);
+typedef DPI_AWARENESS_CONTEXT(WINAPI *PSBR_DPIAWARE) (DPI_AWARENESS_CONTEXT);
 
 // Entry to GUI mapping
 // Following used to keep track of display vs data
@@ -116,6 +117,9 @@ public:
 
   DboxMain(PWScore &core, CWnd* pParent = NULL);
   ~DboxMain();
+
+  // To enable DPI awareness
+  virtual INT_PTR DoModal();
 
   enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, ST_SAVEIMMEDIATELY,
                  ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
@@ -457,6 +461,7 @@ public:
   PSLWA GetSetLayeredWindowAttributes() { return m_pfcnSetLayeredWindowAttributes; }
   bool GetInitialTransparencyState() { return m_bOnStartupTransparancyEnabled; }
   bool SetLayered(CWnd *pWnd, const int value = -1);
+  void SetThreadDpiAwarenessContext();
 
  protected:
    friend class CSetDBID;  // To access icon creation etc.

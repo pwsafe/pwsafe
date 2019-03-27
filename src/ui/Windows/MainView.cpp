@@ -37,6 +37,7 @@
 #include "os/env.h"
 #include "os/run.h"
 #include "os/logit.h"
+#include "os/lib.h"
 
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
@@ -5471,4 +5472,16 @@ bool DboxMain::SetLayered(CWnd *pWnd, const int value)
 
   // Couldn't do it
   return false;
+}
+
+void DboxMain::SetThreadDpiAwarenessContext()
+{
+	if (!pws_os::IsWindows10OrGreater())
+		return;
+
+	PSBR_DPIAWARE pfcnSetThreadDpiAwarenessContext = PSBR_DPIAWARE(pws_os::GetFunction(m_hUser32, "SetThreadDpiAwarenessContext"));
+	if (!pfcnSetThreadDpiAwarenessContext)
+		return;
+
+	pfcnSetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 }
