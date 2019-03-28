@@ -33,24 +33,24 @@ public:
    * last find results may no longer be valid) but is now unchanged
    * from the last saved version.
    */
-  virtual void DatabaseModified(bool bChanged) {}
+  virtual void DatabaseModified(bool /* bChanged */) {}
 
   // UpdateGUI - used by GUI if one or more entries have changed
   // and the entry/entries needs refreshing in GUI:
-  virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                         const pws_os::CUUID &entry_uuid,
-                         CItemData::FieldType ft = CItemData::START) {}
+  virtual void UpdateGUI(UpdateGUICommand::GUI_Action /* ga */,
+                         const pws_os::CUUID &/* entry_uuid */,
+                         CItemData::FieldType /* ft */ = CItemData::START) {}
 
   // Version for groups
-  virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                         const std::vector<StringX> &vGroups) {}
+  virtual void UpdateGUI(UpdateGUICommand::GUI_Action /* ga */,
+                         const std::vector<StringX> &/* vGroups */) {}
 
   // GUIRefreshEntry: called when the entry's graphic representation
   // may have changed - GUI should update and invalidate its display.
-  virtual void GUIRefreshEntry(const CItemData &ci, bool bAllowFail = false) {}
+  virtual void GUIRefreshEntry(const CItemData &/* ci */, bool /* bAllowFail */ = false) {}
 
   // UpdateWizard: called to update text in Wizard during export Text/XML.
-  virtual void UpdateWizard(const stringT &s) {}
+  virtual void UpdateWizard(const stringT &) {}
 
   virtual ~Observer() {}
 };

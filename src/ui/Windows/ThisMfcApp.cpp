@@ -1091,15 +1091,6 @@ BOOL ThisMfcApp::InitInstance()
   // using the potentially incorrect config data
   DboxMain dbox(m_core);
 
-  std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions;
-  bsSupportedFunctions.set(UIInterFace::DATABASEMODIFIED);
-  bsSupportedFunctions.set(UIInterFace::UPDATEGUI);
-  bsSupportedFunctions.set(UIInterFace::GUIREFRESHENTRY);
-  bsSupportedFunctions.set(UIInterFace::UPDATEWIZARD);
-  bsSupportedFunctions.set(UIInterFace::UPDATEGUIGROUPS);
-
-  m_core.SetUIInterFace(&dbox, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
-
   // Parse the command line again.  If there were errors getting the config file,
   // host or user before, then this time around we will issue messages but they
   // will probably be in English unless the config data was OK previously and

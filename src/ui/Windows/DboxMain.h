@@ -120,7 +120,7 @@ class CAddEdit_PropertySheet;
 class CPasskeyEntry;
 
 //-----------------------------------------------------------------------------
-class DboxMain : public CDialog, public UIInterFace
+class DboxMain : public CDialog, public Observer
 {
 public:
   DECLARE_DYNAMIC(DboxMain)
@@ -810,7 +810,7 @@ public:
 private:
   enum InitType {NormalInit, SilentInit, ClosedInit, MinimizedInit};
 
-  // UIInterFace implementations:
+  // Observer interface implementations:
   virtual void DatabaseModified(bool bChanged);
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                          const pws_os::CUUID &entry_uuid,

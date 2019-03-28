@@ -196,13 +196,12 @@ DboxMain::DboxMain(PWScore &core, CWnd* pParent)
 
   // Zero Autotype bits
   m_btAT.reset();
+
+  m_core.RegisterObserver(this);
 }
 
 DboxMain::~DboxMain()
 {
-  std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions(0);
-  m_core.SetUIInterFace(NULL, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
-
   ::DestroyIcon(m_hIcon);
   ::DestroyIcon(m_hIconSm);
 
@@ -212,6 +211,7 @@ DboxMain::~DboxMain()
   pws_os::FreeLibrary(m_hUser32);
 
   free(m_eye_catcher);
+  m_core.UnregisterObserver(this);
 }
 
 INT_PTR DboxMain::DoModal()
