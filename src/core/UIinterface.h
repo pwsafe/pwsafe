@@ -11,6 +11,8 @@
 #include "Command.h"
 #include "ItemData.h"
 
+#include <algorithm>
+
 /**
  * An abstract base class representing all of the UI functionality
  * that core needs to know about.
@@ -20,25 +22,10 @@
  * This is the classic 'mixin' design pattern.
  */
 
-class UIInterFace
+class Observer
 {
 public:
-  UIInterFace() {}
-
-  /** Functions that can be supported by the UI.
-   * It is the responsiblity of the UI to tell the core via SetUIInterFace
-   * which ones it supports.  It will not get called for ones that it does not
-   * support.
-   * NOTE: New functions must be placed at the end of the list.
-   * Sequential values must be used as they are used to access positions in
-   * a std::bitset<NUM_SUPPORTED> variable.
-   *
-   * DO NOT change the order of the functions as UIs will fail
-   */
-  enum Functions {
-    DATABASEMODIFIED = 0, UPDATEGUI, GUIREFRESHENTRY,
-    UPDATEWIZARD, UPDATEGUIGROUPS,
-    NUM_SUPPORTED};
+  Observer() {}
 
   /*
    * UpdateGUI(bChanged):
@@ -46,26 +33,50 @@ public:
    * last find results may no longer be valid) but is now unchanged
    * from the last saved version.
    */
-  virtual void DatabaseModified(bool bChanged) = 0;
+  virtual void DatabaseModified(bool /* bChanged */) {}
 
   // UpdateGUI - used by GUI if one or more entries have changed
   // and the entry/entries needs refreshing in GUI:
-  virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                         const pws_os::CUUID &entry_uuid,
-                         CItemData::FieldType ft = CItemData::START) = 0;
+  virtual void UpdateGUI(UpdateGUICommand::GUI_Action /* ga */,
+                         const pws_os::CUUID &/* entry_uuid */,
+                         CItemData::FieldType /* ft */ = CItemData::START) {}
 
   // Version for groups
-  virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                         const std::vector<StringX> &vGroups) = 0;
+  virtual void UpdateGUI(UpdateGUICommand::GUI_Action /* ga */,
+                         const std::vector<StringX> &/* vGroups */) {}
 
   // GUIRefreshEntry: called when the entry's graphic representation
   // may have changed - GUI should update and invalidate its display.
-  virtual void GUIRefreshEntry(const CItemData &ci, bool bAllowFail = false) = 0;
+  virtual void GUIRefreshEntry(const CItemData &/* ci */, bool /* bAllowFail */ = false) {}
 
   // UpdateWizard: called to update text in Wizard during export Text/XML.
-  virtual void UpdateWizard(const stringT &s) = 0;
+  virtual void UpdateWizard(const stringT &) {}
 
-  virtual ~UIInterFace() {}
+  virtual ~Observer() {}
+};
+
+class Observable
+{
+public:
+  void RegisterObserver(Observer* observer)
+  {
+    if (std::find(m_Observers.begin(), m_Observers.end(), observer) == m_Observers.end()) {
+      m_Observers.push_back(observer);
+    }
+  }
+
+  void UnregisterObserver(Observer* observer)
+  {
+    m_Observers.erase(std::remove_if(
+      m_Observers.begin(), m_Observers.end(), 
+      [observer](Observer* registeredObserver){ return registeredObserver == observer; }), 
+      m_Observers.end());
+  }
+
+  virtual ~Observable() {};
+
+protected:
+  std::vector<Observer*> m_Observers;
 };
 
 #endif /* __UIINTERFACE_H */

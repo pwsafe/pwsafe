@@ -23,6 +23,7 @@
 
 #include "core/ItemData.h"
 #include "core/PWScore.h"
+#include "core/UIinterface.h"
 #include "os/UUID.h"
 
 #include <functional>
@@ -55,7 +56,7 @@ typedef std::map<pws_os::CUUID, int, std::less<pws_os::CUUID> > UUIDRowMapT;
  * PWSGrid class declaration
  */
 
-class PWSGrid: public wxGrid
+class PWSGrid: public wxGrid, public Observer
 {
   typedef std::multimap<wxString, const CItemData*, std::greater<wxString> > DescendingSortedMultimap;
   typedef std::multimap<wxString, const CItemData*, std::less<wxString> >    AscendingSortedMultimap;
@@ -81,6 +82,14 @@ public:
 
   /// Creates the controls and sizers
   void CreateControls();
+
+  /* Observer Interface Implementation */
+
+  /// Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
+  void UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft = CItemData::START) override;
+
+  /// Implements Observer::GUIRefreshEntry(const CItemData&, bool)
+  void GUIRefreshEntry(const CItemData &item, bool bAllowFail = false) override;
 
   // Notification from PWScore when new data is loaded
   void OnPasswordListModified();
@@ -110,8 +119,6 @@ public:
   /// wxEVT_GRID_SELECT_CELL event handler for ID_LISTBOX
   void OnSelectCell( wxGridEvent& event );
 
-  void OnDBGUIPrefsChange(wxEvent& evt);
-
   /// EVT_HEADER_CLICK
   void OnHeaderClick(wxHeaderCtrlEvent& event);
 
@@ -124,6 +131,7 @@ public:
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
+
 ////@end PWSGrid member function declarations
 
   /// Should we show tooltips?
@@ -145,6 +153,8 @@ public:
 ////@end PWSGrid member variables
 
  private:
+  void PreferencesChanged();
+
   void SortByColumn(int column, bool ascending);
 
   template<typename ItemsCollection>
@@ -155,5 +165,4 @@ public:
   UUIDRowMapT m_uuid_map;
 };
 
-#endif
-  // _PWSGRID_H_
+#endif  // _PWSGRID_H_

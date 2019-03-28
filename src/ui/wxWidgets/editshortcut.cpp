@@ -24,7 +24,6 @@
 ////@end includes
 
 #include "editshortcut.h"
-#include "core/UIinterface.h"
 #include "./wxutils.h"
 
 #ifdef __WXMSW__
@@ -61,10 +60,9 @@ EditShortcut::EditShortcut(wxWindow* parent,
                            PWScore &core, CItemData *item,
                            wxWindowID id, const wxString& caption,
                            const wxPoint& pos, const wxSize& size, long style)
-: m_core(core), m_item(item), m_ui(dynamic_cast<UIInterFace *>(parent))
+: m_core(core), m_item(item)
 {
   ASSERT(m_item != nullptr);
-  ASSERT(m_ui != nullptr);
   Init();
   Create(parent, id, caption, pos, size, style);
 }
@@ -294,7 +292,6 @@ void EditShortcut::OnOkClick( wxCommandEvent& /* evt */ )
       modified_item.SetRMTime(t);
       m_core.Execute(EditEntryCommand::Create(&m_core,*m_item,
                                               modified_item));
-      m_ui->GUIRefreshEntry(modified_item);
     }
   }
   EndModal(wxID_OK);

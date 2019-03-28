@@ -77,7 +77,7 @@ void PasswordSafeFrame::DoEdit(CItemData item)
     bool read_only = m_core.IsReadOnly() || item.IsProtected();
     AddEditPropSheet editDbox(this, m_core,
                               read_only ? AddEditPropSheet::SheetType::VIEW : AddEditPropSheet::SheetType::EDIT,
-                              &item, this);
+                              &item);
     rc = editDbox.ShowModal();
   } else {
     EditShortcut editDbox(this, m_core, &item);
@@ -114,7 +114,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
     selectedGroup = m_tree->GetItemGroup(selection);
   }
 
-  AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::SheetType::ADD, nullptr, this, selectedGroup);
+  AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::SheetType::ADD, nullptr, selectedGroup);
   if (addDbox.ShowModal() == wxID_OK) {
     const CItemData &item = addDbox.GetItem();
     m_core.Execute(AddEntryCommand::Create(&m_core, item, item.GetBaseUUID()));

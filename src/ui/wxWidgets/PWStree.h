@@ -23,6 +23,7 @@
 
 #include "core/ItemData.h"
 #include "core/PWScore.h"
+#include "core/UIinterface.h"
 #include "os/UUID.h"
 
 #include <map>
@@ -53,7 +54,7 @@ typedef std::map<pws_os::CUUID, wxTreeItemId, std::less<pws_os::CUUID> > UUIDTIM
  * PWSTreeCtrl class declaration
  */
 
-class PWSTreeCtrl: public wxTreeCtrl
+class PWSTreeCtrl: public wxTreeCtrl, public Observer
 {
   DECLARE_CLASS( PWSTreeCtrl )
   DECLARE_EVENT_TABLE()
@@ -76,6 +77,14 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
+  /* Observer Interface Implementation */
+
+  /// Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
+  void UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft = CItemData::START) override;
+
+  /// Implements Observer::GUIRefreshEntry(const CItemData&, bool)
+  void GUIRefreshEntry(const CItemData &item, bool bAllowFail = false) override;
+
 ////@begin PWSTreeCtrl event handler declarations
 
   /// wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL
@@ -88,11 +97,8 @@ public:
   void OnContextMenu( wxTreeEvent& evt);
 
 ////@end PWSTreeCtrl event handler declarations
-  void OnGetToolTip( wxTreeEvent& evt); // Added manually
 
-  //handler for DB's GUI preferences change notifications from core which are
-  //converted to an event by frame
-  void OnDBGUIPrefsChange(wxEvent& evt);
+  void OnGetToolTip( wxTreeEvent& evt); // Added manually
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_ADDGROUP
   void OnAddGroup(wxCommandEvent& evt);
@@ -106,8 +112,8 @@ public:
   void OnKeyDown(wxTreeEvent& evt);
 
 ////@begin PWSTreeCtrl member function declarations
-
 ////@end PWSTreeCtrl member function declarations
+
   void Clear() {DeleteAllItems(); m_item_map.clear();} // consistent name w/PWSgrid
   void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
@@ -129,11 +135,12 @@ public:
   void SaveGroupDisplayState();
   void RestoreGroupDisplayState();
 
- private:
+private:
+  void PreferencesChanged();
+
   //overridden from base for case-insensitive sort
-  virtual int OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2);
-  bool ExistsInTree(wxTreeItemId node,
-                    const StringX &s, wxTreeItemId &si) const;
+  virtual int OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2) override;
+  bool ExistsInTree(wxTreeItemId node, const StringX &s, wxTreeItemId &si) const;
   wxTreeItemId AddGroup(const StringX &group);
   wxString ItemDisplayString(const CItemData &item) const;
   wxString GetPath(const wxTreeItemId &node) const;
@@ -146,11 +153,12 @@ public:
 
   template<typename GroupItemConsumer>
   void TraverseTree(wxTreeItemId itemId, GroupItemConsumer&& consumer);
+
 ////@begin PWSTreeCtrl member variables
 ////@end PWSTreeCtrl member variables
+
   PWScore &m_core;
   UUIDTIMapT m_item_map; // given a uuid, find the tree item pronto!
 };
 
-#endif
-  // _PWSTREECTRL_H_
+#endif  // _PWSTREECTRL_H_

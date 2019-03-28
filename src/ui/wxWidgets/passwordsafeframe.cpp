@@ -88,7 +88,6 @@ using std::make_tuple;
 
 IMPLEMENT_CLASS( PasswordSafeFrame, wxFrame )
 
-DEFINE_EVENT_TYPE(wxEVT_DB_PREFS_CHANGE)
 DEFINE_EVENT_TYPE(wxEVT_GUI_DB_PREFS_CHANGE)
 
 /*!
@@ -350,6 +349,7 @@ PasswordSafeFrame::~PasswordSafeFrame()
   m_guiInfo = 0;
 
   m_core.ClearDBData();
+  m_core.UnregisterObserver(this);
 }
 
 /*!
@@ -358,12 +358,7 @@ PasswordSafeFrame::~PasswordSafeFrame()
 
 void PasswordSafeFrame::Init()
 {
-  std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions;
-  bsSupportedFunctions.set(UIInterFace::DATABASEMODIFIED);
-  bsSupportedFunctions.set(UIInterFace::UPDATEGUI);
-  bsSupportedFunctions.set(UIInterFace::GUIREFRESHENTRY);
-
-  m_core.SetUIInterFace(this, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
+  m_core.RegisterObserver(this);
 
   m_RUEList.SetMax(PWSprefs::GetInstance()->PWSprefs::MaxREItems);
 ////@begin PasswordSafeFrame member initialisation
@@ -605,6 +600,7 @@ void PasswordSafeFrame::CreateControls()
   m_tree = new PWSTreeCtrl( this, m_core, ID_TREECTRL, wxDefaultPosition,
                             wxDefaultSize,
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
+
   // let the tree ctrl handle ID_ADDGROUP & ID_RENAME all by itself
   Connect(ID_ADDGROUP, wxEVT_COMMAND_MENU_SELECTED,
                        wxCommandEventHandler(PWSTreeCtrl::OnAddGroup), nullptr, m_tree);
@@ -881,9 +877,15 @@ void PasswordSafeFrame::ShowGrid(bool show)
     m_grid->UpdateSorting();
 
     m_guiInfo->RestoreGridViewInfo(m_grid);
+
+    // Register view at core as new observer for notifications
+    m_core.RegisterObserver(m_grid);
   }
   else {
     m_guiInfo->SaveGridViewInfo(m_grid);
+
+    // Unregister the active view at core to not get notifications anymore
+    m_core.UnregisterObserver(m_grid);
   }
 
   m_grid->Show(show);
@@ -937,9 +939,15 @@ void PasswordSafeFrame::ShowTree(bool show)
     else {
       m_guiInfo->RestoreTreeViewInfo(m_tree);
     }
+
+    // Register view at core as new observer for notifications
+    m_core.RegisterObserver(m_tree);
   }
   else {
     m_guiInfo->SaveTreeViewInfo(m_tree);
+
+    // Unregister the active view at core to not get notifications anymore
+    m_core.UnregisterObserver(m_tree);
   }
 
   m_tree->Show(show);
@@ -2161,46 +2169,6 @@ bool PasswordSafeFrame::IsClosed() const
           !m_core.HasDBChanged() && !m_core.AnyToUndo() && !m_core.AnyToRedo());
 }
 
-// Implementation of UIinterface methods
-
-void PasswordSafeFrame::DatabaseModified(bool modified)
-{
-  if (!modified)
-    return;
-
-  if (m_core.HaveDBPrefsChanged()) {
-    wxCommandEvent evt(wxEVT_DB_PREFS_CHANGE, wxID_ANY);
-    evt.ResumePropagation(wxEVENT_PROPAGATE_MAX); //let it propagate through the entire window tree
-    if (m_tree) {
-      m_tree->GetEventHandler()->AddPendingEvent(evt);
-      evt.StopPropagation(); //or else it will come to the frame twice
-    }
-    if (m_grid) m_grid->GetEventHandler()->AddPendingEvent(evt);
-  }
-  else if (m_core.HasDBChanged()) {  //"else if" => both DB and it's prefs can't change at the same time
-    if (m_search) m_search->Invalidate();
-    if (IsTreeView()) {
-      if (m_grid != nullptr)
-        m_grid->OnPasswordListModified();
-    }
-    else {
-#if 0
-    if (m_tree != nullptr)
-      m_tree->???
-#endif
-    }
-  } else {
-    wxFAIL_MSG(wxT("What changed in the DB if not entries or preferences?"));
-  }
-
-  // Save Immediately if user requested it
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
-    int rc = SaveImmediately();
-    if (rc == PWScore::SUCCESS)
-      modified = false;
-  }
-}
-
 void PasswordSafeFrame::RebuildGUI(const int iView /*= iBothViews*/)
 {
   // assumption: the view get updated on switching between each other,
@@ -2230,9 +2198,36 @@ void PasswordSafeFrame::RefreshViews()
   UpdateStatusBar();
 }
 
-void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                                  const CUUID &entry_uuid,
-                                  CItemData::FieldType ft)
+
+/**
+ * Implements Observer::DatabaseModified(bool)
+ */
+void PasswordSafeFrame::DatabaseModified(bool modified)
+{
+  if (!modified)
+    return;
+
+  if (m_core.HaveDBPrefsChanged()) {
+    // TODO: Anything that needs to be handled here?
+  }
+  else if (m_core.HasDBChanged()) {  //"else if" => both DB and it's prefs can't change at the same time
+    // TODO: Anything that needs to be handled here?
+  } else {
+    wxFAIL_MSG(wxT("What changed in the DB if not entries or preferences?"));
+  }
+
+  // Save Immediately if user requested it
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+    int rc = SaveImmediately();
+    if (rc == PWScore::SUCCESS)
+      modified = false;
+  }
+}
+
+/**
+ * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
+ */
+void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &entry_uuid, CItemData::FieldType WXUNUSED(ft))
 {
   // Callback from PWScore if GUI needs updating
   // Note: For some values of 'ga', 'ci' & ft are invalid and not used.
@@ -2242,7 +2237,6 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   // the GUI should not be updated until after the Add.
 
   // TODO: bUpdateGUI processing in PasswordSafeFrame::UpdateGUI
-  UNREFERENCED_PARAMETER(ft);
 
   CItemData *pci(nullptr);
 
@@ -2252,8 +2246,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   } else if (ga == UpdateGUICommand::GUI_ADD_ENTRY ||
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
-    pws_os::Trace(wxT("Couldn't find uuid %ls"),
-                  StringX(CUUID(entry_uuid)).c_str());
+    pws_os::Trace(wxT("Couldn't find uuid %ls"), StringX(CUUID(entry_uuid)).c_str());
     return;
   }
 
@@ -2262,13 +2255,10 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
 #endif
   switch (ga) {
     case UpdateGUICommand::GUI_ADD_ENTRY:
-      ASSERT(pci != nullptr);
-      m_tree->AddItem(*pci);
-      m_grid->AddItem(*pci);
+      // Handled by individual views.
       break;
     case UpdateGUICommand::GUI_DELETE_ENTRY:
-      m_grid->Remove(entry_uuid);
-      m_tree->Remove(entry_uuid);
+      // Handled by individual views.
       break;
     case UpdateGUICommand::GUI_REFRESH_TREE:
       // Caused by Database preference changed about showing username and/or
@@ -2284,83 +2274,27 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       // the action is complete - when these calls are then sent
       RebuildGUI();
       break;
-#ifdef NOTYET
     case UpdateGUICommand::GUI_UPDATE_STATUSBAR:
-      UpdateToolBarDoUndo();
+      // TODO: UpdateToolBarDoUndo();
       UpdateStatusBar();
       break;
-#endif
     case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
-      ASSERT(pci != nullptr);
-      RefreshEntryFieldInGUI(*pci, ft);
+      // Handled by individual views.
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
-      ASSERT(pci != nullptr);
-      RefreshEntryPasswordInGUI(*pci);
+      // Handled by individual views.
       break;
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
     {
       wxCommandEvent evt(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY);
       evt.ResumePropagation(wxEVENT_PROPAGATE_MAX); //let it propagate through the entire window tree
-      if (m_tree) {
-        m_tree->GetEventHandler()->AddPendingEvent(evt);
-        evt.StopPropagation(); //or else it will come to the frame twice
-      }
-      if (m_grid) m_grid->GetEventHandler()->AddPendingEvent(evt);
+      GetEventHandler()->ProcessEvent(evt);
+      RefreshViews();
       break;
     }
     default:
       break;
   }
-}
-
-void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action /*ga*/,
-                                  const std::vector<StringX> &/*vGroups*/)
-{
-  // TODO
-  return;
-}
-void PasswordSafeFrame::RefreshEntryFieldInGUI(const CItemData& item, CItemData::FieldType ft)
-{
-  if (m_currentView == ViewType::GRID) {
-    m_grid->RefreshItemField(item.GetUUID(), ft);
-  }
-  else {
-    //even though the sort order might have changed, don't change the position yet
-    //as it could be too distracting, and the item may even move off the screen
-    m_tree->UpdateItemField(item, ft);
-  }
-}
-
-void PasswordSafeFrame::RefreshEntryPasswordInGUI(const CItemData& item)
-{
-  if (m_currentView == ViewType::GRID) {
-    RefreshEntryFieldInGUI(item, CItemData::PASSWORD);
-    //TODO: Update password history
-  }
-  else {
-    RefreshEntryFieldInGUI(item, CItemData::PASSWORD);
-  }
-}
-
-void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item, bool bAllowFail)
-{
-  UNREFERENCED_PARAMETER(bAllowFail);
-
-  if (item.GetStatus() ==CItemData::ES_DELETED) {
-    uuid_array_t uuid;
-    item.GetUUID(uuid);
-    if (IsTreeView()) { m_tree->Remove(uuid); }
-    else { m_grid->Remove(uuid); }
-  } else {
-    if (IsTreeView()) { m_tree->UpdateItem(item); }
-    else { m_grid->UpdateItem(item); }
-  }
-}
-
-void PasswordSafeFrame::UpdateWizard(const stringT &)
-{
-  // Stub
 }
 
 /*!
