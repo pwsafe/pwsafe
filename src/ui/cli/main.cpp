@@ -100,7 +100,7 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
 
        %PROGNAME% safe --exp[=file] --text|--xml
 
-       %PROGNAME% safe --new
+       %PROGNAME% safe --create
 
        %PROGNAME% safe --add=field1=value1,field2=value2,...
 

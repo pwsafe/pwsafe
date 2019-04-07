@@ -24,12 +24,15 @@ static bool bSubTreeKeyValid; // not me!
 
 bool pws_os::RegCheckExists(const TCHAR *stree)
 {
-  if (stree == NULL) {
+  if (stree == nullptr) {
     CWinApp *app = ::AfxGetApp();
-    if (app == NULL) // can happen in unit test framework
+    if (app == nullptr) // can happen in unit test framework
       return false;
     stree = app->m_pszRegistryKey;
   }
+
+  if (stree == nullptr) // can happen too (no registry key for app)
+	  return false;
 
   const stringT csSubkey = _T("Software\\") + stringT(stree);
   HKEY hSubkey;
