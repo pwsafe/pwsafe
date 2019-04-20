@@ -495,7 +495,7 @@ int Diff(PWScore &core, const UserArgs &ua)
   }
   safeFields.reset(CItem::RMTIME);
 
-  int status = OpenCore(otherCore, otherSafe);
+  int status = OpenCore(otherCore, otherSafe, ua.passphrase[1]);
   if ( status == PWScore::SUCCESS ) {
     constexpr bool treatWhitespacesAsEmpty = false;
     core.Compare( &otherCore,

@@ -36,14 +36,14 @@ static struct termios oldTermioFlags; // to restore tty echo
 
 static void InitPWPolicy(PWPolicy &pwp, PWScore &core, const UserArgs::FieldUpdates &updates);
 
-int OpenCore(PWScore& core, const StringX& safe)
+int OpenCore(PWScore &core, const StringX &safe, const StringX &passphrase)
 {
   if (!pws_os::FileExists(safe.c_str())) {
     wcerr << safe << " - file not found" << endl;
     return 2;
   }
 
-  StringX pk = GetPassphrase(L"Enter Password [" + stringx2std(safe) + L"]: ");
+  StringX pk = passphrase.empty() ? GetPassphrase(L"Enter Password [" + stringx2std(safe) + L"]: ") : passphrase;
 
   int status;
   status = core.CheckPasskey(safe, pk);

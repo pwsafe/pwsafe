@@ -35,6 +35,7 @@ struct Restriction {
 struct UserArgs {
   UserArgs()  { fields.set(); }
   StringX safe;
+  StringX passphrase[2];
   enum OpType {Unset, Import, Export, CreateNew, Search, Add,
                Diff, Sync, Merge} Operation{Unset};
   enum {Print, Delete, Update, ClearFields, ChangePassword} SearchAction{Print};

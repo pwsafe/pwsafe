@@ -62,13 +62,13 @@ static char *basename(const char *path)
 int SaveCore(PWScore &core, const UserArgs &);
 
 // These are the new operations. Each returns the code to exit with
-static int CreateNewSafe(PWScore &core, const StringX& filename);
+static int CreateNewSafe(PWScore &core, const StringX &filename, const StringX &passphrase);
 static int Sync(PWScore &core, const UserArgs &ua);
 static int Merge(PWScore &core, const UserArgs &ua);
 
 //-----------------------------------------------------------------
 
-using pre_op_fn = function<int(PWScore &, const StringX &)>;
+using pre_op_fn = function<int(PWScore &, const StringX &, const StringX &)>;
 using main_op_fn = function<int(PWScore &, const UserArgs &)>;
 using post_op_fn = function<int(PWScore &, const UserArgs &)>;
 
@@ -118,7 +118,7 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
 
                         where OP is one of ==, !==, ^= !^=, $=, !$=, ~=, !~=
                          = => exactly similar
-                         ^ => begins-with
+                         ^ => begins with
                          $ => ends with
                          ~ => contains
                          ! => negation
@@ -146,16 +146,19 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
 	cerr << '\n';
 }
 
-constexpr bool no_dup_short_option2(uint32_t bits, const option *p)
+#if 0
+// Can't get this to work with shift of > 32 bits - compiler bug?
+constexpr bool no_dup_short_option2(uint64_t bits, const option *p)
 {
   return p->name == 0 ||
-          (!(bits & (1 << (p->val - 'a'))) && no_dup_short_option2(bits | (1 << (p->val - 'a')), p+1));
+          (!(bits & (1 << (p->val - 'A'))) && no_dup_short_option2(bits | (1 << (p->val - 'A')), p+1));
 }
 
 constexpr bool no_dup_short_option(const struct option *p)
 {
-  return no_dup_short_option2(uint32_t{}, p);
+  return no_dup_short_option2(uint64_t{}, p);
 }
+#endif
 
 bool parseArgs(int argc, char *argv[], UserArgs &ua)
 {
@@ -195,12 +198,16 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
     //  {"synch",       no_argument,        0, 'z'},
       {"merge",       no_argument,        0, 'm'},
       {"colwidth",    required_argument,  0, 'w'},
+      {"passphrase",  required_argument,  0, 'P'},
+      {"passphrase2", required_argument,  0, 'Q'},
       {0, 0, 0, 0}
     };
 
+#if 0 // see comment above no_dup_short_option
     static_assert(no_dup_short_option(long_options), "Short option used twice");
+#endif
 
-    int c = getopt_long(argc-1, argv+1, "i::e::txcs:b:f:oa:u:pryd:gjknz:m:",
+    int c = getopt_long(argc-1, argv+1, "i::e::txcs:b:f:oa:u:pryd:gjknz:m:P:Q:",
                         long_options, &option_index);
     if (c == -1)
       break;
@@ -290,7 +297,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
     case 'l':
         ua.SearchAction = UserArgs::ClearFields;
         assert(optarg);
-        ua.opArg2 = Utf82wstring(optarg);;
+        ua.opArg2 = Utf82wstring(optarg);
         break;
 
     case 'v':
@@ -316,6 +323,16 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       case 'w':
         assert(optarg);
         ua.colwidth = atoi(optarg);
+        break;
+
+    case 'P':
+        assert(optarg);
+        Utf82StringX(optarg, ua.passphrase[0]);
+        break;
+
+    case 'Q':
+        assert(optarg);
+        Utf82StringX(optarg, ua.passphrase[1]);
         break;
 
     default:
@@ -367,7 +384,7 @@ int main(int argc, char *argv[])
   if (itr != pws_ops.end()) {
     PWScore core;
     try {
-      status = itr->second.pre_op(core, ua.safe);
+      status = itr->second.pre_op(core, ua.safe, ua.passphrase[0]);
       if ( status == PWScore::SUCCESS) {
         status = itr->second.main_op(core, ua);
         if (status == PWScore::SUCCESS)
@@ -386,14 +403,14 @@ int main(int argc, char *argv[])
   return status;
 }
 
-static int CreateNewSafe(PWScore &core, const StringX& filename)
+static int CreateNewSafe(PWScore &core, const StringX &filename, const StringX &passphrase)
 {
     if ( pws_os::FileExists(filename.c_str()) ) {
         wcerr << filename << L" - already exists" << endl;
         exit(1);
     }
 
-    const StringX passkey = GetNewPassphrase();
+    const StringX passkey = passphrase.empty() ? GetNewPassphrase() : passphrase;
     core.SetCurFile(filename);
     core.NewFile(passkey);
 
@@ -412,7 +429,7 @@ int Sync(PWScore &core, const UserArgs &ua)
 {
   const StringX otherSafe{std2stringx(ua.opArg)};
   PWScore otherCore;
-  int status = OpenCore(otherCore, otherSafe);
+  int status = OpenCore(otherCore, otherSafe, ua.passphrase[1]);
   if ( status == PWScore::SUCCESS ) {
     CReport rpt;
     int numUpdated = 0;
@@ -435,7 +452,7 @@ int Merge(PWScore &core, const UserArgs &ua)
 {
   const StringX otherSafe{std2stringx(ua.opArg)};
   PWScore otherCore;
-  int status = OpenCore(otherCore, otherSafe);
+  int status = OpenCore(otherCore, otherSafe, ua.passphrase[1]);
   if ( status == PWScore::SUCCESS ) {
     CReport rpt;
     core.Merge(&otherCore,
