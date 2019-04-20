@@ -337,6 +337,10 @@ bool pws_os::IsLockedFile(const stringT &filename)
 
 std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
 {
+  if (filename.empty()) { // set to stdin/stdout, depending on mode[0] (r/w/a)
+	  return mode[0] == L'r' ? stdin : stdout;
+  }
+  
   const char *cfname = NULL;
   const char *cmode = NULL;
 #ifdef UNICODE

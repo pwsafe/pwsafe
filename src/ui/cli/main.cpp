@@ -323,8 +323,6 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       return false;
     } // switch
   } // while 
-  if (ua.opArg.empty()) // TODO - switch to stdout in this case
-	  ua.opArg = (ua.Format == UserArgs::XML) ? L"file.xml" : L"file.txt";
   return true;
 }
 

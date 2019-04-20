@@ -367,6 +367,10 @@ bool pws_os::IsLockedFile(const stringT &filename)
 
 std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
 {
+  if (filename.empty()) { // set to stdin/stdout, depending on mode[0] (r/w/a)
+	  return mode[0] == L'r' ? stdin : stdout;
+  }
+  
   const char *cfname = nullptr;
   const char *cmode = nullptr;
   size_t fnsize = wcstombs(nullptr, filename.c_str(), 0) + 1;
