@@ -495,6 +495,7 @@ endif (EXISTS "/etc/debian_version")
 
 ## RPM-specific
 set (CPACK_RPM_PACKAGE_REQUIRES "wxBase3, wxGTK3, xerces-c, ykpers, qrencode-libs")
+set (CPACK_RPM_PACKAGE_SUGGESTS "xvkbd")
 set (CPACK_RPM_PACKAGE_URL "https://pwsafe.org/")
 set (CPACK_RPM_PACKAGE_LICENSE "Artistic2.0")
 set (CPACK_RPM_PACKAGE_GROUP "Applications/Utils")
