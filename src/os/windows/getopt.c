@@ -256,7 +256,7 @@ getopt_long(int nargc, char ** nargv, const char * options, const struct option 
 			    long_options[match].has_arg == optional_argument) {
 				if (has_equal)
 					optarg = has_equal;
-				else
+				else if (nargv[optind][0] != '-')
 					optarg = nargv[optind++];
 			}
 			if ((long_options[match].has_arg == required_argument)
