@@ -13,6 +13,7 @@
 
 #include <map>
 #include <regex>
+#include <cassert>
 
 #include "../../core/PWScore.h"
 #include "../../core/core.h"

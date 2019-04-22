@@ -13,6 +13,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <cassert>
 #ifndef _WIN32
 #include <getopt.h>
 #include <libgen.h> // for basename()

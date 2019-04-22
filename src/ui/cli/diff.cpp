@@ -20,6 +20,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <functional>
+#include <cassert>
 
 using namespace std;
 
