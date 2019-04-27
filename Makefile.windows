@@ -77,12 +77,12 @@ I18N_DLLS_64 := $(foreach i,\
 
 BIN_MANIFEST = README.md docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
     $(XMLS) \
-		docs/ChangeLog.txt $(BIN_DIR)/pwsafe.exe $(BIN_DIR)/pws_at.dll \
+		docs/ChangeLog.txt $(BIN_DIR)/pwsafe.exe $(BIN_DIR)/pwsafe-cli.exe $(BIN_DIR)/pws_at.dll \
 		$(BIN_DIR)/pws_osk.dll help/default/pwsafe.chm \
 		docs/pad_file.xml
 BIN_MANIFEST_64 = README.md docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
     $(XMLS) \
-		docs/ChangeLog.txt $(BIN_DIR_64)/pwsafe.exe $(BIN_DIR_64)/pws_at.dll \
+		docs/ChangeLog.txt $(BIN_DIR_64)/pwsafe.exe $(BIN_DIR_64)/pwsafe-cli.exe $(BIN_DIR_64)/pws_at.dll \
 		$(BIN_DIR_64)/pws_osk.dll help/default/pwsafe.chm \
 		docs/pad_file.xml
 

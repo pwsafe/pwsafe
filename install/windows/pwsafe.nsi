@@ -350,6 +350,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the install.
   File "${BIN_DIR}\pwsafe.exe"
+  File "${BIN_DIR}\pwsafe-cli.exe"
   File "${BIN_DIR}\pws_at.dll"
   File "${BIN_DIR}\pws_osk.dll"
   File "..\..\help\default\pwsafe.chm"
