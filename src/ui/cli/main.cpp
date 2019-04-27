@@ -31,6 +31,7 @@
 #include "./diff.h"
 #include "./safeutils.h"
 #include "./impexp.h"
+#include "./cli-version.h"
 
 #include "core/PWScore.h"
 #include "os/file.h"
@@ -135,6 +136,8 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
 			usage_str.replace(itr, placeholder.length(), pname);
 	}
 
+
+  cerr << pname << " version " << CLI_MAJOR_VERSION << "." << CLI_MINOR_VERSION << "." << CLI_REVISION << endl;
 	cerr << usage_str;
 
 	constexpr auto names_per_line = 5;
