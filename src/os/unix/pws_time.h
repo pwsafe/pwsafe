@@ -13,8 +13,11 @@
 #ifdef __FreeBSD__
 #include <time.h>
 #endif
+
 typedef time_t __time32_t;
+#ifndef __time64_t 
 typedef uint64_t __time64_t;
+#endif
 
 extern int localtime64_r(const __time64_t *timep, struct tm *result);
 
