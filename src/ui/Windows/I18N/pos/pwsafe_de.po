@@ -841,7 +841,7 @@ msgstr "Historie der letzten &Einträge"
 
 #. Resource IDs: (5217)
 msgid "&Recent Safes"
-msgstr "&Letzte Sicherungen"
+msgstr "&Letzte Datenbanken"
 
 #. Resource IDs: (32111 - MenuEx)
 msgid "&Refresh"
@@ -2013,7 +2013,7 @@ msgstr "Historie löschen"
 
 #. Resource IDs: (6032)
 msgid "Clear Recent Safe list"
-msgstr "Liste aktueller Sicherungen löschen"
+msgstr "Liste aktueller Datenbanken löschen"
 
 #. Resource IDs: (1062)
 msgid "Clear clipboard upon exit"
@@ -3871,7 +3871,7 @@ msgstr "Symbol"
 
 #. Resource IDs: (5104)
 msgid "If enabled, a 'snapshot' will be taken before every save, named as specified below."
-msgstr "Wenn erlaubt, wird vor jeder Sicherung ein 'Schnappschuss' gemacht, benannt wie unten definiert."
+msgstr "Wenn aktiviert, wird von jeder Datenbank ein 'Schnappschuss' erstellt, benannt wie unten definiert."
 
 #. Resource IDs: (5267)
 msgid "If requested, then a delimiter character must be entered."
@@ -3892,11 +3892,11 @@ msgstr "Wenn die Tastatur Zeichen via %s unterstützt, dann wird diese Taste fre
 
 #. Resource IDs: (5112)
 msgid "If unchecked, you will be prompted to save changes upon exiting Password Safe."
-msgstr "Wenn nicht markiert, werden Sie beim Beenden von Password Safe zur Sicherung aufgefordert."
+msgstr "Wenn deaktiviert, werden Sie beim Beenden von Password Safe zum Speichern von Änderungen aufgefordert."
 
 #. Resource IDs: (5919)
 msgid "If you specify using your own symbol list, you cannot leave it empty. Unselecting use of symbols."
-msgstr "Wenn Sie eine eigene Symbolliste festlegen, darf diese nicht leer sein. Benutzung von Symbole abgewählt."
+msgstr "Wenn Sie eine eigene Symbolliste festlegen, darf diese nicht leer sein. Benutzung von Symbolen abgewählt."
 
 #. Resource IDs: (8262)
 msgid "Igbo"
@@ -5171,7 +5171,7 @@ msgstr "Bestätigen Sie die Löschung von %s Filter %s?"
 
 #. Resource IDs: (6033)
 msgid "Please confirm that you wish to clear the recent Safe list."
-msgstr "Bitte bestätigen sie das Löschen der aktuellen Sicherungsliste"
+msgstr "Bitte bestätigen sie das Löschen der aktuellen Liste von Datenbanken"
 
 #. Resource IDs: (5287)
 msgid "Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n\n"
@@ -5211,7 +5211,7 @@ msgstr "Bitte das Master-Passwort für die Passwortdatenbank eingeben."
 
 #. Resource IDs: (5388)
 msgid "Please enter your backup database prefix."
-msgstr "Geben Sie das Präfix zur Sicherungsdatenbank ein."
+msgstr "Geben Sie den Präfix zur Sicherungsdatenbank ein."
 
 #. Resource IDs: (6001)
 msgid "Please insert your YubiKey"
@@ -6939,7 +6939,7 @@ msgstr "Safe entsperren"
 
 #. Resource IDs: (32090 - MenuEx)
 msgid "Unprotect All Entries"
-msgstr "Schutz entfernen bei allen Einträgen"
+msgstr "Schutz bei allen Einträgen entfernen"
 
 #. Resource IDs: (32088 - Menu, 32088 - MenuEx)
 msgid "Unprotect Entry"
@@ -6968,7 +6968,7 @@ msgstr "Unbenannt"
 
 #. Resource IDs: (5102)
 msgid "Update the maximum number of saved passwords per entry."
-msgstr "Update das maximal Anzahl gesicherte Passwörter per Eintrag"
+msgstr "Aktualisiere die maximale Anzahl gespeicherter Passwörter pro Eintrag."
 
 #. Resource IDs: (5741)
 #, c-format
@@ -6989,35 +6989,35 @@ msgstr "Verwende"
 
 #. Resource IDs: (1049)
 msgid "Use &Digits"
-msgstr "Benutze &Zahlen"
+msgstr "&Ziffern verwenden"
 
 #. Resource IDs: (1070)
 msgid "Use &Hexadecimal digits only (0-9,a-f)"
-msgstr "Benutze nur &Hexadezimalzahlen (0-9,a-f)"
+msgstr "Nur &Hexadezimalzahlen (0-9,a-f) verwenden"
 
 #. Resource IDs: (1047)
 msgid "Use &Lowercase letters"
-msgstr "Benutze &Kleinbuchstaben"
+msgstr "&Kleinbuchstaben verwenden"
 
 #. Resource IDs: (1050)
 msgid "Use &Symbols"
-msgstr "Benutze &Symbole"
+msgstr "&Symbole verwenden"
 
 #. Resource IDs: (1050)
 msgid "Use &Symbols (i.e., &, %, $, etc.)"
-msgstr "Benutze &Symbole (z.B. &, %, $, usw.)"
+msgstr "&Symbole (z.B., &, %, $, usw.) verwenden"
 
 #. Resource IDs: (1048)
 msgid "Use &UPPERCASE letters"
-msgstr "Benutze &Großbuchstaben"
+msgstr "&Großbuchstaben verwenden"
 
 #. Resource IDs: (1476)
 msgid "Use Database Policy"
-msgstr "Verwende Datenbankrichtlinie"
+msgstr "Datenbankrichtlinie verwenden"
 
 #. Resource IDs: (1481)
 msgid "Use Named Policy"
-msgstr "f⥮annte Richtlinie"
+msgstr "Benannte Richtlinie verwenden"
 
 #. Resource IDs: (5888)
 msgid "Use count"
@@ -7025,19 +7025,19 @@ msgstr "In Verwendung"
 
 #. Resource IDs: (4102)
 msgid "Use digits"
-msgstr "Verwende Ziffern"
+msgstr "Ziffern verwenden"
 
 #. Resource IDs: (4100)
 msgid "Use lowercase characters"
-msgstr "Verwende Kleinbuchstaben"
+msgstr "Kleinbuchstaben verwenden"
 
 #. Resource IDs: (1051)
 msgid "Use only &Easy-to-read characters (i.e., no  'l', '1', etc.)"
-msgstr "Benutze l&eicht zu lesende Zeichen (z.B. kein  'l', '1', usw.)"
+msgstr "Nur l&eicht lesbare Zeichen (z.B., kein  'l', '1', usw.) verwenden"
 
 #. Resource IDs: (4103)
 msgid "Use symbols"
-msgstr "Verwende Symbole"
+msgstr "Symbole verwenden"
 
 #. Resource IDs: (1376)
 msgid "Use the P&olicy below:"
@@ -7045,7 +7045,7 @@ msgstr "Verwende die &Richtlinie unten:"
 
 #. Resource IDs: (4101)
 msgid "Use uppercase characters"
-msgstr "Verwende Großbuchstaben"
+msgstr "Großbuchstaben verwenden"
 
 #. Resource IDs: (5223)
 msgid "User Name"
@@ -7130,11 +7130,11 @@ msgstr "Ansicht"
 
 #. Resource IDs: (32097 - MenuEx, 548, 6025)
 msgid "View Attachment"
-msgstr "Ansicht Anhang"
+msgstr "Anhang anzeigen"
 
 #. Resource IDs: (6053)
 msgid "View Base entry"
-msgstr "Zeige Basiseintrag an"
+msgstr "Basiseintrag anzeigen"
 
 #. Resource IDs: (32220 - Menu, 5261)
 msgid "View Entry"
@@ -7147,15 +7147,15 @@ msgstr "Siehe Eintrag:   «%s» «%s» «%s»"
 
 #. Resource IDs: (1431, 157)
 msgid "View Report"
-msgstr "Zeige Report"
+msgstr "Report anzeigen"
 
 #. Resource IDs: (5502)
 msgid "View Shortcut"
-msgstr "Zeige Verknüpfung"
+msgstr "Verknüpfung anzeigen"
 
 #. Resource IDs: (4006, 5301)
 msgid "View/Edit selected entry"
-msgstr "Zeige/ändere ausgewählten Eintrag"
+msgstr "Ausgewählten Eintrag anzeigen/bearbeiten"
 
 #. Resource IDs: (32201 - MenuEx)
 msgid "Visit Password Safe &website..."
@@ -7251,7 +7251,7 @@ msgstr "Zeilenumbruch"
 
 #. Resource IDs: (1363)
 msgid "Word Wrap Notes in Add && Edit"
-msgstr "Umbrechen der Notizen beim Einfügen und Bearbeiten"
+msgstr "Notizen beim Einfügen und Bearbeiten umbrechen"
 
 #. Resource IDs: (5305)
 #, c-format
@@ -7484,7 +7484,7 @@ msgstr "\nBenutzername in Zwischenablage kopieren"
 
 #. Resource IDs: (32308)
 msgid "\nCreate report of previous Find search"
-msgstr "\nErstelle Report der letzten Suche"
+msgstr "\nReport der letzten Suche erstellen"
 
 #. Resource IDs: (32056)
 msgid "\nDelete an Entry"
@@ -7496,7 +7496,7 @@ msgstr "\nTeilmenge des Passwortes anzeigen"
 
 #. Resource IDs: (32063)
 msgid "\nDuplicate Entry"
-msgstr "\nDoppelter Eintrag"
+msgstr "\nEintrag duplizieren"
 
 #. Resource IDs: (32086)
 msgid "\nDuplicate Group"
@@ -7516,7 +7516,7 @@ msgstr "\nFilter bearbeiten"
 
 #. Resource IDs: (5517)
 msgid "\nEmail: "
-msgstr "\nE-Mail: "
+msgstr "\nEMail: "
 
 #. Resource IDs: (3052)
 #, c-format
@@ -7541,7 +7541,7 @@ msgstr "\nExportiere Eintrag als Text..."
 
 #. Resource IDs: (32092)
 msgid "\nExport Entry to another Safe..."
-msgstr "\nExportiere Eintrag in andere Sicherung..."
+msgstr "\nExportiere Eintrag in andere Datenbank..."
 
 #. Resource IDs: (32094)
 msgid "\nExport Group in XML format..."
@@ -7553,7 +7553,7 @@ msgstr "\nExportiere Gruppe in Text-Format..."
 
 #. Resource IDs: (32095)
 msgid "\nExport Group to another Safe..."
-msgstr "\nExportiere Gruppe in andere Sicherung..."
+msgstr "\nExportiere Gruppe in andere Datenbank..."
 
 #. Resource IDs: (32010)
 msgid "\nExport to Text"
@@ -7577,7 +7577,7 @@ msgstr "\nAls XML exportieren"
 
 #. Resource IDs: (32026)
 msgid "\nExport to v4 database (EXPERIMENTAL)"
-msgstr "\nExport in  v4 Datenbank (EXPERIMENTELL)"
+msgstr "\nExport in v4 Datenbank (EXPERIMENTELL)"
 
 #. Resource IDs: (32028)
 msgid "\nFiltered entries to PasswordSafe..."
@@ -7597,11 +7597,11 @@ msgstr "\nFinde..."
 
 #. Resource IDs: (32157)
 msgid "\nGenerate Password"
-msgstr "\nGeneriere Passwort"
+msgstr "\nPasswort generieren"
 
 #. Resource IDs: (32078)
 msgid "\nGo to Base entry"
-msgstr "\nGehe zum Basiseintrag"
+msgstr "\nZum Basiseintrag gehen"
 
 #. Resource IDs: (57670)
 msgid "\nHelp"
@@ -7629,12 +7629,12 @@ msgstr "\nNeue Datenbank erstellen"
 
 #. Resource IDs: (32115)
 msgid "\nManage Filters"
-msgstr "\nVerwalte Filter"
+msgstr "\nFilter verwalten"
 
 #. Resource IDs: (3415)
 #, c-format
 msgid "\nMerge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
-msgstr "\nZusammenführen fertig: %d %ls dazu (%d %ls, %d %ls, %d %ls, %d %ls)"
+msgstr "\nZusammenführen beendet: %d %ls dazu (%d %ls, %d %ls, %d %ls, %d %ls)"
 
 #. Resource IDs: (32018)
 msgid "\nMerge into Database"
@@ -7666,7 +7666,7 @@ msgstr "\nProgramm wird beendet."
 
 #. Resource IDs: (32089)
 msgid "\nProtect All Entries"
-msgstr "\nSchütze alle Einträge"
+msgstr "\nAlle Einträge schützen"
 
 #. Resource IDs: (32087)
 msgid "\nProtect Entry"
