@@ -331,7 +331,7 @@ if (WIN32 AND NOT WX_WINDOWS)
   add_subdirectory (src/Tools/Windows/I18N/ResPWSL)
 else()
   add_subdirectory (src/ui/wxWidgets)
-  add_subdirectory(src/ui/cli EXCLUDE_FROM_ALL)
+  add_subdirectory(src/ui/cli "./cli")
   if (NOT WIN32)
     # TBD - handle I18N under WX_WINDOWS.
     find_package(Gettext QUIET)
