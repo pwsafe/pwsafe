@@ -17,6 +17,7 @@ New Features in 3.49.0
 ======================
 [856] Setting the "Copy password to clipboard upon browse" implies copy
 password upon Run command.
+[-] Added command-line program pwsafe-cli, suitable for scripting.
 
 Bugs Fixed in 3.49.0
 ====================
