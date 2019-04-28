@@ -2528,10 +2528,6 @@ msgstr "Tarih/Saat Bilgisi"
 msgid "Dates and Times"
 msgstr "Tarih ve Saatler"
 
-#. Resource IDs: (1447)
-msgid "Default password expiration (days)"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Default"
 msgstr "Varsayılan"
@@ -2560,6 +2556,10 @@ msgstr ""
 #, c-format
 msgid "Default number of saved password history entries must be between %d and %d."
 msgstr "Kaydedilmiş şifre geçmişi girdilerinin varsayılan adedi %d ve %d arasında olmalıdır."
+
+#. Resource IDs: (1447)
+msgid "Default password expiration (days)"
+msgstr ""
 
 #. Resource IDs: (5622)
 msgid "Delete"

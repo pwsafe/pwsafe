@@ -2528,10 +2528,6 @@ msgstr "日期/时间信息"
 msgid "Dates and Times"
 msgstr "日期和时间"
 
-#. Resource IDs: (1447)
-msgid "Default password expiration (days)"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Default"
 msgstr ""
@@ -2560,6 +2556,10 @@ msgstr ""
 #, c-format
 msgid "Default number of saved password history entries must be between %d and %d."
 msgstr "默认保存项目历史密码数量必须在 %d 和 %d 之间！"
+
+#. Resource IDs: (1447)
+msgid "Default password expiration (days)"
+msgstr ""
 
 #. Resource IDs: (5622)
 msgid "Delete"

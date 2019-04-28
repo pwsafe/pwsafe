@@ -2541,10 +2541,6 @@ msgstr "Informazioni Data\\Ora"
 msgid "Dates and Times"
 msgstr "Date e orari"
 
-#. Resource IDs: (1447)
-msgid "Default password expiration (days)"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Default"
 msgstr "Predefinita"
@@ -2573,6 +2569,10 @@ msgstr "L'impostazione predefinita è la stessa cartella del database.\nSe modif
 #, c-format
 msgid "Default number of saved password history entries must be between %d and %d."
 msgstr "Il numero predefinito di elementi salvati nella cronologia della password deve essere tra %d e %d."
+
+#. Resource IDs: (1447)
+msgid "Default password expiration (days)"
+msgstr ""
 
 #. Resource IDs: (5622)
 msgid "Delete"

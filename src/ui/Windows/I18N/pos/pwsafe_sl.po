@@ -2541,10 +2541,6 @@ msgstr "Podatki o datumu/času"
 msgid "Dates and Times"
 msgstr "Datumi in časi"
 
-#. Resource IDs: (1447)
-msgid "Default password expiration (days)"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Default"
 msgstr "Privzeto"
@@ -2573,6 +2569,10 @@ msgstr "Privzet je isti imenik kot zbirka podatkov. Če je spremenjen, se prepri
 #, c-format
 msgid "Default number of saved password history entries must be between %d and %d."
 msgstr "Privzeto število shranjenih vnosov zgodovine gesla mora biti med %d in %d."
+
+#. Resource IDs: (1447)
+msgid "Default password expiration (days)"
+msgstr ""
 
 #. Resource IDs: (5622)
 msgid "Delete"

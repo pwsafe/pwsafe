@@ -2528,10 +2528,6 @@ msgstr "날짜/시각 정보"
 msgid "Dates and Times"
 msgstr "요일 및 시간"
 
-#. Resource IDs: (1447)
-msgid "Default password expiration (days)"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Default"
 msgstr ""
@@ -2560,6 +2556,10 @@ msgstr ""
 #, c-format
 msgid "Default number of saved password history entries must be between %d and %d."
 msgstr "저장된 비밀번호 내역 항목 수의 기본값은 반드시 %d 에서 %d 사이"
+
+#. Resource IDs: (1447)
+msgid "Default password expiration (days)"
+msgstr ""
 
 #. Resource IDs: (5622)
 msgid "Delete"

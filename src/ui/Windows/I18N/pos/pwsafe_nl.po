@@ -2554,10 +2554,6 @@ msgstr "Datum/Tijd Informatie"
 msgid "Dates and Times"
 msgstr "Data en Tijden"
 
-#. Resource IDs: (1447)
-msgid "Default password expiration (days)"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Default"
 msgstr "Standaard"
@@ -2586,6 +2582,10 @@ msgstr "Standaard is dezelfde folder als de database. Als gewijzigd, zorg dan vo
 #, c-format
 msgid "Default number of saved password history entries must be between %d and %d."
 msgstr "Standaard aantal bewaarde wachtwoorden voor de wachtwoord geschiedenis moet tussen de %d en %d zijn."
+
+#. Resource IDs: (1447)
+msgid "Default password expiration (days)"
+msgstr ""
 
 #. Resource IDs: (5622)
 msgid "Delete"

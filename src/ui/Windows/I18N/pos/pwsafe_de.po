@@ -2567,10 +2567,6 @@ msgstr "Datum/Zeit Information"
 msgid "Dates and Times"
 msgstr "Datum und Uhrzeit"
 
-#. Resource IDs: (1447)
-msgid "Default password expiration (days)"
-msgstr "Standard Ablaufdatum des Passworts (Tage)"
-
 #. Resource IDs: (65535)
 msgid "Default"
 msgstr "Standard"
@@ -2599,6 +2595,10 @@ msgstr "Standard ist das selbe Verzeichnis wie die Datenbank. Nach einer Änderu
 #, c-format
 msgid "Default number of saved password history entries must be between %d and %d."
 msgstr "Standard Anzahl der gespeicherten Passworthistorien muss zwischen %d und %d sein."
+
+#. Resource IDs: (1447)
+msgid "Default password expiration (days)"
+msgstr "Standard Ablaufdatum des Passworts (Tage)"
 
 #. Resource IDs: (5622)
 msgid "Delete"
