@@ -1387,7 +1387,7 @@ msgstr "Anzahl der Einträge:"
 
 #: ../../../ui/wxWidgets/properties.cpp:305
 msgid "Number of Attachments:"
-msgstr "Anzahl der Anlagen:"
+msgstr "Anzahl der Anhänge:"
 
 #: ../../../ui/wxWidgets/properties.cpp:311
 msgid "Last saved by:"
