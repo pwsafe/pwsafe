@@ -7,18 +7,21 @@ before_install:
 
 addons:
     apt:
-        packages:
-            - "libwxgtk3.0-dev"
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.9
+            - libwxgtk3.0-dev
             - libuuid1
-            - "libxerces-c-dev" 
-            - "libxt-dev"
-            - "libxtst-dev"
-            - "libykpers-1-dev"
-            - "libyubikey-dev"
-            - "uuid-dev"
-            - "pkg-config"
-            - "libgtest-dev"
-            - "libqrencode-dev"
+            - libxerces-c-dev
+            - libxt-dev
+            - libxtst-dev
+            - libykpers-1-dev
+            - libyubikey-dev
+            - uuid-dev
+            - pkg-config
+            - libgtest-dev
+            - libqrencode-dev
 
 language: cpp
 
@@ -27,6 +30,7 @@ dist: trusty
 env:
     - BUILD_DIR=dist UPLOAD_DIR=linux
     - BUILD_DIR=Xcode/installers UPLOAD_DIR=osx
+    - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
 
 matrix:
     exclude:
