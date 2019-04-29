@@ -7,10 +7,7 @@ before_install:
 
 addons:
     apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-4.9
+        packages:
             - libwxgtk3.0-dev
             - libuuid1
             - libxerces-c-dev
@@ -25,12 +22,11 @@ addons:
 
 language: cpp
 
-dist: trusty
+dist: xenial
 
 env:
     - BUILD_DIR=dist UPLOAD_DIR=linux
     - BUILD_DIR=Xcode/installers UPLOAD_DIR=osx
-    - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
 
 matrix:
     exclude:
