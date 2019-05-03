@@ -63,8 +63,10 @@ class CAbout: public wxDialog, public wxThreadHelper
   bool CheckDatabaseStatus();
   bool SetupConnection();
   void Cleanup();
+#if defined(_DEBUG) || defined(DEBUG)
   wxString GetLibCurlVersion();
   wxString GetLibWxVersion();
+#endif
   static wxCriticalSection& CriticalSection();
   static size_t WriteCallback(char *receivedData, size_t size, size_t bytes, void *userData);
 

@@ -75,10 +75,11 @@ CAbout::CAbout( wxWindow* parent, wxWindowID id, const wxString& caption, const 
 {
   Init();
   Create(parent, id, caption, pos, size, style);
-
+#if defined(_DEBUG) || defined(DEBUG)
   // Print version information on standard output which might be useful for error reports.
   pws_os::Trace(GetLibWxVersion());
   pws_os::Trace(GetLibCurlVersion());
+#endif
 }
 
 /*!
@@ -373,6 +374,7 @@ void CAbout::Cleanup()
   }
 }
 
+#if defined(_DEBUG) || defined(DEBUG)
 /**
  * Provides version information about Curl library.
  */
@@ -409,6 +411,7 @@ wxString CAbout::GetLibWxVersion()
 {
   return wxString::Format("[wx] Wx Version:\n%s\n", wxGetLibraryVersionInfo().ToString());
 }
+#endif // debug
 
 /**
  * Checks whether database is closed.
