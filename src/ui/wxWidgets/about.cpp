@@ -393,7 +393,7 @@ wxString CAbout::GetLibCurlVersion()
 
   wxString protocols;
 
-  for (size_t i = 0; i < (sizeof(curlVersion->protocols) / sizeof(curlVersion->protocols[0])); i++) {
+  for (size_t i = 0; curlVersion->protocols[i]; i++) {
     i == 0 ? protocols = (curlVersion->protocols)[i] : protocols << ", " << (curlVersion->protocols)[i];
   }
 
@@ -644,7 +644,7 @@ wxThread::ExitCode CAbout::Entry()
  * @see method <code>CAbout::Entry()</code>
  * @see https://curl.haxx.se/libcurl/c/CURLOPT_WRITEFUNCTION.html
  */
-size_t CAbout::WriteCallback(char *receivedData, size_t size, size_t bytes, void *userData)
+size_t CAbout::WriteCallback(char *receivedData, size_t size, size_t bytes, void* WXUNUSED(userData))
 {
   size_t receivedDataSize = size * bytes;
 
