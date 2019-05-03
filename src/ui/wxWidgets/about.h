@@ -19,12 +19,14 @@
 ////@begin includes
 #include <wx/hyperlink.h>
 #include <wx/event.h>
-#include <wx/thread.h>
 ////@end includes
 
 #include "os/typedefs.h"
 
+#ifndef NO_VERCHECK
+#include <wx/thread.h>
 #include <curl/curl.h>
+#endif // NO_VERCHECK
 
 /*!
  * Forward declarations
@@ -54,24 +56,32 @@
  * CAbout class declaration
  */
 
-class CAbout: public wxDialog, public wxThreadHelper
+class CAbout: public wxDialog
+#ifndef NO_VERCHECK
+, public wxThreadHelper
+#endif // NO_VERCHECK
 {
   DECLARE_CLASS( CAbout )
   DECLARE_EVENT_TABLE()
 
+#if defined(_DEBUG) || defined(DEBUG)
+  wxString GetLibWxVersion();
+#endif // debug
+
+#ifndef NO_VERCHECK
   void CompareVersionData();
   bool CheckDatabaseStatus();
   bool SetupConnection();
   void Cleanup();
 #if defined(_DEBUG) || defined(DEBUG)
   wxString GetLibCurlVersion();
-  wxString GetLibWxVersion();
-#endif
+#endif // debug
+
   static wxCriticalSection& CriticalSection();
   static size_t WriteCallback(char *receivedData, size_t size, size_t bytes, void *userData);
-
 protected:
   virtual wxThread::ExitCode Entry();
+#endif // NO_VERCHECK
 
 public:
   /// Constructors
@@ -84,18 +94,17 @@ public:
   /// Destructor
   ~CAbout();
 
-  /// Initialises member variables
+  /// Initializes member variables
   void Init();
 
   /// Creates the controls and sizers
   void CreateControls();
-
+#ifndef NO_VERCHECK
   void CheckNewVersion();
-
+#endif // NO_VERCHECK
 ////@begin CAbout event handler declarations
-
   /// event handler for ID_CHECKNEW
-  void OnCheckNewClicked(wxHyperlinkEvent& WXUNUSED(event)) { CheckNewVersion(); };
+  void OnCheckNewClicked(wxHyperlinkEvent& event);
 
   /// event handler for ID_SITEHYPERLINK
   void OnVisitSiteClicked(wxHyperlinkEvent& event);
@@ -106,8 +115,11 @@ public:
   /// wxEVT_CLOSE_WINDOW event handler
   void OnCloseWindow( wxCloseEvent& event );
 
+#ifndef NO_VERCHECK
   /// wxEVT_THREAD event handler for wxID_ANY
   void OnDownloadCompleted(wxThreadEvent& event);
+#endif // NO_VERCHECK
+
 ////@end CAbout event handler declarations
 
 ////@begin CAbout member function declarations
@@ -123,6 +135,7 @@ public:
   static bool ShowToolTips();
 
 private:
+#ifndef NO_VERCHECK
 ////@begin CAbout member variables
   wxTextCtrl* m_VersionStatus;
 ////@end CAbout member variables
@@ -132,9 +145,7 @@ private:
 
   /// Set to downloaded data by worker thread, resp. WriteCallback, and read by main thread for final version check
   static wxString s_VersionData;
-
-  static const wstringT s_HOME_URL;
-  static const cstringT s_VERSION_URL;
+#endif // NO_VERCHECK
 };
 
 #endif /* _ABOUT_H_ */
