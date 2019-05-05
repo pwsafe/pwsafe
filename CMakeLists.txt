@@ -45,6 +45,10 @@ if (LSB_RELEASE_EXECUTABLE)
     OUTPUT_VARIABLE LSB_RELEASE_ID_SHORT
     OUTPUT_STRIP_TRAILING_WHITESPACE
     )
+  execute_process(COMMAND ${LSB_RELEASE_EXECUTABLE} -rs
+    OUTPUT_VARIABLE LSB_RELEASE_NUM_SHORT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
 endif()
 
 if (WIN32 AND NOT WX_WINDOWS)
@@ -472,13 +476,18 @@ set (CPACK_DEBIAN_PACKAGE_CONFLICTS "passwordsafe-common") # Debian package main
 
 if (${LSB_RELEASE_ID_SHORT} STREQUAL "Ubuntu")
 	## Ubuntu-specific
+  if (${LSB_RELEASE_NUM_SHORT} VERSION_GREATER_EQUAL "18.0")
+    set (LIBCURL "libcurl4 (>= 7.58.0-2)")
+  else (${LSB_RELEASE_NUM_SHORT} VERSION_GREATER_EQUAL "18.0")
+    set (LIBCURL "libcurl3 (>= 7.58.0-2)")
+  endif (${LSB_RELEASE_NUM_SHORT} VERSION_GREATER_EQUAL "18.0")
   string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.[0-9]+" "\\1.\\2" XercesC_VER ${XercesC_VERSION})
-	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), libcurl4 (>= 7.47.0-1), libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c${XercesC_VER} (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1)")
+	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c${XercesC_VER} (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1)")
 endif (${LSB_RELEASE_ID_SHORT} STREQUAL "Ubuntu")
 
 if (${LSB_RELEASE_ID_SHORT} STREQUAL "Debian")
 	## Debian-specific:
-	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.7-18lenny4), libcurl4 (>= 7.52.1-5), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2) | libwxgtk3.0-0v5 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1+b2)")
+	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.7-18lenny4), libcurl3 (>= 7.52.1-5), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2) | libwxgtk3.0-0v5 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1+b2)")
   set (CPACK_DEBIAN_PACKAGE_RECOMMENDS "xvkbd (>= 3.3-1+b1)")
 endif (${LSB_RELEASE_ID_SHORT} STREQUAL "Debian")
 
