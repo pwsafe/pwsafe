@@ -21,7 +21,7 @@
 FROM ubuntu:18.04
 
 # Build with: sudo docker build -t passwordsafe .
-# --or--      sudo docker build -t passwordsafe:1.07BETA .
+# --or--      sudo docker build -t passwordsafe:1.08BETA .
 # Run with: sudo docker run --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="$HOME/.pwsafe:/root/.pwsafe:rw" passwordsafe
 
 LABEL "maintainer"="The Passwordsafe Project <Passwordsafe-linux@lists.sourceforge.net>"
@@ -43,11 +43,11 @@ RUN mkdir -p /root/.local/share
 
 # This is here to leave everything above UNCHANGED as much as possible
 # to allow layer caching to work at build time!
-ARG deb_file=passwordsafe-ubuntu18-1.07.0-BETA.amd64.deb
+ARG deb_file=passwordsafe-ubuntu18-1.08.1-BETA.amd64.deb
 
 LABEL "pwsafe"="$deb_file"
 
-ADD https://github.com/pwsafe/pwsafe/releases/download/1.07BETA/$deb_file \
+ADD https://github.com/pwsafe/pwsafe/releases/download/1.08.1BETA/$deb_file \
      /tmp/$deb_file
 
 RUN dpkg -i /tmp/$deb_file && rm /tmp/$deb_file
@@ -62,7 +62,7 @@ CMD /usr/bin/pwsafe
 # ----
 #
 # ~/working/docker/passwordsafe$ time sudo docker build -t 
-# passwordsafe:1.07BETA .
+# passwordsafe:1.08BETA .
 # Sending build context to Docker daemon  3.584kB
 # Step 1/13 : FROM ubuntu:18.04
 #   ---> 1d9c17228a9e
@@ -90,14 +90,14 @@ CMD /usr/bin/pwsafe
 # Step 8/13 : RUN mkdir -p /root/.local/share
 #   ---> Using cache
 #   ---> 853a2a59033b
-# Step 9/13 : ARG deb_file=passwordsafe-ubuntu18-1.07.0-BETA.amd64.deb
+# Step 9/13 : ARG deb_file=passwordsafe-ubuntu18-1.08.1-BETA.amd64.deb
 #   ---> Using cache
 #   ---> b8c13697e68e
 # Step 10/13 : LABEL "pwsafe"="$deb_file"
 #   ---> Using cache
 #   ---> a04a7de3ab67
 # Step 11/13 : ADD 
-# https://github.com/pwsafe/pwsafe/releases/download/1.07BETA/$deb_file 
+# https://github.com/pwsafe/pwsafe/releases/download/1.08.1BETA/$deb_file 
 #   /tmp/$deb_file
 # Downloading  11.26MB/11.26MB
 #   ---> Using cache
@@ -109,7 +109,7 @@ CMD /usr/bin/pwsafe
 #   ---> Using cache
 #   ---> 00b895e642f0
 # Successfully built 00b895e642f0
-# Successfully tagged passwordsafe:1.07BETA
+# Successfully tagged passwordsafe:1.08.1BETA
 # 
 # real    0m3.823s
 # user    0m0.120s
@@ -121,7 +121,7 @@ CMD /usr/bin/pwsafe
 # ----
 # ~/working/docker/passwordsafe$ sudo docker image list
 # REPOSITORY       TAG        IMAGE ID         CREATED             SIZE
-# passwordsafe     1.07BETA   00b895e642f0     2 minutes ago       359MB
+# passwordsafe     1.08BETA   00b895e642f0     2 minutes ago       359MB
 # passwordsafe     latest     00b895e642f0     2 minutes ago       359MB
 # <none>           <none>     852d5e907158     29 minutes ago      359MB
 # <none>           <none>     9d5272a16c46     About an hour ago   359MB
