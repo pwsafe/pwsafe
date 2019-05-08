@@ -104,6 +104,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( wxID_OPEN,                  PasswordSafeFrame::OnOpenClick                   )
   EVT_MENU( wxID_CLOSE,                 PasswordSafeFrame::OnCloseClick                  )
   EVT_MENU( ID_LOCK_SAFE,               PasswordSafeFrame::OnLockSafe                    )
+  EVT_MENU( ID_UNLOCK_SAFE,             PasswordSafeFrame::OnUnlockSafe                  )
   EVT_MENU( wxID_SAVE,                  PasswordSafeFrame::OnSaveClick                   )
   EVT_MENU( wxID_SAVEAS,                PasswordSafeFrame::OnSaveAsClick                 )
   EVT_MENU( wxID_PROPERTIES,            PasswordSafeFrame::OnPropertiesClick             )
@@ -201,6 +202,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( wxID_SAVEAS,           PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( wxID_CLOSE,            PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_LOCK_SAFE,          PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_UNLOCK_SAFE,        PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_ADDGROUP,           PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_RENAME,             PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_LIST_VIEW,          PasswordSafeFrame::OnUpdateUI                    )
@@ -433,7 +435,14 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu3->Append(wxID_NEW, _("&New..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(wxID_OPEN, _("&Open..."), wxEmptyString, wxITEM_NORMAL);
   itemMenu3->Append(wxID_CLOSE, _("&Close"), wxEmptyString, wxITEM_NORMAL);
-  itemMenu3->Append(ID_LOCK_SAFE, _("&Lock Safe"), wxEmptyString, wxITEM_NORMAL);
+
+  // Added for window managers which have no iconization concept
+  if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::LOCKED) {
+    itemMenu3->Append(ID_UNLOCK_SAFE, _("&Unlock Safe\tCtrl+I"), wxEmptyString, wxITEM_NORMAL);
+  }
+  else {
+    itemMenu3->Append(ID_LOCK_SAFE, _("&Lock Safe\tCtrl+J"), wxEmptyString, wxITEM_NORMAL);
+  }
 
   if (wxGetApp().recentDatabases().GetCount() > 0) {
 
@@ -2150,7 +2159,11 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_PWDPOLSM:
     case ID_LOCK_SAFE:
-      evt.Enable(m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED);
+      evt.Enable(m_core.IsDbOpen() && !m_sysTray->IsLocked());
+      break;
+
+    case ID_UNLOCK_SAFE:
+      evt.Enable(m_core.IsDbOpen() && m_sysTray->IsLocked());
       break;
 
     case ID_FILTERMENU:
@@ -2159,7 +2172,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     default:
-        break;
+      break;
   }
 }
 
@@ -2577,6 +2590,8 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
     Show(true);
     m_guiInfo->Restore(this);
   }
+
+  CreateMenubar(); // Recreate menubar to replace menu item 'Unlock Safe' by 'Lock Safe'
 }
 
 void PasswordSafeFrame::SetFocus()
@@ -2679,6 +2694,11 @@ void PasswordSafeFrame::OnLockSafe(wxCommandEvent&)
   IconizeOrHideAndLock();
 }
 
+void PasswordSafeFrame::OnUnlockSafe(wxCommandEvent&)
+{
+  UnlockSafe(true, true);
+}
+
 void PasswordSafeFrame::IconizeOrHideAndLock()
 {
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
@@ -2707,7 +2727,7 @@ void PasswordSafeFrame::LockDb()
   if (SaveAndClearDatabaseOnLock()) {
     m_sysTray->SetTrayStatus(SystemTray::TrayStatus::LOCKED);
 
-    UpdateMenuBar();
+    CreateMenubar(); // Recreate menubar to replace menu item 'Lock Safe' by 'Unlock Safe'
   }
 }
 
