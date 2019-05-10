@@ -1514,13 +1514,19 @@ void DboxMain::OnWindowPosChanging(WINDOWPOS* lpwndpos)
    * creation of the main window until appropriate, but that's major rocket surgery
    * at this stage...
    */
-  static int countDown = 5;
+  static int countDown = 6;
   static bool oneShot = false;
+
+  pws_os::Trace(L"countDown=%d, oneShot=%s, x=%d, y=%d, cx=%d, cy=%d\n",
+                countDown, oneShot ? L"T" : L"F", lpwndpos->x, lpwndpos->y, lpwndpos->cx, lpwndpos->cy);
+
   if ((m_InitMode == SilentInit || m_InitMode == MinimizedInit) &&
-      !oneShot && --countDown == 0) {
-    oneShot = true;
+      !oneShot && --countDown == 0)
+    {
+    
     // Here's where we enforce the '-m/s' flag
     // semantics, causing main window to minimize ASAP.
+    oneShot = true;
     lpwndpos->flags |= (SWP_HIDEWINDOW | SWP_NOACTIVATE);
     lpwndpos->flags &= ~SWP_SHOWWINDOW;
     PostMessage(WM_COMMAND, ID_MENUITEM_MINIMIZE);

@@ -1016,6 +1016,9 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
     // If start silent && no filename specified, start closed as well
     if (startSilent && !fileGiven)
       dbox.SetStartNoDB();
+    // start silent implies system tray:
+    if (startSilent)
+      PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);
   } // Command line not empty
 
   if (!allDone) {
