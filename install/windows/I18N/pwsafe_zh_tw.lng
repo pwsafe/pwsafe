@@ -48,6 +48,9 @@ LangString UNINSTALL_SHORTCUT ${LANG_TRADCHINESE} "移除程式捷徑"
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
 LangString DESC_ProgramFiles ${LANG_TRADCHINESE} "安裝執行Password Safe所須的基本檔案"
 
+; DESC_CliTool "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_TRADCHINESE} "Installs pwsafe-cli, a command line utility."
+
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
 LangString DESC_LangSupport ${LANG_TRADCHINESE} "請選擇執行Password Safe所使用的語文"
 
@@ -93,6 +96,9 @@ LangString LANG_INSTALL ${LANG_TRADCHINESE} "安裝語言"
 
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_TRADCHINESE} "請選擇安裝的語言"
+
+; CLI_TOOL "Command-line tool"
+LangString CLI_TOOL ${LANG_TRADCHINESE} "Command-line tool"
 
 ;LANGUAGE_SUPPORT "Language Support"
 LangString LANGUAGE_SUPPORT ${LANG_TRADCHINESE} "支援語言"

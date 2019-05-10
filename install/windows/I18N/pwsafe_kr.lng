@@ -48,6 +48,9 @@ LangString UNINSTALL_SHORTCUT ${LANG_KOREAN} "바로 가기 아이콘 삭제"
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
 LangString DESC_ProgramFiles ${LANG_KOREAN} "Password Safe를 실행시키기 위한 최소한의 파일만 설치"
 
+; DESC_CliTool "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_KOREAN} "Installs pwsafe-cli, a command line utility."
+
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
 LangString DESC_LangSupport ${LANG_KOREAN} "Password Safe에서 사용하실 언어를 선택해 주십시오"
 
@@ -93,6 +96,9 @@ LangString LANG_INSTALL ${LANG_KOREAN} "설치 언어"
 
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_KOREAN} "설치하실 언어를 선택해 주십시오"
+
+; CLI_TOOL "Command-line tool"
+LangString CLI_TOOL ${LANG_KOREAN} "Command-line tool"
 
 LangString LANGUAGE_SUPPORT ${LANG_KOREAN} "언어 선택"
 LangString ENGLISH_SUPPORT ${LANG_KOREAN} "영어"

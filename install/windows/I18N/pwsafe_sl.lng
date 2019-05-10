@@ -48,6 +48,9 @@ LangString UNINSTALL_SHORTCUT ${LANG_SLOVENIAN} "Odstrani bližnjico"
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
 LangString DESC_ProgramFiles ${LANG_SLOVENIAN} "Namesti osnovne datoteke, potrebne za zagon Password Safe"
 
+; DESC_CliTool "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_SLOVENIAN} "Installs pwsafe-cli, a command line utility."
+
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
 LangString DESC_LangSupport ${LANG_SLOVENIAN} "Izberite jezike, ki jih bo PasswordSafe uporabil. "
 
@@ -93,6 +96,9 @@ LangString LANG_INSTALL ${LANG_SLOVENIAN} "Jezik namestitve"
 
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_SLOVENIAN} "Izberite jezik za namestitev"
+
+; CLI_TOOL "Command-line tool"
+LangString CLI_TOOL ${LANG_SLOVENIAN} "Command-line tool"
 
 ; LANGUAGE_SUPPORT "Language Support"
 LangString LANGUAGE_SUPPORT ${LANG_SLOVENIAN} "Jezikovna podpora"

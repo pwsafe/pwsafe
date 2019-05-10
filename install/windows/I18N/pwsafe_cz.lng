@@ -49,6 +49,9 @@ LangString UNINSTALL_SHORTCUT ${LANG_CZECH} "Zástupce odinstalace"
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
 LangString DESC_ProgramFiles ${LANG_CZECH} "Nainstaluje základní soubory nutné pro bìh Password Safe."
 
+; DESC_CliTool "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_CZECH} "Installs pwsafe-cli, a command line utility."
+
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
 LangString DESC_LangSupport ${LANG_CZECH} "Prosím vyberte jazyk(y), které bude Password Safe používat."
 
@@ -94,6 +97,9 @@ LangString LANG_INSTALL ${LANG_CZECH} "Jazyk instalace"
 
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_CZECH} "Prosím vyberte jazyk instalace"
+
+; CLI_TOOL "Command-line tool"
+LangString CLI_TOOL ${LANG_CZECH} "Command-line tool"
 
 ; LANGUAGE_SUPPORT "Language Support"
 LangString LANGUAGE_SUPPORT ${LANG_CZECH} "Jazyky"

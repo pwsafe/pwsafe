@@ -49,6 +49,9 @@ LangString UNINSTALL_SHORTCUT ${LANG_ITALIAN} "Collegamento per la disinstallazi
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
 LangString DESC_ProgramFiles ${LANG_ITALIAN} "Installa i file base necessari per eseguire Password Safe."
 
+; DESC_CliTool "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_ITALIAN} "Installs pwsafe-cli, a command line utility."
+
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
 LangString DESC_LangSupport ${LANG_ITALIAN} "Seleziona le lingue da installare per Password Safe."
 
@@ -94,6 +97,9 @@ LangString LANG_INSTALL ${LANG_ITALIAN} "Lingua installazione"
 
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_ITALIAN} "Seleziona una lingua per l'istallazione"
+
+; CLI_TOOL "Command-line tool"
+LangString CLI_TOOL ${LANG_ITALIAN} "Command-line tool"
 
 ; LANGUAGE_SUPPORT "Language Support"
 LangString LANGUAGE_SUPPORT ${LANG_ITALIAN} "Lingue supportate"

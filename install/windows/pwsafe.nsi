@@ -277,6 +277,7 @@ LangString UNINSTALL_SHORTCUT ${LANG_ENGLISH} "Uninstall shortcut"
 
 ; Descriptions
 LangString DESC_ProgramFiles ${LANG_ENGLISH} "Installs the basic files necessary to run Password Safe."
+LangString DESC_CliTool ${LANG_ENGLISH} "Installs pwsafe-cli, a command line utility."
 LangString DESC_StartUp ${LANG_ENGLISH} "Starts Password Safe as part of Windows boot/login."
 LangString DESC_StartMenu ${LANG_ENGLISH} "Creates an entry in the start menu for Password Safe."
 LangString DESC_DesktopShortcut ${LANG_ENGLISH} "Places a shortcut to Password Safe on your desktop."
@@ -293,6 +294,7 @@ LangString RUNNING_INSTALL ${LANG_ENGLISH} "The installer is already running."
 LangString RUNNING_APPLICATION ${LANG_ENGLISH} "Please exit all running instances of PasswordSafe before installing a new version"
 LangString LANG_INSTALL ${LANG_ENGLISH} "Installation Language"
 LangString LANG_SELECT ${LANG_ENGLISH} "Please select the language for the installation"
+LangString CLI_TOOL ${LANG_ENGLISH} "Command-line tool"
 LangString LANGUAGE_SUPPORT ${LANG_ENGLISH} "Language Support"
 LangString ENGLISH_SUPPORT ${LANG_ENGLISH} "English"
 LangString CHINESE_CN_SUPPORT ${LANG_ENGLISH} "Chinese (Simplified)"
@@ -350,10 +352,8 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the install.
   File "${BIN_DIR}\pwsafe.exe"
-  File "${BIN_DIR}\pwsafe-cli.exe"
   File "${BIN_DIR}\pws_at.dll"
   File "${BIN_DIR}\pws_osk.dll"
-  File "..\..\help\default\pwsafe.chm"
   File "..\..\LICENSE"
   File "..\..\README.md"
   File "..\..\docs\ReleaseNotes.txt"
@@ -401,6 +401,11 @@ GreenInstall:
 SectionEnd
 
 ;--------------------------------
+Section /o "$(CLI_TOOL)" CliTool
+  SetOutPath "$INSTDIR"
+  File "${BIN_DIR}\pwsafe-cli.exe"
+SectionEnd
+
 ; Section per-supported language
 SectionGroup /e "$(LANGUAGE_SUPPORT)" LanguageSupport
 Section  "$(ENGLISH_SUPPORT)" EnglishSection
@@ -590,6 +595,7 @@ SectionEnd
   ; Assign language strings to sections
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
     !insertmacro MUI_DESCRIPTION_TEXT ${ProgramFiles} $(DESC_ProgramFiles)
+    !insertmacro MUI_DESCRIPTION_TEXT ${CliTool} $(DESC_CliTool)
     !insertmacro MUI_DESCRIPTION_TEXT ${StartUp} $(DESC_StartUp)
     !insertmacro MUI_DESCRIPTION_TEXT ${StartMenu} $(DESC_StartMenu)
     !insertmacro MUI_DESCRIPTION_TEXT ${UninstallMenu} $(DESC_UninstallMenu)
@@ -823,6 +829,7 @@ Function .onInit
   SectionSetFlags ${HungarianSection} ${SF_SELECTED}
   StrCmp $LANGUAGE ${LANG_SLOVENIAN} 0 +2
   SectionSetFlags ${SlovenianSection} ${SF_SELECTED}
+
   ;
   ; Check if this is an upgrade or not. If so, default "startup" to
   ; disabled, so as not to create unwanted shortcut
