@@ -1,4 +1,4 @@
-Password Safe 3.49.0 Release ??? 2019
+Password Safe 3.49.1 Release May 2019
 =====================================
 
 This note describes the new features, fixed bugs and known problems
@@ -12,6 +12,14 @@ Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
 SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
+
+New Features in 3.49.1
+======================
+[-] Installaion of pwsafe-cli is now optional in Windows installer.
+
+Bugs Fixed in 3.49.1
+====================
+[1490,G359,G550] Fixed -s switch (again).
 
 New Features in 3.49.0
 ======================
