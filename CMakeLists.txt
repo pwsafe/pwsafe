@@ -399,51 +399,83 @@ install (TARGETS pwsafe RUNTIME DESTINATION "bin")
 
 
 if (NOT WIN32)
-   install (DIRECTORY xml DESTINATION "share/passwordsafe/")
-   ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/pwsafe.1.gz
-     COMMAND ${GZIP} ARGS -9 -n -c ${PROJECT_SOURCE_DIR}/docs/pwsafe.1 > pwsafe.1.gz
-		 WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-   ADD_CUSTOM_TARGET(manpage ALL DEPENDS ${CMAKE_BINARY_DIR}/pwsafe.1.gz)
-   install (FILES ${CMAKE_BINARY_DIR}/pwsafe.1.gz DESTINATION "share/man/man1") 
-   install (FILES "install/desktop/pwsafe.desktop" DESTINATION "share/applications")
-   install (FILES "install/graphics/pwsafe.png" DESTINATION "share/pixmaps")
-   install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
-            DESTINATION "share/locale")
+  install (DIRECTORY xml DESTINATION "share/passwordsafe/")
+  ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/pwsafe.1.gz
+                     COMMAND ${GZIP} ARGS -9 -n -c ${PROJECT_SOURCE_DIR}/docs/pwsafe.1 > pwsafe.1.gz
+                     WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+  ADD_CUSTOM_TARGET(manpage ALL DEPENDS ${CMAKE_BINARY_DIR}/pwsafe.1.gz)
+  install (FILES ${CMAKE_BINARY_DIR}/pwsafe.1.gz DESTINATION "share/man/man1") 
+  install (FILES "install/desktop/pwsafe.desktop" DESTINATION "share/applications")
+  install (FILES "install/graphics/pwsafe.png" DESTINATION "share/pixmaps")
+  install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
+           DESTINATION "share/locale")
 
-   install (DIRECTORY ${PROJECT_BINARY_DIR}/help/
-     DESTINATION "share/passwordsafe/help"
-     FILES_MATCHING PATTERN "*.zip"
-     PATTERN "CMakeFiles" EXCLUDE)
+  install (DIRECTORY ${PROJECT_BINARY_DIR}/help/
+           DESTINATION "share/passwordsafe/help"
+           FILES_MATCHING PATTERN "*.zip"
+           PATTERN "CMakeFiles" EXCLUDE)
 
 else ()
-   install (FILES "xml/pwsafe.xsd" DESTINATION "bin")
-   install (FILES "xml/pwsafe_filter.xsd" DESTINATION "bin")
+  install (FILES "xml/pwsafe.xsd" DESTINATION "bin")
+  install (FILES "xml/pwsafe_filter.xsd" DESTINATION "bin")
 endif (NOT WIN32)
 
 # uninstall target
 if(NOT TARGET uninstall)
-    configure_file(
-        "${CMAKE_CURRENT_SOURCE_DIR}/install/cmake_uninstall.cmake.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-        IMMEDIATE @ONLY)
+  configure_file(
+      "${CMAKE_CURRENT_SOURCE_DIR}/install/cmake_uninstall.cmake.in"
+      "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+      IMMEDIATE @ONLY)
 
-    add_custom_target(uninstall
-        COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+  add_custom_target(uninstall
+      COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 endif()
 
 
-# Packaging stuff:
-## Common:
+###################################################################################################
+#
+# P A C K A G I N G
+#
+###################################################################################################
+
+#
+# Major version number of software version (e.g. 1.08-BETA).
+#                                                ^
 set (CPACK_PACKAGE_VERSION_MAJOR "${pwsafe_VERSION_MAJOR}")
-set (CPACK_PACKAGE_VERSION_MAJOR "${pwsafe_VERSION_MINOR}")
-if (pwsafe_REVISION)
-   set (CPACK_PACKAGE_VERSION_PATCH "${pwsafe_REVISION}")
-endif (pwsafe_REVISION)
-if (pwsafe_SPECIALBUILD)
-   set (CPACK_PACKAGE_VERSION "${pwsafe_VERSION}-${pwsafe_SPECIALBUILD}")
+
+#
+# Minor version number of software version (e.g. 1.08-BETA), which should consist of two digits.
+#                                                   ^
+string(LENGTH ${pwsafe_VERSION_MINOR} VERSION_MINOR_LENGTH)
+if (VERSION_MINOR_LENGTH GREATER 1)
+  set (CPACK_PACKAGE_VERSION_MINOR "${pwsafe_VERSION_MINOR}")
 else ()
-   set (CPACK_PACKAGE_VERSION "${pwsafe_VERSION}")
+  set (CPACK_PACKAGE_VERSION_MINOR "0${pwsafe_VERSION_MINOR}")
+endif ()
+
+#
+# Mandatory part is complete. What follows is optional.
+#
+set (CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}")
+
+#
+# Revision number of software version (e.g. 1.08.1-BETA).
+#                                                ^
+if (pwsafe_REVISION)
+  set (CPACK_PACKAGE_VERSION_PATCH "${pwsafe_REVISION}")
+  set (CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION}.${CPACK_PACKAGE_VERSION_PATCH}")
+endif (pwsafe_REVISION)
+
+#
+# Special build tag of software version (e.g. 1.08.1-BETA).
+#                                                    ^
+if (pwsafe_SPECIALBUILD)
+  set (CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION}-${pwsafe_SPECIALBUILD}")
 endif (pwsafe_SPECIALBUILD)
+
+#
+# Miscellaneous package information.
+#
 set (CPACK_PACKAGE_CONTACT "Rony Shapiro <ronys@pwsafe.org>")
 set (CPACK_PACKAGE_VENDOR "Rony Shapiro")
 set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "Password Safe is a password database utility.")
@@ -451,22 +483,70 @@ set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set (CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/install/description.txt")
 set (CPACK_STRIP_FILES "TRUE")
 
+#
+# Package file name is project name.
+#
+if (NOT CPACK_PACKAGE_NAME)
+  string(TOLOWER "${PROJECT_NAME}" CPACK_PACKAGE_NAME)
+endif ()
+
+#
+# Determine the architecture (amd64, i386) with command 'dpkg --print-architecture'
+#
+if (NOT CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
+  find_program(DPKG_CMD dpkg)
+  if (NOT DPKG_CMD)
+    message(STATUS "Cannot find dpkg in your path. Set architecture to default i386.")
+    set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE i386)
+  else ()
+    execute_process(COMMAND "${DPKG_CMD}" --print-architecture
+                    OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE
+                    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  endif ()
+endif ()
+
+#
+# Determine name of distribution (Ubuntu, LinuxMint, ...)
+#
+string(TOLOWER ${LSB_RELEASE_ID_SHORT} DISTRO_NAME)
+
+#
+# Determine major version number from output (e.g. '18.04') of command 'lsb_release -rs'
+#
+# Get the first number up to the separator ('.' or '-').
+# The remaining characters doesn't matter.
+#
+if (${LSB_RELEASE_NUM_SHORT} MATCHES "^([0-9]+)([\\.\\-]*.)*$")
+  if (CMAKE_MATCH_COUNT GREATER 0)
+    set (DISTRO_MAJOR_VERSION ${CMAKE_MATCH_1})
+  else ()
+    set (DISTRO_MAJOR_VERSION ${LSB_RELEASE_NUM_SHORT})
+  endif ()
+else ()
+  set (DISTRO_MAJOR_VERSION ${LSB_RELEASE_NUM_SHORT})
+endif ()
+
+#
+# Build name of package file (e.g. passwordsafe-ubuntu18-1.08.1-BETA-amd64.deb)
+#
+set (CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${DISTRO_NAME}${DISTRO_MAJOR_VERSION}-${CPACK_PACKAGE_VERSION}-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE})
+
 if (EXISTS "/etc/debian_version")
 ## we are on a debian based distro, but we can't make assumptions about which
 ## we will do general deb related setup and relegate deps to specific distros 
 
 ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/changelog.Debian.gz
                    COMMAND /bin/gzip ARGS -9 -n -k 
-	             "${PROJECT_SOURCE_DIR}/install/deb/changelog.Debian"
-	           COMMAND /bin/mv ARGS 
-	             "${PROJECT_SOURCE_DIR}/install/deb/changelog.Debian.gz" 
-	             ${CMAKE_BINARY_DIR}/changelog.Debian.gz)
+                   "${PROJECT_SOURCE_DIR}/install/deb/changelog.Debian"
+                   COMMAND /bin/mv ARGS 
+                   "${PROJECT_SOURCE_DIR}/install/deb/changelog.Debian.gz" 
+                   ${CMAKE_BINARY_DIR}/changelog.Debian.gz)
 
 ADD_CUSTOM_TARGET(changelog ALL DEPENDS ${CMAKE_BINARY_DIR}/changelog.Debian.gz)
 install (FILES ${CMAKE_BINARY_DIR}/changelog.Debian.gz 
          DESTINATION "share/doc/passwordsafe")
 install (FILES "install/deb/copyright.debian" DESTINATION "share/doc/passwordsafe"
-	RENAME "copyright")
+         RENAME "copyright")
 
 set (CPACK_DEBIAN_PACKAGE_SECTION "utils")
 set (CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
@@ -475,33 +555,33 @@ set (CPACK_DEBIAN_PACKAGE_CONTROL_STRICT_PERMISSION "TRUE")
 set (CPACK_DEBIAN_PACKAGE_CONFLICTS "passwordsafe-common") # Debian package maintainer split stuff
 
 if (${LSB_RELEASE_ID_SHORT} STREQUAL "Ubuntu")
-	## Ubuntu-specific
+  ## Ubuntu-specific
   if (NOT ${LSB_RELEASE_NUM_SHORT} VERSION_LESS "18.0")
     set (LIBCURL "libcurl4 (>= 7.58.0-2)")
   else (NOT ${LSB_RELEASE_NUM_SHORT} VERSION_LESS "18.0")
     set (LIBCURL "libcurl3 (>= 7.47.0)")
   endif (NOT ${LSB_RELEASE_NUM_SHORT} VERSION_LESS "18.0")
   string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.[0-9]+" "\\1.\\2" XercesC_VER ${XercesC_VERSION})
-	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c${XercesC_VER} (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1)")
+  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c${XercesC_VER} (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1)")
 endif (${LSB_RELEASE_ID_SHORT} STREQUAL "Ubuntu")
 
 if (${LSB_RELEASE_ID_SHORT} STREQUAL "Debian")
-	## Debian-specific:
-	set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.7-18lenny4), libcurl3 (>= 7.52.1-5), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2) | libwxgtk3.0-0v5 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1+b2)")
+  ## Debian-specific:
+  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.7-18lenny4), libcurl3 (>= 7.52.1-5), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2) | libwxgtk3.0-0v5 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1+b2)")
   set (CPACK_DEBIAN_PACKAGE_RECOMMENDS "xvkbd (>= 3.3-1+b1)")
 endif (${LSB_RELEASE_ID_SHORT} STREQUAL "Debian")
 
 if (${LSB_RELEASE_ID_SHORT} STREQUAL "LinuxMint")
   ## LinuxMint-specific:
   if (NOT ${LSB_RELEASE_NUM_SHORT} VERSION_LESS "19.1")
-    set (LIBCURL "libcurl4 (>= 7.58.0-2)")
+    set (LIBCURL "libcurl4 (>= 7.58.0)")
   else (NOT ${LSB_RELEASE_NUM_SHORT} VERSION_LESS "19.1")
     set (LIBCURL "libcurl3 (>= 7.47.0)")
   endif (NOT ${LSB_RELEASE_NUM_SHORT} VERSION_LESS "19.1")
-  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libuuid1 (>= 2.17.2-0ubuntu1), libxtst6 (>= 2:1.1.0-2), libxerces-c3.2 (>= 3.1.0-1)")
+  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c3.2 (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0), libqrencode3 (>= 3.4.4)")
 endif (${LSB_RELEASE_ID_SHORT} STREQUAL "LinuxMint")
 
-set (CPACK_DEBIAN_PACKAGE_DESCRIPTION "Password Safe is a password database utility. \n Like many other such  products, commercial and otherwise,\n  it stores your passwords in an encrypted file.")
+set (CPACK_DEBIAN_PACKAGE_DESCRIPTION "Password Safe is a password database utility.\n Like many other such products, commercial and otherwise,\n it stores your passwords in an encrypted file.")
 
 set (CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA 
   "${CMAKE_CURRENT_SOURCE_DIR}/install/deb/prerm;${CMAKE_CURRENT_SOURCE_DIR}/install/deb/postrm")
@@ -517,4 +597,3 @@ set (CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION "/usr/share/man" "/usr/share/
 include(CPack)
 ### End of packaging section
 ### End of CMakeLists.txt
-
