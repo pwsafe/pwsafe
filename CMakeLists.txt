@@ -1,13 +1,18 @@
 if (WIN32)
   cmake_minimum_required (VERSION 3.5.1)
 else (WIN32)
+  # oldest cmake version is currently on CentOS 7:
   cmake_minimum_required (VERSION 2.8)
 endif (WIN32)
-project (passwordsafe CXX C)
-
 if (POLICY CMP0069)
   cmake_policy(SET CMP0069 NEW)
 endif (POLICY CMP0069)
+
+if (POLICY CMP0048)
+  cmake_policy(SET CMP0048 NEW)
+endif (POLICY CMP0048)
+
+project (passwordsafe CXX C)
 
 # prerequisites
 include(CheckLibraryExists)
@@ -33,23 +38,6 @@ endif (NOT WIN32)
 # VER_SPECIAL = text [or not set]
 # where VER_MAJOR and VER_MINOR are mandatory, and all except
 # VER_SPECIAL must be integers
-
-# Find out what linux distro we're on... currently only used for 
-# debian based distros
-find_program(LSB_RELEASE_EXECUTABLE lsb_release
-  DOC "Linux Standard Base and Distribution command line query client")
-mark_as_advanced(LSB_RELEASE_EXECUTABLE)
-
-if (LSB_RELEASE_EXECUTABLE)
-  execute_process(COMMAND ${LSB_RELEASE_EXECUTABLE} -is
-    OUTPUT_VARIABLE LSB_RELEASE_ID_SHORT
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-  execute_process(COMMAND ${LSB_RELEASE_EXECUTABLE} -rs
-    OUTPUT_VARIABLE LSB_RELEASE_NUM_SHORT
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-endif()
 
 if (WIN32 AND NOT WX_WINDOWS)
    set (VERSION_FILE "${PROJECT_SOURCE_DIR}/version.mfc")
@@ -514,10 +502,30 @@ endif ()
 #
 # Determine name of distribution (Ubuntu, LinuxMint, ...)
 #
-string(TOLOWER ${LSB_RELEASE_ID_SHORT} DISTRO_NAME)
+
+# Find out what linux distro we're on... currently only used for 
+# debian based distros
+find_program(LSB_RELEASE_EXECUTABLE lsb_release
+  DOC "Linux Standard Base and Distribution command line query client")
+mark_as_advanced(LSB_RELEASE_EXECUTABLE)
+
+if (LSB_RELEASE_EXECUTABLE)
+  execute_process(COMMAND ${LSB_RELEASE_EXECUTABLE} -is
+    OUTPUT_VARIABLE LSB_RELEASE_ID_SHORT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+  execute_process(COMMAND ${LSB_RELEASE_EXECUTABLE} -rs
+    OUTPUT_VARIABLE LSB_RELEASE_NUM_SHORT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+endif()
+
+if (LSB_RELEASE_ID_SHORT)
+  string(TOLOWER ${LSB_RELEASE_ID_SHORT} DISTRO_NAME)
+endif (LSB_RELEASE_ID_SHORT)
 
 #
-# Determine major version number from output (e.g. '18.04') of command 'lsb_release -rs'
+# Determine major distroversion number from output (e.g. '18.04') of command 'lsb_release -rs'
 #
 # Get the first number up to the separator ('.' or '-').
 # The remaining characters doesn't matter.
