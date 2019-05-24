@@ -8,7 +8,7 @@ Vendor: Rony Shapiro
 URL: https://pwsafe.org/
 Packager: David Dreggors <dadreggors@gmail.com>
 Source:	passwordsafe-@VERSION@-src.tgz
-BuildRequires: gcc-c++, libXt-devel, libXtst-devel, libuuid-devel, libyubikey-devel, xerces-c-devel, ykpers-devel, wxGTK3-devel, make
+BuildRequires: gcc-c++, libXt-devel, libXtst-devel, libuuid-devel, libyubikey-devel, xerces-c-devel, ykpers-devel, wxGTK3-devel, file-devel make
 BuildRequires: zip
 BuildRequires: gettext
 %{?el7:Requires: epel-release, wxBase3, wxGTK3, xerces-c, ykpers}
@@ -19,6 +19,8 @@ products, commercial and otherwise, it stores your passwords in an
 encrypted file, allowing you to remember only one password (the "safe
 combination"), instead of all the username/password combinations that
 you use.
+
+%global debug_package %{nil}
 
 %prep
 %setup -q
@@ -31,6 +33,7 @@ rm -rf ${RPM_BUILD_ROOT}
 install -d -m 755 ${RPM_BUILD_ROOT}
 install -d -m 755 ${RPM_BUILD_ROOT}/usr/bin
 install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/applications
+install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/doc/passwordsafe
 install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/48x48/apps
 install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/passwordsafe/xml
 install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/passwordsafe/help
@@ -64,6 +67,7 @@ rm -rf ${RPM_BUILD_ROOT}
 %attr(644,root,root) /usr/share/locale/da/LC_MESSAGES/pwsafe.mo
 %attr(644,root,root) /usr/share/locale/es/LC_MESSAGES/pwsafe.mo
 %attr(644,root,root) /usr/share/locale/fr/LC_MESSAGES/pwsafe.mo
+%attr(644,root,root) /usr/share/locale/hu/LC_MESSAGES/pwsafe.mo
 %attr(644,root,root) /usr/share/locale/it/LC_MESSAGES/pwsafe.mo
 %attr(644,root,root) /usr/share/locale/ko/LC_MESSAGES/pwsafe.mo
 %attr(644,root,root) /usr/share/locale/nl/LC_MESSAGES/pwsafe.mo
