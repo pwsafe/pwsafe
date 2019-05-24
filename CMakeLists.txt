@@ -511,33 +511,49 @@ mark_as_advanced(LSB_RELEASE_EXECUTABLE)
 
 if (LSB_RELEASE_EXECUTABLE)
   execute_process(COMMAND ${LSB_RELEASE_EXECUTABLE} -is
-    OUTPUT_VARIABLE LSB_RELEASE_ID_SHORT
+    OUTPUT_VARIABLE RELEASE_ID_SHORT
     OUTPUT_STRIP_TRAILING_WHITESPACE
     )
   execute_process(COMMAND ${LSB_RELEASE_EXECUTABLE} -rs
-    OUTPUT_VARIABLE LSB_RELEASE_NUM_SHORT
+    OUTPUT_VARIABLE RELEASE_NUM_SHORT
     OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-endif()
+else(LSB_RELEASE_EXECUTABLE) # look for /etc/os-release
+  set (OS_RELEASE_FILE "/etc/os-release")
+  if (EXISTS ${OS_RELEASE_FILE})
+    file ( STRINGS ${OS_RELEASE_FILE} OS_RELEASE_LIST )
+    foreach ( OS_RELEASE_ITEM IN ITEMS ${OS_RELEASE_LIST} )
+      string (REGEX REPLACE "\;" "" OS_RELEASE_ITEM ${OS_RELEASE_ITEM})
+      if (${OS_RELEASE_ITEM} MATCHES "^[ ]*NAME[ ]*=[ ]*(.+)")
+        string (REGEX REPLACE ".*=[ ]*(.+)" "\\1"
+          RELEASE_ID_SHORT ${OS_RELEASE_ITEM})
+      elseif (${OS_RELEASE_ITEM} MATCHES "^[ ]*VERSION_ID[ ]*=[ ]*([0-9]+)")
+        string (REGEX REPLACE ".*=[ ]*([0-9]+)" "\\1"
+          RELEASE_NUM_SHORT ${OS_RELEASE_ITEM})
+      endif ()
+      endforeach (OS_RELEASE_ITEM)
+  endif (EXISTS ${OS_RELEASE_FILE})
+endif(LSB_RELEASE_EXECUTABLE)
 
-if (LSB_RELEASE_ID_SHORT)
-  string(TOLOWER ${LSB_RELEASE_ID_SHORT} DISTRO_NAME)
-endif (LSB_RELEASE_ID_SHORT)
+if (RELEASE_ID_SHORT)
+  string(TOLOWER ${RELEASE_ID_SHORT} DISTRO_NAME)
+endif (RELEASE_ID_SHORT)
 
 #
 # Determine major distroversion number from output (e.g. '18.04') of command 'lsb_release -rs'
+# or from VERSION_ID of /etc/os-release
 #
 # Get the first number up to the separator ('.' or '-').
 # The remaining characters doesn't matter.
 #
-if (${LSB_RELEASE_NUM_SHORT} MATCHES "^([0-9]+)([\\.\\-]*.)*$")
+if (${RELEASE_NUM_SHORT} MATCHES "^([0-9]+)([\\.\\-]*.)*$")
   if (CMAKE_MATCH_COUNT GREATER 0)
     set (DISTRO_MAJOR_VERSION ${CMAKE_MATCH_1})
   else ()
-    set (DISTRO_MAJOR_VERSION ${LSB_RELEASE_NUM_SHORT})
+    set (DISTRO_MAJOR_VERSION ${RELEASE_NUM_SHORT})
   endif ()
 else ()
-  set (DISTRO_MAJOR_VERSION ${LSB_RELEASE_NUM_SHORT})
+  set (DISTRO_MAJOR_VERSION ${RELEASE_NUM_SHORT})
 endif ()
 
 #
@@ -568,32 +584,32 @@ set (CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://pwsafe.org/")
 set (CPACK_DEBIAN_PACKAGE_CONTROL_STRICT_PERMISSION "TRUE")
 set (CPACK_DEBIAN_PACKAGE_CONFLICTS "passwordsafe-common") # Debian package maintainer split stuff
 
-if (${LSB_RELEASE_ID_SHORT} STREQUAL "Ubuntu")
+if (${RELEASE_ID_SHORT} STREQUAL "Ubuntu")
   ## Ubuntu-specific
-  if (NOT ${LSB_RELEASE_NUM_SHORT} VERSION_LESS "18.0")
+  if (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "18.0")
     set (LIBCURL "libcurl4 (>= 7.58.0-2)")
-  else (NOT ${LSB_RELEASE_NUM_SHORT} VERSION_LESS "18.0")
+  else (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "18.0")
     set (LIBCURL "libcurl3 (>= 7.47.0)")
-  endif (NOT ${LSB_RELEASE_NUM_SHORT} VERSION_LESS "18.0")
+  endif (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "18.0")
   string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.[0-9]+" "\\1.\\2" XercesC_VER ${XercesC_VERSION})
   set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c${XercesC_VER} (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1)")
-endif (${LSB_RELEASE_ID_SHORT} STREQUAL "Ubuntu")
+endif (${RELEASE_ID_SHORT} STREQUAL "Ubuntu")
 
-if (${LSB_RELEASE_ID_SHORT} STREQUAL "Debian")
+if (${RELEASE_ID_SHORT} STREQUAL "Debian")
   ## Debian-specific:
   set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.7-18lenny4), libcurl3 (>= 7.52.1-5), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2) | libwxgtk3.0-0v5 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1+b2)")
   set (CPACK_DEBIAN_PACKAGE_RECOMMENDS "xvkbd (>= 3.3-1+b1)")
-endif (${LSB_RELEASE_ID_SHORT} STREQUAL "Debian")
+endif (${RELEASE_ID_SHORT} STREQUAL "Debian")
 
-if (${LSB_RELEASE_ID_SHORT} STREQUAL "LinuxMint")
+if (${RELEASE_ID_SHORT} STREQUAL "LinuxMint")
   ## LinuxMint-specific:
-  if (NOT ${LSB_RELEASE_NUM_SHORT} VERSION_LESS "19.1")
+  if (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "19.1")
     set (LIBCURL "libcurl4 (>= 7.58.0)")
-  else (NOT ${LSB_RELEASE_NUM_SHORT} VERSION_LESS "19.1")
+  else (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "19.1")
     set (LIBCURL "libcurl3 (>= 7.47.0)")
-  endif (NOT ${LSB_RELEASE_NUM_SHORT} VERSION_LESS "19.1")
+  endif (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "19.1")
   set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c3.2 (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0), libqrencode3 (>= 3.4.4)")
-endif (${LSB_RELEASE_ID_SHORT} STREQUAL "LinuxMint")
+endif (${RELEASE_ID_SHORT} STREQUAL "LinuxMint")
 
 set (CPACK_DEBIAN_PACKAGE_DESCRIPTION "Password Safe is a password database utility.\n Like many other such products, commercial and otherwise,\n it stores your passwords in an encrypted file.")
 
