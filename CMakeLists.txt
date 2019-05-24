@@ -29,6 +29,8 @@ if (NOT WIN32)
 include(FindUnixCommands)
 endif (NOT WIN32)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
+
 # Version configuration:
 # version.mfc for Windows MFC build, version.wx for all the rest
 # version file has the following format:
@@ -137,6 +139,9 @@ if (NOT WIN32 OR WX_WINDOWS)
 
   find_package(OpenSSL REQUIRED)
   include_directories(${OPENSSL_INCLUDE_DIR})
+
+  find_package(Magic REQUIRED)
+  include_directories(${MAGIC_INCLUDE_DIRS})
 endif (NOT WIN32 OR WX_WINDOWS)
 
 if (NOT WIN32)
@@ -165,14 +170,14 @@ if (XML_XERCESC)
     # If the module wasn't found yet XML is enabled, we set the default
     # values. If this isn't what you want, either configure NO_XML
     # or edit the following values manually.
-        if (NOT XercesC_INCLUDE_DIR)
-            message (WARNING "XML enabled but XercesC_INCLUDE_DIR unset - using default")
-           set (XercesC_INCLUDE_DIR "/usr/include")
-        endif ()
-        if (NOT XercesC_LIBRARY)
-            message (WARNING "XML enabled but XercesC_LIBRARY unset - using default")
-           set (XercesC_LIBRARY "xerces-c")
-        endif ()
+    if (NOT XercesC_INCLUDE_DIR)
+      message (WARNING "XML enabled but XercesC_INCLUDE_DIR unset - using default")
+      set (XercesC_INCLUDE_DIR "/usr/include")
+    endif ()
+    if (NOT XercesC_LIBRARY)
+      message (WARNING "XML enabled but XercesC_LIBRARY unset - using default")
+      set (XercesC_LIBRARY "xerces-c")
+    endif ()
   endif(NOT XercesC_FOUND)
   include_directories( ${XercesC_INCLUDE_DIR} )
   add_definitions ("-DUSE_XML_LIBRARY=XERCES")
@@ -361,11 +366,11 @@ if (XML_XERCESC)
 endif (XML_XERCESC)
 
 if (APPLE)
-    FIND_LIBRARY(QUARTZCORE_LIBS QuartzCore)
-    target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES} ${QUARTZCORE_LIBS} curl ${OPENSSL_SSL_LIBRARY})
+  FIND_LIBRARY(QUARTZCORE_LIBS QuartzCore)
+  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES} ${QUARTZCORE_LIBS} curl ${OPENSSL_SSL_LIBRARY})
 elseif (WIN32)
   if (NOT NO_YUBI)
-   set (YUBILIB "YkLib22")
+    set (YUBILIB "YkLib22")
   endif ()
   target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} 
       ${YUBILIB} ${PWS_DLL_LIBS} version Rpcrt4 htmlhelp SetupAPI Hid usp10
@@ -374,7 +379,7 @@ else ()
   if (NOT NO_QR)
     target_link_libraries(pwsafe qrencode  ${CMAKE_REQUIRED_LIBRARIES})
   endif (NOT NO_QR)
-  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 curl magic ${OPENSSL_SSL_LIBRARY}
+  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 curl ${OPENSSL_SSL_LIBRARY} ${MAGIC_LIBRARIES}
   ${CMAKE_REQUIRED_LIBRARIES})
 endif()
 
@@ -592,7 +597,7 @@ if (${RELEASE_ID_SHORT} STREQUAL "Ubuntu")
     set (LIBCURL "libcurl3 (>= 7.47.0)")
   endif (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "18.0")
   string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.[0-9]+" "\\1.\\2" XercesC_VER ${XercesC_VERSION})
-  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c${XercesC_VER} (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1)")
+  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libmagic1 (>= 1:5.25), libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c${XercesC_VER} (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0-1), libqrencode3 (>= 3.4.4-1)")
 endif (${RELEASE_ID_SHORT} STREQUAL "Ubuntu")
 
 if (${RELEASE_ID_SHORT} STREQUAL "Debian")
@@ -606,7 +611,7 @@ if (${RELEASE_ID_SHORT} STREQUAL "Debian")
     set (LIBXERCES "libxerces-c3.1 (>= 3.1.1-1+b1)")
     set (LIBQRENCODE "libqrencode3 (>= 3.4.4-1+b2)")
   endif (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "10")
-  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.7-18lenny4), ${LIBCURL}, libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2) | libwxgtk3.0-0v5 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), ${LIBXERCES}, libykpers-1-1 (>= 1.7.0-1), ${LIBQRENCODE}")
+  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.7-18lenny4), ${LIBCURL}, libmagic1 (>= 1:5.22), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2) | libwxgtk3.0-0v5 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), ${LIBXERCES}, libykpers-1-1 (>= 1.7.0-1), ${LIBQRENCODE}")
   set (CPACK_DEBIAN_PACKAGE_RECOMMENDS "xvkbd (>= 3.3-1+b1)")
 endif (${RELEASE_ID_SHORT} STREQUAL "Debian")
 
@@ -617,7 +622,7 @@ if (${RELEASE_ID_SHORT} STREQUAL "LinuxMint")
   else (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "19.1")
     set (LIBCURL "libcurl3 (>= 7.47.0)")
   endif (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "19.1")
-  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c3.2 (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0), libqrencode3 (>= 3.4.4)")
+  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libmagic1 (>= 1:5.25), libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), libxerces-c3.2 (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0), libqrencode3 (>= 3.4.4)")
 endif (${RELEASE_ID_SHORT} STREQUAL "LinuxMint")
 
 set (CPACK_DEBIAN_PACKAGE_DESCRIPTION "Password Safe is a password database utility.\n Like many other such products, commercial and otherwise,\n it stores your passwords in an encrypted file.")
@@ -627,7 +632,7 @@ set (CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
 endif (EXISTS "/etc/debian_version")
 
 ## RPM-specific
-set (CPACK_RPM_PACKAGE_REQUIRES "wxBase3, wxGTK3, xerces-c, ykpers, qrencode-libs")
+set (CPACK_RPM_PACKAGE_REQUIRES "wxBase3, wxGTK3, xerces-c, ykpers, qrencode-libs file-libs")
 set (CPACK_RPM_PACKAGE_SUGGESTS "xvkbd")
 set (CPACK_RPM_PACKAGE_URL "https://pwsafe.org/")
 set (CPACK_RPM_PACKAGE_LICENSE "Artistic2.0")
