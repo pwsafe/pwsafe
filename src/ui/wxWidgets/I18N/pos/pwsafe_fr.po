@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-28 22:25+0300\n"
+"POT-Creation-Date: 2019-05-24 14:12+0300\n"
 "PO-Revision-Date: 2011-10-12 16:57-0800\n"
 "Last-Translator: François Lamoureux <franklamoureux@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,6 +15,35 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:27
+msgid "Import XML Settings"
+msgstr "Importer les réglages XML"
+
+#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:39
+#, fuzzy
+msgid "XML file to import:"
+msgstr "Le fichier %s est en train d^\"tre importé: %s"
+
+#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:43
+msgid "Please Choose a XML File to Import"
+msgstr "SVP, Choisissez un fichier XML à importer"
+
+#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:44
+#, fuzzy
+msgid "XML files (*.xml)|*.xml"
+msgstr "Fichiers XML (*.xml)|*.xml||"
+
+#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:54
+#, fuzzy
+msgid "Import under Group"
+msgstr "Importer dans le groupe?"
+
+#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:60
+#: ../../../ui/wxWidgets/ImportTextDlg.cpp:92
+msgid "Import to change passwords of existing entries ONLY"
+msgstr ""
+"Importer pour modifier les mots de passe des entrées existantes seulement."
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:160
 msgid "Please enter the safe combination for this password database."
@@ -39,15 +68,15 @@ msgid "Please insert your YubiKey"
 msgstr "Veuillez insérer votre YubiKey"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:194
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:562
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:591
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:250
 #: ../../../ui/wxWidgets/yubicfg.cpp:202
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:384
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:212
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:173
 #: ../../../ui/wxWidgets/editshortcut.cpp:219
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:383
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:249
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:250
 msgid "&Help"
 msgstr "&Aide"
 
@@ -58,24 +87,24 @@ msgid "&Exit"
 msgstr "Quitter"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:206
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:381
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:170
 #: ../../../ui/wxWidgets/editshortcut.cpp:216
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:380
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:246
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:247
 #, fuzzy
 msgid "&Cancel"
 msgstr "Annuler"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:210
 #: ../../../ui/wxWidgets/properties.cpp:367
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:378
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:167
 #: ../../../ui/wxWidgets/editshortcut.cpp:213
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:377
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:243
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:244
 #, fuzzy
 msgid "&OK"
 msgstr "&OK"
@@ -97,7 +126,7 @@ msgstr "Mot de passe invalide ou fichier PasswordSafe corrompu."
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:303
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:309
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:352
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1850
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1866
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:351
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:101
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:108
@@ -105,8 +134,13 @@ msgstr "Mot de passe invalide ou fichier PasswordSafe corrompu."
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:350
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:357
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:406
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:519
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:521
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:75
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:727
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:746
+#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:103
+#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:112
+#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:128
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:272
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:276
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:280
@@ -116,18 +150,14 @@ msgstr "Mot de passe invalide ou fichier PasswordSafe corrompu."
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:252
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:280
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:319
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1135
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1248
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1255
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1399
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1443
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1883
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1910
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:103
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:112
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:128
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:726
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:745
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1154
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1276
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1288
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1304
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1473
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1523
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1971
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1998
 msgid "Error"
 msgstr "Erreur"
 
@@ -142,377 +172,426 @@ msgstr "La combinaison ne peut être vide."
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:351
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:101
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:356
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:518
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:520
 msgid "File or path not found."
 msgstr "Le fichier ou son chemin n'ont pas été trouvés."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:433
+#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:77
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:122
+#, fuzzy
+msgid "&Available Fields:"
+msgstr "Champs disponibles:"
+
+#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:79
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:124
+#, fuzzy
+msgid "&Selected Fields:"
+msgstr "Champs sélectionnés:"
+
+#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:138
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:180
+#, fuzzy
+msgid " [Mandatory Field]"
+msgstr "Utilisateur [champ obligatoire]"
+
+#: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:49
+msgid "You must select a valid file to continue."
+msgstr ""
+
+#: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:50
+msgid "You haven't selected any files"
+msgstr ""
+
+#: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:57
+#, fuzzy
+msgid "Selected file doesn't exist."
+msgstr "Détails du filtre sélectionné:"
+
+#: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:58
+#, fuzzy
+msgid "Please select a valid file"
+msgstr "Veuillez sélectionner un rapport pour l'afficher. "
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:451
 #, fuzzy
 msgid "&New..."
 msgstr "Nouveau..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:434
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:452
 msgid "&Open..."
 msgstr "&Ouvrir..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:435
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:453
 #: ../../../ui/wxWidgets/yubicfg.cpp:199
 #: ../../../ui/wxWidgets/passwordsubset.cpp:165
-#: ../../../ui/wxWidgets/about.cpp:185
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:395
-#: ../../../ui/wxWidgets/SystemTray.cpp:135
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:396
+#: ../../../ui/wxWidgets/about.cpp:185 ../../../ui/wxWidgets/SystemTray.cpp:135
 msgid "&Close"
 msgstr "&Fermer"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:436
-#: ../../../ui/wxWidgets/SystemTray.cpp:117
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:457
 #, fuzzy
-msgid "&Lock Safe"
+msgid "&Unlock Safe\tCtrl+I"
+msgstr "&Déverrouiller le coffre"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:460
+#, fuzzy
+msgid "&Lock Safe\tCtrl+J"
 msgstr "&Verrouiller le coffre"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:449
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:474
 #, fuzzy
 msgid "&Recent Safes..."
 msgstr "Coffres &Récents"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:456
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:481
 #, fuzzy
 msgid "Clear Recent Safe List"
 msgstr "&Effacer cette liste"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:458
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:483
 msgid "&Save..."
 msgstr "&Enregistrer"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:459
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:484
 msgid "Save &As..."
 msgstr "Enregistrer &sous..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:462
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:487
 msgid "v&1.x format..."
 msgstr "Format v&1.x..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:463
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:488
 msgid "v&2 format..."
 msgstr "Format v&2..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:464
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:489
 msgid "v&4 format (EXPERIMENTAL)..."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:465
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:490
 msgid "&Plain Text (tab separated)..."
 msgstr "Format &texte (separé par tabulation)..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:466
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:470
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:491
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:495
 msgid "&XML format..."
 msgstr "&Format XML..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:467
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:492
 msgid "Export &To"
 msgstr "&Exporter vers"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:469
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:494
 msgid "&Plain Text..."
 msgstr "&Texte simple..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:471
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:496
 #, fuzzy
 msgid "&KeePass..."
 msgstr "Fichier CVS KeePass V1..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:472
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:497
 msgid "Import &From"
 msgstr "&Importer à partir de..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:473
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:498
 #, fuzzy
 msgid "&Merge..."
 msgstr "F&usion..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:474
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:499
 #, fuzzy
 msgid "&Compare..."
 msgstr "&Comparer..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:475
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:500
 msgid "S&ynchronize..."
 msgstr "S&ynchroniser..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:477
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:502
 msgid "&Properties"
 msgstr "&Propriétés"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:479
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:504
 msgid "E&xit"
 msgstr "&Quitter"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:480
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:505
 msgid "&File"
 msgstr "&Fichier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:482
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:507
 #, fuzzy
 msgid "&Add Entry...\tCtrl+A"
 msgstr "&Ajouter une entrée..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:484
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:509
 #, fuzzy
 msgid "&View Entry...\tCtrl+Enter"
 msgstr "Modifier/&Voir l'entrée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:487
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:512
 #, fuzzy
 msgid "Edit Entry...\tCtrl+Enter"
 msgstr "Modifier/&Voir l'entrée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:489
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:514
 #, fuzzy
 msgid "&Delete Entry\tDel"
 msgstr "&Supprimer l'entrée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:490
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:515
 #, fuzzy
 msgid "Rename Entry\tF2"
 msgstr "&Renommer l'entrée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:491
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:516
 #, fuzzy
 msgid "&Find Entry...\tCtrl+F"
 msgstr "&Ajouter une entrée..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:492
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:517
 #, fuzzy
 msgid "&Duplicate Entry\tCtrl+D"
 msgstr "&Dupliquer l'entrée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:493
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1924
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:518
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1940
 msgid "Protect Entry"
 msgstr "&Protéger l'entrée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:495
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:520
 msgid "Add Group"
 msgstr "Ajouter un &groupe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:499
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:524
 #, fuzzy
 msgid "C&lear Clipboard\tCtrl+Del"
 msgstr "&Effacer le presse-papier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:501
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:526
 #, fuzzy
 msgid "&Copy Password to Clipboard\tCtrl+C"
 msgstr "&Copier le mot de passe au presse-papier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:502
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:527
 #, fuzzy
 msgid "Copy &Username to Clipboard\tCtrl+U"
 msgstr "Copier le nom d'&utilisateur au presse-papier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:503
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:528
 #, fuzzy
 msgid "Copy &Notes to Clipboard\tCtrl+G"
 msgstr "Copier les &notes au presse-papier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:504
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:529
 #, fuzzy
 msgid "Copy URL to Clipboard\tCtrl+Alt+L"
 msgstr "Copier l'URL au presse-papier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:505
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:530
 #, fuzzy
 msgid "&Browse to URL\tCtrl+L"
 msgstr "&Aller à l'URL"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:506
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:531
 #, fuzzy
 msgid "Perform Auto&type\tCtrl+T"
 msgstr "Exécuter l'auto&frappe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:507
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:532
 #, fuzzy
 msgid "Go to Base entry"
 msgstr "&Gagner l'entrée de base"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:508
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:533
 msgid "&Edit"
 msgstr "&Edition"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:510
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:535
 msgid "Flattened &List"
 msgstr "Vue en &liste"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:511
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:536
 msgid "Nested &Tree"
 msgstr "Vue en &arborescence"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:513
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:538
 msgid "Toolbar &visible"
 msgstr "Barre d'outils &visible"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:514
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:539
 msgid "&New Toolbar"
 msgstr "&Nouvelle barre de tâches"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:515
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:540
 msgid "&Classic Toolbar"
 msgstr "Barre de tâ&ches classique"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:516
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:541
 msgid "&Dragbar visible"
 msgstr "Barre de &glissement visible"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:518
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:543
 #: ../../../ui/wxWidgets/PwsToolbarButtons.h:212
 msgid "Expand All"
 msgstr "Tout développer"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:519
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:544
 #: ../../../ui/wxWidgets/PwsToolbarButtons.h:213
 msgid "Collapse All"
 msgstr "Tout regrouper"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:520
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:545
 msgid "Show &Unsaved Changes"
 msgstr "Afficher les &changement non enregistrés"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:521
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:546
 msgid "Show entries with E&xpiry dates"
 msgstr "Afficher les entrées avec les dates d'expiration"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:523
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:548
 #, fuzzy
 msgid "&New/Edit Filter..."
 msgstr "&Nouveau/Modifier Filtre "
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:524
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:549
 msgid "&Apply current"
 msgstr "&Appliquer le filtre courant"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:525
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:550
 msgid "&Manage..."
 msgstr "&Outils..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:526
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:551
 msgid "&Filters"
 msgstr "&Filtres"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:528
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:553
 #, fuzzy
 msgid "Customize &Main Toolbar..."
 msgstr "&Personnaliser la barre d'outils principale"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:530
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:555
 msgid "&Tree/List Font"
 msgstr "Police d'&affichage"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:531
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:556
+#, fuzzy
+msgid "&Add/Edit Font"
+msgstr "Police d'&affichage"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:557
 msgid "&Password Font"
 msgstr "Police du &mot de passe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:532
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:558
+#, fuzzy
+msgid "&Notes Font"
+msgstr "Notes"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:561
 msgid "Change &Font"
 msgstr "Changer la  &Police"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:534
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:563
 #: ../../../ui/wxWidgets/CompareDlg.cpp:162
 msgid "&Compare"
 msgstr "&Comparer"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:535
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:564
 msgid "&Find"
 msgstr "&Rechercher"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:536
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:565
 msgid "Import &Text"
 msgstr "Importer du &Texte"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:537
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:566
 msgid "Import &XML"
 msgstr "Importer du &XML"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:538
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:567
 msgid "&Merge"
 msgstr "&Fusionner"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:539
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:568
 msgid "&Validate"
 msgstr "&Valider"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:540
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:569
 #, fuzzy
 msgid "Reports"
 msgstr "&Rapports"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:541
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:570
 msgid "&View"
 msgstr "&Affichage"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:543
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:572
 msgid "&Change Safe Combination..."
 msgstr "&Changer le mot de passe du fichier..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:545
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:574
 #, fuzzy
 msgid "Make &Backup...\tCtrl+B"
 msgstr "&Créer une copie de sauvegarde"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:546
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:575
 #, fuzzy
 msgid "&Restore from Backup...\tCtrl+R"
 msgstr "&Récupérer depuis la sauvegarde..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:548
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:577
 #, fuzzy
 msgid "&Options...\tCtrl+M"
 msgstr "&Préférences..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:549
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:578
 msgid "Password Policies..."
 msgstr "Stratégies de mot de passe..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:551
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:580
 #, fuzzy
 msgid "Generate &Password...\tCtrl+P"
 msgstr "&Générer un mot de passe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:551
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:580
 msgid "Generate Password"
 msgstr "Générer un mot de passe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:553
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:582
 msgid "YubiKey..."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:553
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:582
 msgid "Configure and backup YubiKeys"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:557
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:586
 msgid "&Manage"
 msgstr "&Options"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:559
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:588
 msgid "Get &Help"
 msgstr "Obtenir de l'&aide?\tF1"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:560
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:589
 msgid "Visit Password Safe &website..."
 msgstr "Visiter le site &web de PasswordSafe..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:561
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:590
 #: ../../../ui/wxWidgets/SystemTray.cpp:144
 msgid "&About Password Safe..."
 msgstr "À &propos de PasswordSafe..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:657
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:686
 #, fuzzy
 msgid "Select Language"
 msgstr "Changer la lan&gue"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1009
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1026
 #, fuzzy
 msgid ""
 "Unable to create intermediate backup.  Save database elsewhere or with "
@@ -522,17 +601,17 @@ msgid ""
 msgstr ""
 "%s. Essayer d'enregistrer avec un nouveau nom ou quittez sans enregistrer."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1010
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1017
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1022
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1032
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2329
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:503
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1027
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1034
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1039
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1049
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2339
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:505
 #: ../../../ui/wxWidgets/mainManage.cpp:127
 msgid "Write Error"
 msgstr "Erreur d'écriture"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1016
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1033
 #, fuzzy
 msgid ""
 "Unable to create intermediate backup.  Do you wish to save changes to your "
@@ -540,12 +619,12 @@ msgid ""
 msgstr ""
 "%s. Essayer d'enregistrer avec un nouveau nom ou quittez sans enregistrer."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1022
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1032
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1039
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1049
 msgid "Unable to create intermediate backup."
 msgstr "Incapable de créer une sauvegarde intermédiaire"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1042
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1059
 #, fuzzy, c-format
 msgid ""
 "The original database, \"%ls\", is in pre-3.0 format. It will be unchanged.\n"
@@ -560,32 +639,32 @@ msgstr ""
 "enregistrer vos changements dans l'ancien format, utilisez \"Fichier-"
 ">Exporter vers->Format v1x ou v2\""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1044
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1448
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1061
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1465
 msgid "File version warning"
 msgstr "Avertissement de la version du fichier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1100
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1117
 #, fuzzy
 msgid "Do you wish to save this restored database as new database?"
 msgstr "Voulez-vous enregistrer les changements dans le fichier: %s?"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1101
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1118
 #, fuzzy
 msgid "Unsaved restored database"
 msgstr "au fichier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1133
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1150
 #, fuzzy
 msgid "Do you want to save changes to the password database"
 msgstr "Voulez-vous enregistrer les changements dans le fichier: %s?"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1194
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1211
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:431
 msgid "Please Choose a Database to Open:"
 msgstr "SVP, Choisissez un fichier à ouvrir:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1241
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1258
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:60
 #, fuzzy
 msgid ""
@@ -597,16 +676,16 @@ msgstr ""
 "PasswordSafe (*.bak)|*.bak|Sauvegarde intermédiaires de PasswordSafe (*."
 "ibak)|*.ibak|All files (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1261
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1278
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:108
 msgid "That file is already open."
 msgstr "Ce fichier est déjà ouvert."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1261
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1278
 msgid "Open database"
 msgstr "Ouvrir le fichier de mots de passe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1447
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1464
 #, fuzzy, c-format
 msgid ""
 "The original database, '%ls', is in pre-3.0 format. The data will now be "
@@ -619,15 +698,15 @@ msgstr ""
 "versions de PasswordSafe. Pour enregistrer vos changements dans l'ancien "
 "format, utilisez \"Fichier->Exporter vers->Format v1x ou v2\""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1460
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1477
 msgid "Please choose a name for the current (Untitled) database:"
 msgstr "SVP, Choisissez un nom pour le fichier courant (sans titre)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1461
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1478
 msgid "Please choose a new name for the current database:"
 msgstr "SVP, Choisissez un nouveau nom pour le fichier courant"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1469
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1486
 #, fuzzy
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
@@ -636,7 +715,7 @@ msgstr ""
 "Fichier PasswordSafe (*.psafe3; *.dat)|*.psafe3; *.dat|Tous les fichiers (*."
 "*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1481
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1498
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -647,119 +726,119 @@ msgstr ""
 "\n"
 "Le fichier est couramment verrouillé par %ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1482
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1499
 msgid "File lock error"
 msgstr "Erreur de verrouillage de fichier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1848
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1864
 #, fuzzy, c-format
 msgid "Unknown code: %d"
 msgstr "Champs inconnus"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1887
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1903
 msgid "Add &Entry"
 msgstr "Ajouter une &entrée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1888
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1904
 msgid "Add &Group"
 msgstr "Ajouter un &groupe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1889
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1905
 #, fuzzy
 msgid "&Rename Group"
 msgstr "&Renommer le groupe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1890
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1906
 msgid "&Delete Group"
 msgstr "&Supprimer le groupe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1895
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1911
 msgid "Copy &Username to Clipboard"
 msgstr "Copier le nom d'&utilisateur au presse-papier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1896
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1912
 msgid "&Copy Password to Clipboard"
 msgstr "&Copier le mot de passe au presse-papier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1897
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1913
 msgid "Display subset of Password"
 msgstr "Afficher une partie du mot de passe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1899
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1915
 msgid "Display Password as &QR code"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1901
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1917
 msgid "Copy &Notes to Clipboard"
 msgstr "Copier les &notes au presse-papier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1902
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1918
 msgid "Copy UR&L to Clipboard"
 msgstr "Copier l'UR&L au presse-papier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1903
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1919
 msgid "Copy email to Clipboard"
 msgstr "Copier l'adresse de courriel au presse-papier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1904
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1920
 msgid "Copy Run Command to Clipboard"
 msgstr "Copier la commande à exécuter au presse-papier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1906
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1922
 #: ../../../ui/wxWidgets/SystemTray.cpp:203
 msgid "&Browse to URL"
 msgstr "&Aller à l'URL"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1907
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1923
 #: ../../../ui/wxWidgets/SystemTray.cpp:204
 msgid "Browse to URL + &Autotype"
 msgstr "Aller à l'URL + &Autofrappe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1908
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1924
 msgid "Send &email"
 msgstr "Envoyer un &courriel"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1909
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1925
 #: ../../../ui/wxWidgets/SystemTray.cpp:211
 msgid "&Run Command"
 msgstr "Exécuter la commande"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1910
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1926
 msgid "Perform Auto &Type"
 msgstr "Exécuter l'auto&frappe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1913
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1929
 #, fuzzy
 msgid "&View Entry..."
 msgstr "Modifier/&Voir l'entrée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1916
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1932
 #, fuzzy
 msgid "Edit Entry..."
 msgstr "Modifier l'entrée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1918
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1934
 msgid "&Duplicate Entry"
 msgstr "&Dupliquer l'entrée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1919
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1935
 msgid "Delete Entry"
 msgstr "&Supprimer l'entrée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1920
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1936
 msgid "Create &Shortcut"
 msgstr "Créer un &raccourci"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1921
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1937
 msgid "&Go to Base entry"
 msgstr "&Gagner l'entrée de base"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1922
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1938
 msgid "&Edit Base entry"
 msgstr "&Edition de l'entrée de base"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2334
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:502
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2344
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:504
 #: ../../../ui/wxWidgets/mainManage.cpp:126
 #, fuzzy
 msgid "Could not open file for writing!"
@@ -768,7 +847,7 @@ msgstr ""
 "\n"
 "N'a pas pu ouvrir le fichier en écriture!"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2337
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2347
 msgid ""
 "Write operation failed!\n"
 "File may have been corrupted.\n"
@@ -778,7 +857,7 @@ msgstr ""
 "Le fichier peut avoir été corrompu.\n"
 "Essayer d'enregistrer dans un autre dossier."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2342
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2352
 #: ../../../ui/wxWidgets/wxutils.cpp:73
 #, fuzzy
 msgid "Unknown error"
@@ -787,56 +866,56 @@ msgstr ""
 "\n"
 "Erreur inconnue"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2360
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2370
 #, fuzzy
 msgid "Do you want to save changes to the password database: "
 msgstr "Voulez-vous enregistrer les changements dans le fichier: %s?"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2414
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2424
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:466
 msgid "Please choose a name for the new database"
 msgstr "SVP, Choisissez un nom pour le nouveau fichier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2423
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2433
 #, fuzzy
 msgid "psafe3 files (*.psafe3)|*.psafe3|All files(*.*; *)|*.*;*"
 msgstr "Fichier PasswordSafe (*.psafe3)|*.psafe3|Tous fichiers (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2504
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2514
 #, fuzzy
 msgid "Could not re-load database: "
 msgstr "Entrées seulement dans la base courante(%s):"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2505
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2515
 msgid "Error re-loading last database"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2754
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2772
 msgid "There was an error loading the database: "
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2755
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2773
 #, fuzzy
 msgid "Could not load database"
 msgstr "Sélectionner le fichier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2769
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2787
 msgid ""
 "The current database was opened in read-only mode.  You cannot import into "
 "it."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2770
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2788
 #, fuzzy
 msgid "Import text"
 msgstr "Importer du &Texte"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2778
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2796
 #, fuzzy
 msgid "The database:"
 msgstr "au fichier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2779
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2797
 #, fuzzy
 msgid "has duplicate entries with the same group/title/user combination."
 msgstr ""
@@ -847,38 +926,38 @@ msgstr ""
 "a des entrées similaires ayant la même combinaison groupe/titre/utilisateur. "
 "Veuillez corriger en validant le fichier."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2780
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2798
 msgid "  Please fix by validating database."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2781
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2827
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2799
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2845
 msgid "Import Text failed"
 msgstr "L'importation de texte a échoué"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2800
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2818
 msgid "Import_Text"
 msgstr "Import_Text"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2802
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3010
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2820
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3028
 #, fuzzy, c-format
 msgid "%ls file being imported: %ls"
 msgstr "Le fichier %ls est en train d^\"tre importé: %ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2802
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2820
 msgid "Text"
 msgstr "Texte"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2817
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2822
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2835
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2840
 #: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/wxutils.cpp:61
 #: ../../../ui/wxWidgets/wxutils.cpp:66 ../../../ui/wxWidgets/wxutils.cpp:73
 #: ../../../ui/wxWidgets/mainManage.cpp:184
 msgid "File Read Error"
 msgstr "Erreur de lecture de fichier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2818
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2836
 #: ../../../ui/wxWidgets/wxutils.cpp:60
 #: ../../../ui/wxWidgets/mainManage.cpp:183
 #, fuzzy
@@ -888,7 +967,7 @@ msgstr ""
 "\n"
 "N'a pas pu ouvrir le fichier en lecture!"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2823
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2841
 #, fuzzy
 msgid "Invalid format"
 msgstr ""
@@ -896,75 +975,75 @@ msgstr ""
 "\n"
 "Format invalide"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2840
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2858
 #, fuzzy
 msgid "Updated "
 msgstr "%d %s mis à jour"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2840
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2858
 #, fuzzy
 msgid "Imported "
 msgstr "Importé"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2841
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2846
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2860
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2859
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2864
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2878
 #, fuzzy
 msgid " entry"
 msgstr "entrée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2841
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2846
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2860
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2859
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2864
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2878
 #, fuzzy
 msgid " entries"
 msgstr "entrées"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2846
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2864
 #, fuzzy
 msgid "Skipped "
 msgstr ""
 "\n"
 "%d %s ignoré(es)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2853
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2871
 #, fuzzy
 msgid "with Password History errors "
 msgstr ""
 "\n"
 "avec erreur d'historique de mot de passe %d"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2860
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2878
 #, fuzzy
 msgid "Renamed "
 msgstr "Renommer"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2865
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2957
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3043
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2883
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2975
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3061
 msgid "Completed successfully"
 msgstr "Complété avec succes"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2865
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2957
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3043
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2883
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2975
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3061
 msgid "Completed but ...."
 msgstr "Complété mais..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2877
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2959
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3107
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3427
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2895
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2977
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3125
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3445
 #, fuzzy
 msgid "Do you wish to see a detailed report?"
 msgstr "Voulez-vous le remplacer?"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2889
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2907
 msgid "Please Choose a KeePass Text File to Import"
 msgstr "SVP, Choisissez un fichier texte Keepass à importer"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2891
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3183
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2909
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3201
 #, fuzzy
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
@@ -972,20 +1051,20 @@ msgstr ""
 "Fichiers de texte (*.txt)|*.txt|Fichiers CSV (*.csv)|*.csv|Tous fichiers (*."
 "*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2903
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2921
 msgid "Import_KeePassV1_CSV"
 msgstr "Import_CSV_KeePassV1"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2905
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2923
 msgid "Import_KeePassV1_TXT"
 msgstr "Import_TXT_KeePassV1"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2907
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2925
 #, fuzzy, c-format
 msgid "Text file being imported: %ls"
 msgstr "Le fichier est en importé: %ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2924
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2942
 #: ../../../ui/wxWidgets/PwsSync.cpp:603
 #, fuzzy, c-format
 msgid ""
@@ -997,11 +1076,11 @@ msgstr ""
 "\n"
 "N'a pas pu ouvrir le fichier en lecture!"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2925
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2943
 msgid "File open error"
 msgstr "Erreur d'ouverture de fichier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2939
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2957
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -1012,34 +1091,34 @@ msgstr ""
 "\n"
 "Format invalide"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2940
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2958
 msgid "Import failed"
 msgstr "L'importation a échoué."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2953
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3084
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3085
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2971
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3102
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3103
 #: ../../../ui/wxWidgets/PwsSync.cpp:588 ../../../ui/wxWidgets/PwsSync.cpp:731
 #: ../../../ui/wxWidgets/PwsSync.cpp:748
 msgid "entry"
 msgstr "entrée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2953
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3084
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3085
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2971
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3102
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3103
 #: ../../../ui/wxWidgets/PwsSync.cpp:588 ../../../ui/wxWidgets/PwsSync.cpp:731
 #: ../../../ui/wxWidgets/PwsSync.cpp:748
 msgid "entries"
 msgstr "entrées"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2954
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2972
 #, fuzzy, c-format
 msgid "Imported %d %ls"
 msgstr "%d %ls importé"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2976
-#: ../../../ui/wxWidgets/PwsSync.cpp:619
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2994
 #: ../../../ui/wxWidgets/CompareDlg.cpp:729
+#: ../../../ui/wxWidgets/PwsSync.cpp:619
 #, fuzzy, c-format
 msgid ""
 "The database:\n"
@@ -1056,12 +1135,12 @@ msgstr ""
 "a des entrées similaires ayant la même combinaison groupe/titre/utilisateur. "
 "Veuillez corriger en validant le fichier."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2977
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3025
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2995
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3043
 msgid "Import XML failed"
 msgstr "L'importation de XML a échoué"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2987
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3005
 #, c-format
 msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application "
@@ -1073,24 +1152,24 @@ msgstr ""
 "Veuillez le copier depuis votre fichier d'installation ou réinstaller "
 "PasswordSafe."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2988
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3006
 #, fuzzy
 msgid "Missing XSD File - "
 msgstr "Fichier XSD manquant"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2988
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3006
 msgid " Build"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3009
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3027
 msgid "Import_XML"
 msgstr "Import_XML"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3010
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3028
 msgid "XML"
 msgstr "XML"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3031
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3049
 #, fuzzy, c-format
 msgid ""
 "File: %ls failed validation against XML Schema:\n"
@@ -1101,7 +1180,7 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3037
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3055
 #, fuzzy, c-format
 msgid ""
 "File: %ls passed Validation but had the following errors during import:\n"
@@ -1113,27 +1192,27 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3058
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3076
 msgid "The following records were skipped:"
 msgstr "Les entrées suivantes ont étés ignorés:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3060
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3078
 #, c-format
 msgid " / skipped %d"
 msgstr " / %d sautés"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3065
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3083
 msgid "The following records had errors in their Password History:"
 msgstr ""
 "Les entrées suivantes avaient des erreurs dans leur historique de mot de "
 "passe :"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3067
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3085
 #, c-format
 msgid " / with Password History errors %d"
 msgstr " / %d avec erreurs d'Historique de Mot de Passe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3072
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3090
 msgid ""
 "The following records were renamed as an entry already exists in your "
 "database or in the Import file:"
@@ -1141,12 +1220,12 @@ msgstr ""
 "Les entrées suivantes ont été renommés car une entrée existe déjà la votre "
 "fichier ou le fichier importé :"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3074
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3092
 #, c-format
 msgid " / renamed %d"
 msgstr " / %d renommé"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3079
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3097
 #, fuzzy, c-format
 msgid ""
 "File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
@@ -1155,7 +1234,7 @@ msgstr ""
 "Fichier: %ls a été importé (%d entrées validées / importées %d%ls%ls%ls). "
 "Détails dans le rapport."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3086
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3104
 #, fuzzy, c-format
 msgid ""
 "Validated %d %ls\n"
@@ -1166,160 +1245,185 @@ msgstr ""
 "\n"
 "%d %ls importées"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3094
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3112
 msgid "XML import not supported in this release"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3097
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3115
 #, c-format
 msgid "XML import: Unexpected return code(%d)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3130
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3134
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3148
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3152
 #, fuzzy
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*"
 msgstr ""
 "Fichier PasswordSafe (*.psafe3; *.dat)|*.psafe3; *.dat|Tous les fichiers (*."
 "*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3138
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3156
 #, fuzzy
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*"
 msgstr ""
 "Fichier PasswordSafe (*.psafe3; *.dat)|*.psafe3; *.dat|Tous les fichiers (*."
 "*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3149
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3167
 msgid "Please name the exported database"
 msgstr "Veuillez nommer la base exportée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3166
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3184
 msgid "Could not figure out why PasswordSafeFrame::OnExportVx was invoked"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3176
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3194
 msgid "Export Text"
 msgstr "Exporter du texte"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3180
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3198
 #, fuzzy
 msgid "Export Text failed"
 msgstr "L'importation de texte a échoué"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3182
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3200
 msgid "Please name the plaintext file"
 msgstr "Veuillez nommer le fichier texte"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3193
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3211
 msgid "Advanced Text Export Options"
 msgstr "Options avancées d'exportation texte"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3213
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3261
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3231
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3279
 #, fuzzy
 msgid "export"
 msgstr "exporté(es)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3224
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3242
 msgid "Export XML"
 msgstr "Exporter en XML"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3228
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3246
 #, fuzzy
 msgid "Export XML failed"
 msgstr "L'importation de XML a échoué"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3230
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3248
 msgid "Please name the XML file"
 msgstr "Veuillez nommer le fichier XML"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3231
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3249
 #, fuzzy
 msgid "XML files (*.xml)|*.xml|All files (*.*; *)|*.*;*"
 msgstr "Fichiers XML (*.xml)|*.xml|All files (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3242
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3260
 msgid "Advanced XML Export Options"
 msgstr "Options avancées d'exportation XML"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3331
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3349
 #, fuzzy
 msgid "Exporting database: "
 msgstr "Fusion de : %s\n"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3355
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3373
 #, fuzzy
 msgid "No entries satisfied your selection criteria and so none were exported!"
 msgstr ""
 "Aucune entrée ne satisfait aux critères de sélection, donc aucune ne peut "
 "être %s!"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3368
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3386
 msgid "Passkey incorrect"
 msgstr "Mot de passe invalide"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3412
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3430
 msgid "Merge"
 msgstr "Fusionner"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3413
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3431
 #, fuzzy
 msgid "Merging database: "
 msgstr "Fusion de : %s\n"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3428
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3446
 #, fuzzy
 msgid "Merge Complete"
 msgstr "La comparaison est finie"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3510
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3528
 msgid "Group copied "
 msgstr "Groupe copié"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3513
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3531
 msgid "Title copied "
 msgstr "Titre copié"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3516
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3534
 msgid "User copied "
 msgstr "Utilisateur copié"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3519
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3537
 msgid "Pswd copied "
 msgstr "MdP copié"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3522
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3540
 msgid "Notes copied "
 msgstr "Notes copiées"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3525
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3543
 #, fuzzy
 msgid "URL copied "
 msgstr "Utilisateur copié"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3528
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3546
 msgid "Autotype copied "
 msgstr "Autofrappe copiée"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3531
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3549
 msgid "RunCmd copied "
 msgstr "RunCmd copié "
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3534
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3552
 #, fuzzy
 msgid "Email copied "
 msgstr "Courriel copié"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3537
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3555
 #, fuzzy
 msgid "Password History copied "
 msgstr "Filtre de l'historique du mot de passe"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3540
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3558
 #, fuzzy
 msgid "Old Pswd copied "
 msgstr "MdP copié"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3597
+#, fuzzy
+msgid "Select Tree/List display font"
+msgstr "Définir la police d'affichache d'arborescence/de liste"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3614
+#, fuzzy
+msgid "Select Add/Edit display font"
+msgstr "Définir la police d'affichache d'arborescence/de liste"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3618
+#, fuzzy
+msgid "Select Password display font"
+msgstr "Définir la police d'affichage de mots de passe"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3622
+#, fuzzy
+msgid "Select Notes display font"
+msgstr "Définir la police d'affichache d'arborescence/de liste"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3626
+#, fuzzy
+msgid "Select Virtual Keyboard font"
+msgstr "Définir la police du clavier virtuel"
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:410
 msgid "Another instance of Password Safe is already running"
@@ -1454,14 +1558,14 @@ msgstr "Aucun"
 #: ../../../ui/wxWidgets/properties.cpp:266
 #: ../../../ui/wxWidgets/properties.cpp:455
 #: ../../../ui/wxWidgets/properties.cpp:483
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:532
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:411
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:550
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:412
 msgid "N/A"
 msgstr "N/D"
 
 #: ../../../ui/wxWidgets/properties.cpp:280
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:526
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:538
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:544
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:556
 #, fuzzy
 msgid "Static text"
 msgstr "Static"
@@ -1526,6 +1630,56 @@ msgstr "Entrez le nouveau nom de fichier"
 #: ../../../ui/wxWidgets/properties.cpp:474
 msgid "Please enter the new database description"
 msgstr "Entrez la nouvelle description de fichier"
+
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:40
+msgid "equals"
+msgstr "égale"
+
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:41
+msgid "does not equal"
+msgstr "n'est pas égal à"
+
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:42
+msgid "begins with"
+msgstr "commence par"
+
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:43
+msgid "does not begin with"
+msgstr "ne commence pas avec"
+
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:44
+msgid "ends with"
+msgstr "se termine par"
+
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:45
+msgid "does not end with"
+msgstr "ne se termine pas par"
+
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:46
+msgid "contains"
+msgstr "contient"
+
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:47
+msgid "does not contain"
+msgstr "ne contient pas"
+
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:105
+#, fuzzy
+msgid "All entries"
+msgstr "entrées"
+
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:107
+msgid "Entries whose "
+msgstr ""
+
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:109
+msgid "not "
+msgstr ""
+
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:109
+#, fuzzy
+msgid "case-sensitive]"
+msgstr "(sensible à la casse)"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:72
 msgid ""
@@ -1605,6 +1759,35 @@ msgstr ""
 "Fichier PasswordSafe (*.psafe3; *.dat)|*.psafe3; *.dat|Tous les fichiers (*."
 "*)|*.*||"
 
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:69
+#, fuzzy
+msgid "&Restrict to a subset of entries:"
+msgstr "Restreindre à un sous-ensemble d'entrées:"
+
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:76
+#, fuzzy
+msgid "&Where"
+msgstr "où"
+
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:93
+#, fuzzy
+msgid "the &following text:"
+msgstr "le texte suivant:"
+
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:99
+#, fuzzy
+msgid "&Case Sensitive"
+msgstr "Sensible à la casse"
+
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:200
+msgid "You must select some of the fields to "
+msgstr ""
+
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:201
+#, fuzzy
+msgid "No fields selected"
+msgstr "Aucune règle sélectionnée"
+
 #: ../../../ui/wxWidgets/deleteconfirmation.cpp:128
 msgid "Are you sure you want to delete the selected entry?"
 msgstr "Êtes-vous certain de vouloir supprimer l'entrée sélectionnée?"
@@ -1636,23 +1819,6 @@ msgstr "Glissez cette image sur une autre fenêtre pour coller le champ '%s'."
 msgid "' field."
 msgstr "Champ"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:27
-msgid "View Report"
-msgstr "Voir le rapport"
-
-#: ../../../ui/wxWidgets/ViewReport.cpp:42
-msgid "&Save to Disk"
-msgstr "&Enregistrer sur le disque"
-
-#: ../../../ui/wxWidgets/ViewReport.cpp:44
-#, fuzzy
-msgid "&Copy to Clipboard"
-msgstr "Copier au presse-papier"
-
-#: ../../../ui/wxWidgets/ViewReport.cpp:46
-msgid "&Finish"
-msgstr "&Terminer"
-
 #: ../../../ui/wxWidgets/yubicfg.cpp:167
 msgid "YubiKey Serial Number: "
 msgstr ""
@@ -1667,7 +1833,7 @@ msgid "Hide"
 msgstr "&Cacher"
 
 #: ../../../ui/wxWidgets/yubicfg.cpp:190
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:360
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:361
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:200
 msgid "Generate"
 msgstr "Générer"
@@ -1679,15 +1845,6 @@ msgstr ""
 #: ../../../ui/wxWidgets/yubicfg.cpp:329
 msgid "Show"
 msgstr "Afficher"
-
-#: ../../../ui/wxWidgets/mainView.cpp:106
-#, fuzzy
-msgid "Select Tree/List display font"
-msgstr "Définir la police d'affichache d'arborescence/de liste"
-
-#: ../../../ui/wxWidgets/mainView.cpp:123
-msgid "Set Password display font"
-msgstr "Définir la police d'affichage de mots de passe"
 
 #: ../../../ui/wxWidgets/YubiMixin.cpp:32
 msgid "<- Click on button to the left"
@@ -1762,8 +1919,8 @@ msgstr "Le même que celui du fichier courant"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:333
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:499
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:271
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:862
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:280
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:881
 msgid "Browse"
 msgstr "Choisir..."
 
@@ -1948,7 +2105,7 @@ msgid "Apply"
 msgstr "Appliquer"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:586
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:410
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:428
 #: ../../../ui/wxWidgets/helpmap.h:42
 msgid "Password History"
 msgstr "Historique du mot de passe"
@@ -2156,6 +2313,172 @@ msgstr "Afficher les notes"
 msgid "Invalid position"
 msgstr "validation"
 
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:183
+#, fuzzy
+msgid "Policy Name:"
+msgstr "Stratégie de mot de passe"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:197
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:576
+msgid "Use Database Policy"
+msgstr "Utiliser la stratégie du fichier"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:209
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:569
+msgid "Random password generation rules"
+msgstr "Règles de génération de mot de passe aléatoire"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:216
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:591
+#, fuzzy
+msgid "Password length:"
+msgstr "Longueur :"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:231
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:606
+#, fuzzy
+msgid "Use lowercase letters"
+msgstr "Utiliser des lettres &Minuscules"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:238
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:260
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:282
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:305
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:612
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:633
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:654
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:676
+#, fuzzy
+msgid "(At least "
+msgstr "(minimum"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:253
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:627
+#, fuzzy
+msgid "Use UPPERCASE letters"
+msgstr "Utiliser des M&AJUSCULES"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:275
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:648
+msgid "Use digits"
+msgstr "Utiliser des chiffres"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:297
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:669
+msgid "Use symbols"
+msgstr "Utiliser des symboles"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:299
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:671
+#, fuzzy
+msgid "i.e., ., %, $, etc."
+msgstr "Utiliser des &Symboles (ex.: &, %, $, etc.)"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:324
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:694
+msgid "Reset"
+msgstr "Réinitializer"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:327
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:697
+#, fuzzy
+msgid "Use only easy-to-read characters"
+msgstr "Utiliser des minuscules"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:329
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:699
+msgid "i.e., no 'l', '1', etc."
+msgstr ""
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:334
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:704
+#, fuzzy
+msgid "Generate pronounceable passwords"
+msgstr "Générer des mots &prononçables"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:340
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:710
+msgid "Or"
+msgstr "Ou"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:345
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:715
+#, fuzzy
+msgid "Use hexadecimal digits only"
+msgstr "Utiliser des chiffres &Hexadécimaux seulement (0-9,a-f)"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:347
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:717
+msgid "0-9, a-f"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:367
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:214
+#, fuzzy
+msgid "Copy Password to clipboard"
+msgstr "&Copier le mot de passe au presse-papier"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:488
+#, fuzzy
+msgid "Hexadecimal is mutually exclusive to all other options."
+msgstr "L'hexadécimal est mutuellement exclusif de toutes les autres options!"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:492
+msgid ""
+"Hexadecimal passwords must have even length - each byte is two characters"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:497
+#, fuzzy
+msgid ""
+"At least one type of character (lowercase, uppercase, digits, symbols or "
+"hexadecimal) must be chosen"
+msgstr ""
+"Au moins un type of caractère (minuscules, majuscules, chiffres,\n"
+"symboles, hexadécimal) doit être permis."
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:502
+#, fuzzy
+msgid "Password must be between 4 and 1024 characters"
+msgstr "Le mot de passe doit être long de 4 à 1024 caractères."
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:510
+msgid "Password length is less than sum of 'at least' constraints"
+msgstr ""
+"La taille du mot de passe est moindre que la somme des contraintes minimum"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:520
+#, fuzzy
+msgid "Policy name cannot be blank"
+msgstr "La combinaison ne peut être vide."
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:525
+msgid "Policy name is already in use"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:530
+msgid "Default policy name is not allowed"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:536
+#, fuzzy
+msgid "Policy Error"
+msgstr "Stratégie de mot de passe"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:726
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1997
+#, fuzzy
+msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
+msgstr ""
+"Désolé, 'prononçable' et 'facile à lire' ne sont pas activables en même temps"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:745
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1970
+#, fuzzy
+msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
+msgstr ""
+"Désolé, 'prononçable' et 'facile à lire' ne sont pas activables en même temps"
+
 #: ../../../ui/wxWidgets/dragbar.cpp:77
 msgid "Error dragging"
 msgstr ""
@@ -2184,6 +2507,182 @@ msgid "Unexpected result dragging"
 msgstr ""
 "\n"
 "Exception inatendue pendant l'analyse."
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:95
+#, fuzzy
+msgid "Compare current database with another database"
+msgstr "Comparant la base courante avec: %s"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:138
+#, fuzzy
+msgid "Conflicting items"
+msgstr "Confirmer la suppression des items"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:142
+#, fuzzy
+msgid "Only in current database: "
+msgstr "Entrées seulement dans la base courante(%s):"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:147
+#, fuzzy
+msgid "Only in comparison database: "
+msgstr "Entrées uniquement dans le fichier de comparaison (%s):"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:152
+#, fuzzy
+msgid "Identical items"
+msgstr "%d éléments"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:202
+#, fuzzy
+msgid "compare"
+msgstr "comparé"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:208
+#, fuzzy
+msgid "Select a database to compare with current database ("
+msgstr "SVP, Choisissez un fichier à comparer avec le fichier courant"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:215
+#, fuzzy
+msgid "Password Database"
+msgstr "Fichier de mot de passe:"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:216
+#, fuzzy
+msgid "Select a PasswordSafe database to compare"
+msgstr "Récents fichiers de PasswordSafe"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:232
+#, fuzzy
+msgid "Advanced Options..."
+msgstr "Options de recherche avancées"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:438
+#, fuzzy
+msgid "Synchronize this item..."
+msgstr "S&ynchroniser..."
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:440
+#: ../../../ui/wxWidgets/CompareDlg.cpp:722
+#: ../../../ui/wxWidgets/PwsSync.cpp:640
+msgid "Synchronize"
+msgstr "Synchroniser"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:440
+#: ../../../ui/wxWidgets/CompareDlg.cpp:446
+#: ../../../ui/wxWidgets/CompareDlg.cpp:450
+#, fuzzy
+msgid "selected "
+msgstr "Sélectionné"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:440
+msgid "..."
+msgstr "..."
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:443
+#, fuzzy
+msgid "Synchronize all items..."
+msgstr "S&ynchroniser..."
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:446
+#, fuzzy
+msgid "Copy"
+msgstr "&Copier"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:446
+#: ../../../ui/wxWidgets/CompareDlg.cpp:469
+#, fuzzy
+msgid " to current db"
+msgstr "Monter le courant"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:450
+msgid "Delete"
+msgstr "Supprimer"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:450
+#, fuzzy
+msgid " from current db"
+msgstr "[Pas de fichier courant]"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:456
+#, fuzzy
+msgid "&Edit entry in current db"
+msgstr "Monter le courant"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:457
+#, fuzzy
+msgid "&View entry in comparison db"
+msgstr "Entrées uniquement dans le fichier de comparaison (%s):"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:465
+#, fuzzy
+msgid "&Copy "
+msgstr "&Copier"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:465
+#, fuzzy
+msgid " selected "
+msgstr "Sélectionné"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:467
+#, fuzzy
+msgid " fields to current db"
+msgstr "Monter le courant"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:469
+#, fuzzy
+msgid "&Copy this "
+msgstr "Copier dans le fichier"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:722
+#, fuzzy
+msgid "Current safe was opened read-only"
+msgstr "Ouvrir en lecture seule"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:730
+#: ../../../ui/wxWidgets/PwsSync.cpp:618
+msgid "Synchronization failed"
+msgstr "La synchronisation a échoué"
+
+#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:44
+#, fuzzy
+msgid "Encrytion"
+msgstr "L'encryptage a échoué"
+
+#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:45
+#, fuzzy
+msgid "Please enter an encryption key."
+msgstr "Veuillez entrer la clé d'encryptage et de décryptage"
+
+#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:48
+#, fuzzy
+msgid "Decryption"
+msgstr "#description"
+
+#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:49
+#, fuzzy
+msgid "Please enter a decryption key."
+msgstr "Veuillez entrer la clé d'encryptage et de décryptage"
+
+#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:56
+msgid "Enter Key:"
+msgstr "Taper:"
+
+#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:63
+msgid "Verify Key:"
+msgstr "Vérifier la clef"
+
+#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:111
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:245
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:318
+msgid "The two entries do not match."
+msgstr "Les deux entrées ne coïncident pas."
+
+#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:127
+#, fuzzy
+msgid "The entry cannot be blank."
+msgstr "La combinaison ne peut être vide."
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:102
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:104
@@ -2275,12 +2774,6 @@ msgstr "Importer les réglages XML"
 #, fuzzy
 msgid "Import under group"
 msgstr "Importer dans le groupe?"
-
-#: ../../../ui/wxWidgets/ImportTextDlg.cpp:92
-#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:60
-msgid "Import to change passwords of existing entries ONLY"
-msgstr ""
-"Importer pour modifier les mots de passe des entrées existantes seulement."
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:143
 msgid "Delimiters"
@@ -2428,12 +2921,6 @@ msgstr ""
 msgid "Verify:"
 msgstr "Vérifier:"
 
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:245
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:318
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:111
-msgid "The two entries do not match."
-msgstr "Les deux entrées ne coïncident pas."
-
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:251
 msgid "Please enter the key and verify it."
 msgstr "SVP, entrez la clef et vérifiez-la."
@@ -2445,55 +2932,55 @@ msgstr ""
 "\n"
 "SVP, essayez-en un autre"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:270
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:861
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:279
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:880
 #, fuzzy
 msgid "Auto Type"
 msgstr "Auto-frappe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:272
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:863
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:281
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:882
 #, fuzzy
 msgid "Browse + Auto Type"
 msgstr "Aller à l'URL + Autofrappe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:273
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:864
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:282
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:883
 #, fuzzy
 msgid "Copy Notes"
 msgstr "Afficher les notes"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:274
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:865
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:283
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:884
 #, fuzzy
 msgid "Copy Password"
 msgstr "Mot de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:275
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:866
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:284
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:885
 #, fuzzy
 msgid "Copy Password + Minimize"
 msgstr "Copier le mot de passe au presse-papier, réduire"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:276
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:867
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:285
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:886
 #, fuzzy
 msgid "Copy Username"
 msgstr "Nom d'utilisateur"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:277
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:868
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:286
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:887
 #, fuzzy
 msgid "Edit/View Entry"
 msgstr "Visualiser l'entrée"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:278
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:869
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:287
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:888
 #, fuzzy
 msgid "Execute Run command"
 msgstr " 'Exécuter la commande'"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:298
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:307
 #, fuzzy
 msgid ""
 "To add a new entry, simply fill in the fields below. At least a title and\n"
@@ -2504,330 +2991,240 @@ msgstr ""
 "un titre et un mot de passe sont requis.Si vous avez défini un nom "
 "d'utilisateur par défaut, il apparaîtra dans le champ Nom d'utilisateur."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:306
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:315
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:145
 #: ../../../ui/wxWidgets/editshortcut.cpp:160
 msgid "Group:"
 msgstr "Groupe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:313
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:322
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:152
 #: ../../../ui/wxWidgets/editshortcut.cpp:167
 msgid "Title:"
 msgstr "Titre:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:319
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:328
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:158
 #: ../../../ui/wxWidgets/editshortcut.cpp:173
 msgid "Username:"
 msgstr "Nom d'utilisateur:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:325
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:334
 #, fuzzy
 msgid "Password:"
 msgstr "Mot de &Passe:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:331
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1165
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:340
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1184
 msgid "&Hide"
 msgstr "&Cacher"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:334
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:343
 msgid "&Generate"
 msgstr "&Générer"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:337
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:346
 #, fuzzy
 msgid "Confirm:"
 msgstr "Confirmation :"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:343
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:352
 msgid "URL:"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:349
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:358
 msgid "Go"
 msgstr "Aller"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:352
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:361
 #, fuzzy
 msgid "EMail:"
 msgstr "&courriel:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:358
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:367
 msgid "Send"
 msgstr "Envoyer"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:361
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:370
 #, fuzzy
 msgid "Notes:"
 msgstr "&Notes:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:370
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:379
 #: ../../../ui/wxWidgets/helpmap.h:47
 msgid "Basic"
 msgstr "Général"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:382
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:400
 #, fuzzy
 msgid "Autotype:"
 msgstr "&Autofrappe:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:388
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:406
 msgid "Run Cmd:"
 msgstr "Commande :"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:394
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:412
 #, fuzzy
 msgid "Double-Click Action:"
 msgstr "Action double-clic :"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:402
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:420
 #, fuzzy
 msgid "Shift-Double-Click Action:"
 msgstr "Action Maj + double-clic:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:415
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:433
 msgid "Keep"
 msgstr "Mémoriser"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:428
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:446
 msgid "last passwords"
 msgstr "derniers mots de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:441
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:459
 msgid "Clear History"
 msgstr "Effacer l'historique"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:446
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:464
 msgid "Copy All"
 msgstr "Tout copier"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:449
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:467
 #: ../../../ui/wxWidgets/helpmap.h:50
 msgid "Additional"
 msgstr "Avancé"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:459
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:477
 msgid "Password Expiry"
 msgstr "Expiration du mot de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:466
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:484
 msgid "On"
 msgstr "Le"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:475
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:493
 #, fuzzy
 msgid "In"
 msgstr "&Dans"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:491
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:509
 msgid "days"
 msgstr "jours"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:494
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:512
 msgid "Recurring"
 msgstr "Répéter"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:500
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:910
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1581
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:518
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:929
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1669
 msgid "Never"
 msgstr "Jamais"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:506
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:524
 msgid "Original Value:"
 msgstr "Valeur originale:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:512
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:530
 msgid "Statistics"
 msgstr "Statistiques"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:517
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:535
 #: ../../../ui/wxWidgets/editshortcut.cpp:186
 msgid "Created on:"
 msgstr "Créée le:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:523
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:541
 msgid "Password last changed on:"
 msgstr "Le mot de passe a été changé le:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:529
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:547
 #: ../../../ui/wxWidgets/editshortcut.cpp:198
 msgid "Last accessed on:"
 msgstr "Dernier accès le:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:535
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:553
 #: ../../../ui/wxWidgets/editshortcut.cpp:204
 msgid "Any field last changed on:"
 msgstr "Tout champ récemment changé sur:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:541
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:559
 #: ../../../ui/wxWidgets/helpmap.h:48
 msgid "Dates and Times"
 msgstr "Heures et Dates"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:551
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:209
-msgid "Random password generation rules"
-msgstr "Règles de génération de mot de passe aléatoire"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:558
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:197
-msgid "Use Database Policy"
-msgstr "Utiliser la stratégie du fichier"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:573
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:216
-#, fuzzy
-msgid "Password length:"
-msgstr "Longueur :"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:588
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:231
-#, fuzzy
-msgid "Use lowercase letters"
-msgstr "Utiliser des lettres &Minuscules"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:594
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:615
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:636
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:658
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:238
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:260
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:282
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:305
-#, fuzzy
-msgid "(At least "
-msgstr "(minimum"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:606
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:627
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:648
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:670
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:624
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:645
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:666
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:688
 msgid ")"
 msgstr ")"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:609
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:253
-#, fuzzy
-msgid "Use UPPERCASE letters"
-msgstr "Utiliser des M&AJUSCULES"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:630
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:275
-msgid "Use digits"
-msgstr "Utiliser des chiffres"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:651
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:297
-msgid "Use symbols"
-msgstr "Utiliser des symboles"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:653
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:299
-#, fuzzy
-msgid "i.e., ., %, $, etc."
-msgstr "Utiliser des &Symboles (ex.: &, %, $, etc.)"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:677
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:324
-msgid "Reset"
-msgstr "Réinitializer"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:680
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:327
-#, fuzzy
-msgid "Use only easy-to-read characters"
-msgstr "Utiliser des minuscules"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:682
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:329
-msgid "i.e., no 'l', '1', etc."
-msgstr ""
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:687
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:334
-#, fuzzy
-msgid "Generate pronounceable passwords"
-msgstr "Générer des mots &prononçables"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:693
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:340
-msgid "Or"
-msgstr "Ou"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:698
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:345
-#, fuzzy
-msgid "Use hexadecimal digits only"
-msgstr "Utiliser des chiffres &Hexadécimaux seulement (0-9,a-f)"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:700
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:347
-msgid "0-9, a-f"
-msgstr ""
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:703
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1624
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:720
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1712
 #: ../../../ui/wxWidgets/PasswordPolicy.h:69 ../../../ui/wxWidgets/helpmap.h:41
 #: ../../../ui/wxWidgets/helpmap.h:49
 msgid "Password Policy"
 msgstr "Stratégie de mot de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:733
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:752
 msgid "Set Date/Time"
 msgstr "Mettre à jour la date/l'heure"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:734
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:753
 msgid "Password"
 msgstr "Mot de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:890
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:909
 msgid "default"
 msgstr "défaut"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1013
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1032
 msgid "[Notes hidden - click here to display]"
 msgstr "[Notes cachées - cliquer ici pour les afficher]"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1082
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1106
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1384
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1976
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1101
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1126
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1439
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:2064
 msgid "Default Policy"
 msgstr "Stratégie par défaut"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1134
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1153
 msgid "Couldn't generate password - invalid policy"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1193
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1212
 msgid "&Show"
 msgstr "&Afficher"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1246
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1274
 #, fuzzy, c-format
 msgid "This entry must have a %ls"
 msgstr "Cette entrée doit comporter un %ls."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1247
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1275
 #, fuzzy
 msgid "title"
 msgstr "Titre"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1247
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1275
 #, fuzzy
 msgid "password"
 msgstr "Mot de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1255
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1287
 #, fuzzy
 msgid "Passwords do not match"
 msgstr "Les deux entrées ne coïncident pas."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1398
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1442
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1303
+msgid "Database name must not be empty if a database policy shall be used."
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1472
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1522
 #, fuzzy
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
@@ -2835,31 +3232,17 @@ msgstr ""
 "Une entrée avec un Groupe vide, Titre \"%s\" et nom d'utilisateur \"%s\" "
 "existe déjà."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1560
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1648
 #, fuzzy, c-format
 msgid " (every %d days)"
 msgstr "Récurrence (%d jours)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1623
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1711
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
 msgstr ""
 "Désolé, 'prononçable' et 'facile à lire' ne sont pas activables en même temps"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1882
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:744
-#, fuzzy
-msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
-msgstr ""
-"Désolé, 'prononçable' et 'facile à lire' ne sont pas activables en même temps"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1909
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:725
-#, fuzzy
-msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
-msgstr ""
-"Désolé, 'prononçable' et 'facile à lire' ne sont pas activables en même temps"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1961
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:2049
 #, fuzzy
 msgid "mailto:"
 msgstr "&courriel:"
@@ -3022,17 +3405,6 @@ msgstr ""
 "\n"
 "Erreur inconnue"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:618
-#: ../../../ui/wxWidgets/CompareDlg.cpp:730
-msgid "Synchronization failed"
-msgstr "La synchronisation a échoué"
-
-#: ../../../ui/wxWidgets/PwsSync.cpp:640
-#: ../../../ui/wxWidgets/CompareDlg.cpp:440
-#: ../../../ui/wxWidgets/CompareDlg.cpp:722
-msgid "Synchronize"
-msgstr "Synchroniser"
-
 #: ../../../ui/wxWidgets/PwsSync.cpp:641
 #, fuzzy, c-format
 msgid "Synchronizing from database: %ls\n"
@@ -3095,39 +3467,6 @@ msgid ""
 msgstr ""
 "Veuillez spécifier le nom ainsi que le groupe pour ce raccourci vers "
 "l'entrée '%s' :"
-
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:44
-#, fuzzy
-msgid "Encrytion"
-msgstr "L'encryptage a échoué"
-
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:45
-#, fuzzy
-msgid "Please enter an encryption key."
-msgstr "Veuillez entrer la clé d'encryptage et de décryptage"
-
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:48
-#, fuzzy
-msgid "Decryption"
-msgstr "#description"
-
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:49
-#, fuzzy
-msgid "Please enter a decryption key."
-msgstr "Veuillez entrer la clé d'encryptage et de décryptage"
-
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:56
-msgid "Enter Key:"
-msgstr "Taper:"
-
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:63
-msgid "Verify Key:"
-msgstr "Vérifier la clef"
-
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:127
-#, fuzzy
-msgid "The entry cannot be blank."
-msgstr "La combinaison ne peut être vide."
 
 #: ../../../ui/wxWidgets/about.cpp:148 ../../../ui/wxWidgets/about.cpp:190
 msgid "Build date:"
@@ -3272,24 +3611,6 @@ msgstr ""
 "Les données ont pu être perdues ou modifiées.\n"
 "Continuer de toute façon?"
 
-#: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:49
-msgid "You must select a valid file to continue."
-msgstr ""
-
-#: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:50
-msgid "You haven't selected any files"
-msgstr ""
-
-#: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:57
-#, fuzzy
-msgid "Selected file doesn't exist."
-msgstr "Détails du filtre sélectionné:"
-
-#: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:58
-#, fuzzy
-msgid "Please select a valid file"
-msgstr "Veuillez sélectionner un rapport pour l'afficher. "
-
 #: ../../../ui/wxWidgets/editshortcut.cpp:154
 #, fuzzy
 msgid ""
@@ -3361,64 +3682,6 @@ msgstr "Options de fusion avancées"
 msgid "merge"
 msgstr "Fusionner"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:183
-#, fuzzy
-msgid "Policy Name:"
-msgstr "Stratégie de mot de passe"
-
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:366
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:213
-#, fuzzy
-msgid "Copy Password to clipboard"
-msgstr "&Copier le mot de passe au presse-papier"
-
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:487
-#, fuzzy
-msgid "Hexadecimal is mutually exclusive to all other options."
-msgstr "L'hexadécimal est mutuellement exclusif de toutes les autres options!"
-
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:491
-msgid ""
-"Hexadecimal passwords must have even length - each byte is two characters"
-msgstr ""
-
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:496
-#, fuzzy
-msgid ""
-"At least one type of character (lowercase, uppercase, digits, symbols or "
-"hexadecimal) must be chosen"
-msgstr ""
-"Au moins un type of caractère (minuscules, majuscules, chiffres,\n"
-"symboles, hexadécimal) doit être permis."
-
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:501
-#, fuzzy
-msgid "Password must be between 4 and 1024 characters"
-msgstr "Le mot de passe doit être long de 4 à 1024 caractères."
-
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:509
-msgid "Password length is less than sum of 'at least' constraints"
-msgstr ""
-"La taille du mot de passe est moindre que la somme des contraintes minimum"
-
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:519
-#, fuzzy
-msgid "Policy name cannot be blank"
-msgstr "La combinaison ne peut être vide."
-
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:524
-msgid "Policy name is already in use"
-msgstr ""
-
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:529
-msgid "Default policy name is not allowed"
-msgstr ""
-
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:535
-#, fuzzy
-msgid "Policy Error"
-msgstr "Stratégie de mot de passe"
-
 #: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:644
 #, fuzzy
 msgid "&Reset/Remove shortcut\tDel"
@@ -3439,56 +3702,6 @@ msgstr "entrée de base pour un raccourci"
 msgid "Invalid shortcut"
 msgstr "Raccourci invalide ignoré."
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:40
-msgid "equals"
-msgstr "égale"
-
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:41
-msgid "does not equal"
-msgstr "n'est pas égal à"
-
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:42
-msgid "begins with"
-msgstr "commence par"
-
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:43
-msgid "does not begin with"
-msgstr "ne commence pas avec"
-
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:44
-msgid "ends with"
-msgstr "se termine par"
-
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:45
-msgid "does not end with"
-msgstr "ne se termine pas par"
-
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:46
-msgid "contains"
-msgstr "contient"
-
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:47
-msgid "does not contain"
-msgstr "ne contient pas"
-
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:105
-#, fuzzy
-msgid "All entries"
-msgstr "entrées"
-
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:107
-msgid "Entries whose "
-msgstr ""
-
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:109
-msgid "not "
-msgstr ""
-
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:109
-#, fuzzy
-msgid "case-sensitive]"
-msgstr "(sensible à la casse)"
-
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:157
 msgid "Available Password Policies:"
 msgstr "Stratégies de mot de passe disponible:"
@@ -3506,7 +3719,7 @@ msgid "&Delete"
 msgstr "&Supprimer"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:187
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:367
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:368
 msgid "List"
 msgstr "Liste"
 
@@ -3523,59 +3736,64 @@ msgstr "&Rétablir"
 msgid "Test Selected Policy"
 msgstr "Tester la stratégie sélectionnée"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:216
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:368
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:217
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:369
 msgid "Selected policy details:"
 msgstr "Détails de la stratégie sélectionnée:"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:264
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:265
 msgid "Close"
 msgstr "Fermer"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:265
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:266
 msgid "View"
 msgstr "Voir"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:271
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:272
 msgid "Policy Name"
 msgstr "Nom de stratégie"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:272
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:273
 msgid "Use count"
 msgstr "Utiliser un compte"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:283
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:284
 msgid "Policy Field"
 msgstr ""
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:284
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:285
 msgid "Value"
 msgstr "Valeur"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:288
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:289
 msgid "Group"
 msgstr "Groupe"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:289
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:290
 #: ../../../ui/wxWidgets/PWSgrid.cpp:155
 msgid "Title"
 msgstr "Titre"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:290
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:291
 msgid "User Name"
 msgstr "Nom de l'utilisateur"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:379
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:380
 msgid "Details"
 msgstr "Détails"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:380
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:381
 msgid "Entries using selected policy:"
 msgstr "Entrées utilisant la stratégie sélectionnée:"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:431
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:432
 msgid "Not used"
 msgstr "Non utilisé"
+
+#: ../../../ui/wxWidgets/SystemTray.cpp:117
+#, fuzzy
+msgid "&Lock Safe"
+msgstr "&Verrouiller le coffre"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:121
 #, fuzzy
@@ -3654,25 +3872,25 @@ msgstr "&Supprimer de la liste d'entrées récentes"
 msgid " Copy # "
 msgstr " Copier # %d"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:571
+#: ../../../ui/wxWidgets/mainEdit.cpp:569
 msgid "There was an error autotyping.  "
 msgstr ""
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:591
+#: ../../../ui/wxWidgets/mainEdit.cpp:589
 msgid ""
 "Error switching to another application before autotyping. Switch manually "
 "within 5 seconds"
 msgstr ""
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:762
+#: ../../../ui/wxWidgets/mainEdit.cpp:760
 msgid "Unable to send email"
 msgstr "Incapable d'envoyer un courriel"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:762
+#: ../../../ui/wxWidgets/mainEdit.cpp:760
 msgid "Unable to display URL"
 msgstr "Incapable d'afficher l'URL"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:863
+#: ../../../ui/wxWidgets/mainEdit.cpp:861
 #, c-format
 msgid ""
 "Error at column %d:\n"
@@ -3683,181 +3901,31 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:864
+#: ../../../ui/wxWidgets/mainEdit.cpp:862
 msgid "Error parsing Run Command"
 msgstr "Erreur de syntaxe dans l'exécution de la commande"
-
-#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:27
-msgid "Import XML Settings"
-msgstr "Importer les réglages XML"
-
-#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:39
-#, fuzzy
-msgid "XML file to import:"
-msgstr "Le fichier %s est en train d^\"tre importé: %s"
-
-#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:43
-msgid "Please Choose a XML File to Import"
-msgstr "SVP, Choisissez un fichier XML à importer"
-
-#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:44
-#, fuzzy
-msgid "XML files (*.xml)|*.xml"
-msgstr "Fichiers XML (*.xml)|*.xml||"
-
-#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:54
-#, fuzzy
-msgid "Import under Group"
-msgstr "Importer dans le groupe?"
 
 #: ../../../ui/wxWidgets/PWSgrid.cpp:156
 #, fuzzy
 msgid "User"
 msgstr " 'Utilisateur'"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:77
-#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:122
+#: ../../../ui/wxWidgets/ViewReport.cpp:27
+msgid "View Report"
+msgstr "Voir le rapport"
+
+#: ../../../ui/wxWidgets/ViewReport.cpp:42
+msgid "&Save to Disk"
+msgstr "&Enregistrer sur le disque"
+
+#: ../../../ui/wxWidgets/ViewReport.cpp:44
 #, fuzzy
-msgid "&Available Fields:"
-msgstr "Champs disponibles:"
+msgid "&Copy to Clipboard"
+msgstr "Copier au presse-papier"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:79
-#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:124
-#, fuzzy
-msgid "&Selected Fields:"
-msgstr "Champs sélectionnés:"
-
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:138
-#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:180
-#, fuzzy
-msgid " [Mandatory Field]"
-msgstr "Utilisateur [champ obligatoire]"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:95
-#, fuzzy
-msgid "Compare current database with another database"
-msgstr "Comparant la base courante avec: %s"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:138
-#, fuzzy
-msgid "Conflicting items"
-msgstr "Confirmer la suppression des items"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:142
-#, fuzzy
-msgid "Only in current database: "
-msgstr "Entrées seulement dans la base courante(%s):"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:147
-#, fuzzy
-msgid "Only in comparison database: "
-msgstr "Entrées uniquement dans le fichier de comparaison (%s):"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:152
-#, fuzzy
-msgid "Identical items"
-msgstr "%d éléments"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:202
-#, fuzzy
-msgid "compare"
-msgstr "comparé"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:208
-#, fuzzy
-msgid "Select a database to compare with current database ("
-msgstr "SVP, Choisissez un fichier à comparer avec le fichier courant"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:215
-#, fuzzy
-msgid "Password Database"
-msgstr "Fichier de mot de passe:"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:216
-#, fuzzy
-msgid "Select a PasswordSafe database to compare"
-msgstr "Récents fichiers de PasswordSafe"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:232
-#, fuzzy
-msgid "Advanced Options..."
-msgstr "Options de recherche avancées"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:438
-#, fuzzy
-msgid "Synchronize this item..."
-msgstr "S&ynchroniser..."
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:440
-#: ../../../ui/wxWidgets/CompareDlg.cpp:446
-#: ../../../ui/wxWidgets/CompareDlg.cpp:450
-#, fuzzy
-msgid "selected "
-msgstr "Sélectionné"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:440
-msgid "..."
-msgstr "..."
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:443
-#, fuzzy
-msgid "Synchronize all items..."
-msgstr "S&ynchroniser..."
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:446
-#, fuzzy
-msgid "Copy"
-msgstr "&Copier"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:446
-#: ../../../ui/wxWidgets/CompareDlg.cpp:469
-#, fuzzy
-msgid " to current db"
-msgstr "Monter le courant"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:450
-msgid "Delete"
-msgstr "Supprimer"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:450
-#, fuzzy
-msgid " from current db"
-msgstr "[Pas de fichier courant]"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:456
-#, fuzzy
-msgid "&Edit entry in current db"
-msgstr "Monter le courant"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:457
-#, fuzzy
-msgid "&View entry in comparison db"
-msgstr "Entrées uniquement dans le fichier de comparaison (%s):"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:465
-#, fuzzy
-msgid "&Copy "
-msgstr "&Copier"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:465
-#, fuzzy
-msgid " selected "
-msgstr "Sélectionné"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:467
-#, fuzzy
-msgid " fields to current db"
-msgstr "Monter le courant"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:469
-#, fuzzy
-msgid "&Copy this "
-msgstr "Copier dans le fichier"
-
-#: ../../../ui/wxWidgets/CompareDlg.cpp:722
-#, fuzzy
-msgid "Current safe was opened read-only"
-msgstr "Ouvrir en lecture seule"
+#: ../../../ui/wxWidgets/ViewReport.cpp:46
+msgid "&Finish"
+msgstr "&Terminer"
 
 #: ../../../ui/wxWidgets/mainManage.cpp:85
 msgid "Please Choose a Name for this Backup:"
@@ -3891,39 +3959,6 @@ msgstr ""
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "PasswordSafe - <Copie de sauvegarde restaurée sans titre>"
 
-#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:69
-#, fuzzy
-msgid "&Restrict to a subset of entries:"
-msgstr "Restreindre à un sous-ensemble d'entrées:"
-
-#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:76
-#, fuzzy
-msgid "&Where"
-msgstr "où"
-
-#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:93
-#, fuzzy
-msgid "the &following text:"
-msgstr "le texte suivant:"
-
-#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:99
-#, fuzzy
-msgid "&Case Sensitive"
-msgstr "Sensible à la casse"
-
-#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:200
-msgid "You must select some of the fields to "
-msgstr ""
-
-#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:201
-#, fuzzy
-msgid "No fields selected"
-msgstr "Aucune règle sélectionnée"
-
-#: ../../../ui/wxWidgets/ManagePwdPolicies.h:58
-msgid "Manage Password Policies"
-msgstr "Géger les stratégies de mot de passe"
-
 #: ../../../ui/wxWidgets/addeditpropsheet.h:105
 #: ../../../ui/wxWidgets/addeditpropsheet.h:111
 msgid "Edit Entry"
@@ -3946,7 +3981,7 @@ msgstr "Visualiser l'entrée"
 msgid "Enter Safe Combination"
 msgstr "Entrer le mot de passe du fichier"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.h:116
+#: ../../../ui/wxWidgets/passwordsafeframe.h:119
 #: ../../../ui/wxWidgets/wxMessages.h:19 ../../../ui/wxWidgets/wxMessages.h:34
 #, fuzzy
 msgid "PasswordSafe"
@@ -4077,10 +4112,6 @@ msgstr ""
 msgid "Help"
 msgstr "Aide"
 
-#: ../../../ui/wxWidgets/safecombinationchange.h:54
-msgid "Change Safe Combination"
-msgstr "Changer le mot de passe du fichier"
-
 #: ../../../ui/wxWidgets/safecombinationsetup.h:53
 msgid "Safe Combination Setup"
 msgstr "Mise en place du mot de passe du fichier"
@@ -4096,6 +4127,14 @@ msgstr "À propos de PasswordSafe"
 #: ../../../ui/wxWidgets/editshortcut.h:47
 msgid "Edit Shortcut"
 msgstr "Modifier le raccourci"
+
+#: ../../../ui/wxWidgets/safecombinationchange.h:54
+msgid "Change Safe Combination"
+msgstr "Changer le mot de passe du fichier"
+
+#: ../../../ui/wxWidgets/ManagePwdPolicies.h:58
+msgid "Manage Password Policies"
+msgstr "Géger les stratégies de mot de passe"
 
 #~ msgid "Confirm item copy to clipboard"
 #~ msgstr "Confirmer la copie de l'élément au presse-papier"
@@ -4494,9 +4533,6 @@ msgstr "Modifier le raccourci"
 
 #~ msgid "Keyboard Shortcut"
 #~ msgstr "Raccourci Clavier"
-
-#~ msgid "Notes"
-#~ msgstr "Notes"
 
 #~ msgid "Password Modified Time"
 #~ msgstr "Heure de modification du mot de passe"
@@ -7834,9 +7870,6 @@ msgstr "Modifier le raccourci"
 
 #~ msgid "Set Sample &Text"
 #~ msgstr "Mettre en place du &Texte échantillon"
-
-#~ msgid "Set Virtual Keyboard font"
-#~ msgstr "Définir la police du clavier virtuel"
 
 #~ msgid "Setswana"
 #~ msgstr "Setswana"
