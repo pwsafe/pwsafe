@@ -494,6 +494,8 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
 
   m_core.SetReadOnly(false); // new file can't be read-only...
   m_core.NewFile(tostringx(pksetup.GetPassword()));
+  m_password = tostringx(pksetup.GetPassword());
+
   if (m_core.WriteCurFile() == PWSfile::SUCCESS) {
     wxGetApp().recentDatabases().AddFileToHistory(newfile);
     EndModal(wxID_OK);
