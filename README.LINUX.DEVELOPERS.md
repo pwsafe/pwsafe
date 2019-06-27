@@ -27,7 +27,8 @@ gettext
 git
 libcurl4-openssl-dev
 libqrencode-dev
-libssl-devlibgtest-dev
+libssl-dev
+libgtest-dev
 libuuid1
 libwxgtk3.0-dbg (See note 2 below)
 libwxgtk3.0-dev (See note 2 below)
