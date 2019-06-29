@@ -1,5 +1,5 @@
-Password Safe 3.49.1 Release May 2019
-=====================================
+Password Safe 3.49.1 Release June 2019
+======================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
