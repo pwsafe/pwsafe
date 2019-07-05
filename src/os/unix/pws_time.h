@@ -14,8 +14,7 @@
 #include <time.h>
 #endif
 
-typedef time_t __time32_t;
-#ifndef __time64_t 
+#if !defined(__time64_t) && !defined(__TIME64_T_TYPE)
 typedef uint64_t __time64_t;
 #endif
 
