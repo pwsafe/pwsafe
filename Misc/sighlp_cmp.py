@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+
+# originally from https://github.com/Blutkoete/sighlp_cmp
+# Modified to support signing github-generated source zip/tarball that is verified as unmodified.
+
 import argparse
 import hashlib
 import os
@@ -19,7 +23,6 @@ verbosity_level = VERBOSITY_LEVEL_NORMAL
 
 dir_names_to_ignore = []
 file_names_to_ignore = []
-
 
 def cond_print(what, condition):
     """
@@ -55,6 +58,7 @@ def parse_command_line_arguments():
                         action='append',
                         dest='file_names_to_ignore',
                         help='file name to ignore, e.g. ".gitignore" - may be specified multiple times')
+    parser.add_argument('-s' '--save-download', metavar='save_download_dest', type=str, dest='save_download_dest') 
     parser.add_argument('url', metavar='url', type=str, help='download URL')
     parser.add_argument('path', metavar='path', type=str, help='path to local folder')
     return parser.parse_args()
@@ -248,6 +252,9 @@ def sighlp_cmp():
     try:
         # Download the given file
         download_archive(args.url, tmp_file)
+        # Save a copy if so specified
+        if args.save_download_dest is not None:
+            shutil.copyfile(tmp_file, args.save_download_dest)
         # Unpack it
         tmp_unarchived_dir = unpack_archive(tmp_file, tmp_dir)
         local_root_dir = args.path
