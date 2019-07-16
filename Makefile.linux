@@ -11,9 +11,11 @@
 include version.wx
 export VER_MAJOR
 export VER_MINOR
+LEAD_0 = 0
 export VER_REV
 export VER_SPECIAL
-export RELEASENUM := $(VER_MAJOR).$(VER_MINOR)
+
+export RELEASENUM := $(VER_MAJOR).$(LEAD_0)$(VER_MINOR).$(VER_REV)
 export RELEASE_SPECIAL := $(VER_SPECIAL)
 export RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
 
@@ -32,6 +34,7 @@ RM := /bin/rm -rf
 GIT := git
 GZIP := gzip
 ECHO := /bin/echo
+TAR := /usr/bin/tar
 
 GPG := /usr/bin/gpg
 GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
@@ -100,6 +103,17 @@ tar:
 	-o $(RELEASEDIR)/$(SRC_TGZ) \
 	HEAD
 	@echo "Done."
+
+# Following needed because GitHub creates its own tar.gz and .zip files for a release
+# and we need to verify those before signing them
+cmpsrc-github:
+	(cd $(RELEASEDIR); $(TAR) xzf $(SRC_TGZ) && \
+	../Misc/sighlp_cmp.py -f ChangeLog -f pwsafe.pot -f version.h -v 1 -s $(RELEASENAME).zip \
+												https://github.com/pwsafe/pwsafe/archive/$(RELEASENAME).zip \
+	                      $(PKG_BASE)-$(RELEASENAME)/)
+	(cd $(RELEASEDIR); $(GPG_SIGN) $(RELEASENAME).zip)
+	(cd $(RELEASEDIR); $(RM) $(RELEASENAME).zip &&	$(RM) -rf $(PKG_BASE)-$(RELEASENAME))
+	@echo "GitHub source signature files ready to upload from $(RELEASEDIR)"
 
 sha1sums:
 	(cd $(RELEASEDIR); $(SHA1SUM) *$(RELEASENAME)*)
