@@ -277,4 +277,4 @@ def sighlp_cmp():
 
 
 if __name__ == '__main__':
-    sighlp_cmp()
+    sys.exit(sighlp_cmp())
