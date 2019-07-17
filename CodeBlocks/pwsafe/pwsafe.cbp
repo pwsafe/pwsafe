@@ -15,31 +15,14 @@
 				<Option parameters="-s" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
-					<Add option="-Wnon-virtual-dtor" />
-					<Add option="-Wshadow" />
-					<Add option="-Winit-self" />
-					<Add option="-Wredundant-decls" />
-					<Add option="-Wcast-align" />
-					<Add option="-Wfloat-equal" />
-					<Add option="-Winline" />
-					<Add option="-Wunreachable-code" />
-					<Add option="-Wmissing-include-dirs" />
-					<Add option="-Wswitch-default" />
-					<Add option="-pedantic" />
-					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
 					<Add option="-g" />
-					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=yes --inplace`" />
+					<Add option="`../wx-config-filter  --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-Wpedantic" />
-					<Add option="-Wunused" />
-					<Add option="-Wuninitialized" />
-					<Add option="-Wlogical-op" />
-					<Add option="-Winvalid-pch" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
@@ -47,11 +30,12 @@
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
 					<Add option="-DNO_QR" />
+					<Add option="-DNO_VERCHECK" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
 					<Add option="-m64" />
-					<Add option="`wx-config --libs --unicode=yes --debug=yes --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs core,base,adv,html --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add library="core64d" />
 					<Add library="os64d" />
@@ -67,15 +51,6 @@
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
-					<Add option="-Wshadow" />
-					<Add option="-Winit-self" />
-					<Add option="-Wcast-align" />
-					<Add option="-Wfloat-equal" />
-					<Add option="-Winline" />
-					<Add option="-Wunreachable-code" />
-					<Add option="-Wmissing-include-dirs" />
-					<Add option="-Wswitch-default" />
-					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
@@ -84,11 +59,6 @@
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-Wpedantic" />
-					<Add option="-Wunused" />
-					<Add option="-Wuninitialized" />
-					<Add option="-Wlogical-op" />
-					<Add option="-Winvalid-pch" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
@@ -97,11 +67,12 @@
 					<Add option="-DNO_YUBI" />
 					<Add option="-DwxSIZE_T_IS_UINT" />
 					<Add option="-DNO_QR" />
+					<Add option="-DNO_VERCHECK" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
 					<Add option="-m32" />
-					<Add option="`wx-config --libs --unicode=yes --debug=yes --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs core,base,adv,html --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add library="core32d" />
 					<Add library="os32d" />
@@ -119,25 +90,23 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
-					<Add option="-Wshadow" />
-					<Add option="-Winit-self" />
-					<Add option="-Wswitch-default" />
-					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
+					<Add option="-Wno-type-limits" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
 					<Add option="-DNO_QR" />
+					<Add option="-DNO_VERCHECK" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
 					<Add option="-m64" />
-					<Add option="`wx-config --libs --unicode=yes --debug=no --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs core,base,adv,html --unicode=yes --debug=no --inplace`" />
 					<Add library="core64" />
 					<Add library="os64" />
 					<Add directory="../core" />
@@ -154,26 +123,24 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
-					<Add option="-Wshadow" />
-					<Add option="-Winit-self" />
-					<Add option="-Wswitch-default" />
-					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
+					<Add option="-Wno-type-limits" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
 					<Add option="-DwxSIZE_T_IS_UINT" />
 					<Add option="-DNO_QR" />
+					<Add option="-DNO_VERCHECK" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
 					<Add option="-m32" />
-					<Add option="`wx-config --libs --unicode=yes --debug=no --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs core,base,adv,html --unicode=yes --debug=no --inplace`" />
 					<Add library="core32" />
 					<Add library="os32" />
 					<Add directory="../core" />
@@ -194,10 +161,10 @@
 					<Add option="-Wredundant-decls" />
 					<Add option="-Wcast-align" />
 					<Add option="-Wfloat-equal" />
-					<Add option="-Winline" />
 					<Add option="-Wunreachable-code" />
 					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
+					<Add option="-Wzero-as-null-pointer-constant" />
 					<Add option="-pedantic" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
@@ -206,14 +173,9 @@
 					<Add option="-m64" />
 					<Add option="-g" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=yes --inplace`" />
+					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-Wpedantic" />
-					<Add option="-Wunused" />
-					<Add option="-Wuninitialized" />
-					<Add option="-Wlogical-op" />
-					<Add option="-Winvalid-pch" />
-					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
@@ -223,10 +185,11 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m64" />
-					<Add option="`wx-config --libs --unicode=yes --debug=yes --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs core,base,adv,html --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="`pkg-config --libs ykpers-1`" />
 					<Add option="`pkg-config --libs libqrencode`" />
+					<Add option="`pkg-config --libs libcurl`" />
 					<Add library="core64yd" />
 					<Add library="os64yd" />
 					<Add directory="../core" />
@@ -241,28 +204,15 @@
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
-					<Add option="-Wshadow" />
-					<Add option="-Winit-self" />
-					<Add option="-Wcast-align" />
-					<Add option="-Winline" />
-					<Add option="-Wunreachable-code" />
-					<Add option="-Wmissing-include-dirs" />
-					<Add option="-Wswitch-default" />
-					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="-g" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
+					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
-					<Add option="-Wpedantic" />
-					<Add option="-Wunused" />
-					<Add option="-Wuninitialized" />
-					<Add option="-Wlogical-op" />
-					<Add option="-Winvalid-pch" />
-					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
@@ -273,10 +223,11 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m32" />
-					<Add option="`wx-config --libs --unicode=yes --debug=yes --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs core,base,adv,html --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="`pkg-config --libs ykpers-1`" />
 					<Add option="`pkg-config --libs libqrencode`" />
+					<Add option="`pkg-config --libs libcurl`" />
 					<Add library="core32yd" />
 					<Add library="os32yd" />
 					<Add directory="../core" />
@@ -293,19 +244,13 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
-					<Add option="-Wshadow" />
-					<Add option="-Winit-self" />
-					<Add option="-Wfloat-equal" />
-					<Add option="-Winline" />
-					<Add option="-Wunreachable-code" />
-					<Add option="-Wswitch-default" />
-					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
+					<Add option="-Wno-type-limits" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
@@ -313,9 +258,10 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m64" />
-					<Add option="`wx-config --libs --unicode=yes --debug=no --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs core,base,adv,html --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --libs ykpers-1`" />
 					<Add option="`pkg-config --libs libqrencode`" />
+					<Add option="`pkg-config --libs libcurl`" />
 					<Add library="core64y" />
 					<Add library="os64y" />
 					<Add directory="../core" />
@@ -332,20 +278,13 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
-					<Add option="-Wshadow" />
-					<Add option="-Winit-self" />
-					<Add option="-Wfloat-equal" />
-					<Add option="-Winline" />
-					<Add option="-Wunreachable-code" />
-					<Add option="-Wmissing-include-dirs" />
-					<Add option="-Wswitch-default" />
-					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
+					<Add option="-Wno-type-limits" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
@@ -354,9 +293,10 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m32" />
-					<Add option="`wx-config --libs --unicode=yes --debug=no --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs core,base,adv,html --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --libs ykpers-1`" />
 					<Add option="`pkg-config --libs libqrencode`" />
+					<Add option="`pkg-config --libs libcurl`" />
 					<Add library="core32y" />
 					<Add library="os32y" />
 					<Add directory="../core" />
@@ -365,9 +305,29 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-Wnon-virtual-dtor" />
+			<Add option="-Wshadow" />
+			<Add option="-Winit-self" />
+			<Add option="-Wcast-align" />
+			<Add option="-Wundef" />
+			<Add option="-Wfloat-equal" />
+			<Add option="-Wunreachable-code" />
+			<Add option="-Wmissing-include-dirs" />
+			<Add option="-Wswitch-enum" />
+			<Add option="-Wswitch-default" />
+			<Add option="-Wzero-as-null-pointer-constant" />
+			<Add option="-Wextra" />
 			<Add option="-Wall" />
+			<Add option="-std=c++11" />
+			<Add option="-fPIC" />
 			<Add option="-Wformat=2" />
 			<Add option="-Wno-unused-local-typedefs" />
+			<Add option="-Wdouble-promotion" />
+			<Add option="-Wnull-dereference" />
+			<Add option="-Wduplicated-branches" />
+			<Add option="-Wduplicated-cond" />
+			<Add option="-Winvalid-pch" />
+			<Add option="-Wlogical-op" />
 			<Add option="-DUNICODE" />
 		</Compiler>
 		<Linker>
@@ -385,6 +345,8 @@
 		<Unit filename="../../src/ui/wxWidgets/CompareDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/ComparisonGridTable.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ComparisonGridTable.h" />
+		<Unit filename="../../src/ui/wxWidgets/CryptKeyEntry.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/CryptKeyEntry.h" />
 		<Unit filename="../../src/ui/wxWidgets/DbSelectionPanel.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/DbSelectionPanel.h" />
 		<Unit filename="../../src/ui/wxWidgets/ExportTextWarningDlg.cpp" />

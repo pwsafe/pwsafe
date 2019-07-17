@@ -83,6 +83,7 @@ endif (pwsafe_REVISION)
 # Configurable options:
 option (NO_YUBI "Set ON to disable YubiKey support" OFF)
 option (NO_GTEST "Set ON to disable gtest unit testing" OFF)
+option (NO_VERCHECK "Set ON to disable online version check" OFF)
 
 if (WIN32)
   option (WX_WINDOWS "Build wxWidget under Windows" OFF)
@@ -132,11 +133,13 @@ if (NOT WIN32 OR WX_WINDOWS)
                )
      endif (NOT PWSHINT_wxconfig)
   endif (NOT WIN32)
-  find_package(wxWidgets COMPONENTS adv base core html net REQUIRED)
+  find_package(wxWidgets COMPONENTS adv base core html REQUIRED)
   include(${wxWidgets_USE_FILE})
 
-  find_package(OpenSSL REQUIRED)
-  include_directories(${OPENSSL_INCLUDE_DIR})
+  if (NOT NO_VERCHECK)
+    find_package(OpenSSL REQUIRED)
+    include_directories(${OPENSSL_INCLUDE_DIR})
+  endif()
 endif (NOT WIN32 OR WX_WINDOWS)
 
 if (NOT WIN32)
@@ -214,6 +217,11 @@ if (res)
   set(pwsafe_VERSTRING "local")
 endif()
 
+if (NO_VERCHECK)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_VERCHECK")
+  message(STATUS "Online version check disabled")
+endif (NO_VERCHECK)
+
 # Assume that we're either MSVC or a Unix-like
 if (MSVC)
 # Debug build looks for dlls with _D postfix, this provides it:
@@ -230,7 +238,6 @@ set(CMAKE_CXX_FLAGS
 if (NO_YUBI)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
 endif (NO_YUBI)
-
 
 if (WX_WINDOWS)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D __WX__")
@@ -360,9 +367,13 @@ if (XML_XERCESC)
   target_link_libraries(pwsafe ${XercesC_LIBRARY})
 endif (XML_XERCESC)
 
+if (NOT NO_VERCHECK)
+ set (CURL_LIBS "curl ${OPENSSL_SSL_LIBRARY}")
+endif ()
+
 if (APPLE)
     FIND_LIBRARY(QUARTZCORE_LIBS QuartzCore)
-    target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES} ${QUARTZCORE_LIBS} curl ${OPENSSL_SSL_LIBRARY})
+    target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES} ${QUARTZCORE_LIBS} ${CURL_LIBS})
 elseif (WIN32)
   if (NOT NO_YUBI)
    set (YUBILIB "YkLib22")
@@ -374,8 +385,7 @@ else ()
   if (NOT NO_QR)
     target_link_libraries(pwsafe qrencode  ${CMAKE_REQUIRED_LIBRARIES})
   endif (NOT NO_QR)
-  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 curl ${OPENSSL_SSL_LIBRARY}
-  ${CMAKE_REQUIRED_LIBRARIES})
+  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 ${CURL_LIBS} ${CMAKE_REQUIRED_LIBRARIES})
 endif()
 
 if (IPO_SUPPORTED)

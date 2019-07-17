@@ -53,14 +53,19 @@ BEGIN_EVENT_TABLE( CAbout, wxDialog )
   EVT_HYPERLINK( ID_CHECKNEW     , CAbout::OnCheckNewClicked   )
   EVT_HYPERLINK( ID_SITEHYPERLINK, CAbout::OnVisitSiteClicked  )
   EVT_BUTTON(    wxID_CLOSE      , CAbout::OnCloseClick        )
+#ifndef NO_VERCHECK
   EVT_THREAD(    wxID_ANY        , CAbout::OnDownloadCompleted )
-
+#endif
 END_EVENT_TABLE()
 
+#ifndef NO_VERCHECK
 wxString CAbout::s_VersionData = wxEmptyString;
+const cstringT s_URL_VERSION   =  "https://pwsafe.org/latest.xml";
+#else
+const cstringT s_URL_VERSION   =  "https://pwsafe.org/news.shtml";
+#endif
 
 const wstringT s_URL_HOME      = L"https://pwsafe.org";
-const cstringT s_URL_VERSION   =  "https://pwsafe.org/latest.xml";
 
 /*!
  * CAbout constructors
@@ -75,10 +80,13 @@ CAbout::CAbout( wxWindow* parent, wxWindowID id, const wxString& caption, const 
 {
   Init();
   Create(parent, id, caption, pos, size, style);
-
+#if defined(_DEBUG) || defined(DEBUG)
   // Print version information on standard output which might be useful for error reports.
   pws_os::Trace(GetLibWxVersion());
+#ifndef NO_VERCHECK
   pws_os::Trace(GetLibCurlVersion());
+#endif // NO_VERCHECK
+#endif
 }
 
 /*!
@@ -121,8 +129,10 @@ CAbout::~CAbout()
 
 void CAbout::Init()
 {
+#ifndef NO_VERCHECK
   m_VersionStatus = nullptr;
   m_CurlHandle = nullptr;
+#endif // NO_VERCHECK
 }
 
 /*!
@@ -178,9 +188,11 @@ void CAbout::CreateControls()
   wxStaticText* copyrightStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Copyright (c) 2003-2019 Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(copyrightStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
+#ifndef NO_VERCHECK
   m_VersionStatus = new wxTextCtrl(aboutDialog, ID_TEXTCTRL, wxT("\n\n"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER);
   rightSizer->Add(m_VersionStatus, 0, wxALIGN_LEFT|wxALL|wxEXPAND|wxRESERVE_SPACE_EVEN_IF_HIDDEN, 5);
   m_VersionStatus->Hide();
+#endif // NO_VERCHECK
 
   wxButton* closeButton = new wxButton(aboutDialog, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0);
   rightSizer->Add(closeButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
@@ -233,7 +245,9 @@ wxIcon CAbout::GetIconResource( const wxString& WXUNUSED(name) )
 
 void CAbout::OnCloseWindow( wxCloseEvent& WXUNUSED(event) )
 {
+#ifndef NO_VERCHECK
   Cleanup();
+#endif // NO_VERCHECK
   EndModal(wxID_CLOSE);
 }
 
@@ -243,10 +257,13 @@ void CAbout::OnCloseWindow( wxCloseEvent& WXUNUSED(event) )
 
 void CAbout::OnCloseClick( wxCommandEvent& WXUNUSED(event) )
 {
+#ifndef NO_VERCHECK
   Cleanup();
+#endif // NO_VERCHECK
   EndModal(wxID_CLOSE);
 }
 
+#ifndef NO_VERCHECK
 /**
  * Returns a <code>wxCriticalSection</code> object that is used to protect
  * the shared data <code>s_VersionData</code>, which is accessed by worker
@@ -373,6 +390,7 @@ void CAbout::Cleanup()
   }
 }
 
+#if defined(_DEBUG) || defined(DEBUG)
 /**
  * Provides version information about Curl library.
  */
@@ -401,14 +419,7 @@ wxString CAbout::GetLibCurlVersion()
 
   return versionInfo;
 }
-
-/**
- * Provides version information about wxWidgets framework.
- */
-wxString CAbout::GetLibWxVersion()
-{
-  return wxString::Format("[wx] Wx Version:\n%s\n", wxGetLibraryVersionInfo().ToString());
-}
+#endif // debug
 
 /**
  * Checks whether database is closed.
@@ -691,10 +702,32 @@ void CAbout::OnDownloadCompleted(wxThreadEvent& event)
     s_VersionData.Empty();
   }
 }
+#endif // NO_VERCHECK
+
+#if defined(_DEBUG) || defined(DEBUG)
+/**
+ * Provides version information about wxWidgets framework.
+ */
+wxString CAbout::GetLibWxVersion()
+{
+  return wxString::Format("[wx] Wx Version:\n%s\n", wxGetLibraryVersionInfo().ToString());
+}
+#endif // debug
 
 /**
  * wxEVT_HYPERLINK event handler for ID_SITEHYPERLINK
  */
 void CAbout::OnVisitSiteClicked(wxHyperlinkEvent& WXUNUSED(event)) {
   wxLaunchDefaultBrowser(s_URL_HOME);
+}
+
+/**
+ * wxEVT_HYPERLINK event handler for ID_CHECKNEW
+ */
+void CAbout::OnCheckNewClicked(wxHyperlinkEvent& WXUNUSED(event)) {
+#ifndef NO_VERCHECK
+  CheckNewVersion();
+#else
+  wxLaunchDefaultBrowser(s_URL_VERSION);
+#endif // NO_VERCHECK
 }
