@@ -81,7 +81,7 @@ bool PWSfileHeader::operator==(const PWSfileHeader &h) const
                  m_displaystatus == h.m_displaystatus &&
                  m_prefString == h.m_prefString &&
                  m_whenlastsaved == h.m_whenlastsaved &&
-                 m_whenpwdlastchanged == m_whenpwdlastchanged &&
+                 m_whenpwdlastchanged == h.m_whenpwdlastchanged &&
                  m_lastsavedby == h.m_lastsavedby &&
                  m_lastsavedon == h.m_lastsavedon &&
                  m_whatlastsaved == h.m_whatlastsaved &&
