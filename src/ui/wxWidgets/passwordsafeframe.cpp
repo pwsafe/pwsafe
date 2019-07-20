@@ -2251,18 +2251,6 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &
 
   // TODO: bUpdateGUI processing in PasswordSafeFrame::UpdateGUI
 
-  CItemData *pci(nullptr);
-
-  ItemListIter pos = m_core.Find(entry_uuid);
-  if (pos != m_core.GetEntryEndIter()) {
-    pci = &pos->second;
-  } else if (ga == UpdateGUICommand::GUI_ADD_ENTRY ||
-             ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
-             ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
-    pws_os::Trace(wxT("Couldn't find uuid %ls"), StringX(CUUID(entry_uuid)).c_str());
-    return;
-  }
-
 #ifdef NOTYET
   PWSprefs *prefs = PWSprefs::GetInstance();
 #endif
