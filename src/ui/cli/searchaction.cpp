@@ -140,6 +140,6 @@ int ChangePasswordOfSearchResults(const ItemPtrVec &items, PWScore &core)
   return PWScore::SUCCESS;
 }
 
-constexpr wchar_t *SearchActionTraits<UserArgs::Delete>::prompt;
-constexpr wchar_t *SearchActionTraits<UserArgs::Update>::prompt;
-constexpr wchar_t *SearchActionTraits<UserArgs::ClearFields>::prompt;
+constexpr const wchar_t *SearchActionTraits<UserArgs::Delete>::prompt;
+constexpr const wchar_t *SearchActionTraits<UserArgs::Update>::prompt;
+constexpr const wchar_t *SearchActionTraits<UserArgs::ClearFields>::prompt;
