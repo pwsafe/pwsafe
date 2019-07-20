@@ -360,8 +360,8 @@ void BlowFish::Blowfish_decipher(uint32 *xl,
 void BlowFish::InitializeBlowfish(const unsigned char key[],
                                   short keybytes)
 {
-  short          i;
-  short          j;
+  unsigned short i;
+  unsigned short j;
   uint32  data;
   uint32  datal;
   uint32  datar;

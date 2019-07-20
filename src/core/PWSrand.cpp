@@ -91,7 +91,7 @@ void PWSrand::GetRandomData( void * const buffer, unsigned long length )
   unsigned char *pb = static_cast<unsigned char *>(buffer);
   while (length > SHA256::HASHLEN) {
     NextRandBlock();
-    for (int j = 0; j < SHA256::HASHLEN; j++)
+    for (unsigned int j = 0; j < SHA256::HASHLEN; j++)
       pb[j] = (m_IsInternalPRNG) ? R[j] : pb[j] ^ R[j];
     length -= SHA256::HASHLEN;
     pb += SHA256::HASHLEN;

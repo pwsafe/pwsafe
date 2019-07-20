@@ -402,7 +402,7 @@ void PWSprefs::GetPrefPSSRect(long &top, long &bottom,
   right = m_PSSrect.right;
 }
 
-int PWSprefs::GetMRUList(stringT *MRUFiles) const
+unsigned int PWSprefs::GetMRUList(stringT *MRUFiles) const
 {
   ASSERT(MRUFiles != nullptr);
 
