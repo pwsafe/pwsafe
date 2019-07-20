@@ -959,7 +959,7 @@ std::vector<bool> PWSTreeCtrl::GetGroupDisplayState()
  */
 void PWSTreeCtrl::SetGroupDisplayState(const std::vector<bool> &groupstates)
 {
-  int groupIndex = 0;
+  size_t groupIndex = 0;
 
   TraverseTree(
     GetRootItem(),

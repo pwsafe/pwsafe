@@ -217,7 +217,7 @@ public:
   void SetPrefRect(long top, long bottom, long left, long right);
   void GetPrefPSSRect(long &top, long &bottom, long &left, long &right) const;
   void SetPrefPSSRect(long top, long bottom, long left, long right);
-  int GetMRUList(stringT *MRUFiles) const;
+  unsigned int GetMRUList(stringT *MRUFiles) const;
   int SetMRUList(const stringT *MRUFiles, int n, int max_MRU);
   PWPolicy GetDefaultPolicy(const bool bUseCopy = false) const;
   void SetDefaultPolicy(const PWPolicy &pol, const bool bUseCopy = false);

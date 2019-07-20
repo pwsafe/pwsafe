@@ -50,9 +50,9 @@ public:
       PWSprefs* prefs = PWSprefs::GetInstance();
       const auto nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
       std::vector<stringT> mruList(nExpected);
-      const int nFound = prefs->GetMRUList(&mruList[0]);
+      const auto nFound = prefs->GetMRUList(&mruList[0]);
       wxASSERT(nExpected >= nFound);
-      for (int idx = 0; idx < nFound; ++idx) {
+      for (unsigned int idx = 0; idx < nFound; ++idx) {
         if (!mruList[idx].empty())
           AddFileToHistory(towxstring(mruList[idx]));
       }
