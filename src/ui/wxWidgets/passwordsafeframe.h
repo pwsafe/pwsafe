@@ -172,7 +172,7 @@ class PasswordSafeFrame: public wxFrame, public Observer
     DECLARE_EVENT_TABLE()
 
 private:
-    enum class ViewType { TREE, GRID } m_currentView;
+    enum class ViewType { TREE, GRID };
 
 public:
   /// Constructors
@@ -572,6 +572,7 @@ private:
   void UpdateMenuBar();
   void UpdateLastClipboardAction(const CItemData::FieldType field);
   PWScore &m_core;
+  ViewType m_currentView;
   PasswordSafeSearch* m_search;
   SystemTray* m_sysTray;
   bool m_exitFromMenu;
