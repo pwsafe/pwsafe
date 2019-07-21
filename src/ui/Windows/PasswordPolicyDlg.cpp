@@ -78,7 +78,7 @@ CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongP
   m_PWMakePronounceable = m_oldPWMakePronounceable =
     (m_st_default_pp.flags & PWPolicy::MakePronounceable) != 0;
 
-  m_PWDefaultLength = m_oldPWDefaultLength = m_st_default_pp.length;
+  m_PWLength = m_oldPWLength = m_st_default_pp.length;
   m_PWDigitMinLength = m_oldPWDigitMinLength = m_st_default_pp.digitminlength;
   m_PWLowerMinLength = m_oldPWLowerMinLength = m_st_default_pp.lowerminlength;
   m_PWSymbolMinLength = m_oldPWSymbolMinLength = m_st_default_pp.symbolminlength;
@@ -122,7 +122,7 @@ void CPasswordPolicyDlg::DoDataExchange(CDataExchange* pDX)
     CPWDialog::DoDataExchange(pDX);
 
     //{{AFX_DATA_MAP(CPasswordPolicyDlg)
-    DDX_Text(pDX, IDC_DEFPWLENGTH, m_PWDefaultLength);
+    DDX_Text(pDX, IDC_DEFPWLENGTH, m_PWLength);
     DDX_Text(pDX, IDC_MINDIGITLENGTH, m_PWDigitMinLength);
     DDX_Text(pDX, IDC_MINLOWERLENGTH, m_PWLowerMinLength);
     DDX_Text(pDX, IDC_MINSYMBOLLENGTH, m_PWSymbolMinLength);
@@ -363,7 +363,7 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
     break;
   }
 
-  setupBuddy(this, IDC_PWLENSPIN, IDC_DEFPWLENGTH, m_PWDefaultLength, PWSprefs::PWDefaultLength);
+  setupBuddy(this, IDC_PWLENSPIN, IDC_DEFPWLENGTH, m_PWLength, PWSprefs::PWDefaultLength);
   setupBuddy(this, IDC_SPINDIGITS, IDC_MINDIGITLENGTH, m_PWDigitMinLength, PWSprefs::PWDigitMinLength);
   setupBuddy(this, IDC_SPINLOWERCASE, IDC_MINLOWERLENGTH, m_PWLowerMinLength, PWSprefs::PWLowercaseMinLength);
   setupBuddy(this, IDC_SPINUPPERCASE, IDC_MINUPPERLENGTH, m_PWUpperMinLength, PWSprefs::PWUppercaseMinLength);
@@ -469,7 +469,7 @@ void CPasswordPolicyDlg::OnCancel()
   m_SymbolsEdit.GetWindowText(m_Symbols);
 
   // Check if any changes made
-  if (m_PWDefaultLength     != m_oldPWDefaultLength     ||
+  if (m_PWLength     != m_oldPWLength     ||
       m_PWUseLowercase      != m_oldPWUseLowercase      ||
       (m_oldPWUseLowercase  == TRUE &&
        m_PWLowerMinLength   != m_oldPWLowerMinLength)   ||
@@ -543,7 +543,7 @@ void CPasswordPolicyDlg::SetPolicyData(CString &cs_policyname,
   m_PWMakePronounceable = m_oldPWMakePronounceable =
     (xst_pp.flags & PWPolicy::MakePronounceable) ==
                        PWPolicy::MakePronounceable;
-  m_PWDefaultLength = m_oldPWDefaultLength = xst_pp.length;
+  m_PWLength = m_oldPWLength = xst_pp.length;
   m_PWDigitMinLength = m_oldPWDigitMinLength = xst_pp.digitminlength;
   m_PWLowerMinLength = m_oldPWLowerMinLength = xst_pp.lowerminlength;
   m_PWSymbolMinLength = m_oldPWSymbolMinLength = xst_pp.symbolminlength;
@@ -590,7 +590,7 @@ void CPasswordPolicyDlg::OnNamesComboChanged()
   m_PWEasyVision = (xst_pp.flags & PWPolicy::UseEasyVision) != 0;
   m_PWMakePronounceable = (xst_pp.flags & PWPolicy::MakePronounceable) != 0;
   
-  m_PWDefaultLength = xst_pp.length;
+  m_PWLength = xst_pp.length;
   m_PWDigitMinLength = xst_pp.digitminlength;
   m_PWLowerMinLength = xst_pp.lowerminlength;
   m_PWSymbolMinLength = xst_pp.symbolminlength;
@@ -828,7 +828,7 @@ BOOL CPasswordPolicyDlg::Validate()
   }
 
   if (m_PWUseHexdigits) {
-    if (m_PWDefaultLength % 2 != 0) {
+    if (m_PWLength % 2 != 0) {
       gmb.AfxMessageBox(IDS_HEXMUSTBEEVEN);
       return FALSE;
     }
@@ -841,7 +841,7 @@ BOOL CPasswordPolicyDlg::Validate()
 
   int minPWL = PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWDefaultLength);
   int maxPWL = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDefaultLength);
-  if ((m_PWDefaultLength < minPWL) || (m_PWDefaultLength > maxPWL)) {
+  if ((m_PWLength < minPWL) || (m_PWLength > maxPWL)) {
     CString errmess;
     errmess.Format(IDS_DEFAULTPWLENGTH, minPWL, maxPWL);
     gmb.AfxMessageBox(errmess);
@@ -849,11 +849,10 @@ BOOL CPasswordPolicyDlg::Validate()
     return FALSE;
   }
 
-  if (!(m_PWUseHexdigits || m_PWEasyVision || m_PWMakePronounceable) &&
-      ((m_PWUseDigits ? m_PWDigitMinLength : 0) +
+  if (((m_PWUseDigits ? m_PWDigitMinLength : 0) +
        (m_PWUseLowercase ? m_PWLowerMinLength : 0) +
        (m_PWUseSymbols ? m_PWSymbolMinLength : 0) +
-       (m_PWUseUppercase ? m_PWUpperMinLength : 0)) > m_PWDefaultLength) {
+       (m_PWUseUppercase ? m_PWUpperMinLength : 0)) > m_PWLength) {
     gmb.AfxMessageBox(IDS_DEFAULTPWLENGTHTOOSMALL);
     ((CEdit*)GetDlgItem(IDC_DEFPWLENGTH))->SetFocus();
     return FALSE;
@@ -907,7 +906,7 @@ void CPasswordPolicyDlg::OnGeneratePassword()
       st_pp.flags |= PWPolicy::UseEasyVision;
     if (m_PWMakePronounceable == TRUE)
       st_pp.flags |= PWPolicy::MakePronounceable;
-    st_pp.length = m_PWDefaultLength;
+    st_pp.length = m_PWLength;
     st_pp.digitminlength = m_PWDigitMinLength;
     st_pp.lowerminlength = m_PWLowerMinLength;
     st_pp.symbolminlength = m_PWSymbolMinLength;
@@ -1103,7 +1102,7 @@ bool CPasswordPolicyDlg::UpdatePasswordPolicy()
   if (m_PWMakePronounceable == TRUE)
     st_pp.flags |= PWPolicy::MakePronounceable;
 
-  st_pp.length = m_PWDefaultLength;
+  st_pp.length = m_PWLength;
   st_pp.digitminlength = m_PWDigitMinLength;
   st_pp.lowerminlength = m_PWLowerMinLength;
   st_pp.symbolminlength = m_PWSymbolMinLength;

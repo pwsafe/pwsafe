@@ -434,4 +434,5 @@ BEGIN
   IDSC_PEASYVISION         "Easyvision characters"
   IDSC_PPRONOUNCEABLE      "Pronounceable passwords"
   IDSC_PHEXADECIMAL        "Hexadecimal characters"
+  IDSC_ATLEASTIGNORED      " (at least N restrictions may be ignored)"
 END

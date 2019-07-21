@@ -67,11 +67,14 @@ struct PWPolicy {
       lowerminlength(that.lowerminlength),
       symbolminlength(that.symbolminlength),
       upperminlength(that.upperminlength),
-      symbols(that.symbols), usecount(that.usecount) {}
+	  symbols(that.symbols), usecount(that.usecount) {
+	  that.Validate();
+  }
 
   PWPolicy &operator=(const PWPolicy &that)
   {
     if (this != &that) {
+		that.Validate();
       flags  = that.flags;
       length = that.length;
       digitminlength  = that.digitminlength;
@@ -107,6 +110,10 @@ struct PWPolicy {
 
   typedef void (*RowPutter)(int row, const stringT &name, const stringT &value, void *table);
   void Policy2Table(RowPutter rp, void *table);
+
+  // Test that a policy is internally consistent
+  // Debug build should assert if not
+  void Validate() const;
 };
 
 //-----------------------------------------------------------------

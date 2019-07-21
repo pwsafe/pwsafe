@@ -330,3 +330,4 @@
 #define IDSC_PPRONOUNCEABLE             4112
 #define IDSC_PHEXADECIMAL               4113
 #define IDSC_DEFAULT_POLICY             4114
+#define IDSC_ATLEASTIGNORED             4115

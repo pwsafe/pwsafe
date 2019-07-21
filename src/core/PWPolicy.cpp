@@ -71,6 +71,7 @@ PWPolicy::PWPolicy(const StringX &str) : usecount(0)
   if (!(is_upperminlength >> std::hex >> upperminlength)) goto fail;
 
   // Sanity checks:
+  Validate();
   // Must be some flags; however hex incompatible with other flags
   // lengths also have restrictions.
   bhex_flag = (flags & PWPolicy::UseHexDigits) != 0;
@@ -96,6 +97,7 @@ PWPolicy::operator StringX() const
   if (flags == 0) {
     return retval;
   }
+  Validate();
   ostringstreamT os;
   unsigned int f; // dain bramaged istringstream requires this runaround
   f = static_cast<unsigned int>(flags);
@@ -114,6 +116,8 @@ PWPolicy::operator StringX() const
 bool PWPolicy::operator==(const PWPolicy &that) const
 {
   if (this != &that) {
+	  Validate();
+	  that.Validate();
     if (flags != that.flags ||
         length != that.length ||
         ((flags & PWPolicy::UseDigits) == PWPolicy::UseDigits &&
@@ -143,7 +147,7 @@ StringX PWPolicy::MakeRandomPassword() const
   return pwchars.MakePassword();
 }
 
-static stringT PolValueString(int flag, bool override, int count)
+static stringT PolValueString(int flag, int count)
 {
   // helper function for Policy2Table
   stringT yes, no;
@@ -151,11 +155,10 @@ static stringT PolValueString(int flag, bool override, int count)
 
   stringT retval;
   if (flag != 0) {
-    if (override)
+    if (count == 0)
       retval = yes;
-    else {
+    else
       Format(retval, IDSC_YESNUMBER, count);
-    }
   } else {
     retval = no;
   }
@@ -164,6 +167,7 @@ static stringT PolValueString(int flag, bool override, int count)
 
 void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
 {
+  Validate();
   stringT yes, no;
   LoadAString(yes, IDSC_YES); LoadAString(no, IDSC_NO);
 
@@ -185,17 +189,17 @@ void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
   nPos++;
 
   LoadAString(col1, IDSC_PUSELOWER);
-  col2 = PolValueString((flags & PWPolicy::UseLowercase), bEV || bPR, lowerminlength);
+  col2 = PolValueString((flags & PWPolicy::UseLowercase), lowerminlength);
   rp(nPos, col1, col2, table);
   nPos++;
 
   LoadAString(col1, IDSC_PUSEUPPER);
-  col2 = PolValueString((flags & PWPolicy::UseUppercase), bEV || bPR, upperminlength);
+  col2 = PolValueString((flags & PWPolicy::UseUppercase), upperminlength);
   rp(nPos, col1, col2, table);
   nPos++;
 
   LoadAString(col1, IDSC_PUSEDIGITS);
-  col2 = PolValueString((flags & PWPolicy::UseDigits), bEV || bPR, digitminlength);
+  col2 = PolValueString((flags & PWPolicy::UseDigits), digitminlength);
   rp(nPos, col1, col2, table);
   nPos++;
 
@@ -224,6 +228,11 @@ void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
   nPos++;
 
   LoadAString(col1, IDSC_PPRONOUNCEABLE);
+  if (bPR && ((lowerminlength > 0) || (upperminlength > 0) || (digitminlength > 0) || (symbolminlength > 0))) {
+    stringT note;
+    LoadAString(note, IDSC_ATLEASTIGNORED);
+    col2 += note;
+  }
   rp(nPos, col1, bPR ? yes : no, table);
   nPos++;
 
@@ -236,6 +245,7 @@ StringX PWPolicy::GetDisplayString()
 {
   // Display string for policy in List View and Show entries' differences
   // when comparing entries in this or in different databases
+  Validate();
   if (flags != 0) {
     stringT st_pwp(_T("")), st_text;
     if (flags & PWPolicy::UseLowercase) {
@@ -277,4 +287,16 @@ StringX PWPolicy::GetDisplayString()
     return osx.str().c_str();
   }
   return _T("");
+}
+
+void PWPolicy::Validate() const
+{
+	ASSERT(length >= digitminlength + lowerminlength + symbolminlength + upperminlength);
+	if (length != 0) {// if length != 0 we assume the policy isn't empty, and so the following must hold:
+		// At least one set of characters is specified
+		ASSERT((flags & PWPolicy::UseLowercase) || (flags & PWPolicy::UseUppercase) || (flags & PWPolicy::UseDigits) || (flags & PWPolicy::UseSymbols));
+		// HexDigits imples no easyvision or pronounceable
+		if (flags & PWPolicy::UseHexDigits)
+			ASSERT((flags & (PWPolicy::UseEasyVision | PWPolicy::MakePronounceable)) == 0);
+	}
 }

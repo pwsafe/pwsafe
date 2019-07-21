@@ -54,7 +54,7 @@ protected:
   BOOL m_PWEasyVision, m_oldPWEasyVision;
   BOOL m_PWMakePronounceable, m_oldPWMakePronounceable;
   BOOL m_UseNamedPolicy, m_oldUseNamedPolicy;
-  int m_PWDefaultLength, m_oldPWDefaultLength;
+  int m_PWLength, m_oldPWLength;
   int m_PWDigitMinLength, m_oldPWDigitMinLength;
   int m_PWLowerMinLength, m_oldPWLowerMinLength;
   int m_PWSymbolMinLength, m_oldPWSymbolMinLength;
