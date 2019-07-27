@@ -74,7 +74,7 @@ struct PWPolicy {
   PWPolicy &operator=(const PWPolicy &that)
   {
     if (this != &that) {
-		that.Validate();
+      that.Validate();
       flags  = that.flags;
       length = that.length;
       digitminlength  = that.digitminlength;

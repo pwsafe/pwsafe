@@ -13,9 +13,9 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
 
-Bugs Fixed in 3.50pre1
+Bugs Fixed in 3.50pre2
 ======================
-[1494] Prevent invalid password policies from being entered.
+[1494] Improve password policy checks and display.
 
 New Features in 3.49.1
 ======================
