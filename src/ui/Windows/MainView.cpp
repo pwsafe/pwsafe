@@ -5482,6 +5482,10 @@ void DboxMain::SetThreadDpiAwarenessContext()
 	PSBR_DPIAWARE pfcnSetThreadDpiAwarenessContext = PSBR_DPIAWARE(pws_os::GetFunction(m_hUser32, "SetThreadDpiAwarenessContext"));
 	if (!pfcnSetThreadDpiAwarenessContext)
 		return;
-
+#ifdef BR1491_WORKAROUND
+  // This call seems to break the display of graphics on hi resolution monitors
+  // Disabling for now, until someone finds a better fox, or I get a monitor that I can
+  // reproduce the problem with...
 	pfcnSetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+#endif
 }

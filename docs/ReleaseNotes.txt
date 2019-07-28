@@ -16,6 +16,7 @@ The ReleaseNotes.html file has links to the relevant tickets/issues.
 Bugs Fixed in 3.50pre2
 ======================
 [1494] Improve password policy checks and display.
+[1491] Workaround 4K monitor display problem.
 
 New Features in 3.49.1
 ======================
