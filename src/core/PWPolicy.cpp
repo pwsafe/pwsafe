@@ -61,6 +61,7 @@ PWPolicy::PWPolicy(const StringX &str) : usecount(0)
   bool bhex_flag;
   bool bother_flags;
   unsigned int f; // dain bramaged istringstream requires this runaround
+  int total_sublength; // define before any goto to keep pickey compilers happy
 
   if (!(is_flags >> std::hex >> f)) goto fail;
   flags = static_cast<unsigned short>(f);
@@ -76,7 +77,7 @@ PWPolicy::PWPolicy(const StringX &str) : usecount(0)
   // lengths also have restrictions.
   bhex_flag = (flags & PWPolicy::UseHexDigits) != 0;
   bother_flags = (flags & (~PWPolicy::UseHexDigits)) != 0;
-  int total_sublength = (
+  total_sublength = (
     ((flags & PWPolicy::UseLowercase) ? lowerminlength : 0) +
     ((flags & PWPolicy::UseUppercase) ? upperminlength : 0) +
     ((flags & PWPolicy::UseDigits) ? digitminlength : 0) +
