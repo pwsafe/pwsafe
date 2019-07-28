@@ -2621,6 +2621,9 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
         PWSclipboard::GetInstance()->ClearCBData();
       }
     }
+    else {
+      m_guiInfo->Save(this);
+    }
   }
   else{
 #if wxCHECK_VERSION(2,9,5)
