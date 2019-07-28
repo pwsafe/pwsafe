@@ -542,8 +542,6 @@ void PasswordSafeFrame::MinimizeOrHideBeforeAutotyping()
   //       the window will be locked once minimized.
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::MinimizeOnAutotype)) {
-    // Need to save display status for when we return from minimize
-    //m_vGroupDisplayState = GetGroupDisplayState();
     TryIconize();
   } else {
     m_guiInfo->Save(this);
