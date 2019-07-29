@@ -116,7 +116,7 @@ void CryptKeyEntry::OnOk(wxCommandEvent& WXUNUSED(event))
         return;
       }
       else {
-        m_CryptKey = TextCtrlKey1->GetValue();
+        m_CryptKey = std2stringx((TextCtrlKey1->GetValue()).wc_str());
 
         EndModal(wxID_OK);
       }
@@ -132,7 +132,7 @@ void CryptKeyEntry::OnOk(wxCommandEvent& WXUNUSED(event))
         return;
       }
       else {
-        m_CryptKey = TextCtrlKey1->GetValue();
+        m_CryptKey = std2stringx((TextCtrlKey1->GetValue()).wc_str());
 
         EndModal(wxID_OK);
       }

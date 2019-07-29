@@ -77,8 +77,8 @@ CAbout::CAbout( wxWindow* parent, wxWindowID id, const wxString& caption, const 
   Create(parent, id, caption, pos, size, style);
 
   // Print version information on standard output which might be useful for error reports.
-  pws_os::Trace(GetLibWxVersion());
-  pws_os::Trace(GetLibCurlVersion());
+  pws_os::Trace(GetLibWxVersion().wc_str());
+  pws_os::Trace(GetLibCurlVersion().wc_str());
 }
 
 /*!
@@ -556,7 +556,7 @@ void CAbout::CompareVersionData()
   switch (status) {
     case CheckVersion::CheckStatus::CANT_CONNECT:
       *m_VersionStatus << _("Couldn't contact server.");
-      pws_os::Trace(wxString::Format("Server URL: %s", s_URL_VERSION));
+      pws_os::Trace(wxString::Format("Server URL: %s", s_URL_VERSION).wc_str());
       break;
 
     case CheckVersion::CheckStatus::UP2DATE:
@@ -577,7 +577,7 @@ void CAbout::CompareVersionData()
     }
     case CheckVersion::CheckStatus::CANT_READ:
       *m_VersionStatus << _("Could not read server version data.");
-      pws_os::Trace(wxString::Format("parsed version data: \n'%s'\n", latest_xml));
+      pws_os::Trace(wxString::Format("parsed version data: \n'%s'\n", latest_xml).wc_str());
       break;
 
     default:
@@ -673,7 +673,7 @@ size_t CAbout::WriteCallback(char *receivedData, size_t size, size_t bytes, void
  */
 void CAbout::OnDownloadCompleted(wxThreadEvent& event)
 {
-  pws_os::Trace(wxString::Format("Got notification from worker thread. Exit Code = %d ; Result = %s", event.GetInt(), event.GetString()));
+  pws_os::Trace(wxString::Format("Got notification from worker thread. Exit Code = %d ; Result = %s", event.GetInt(), event.GetString()).wc_str());
 
   if (event.GetInt() == 0 /*CURLE_OK*/) {
     CompareVersionData();
@@ -685,7 +685,7 @@ void CAbout::OnDownloadCompleted(wxThreadEvent& event)
     m_VersionStatus->Show();
 
     // Show what we've received so far
-    pws_os::Trace(wxString::Format("received data: \n'%s'\n", s_VersionData));
+    pws_os::Trace(wxString::Format("received data: \n'%s'\n", s_VersionData).wc_str());
 
     // Forget about all the received data in error case
     s_VersionData.Empty();
