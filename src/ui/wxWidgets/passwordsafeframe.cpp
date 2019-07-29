@@ -2568,7 +2568,6 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
       Iconize(false);
     }
     Show(true); //show the grid/tree
-    m_guiInfo->Restore(this);
     Raise();
     // Without this, modal dialogs like msgboxes lose focus and we end up in a different message loop than theirs.
     // See https://sourceforge.net/tracker/?func=detail&aid=3537985&group_id=41019&atid=429579
@@ -2576,7 +2575,6 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
   }
   else if (IsShown()) { /* if it is somehow visible, show it correctly */
     Show(true);
-    m_guiInfo->Restore(this);
   }
 
   CreateMenubar(); // Recreate menubar to replace menu item 'Unlock Safe' by 'Lock Safe'
