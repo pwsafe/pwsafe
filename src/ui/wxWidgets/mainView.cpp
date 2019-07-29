@@ -57,9 +57,16 @@ void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
 void PasswordSafeFrame::OnListViewClick( wxCommandEvent& /* evt */ )
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("list"));
+
+  // Unregister the active view at core to not get notifications anymore
+  m_core.UnregisterObserver(m_tree);
+
   ShowTree(false);
   ShowGrid(true);
   SetViewType(ViewType::GRID);
+
+  // Register view at core as new observer for notifications
+  m_core.RegisterObserver(m_grid);
 }
 
 /*!
@@ -69,9 +76,16 @@ void PasswordSafeFrame::OnListViewClick( wxCommandEvent& /* evt */ )
 void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& /* evt */ )
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("tree"));
+
+  // Unregister the active view at core to not get notifications anymore
+  m_core.UnregisterObserver(m_grid);
+
   ShowGrid(false);
   ShowTree(true);
   SetViewType(ViewType::TREE);
+
+  // Register view at core as new observer for notifications
+  m_core.RegisterObserver(m_tree);
 }
 
 void PasswordSafeFrame::OnExpandAll(wxCommandEvent& /*evt*/)
