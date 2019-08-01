@@ -1236,6 +1236,10 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
     const wxString group = m_groupCtrl->GetValue();
     const StringX password = tostringx(m_PasswordCtrl->GetValue());
 
+    /////////////////////////////////////////////////////////////////////////////
+    // Tab: "Basic"
+    /////////////////////////////////////////////////////////////////////////////
+
     if (m_title.IsEmpty() || password.empty()) {
       GetBookCtrl()->SetSelection(0);
       if (m_title.IsEmpty())
@@ -1257,6 +1261,22 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         msg.ShowModal();
         return;
       }
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    // Tab: "Password Policy"
+    /////////////////////////////////////////////////////////////////////////////
+
+    if (m_UseDatabasePolicyCtrl->GetValue() && (m_cbxPolicyNames->GetValue().IsEmpty())) {
+      wxMessageDialog msg(
+        this,
+        _("Database name must not be empty if a database policy shall be used."),
+        _("Error"),
+        wxOK|wxICON_ERROR
+      );
+
+      msg.ShowModal();
+      return;
     }
 
     switch (m_type) {
