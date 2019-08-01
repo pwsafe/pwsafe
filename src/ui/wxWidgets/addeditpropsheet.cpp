@@ -1411,17 +1411,36 @@ void AddEditPropSheet::OnOk(wxCommandEvent& WXUNUSED(evt))
           m_item.SetAutoType(tostringx(m_autotype));
           m_item.SetRunCommand(tostringx(m_runcmd));
           m_item.SetPWHistory(tostringx(m_PWHistory));
-          wxString polName;
+
           if (m_UseDatabasePolicyCtrl->GetValue()) {
-            polName = m_cbxPolicyNames->GetValue();
+            // User has selected to use a named policy
+            wxString polName = m_cbxPolicyNames->GetValue();
+
+            // The default policy is neither item specific nor stored in the database
             if (polName == _("Default Policy")) {
-              polName = wxEmptyString;
+              // Remove database policy information from item
+              m_item.SetPolicyName(tostringx(wxEmptyString));
+
+              // Remove item specific policy information from item
+              m_item.SetPWPolicy(tostringx(wxEmptyString));
+            }
+            // If it is not the default policy than it's a named policy from the database
+            else {
+              // Use policy that is stored in the database
+              m_item.SetPolicyName(tostringx(polName));
+
+              // Remove item specific policy information from item
+              m_item.SetPWPolicy(tostringx(wxEmptyString));
             }
           }
+          // User has selected to use an item specific policy
           else {
+            // Use the data of the item specific policy collected from the UI
             m_item.SetPWPolicy(pwp);
+
+            // Remove database policy information from item
+            m_item.SetPolicyName(tostringx(wxEmptyString));
           }
-          m_item.SetPolicyName(tostringx(polName));
           m_item.SetDCA(m_DCA);
           m_item.SetShiftDCA(m_ShiftDCA);
           // Check for Group/Username/Title uniqueness
