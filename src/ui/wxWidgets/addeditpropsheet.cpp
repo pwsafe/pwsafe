@@ -1229,7 +1229,7 @@ static short GetSelectedDCA(const wxComboBox *pcbox,
   }
 }
 
-void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
+void AddEditPropSheet::OnOk(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     time_t t;
@@ -1242,22 +1242,33 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
 
     if (m_title.IsEmpty() || password.empty()) {
       GetBookCtrl()->SetSelection(0);
-      if (m_title.IsEmpty())
-        FindWindow(ID_TEXTCTRL_TITLE)->SetFocus();
-      else
-        m_PasswordCtrl->SetFocus();
 
-      wxMessageBox(wxString::Format(wxString(_("This entry must have a %ls")),
-                                    (m_title.IsEmpty() ? _("title"): _("password"))),
-                   _("Error"), wxOK|wxICON_INFORMATION, this);
+      if (m_title.IsEmpty()) {
+        FindWindow(ID_TEXTCTRL_TITLE)->SetFocus();
+      }
+      else {
+        m_PasswordCtrl->SetFocus();
+      }
+
+      wxMessageBox(
+        wxString::Format(
+          wxString(_("This entry must have a %ls")),
+                    (m_title.IsEmpty() ? _("title"): _("password"))),
+          _("Error"), wxOK|wxICON_INFORMATION, this
+      );
       return;
     }
 
     if (m_isPWHidden) { // hidden passwords - compare both values
-      const StringX p2 = tostringx(m_Password2Ctrl->GetValue());
-      if (password != p2) {
-        wxMessageDialog msg(this, _("Passwords do not match"), _("Error"),
-                            wxOK|wxICON_ERROR);
+      const StringX secondPassword = tostringx(m_Password2Ctrl->GetValue());
+
+      if (password != secondPassword) {
+        wxMessageDialog msg(
+          this,
+          _("Passwords do not match"),
+          _("Error"),
+          wxOK|wxICON_ERROR
+        );
         msg.ShowModal();
         return;
       }
@@ -1274,251 +1285,270 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         _("Error"),
         wxOK|wxICON_ERROR
       );
-
       msg.ShowModal();
       return;
     }
 
     switch (m_type) {
-    case SheetType::EDIT: {
-      bool bIsModified, bIsPSWDModified;
-      short lastDCA, lastShiftDCA;
-      const PWSprefs *prefs = PWSprefs::GetInstance();
-      m_item.GetDCA(lastDCA);
-      m_DCA = GetSelectedDCA(m_DCAcomboBox, lastDCA,
-                             short(prefs->GetPref(PWSprefs::DoubleClickAction)));
+      case SheetType::EDIT: {
+        bool bIsModified, bIsPSWDModified;
+        short lastDCA, lastShiftDCA;
+        const PWSprefs *prefs = PWSprefs::GetInstance();
+        m_item.GetDCA(lastDCA);
+        m_DCA = GetSelectedDCA(m_DCAcomboBox, lastDCA,
+                              short(prefs->GetPref(PWSprefs::DoubleClickAction)));
 
-      m_item.GetShiftDCA(lastShiftDCA);
-      m_ShiftDCA = GetSelectedDCA(m_SDCAcomboBox, lastShiftDCA,
-                                  short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
-      // Check if modified
-      int lastXTimeInt;
-      m_item.GetXTimeInt(lastXTimeInt);
-      time_t lastXtime;
-      m_item.GetXTime(lastXtime);
-      // Following ensures that untouched & hidden note
-      // isn't marked as modified. Relies on fact that
-      // Note field can't be modified w/o first getting focus
-      // and that we turn off m_isNotesHidden when that happens.
-      if (m_type != SheetType::ADD && m_isNotesHidden)
-        m_notes = m_item.GetNotes(TCHAR('\n')).c_str();
+        m_item.GetShiftDCA(lastShiftDCA);
+        m_ShiftDCA = GetSelectedDCA(m_SDCAcomboBox, lastShiftDCA,
+                                    short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
+        // Check if modified
+        int lastXTimeInt;
+        m_item.GetXTimeInt(lastXTimeInt);
+        time_t lastXtime;
+        m_item.GetXTime(lastXtime);
+        // Following ensures that untouched & hidden note
+        // isn't marked as modified. Relies on fact that
+        // Note field can't be modified w/o first getting focus
+        // and that we turn off m_isNotesHidden when that happens.
+        if (m_type != SheetType::ADD && m_isNotesHidden)
+          m_notes = m_item.GetNotes(TCHAR('\n')).c_str();
 
-      // Create a new PWHistory string based on settings in this dialog, and compare it
-      // with the PWHistory string from the item being edited, to see if the user modified it.
-      // Note that we are not erasing the history here, even if the user has chosen to not
-      // track PWHistory.  So there could be some password entries in the history
-      // but the first byte could be zero, meaning we are not tracking it _FROM_NOW_.
-      // Clearing the history is something the user must do himself with the "Clear History" button
+        // Create a new PWHistory string based on settings in this dialog, and compare it
+        // with the PWHistory string from the item being edited, to see if the user modified it.
+        // Note that we are not erasing the history here, even if the user has chosen to not
+        // track PWHistory.  So there could be some password entries in the history
+        // but the first byte could be zero, meaning we are not tracking it _FROM_NOW_.
+        // Clearing the history is something the user must do himself with the "Clear History" button
 
-      // First, Get a list of all password history entries
-      size_t pwh_max, num_err;
-      PWHistList pwhl;
-      (void)CreatePWHistoryList(tostringx(m_PWHistory), pwh_max, num_err,
-                                pwhl, PWSUtil::TMC_LOCALE);
+        // First, Get a list of all password history entries
+        size_t pwh_max, num_err;
+        PWHistList pwhl;
+        (void)CreatePWHistoryList(tostringx(m_PWHistory), pwh_max, num_err,
+                                  pwhl, PWSUtil::TMC_LOCALE);
 
-      // Create a new PWHistory header, as per settings in this dialog
-      size_t numEntries = std::min(pwhl.size(), static_cast<size_t>(m_maxPWHist));
-      m_PWHistory = towxstring(MakePWHistoryHeader(m_keepPWHist, m_maxPWHist, numEntries));
-      //reverse-sort the history entries to retain only the newest
-      std::sort(pwhl.begin(), pwhl.end(), newer());
-      // Now add all the existing history entries, up to a max of what the user wants to track
-      // This code is from CItemData::UpdatePasswordHistory()
-      PWHistList::iterator iter;
-      for (iter = pwhl.begin(); iter != pwhl.end() && numEntries > 0; iter++, numEntries--) {
-        StringX buffer;
-        Format(buffer, _T("%08x%04x%ls"),
-               static_cast<long>(iter->changetttdate), iter->password.length(),
-               iter->password.c_str());
-        m_PWHistory += towxstring(buffer);
-      }
-
-      wxASSERT_MSG(numEntries ==0, wxT("Could not save existing password history entries"));
-
-      PWPolicy oldPWP, pwp;
-      // get item's effective policy:
-      const StringX oldPolName = m_item.GetPolicyName();
-      if (oldPolName.empty()) { // either item-specific or default:
-        if (m_item.GetPWPolicy().empty())
-          oldPWP = PWSprefs::GetInstance()->GetDefaultPolicy();
-        else
-          m_item.GetPWPolicy(oldPWP);
-      } else {
-        m_core.GetPolicyFromName(oldPolName, oldPWP);
-      }
-      // now get dbox's effective policy:
-      pwp = GetSelectedPWPolicy();
-
-      bIsModified = (group        != m_item.GetGroup().c_str()       ||
-                     m_title      != m_item.GetTitle().c_str()       ||
-                     m_user       != m_item.GetUser().c_str()        ||
-                     m_notes      != m_item.GetNotes(TCHAR('\n')).c_str()       ||
-                     m_url        != m_item.GetURL().c_str()         ||
-                     m_email      != m_item.GetEmail().c_str()       ||
-                     m_autotype   != m_item.GetAutoType().c_str()    ||
-                     m_runcmd     != m_item.GetRunCommand().c_str()  ||
-                     m_DCA        != lastDCA                         ||
-                     m_ShiftDCA   != lastShiftDCA                    ||
-                     m_PWHistory  != m_item.GetPWHistory().c_str()   ||
-                     m_tttXTime   != lastXtime                       ||
-                     m_XTimeInt   != lastXTimeInt                    ||
-                     m_symbols    != m_item.GetSymbols().c_str()     ||
-                     oldPWP       != pwp);
-
-
-        if (!m_item.IsAlias()) {
-          bIsPSWDModified = (password != m_item.GetPassword());
+        // Create a new PWHistory header, as per settings in this dialog
+        size_t numEntries = std::min(pwhl.size(), static_cast<size_t>(m_maxPWHist));
+        m_PWHistory = towxstring(MakePWHistoryHeader(m_keepPWHist, m_maxPWHist, numEntries));
+        //reverse-sort the history entries to retain only the newest
+        std::sort(pwhl.begin(), pwhl.end(), newer());
+        // Now add all the existing history entries, up to a max of what the user wants to track
+        // This code is from CItemData::UpdatePasswordHistory()
+        PWHistList::iterator iter;
+        for (iter = pwhl.begin(); iter != pwhl.end() && numEntries > 0; iter++, numEntries--) {
+          StringX buffer;
+          Format(buffer, _T("%08x%04x%ls"),
+                static_cast<long>(iter->changetttdate), iter->password.length(),
+                iter->password.c_str());
+          m_PWHistory += towxstring(buffer);
         }
-        else {
-          // Update password to alias form
-          // Show text stating that it is an alias
-          const CItemData *pbci = m_core.GetBaseEntry(&m_item);
-          ASSERT(pbci);
-          if (pbci) {
-            StringX alias = L"[" +
-                pbci->GetGroup() + L":" +
-                pbci->GetTitle() + L":" +
-                pbci->GetUser()  + L"]";
-            bIsPSWDModified = (password != alias);
+
+        wxASSERT_MSG(numEntries ==0, wxT("Could not save existing password history entries"));
+
+        PWPolicy oldPWP, pwp;
+        // get item's effective policy:
+        const StringX oldPolName = m_item.GetPolicyName();
+        if (oldPolName.empty()) { // either item-specific or default:
+          if (m_item.GetPWPolicy().empty()) {
+            oldPWP = PWSprefs::GetInstance()->GetDefaultPolicy();
           }
           else {
-            bIsPSWDModified = true;
+            m_item.GetPWPolicy(oldPWP);
           }
         }
+        else {
+          m_core.GetPolicyFromName(oldPolName, oldPWP);
+        }
+        // now get dbox's effective policy:
+        pwp = GetSelectedPWPolicy();
 
-      if (bIsModified) {
-        // Just modify all - even though only 1 may have actually been modified
+        bIsModified = (group       != m_item.GetGroup().c_str()       ||
+                      m_title      != m_item.GetTitle().c_str()       ||
+                      m_user       != m_item.GetUser().c_str()        ||
+                      m_notes      != m_item.GetNotes(TCHAR('\n')).c_str()       ||
+                      m_url        != m_item.GetURL().c_str()         ||
+                      m_email      != m_item.GetEmail().c_str()       ||
+                      m_autotype   != m_item.GetAutoType().c_str()    ||
+                      m_runcmd     != m_item.GetRunCommand().c_str()  ||
+                      m_DCA        != lastDCA                         ||
+                      m_ShiftDCA   != lastShiftDCA                    ||
+                      m_PWHistory  != m_item.GetPWHistory().c_str()   ||
+                      m_tttXTime   != lastXtime                       ||
+                      m_XTimeInt   != lastXTimeInt                    ||
+                      m_symbols    != m_item.GetSymbols().c_str()     ||
+                      oldPWP       != pwp);
+
+
+          if (!m_item.IsAlias()) {
+            bIsPSWDModified = (password != m_item.GetPassword());
+          }
+          else {
+            // Update password to alias form
+            // Show text stating that it is an alias
+            const CItemData *pbci = m_core.GetBaseEntry(&m_item);
+            ASSERT(pbci);
+            if (pbci) {
+              StringX alias = L"[" +
+                  pbci->GetGroup() + L":" +
+                  pbci->GetTitle() + L":" +
+                  pbci->GetUser()  + L"]";
+              bIsPSWDModified = (password != alias);
+            }
+            else {
+              bIsPSWDModified = true;
+            }
+          }
+
+        if (bIsModified) {
+          // Just modify all - even though only 1 may have actually been modified
+          m_item.SetGroup(tostringx(group));
+          m_item.SetTitle(tostringx(m_title));
+          m_item.SetUser(m_user.empty() ?
+                        PWSprefs::GetInstance()->
+                        GetPref(PWSprefs::DefaultUsername).c_str() : m_user.c_str());
+          m_item.SetNotes(tostringx(m_notes));
+          m_item.SetURL(tostringx(m_url));
+          m_item.SetEmail(tostringx(m_email));
+          m_item.SetAutoType(tostringx(m_autotype));
+          m_item.SetRunCommand(tostringx(m_runcmd));
+          m_item.SetPWHistory(tostringx(m_PWHistory));
+          wxString polName;
+          if (m_UseDatabasePolicyCtrl->GetValue()) {
+            polName = m_cbxPolicyNames->GetValue();
+            if (polName == _("Default Policy")) {
+              polName = wxEmptyString;
+            }
+          }
+          else {
+            m_item.SetPWPolicy(pwp);
+          }
+          m_item.SetPolicyName(tostringx(polName));
+          m_item.SetDCA(m_DCA);
+          m_item.SetShiftDCA(m_ShiftDCA);
+          // Check for Group/Username/Title uniqueness
+          auto listindex = m_core.Find(m_item.GetGroup(), m_item.GetTitle(), m_item.GetUser());
+          if (listindex != m_core.GetEntryEndIter()) {
+            auto listItem = m_core.GetEntry(listindex);
+            if (listItem.GetUUID() != m_item.GetUUID()) {
+              wxMessageDialog msg(
+                this,
+                _("An entry or shortcut with the same Group, Title and Username already exists."),
+                _("Error"),
+                wxOK|wxICON_ERROR
+              );
+              msg.ShowModal();
+              return;
+            }
+          }
+        } // bIsModified
+
+        time(&t);
+        if (bIsPSWDModified) {
+          m_item.UpdatePassword(password);
+          m_item.SetPMTime(t);
+        }
+        if (bIsModified || bIsPSWDModified) {
+          m_item.SetRMTime(t);
+        }
+        if (m_tttXTime != lastXtime) {
+          m_item.SetXTime(m_tttXTime);
+        }
+        if (m_Recurring) {
+          if (m_XTimeInt != lastXTimeInt) {
+            m_item.SetXTimeInt(m_XTimeInt);
+          }
+        } else {
+          m_item.SetXTimeInt(0);
+        }
+        // All fields in m_item now reflect user's edits
+        // Let's update the core's data
+        uuid_array_t uuid;
+        m_item.GetUUID(uuid);
+        auto listpos = m_core.Find(uuid);
+        ASSERT(listpos != m_core.GetEntryEndIter());
+        m_core.Execute(EditEntryCommand::Create(&m_core,
+                                                m_core.GetEntry(listpos),
+                                                m_item));
+      }
+      break;
+      case SheetType::ADD: {
         m_item.SetGroup(tostringx(group));
         m_item.SetTitle(tostringx(m_title));
         m_item.SetUser(m_user.empty() ?
-                       PWSprefs::GetInstance()->
-                       GetPref(PWSprefs::DefaultUsername).c_str() : m_user.c_str());
+                      PWSprefs::GetInstance()->
+                        GetPref(PWSprefs::DefaultUsername).c_str() : m_user.c_str());
+        // Check for Group/Username/Title uniqueness
+        if (m_core.Find(m_item.GetGroup(), m_item.GetTitle(), m_item.GetUser()) !=
+            m_core.GetEntryEndIter()) {
+          wxMessageDialog msg(
+            this,
+            _("An entry or shortcut with the same Group, Title and Username already exists."),
+            _("Error"),
+            wxOK|wxICON_ERROR
+          );
+          msg.ShowModal();
+          return;
+        }
         m_item.SetNotes(tostringx(m_notes));
         m_item.SetURL(tostringx(m_url));
         m_item.SetEmail(tostringx(m_email));
+        m_item.SetPassword(password);
         m_item.SetAutoType(tostringx(m_autotype));
         m_item.SetRunCommand(tostringx(m_runcmd));
-        m_item.SetPWHistory(tostringx(m_PWHistory));
-        wxString polName;
-        if (m_UseDatabasePolicyCtrl->GetValue()) {
-          polName = m_cbxPolicyNames->GetValue();
-          if (polName == _("Default Policy"))
-            polName = wxEmptyString;
-        } else {
-          m_item.SetPWPolicy(pwp);
-        }
-        m_item.SetPolicyName(tostringx(polName));
         m_item.SetDCA(m_DCA);
         m_item.SetShiftDCA(m_ShiftDCA);
-        // Check for Group/Username/Title uniqueness
-        auto listindex = m_core.Find(m_item.GetGroup(), m_item.GetTitle(), m_item.GetUser());
-        if (listindex != m_core.GetEntryEndIter()) {
-          auto listItem = m_core.GetEntry(listindex);
-          if (listItem.GetUUID() != m_item.GetUUID()) {
-            wxMessageDialog msg(this,
-                                _("An entry or shortcut with the same Group, Title and Username already exists."),
-                                _("Error"), wxOK|wxICON_ERROR);
-            msg.ShowModal();
-            return;
+        time(&t);
+        m_item.SetCTime(t);
+        if (m_keepPWHist) {
+          m_item.SetPWHistory(MakePWHistoryHeader(true, m_maxPWHist, 0));
+        }
+        m_item.SetXTime(m_tttXTime);
+        if (m_XTimeInt > 0 && m_XTimeInt <= 3650) {
+          m_item.SetXTimeInt(m_XTimeInt);
+        }
+        if (!m_UseDatabasePolicyCtrl->GetValue()) {
+          m_item.SetPWPolicy(GetPWPolicyFromUI());
+        }
+  #ifdef NOTYET
+        if (m_AEMD.ibasedata > 0) {
+          // Password in alias format AND base entry exists
+          // No need to check if base is an alias as already done in
+          // call to PWScore::ParseBaseEntryPWD
+          uuid_array_t alias_uuid;
+          m_item.GetUUID(alias_uuid);
+          m_AEMD.pcore->AddDependentEntry(m_AEMD.base_uuid, alias_uuid, CItemData::ET_ALIAS);
+          m_item.SetPassword(_T("[Alias]"));
+          m_item.SetAlias();
+          ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
+          if (iter != m_AEMD.pDbx->End()) {
+            const CItemData &cibase = iter->second;
+            DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+            int nImage = m_AEMD.pDbx->GetEntryImage(cibase);
+            m_AEMD.pDbx->SetEntryImage(di->list_index, nImage, true);
+            m_AEMD.pDbx->SetEntryImage(di->tree_item, nImage, true);
           }
         }
-      } // bIsModified
-
-      time(&t);
-      if (bIsPSWDModified) {
-        m_item.UpdatePassword(password);
-        m_item.SetPMTime(t);
-      }
-      if (bIsModified || bIsPSWDModified)
-        m_item.SetRMTime(t);
-      if (m_tttXTime != lastXtime)
-        m_item.SetXTime(m_tttXTime);
-      if (m_Recurring) {
-      if (m_XTimeInt != lastXTimeInt)
-        m_item.SetXTimeInt(m_XTimeInt);
-      } else
-        m_item.SetXTimeInt(0);
-      // All fields in m_item now reflect user's edits
-      // Let's update the core's data
-      uuid_array_t uuid;
-      m_item.GetUUID(uuid);
-      auto listpos = m_core.Find(uuid);
-      ASSERT(listpos != m_core.GetEntryEndIter());
-      m_core.Execute(EditEntryCommand::Create(&m_core,
-                                              m_core.GetEntry(listpos),
-                                              m_item));
-    }
-      break;
-
-    case SheetType::ADD:
-      m_item.SetGroup(tostringx(group));
-      m_item.SetTitle(tostringx(m_title));
-      m_item.SetUser(m_user.empty() ?
-                     PWSprefs::GetInstance()->
-                      GetPref(PWSprefs::DefaultUsername).c_str() : m_user.c_str());
-      // Check for Group/Username/Title uniqueness
-      if (m_core.Find(m_item.GetGroup(), m_item.GetTitle(), m_item.GetUser()) !=
-          m_core.GetEntryEndIter()) {
-        wxMessageDialog msg(this,
-                            _("An entry or shortcut with the same Group, Title and Username already exists."),
-                            _("Error"), wxOK|wxICON_ERROR);
-        msg.ShowModal();
-        return;
-      }
-      m_item.SetNotes(tostringx(m_notes));
-      m_item.SetURL(tostringx(m_url));
-      m_item.SetEmail(tostringx(m_email));
-      m_item.SetPassword(password);
-      m_item.SetAutoType(tostringx(m_autotype));
-      m_item.SetRunCommand(tostringx(m_runcmd));
-      m_item.SetDCA(m_DCA);
-      m_item.SetShiftDCA(m_ShiftDCA);
-      time(&t);
-      m_item.SetCTime(t);
-      if (m_keepPWHist)
-        m_item.SetPWHistory(MakePWHistoryHeader(true, m_maxPWHist, 0));
-
-      m_item.SetXTime(m_tttXTime);
-      if (m_XTimeInt > 0 && m_XTimeInt <= 3650)
-        m_item.SetXTimeInt(m_XTimeInt);
-      if (!m_UseDatabasePolicyCtrl->GetValue())
-        m_item.SetPWPolicy(GetPWPolicyFromUI());
-
-#ifdef NOTYET
-      if (m_AEMD.ibasedata > 0) {
-        // Password in alias format AND base entry exists
-        // No need to check if base is an alias as already done in
-        // call to PWScore::ParseBaseEntryPWD
-        uuid_array_t alias_uuid;
-        m_item.GetUUID(alias_uuid);
-        m_AEMD.pcore->AddDependentEntry(m_AEMD.base_uuid, alias_uuid, CItemData::ET_ALIAS);
-        m_item.SetPassword(_T("[Alias]"));
-        m_item.SetAlias();
-        ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
-        if (iter != m_AEMD.pDbx->End()) {
-          const CItemData &cibase = iter->second;
-          DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-          int nImage = m_AEMD.pDbx->GetEntryImage(cibase);
-          m_AEMD.pDbx->SetEntryImage(di->list_index, nImage, true);
-          m_AEMD.pDbx->SetEntryImage(di->tree_item, nImage, true);
+        else {
+          m_item.SetPassword(m_AEMD.realpassword);
+          m_item.SetNormal();
         }
-      } else {
-        m_item.SetPassword(m_AEMD.realpassword);
-        m_item.SetNormal();
-      }
-#endif
-      if (m_item.IsAlias()) {
-        m_item.SetXTime((time_t)0);
-        m_item.SetPWPolicy(wxEmptyString);
-      } else {
-        m_item.SetXTime(m_tttXTime);
+  #endif
+        if (m_item.IsAlias()) {
+          m_item.SetXTime((time_t)0);
+          m_item.SetPWPolicy(wxEmptyString);
+        }
+        else {
+          m_item.SetXTime(m_tttXTime);
+        }
       }
       break;
-    case SheetType::VIEW:
-      // No Update
+      case SheetType::VIEW: {
+        // No Update
+      }
       break;
-    default:
-      ASSERT(0);
-      break;
+      default: {
+        ASSERT(0);
+        break;
+      }
     }
     EndModal(wxID_OK);
   }
