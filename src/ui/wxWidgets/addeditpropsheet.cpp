@@ -1091,21 +1091,21 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   ASSERT(!(namedPwPolicy && specificPwPolicy)); // both cannot be true!
   m_UseDatabasePolicyCtrl->SetValue(!specificPwPolicy);
 
-  if (specificPwPolicy) {
+  if (specificPwPolicy) { /* item specific policy */
     m_item.GetPWPolicy(policy);
     policy.symbols = m_item.GetSymbols().c_str();
-    if (!policy.symbols.empty())
+    if (!policy.symbols.empty()) {
       m_symbols = policy.symbols.c_str();
-  } else { // no item-specific policy, either default or named
-    // Select item's named policy, or Default
-    const wxString itemPolName = m_item.GetPolicyName().c_str();
-    if (!itemPolName.IsEmpty()) {
-      m_cbxPolicyNames->SetValue(itemPolName);
-      m_core.GetPolicyFromName(tostringx(itemPolName), policy);
-    } else {
-      m_cbxPolicyNames->SetValue(_("Default Policy"));
-      policy = prefs->GetDefaultPolicy();
     }
+  }
+  else if (namedPwPolicy) { /* named policy */
+    const wxString itemPolName = m_item.GetPolicyName().c_str();
+    m_cbxPolicyNames->SetValue(itemPolName);
+    m_core.GetPolicyFromName(tostringx(itemPolName), policy);
+  }
+  else { /* default policy */
+    m_cbxPolicyNames->SetValue(_("Default Policy"));
+    policy = prefs->GetDefaultPolicy();
   }
   UpdatePWPolicyControls(policy);
   EnablePWPolicyControls(specificPwPolicy);
