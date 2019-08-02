@@ -267,7 +267,7 @@ PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
   m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
   m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
 {
-    Init();
+  Init();
 }
 
 PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
@@ -280,11 +280,25 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
     m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
     m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
 {
-    Init();
-    m_currentView = (PWSprefs::GetInstance()->GetPref(PWSprefs::LastView) == _T("list")) ? ViewType::GRID : ViewType::TREE;
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
-      style |= wxSTAY_ON_TOP;
-    Create( parent, id, caption, pos, size, style );
+  Init();
+
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
+    style |= wxSTAY_ON_TOP;
+  }
+
+  Create( parent, id, caption, pos, size, style );
+
+  RegisterLanguageMenuItems();
+
+  // Register all observers for notifications at the core
+  m_core.RegisterObserver(this);
+
+  if (IsTreeView()) {
+    m_core.RegisterObserver(m_tree);
+  }
+  else {
+    m_core.RegisterObserver(m_grid);
+  }
 }
 
 /*!
@@ -360,7 +374,7 @@ PasswordSafeFrame::~PasswordSafeFrame()
 
 void PasswordSafeFrame::Init()
 {
-  m_core.RegisterObserver(this);
+  m_currentView = (PWSprefs::GetInstance()->GetPref(PWSprefs::LastView) == _T("list")) ? ViewType::GRID : ViewType::TREE;
 
   m_RUEList.SetMax(PWSprefs::GetInstance()->PWSprefs::MaxREItems);
 ////@begin PasswordSafeFrame member initialisation
@@ -368,7 +382,6 @@ void PasswordSafeFrame::Init()
   m_tree = nullptr;
   m_statusBar = nullptr;
 ////@end PasswordSafeFrame member initialisation
-  RegisterLanguageMenuItems();
 }
 
 /**
@@ -886,15 +899,9 @@ void PasswordSafeFrame::ShowGrid(bool show)
     m_grid->UpdateSorting();
 
     m_guiInfo->RestoreGridViewInfo(m_grid);
-
-    // Register view at core as new observer for notifications
-    m_core.RegisterObserver(m_grid);
   }
   else {
     m_guiInfo->SaveGridViewInfo(m_grid);
-
-    // Unregister the active view at core to not get notifications anymore
-    m_core.UnregisterObserver(m_grid);
   }
 
   m_grid->Show(show);
@@ -948,15 +955,9 @@ void PasswordSafeFrame::ShowTree(bool show)
     else {
       m_guiInfo->RestoreTreeViewInfo(m_tree);
     }
-
-    // Register view at core as new observer for notifications
-    m_core.RegisterObserver(m_tree);
   }
   else {
     m_guiInfo->SaveTreeViewInfo(m_tree);
-
-    // Unregister the active view at core to not get notifications anymore
-    m_core.UnregisterObserver(m_tree);
   }
 
   m_tree->Show(show);
@@ -1759,13 +1760,12 @@ void PasswordSafeFrame::OnEditBase(wxCommandEvent& /*evt*/)
 
 void PasswordSafeFrame::SelectItem(const CUUID& uuid)
 {
-    if (m_currentView == ViewType::GRID) {
+    if (IsGridView()) {
       m_grid->SelectItem(uuid);
     }
     else {
       m_tree->SelectItem(uuid);
     }
-
 }
 
 void PasswordSafeFrame::SaveSettings(void) const
@@ -1983,10 +1983,12 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
       itemEditMenu.Delete(ID_RUNCOMMAND);
     }
 
-    if ( m_currentView == ViewType::TREE )
+    if (IsTreeView()) {
       m_tree->PopupMenu(&itemEditMenu);
-    else
+    }
+    else {
       m_grid->PopupMenu(&itemEditMenu);
+    }
   }
 }
 
@@ -2568,7 +2570,6 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
       Iconize(false);
     }
     Show(true); //show the grid/tree
-    m_guiInfo->Restore(this);
     Raise();
     // Without this, modal dialogs like msgboxes lose focus and we end up in a different message loop than theirs.
     // See https://sourceforge.net/tracker/?func=detail&aid=3537985&group_id=41019&atid=429579
@@ -2576,7 +2577,6 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
   }
   else if (IsShown()) { /* if it is somehow visible, show it correctly */
     Show(true);
-    m_guiInfo->Restore(this);
   }
 
   CreateMenubar(); // Recreate menubar to replace menu item 'Unlock Safe' by 'Lock Safe'
@@ -2620,6 +2620,9 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
         PWSclipboard::GetInstance()->ClearCBData();
       }
+    }
+    else {
+      m_guiInfo->Save(this);
     }
   }
   else{
