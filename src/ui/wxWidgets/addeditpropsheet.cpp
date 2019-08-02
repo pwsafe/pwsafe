@@ -238,30 +238,39 @@ void AddEditPropSheet::Init()
 ////@end AddEditPropSheet member initialisation
 }
 
-// class PolicyValidator : public MultiCheckboxValidator
-// {
-// public:
-//   PolicyValidator(int rbID, int ids[], size_t num,
-//       const wxString& msg, const wxString& title)
-//     : MultiCheckboxValidator(ids, num, msg, title), m_rbID(rbID) {}
-//   PolicyValidator(const PolicyValidator &other)
-//     : MultiCheckboxValidator(other), m_rbID(other.m_rbID) {}
-//   ~PolicyValidator() {}
+#if 0
+/*
+  This class is currently unused, but it should be easy to incorporate into the Policy checks.
+  Validate() works as follows:
+  return true if (specified radio button is enabled AND set) OR at least one of the specified checkboxes are selected OR all checkboxes are disabled
 
-//   wxObject* Clone() const {return new PolicyValidator(m_rbID, m_ids, m_count, m_msg, m_title);}
-//   bool Validate(wxWindow* parent) {
-//     wxWindow* win = GetWindow()->FindWindow(m_rbID);
-//     if (win && win->IsEnabled()) {
-//       wxRadioButton* rb = wxDynamicCast(win, wxRadioButton);
-//       if (rb && rb->GetValue()) {
-//   return true;
-//       }
-//     }
-//     return MultiCheckboxValidator::Validate(parent);
-//   }
-// private:
-//   int m_rbID;
-// };
+  If we decide this is useless, then MultiCheckboxValidator in wxutil.{cpp.h} should be removed as well.
+*/
+class PolicyValidator : public MultiCheckboxValidator
+{
+public:
+  PolicyValidator(int rbID, int ids[], size_t num,
+      const wxString& msg, const wxString& title)
+    : MultiCheckboxValidator(ids, num, msg, title), m_rbID(rbID) {}
+  PolicyValidator(const PolicyValidator &other)
+    : MultiCheckboxValidator(other), m_rbID(other.m_rbID) {}
+  ~PolicyValidator() {}
+
+  wxObject* Clone() const {return new PolicyValidator(m_rbID, m_ids, m_count, m_msg, m_title);}
+  bool Validate(wxWindow* parent) {
+    wxWindow* win = GetWindow()->FindWindow(m_rbID);
+    if (win && win->IsEnabled()) {
+      wxRadioButton* rb = wxDynamicCast(win, wxRadioButton);
+      if (rb && rb->GetValue()) {
+        return true;
+      }
+    }
+    return MultiCheckboxValidator::Validate(parent);
+  }
+private:
+  int m_rbID;
+};
+#endif /* 0 */
 
 static void setupDCAStrings(wxArrayString &as)
 {
