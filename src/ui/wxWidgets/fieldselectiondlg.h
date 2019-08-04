@@ -14,6 +14,9 @@
  * A dialog class to let the user select multiple CItemData::FieldType items
  */
 
+#ifndef _FIELDSELECTIONDLG_H_
+#define _FIELDSELECTIONDLG_H_
+
 #include <wx/dialog.h>
 
 #include "./fieldselectionpanel.h"
@@ -38,3 +41,5 @@ public:
   void OnInitDialog(wxInitDialogEvent& evt);
   void OnRelayoutDlg(wxCommandEvent& evt);  
 };
+
+#endif // _FIELDSELECTIONDLG_H_

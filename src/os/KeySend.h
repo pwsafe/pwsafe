@@ -14,6 +14,9 @@
 // Linux implementation by sauravg
 //-----------------------------------------------------------------------------
 
+#ifndef _KEYSEND_H_
+#define _KEYSEND_H_
+
 #include "typedefs.h"
 #include "../core/StringX.h"
 
@@ -65,3 +68,5 @@ private:
   unsigned m_delayMS; //delay between keystrokes in milliseconds
   CKeySendImpl *m_impl;
 };
+
+#endif // _KEYSEND_H_
