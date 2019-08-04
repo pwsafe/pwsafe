@@ -72,6 +72,9 @@
  * listed above
  */
 
+#ifndef _SYSTEMTRAYMENUID_H_
+#define _SYSTEMTRAYMENUID_H_
+
 #include "../../os/typedefs.h"
 
 enum { MIN_RUE_COMMAND_ID = 256, MAX_RUE_COMMAND_ID = 4095 };
@@ -137,3 +140,5 @@ inline int GetFrameCommandId(RUEOperation opn) {
   wxASSERT(opn > 0 && size_t(opn) <= NumberOf(frameCommands));
   return frameCommands[opn-1];
 }
+
+#endif // _SYSTEMTRAYMENUID_H_
