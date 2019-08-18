@@ -14,6 +14,9 @@
  * A dialog class to display a QR code. The dialog closes automatically for security reasons.
  */
 
+#ifndef _PWSQRCODEDLG_H_
+#define _PWSQRCODEDLG_H_
+
 #include <wx/dialog.h>
 #include <wx/timer.h>
 #include <wx/stattext.h>
@@ -59,3 +62,4 @@ constexpr bool HasQRCode() {
 #endif
 }
 
+#endif // _PWSQRCODEDLG_H_
