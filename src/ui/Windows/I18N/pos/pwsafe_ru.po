@@ -651,7 +651,7 @@ msgstr "&Очистить историю"
 
 #. Resource IDs: (32008 - MenuEx)
 msgid "&Clear Recent Safe List"
-msgstr "О&чистить список ранее использованных контейнеров"
+msgstr "О&чистить список недавних контейнеров"
 
 #. Resource IDs: (5606)
 msgid "&Clear current"
@@ -692,7 +692,7 @@ msgstr "&Удалить группу"
 
 #. Resource IDs: (5302)
 msgid "&Delete from Recent Entry List"
-msgstr "&Удалить из списка ранее использованных"
+msgstr "&Удалить из списка недавних"
 
 #. Resource IDs: (1015, 1038)
 msgid "&Don't ask me again"
@@ -905,11 +905,11 @@ msgstr "&Защитить все элементы"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Recent Entries History"
-msgstr "&Недавно использованные элементы"
+msgstr "&Недавние элементы"
 
 #. Resource IDs: (5217)
 msgid "&Recent Safes"
-msgstr "&Недавно использованные контейнеры"
+msgstr "&Недавние контейнеры"
 
 #. Resource IDs: (32111 - MenuEx)
 msgid "&Refresh"
@@ -2133,7 +2133,7 @@ msgstr "Очистить"
 
 #. Resource IDs: (6032)
 msgid "Clear Recent Safe list"
-msgstr "Очистить список ранее использованных контейнеров"
+msgstr "Очистить список недавних контейнеров"
 
 #. Resource IDs: (1062)
 msgid "Clear clipboard upon exit"
@@ -5475,7 +5475,7 @@ msgstr "Подтверждаете удаление %s фильтра %s?"
 
 #. Resource IDs: (6033)
 msgid "Please confirm that you wish to clear the recent Safe list."
-msgstr "Подтвердите очистку списка ранее использованных контейнеров."
+msgstr "Подтвердите очистку списка недавних контейнеров."
 
 #. Resource IDs: (5287)
 msgid "Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n\n"
@@ -5729,15 +5729,15 @@ msgstr "Чтение/запись"
 
 #. Resource IDs: (5216)
 msgid "Recent"
-msgstr "Недавно использованные"
+msgstr "Недавние"
 
 #. Resource IDs: (1096)
 msgid "Recent Databases on File Menu rather than as a sub-menu."
-msgstr "Отображать недавно использованные контейнеры в меню Файл, а не в подменю"
+msgstr "Отображать недавние контейнеры в меню Файл, а не в подменю"
 
 #. Resource IDs: (1095)
 msgid "Recent PasswordSafe Databases"
-msgstr "Недавно использованные контейнеры"
+msgstr "Недавние контейнеры"
 
 #. Resource IDs: (3012)
 msgid "Record Modified Time"
@@ -8089,7 +8089,7 @@ msgstr "\nСохранить контейнер"
 msgid "\nSave Database As..."
 msgstr "\nСохранить контейнер как..."
 
-# Переход к элементу из контекстного меню недавно использованных
+# Переход к элементу из контекстного меню недавних
 #. Resource IDs: (32255)
 msgid "\nSelect Entry"
 msgstr "Перейти к элементу"
