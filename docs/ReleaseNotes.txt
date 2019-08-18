@@ -15,6 +15,7 @@ The ReleaseNotes.html file has links to the relevant tickets/issues.
 
 Bugs Fixed in 3.50pre2
 ======================
+[1496] Easy-to-use password policies now enforces symbol constraint.
 [1494] Improve password policy checks and display.
 [1491] Workaround 4K monitor display problem.
 

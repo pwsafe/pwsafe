@@ -549,6 +549,8 @@ void CPasswordPolicyDlg::SetPolicyData(CString &cs_policyname,
   m_PWSymbolMinLength = m_oldPWSymbolMinLength = xst_pp.symbolminlength;
   m_PWUpperMinLength = m_oldPWUpperMinLength = xst_pp.upperminlength;
 
+  do_reset_symbols(false); // BR1496 - if symbols were set; this will be overridden below:
+
   CString cs_symbols = xst_pp.symbols.c_str();
   if (m_PWUseSymbols &&!cs_symbols.IsEmpty())
     m_Symbols = m_oldSymbols = cs_symbols;
@@ -1162,6 +1164,7 @@ void CPasswordPolicyDlg::do_reset_symbols(bool restore_defaults)
   }
 
   m_SymbolsEdit.SetValidSym(st_symbols);
-  m_SymbolsEdit.SetWindowText(st_symbols.c_str());
+  if (::IsWindow(m_SymbolsEdit.m_hWnd))
+    m_SymbolsEdit.SetWindowText(st_symbols.c_str());
   m_Symbols = st_symbols.c_str();
 }
