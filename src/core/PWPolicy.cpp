@@ -232,12 +232,13 @@ void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
   nPos++;
 
   LoadAString(col1, IDSC_PPRONOUNCEABLE);
+  col2 = bPR ? yes : no;
   if (bPR && ((lowerminlength > 0) || (upperminlength > 0) || (digitminlength > 0) || (symbolminlength > 0))) {
     stringT note;
     LoadAString(note, IDSC_ATLEASTIGNORED);
     col2 += note;
   }
-  rp(nPos, col1, bPR ? yes : no, table);
+  rp(nPos, col1, col2, table);
   nPos++;
 
   LoadAString(col1, IDSC_PHEXADECIMAL);
@@ -304,7 +305,7 @@ void PWPolicy::Validate() const
 	ASSERT(length >= total_sublength);
 	if (length != 0) {// if length != 0 we assume the policy isn't empty, and so the following must hold:
 		// At least one set of characters is specified
-		ASSERT((flags & PWPolicy::UseLowercase) || (flags & PWPolicy::UseUppercase) || (flags & PWPolicy::UseDigits) || (flags & PWPolicy::UseSymbols));
+		ASSERT((flags & PWPolicy::UseLowercase) || (flags & PWPolicy::UseUppercase) || (flags & PWPolicy::UseDigits) || (flags & PWPolicy::UseSymbols) || (flags & PWPolicy::UseHexDigits));
 		// HexDigits imples no easyvision or pronounceable
 		if (flags & PWPolicy::UseHexDigits)
 			ASSERT((flags & (PWPolicy::UseEasyVision | PWPolicy::MakePronounceable)) == 0);
