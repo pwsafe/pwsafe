@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.1.5_3_10485" segtype="sentence" srclang="EN-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="4.2.0_0_10666" segtype="sentence" srclang="EN-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -12843,8 +12843,8 @@
       <tuv lang="EN-US">
         <seg>Password generation policy - use Easy-Vision characters so that one character isn't mistaken for another e.g. number 0 (zero) and letter O (capital O) etc.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110621T175016Z">
-        <seg>Политика создания паролей: использовать только легкоотличимые символы</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T163905Z">
+        <seg>Политика создания паролей: использовать только удобочитаемые символы</seg>
       </tuv>
     </tu>
     <tu>
@@ -13364,24 +13364,24 @@
       <tuv lang="EN-US">
         <seg>Recent</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20101031T160508Z">
-        <seg>Недавно использованные</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T163402Z">
+        <seg>Недавние контейнеры</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Recent &lt;b0&gt;Password Safe&lt;/b0&gt; Databases</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20140113T153228Z">
-        <seg>Недавно использованные контейнеры&lt;b0&gt;&lt;/b0&gt;</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T163758Z">
+        <seg>Недавние контейнеры&lt;b0&gt;&lt;/b0&gt;</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Recent Databases on File Menu rather than as a sub-menu</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20101105T192133Z">
-        <seg>Отображать недавно использованные контейнеры в меню Файл, а не в подменю</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T163837Z">
+        <seg>Отображать недавние контейнеры в меню Файл, а не в подменю</seg>
       </tuv>
     </tu>
     <tu>
@@ -16445,8 +16445,8 @@
       <tuv lang="EN-US">
         <seg>The list of recently opened files may be cleared by selecting "&lt;b0&gt;Clear Recent Safe List&lt;/b0&gt;"</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20110620T155302Z">
-        <seg>Список недавно использованных контейнеров можно очистить нажав на пункт меню &lt;b0&gt;Очистить список ранее использованных контейнеров&lt;/b0&gt;.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T163558Z">
+        <seg>Список недавно использованных контейнеров можно очистить нажав на пункт меню &lt;b0&gt;Очистить список недавних контейнеров&lt;/b0&gt;.</seg>
       </tuv>
     </tu>
     <tu>
