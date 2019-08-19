@@ -368,8 +368,8 @@ Unknown error</seg>
       <tuv lang="EN-US">
         <seg>&amp;Delete from Recent Entry List</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>&amp;Удалить из списка ранее использованных</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T162423Z">
+        <seg>&amp;Удалить из списка недавних</seg>
       </tuv>
     </tu>
     <tu>
@@ -550,6 +550,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&amp;Lock Safe	Ctrl+J</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T162133Z" creationid="pm_kan" creationdate="20190819T162133Z">
+        <seg>&amp;Заблокировать контейнер	Ctrl+J</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&amp;Manage</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -688,16 +696,16 @@ Unknown error</seg>
       <tuv lang="EN-US">
         <seg>&amp;Recent Entries History</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>&amp;Недавно использованные элементы</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T162348Z">
+        <seg>&amp;Недавние элементы</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>&amp;Recent Safes...</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190503T164422Z" creationid="pm_kan" creationdate="20190503T164422Z">
-        <seg>&amp;Недавно использованные контейнеры...</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T162331Z" creationid="pm_kan" creationdate="20190503T164422Z">
+        <seg>&amp;Недавние контейнеры...</seg>
       </tuv>
     </tu>
     <tu>
@@ -830,6 +838,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&amp;Unlock Safe	Ctrl+I</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T162115Z" creationid="pm_kan" creationdate="20190819T162115Z">
+        <seg>&amp;Разблокировать контейнер	Ctrl+I</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&amp;Validate</seg>
       </tuv>
       <tuv lang="RU-RU">
@@ -918,10 +934,34 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>(EasyVision Symbols)</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>(удобочитаемые символы)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>(Pronounceable Symbols)</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>(произносимые символы)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>(application default)</seg>
       </tuv>
       <tuv lang="RU-RU">
         <seg>(по умолчанию)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>(at least N restrictions may be ignored)</seg>
+      </tuv>
+      <tuv lang="RU-RU">
+        <seg>(условие «не менее чем N» может быть проигнорировано)</seg>
       </tuv>
     </tu>
     <tu>
@@ -1729,8 +1769,8 @@ a password are required.</seg>
       <tuv lang="EN-US">
         <seg>Clear Recent Safe List</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T114646Z">
-        <seg>Очистить список ранее использованных контейнеров</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T162339Z">
+        <seg>О&amp;чистить список недавних контейнеров</seg>
       </tuv>
     </tu>
     <tu>
@@ -2599,6 +2639,14 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Database name must not be empty if a database policy shall be used.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T162008Z" creationid="pm_kan" creationdate="20190819T162008Z">
+        <seg>Имя политики создания паролей не должно быть пустым.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user.</seg>
       </tuv>
       <tuv lang="RU-RU" changeid="pm_kan" changedate="20150418T091558Z">
@@ -2977,8 +3025,8 @@ Locked by</seg>
       <tuv lang="EN-US">
         <seg>Easyvision characters</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Легкоотличимые символы</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T164127Z">
+        <seg>Удобочитаемые символы</seg>
       </tuv>
     </tu>
     <tu>
@@ -5944,20 +5992,20 @@ to the base entry</seg>
       <tuv lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2019-05-03 19:43+0300
-PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE
-Last-Translator: FULL NAME &lt;EMAIL@ADDRESS&gt;
+POT-Creation-Date: 2019-08-19 19:11+0300
+PO-Revision-Date: 2018-08-18 19:36+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: 
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190503T164839Z" creationid="pm_kan" creationdate="20190503T164822Z">
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T161708Z" creationid="pm_kan" creationdate="20190819T161708Z">
         <seg>Project-Id-Version: Password Safe
-Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2019-05-03 19:50+0300
-PO-Revision-Date: 2019-05-03 19:50+0300
+Report-Msgid-Bugs-To: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+POT-Creation-Date: 2019-08-19 20:02+0300
+PO-Revision-Date: 2019-08-19 20:02+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
@@ -6050,16 +6098,16 @@ Content-Transfer-Encoding: 8bit</seg>
       <tuv lang="EN-US">
         <seg>Recent Databases on File Menu rather than as a sub-menu</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T113654Z">
-        <seg>Отображать недавно использованные контейнеры в меню Файл, а не в подменю</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T162317Z">
+        <seg>Отображать недавние контейнеры в меню Файл, а не в подменю</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>Recent PasswordSafe Databases</seg>
       </tuv>
-      <tuv lang="RU-RU">
-        <seg>Недавно использованные контейнеры</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20190819T162258Z">
+        <seg>Недавние контейнеры</seg>
       </tuv>
     </tu>
     <tu>
@@ -8251,26 +8299,10 @@ Imported %d %ls</seg>
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Yes - At least %d from %ls: %ls</seg>
-      </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20150418T092010Z">
-        <seg>Да: не␣менее %d из %ls: %ls</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>Yes - EasyVision Symbols: %ls</seg>
+        <seg>Yes - At least %d from %ls: %ls%ls</seg>
       </tuv>
       <tuv lang="RU-RU">
-        <seg>Да: удобочитаемые символы: %ls</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>Yes - Pronounceable Symbols: %ls</seg>
-      </tuv>
-      <tuv lang="RU-RU">
-        <seg>Да: произносимые символы: %ls</seg>
+        <seg>Да: не менее %d из %ls: %ls%ls</seg>
       </tuv>
     </tu>
     <tu>
