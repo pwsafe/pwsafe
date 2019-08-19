@@ -49,7 +49,6 @@
 const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift+DCA\te-mail\tProtected\tSymbols\tKeyboard Shortcut\tNotes");
 const TCHAR *KPEXPORTHEADER  = _T("Password Groups\tGroup Tree\tAccount\tLogin Name\tPassword\tWeb Site\tComments\tUUID\tIcon\tCreation Time\tLast Access\tLast Modification\tExpires\tAttachment Description\tAttachment");
 const TCHAR *KPIMPORTEDPREFIX = _T("ImportedKeePass");
-const TCHAR *GROUPTITLEUSERINCHEVRONS = _T("\xab%ls\xbb \xab%ls\xbb \xab%ls\xbb");
 
 using namespace std;
 using pws_os::CUUID;
@@ -370,7 +369,7 @@ struct XMLRecordWriter {
         item.Matches(m_subgroup_name,
                      m_subgroup_object, m_subgroup_function)) {
       StringX sx_exported;
-      Format(sx_exported, GROUPTITLEUSERINCHEVRONS,
+      Format(sx_exported, PWScore::GROUPTITLEUSERINCHEVRONS,
                         item.GetGroup().c_str(), item.GetTitle().c_str(), item.GetUser().c_str());
       bool bforce_normal_entry(false);
 
@@ -1265,7 +1264,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     }
 
     // Use new group if the entries have been imported under a new level.
-    Format(sxImportedEntry, GROUPTITLEUSERINCHEVRONS,
+    Format(sxImportedEntry, PWScore::GROUPTITLEUSERINCHEVRONS,
                         sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
                            
     if (i_Offset[URL] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[URL]))
@@ -1399,7 +1398,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         // Tell the user via the report
         StringX sxExistingEntry, sx_imported;
         LoadAString(sx_imported, IDSC_IMPORTED);
-        Format(sxExistingEntry, GROUPTITLEUSERINCHEVRONS,
+        Format(sxExistingEntry, PWScore::GROUPTITLEUSERINCHEVRONS,
                            iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(),
                            iter->second.GetUser().c_str());
         Format(sxTemp, IDSC_KBSHORTCUT_REMOVED, sx_imported.c_str(), sxImportedEntry.c_str(),
@@ -1831,7 +1830,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
 
     // Use new group if the entries have been imported under a new level.
     StringX sx_imported;
-    Format(sx_imported, GROUPTITLEUSERINCHEVRONS,
+    Format(sx_imported, PWScore::GROUPTITLEUSERINCHEVRONS,
                         sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
     rpt.WriteLine(sx_imported.c_str());
   }
@@ -2313,7 +2312,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     
     // Use new group if the entries have been imported under a new level.
     StringX sx_imported;
-    Format(sx_imported, GROUPTITLEUSERINCHEVRONS,
+    Format(sx_imported, PWScore::GROUPTITLEUSERINCHEVRONS,
                         sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
     rpt.WriteLine(sx_imported.c_str());
   } // file processing for (;;) loop

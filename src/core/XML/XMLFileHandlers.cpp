@@ -27,8 +27,6 @@
 
 #include <algorithm>
 
-extern const TCHAR *GROUPTITLEUSERINCHEVRONS;
-
 using namespace std;
 using pws_os::CUUID;
 
@@ -914,7 +912,7 @@ void XMLFileHandlers::AddXMLEntries()
 
     StringX sxImportedEntry;
     // Use new group if the entries have been imported under a new level.
-    Format(sxImportedEntry, GROUPTITLEUSERINCHEVRONS,
+    Format(sxImportedEntry, PWScore::GROUPTITLEUSERINCHEVRONS,
                         sxnewgroup.c_str(), cur_entry->title.c_str(),
                         cur_entry->username.c_str());
     m_prpt->WriteLine(sxImportedEntry.c_str());
@@ -940,7 +938,7 @@ void XMLFileHandlers::AddXMLEntries()
 
         // Tell the user via the report
         StringX sxExistingEntry;
-        Format(sxExistingEntry, GROUPTITLEUSERINCHEVRONS,
+        Format(sxExistingEntry, PWScore::GROUPTITLEUSERINCHEVRONS,
                            iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(),
                            iter->second.GetUser().c_str());
 

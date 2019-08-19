@@ -18,6 +18,7 @@
 
 #include "core/ItemData.h"
 #include "core/Util.h"
+#include "core/UTF8Conv.h"
 #include "core/Pwsprefs.h"
 
 #include "os/debug.h"

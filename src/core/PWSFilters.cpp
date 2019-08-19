@@ -14,6 +14,7 @@
 #include "PWScore.h"
 #include "StringX.h"
 #include "Util.h"
+#include "UTF8Conv.h"
 
 #include "os/file.h"
 #include "os/dir.h"

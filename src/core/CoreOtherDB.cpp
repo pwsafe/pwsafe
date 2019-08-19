@@ -36,8 +36,6 @@ typedef std::wifstream ifstreamT;
 typedef std::wofstream ofstreamT;
 typedef std::vector<stringT>::iterator viter;
 
-extern const TCHAR *GROUPTITLEUSERINCHEVRONS;
-
 static void CompareField(CItemData::FieldType field,
                          const CItemData::FieldBits &bsTest,
                          const CItemData &first, const CItemData &second,
@@ -118,7 +116,7 @@ void PWScore::Compare(PWScore *pothercore,
       st_data.user = currentItem.GetUser();
 
       StringX sx_original;
-      Format(sx_original, GROUPTITLEUSERINCHEVRONS,
+      Format(sx_original, PWScore::GROUPTITLEUSERINCHEVRONS,
                 st_data.group.c_str(), st_data.title.c_str(), st_data.user.c_str());
 
       // Update the Wizard page
@@ -292,7 +290,7 @@ void PWScore::Compare(PWScore *pothercore,
       st_data.user = compItem.GetUser();
 
       StringX sx_compare;
-      Format(sx_compare, GROUPTITLEUSERINCHEVRONS,
+      Format(sx_compare, PWScore::GROUPTITLEUSERINCHEVRONS,
                 st_data.group.c_str(), st_data.title.c_str(), st_data.user.c_str());
 
       // Update the Wizard page
@@ -464,7 +462,7 @@ stringT PWScore::Merge(PWScore *pothercore,
     const StringX sx_otherUser = otherItem.GetUser();
 
     StringX sxMergedEntry;
-    Format(sxMergedEntry, GROUPTITLEUSERINCHEVRONS,
+    Format(sxMergedEntry, PWScore::GROUPTITLEUSERINCHEVRONS,
                 sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
 
     ItemListConstIter foundPos = Find(sx_otherGroup, sx_otherTitle, sx_otherUser);
@@ -652,7 +650,7 @@ stringT PWScore::Merge(PWScore *pothercore,
           ItemListIter iter = Find(kbshortcut_uuid);
           if (iter != m_pwlist.end()) {
             StringX sxTemp, sxExistingEntry;
-            Format(sxExistingEntry, GROUPTITLEUSERINCHEVRONS,
+            Format(sxExistingEntry, PWScore::GROUPTITLEUSERINCHEVRONS,
                 iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(),
                 iter->second.GetUser().c_str());
             Format(sxTemp, IDSC_KBSHORTCUT_REMOVED, sx_merged.c_str(), sxMergedEntry.c_str(),
@@ -700,7 +698,7 @@ stringT PWScore::Merge(PWScore *pothercore,
         ItemListIter iter = Find(kbshortcut_uuid);
         if (iter != m_pwlist.end()) {
           StringX sxTemp, sxExistingEntry;
-          Format(sxExistingEntry, GROUPTITLEUSERINCHEVRONS,
+          Format(sxExistingEntry, PWScore::GROUPTITLEUSERINCHEVRONS,
                 iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(),
                 iter->second.GetUser().c_str());
           Format(sxTemp, IDSC_KBSHORTCUT_REMOVED, sx_merged.c_str(), sxMergedEntry.c_str(),
@@ -715,7 +713,7 @@ stringT PWScore::Merge(PWScore *pothercore,
       pmulticmds->Add(pcmd);
 
       StringX sx_added;
-      Format(sx_added, GROUPTITLEUSERINCHEVRONS,
+      Format(sx_added, PWScore::GROUPTITLEUSERINCHEVRONS,
                 sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
       vs_added.push_back(sx_added);
 
@@ -895,7 +893,7 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
       ASSERT(0);
 
     StringX sx_added;
-    Format(sx_added, GROUPTITLEUSERINCHEVRONS,
+    Format(sx_added, PWScore::GROUPTITLEUSERINCHEVRONS,
                 ci_temp.GetGroup().c_str(), ci_temp.GetTitle().c_str(),
                 ci_temp.GetUser().c_str());
     vs_added.push_back(sx_added);
@@ -976,7 +974,7 @@ void PWScore::Synchronize(PWScore *pothercore,
     const StringX sx_otherUser = otherItem.GetUser();
 
     StringX sx_mergedentry;
-    Format(sx_mergedentry, GROUPTITLEUSERINCHEVRONS,
+    Format(sx_mergedentry, PWScore::GROUPTITLEUSERINCHEVRONS,
                 sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
 
     ItemListConstIter foundPos = Find(sx_otherGroup, sx_otherTitle, sx_otherUser);
@@ -1025,7 +1023,7 @@ void PWScore::Synchronize(PWScore *pothercore,
       updItem.SetStatus(CItemData::ES_MODIFIED);
 
       StringX sx_updated;
-      Format(sx_updated, GROUPTITLEUSERINCHEVRONS,
+      Format(sx_updated, PWScore::GROUPTITLEUSERINCHEVRONS,
                 sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
       vs_updated.push_back(sx_updated);
 

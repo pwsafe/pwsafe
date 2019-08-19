@@ -16,7 +16,6 @@
 #include "StringXStream.h"
 #include "Fish.h"
 #include "PwsPlatform.h"
-#include "UTF8Conv.h"
 
 #include "../os/debug.h"
 #include "../os/typedefs.h"
@@ -37,6 +36,8 @@
 //Version defines
 #define V10 0
 #define V15 1
+
+class CUTF8Conv;
 
 extern void trashMemory(void *buffer, size_t length);
 extern void trashMemory(LPTSTR buffer, size_t length);

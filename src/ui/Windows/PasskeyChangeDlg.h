@@ -50,9 +50,6 @@ protected:
   afx_msg void OnNewPasskeySetfocus();
   afx_msg void OnConfirmNewSetfocus();
   afx_msg void OnShowCombination();
-  afx_msg void OnOldVK();
-  afx_msg void OnNewVK();
-  afx_msg void OnConfirmVK();
   afx_msg void OnVirtualKeyboard();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   afx_msg void OnYubikey2Btn();

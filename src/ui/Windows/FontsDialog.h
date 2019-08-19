@@ -22,13 +22,6 @@ public:
                  CDC* pdcPrinter = NULL,
                  CWnd* pParentWnd = NULL,
                  FontType iType = PASSWORDFONT);
-#ifndef _AFX_NO_RICHEDIT_SUPPORT
-  CFontsDialog(const CHARFORMAT& charformat,
-                 DWORD dwFlags = CF_SCREENFONTS,
-                 CDC* pdcPrinter = NULL,
-                 CWnd* pParentWnd = NULL,
-                 FontType iType = PASSWORDFONT);
-#endif
   virtual ~CFontsDialog();
 
   // Following override to reset idle timeout on any event

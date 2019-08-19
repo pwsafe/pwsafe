@@ -107,6 +107,8 @@ public:
   void SetFileUUID(const pws_os::CUUID &fu) { m_hdr.m_file_uuid = fu; }
   const pws_os::CUUID &GetFileUUID() const { return m_hdr.m_file_uuid; }
 
+  static const TCHAR *GROUPTITLEUSERINCHEVRONS;
+
   // Get/Set Unknown Fields info
   bool HasHeaderUnknownFields() const
   {return !m_UHFL.empty();}

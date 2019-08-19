@@ -39,7 +39,7 @@
 #include <set>
 #include <iterator>
 
-extern const TCHAR *GROUPTITLEUSERINCHEVRONS;
+const TCHAR *PWScore::GROUPTITLEUSERINCHEVRONS = _T("\xab%ls\xbb \xab%ls\xbb \xab%ls\xbb");
 
 using pws_os::CUUID;
 
@@ -713,7 +713,7 @@ struct ExportRecordWriter {
 
     if (m_pRpt != nullptr && bAddToReport) {
       StringX sx_exported;
-      Format(sx_exported, GROUPTITLEUSERINCHEVRONS,
+      Format(sx_exported, PWScore::GROUPTITLEUSERINCHEVRONS,
         item.GetGroup().c_str(), item.GetTitle().c_str(), item.GetUser().c_str());
       m_pRpt->WriteLine(sx_exported.c_str(), true);
     }

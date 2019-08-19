@@ -64,7 +64,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 extern HRGN GetWorkAreaRegion();
-extern const TCHAR *GROUPTITLEUSERINCHEVRONS;
 
 static void DisplayFileWriteError(INT_PTR rc, const StringX &cs_newfile)
 {
@@ -1779,7 +1778,7 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
     for (size_t i = 0; i < vuuidAddedBases.size(); i++) {
       ItemListIter iter = Find(vuuidAddedBases[i]);
       StringX sx_exported;
-      Format(sx_exported, GROUPTITLEUSERINCHEVRONS,
+      Format(sx_exported, PWScore::GROUPTITLEUSERINCHEVRONS,
         iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(), iter->second.GetUser().c_str());
       prpt->WriteLine(sx_exported.c_str(), true);
     }
