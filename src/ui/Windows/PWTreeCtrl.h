@@ -90,6 +90,9 @@ public:
   HTREEITEM FindItem(const CString &path, HTREEITEM hRoot);
   const StringX &GetDroppedFile() const {return m_droppedFile;}
 
+  static const wchar_t GROUP_SEP;
+  static const wchar_t *GROUP_SEP2;
+
  protected:
   virtual BOOL PreTranslateMessage(MSG *pMsg);
 

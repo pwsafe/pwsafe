@@ -52,9 +52,6 @@
 using namespace std;
 using pws_os::CUUID;
 
-extern const wchar_t GROUP_SEP;
-extern const wchar_t *GROUP_SEP2;
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -4655,12 +4652,12 @@ void DboxMain::UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNe
         continue;
       }
     } 
-    else if ((iter->first.length() > len+1) && (iter->first[len+1] != GROUP_SEP)) {
+    else if ((iter->first.length() > len+1) && (iter->first[len+1] != CPWTreeCtrl::GROUP_SEP)) {
       // Need to add group separator and check that next symbol is not a dot
       // to ensure not affecting another group
       // (group name could contain trailing dots, for example abc..def.g)
       // subgroup name will have len > len+1 (old_name + dot + subgroup_name)
-      StringX path = sxOldPath + StringX(GROUP_SEP2);
+      StringX path = sxOldPath + StringX(CPWTreeCtrl::GROUP_SEP2);
       if (wcsncmp(path.c_str(), iter->first.c_str(), len + 1) == 0) {
         HTREEITEM ti = iter->second;
         StringX sxNewGroup = sxNewPath + iter->first.substr(len);

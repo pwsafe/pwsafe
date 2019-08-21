@@ -42,8 +42,6 @@
 #include <vector>
 #include <algorithm>
 
-extern const wchar_t *GROUP_SEP2;
-
 using pws_os::CUUID;
 
 #ifdef _DEBUG

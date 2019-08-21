@@ -36,8 +36,8 @@ static char THIS_FILE[] = __FILE__;
 // Hover time of 1.5 seconds before expanding a group during D&D
 #define HOVERTIME 1500
 
-extern const wchar_t GROUP_SEP = L'.';
-extern const wchar_t *GROUP_SEP2 = L".";
+const wchar_t CPWTreeCtrlX::GROUP_SEP = L'.';
+const wchar_t *CPWTreeCtrlX::GROUP_SEP2 = L".";
 
 // following header for D&D data passed over OLE:
 // Process ID of sender (to determine if src == tgt)
@@ -1073,13 +1073,13 @@ static StringX GetFirstPathElem(StringX &sxPath)
    // (assuming GROUP_SEP is '.')
 
   StringX sxElement;
-  size_t dotPos = sxPath.find_first_of(GROUP_SEP);
+  size_t dotPos = sxPath.find_first_of(CPWTreeCtrl::GROUP_SEP);
   size_t len=sxPath.length();
   if (dotPos == StringX::npos){
     sxElement = sxPath;
     sxPath = L"";
   } else {
-    while ((dotPos < len) && (sxPath[dotPos] == GROUP_SEP)) {// look for consecutive dots
+    while ((dotPos < len) && (sxPath[dotPos] == CPWTreeCtrl::GROUP_SEP)) {// look for consecutive dots
       dotPos++;
     }
     if (dotPos < len) {
