@@ -20,8 +20,6 @@
 
 #include "dlgs.h"
 
-extern const wchar_t *EYE_CATCHER;
-
 // CFontsDialog
 
 IMPLEMENT_DYNAMIC(CFontsDialog, CFontDialog)
@@ -196,18 +194,6 @@ INT_PTR CFontsDialog::DoModal()
 
 LRESULT CFontsDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  CWnd *pParent = GetParent();
-  while (pParent != NULL) {
-    DboxMain *pDbx = dynamic_cast<DboxMain *>(pParent);
-    if (pDbx != NULL && pDbx->m_eye_catcher != NULL &&
-        wcscmp(pDbx->m_eye_catcher, EYE_CATCHER) == 0) {
-      pDbx->ResetIdleLockCounter(message);
-      break;
-    } else
-      pParent = pParent->GetParent();
-  }
-  if (pParent == NULL)
-    pws_os::Trace(L"CFontsDialog::WindowProc - couldn't find DboxMain ancestor\n");
-
+  app.GetMainDlg()->ResetIdleLockCounter(message);
   return CFontDialog::WindowProc(message, wParam, lParam);
 }

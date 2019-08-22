@@ -14,8 +14,6 @@
 #include "WZPropertyPage.h"
 #include "WZPropertySheet.h"
 
-extern const wchar_t *EYE_CATCHER;
-
 IMPLEMENT_DYNAMIC(CWZPropertyPage, CPropertyPage)
 
 CWZPropertyPage::CWZPropertyPage(UINT nID, UINT nIDCaption, const int nType)
@@ -86,13 +84,7 @@ void CWZPropertyPage::ShowHelp(const CString &topicFile)
 
 LRESULT CWZPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  if (app.GetMainDlg()->m_eye_catcher != NULL &&
-      wcscmp(app.GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
-    app.GetMainDlg()->ResetIdleLockCounter(message);
-  } else {
-    pws_os::Trace(L"CWZPropertyPage::WindowProc - couldn't find DboxMain ancestor\n");
-  }
-
+  app.GetMainDlg()->ResetIdleLockCounter(message);
   return CPropertyPage::WindowProc(message, wParam, lParam);
 }
 

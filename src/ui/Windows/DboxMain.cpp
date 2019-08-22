@@ -89,10 +89,6 @@ IMPLEMENT_DYNAMIC(DboxMain, CDialog)
 */
 const wchar_t *HIDDEN_PASSWORD = L"**************";
 
-// Eyecatcher for looking for the parent within child windows based on
-// CPWDialog, CPWFileDialog and CPWPropertySheet
-const wchar_t *EYE_CATCHER = L"DBXM";
-
 CString DboxMain::CS_SETFILTERS;
 CString DboxMain::CS_CLEARFILTERS;
 CString DboxMain::CS_READWRITE;
@@ -134,8 +130,8 @@ DboxMain::DboxMain(PWScore &core, CWnd* pParent)
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bUnsavedDisplayed(false), m_bExpireDisplayed(false), m_bFindFilterDisplayed(false),
-  m_RUEList(core), m_eye_catcher(_wcsdup(EYE_CATCHER)),
-  m_hUser32(NULL), m_bInAddGroup(false), m_bWizardActive(false),
+  m_RUEList(core), m_hUser32(NULL),
+  m_bInAddGroup(false), m_bWizardActive(false),
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
   m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
   m_wpAutotypeUPMsg(WM_KEYUP), m_wpAutotypeDNMsg(WM_KEYDOWN), m_wpAutotypeKey('T'),
@@ -209,8 +205,6 @@ DboxMain::~DboxMain()
   delete m_pToolTipCtrl;
 
   pws_os::FreeLibrary(m_hUser32);
-
-  free(m_eye_catcher);
   m_core.UnregisterObserver(this);
 }
 

@@ -10,18 +10,11 @@
 #include "DboxMain.h"
 #include "PWFileDialog.h"
 
-extern const wchar_t *EYE_CATCHER;
-
 IMPLEMENT_DYNAMIC(CPWFileDialog, CFileDialog)
 
 LRESULT CPWFileDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  if (app.GetMainDlg()->m_eye_catcher != NULL &&
-      wcscmp(app.GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
-    app.GetMainDlg()->ResetIdleLockCounter(message);
-  } else
-    pws_os::Trace(L"CPWFileDialog::WindowProc - couldn't find DboxMain ancestor\n");
-
+  app.GetMainDlg()->ResetIdleLockCounter(message);
   return CFileDialog::WindowProc(message, wParam, lParam);
 }
 

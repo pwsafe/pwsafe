@@ -14,8 +14,6 @@
 #include <algorithm>
 #include <functional>
 
-extern const wchar_t *EYE_CATCHER;
-
 static CPWDialogTracker the_tracker;
 CPWDialogTracker *CPWDialog::sm_tracker = &the_tracker; // static member
 
@@ -85,12 +83,7 @@ void CPWDialog::ShowHelp(const CString &topicFile)
 
 LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  if (GetMainDlg()->m_eye_catcher != NULL &&
-      wcscmp(GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
-    GetMainDlg()->ResetIdleLockCounter(message);
-  } else
-    pws_os::Trace(L"CPWDialog::WindowProc - couldn't find DboxMain ancestor\n");
-
+  GetMainDlg()->ResetIdleLockCounter(message);
   return CDialog::WindowProc(message, wParam, lParam);
 }
 

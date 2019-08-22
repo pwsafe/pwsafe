@@ -10,8 +10,6 @@
 #include "DboxMain.h"
 #include "PWPropertySheet.h"
 
-extern const wchar_t *EYE_CATCHER;
-
 IMPLEMENT_DYNAMIC(CPWPropertySheet, CPropertySheet)
 
 CPWPropertySheet::CPWPropertySheet(UINT nID, CWnd *pParent, const bool bLongPPs)
@@ -43,12 +41,7 @@ DboxMain *CPWPropertySheet::GetMainDlg() const
 
 LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  if (GetMainDlg()->m_eye_catcher != NULL &&
-      wcscmp(GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
-    GetMainDlg()->ResetIdleLockCounter(message);
-  } else
-    pws_os::Trace(L"CPWPropertySheet::WindowProc - couldn't find DboxMain ancestor\n");
-
+  GetMainDlg()->ResetIdleLockCounter(message);
   return CPropertySheet::WindowProc(message, wParam, lParam);
 }
 

@@ -11,8 +11,6 @@
 #include "PWPropertyPage.h"
 #include "GeneralMsgBox.h"
 
-extern const wchar_t *EYE_CATCHER;
-
 IMPLEMENT_DYNAMIC(CPWPropertyPage, CPropertyPage)
 
 CPWPropertyPage::CPWPropertyPage(UINT nID)
@@ -86,11 +84,6 @@ void CPWPropertyPage::ShowHelp(const CString &topicFile)
 
 LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  if (GetMainDlg()->m_eye_catcher != NULL &&
-      wcscmp(GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
-    GetMainDlg()->ResetIdleLockCounter(message);
-  } else
-    pws_os::Trace(L"CPWPropertyPage::WindowProc - couldn't find DboxMain ancestor\n");
-
+  GetMainDlg()->ResetIdleLockCounter(message);
   return CPropertyPage::WindowProc(message, wParam, lParam);
 }
