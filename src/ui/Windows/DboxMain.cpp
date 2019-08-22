@@ -79,7 +79,6 @@ static char THIS_FILE[] = __FILE__;
 
 // Also needed by CInfoDisplay and CPasswordSubsetDlg
 extern HRGN GetWorkAreaRegion();
-extern BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC , LPRECT , LPARAM lParam);
 
 IMPLEMENT_DYNAMIC(DboxMain, CDialog)
 
@@ -3724,18 +3723,8 @@ void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
   ::DeleteObject(hrgnWork);
 }
 
-HRGN GetWorkAreaRegion()
-{
-  HRGN hrgn = CreateRectRgn(0, 0, 0, 0);
 
-  HDC hdc = ::GetDC(NULL);
-  EnumDisplayMonitors(hdc, NULL, EnumScreens, (LPARAM)&hrgn);
-  ::ReleaseDC(NULL, hdc);
-
-  return hrgn;
-}
-
-BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC , LPRECT , LPARAM lParam)
+static BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC , LPRECT , LPARAM lParam)
 {
   MONITORINFO mi;
   HRGN hrgn2;
@@ -3751,6 +3740,18 @@ BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC , LPRECT , LPARAM lParam)
 
   return TRUE;
 }
+
+HRGN GetWorkAreaRegion()
+{
+  HRGN hrgn = CreateRectRgn(0, 0, 0, 0);
+
+  HDC hdc = ::GetDC(NULL);
+  EnumDisplayMonitors(hdc, NULL, EnumScreens, (LPARAM)&hrgn);
+  ::ReleaseDC(NULL, hdc);
+
+  return hrgn;
+}
+
 
 void DboxMain::GetMonitorRect(HWND hwnd, RECT *prc, BOOL fWork)
 {
