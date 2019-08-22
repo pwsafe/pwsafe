@@ -4006,23 +4006,6 @@ void DboxMain::OnOK()
   }
 }
 
-void RelativizePath(std::wstring &curfile)
-{
-  // If  IsUnderPw2go() && exec's drive == curfile's drive, remove
-  // from latter's path. This supports DoK usage
-  if (SysInfo::IsUnderPw2go()) {
-    const std::wstring execDir = pws_os::getexecdir();
-    std::wstring execDrive, dontCare;
-    pws_os::splitpath(execDir, execDrive, dontCare, dontCare, dontCare);
-    std::wstring fileDrive, fileDir, fileFile, fileExt;
-    pws_os::splitpath(curfile, fileDrive, fileDir, fileFile, fileExt);
-    ToUpper(fileDrive); ToUpper(execDrive);
-    if (fileDrive == execDrive) {
-      curfile = pws_os::makepath(L"", fileDir, fileFile, fileExt);
-    }
-  }
-}
-
 void DboxMain::SavePreferencesOnExit()
 {
   PWS_LOGIT;
@@ -4078,7 +4061,7 @@ void DboxMain::SavePreferencesOnExit()
   } else
     if (m_core.IsDbOpen()) {
       std::wstring curFile = m_core.GetCurFile().c_str();
-      RelativizePath(curFile);
+      PWSUtil::RelativizePath(curFile);
       prefs->SetPref(PWSprefs::CurrentFile, curFile.c_str());
     }
   // Now save the Find Toolbar display status
