@@ -182,6 +182,7 @@ void CSafeCombinationCtrl::SecureTextfield(bool secured)
 
     if (m_textCtrl->Destroy()) {
       m_textCtrl = newTextCtrl;
+      ApplyPasswordFont(m_textCtrl);
       Layout();
     }
     else {

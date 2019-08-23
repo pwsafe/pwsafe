@@ -356,6 +356,7 @@ void CPasswordPolicy::CreateControls()
 
   m_passwordCtrl = new wxTextCtrl( itemDialog1, ID_GENERATEDPASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(m_passwordCtrl, 1, wxALIGN_CENTER_VERTICAL|wxLEFT, 20);
+  ApplyPasswordFont(m_passwordCtrl);
 
   wxButton* itemButton1 = new wxButton( itemDialog1, ID_GENERATEPASSWORD2, _("Generate"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemButton1, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
