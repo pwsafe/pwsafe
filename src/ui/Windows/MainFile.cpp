@@ -28,11 +28,10 @@
 #include "AddEdit_DateTimes.h"
 #include "PasskeyEntry.h"
 #include "PWSFaultHandler.h"
-
+#include "winutils.h"
 #include "WZPropertySheet.h"
 
 #include "core/PWSprefs.h"
-#include "core/Util.h"
 #include "core/PWSdirs.h"
 #include "core/Report.h"
 #include "core/ItemData.h"
@@ -62,8 +61,6 @@ using pws_os::CUUID;
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-extern HRGN GetWorkAreaRegion();
 
 static void DisplayFileWriteError(INT_PTR rc, const StringX &cs_newfile)
 {
@@ -259,7 +256,7 @@ BOOL DboxMain::OpenOnInit()
   // Now get window sizes
   PWSprefs::GetInstance()->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
 
-  HRGN hrgnWork = GetWorkAreaRegion();
+  HRGN hrgnWork = WinUtil::GetWorkAreaRegion();
   // also check that window will be visible
   if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) ||
     !RectInRegion(hrgnWork, rect)) {
@@ -4061,7 +4058,7 @@ void DboxMain::SavePreferencesOnExit()
   } else
     if (m_core.IsDbOpen()) {
       std::wstring curFile = m_core.GetCurFile().c_str();
-      PWSUtil::RelativizePath(curFile);
+      WinUtil::RelativizePath(curFile);
       prefs->SetPref(PWSprefs::CurrentFile, curFile.c_str());
     }
   // Now save the Find Toolbar display status

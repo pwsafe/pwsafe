@@ -13,6 +13,7 @@
 #include "PasswordSubsetDlg.h"
 #include "DboxMain.h"
 #include "Fonts.h"
+#include "winutils.h"
 
 #include "core/StringX.h"
 #include "core/PWSprefs.h"
@@ -24,8 +25,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-extern HRGN GetWorkAreaRegion();
 
 //-----------------------------------------------------------------------------
 
@@ -171,7 +170,7 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
   PWSprefs::GetInstance()->GetPrefPSSRect(rect.top, rect.bottom, 
                                           rect.left, rect.right);
 
-  HRGN hrgnWork = GetWorkAreaRegion();
+  HRGN hrgnWork = WinUtil::GetWorkAreaRegion();
   // also check that window will be visible
   if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) || !RectInRegion(hrgnWork, rect)){
     rect = dlgRect;

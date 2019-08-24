@@ -911,22 +911,3 @@ bool PWSUtil::loadFile(const StringX &filename, StringXStream &stream) {
 
   return !bError;
 }
-
-void PWSUtil::RelativizePath(std::wstring &curfile)
-{
-  // If  IsUnderPw2go() && exec's drive == curfile's drive, remove
-  // from latter's path. This supports DoK usage
-  if (SysInfo::IsUnderPw2go()) {
-    const std::wstring execDir = pws_os::getexecdir();
-    std::wstring execDrive, dontCare;
-    pws_os::splitpath(execDir, execDrive, dontCare, dontCare, dontCare);
-    std::wstring fileDrive, fileDir, fileFile, fileExt;
-    pws_os::splitpath(curfile, fileDrive, fileDir, fileFile, fileExt);
-    ToUpper(fileDrive); ToUpper(execDrive);
-    if (fileDrive == execDrive) {
-      curfile = pws_os::makepath(L"", fileDir, fileFile, fileExt);
-    }
-  }
-}
-
-

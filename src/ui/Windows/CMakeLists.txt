@@ -133,6 +133,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/VirtualKeyboard/VKresource3.h
             src/ui/Windows/VirtualKeyboard/VKShiftState.h
             src/ui/Windows/Windowsdefs.h
+            src/ui/Windows/winutils.h
             src/ui/Windows/WZAdvanced.h
             src/ui/Windows/WZExecuteThreadParms.h
             src/ui/Windows/WZFinish.h
@@ -274,6 +275,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/ViewAttachmentDlg.cpp
             src/ui/Windows/VirtualKeyboard/VKBButton.cpp
             src/ui/Windows/VirtualKeyboard/VKeyBoardDlg.cpp
+            src/ui/Windows/winutils.cpp
             src/ui/Windows/WZAdvanced.cpp
             src/ui/Windows/WZFinish.cpp
             src/ui/Windows/WZPropertyPage.cpp

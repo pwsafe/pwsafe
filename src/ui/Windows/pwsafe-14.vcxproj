@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -638,6 +638,7 @@
     <ClCompile Include="ViewReport.cpp" />
     <ClCompile Include="VirtualKeyboard\VKBButton.cpp" />
     <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp" />
+    <ClCompile Include="winutils.cpp" />
     <ClCompile Include="WZAdvanced.cpp" />
     <ClCompile Include="WZFinish.cpp" />
     <ClCompile Include="WZPropertyPage.cpp" />
@@ -780,6 +781,7 @@
     <ClInclude Include="VirtualKeyboard\VKBButton.h" />
     <ClInclude Include="VirtualKeyboard\VKeyBoardDlg.h" />
     <ClInclude Include="Windowsdefs.h" />
+    <ClInclude Include="winutils.h" />
     <ClInclude Include="WZAdvanced.h" />
     <ClInclude Include="WZExecuteThreadParms.h" />
     <ClInclude Include="WZFinish.h" />

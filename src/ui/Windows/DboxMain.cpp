@@ -29,6 +29,7 @@
 #include "InfoDisplay.h"
 #include "PasskeySetup.h"
 #include "SetDBID.h"
+#include "winutils.h"
 
 // Set Ctrl/Alt/Shift strings for menus
 #include "MenuShortcuts.h"
@@ -59,7 +60,7 @@
 
 #include "psapi.h"    // For EnumProcesses
 #include <afxpriv.h>
-#include <stdlib.h>   // for qsort
+
 #include <bitset>
 #include <algorithm>
 
@@ -76,9 +77,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-// Also needed by CInfoDisplay and CPasswordSubsetDlg
-extern HRGN GetWorkAreaRegion();
 
 IMPLEMENT_DYNAMIC(DboxMain, CDialog)
 
@@ -1977,7 +1975,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     m_core.SetCurFile(curFile);
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems) != 0) {
       std::wstring cf = curFile.c_str(); // relativize and set pref
-      PWSUtil::RelativizePath(cf);
+      WinUtil::RelativizePath(cf);
       PWSprefs::GetInstance()->SetPref(PWSprefs::CurrentFile, cf.c_str());
     }
 
@@ -3705,7 +3703,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
 void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
 {
   WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
-  HRGN hrgnWork = GetWorkAreaRegion();
+  HRGN hrgnWork = WinUtil::GetWorkAreaRegion();
 
   pWnd->GetWindowPlacement(&wp);  // Get min/max positions - then add what we know
   wp.flags = 0;
@@ -3722,36 +3720,6 @@ void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
   pWnd->SetWindowPlacement(&wp);
   ::DeleteObject(hrgnWork);
 }
-
-
-static BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC , LPRECT , LPARAM lParam)
-{
-  MONITORINFO mi;
-  HRGN hrgn2;
-
-  HRGN *phrgn = (HRGN *)lParam;
-
-  mi.cbSize = sizeof(mi);
-  GetMonitorInfo(hMonitor, &mi);
-
-  hrgn2 = CreateRectRgnIndirect(&mi.rcWork);
-  CombineRgn(*phrgn, *phrgn, hrgn2, RGN_OR);
-  ::DeleteObject(hrgn2);
-
-  return TRUE;
-}
-
-HRGN GetWorkAreaRegion()
-{
-  HRGN hrgn = CreateRectRgn(0, 0, 0, 0);
-
-  HDC hdc = ::GetDC(NULL);
-  EnumDisplayMonitors(hdc, NULL, EnumScreens, (LPARAM)&hrgn);
-  ::ReleaseDC(NULL, hdc);
-
-  return hrgn;
-}
-
 
 void DboxMain::GetMonitorRect(HWND hwnd, RECT *prc, BOOL fWork)
 {

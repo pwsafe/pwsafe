@@ -19,10 +19,9 @@
 #include "stdafx.h"
 #include "InfoDisplay.h"
 #include "SecString.h"
+#include "winutils.h"
 
 // CInfoDisplay
-
-extern HRGN GetWorkAreaRegion();
 
 IMPLEMENT_DYNAMIC(CInfoDisplay, CWnd)
 
@@ -109,7 +108,7 @@ void CInfoDisplay::OnPaint()
        hrgn = CreateRectRgn(mi.rcWork.left, mi.rcWork.top, mi.rcWork.right, mi.rcWork.bottom);
     }
     else
-      hrgn = GetWorkAreaRegion();
+      hrgn = WinUtil::GetWorkAreaRegion();
 
     if (hrgn != NULL) {
       // Test that all tip window is visible in the desktop rectangle.

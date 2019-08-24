@@ -9,8 +9,8 @@
 #include <afxadv.h>
 
 #include "PWSRecentFileList.h"
+#include "winutils.h"
 #include "core/PWSprefs.h"
-#include "core/Util.h"
 #include "os/file.h"
 #include "resource2.h" // for ID_FILE_MRU_*
 
@@ -61,7 +61,7 @@ void CPWSRecentFileList::WriteList()
       sMRUFiles[i] = (*this)[i];
       if (!sMRUFiles[i].empty()) {
         Trim(sMRUFiles[i]);
-        PWSUtil::RelativizePath(sMRUFiles[i]);
+        WinUtil::RelativizePath(sMRUFiles[i]);
       }
     }
 

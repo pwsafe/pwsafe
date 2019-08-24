@@ -278,7 +278,6 @@ namespace PWSUtil {
   bool pull_time(time_t &t, const unsigned char *data, size_t len);
   // load file to stream
   bool loadFile(const StringX &filename, StringXStream &stream);
-  void RelativizePath(std::wstring &);
 }
 
 ///////////////////////////////////////////////////////
