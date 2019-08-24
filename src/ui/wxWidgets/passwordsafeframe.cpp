@@ -176,7 +176,10 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_COLLAPSEALL,             PasswordSafeFrame::OnCollapseAll                 )
 
   EVT_MENU( ID_CHANGETREEFONT,          PasswordSafeFrame::OnChangeTreeFont              )
+  EVT_MENU( ID_CHANGEADDEDITFONT,       PasswordSafeFrame::OnChangeAddEditFont           )
   EVT_MENU( ID_CHANGEPSWDFONT,          PasswordSafeFrame::OnChangePasswordFont          )
+  EVT_MENU( ID_CHANGENOTESFONT,         PasswordSafeFrame::OnChangeNotesFont             )
+  EVT_MENU( ID_CHANGEVKBFONT,           PasswordSafeFrame::OnChangeVirtualKeyboardFont   )
 
   EVT_MENU( ID_SHOWHIDE_TOOLBAR,        PasswordSafeFrame::OnShowHideToolBar             )
   EVT_MENU( ID_SHOWHIDE_DRAGBAR,        PasswordSafeFrame::OnShowHideDragBar             )
@@ -550,7 +553,11 @@ void PasswordSafeFrame::CreateMenubar()
   itemMenu48->Append(ID_CUSTOMIZETOOLBAR, _("Customize &Main Toolbar..."), wxEmptyString, wxITEM_NORMAL);
   wxMenu* itemMenu64 = new wxMenu;
   itemMenu64->Append(ID_CHANGETREEFONT, _("&Tree/List Font"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu64->Append(ID_CHANGEADDEDITFONT, _("&Add/Edit Font"), wxEmptyString, wxITEM_NORMAL);
   itemMenu64->Append(ID_CHANGEPSWDFONT, _("&Password Font"), wxEmptyString, wxITEM_NORMAL);
+  itemMenu64->Append(ID_CHANGENOTESFONT, _("&Notes Font"), wxEmptyString, wxITEM_NORMAL);
+  //TODO: Applying font to virtual keyboard needs to be implemented; Event handler for menu item is already prepared
+  //itemMenu64->Append(ID_CHANGEVKBFONT, _("&Virtual Keyboard Font"), wxEmptyString, wxITEM_NORMAL);
   itemMenu48->Append(ID_CHANGEFONTMENU, _("Change &Font"), itemMenu64);
   wxMenu* itemMenu67 = new wxMenu;
   itemMenu67->Append(ID_REPORT_COMPARE, _("&Compare"), wxEmptyString, wxITEM_NORMAL);
@@ -3574,8 +3581,81 @@ void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
   m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(dca)), CPWStatusBar::Field::DOUBLECLICK);
 }
 
-//-----------------------------------------------------------------
-// Remove all DialogBlock-generated stubs below this line, as we
-// already have them implemented in main*.cpp
-// (how to get DB to stop generating them??)
-//-----------------------------------------------------------------
+void PasswordSafeFrame::ChangeFontPreference(enum PWSprefs::StringPrefs fontPreference)
+{
+  wxString caption;
+
+  wxFont currentFont(towxstring(PWSprefs::GetInstance()->GetPref(fontPreference)));
+  wxFont newFont;
+
+  switch (fontPreference)
+  {
+  case (PWSprefs::StringPrefs::TreeFont):
+  {
+    caption = _("Set Tree/List display font");
+
+    if (!currentFont.IsOk()) {
+      currentFont = IsTreeView() ? m_tree->GetFont() : m_grid->GetDefaultCellFont();
+    }
+
+    newFont = ::wxGetFontFromUser(this, currentFont, caption);
+
+    if (newFont.IsOk()) {
+      if (IsTreeView()) {
+        m_tree->SetFont(newFont);
+        m_tree->Show(); // Updates the tree items font
+      }
+      else {
+        m_grid->SetDefaultCellFont(newFont);
+        // TODO: Update grid font
+        // Grid items font doesn't get updated by just calling Show() :-|
+      }
+    }
+  }
+  break;
+
+  case (PWSprefs::StringPrefs::AddEditFont):
+  {
+    caption = _("Set Add/Edit display font");
+    newFont = ::wxGetFontFromUser(this, currentFont.IsOk() ? currentFont : GetFont(), caption);
+  }
+  break;
+
+  case (PWSprefs::StringPrefs::PasswordFont):
+  {
+    caption = _("Set Password display font");
+    newFont = ::wxGetFontFromUser(this, currentFont.IsOk() ? currentFont : GetFont(), caption);
+  }
+  break;
+
+  case (PWSprefs::StringPrefs::NotesFont):
+  {
+    caption = _("Set Notes display font");
+    newFont = ::wxGetFontFromUser(this, currentFont.IsOk() ? currentFont : GetFont(), caption);
+  }
+  break;
+
+  case (PWSprefs::StringPrefs::VKeyboardFontName):
+  {
+    caption = _("Set Virtual Keyboard font");
+    newFont = ::wxGetFontFromUser(this, currentFont.IsOk() ? currentFont : GetFont(), caption);
+  }
+  break;
+
+  default:
+  {
+    return;
+  }
+  }
+
+  if (newFont.IsOk())
+  {
+    PWSprefs::GetInstance()->SetPref(fontPreference, tostringx(newFont.GetNativeFontInfoDesc()));
+  }
+}
+
+  //-----------------------------------------------------------------
+  // Remove all DialogBlock-generated stubs below this line, as we
+  // already have them implemented in main*.cpp
+  // (how to get DB to stop generating them??)
+  //-----------------------------------------------------------------
