@@ -576,7 +576,6 @@
     <ClCompile Include="ManagePSWDPols.cpp" />
     <ClCompile Include="MenuShortcuts.cpp" />
     <ClCompile Include="MenuTipper.cpp" />
-    <ClCompile Include="MigratePrefs.cpp" />
     <ClCompile Include="Options_PropertyPage.cpp" />
     <ClCompile Include="Options_PropertySheet.cpp" />
     <ClCompile Include="OptionsBackup.cpp" />

@@ -213,9 +213,6 @@
     <ClCompile Include="MenuTipper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MigratePrefs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Options_PropertyPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

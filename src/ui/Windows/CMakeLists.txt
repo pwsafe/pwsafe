@@ -218,7 +218,6 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/ManagePSWDPols.cpp
             src/ui/Windows/MenuShortcuts.cpp
             src/ui/Windows/MenuTipper.cpp
-            src/ui/Windows/MigratePrefs.cpp
             src/ui/Windows/OptionsBackup.cpp
             src/ui/Windows/OptionsDisplay.cpp
             src/ui/Windows/OptionsMisc.cpp

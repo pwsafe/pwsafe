@@ -13,6 +13,7 @@
 #include "ThisMfcApp.h"    // For Help
 #include "Options_PropertySheet.h"
 #include "GeneralMsgBox.h"
+#include "winutils.h"
 
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
@@ -23,9 +24,6 @@
 #include "resource3.h"  // String resources
 
 #include "OptionsSystem.h" // Must be after resource.h
-
-extern bool OfferConfigMigration();
-extern bool PerformConfigMigration();
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -146,7 +144,7 @@ BOOL COptionsSystem::OnInitDialog()
 
   bool bofferdeleteregistry = prefs->OfferDeleteRegistry();
 
-  bool boffermigrate2appdata = OfferConfigMigration();
+  bool boffermigrate2appdata = WinUtil::OfferConfigMigration();
 
   if (!bofferdeleteregistry) {
     GetDlgItem(IDC_REGDEL)->ShowWindow(SW_HIDE);
@@ -340,7 +338,7 @@ void COptionsSystem::OnApplyConfigChanges()
 
   if (m_Migrate2Appdata == TRUE) {
     GetDlgItem(IDC_MIGRATETOAPPDATA)->EnableWindow(FALSE);
-    PerformConfigMigration();
+    WinUtil::PerformConfigMigration();
   }
 
   if (!GetDlgItem(IDC_REGDEL)->IsWindowEnabled() && 
