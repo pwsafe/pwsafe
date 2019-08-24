@@ -109,35 +109,29 @@ void PasswordSafeFrame::OnCollapseAll(wxCommandEvent& /*evt*/)
   }
 }
 
-void PasswordSafeFrame::OnChangeTreeFont(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnChangeTreeFont(wxCommandEvent& WXUNUSED(evt))
 {
-  wxFont currentFont(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::TreeFont)));
-
-  if (!currentFont.IsOk()) {
-    currentFont = IsTreeView() ? m_tree->GetFont() : m_grid->GetDefaultCellFont();
-  }
-
-  wxFont newFont = ::wxGetFontFromUser(this, currentFont, _("Select Tree/List display font"));
-
-  if (newFont.IsOk()) {
-    if (IsTreeView()) {
-      m_tree->SetFont(newFont);
-    }
-    else {
-      m_grid->SetDefaultCellFont(newFont);
-    }
-    PWSprefs::GetInstance()->SetPref(PWSprefs::TreeFont, tostringx(newFont.GetNativeFontInfoDesc()));
-  }
+  ChangeFontPreference(PWSprefs::TreeFont);
 }
 
-void PasswordSafeFrame::OnChangePasswordFont(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnChangeAddEditFont(wxCommandEvent& WXUNUSED(evt))
 {
-  wxFont passwordFont(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::PasswordFont)));
+  ChangeFontPreference(PWSprefs::AddEditFont);
+}
 
-  wxFont newFont = ::wxGetFontFromUser(this, passwordFont, _("Set Password display font"));
-  if (newFont.IsOk()) {
-    PWSprefs::GetInstance()->SetPref(PWSprefs::PasswordFont, tostringx(newFont.GetNativeFontInfoDesc()));
-  }
+void PasswordSafeFrame::OnChangePasswordFont(wxCommandEvent& WXUNUSED(evt))
+{
+  ChangeFontPreference(PWSprefs::PasswordFont);
+}
+
+void PasswordSafeFrame::OnChangeNotesFont(wxCommandEvent& WXUNUSED(evt))
+{
+  ChangeFontPreference(PWSprefs::NotesFont);
+}
+
+void PasswordSafeFrame::OnChangeVirtualKeyboardFont(wxCommandEvent& WXUNUSED(evt))
+{
+  ChangeFontPreference(PWSprefs::VKeyboardFontName);
 }
 
 void PasswordSafeFrame::OnShowHideToolBar(wxCommandEvent& evt)

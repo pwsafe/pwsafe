@@ -94,7 +94,10 @@ class PasswordSafeSearch;
 #define ID_CUSTOMIZETOOLBAR 10046
 #define ID_CHANGEFONTMENU 10047
 #define ID_CHANGETREEFONT 10048
+#define ID_CHANGEADDEDITFONT 10348
 #define ID_CHANGEPSWDFONT 10049
+#define ID_CHANGENOTESFONT 10349
+#define ID_CHANGEVKBFONT 10350
 #define ID_REPORTSMENU 10050
 #define ID_REPORT_COMPARE 10051
 #define ID_REPORT_FIND 10052
@@ -391,7 +394,10 @@ public:
   void OnCollapseAll(wxCommandEvent& evt);
 
   void OnChangeTreeFont(wxCommandEvent& evt);
+  void OnChangeAddEditFont(wxCommandEvent& evt);
   void OnChangePasswordFont(wxCommandEvent& evt);
+  void OnChangeNotesFont(wxCommandEvent& evt);
+  void OnChangeVirtualKeyboardFont(wxCommandEvent& evt);
 
   void OnShowHideToolBar(wxCommandEvent& evt);
   void OnShowHideDragBar(wxCommandEvent& evt);
@@ -571,6 +577,9 @@ private:
   void UpdateStatusBar();
   void UpdateMenuBar();
   void UpdateLastClipboardAction(const CItemData::FieldType field);
+
+  void ChangeFontPreference(enum PWSprefs::StringPrefs fontPreference);
+
   PWScore &m_core;
   ViewType m_currentView;
   PasswordSafeSearch* m_search;

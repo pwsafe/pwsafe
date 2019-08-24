@@ -322,8 +322,8 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText9 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicGBSizer->Add(itemStaticText9, wxGBPosition(/*row:*/ 1, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_TITLE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicGBSizer->Add(itemTextCtrl10, wxGBPosition(/*row:*/ 1, /*column:*/ 1), wxDefaultSpan, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxTextCtrl* itemTextCtrlTitle = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_TITLE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicGBSizer->Add(itemTextCtrlTitle, wxGBPosition(/*row:*/ 1, /*column:*/ 1), wxDefaultSpan, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText12 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicGBSizer->Add(itemStaticText12, wxGBPosition(/*row:*/ 2, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -352,8 +352,8 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText25 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("URL:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicGBSizer->Add(itemStaticText25, wxGBPosition(/*row:*/ 5, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl26 = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_URL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicGBSizer->Add(itemTextCtrl26, wxGBPosition(/*row:*/ 5, /*column:*/ 1), wxDefaultSpan, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxTextCtrl* itemTextCtrlUrl = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_URL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicGBSizer->Add(itemTextCtrlUrl, wxGBPosition(/*row:*/ 5, /*column:*/ 1), wxDefaultSpan, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxButton* itemButton29 = new wxButton( m_BasicPanel, ID_GO_BTN, _("Go"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicGBSizer->Add(itemButton29, wxGBPosition(/*row:*/ 5, /*column:*/ 2), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT, 5);
@@ -361,8 +361,8 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText30 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("EMail:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicGBSizer->Add(itemStaticText30, wxGBPosition(/*row:*/ 6, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl31 = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_EMAIL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicGBSizer->Add(itemTextCtrl31, wxGBPosition(/*row:*/ 6, /*column:*/ 1), wxDefaultSpan, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxTextCtrl* itemTextCtrlEmail = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL_EMAIL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicGBSizer->Add(itemTextCtrlEmail, wxGBPosition(/*row:*/ 6, /*column:*/ 1), wxDefaultSpan, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxButton* itemButton34 = new wxButton( m_BasicPanel, ID_SEND_BTN, _("Send"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicGBSizer->Add(itemButton34, wxGBPosition(/*row:*/ 6, /*column:*/ 2), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT, 5);
@@ -377,6 +377,15 @@ void AddEditPropSheet::CreateControls()
   m_BasicGBSizer->AddGrowableRow(7);  // Growable notes field
 
   GetBookCtrl()->AddPage(m_BasicPanel, _("Basic"));
+
+  ApplyAddEditFont(m_groupCtrl);       // Group
+  ApplyAddEditFont(itemTextCtrlTitle); // Title
+  ApplyAddEditFont(m_UsernameCtrl);    // Username
+  ApplyPasswordFont(m_PasswordCtrl);   // Password
+  ApplyPasswordFont(m_Password2Ctrl);  // Confirmation Password
+  ApplyAddEditFont(itemTextCtrlUrl);   // URL
+  ApplyAddEditFont(itemTextCtrlEmail); // Email
+  ApplyNotesFont(m_noteTX);            // Notes
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Additional"
@@ -680,7 +689,6 @@ void AddEditPropSheet::CreateControls()
   m_pwNumSymbox->Add(itemStaticText118, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_ownsymbols = new wxTextCtrl( m_PasswordPolicyPanel, IDC_OWNSYMBOLS, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  ApplyPasswordFont(m_ownsymbols);
   m_pwMinsGSzr->Add(m_ownsymbols, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxEXPAND|wxALL, 5);
 
   wxButton* itemButton120 = new wxButton( m_PasswordPolicyPanel, ID_RESET_SYMBOLS, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -711,15 +719,17 @@ void AddEditPropSheet::CreateControls()
 
   GetBookCtrl()->AddPage(m_PasswordPolicyPanel, _("Password Policy"));
 
+  ApplyPasswordFont(m_ownsymbols);   // User defined symbols
+
   /////////////////////////////////////////////////////////////////////////////
   // End of Tab Creation
   /////////////////////////////////////////////////////////////////////////////
 
   // Set validators
-  itemTextCtrl10->SetValidator( wxGenericValidator(& m_title) );
+  itemTextCtrlTitle->SetValidator( wxGenericValidator(& m_title) );
   m_UsernameCtrl->SetValidator( wxGenericValidator(& m_user) );
-  itemTextCtrl26->SetValidator( wxGenericValidator(& m_url) );
-  itemTextCtrl31->SetValidator( wxGenericValidator(& m_email) );
+  itemTextCtrlUrl->SetValidator( wxGenericValidator(& m_url) );
+  itemTextCtrlEmail->SetValidator( wxGenericValidator(& m_email) );
   m_noteTX->SetValidator( wxGenericValidator(& m_notes) );
   itemTextCtrl42->SetValidator( wxGenericValidator(& m_autotype) );
   itemTextCtrl44->SetValidator( wxGenericValidator(& m_runcmd) );
