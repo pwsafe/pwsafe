@@ -189,7 +189,7 @@ void ShowHideText(wxTextCtrl *&txtCtrl, const wxString &text,
                            show ? 0 : wxTE_PASSWORD);
   if (validator != nullptr)
     txtCtrl->SetValidator(*validator);
-  ApplyPasswordFont(txtCtrl);
+  ApplyFontPreference(txtCtrl, PWSprefs::StringPrefs::PasswordFont);
   sizer->Replace(tmp, txtCtrl);
   delete tmp;
   sizer->Layout();

@@ -118,7 +118,7 @@ void CSafeCombinationCtrl::Init(wxWindow* parent,
   m_textCtrl = new wxTextCtrl(parent, textCtrlID, wxEmptyString, pos, size, 
                                                 wxTE_PASSWORD,
                                                 scValidator);
-  ApplyPasswordFont(m_textCtrl);
+  ApplyFontPreference(m_textCtrl, PWSprefs::StringPrefs::PasswordFont);
   Add(m_textCtrl, wxSizerFlags().Proportion(1).Expand());
 
   ExternalKeyboardButton* vkbdButton = new ExternalKeyboardButton(parent);
@@ -182,7 +182,7 @@ void CSafeCombinationCtrl::SecureTextfield(bool secured)
 
     if (m_textCtrl->Destroy()) {
       m_textCtrl = newTextCtrl;
-      ApplyPasswordFont(m_textCtrl);
+      ApplyFontPreference(m_textCtrl, PWSprefs::StringPrefs::PasswordFont);
       Layout();
     }
     else {

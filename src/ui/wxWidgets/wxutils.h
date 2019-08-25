@@ -57,27 +57,23 @@ inline wxString& operator<<(wxString& w, const stringT& s) {
   return w << towxstring(s);
 }
 
-inline void ApplyPasswordFont(wxWindow* win)
+inline void ApplyFontPreference(wxWindow* window, const PWSprefs::StringPrefs fontPreference)
 {
-  wxFont font(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::PasswordFont)));
-  if (font.IsOk()) {
-    win->SetFont(font);
-  }
-}
-
-inline void ApplyAddEditFont(wxWindow* win)
-{
-  wxFont font(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::AddEditFont)));
-  if (font.IsOk()) {
-    win->SetFont(font);
-  }
-}
-
-inline void ApplyNotesFont(wxWindow* win)
-{
-  wxFont font(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::NotesFont)));
-  if (font.IsOk()) {
-    win->SetFont(font);
+  switch (fontPreference)
+  {
+    case PWSprefs::StringPrefs::AddEditFont:
+    case PWSprefs::StringPrefs::NotesFont:
+    case PWSprefs::StringPrefs::PasswordFont:
+    case PWSprefs::StringPrefs::TreeFont:
+    {
+      wxFont font(towxstring(PWSprefs::GetInstance()->GetPref(fontPreference)));
+      if (font.IsOk()) {
+        window->SetFont(font);
+      }
+    }
+    break;
+    default:
+    return;
   }
 }
 
