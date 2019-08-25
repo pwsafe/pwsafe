@@ -378,14 +378,14 @@ void AddEditPropSheet::CreateControls()
 
   GetBookCtrl()->AddPage(m_BasicPanel, _("Basic"));
 
-  ApplyAddEditFont(m_groupCtrl);       // Group
-  ApplyAddEditFont(itemTextCtrlTitle); // Title
-  ApplyAddEditFont(m_UsernameCtrl);    // Username
-  ApplyPasswordFont(m_PasswordCtrl);   // Password
-  ApplyPasswordFont(m_Password2Ctrl);  // Confirmation Password
-  ApplyAddEditFont(itemTextCtrlUrl);   // URL
-  ApplyAddEditFont(itemTextCtrlEmail); // Email
-  ApplyNotesFont(m_noteTX);            // Notes
+  ApplyFontPreference(m_groupCtrl, PWSprefs::StringPrefs::AddEditFont);       // Group
+  ApplyFontPreference(itemTextCtrlTitle, PWSprefs::StringPrefs::AddEditFont); // Title
+  ApplyFontPreference(m_UsernameCtrl, PWSprefs::StringPrefs::AddEditFont);    // Username
+  ApplyFontPreference(m_PasswordCtrl, PWSprefs::StringPrefs::PasswordFont);   // Password
+  ApplyFontPreference(m_Password2Ctrl, PWSprefs::StringPrefs::PasswordFont);  // Confirmation Password
+  ApplyFontPreference(itemTextCtrlUrl, PWSprefs::StringPrefs::AddEditFont);   // URL
+  ApplyFontPreference(itemTextCtrlEmail, PWSprefs::StringPrefs::AddEditFont); // Email
+  ApplyFontPreference(m_noteTX, PWSprefs::StringPrefs::NotesFont);            // Notes
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Additional"
@@ -719,7 +719,7 @@ void AddEditPropSheet::CreateControls()
 
   GetBookCtrl()->AddPage(m_PasswordPolicyPanel, _("Password Policy"));
 
-  ApplyPasswordFont(m_ownsymbols);   // User defined symbols
+  ApplyFontPreference(m_ownsymbols, PWSprefs::StringPrefs::PasswordFont);   // User defined symbols
 
   /////////////////////////////////////////////////////////////////////////////
   // End of Tab Creation
@@ -1195,13 +1195,13 @@ void AddEditPropSheet::ShowPassword()
     m_PasswordCtrl->ChangeValue(pwd);
     m_PasswordCtrl->SetModified(true);
   }
-  ApplyPasswordFont(m_PasswordCtrl);
+  ApplyFontPreference(m_PasswordCtrl, PWSprefs::StringPrefs::PasswordFont);
   m_PasswordCtrl->MoveAfterInTabOrder(m_UsernameCtrl);
   m_BasicGBSizer->Replace(tmp, m_PasswordCtrl);
   delete tmp;
   m_BasicGBSizer->Layout();
   // Disable confirmation Ctrl, as the user can see the password entered
-  ApplyPasswordFont(m_Password2Ctrl);
+  ApplyFontPreference(m_Password2Ctrl, PWSprefs::StringPrefs::PasswordFont);
   m_Password2Ctrl->Clear();
   m_Password2Ctrl->Enable(false);
 }
@@ -1220,7 +1220,7 @@ void AddEditPropSheet::HidePassword()
                                   pwd,
                                   wxDefaultPosition, wxDefaultSize,
                                   wxTE_PASSWORD);
-  ApplyPasswordFont(m_PasswordCtrl);
+  ApplyFontPreference(m_PasswordCtrl, PWSprefs::StringPrefs::PasswordFont);
   m_PasswordCtrl->MoveAfterInTabOrder(m_UsernameCtrl);
   m_BasicGBSizer->Replace(tmp, m_PasswordCtrl);
   delete tmp;
@@ -1229,7 +1229,7 @@ void AddEditPropSheet::HidePassword()
     m_PasswordCtrl->ChangeValue(pwd);
     m_PasswordCtrl->SetModified(true);
   }
-  ApplyPasswordFont(m_Password2Ctrl);
+  ApplyFontPreference(m_Password2Ctrl, PWSprefs::StringPrefs::PasswordFont);
   m_Password2Ctrl->ChangeValue(pwd);
   m_Password2Ctrl->Enable(true);
 }

@@ -578,7 +578,7 @@ private:
   void UpdateMenuBar();
   void UpdateLastClipboardAction(const CItemData::FieldType field);
 
-  void ChangeFontPreference(enum PWSprefs::StringPrefs fontPreference);
+  void ChangeFontPreference(const PWSprefs::StringPrefs fontPreference);
 
   PWScore &m_core;
   ViewType m_currentView;

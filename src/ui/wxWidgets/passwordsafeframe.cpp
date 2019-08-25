@@ -3581,10 +3581,8 @@ void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
   m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(dca)), CPWStatusBar::Field::DOUBLECLICK);
 }
 
-void PasswordSafeFrame::ChangeFontPreference(enum PWSprefs::StringPrefs fontPreference)
+void PasswordSafeFrame::ChangeFontPreference(const PWSprefs::StringPrefs fontPreference)
 {
-  wxString caption;
-
   wxFont currentFont(towxstring(PWSprefs::GetInstance()->GetPref(fontPreference)));
   wxFont newFont;
 
@@ -3592,13 +3590,11 @@ void PasswordSafeFrame::ChangeFontPreference(enum PWSprefs::StringPrefs fontPref
   {
   case (PWSprefs::StringPrefs::TreeFont):
   {
-    caption = _("Set Tree/List display font");
-
     if (!currentFont.IsOk()) {
       currentFont = IsTreeView() ? m_tree->GetFont() : m_grid->GetDefaultCellFont();
     }
 
-    newFont = ::wxGetFontFromUser(this, currentFont, caption);
+    newFont = ::wxGetFontFromUser(this, currentFont, _("Select Tree/List display font"));
 
     if (newFont.IsOk()) {
       if (IsTreeView()) {
@@ -3615,37 +3611,23 @@ void PasswordSafeFrame::ChangeFontPreference(enum PWSprefs::StringPrefs fontPref
   break;
 
   case (PWSprefs::StringPrefs::AddEditFont):
-  {
-    caption = _("Set Add/Edit display font");
-    newFont = ::wxGetFontFromUser(this, currentFont.IsOk() ? currentFont : GetFont(), caption);
-  }
-  break;
+    newFont = ::wxGetFontFromUser(this, currentFont.IsOk() ? currentFont : GetFont(), _("Select Add/Edit display font"));
+    break;
 
   case (PWSprefs::StringPrefs::PasswordFont):
-  {
-    caption = _("Set Password display font");
-    newFont = ::wxGetFontFromUser(this, currentFont.IsOk() ? currentFont : GetFont(), caption);
-  }
-  break;
+    newFont = ::wxGetFontFromUser(this, currentFont.IsOk() ? currentFont : GetFont(), _("Select Password display font"));
+    break;
 
   case (PWSprefs::StringPrefs::NotesFont):
-  {
-    caption = _("Set Notes display font");
-    newFont = ::wxGetFontFromUser(this, currentFont.IsOk() ? currentFont : GetFont(), caption);
-  }
-  break;
+    newFont = ::wxGetFontFromUser(this, currentFont.IsOk() ? currentFont : GetFont(), _("Select Notes display font"));
+    break;
 
   case (PWSprefs::StringPrefs::VKeyboardFontName):
-  {
-    caption = _("Set Virtual Keyboard font");
-    newFont = ::wxGetFontFromUser(this, currentFont.IsOk() ? currentFont : GetFont(), caption);
-  }
-  break;
+    newFont = ::wxGetFontFromUser(this, currentFont.IsOk() ? currentFont : GetFont(), _("Select Virtual Keyboard font"));
+    break;
 
   default:
-  {
     return;
-  }
   }
 
   if (newFont.IsOk())

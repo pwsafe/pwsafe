@@ -318,7 +318,7 @@ void CPasswordPolicy::CreateControls()
   m_pwNumSymbox->Add(itemStaticText30, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_OwnSymbols = new wxTextCtrl( itemDialog1, IDC_OWNSYMBOLS, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  ApplyPasswordFont(m_OwnSymbols);
+  ApplyFontPreference(m_OwnSymbols, PWSprefs::StringPrefs::PasswordFont);
   m_pwMinsGSzr->Add(m_OwnSymbols, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxEXPAND|wxALL, 5);
 
   wxButton* itemButton32 = new wxButton( itemDialog1, ID_RESET_SYMBOLS, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -356,7 +356,7 @@ void CPasswordPolicy::CreateControls()
 
   m_passwordCtrl = new wxTextCtrl( itemDialog1, ID_GENERATEDPASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(m_passwordCtrl, 1, wxALIGN_CENTER_VERTICAL|wxLEFT, 20);
-  ApplyPasswordFont(m_passwordCtrl);
+  ApplyFontPreference(m_passwordCtrl, PWSprefs::StringPrefs::PasswordFont);
 
   wxButton* itemButton1 = new wxButton( itemDialog1, ID_GENERATEPASSWORD2, _("Generate"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemButton1, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
