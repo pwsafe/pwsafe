@@ -9,23 +9,23 @@
 #ifndef _PWSLOG_H
 #define _PWSLOG_H
 
-#include "../os/typedefs.h"
+#include "os/typedefs.h"
 
 #include <deque>
 
 class PWSLog
 {
 public:
-  PWSLog() {}
   virtual ~PWSLog() {}
 
   static PWSLog *GetLog(); // singleton
   static void DeleteLog();
   
   void Add(const stringT &sLogRecord);
-  stringT DumpLog();
+  stringT DumpLog() const;
 
 private:
+  PWSLog() {}
   static PWSLog *self;
   std::deque<stringT> m_log;
 };

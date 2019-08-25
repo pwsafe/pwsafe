@@ -14,8 +14,8 @@
 #include "core.h"
 #include "StringXStream.h"
 
-#include "../os/typedefs.h"
-#include "../os/debug.h"
+#include "os/typedefs.h"
+#include "os/debug.h"
 
 #include <iomanip>
 /**

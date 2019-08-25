@@ -17,9 +17,10 @@
 #include <vector>
 #include "ItemData.h"
 #include "StringX.h"
-#include "PWScore.h"
-#include "../os/UUID.h"
+#include "os/UUID.h"
+#include "coredefs.h"
 //-----------------------------------------------------------------------------
+class PWScore;
 
 /*
 * CRUEList is a class that contains the recently used entries

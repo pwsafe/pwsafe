@@ -39,12 +39,12 @@ void PWSLog::Add(const stringT &sLogRecord)
   stringT sTimeStamp;
   PWSUtil::GetTimeStamp(sTimeStamp);
 
-  // m_log preloaded, so pop_fornt is always valid (see GetLog).
+  // m_log preloaded, so pop_front is always valid (see GetLog).
   m_log.pop_front();
   m_log.push_back(sTimeStamp + sb + sLogRecord);
 }
 
-stringT PWSLog::DumpLog()
+stringT PWSLog::DumpLog() const
 {
   const TCHAR *sHeader = _T("US04 ");
   ostringstreamT stLog;

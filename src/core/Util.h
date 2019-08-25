@@ -17,9 +17,9 @@
 #include "Fish.h"
 #include "PwsPlatform.h"
 
-#include "../os/debug.h"
-#include "../os/typedefs.h"
-#include "../os/mem.h"
+#include "os/debug.h"
+#include "os/typedefs.h"
+#include "os/mem.h"
 
 #include <sstream>
 #include <stdarg.h>
