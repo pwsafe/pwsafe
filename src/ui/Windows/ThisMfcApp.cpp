@@ -70,13 +70,6 @@ END_MESSAGE_MAP()
 
 static MFCReporter aReporter;
 static MFCAsker    anAsker;
-#ifndef _DEBUG
-extern wchar_t *wcRevision;
-extern wchar_t *wcMsg1;
-extern wchar_t *wcMsg2;
-extern wchar_t *wcMsg3;
-extern wchar_t *wcCaption;
-#endif
 
 ThisMfcApp::ThisMfcApp() :
   m_bUseAccelerator(true),
