@@ -73,7 +73,7 @@ inline void ApplyFontPreference(wxWindow* window, const PWSprefs::StringPrefs fo
     }
     break;
     default:
-    return;
+    wxASSERT_MSG(false, wxT("Wrong enumeration value."));
   }
 }
 
