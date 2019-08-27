@@ -9,8 +9,8 @@
 //-----------------------------------------------------------------------------
 
 #include "ItemAtt.h"
-#include "BlowFish.h"
-#include "TwoFish.h"
+#include "crypto/BlowFish.h"
+#include "crypto/TwoFish.h"
 #include "PWSrand.h"
 #include "PWSfile.h"
 #include "PWSfileV4.h"

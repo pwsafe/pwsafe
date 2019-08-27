@@ -24,7 +24,7 @@ WX_CONFIG?=$(shell if [ -e $(WX3) ]; then echo $(WX3); else echo $(WX2); fi)
 # Following not used in Linux build
 NOTSRC          = PWSclipboard.cpp
 
-LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
+LIBSRC          = CheckVersion.cpp \
                   Item.cpp ItemData.cpp ItemAtt.cpp ItemField.cpp  \
                   Match.cpp PolicyManager.cpp PWCharPool.cpp CoreImpExp.cpp \
                   PWPolicy.cpp PWHistory.cpp PWSAuxParse.cpp \
@@ -32,10 +32,9 @@ LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
                   PWSfileV1V2.cpp PWSfileV3.cpp PWSfileV4.cpp \
                   PWSFilters.cpp PWSLog.cpp PWSprefs.cpp \
                   Command.cpp PWSrand.cpp Report.cpp \
-                  sha1.cpp sha256.cpp core_st.cpp\
-								  pbkdf2.cpp KeyWrap.cpp RUEList.cpp \
+                  core_st.cpp RUEList.cpp \
                   StringX.cpp SysInfo.cpp \
-                  TwoFish.cpp UnknownField.cpp  \
+                  UnknownField.cpp  \
                   UTF8Conv.cpp Util.cpp CoreOtherDB.cpp \
                   VerifyFormat.cpp XMLprefs.cpp \
                   ExpiredList.cpp PWStime.cpp\
@@ -44,7 +43,10 @@ LIBSRC          = AES.cpp BlowFish.cpp CheckVersion.cpp \
                   XML/Xerces/XFileSAX2Handlers.cpp XML/Xerces/XFileValidator.cpp \
                   XML/Xerces/XFileXMLProcessor.cpp XML/Xerces/XFilterSAX2Handlers.cpp \
                   XML/Xerces/XFilterXMLProcessor.cpp XML/Xerces/XSecMemMgr.cpp PWSLog.cpp \
-				  RUEList.cpp
+				  RUEList.cpp \
+				  crypto/AES.cpp crypto/BlowFish.cpp crypto/pbkdf2.cpp \
+				  crypto/KeyWrap.cpp crypto/sha1.cpp crypto/sha256.cpp \
+				  crypto/TwoFish.cpp
 
 SRC             = $(LIBSRC)
 
@@ -108,7 +110,7 @@ setup:
 	@mkdir -p $(OBJPATH) $(OBJPATH)/pugixml $(OBJPATH)/XML/Xerces $(LIBPATH) $(DEPDIR)
 
 $(DEPDIR)/%.d: %.cpp
-	@set -e; mkdir -p $(DEPDIR) $(DEPDIR)/pugixml; \
+	@set -e; mkdir -p $(DEPDIR) $(DEPDIR)/pugixml $(DEPDIR)/crypto; \
 	mkdir -p $(DEPDIR)/XML/Xerces; \
 	$(RM) $@; \
 	$(CXX) -MM $(CPPFLAGS) $< > $@.$$$$; \

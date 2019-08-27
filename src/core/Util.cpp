@@ -8,8 +8,8 @@
 /// \file Util.cpp
 //-----------------------------------------------------------------------------
 
-#include "sha1.h"
-#include "BlowFish.h"
+#include "crypto/sha1.h"
+#include "crypto/BlowFish.h"
 #include "PWSrand.h"
 #include "PwsPlatform.h"
 #include "core.h"

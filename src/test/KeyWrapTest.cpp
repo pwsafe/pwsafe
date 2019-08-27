@@ -12,8 +12,8 @@
 #include "../ui/Windows/stdafx.h"
 #endif
 
-#include "core/KeyWrap.h"
-#include "core/AES.h"
+#include "core/crypto/KeyWrap.h"
+#include "core/crypto/AES.h"
 #include "gtest/gtest.h"
 
 static int AES_wrap_unwrap_test(const unsigned char *kek, int keybits,

@@ -14,7 +14,7 @@
 #include "os/file.h"
 #include "os/dir.h"  // for splitpath
 
-#include "sha1.h" // for simple encrypt/decrypt
+#include "crypto/sha1.h" // for simple encrypt/decrypt
 #include "PWSrand.h"
 
 #include <fcntl.h>

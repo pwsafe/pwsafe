@@ -11,10 +11,10 @@
 // Util.h
 //-----------------------------------------------------------------------------
 
-#include "sha256.h"
+#include "crypto/sha256.h"
 #include "StringX.h"
 #include "StringXStream.h"
-#include "Fish.h"
+#include "crypto/Fish.h"
 #include "PwsPlatform.h"
 
 #include "os/debug.h"

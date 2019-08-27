@@ -12,8 +12,8 @@
 #include "../ui/Windows/stdafx.h"
 #endif
 
-#include "core/hmac.h"
-#include "core/sha256.h"
+#include "core/crypto/hmac.h"
+#include "core/crypto/sha256.h"
 #include "gtest/gtest.h"
 
 TEST(HMAC_SHA256Test, hmac_sha256_test)

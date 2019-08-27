@@ -12,7 +12,7 @@
 
 #include "ItemField.h"
 #include "Util.h"
-#include "Fish.h"
+#include "crypto/Fish.h"
 #include "PWSrand.h"
 #include "os/funcwrap.h"
 

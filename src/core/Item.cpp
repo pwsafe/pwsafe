@@ -9,8 +9,8 @@
 //-----------------------------------------------------------------------------
 
 #include "Item.h"
-#include "BlowFish.h"
-#include "TwoFish.h"
+#include "crypto/BlowFish.h"
+#include "crypto/TwoFish.h"
 #include "PWSrand.h"
 #include "UTF8Conv.h"
 #include "Util.h"

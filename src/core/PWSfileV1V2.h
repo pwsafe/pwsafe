@@ -13,7 +13,7 @@
 #define __PWSFILEV1V2_H
 
 #include "PWSfile.h"
-#include "BlowFish.h"
+#include "crypto/BlowFish.h"
 
 class PWSfileV1V2 : public PWSfile
 {

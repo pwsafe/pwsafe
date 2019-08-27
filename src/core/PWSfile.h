@@ -23,7 +23,7 @@
 #include "StringX.h"
 #include "PWSfileHeader.h"
 #include "Proxy.h"
-#include "sha256.h"
+#include "crypto/sha256.h"
 
 #include "coredefs.h"
 

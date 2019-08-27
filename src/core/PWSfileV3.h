@@ -13,9 +13,9 @@
 //-----------------------------------------------------------------------------
 
 #include "PWSfile.h"
-#include "TwoFish.h"
-#include "sha256.h"
-#include "hmac.h"
+#include "crypto/TwoFish.h"
+#include "crypto/sha256.h"
+#include "crypto/hmac.h"
 #include "UTF8Conv.h"
 
 class PWSfileV3 : public PWSfile

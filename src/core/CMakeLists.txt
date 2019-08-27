@@ -1,8 +1,7 @@
 include(CheckLibraryExists)
 
 set (CORE_SRCS
-  AES.cpp
-  BlowFish.cpp
+ 
   CheckVersion.cpp
   Command.cpp
   CoreImpExp.cpp
@@ -12,9 +11,7 @@ set (CORE_SRCS
   Item.cpp
   ItemData.cpp
   ItemField.cpp
-  KeyWrap.cpp
   Match.cpp
-  pbkdf2.cpp
   PolicyManager.cpp
   PWCharPool.cpp
   PWHistory.cpp
@@ -34,16 +31,20 @@ set (CORE_SRCS
   PWStime.cpp
   Report.cpp
   RUEList.cpp
-  sha1.cpp
-  sha256.cpp
   StringX.cpp
   SysInfo.cpp
-  TwoFish.cpp
   UnknownField.cpp
   UTF8Conv.cpp
   Util.cpp
   VerifyFormat.cpp
   XMLprefs.cpp
+  crypto/AES.cpp
+  crypto/BlowFish.cpp
+  crypto/KeyWrap.cpp
+  crypto/pbkdf2.cpp
+  crypto/sha1.cpp
+  crypto/sha256.cpp
+  crypto/TwoFish.cpp
   XML/XMLFileHandlers.cpp
   XML/XMLFileValidation.cpp
   pugixml/pugixml.cpp

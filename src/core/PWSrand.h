@@ -11,7 +11,7 @@
 #ifndef __PWSRAND_H
 #define __PWSRAND_H
 
-#include "sha256.h"
+#include "crypto/sha256.h"
 
 class PWSrand
 {

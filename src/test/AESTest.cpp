@@ -12,7 +12,7 @@
 #include "../ui/Windows/stdafx.h"
 #endif
 
-#include "core/AES.h"
+#include "core/crypto/AES.h"
 #include "gtest/gtest.h"
 
 TEST(AESTest, aes_test)
