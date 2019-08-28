@@ -58,7 +58,7 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libcore.a
 OBJ       = $(LIBOBJ)
 
-CPPFLAGS := $(CXXFLAGS) -fPIC -Wall -I.. $(CPPFLAGS)
+CPPFLAGS := $(CXXFLAGS) -fPIC -Wall -I. -I.. -I../.. $(CPPFLAGS)
 
 ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
 	    XERCESCPPFLAGS=
@@ -107,7 +107,7 @@ clean:
 	@rm core_st.cpp core_st.h
 
 setup:
-	@mkdir -p $(OBJPATH) $(OBJPATH)/pugixml $(OBJPATH)/XML/Xerces $(LIBPATH) $(DEPDIR)
+	@mkdir -p $(OBJPATH) $(OBJPATH)/pugixml $(OBJPATH)/crypto $(OBJPATH)/XML/Xerces $(LIBPATH) $(DEPDIR)
 
 $(DEPDIR)/%.d: %.cpp
 	@set -e; mkdir -p $(DEPDIR) $(DEPDIR)/pugixml $(DEPDIR)/crypto; \
