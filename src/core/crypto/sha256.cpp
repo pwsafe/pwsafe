@@ -10,7 +10,7 @@
 // Tom St Denis, tomstdenis@iahu.ca, http://libtomcrypt.org
 //-----------------------------------------------------------------------------
 #include "sha256.h"
-#include "PwsPlatform.h"
+#include "bitops.h"
 #include "Util.h"
 
 #include <algorithm>
