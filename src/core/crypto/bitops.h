@@ -16,6 +16,10 @@
 * use the portable [slower] macros.
 */
 
+#ifndef _MSC_VER
+#include <stdint.h>
+#endif
+
 /* detect x86-32 machines somewhat */
 #if defined(INTEL_CC) || (defined(_MSC_VER) && defined(WIN32)) || (defined(__GNUC__) && (defined(__DJGPP__) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__i386__)))
 #define ENDIAN_LITTLE
@@ -41,7 +45,7 @@
 /* #define ENDIAN_64BITWORD */
 
 #if (defined(ENDIAN_BIG) || defined(ENDIAN_LITTLE)) && !(defined(ENDIAN_32BITWORD) || defined(ENDIAN_64BITWORD))
-#error You must specify a word size as well as endianness in mycrypt_cfg.h
+#error You must specify a word size as well as endianness
 #endif
 
 #if !(defined(ENDIAN_BIG) || defined(ENDIAN_LITTLE))
