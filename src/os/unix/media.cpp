@@ -7,55 +7,49 @@
 */
 
 /**
-* \file Linux-specific implementation of media.h
+* Linux-specific implementation of media.h
 */
 
 #include "../media.h"
 #include "../file.h"
 #include "../utf8conv.h"
 
-#include <cstdlib>
-#include <cstdio>
+#include <magic.h>
 
 using namespace std;
 
-stringT pws_os::GetMediaType(const stringT &sfilename)
-{
-  /**
-   * Simplest way to get the mime type of file is via file(1) command
-   * popen()/pclose() is one approach, but we need to protect against
-   * a filename of the form "foo;/bin/rm -rf *" (Little Bobby tables).
-   * One solution is to fork/exec with dup2.
-   * I think it's easier (a) to stat the file first (b) quote the
-   * filename.
-   */
+stringT pws_os::GetMediaType(const stringT &sfilename) {
+    /**
+     * Using libmagic instead of external 'file' command
+     */
 
-  if (!pws_os::FileExists(sfilename))
-    return _T("unknown");
-  
-  stringT command = _T("/usr/bin/file -b --mime-type '") + sfilename + _T("'");
+    if (!pws_os::FileExists(sfilename))
+        return _T("unknown");
 
-  // need to convert command to char *
-  size_t clen = pws_os::wcstombs(nullptr, 0, command.c_str(), command.length());
-  if (clen <= 0)
-    return _T("unknown");
-  char *cmd = new char[clen+1];
-  pws_os::wcstombs(cmd, clen, command.c_str(), command.length());
+    const char *smimeType;
+    magic_t magic_cookie;
+    stringT wcmimeType;
 
-  
-  FILE *pf = popen(cmd, "r");
-  delete[] cmd;
-  char pret[64];
-  if (fgets(pret, sizeof(pret), pf) == nullptr) {
-    pclose(pf);
-    return _T("unknown");
-  }
-  pclose(pf);
-  // need to convert pret to wchar_t
-  wchar_t pwret[4*sizeof(pret)];
-  mbstowcs(pwret, sizeof(pwret), pret, sizeof(pret));
-  stringT retval(pwret);
-  if (!retval.empty())
-    retval.pop_back(); // get rid of pesky newline
-  return retval;
+    //MAGIC_MIME_TYPE -> return mime type of the file
+    magic_cookie = magic_open(MAGIC_MIME_TYPE);
+
+    if (magic_cookie == nullptr) {
+        pws_os::Trace(L"GetMediaType - Error during libmagic initialization");
+        return _T("unknown");
+    }
+
+    //Load default magic db
+    if (magic_load(magic_cookie, nullptr) != 0) {
+        pws_os::Trace(L"GetMediaType - Cannot load libmagic database - %s", magic_error(magic_cookie));
+        magic_close(magic_cookie);
+        return _T("unknown");
+    }
+
+    smimeType = magic_file(magic_cookie, pws_os::tomb(sfilename).c_str());
+
+    wcmimeType = pws_os::towc(smimeType);
+    //close at end since result is lost after that
+    magic_close(magic_cookie);
+
+    return wcmimeType;
 }

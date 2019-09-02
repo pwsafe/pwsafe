@@ -374,7 +374,7 @@ else ()
   if (NOT NO_QR)
     target_link_libraries(pwsafe qrencode  ${CMAKE_REQUIRED_LIBRARIES})
   endif (NOT NO_QR)
-  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 curl ${OPENSSL_SSL_LIBRARY}
+  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 curl magic ${OPENSSL_SSL_LIBRARY}
   ${CMAKE_REQUIRED_LIBRARIES})
 endif()
 
