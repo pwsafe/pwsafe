@@ -8,7 +8,8 @@
 
 dnf install cmake gcc-c++ git gtest-devel libXt-devel libXtst-devel \
     libcurl-devel libuuid-devel libyubikey-devel \
-    make openssl-devel wxGTK3-devel xerces-c-devel ykpers-devel qrencode-devel
+    make openssl-devel wxGTK3-devel xerces-c-devel ykpers-devel qrencode-devel \
+    file-devel
 
 #cd /usr/src/gtest
 #mkdir build

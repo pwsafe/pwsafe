@@ -9,7 +9,8 @@
 apt-get install cmake fakeroot g++ gettext git libgtest-dev \
         libcurl4-openssl-dev libqrencode-dev  libssl-dev libuuid1 \
         libwxgtk3.0-dev libxerces-c-dev libxt-dev libxtst-dev \
-        libykpers-1-dev libyubikey-dev make pkg-config uuid-dev zip
+        libykpers-1-dev libyubikey-dev make pkg-config uuid-dev zip \
+        libmagic-dev
 
 cd /usr/src/gtest
 mkdir build
