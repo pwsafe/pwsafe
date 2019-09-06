@@ -40,7 +40,7 @@ else
 	GTEST_HEADERS=/usr/include/gtest/*.h /usr/include/gtest/internal/*.h
 	GTEST_SRCS=$(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 	GTEST_OBJ = $(OBJPATH)/gtest-all.o
-	EXTLIBS=-luuid -lxerces-c -lpthread
+	EXTLIBS=-luuid -lxerces-c -lpthread -lmagic
 	TEST_EXTLIBS=$(EXTLIBS)
 	WX_CONFIG?=/usr/bin/wx-config
 endif

@@ -19,6 +19,7 @@ addons:
             - pkg-config
             - libgtest-dev
             - libqrencode-dev
+            - libmagic-dev
 
 language: cpp
 
