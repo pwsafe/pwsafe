@@ -13,7 +13,7 @@
 #include "InfoDisplay.h"      // for Listbox Tooltips
 
 #include "core/ItemField.h"   // for CSecEditExtn
-#include "core/BlowFish.h"    // ditto
+#include "core/crypto/BlowFish.h"    // ditto
 #include "core/PWSrand.h"     // ditto
 #include "core/PWCharPool.h"  // for CSymbolEdit
 #include "resource2.h"        // for CRichEditExtnX context menu

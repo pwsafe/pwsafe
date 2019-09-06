@@ -15,10 +15,10 @@
 #include "PWSdirs.h"
 #include "PWSprefs.h"
 #include "core.h"
-#include "pbkdf2.h"
-#include "KeyWrap.h"
+#include "crypto/pbkdf2.h"
+#include "crypto/KeyWrap.h"
 #include "PWStime.h"
-#include "TwoFish.h"
+#include "crypto/TwoFish.h"
 
 #include "ItemAtt.h" // for WriteContentFields()
 

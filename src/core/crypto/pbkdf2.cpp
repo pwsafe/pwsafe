@@ -9,7 +9,7 @@
 // Based on LibTomCrypt by
 // Tom St Denis, tomstdenis@iahu.ca, http://libtomcrypt.org
 
-#include "PwsPlatform.h"
+#include "bitops.h"
 #include "hmac.h"
 
 #include <cstring>

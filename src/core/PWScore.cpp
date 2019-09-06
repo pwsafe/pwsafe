@@ -10,7 +10,7 @@
 
 #include "PWScore.h"
 #include "core.h"
-#include "TwoFish.h"
+#include "crypto/TwoFish.h"
 #include "PWSprefs.h"
 #include "PWHistory.h"
 #include "PWSrand.h"

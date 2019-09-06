@@ -11,7 +11,7 @@
 #endif
 
 #include "core/ItemField.h"
-#include "core/BlowFish.h"
+#include "core/crypto/BlowFish.h"
 #include "gtest/gtest.h"
 
 class NullFish : public Fish

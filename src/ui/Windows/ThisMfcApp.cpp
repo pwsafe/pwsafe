@@ -33,7 +33,6 @@
 #include "PWSversion.h"
 
 #include "core/Util.h"
-#include "core/BlowFish.h"
 #include "core/PWSprefs.h"
 #include "core/PWSrand.h"
 #include "core/PWSdirs.h"

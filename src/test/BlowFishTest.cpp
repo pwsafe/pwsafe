@@ -12,7 +12,7 @@
 #include "../ui/Windows/stdafx.h"
 #endif
 
-#include "core/BlowFish.h"
+#include "core/crypto/BlowFish.h"
 #include "gtest/gtest.h"
 
 /*

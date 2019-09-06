@@ -11,7 +11,7 @@
 #include "../ui/Windows/stdafx.h"
 #endif
 
-#include "core/TwoFish.h"
+#include "core/crypto/TwoFish.h"
 #include "gtest/gtest.h"
 
 TEST(TwoFishTest, twofish_test)

@@ -164,7 +164,7 @@ endif
 
 DEPDIR= ./deps
 
-CPPINC += -I../..
+CPPINC += -I../.. -I../../core
 
 ifndef NO_YUBI
 YBPERS_LIBPATH?=$(LIBPATH)

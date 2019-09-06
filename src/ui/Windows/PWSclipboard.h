@@ -17,7 +17,7 @@
 * if isSensitive was true when we added it.
 */
 
-#include "core/sha256.h"
+#include "core/crypto/sha256.h"
 
 #define CLIPBOARD_TEXT_FORMAT CF_UNICODETEXT
 

@@ -9,8 +9,8 @@
 //-----------------------------------------------------------------------------
 
 #include "ItemData.h"
-#include "BlowFish.h"
-#include "TwoFish.h"
+#include "crypto/BlowFish.h"
+#include "crypto/TwoFish.h"
 #include "UTF8Conv.h"
 #include "PWSprefs.h"
 #include "VerifyFormat.h"

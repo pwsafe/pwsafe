@@ -11,7 +11,7 @@
 //-----------------------------------------------------------------------------
 
 #include "TwoFish.h"
-#include "PwsPlatform.h"
+#include "bitops.h"
 #include "Util.h"
 
 #define LTC_CLEAN_STACK

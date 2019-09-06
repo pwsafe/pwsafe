@@ -10,7 +10,7 @@
 #include "../ui/Windows/stdafx.h"
 #endif
 
-#include "core/sha256.h"
+#include "core/crypto/sha256.h"
 #include "gtest/gtest.h"
 
 TEST(SHA256Test, sha256_test)

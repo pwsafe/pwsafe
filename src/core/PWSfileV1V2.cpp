@@ -8,7 +8,7 @@
 #include "PWSfileV1V2.h"
 #include "PWSrand.h"
 #include "core.h"
-#include "sha1.h"
+#include "crypto/sha1.h"
 #include "os/file.h"
 #include "os/utf8conv.h"
 #include "os/UUID.h"
