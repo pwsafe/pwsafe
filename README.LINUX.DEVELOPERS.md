@@ -29,6 +29,7 @@ libcurl4-openssl-dev
 libqrencode-dev
 libssl-dev
 libgtest-dev
+libmagic-dev
 libuuid1
 libwxgtk3.0-dbg (See note 2 below)
 libwxgtk3.0-dev (See note 2 below)
@@ -50,6 +51,7 @@ cmake (See note 1 below)
 gcc-c++
 git
 gtest-devel
+file-devel
 libXt-devel
 libXtst-devel
 libcurl-devel
