@@ -55,7 +55,6 @@ file-devel
 libXt-devel
 libXtst-devel
 libcurl-devel
-libqrencode-devel
 libuuid-devel
 libyubikey-devel
 make
