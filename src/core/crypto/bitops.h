@@ -66,8 +66,6 @@ typedef uint64_t ulong64;
 */
 #if defined(__x86_64__)
 typedef unsigned ulong32;
-#else
-typedef unsigned long ulong32;
 #endif
 
 #if defined(__linux__) || defined(__CYGWIN__) || defined (macintosh) || defined(Macintosh) || defined(__APPLE__) || defined(__MACH__) || defined(__FreeBSD) || defined(__FreeBSD__)
