@@ -214,9 +214,21 @@ msgstr " 'geschützt'"
 msgid " 'symbols'"
 msgstr " 'Symbole'"
 
+#. Resource IDs: (4105)
+msgid " (EasyVision Symbols)"
+msgstr ""
+
+#. Resource IDs: (4106)
+msgid " (Pronounceable Symbols)"
+msgstr ""
+
 #. Resource IDs: (4011)
 msgid " (application default)"
 msgstr "(Anwendungsstandard)"
+
+#. Resource IDs: (4115)
+msgid " (at least N restrictions may be ignored)"
+msgstr ""
 
 #. Resource IDs: (5781)
 #, c-format
@@ -7310,18 +7322,8 @@ msgstr "Ja (mindestens %d)"
 
 #. Resource IDs: (4107)
 #, c-format
-msgid "Yes - At least %d from %ls: %ls"
-msgstr "Ja - mindestens %d von %ls: %ls"
-
-#. Resource IDs: (4105)
-#, c-format
-msgid "Yes - EasyVision Symbols: %ls"
-msgstr "Ja - Easyvision Zeichen: %ls"
-
-#. Resource IDs: (4106)
-#, c-format
-msgid "Yes - Pronounceable Symbols: %ls"
-msgstr "Ja - Aussprechbare Symbole: %ls"
+msgid "Yes - At least %d from %ls: %ls%ls"
+msgstr ""
 
 #. Resource IDs: (1084)
 msgid "Yes:"
