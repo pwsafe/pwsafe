@@ -13,7 +13,7 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
 
-Bugs Fixed in 3.50pre2
+Bugs Fixed in 3.50pre3
 ======================
 [1496] Easy-to-use password policies now enforces symbol constraint.
 [1494] Improve password policy checks and display.
