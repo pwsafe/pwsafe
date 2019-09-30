@@ -1204,16 +1204,16 @@ BOOL DboxMain::OnInitDialog()
     }
   } // --setup flag handling
   
-  //  if (m_IsStartNoDB)
-  //Close();
-  if (m_InitMode != SilentInit)
-    ShowWindow(SW_SHOW);
-
   // Check if user cancelled
   if (bOOI == FALSE) {
     PostQuitMessage(0);
     return TRUE;  // return TRUE unless you set the focus to a control
   }
+
+  //  if (m_IsStartNoDB)
+  //Close();
+  if (m_InitMode != SilentInit)
+    ShowWindow(SW_SHOW);
 
   SetInitialDatabaseDisplay();
   if (m_bOpen && PWSprefs::GetInstance()->GetPref(PWSprefs::ShowFindToolBarOnOpen))
