@@ -2501,7 +2501,7 @@ msgid "Synchronization failed"
 msgstr "Сбой при синхронизации"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:44
-msgid "Encrytion"
+msgid "Encryption"
 msgstr "Шифрование"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:45

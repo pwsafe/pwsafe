@@ -2607,7 +2607,7 @@ msgstr "Synchronizacja sie nie powiodła"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:44
 #, fuzzy
-msgid "Encrytion"
+msgid "Encryption"
 msgstr "Szyfrowanie nie powiodło się"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:45

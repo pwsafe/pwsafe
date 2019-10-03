@@ -41,7 +41,7 @@ CryptKeyEntry::CryptKeyEntry(Mode mode)
     wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
     if (mode == Mode::ENCRYPT) {
-      Create(nullptr, -1, _("Encrytion"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxTAB_TRAVERSAL, _T("id"));
+      Create(nullptr, -1, _("Encryption"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxTAB_TRAVERSAL, _T("id"));
       StaticTextDescription = new wxStaticText(this, wxID_ANY, _("Please enter an encryption key."), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
     }
     else {

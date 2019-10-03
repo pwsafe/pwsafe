@@ -2676,7 +2676,7 @@ msgstr "Synchronisatie mislukt"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:44
 #, fuzzy
-msgid "Encrytion"
+msgid "Encryption"
 msgstr "Codering mislukt."
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:45

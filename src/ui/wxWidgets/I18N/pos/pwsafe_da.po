@@ -2619,7 +2619,7 @@ msgstr "Synkronisering fejlede"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:44
 #, fuzzy
-msgid "Encrytion"
+msgid "Encryption"
 msgstr "Kryptering fejlede"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:45

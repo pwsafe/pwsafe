@@ -2645,7 +2645,7 @@ msgstr "동기화 실패"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:44
 #, fuzzy
-msgid "Encrytion"
+msgid "Encryption"
 msgstr "암호화 실패"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:45
