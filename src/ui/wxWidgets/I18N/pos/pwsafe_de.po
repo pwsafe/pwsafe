@@ -2481,7 +2481,7 @@ msgid "Synchronization failed"
 msgstr "Synchronisation fehlgeschlagen"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:44
-msgid "Encrytion"
+msgid "Encryption"
 msgstr "Verschlüsselung"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:45

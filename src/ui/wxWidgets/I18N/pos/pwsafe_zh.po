@@ -2617,7 +2617,7 @@ msgstr "同步失败"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:44
 #, fuzzy
-msgid "Encrytion"
+msgid "Encryption"
 msgstr "加密失败"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:45

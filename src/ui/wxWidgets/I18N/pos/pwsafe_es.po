@@ -2665,7 +2665,7 @@ msgstr "Error de sincronización"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:44
 #, fuzzy
-msgid "Encrytion"
+msgid "Encryption"
 msgstr "Fallo de cifrado"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:45

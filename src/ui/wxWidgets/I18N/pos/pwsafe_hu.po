@@ -2508,7 +2508,7 @@ msgstr "Sikertelen szinkronizáció"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:44
 #, fuzzy
-msgid "Encrytion"
+msgid "Encryption"
 msgstr "Titkosítás sikertelen"
 
 #: ../../../ui/wxWidgets/CryptKeyEntry.cpp:45
