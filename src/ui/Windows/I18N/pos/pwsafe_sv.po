@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-09-27 20:03+0200\n"
+"PO-Revision-Date: 2019-10-02 23:38+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Last-Translator: \n"
+"Last-Translator: Björn Nordwall <bjorn@nordwall.info>\n"
 "Language-Team: \n"
 "Language: sv\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.4\n"
 
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
@@ -101,23 +101,23 @@ msgstr "  All lösenordshistorik har ignorerats."
 
 #. Resource IDs: (3040)
 msgid "  Field is too long."
-msgstr "  För långt fält."
+msgstr "  Fältet är för långt."
 
 #. Resource IDs: (3039)
 msgid "  Field is too short."
-msgstr "  För kort fält."
+msgstr "  Fältet är för kort."
 
 #. Resource IDs: (3069)
 msgid "  Field length is incorrect."
-msgstr "  Felaktig fältlängd."
+msgstr "   fältlängd."
 
 #. Resource IDs: (3037)
 msgid "  Invalid date/time value."
-msgstr "  Felaktig datum/tidsangivelse."
+msgstr "   Ogiltigt datum/tidsangivelse."
 
 #. Resource IDs: (3041)
 msgid "  Invalid field separator character found - only a single blank is allowed between fields."
-msgstr "  Felaktigt fältavgränsande tecken har hittats - endast ett enda blanksteg är tillåtet mellan fälten."
+msgstr "  Ogiltigt fältavgränsningstecken hittades - endast ett enda blanksteg tillåts mellan fälten."
 
 #. Resource IDs: (3034)
 #, c-format
@@ -127,20 +127,20 @@ msgstr "  Ogiltig rubrik: '%ls' (måste vara 5 hexadecimala tecken)."
 #. Resource IDs: (3036)
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
-msgstr "  Felaktigt antal sparade gamla lösenord %d."
+msgstr "  t antal sparade gamla lösenord %d."
 
 #. Resource IDs: (3070)
 msgid "  Invalid password length found (differs from length of following password)."
-msgstr "  Felaktig lösenordslängd hittades (avviker i längd från följande lösenord)."
+msgstr "   lösenordslängd hittades (avviker i längd från följande lösenord)."
 
 #. Resource IDs: (3038)
 msgid "  Invalid password length found (not a hexadecimal number)."
-msgstr "  Felaktig lösenordslängd hittades (inte ett hexadecimalt tal)."
+msgstr "   lösenordslängd hittades (inte ett hexadecimalt tal)."
 
 #. Resource IDs: (3035)
 #, c-format
 msgid "  Invalid status value: %d (must be either 0 or 1)."
-msgstr "  Felaktigt statusvärde: %d (måste vara antingen 0 eller 1)."
+msgstr "  t statusvärde: %d (måste vara antingen 0 eller 1)."
 
 #. Resource IDs: (5367)
 msgid " 'AutoType'"
@@ -148,7 +148,7 @@ msgstr " 'Autoskriv'"
 
 #. Resource IDs: (5368)
 msgid " 'Creation Time'"
-msgstr " 'Skapad den'"
+msgstr " 'Skapandetid'"
 
 #. Resource IDs: (5704)
 msgid " 'DCA'"
@@ -164,11 +164,11 @@ msgstr " 'Grupp'"
 
 #. Resource IDs: (5980)
 msgid " 'Has Attachments'"
-msgstr " 'Innehåller bilagor'"
+msgstr " 'Har bilagor'"
 
 #. Resource IDs: (5941)
 msgid " 'Keyboard Shortcut'"
-msgstr " 'Tangentbordsgenväg'"
+msgstr " 'Kortkommando'"
 
 #. Resource IDs: (5370)
 msgid " 'Last Access Time'"
@@ -180,11 +180,11 @@ msgstr " 'Noteringar'"
 
 #. Resource IDs: (5691)
 msgid " 'Password Expiry Time Interval'"
-msgstr " 'Tidsperiod för lösenordets utgång'"
+msgstr " 'Tidsperiod för lösenordets förfall'"
 
 #. Resource IDs: (5371)
 msgid " 'Password Expiry Time'"
-msgstr " 'Lösenordets utgångsdatum'"
+msgstr " 'Lösenordets förfallodatum'"
 
 #. Resource IDs: (5373)
 msgid " 'Password History'"
@@ -208,7 +208,7 @@ msgstr " 'Policynamn'"
 
 #. Resource IDs: (5372)
 msgid " 'Record Modification Time'"
-msgstr " 'Tidpunkt för ändring av registreringen'"
+msgstr " 'Tidpunkt för registreringsändring'"
 
 #. Resource IDs: (5655)
 msgid " 'Run Command'"
@@ -375,7 +375,7 @@ msgstr "%1 har ett felaktigt format."
 #. Resource IDs: (61858)
 #, c-format
 msgid "%1 was not found."
-msgstr "%1 kunde inte hittas."
+msgstr "%1 hittades inte."
 
 #. Resource IDs: (61744)
 #, c-format
@@ -384,7 +384,7 @@ msgid ""
 "Continue running script?"
 msgstr ""
 "%1: %2\n"
-"Fortsätt köra skriptet?"
+"Vill du fortsätta köra skriptet?"
 
 #. Resource IDs: (61729)
 #, c-format
@@ -425,7 +425,7 @@ msgstr "%d punkter"
 #. Resource IDs: (5275)
 #, c-format
 msgid "%d of %d matches."
-msgstr "%d av %d matchar."
+msgstr "%d av %d matchningar."
 
 #. Resource IDs: (5609)
 #, c-format
@@ -612,7 +612,7 @@ msgid ""
 msgstr ""
 "%s\n"
 "\n"
-"Filen är felaktig eller trasig!\n"
+"Filen är skadad eller trasig!\n"
 "Data kan ha förlorats eller ändrats.\n"
 "Fortsätta ändå?"
 
@@ -636,7 +636,7 @@ msgid ""
 msgstr ""
 "%s\n"
 "\n"
-"Felaktigt format"
+"Ogiltigt format"
 
 #. Resource IDs: (5321)
 #, c-format
@@ -651,7 +651,7 @@ msgstr ""
 
 #. Resource IDs: (5728)
 msgid "&Abort"
-msgstr "S&täng"
+msgstr "&Avsluta"
 
 #. Resource IDs: (32202 - Menu, 32202 - MenuEx)
 msgid "&About Password Safe..."
@@ -659,11 +659,11 @@ msgstr "&Om Password Safe.."
 
 #. Resource IDs: (32051 - Menu, 32051 - MenuEx)
 msgid "&Add Entry..."
-msgstr "Lägg till &Post..."
+msgstr "&Lägg till Post..."
 
 #. Resource IDs: (32139 - MenuEx)
 msgid "&Add/Edit Font"
-msgstr "&Lägg till/Redigera Font"
+msgstr "&Lägg till/redigera font"
 
 #. Resource IDs: (1026, 1306)
 msgid "&Apply"
@@ -683,23 +683,23 @@ msgstr "&Gå till URL"
 
 #. Resource IDs: (32151 - MenuEx)
 msgid "&Change Safe Combination..."
-msgstr "&Byt Safe-nyckel..."
+msgstr "&Ändra säkerhetsnyckel..."
 
 #. Resource IDs: (32105 - MenuEx)
 msgid "&Classic Toolbar"
-msgstr "&Klassisk verktygslist"
+msgstr "&Klassisk verktygsfält"
 
 #. Resource IDs: (32252 - Menu)
 msgid "&Clear Recent History"
-msgstr "&Rensa aktuell historik"
+msgstr "&Rensa den senaste historiken"
 
 #. Resource IDs: (32008 - MenuEx)
 msgid "&Clear Recent Safe List"
-msgstr "&Rensa senaste Safe-lista"
+msgstr "&Rensa den senaste Safe-lista"
 
 #. Resource IDs: (5606)
 msgid "&Clear current"
-msgstr "&Rensa den aktuella"
+msgstr "&Rensa aktuell"
 
 #. Resource IDs: (32004 - Menu, 32004 - MenuEx)
 msgid "&Close"
@@ -719,7 +719,7 @@ msgstr "&Kopiera"
 
 #. Resource IDs: (32066 - Menu, 32066 - MenuEx, 5299)
 msgid "&Copy Password to Clipboard"
-msgstr "&Kopiera lösenordet till Urklipp"
+msgstr "&Kopiera lösenord till Urklipp"
 
 #. Resource IDs: (1344, 1405, 32055 - MenuEx, 34104)
 msgid "&Delete"
@@ -747,7 +747,7 @@ msgstr "&Påminn mig inte igen"
 
 #. Resource IDs: (32107 - MenuEx)
 msgid "&Dragbar visible"
-msgstr "Visa &draglisten"
+msgstr "&Visa draglisten"
 
 #. Resource IDs: (32063 - Menu, 32063 - MenuEx)
 msgid "&Duplicate Entry"
@@ -775,7 +775,7 @@ msgstr "&Exportera"
 
 #. Resource IDs: (32001 - PopupMenuEx)
 msgid "&File"
-msgstr "&Arkiv"
+msgstr "&Fil"
 
 #. Resource IDs: (32028 - MenuEx)
 msgid "&Filtered entries to PasswordSafe..."
@@ -795,7 +795,7 @@ msgstr "&Sök..."
 
 #. Resource IDs: (2)
 msgid "&Finish"
-msgstr "S&täng"
+msgstr "&Avsluta"
 
 #. Resource IDs: (1088)
 msgid "&Font:"
@@ -827,7 +827,7 @@ msgstr "&Importera"
 
 #. Resource IDs: (1228)
 msgid "&In"
-msgstr "&Om"
+msgstr "&I"
 
 #. Resource IDs: (1143)
 msgid "&Keep"
@@ -843,7 +843,7 @@ msgstr "&Lås"
 
 #. Resource IDs: (32150 - PopupMenuEx)
 msgid "&Manage"
-msgstr "Ha&ntera"
+msgstr "&Hantera"
 
 #. Resource IDs: (32115 - MenuEx)
 msgid "&Manage..."
@@ -851,7 +851,7 @@ msgstr "&Hantera..."
 
 #. Resource IDs: (32124 - MenuEx)
 msgid "&Merge"
-msgstr "Slå &ihop"
+msgstr "&Slå ihop"
 
 #. Resource IDs: (32253 - Menu)
 msgid "&Minimize"
@@ -867,7 +867,7 @@ msgstr "&Ny "
 
 #. Resource IDs: (32104 - MenuEx)
 msgid "&New Toolbar"
-msgstr "Moder&n verktygslist"
+msgstr "&Nytt verktygsfält"
 
 #. Resource IDs: (32003 - MenuEx)
 msgid "&New..."
@@ -939,7 +939,7 @@ msgstr "&Aktuell posthistorik"
 
 #. Resource IDs: (5217)
 msgid "&Recent Safes"
-msgstr "&Aktuella Safer"
+msgstr "&Senaste Safer"
 
 #. Resource IDs: (32111 - MenuEx)
 msgid "&Refresh"
@@ -955,7 +955,7 @@ msgstr "&Återställ"
 
 #. Resource IDs: (32254 - Menu)
 msgid "&Restore"
-msgstr "&Återställ"
+msgstr "&Återskapa"
 
 #. Resource IDs: (5729)
 msgid "&Retry"
@@ -971,7 +971,7 @@ msgstr "&Spara"
 
 #. Resource IDs: (1)
 msgid "&Save to Disk"
-msgstr "&Spara till disk"
+msgstr "&Spara på disk"
 
 #. Resource IDs: (5552)
 msgid "&Search"
@@ -1011,7 +1011,7 @@ msgstr "&Titel:"
 
 #. Resource IDs: (32117 - MenuEx)
 msgid "&Tree/List Font"
-msgstr "&Träd-/tabellfont"
+msgstr "&Träd-/lisfont"
 
 #. Resource IDs: (5731)
 msgid "&Try again"
@@ -1079,7 +1079,7 @@ msgstr "'Gå till URL' kopierar lösenordet till Urklipp"
 
 #. Resource IDs: (5645)
 msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Please change one or both."
-msgstr "'Rensa Urklipp vid Minimera' och dubbelklicksvalet 'Kopiera och Minimera' strider mot varandra. Vänligen, ändra en eller båda."
+msgstr "'Rensa Urklipp vid minimera' och dubbelklicksvalet 'Kopiera lösenord och minimera' strider mot varandra. Vänligen, ändra en eller båda."
 
 #. Resource IDs: (5714)
 msgid ""
@@ -1105,7 +1105,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "(Also used to replace periods in Title field)"
-msgstr "(Används också som ersättning för punkter i Titel-fältet)"
+msgstr "(Används också som ersättning för mellanslag i rubrikfält)"
 
 #. Resource IDs: (65535)
 msgid "(Double-click an entry to edit it. Entries in italics are protected and need to be unprotected first.)"
@@ -1117,7 +1117,7 @@ msgstr "(Tom)"
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
-msgstr "(Kräver en omstart av PasswordSafe för att fungera.)"
+msgstr "(Kräver en omstart av PasswordSafe för att träda i kraft.)"
 
 #. Resource IDs: (65535)
 msgid "(Restart of PasswordSafe required to enable.)"
@@ -1154,7 +1154,7 @@ msgstr "- Dess titel har ändrats till:'%ls'"
 
 #. Resource IDs: (8200)
 msgid "- Physical -"
-msgstr "- Verkligt -"
+msgstr "- Fysiskt -"
 
 #. Resource IDs: (3257)
 msgid "--------------------------------------------------------------------------------"
@@ -1468,7 +1468,7 @@ msgstr ">>"
 
 #. Resource IDs: (5249)
 msgid "A dot cannot be used as the first character of the Group field."
-msgstr "En punkt kan inte användas som första tecken i Gruppfältet."
+msgstr "En punkt kan inte användas som första tecken i gruppfältet."
 
 #. Resource IDs: (5212)
 msgid "A fatal error occured: "
@@ -1476,7 +1476,7 @@ msgstr "Ett fatalt fel uppstod: "
 
 #. Resource IDs: (3363)
 msgid "A filter was active. Export of data was restricted to include only those displayed."
-msgstr "Ett filter var aktivt. Export av data begränsades till att bara inkludera de som visas."
+msgstr "Ett filter var aktivt. Export av data begränsades till att bara omfatta de som visas."
 
 #. Resource IDs: (5798)
 msgid "A future date is not valid for this field"
@@ -1484,7 +1484,7 @@ msgstr "Ett framtida datum är inte giltigt för detta fält"
 
 #. Resource IDs: (5116)
 msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, Confirm shows numbers that may be used to help count the password's characters."
-msgstr "Ett dolt lösenord måste också läggas in i fältet för konfirmering av lösenord. Om det inte är dolt, visar Konfirmering tal som kan användas för att underlätta att räkna lösenordets tecken."
+msgstr "Ett dolt lösenord måste också anges i fältet för Bekräfta lösenord. Om det inte är dolt, visar Konfirmering tal som kan användas för att underlätta att räkna lösenordets tecken."
 
 #. Resource IDs: (65535)
 msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
@@ -1694,7 +1694,7 @@ msgstr "En post eller genväg med samma Grupp, Titel och Användarnamn finns red
 #. Resource IDs: (61862)
 #, c-format
 msgid "An incorrect file handle was associated with %1."
-msgstr "Ett felaktigt filtillägg kopplade till %1."
+msgstr "En felaktig filreferens associerades med %1."
 
 #. Resource IDs: (61476)
 msgid "An unknown error has occurred."
@@ -2303,7 +2303,7 @@ msgstr "Kolumnväljare"
 
 #. Resource IDs: (3244)
 msgid "Column header row not recognised as first record. No records imported."
-msgstr "Kolumnens rubrikrad känns inte igen som första post. Ingenting har importerats."
+msgstr "Kolumnrubrikraden känns inte igen som första post. Inga importerade poster."
 
 #. Resource IDs: (1080)
 msgid "Comma"
@@ -3127,7 +3127,7 @@ msgstr "Påträffade ett delningsfel vid åtkomst av %1."
 
 #. Resource IDs: (61477)
 msgid "Encountered an improper argument."
-msgstr "Påträffade ett felaktigt argument."
+msgstr "Ett felaktigt argument påträffades."
 
 #. Resource IDs: (61733)
 #, c-format
@@ -3688,7 +3688,7 @@ msgstr "Filen är för liten."
 
 #. Resource IDs: (3399)
 msgid "File is truncated or otherwise corrupt. Please use backup database."
-msgstr "Filen är trunkerad eller på annat sett felaktig. Vänligen, använd databasens backup."
+msgstr "Filen är trunkerad eller på annat sett skadad. Använd databasens backup."
 
 #. Resource IDs: (5330)
 msgid "File lock error"
@@ -3818,7 +3818,7 @@ msgstr ""
 #. Resource IDs: (3242)
 #, c-format
 msgid "Found %d known column headers:"
-msgstr "Fann %d kända kolumnrubriker:"
+msgstr "Hittade %d kända kolumnrubriker:"
 
 #. Resource IDs: (5274)
 msgid "Found 1 match."
@@ -4300,7 +4300,7 @@ msgstr "Importerat %d %s"
 #. Resource IDs: (3383)
 #, c-format
 msgid "In Headers(%ls)/In Entries("
-msgstr "I rubriker(%ls)/I poster("
+msgstr "I rubriker(%ls)/i poster("
 
 #. Resource IDs: (5595)
 msgid "Inactive"
@@ -4316,7 +4316,7 @@ msgstr "Felaktigt filnamn."
 
 #. Resource IDs: (5280)
 msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database."
-msgstr "Ogiltigt lösenord, inte en PasswordSafe databas eller en felaktig databas."
+msgstr "Ogiltigt lösenord, inte en PasswordSafe-databas eller en skadad databas."
 
 #. Resource IDs: (3251)
 msgid "Incorrect password"
@@ -4552,7 +4552,7 @@ msgstr ""
 #. Resource IDs: (3259)
 #, c-format
 msgid "Line %d skipped - Only %d fields found, whereas parsing the Header says there should be %d."
-msgstr "Rad %d överhoppad - Bara %d fält funna, emedan tolkning av rubriken visar att det borde vara %d."
+msgstr "Rad %d hoppades över - Endast %d fält hittades, medan parsningrubriken visar att det borde vara %d."
 
 #. Resource IDs: (3268)
 #, c-format
@@ -7037,7 +7037,7 @@ msgstr "Postens Noteringsfält innehåller mer text än som kan visas. Ändringa
 
 #. Resource IDs: (5284)
 msgid "The old safe combination is not correct"
-msgstr "Den gamla Safe-nyckeln är felaktig"
+msgstr "Den gamla Safe-nyckeln är inte korrekt"
 
 #. Resource IDs: (5323)
 #, c-format
