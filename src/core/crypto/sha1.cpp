@@ -10,7 +10,7 @@
 
 /* based on SHA-1 in C By Steve Reid <steve@edmweb.com> */
 
-#include "PwsPlatform.h"
+#include "../PwsPlatform.h"
 //#define SHA1HANDSOFF Copies data before messing with it.
 
 #include <stdio.h>

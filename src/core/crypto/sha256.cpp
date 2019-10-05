@@ -11,7 +11,7 @@
 //-----------------------------------------------------------------------------
 #include "sha256.h"
 #include "bitops.h"
-#include "Util.h"
+#include "../Util.h"
 
 #include <algorithm>
 
