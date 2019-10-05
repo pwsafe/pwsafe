@@ -14,7 +14,7 @@
 
 // HMAC algorithm as per RFC2104
 
-#include "Util.h" // for ASSERT
+#include "../Util.h" // for ASSERT
 
 class HMAC_BASE
 {

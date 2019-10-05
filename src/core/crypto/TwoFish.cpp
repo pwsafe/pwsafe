@@ -12,7 +12,7 @@
 
 #include "TwoFish.h"
 #include "bitops.h"
-#include "Util.h"
+#include "../Util.h"
 
 #define LTC_CLEAN_STACK
 #define TWOFISH_ALL_TABLES
