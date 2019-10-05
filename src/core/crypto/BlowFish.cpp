@@ -10,9 +10,9 @@
 
 #include "BlowFish.h"
 #include "sha1.h"
-#include "PwsPlatform.h"
+#include "../PwsPlatform.h"
 #include "os/mem.h"
-#include "Util.h" // for trashMemory
+#include "../Util.h" // for trashMemory
 
 union aword
 {
