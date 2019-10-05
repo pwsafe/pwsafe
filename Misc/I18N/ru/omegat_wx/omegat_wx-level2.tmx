@@ -190,6 +190,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>&amp;Add/Edit Font</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Шрифт в диалоге &amp;Вставки/Редактирования</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>&amp;Apply current</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -634,6 +642,14 @@ Unknown error</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>&amp;Нет</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>&amp;Notes Font</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Шрифт для &amp;заметок</seg>
       </tuv>
     </tu>
     <tu>
@@ -5992,20 +6008,20 @@ to the base entry</seg>
       <tuv xml:lang="EN-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2019-08-19 19:11+0300
-PO-Revision-Date: 2018-08-18 19:36+0300
-Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+POT-Creation-Date: 2019-10-05 16:47+0300
+PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE
+Last-Translator: FULL NAME &lt;EMAIL@ADDRESS&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: 
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20190819T161708Z" creationid="pm_kan" creationdate="20190819T161708Z">
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20191005T134900Z" creationid="pm_kan" creationdate="20191005T134900Z">
         <seg>Project-Id-Version: Password Safe
-Report-Msgid-Bugs-To: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
-POT-Creation-Date: 2019-08-19 20:02+0300
-PO-Revision-Date: 2019-08-19 20:02+0300
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2019-10-05 16:50+0300
+PO-Revision-Date: 2019-10-05 16:50+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
@@ -6419,6 +6435,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Select Add/Edit display font</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20191005T135710Z" creationid="pm_kan" creationdate="20191005T134950Z">
+        <seg>Выбор шрифта для диалога Вставки/Редактирования</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Select Language</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20160617T173410Z" creationid="pm_kan" creationdate="20141226T150606Z">
@@ -6427,10 +6451,34 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Select Notes display font</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20191005T135736Z" creationid="pm_kan" creationdate="20191005T135736Z">
+        <seg>Выбор шрифта для заметок</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Select Password display font</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20191005T135727Z" creationid="pm_kan" creationdate="20191005T135046Z">
+        <seg>Выбор шрифта для отображения паролей</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Select Tree/List display font</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20121224T115652Z">
-        <seg>Установить шрифт для дерева/списка</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20191005T135652Z">
+        <seg>Выбор шрифта для дерева/списка</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Select Virtual Keyboard font</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20191005T135742Z" creationid="pm_kan" creationdate="20191005T135742Z">
+        <seg>Выбор шрифта для экранной клавиатуры</seg>
       </tuv>
     </tu>
     <tu>
@@ -6535,14 +6583,6 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Дата/время создания</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>Set Password display font</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>Установить шрифт для отображения паролей</seg>
       </tuv>
     </tu>
     <tu>
