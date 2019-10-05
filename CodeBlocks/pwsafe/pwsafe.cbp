@@ -328,6 +328,7 @@
 			<Add library="Xtst" />
 			<Add library="X11" />
 			<Add library="xerces-c" />
+			<Add library="magic" />
 		</Linker>
 		<ExtraCommands>
 			<Add before="../cb-ver-update" />
