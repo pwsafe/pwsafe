@@ -152,7 +152,7 @@ msgstr " 'Letzter Zugriff'"
 
 #. Resource IDs: (5365)
 msgid " 'Notes'"
-msgstr " 'Anmerkungen'"
+msgstr " 'Notizen'"
 
 #. Resource IDs: (5691)
 msgid " 'Password Expiry Time Interval'"
@@ -797,7 +797,7 @@ msgstr "&Nein"
 
 #. Resource IDs: (32138 - MenuEx)
 msgid "&Notes Font"
-msgstr "&Anmerkungen Schriftart"
+msgstr "&Notizen Schriftart"
 
 #. Resource IDs: (1354)
 msgid "&Notes:"
@@ -1638,11 +1638,11 @@ msgstr "Armenisch Westlich"
 
 #. Resource IDs: (5268)
 msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
-msgstr "Wenn Gänsefüßschen verwendet werden um das komplette Feld Anmerkungen einzugrenzen, kann es innerhalb nicht als Zeilenbegrenzer verwendet werden. Verwenden Sie bitte ein anderes Zeichen."
+msgstr "Da das doppelte Anführungszeichen zur Begrenzung des gesamten Notizenfelds verwendet wird, kann es nicht zur Begrenzung mehrerer Zeilen verwendet werden. Verwenden Sie bitte ein anderes Zeichen."
 
 #. Resource IDs: (5292)
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
-msgstr "Mindestens eine Art von Zeichen (Kleinbuchstabe, Großbuchstabe,\nZiffer, Symbol, hexadezimal) sollte erlaubt sein."
+msgstr "Mindestens ein Zeichentyp (Kleinbuchstabe, Großbuchstabe,\nZiffer, Symbol, Hexadezimalzahl) sollte erlaubt sein."
 
 #. Resource IDs: (538, 539, 5986)
 msgid "Attachment"
@@ -5856,7 +5856,7 @@ msgstr "Sitzung"
 
 #. Resource IDs: (5996)
 msgid "Set Add/Edit display font"
-msgstr "Schriftart Hinzufügen/Bearbeiten setzen"
+msgstr "Schriftart für Hinzufügen/Bearbeiten auswählen"
 
 #. Resource IDs: (5992)
 #, c-format
@@ -5898,7 +5898,7 @@ msgstr "Passwortrichtlinie des Eintrages setzen"
 
 #. Resource IDs: (5971)
 msgid "Set Notes display font"
-msgstr "Setze die Schriftart der Bemerkungen"
+msgstr "Schriftart für Notizen auswählen"
 
 #. Resource IDs: (5573)
 #, c-format
@@ -6014,7 +6014,7 @@ msgstr "Notizen anzeigen"
 
 #. Resource IDs: (1296)
 msgid "Show Notes as ToolTips in Tree && List views"
-msgstr "Notizen in Baum- und Listen-Darstellung als Tooltip anzeigen"
+msgstr "Notizen in Baum- und Listendarstellung als Tooltip anzeigen"
 
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
