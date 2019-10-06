@@ -226,14 +226,12 @@ msgid "&Close"
 msgstr "&Schließen"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:457
-#, fuzzy
 msgid "&Unlock Safe\tCtrl+I"
-msgstr "Safe &entsperren"
+msgstr "Safe &entsperren\tCtrl+I"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:460
-#, fuzzy
 msgid "&Lock Safe\tCtrl+J"
-msgstr "Safe &sperren"
+msgstr "Safe &sperren\tCtrl+J"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:474
 msgid "&Recent Safes..."
@@ -452,18 +450,16 @@ msgid "&Tree/List Font"
 msgstr "&Baum/Listen Schriftart"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:556
-#, fuzzy
 msgid "&Add/Edit Font"
-msgstr "&Baum/Listen Schriftart"
+msgstr "&Hinzufügen/Bearbeiten Schriftart"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:557
 msgid "&Password Font"
 msgstr "&Passwort Schriftart"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:558
-#, fuzzy
 msgid "&Notes Font"
-msgstr "Notizen"
+msgstr "&Notizen Schriftart"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:561
 msgid "Change &Font"
@@ -1309,24 +1305,20 @@ msgid "Select Tree/List display font"
 msgstr "Schriftart für Baum-/Listenansicht auswählen"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:3614
-#, fuzzy
 msgid "Select Add/Edit display font"
-msgstr "Schriftart für Baum-/Listenansicht auswählen"
+msgstr "Schriftart für Hinzufügen/Bearbeiten auswählen"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:3618
-#, fuzzy
 msgid "Select Password display font"
 msgstr "Schriftart für Passwort auswählen"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:3622
-#, fuzzy
 msgid "Select Notes display font"
-msgstr "Schriftart für Baum-/Listenansicht auswählen"
+msgstr "Schriftart für Notizen auswählen"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:3626
-#, fuzzy
 msgid "Select Virtual Keyboard font"
-msgstr "Schriftart der virtuellen Tastatur setzen"
+msgstr "Schriftart für virtuelle Tastatur auswählen"
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:410
 msgid "Another instance of Password Safe is already running"
@@ -2299,8 +2291,8 @@ msgid ""
 "At least one type of character (lowercase, uppercase, digits, symbols or "
 "hexadecimal) must be chosen"
 msgstr ""
-"Mindestens eine Art von Zeichen (Kleinbuchstabe, Großbuchstabe, Ziffer, "
-"Symbol oder Hexadezimalwert) muss ausgewählt werden."
+"Mindestens ein Zeichentyp (Kleinbuchstabe, Großbuchstabe, Ziffer, "
+"Symbol oder Hexadezimalzahl) muss ausgewählt werden."
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:502
 msgid "Password must be between 4 and 1024 characters"
@@ -3007,7 +2999,7 @@ msgstr "Die beiden Einträge sind verschieden."
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1303
 msgid "Database name must not be empty if a database policy shall be used."
-msgstr ""
+msgstr "Der Datenbankname darf nicht leer sein, wenn eine Datenbankrichtlinie verwendet werden soll."
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1472
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1522
@@ -3362,7 +3354,7 @@ msgstr "Keine Versionsinformationen vom Server erhalten."
 
 #: ../../../ui/wxWidgets/about.cpp:628
 msgid "No Curl handle to perform download."
-msgstr ""
+msgstr "Kein Curl-Handle zur Durchführung des Downloads."
 
 #: ../../../ui/wxWidgets/about.cpp:683
 msgid "Could not download version data.\n"
