@@ -37,7 +37,7 @@ msgstr "Просмотр элемента"
 msgid "Add, Edit or View Entry"
 msgstr "Добавление, редактирование или просмотр элемента"
 
-#: src/ui/wxWidgets/createshortcutdlg.h:46
+#: src/ui/wxWidgets/CreateShortcutDlg.h:46
 msgid "Create Shortcut"
 msgstr "Создать ярлык"
 
@@ -398,19 +398,19 @@ msgstr ""
 "оно будет введено в поле «Имя»."
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:315
-#: src/ui/wxWidgets/createshortcutdlg.cpp:145
+#: src/ui/wxWidgets/CreateShortcutDlg.cpp:145
 #: src/ui/wxWidgets/editshortcut.cpp:160
 msgid "Group:"
 msgstr "Группа:"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:322
-#: src/ui/wxWidgets/createshortcutdlg.cpp:152
+#: src/ui/wxWidgets/CreateShortcutDlg.cpp:152
 #: src/ui/wxWidgets/editshortcut.cpp:167
 msgid "Title:"
 msgstr "Заголовок:"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:328
-#: src/ui/wxWidgets/createshortcutdlg.cpp:158
+#: src/ui/wxWidgets/CreateShortcutDlg.cpp:158
 #: src/ui/wxWidgets/editshortcut.cpp:173
 msgid "Username:"
 msgstr "Имя пользователя:"
@@ -953,7 +953,7 @@ msgstr ""
 msgid "Synchronization failed"
 msgstr "Сбой при синхронизации"
 
-#: src/ui/wxWidgets/createshortcutdlg.cpp:139
+#: src/ui/wxWidgets/CreateShortcutDlg.cpp:139
 msgid ""
 "Please specify the name & group\n"
 " for shortcut to "
@@ -961,7 +961,7 @@ msgstr ""
 "Укажите имя и группу\n"
 " для ярлыка на "
 
-#: src/ui/wxWidgets/createshortcutdlg.cpp:167
+#: src/ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: src/ui/wxWidgets/editshortcut.cpp:213
 #: src/ui/wxWidgets/ManagePwdPolicies.cpp:244
 #: src/ui/wxWidgets/PasswordPolicy.cpp:378 src/ui/wxWidgets/properties.cpp:367
@@ -971,7 +971,7 @@ msgstr ""
 msgid "&OK"
 msgstr "&OK"
 
-#: src/ui/wxWidgets/createshortcutdlg.cpp:170
+#: src/ui/wxWidgets/CreateShortcutDlg.cpp:170
 #: src/ui/wxWidgets/editshortcut.cpp:216
 #: src/ui/wxWidgets/ManagePwdPolicies.cpp:247
 #: src/ui/wxWidgets/PasswordPolicy.cpp:381
@@ -981,7 +981,7 @@ msgstr "&OK"
 msgid "&Cancel"
 msgstr "&Отмена"
 
-#: src/ui/wxWidgets/createshortcutdlg.cpp:173
+#: src/ui/wxWidgets/CreateShortcutDlg.cpp:173
 #: src/ui/wxWidgets/editshortcut.cpp:219
 #: src/ui/wxWidgets/ManagePwdPolicies.cpp:250
 #: src/ui/wxWidgets/PasswordPolicy.cpp:384

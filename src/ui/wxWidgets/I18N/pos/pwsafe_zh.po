@@ -74,7 +74,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:384
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:212
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:173
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
 #: ../../../ui/wxWidgets/editshortcut.cpp:219
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:250
 msgid "&Help"
@@ -90,7 +90,7 @@ msgstr "退出"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:381
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:170
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
 #: ../../../ui/wxWidgets/editshortcut.cpp:216
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:247
 #, fuzzy
@@ -102,7 +102,7 @@ msgstr "取消"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:378
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:167
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: ../../../ui/wxWidgets/editshortcut.cpp:213
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:244
 #, fuzzy
@@ -2955,20 +2955,20 @@ msgstr ""
 "已经设定了一个默认用户名，它将出现在用户名字段中。"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:315
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:145
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:145
 #: ../../../ui/wxWidgets/editshortcut.cpp:160
 msgid "Group:"
 msgstr "组:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:322
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:152
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:152
 #: ../../../ui/wxWidgets/editshortcut.cpp:167
 #, fuzzy
 msgid "Title:"
 msgstr "标题(&T):"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:328
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:158
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:158
 #: ../../../ui/wxWidgets/editshortcut.cpp:173
 #, fuzzy
 msgid "Username:"
@@ -3418,7 +3418,7 @@ msgstr ""
 msgid "The following fields were %ls"
 msgstr ""
 
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:139
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:139
 #, fuzzy
 msgid ""
 "Please specify the name & group\n"
@@ -4079,7 +4079,7 @@ msgstr "帮助"
 msgid "Safe Combination Setup"
 msgstr "设置保险箱密码"
 
-#: ../../../ui/wxWidgets/createshortcutdlg.h:46
+#: ../../../ui/wxWidgets/CreateShortcutDlg.h:46
 #, fuzzy
 msgid "Create Shortcut"
 msgstr "创建快捷方式(&S)"

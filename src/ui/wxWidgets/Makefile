@@ -194,7 +194,7 @@ SOURCES= passwordsafeframe.cpp \
 	AddEditPropSheetDlg.cpp PWSgridtable.cpp \
 	optionspropsheet.cpp PasswordSafeSearch.cpp \
 	deleteconfirmation.cpp editshortcut.cpp \
-	createshortcutdlg.cpp SystemTray.cpp \
+	CreateShortcutDlg.cpp SystemTray.cpp \
 	guiinfo.cpp ImportTextDlg.cpp \
 	ImportXmlDlg.cpp OpenFilePickerValidator.cpp \
 	SafeCombinationCtrl.cpp ExportTextWarningDlg.cpp \

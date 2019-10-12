@@ -72,7 +72,7 @@ msgstr "Kérem helyezze be a Yubikey-t"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:384
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:212
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:173
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
 #: ../../../ui/wxWidgets/editshortcut.cpp:219
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:250
 msgid "&Help"
@@ -87,7 +87,7 @@ msgstr "K&ilépés"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:381
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:170
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
 #: ../../../ui/wxWidgets/editshortcut.cpp:216
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:247
 #, fuzzy
@@ -99,7 +99,7 @@ msgstr "Mégse"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:378
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:167
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: ../../../ui/wxWidgets/editshortcut.cpp:213
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:244
 #, fuzzy
@@ -2818,19 +2818,19 @@ msgstr ""
 "alapértelmezett felhasználónév, az kerül a felhasználói név mezőbe."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:315
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:145
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:145
 #: ../../../ui/wxWidgets/editshortcut.cpp:160
 msgid "Group:"
 msgstr "Csoport:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:322
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:152
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:152
 #: ../../../ui/wxWidgets/editshortcut.cpp:167
 msgid "Title:"
 msgstr "Cím:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:328
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:158
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:158
 #: ../../../ui/wxWidgets/editshortcut.cpp:173
 msgid "Username:"
 msgstr "Felhasználónév:"
@@ -3278,7 +3278,7 @@ msgstr ""
 "\n"
 "Az alábbi %ls %ls módosítva:"
 
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:139
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:139
 msgid ""
 "Please specify the name & group\n"
 " for shortcut to "
@@ -3865,7 +3865,7 @@ msgstr "Súgó"
 msgid "Safe Combination Setup"
 msgstr "Széfkombináció beállítása"
 
-#: ../../../ui/wxWidgets/createshortcutdlg.h:46
+#: ../../../ui/wxWidgets/CreateShortcutDlg.h:46
 msgid "Create Shortcut"
 msgstr "Parancsikon létrehozása"
 

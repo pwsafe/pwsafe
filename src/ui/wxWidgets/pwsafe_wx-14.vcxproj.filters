@@ -21,7 +21,7 @@
     <ClInclude Include="AddEditPropSheetDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="createshortcutdlg.h">
+    <ClInclude Include="CreateShortcutDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="deleteconfirmation.h">
@@ -190,7 +190,7 @@
     <ClCompile Include="AdvancedSelectionDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="createshortcutdlg.cpp">
+    <ClCompile Include="CreateShortcutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="deleteconfirmation.cpp">
