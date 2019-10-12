@@ -1828,12 +1828,12 @@ msgstr "&Ja"
 msgid "&No"
 msgstr "&Nee"
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:111
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:111
 #, fuzzy
 msgid "Drag this image onto another window to paste the '"
 msgstr "Sleep dit plaatje naar een ander scherm om het  '%s' veld te plakken."
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:112
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:112
 #, fuzzy
 msgid "' field."
 msgstr "Veld"

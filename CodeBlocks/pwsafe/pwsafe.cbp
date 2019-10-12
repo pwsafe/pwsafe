@@ -357,8 +357,8 @@
 		<Unit filename="../../src/ui/wxWidgets/MergeDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/OpenFilePickerValidator.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/OpenFilePickerValidator.h" />
-		<Unit filename="../../src/ui/wxWidgets/PWSDragBar.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/PWSDragBar.h" />
+		<Unit filename="../../src/ui/wxWidgets/DragBarCtrl.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/DragBarCtrl.h" />
 		<Unit filename="../../src/ui/wxWidgets/PWSgrid.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PWSgrid.h" />
 		<Unit filename="../../src/ui/wxWidgets/PWSgridtable.cpp" />

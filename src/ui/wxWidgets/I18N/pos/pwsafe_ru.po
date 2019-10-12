@@ -3246,11 +3246,11 @@ msgstr "Пожалуйста, сообщите об этом разработч�
 msgid "Help Undefined"
 msgstr "Справка отсутствует"
 
-#: src/ui/wxWidgets/PWSDragBar.cpp:111
+#: src/ui/wxWidgets/DragBarCtrl.cpp:111
 msgid "Drag this image onto another window to paste the '"
 msgstr "Перетащите изображение на другое окно, чтобы вставить значение поля «"
 
-#: src/ui/wxWidgets/PWSDragBar.cpp:112
+#: src/ui/wxWidgets/DragBarCtrl.cpp:112
 msgid "' field."
 msgstr "»."
 

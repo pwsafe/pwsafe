@@ -55,7 +55,7 @@
 #include "./ImportXmlDlg.h"
 #include "./ExportTextWarningDlg.h"
 #include "./ViewReport.h"
-#include "./PWSDragBar.h"
+#include "./DragBarCtrl.h"
 #include "./MergeDlg.h"
 #include "./PwsSync.h"
 #include "./SystemTrayMenuId.h"

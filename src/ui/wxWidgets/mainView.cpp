@@ -28,7 +28,7 @@
 #include "passwordsafeframe.h"
 #include "PWSgrid.h"
 #include "PWStree.h"
-#include "PWSDragBar.h"
+#include "DragBarCtrl.h"
 #include "PasswordSafeSearch.h"
 #include "core/PWSprefs.h"
 

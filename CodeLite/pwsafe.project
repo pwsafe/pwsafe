@@ -92,8 +92,8 @@
     <File Name="../src/ui/wxWidgets/ViewReport.cpp"/>
     <File Name="../src/ui/wxWidgets/DragBarGenericCtrl.cpp"/>
     <File Name="../src/ui/wxWidgets/DragBarGenericCtrl.h"/>
-    <File Name="../src/ui/wxWidgets/PWSDragBar.h"/>
-    <File Name="../src/ui/wxWidgets/PWSDragBar.cpp"/>
+    <File Name="../src/ui/wxWidgets/DragBarCtrl.h"/>
+    <File Name="../src/ui/wxWidgets/DragBarCtrl.cpp"/>
     <File Name="../src/ui/wxWidgets/MergeDlg.h"/>
     <File Name="../src/ui/wxWidgets/MergeDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/helpmap.h"/>

@@ -1806,13 +1806,13 @@ msgstr "네(&Y)"
 msgid "&No"
 msgstr "아니오(&N)"
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:111
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:111
 #, fuzzy
 msgid "Drag this image onto another window to paste the '"
 msgstr ""
 "'%s' 필드값을 복사하시려면 이 아이큰을 다른 윈도우 위로 드래그하십시오."
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:112
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:112
 #, fuzzy
 msgid "' field."
 msgstr "필드"
