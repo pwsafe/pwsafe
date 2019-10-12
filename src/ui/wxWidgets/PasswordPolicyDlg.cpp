@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file PasswordPolicy.cpp
+/** \file PasswordPolicyDlg.cpp
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -23,7 +23,7 @@
 ////@begin includes
 ////@end includes
 
-#include "PasswordPolicy.h"
+#include "PasswordPolicyDlg.h"
 #include "core/PolicyManager.h"
 #include "core/PWCharPool.h"
 #include "pwsclip.h"

@@ -150,7 +150,7 @@
     <ClInclude Include="ManagePasswordPoliciesDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PasswordPolicy.h">
+    <ClInclude Include="PasswordPolicyDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PwsToolbarButtons.h">
@@ -313,7 +313,7 @@
     <ClCompile Include="ManagePasswordPoliciesDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PasswordPolicy.cpp">
+    <ClCompile Include="PasswordPolicyDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SelectionCriteria.cpp">

@@ -71,7 +71,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:591
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:250
 #: ../../../ui/wxWidgets/yubicfg.cpp:202
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:384
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:384
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:212
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
@@ -87,7 +87,7 @@ msgid "&Exit"
 msgstr "&Afslut"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:206
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:381
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:381
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
@@ -99,7 +99,7 @@ msgstr "&Afbryd"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:210
 #: ../../../ui/wxWidgets/properties.cpp:367
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:378
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:378
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
@@ -135,8 +135,8 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:406
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:521
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:75
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:727
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:746
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:727
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:746
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:103
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:112
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:128
@@ -223,7 +223,7 @@ msgstr "&Åben..."
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:453
 #: ../../../ui/wxWidgets/yubicfg.cpp:199
 #: ../../../ui/wxWidgets/passwordsubset.cpp:165
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:396
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:396
 #: ../../../ui/wxWidgets/AboutDlg.cpp:185 ../../../ui/wxWidgets/SystemTray.cpp:135
 msgid "&Close"
 msgstr "&Luk"
@@ -1805,7 +1805,7 @@ msgid "Hide"
 msgstr "Skjul"
 
 #: ../../../ui/wxWidgets/yubicfg.cpp:190
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:361
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:361
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:200
 #, fuzzy
 msgid "Generate"
@@ -2287,38 +2287,38 @@ msgstr "Vis Notater"
 msgid "Invalid position"
 msgstr "vurdering"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:183
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:183
 #, fuzzy
 msgid "Policy Name:"
 msgstr "Adgangskode Politik:"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:197
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:197
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:576
 #, fuzzy
 msgid "Use Database Policy"
 msgstr "Brug Database Standarter"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:209
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:209
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:569
 msgid "Random password generation rules"
 msgstr "Tilfældig adgangskode udviklings regel"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:216
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:216
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:591
 #, fuzzy
 msgid "Password length:"
 msgstr "Adgangskode længde: "
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:231
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:231
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:606
 #, fuzzy
 msgid "Use lowercase letters"
 msgstr "Brug Små bogstaver"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:238
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:260
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:282
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:305
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:238
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:260
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:282
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:305
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:612
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:633
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:654
@@ -2327,86 +2327,86 @@ msgstr "Brug Små bogstaver"
 msgid "(At least "
 msgstr "(mindst"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:253
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:253
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:627
 #, fuzzy
 msgid "Use UPPERCASE letters"
 msgstr "Brug STORE bogstaver"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:275
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:275
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:648
 #, fuzzy
 msgid "Use digits"
 msgstr "Brug Tal"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:297
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:297
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:669
 #, fuzzy
 msgid "Use symbols"
 msgstr "Standart Brugernavn"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:299
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:299
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:671
 #, fuzzy
 msgid "i.e., ., %, $, etc."
 msgstr "Brug Symboler (i.e., %, $, o.s.v.)"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:324
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:324
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:694
 #, fuzzy
 msgid "Reset"
 msgstr "Nulstil"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:327
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:327
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:697
 #, fuzzy
 msgid "Use only easy-to-read characters"
 msgstr "Minimum små tegn"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:329
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:329
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:699
 msgid "i.e., no 'l', '1', etc."
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:334
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:334
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:704
 #, fuzzy
 msgid "Generate pronounceable passwords"
 msgstr "Generer Udtalbare adgangskoder"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:340
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:340
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:710
 msgid "Or"
 msgstr "Eller"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:345
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:345
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:715
 #, fuzzy
 msgid "Use hexadecimal digits only"
 msgstr "Brug Kun hexadecimal tal (0-9,a-f)"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:347
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:347
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:717
 msgid "0-9, a-f"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:367
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:367
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:214
 #, fuzzy
 msgid "Copy Password to clipboard"
 msgstr "Kopier Adgangskode til klipbord"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:488
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:488
 #, fuzzy
 msgid "Hexadecimal is mutually exclusive to all other options."
 msgstr "Hexadecimal er uforenelige med alle andre muligheder."
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:492
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:492
 msgid ""
 "Hexadecimal passwords must have even length - each byte is two characters"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:497
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:497
 #, fuzzy
 msgid ""
 "At least one type of character (lowercase, uppercase, digits, symbols or "
@@ -2415,40 +2415,40 @@ msgstr ""
 "Mindst en type af tegnene (små, store bogst., tal, symboler, hexadecimal) "
 "skal tillades."
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:502
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:502
 #, fuzzy
 msgid "Password must be between 4 and 1024 characters"
 msgstr "Adgangskode længden skal være mellem 4 og 1024."
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:510
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:510
 msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Adgangskode længden er mindre end summena af  'mindste' begrænsningen"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:520
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:520
 #, fuzzy
 msgid "Policy name cannot be blank"
 msgstr "Kodefeltet kan ikke være tomt."
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:525
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:525
 msgid "Policy name is already in use"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:530
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:530
 msgid "Default policy name is not allowed"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:536
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:536
 #, fuzzy
 msgid "Policy Error"
 msgstr "Adgangskode Politik"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:726
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:726
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1997
 #, fuzzy
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr "Beklager, 'udtalbare' og 'nemme-at-læse' er ikke understøttet sammen"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:745
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:745
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1970
 #, fuzzy
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
@@ -3126,7 +3126,7 @@ msgstr ")"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:720
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1712
-#: ../../../ui/wxWidgets/PasswordPolicy.h:69 ../../../ui/wxWidgets/HelpMap.h:41
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.h:69 ../../../ui/wxWidgets/HelpMap.h:41
 #: ../../../ui/wxWidgets/HelpMap.h:49
 msgid "Password Policy"
 msgstr "Adgangskode Politik"

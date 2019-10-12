@@ -266,7 +266,7 @@
     <ClInclude Include="MergeDlg.h" />
     <ClInclude Include="OpenFilePickerValidator.h" />
     <ClInclude Include="OptionsPropertySheetDlg.h" />
-    <ClInclude Include="PasswordPolicy.h" />
+    <ClInclude Include="PasswordPolicyDlg.h" />
     <ClInclude Include="passwordsafeframe.h" />
     <ClInclude Include="PasswordSafeSearch.h" />
     <ClInclude Include="passwordsubset.h" />
@@ -326,7 +326,7 @@
     <ClCompile Include="MergeDlg.cpp" />
     <ClCompile Include="OpenFilePickerValidator.cpp" />
     <ClCompile Include="OptionsPropertySheetDlg.cpp" />
-    <ClCompile Include="PasswordPolicy.cpp" />
+    <ClCompile Include="PasswordPolicyDlg.cpp" />
     <ClCompile Include="passwordsafeframe.cpp" />
     <ClCompile Include="PasswordSafeSearch.cpp" />
     <ClCompile Include="passwordsubset.cpp" />

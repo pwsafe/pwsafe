@@ -63,7 +63,7 @@ msgid "Misc."
 msgstr "Разное"
 
 #: src/ui/wxWidgets/HelpMap.h:41 src/ui/wxWidgets/HelpMap.h:49
-#: src/ui/wxWidgets/PasswordPolicy.h:69
+#: src/ui/wxWidgets/PasswordPolicyDlg.h:69
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:720
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1712 src/core/core_st.cpp:139
 msgid "Password Policy"
@@ -261,7 +261,7 @@ msgstr ""
 msgid "Copyright (c) 2003-2019 Rony Shapiro"
 msgstr "Copyright (c) 2003-2019 Rony Shapiro"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:185 src/ui/wxWidgets/PasswordPolicy.cpp:396
+#: src/ui/wxWidgets/AboutDlg.cpp:185 src/ui/wxWidgets/PasswordPolicyDlg.cpp:396
 #: src/ui/wxWidgets/passwordsafeframe.cpp:453
 #: src/ui/wxWidgets/passwordsubset.cpp:165 src/ui/wxWidgets/SystemTray.cpp:135
 #: src/ui/wxWidgets/yubicfg.cpp:199
@@ -562,23 +562,23 @@ msgid "Any field last changed on:"
 msgstr "Изменено хотя бы одно поле:"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:569
-#: src/ui/wxWidgets/PasswordPolicy.cpp:209
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:209
 msgid "Random password generation rules"
 msgstr "Правила создания случайного пароля"
 
 # урезано (вкладка "Политика..." в диалоге редактирования элемента)
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:576
-#: src/ui/wxWidgets/PasswordPolicy.cpp:197
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:197
 msgid "Use Database Policy"
 msgstr "Использовать политику"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:591
-#: src/ui/wxWidgets/PasswordPolicy.cpp:216
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:216
 msgid "Password length:"
 msgstr "Длина пароля:"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:606
-#: src/ui/wxWidgets/PasswordPolicy.cpp:231
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:231
 msgid "Use lowercase letters"
 msgstr "Строчные буквы"
 
@@ -586,10 +586,10 @@ msgstr "Строчные буквы"
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:633
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:654
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:676
-#: src/ui/wxWidgets/PasswordPolicy.cpp:238
-#: src/ui/wxWidgets/PasswordPolicy.cpp:260
-#: src/ui/wxWidgets/PasswordPolicy.cpp:282
-#: src/ui/wxWidgets/PasswordPolicy.cpp:305
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:238
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:260
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:282
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:305
 msgid "(At least "
 msgstr "(не менее "
 
@@ -601,60 +601,60 @@ msgid ")"
 msgstr ")"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:627
-#: src/ui/wxWidgets/PasswordPolicy.cpp:253
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:253
 msgid "Use UPPERCASE letters"
 msgstr "ПРОПИСНЫЕ буквы"
 
 # урезано, в информации о политике
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:648
-#: src/ui/wxWidgets/PasswordPolicy.cpp:275 src/core/core_st.cpp:256
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:275 src/core/core_st.cpp:256
 msgid "Use digits"
 msgstr "Использовать цифры"
 
 # урезано, в информации о политике
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:669
-#: src/ui/wxWidgets/PasswordPolicy.cpp:297 src/core/core_st.cpp:258
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:297 src/core/core_st.cpp:258
 msgid "Use symbols"
 msgstr "Символы"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:671
-#: src/ui/wxWidgets/PasswordPolicy.cpp:299
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:299
 msgid "i.e., ., %, $, etc."
 msgstr "напр. &, %, $ и т. п."
 
 # Урезано (кнопка в диалогах мастера и политиках паролей)
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:694
-#: src/ui/wxWidgets/PasswordPolicy.cpp:324
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:324
 msgid "Reset"
 msgstr "Сброс"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:697
-#: src/ui/wxWidgets/PasswordPolicy.cpp:327
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:327
 msgid "Use only easy-to-read characters"
 msgstr "Только удобочитаемые символы"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:699
-#: src/ui/wxWidgets/PasswordPolicy.cpp:329
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:329
 msgid "i.e., no 'l', '1', etc."
 msgstr "не исп. «l», «1» и т. п."
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:704
-#: src/ui/wxWidgets/PasswordPolicy.cpp:334
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:334
 msgid "Generate pronounceable passwords"
 msgstr "Создавать произносимые пароли"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:710
-#: src/ui/wxWidgets/PasswordPolicy.cpp:340 src/core/core_st.cpp:249
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:340 src/core/core_st.cpp:249
 msgid "Or"
 msgstr "Или"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:715
-#: src/ui/wxWidgets/PasswordPolicy.cpp:345
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:345
 msgid "Use hexadecimal digits only"
 msgstr "Только шестнадцатеричные цифры"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:717
-#: src/ui/wxWidgets/PasswordPolicy.cpp:347
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:347
 msgid "0-9, a-f"
 msgstr "0-9, a-f"
 
@@ -700,8 +700,8 @@ msgstr "Ошибка при создании пароля: некорректн�
 #: src/ui/wxWidgets/DbSelectionPanel.cpp:101
 #: src/ui/wxWidgets/DbSelectionPanel.cpp:108
 #: src/ui/wxWidgets/DbSelectionPanel.cpp:116
-#: src/ui/wxWidgets/PasswordPolicy.cpp:727
-#: src/ui/wxWidgets/PasswordPolicy.cpp:746
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:727
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:746
 #: src/ui/wxWidgets/passwordsafeframe.cpp:1866
 #: src/ui/wxWidgets/pwsafeapp.cpp:351
 #: src/ui/wxWidgets/safecombinationchange.cpp:272
@@ -768,12 +768,12 @@ msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
 msgstr "Параметры «произносимые» и «удобочитаемые» несовместимы"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1970
-#: src/ui/wxWidgets/PasswordPolicy.cpp:745
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:745
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr "Параметры «удобочитаемые» и «произносимые» несовместимы"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1997
-#: src/ui/wxWidgets/PasswordPolicy.cpp:726
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:726
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr "Параметры «произносимые» и «удобочитаемые» несовместимы"
 
@@ -964,7 +964,7 @@ msgstr ""
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: src/ui/wxWidgets/EditShortcutDlg.cpp:213
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:244
-#: src/ui/wxWidgets/PasswordPolicy.cpp:378 src/ui/wxWidgets/properties.cpp:367
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:378 src/ui/wxWidgets/properties.cpp:367
 #: src/ui/wxWidgets/safecombinationchange.cpp:205
 #: src/ui/wxWidgets/safecombinationprompt.cpp:210
 #: src/ui/wxWidgets/safecombinationsetup.cpp:180
@@ -974,7 +974,7 @@ msgstr "&OK"
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:170
 #: src/ui/wxWidgets/EditShortcutDlg.cpp:216
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:247
-#: src/ui/wxWidgets/PasswordPolicy.cpp:381
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:381
 #: src/ui/wxWidgets/safecombinationchange.cpp:209
 #: src/ui/wxWidgets/safecombinationprompt.cpp:206
 #: src/ui/wxWidgets/safecombinationsetup.cpp:183
@@ -984,7 +984,7 @@ msgstr "&Отмена"
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:173
 #: src/ui/wxWidgets/EditShortcutDlg.cpp:219
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:250
-#: src/ui/wxWidgets/PasswordPolicy.cpp:384
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:384
 #: src/ui/wxWidgets/passwordsafeframe.cpp:591
 #: src/ui/wxWidgets/safecombinationchange.cpp:212
 #: src/ui/wxWidgets/safecombinationentry.cpp:250
@@ -1424,12 +1424,12 @@ msgid "Test Selected Policy"
 msgstr "Проверить выбранную политику"
 
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:200
-#: src/ui/wxWidgets/PasswordPolicy.cpp:361 src/ui/wxWidgets/yubicfg.cpp:190
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:361 src/ui/wxWidgets/yubicfg.cpp:190
 msgid "Generate"
 msgstr "Создать"
 
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:214
-#: src/ui/wxWidgets/PasswordPolicy.cpp:367
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:367
 msgid "Copy Password to clipboard"
 msgstr "Копировать пароль в буфер обмена"
 
@@ -1942,22 +1942,22 @@ msgstr ""
 msgid "Number of entries that had their password history removed was %d"
 msgstr "Количество элементов для которых была удалена история паролей: %d"
 
-#: src/ui/wxWidgets/PasswordPolicy.cpp:183
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:183
 msgid "Policy Name:"
 msgstr "Имя политики:"
 
-#: src/ui/wxWidgets/PasswordPolicy.cpp:488
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:488
 msgid "Hexadecimal is mutually exclusive to all other options."
 msgstr "Опция «шестнадцатеричные цифры» несовместима с другими опциями."
 
-#: src/ui/wxWidgets/PasswordPolicy.cpp:492
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:492
 msgid ""
 "Hexadecimal passwords must have even length - each byte is two characters"
 msgstr ""
 "Длина генерируемого шестнадцатеричного пароля должна быть чётной,\n"
 "так как каждый байт представим двумя шестнадцатеричными цифрами."
 
-#: src/ui/wxWidgets/PasswordPolicy.cpp:497
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:497
 msgid ""
 "At least one type of character (lowercase, uppercase, digits, symbols or "
 "hexadecimal) must be chosen"
@@ -1965,27 +1965,27 @@ msgstr ""
 "Хотя бы один из типов символов (прописные, строчные, цифры, знаки, "
 "шестнадцатеричные цифры) должен быть разрешён"
 
-#: src/ui/wxWidgets/PasswordPolicy.cpp:502
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:502
 msgid "Password must be between 4 and 1024 characters"
 msgstr "Длина пароля должна быть от 4 до 1024 символов"
 
-#: src/ui/wxWidgets/PasswordPolicy.cpp:510
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:510
 msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Длина пароля меньше, чем сумма ограничений вида «не менее»"
 
-#: src/ui/wxWidgets/PasswordPolicy.cpp:520
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:520
 msgid "Policy name cannot be blank"
 msgstr "Название политики не может быть пустым"
 
-#: src/ui/wxWidgets/PasswordPolicy.cpp:525
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:525
 msgid "Policy name is already in use"
 msgstr "Имя политики уже используется"
 
-#: src/ui/wxWidgets/PasswordPolicy.cpp:530
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:530
 msgid "Default policy name is not allowed"
 msgstr "Нельзя использовать имя политики по умолчанию"
 
-#: src/ui/wxWidgets/PasswordPolicy.cpp:536
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:536
 msgid "Policy Error"
 msgstr "Ошибка в политике"
 

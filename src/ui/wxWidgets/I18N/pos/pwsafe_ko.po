@@ -71,7 +71,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:591
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:250
 #: ../../../ui/wxWidgets/yubicfg.cpp:202
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:384
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:384
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:212
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
@@ -87,7 +87,7 @@ msgid "&Exit"
 msgstr "종료"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:206
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:381
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:381
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
@@ -99,7 +99,7 @@ msgstr "취소"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:210
 #: ../../../ui/wxWidgets/properties.cpp:367
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:378
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:378
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
@@ -135,8 +135,8 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:406
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:521
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:75
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:727
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:746
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:727
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:746
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:103
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:112
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:128
@@ -223,7 +223,7 @@ msgstr "열기(&O)..."
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:453
 #: ../../../ui/wxWidgets/yubicfg.cpp:199
 #: ../../../ui/wxWidgets/passwordsubset.cpp:165
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:396
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:396
 #: ../../../ui/wxWidgets/AboutDlg.cpp:185 ../../../ui/wxWidgets/SystemTray.cpp:135
 msgid "&Close"
 msgstr "닫기(&C)"
@@ -1831,7 +1831,7 @@ msgid "Hide"
 msgstr "숨기기(&H)"
 
 #: ../../../ui/wxWidgets/yubicfg.cpp:190
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:361
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:361
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:200
 #, fuzzy
 msgid "Generate"
@@ -2307,38 +2307,38 @@ msgstr "노트 보이기"
 msgid "Invalid position"
 msgstr "validation"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:183
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:183
 #, fuzzy
 msgid "Policy Name:"
 msgstr "비밀번호 정책"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:197
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:197
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:576
 #, fuzzy
 msgid "Use Database Policy"
 msgstr "데이터베이스 기본값 사용(&F)"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:209
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:209
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:569
 msgid "Random password generation rules"
 msgstr "난수 비밀번호 생성 규칙"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:216
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:216
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:591
 #, fuzzy
 msgid "Password length:"
 msgstr "비밀번호 길이:"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:231
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:231
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:606
 #, fuzzy
 msgid "Use lowercase letters"
 msgstr "소문자 사용(&L)"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:238
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:260
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:282
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:305
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:238
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:260
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:282
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:305
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:612
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:633
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:654
@@ -2347,85 +2347,85 @@ msgstr "소문자 사용(&L)"
 msgid "(At least "
 msgstr "(최소한"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:253
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:253
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:627
 #, fuzzy
 msgid "Use UPPERCASE letters"
 msgstr "대문자 사용"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:275
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:275
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:648
 #, fuzzy
 msgid "Use digits"
 msgstr "숫자 사용(&D)"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:297
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:297
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:669
 #, fuzzy
 msgid "Use symbols"
 msgstr "기본 사용자 이름"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:299
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:299
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:671
 #, fuzzy
 msgid "i.e., ., %, $, etc."
 msgstr "특수문자 사용 (i.e. &, %, $, etc.)(&S)"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:324
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:324
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:694
 msgid "Reset"
 msgstr "초기화"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:327
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:327
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:697
 #, fuzzy
 msgid "Use only easy-to-read characters"
 msgstr "최소 소문자 개수"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:329
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:329
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:699
 msgid "i.e., no 'l', '1', etc."
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:334
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:334
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:704
 #, fuzzy
 msgid "Generate pronounceable passwords"
 msgstr "발음 가능한 비밀번호 생성(&P)"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:340
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:340
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:710
 msgid "Or"
 msgstr "또는"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:345
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:345
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:715
 #, fuzzy
 msgid "Use hexadecimal digits only"
 msgstr "16진수만 사용(&H) (0-9,a-f)"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:347
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:347
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:717
 msgid "0-9, a-f"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:367
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:367
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:214
 #, fuzzy
 msgid "Copy Password to clipboard"
 msgstr "비밀번호를 클립보드에 복사(&C)"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:488
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:488
 #, fuzzy
 msgid "Hexadecimal is mutually exclusive to all other options."
 msgstr "16진수 방식은 모든 다른 옵션들을 공통적으로 제외합니다!"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:492
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:492
 msgid ""
 "Hexadecimal passwords must have even length - each byte is two characters"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:497
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:497
 #, fuzzy
 msgid ""
 "At least one type of character (lowercase, uppercase, digits, symbols or "
@@ -2434,34 +2434,34 @@ msgstr ""
 "최소 한 글자(소문자, 대문자, 숫자,\n"
 "특수문자, 16진수) 이상 입력해야 합니다."
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:502
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:502
 #, fuzzy
 msgid "Password must be between 4 and 1024 characters"
 msgstr "비밀번호의 길이는 반드시 4~1024자 이내여야 합니다."
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:510
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:510
 msgid "Password length is less than sum of 'at least' constraints"
 msgstr "비밀번호 길이가 최소 규칙들의 합보다 적습니다"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:520
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:520
 #, fuzzy
 msgid "Policy name cannot be blank"
 msgstr "비밀번호 조합은 공백으로 남겨질 수 없습니다"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:525
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:525
 msgid "Policy name is already in use"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:530
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:530
 msgid "Default policy name is not allowed"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:536
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:536
 #, fuzzy
 msgid "Policy Error"
 msgstr "비밀번호 정책"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:726
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:726
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1997
 #, fuzzy
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
@@ -2469,7 +2469,7 @@ msgstr ""
 "죄송합니다만, '발음할 수 있는' 속성과 '읽기쉬운' 속성이 동시에 지원되지 않습"
 "니다"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:745
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:745
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1970
 #, fuzzy
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
@@ -3158,7 +3158,7 @@ msgstr ")"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:720
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1712
-#: ../../../ui/wxWidgets/PasswordPolicy.h:69 ../../../ui/wxWidgets/HelpMap.h:41
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.h:69 ../../../ui/wxWidgets/HelpMap.h:41
 #: ../../../ui/wxWidgets/HelpMap.h:49
 msgid "Password Policy"
 msgstr "비밀번호 정책"
