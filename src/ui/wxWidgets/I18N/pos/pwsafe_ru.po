@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/ui/wxWidgets/about.h:47
+#: src/ui/wxWidgets/AboutDlg.h:47
 msgid "About Password Safe"
 msgstr "О Password Safe"
 
@@ -217,78 +217,78 @@ msgstr "Установка пароля для контейнера"
 msgid "YubiKey Configuration"
 msgstr "Настройки YubiKey"
 
-#: src/ui/wxWidgets/about.cpp:145 src/ui/wxWidgets/optionspropsheet.cpp:1287
+#: src/ui/wxWidgets/AboutDlg.cpp:145 src/ui/wxWidgets/optionspropsheet.cpp:1287
 #: src/ui/wxWidgets/PasswordSafeSearch.cpp:496
 #: src/ui/wxWidgets/pwsafeapp.cpp:410
 msgid "Password Safe"
 msgstr "Password Safe"
 
-#: src/ui/wxWidgets/about.cpp:148 src/ui/wxWidgets/about.cpp:190
+#: src/ui/wxWidgets/AboutDlg.cpp:148 src/ui/wxWidgets/AboutDlg.cpp:190
 msgid "Build date:"
 msgstr "Дата сборки:"
 
-#: src/ui/wxWidgets/about.cpp:154
+#: src/ui/wxWidgets/AboutDlg.cpp:154
 msgid "Latest version? Click "
 msgstr "Новая версия? Нажмите "
 
-#: src/ui/wxWidgets/about.cpp:157
+#: src/ui/wxWidgets/AboutDlg.cpp:157
 msgid "here"
 msgstr "здесь"
 
-#: src/ui/wxWidgets/about.cpp:160
+#: src/ui/wxWidgets/AboutDlg.cpp:160
 msgid " to check."
 msgstr " для проверки."
 
-#: src/ui/wxWidgets/about.cpp:166
+#: src/ui/wxWidgets/AboutDlg.cpp:166
 msgid "Please visit the "
 msgstr "Пожалуйста, посетите "
 
-#: src/ui/wxWidgets/about.cpp:169
+#: src/ui/wxWidgets/AboutDlg.cpp:169
 msgid "PasswordSafe website"
 msgstr "сайт Password Safe"
 
-#: src/ui/wxWidgets/about.cpp:172
+#: src/ui/wxWidgets/AboutDlg.cpp:172
 msgid "."
 msgstr "."
 
-#: src/ui/wxWidgets/about.cpp:175
+#: src/ui/wxWidgets/AboutDlg.cpp:175
 msgid "See LICENSE for open source details."
 msgstr ""
 "См. LICENSE, чтобы узнать подробности\n"
 "о распространении исходного кода."
 
-#: src/ui/wxWidgets/about.cpp:178
+#: src/ui/wxWidgets/AboutDlg.cpp:178
 msgid "Copyright (c) 2003-2019 Rony Shapiro"
 msgstr "Copyright (c) 2003-2019 Rony Shapiro"
 
-#: src/ui/wxWidgets/about.cpp:185 src/ui/wxWidgets/PasswordPolicy.cpp:396
+#: src/ui/wxWidgets/AboutDlg.cpp:185 src/ui/wxWidgets/PasswordPolicy.cpp:396
 #: src/ui/wxWidgets/passwordsafeframe.cpp:453
 #: src/ui/wxWidgets/passwordsubset.cpp:165 src/ui/wxWidgets/SystemTray.cpp:135
 #: src/ui/wxWidgets/yubicfg.cpp:199
 msgid "&Close"
 msgstr "&Закрыть"
 
-#: src/ui/wxWidgets/about.cpp:299
+#: src/ui/wxWidgets/AboutDlg.cpp:299
 msgid "Could not initialize the Curl library.\n"
 msgstr "Не удалось инициализировать библиотеку Curl.\n"
 
-#: src/ui/wxWidgets/about.cpp:312
+#: src/ui/wxWidgets/AboutDlg.cpp:312
 msgid "Could not create a connection session.\n"
 msgstr "Не удалось установить подключение.\n"
 
-#: src/ui/wxWidgets/about.cpp:325
+#: src/ui/wxWidgets/AboutDlg.cpp:325
 msgid "Could not set 'URL' option.\n"
 msgstr "Не удалось задать URL.\n"
 
-#: src/ui/wxWidgets/about.cpp:335
+#: src/ui/wxWidgets/AboutDlg.cpp:335
 msgid "Could not set 'Timeout' option.\n"
 msgstr "Не удалось задать параметр 'Timeout'.\n"
 
-#: src/ui/wxWidgets/about.cpp:348
+#: src/ui/wxWidgets/AboutDlg.cpp:348
 msgid "Could not set 'Write Function' option.\n"
 msgstr "Не удалось задать параметр 'Write Function'.\n"
 
-#: src/ui/wxWidgets/about.cpp:427
+#: src/ui/wxWidgets/AboutDlg.cpp:427
 msgid ""
 "For security, the database must be closed before connecting to the Internet.\n"
 "Press OK to close database and continue (Changes will be saved)"
@@ -296,47 +296,47 @@ msgstr ""
 "Из соображений безопасности перед подключением к Интернет необходимо закрыть контейнер.\n"
 "Нажмите OK для закрытия контейнера и продолжения (изменения будут сохранены)."
 
-#: src/ui/wxWidgets/about.cpp:432
+#: src/ui/wxWidgets/AboutDlg.cpp:432
 msgid "Confirm Close Dialog"
 msgstr "Диалог подтверждения закрытия"
 
-#: src/ui/wxWidgets/about.cpp:505
+#: src/ui/wxWidgets/AboutDlg.cpp:505
 msgid "Trying to contact server..."
 msgstr "Соединение с сервером..."
 
-#: src/ui/wxWidgets/about.cpp:558
+#: src/ui/wxWidgets/AboutDlg.cpp:558
 msgid "Couldn't contact server."
 msgstr "Невозможно соединиться с сервером."
 
-#: src/ui/wxWidgets/about.cpp:563
+#: src/ui/wxWidgets/AboutDlg.cpp:563
 msgid "This is the latest release!"
 msgstr "У вас самая новая версия!"
 
-#: src/ui/wxWidgets/about.cpp:568
+#: src/ui/wxWidgets/AboutDlg.cpp:568
 msgid "Current version: "
 msgstr "Текущая версия: "
 
-#: src/ui/wxWidgets/about.cpp:570
+#: src/ui/wxWidgets/AboutDlg.cpp:570
 msgid "Latest version:\t"
 msgstr "Новая версия:\t"
 
-#: src/ui/wxWidgets/about.cpp:571
+#: src/ui/wxWidgets/AboutDlg.cpp:571
 msgid "Please visit the PasswordSafe website to download the latest version."
 msgstr "Пожалуйста, посетите сайт Password Safe для загрузки новой версии."
 
-#: src/ui/wxWidgets/about.cpp:572
+#: src/ui/wxWidgets/AboutDlg.cpp:572
 msgid "Newer Version Found!"
 msgstr "Обнаружена новая версия!"
 
-#: src/ui/wxWidgets/about.cpp:579
+#: src/ui/wxWidgets/AboutDlg.cpp:579
 msgid "Could not read server version data."
 msgstr "Невозможно получить с сервера данные о версии."
 
-#: src/ui/wxWidgets/about.cpp:628
+#: src/ui/wxWidgets/AboutDlg.cpp:628
 msgid "No Curl handle to perform download."
 msgstr "Ошибка загрузки: не задан CurlHandle."
 
-#: src/ui/wxWidgets/about.cpp:683
+#: src/ui/wxWidgets/AboutDlg.cpp:683
 msgid "Could not download version data.\n"
 msgstr "Невозможно загрузить данные о версии.\n"
 

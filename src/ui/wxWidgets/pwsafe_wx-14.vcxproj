@@ -246,7 +246,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="about.h" />
+    <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="addeditpropsheet.h" />
     <ClInclude Include="AdvancedSelectionDlg.h" />
     <ClInclude Include="CompareDlg.h" />
@@ -304,7 +304,7 @@
     <ResourceCompile Include="pwsafe.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="about.cpp" />
+    <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="addeditpropsheet.cpp" />
     <ClCompile Include="AdvancedSelectionDlg.cpp" />
     <ClCompile Include="CompareDlg.cpp" />

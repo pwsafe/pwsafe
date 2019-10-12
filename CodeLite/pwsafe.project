@@ -54,7 +54,7 @@
     <File Name="../src/ui/wxWidgets/version.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationsetup.h"/>
     <File Name="../src/ui/wxWidgets/SystemTray.cpp"/>
-    <File Name="../src/ui/wxWidgets/about.h"/>
+    <File Name="../src/ui/wxWidgets/AboutDlg.h"/>
     <File Name="../src/ui/wxWidgets/createshortcutdlg.h"/>
     <File Name="../src/ui/wxWidgets/pwsclip.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationprompt.cpp"/>
@@ -65,7 +65,7 @@
     <File Name="../src/ui/wxWidgets/addeditpropsheet.cpp"/>
     <File Name="../src/ui/wxWidgets/passwordsafeframe.h"/>
     <File Name="../src/ui/wxWidgets/PWStree.h"/>
-    <File Name="../src/ui/wxWidgets/about.cpp"/>
+    <File Name="../src/ui/wxWidgets/AboutDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/PWSgridtable.cpp"/>
     <File Name="../src/ui/wxWidgets/PWStree.cpp"/>
     <File Name="../src/ui/wxWidgets/deleteconfirmation.h"/>

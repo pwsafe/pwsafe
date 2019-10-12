@@ -398,8 +398,8 @@
 			<Option target="Release_L64Y" />
 			<Option target="Release_L32Y" />
 		</Unit>
-		<Unit filename="../../src/ui/wxWidgets/about.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/about.h" />
+		<Unit filename="../../src/ui/wxWidgets/AboutDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/AboutDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/addeditpropsheet.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/addeditpropsheet.h" />
 		<Unit filename="../../src/ui/wxWidgets/createshortcutdlg.cpp" />

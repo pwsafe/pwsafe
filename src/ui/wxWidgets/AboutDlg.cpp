@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file about.cpp
+/** \file AboutDlg.cpp
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -24,7 +24,7 @@
 ////@begin includes
 ////@end includes
 
-#include "about.h"
+#include "AboutDlg.h"
 #include "version.h"
 #include "passwordsafeframe.h"
 #include "core/CheckVersion.h"

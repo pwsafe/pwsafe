@@ -217,7 +217,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/yubicfg.cpp:199
 #: ../../../ui/wxWidgets/passwordsubset.cpp:165
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:396
-#: ../../../ui/wxWidgets/about.cpp:185 ../../../ui/wxWidgets/SystemTray.cpp:135
+#: ../../../ui/wxWidgets/AboutDlg.cpp:185 ../../../ui/wxWidgets/SystemTray.cpp:135
 msgid "&Close"
 msgstr "&Chiudi"
 
@@ -1356,7 +1356,7 @@ msgstr "Un'altra istanza di Password Safe è già in esecuzione"
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:410
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:1287
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:496
-#: ../../../ui/wxWidgets/about.cpp:145
+#: ../../../ui/wxWidgets/AboutDlg.cpp:145
 msgid "Password Safe"
 msgstr "Password Safe"
 
@@ -3297,71 +3297,71 @@ msgstr ""
 "Specificare il nome e il gruppo\n"
 " per la scorciatoia a "
 
-#: ../../../ui/wxWidgets/about.cpp:148 ../../../ui/wxWidgets/about.cpp:190
+#: ../../../ui/wxWidgets/AboutDlg.cpp:148 ../../../ui/wxWidgets/AboutDlg.cpp:190
 #, fuzzy
 msgid "Build date:"
 msgstr "Data di compilazione: "
 
-#: ../../../ui/wxWidgets/about.cpp:154
+#: ../../../ui/wxWidgets/AboutDlg.cpp:154
 #, fuzzy
 msgid "Latest version? Click "
 msgstr "Cliccare"
 
-#: ../../../ui/wxWidgets/about.cpp:157
+#: ../../../ui/wxWidgets/AboutDlg.cpp:157
 msgid "here"
 msgstr "qui"
 
-#: ../../../ui/wxWidgets/about.cpp:160
+#: ../../../ui/wxWidgets/AboutDlg.cpp:160
 #, fuzzy
 msgid " to check."
 msgstr "Per controllare l'ultima versione."
 
-#: ../../../ui/wxWidgets/about.cpp:166
+#: ../../../ui/wxWidgets/AboutDlg.cpp:166
 msgid "Please visit the "
 msgstr "Visita il"
 
-#: ../../../ui/wxWidgets/about.cpp:169
+#: ../../../ui/wxWidgets/AboutDlg.cpp:169
 msgid "PasswordSafe website"
 msgstr "sito web di PasswordSafe"
 
-#: ../../../ui/wxWidgets/about.cpp:172
+#: ../../../ui/wxWidgets/AboutDlg.cpp:172
 msgid "."
 msgstr "."
 
-#: ../../../ui/wxWidgets/about.cpp:175
+#: ../../../ui/wxWidgets/AboutDlg.cpp:175
 #, fuzzy
 msgid "See LICENSE for open source details."
 msgstr "Per dettagli sul codice sorgente, si veda la LICENZA."
 
-#: ../../../ui/wxWidgets/about.cpp:178
+#: ../../../ui/wxWidgets/AboutDlg.cpp:178
 msgid "Copyright (c) 2003-2019 Rony Shapiro"
 msgstr "Copyright (c) 2003-2019 di Rony Shapiro"
 
-#: ../../../ui/wxWidgets/about.cpp:299
+#: ../../../ui/wxWidgets/AboutDlg.cpp:299
 #, fuzzy
 msgid "Could not initialize the Curl library.\n"
 msgstr ""
 "Impossibile inizializzare il sottosistema di aiuto. L'aiuto non sarà "
 "disponibile"
 
-#: ../../../ui/wxWidgets/about.cpp:312
+#: ../../../ui/wxWidgets/AboutDlg.cpp:312
 #, fuzzy
 msgid "Could not create a connection session.\n"
 msgstr "Impossibile creare la Barra di Ricerca"
 
-#: ../../../ui/wxWidgets/about.cpp:325
+#: ../../../ui/wxWidgets/AboutDlg.cpp:325
 msgid "Could not set 'URL' option.\n"
 msgstr ""
 
-#: ../../../ui/wxWidgets/about.cpp:335
+#: ../../../ui/wxWidgets/AboutDlg.cpp:335
 msgid "Could not set 'Timeout' option.\n"
 msgstr ""
 
-#: ../../../ui/wxWidgets/about.cpp:348
+#: ../../../ui/wxWidgets/AboutDlg.cpp:348
 msgid "Could not set 'Write Function' option.\n"
 msgstr ""
 
-#: ../../../ui/wxWidgets/about.cpp:427
+#: ../../../ui/wxWidgets/AboutDlg.cpp:427
 msgid ""
 "For security, the database must be closed before connecting to the "
 "Internet.\n"
@@ -3372,47 +3372,47 @@ msgstr ""
 "Premere OK per chiudere il database e continuare (i cambiamenti saranno "
 "salvati)"
 
-#: ../../../ui/wxWidgets/about.cpp:432
+#: ../../../ui/wxWidgets/AboutDlg.cpp:432
 msgid "Confirm Close Dialog"
 msgstr "Conferma Chiusura Finestra"
 
-#: ../../../ui/wxWidgets/about.cpp:505
+#: ../../../ui/wxWidgets/AboutDlg.cpp:505
 msgid "Trying to contact server..."
 msgstr "Tentativo di connessione al server..."
 
-#: ../../../ui/wxWidgets/about.cpp:558
+#: ../../../ui/wxWidgets/AboutDlg.cpp:558
 msgid "Couldn't contact server."
 msgstr "Impossibile contattare il server."
 
-#: ../../../ui/wxWidgets/about.cpp:563
+#: ../../../ui/wxWidgets/AboutDlg.cpp:563
 msgid "This is the latest release!"
 msgstr "Questa è l'ultima versione!"
 
-#: ../../../ui/wxWidgets/about.cpp:568
+#: ../../../ui/wxWidgets/AboutDlg.cpp:568
 msgid "Current version: "
 msgstr "Versione corrente: "
 
-#: ../../../ui/wxWidgets/about.cpp:570
+#: ../../../ui/wxWidgets/AboutDlg.cpp:570
 msgid "Latest version:\t"
 msgstr "Ultima versione:\t"
 
-#: ../../../ui/wxWidgets/about.cpp:571
+#: ../../../ui/wxWidgets/AboutDlg.cpp:571
 msgid "Please visit the PasswordSafe website to download the latest version."
 msgstr "Visita il sito web di PasswordSafe per scaricare l'ultima versione."
 
-#: ../../../ui/wxWidgets/about.cpp:572
+#: ../../../ui/wxWidgets/AboutDlg.cpp:572
 msgid "Newer Version Found!"
 msgstr "Versione più recente trovata!"
 
-#: ../../../ui/wxWidgets/about.cpp:579
+#: ../../../ui/wxWidgets/AboutDlg.cpp:579
 msgid "Could not read server version data."
 msgstr "Impossibile leggere i dati di versione dal server."
 
-#: ../../../ui/wxWidgets/about.cpp:628
+#: ../../../ui/wxWidgets/AboutDlg.cpp:628
 msgid "No Curl handle to perform download."
 msgstr ""
 
-#: ../../../ui/wxWidgets/about.cpp:683
+#: ../../../ui/wxWidgets/AboutDlg.cpp:683
 #, fuzzy
 msgid "Could not download version data.\n"
 msgstr "Impossibile leggere i dati di versione dal server."
@@ -3880,7 +3880,7 @@ msgstr "Impostazione Combinazione di Sicurezza"
 msgid "Create Shortcut"
 msgstr "Crea Scorciatoia"
 
-#: ../../../ui/wxWidgets/about.h:47
+#: ../../../ui/wxWidgets/AboutDlg.h:47
 msgid "About Password Safe"
 msgstr "Informazioni su Password Safe"
 
