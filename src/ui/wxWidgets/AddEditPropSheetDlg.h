@@ -7,7 +7,7 @@
  */
 
 /**
- *  \file addeditpropsheet.h
+ *  \file AddEditPropSheetDlg.h
  */
 
 #ifndef _ADDEDITPROPSHEET_H_

@@ -245,7 +245,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h" />
-    <ClInclude Include="addeditpropsheet.h" />
+    <ClInclude Include="AddEditPropSheetDlg.h" />
     <ClInclude Include="AdvancedSelectionDlg.h" />
     <ClInclude Include="CompareDlg.h" />
     <ClInclude Include="ComparisonGridTable.h" />
@@ -303,7 +303,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AboutDlg.cpp" />
-    <ClCompile Include="addeditpropsheet.cpp" />
+    <ClCompile Include="AddEditPropSheetDlg.cpp" />
     <ClCompile Include="AdvancedSelectionDlg.cpp" />
     <ClCompile Include="CompareDlg.cpp" />
     <ClCompile Include="ComparisonGridTable.cpp" />

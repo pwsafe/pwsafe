@@ -18,7 +18,7 @@
     <ClInclude Include="AboutDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="addeditpropsheet.h">
+    <ClInclude Include="AddEditPropSheetDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="createshortcutdlg.h">
@@ -184,7 +184,7 @@
     <ClCompile Include="AboutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="addeditpropsheet.cpp">
+    <ClCompile Include="AddEditPropSheetDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AdvancedSelectionDlg.cpp">

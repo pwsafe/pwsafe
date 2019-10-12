@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file addeditpropsheet.cpp
+/** \file AddEditPropSheetDlg.cpp
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -30,7 +30,7 @@
 #include "core/PWHistory.h"
 #include "os/run.h"
 
-#include "addeditpropsheet.h"
+#include "AddEditPropSheetDlg.h"
 #include "pwsclip.h"
 #include "./wxutils.h"
 

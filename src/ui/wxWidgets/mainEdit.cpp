@@ -28,7 +28,7 @@
 #include "PWStree.h"
 
 #include "passwordsafeframe.h"
-#include "addeditpropsheet.h"
+#include "AddEditPropSheetDlg.h"
 #include "pwsclip.h"
 #include "PasswordSafeSearch.h"
 #include "deleteconfirmation.h"

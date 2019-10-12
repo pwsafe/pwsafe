@@ -49,7 +49,7 @@
     <File Name="../src/ui/wxWidgets/properties.h"/>
     <File Name="../src/ui/wxWidgets/optionspropsheet.cpp"/>
     <File Name="../src/ui/wxWidgets/PWSgridtable.h"/>
-    <File Name="../src/ui/wxWidgets/addeditpropsheet.h"/>
+    <File Name="../src/ui/wxWidgets/AddEditPropSheetDlg.h"/>
     <File Name="../src/ui/wxWidgets/wxutils.h"/>
     <File Name="../src/ui/wxWidgets/version.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationsetup.h"/>
@@ -62,7 +62,7 @@
     <File Name="../src/ui/wxWidgets/PWSgrid.h"/>
     <File Name="../src/ui/wxWidgets/optionspropsheet.h"/>
     <File Name="../src/ui/wxWidgets/safecombinationentry.cpp"/>
-    <File Name="../src/ui/wxWidgets/addeditpropsheet.cpp"/>
+    <File Name="../src/ui/wxWidgets/AddEditPropSheetDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/passwordsafeframe.h"/>
     <File Name="../src/ui/wxWidgets/PWStree.h"/>
     <File Name="../src/ui/wxWidgets/AboutDlg.cpp"/>

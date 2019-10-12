@@ -28,7 +28,7 @@
 #include "./ComparisonGridTable.h"
 #include "./SizeRestrictedPanel.h"
 #include "../../core/core.h"
-#include "./addeditpropsheet.h"
+#include "./AddEditPropSheetDlg.h"
 #include "./fieldselectiondlg.h"
 #include "./SelectionCriteria.h"
 
