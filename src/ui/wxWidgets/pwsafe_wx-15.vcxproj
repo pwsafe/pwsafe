@@ -256,7 +256,7 @@
     <ClInclude Include="EditShortcutDlg.h" />
     <ClInclude Include="ExportTextWarningDlg.h" />
     <ClInclude Include="ExternalKeyboardButton.h" />
-    <ClInclude Include="fieldselectiondlg.h" />
+    <ClInclude Include="FieldSelectionDlg.h" />
     <ClInclude Include="fieldselectionpanel.h" />
     <ClInclude Include="guiinfo.h" />
     <ClInclude Include="helpmap.h" />
@@ -314,7 +314,7 @@
     <ClCompile Include="EditShortcutDlg.cpp" />
     <ClCompile Include="ExportTextWarningDlg.cpp" />
     <ClCompile Include="ExternalKeyboardButton.cpp" />
-    <ClCompile Include="fieldselectiondlg.cpp" />
+    <ClCompile Include="FieldSelectionDlg.cpp" />
     <ClCompile Include="fieldselectionpanel.cpp" />
     <ClCompile Include="guiinfo.cpp" />
     <ClCompile Include="ImportTextDlg.cpp" />

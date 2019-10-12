@@ -410,8 +410,8 @@
 		<Unit filename="../../src/ui/wxWidgets/DragBarGenericCtrl.h" />
 		<Unit filename="../../src/ui/wxWidgets/EditShortcutDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/EditShortcutDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/fieldselectiondlg.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/fieldselectiondlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/FieldSelectionDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/FieldSelectionDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/fieldselectionpanel.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/fieldselectionpanel.h" />
 		<Unit filename="../../src/ui/wxWidgets/guiinfo.cpp" />

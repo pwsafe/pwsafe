@@ -20,7 +20,7 @@
 #include <wx/wx.h>
 #endif
 
-#include "./fieldselectiondlg.h"
+#include "./FieldSelectionDlg.h"
 #include "./fieldselectionpanel.h"
 #include "./wxutils.h"
 

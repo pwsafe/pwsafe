@@ -115,8 +115,8 @@
     <File Name="../src/ui/wxWidgets/SizeRestrictedPanel.cpp"/>
     <File Name="../src/ui/wxWidgets/fieldselectionpanel.h"/>
     <File Name="../src/ui/wxWidgets/fieldselectionpanel.cpp"/>
-    <File Name="../src/ui/wxWidgets/fieldselectiondlg.cpp"/>
-    <File Name="../src/ui/wxWidgets/fieldselectiondlg.h"/>
+    <File Name="../src/ui/wxWidgets/FieldSelectionDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/FieldSelectionDlg.h"/>
     <File Name="../src/ui/wxWidgets/pwsmenushortcuts.h"/>
     <File Name="../src/ui/wxWidgets/pwsmenushortcuts.cpp"/>
     <File Name="../src/ui/wxWidgets/PasswordPolicy.cpp"/>
