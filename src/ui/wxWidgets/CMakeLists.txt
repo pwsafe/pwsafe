@@ -2,7 +2,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/pwsafeapp.h
     src/ui/wxWidgets/passwordsafeframe.h
     src/ui/wxWidgets/AboutDlg.h
-    src/ui/wxWidgets/optionspropsheet.h
+    src/ui/wxWidgets/OptionsPropertySheetDlg.h
     src/ui/wxWidgets/PasswordSafeSearch.h
     src/ui/wxWidgets/ViewReport.h
     src/ui/wxWidgets/GuiInfo.h
@@ -55,7 +55,7 @@ list(APPEND PWSAFE_HDR_LIST
 
 
 list(APPEND PWSAFE_SRC_LIST
-    src/ui/wxWidgets/optionspropsheet.cpp
+    src/ui/wxWidgets/OptionsPropertySheetDlg.cpp
     src/ui/wxWidgets/CompareDlg.cpp
     src/ui/wxWidgets/ImportTextDlg.cpp
     src/ui/wxWidgets/AddEditPropSheetDlg.cpp

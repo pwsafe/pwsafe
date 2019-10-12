@@ -26,7 +26,7 @@
 
 #include "passwordsafeframe.h"
 #include "safecombinationprompt.h"
-#include "optionspropsheet.h"
+#include "OptionsPropertySheetDlg.h"
 #include "SystemTray.h"
 #include "ManagePasswordPoliciesDlg.h"
 #include "PasswordPolicy.h"

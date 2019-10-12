@@ -1446,7 +1446,7 @@ msgid "Another instance of Password Safe is already running"
 msgstr ""
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:410
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:1287
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1287
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:496
 #: ../../../ui/wxWidgets/AboutDlg.cpp:145
 msgid "Password Safe"
@@ -1889,403 +1889,403 @@ msgstr ""
 msgid "Error: Unconfigured YubiKey?"
 msgstr ""
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:249
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:249
 #, fuzzy
 msgid "Save database immediately after any change"
 msgstr "Guardar base de datos inmediatamente tras editar o añadir"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:253
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:253
 msgid "Intermediate Backups"
 msgstr "Respaldos intermedios"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:256
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:256
 msgid "Create intermediate backups (.ibak) before saving"
 msgstr "Crear archivos de respaldo intermedios (.bak) antes de guardar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:260
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:260
 msgid "Backup Name"
 msgstr "Nombre de copia de respaldo"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:263
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:263
 msgid "Base:"
 msgstr "Base:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:266
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:266
 msgid "Database name"
 msgstr "Nombre de la base de datos"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:272
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:326
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:272
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:326
 msgid "Other:"
 msgstr "Otro:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:282
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:282
 msgid "Suffix:"
 msgstr "Sufijo:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:294
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:294
 msgid "Max."
 msgstr "Máx."
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:308
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:308
 msgid "Example:"
 msgstr "Ejemplo:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:317
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:317
 #, fuzzy
 msgid "Backup directory:"
 msgstr "Directorio de respaldo:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:320
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:320
 msgid "Same as database's"
 msgstr "El mismo de la base de datos"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:333
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:499
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:333
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:499
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:280
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:881
 msgid "Browse"
 msgstr "Buscar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:336
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:336
 #: ../../../ui/wxWidgets/HelpMap.h:38
 msgid "Backups"
 msgstr "Copias de respaldo"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:346
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:346
 msgid "Always keep Password Safe on top"
 msgstr "Mantener Password Safe siempre visible"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:350
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:350
 msgid "Show Username in Tree View"
 msgstr "Mostrar usuario en vista de árbol"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:354
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:354
 msgid "Show Password in Tree View"
 msgstr "Mostrar contraseñas en vista de árbol"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:358
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:358
 msgid "Show Password in Add && Edit"
 msgstr "Mostrar contraseña en agregar y editar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:362
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:362
 msgid "Show Notes in Edit"
 msgstr "Mostrar notas al editar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:366
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:366
 msgid "Show Notes as ToolTips in Tree && List views"
 msgstr "Mostrar notas como menú desplegable en vistas en árbol y lista"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:370
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:370
 msgid "Word Wrap Notes in Add && Edit"
 msgstr "Ajuste de línea en notas al añadir y editar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:374
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:374
 msgid "Put Groups first in Tree View"
 msgstr "Poner grupos primero en vista de árbol"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:380
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:380
 msgid "Warn"
 msgstr "Avisar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:393
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:393
 msgid "days before passwords expire"
 msgstr "días antes que las contraseñas caduquen"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:397
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:397
 #, fuzzy
 msgid "&Fully collapsed"
 msgstr "Todo contraído"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:398
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:398
 #, fuzzy
 msgid "&Fully expanded"
 msgstr "Todo expandido"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:399
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:399
 #, fuzzy
 msgid "&Same as when last saved"
 msgstr "La misma del último guardado"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:400
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:400
 msgid "Initial Tree View"
 msgstr "Vista inicial en árbol"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:404
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:404
 #: ../../../ui/wxWidgets/HelpMap.h:39
 msgid "Display"
 msgstr "Visualizar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:414
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:414
 msgid "Confirm deletion of items"
 msgstr "Confirmar borrado de elementos"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:418
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:418
 msgid "Record last access times"
 msgstr "Registro de últimos accesos"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:422
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:422
 msgid "Escape key closes application"
 msgstr "La tecla Escape cierra la aplicación"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:428
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:428
 msgid "Double-click action"
 msgstr "Acción de doble clic"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:449
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:449
 #, fuzzy
 msgid "Shift double-click action"
 msgstr "Acción de doble clic"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:455
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:455
 msgid "Autotype"
 msgstr "Autoescritura"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:458
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:458
 msgid "Minimize after Autotype"
 msgstr "Minimizar después de autoescritura"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:464
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:464
 msgid "Default Autotype string:"
 msgstr "Formato autoescritura por defecto:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:471
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:471
 msgid "Default Username"
 msgstr "Usuario por defecto"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:476
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:476
 msgid "Use"
 msgstr "Usar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:483
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:483
 msgid "as default username"
 msgstr "como usuario por defecto"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:487
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:487
 msgid "Query user to set default username"
 msgstr "Consultar al usuario sobre el nombre de usuario por defecto"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:491
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:491
 #, fuzzy
 msgid "Alternate Browser"
 msgstr "Navegador alternativo"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:505
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:505
 msgid "Browser Command Line parameters"
 msgstr "Parámetros de línea de comandos"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:511
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:511
 #: ../../../ui/wxWidgets/HelpMap.h:40
 msgid "Misc."
 msgstr "Misc."
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:523
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:523
 msgid "Save"
 msgstr "Guardar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:536
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:536
 msgid "previous passwords per entry"
 msgstr "contraseñas anteriores por entrada"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:543
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:543
 #, fuzzy
 msgid "Default password expiration (days)"
 msgstr "Reglas de generación de contraseñas aleatorias"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:556
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:556
 msgid "Manage password history of current entries"
 msgstr "Organizar historial de contraseñas de las entradas actuales"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:559
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:559
 msgid "No change"
 msgstr "Sin cambios"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:563
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:563
 msgid "Stop saving previous passwords"
 msgstr "Dejar de guardar contraseñas previas"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:567
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:567
 msgid "Start saving previous passwords"
 msgstr "Empezar a guardar contraseñas previas"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:571
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:571
 #, fuzzy
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Establecer número máximo de contraseñas guardadas al valor de arriba"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:575
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:575
 #, fuzzy
 msgid "Clear password history for ALL entries"
 msgstr "Organizar historial de contraseñas de las entradas actuales"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:579
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:579
 msgid "Apply these changes to Protected Entries (if required)."
 msgstr ""
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:583
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:583
 msgid "Apply"
 msgstr "Aplicar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:586
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:586
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
 #: ../../../ui/wxWidgets/HelpMap.h:42
 msgid "Password History"
 msgstr "Historial de contraseñas"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:596
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:596
 msgid "Clear clipboard upon minimize"
 msgstr "Borrar portapapeles al minimizar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:600
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:600
 msgid "Clear clipboard upon exit"
 msgstr "Borrar portapapeles al salir"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:604
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:604
 #, fuzzy
 msgid "Confirm copy of password to clipboard"
 msgstr "Copiar contraseña al portapapeles"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:608
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:608
 msgid "'Browse to URL' copies password to clipboard"
 msgstr "'Ir a URL' copia la contraseña en el portapapeles"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:612
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:612
 msgid "Lock password database on minimize"
 msgstr "Bloquear base de datos al minimizar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:616
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:616
 msgid "Lock password database on workstation lock"
 msgstr "Bloquear base de datos al bloquear equipo"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:622
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:622
 #, fuzzy
 msgid "Lock password database after"
 msgstr "Bloquear base de datos después de"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:635
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:635
 msgid "minutes idle"
 msgstr "minutos inactivo"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:640
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:640
 msgid "Unlock Difficulty:"
 msgstr ""
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:648
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:648
 #, fuzzy
 msgid "Standard"
 msgstr "Sorabo estandar"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:653
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:653
 msgid "Maximum"
 msgstr ""
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:656
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:656
 #: ../../../ui/wxWidgets/HelpMap.h:43
 msgid "Security"
 msgstr "Seguridad"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:675
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:675
 #: ../../../ui/wxWidgets/HelpMap.h:45
 msgid "Shortcuts"
 msgstr "Atajos"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:685
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:685
 #, fuzzy
 msgid "System Tray"
 msgstr "Bandeja"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:688
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:688
 msgid "Put icon in System Tray"
 msgstr "Mostrar icono en el área de notificación"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:694
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:723
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:694
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:723
 #, fuzzy
 msgid "  Remember last"
 msgstr "Recordar últimas"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:706
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:706
 #, fuzzy
 msgid "used entries in System Tray menu"
 msgstr "entradas usadas en el menú del área de notificación."
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:709
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:709
 msgid "Start PasswordSafe at Login"
 msgstr "Iniciar PasswordSafe al iniciar sesión"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:713
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:713
 msgid ""
 "There appears to be no system tray support in your current environment.\n"
 "Any related functionality may not work as expected."
 msgstr ""
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:718
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:718
 msgid "Recent PasswordSafe Databases"
 msgstr "Bases de datos Passwordafe recientes"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:735
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:735
 #, fuzzy
 msgid "databases"
 msgstr "bases de datos."
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:738
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:738
 #, fuzzy
 msgid "Recent Databases on File Menu rather than as a sub-menu"
 msgstr "Bases de datos recientes en el menú archivo en vez de en un submenú."
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:742
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:742
 #, fuzzy
 msgid "Open database as read-only by default"
 msgstr "Abrir base de datos en sólo lectura por defecto"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:746
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:746
 msgid "Allow multiple instances"
 msgstr ""
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:751
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:751
 msgid "Use Primary Selection for clipboard"
 msgstr ""
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:757
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:757
 msgid "Use alternate AutoType method"
 msgstr ""
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:759
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:759
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
 "XSendEvent can handle more control keys, but may be blocked by some "
 "applications."
 msgstr ""
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:761
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:761
 msgid "If AutoType doesn't work, setting this may help."
 msgstr ""
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:765
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:765
 #: ../../../ui/wxWidgets/HelpMap.h:44
 msgid "System"
 msgstr "Sistema"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:1235
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1235
 #, fuzzy
 msgid "Select a Browser"
 msgstr "Escoger navegador:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:1259
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1259
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to not save password "
 "history was: %d"
 msgstr "Número de entradas que han desactivado historial de contraseñas: %d"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:1264
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1264
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to save password history "
 "was: %d"
 msgstr "Número de entradas que han activado historial de contraseñas: %d"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:1269
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1269
 #, c-format
 msgid ""
 "Number of entries that had their 'maximum saved passwords' changed to the "
@@ -2294,7 +2294,7 @@ msgstr ""
 "Número de entradas que cambiaron su 'máximo de contraseñas guardadas' al "
 "nuevo valor fue %d"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:1274
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1274
 #, fuzzy, c-format
 msgid "Number of entries that had their password history removed was %d"
 msgstr "Número de entradas que han activado historial de contraseñas: %d"
@@ -4027,7 +4027,7 @@ msgstr "Confirmación de borrado"
 msgid "YubiKey Configuration"
 msgstr "Archivo de configuración:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.h:129
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:129
 #: ../../../ui/wxWidgets/PwsToolbarButtons.h:215
 #, fuzzy
 msgid "Options"
