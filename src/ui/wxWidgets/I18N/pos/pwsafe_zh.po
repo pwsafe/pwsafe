@@ -175,19 +175,19 @@ msgstr "密码不可空缺！"
 msgid "File or path not found."
 msgstr "文件或路径未建立！"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:77
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:77
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:122
 #, fuzzy
 msgid "&Available Fields:"
 msgstr "可用字段:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:79
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:79
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:124
 #, fuzzy
 msgid "&Selected Fields:"
 msgstr "选择字段:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:138
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:138
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:180
 #, fuzzy
 msgid " [Mandatory Field]"

@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file fieldselectionpanel.cpp
+/** \file FieldSelectionPanel.cpp
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -20,7 +20,7 @@
 #include <wx/wx.h>
 #endif
 
-#include "./fieldselectionpanel.h"
+#include "./FieldSelectionPanel.h"
 
 #include "./wxutils.h"
 

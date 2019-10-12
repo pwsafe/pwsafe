@@ -19,7 +19,7 @@
 
 #include <wx/dialog.h>
 
-#include "./fieldselectionpanel.h"
+#include "./FieldSelectionPanel.h"
 #include "../../core/ItemData.h"
 
 class FieldSelectionDlg : public wxDialog {

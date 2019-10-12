@@ -176,19 +176,19 @@ msgstr "La combinaison ne peut être vide."
 msgid "File or path not found."
 msgstr "Le fichier ou son chemin n'ont pas été trouvés."
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:77
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:77
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:122
 #, fuzzy
 msgid "&Available Fields:"
 msgstr "Champs disponibles:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:79
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:79
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:124
 #, fuzzy
 msgid "&Selected Fields:"
 msgstr "Champs sélectionnés:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:138
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:138
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:180
 #, fuzzy
 msgid " [Mandatory Field]"

@@ -174,17 +174,17 @@ msgstr "A kombináció nem lehet üres."
 msgid "File or path not found."
 msgstr "Fájl vagy útvonal nem található."
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:77
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:77
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:122
 msgid "&Available Fields:"
 msgstr "&Elérhető mezők:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:79
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:79
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:124
 msgid "&Selected Fields:"
 msgstr "&Kiválasztott mezők:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:138
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:138
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:180
 msgid " [Mandatory Field]"
 msgstr " [Kötelező mező]"

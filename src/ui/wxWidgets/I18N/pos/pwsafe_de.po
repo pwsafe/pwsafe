@@ -178,17 +178,17 @@ msgstr "Das Master-Passwort darf nicht leer sein."
 msgid "File or path not found."
 msgstr "Datei oder Pfad nicht gefunden."
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:77
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:77
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:122
 msgid "&Available Fields:"
 msgstr "&Verfügbare Felder:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:79
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:79
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:124
 msgid "&Selected Fields:"
 msgstr "&Ausgewählte Felder:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:138
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:138
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:180
 msgid " [Mandatory Field]"
 msgstr " [Pflichtfeld]"

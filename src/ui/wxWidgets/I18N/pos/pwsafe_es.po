@@ -179,19 +179,19 @@ msgstr "La contraseña no puede estar en blanco."
 msgid "File or path not found."
 msgstr "Ruta o archivo no encontrado."
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:77
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:77
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:122
 #, fuzzy
 msgid "&Available Fields:"
 msgstr "Campos Disponibles:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:79
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:79
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:124
 #, fuzzy
 msgid "&Selected Fields:"
 msgstr "Campos seleccionados:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:138
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:138
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:180
 #, fuzzy
 msgid " [Mandatory Field]"
