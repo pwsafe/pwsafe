@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file createshortcutdlg.cpp
+/** \file CreateShortcutDlg.cpp
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -23,7 +23,7 @@
 ////@begin includes
 ////@end includes
 
-#include "createshortcutdlg.h"
+#include "CreateShortcutDlg.h"
 #include "core/ItemData.h"
 #include "./wxutils.h"
 

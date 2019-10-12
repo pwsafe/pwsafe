@@ -33,7 +33,7 @@
 #include "PasswordSafeSearch.h"
 #include "deleteconfirmation.h"
 #include "editshortcut.h"
-#include "createshortcutdlg.h"
+#include "CreateShortcutDlg.h"
 #include "wxutils.h"
 #include "guiinfo.h"
 #include "passwordsubset.h"

@@ -55,10 +55,10 @@
     <File Name="../src/ui/wxWidgets/safecombinationsetup.h"/>
     <File Name="../src/ui/wxWidgets/SystemTray.cpp"/>
     <File Name="../src/ui/wxWidgets/AboutDlg.h"/>
-    <File Name="../src/ui/wxWidgets/createshortcutdlg.h"/>
+    <File Name="../src/ui/wxWidgets/CreateShortcutDlg.h"/>
     <File Name="../src/ui/wxWidgets/pwsclip.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationprompt.cpp"/>
-    <File Name="../src/ui/wxWidgets/createshortcutdlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/CreateShortcutDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/PWSgrid.h"/>
     <File Name="../src/ui/wxWidgets/optionspropsheet.h"/>
     <File Name="../src/ui/wxWidgets/safecombinationentry.cpp"/>

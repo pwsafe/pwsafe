@@ -72,7 +72,7 @@ msgstr "Inserire la YubiKey"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:384
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:212
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:173
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
 #: ../../../ui/wxWidgets/editshortcut.cpp:219
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:250
 msgid "&Help"
@@ -87,7 +87,7 @@ msgstr "&Esci"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:381
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:170
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
 #: ../../../ui/wxWidgets/editshortcut.cpp:216
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:247
 msgid "&Cancel"
@@ -98,7 +98,7 @@ msgstr "&Annulla"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:378
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:167
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: ../../../ui/wxWidgets/editshortcut.cpp:213
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:244
 msgid "&OK"
@@ -2828,19 +2828,19 @@ msgstr ""
 "esso apparirà nel campo relativo al nome utente."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:315
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:145
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:145
 #: ../../../ui/wxWidgets/editshortcut.cpp:160
 msgid "Group:"
 msgstr "Gruppo:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:322
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:152
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:152
 #: ../../../ui/wxWidgets/editshortcut.cpp:167
 msgid "Title:"
 msgstr "Titolo:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:328
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:158
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:158
 #: ../../../ui/wxWidgets/editshortcut.cpp:173
 msgid "Username:"
 msgstr "Nome utente:"
@@ -3289,7 +3289,7 @@ msgstr "Tutti i campi nelle voci corrispondenti sono stati %ls"
 msgid "The following fields were %ls"
 msgstr "I campi seguenti sono stati %ls"
 
-#: ../../../ui/wxWidgets/createshortcutdlg.cpp:139
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:139
 msgid ""
 "Please specify the name & group\n"
 " for shortcut to "
@@ -3876,7 +3876,7 @@ msgstr "Aiuto"
 msgid "Safe Combination Setup"
 msgstr "Impostazione Combinazione di Sicurezza"
 
-#: ../../../ui/wxWidgets/createshortcutdlg.h:46
+#: ../../../ui/wxWidgets/CreateShortcutDlg.h:46
 msgid "Create Shortcut"
 msgstr "Crea Scorciatoia"
 

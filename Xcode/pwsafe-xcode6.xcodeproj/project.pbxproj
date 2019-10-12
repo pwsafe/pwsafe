@@ -65,7 +65,7 @@
 		E6A7ECAF12CDEAA40021D898 /* PwsSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6A7ECAB12CDEAA40021D898 /* PwsSync.cpp */; };
 		E6ADBA371195709A004E2BE5 /* AboutDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9A511957099004E2BE5 /* AboutDlg.cpp */; };
 		E6ADBA381195709A004E2BE5 /* AddEditPropSheetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9A711957099004E2BE5 /* AddEditPropSheetDlg.cpp */; };
-		E6ADBA3A1195709A004E2BE5 /* createshortcutdlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AA11957099004E2BE5 /* createshortcutdlg.cpp */; };
+		E6ADBA3A1195709A004E2BE5 /* CreateShortcutDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AA11957099004E2BE5 /* CreateShortcutDlg.cpp */; };
 		E6ADBA3B1195709A004E2BE5 /* deleteconfirmation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AC11957099004E2BE5 /* deleteconfirmation.cpp */; };
 		E6ADBA3C1195709A004E2BE5 /* editshortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AE11957099004E2BE5 /* editshortcut.cpp */; };
 		E6ADBA3D1195709A004E2BE5 /* mainEdit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B011957099004E2BE5 /* mainEdit.cpp */; };
@@ -539,8 +539,8 @@
 		E6ADB9A611957099004E2BE5 /* AboutDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutDlg.h; sourceTree = "<group>"; };
 		E6ADB9A711957099004E2BE5 /* AddEditPropSheetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AddEditPropSheetDlg.cpp; sourceTree = "<group>"; };
 		E6ADB9A811957099004E2BE5 /* AddEditPropSheetDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddEditPropSheetDlg.h; sourceTree = "<group>"; };
-		E6ADB9AA11957099004E2BE5 /* createshortcutdlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = createshortcutdlg.cpp; sourceTree = "<group>"; };
-		E6ADB9AB11957099004E2BE5 /* createshortcutdlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = createshortcutdlg.h; sourceTree = "<group>"; };
+		E6ADB9AA11957099004E2BE5 /* CreateShortcutDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CreateShortcutDlg.cpp; sourceTree = "<group>"; };
+		E6ADB9AB11957099004E2BE5 /* CreateShortcutDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateShortcutDlg.h; sourceTree = "<group>"; };
 		E6ADB9AC11957099004E2BE5 /* deleteconfirmation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = deleteconfirmation.cpp; sourceTree = "<group>"; };
 		E6ADB9AD11957099004E2BE5 /* deleteconfirmation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = deleteconfirmation.h; sourceTree = "<group>"; };
 		E6ADB9AE11957099004E2BE5 /* editshortcut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = editshortcut.cpp; sourceTree = "<group>"; };
@@ -1245,8 +1245,8 @@
 				E6ADB9A611957099004E2BE5 /* AboutDlg.h */,
 				E6ADB9A711957099004E2BE5 /* AddEditPropSheetDlg.cpp */,
 				E6ADB9A811957099004E2BE5 /* AddEditPropSheetDlg.h */,
-				E6ADB9AA11957099004E2BE5 /* createshortcutdlg.cpp */,
-				E6ADB9AB11957099004E2BE5 /* createshortcutdlg.h */,
+				E6ADB9AA11957099004E2BE5 /* CreateShortcutDlg.cpp */,
+				E6ADB9AB11957099004E2BE5 /* CreateShortcutDlg.h */,
 				E6ADB9AC11957099004E2BE5 /* deleteconfirmation.cpp */,
 				E6ADB9AD11957099004E2BE5 /* deleteconfirmation.h */,
 				E6ADB9AE11957099004E2BE5 /* editshortcut.cpp */,
@@ -1784,7 +1784,7 @@
 				E6E8959B1BD8CB3B009F3A8E /* TimedTaskChain.cpp in Sources */,
 				E6ADBA371195709A004E2BE5 /* AboutDlg.cpp in Sources */,
 				E6ADBA381195709A004E2BE5 /* AddEditPropSheetDlg.cpp in Sources */,
-				E6ADBA3A1195709A004E2BE5 /* createshortcutdlg.cpp in Sources */,
+				E6ADBA3A1195709A004E2BE5 /* CreateShortcutDlg.cpp in Sources */,
 				E6ADBA3B1195709A004E2BE5 /* deleteconfirmation.cpp in Sources */,
 				E6ADBA3C1195709A004E2BE5 /* editshortcut.cpp in Sources */,
 				E6ADBA3D1195709A004E2BE5 /* mainEdit.cpp in Sources */,
