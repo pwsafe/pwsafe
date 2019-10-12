@@ -217,7 +217,7 @@ msgstr "&Megnyitás..."
 #: ../../../ui/wxWidgets/yubicfg.cpp:199
 #: ../../../ui/wxWidgets/passwordsubset.cpp:165
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:396
-#: ../../../ui/wxWidgets/about.cpp:185 ../../../ui/wxWidgets/SystemTray.cpp:135
+#: ../../../ui/wxWidgets/AboutDlg.cpp:185 ../../../ui/wxWidgets/SystemTray.cpp:135
 msgid "&Close"
 msgstr "&Bezár"
 
@@ -1342,7 +1342,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:410
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:1287
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:496
-#: ../../../ui/wxWidgets/about.cpp:145
+#: ../../../ui/wxWidgets/AboutDlg.cpp:145
 msgid "Password Safe"
 msgstr "Password Safe"
 
@@ -3284,70 +3284,70 @@ msgid ""
 " for shortcut to "
 msgstr ""
 
-#: ../../../ui/wxWidgets/about.cpp:148 ../../../ui/wxWidgets/about.cpp:190
+#: ../../../ui/wxWidgets/AboutDlg.cpp:148 ../../../ui/wxWidgets/AboutDlg.cpp:190
 msgid "Build date:"
 msgstr "Készítés dátuma:"
 
-#: ../../../ui/wxWidgets/about.cpp:154
+#: ../../../ui/wxWidgets/AboutDlg.cpp:154
 msgid "Latest version? Click "
 msgstr "Legfrissebb verzió? Kattintson"
 
-#: ../../../ui/wxWidgets/about.cpp:157
+#: ../../../ui/wxWidgets/AboutDlg.cpp:157
 #, fuzzy
 msgid "here"
 msgstr "hol"
 
-#: ../../../ui/wxWidgets/about.cpp:160
+#: ../../../ui/wxWidgets/AboutDlg.cpp:160
 msgid " to check."
 msgstr ""
 
-#: ../../../ui/wxWidgets/about.cpp:166
+#: ../../../ui/wxWidgets/AboutDlg.cpp:166
 #, fuzzy
 msgid "Please visit the "
 msgstr "Kérem adja meg a szöveget"
 
-#: ../../../ui/wxWidgets/about.cpp:169
+#: ../../../ui/wxWidgets/AboutDlg.cpp:169
 #, fuzzy
 msgid "PasswordSafe website"
 msgstr "A Password Safe &weboldalának meglátogatása..."
 
-#: ../../../ui/wxWidgets/about.cpp:172
+#: ../../../ui/wxWidgets/AboutDlg.cpp:172
 msgid "."
 msgstr ""
 
-#: ../../../ui/wxWidgets/about.cpp:175
+#: ../../../ui/wxWidgets/AboutDlg.cpp:175
 msgid "See LICENSE for open source details."
 msgstr "Nézze meg a LICENSE-t a nyílt forráskód részleteiért."
 
-#: ../../../ui/wxWidgets/about.cpp:178
+#: ../../../ui/wxWidgets/AboutDlg.cpp:178
 msgid "Copyright (c) 2003-2019 Rony Shapiro"
 msgstr ""
 
-#: ../../../ui/wxWidgets/about.cpp:299
+#: ../../../ui/wxWidgets/AboutDlg.cpp:299
 #, fuzzy
 msgid "Could not initialize the Curl library.\n"
 msgstr "Nem sikerült a súgót beindítani. A súgó nem elérhető."
 
-#: ../../../ui/wxWidgets/about.cpp:312
+#: ../../../ui/wxWidgets/AboutDlg.cpp:312
 msgid "Could not create a connection session.\n"
 msgstr ""
 
-#: ../../../ui/wxWidgets/about.cpp:325
+#: ../../../ui/wxWidgets/AboutDlg.cpp:325
 #, fuzzy
 msgid "Could not set 'URL' option.\n"
 msgstr "Nyomtatás indítása nem sikerült."
 
-#: ../../../ui/wxWidgets/about.cpp:335
+#: ../../../ui/wxWidgets/AboutDlg.cpp:335
 #, fuzzy
 msgid "Could not set 'Timeout' option.\n"
 msgstr "Nyomtatás indítása nem sikerült."
 
-#: ../../../ui/wxWidgets/about.cpp:348
+#: ../../../ui/wxWidgets/AboutDlg.cpp:348
 #, fuzzy
 msgid "Could not set 'Write Function' option.\n"
 msgstr "Nyomtatás indítása nem sikerült."
 
-#: ../../../ui/wxWidgets/about.cpp:427
+#: ../../../ui/wxWidgets/AboutDlg.cpp:427
 msgid ""
 "For security, the database must be closed before connecting to the "
 "Internet.\n"
@@ -3358,49 +3358,49 @@ msgstr ""
 "Nyomja meg az OK-t az adatbázis bezárásához és a folytatáshoz (a változások "
 "mentve lesznek)"
 
-#: ../../../ui/wxWidgets/about.cpp:432
+#: ../../../ui/wxWidgets/AboutDlg.cpp:432
 msgid "Confirm Close Dialog"
 msgstr "Bezárás megerősítése párbeszédablak"
 
-#: ../../../ui/wxWidgets/about.cpp:505
+#: ../../../ui/wxWidgets/AboutDlg.cpp:505
 msgid "Trying to contact server..."
 msgstr "Kapcsolódás a kiszolgálóhoz..."
 
-#: ../../../ui/wxWidgets/about.cpp:558
+#: ../../../ui/wxWidgets/AboutDlg.cpp:558
 msgid "Couldn't contact server."
 msgstr "Nem sikerült kapcsolódni a kiszolgálóhoz."
 
-#: ../../../ui/wxWidgets/about.cpp:563
+#: ../../../ui/wxWidgets/AboutDlg.cpp:563
 msgid "This is the latest release!"
 msgstr "Ez a legfrissebb verzió!"
 
-#: ../../../ui/wxWidgets/about.cpp:568
+#: ../../../ui/wxWidgets/AboutDlg.cpp:568
 msgid "Current version: "
 msgstr "Jelenlegi verzió: "
 
-#: ../../../ui/wxWidgets/about.cpp:570
+#: ../../../ui/wxWidgets/AboutDlg.cpp:570
 msgid "Latest version:\t"
 msgstr "Legutolsó verzió:\t"
 
-#: ../../../ui/wxWidgets/about.cpp:571
+#: ../../../ui/wxWidgets/AboutDlg.cpp:571
 msgid "Please visit the PasswordSafe website to download the latest version."
 msgstr ""
 "Kérem látogassa meg a PasswordSafe weboldalát a legújabb verzió letöltéséhez."
 
-#: ../../../ui/wxWidgets/about.cpp:572
+#: ../../../ui/wxWidgets/AboutDlg.cpp:572
 msgid "Newer Version Found!"
 msgstr "Új verzió jelent meg!"
 
-#: ../../../ui/wxWidgets/about.cpp:579
+#: ../../../ui/wxWidgets/AboutDlg.cpp:579
 #, fuzzy
 msgid "Could not read server version data."
 msgstr "%sKiszolgáló verzióadatának olvasása sikertelen.%s"
 
-#: ../../../ui/wxWidgets/about.cpp:628
+#: ../../../ui/wxWidgets/AboutDlg.cpp:628
 msgid "No Curl handle to perform download."
 msgstr ""
 
-#: ../../../ui/wxWidgets/about.cpp:683
+#: ../../../ui/wxWidgets/AboutDlg.cpp:683
 #, fuzzy
 msgid "Could not download version data.\n"
 msgstr "%sKiszolgáló verzióadatának olvasása sikertelen.%s"
@@ -3869,7 +3869,7 @@ msgstr "Széfkombináció beállítása"
 msgid "Create Shortcut"
 msgstr "Parancsikon létrehozása"
 
-#: ../../../ui/wxWidgets/about.h:47
+#: ../../../ui/wxWidgets/AboutDlg.h:47
 msgid "About Password Safe"
 msgstr "A Password Safe programról"
 
