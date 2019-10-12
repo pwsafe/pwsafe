@@ -1760,24 +1760,24 @@ msgstr ""
 msgid "No fields selected"
 msgstr "Ingen regel valgt"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:128
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:128
 msgid "Are you sure you want to delete the selected entry?"
 msgstr "Er du sikker på du vil slette den valgte post?"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:129
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:129
 msgid "Are you sure you want to delete the selected group?"
 msgstr "Er du sikker på du vil slette den valgte gruppe?"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:133
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:133
 #, fuzzy
 msgid "Don't ask me again"
 msgstr "Spørg mig ikke igen"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:142
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:142
 msgid "&Yes"
 msgstr "&Ja"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:145
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:145
 msgid "&No"
 msgstr "&Nej"
 
@@ -3951,7 +3951,7 @@ msgstr "Egenskaber"
 msgid "Safe Combination Entry"
 msgstr "Hoved Nøgle Post"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.h:39
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.h:39
 msgid "Delete Confirmation"
 msgstr "Bekræft Slet"
 

@@ -1807,24 +1807,24 @@ msgstr ""
 msgid "No fields selected"
 msgstr "Geen regel geselecteerd"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:128
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:128
 msgid "Are you sure you want to delete the selected entry?"
 msgstr "Weet u zeker dat u de gekozen vermelding wilt verwijderen?"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:129
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:129
 msgid "Are you sure you want to delete the selected group?"
 msgstr "Weet u zeker dat u de gekozen groep wilt verwijderen?"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:133
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:133
 #, fuzzy
 msgid "Don't ask me again"
 msgstr "&Niet opnieuw vragen"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:142
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:142
 msgid "&Yes"
 msgstr "&Ja"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:145
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:145
 msgid "&No"
 msgstr "&Nee"
 
@@ -4042,7 +4042,7 @@ msgstr "Eigenschappen"
 msgid "Safe Combination Entry"
 msgstr "Invoer Kluis combinatie"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.h:39
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.h:39
 msgid "Delete Confirmation"
 msgstr "Verwijder Bevestiging"
 

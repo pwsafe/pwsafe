@@ -1799,24 +1799,24 @@ msgstr ""
 msgid "No fields selected"
 msgstr "Ingen regel är vald"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:128
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:128
 msgid "Are you sure you want to delete the selected entry?"
 msgstr "Är du säker på att du vill radera den valda posten?"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:129
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:129
 msgid "Are you sure you want to delete the selected group?"
 msgstr "Är du säker på att du vill radera den valda gruppen?"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:133
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:133
 #, fuzzy
 msgid "Don't ask me again"
 msgstr "&Fråga mig inte igen"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:142
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:142
 msgid "&Yes"
 msgstr "&Ja"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:145
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:145
 msgid "&No"
 msgstr "&Nej"
 
@@ -4012,7 +4012,7 @@ msgstr "Egenskaper"
 msgid "Safe Combination Entry"
 msgstr "Startmeny för databaser"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.h:39
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.h:39
 msgid "Delete Confirmation"
 msgstr "Bekräfta radering"
 

@@ -41,7 +41,7 @@ msgstr "Добавление, редактирование или просмот
 msgid "Create Shortcut"
 msgstr "Создать ярлык"
 
-#: src/ui/wxWidgets/deleteconfirmation.h:39
+#: src/ui/wxWidgets/DeleteConfirmationDlg.h:39
 msgid "Delete Confirmation"
 msgstr "Подтверждение удаления"
 
@@ -1085,23 +1085,23 @@ msgstr ""
 "Safe. (Резервная копия контейнера имеет то же имя, но заканчивается символом"
 " «~»)"
 
-#: src/ui/wxWidgets/deleteconfirmation.cpp:128
+#: src/ui/wxWidgets/DeleteConfirmationDlg.cpp:128
 msgid "Are you sure you want to delete the selected entry?"
 msgstr "Подтверждаете удаление выбранного элемента?"
 
-#: src/ui/wxWidgets/deleteconfirmation.cpp:129
+#: src/ui/wxWidgets/DeleteConfirmationDlg.cpp:129
 msgid "Are you sure you want to delete the selected group?"
 msgstr "Подтверждаете удаление выбранной группы?"
 
-#: src/ui/wxWidgets/deleteconfirmation.cpp:133
+#: src/ui/wxWidgets/DeleteConfirmationDlg.cpp:133
 msgid "Don't ask me again"
 msgstr "Не спрашивать снова"
 
-#: src/ui/wxWidgets/deleteconfirmation.cpp:142
+#: src/ui/wxWidgets/DeleteConfirmationDlg.cpp:142
 msgid "&Yes"
 msgstr "&Да"
 
-#: src/ui/wxWidgets/deleteconfirmation.cpp:145
+#: src/ui/wxWidgets/DeleteConfirmationDlg.cpp:145
 msgid "&No"
 msgstr "&Нет"
 

@@ -24,7 +24,7 @@
     <ClInclude Include="CreateShortcutDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="deleteconfirmation.h">
+    <ClInclude Include="DeleteConfirmationDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="editshortcut.h">
@@ -193,7 +193,7 @@
     <ClCompile Include="CreateShortcutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="deleteconfirmation.cpp">
+    <ClCompile Include="DeleteConfirmationDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="editshortcut.cpp">

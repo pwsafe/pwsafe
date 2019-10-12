@@ -251,7 +251,7 @@
     <ClInclude Include="ComparisonGridTable.h" />
     <ClInclude Include="CreateShortcutDlg.h" />
     <ClInclude Include="DbSelectionPanel.h" />
-    <ClInclude Include="deleteconfirmation.h" />
+    <ClInclude Include="DeleteConfirmationDlg.h" />
     <ClInclude Include="dragbar.h" />
     <ClInclude Include="editshortcut.h" />
     <ClInclude Include="ExportTextWarningDlg.h" />
@@ -309,7 +309,7 @@
     <ClCompile Include="ComparisonGridTable.cpp" />
     <ClCompile Include="CreateShortcutDlg.cpp" />
     <ClCompile Include="DbSelectionPanel.cpp" />
-    <ClCompile Include="deleteconfirmation.cpp" />
+    <ClCompile Include="DeleteConfirmationDlg.cpp" />
     <ClCompile Include="dragbar.cpp" />
     <ClCompile Include="editshortcut.cpp" />
     <ClCompile Include="ExportTextWarningDlg.cpp" />

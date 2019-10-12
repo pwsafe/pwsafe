@@ -45,7 +45,7 @@
     <File Name="../src/ui/wxWidgets/safecombinationsetup.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationprompt.h"/>
     <File Name="../src/ui/wxWidgets/wxMessages.h"/>
-    <File Name="../src/ui/wxWidgets/deleteconfirmation.cpp"/>
+    <File Name="../src/ui/wxWidgets/DeleteConfirmationDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/properties.h"/>
     <File Name="../src/ui/wxWidgets/optionspropsheet.cpp"/>
     <File Name="../src/ui/wxWidgets/PWSgridtable.h"/>
@@ -68,7 +68,7 @@
     <File Name="../src/ui/wxWidgets/AboutDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/PWSgridtable.cpp"/>
     <File Name="../src/ui/wxWidgets/PWStree.cpp"/>
-    <File Name="../src/ui/wxWidgets/deleteconfirmation.h"/>
+    <File Name="../src/ui/wxWidgets/DeleteConfirmationDlg.h"/>
     <File Name="../src/ui/wxWidgets/editshortcut.h"/>
     <File Name="../src/ui/wxWidgets/editshortcut.cpp"/>
     <File Name="../src/ui/wxWidgets/properties.cpp"/>
