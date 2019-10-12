@@ -73,8 +73,8 @@
     <File Name="../src/ui/wxWidgets/EditShortcutDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/properties.cpp"/>
     <File Name="../src/ui/wxWidgets/pwsafeapp.h"/>
-    <File Name="../src/ui/wxWidgets/guiinfo.cpp"/>
-    <File Name="../src/ui/wxWidgets/guiinfo.h"/>
+    <File Name="../src/ui/wxWidgets/GuiInfo.cpp"/>
+    <File Name="../src/ui/wxWidgets/GuiInfo.h"/>
     <File Name="../src/ui/wxWidgets/RecentDBList.h"/>
     <File Name="../src/ui/wxWidgets/ImportTextDlg.h"/>
     <File Name="../src/ui/wxWidgets/ImportTextDlg.cpp"/>

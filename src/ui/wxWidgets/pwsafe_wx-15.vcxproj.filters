@@ -33,7 +33,7 @@
     <ClInclude Include="ExportTextWarningDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="guiinfo.h">
+    <ClInclude Include="GuiInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImportTextDlg.h">
@@ -202,7 +202,7 @@
     <ClCompile Include="ExportTextWarningDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="guiinfo.cpp">
+    <ClCompile Include="GuiInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImportTextDlg.cpp">

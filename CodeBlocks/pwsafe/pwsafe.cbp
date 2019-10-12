@@ -414,8 +414,8 @@
 		<Unit filename="../../src/ui/wxWidgets/FieldSelectionDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/FieldSelectionPanel.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/FieldSelectionPanel.h" />
-		<Unit filename="../../src/ui/wxWidgets/guiinfo.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/guiinfo.h" />
+		<Unit filename="../../src/ui/wxWidgets/GuiInfo.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/GuiInfo.h" />
 		<Unit filename="../../src/ui/wxWidgets/helpmap.h" />
 		<Unit filename="../../src/ui/wxWidgets/mainEdit.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/mainManage.cpp" />

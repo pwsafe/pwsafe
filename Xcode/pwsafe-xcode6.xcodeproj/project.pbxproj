@@ -118,7 +118,7 @@
 		E6C94E961FA2075B008F0072 /* pwsqrencode.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6C94E951FA2075B008F0072 /* pwsqrencode.mm */; };
 		E6C94E9A1FA33BA6008F0072 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C94E991FA33BA6008F0072 /* QuartzCore.framework */; };
 		E6D17CEE1411156D003BDBE7 /* FieldSelectionDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D17CEB1411156D003BDBE7 /* FieldSelectionDlg.cpp */; };
-		E6DA586511A701AE00D84199 /* guiinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DA586311A701AE00D84199 /* guiinfo.cpp */; };
+		E6DA586511A701AE00D84199 /* GuiInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DA586311A701AE00D84199 /* GuiInfo.cpp */; };
 		E6DDC6FC138911CB00F0C0D1 /* CompareDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */; };
 		E6DDC7011389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */; };
 		E6DDC714138914B700F0C0D1 /* wxutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC713138914B700F0C0D1 /* wxutils.cpp */; };
@@ -628,8 +628,8 @@
 		E6CFEE4311EA0AFB001402D8 /* RecentDBList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentDBList.h; sourceTree = "<group>"; };
 		E6D17CEA1411156D003BDBE7 /* FieldSelectionDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FieldSelectionDlg.h; sourceTree = "<group>"; };
 		E6D17CEB1411156D003BDBE7 /* FieldSelectionDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FieldSelectionDlg.cpp; sourceTree = "<group>"; };
-		E6DA586311A701AE00D84199 /* guiinfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = guiinfo.cpp; sourceTree = "<group>"; };
-		E6DA586411A701AE00D84199 /* guiinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiinfo.h; sourceTree = "<group>"; };
+		E6DA586311A701AE00D84199 /* GuiInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuiInfo.cpp; sourceTree = "<group>"; };
+		E6DA586411A701AE00D84199 /* GuiInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuiInfo.h; sourceTree = "<group>"; };
 		E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CompareDlg.cpp; sourceTree = "<group>"; };
 		E6DDC6FA138911CB00F0C0D1 /* CompareDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompareDlg.h; sourceTree = "<group>"; };
 		E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreOtherDB.cpp; sourceTree = "<group>"; };
@@ -1239,8 +1239,8 @@
 				E6AF167C11F1FD77002C253B /* ImportTextDlg.cpp */,
 				E6AF167D11F1FD77002C253B /* ImportTextDlg.h */,
 				E6CFEE4311EA0AFB001402D8 /* RecentDBList.h */,
-				E6DA586411A701AE00D84199 /* guiinfo.h */,
-				E6DA586311A701AE00D84199 /* guiinfo.cpp */,
+				E6DA586411A701AE00D84199 /* GuiInfo.h */,
+				E6DA586311A701AE00D84199 /* GuiInfo.cpp */,
 				E6ADB9A511957099004E2BE5 /* AboutDlg.cpp */,
 				E6ADB9A611957099004E2BE5 /* AboutDlg.h */,
 				E6ADB9A711957099004E2BE5 /* AddEditPropSheetDlg.cpp */,
@@ -1805,7 +1805,7 @@
 				E6ADBA9B1195709A004E2BE5 /* safecombinationsetup.cpp in Sources */,
 				E6ADBA9C1195709A004E2BE5 /* SystemTray.cpp in Sources */,
 				E6ADBA9D1195709A004E2BE5 /* version.cpp in Sources */,
-				E6DA586511A701AE00D84199 /* guiinfo.cpp in Sources */,
+				E6DA586511A701AE00D84199 /* GuiInfo.cpp in Sources */,
 				E6AF167E11F1FD77002C253B /* ImportTextDlg.cpp in Sources */,
 				E69B7FA811F600BA0084F6C4 /* ImportXmlDlg.cpp in Sources */,
 				E69B7FA911F600BA0084F6C4 /* OpenFilePickerValidator.cpp in Sources */,

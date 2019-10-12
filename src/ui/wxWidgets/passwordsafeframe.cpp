@@ -49,7 +49,7 @@
 #include "pwsclip.h"
 #include "SystemTray.h"
 #include "wxutils.h"
-#include "guiinfo.h"
+#include "GuiInfo.h"
 #include "pwsafeapp.h"
 #include "./ImportTextDlg.h"
 #include "./ImportXmlDlg.h"
