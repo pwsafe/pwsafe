@@ -1671,23 +1671,23 @@ msgstr "Einige Felder müssen ausgewählt sein zum "
 msgid "No fields selected"
 msgstr "Keine Felder ausgewählt"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:128
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:128
 msgid "Are you sure you want to delete the selected entry?"
 msgstr "Sind Sie sicher dass Sie den ausgewählten Eintrag löschen möchten?"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:129
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:129
 msgid "Are you sure you want to delete the selected group?"
 msgstr "Sind Sie sicher dass Sie die ausgewählte Gruppe löschen möchten?"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:133
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:133
 msgid "Don't ask me again"
 msgstr "Nicht mehr nachfragen"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:142
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:142
 msgid "&Yes"
 msgstr "&Ja"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:145
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:145
 msgid "&No"
 msgstr "&Nein"
 
@@ -3734,7 +3734,7 @@ msgstr "Eigenschaften"
 msgid "Safe Combination Entry"
 msgstr "Eingabe des Master-Passwortes"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.h:39
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.h:39
 msgid "Delete Confirmation"
 msgstr "Bestätigung löschen"
 

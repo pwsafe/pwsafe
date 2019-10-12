@@ -25472,14 +25472,14 @@ XSendEvent can handle more control keys, but may be blocked by some applications
           <bool name="proxy-Fit to content">1</bool>
           <string name="proxy-Font">""</string>
           <string name="proxy-Foreground colour">""</string>
-          <string name="proxy-Header filename">"deleteconfirmation.h"</string>
+          <string name="proxy-Header filename">"DeleteConfirmationDlg.h"</string>
           <long name="proxy-Height">300</long>
           <string name="proxy-Help text">""</string>
           <bool name="proxy-Hidden">0</bool>
           <string name="proxy-Icon">""</string>
           <string name="proxy-Id name">"ID_DELETECONFIRMATION"</string>
           <long name="proxy-Id value">10199</long>
-          <string name="proxy-Implementation filename">"deleteconfirmation.cpp"</string>
+          <string name="proxy-Implementation filename">"DeleteConfirmationDlg.cpp"</string>
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
           <string name="proxy-Texture">""</string>
           <string name="proxy-Texture style">"Tiled"</string>

@@ -1785,24 +1785,24 @@ msgstr ""
 msgid "No fields selected"
 msgstr "규칙이 선택되지 않았습니다"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:128
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:128
 msgid "Are you sure you want to delete the selected entry?"
 msgstr "선택된 항목들을 정말 삭제하시겠습니까?"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:129
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:129
 msgid "Are you sure you want to delete the selected group?"
 msgstr "선택된 그룹들을 정말 삭제하시겠습니까?"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:133
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:133
 #, fuzzy
 msgid "Don't ask me again"
 msgstr "다시 묻지 않기(&D)"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:142
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:142
 msgid "&Yes"
 msgstr "네(&Y)"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.cpp:145
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:145
 msgid "&No"
 msgstr "아니오(&N)"
 
@@ -3995,7 +3995,7 @@ msgstr "속성"
 msgid "Safe Combination Entry"
 msgstr "보안 비밀번호 항목"
 
-#: ../../../ui/wxWidgets/deleteconfirmation.h:39
+#: ../../../ui/wxWidgets/DeleteConfirmationDlg.h:39
 msgid "Delete Confirmation"
 msgstr "삭제 확인"
 

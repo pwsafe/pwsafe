@@ -404,8 +404,8 @@
 		<Unit filename="../../src/ui/wxWidgets/AddEditPropSheetDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/CreateShortcutDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/CreateShortcutDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/deleteconfirmation.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/deleteconfirmation.h" />
+		<Unit filename="../../src/ui/wxWidgets/DeleteConfirmationDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/DeleteConfirmationDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/dragbar.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/dragbar.h" />
 		<Unit filename="../../src/ui/wxWidgets/editshortcut.cpp" />

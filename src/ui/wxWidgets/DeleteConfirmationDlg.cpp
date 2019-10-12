@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file deleteconfirmation.cpp
+/** \file DeleteConfirmationDlg.cpp
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -23,7 +23,7 @@
 ////@begin includes
 ////@end includes
 
-#include "deleteconfirmation.h"
+#include "DeleteConfirmationDlg.h"
 #include "core/PWSprefs.h"
 
 #ifdef __WXMSW__

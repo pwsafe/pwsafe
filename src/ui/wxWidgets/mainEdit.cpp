@@ -31,7 +31,7 @@
 #include "AddEditPropSheetDlg.h"
 #include "pwsclip.h"
 #include "PasswordSafeSearch.h"
-#include "deleteconfirmation.h"
+#include "DeleteConfirmationDlg.h"
 #include "editshortcut.h"
 #include "CreateShortcutDlg.h"
 #include "wxutils.h"
