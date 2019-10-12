@@ -91,7 +91,7 @@
 		E6B1448212B26CEE00415AAE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448112B26CEE00415AAE /* OpenGL.framework */; };
 		E6B1448812B26D1500415AAE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
 		E6B1449412B26D7E00415AAE /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
-		E6B5C6451232B3D000AC8B45 /* dragbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6411232B3D000AC8B45 /* dragbar.cpp */; };
+		E6B5C6451232B3D000AC8B45 /* DragBarGenericCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6411232B3D000AC8B45 /* DragBarGenericCtrl.cpp */; };
 		E6B5C6461232B3D000AC8B45 /* PWSDragBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */; };
 		E6B908E21D30C8980050CFF1 /* diff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B908DE1D30C8980050CFF1 /* diff.cpp */; };
 		E6B908E31D30C8980050CFF1 /* safeutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B908E01D30C8980050CFF1 /* safeutils.cpp */; };
@@ -584,8 +584,8 @@
 		E6B1448112B26CEE00415AAE /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		E6B1448712B26D1500415AAE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E6B1449312B26D7E00415AAE /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		E6B5C6411232B3D000AC8B45 /* dragbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dragbar.cpp; sourceTree = "<group>"; };
-		E6B5C6421232B3D000AC8B45 /* dragbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dragbar.h; sourceTree = "<group>"; };
+		E6B5C6411232B3D000AC8B45 /* DragBarGenericCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DragBarGenericCtrl.cpp; sourceTree = "<group>"; };
+		E6B5C6421232B3D000AC8B45 /* DragBarGenericCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragBarGenericCtrl.h; sourceTree = "<group>"; };
 		E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSDragBar.cpp; sourceTree = "<group>"; };
 		E6B5C6441232B3D000AC8B45 /* PWSDragBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSDragBar.h; sourceTree = "<group>"; };
 		E6B908DE1D30C8980050CFF1 /* diff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = diff.cpp; sourceTree = "<group>"; };
@@ -1220,8 +1220,8 @@
 				E60F25D712C4ACEB001E63C4 /* ExternalKeyboardButton.h */,
 				E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */,
 				E61D6FA212617EFC0049FA2A /* MergeDlg.h */,
-				E6B5C6411232B3D000AC8B45 /* dragbar.cpp */,
-				E6B5C6421232B3D000AC8B45 /* dragbar.h */,
+				E6B5C6411232B3D000AC8B45 /* DragBarGenericCtrl.cpp */,
+				E6B5C6421232B3D000AC8B45 /* DragBarGenericCtrl.h */,
 				E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */,
 				E6B5C6441232B3D000AC8B45 /* PWSDragBar.h */,
 				E6BA477F1216DB9C00193879 /* AdvancedSelectionDlg.cpp */,
@@ -1813,7 +1813,7 @@
 				E6BA47881216DB9C00193879 /* ExportTextWarningDlg.cpp in Sources */,
 				E6BA47891216DB9C00193879 /* SafeCombinationCtrl.cpp in Sources */,
 				E6BA478A1216DB9C00193879 /* ViewReport.cpp in Sources */,
-				E6B5C6451232B3D000AC8B45 /* dragbar.cpp in Sources */,
+				E6B5C6451232B3D000AC8B45 /* DragBarGenericCtrl.cpp in Sources */,
 				E6B5C6461232B3D000AC8B45 /* PWSDragBar.cpp in Sources */,
 				E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */,
 				6FF5D4A11DA14EE80032F5B6 /* passwordsubset.cpp in Sources */,

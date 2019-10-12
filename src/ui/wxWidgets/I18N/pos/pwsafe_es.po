@@ -2497,29 +2497,29 @@ msgstr "'Pronunciable' y 'fácil de leer' no son compatibles"
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr "'Pronunciable' y 'fácil de leer' no son compatibles"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:77
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:77
 msgid "Error dragging"
 msgstr ""
 
-#: ../../../ui/wxWidgets/dragbar.cpp:80
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:80
 msgid "Nothing happened dragging"
 msgstr ""
 
-#: ../../../ui/wxWidgets/dragbar.cpp:83
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:83
 #, fuzzy
 msgid "Copied successfully"
 msgstr "Completado con éxito"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:86
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:86
 #, fuzzy
 msgid "Moved successfully"
 msgstr "Completado con éxito"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:89
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:89
 msgid "Dragging cancelled"
 msgstr ""
 
-#: ../../../ui/wxWidgets/dragbar.cpp:92
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:92
 #, fuzzy
 msgid "Unexpected result dragging"
 msgstr ""

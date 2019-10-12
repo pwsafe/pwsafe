@@ -2332,27 +2332,27 @@ msgstr ""
 "Entschuldigung, aber \"leicht lesbar\" und \"aussprechbar\" können nicht "
 "gemeinsam ausgewählt werden."
 
-#: ../../../ui/wxWidgets/dragbar.cpp:77
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:77
 msgid "Error dragging"
 msgstr "Fehler beim Hineinziehen"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:80
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:80
 msgid "Nothing happened dragging"
 msgstr "Das Hineinziehen hat nichts bewirkt"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:83
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:83
 msgid "Copied successfully"
 msgstr "Erfolgreich kopiert"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:86
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:86
 msgid "Moved successfully"
 msgstr "Erfolgreich verschoben"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:89
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:89
 msgid "Dragging cancelled"
 msgstr "Das Hineinziehen wurde abgebrochen"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:92
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:92
 msgid "Unexpected result dragging"
 msgstr "Das Hineinziehen hatte ein unerwartetes Ergebnis zur Folge."
 

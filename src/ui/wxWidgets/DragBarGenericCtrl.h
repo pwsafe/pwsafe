@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file dragbar.h
+/** \file DragBarGenericCtrl.h
  *
  * Implements a generic toolbar-like class from which tool icons can be dragged and
  * dropped on targets accepting text drops.

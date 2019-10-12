@@ -90,8 +90,8 @@
     <File Name="../src/ui/wxWidgets/AdvancedSelectionDlg.h"/>
     <File Name="../src/ui/wxWidgets/ViewReport.h"/>
     <File Name="../src/ui/wxWidgets/ViewReport.cpp"/>
-    <File Name="../src/ui/wxWidgets/dragbar.cpp"/>
-    <File Name="../src/ui/wxWidgets/dragbar.h"/>
+    <File Name="../src/ui/wxWidgets/DragBarGenericCtrl.cpp"/>
+    <File Name="../src/ui/wxWidgets/DragBarGenericCtrl.h"/>
     <File Name="../src/ui/wxWidgets/PWSDragBar.h"/>
     <File Name="../src/ui/wxWidgets/PWSDragBar.cpp"/>
     <File Name="../src/ui/wxWidgets/MergeDlg.h"/>

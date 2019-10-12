@@ -2347,27 +2347,27 @@ msgstr ""
 "A \"könnyen olvasható\" és a \"könnyen kiejthető\" opciókat sajnos nem lehet "
 "egyszerre kiválasztani"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:77
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:77
 msgid "Error dragging"
 msgstr ""
 
-#: ../../../ui/wxWidgets/dragbar.cpp:80
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:80
 msgid "Nothing happened dragging"
 msgstr ""
 
-#: ../../../ui/wxWidgets/dragbar.cpp:83
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:83
 msgid "Copied successfully"
 msgstr "Másolás sikeres"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:86
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:86
 msgid "Moved successfully"
 msgstr "Átmozgatás sikeres"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:89
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:89
 msgid "Dragging cancelled"
 msgstr ""
 
-#: ../../../ui/wxWidgets/dragbar.cpp:92
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:92
 #, fuzzy
 msgid "Unexpected result dragging"
 msgstr ""

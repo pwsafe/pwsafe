@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file dragbar.cpp
+/** \file DragBarGenericCtrl.cpp
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -21,7 +21,7 @@
 #endif
 
 ////@begin includes
-#include "dragbar.h"
+#include "DragBarGenericCtrl.h"
 #include "../../os/pws_tchar.h"
 #include "../../core/PwsPlatform.h"
 #include "../../core/ItemData.h"
