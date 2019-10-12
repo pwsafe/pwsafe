@@ -141,7 +141,7 @@
     <ClInclude Include="pwsmenushortcuts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fieldselectionpanel.h">
+    <ClInclude Include="FieldSelectionPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ComparisonGridTable.h">
@@ -304,7 +304,7 @@
     <ClCompile Include="pwsmenushortcuts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fieldselectionpanel.cpp">
+    <ClCompile Include="FieldSelectionPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mainManage.cpp">

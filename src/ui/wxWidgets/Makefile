@@ -202,7 +202,7 @@ SOURCES= passwordsafeframe.cpp \
 	DragBarCtrl.cpp MergeDlg.cpp ExternalKeyboardButton.cpp \
 	PwsSync.cpp DbSelectionPanel.cpp CompareDlg.cpp \
 	wxutils.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \
-	fieldselectionpanel.cpp FieldSelectionDlg.cpp pwsmenushortcuts.cpp \
+	FieldSelectionPanel.cpp FieldSelectionDlg.cpp pwsmenushortcuts.cpp \
 	$(YUBI_SRC) $(QR_SRC) \
 	ManagePwdPolicies.cpp PasswordPolicy.cpp SelectionCriteria.cpp \
 	TimedTaskChain.cpp mainView.cpp passwordsubset.cpp \

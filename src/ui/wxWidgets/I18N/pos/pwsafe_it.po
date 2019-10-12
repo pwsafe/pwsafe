@@ -173,17 +173,17 @@ msgstr "La combinazione non può essere vuota."
 msgid "File or path not found."
 msgstr "File o percorso non trovato."
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:77
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:77
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:122
 msgid "&Available Fields:"
 msgstr "Campi &Disponibili:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:79
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:79
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:124
 msgid "&Selected Fields:"
 msgstr "Campi &Selezionati:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:138
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:138
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:180
 msgid " [Mandatory Field]"
 msgstr " [Campo Obbligatorio]"

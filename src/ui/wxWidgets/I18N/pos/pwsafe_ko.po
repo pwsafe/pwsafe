@@ -175,19 +175,19 @@ msgstr "비밀번호 조합은 공백으로 남겨질 수 없습니다"
 msgid "File or path not found."
 msgstr "파일 또는 경로를 찾을 수 없습니다."
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:77
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:77
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:122
 #, fuzzy
 msgid "&Available Fields:"
 msgstr "사용 가능한 필드:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:79
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:79
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:124
 #, fuzzy
 msgid "&Selected Fields:"
 msgstr "선택된 필드:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:138
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:138
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:180
 #, fuzzy
 msgid " [Mandatory Field]"

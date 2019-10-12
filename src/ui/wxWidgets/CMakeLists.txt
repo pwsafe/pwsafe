@@ -20,7 +20,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/DragBarGenericCtrl.h
     src/ui/wxWidgets/EditShortcutDlg.h
     src/ui/wxWidgets/FieldSelectionDlg.h
-    src/ui/wxWidgets/fieldselectionpanel.h
+    src/ui/wxWidgets/FieldSelectionPanel.h
     src/ui/wxWidgets/wxutils.h
     src/ui/wxWidgets/AdvancedSelectionDlg.h
     src/ui/wxWidgets/CompareDlg.h
@@ -78,7 +78,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/DragBarGenericCtrl.cpp
     src/ui/wxWidgets/EditShortcutDlg.cpp
     src/ui/wxWidgets/FieldSelectionDlg.cpp
-    src/ui/wxWidgets/fieldselectionpanel.cpp
+    src/ui/wxWidgets/FieldSelectionPanel.cpp
     src/ui/wxWidgets/pwsmenushortcuts.cpp
     src/ui/wxWidgets/safecombinationchange.cpp
     src/ui/wxWidgets/ExternalKeyboardButton.cpp

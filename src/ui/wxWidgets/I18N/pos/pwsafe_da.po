@@ -175,19 +175,19 @@ msgstr "Kodefeltet kan ikke være tomt."
 msgid "File or path not found."
 msgstr "Fil eller sti ikke fundet."
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:77
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:77
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:122
 #, fuzzy
 msgid "&Available Fields:"
 msgstr "&Tilgængelige felter:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:79
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:79
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:124
 #, fuzzy
 msgid "&Selected Fields:"
 msgstr "&Valgte Felter:"
 
-#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:138
+#: ../../../ui/wxWidgets/FieldSelectionPanel.cpp:138
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:180
 #, fuzzy
 msgid " [Mandatory Field]"

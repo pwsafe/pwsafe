@@ -798,17 +798,17 @@ msgid "&Case Sensitive"
 msgstr "&С учётом регистра"
 
 #: src/ui/wxWidgets/AdvancedSelectionDlg.cpp:122
-#: src/ui/wxWidgets/fieldselectionpanel.cpp:77
+#: src/ui/wxWidgets/FieldSelectionPanel.cpp:77
 msgid "&Available Fields:"
 msgstr "&Доступные поля:"
 
 #: src/ui/wxWidgets/AdvancedSelectionDlg.cpp:124
-#: src/ui/wxWidgets/fieldselectionpanel.cpp:79
+#: src/ui/wxWidgets/FieldSelectionPanel.cpp:79
 msgid "&Selected Fields:"
 msgstr "&Отобранные поля:"
 
 #: src/ui/wxWidgets/AdvancedSelectionDlg.cpp:180
-#: src/ui/wxWidgets/fieldselectionpanel.cpp:138
+#: src/ui/wxWidgets/FieldSelectionPanel.cpp:138
 msgid " [Mandatory Field]"
 msgstr " [Обязательное поле]"
 
