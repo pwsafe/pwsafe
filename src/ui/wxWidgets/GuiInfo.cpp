@@ -7,7 +7,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file guiinfo.cpp
+/** \file GuiInfo.cpp
 * 
 */
 
@@ -17,7 +17,7 @@
 #include "wx/wx.h"
 #endif
 
-#include "./guiinfo.h"
+#include "./GuiInfo.h"
 #include "./passwordsafeframe.h"
 #include "./PWStree.h"
 #include "./PWSgrid.h"

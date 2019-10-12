@@ -195,7 +195,7 @@ SOURCES= passwordsafeframe.cpp \
 	optionspropsheet.cpp PasswordSafeSearch.cpp \
 	DeleteConfirmationDlg.cpp EditShortcutDlg.cpp \
 	CreateShortcutDlg.cpp SystemTray.cpp \
-	guiinfo.cpp ImportTextDlg.cpp \
+	GuiInfo.cpp ImportTextDlg.cpp \
 	ImportXmlDlg.cpp OpenFilePickerValidator.cpp \
 	SafeCombinationCtrl.cpp ExportTextWarningDlg.cpp \
 	AdvancedSelectionDlg.cpp ViewReport.cpp DragBarGenericCtrl.cpp \
