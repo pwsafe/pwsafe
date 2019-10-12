@@ -29,7 +29,7 @@
 #include "./SizeRestrictedPanel.h"
 #include "../../core/core.h"
 #include "./AddEditPropSheetDlg.h"
-#include "./fieldselectiondlg.h"
+#include "./FieldSelectionDlg.h"
 #include "./SelectionCriteria.h"
 
 #include <wx/statline.h>

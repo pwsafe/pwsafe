@@ -117,7 +117,7 @@
 		E6C94E931FA20593008F0072 /* pwsqrcodedlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C94E911FA20593008F0072 /* pwsqrcodedlg.cpp */; };
 		E6C94E961FA2075B008F0072 /* pwsqrencode.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6C94E951FA2075B008F0072 /* pwsqrencode.mm */; };
 		E6C94E9A1FA33BA6008F0072 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C94E991FA33BA6008F0072 /* QuartzCore.framework */; };
-		E6D17CEE1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D17CEB1411156D003BDBE7 /* fieldselectiondlg.cpp */; };
+		E6D17CEE1411156D003BDBE7 /* FieldSelectionDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D17CEB1411156D003BDBE7 /* FieldSelectionDlg.cpp */; };
 		E6DA586511A701AE00D84199 /* guiinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DA586311A701AE00D84199 /* guiinfo.cpp */; };
 		E6DDC6FC138911CB00F0C0D1 /* CompareDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */; };
 		E6DDC7011389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */; };
@@ -626,8 +626,8 @@
 		E6C94E971FA3399F008F0072 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		E6C94E991FA33BA6008F0072 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E6CFEE4311EA0AFB001402D8 /* RecentDBList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentDBList.h; sourceTree = "<group>"; };
-		E6D17CEA1411156D003BDBE7 /* fieldselectiondlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fieldselectiondlg.h; sourceTree = "<group>"; };
-		E6D17CEB1411156D003BDBE7 /* fieldselectiondlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fieldselectiondlg.cpp; sourceTree = "<group>"; };
+		E6D17CEA1411156D003BDBE7 /* FieldSelectionDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FieldSelectionDlg.h; sourceTree = "<group>"; };
+		E6D17CEB1411156D003BDBE7 /* FieldSelectionDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FieldSelectionDlg.cpp; sourceTree = "<group>"; };
 		E6DA586311A701AE00D84199 /* guiinfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = guiinfo.cpp; sourceTree = "<group>"; };
 		E6DA586411A701AE00D84199 /* guiinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiinfo.h; sourceTree = "<group>"; };
 		E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CompareDlg.cpp; sourceTree = "<group>"; };
@@ -1202,8 +1202,8 @@
 				E6651E9B14E914320057D8EC /* pwsmenushortcuts.h */,
 				E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */,
 				E691FB56140D551F00925F96 /* fieldselectionpanel.h */,
-				E6D17CEA1411156D003BDBE7 /* fieldselectiondlg.h */,
-				E6D17CEB1411156D003BDBE7 /* fieldselectiondlg.cpp */,
+				E6D17CEA1411156D003BDBE7 /* FieldSelectionDlg.h */,
+				E6D17CEB1411156D003BDBE7 /* FieldSelectionDlg.cpp */,
 				E66FB84C13ACA5C3004DBB97 /* SizeRestrictedPanel.h */,
 				E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */,
 				E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */,
@@ -1825,7 +1825,7 @@
 				E66EE0B313921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
 				E66FB84D13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
 				E691FB5A140D551F00925F96 /* fieldselectionpanel.cpp in Sources */,
-				E6D17CEE1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */,
+				E6D17CEE1411156D003BDBE7 /* FieldSelectionDlg.cpp in Sources */,
 				E6651E9C14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */,
 				E66C16A416731E2100C996B1 /* SelectionCriteria.cpp in Sources */,
 				E66C16AB16731ECD00C996B1 /* mainManage.cpp in Sources */,

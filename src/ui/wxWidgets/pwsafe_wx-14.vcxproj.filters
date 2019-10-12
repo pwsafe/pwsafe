@@ -135,7 +135,7 @@
     <ClInclude Include="helpmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fieldselectiondlg.h">
+    <ClInclude Include="FieldSelectionDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pwsmenushortcuts.h">
@@ -298,7 +298,7 @@
     <ClCompile Include="SizeRestrictedPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fieldselectiondlg.cpp">
+    <ClCompile Include="FieldSelectionDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pwsmenushortcuts.cpp">
