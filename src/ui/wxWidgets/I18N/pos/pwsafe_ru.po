@@ -1105,27 +1105,27 @@ msgstr "&Да"
 msgid "&No"
 msgstr "&Нет"
 
-#: src/ui/wxWidgets/dragbar.cpp:77
+#: src/ui/wxWidgets/DragBarGenericCtrl.cpp:77
 msgid "Error dragging"
 msgstr "Ошибка при перетягивании"
 
-#: src/ui/wxWidgets/dragbar.cpp:80
+#: src/ui/wxWidgets/DragBarGenericCtrl.cpp:80
 msgid "Nothing happened dragging"
 msgstr "Безрезультатное перетягивание"
 
-#: src/ui/wxWidgets/dragbar.cpp:83
+#: src/ui/wxWidgets/DragBarGenericCtrl.cpp:83
 msgid "Copied successfully"
 msgstr "Успешно скопировано"
 
-#: src/ui/wxWidgets/dragbar.cpp:86
+#: src/ui/wxWidgets/DragBarGenericCtrl.cpp:86
 msgid "Moved successfully"
 msgstr "Успешно перемещено"
 
-#: src/ui/wxWidgets/dragbar.cpp:89
+#: src/ui/wxWidgets/DragBarGenericCtrl.cpp:89
 msgid "Dragging cancelled"
 msgstr "Перетягивание отменено"
 
-#: src/ui/wxWidgets/dragbar.cpp:92
+#: src/ui/wxWidgets/DragBarGenericCtrl.cpp:92
 msgid "Unexpected result dragging"
 msgstr "Непредусмотренные результат при перетягивании"
 

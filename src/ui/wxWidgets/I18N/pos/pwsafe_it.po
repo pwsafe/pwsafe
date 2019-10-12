@@ -2377,27 +2377,27 @@ msgstr ""
 "Spiacente, \"facile da leggere\" e \"pronunciabile\" non possono essere "
 "selezionati insieme"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:77
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:77
 msgid "Error dragging"
 msgstr "Errore durante il trascinamento"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:80
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:80
 msgid "Nothing happened dragging"
 msgstr "Non è successo niente trascinando"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:83
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:83
 msgid "Copied successfully"
 msgstr "Copiato correttamente"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:86
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:86
 msgid "Moved successfully"
 msgstr "Spostato correttamente"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:89
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:89
 msgid "Dragging cancelled"
 msgstr "Trascinamento cancellato"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:92
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:92
 msgid "Unexpected result dragging"
 msgstr "Risultato non atteso dopo il trascinamento"
 

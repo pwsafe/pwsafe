@@ -108,7 +108,7 @@
     <ClInclude Include="ViewReport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dragbar.h">
+    <ClInclude Include="DragBarGenericCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWSDragBar.h">
@@ -268,7 +268,7 @@
     <ClCompile Include="ViewReport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dragbar.cpp">
+    <ClCompile Include="DragBarGenericCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PWSDragBar.cpp">

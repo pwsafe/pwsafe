@@ -2477,29 +2477,29 @@ msgstr ""
 "죄송합니다만, '발음할 수 있는' 속성과 '읽기쉬운' 속성이 동시에 지원되지 않습"
 "니다"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:77
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:77
 msgid "Error dragging"
 msgstr ""
 
-#: ../../../ui/wxWidgets/dragbar.cpp:80
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:80
 msgid "Nothing happened dragging"
 msgstr ""
 
-#: ../../../ui/wxWidgets/dragbar.cpp:83
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:83
 #, fuzzy
 msgid "Copied successfully"
 msgstr "성공적으로 완료했습니다"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:86
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:86
 #, fuzzy
 msgid "Moved successfully"
 msgstr "성공적으로 완료했습니다"
 
-#: ../../../ui/wxWidgets/dragbar.cpp:89
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:89
 msgid "Dragging cancelled"
 msgstr ""
 
-#: ../../../ui/wxWidgets/dragbar.cpp:92
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:92
 #, fuzzy
 msgid "Unexpected result dragging"
 msgstr ""

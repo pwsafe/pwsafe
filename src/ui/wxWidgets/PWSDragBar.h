@@ -18,7 +18,7 @@
 #ifndef __PWSDRAGBAR_H__
 #define __PWSDRAGBAR_H__
 
-#include "./dragbar.h"
+#include "./DragBarGenericCtrl.h"
 
 class PasswordSafeFrame;
 
