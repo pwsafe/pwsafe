@@ -264,7 +264,7 @@
     <ClInclude Include="HelpMap.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXmlDlg.h" />
-    <ClInclude Include="ManagePwdPolicies.h" />
+    <ClInclude Include="ManagePasswordPoliciesDlg.h" />
     <ClInclude Include="MergeDlg.h" />
     <ClInclude Include="OpenFilePickerValidator.h" />
     <ClInclude Include="optionspropsheet.h" />
@@ -324,7 +324,7 @@
     <ClCompile Include="mainEdit.cpp" />
     <ClCompile Include="mainManage.cpp" />
     <ClCompile Include="mainView.cpp" />
-    <ClCompile Include="ManagePwdPolicies.cpp" />
+    <ClCompile Include="ManagePasswordPoliciesDlg.cpp" />
     <ClCompile Include="MergeDlg.cpp" />
     <ClCompile Include="OpenFilePickerValidator.cpp" />
     <ClCompile Include="optionspropsheet.cpp" />

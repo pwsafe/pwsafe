@@ -75,7 +75,7 @@ msgstr "Proszę wprowadzić swój YubiKey"
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:219
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:250
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:250
 msgid "&Help"
 msgstr "Pomoc"
 
@@ -90,7 +90,7 @@ msgstr "Wyjści&e"
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:216
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:247
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:247
 #, fuzzy
 msgid "&Cancel"
 msgstr "Anuluj"
@@ -102,7 +102,7 @@ msgstr "Anuluj"
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:213
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:244
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:244
 #, fuzzy
 msgid "&OK"
 msgstr "&OK"
@@ -1506,7 +1506,7 @@ msgstr "Żaden"
 #: ../../../ui/wxWidgets/properties.cpp:455
 #: ../../../ui/wxWidgets/properties.cpp:483
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:550
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:412
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:412
 msgid "N/A"
 msgstr "N/A"
 
@@ -1783,7 +1783,7 @@ msgstr "Ukryj"
 
 #: ../../../ui/wxWidgets/yubicfg.cpp:190
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:361
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:200
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:200
 #, fuzzy
 msgid "Generate"
 msgstr "Twórz"
@@ -2379,7 +2379,7 @@ msgid "0-9, a-f"
 msgstr ""
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:367
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:214
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:214
 #, fuzzy
 msgid "Copy Password to clipboard"
 msgstr "Kopiuj hasło do schowka"
@@ -3639,99 +3639,99 @@ msgstr "nie jest poprawnym skrótem"
 msgid "Invalid shortcut"
 msgstr "Niepoprawny skrót"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:157
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:157
 #, fuzzy
 msgid "Available Password Policies:"
 msgstr "Dostępne polityki haseł:"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:178
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:178
 msgid "&New"
 msgstr "&Nowy"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:181
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:181
 #, fuzzy
 msgid "Edit"
 msgstr "Edycja"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:184
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:184
 msgid "&Delete"
 msgstr "Usuń"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:187
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:368
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:187
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:368
 msgid "List"
 msgstr "Lista"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:190
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:190
 msgid "&Undo"
 msgstr "Cofnij"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:193
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:193
 #, fuzzy
 msgid "&Redo"
 msgstr "P&rzywróć"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:196
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:196
 msgid "Test Selected Policy"
 msgstr "Test wybranej polityki"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:217
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:369
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:217
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:369
 #, fuzzy
 msgid "Selected policy details:"
 msgstr "Szczegóły wybranej polityki:"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:265
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:265
 msgid "Close"
 msgstr "Zamknij"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:266
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:266
 msgid "View"
 msgstr "Widok"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:272
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:272
 #, fuzzy
 msgid "Policy Name"
 msgstr "Nazwa polityki"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:273
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:273
 #, fuzzy
 msgid "Use count"
 msgstr "Liczba użyć"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:284
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:284
 msgid "Policy Field"
 msgstr "Pole z polityką"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:285
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:285
 #, fuzzy
 msgid "Value"
 msgstr "Wartość"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:289
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:289
 msgid "Group"
 msgstr "Grupa"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:290
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:290
 #: ../../../ui/wxWidgets/PWSgrid.cpp:155
 #, fuzzy
 msgid "Title"
 msgstr "Tytuł"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:291
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:291
 msgid "User Name"
 msgstr "Nazwa Użytkownika"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:380
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:380
 msgid "Details"
 msgstr "Szczegóły"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:381
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:381
 #, fuzzy
 msgid "Entries using selected policy:"
 msgstr "Wpisy używające wybranej polityki:"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:432
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:432
 msgid "Not used"
 msgstr "Nie użyty"
 
@@ -4077,7 +4077,7 @@ msgstr "Edytuj Skrót"
 msgid "Change Safe Combination"
 msgstr "Zmień Hasło"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.h:58
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.h:58
 #, fuzzy
 msgid "Manage Password Policies"
 msgstr "Dostępne polityki haseł:"

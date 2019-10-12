@@ -147,7 +147,7 @@
     <ClInclude Include="ComparisonGridTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ManagePwdPolicies.h">
+    <ClInclude Include="ManagePasswordPoliciesDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PasswordPolicy.h">
@@ -310,7 +310,7 @@
     <ClCompile Include="mainManage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ManagePwdPolicies.cpp">
+    <ClCompile Include="ManagePasswordPoliciesDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PasswordPolicy.cpp">

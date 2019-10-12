@@ -351,8 +351,8 @@
 		<Unit filename="../../src/ui/wxWidgets/ImportTextDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/ImportXmlDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ImportXmlDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/ManagePwdPolicies.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/ManagePwdPolicies.h" />
+		<Unit filename="../../src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/ManagePasswordPoliciesDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/MergeDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/MergeDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/OpenFilePickerValidator.cpp" />

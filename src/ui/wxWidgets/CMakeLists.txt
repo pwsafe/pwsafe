@@ -30,7 +30,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/ExternalKeyboardButton.h
     src/ui/wxWidgets/ImportTextDlg.h
     src/ui/wxWidgets/ImportXmlDlg.h
-    src/ui/wxWidgets/ManagePwdPolicies.h
+    src/ui/wxWidgets/ManagePasswordPoliciesDlg.h
     src/ui/wxWidgets/MergeDlg.h
     src/ui/wxWidgets/OpenFilePickerValidator.h
     src/ui/wxWidgets/DragBarCtrl.h
@@ -91,7 +91,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/ComparisonGridTable.cpp
     src/ui/wxWidgets/ExportTextWarningDlg.cpp
     src/ui/wxWidgets/ImportXmlDlg.cpp
-    src/ui/wxWidgets/ManagePwdPolicies.cpp
+    src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp
     src/ui/wxWidgets/MergeDlg.cpp
     src/ui/wxWidgets/OpenFilePickerValidator.cpp
     src/ui/wxWidgets/DragBarCtrl.cpp

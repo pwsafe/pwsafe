@@ -28,7 +28,7 @@
 #include "safecombinationprompt.h"
 #include "optionspropsheet.h"
 #include "SystemTray.h"
-#include "ManagePwdPolicies.h"
+#include "ManagePasswordPoliciesDlg.h"
 #include "PasswordPolicy.h"
 #ifndef NO_YUBI
 #include "yubicfg.h"

@@ -40,7 +40,7 @@
 		E6651E9C14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */; };
 		E66C16A416731E2100C996B1 /* SelectionCriteria.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16A316731E2100C996B1 /* SelectionCriteria.cpp */; };
 		E66C16AB16731ECD00C996B1 /* mainManage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16AA16731ECD00C996B1 /* mainManage.cpp */; };
-		E66C16B316731EFE00C996B1 /* ManagePwdPolicies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B116731EFE00C996B1 /* ManagePwdPolicies.cpp */; };
+		E66C16B316731EFE00C996B1 /* ManagePasswordPoliciesDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B116731EFE00C996B1 /* ManagePasswordPoliciesDlg.cpp */; };
 		E66C16BB16731F9400C996B1 /* PasswordPolicy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */; };
 		E66D293C1D02B92F00C9BCBF /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
 		E66D293D1D02B92F00C9BCBF /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
@@ -275,8 +275,8 @@
 		E66C16A216731E2100C996B1 /* SelectionCriteria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionCriteria.h; sourceTree = "<group>"; };
 		E66C16A316731E2100C996B1 /* SelectionCriteria.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectionCriteria.cpp; sourceTree = "<group>"; };
 		E66C16AA16731ECD00C996B1 /* mainManage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mainManage.cpp; sourceTree = "<group>"; };
-		E66C16B116731EFE00C996B1 /* ManagePwdPolicies.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ManagePwdPolicies.cpp; sourceTree = "<group>"; };
-		E66C16B216731EFE00C996B1 /* ManagePwdPolicies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManagePwdPolicies.h; sourceTree = "<group>"; };
+		E66C16B116731EFE00C996B1 /* ManagePasswordPoliciesDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ManagePasswordPoliciesDlg.cpp; sourceTree = "<group>"; };
+		E66C16B216731EFE00C996B1 /* ManagePasswordPoliciesDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManagePasswordPoliciesDlg.h; sourceTree = "<group>"; };
 		E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordPolicy.cpp; sourceTree = "<group>"; };
 		E66C16BA16731F9400C996B1 /* PasswordPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordPolicy.h; sourceTree = "<group>"; };
 		E66D292F1D02B49B00C9BCBF /* pwsafe-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "pwsafe-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1193,8 +1193,8 @@
 				E6E895991BD8C5E1009F3A8E /* TimedTaskChain.h */,
 				E66C16B916731F9400C996B1 /* PasswordPolicy.cpp */,
 				E66C16BA16731F9400C996B1 /* PasswordPolicy.h */,
-				E66C16B116731EFE00C996B1 /* ManagePwdPolicies.cpp */,
-				E66C16B216731EFE00C996B1 /* ManagePwdPolicies.h */,
+				E66C16B116731EFE00C996B1 /* ManagePasswordPoliciesDlg.cpp */,
+				E66C16B216731EFE00C996B1 /* ManagePasswordPoliciesDlg.h */,
 				E66C16AA16731ECD00C996B1 /* mainManage.cpp */,
 				E66C16A216731E2100C996B1 /* SelectionCriteria.h */,
 				E66C16A316731E2100C996B1 /* SelectionCriteria.cpp */,
@@ -1830,7 +1830,7 @@
 				E66C16A416731E2100C996B1 /* SelectionCriteria.cpp in Sources */,
 				E66C16AB16731ECD00C996B1 /* mainManage.cpp in Sources */,
 				E6F8DC1F1D132618007DFBEC /* mainView.cpp in Sources */,
-				E66C16B316731EFE00C996B1 /* ManagePwdPolicies.cpp in Sources */,
+				E66C16B316731EFE00C996B1 /* ManagePasswordPoliciesDlg.cpp in Sources */,
 				E66C16BB16731F9400C996B1 /* PasswordPolicy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

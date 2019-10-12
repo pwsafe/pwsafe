@@ -74,7 +74,7 @@ msgstr "Inserire la YubiKey"
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:219
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:250
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:250
 msgid "&Help"
 msgstr "A&iuto"
 
@@ -89,7 +89,7 @@ msgstr "&Esci"
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:216
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:247
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:247
 msgid "&Cancel"
 msgstr "&Annulla"
 
@@ -100,7 +100,7 @@ msgstr "&Annulla"
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:213
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:244
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:244
 msgid "&OK"
 msgstr "&OK"
 
@@ -1483,7 +1483,7 @@ msgstr "Nessuno"
 #: ../../../ui/wxWidgets/properties.cpp:455
 #: ../../../ui/wxWidgets/properties.cpp:483
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:550
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:412
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:412
 msgid "N/A"
 msgstr "N/A"
 
@@ -1753,7 +1753,7 @@ msgstr "Nascondi"
 
 #: ../../../ui/wxWidgets/yubicfg.cpp:190
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:361
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:200
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:200
 msgid "Generate"
 msgstr "Genera"
 
@@ -2312,7 +2312,7 @@ msgid "0-9, a-f"
 msgstr ""
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:367
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:214
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:214
 msgid "Copy Password to clipboard"
 msgstr "Copia password negli appunti"
 
@@ -3507,90 +3507,90 @@ msgstr "non è una scorciatoia valida"
 msgid "Invalid shortcut"
 msgstr "Scorciatoia non valida"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:157
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:157
 msgid "Available Password Policies:"
 msgstr "Metodi di Generazione Password Disponibili:"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:178
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:178
 msgid "&New"
 msgstr "&Nuovo"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:181
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:181
 msgid "Edit"
 msgstr "Modifica"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:184
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:184
 msgid "&Delete"
 msgstr "&Cancella"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:187
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:368
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:187
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:368
 msgid "List"
 msgstr "Elenca"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:190
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:190
 msgid "&Undo"
 msgstr "&Annulla"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:193
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:193
 msgid "&Redo"
 msgstr "&Ripeti"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:196
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:196
 msgid "Test Selected Policy"
 msgstr "Verifica Metodo Selezionato"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:217
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:369
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:217
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:369
 msgid "Selected policy details:"
 msgstr "Dettagli del metodo selezionato:"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:265
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:265
 msgid "Close"
 msgstr "Chiudi"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:266
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:266
 msgid "View"
 msgstr "Visualizza"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:272
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:272
 msgid "Policy Name"
 msgstr "Nome Metodo"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:273
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:273
 msgid "Use count"
 msgstr "Conteggio utilizzi"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:284
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:284
 msgid "Policy Field"
 msgstr "Proprietà Metodo"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:285
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:285
 msgid "Value"
 msgstr "Valore"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:289
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:289
 msgid "Group"
 msgstr "Gruppo"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:290
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:290
 #: ../../../ui/wxWidgets/PWSgrid.cpp:155
 msgid "Title"
 msgstr "Titolo"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:291
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:291
 msgid "User Name"
 msgstr "Nome Utente"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:380
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:380
 msgid "Details"
 msgstr "Dettagli"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:381
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:381
 msgid "Entries using selected policy:"
 msgstr "Voci che utilizzano il metodo selezionato:"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:432
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:432
 msgid "Not used"
 msgstr "Non utilizzato"
 
@@ -3892,7 +3892,7 @@ msgstr "Modifica Scorciatoia"
 msgid "Change Safe Combination"
 msgstr "Cambia Combinazione di Sicurezza"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.h:58
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.h:58
 msgid "Manage Password Policies"
 msgstr "Gestione Metodi Generazione Password"
 

@@ -204,7 +204,7 @@ SOURCES= passwordsafeframe.cpp \
 	wxutils.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \
 	FieldSelectionPanel.cpp FieldSelectionDlg.cpp pwsmenushortcuts.cpp \
 	$(YUBI_SRC) $(QR_SRC) \
-	ManagePwdPolicies.cpp PasswordPolicy.cpp SelectionCriteria.cpp \
+	ManagePasswordPoliciesDlg.cpp PasswordPolicy.cpp SelectionCriteria.cpp \
 	TimedTaskChain.cpp mainView.cpp passwordsubset.cpp \
   CryptKeyEntryDlg.cpp
 

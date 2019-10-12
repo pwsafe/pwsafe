@@ -100,7 +100,7 @@ msgstr "Дата и время"
 msgid "Additional"
 msgstr "Дополнительно"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.h:58
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.h:58
 msgid "Manage Password Policies"
 msgstr "Управление политиками создания паролей"
 
@@ -550,7 +550,7 @@ msgid "Last accessed on:"
 msgstr "Последнее обращение:"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:550
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:412
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:412
 #: src/ui/wxWidgets/properties.cpp:256 src/ui/wxWidgets/properties.cpp:266
 #: src/ui/wxWidgets/properties.cpp:455 src/ui/wxWidgets/properties.cpp:483
 msgid "N/A"
@@ -963,7 +963,7 @@ msgstr ""
 
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: src/ui/wxWidgets/EditShortcutDlg.cpp:213
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:244
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:244
 #: src/ui/wxWidgets/PasswordPolicy.cpp:378 src/ui/wxWidgets/properties.cpp:367
 #: src/ui/wxWidgets/safecombinationchange.cpp:205
 #: src/ui/wxWidgets/safecombinationprompt.cpp:210
@@ -973,7 +973,7 @@ msgstr "&OK"
 
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:170
 #: src/ui/wxWidgets/EditShortcutDlg.cpp:216
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:247
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:247
 #: src/ui/wxWidgets/PasswordPolicy.cpp:381
 #: src/ui/wxWidgets/safecombinationchange.cpp:209
 #: src/ui/wxWidgets/safecombinationprompt.cpp:206
@@ -983,7 +983,7 @@ msgstr "&Отмена"
 
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:173
 #: src/ui/wxWidgets/EditShortcutDlg.cpp:219
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:250
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:250
 #: src/ui/wxWidgets/PasswordPolicy.cpp:384
 #: src/ui/wxWidgets/passwordsafeframe.cpp:591
 #: src/ui/wxWidgets/safecombinationchange.cpp:212
@@ -1389,104 +1389,104 @@ msgstr "Ошибка при чтении файла"
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe — <Восстановлено из резервной копии>"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:157
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:157
 msgid "Available Password Policies:"
 msgstr "Доступные политики создания паролей:"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:178
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:178
 msgid "&New"
 msgstr "&Создать"
 
 # 32050 - id пункта меню
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:181
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:181
 msgid "Edit"
 msgstr "Правка"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:184
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:184
 msgid "&Delete"
 msgstr "&Удалить"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:187
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:368
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:187
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:368
 msgid "List"
 msgstr "Список"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:190
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:190
 msgid "&Undo"
 msgstr "&Отмена"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:193
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:193
 msgid "&Redo"
 msgstr "&Повторить"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:196
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:196
 msgid "Test Selected Policy"
 msgstr "Проверить выбранную политику"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:200
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:200
 #: src/ui/wxWidgets/PasswordPolicy.cpp:361 src/ui/wxWidgets/yubicfg.cpp:190
 msgid "Generate"
 msgstr "Создать"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:214
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:214
 #: src/ui/wxWidgets/PasswordPolicy.cpp:367
 msgid "Copy Password to clipboard"
 msgstr "Копировать пароль в буфер обмена"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:217
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:369
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:217
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:369
 msgid "Selected policy details:"
 msgstr "Информация о выбранной политике:"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:265
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:265
 msgid "Close"
 msgstr "Закрыть"
 
 # 5624 - кнопка, 32101 - menu id (т.к. id, то не важно и переводим как надпись
 # на кнопке, а не "вид")
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:266
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:266
 msgid "View"
 msgstr "Просмотреть"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:272
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:272
 msgid "Policy Name"
 msgstr "Имя политики"
 
 # столбец в информации о политике
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:273
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:273
 msgid "Use count"
 msgstr "Используется в"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:284
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:284
 msgid "Policy Field"
 msgstr "Политика"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:285
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:285
 msgid "Value"
 msgstr "Значение"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:289 src/core/core_st.cpp:131
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:289 src/core/core_st.cpp:131
 msgid "Group"
 msgstr "Группа"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:290 src/ui/wxWidgets/PWSgrid.cpp:155
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:290 src/ui/wxWidgets/PWSgrid.cpp:155
 #: src/core/core_st.cpp:145
 msgid "Title"
 msgstr "Заголовок"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:291
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:291
 msgid "User Name"
 msgstr "Имя пользователя"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:380
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:380
 msgid "Details"
 msgstr "Информация"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:381
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:381
 msgid "Entries using selected policy:"
 msgstr "Элементы, использующие выбранную политику:"
 
-#: src/ui/wxWidgets/ManagePwdPolicies.cpp:432
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:432
 msgid "Not used"
 msgstr "Не используется"
 
