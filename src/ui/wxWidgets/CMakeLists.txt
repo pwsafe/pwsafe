@@ -12,7 +12,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/safecombinationchange.h
     src/ui/wxWidgets/safecombinationentry.h
     src/ui/wxWidgets/safecombinationsetup.h
-    src/ui/wxWidgets/addeditpropsheet.h
+    src/ui/wxWidgets/AddEditPropSheetDlg.h
     src/ui/wxWidgets/properties.h
     src/ui/wxWidgets/pwsclip.h
     src/ui/wxWidgets/createshortcutdlg.h
@@ -58,7 +58,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/optionspropsheet.cpp
     src/ui/wxWidgets/CompareDlg.cpp
     src/ui/wxWidgets/ImportTextDlg.cpp
-    src/ui/wxWidgets/addeditpropsheet.cpp
+    src/ui/wxWidgets/AddEditPropSheetDlg.cpp
     src/ui/wxWidgets/PasswordSafeSearch.cpp
     src/ui/wxWidgets/SystemTray.cpp
     src/ui/wxWidgets/AboutDlg.cpp

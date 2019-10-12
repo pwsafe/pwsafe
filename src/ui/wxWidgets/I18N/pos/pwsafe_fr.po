@@ -150,14 +150,14 @@ msgstr "Mot de passe invalide ou fichier PasswordSafe corrompu."
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:252
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:280
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:319
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1154
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1276
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1288
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1304
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1473
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1523
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1971
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1998
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1154
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1276
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1288
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1304
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1473
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1523
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1971
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1998
 msgid "Error"
 msgstr "Erreur"
 
@@ -1558,14 +1558,14 @@ msgstr "Aucun"
 #: ../../../ui/wxWidgets/properties.cpp:266
 #: ../../../ui/wxWidgets/properties.cpp:455
 #: ../../../ui/wxWidgets/properties.cpp:483
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:550
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:550
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:412
 msgid "N/A"
 msgstr "N/D"
 
 #: ../../../ui/wxWidgets/properties.cpp:280
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:544
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:556
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:544
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:556
 #, fuzzy
 msgid "Static text"
 msgstr "Static"
@@ -1919,8 +1919,8 @@ msgstr "Le même que celui du fichier courant"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:333
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:499
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:280
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:881
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:280
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:881
 msgid "Browse"
 msgstr "Choisir..."
 
@@ -2105,7 +2105,7 @@ msgid "Apply"
 msgstr "Appliquer"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:586
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:428
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
 #: ../../../ui/wxWidgets/helpmap.h:42
 msgid "Password History"
 msgstr "Historique du mot de passe"
@@ -2319,23 +2319,23 @@ msgid "Policy Name:"
 msgstr "Stratégie de mot de passe"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:197
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:576
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:576
 msgid "Use Database Policy"
 msgstr "Utiliser la stratégie du fichier"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:209
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:569
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:569
 msgid "Random password generation rules"
 msgstr "Règles de génération de mot de passe aléatoire"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:216
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:591
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:591
 #, fuzzy
 msgid "Password length:"
 msgstr "Longueur :"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:231
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:606
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:606
 #, fuzzy
 msgid "Use lowercase letters"
 msgstr "Utiliser des lettres &Minuscules"
@@ -2344,71 +2344,71 @@ msgstr "Utiliser des lettres &Minuscules"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:260
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:282
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:305
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:612
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:633
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:654
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:676
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:612
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:633
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:654
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:676
 #, fuzzy
 msgid "(At least "
 msgstr "(minimum"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:253
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:627
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:627
 #, fuzzy
 msgid "Use UPPERCASE letters"
 msgstr "Utiliser des M&AJUSCULES"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:275
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:648
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:648
 msgid "Use digits"
 msgstr "Utiliser des chiffres"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:297
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:669
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:669
 msgid "Use symbols"
 msgstr "Utiliser des symboles"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:299
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:671
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:671
 #, fuzzy
 msgid "i.e., ., %, $, etc."
 msgstr "Utiliser des &Symboles (ex.: &, %, $, etc.)"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:324
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:694
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:694
 msgid "Reset"
 msgstr "Réinitializer"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:327
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:697
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:697
 #, fuzzy
 msgid "Use only easy-to-read characters"
 msgstr "Utiliser des minuscules"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:329
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:699
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:699
 msgid "i.e., no 'l', '1', etc."
 msgstr ""
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:334
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:704
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:704
 #, fuzzy
 msgid "Generate pronounceable passwords"
 msgstr "Générer des mots &prononçables"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:340
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:710
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:710
 msgid "Or"
 msgstr "Ou"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:345
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:715
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:715
 #, fuzzy
 msgid "Use hexadecimal digits only"
 msgstr "Utiliser des chiffres &Hexadécimaux seulement (0-9,a-f)"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:347
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:717
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:717
 msgid "0-9, a-f"
 msgstr ""
 
@@ -2466,14 +2466,14 @@ msgid "Policy Error"
 msgstr "Stratégie de mot de passe"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:726
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1997
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1997
 #, fuzzy
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr ""
 "Désolé, 'prononçable' et 'facile à lire' ne sont pas activables en même temps"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:745
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1970
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1970
 #, fuzzy
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr ""
@@ -2932,55 +2932,55 @@ msgstr ""
 "\n"
 "SVP, essayez-en un autre"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:279
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:880
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:279
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:880
 #, fuzzy
 msgid "Auto Type"
 msgstr "Auto-frappe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:281
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:882
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:281
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:882
 #, fuzzy
 msgid "Browse + Auto Type"
 msgstr "Aller à l'URL + Autofrappe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:282
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:883
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:282
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:883
 #, fuzzy
 msgid "Copy Notes"
 msgstr "Afficher les notes"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:283
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:884
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:283
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:884
 #, fuzzy
 msgid "Copy Password"
 msgstr "Mot de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:284
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:885
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:284
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:885
 #, fuzzy
 msgid "Copy Password + Minimize"
 msgstr "Copier le mot de passe au presse-papier, réduire"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:285
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:886
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:285
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:886
 #, fuzzy
 msgid "Copy Username"
 msgstr "Nom d'utilisateur"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:286
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:887
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:286
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:887
 #, fuzzy
 msgid "Edit/View Entry"
 msgstr "Visualiser l'entrée"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:287
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:888
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:287
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:888
 #, fuzzy
 msgid "Execute Run command"
 msgstr " 'Exécuter la commande'"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:307
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:307
 #, fuzzy
 msgid ""
 "To add a new entry, simply fill in the fields below. At least a title and\n"
@@ -2991,240 +2991,240 @@ msgstr ""
 "un titre et un mot de passe sont requis.Si vous avez défini un nom "
 "d'utilisateur par défaut, il apparaîtra dans le champ Nom d'utilisateur."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:315
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:315
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:145
 #: ../../../ui/wxWidgets/editshortcut.cpp:160
 msgid "Group:"
 msgstr "Groupe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:322
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:322
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:152
 #: ../../../ui/wxWidgets/editshortcut.cpp:167
 msgid "Title:"
 msgstr "Titre:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:328
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:328
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:158
 #: ../../../ui/wxWidgets/editshortcut.cpp:173
 msgid "Username:"
 msgstr "Nom d'utilisateur:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:334
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:334
 #, fuzzy
 msgid "Password:"
 msgstr "Mot de &Passe:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:340
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1184
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:340
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1184
 msgid "&Hide"
 msgstr "&Cacher"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:343
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:343
 msgid "&Generate"
 msgstr "&Générer"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:346
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:346
 #, fuzzy
 msgid "Confirm:"
 msgstr "Confirmation :"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:352
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:352
 msgid "URL:"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:358
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:358
 msgid "Go"
 msgstr "Aller"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:361
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:361
 #, fuzzy
 msgid "EMail:"
 msgstr "&courriel:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:367
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:367
 msgid "Send"
 msgstr "Envoyer"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:370
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:370
 #, fuzzy
 msgid "Notes:"
 msgstr "&Notes:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:379
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:379
 #: ../../../ui/wxWidgets/helpmap.h:47
 msgid "Basic"
 msgstr "Général"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:400
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:400
 #, fuzzy
 msgid "Autotype:"
 msgstr "&Autofrappe:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:406
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:406
 msgid "Run Cmd:"
 msgstr "Commande :"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:412
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:412
 #, fuzzy
 msgid "Double-Click Action:"
 msgstr "Action double-clic :"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:420
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:420
 #, fuzzy
 msgid "Shift-Double-Click Action:"
 msgstr "Action Maj + double-clic:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:433
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:433
 msgid "Keep"
 msgstr "Mémoriser"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:446
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:446
 msgid "last passwords"
 msgstr "derniers mots de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:459
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:459
 msgid "Clear History"
 msgstr "Effacer l'historique"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:464
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:464
 msgid "Copy All"
 msgstr "Tout copier"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:467
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:467
 #: ../../../ui/wxWidgets/helpmap.h:50
 msgid "Additional"
 msgstr "Avancé"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:477
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:477
 msgid "Password Expiry"
 msgstr "Expiration du mot de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:484
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:484
 msgid "On"
 msgstr "Le"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:493
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:493
 #, fuzzy
 msgid "In"
 msgstr "&Dans"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:509
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:509
 msgid "days"
 msgstr "jours"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:512
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:512
 msgid "Recurring"
 msgstr "Répéter"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:518
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:929
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1669
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:518
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:929
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1669
 msgid "Never"
 msgstr "Jamais"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:524
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:524
 msgid "Original Value:"
 msgstr "Valeur originale:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:530
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:530
 msgid "Statistics"
 msgstr "Statistiques"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:535
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:535
 #: ../../../ui/wxWidgets/editshortcut.cpp:186
 msgid "Created on:"
 msgstr "Créée le:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:541
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:541
 msgid "Password last changed on:"
 msgstr "Le mot de passe a été changé le:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:547
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:547
 #: ../../../ui/wxWidgets/editshortcut.cpp:198
 msgid "Last accessed on:"
 msgstr "Dernier accès le:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:553
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:553
 #: ../../../ui/wxWidgets/editshortcut.cpp:204
 msgid "Any field last changed on:"
 msgstr "Tout champ récemment changé sur:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:559
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:559
 #: ../../../ui/wxWidgets/helpmap.h:48
 msgid "Dates and Times"
 msgstr "Heures et Dates"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:624
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:645
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:666
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:688
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:624
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:645
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:666
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:688
 msgid ")"
 msgstr ")"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:720
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1712
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:720
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1712
 #: ../../../ui/wxWidgets/PasswordPolicy.h:69 ../../../ui/wxWidgets/helpmap.h:41
 #: ../../../ui/wxWidgets/helpmap.h:49
 msgid "Password Policy"
 msgstr "Stratégie de mot de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:752
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:752
 msgid "Set Date/Time"
 msgstr "Mettre à jour la date/l'heure"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:753
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:753
 msgid "Password"
 msgstr "Mot de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:909
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:909
 msgid "default"
 msgstr "défaut"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1032
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1032
 msgid "[Notes hidden - click here to display]"
 msgstr "[Notes cachées - cliquer ici pour les afficher]"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1101
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1126
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1439
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:2064
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1101
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1126
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1439
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2064
 msgid "Default Policy"
 msgstr "Stratégie par défaut"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1153
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1153
 msgid "Couldn't generate password - invalid policy"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1212
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1212
 msgid "&Show"
 msgstr "&Afficher"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1274
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1274
 #, fuzzy, c-format
 msgid "This entry must have a %ls"
 msgstr "Cette entrée doit comporter un %ls."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1275
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1275
 #, fuzzy
 msgid "title"
 msgstr "Titre"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1275
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1275
 #, fuzzy
 msgid "password"
 msgstr "Mot de passe"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1287
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1287
 #, fuzzy
 msgid "Passwords do not match"
 msgstr "Les deux entrées ne coïncident pas."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1303
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1303
 msgid "Database name must not be empty if a database policy shall be used."
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1472
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1522
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1472
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1522
 #, fuzzy
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
@@ -3232,17 +3232,17 @@ msgstr ""
 "Une entrée avec un Groupe vide, Titre \"%s\" et nom d'utilisateur \"%s\" "
 "existe déjà."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1648
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1648
 #, fuzzy, c-format
 msgid " (every %d days)"
 msgstr "Récurrence (%d jours)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1711
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1711
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
 msgstr ""
 "Désolé, 'prononçable' et 'facile à lire' ne sont pas activables en même temps"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:2049
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2049
 #, fuzzy
 msgid "mailto:"
 msgstr "&courriel:"
@@ -3959,20 +3959,20 @@ msgstr ""
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "PasswordSafe - <Copie de sauvegarde restaurée sans titre>"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.h:105
-#: ../../../ui/wxWidgets/addeditpropsheet.h:111
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:105
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:111
 msgid "Edit Entry"
 msgstr "Modifier l'entrée"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.h:110
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:110
 msgid "Add Entry"
 msgstr "Ajouter une entrée"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.h:112
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:112
 msgid "View Entry"
 msgstr "Visualiser l'entrée"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.h:113
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:113
 #, fuzzy
 msgid "Add, Edit or View Entry"
 msgstr "Visualiser l'entrée"

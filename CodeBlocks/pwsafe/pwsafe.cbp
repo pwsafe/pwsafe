@@ -400,8 +400,8 @@
 		</Unit>
 		<Unit filename="../../src/ui/wxWidgets/AboutDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/AboutDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/addeditpropsheet.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/addeditpropsheet.h" />
+		<Unit filename="../../src/ui/wxWidgets/AddEditPropSheetDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/AddEditPropSheetDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/createshortcutdlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/createshortcutdlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/deleteconfirmation.cpp" />
