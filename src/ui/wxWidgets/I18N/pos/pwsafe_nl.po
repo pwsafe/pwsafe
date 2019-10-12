@@ -139,9 +139,9 @@ msgstr ""
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:75
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:727
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:746
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:103
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:112
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:128
+#: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:103
+#: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:112
+#: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:128
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:272
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:276
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:280
@@ -165,7 +165,7 @@ msgstr "Fout"
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:302
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:349
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:75
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:102
+#: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:102
 msgid "The combination cannot be blank."
 msgstr "De combinatie kan niet leeg zijn."
 
@@ -2674,40 +2674,40 @@ msgstr "Open in alleen-lezen modus"
 msgid "Synchronization failed"
 msgstr "Synchronisatie mislukt"
 
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:44
+#: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:44
 #, fuzzy
 msgid "Encryption"
 msgstr "Codering mislukt."
 
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:45
+#: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:45
 #, fuzzy
 msgid "Please enter an encryption key."
 msgstr "Geef een codering of decodering sleutel"
 
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:48
+#: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:48
 msgid "Decryption"
 msgstr ""
 
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:49
+#: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:49
 #, fuzzy
 msgid "Please enter a decryption key."
 msgstr "Geef een codering of decodering sleutel"
 
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:56
+#: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:56
 msgid "Enter Key:"
 msgstr "Sleutel invoeren:"
 
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:63
+#: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:63
 msgid "Verify Key:"
 msgstr "Controle Sleutel:"
 
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:111
+#: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:111
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:245
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:318
 msgid "The two entries do not match."
 msgstr "De twee waarden komen niet overeen."
 
-#: ../../../ui/wxWidgets/CryptKeyEntry.cpp:127
+#: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:127
 #, fuzzy
 msgid "The entry cannot be blank."
 msgstr "De combinatie kan niet leeg zijn."

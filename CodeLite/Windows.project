@@ -140,7 +140,7 @@
     <File Name="../src/ui/Windows/PWPropertySheet.cpp"/>
     <File Name="../src/ui/Windows/AddEdit_DateTimes.cpp"/>
     <File Name="../src/ui/Windows/PWSFaultHandler.cpp"/>
-    <File Name="../src/ui/Windows/CryptKeyEntry.cpp"/>
+    <File Name="../src/ui/Windows/CryptKeyEntryDlg.cpp"/>
     <File Name="../src/ui/Windows/Subclass.cpp"/>
     <File Name="../src/ui/Windows/OptionsShortcuts.h"/>
     <File Name="../src/ui/Windows/CoolMenu.cpp"/>
@@ -241,7 +241,7 @@
     <File Name="../src/ui/Windows/AdvancedDlg.cpp"/>
     <File Name="../src/ui/Windows/PasskeySetup.h"/>
     <File Name="../src/ui/Windows/SHCTHotKey.cpp"/>
-    <File Name="../src/ui/Windows/CryptKeyEntry.h"/>
+    <File Name="../src/ui/Windows/CryptKeyEntryDlg.h"/>
     <File Name="../src/ui/Windows/OptionsMisc.h"/>
     <File Name="../src/ui/Windows/SingleInstance.cpp"/>
     <File Name="../src/ui/Windows/QuerySetDef.cpp"/>

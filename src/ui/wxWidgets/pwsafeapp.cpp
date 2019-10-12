@@ -38,7 +38,7 @@ using namespace std;
 #include "wxMessages.h"
 #include "pwsclip.h"
 #include "pwsmenushortcuts.h"
-#include "CryptKeyEntry.h"
+#include "CryptKeyEntryDlg.h"
 #if defined(__X__) || defined(__WXGTK__)
 #include "pwsclip.h"
 #endif

@@ -694,9 +694,9 @@ msgstr "Ошибка при создании пароля: некорректн�
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1523
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1971
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1998
-#: src/ui/wxWidgets/CryptKeyEntry.cpp:103
-#: src/ui/wxWidgets/CryptKeyEntry.cpp:112
-#: src/ui/wxWidgets/CryptKeyEntry.cpp:128
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:103
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:112
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:128
 #: src/ui/wxWidgets/DbSelectionPanel.cpp:101
 #: src/ui/wxWidgets/DbSelectionPanel.cpp:108
 #: src/ui/wxWidgets/DbSelectionPanel.cpp:116
@@ -994,35 +994,35 @@ msgstr "&Отмена"
 msgid "&Help"
 msgstr "П&омощь"
 
-#: src/ui/wxWidgets/CryptKeyEntry.cpp:44
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:44
 msgid "Encryption"
 msgstr "Шифрование"
 
-#: src/ui/wxWidgets/CryptKeyEntry.cpp:45
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:45
 msgid "Please enter an encryption key."
 msgstr "Введите ключ для шифрования"
 
-#: src/ui/wxWidgets/CryptKeyEntry.cpp:48
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:48
 msgid "Decryption"
 msgstr "Расшифрование"
 
-#: src/ui/wxWidgets/CryptKeyEntry.cpp:49
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:49
 msgid "Please enter a decryption key."
 msgstr "Введите ключ для расшифрования"
 
 # урезано
 # диалог управления фильтрами
-#: src/ui/wxWidgets/CryptKeyEntry.cpp:56
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:56
 msgid "Enter Key:"
 msgstr "Ключ:"
 
 # урезано
 # диалог, вызываемый по параметру -e
-#: src/ui/wxWidgets/CryptKeyEntry.cpp:63
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:63
 msgid "Verify Key:"
 msgstr "Повтор:"
 
-#: src/ui/wxWidgets/CryptKeyEntry.cpp:102
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:102
 #: src/ui/wxWidgets/SafeCombinationCtrl.cpp:75
 #: src/ui/wxWidgets/safecombinationentry.cpp:349
 #: src/ui/wxWidgets/safecombinationprompt.cpp:302
@@ -1031,13 +1031,13 @@ msgstr "Пароль не может быть пустым!"
 
 # Выводится при неверном повторе пароля (взоможно, где-то ещё), поэтому entry
 # переведено как «значение»
-#: src/ui/wxWidgets/CryptKeyEntry.cpp:111
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:111
 #: src/ui/wxWidgets/safecombinationsetup.cpp:245
 #: src/ui/wxWidgets/safecombinationsetup.cpp:318
 msgid "The two entries do not match."
 msgstr "Введённые значения не совпадают"
 
-#: src/ui/wxWidgets/CryptKeyEntry.cpp:127
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:127
 msgid "The entry cannot be blank."
 msgstr "Значение не может быть пустым"
 

@@ -1,5 +1,5 @@
 /*
- * CryptKeyEntry.cpp - initial version by rafaelx 2019-03-02
+ * CryptKeyEntryDlg.cpp - initial version by rafaelx 2019-03-02
  * Copyright (c) 2019 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -7,7 +7,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#include "CryptKeyEntry.h"
+#include "CryptKeyEntryDlg.h"
 #include <wx/msgdlg.h>
 
 //(*InternalHeaders(CryptKeyEntry)

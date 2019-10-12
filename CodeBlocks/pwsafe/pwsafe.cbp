@@ -339,8 +339,8 @@
 		<Unit filename="../../src/ui/wxWidgets/CompareDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/ComparisonGridTable.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ComparisonGridTable.h" />
-		<Unit filename="../../src/ui/wxWidgets/CryptKeyEntry.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/CryptKeyEntry.h" />
+		<Unit filename="../../src/ui/wxWidgets/CryptKeyEntryDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/CryptKeyEntryDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/DbSelectionPanel.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/DbSelectionPanel.h" />
 		<Unit filename="../../src/ui/wxWidgets/ExportTextWarningDlg.cpp" />
