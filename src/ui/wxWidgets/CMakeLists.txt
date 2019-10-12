@@ -6,7 +6,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/PasswordSafeSearch.h
     src/ui/wxWidgets/ViewReport.h
     src/ui/wxWidgets/GuiInfo.h
-    src/ui/wxWidgets/helpmap.h
+    src/ui/wxWidgets/HelpMap.h
     src/ui/wxWidgets/wxMessages.h
     src/ui/wxWidgets/pwsmenushortcuts.h
     src/ui/wxWidgets/safecombinationchange.h

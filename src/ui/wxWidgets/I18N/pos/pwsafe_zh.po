@@ -1903,7 +1903,7 @@ msgid "Browse"
 msgstr "浏览"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:336
-#: ../../../ui/wxWidgets/helpmap.h:38
+#: ../../../ui/wxWidgets/HelpMap.h:38
 msgid "Backups"
 msgstr "备份"
 
@@ -1967,7 +1967,7 @@ msgid "Initial Tree View"
 msgstr "初始树状目录视图"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:404
-#: ../../../ui/wxWidgets/helpmap.h:39
+#: ../../../ui/wxWidgets/HelpMap.h:39
 msgid "Display"
 msgstr "显示"
 
@@ -2030,7 +2030,7 @@ msgid "Browser Command Line parameters"
 msgstr "浏览器命令行参数"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:511
-#: ../../../ui/wxWidgets/helpmap.h:40
+#: ../../../ui/wxWidgets/HelpMap.h:40
 msgid "Misc."
 msgstr "杂项"
 
@@ -2083,7 +2083,7 @@ msgstr "应用"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:586
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: ../../../ui/wxWidgets/helpmap.h:42
+#: ../../../ui/wxWidgets/HelpMap.h:42
 msgid "Password History"
 msgstr "历史密码"
 
@@ -2136,12 +2136,12 @@ msgid "Maximum"
 msgstr ""
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:656
-#: ../../../ui/wxWidgets/helpmap.h:43
+#: ../../../ui/wxWidgets/HelpMap.h:43
 msgid "Security"
 msgstr "安全"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:675
-#: ../../../ui/wxWidgets/helpmap.h:45
+#: ../../../ui/wxWidgets/HelpMap.h:45
 msgid "Shortcuts"
 msgstr "快捷方式"
 
@@ -2218,7 +2218,7 @@ msgid "If AutoType doesn't work, setting this may help."
 msgstr ""
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:765
-#: ../../../ui/wxWidgets/helpmap.h:44
+#: ../../../ui/wxWidgets/HelpMap.h:44
 msgid "System"
 msgstr "系统"
 
@@ -3016,7 +3016,7 @@ msgid "Notes:"
 msgstr "备注(&N):"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:379
-#: ../../../ui/wxWidgets/helpmap.h:47
+#: ../../../ui/wxWidgets/HelpMap.h:47
 msgid "Basic"
 msgstr "基本"
 
@@ -3056,7 +3056,7 @@ msgid "Copy All"
 msgstr "全部复制"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:467
-#: ../../../ui/wxWidgets/helpmap.h:50
+#: ../../../ui/wxWidgets/HelpMap.h:50
 msgid "Additional"
 msgstr "附加"
 
@@ -3115,7 +3115,7 @@ msgid "Any field last changed on:"
 msgstr "所有字段最后修改时间:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:559
-#: ../../../ui/wxWidgets/helpmap.h:48
+#: ../../../ui/wxWidgets/HelpMap.h:48
 msgid "Dates and Times"
 msgstr "日期和时间"
 
@@ -3128,8 +3128,8 @@ msgstr ")"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:720
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1712
-#: ../../../ui/wxWidgets/PasswordPolicy.h:69 ../../../ui/wxWidgets/helpmap.h:41
-#: ../../../ui/wxWidgets/helpmap.h:49
+#: ../../../ui/wxWidgets/PasswordPolicy.h:69 ../../../ui/wxWidgets/HelpMap.h:41
+#: ../../../ui/wxWidgets/HelpMap.h:49
 msgid "Password Policy"
 msgstr "密码策略"
 

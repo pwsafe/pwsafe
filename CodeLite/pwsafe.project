@@ -96,7 +96,7 @@
     <File Name="../src/ui/wxWidgets/DragBarCtrl.cpp"/>
     <File Name="../src/ui/wxWidgets/MergeDlg.h"/>
     <File Name="../src/ui/wxWidgets/MergeDlg.cpp"/>
-    <File Name="../src/ui/wxWidgets/helpmap.h"/>
+    <File Name="../src/ui/wxWidgets/HelpMap.h"/>
     <File Name="../src/ui/wxWidgets/SystemTrayMenuId.h"/>
     <File Name="../src/ui/wxWidgets/PwsToolbarButtons.h"/>
     <File Name="../src/ui/wxWidgets/ExternalKeyboardButton.h"/>

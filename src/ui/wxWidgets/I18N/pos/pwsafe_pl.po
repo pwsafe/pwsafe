@@ -1880,7 +1880,7 @@ msgid "Browse"
 msgstr "Przeglądaj"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:336
-#: ../../../ui/wxWidgets/helpmap.h:38
+#: ../../../ui/wxWidgets/HelpMap.h:38
 msgid "Backups"
 msgstr "Kopie zapasowe"
 
@@ -1946,7 +1946,7 @@ msgid "Initial Tree View"
 msgstr "Wstępny widok drzewa"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:404
-#: ../../../ui/wxWidgets/helpmap.h:39
+#: ../../../ui/wxWidgets/HelpMap.h:39
 msgid "Display"
 msgstr "Widok"
 
@@ -2012,7 +2012,7 @@ msgid "Browser Command Line parameters"
 msgstr "Parametry linii poleceń przeglądarki"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:511
-#: ../../../ui/wxWidgets/helpmap.h:40
+#: ../../../ui/wxWidgets/HelpMap.h:40
 #, fuzzy
 msgid "Misc."
 msgstr "Inne"
@@ -2067,7 +2067,7 @@ msgstr "Zastosuj"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:586
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: ../../../ui/wxWidgets/helpmap.h:42
+#: ../../../ui/wxWidgets/HelpMap.h:42
 msgid "Password History"
 msgstr "Historia Haseł"
 
@@ -2120,12 +2120,12 @@ msgid "Maximum"
 msgstr "Maksimum"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:656
-#: ../../../ui/wxWidgets/helpmap.h:43
+#: ../../../ui/wxWidgets/HelpMap.h:43
 msgid "Security"
 msgstr "Bezpieczeństwo"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:675
-#: ../../../ui/wxWidgets/helpmap.h:45
+#: ../../../ui/wxWidgets/HelpMap.h:45
 msgid "Shortcuts"
 msgstr "Skróty"
 
@@ -2202,7 +2202,7 @@ msgid "If AutoType doesn't work, setting this may help."
 msgstr ""
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:765
-#: ../../../ui/wxWidgets/helpmap.h:44
+#: ../../../ui/wxWidgets/HelpMap.h:44
 msgid "System"
 msgstr "System"
 
@@ -2990,7 +2990,7 @@ msgid "Notes:"
 msgstr "Notes:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:379
-#: ../../../ui/wxWidgets/helpmap.h:47
+#: ../../../ui/wxWidgets/HelpMap.h:47
 msgid "Basic"
 msgstr "Podstawowy"
 
@@ -3034,7 +3034,7 @@ msgid "Copy All"
 msgstr "Kopiuj wszystko"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:467
-#: ../../../ui/wxWidgets/helpmap.h:50
+#: ../../../ui/wxWidgets/HelpMap.h:50
 msgid "Additional"
 msgstr "Dodatkowy"
 
@@ -3094,7 +3094,7 @@ msgid "Any field last changed on:"
 msgstr "Ostatnia zmiana w którymkolwiek z pól:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:559
-#: ../../../ui/wxWidgets/helpmap.h:48
+#: ../../../ui/wxWidgets/HelpMap.h:48
 msgid "Dates and Times"
 msgstr "Daty i czas"
 
@@ -3107,8 +3107,8 @@ msgstr ")"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:720
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1712
-#: ../../../ui/wxWidgets/PasswordPolicy.h:69 ../../../ui/wxWidgets/helpmap.h:41
-#: ../../../ui/wxWidgets/helpmap.h:49
+#: ../../../ui/wxWidgets/PasswordPolicy.h:69 ../../../ui/wxWidgets/HelpMap.h:41
+#: ../../../ui/wxWidgets/HelpMap.h:49
 msgid "Password Policy"
 msgstr "Właściwości Haseł"
 

@@ -132,7 +132,7 @@
     <ClInclude Include="CompareDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="helpmap.h">
+    <ClInclude Include="HelpMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FieldSelectionDlg.h">

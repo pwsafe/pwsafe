@@ -1898,7 +1898,7 @@ msgid "Browse"
 msgstr "Gennemse"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:336
-#: ../../../ui/wxWidgets/helpmap.h:38
+#: ../../../ui/wxWidgets/HelpMap.h:38
 msgid "Backups"
 msgstr "Sikkerheds kopier"
 
@@ -1962,7 +1962,7 @@ msgid "Initial Tree View"
 msgstr "Først Træ-visning"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:404
-#: ../../../ui/wxWidgets/helpmap.h:39
+#: ../../../ui/wxWidgets/HelpMap.h:39
 msgid "Display"
 msgstr "Vis"
 
@@ -2025,7 +2025,7 @@ msgid "Browser Command Line parameters"
 msgstr "Browser Kommando Linie parametre"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:511
-#: ../../../ui/wxWidgets/helpmap.h:40
+#: ../../../ui/wxWidgets/HelpMap.h:40
 msgid "Misc."
 msgstr "Diverse."
 
@@ -2078,7 +2078,7 @@ msgstr "Anvend"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:586
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: ../../../ui/wxWidgets/helpmap.h:42
+#: ../../../ui/wxWidgets/HelpMap.h:42
 msgid "Password History"
 msgstr "Adgangskode Historik"
 
@@ -2131,12 +2131,12 @@ msgid "Maximum"
 msgstr ""
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:656
-#: ../../../ui/wxWidgets/helpmap.h:43
+#: ../../../ui/wxWidgets/HelpMap.h:43
 msgid "Security"
 msgstr "Sikkerhed"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:675
-#: ../../../ui/wxWidgets/helpmap.h:45
+#: ../../../ui/wxWidgets/HelpMap.h:45
 msgid "Shortcuts"
 msgstr "Genveje"
 
@@ -2213,7 +2213,7 @@ msgid "If AutoType doesn't work, setting this may help."
 msgstr ""
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:765
-#: ../../../ui/wxWidgets/helpmap.h:44
+#: ../../../ui/wxWidgets/HelpMap.h:44
 msgid "System"
 msgstr "System"
 
@@ -3014,7 +3014,7 @@ msgid "Notes:"
 msgstr "Notater:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:379
-#: ../../../ui/wxWidgets/helpmap.h:47
+#: ../../../ui/wxWidgets/HelpMap.h:47
 msgid "Basic"
 msgstr "Grundlæggende"
 
@@ -3054,7 +3054,7 @@ msgid "Copy All"
 msgstr "Kopier Alt"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:467
-#: ../../../ui/wxWidgets/helpmap.h:50
+#: ../../../ui/wxWidgets/HelpMap.h:50
 msgid "Additional"
 msgstr "Ekstra"
 
@@ -3113,7 +3113,7 @@ msgid "Any field last changed on:"
 msgstr "Ethvert felt senest ændret d.:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:559
-#: ../../../ui/wxWidgets/helpmap.h:48
+#: ../../../ui/wxWidgets/HelpMap.h:48
 msgid "Dates and Times"
 msgstr "Datoer og Tider"
 
@@ -3126,8 +3126,8 @@ msgstr ")"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:720
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1712
-#: ../../../ui/wxWidgets/PasswordPolicy.h:69 ../../../ui/wxWidgets/helpmap.h:41
-#: ../../../ui/wxWidgets/helpmap.h:49
+#: ../../../ui/wxWidgets/PasswordPolicy.h:69 ../../../ui/wxWidgets/HelpMap.h:41
+#: ../../../ui/wxWidgets/HelpMap.h:49
 msgid "Password Policy"
 msgstr "Adgangskode Politik"
 
