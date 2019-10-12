@@ -24,7 +24,7 @@
 ////@end includes
 
 #include "ManagePasswordPoliciesDlg.h"
-#include "PasswordPolicy.h"
+#include "PasswordPolicyDlg.h"
 #include "pwsclip.h"
 #include "core/PWCharPool.h"
 #include "./wxutils.h"

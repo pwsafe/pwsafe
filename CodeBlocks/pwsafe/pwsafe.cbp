@@ -365,8 +365,8 @@
 		<Unit filename="../../src/ui/wxWidgets/PWSgridtable.h" />
 		<Unit filename="../../src/ui/wxWidgets/PWStree.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PWStree.h" />
-		<Unit filename="../../src/ui/wxWidgets/PasswordPolicy.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/PasswordPolicy.h" />
+		<Unit filename="../../src/ui/wxWidgets/PasswordPolicyDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/PasswordPolicyDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordSafeSearch.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordSafeSearch.h" />
 		<Unit filename="../../src/ui/wxWidgets/PwsSync.cpp" />

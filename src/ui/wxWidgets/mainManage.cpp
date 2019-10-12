@@ -29,7 +29,7 @@
 #include "OptionsPropertySheetDlg.h"
 #include "SystemTray.h"
 #include "ManagePasswordPoliciesDlg.h"
-#include "PasswordPolicy.h"
+#include "PasswordPolicyDlg.h"
 #ifndef NO_YUBI
 #include "yubicfg.h"
 #endif

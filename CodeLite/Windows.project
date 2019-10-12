@@ -57,13 +57,13 @@
   <VirtualDirectory Name="Windows">
     <File Name="../src/ui/Windows/SystemTray.h"/>
     <File Name="../src/ui/Windows/AboutDlg.cpp"/>
-    <File Name="../src/ui/Windows/OptionsPasswordPolicy.cpp"/>
+    <File Name="../src/ui/Windows/OptionsPasswordPolicyDlg.cpp"/>
     <File Name="../src/ui/Windows/CreateShortcutDlg.cpp"/>
     <File Name="../src/ui/Windows/DoxyTempl.cpp"/>
     <File Name="../src/ui/Windows/PWFontDialog.h"/>
     <File Name="../src/ui/Windows/resource3.h"/>
     <File Name="../src/ui/Windows/PWSclipboard.cpp"/>
-    <File Name="../src/ui/Windows/AddEdit_PasswordPolicy.cpp"/>
+    <File Name="../src/ui/Windows/AddEdit_PasswordPolicyDlg.cpp"/>
     <File Name="../src/ui/Windows/MainEdit.cpp"/>
     <File Name="../src/ui/Windows/RichEditCtrlExtn.h"/>
     <File Name="../src/ui/Windows/PWFileDialog.h"/>
@@ -154,7 +154,7 @@
     <File Name="../src/ui/Windows/ViewReport.cpp"/>
     <File Name="../src/ui/Windows/PWToolBar.cpp"/>
     <File Name="../src/ui/Windows/PWStatusBar.cpp"/>
-    <File Name="../src/ui/Windows/OptionsPasswordPolicy.h"/>
+    <File Name="../src/ui/Windows/OptionsPasswordPolicyDlg.h"/>
     <File Name="../src/ui/Windows/PasskeyEntry.cpp"/>
     <File Name="../src/ui/Windows/ChangeAliasPswd.cpp"/>
     <File Name="../src/ui/Windows/ColumnChooserLC.cpp"/>
@@ -189,7 +189,7 @@
     <File Name="../src/ui/Windows/MenuTipper.cpp"/>
     <File Name="../src/ui/Windows/OptionsBackup.cpp"/>
     <File Name="../src/ui/Windows/PWResizeDialog.h"/>
-    <File Name="../src/ui/Windows/AddEdit_PasswordPolicy.h"/>
+    <File Name="../src/ui/Windows/AddEdit_PasswordPolicyDlg.h"/>
     <File Name="../src/ui/Windows/SampleTextDlg.cpp"/>
     <File Name="../src/ui/Windows/MainFile.cpp"/>
     <File Name="../src/ui/Windows/DropTarget.h"/>

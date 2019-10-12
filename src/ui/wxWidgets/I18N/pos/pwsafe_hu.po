@@ -69,7 +69,7 @@ msgstr "Kérem helyezze be a Yubikey-t"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:591
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:250
 #: ../../../ui/wxWidgets/yubicfg.cpp:202
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:384
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:384
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:212
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
@@ -84,7 +84,7 @@ msgid "&Exit"
 msgstr "K&ilépés"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:206
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:381
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:381
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
@@ -96,7 +96,7 @@ msgstr "Mégse"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:210
 #: ../../../ui/wxWidgets/properties.cpp:367
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:378
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:378
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
@@ -134,8 +134,8 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:406
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:521
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:75
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:727
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:746
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:727
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:746
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:103
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:112
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:128
@@ -216,7 +216,7 @@ msgstr "&Megnyitás..."
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:453
 #: ../../../ui/wxWidgets/yubicfg.cpp:199
 #: ../../../ui/wxWidgets/passwordsubset.cpp:165
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:396
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:396
 #: ../../../ui/wxWidgets/AboutDlg.cpp:185 ../../../ui/wxWidgets/SystemTray.cpp:135
 msgid "&Close"
 msgstr "&Bezár"
@@ -1727,7 +1727,7 @@ msgid "Hide"
 msgstr "Elrejtés"
 
 #: ../../../ui/wxWidgets/yubicfg.cpp:190
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:361
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:361
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:200
 msgid "Generate"
 msgstr "Generálás"
@@ -2192,35 +2192,35 @@ msgstr "Minden másolása"
 msgid "Invalid position"
 msgstr "ellenőrzés"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:183
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:183
 msgid "Policy Name:"
 msgstr "Szabály neve:"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:197
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:197
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:576
 msgid "Use Database Policy"
 msgstr "Széfben megadott szabály használata"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:209
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:209
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:569
 msgid "Random password generation rules"
 msgstr "Véletlenszerű jelszó generálásának szabályai"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:216
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:216
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:591
 #, fuzzy
 msgid "Password length:"
 msgstr "Jelszó hossza: "
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:231
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:231
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:606
 msgid "Use lowercase letters"
 msgstr "Használjon kisbetűket"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:238
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:260
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:282
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:305
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:238
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:260
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:282
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:305
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:612
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:633
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:654
@@ -2228,79 +2228,79 @@ msgstr "Használjon kisbetűket"
 msgid "(At least "
 msgstr "(legalább "
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:253
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:253
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:627
 msgid "Use UPPERCASE letters"
 msgstr "NAGYBETŰK használata"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:275
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:275
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:648
 msgid "Use digits"
 msgstr "Számjegyek használata"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:297
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:297
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:669
 msgid "Use symbols"
 msgstr "Szimbólumok használata"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:299
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:299
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:671
 #, fuzzy
 msgid "i.e., ., %, $, etc."
 msgstr "Speciális karakterek használata (., %, $, stb.)"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:324
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:324
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:694
 msgid "Reset"
 msgstr "Visszaállítás"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:327
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:327
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:697
 #, fuzzy
 msgid "Use only easy-to-read characters"
 msgstr "Használjon kisbetűket"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:329
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:329
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:699
 msgid "i.e., no 'l', '1', etc."
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:334
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:334
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:704
 msgid "Generate pronounceable passwords"
 msgstr "Könnyen kiejthető jelszó generálása"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:340
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:340
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:710
 msgid "Or"
 msgstr "Vagy"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:345
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:345
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:715
 #, fuzzy
 msgid "Use hexadecimal digits only"
 msgstr "Csak hexadecimális számjegyek használata (0-9, a-f)"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:347
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:347
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:717
 msgid "0-9, a-f"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:367
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:367
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:214
 msgid "Copy Password to clipboard"
 msgstr "Jelszó másolása a vágólapra"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:488
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:488
 msgid "Hexadecimal is mutually exclusive to all other options."
 msgstr "A Hexadecimális kizárja az összes többi opciót."
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:492
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:492
 msgid ""
 "Hexadecimal passwords must have even length - each byte is two characters"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:497
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:497
 msgid ""
 "At least one type of character (lowercase, uppercase, digits, symbols or "
 "hexadecimal) must be chosen"
@@ -2308,39 +2308,39 @@ msgstr ""
 "Legalább az egyik fajta karaktert (kisbetű, nagybetű, számok, szimbólumok, "
 "hexadecimális) engedélyeznie kell."
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:502
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:502
 #, fuzzy
 msgid "Password must be between 4 and 1024 characters"
 msgstr "A jelszó hossza 4 és 1024 között lehet"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:510
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:510
 msgid "Password length is less than sum of 'at least' constraints"
 msgstr "A jelszó hossza kevesebb, mint a 'legalább N karakter' tételek összege"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:520
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:520
 msgid "Policy name cannot be blank"
 msgstr "A szabály neve nem lehet üres"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:525
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:525
 msgid "Policy name is already in use"
 msgstr "Ez a szabálynév már használatban van"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:530
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:530
 msgid "Default policy name is not allowed"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:536
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:536
 msgid "Policy Error"
 msgstr "Szabály hiba"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:726
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:726
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1997
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr ""
 "A \"könnyen kiejthető\" és a \"könnyen olvasható\" opciókat sajnos nem lehet "
 "egyszerre kiválasztani"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:745
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:745
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1970
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr ""
@@ -2988,7 +2988,7 @@ msgstr ")"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:720
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1712
-#: ../../../ui/wxWidgets/PasswordPolicy.h:69 ../../../ui/wxWidgets/HelpMap.h:41
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.h:69 ../../../ui/wxWidgets/HelpMap.h:41
 #: ../../../ui/wxWidgets/HelpMap.h:49
 msgid "Password Policy"
 msgstr "Jelszószabály"
