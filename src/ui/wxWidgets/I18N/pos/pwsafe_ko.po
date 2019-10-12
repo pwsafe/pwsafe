@@ -1925,7 +1925,7 @@ msgid "Browse"
 msgstr "탐색"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:336
-#: ../../../ui/wxWidgets/helpmap.h:38
+#: ../../../ui/wxWidgets/HelpMap.h:38
 msgid "Backups"
 msgstr "백업본"
 
@@ -1989,7 +1989,7 @@ msgid "Initial Tree View"
 msgstr "트리 보기 기본값"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:404
-#: ../../../ui/wxWidgets/helpmap.h:39
+#: ../../../ui/wxWidgets/HelpMap.h:39
 msgid "Display"
 msgstr "표시"
 
@@ -2052,7 +2052,7 @@ msgid "Browser Command Line parameters"
 msgstr "브라우저 명령줄 변수"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:511
-#: ../../../ui/wxWidgets/helpmap.h:40
+#: ../../../ui/wxWidgets/HelpMap.h:40
 msgid "Misc."
 msgstr "기타"
 
@@ -2105,7 +2105,7 @@ msgstr "적용"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:586
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: ../../../ui/wxWidgets/helpmap.h:42
+#: ../../../ui/wxWidgets/HelpMap.h:42
 msgid "Password History"
 msgstr "비밀번호 내역"
 
@@ -2158,12 +2158,12 @@ msgid "Maximum"
 msgstr ""
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:656
-#: ../../../ui/wxWidgets/helpmap.h:43
+#: ../../../ui/wxWidgets/HelpMap.h:43
 msgid "Security"
 msgstr "보안"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:675
-#: ../../../ui/wxWidgets/helpmap.h:45
+#: ../../../ui/wxWidgets/HelpMap.h:45
 msgid "Shortcuts"
 msgstr "바로가기"
 
@@ -2240,7 +2240,7 @@ msgid "If AutoType doesn't work, setting this may help."
 msgstr ""
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:765
-#: ../../../ui/wxWidgets/helpmap.h:44
+#: ../../../ui/wxWidgets/HelpMap.h:44
 msgid "System"
 msgstr "시스템"
 
@@ -3046,7 +3046,7 @@ msgid "Notes:"
 msgstr "메모(&N):"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:379
-#: ../../../ui/wxWidgets/helpmap.h:47
+#: ../../../ui/wxWidgets/HelpMap.h:47
 msgid "Basic"
 msgstr "기본"
 
@@ -3086,7 +3086,7 @@ msgid "Copy All"
 msgstr "모두 복사"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:467
-#: ../../../ui/wxWidgets/helpmap.h:50
+#: ../../../ui/wxWidgets/HelpMap.h:50
 msgid "Additional"
 msgstr "추가"
 
@@ -3145,7 +3145,7 @@ msgid "Any field last changed on:"
 msgstr "마지막으로 변경된 날짜:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:559
-#: ../../../ui/wxWidgets/helpmap.h:48
+#: ../../../ui/wxWidgets/HelpMap.h:48
 msgid "Dates and Times"
 msgstr "요일 및 시간"
 
@@ -3158,8 +3158,8 @@ msgstr ")"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:720
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1712
-#: ../../../ui/wxWidgets/PasswordPolicy.h:69 ../../../ui/wxWidgets/helpmap.h:41
-#: ../../../ui/wxWidgets/helpmap.h:49
+#: ../../../ui/wxWidgets/PasswordPolicy.h:69 ../../../ui/wxWidgets/HelpMap.h:41
+#: ../../../ui/wxWidgets/HelpMap.h:49
 msgid "Password Policy"
 msgstr "비밀번호 정책"
 

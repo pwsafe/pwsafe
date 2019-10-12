@@ -261,7 +261,7 @@
     <ClInclude Include="FieldSelectionDlg.h" />
     <ClInclude Include="FieldSelectionPanel.h" />
     <ClInclude Include="GuiInfo.h" />
-    <ClInclude Include="helpmap.h" />
+    <ClInclude Include="HelpMap.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXmlDlg.h" />
     <ClInclude Include="ManagePwdPolicies.h" />

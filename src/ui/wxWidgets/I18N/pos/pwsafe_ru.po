@@ -49,54 +49,54 @@ msgstr "Подтверждение удаления"
 msgid "Edit Shortcut"
 msgstr "Редактировать ярлык"
 
-#: src/ui/wxWidgets/helpmap.h:38 src/ui/wxWidgets/optionspropsheet.cpp:336
+#: src/ui/wxWidgets/HelpMap.h:38 src/ui/wxWidgets/optionspropsheet.cpp:336
 msgid "Backups"
 msgstr "Резервные копии"
 
 # Вкладка настроек
-#: src/ui/wxWidgets/helpmap.h:39 src/ui/wxWidgets/optionspropsheet.cpp:404
+#: src/ui/wxWidgets/HelpMap.h:39 src/ui/wxWidgets/optionspropsheet.cpp:404
 msgid "Display"
 msgstr "Вид"
 
-#: src/ui/wxWidgets/helpmap.h:40 src/ui/wxWidgets/optionspropsheet.cpp:511
+#: src/ui/wxWidgets/HelpMap.h:40 src/ui/wxWidgets/optionspropsheet.cpp:511
 msgid "Misc."
 msgstr "Разное"
 
-#: src/ui/wxWidgets/helpmap.h:41 src/ui/wxWidgets/helpmap.h:49
+#: src/ui/wxWidgets/HelpMap.h:41 src/ui/wxWidgets/HelpMap.h:49
 #: src/ui/wxWidgets/PasswordPolicy.h:69
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:720
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1712 src/core/core_st.cpp:139
 msgid "Password Policy"
 msgstr "Политика создания паролей"
 
-#: src/ui/wxWidgets/helpmap.h:42 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:428
+#: src/ui/wxWidgets/HelpMap.h:42 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:428
 #: src/ui/wxWidgets/optionspropsheet.cpp:586
 msgid "Password History"
 msgstr "История паролей"
 
-#: src/ui/wxWidgets/helpmap.h:43 src/ui/wxWidgets/optionspropsheet.cpp:656
+#: src/ui/wxWidgets/HelpMap.h:43 src/ui/wxWidgets/optionspropsheet.cpp:656
 msgid "Security"
 msgstr "Безопасность"
 
-#: src/ui/wxWidgets/helpmap.h:44 src/ui/wxWidgets/optionspropsheet.cpp:765
+#: src/ui/wxWidgets/HelpMap.h:44 src/ui/wxWidgets/optionspropsheet.cpp:765
 msgid "System"
 msgstr "Система"
 
-#: src/ui/wxWidgets/helpmap.h:45 src/ui/wxWidgets/optionspropsheet.cpp:675
+#: src/ui/wxWidgets/HelpMap.h:45 src/ui/wxWidgets/optionspropsheet.cpp:675
 msgid "Shortcuts"
 msgstr "Комбинации клавиш"
 
-#: src/ui/wxWidgets/helpmap.h:47 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:379
+#: src/ui/wxWidgets/HelpMap.h:47 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:379
 msgid "Basic"
 msgstr "Основные"
 
 # закладка в диалоге создания/редактирования элемента
-#: src/ui/wxWidgets/helpmap.h:48 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:559
+#: src/ui/wxWidgets/HelpMap.h:48 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:559
 msgid "Dates and Times"
 msgstr "Дата и время"
 
 # закладка в диалоге создания/редактирования элемента
-#: src/ui/wxWidgets/helpmap.h:50 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:467
+#: src/ui/wxWidgets/HelpMap.h:50 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:467
 msgid "Additional"
 msgstr "Дополнительно"
 

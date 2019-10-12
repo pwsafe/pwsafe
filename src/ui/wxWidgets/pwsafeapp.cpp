@@ -850,7 +850,7 @@ PwsafeApp::StringToStringMap& PwsafeApp::GetHelpMap()
   if (!initialized) {
 #define DLG_HELP(dlgname, htmlfile) helpMap[wxSTRINGIZE_T(dlgname)] = wxSTRINGIZE_T(htmlfile);
 #define PROPSHEET_HELP(sheet, page, htmlfile) helpMap[wxString(wxSTRINGIZE_T(sheet) wxT("#")) + page] = wxSTRINGIZE_T(htmlfile);
-#include "./helpmap.h"
+#include "./HelpMap.h"
 #undef DLG_HELP
 #undef PROPSHEET_HELP
     initialized = true;
