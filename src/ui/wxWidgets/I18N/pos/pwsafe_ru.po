@@ -45,7 +45,7 @@ msgstr "Создать ярлык"
 msgid "Delete Confirmation"
 msgstr "Подтверждение удаления"
 
-#: src/ui/wxWidgets/editshortcut.h:47
+#: src/ui/wxWidgets/EditShortcutDlg.h:47
 msgid "Edit Shortcut"
 msgstr "Редактировать ярлык"
 
@@ -399,19 +399,19 @@ msgstr ""
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:315
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:145
-#: src/ui/wxWidgets/editshortcut.cpp:160
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:160
 msgid "Group:"
 msgstr "Группа:"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:322
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:152
-#: src/ui/wxWidgets/editshortcut.cpp:167
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:167
 msgid "Title:"
 msgstr "Заголовок:"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:328
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:158
-#: src/ui/wxWidgets/editshortcut.cpp:173
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:173
 msgid "Username:"
 msgstr "Имя пользователя:"
 
@@ -529,7 +529,7 @@ msgstr "Статистика"
 
 # "Создан" т.к. относится к элементу
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:535
-#: src/ui/wxWidgets/editshortcut.cpp:186
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:186
 msgid "Created on:"
 msgstr "Создан:"
 
@@ -545,7 +545,7 @@ msgid "Static text"
 msgstr "Заглушка"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:547
-#: src/ui/wxWidgets/editshortcut.cpp:198
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:198
 msgid "Last accessed on:"
 msgstr "Последнее обращение:"
 
@@ -557,7 +557,7 @@ msgid "N/A"
 msgstr "Н/Д"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:553
-#: src/ui/wxWidgets/editshortcut.cpp:204
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:204
 msgid "Any field last changed on:"
 msgstr "Изменено хотя бы одно поле:"
 
@@ -962,7 +962,7 @@ msgstr ""
 " для ярлыка на "
 
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:167
-#: src/ui/wxWidgets/editshortcut.cpp:213
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:213
 #: src/ui/wxWidgets/ManagePwdPolicies.cpp:244
 #: src/ui/wxWidgets/PasswordPolicy.cpp:378 src/ui/wxWidgets/properties.cpp:367
 #: src/ui/wxWidgets/safecombinationchange.cpp:205
@@ -972,7 +972,7 @@ msgid "&OK"
 msgstr "&OK"
 
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:170
-#: src/ui/wxWidgets/editshortcut.cpp:216
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:216
 #: src/ui/wxWidgets/ManagePwdPolicies.cpp:247
 #: src/ui/wxWidgets/PasswordPolicy.cpp:381
 #: src/ui/wxWidgets/safecombinationchange.cpp:209
@@ -982,7 +982,7 @@ msgid "&Cancel"
 msgstr "&Отмена"
 
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:173
-#: src/ui/wxWidgets/editshortcut.cpp:219
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:219
 #: src/ui/wxWidgets/ManagePwdPolicies.cpp:250
 #: src/ui/wxWidgets/PasswordPolicy.cpp:384
 #: src/ui/wxWidgets/passwordsafeframe.cpp:591
@@ -1130,28 +1130,28 @@ msgid "Unexpected result dragging"
 msgstr "Непредусмотренные результат при перетягивании"
 
 # дата в истории паролей
-#: src/ui/wxWidgets/editshortcut.cpp:117 src/ui/wxWidgets/properties.cpp:161
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:117 src/ui/wxWidgets/properties.cpp:161
 #: src/ui/wxWidgets/properties.cpp:174 src/ui/wxWidgets/properties.cpp:193
 #: src/ui/wxWidgets/properties.cpp:203 src/core/core_st.cpp:297
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: src/ui/wxWidgets/editshortcut.cpp:154
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:154
 msgid ""
 "Please specify the name and group for this shortcut\n"
 "to the base entry "
 msgstr "Укажите имя и группу для ярлыка на исходный элемент "
 
-#: src/ui/wxWidgets/editshortcut.cpp:179
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:179
 msgid "Date/Time Information"
 msgstr "Информация о дате/времени"
 
-#: src/ui/wxWidgets/editshortcut.cpp:189 src/ui/wxWidgets/editshortcut.cpp:195
-#: src/ui/wxWidgets/editshortcut.cpp:201 src/ui/wxWidgets/editshortcut.cpp:207
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:189 src/ui/wxWidgets/EditShortcutDlg.cpp:195
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:201 src/ui/wxWidgets/EditShortcutDlg.cpp:207
 msgid "DDD DD MMM YYYY HH:MM:SS XM ZZZ"
 msgstr "DDD DD MMM YYYY HH:MM:SS XM ZZZ"
 
-#: src/ui/wxWidgets/editshortcut.cpp:192
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:192
 msgid "Target last changed on:"
 msgstr "Целевой элемент изменён:"
 

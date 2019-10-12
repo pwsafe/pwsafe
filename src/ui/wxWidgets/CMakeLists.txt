@@ -18,7 +18,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/CreateShortcutDlg.h
     src/ui/wxWidgets/DeleteConfirmationDlg.h
     src/ui/wxWidgets/DragBarGenericCtrl.h
-    src/ui/wxWidgets/editshortcut.h
+    src/ui/wxWidgets/EditShortcutDlg.h
     src/ui/wxWidgets/fieldselectiondlg.h
     src/ui/wxWidgets/fieldselectionpanel.h
     src/ui/wxWidgets/wxutils.h
@@ -76,7 +76,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/CreateShortcutDlg.cpp
     src/ui/wxWidgets/DeleteConfirmationDlg.cpp
     src/ui/wxWidgets/DragBarGenericCtrl.cpp
-    src/ui/wxWidgets/editshortcut.cpp
+    src/ui/wxWidgets/EditShortcutDlg.cpp
     src/ui/wxWidgets/fieldselectiondlg.cpp
     src/ui/wxWidgets/fieldselectionpanel.cpp
     src/ui/wxWidgets/pwsmenushortcuts.cpp

@@ -253,7 +253,7 @@
     <ClInclude Include="DbSelectionPanel.h" />
     <ClInclude Include="DeleteConfirmationDlg.h" />
     <ClInclude Include="DragBarGenericCtrl.h" />
-    <ClInclude Include="editshortcut.h" />
+    <ClInclude Include="EditShortcutDlg.h" />
     <ClInclude Include="ExportTextWarningDlg.h" />
     <ClInclude Include="ExternalKeyboardButton.h" />
     <ClInclude Include="fieldselectiondlg.h" />
@@ -311,7 +311,7 @@
     <ClCompile Include="DbSelectionPanel.cpp" />
     <ClCompile Include="DeleteConfirmationDlg.cpp" />
     <ClCompile Include="DragBarGenericCtrl.cpp" />
-    <ClCompile Include="editshortcut.cpp" />
+    <ClCompile Include="EditShortcutDlg.cpp" />
     <ClCompile Include="ExportTextWarningDlg.cpp" />
     <ClCompile Include="ExternalKeyboardButton.cpp" />
     <ClCompile Include="fieldselectiondlg.cpp" />

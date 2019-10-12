@@ -75,7 +75,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:212
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
-#: ../../../ui/wxWidgets/editshortcut.cpp:219
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:219
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:250
 msgid "&Help"
 msgstr "&Help"
@@ -91,7 +91,7 @@ msgstr "Afsluiten"
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
-#: ../../../ui/wxWidgets/editshortcut.cpp:216
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:216
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:247
 #, fuzzy
 msgid "&Cancel"
@@ -103,7 +103,7 @@ msgstr "Annuleer"
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
-#: ../../../ui/wxWidgets/editshortcut.cpp:213
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:213
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:244
 #, fuzzy
 msgid "&OK"
@@ -1536,7 +1536,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/properties.cpp:174
 #: ../../../ui/wxWidgets/properties.cpp:193
 #: ../../../ui/wxWidgets/properties.cpp:203
-#: ../../../ui/wxWidgets/editshortcut.cpp:117
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:117
 msgid "Unknown"
 msgstr "Onbekend"
 
@@ -3022,20 +3022,20 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:315
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:145
-#: ../../../ui/wxWidgets/editshortcut.cpp:160
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:160
 msgid "Group:"
 msgstr "Groep"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:322
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:152
-#: ../../../ui/wxWidgets/editshortcut.cpp:167
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:167
 #, fuzzy
 msgid "Title:"
 msgstr "&Titel:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:328
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:158
-#: ../../../ui/wxWidgets/editshortcut.cpp:173
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:173
 #, fuzzy
 msgid "Username:"
 msgstr "&Gebruikersnaam:"
@@ -3162,7 +3162,7 @@ msgid "Statistics"
 msgstr "Statistieken"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:535
-#: ../../../ui/wxWidgets/editshortcut.cpp:186
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:186
 msgid "Created on:"
 msgstr "Gemaakt op:"
 
@@ -3171,12 +3171,12 @@ msgid "Password last changed on:"
 msgstr "Wachtwoord laatst gewijzigd op:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:547
-#: ../../../ui/wxWidgets/editshortcut.cpp:198
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:198
 msgid "Last accessed on:"
 msgstr "Laatst geopend op:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:553
-#: ../../../ui/wxWidgets/editshortcut.cpp:204
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:204
 msgid "Any field last changed on:"
 msgstr "Willekeurig veld laatst gewijzigd op:"
 
@@ -3648,7 +3648,7 @@ msgstr ""
 "Gegevens kunnen verloren of gewijzigd zijn.\n"
 "Toch doorgaan?"
 
-#: ../../../ui/wxWidgets/editshortcut.cpp:154
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:154
 #, fuzzy
 msgid ""
 "Please specify the name and group for this shortcut\n"
@@ -3657,18 +3657,18 @@ msgstr ""
 "Geef altublieft de naam && groep voor deze snelkoppeling naar de basis "
 "vermelding '%s':"
 
-#: ../../../ui/wxWidgets/editshortcut.cpp:179
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:179
 msgid "Date/Time Information"
 msgstr "Datum/Tijd Informatie"
 
-#: ../../../ui/wxWidgets/editshortcut.cpp:189
-#: ../../../ui/wxWidgets/editshortcut.cpp:195
-#: ../../../ui/wxWidgets/editshortcut.cpp:201
-#: ../../../ui/wxWidgets/editshortcut.cpp:207
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:189
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:195
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:201
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:207
 msgid "DDD DD MMM YYYY HH:MM:SS XM ZZZ"
 msgstr ""
 
-#: ../../../ui/wxWidgets/editshortcut.cpp:192
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:192
 msgid "Target last changed on:"
 msgstr "Doel laatst gewijzigd op:"
 
@@ -4176,7 +4176,7 @@ msgstr "Maak &Snelkoppeling"
 msgid "About Password Safe"
 msgstr "Over Password Safe"
 
-#: ../../../ui/wxWidgets/editshortcut.h:47
+#: ../../../ui/wxWidgets/EditShortcutDlg.h:47
 msgid "Edit Shortcut"
 msgstr "Bewerk Snelkoppeling"
 
