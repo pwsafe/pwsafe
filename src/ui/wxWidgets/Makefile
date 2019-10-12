@@ -192,7 +192,7 @@ SOURCES= passwordsafeframe.cpp \
 	PWStree.cpp version.cpp \
 	pwsclip.cpp mainEdit.cpp mainManage.cpp \
 	AddEditPropSheetDlg.cpp PWSgridtable.cpp \
-	optionspropsheet.cpp PasswordSafeSearch.cpp \
+	OptionsPropertySheetDlg.cpp PasswordSafeSearch.cpp \
 	DeleteConfirmationDlg.cpp EditShortcutDlg.cpp \
 	CreateShortcutDlg.cpp SystemTray.cpp \
 	GuiInfo.cpp ImportTextDlg.cpp \

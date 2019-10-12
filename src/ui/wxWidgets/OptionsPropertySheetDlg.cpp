@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file optionspropsheet.cpp
+/** \file OptionsPropertySheetDlg.cpp
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -30,7 +30,7 @@
 #include <wx/taskbar.h>
 
 #include "passwordsafeframe.h"
-#include "optionspropsheet.h"
+#include "OptionsPropertySheetDlg.h"
 #include "core/PWSprefs.h"
 #include "core/Util.h" // for datetime string
 #include "core/PWSAuxParse.h" // for DEFAULT_AUTOTYPE

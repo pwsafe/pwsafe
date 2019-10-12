@@ -69,7 +69,7 @@
 		E6ADBA3B1195709A004E2BE5 /* DeleteConfirmationDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AC11957099004E2BE5 /* DeleteConfirmationDlg.cpp */; };
 		E6ADBA3C1195709A004E2BE5 /* EditShortcutDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AE11957099004E2BE5 /* EditShortcutDlg.cpp */; };
 		E6ADBA3D1195709A004E2BE5 /* mainEdit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B011957099004E2BE5 /* mainEdit.cpp */; };
-		E6ADBA3F1195709A004E2BE5 /* optionspropsheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B211957099004E2BE5 /* optionspropsheet.cpp */; };
+		E6ADBA3F1195709A004E2BE5 /* OptionsPropertySheetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B211957099004E2BE5 /* OptionsPropertySheetDlg.cpp */; };
 		E6ADBA401195709A004E2BE5 /* passwordsafeframe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */; };
 		E6ADBA411195709A004E2BE5 /* PasswordSafeSearch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */; };
 		E6ADBA431195709A004E2BE5 /* properties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B911957099004E2BE5 /* properties.cpp */; };
@@ -546,8 +546,8 @@
 		E6ADB9AE11957099004E2BE5 /* EditShortcutDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditShortcutDlg.cpp; sourceTree = "<group>"; };
 		E6ADB9AF11957099004E2BE5 /* EditShortcutDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditShortcutDlg.h; sourceTree = "<group>"; };
 		E6ADB9B011957099004E2BE5 /* mainEdit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mainEdit.cpp; sourceTree = "<group>"; };
-		E6ADB9B211957099004E2BE5 /* optionspropsheet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = optionspropsheet.cpp; sourceTree = "<group>"; };
-		E6ADB9B311957099004E2BE5 /* optionspropsheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = optionspropsheet.h; sourceTree = "<group>"; };
+		E6ADB9B211957099004E2BE5 /* OptionsPropertySheetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionsPropertySheetDlg.cpp; sourceTree = "<group>"; };
+		E6ADB9B311957099004E2BE5 /* OptionsPropertySheetDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionsPropertySheetDlg.h; sourceTree = "<group>"; };
 		E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = passwordsafeframe.cpp; sourceTree = "<group>"; };
 		E6ADB9B511957099004E2BE5 /* passwordsafeframe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = passwordsafeframe.h; sourceTree = "<group>"; };
 		E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSafeSearch.cpp; sourceTree = "<group>"; };
@@ -1252,8 +1252,8 @@
 				E6ADB9AE11957099004E2BE5 /* EditShortcutDlg.cpp */,
 				E6ADB9AF11957099004E2BE5 /* EditShortcutDlg.h */,
 				E6ADB9B011957099004E2BE5 /* mainEdit.cpp */,
-				E6ADB9B211957099004E2BE5 /* optionspropsheet.cpp */,
-				E6ADB9B311957099004E2BE5 /* optionspropsheet.h */,
+				E6ADB9B211957099004E2BE5 /* OptionsPropertySheetDlg.cpp */,
+				E6ADB9B311957099004E2BE5 /* OptionsPropertySheetDlg.h */,
 				E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */,
 				E6ADB9B511957099004E2BE5 /* passwordsafeframe.h */,
 				E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */,
@@ -1788,7 +1788,7 @@
 				E6ADBA3B1195709A004E2BE5 /* DeleteConfirmationDlg.cpp in Sources */,
 				E6ADBA3C1195709A004E2BE5 /* EditShortcutDlg.cpp in Sources */,
 				E6ADBA3D1195709A004E2BE5 /* mainEdit.cpp in Sources */,
-				E6ADBA3F1195709A004E2BE5 /* optionspropsheet.cpp in Sources */,
+				E6ADBA3F1195709A004E2BE5 /* OptionsPropertySheetDlg.cpp in Sources */,
 				E6ADBA401195709A004E2BE5 /* passwordsafeframe.cpp in Sources */,
 				E6ADBA411195709A004E2BE5 /* PasswordSafeSearch.cpp in Sources */,
 				E6ADBA431195709A004E2BE5 /* properties.cpp in Sources */,

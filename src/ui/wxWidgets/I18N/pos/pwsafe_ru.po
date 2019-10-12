@@ -49,16 +49,16 @@ msgstr "Подтверждение удаления"
 msgid "Edit Shortcut"
 msgstr "Редактировать ярлык"
 
-#: src/ui/wxWidgets/HelpMap.h:38 src/ui/wxWidgets/optionspropsheet.cpp:336
+#: src/ui/wxWidgets/HelpMap.h:38 src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:336
 msgid "Backups"
 msgstr "Резервные копии"
 
 # Вкладка настроек
-#: src/ui/wxWidgets/HelpMap.h:39 src/ui/wxWidgets/optionspropsheet.cpp:404
+#: src/ui/wxWidgets/HelpMap.h:39 src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:404
 msgid "Display"
 msgstr "Вид"
 
-#: src/ui/wxWidgets/HelpMap.h:40 src/ui/wxWidgets/optionspropsheet.cpp:511
+#: src/ui/wxWidgets/HelpMap.h:40 src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:511
 msgid "Misc."
 msgstr "Разное"
 
@@ -70,19 +70,19 @@ msgid "Password Policy"
 msgstr "Политика создания паролей"
 
 #: src/ui/wxWidgets/HelpMap.h:42 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: src/ui/wxWidgets/optionspropsheet.cpp:586
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:586
 msgid "Password History"
 msgstr "История паролей"
 
-#: src/ui/wxWidgets/HelpMap.h:43 src/ui/wxWidgets/optionspropsheet.cpp:656
+#: src/ui/wxWidgets/HelpMap.h:43 src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:656
 msgid "Security"
 msgstr "Безопасность"
 
-#: src/ui/wxWidgets/HelpMap.h:44 src/ui/wxWidgets/optionspropsheet.cpp:765
+#: src/ui/wxWidgets/HelpMap.h:44 src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:765
 msgid "System"
 msgstr "Система"
 
-#: src/ui/wxWidgets/HelpMap.h:45 src/ui/wxWidgets/optionspropsheet.cpp:675
+#: src/ui/wxWidgets/HelpMap.h:45 src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:675
 msgid "Shortcuts"
 msgstr "Комбинации клавиш"
 
@@ -104,7 +104,7 @@ msgstr "Дополнительно"
 msgid "Manage Password Policies"
 msgstr "Управление политиками создания паролей"
 
-#: src/ui/wxWidgets/optionspropsheet.h:129
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.h:129
 #: src/ui/wxWidgets/PwsToolbarButtons.h:215
 msgid "Options"
 msgstr "Настройки"
@@ -163,7 +163,7 @@ msgid "Perform Autotype"
 msgstr "Автонабор"
 
 #: src/ui/wxWidgets/PwsToolbarButtons.h:204
-#: src/ui/wxWidgets/optionspropsheet.cpp:130 src/core/core_st.cpp:63
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:130 src/core/core_st.cpp:63
 msgid "Browse to URL"
 msgstr "Перейти по ссылке"
 
@@ -217,7 +217,7 @@ msgstr "Установка пароля для контейнера"
 msgid "YubiKey Configuration"
 msgstr "Настройки YubiKey"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:145 src/ui/wxWidgets/optionspropsheet.cpp:1287
+#: src/ui/wxWidgets/AboutDlg.cpp:145 src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:1287
 #: src/ui/wxWidgets/PasswordSafeSearch.cpp:496
 #: src/ui/wxWidgets/pwsafeapp.cpp:410
 msgid "Password Safe"
@@ -347,8 +347,8 @@ msgstr "Автонабор"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:280
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:881
-#: src/ui/wxWidgets/optionspropsheet.cpp:333
-#: src/ui/wxWidgets/optionspropsheet.cpp:499
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:333
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:499
 msgid "Browse"
 msgstr "Обзор"
 
@@ -1527,80 +1527,80 @@ msgid "Please select a valid file"
 msgstr "Укажите подходящий файл"
 
 # Встречается в отчётах при указании отсутствия элементов
-#: src/ui/wxWidgets/optionspropsheet.cpp:118
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:118
 #: src/ui/wxWidgets/properties.cpp:246 src/core/core_st.cpp:245
 msgid "None"
 msgstr "Нет"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:119
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:119
 msgid "YYYYMMMDD_HHMMSS"
 msgstr "YYYYMMMDD_HHMMSS"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:120
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:120
 msgid "Incremented Number [001-999]"
 msgstr "Автонумератор [001-999]"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:127 src/core/core_st.cpp:66
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:127 src/core/core_st.cpp:66
 msgid "Copy password to clipboard"
 msgstr "Копировать пароль в буфер обмена"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:128
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:128
 msgid "Edit/View selected entry"
 msgstr "Редактирование/просмотр выбранного элемента"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:129
-#: src/ui/wxWidgets/optionspropsheet.cpp:455 src/core/core_st.cpp:62
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:129
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:455 src/core/core_st.cpp:62
 msgid "Autotype"
 msgstr "Автонабор"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:131 src/core/core_st.cpp:65
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:131 src/core/core_st.cpp:65
 msgid "Copy notes to clipboard"
 msgstr "Копировать заметки в буфер обмена"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:132 src/core/core_st.cpp:68
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:132 src/core/core_st.cpp:68
 msgid "Copy username to clipboard"
 msgstr "Копировать имя пользователя в буфер"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:133 src/core/core_st.cpp:67
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:133 src/core/core_st.cpp:67
 msgid "Copy password to clipboard, minimize"
 msgstr "Копировать пароль в буфер и свернуть"
 
 # урезано (в настройках вып. меню для двойного клика)
-#: src/ui/wxWidgets/optionspropsheet.cpp:134 src/core/core_st.cpp:64
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:134 src/core/core_st.cpp:64
 msgid "Browse to URL + Autotype"
 msgstr "Перейти по ссылке и выполнить автонабор"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:135 src/core/core_st.cpp:69
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:135 src/core/core_st.cpp:69
 #: src/core/core_st.cpp:142
 msgid "Run Command"
 msgstr "Выполнить команду"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:136
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:136
 msgid "Send email"
 msgstr "Отправить письмо"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:249
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:249
 msgid "Save database immediately after any change"
 msgstr "Сохранять контейнер после любых изменений"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:253
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:253
 msgid "Intermediate Backups"
 msgstr "Промежуточная резервная копия"
 
 # урезано из-за ограничения длины
-#: src/ui/wxWidgets/optionspropsheet.cpp:256
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:256
 msgid "Create intermediate backups (.ibak) before saving"
 msgstr "Создавать копию (.ibak) перед сохранением"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:260
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:260
 msgid "Backup Name"
 msgstr "Имя для резервной копии"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:263
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:263
 msgid "Base:"
 msgstr "Начало:"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:266
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:266
 msgid "Database name"
 msgstr "Имя контейнера"
 
@@ -1608,259 +1608,259 @@ msgstr "Имя контейнера"
 # копий
 # и
 # Импорт из TXT (разделитель)
-#: src/ui/wxWidgets/optionspropsheet.cpp:272
-#: src/ui/wxWidgets/optionspropsheet.cpp:326
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:272
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:326
 msgid "Other:"
 msgstr "Указано:"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:282
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:282
 msgid "Suffix:"
 msgstr "Суффикс:"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:294
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:294
 msgid "Max."
 msgstr "Макс."
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:308
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:308
 msgid "Example:"
 msgstr "Пример:"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:317
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:317
 msgid "Backup directory:"
 msgstr "Каталог для резервных копий:"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:320
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:320
 msgid "Same as database's"
 msgstr "Такой же как у контейнера"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:346
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:346
 msgid "Always keep Password Safe on top"
 msgstr "Располагать Password Safe поверх всех окон"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:350
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:350
 msgid "Show Username in Tree View"
 msgstr "Показывать имя пользователя в дереве"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:354
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:354
 msgid "Show Password in Tree View"
 msgstr "Показывать пароль в дереве"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:358
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:358
 msgid "Show Password in Add && Edit"
 msgstr "Показывать пароль при добавлении и редактировании"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:362
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:362
 msgid "Show Notes in Edit"
 msgstr "Показывать заметки при редактировании"
 
 # урезано
-#: src/ui/wxWidgets/optionspropsheet.cpp:366
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:366
 msgid "Show Notes as ToolTips in Tree && List views"
 msgstr "Показывать заметки во всплывающей подсказке"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:370
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:370
 msgid "Word Wrap Notes in Add && Edit"
 msgstr "При редактировании переносить заметки по словам"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:374
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:374
 msgid "Put Groups first in Tree View"
 msgstr "Размещать группы вверху дерева"
 
 # Предупреждать за n дней до истечения пароля
-#: src/ui/wxWidgets/optionspropsheet.cpp:380
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:380
 msgid "Warn"
 msgstr "Предупр. за"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:393
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:393
 msgid "days before passwords expire"
 msgstr "дней до истечения пароля"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:397
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:397
 msgid "&Fully collapsed"
 msgstr "Полностью &свёрнуто"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:398
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:398
 msgid "&Fully expanded"
 msgstr "Полностью &развёрнуто"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:399
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:399
 msgid "&Same as when last saved"
 msgstr "Такой же, как при &последнем сохранении"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:400
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:400
 msgid "Initial Tree View"
 msgstr "Вид дерева при старте"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:414
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:414
 msgid "Confirm deletion of items"
 msgstr "Подтверждать удаление элементов"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:418
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:418
 msgid "Record last access times"
 msgstr "Время последнего доступа"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:422
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:422
 msgid "Escape key closes application"
 msgstr "Закрывать приложение по Esc"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:428
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:428
 msgid "Double-click action"
 msgstr "По двойному клику"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:449
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:449
 msgid "Shift double-click action"
 msgstr "По Shift + двойной клик"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:458
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:458
 msgid "Minimize after Autotype"
 msgstr "Свернуть после автонабора"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:464
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:464
 msgid "Default Autotype string:"
 msgstr "Строка автонабора по умолчанию:"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:471
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:471
 msgid "Default Username"
 msgstr "Имя пользователя по умолчанию"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:476
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:476
 msgid "Use"
 msgstr "Задать"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:483
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:483
 msgid "as default username"
 msgstr "как «имя по умолчанию»"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:487
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:487
 msgid "Query user to set default username"
 msgstr "Запросить у пользователя имя по умолчанию"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:491
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:491
 msgid "Alternate Browser"
 msgstr "Альтернативный браузер"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:505
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:505
 msgid "Browser Command Line parameters"
 msgstr "Параметры командной строки браузера"
 
 # Хранить n предыдущих паролей
-#: src/ui/wxWidgets/optionspropsheet.cpp:523
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:523
 msgid "Save"
 msgstr "Хранить"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:536
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:536
 msgid "previous passwords per entry"
 msgstr "предыдущих паролей для элемента"
 
 # вкладка "история паролей", урезано
-#: src/ui/wxWidgets/optionspropsheet.cpp:543
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:543
 msgid "Default password expiration (days)"
 msgstr "Срок действия пароля по умолчанию (в днях)"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:556
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:556
 msgid "Manage password history of current entries"
 msgstr "Управление историей паролей для существующих элементов"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:559
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:559
 msgid "No change"
 msgstr "Без изменений"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:563
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:563
 msgid "Stop saving previous passwords"
 msgstr "Перестать сохранять предыдущие пароли"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:567
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:567
 msgid "Start saving previous passwords"
 msgstr "Начать сохранение предыдущих паролей"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:571
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:571
 msgid "Set maximum number of passwords saved to above value"
 msgstr ""
 "Установить максимальное количество сохраняемых паролей равным указанному "
 "значению"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:575
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:575
 msgid "Clear password history for ALL entries"
 msgstr "Очистить историю паролей у ВСЕХ элементов"
 
 # урезано (галка в настройке истории)
-#: src/ui/wxWidgets/optionspropsheet.cpp:579
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:579
 msgid "Apply these changes to Protected Entries (if required)."
 msgstr "Применить и к защищённым элементам"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:583
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:583
 msgid "Apply"
 msgstr "Применить"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:596
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:596
 msgid "Clear clipboard upon minimize"
 msgstr "Очищать буфер обмена при сворачивании"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:600
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:600
 msgid "Clear clipboard upon exit"
 msgstr "Очищать буфер обмена при выходе"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:604
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:604
 msgid "Confirm copy of password to clipboard"
 msgstr "Подтверждать копирование пароля в буфер обмена"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:608
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:608
 msgid "'Browse to URL' copies password to clipboard"
 msgstr "«Перейти по ссылке» копирует пароль в буфер обмена"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:612
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:612
 msgid "Lock password database on minimize"
 msgstr "Блокировать контейнер при сворачивании"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:616
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:616
 msgid "Lock password database on workstation lock"
 msgstr "Блокировать контейнер при блокировке компьютера"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:622
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:622
 msgid "Lock password database after"
 msgstr "Блокировать контейнер после "
 
 # Ex.: "Lock password database after 5 minutes idle"
-#: src/ui/wxWidgets/optionspropsheet.cpp:635
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:635
 msgid "minutes idle"
 msgstr "минут бездействия"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:640
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:640
 msgid "Unlock Difficulty:"
 msgstr "Стойкость к перебору"
 
 # Unlock difficulty
-#: src/ui/wxWidgets/optionspropsheet.cpp:648
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:648
 msgid "Standard"
 msgstr "обычная"
 
 # Unlock difficulty
-#: src/ui/wxWidgets/optionspropsheet.cpp:653
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:653
 msgid "Maximum"
 msgstr "максимальная"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:685
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:685
 msgid "System Tray"
 msgstr "Значок в области уведомлений"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:688
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:688
 msgid "Put icon in System Tray"
 msgstr "Отображать значок в области уведомлений"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:694
-#: src/ui/wxWidgets/optionspropsheet.cpp:723
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:694
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:723
 msgid "  Remember last"
 msgstr "  Хранить последние"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:706
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:706
 msgid "used entries in System Tray menu"
 msgstr "использованных элементов в меню значка"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:709
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:709
 msgid "Start PasswordSafe at Login"
 msgstr "Запускать Password Safe при входе в систему"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:713
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:713
 msgid ""
 "There appears to be no system tray support in your current environment.\n"
 "Any related functionality may not work as expected."
@@ -1868,36 +1868,36 @@ msgstr ""
 "Похоже, текущее окружение не поддерживает работу с областью уведомлений.\n"
 "Связанные с ней функции могут работать некорректно."
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:718
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:718
 msgid "Recent PasswordSafe Databases"
 msgstr "Недавние контейнеры"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:735
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:735
 msgid "databases"
 msgstr "контейнеров"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:738
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:738
 msgid "Recent Databases on File Menu rather than as a sub-menu"
 msgstr "Отображать недавние контейнеры в меню Файл, а не в подменю"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:742
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:742
 msgid "Open database as read-only by default"
 msgstr "По умолчанию открывать контейнер только для чтения"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:746
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:746
 msgid "Allow multiple instances"
 msgstr "Разрешить одновременный запуск нескольких копий"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:751
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:751
 msgid "Use Primary Selection for clipboard"
 msgstr ""
 "Использовать «буфер текущего выделения» при копировании в буфер обмена"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:757
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:757
 msgid "Use alternate AutoType method"
 msgstr "Использовать альтернативный способ автонабора"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:759
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:759
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
 "XSendEvent can handle more control keys, but may be blocked by some applications."
@@ -1905,15 +1905,15 @@ msgstr ""
 "Если выбрано, для автонабора будет использован XTEST вместо XSendEvent.\n"
 "XSendEvent поддерживает большее количество комбинаций, но может быть заблокирован некоторыми приложениями."
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:761
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:761
 msgid "If AutoType doesn't work, setting this may help."
 msgstr "Если автонабор не работает, попробуйте установить этот флажок."
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:1235
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:1235
 msgid "Select a Browser"
 msgstr "Укажите браузер"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:1259
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:1259
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to not save password "
@@ -1921,14 +1921,14 @@ msgid ""
 msgstr ""
 "Количество элементов для которых отключено ведение истории паролей: %d"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:1264
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:1264
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to save password history "
 "was: %d"
 msgstr "Количество элементов для которых включено ведение истории паролей: %d"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:1269
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:1269
 #, c-format
 msgid ""
 "Number of entries that had their 'maximum saved passwords' changed to the "
@@ -1937,7 +1937,7 @@ msgstr ""
 "Количество элементов у которых значение «количество запоминаемых паролей» "
 "было изменено на новое: %d"
 
-#: src/ui/wxWidgets/optionspropsheet.cpp:1274
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:1274
 #, c-format
 msgid "Number of entries that had their password history removed was %d"
 msgstr "Количество элементов для которых была удалена история паролей: %d"

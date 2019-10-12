@@ -16615,14 +16615,14 @@ Action:"</string>
           <bool name="proxy-Fit to content">1</bool>
           <string name="proxy-Font">""</string>
           <string name="proxy-Foreground colour">""</string>
-          <string name="proxy-Header filename">"optionspropsheet.h"</string>
+          <string name="proxy-Header filename">"OptionsPropertySheetDlg.h"</string>
           <long name="proxy-Height">300</long>
           <string name="proxy-Help text">""</string>
           <bool name="proxy-Hidden">0</bool>
           <string name="proxy-Icon">""</string>
           <string name="proxy-Id name">"ID_OPTIONS"</string>
           <long name="proxy-Id value">10130</long>
-          <string name="proxy-Implementation filename">"optionspropsheet.cpp"</string>
+          <string name="proxy-Implementation filename">"OptionsPropertySheetDlg.cpp"</string>
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
           <string name="proxy-Title">"Options"</string>
           <string name="proxy-Tooltip text">""</string>

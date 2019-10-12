@@ -45,7 +45,7 @@
     <ClInclude Include="OpenFilePickerValidator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="optionspropsheet.h">
+    <ClInclude Include="OptionsPropertySheetDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="passwordsafeframe.h">
@@ -217,7 +217,7 @@
     <ClCompile Include="OpenFilePickerValidator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="optionspropsheet.cpp">
+    <ClCompile Include="OptionsPropertySheetDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="passwordsafeframe.cpp">
