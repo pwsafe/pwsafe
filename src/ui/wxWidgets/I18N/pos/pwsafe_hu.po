@@ -1705,12 +1705,12 @@ msgstr "&Igen"
 msgid "&No"
 msgstr "&Nem"
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:111
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:111
 msgid "Drag this image onto another window to paste the '"
 msgstr ""
 "Húzza ezt a képet egy másik ablakra a következő mező beillesztéséhez: '"
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:112
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:112
 msgid "' field."
 msgstr "' mező."
 

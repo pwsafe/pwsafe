@@ -1809,12 +1809,12 @@ msgstr "Oui"
 msgid "&No"
 msgstr "&Non"
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:111
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:111
 #, fuzzy
 msgid "Drag this image onto another window to paste the '"
 msgstr "Glissez cette image sur une autre fenêtre pour coller le champ '%s'."
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:112
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:112
 #, fuzzy
 msgid "' field."
 msgstr "Champ"

@@ -1731,11 +1731,11 @@ msgstr "&Sì"
 msgid "&No"
 msgstr "&No"
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:111
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:111
 msgid "Drag this image onto another window to paste the '"
 msgstr "Trascinare questa immagine in un'altra finestra per copiare il campo '"
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:112
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:112
 msgid "' field."
 msgstr "'."
 

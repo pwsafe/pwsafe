@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file PWSDragBar.h
+/** \file DragBarCtrl.h
  * 
  * Derives from the generic CDragBar class to provide the interfaces 
  * CDragBar uses to get the drag & drop text.  

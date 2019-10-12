@@ -33,7 +33,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/ManagePwdPolicies.h
     src/ui/wxWidgets/MergeDlg.h
     src/ui/wxWidgets/OpenFilePickerValidator.h
-    src/ui/wxWidgets/PWSDragBar.h
+    src/ui/wxWidgets/DragBarCtrl.h
     src/ui/wxWidgets/PWSgrid.h
     src/ui/wxWidgets/PWSgridtable.h
     src/ui/wxWidgets/PWStatusBar.h
@@ -94,7 +94,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/ManagePwdPolicies.cpp
     src/ui/wxWidgets/MergeDlg.cpp
     src/ui/wxWidgets/OpenFilePickerValidator.cpp
-    src/ui/wxWidgets/PWSDragBar.cpp
+    src/ui/wxWidgets/DragBarCtrl.cpp
     src/ui/wxWidgets/PWSgrid.cpp
     src/ui/wxWidgets/PWSgridtable.cpp
     src/ui/wxWidgets/PWStree.cpp

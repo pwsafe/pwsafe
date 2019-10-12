@@ -1830,12 +1830,12 @@ msgstr "&Sí"
 msgid "&No"
 msgstr "&No"
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:111
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:111
 #, fuzzy
 msgid "Drag this image onto another window to paste the '"
 msgstr "Arrastra esta imagen a otra ventana para pegar el campo '%s'."
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:112
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:112
 #, fuzzy
 msgid "' field."
 msgstr "Campo"

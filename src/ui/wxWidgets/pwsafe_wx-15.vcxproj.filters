@@ -111,7 +111,7 @@
     <ClInclude Include="DragBarGenericCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PWSDragBar.h">
+    <ClInclude Include="DragBarCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MergeDlg.h">
@@ -271,7 +271,7 @@
     <ClCompile Include="DragBarGenericCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PWSDragBar.cpp">
+    <ClCompile Include="DragBarCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MergeDlg.cpp">

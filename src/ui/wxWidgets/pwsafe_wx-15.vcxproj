@@ -273,7 +273,7 @@
     <ClInclude Include="properties.h" />
     <ClInclude Include="pwsafeapp.h" />
     <ClInclude Include="pwsclip.h" />
-    <ClInclude Include="PWSDragBar.h" />
+    <ClInclude Include="DragBarCtrl.h" />
     <ClInclude Include="PWSgrid.h" />
     <ClInclude Include="PWSgridtable.h" />
     <ClInclude Include="pwsmenushortcuts.h" />
@@ -333,7 +333,7 @@
     <ClCompile Include="properties.cpp" />
     <ClCompile Include="pwsafeapp.cpp" />
     <ClCompile Include="pwsclip.cpp" />
-    <ClCompile Include="PWSDragBar.cpp" />
+    <ClCompile Include="DragBarCtrl.cpp" />
     <ClCompile Include="PWSgrid.cpp" />
     <ClCompile Include="PWSgridtable.cpp" />
     <ClCompile Include="pwsmenushortcuts.cpp" />

@@ -1781,12 +1781,12 @@ msgstr "&Ja"
 msgid "&No"
 msgstr "&Nej"
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:111
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:111
 #, fuzzy
 msgid "Drag this image onto another window to paste the '"
 msgstr "Træk dette billede over i et andet vindue for at indsætte '"
 
-#: ../../../ui/wxWidgets/PWSDragBar.cpp:112
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:112
 #, fuzzy
 msgid "' field."
 msgstr "Felt."
