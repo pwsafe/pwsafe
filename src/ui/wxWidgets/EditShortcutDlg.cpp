@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file editshortcut.cpp
+/** \file EditShortcutDlg.cpp
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -23,7 +23,7 @@
 ////@begin includes
 ////@end includes
 
-#include "editshortcut.h"
+#include "EditShortcutDlg.h"
 #include "./wxutils.h"
 
 #ifdef __WXMSW__

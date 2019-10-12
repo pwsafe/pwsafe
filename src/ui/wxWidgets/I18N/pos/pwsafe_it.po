@@ -73,7 +73,7 @@ msgstr "Inserire la YubiKey"
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:212
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
-#: ../../../ui/wxWidgets/editshortcut.cpp:219
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:219
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:250
 msgid "&Help"
 msgstr "A&iuto"
@@ -88,7 +88,7 @@ msgstr "&Esci"
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
-#: ../../../ui/wxWidgets/editshortcut.cpp:216
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:216
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:247
 msgid "&Cancel"
 msgstr "&Annulla"
@@ -99,7 +99,7 @@ msgstr "&Annulla"
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
-#: ../../../ui/wxWidgets/editshortcut.cpp:213
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:213
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:244
 msgid "&OK"
 msgstr "&OK"
@@ -1448,7 +1448,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/properties.cpp:174
 #: ../../../ui/wxWidgets/properties.cpp:193
 #: ../../../ui/wxWidgets/properties.cpp:203
-#: ../../../ui/wxWidgets/editshortcut.cpp:117
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:117
 msgid "Unknown"
 msgstr "Sconosciuto"
 
@@ -2829,19 +2829,19 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:315
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:145
-#: ../../../ui/wxWidgets/editshortcut.cpp:160
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:160
 msgid "Group:"
 msgstr "Gruppo:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:322
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:152
-#: ../../../ui/wxWidgets/editshortcut.cpp:167
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:167
 msgid "Title:"
 msgstr "Titolo:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:328
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:158
-#: ../../../ui/wxWidgets/editshortcut.cpp:173
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:173
 msgid "Username:"
 msgstr "Nome utente:"
 
@@ -2966,7 +2966,7 @@ msgid "Statistics"
 msgstr "Statistiche"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:535
-#: ../../../ui/wxWidgets/editshortcut.cpp:186
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:186
 msgid "Created on:"
 msgstr "Data creazione voce:"
 
@@ -2975,12 +2975,12 @@ msgid "Password last changed on:"
 msgstr "Data ultima modifica password:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:547
-#: ../../../ui/wxWidgets/editshortcut.cpp:198
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:198
 msgid "Last accessed on:"
 msgstr "Data ultimo accesso:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:553
-#: ../../../ui/wxWidgets/editshortcut.cpp:204
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:204
 msgid "Any field last changed on:"
 msgstr "Data ultima modifica altri campi:"
 
@@ -3427,7 +3427,7 @@ msgstr ""
 "Alcuni dati potrebbero essere andati persi o modificati.\n"
 "Continuare ugualmente?"
 
-#: ../../../ui/wxWidgets/editshortcut.cpp:154
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:154
 msgid ""
 "Please specify the name and group for this shortcut\n"
 "to the base entry "
@@ -3435,18 +3435,18 @@ msgstr ""
 "Specificare nome e gruppo per questa scorciatoia\n"
 "alla voce base "
 
-#: ../../../ui/wxWidgets/editshortcut.cpp:179
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:179
 msgid "Date/Time Information"
 msgstr "Informazioni su Data/Ora"
 
-#: ../../../ui/wxWidgets/editshortcut.cpp:189
-#: ../../../ui/wxWidgets/editshortcut.cpp:195
-#: ../../../ui/wxWidgets/editshortcut.cpp:201
-#: ../../../ui/wxWidgets/editshortcut.cpp:207
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:189
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:195
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:201
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:207
 msgid "DDD DD MMM YYYY HH:MM:SS XM ZZZ"
 msgstr "GGG GG MMM AAAA OO:MM:SS XM ZZ"
 
-#: ../../../ui/wxWidgets/editshortcut.cpp:192
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:192
 msgid "Target last changed on:"
 msgstr "Data ultima modifica destinazione:"
 
@@ -3884,7 +3884,7 @@ msgstr "Crea Scorciatoia"
 msgid "About Password Safe"
 msgstr "Informazioni su Password Safe"
 
-#: ../../../ui/wxWidgets/editshortcut.h:47
+#: ../../../ui/wxWidgets/EditShortcutDlg.h:47
 msgid "Edit Shortcut"
 msgstr "Modifica Scorciatoia"
 

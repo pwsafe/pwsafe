@@ -69,8 +69,8 @@
     <File Name="../src/ui/wxWidgets/PWSgridtable.cpp"/>
     <File Name="../src/ui/wxWidgets/PWStree.cpp"/>
     <File Name="../src/ui/wxWidgets/DeleteConfirmationDlg.h"/>
-    <File Name="../src/ui/wxWidgets/editshortcut.h"/>
-    <File Name="../src/ui/wxWidgets/editshortcut.cpp"/>
+    <File Name="../src/ui/wxWidgets/EditShortcutDlg.h"/>
+    <File Name="../src/ui/wxWidgets/EditShortcutDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/properties.cpp"/>
     <File Name="../src/ui/wxWidgets/pwsafeapp.h"/>
     <File Name="../src/ui/wxWidgets/guiinfo.cpp"/>

@@ -75,7 +75,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:212
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
-#: ../../../ui/wxWidgets/editshortcut.cpp:219
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:219
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:250
 msgid "&Help"
 msgstr "帮助(&H)"
@@ -91,7 +91,7 @@ msgstr "退出"
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
-#: ../../../ui/wxWidgets/editshortcut.cpp:216
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:216
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:247
 #, fuzzy
 msgid "&Cancel"
@@ -103,7 +103,7 @@ msgstr "取消"
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
-#: ../../../ui/wxWidgets/editshortcut.cpp:213
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:213
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:244
 #, fuzzy
 msgid "&OK"
@@ -1495,7 +1495,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/properties.cpp:174
 #: ../../../ui/wxWidgets/properties.cpp:193
 #: ../../../ui/wxWidgets/properties.cpp:203
-#: ../../../ui/wxWidgets/editshortcut.cpp:117
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:117
 msgid "Unknown"
 msgstr "未知"
 
@@ -2956,20 +2956,20 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:315
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:145
-#: ../../../ui/wxWidgets/editshortcut.cpp:160
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:160
 msgid "Group:"
 msgstr "组:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:322
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:152
-#: ../../../ui/wxWidgets/editshortcut.cpp:167
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:167
 #, fuzzy
 msgid "Title:"
 msgstr "标题(&T):"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:328
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:158
-#: ../../../ui/wxWidgets/editshortcut.cpp:173
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:173
 #, fuzzy
 msgid "Username:"
 msgstr "用户名(&U):"
@@ -3096,7 +3096,7 @@ msgid "Statistics"
 msgstr "统计信息"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:535
-#: ../../../ui/wxWidgets/editshortcut.cpp:186
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:186
 msgid "Created on:"
 msgstr "创建时间:"
 
@@ -3105,12 +3105,12 @@ msgid "Password last changed on:"
 msgstr "密码最后更改时间:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:547
-#: ../../../ui/wxWidgets/editshortcut.cpp:198
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:198
 msgid "Last accessed on:"
 msgstr "最后访问时间:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:553
-#: ../../../ui/wxWidgets/editshortcut.cpp:204
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:204
 msgid "Any field last changed on:"
 msgstr "所有字段最后修改时间:"
 
@@ -3564,25 +3564,25 @@ msgstr ""
 "文件被破坏或被删节其中部份，数据可能已经丢失或被修改！\n"
 "仍然继续吗？"
 
-#: ../../../ui/wxWidgets/editshortcut.cpp:154
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:154
 #, fuzzy
 msgid ""
 "Please specify the name and group for this shortcut\n"
 "to the base entry "
 msgstr "请指定作为该快捷方式到基本项目“%s”的名称和组:"
 
-#: ../../../ui/wxWidgets/editshortcut.cpp:179
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:179
 msgid "Date/Time Information"
 msgstr "日期/时间信息"
 
-#: ../../../ui/wxWidgets/editshortcut.cpp:189
-#: ../../../ui/wxWidgets/editshortcut.cpp:195
-#: ../../../ui/wxWidgets/editshortcut.cpp:201
-#: ../../../ui/wxWidgets/editshortcut.cpp:207
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:189
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:195
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:201
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:207
 msgid "DDD DD MMM YYYY HH:MM:SS XM ZZZ"
 msgstr ""
 
-#: ../../../ui/wxWidgets/editshortcut.cpp:192
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:192
 msgid "Target last changed on:"
 msgstr "目标最后更改时间:"
 
@@ -4088,7 +4088,7 @@ msgstr "创建快捷方式(&S)"
 msgid "About Password Safe"
 msgstr "关于 Password Safe"
 
-#: ../../../ui/wxWidgets/editshortcut.h:47
+#: ../../../ui/wxWidgets/EditShortcutDlg.h:47
 msgid "Edit Shortcut"
 msgstr "编辑快捷方式"
 

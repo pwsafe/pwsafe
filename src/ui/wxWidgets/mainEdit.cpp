@@ -32,7 +32,7 @@
 #include "pwsclip.h"
 #include "PasswordSafeSearch.h"
 #include "DeleteConfirmationDlg.h"
-#include "editshortcut.h"
+#include "EditShortcutDlg.h"
 #include "CreateShortcutDlg.h"
 #include "wxutils.h"
 #include "guiinfo.h"
