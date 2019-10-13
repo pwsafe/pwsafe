@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file safecombinationprompt.cpp
+/** \file SafeCombinationPromptDlg.cpp
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -24,7 +24,7 @@
 #include "SafeCombinationCtrl.h"
 ////@end includes
 
-#include "safecombinationprompt.h"
+#include "SafeCombinationPromptDlg.h"
 #include "os/file.h"
 #include "./wxutils.h"
 

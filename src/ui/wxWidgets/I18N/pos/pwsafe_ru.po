@@ -205,7 +205,7 @@ msgstr "Изменить пароль для контейнера"
 msgid "Safe Combination Entry"
 msgstr "Пароль для контейнера"
 
-#: src/ui/wxWidgets/safecombinationprompt.h:51
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.h:51
 msgid "Enter Safe Combination"
 msgstr "Введите пароль для контейнера"
 
@@ -714,10 +714,10 @@ msgstr "Ошибка при создании пароля: некорректн�
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:357
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:406
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:521
-#: src/ui/wxWidgets/safecombinationprompt.cpp:282
-#: src/ui/wxWidgets/safecombinationprompt.cpp:303
-#: src/ui/wxWidgets/safecombinationprompt.cpp:309
-#: src/ui/wxWidgets/safecombinationprompt.cpp:352
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:282
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:303
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:309
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:352
 #: src/ui/wxWidgets/safecombinationsetup.cpp:246
 #: src/ui/wxWidgets/safecombinationsetup.cpp:252
 #: src/ui/wxWidgets/safecombinationsetup.cpp:280
@@ -966,7 +966,7 @@ msgstr ""
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:244
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:378 src/ui/wxWidgets/PropertiesDlg.cpp:367
 #: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:205
-#: src/ui/wxWidgets/safecombinationprompt.cpp:210
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:210
 #: src/ui/wxWidgets/safecombinationsetup.cpp:180
 msgid "&OK"
 msgstr "&OK"
@@ -976,7 +976,7 @@ msgstr "&OK"
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:247
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:381
 #: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:209
-#: src/ui/wxWidgets/safecombinationprompt.cpp:206
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:206
 #: src/ui/wxWidgets/safecombinationsetup.cpp:183
 msgid "&Cancel"
 msgstr "&Отмена"
@@ -988,7 +988,7 @@ msgstr "&Отмена"
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:591
 #: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:250
-#: src/ui/wxWidgets/safecombinationprompt.cpp:194
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:194
 #: src/ui/wxWidgets/safecombinationsetup.cpp:186
 #: src/ui/wxWidgets/yubicfg.cpp:202
 msgid "&Help"
@@ -1025,7 +1025,7 @@ msgstr "Повтор:"
 #: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:102
 #: src/ui/wxWidgets/SafeCombinationCtrl.cpp:75
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:349
-#: src/ui/wxWidgets/safecombinationprompt.cpp:302
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:302
 msgid "The combination cannot be blank."
 msgstr "Пароль не может быть пустым!"
 
@@ -1064,8 +1064,8 @@ msgstr "Пароль:"
 #: src/ui/wxWidgets/DbSelectionPanel.cpp:101
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:356
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:520
-#: src/ui/wxWidgets/safecombinationprompt.cpp:308
-#: src/ui/wxWidgets/safecombinationprompt.cpp:351
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:308
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:351
 msgid "File or path not found."
 msgstr "Файл или путь к файлу не найден."
 
@@ -1076,7 +1076,7 @@ msgstr "Указанный файл уже открыт."
 
 #: src/ui/wxWidgets/DbSelectionPanel.cpp:115
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:400
-#: src/ui/wxWidgets/safecombinationprompt.cpp:279
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:279
 msgid ""
 "Incorrect passkey, not a PasswordSafe database, or a corrupt database. "
 "(Backup database has same name as original, ending with '~')"
@@ -1175,7 +1175,7 @@ msgstr ""
 #: src/ui/wxWidgets/ExportTextWarningDlg.cpp:85
 #: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:198
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:236
-#: src/ui/wxWidgets/safecombinationprompt.cpp:186
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:186
 #: src/ui/wxWidgets/safecombinationsetup.cpp:171
 #: src/ui/wxWidgets/yubicfg.cpp:366 src/ui/wxWidgets/YubiMixin.cpp:58
 msgid "Please insert your YubiKey"
@@ -3633,24 +3633,24 @@ msgstr ""
 "Контейнеры Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat|Все файлы (*.*; "
 "*)|*.*;*"
 
-#: src/ui/wxWidgets/safecombinationprompt.cpp:160
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:160
 msgid "Please enter the safe combination for this password database."
 msgstr "Введите пароль для указанного контейнера"
 
-#: src/ui/wxWidgets/safecombinationprompt.cpp:163
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:163
 msgid "filename"
 msgstr "имя файла"
 
-#: src/ui/wxWidgets/safecombinationprompt.cpp:169
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:169
 msgid "Safe combination:"
 msgstr "Пароль:"
 
-#: src/ui/wxWidgets/safecombinationprompt.cpp:199
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:199
 #: src/ui/wxWidgets/SystemTray.cpp:146
 msgid "&Exit"
 msgstr "Вы&ход"
 
-#: src/ui/wxWidgets/safecombinationprompt.cpp:276
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:276
 msgid "Three strikes - yer out!"
 msgstr "Пароль для контейнера был введён неверно три раза подряд."
 

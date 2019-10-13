@@ -25,7 +25,7 @@
 #include "wx/filename.h"
 
 #include "PasswordSafeFrame.h"
-#include "safecombinationprompt.h"
+#include "SafeCombinationPromptDlg.h"
 #include "OptionsPropertySheetDlg.h"
 #include "SystemTray.h"
 #include "ManagePasswordPoliciesDlg.h"

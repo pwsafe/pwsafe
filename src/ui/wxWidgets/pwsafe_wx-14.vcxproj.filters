@@ -84,7 +84,7 @@
     <ClInclude Include="SafeCombinationEntryDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="safecombinationprompt.h">
+    <ClInclude Include="SafeCombinationPromptDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="safecombinationsetup.h">
@@ -253,7 +253,7 @@
     <ClCompile Include="SafeCombinationEntryDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="safecombinationprompt.cpp">
+    <ClCompile Include="SafeCombinationPromptDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="safecombinationsetup.cpp">

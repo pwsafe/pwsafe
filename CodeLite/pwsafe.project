@@ -43,7 +43,7 @@
     <File Name="../src/ui/wxWidgets/PWSafeApp.cpp"/>
     <File Name="../src/ui/wxWidgets/MenuEditHandlers.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationsetup.cpp"/>
-    <File Name="../src/ui/wxWidgets/safecombinationprompt.h"/>
+    <File Name="../src/ui/wxWidgets/SafeCombinationPromptDlg.h"/>
     <File Name="../src/ui/wxWidgets/wxMessages.h"/>
     <File Name="../src/ui/wxWidgets/DeleteConfirmationDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/PropertiesDlg.h"/>
@@ -57,7 +57,7 @@
     <File Name="../src/ui/wxWidgets/AboutDlg.h"/>
     <File Name="../src/ui/wxWidgets/CreateShortcutDlg.h"/>
     <File Name="../src/ui/wxWidgets/Clipboard.cpp"/>
-    <File Name="../src/ui/wxWidgets/safecombinationprompt.cpp"/>
+    <File Name="../src/ui/wxWidgets/SafeCombinationPromptDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/CreateShortcutDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/GridCtrl.h"/>
     <File Name="../src/ui/wxWidgets/OptionsPropertySheetDlg.h"/>
