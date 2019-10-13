@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file passwordsubset.cpp
+/** \file PasswordSubsetDlg.cpp
 * 
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -25,7 +25,7 @@
 
 #include <sstream>
 #include <wx/regex.h>
-#include "passwordsubset.h"
+#include "PasswordSubsetDlg.h"
 #include "pwsclip.h"
 
 ////@begin XPM images

@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file passwordsubset.h
+/** \file PasswordSubsetDlg.h
 * 
 */
 

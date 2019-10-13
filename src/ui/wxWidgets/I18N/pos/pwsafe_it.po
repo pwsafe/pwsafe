@@ -215,7 +215,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:453
 #: ../../../ui/wxWidgets/yubicfg.cpp:199
-#: ../../../ui/wxWidgets/passwordsubset.cpp:165
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:165
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:396
 #: ../../../ui/wxWidgets/AboutDlg.cpp:185 ../../../ui/wxWidgets/SystemTray.cpp:135
 msgid "&Close"
@@ -2186,7 +2186,7 @@ msgstr ""
 msgid "Number of entries that had their password history removed was %d"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:128
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:128
 msgid ""
 "Enter positions of password characters separated by spaces, commas or semi-"
 "colons.\n"
@@ -2196,23 +2196,23 @@ msgid ""
 "password character."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:134
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:134
 #, fuzzy
 msgid "Positions:"
 msgstr "Conferma:"
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:142
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:142
 #, fuzzy
 msgid "Values:"
 msgstr "Valore"
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:158
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:158
 #, fuzzy
 msgid "Copy values"
 msgstr "Copia Note"
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:251
-#: ../../../ui/wxWidgets/passwordsubset.cpp:255
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:251
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:255
 #, fuzzy
 msgid "Invalid position"
 msgstr "&Convalida"
@@ -3802,7 +3802,7 @@ msgstr "Configurazione YubiKey"
 msgid "Options"
 msgstr "Opzioni"
 
-#: ../../../ui/wxWidgets/passwordsubset.h:45
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.h:45
 #, fuzzy
 msgid "Show a subset of the Password"
 msgstr "Mostra un sottoinsieme della Password"

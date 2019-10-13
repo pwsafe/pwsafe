@@ -21,7 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		6FF5D4A11DA14EE80032F5B6 /* passwordsubset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* passwordsubset.cpp */; };
+		6FF5D4A11DA14EE80032F5B6 /* PasswordSubsetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */; };
 		A2D181461C8FF86C0018AE03 /* media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D181451C8FF86C0018AE03 /* media.cpp */; };
 		A2FE25801C5ACEFD00210C36 /* AES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE257E1C5ACEFD00210C36 /* AES.cpp */; };
 		A2FE258D1C5ACF7500210C36 /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25811C5ACF7500210C36 /* Item.cpp */; };
@@ -239,8 +239,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6FF5D49D1DA14AB20032F5B6 /* passwordsubset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = passwordsubset.cpp; sourceTree = "<group>"; };
-		6FF5D49E1DA14AB20032F5B6 /* passwordsubset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = passwordsubset.h; sourceTree = "<group>"; };
+		6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSubsetDlg.cpp; sourceTree = "<group>"; };
+		6FF5D49E1DA14AB20032F5B6 /* PasswordSubsetDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSubsetDlg.h; sourceTree = "<group>"; };
 		A2D181451C8FF86C0018AE03 /* media.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = media.cpp; sourceTree = "<group>"; };
 		A2FE257E1C5ACEFD00210C36 /* AES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AES.cpp; sourceTree = "<group>"; };
 		A2FE257F1C5ACEFD00210C36 /* AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AES.h; sourceTree = "<group>"; };
@@ -1186,8 +1186,8 @@
 				E6C94E911FA20593008F0072 /* pwsqrcodedlg.cpp */,
 				E6C94E921FA20593008F0072 /* pwsqrcodedlg.h */,
 				E6C94E951FA2075B008F0072 /* pwsqrencode.mm */,
-				6FF5D49D1DA14AB20032F5B6 /* passwordsubset.cpp */,
-				6FF5D49E1DA14AB20032F5B6 /* passwordsubset.h */,
+				6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */,
+				6FF5D49E1DA14AB20032F5B6 /* PasswordSubsetDlg.h */,
 				E6F8DC1E1D132618007DFBEC /* mainView.cpp */,
 				E6E895981BD8C5E1009F3A8E /* TimedTaskChain.cpp */,
 				E6E895991BD8C5E1009F3A8E /* TimedTaskChain.h */,
@@ -1816,7 +1816,7 @@
 				E6B5C6451232B3D000AC8B45 /* DragBarGenericCtrl.cpp in Sources */,
 				E6B5C6461232B3D000AC8B45 /* DragBarCtrl.cpp in Sources */,
 				E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */,
-				6FF5D4A11DA14EE80032F5B6 /* passwordsubset.cpp in Sources */,
+				6FF5D4A11DA14EE80032F5B6 /* PasswordSubsetDlg.cpp in Sources */,
 				E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */,
 				E6A7ECAE12CDEAA40021D898 /* DbSelectionPanel.cpp in Sources */,
 				E6A7ECAF12CDEAA40021D898 /* PwsSync.cpp in Sources */,

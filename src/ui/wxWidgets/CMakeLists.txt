@@ -49,7 +49,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/SystemTrayMenuId.h
     src/ui/wxWidgets/safecombinationprompt.h
     src/ui/wxWidgets/TimedTaskChain.h
-    src/ui/wxWidgets/passwordsubset.h
+    src/ui/wxWidgets/PasswordSubsetDlg.h
     src/ui/wxWidgets/CryptKeyEntryDlg.h
     )
 
@@ -103,7 +103,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/SelectionCriteria.cpp
     src/ui/wxWidgets/SizeRestrictedPanel.cpp
     src/ui/wxWidgets/TimedTaskChain.cpp
-    src/ui/wxWidgets/passwordsubset.cpp
+    src/ui/wxWidgets/PasswordSubsetDlg.cpp
     src/ui/wxWidgets/CryptKeyEntryDlg.cpp
     )
 

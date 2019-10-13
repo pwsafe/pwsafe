@@ -36,7 +36,7 @@
 #include "CreateShortcutDlg.h"
 #include "wxutils.h"
 #include "GuiInfo.h"
-#include "passwordsubset.h"
+#include "PasswordSubsetDlg.h"
 #include "./pwsqrcodedlg.h"
 
 #include "../../core/PWSAuxParse.h"
