@@ -282,7 +282,7 @@
     <ClInclude Include="PwsSync.h" />
     <ClInclude Include="PwsToolbarButtons.h" />
     <ClInclude Include="TreeCtrl.h" />
-    <ClInclude Include="RecentDBList.h" />
+    <ClInclude Include="RecentDbList.h" />
     <ClInclude Include="safecombinationchange.h" />
     <ClInclude Include="SafeCombinationCtrl.h" />
     <ClInclude Include="safecombinationentry.h" />

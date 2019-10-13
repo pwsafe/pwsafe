@@ -72,7 +72,7 @@
     <ClInclude Include="TreeCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RecentDBList.h">
+    <ClInclude Include="RecentDbList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="safecombinationchange.h">
