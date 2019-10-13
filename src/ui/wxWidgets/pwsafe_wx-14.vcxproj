@@ -350,7 +350,7 @@
     <ClCompile Include="SizeRestrictedPanel.cpp" />
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="TimedTaskChain.cpp" />
-    <ClCompile Include="version.cpp" />
+    <ClCompile Include="Version.cpp" />
     <ClCompile Include="ViewReport.cpp" />
     <ClCompile Include="wxutils.cpp" />
     <ClCompile Include="yubicfg.cpp">
