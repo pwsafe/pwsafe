@@ -48,7 +48,7 @@
     <File Name="../src/ui/wxWidgets/DeleteConfirmationDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/PropertiesDlg.h"/>
     <File Name="../src/ui/wxWidgets/OptionsPropertySheetDlg.cpp"/>
-    <File Name="../src/ui/wxWidgets/PWSgridtable.h"/>
+    <File Name="../src/ui/wxWidgets/GridTable.h"/>
     <File Name="../src/ui/wxWidgets/AddEditPropSheetDlg.h"/>
     <File Name="../src/ui/wxWidgets/wxutils.h"/>
     <File Name="../src/ui/wxWidgets/version.cpp"/>
@@ -66,7 +66,7 @@
     <File Name="../src/ui/wxWidgets/PasswordSafeFrame.h"/>
     <File Name="../src/ui/wxWidgets/PWStree.h"/>
     <File Name="../src/ui/wxWidgets/AboutDlg.cpp"/>
-    <File Name="../src/ui/wxWidgets/PWSgridtable.cpp"/>
+    <File Name="../src/ui/wxWidgets/GridTable.cpp"/>
     <File Name="../src/ui/wxWidgets/PWStree.cpp"/>
     <File Name="../src/ui/wxWidgets/DeleteConfirmationDlg.h"/>
     <File Name="../src/ui/wxWidgets/EditShortcutDlg.h"/>

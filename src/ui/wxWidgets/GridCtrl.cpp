@@ -27,7 +27,7 @@
 
 #include "GridCtrl.h"
 #include "PasswordSafeFrame.h" // for DispatchDblClickAction()
-#include "./PWSgridtable.h"
+#include "./GridTable.h"
 #include "core/Command.h"
 
 #include <algorithm>

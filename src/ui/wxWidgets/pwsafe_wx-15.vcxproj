@@ -275,7 +275,7 @@
     <ClInclude Include="Clipboard.h" />
     <ClInclude Include="DragBarCtrl.h" />
     <ClInclude Include="GridCtrl.h" />
-    <ClInclude Include="PWSgridtable.h" />
+    <ClInclude Include="GridTable.h" />
     <ClInclude Include="pwsmenushortcuts.h" />
     <ClInclude Include="PwsSync.h" />
     <ClInclude Include="PwsToolbarButtons.h" />
@@ -335,7 +335,7 @@
     <ClCompile Include="Clipboard.cpp" />
     <ClCompile Include="DragBarCtrl.cpp" />
     <ClCompile Include="GridCtrl.cpp" />
-    <ClCompile Include="PWSgridtable.cpp" />
+    <ClCompile Include="GridTable.cpp" />
     <ClCompile Include="pwsmenushortcuts.cpp" />
     <ClCompile Include="PwsSync.cpp" />
     <ClCompile Include="PWStree.cpp" />

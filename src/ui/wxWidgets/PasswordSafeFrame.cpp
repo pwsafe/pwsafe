@@ -39,7 +39,7 @@
 #include "GridCtrl.h"
 #include "PWStree.h"
 #include "PWStatusBar.h"
-#include "PWSgridtable.h"
+#include "GridTable.h"
 #include "safecombinationchange.h"
 #include "safecombinationsetup.h"
 #include "safecombinationprompt.h"
