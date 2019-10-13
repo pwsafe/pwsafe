@@ -359,8 +359,8 @@
 		<Unit filename="../../src/ui/wxWidgets/OpenFilePickerValidator.h" />
 		<Unit filename="../../src/ui/wxWidgets/DragBarCtrl.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/DragBarCtrl.h" />
-		<Unit filename="../../src/ui/wxWidgets/PWSgrid.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/PWSgrid.h" />
+		<Unit filename="../../src/ui/wxWidgets/GridCtrl.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/GridCtrl.h" />
 		<Unit filename="../../src/ui/wxWidgets/PWSgridtable.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PWSgridtable.h" />
 		<Unit filename="../../src/ui/wxWidgets/PWStree.cpp" />

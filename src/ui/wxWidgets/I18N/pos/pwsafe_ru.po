@@ -1469,7 +1469,7 @@ msgstr "Значение"
 msgid "Group"
 msgstr "Группа"
 
-#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:290 src/ui/wxWidgets/PWSgrid.cpp:155
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:290 src/ui/wxWidgets/GridCtrl.cpp:155
 #: src/core/core_st.cpp:145
 msgid "Title"
 msgstr "Заголовок"
@@ -3254,7 +3254,7 @@ msgstr "Перетащите изображение на другое окно, 
 msgid "' field."
 msgstr "»."
 
-#: src/ui/wxWidgets/PWSgrid.cpp:156
+#: src/ui/wxWidgets/GridCtrl.cpp:156
 msgid "User"
 msgstr "Пользователь"
 

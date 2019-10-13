@@ -3784,7 +3784,7 @@ msgid "Group"
 msgstr "Grupp"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:290
-#: ../../../ui/wxWidgets/PWSgrid.cpp:155
+#: ../../../ui/wxWidgets/GridCtrl.cpp:155
 msgid "Title"
 msgstr "Titel"
 
@@ -3920,7 +3920,7 @@ msgstr ""
 msgid "Error parsing Run Command"
 msgstr "Fel vid körning av körkommando"
 
-#: ../../../ui/wxWidgets/PWSgrid.cpp:156
+#: ../../../ui/wxWidgets/GridCtrl.cpp:156
 #, fuzzy
 msgid "User"
 msgstr " 'Användare'"

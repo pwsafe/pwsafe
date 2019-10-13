@@ -188,7 +188,7 @@ SOURCES= PasswordSafeFrame.cpp \
 	PWSafeApp.cpp safecombinationentry.cpp \
 	safecombinationsetup.cpp safecombinationprompt.cpp \
 	safecombinationchange.cpp AboutDlg.cpp \
-	PropertiesDlg.cpp PWSgrid.cpp \
+	PropertiesDlg.cpp GridCtrl.cpp \
 	PWStree.cpp version.cpp \
 	Clipboard.cpp MenuEditHandlers.cpp MenuManageHandlers.cpp \
 	AddEditPropSheetDlg.cpp PWSgridtable.cpp \
