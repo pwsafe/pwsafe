@@ -3925,20 +3925,20 @@ msgstr "Fel vid körning av körkommando"
 msgid "User"
 msgstr " 'Användare'"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:27
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:27
 msgid "View Report"
 msgstr "Rapport"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:42
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:42
 msgid "&Save to Disk"
 msgstr "&Spara till disk"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:44
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:44
 #, fuzzy
 msgid "&Copy to Clipboard"
 msgstr "Kopiera till Urklipp"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:46
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:46
 msgid "&Finish"
 msgstr "S&täng"
 

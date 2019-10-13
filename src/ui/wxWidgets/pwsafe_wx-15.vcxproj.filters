@@ -105,7 +105,7 @@
     <ClInclude Include="wxutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ViewReport.h">
+    <ClInclude Include="ViewReportDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DragBarGenericCtrl.h">
@@ -265,7 +265,7 @@
     <ClCompile Include="Version.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ViewReport.cpp">
+    <ClCompile Include="ViewReportDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DragBarGenericCtrl.cpp">

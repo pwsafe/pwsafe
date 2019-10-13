@@ -12,7 +12,7 @@
 #include <wx/wx.h>
 #endif
 
-#include "ViewReport.h"
+#include "ViewReportDlg.h"
 #include "./wxutils.h"
 
 #include "../../core/Report.h"

@@ -3852,19 +3852,19 @@ msgstr "Błąd parsowania komendy Run"
 msgid "User"
 msgstr "Użytkownik"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:27
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:27
 msgid "View Report"
 msgstr "Pokaż raport"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:42
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:42
 msgid "&Save to Disk"
 msgstr "&Zapisz na dysku"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:44
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:44
 msgid "&Copy to Clipboard"
 msgstr "Skopiuj do s&chowka"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:46
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:46
 msgid "&Finish"
 msgstr "Zakończ"
 

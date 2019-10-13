@@ -3864,20 +3864,20 @@ msgstr "Fejl ved analyse af Kør Kommando"
 msgid "User"
 msgstr "'Bruger'"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:27
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:27
 msgid "View Report"
 msgstr "Se Rapport"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:42
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:42
 msgid "&Save to Disk"
 msgstr "&Gem på Disk"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:44
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:44
 #, fuzzy
 msgid "&Copy to Clipboard"
 msgstr "&Kopier til Klipbord"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:46
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:46
 msgid "&Finish"
 msgstr "&Afslut"
 

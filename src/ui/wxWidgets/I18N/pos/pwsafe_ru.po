@@ -3796,19 +3796,19 @@ msgstr "&Отправить письмо"
 msgid "&Delete from Recent Entry List"
 msgstr "&Удалить из списка недавних"
 
-#: src/ui/wxWidgets/ViewReport.cpp:27
+#: src/ui/wxWidgets/ViewReportDlg.cpp:27
 msgid "View Report"
 msgstr "Просмотр отчёта"
 
-#: src/ui/wxWidgets/ViewReport.cpp:42
+#: src/ui/wxWidgets/ViewReportDlg.cpp:42
 msgid "&Save to Disk"
 msgstr "&Сохранить на диск"
 
-#: src/ui/wxWidgets/ViewReport.cpp:44
+#: src/ui/wxWidgets/ViewReportDlg.cpp:44
 msgid "&Copy to Clipboard"
 msgstr "&Копировать в буфер"
 
-#: src/ui/wxWidgets/ViewReport.cpp:46
+#: src/ui/wxWidgets/ViewReportDlg.cpp:46
 msgid "&Finish"
 msgstr "&Закончить"
 

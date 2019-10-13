@@ -79,7 +79,7 @@
     <File Name="../src/ui/Windows/MFCmessages.h"/>
     <File Name="../src/ui/Windows/Properties.cpp"/>
     <File Name="../src/ui/Windows/ExtThread.cpp"/>
-    <File Name="../src/ui/Windows/ViewReport.h"/>
+    <File Name="../src/ui/Windows/ViewReportDlg.h"/>
     <File Name="../src/ui/Windows/PWSclipboard.h"/>
     <File Name="../src/ui/Windows/DDSupport.h"/>
     <File Name="../src/ui/Windows/DDStatic.cpp"/>
@@ -151,7 +151,7 @@
     <File Name="../src/ui/Windows/LVHdrCtrl.cpp"/>
     <File Name="../src/ui/Windows/ExportXMLDlg.h"/>
     <File Name="../src/ui/Windows/AddEdit_PropertySheet.cpp"/>
-    <File Name="../src/ui/Windows/ViewReport.cpp"/>
+    <File Name="../src/ui/Windows/ViewReportDlg.cpp"/>
     <File Name="../src/ui/Windows/PWToolBar.cpp"/>
     <File Name="../src/ui/Windows/PWStatusBar.cpp"/>
     <File Name="../src/ui/Windows/OptionsPasswordPolicyDlg.h"/>
