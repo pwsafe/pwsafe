@@ -2538,7 +2538,7 @@
             <string name="proxy-Field widths">""</string>
             <string name="proxy-Font">""</string>
             <string name="proxy-Foreground colour">""</string>
-            <string name="proxy-Header filename">"PWStatusBar.h"</string>
+            <string name="proxy-Header filename">"StatusBar.h"</string>
             <long name="proxy-Height">-1</long>
             <string name="proxy-Help text">""</string>
             <bool name="proxy-Hidden">0</bool>

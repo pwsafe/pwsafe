@@ -181,7 +181,7 @@
     <File Name="../src/ui/Windows/OptionsDisplay.h"/>
     <File Name="../src/ui/Windows/SMemFile.cpp"/>
     <File Name="../src/ui/Windows/LVHdrCtrl.h"/>
-    <File Name="../src/ui/Windows/PWStatusBar.h"/>
+    <File Name="../src/ui/Windows/StatusBar.h"/>
     <File Name="../src/ui/Windows/ControlExtns.cpp"/>
     <File Name="../src/ui/Windows/PupText.h"/>
     <File Name="../src/ui/Windows/AddEdit_PropertyPage.cpp"/>
