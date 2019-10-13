@@ -9,7 +9,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/HelpMap.h
     src/ui/wxWidgets/wxMessages.h
     src/ui/wxWidgets/GridShortcutsValidator.h
-    src/ui/wxWidgets/safecombinationchange.h
+    src/ui/wxWidgets/SafeCombinationChangeDlg.h
     src/ui/wxWidgets/safecombinationentry.h
     src/ui/wxWidgets/safecombinationsetup.h
     src/ui/wxWidgets/AddEditPropSheetDlg.h
@@ -80,7 +80,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/FieldSelectionDlg.cpp
     src/ui/wxWidgets/FieldSelectionPanel.cpp
     src/ui/wxWidgets/GridShortcutsValidator.cpp
-    src/ui/wxWidgets/safecombinationchange.cpp
+    src/ui/wxWidgets/SafeCombinationChangeDlg.cpp
     src/ui/wxWidgets/ExternalKeyboardButton.cpp
     src/ui/wxWidgets/PasswordPolicyDlg.cpp
     src/ui/wxWidgets/DbSelectionPanel.cpp

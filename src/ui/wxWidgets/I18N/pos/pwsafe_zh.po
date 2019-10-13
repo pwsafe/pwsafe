@@ -62,7 +62,7 @@ msgstr "保险箱密码:"
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:85
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:236
 #: ../../../ui/wxWidgets/yubicfg.cpp:366 ../../../ui/wxWidgets/YubiMixin.cpp:58
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:198
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:198
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:171
 msgid "Please insert your YubiKey"
 msgstr ""
@@ -72,7 +72,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:250
 #: ../../../ui/wxWidgets/yubicfg.cpp:202
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:384
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:212
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:219
@@ -88,7 +88,7 @@ msgstr "退出"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:206
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:381
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:209
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:216
@@ -100,7 +100,7 @@ msgstr "取消"
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:210
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:367
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:378
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:205
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:213
@@ -140,11 +140,11 @@ msgstr ""
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:103
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:112
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:128
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:272
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:276
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:280
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:296
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:302
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:272
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:276
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:280
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:296
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:246
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:252
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:280
@@ -2653,12 +2653,12 @@ msgstr "两个项目不匹配！"
 msgid "The entry cannot be blank."
 msgstr "密码不可空缺！"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:102
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:104
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:102
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:104
 msgid "Enter old safe combination (if any) and click on top Yubikey button"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:154
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:154
 #, fuzzy
 msgid ""
 "Please enter the current combination, followed by a new combination.\n"
@@ -2667,33 +2667,33 @@ msgstr ""
 "首先请输入当前保险箱旧密码，接着输入新密码，再确认输入一遍新密码，最后单击确"
 "定按钮完成更改。"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:167
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:167
 #, fuzzy
 msgid "Old safe combination:"
 msgstr "旧密码:"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:178
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:178
 #, fuzzy
 msgid "New safe combination:"
 msgstr "新密码:"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:189
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:189
 msgid "Confirmation:"
 msgstr "确认:"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:271
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:271
 msgid "The old safe combination is not correct"
 msgstr "旧密码不正确！"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:275
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:275
 msgid "Cannot verify old safe combination - file gone?"
 msgstr "不能验证旧密码，丢弃该文件吗？"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:279
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:279
 msgid "New safe combination and confirmation do not match"
 msgstr "新密码和确认密码不匹配，请重新输入确认！"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:289
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:289
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:266
 #, fuzzy
 msgid "Weak passphrase:"
@@ -2702,7 +2702,7 @@ msgstr ""
 "\n"
 " %s"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:294
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:294
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:271
 #, fuzzy
 msgid "Use it anyway?"
@@ -2710,21 +2710,21 @@ msgstr ""
 "\n"
 "总是使用它？"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:347
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:381
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:347
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:381
 #, fuzzy
 msgid "YubiKey safe combination incorrect"
 msgstr "旧密码不正确！"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:349
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:349
 msgid "Enter new safe combination (if any) and click on bottom Yubikey button"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:372
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:372
 msgid "Please confirm existing combination"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:389
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:389
 #, fuzzy
 msgid "Current safe combination incorrect"
 msgstr "旧密码不正确！"
@@ -4092,7 +4092,7 @@ msgstr "关于 Password Safe"
 msgid "Edit Shortcut"
 msgstr "编辑快捷方式"
 
-#: ../../../ui/wxWidgets/safecombinationchange.h:54
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.h:54
 msgid "Change Safe Combination"
 msgstr "更改保险箱密码"
 

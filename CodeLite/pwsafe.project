@@ -32,10 +32,10 @@
   <VirtualDirectory Name="wxWidgets">
     <File Name="../src/ui/wxWidgets/PasswordSafeFrame.cpp"/>
     <File Name="../src/ui/wxWidgets/SystemTray.h"/>
-    <File Name="../src/ui/wxWidgets/safecombinationchange.cpp"/>
+    <File Name="../src/ui/wxWidgets/SafeCombinationChangeDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationentry.h"/>
     <File Name="../src/ui/wxWidgets/PasswordSafeSearch.cpp"/>
-    <File Name="../src/ui/wxWidgets/safecombinationchange.h"/>
+    <File Name="../src/ui/wxWidgets/SafeCombinationChangeDlg.h"/>
     <File Name="../src/ui/wxWidgets/GridCtrl.cpp"/>
     <File Name="../src/ui/wxWidgets/PasswordSafeSearch.h"/>
     <File Name="../src/ui/wxWidgets/version.h"/>
