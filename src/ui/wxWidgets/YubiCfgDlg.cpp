@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file yubicfg.cpp
+/** \file YubiCfgDlg.cpp
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -27,7 +27,7 @@
 #include <sstream>
 
 #include <wx/timer.h>
-#include "yubicfg.h"
+#include "YubiCfgDlg.h"
 #include "YubiMixin.h" // for POLLING_INTERVAL
 #include "./wxUtilities.h"
 

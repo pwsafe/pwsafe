@@ -297,7 +297,7 @@
     <ClInclude Include="ViewReportDlg.h" />
     <ClInclude Include="wxMessages.h" />
     <ClInclude Include="wxUtilities.h" />
-    <ClInclude Include="yubicfg.h" />
+    <ClInclude Include="YubiCfgDlg.h" />
     <ClInclude Include="YubiMixin.h" />
   </ItemGroup>
   <ItemGroup>
@@ -353,7 +353,7 @@
     <ClCompile Include="Version.cpp" />
     <ClCompile Include="ViewReportDlg.cpp" />
     <ClCompile Include="wxUtilities.cpp" />
-    <ClCompile Include="yubicfg.cpp">
+    <ClCompile Include="YubiCfgDlg.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debugwx|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">true</ExcludedFromBuild>

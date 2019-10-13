@@ -61,7 +61,7 @@ msgstr "保险箱密码:"
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:186
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:85
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:236
-#: ../../../ui/wxWidgets/yubicfg.cpp:366 ../../../ui/wxWidgets/YubiMixin.cpp:58
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:366 ../../../ui/wxWidgets/YubiMixin.cpp:58
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:198
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:171
 msgid "Please insert your YubiKey"
@@ -70,7 +70,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:194
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:591
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:250
-#: ../../../ui/wxWidgets/yubicfg.cpp:202
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:202
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:384
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:186
@@ -221,7 +221,7 @@ msgid "&Open..."
 msgstr "打开(&O)..."
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:453
-#: ../../../ui/wxWidgets/yubicfg.cpp:199
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:199
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:165
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:396
 #: ../../../ui/wxWidgets/AboutDlg.cpp:185 ../../../ui/wxWidgets/SystemTray.cpp:135
@@ -1795,31 +1795,31 @@ msgstr "拖放该图标粘贴“%s”字段到其它窗口"
 msgid "' field."
 msgstr "字段"
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:167
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:167
 msgid "YubiKey Serial Number: "
 msgstr ""
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:173
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:173
 msgid "YubiKey Secret Key (20 Byte Hex)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:187 ../../../ui/wxWidgets/yubicfg.cpp:320
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:187 ../../../ui/wxWidgets/YubiCfgDlg.cpp:320
 #, fuzzy
 msgid "Hide"
 msgstr "隐藏(&H)"
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:190
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:190
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:361
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:200
 #, fuzzy
 msgid "Generate"
 msgstr "生成(&G)"
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:193
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:193
 msgid "Set YubiKey"
 msgstr ""
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:329
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:329
 #, fuzzy
 msgid "Show"
 msgstr "显示(&S)"
@@ -3958,7 +3958,7 @@ msgstr "密码保险箱项目"
 msgid "Delete Confirmation"
 msgstr "确认删除"
 
-#: ../../../ui/wxWidgets/yubicfg.h:50
+#: ../../../ui/wxWidgets/YubiCfgDlg.h:50
 #, fuzzy
 msgid "YubiKey Configuration"
 msgstr "配置文件:"
