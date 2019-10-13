@@ -549,7 +549,7 @@
 		E6ADB9B211957099004E2BE5 /* OptionsPropertySheetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionsPropertySheetDlg.cpp; sourceTree = "<group>"; };
 		E6ADB9B311957099004E2BE5 /* OptionsPropertySheetDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionsPropertySheetDlg.h; sourceTree = "<group>"; };
 		E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = passwordsafeframe.cpp; sourceTree = "<group>"; };
-		E6ADB9B511957099004E2BE5 /* passwordsafeframe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = passwordsafeframe.h; sourceTree = "<group>"; };
+		E6ADB9B511957099004E2BE5 /* PasswordSafeFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSafeFrame.h; sourceTree = "<group>"; };
 		E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSafeSearch.cpp; sourceTree = "<group>"; };
 		E6ADB9B711957099004E2BE5 /* PasswordSafeSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSafeSearch.h; sourceTree = "<group>"; };
 		E6ADB9B911957099004E2BE5 /* PropertiesDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PropertiesDlg.cpp; sourceTree = "<group>"; };
@@ -1255,7 +1255,7 @@
 				E6ADB9B211957099004E2BE5 /* OptionsPropertySheetDlg.cpp */,
 				E6ADB9B311957099004E2BE5 /* OptionsPropertySheetDlg.h */,
 				E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */,
-				E6ADB9B511957099004E2BE5 /* passwordsafeframe.h */,
+				E6ADB9B511957099004E2BE5 /* PasswordSafeFrame.h */,
 				E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */,
 				E6ADB9B711957099004E2BE5 /* PasswordSafeSearch.h */,
 				E6299FB91D07161E00D03FD1 /* SearchUtils.h */,

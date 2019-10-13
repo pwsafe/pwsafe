@@ -67,7 +67,7 @@ msgid "Please insert your YubiKey"
 msgstr ""
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:194
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:591
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:591
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:250
 #: ../../../ui/wxWidgets/yubicfg.cpp:202
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:384
@@ -126,7 +126,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:303
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:309
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:352
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1866
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1866
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:351
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:101
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:108
@@ -212,16 +212,16 @@ msgstr "Valda filteruppgifter:"
 msgid "Please select a valid file"
 msgstr "Vänligen, välj rapport att visa."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:451
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:451
 #, fuzzy
 msgid "&New..."
 msgstr "&Ny..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:452
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:452
 msgid "&Open..."
 msgstr "&Öppna..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:453
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:453
 #: ../../../ui/wxWidgets/yubicfg.cpp:199
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:165
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:396
@@ -229,371 +229,371 @@ msgstr "&Öppna..."
 msgid "&Close"
 msgstr "&Stäng"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:457
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:457
 #, fuzzy
 msgid "&Unlock Safe\tCtrl+I"
 msgstr "Lås upp Safen"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:460
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:460
 #, fuzzy
 msgid "&Lock Safe\tCtrl+J"
 msgstr "Lås Safen"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:474
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:474
 #, fuzzy
 msgid "&Recent Safes..."
 msgstr "&Aktuella Safer"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:481
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:481
 #, fuzzy
 msgid "Clear Recent Safe List"
 msgstr "&Rensa senaste Safe-lista"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:483
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:483
 msgid "&Save..."
 msgstr "&Spara"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:484
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:484
 msgid "Save &As..."
 msgstr "Spar&a som..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:487
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:487
 msgid "v&1.x format..."
 msgstr "v&1.x format..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:488
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:488
 msgid "v&2 format..."
 msgstr "v&2 format..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:489
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:489
 msgid "v&4 format (EXPERIMENTAL)..."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:490
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:490
 msgid "&Plain Text (tab separated)..."
 msgstr "&Ren Text (tabseparerad)..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:491
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:495
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:491
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:495
 msgid "&XML format..."
 msgstr "&XML-format..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:492
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:492
 msgid "Export &To"
 msgstr "Exportera &till"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:494
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:494
 msgid "&Plain Text..."
 msgstr "&Ren text..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:496
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:496
 #, fuzzy
 msgid "&KeePass..."
 msgstr "KeePass V1 CSV Fil..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:497
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:497
 msgid "Import &From"
 msgstr "Importera &från"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:498
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:498
 #, fuzzy
 msgid "&Merge..."
 msgstr "Slå ihop..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:499
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:499
 #, fuzzy
 msgid "&Compare..."
 msgstr "Jämför..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:500
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:500
 msgid "S&ynchronize..."
 msgstr "S&ynkronisera"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:502
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:502
 msgid "&Properties"
 msgstr "&Egenskaper"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:504
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:504
 msgid "E&xit"
 msgstr "A&vsluta"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:505
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:505
 msgid "&File"
 msgstr "&Arkiv"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:507
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:507
 #, fuzzy
 msgid "&Add Entry...\tCtrl+A"
 msgstr "Lägg till &Post..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:509
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:509
 #, fuzzy
 msgid "&View Entry...\tCtrl+Enter"
 msgstr "Redigera/&visa post..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:512
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:512
 #, fuzzy
 msgid "Edit Entry...\tCtrl+Enter"
 msgstr "Redigera/&visa post..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:514
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:514
 #, fuzzy
 msgid "&Delete Entry\tDel"
 msgstr "&Radera posten"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:515
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:515
 #, fuzzy
 msgid "Rename Entry\tF2"
 msgstr "Byt postnamnet"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:516
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:516
 #, fuzzy
 msgid "&Find Entry...\tCtrl+F"
 msgstr "Lägg till &Post..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:517
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:517
 #, fuzzy
 msgid "&Duplicate Entry\tCtrl+D"
 msgstr "&Duplicera posten"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:518
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1940
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:518
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1940
 msgid "Protect Entry"
 msgstr "Skydda post"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:520
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:520
 msgid "Add Group"
 msgstr "Lägg till grupp"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:524
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:524
 #, fuzzy
 msgid "C&lear Clipboard\tCtrl+Del"
 msgstr "R&ensa Urklipp"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:526
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:526
 #, fuzzy
 msgid "&Copy Password to Clipboard\tCtrl+C"
 msgstr "&Kopiera lösenordet till Urklipp"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:527
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:527
 #, fuzzy
 msgid "Copy &Username to Clipboard\tCtrl+U"
 msgstr "Kopiera &användarnamnet till Urklipp"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:528
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:528
 #, fuzzy
 msgid "Copy &Notes to Clipboard\tCtrl+G"
 msgstr "Kopiera &noteringar till Urklipp"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:529
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:529
 #, fuzzy
 msgid "Copy URL to Clipboard\tCtrl+Alt+L"
 msgstr "Kopiera URL till Urklipp"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:530
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:530
 #, fuzzy
 msgid "&Browse to URL\tCtrl+L"
 msgstr "&Gå till URL"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:531
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:531
 #, fuzzy
 msgid "Perform Auto&type\tCtrl+T"
 msgstr "Au&toskriv"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:532
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:532
 #, fuzzy
 msgid "Go to Base entry"
 msgstr "&Gå till basposten"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:533
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:533
 msgid "&Edit"
 msgstr "&Redigera"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:535
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:535
 msgid "Flattened &List"
 msgstr "Tabe&llvy"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:536
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:536
 msgid "Nested &Tree"
 msgstr "&Trädvy"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:538
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:538
 msgid "Toolbar &visible"
 msgstr "Synligt &verktygsfält"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:539
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:539
 msgid "&New Toolbar"
 msgstr "Moder&n verktygslist"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:540
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:540
 msgid "&Classic Toolbar"
 msgstr "&Klassisk verktygslist"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:541
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:541
 msgid "&Dragbar visible"
 msgstr "Visa &draglisten"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:543
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:543
 #: ../../../ui/wxWidgets/PwsToolbarButtons.h:212
 msgid "Expand All"
 msgstr "Expandera allt"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:544
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:544
 #: ../../../ui/wxWidgets/PwsToolbarButtons.h:213
 msgid "Collapse All"
 msgstr "Kollapsa allt"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:545
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:545
 msgid "Show &Unsaved Changes"
 msgstr "Visa &icke sparade ändringar"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:546
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:546
 msgid "Show entries with E&xpiry dates"
 msgstr "Visa poster med &utgångsdatum"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:548
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:548
 #, fuzzy
 msgid "&New/Edit Filter..."
 msgstr "&Nytt/redigera filter"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:549
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:549
 msgid "&Apply current"
 msgstr "&Använd nuvarande"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:550
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:550
 msgid "&Manage..."
 msgstr "&Hantera..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:551
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:551
 msgid "&Filters"
 msgstr "&Filter"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:553
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:553
 #, fuzzy
 msgid "Customize &Main Toolbar..."
 msgstr "An&passa verktygsraden"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:555
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:555
 msgid "&Tree/List Font"
 msgstr "&Träd-/tabellfont"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:556
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:556
 #, fuzzy
 msgid "&Add/Edit Font"
 msgstr "&Träd-/tabellfont"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:557
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:557
 msgid "&Password Font"
 msgstr "&Lösenordsfont"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:558
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:558
 #, fuzzy
 msgid "&Notes Font"
 msgstr "Noteringar"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:561
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:561
 msgid "Change &Font"
 msgstr "Ändra f&ont"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:563
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:563
 #: ../../../ui/wxWidgets/CompareDlg.cpp:162
 msgid "&Compare"
 msgstr "&Jämför"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:564
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:564
 msgid "&Find"
 msgstr "&Sök"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:565
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:565
 msgid "Import &Text"
 msgstr "Importerad &text"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:566
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:566
 msgid "Import &XML"
 msgstr "Importerad &XML"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:567
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:567
 #, fuzzy
 msgid "&Merge"
 msgstr "Slå &ihop"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:568
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:568
 msgid "&Validate"
 msgstr "&Validera"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:569
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:569
 #, fuzzy
 msgid "Reports"
 msgstr "&Rapporter"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:570
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:570
 msgid "&View"
 msgstr "&Visa"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:572
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:572
 msgid "&Change Safe Combination..."
 msgstr "&Byt Safe-nyckel..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:574
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:574
 #, fuzzy
 msgid "Make &Backup...\tCtrl+B"
 msgstr "Säkerhetskopiera"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:575
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:575
 #, fuzzy
 msgid "&Restore from Backup...\tCtrl+R"
 msgstr "Återställ från säkerhetskopia..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:577
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:577
 #, fuzzy
 msgid "&Options...\tCtrl+M"
 msgstr "&Alternativ..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:578
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:578
 #, fuzzy
 msgid "Password Policies..."
 msgstr "Lösenordspolicy"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:580
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:580
 #, fuzzy
 msgid "Generate &Password...\tCtrl+P"
 msgstr "Generera &lösenord"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:580
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:580
 msgid "Generate Password"
 msgstr "Generera lösenord"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:582
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:582
 msgid "YubiKey..."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:582
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:582
 msgid "Configure and backup YubiKeys"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:586
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:586
 msgid "&Manage"
 msgstr "Ha&ntera"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:588
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:588
 msgid "Get &Help"
 msgstr "Hämta &hjälp\tF1"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:589
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:589
 msgid "Visit Password Safe &website..."
 msgstr "Besök Password Safe's &websida..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:590
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:590
 #: ../../../ui/wxWidgets/SystemTray.cpp:144
 msgid "&About Password Safe..."
 msgstr "&Om Password Safe.."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:686
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:686
 #, fuzzy
 msgid "Select Language"
 msgstr "Byt &språk"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1026
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1026
 #, fuzzy
 msgid ""
 "Unable to create intermediate backup.  Save database elsewhere or with "
@@ -604,17 +604,17 @@ msgstr ""
 "%s. Försök antingen spara databasen med ett annat namn eller avsluta utan "
 "att spara."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1027
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1034
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1039
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1049
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2339
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1027
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1034
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1039
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1049
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2339
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:505
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:127
 msgid "Write Error"
 msgstr "Skrivfel"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1033
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1033
 #, fuzzy
 msgid ""
 "Unable to create intermediate backup.  Do you wish to save changes to your "
@@ -623,12 +623,12 @@ msgstr ""
 "%s. Försök antingen spara databasen med ett annat namn eller avsluta utan "
 "att spara."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1039
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1049
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1039
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1049
 msgid "Unable to create intermediate backup."
 msgstr "Kunde inte göra mellanlagrande säkerhetskopia."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1059
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1059
 #, fuzzy, c-format
 msgid ""
 "The original database, \"%ls\", is in pre-3.0 format. It will be unchanged.\n"
@@ -643,32 +643,32 @@ msgstr ""
 "formatet, använd \"Arkiv->Exportera till->Äldre (1.x or 2) format\" "
 "kommandon."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1061
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1465
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1061
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1465
 msgid "File version warning"
 msgstr "Varning för filversion"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1117
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1117
 #, fuzzy
 msgid "Do you wish to save this restored database as new database?"
 msgstr "Vill du spara ändringar i lösenordsdatabasen: %s?"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1118
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1118
 #, fuzzy
 msgid "Unsaved restored database"
 msgstr "i databasen"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1150
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1150
 #, fuzzy
 msgid "Do you want to save changes to the password database"
 msgstr "Vill du spara ändringar i lösenordsdatabasen: %s?"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1211
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1211
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:431
 msgid "Please Choose a Database to Open:"
 msgstr "Vänligen, välj en databas att öppna:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1258
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1258
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:60
 #, fuzzy
 msgid ""
@@ -680,16 +680,16 @@ msgstr ""
 "säkerhetskopior (*.bak)|*.bak|Password Safe mellanlagrade säkerhetskopior(*."
 "ibak)|*.ibak|Alla filer (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1278
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1278
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:108
 msgid "That file is already open."
 msgstr "Den filen är redan öppen."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1278
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1278
 msgid "Open database"
 msgstr "Öppna databas"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1464
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1464
 #, fuzzy, c-format
 msgid ""
 "The original database, '%ls', is in pre-3.0 format. The data will now be "
@@ -702,15 +702,15 @@ msgstr ""
 "versioner av PasswordSafe. För att spara data i det äldre formatet, använd "
 "\"Arkiv->Exportera till->Gamla (1.x or 2) formatet\" kommandot."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1477
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1477
 msgid "Please choose a name for the current (Untitled) database:"
 msgstr "Vänligen, välj ett namn på den nuvarande (ej namngivna) databasen:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1478
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1478
 msgid "Please choose a new name for the current database:"
 msgstr "Vänligen, välj ett nytt namn på den nuvarande databasen:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1486
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1486
 #, fuzzy
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
@@ -719,7 +719,7 @@ msgstr ""
 "Password Safe databaser (*.psafe3; *.dat)|*.psafe3; *.dat|Alla filer (*.*)|*."
 "*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1498
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1498
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -730,128 +730,128 @@ msgstr ""
 "\n"
 "Filen är för närvarande låst av %ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1499
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1499
 msgid "File lock error"
 msgstr "Fel vid filstängning"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1864
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1864
 #, fuzzy, c-format
 msgid "Unknown code: %d"
 msgstr "Okända fält"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1903
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1903
 msgid "Add &Entry"
 msgstr "Lägg till &Post"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1904
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1904
 msgid "Add &Group"
 msgstr "Lägg till &Grupp"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1905
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1905
 #, fuzzy
 msgid "&Rename Group"
 msgstr "Döp om gruppen"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1906
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1906
 msgid "&Delete Group"
 msgstr "&Radera gruppen"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1911
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1911
 #, fuzzy
 msgid "Copy &Username to Clipboard"
 msgstr "Kopiera &användarnamnet till Urklipp"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1912
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1912
 #, fuzzy
 msgid "&Copy Password to Clipboard"
 msgstr ""
 "\n"
 "Kopiera lösenordet till Urklipp"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1913
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1913
 msgid "Display subset of Password"
 msgstr "Visa delmängd av lösenordet"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1915
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1915
 msgid "Display Password as &QR code"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1917
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1917
 #, fuzzy
 msgid "Copy &Notes to Clipboard"
 msgstr "Kopiera &noteringar till Urklipp"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1918
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1918
 msgid "Copy UR&L to Clipboard"
 msgstr "Kopiera UR&L till Urklipp"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1919
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1919
 msgid "Copy email to Clipboard"
 msgstr "Kopiera e-post till Urklipp"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1920
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1920
 msgid "Copy Run Command to Clipboard"
 msgstr "Kopiera körkommandot till Urklipp"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1922
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1922
 #: ../../../ui/wxWidgets/SystemTray.cpp:203
 #, fuzzy
 msgid "&Browse to URL"
 msgstr "Gå till URL"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1923
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1923
 #: ../../../ui/wxWidgets/SystemTray.cpp:204
 msgid "Browse to URL + &Autotype"
 msgstr "Gå till URL + &Autoskriv"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1924
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1924
 msgid "Send &email"
 msgstr "Skicka &e-post"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1925
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1925
 #: ../../../ui/wxWidgets/SystemTray.cpp:211
 msgid "&Run Command"
 msgstr "&Kör kommando"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1926
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1926
 msgid "Perform Auto &Type"
 msgstr "Au&toskriv"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1929
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1929
 #, fuzzy
 msgid "&View Entry..."
 msgstr "Visa posten"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1932
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1932
 #, fuzzy
 msgid "Edit Entry..."
 msgstr "Redigera post..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1934
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1934
 #, fuzzy
 msgid "&Duplicate Entry"
 msgstr ""
 "\n"
 "Duplicera post"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1935
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1935
 msgid "Delete Entry"
 msgstr "Radera posten"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1936
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1936
 msgid "Create &Shortcut"
 msgstr "Skapa &genväg"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1937
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1937
 #, fuzzy
 msgid "&Go to Base entry"
 msgstr "&Gå till basposten"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1938
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1938
 msgid "&Edit Base entry"
 msgstr "&Redigera baspost"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2344
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2344
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:504
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:126
 #, fuzzy
@@ -861,7 +861,7 @@ msgstr ""
 "\n"
 "Kunde inte öppna filen för skrivning!"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2347
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2347
 msgid ""
 "Write operation failed!\n"
 "File may have been corrupted.\n"
@@ -871,7 +871,7 @@ msgstr ""
 "Filen kan ha skadats.\n"
 "Försök att spara någon annan stans"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2352
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2352
 #: ../../../ui/wxWidgets/wxutils.cpp:73
 #, fuzzy
 msgid "Unknown error"
@@ -880,56 +880,56 @@ msgstr ""
 "\n"
 "Okänt fel"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2370
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2370
 #, fuzzy
 msgid "Do you want to save changes to the password database: "
 msgstr "Vill du spara ändringar i lösenordsdatabasen: %s?"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2424
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2424
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:466
 msgid "Please choose a name for the new database"
 msgstr "Vänligen, ange ett namn på den nya databasen"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2433
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2433
 #, fuzzy
 msgid "psafe3 files (*.psafe3)|*.psafe3|All files(*.*; *)|*.*;*"
 msgstr "Password Safe databaser (*.psafe3)|*.psafe3|Alla filer (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2514
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2514
 #, fuzzy
 msgid "Could not re-load database: "
 msgstr "Poster som endast finns i nuvarande databas (%s):"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2515
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2515
 msgid "Error re-loading last database"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2772
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2772
 msgid "There was an error loading the database: "
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2773
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2773
 #, fuzzy
 msgid "Could not load database"
 msgstr "Välj databas"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2787
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2787
 msgid ""
 "The current database was opened in read-only mode.  You cannot import into "
 "it."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2788
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2788
 #, fuzzy
 msgid "Import text"
 msgstr "Importerad &text"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2796
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2796
 #, fuzzy
 msgid "The database:"
 msgstr "i databasen"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2797
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2797
 #, fuzzy
 msgid "has duplicate entries with the same group/title/user combination."
 msgstr ""
@@ -940,39 +940,39 @@ msgstr ""
 "har duplicerade poster med samma grupp/titel/användare-kombination. "
 "Vänligen, ordna dettta genom att validera databasen."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2798
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2798
 msgid "  Please fix by validating database."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2799
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2845
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2799
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2845
 #, fuzzy
 msgid "Import Text failed"
 msgstr "Textimport misslyckades"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2818
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2818
 msgid "Import_Text"
 msgstr "Importera_text"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2820
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3028
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2820
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3028
 #, fuzzy, c-format
 msgid "%ls file being imported: %ls"
 msgstr "%ls fil som importeras: %ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2820
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2820
 msgid "Text"
 msgstr "Text"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2835
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2840
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2835
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2840
 #: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/wxutils.cpp:61
 #: ../../../ui/wxWidgets/wxutils.cpp:66 ../../../ui/wxWidgets/wxutils.cpp:73
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:184
 msgid "File Read Error"
 msgstr "Läsfel i filen"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2836
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2836
 #: ../../../ui/wxWidgets/wxutils.cpp:60
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:183
 #, fuzzy
@@ -982,7 +982,7 @@ msgstr ""
 "\n"
 "Kunde inte öppna filen för läsning!"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2841
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2841
 #, fuzzy
 msgid "Invalid format"
 msgstr ""
@@ -990,95 +990,95 @@ msgstr ""
 "\n"
 "Felaktigt format"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2858
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2858
 #, fuzzy
 msgid "Updated "
 msgstr "Uppdaterad %d %s"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2858
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2858
 #, fuzzy
 msgid "Imported "
 msgstr "Importerad"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2859
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2864
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2878
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2859
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2864
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2878
 #, fuzzy
 msgid " entry"
 msgstr "post"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2859
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2864
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2878
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2859
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2864
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2878
 #, fuzzy
 msgid " entries"
 msgstr "poster"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2864
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2864
 #, fuzzy
 msgid "Skipped "
 msgstr ""
 "\n"
 "Överhoppat %d %s"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2871
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2871
 #, fuzzy
 msgid "with Password History errors "
 msgstr ""
 "\n"
 "med lösenordshistoriska fel %d"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2878
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2878
 #, fuzzy
 msgid "Renamed "
 msgstr "Byt namn"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2883
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2975
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3061
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2883
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2975
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3061
 msgid "Completed successfully"
 msgstr "Operationen lyckades"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2883
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2975
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3061
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2883
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2975
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3061
 msgid "Completed but ...."
 msgstr "Genomfört men ...."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2895
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2977
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3125
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3445
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2895
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2977
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3125
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3445
 #, fuzzy
 msgid "Do you wish to see a detailed report?"
 msgstr "Vill du ersätta det?"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2907
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2907
 msgid "Please Choose a KeePass Text File to Import"
 msgstr "Vänligen, välj en KeePass Text-fil att importera"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2909
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3201
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2909
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3201
 #, fuzzy
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
 msgstr ""
 "Textfiler (*.txt)|*.txt|CSV filer (*.csv)|*.csv|Allla filer (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2921
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2921
 msgid "Import_KeePassV1_CSV"
 msgstr "Importera_KeePassV1_CSV"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2923
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2923
 msgid "Import_KeePassV1_TXT"
 msgstr "Importera_KeePassV1_TXT"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2925
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2925
 #, fuzzy, c-format
 msgid "Text file being imported: %ls"
 msgstr "Text fil som importeras: %ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2942
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2942
 #: ../../../ui/wxWidgets/PwsSync.cpp:603
 #, fuzzy, c-format
 msgid ""
@@ -1090,11 +1090,11 @@ msgstr ""
 "\n"
 "Kunde inte öppna filen för läsning!"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2943
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2943
 msgid "File open error"
 msgstr "Fel vid filöppning"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2957
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2957
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -1105,32 +1105,32 @@ msgstr ""
 "\n"
 "Felaktigt format"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2958
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2958
 msgid "Import failed"
 msgstr "Importen misslyckades"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2971
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3102
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3103
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2971
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3102
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3103
 #: ../../../ui/wxWidgets/PwsSync.cpp:588 ../../../ui/wxWidgets/PwsSync.cpp:731
 #: ../../../ui/wxWidgets/PwsSync.cpp:748
 msgid "entry"
 msgstr "post"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2971
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3102
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3103
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2971
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3102
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3103
 #: ../../../ui/wxWidgets/PwsSync.cpp:588 ../../../ui/wxWidgets/PwsSync.cpp:731
 #: ../../../ui/wxWidgets/PwsSync.cpp:748
 msgid "entries"
 msgstr "poster"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2972
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2972
 #, fuzzy, c-format
 msgid "Imported %d %ls"
 msgstr "Importerat %d %ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2994
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2994
 #: ../../../ui/wxWidgets/CompareDlg.cpp:729
 #: ../../../ui/wxWidgets/PwsSync.cpp:619
 #, fuzzy, c-format
@@ -1149,12 +1149,12 @@ msgstr ""
 "har duplicerade poster med samma grupp/titel/användare-kombination. "
 "Vänligen, ordna dettta genom att validera databasen."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2995
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3043
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2995
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3043
 msgid "Import XML failed"
 msgstr "XML-import misslyckades"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3005
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3005
 #, fuzzy, c-format
 msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application "
@@ -1166,24 +1166,24 @@ msgstr ""
 "Vänligen, kopiera den från din installationsmapp eller ominstallera "
 "PasswordSafe."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3006
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3006
 #, fuzzy
 msgid "Missing XSD File - "
 msgstr "Saknas XSD-fil"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3006
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3006
 msgid " Build"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3027
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3027
 msgid "Import_XML"
 msgstr "Importera_XML"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3028
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3028
 msgid "XML"
 msgstr "XML"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3049
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3049
 #, fuzzy, c-format
 msgid ""
 "File: %ls failed validation against XML Schema:\n"
@@ -1194,7 +1194,7 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3055
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3055
 #, fuzzy, c-format
 msgid ""
 "File: %ls passed Validation but had the following errors during import:\n"
@@ -1205,25 +1205,25 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3076
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3076
 msgid "The following records were skipped:"
 msgstr "Följande registreringar hoppades över:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3078
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3078
 #, c-format
 msgid " / skipped %d"
 msgstr " / överhoppad %d"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3083
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3083
 msgid "The following records had errors in their Password History:"
 msgstr "Följande registreringar hade fel i deras lösenordshistorik:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3085
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3085
 #, c-format
 msgid " / with Password History errors %d"
 msgstr " / med Password historikfel %d"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3090
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3090
 msgid ""
 "The following records were renamed as an entry already exists in your "
 "database or in the Import file:"
@@ -1231,12 +1231,12 @@ msgstr ""
 "Följande registreringar döptes om som en post som redan finns i din databas "
 "eller i importfilen:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3092
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3092
 #, c-format
 msgid " / renamed %d"
 msgstr " / omdöpt %d"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3097
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3097
 #, fuzzy, c-format
 msgid ""
 "File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
@@ -1245,7 +1245,7 @@ msgstr ""
 "Fil: %ls importerades (validerade poster %d / importerade %d%ls%ls%ls). Se "
 "rapporten för detaljinformation."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3104
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3104
 #, fuzzy, c-format
 msgid ""
 "Validated %d %ls\n"
@@ -1256,180 +1256,180 @@ msgstr ""
 "\n"
 "Importerat %d %ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3112
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3112
 msgid "XML import not supported in this release"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3115
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3115
 #, c-format
 msgid "XML import: Unexpected return code(%d)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3148
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3152
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3148
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3152
 #, fuzzy
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*"
 msgstr ""
 "Password Safe databaser (*.psafe3; *.dat)|*.psafe3; *.dat|Alla filer (*.*)|*."
 "*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3156
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3156
 #, fuzzy
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*"
 msgstr ""
 "Password Safe databaser (*.psafe3; *.dat)|*.psafe3; *.dat|Alla filer (*.*)|*."
 "*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3167
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3167
 msgid "Please name the exported database"
 msgstr "Vänligen, namnge den exporterade databasen"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3184
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3184
 msgid "Could not figure out why PasswordSafeFrame::OnExportVx was invoked"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3194
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3194
 msgid "Export Text"
 msgstr "Exportera text"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3198
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3198
 #, fuzzy
 msgid "Export Text failed"
 msgstr "Textimport misslyckades"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3200
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3200
 msgid "Please name the plaintext file"
 msgstr "Vänligen, namnge den rena textfilen"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3211
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3211
 msgid "Advanced Text Export Options"
 msgstr "Avancerade Text exportalternativ"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3231
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3279
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3231
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3279
 #, fuzzy
 msgid "export"
 msgstr "exporterat"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3242
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3242
 msgid "Export XML"
 msgstr "Exportera XML"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3246
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3246
 #, fuzzy
 msgid "Export XML failed"
 msgstr "XML-import misslyckades"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3248
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3248
 msgid "Please name the XML file"
 msgstr "Vänligen, namnge XML-filen"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3249
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3249
 #, fuzzy
 msgid "XML files (*.xml)|*.xml|All files (*.*; *)|*.*;*"
 msgstr "XML filer (*.xml)|*.xml|Alla filer (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3260
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3260
 msgid "Advanced XML Export Options"
 msgstr "Avancerade XML exportalternativ"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3349
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3349
 #, fuzzy
 msgid "Exporting database: "
 msgstr "Sammanslående databas: %s\n"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3373
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3373
 #, fuzzy
 msgid "No entries satisfied your selection criteria and so none were exported!"
 msgstr "Inga poster motsvarade dina urvalskriteria, så ingen kan vara %s!"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3386
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3386
 msgid "Passkey incorrect"
 msgstr "Felaktigt lösenord"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3430
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3430
 msgid "Merge"
 msgstr "Slå ihop"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3431
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3431
 #, fuzzy
 msgid "Merging database: "
 msgstr "Sammanslående databas: %s\n"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3446
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3446
 #, fuzzy
 msgid "Merge Complete"
 msgstr "Jämförelsen klar"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3528
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3528
 msgid "Group copied "
 msgstr "Gruppen kopierad"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3531
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3531
 msgid "Title copied "
 msgstr "Titel kopierad"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3534
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3534
 msgid "User copied "
 msgstr "Användare kopierad"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3537
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3537
 msgid "Pswd copied "
 msgstr "Pswd kopierat"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3540
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3540
 msgid "Notes copied "
 msgstr "Noteringar kopierade"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3543
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3543
 #, fuzzy
 msgid "URL copied "
 msgstr "Användare kopierad"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3546
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3546
 msgid "Autotype copied "
 msgstr "Autoskrift kopierad"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3549
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3549
 msgid "RunCmd copied "
 msgstr "RunCmd kopierat"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3552
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3552
 #, fuzzy
 msgid "Email copied "
 msgstr "e-posten kopierad"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3555
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3555
 #, fuzzy
 msgid "Password History copied "
 msgstr "Lösenordshistorikens filter"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3558
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3558
 #, fuzzy
 msgid "Old Pswd copied "
 msgstr "Pswd kopierat"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3597
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3597
 #, fuzzy
 msgid "Select Tree/List display font"
 msgstr "Välj font för Träd/Tabell"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3614
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3614
 #, fuzzy
 msgid "Select Add/Edit display font"
 msgstr "Välj font för Träd/Tabell"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3618
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3618
 #, fuzzy
 msgid "Select Password display font"
 msgstr "Välj font för att visa lösenord"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3622
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3622
 #, fuzzy
 msgid "Select Notes display font"
 msgstr "Välj font för Träd/Tabell"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3626
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3626
 #, fuzzy
 msgid "Select Virtual Keyboard font"
 msgstr "Välj virtuell tangentbordsfont"
@@ -3998,7 +3998,7 @@ msgstr "Visa posten"
 msgid "Enter Safe Combination"
 msgstr "Uppgift om Safe-nyckel"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.h:119
+#: ../../../ui/wxWidgets/PasswordSafeFrame.h:119
 #: ../../../ui/wxWidgets/wxMessages.h:19 ../../../ui/wxWidgets/wxMessages.h:34
 #, fuzzy
 msgid "PasswordSafe"

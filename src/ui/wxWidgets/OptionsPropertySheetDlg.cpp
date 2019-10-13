@@ -29,7 +29,7 @@
 #include <wx/debug.h>
 #include <wx/taskbar.h>
 
-#include "passwordsafeframe.h"
+#include "PasswordSafeFrame.h"
 #include "OptionsPropertySheetDlg.h"
 #include "core/PWSprefs.h"
 #include "core/Util.h" // for datetime string

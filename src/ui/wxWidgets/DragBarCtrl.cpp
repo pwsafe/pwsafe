@@ -22,7 +22,7 @@
 
 ////@begin includes
 #include "DragBarCtrl.h"
-#include "passwordsafeframe.h"
+#include "PasswordSafeFrame.h"
 #include "../../os/pws_tchar.h"
 #include "../../core/PwsPlatform.h"
 #include "../../core/ItemData.h"

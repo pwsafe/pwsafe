@@ -26,7 +26,7 @@
 
 #include "AboutDlg.h"
 #include "version.h"
-#include "passwordsafeframe.h"
+#include "PasswordSafeFrame.h"
 #include "core/CheckVersion.h"
 
 #ifdef __WXMSW__

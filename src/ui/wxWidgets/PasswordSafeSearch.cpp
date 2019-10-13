@@ -24,7 +24,7 @@
 #include "wxutils.h"
 
 #include "PasswordSafeSearch.h"
-#include "passwordsafeframe.h"
+#include "PasswordSafeFrame.h"
 #include "AdvancedSelectionDlg.h"
 #include "SelectionCriteria.h"
 #include "SearchUtils.h"

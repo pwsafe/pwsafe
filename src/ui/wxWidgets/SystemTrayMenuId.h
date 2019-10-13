@@ -39,7 +39,7 @@
  *      see wx/defs.h
  *      
  *   2. The ids must not conflict with the dialogblocks generated ids
- *      defined in passwordsafeframe.h, and some of the hand-defined values
+ *      defined in PasswordSafeFrame.h, and some of the hand-defined values
  *      which follow the dialogblocks ids in the same file.  These values
  *      start from 10000 and don't have a defined upper bound as of yet
  *

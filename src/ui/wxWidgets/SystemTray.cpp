@@ -15,7 +15,7 @@
 #include "wx/wx.h"
 #endif
 
-#include "./passwordsafeframe.h"
+#include "./PasswordSafeFrame.h"
 #include "./SystemTray.h"
 #include "../../core/PWSprefs.h"
 #include "./wxutils.h"

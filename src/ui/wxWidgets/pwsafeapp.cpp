@@ -33,7 +33,7 @@
 using namespace std;
 
 #include "pwsafeapp.h"
-#include "passwordsafeframe.h"
+#include "PasswordSafeFrame.h"
 #include "version.h"
 #include "wxMessages.h"
 #include "pwsclip.h"
