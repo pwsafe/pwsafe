@@ -117,8 +117,8 @@
     <File Name="../src/ui/wxWidgets/FieldSelectionPanel.cpp"/>
     <File Name="../src/ui/wxWidgets/FieldSelectionDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/FieldSelectionDlg.h"/>
-    <File Name="../src/ui/wxWidgets/pwsmenushortcuts.h"/>
-    <File Name="../src/ui/wxWidgets/pwsmenushortcuts.cpp"/>
+    <File Name="../src/ui/wxWidgets/GridShortcutsValidator.h"/>
+    <File Name="../src/ui/wxWidgets/GridShortcutsValidator.cpp"/>
     <File Name="../src/ui/wxWidgets/PasswordPolicyDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/PasswordPolicyDlg.h"/>
     <File Name="../src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp"/>

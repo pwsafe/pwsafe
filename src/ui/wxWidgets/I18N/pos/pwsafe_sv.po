@@ -3690,22 +3690,22 @@ msgstr "Avancerade sammanslagningsalternativ"
 msgid "merge"
 msgstr "Slå ihop"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:644
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:644
 #, fuzzy
 msgid "&Reset/Remove shortcut\tDel"
 msgstr "Tag bort denna genväg"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:762
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:762
 #, fuzzy
 msgid "Shortcut # "
 msgstr "Genvägar"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:763
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:763
 #, fuzzy
 msgid "is not a valid shortcut"
 msgstr "en genvägs baspost"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:764
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:764
 #, fuzzy
 msgid "Invalid shortcut"
 msgstr "Ogiltig genväg ignorerades."

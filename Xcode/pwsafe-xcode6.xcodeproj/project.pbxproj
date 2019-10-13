@@ -37,7 +37,7 @@
 		E6112A64131D720E00AA1454 /* ExpiredList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6112A61131D720E00AA1454 /* ExpiredList.cpp */; };
 		E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */; };
 		E6299FB71D0323A300D03FD1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66D293A1D02B54600C9BCBF /* main.cpp */; };
-		E6651E9C14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */; };
+		E6651E9C14E914320057D8EC /* GridShortcutsValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6651E9A14E914320057D8EC /* GridShortcutsValidator.cpp */; };
 		E66C16A416731E2100C996B1 /* SelectionCriteria.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16A316731E2100C996B1 /* SelectionCriteria.cpp */; };
 		E66C16AB16731ECD00C996B1 /* MenuManageHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16AA16731ECD00C996B1 /* MenuManageHandlers.cpp */; };
 		E66C16B316731EFE00C996B1 /* ManagePasswordPoliciesDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66C16B116731EFE00C996B1 /* ManagePasswordPoliciesDlg.cpp */; };
@@ -270,8 +270,8 @@
 		E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MergeDlg.cpp; sourceTree = "<group>"; };
 		E61D6FA212617EFC0049FA2A /* MergeDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MergeDlg.h; sourceTree = "<group>"; };
 		E6299FB91D07161E00D03FD1 /* SearchUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchUtils.h; sourceTree = "<group>"; };
-		E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pwsmenushortcuts.cpp; sourceTree = "<group>"; };
-		E6651E9B14E914320057D8EC /* pwsmenushortcuts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwsmenushortcuts.h; sourceTree = "<group>"; };
+		E6651E9A14E914320057D8EC /* GridShortcutsValidator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GridShortcutsValidator.cpp; sourceTree = "<group>"; };
+		E6651E9B14E914320057D8EC /* GridShortcutsValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridShortcutsValidator.h; sourceTree = "<group>"; };
 		E66C16A216731E2100C996B1 /* SelectionCriteria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionCriteria.h; sourceTree = "<group>"; };
 		E66C16A316731E2100C996B1 /* SelectionCriteria.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectionCriteria.cpp; sourceTree = "<group>"; };
 		E66C16AA16731ECD00C996B1 /* MenuManageHandlers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuManageHandlers.cpp; sourceTree = "<group>"; };
@@ -1198,8 +1198,8 @@
 				E66C16AA16731ECD00C996B1 /* MenuManageHandlers.cpp */,
 				E66C16A216731E2100C996B1 /* SelectionCriteria.h */,
 				E66C16A316731E2100C996B1 /* SelectionCriteria.cpp */,
-				E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */,
-				E6651E9B14E914320057D8EC /* pwsmenushortcuts.h */,
+				E6651E9A14E914320057D8EC /* GridShortcutsValidator.cpp */,
+				E6651E9B14E914320057D8EC /* GridShortcutsValidator.h */,
 				E691FB55140D551E00925F96 /* FieldSelectionPanel.cpp */,
 				E691FB56140D551F00925F96 /* FieldSelectionPanel.h */,
 				E6D17CEA1411156D003BDBE7 /* FieldSelectionDlg.h */,
@@ -1826,7 +1826,7 @@
 				E66FB84D13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
 				E691FB5A140D551F00925F96 /* FieldSelectionPanel.cpp in Sources */,
 				E6D17CEE1411156D003BDBE7 /* FieldSelectionDlg.cpp in Sources */,
-				E6651E9C14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */,
+				E6651E9C14E914320057D8EC /* GridShortcutsValidator.cpp in Sources */,
 				E66C16A416731E2100C996B1 /* SelectionCriteria.cpp in Sources */,
 				E66C16AB16731ECD00C996B1 /* MenuManageHandlers.cpp in Sources */,
 				E6F8DC1F1D132618007DFBEC /* MenuViewHandlers.cpp in Sources */,

@@ -12,7 +12,7 @@
 #include <wx/wx.h>
 #endif
 
-#include "pwsmenushortcuts.h"
+#include "GridShortcutsValidator.h"
 
 #include "./RecentDBList.h"
 #include "./PWSafeApp.h"

@@ -3673,22 +3673,22 @@ msgstr "고급 병합 옵션"
 msgid "merge"
 msgstr "병합"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:644
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:644
 #, fuzzy
 msgid "&Reset/Remove shortcut\tDel"
 msgstr "바로가기 삭제"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:762
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:762
 #, fuzzy
 msgid "Shortcut # "
 msgstr "바로가기"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:763
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:763
 #, fuzzy
 msgid "is not a valid shortcut"
 msgstr "바로가기의 기본 항목"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:764
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:764
 #, fuzzy
 msgid "Invalid shortcut"
 msgstr "잘못된 바로가기가 무시되었습니다."

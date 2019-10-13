@@ -3630,22 +3630,22 @@ msgstr "Avancerede Flette Muligheder"
 msgid "merge"
 msgstr "Flet"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:644
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:644
 #, fuzzy
 msgid "&Reset/Remove shortcut\tDel"
 msgstr "&Fjern denne genvej\tDel"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:762
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:762
 #, fuzzy
 msgid "Shortcut # "
 msgstr "Genveje"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:763
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:763
 #, fuzzy
 msgid "is not a valid shortcut"
 msgstr "en basis post af en genvej"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:764
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:764
 #, fuzzy
 msgid "Invalid shortcut"
 msgstr "Ugyldig genvej ignoreret."

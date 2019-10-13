@@ -3477,22 +3477,22 @@ msgstr "Speciális összefűzési beállítások"
 msgid "merge"
 msgstr "összefésülve"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:644
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:644
 #, fuzzy
 msgid "&Reset/Remove shortcut\tDel"
 msgstr "Parancsikon eltávolítása"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:762
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:762
 #, fuzzy
 msgid "Shortcut # "
 msgstr "parancsikon"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:763
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:763
 #, fuzzy
 msgid "is not a valid shortcut"
 msgstr "egy parancsikon alapbejegyzése"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:764
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:764
 #, fuzzy
 msgid "Invalid shortcut"
 msgstr "Érvénytelen parancsikon figyelmen kívül hagyva."

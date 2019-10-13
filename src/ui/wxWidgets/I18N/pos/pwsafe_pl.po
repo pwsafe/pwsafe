@@ -3623,19 +3623,19 @@ msgstr "Zaawansowane opcje scalania"
 msgid "merge"
 msgstr "połącz"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:644
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:644
 msgid "&Reset/Remove shortcut\tDel"
 msgstr "Z&resetuj/Usuń skrót\tDel"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:762
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:762
 msgid "Shortcut # "
 msgstr "Nr skrutu "
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:763
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:763
 msgid "is not a valid shortcut"
 msgstr "nie jest poprawnym skrótem"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:764
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:764
 msgid "Invalid shortcut"
 msgstr "Niepoprawny skrót"
 

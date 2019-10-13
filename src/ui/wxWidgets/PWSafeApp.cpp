@@ -37,7 +37,7 @@ using namespace std;
 #include "version.h"
 #include "wxMessages.h"
 #include "Clipboard.h"
-#include "pwsmenushortcuts.h"
+#include "GridShortcutsValidator.h"
 #include "CryptKeyEntryDlg.h"
 #if defined(__X__) || defined(__WXGTK__)
 #include "Clipboard.h"

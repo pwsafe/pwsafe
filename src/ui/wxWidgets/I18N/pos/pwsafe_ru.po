@@ -3258,19 +3258,19 @@ msgstr "»."
 msgid "User"
 msgstr "Пользователь"
 
-#: src/ui/wxWidgets/pwsmenushortcuts.cpp:644
+#: src/ui/wxWidgets/GridShortcutsValidator.cpp:644
 msgid "&Reset/Remove shortcut\tDel"
 msgstr "&Удалить/сбросить комбинацию\tDel"
 
-#: src/ui/wxWidgets/pwsmenushortcuts.cpp:762
+#: src/ui/wxWidgets/GridShortcutsValidator.cpp:762
 msgid "Shortcut # "
 msgstr "Комбинация клавиш # "
 
-#: src/ui/wxWidgets/pwsmenushortcuts.cpp:763
+#: src/ui/wxWidgets/GridShortcutsValidator.cpp:763
 msgid "is not a valid shortcut"
 msgstr "не является допустимой комбинацией клавиш"
 
-#: src/ui/wxWidgets/pwsmenushortcuts.cpp:764
+#: src/ui/wxWidgets/GridShortcutsValidator.cpp:764
 msgid "Invalid shortcut"
 msgstr "Недопустимая комбинация клавиш"
 

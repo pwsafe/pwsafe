@@ -3682,22 +3682,22 @@ msgstr "Options de fusion avancées"
 msgid "merge"
 msgstr "Fusionner"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:644
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:644
 #, fuzzy
 msgid "&Reset/Remove shortcut\tDel"
 msgstr "Supprimer ce raccourci"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:762
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:762
 #, fuzzy
 msgid "Shortcut # "
 msgstr "Raccourcis"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:763
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:763
 #, fuzzy
 msgid "is not a valid shortcut"
 msgstr "entrée de base pour un raccourci"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:764
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:764
 #, fuzzy
 msgid "Invalid shortcut"
 msgstr "Raccourci invalide ignoré."

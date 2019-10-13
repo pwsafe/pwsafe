@@ -3491,19 +3491,19 @@ msgstr "Opzioni di Unione Avanzate"
 msgid "merge"
 msgstr "unione"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:644
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:644
 msgid "&Reset/Remove shortcut\tDel"
 msgstr "&Ripristinare/Rimuovere scorciatoia\tCanc"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:762
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:762
 msgid "Shortcut # "
 msgstr "La scorciatoia # "
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:763
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:763
 msgid "is not a valid shortcut"
 msgstr "non è una scorciatoia valida"
 
-#: ../../../ui/wxWidgets/pwsmenushortcuts.cpp:764
+#: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:764
 msgid "Invalid shortcut"
 msgstr "Scorciatoia non valida"
 
