@@ -133,8 +133,8 @@
     <File Name="../src/ui/wxWidgets/PasswordSubsetDlg.h"/>
     <File Name="../src/ui/wxWidgets/QRCodeDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/QRCodeDlg.h"/>
-    <File Name="../src/ui/wxWidgets/pwsqrencode.cpp"/>
-    <File Name="../src/ui/wxWidgets/pwsqrencode.h"/>
+    <File Name="../src/ui/wxWidgets/QREncode.cpp"/>
+    <File Name="../src/ui/wxWidgets/QREncode.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>

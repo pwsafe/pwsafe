@@ -6,7 +6,7 @@
 //
 //
 
-#include "pwsqrencode.h"
+#include "QREncode.h"
 
 #include <qrencode.h>
 

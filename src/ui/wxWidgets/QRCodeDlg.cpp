@@ -17,7 +17,7 @@
 
 #include <wx/statline.h>
 
-#include "./pwsqrencode.h"
+#include "./QREncode.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
