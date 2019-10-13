@@ -205,7 +205,7 @@ SOURCES= passwordsafeframe.cpp \
 	FieldSelectionPanel.cpp FieldSelectionDlg.cpp pwsmenushortcuts.cpp \
 	$(YUBI_SRC) $(QR_SRC) \
 	ManagePasswordPoliciesDlg.cpp PasswordPolicyDlg.cpp SelectionCriteria.cpp \
-	TimedTaskChain.cpp mainView.cpp PasswordSubsetDlg.cpp \
+	TimedTaskChain.cpp MenuViewHandlers.cpp PasswordSubsetDlg.cpp \
   CryptKeyEntryDlg.cpp
 
 

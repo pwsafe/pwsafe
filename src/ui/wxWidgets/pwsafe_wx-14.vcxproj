@@ -323,7 +323,7 @@
     <ClCompile Include="ImportXmlDlg.cpp" />
     <ClCompile Include="MenuEditHandlers.cpp" />
     <ClCompile Include="MenuManageHandlers.cpp" />
-    <ClCompile Include="mainView.cpp" />
+    <ClCompile Include="MenuViewHandlers.cpp" />
     <ClCompile Include="ManagePasswordPoliciesDlg.cpp" />
     <ClCompile Include="MergeDlg.cpp" />
     <ClCompile Include="OpenFilePickerValidator.cpp" />

@@ -167,7 +167,7 @@
 		E6EE845311E87E9800B01518 /* XMLFileHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841511E87E9800B01518 /* XMLFileHandlers.cpp */; };
 		E6EE845411E87E9800B01518 /* XMLFileValidation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841711E87E9800B01518 /* XMLFileValidation.cpp */; };
 		E6EE845511E87E9800B01518 /* XMLprefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841911E87E9800B01518 /* XMLprefs.cpp */; };
-		E6F8DC1F1D132618007DFBEC /* mainView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6F8DC1E1D132618007DFBEC /* mainView.cpp */; };
+		E6F8DC1F1D132618007DFBEC /* MenuViewHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6F8DC1E1D132618007DFBEC /* MenuViewHandlers.cpp */; };
 		E6F8DC221D132657007DFBEC /* RUEList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6F8DC201D132657007DFBEC /* RUEList.cpp */; };
 /* End PBXBuildFile section */
 
@@ -748,7 +748,7 @@
 		E6EE841811E87E9800B01518 /* XMLFileValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLFileValidation.h; sourceTree = "<group>"; };
 		E6EE841911E87E9800B01518 /* XMLprefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMLprefs.cpp; sourceTree = "<group>"; };
 		E6EE841A11E87E9800B01518 /* XMLprefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLprefs.h; sourceTree = "<group>"; };
-		E6F8DC1E1D132618007DFBEC /* mainView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mainView.cpp; sourceTree = "<group>"; };
+		E6F8DC1E1D132618007DFBEC /* MenuViewHandlers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuViewHandlers.cpp; sourceTree = "<group>"; };
 		E6F8DC201D132657007DFBEC /* RUEList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RUEList.cpp; sourceTree = "<group>"; };
 		E6F8DC211D132657007DFBEC /* RUEList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUEList.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1188,7 +1188,7 @@
 				E6C94E951FA2075B008F0072 /* pwsqrencode.mm */,
 				6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */,
 				6FF5D49E1DA14AB20032F5B6 /* PasswordSubsetDlg.h */,
-				E6F8DC1E1D132618007DFBEC /* mainView.cpp */,
+				E6F8DC1E1D132618007DFBEC /* MenuViewHandlers.cpp */,
 				E6E895981BD8C5E1009F3A8E /* TimedTaskChain.cpp */,
 				E6E895991BD8C5E1009F3A8E /* TimedTaskChain.h */,
 				E66C16B916731F9400C996B1 /* PasswordPolicyDlg.cpp */,
@@ -1829,7 +1829,7 @@
 				E6651E9C14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */,
 				E66C16A416731E2100C996B1 /* SelectionCriteria.cpp in Sources */,
 				E66C16AB16731ECD00C996B1 /* MenuManageHandlers.cpp in Sources */,
-				E6F8DC1F1D132618007DFBEC /* mainView.cpp in Sources */,
+				E6F8DC1F1D132618007DFBEC /* MenuViewHandlers.cpp in Sources */,
 				E66C16B316731EFE00C996B1 /* ManagePasswordPoliciesDlg.cpp in Sources */,
 				E66C16BB16731F9400C996B1 /* PasswordPolicyDlg.cpp in Sources */,
 			);
