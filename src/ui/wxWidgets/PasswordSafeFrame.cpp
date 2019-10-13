@@ -67,7 +67,7 @@
 
 // main toolbar images
 #include "./PwsToolbarButtons.h"
-#include "./pwsmenushortcuts.h"
+#include "./GridShortcutsValidator.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>

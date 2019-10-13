@@ -36,7 +36,7 @@
 #include "core/PWSAuxParse.h" // for DEFAULT_AUTOTYPE
 #include "core/PWHistory.h" // for history actions
 #include "./wxutils.h"
-#include "./pwsmenushortcuts.h"
+#include "./GridShortcutsValidator.h"
 #include "PWSafeApp.h" // for GetHashIters()
 #if defined(__X__) || defined(__WXGTK__)
 #include "Clipboard.h"

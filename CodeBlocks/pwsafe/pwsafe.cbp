@@ -432,8 +432,8 @@
 		<Unit filename="../../src/ui/wxWidgets/PWSafeApp.h" />
 		<Unit filename="../../src/ui/wxWidgets/Clipboard.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/Clipboard.h" />
-		<Unit filename="../../src/ui/wxWidgets/pwsmenushortcuts.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/pwsmenushortcuts.h" />
+		<Unit filename="../../src/ui/wxWidgets/GridShortcutsValidator.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/GridShortcutsValidator.h" />
 		<Unit filename="../../src/ui/wxWidgets/pwsqrcodedlg.cpp">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />

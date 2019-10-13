@@ -138,7 +138,7 @@
     <ClInclude Include="FieldSelectionDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pwsmenushortcuts.h">
+    <ClInclude Include="GridShortcutsValidator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FieldSelectionPanel.h">
@@ -301,7 +301,7 @@
     <ClCompile Include="FieldSelectionDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pwsmenushortcuts.cpp">
+    <ClCompile Include="GridShortcutsValidator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FieldSelectionPanel.cpp">
