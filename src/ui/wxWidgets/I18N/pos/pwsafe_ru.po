@@ -219,7 +219,7 @@ msgstr "Настройки YubiKey"
 
 #: src/ui/wxWidgets/AboutDlg.cpp:145 src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:1287
 #: src/ui/wxWidgets/PasswordSafeSearch.cpp:496
-#: src/ui/wxWidgets/pwsafeapp.cpp:410
+#: src/ui/wxWidgets/PWSafeApp.cpp:410
 msgid "Password Safe"
 msgstr "Password Safe"
 
@@ -703,7 +703,7 @@ msgstr "Ошибка при создании пароля: некорректн�
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:727
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:746
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:1866
-#: src/ui/wxWidgets/pwsafeapp.cpp:351
+#: src/ui/wxWidgets/PWSafeApp.cpp:351
 #: src/ui/wxWidgets/safecombinationchange.cpp:272
 #: src/ui/wxWidgets/safecombinationchange.cpp:276
 #: src/ui/wxWidgets/safecombinationchange.cpp:280
@@ -3209,40 +3209,40 @@ msgstr "Введите новое имя контейнера"
 msgid "Please enter the new database description"
 msgstr "Введите новое описание контейнера"
 
-#: src/ui/wxWidgets/pwsafeapp.cpp:410
+#: src/ui/wxWidgets/PWSafeApp.cpp:410
 msgid "Another instance of Password Safe is already running"
 msgstr "Запущен другой экземпляр Password Safe"
 
-#: src/ui/wxWidgets/pwsafeapp.cpp:446 src/ui/wxWidgets/pwsafeapp.cpp:455
+#: src/ui/wxWidgets/PWSafeApp.cpp:446 src/ui/wxWidgets/PWSafeApp.cpp:455
 msgid "Could not initialize help subsystem. Help will not be available."
 msgstr ""
 "Не удалось инициализировать справочную подсистему. Справка будет недоступна."
 
-#: src/ui/wxWidgets/pwsafeapp.cpp:447 src/ui/wxWidgets/pwsafeapp.cpp:456
+#: src/ui/wxWidgets/PWSafeApp.cpp:447 src/ui/wxWidgets/PWSafeApp.cpp:456
 msgid "Password Safe: Error initializing help"
 msgstr "Password Safe: Ошибка при инициализации справочной подсистемы"
 
-#: src/ui/wxWidgets/pwsafeapp.cpp:448
+#: src/ui/wxWidgets/PWSafeApp.cpp:448
 msgid "Don't show this warning again"
 msgstr "Больше не показывать это предупреждение"
 
-#: src/ui/wxWidgets/pwsafeapp.cpp:814
+#: src/ui/wxWidgets/PWSafeApp.cpp:814
 msgid "Missing help definition for page \""
 msgstr "Не найдена справка для вкладки \""
 
-#: src/ui/wxWidgets/pwsafeapp.cpp:815
+#: src/ui/wxWidgets/PWSafeApp.cpp:815
 msgid "\" of \""
 msgstr "\" из \""
 
-#: src/ui/wxWidgets/pwsafeapp.cpp:820
+#: src/ui/wxWidgets/PWSafeApp.cpp:820
 msgid "Missing help definition for window \""
 msgstr "Не найдена справка для окна \""
 
-#: src/ui/wxWidgets/pwsafeapp.cpp:831
+#: src/ui/wxWidgets/PWSafeApp.cpp:831
 msgid "Please inform the developers."
 msgstr "Пожалуйста, сообщите об этом разработчикам."
 
-#: src/ui/wxWidgets/pwsafeapp.cpp:832
+#: src/ui/wxWidgets/PWSafeApp.cpp:832
 msgid "Help Undefined"
 msgstr "Справка отсутствует"
 

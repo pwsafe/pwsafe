@@ -37,7 +37,7 @@
 #include "core/PWHistory.h" // for history actions
 #include "./wxutils.h"
 #include "./pwsmenushortcuts.h"
-#include "pwsafeapp.h" // for GetHashIters()
+#include "PWSafeApp.h" // for GetHashIters()
 #if defined(__X__) || defined(__WXGTK__)
 #include "pwsclip.h"
 #endif

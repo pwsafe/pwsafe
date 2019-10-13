@@ -33,7 +33,7 @@
 #include "SafeCombinationCtrl.h"
 ////@end includes
 
-#include "pwsafeapp.h"
+#include "PWSafeApp.h"
 #include "safecombinationentry.h"
 #include "safecombinationsetup.h"
 #include "version.h"
