@@ -10,7 +10,7 @@
 #include "wx/wx.h"
 #endif
 
-#include "./pwsqrcodedlg.h"
+#include "./QRCodeDlg.h"
 #include "./wxutils.h"
 
 #include <algorithm>
@@ -110,7 +110,7 @@ void PWSQRCodeDlg::UpdateTimeRemaining()
 // build it like this
 // g++ -D__TEST_QR_CODE__ -o qrtest
 //                  `/usr/bin/wx-config-3.0 --debug=yes --unicode=yes --inplace --cxxflags --libs`
-//                  -DUNICODE -I../.. pwsqrcodedlg.cpp  -lcore -los -lcore -lqrencode -L../../../lib/unicodedebug
+//                  -DUNICODE -I../.. QRCodeDlg.cpp  -lcore -los -lcore -lqrencode -L../../../lib/unicodedebug
 //
 #include <wx/cmdline.h>
 #include <wx/filename.h>

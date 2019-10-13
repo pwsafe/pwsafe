@@ -114,14 +114,14 @@ endif(HAVE_YKPERS_H)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 if (NOT NO_QR)
-  list(APPEND PWSAFE_SRC_LIST src/ui/wxWidgets/pwsqrcodedlg.cpp src/ui/wxWidgets/pwsqrencode.cpp)
-  list(APPEND PWSAFE_HDR_LIST src/ui/wxWidgets/pwsqrencode.h src/ui/wxWidgets/pwsqrcodedlg.h)
+  list(APPEND PWSAFE_SRC_LIST src/ui/wxWidgets/QRCodeDlg.cpp src/ui/wxWidgets/pwsqrencode.cpp)
+  list(APPEND PWSAFE_HDR_LIST src/ui/wxWidgets/pwsqrencode.h src/ui/wxWidgets/QRCodeDlg.h)
 endif(NOT NO_QR)
 endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  list(APPEND PWSAFE_SRC_LIST src/ui/wxWidgets/pwsqrcodedlg.cpp src/ui/wxWidgets/pwsqrencode.mm)
-  list(APPEND PWSAFE_HDR_LIST src/ui/wxWidgets/pwsqrencode.h src/ui/wxWidgets/pwsqrcodedlg.h)
+  list(APPEND PWSAFE_SRC_LIST src/ui/wxWidgets/QRCodeDlg.cpp src/ui/wxWidgets/pwsqrencode.mm)
+  list(APPEND PWSAFE_HDR_LIST src/ui/wxWidgets/pwsqrencode.h src/ui/wxWidgets/QRCodeDlg.h)
 endif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 set (PWSAFE_SRCS ${PWSAFE_SRC_LIST} PARENT_SCOPE)

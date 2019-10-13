@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file pwsqrcodedlg.h
+/** \file QRCodeDlg.h
  * 
  */
 

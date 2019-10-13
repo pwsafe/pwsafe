@@ -61,7 +61,7 @@
 #include "./SystemTrayMenuId.h"
 #include "./CompareDlg.h"
 #include "./SelectionCriteria.h"
-#include "./pwsqrcodedlg.h"
+#include "./QRCodeDlg.h"
 
 #include <algorithm>
 

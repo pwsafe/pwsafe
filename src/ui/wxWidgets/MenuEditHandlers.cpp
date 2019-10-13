@@ -37,7 +37,7 @@
 #include "wxutils.h"
 #include "GuiInfo.h"
 #include "PasswordSubsetDlg.h"
-#include "./pwsqrcodedlg.h"
+#include "./QRCodeDlg.h"
 
 #include "../../core/PWSAuxParse.h"
 #include "../../core/Util.h"
