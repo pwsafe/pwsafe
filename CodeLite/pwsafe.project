@@ -131,8 +131,8 @@
     <File Name="../src/ui/wxWidgets/MenuViewHandlers.cpp"/>
     <File Name="../src/ui/wxWidgets/PasswordSubsetDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/PasswordSubsetDlg.h"/>
-    <File Name="../src/ui/wxWidgets/pwsqrcodedlg.cpp"/>
-    <File Name="../src/ui/wxWidgets/pwsqrcodedlg.h"/>
+    <File Name="../src/ui/wxWidgets/QRCodeDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/QRCodeDlg.h"/>
     <File Name="../src/ui/wxWidgets/pwsqrencode.cpp"/>
     <File Name="../src/ui/wxWidgets/pwsqrencode.h"/>
   </VirtualDirectory>

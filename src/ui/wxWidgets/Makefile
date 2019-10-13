@@ -33,9 +33,9 @@ endif
 
 ifndef NO_QR
 ifeq ($(findstring Linux, $(shell uname -s)), Linux)
-QR_SRC=pwsqrcodedlg.cpp pwsqrencode.cpp
+QR_SRC=QRCodeDlg.cpp pwsqrencode.cpp
 else
-QR_SRC=pwsqrcodedlg.cpp
+QR_SRC=QRCodeDlg.cpp
 endif
 else
 QRFLAGS=-DNO_QR

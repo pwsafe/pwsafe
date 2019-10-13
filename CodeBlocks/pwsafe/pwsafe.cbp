@@ -434,13 +434,13 @@
 		<Unit filename="../../src/ui/wxWidgets/Clipboard.h" />
 		<Unit filename="../../src/ui/wxWidgets/GridShortcutsValidator.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/GridShortcutsValidator.h" />
-		<Unit filename="../../src/ui/wxWidgets/pwsqrcodedlg.cpp">
+		<Unit filename="../../src/ui/wxWidgets/QRCodeDlg.cpp">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />
 			<Option target="Release_L32Y" />
 		</Unit>
-		<Unit filename="../../src/ui/wxWidgets/pwsqrcodedlg.h">
+		<Unit filename="../../src/ui/wxWidgets/QRCodeDlg.h">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />
