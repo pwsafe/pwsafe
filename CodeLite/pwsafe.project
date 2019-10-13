@@ -33,7 +33,7 @@
     <File Name="../src/ui/wxWidgets/PasswordSafeFrame.cpp"/>
     <File Name="../src/ui/wxWidgets/SystemTray.h"/>
     <File Name="../src/ui/wxWidgets/SafeCombinationChangeDlg.cpp"/>
-    <File Name="../src/ui/wxWidgets/safecombinationentry.h"/>
+    <File Name="../src/ui/wxWidgets/SafeCombinationEntryDlg.h"/>
     <File Name="../src/ui/wxWidgets/PasswordSafeSearch.cpp"/>
     <File Name="../src/ui/wxWidgets/SafeCombinationChangeDlg.h"/>
     <File Name="../src/ui/wxWidgets/GridCtrl.cpp"/>
@@ -61,7 +61,7 @@
     <File Name="../src/ui/wxWidgets/CreateShortcutDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/GridCtrl.h"/>
     <File Name="../src/ui/wxWidgets/OptionsPropertySheetDlg.h"/>
-    <File Name="../src/ui/wxWidgets/safecombinationentry.cpp"/>
+    <File Name="../src/ui/wxWidgets/SafeCombinationEntryDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/AddEditPropSheetDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/PasswordSafeFrame.h"/>
     <File Name="../src/ui/wxWidgets/TreeCtrl.h"/>

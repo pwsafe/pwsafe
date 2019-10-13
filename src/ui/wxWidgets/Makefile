@@ -185,7 +185,7 @@ override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS
 CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS) $(QRFLAGS) $(CPPFLAGS)
 
 SOURCES= PasswordSafeFrame.cpp \
-	PWSafeApp.cpp safecombinationentry.cpp \
+	PWSafeApp.cpp SafeCombinationEntryDlg.cpp \
 	safecombinationsetup.cpp safecombinationprompt.cpp \
 	SafeCombinationChangeDlg.cpp AboutDlg.cpp \
 	PropertiesDlg.cpp GridCtrl.cpp \

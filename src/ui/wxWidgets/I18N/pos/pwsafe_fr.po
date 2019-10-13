@@ -60,7 +60,7 @@ msgstr "Mot de passe :"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:186
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:85
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:236
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:236
 #: ../../../ui/wxWidgets/yubicfg.cpp:366 ../../../ui/wxWidgets/YubiMixin.cpp:58
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:198
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:171
@@ -69,7 +69,7 @@ msgstr "Veuillez insérer votre YubiKey"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:194
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:591
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:250
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:250
 #: ../../../ui/wxWidgets/yubicfg.cpp:202
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:384
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
@@ -115,7 +115,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:279
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:115
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:400
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:400
 #, fuzzy
 msgid ""
 "Incorrect passkey, not a PasswordSafe database, or a corrupt database. "
@@ -131,10 +131,10 @@ msgstr "Mot de passe invalide ou fichier PasswordSafe corrompu."
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:101
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:108
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:116
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:350
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:357
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:406
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:521
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:350
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:357
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:406
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:521
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:75
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:727
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:746
@@ -162,7 +162,7 @@ msgid "Error"
 msgstr "Erreur"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:302
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:349
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:349
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:75
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:102
 msgid "The combination cannot be blank."
@@ -171,8 +171,8 @@ msgstr "La combinaison ne peut être vide."
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:308
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:351
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:101
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:356
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:520
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:356
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:520
 msgid "File or path not found."
 msgstr "Le fichier ou son chemin n'ont pas été trouvés."
 
@@ -606,7 +606,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1039
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1049
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2339
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:505
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:505
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:127
 msgid "Write Error"
 msgstr "Erreur d'écriture"
@@ -660,7 +660,7 @@ msgid "Do you want to save changes to the password database"
 msgstr "Voulez-vous enregistrer les changements dans le fichier: %s?"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1211
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:431
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:431
 msgid "Please Choose a Database to Open:"
 msgstr "SVP, Choisissez un fichier à ouvrir:"
 
@@ -838,7 +838,7 @@ msgid "&Edit Base entry"
 msgstr "&Edition de l'entrée de base"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2344
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:504
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:504
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:126
 #, fuzzy
 msgid "Could not open file for writing!"
@@ -872,7 +872,7 @@ msgid "Do you want to save changes to the password database: "
 msgstr "Voulez-vous enregistrer les changements dans le fichier: %s?"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2424
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:466
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:466
 msgid "Please choose a name for the new database"
 msgstr "SVP, Choisissez un nom pour le nouveau fichier"
 
@@ -1494,7 +1494,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:73
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:70
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:206
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:206
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:155
 msgid "Safe Combination:"
 msgstr "Mot de passe :"
@@ -1701,47 +1701,47 @@ msgid ""
 "Could not launch a new process for xvkbd.  Simultaneous execution disabled?"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:193
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:193
 msgid "Open Password Database:"
 msgstr "Ouvrir le fichier de mots de passe:"
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:215
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:215
 msgid "Open as read-only"
 msgstr "Ouvrir en lecture seule"
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:222
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:222
 #, fuzzy
 msgid "Show Combination"
 msgstr "Mot de passe :"
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:226
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:226
 msgid "New..."
 msgstr "Nouveau..."
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:243
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:243
 msgid "OK"
 msgstr "&OK"
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:247
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:247
 msgid "Cancel"
 msgstr "Annuler"
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:375
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:375
 msgid ""
 "Could not lock file, opening read-only\n"
 "Locked by "
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:378
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:378
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:272
 msgid "Warning"
 msgstr "Attention"
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:397
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:397
 msgid "Too many retries - exiting"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:433
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:433
 #, fuzzy
 msgid ""
 "Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| "
@@ -1750,7 +1750,7 @@ msgstr ""
 "Fichier PasswordSafe (*.psafe3; *.dat)|*.psafe3; *.dat|Tous les fichiers (*."
 "*)|*.*||"
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:468
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:468
 #, fuzzy
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|"
@@ -3991,7 +3991,7 @@ msgstr "PasswordSafe"
 msgid "Properties"
 msgstr "Propriétés"
 
-#: ../../../ui/wxWidgets/safecombinationentry.h:57
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.h:57
 msgid "Safe Combination Entry"
 msgstr "Entrée de le mot de passe du fichier"
 

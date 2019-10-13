@@ -460,8 +460,8 @@
 		</Unit>
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationChangeDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationChangeDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/safecombinationentry.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/safecombinationentry.h" />
+		<Unit filename="../../src/ui/wxWidgets/SafeCombinationEntryDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/SafeCombinationEntryDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/safecombinationprompt.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/safecombinationprompt.h" />
 		<Unit filename="../../src/ui/wxWidgets/safecombinationsetup.cpp" />

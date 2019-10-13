@@ -10,7 +10,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/wxMessages.h
     src/ui/wxWidgets/GridShortcutsValidator.h
     src/ui/wxWidgets/SafeCombinationChangeDlg.h
-    src/ui/wxWidgets/safecombinationentry.h
+    src/ui/wxWidgets/SafeCombinationEntryDlg.h
     src/ui/wxWidgets/safecombinationsetup.h
     src/ui/wxWidgets/AddEditPropSheetDlg.h
     src/ui/wxWidgets/PropertiesDlg.h
@@ -66,7 +66,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/GuiInfo.cpp
     src/ui/wxWidgets/version.cpp
     src/ui/wxWidgets/Clipboard.cpp
-    src/ui/wxWidgets/safecombinationentry.cpp
+    src/ui/wxWidgets/SafeCombinationEntryDlg.cpp
     src/ui/wxWidgets/MenuEditHandlers.cpp
     src/ui/wxWidgets/MenuViewHandlers.cpp
     src/ui/wxWidgets/ViewReport.cpp
