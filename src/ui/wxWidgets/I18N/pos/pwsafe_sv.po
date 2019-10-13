@@ -61,7 +61,7 @@ msgstr "Safe-nyckel:"
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:85
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:236
 #: ../../../ui/wxWidgets/yubicfg.cpp:366 ../../../ui/wxWidgets/YubiMixin.cpp:58
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:198
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:198
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:171
 msgid "Please insert your YubiKey"
 msgstr ""
@@ -71,7 +71,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:250
 #: ../../../ui/wxWidgets/yubicfg.cpp:202
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:384
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:212
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:219
@@ -87,7 +87,7 @@ msgstr "Avsluta"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:206
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:381
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:209
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:216
@@ -99,7 +99,7 @@ msgstr "Avbryt"
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:210
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:367
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:378
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:205
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:213
@@ -141,11 +141,11 @@ msgstr ""
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:103
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:112
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:128
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:272
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:276
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:280
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:296
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:302
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:272
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:276
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:280
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:296
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:246
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:252
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:280
@@ -2692,12 +2692,12 @@ msgstr "De två posterna matchar inte."
 msgid "The entry cannot be blank."
 msgstr "Nyckeln kan inte vara tom."
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:102
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:104
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:102
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:104
 msgid "Enter old safe combination (if any) and click on top Yubikey button"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:154
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:154
 #, fuzzy
 msgid ""
 "Please enter the current combination, followed by a new combination.\n"
@@ -2706,33 +2706,33 @@ msgstr ""
 "Vänligen, ange nuvarande nyckel och därefter en ny nyckel. Skriv den nya "
 "nyckeln ytterligare en gång för att bekräfta den."
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:167
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:167
 #, fuzzy
 msgid "Old safe combination:"
 msgstr "Gamla Safe-nyckeln:"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:178
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:178
 #, fuzzy
 msgid "New safe combination:"
 msgstr "Ny Safe-nyckel:"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:189
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:189
 msgid "Confirmation:"
 msgstr "Bekräftelse:"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:271
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:271
 msgid "The old safe combination is not correct"
 msgstr "Den gamla Safe-nyckeln är felaktig"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:275
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:275
 msgid "Cannot verify old safe combination - file gone?"
 msgstr "Kan inte verifiera gamla Safe-nyckeln - saknas filen?"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:279
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:279
 msgid "New safe combination and confirmation do not match"
 msgstr "Nya Safe-nyckeln och konfirmeringen matchar inte"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:289
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:289
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:266
 #, fuzzy
 msgid "Weak passphrase:"
@@ -2741,7 +2741,7 @@ msgstr ""
 "\n"
 " %s"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:294
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:294
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:271
 #, fuzzy
 msgid "Use it anyway?"
@@ -2749,21 +2749,21 @@ msgstr ""
 "\n"
 "Använd ändå?"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:347
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:381
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:347
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:381
 #, fuzzy
 msgid "YubiKey safe combination incorrect"
 msgstr "Den gamla Safe-nyckeln är felaktig"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:349
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:349
 msgid "Enter new safe combination (if any) and click on bottom Yubikey button"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:372
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:372
 msgid "Please confirm existing combination"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:389
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:389
 #, fuzzy
 msgid "Current safe combination incorrect"
 msgstr "Den gamla Safe-nyckeln är felaktig"
@@ -4150,7 +4150,7 @@ msgstr "Om Password Safe"
 msgid "Edit Shortcut"
 msgstr "Redigera genväg"
 
-#: ../../../ui/wxWidgets/safecombinationchange.h:54
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.h:54
 msgid "Change Safe Combination"
 msgstr "Ändra Safe-nyckel"
 

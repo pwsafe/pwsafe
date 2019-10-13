@@ -62,7 +62,7 @@ msgstr "보안 비밀번호:"
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:85
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:236
 #: ../../../ui/wxWidgets/yubicfg.cpp:366 ../../../ui/wxWidgets/YubiMixin.cpp:58
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:198
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:198
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:171
 msgid "Please insert your YubiKey"
 msgstr ""
@@ -72,7 +72,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:250
 #: ../../../ui/wxWidgets/yubicfg.cpp:202
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:384
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:212
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:219
@@ -88,7 +88,7 @@ msgstr "종료"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:206
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:381
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:209
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:216
@@ -100,7 +100,7 @@ msgstr "취소"
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:210
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:367
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:378
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:205
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:213
@@ -140,11 +140,11 @@ msgstr ""
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:103
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:112
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:128
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:272
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:276
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:280
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:296
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:302
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:272
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:276
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:280
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:296
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:246
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:252
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:280
@@ -2681,12 +2681,12 @@ msgstr "두 항목이 일치하지 않습니다."
 msgid "The entry cannot be blank."
 msgstr "비밀번호 조합은 공백으로 남겨질 수 없습니다"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:102
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:104
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:102
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:104
 msgid "Enter old safe combination (if any) and click on top Yubikey button"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:154
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:154
 #, fuzzy
 msgid ""
 "Please enter the current combination, followed by a new combination.\n"
@@ -2695,33 +2695,33 @@ msgstr ""
 "현재 보안 비밀번호를 입력하신 후, 새 보안 비밀번호를 입력해 주십시오. 그 다"
 "음, 확인 절차상 같은 보안 비밀번호를 다시 한번 입력해 주십시오."
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:167
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:167
 #, fuzzy
 msgid "Old safe combination:"
 msgstr "기존 보안 비밀번호:"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:178
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:178
 #, fuzzy
 msgid "New safe combination:"
 msgstr "새 보안 비밀번호:"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:189
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:189
 msgid "Confirmation:"
 msgstr "확인:"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:271
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:271
 msgid "The old safe combination is not correct"
 msgstr "이전 보안 비밀번호가 일치하지 않습니다"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:275
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:275
 msgid "Cannot verify old safe combination - file gone?"
 msgstr "이전 보안 비밀번호를 검사할 수 없습니다 - 파일이 삭제되었습니까?"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:279
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:279
 msgid "New safe combination and confirmation do not match"
 msgstr "새 보안 비밀번호와 확인 비밀번호가 일치하지 않습니다"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:289
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:289
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:266
 #, fuzzy
 msgid "Weak passphrase:"
@@ -2730,7 +2730,7 @@ msgstr ""
 "\n"
 " %s"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:294
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:294
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:271
 #, fuzzy
 msgid "Use it anyway?"
@@ -2738,21 +2738,21 @@ msgstr ""
 "\n"
 "그냥 사용하시겠습니까?"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:347
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:381
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:347
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:381
 #, fuzzy
 msgid "YubiKey safe combination incorrect"
 msgstr "이전 보안 비밀번호가 일치하지 않습니다"
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:349
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:349
 msgid "Enter new safe combination (if any) and click on bottom Yubikey button"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:372
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:372
 msgid "Please confirm existing combination"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationchange.cpp:389
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:389
 #, fuzzy
 msgid "Current safe combination incorrect"
 msgstr "이전 보안 비밀번호가 일치하지 않습니다"
@@ -4133,7 +4133,7 @@ msgstr "Password Safe 정보"
 msgid "Edit Shortcut"
 msgstr "바로가기 편집"
 
-#: ../../../ui/wxWidgets/safecombinationchange.h:54
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.h:54
 msgid "Change Safe Combination"
 msgstr "보안 비밀번호 바꾸기"
 

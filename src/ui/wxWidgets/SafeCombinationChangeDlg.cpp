@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file safecombinationchange.cpp
+/** \file SafeCombinationChangeDlg.cpp
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -24,7 +24,7 @@
 #include "SafeCombinationCtrl.h"
 ////@end includes
 
-#include "safecombinationchange.h"
+#include "SafeCombinationChangeDlg.h"
 #include "core/PWCharPool.h" // for CheckPassword()
 #include "./wxutils.h"          // for ApplyPasswordFont
 #include "./ExternalKeyboardButton.h"

@@ -283,7 +283,7 @@
     <ClInclude Include="PwsToolbarButtons.h" />
     <ClInclude Include="TreeCtrl.h" />
     <ClInclude Include="RecentDbList.h" />
-    <ClInclude Include="safecombinationchange.h" />
+    <ClInclude Include="SafeCombinationChangeDlg.h" />
     <ClInclude Include="SafeCombinationCtrl.h" />
     <ClInclude Include="safecombinationentry.h" />
     <ClInclude Include="safecombinationprompt.h" />
@@ -341,7 +341,7 @@
     <ClCompile Include="GridShortcutsValidator.cpp" />
     <ClCompile Include="PwsSync.cpp" />
     <ClCompile Include="TreeCtrl.cpp" />
-    <ClCompile Include="safecombinationchange.cpp" />
+    <ClCompile Include="SafeCombinationChangeDlg.cpp" />
     <ClCompile Include="SafeCombinationCtrl.cpp" />
     <ClCompile Include="safecombinationentry.cpp" />
     <ClCompile Include="safecombinationprompt.cpp" />

@@ -40,7 +40,7 @@
 #include "TreeCtrl.h"
 #include "PWStatusBar.h"
 #include "GridTable.h"
-#include "safecombinationchange.h"
+#include "SafeCombinationChangeDlg.h"
 #include "safecombinationsetup.h"
 #include "safecombinationprompt.h"
 #include "PasswordSafeFrame.h"

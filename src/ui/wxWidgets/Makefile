@@ -187,7 +187,7 @@ CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGF
 SOURCES= PasswordSafeFrame.cpp \
 	PWSafeApp.cpp safecombinationentry.cpp \
 	safecombinationsetup.cpp safecombinationprompt.cpp \
-	safecombinationchange.cpp AboutDlg.cpp \
+	SafeCombinationChangeDlg.cpp AboutDlg.cpp \
 	PropertiesDlg.cpp GridCtrl.cpp \
 	TreeCtrl.cpp version.cpp \
 	Clipboard.cpp MenuEditHandlers.cpp MenuManageHandlers.cpp \
