@@ -42,7 +42,7 @@
 #include "GridTable.h"
 #include "SafeCombinationChangeDlg.h"
 #include "safecombinationsetup.h"
-#include "safecombinationprompt.h"
+#include "SafeCombinationPromptDlg.h"
 #include "PasswordSafeFrame.h"
 #include "PropertiesDlg.h"
 #include "PasswordSafeSearch.h"

@@ -284,7 +284,7 @@
     <ClInclude Include="SafeCombinationChangeDlg.h" />
     <ClInclude Include="SafeCombinationCtrl.h" />
     <ClInclude Include="SafeCombinationEntryDlg.h" />
-    <ClInclude Include="safecombinationprompt.h" />
+    <ClInclude Include="SafeCombinationPromptDlg.h" />
     <ClInclude Include="safecombinationsetup.h" />
     <ClInclude Include="SelectionCriteria.h" />
     <ClInclude Include="SizeRestrictedPanel.h" />
@@ -342,7 +342,7 @@
     <ClCompile Include="SafeCombinationChangeDlg.cpp" />
     <ClCompile Include="SafeCombinationCtrl.cpp" />
     <ClCompile Include="SafeCombinationEntryDlg.cpp" />
-    <ClCompile Include="safecombinationprompt.cpp" />
+    <ClCompile Include="SafeCombinationPromptDlg.cpp" />
     <ClCompile Include="safecombinationsetup.cpp" />
     <ClCompile Include="SelectionCriteria.cpp" />
     <ClCompile Include="SizeRestrictedPanel.cpp" />

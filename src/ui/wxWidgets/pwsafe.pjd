@@ -4829,14 +4829,14 @@ You can use any keyboard character. The combination is case-sensitive.
           <bool name="proxy-Fit to content">1</bool>
           <string name="proxy-Font">""</string>
           <string name="proxy-Foreground colour">""</string>
-          <string name="proxy-Header filename">"safecombinationprompt.h"</string>
+          <string name="proxy-Header filename">"SafeCombinationPromptDlg.h"</string>
           <long name="proxy-Height">300</long>
           <string name="proxy-Help text">""</string>
           <bool name="proxy-Hidden">0</bool>
           <string name="proxy-Icon">""</string>
           <string name="proxy-Id name">"ID_CSAFECOMBINATIONPROMPT"</string>
           <long name="proxy-Id value">10062</long>
-          <string name="proxy-Implementation filename">"safecombinationprompt.cpp"</string>
+          <string name="proxy-Implementation filename">"SafeCombinationPromptDlg.cpp"</string>
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
           <string name="proxy-Texture">""</string>
           <string name="proxy-Texture style">"Tiled"</string>

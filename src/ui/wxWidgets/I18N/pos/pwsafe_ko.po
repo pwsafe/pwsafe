@@ -45,20 +45,20 @@ msgstr "아래 그룹을 불러오시겠습니까?"
 msgid "Import to change passwords of existing entries ONLY"
 msgstr "현재 존재하는 항목들의 비밀번호만을 변경하기 위해 불러오기"
 
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:160
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:160
 msgid "Please enter the safe combination for this password database."
 msgstr "이 데이터베이스의 보안 비밀번호를 입력해 주십시오."
 
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:163
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:163
 msgid "filename"
 msgstr "파일 이름"
 
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:169
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:169
 #, fuzzy
 msgid "Safe combination:"
 msgstr "보안 비밀번호:"
 
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:186
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:186
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:85
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:236
 #: ../../../ui/wxWidgets/yubicfg.cpp:366 ../../../ui/wxWidgets/YubiMixin.cpp:58
@@ -67,7 +67,7 @@ msgstr "보안 비밀번호:"
 msgid "Please insert your YubiKey"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:194
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:194
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:591
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:250
 #: ../../../ui/wxWidgets/yubicfg.cpp:202
@@ -80,13 +80,13 @@ msgstr ""
 msgid "&Help"
 msgstr "도움(&H)"
 
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:199
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:199
 #: ../../../ui/wxWidgets/SystemTray.cpp:146
 #, fuzzy
 msgid "&Exit"
 msgstr "종료"
 
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:206
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:206
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:381
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:209
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
@@ -97,7 +97,7 @@ msgstr "종료"
 msgid "&Cancel"
 msgstr "취소"
 
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:210
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:210
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:367
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:378
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:205
@@ -109,11 +109,11 @@ msgstr "취소"
 msgid "&OK"
 msgstr "확인"
 
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:276
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:276
 msgid "Three strikes - yer out!"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:279
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:279
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:115
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:400
 msgid ""
@@ -121,10 +121,10 @@ msgid ""
 "(Backup database has same name as original, ending with '~')"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:282
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:303
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:309
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:352
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:282
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:303
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:309
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:352
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1866
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:351
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:101
@@ -160,15 +160,15 @@ msgstr ""
 msgid "Error"
 msgstr "오류"
 
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:302
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:302
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:349
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:75
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:102
 msgid "The combination cannot be blank."
 msgstr "비밀번호 조합은 공백으로 남겨질 수 없습니다"
 
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:308
-#: ../../../ui/wxWidgets/safecombinationprompt.cpp:351
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:308
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:351
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:101
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:356
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:520
@@ -3977,7 +3977,7 @@ msgstr "항목 보기...(&V)"
 msgid "Add, Edit or View Entry"
 msgstr "항목 보기"
 
-#: ../../../ui/wxWidgets/safecombinationprompt.h:51
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.h:51
 msgid "Enter Safe Combination"
 msgstr "보안 비빌번호를 입력하세요"
 
