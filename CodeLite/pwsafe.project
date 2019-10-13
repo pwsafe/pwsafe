@@ -40,7 +40,7 @@
     <File Name="../src/ui/wxWidgets/PasswordSafeSearch.h"/>
     <File Name="../src/ui/wxWidgets/version.h"/>
     <File Name="../src/ui/wxWidgets/pwsclip.h"/>
-    <File Name="../src/ui/wxWidgets/pwsafeapp.cpp"/>
+    <File Name="../src/ui/wxWidgets/PWSafeApp.cpp"/>
     <File Name="../src/ui/wxWidgets/MenuEditHandlers.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationsetup.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationprompt.h"/>
@@ -72,7 +72,7 @@
     <File Name="../src/ui/wxWidgets/EditShortcutDlg.h"/>
     <File Name="../src/ui/wxWidgets/EditShortcutDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/PropertiesDlg.cpp"/>
-    <File Name="../src/ui/wxWidgets/pwsafeapp.h"/>
+    <File Name="../src/ui/wxWidgets/PWSafeApp.h"/>
     <File Name="../src/ui/wxWidgets/GuiInfo.cpp"/>
     <File Name="../src/ui/wxWidgets/GuiInfo.h"/>
     <File Name="../src/ui/wxWidgets/RecentDBList.h"/>

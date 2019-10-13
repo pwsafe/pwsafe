@@ -1,5 +1,5 @@
 list(APPEND PWSAFE_HDR_LIST
-    src/ui/wxWidgets/pwsafeapp.h
+    src/ui/wxWidgets/PWSafeApp.h
     src/ui/wxWidgets/PasswordSafeFrame.h
     src/ui/wxWidgets/AboutDlg.h
     src/ui/wxWidgets/OptionsPropertySheetDlg.h
@@ -84,7 +84,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/ExternalKeyboardButton.cpp
     src/ui/wxWidgets/PasswordPolicyDlg.cpp
     src/ui/wxWidgets/DbSelectionPanel.cpp
-    src/ui/wxWidgets/pwsafeapp.cpp
+    src/ui/wxWidgets/PWSafeApp.cpp
     src/ui/wxWidgets/safecombinationsetup.cpp
     src/ui/wxWidgets/wxutils.cpp
     src/ui/wxWidgets/AdvancedSelectionDlg.cpp

@@ -547,9 +547,9 @@
           <string name="proxy-Base class">"wxApp"</string>
           <string name="proxy-Class">"PwsafeApp"</string>
           <string name="proxy-Event sources">""</string>
-          <string name="proxy-Header filename">"pwsafeapp.h"</string>
+          <string name="proxy-Header filename">"PWSafeApp.h"</string>
           <string name="proxy-Help filename">""</string>
-          <string name="proxy-Implementation filename">"pwsafeapp.cpp"</string>
+          <string name="proxy-Implementation filename">"PWSafeApp.cpp"</string>
           <string name="proxy-Main window">"ID_CSAFECOMBINATIONENTRY"</string>
           <string name="title">"PwsafeApp"</string>
           <long name="title-mode">0</long>

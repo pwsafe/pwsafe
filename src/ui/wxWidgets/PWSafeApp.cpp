@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file pwsafeapp.cpp
+/** \file PWSafeApp.cpp
 *
 */
 
@@ -32,7 +32,7 @@
 
 using namespace std;
 
-#include "pwsafeapp.h"
+#include "PWSafeApp.h"
 #include "PasswordSafeFrame.h"
 #include "version.h"
 #include "wxMessages.h"

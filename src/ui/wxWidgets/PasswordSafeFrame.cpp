@@ -50,7 +50,7 @@
 #include "SystemTray.h"
 #include "wxutils.h"
 #include "GuiInfo.h"
-#include "pwsafeapp.h"
+#include "PWSafeApp.h"
 #include "./ImportTextDlg.h"
 #include "./ImportXmlDlg.h"
 #include "./ExportTextWarningDlg.h"

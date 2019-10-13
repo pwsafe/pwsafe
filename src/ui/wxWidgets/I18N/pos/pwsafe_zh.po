@@ -126,7 +126,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:309
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:352
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1866
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:351
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:351
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:101
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:108
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:116
@@ -1404,49 +1404,49 @@ msgstr "设定树目录/列表显示字体"
 msgid "Select Virtual Keyboard font"
 msgstr "设定虚拟键盘字体"
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:410
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:410
 msgid "Another instance of Password Safe is already running"
 msgstr ""
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:410
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:410
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1287
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:496
 #: ../../../ui/wxWidgets/AboutDlg.cpp:145
 msgid "Password Safe"
 msgstr "Password Safe"
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:446
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:455
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:446
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:455
 msgid "Could not initialize help subsystem. Help will not be available."
 msgstr ""
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:447
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:456
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:447
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:456
 msgid "Password Safe: Error initializing help"
 msgstr ""
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:448
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:448
 msgid "Don't show this warning again"
 msgstr ""
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:814
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:814
 msgid "Missing help definition for page \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:815
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:815
 msgid "\" of \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:820
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:820
 msgid "Missing help definition for window \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:831
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:831
 #, fuzzy
 msgid "Please inform the developers."
 msgstr "请命名该筛选！"
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:832
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:832
 msgid "Help Undefined"
 msgstr ""
 

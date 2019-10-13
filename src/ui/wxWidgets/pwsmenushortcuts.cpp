@@ -15,7 +15,7 @@
 #include "pwsmenushortcuts.h"
 
 #include "./RecentDBList.h"
-#include "./pwsafeapp.h"
+#include "./PWSafeApp.h"
 #include "../../core/PWSprefs.h"
 
 #include <wx/stockitem.h>

@@ -271,7 +271,7 @@
     <ClInclude Include="PasswordSafeSearch.h" />
     <ClInclude Include="PasswordSubsetDlg.h" />
     <ClInclude Include="PropertiesDlg.h" />
-    <ClInclude Include="pwsafeapp.h" />
+    <ClInclude Include="PWSafeApp.h" />
     <ClInclude Include="pwsclip.h" />
     <ClInclude Include="DragBarCtrl.h" />
     <ClInclude Include="PWSgrid.h" />
@@ -331,7 +331,7 @@
     <ClCompile Include="PasswordSafeSearch.cpp" />
     <ClCompile Include="PasswordSubsetDlg.cpp" />
     <ClCompile Include="PropertiesDlg.cpp" />
-    <ClCompile Include="pwsafeapp.cpp" />
+    <ClCompile Include="PWSafeApp.cpp" />
     <ClCompile Include="pwsclip.cpp" />
     <ClCompile Include="DragBarCtrl.cpp" />
     <ClCompile Include="PWSgrid.cpp" />
