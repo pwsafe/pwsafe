@@ -19,7 +19,7 @@
 
 #include "./GuiInfo.h"
 #include "./PasswordSafeFrame.h"
-#include "./PWStree.h"
+#include "./TreeCtrl.h"
 #include "./GridCtrl.h"
 #include <functional>
 

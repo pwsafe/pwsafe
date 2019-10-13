@@ -77,7 +77,7 @@
 		E6ADBA931195709A004E2BE5 /* Clipboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1D1195709A004E2BE5 /* Clipboard.cpp */; };
 		E6ADBA941195709A004E2BE5 /* GridCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1F1195709A004E2BE5 /* GridCtrl.cpp */; };
 		E6ADBA951195709A004E2BE5 /* GridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA211195709A004E2BE5 /* GridTable.cpp */; };
-		E6ADBA961195709A004E2BE5 /* PWStree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA231195709A004E2BE5 /* PWStree.cpp */; };
+		E6ADBA961195709A004E2BE5 /* TreeCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA231195709A004E2BE5 /* TreeCtrl.cpp */; };
 		E6ADBA981195709A004E2BE5 /* safecombinationchange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA271195709A004E2BE5 /* safecombinationchange.cpp */; };
 		E6ADBA991195709A004E2BE5 /* safecombinationentry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA291195709A004E2BE5 /* safecombinationentry.cpp */; };
 		E6ADBA9A1195709A004E2BE5 /* safecombinationprompt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA2B1195709A004E2BE5 /* safecombinationprompt.cpp */; };
@@ -562,8 +562,8 @@
 		E6ADBA201195709A004E2BE5 /* GridCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridCtrl.h; sourceTree = "<group>"; };
 		E6ADBA211195709A004E2BE5 /* GridTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GridTable.cpp; sourceTree = "<group>"; };
 		E6ADBA221195709A004E2BE5 /* GridTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridTable.h; sourceTree = "<group>"; };
-		E6ADBA231195709A004E2BE5 /* PWStree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWStree.cpp; sourceTree = "<group>"; };
-		E6ADBA241195709A004E2BE5 /* PWStree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWStree.h; sourceTree = "<group>"; };
+		E6ADBA231195709A004E2BE5 /* TreeCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TreeCtrl.cpp; sourceTree = "<group>"; };
+		E6ADBA241195709A004E2BE5 /* TreeCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeCtrl.h; sourceTree = "<group>"; };
 		E6ADBA271195709A004E2BE5 /* safecombinationchange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = safecombinationchange.cpp; sourceTree = "<group>"; };
 		E6ADBA281195709A004E2BE5 /* safecombinationchange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = safecombinationchange.h; sourceTree = "<group>"; };
 		E6ADBA291195709A004E2BE5 /* safecombinationentry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = safecombinationentry.cpp; sourceTree = "<group>"; };
@@ -1269,8 +1269,8 @@
 				E6ADBA201195709A004E2BE5 /* GridCtrl.h */,
 				E6ADBA211195709A004E2BE5 /* GridTable.cpp */,
 				E6ADBA221195709A004E2BE5 /* GridTable.h */,
-				E6ADBA231195709A004E2BE5 /* PWStree.cpp */,
-				E6ADBA241195709A004E2BE5 /* PWStree.h */,
+				E6ADBA231195709A004E2BE5 /* TreeCtrl.cpp */,
+				E6ADBA241195709A004E2BE5 /* TreeCtrl.h */,
 				E6ADBA271195709A004E2BE5 /* safecombinationchange.cpp */,
 				E6ADBA281195709A004E2BE5 /* safecombinationchange.h */,
 				E6ADBA291195709A004E2BE5 /* safecombinationentry.cpp */,
@@ -1798,7 +1798,7 @@
 				E6ADBA931195709A004E2BE5 /* Clipboard.cpp in Sources */,
 				E6ADBA941195709A004E2BE5 /* GridCtrl.cpp in Sources */,
 				E6ADBA951195709A004E2BE5 /* GridTable.cpp in Sources */,
-				E6ADBA961195709A004E2BE5 /* PWStree.cpp in Sources */,
+				E6ADBA961195709A004E2BE5 /* TreeCtrl.cpp in Sources */,
 				E6ADBA981195709A004E2BE5 /* safecombinationchange.cpp in Sources */,
 				E6ADBA991195709A004E2BE5 /* safecombinationentry.cpp in Sources */,
 				E6ADBA9A1195709A004E2BE5 /* safecombinationprompt.cpp in Sources */,

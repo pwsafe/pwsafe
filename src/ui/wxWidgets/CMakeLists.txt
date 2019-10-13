@@ -37,7 +37,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/GridCtrl.h
     src/ui/wxWidgets/GridTable.h
     src/ui/wxWidgets/PWStatusBar.h
-    src/ui/wxWidgets/PWStree.h
+    src/ui/wxWidgets/TreeCtrl.h
     src/ui/wxWidgets/PasswordPolicyDlg.h
     src/ui/wxWidgets/PwsSync.h
     src/ui/wxWidgets/PwsToolbarButtons.h
@@ -97,7 +97,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/DragBarCtrl.cpp
     src/ui/wxWidgets/GridCtrl.cpp
     src/ui/wxWidgets/GridTable.cpp
-    src/ui/wxWidgets/PWStree.cpp
+    src/ui/wxWidgets/TreeCtrl.cpp
     src/ui/wxWidgets/PwsSync.cpp
     src/ui/wxWidgets/SafeCombinationCtrl.cpp
     src/ui/wxWidgets/SelectionCriteria.cpp

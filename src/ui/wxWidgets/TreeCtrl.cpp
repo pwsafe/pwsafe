@@ -25,7 +25,7 @@
 #include <wx/tokenzr.h>
 ////@end includes
 
-#include "PWStree.h"
+#include "TreeCtrl.h"
 #include "PasswordSafeFrame.h"
 #include "core/PWSprefs.h"
 #include "core/Command.h"

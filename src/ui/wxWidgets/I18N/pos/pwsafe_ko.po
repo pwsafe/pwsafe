@@ -3626,23 +3626,23 @@ msgstr ""
 msgid "Target last changed on:"
 msgstr "대상의 마지막 변경 시점:"
 
-#: ../../../ui/wxWidgets/PWStree.cpp:704
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:704
 msgid "New Group"
 msgstr "새 그룹 만들기"
 
-#: ../../../ui/wxWidgets/PWStree.cpp:706
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:706
 msgid "Could not add empty group item to tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWStree.cpp:719
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:719
 msgid "Renaming of non-Group items is not implemented"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWStree.cpp:746
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:746
 msgid "Dots are not allowed in group names"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWStree.cpp:746
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:746
 #, fuzzy
 msgid "Invalid Character"
 msgstr "잘못된 변수"

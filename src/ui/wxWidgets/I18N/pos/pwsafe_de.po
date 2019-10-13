@@ -3394,23 +3394,23 @@ msgstr "DDD DD MMM YYYY HH:MM:SS XM ZZZ"
 msgid "Target last changed on:"
 msgstr "Ziel wurde zuletzt geändert am:"
 
-#: ../../../ui/wxWidgets/PWStree.cpp:704
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:704
 msgid "New Group"
 msgstr "Neue Gruppe"
 
-#: ../../../ui/wxWidgets/PWStree.cpp:706
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:706
 msgid "Could not add empty group item to tree"
 msgstr "Konnte kein leeres Gruppenelement der Baumstruktur hinzufügen"
 
-#: ../../../ui/wxWidgets/PWStree.cpp:719
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:719
 msgid "Renaming of non-Group items is not implemented"
 msgstr "Das Umbenennen von Nicht-Gruppenelementen ist nicht implementiert"
 
-#: ../../../ui/wxWidgets/PWStree.cpp:746
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:746
 msgid "Dots are not allowed in group names"
 msgstr "Das Punktzeichen ist in Gruppennamen nicht erlaubt"
 
-#: ../../../ui/wxWidgets/PWStree.cpp:746
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:746
 msgid "Invalid Character"
 msgstr "Ungültiges Zeichen"
 
