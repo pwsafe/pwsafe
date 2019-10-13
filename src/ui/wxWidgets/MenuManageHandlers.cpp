@@ -24,7 +24,7 @@
 #endif
 #include "wx/filename.h"
 
-#include "passwordsafeframe.h"
+#include "PasswordSafeFrame.h"
 #include "safecombinationprompt.h"
 #include "OptionsPropertySheetDlg.h"
 #include "SystemTray.h"

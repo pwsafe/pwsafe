@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file passwordsafeframe.cpp
+/** \file PasswordSafeFrame.cpp
 *
 */
 
@@ -43,7 +43,7 @@
 #include "safecombinationchange.h"
 #include "safecombinationsetup.h"
 #include "safecombinationprompt.h"
-#include "passwordsafeframe.h"
+#include "PasswordSafeFrame.h"
 #include "PropertiesDlg.h"
 #include "PasswordSafeSearch.h"
 #include "pwsclip.h"

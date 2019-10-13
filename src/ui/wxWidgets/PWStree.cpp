@@ -26,7 +26,7 @@
 ////@end includes
 
 #include "PWStree.h"
-#include "passwordsafeframe.h"
+#include "PasswordSafeFrame.h"
 #include "core/PWSprefs.h"
 #include "core/Command.h"
 

@@ -26,7 +26,7 @@
 #include <utility> // for make_pair
 #include <limits> //for MAX_INT
 #include "PWSgridtable.h"
-#include "passwordsafeframe.h"
+#include "PasswordSafeFrame.h"
 #include "PWSgrid.h"
 #include "../../core/ItemData.h"
 #include "../../core/PWScore.h"

@@ -589,14 +589,14 @@
           <bool name="proxy-Fit to content">0</bool>
           <string name="proxy-Font">""</string>
           <string name="proxy-Foreground colour">""</string>
-          <string name="proxy-Header filename">"passwordsafeframe.h"</string>
+          <string name="proxy-Header filename">"PasswordSafeFrame.h"</string>
           <long name="proxy-Height">300</long>
           <string name="proxy-Help text">""</string>
           <bool name="proxy-Hidden">0</bool>
           <string name="proxy-Icon">"../graphics/wxWidgets/cpane.xpm"</string>
           <string name="proxy-Id name">"ID_PASSWORDSAFEFRAME"</string>
           <long name="proxy-Id value">10001</long>
-          <string name="proxy-Implementation filename">"passwordsafeframe.cpp"</string>
+          <string name="proxy-Implementation filename">"PasswordSafeFrame.cpp"</string>
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
           <string name="proxy-Title">"PasswordSafe"</string>
           <string name="proxy-Tooltip text">""</string>

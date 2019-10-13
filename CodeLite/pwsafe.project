@@ -30,7 +30,7 @@
   <Dependencies/>
   <VirtualDirectory Name="src"/>
   <VirtualDirectory Name="wxWidgets">
-    <File Name="../src/ui/wxWidgets/passwordsafeframe.cpp"/>
+    <File Name="../src/ui/wxWidgets/PasswordSafeFrame.cpp"/>
     <File Name="../src/ui/wxWidgets/SystemTray.h"/>
     <File Name="../src/ui/wxWidgets/safecombinationchange.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationentry.h"/>
@@ -63,7 +63,7 @@
     <File Name="../src/ui/wxWidgets/OptionsPropertySheetDlg.h"/>
     <File Name="../src/ui/wxWidgets/safecombinationentry.cpp"/>
     <File Name="../src/ui/wxWidgets/AddEditPropSheetDlg.cpp"/>
-    <File Name="../src/ui/wxWidgets/passwordsafeframe.h"/>
+    <File Name="../src/ui/wxWidgets/PasswordSafeFrame.h"/>
     <File Name="../src/ui/wxWidgets/PWStree.h"/>
     <File Name="../src/ui/wxWidgets/AboutDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/PWSgridtable.cpp"/>

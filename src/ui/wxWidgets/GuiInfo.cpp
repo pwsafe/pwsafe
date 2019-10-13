@@ -18,7 +18,7 @@
 #endif
 
 #include "./GuiInfo.h"
-#include "./passwordsafeframe.h"
+#include "./PasswordSafeFrame.h"
 #include "./PWStree.h"
 #include "./PWSgrid.h"
 #include <functional>

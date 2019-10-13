@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file passwordsafeframe.h
+/** \file PasswordSafeFrame.h
  *
  */
 

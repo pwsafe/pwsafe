@@ -184,7 +184,7 @@ endif
 override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)
 CPPFLAGS:=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS) $(YUBIFLAGS) $(QRFLAGS) $(CPPFLAGS)
 
-SOURCES= passwordsafeframe.cpp \
+SOURCES= PasswordSafeFrame.cpp \
 	pwsafeapp.cpp safecombinationentry.cpp \
 	safecombinationsetup.cpp safecombinationprompt.cpp \
 	safecombinationchange.cpp AboutDlg.cpp \

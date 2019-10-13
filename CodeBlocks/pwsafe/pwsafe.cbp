@@ -422,8 +422,8 @@
 		<Unit filename="../../src/ui/wxWidgets/MenuViewHandlers.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/OptionsPropertySheetDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/OptionsPropertySheetDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/passwordsafeframe.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/passwordsafeframe.h" />
+		<Unit filename="../../src/ui/wxWidgets/PasswordSafeFrame.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/PasswordSafeFrame.h" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordSubsetDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordSubsetDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/PropertiesDlg.cpp" />

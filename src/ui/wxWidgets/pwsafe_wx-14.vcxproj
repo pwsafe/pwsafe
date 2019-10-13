@@ -269,7 +269,7 @@
     <ClInclude Include="OpenFilePickerValidator.h" />
     <ClInclude Include="OptionsPropertySheetDlg.h" />
     <ClInclude Include="PasswordPolicyDlg.h" />
-    <ClInclude Include="passwordsafeframe.h" />
+    <ClInclude Include="PasswordSafeFrame.h" />
     <ClInclude Include="PasswordSafeSearch.h" />
     <ClInclude Include="PasswordSubsetDlg.h" />
     <ClInclude Include="PropertiesDlg.h" />
@@ -329,7 +329,7 @@
     <ClCompile Include="OpenFilePickerValidator.cpp" />
     <ClCompile Include="OptionsPropertySheetDlg.cpp" />
     <ClCompile Include="PasswordPolicyDlg.cpp" />
-    <ClCompile Include="passwordsafeframe.cpp" />
+    <ClCompile Include="PasswordSafeFrame.cpp" />
     <ClCompile Include="PasswordSafeSearch.cpp" />
     <ClCompile Include="PasswordSubsetDlg.cpp" />
     <ClCompile Include="PropertiesDlg.cpp" />

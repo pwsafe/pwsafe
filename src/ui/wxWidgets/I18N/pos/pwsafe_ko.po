@@ -68,7 +68,7 @@ msgid "Please insert your YubiKey"
 msgstr ""
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:194
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:591
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:591
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:250
 #: ../../../ui/wxWidgets/yubicfg.cpp:202
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:384
@@ -125,7 +125,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:303
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:309
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:352
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1866
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1866
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:351
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:101
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:108
@@ -211,16 +211,16 @@ msgstr "선택된 필터 속성:"
 msgid "Please select a valid file"
 msgstr "열람할 리포트를 선택해 주십시오."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:451
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:451
 #, fuzzy
 msgid "&New..."
 msgstr "새로 만들기...(&N)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:452
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:452
 msgid "&Open..."
 msgstr "열기(&O)..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:453
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:453
 #: ../../../ui/wxWidgets/yubicfg.cpp:199
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:165
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:396
@@ -228,370 +228,370 @@ msgstr "열기(&O)..."
 msgid "&Close"
 msgstr "닫기(&C)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:457
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:457
 #, fuzzy
 msgid "&Unlock Safe\tCtrl+I"
 msgstr "Safe 해제"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:460
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:460
 #, fuzzy
 msgid "&Lock Safe\tCtrl+J"
 msgstr "Safe 잠그기"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:474
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:474
 #, fuzzy
 msgid "&Recent Safes..."
 msgstr "최근 보안 비밀번호(&R)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:481
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:481
 #, fuzzy
 msgid "Clear Recent Safe List"
 msgstr "최근 보안 비밀번호 내역 삭제(&C)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:483
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:483
 msgid "&Save..."
 msgstr "저장(&S)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:484
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:484
 msgid "Save &As..."
 msgstr "다른 이름으로 저장(&A)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:487
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:487
 msgid "v&1.x format..."
 msgstr "v1.x 형식...(&V)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:488
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:488
 msgid "v&2 format..."
 msgstr "v2 형식...(&V)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:489
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:489
 msgid "v&4 format (EXPERIMENTAL)..."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:490
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:490
 msgid "&Plain Text (tab separated)..."
 msgstr "탭으로 구분된 텍스트...(&P)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:491
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:495
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:491
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:495
 msgid "&XML format..."
 msgstr "XML 형식...(&X)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:492
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:492
 msgid "Export &To"
 msgstr "보내기(&T)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:494
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:494
 msgid "&Plain Text..."
 msgstr "텍스트...(&P)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:496
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:496
 msgid "&KeePass..."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:497
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:497
 msgid "Import &From"
 msgstr "불러오기(&F)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:498
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:498
 #, fuzzy
 msgid "&Merge..."
 msgstr "병합..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:499
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:499
 #, fuzzy
 msgid "&Compare..."
 msgstr "비교..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:500
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:500
 msgid "S&ynchronize..."
 msgstr "동기화(&Y)..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:502
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:502
 msgid "&Properties"
 msgstr "속성(&P)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:504
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:504
 msgid "E&xit"
 msgstr "종료(&X)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:505
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:505
 msgid "&File"
 msgstr "파일(&F)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:507
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:507
 #, fuzzy
 msgid "&Add Entry...\tCtrl+A"
 msgstr "항목 추가(&A)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:509
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:509
 #, fuzzy
 msgid "&View Entry...\tCtrl+Enter"
 msgstr "항목 편집..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:512
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:512
 #, fuzzy
 msgid "Edit Entry...\tCtrl+Enter"
 msgstr "항목 편집..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:514
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:514
 #, fuzzy
 msgid "&Delete Entry\tDel"
 msgstr "항목 삭제(&D)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:515
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:515
 #, fuzzy
 msgid "Rename Entry\tF2"
 msgstr "항목 이름 변경"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:516
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:516
 #, fuzzy
 msgid "&Find Entry...\tCtrl+F"
 msgstr "항목 추가(&A)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:517
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:517
 #, fuzzy
 msgid "&Duplicate Entry\tCtrl+D"
 msgstr "항목 복제(&D)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:518
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1940
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:518
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1940
 msgid "Protect Entry"
 msgstr "항목 보호하기"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:520
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:520
 msgid "Add Group"
 msgstr "그룹 추가"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:524
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:524
 #, fuzzy
 msgid "C&lear Clipboard\tCtrl+Del"
 msgstr "클립보드 비우기(&C)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:526
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:526
 #, fuzzy
 msgid "&Copy Password to Clipboard\tCtrl+C"
 msgstr "비밀번호를 클립보드에 복사(&C)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:527
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:527
 #, fuzzy
 msgid "Copy &Username to Clipboard\tCtrl+U"
 msgstr "사용자 이름을 클립보드에 복사(&U)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:528
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:528
 #, fuzzy
 msgid "Copy &Notes to Clipboard\tCtrl+G"
 msgstr "노트를 클립보드에 복사(&N)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:529
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:529
 #, fuzzy
 msgid "Copy URL to Clipboard\tCtrl+Alt+L"
 msgstr "URL을 클립보드에 복사"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:530
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:530
 #, fuzzy
 msgid "&Browse to URL\tCtrl+L"
 msgstr "URL 탐색(&B)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:531
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:531
 #, fuzzy
 msgid "Perform Auto&type\tCtrl+T"
 msgstr "자동입력 실행(&T)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:532
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:532
 #, fuzzy
 msgid "Go to Base entry"
 msgstr "기본 항목으로 이동(&G)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:533
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:533
 msgid "&Edit"
 msgstr "편집(&E)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:535
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:535
 msgid "Flattened &List"
 msgstr "리스트 펼치기(&L)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:536
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:536
 msgid "Nested &Tree"
 msgstr "중첩된 트리(&T)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:538
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:538
 msgid "Toolbar &visible"
 msgstr "툴바 보이기(&V)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:539
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:539
 msgid "&New Toolbar"
 msgstr "새 도구모음(&N)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:540
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:540
 msgid "&Classic Toolbar"
 msgstr "구식 스타일 툴바(&C)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:541
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:541
 msgid "&Dragbar visible"
 msgstr "드래그바 보이기(&D)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:543
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:543
 #: ../../../ui/wxWidgets/PwsToolbarButtons.h:212
 msgid "Expand All"
 msgstr "모두 펼치기"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:544
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:544
 #: ../../../ui/wxWidgets/PwsToolbarButtons.h:213
 msgid "Collapse All"
 msgstr "모두 펼치기"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:545
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:545
 msgid "Show &Unsaved Changes"
 msgstr "저장되지 않은 변경사항 보이기(&U)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:546
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:546
 msgid "Show entries with E&xpiry dates"
 msgstr "항목을 만료일자와 함께 표시(&X)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:548
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:548
 #, fuzzy
 msgid "&New/Edit Filter..."
 msgstr "필터 생성/편집하기(&N)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:549
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:549
 msgid "&Apply current"
 msgstr "현재 적용(&A)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:550
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:550
 msgid "&Manage..."
 msgstr "관리...(&M)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:551
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:551
 msgid "&Filters"
 msgstr "필터(&F)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:553
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:553
 #, fuzzy
 msgid "Customize &Main Toolbar..."
 msgstr "주 툴바 편집하기(&M)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:555
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:555
 msgid "&Tree/List Font"
 msgstr "트리/목록 글꼴(&T)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:556
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:556
 #, fuzzy
 msgid "&Add/Edit Font"
 msgstr "트리/목록 글꼴(&T)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:557
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:557
 msgid "&Password Font"
 msgstr "비밀번호 폰트(&P)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:558
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:558
 #, fuzzy
 msgid "&Notes Font"
 msgstr "노트"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:561
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:561
 msgid "Change &Font"
 msgstr "폰트 바꾸기(&F)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:563
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:563
 #: ../../../ui/wxWidgets/CompareDlg.cpp:162
 msgid "&Compare"
 msgstr "비교(&C)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:564
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:564
 msgid "&Find"
 msgstr "찾기(&F)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:565
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:565
 msgid "Import &Text"
 msgstr "텍스트 불러오기(&T)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:566
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:566
 msgid "Import &XML"
 msgstr "&XML 불러오기"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:567
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:567
 #, fuzzy
 msgid "&Merge"
 msgstr "합치기(&M)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:568
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:568
 msgid "&Validate"
 msgstr "유효화(&V)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:569
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:569
 #, fuzzy
 msgid "Reports"
 msgstr "보고서(&R)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:570
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:570
 msgid "&View"
 msgstr "보기(&V)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:572
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:572
 msgid "&Change Safe Combination..."
 msgstr "보안 비밀번호 바꾸기(&C)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:574
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:574
 #, fuzzy
 msgid "Make &Backup...\tCtrl+B"
 msgstr "백업본 생성"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:575
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:575
 #, fuzzy
 msgid "&Restore from Backup...\tCtrl+R"
 msgstr "백업본에서 되돌리기..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:577
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:577
 #, fuzzy
 msgid "&Options...\tCtrl+M"
 msgstr "옵션...(&O)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:578
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:578
 #, fuzzy
 msgid "Password Policies..."
 msgstr "비밀번호 정책"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:580
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:580
 #, fuzzy
 msgid "Generate &Password...\tCtrl+P"
 msgstr "비밀번호 생성(&P)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:580
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:580
 msgid "Generate Password"
 msgstr "비밀번호 생성"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:582
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:582
 msgid "YubiKey..."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:582
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:582
 msgid "Configure and backup YubiKeys"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:586
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:586
 msgid "&Manage"
 msgstr "관리(&M)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:588
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:588
 msgid "Get &Help"
 msgstr "도움말 얻기(&H)\tF1"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:589
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:589
 msgid "Visit Password Safe &website..."
 msgstr "Password Safe 웹사이트 방문...(&W)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:590
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:590
 #: ../../../ui/wxWidgets/SystemTray.cpp:144
 msgid "&About Password Safe..."
 msgstr "Password Safe에 관하여...(&A)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:686
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:686
 #, fuzzy
 msgid "Select Language"
 msgstr "모든 항목 선택"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1026
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1026
 #, fuzzy
 msgid ""
 "Unable to create intermediate backup.  Save database elsewhere or with "
@@ -601,17 +601,17 @@ msgid ""
 msgstr ""
 "%s. 데이터베이스를 다른 이름으로 저장하거나, 저장하지 말고 종료해주십시오."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1027
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1034
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1039
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1049
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2339
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1027
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1034
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1039
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1049
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2339
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:505
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:127
 msgid "Write Error"
 msgstr "쓰기 오류"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1033
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1033
 #, fuzzy
 msgid ""
 "Unable to create intermediate backup.  Do you wish to save changes to your "
@@ -619,12 +619,12 @@ msgid ""
 msgstr ""
 "%s. 데이터베이스를 다른 이름으로 저장하거나, 저장하지 말고 종료해주십시오."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1039
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1049
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1039
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1049
 msgid "Unable to create intermediate backup."
 msgstr "임시 백업본을 생성하는 데 실패했습니다."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1059
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1059
 #, c-format
 msgid ""
 "The original database, \"%ls\", is in pre-3.0 format. It will be unchanged.\n"
@@ -633,32 +633,32 @@ msgid ""
 "the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1061
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1465
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1061
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1465
 msgid "File version warning"
 msgstr "파일 버전 경고"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1117
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1117
 #, fuzzy
 msgid "Do you wish to save this restored database as new database?"
 msgstr "비밀번호 데이터베이스 %s에 변경 사항을 저장하시겠습니까?:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1118
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1118
 #, fuzzy
 msgid "Unsaved restored database"
 msgstr "in the database"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1150
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1150
 #, fuzzy
 msgid "Do you want to save changes to the password database"
 msgstr "비밀번호 데이터베이스 %s에 변경 사항을 저장하시겠습니까?:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1211
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1211
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:431
 msgid "Please Choose a Database to Open:"
 msgstr "불러올 데이터베이스를 선택하세요:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1258
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1258
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:60
 #, fuzzy
 msgid ""
@@ -670,16 +670,16 @@ msgstr ""
 "업본 (*.bak)|*.bak|Password Safe 임시 백업본 (*.ibak)|*.ibak|모든 파일 (*.*)|"
 "*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1278
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1278
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:108
 msgid "That file is already open."
 msgstr "그 파일은 이미 열려 있습니다."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1278
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1278
 msgid "Open database"
 msgstr "데이터베이스 열기"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1464
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1464
 #, c-format
 msgid ""
 "The original database, '%ls', is in pre-3.0 format. The data will now be "
@@ -688,15 +688,15 @@ msgid ""
 "Old (1.x or 2) format' command."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1477
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1477
 msgid "Please choose a name for the current (Untitled) database:"
 msgstr "현재 (제목없는) 데이터베이스에 사용할 이름을 지정해 주십시오:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1478
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1478
 msgid "Please choose a new name for the current database:"
 msgstr "현재 데이터베이스의 새 이름을 지정해 주십시오:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1486
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1486
 #, fuzzy
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
@@ -705,7 +705,7 @@ msgstr ""
 "Password Safe 데이터베이스 (*.psafe3; *.dat)|*.psafe3; *.dat|모든 파일 (*.*)|"
 "*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1498
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1498
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -716,128 +716,128 @@ msgstr ""
 "\n"
 "파일이 현재 %ls에 의해 잠겨져 있습니다"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1499
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1499
 msgid "File lock error"
 msgstr "파일 잠금 오류"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1864
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1864
 #, fuzzy, c-format
 msgid "Unknown code: %d"
 msgstr "알 수 없는 필드"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1903
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1903
 msgid "Add &Entry"
 msgstr "항목 추가(&E)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1904
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1904
 msgid "Add &Group"
 msgstr "그룹 추가(&G)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1905
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1905
 #, fuzzy
 msgid "&Rename Group"
 msgstr "그룹 이름 변경"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1906
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1906
 msgid "&Delete Group"
 msgstr "그룹 삭제(&D)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1911
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1911
 #, fuzzy
 msgid "Copy &Username to Clipboard"
 msgstr "사용자 이름을 클립보드에 복사(&U)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1912
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1912
 #, fuzzy
 msgid "&Copy Password to Clipboard"
 msgstr ""
 "\n"
 "클립보드에 비밀번호 복사"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1913
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1913
 msgid "Display subset of Password"
 msgstr "비밀번호 조합 보이기"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1915
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1915
 msgid "Display Password as &QR code"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1917
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1917
 #, fuzzy
 msgid "Copy &Notes to Clipboard"
 msgstr "노트를 클립보드에 복사(&N)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1918
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1918
 msgid "Copy UR&L to Clipboard"
 msgstr "&URL을 클립보드에 복사"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1919
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1919
 msgid "Copy email to Clipboard"
 msgstr "전자우편 주소를 클립보드에 복사"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1920
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1920
 msgid "Copy Run Command to Clipboard"
 msgstr "실행 명령을 클립보드에 복사"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1922
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1922
 #: ../../../ui/wxWidgets/SystemTray.cpp:203
 #, fuzzy
 msgid "&Browse to URL"
 msgstr "URL으로 탐색"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1923
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1923
 #: ../../../ui/wxWidgets/SystemTray.cpp:204
 msgid "Browse to URL + &Autotype"
 msgstr "URL으로 탐색하고 자동입력(&A)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1924
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1924
 msgid "Send &email"
 msgstr "전자우편 보내기(&E)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1925
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1925
 #: ../../../ui/wxWidgets/SystemTray.cpp:211
 msgid "&Run Command"
 msgstr "명령 실행(&R)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1926
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1926
 msgid "Perform Auto &Type"
 msgstr "자동입력 하기(&T)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1929
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1929
 #, fuzzy
 msgid "&View Entry..."
 msgstr "항목 보기"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1932
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1932
 #, fuzzy
 msgid "Edit Entry..."
 msgstr "항목 편집..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1934
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1934
 #, fuzzy
 msgid "&Duplicate Entry"
 msgstr ""
 "\n"
 "항목 복제"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1935
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1935
 msgid "Delete Entry"
 msgstr "항목 삭제"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1936
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1936
 msgid "Create &Shortcut"
 msgstr "바로가기 만들기(&S)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1937
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1937
 #, fuzzy
 msgid "&Go to Base entry"
 msgstr "기본 항목으로 이동(&G)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1938
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1938
 msgid "&Edit Base entry"
 msgstr "기본 항목 편집(&E)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2344
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2344
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:504
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:126
 #, fuzzy
@@ -847,7 +847,7 @@ msgstr ""
 "\n"
 "파일을 쓸 수 없었습니다!"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2347
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2347
 msgid ""
 "Write operation failed!\n"
 "File may have been corrupted.\n"
@@ -857,7 +857,7 @@ msgstr ""
 "파일이 손상된 것 같습니다.\n"
 "다른 곳에 저장해 보십시오"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2352
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2352
 #: ../../../ui/wxWidgets/wxutils.cpp:73
 #, fuzzy
 msgid "Unknown error"
@@ -866,56 +866,56 @@ msgstr ""
 "\n"
 "알 수 없는 오류"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2370
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2370
 #, fuzzy
 msgid "Do you want to save changes to the password database: "
 msgstr "비밀번호 데이터베이스 %s에 변경 사항을 저장하시겠습니까?:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2424
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2424
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:466
 msgid "Please choose a name for the new database"
 msgstr "새 데이터베이스에 사용할 이름을 지정해 주십시오"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2433
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2433
 #, fuzzy
 msgid "psafe3 files (*.psafe3)|*.psafe3|All files(*.*; *)|*.*;*"
 msgstr "Password Safe 데이터베이스 (*.psafe3)|*.psafe3|모든 파일 (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2514
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2514
 #, fuzzy
 msgid "Could not re-load database: "
 msgstr "현재 데이터베이스에만 존재하는 항목들(%s):"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2515
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2515
 msgid "Error re-loading last database"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2772
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2772
 msgid "There was an error loading the database: "
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2773
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2773
 #, fuzzy
 msgid "Could not load database"
 msgstr "데이터베이스 선택"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2787
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2787
 msgid ""
 "The current database was opened in read-only mode.  You cannot import into "
 "it."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2788
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2788
 #, fuzzy
 msgid "Import text"
 msgstr "텍스트 불러오기(&T)"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2796
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2796
 #, fuzzy
 msgid "The database:"
 msgstr "in the database"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2797
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2797
 #, fuzzy
 msgid "has duplicate entries with the same group/title/user combination."
 msgstr ""
@@ -926,39 +926,39 @@ msgstr ""
 "가 같은 그룹/제목/사용자 모음의 항목들을 복제했습니다. 데이터베이스 유효성 검"
 "사를 통해 수정해 주십시오."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2798
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2798
 msgid "  Please fix by validating database."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2799
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2845
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2799
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2845
 #, fuzzy
 msgid "Import Text failed"
 msgstr "텍스트 불러오기 실패"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2818
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2818
 msgid "Import_Text"
 msgstr "텍스트 불러오기"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2820
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3028
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2820
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3028
 #, fuzzy, c-format
 msgid "%ls file being imported: %ls"
 msgstr "%ls 파일을 불러왔습니다: %ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2820
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2820
 msgid "Text"
 msgstr "텍스트"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2835
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2840
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2835
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2840
 #: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/wxutils.cpp:61
 #: ../../../ui/wxWidgets/wxutils.cpp:66 ../../../ui/wxWidgets/wxutils.cpp:73
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:184
 msgid "File Read Error"
 msgstr "파일 읽기 오류"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2836
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2836
 #: ../../../ui/wxWidgets/wxutils.cpp:60
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:183
 #, fuzzy
@@ -968,7 +968,7 @@ msgstr ""
 "\n"
 "파일을 읽을 수 없었습니다!"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2841
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2841
 #, fuzzy
 msgid "Invalid format"
 msgstr ""
@@ -976,94 +976,94 @@ msgstr ""
 "\n"
 "잘못된 형식"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2858
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2858
 #, fuzzy
 msgid "Updated "
 msgstr "%d %s 갱신함"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2858
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2858
 #, fuzzy
 msgid "Imported "
 msgstr "불러옴"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2859
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2864
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2878
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2859
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2864
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2878
 #, fuzzy
 msgid " entry"
 msgstr "항목"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2859
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2864
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2878
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2859
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2864
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2878
 #, fuzzy
 msgid " entries"
 msgstr "항목들"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2864
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2864
 #, fuzzy
 msgid "Skipped "
 msgstr ""
 "\n"
 "%d %s 생략됨"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2871
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2871
 #, fuzzy
 msgid "with Password History errors "
 msgstr ""
 "\n"
 "와 %d 비밀번호 내역 오류"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2878
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2878
 #, fuzzy
 msgid "Renamed "
 msgstr "이름 변경"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2883
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2975
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3061
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2883
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2975
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3061
 msgid "Completed successfully"
 msgstr "성공적으로 완료했습니다"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2883
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2975
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3061
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2883
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2975
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3061
 msgid "Completed but ...."
 msgstr "완료하였습니다만..."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2895
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2977
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3125
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3445
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2895
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2977
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3125
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3445
 #, fuzzy
 msgid "Do you wish to see a detailed report?"
 msgstr "정말 이것을 교체하시겠습니까?"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2907
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2907
 msgid "Please Choose a KeePass Text File to Import"
 msgstr "불러올 KeePass 텍스트 파일을 선택해 주십시오"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2909
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3201
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2909
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3201
 #, fuzzy
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
 msgstr "텍스트 파일 (*.txt)|*.txt|CSV 파일 (*.csv)|*.csv|모든 파일 (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2921
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2921
 msgid "Import_KeePassV1_CSV"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2923
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2923
 msgid "Import_KeePassV1_TXT"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2925
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2925
 #, fuzzy, c-format
 msgid "Text file being imported: %ls"
 msgstr "파일을 불러왔습니다: %ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2942
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2942
 #: ../../../ui/wxWidgets/PwsSync.cpp:603
 #, fuzzy, c-format
 msgid ""
@@ -1075,11 +1075,11 @@ msgstr ""
 "\n"
 "파일을 읽을 수 없었습니다!"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2943
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2943
 msgid "File open error"
 msgstr "파일 열기 오류"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2957
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2957
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -1090,32 +1090,32 @@ msgstr ""
 "\n"
 "잘못된 형식"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2958
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2958
 msgid "Import failed"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2971
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3102
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3103
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2971
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3102
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3103
 #: ../../../ui/wxWidgets/PwsSync.cpp:588 ../../../ui/wxWidgets/PwsSync.cpp:731
 #: ../../../ui/wxWidgets/PwsSync.cpp:748
 msgid "entry"
 msgstr "항목"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2971
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3102
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3103
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2971
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3102
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3103
 #: ../../../ui/wxWidgets/PwsSync.cpp:588 ../../../ui/wxWidgets/PwsSync.cpp:731
 #: ../../../ui/wxWidgets/PwsSync.cpp:748
 msgid "entries"
 msgstr "항목들"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2972
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2972
 #, fuzzy, c-format
 msgid "Imported %d %ls"
 msgstr "%d %ls 불러옴"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2994
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2994
 #: ../../../ui/wxWidgets/CompareDlg.cpp:729
 #: ../../../ui/wxWidgets/PwsSync.cpp:619
 #, fuzzy, c-format
@@ -1134,12 +1134,12 @@ msgstr ""
 "가 같은 그룹/제목/사용자 모음의 항목들을 복제했습니다. 데이터베이스 유효성 검"
 "사를 통해 수정해 주십시오."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2995
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3043
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2995
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3043
 msgid "Import XML failed"
 msgstr "XML 설정 불러오기 실패"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3005
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3005
 #, fuzzy, c-format
 msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application "
@@ -1149,24 +1149,24 @@ msgstr ""
 "Password Safe 실행 폴더에서 XML 스키마 정의 파일 (%ls) 을 찾을 수 없습니다.\n"
 "설치 파일에서 복사하시거나, Password Safe를 재설치 해 주십시오."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3006
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3006
 #, fuzzy
 msgid "Missing XSD File - "
 msgstr "xsd 파일 없음"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3006
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3006
 msgid " Build"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3027
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3027
 msgid "Import_XML"
 msgstr "XML 불러오기"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3028
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3028
 msgid "XML"
 msgstr "XML"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3049
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3049
 #, fuzzy, c-format
 msgid ""
 "File: %ls failed validation against XML Schema:\n"
@@ -1177,7 +1177,7 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3055
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3055
 #, fuzzy, c-format
 msgid ""
 "File: %ls passed Validation but had the following errors during import:\n"
@@ -1189,25 +1189,25 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3076
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3076
 msgid "The following records were skipped:"
 msgstr "다음 레코드가 무시되었습니다:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3078
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3078
 #, c-format
 msgid " / skipped %d"
 msgstr " / %d 생략됨"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3083
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3083
 msgid "The following records had errors in their Password History:"
 msgstr "다음 항목들이 비밀번호 내역에서 오류를 가지고 있습니다:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3085
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3085
 #, c-format
 msgid " / with Password History errors %d"
 msgstr "/ %d 비밀번호 과거 오류"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3090
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3090
 msgid ""
 "The following records were renamed as an entry already exists in your "
 "database or in the Import file:"
@@ -1215,12 +1215,12 @@ msgstr ""
 "다음 레코드는 이미 당신의 데이터베이스에 존재하거나 불러온 파일으로써 이름이 "
 "변경되었습니다:"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3092
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3092
 #, c-format
 msgid " / renamed %d"
 msgstr " / %d 이름이 변경됨"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3097
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3097
 #, fuzzy, c-format
 msgid ""
 "File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
@@ -1229,7 +1229,7 @@ msgstr ""
 "파일: %ls 을 불러왔습니다 (유효한 항목 %d / %d%ls%ls%ls 불러옴). 자세한 내용"
 "은 보고서를 참조하십시오."
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3104
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3104
 #, fuzzy, c-format
 msgid ""
 "Validated %d %ls\n"
@@ -1240,179 +1240,179 @@ msgstr ""
 "\n"
 "%d %ls 불러옴"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3112
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3112
 msgid "XML import not supported in this release"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3115
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3115
 #, c-format
 msgid "XML import: Unexpected return code(%d)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3148
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3152
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3148
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3152
 #, fuzzy
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*"
 msgstr ""
 "Password Safe 데이터베이스 (*.psafe3; *.dat)|*.psafe3; *.dat|모든 파일 (*.*)|"
 "*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3156
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3156
 #, fuzzy
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*"
 msgstr ""
 "Password Safe 데이터베이스 (*.psafe3; *.dat)|*.psafe3; *.dat|모든 파일 (*.*)|"
 "*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3167
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3167
 msgid "Please name the exported database"
 msgstr "내보낼 데이터베이스의 이름을 지정해 주십시오"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3184
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3184
 msgid "Could not figure out why PasswordSafeFrame::OnExportVx was invoked"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3194
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3194
 msgid "Export Text"
 msgstr "텍스트 보내기"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3198
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3198
 #, fuzzy
 msgid "Export Text failed"
 msgstr "텍스트 불러오기 실패"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3200
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3200
 msgid "Please name the plaintext file"
 msgstr "텍스트 파일의 이름을 지정해 주십시오"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3211
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3211
 msgid "Advanced Text Export Options"
 msgstr "고급 텍스트 보내기 옵션"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3231
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3279
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3231
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3279
 #, fuzzy
 msgid "export"
 msgstr "exported"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3242
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3242
 msgid "Export XML"
 msgstr "XML 보내기"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3246
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3246
 #, fuzzy
 msgid "Export XML failed"
 msgstr "XML 설정 불러오기 실패"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3248
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3248
 msgid "Please name the XML file"
 msgstr "XML 파일의 이름을 지정해주세요"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3249
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3249
 #, fuzzy
 msgid "XML files (*.xml)|*.xml|All files (*.*; *)|*.*;*"
 msgstr "XML 파일 (*.xml)|*.xml|모든 파일 (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3260
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3260
 msgid "Advanced XML Export Options"
 msgstr "고급 XML 보내기 옵션"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3349
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3349
 #, fuzzy
 msgid "Exporting database: "
 msgstr "데이터베이스 병합: %s\n"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3373
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3373
 msgid "No entries satisfied your selection criteria and so none were exported!"
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3386
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3386
 msgid "Passkey incorrect"
 msgstr "비밀번호 불일치"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3430
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3430
 msgid "Merge"
 msgstr "병합"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3431
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3431
 #, fuzzy
 msgid "Merging database: "
 msgstr "데이터베이스 병합: %s\n"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3446
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3446
 #, fuzzy
 msgid "Merge Complete"
 msgstr "비교 완료"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3528
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3528
 msgid "Group copied "
 msgstr "그룹 복사됨"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3531
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3531
 msgid "Title copied "
 msgstr "주제 복사됨"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3534
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3534
 msgid "User copied "
 msgstr "사용자 이름 복사됨"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3537
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3537
 msgid "Pswd copied "
 msgstr "비밀번호 복사됨"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3540
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3540
 msgid "Notes copied "
 msgstr "노트가 복사됨"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3543
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3543
 #, fuzzy
 msgid "URL copied "
 msgstr "사용자 이름 복사됨"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3546
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3546
 msgid "Autotype copied "
 msgstr "자동입력됨"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3549
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3549
 msgid "RunCmd copied "
 msgstr "명령 복사됨"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3552
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3552
 #, fuzzy
 msgid "Email copied "
 msgstr "전자우편 복사됨"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3555
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3555
 #, fuzzy
 msgid "Password History copied "
 msgstr "비밀번호 내역 필터"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3558
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3558
 #, fuzzy
 msgid "Old Pswd copied "
 msgstr "비밀번호 복사됨"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3597
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3597
 #, fuzzy
 msgid "Select Tree/List display font"
 msgstr "트리/리스트 보기 글꼴 설정"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3614
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3614
 #, fuzzy
 msgid "Select Add/Edit display font"
 msgstr "트리/리스트 보기 글꼴 설정"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3618
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3618
 #, fuzzy
 msgid "Select Password display font"
 msgstr "비밀번호 표시 글꼴 설정"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3622
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3622
 #, fuzzy
 msgid "Select Notes display font"
 msgstr "트리/리스트 보기 글꼴 설정"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3626
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3626
 #, fuzzy
 msgid "Select Virtual Keyboard font"
 msgstr "가상 키보드 글꼴 설정"
@@ -3981,7 +3981,7 @@ msgstr "항목 보기"
 msgid "Enter Safe Combination"
 msgstr "보안 비빌번호를 입력하세요"
 
-#: ../../../ui/wxWidgets/passwordsafeframe.h:119
+#: ../../../ui/wxWidgets/PasswordSafeFrame.h:119
 #: ../../../ui/wxWidgets/wxMessages.h:19 ../../../ui/wxWidgets/wxMessages.h:34
 #, fuzzy
 msgid "PasswordSafe"
