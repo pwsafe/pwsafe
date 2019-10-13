@@ -213,7 +213,7 @@ msgstr "Введите пароль для контейнера"
 msgid "Safe Combination Setup"
 msgstr "Установка пароля для контейнера"
 
-#: src/ui/wxWidgets/yubicfg.h:50
+#: src/ui/wxWidgets/YubiCfgDlg.h:50
 msgid "YubiKey Configuration"
 msgstr "Настройки YubiKey"
 
@@ -264,7 +264,7 @@ msgstr "Copyright (c) 2003-2019 Rony Shapiro"
 #: src/ui/wxWidgets/AboutDlg.cpp:185 src/ui/wxWidgets/PasswordPolicyDlg.cpp:396
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:453
 #: src/ui/wxWidgets/PasswordSubsetDlg.cpp:165 src/ui/wxWidgets/SystemTray.cpp:135
-#: src/ui/wxWidgets/yubicfg.cpp:199
+#: src/ui/wxWidgets/YubiCfgDlg.cpp:199
 msgid "&Close"
 msgstr "&Закрыть"
 
@@ -990,7 +990,7 @@ msgstr "&Отмена"
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:250
 #: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:194
 #: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:186
-#: src/ui/wxWidgets/yubicfg.cpp:202
+#: src/ui/wxWidgets/YubiCfgDlg.cpp:202
 msgid "&Help"
 msgstr "П&омощь"
 
@@ -1177,7 +1177,7 @@ msgstr ""
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:236
 #: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:186
 #: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:171
-#: src/ui/wxWidgets/yubicfg.cpp:366 src/ui/wxWidgets/YubiMixin.cpp:58
+#: src/ui/wxWidgets/YubiCfgDlg.cpp:366 src/ui/wxWidgets/YubiMixin.cpp:58
 msgid "Please insert your YubiKey"
 msgstr "Вставьте ваш YubiKey"
 
@@ -1424,7 +1424,7 @@ msgid "Test Selected Policy"
 msgstr "Проверить выбранную политику"
 
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:200
-#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:361 src/ui/wxWidgets/yubicfg.cpp:190
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:361 src/ui/wxWidgets/YubiCfgDlg.cpp:190
 msgid "Generate"
 msgstr "Создать"
 
@@ -3822,24 +3822,24 @@ msgstr ""
 "Возможно изменение или потеря данных.\n"
 "Всё равно продолжить?"
 
-#: src/ui/wxWidgets/yubicfg.cpp:167
+#: src/ui/wxWidgets/YubiCfgDlg.cpp:167
 msgid "YubiKey Serial Number: "
 msgstr "Серийный номер YubiKey: "
 
-#: src/ui/wxWidgets/yubicfg.cpp:173
+#: src/ui/wxWidgets/YubiCfgDlg.cpp:173
 msgid "YubiKey Secret Key (20 Byte Hex)"
 msgstr "Закрытый ключ YubiKey (20 байт в шестн. формате)"
 
-#: src/ui/wxWidgets/yubicfg.cpp:187 src/ui/wxWidgets/yubicfg.cpp:320
+#: src/ui/wxWidgets/YubiCfgDlg.cpp:187 src/ui/wxWidgets/YubiCfgDlg.cpp:320
 msgid "Hide"
 msgstr "Скрыть"
 
-#: src/ui/wxWidgets/yubicfg.cpp:193
+#: src/ui/wxWidgets/YubiCfgDlg.cpp:193
 msgid "Set YubiKey"
 msgstr "Сохранить"
 
 # Показать ключ (пароль) YubiKey
-#: src/ui/wxWidgets/yubicfg.cpp:329
+#: src/ui/wxWidgets/YubiCfgDlg.cpp:329
 msgid "Show"
 msgstr "Показать"
 

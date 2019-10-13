@@ -108,8 +108,8 @@ list(APPEND PWSAFE_SRC_LIST
     )
 
 if(HAVE_YKPERS_H)
-  list(APPEND PWSAFE_SRC_LIST src/ui/wxWidgets/yubicfg.cpp src/ui/wxWidgets/YubiMixin.cpp)
-  list(APPEND PWSAFE_HDR_LIST src/ui/wxWidgets/yubicfg.h src/ui/wxWidgets/YubiMixin.h)
+  list(APPEND PWSAFE_SRC_LIST src/ui/wxWidgets/YubiCfgDlg.cpp src/ui/wxWidgets/YubiMixin.cpp)
+  list(APPEND PWSAFE_HDR_LIST src/ui/wxWidgets/YubiCfgDlg.h src/ui/wxWidgets/YubiMixin.h)
 endif(HAVE_YKPERS_H)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")

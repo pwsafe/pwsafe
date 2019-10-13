@@ -162,7 +162,7 @@
     <ClInclude Include="SelectionCriteria.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="yubicfg.h">
+    <ClInclude Include="YubiCfgDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="YubiMixin.h">
@@ -319,7 +319,7 @@
     <ClCompile Include="SelectionCriteria.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="yubicfg.cpp">
+    <ClCompile Include="YubiCfgDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="YubiMixin.cpp">

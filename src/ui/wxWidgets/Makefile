@@ -23,7 +23,7 @@ endif
 WX_CONFIG?=$(shell if [ -e $(WX3) ]; then echo $(WX3); else echo $(WX2); fi)
 
 ifndef NO_YUBI
-YUBI_SRC=yubicfg.cpp YubiMixin.cpp
+YUBI_SRC=YubiCfgDlg.cpp YubiMixin.cpp
 YBPERS_LIBS=ykpers-1
 else
 YUBIFLAGS=-DNO_YUBI

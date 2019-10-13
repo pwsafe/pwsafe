@@ -31,7 +31,7 @@
 #include "ManagePasswordPoliciesDlg.h"
 #include "PasswordPolicyDlg.h"
 #ifndef NO_YUBI
-#include "yubicfg.h"
+#include "YubiCfgDlg.h"
 #endif
 #include "core/PWSdirs.h"
 

@@ -472,13 +472,13 @@
 		<Unit filename="../../src/ui/wxWidgets/wxMessages.h" />
 		<Unit filename="../../src/ui/wxWidgets/wxUtilities.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/wxUtilities.h" />
-		<Unit filename="../../src/ui/wxWidgets/yubicfg.cpp">
+		<Unit filename="../../src/ui/wxWidgets/YubiCfg.cpp">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />
 			<Option target="Release_L32Y" />
 		</Unit>
-		<Unit filename="../../src/ui/wxWidgets/yubicfg.h">
+		<Unit filename="../../src/ui/wxWidgets/YubiCfg.h">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />
