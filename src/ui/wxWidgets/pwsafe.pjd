@@ -2382,13 +2382,13 @@
               <bool name="proxy-External implementation">0</bool>
               <string name="proxy-Font">""</string>
               <string name="proxy-Foreground colour">""</string>
-              <string name="proxy-Header filename">"PWSgrid.h"</string>
+              <string name="proxy-Header filename">"GridCtrl.h"</string>
               <long name="proxy-Height">-1</long>
               <string name="proxy-Help text">""</string>
               <bool name="proxy-Hidden">0</bool>
               <string name="proxy-Id name">"ID_LISTBOX"</string>
               <long name="proxy-Id value">10060</long>
-              <string name="proxy-Implementation filename">"PWSgrid.cpp"</string>
+              <string name="proxy-Implementation filename">"GridCtrl.cpp"</string>
               <string name="proxy-Member variable name">"m_grid"</string>
               <string name="proxy-Name">""</string>
               <string name="proxy-Platform">"&lt;Any platform&gt;"</string>

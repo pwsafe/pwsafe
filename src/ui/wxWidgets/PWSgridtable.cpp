@@ -27,7 +27,7 @@
 #include <limits> //for MAX_INT
 #include "PWSgridtable.h"
 #include "PasswordSafeFrame.h"
-#include "PWSgrid.h"
+#include "GridCtrl.h"
 #include "../../core/ItemData.h"
 #include "../../core/PWScore.h"
 #include <wx/tokenzr.h>

@@ -3790,7 +3790,7 @@ msgid "Group"
 msgstr "Grupo"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:290
-#: ../../../ui/wxWidgets/PWSgrid.cpp:155
+#: ../../../ui/wxWidgets/GridCtrl.cpp:155
 msgid "Title"
 msgstr "Título"
 
@@ -3926,7 +3926,7 @@ msgstr ""
 msgid "Error parsing Run Command"
 msgstr "Error al analizar el comando a ejecutar"
 
-#: ../../../ui/wxWidgets/PWSgrid.cpp:156
+#: ../../../ui/wxWidgets/GridCtrl.cpp:156
 #, fuzzy
 msgid "User"
 msgstr " 'Usuario'"

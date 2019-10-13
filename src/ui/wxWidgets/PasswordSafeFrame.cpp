@@ -36,7 +36,7 @@
 #include "os/sleep.h"
 
 #include "AboutDlg.h"
-#include "PWSgrid.h"
+#include "GridCtrl.h"
 #include "PWStree.h"
 #include "PWStatusBar.h"
 #include "PWSgridtable.h"

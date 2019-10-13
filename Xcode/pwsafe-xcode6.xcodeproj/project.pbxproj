@@ -75,7 +75,7 @@
 		E6ADBA431195709A004E2BE5 /* PropertiesDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B911957099004E2BE5 /* PropertiesDlg.cpp */; };
 		E6ADBA921195709A004E2BE5 /* PWSafeApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1B1195709A004E2BE5 /* PWSafeApp.cpp */; };
 		E6ADBA931195709A004E2BE5 /* Clipboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1D1195709A004E2BE5 /* Clipboard.cpp */; };
-		E6ADBA941195709A004E2BE5 /* PWSgrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1F1195709A004E2BE5 /* PWSgrid.cpp */; };
+		E6ADBA941195709A004E2BE5 /* GridCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1F1195709A004E2BE5 /* GridCtrl.cpp */; };
 		E6ADBA951195709A004E2BE5 /* PWSgridtable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA211195709A004E2BE5 /* PWSgridtable.cpp */; };
 		E6ADBA961195709A004E2BE5 /* PWStree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA231195709A004E2BE5 /* PWStree.cpp */; };
 		E6ADBA981195709A004E2BE5 /* safecombinationchange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA271195709A004E2BE5 /* safecombinationchange.cpp */; };
@@ -558,8 +558,8 @@
 		E6ADBA1C1195709A004E2BE5 /* PWSafeApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSafeApp.h; sourceTree = "<group>"; };
 		E6ADBA1D1195709A004E2BE5 /* Clipboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Clipboard.cpp; sourceTree = "<group>"; };
 		E6ADBA1E1195709A004E2BE5 /* Clipboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Clipboard.h; sourceTree = "<group>"; };
-		E6ADBA1F1195709A004E2BE5 /* PWSgrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSgrid.cpp; sourceTree = "<group>"; };
-		E6ADBA201195709A004E2BE5 /* PWSgrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSgrid.h; sourceTree = "<group>"; };
+		E6ADBA1F1195709A004E2BE5 /* GridCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GridCtrl.cpp; sourceTree = "<group>"; };
+		E6ADBA201195709A004E2BE5 /* GridCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridCtrl.h; sourceTree = "<group>"; };
 		E6ADBA211195709A004E2BE5 /* PWSgridtable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSgridtable.cpp; sourceTree = "<group>"; };
 		E6ADBA221195709A004E2BE5 /* PWSgridtable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSgridtable.h; sourceTree = "<group>"; };
 		E6ADBA231195709A004E2BE5 /* PWStree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWStree.cpp; sourceTree = "<group>"; };
@@ -1265,8 +1265,8 @@
 				E6ADBA1C1195709A004E2BE5 /* PWSafeApp.h */,
 				E6ADBA1D1195709A004E2BE5 /* Clipboard.cpp */,
 				E6ADBA1E1195709A004E2BE5 /* Clipboard.h */,
-				E6ADBA1F1195709A004E2BE5 /* PWSgrid.cpp */,
-				E6ADBA201195709A004E2BE5 /* PWSgrid.h */,
+				E6ADBA1F1195709A004E2BE5 /* GridCtrl.cpp */,
+				E6ADBA201195709A004E2BE5 /* GridCtrl.h */,
 				E6ADBA211195709A004E2BE5 /* PWSgridtable.cpp */,
 				E6ADBA221195709A004E2BE5 /* PWSgridtable.h */,
 				E6ADBA231195709A004E2BE5 /* PWStree.cpp */,
@@ -1796,7 +1796,7 @@
 				E6C94E931FA20593008F0072 /* pwsqrcodedlg.cpp in Sources */,
 				E6C94E961FA2075B008F0072 /* pwsqrencode.mm in Sources */,
 				E6ADBA931195709A004E2BE5 /* Clipboard.cpp in Sources */,
-				E6ADBA941195709A004E2BE5 /* PWSgrid.cpp in Sources */,
+				E6ADBA941195709A004E2BE5 /* GridCtrl.cpp in Sources */,
 				E6ADBA951195709A004E2BE5 /* PWSgridtable.cpp in Sources */,
 				E6ADBA961195709A004E2BE5 /* PWStree.cpp in Sources */,
 				E6ADBA981195709A004E2BE5 /* safecombinationchange.cpp in Sources */,

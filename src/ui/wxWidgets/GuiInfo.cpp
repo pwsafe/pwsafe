@@ -20,7 +20,7 @@
 #include "./GuiInfo.h"
 #include "./PasswordSafeFrame.h"
 #include "./PWStree.h"
-#include "./PWSgrid.h"
+#include "./GridCtrl.h"
 #include <functional>
 
 #ifdef __WXMSW__

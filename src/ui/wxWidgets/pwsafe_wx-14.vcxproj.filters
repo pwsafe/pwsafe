@@ -63,7 +63,7 @@
     <ClInclude Include="Clipboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PWSgrid.h">
+    <ClInclude Include="GridCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWSgridtable.h">
@@ -235,7 +235,7 @@
     <ClCompile Include="Clipboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PWSgrid.cpp">
+    <ClCompile Include="GridCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PWSgridtable.cpp">

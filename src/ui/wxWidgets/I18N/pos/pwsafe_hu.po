@@ -3564,7 +3564,7 @@ msgid "Group"
 msgstr "Csoport"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:290
-#: ../../../ui/wxWidgets/PWSgrid.cpp:155
+#: ../../../ui/wxWidgets/GridCtrl.cpp:155
 msgid "Title"
 msgstr "Cím"
 
@@ -3695,7 +3695,7 @@ msgstr ""
 msgid "Error parsing Run Command"
 msgstr "Hiba a futtatási parancs felolvasásakor"
 
-#: ../../../ui/wxWidgets/PWSgrid.cpp:156
+#: ../../../ui/wxWidgets/GridCtrl.cpp:156
 msgid "User"
 msgstr "Felhasználó"
 

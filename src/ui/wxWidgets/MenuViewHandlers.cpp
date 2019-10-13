@@ -26,7 +26,7 @@
 #include <wx/fontdlg.h> 
 
 #include "PasswordSafeFrame.h"
-#include "PWSgrid.h"
+#include "GridCtrl.h"
 #include "PWStree.h"
 #include "DragBarCtrl.h"
 #include "PasswordSafeSearch.h"

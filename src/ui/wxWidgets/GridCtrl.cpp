@@ -25,7 +25,7 @@
 
 #include <wx/memory.h>
 
-#include "PWSgrid.h"
+#include "GridCtrl.h"
 #include "PasswordSafeFrame.h" // for DispatchDblClickAction()
 #include "./PWSgridtable.h"
 #include "core/Command.h"

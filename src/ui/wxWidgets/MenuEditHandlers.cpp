@@ -24,7 +24,7 @@
 #endif
 #include "wx/utils.h" // for wxLaunchDefaultBrowser
 
-#include "PWSgrid.h"
+#include "GridCtrl.h"
 #include "PWStree.h"
 
 #include "PasswordSafeFrame.h"
