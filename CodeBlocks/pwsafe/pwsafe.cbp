@@ -371,7 +371,7 @@
 		<Unit filename="../../src/ui/wxWidgets/PasswordSafeSearch.h" />
 		<Unit filename="../../src/ui/wxWidgets/SyncWizard.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SyncWizard.h" />
-		<Unit filename="../../src/ui/wxWidgets/PwsToolbarButtons.h" />
+		<Unit filename="../../src/ui/wxWidgets/ToolbarButtons.h" />
 		<Unit filename="../../src/ui/wxWidgets/RecentDbList.h" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationCtrl.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationCtrl.h" />

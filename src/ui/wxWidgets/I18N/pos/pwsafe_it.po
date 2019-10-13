@@ -414,12 +414,12 @@ msgid "&Dragbar visible"
 msgstr "Barra di &Trascinamento visibile"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:543
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:212
+#: ../../../ui/wxWidgets/ToolbarButtons.h:212
 msgid "Expand All"
 msgstr "Espandi Tutto"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:544
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:213
+#: ../../../ui/wxWidgets/ToolbarButtons.h:213
 msgid "Collapse All"
 msgstr "Riduci Tutto"
 
@@ -3798,7 +3798,7 @@ msgid "YubiKey Configuration"
 msgstr "Configurazione YubiKey"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:129
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:215
+#: ../../../ui/wxWidgets/ToolbarButtons.h:215
 msgid "Options"
 msgstr "Opzioni"
 
@@ -3807,68 +3807,68 @@ msgstr "Opzioni"
 msgid "Show a subset of the Password"
 msgstr "Mostra un sottoinsieme della Password"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:192
+#: ../../../ui/wxWidgets/ToolbarButtons.h:192
 msgid "Make New Database"
 msgstr "Crea un Nuovo Database"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:193
+#: ../../../ui/wxWidgets/ToolbarButtons.h:193
 msgid "Open Another Database"
 msgstr "Apri un Altro Database"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:194
+#: ../../../ui/wxWidgets/ToolbarButtons.h:194
 msgid "Close Database"
 msgstr "Chiudi Database"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:195
+#: ../../../ui/wxWidgets/ToolbarButtons.h:195
 #, fuzzy
 msgid "Lock Database"
 msgstr "Chiudi Database"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:196
+#: ../../../ui/wxWidgets/ToolbarButtons.h:196
 msgid "Save Database"
 msgstr "Salva Database"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:198
+#: ../../../ui/wxWidgets/ToolbarButtons.h:198
 msgid "Copy Password to Clipboard"
 msgstr "Copia Password negli Appunti"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:199
+#: ../../../ui/wxWidgets/ToolbarButtons.h:199
 msgid "Copy Username to Clipboard"
 msgstr "Copia Nome Utente negli Appunti"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:200
+#: ../../../ui/wxWidgets/ToolbarButtons.h:200
 msgid "Copy Notes to Clipboard"
 msgstr "Copia le Note negli Appunti"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:201
+#: ../../../ui/wxWidgets/ToolbarButtons.h:201
 msgid "Clear the clipboard contents"
 msgstr "Svuota Appunti"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:203
+#: ../../../ui/wxWidgets/ToolbarButtons.h:203
 msgid "Perform Autotype"
 msgstr "Esegui Digitazione Automatica"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:204
+#: ../../../ui/wxWidgets/ToolbarButtons.h:204
 msgid "Browse to URL"
 msgstr "Visita URL"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:205
+#: ../../../ui/wxWidgets/ToolbarButtons.h:205
 msgid "Send Email"
 msgstr "Invia Email"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:207
+#: ../../../ui/wxWidgets/ToolbarButtons.h:207
 msgid "Add New Entry"
 msgstr "Aggiungi Voce"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:208
+#: ../../../ui/wxWidgets/ToolbarButtons.h:208
 msgid "Edit an Entry"
 msgstr "Modifica Voce"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:210
+#: ../../../ui/wxWidgets/ToolbarButtons.h:210
 msgid "Delete an Entry"
 msgstr "Cancella Voce"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:217
+#: ../../../ui/wxWidgets/ToolbarButtons.h:217
 msgid "Help"
 msgstr "Aiuto"
 

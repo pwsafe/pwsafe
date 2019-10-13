@@ -105,7 +105,7 @@ msgid "Manage Password Policies"
 msgstr "Управление политиками создания паролей"
 
 #: src/ui/wxWidgets/OptionsPropertySheetDlg.h:129
-#: src/ui/wxWidgets/PwsToolbarButtons.h:215
+#: src/ui/wxWidgets/ToolbarButtons.h:215
 msgid "Options"
 msgstr "Настройки"
 
@@ -122,78 +122,78 @@ msgstr "Показать часть пароля"
 msgid "Properties"
 msgstr "Свойства"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:192
+#: src/ui/wxWidgets/ToolbarButtons.h:192
 msgid "Make New Database"
 msgstr "Создать новый контейнер"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:193
+#: src/ui/wxWidgets/ToolbarButtons.h:193
 msgid "Open Another Database"
 msgstr "Открыть другой контейнер"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:194
+#: src/ui/wxWidgets/ToolbarButtons.h:194
 msgid "Close Database"
 msgstr "Закрыть контейнер"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:195
+#: src/ui/wxWidgets/ToolbarButtons.h:195
 msgid "Lock Database"
 msgstr "Заблокировать контейнер"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:196
+#: src/ui/wxWidgets/ToolbarButtons.h:196
 msgid "Save Database"
 msgstr "Сохранить контейнер"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:198
+#: src/ui/wxWidgets/ToolbarButtons.h:198
 msgid "Copy Password to Clipboard"
 msgstr "Копировать пароль в буфер обмена"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:199
+#: src/ui/wxWidgets/ToolbarButtons.h:199
 msgid "Copy Username to Clipboard"
 msgstr "Копировать имя пользователя в буфер"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:200
+#: src/ui/wxWidgets/ToolbarButtons.h:200
 msgid "Copy Notes to Clipboard"
 msgstr "Копировать заметки в буфер обмена"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:201
+#: src/ui/wxWidgets/ToolbarButtons.h:201
 msgid "Clear the clipboard contents"
 msgstr "Очистить буфер обмена"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:203
+#: src/ui/wxWidgets/ToolbarButtons.h:203
 msgid "Perform Autotype"
 msgstr "Автонабор"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:204
+#: src/ui/wxWidgets/ToolbarButtons.h:204
 #: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:130 src/core/core_st.cpp:63
 msgid "Browse to URL"
 msgstr "Перейти по ссылке"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:205 src/core/core_st.cpp:70
+#: src/ui/wxWidgets/ToolbarButtons.h:205 src/core/core_st.cpp:70
 msgid "Send Email"
 msgstr "Отправить письмо"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:207
+#: src/ui/wxWidgets/ToolbarButtons.h:207
 msgid "Add New Entry"
 msgstr "Добавить новый элемент"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:208
+#: src/ui/wxWidgets/ToolbarButtons.h:208
 msgid "Edit an Entry"
 msgstr "Редактировать элемент"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:210
+#: src/ui/wxWidgets/ToolbarButtons.h:210
 msgid "Delete an Entry"
 msgstr "Удалить элемент"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:212
+#: src/ui/wxWidgets/ToolbarButtons.h:212
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:543
 msgid "Expand All"
 msgstr "Развернуть все"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:213
+#: src/ui/wxWidgets/ToolbarButtons.h:213
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:544
 msgid "Collapse All"
 msgstr "Свернуть все"
 
-#: src/ui/wxWidgets/PwsToolbarButtons.h:217
+#: src/ui/wxWidgets/ToolbarButtons.h:217
 msgid "Help"
 msgstr "Помощь"
 

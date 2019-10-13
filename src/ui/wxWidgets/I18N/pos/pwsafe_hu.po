@@ -407,12 +407,12 @@ msgid "&Dragbar visible"
 msgstr "&Áthúzósáv (Dragbar) látható"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:543
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:212
+#: ../../../ui/wxWidgets/ToolbarButtons.h:212
 msgid "Expand All"
 msgstr "Összes kibontása"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:544
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:213
+#: ../../../ui/wxWidgets/ToolbarButtons.h:213
 msgid "Collapse All"
 msgstr "Összes összecsukása"
 
@@ -3789,7 +3789,7 @@ msgid "YubiKey Configuration"
 msgstr "YubiKey Konfiguráció"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:129
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:215
+#: ../../../ui/wxWidgets/ToolbarButtons.h:215
 msgid "Options"
 msgstr "Beállítások"
 
@@ -3797,67 +3797,67 @@ msgstr "Beállítások"
 msgid "Show a subset of the Password"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:192
+#: ../../../ui/wxWidgets/ToolbarButtons.h:192
 msgid "Make New Database"
 msgstr "Új adatbázis létrehozása"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:193
+#: ../../../ui/wxWidgets/ToolbarButtons.h:193
 msgid "Open Another Database"
 msgstr "Másik adatbázis megnyitása"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:194
+#: ../../../ui/wxWidgets/ToolbarButtons.h:194
 msgid "Close Database"
 msgstr "Adatbázis bezárása"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:195
+#: ../../../ui/wxWidgets/ToolbarButtons.h:195
 msgid "Lock Database"
 msgstr "Adatbázis zárolása"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:196
+#: ../../../ui/wxWidgets/ToolbarButtons.h:196
 msgid "Save Database"
 msgstr "Adatbázis Mentése"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:198
+#: ../../../ui/wxWidgets/ToolbarButtons.h:198
 msgid "Copy Password to Clipboard"
 msgstr "Jelszó másolása a vágólapra"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:199
+#: ../../../ui/wxWidgets/ToolbarButtons.h:199
 msgid "Copy Username to Clipboard"
 msgstr "Felhasználónév másolása a vágólapra"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:200
+#: ../../../ui/wxWidgets/ToolbarButtons.h:200
 msgid "Copy Notes to Clipboard"
 msgstr "Jegyzetek másolása a vágólapra"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:201
+#: ../../../ui/wxWidgets/ToolbarButtons.h:201
 msgid "Clear the clipboard contents"
 msgstr "A vágólap tartalmának törlése"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:203
+#: ../../../ui/wxWidgets/ToolbarButtons.h:203
 msgid "Perform Autotype"
 msgstr "Autogépelés"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:204
+#: ../../../ui/wxWidgets/ToolbarButtons.h:204
 msgid "Browse to URL"
 msgstr "Navigálás az URL-re"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:205
+#: ../../../ui/wxWidgets/ToolbarButtons.h:205
 msgid "Send Email"
 msgstr "Email küldése"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:207
+#: ../../../ui/wxWidgets/ToolbarButtons.h:207
 msgid "Add New Entry"
 msgstr "Bejegyzés hozzáadása"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:208
+#: ../../../ui/wxWidgets/ToolbarButtons.h:208
 msgid "Edit an Entry"
 msgstr "Bejegyzés szerkesztése"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:210
+#: ../../../ui/wxWidgets/ToolbarButtons.h:210
 msgid "Delete an Entry"
 msgstr "Egy bejegyzés törlése"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:217
+#: ../../../ui/wxWidgets/ToolbarButtons.h:217
 msgid "Help"
 msgstr "Súgó"
 

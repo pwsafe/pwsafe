@@ -435,12 +435,12 @@ msgid "&Dragbar visible"
 msgstr "&Linien Træk synlig"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:543
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:212
+#: ../../../ui/wxWidgets/ToolbarButtons.h:212
 msgid "Expand All"
 msgstr "Udvid Alle"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:544
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:213
+#: ../../../ui/wxWidgets/ToolbarButtons.h:213
 msgid "Collapse All"
 msgstr "Luk Alle"
 
@@ -3961,7 +3961,7 @@ msgid "YubiKey Configuration"
 msgstr "Bekræft Slet"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:129
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:215
+#: ../../../ui/wxWidgets/ToolbarButtons.h:215
 #, fuzzy
 msgid "Options"
 msgstr "Valgmuligheder"
@@ -3970,81 +3970,81 @@ msgstr "Valgmuligheder"
 msgid "Show a subset of the Password"
 msgstr "Vis en delmængde af Adgangskoden"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:192
+#: ../../../ui/wxWidgets/ToolbarButtons.h:192
 #, fuzzy
 msgid "Make New Database"
 msgstr "Lav Ny Database"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:193
+#: ../../../ui/wxWidgets/ToolbarButtons.h:193
 #, fuzzy
 msgid "Open Another Database"
 msgstr "Åben en Anden Database"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:194
+#: ../../../ui/wxWidgets/ToolbarButtons.h:194
 #, fuzzy
 msgid "Close Database"
 msgstr "Luk Databasen"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:195
+#: ../../../ui/wxWidgets/ToolbarButtons.h:195
 #, fuzzy
 msgid "Lock Database"
 msgstr "Database"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:196
+#: ../../../ui/wxWidgets/ToolbarButtons.h:196
 #, fuzzy
 msgid "Save Database"
 msgstr "Gem Databasen"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:198
+#: ../../../ui/wxWidgets/ToolbarButtons.h:198
 #, fuzzy
 msgid "Copy Password to Clipboard"
 msgstr "Kopier Adgangskode til Klipbord"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:199
+#: ../../../ui/wxWidgets/ToolbarButtons.h:199
 #, fuzzy
 msgid "Copy Username to Clipboard"
 msgstr "Kopier Brugernavn til Klipbord"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:200
+#: ../../../ui/wxWidgets/ToolbarButtons.h:200
 #, fuzzy
 msgid "Copy Notes to Clipboard"
 msgstr "Kopier Notater til Klipbord"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:201
+#: ../../../ui/wxWidgets/ToolbarButtons.h:201
 #, fuzzy
 msgid "Clear the clipboard contents"
 msgstr "Tøm klipbordet"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:203
+#: ../../../ui/wxWidgets/ToolbarButtons.h:203
 #, fuzzy
 msgid "Perform Autotype"
 msgstr "Udfør Autoindsæt"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:204
+#: ../../../ui/wxWidgets/ToolbarButtons.h:204
 msgid "Browse to URL"
 msgstr "Gennemse efter URL"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:205
+#: ../../../ui/wxWidgets/ToolbarButtons.h:205
 #, fuzzy
 msgid "Send Email"
 msgstr "Send email"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:207
+#: ../../../ui/wxWidgets/ToolbarButtons.h:207
 #, fuzzy
 msgid "Add New Entry"
 msgstr "Tilføj ny adgang"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:208
+#: ../../../ui/wxWidgets/ToolbarButtons.h:208
 #, fuzzy
 msgid "Edit an Entry"
 msgstr "Rediger en post"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:210
+#: ../../../ui/wxWidgets/ToolbarButtons.h:210
 #, fuzzy
 msgid "Delete an Entry"
 msgstr "Slet en post"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:217
+#: ../../../ui/wxWidgets/ToolbarButtons.h:217
 msgid "Help"
 msgstr "Hjælp"
 

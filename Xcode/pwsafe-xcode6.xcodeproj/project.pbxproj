@@ -531,7 +531,7 @@
 		E6A7ECAA12CDEAA40021D898 /* DbSelectionPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DbSelectionPanel.h; sourceTree = "<group>"; };
 		E6A7ECAB12CDEAA40021D898 /* SyncWizard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SyncWizard.cpp; sourceTree = "<group>"; };
 		E6A7ECAC12CDEAA40021D898 /* SyncWizard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncWizard.h; sourceTree = "<group>"; };
-		E6A7ECAD12CDEAA40021D898 /* PwsToolbarButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PwsToolbarButtons.h; sourceTree = "<group>"; };
+		E6A7ECAD12CDEAA40021D898 /* ToolbarButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolbarButtons.h; sourceTree = "<group>"; };
 		E6ADB80311956A93004E2BE5 /* libcore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6ADB91C11956DD0004E2BE5 /* libos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libos.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6ADB99E1195706A004E2BE5 /* pwsafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pwsafe.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1215,7 +1215,7 @@
 				E6A7ECAA12CDEAA40021D898 /* DbSelectionPanel.h */,
 				E6A7ECAB12CDEAA40021D898 /* SyncWizard.cpp */,
 				E6A7ECAC12CDEAA40021D898 /* SyncWizard.h */,
-				E6A7ECAD12CDEAA40021D898 /* PwsToolbarButtons.h */,
+				E6A7ECAD12CDEAA40021D898 /* ToolbarButtons.h */,
 				E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */,
 				E60F25D712C4ACEB001E63C4 /* ExternalKeyboardButton.h */,
 				E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */,

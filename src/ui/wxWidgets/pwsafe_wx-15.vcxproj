@@ -278,7 +278,7 @@
     <ClInclude Include="GridTable.h" />
     <ClInclude Include="GridShortcutsValidator.h" />
     <ClInclude Include="SyncWizard.h" />
-    <ClInclude Include="PwsToolbarButtons.h" />
+    <ClInclude Include="ToolbarButtons.h" />
     <ClInclude Include="TreeCtrl.h" />
     <ClInclude Include="RecentDbList.h" />
     <ClInclude Include="SafeCombinationChangeDlg.h" />

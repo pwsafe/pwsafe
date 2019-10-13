@@ -432,12 +432,12 @@ msgid "&Dragbar visible"
 msgstr "드래그바 보이기(&D)"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:543
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:212
+#: ../../../ui/wxWidgets/ToolbarButtons.h:212
 msgid "Expand All"
 msgstr "모두 펼치기"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:544
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:213
+#: ../../../ui/wxWidgets/ToolbarButtons.h:213
 msgid "Collapse All"
 msgstr "모두 펼치기"
 
@@ -4005,7 +4005,7 @@ msgid "YubiKey Configuration"
 msgstr "설정 파일:"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:129
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:215
+#: ../../../ui/wxWidgets/ToolbarButtons.h:215
 #, fuzzy
 msgid "Options"
 msgstr ""
@@ -4016,103 +4016,103 @@ msgstr ""
 msgid "Show a subset of the Password"
 msgstr "비밀번호 조합 보이기"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:192
+#: ../../../ui/wxWidgets/ToolbarButtons.h:192
 #, fuzzy
 msgid "Make New Database"
 msgstr ""
 "\n"
 "새 데이터베이스 생성"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:193
+#: ../../../ui/wxWidgets/ToolbarButtons.h:193
 #, fuzzy
 msgid "Open Another Database"
 msgstr "다른 데이터베이스 열기(&O)..."
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:194
+#: ../../../ui/wxWidgets/ToolbarButtons.h:194
 #, fuzzy
 msgid "Close Database"
 msgstr ""
 "\n"
 "데이터베이스 닫기"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:195
+#: ../../../ui/wxWidgets/ToolbarButtons.h:195
 #, fuzzy
 msgid "Lock Database"
 msgstr "데이터베이스"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:196
+#: ../../../ui/wxWidgets/ToolbarButtons.h:196
 #, fuzzy
 msgid "Save Database"
 msgstr ""
 "\n"
 "데이터베이스 저장"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:198
+#: ../../../ui/wxWidgets/ToolbarButtons.h:198
 #, fuzzy
 msgid "Copy Password to Clipboard"
 msgstr ""
 "\n"
 "클립보드에 비밀번호 복사"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:199
+#: ../../../ui/wxWidgets/ToolbarButtons.h:199
 #, fuzzy
 msgid "Copy Username to Clipboard"
 msgstr ""
 "\n"
 "클립보드에 사용자 이름 복사"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:200
+#: ../../../ui/wxWidgets/ToolbarButtons.h:200
 #, fuzzy
 msgid "Copy Notes to Clipboard"
 msgstr ""
 "\n"
 "클립보드에 노트 복사"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:201
+#: ../../../ui/wxWidgets/ToolbarButtons.h:201
 #, fuzzy
 msgid "Clear the clipboard contents"
 msgstr ""
 "\n"
 "클립보드 내용 비우기"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:203
+#: ../../../ui/wxWidgets/ToolbarButtons.h:203
 #, fuzzy
 msgid "Perform Autotype"
 msgstr ""
 "\n"
 "자동입력하기"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:204
+#: ../../../ui/wxWidgets/ToolbarButtons.h:204
 msgid "Browse to URL"
 msgstr "URL으로 탐색"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:205
+#: ../../../ui/wxWidgets/ToolbarButtons.h:205
 #, fuzzy
 msgid "Send Email"
 msgstr "전자우편 보내기"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:207
+#: ../../../ui/wxWidgets/ToolbarButtons.h:207
 #, fuzzy
 msgid "Add New Entry"
 msgstr ""
 "\n"
 "새 항목 생성"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:208
+#: ../../../ui/wxWidgets/ToolbarButtons.h:208
 #, fuzzy
 msgid "Edit an Entry"
 msgstr ""
 "\n"
 "항목 편집"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:210
+#: ../../../ui/wxWidgets/ToolbarButtons.h:210
 #, fuzzy
 msgid "Delete an Entry"
 msgstr ""
 "\n"
 "항목 지우기"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:217
+#: ../../../ui/wxWidgets/ToolbarButtons.h:217
 msgid "Help"
 msgstr "지원"
 
