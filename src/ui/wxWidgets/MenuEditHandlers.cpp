@@ -34,7 +34,7 @@
 #include "DeleteConfirmationDlg.h"
 #include "EditShortcutDlg.h"
 #include "CreateShortcutDlg.h"
-#include "wxutils.h"
+#include "wxUtilities.h"
 #include "GuiInfo.h"
 #include "PasswordSubsetDlg.h"
 #include "./QRCodeDlg.h"

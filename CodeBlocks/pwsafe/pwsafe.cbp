@@ -470,8 +470,8 @@
 		<Unit filename="../../src/ui/wxWidgets/version.h" />
 		<Unit filename="../../src/ui/wxWidgets/version.in" />
 		<Unit filename="../../src/ui/wxWidgets/wxMessages.h" />
-		<Unit filename="../../src/ui/wxWidgets/wxutils.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/wxutils.h" />
+		<Unit filename="../../src/ui/wxWidgets/wxUtilities.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/wxUtilities.h" />
 		<Unit filename="../../src/ui/wxWidgets/yubicfg.cpp">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />

@@ -27,7 +27,7 @@
 #include "PasswordPolicyDlg.h"
 #include "Clipboard.h"
 #include "core/PWCharPool.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 
 ////@begin XPM images
 #include "graphics/toolbar/new/copypassword.xpm"

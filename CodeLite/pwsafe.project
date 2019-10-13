@@ -50,7 +50,7 @@
     <File Name="../src/ui/wxWidgets/OptionsPropertySheetDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/GridTable.h"/>
     <File Name="../src/ui/wxWidgets/AddEditPropSheetDlg.h"/>
-    <File Name="../src/ui/wxWidgets/wxutils.h"/>
+    <File Name="../src/ui/wxWidgets/wxUtilities.h"/>
     <File Name="../src/ui/wxWidgets/Version.cpp"/>
     <File Name="../src/ui/wxWidgets/SafeCombinationSetupDlg.h"/>
     <File Name="../src/ui/wxWidgets/SystemTray.cpp"/>
@@ -108,7 +108,7 @@
     <File Name="../src/ui/wxWidgets/CoreEvents.h"/>
     <File Name="../src/ui/wxWidgets/CompareDlg.h"/>
     <File Name="../src/ui/wxWidgets/CompareDlg.cpp"/>
-    <File Name="../src/ui/wxWidgets/wxutils.cpp"/>
+    <File Name="../src/ui/wxWidgets/wxUtilities.cpp"/>
     <File Name="../src/ui/wxWidgets/ComparisonGridTable.h"/>
     <File Name="../src/ui/wxWidgets/ComparisonGridTable.cpp"/>
     <File Name="../src/ui/wxWidgets/SizeRestrictedPanel.h"/>

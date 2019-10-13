@@ -22,7 +22,7 @@
 
 #include "./CompareDlg.h"
 #include "./DbSelectionPanel.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 #include "../../core/PWScore.h"
 #include "./AdvancedSelectionDlg.h"
 #include "./ComparisonGridTable.h"

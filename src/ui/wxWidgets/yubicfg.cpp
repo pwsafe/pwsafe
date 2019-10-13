@@ -29,7 +29,7 @@
 #include <wx/timer.h>
 #include "yubicfg.h"
 #include "YubiMixin.h" // for POLLING_INTERVAL
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 
 #include "core/StringX.h"
 #include "core/PWScore.h"

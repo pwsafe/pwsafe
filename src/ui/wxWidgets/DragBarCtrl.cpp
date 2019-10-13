@@ -26,7 +26,7 @@
 #include "../../os/pws_tchar.h"
 #include "../../core/PwsPlatform.h"
 #include "../../core/ItemData.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 ////@end includes
 
 #ifdef __WXMSW__

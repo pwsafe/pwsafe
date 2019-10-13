@@ -7,7 +7,7 @@
  */
 
 ////////////////////////////////////////////////////////////////////
-// wxutils.h - file for various wxWidgets related utility functions,
+// wxUtilities.h - file for various wxWidgets related utility functions,
 // macros, classes, etc
 
 #ifndef __WXUTILS_H__

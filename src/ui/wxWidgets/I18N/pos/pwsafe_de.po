@@ -815,7 +815,7 @@ msgstr ""
 "Versuchen Sie diese woanders zu speichern."
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2352
-#: ../../../ui/wxWidgets/wxutils.cpp:73
+#: ../../../ui/wxWidgets/wxUtilities.cpp:73
 msgid "Unknown error"
 msgstr "Unbekannter Fehler"
 
@@ -895,14 +895,14 @@ msgstr "Text"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2835
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2840
-#: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/wxutils.cpp:61
-#: ../../../ui/wxWidgets/wxutils.cpp:66 ../../../ui/wxWidgets/wxutils.cpp:73
+#: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/wxUtilities.cpp:61
+#: ../../../ui/wxWidgets/wxUtilities.cpp:66 ../../../ui/wxWidgets/wxUtilities.cpp:73
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:184
 msgid "File Read Error"
 msgstr "Dateilesefehler"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2836
-#: ../../../ui/wxWidgets/wxutils.cpp:60
+#: ../../../ui/wxWidgets/wxUtilities.cpp:60
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:183
 msgid "Could not open file for reading!"
 msgstr "Konnte Datei nicht zum Lesen öffnen!"
@@ -3360,7 +3360,7 @@ msgstr "Kein Curl-Handle zur Durchführung des Downloads."
 msgid "Could not download version data.\n"
 msgstr "Keine Versionsinformationen vom Server erhalten.\n"
 
-#: ../../../ui/wxWidgets/wxutils.cpp:65
+#: ../../../ui/wxWidgets/wxUtilities.cpp:65
 msgid ""
 "File corrupt or truncated!\n"
 "Data may have been lost or modified.\n"

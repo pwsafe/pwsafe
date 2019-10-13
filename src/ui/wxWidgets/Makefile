@@ -201,7 +201,7 @@ SOURCES= PasswordSafeFrame.cpp \
 	AdvancedSelectionDlg.cpp ViewReportDlg.cpp DragBarGenericCtrl.cpp \
 	DragBarCtrl.cpp MergeDlg.cpp ExternalKeyboardButton.cpp \
 	PwsSync.cpp DbSelectionPanel.cpp CompareDlg.cpp \
-	wxutils.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \
+	wxUtilities.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \
 	FieldSelectionPanel.cpp FieldSelectionDlg.cpp GridShortcutsValidator.cpp \
 	$(YUBI_SRC) $(QR_SRC) \
 	ManagePasswordPoliciesDlg.cpp PasswordPolicyDlg.cpp SelectionCriteria.cpp \

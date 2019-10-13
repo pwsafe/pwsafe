@@ -48,7 +48,7 @@
 #include "PasswordSafeSearch.h"
 #include "Clipboard.h"
 #include "SystemTray.h"
-#include "wxutils.h"
+#include "wxUtilities.h"
 #include "GuiInfo.h"
 #include "PWSafeApp.h"
 #include "./ImportTextDlg.h"

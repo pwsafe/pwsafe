@@ -296,7 +296,7 @@
     <ClInclude Include="version.h" />
     <ClInclude Include="ViewReportDlg.h" />
     <ClInclude Include="wxMessages.h" />
-    <ClInclude Include="wxutils.h" />
+    <ClInclude Include="wxUtilities.h" />
     <ClInclude Include="yubicfg.h" />
     <ClInclude Include="YubiMixin.h" />
   </ItemGroup>
@@ -352,7 +352,7 @@
     <ClCompile Include="TimedTaskChain.cpp" />
     <ClCompile Include="Version.cpp" />
     <ClCompile Include="ViewReportDlg.cpp" />
-    <ClCompile Include="wxutils.cpp" />
+    <ClCompile Include="wxUtilities.cpp" />
     <ClCompile Include="yubicfg.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debugwx|x64'">true</ExcludedFromBuild>

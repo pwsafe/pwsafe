@@ -32,7 +32,7 @@
 
 #include "AddEditPropSheetDlg.h"
 #include "Clipboard.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 
 #include <algorithm>
 #include <vector>

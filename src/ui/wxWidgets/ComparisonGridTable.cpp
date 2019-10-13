@@ -25,7 +25,7 @@
 #include "./AdvancedSelectionDlg.h"
 #include "./SelectionCriteria.h"
 #include "../../core/PWScore.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 #include <algorithm>
 #include <functional>
 

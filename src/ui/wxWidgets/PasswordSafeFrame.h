@@ -28,7 +28,7 @@
 #include "core/UIinterface.h"
 #include "core/RUEList.h"
 #include "core/PWSFilters.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 #include <tuple>
 
 /*!

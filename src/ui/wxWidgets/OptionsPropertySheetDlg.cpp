@@ -35,7 +35,7 @@
 #include "core/Util.h" // for datetime string
 #include "core/PWSAuxParse.h" // for DEFAULT_AUTOTYPE
 #include "core/PWHistory.h" // for history actions
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 #include "./GridShortcutsValidator.h"
 #include "PWSafeApp.h" // for GetHashIters()
 #if defined(__X__) || defined(__WXGTK__)

@@ -13,7 +13,7 @@
 
 #include "./MergeDlg.h"
 #include "../../core/PWScore.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 #include "./AdvancedSelectionDlg.h"
 #include "../../os/file.h"
 #include "./DbSelectionPanel.h"
