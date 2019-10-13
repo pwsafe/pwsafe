@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file mainEdit.cpp
+/** \file MenuEditHandlers.cpp
  *  This file contains implementations of PasswordSafeFrame
  *  member functions corresponding to actions under the 'Edit'
  *  menubar menu.

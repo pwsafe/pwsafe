@@ -3809,15 +3809,15 @@ msgstr "Wyślij email"
 msgid "&Delete from Recent Entry List"
 msgstr "Usuń z listy Ostatnich Wpisów"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:415
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:415
 msgid " Copy # "
 msgstr " Nr kopii "
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:569
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:569
 msgid "There was an error autotyping.  "
 msgstr "Podczas automatycznego pisania wystąpił błąd.  "
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:589
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:589
 msgid ""
 "Error switching to another application before autotyping. Switch manually "
 "within 5 seconds"
@@ -3825,15 +3825,15 @@ msgstr ""
 "Błąd z przełączeniem na inną aplikację przed automatycznym pisaniem. Proszę "
 "przełączyć się ręcznie w przeciągu 5 sekund"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:760
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:760
 msgid "Unable to send email"
 msgstr "Nie można wysłać wiadomości"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:760
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:760
 msgid "Unable to display URL"
 msgstr "Nie można wyświetlić adresu URL"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:861
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:861
 #, c-format
 msgid ""
 "Error at column %d:\n"
@@ -3844,7 +3844,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:862
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:862
 msgid "Error parsing Run Command"
 msgstr "Błąd parsowania komendy Run"
 

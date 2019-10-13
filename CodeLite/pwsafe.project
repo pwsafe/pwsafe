@@ -41,7 +41,7 @@
     <File Name="../src/ui/wxWidgets/version.h"/>
     <File Name="../src/ui/wxWidgets/pwsclip.h"/>
     <File Name="../src/ui/wxWidgets/pwsafeapp.cpp"/>
-    <File Name="../src/ui/wxWidgets/mainEdit.cpp"/>
+    <File Name="../src/ui/wxWidgets/MenuEditHandlers.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationsetup.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationprompt.h"/>
     <File Name="../src/ui/wxWidgets/wxMessages.h"/>

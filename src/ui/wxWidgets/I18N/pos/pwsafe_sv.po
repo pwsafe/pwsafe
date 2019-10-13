@@ -3882,30 +3882,30 @@ msgstr "&Skicka e-post"
 msgid "&Delete from Recent Entry List"
 msgstr "&Ta bort från senaste postlista"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:415
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:415
 #, fuzzy
 msgid " Copy # "
 msgstr " Kopiera # %d"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:569
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:569
 msgid "There was an error autotyping.  "
 msgstr ""
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:589
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:589
 msgid ""
 "Error switching to another application before autotyping. Switch manually "
 "within 5 seconds"
 msgstr ""
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:760
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:760
 msgid "Unable to send email"
 msgstr "Kan inte skicka e-post"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:760
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:760
 msgid "Unable to display URL"
 msgstr "Kan inte visa URL"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:861
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:861
 #, c-format
 msgid ""
 "Error at column %d:\n"
@@ -3916,7 +3916,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:862
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:862
 msgid "Error parsing Run Command"
 msgstr "Fel vid körning av körkommando"
 

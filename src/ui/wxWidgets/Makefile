@@ -190,7 +190,7 @@ SOURCES= passwordsafeframe.cpp \
 	safecombinationchange.cpp AboutDlg.cpp \
 	PropertiesDlg.cpp PWSgrid.cpp \
 	PWStree.cpp version.cpp \
-	pwsclip.cpp mainEdit.cpp mainManage.cpp \
+	pwsclip.cpp MenuEditHandlers.cpp mainManage.cpp \
 	AddEditPropSheetDlg.cpp PWSgridtable.cpp \
 	OptionsPropertySheetDlg.cpp PasswordSafeSearch.cpp \
 	DeleteConfirmationDlg.cpp EditShortcutDlg.cpp \
