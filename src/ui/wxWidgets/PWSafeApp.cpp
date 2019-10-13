@@ -36,11 +36,11 @@ using namespace std;
 #include "PasswordSafeFrame.h"
 #include "version.h"
 #include "wxMessages.h"
-#include "pwsclip.h"
+#include "Clipboard.h"
 #include "pwsmenushortcuts.h"
 #include "CryptKeyEntryDlg.h"
 #if defined(__X__) || defined(__WXGTK__)
-#include "pwsclip.h"
+#include "Clipboard.h"
 #endif
 
 #include "os/cleanup.h"

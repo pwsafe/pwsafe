@@ -39,7 +39,7 @@
     <File Name="../src/ui/wxWidgets/PWSgrid.cpp"/>
     <File Name="../src/ui/wxWidgets/PasswordSafeSearch.h"/>
     <File Name="../src/ui/wxWidgets/version.h"/>
-    <File Name="../src/ui/wxWidgets/pwsclip.h"/>
+    <File Name="../src/ui/wxWidgets/Clipboard.h"/>
     <File Name="../src/ui/wxWidgets/PWSafeApp.cpp"/>
     <File Name="../src/ui/wxWidgets/MenuEditHandlers.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationsetup.cpp"/>
@@ -56,7 +56,7 @@
     <File Name="../src/ui/wxWidgets/SystemTray.cpp"/>
     <File Name="../src/ui/wxWidgets/AboutDlg.h"/>
     <File Name="../src/ui/wxWidgets/CreateShortcutDlg.h"/>
-    <File Name="../src/ui/wxWidgets/pwsclip.cpp"/>
+    <File Name="../src/ui/wxWidgets/Clipboard.cpp"/>
     <File Name="../src/ui/wxWidgets/safecombinationprompt.cpp"/>
     <File Name="../src/ui/wxWidgets/CreateShortcutDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/PWSgrid.h"/>

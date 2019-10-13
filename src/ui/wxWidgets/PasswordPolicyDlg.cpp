@@ -26,7 +26,7 @@
 #include "PasswordPolicyDlg.h"
 #include "core/PolicyManager.h"
 #include "core/PWCharPool.h"
-#include "pwsclip.h"
+#include "Clipboard.h"
 #include "./wxutils.h"
 
 ////@begin XPM images

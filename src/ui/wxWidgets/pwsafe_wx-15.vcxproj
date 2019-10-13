@@ -272,7 +272,7 @@
     <ClInclude Include="PasswordSubsetDlg.h" />
     <ClInclude Include="PropertiesDlg.h" />
     <ClInclude Include="PWSafeApp.h" />
-    <ClInclude Include="pwsclip.h" />
+    <ClInclude Include="Clipboard.h" />
     <ClInclude Include="DragBarCtrl.h" />
     <ClInclude Include="PWSgrid.h" />
     <ClInclude Include="PWSgridtable.h" />
@@ -332,7 +332,7 @@
     <ClCompile Include="PasswordSubsetDlg.cpp" />
     <ClCompile Include="PropertiesDlg.cpp" />
     <ClCompile Include="PWSafeApp.cpp" />
-    <ClCompile Include="pwsclip.cpp" />
+    <ClCompile Include="Clipboard.cpp" />
     <ClCompile Include="DragBarCtrl.cpp" />
     <ClCompile Include="PWSgrid.cpp" />
     <ClCompile Include="PWSgridtable.cpp" />

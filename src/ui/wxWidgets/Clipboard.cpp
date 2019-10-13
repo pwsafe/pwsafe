@@ -23,12 +23,12 @@
 
   This issue did not occur with wxWidgets 2.8.12.
 
-  For this reason, "pwsclip.h", which includes "core/StringX.h" that also includes
+  For this reason, "Clipboard.h", which includes "core/StringX.h" that also includes
   <string>, is placed here after <wx/clipbrd.h> & <wx/dataobj.h>.
 
 */
 
-#include "pwsclip.h"
+#include "Clipboard.h"
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif

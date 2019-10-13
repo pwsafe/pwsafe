@@ -60,7 +60,7 @@
     <ClInclude Include="PWSafeApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pwsclip.h">
+    <ClInclude Include="Clipboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWSgrid.h">
@@ -232,7 +232,7 @@
     <ClCompile Include="PWSafeApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pwsclip.cpp">
+    <ClCompile Include="Clipboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PWSgrid.cpp">

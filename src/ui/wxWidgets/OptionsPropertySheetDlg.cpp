@@ -39,7 +39,7 @@
 #include "./pwsmenushortcuts.h"
 #include "PWSafeApp.h" // for GetHashIters()
 #if defined(__X__) || defined(__WXGTK__)
-#include "pwsclip.h"
+#include "Clipboard.h"
 #endif
 
 #ifdef __WXMSW__
