@@ -584,7 +584,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1049
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2339
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:505
-#: ../../../ui/wxWidgets/mainManage.cpp:127
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:127
 msgid "Write Error"
 msgstr "Errore di scrittura"
 
@@ -816,7 +816,7 @@ msgstr "&Modifica la Voce Base"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2344
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:504
-#: ../../../ui/wxWidgets/mainManage.cpp:126
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:126
 msgid "Could not open file for writing!"
 msgstr "Impossibile aprire il file in scrittura!"
 
@@ -912,13 +912,13 @@ msgstr "Testo"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2840
 #: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/wxutils.cpp:61
 #: ../../../ui/wxWidgets/wxutils.cpp:66 ../../../ui/wxWidgets/wxutils.cpp:73
-#: ../../../ui/wxWidgets/mainManage.cpp:184
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:184
 msgid "File Read Error"
 msgstr "Errore di lettura del file"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2836
 #: ../../../ui/wxWidgets/wxutils.cpp:60
-#: ../../../ui/wxWidgets/mainManage.cpp:183
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:183
 msgid "Could not open file for reading!"
 msgstr "Impossibile aprire il file in lettura!"
 
@@ -3723,25 +3723,25 @@ msgstr "&Copia negli Appunti"
 msgid "&Finish"
 msgstr "&Finito"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:85
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:85
 msgid "Please Choose a Name for this Backup:"
 msgstr "Scegliere un nome per questo backup:"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:92
-#: ../../../ui/wxWidgets/mainManage.cpp:146
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:92
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:146
 msgid "Could not parse current file path"
 msgstr "Impossibile analizzare il percorso del file corrente"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:100
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:100
 msgid "Password Safe Backups (*.bak)|*.bak"
 msgstr "Backup Password Safe (*.bak)|*.bak"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:150
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:150
 #, fuzzy
 msgid "Please Choose a Backup to Restore:"
 msgstr "Selezionare un backup da ripristinare:"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:154
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:154
 #, fuzzy
 msgid ""
 "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
@@ -3751,7 +3751,7 @@ msgstr ""
 "(*.bak)|*.bak|Backup Intermedi Password Safe (*.ibak)|*.ibak|Tutti i file (*."
 "*; *)|*.*;*"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:191
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:191
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <Backup Ripristinato Senza Nome>"
 

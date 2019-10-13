@@ -320,7 +320,7 @@
     <ClCompile Include="ImportTextDlg.cpp" />
     <ClCompile Include="ImportXmlDlg.cpp" />
     <ClCompile Include="MenuEditHandlers.cpp" />
-    <ClCompile Include="mainManage.cpp" />
+    <ClCompile Include="MenuManageHandlers.cpp" />
     <ClCompile Include="mainView.cpp" />
     <ClCompile Include="ManagePasswordPoliciesDlg.cpp" />
     <ClCompile Include="MergeDlg.cpp" />

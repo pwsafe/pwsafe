@@ -123,7 +123,7 @@
     <File Name="../src/ui/wxWidgets/PasswordPolicyDlg.h"/>
     <File Name="../src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/ManagePasswordPoliciesDlg.h"/>
-    <File Name="../src/ui/wxWidgets/mainManage.cpp"/>
+    <File Name="../src/ui/wxWidgets/MenuManageHandlers.cpp"/>
     <File Name="../src/ui/wxWidgets/SelectionCriteria.h"/>
     <File Name="../src/ui/wxWidgets/SelectionCriteria.cpp"/>
     <File Name="../src/ui/wxWidgets/TimedTaskChain.cpp"/>

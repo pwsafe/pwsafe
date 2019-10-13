@@ -307,7 +307,7 @@
     <ClCompile Include="FieldSelectionPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainManage.cpp">
+    <ClCompile Include="MenuManageHandlers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ManagePasswordPoliciesDlg.cpp">

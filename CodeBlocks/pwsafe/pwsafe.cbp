@@ -418,7 +418,7 @@
 		<Unit filename="../../src/ui/wxWidgets/GuiInfo.h" />
 		<Unit filename="../../src/ui/wxWidgets/HelpMap.h" />
 		<Unit filename="../../src/ui/wxWidgets/MenuEditHandlers.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/mainManage.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/MenuManageHandlers.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/mainView.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/OptionsPropertySheetDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/OptionsPropertySheetDlg.h" />
