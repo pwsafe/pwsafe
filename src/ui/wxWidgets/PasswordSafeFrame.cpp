@@ -66,7 +66,7 @@
 #include <algorithm>
 
 // main toolbar images
-#include "./PwsToolbarButtons.h"
+#include "./ToolbarButtons.h"
 #include "./GridShortcutsValidator.h"
 
 #ifdef __WXMSW__

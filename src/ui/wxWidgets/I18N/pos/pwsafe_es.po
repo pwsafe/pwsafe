@@ -437,12 +437,12 @@ msgid "&Dragbar visible"
 msgstr "&Mostrar barra de arrastre"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:543
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:212
+#: ../../../ui/wxWidgets/ToolbarButtons.h:212
 msgid "Expand All"
 msgstr "Expandir todo"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:544
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:213
+#: ../../../ui/wxWidgets/ToolbarButtons.h:213
 msgid "Collapse All"
 msgstr "Contraer todo"
 
@@ -4028,7 +4028,7 @@ msgid "YubiKey Configuration"
 msgstr "Archivo de configuración:"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:129
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:215
+#: ../../../ui/wxWidgets/ToolbarButtons.h:215
 #, fuzzy
 msgid "Options"
 msgstr ""
@@ -4039,103 +4039,103 @@ msgstr ""
 msgid "Show a subset of the Password"
 msgstr "Mostrar parte de la contraseña"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:192
+#: ../../../ui/wxWidgets/ToolbarButtons.h:192
 #, fuzzy
 msgid "Make New Database"
 msgstr ""
 "\n"
 "Crear nueva base de datos"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:193
+#: ../../../ui/wxWidgets/ToolbarButtons.h:193
 #, fuzzy
 msgid "Open Another Database"
 msgstr "A&brir otra base de datos..."
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:194
+#: ../../../ui/wxWidgets/ToolbarButtons.h:194
 #, fuzzy
 msgid "Close Database"
 msgstr ""
 "\n"
 "Cerrar base de datos"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:195
+#: ../../../ui/wxWidgets/ToolbarButtons.h:195
 #, fuzzy
 msgid "Lock Database"
 msgstr "Base de datos"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:196
+#: ../../../ui/wxWidgets/ToolbarButtons.h:196
 #, fuzzy
 msgid "Save Database"
 msgstr ""
 "\n"
 "Guardar base de datos"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:198
+#: ../../../ui/wxWidgets/ToolbarButtons.h:198
 #, fuzzy
 msgid "Copy Password to Clipboard"
 msgstr ""
 "\n"
 "Copiar contraseña al portapapeles"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:199
+#: ../../../ui/wxWidgets/ToolbarButtons.h:199
 #, fuzzy
 msgid "Copy Username to Clipboard"
 msgstr ""
 "\n"
 "Copiar usuario al portapapeles"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:200
+#: ../../../ui/wxWidgets/ToolbarButtons.h:200
 #, fuzzy
 msgid "Copy Notes to Clipboard"
 msgstr ""
 "\n"
 "Copiar notas al portapapeles"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:201
+#: ../../../ui/wxWidgets/ToolbarButtons.h:201
 #, fuzzy
 msgid "Clear the clipboard contents"
 msgstr ""
 "\n"
 "Borrar el portapapeles"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:203
+#: ../../../ui/wxWidgets/ToolbarButtons.h:203
 #, fuzzy
 msgid "Perform Autotype"
 msgstr ""
 "\n"
 "Autoescritura"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:204
+#: ../../../ui/wxWidgets/ToolbarButtons.h:204
 msgid "Browse to URL"
 msgstr "Abrir URL"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:205
+#: ../../../ui/wxWidgets/ToolbarButtons.h:205
 #, fuzzy
 msgid "Send Email"
 msgstr "Enviar correo"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:207
+#: ../../../ui/wxWidgets/ToolbarButtons.h:207
 #, fuzzy
 msgid "Add New Entry"
 msgstr ""
 "\n"
 "Añadir nueva entrada"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:208
+#: ../../../ui/wxWidgets/ToolbarButtons.h:208
 #, fuzzy
 msgid "Edit an Entry"
 msgstr ""
 "\n"
 "Editar una entrada"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:210
+#: ../../../ui/wxWidgets/ToolbarButtons.h:210
 #, fuzzy
 msgid "Delete an Entry"
 msgstr ""
 "\n"
 "Eliminar una entrada"
 
-#: ../../../ui/wxWidgets/PwsToolbarButtons.h:217
+#: ../../../ui/wxWidgets/ToolbarButtons.h:217
 msgid "Help"
 msgstr "Ayuda"
 
