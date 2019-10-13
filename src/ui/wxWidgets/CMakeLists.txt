@@ -11,7 +11,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/GridShortcutsValidator.h
     src/ui/wxWidgets/SafeCombinationChangeDlg.h
     src/ui/wxWidgets/SafeCombinationEntryDlg.h
-    src/ui/wxWidgets/safecombinationsetup.h
+    src/ui/wxWidgets/SafeCombinationSetupDlg.h
     src/ui/wxWidgets/AddEditPropSheetDlg.h
     src/ui/wxWidgets/PropertiesDlg.h
     src/ui/wxWidgets/Clipboard.h
@@ -85,7 +85,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/PasswordPolicyDlg.cpp
     src/ui/wxWidgets/DbSelectionPanel.cpp
     src/ui/wxWidgets/PWSafeApp.cpp
-    src/ui/wxWidgets/safecombinationsetup.cpp
+    src/ui/wxWidgets/SafeCombinationSetupDlg.cpp
     src/ui/wxWidgets/wxutils.cpp
     src/ui/wxWidgets/AdvancedSelectionDlg.cpp
     src/ui/wxWidgets/ComparisonGridTable.cpp

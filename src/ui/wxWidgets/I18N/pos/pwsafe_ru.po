@@ -209,7 +209,7 @@ msgstr "Пароль для контейнера"
 msgid "Enter Safe Combination"
 msgstr "Введите пароль для контейнера"
 
-#: src/ui/wxWidgets/safecombinationsetup.h:53
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.h:53
 msgid "Safe Combination Setup"
 msgstr "Установка пароля для контейнера"
 
@@ -718,10 +718,10 @@ msgstr "Ошибка при создании пароля: некорректн�
 #: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:303
 #: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:309
 #: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:352
-#: src/ui/wxWidgets/safecombinationsetup.cpp:246
-#: src/ui/wxWidgets/safecombinationsetup.cpp:252
-#: src/ui/wxWidgets/safecombinationsetup.cpp:280
-#: src/ui/wxWidgets/safecombinationsetup.cpp:319 src/core/core_st.cpp:270
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:246
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:252
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:280
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:319 src/core/core_st.cpp:270
 msgid "Error"
 msgstr "Ошибка"
 
@@ -967,7 +967,7 @@ msgstr ""
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:378 src/ui/wxWidgets/PropertiesDlg.cpp:367
 #: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:205
 #: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:210
-#: src/ui/wxWidgets/safecombinationsetup.cpp:180
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:180
 msgid "&OK"
 msgstr "&OK"
 
@@ -977,7 +977,7 @@ msgstr "&OK"
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:381
 #: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:209
 #: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:206
-#: src/ui/wxWidgets/safecombinationsetup.cpp:183
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
 msgid "&Cancel"
 msgstr "&Отмена"
 
@@ -989,7 +989,7 @@ msgstr "&Отмена"
 #: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:250
 #: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:194
-#: src/ui/wxWidgets/safecombinationsetup.cpp:186
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:186
 #: src/ui/wxWidgets/yubicfg.cpp:202
 msgid "&Help"
 msgstr "П&омощь"
@@ -1032,8 +1032,8 @@ msgstr "Пароль не может быть пустым!"
 # Выводится при неверном повторе пароля (взоможно, где-то ещё), поэтому entry
 # переведено как «значение»
 #: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:111
-#: src/ui/wxWidgets/safecombinationsetup.cpp:245
-#: src/ui/wxWidgets/safecombinationsetup.cpp:318
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:245
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:318
 msgid "The two entries do not match."
 msgstr "Введённые значения не совпадают"
 
@@ -1057,7 +1057,7 @@ msgstr ""
 #: src/ui/wxWidgets/DbSelectionPanel.cpp:70
 #: src/ui/wxWidgets/ExportTextWarningDlg.cpp:73
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:206
-#: src/ui/wxWidgets/safecombinationsetup.cpp:155
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:155
 msgid "Safe Combination:"
 msgstr "Пароль:"
 
@@ -1176,7 +1176,7 @@ msgstr ""
 #: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:198
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:236
 #: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:186
-#: src/ui/wxWidgets/safecombinationsetup.cpp:171
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:171
 #: src/ui/wxWidgets/yubicfg.cpp:366 src/ui/wxWidgets/YubiMixin.cpp:58
 msgid "Please insert your YubiKey"
 msgstr "Вставьте ваш YubiKey"
@@ -3547,12 +3547,12 @@ msgid "New safe combination and confirmation do not match"
 msgstr "Новый пароль и его подтверждение не совпадают"
 
 #: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:289
-#: src/ui/wxWidgets/safecombinationsetup.cpp:266
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:266
 msgid "Weak passphrase:"
 msgstr "Слабый пароль:"
 
 #: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:294
-#: src/ui/wxWidgets/safecombinationsetup.cpp:271
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:271
 msgid "Use it anyway?"
 msgstr "Всё равно использовать его?"
 
@@ -3609,7 +3609,7 @@ msgstr ""
 "Заблокирован "
 
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:378
-#: src/ui/wxWidgets/safecombinationsetup.cpp:272 src/core/core_st.cpp:272
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:272 src/core/core_st.cpp:272
 msgid "Warning"
 msgstr "Предупреждение"
 
@@ -3654,7 +3654,7 @@ msgstr "Вы&ход"
 msgid "Three strikes - yer out!"
 msgstr "Пароль для контейнера был введён неверно три раза подряд."
 
-#: src/ui/wxWidgets/safecombinationsetup.cpp:149
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:149
 msgid ""
 "A new password database will be created.\n"
 "The safe combination will be used to encrypt the password database file.\n"
@@ -3664,15 +3664,15 @@ msgstr ""
 "Введённый пароль будет использован для шифрования контейнера.\n"
 "Пароль для контейнера может содержать любые символы. При вводе и проверке пароля учитывается регистр букв."
 
-#: src/ui/wxWidgets/safecombinationsetup.cpp:161
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:161
 msgid "Verify:"
 msgstr "Подтверждение:"
 
-#: src/ui/wxWidgets/safecombinationsetup.cpp:251
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:251
 msgid "Please enter the key and verify it."
 msgstr "Укажите ключ и подтвердите его."
 
-#: src/ui/wxWidgets/safecombinationsetup.cpp:279
+#: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:279
 msgid "Please try another"
 msgstr "Попробуйте другой"
 

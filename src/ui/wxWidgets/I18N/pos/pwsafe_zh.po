@@ -63,7 +63,7 @@ msgstr "保险箱密码:"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:236
 #: ../../../ui/wxWidgets/yubicfg.cpp:366 ../../../ui/wxWidgets/YubiMixin.cpp:58
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:198
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:171
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:171
 msgid "Please insert your YubiKey"
 msgstr ""
 
@@ -73,7 +73,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/yubicfg.cpp:202
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:384
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:186
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:219
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:250
@@ -89,7 +89,7 @@ msgstr "退出"
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:206
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:381
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:209
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:216
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:247
@@ -101,7 +101,7 @@ msgstr "取消"
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:367
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:378
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:205
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:180
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:213
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:244
@@ -145,10 +145,10 @@ msgstr ""
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:280
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:296
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:246
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:252
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:280
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:319
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:246
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:252
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:280
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:319
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1154
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1276
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1288
@@ -1467,7 +1467,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:73
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:70
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:206
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:155
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:155
 msgid "Safe Combination:"
 msgstr "保险箱密码:"
 
@@ -1711,7 +1711,7 @@ msgid ""
 msgstr ""
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:378
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:272
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:272
 msgid "Warning"
 msgstr "警告"
 
@@ -2643,8 +2643,8 @@ msgid "Verify Key:"
 msgstr "验证密匙:"
 
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:111
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:245
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:318
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:245
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:318
 msgid "The two entries do not match."
 msgstr "两个项目不匹配！"
 
@@ -2694,7 +2694,7 @@ msgid "New safe combination and confirmation do not match"
 msgstr "新密码和确认密码不匹配，请重新输入确认！"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:289
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:266
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:266
 #, fuzzy
 msgid "Weak passphrase:"
 msgstr ""
@@ -2703,7 +2703,7 @@ msgstr ""
 " %s"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:294
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:271
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:271
 #, fuzzy
 msgid "Use it anyway?"
 msgstr ""
@@ -2871,7 +2871,7 @@ msgstr "未找到匹配的项目！"
 msgid "1 match"
 msgstr "找到 1 个匹配项！"
 
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:149
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:149
 #, fuzzy
 msgid ""
 "A new password database will be created.\n"
@@ -2881,15 +2881,15 @@ msgstr ""
 "即将创建一个新密码数据库，请输入你的保险箱数据库保护密码，保险箱密码可以使用"
 "所有键盘上区分大小写的字符。"
 
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:161
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:161
 msgid "Verify:"
 msgstr "确认:"
 
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:251
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:251
 msgid "Please enter the key and verify it."
 msgstr "请输入密匙并验证它！"
 
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:279
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:279
 #, fuzzy
 msgid "Please try another"
 msgstr ""
@@ -4075,7 +4075,7 @@ msgstr ""
 msgid "Help"
 msgstr "帮助"
 
-#: ../../../ui/wxWidgets/safecombinationsetup.h:53
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.h:53
 msgid "Safe Combination Setup"
 msgstr "设置保险箱密码"
 

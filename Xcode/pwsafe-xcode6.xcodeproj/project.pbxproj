@@ -81,7 +81,7 @@
 		E6ADBA981195709A004E2BE5 /* SafeCombinationChangeDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA271195709A004E2BE5 /* SafeCombinationChangeDlg.cpp */; };
 		E6ADBA991195709A004E2BE5 /* SafeCombinationEntryDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA291195709A004E2BE5 /* SafeCombinationEntryDlg.cpp */; };
 		E6ADBA9A1195709A004E2BE5 /* SafeCombinationPromptDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA2B1195709A004E2BE5 /* SafeCombinationPromptDlg.cpp */; };
-		E6ADBA9B1195709A004E2BE5 /* safecombinationsetup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA2D1195709A004E2BE5 /* safecombinationsetup.cpp */; };
+		E6ADBA9B1195709A004E2BE5 /* SafeCombinationSetupDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA2D1195709A004E2BE5 /* SafeCombinationSetupDlg.cpp */; };
 		E6ADBA9C1195709A004E2BE5 /* SystemTray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA2F1195709A004E2BE5 /* SystemTray.cpp */; };
 		E6ADBA9D1195709A004E2BE5 /* version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA321195709A004E2BE5 /* version.cpp */; };
 		E6ADBB2111957CCB004E2BE5 /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
@@ -570,8 +570,8 @@
 		E6ADBA2A1195709A004E2BE5 /* SafeCombinationEntryDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafeCombinationEntryDlg.h; sourceTree = "<group>"; };
 		E6ADBA2B1195709A004E2BE5 /* SafeCombinationPromptDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SafeCombinationPromptDlg.cpp; sourceTree = "<group>"; };
 		E6ADBA2C1195709A004E2BE5 /* SafeCombinationPromptDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafeCombinationPromptDlg.h; sourceTree = "<group>"; };
-		E6ADBA2D1195709A004E2BE5 /* safecombinationsetup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = safecombinationsetup.cpp; sourceTree = "<group>"; };
-		E6ADBA2E1195709A004E2BE5 /* safecombinationsetup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = safecombinationsetup.h; sourceTree = "<group>"; };
+		E6ADBA2D1195709A004E2BE5 /* SafeCombinationSetupDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SafeCombinationSetupDlg.cpp; sourceTree = "<group>"; };
+		E6ADBA2E1195709A004E2BE5 /* SafeCombinationSetupDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafeCombinationSetupDlg.h; sourceTree = "<group>"; };
 		E6ADBA2F1195709A004E2BE5 /* SystemTray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemTray.cpp; sourceTree = "<group>"; };
 		E6ADBA301195709A004E2BE5 /* SystemTray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemTray.h; sourceTree = "<group>"; };
 		E6ADBA311195709A004E2BE5 /* SystemTrayMenuId.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemTrayMenuId.h; sourceTree = "<group>"; };
@@ -1277,8 +1277,8 @@
 				E6ADBA2A1195709A004E2BE5 /* SafeCombinationEntryDlg.h */,
 				E6ADBA2B1195709A004E2BE5 /* SafeCombinationPromptDlg.cpp */,
 				E6ADBA2C1195709A004E2BE5 /* SafeCombinationPromptDlg.h */,
-				E6ADBA2D1195709A004E2BE5 /* safecombinationsetup.cpp */,
-				E6ADBA2E1195709A004E2BE5 /* safecombinationsetup.h */,
+				E6ADBA2D1195709A004E2BE5 /* SafeCombinationSetupDlg.cpp */,
+				E6ADBA2E1195709A004E2BE5 /* SafeCombinationSetupDlg.h */,
 				E6ADBA2F1195709A004E2BE5 /* SystemTray.cpp */,
 				E6ADBA301195709A004E2BE5 /* SystemTray.h */,
 				E6ADBA311195709A004E2BE5 /* SystemTrayMenuId.h */,
@@ -1802,7 +1802,7 @@
 				E6ADBA981195709A004E2BE5 /* SafeCombinationChangeDlg.cpp in Sources */,
 				E6ADBA991195709A004E2BE5 /* SafeCombinationEntryDlg.cpp in Sources */,
 				E6ADBA9A1195709A004E2BE5 /* SafeCombinationPromptDlg.cpp in Sources */,
-				E6ADBA9B1195709A004E2BE5 /* safecombinationsetup.cpp in Sources */,
+				E6ADBA9B1195709A004E2BE5 /* SafeCombinationSetupDlg.cpp in Sources */,
 				E6ADBA9C1195709A004E2BE5 /* SystemTray.cpp in Sources */,
 				E6ADBA9D1195709A004E2BE5 /* version.cpp in Sources */,
 				E6DA586511A701AE00D84199 /* GuiInfo.cpp in Sources */,

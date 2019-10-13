@@ -41,7 +41,7 @@
 #include "PWStatusBar.h"
 #include "GridTable.h"
 #include "SafeCombinationChangeDlg.h"
-#include "safecombinationsetup.h"
+#include "SafeCombinationSetupDlg.h"
 #include "SafeCombinationPromptDlg.h"
 #include "PasswordSafeFrame.h"
 #include "PropertiesDlg.h"
