@@ -64,7 +64,7 @@ msgstr "Contraseña de seguridad:"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:236
 #: ../../../ui/wxWidgets/yubicfg.cpp:366 ../../../ui/wxWidgets/YubiMixin.cpp:58
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:198
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:171
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:171
 msgid "Please insert your YubiKey"
 msgstr ""
 
@@ -74,7 +74,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/yubicfg.cpp:202
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:384
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:186
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:186
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:173
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:219
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:250
@@ -90,7 +90,7 @@ msgstr "Salir"
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:206
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:381
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:209
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:183
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:170
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:216
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:247
@@ -102,7 +102,7 @@ msgstr "Cancelar"
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:367
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:378
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:205
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:180
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:213
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:244
@@ -149,10 +149,10 @@ msgstr ""
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:280
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:296
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:246
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:252
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:280
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:319
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:246
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:252
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:280
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:319
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1154
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1276
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1288
@@ -1510,7 +1510,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:73
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:70
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:206
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:155
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:155
 msgid "Safe Combination:"
 msgstr "Contraseña de seguridad:"
 
@@ -1754,7 +1754,7 @@ msgid ""
 msgstr ""
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:378
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:272
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:272
 msgid "Warning"
 msgstr "Atención"
 
@@ -2691,8 +2691,8 @@ msgid "Verify Key:"
 msgstr "Verificar Clave:"
 
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:111
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:245
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:318
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:245
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:318
 msgid "The two entries do not match."
 msgstr "Las entradas no coinciden."
 
@@ -2742,7 +2742,7 @@ msgid "New safe combination and confirmation do not match"
 msgstr "La nueva contraseña y la confirmación no coinciden"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:289
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:266
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:266
 #, fuzzy
 msgid "Weak passphrase:"
 msgstr ""
@@ -2751,7 +2751,7 @@ msgstr ""
 " %s"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:294
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:271
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:271
 #, fuzzy
 msgid "Use it anyway?"
 msgstr ""
@@ -2922,7 +2922,7 @@ msgstr "¡No se han encontrado coincidencias!"
 msgid "1 match"
 msgstr "Encontrada 1 coincidencia."
 
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:149
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:149
 #, fuzzy
 msgid ""
 "A new password database will be created.\n"
@@ -2934,15 +2934,15 @@ msgstr ""
 "puede contener cualquier carácter del teclado y es sensible a mayúsculas/"
 "minúsculas."
 
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:161
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:161
 msgid "Verify:"
 msgstr "Verificar:"
 
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:251
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:251
 msgid "Please enter the key and verify it."
 msgstr "Introduzca la clave y verifíquela."
 
-#: ../../../ui/wxWidgets/safecombinationsetup.cpp:279
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:279
 #, fuzzy
 msgid "Please try another"
 msgstr ""
@@ -4139,7 +4139,7 @@ msgstr ""
 msgid "Help"
 msgstr "Ayuda"
 
-#: ../../../ui/wxWidgets/safecombinationsetup.h:53
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.h:53
 msgid "Safe Combination Setup"
 msgstr "Configuración de contraseña maestra"
 

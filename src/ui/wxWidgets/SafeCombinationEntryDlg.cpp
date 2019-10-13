@@ -35,7 +35,7 @@
 
 #include "PWSafeApp.h"
 #include "SafeCombinationEntryDlg.h"
-#include "safecombinationsetup.h"
+#include "SafeCombinationSetupDlg.h"
 #include "version.h"
 #include "core/core.h"
 #include "core/PWSdirs.h"
