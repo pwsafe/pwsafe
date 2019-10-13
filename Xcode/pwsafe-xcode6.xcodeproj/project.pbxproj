@@ -625,7 +625,7 @@
 		E6C94E951FA2075B008F0072 /* QREncode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = QREncode.mm; sourceTree = "<group>"; };
 		E6C94E971FA3399F008F0072 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		E6C94E991FA33BA6008F0072 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		E6CFEE4311EA0AFB001402D8 /* RecentDBList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentDBList.h; sourceTree = "<group>"; };
+		E6CFEE4311EA0AFB001402D8 /* RecentDbList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentDbList.h; sourceTree = "<group>"; };
 		E6D17CEA1411156D003BDBE7 /* FieldSelectionDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FieldSelectionDlg.h; sourceTree = "<group>"; };
 		E6D17CEB1411156D003BDBE7 /* FieldSelectionDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FieldSelectionDlg.cpp; sourceTree = "<group>"; };
 		E6DA586311A701AE00D84199 /* GuiInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuiInfo.cpp; sourceTree = "<group>"; };
@@ -1238,7 +1238,7 @@
 				E69B7FA711F600BA0084F6C4 /* OpenFilePickerValidator.h */,
 				E6AF167C11F1FD77002C253B /* ImportTextDlg.cpp */,
 				E6AF167D11F1FD77002C253B /* ImportTextDlg.h */,
-				E6CFEE4311EA0AFB001402D8 /* RecentDBList.h */,
+				E6CFEE4311EA0AFB001402D8 /* RecentDbList.h */,
 				E6DA586411A701AE00D84199 /* GuiInfo.h */,
 				E6DA586311A701AE00D84199 /* GuiInfo.cpp */,
 				E6ADB9A511957099004E2BE5 /* AboutDlg.cpp */,

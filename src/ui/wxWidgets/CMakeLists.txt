@@ -41,7 +41,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/PasswordPolicyDlg.h
     src/ui/wxWidgets/PwsSync.h
     src/ui/wxWidgets/PwsToolbarButtons.h
-    src/ui/wxWidgets/RecentDBList.h
+    src/ui/wxWidgets/RecentDbList.h
     src/ui/wxWidgets/SafeCombinationCtrl.h
     src/ui/wxWidgets/SelectionCriteria.h
     src/ui/wxWidgets/SizeRestrictedPanel.h

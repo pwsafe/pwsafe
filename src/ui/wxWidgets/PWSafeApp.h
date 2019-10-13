@@ -21,7 +21,7 @@
 #include "safecombinationentry.h"
 ////@end includes
 #include "core/PWScore.h"
-#include "./RecentDBList.h"
+#include "./RecentDbList.h"
 
 /*!
  * Forward declarations

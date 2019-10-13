@@ -14,7 +14,7 @@
 
 #include "GridShortcutsValidator.h"
 
-#include "./RecentDBList.h"
+#include "./RecentDbList.h"
 #include "./PWSafeApp.h"
 #include "../../core/PWSprefs.h"
 

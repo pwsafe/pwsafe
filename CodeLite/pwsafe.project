@@ -75,7 +75,7 @@
     <File Name="../src/ui/wxWidgets/PWSafeApp.h"/>
     <File Name="../src/ui/wxWidgets/GuiInfo.cpp"/>
     <File Name="../src/ui/wxWidgets/GuiInfo.h"/>
-    <File Name="../src/ui/wxWidgets/RecentDBList.h"/>
+    <File Name="../src/ui/wxWidgets/RecentDbList.h"/>
     <File Name="../src/ui/wxWidgets/ImportTextDlg.h"/>
     <File Name="../src/ui/wxWidgets/ImportTextDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/ImportXmlDlg.h"/>

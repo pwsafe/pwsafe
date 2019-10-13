@@ -372,7 +372,7 @@
 		<Unit filename="../../src/ui/wxWidgets/PwsSync.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PwsSync.h" />
 		<Unit filename="../../src/ui/wxWidgets/PwsToolbarButtons.h" />
-		<Unit filename="../../src/ui/wxWidgets/RecentDBList.h" />
+		<Unit filename="../../src/ui/wxWidgets/RecentDbList.h" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationCtrl.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationCtrl.h" />
 		<Unit filename="../../src/ui/wxWidgets/SelectionCriteria.cpp" />
