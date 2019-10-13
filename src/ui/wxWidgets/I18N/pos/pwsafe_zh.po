@@ -222,7 +222,7 @@ msgstr "打开(&O)..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:453
 #: ../../../ui/wxWidgets/yubicfg.cpp:199
-#: ../../../ui/wxWidgets/passwordsubset.cpp:165
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:165
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:396
 #: ../../../ui/wxWidgets/AboutDlg.cpp:185 ../../../ui/wxWidgets/SystemTray.cpp:135
 msgid "&Close"
@@ -2253,7 +2253,7 @@ msgstr "该项目的“最大保存密码数量”已经更改为新默认值:%d
 msgid "Number of entries that had their password history removed was %d"
 msgstr "该项目数量设置已经更改为保存历史密码:%d"
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:128
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:128
 msgid ""
 "Enter positions of password characters separated by spaces, commas or semi-"
 "colons.\n"
@@ -2263,23 +2263,23 @@ msgid ""
 "password character."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:134
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:134
 #, fuzzy
 msgid "Positions:"
 msgstr "确认:"
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:142
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:142
 #, fuzzy
 msgid "Values:"
 msgstr "值:"
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:158
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:158
 #, fuzzy
 msgid "Copy values"
 msgstr "显示备注"
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:251
-#: ../../../ui/wxWidgets/passwordsubset.cpp:255
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:251
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:255
 #, fuzzy
 msgid "Invalid position"
 msgstr "验证"
@@ -3971,7 +3971,7 @@ msgstr ""
 "\n"
 "选项"
 
-#: ../../../ui/wxWidgets/passwordsubset.h:45
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.h:45
 msgid "Show a subset of the Password"
 msgstr "显示一个密码子集"
 

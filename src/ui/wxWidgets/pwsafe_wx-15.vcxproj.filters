@@ -171,7 +171,7 @@
     <ClInclude Include="TimedTaskChain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="passwordsubset.h">
+    <ClInclude Include="PasswordSubsetDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -331,7 +331,7 @@
     <ClCompile Include="mainView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="passwordsubset.cpp">
+    <ClCompile Include="PasswordSubsetDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

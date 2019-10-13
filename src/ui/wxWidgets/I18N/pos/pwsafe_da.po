@@ -222,7 +222,7 @@ msgstr "&Åben..."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:453
 #: ../../../ui/wxWidgets/yubicfg.cpp:199
-#: ../../../ui/wxWidgets/passwordsubset.cpp:165
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:165
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:396
 #: ../../../ui/wxWidgets/AboutDlg.cpp:185 ../../../ui/wxWidgets/SystemTray.cpp:135
 msgid "&Close"
@@ -2256,7 +2256,7 @@ msgstr ""
 "Antal poster med ændrede indstillinger for at gemme adgangskode historik "
 "var: %d"
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:128
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:128
 msgid ""
 "Enter positions of password characters separated by spaces, commas or semi-"
 "colons.\n"
@@ -2266,23 +2266,23 @@ msgid ""
 "password character."
 msgstr ""
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:134
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:134
 #, fuzzy
 msgid "Positions:"
 msgstr "Bekræftelse:"
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:142
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:142
 #, fuzzy
 msgid "Values:"
 msgstr "Værdi:"
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:158
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:158
 #, fuzzy
 msgid "Copy values"
 msgstr "Vis Notater"
 
-#: ../../../ui/wxWidgets/passwordsubset.cpp:251
-#: ../../../ui/wxWidgets/passwordsubset.cpp:255
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:251
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:255
 #, fuzzy
 msgid "Invalid position"
 msgstr "vurdering"
@@ -3966,7 +3966,7 @@ msgstr "Bekræft Slet"
 msgid "Options"
 msgstr "Valgmuligheder"
 
-#: ../../../ui/wxWidgets/passwordsubset.h:45
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.h:45
 msgid "Show a subset of the Password"
 msgstr "Vis en delmængde af Adgangskoden"
 

@@ -114,7 +114,7 @@ msgstr "Настройки"
 msgid "PasswordSafe"
 msgstr "Password Safe"
 
-#: src/ui/wxWidgets/passwordsubset.h:45
+#: src/ui/wxWidgets/PasswordSubsetDlg.h:45
 msgid "Show a subset of the Password"
 msgstr "Показать часть пароля"
 
@@ -263,7 +263,7 @@ msgstr "Copyright (c) 2003-2019 Rony Shapiro"
 
 #: src/ui/wxWidgets/AboutDlg.cpp:185 src/ui/wxWidgets/PasswordPolicyDlg.cpp:396
 #: src/ui/wxWidgets/passwordsafeframe.cpp:453
-#: src/ui/wxWidgets/passwordsubset.cpp:165 src/ui/wxWidgets/SystemTray.cpp:135
+#: src/ui/wxWidgets/PasswordSubsetDlg.cpp:165 src/ui/wxWidgets/SystemTray.cpp:135
 #: src/ui/wxWidgets/yubicfg.cpp:199
 msgid "&Close"
 msgstr "&Закрыть"
@@ -3093,7 +3093,7 @@ msgstr "Совпадений не обнаружено"
 msgid "1 match"
 msgstr "одно совпадение"
 
-#: src/ui/wxWidgets/passwordsubset.cpp:128
+#: src/ui/wxWidgets/PasswordSubsetDlg.cpp:128
 msgid ""
 "Enter positions of password characters separated by spaces, commas or semi-colons.\n"
 "Position 1 is the first character, 2 is the second, etc. up to N for the last character of a password of length N.\n"
@@ -3104,21 +3104,21 @@ msgstr ""
 "-1 указывает на последний символ, -2 — на второй с конца, и т. д. (-N соответствует первому символу)."
 
 # отображение части пароля
-#: src/ui/wxWidgets/passwordsubset.cpp:134
+#: src/ui/wxWidgets/PasswordSubsetDlg.cpp:134
 msgid "Positions:"
 msgstr "Номера:"
 
 # при выборе части пароля
-#: src/ui/wxWidgets/passwordsubset.cpp:142
+#: src/ui/wxWidgets/PasswordSubsetDlg.cpp:142
 msgid "Values:"
 msgstr "Значения:"
 
-#: src/ui/wxWidgets/passwordsubset.cpp:158
+#: src/ui/wxWidgets/PasswordSubsetDlg.cpp:158
 msgid "Copy values"
 msgstr "Копировать значения"
 
-#: src/ui/wxWidgets/passwordsubset.cpp:251
-#: src/ui/wxWidgets/passwordsubset.cpp:255
+#: src/ui/wxWidgets/PasswordSubsetDlg.cpp:251
+#: src/ui/wxWidgets/PasswordSubsetDlg.cpp:255
 msgid "Invalid position"
 msgstr "Неверный номер символа"
 
