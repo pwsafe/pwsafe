@@ -98,7 +98,7 @@ msgid "&Cancel"
 msgstr "取消"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:210
-#: ../../../ui/wxWidgets/properties.cpp:367
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:367
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:378
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
@@ -1487,121 +1487,121 @@ msgstr "同时代替标题字段的句号"
 msgid "Advanced..."
 msgstr "高级"
 
-#: ../../../ui/wxWidgets/properties.cpp:137
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:137
 msgid " empty)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/properties.cpp:161
-#: ../../../ui/wxWidgets/properties.cpp:174
-#: ../../../ui/wxWidgets/properties.cpp:193
-#: ../../../ui/wxWidgets/properties.cpp:203
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:161
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:174
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:193
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:203
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:117
 msgid "Unknown"
 msgstr "未知"
 
-#: ../../../ui/wxWidgets/properties.cpp:183
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:183
 #, fuzzy, c-format
 msgid "%ls on %ls"
 msgstr "%ls 在 %ls 上"
 
-#: ../../../ui/wxWidgets/properties.cpp:233
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:233
 msgid "Yes"
 msgstr "是"
 
-#: ../../../ui/wxWidgets/properties.cpp:233
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:233
 msgid "No"
 msgstr "否"
 
-#: ../../../ui/wxWidgets/properties.cpp:235
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:235
 #, fuzzy, c-format
 msgid "In Headers(%ls)/In Entries("
 msgstr "在标题(%ls)/在项目("
 
-#: ../../../ui/wxWidgets/properties.cpp:238
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:238
 #, fuzzy
 msgid "No)"
 msgstr "否"
 
-#: ../../../ui/wxWidgets/properties.cpp:246
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:246
 msgid "None"
 msgstr "无"
 
-#: ../../../ui/wxWidgets/properties.cpp:256
-#: ../../../ui/wxWidgets/properties.cpp:266
-#: ../../../ui/wxWidgets/properties.cpp:455
-#: ../../../ui/wxWidgets/properties.cpp:483
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:256
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:266
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:455
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:483
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:550
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:412
 msgid "N/A"
 msgstr "未知"
 
-#: ../../../ui/wxWidgets/properties.cpp:280
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:280
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:544
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:556
 #, fuzzy
 msgid "Static text"
 msgstr "Static"
 
-#: ../../../ui/wxWidgets/properties.cpp:287
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:287
 msgid "Database format:"
 msgstr "数据库格式:"
 
-#: ../../../ui/wxWidgets/properties.cpp:293
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:293
 msgid "Number of Groups:"
 msgstr "组数量合计:"
 
-#: ../../../ui/wxWidgets/properties.cpp:299
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:299
 msgid "Number of Entries:"
 msgstr "项目数量合计:"
 
-#: ../../../ui/wxWidgets/properties.cpp:305
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:305
 #, fuzzy
 msgid "Number of Attachments:"
 msgstr "项目数量合计:"
 
-#: ../../../ui/wxWidgets/properties.cpp:311
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:311
 msgid "Last saved by:"
 msgstr "最后保存用户:"
 
-#: ../../../ui/wxWidgets/properties.cpp:317
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:317
 msgid "Last saved on:"
 msgstr "最后保存时间:"
 
-#: ../../../ui/wxWidgets/properties.cpp:323
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:323
 msgid "Using application:"
 msgstr "使用应用程序:"
 
-#: ../../../ui/wxWidgets/properties.cpp:329
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:329
 #, fuzzy
 msgid "Master Password last set on:"
 msgstr "密码最后更改时间:"
 
-#: ../../../ui/wxWidgets/properties.cpp:335
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:335
 msgid "Database Unique ID:"
 msgstr "数据库唯一ID:"
 
-#: ../../../ui/wxWidgets/properties.cpp:343
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:343
 msgid "Unknown fields:"
 msgstr "未知字段:"
 
-#: ../../../ui/wxWidgets/properties.cpp:349
-#: ../../../ui/wxWidgets/properties.cpp:446
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:349
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:446
 #, fuzzy
 msgid "Name:"
 msgstr "名称"
 
-#: ../../../ui/wxWidgets/properties.cpp:356
-#: ../../../ui/wxWidgets/properties.cpp:474
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:356
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:474
 #, fuzzy
 msgid "Description:"
 msgstr "确认:"
 
-#: ../../../ui/wxWidgets/properties.cpp:446
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:446
 #, fuzzy
 msgid "Please enter the new database name"
 msgstr "请选择作为新建数据库的名称"
 
-#: ../../../ui/wxWidgets/properties.cpp:474
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:474
 #, fuzzy
 msgid "Please enter the new database description"
 msgstr "请选择作为新建数据库的名称"
@@ -3946,7 +3946,7 @@ msgstr "输入保险箱密码"
 msgid "PasswordSafe"
 msgstr "Password Safe"
 
-#: ../../../ui/wxWidgets/properties.h:57
+#: ../../../ui/wxWidgets/PropertiesDlg.h:57
 msgid "Properties"
 msgstr "属性"
 

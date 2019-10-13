@@ -54,7 +54,7 @@
     <ClInclude Include="PasswordSafeSearch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="properties.h">
+    <ClInclude Include="PropertiesDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pwsafeapp.h">
@@ -226,7 +226,7 @@
     <ClCompile Include="PasswordSafeSearch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="properties.cpp">
+    <ClCompile Include="PropertiesDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pwsafeapp.cpp">

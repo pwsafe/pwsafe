@@ -44,7 +44,7 @@
 #include "safecombinationsetup.h"
 #include "safecombinationprompt.h"
 #include "passwordsafeframe.h"
-#include "properties.h"
+#include "PropertiesDlg.h"
 #include "PasswordSafeSearch.h"
 #include "pwsclip.h"
 #include "SystemTray.h"

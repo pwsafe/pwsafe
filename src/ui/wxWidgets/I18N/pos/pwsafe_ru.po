@@ -118,7 +118,7 @@ msgstr "Password Safe"
 msgid "Show a subset of the Password"
 msgstr "Показать часть пароля"
 
-#: src/ui/wxWidgets/properties.h:57
+#: src/ui/wxWidgets/PropertiesDlg.h:57
 msgid "Properties"
 msgstr "Свойства"
 
@@ -540,7 +540,7 @@ msgstr "Пароль изменён:"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:544
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:556
-#: src/ui/wxWidgets/properties.cpp:280
+#: src/ui/wxWidgets/PropertiesDlg.cpp:280
 msgid "Static text"
 msgstr "Заглушка"
 
@@ -551,8 +551,8 @@ msgstr "Последнее обращение:"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:550
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:412
-#: src/ui/wxWidgets/properties.cpp:256 src/ui/wxWidgets/properties.cpp:266
-#: src/ui/wxWidgets/properties.cpp:455 src/ui/wxWidgets/properties.cpp:483
+#: src/ui/wxWidgets/PropertiesDlg.cpp:256 src/ui/wxWidgets/PropertiesDlg.cpp:266
+#: src/ui/wxWidgets/PropertiesDlg.cpp:455 src/ui/wxWidgets/PropertiesDlg.cpp:483
 msgid "N/A"
 msgstr "Н/Д"
 
@@ -964,7 +964,7 @@ msgstr ""
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:167
 #: src/ui/wxWidgets/EditShortcutDlg.cpp:213
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:244
-#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:378 src/ui/wxWidgets/properties.cpp:367
+#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:378 src/ui/wxWidgets/PropertiesDlg.cpp:367
 #: src/ui/wxWidgets/safecombinationchange.cpp:205
 #: src/ui/wxWidgets/safecombinationprompt.cpp:210
 #: src/ui/wxWidgets/safecombinationsetup.cpp:180
@@ -1130,9 +1130,9 @@ msgid "Unexpected result dragging"
 msgstr "Непредусмотренные результат при перетягивании"
 
 # дата в истории паролей
-#: src/ui/wxWidgets/EditShortcutDlg.cpp:117 src/ui/wxWidgets/properties.cpp:161
-#: src/ui/wxWidgets/properties.cpp:174 src/ui/wxWidgets/properties.cpp:193
-#: src/ui/wxWidgets/properties.cpp:203 src/core/core_st.cpp:297
+#: src/ui/wxWidgets/EditShortcutDlg.cpp:117 src/ui/wxWidgets/PropertiesDlg.cpp:161
+#: src/ui/wxWidgets/PropertiesDlg.cpp:174 src/ui/wxWidgets/PropertiesDlg.cpp:193
+#: src/ui/wxWidgets/PropertiesDlg.cpp:203 src/core/core_st.cpp:297
 msgid "Unknown"
 msgstr "Неизвестно"
 
@@ -1528,7 +1528,7 @@ msgstr "Укажите подходящий файл"
 
 # Встречается в отчётах при указании отсутствия элементов
 #: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:118
-#: src/ui/wxWidgets/properties.cpp:246 src/core/core_st.cpp:245
+#: src/ui/wxWidgets/PropertiesDlg.cpp:246 src/core/core_st.cpp:245
 msgid "None"
 msgstr "Нет"
 
@@ -3122,90 +3122,90 @@ msgstr "Копировать значения"
 msgid "Invalid position"
 msgstr "Неверный номер символа"
 
-#: src/ui/wxWidgets/properties.cpp:137
+#: src/ui/wxWidgets/PropertiesDlg.cpp:137
 msgid " empty)"
 msgstr " пустых)"
 
 # Ex.: "Saved by: qq on MAIN"
-#: src/ui/wxWidgets/properties.cpp:183 src/core/core_st.cpp:302
+#: src/ui/wxWidgets/PropertiesDlg.cpp:183 src/core/core_st.cpp:302
 #, c-format
 msgid "%ls on %ls"
 msgstr "%ls на %ls"
 
-#: src/ui/wxWidgets/properties.cpp:233 src/core/core_st.cpp:337
+#: src/ui/wxWidgets/PropertiesDlg.cpp:233 src/core/core_st.cpp:337
 msgid "Yes"
 msgstr "Да"
 
-#: src/ui/wxWidgets/properties.cpp:233 src/core/core_st.cpp:240
+#: src/ui/wxWidgets/PropertiesDlg.cpp:233 src/core/core_st.cpp:240
 msgid "No"
 msgstr "Нет"
 
-#: src/ui/wxWidgets/properties.cpp:235 src/core/core_st.cpp:298
+#: src/ui/wxWidgets/PropertiesDlg.cpp:235 src/core/core_st.cpp:298
 #, c-format
 msgid "In Headers(%ls)/In Entries("
 msgstr "В заголовках(%ls)/в элементах("
 
-#: src/ui/wxWidgets/properties.cpp:238
+#: src/ui/wxWidgets/PropertiesDlg.cpp:238
 msgid "No)"
 msgstr "Нет)"
 
-#: src/ui/wxWidgets/properties.cpp:287
+#: src/ui/wxWidgets/PropertiesDlg.cpp:287
 msgid "Database format:"
 msgstr "Формат контейнера:"
 
-#: src/ui/wxWidgets/properties.cpp:293
+#: src/ui/wxWidgets/PropertiesDlg.cpp:293
 msgid "Number of Groups:"
 msgstr "Количество групп:"
 
-#: src/ui/wxWidgets/properties.cpp:299
+#: src/ui/wxWidgets/PropertiesDlg.cpp:299
 msgid "Number of Entries:"
 msgstr "Количество элементов:"
 
 # свойства контейнера
-#: src/ui/wxWidgets/properties.cpp:305
+#: src/ui/wxWidgets/PropertiesDlg.cpp:305
 msgid "Number of Attachments:"
 msgstr "Количество вложений:"
 
 # в свойствах контейнера
-#: src/ui/wxWidgets/properties.cpp:311
+#: src/ui/wxWidgets/PropertiesDlg.cpp:311
 msgid "Last saved by:"
 msgstr "Сохранил:"
 
 # Урезано из-за ограничения длины поля
-#: src/ui/wxWidgets/properties.cpp:317
+#: src/ui/wxWidgets/PropertiesDlg.cpp:317
 msgid "Last saved on:"
 msgstr "Дата сохранения:"
 
-#: src/ui/wxWidgets/properties.cpp:323
+#: src/ui/wxWidgets/PropertiesDlg.cpp:323
 msgid "Using application:"
 msgstr "С использованием:"
 
 # Урезано из-за ограничения длины поля
-#: src/ui/wxWidgets/properties.cpp:329
+#: src/ui/wxWidgets/PropertiesDlg.cpp:329
 msgid "Master Password last set on:"
 msgstr "Дата смены мастер-пароля:"
 
-#: src/ui/wxWidgets/properties.cpp:335
+#: src/ui/wxWidgets/PropertiesDlg.cpp:335
 msgid "Database Unique ID:"
 msgstr "UID контейнера:"
 
-#: src/ui/wxWidgets/properties.cpp:343
+#: src/ui/wxWidgets/PropertiesDlg.cpp:343
 msgid "Unknown fields:"
 msgstr "Неопознанные поля:"
 
-#: src/ui/wxWidgets/properties.cpp:349 src/ui/wxWidgets/properties.cpp:446
+#: src/ui/wxWidgets/PropertiesDlg.cpp:349 src/ui/wxWidgets/PropertiesDlg.cpp:446
 msgid "Name:"
 msgstr "Имя:"
 
-#: src/ui/wxWidgets/properties.cpp:356 src/ui/wxWidgets/properties.cpp:474
+#: src/ui/wxWidgets/PropertiesDlg.cpp:356 src/ui/wxWidgets/PropertiesDlg.cpp:474
 msgid "Description:"
 msgstr "Описание:"
 
-#: src/ui/wxWidgets/properties.cpp:446
+#: src/ui/wxWidgets/PropertiesDlg.cpp:446
 msgid "Please enter the new database name"
 msgstr "Введите новое имя контейнера"
 
-#: src/ui/wxWidgets/properties.cpp:474
+#: src/ui/wxWidgets/PropertiesDlg.cpp:474
 msgid "Please enter the new database description"
 msgstr "Введите новое описание контейнера"
 

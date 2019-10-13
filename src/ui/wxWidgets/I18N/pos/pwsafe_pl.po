@@ -96,7 +96,7 @@ msgid "&Cancel"
 msgstr "Anuluj"
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:210
-#: ../../../ui/wxWidgets/properties.cpp:367
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:367
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:378
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:205
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:180
@@ -1461,121 +1461,121 @@ msgstr "Zastępuje także kropki w polu nazwy."
 msgid "Advanced..."
 msgstr "Zaawansowane..."
 
-#: ../../../ui/wxWidgets/properties.cpp:137
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:137
 msgid " empty)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/properties.cpp:161
-#: ../../../ui/wxWidgets/properties.cpp:174
-#: ../../../ui/wxWidgets/properties.cpp:193
-#: ../../../ui/wxWidgets/properties.cpp:203
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:161
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:174
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:193
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:203
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:117
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: ../../../ui/wxWidgets/properties.cpp:183
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:183
 #, fuzzy, c-format
 msgid "%ls on %ls"
 msgstr "%ls na %ls"
 
-#: ../../../ui/wxWidgets/properties.cpp:233
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:233
 msgid "Yes"
 msgstr "Tak"
 
-#: ../../../ui/wxWidgets/properties.cpp:233
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:233
 msgid "No"
 msgstr "Nie"
 
-#: ../../../ui/wxWidgets/properties.cpp:235
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:235
 #, fuzzy, c-format
 msgid "In Headers(%ls)/In Entries("
 msgstr "W nagłówkach(%ls)/We wpisach("
 
-#: ../../../ui/wxWidgets/properties.cpp:238
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:238
 #, fuzzy
 msgid "No)"
 msgstr "Nie)"
 
-#: ../../../ui/wxWidgets/properties.cpp:246
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:246
 #, fuzzy
 msgid "None"
 msgstr "Żaden"
 
-#: ../../../ui/wxWidgets/properties.cpp:256
-#: ../../../ui/wxWidgets/properties.cpp:266
-#: ../../../ui/wxWidgets/properties.cpp:455
-#: ../../../ui/wxWidgets/properties.cpp:483
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:256
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:266
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:455
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:483
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:550
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:412
 msgid "N/A"
 msgstr "N/A"
 
-#: ../../../ui/wxWidgets/properties.cpp:280
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:280
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:544
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:556
 #, fuzzy
 msgid "Static text"
 msgstr "Tekst statyczny"
 
-#: ../../../ui/wxWidgets/properties.cpp:287
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:287
 msgid "Database format:"
 msgstr "Format Bazy Danych:"
 
-#: ../../../ui/wxWidgets/properties.cpp:293
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:293
 msgid "Number of Groups:"
 msgstr "Liczba grup:"
 
-#: ../../../ui/wxWidgets/properties.cpp:299
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:299
 msgid "Number of Entries:"
 msgstr "Liczba wpisów:"
 
-#: ../../../ui/wxWidgets/properties.cpp:305
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:305
 #, fuzzy
 msgid "Number of Attachments:"
 msgstr "Liczba wpisów:"
 
-#: ../../../ui/wxWidgets/properties.cpp:311
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:311
 msgid "Last saved by:"
 msgstr "Ostatnio zapisany przez:"
 
-#: ../../../ui/wxWidgets/properties.cpp:317
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:317
 msgid "Last saved on:"
 msgstr "Ostatnio zapisany:"
 
-#: ../../../ui/wxWidgets/properties.cpp:323
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:323
 msgid "Using application:"
 msgstr "Wersja programu:"
 
-#: ../../../ui/wxWidgets/properties.cpp:329
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:329
 #, fuzzy
 msgid "Master Password last set on:"
 msgstr "Ostatnia zmiana hasła:"
 
-#: ../../../ui/wxWidgets/properties.cpp:335
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:335
 #, fuzzy
 msgid "Database Unique ID:"
 msgstr "ID Bazy Danych:"
 
-#: ../../../ui/wxWidgets/properties.cpp:343
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:343
 msgid "Unknown fields:"
 msgstr "Nieznane pola:"
 
-#: ../../../ui/wxWidgets/properties.cpp:349
-#: ../../../ui/wxWidgets/properties.cpp:446
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:349
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:446
 msgid "Name:"
 msgstr "Nazwa:"
 
-#: ../../../ui/wxWidgets/properties.cpp:356
-#: ../../../ui/wxWidgets/properties.cpp:474
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:356
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:474
 #, fuzzy
 msgid "Description:"
 msgstr "#opis"
 
-#: ../../../ui/wxWidgets/properties.cpp:446
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:446
 msgid "Please enter the new database name"
 msgstr "Proszę podać nazwę nowej bazy danych"
 
-#: ../../../ui/wxWidgets/properties.cpp:474
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:474
 msgid "Please enter the new database description"
 msgstr "Proszę podać opis nowej bazy danych"
 
@@ -3929,7 +3929,7 @@ msgstr "Wprowadź Hasło"
 msgid "PasswordSafe"
 msgstr "Password Safe"
 
-#: ../../../ui/wxWidgets/properties.h:57
+#: ../../../ui/wxWidgets/PropertiesDlg.h:57
 msgid "Properties"
 msgstr "Właściwości"
 

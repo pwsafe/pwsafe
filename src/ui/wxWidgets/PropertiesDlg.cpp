@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file properties.cpp
+/** \file PropertiesDlg.cpp
 *
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -26,7 +26,7 @@
 ////@end includes
 
 #include <vector>
-#include "properties.h"
+#include "PropertiesDlg.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>

@@ -72,7 +72,7 @@
 		E6ADBA3F1195709A004E2BE5 /* OptionsPropertySheetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B211957099004E2BE5 /* OptionsPropertySheetDlg.cpp */; };
 		E6ADBA401195709A004E2BE5 /* passwordsafeframe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */; };
 		E6ADBA411195709A004E2BE5 /* PasswordSafeSearch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */; };
-		E6ADBA431195709A004E2BE5 /* properties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B911957099004E2BE5 /* properties.cpp */; };
+		E6ADBA431195709A004E2BE5 /* PropertiesDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B911957099004E2BE5 /* PropertiesDlg.cpp */; };
 		E6ADBA921195709A004E2BE5 /* pwsafeapp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1B1195709A004E2BE5 /* pwsafeapp.cpp */; };
 		E6ADBA931195709A004E2BE5 /* pwsclip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1D1195709A004E2BE5 /* pwsclip.cpp */; };
 		E6ADBA941195709A004E2BE5 /* PWSgrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1F1195709A004E2BE5 /* PWSgrid.cpp */; };
@@ -552,8 +552,8 @@
 		E6ADB9B511957099004E2BE5 /* passwordsafeframe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = passwordsafeframe.h; sourceTree = "<group>"; };
 		E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSafeSearch.cpp; sourceTree = "<group>"; };
 		E6ADB9B711957099004E2BE5 /* PasswordSafeSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSafeSearch.h; sourceTree = "<group>"; };
-		E6ADB9B911957099004E2BE5 /* properties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = properties.cpp; sourceTree = "<group>"; };
-		E6ADB9BA11957099004E2BE5 /* properties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = properties.h; sourceTree = "<group>"; };
+		E6ADB9B911957099004E2BE5 /* PropertiesDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PropertiesDlg.cpp; sourceTree = "<group>"; };
+		E6ADB9BA11957099004E2BE5 /* PropertiesDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertiesDlg.h; sourceTree = "<group>"; };
 		E6ADBA1B1195709A004E2BE5 /* pwsafeapp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pwsafeapp.cpp; sourceTree = "<group>"; };
 		E6ADBA1C1195709A004E2BE5 /* pwsafeapp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwsafeapp.h; sourceTree = "<group>"; };
 		E6ADBA1D1195709A004E2BE5 /* pwsclip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pwsclip.cpp; sourceTree = "<group>"; };
@@ -1259,8 +1259,8 @@
 				E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */,
 				E6ADB9B711957099004E2BE5 /* PasswordSafeSearch.h */,
 				E6299FB91D07161E00D03FD1 /* SearchUtils.h */,
-				E6ADB9B911957099004E2BE5 /* properties.cpp */,
-				E6ADB9BA11957099004E2BE5 /* properties.h */,
+				E6ADB9B911957099004E2BE5 /* PropertiesDlg.cpp */,
+				E6ADB9BA11957099004E2BE5 /* PropertiesDlg.h */,
 				E6ADBA1B1195709A004E2BE5 /* pwsafeapp.cpp */,
 				E6ADBA1C1195709A004E2BE5 /* pwsafeapp.h */,
 				E6ADBA1D1195709A004E2BE5 /* pwsclip.cpp */,
@@ -1791,7 +1791,7 @@
 				E6ADBA3F1195709A004E2BE5 /* OptionsPropertySheetDlg.cpp in Sources */,
 				E6ADBA401195709A004E2BE5 /* passwordsafeframe.cpp in Sources */,
 				E6ADBA411195709A004E2BE5 /* PasswordSafeSearch.cpp in Sources */,
-				E6ADBA431195709A004E2BE5 /* properties.cpp in Sources */,
+				E6ADBA431195709A004E2BE5 /* PropertiesDlg.cpp in Sources */,
 				E6ADBA921195709A004E2BE5 /* pwsafeapp.cpp in Sources */,
 				E6C94E931FA20593008F0072 /* pwsqrcodedlg.cpp in Sources */,
 				E6C94E961FA2075B008F0072 /* pwsqrencode.mm in Sources */,
