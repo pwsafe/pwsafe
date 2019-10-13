@@ -941,7 +941,7 @@ msgstr "Tekst"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2835
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2840
-#: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/wxUtilities.cpp:61
+#: ../../../ui/wxWidgets/SyncWizard.cpp:573 ../../../ui/wxWidgets/wxUtilities.cpp:61
 #: ../../../ui/wxWidgets/wxUtilities.cpp:66 ../../../ui/wxWidgets/wxUtilities.cpp:73
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:184
 msgid "File Read Error"
@@ -1044,7 +1044,7 @@ msgid "Text file being imported: %ls"
 msgstr "Text filen der importeres: %ls"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2942
-#: ../../../ui/wxWidgets/PwsSync.cpp:603
+#: ../../../ui/wxWidgets/SyncWizard.cpp:603
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -1077,16 +1077,16 @@ msgstr ""
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2971
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3102
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3103
-#: ../../../ui/wxWidgets/PwsSync.cpp:588 ../../../ui/wxWidgets/PwsSync.cpp:731
-#: ../../../ui/wxWidgets/PwsSync.cpp:748
+#: ../../../ui/wxWidgets/SyncWizard.cpp:588 ../../../ui/wxWidgets/SyncWizard.cpp:731
+#: ../../../ui/wxWidgets/SyncWizard.cpp:748
 msgid "entry"
 msgstr "post"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2971
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3102
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3103
-#: ../../../ui/wxWidgets/PwsSync.cpp:588 ../../../ui/wxWidgets/PwsSync.cpp:731
-#: ../../../ui/wxWidgets/PwsSync.cpp:748
+#: ../../../ui/wxWidgets/SyncWizard.cpp:588 ../../../ui/wxWidgets/SyncWizard.cpp:731
+#: ../../../ui/wxWidgets/SyncWizard.cpp:748
 msgid "entries"
 msgstr "poster"
 
@@ -1097,7 +1097,7 @@ msgstr "Importeret%d %ls"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2994
 #: ../../../ui/wxWidgets/CompareDlg.cpp:729
-#: ../../../ui/wxWidgets/PwsSync.cpp:619
+#: ../../../ui/wxWidgets/SyncWizard.cpp:619
 #, fuzzy, c-format
 msgid ""
 "The database:\n"
@@ -2537,7 +2537,7 @@ msgstr "Synkroniser..."
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:440
 #: ../../../ui/wxWidgets/CompareDlg.cpp:722
-#: ../../../ui/wxWidgets/PwsSync.cpp:640
+#: ../../../ui/wxWidgets/SyncWizard.cpp:640
 msgid "Synchronize"
 msgstr "Synkroniser"
 
@@ -2613,7 +2613,7 @@ msgid "Current safe was opened read-only"
 msgstr "Åben som læs-kun"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:730
-#: ../../../ui/wxWidgets/PwsSync.cpp:618
+#: ../../../ui/wxWidgets/SyncWizard.cpp:618
 msgid "Synchronization failed"
 msgstr "Synkronisering fejlede"
 
@@ -3210,79 +3210,79 @@ msgstr "Beklager, 'udtalbare' og 'nemme-at-læse' er ikke understøttet sammen"
 msgid "mailto:"
 msgstr "email:"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:145
+#: ../../../ui/wxWidgets/SyncWizard.cpp:145
 #, fuzzy
 msgid "synchronize"
 msgstr "Synkroniser"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:222
+#: ../../../ui/wxWidgets/SyncWizard.cpp:222
 #, fuzzy
 msgid "Synchronize another database with currently open database"
 msgstr "Vælg Venligst en Database til Sammenligning med den åbne database"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:350
+#: ../../../ui/wxWidgets/SyncWizard.cpp:350
 msgid "Introduction"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:354
+#: ../../../ui/wxWidgets/SyncWizard.cpp:354
 msgid ""
 "Synchronizing with another database will update the entries in your\n"
 "database with matching entries from the other database."
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:357
+#: ../../../ui/wxWidgets/SyncWizard.cpp:357
 msgid "More Info"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:360
+#: ../../../ui/wxWidgets/SyncWizard.cpp:360
 msgid ""
 "1. Two entries from different databases match if their Group, Title\n"
 "and User fields match."
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:361
+#: ../../../ui/wxWidgets/SyncWizard.cpp:361
 msgid ""
 "2. You can select the fields to update, as well as filter the entries\n"
 "for synchronization."
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:362
+#: ../../../ui/wxWidgets/SyncWizard.cpp:362
 msgid ""
 "3. Only existing entries in your database are updated.  No new entries are\n"
 "added or existing entries removed during this process."
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:363
+#: ../../../ui/wxWidgets/SyncWizard.cpp:363
 msgid ""
 "4. You can undo the operation once it is complete, but won't be\n"
 "able to abort it mid-way."
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:380
+#: ../../../ui/wxWidgets/SyncWizard.cpp:380
 #, fuzzy
 msgid "Select another database"
 msgstr "Åben en Anden Database"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:382
+#: ../../../ui/wxWidgets/SyncWizard.cpp:382
 msgid "Choose Database to Synchronize with \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:383
+#: ../../../ui/wxWidgets/SyncWizard.cpp:383
 #, fuzzy
 msgid "Please Choose a Database to Synchronize with current database"
 msgstr "Vælg Venligst en Database til Sammenligning med den åbne database"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:406
+#: ../../../ui/wxWidgets/SyncWizard.cpp:406
 #, fuzzy
 msgid "Synchronization options"
 msgstr "Synkronisering fejlede"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:430
+#: ../../../ui/wxWidgets/SyncWizard.cpp:430
 #, fuzzy
 msgid "Options Summary"
 msgstr "Muligheder"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:455
+#: ../../../ui/wxWidgets/SyncWizard.cpp:455
 msgid ""
 "WARNING!!\n"
 "\n"
@@ -3290,56 +3290,56 @@ msgid ""
 "from your selected input database"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:472
+#: ../../../ui/wxWidgets/SyncWizard.cpp:472
 msgid " will be updated with corresponding entries from \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:479
+#: ../../../ui/wxWidgets/SyncWizard.cpp:479
 msgid "All fields in matching entries will be updated"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:485
+#: ../../../ui/wxWidgets/SyncWizard.cpp:485
 msgid "Following fields in matching entries will be updated:"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:489
+#: ../../../ui/wxWidgets/SyncWizard.cpp:489
 #, fuzzy
 msgid "Following fields will not be updated:"
 msgstr "De følgende kolonner vil blive behandlet:"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:508
+#: ../../../ui/wxWidgets/SyncWizard.cpp:508
 #, fuzzy
 msgid "Synchronization status"
 msgstr "Synkronisering fejlede"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:526
+#: ../../../ui/wxWidgets/SyncWizard.cpp:526
 msgid "See a detailed report"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:562
+#: ../../../ui/wxWidgets/SyncWizard.cpp:562
 msgid "Your database is being synchronized with \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:572
+#: ../../../ui/wxWidgets/SyncWizard.cpp:572
 msgid "There was an error during synchronization"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:586
+#: ../../../ui/wxWidgets/SyncWizard.cpp:586
 #, c-format
 msgid "Your database has been synchronized with \"%ls\""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:587
+#: ../../../ui/wxWidgets/SyncWizard.cpp:587
 #, c-format
 msgid "%d %ls updated"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:589
+#: ../../../ui/wxWidgets/SyncWizard.cpp:589
 #, fuzzy
 msgid "Synchronization completed successfully"
 msgstr "Fuldført succesfuldt"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:605
+#: ../../../ui/wxWidgets/SyncWizard.cpp:605
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -3352,7 +3352,7 @@ msgstr ""
 "Filen er forvansket eller afkortet!\n"
 "Data kan være mistet eller ændret."
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:607
+#: ../../../ui/wxWidgets/SyncWizard.cpp:607
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -3363,24 +3363,24 @@ msgstr ""
 "\n"
 "Ukendt fejl"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:641
+#: ../../../ui/wxWidgets/SyncWizard.cpp:641
 #, fuzzy, c-format
 msgid "Synchronizing from database: %ls\n"
 msgstr "Synkroniserer fra database: %ls\n"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:644
+#: ../../../ui/wxWidgets/SyncWizard.cpp:644
 msgid "synchronized"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:732
+#: ../../../ui/wxWidgets/SyncWizard.cpp:732
 msgid "was"
 msgstr "var"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:732
+#: ../../../ui/wxWidgets/SyncWizard.cpp:732
 msgid "were"
 msgstr "blev"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:733
+#: ../../../ui/wxWidgets/SyncWizard.cpp:733
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -3389,7 +3389,7 @@ msgstr ""
 "\n"
 "De følgende %ls %ls er opdateret:"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:749
+#: ../../../ui/wxWidgets/SyncWizard.cpp:749
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -3398,21 +3398,21 @@ msgstr ""
 "\n"
 "Synkronisering udført: %d %ls opdateret"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:759
+#: ../../../ui/wxWidgets/SyncWizard.cpp:759
 #, fuzzy
 msgid " were "
 msgstr "blev"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:759
+#: ../../../ui/wxWidgets/SyncWizard.cpp:759
 msgid " with corresponding entries from \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:766
+#: ../../../ui/wxWidgets/SyncWizard.cpp:766
 #, c-format
 msgid "All fields in matching entries were %ls"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:770
+#: ../../../ui/wxWidgets/SyncWizard.cpp:770
 #, fuzzy, c-format
 msgid "The following fields were %ls"
 msgstr "De følgende poster blev sprunget over %ls"

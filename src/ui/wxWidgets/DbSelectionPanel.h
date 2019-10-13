@@ -23,7 +23,7 @@ class wxFileDirPickerEvent;
  * row and a masked textctrl + virtual keyboard button for entering
  * the combination in the second row.  It is meant to be used like
  * a child control by embedding in a wxSizer  See MergeDlg.cpp
- * and PwsSync.cpp for its usage
+ * and SyncWizard.cpp for its usage
  * 
  * filePrompt - the static text displayed just above the file picker ctrl
  * 

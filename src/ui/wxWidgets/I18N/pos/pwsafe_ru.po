@@ -871,7 +871,7 @@ msgid "Synchronize this item..."
 msgstr "Синхронизировать элемент..."
 
 #: src/ui/wxWidgets/CompareDlg.cpp:440 src/ui/wxWidgets/CompareDlg.cpp:722
-#: src/ui/wxWidgets/PwsSync.cpp:640
+#: src/ui/wxWidgets/SyncWizard.cpp:640
 msgid "Synchronize"
 msgstr "Синхронизация"
 
@@ -934,7 +934,7 @@ msgstr "Контейнер открыт «только для чтения»"
 
 #: src/ui/wxWidgets/CompareDlg.cpp:729
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:2994
-#: src/ui/wxWidgets/PwsSync.cpp:619
+#: src/ui/wxWidgets/SyncWizard.cpp:619
 #, c-format
 msgid ""
 "The database:\n"
@@ -949,7 +949,7 @@ msgstr ""
 "\n"
 "содержит дубликаты с совпадающими комбинациями Группа/Заголовок/Имя пользователя. Для исправления запустите проверку."
 
-#: src/ui/wxWidgets/CompareDlg.cpp:730 src/ui/wxWidgets/PwsSync.cpp:618
+#: src/ui/wxWidgets/CompareDlg.cpp:730 src/ui/wxWidgets/SyncWizard.cpp:618
 msgid "Synchronization failed"
 msgstr "Сбой при синхронизации"
 
@@ -1380,7 +1380,7 @@ msgstr "Невозможно открыть файл для чтения!"
 #: src/ui/wxWidgets/MenuManageHandlers.cpp:184
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:2835
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:2840
-#: src/ui/wxWidgets/PwsSync.cpp:573 src/ui/wxWidgets/wxUtilities.cpp:61
+#: src/ui/wxWidgets/SyncWizard.cpp:573 src/ui/wxWidgets/wxUtilities.cpp:61
 #: src/ui/wxWidgets/wxUtilities.cpp:66 src/ui/wxWidgets/wxUtilities.cpp:73
 msgid "File Read Error"
 msgstr "Ошибка при чтении файла"
@@ -2695,7 +2695,7 @@ msgid "Text file being imported: %ls"
 msgstr "Текстовый файл импортирован: %ls"
 
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:2942
-#: src/ui/wxWidgets/PwsSync.cpp:603
+#: src/ui/wxWidgets/SyncWizard.cpp:603
 #, c-format
 msgid ""
 "%ls\n"
@@ -2728,8 +2728,8 @@ msgstr "Сбой при импорте"
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:2971
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:3102
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:3103
-#: src/ui/wxWidgets/PwsSync.cpp:588 src/ui/wxWidgets/PwsSync.cpp:731
-#: src/ui/wxWidgets/PwsSync.cpp:748 src/core/core_st.cpp:93
+#: src/ui/wxWidgets/SyncWizard.cpp:588 src/ui/wxWidgets/SyncWizard.cpp:731
+#: src/ui/wxWidgets/SyncWizard.cpp:748 src/core/core_st.cpp:93
 msgid "entry"
 msgstr "элемент"
 
@@ -2737,8 +2737,8 @@ msgstr "элемент"
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:2971
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:3102
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:3103
-#: src/ui/wxWidgets/PwsSync.cpp:588 src/ui/wxWidgets/PwsSync.cpp:731
-#: src/ui/wxWidgets/PwsSync.cpp:748 src/core/core_st.cpp:91
+#: src/ui/wxWidgets/SyncWizard.cpp:588 src/ui/wxWidgets/SyncWizard.cpp:731
+#: src/ui/wxWidgets/SyncWizard.cpp:748 src/core/core_st.cpp:91
 msgid "entries"
 msgstr "элементов"
 
@@ -3274,19 +3274,19 @@ msgstr "не является допустимой комбинацией кл�
 msgid "Invalid shortcut"
 msgstr "Недопустимая комбинация клавиш"
 
-#: src/ui/wxWidgets/PwsSync.cpp:145
+#: src/ui/wxWidgets/SyncWizard.cpp:145
 msgid "synchronize"
 msgstr "синхронизация"
 
-#: src/ui/wxWidgets/PwsSync.cpp:222
+#: src/ui/wxWidgets/SyncWizard.cpp:222
 msgid "Synchronize another database with currently open database"
 msgstr "Синхронизация контейнеров"
 
-#: src/ui/wxWidgets/PwsSync.cpp:350
+#: src/ui/wxWidgets/SyncWizard.cpp:350
 msgid "Introduction"
 msgstr "Введение"
 
-#: src/ui/wxWidgets/PwsSync.cpp:354
+#: src/ui/wxWidgets/SyncWizard.cpp:354
 msgid ""
 "Synchronizing with another database will update the entries in your\n"
 "database with matching entries from the other database."
@@ -3295,11 +3295,11 @@ msgstr ""
 "текущего контейнера данными из соответствующих элементов другого\n"
 "контейнера"
 
-#: src/ui/wxWidgets/PwsSync.cpp:357
+#: src/ui/wxWidgets/SyncWizard.cpp:357
 msgid "More Info"
 msgstr "Дополнительная информация"
 
-#: src/ui/wxWidgets/PwsSync.cpp:360
+#: src/ui/wxWidgets/SyncWizard.cpp:360
 msgid ""
 "1. Two entries from different databases match if their Group, Title\n"
 "and User fields match."
@@ -3308,7 +3308,7 @@ msgstr ""
 "соответствующими, если у них совпадают поля «Группа», «Заголовок» и\n"
 "«Имя пользователя»."
 
-#: src/ui/wxWidgets/PwsSync.cpp:361
+#: src/ui/wxWidgets/SyncWizard.cpp:361
 msgid ""
 "2. You can select the fields to update, as well as filter the entries\n"
 "for synchronization."
@@ -3316,7 +3316,7 @@ msgstr ""
 "2. Вы можете выбрать поля для обновления и указать фильтр для отбора\n"
 "синхронизируемых элементов."
 
-#: src/ui/wxWidgets/PwsSync.cpp:362
+#: src/ui/wxWidgets/SyncWizard.cpp:362
 msgid ""
 "3. Only existing entries in your database are updated.  No new entries are\n"
 "added or existing entries removed during this process."
@@ -3325,7 +3325,7 @@ msgstr ""
 "контейнере.  Во время синхронизации не происходит удаления или добавления\n"
 "элементов."
 
-#: src/ui/wxWidgets/PwsSync.cpp:363
+#: src/ui/wxWidgets/SyncWizard.cpp:363
 msgid ""
 "4. You can undo the operation once it is complete, but won't be\n"
 "able to abort it mid-way."
@@ -3333,27 +3333,27 @@ msgstr ""
 "4. Действия могут быть отменены после завершения, но сам\n"
 "процесс не может быть прерван."
 
-#: src/ui/wxWidgets/PwsSync.cpp:380
+#: src/ui/wxWidgets/SyncWizard.cpp:380
 msgid "Select another database"
 msgstr "Выберите контейнер"
 
-#: src/ui/wxWidgets/PwsSync.cpp:382
+#: src/ui/wxWidgets/SyncWizard.cpp:382
 msgid "Choose Database to Synchronize with \""
 msgstr "Укажите контейнер для синхронизации с \""
 
-#: src/ui/wxWidgets/PwsSync.cpp:383
+#: src/ui/wxWidgets/SyncWizard.cpp:383
 msgid "Please Choose a Database to Synchronize with current database"
 msgstr "Укажите контейнер для синхронизации с открытым контейнером"
 
-#: src/ui/wxWidgets/PwsSync.cpp:406
+#: src/ui/wxWidgets/SyncWizard.cpp:406
 msgid "Synchronization options"
 msgstr "Параметры синхронизации"
 
-#: src/ui/wxWidgets/PwsSync.cpp:430
+#: src/ui/wxWidgets/SyncWizard.cpp:430
 msgid "Options Summary"
 msgstr "Сводка настроек"
 
-#: src/ui/wxWidgets/PwsSync.cpp:455
+#: src/ui/wxWidgets/SyncWizard.cpp:455
 msgid ""
 "WARNING!!\n"
 "\n"
@@ -3364,53 +3364,53 @@ msgstr ""
 "\n"
 "В случае продолжения, значения элементов текущего контейнера будут заменены на значения из указанного контейнера"
 
-#: src/ui/wxWidgets/PwsSync.cpp:472
+#: src/ui/wxWidgets/SyncWizard.cpp:472
 msgid " will be updated with corresponding entries from \""
 msgstr " будут обновлены с использованием значений из \""
 
-#: src/ui/wxWidgets/PwsSync.cpp:479
+#: src/ui/wxWidgets/SyncWizard.cpp:479
 msgid "All fields in matching entries will be updated"
 msgstr "Все поля соответствующих элементов будут обновлены"
 
-#: src/ui/wxWidgets/PwsSync.cpp:485
+#: src/ui/wxWidgets/SyncWizard.cpp:485
 msgid "Following fields in matching entries will be updated:"
 msgstr "В соответствующих элементах будут обновлены следующие поля:"
 
-#: src/ui/wxWidgets/PwsSync.cpp:489
+#: src/ui/wxWidgets/SyncWizard.cpp:489
 msgid "Following fields will not be updated:"
 msgstr "Следующие поля не будут обновлены:"
 
-#: src/ui/wxWidgets/PwsSync.cpp:508
+#: src/ui/wxWidgets/SyncWizard.cpp:508
 msgid "Synchronization status"
 msgstr "Состояние синхронизации"
 
-#: src/ui/wxWidgets/PwsSync.cpp:526
+#: src/ui/wxWidgets/SyncWizard.cpp:526
 msgid "See a detailed report"
 msgstr "Открыть подробный отчёт"
 
-#: src/ui/wxWidgets/PwsSync.cpp:562
+#: src/ui/wxWidgets/SyncWizard.cpp:562
 msgid "Your database is being synchronized with \""
 msgstr "Контейнер синхронизируется с \""
 
-#: src/ui/wxWidgets/PwsSync.cpp:572
+#: src/ui/wxWidgets/SyncWizard.cpp:572
 msgid "There was an error during synchronization"
 msgstr "Во время синхронизации произошла ошибка"
 
-#: src/ui/wxWidgets/PwsSync.cpp:586
+#: src/ui/wxWidgets/SyncWizard.cpp:586
 #, c-format
 msgid "Your database has been synchronized with \"%ls\""
 msgstr "Контейнер был синхронизирован с «%ls»"
 
-#: src/ui/wxWidgets/PwsSync.cpp:587
+#: src/ui/wxWidgets/SyncWizard.cpp:587
 #, c-format
 msgid "%d %ls updated"
 msgstr "%d %ls обновлено"
 
-#: src/ui/wxWidgets/PwsSync.cpp:589
+#: src/ui/wxWidgets/SyncWizard.cpp:589
 msgid "Synchronization completed successfully"
 msgstr "Синхронизация успешно завершена"
 
-#: src/ui/wxWidgets/PwsSync.cpp:605
+#: src/ui/wxWidgets/SyncWizard.cpp:605
 #, c-format
 msgid ""
 "%ls\n"
@@ -3423,7 +3423,7 @@ msgstr ""
 "Файл повреждён или усечён!\n"
 "Возможно изменение или потеря данных."
 
-#: src/ui/wxWidgets/PwsSync.cpp:607
+#: src/ui/wxWidgets/SyncWizard.cpp:607
 #, c-format
 msgid ""
 "%ls\n"
@@ -3434,24 +3434,24 @@ msgstr ""
 "\n"
 "Неопознанная ошибка"
 
-#: src/ui/wxWidgets/PwsSync.cpp:641
+#: src/ui/wxWidgets/SyncWizard.cpp:641
 #, c-format
 msgid "Synchronizing from database: %ls\n"
 msgstr "Синхронизация с контейнером: %ls\n"
 
-#: src/ui/wxWidgets/PwsSync.cpp:644
+#: src/ui/wxWidgets/SyncWizard.cpp:644
 msgid "synchronized"
 msgstr "синхронизировано"
 
-#: src/ui/wxWidgets/PwsSync.cpp:732 src/core/core_st.cpp:318
+#: src/ui/wxWidgets/SyncWizard.cpp:732 src/core/core_st.cpp:318
 msgid "was"
 msgstr "был"
 
-#: src/ui/wxWidgets/PwsSync.cpp:732 src/core/core_st.cpp:319
+#: src/ui/wxWidgets/SyncWizard.cpp:732 src/core/core_st.cpp:319
 msgid "were"
 msgstr "были"
 
-#: src/ui/wxWidgets/PwsSync.cpp:733 src/core/core_st.cpp:294
+#: src/ui/wxWidgets/SyncWizard.cpp:733 src/core/core_st.cpp:294
 #, c-format
 msgid ""
 "\n"
@@ -3460,7 +3460,7 @@ msgstr ""
 "\n"
 "Следующие %ls %ls обновлены:"
 
-#: src/ui/wxWidgets/PwsSync.cpp:749 src/core/core_st.cpp:293
+#: src/ui/wxWidgets/SyncWizard.cpp:749 src/core/core_st.cpp:293
 #, c-format
 msgid ""
 "\n"
@@ -3469,20 +3469,20 @@ msgstr ""
 "\n"
 "Синхронизация завершена: %d %ls обновлено"
 
-#: src/ui/wxWidgets/PwsSync.cpp:759
+#: src/ui/wxWidgets/SyncWizard.cpp:759
 msgid " were "
 msgstr " были "
 
-#: src/ui/wxWidgets/PwsSync.cpp:759
+#: src/ui/wxWidgets/SyncWizard.cpp:759
 msgid " with corresponding entries from \""
 msgstr " с использованием значений из \""
 
-#: src/ui/wxWidgets/PwsSync.cpp:766
+#: src/ui/wxWidgets/SyncWizard.cpp:766
 #, c-format
 msgid "All fields in matching entries were %ls"
 msgstr "Все поля соответствующих элементов были %ls"
 
-#: src/ui/wxWidgets/PwsSync.cpp:770
+#: src/ui/wxWidgets/SyncWizard.cpp:770
 #, c-format
 msgid "The following fields were %ls"
 msgstr "Следующие поля были %ls"

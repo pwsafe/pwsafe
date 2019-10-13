@@ -200,7 +200,7 @@ SOURCES= PasswordSafeFrame.cpp \
 	SafeCombinationCtrl.cpp ExportTextWarningDlg.cpp \
 	AdvancedSelectionDlg.cpp ViewReportDlg.cpp DragBarGenericCtrl.cpp \
 	DragBarCtrl.cpp MergeDlg.cpp ExternalKeyboardButton.cpp \
-	PwsSync.cpp DbSelectionPanel.cpp CompareDlg.cpp \
+	SyncWizard.cpp DbSelectionPanel.cpp CompareDlg.cpp \
 	wxUtilities.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \
 	FieldSelectionPanel.cpp FieldSelectionDlg.cpp GridShortcutsValidator.cpp \
 	$(YUBI_SRC) $(QR_SRC) \

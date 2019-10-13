@@ -279,7 +279,7 @@
     <ClInclude Include="GridCtrl.h" />
     <ClInclude Include="GridTable.h" />
     <ClInclude Include="GridShortcutsValidator.h" />
-    <ClInclude Include="PwsSync.h" />
+    <ClInclude Include="SyncWizard.h" />
     <ClInclude Include="PwsToolbarButtons.h" />
     <ClInclude Include="TreeCtrl.h" />
     <ClInclude Include="RecentDbList.h" />
@@ -339,7 +339,7 @@
     <ClCompile Include="GridCtrl.cpp" />
     <ClCompile Include="GridTable.cpp" />
     <ClCompile Include="GridShortcutsValidator.cpp" />
-    <ClCompile Include="PwsSync.cpp" />
+    <ClCompile Include="SyncWizard.cpp" />
     <ClCompile Include="TreeCtrl.cpp" />
     <ClCompile Include="SafeCombinationChangeDlg.cpp" />
     <ClCompile Include="SafeCombinationCtrl.cpp" />
