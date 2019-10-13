@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file mainView.cpp
+/** \file MenuViewHandlers.cpp
  *  This file contains implementations of PasswordSafeFrame
  *  member functions corresponding to actions under the 'View'
  *  menubar menu.

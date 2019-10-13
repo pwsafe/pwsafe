@@ -128,7 +128,7 @@
     <File Name="../src/ui/wxWidgets/SelectionCriteria.cpp"/>
     <File Name="../src/ui/wxWidgets/TimedTaskChain.cpp"/>
     <File Name="../src/ui/wxWidgets/TimedTaskChain.h"/>
-    <File Name="../src/ui/wxWidgets/mainView.cpp"/>
+    <File Name="../src/ui/wxWidgets/MenuViewHandlers.cpp"/>
     <File Name="../src/ui/wxWidgets/PasswordSubsetDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/PasswordSubsetDlg.h"/>
     <File Name="../src/ui/wxWidgets/pwsqrcodedlg.cpp"/>

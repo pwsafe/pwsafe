@@ -328,7 +328,7 @@
     <ClCompile Include="TimedTaskChain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainView.cpp">
+    <ClCompile Include="MenuViewHandlers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PasswordSubsetDlg.cpp">
