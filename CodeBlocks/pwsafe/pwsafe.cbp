@@ -430,8 +430,8 @@
 		<Unit filename="../../src/ui/wxWidgets/PropertiesDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/PWSafeApp.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PWSafeApp.h" />
-		<Unit filename="../../src/ui/wxWidgets/pwsclip.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/pwsclip.h" />
+		<Unit filename="../../src/ui/wxWidgets/Clipboard.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/Clipboard.h" />
 		<Unit filename="../../src/ui/wxWidgets/pwsmenushortcuts.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/pwsmenushortcuts.h" />
 		<Unit filename="../../src/ui/wxWidgets/pwsqrcodedlg.cpp">

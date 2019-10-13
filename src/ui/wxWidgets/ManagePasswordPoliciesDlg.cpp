@@ -25,7 +25,7 @@
 
 #include "ManagePasswordPoliciesDlg.h"
 #include "PasswordPolicyDlg.h"
-#include "pwsclip.h"
+#include "Clipboard.h"
 #include "core/PWCharPool.h"
 #include "./wxutils.h"
 

@@ -31,7 +31,7 @@
 #include "os/run.h"
 
 #include "AddEditPropSheetDlg.h"
-#include "pwsclip.h"
+#include "Clipboard.h"
 #include "./wxutils.h"
 
 #include <algorithm>

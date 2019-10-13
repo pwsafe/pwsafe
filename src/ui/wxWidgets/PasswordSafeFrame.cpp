@@ -46,7 +46,7 @@
 #include "PasswordSafeFrame.h"
 #include "PropertiesDlg.h"
 #include "PasswordSafeSearch.h"
-#include "pwsclip.h"
+#include "Clipboard.h"
 #include "SystemTray.h"
 #include "wxutils.h"
 #include "GuiInfo.h"

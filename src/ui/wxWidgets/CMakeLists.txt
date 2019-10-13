@@ -14,7 +14,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/safecombinationsetup.h
     src/ui/wxWidgets/AddEditPropSheetDlg.h
     src/ui/wxWidgets/PropertiesDlg.h
-    src/ui/wxWidgets/pwsclip.h
+    src/ui/wxWidgets/Clipboard.h
     src/ui/wxWidgets/CreateShortcutDlg.h
     src/ui/wxWidgets/DeleteConfirmationDlg.h
     src/ui/wxWidgets/DragBarGenericCtrl.h
@@ -65,7 +65,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/MenuManageHandlers.cpp
     src/ui/wxWidgets/GuiInfo.cpp
     src/ui/wxWidgets/version.cpp
-    src/ui/wxWidgets/pwsclip.cpp
+    src/ui/wxWidgets/Clipboard.cpp
     src/ui/wxWidgets/safecombinationentry.cpp
     src/ui/wxWidgets/MenuEditHandlers.cpp
     src/ui/wxWidgets/MenuViewHandlers.cpp

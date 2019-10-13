@@ -29,7 +29,7 @@
 
 #include "PasswordSafeFrame.h"
 #include "AddEditPropSheetDlg.h"
-#include "pwsclip.h"
+#include "Clipboard.h"
 #include "PasswordSafeSearch.h"
 #include "DeleteConfirmationDlg.h"
 #include "EditShortcutDlg.h"

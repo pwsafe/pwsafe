@@ -26,7 +26,7 @@
 #include <sstream>
 #include <wx/regex.h>
 #include "PasswordSubsetDlg.h"
-#include "pwsclip.h"
+#include "Clipboard.h"
 
 ////@begin XPM images
 #include "graphics/toolbar/new/copypassword.xpm"
