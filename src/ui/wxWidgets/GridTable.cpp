@@ -25,7 +25,7 @@
 
 #include <utility> // for make_pair
 #include <limits> //for MAX_INT
-#include "PWSgridtable.h"
+#include "GridTable.h"
 #include "PasswordSafeFrame.h"
 #include "GridCtrl.h"
 #include "../../core/ItemData.h"

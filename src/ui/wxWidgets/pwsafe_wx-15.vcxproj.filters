@@ -66,7 +66,7 @@
     <ClInclude Include="GridCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PWSgridtable.h">
+    <ClInclude Include="GridTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWStree.h">
@@ -238,7 +238,7 @@
     <ClCompile Include="GridCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PWSgridtable.cpp">
+    <ClCompile Include="GridTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PWStree.cpp">

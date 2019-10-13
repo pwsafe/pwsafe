@@ -191,7 +191,7 @@ SOURCES= PasswordSafeFrame.cpp \
 	PropertiesDlg.cpp GridCtrl.cpp \
 	PWStree.cpp version.cpp \
 	Clipboard.cpp MenuEditHandlers.cpp MenuManageHandlers.cpp \
-	AddEditPropSheetDlg.cpp PWSgridtable.cpp \
+	AddEditPropSheetDlg.cpp GridTable.cpp \
 	OptionsPropertySheetDlg.cpp PasswordSafeSearch.cpp \
 	DeleteConfirmationDlg.cpp EditShortcutDlg.cpp \
 	CreateShortcutDlg.cpp SystemTray.cpp \
