@@ -189,7 +189,7 @@ SOURCES= PasswordSafeFrame.cpp \
 	SafeCombinationSetupDlg.cpp SafeCombinationPromptDlg.cpp \
 	SafeCombinationChangeDlg.cpp AboutDlg.cpp \
 	PropertiesDlg.cpp GridCtrl.cpp \
-	TreeCtrl.cpp version.cpp \
+	TreeCtrl.cpp Version.cpp \
 	Clipboard.cpp MenuEditHandlers.cpp MenuManageHandlers.cpp \
 	AddEditPropSheetDlg.cpp GridTable.cpp \
 	OptionsPropertySheetDlg.cpp PasswordSafeSearch.cpp \

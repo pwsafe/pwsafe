@@ -262,7 +262,7 @@
     <ClCompile Include="SystemTray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="version.cpp">
+    <ClCompile Include="Version.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ViewReport.cpp">

@@ -51,7 +51,7 @@
     <File Name="../src/ui/wxWidgets/GridTable.h"/>
     <File Name="../src/ui/wxWidgets/AddEditPropSheetDlg.h"/>
     <File Name="../src/ui/wxWidgets/wxutils.h"/>
-    <File Name="../src/ui/wxWidgets/version.cpp"/>
+    <File Name="../src/ui/wxWidgets/Version.cpp"/>
     <File Name="../src/ui/wxWidgets/SafeCombinationSetupDlg.h"/>
     <File Name="../src/ui/wxWidgets/SystemTray.cpp"/>
     <File Name="../src/ui/wxWidgets/AboutDlg.h"/>

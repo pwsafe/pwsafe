@@ -64,7 +64,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/AboutDlg.cpp
     src/ui/wxWidgets/MenuManageHandlers.cpp
     src/ui/wxWidgets/GuiInfo.cpp
-    src/ui/wxWidgets/version.cpp
+    src/ui/wxWidgets/Version.cpp
     src/ui/wxWidgets/Clipboard.cpp
     src/ui/wxWidgets/SafeCombinationEntryDlg.cpp
     src/ui/wxWidgets/MenuEditHandlers.cpp
