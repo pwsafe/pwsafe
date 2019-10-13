@@ -13,7 +13,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/safecombinationentry.h
     src/ui/wxWidgets/safecombinationsetup.h
     src/ui/wxWidgets/AddEditPropSheetDlg.h
-    src/ui/wxWidgets/properties.h
+    src/ui/wxWidgets/PropertiesDlg.h
     src/ui/wxWidgets/pwsclip.h
     src/ui/wxWidgets/CreateShortcutDlg.h
     src/ui/wxWidgets/DeleteConfirmationDlg.h
@@ -72,7 +72,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/ViewReport.cpp
     src/ui/wxWidgets/safecombinationprompt.cpp
     src/ui/wxWidgets/passwordsafeframe.cpp
-    src/ui/wxWidgets/properties.cpp
+    src/ui/wxWidgets/PropertiesDlg.cpp
     src/ui/wxWidgets/CreateShortcutDlg.cpp
     src/ui/wxWidgets/DeleteConfirmationDlg.cpp
     src/ui/wxWidgets/DragBarGenericCtrl.cpp
