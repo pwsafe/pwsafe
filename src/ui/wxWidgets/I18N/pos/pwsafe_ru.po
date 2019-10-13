@@ -1331,25 +1331,25 @@ msgstr ""
 msgid "Error parsing Run Command"
 msgstr "Ошибка разбора команды для запуска"
 
-#: src/ui/wxWidgets/mainManage.cpp:85
+#: src/ui/wxWidgets/MenuManageHandlers.cpp:85
 msgid "Please Choose a Name for this Backup:"
 msgstr "Укажите имя для резервной копии:"
 
-#: src/ui/wxWidgets/mainManage.cpp:92 src/ui/wxWidgets/mainManage.cpp:146
+#: src/ui/wxWidgets/MenuManageHandlers.cpp:92 src/ui/wxWidgets/MenuManageHandlers.cpp:146
 msgid "Could not parse current file path"
 msgstr "Ошибка разбора пути к файлу"
 
-#: src/ui/wxWidgets/mainManage.cpp:100
+#: src/ui/wxWidgets/MenuManageHandlers.cpp:100
 msgid "Password Safe Backups (*.bak)|*.bak"
 msgstr "Резервные копии Password Safe (*.bak)|*.bak"
 
-#: src/ui/wxWidgets/mainManage.cpp:126
+#: src/ui/wxWidgets/MenuManageHandlers.cpp:126
 #: src/ui/wxWidgets/passwordsafeframe.cpp:2344
 #: src/ui/wxWidgets/safecombinationentry.cpp:504
 msgid "Could not open file for writing!"
 msgstr "Невозможно открыть файл для записи!"
 
-#: src/ui/wxWidgets/mainManage.cpp:127
+#: src/ui/wxWidgets/MenuManageHandlers.cpp:127
 #: src/ui/wxWidgets/passwordsafeframe.cpp:1027
 #: src/ui/wxWidgets/passwordsafeframe.cpp:1034
 #: src/ui/wxWidgets/passwordsafeframe.cpp:1039
@@ -1359,12 +1359,12 @@ msgstr "Невозможно открыть файл для записи!"
 msgid "Write Error"
 msgstr "Ошибка записи"
 
-#: src/ui/wxWidgets/mainManage.cpp:150
+#: src/ui/wxWidgets/MenuManageHandlers.cpp:150
 msgid "Please Choose a Backup to Restore:"
 msgstr "Выберите резервную копию для восстановления"
 
 # урезано
-#: src/ui/wxWidgets/mainManage.cpp:154
+#: src/ui/wxWidgets/MenuManageHandlers.cpp:154
 msgid ""
 "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups "
 "(*.ibak)|*.ibak||"
@@ -1372,12 +1372,12 @@ msgstr ""
 "Резервные копии Password Safe (*.bak)|*.bak|Промежуточные резервные копии "
 "(*.ibak)|*.ibak||"
 
-#: src/ui/wxWidgets/mainManage.cpp:183
+#: src/ui/wxWidgets/MenuManageHandlers.cpp:183
 #: src/ui/wxWidgets/passwordsafeframe.cpp:2836 src/ui/wxWidgets/wxutils.cpp:60
 msgid "Could not open file for reading!"
 msgstr "Невозможно открыть файл для чтения!"
 
-#: src/ui/wxWidgets/mainManage.cpp:184
+#: src/ui/wxWidgets/MenuManageHandlers.cpp:184
 #: src/ui/wxWidgets/passwordsafeframe.cpp:2835
 #: src/ui/wxWidgets/passwordsafeframe.cpp:2840
 #: src/ui/wxWidgets/PwsSync.cpp:573 src/ui/wxWidgets/wxutils.cpp:61
@@ -1385,7 +1385,7 @@ msgstr "Невозможно открыть файл для чтения!"
 msgid "File Read Error"
 msgstr "Ошибка при чтении файла"
 
-#: src/ui/wxWidgets/mainManage.cpp:191
+#: src/ui/wxWidgets/MenuManageHandlers.cpp:191
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe — <Восстановлено из резервной копии>"
 

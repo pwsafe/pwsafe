@@ -62,7 +62,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/PasswordSafeSearch.cpp
     src/ui/wxWidgets/SystemTray.cpp
     src/ui/wxWidgets/AboutDlg.cpp
-    src/ui/wxWidgets/mainManage.cpp
+    src/ui/wxWidgets/MenuManageHandlers.cpp
     src/ui/wxWidgets/GuiInfo.cpp
     src/ui/wxWidgets/version.cpp
     src/ui/wxWidgets/pwsclip.cpp

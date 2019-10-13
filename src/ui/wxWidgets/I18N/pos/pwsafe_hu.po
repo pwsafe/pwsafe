@@ -574,7 +574,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1049
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2339
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:505
-#: ../../../ui/wxWidgets/mainManage.cpp:127
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:127
 msgid "Write Error"
 msgstr "Írási hiba"
 
@@ -790,7 +790,7 @@ msgstr "&Alapbejegyzés szerkesztése"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2344
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:504
-#: ../../../ui/wxWidgets/mainManage.cpp:126
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:126
 msgid "Could not open file for writing!"
 msgstr "A fájl megnyitása írásra sikertelen!"
 
@@ -885,13 +885,13 @@ msgstr "Szöveg"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2840
 #: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/wxutils.cpp:61
 #: ../../../ui/wxWidgets/wxutils.cpp:66 ../../../ui/wxWidgets/wxutils.cpp:73
-#: ../../../ui/wxWidgets/mainManage.cpp:184
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:184
 msgid "File Read Error"
 msgstr "Fájlolvasási hiba"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2836
 #: ../../../ui/wxWidgets/wxutils.cpp:60
-#: ../../../ui/wxWidgets/mainManage.cpp:183
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:183
 #, fuzzy
 msgid "Could not open file for reading!"
 msgstr ""
@@ -3716,25 +3716,25 @@ msgstr "Vágólapra másolás"
 msgid "&Finish"
 msgstr "&Befejezés"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:85
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:85
 msgid "Please Choose a Name for this Backup:"
 msgstr "Kérem adjon nevet ennek a mentésnek:"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:92
-#: ../../../ui/wxWidgets/mainManage.cpp:146
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:92
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:146
 #, fuzzy
 msgid "Could not parse current file path"
 msgstr "Fájl elérése sikertelen: %s"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:100
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:100
 msgid "Password Safe Backups (*.bak)|*.bak"
 msgstr "Password Safe mentések (*.bak)|*.bak"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:150
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:150
 msgid "Please Choose a Backup to Restore:"
 msgstr "Kérem válasszon egy visszaállítandó mentést:"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:154
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:154
 msgid ""
 "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
 "ibak)|*.ibak||"
@@ -3742,7 +3742,7 @@ msgstr ""
 "Password Safe mentések (*.bak)|*.bak|Password Safe Köztes mentések (*.ibak)|"
 "*.ibak||"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:191
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:191
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <Névtelen Visszaállított Mentés>"
 

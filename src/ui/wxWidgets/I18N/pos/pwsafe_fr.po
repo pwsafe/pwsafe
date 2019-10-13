@@ -607,7 +607,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1049
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2339
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:505
-#: ../../../ui/wxWidgets/mainManage.cpp:127
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:127
 msgid "Write Error"
 msgstr "Erreur d'écriture"
 
@@ -839,7 +839,7 @@ msgstr "&Edition de l'entrée de base"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2344
 #: ../../../ui/wxWidgets/safecombinationentry.cpp:504
-#: ../../../ui/wxWidgets/mainManage.cpp:126
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:126
 #, fuzzy
 msgid "Could not open file for writing!"
 msgstr ""
@@ -953,13 +953,13 @@ msgstr "Texte"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2840
 #: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/wxutils.cpp:61
 #: ../../../ui/wxWidgets/wxutils.cpp:66 ../../../ui/wxWidgets/wxutils.cpp:73
-#: ../../../ui/wxWidgets/mainManage.cpp:184
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:184
 msgid "File Read Error"
 msgstr "Erreur de lecture de fichier"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2836
 #: ../../../ui/wxWidgets/wxutils.cpp:60
-#: ../../../ui/wxWidgets/mainManage.cpp:183
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:183
 #, fuzzy
 msgid "Could not open file for reading!"
 msgstr ""
@@ -3927,27 +3927,27 @@ msgstr "Copier au presse-papier"
 msgid "&Finish"
 msgstr "&Terminer"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:85
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:85
 msgid "Please Choose a Name for this Backup:"
 msgstr "SVP, Choisissez un nom pour cette copie de sauvegarde"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:92
-#: ../../../ui/wxWidgets/mainManage.cpp:146
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:92
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:146
 #, fuzzy
 msgid "Could not parse current file path"
 msgstr "N'a pas pu accéder au fichier: %s"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:100
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:100
 #, fuzzy
 msgid "Password Safe Backups (*.bak)|*.bak"
 msgstr "Sauvegarde de PasswordSafe (*.bak)|*.bak||"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:150
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:150
 #, fuzzy
 msgid "Please Choose a Backup to Restore:"
 msgstr "SVP, Choisissez une copie de sauvegarde à restaurer:"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:154
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:154
 msgid ""
 "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
 "ibak)|*.ibak||"
@@ -3955,7 +3955,7 @@ msgstr ""
 "Sauvegarde de PasswordSafe (*.bak)|*.bak|Sauvegarde intermédiaires de "
 "PasswordSafe (*.ibak)|*.ibak||"
 
-#: ../../../ui/wxWidgets/mainManage.cpp:191
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:191
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "PasswordSafe - <Copie de sauvegarde restaurée sans titre>"
 
