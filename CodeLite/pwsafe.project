@@ -101,8 +101,8 @@
     <File Name="../src/ui/wxWidgets/PwsToolbarButtons.h"/>
     <File Name="../src/ui/wxWidgets/ExternalKeyboardButton.h"/>
     <File Name="../src/ui/wxWidgets/ExternalKeyboardButton.cpp"/>
-    <File Name="../src/ui/wxWidgets/PwsSync.h"/>
-    <File Name="../src/ui/wxWidgets/PwsSync.cpp"/>
+    <File Name="../src/ui/wxWidgets/SyncWizard.h"/>
+    <File Name="../src/ui/wxWidgets/SyncWizard.cpp"/>
     <File Name="../src/ui/wxWidgets/DbSelectionPanel.h"/>
     <File Name="../src/ui/wxWidgets/DbSelectionPanel.cpp"/>
     <File Name="../src/ui/wxWidgets/CoreEvents.h"/>

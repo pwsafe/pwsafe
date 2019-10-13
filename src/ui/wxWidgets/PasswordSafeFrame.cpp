@@ -57,7 +57,7 @@
 #include "./ViewReportDlg.h"
 #include "./DragBarCtrl.h"
 #include "./MergeDlg.h"
-#include "./PwsSync.h"
+#include "./SyncWizard.h"
 #include "./SystemTrayMenuId.h"
 #include "./CompareDlg.h"
 #include "./SelectionCriteria.h"

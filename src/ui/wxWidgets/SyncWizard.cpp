@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file PwsSync.cpp
+/** \file SyncWizard.cpp
 *
 */
 
@@ -21,7 +21,7 @@
 #include "wx/wx.h"
 #endif
 
-#include "./PwsSync.h"
+#include "./SyncWizard.h"
 #include "./OpenFilePickerValidator.h"
 #include "./SafeCombinationCtrl.h"
 #include "./DbSelectionPanel.h"
