@@ -446,13 +446,13 @@
 			<Option target="Release_L64Y" />
 			<Option target="Release_L32Y" />
 		</Unit>
-		<Unit filename="../../src/ui/wxWidgets/pwsqrencode.cpp">
+		<Unit filename="../../src/ui/wxWidgets/QREncode.cpp">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />
 			<Option target="Release_L32Y" />
 		</Unit>
-		<Unit filename="../../src/ui/wxWidgets/pwsqrencode.h">
+		<Unit filename="../../src/ui/wxWidgets/QREncode.h">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />

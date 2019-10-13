@@ -621,7 +621,7 @@
 		E6C6876D137C406300A916C1 /* UUID.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UUID.cpp; sourceTree = "<group>"; };
 		E6C94E911FA20593008F0072 /* QRCodeDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QRCodeDlg.cpp; sourceTree = "<group>"; };
 		E6C94E921FA20593008F0072 /* QRCodeDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeDlg.h; sourceTree = "<group>"; };
-		E6C94E941FA205E9008F0072 /* pwsqrencode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwsqrencode.h; sourceTree = "<group>"; };
+		E6C94E941FA205E9008F0072 /* QREncode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QREncode.h; sourceTree = "<group>"; };
 		E6C94E951FA2075B008F0072 /* pwsqrencode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = pwsqrencode.mm; sourceTree = "<group>"; };
 		E6C94E971FA3399F008F0072 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		E6C94E991FA33BA6008F0072 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -1182,7 +1182,7 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
-				E6C94E941FA205E9008F0072 /* pwsqrencode.h */,
+				E6C94E941FA205E9008F0072 /* QREncode.h */,
 				E6C94E911FA20593008F0072 /* QRCodeDlg.cpp */,
 				E6C94E921FA20593008F0072 /* QRCodeDlg.h */,
 				E6C94E951FA2075B008F0072 /* pwsqrencode.mm */,
