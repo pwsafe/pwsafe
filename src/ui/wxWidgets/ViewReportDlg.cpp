@@ -13,7 +13,7 @@
 #endif
 
 #include "ViewReportDlg.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 
 #include "../../core/Report.h"
 

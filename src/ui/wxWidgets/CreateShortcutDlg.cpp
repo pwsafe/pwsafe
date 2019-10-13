@@ -25,7 +25,7 @@
 
 #include "CreateShortcutDlg.h"
 #include "core/ItemData.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>

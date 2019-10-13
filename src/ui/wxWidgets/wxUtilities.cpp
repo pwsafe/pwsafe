@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file wxutils.cpp
+/** \file wxUtilities.cpp
 *
 * Contains generic utility functions that should be global and don't fit anywhere else
 */
@@ -23,7 +23,7 @@
 #endif
 
 #include "../../core/PWScore.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>

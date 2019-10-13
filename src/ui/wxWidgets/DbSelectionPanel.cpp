@@ -23,7 +23,7 @@
 #include "./DbSelectionPanel.h"
 #include "./OpenFilePickerValidator.h"
 #include "./SafeCombinationCtrl.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 #include "../../core/PWScore.h"
 
 #include <wx/filename.h>

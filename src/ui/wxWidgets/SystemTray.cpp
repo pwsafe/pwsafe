@@ -18,7 +18,7 @@
 #include "./PasswordSafeFrame.h"
 #include "./SystemTray.h"
 #include "../../core/PWSprefs.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 #include "./SystemTrayMenuId.h"
 
 #include <wx/menu.h>

@@ -121,7 +121,7 @@
 		E6DA586511A701AE00D84199 /* GuiInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DA586311A701AE00D84199 /* GuiInfo.cpp */; };
 		E6DDC6FC138911CB00F0C0D1 /* CompareDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */; };
 		E6DDC7011389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */; };
-		E6DDC714138914B700F0C0D1 /* wxutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC713138914B700F0C0D1 /* wxutils.cpp */; };
+		E6DDC714138914B700F0C0D1 /* wxUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC713138914B700F0C0D1 /* wxUtilities.cpp */; };
 		E6E8959B1BD8CB3B009F3A8E /* TimedTaskChain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6E895981BD8C5E1009F3A8E /* TimedTaskChain.cpp */; };
 		E6EBC8111D16F47F00AF61CD /* search.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC80F1D16F47F00AF61CD /* search.cpp */; };
 		E6EBC8141D16F9B600AF61CD /* argutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC8121D16F9B600AF61CD /* argutils.cpp */; };
@@ -578,7 +578,7 @@
 		E6ADBA321195709A004E2BE5 /* Version.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Version.cpp; sourceTree = "<group>"; };
 		E6ADBA331195709A004E2BE5 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		E6ADBA351195709A004E2BE5 /* wxMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxMessages.h; sourceTree = "<group>"; };
-		E6ADBA361195709A004E2BE5 /* wxutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxutils.h; sourceTree = "<group>"; };
+		E6ADBA361195709A004E2BE5 /* wxUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxUtilities.h; sourceTree = "<group>"; };
 		E6AF167C11F1FD77002C253B /* ImportTextDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportTextDlg.cpp; sourceTree = "<group>"; };
 		E6AF167D11F1FD77002C253B /* ImportTextDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportTextDlg.h; sourceTree = "<group>"; };
 		E6B1448112B26CEE00415AAE /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -634,7 +634,7 @@
 		E6DDC6FA138911CB00F0C0D1 /* CompareDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompareDlg.h; sourceTree = "<group>"; };
 		E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreOtherDB.cpp; sourceTree = "<group>"; };
 		E6DDC7001389120E00F0C0D1 /* DBCompareData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCompareData.h; sourceTree = "<group>"; };
-		E6DDC713138914B700F0C0D1 /* wxutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxutils.cpp; sourceTree = "<group>"; };
+		E6DDC713138914B700F0C0D1 /* wxUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxUtilities.cpp; sourceTree = "<group>"; };
 		E6E895981BD8C5E1009F3A8E /* TimedTaskChain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimedTaskChain.cpp; sourceTree = "<group>"; };
 		E6E895991BD8C5E1009F3A8E /* TimedTaskChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimedTaskChain.h; sourceTree = "<group>"; };
 		E6EBC80F1D16F47F00AF61CD /* search.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = search.cpp; sourceTree = "<group>"; };
@@ -1208,7 +1208,7 @@
 				E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */,
 				E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */,
 				E66EE0B213921B30005C10C5 /* ComparisonGridTable.h */,
-				E6DDC713138914B700F0C0D1 /* wxutils.cpp */,
+				E6DDC713138914B700F0C0D1 /* wxUtilities.cpp */,
 				E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */,
 				E6DDC6FA138911CB00F0C0D1 /* CompareDlg.h */,
 				E6A7ECA912CDEAA40021D898 /* DbSelectionPanel.cpp */,
@@ -1285,7 +1285,7 @@
 				E6ADBA321195709A004E2BE5 /* Version.cpp */,
 				E6ADBA331195709A004E2BE5 /* version.h */,
 				E6ADBA351195709A004E2BE5 /* wxMessages.h */,
-				E6ADBA361195709A004E2BE5 /* wxutils.h */,
+				E6ADBA361195709A004E2BE5 /* wxUtilities.h */,
 			);
 			indentWidth = 2;
 			name = wxWidgets;
@@ -1821,7 +1821,7 @@
 				E6A7ECAE12CDEAA40021D898 /* DbSelectionPanel.cpp in Sources */,
 				E6A7ECAF12CDEAA40021D898 /* PwsSync.cpp in Sources */,
 				E6DDC6FC138911CB00F0C0D1 /* CompareDlg.cpp in Sources */,
-				E6DDC714138914B700F0C0D1 /* wxutils.cpp in Sources */,
+				E6DDC714138914B700F0C0D1 /* wxUtilities.cpp in Sources */,
 				E66EE0B313921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
 				E66FB84D13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
 				E691FB5A140D551F00925F96 /* FieldSelectionPanel.cpp in Sources */,

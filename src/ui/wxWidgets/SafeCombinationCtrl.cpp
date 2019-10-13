@@ -22,7 +22,7 @@
 
 #include "SafeCombinationCtrl.h"
 #include "core/PwsPlatform.h"
-#include "wxutils.h"
+#include "wxUtilities.h"
 #include "ExternalKeyboardButton.h"
 
 #ifdef __WXMSW__

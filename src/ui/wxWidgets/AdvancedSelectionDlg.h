@@ -10,7 +10,7 @@
 #define __ADVANCEDDSELECTIONDLG_H__
 
 #include "../../core/ItemData.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 
 /*
  *

@@ -21,7 +21,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/EditShortcutDlg.h
     src/ui/wxWidgets/FieldSelectionDlg.h
     src/ui/wxWidgets/FieldSelectionPanel.h
-    src/ui/wxWidgets/wxutils.h
+    src/ui/wxWidgets/wxUtilities.h
     src/ui/wxWidgets/AdvancedSelectionDlg.h
     src/ui/wxWidgets/CompareDlg.h
     src/ui/wxWidgets/ComparisonGridTable.h
@@ -86,7 +86,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/DbSelectionPanel.cpp
     src/ui/wxWidgets/PWSafeApp.cpp
     src/ui/wxWidgets/SafeCombinationSetupDlg.cpp
-    src/ui/wxWidgets/wxutils.cpp
+    src/ui/wxWidgets/wxUtilities.cpp
     src/ui/wxWidgets/AdvancedSelectionDlg.cpp
     src/ui/wxWidgets/ComparisonGridTable.cpp
     src/ui/wxWidgets/ExportTextWarningDlg.cpp

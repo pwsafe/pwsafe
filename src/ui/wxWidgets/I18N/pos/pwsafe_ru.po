@@ -1373,15 +1373,15 @@ msgstr ""
 "(*.ibak)|*.ibak||"
 
 #: src/ui/wxWidgets/MenuManageHandlers.cpp:183
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2836 src/ui/wxWidgets/wxutils.cpp:60
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2836 src/ui/wxWidgets/wxUtilities.cpp:60
 msgid "Could not open file for reading!"
 msgstr "Невозможно открыть файл для чтения!"
 
 #: src/ui/wxWidgets/MenuManageHandlers.cpp:184
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:2835
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:2840
-#: src/ui/wxWidgets/PwsSync.cpp:573 src/ui/wxWidgets/wxutils.cpp:61
-#: src/ui/wxWidgets/wxutils.cpp:66 src/ui/wxWidgets/wxutils.cpp:73
+#: src/ui/wxWidgets/PwsSync.cpp:573 src/ui/wxWidgets/wxUtilities.cpp:61
+#: src/ui/wxWidgets/wxUtilities.cpp:66 src/ui/wxWidgets/wxUtilities.cpp:73
 msgid "File Read Error"
 msgstr "Ошибка при чтении файла"
 
@@ -2535,7 +2535,7 @@ msgstr ""
 "Возможно, файл повреждён.\n"
 "Попробуйте сохранить файл в другом месте."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2352 src/ui/wxWidgets/wxutils.cpp:73
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2352 src/ui/wxWidgets/wxUtilities.cpp:73
 msgid "Unknown error"
 msgstr "Неопознанная ошибка"
 
@@ -3812,7 +3812,7 @@ msgstr "&Копировать в буфер"
 msgid "&Finish"
 msgstr "&Закончить"
 
-#: src/ui/wxWidgets/wxutils.cpp:65
+#: src/ui/wxWidgets/wxUtilities.cpp:65
 msgid ""
 "File corrupt or truncated!\n"
 "Data may have been lost or modified.\n"

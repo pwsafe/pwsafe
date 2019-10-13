@@ -32,7 +32,7 @@
 #include <wx/txtstrm.h>
 #include <wx/gbsizer.h>
 #include "../../core/StringX.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 #include "../../core/PwsPlatform.h"
 #include <wx/valgen.h>
 #include <wx/filepicker.h>

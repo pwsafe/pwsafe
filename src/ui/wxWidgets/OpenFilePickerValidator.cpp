@@ -13,7 +13,7 @@
 #endif
 
 #include "./OpenFilePickerValidator.h"
-#include "./wxutils.h"
+#include "./wxUtilities.h"
 #include "../../os/file.h"
 
 #ifdef __WXMSW__

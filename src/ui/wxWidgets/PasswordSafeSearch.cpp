@@ -21,7 +21,7 @@
 #include "core/PwsPlatform.h"
 #include "core/PWHistory.h"
 #include "core/Util.h"
-#include "wxutils.h"
+#include "wxUtilities.h"
 
 #include "PasswordSafeSearch.h"
 #include "PasswordSafeFrame.h"

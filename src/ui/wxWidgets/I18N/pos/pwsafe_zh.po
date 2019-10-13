@@ -854,7 +854,7 @@ msgstr ""
 "请尝试保存在一个不同的位置！"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2352
-#: ../../../ui/wxWidgets/wxutils.cpp:73
+#: ../../../ui/wxWidgets/wxUtilities.cpp:73
 #, fuzzy
 msgid "Unknown error"
 msgstr ""
@@ -947,14 +947,14 @@ msgstr "文本"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2835
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2840
-#: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/wxutils.cpp:61
-#: ../../../ui/wxWidgets/wxutils.cpp:66 ../../../ui/wxWidgets/wxutils.cpp:73
+#: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/wxUtilities.cpp:61
+#: ../../../ui/wxWidgets/wxUtilities.cpp:66 ../../../ui/wxWidgets/wxUtilities.cpp:73
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:184
 msgid "File Read Error"
 msgstr "文件读取错误！"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2836
-#: ../../../ui/wxWidgets/wxutils.cpp:60
+#: ../../../ui/wxWidgets/wxUtilities.cpp:60
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:183
 #, fuzzy
 msgid "Could not open file for reading!"
@@ -3552,7 +3552,7 @@ msgstr ""
 msgid "Could not download version data.\n"
 msgstr "选择数据库"
 
-#: ../../../ui/wxWidgets/wxutils.cpp:65
+#: ../../../ui/wxWidgets/wxUtilities.cpp:65
 #, fuzzy
 msgid ""
 "File corrupt or truncated!\n"

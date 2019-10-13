@@ -26,7 +26,7 @@
 
 #include "SafeCombinationChangeDlg.h"
 #include "core/PWCharPool.h" // for CheckPassword()
-#include "./wxutils.h"          // for ApplyPasswordFont
+#include "./wxUtilities.h"          // for ApplyPasswordFont
 #include "./ExternalKeyboardButton.h"
 
 #ifdef __WXMSW__
