@@ -363,8 +363,8 @@
 		<Unit filename="../../src/ui/wxWidgets/GridCtrl.h" />
 		<Unit filename="../../src/ui/wxWidgets/GridTable.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/GridTable.h" />
-		<Unit filename="../../src/ui/wxWidgets/PWStree.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/PWStree.h" />
+		<Unit filename="../../src/ui/wxWidgets/TreeCtrl.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/TreeCtrl.h" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordPolicyDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordPolicyDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordSafeSearch.cpp" />

@@ -3487,23 +3487,23 @@ msgstr "Все поля соответствующих элементов был
 msgid "The following fields were %ls"
 msgstr "Следующие поля были %ls"
 
-#: src/ui/wxWidgets/PWStree.cpp:704
+#: src/ui/wxWidgets/TreeCtrl.cpp:704
 msgid "New Group"
 msgstr "Новая группа"
 
-#: src/ui/wxWidgets/PWStree.cpp:706
+#: src/ui/wxWidgets/TreeCtrl.cpp:706
 msgid "Could not add empty group item to tree"
 msgstr "Невозможно добавить пустую группу"
 
-#: src/ui/wxWidgets/PWStree.cpp:719
+#: src/ui/wxWidgets/TreeCtrl.cpp:719
 msgid "Renaming of non-Group items is not implemented"
 msgstr "Переименование реализовано только для групп"
 
-#: src/ui/wxWidgets/PWStree.cpp:746
+#: src/ui/wxWidgets/TreeCtrl.cpp:746
 msgid "Dots are not allowed in group names"
 msgstr "Использование точек в имени группы запрещено"
 
-#: src/ui/wxWidgets/PWStree.cpp:746
+#: src/ui/wxWidgets/TreeCtrl.cpp:746
 msgid "Invalid Character"
 msgstr "Недопустимый символ"
 

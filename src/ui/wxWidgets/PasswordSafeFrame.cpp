@@ -37,7 +37,7 @@
 
 #include "AboutDlg.h"
 #include "GridCtrl.h"
-#include "PWStree.h"
+#include "TreeCtrl.h"
 #include "PWStatusBar.h"
 #include "GridTable.h"
 #include "safecombinationchange.h"

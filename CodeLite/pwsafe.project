@@ -64,10 +64,10 @@
     <File Name="../src/ui/wxWidgets/safecombinationentry.cpp"/>
     <File Name="../src/ui/wxWidgets/AddEditPropSheetDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/PasswordSafeFrame.h"/>
-    <File Name="../src/ui/wxWidgets/PWStree.h"/>
+    <File Name="../src/ui/wxWidgets/TreeCtrl.h"/>
     <File Name="../src/ui/wxWidgets/AboutDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/GridTable.cpp"/>
-    <File Name="../src/ui/wxWidgets/PWStree.cpp"/>
+    <File Name="../src/ui/wxWidgets/TreeCtrl.cpp"/>
     <File Name="../src/ui/wxWidgets/DeleteConfirmationDlg.h"/>
     <File Name="../src/ui/wxWidgets/EditShortcutDlg.h"/>
     <File Name="../src/ui/wxWidgets/EditShortcutDlg.cpp"/>

@@ -2461,13 +2461,13 @@
               <bool name="proxy-External implementation">0</bool>
               <string name="proxy-Font">""</string>
               <string name="proxy-Foreground colour">""</string>
-              <string name="proxy-Header filename">"PWStree.h"</string>
+              <string name="proxy-Header filename">"TreeCtrl.h"</string>
               <long name="proxy-Height">100</long>
               <string name="proxy-Help text">""</string>
               <bool name="proxy-Hidden">0</bool>
               <string name="proxy-Id name">"ID_TREECTRL"</string>
               <long name="proxy-Id value">10061</long>
-              <string name="proxy-Implementation filename">"PWStree.cpp"</string>
+              <string name="proxy-Implementation filename">"TreeCtrl.cpp"</string>
               <string name="proxy-Member variable name">"m_tree"</string>
               <string name="proxy-Name">""</string>
               <string name="proxy-Platform">"&lt;Any platform&gt;"</string>

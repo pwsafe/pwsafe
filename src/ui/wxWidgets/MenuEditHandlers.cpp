@@ -25,7 +25,7 @@
 #include "wx/utils.h" // for wxLaunchDefaultBrowser
 
 #include "GridCtrl.h"
-#include "PWStree.h"
+#include "TreeCtrl.h"
 
 #include "PasswordSafeFrame.h"
 #include "AddEditPropSheetDlg.h"

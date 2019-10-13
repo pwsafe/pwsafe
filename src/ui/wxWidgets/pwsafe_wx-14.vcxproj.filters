@@ -69,7 +69,7 @@
     <ClInclude Include="GridTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PWStree.h">
+    <ClInclude Include="TreeCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RecentDBList.h">
@@ -241,7 +241,7 @@
     <ClCompile Include="GridTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PWStree.cpp">
+    <ClCompile Include="TreeCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="safecombinationchange.cpp">

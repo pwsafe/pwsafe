@@ -3578,23 +3578,23 @@ msgstr "DDD DD MMM YYYY HH:MM:SS XM ZZZ"
 msgid "Target last changed on:"
 msgstr "Element docelowy ostatnio zmieniony:"
 
-#: ../../../ui/wxWidgets/PWStree.cpp:704
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:704
 msgid "New Group"
 msgstr "Nowa Grupa"
 
-#: ../../../ui/wxWidgets/PWStree.cpp:706
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:706
 msgid "Could not add empty group item to tree"
 msgstr "Nie można dodać pustej grupy do drzewa"
 
-#: ../../../ui/wxWidgets/PWStree.cpp:719
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:719
 msgid "Renaming of non-Group items is not implemented"
 msgstr "Zamiana nazwy nie-grupy nie jest zaimplementowana"
 
-#: ../../../ui/wxWidgets/PWStree.cpp:746
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:746
 msgid "Dots are not allowed in group names"
 msgstr "Kropki nie są dozwolone w nazwie grupy"
 
-#: ../../../ui/wxWidgets/PWStree.cpp:746
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:746
 msgid "Invalid Character"
 msgstr "Nieprawidłowy znak"
 
