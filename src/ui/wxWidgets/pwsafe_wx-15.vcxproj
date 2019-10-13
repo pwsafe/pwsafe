@@ -292,7 +292,7 @@
     <ClInclude Include="SystemTrayMenuId.h" />
     <ClInclude Include="TimedTaskChain.h" />
     <ClInclude Include="version.h" />
-    <ClInclude Include="ViewReport.h" />
+    <ClInclude Include="ViewReportDlg.h" />
     <ClInclude Include="wxMessages.h" />
     <ClInclude Include="wxutils.h" />
     <ClInclude Include="yubicfg.h" />
@@ -349,7 +349,7 @@
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="TimedTaskChain.cpp" />
     <ClCompile Include="Version.cpp" />
-    <ClCompile Include="ViewReport.cpp" />
+    <ClCompile Include="ViewReportDlg.cpp" />
     <ClCompile Include="wxutils.cpp" />
     <ClCompile Include="yubicfg.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">true</ExcludedFromBuild>

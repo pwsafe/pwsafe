@@ -3868,20 +3868,20 @@ msgstr "错误分析运行命令"
 msgid "User"
 msgstr " '用户'"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:27
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:27
 msgid "View Report"
 msgstr "查看报告"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:42
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:42
 msgid "&Save to Disk"
 msgstr "保存到磁盘(&S)"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:44
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:44
 #, fuzzy
 msgid "&Copy to Clipboard"
 msgstr "复制到剪贴板"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:46
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:46
 msgid "&Finish"
 msgstr "完成(&F)"
 

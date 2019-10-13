@@ -384,8 +384,8 @@
 		<Unit filename="../../src/ui/wxWidgets/SystemTrayMenuId.h" />
 		<Unit filename="../../src/ui/wxWidgets/TimedTaskChain.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/TimedTaskChain.h" />
-		<Unit filename="../../src/ui/wxWidgets/ViewReport.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/ViewReport.h" />
+		<Unit filename="../../src/ui/wxWidgets/ViewReportDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/ViewReportDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/YubiMixin.cpp">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />

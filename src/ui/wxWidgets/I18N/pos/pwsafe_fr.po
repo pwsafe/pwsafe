@@ -3910,20 +3910,20 @@ msgstr "Erreur de syntaxe dans l'exécution de la commande"
 msgid "User"
 msgstr " 'Utilisateur'"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:27
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:27
 msgid "View Report"
 msgstr "Voir le rapport"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:42
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:42
 msgid "&Save to Disk"
 msgstr "&Enregistrer sur le disque"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:44
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:44
 #, fuzzy
 msgid "&Copy to Clipboard"
 msgstr "Copier au presse-papier"
 
-#: ../../../ui/wxWidgets/ViewReport.cpp:46
+#: ../../../ui/wxWidgets/ViewReportDlg.cpp:46
 msgid "&Finish"
 msgstr "&Terminer"
 

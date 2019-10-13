@@ -98,7 +98,7 @@
 		E6BA47871216DB9C00193879 /* AdvancedSelectionDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA477F1216DB9C00193879 /* AdvancedSelectionDlg.cpp */; };
 		E6BA47881216DB9C00193879 /* ExportTextWarningDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47811216DB9C00193879 /* ExportTextWarningDlg.cpp */; };
 		E6BA47891216DB9C00193879 /* SafeCombinationCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47831216DB9C00193879 /* SafeCombinationCtrl.cpp */; };
-		E6BA478A1216DB9C00193879 /* ViewReport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47851216DB9C00193879 /* ViewReport.cpp */; };
+		E6BA478A1216DB9C00193879 /* ViewReportDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47851216DB9C00193879 /* ViewReportDlg.cpp */; };
 		E6C1254811E1B2BA00D22D92 /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253611E1B2BA00D22D92 /* debug.cpp */; };
 		E6C1254911E1B2BA00D22D92 /* dir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253711E1B2BA00D22D92 /* dir.cpp */; };
 		E6C1254A11E1B2BA00D22D92 /* env.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253811E1B2BA00D22D92 /* env.cpp */; };
@@ -598,8 +598,8 @@
 		E6BA47821216DB9C00193879 /* ExportTextWarningDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExportTextWarningDlg.h; sourceTree = "<group>"; };
 		E6BA47831216DB9C00193879 /* SafeCombinationCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SafeCombinationCtrl.cpp; sourceTree = "<group>"; };
 		E6BA47841216DB9C00193879 /* SafeCombinationCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafeCombinationCtrl.h; sourceTree = "<group>"; };
-		E6BA47851216DB9C00193879 /* ViewReport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewReport.cpp; sourceTree = "<group>"; };
-		E6BA47861216DB9C00193879 /* ViewReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewReport.h; sourceTree = "<group>"; };
+		E6BA47851216DB9C00193879 /* ViewReportDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewReportDlg.cpp; sourceTree = "<group>"; };
+		E6BA47861216DB9C00193879 /* ViewReportDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewReportDlg.h; sourceTree = "<group>"; };
 		E6C1253611E1B2BA00D22D92 /* debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = debug.cpp; sourceTree = "<group>"; };
 		E6C1253711E1B2BA00D22D92 /* dir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dir.cpp; sourceTree = "<group>"; };
 		E6C1253811E1B2BA00D22D92 /* env.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = env.cpp; sourceTree = "<group>"; };
@@ -1230,8 +1230,8 @@
 				E6BA47821216DB9C00193879 /* ExportTextWarningDlg.h */,
 				E6BA47831216DB9C00193879 /* SafeCombinationCtrl.cpp */,
 				E6BA47841216DB9C00193879 /* SafeCombinationCtrl.h */,
-				E6BA47851216DB9C00193879 /* ViewReport.cpp */,
-				E6BA47861216DB9C00193879 /* ViewReport.h */,
+				E6BA47851216DB9C00193879 /* ViewReportDlg.cpp */,
+				E6BA47861216DB9C00193879 /* ViewReportDlg.h */,
 				E69B7FA411F600BA0084F6C4 /* ImportXmlDlg.cpp */,
 				E69B7FA511F600BA0084F6C4 /* ImportXmlDlg.h */,
 				E69B7FA611F600BA0084F6C4 /* OpenFilePickerValidator.cpp */,
@@ -1812,7 +1812,7 @@
 				E6BA47871216DB9C00193879 /* AdvancedSelectionDlg.cpp in Sources */,
 				E6BA47881216DB9C00193879 /* ExportTextWarningDlg.cpp in Sources */,
 				E6BA47891216DB9C00193879 /* SafeCombinationCtrl.cpp in Sources */,
-				E6BA478A1216DB9C00193879 /* ViewReport.cpp in Sources */,
+				E6BA478A1216DB9C00193879 /* ViewReportDlg.cpp in Sources */,
 				E6B5C6451232B3D000AC8B45 /* DragBarGenericCtrl.cpp in Sources */,
 				E6B5C6461232B3D000AC8B45 /* DragBarCtrl.cpp in Sources */,
 				E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */,
