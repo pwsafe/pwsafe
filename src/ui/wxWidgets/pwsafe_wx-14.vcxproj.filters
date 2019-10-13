@@ -211,7 +211,7 @@
     <ClCompile Include="ImportXmlDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainEdit.cpp">
+    <ClCompile Include="MenuEditHandlers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OpenFilePickerValidator.cpp">

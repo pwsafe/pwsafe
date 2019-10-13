@@ -3912,30 +3912,30 @@ msgstr "&Verzend e-mail"
 msgid "&Delete from Recent Entry List"
 msgstr "&Verwijder van Lijst Recente Vermeldingen"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:415
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:415
 #, fuzzy
 msgid " Copy # "
 msgstr "Kopieer # %d"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:569
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:569
 msgid "There was an error autotyping.  "
 msgstr ""
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:589
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:589
 msgid ""
 "Error switching to another application before autotyping. Switch manually "
 "within 5 seconds"
 msgstr ""
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:760
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:760
 msgid "Unable to send email"
 msgstr "Niet mogelijk om e-mail te verzenden"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:760
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:760
 msgid "Unable to display URL"
 msgstr "Niet mogelijk om URL te tonen."
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:861
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:861
 #, c-format
 msgid ""
 "Error at column %d:\n"
@@ -3946,7 +3946,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../../../ui/wxWidgets/mainEdit.cpp:862
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:862
 msgid "Error parsing Run Command"
 msgstr "Fout bij het analyzeren van het commando uitvoeren"
 

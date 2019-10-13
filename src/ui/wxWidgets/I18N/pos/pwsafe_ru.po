@@ -1292,15 +1292,15 @@ msgstr "XML-файлы (*.xml)|*.xml"
 msgid "Import under Group"
 msgstr "Импортировать в группу"
 
-#: src/ui/wxWidgets/mainEdit.cpp:415
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:415
 msgid " Copy # "
 msgstr " Копия № "
 
-#: src/ui/wxWidgets/mainEdit.cpp:569
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:569
 msgid "There was an error autotyping.  "
 msgstr "Ошибка при выполнении автонабора  "
 
-#: src/ui/wxWidgets/mainEdit.cpp:589
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:589
 msgid ""
 "Error switching to another application before autotyping. Switch manually "
 "within 5 seconds"
@@ -1308,15 +1308,15 @@ msgstr ""
 "Ошибка при переключении в другое приложение для автонабора. Переключить "
 "вручную в течение 5 секунд"
 
-#: src/ui/wxWidgets/mainEdit.cpp:760
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:760
 msgid "Unable to send email"
 msgstr "Невозможно отправить письмо"
 
-#: src/ui/wxWidgets/mainEdit.cpp:760
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:760
 msgid "Unable to display URL"
 msgstr "Невозможно перейти по ссылке"
 
-#: src/ui/wxWidgets/mainEdit.cpp:861
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:861
 #, c-format
 msgid ""
 "Error at column %d:\n"
@@ -1327,7 +1327,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/ui/wxWidgets/mainEdit.cpp:862
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:862
 msgid "Error parsing Run Command"
 msgstr "Ошибка разбора команды для запуска"
 
