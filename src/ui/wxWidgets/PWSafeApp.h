@@ -18,7 +18,7 @@
 
 ////@begin includes
 #include "wx/image.h"
-#include "safecombinationentry.h"
+#include "SafeCombinationEntryDlg.h"
 ////@end includes
 #include "core/PWScore.h"
 #include "./RecentDbList.h"

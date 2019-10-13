@@ -285,7 +285,7 @@
     <ClInclude Include="RecentDbList.h" />
     <ClInclude Include="SafeCombinationChangeDlg.h" />
     <ClInclude Include="SafeCombinationCtrl.h" />
-    <ClInclude Include="safecombinationentry.h" />
+    <ClInclude Include="SafeCombinationEntryDlg.h" />
     <ClInclude Include="safecombinationprompt.h" />
     <ClInclude Include="safecombinationsetup.h" />
     <ClInclude Include="SelectionCriteria.h" />
@@ -343,7 +343,7 @@
     <ClCompile Include="TreeCtrl.cpp" />
     <ClCompile Include="SafeCombinationChangeDlg.cpp" />
     <ClCompile Include="SafeCombinationCtrl.cpp" />
-    <ClCompile Include="safecombinationentry.cpp" />
+    <ClCompile Include="SafeCombinationEntryDlg.cpp" />
     <ClCompile Include="safecombinationprompt.cpp" />
     <ClCompile Include="safecombinationsetup.cpp" />
     <ClCompile Include="SelectionCriteria.cpp" />
