@@ -40,7 +40,7 @@ TEST	   = $(BINPATH)/coretest
 OBJS     = $(TESTOBJ) $(GTEST_OBJ)
 
 CXXFLAGS += -DUNICODE -Wall -I$(INCPATH) -I$(INCPATH)/core -std=c++11
-LDFLAGS  += -L$(LIBPATH) -lcore -los -luuid -lxerces-c -pthread -lX11 -lXtst
+LDFLAGS  += -L$(LIBPATH) -lcore -los -luuid -lxerces-c -pthread -lX11 -lXtst -lmagic
 
 ifeq ($(CONFIG),debug)
 LDFLAGS += `$(WX_CONFIG) --debug=yes --unicode=no --libs`
