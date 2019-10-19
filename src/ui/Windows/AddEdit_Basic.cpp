@@ -1122,6 +1122,11 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
     case IDC_STATIC_PASSWORD:
       m_stc_password.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
       cs_data = M_realpassword();
+      if (M_pci() && M_pci()->IsAlias()) {
+        const CItemData *pcbi = M_pcore()->GetBaseEntry(M_pci());
+        if (pcbi != nullptr) // can be null if user changed password, breaking relation
+          cs_data = M_pci()->GetEffectiveFieldValue(CItem::PASSWORD, pcbi);
+      }
       iaction = CItemData::PASSWORD;
       break;
     case IDC_STATIC_NOTES:
@@ -1718,7 +1723,14 @@ void CAddEdit_Basic::OnCopyPassword()
 {
   UpdateData(TRUE);
 
-  GetMainDlg()->SetClipboardData(m_password);
+  StringX effectivePassword = m_password;
+
+  if (M_pci() && M_pci()->IsAlias()) {
+    const CItemData *pcbi = M_pcore()->GetBaseEntry(M_pci());
+    if (pcbi != nullptr) // can be null if user changed password, breaking relation
+      effectivePassword = M_pci()->GetEffectiveFieldValue(CItem::PASSWORD, pcbi);
+  }
+  GetMainDlg()->SetClipboardData(effectivePassword);
   GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 }
 
