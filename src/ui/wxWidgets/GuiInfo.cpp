@@ -27,13 +27,13 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-void GUIInfo::Save(PasswordSafeFrame* frame)
+void GuiInfo::Save(PasswordSafeFrame* frame)
 {
   SaveTreeViewInfo(frame->m_tree);
   SaveGridViewInfo(frame->m_grid);
 }
 
-void GUIInfo::Restore(PasswordSafeFrame* frame)
+void GuiInfo::Restore(PasswordSafeFrame* frame)
 {
   RestoreTreeViewInfo(frame->m_tree);
   RestoreGridViewInfo(frame->m_grid);
@@ -53,8 +53,8 @@ void CollectExpandedNodes(PWSTreeCtrl* tree, wxTreeItemId root, wxArrayString& e
     }
   }
 }
-      
-void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
+
+void GuiInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
 {
   //save the first visible item
   wxTreeItemId treeItem = tree->GetFirstVisibleItem();
@@ -74,12 +74,12 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
   else {
     m_treeTop.Clear();
   }
-  
+
   m_expanded.Empty();
 
   //find out all the expanded groups in a depth-first manner
   CollectExpandedNodes(tree, tree->GetRootItem(), m_expanded);
- 
+
   //save the selected item
   wxTreeItemId selection = tree->GetSelection();
   if (selection.IsOk() && selection != tree->GetRootItem()) {
@@ -104,7 +104,7 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
   }
 }
 
-void GUIInfo::SaveGridViewInfo(GridCtrl* grid)
+void GuiInfo::SaveGridViewInfo(GridCtrl* grid)
 {
   //has the grid been initialized?
   if (grid->GetNumItems() == 0)
@@ -141,7 +141,7 @@ void GUIInfo::SaveGridViewInfo(GridCtrl* grid)
   }
 }
 
-void GUIInfo::RestoreGridViewInfo(GridCtrl* grid)
+void GuiInfo::RestoreGridViewInfo(GridCtrl* grid)
 {
   const int top = grid->FindItemRow(m_gridTop);
   if (top != wxNOT_FOUND)
@@ -188,7 +188,7 @@ struct BringItemToTop {
   void operator()(PWSTreeCtrl* tree, const wxTreeItemId& id) { tree->ScrollTo(id); }
 };
 
-void GUIInfo::RestoreTreeViewInfo(PWSTreeCtrl* tree)
+void GuiInfo::RestoreTreeViewInfo(PWSTreeCtrl* tree)
 {
   // We do this first to ensure that item selection and scrolling an item to top are not wasted by this
   for (size_t idx = 0; idx < m_expanded.Count(); ++idx) {
@@ -205,7 +205,7 @@ void GUIInfo::RestoreTreeViewInfo(PWSTreeCtrl* tree)
 
   // Then restore the "Top" item
   RestoreTreeItem(tree, m_treeTop, BringItemToTop());
-  
+
   // Finally select the previously "selected" item
   RestoreTreeItem(tree, m_treeSelection, SelectItem());
 }

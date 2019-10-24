@@ -41,7 +41,7 @@ class PWSTreeCtrl;
 class CPWStatusBar;
 ////@end forward declarations
 class SystemTray;
-class GUIInfo;
+class GuiInfo;
 struct SelectionCriteria;
 class DragBarCtrl;
 class PasswordSafeSearch;
@@ -587,7 +587,7 @@ private:
   bool m_exitFromMenu;
   bool m_bRestoredDBUnsaved;
   CRUEList m_RUEList;
-  GUIInfo* m_guiInfo;
+  GuiInfo* m_guiInfo;
   bool m_bTSUpdated;
   wxString m_savedDBPrefs;
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
