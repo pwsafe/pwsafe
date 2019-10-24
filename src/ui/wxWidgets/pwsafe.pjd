@@ -32232,7 +32232,7 @@ to the base entry "</string>
           <string name="proxy-Background colour">""</string>
           <string name="proxy-Base class">"wxDialog"</string>
           <bool name="proxy-Centre">1</bool>
-          <string name="proxy-Class">"CPasswordSubset"</string>
+          <string name="proxy-Class">"PasswordSubsetDlg"</string>
           <string name="proxy-Custom styles">""</string>
           <string name="proxy-Data class header filename">""</string>
           <string name="proxy-Data class implementation filename">""</string>
@@ -32250,7 +32250,7 @@ to the base entry "</string>
           <string name="proxy-Help text">""</string>
           <bool name="proxy-Hidden">0</bool>
           <string name="proxy-Icon">""</string>
-          <string name="proxy-Id name">"ID_CPASSWORDSUBSET"</string>
+          <string name="proxy-Id name">"ID_PASSWORDSUBSETDLG"</string>
           <long name="proxy-Id value">10000</long>
           <string name="proxy-Implementation filename">"PasswordSubsetDlg.cpp"</string>
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
@@ -32495,7 +32495,7 @@ Position 1 is the first character, 2 is the second, etc. up to N for the last ch
               </document>
               <document>
                 <string name="proxy-type">"wbTextCtrlProxy"</string>
-                <string name="event-handler-0">"wxEVT_CHAR|OnChar|NONE||CPasswordSubset"</string>
+                <string name="event-handler-0">"wxEVT_CHAR|OnChar|NONE||PasswordSubsetDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"textctrl"</string>
                 <long name="is-transient">0</long>
@@ -32759,7 +32759,7 @@ Position 1 is the first character, 2 is the second, etc. up to N for the last ch
               </document>
               <document>
                 <string name="proxy-type">"wbBitmapButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnBitmapbuttonClick|NONE||CPasswordSubset"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnBitmapbuttonClick|NONE||PasswordSubsetDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"bitmapbutton"</string>
                 <long name="is-transient">0</long>
@@ -32902,7 +32902,7 @@ Position 1 is the first character, 2 is the second, etc. up to N for the last ch
             </document>
             <document>
               <string name="proxy-type">"wbButtonProxy"</string>
-              <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCloseClick|DESTROYWINDOW|ID_CPASSWORDSUBSET|CPasswordSubset"</string>
+              <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCloseClick|DESTROYWINDOW|ID_PASSWORDSUBSETDLG|PasswordSubsetDlg"</string>
               <string name="filename">""</string>
               <string name="icon-name">"dialogcontrol"</string>
               <long name="is-transient">0</long>

@@ -9,6 +9,7 @@
 /** \file PasswordSubsetDlg.cpp
 * 
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -34,35 +35,35 @@
 ////@end XPM images
 
 /*!
- * CPasswordSubset type definition
+ * PasswordSubsetDlg type definition
  */
 
-IMPLEMENT_DYNAMIC_CLASS( CPasswordSubset, wxDialog )
+IMPLEMENT_DYNAMIC_CLASS( PasswordSubsetDlg, wxDialog )
 
 /*!
- * CPasswordSubset event table definition
+ * PasswordSubsetDlg event table definition
  */
 
-BEGIN_EVENT_TABLE( CPasswordSubset, wxDialog )
+BEGIN_EVENT_TABLE( PasswordSubsetDlg, wxDialog )
 
-////@begin CPasswordSubset event table entries
-  EVT_BUTTON( ID_BITMAPBUTTON, CPasswordSubset::OnBitmapbuttonClick )
-  EVT_BUTTON( wxID_CLOSE, CPasswordSubset::OnCloseClick )
-////@end CPasswordSubset event table entries
+////@begin PasswordSubsetDlg event table entries
+  EVT_BUTTON( ID_BITMAPBUTTON, PasswordSubsetDlg::OnBitmapbuttonClick )
+  EVT_BUTTON( wxID_CLOSE, PasswordSubsetDlg::OnCloseClick )
+////@end PasswordSubsetDlg event table entries
 
 END_EVENT_TABLE()
 
 /*!
- * CPasswordSubset constructors
+ * PasswordSubsetDlg constructors
  */
 
-CPasswordSubset::CPasswordSubset()
+PasswordSubsetDlg::PasswordSubsetDlg()
 : m_password(wxEmptyString)
 {
   Init();
 }
 
-CPasswordSubset::CPasswordSubset( wxWindow* parent, const StringX &password,
+PasswordSubsetDlg::PasswordSubsetDlg( wxWindow* parent, const StringX &password,
                                   wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
   : m_password(password)
 {
@@ -71,12 +72,12 @@ CPasswordSubset::CPasswordSubset( wxWindow* parent, const StringX &password,
 }
 
 /*!
- * CPasswordSubset creator
+ * PasswordSubsetDlg creator
  */
 
-bool CPasswordSubset::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool PasswordSubsetDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin CPasswordSubset creation
+////@begin PasswordSubsetDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -86,41 +87,41 @@ bool CPasswordSubset::Create( wxWindow* parent, wxWindowID id, const wxString& c
     GetSizer()->SetSizeHints(this);
   }
   Centre();
-////@end CPasswordSubset creation
+////@end PasswordSubsetDlg creation
   return true;
 }
 
 /*!
- * CPasswordSubset destructor
+ * PasswordSubsetDlg destructor
  */
 
-CPasswordSubset::~CPasswordSubset()
+PasswordSubsetDlg::~PasswordSubsetDlg()
 {
-////@begin CPasswordSubset destruction
-////@end CPasswordSubset destruction
+////@begin PasswordSubsetDlg destruction
+////@end PasswordSubsetDlg destruction
 }
 
 /*!
  * Member initialisation
  */
 
-void CPasswordSubset::Init()
+void PasswordSubsetDlg::Init()
 {
-////@begin CPasswordSubset member initialisation
+////@begin PasswordSubsetDlg member initialisation
   m_pos = nullptr;
   m_vals = nullptr;
   m_error = nullptr;
-////@end CPasswordSubset member initialisation
+////@end PasswordSubsetDlg member initialisation
 }
 
 /*!
- * Control creation for CPasswordSubset
+ * Control creation for PasswordSubsetDlg
  */
 
-void CPasswordSubset::CreateControls()
+void PasswordSubsetDlg::CreateControls()
 {    
-////@begin CPasswordSubset content construction
-  CPasswordSubset* itemDialog1 = this;
+////@begin PasswordSubsetDlg content construction
+  PasswordSubsetDlg* itemDialog1 = this;
 
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
@@ -154,7 +155,7 @@ void CPasswordSubset::CreateControls()
   itemBitmapButton10->SetBitmapDisabled(itemBitmapButton10BitmapDisabled);
   wxBitmap itemBitmapButton10BitmapHover(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
   itemBitmapButton10->SetBitmapHover(itemBitmapButton10BitmapHover);
-  if (CPasswordSubset::ShowToolTips())
+  if (PasswordSubsetDlg::ShowToolTips())
     itemBitmapButton10->SetToolTip(_("Copy values"));
   itemGridSizer4->Add(itemBitmapButton10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -166,15 +167,15 @@ void CPasswordSubset::CreateControls()
   itemBoxSizer2->Add(itemButton12, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   // Connect events and objects
-  m_pos->Connect(ID_TEXTCTRL_POS, wxEVT_CHAR, wxKeyEventHandler(CPasswordSubset::OnChar), nullptr, this);
-////@end CPasswordSubset content construction
+  m_pos->Connect(ID_TEXTCTRL_POS, wxEVT_CHAR, wxKeyEventHandler(PasswordSubsetDlg::OnChar), nullptr, this);
+////@end PasswordSubsetDlg content construction
 }
 
 /*!
  * Should we show tooltips?
  */
 
-bool CPasswordSubset::ShowToolTips()
+bool PasswordSubsetDlg::ShowToolTips()
 {
   return true;
 }
@@ -183,10 +184,10 @@ bool CPasswordSubset::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap CPasswordSubset::GetBitmapResource( const wxString& name )
+wxBitmap PasswordSubsetDlg::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
-////@begin CPasswordSubset bitmap retrieval
+////@begin PasswordSubsetDlg bitmap retrieval
   wxUnusedVar(name);
   if (name == wxT("graphics/toolbar/new/copypassword.xpm"))
   {
@@ -199,27 +200,27 @@ wxBitmap CPasswordSubset::GetBitmapResource( const wxString& name )
     return bitmap;
   }
   return wxNullBitmap;
-////@end CPasswordSubset bitmap retrieval
+////@end PasswordSubsetDlg bitmap retrieval
 }
 
 /*!
  * Get icon resources
  */
 
-wxIcon CPasswordSubset::GetIconResource( const wxString& name )
+wxIcon PasswordSubsetDlg::GetIconResource( const wxString& name )
 {
   // Icon retrieval
-////@begin CPasswordSubset icon retrieval
+////@begin PasswordSubsetDlg icon retrieval
   wxUnusedVar(name);
   return wxNullIcon;
-////@end CPasswordSubset icon retrieval
+////@end PasswordSubsetDlg icon retrieval
 }
 
 /*!
  * wxEVT_CHAR event handler for ID_TEXTCTRL
  */
 
-void CPasswordSubset::OnChar( wxKeyEvent& event )
+void PasswordSubsetDlg::OnChar( wxKeyEvent& event )
 {
   static wxRegEx charSet("[[:digit:]]|[[:space:]]|,|-|;");
   static wxRegEx seps(",|;");
@@ -269,7 +270,7 @@ void CPasswordSubset::OnChar( wxKeyEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON
  */
 
-void CPasswordSubset::OnBitmapbuttonClick( wxCommandEvent& event )
+void PasswordSubsetDlg::OnBitmapbuttonClick( wxCommandEvent& event )
 {
   wxUnusedVar(event);
   wxString val_str = m_vals->GetLineText(0);
@@ -288,11 +289,11 @@ void CPasswordSubset::OnBitmapbuttonClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
  */
 
-void CPasswordSubset::OnCloseClick( wxCommandEvent& event )
+void PasswordSubsetDlg::OnCloseClick( wxCommandEvent& event )
 {
   wxUnusedVar(event);
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in CPasswordSubset.
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in PasswordSubsetDlg.
   // Before editing this code, remove the block markers.
   EndModal(wxID_CLOSE);
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in CPasswordSubset.
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in PasswordSubsetDlg.
 }

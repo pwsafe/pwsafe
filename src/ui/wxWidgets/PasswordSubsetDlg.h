@@ -10,8 +10,8 @@
 * 
 */
 
-#ifndef _PASSWORDSUBSET_H_
-#define _PASSWORDSUBSET_H_
+#ifndef _PASSWORDSUBSETDLG_H_
+#define _PASSWORDSUBSETDLG_H_
 
 /*!
  * Includes
@@ -37,37 +37,37 @@
 #endif
 
 ////@begin control identifiers
-#define ID_CPASSWORDSUBSET 10000
+#define ID_PASSWORDSUBSETDLG 10000
 #define ID_TEXTCTRL_POS 10001
 #define ID_TEXTCTRL_VAL 10002
 #define ID_BITMAPBUTTON 10003
-#define SYMBOL_CPASSWORDSUBSET_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
-#define SYMBOL_CPASSWORDSUBSET_TITLE _("Show a subset of the Password")
-#define SYMBOL_CPASSWORDSUBSET_IDNAME ID_CPASSWORDSUBSET
-#define SYMBOL_CPASSWORDSUBSET_SIZE wxSize(400, 300)
-#define SYMBOL_CPASSWORDSUBSET_POSITION wxDefaultPosition
+#define SYMBOL_PASSWORDSUBSETDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
+#define SYMBOL_PASSWORDSUBSETDLG_TITLE _("Show a subset of the Password")
+#define SYMBOL_PASSWORDSUBSETDLG_IDNAME ID_PASSWORDSUBSETDLG
+#define SYMBOL_PASSWORDSUBSETDLG_SIZE wxSize(400, 300)
+#define SYMBOL_PASSWORDSUBSETDLG_POSITION wxDefaultPosition
 ////@end control identifiers
 
 /*!
- * CPasswordSubset class declaration
+ * PasswordSubsetDlg class declaration
  */
 
-class CPasswordSubset: public wxDialog
-{    
-  DECLARE_DYNAMIC_CLASS( CPasswordSubset )
+class PasswordSubsetDlg : public wxDialog
+{
+  DECLARE_DYNAMIC_CLASS( PasswordSubsetDlg )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  CPasswordSubset();
-  CPasswordSubset( wxWindow* parent, const StringX &password,
-                   wxWindowID id = SYMBOL_CPASSWORDSUBSET_IDNAME, const wxString& caption = SYMBOL_CPASSWORDSUBSET_TITLE, const wxPoint& pos = SYMBOL_CPASSWORDSUBSET_POSITION, const wxSize& size = SYMBOL_CPASSWORDSUBSET_SIZE, long style = SYMBOL_CPASSWORDSUBSET_STYLE );
+  PasswordSubsetDlg();
+  PasswordSubsetDlg( wxWindow* parent, const StringX &password,
+                   wxWindowID id = SYMBOL_PASSWORDSUBSETDLG_IDNAME, const wxString& caption = SYMBOL_PASSWORDSUBSETDLG_TITLE, const wxPoint& pos = SYMBOL_PASSWORDSUBSETDLG_POSITION, const wxSize& size = SYMBOL_PASSWORDSUBSETDLG_SIZE, long style = SYMBOL_PASSWORDSUBSETDLG_STYLE );
 
   /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_CPASSWORDSUBSET_IDNAME, const wxString& caption = SYMBOL_CPASSWORDSUBSET_TITLE, const wxPoint& pos = SYMBOL_CPASSWORDSUBSET_POSITION, const wxSize& size = SYMBOL_CPASSWORDSUBSET_SIZE, long style = SYMBOL_CPASSWORDSUBSET_STYLE );
+  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_PASSWORDSUBSETDLG_IDNAME, const wxString& caption = SYMBOL_PASSWORDSUBSETDLG_TITLE, const wxPoint& pos = SYMBOL_PASSWORDSUBSETDLG_POSITION, const wxSize& size = SYMBOL_PASSWORDSUBSETDLG_SIZE, long style = SYMBOL_PASSWORDSUBSETDLG_STYLE );
 
   /// Destructor
-  ~CPasswordSubset();
+  ~PasswordSubsetDlg();
 
   /// Initialises member variables
   void Init();
@@ -75,7 +75,7 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-////@begin CPasswordSubset event handler declarations
+////@begin PasswordSubsetDlg event handler declarations
 
   /// wxEVT_CHAR event handler for ID_TEXTCTRL_POS
   void OnChar( wxKeyEvent& event );
@@ -86,27 +86,27 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
   void OnCloseClick( wxCommandEvent& event );
 
-////@end CPasswordSubset event handler declarations
+////@end PasswordSubsetDlg event handler declarations
 
-////@begin CPasswordSubset member function declarations
+////@begin PasswordSubsetDlg member function declarations
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
-////@end CPasswordSubset member function declarations
+////@end PasswordSubsetDlg member function declarations
 
   /// Should we show tooltips?
   static bool ShowToolTips();
- private:
+
+private:
   const StringX m_password;
-////@begin CPasswordSubset member variables
+////@begin PasswordSubsetDlg member variables
   wxTextCtrl* m_pos;
   wxTextCtrl* m_vals;
   wxStaticText* m_error;
-////@end CPasswordSubset member variables
+////@end PasswordSubsetDlg member variables
 };
 
-#endif
-  // _PASSWORDSUBSET_H_
+#endif // _PASSWORDSUBSETDLG_H_
