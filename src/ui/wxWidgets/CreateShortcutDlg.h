@@ -53,8 +53,8 @@
  * CreateShortcutDlg class declaration
  */
 
-class CreateShortcutDlg: public wxDialog
-{    
+class CreateShortcutDlg : public wxDialog
+{
   DECLARE_CLASS( CreateShortcutDlg )
   DECLARE_EVENT_TABLE()
 
@@ -108,9 +108,9 @@ public:
   static bool ShowToolTips();
 
 ////@begin CreateShortcutDlg member variables
+private:
   wxComboBox* m_groupCtrl;
   wxString m_user;
-private:
   wxString m_heading;
   wxString m_title;
 ////@end CreateShortcutDlg member variables
@@ -119,5 +119,4 @@ private:
   CItemData *m_base;
 };
 
-#endif
-  // _CREATESHORTCUTDLG_H_
+#endif // _CREATESHORTCUTDLG_H_
