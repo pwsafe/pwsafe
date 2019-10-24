@@ -143,7 +143,7 @@ void PasswordSafeFrame::OnDeleteClick( wxCommandEvent& /* evt */ )
 
   //Confirm whether to delete the item
   if (!dontaskquestion) {
-    DeleteConfirmation deleteDlg(this, num_children);
+    DeleteConfirmationDlg deleteDlg(this, num_children);
     deleteDlg.SetConfirmdelete(PWSprefs::GetInstance()->GetPref(PWSprefs::DeleteQuestion));
     int rc = deleteDlg.ShowModal();
     if (rc != wxID_YES) {
