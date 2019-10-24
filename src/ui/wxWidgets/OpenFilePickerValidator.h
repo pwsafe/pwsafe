@@ -6,23 +6,27 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __OPENFILEPICKERVALIDATOR_H__
-#define __OPENFILEPICKERVALIDATOR_H__
+/** \file OpenFilePickerValidator.h
+*
+*/
+
+#ifndef _OPENFILEPICKERVALIDATOR_H_
+#define _OPENFILEPICKERVALIDATOR_H_
 
 #include <wx/filepicker.h>
 
-struct COpenFilePickerValidator: public wxValidator
+struct OpenFilePickerValidator : public wxValidator
 {
-  COpenFilePickerValidator(wxString& str) : m_str(str) {}
+  OpenFilePickerValidator(wxString& str) : m_str(str) {}
 
-  virtual wxObject* Clone() const { return new COpenFilePickerValidator(m_str); }
+  virtual wxObject* Clone() const { return new OpenFilePickerValidator(m_str); }
   virtual bool TransferFromWindow();
   virtual bool TransferToWindow();
   virtual bool Validate (wxWindow* parent);
   
 private:
   wxString& m_str;
-  DECLARE_NO_COPY_CLASS(COpenFilePickerValidator)
+  DECLARE_NO_COPY_CLASS(OpenFilePickerValidator)
 };
 
-#endif
+#endif // _OPENFILEPICKERVALIDATOR_H_

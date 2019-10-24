@@ -42,7 +42,7 @@ ImportXmlDlg::ImportXmlDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxStri
 
   dlgSizer->Add(new wxStaticText(this, wxID_ANY, _("XML file to import:")), borderFlags);
   dlgSizer->AddSpacer(RowSeparation/2);
-  COpenFilePickerValidator validator(filepath);
+  OpenFilePickerValidator validator(filepath);
   dlgSizer->Add(new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString, 
                                           _("Please Choose a XML File to Import"), 
                                           _("XML files (*.xml)|*.xml"), 

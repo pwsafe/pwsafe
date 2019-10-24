@@ -185,7 +185,7 @@ void ImportTextDlg::CreateControls()
 
   dlgSizer->Add(new wxStaticText(this, wxID_ANY, strPrompt), Left);
   dlgSizer->AddSpacer(RowSeparation);
-  COpenFilePickerValidator validator(filepath);
+  OpenFilePickerValidator validator(filepath);
   dlgSizer->Add(new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString,
                                           strPrompt, wildCards,
                                           wxDefaultPosition, wxDefaultSize,
