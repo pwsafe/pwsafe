@@ -42,7 +42,7 @@ void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
   if (GetMenuBar()->IsChecked(evt.GetId())) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, evt.GetId() == ID_TOOLBAR_NEW);
     RefreshToolbarButtons();
-    PWSDragBar* dragbar = GetDragBar();
+    DragBarCtrl* dragbar = GetDragBar();
     wxCHECK_RET(dragbar, wxT("Could not find dragbar"));
     dragbar->RefreshButtons();
     wxCHECK_RET(m_search, wxT("Search object not created as expected"));
@@ -144,7 +144,7 @@ void PasswordSafeFrame::OnShowHideToolBar(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
 {
-  PWSDragBar* dragbar = GetDragBar();
+  DragBarCtrl* dragbar = GetDragBar();
   wxCHECK_RET(dragbar, wxT("Could not find dragbar"));
 
   dragbar->Show(evt.IsChecked());

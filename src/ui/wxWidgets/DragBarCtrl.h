@@ -15,29 +15,29 @@
  * lets PasswordSafeFrame deal with just this class alone
  */
 
-#ifndef __PWSDRAGBAR_H__
-#define __PWSDRAGBAR_H__
+#ifndef _DRAGBARCTRL_H_
+#define _DRAGBARCTRL_H_
 
 #include "./DragBarGenericCtrl.h"
 
 class PasswordSafeFrame;
 
-class PWSDragBar : public CDragBar, public CDragBar::IDragSourceTextProvider
+class DragBarCtrl : public CDragBar, public CDragBar::IDragSourceTextProvider
 {
   PasswordSafeFrame* m_frame;
   
 public:
-  PWSDragBar(PasswordSafeFrame* frame);
-  ~PWSDragBar();
+  DragBarCtrl(PasswordSafeFrame* frame);
+  ~DragBarCtrl();
 
   //show the classic or new buttons depending on PWSprefs::UseNewToolbar
   void RefreshButtons();
   
-  //PWSDragBar::IDragSourceTextProvider override
+  //DragBarCtrl::IDragSourceTextProvider override
   virtual wxString GetText(int id) const;
   virtual bool IsEnabled(int id) const;
 
-  DECLARE_CLASS(PWSDragBar)
+  DECLARE_CLASS(DragBarCtrl)
 };
 
-#endif // __PWSDRAGBAR_H__
+#endif // _DRAGBARCTRL_H_

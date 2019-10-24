@@ -9,6 +9,7 @@
 /** \file DragBarCtrl.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -66,7 +67,7 @@
 
 ////@end XPM images
 
-IMPLEMENT_CLASS( PWSDragBar, CDragBar )
+IMPLEMENT_CLASS( DragBarCtrl, CDragBar )
 
 enum { DRAGBAR_TOOLID_BASE = 100 };
 
@@ -93,12 +94,12 @@ struct _DragbarElementInfo {
                         PWS_TOOLINFO(Email,     EMAIL)
                       };
 
-PWSDragBar::PWSDragBar(PasswordSafeFrame* frame) : CDragBar(frame, this), m_frame(frame)
+DragBarCtrl::DragBarCtrl(PasswordSafeFrame* frame) : CDragBar(frame, this), m_frame(frame)
 {
   RefreshButtons();
 }
 
-void PWSDragBar::RefreshButtons()
+void DragBarCtrl::RefreshButtons()
 {
   const bool newButtons = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
 
@@ -122,11 +123,11 @@ void PWSDragBar::RefreshButtons()
 #undef BTN_DISABLED
 }
 
-PWSDragBar::~PWSDragBar()
+DragBarCtrl::~DragBarCtrl()
 {
 }
 
-wxString PWSDragBar::GetText(int id) const
+wxString DragBarCtrl::GetText(int id) const
 {
   const int idx = id - DRAGBAR_TOOLID_BASE;
   wxASSERT( idx >= 0 && size_t(idx) < NumberOf(DragbarElements));
@@ -139,7 +140,7 @@ wxString PWSDragBar::GetText(int id) const
     towxstring(pci->GetEffectiveFieldValue(DragbarElements[idx].ft, pbci)) : wxString(wxEmptyString);
 }
 
-bool PWSDragBar::IsEnabled(int id) const
+bool DragBarCtrl::IsEnabled(int id) const
 {
   const int idx = id - DRAGBAR_TOOLID_BASE;
   wxASSERT( idx >= 0 && size_t(idx) < NumberOf(DragbarElements));

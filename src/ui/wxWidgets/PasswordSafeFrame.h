@@ -43,7 +43,7 @@ class CPWStatusBar;
 class SystemTray;
 class GUIInfo;
 struct SelectionCriteria;
-class PWSDragBar;
+class DragBarCtrl;
 class PasswordSafeSearch;
 
 /*!
@@ -529,7 +529,7 @@ private:
   void RebuildGUI(const int iView = iBothViews);
   void CreateDragBar();
   void RefreshToolbarButtons();
-  PWSDragBar* GetDragBar();
+  DragBarCtrl* GetDragBar();
   void CreateStatusBar();
   void SaveSettings() const;
   void LockDb();

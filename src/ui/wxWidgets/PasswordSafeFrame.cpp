@@ -333,7 +333,7 @@ void PasswordSafeFrame::CreateDragBar()
   wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
   wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
 
-  PWSDragBar* dragbar = new PWSDragBar(this);
+  DragBarCtrl* dragbar = new DragBarCtrl(this);
   origSizer->Insert(0, dragbar, 0, wxEXPAND);
 
   const bool bShow = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
@@ -743,7 +743,7 @@ void PasswordSafeFrame::ReCreateMainToolbar()
  */
 void PasswordSafeFrame::ReCreateDragToolbar()
 {
-    PWSDragBar* dragbar = GetDragBar();
+    DragBarCtrl* dragbar = GetDragBar();
     wxCHECK_RET(dragbar, wxT("Couldn't find dragbar"));
     dragbar->ClearTools();
     dragbar->RefreshButtons();
@@ -971,7 +971,7 @@ void PasswordSafeFrame::ShowTree(bool show)
   GetSizer()->Layout();
 }
 
-PWSDragBar* PasswordSafeFrame::GetDragBar()
+DragBarCtrl* PasswordSafeFrame::GetDragBar()
 {
   wxSizer* origSizer = GetSizer();
 
@@ -981,10 +981,10 @@ PWSDragBar* PasswordSafeFrame::GetDragBar()
 
   wxSizerItem* dragbarItem = origSizer->GetItem(size_t(0));
   wxASSERT_MSG(dragbarItem && dragbarItem->IsWindow() &&
-                      wxIS_KIND_OF(dragbarItem->GetWindow(), PWSDragBar),
+                      wxIS_KIND_OF(dragbarItem->GetWindow(), DragBarCtrl),
                     wxT("Found unexpected item while searching for DragBar"));
 
-  PWSDragBar* dragbar = wxDynamicCast(dragbarItem->GetWindow(), PWSDragBar);
+  DragBarCtrl* dragbar = wxDynamicCast(dragbarItem->GetWindow(), DragBarCtrl);
   return dragbar;
 }
 
