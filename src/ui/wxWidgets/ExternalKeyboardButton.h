@@ -6,13 +6,17 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __ExternalKeyboardButton__
-#define __ExternalKeyboardButton__
+/** \file ExternalKeyboardButton.h
+* 
+*/
+
+#ifndef _ExternalKeyboardButton_
+#define _ExternalKeyboardButton_
 
 #include <wx/bmpbuttn.h> // Base class: wxBitmapButton
 
-class ExternalKeyboardButton : public wxBitmapButton {
-
+class ExternalKeyboardButton : public wxBitmapButton
+{
 public:
   ExternalKeyboardButton(wxWindow* parent, wxWindowID id = wxID_ANY,
                                             const wxPoint& pos = wxDefaultPosition,
@@ -26,4 +30,4 @@ public:
 
 };
 
-#endif // __ExternalKeyboardButton__
+#endif // _ExternalKeyboardButton_
