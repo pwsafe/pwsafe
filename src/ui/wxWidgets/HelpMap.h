@@ -15,7 +15,7 @@ DLG_HELP(CSafeCombinationChange,                        html/change_combo.html)
 DLG_HELP(MergeDlg,                                      html/file_menu.html)
 DLG_HELP(CSafeCombinationSetup,                         html/about_combinations.html)
 DLG_HELP(ImportTextDlg,                                 html/import.html)
-DLG_HELP(CImportXMLDlg,                                 html/import.html#XML)
+DLG_HELP(ImportXmlDlg,                                  html/import.html#XML)
 DLG_HELP(CSafeCombinationEntry,                         html/create_new_db.html)
 
 //The Contents page from main toolbar

@@ -3008,7 +3008,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   }
 #endif
 
-  CImportXMLDlg dlg(this);
+  ImportXmlDlg dlg(this);
   if (dlg.ShowModal() != wxID_OK)
     return;
 

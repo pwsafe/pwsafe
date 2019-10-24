@@ -6,20 +6,24 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __IMPORTXMLDLG_H__
-#define __IMPORTXMLDLG_H__
+/** \file ImportXmlDlg.h
+* 
+*/
+
+#ifndef _IMPORTXMLDLG_H_
+#define _IMPORTXMLDLG_H_
 
 #include <wx/dialog.h> // Base class: wxDialog
 
 class wxCheckBox;
 class wxTextCtrl;
 
-class CImportXMLDlg : public wxDialog {
-
-  DECLARE_CLASS( CImportXMLDlg )
+class ImportXmlDlg : public wxDialog
+{
+  DECLARE_CLASS( ImportXmlDlg )
   
 public:
-  CImportXMLDlg(wxWindow* parent);
+  ImportXmlDlg(wxWindow* parent);
 
 public:
   bool importUnderGroup;
@@ -35,4 +39,4 @@ private:
 
 };
 
-#endif // __IMPORTXMLDLG_H__
+#endif // _IMPORTXMLDLG_H_

@@ -6,6 +6,10 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+/** \file ImportXmlDlg.cpp
+* 
+*/
+
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
@@ -22,9 +26,9 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-IMPLEMENT_CLASS( CImportXMLDlg, wxDialog )
+IMPLEMENT_CLASS( ImportXmlDlg, wxDialog )
 
-CImportXMLDlg::CImportXMLDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxString(_("Import XML Settings"))),
+ImportXmlDlg::ImportXmlDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxString(_("Import XML Settings"))),
                                                   importUnderGroup(false), 
                                                   importPasswordsOnly(false)
 {
@@ -70,13 +74,13 @@ CImportXMLDlg::CImportXMLDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxSt
   SetSizerAndFit(dlgSizer);
 }
 
-wxCheckBox* CImportXMLDlg::CheckBox(const wxString& label, bool* validatorTarget)
+wxCheckBox* ImportXmlDlg::CheckBox(const wxString& label, bool* validatorTarget)
 {
   return new wxCheckBox(this, wxID_ANY, label, wxDefaultPosition, wxDefaultSize, 0,
                           wxGenericValidator(validatorTarget));
 }
 
-wxTextCtrl* CImportXMLDlg::TextCtrl(wxString* validatorTarget)
+wxTextCtrl* ImportXmlDlg::TextCtrl(wxString* validatorTarget)
 {
   return new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 
                                   wxTextValidator(wxFILTER_NONE, validatorTarget));
