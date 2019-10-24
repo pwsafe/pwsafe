@@ -67,7 +67,7 @@
 
 ////@end XPM images
 
-IMPLEMENT_CLASS( DragBarCtrl, CDragBar )
+IMPLEMENT_CLASS( DragBarCtrl, DragBarGenericCtrl )
 
 enum { DRAGBAR_TOOLID_BASE = 100 };
 
@@ -94,7 +94,7 @@ struct _DragbarElementInfo {
                         PWS_TOOLINFO(Email,     EMAIL)
                       };
 
-DragBarCtrl::DragBarCtrl(PasswordSafeFrame* frame) : CDragBar(frame, this), m_frame(frame)
+DragBarCtrl::DragBarCtrl(PasswordSafeFrame* frame) : DragBarGenericCtrl(frame, this), m_frame(frame)
 {
   RefreshButtons();
 }

@@ -8,10 +8,10 @@
 
 /** \file DragBarCtrl.h
  * 
- * Derives from the generic CDragBar class to provide the interfaces 
- * CDragBar uses to get the drag & drop text.  
+ * Derives from the generic DragBarGenericCtrl class to provide the interfaces 
+ * DragBarGenericCtrl uses to get the drag & drop text.  
  * 
- * That doesn't require it to derive from CDragBar, but derivation
+ * That doesn't require it to derive from DragBarGenericCtrl, but derivation
  * lets PasswordSafeFrame deal with just this class alone
  */
 
@@ -22,7 +22,7 @@
 
 class PasswordSafeFrame;
 
-class DragBarCtrl : public CDragBar, public CDragBar::IDragSourceTextProvider
+class DragBarCtrl : public DragBarGenericCtrl, public DragBarGenericCtrl::IDragSourceTextProvider
 {
   PasswordSafeFrame* m_frame;
   
