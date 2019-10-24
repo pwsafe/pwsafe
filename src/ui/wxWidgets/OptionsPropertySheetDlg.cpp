@@ -942,7 +942,7 @@ void OptionsPropertySheetDlg::PrefsToPropSheet()
   m_Security_LockOnIdleTimeout          = prefs->GetPref(PWSprefs::LockDBOnIdleTimeout);
   m_Security_IdleTimeoutSB->SetValue(     prefs->GetPref(PWSprefs::IdleTimeout));
 
-  auto *app = dynamic_cast<PwsafeApp *>(wxTheApp);
+  auto *app = dynamic_cast<PWSafeApp *>(wxTheApp);
   uint32 hashIters = app->GetHashIters();
   if (hashIters <= MIN_HASH_ITERATIONS) {
     m_Security_HashIterSlider = 0;

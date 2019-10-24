@@ -9,6 +9,10 @@
 // Licence:
 /////////////////////////////////////////////////////////////////////////////
 
+/** \file PWSafeApp.h
+*
+*/
+
 #ifndef _PWSAFEAPP_H_
 #define _PWSAFEAPP_H_
 
@@ -41,20 +45,20 @@ class wxLocale;
 ////@end control identifiers
 
 /*!
- * PwsafeApp class declaration
+ * PWSafeApp class declaration
  */
 
-class PwsafeApp: public wxApp
+class PWSafeApp : public wxApp
 {
-    DECLARE_CLASS( PwsafeApp )
+    DECLARE_CLASS( PWSafeApp )
     DECLARE_EVENT_TABLE()
 
 public:
     /// Constructor
-    PwsafeApp();
+    PWSafeApp();
 
     /// Destructor
-    ~PwsafeApp();
+    ~PWSafeApp();
 
     void Init();
 
@@ -68,16 +72,16 @@ public:
     /// Called on exit
     virtual int OnExit();
 
-////@begin PwsafeApp event handler declarations
+////@begin PWSafeApp event handler declarations
 
-////@end PwsafeApp event handler declarations
+////@end PWSafeApp event handler declarations
 
-////@begin PwsafeApp member function declarations
+////@begin PWSafeApp member function declarations
 
-////@end PwsafeApp member function declarations
+////@end PWSafeApp member function declarations
 
-////@begin PwsafeApp member variables
-////@end PwsafeApp member variables
+////@begin PWSafeApp member variables
+////@end PWSafeApp member variables
 
   void OnIdleTimer(wxTimerEvent& timerEvent);
   void ConfigureIdleTimer();
@@ -122,8 +126,7 @@ public:
  */
 
 ////@begin declare app
-DECLARE_APP(PwsafeApp)
+DECLARE_APP(PWSafeApp)
 ////@end declare app
 
-#endif
-    // _PWSAFEAPP_H_
+#endif // _PWSAFEAPP_H_

@@ -545,13 +545,13 @@
           <long name="locked">0</long>
           <long name="owns-file">1</long>
           <string name="proxy-Base class">"wxApp"</string>
-          <string name="proxy-Class">"PwsafeApp"</string>
+          <string name="proxy-Class">"PWSafeApp"</string>
           <string name="proxy-Event sources">""</string>
           <string name="proxy-Header filename">"PWSafeApp.h"</string>
           <string name="proxy-Help filename">""</string>
           <string name="proxy-Implementation filename">"PWSafeApp.cpp"</string>
           <string name="proxy-Main window">"ID_CSAFECOMBINATIONENTRY"</string>
-          <string name="title">"PwsafeApp"</string>
+          <string name="title">"PWSafeApp"</string>
           <long name="title-mode">0</long>
           <string name="type">"dialog-document"</string>
           <bool name="use-id-prefix">0</bool>
