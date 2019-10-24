@@ -169,7 +169,7 @@ enum {
  * PasswordSafeFrame class declaration
  */
 
-class PasswordSafeFrame: public wxFrame, public Observer
+class PasswordSafeFrame : public wxFrame, public Observer
 {
     DECLARE_CLASS( PasswordSafeFrame )
     DECLARE_EVENT_TABLE()
