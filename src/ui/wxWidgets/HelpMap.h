@@ -35,14 +35,14 @@ DLG_HELP(ManagePasswordPoliciesDlg,                     html/named_password_poli
 //
 
 //Options dialog
-PROPSHEET_HELP(COptions,            _("Backups"),          html/backups_tab.html)
-PROPSHEET_HELP(COptions,            _("Display"),          html/display_tab.html)
-PROPSHEET_HELP(COptions,            _("Misc."),            html/misc_tab.html)
-PROPSHEET_HELP(COptions,            _("Password Policy"),  html/password_policies.html)
-PROPSHEET_HELP(COptions,            _("Password History"), html/password_history_tab.html)
-PROPSHEET_HELP(COptions,            _("Security"),         html/security_tab.html)
-PROPSHEET_HELP(COptions,            _("System"),           html/system_tab.html)
-PROPSHEET_HELP(COptions,            _("Shortcuts"),        html/shortcuts_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Backups"),          html/backups_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Display"),          html/display_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Misc."),            html/misc_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Password Policy"),  html/password_policies.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Password History"), html/password_history_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Security"),         html/security_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("System"),           html/system_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Shortcuts"),        html/shortcuts_tab.html)
 
 PROPSHEET_HELP(AddEditPropSheetDlg, _("Basic"),            html/entering_pwd.html)
 PROPSHEET_HELP(AddEditPropSheetDlg, _("Dates and Times"),  html/entering_pwd_date.html)
