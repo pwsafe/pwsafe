@@ -5,6 +5,7 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
+
 /** \file FieldSelectionPanel.h
 * 
 */
@@ -26,8 +27,8 @@ typedef std::set<CItemData::FieldType> FieldSet;
  * validator defined below the class
  */
  
-class FieldSelectionPanel : public wxPanel {
-
+class FieldSelectionPanel : public wxPanel
+{
   DECLARE_EVENT_TABLE()
 
   //returns wxNOT_FOUND if the field is not found in the listbox

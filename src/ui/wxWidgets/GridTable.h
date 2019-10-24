@@ -5,12 +5,13 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
-/** \file
+
+/** \file GridTable.h
 * 
 */
 
-#ifndef _PWSGRIDTABLE_H_
-#define _PWSGRIDTABLE_H_
+#ifndef _GRIDTABLE_H_
+#define _GRIDTABLE_H_
 
 /*!
  * Includes
@@ -34,27 +35,27 @@ class GridCtrl;
 
 ////@begin control identifiers
 //#define ID_LISTBOX 10060
-//#define SYMBOL_PWSGRID_STYLE wxHSCROLL|wxVSCROLL
-//#define SYMBOL_PWSGRID_IDNAME ID_LISTBOX
-//#define SYMBOL_PWSGRID_SIZE wxDefaultSize
-//#define SYMBOL_PWSGRID_POSITION wxDefaultPosition
+//#define SYMBOL_GRIDTABLE_STYLE wxHSCROLL|wxVSCROLL
+//#define SYMBOL_GRIDTABLE_IDNAME ID_LISTBOX
+//#define SYMBOL_GRIDTABLE_SIZE wxDefaultSize
+//#define SYMBOL_GRIDTABLE_POSITION wxDefaultPosition
 ////@end control identifiers
 
 /*!
- * PWSGridTable class declaration
+ * GridTable class declaration
  */
 
-class PWSGridTable: public wxGridTableBase
-{    
-  DECLARE_CLASS( PWSGridTable )
+class GridTable : public wxGridTableBase
+{
+  DECLARE_CLASS( GridTable )
 
-  DECLARE_NO_COPY_CLASS(PWSGridTable)
+  DECLARE_NO_COPY_CLASS(GridTable)
 public:
   /// Constructors
-  PWSGridTable(GridCtrl* GridCtrl);
+  GridTable(GridCtrl* GridCtrl);
 
   /// Destructor
-  ~PWSGridTable();
+  ~GridTable();
 
   /// overrides from wxGridTableBase
   virtual int GetNumberRows();
@@ -83,5 +84,4 @@ private:
   GridCtrl* m_pwsgrid;
 };
 
-#endif
-  // _PWSGRIDTABLE_H_
+#endif // _GRIDTABLE_H_

@@ -6,9 +6,10 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file pwsgridtable.cpp
+/** \file GridTable.cpp
 * 
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -40,10 +41,10 @@
 ////@end XPM images
 
 /*!
- * PWSGridTable type definition
+ * GridTable type definition
  */
 
-IMPLEMENT_CLASS(PWSGridTable, wxGridTableBase)
+IMPLEMENT_CLASS(GridTable, wxGridTableBase)
 
 typedef StringX (CItemData::*ItemDataFuncT)() const;
 
@@ -74,12 +75,12 @@ static struct PWSGridCellDataType {
                       };
 
 /*!
- * PWSGridTable constructor
+ * GridTable constructor
  */
 
-PWSGridTable::PWSGridTable(GridCtrl* GridCtrl) : m_pwsgrid(GridCtrl)
+GridTable::GridTable(GridCtrl* GridCtrl) : m_pwsgrid(GridCtrl)
 {
-  //PWSGridTable could be created many times, but the above table should be initialized
+  //GridTable could be created many times, but the above table should be initialized
   //only once to avoid losing the changes made during a session
   static bool initialized = false;
   if (!initialized) {
@@ -89,10 +90,10 @@ PWSGridTable::PWSGridTable(GridCtrl* GridCtrl) : m_pwsgrid(GridCtrl)
 }
 
 /*!
- * PWSGridTable destructor
+ * GridTable destructor
  */
 
-PWSGridTable::~PWSGridTable()
+GridTable::~GridTable()
 {
 }
 
@@ -100,32 +101,32 @@ PWSGridTable::~PWSGridTable()
  * wxGridTableBase override implementations
  */
 
-int PWSGridTable::GetNumberRows()
-{    
+int GridTable::GetNumberRows()
+{
   const size_t N = m_pwsgrid->GetNumItems();
   assert(N <= size_t(std::numeric_limits<int>::max()));
   return int(N);
 }
 
-int PWSGridTable::GetNumberCols()
-{    
+int GridTable::GetNumberCols()
+{
   return NumberOf(PWSGridCellData);
 }
 
-bool PWSGridTable::IsEmptyCell(int row, int col)
+bool GridTable::IsEmptyCell(int row, int col)
 {
   const wxString val = GetValue(row, col);
 
   return val == wxEmptyString || val.empty() || val.IsSameAs(wxT("Unknown"));
 }
 
-wxString PWSGridTable::GetColLabelValue(int col)
-{    
+wxString GridTable::GetColLabelValue(int col)
+{
   return (size_t(col) < NumberOf(PWSGridCellData)) ?
     towxstring(CItemData::FieldName(PWSGridCellData[col].ft)) : wxString();
 }
 
-wxString PWSGridTable::GetValue(int row, int col)
+wxString GridTable::GetValue(int row, int col)
 {
   if (size_t(row) < m_pwsgrid->GetNumItems() &&
       size_t(col) < NumberOf(PWSGridCellData)) {
@@ -143,18 +144,18 @@ wxString PWSGridTable::GetValue(int row, int col)
   return wxEmptyString;
 }
 
-void PWSGridTable::SetValue(int /*row*/, int /*col*/, const wxString& /*value*/)
+void GridTable::SetValue(int /*row*/, int /*col*/, const wxString& /*value*/)
 {
   //I think it comes here only if the grid is editable
 }
 
-void PWSGridTable::Clear()
+void GridTable::Clear()
 {
   m_pwsgrid->DeleteAllItems();
 }
 
 //overridden
-void PWSGridTable::SetView(wxGrid* newGrid)
+void GridTable::SetView(wxGrid* newGrid)
 {
   wxGrid* oldGrid = GetView();
   wxGridTableBase::SetView(newGrid);
@@ -198,12 +199,12 @@ void PWSGridTable::SetView(wxGrid* newGrid)
   }
 }
 
-bool PWSGridTable::DeleteRows(size_t pos, size_t numRows)
+bool GridTable::DeleteRows(size_t pos, size_t numRows)
 {
   size_t curNumRows = m_pwsgrid->GetNumItems();
   
   if (pos >= curNumRows) {
-    wxFAIL_MSG( wxString(wxT("PWSGridTable::DeleteRows(")) << "pos= " << pos << ", numRows= " << numRows << ") call is invalid\nPos value is invalid for present table with " << curNumRows << " rows");
+    wxFAIL_MSG( wxString(wxT("GridTable::DeleteRows(")) << "pos= " << pos << ", numRows= " << numRows << ") call is invalid\nPos value is invalid for present table with " << curNumRows << " rows");
     return false;
   }
 
@@ -222,7 +223,7 @@ bool PWSGridTable::DeleteRows(size_t pos, size_t numRows)
   return true;
 }
 
-bool PWSGridTable::AppendRows(size_t numRows/*=1*/)
+bool GridTable::AppendRows(size_t numRows/*=1*/)
 {
   if (GetView()) {
     wxGridTableMessage msg(this,
@@ -233,7 +234,7 @@ bool PWSGridTable::AppendRows(size_t numRows/*=1*/)
   return true;
 }
 
-bool PWSGridTable::InsertRows(size_t pos/*=0*/, size_t numRows/*=1*/)
+bool GridTable::InsertRows(size_t pos/*=0*/, size_t numRows/*=1*/)
 {
   if (GetView()) {
     wxGridTableMessage msg(this,
@@ -246,7 +247,7 @@ bool PWSGridTable::InsertRows(size_t pos/*=0*/, size_t numRows/*=1*/)
 }
 
 //static
-int PWSGridTable::GetColumnFieldType(int colID)
+int GridTable::GetColumnFieldType(int colID)
 {
   wxCHECK_MSG(colID >= 0 && size_t(colID) < WXSIZEOF(PWSGridCellData), CItemData::END,
                 wxT("column ID is greater than the number of columns in GridCtrl"));
@@ -254,7 +255,7 @@ int PWSGridTable::GetColumnFieldType(int colID)
 }
 
 //static
-int PWSGridTable::Field2Column(int fieldType)
+int GridTable::Field2Column(int fieldType)
 {
   for(int n = 0; n < int(WXSIZEOF(PWSGridCellData)); ++n) {
     if (PWSGridCellData[n].ft == fieldType)
@@ -263,7 +264,7 @@ int PWSGridTable::Field2Column(int fieldType)
   return wxNOT_FOUND;
 }
 
-void PWSGridTable::SaveSettings(void) const
+void GridTable::SaveSettings(void) const
 {
   wxString colWidths, colShown;
   wxGrid* grid = GetView();
@@ -293,7 +294,7 @@ void PWSGridTable::SaveSettings(void) const
   PWSprefs::GetInstance()->SetPref(PWSprefs::ColumnWidths, tostringx(colWidths));
 }
 
-void PWSGridTable::RestoreSettings(void) const
+void GridTable::RestoreSettings(void) const
 {
   wxString colShown = towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::ListColumns));
   wxString colWidths = towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::ColumnWidths));
@@ -324,7 +325,7 @@ void PWSGridTable::RestoreSettings(void) const
   }
 }
 
-int PWSGridTable::GetNumHeaderCols()
+int GridTable::GetNumHeaderCols()
 {
   // XXX Should probably reflect number of columns
   // as selected by user

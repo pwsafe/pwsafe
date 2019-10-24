@@ -887,7 +887,7 @@ void PasswordSafeFrame::OnExitClick( wxCommandEvent& /* evt */ )
 void PasswordSafeFrame::ShowGrid(bool show)
 {
   if (show) {
-    m_grid->SetTable(new PWSGridTable(m_grid), true, wxGrid::wxGridSelectRows); // true => auto-delete
+    m_grid->SetTable(new GridTable(m_grid), true, wxGrid::wxGridSelectRows); // true => auto-delete
     m_grid->EnableEditing(false);
     m_grid->Clear();
     wxFont font(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::TreeFont)));
