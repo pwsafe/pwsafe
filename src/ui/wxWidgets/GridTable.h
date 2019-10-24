@@ -25,7 +25,7 @@
  */
 
 ////@begin forward declarations
-class PWSGrid;
+class GridCtrl;
 ////@end forward declarations
 
 /*!
@@ -51,7 +51,7 @@ class PWSGridTable: public wxGridTableBase
   DECLARE_NO_COPY_CLASS(PWSGridTable)
 public:
   /// Constructors
-  PWSGridTable(PWSGrid* pwsgrid);
+  PWSGridTable(GridCtrl* GridCtrl);
 
   /// Destructor
   ~PWSGridTable();
@@ -80,7 +80,7 @@ public:
   void RestoreSettings(void) const;
 
 private:
-  PWSGrid* m_pwsgrid;
+  GridCtrl* m_pwsgrid;
 };
 
 #endif

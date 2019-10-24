@@ -622,7 +622,7 @@ void PasswordSafeFrame::CreateControls()
   mainsizer->Add(itemBoxSizer83, 1, wxEXPAND);
   SetSizer(mainsizer);
 
-  m_grid = new PWSGrid( this, m_core, ID_LISTBOX, wxDefaultPosition,
+  m_grid = new GridCtrl( this, m_core, ID_LISTBOX, wxDefaultPosition,
                         wxDefaultSize, wxHSCROLL|wxVSCROLL );
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0).Proportion(1));
 

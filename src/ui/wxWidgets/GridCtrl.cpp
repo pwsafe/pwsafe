@@ -6,9 +6,10 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file pwsgrid.cpp
+/** \file GridCtrl.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -43,36 +44,36 @@
 using pws_os::CUUID;
 
 /*!
- * PWSGrid type definition
+ * GridCtrl type definition
  */
 
-IMPLEMENT_CLASS( PWSGrid, wxGrid )
+IMPLEMENT_CLASS( GridCtrl, wxGrid )
 
 /*!
- * PWSGrid event table definition
+ * GridCtrl event table definition
  */
 
-BEGIN_EVENT_TABLE( PWSGrid, wxGrid )
+BEGIN_EVENT_TABLE( GridCtrl, wxGrid )
 
-////@begin PWSGrid event table entries
-  EVT_GRID_CELL_RIGHT_CLICK( PWSGrid::OnCellRightClick )
-  EVT_GRID_CELL_LEFT_DCLICK( PWSGrid::OnLeftDClick )
-  EVT_GRID_SELECT_CELL( PWSGrid::OnSelectCell )
-  EVT_CONTEXT_MENU(PWSGrid::OnContextMenu)
-////@end PWSGrid event table entries
+////@begin GridCtrl event table entries
+  EVT_GRID_CELL_RIGHT_CLICK( GridCtrl::OnCellRightClick )
+  EVT_GRID_CELL_LEFT_DCLICK( GridCtrl::OnLeftDClick )
+  EVT_GRID_SELECT_CELL( GridCtrl::OnSelectCell )
+  EVT_CONTEXT_MENU(GridCtrl::OnContextMenu)
+////@end GridCtrl event table entries
 
 END_EVENT_TABLE()
 
 /*!
- * PWSGrid constructors
+ * GridCtrl constructors
  */
 
-PWSGrid::PWSGrid(PWScore &core) : m_core(core)
+GridCtrl::GridCtrl(PWScore &core) : m_core(core)
 {
   Init();
 }
 
-PWSGrid::PWSGrid(wxWindow* parent, PWScore &core,
+GridCtrl::GridCtrl(wxWindow* parent, PWScore &core,
                  wxWindowID id, const wxPoint& pos,
                  const wxSize& size, long style) : m_core(core)
 {
@@ -94,19 +95,19 @@ PWSGrid::PWSGrid(wxWindow* parent, PWScore &core,
     // Handler for single click events on column header
     header->Bind(
       wxEVT_HEADER_CLICK, 
-      &PWSGrid::OnHeaderClick,
+      &GridCtrl::OnHeaderClick,
       this
     );
   }
 }
 
 /*!
- * PWSGrid creator
+ * GridCtrl creator
  */
 
-bool PWSGrid::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
+bool GridCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 {
-////@begin PWSGrid creation
+////@begin GridCtrl creation
   wxGrid::Create(parent, id, pos, size, style);
   CreateControls();
   EnableGridLines(PWSprefs::GetInstance()->GetPref(PWSprefs::ListViewGridLines));
@@ -116,7 +117,7 @@ bool PWSGrid::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const 
 #if wxCHECK_VERSION(2, 9, 1)
   UseNativeColHeader(true);
 #endif
-////@end PWSGrid creation
+////@end GridCtrl creation
 
   UpdateSorting();
 
@@ -124,33 +125,33 @@ bool PWSGrid::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const 
 }
 
 /*!
- * PWSGrid destructor
+ * GridCtrl destructor
  */
 
-PWSGrid::~PWSGrid()
+GridCtrl::~GridCtrl()
 {
-////@begin PWSGrid destruction
-////@end PWSGrid destruction
+////@begin GridCtrl destruction
+////@end GridCtrl destruction
 }
 
 /*!
  * Member initialisation
  */
 
-void PWSGrid::Init()
+void GridCtrl::Init()
 {
-////@begin PWSGrid member initialisation
-////@end PWSGrid member initialisation
+////@begin GridCtrl member initialisation
+////@end GridCtrl member initialisation
 }
 
 /*!
- * Control creation for PWSGrid
+ * Control creation for GridCtrl
  */
 
-void PWSGrid::CreateControls()
+void GridCtrl::CreateControls()
 {
-////@begin PWSGrid content construction
-////@end PWSGrid content construction
+////@begin GridCtrl content construction
+////@end GridCtrl content construction
   CreateGrid(0, PWSGridTable::GetNumHeaderCols(), wxGrid::wxGridSelectRows);
   SetColLabelValue(0, _("Title"));
   SetColLabelValue(1, _("User"));
@@ -165,7 +166,7 @@ void PWSGrid::CreateControls()
 /**
  * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
  */
-void PWSGrid::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft)
+void GridCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft)
 {
   CItemData *item = nullptr;
 
@@ -177,7 +178,7 @@ void PWSGrid::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &en
   else if (ga == UpdateGUICommand::GUI_ADD_ENTRY ||
            ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
            ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
-    pws_os::Trace(wxT("PWSGrid - Couldn't find uuid %ls"), StringX(CUUID(entry_uuid)).c_str());
+    pws_os::Trace(wxT("GridCtrl - Couldn't find uuid %ls"), StringX(CUUID(entry_uuid)).c_str());
     return;
   }
 
@@ -219,7 +220,7 @@ void PWSGrid::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &en
       // TODO: ???
       break;
     default:
-      wxFAIL_MSG(wxT("PWSGrid - Unsupported GUI action received."));
+      wxFAIL_MSG(wxT("GridCtrl - Unsupported GUI action received."));
       break;
   }
 }
@@ -227,9 +228,9 @@ void PWSGrid::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &en
 /**
  * Implements Observer::GUIRefreshEntry(const CItemData&, bool)
  */
-void PWSGrid::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
+void GridCtrl::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
 {
-  pws_os::Trace(wxT("PWSGrid::GUIRefreshEntry"));
+  pws_os::Trace(wxT("GridCtrl::GUIRefreshEntry"));
 
   if (item.GetStatus() == CItemData::ES_DELETED) {
     uuid_array_t uuid;
@@ -241,7 +242,7 @@ void PWSGrid::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
   }
 }
 
-void PWSGrid::OnPasswordListModified()
+void GridCtrl::OnPasswordListModified()
 {
   m_row_map.clear();
   m_uuid_map.clear();
@@ -260,7 +261,7 @@ void PWSGrid::OnPasswordListModified()
  * Should we show tooltips?
  */
 
-bool PWSGrid::ShowToolTips()
+bool GridCtrl::ShowToolTips()
 {
   return true;
 }
@@ -269,27 +270,27 @@ bool PWSGrid::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap PWSGrid::GetBitmapResource( const wxString& WXUNUSED(name) )
+wxBitmap GridCtrl::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
   // Bitmap retrieval
-////@begin PWSGrid bitmap retrieval
+////@begin GridCtrl bitmap retrieval
   return wxNullBitmap;
-////@end PWSGrid bitmap retrieval
+////@end GridCtrl bitmap retrieval
 }
 
 /*!
  * Get icon resources
  */
 
-wxIcon PWSGrid::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon GridCtrl::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
-////@begin PWSGrid icon retrieval
+////@begin GridCtrl icon retrieval
   return wxNullIcon;
-////@end PWSGrid icon retrieval
+////@end GridCtrl icon retrieval
 }
 
-void PWSGrid::AddItem(const CItemData &item, int row)
+void GridCtrl::AddItem(const CItemData &item, int row)
 {
   int nRows = GetNumberRows();
   if (row == -1)
@@ -301,7 +302,7 @@ void PWSGrid::AddItem(const CItemData &item, int row)
   InsertRows(row);
 }
 
-void PWSGrid::RefreshItem(const CItemData &item, int row)
+void GridCtrl::RefreshItem(const CItemData &item, int row)
 {
   int nRows = GetNumberRows();
   if (row == -1)
@@ -313,7 +314,7 @@ void PWSGrid::RefreshItem(const CItemData &item, int row)
   RefreshRow(row);
 }
 
-void PWSGrid::UpdateItem(const CItemData &item)
+void GridCtrl::UpdateItem(const CItemData &item)
 {
   uuid_array_t uuid;
   item.GetUUID(uuid);
@@ -325,7 +326,7 @@ void PWSGrid::UpdateItem(const CItemData &item)
   }
 }
 
-void PWSGrid::RefreshRow(int row)
+void GridCtrl::RefreshRow(int row)
 {
   wxRect rect(CellToRect( row, 0 ));
   rect.x = 0;
@@ -335,14 +336,14 @@ void PWSGrid::RefreshRow(int row)
   GetGridWindow()->Refresh( false, &rect );
 }
 
-void PWSGrid::RefreshItemRow(const pws_os::CUUID& uuid)
+void GridCtrl::RefreshItemRow(const pws_os::CUUID& uuid)
 {
   const int row = FindItemRow(uuid);
   if (row != wxNOT_FOUND)
     RefreshRow(row);
 }
 
-void PWSGrid::RefreshItemField(const pws_os::CUUID& uuid, CItemData::FieldType ft)
+void GridCtrl::RefreshItemField(const pws_os::CUUID& uuid, CItemData::FieldType ft)
 {
   int row = FindItemRow(uuid);
   int col = PWSGridTable::Field2Column(ft);
@@ -359,7 +360,7 @@ struct moveup : public std::binary_function<UUIDRowMapT::value_type, int, void> 
   }
 };
 
-void PWSGrid::Remove(const CUUID &uuid)
+void GridCtrl::Remove(const CUUID &uuid)
 {
   auto iter = m_uuid_map.find(uuid);
   if (iter != m_uuid_map.end()) {
@@ -390,7 +391,7 @@ void PWSGrid::Remove(const CUUID &uuid)
 /*!
  * Returns the number of elements in its own books
  */
-size_t PWSGrid::GetNumItems() const
+size_t GridCtrl::GetNumItems() const
 {
   //These vars help with debugging.  Declared volatile to keep the compiler
   //from optimizing them away
@@ -420,7 +421,7 @@ size_t PWSGrid::GetNumItems() const
  * as well as from PWSCore.  The display will be updated by an event
  * generated by PWSGridTable once this function returns.
  */
-void PWSGrid::DeleteItems(int row, size_t numItems)
+void GridCtrl::DeleteItems(int row, size_t numItems)
 {
   for (size_t N = 0; N < numItems; ++N) {
     auto iter = m_row_map.find(row);
@@ -451,7 +452,7 @@ void PWSGrid::DeleteItems(int row, size_t numItems)
  * removed by an event generated by PWSGridTable once this function
  * returns
  */
-void PWSGrid::DeleteAllItems()
+void GridCtrl::DeleteAllItems()
 {
   m_uuid_map.clear();
   m_row_map.clear();
@@ -461,7 +462,7 @@ void PWSGrid::DeleteAllItems()
  * wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX
  */
 
-void PWSGrid::OnCellRightClick( wxGridEvent& evt )
+void GridCtrl::OnCellRightClick( wxGridEvent& evt )
 {
   // We need this function because wxGrid doesn't convert unprocessed
   // right-mouse-down events to contextmenu events, so we need to do
@@ -484,7 +485,7 @@ void PWSGrid::OnCellRightClick( wxGridEvent& evt )
  * wxEVT_GRID_CELL_ITEM_MENU event handler for ID_LISTBOX
  */
 
-void PWSGrid::OnContextMenu( wxContextMenuEvent& evt )
+void GridCtrl::OnContextMenu( wxContextMenuEvent& evt )
 {
   wxPoint pos = evt.GetPosition();
   if ( pos == wxDefaultPosition ) { //sent from keyboard?
@@ -497,9 +498,9 @@ void PWSGrid::OnContextMenu( wxContextMenuEvent& evt )
   }
 }
 
-CItemData *PWSGrid::GetItem(int row) const
+CItemData *GridCtrl::GetItem(int row) const
 {
-  if (row < 0 || row > const_cast<PWSGrid *>(this)->GetNumberRows())
+  if (row < 0 || row > const_cast<GridCtrl *>(this)->GetNumberRows())
     return nullptr;
   auto iter = m_row_map.find(row);
   if (iter != m_row_map.end()) {
@@ -517,7 +518,7 @@ CItemData *PWSGrid::GetItem(int row) const
  * wxEVT_GRID_CELL_LEFT_DCLICK event handler for ID_LISTBOX
  */
 
-void PWSGrid::OnLeftDClick( wxGridEvent& evt )
+void GridCtrl::OnLeftDClick( wxGridEvent& evt )
 {
   CItemData *item = GetItem(evt.GetRow());
   if (item != nullptr)
@@ -525,7 +526,7 @@ void PWSGrid::OnLeftDClick( wxGridEvent& evt )
       DispatchDblClickAction(*item);
 }
 
- void PWSGrid::SelectItem(const CUUID & uuid)
+ void GridCtrl::SelectItem(const CUUID & uuid)
  {
      UUIDRowMapT::const_iterator itr = m_uuid_map.find(uuid);
      if (itr != m_uuid_map.end()) {
@@ -534,7 +535,7 @@ void PWSGrid::OnLeftDClick( wxGridEvent& evt )
      }
  }
 
-int  PWSGrid::FindItemRow(const CUUID& uu)
+int  GridCtrl::FindItemRow(const CUUID& uu)
 {
      UUIDRowMapT::const_iterator itr = m_uuid_map.find(uu);
      if (itr != m_uuid_map.end()) {
@@ -543,19 +544,19 @@ int  PWSGrid::FindItemRow(const CUUID& uu)
      return wxNOT_FOUND;
 }
 
-void PWSGrid::SaveSettings() const
+void GridCtrl::SaveSettings() const
 {
   auto *table = dynamic_cast<PWSGridTable*>(GetTable());
   if (table)  //may not have been created/assigned
     table->SaveSettings();
 }
 
-void PWSGrid::PreferencesChanged()
+void GridCtrl::PreferencesChanged()
 {
   EnableGridLines(PWSprefs::GetInstance()->GetPref(PWSprefs::ListViewGridLines));
 }
 
-void PWSGrid::Clear()
+void GridCtrl::Clear()
 {
   if (GetNumberRows() > 0) {
     BeginBatch();
@@ -569,21 +570,21 @@ void PWSGrid::Clear()
  * wxEVT_GRID_SELECT_CELL event handler for ID_LISTBOX
  */
 
-void PWSGrid::OnSelectCell( wxGridEvent& evt )
+void GridCtrl::OnSelectCell( wxGridEvent& evt )
 {
   CItemData *pci = GetItem(evt.GetRow());
 
   dynamic_cast<PasswordSafeFrame *>(GetParent())->UpdateSelChanged(pci);
 }
 
-void PWSGrid::SetFilterState(bool state)
+void GridCtrl::SetFilterState(bool state)
 {
   const wxColour *colour = state ? wxRED : wxBLACK;
   SetDefaultCellTextColour(*colour);
   ForceRefresh();
 }
 
-void PWSGrid::UpdateSorting()
+void GridCtrl::UpdateSorting()
 {
   SortByColumn(
     PWSprefs::GetInstance()->GetPref(PWSprefs::SortedColumn),
@@ -591,7 +592,7 @@ void PWSGrid::UpdateSorting()
   );
 }
 
-void PWSGrid::OnHeaderClick(wxHeaderCtrlEvent& event)
+void GridCtrl::OnHeaderClick(wxHeaderCtrlEvent& event)
 {
   SortByColumn(event.GetColumn(), !IsSortOrderAscending());
 
@@ -601,7 +602,7 @@ void PWSGrid::OnHeaderClick(wxHeaderCtrlEvent& event)
   }
 }
 
-void PWSGrid::SortByColumn(int column, bool ascending)
+void GridCtrl::SortByColumn(int column, bool ascending)
 {
   UnsetSortingColumn();
 
@@ -620,7 +621,7 @@ void PWSGrid::SortByColumn(int column, bool ascending)
 }
 
 template<typename ItemsCollection>
-void PWSGrid::RearrangeItems(ItemsCollection& collection, int column)
+void GridCtrl::RearrangeItems(ItemsCollection& collection, int column)
 {
   int row = 0;
 

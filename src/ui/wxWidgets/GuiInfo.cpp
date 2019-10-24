@@ -104,7 +104,7 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
   }
 }
 
-void GUIInfo::SaveGridViewInfo(PWSGrid* grid)
+void GUIInfo::SaveGridViewInfo(GridCtrl* grid)
 {
   //has the grid been initialized?
   if (grid->GetNumItems() == 0)
@@ -141,7 +141,7 @@ void GUIInfo::SaveGridViewInfo(PWSGrid* grid)
   }
 }
 
-void GUIInfo::RestoreGridViewInfo(PWSGrid* grid)
+void GUIInfo::RestoreGridViewInfo(GridCtrl* grid)
 {
   const int top = grid->FindItemRow(m_gridTop);
   if (top != wxNOT_FOUND)

@@ -114,7 +114,7 @@ public:
 ////@begin PWSTreeCtrl member function declarations
 ////@end PWSTreeCtrl member function declarations
 
-  void Clear() {DeleteAllItems(); m_item_map.clear();} // consistent name w/PWSgrid
+  void Clear() {DeleteAllItems(); m_item_map.clear();} // consistent name w/GridCtrl
   void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
   void UpdateItemField(const CItemData &item, CItemData::FieldType ft);

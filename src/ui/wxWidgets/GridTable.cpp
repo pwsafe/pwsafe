@@ -77,7 +77,7 @@ static struct PWSGridCellDataType {
  * PWSGridTable constructor
  */
 
-PWSGridTable::PWSGridTable(PWSGrid* pwsgrid) : m_pwsgrid(pwsgrid)
+PWSGridTable::PWSGridTable(GridCtrl* GridCtrl) : m_pwsgrid(GridCtrl)
 {
   //PWSGridTable could be created many times, but the above table should be initialized
   //only once to avoid losing the changes made during a session
@@ -249,7 +249,7 @@ bool PWSGridTable::InsertRows(size_t pos/*=0*/, size_t numRows/*=1*/)
 int PWSGridTable::GetColumnFieldType(int colID)
 {
   wxCHECK_MSG(colID >= 0 && size_t(colID) < WXSIZEOF(PWSGridCellData), CItemData::END,
-                wxT("column ID is greater than the number of columns in PWSGrid"));
+                wxT("column ID is greater than the number of columns in GridCtrl"));
   return PWSGridCellData[colID].ft;
 }
 

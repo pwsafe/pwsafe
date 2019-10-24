@@ -36,7 +36,7 @@
  */
 
 ////@begin forward declarations
-class PWSGrid;
+class GridCtrl;
 class PWSTreeCtrl;
 class CPWStatusBar;
 ////@end forward declarations
@@ -490,7 +490,7 @@ public:
   bool IsClosed() const;
 
 ////@begin PasswordSafeFrame member variables
-  PWSGrid* m_grid;
+  GridCtrl* m_grid;
   PWSTreeCtrl* m_tree;
   CPWStatusBar* m_statusBar;
 ////@end PasswordSafeFrame member variables

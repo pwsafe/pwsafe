@@ -2349,9 +2349,9 @@
             <string name="type">"dialog-control-document"</string>
             <document>
               <string name="proxy-type">"wbGridProxy"</string>
-              <string name="event-handler-0">"wxEVT_GRID_CELL_RIGHT_CLICK|OnCellRightClick|SHOWMESSAGE|I'm right-clicked!|PWSGrid"</string>
-              <string name="event-handler-1">"wxEVT_GRID_CELL_LEFT_DCLICK|OnLeftDClick|SHOWMESSAGE|I'm clicked!|PWSGrid"</string>
-              <string name="event-handler-2">"wxEVT_GRID_SELECT_CELL|OnSelectCell|NONE||PWSGrid"</string>
+              <string name="event-handler-0">"wxEVT_GRID_CELL_RIGHT_CLICK|OnCellRightClick|SHOWMESSAGE|I'm right-clicked!|GridCtrl"</string>
+              <string name="event-handler-1">"wxEVT_GRID_CELL_LEFT_DCLICK|OnLeftDClick|SHOWMESSAGE|I'm clicked!|GridCtrl"</string>
+              <string name="event-handler-2">"wxEVT_GRID_SELECT_CELL|OnSelectCell|NONE||GridCtrl"</string>
               <string name="event-handler-3">"wxEVT_CHAR|OnChar|NONE||"</string>
               <string name="filename">""</string>
               <string name="icon-name">"grid"</string>
@@ -2363,7 +2363,7 @@
               <string name="proxy-Background colour">""</string>
               <string name="proxy-Base class">"wxGrid"</string>
               <long name="proxy-Border">5</long>
-              <string name="proxy-Class">"PWSGrid"</string>
+              <string name="proxy-Class">"GridCtrl"</string>
               <long name="proxy-Column label height">25</long>
               <long name="proxy-Column width">50</long>
               <long name="proxy-Columns">2</long>
@@ -2425,7 +2425,7 @@
               <bool name="proxy-wxWS_EX_VALIDATE_RECURSIVELY">0</bool>
               <long name="proxy-X">-1</long>
               <long name="proxy-Y">-1</long>
-              <string name="title">"PWSGrid: ID_LISTBOX"</string>
+              <string name="title">"GridCtrl: ID_LISTBOX"</string>
               <long name="title-mode">0</long>
               <string name="type">"dialog-control-document"</string>
             </document>

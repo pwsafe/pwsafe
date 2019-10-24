@@ -16,7 +16,7 @@
 
 class PasswordSafeFrame;
 class PWSTreeCtrl;
-class PWSGrid;
+class GridCtrl;
 
 class string_or_uuid
 {
@@ -69,10 +69,10 @@ class GUIInfo
     void Restore(PasswordSafeFrame* frame);
 
     void SaveTreeViewInfo(PWSTreeCtrl* tree);
-    void SaveGridViewInfo(PWSGrid* grid);
+    void SaveGridViewInfo(GridCtrl* grid);
 
     void RestoreTreeViewInfo(PWSTreeCtrl* tree);
-    void RestoreGridViewInfo(PWSGrid* grid);
+    void RestoreGridViewInfo(GridCtrl* grid);
 
   private:
 
