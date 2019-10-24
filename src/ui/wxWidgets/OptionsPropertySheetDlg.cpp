@@ -1057,7 +1057,7 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::MultipleInstances, m_System_MultipleInstances);
 #if defined(__X__) || defined(__WXGTK__)
   prefs->SetPref(PWSprefs::UsePrimarySelectionForClipboard, m_System_UsePrimarySelection);
-  PWSclipboard::GetInstance()->UsePrimarySelection(m_System_UsePrimarySelection);
+  Clipboard::GetInstance()->UsePrimarySelection(m_System_UsePrimarySelection);
   prefs->SetPref(PWSprefs::UseAltAutoType, m_System_UseAltAutoType);
 #endif
 

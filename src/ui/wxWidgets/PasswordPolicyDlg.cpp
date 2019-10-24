@@ -855,7 +855,7 @@ void CPasswordPolicy::OnGeneratePassword( wxCommandEvent& WXUNUSED(event) )
 void CPasswordPolicy::OnCopyPassword( wxCommandEvent& WXUNUSED(event) )
 {
   if (!(m_passwordCtrl->GetValue()).IsEmpty()) {
-    PWSclipboard::GetInstance()->SetData(tostringx(m_passwordCtrl->GetValue()));
+    Clipboard::GetInstance()->SetData(tostringx(m_passwordCtrl->GetValue()));
   }
 }
 

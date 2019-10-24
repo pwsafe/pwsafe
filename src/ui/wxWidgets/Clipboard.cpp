@@ -6,6 +6,10 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+/** \file Clipboard.cpp
+ *
+ */
+
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
 
@@ -33,15 +37,15 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-PWSclipboard *PWSclipboard::self = nullptr;
+Clipboard *Clipboard::self = nullptr;
 
 /**
  * Get pointer to single instance of clipboard manager
  */
-PWSclipboard *PWSclipboard::GetInstance()
+Clipboard *Clipboard::GetInstance()
 {
   if (self == nullptr) {
-    self = new PWSclipboard();
+    self = new Clipboard();
   }
   return self;
 }
@@ -49,13 +53,13 @@ PWSclipboard *PWSclipboard::GetInstance()
 /**
  * Destroy the instance
 */
-void PWSclipboard::DeleteInstance()
+void Clipboard::DeleteInstance()
 {
   delete self;
   self = nullptr;
 }
 
-PWSclipboard::PWSclipboard(): m_set(false)
+Clipboard::Clipboard(): m_set(false)
 {
   memset(m_digest, 0, sizeof(m_digest));
 }
@@ -66,7 +70,7 @@ PWSclipboard::PWSclipboard(): m_set(false)
  * @param isSensitive if data sensitive, we remember its hash and will clear on ClearCBData() call
  * @return \c true, if we could open the clipboard and put the data
 */
-bool PWSclipboard::SetData(const StringX &data)
+bool Clipboard::SetData(const StringX &data)
 {
   wxMutexLocker clip(m_clipboardMutex);
 
@@ -92,7 +96,7 @@ bool PWSclipboard::SetData(const StringX &data)
  * Clear from clipboard data, that we put there previously
  * @return \c true, if we cleared our data, or stored data don't belong to us
 */
-bool PWSclipboard::ClearCBData()
+bool Clipboard::ClearCBData()
 {
   wxMutexLocker clip(m_clipboardMutex);
 
@@ -131,7 +135,7 @@ bool PWSclipboard::ClearCBData()
  * @param primary if set to \c true, will use PRIMARY selection, otherwise CLIPBOARD X11
  * @param clearOnChange if set to \c true, our previous data will be cleared from previous buffer
  */
-void PWSclipboard::UsePrimarySelection(bool primary, bool clearOnChange) {
+void Clipboard::UsePrimarySelection(bool primary, bool clearOnChange) {
   if (primary != wxTheClipboard->IsUsingPrimarySelection()) {
     if (clearOnChange)
       ClearCBData();

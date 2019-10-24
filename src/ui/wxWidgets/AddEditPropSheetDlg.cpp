@@ -1156,7 +1156,7 @@ void AddEditPropSheetDlg::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
       return;
     }
 
-    PWSclipboard::GetInstance()->SetData(password);
+    Clipboard::GetInstance()->SetData(password);
     m_password = password.c_str();
     m_PasswordCtrl->ChangeValue(m_password.c_str());
     if (m_isPWHidden) {

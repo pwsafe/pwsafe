@@ -261,7 +261,7 @@ void PasswordSafeFrame::OnFindPrevious( wxCommandEvent& /* evt */ )
 void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& /* evt */ )
 {
   UpdateLastClipboardAction(CItemData::FieldType::END);
-  PWSclipboard::GetInstance()->ClearCBData();
+  Clipboard::GetInstance()->ClearCBData();
 }
 
 /*!
@@ -279,11 +279,11 @@ void PasswordSafeFrame::OnCopypasswordClick(wxCommandEvent& evt)
 void PasswordSafeFrame::DoCopyPassword(CItemData &item)
 {
   if (!item.IsDependent())
-    PWSclipboard::GetInstance()->SetData(item.GetPassword());
+    Clipboard::GetInstance()->SetData(item.GetPassword());
   else {
     const CUUID &base = item.GetBaseUUID();
     const StringX &passwd = m_core.GetEntry(m_core.Find(base)).GetPassword();
-    PWSclipboard::GetInstance()->SetData(passwd);
+    Clipboard::GetInstance()->SetData(passwd);
   }
   UpdateLastClipboardAction(CItemData::FieldType::PASSWORD);
   UpdateAccessTime(item);
@@ -303,7 +303,7 @@ void PasswordSafeFrame::OnCopyRunCmd(wxCommandEvent& evt)
 
 void PasswordSafeFrame::DoCopyRunCmd(CItemData &item)
 {
-  PWSclipboard::GetInstance()->SetData(item.GetRunCommand());
+  Clipboard::GetInstance()->SetData(item.GetRunCommand());
   UpdateLastClipboardAction(CItemData::FieldType::RUNCMD);
   UpdateAccessTime(item);
 }
@@ -322,7 +322,7 @@ void PasswordSafeFrame::OnCopyusernameClick(wxCommandEvent& evt)
 
 void PasswordSafeFrame::DoCopyUsername(CItemData &item)
 {
-  PWSclipboard::GetInstance()->SetData(item.GetUser());
+  Clipboard::GetInstance()->SetData(item.GetUser());
   UpdateLastClipboardAction(CItemData::FieldType::USER);
   UpdateAccessTime(item);
 }
@@ -341,7 +341,7 @@ void PasswordSafeFrame::OnCopynotesfldClick(wxCommandEvent& evt)
 
 void PasswordSafeFrame::DoCopyNotes(CItemData &item)
 {
-  PWSclipboard::GetInstance()->SetData(item.GetNotes());
+  Clipboard::GetInstance()->SetData(item.GetNotes());
   UpdateLastClipboardAction(CItemData::FieldType::NOTES);
   UpdateAccessTime(item);
 }
@@ -471,7 +471,7 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
 
 void PasswordSafeFrame::DoCopyURL(CItemData &item)
 {
-  PWSclipboard::GetInstance()->SetData(item.GetURL());
+  Clipboard::GetInstance()->SetData(item.GetURL());
   UpdateLastClipboardAction(CItemData::FieldType::URL);
   UpdateAccessTime(item);
 }
@@ -483,7 +483,7 @@ void PasswordSafeFrame::DoCopyEmail(CItemData &item)
                       : item.GetEmail();
 
   if (!mailto.empty()) {
-    PWSclipboard::GetInstance()->SetData(mailto);
+    Clipboard::GetInstance()->SetData(mailto);
     UpdateLastClipboardAction(CItemData::FieldType::EMAIL);
     UpdateAccessTime(item);
   }
@@ -735,7 +735,7 @@ void PasswordSafeFrame::DoBrowse(CItemData &item, bool bAutotype)
     LaunchBrowser(cs_command, sxautotype, vactionverboffsets, bAutotype);
 
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
-      PWSclipboard::GetInstance()->SetData(sx_pswd);
+      Clipboard::GetInstance()->SetData(sx_pswd);
       UpdateLastClipboardAction(CItemData::FieldType::PASSWORD);
     }
 
@@ -901,7 +901,7 @@ void PasswordSafeFrame::DoRun(CItemData& item)
 
   // FR856 - Copy Password to Clipboard on Run-Command When copy-on-browse set.
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
-    PWSclipboard::GetInstance()->SetData(password);
+    Clipboard::GetInstance()->SetData(password);
     UpdateLastClipboardAction(CItemData::FieldType::PASSWORD);
   }
 

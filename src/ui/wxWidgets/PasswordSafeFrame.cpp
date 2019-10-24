@@ -1596,7 +1596,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
     }
 
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnExit)) {
-      PWSclipboard::GetInstance()->ClearCBData();
+      Clipboard::GetInstance()->ClearCBData();
     }
 
     // Don't leave dangling locks!
@@ -1616,7 +1616,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
     const bool lockOnMinimize = PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear);
 
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnExit)) {
-      PWSclipboard::GetInstance()->ClearCBData();
+      Clipboard::GetInstance()->ClearCBData();
     }
 #if wxCHECK_VERSION(2,9,5)
     CallAfter(&PasswordSafeFrame::HideUI, lockOnMinimize);
@@ -2625,7 +2625,7 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
       LockDb();
 #endif
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
-        PWSclipboard::GetInstance()->ClearCBData();
+        Clipboard::GetInstance()->ClearCBData();
       }
     }
     else {
@@ -2663,7 +2663,7 @@ void PasswordSafeFrame::HideUI(bool lock)
 
   // As HideUI doesn't produce iconize event we need to process clear clipboard options
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
-    PWSclipboard::GetInstance()->ClearCBData();
+    Clipboard::GetInstance()->ClearCBData();
   }
 
   m_guiInfo->Save(this);

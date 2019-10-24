@@ -197,7 +197,7 @@ PwsafeApp::~PwsafeApp()
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
   PWSLog::DeleteLog();
-  PWSclipboard::DeleteInstance();
+  Clipboard::DeleteInstance();
 
   delete m_locale;
 }
@@ -413,7 +413,7 @@ bool PwsafeApp::OnInit()
   }
 
 #if defined(__X__) || defined(__WXGTK__)
-  PWSclipboard::GetInstance()->UsePrimarySelection(prefs->GetPref(PWSprefs::UsePrimarySelectionForClipboard));
+  Clipboard::GetInstance()->UsePrimarySelection(prefs->GetPref(PWSprefs::UsePrimarySelectionForClipboard));
 #endif
 
   // here if we're the child

@@ -77,5 +77,5 @@ void CViewReport::OnClose(wxCommandEvent& evt)
 void CViewReport::OnCopy(wxCommandEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
-  PWSclipboard::GetInstance()->SetData(m_pRpt->GetString());
+  Clipboard::GetInstance()->SetData(m_pRpt->GetString());
 }

@@ -280,7 +280,7 @@ void CPasswordSubset::OnBitmapbuttonClick( wxCommandEvent& event )
     wxASSERT(val_str.length() % 2 == 0);
     for (size_t i = 0; i < val_str.length(); i += 2)
       reduced_str += val_str[i];
-    PWSclipboard::GetInstance()->SetData(static_cast<const wchar_t*>(reduced_str.wc_str()));
+    Clipboard::GetInstance()->SetData(static_cast<const wchar_t*>(reduced_str.wc_str()));
   }
 }
 
