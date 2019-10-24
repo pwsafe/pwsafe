@@ -3304,7 +3304,7 @@ void PasswordSafeFrame::DoExportText()
     return;
   }
 
-  CExportTextWarningDlg<ExportType> et(this);
+  ExportTextWarningDlg<ExportType> et(this);
   if (et.ShowModal() != wxID_OK)
     return;
 
