@@ -27,7 +27,7 @@ DLG_HELP(AdvancedSelectionDlg<ExportFullText>,          html/export.html#text)
 DLG_HELP(AdvancedSelectionDlg<FindDlgType>,             html/searching.html)
 
 //The help for Manage Password Policies dialog
-DLG_HELP(CManagePasswordPolicies,                       html/named_password_policies.html)
+DLG_HELP(ManagePasswordPoliciesDlg,                     html/named_password_policies.html)
 
 //
 //for property sheet help, note that the second parameter is a locale-specific string

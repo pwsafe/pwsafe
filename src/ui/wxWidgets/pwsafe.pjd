@@ -28276,7 +28276,7 @@ to the base entry "</string>
           <string name="proxy-Background colour">""</string>
           <string name="proxy-Base class">"wxDialog"</string>
           <bool name="proxy-Centre">1</bool>
-          <string name="proxy-Class">"CManagePasswordPolicies"</string>
+          <string name="proxy-Class">"ManagePasswordPoliciesDlg"</string>
           <string name="proxy-Custom styles">""</string>
           <string name="proxy-Data class header filename">""</string>
           <string name="proxy-Data class implementation filename">""</string>
@@ -28294,7 +28294,7 @@ to the base entry "</string>
           <string name="proxy-Help text">""</string>
           <bool name="proxy-Hidden">0</bool>
           <string name="proxy-Icon">""</string>
-          <string name="proxy-Id name">"ID_CMANAGEPASSWORDPOLICIES"</string>
+          <string name="proxy-Id name">"ID_MANAGEPASSWORDPOLICIESDLG"</string>
           <long name="proxy-Id value">10216</long>
           <string name="proxy-Implementation filename">"ManagePasswordPoliciesDlg.cpp"</string>
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
@@ -28463,7 +28463,7 @@ to the base entry "</string>
               <string name="type">"dialog-control-document"</string>
               <document>
                 <string name="proxy-type">"wbGridProxy"</string>
-                <string name="event-handler-0">"wxEVT_GRID_SELECT_CELL|OnSelectCell|NONE||CManagePasswordPolicies"</string>
+                <string name="event-handler-0">"wxEVT_GRID_SELECT_CELL|OnSelectCell|NONE||ManagePasswordPoliciesDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"grid"</string>
                 <long name="is-transient">0</long>
@@ -28595,7 +28595,7 @@ to the base entry "</string>
                   <string name="type">"dialog-control-document"</string>
                   <document>
                     <string name="proxy-type">"wbButtonProxy"</string>
-                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnNewClick|NONE||CManagePasswordPolicies"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnNewClick|NONE||ManagePasswordPoliciesDlg"</string>
                     <string name="filename">""</string>
                     <string name="icon-name">"dialogcontrol"</string>
                     <long name="is-transient">0</long>
@@ -28662,7 +28662,7 @@ to the base entry "</string>
                   </document>
                   <document>
                     <string name="proxy-type">"wbButtonProxy"</string>
-                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnEditPpClick|NONE||CManagePasswordPolicies"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnEditPpClick|NONE||ManagePasswordPoliciesDlg"</string>
                     <string name="filename">""</string>
                     <string name="icon-name">"dialogcontrol"</string>
                     <long name="is-transient">0</long>
@@ -28729,7 +28729,7 @@ to the base entry "</string>
                   </document>
                   <document>
                     <string name="proxy-type">"wbButtonProxy"</string>
-                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnDeleteClick|NONE||CManagePasswordPolicies"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnDeleteClick|NONE||ManagePasswordPoliciesDlg"</string>
                     <string name="filename">""</string>
                     <string name="icon-name">"dialogcontrol"</string>
                     <long name="is-transient">0</long>
@@ -28796,7 +28796,7 @@ to the base entry "</string>
                   </document>
                   <document>
                     <string name="proxy-type">"wbButtonProxy"</string>
-                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnListClick|NONE||CManagePasswordPolicies"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnListClick|NONE||ManagePasswordPoliciesDlg"</string>
                     <string name="filename">""</string>
                     <string name="icon-name">"dialogcontrol"</string>
                     <long name="is-transient">0</long>
@@ -28863,7 +28863,7 @@ to the base entry "</string>
                   </document>
                   <document>
                     <string name="proxy-type">"wbButtonProxy"</string>
-                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnUndoClick|NONE||CManagePasswordPolicies"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnUndoClick|NONE||ManagePasswordPoliciesDlg"</string>
                     <string name="filename">""</string>
                     <string name="icon-name">"dialogcontrol"</string>
                     <long name="is-transient">0</long>
@@ -28930,7 +28930,7 @@ to the base entry "</string>
                   </document>
                   <document>
                     <string name="proxy-type">"wbButtonProxy"</string>
-                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnRedoClick|NONE||CManagePasswordPolicies"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnRedoClick|NONE||ManagePasswordPoliciesDlg"</string>
                     <string name="filename">""</string>
                     <string name="icon-name">"dialogcontrol"</string>
                     <long name="is-transient">0</long>
@@ -29033,7 +29033,7 @@ to the base entry "</string>
                   <string name="type">"dialog-control-document"</string>
                   <document>
                     <string name="proxy-type">"wbButtonProxy"</string>
-                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnGeneratePasswordClick|NONE||CManagePasswordPolicies"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnGeneratePasswordClick|NONE||ManagePasswordPoliciesDlg"</string>
                     <string name="filename">""</string>
                     <string name="icon-name">"dialogcontrol"</string>
                     <long name="is-transient">0</long>
@@ -29208,7 +29208,7 @@ to the base entry "</string>
                     </document>
                     <document>
                       <string name="proxy-type">"wbBitmapButtonProxy"</string>
-                      <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCopyPasswordClick|NONE||CManagePasswordPolicies"</string>
+                      <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCopyPasswordClick|NONE||ManagePasswordPoliciesDlg"</string>
                       <string name="filename">""</string>
                       <string name="icon-name">"bitmapbutton"</string>
                       <long name="is-transient">0</long>
@@ -29568,7 +29568,7 @@ to the base entry "</string>
               <string name="type">"dialog-control-document"</string>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOkClick|NONE||CManagePasswordPolicies"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOkClick|NONE||ManagePasswordPoliciesDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>
@@ -29635,7 +29635,7 @@ to the base entry "</string>
               </document>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCancelClick|NONE||CManagePasswordPolicies"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCancelClick|NONE||ManagePasswordPoliciesDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>
@@ -29702,7 +29702,7 @@ to the base entry "</string>
               </document>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnHelpClick|NONE||CManagePasswordPolicies"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnHelpClick|NONE||ManagePasswordPoliciesDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>

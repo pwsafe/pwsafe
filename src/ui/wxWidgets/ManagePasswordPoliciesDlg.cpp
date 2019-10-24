@@ -9,6 +9,7 @@
 /** \file ManagePasswordPoliciesDlg.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -35,55 +36,55 @@
 ////@end XPM images
 
 /*!
- * CManagePasswordPolicies type definition
+ * ManagePasswordPoliciesDlg type definition
  */
 
-IMPLEMENT_CLASS( CManagePasswordPolicies, wxDialog )
+IMPLEMENT_CLASS( ManagePasswordPoliciesDlg, wxDialog )
 
 /*!
- * CManagePasswordPolicies event table definition
+ * ManagePasswordPoliciesDlg event table definition
  */
 
-BEGIN_EVENT_TABLE( CManagePasswordPolicies, wxDialog )
+BEGIN_EVENT_TABLE( ManagePasswordPoliciesDlg, wxDialog )
 
-////@begin CManagePasswordPolicies event table entries
-  EVT_GRID_SELECT_CELL( CManagePasswordPolicies::OnSelectCell )
+////@begin ManagePasswordPoliciesDlg event table entries
+  EVT_GRID_SELECT_CELL( ManagePasswordPoliciesDlg::OnSelectCell )
 
-  EVT_BUTTON( wxID_NEW, CManagePasswordPolicies::OnNewClick )
+  EVT_BUTTON( wxID_NEW, ManagePasswordPoliciesDlg::OnNewClick )
 
-  EVT_BUTTON( ID_EDIT_PP, CManagePasswordPolicies::OnEditClick )
+  EVT_BUTTON( ID_EDIT_PP, ManagePasswordPoliciesDlg::OnEditClick )
 
-  EVT_BUTTON( wxID_DELETE, CManagePasswordPolicies::OnDeleteClick )
+  EVT_BUTTON( wxID_DELETE, ManagePasswordPoliciesDlg::OnDeleteClick )
 
-  EVT_BUTTON( ID_LIST, CManagePasswordPolicies::OnListClick )
+  EVT_BUTTON( ID_LIST, ManagePasswordPoliciesDlg::OnListClick )
 
-  EVT_BUTTON( wxID_UNDO, CManagePasswordPolicies::OnUndoClick )
+  EVT_BUTTON( wxID_UNDO, ManagePasswordPoliciesDlg::OnUndoClick )
 
-  EVT_BUTTON( wxID_REDO, CManagePasswordPolicies::OnRedoClick )
+  EVT_BUTTON( wxID_REDO, ManagePasswordPoliciesDlg::OnRedoClick )
 
-  EVT_BUTTON( ID_GENERATE_PASSWORD, CManagePasswordPolicies::OnGeneratePasswordClick )
+  EVT_BUTTON( ID_GENERATE_PASSWORD, ManagePasswordPoliciesDlg::OnGeneratePasswordClick )
 
-  EVT_BUTTON( ID_BITMAPBUTTON, CManagePasswordPolicies::OnCopyPasswordClick )
+  EVT_BUTTON( ID_BITMAPBUTTON, ManagePasswordPoliciesDlg::OnCopyPasswordClick )
 
-  EVT_BUTTON( wxID_OK, CManagePasswordPolicies::OnOkClick )
+  EVT_BUTTON( wxID_OK, ManagePasswordPoliciesDlg::OnOkClick )
 
-  EVT_BUTTON( wxID_CANCEL, CManagePasswordPolicies::OnCancelClick )
+  EVT_BUTTON( wxID_CANCEL, ManagePasswordPoliciesDlg::OnCancelClick )
 
-  EVT_BUTTON( wxID_HELP, CManagePasswordPolicies::OnHelpClick )
+  EVT_BUTTON( wxID_HELP, ManagePasswordPoliciesDlg::OnHelpClick )
 
-////@end CManagePasswordPolicies event table entries
+////@end ManagePasswordPoliciesDlg event table entries
 
-  EVT_SIZE( CManagePasswordPolicies::OnSize )
+  EVT_SIZE( ManagePasswordPoliciesDlg::OnSize )
 
-  EVT_MAXIMIZE( CManagePasswordPolicies::OnMaximize )
+  EVT_MAXIMIZE( ManagePasswordPoliciesDlg::OnMaximize )
 
 END_EVENT_TABLE()
 
 /*!
- * CManagePasswordPolicies constructor
+ * ManagePasswordPoliciesDlg constructor
  */
 
-CManagePasswordPolicies::CManagePasswordPolicies( wxWindow* parent,  PWScore &core, wxWindowID id,
+ManagePasswordPoliciesDlg::ManagePasswordPoliciesDlg( wxWindow* parent,  PWScore &core, wxWindowID id,
               const wxString& caption, const wxPoint& pos,
               const wxSize& size, long style )
 : m_core(core), m_curPolRow(-1),
@@ -96,12 +97,12 @@ CManagePasswordPolicies::CManagePasswordPolicies( wxWindow* parent,  PWScore &co
 }
 
 /*!
- * CManagePasswordPolicies creator
+ * ManagePasswordPoliciesDlg creator
  */
 
-bool CManagePasswordPolicies::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool ManagePasswordPoliciesDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin CManagePasswordPolicies creation
+////@begin ManagePasswordPoliciesDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -111,45 +112,45 @@ bool CManagePasswordPolicies::Create( wxWindow* parent, wxWindowID id, const wxS
     GetSizer()->SetSizeHints(this);
   }
   Centre();
-////@end CManagePasswordPolicies creation
+////@end ManagePasswordPoliciesDlg creation
   return true;
 }
 
 /*!
- * CManagePasswordPolicies destructor
+ * ManagePasswordPoliciesDlg destructor
  */
 
-CManagePasswordPolicies::~CManagePasswordPolicies()
+ManagePasswordPoliciesDlg::~ManagePasswordPoliciesDlg()
 {
-////@begin CManagePasswordPolicies destruction
-////@end CManagePasswordPolicies destruction
+////@begin ManagePasswordPoliciesDlg destruction
+////@end ManagePasswordPoliciesDlg destruction
 }
 
 /*!
  * Member initialisation
  */
 
-void CManagePasswordPolicies::Init()
+void ManagePasswordPoliciesDlg::Init()
 {
-////@begin CManagePasswordPolicies member initialisation
+////@begin ManagePasswordPoliciesDlg member initialisation
   m_PolicyNames = nullptr;
   m_passwordCtrl = nullptr;
   m_lowerTableDesc = nullptr;
   m_PolicyDetails = nullptr;
   m_PolicyEntries = nullptr;
-////@end CManagePasswordPolicies member initialisation
+////@end ManagePasswordPoliciesDlg member initialisation
 
   m_PolicyManager = std::unique_ptr<PolicyManager>(new PolicyManager(m_core));
 }
 
 /*!
- * Control creation for CManagePasswordPolicies
+ * Control creation for ManagePasswordPoliciesDlg
  */
 
-void CManagePasswordPolicies::CreateControls()
+void ManagePasswordPoliciesDlg::CreateControls()
 {
-////@begin CManagePasswordPolicies content construction
-  CManagePasswordPolicies* itemDialog1 = this;
+////@begin ManagePasswordPoliciesDlg content construction
+  ManagePasswordPoliciesDlg* itemDialog1 = this;
 
   auto *itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
@@ -210,7 +211,7 @@ void CManagePasswordPolicies::CreateControls()
   wxBitmapButton* itemBitmapButton18 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
   wxBitmap itemBitmapButton18BitmapDisabled(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword_disabled.xpm")));
   itemBitmapButton18->SetBitmapDisabled(itemBitmapButton18BitmapDisabled);
-  if (CManagePasswordPolicies::ShowToolTips())
+  if (ManagePasswordPoliciesDlg::ShowToolTips())
     itemBitmapButton18->SetToolTip(_("Copy Password to clipboard"));
   itemBoxSizer16->Add(itemBitmapButton18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -252,7 +253,7 @@ void CManagePasswordPolicies::CreateControls()
 
   itemStdDialogButtonSizer23->Realize();
 
-////@end CManagePasswordPolicies content construction
+////@end ManagePasswordPoliciesDlg content construction
 
   if (m_core.IsReadOnly()) {
     FindWindow(wxID_NEW)->Enable(false);
@@ -314,7 +315,7 @@ void CManagePasswordPolicies::CreateControls()
  * Should we show tooltips?
  */
 
-bool CManagePasswordPolicies::ShowToolTips()
+bool ManagePasswordPoliciesDlg::ShowToolTips()
 {
   return true;
 }
@@ -323,10 +324,10 @@ bool CManagePasswordPolicies::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap CManagePasswordPolicies::GetBitmapResource( const wxString& name )
+wxBitmap ManagePasswordPoliciesDlg::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
-////@begin CManagePasswordPolicies bitmap retrieval
+////@begin ManagePasswordPoliciesDlg bitmap retrieval
   if (name == _T("graphics/toolbar/new/copypassword.xpm"))
   {
     wxBitmap bitmap(copypassword_xpm);
@@ -338,22 +339,22 @@ wxBitmap CManagePasswordPolicies::GetBitmapResource( const wxString& name )
     return bitmap;
   }
   return wxNullBitmap;
-////@end CManagePasswordPolicies bitmap retrieval
+////@end ManagePasswordPoliciesDlg bitmap retrieval
 }
 
 /*!
  * Get icon resources
  */
 
-wxIcon CManagePasswordPolicies::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon ManagePasswordPoliciesDlg::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
-////@begin CManagePasswordPolicies icon retrieval
+////@begin ManagePasswordPoliciesDlg icon retrieval
   return wxNullIcon;
-////@end CManagePasswordPolicies icon retrieval
+////@end ManagePasswordPoliciesDlg icon retrieval
 }
 
-bool CManagePasswordPolicies::Show(bool show)
+bool ManagePasswordPoliciesDlg::Show(bool show)
 {
   if (m_bViewPolicy)
     ShowPolicyDetails();
@@ -362,7 +363,7 @@ bool CManagePasswordPolicies::Show(bool show)
   return wxDialog::Show(show);
 }
 
-void CManagePasswordPolicies::ShowPolicyDetails()
+void ManagePasswordPoliciesDlg::ShowPolicyDetails()
 {
   m_bViewPolicy = true;
   FindWindow(ID_LIST)->SetLabel(_("List"));
@@ -374,7 +375,7 @@ void CManagePasswordPolicies::ShowPolicyDetails()
   GetSizer()->Layout();
 }
 
-void CManagePasswordPolicies::ShowPolicyEntries()
+void ManagePasswordPoliciesDlg::ShowPolicyEntries()
 {
   m_bViewPolicy = false;
   FindWindow(ID_LIST)->SetLabel(_("Details"));
@@ -388,7 +389,7 @@ void CManagePasswordPolicies::ShowPolicyEntries()
   if (m_bShowPolicyEntriesInitially) {
     m_bShowPolicyEntriesInitially = false;
 
-    // All columns of policy entries shall get the same space (see also CManagePasswordPolicies::ResizeGridColumns)
+    // All columns of policy entries shall get the same space (see also ManagePasswordPoliciesDlg::ResizeGridColumns)
     int width = m_PolicyEntries->GetClientSize().GetWidth() - m_PolicyEntries->GetRowLabelSize() - m_ScrollbarWidth;
 
     if (width > 0) {
@@ -399,7 +400,7 @@ void CManagePasswordPolicies::ShowPolicyEntries()
   }
 }
 
-void CManagePasswordPolicies::UpdateNames()
+void ManagePasswordPoliciesDlg::UpdateNames()
 {
   int row = 0;
   const auto& policies      = m_PolicyManager->GetPolicies();
@@ -453,7 +454,7 @@ static void wxRowPutter(int row, const stringT &name, const stringT &value, void
   }
 }
 
-int CManagePasswordPolicies::GetSelectedRow() const
+int ManagePasswordPoliciesDlg::GetSelectedRow() const
 {
   wxArrayInt ai = m_PolicyNames->GetSelectedRows();
   if (!ai.IsEmpty())
@@ -469,7 +470,7 @@ int CManagePasswordPolicies::GetSelectedRow() const
  * If first row or no row selected, then fill in with the database default,
  * otherwise use the name entry.
  */
-PWPolicy CManagePasswordPolicies::GetSelectedPolicy() const
+PWPolicy ManagePasswordPoliciesDlg::GetSelectedPolicy() const
 {
   int row = GetSelectedRow();
 
@@ -484,7 +485,7 @@ PWPolicy CManagePasswordPolicies::GetSelectedPolicy() const
   return m_PolicyManager->GetDefaultPolicy();
 }
 
-void CManagePasswordPolicies::UpdateDetails()
+void ManagePasswordPoliciesDlg::UpdateDetails()
 {
   // Update details table to reflect selected policy, if any
   if (GetSelectedRow() < 0) {
@@ -497,7 +498,7 @@ void CManagePasswordPolicies::UpdateDetails()
   st_pp.Policy2Table(wxRowPutter, m_PolicyDetails);
 }
 
-void CManagePasswordPolicies::UpdateEntryList()
+void ManagePasswordPoliciesDlg::UpdateEntryList()
 {
   int row = GetSelectedRow();
 
@@ -528,7 +529,7 @@ void CManagePasswordPolicies::UpdateEntryList()
   }
 }
 
-void CManagePasswordPolicies::UpdateSelection(const wxString& policyname)
+void ManagePasswordPoliciesDlg::UpdateSelection(const wxString& policyname)
 {
   int rows = m_PolicyNames->GetNumberRows();
 
@@ -542,13 +543,13 @@ void CManagePasswordPolicies::UpdateSelection(const wxString& policyname)
   }
 }
 
-void CManagePasswordPolicies::UpdateUndoRedoButtons()
+void ManagePasswordPoliciesDlg::UpdateUndoRedoButtons()
 {
   FindWindow(wxID_UNDO)->Enable(m_PolicyManager->CanUndo());
   FindWindow(wxID_REDO)->Enable(m_PolicyManager->CanRedo());
 }
 
-void CManagePasswordPolicies::ResizeGridColumns()
+void ManagePasswordPoliciesDlg::ResizeGridColumns()
 {
   int width = 0;
 
@@ -592,7 +593,7 @@ void CManagePasswordPolicies::ResizeGridColumns()
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEW
  */
 
-void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
+void ManagePasswordPoliciesDlg::OnNewClick( wxCommandEvent& )
 {
   auto policies = m_PolicyManager->GetPolicies();
   auto policy   = m_PolicyManager->GetDefaultPolicy();
@@ -617,7 +618,7 @@ void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_EDIT
  */
 
-void CManagePasswordPolicies::OnEditClick( wxCommandEvent& )
+void ManagePasswordPoliciesDlg::OnEditClick( wxCommandEvent& )
 {
   int row = GetSelectedRow();
 
@@ -686,7 +687,7 @@ void CManagePasswordPolicies::OnEditClick( wxCommandEvent& )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_DELETE
  */
 
-void CManagePasswordPolicies::OnDeleteClick( wxCommandEvent& )
+void ManagePasswordPoliciesDlg::OnDeleteClick( wxCommandEvent& )
 {
   int row = GetSelectedRow();
 
@@ -705,7 +706,7 @@ void CManagePasswordPolicies::OnDeleteClick( wxCommandEvent& )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_LIST
  */
 
-void CManagePasswordPolicies::OnListClick( wxCommandEvent&  )
+void ManagePasswordPoliciesDlg::OnListClick( wxCommandEvent&  )
 {
   if (m_bViewPolicy)
     ShowPolicyEntries();
@@ -717,7 +718,7 @@ void CManagePasswordPolicies::OnListClick( wxCommandEvent&  )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_UNDO
  */
 
-void CManagePasswordPolicies::OnUndoClick( wxCommandEvent& )
+void ManagePasswordPoliciesDlg::OnUndoClick( wxCommandEvent& )
 {
   m_PolicyManager->Undo();
   UpdateUndoRedoButtons();
@@ -728,7 +729,7 @@ void CManagePasswordPolicies::OnUndoClick( wxCommandEvent& )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_REDO
  */
 
-void CManagePasswordPolicies::OnRedoClick( wxCommandEvent& )
+void ManagePasswordPoliciesDlg::OnRedoClick( wxCommandEvent& )
 {
   m_PolicyManager->Redo();
   UpdateUndoRedoButtons();
@@ -739,7 +740,7 @@ void CManagePasswordPolicies::OnRedoClick( wxCommandEvent& )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
+void ManagePasswordPoliciesDlg::OnOkClick( wxCommandEvent& )
 {
   /*
    * User may have changed default policy, named policy, none or both.
@@ -784,33 +785,33 @@ void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void CManagePasswordPolicies::OnCancelClick( wxCommandEvent& event )
+void ManagePasswordPoliciesDlg::OnCancelClick( wxCommandEvent& event )
 {
   m_bShowPolicyEntriesInitially = true;
 
-  ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CManagePasswordPolicies.
+  ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in ManagePasswordPoliciesDlg.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CManagePasswordPolicies.
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in ManagePasswordPoliciesDlg.
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
  */
 
-void CManagePasswordPolicies::OnHelpClick( wxCommandEvent& event )
+void ManagePasswordPoliciesDlg::OnHelpClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CManagePasswordPolicies.
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in ManagePasswordPoliciesDlg.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CManagePasswordPolicies.
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in ManagePasswordPoliciesDlg.
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GENERATE_PASSWORD
  */
 
-void CManagePasswordPolicies::OnGeneratePasswordClick( wxCommandEvent& event )
+void ManagePasswordPoliciesDlg::OnGeneratePasswordClick( wxCommandEvent& event )
 {
   UNREFERENCED_PARAMETER(event);
   PWPolicy st_pp = GetSelectedPolicy();
@@ -823,7 +824,7 @@ void CManagePasswordPolicies::OnGeneratePasswordClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON
  */
 
-void CManagePasswordPolicies::OnCopyPasswordClick( wxCommandEvent& )
+void ManagePasswordPoliciesDlg::OnCopyPasswordClick( wxCommandEvent& )
 {
   Clipboard::GetInstance()->SetData(tostringx(m_passwordCtrl->GetValue()));
 }
@@ -832,7 +833,7 @@ void CManagePasswordPolicies::OnCopyPasswordClick( wxCommandEvent& )
  * wxEVT_GRID_SELECT_CELL event handler for ID_POLICYLIST
  */
 
-void CManagePasswordPolicies::OnSelectCell( wxGridEvent& event )
+void ManagePasswordPoliciesDlg::OnSelectCell( wxGridEvent& event )
 {
   if (event.GetEventObject() == m_PolicyNames) {
 
@@ -893,7 +894,7 @@ void CManagePasswordPolicies::OnSelectCell( wxGridEvent& event )
  * @param event holds information about size change events.
  * @see <a href="http://docs.wxwidgets.org/3.0/classwx_size_event.html">wxSizeEvent Class Reference</a>
  */
-void CManagePasswordPolicies::OnSize(wxSizeEvent& event)
+void ManagePasswordPoliciesDlg::OnSize(wxSizeEvent& event)
 {
   ResizeGridColumns();
 
@@ -906,9 +907,9 @@ void CManagePasswordPolicies::OnSize(wxSizeEvent& event)
  * @param event holds information about size change events.
  * @see <a href="http://docs.wxwidgets.org/3.0/classwx_maximize_event.html">wxMaximizeEvent Class Reference</a>
  */
-void CManagePasswordPolicies::OnMaximize(wxMaximizeEvent& event)
+void ManagePasswordPoliciesDlg::OnMaximize(wxMaximizeEvent& event)
 {
-  CallAfter(&CManagePasswordPolicies::ResizeGridColumns); // delayed execution of resizing, until dialog is completely layout
+  CallAfter(&ManagePasswordPoliciesDlg::ResizeGridColumns); // delayed execution of resizing, until dialog is completely layout
 
   event.Skip();
 }
