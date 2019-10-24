@@ -340,10 +340,10 @@ bool PwsafeApp::OnInit()
   // Process encryption/decryption command line arguments
   if ((cmd_encrypt || cmd_decrypt) && !filename.IsEmpty()) {
 
-    auto processCryption = [&](CryptKeyEntry::Mode mode, std::function<bool(const stringT &fn, const StringX &passwd, stringT &errmess)> func) {
+    auto processCryption = [&](CryptKeyEntryDlg::Mode mode, std::function<bool(const stringT &fn, const StringX &passwd, stringT &errmess)> func) {
       stringT errstr;
 
-      CryptKeyEntry dialog(mode);
+      CryptKeyEntryDlg dialog(mode);
 
       if (dialog.ShowModal() == wxID_OK) {
         if (!func(filename.wc_str(), dialog.getCryptKey(), errstr)) {
@@ -357,13 +357,13 @@ bool PwsafeApp::OnInit()
 
     if (cmd_encrypt) {
       processCryption(
-        CryptKeyEntry::Mode::ENCRYPT,
+        CryptKeyEntryDlg::Mode::ENCRYPT,
         PWSfile::Encrypt
       );
     }
     else {
       processCryption(
-        CryptKeyEntry::Mode::DECRYPT,
+        CryptKeyEntryDlg::Mode::DECRYPT,
         PWSfile::Decrypt
       );
     }
