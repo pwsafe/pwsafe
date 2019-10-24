@@ -75,8 +75,8 @@ void PasswordSafeFrame::DoEdit(CItemData item)
   int rc = 0;
   if (!item.IsShortcut()) {
     bool read_only = m_core.IsReadOnly() || item.IsProtected();
-    AddEditPropSheet editDbox(this, m_core,
-                              read_only ? AddEditPropSheet::SheetType::VIEW : AddEditPropSheet::SheetType::EDIT,
+    AddEditPropSheetDlg editDbox(this, m_core,
+                              read_only ? AddEditPropSheetDlg::SheetType::VIEW : AddEditPropSheetDlg::SheetType::EDIT,
                               &item);
     rc = editDbox.ShowModal();
   } else {
@@ -91,7 +91,7 @@ void PasswordSafeFrame::DoEdit(CItemData item)
     auto iter = m_core.Find(uuid);
     if ( iter != m_core.GetEntryEndIter()) {
       CItemData& origItem = m_core.GetEntry(iter);
-      //The Item is updated in DB by AddEditPropSheet
+      //The Item is updated in DB by AddEditPropSheetDlg
       UpdateAccessTime(origItem);
       UpdateSelChanged(&origItem);
       UpdateStatusBar();
@@ -114,7 +114,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
     selectedGroup = m_tree->GetItemGroup(selection);
   }
 
-  AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::SheetType::ADD, nullptr, selectedGroup);
+  AddEditPropSheetDlg addDbox(this, m_core, AddEditPropSheetDlg::SheetType::ADD, nullptr, selectedGroup);
   if (addDbox.ShowModal() == wxID_OK) {
     const CItemData &item = addDbox.GetItem();
     m_core.Execute(AddEntryCommand::Create(&m_core, item, item.GetBaseUUID()));

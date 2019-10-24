@@ -9,6 +9,7 @@
 /** \file AddEditPropSheetDlg.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -45,81 +46,81 @@
 ////@end XPM images
 
 /*!
- * AddEditPropSheet type definition
+ * AddEditPropSheetDlg type definition
  */
 
-IMPLEMENT_CLASS( AddEditPropSheet, wxPropertySheetDialog )
+IMPLEMENT_CLASS( AddEditPropSheetDlg, wxPropertySheetDialog )
 
 /*!
- * AddEditPropSheet event table definition
+ * AddEditPropSheetDlg event table definition
  */
 
-BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
+BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
 
-  EVT_BUTTON(       wxID_OK,                 AddEditPropSheet::OnOk                      )
-////@begin AddEditPropSheet event table entries
-  EVT_BUTTON(       ID_BUTTON2,              AddEditPropSheet::OnShowHideClick           )
-  EVT_BUTTON(       ID_BUTTON_GENERATE,      AddEditPropSheet::OnGenerateButtonClick     )
-  EVT_BUTTON(       ID_GO_BTN,               AddEditPropSheet::OnGoButtonClick           )
-  EVT_BUTTON(       ID_SEND_BTN,             AddEditPropSheet::OnSendButtonClick         )
-  EVT_CHECKBOX(     ID_CHECKBOX_KEEP,        AddEditPropSheet::OnKeepHistoryClick        )
-  EVT_RADIOBUTTON(  ID_RADIOBUTTON_ON,       AddEditPropSheet::OnExpRadiobuttonSelected  )
-  EVT_DATE_CHANGED( ID_DATECTRL_EXP_DATE,    AddEditPropSheet::OnExpDateChanged          )
-  EVT_RADIOBUTTON(  ID_RADIOBUTTON_IN,       AddEditPropSheet::OnExpRadiobuttonSelected  )
-  EVT_SPINCTRL(     ID_SPINCTRL_EXP_TIME,    AddEditPropSheet::OnExpIntervalChanged      )
-  EVT_RADIOBUTTON(  ID_RADIOBUTTON_NEVER,    AddEditPropSheet::OnExpRadiobuttonSelected  )
-  EVT_COMBOBOX(     ID_POLICYLIST,           AddEditPropSheet::OnPolicylistSelected      )
-  EVT_CHECKBOX(     ID_CHECKBOX42,           AddEditPropSheet::OnPasswordPolicySelected  )
-  EVT_CHECKBOX(     ID_CHECKBOX3,            AddEditPropSheet::OnLowercaseCB             )
-  EVT_CHECKBOX(     ID_CHECKBOX4,            AddEditPropSheet::OnUppercaseCB             )
-  EVT_CHECKBOX(     ID_CHECKBOX5,            AddEditPropSheet::OnDigitsCB                )
-  EVT_CHECKBOX(     ID_CHECKBOX6,            AddEditPropSheet::OnSymbolsCB               )
-  EVT_BUTTON(       ID_RESET_SYMBOLS,        AddEditPropSheet::OnResetSymbolsClick       )
-  EVT_CHECKBOX(     ID_CHECKBOX7,            AddEditPropSheet::OnEZreadCBClick           )
-  EVT_CHECKBOX(     ID_CHECKBOX8,            AddEditPropSheet::OnPronouceableCBClick     )
-  EVT_CHECKBOX(     ID_CHECKBOX9,            AddEditPropSheet::OnUseHexCBClick           )
-////@end AddEditPropSheet event table entries
-  EVT_SPINCTRL(     ID_SPINCTRL5,            AddEditPropSheet::OnAtLeastPasswordChars    )
-  EVT_SPINCTRL(     ID_SPINCTRL6,            AddEditPropSheet::OnAtLeastPasswordChars    )
-  EVT_SPINCTRL(     ID_SPINCTRL7,            AddEditPropSheet::OnAtLeastPasswordChars    )
-  EVT_SPINCTRL(     ID_SPINCTRL8,            AddEditPropSheet::OnAtLeastPasswordChars    )
+  EVT_BUTTON(       wxID_OK,                 AddEditPropSheetDlg::OnOk                      )
+////@begin AddEditPropSheetDlg event table entries
+  EVT_BUTTON(       ID_BUTTON2,              AddEditPropSheetDlg::OnShowHideClick           )
+  EVT_BUTTON(       ID_BUTTON_GENERATE,      AddEditPropSheetDlg::OnGenerateButtonClick     )
+  EVT_BUTTON(       ID_GO_BTN,               AddEditPropSheetDlg::OnGoButtonClick           )
+  EVT_BUTTON(       ID_SEND_BTN,             AddEditPropSheetDlg::OnSendButtonClick         )
+  EVT_CHECKBOX(     ID_CHECKBOX_KEEP,        AddEditPropSheetDlg::OnKeepHistoryClick        )
+  EVT_RADIOBUTTON(  ID_RADIOBUTTON_ON,       AddEditPropSheetDlg::OnExpRadiobuttonSelected  )
+  EVT_DATE_CHANGED( ID_DATECTRL_EXP_DATE,    AddEditPropSheetDlg::OnExpDateChanged          )
+  EVT_RADIOBUTTON(  ID_RADIOBUTTON_IN,       AddEditPropSheetDlg::OnExpRadiobuttonSelected  )
+  EVT_SPINCTRL(     ID_SPINCTRL_EXP_TIME,    AddEditPropSheetDlg::OnExpIntervalChanged      )
+  EVT_RADIOBUTTON(  ID_RADIOBUTTON_NEVER,    AddEditPropSheetDlg::OnExpRadiobuttonSelected  )
+  EVT_COMBOBOX(     ID_POLICYLIST,           AddEditPropSheetDlg::OnPolicylistSelected      )
+  EVT_CHECKBOX(     ID_CHECKBOX42,           AddEditPropSheetDlg::OnPasswordPolicySelected  )
+  EVT_CHECKBOX(     ID_CHECKBOX3,            AddEditPropSheetDlg::OnLowercaseCB             )
+  EVT_CHECKBOX(     ID_CHECKBOX4,            AddEditPropSheetDlg::OnUppercaseCB             )
+  EVT_CHECKBOX(     ID_CHECKBOX5,            AddEditPropSheetDlg::OnDigitsCB                )
+  EVT_CHECKBOX(     ID_CHECKBOX6,            AddEditPropSheetDlg::OnSymbolsCB               )
+  EVT_BUTTON(       ID_RESET_SYMBOLS,        AddEditPropSheetDlg::OnResetSymbolsClick       )
+  EVT_CHECKBOX(     ID_CHECKBOX7,            AddEditPropSheetDlg::OnEZreadCBClick           )
+  EVT_CHECKBOX(     ID_CHECKBOX8,            AddEditPropSheetDlg::OnPronouceableCBClick     )
+  EVT_CHECKBOX(     ID_CHECKBOX9,            AddEditPropSheetDlg::OnUseHexCBClick           )
+////@end AddEditPropSheetDlg event table entries
+  EVT_SPINCTRL(     ID_SPINCTRL5,            AddEditPropSheetDlg::OnAtLeastPasswordChars    )
+  EVT_SPINCTRL(     ID_SPINCTRL6,            AddEditPropSheetDlg::OnAtLeastPasswordChars    )
+  EVT_SPINCTRL(     ID_SPINCTRL7,            AddEditPropSheetDlg::OnAtLeastPasswordChars    )
+  EVT_SPINCTRL(     ID_SPINCTRL8,            AddEditPropSheetDlg::OnAtLeastPasswordChars    )
 
-  EVT_BUTTON(       ID_BUTTON_CLEAR_HIST,    AddEditPropSheet::OnClearPWHist             )
+  EVT_BUTTON(       ID_BUTTON_CLEAR_HIST,    AddEditPropSheetDlg::OnClearPWHist             )
 
-  EVT_UPDATE_UI(    ID_COMBOBOX_GROUP,       AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_BUTTON_GENERATE,      AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL_TITLE,       AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL_USERNAME,    AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL_PASSWORD,    AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL_PASSWORD2,   AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL_URL,         AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL_EMAIL,       AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL_NOTES,       AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_COMBOBOX_GROUP,       AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_BUTTON_GENERATE,      AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_TITLE,       AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_USERNAME,    AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_PASSWORD,    AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_PASSWORD2,   AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_URL,         AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_EMAIL,       AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_NOTES,       AddEditPropSheetDlg::OnUpdateUI                )
 
-  EVT_UPDATE_UI(    ID_TEXTCTRL_AUTOTYPE,    AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_TEXTCTRL_RUN_CMD,     AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_COMBOBOX_DBC_ACTION,  AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_COMBOBOX_SDBC_ACTION, AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_CHECKBOX_KEEP,        AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_SPINCTRL_MAX_PW_HIST, AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_GRID_PW_HIST,         AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_BUTTON_CLEAR_HIST,    AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_BUTTON_COPY_ALL,      AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_AUTOTYPE,    AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_TEXTCTRL_RUN_CMD,     AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_COMBOBOX_DBC_ACTION,  AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_COMBOBOX_SDBC_ACTION, AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_CHECKBOX_KEEP,        AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_SPINCTRL_MAX_PW_HIST, AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_GRID_PW_HIST,         AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_BUTTON_CLEAR_HIST,    AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_BUTTON_COPY_ALL,      AddEditPropSheetDlg::OnUpdateUI                )
 
-  EVT_UPDATE_UI(    ID_RADIOBUTTON_ON,       AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_DATECTRL_EXP_DATE,    AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_RADIOBUTTON_IN,       AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_SPINCTRL_EXP_TIME,    AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_STATICTEXT_DAYS,      AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_CHECKBOX_RECURRING,   AddEditPropSheet::OnUpdateUI                )
-  EVT_UPDATE_UI(    ID_RADIOBUTTON_NEVER,    AddEditPropSheet::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_RADIOBUTTON_ON,       AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_DATECTRL_EXP_DATE,    AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_RADIOBUTTON_IN,       AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_SPINCTRL_EXP_TIME,    AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_STATICTEXT_DAYS,      AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_CHECKBOX_RECURRING,   AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_RADIOBUTTON_NEVER,    AddEditPropSheetDlg::OnUpdateUI                )
 END_EVENT_TABLE()
 
 /*!
- * AddEditPropSheet constructors
+ * AddEditPropSheetDlg constructors
  */
 
-AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
+AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow* parent, PWScore &core,
                                    SheetType type, const CItemData *item,
                                    const wxString& selectedGroup,
                                    wxWindowID id, const wxString& caption,
@@ -133,16 +134,16 @@ AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
     m_item.CreateUUID(); // We're adding a new entry
   Init();
   wxString dlgTitle;
-  if (caption == SYMBOL_AUTOPROPSHEET_TITLE) {
+  if (caption == SYMBOL_AUTOPROPSHEETDLG_TITLE) {
     switch(m_type) {
       case SheetType::ADD:
-        dlgTitle = SYMBOL_ADDPROPSHEET_TITLE;
+        dlgTitle = SYMBOL_ADDPROPSHEETDLG_TITLE;
         break;
       case SheetType::EDIT:
-        dlgTitle = SYMBOL_EDITPROPSHEET_TITLE;
+        dlgTitle = SYMBOL_EDITPROPSHEETDLG_TITLE;
         break;
       case SheetType::VIEW:
-        dlgTitle = SYMBOL_VIEWPROPSHEET_TITLE;
+        dlgTitle = SYMBOL_VIEWPROPSHEETDLG_TITLE;
         break;
       default:
         dlgTitle = caption;
@@ -153,12 +154,12 @@ AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
 }
 
 /*!
- * AddEditPropSheet creator
+ * AddEditPropSheetDlg creator
  */
 
-bool AddEditPropSheet::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool AddEditPropSheetDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin AddEditPropSheet creation
+////@begin AddEditPropSheetDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
 
@@ -166,7 +167,7 @@ bool AddEditPropSheet::Create( wxWindow* parent, wxWindowID id, const wxString& 
   CreateButtons(flags);
   CreateControls();
   Centre();
-////@end AddEditPropSheet creation
+////@end AddEditPropSheetDlg creation
   ItemFieldsToPropSheet();
   LayoutDialog();
 
@@ -177,22 +178,22 @@ bool AddEditPropSheet::Create( wxWindow* parent, wxWindowID id, const wxString& 
 }
 
 /*!
- * AddEditPropSheet destructor
+ * AddEditPropSheetDlg destructor
  */
 
-AddEditPropSheet::~AddEditPropSheet()
+AddEditPropSheetDlg::~AddEditPropSheetDlg()
 {
-////@begin AddEditPropSheet destruction
-////@end AddEditPropSheet destruction
+////@begin AddEditPropSheetDlg destruction
+////@end AddEditPropSheetDlg destruction
 }
 
 /*!
  * Member initialisation
  */
 
-void AddEditPropSheet::Init()
+void AddEditPropSheetDlg::Init()
 {
-////@begin AddEditPropSheet member initialisation
+////@begin AddEditPropSheetDlg member initialisation
   m_XTimeInt = 0;
   m_isNotesHidden = !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault);
   m_BasicPanel = nullptr;
@@ -235,7 +236,7 @@ void AddEditPropSheet::Init()
   m_pwpEasyCtrl = nullptr;
   m_pwpPronounceCtrl = nullptr;
   m_pwpHexCtrl = nullptr;
-////@end AddEditPropSheet member initialisation
+////@end AddEditPropSheetDlg member initialisation
 }
 
 #if 0
@@ -288,12 +289,12 @@ static void setupDCAStrings(wxArrayString &as)
 }
 
 /*!
- * Control creation for AddEditPropSheet
+ * Control creation for AddEditPropSheetDlg
  */
 
-void AddEditPropSheet::CreateControls()
+void AddEditPropSheetDlg::CreateControls()
 {
-////@begin AddEditPropSheet content construction
+////@begin AddEditPropSheetDlg content construction
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Basic"
@@ -744,9 +745,9 @@ void AddEditPropSheet::CreateControls()
   itemStaticText86->SetValidator( wxGenericValidator(& m_RMTime) );
   m_ownsymbols->SetValidator( wxGenericValidator(& m_symbols) );
   // Connect events and objects
-  m_noteTX->Connect(ID_TEXTCTRL_NOTES, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnNoteSetFocus), nullptr, this);
-  m_ownsymbols->Connect(IDC_OWNSYMBOLS, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnOwnSymSetFocus), nullptr, this);
-////@end AddEditPropSheet content construction
+  m_noteTX->Connect(ID_TEXTCTRL_NOTES, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheetDlg::OnNoteSetFocus), nullptr, this);
+  m_ownsymbols->Connect(IDC_OWNSYMBOLS, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheetDlg::OnOwnSymSetFocus), nullptr, this);
+////@end AddEditPropSheetDlg content construction
 
   // Non-DialogBlock initializations:
   m_PWHgrid->SetColLabelValue(0, _("Set Date/Time"));
@@ -763,7 +764,7 @@ void AddEditPropSheet::CreateControls()
  * Should we show tooltips?
  */
 
-bool AddEditPropSheet::ShowToolTips()
+bool AddEditPropSheetDlg::ShowToolTips()
 {
   return true;
 }
@@ -772,24 +773,24 @@ bool AddEditPropSheet::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap AddEditPropSheet::GetBitmapResource( const wxString& WXUNUSED(name) )
+wxBitmap AddEditPropSheetDlg::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
   // Bitmap retrieval
-////@begin AddEditPropSheet bitmap retrieval
+////@begin AddEditPropSheetDlg bitmap retrieval
   return wxNullBitmap;
-////@end AddEditPropSheet bitmap retrieval
+////@end AddEditPropSheetDlg bitmap retrieval
 }
 
 /*!
  * Get icon resources
  */
 
-wxIcon AddEditPropSheet::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon AddEditPropSheetDlg::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
-////@begin AddEditPropSheet icon retrieval
+////@begin AddEditPropSheetDlg icon retrieval
   return wxNullIcon;
-////@end AddEditPropSheet icon retrieval
+////@end AddEditPropSheetDlg icon retrieval
 }
 
 static void EnableSizerChildren(wxSizer *sizer, bool enable)
@@ -808,7 +809,7 @@ static void EnableSizerChildren(wxSizer *sizer, bool enable)
   }
 }
 
-void AddEditPropSheet::UpdatePWPolicyControls(const PWPolicy& pwp)
+void AddEditPropSheetDlg::UpdatePWPolicyControls(const PWPolicy& pwp)
 {
   bool bUseVal; // keep picky compiler happy, code readable
 
@@ -849,7 +850,7 @@ void AddEditPropSheet::UpdatePWPolicyControls(const PWPolicy& pwp)
   }
 }
 
-void AddEditPropSheet::EnablePWPolicyControls(bool enable)
+void AddEditPropSheetDlg::EnablePWPolicyControls(bool enable)
 {
   m_cbxPolicyNames->Enable(!enable);
   m_pwpLenCtrl->Enable(enable);
@@ -873,7 +874,7 @@ struct newer {
   }
 };
 
-void AddEditPropSheet::SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift)
+void AddEditPropSheetDlg::SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift)
 {
 static struct {short pv; wxString name;}
  dcaMapping[] =
@@ -917,7 +918,7 @@ static struct {short pv; wxString name;}
   }
 }
 
-void AddEditPropSheet::UpdateExpTimes()
+void AddEditPropSheetDlg::UpdateExpTimes()
 {
   // From m_item to display
 
@@ -965,7 +966,7 @@ void AddEditPropSheet::UpdateExpTimes()
   OnExpRadiobuttonSelected(dummy); // setup enable/disable of expiry-related controls
 }
 
-void AddEditPropSheet::ItemFieldsToPropSheet()
+void AddEditPropSheetDlg::ItemFieldsToPropSheet()
 {
   std::vector<stringT> svec;
   std::vector<stringT>::iterator sviter;
@@ -1134,7 +1135,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN
  */
 
-void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& /* evt */ )
+void AddEditPropSheetDlg::OnGoButtonClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow() && !m_url.IsEmpty())
     ::wxLaunchDefaultBrowser(m_url, wxBROWSER_NEW_WINDOW);
@@ -1144,7 +1145,7 @@ void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_GENERATE
  */
 
-void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
+void AddEditPropSheetDlg::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     PWPolicy pwp = GetSelectedPWPolicy();
@@ -1168,7 +1169,7 @@ void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
  */
 
-void AddEditPropSheet::OnShowHideClick( wxCommandEvent& /* evt */ )
+void AddEditPropSheetDlg::OnShowHideClick( wxCommandEvent& /* evt */ )
 {
   m_password = m_PasswordCtrl->GetValue().c_str(); // save visible password
   if (m_isPWHidden) {
@@ -1178,7 +1179,7 @@ void AddEditPropSheet::OnShowHideClick( wxCommandEvent& /* evt */ )
   }
 }
 
-void AddEditPropSheet::ShowPassword()
+void AddEditPropSheetDlg::ShowPassword()
 {
   m_isPWHidden = false;
   m_ShowHideCtrl->SetLabel(_("&Hide"));
@@ -1206,7 +1207,7 @@ void AddEditPropSheet::ShowPassword()
   m_Password2Ctrl->Enable(false);
 }
 
-void AddEditPropSheet::HidePassword()
+void AddEditPropSheetDlg::HidePassword()
 {
   m_isPWHidden = true;
   m_ShowHideCtrl->SetLabel(_("&Show"));
@@ -1248,7 +1249,7 @@ static short GetSelectedDCA(const wxComboBox *pcbox,
   }
 }
 
-void AddEditPropSheet::OnOk(wxCommandEvent& WXUNUSED(evt))
+void AddEditPropSheetDlg::OnOk(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     time_t t;
@@ -1596,7 +1597,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& WXUNUSED(evt))
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX_KEEP
  */
 
-void AddEditPropSheet::OnKeepHistoryClick(wxCommandEvent &)
+void AddEditPropSheetDlg::OnKeepHistoryClick(wxCommandEvent &)
 {
    if (Validate() && TransferDataFromWindow()) {
      // disable spinbox if checkbox is false
@@ -1605,7 +1606,7 @@ void AddEditPropSheet::OnKeepHistoryClick(wxCommandEvent &)
 }
 
 #if 0 // XXX Remove, as we did away with this checkbox!
-void AddEditPropSheet::OnOverrideDCAClick( wxCommandEvent& /* evt */ )
+void AddEditPropSheetDlg::OnOverrideDCAClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     m_DCAcomboBox->Enable(!m_useDefaultDCA);
@@ -1623,7 +1624,7 @@ void AddEditPropSheet::OnOverrideDCAClick( wxCommandEvent& /* evt */ )
 }
 #endif
 
-void AddEditPropSheet::SetXTime(wxObject *src)
+void AddEditPropSheetDlg::SetXTime(wxObject *src)
 {
   if (Validate() && TransferDataFromWindow()) {
     wxDateTime xdt;
@@ -1660,7 +1661,7 @@ void AddEditPropSheet::SetXTime(wxObject *src)
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON_ON
  */
 
-void AddEditPropSheet::OnExpRadiobuttonSelected( wxCommandEvent& evt )
+void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
 {
   bool On = (evt.GetEventObject() == m_OnRB);
   bool Never = (evt.GetEventObject() == m_NeverRB);
@@ -1686,12 +1687,12 @@ void AddEditPropSheet::OnExpRadiobuttonSelected( wxCommandEvent& evt )
  * wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_CHECKBOX42
  */
 
-void AddEditPropSheet::OnPasswordPolicySelected( wxCommandEvent& evt )
+void AddEditPropSheetDlg::OnPasswordPolicySelected( wxCommandEvent& evt )
 {
   EnablePWPolicyControls(!evt.IsChecked());
 }
 
-void AddEditPropSheet::ShowPWPSpinners(bool show)
+void AddEditPropSheetDlg::ShowPWPSpinners(bool show)
 {
   m_pwMinsGSzr->Show(m_pwNumLCbox,  show, true);
   m_pwMinsGSzr->Show(m_pwNumUCbox,  show, true);
@@ -1704,7 +1705,7 @@ void AddEditPropSheet::ShowPWPSpinners(bool show)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
  */
 
-void AddEditPropSheet::OnEZreadOrPronounceable(wxCommandEvent& evt)
+void AddEditPropSheetDlg::OnEZreadOrPronounceable(wxCommandEvent& evt)
 {
  if (Validate() && TransferDataFromWindow()) {
    if (m_pwpEasyCtrl->GetValue() && m_pwpPronounceCtrl->GetValue()) {
@@ -1721,7 +1722,7 @@ void AddEditPropSheet::OnEZreadOrPronounceable(wxCommandEvent& evt)
  }
 }
 
-void AddEditPropSheet::EnableNonHexCBs(bool enable)
+void AddEditPropSheetDlg::EnableNonHexCBs(bool enable)
 {
   EnableSizerChildren(m_pwMinsGSzr, enable);
 }
@@ -1730,7 +1731,7 @@ void AddEditPropSheet::EnableNonHexCBs(bool enable)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX9
  */
 
-void AddEditPropSheet::OnUseHexCBClick( wxCommandEvent& /* evt */ )
+void AddEditPropSheetDlg::OnUseHexCBClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     bool useHex = m_pwpHexCtrl->GetValue();
@@ -1743,7 +1744,7 @@ void AddEditPropSheet::OnUseHexCBClick( wxCommandEvent& /* evt */ )
  * wxEVT_UPDATE_UI event handler for all command ids
  */
 
-void AddEditPropSheet::OnUpdateUI(wxUpdateUIEvent& event)
+void AddEditPropSheetDlg::OnUpdateUI(wxUpdateUIEvent& event)
 {
   bool dbIsReadOnly = m_core.IsReadOnly();
 
@@ -1846,7 +1847,7 @@ void AddEditPropSheet::OnUpdateUI(wxUpdateUIEvent& event)
  * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL_NOTES
  */
 
-void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& /* evt */ )
+void AddEditPropSheetDlg::OnNoteSetFocus( wxFocusEvent& /* evt */ )
 {
   if (m_type != SheetType::ADD && m_isNotesHidden) {
     m_isNotesHidden = false;
@@ -1855,7 +1856,7 @@ void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& /* evt */ )
   }
 }
 
-PWPolicy AddEditPropSheet::GetPWPolicyFromUI()
+PWPolicy AddEditPropSheetDlg::GetPWPolicyFromUI()
 {
   wxASSERT_MSG(!m_UseDatabasePolicyCtrl->GetValue(), wxT("Trying to get Password policy from UI when db defaults are to be used"));
 
@@ -1896,7 +1897,7 @@ PWPolicy AddEditPropSheet::GetPWPolicyFromUI()
   return pwp;
 }
 
-PWPolicy AddEditPropSheet::GetSelectedPWPolicy()
+PWPolicy AddEditPropSheetDlg::GetSelectedPWPolicy()
 {
   PWPolicy pwp;
   if (m_UseDatabasePolicyCtrl->GetValue()) {
@@ -1923,7 +1924,7 @@ PWPolicy AddEditPropSheet::GetSelectedPWPolicy()
  * the sum of all enabled "at least" lengths.  We have to do this 
  * in the UI, or else password generation crashes.
  */
-void AddEditPropSheet::OnAtLeastPasswordChars(wxSpinEvent& WXUNUSED(event))
+void AddEditPropSheetDlg::OnAtLeastPasswordChars(wxSpinEvent& WXUNUSED(event))
 {
   const int min = GetRequiredPWLength();
 
@@ -1933,7 +1934,7 @@ void AddEditPropSheet::OnAtLeastPasswordChars(wxSpinEvent& WXUNUSED(event))
   }
 }
 
-int AddEditPropSheet::GetRequiredPWLength() const
+int AddEditPropSheetDlg::GetRequiredPWLength() const
 {
   wxSpinCtrl* spinControls[] = { m_pwpUCSpin, m_pwpLCSpin, m_pwpDigSpin, m_pwpSymSpin };
   int total = 0;
@@ -1946,7 +1947,7 @@ int AddEditPropSheet::GetRequiredPWLength() const
   return total;
 }
 
-void AddEditPropSheet::OnClearPWHist(wxCommandEvent& /*evt*/)
+void AddEditPropSheetDlg::OnClearPWHist(wxCommandEvent& /*evt*/)
 {
   m_PWHgrid->ClearGrid();
   if (m_MaxPWHistCtrl->TransferDataFromWindow() && m_keepPWHist && m_maxPWHist > 0) {
@@ -1960,7 +1961,7 @@ void AddEditPropSheet::OnClearPWHist(wxCommandEvent& /*evt*/)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
  */
 
-void AddEditPropSheet::OnEZreadCBClick(wxCommandEvent& evt)
+void AddEditPropSheetDlg::OnEZreadCBClick(wxCommandEvent& evt)
 {
   stringT st_symbols;
   if (evt.IsChecked()) {
@@ -1987,7 +1988,7 @@ void AddEditPropSheet::OnEZreadCBClick(wxCommandEvent& evt)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
  */
 
-void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& evt)
+void AddEditPropSheetDlg::OnPronouceableCBClick( wxCommandEvent& evt)
 {
   stringT st_symbols;
   if (evt.IsChecked()) {
@@ -2013,7 +2014,7 @@ void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& evt)
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON9
  */
 
-void AddEditPropSheet::OnSendButtonClick( wxCommandEvent& event )
+void AddEditPropSheetDlg::OnSendButtonClick( wxCommandEvent& event )
 {
   UNREFERENCED_PARAMETER(event);
   /*
@@ -2057,7 +2058,7 @@ void AddEditPropSheet::OnSendButtonClick( wxCommandEvent& event )
  * wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_POLICYLIST
  */
 
-void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
+void AddEditPropSheetDlg::OnPolicylistSelected( wxCommandEvent& event )
 {
   const wxString polName = event.GetString();
   PWPolicy policy;
@@ -2078,7 +2079,7 @@ void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
  * wxEVT_DATE_CHANGED event handler for ID_DATECTRL_EXP_DATE
  */
 
-void AddEditPropSheet::OnExpDateChanged( wxDateEvent& event )
+void AddEditPropSheetDlg::OnExpDateChanged( wxDateEvent& event )
 {
   SetXTime(event.GetEventObject());
 }
@@ -2087,7 +2088,7 @@ void AddEditPropSheet::OnExpDateChanged( wxDateEvent& event )
  * wxEVT_COMMAND_SPINCTRL_UPDATED event handler for ID_SPINCTRL_EXP_TIME
  */
 
-void AddEditPropSheet::OnExpIntervalChanged( wxSpinEvent& event )
+void AddEditPropSheetDlg::OnExpIntervalChanged( wxSpinEvent& event )
 {
   SetXTime(event.GetEventObject());
 }
@@ -2096,7 +2097,7 @@ void AddEditPropSheet::OnExpIntervalChanged( wxSpinEvent& event )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
  */
 
-void AddEditPropSheet::OnSymbolsCB( wxCommandEvent& event )
+void AddEditPropSheetDlg::OnSymbolsCB( wxCommandEvent& event )
 {
   bool checked = event.IsChecked();
   m_ownsymbols->Enable(checked);
@@ -2108,19 +2109,19 @@ void AddEditPropSheet::OnSymbolsCB( wxCommandEvent& event )
  * wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS
  */
 
-void AddEditPropSheet::OnOwnSymSetFocus( wxFocusEvent& event )
+void AddEditPropSheetDlg::OnOwnSymSetFocus( wxFocusEvent& event )
 {
-////@begin wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS in AddEditPropSheet.
+////@begin wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS in AddEditPropSheetDlg.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS in AddEditPropSheet.
+////@end wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS in AddEditPropSheetDlg.
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_RESET_SYMBOLS
  */
 
-void AddEditPropSheet::OnResetSymbolsClick( wxCommandEvent& WXUNUSED(event) )
+void AddEditPropSheetDlg::OnResetSymbolsClick( wxCommandEvent& WXUNUSED(event) )
 {
   stringT st_symbols;
   if (m_pwpEasyCtrl->GetValue())
@@ -2137,7 +2138,7 @@ void AddEditPropSheet::OnResetSymbolsClick( wxCommandEvent& WXUNUSED(event) )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX5
  */
 
-void AddEditPropSheet::OnDigitsCB( wxCommandEvent& event )
+void AddEditPropSheetDlg::OnDigitsCB( wxCommandEvent& event )
 {
   m_pwpDigSpin->Enable(event.IsChecked());
 }
@@ -2146,7 +2147,7 @@ void AddEditPropSheet::OnDigitsCB( wxCommandEvent& event )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX4
  */
 
-void AddEditPropSheet::OnUppercaseCB( wxCommandEvent& event )
+void AddEditPropSheetDlg::OnUppercaseCB( wxCommandEvent& event )
 {
   m_pwpUCSpin->Enable(event.IsChecked());
 }
@@ -2155,7 +2156,7 @@ void AddEditPropSheet::OnUppercaseCB( wxCommandEvent& event )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
  */
 
-void AddEditPropSheet::OnLowercaseCB( wxCommandEvent& event )
+void AddEditPropSheetDlg::OnLowercaseCB( wxCommandEvent& event )
 {
   m_pwpLCSpin->Enable(event.IsChecked());
 }

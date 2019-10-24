@@ -542,9 +542,9 @@ void CompareDlg::OnViewInComparisonDB(wxCommandEvent& evt)
 
 bool CompareDlg::ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly)
 {
-  AddEditPropSheet ae(this,
+  AddEditPropSheetDlg ae(this,
                       *core,
-                      readOnly? AddEditPropSheet::SheetType::VIEW: AddEditPropSheet::SheetType::EDIT,
+                      readOnly? AddEditPropSheetDlg::SheetType::VIEW: AddEditPropSheetDlg::SheetType::EDIT,
                       &core->Find(uuid)->second);
   return ae.ShowModal() == wxID_OK && !readOnly;
 }

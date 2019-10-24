@@ -35,18 +35,18 @@ DLG_HELP(CManagePasswordPolicies,                       html/named_password_poli
 //
 
 //Options dialog
-PROPSHEET_HELP(COptions,         _("Backups"),          html/backups_tab.html)
-PROPSHEET_HELP(COptions,         _("Display"),          html/display_tab.html)
-PROPSHEET_HELP(COptions,         _("Misc."),            html/misc_tab.html)
-PROPSHEET_HELP(COptions,         _("Password Policy"),  html/password_policies.html)
-PROPSHEET_HELP(COptions,         _("Password History"), html/password_history_tab.html)
-PROPSHEET_HELP(COptions,         _("Security"),         html/security_tab.html)
-PROPSHEET_HELP(COptions,         _("System"),           html/system_tab.html)
-PROPSHEET_HELP(COptions,         _("Shortcuts"),        html/shortcuts_tab.html)
+PROPSHEET_HELP(COptions,            _("Backups"),          html/backups_tab.html)
+PROPSHEET_HELP(COptions,            _("Display"),          html/display_tab.html)
+PROPSHEET_HELP(COptions,            _("Misc."),            html/misc_tab.html)
+PROPSHEET_HELP(COptions,            _("Password Policy"),  html/password_policies.html)
+PROPSHEET_HELP(COptions,            _("Password History"), html/password_history_tab.html)
+PROPSHEET_HELP(COptions,            _("Security"),         html/security_tab.html)
+PROPSHEET_HELP(COptions,            _("System"),           html/system_tab.html)
+PROPSHEET_HELP(COptions,            _("Shortcuts"),        html/shortcuts_tab.html)
 
-PROPSHEET_HELP(AddEditPropSheet, _("Basic"),            html/entering_pwd.html)
-PROPSHEET_HELP(AddEditPropSheet, _("Dates and Times"),  html/entering_pwd_date.html)
-PROPSHEET_HELP(AddEditPropSheet, _("Password Policy"),  html/entering_pwd_pp.html)
-PROPSHEET_HELP(AddEditPropSheet, _("Additional"),       html/entering_pwd_add.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, _("Basic"),            html/entering_pwd.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, _("Dates and Times"),  html/entering_pwd_date.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, _("Password Policy"),  html/entering_pwd_pp.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, _("Additional"),       html/entering_pwd_add.html)
 
 #endif

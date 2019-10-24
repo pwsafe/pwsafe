@@ -9414,7 +9414,7 @@ Type the new combination once again to confirm it."</string>
           <string name="proxy-Background colour">""</string>
           <string name="proxy-Base class">"wxPropertySheetDialog"</string>
           <bool name="proxy-Centre">1</bool>
-          <string name="proxy-Class">"AddEditPropSheet"</string>
+          <string name="proxy-Class">"AddEditPropSheetDlg"</string>
           <string name="proxy-Custom styles">""</string>
           <string name="proxy-Data class header filename">""</string>
           <string name="proxy-Data class implementation filename">""</string>
@@ -10436,7 +10436,7 @@ username field."</string>
                   </document>
                   <document>
                     <string name="proxy-type">"wbButtonProxy"</string>
-                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnShowHideClick|NONE||AddEditPropSheet"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnShowHideClick|NONE||AddEditPropSheetDlg"</string>
                     <string name="filename">""</string>
                     <string name="icon-name">"dialogcontrol"</string>
                     <long name="is-transient">0</long>
@@ -10529,7 +10529,7 @@ username field."</string>
                   </document>
                   <document>
                     <string name="proxy-type">"wbButtonProxy"</string>
-                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnGenerateButtonClick|SHOWMESSAGE|'Generate' placeholder|AddEditPropSheet"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnGenerateButtonClick|SHOWMESSAGE|'Generate' placeholder|AddEditPropSheetDlg"</string>
                     <string name="filename">""</string>
                     <string name="icon-name">"dialogcontrol"</string>
                     <long name="is-transient">0</long>
@@ -10982,7 +10982,7 @@ username field."</string>
                   </document>
                   <document>
                     <string name="proxy-type">"wbButtonProxy"</string>
-                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnGoButtonClick|SHOWMESSAGE|'Go' placeholder|AddEditPropSheet"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnGoButtonClick|SHOWMESSAGE|'Go' placeholder|AddEditPropSheetDlg"</string>
                     <string name="filename">""</string>
                     <string name="icon-name">"dialogcontrol"</string>
                     <long name="is-transient">0</long>
@@ -11255,7 +11255,7 @@ username field."</string>
                   </document>
                   <document>
                     <string name="proxy-type">"wbButtonProxy"</string>
-                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnSendButtonClick|NONE||AddEditPropSheet"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnSendButtonClick|NONE||AddEditPropSheetDlg"</string>
                     <string name="filename">""</string>
                     <string name="icon-name">"dialogcontrol"</string>
                     <long name="is-transient">0</long>
@@ -11420,7 +11420,7 @@ username field."</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbTextCtrlProxy"</string>
-                  <string name="event-handler-0">"wxEVT_SET_FOCUS|OnNoteSetFocus|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_SET_FOCUS|OnNoteSetFocus|NONE||AddEditPropSheetDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"textctrl"</string>
                   <long name="is-transient">0</long>
@@ -12281,7 +12281,7 @@ Action:"</string>
                   <string name="type">"dialog-control-document"</string>
                   <document>
                     <string name="proxy-type">"wbCheckBoxProxy"</string>
-                    <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnKeepHistoryClick|NONE||AddEditPropSheet"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnKeepHistoryClick|NONE||AddEditPropSheetDlg"</string>
                     <string name="filename">""</string>
                     <string name="icon-name">"checkbox"</string>
                     <long name="is-transient">0</long>
@@ -12944,7 +12944,7 @@ Action:"</string>
                     <string name="type">"dialog-control-document"</string>
                     <document>
                       <string name="proxy-type">"wbRadioButtonProxy"</string>
-                      <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnRadiobuttonSelected|NONE||AddEditPropSheet"</string>
+                      <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnRadiobuttonSelected|NONE||AddEditPropSheetDlg"</string>
                       <string name="filename">""</string>
                       <string name="icon-name">"radiobutton"</string>
                       <long name="is-transient">0</long>
@@ -13007,7 +13007,7 @@ Action:"</string>
                     </document>
                     <document>
                       <string name="proxy-type">"wbDatePickerCtrlProxy"</string>
-                      <string name="event-handler-0">"wxEVT_DATE_CHANGED|OnExpDateChanged|NONE||AddEditPropSheet"</string>
+                      <string name="event-handler-0">"wxEVT_DATE_CHANGED|OnExpDateChanged|NONE||AddEditPropSheetDlg"</string>
                       <string name="filename">""</string>
                       <string name="icon-name">"spinctrl"</string>
                       <long name="is-transient">0</long>
@@ -13106,7 +13106,7 @@ Action:"</string>
                     </document>
                     <document>
                       <string name="proxy-type">"wbRadioButtonProxy"</string>
-                      <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnRadiobuttonSelected|NONE||AddEditPropSheet"</string>
+                      <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnRadiobuttonSelected|NONE||AddEditPropSheetDlg"</string>
                       <string name="filename">""</string>
                       <string name="icon-name">"radiobutton"</string>
                       <long name="is-transient">0</long>
@@ -13194,7 +13194,7 @@ Action:"</string>
                       <string name="type">"dialog-control-document"</string>
                       <document>
                         <string name="proxy-type">"wbSpinCtrlProxy"</string>
-                        <string name="event-handler-0">"wxEVT_COMMAND_SPINCTRL_UPDATED|OnExpIntervalChanged|NONE||AddEditPropSheet"</string>
+                        <string name="event-handler-0">"wxEVT_COMMAND_SPINCTRL_UPDATED|OnExpIntervalChanged|NONE||AddEditPropSheetDlg"</string>
                         <string name="filename">""</string>
                         <string name="icon-name">"spinctrl"</string>
                         <long name="is-transient">0</long>
@@ -13427,7 +13427,7 @@ Action:"</string>
                     <string name="type">"dialog-control-document"</string>
                     <document>
                       <string name="proxy-type">"wbRadioButtonProxy"</string>
-                      <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnRadiobuttonSelected|NONE||AddEditPropSheet"</string>
+                      <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnRadiobuttonSelected|NONE||AddEditPropSheetDlg"</string>
                       <string name="filename">""</string>
                       <string name="icon-name">"radiobutton"</string>
                       <long name="is-transient">0</long>
@@ -14434,7 +14434,7 @@ Action:"</string>
                 <string name="type">"dialog-control-document"</string>
                 <document>
                   <string name="proxy-type">"wbRadioButtonProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnPWPRBSelected|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnPWPRBSelected|NONE||AddEditPropSheetDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"radiobutton"</string>
                   <long name="is-transient">0</long>
@@ -14523,7 +14523,7 @@ Action:"</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbComboBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_COMBOBOX_SELECTED|OnPolicylistSelected|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_COMBOBOX_SELECTED|OnPolicylistSelected|NONE||AddEditPropSheetDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"combobox"</string>
                   <long name="is-transient">0</long>
@@ -14590,7 +14590,7 @@ Action:"</string>
               </document>
               <document>
                 <string name="proxy-type">"wbRadioButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnPWPRBSelected|NONE||AddEditPropSheet"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnPWPRBSelected|NONE||AddEditPropSheetDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"radiobutton"</string>
                 <long name="is-transient">0</long>
@@ -14904,7 +14904,7 @@ Action:"</string>
                 <string name="type">"dialog-control-document"</string>
                 <document>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnLowercaseCB|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnLowercaseCB|NONE||AddEditPropSheetDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
                   <long name="is-transient">0</long>
@@ -15207,7 +15207,7 @@ Action:"</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnUppercaseCB|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnUppercaseCB|NONE||AddEditPropSheetDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
                   <long name="is-transient">0</long>
@@ -15510,7 +15510,7 @@ Action:"</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnDigitsCB|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnDigitsCB|NONE||AddEditPropSheetDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
                   <long name="is-transient">0</long>
@@ -15813,7 +15813,7 @@ Action:"</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnSymbolsCB|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnSymbolsCB|NONE||AddEditPropSheetDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
                   <long name="is-transient">0</long>
@@ -16116,7 +16116,7 @@ Action:"</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbTextCtrlProxy"</string>
-                  <string name="event-handler-0">"wxEVT_SET_FOCUS|OnOwnSymSetFocus|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_SET_FOCUS|OnOwnSymSetFocus|NONE||AddEditPropSheetDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"textctrl"</string>
                   <long name="is-transient">0</long>
@@ -16200,7 +16200,7 @@ Action:"</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbButtonProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnResetSymbolsClick|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnResetSymbolsClick|NONE||AddEditPropSheetDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"dialogcontrol"</string>
                   <long name="is-transient">0</long>
@@ -16267,7 +16267,7 @@ Action:"</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnEZreadCBClick|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnEZreadCBClick|NONE||AddEditPropSheetDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
                   <long name="is-transient">0</long>
@@ -16359,7 +16359,7 @@ Action:"</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnPronouceableCBClick|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnPronouceableCBClick|NONE||AddEditPropSheetDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
                   <long name="is-transient">0</long>
@@ -16522,7 +16522,7 @@ Action:"</string>
               </document>
               <document>
                 <string name="proxy-type">"wbCheckBoxProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnUseHexCBClick|NONE||AddEditPropSheet"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnUseHexCBClick|NONE||AddEditPropSheetDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"checkbox"</string>
                 <long name="is-transient">0</long>
