@@ -9,6 +9,7 @@
 /** \file EditShortcutDlg.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -34,29 +35,29 @@
 ////@end XPM images
 
 /*!
- * EditShortcut type definition
+ * EditShortcutDlg type definition
  */
 
-IMPLEMENT_CLASS( EditShortcut, wxDialog )
+IMPLEMENT_CLASS( EditShortcutDlg, wxDialog )
 
 /*!
- * EditShortcut event table definition
+ * EditShortcutDlg event table definition
  */
 
-BEGIN_EVENT_TABLE( EditShortcut, wxDialog )
+BEGIN_EVENT_TABLE( EditShortcutDlg, wxDialog )
 
-////@begin EditShortcut event table entries
-  EVT_BUTTON( wxID_OK, EditShortcut::OnOkClick )
+////@begin EditShortcutDlg event table entries
+  EVT_BUTTON( wxID_OK, EditShortcutDlg::OnOkClick )
 
-////@end EditShortcut event table entries
+////@end EditShortcutDlg event table entries
 
 END_EVENT_TABLE()
 
 /*!
- * EditShortcut constructors
+ * EditShortcutDlg constructors
  */
 
-EditShortcut::EditShortcut(wxWindow* parent,
+EditShortcutDlg::EditShortcutDlg(wxWindow* parent,
                            PWScore &core, CItemData *item,
                            wxWindowID id, const wxString& caption,
                            const wxPoint& pos, const wxSize& size, long style)
@@ -68,12 +69,12 @@ EditShortcut::EditShortcut(wxWindow* parent,
 }
 
 /*!
- * EditShortcut creator
+ * EditShortcutDlg creator
  */
 
-bool EditShortcut::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool EditShortcutDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin EditShortcut creation
+////@begin EditShortcutDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -83,12 +84,12 @@ bool EditShortcut::Create( wxWindow* parent, wxWindowID id, const wxString& capt
     GetSizer()->SetSizeHints(this);
   }
   Centre();
-////@end EditShortcut creation
+////@end EditShortcutDlg creation
   ItemFieldsToDialog();
   return true;
 }
 
-void EditShortcut::ItemFieldsToDialog()
+void EditShortcutDlg::ItemFieldsToDialog()
 {
   // Populate the combo box
   std::vector<stringT> aryGroups;
@@ -119,34 +120,34 @@ void EditShortcut::ItemFieldsToDialog()
 }
 
 /*!
- * EditShortcut destructor
+ * EditShortcutDlg destructor
  */
 
-EditShortcut::~EditShortcut()
+EditShortcutDlg::~EditShortcutDlg()
 {
-////@begin EditShortcut destruction
-////@end EditShortcut destruction
+////@begin EditShortcutDlg destruction
+////@end EditShortcutDlg destruction
 }
 
 /*!
  * Member initialisation
  */
 
-void EditShortcut::Init()
+void EditShortcutDlg::Init()
 {
-////@begin EditShortcut member initialisation
+////@begin EditShortcutDlg member initialisation
   m_groupCtrl = nullptr;
-////@end EditShortcut member initialisation
+////@end EditShortcutDlg member initialisation
 }
 
 /*!
- * Control creation for EditShortcut
+ * Control creation for EditShortcutDlg
  */
 
-void EditShortcut::CreateControls()
+void EditShortcutDlg::CreateControls()
 {
-////@begin EditShortcut content construction
-  EditShortcut* itemDialog1 = this;
+////@begin EditShortcutDlg content construction
+  EditShortcutDlg* itemDialog1 = this;
 
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
@@ -228,14 +229,14 @@ void EditShortcut::CreateControls()
   itemStaticText16->SetValidator( wxGenericValidator(& m_lastChanged) );
   itemStaticText18->SetValidator( wxGenericValidator(& m_lastAccess) );
   itemStaticText20->SetValidator( wxGenericValidator(& m_lastAny) );
-////@end EditShortcut content construction
+////@end EditShortcutDlg content construction
 }
 
 /*!
  * Should we show tooltips?
  */
 
-bool EditShortcut::ShowToolTips()
+bool EditShortcutDlg::ShowToolTips()
 {
   return true;
 }
@@ -244,31 +245,31 @@ bool EditShortcut::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap EditShortcut::GetBitmapResource( const wxString& WXUNUSED(name) )
+wxBitmap EditShortcutDlg::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
   // Bitmap retrieval
-////@begin EditShortcut bitmap retrieval
+////@begin EditShortcutDlg bitmap retrieval
   return wxNullBitmap;
-////@end EditShortcut bitmap retrieval
+////@end EditShortcutDlg bitmap retrieval
 }
 
 /*!
  * Get icon resources
  */
 
-wxIcon EditShortcut::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon EditShortcutDlg::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
-////@begin EditShortcut icon retrieval
+////@begin EditShortcutDlg icon retrieval
   return wxNullIcon;
-////@end EditShortcut icon retrieval
+////@end EditShortcutDlg icon retrieval
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void EditShortcut::OnOkClick( wxCommandEvent& /* evt */ )
+void EditShortcutDlg::OnOkClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     bool modified = false;

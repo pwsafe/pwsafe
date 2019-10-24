@@ -80,7 +80,7 @@ void PasswordSafeFrame::DoEdit(CItemData item)
                               &item);
     rc = editDbox.ShowModal();
   } else {
-    EditShortcut editDbox(this, m_core, &item);
+    EditShortcutDlg editDbox(this, m_core, &item);
     rc = editDbox.ShowModal();
   }
   if (rc == wxID_OK) {

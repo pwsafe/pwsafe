@@ -25868,7 +25868,7 @@ XSendEvent can handle more control keys, but may be blocked by some applications
           <string name="proxy-Background colour">""</string>
           <string name="proxy-Base class">"wxDialog"</string>
           <bool name="proxy-Centre">1</bool>
-          <string name="proxy-Class">"EditShortcut"</string>
+          <string name="proxy-Class">"EditShortcutDlg"</string>
           <string name="proxy-Custom styles">""</string>
           <string name="proxy-Data class header filename">""</string>
           <string name="proxy-Data class implementation filename">""</string>
@@ -25886,7 +25886,7 @@ XSendEvent can handle more control keys, but may be blocked by some applications
           <string name="proxy-Help text">""</string>
           <bool name="proxy-Hidden">0</bool>
           <string name="proxy-Icon">""</string>
-          <string name="proxy-Id name">"ID_EDITSHORTCUT"</string>
+          <string name="proxy-Id name">"ID_EDITSHORTCUTDLG"</string>
           <long name="proxy-Id value">10174</long>
           <string name="proxy-Implementation filename">"EditShortcutDlg.cpp"</string>
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
@@ -27175,7 +27175,7 @@ to the base entry "</string>
               <string name="type">"dialog-control-document"</string>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOkClick|NONE||EditShortcut"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOkClick|NONE||EditShortcutDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>
