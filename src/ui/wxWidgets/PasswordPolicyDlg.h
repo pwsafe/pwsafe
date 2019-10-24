@@ -10,8 +10,8 @@
 * 
 */
 
-#ifndef _PASSWORDPOLICY_H_
-#define _PASSWORDPOLICY_H_
+#ifndef _PASSWORDPOLICYDLG_H_
+#define _PASSWORDPOLICYDLG_H_
 
 /*!
  * Includes
@@ -44,7 +44,7 @@ class wxSpinCtrl;
 #endif
 
 ////@begin control identifiers
-#define ID_CPASSWORDPOLICY 10221
+#define ID_PASSWORDPOLICYDLG 10221
 #define ID_POLICYNAME 10223
 #define ID_PWLENSB 10117
 #define ID_CHECKBOX3 10118
@@ -65,18 +65,18 @@ class wxSpinCtrl;
 #define ID_GENERATEDPASSWORD 10333
 #define ID_GENERATEPASSWORD2 10334
 #define ID_COPYPASSWORD2 10335
-#define SYMBOL_CPASSWORDPOLICY_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
-#define SYMBOL_CPASSWORDPOLICY_TITLE _("Password Policy")
-#define SYMBOL_CPASSWORDPOLICY_IDNAME ID_CPASSWORDPOLICY
-#define SYMBOL_CPASSWORDPOLICY_SIZE wxSize(400, 300)
-#define SYMBOL_CPASSWORDPOLICY_POSITION wxDefaultPosition
+#define SYMBOL_PASSWORDPOLICYDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
+#define SYMBOL_PASSWORDPOLICYDLG_TITLE _("Password Policy")
+#define SYMBOL_PASSWORDPOLICYDLG_IDNAME ID_PASSWORDPOLICYDLG
+#define SYMBOL_PASSWORDPOLICYDLG_SIZE wxSize(400, 300)
+#define SYMBOL_PASSWORDPOLICYDLG_POSITION wxDefaultPosition
 ////@end control identifiers
 
 /*!
- * CPasswordPolicy class declaration
+ * PasswordPolicyDlg class declaration
  */
 
-class CPasswordPolicy: public wxDialog
+class PasswordPolicyDlg : public wxDialog
 {
   DECLARE_EVENT_TABLE()
 
@@ -84,20 +84,20 @@ public:
   enum class DialogType { EDITOR, GENERATOR };
 
   /// Constructors
-  CPasswordPolicy( wxWindow* parent, PWScore &core,
+  PasswordPolicyDlg( wxWindow* parent, PWScore &core,
                    const PSWDPolicyMap &polmap,
                    DialogType type = DialogType::EDITOR,
-                   wxWindowID id = SYMBOL_CPASSWORDPOLICY_IDNAME,
-                   const wxString& caption = SYMBOL_CPASSWORDPOLICY_TITLE,
-                   const wxPoint& pos = SYMBOL_CPASSWORDPOLICY_POSITION,
-                   const wxSize& size = SYMBOL_CPASSWORDPOLICY_SIZE,
-                   long style = SYMBOL_CPASSWORDPOLICY_STYLE );
+                   wxWindowID id = SYMBOL_PASSWORDPOLICYDLG_IDNAME,
+                   const wxString& caption = SYMBOL_PASSWORDPOLICYDLG_TITLE,
+                   const wxPoint& pos = SYMBOL_PASSWORDPOLICYDLG_POSITION,
+                   const wxSize& size = SYMBOL_PASSWORDPOLICYDLG_SIZE,
+                   long style = SYMBOL_PASSWORDPOLICYDLG_STYLE );
 
   /// Creation
-  bool Create( wxWindow* parent, DialogType type = DialogType::EDITOR, wxWindowID id = SYMBOL_CPASSWORDPOLICY_IDNAME, const wxString& caption = SYMBOL_CPASSWORDPOLICY_TITLE, const wxPoint& pos = SYMBOL_CPASSWORDPOLICY_POSITION, const wxSize& size = SYMBOL_CPASSWORDPOLICY_SIZE, long style = SYMBOL_CPASSWORDPOLICY_STYLE );
+  bool Create( wxWindow* parent, DialogType type = DialogType::EDITOR, wxWindowID id = SYMBOL_PASSWORDPOLICYDLG_IDNAME, const wxString& caption = SYMBOL_PASSWORDPOLICYDLG_TITLE, const wxPoint& pos = SYMBOL_PASSWORDPOLICYDLG_POSITION, const wxSize& size = SYMBOL_PASSWORDPOLICYDLG_SIZE, long style = SYMBOL_PASSWORDPOLICYDLG_STYLE );
 
   /// Destructor
-  ~CPasswordPolicy();
+  ~PasswordPolicyDlg();
 
   /// Initialises member variables
   void Init();
@@ -105,7 +105,7 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-////@begin CPasswordPolicy event handler declarations
+////@begin PasswordPolicyDlg event handler declarations
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
   void OnPwPolUseLowerCase( wxCommandEvent& event );
@@ -152,9 +152,9 @@ public:
   /// wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, ID_SPINCTRL7, ID_SPINCTRL8
   void OnAtLeastPasswordChars(wxSpinEvent& evt);
 
-////@end CPasswordPolicy event handler declarations
+////@end PasswordPolicyDlg event handler declarations
 
-////@begin CPasswordPolicy member function declarations
+////@begin PasswordPolicyDlg member function declarations
 
   wxString GetSymbols() const { return m_Symbols ; }
   void SetSymbols(wxString value) { m_Symbols = value ; }
@@ -203,7 +203,7 @@ public:
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
-////@end CPasswordPolicy member function declarations
+////@end PasswordPolicyDlg member function declarations
   void SetPolicyData(const wxString &polname, const PWPolicy &pol);
   void GetPolicyData(wxString &polname, PWPolicy &pol)
   {polname = m_polname; pol = m_st_pp;}
@@ -214,7 +214,7 @@ public:
 private:
   void EnableSizerChildren(wxSizer* sizer, bool state);
 
-////@begin CPasswordPolicy member variables
+////@begin PasswordPolicyDlg member variables
   /* Controls for DialogType EDITOR */
   wxSpinCtrl* m_pwpLenCtrl;
   wxGridSizer* m_pwMinsGSzr;
@@ -256,7 +256,7 @@ private:
   bool m_pwUseSymbols;
   bool m_pwUseUppercase;
   int m_pwdefaultlength;
-////@end CPasswordPolicy member variables
+////@end PasswordPolicyDlg member variables
   void SetDefaultSymbolDisplay(bool restore_defaults);
   void CBox2Spin(wxCheckBox *cb, wxSpinCtrl *sp);
   bool UpdatePolicy();
@@ -282,4 +282,4 @@ private:
   PWPolicy m_st_pp; // The edited policy
 };
 
-#endif  // _PASSWORDPOLICY_H_
+#endif // _PASSWORDPOLICYDLG_H_

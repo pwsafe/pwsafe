@@ -9,6 +9,7 @@
 /** \file PasswordPolicyDlg.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -35,39 +36,39 @@
 ////@end XPM images
 
 /*!
- * CPasswordPolicy event table definition
+ * PasswordPolicyDlg event table definition
  */
 
-BEGIN_EVENT_TABLE( CPasswordPolicy, wxDialog )
+BEGIN_EVENT_TABLE( PasswordPolicyDlg, wxDialog )
 
-////@begin CPasswordPolicy event table entries
-  EVT_SPINCTRL( ID_SPINCTRL5        , CPasswordPolicy::OnAtLeastPasswordChars )
-  EVT_SPINCTRL( ID_SPINCTRL6        , CPasswordPolicy::OnAtLeastPasswordChars )
-  EVT_SPINCTRL( ID_SPINCTRL7        , CPasswordPolicy::OnAtLeastPasswordChars )
-  EVT_SPINCTRL( ID_SPINCTRL8        , CPasswordPolicy::OnAtLeastPasswordChars )
-  EVT_CHECKBOX( ID_CHECKBOX41       , CPasswordPolicy::OnUseNamedPolicy       )
-  EVT_COMBOBOX( ID_COMBOBOX41       , CPasswordPolicy::OnPolicynameSelection  )
-  EVT_CHECKBOX( ID_CHECKBOX3        , CPasswordPolicy::OnPwPolUseLowerCase    )
-  EVT_CHECKBOX( ID_CHECKBOX4        , CPasswordPolicy::OnPwPolUseUpperCase    )
-  EVT_CHECKBOX( ID_CHECKBOX5        , CPasswordPolicy::OnPwPolUseDigits       )
-  EVT_CHECKBOX( ID_CHECKBOX6        , CPasswordPolicy::OnPwPolUseSymbols      )
-  EVT_BUTTON(   ID_RESET_SYMBOLS    , CPasswordPolicy::OnResetSymbolsClick    )
-  EVT_CHECKBOX( ID_CHECKBOX7        , CPasswordPolicy::OnEZreadCBClick        )
-  EVT_CHECKBOX( ID_CHECKBOX8        , CPasswordPolicy::OnPronouceableCBClick  )
-  EVT_BUTTON(   ID_GENERATEPASSWORD2, CPasswordPolicy::OnGeneratePassword     )
-  EVT_BUTTON(   ID_COPYPASSWORD2    , CPasswordPolicy::OnCopyPassword         )
-  EVT_BUTTON(   wxID_OK             , CPasswordPolicy::OnOkClick              )
-  EVT_BUTTON(   wxID_CANCEL         , CPasswordPolicy::OnCancelClick          )
-  EVT_BUTTON(   wxID_HELP           , CPasswordPolicy::OnHelpClick            )
-////@end CPasswordPolicy event table entries
+////@begin PasswordPolicyDlg event table entries
+  EVT_SPINCTRL( ID_SPINCTRL5        , PasswordPolicyDlg::OnAtLeastPasswordChars )
+  EVT_SPINCTRL( ID_SPINCTRL6        , PasswordPolicyDlg::OnAtLeastPasswordChars )
+  EVT_SPINCTRL( ID_SPINCTRL7        , PasswordPolicyDlg::OnAtLeastPasswordChars )
+  EVT_SPINCTRL( ID_SPINCTRL8        , PasswordPolicyDlg::OnAtLeastPasswordChars )
+  EVT_CHECKBOX( ID_CHECKBOX41       , PasswordPolicyDlg::OnUseNamedPolicy       )
+  EVT_COMBOBOX( ID_COMBOBOX41       , PasswordPolicyDlg::OnPolicynameSelection  )
+  EVT_CHECKBOX( ID_CHECKBOX3        , PasswordPolicyDlg::OnPwPolUseLowerCase    )
+  EVT_CHECKBOX( ID_CHECKBOX4        , PasswordPolicyDlg::OnPwPolUseUpperCase    )
+  EVT_CHECKBOX( ID_CHECKBOX5        , PasswordPolicyDlg::OnPwPolUseDigits       )
+  EVT_CHECKBOX( ID_CHECKBOX6        , PasswordPolicyDlg::OnPwPolUseSymbols      )
+  EVT_BUTTON(   ID_RESET_SYMBOLS    , PasswordPolicyDlg::OnResetSymbolsClick    )
+  EVT_CHECKBOX( ID_CHECKBOX7        , PasswordPolicyDlg::OnEZreadCBClick        )
+  EVT_CHECKBOX( ID_CHECKBOX8        , PasswordPolicyDlg::OnPronouceableCBClick  )
+  EVT_BUTTON(   ID_GENERATEPASSWORD2, PasswordPolicyDlg::OnGeneratePassword     )
+  EVT_BUTTON(   ID_COPYPASSWORD2    , PasswordPolicyDlg::OnCopyPassword         )
+  EVT_BUTTON(   wxID_OK             , PasswordPolicyDlg::OnOkClick              )
+  EVT_BUTTON(   wxID_CANCEL         , PasswordPolicyDlg::OnCancelClick          )
+  EVT_BUTTON(   wxID_HELP           , PasswordPolicyDlg::OnHelpClick            )
+////@end PasswordPolicyDlg event table entries
 
 END_EVENT_TABLE()
 
 /*!
- * CPasswordPolicy constructor
+ * PasswordPolicyDlg constructor
  */
 
-CPasswordPolicy::CPasswordPolicy( wxWindow* parent, PWScore &core,
+PasswordPolicyDlg::PasswordPolicyDlg( wxWindow* parent, PWScore &core,
                                   const PSWDPolicyMap &polmap, DialogType type,
                                   wxWindowID id, const wxString& caption,
                                   const wxPoint& pos, const wxSize& size, long style )
@@ -78,12 +79,12 @@ CPasswordPolicy::CPasswordPolicy( wxWindow* parent, PWScore &core,
 }
 
 /*!
- * CPasswordPolicy creator
+ * PasswordPolicyDlg creator
  */
 
-bool CPasswordPolicy::Create( wxWindow* parent, DialogType type, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool PasswordPolicyDlg::Create( wxWindow* parent, DialogType type, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin CPasswordPolicy creation
+////@begin PasswordPolicyDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -93,11 +94,11 @@ bool CPasswordPolicy::Create( wxWindow* parent, DialogType type, wxWindowID id, 
     GetSizer()->SetSizeHints(this);
   }
   Centre();
-////@end CPasswordPolicy creation
+////@end PasswordPolicyDlg creation
   return true;
 }
 
-void CPasswordPolicy::SetDefaultSymbolDisplay(bool restore_defaults)
+void PasswordPolicyDlg::SetDefaultSymbolDisplay(bool restore_defaults)
 {
   stringT symset;
   if (m_pwUseEasyVision)
@@ -114,22 +115,22 @@ void CPasswordPolicy::SetDefaultSymbolDisplay(bool restore_defaults)
 }
 
 /*!
- * CPasswordPolicy destructor
+ * PasswordPolicyDlg destructor
  */
 
-CPasswordPolicy::~CPasswordPolicy()
+PasswordPolicyDlg::~PasswordPolicyDlg()
 {
-////@begin CPasswordPolicy destruction
-////@end CPasswordPolicy destruction
+////@begin PasswordPolicyDlg destruction
+////@end PasswordPolicyDlg destruction
 }
 
 /*!
  * Member initialisation
  */
 
-void CPasswordPolicy::Init()
+void PasswordPolicyDlg::Init()
 {
-////@begin CPasswordPolicy member initialisation
+////@begin PasswordPolicyDlg member initialisation
   m_pwpLenCtrl = nullptr;
   m_pwMinsGSzr = nullptr;
   m_pwpUseLowerCtrl = nullptr;
@@ -153,7 +154,7 @@ void CPasswordPolicy::Init()
   m_PoliciesSelectionCtrl = nullptr;
   m_passwordCtrl = nullptr;
   m_itemStaticBoxSizer6 = nullptr;
-////@end CPasswordPolicy member initialisation
+////@end PasswordPolicyDlg member initialisation
 
   // Collect all policy names to display in combobox control
   for (auto& policy : m_MapPSWDPLC) {
@@ -162,13 +163,13 @@ void CPasswordPolicy::Init()
 }
 
 /*!
- * Control creation for CPasswordPolicy
+ * Control creation for PasswordPolicyDlg
  */
 
-void CPasswordPolicy::CreateControls()
+void PasswordPolicyDlg::CreateControls()
 {
-////@begin CPasswordPolicy content construction
-  CPasswordPolicy* itemDialog1 = this;
+////@begin PasswordPolicyDlg content construction
+  PasswordPolicyDlg* itemDialog1 = this;
 
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
@@ -363,7 +364,7 @@ void CPasswordPolicy::CreateControls()
 
   wxBitmapButton* itemBitmapButton1 = new wxBitmapButton( itemDialog1, ID_COPYPASSWORD2, itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 
-  if (CPasswordPolicy::ShowToolTips())
+  if (PasswordPolicyDlg::ShowToolTips())
     itemBitmapButton1->SetToolTip(_("Copy Password to clipboard"));
 
   itemBoxSizer5->Add(itemBitmapButton1, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 20);
@@ -413,7 +414,7 @@ void CPasswordPolicy::CreateControls()
   m_pwpEasyCtrl->SetValidator( wxGenericValidator(& m_pwUseEasyVision) );
   m_pwpPronounceCtrl->SetValidator( wxGenericValidator(& m_pwMakePronounceable) );
   m_pwpHexCtrl->SetValidator( wxGenericValidator(& m_pwUseHex) );
-////@end CPasswordPolicy content construction
+////@end PasswordPolicyDlg content construction
 
   if (m_DialogType == DialogType::GENERATOR) {
     itemBoxSizer3->Show(false);
@@ -437,7 +438,7 @@ void CPasswordPolicy::CreateControls()
  * Should we show tooltips?
  */
 
-bool CPasswordPolicy::ShowToolTips()
+bool PasswordPolicyDlg::ShowToolTips()
 {
   return true;
 }
@@ -446,10 +447,10 @@ bool CPasswordPolicy::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap CPasswordPolicy::GetBitmapResource( const wxString& name )
+wxBitmap PasswordPolicyDlg::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
-////@begin CPasswordPolicy bitmap retrieval
+////@begin PasswordPolicyDlg bitmap retrieval
   if (name == _T("graphics/toolbar/new/copypassword.xpm")) {
     wxBitmap bitmap(copypassword_xpm);
     return bitmap;
@@ -460,22 +461,22 @@ wxBitmap CPasswordPolicy::GetBitmapResource( const wxString& name )
   }
 
   return wxNullBitmap;
-////@end CPasswordPolicy bitmap retrieval
+////@end PasswordPolicyDlg bitmap retrieval
 }
 
 /*!
  * Get icon resources
  */
 
-wxIcon CPasswordPolicy::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon PasswordPolicyDlg::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
-////@begin CPasswordPolicy icon retrieval
+////@begin PasswordPolicyDlg icon retrieval
   return wxNullIcon;
-////@end CPasswordPolicy icon retrieval
+////@end PasswordPolicyDlg icon retrieval
 }
 
-bool CPasswordPolicy::Verify()
+bool PasswordPolicyDlg::Verify()
 {
   wxString mess;
   bool retval = true;
@@ -541,7 +542,7 @@ bool CPasswordPolicy::Verify()
   return retval;
 }
 
-bool CPasswordPolicy::UpdatePolicy()
+bool PasswordPolicyDlg::UpdatePolicy()
 {
   if (Validate() && TransferDataFromWindow() && Verify()) {
 
@@ -576,7 +577,7 @@ bool CPasswordPolicy::UpdatePolicy()
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CPasswordPolicy::OnOkClick( wxCommandEvent& )
+void PasswordPolicyDlg::OnOkClick( wxCommandEvent& )
 {
   if (m_core.IsReadOnly())
     return;
@@ -589,27 +590,27 @@ void CPasswordPolicy::OnOkClick( wxCommandEvent& )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void CPasswordPolicy::OnCancelClick( wxCommandEvent& event )
+void PasswordPolicyDlg::OnCancelClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CPasswordPolicy.
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in PasswordPolicyDlg.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CPasswordPolicy.
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in PasswordPolicyDlg.
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
  */
 
-void CPasswordPolicy::OnHelpClick( wxCommandEvent& event )
+void PasswordPolicyDlg::OnHelpClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CPasswordPolicy.
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in PasswordPolicyDlg.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CPasswordPolicy.
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in PasswordPolicyDlg.
 }
 
-void CPasswordPolicy::SetPolicyData(const wxString &policyname, const PWPolicy &policy)
+void PasswordPolicyDlg::SetPolicyData(const wxString &policyname, const PWPolicy &policy)
 {
   m_polname             = m_oldpolname             = policyname;
 
@@ -654,7 +655,7 @@ void CPasswordPolicy::SetPolicyData(const wxString &policyname, const PWPolicy &
   }
 }
 
-void CPasswordPolicy::CBox2Spin(wxCheckBox *checkbox, wxSpinCtrl *spinner)
+void PasswordPolicyDlg::CBox2Spin(wxCheckBox *checkbox, wxSpinCtrl *spinner)
 {
   Validate();
   TransferDataFromWindow();
@@ -669,7 +670,7 @@ void CPasswordPolicy::CBox2Spin(wxCheckBox *checkbox, wxSpinCtrl *spinner)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
  */
 
-void CPasswordPolicy::OnPwPolUseLowerCase( wxCommandEvent& )
+void PasswordPolicyDlg::OnPwPolUseLowerCase( wxCommandEvent& )
 {
   CBox2Spin(m_pwpUseLowerCtrl, m_pwpLCSpin);
 }
@@ -678,7 +679,7 @@ void CPasswordPolicy::OnPwPolUseLowerCase( wxCommandEvent& )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX4
  */
 
-void CPasswordPolicy::OnPwPolUseUpperCase( wxCommandEvent& )
+void PasswordPolicyDlg::OnPwPolUseUpperCase( wxCommandEvent& )
 {
   CBox2Spin(m_pwpUseUpperCtrl, m_pwpUCSpin);
 }
@@ -687,7 +688,7 @@ void CPasswordPolicy::OnPwPolUseUpperCase( wxCommandEvent& )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX5
  */
 
-void CPasswordPolicy::OnPwPolUseDigits( wxCommandEvent& )
+void PasswordPolicyDlg::OnPwPolUseDigits( wxCommandEvent& )
 {
   CBox2Spin(m_pwpUseDigitsCtrl, m_pwpDigSpin);
 }
@@ -696,7 +697,7 @@ void CPasswordPolicy::OnPwPolUseDigits( wxCommandEvent& )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
  */
 
-void CPasswordPolicy::OnPwPolUseSymbols( wxCommandEvent& )
+void PasswordPolicyDlg::OnPwPolUseSymbols( wxCommandEvent& )
 {
   CBox2Spin(m_pwpSymCtrl, m_pwpSymSpin);
   bool checked = m_pwpSymCtrl->GetValue();
@@ -708,7 +709,7 @@ void CPasswordPolicy::OnPwPolUseSymbols( wxCommandEvent& )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_RESET_SYMBOLS
  */
 
-void CPasswordPolicy::OnResetSymbolsClick( wxCommandEvent& WXUNUSED(event) )
+void PasswordPolicyDlg::OnResetSymbolsClick( wxCommandEvent& WXUNUSED(event) )
 {
   SetDefaultSymbolDisplay(true);
 }
@@ -717,7 +718,7 @@ void CPasswordPolicy::OnResetSymbolsClick( wxCommandEvent& WXUNUSED(event) )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
  */
 
-void CPasswordPolicy::OnPronouceableCBClick( wxCommandEvent& event )
+void PasswordPolicyDlg::OnPronouceableCBClick( wxCommandEvent& event )
 {
   if (event.IsChecked()) {
     // Check if ezread is also set - forbid both
@@ -736,7 +737,7 @@ void CPasswordPolicy::OnPronouceableCBClick( wxCommandEvent& event )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
  */
 
-void CPasswordPolicy::OnEZreadCBClick( wxCommandEvent& event )
+void PasswordPolicyDlg::OnEZreadCBClick( wxCommandEvent& event )
 {
   if (event.IsChecked()) {
     // Check if pronounceable is also set - forbid both
@@ -758,7 +759,7 @@ void CPasswordPolicy::OnEZreadCBClick( wxCommandEvent& event )
  * @param sizer the sizer from that the search for wxWindow objects is started.
  * @param state the state that shall be set for all wxWindow children of a wxSizer.
  */
-void CPasswordPolicy::EnableSizerChildren(wxSizer* sizer, bool state)
+void PasswordPolicyDlg::EnableSizerChildren(wxSizer* sizer, bool state)
 {
   if (sizer == nullptr) {
     return;
@@ -797,7 +798,7 @@ void CPasswordPolicy::EnableSizerChildren(wxSizer* sizer, bool state)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX41
  */
 
-void CPasswordPolicy::OnUseNamedPolicy( wxCommandEvent& event )
+void PasswordPolicyDlg::OnUseNamedPolicy( wxCommandEvent& event )
 {
   EnableSizerChildren(m_itemStaticBoxSizer6, !event.IsChecked());
   m_PoliciesSelectionCtrl->Enable(event.IsChecked());
@@ -814,7 +815,7 @@ void CPasswordPolicy::OnUseNamedPolicy( wxCommandEvent& event )
  * wxEVT_COMMAND_COMBOBOX_CLICKED event handler for ID_COMBOBOX41
  */
 
-void CPasswordPolicy::OnPolicynameSelection( wxCommandEvent& WXUNUSED(event) )
+void PasswordPolicyDlg::OnPolicynameSelection( wxCommandEvent& WXUNUSED(event) )
 {
   auto policyname = m_PoliciesSelectionCtrl->GetValue();
 
@@ -841,7 +842,7 @@ void CPasswordPolicy::OnPolicynameSelection( wxCommandEvent& WXUNUSED(event) )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GENERATEPASSWORD2
  */
 
-void CPasswordPolicy::OnGeneratePassword( wxCommandEvent& WXUNUSED(event) )
+void PasswordPolicyDlg::OnGeneratePassword( wxCommandEvent& WXUNUSED(event) )
 {
   UpdatePolicy();
 
@@ -852,7 +853,7 @@ void CPasswordPolicy::OnGeneratePassword( wxCommandEvent& WXUNUSED(event) )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_COPYPASSWORD2
  */
 
-void CPasswordPolicy::OnCopyPassword( wxCommandEvent& WXUNUSED(event) )
+void PasswordPolicyDlg::OnCopyPassword( wxCommandEvent& WXUNUSED(event) )
 {
   if (!(m_passwordCtrl->GetValue()).IsEmpty()) {
     Clipboard::GetInstance()->SetData(tostringx(m_passwordCtrl->GetValue()));
@@ -875,7 +876,7 @@ void CPasswordPolicy::OnCopyPassword( wxCommandEvent& WXUNUSED(event) )
  * the sum of all enabled "at least" lengths.  We have to do this 
  * in the UI, or else password generation crashes.
  */
-void CPasswordPolicy::OnAtLeastPasswordChars( wxSpinEvent& WXUNUSED(event) )
+void PasswordPolicyDlg::OnAtLeastPasswordChars( wxSpinEvent& WXUNUSED(event) )
 {
   wxSpinCtrl* spinControls[] = { m_pwpUCSpin, m_pwpLCSpin, m_pwpDigSpin, m_pwpSymSpin };
   int total = 0;

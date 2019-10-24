@@ -29785,7 +29785,7 @@ to the base entry "</string>
           <string name="proxy-Background colour">""</string>
           <string name="proxy-Base class">"wxDialog"</string>
           <bool name="proxy-Centre">1</bool>
-          <string name="proxy-Class">"CPasswordPolicy"</string>
+          <string name="proxy-Class">"PasswordPolicyDlg"</string>
           <string name="proxy-Custom styles">""</string>
           <string name="proxy-Data class header filename">""</string>
           <string name="proxy-Data class implementation filename">""</string>
@@ -30300,7 +30300,7 @@ to the base entry "</string>
                 <string name="type">"dialog-control-document"</string>
                 <document>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnPwPolUseLowerCase|NONE||CPasswordPolicy"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnPwPolUseLowerCase|NONE||PasswordPolicyDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
                   <long name="is-transient">0</long>
@@ -30603,7 +30603,7 @@ to the base entry "</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnPwPolUseUpperCase|NONE||CPasswordPolicy"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnPwPolUseUpperCase|NONE||PasswordPolicyDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
                   <long name="is-transient">0</long>
@@ -30906,7 +30906,7 @@ to the base entry "</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnPwPolUseDigits|NONE||CPasswordPolicy"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnPwPolUseDigits|NONE||PasswordPolicyDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
                   <long name="is-transient">0</long>
@@ -31209,7 +31209,7 @@ to the base entry "</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnPwPolUseSymbols|NONE||CPasswordPolicy"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnPwPolUseSymbols|NONE||PasswordPolicyDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
                   <long name="is-transient">0</long>
@@ -31595,7 +31595,7 @@ to the base entry "</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbButtonProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnResetSymbolsClick|NONE||CPasswordPolicy"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnResetSymbolsClick|NONE||PasswordPolicyDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"dialogcontrol"</string>
                   <long name="is-transient">0</long>
@@ -31662,7 +31662,7 @@ to the base entry "</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnEZreadCBClick|NONE||CPasswordPolicy"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnEZreadCBClick|NONE||PasswordPolicyDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
                   <long name="is-transient">0</long>
@@ -31754,7 +31754,7 @@ to the base entry "</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnPronouceableCBClick|NONE||CPasswordPolicy"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnPronouceableCBClick|NONE||PasswordPolicyDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
                   <long name="is-transient">0</long>
@@ -32015,7 +32015,7 @@ to the base entry "</string>
               <string name="type">"dialog-control-document"</string>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOkClick|NONE||CPasswordPolicy"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOkClick|NONE||PasswordPolicyDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>
@@ -32082,7 +32082,7 @@ to the base entry "</string>
               </document>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCancelClick|NONE||CPasswordPolicy"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCancelClick|NONE||PasswordPolicyDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>
@@ -32149,7 +32149,7 @@ to the base entry "</string>
               </document>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnHelpClick|NONE||CPasswordPolicy"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnHelpClick|NONE||PasswordPolicyDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>

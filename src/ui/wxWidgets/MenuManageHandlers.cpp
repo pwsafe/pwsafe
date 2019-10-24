@@ -225,7 +225,7 @@ void PasswordSafeFrame::OnGeneratePassword(wxCommandEvent& WXUNUSED(event))
 
   customPolicies[std2stringx(defaultName)] = defaultPolicy;
 
-  CPasswordPolicy ppdlg(this, m_core, customPolicies, CPasswordPolicy::DialogType::GENERATOR);
+  PasswordPolicyDlg ppdlg(this, m_core, customPolicies, PasswordPolicyDlg::DialogType::GENERATOR);
   ppdlg.SetPolicyData(defaultName, defaultPolicy);
 
   ppdlg.ShowModal();

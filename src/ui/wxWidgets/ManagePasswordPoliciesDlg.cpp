@@ -598,7 +598,7 @@ void ManagePasswordPoliciesDlg::OnNewClick( wxCommandEvent& )
   auto policies = m_PolicyManager->GetPolicies();
   auto policy   = m_PolicyManager->GetDefaultPolicy();
 
-  CPasswordPolicy ppdlg(this, m_core, policies);
+  PasswordPolicyDlg ppdlg(this, m_core, policies);
   ppdlg.SetPolicyData(wxEmptyString, policy);
 
   if (ppdlg.ShowModal() == wxID_OK) {
@@ -650,7 +650,7 @@ void ManagePasswordPoliciesDlg::OnEditClick( wxCommandEvent& )
     originalPolicy     = m_PolicyManager->GetPolicy(originalPolicyname.ToStdWstring());
   }
 
-  CPasswordPolicy ppdlg(this, m_core, policies);
+  PasswordPolicyDlg ppdlg(this, m_core, policies);
 
   ppdlg.SetPolicyData(originalPolicyname, originalPolicy);
 

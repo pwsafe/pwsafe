@@ -137,7 +137,7 @@ class wxBookCtrlEvent;
  * Options class declaration
  */
 
-class OptionsPropertySheetDlg: public wxPropertySheetDialog
+class OptionsPropertySheetDlg : public wxPropertySheetDialog
 {
   DECLARE_CLASS( OptionsPropertySheetDlg )
   DECLARE_EVENT_TABLE()
