@@ -8436,7 +8436,7 @@ Type the new combination once again to confirm it."</string>
           <string name="proxy-Background colour">""</string>
           <string name="proxy-Base class">"wxDialog"</string>
           <bool name="proxy-Centre">1</bool>
-          <string name="proxy-Class">"CAbout"</string>
+          <string name="proxy-Class">"AboutDlg"</string>
           <string name="proxy-Custom styles">""</string>
           <string name="proxy-Data class header filename">""</string>
           <string name="proxy-Data class implementation filename">""</string>
@@ -8785,7 +8785,7 @@ Type the new combination once again to confirm it."</string>
                 </document>
                 <document>
                   <string name="proxy-type">"wbHyperlinkCtrlProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_HYPERLINK|OnHyperlinkctrl1HyperlinkClicked|NONE||CAbout"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_HYPERLINK|OnHyperlinkctrl1HyperlinkClicked|NONE||AboutDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"dialogcontrol"</string>
                   <long name="is-transient">0</long>
@@ -9332,7 +9332,7 @@ Type the new combination once again to confirm it."</string>
               </document>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCloseClick|DESTROYWINDOW|ID_CABOUT|CAbout"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCloseClick|DESTROYWINDOW|ID_CABOUT|AboutDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>

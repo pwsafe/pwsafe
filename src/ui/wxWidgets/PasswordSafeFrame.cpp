@@ -1673,7 +1673,7 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnAboutClick( wxCommandEvent& /* evt */ )
 {
-  CAbout* window = new CAbout(this);
+  AboutDlg* window = new AboutDlg(this);
   window->ShowModal();
   window->Destroy();
 }

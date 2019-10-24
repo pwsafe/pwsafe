@@ -5,12 +5,13 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
-/** \file
+
+/** \file AboutDlg.h
 *
 */
 
-#ifndef _ABOUT_H_
-#define _ABOUT_H_
+#ifndef _ABOUTDLG_H_
+#define _ABOUTDLG_H_
 
 /*!
  * Includes
@@ -38,25 +39,25 @@
  */
 
 ////@begin control identifiers
-#define ID_CABOUT 10078
+#define ID_ABOUTDLG 10078
 #define wxID_VERSIONSTR 10079
 #define ID_CHECKNEW 10081
 #define ID_SITEHYPERLINK 10080
 #define ID_TEXTCTRL 10082
-#define SYMBOL_CABOUT_STYLE wxCAPTION|wxCLOSE_BOX|wxTAB_TRAVERSAL
-#define SYMBOL_CABOUT_TITLE _("About Password Safe")
-#define SYMBOL_CABOUT_IDNAME ID_CABOUT
-#define SYMBOL_CABOUT_SIZE wxSize(400, 300)
-#define SYMBOL_CABOUT_POSITION wxDefaultPosition
+#define SYMBOL_ABOUTDLG_STYLE wxCAPTION|wxCLOSE_BOX|wxTAB_TRAVERSAL
+#define SYMBOL_ABOUTDLG_TITLE _("About Password Safe")
+#define SYMBOL_ABOUTDLG_IDNAME ID_ABOUTDLG
+#define SYMBOL_ABOUTDLG_SIZE wxSize(400, 300)
+#define SYMBOL_ABOUTDLG_POSITION wxDefaultPosition
 ////@end control identifiers
 
 /*!
- * CAbout class declaration
+ * AboutDlg class declaration
  */
 
-class CAbout: public wxDialog, public wxThreadHelper
+class AboutDlg : public wxDialog, public wxThreadHelper
 {
-  DECLARE_CLASS( CAbout )
+  DECLARE_CLASS( AboutDlg )
   DECLARE_EVENT_TABLE()
 
   void CompareVersionData();
@@ -73,14 +74,14 @@ protected:
 
 public:
   /// Constructors
-  CAbout();
-  CAbout( wxWindow* parent, wxWindowID id = SYMBOL_CABOUT_IDNAME, const wxString& caption = SYMBOL_CABOUT_TITLE, const wxPoint& pos = SYMBOL_CABOUT_POSITION, const wxSize& size = SYMBOL_CABOUT_SIZE, long style = SYMBOL_CABOUT_STYLE );
+  AboutDlg();
+  AboutDlg( wxWindow* parent, wxWindowID id = SYMBOL_ABOUTDLG_IDNAME, const wxString& caption = SYMBOL_ABOUTDLG_TITLE, const wxPoint& pos = SYMBOL_ABOUTDLG_POSITION, const wxSize& size = SYMBOL_ABOUTDLG_SIZE, long style = SYMBOL_ABOUTDLG_STYLE );
 
   /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_CABOUT_IDNAME, const wxString& caption = SYMBOL_CABOUT_TITLE, const wxPoint& pos = SYMBOL_CABOUT_POSITION, const wxSize& size = SYMBOL_CABOUT_SIZE, long style = SYMBOL_CABOUT_STYLE );
+  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_ABOUTDLG_IDNAME, const wxString& caption = SYMBOL_ABOUTDLG_TITLE, const wxPoint& pos = SYMBOL_ABOUTDLG_POSITION, const wxSize& size = SYMBOL_ABOUTDLG_SIZE, long style = SYMBOL_ABOUTDLG_STYLE );
 
   /// Destructor
-  ~CAbout();
+  ~AboutDlg();
 
   /// Initialises member variables
   void Init();
@@ -90,7 +91,7 @@ public:
 
   void CheckNewVersion();
 
-////@begin CAbout event handler declarations
+////@begin AboutDlg event handler declarations
 
   /// event handler for ID_CHECKNEW
   void OnCheckNewClicked(wxHyperlinkEvent& WXUNUSED(event)) { CheckNewVersion(); };
@@ -106,24 +107,24 @@ public:
 
   /// wxEVT_THREAD event handler for wxID_ANY
   void OnDownloadCompleted(wxThreadEvent& event);
-////@end CAbout event handler declarations
+////@end AboutDlg event handler declarations
 
-////@begin CAbout member function declarations
+////@begin AboutDlg member function declarations
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
-////@end CAbout member function declarations
+////@end AboutDlg member function declarations
 
   /// Should we show tooltips?
   static bool ShowToolTips();
 
 private:
-////@begin CAbout member variables
+////@begin AboutDlg member variables
   wxTextCtrl* m_VersionStatus;
-////@end CAbout member variables
+////@end AboutDlg member variables
 
   /// The CURL handle with connection specific options for request of version data
   CURL *m_CurlHandle;
@@ -135,4 +136,4 @@ private:
   static const cstringT s_VERSION_URL;
 };
 
-#endif /* _ABOUT_H_ */
+#endif /* _ABOUTDLG_H_ */
