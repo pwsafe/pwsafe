@@ -2800,7 +2800,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
     return;
   }
 
-  CImportTextDlg dlg(this);
+  ImportTextDlg dlg(this);
   if (dlg.ShowModal() != wxID_OK)
     return;
 

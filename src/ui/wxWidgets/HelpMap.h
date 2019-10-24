@@ -6,15 +6,15 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __HELPMAP_H__
-#define __HELPMAP_H__
+#ifndef _HELPMAP_H_
+#define _HELPMAP_H_
 
 //For both export text and export XML
 DLG_HELP(ExportTextWarningDlgBase,                      html/export.html)
 DLG_HELP(CSafeCombinationChange,                        html/change_combo.html)
 DLG_HELP(MergeDlg,                                      html/file_menu.html)
 DLG_HELP(CSafeCombinationSetup,                         html/about_combinations.html)
-DLG_HELP(CImportTextDlg,                                html/import.html)
+DLG_HELP(ImportTextDlg,                                 html/import.html)
 DLG_HELP(CImportXMLDlg,                                 html/import.html#XML)
 DLG_HELP(CSafeCombinationEntry,                         html/create_new_db.html)
 
@@ -49,4 +49,4 @@ PROPSHEET_HELP(AddEditPropSheetDlg, _("Dates and Times"),  html/entering_pwd_dat
 PROPSHEET_HELP(AddEditPropSheetDlg, _("Password Policy"),  html/entering_pwd_pp.html)
 PROPSHEET_HELP(AddEditPropSheetDlg, _("Additional"),       html/entering_pwd_add.html)
 
-#endif
+#endif // _HELPMAP_H_
