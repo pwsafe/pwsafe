@@ -6,8 +6,12 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __ADVANCEDDSELECTIONDLG_H__
-#define __ADVANCEDDSELECTIONDLG_H__
+/** \file AdvancedSelectionDlg.h
+*
+*/
+
+#ifndef _ADVANCEDSELECTIONDLG_H_
+#define _ADVANCEDSELECTIONDLG_H_
 
 #include "../../core/ItemData.h"
 #include "./wxUtilities.h"
@@ -66,7 +70,7 @@ struct SelectionCriteria;
  * AdvancedSelectionDlg class declaration
  */
 
-class AdvancedSelectionPanel: public wxPanel
+class AdvancedSelectionPanel : public wxPanel
 {
   DECLARE_CLASS(AdvancedSelectionPanel)
   DECLARE_EVENT_TABLE()
@@ -101,7 +105,7 @@ public:
 };
 
 template <class DlgType>
-class AdvancedSelectionImpl: public AdvancedSelectionPanel
+class AdvancedSelectionImpl : public AdvancedSelectionPanel
 {
 public:
   AdvancedSelectionImpl(wxWindow* wnd, SelectionCriteria* existingCriteria, bool autoValidate):
@@ -162,4 +166,4 @@ public:
   }
 };
 
-#endif
+#endif /* _ADVANCEDSELECTIONDLG_H_ */
