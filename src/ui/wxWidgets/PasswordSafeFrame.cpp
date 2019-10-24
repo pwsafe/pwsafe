@@ -1392,7 +1392,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
 
 void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
 {
-  CProperties propsDialog(this, m_core);
+  PropertiesDlg propsDialog(this, m_core);
   propsDialog.ShowModal();
 
   if (propsDialog.HasDbNameChanged() || propsDialog.HasDbDescriptionChanged()) {
