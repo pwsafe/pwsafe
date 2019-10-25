@@ -1284,7 +1284,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
     return rc;
 
   // prompt for password, try to Load.
-  CSafeCombinationPrompt pwdprompt(this, m_core, fname);
+  SafeCombinationPromptDlg pwdprompt(this, m_core, fname);
   if (pwdprompt.ShowModal() == wxID_OK) {
     m_core.SetCurFile(tostringx(fname));
     StringX password = pwdprompt.GetPassword();
@@ -2534,7 +2534,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
 
   if (m_sysTray->IsLocked()) {
 
-    CSafeCombinationPrompt scp(nullptr, m_core, towxstring(m_core.GetCurFile()));
+    SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()));
 
     switch (scp.ShowModal()) {
       case (wxID_OK):

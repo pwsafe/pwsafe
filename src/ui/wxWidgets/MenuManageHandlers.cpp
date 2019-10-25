@@ -167,7 +167,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
   }
 #endif
 
-  CSafeCombinationPrompt pwdprompt(this, m_core, wxbf);
+  SafeCombinationPromptDlg pwdprompt(this, m_core, wxbf);
   if (pwdprompt.ShowModal() == wxID_OK) {
     const StringX passkey = pwdprompt.GetPassword();
     // unlock the file we're leaving

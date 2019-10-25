@@ -4816,7 +4816,7 @@ You can use any keyboard character. The combination is case-sensitive.
           <string name="proxy-Background colour">""</string>
           <string name="proxy-Base class">"wxDialog"</string>
           <bool name="proxy-Centre">1</bool>
-          <string name="proxy-Class">"CSafeCombinationPrompt"</string>
+          <string name="proxy-Class">"SafeCombinationPromptDlg"</string>
           <string name="proxy-Custom styles">""</string>
           <string name="proxy-Data class header filename">""</string>
           <string name="proxy-Data class implementation filename">""</string>
@@ -4834,7 +4834,7 @@ You can use any keyboard character. The combination is case-sensitive.
           <string name="proxy-Help text">""</string>
           <bool name="proxy-Hidden">0</bool>
           <string name="proxy-Icon">""</string>
-          <string name="proxy-Id name">"ID_CSAFECOMBINATIONPROMPT"</string>
+          <string name="proxy-Id name">"ID_SAFECOMBINATIONPROMPTDLG"</string>
           <long name="proxy-Id value">10062</long>
           <string name="proxy-Implementation filename">"SafeCombinationPromptDlg.cpp"</string>
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
@@ -5371,7 +5371,7 @@ combination:"</string>
                   <string name="type">"dialog-control-document"</string>
                   <document>
                     <string name="proxy-type">"wbBitmapButtonProxy"</string>
-                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtnClick|NONE||CSafeCombinationPrompt"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtnClick|NONE||SafeCombinationPromptDlg"</string>
                     <string name="filename">""</string>
                     <string name="icon-name">"bitmapbutton"</string>
                     <long name="is-transient">0</long>
@@ -5574,7 +5574,7 @@ combination:"</string>
               <string name="type">"dialog-control-document"</string>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOkClick|NONE||CSafeCombinationPrompt"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOkClick|NONE||SafeCombinationPromptDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>
@@ -5641,7 +5641,7 @@ combination:"</string>
               </document>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCancelClick|DESTROYWINDOW|ID_CSAFECOMBINATIONPROMPT|CSafeCombinationPrompt"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCancelClick|DESTROYWINDOW|ID_SAFECOMBINATIONPROMPTDLG|SafeCombinationPromptDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>

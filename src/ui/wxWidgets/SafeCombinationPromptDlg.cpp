@@ -9,6 +9,7 @@
 /** \file SafeCombinationPromptDlg.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -41,35 +42,35 @@
 #include "./graphics/cpane.xpm"
 
 /*!
- * CSafeCombinationPrompt type definition
+ * SafeCombinationPromptDlg type definition
  */
 
-IMPLEMENT_CLASS( CSafeCombinationPrompt, wxDialog )
+IMPLEMENT_CLASS( SafeCombinationPromptDlg, wxDialog )
 
 /*!
- * CSafeCombinationPrompt event table definition
+ * SafeCombinationPromptDlg event table definition
  */
 
-BEGIN_EVENT_TABLE( CSafeCombinationPrompt, wxDialog )
+BEGIN_EVENT_TABLE( SafeCombinationPromptDlg, wxDialog )
 
 #ifndef NO_YUBI
-////@begin CSafeCombinationPrompt event table entries
-  EVT_BUTTON( ID_YUBIBTN,  CSafeCombinationPrompt::OnYubibtnClick      )
-  EVT_TIMER(  POLLING_TIMER_ID, CSafeCombinationPrompt::OnPollingTimer )
-////@end CSafeCombinationPrompt event table entries
+////@begin SafeCombinationPromptDlg event table entries
+  EVT_BUTTON( ID_YUBIBTN,  SafeCombinationPromptDlg::OnYubibtnClick      )
+  EVT_TIMER(  POLLING_TIMER_ID, SafeCombinationPromptDlg::OnPollingTimer )
+////@end SafeCombinationPromptDlg event table entries
 #endif
 
-  EVT_BUTTON( wxID_OK,     CSafeCombinationPrompt::OnOkClick           )
-  EVT_BUTTON( wxID_CANCEL, CSafeCombinationPrompt::OnCancelClick       )
-  EVT_BUTTON( wxID_EXIT,   CSafeCombinationPrompt::OnExitClick         )
+  EVT_BUTTON( wxID_OK,     SafeCombinationPromptDlg::OnOkClick           )
+  EVT_BUTTON( wxID_CANCEL, SafeCombinationPromptDlg::OnCancelClick       )
+  EVT_BUTTON( wxID_EXIT,   SafeCombinationPromptDlg::OnExitClick         )
 
 END_EVENT_TABLE()
 
 /*!
- * CSafeCombinationPrompt constructors
+ * SafeCombinationPromptDlg constructors
  */
 
-CSafeCombinationPrompt::CSafeCombinationPrompt(wxWindow* parent, PWScore &core,
+SafeCombinationPromptDlg::SafeCombinationPromptDlg(wxWindow* parent, PWScore &core,
                                                const wxString &fname, wxWindowID id,
                                                const wxString& caption,
                                                const wxPoint& pos,
@@ -81,12 +82,12 @@ CSafeCombinationPrompt::CSafeCombinationPrompt(wxWindow* parent, PWScore &core,
 }
 
 /*!
- * CSafeCombinationPrompt creator
+ * SafeCombinationPromptDlg creator
  */
 
-bool CSafeCombinationPrompt::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool SafeCombinationPromptDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin CSafeCombinationPrompt creation
+////@begin SafeCombinationPromptDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -98,7 +99,7 @@ bool CSafeCombinationPrompt::Create( wxWindow* parent, wxWindowID id, const wxSt
   // Allow to resize the dialog in width, only.
   SetMaxSize(wxSize(wxDefaultCoord, GetMinSize().y));
   Centre();
-////@end CSafeCombinationPrompt creation
+////@end SafeCombinationPromptDlg creation
 #ifndef NO_YUBI
   SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
@@ -108,13 +109,13 @@ bool CSafeCombinationPrompt::Create( wxWindow* parent, wxWindowID id, const wxSt
 }
 
 /*!
- * CSafeCombinationPrompt destructor
+ * SafeCombinationPromptDlg destructor
  */
 
-CSafeCombinationPrompt::~CSafeCombinationPrompt()
+SafeCombinationPromptDlg::~SafeCombinationPromptDlg()
 {
-////@begin CSafeCombinationPrompt destruction
-////@end CSafeCombinationPrompt destruction
+////@begin SafeCombinationPromptDlg destruction
+////@end SafeCombinationPromptDlg destruction
 #ifndef NO_YUBI
   delete m_pollingTimer;
 #endif
@@ -124,26 +125,26 @@ CSafeCombinationPrompt::~CSafeCombinationPrompt()
  * Member initialisation
  */
 
-void CSafeCombinationPrompt::Init()
+void SafeCombinationPromptDlg::Init()
 {
-////@begin CSafeCombinationPrompt member initialisation
+////@begin SafeCombinationPromptDlg member initialisation
   m_scctrl = nullptr;
 #ifndef NO_YUBI
   m_YubiBtn = nullptr;
   m_yubiStatusCtrl = nullptr;
 #endif
 
-////@end CSafeCombinationPrompt member initialisation
+////@end SafeCombinationPromptDlg member initialisation
 }
 
 /*!
- * Control creation for CSafeCombinationPrompt
+ * Control creation for SafeCombinationPromptDlg
  */
 
-void CSafeCombinationPrompt::CreateControls()
+void SafeCombinationPromptDlg::CreateControls()
 {
-////@begin CSafeCombinationPrompt content construction
-  CSafeCombinationPrompt* itemDialog1 = this;
+////@begin SafeCombinationPromptDlg content construction
+  SafeCombinationPromptDlg* itemDialog1 = this;
 
   auto *itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
@@ -215,7 +216,7 @@ void CSafeCombinationPrompt::CreateControls()
 
   // Set validators
   itemStaticText7->SetValidator( wxGenericValidator(& m_filename) );
-////@end CSafeCombinationPrompt content construction
+////@end SafeCombinationPromptDlg content construction
   wxWindow* passwdCtrl = FindWindow(ID_PASSWORD);
   if (passwdCtrl) {
     passwdCtrl->SetFocus();
@@ -226,7 +227,7 @@ void CSafeCombinationPrompt::CreateControls()
  * Should we show tooltips?
  */
 
-bool CSafeCombinationPrompt::ShowToolTips()
+bool SafeCombinationPromptDlg::ShowToolTips()
 {
   return true;
 }
@@ -235,10 +236,10 @@ bool CSafeCombinationPrompt::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap CSafeCombinationPrompt::GetBitmapResource( const wxString& name )
+wxBitmap SafeCombinationPromptDlg::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
-////@begin CSafeCombinationPrompt bitmap retrieval
+////@begin SafeCombinationPromptDlg bitmap retrieval
   if (name == L"graphics/cpane.xpm")
   {
     wxBitmap bitmap(cpane_xpm);
@@ -252,22 +253,22 @@ wxBitmap CSafeCombinationPrompt::GetBitmapResource( const wxString& name )
   }
 #endif
   return wxNullBitmap;
-////@end CSafeCombinationPrompt bitmap retrieval
+////@end SafeCombinationPromptDlg bitmap retrieval
 }
 
 /*!
  * Get icon resources
  */
 
-wxIcon CSafeCombinationPrompt::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon SafeCombinationPromptDlg::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
-////@begin CSafeCombinationPrompt icon retrieval
+////@begin SafeCombinationPromptDlg icon retrieval
   return wxNullIcon;
-////@end CSafeCombinationPrompt icon retrieval
+////@end SafeCombinationPromptDlg icon retrieval
 }
 
-void CSafeCombinationPrompt::ProcessPhrase()
+void SafeCombinationPromptDlg::ProcessPhrase()
 {
   if (m_core.CheckPasskey(tostringx(m_filename),
                           m_password) != PWScore::SUCCESS) {
@@ -295,7 +296,7 @@ void CSafeCombinationPrompt::ProcessPhrase()
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CSafeCombinationPrompt::OnOkClick( wxCommandEvent& /* evt */ )
+void SafeCombinationPromptDlg::OnOkClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     if (m_password.empty()) {
@@ -318,24 +319,24 @@ void CSafeCombinationPrompt::OnOkClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void CSafeCombinationPrompt::OnCancelClick( wxCommandEvent& /* evt */ )
+void SafeCombinationPromptDlg::OnCancelClick( wxCommandEvent& /* evt */ )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationPrompt.
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationPromptDlg.
   // Before editing this code, remove the block markers.
   EndModal(wxID_CANCEL);
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationPrompt.
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationPromptDlg.
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_EXIT
  */
 
-void CSafeCombinationPrompt::OnExitClick( wxCommandEvent& /* evt */ )
+void SafeCombinationPromptDlg::OnExitClick( wxCommandEvent& /* evt */ )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_EXIT in CSafeCombinationPrompt.
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_EXIT in SafeCombinationPromptDlg.
   // Before editing this code, remove the block markers.
   EndModal(wxID_EXIT);
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationPrompt.
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationPromptDlg.
 }
 
 #ifndef NO_YUBI
@@ -343,7 +344,7 @@ void CSafeCombinationPrompt::OnExitClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void CSafeCombinationPrompt::OnYubibtnClick( wxCommandEvent& /* event */ )
+void SafeCombinationPromptDlg::OnYubibtnClick( wxCommandEvent& /* event */ )
 {
   m_scctrl->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
   if (Validate() && TransferDataFromWindow()) {
@@ -364,7 +365,7 @@ void CSafeCombinationPrompt::OnYubibtnClick( wxCommandEvent& /* event */ )
   }
 }
 
-void CSafeCombinationPrompt::OnPollingTimer(wxTimerEvent &evt)
+void SafeCombinationPromptDlg::OnPollingTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == POLLING_TIMER_ID) {
     HandlePollingTimer(); // in CYubiMixin
