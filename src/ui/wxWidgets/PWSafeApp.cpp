@@ -462,7 +462,7 @@ bool PWSafeApp::OnInit()
   if (!cmd_closed && !cmd_silent && !cmd_minimized) {
     // Get the file, r/w mode and password from user
     // Note that file may be new
-    CSafeCombinationEntry* initWindow = new CSafeCombinationEntry(nullptr, m_core);
+    SafeCombinationEntryDlg* initWindow = new SafeCombinationEntryDlg(nullptr, m_core);
     int returnValue = initWindow->ShowModal();
 
     initWindow->Destroy();

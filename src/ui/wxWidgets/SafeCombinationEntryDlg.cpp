@@ -55,44 +55,44 @@
 #include <iomanip>
 
 /*!
- * CSafeCombinationEntry type definition
+ * SafeCombinationEntryDlg type definition
  */
 
-IMPLEMENT_CLASS( CSafeCombinationEntry, wxDialog )
+IMPLEMENT_CLASS( SafeCombinationEntryDlg, wxDialog )
 
 /*!
- * CSafeCombinationEntry event table definition
+ * SafeCombinationEntryDlg event table definition
  */
 
-BEGIN_EVENT_TABLE( CSafeCombinationEntry, wxDialog )
+BEGIN_EVENT_TABLE( SafeCombinationEntryDlg, wxDialog )
 
-////@begin CSafeCombinationEntry event table entries
-  EVT_ACTIVATE( CSafeCombinationEntry::OnActivate                               )
-  EVT_BUTTON(   ID_ELLIPSIS,        CSafeCombinationEntry::OnEllipsisClick      )
-  EVT_BUTTON(   ID_NEWDB,           CSafeCombinationEntry::OnNewDbClick         )
+////@begin SafeCombinationEntryDlg event table entries
+  EVT_ACTIVATE( SafeCombinationEntryDlg::OnActivate                               )
+  EVT_BUTTON(   ID_ELLIPSIS,        SafeCombinationEntryDlg::OnEllipsisClick      )
+  EVT_BUTTON(   ID_NEWDB,           SafeCombinationEntryDlg::OnNewDbClick         )
 #ifndef NO_YUBI
-  EVT_BUTTON(   ID_YUBIBTN,         CSafeCombinationEntry::OnYubibtnClick       )
-  EVT_TIMER(    POLLING_TIMER_ID,   CSafeCombinationEntry::OnPollingTimer       )
+  EVT_BUTTON(   ID_YUBIBTN,         SafeCombinationEntryDlg::OnYubibtnClick       )
+  EVT_TIMER(    POLLING_TIMER_ID,   SafeCombinationEntryDlg::OnPollingTimer       )
 #endif
-  EVT_BUTTON(   wxID_OK,            CSafeCombinationEntry::OnOk                 )
-  EVT_BUTTON(   wxID_CANCEL,        CSafeCombinationEntry::OnCancel             )
-  EVT_COMBOBOX( ID_DBASECOMBOBOX,   CSafeCombinationEntry::OnDBSelectionChange  )
-  EVT_CHECKBOX( ID_READONLY,        CSafeCombinationEntry::OnReadonlyClick      )
-  EVT_CHECKBOX( ID_SHOWCOMBINATION, CSafeCombinationEntry::OnShowCombination    )
-////@end CSafeCombinationEntry event table entries
+  EVT_BUTTON(   wxID_OK,            SafeCombinationEntryDlg::OnOk                 )
+  EVT_BUTTON(   wxID_CANCEL,        SafeCombinationEntryDlg::OnCancel             )
+  EVT_COMBOBOX( ID_DBASECOMBOBOX,   SafeCombinationEntryDlg::OnDBSelectionChange  )
+  EVT_CHECKBOX( ID_READONLY,        SafeCombinationEntryDlg::OnReadonlyClick      )
+  EVT_CHECKBOX( ID_SHOWCOMBINATION, SafeCombinationEntryDlg::OnShowCombination    )
+////@end SafeCombinationEntryDlg event table entries
 END_EVENT_TABLE()
 
 /*!
- * CSafeCombinationEntry constructors
+ * SafeCombinationEntryDlg constructors
  */
 
-CSafeCombinationEntry::CSafeCombinationEntry(PWScore &core)
+SafeCombinationEntryDlg::SafeCombinationEntryDlg(PWScore &core)
 : m_core(core), m_tries(0)
 {
   Init();
 }
 
-CSafeCombinationEntry::CSafeCombinationEntry(wxWindow* parent, PWScore &core,
+SafeCombinationEntryDlg::SafeCombinationEntryDlg(wxWindow* parent, PWScore &core,
                                              wxWindowID id,
                                              const wxString& caption,
                                              const wxPoint& pos,
@@ -104,12 +104,12 @@ CSafeCombinationEntry::CSafeCombinationEntry(wxWindow* parent, PWScore &core,
 }
 
 /*!
- * CSafeCombinationEntry creator
+ * SafeCombinationEntryDlg creator
  */
 
-bool CSafeCombinationEntry::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool SafeCombinationEntryDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin CSafeCombinationEntry creation
+////@begin SafeCombinationEntryDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -121,7 +121,7 @@ bool CSafeCombinationEntry::Create( wxWindow* parent, wxWindowID id, const wxStr
   // Allow to resize the dialog in width, only.
   SetMaxSize(wxSize(wxDefaultCoord, GetMinSize().y));
   Centre();
-////@end CSafeCombinationEntry creation
+////@end SafeCombinationEntryDlg creation
 #ifndef NO_YUBI
   SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
@@ -131,13 +131,13 @@ bool CSafeCombinationEntry::Create( wxWindow* parent, wxWindowID id, const wxStr
 }
 
 /*!
- * CSafeCombinationEntry destructor
+ * SafeCombinationEntryDlg destructor
  */
 
-CSafeCombinationEntry::~CSafeCombinationEntry()
+SafeCombinationEntryDlg::~SafeCombinationEntryDlg()
 {
-////@begin CSafeCombinationEntry destruction
-////@end CSafeCombinationEntry destruction
+////@begin SafeCombinationEntryDlg destruction
+////@end SafeCombinationEntryDlg destruction
 #ifndef NO_YUBI
   delete m_pollingTimer;
 #endif
@@ -147,11 +147,11 @@ CSafeCombinationEntry::~CSafeCombinationEntry()
  * Member initialisation
  */
 
-void CSafeCombinationEntry::Init()
+void SafeCombinationEntryDlg::Init()
 {
   m_readOnly = m_core.IsReadOnly() || PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
   m_filename = m_core.GetCurFile().c_str();
-////@begin CSafeCombinationEntry member initialisation
+////@begin SafeCombinationEntryDlg member initialisation
   m_version = nullptr;
   m_filenameCB = nullptr;
   m_combinationEntry = nullptr;
@@ -160,17 +160,17 @@ void CSafeCombinationEntry::Init()
   m_yubiStatusCtrl = nullptr;
 #endif
   m_postInitDone = false;
-////@end CSafeCombinationEntry member initialisation
+////@end SafeCombinationEntryDlg member initialisation
 }
 
 /*!
- * Control creation for CSafeCombinationEntry
+ * Control creation for SafeCombinationEntryDlg
  */
 
-void CSafeCombinationEntry::CreateControls()
+void SafeCombinationEntryDlg::CreateControls()
 {
-////@begin CSafeCombinationEntry content construction
-  CSafeCombinationEntry* itemDialog1 = this;
+////@begin SafeCombinationEntryDlg content construction
+  SafeCombinationEntryDlg* itemDialog1 = this;
 
   auto *itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
   itemDialog1->SetSizer(itemBoxSizer2);
@@ -255,7 +255,7 @@ void CSafeCombinationEntry::CreateControls()
   // Set validators
   m_filenameCB->SetValidator( wxGenericValidator(& m_filename) );
   itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly) );
-////@end CSafeCombinationEntry content construction
+////@end SafeCombinationEntryDlg content construction
   m_combinationEntry->SetValidatorTarget(& m_password);
 
 #if (REVISION == 0)
@@ -276,7 +276,7 @@ void CSafeCombinationEntry::CreateControls()
   SetIcons(wxGetApp().GetAppIcons());
 }
 
-void CSafeCombinationEntry::OnActivate( wxActivateEvent& event )
+void SafeCombinationEntryDlg::OnActivate( wxActivateEvent& event )
 {
   UNREFERENCED_PARAMETER(event);
   if (!m_postInitDone) {
@@ -292,7 +292,7 @@ void CSafeCombinationEntry::OnActivate( wxActivateEvent& event )
  * Should we show tooltips?
  */
 
-bool CSafeCombinationEntry::ShowToolTips()
+bool SafeCombinationEntryDlg::ShowToolTips()
 {
   return true;
 }
@@ -301,10 +301,10 @@ bool CSafeCombinationEntry::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap CSafeCombinationEntry::GetBitmapResource( const wxString& name )
+wxBitmap SafeCombinationEntryDlg::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
-////@begin CSafeCombinationEntry bitmap retrieval
+////@begin SafeCombinationEntryDlg bitmap retrieval
   if (name == _T("graphics/cpane.xpm"))
   {
     wxBitmap bitmap(cpane_xpm);
@@ -323,26 +323,26 @@ wxBitmap CSafeCombinationEntry::GetBitmapResource( const wxString& name )
   }
 #endif
   return wxNullBitmap;
-////@end CSafeCombinationEntry bitmap retrieval
+////@end SafeCombinationEntryDlg bitmap retrieval
 }
 
 /*!
  * Get icon resources
  */
 
-wxIcon CSafeCombinationEntry::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon SafeCombinationEntryDlg::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
-////@begin CSafeCombinationEntry icon retrieval
+////@begin SafeCombinationEntryDlg icon retrieval
   return wxNullIcon;
-////@end CSafeCombinationEntry icon retrieval
+////@end SafeCombinationEntryDlg icon retrieval
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CSafeCombinationEntry::OnOk( wxCommandEvent& )
+void SafeCombinationEntryDlg::OnOk( wxCommandEvent& )
 {
   if (Validate() && TransferDataFromWindow()) {
     if (m_password.empty()) {
@@ -363,7 +363,7 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
   } // Validate && TransferDataFromWindow
 }
 
-void CSafeCombinationEntry::ProcessPhrase()
+void SafeCombinationEntryDlg::ProcessPhrase()
 {
   int status = m_core.CheckPasskey(tostringx(m_filename), m_password);
   wxString errmess;
@@ -414,19 +414,19 @@ void CSafeCombinationEntry::ProcessPhrase()
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void CSafeCombinationEntry::OnCancel( wxCommandEvent& event )
+void SafeCombinationEntryDlg::OnCancel( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationEntry.
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationEntryDlg.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationEntry.
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationEntryDlg.
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_ELLIPSIS
  */
 
-void CSafeCombinationEntry::OnEllipsisClick( wxCommandEvent& /* evt */ )
+void SafeCombinationEntryDlg::OnEllipsisClick( wxCommandEvent& /* evt */ )
 {
   wxFileDialog fd(this, _("Please Choose a Database to Open:"),
                   PWSdirs::GetSafeDir().c_str(), wxEmptyString,
@@ -445,7 +445,7 @@ void CSafeCombinationEntry::OnEllipsisClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEWDB
  */
 
-void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
+void SafeCombinationEntryDlg::OnNewDbClick( wxCommandEvent& /* evt */ )
 {
   // 1. Get a filename from a file dialog box
   // 2. Get a password
@@ -511,7 +511,7 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& /* event */ )
+void SafeCombinationEntryDlg::OnYubibtnClick( wxCommandEvent& /* event */ )
 {
   m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
 
@@ -534,7 +534,7 @@ void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& /* event */ )
   }
 }
 
-void CSafeCombinationEntry::OnPollingTimer(wxTimerEvent &evt)
+void SafeCombinationEntryDlg::OnPollingTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == POLLING_TIMER_ID) {
     HandlePollingTimer(); // in CYubiMixin
@@ -542,12 +542,12 @@ void CSafeCombinationEntry::OnPollingTimer(wxTimerEvent &evt)
 }
 #endif
 
-void CSafeCombinationEntry::OnDBSelectionChange( wxCommandEvent& /*event*/ )
+void SafeCombinationEntryDlg::OnDBSelectionChange( wxCommandEvent& /*event*/ )
 {
   UpdateReadOnlyCheckbox();
 }
 
-void CSafeCombinationEntry::UpdateReadOnlyCheckbox()
+void SafeCombinationEntryDlg::UpdateReadOnlyCheckbox()
 {
   wxFileName fn(m_filenameCB->GetValue());
 
@@ -562,7 +562,7 @@ void CSafeCombinationEntry::UpdateReadOnlyCheckbox()
   }
 }
 
-void CSafeCombinationEntry::UpdateNew(bool isRO)
+void SafeCombinationEntryDlg::UpdateNew(bool isRO)
 {
   FindWindow(ID_NEWDB)->Enable(!isRO);
 }
@@ -571,7 +571,7 @@ void CSafeCombinationEntry::UpdateNew(bool isRO)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_READONLY
  */
 
-void CSafeCombinationEntry::OnReadonlyClick( wxCommandEvent& event )
+void SafeCombinationEntryDlg::OnReadonlyClick( wxCommandEvent& event )
 {
   m_readOnly = event.IsChecked();
   UpdateNew(m_readOnly);
@@ -581,7 +581,7 @@ void CSafeCombinationEntry::OnReadonlyClick( wxCommandEvent& event )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_SHOWCOMBINATION
  */
 
-void CSafeCombinationEntry::OnShowCombination( wxCommandEvent& event )
+void SafeCombinationEntryDlg::OnShowCombination( wxCommandEvent& event )
 {
   m_combinationEntry->SecureTextfield(!event.IsChecked());
 }

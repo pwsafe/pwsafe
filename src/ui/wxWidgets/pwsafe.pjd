@@ -550,7 +550,7 @@
           <string name="proxy-Header filename">"PWSafeApp.h"</string>
           <string name="proxy-Help filename">""</string>
           <string name="proxy-Implementation filename">"PWSafeApp.cpp"</string>
-          <string name="proxy-Main window">"ID_CSAFECOMBINATIONENTRY"</string>
+          <string name="proxy-Main window">"ID_SAFECOMBINATIONENTRYDLG"</string>
           <string name="title">"PWSafeApp"</string>
           <long name="title-mode">0</long>
           <string name="type">"dialog-document"</string>
@@ -2594,7 +2594,7 @@
           <string name="proxy-Background colour">""</string>
           <string name="proxy-Base class">"wxDialog"</string>
           <bool name="proxy-Centre">1</bool>
-          <string name="proxy-Class">"CSafeCombinationEntry"</string>
+          <string name="proxy-Class">"SafeCombinationEntryDlg"</string>
           <string name="proxy-Custom styles">""</string>
           <string name="proxy-Data class header filename">""</string>
           <string name="proxy-Data class implementation filename">""</string>
@@ -2612,7 +2612,7 @@
           <string name="proxy-Help text">""</string>
           <bool name="proxy-Hidden">0</bool>
           <string name="proxy-Icon">""</string>
-          <string name="proxy-Id name">"ID_CSAFECOMBINATIONENTRY"</string>
+          <string name="proxy-Id name">"ID_SAFECOMBINATIONENTRYDLG"</string>
           <long name="proxy-Id value">10000</long>
           <string name="proxy-Implementation filename">"SafeCombinationEntryDlg.cpp"</string>
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
@@ -3101,7 +3101,7 @@
                 </document>
                 <document>
                   <string name="proxy-type">"wbButtonProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnEllipsisClick|NONE||CSafeCombinationEntry"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnEllipsisClick|NONE||SafeCombinationEntryDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"dialogcontrol"</string>
                   <long name="is-transient">0</long>
@@ -3348,7 +3348,7 @@
                 <string name="type">"dialog-control-document"</string>
                 <document>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnReadonlyClick|NONE||CSafeCombinationEntry"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnReadonlyClick|NONE||SafeCombinationEntryDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
                   <long name="is-transient">0</long>
@@ -3439,7 +3439,7 @@
                 </document>
                 <document>
                   <string name="proxy-type">"wbButtonProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnNewDbClick|NONE||CSafeCombinationEntry"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnNewDbClick|NONE||SafeCombinationEntryDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"dialogcontrol"</string>
                   <long name="is-transient">0</long>
@@ -3532,7 +3532,7 @@
                 <string name="type">"dialog-control-document"</string>
                 <document>
                   <string name="proxy-type">"wbBitmapButtonProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtnClick|NONE||CSafeCombinationEntry"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtnClick|NONE||SafeCombinationEntryDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"bitmapbutton"</string>
                   <long name="is-transient">0</long>
@@ -3707,7 +3707,7 @@
                 <string name="type">"dialog-control-document"</string>
                 <document>
                   <string name="proxy-type">"wbButtonProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOk|NONE||CSafeCombinationEntry"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOk|NONE||SafeCombinationEntryDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"dialogcontrol"</string>
                   <long name="is-transient">0</long>
@@ -3774,7 +3774,7 @@
                 </document>
                 <document>
                   <string name="proxy-type">"wbButtonProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCancel|NONE||CSafeCombinationEntry"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCancel|NONE||SafeCombinationEntryDlg"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"dialogcontrol"</string>
                   <long name="is-transient">0</long>
