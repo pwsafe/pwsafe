@@ -6,8 +6,12 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __PWS_SYNCWIZARD__
-#define __PWS_SYNCWIZARD__
+/** \file SyncWizard.h
+* 
+*/
+
+#ifndef _SYNCWIZARD_H_
+#define _SYNCWIZARD_H_
 
 #include <wx/wizard.h> 
 
@@ -17,20 +21,20 @@ struct SyncData;
 class CReport;
 
 /*!
- * PwsSyncWizard class declaration
+ * SyncWizard class declaration
  * 
  * A simple wizard that implements the "Synchronize" menu item as a series of wizard
  * pages instead of a warning dialog followed by a "File Open" dialog followed by
  * SafeCombinationPrompt dialog (like in the MFC version)
  */
-class PwsSyncWizard : public wxWizard {
-
+class SyncWizard : public wxWizard
+{
   wxWizardPageSimple* m_page1;
   SyncData* m_syncData;
 
 public:
-  PwsSyncWizard(wxWindow* parent, PWScore* core);
-  ~PwsSyncWizard();
+  SyncWizard(wxWindow* parent, PWScore* core);
+  ~SyncWizard();
 
   //users must pass the return value of this function to RunWizard
   //for launching the wizard 
@@ -44,4 +48,4 @@ public:
   DECLARE_EVENT_TABLE()
 };
 
-#endif // __PWS_SYNCWIZARD__
+#endif // _SYNCWIZARD_H_

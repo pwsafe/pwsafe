@@ -3454,7 +3454,7 @@ void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
   wxCHECK_RET(!m_core.IsReadOnly() && m_core.IsDbOpen() && m_core.GetNumEntries() != 0,
                 wxT("Synchronize menu enabled for empty or read-only database!"));
 
-  PwsSyncWizard wiz(this, &m_core);
+  SyncWizard wiz(this, &m_core);
   wiz.RunWizard(wiz.GetFirstPage());
 
   if (wiz.GetNumUpdated() > 0)

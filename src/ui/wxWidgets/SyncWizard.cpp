@@ -212,13 +212,13 @@ public:
 };
 
 ///////////////////////////////////////////////////
-// PwsSyncWizard Implementation
+// SyncWizard Implementation
 //
-BEGIN_EVENT_TABLE(PwsSyncWizard, wxWizard)
-  EVT_WIZARD_PAGE_CHANGING(wxID_ANY, PwsSyncWizard::OnWizardPageChanging)
+BEGIN_EVENT_TABLE(SyncWizard, wxWizard)
+  EVT_WIZARD_PAGE_CHANGING(wxID_ANY, SyncWizard::OnWizardPageChanging)
 END_EVENT_TABLE()
 
-PwsSyncWizard::PwsSyncWizard(wxWindow* parent, PWScore* core):
+SyncWizard::SyncWizard(wxWindow* parent, PWScore* core):
                 wxWizard(parent, wxID_ANY, _("Synchronize another database with currently open database")),
                 m_page1(0), m_syncData(new SyncData)
 {
@@ -258,13 +258,13 @@ PwsSyncWizard::PwsSyncWizard(wxWindow* parent, PWScore* core):
   GetPageAreaSizer()->Add(m_page1);
 }
 
-PwsSyncWizard::~PwsSyncWizard()
+SyncWizard::~SyncWizard()
 {
   delete m_syncData;
   m_syncData = 0;
 }
 
-void PwsSyncWizard::OnWizardPageChanging(wxWizardEvent& evt)
+void SyncWizard::OnWizardPageChanging(wxWizardEvent& evt)
 {
   if (evt.GetDirection()) {
     ;//wxMessageBox(wxT("In wizard: Going forward"));
@@ -277,16 +277,16 @@ void PwsSyncWizard::OnWizardPageChanging(wxWizardEvent& evt)
   page->SaveData(m_syncData);
 }
 
-size_t PwsSyncWizard::GetNumUpdated() const
+size_t SyncWizard::GetNumUpdated() const
 {
   return m_syncData->numUpdated;
 }
 
-bool PwsSyncWizard::ShowReport() const {
+bool SyncWizard::ShowReport() const {
   return m_syncData->showReport;
 }
 
-CReport* PwsSyncWizard::GetReport() const {
+CReport* SyncWizard::GetReport() const {
   return &m_syncData->syncReport;
 }
 
