@@ -6,24 +6,28 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __VIEWREPORT_H__
-#define __VIEWREPORT_H__
+/** \file ViewReportDlg.h
+* 
+*/
+
+#ifndef _VIEWREPORTDLG_H_
+#define _VIEWREPORTDLG_H_
 
 #include <wx/dialog.h> // Base class: wxDialog
 
 class CReport;
 
-class CViewReport : public wxDialog {
+class ViewReportDlg : public wxDialog {
 
   CReport* m_pRpt;
   
 public:
-  CViewReport(wxWindow* pParent, CReport* pRpt);
-  ~CViewReport();
+  ViewReportDlg(wxWindow* pParent, CReport* pRpt);
+  ~ViewReportDlg();
 
   void OnSave(wxCommandEvent& event);
   void OnClose(wxCommandEvent& event);
   void OnCopy(wxCommandEvent& event);
 };
 
-#endif // __VIEWREPORT_H__
+#endif // _VIEWREPORTDLG_H_

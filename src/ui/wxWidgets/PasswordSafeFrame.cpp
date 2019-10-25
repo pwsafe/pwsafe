@@ -3130,7 +3130,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
 
 void PasswordSafeFrame::ViewReport(CReport& rpt)
 {
-  CViewReport vr(this, &rpt);
+  ViewReportDlg vr(this, &rpt);
   vr.ShowModal();
 }
 
