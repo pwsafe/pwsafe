@@ -626,15 +626,15 @@ void PasswordSafeFrame::CreateControls()
                         wxDefaultSize, wxHSCROLL|wxVSCROLL );
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0).Proportion(1));
 
-  m_tree = new PWSTreeCtrl( this, m_core, ID_TREECTRL, wxDefaultPosition,
+  m_tree = new TreeCtrl( this, m_core, ID_TREECTRL, wxDefaultPosition,
                             wxDefaultSize,
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
 
   // let the tree ctrl handle ID_ADDGROUP & ID_RENAME all by itself
   Connect(ID_ADDGROUP, wxEVT_COMMAND_MENU_SELECTED,
-                       wxCommandEventHandler(PWSTreeCtrl::OnAddGroup), nullptr, m_tree);
+                       wxCommandEventHandler(TreeCtrl::OnAddGroup), nullptr, m_tree);
   Connect(ID_RENAME, wxEVT_COMMAND_MENU_SELECTED,
-                       wxCommandEventHandler(PWSTreeCtrl::OnRenameGroup), nullptr, m_tree);
+                       wxCommandEventHandler(TreeCtrl::OnRenameGroup), nullptr, m_tree);
 
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
@@ -1869,7 +1869,7 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
   }
 }
 
-static void FlattenTree(wxTreeItemId id, PWSTreeCtrl* tree, OrderedItemList& olist)
+static void FlattenTree(wxTreeItemId id, TreeCtrl* tree, OrderedItemList& olist)
 {
   wxTreeItemIdValue cookie;
 

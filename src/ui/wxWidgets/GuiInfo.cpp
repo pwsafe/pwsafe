@@ -39,7 +39,7 @@ void GuiInfo::Restore(PasswordSafeFrame* frame)
   RestoreGridViewInfo(frame->m_grid);
 }
 
-void CollectExpandedNodes(PWSTreeCtrl* tree, wxTreeItemId root, wxArrayString& expanded)
+void CollectExpandedNodes(TreeCtrl* tree, wxTreeItemId root, wxArrayString& expanded)
 {
   if ( !tree || tree->GetCount() == 0 )
     return;
@@ -54,7 +54,7 @@ void CollectExpandedNodes(PWSTreeCtrl* tree, wxTreeItemId root, wxArrayString& e
   }
 }
 
-void GuiInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
+void GuiInfo::SaveTreeViewInfo(TreeCtrl* tree)
 {
   //save the first visible item
   wxTreeItemId treeItem = tree->GetFirstVisibleItem();
@@ -160,7 +160,7 @@ void GuiInfo::RestoreGridViewInfo(GridCtrl* grid)
 }
 
 template <class TreeFunc>
-void RestoreTreeItem(PWSTreeCtrl* tree, const string_or_uuid& val, TreeFunc func)
+void RestoreTreeItem(TreeCtrl* tree, const string_or_uuid& val, TreeFunc func)
 {
   wxTreeItemId id;
   switch(val.Type()) {
@@ -178,17 +178,17 @@ void RestoreTreeItem(PWSTreeCtrl* tree, const string_or_uuid& val, TreeFunc func
 }
 
 struct SelectItem {
-  void operator()(PWSTreeCtrl* tree, const wxTreeItemId& id) { 
+  void operator()(TreeCtrl* tree, const wxTreeItemId& id) { 
       tree->wxTreeCtrl::SelectItem(id, true); 
   }
 };
 
 struct BringItemToTop {
   //best I can do right now to bring it to top
-  void operator()(PWSTreeCtrl* tree, const wxTreeItemId& id) { tree->ScrollTo(id); }
+  void operator()(TreeCtrl* tree, const wxTreeItemId& id) { tree->ScrollTo(id); }
 };
 
-void GuiInfo::RestoreTreeViewInfo(PWSTreeCtrl* tree)
+void GuiInfo::RestoreTreeViewInfo(TreeCtrl* tree)
 {
   // We do this first to ensure that item selection and scrolling an item to top are not wasted by this
   for (size_t idx = 0; idx < m_expanded.Count(); ++idx) {

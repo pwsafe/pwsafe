@@ -19,7 +19,7 @@
 #include <wx/arrstr.h>
 
 class PasswordSafeFrame;
-class PWSTreeCtrl;
+class TreeCtrl;
 class GridCtrl;
 
 class string_or_uuid
@@ -72,10 +72,10 @@ class GuiInfo
     void Save(PasswordSafeFrame* frame);
     void Restore(PasswordSafeFrame* frame);
 
-    void SaveTreeViewInfo(PWSTreeCtrl* tree);
+    void SaveTreeViewInfo(TreeCtrl* tree);
     void SaveGridViewInfo(GridCtrl* grid);
 
-    void RestoreTreeViewInfo(PWSTreeCtrl* tree);
+    void RestoreTreeViewInfo(TreeCtrl* tree);
     void RestoreGridViewInfo(GridCtrl* grid);
 
   private:

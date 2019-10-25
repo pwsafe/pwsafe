@@ -5,12 +5,13 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
-/** \file
+
+/** \file TreeCtrl.h
 * 
 */
 
-#ifndef _PWSTREECTRL_H_
-#define _PWSTREECTRL_H_
+#ifndef _TREECTRL_H_
+#define _TREECTRL_H_
 
 /*!
  * Includes
@@ -33,7 +34,7 @@
  */
 
 ////@begin forward declarations
-class PWSTreeCtrl;
+class TreeCtrl;
 ////@end forward declarations
 
 /*!
@@ -51,25 +52,25 @@ class PWSTreeCtrl;
 typedef std::map<pws_os::CUUID, wxTreeItemId, std::less<pws_os::CUUID> > UUIDTIMapT;
 
 /*!
- * PWSTreeCtrl class declaration
+ * TreeCtrl class declaration
  */
 
-class PWSTreeCtrl: public wxTreeCtrl, public Observer
+class TreeCtrl : public wxTreeCtrl, public Observer
 {
-  DECLARE_CLASS( PWSTreeCtrl )
+  DECLARE_CLASS( TreeCtrl )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  PWSTreeCtrl(); // Declared, never defined, as we don't support this!
-  PWSTreeCtrl(PWScore &core);
-  PWSTreeCtrl(wxWindow* parent, PWScore &core, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTR_HAS_BUTTONS);
+  TreeCtrl(); // Declared, never defined, as we don't support this!
+  TreeCtrl(PWScore &core);
+  TreeCtrl(wxWindow* parent, PWScore &core, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTR_HAS_BUTTONS);
 
   /// Creation
   bool Create(wxWindow* parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTR_HAS_BUTTONS);
 
   /// Destructor
-  ~PWSTreeCtrl();
+  ~TreeCtrl();
 
   /// Initialises member variables
   void Init();
@@ -85,7 +86,7 @@ public:
   /// Implements Observer::GUIRefreshEntry(const CItemData&, bool)
   void GUIRefreshEntry(const CItemData &item, bool bAllowFail = false) override;
 
-////@begin PWSTreeCtrl event handler declarations
+////@begin TreeCtrl event handler declarations
 
   /// wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL
   void OnTreectrlSelChanged( wxTreeEvent& event );
@@ -96,7 +97,7 @@ public:
   /// wxEVT_TREE_ITEM_MENU event handler for ID_TREECTRL
   void OnContextMenu( wxTreeEvent& evt);
 
-////@end PWSTreeCtrl event handler declarations
+////@end TreeCtrl event handler declarations
 
   void OnGetToolTip( wxTreeEvent& evt); // Added manually
 
@@ -111,8 +112,8 @@ public:
   /// wxEVT_TREE_KEY_DOWN event handler for ID_TREECTRL
   void OnKeyDown(wxTreeEvent& evt);
 
-////@begin PWSTreeCtrl member function declarations
-////@end PWSTreeCtrl member function declarations
+////@begin TreeCtrl member function declarations
+////@end TreeCtrl member function declarations
 
   void Clear() {DeleteAllItems(); m_item_map.clear();} // consistent name w/GridCtrl
   void AddItem(const CItemData &item);
@@ -154,11 +155,11 @@ private:
   template<typename GroupItemConsumer>
   void TraverseTree(wxTreeItemId itemId, GroupItemConsumer&& consumer);
 
-////@begin PWSTreeCtrl member variables
-////@end PWSTreeCtrl member variables
+////@begin TreeCtrl member variables
+////@end TreeCtrl member variables
 
   PWScore &m_core;
   UUIDTIMapT m_item_map; // given a uuid, find the tree item pronto!
 };
 
-#endif  // _PWSTREECTRL_H_
+#endif // _TREECTRL_H_
