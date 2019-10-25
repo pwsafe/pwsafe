@@ -9,6 +9,7 @@
 /** \file SafeCombinationChangeDlg.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -41,34 +42,34 @@
 #endif
 
 /*!
- * CSafeCombinationChange type definition
+ * SafeCombinationChangeDlg type definition
  */
 
-IMPLEMENT_CLASS( CSafeCombinationChange, wxDialog )
+IMPLEMENT_CLASS( SafeCombinationChangeDlg, wxDialog )
 
 /*!
- * CSafeCombinationChange event table definition
+ * SafeCombinationChangeDlg event table definition
  */
 
-BEGIN_EVENT_TABLE( CSafeCombinationChange, wxDialog )
+BEGIN_EVENT_TABLE( SafeCombinationChangeDlg, wxDialog )
 
-////@begin CSafeCombinationChange event table entries
+////@begin SafeCombinationChangeDlg event table entries
 #ifndef NO_YUBI
-  EVT_BUTTON( ID_YUBIBTN,                   CSafeCombinationChange::OnYubibtnClick  )
-  EVT_BUTTON( ID_YUBIBTN2,                  CSafeCombinationChange::OnYubibtn2Click )
-  EVT_TIMER(  CYubiMixin::POLLING_TIMER_ID, CSafeCombinationChange::OnPollingTimer  )
+  EVT_BUTTON( ID_YUBIBTN,                   SafeCombinationChangeDlg::OnYubibtnClick  )
+  EVT_BUTTON( ID_YUBIBTN2,                  SafeCombinationChangeDlg::OnYubibtn2Click )
+  EVT_TIMER(  CYubiMixin::POLLING_TIMER_ID, SafeCombinationChangeDlg::OnPollingTimer  )
 #endif
-  EVT_BUTTON( wxID_OK,                      CSafeCombinationChange::OnOkClick       )
-  EVT_BUTTON( wxID_CANCEL,                  CSafeCombinationChange::OnCancelClick   )
+  EVT_BUTTON( wxID_OK,                      SafeCombinationChangeDlg::OnOkClick       )
+  EVT_BUTTON( wxID_CANCEL,                  SafeCombinationChangeDlg::OnCancelClick   )
 
-////@end CSafeCombinationChange event table entries
+////@end SafeCombinationChangeDlg event table entries
 END_EVENT_TABLE()
 
 /*!
- * CSafeCombinationChange constructors
+ * SafeCombinationChangeDlg constructors
  */
 
-CSafeCombinationChange::CSafeCombinationChange(wxWindow* parent, PWScore &core,
+SafeCombinationChangeDlg::SafeCombinationChangeDlg(wxWindow* parent, PWScore &core,
                                                wxWindowID id, const wxString& caption,
                                                const wxPoint& pos,
                                                const wxSize& size, long style)
@@ -79,12 +80,12 @@ CSafeCombinationChange::CSafeCombinationChange(wxWindow* parent, PWScore &core,
 }
 
 /*!
- * CSafeCombinationChange creator
+ * SafeCombinationChangeDlg creator
  */
 
-bool CSafeCombinationChange::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool SafeCombinationChangeDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin CSafeCombinationChange creation
+////@begin SafeCombinationChangeDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -96,7 +97,7 @@ bool CSafeCombinationChange::Create( wxWindow* parent, wxWindowID id, const wxSt
   // Allow to resize the dialog in width, only.
   SetMaxSize(wxSize(wxDefaultCoord, GetMinSize().y));
   Centre();
-////@end CSafeCombinationChange creation
+////@end SafeCombinationChangeDlg creation
 #ifndef NO_YUBI
   m_yubiMixin1.SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   m_yubiMixin1.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
@@ -109,13 +110,13 @@ bool CSafeCombinationChange::Create( wxWindow* parent, wxWindowID id, const wxSt
 }
 
 /*!
- * CSafeCombinationChange destructor
+ * SafeCombinationChangeDlg destructor
  */
 
-CSafeCombinationChange::~CSafeCombinationChange()
+SafeCombinationChangeDlg::~SafeCombinationChangeDlg()
 {
-////@begin CSafeCombinationChange destruction
-////@end CSafeCombinationChange destruction
+////@begin SafeCombinationChangeDlg destruction
+////@end SafeCombinationChangeDlg destruction
 #ifndef NO_YUBI
   delete m_pollingTimer;
 #endif
@@ -125,9 +126,9 @@ CSafeCombinationChange::~CSafeCombinationChange()
  * Member initialisation
  */
 
-void CSafeCombinationChange::Init()
+void SafeCombinationChangeDlg::Init()
 {
-////@begin CSafeCombinationChange member initialisation
+////@begin SafeCombinationChangeDlg member initialisation
   m_oldPasswdEntry = nullptr;
   m_newPasswdEntry = nullptr;
   m_confirmEntry = nullptr;
@@ -136,17 +137,17 @@ void CSafeCombinationChange::Init()
   m_YubiBtn2 = nullptr;
   m_yubiStatusCtrl = nullptr;
 #endif
-////@end CSafeCombinationChange member initialisation
+////@end SafeCombinationChangeDlg member initialisation
 }
 
 /*!
- * Control creation for CSafeCombinationChange
+ * Control creation for SafeCombinationChangeDlg
  */
 
-void CSafeCombinationChange::CreateControls()
+void SafeCombinationChangeDlg::CreateControls()
 {
-////@begin CSafeCombinationChange content construction
-  CSafeCombinationChange* itemDialog1 = this;
+////@begin SafeCombinationChangeDlg content construction
+  SafeCombinationChangeDlg* itemDialog1 = this;
 
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
@@ -214,14 +215,14 @@ void CSafeCombinationChange::CreateControls()
 
   itemStdDialogButtonSizer15->Realize();
 
-////@end CSafeCombinationChange content construction
+////@end SafeCombinationChangeDlg content construction
 }
 
 /*!
  * Should we show tooltips?
  */
 
-bool CSafeCombinationChange::ShowToolTips()
+bool SafeCombinationChangeDlg::ShowToolTips()
 {
   return true;
 }
@@ -231,17 +232,17 @@ bool CSafeCombinationChange::ShowToolTips()
  */
 
 #ifndef NO_YUBI
-wxBitmap CSafeCombinationChange::GetBitmapResource( const wxString& name )
+wxBitmap SafeCombinationChangeDlg::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
-////@begin CSafeCombinationChange bitmap retrieval
+////@begin SafeCombinationChangeDlg bitmap retrieval
   if (name == _T("graphics/Yubikey-button.xpm"))
   {
     wxBitmap bitmap(Yubikey_button_xpm);
     return bitmap;
   }
   return wxNullBitmap;
-////@end CSafeCombinationChange bitmap retrieval
+////@end SafeCombinationChangeDlg bitmap retrieval
 }
 #endif
 
@@ -249,19 +250,19 @@ wxBitmap CSafeCombinationChange::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon CSafeCombinationChange::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon SafeCombinationChangeDlg::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
-////@begin CSafeCombinationChange icon retrieval
+////@begin SafeCombinationChangeDlg icon retrieval
   return wxNullIcon;
-////@end CSafeCombinationChange icon retrieval
+////@end SafeCombinationChangeDlg icon retrieval
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CSafeCombinationChange::OnOkClick( wxCommandEvent& /* evt */ )
+void SafeCombinationChangeDlg::OnOkClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     StringX errmess;
@@ -312,12 +313,12 @@ void CSafeCombinationChange::OnOkClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void CSafeCombinationChange::OnCancelClick( wxCommandEvent& /* evt */ )
+void SafeCombinationChangeDlg::OnCancelClick( wxCommandEvent& /* evt */ )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationChange.
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationChangeDlg.
   // Before editing this code, remove the block markers.
   EndModal(wxID_CANCEL);
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationChange.
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationChangeDlg.
 }
 
 #ifndef NO_YUBI
@@ -325,7 +326,7 @@ void CSafeCombinationChange::OnCancelClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& /* event */ )
+void SafeCombinationChangeDlg::OnYubibtnClick( wxCommandEvent& /* event */ )
 {
   // Here we just need to get the existing c/r. We verify it as a courtesy to the user,
   // that is, to indicate asap that it's incorrect.
@@ -357,7 +358,7 @@ void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& /* event */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2
  */
 
-void CSafeCombinationChange::OnYubibtn2Click( wxCommandEvent& /* event */ )
+void SafeCombinationChangeDlg::OnYubibtn2Click( wxCommandEvent& /* event */ )
 {
   // Allow blank password when Yubi's used:
   m_oldPasswdEntry->AllowEmptyCombinationOnce();
@@ -399,7 +400,7 @@ void CSafeCombinationChange::OnYubibtn2Click( wxCommandEvent& /* event */ )
   }
 }
 
-void CSafeCombinationChange::OnPollingTimer(wxTimerEvent &evt)
+void SafeCombinationChangeDlg::OnPollingTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == CYubiMixin::POLLING_TIMER_ID) {
     m_yubiMixin1.HandlePollingTimer();

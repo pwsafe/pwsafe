@@ -31,12 +31,12 @@ public:
         }
       }
     }
-    
+
     void GetAll(wxArrayString& sa) const {
       for (size_t idx = 0, max = GetCount(); idx < max; ++idx)
         sa.Add(GetHistoryFile(idx));
     }
-    
+
     void Save() const {
       std::vector<stringT> mruList;
       for (size_t idx = 0, max = GetCount(); idx < max; ++idx) {
@@ -45,7 +45,7 @@ public:
       PWSprefs::GetInstance()->SetMRUList(&mruList[0], static_cast<int>(mruList.size()), 
                   PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems));
     }
-    
+
     void Load() {
       PWSprefs* prefs = PWSprefs::GetInstance();
       const auto nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
@@ -57,7 +57,7 @@ public:
           AddFileToHistory(towxstring(mruList[idx]));
       }
     }
-    
+
     void Clear() {
       while(GetCount() > 0)
         RemoveFileFromHistory(0);

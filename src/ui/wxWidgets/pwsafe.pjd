@@ -2085,7 +2085,7 @@
               <string name="type">"dialog-control-document"</string>
               <document>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnChangePasswdClick|SHOWWINDOW|ID_CSAFECOMBINATIONCHANGE|PasswordSafeFrame"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnChangePasswdClick|SHOWWINDOW|ID_SAFECOMBINATIONCHANGEDLG|PasswordSafeFrame"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"menuitem"</string>
                 <long name="is-transient">0</long>
@@ -7290,7 +7290,7 @@ combination:"</string>
           <string name="proxy-Background colour">""</string>
           <string name="proxy-Base class">"wxDialog"</string>
           <bool name="proxy-Centre">1</bool>
-          <string name="proxy-Class">"CSafeCombinationChange"</string>
+          <string name="proxy-Class">"SafeCombinationChangeDlg"</string>
           <string name="proxy-Custom styles">""</string>
           <string name="proxy-Data class header filename">""</string>
           <string name="proxy-Data class implementation filename">""</string>
@@ -7308,7 +7308,7 @@ combination:"</string>
           <string name="proxy-Help text">""</string>
           <bool name="proxy-Hidden">0</bool>
           <string name="proxy-Icon">""</string>
-          <string name="proxy-Id name">"ID_CSAFECOMBINATIONCHANGE"</string>
+          <string name="proxy-Id name">"ID_SAFECOMBINATIONCHANGEDLG"</string>
           <long name="proxy-Id value">10074</long>
           <string name="proxy-Implementation filename">"SafeCombinationChangeDlg.cpp"</string>
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
@@ -7640,7 +7640,7 @@ Type the new combination once again to confirm it."</string>
               </document>
               <document>
                 <string name="proxy-type">"wbBitmapButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtnClick|NONE||CSafeCombinationChange"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtnClick|NONE||SafeCombinationChangeDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"bitmapbutton"</string>
                 <long name="is-transient">0</long>
@@ -7865,7 +7865,7 @@ Type the new combination once again to confirm it."</string>
               </document>
               <document>
                 <string name="proxy-type">"wbBitmapButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtn2Click|NONE||CSafeCombinationChange"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtn2Click|NONE||SafeCombinationChangeDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"bitmapbutton"</string>
                 <long name="is-transient">0</long>
@@ -8220,7 +8220,7 @@ Type the new combination once again to confirm it."</string>
               <string name="type">"dialog-control-document"</string>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOkClick|NONE||CSafeCombinationChange"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOkClick|NONE||SafeCombinationChangeDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>
@@ -8287,7 +8287,7 @@ Type the new combination once again to confirm it."</string>
               </document>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCancelClick|DESTROYWINDOW|ID_CSAFECOMBINATIONCHANGE|CSafeCombinationChange"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCancelClick|DESTROYWINDOW|ID_SAFECOMBINATIONCHANGEDLG|SafeCombinationChangeDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>

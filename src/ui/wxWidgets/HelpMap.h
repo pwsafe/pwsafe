@@ -11,7 +11,7 @@
 
 //For both export text and export XML
 DLG_HELP(ExportTextWarningDlgBase,                      html/export.html)
-DLG_HELP(CSafeCombinationChange,                        html/change_combo.html)
+DLG_HELP(SafeCombinationChangeDlg,                        html/change_combo.html)
 DLG_HELP(MergeDlg,                                      html/file_menu.html)
 DLG_HELP(CSafeCombinationSetup,                         html/about_combinations.html)
 DLG_HELP(ImportTextDlg,                                 html/import.html)

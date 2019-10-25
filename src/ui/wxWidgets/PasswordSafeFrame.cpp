@@ -1432,7 +1432,7 @@ void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
 
 void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& /* evt */ )
 {
-  CSafeCombinationChange* window = new CSafeCombinationChange(this, m_core);
+  SafeCombinationChangeDlg* window = new SafeCombinationChangeDlg(this, m_core);
   int returnValue = window->ShowModal();
   if (returnValue == wxID_OK) {
     m_core.ChangePasskey(window->GetNewpasswd());
