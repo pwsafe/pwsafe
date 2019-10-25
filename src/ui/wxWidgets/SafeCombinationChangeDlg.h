@@ -142,7 +142,7 @@ private:
 
 #ifndef NO_YUBI
   // try having 2 mixin objects to handle things:
-  CYubiMixin m_yubiMixin1, m_yubiMixin2;
+  YubiMixin m_yubiMixin1, m_yubiMixin2;
   wxTimer* m_pollingTimer; // for Yubi
 #endif
 };

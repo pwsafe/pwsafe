@@ -120,7 +120,7 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(
 #ifndef NO_YUBI
   SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
-  m_pollingTimer->Start(CYubiMixin::POLLING_INTERVAL);
+  m_pollingTimer->Start(YubiMixin::POLLING_INTERVAL);
 #endif
 }
 
@@ -159,7 +159,7 @@ void ExportTextWarningDlgBase::OnYubibtnClick( wxCommandEvent& /* event */ )
 void ExportTextWarningDlgBase::OnPollingTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == POLLING_TIMER_ID) {
-    HandlePollingTimer(); // in CYubiMixin
+    HandlePollingTimer(); // in YubiMixin
   }
 }
 #endif

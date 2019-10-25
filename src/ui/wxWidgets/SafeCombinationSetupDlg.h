@@ -61,7 +61,7 @@ class wxTimer;
  */
 
 #ifndef NO_YUBI
-class SafeCombinationSetupDlg : public wxDialog, private CYubiMixin
+class SafeCombinationSetupDlg : public wxDialog, private YubiMixin
 #else
 class SafeCombinationSetupDlg : public wxDialog
 #endif

@@ -6,12 +6,12 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-////////////////////////////////////////////////////////////////////
-// wxUtilities.h - file for various wxWidgets related utility functions,
-// macros, classes, etc
+/** \file wxUtilities.h
+* file for various wxWidgets related utility functions, macros, classes, etc
+*/
 
-#ifndef __WXUTILS_H__
-#define __WXUTILS_H__
+#ifndef _WXUTILITIES_H_
+#define _WXUTILITIES_H_
 
 #include "../../core/StringX.h"
 #include "../../core/PWSprefs.h"
@@ -340,4 +340,4 @@ typedef wxTextDataObject wxTextDataObjectEx;
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable();
 
-#endif // __WXUTILS_H__
+#endif // _WXUTILITIES_H_

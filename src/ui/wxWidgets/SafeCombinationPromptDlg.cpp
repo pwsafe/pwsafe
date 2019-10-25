@@ -103,7 +103,7 @@ bool SafeCombinationPromptDlg::Create( wxWindow* parent, wxWindowID id, const wx
 #ifndef NO_YUBI
   SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
-  m_pollingTimer->Start(CYubiMixin::POLLING_INTERVAL);
+  m_pollingTimer->Start(YubiMixin::POLLING_INTERVAL);
 #endif
   return true;
 }
@@ -368,7 +368,7 @@ void SafeCombinationPromptDlg::OnYubibtnClick( wxCommandEvent& /* event */ )
 void SafeCombinationPromptDlg::OnPollingTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == POLLING_TIMER_ID) {
-    HandlePollingTimer(); // in CYubiMixin
+    HandlePollingTimer(); // in YubiMixin
   }
 }
 #endif

@@ -23,7 +23,7 @@
 struct SelectionCriteria;
 
 #ifndef NO_YUBI
-class ExportTextWarningDlgBase : public wxDialog, private CYubiMixin
+class ExportTextWarningDlgBase : public wxDialog, private YubiMixin
 #else
 class ExportTextWarningDlgBase : public wxDialog
 #endif

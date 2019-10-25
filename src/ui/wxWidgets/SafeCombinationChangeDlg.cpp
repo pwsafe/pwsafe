@@ -57,7 +57,7 @@ BEGIN_EVENT_TABLE( SafeCombinationChangeDlg, wxDialog )
 #ifndef NO_YUBI
   EVT_BUTTON( ID_YUBIBTN,                   SafeCombinationChangeDlg::OnYubibtnClick  )
   EVT_BUTTON( ID_YUBIBTN2,                  SafeCombinationChangeDlg::OnYubibtn2Click )
-  EVT_TIMER(  CYubiMixin::POLLING_TIMER_ID, SafeCombinationChangeDlg::OnPollingTimer  )
+  EVT_TIMER(  YubiMixin::POLLING_TIMER_ID, SafeCombinationChangeDlg::OnPollingTimer  )
 #endif
   EVT_BUTTON( wxID_OK,                      SafeCombinationChangeDlg::OnOkClick       )
   EVT_BUTTON( wxID_CANCEL,                  SafeCombinationChangeDlg::OnCancelClick   )
@@ -103,8 +103,8 @@ bool SafeCombinationChangeDlg::Create( wxWindow* parent, wxWindowID id, const wx
   m_yubiMixin1.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
   m_yubiMixin2.SetupMixin(FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS));
   m_yubiMixin2.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
-  m_pollingTimer = new wxTimer(this, CYubiMixin::POLLING_TIMER_ID);
-  m_pollingTimer->Start(2*CYubiMixin::POLLING_INTERVAL); // 2 controls
+  m_pollingTimer = new wxTimer(this, YubiMixin::POLLING_TIMER_ID);
+  m_pollingTimer->Start(2*YubiMixin::POLLING_INTERVAL); // 2 controls
 #endif
   return true;
 }
@@ -402,7 +402,7 @@ void SafeCombinationChangeDlg::OnYubibtn2Click( wxCommandEvent& /* event */ )
 
 void SafeCombinationChangeDlg::OnPollingTimer(wxTimerEvent &evt)
 {
-  if (evt.GetId() == CYubiMixin::POLLING_TIMER_ID) {
+  if (evt.GetId() == YubiMixin::POLLING_TIMER_ID) {
     m_yubiMixin1.HandlePollingTimer();
     m_yubiMixin2.HandlePollingTimer();
   }

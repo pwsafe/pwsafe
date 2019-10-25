@@ -10,8 +10,8 @@
 * 
 */
 
-#ifndef _YUBICFG_H_
-#define _YUBICFG_H_
+#ifndef _YUBICFGDLG_H_
+#define _YUBICFGDLG_H_
 
 /*!
  * Includes
@@ -57,8 +57,8 @@ class PWScore;
  * YubiCfgDlg class declaration
  */
 
-class YubiCfgDlg: public wxDialog
-{    
+class YubiCfgDlg : public wxDialog
+{
   DECLARE_CLASS( YubiCfgDlg )
   DECLARE_EVENT_TABLE()
 
@@ -134,5 +134,4 @@ private:
   PWScore &m_core;
 };
 
-#endif
-  // _YUBICFG_H_
+#endif // _YUBICFGDLG_H_
