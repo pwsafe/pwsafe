@@ -38,7 +38,7 @@
 ////@begin forward declarations
 class GridCtrl;
 class PWSTreeCtrl;
-class CPWStatusBar;
+class StatusBar;
 ////@end forward declarations
 class SystemTray;
 class GuiInfo;
@@ -492,7 +492,7 @@ public:
 ////@begin PasswordSafeFrame member variables
   GridCtrl* m_grid;
   PWSTreeCtrl* m_tree;
-  CPWStatusBar* m_statusBar;
+  StatusBar* m_statusBar;
 ////@end PasswordSafeFrame member variables
 
 private:

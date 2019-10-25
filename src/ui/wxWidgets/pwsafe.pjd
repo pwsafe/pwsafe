@@ -2526,7 +2526,7 @@
             <string name="proxy-Background colour">""</string>
             <string name="proxy-Base class">"wxStatusBar"</string>
             <long name="proxy-Border">5</long>
-            <string name="proxy-Class">"CPWStatusBar"</string>
+            <string name="proxy-Class">"StatusBar"</string>
             <string name="proxy-Custom arguments">""</string>
             <string name="proxy-Custom ctor arguments">""</string>
             <string name="proxy-Custom styles">""</string>
@@ -2574,7 +2574,7 @@
             <bool name="proxy-wxWANTS_CHARS">0</bool>
             <long name="proxy-X">-1</long>
             <long name="proxy-Y">-1</long>
-            <string name="title">"CPWStatusBar: ID_STATUSBAR"</string>
+            <string name="title">"StatusBar: ID_STATUSBAR"</string>
             <long name="title-mode">0</long>
             <string name="type">"dialog-control-document"</string>
           </document>

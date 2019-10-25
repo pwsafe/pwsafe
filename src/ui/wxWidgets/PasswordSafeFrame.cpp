@@ -345,7 +345,7 @@ void PasswordSafeFrame::CreateDragBar()
 
 void PasswordSafeFrame::CreateStatusBar()
 {
-  m_statusBar = new CPWStatusBar(this, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER);
+  m_statusBar = new StatusBar(this, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER);
   m_statusBar->Setup();
   SetStatusBar(m_statusBar);
 }
@@ -3488,28 +3488,28 @@ void PasswordSafeFrame::UpdateStatusBar()
     wxString text;
     // SB_DBLCLICK pane is set per selected entry, not here
 
-    m_statusBar->SetStatusText(m_LastClipboardAction, CPWStatusBar::Field::CLIPBOARDACTION);
+    m_statusBar->SetStatusText(m_LastClipboardAction, StatusBar::Field::CLIPBOARDACTION);
 
     text  = m_core.HasDBChanged()       ? wxT("*") : wxT(" ");
     text += m_core.HaveDBPrefsChanged() ? wxT("°") : wxT(" ");
-    m_statusBar->SetStatusText(text, CPWStatusBar::Field::MODIFIED);
+    m_statusBar->SetStatusText(text, StatusBar::Field::MODIFIED);
 
     text = m_core.IsReadOnly() ? wxT("R-O") : wxT("R/W");
-    m_statusBar->SetStatusText(text, CPWStatusBar::Field::READONLY);
+    m_statusBar->SetStatusText(text, StatusBar::Field::READONLY);
 
     text.Clear(); text <<  m_core.GetNumEntries();
-    m_statusBar->SetStatusText(text, CPWStatusBar::Field::NUM_ENT);
+    m_statusBar->SetStatusText(text, StatusBar::Field::NUM_ENT);
 
     text = m_bFilterActive ? wxT("[F]") : wxT("   ");
-    m_statusBar->SetStatusText(text, CPWStatusBar::Field::FILTER);
+    m_statusBar->SetStatusText(text, StatusBar::Field::FILTER);
   }
   else { // no open file
-    m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(-1)), CPWStatusBar::Field::DOUBLECLICK);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::CLIPBOARDACTION);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::MODIFIED);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::READONLY);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::NUM_ENT);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::FILTER);
+    m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(-1)), StatusBar::Field::DOUBLECLICK);
+    m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::CLIPBOARDACTION);
+    m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::MODIFIED);
+    m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::READONLY);
+    m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::NUM_ENT);
+    m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::FILTER);
   }
 }
 
@@ -3578,7 +3578,7 @@ void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
     if (dca == -1)
       dca = PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
   }
-  m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(dca)), CPWStatusBar::Field::DOUBLECLICK);
+  m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(dca)), StatusBar::Field::DOUBLECLICK);
 }
 
 void PasswordSafeFrame::ChangeFontPreference(const PWSprefs::StringPrefs fontPreference)
