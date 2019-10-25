@@ -169,7 +169,7 @@ void CSafeCombinationPrompt::CreateControls()
   wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe combination:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer8->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_scctrl = new CSafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxDefaultSize );
+  m_scctrl = new SafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxDefaultSize );
   itemBoxSizer8->Add(m_scctrl, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
 
   auto *itemBoxSizer11 = new wxBoxSizer(wxHORIZONTAL);

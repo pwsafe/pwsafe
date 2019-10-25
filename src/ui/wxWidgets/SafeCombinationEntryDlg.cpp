@@ -206,7 +206,7 @@ void CSafeCombinationEntry::CreateControls()
   wxStaticText* itemStaticText12 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe Combination:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer4->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL, 3);
 
-  m_combinationEntry = new CSafeCombinationCtrl( itemDialog1, ID_COMBINATION, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  m_combinationEntry = new SafeCombinationCtrl( itemDialog1, ID_COMBINATION, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer4->Add(m_combinationEntry, 0, wxGROW|wxRIGHT|wxTOP|wxBOTTOM, 5);
 
   auto *itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);

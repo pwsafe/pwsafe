@@ -30,7 +30,7 @@
  */
 
 ////@begin forward declarations
-class CSafeCombinationCtrl;
+class SafeCombinationCtrl;
 ////@end forward declarations
 class wxTimer;
 
@@ -118,7 +118,7 @@ public:
   static bool ShowToolTips();
 
 ////@begin CSafeCombinationPrompt member variables
-  CSafeCombinationCtrl* m_scctrl;
+  SafeCombinationCtrl* m_scctrl;
 ////@end CSafeCombinationPrompt member variables
   PWScore &m_core;
   wxString m_filename;

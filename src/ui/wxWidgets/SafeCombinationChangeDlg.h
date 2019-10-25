@@ -30,7 +30,7 @@
  */
 
 ////@begin forward declarations
-class CSafeCombinationCtrl;
+class SafeCombinationCtrl;
 ////@end forward declarations
 class wxTimer;
 
@@ -124,14 +124,14 @@ public:
   static bool ShowToolTips();
 
 ////@begin SafeCombinationChangeDlg member variables
-  CSafeCombinationCtrl* m_oldPasswdEntry;
-  CSafeCombinationCtrl* m_newPasswdEntry;
+  SafeCombinationCtrl* m_oldPasswdEntry;
+  SafeCombinationCtrl* m_newPasswdEntry;
 #ifndef NO_YUBI
   wxBitmapButton* m_YubiBtn;
   wxBitmapButton* m_YubiBtn2;
   wxStaticText* m_yubiStatusCtrl;
 #endif
-  CSafeCombinationCtrl* m_confirmEntry;
+  SafeCombinationCtrl* m_confirmEntry;
 private:
   StringX m_confirm;
   StringX m_newpasswd;

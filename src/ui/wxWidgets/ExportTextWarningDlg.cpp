@@ -73,7 +73,7 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(
   wxBoxSizer* pwdCtrl = new wxBoxSizer(wxHORIZONTAL);
   pwdCtrl->Add(new wxStaticText(this, wxID_ANY, _("Safe Combination:")));
   pwdCtrl->AddSpacer(ColSeparation);
-  m_combinationEntry = new CSafeCombinationCtrl(this, wxID_ANY, &passKey);
+  m_combinationEntry = new SafeCombinationCtrl(this, wxID_ANY, &passKey);
   pwdCtrl->Add(m_combinationEntry, wxSizerFlags().Expand().Proportion(1));
   dlgSizer->Add(pwdCtrl, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
 #ifndef NO_YUBI

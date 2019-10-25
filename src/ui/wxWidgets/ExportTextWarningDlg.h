@@ -49,7 +49,7 @@ private:
   void OnPollingTimer(wxTimerEvent& timerEvent);
 #endif
   const wxString defDelim;
-  CSafeCombinationCtrl* m_combinationEntry;
+  SafeCombinationCtrl* m_combinationEntry;
   wxBitmapButton* m_YubiBtn;
   wxStaticText* m_yubiStatusCtrl;
   wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(

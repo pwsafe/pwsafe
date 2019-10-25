@@ -3248,9 +3248,9 @@
                 <string name="proxy-AlignH">"Expand"</string>
                 <string name="proxy-AlignV">"Centre"</string>
                 <string name="proxy-Background colour">""</string>
-                <string name="proxy-Base class">"CSafeCombinationCtrl"</string>
+                <string name="proxy-Base class">"SafeCombinationCtrl"</string>
                 <long name="proxy-Border">5</long>
-                <string name="proxy-Class">"CSafeCombinationCtrl"</string>
+                <string name="proxy-Class">"SafeCombinationCtrl"</string>
                 <string name="proxy-Custom arguments">""</string>
                 <string name="proxy-Custom ctor arguments">"%PARENT%, %ID%"</string>
                 <string name="proxy-Custom styles">""</string>
@@ -3317,7 +3317,7 @@
                 <bool name="proxy-wxWANTS_CHARS">0</bool>
                 <long name="proxy-X">-1</long>
                 <long name="proxy-Y">-1</long>
-                <string name="title">"CSafeCombinationCtrl: ID_COMBINATION"</string>
+                <string name="title">"SafeCombinationCtrl: ID_COMBINATION"</string>
                 <long name="title-mode">0</long>
                 <string name="type">"dialog-control-document"</string>
               </document>
@@ -5270,9 +5270,9 @@ combination:"</string>
                     <string name="proxy-AlignH">"Centre"</string>
                     <string name="proxy-AlignV">"Centre"</string>
                     <string name="proxy-Background colour">""</string>
-                    <string name="proxy-Base class">"CSafeCombinationCtrl"</string>
+                    <string name="proxy-Base class">"SafeCombinationCtrl"</string>
                     <long name="proxy-Border">5</long>
-                    <string name="proxy-Class">"CSafeCombinationCtrl"</string>
+                    <string name="proxy-Class">"SafeCombinationCtrl"</string>
                     <string name="proxy-Custom arguments">"%PARENT%, %ID%, &amp;m_password, %POSITION%, %SIZE%"</string>
                     <string name="proxy-Custom ctor arguments">""</string>
                     <string name="proxy-Custom styles">""</string>
@@ -5339,7 +5339,7 @@ combination:"</string>
                     <bool name="proxy-wxWANTS_CHARS">0</bool>
                     <long name="proxy-X">-1</long>
                     <long name="proxy-Y">-1</long>
-                    <string name="title">"CSafeCombinationCtrl: ID_PASSWORD"</string>
+                    <string name="title">"SafeCombinationCtrl: ID_PASSWORD"</string>
                     <long name="title-mode">0</long>
                     <string name="type">"dialog-control-document"</string>
                   </document>
@@ -7565,9 +7565,9 @@ Type the new combination once again to confirm it."</string>
                 <string name="proxy-AlignH">"Left"</string>
                 <string name="proxy-AlignV">"Centre"</string>
                 <string name="proxy-Background colour">""</string>
-                <string name="proxy-Base class">"CSafeCombinationCtrl"</string>
+                <string name="proxy-Base class">"SafeCombinationCtrl"</string>
                 <long name="proxy-Border">5</long>
-                <string name="proxy-Class">"CSafeCombinationCtrl"</string>
+                <string name="proxy-Class">"SafeCombinationCtrl"</string>
                 <string name="proxy-Custom arguments">"%PARENT%, %ID%, &amp;m_oldpasswd, %POSITION%, %SIZE%"</string>
                 <string name="proxy-Custom ctor arguments">""</string>
                 <string name="proxy-Custom styles">""</string>
@@ -7634,7 +7634,7 @@ Type the new combination once again to confirm it."</string>
                 <bool name="proxy-wxWANTS_CHARS">0</bool>
                 <long name="proxy-X">-1</long>
                 <long name="proxy-Y">-1</long>
-                <string name="title">"CSafeCombinationCtrl: ID_OLDPASSWD"</string>
+                <string name="title">"SafeCombinationCtrl: ID_OLDPASSWD"</string>
                 <long name="title-mode">0</long>
                 <string name="type">"dialog-control-document"</string>
               </document>
@@ -7790,9 +7790,9 @@ Type the new combination once again to confirm it."</string>
                 <string name="proxy-AlignH">"Centre"</string>
                 <string name="proxy-AlignV">"Centre"</string>
                 <string name="proxy-Background colour">""</string>
-                <string name="proxy-Base class">"CSafeCombinationCtrl"</string>
+                <string name="proxy-Base class">"SafeCombinationCtrl"</string>
                 <long name="proxy-Border">5</long>
-                <string name="proxy-Class">"CSafeCombinationCtrl"</string>
+                <string name="proxy-Class">"SafeCombinationCtrl"</string>
                 <string name="proxy-Custom arguments">"%PARENT%, %ID%, &amp;m_newpasswd, %POSITION%, %SIZE%"</string>
                 <string name="proxy-Custom ctor arguments">""</string>
                 <string name="proxy-Custom styles">""</string>
@@ -7859,7 +7859,7 @@ Type the new combination once again to confirm it."</string>
                 <bool name="proxy-wxWANTS_CHARS">0</bool>
                 <long name="proxy-X">-1</long>
                 <long name="proxy-Y">-1</long>
-                <string name="title">"CSafeCombinationCtrl: ID_NEWPASSWD"</string>
+                <string name="title">"SafeCombinationCtrl: ID_NEWPASSWD"</string>
                 <long name="title-mode">0</long>
                 <string name="type">"dialog-control-document"</string>
               </document>
@@ -8015,9 +8015,9 @@ Type the new combination once again to confirm it."</string>
                 <string name="proxy-AlignH">"Centre"</string>
                 <string name="proxy-AlignV">"Centre"</string>
                 <string name="proxy-Background colour">""</string>
-                <string name="proxy-Base class">"CSafeCombinationCtrl"</string>
+                <string name="proxy-Base class">"SafeCombinationCtrl"</string>
                 <long name="proxy-Border">5</long>
-                <string name="proxy-Class">"CSafeCombinationCtrl"</string>
+                <string name="proxy-Class">"SafeCombinationCtrl"</string>
                 <string name="proxy-Custom arguments">""</string>
                 <string name="proxy-Custom ctor arguments">""</string>
                 <string name="proxy-Custom styles">""</string>
@@ -8084,7 +8084,7 @@ Type the new combination once again to confirm it."</string>
                 <bool name="proxy-wxWANTS_CHARS">0</bool>
                 <long name="proxy-X">-1</long>
                 <long name="proxy-Y">-1</long>
-                <string name="title">"CSafeCombinationCtrl: ID_CONFIRM"</string>
+                <string name="title">"SafeCombinationCtrl: ID_CONFIRM"</string>
                 <long name="title-mode">0</long>
                 <string name="type">"dialog-control-document"</string>
               </document>

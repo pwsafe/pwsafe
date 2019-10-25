@@ -32,7 +32,7 @@
  */
 
 ////@begin forward declarations
-class CSafeCombinationCtrl;
+class SafeCombinationCtrl;
 ////@end forward declarations
 class wxTimer;
 
@@ -143,7 +143,7 @@ public:
 
   wxStaticText* m_version;
   wxComboBox* m_filenameCB;
-  CSafeCombinationCtrl* m_combinationEntry;
+  SafeCombinationCtrl* m_combinationEntry;
 
 #ifndef NO_YUBI
   wxBitmapButton* m_YubiBtn;

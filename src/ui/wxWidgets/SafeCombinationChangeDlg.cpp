@@ -168,7 +168,7 @@ void SafeCombinationChangeDlg::CreateControls()
   wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Old safe combination:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_oldPasswdEntry = new CSafeCombinationCtrl( itemDialog1, ID_OLDPASSWD, &m_oldpasswd, wxDefaultPosition, wxDefaultSize );
+  m_oldPasswdEntry = new SafeCombinationCtrl( itemDialog1, ID_OLDPASSWD, &m_oldpasswd, wxDefaultPosition, wxDefaultSize );
   itemFlexGridSizer4->Add(m_oldPasswdEntry, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
 
 #ifndef NO_YUBI
@@ -179,7 +179,7 @@ void SafeCombinationChangeDlg::CreateControls()
   wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("New safe combination:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText8, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_newPasswdEntry = new CSafeCombinationCtrl( itemDialog1, ID_NEWPASSWD, &m_newpasswd, wxDefaultPosition, wxDefaultSize );
+  m_newPasswdEntry = new SafeCombinationCtrl( itemDialog1, ID_NEWPASSWD, &m_newpasswd, wxDefaultPosition, wxDefaultSize );
   itemFlexGridSizer4->Add(m_newPasswdEntry, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
 
 #ifndef NO_YUBI
@@ -190,7 +190,7 @@ void SafeCombinationChangeDlg::CreateControls()
   wxStaticText* itemStaticText11 = new wxStaticText( itemDialog1, wxID_STATIC, _("Confirmation:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText11, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_confirmEntry = new CSafeCombinationCtrl( itemDialog1, ID_CONFIRM, &m_confirm, wxDefaultPosition, wxDefaultSize );
+  m_confirmEntry = new SafeCombinationCtrl( itemDialog1, ID_CONFIRM, &m_confirm, wxDefaultPosition, wxDefaultSize );
   itemFlexGridSizer4->Add(m_confirmEntry, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
 
   itemFlexGridSizer4->Add(10, 10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);

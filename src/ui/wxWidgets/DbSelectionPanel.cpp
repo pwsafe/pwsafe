@@ -71,7 +71,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   panelSizer->Add(new wxStaticText(this, wxID_ANY, _("Safe Combination:")), borderFlags);
   panelSizer->AddSpacer(RowSeparation);
   
-  m_sc = new CSafeCombinationCtrl(this);
+  m_sc = new SafeCombinationCtrl(this);
   m_sc->SetValidatorTarget(&m_combination);
   panelSizer->Add(m_sc, borderFlags.Expand());
   

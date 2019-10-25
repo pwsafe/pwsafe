@@ -17,7 +17,7 @@
 #include "../../core/StringX.h"
 
 class wxFilePickerCtrl;
-class CSafeCombinationCtrl;
+class SafeCombinationCtrl;
 class PWScore;
 class wxFileDirPickerEvent;
 
@@ -61,7 +61,7 @@ public:
 
 private:
   wxFilePickerCtrl* m_filepicker;
-  CSafeCombinationCtrl* m_sc;
+  SafeCombinationCtrl* m_sc;
   bool m_bAutoValidate;
   PWScore* m_core;
 };
