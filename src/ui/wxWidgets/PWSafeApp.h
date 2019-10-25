@@ -102,7 +102,7 @@ public:
     wxTimer* m_idleTimer;
     PasswordSafeFrame* m_frame;
     enum { IDLE_TIMER_ID = 33 } ;
-    CRecentDBList *m_recentDatabases;
+    RecentDbList *m_recentDatabases;
 
     //A map of dialog titles (or tab names) vs help sections
     WX_DECLARE_STRING_HASH_MAP( wxString, StringToStringMap );
@@ -114,7 +114,7 @@ public:
     bool ActivateHelp(wxLanguage language);
     
  public:
-    CRecentDBList &recentDatabases();
+    RecentDbList &recentDatabases();
     uint32 GetHashIters() const {return m_core.GetHashIters();}
     bool ActivateLanguage(wxLanguage language, bool tryOnly);
     wxLanguage GetSystemLanguage();

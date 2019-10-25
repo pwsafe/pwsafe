@@ -14,8 +14,8 @@
  * A dialog class to display a QR code. The dialog closes automatically for security reasons.
  */
 
-#ifndef _PWSQRCODEDLG_H_
-#define _PWSQRCODEDLG_H_
+#ifndef _QRCODEDLG_H_
+#define _QRCODEDLG_H_
 
 #include <wx/dialog.h>
 #include <wx/timer.h>
@@ -23,9 +23,9 @@
 
 #include "../../core/StringX.h"
 
-class PWSQRCodeDlg : public wxDialog {
-
-  DECLARE_CLASS(PWSQRCodeDlg)
+class QRCodeDlg : public wxDialog
+{
+  DECLARE_CLASS(QRCodeDlg)
   DECLARE_EVENT_TABLE()
 
   wxTimer timer;
@@ -35,17 +35,17 @@ class PWSQRCodeDlg : public wxDialog {
   void UpdateTimeRemaining();
 
 public:
-  PWSQRCodeDlg(wxWindow* parent,
-		  	   const StringX &data,
-			   const wxString& title,
-			   const int seconds = 15,
-			   const wxPoint &pos=wxDefaultPosition,
-			   const wxSize &size=wxDefaultSize,
-			   long style=wxDEFAULT_DIALOG_STYLE,
-			   const wxString &name=wxDialogNameStr);
+  QRCodeDlg(wxWindow* parent,
+            const StringX &data,
+            const wxString& title,
+            const int seconds = 15,
+            const wxPoint &pos=wxDefaultPosition,
+            const wxSize &size=wxDefaultSize,
+            long style=wxDEFAULT_DIALOG_STYLE,
+            const wxString &name=wxDialogNameStr);
 
-  ~PWSQRCodeDlg() = default;
-  
+  ~QRCodeDlg() = default;
+
   //void OnInitDialog(wxInitDialogEvent& evt)  override;
   //void OnRelayoutDlg(wxCommandEvent& evt)  override;  
   void CreateControls(const StringX &data);
@@ -62,4 +62,4 @@ constexpr bool HasQRCode() {
 #endif
 }
 
-#endif // _PWSQRCODEDLG_H_
+#endif // _QRCODEDLG_H_

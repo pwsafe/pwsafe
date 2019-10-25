@@ -959,7 +959,7 @@ void PasswordSafeFrame::OnPasswordQRCode(wxCommandEvent &evt)
     CItemData* item = GetSelectedEntry(evt, rueItem);
     if (item != nullptr) {
 #ifndef NO_QR
-    PWSQRCodeDlg dlg(this, item->GetPassword(),
+    QRCodeDlg dlg(this, item->GetPassword(),
               towxstring(CItemData::FieldName(CItem::PASSWORD)) + _T(" of ") +
               towxstring(item->GetGroup()) +
               _T('[') + towxstring(item->GetTitle()) + _T(']') +

@@ -663,13 +663,13 @@ void PWSafeApp::OnDBGUIPrefsChange(wxEvent& evt)
   ConfigureIdleTimer();
 }
 
-CRecentDBList &PWSafeApp::recentDatabases()
+RecentDbList &PWSafeApp::recentDatabases()
 {
   // we create an instance of m_recentDatabases
   // as late as possible in order to make
   // sure that prefs' is set correctly (user, machine, etc.)
   if (m_recentDatabases == nullptr)
-    m_recentDatabases = new CRecentDBList;
+    m_recentDatabases = new RecentDbList;
   return *m_recentDatabases;
 }
 

@@ -10,17 +10,17 @@
  * 
  */
 
-#ifndef __RECENTDBLIST_H__
-#define __RECENTDBLIST_H__
+#ifndef _RECENTDBLIST_H_
+#define _RECENTDBLIST_H_
 
 // For wxFileHistory
 #include <wx/docview.h>
 #include "./wxUtilities.h"
 
-class CRecentDBList : public wxFileHistory
+class RecentDbList : public wxFileHistory
 {
 public:
-    CRecentDBList() : wxFileHistory(PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems))
+    RecentDbList() : wxFileHistory(PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems))
     {} 
 
     void RemoveFile(const wxString& file) {
@@ -64,4 +64,4 @@ public:
     }
 };
 
-#endif
+#endif // _RECENTDBLIST_H_

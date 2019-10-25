@@ -639,7 +639,7 @@ void PasswordSafeFrame::CreateControls()
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
 
-  const CRecentDBList& rdb = wxGetApp().recentDatabases();
+  const RecentDbList& rdb = wxGetApp().recentDatabases();
   Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
 }
@@ -2747,7 +2747,7 @@ void PasswordSafeFrame::ShowTrayIcon()
 
 void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
 {
-  CRecentDBList& db = wxGetApp().recentDatabases();
+  RecentDbList& db = wxGetApp().recentDatabases();
   const size_t index = evt.GetId() - db.GetBaseId();
   const wxString dbfile = db.GetHistoryFile(index);
   switch(Open(dbfile))
