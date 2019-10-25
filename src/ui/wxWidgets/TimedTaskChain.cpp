@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) 2003-2019 Rony Shapiro <ronys@pwsafe.org>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License 2.0 terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license-2.0.php
+ */
+
+/** \file TimedTaskChain.cpp
+* 
+*/
+
 #include "./TimedTaskChain.h"
 
 #ifndef __TESTING_TIMEDTASKCHAIN__
@@ -8,78 +20,82 @@
 int TimedTaskChain::DefaultTaskDelay()
 {
 #ifndef __TESTING_TIMEDTASKCHAIN__
-    static const int defaultDelay = PWSprefs::GetInstance()->GetPref(PWSprefs::TimedTaskChainDelay);
+  static const int defaultDelay = PWSprefs::GetInstance()->GetPref(PWSprefs::TimedTaskChainDelay);
 #else
-    static const int defaultDelay = 100;
+  static const int defaultDelay = 100;
 #endif
-    return defaultDelay;
+  return defaultDelay;
 }
 
 // static
-TimedTaskChain& TimedTaskChain::CreateTaskChain(std::initializer_list<TaskType> tasks)
+TimedTaskChain &TimedTaskChain::CreateTaskChain(std::initializer_list<TaskType> tasks)
 {
-    return *new TimedTaskChain(tasks);
+  return *new TimedTaskChain(tasks);
 }
 
 // static
-TimedTaskChain& TimedTaskChain::CreateTaskChain(const TaskType &task)
+TimedTaskChain &TimedTaskChain::CreateTaskChain(const TaskType &task)
 {
-    return CreateTaskChain({task});
+  return CreateTaskChain({task});
 }
 
 //static
-TimedTaskChain& TimedTaskChain::CreateTaskChain(std::initializer_list<TaskWithInterval> tasks)
+TimedTaskChain &TimedTaskChain::CreateTaskChain(std::initializer_list<TaskWithInterval> tasks)
 {
-    return *new TimedTaskChain(tasks);
+  return *new TimedTaskChain(tasks);
 }
 
-TimedTaskChain::TimedTaskChain(std::initializer_list<TaskType> tasks):   m_errorHandler(nullptr)
+TimedTaskChain::TimedTaskChain(std::initializer_list<TaskType> tasks) : m_errorHandler(nullptr)
 {
-    for (auto t: tasks)
-        m_tasks.push_back({t, DefaultTaskDelay()});
+  for (auto t : tasks)
+    m_tasks.push_back({t, DefaultTaskDelay()});
 
-    // even if m_tasks is empty
-    m_nextTask = m_tasks.begin();
+  // even if m_tasks is empty
+  m_nextTask = m_tasks.begin();
 
-    // if m_tasks is empty, it would get destructed in the next timer callback
-    Next();
+  // if m_tasks is empty, it would get destructed in the next timer callback
+  Next();
 }
 
-TimedTaskChain::TimedTaskChain(std::initializer_list<TaskWithInterval> tasks): m_errorHandler{nullptr},
-                                                                            m_tasks{tasks},
-                                                                            m_nextTask{m_tasks.begin()}
+TimedTaskChain::TimedTaskChain(std::initializer_list<TaskWithInterval> tasks) : m_errorHandler{nullptr},
+                                                                                m_tasks{tasks},
+                                                                                m_nextTask{m_tasks.begin()}
 {
-    Next();
+  Next();
 }
 
 void TimedTaskChain::Next()
 {
-  Start(m_nextTask == m_tasks.end()? DefaultTaskDelay(): m_nextTask->second, wxTIMER_ONE_SHOT);
+  Start(m_nextTask == m_tasks.end() ? DefaultTaskDelay() : m_nextTask->second, wxTIMER_ONE_SHOT);
 }
 
 void TimedTaskChain::RunTask()
 {
-    if (m_nextTask != m_tasks.end()) {
-        try {
-            m_nextTask->first();
-            m_nextTask++;
-        }
-        catch(std::exception& e) {
-            if (m_errorHandler)
-                m_errorHandler(e);
+  if (m_nextTask != m_tasks.end())
+  {
+    try
+    {
+      m_nextTask->first();
+      m_nextTask++;
+    }
+    catch (std::exception &e)
+    {
+      if (m_errorHandler)
+        m_errorHandler(e);
 
-            m_nextTask = m_tasks.end();
-        }
-        Next();
+      m_nextTask = m_tasks.end();
     }
-    else {
-        delete this;
-    }
+    Next();
+  }
+  else
+  {
+    delete this;
+  }
 }
 
 void TimedTaskChain::Notify()
 {
-    RunTask();
+  RunTask();
 }
 
 #ifdef __TESTING_TIMEDTASKCHAIN__
@@ -98,58 +114,56 @@ void TimedTaskChain::Notify()
  *
  */
 
-class TaskApp: public wxApp
+class TaskApp : public wxApp
 {
-    const char *errmsg{"Here we throw!"};
-    int total{0};
-    wxStopWatch watch;
+  const char *errmsg{"Here we throw!"};
+  int total{0};
+  wxStopWatch watch;
 
-    void Quit()
-    {
-        static int testsRunning = TestsToRun.size();
-        if (--testsRunning == 0)
-            ExitMainLoop();
-    }
+  void Quit()
+  {
+    static int testsRunning = TestsToRun.size();
+    if (--testsRunning == 0)
+      ExitMainLoop();
+  }
 
-    void TestSequentialExecution()
-    {
-    TimedTaskChain::CreateTaskChain( [this]() { total = 10; } )
-                                .then( [this]() { assert(total == 10); total *= 2; })
-                .then( [this]() { assert(total == 20); total += 3; })
-                .then( [this]() { assert(total == 23); total += 34; })
-                                .then( [this]() { assert(total == 57); Quit(); });
-    }
+  void TestSequentialExecution()
+  {
+    TimedTaskChain::CreateTaskChain([this]() { total = 10; })
+        .then([this]() { assert(total == 10); total *= 2; })
+        .then([this]() { assert(total == 20); total += 3; })
+        .then([this]() { assert(total == 23); total += 34; })
+        .then([this]() { assert(total == 57); Quit(); });
+  }
 
-    void TestErrorHandling()
-    {
-    TimedTaskChain::CreateTaskChain( [](void) {  } )
-                                .then( []() {  })
-                .then( [this]() { throw std::logic_error(this->errmsg); })
-                .then( []() { assert(!!"Task executed after exception was thrown!" ); })
-                                .OnError( [this](const std::exception& e) { assert(strcmp(e.what(), this->errmsg) == 0); Quit(); } );
-    }
+  void TestErrorHandling()
+  {
+    TimedTaskChain::CreateTaskChain([](void) {})
+        .then([]() {})
+        .then([this]() { throw std::logic_error(this->errmsg); })
+        .then([]() { assert(!!"Task executed after exception was thrown!"); })
+        .OnError([this](const std::exception &e) { assert(strcmp(e.what(), this->errmsg) == 0); Quit(); });
+  }
 
-    void TestTaskDelays()
-    {
-        watch.Start();
-        TimedTaskChain::CreateTaskChain( {{[this](){ watch.Pause(); assert(watch.Time() >= 100); watch.Resume();}, 100}} )
-                                .then( [this](){ watch.Pause(); assert(watch.Time() >= 500); watch.Resume();}, 500 )
-                                .then( [this](){ watch.Pause(); assert(watch.Time() >= 50);  watch.Resume();}, 50  )
-                                .then( [this](){ watch.Pause(); assert(watch.Time() >= 300); Quit();}, 300 );
-    }
+  void TestTaskDelays()
+  {
+    watch.Start();
+    TimedTaskChain::CreateTaskChain({{[this]() { watch.Pause(); assert(watch.Time() >= 100); watch.Resume(); }, 100}})
+        .then([this]() { watch.Pause(); assert(watch.Time() >= 500); watch.Resume(); }, 500)
+        .then([this]() { watch.Pause(); assert(watch.Time() >= 50);  watch.Resume(); }, 50)
+        .then([this]() { watch.Pause(); assert(watch.Time() >= 300); Quit(); }, 300);
+  }
 
-    typedef std::mem_fun_t<void, TaskApp> TestFunction;
-    std::array<TestFunction, 3> TestsToRun ={ { std::mem_fun(&TaskApp::TestSequentialExecution),
-                                                std::mem_fun(&TaskApp::TestErrorHandling),
-                                                std::mem_fun(&TaskApp::TestTaskDelays)
-                                              }
-    };
+  typedef std::mem_fun_t<void, TaskApp> TestFunction;
+  std::array<TestFunction, 3> TestsToRun = {{std::mem_fun(&TaskApp::TestSequentialExecution),
+                                             std::mem_fun(&TaskApp::TestErrorHandling),
+                                             std::mem_fun(&TaskApp::TestTaskDelays)}};
 
 public:
   bool OnInit()
   {
-        for ( auto t: TestsToRun )
-            t(this);
+    for (auto t : TestsToRun)
+      t(this);
 
     return true;
   }
