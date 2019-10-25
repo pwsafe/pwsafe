@@ -42,53 +42,53 @@
 #endif
 
 /*!
- * CSafeCombinationSetup type definition
+ * SafeCombinationSetupDlg type definition
  */
 
-IMPLEMENT_DYNAMIC_CLASS( CSafeCombinationSetup, wxDialog )
+IMPLEMENT_DYNAMIC_CLASS( SafeCombinationSetupDlg, wxDialog )
 
 /*!
- * CSafeCombinationSetup event table definition
+ * SafeCombinationSetupDlg event table definition
  */
 
-BEGIN_EVENT_TABLE( CSafeCombinationSetup, wxDialog )
+BEGIN_EVENT_TABLE( SafeCombinationSetupDlg, wxDialog )
 
-////@begin CSafeCombinationSetup event table entries
+////@begin SafeCombinationSetupDlg event table entries
 #ifndef NO_YUBI
-  EVT_BUTTON( ID_YUBIBTN, CSafeCombinationSetup::OnYubibtnClick )
+  EVT_BUTTON( ID_YUBIBTN, SafeCombinationSetupDlg::OnYubibtnClick )
 
-EVT_TIMER(POLLING_TIMER_ID, CSafeCombinationSetup::OnPollingTimer)
+EVT_TIMER(POLLING_TIMER_ID, SafeCombinationSetupDlg::OnPollingTimer)
 #endif
 
-  EVT_BUTTON( wxID_OK, CSafeCombinationSetup::OnOkClick )
+  EVT_BUTTON( wxID_OK, SafeCombinationSetupDlg::OnOkClick )
 
-  EVT_BUTTON( wxID_CANCEL, CSafeCombinationSetup::OnCancelClick )
+  EVT_BUTTON( wxID_CANCEL, SafeCombinationSetupDlg::OnCancelClick )
 
-////@end CSafeCombinationSetup event table entries
+////@end SafeCombinationSetupDlg event table entries
 END_EVENT_TABLE()
 
 /*!
- * CSafeCombinationSetup constructors
+ * SafeCombinationSetupDlg constructors
  */
 
-CSafeCombinationSetup::CSafeCombinationSetup()
+SafeCombinationSetupDlg::SafeCombinationSetupDlg()
 {
   Init();
 }
 
-CSafeCombinationSetup::CSafeCombinationSetup( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+SafeCombinationSetupDlg::SafeCombinationSetupDlg( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
   Init();
   Create(parent, id, caption, pos, size, style);
 }
 
 /*!
- * CSafeCombinationSetup creator
+ * SafeCombinationSetupDlg creator
  */
 
-bool CSafeCombinationSetup::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool SafeCombinationSetupDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin CSafeCombinationSetup creation
+////@begin SafeCombinationSetupDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -98,7 +98,7 @@ bool CSafeCombinationSetup::Create( wxWindow* parent, wxWindowID id, const wxStr
     GetSizer()->SetSizeHints(this);
   }
   Centre();
-////@end CSafeCombinationSetup creation
+////@end SafeCombinationSetupDlg creation
 #ifndef NO_YUBI
   SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
@@ -108,13 +108,13 @@ bool CSafeCombinationSetup::Create( wxWindow* parent, wxWindowID id, const wxStr
 }
 
 /*!
- * CSafeCombinationSetup destructor
+ * SafeCombinationSetupDlg destructor
  */
 
-CSafeCombinationSetup::~CSafeCombinationSetup()
+SafeCombinationSetupDlg::~SafeCombinationSetupDlg()
 {
-////@begin CSafeCombinationSetup destruction
-////@end CSafeCombinationSetup destruction
+////@begin SafeCombinationSetupDlg destruction
+////@end SafeCombinationSetupDlg destruction
 #ifndef NO_YUBI
   delete m_pollingTimer;
 #endif
@@ -124,24 +124,24 @@ CSafeCombinationSetup::~CSafeCombinationSetup()
  * Member initialisation
  */
 
-void CSafeCombinationSetup::Init()
+void SafeCombinationSetupDlg::Init()
 {
-////@begin CSafeCombinationSetup member initialisation
+////@begin SafeCombinationSetupDlg member initialisation
 #ifndef NO_YUBI
   m_YubiBtn = nullptr;
   m_yubiStatusCtrl = nullptr;
 #endif
-////@end CSafeCombinationSetup member initialisation
+////@end SafeCombinationSetupDlg member initialisation
 }
 
 /*!
- * Control creation for CSafeCombinationSetup
+ * Control creation for SafeCombinationSetupDlg
  */
 
-void CSafeCombinationSetup::CreateControls()
+void SafeCombinationSetupDlg::CreateControls()
 {
-////@begin CSafeCombinationSetup content construction
-  CSafeCombinationSetup* itemDialog1 = this;
+////@begin SafeCombinationSetupDlg content construction
+  SafeCombinationSetupDlg* itemDialog1 = this;
 
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
@@ -191,14 +191,14 @@ void CSafeCombinationSetup::CreateControls()
   // Set validators
   itemTextCtrl6->SetValidator( wxGenericValidator(& m_password) );
   itemTextCtrl8->SetValidator( wxGenericValidator(& m_verify) );
-////@end CSafeCombinationSetup content construction
+////@end SafeCombinationSetupDlg content construction
 }
 
 /*!
  * Should we show tooltips?
  */
 
-bool CSafeCombinationSetup::ShowToolTips()
+bool SafeCombinationSetupDlg::ShowToolTips()
 {
   return true;
 }
@@ -208,17 +208,17 @@ bool CSafeCombinationSetup::ShowToolTips()
  */
 
 #ifndef NO_YUBI
-wxBitmap CSafeCombinationSetup::GetBitmapResource( const wxString& name )
+wxBitmap SafeCombinationSetupDlg::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
-////@begin CSafeCombinationSetup bitmap retrieval
+////@begin SafeCombinationSetupDlg bitmap retrieval
   if (name == _T("graphics/Yubikey-button.xpm"))
   {
     wxBitmap bitmap(Yubikey_button_xpm);
     return bitmap;
   }
   return wxNullBitmap;
-////@end CSafeCombinationSetup bitmap retrieval
+////@end SafeCombinationSetupDlg bitmap retrieval
 }
 #endif
 
@@ -226,19 +226,19 @@ wxBitmap CSafeCombinationSetup::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon CSafeCombinationSetup::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon SafeCombinationSetupDlg::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
-////@begin CSafeCombinationSetup icon retrieval
+////@begin SafeCombinationSetupDlg icon retrieval
   return wxNullIcon;
-////@end CSafeCombinationSetup icon retrieval
+////@end SafeCombinationSetupDlg icon retrieval
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CSafeCombinationSetup::OnOkClick( wxCommandEvent& /* evt */ )
+void SafeCombinationSetupDlg::OnOkClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     if (m_password != m_verify) {
@@ -291,16 +291,16 @@ void CSafeCombinationSetup::OnOkClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void CSafeCombinationSetup::OnCancelClick( wxCommandEvent& event )
+void SafeCombinationSetupDlg::OnCancelClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationSetup.
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationSetupDlg.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationSetup.
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationSetupDlg.
 }
 
 #ifndef NO_YUBI
-void CSafeCombinationSetup::OnPollingTimer(wxTimerEvent &evt)
+void SafeCombinationSetupDlg::OnPollingTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == POLLING_TIMER_ID) {
     HandlePollingTimer(); // in CYubiMixin
@@ -311,7 +311,7 @@ void CSafeCombinationSetup::OnPollingTimer(wxTimerEvent &evt)
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void CSafeCombinationSetup::OnYubibtnClick( wxCommandEvent& /* event */ )
+void SafeCombinationSetupDlg::OnYubibtnClick( wxCommandEvent& /* event */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     if (m_password != m_verify) {

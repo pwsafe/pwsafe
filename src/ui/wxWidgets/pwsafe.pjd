@@ -3924,7 +3924,7 @@
           <string name="proxy-Background colour">""</string>
           <string name="proxy-Base class">"wxDialog"</string>
           <bool name="proxy-Centre">1</bool>
-          <string name="proxy-Class">"CSafeCombinationSetup"</string>
+          <string name="proxy-Class">"SafeCombinationSetupDlg"</string>
           <string name="proxy-Custom styles">""</string>
           <string name="proxy-Data class header filename">""</string>
           <string name="proxy-Data class implementation filename">""</string>
@@ -3942,7 +3942,7 @@
           <string name="proxy-Help text">""</string>
           <bool name="proxy-Hidden">0</bool>
           <string name="proxy-Icon">""</string>
-          <string name="proxy-Id name">"ID_SAFECOMBINATIONSETUP"</string>
+          <string name="proxy-Id name">"ID_SAFECOMBINATIONSETUPDLG"</string>
           <long name="proxy-Id value">10007</long>
           <string name="proxy-Implementation filename">"SafeCombinationSetupDlg.cpp"</string>
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
@@ -4425,7 +4425,7 @@ You can use any keyboard character. The combination is case-sensitive.
               </document>
               <document>
                 <string name="proxy-type">"wbBitmapButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtnClick|NONE||CSafeCombinationSetup"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtnClick|NONE||SafeCombinationSetupDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"bitmapbutton"</string>
                 <long name="is-transient">0</long>
@@ -4600,7 +4600,7 @@ You can use any keyboard character. The combination is case-sensitive.
               <string name="type">"dialog-control-document"</string>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOkClick|NONE||CSafeCombinationSetup"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOkClick|NONE||SafeCombinationSetupDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>
@@ -4667,7 +4667,7 @@ You can use any keyboard character. The combination is case-sensitive.
               </document>
               <document>
                 <string name="proxy-type">"wbButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCancelClick|NONE||CSafeCombinationSetup"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCancelClick|NONE||SafeCombinationSetupDlg"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"dialogcontrol"</string>
                 <long name="is-transient">0</long>

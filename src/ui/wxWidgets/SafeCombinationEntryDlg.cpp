@@ -480,7 +480,7 @@ void SafeCombinationEntryDlg::OnNewDbClick( wxCommandEvent& /* evt */ )
       return;
   }
   // 2. Get a password
-  CSafeCombinationSetup pksetup(this);
+  SafeCombinationSetupDlg pksetup(this);
   int rc = pksetup.ShowModal();
 
   if (rc != wxID_OK)

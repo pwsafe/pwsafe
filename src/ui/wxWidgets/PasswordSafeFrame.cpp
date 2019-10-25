@@ -2446,7 +2446,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
       return PWScore::USER_CANCEL;
   }
 
-  CSafeCombinationSetup dbox_pksetup(this);
+  SafeCombinationSetupDlg dbox_pksetup(this);
   rc = dbox_pksetup.ShowModal();
 
   if (rc == wxID_CANCEL)
