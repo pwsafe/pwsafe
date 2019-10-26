@@ -6,6 +6,10 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+/** \file ToolbarButtons.h
+*
+*/
+
 #ifndef _TOOLBARBUTTONS_H_
 #define _TOOLBARBUTTONS_H_
 
