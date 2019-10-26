@@ -8,9 +8,6 @@
 
 /** \file SystemTrayMenuId.h
  *
- */
-
-/*
  * This file contains the logic behind generating the command-ids
  * used by the dynamically generated system tray menu.
  *

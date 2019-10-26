@@ -6,6 +6,10 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+/** \file SelectionCriteria.h
+*
+*/
+
 #ifndef _SELECTIONCRITERIA_H_
 #define _SELECTIONCRITERIA_H_
 

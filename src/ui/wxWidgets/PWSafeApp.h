@@ -1,13 +1,13 @@
-/////////////////////////////////////////////////////////////////////////////
-// Name:        PWSafeApp.h
-// Purpose:
-// Author:      Rony Shapiro
-// Modified by:
-// Created:     Wed 14 Jan 2009 10:11:39 PM IST
-// RCS-ID:
-// Copyright:   Copyright (c) 2003-2019 Rony Shapiro <ronys@pwsafe.org>
-// Licence:
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * Initial version created by Rony Shapiro 
+ * on Wed 14 Jan 2009 10:11:39 PM IST.
+ * 
+ * Copyright (c) 2003-2019 Rony Shapiro <ronys@pwsafe.org>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License 2.0 terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license-2.0.php
+ */
 
 /** \file PWSafeApp.h
 *
@@ -50,27 +50,27 @@ class wxLocale;
 
 class PWSafeApp : public wxApp
 {
-    DECLARE_CLASS( PWSafeApp )
-    DECLARE_EVENT_TABLE()
+  DECLARE_CLASS(PWSafeApp)
+  DECLARE_EVENT_TABLE()
 
 public:
-    /// Constructor
-    PWSafeApp();
+  /// Constructor
+  PWSafeApp();
 
-    /// Destructor
-    ~PWSafeApp();
+  /// Destructor
+  ~PWSafeApp();
 
-    void Init();
+  void Init();
 
-    /// Initialises the application
-    virtual bool OnInit();
+  /// Initialises the application
+  virtual bool OnInit();
 
   /// Handle asserts without showing the assert dialog until locale is initialized.
 #ifdef __WXDEBUG__
   virtual void OnAssertFailure(const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg);
 #endif
-    /// Called on exit
-    virtual int OnExit();
+  /// Called on exit
+  virtual int OnExit();
 
 ////@begin PWSafeApp event handler declarations
 
@@ -97,28 +97,31 @@ public:
 
   wxIconBundle GetAppIcons() const { return m_appIcons; }
 
- private:
-    PWScore m_core;
-    wxTimer* m_idleTimer;
-    PasswordSafeFrame* m_frame;
-    enum { IDLE_TIMER_ID = 33 } ;
-    RecentDbList *m_recentDatabases;
+private:
+  PWScore m_core;
+  wxTimer *m_idleTimer;
+  PasswordSafeFrame *m_frame;
+  enum
+  {
+    IDLE_TIMER_ID = 33
+  };
+  RecentDbList *m_recentDatabases;
 
-    //A map of dialog titles (or tab names) vs help sections
-    WX_DECLARE_STRING_HASH_MAP( wxString, StringToStringMap );
-    StringToStringMap& GetHelpMap();
-    wxIconBundle m_appIcons;
-    wxLocale *m_locale; // set in Init(), deleted in d'tor, unused elsewhere
-    wxString helpFileNamePath;
-    bool isHelpActivated;
-    bool ActivateHelp(wxLanguage language);
-    
- public:
-    RecentDbList &recentDatabases();
-    uint32 GetHashIters() const {return m_core.GetHashIters();}
-    bool ActivateLanguage(wxLanguage language, bool tryOnly);
-    wxLanguage GetSystemLanguage();
-    wxLanguage GetSelectedLanguage();
+  //A map of dialog titles (or tab names) vs help sections
+  WX_DECLARE_STRING_HASH_MAP(wxString, StringToStringMap);
+  StringToStringMap &GetHelpMap();
+  wxIconBundle m_appIcons;
+  wxLocale *m_locale; // set in Init(), deleted in d'tor, unused elsewhere
+  wxString helpFileNamePath;
+  bool isHelpActivated;
+  bool ActivateHelp(wxLanguage language);
+
+public:
+  RecentDbList &recentDatabases();
+  uint32 GetHashIters() const { return m_core.GetHashIters(); }
+  bool ActivateLanguage(wxLanguage language, bool tryOnly);
+  wxLanguage GetSystemLanguage();
+  wxLanguage GetSelectedLanguage();
 };
 
 /*!
