@@ -6,9 +6,10 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file AboutDlg.cpp
+/** \file AdvancedSelectionDlg.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -308,9 +309,8 @@ void AdvancedSelectionPanel::OnRemoveAll( wxCommandEvent& /* evt */ )
   }
 }
 
-/*
- * Recursively enables/disables all sizer elements.  The <ignore> window
- * is not disabled
+/**
+ * Recursively enables/disables all sizer elements except the 'ignore' window.
  */
 void EnableSizerElements(wxSizer* sizer, wxWindow* ignore, bool enable)
 {
@@ -319,10 +319,12 @@ void EnableSizerElements(wxSizer* sizer, wxWindow* ignore, bool enable)
   wxSizerItemList& items = sizer->GetChildren();
   for (wxSizerItemList::iterator itr = items.begin(); itr != items.end(); ++itr) {
     wxSizerItem* item = *itr;
-    if (item->IsWindow() && item->GetWindow() != ignore)
+    if (item->IsWindow() && item->GetWindow() != ignore) {
       item->GetWindow()->Enable(enable);
-    else if (item->IsSizer())
+    }
+    else if (item->IsSizer()) {
       EnableSizerElements(item->GetSizer(), ignore, enable);
+    }
   }
 }
 

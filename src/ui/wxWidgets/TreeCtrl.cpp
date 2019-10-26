@@ -6,9 +6,10 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file PWSTreeCtrl.cpp
+/** \file TreeCtrl.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -55,13 +56,13 @@
 using pws_os::CUUID;
 
 /*!
- * PWSTreeCtrl type definition
+ * TreeCtrl type definition
  */
 
-IMPLEMENT_CLASS( PWSTreeCtrl, wxTreeCtrl )
+IMPLEMENT_CLASS( TreeCtrl, wxTreeCtrl )
 
 // Image Indices - these match the order images are added
-//                 in PWSTreeCtrl::CreateControls()
+//                 in TreeCtrl::CreateControls()
 enum {
   ABASE_EXP_II,    // 0
   ABASE_WARN_II,   // 1
@@ -83,22 +84,22 @@ enum {
 enum {ID_TREECTRL_1 = ID_TREECTRL + 1 };
 
 /*!
- * PWSTreeCtrl event table definition
+ * TreeCtrl event table definition
  */
 
-BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
+BEGIN_EVENT_TABLE( TreeCtrl, wxTreeCtrl )
 
-////@begin PWSTreeCtrl event table entries
-  EVT_TREE_SEL_CHANGED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlSelChanged )
-  EVT_TREE_ITEM_ACTIVATED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlItemActivated )
-  EVT_TREE_ITEM_MENU( ID_TREECTRL, PWSTreeCtrl::OnContextMenu )
-  EVT_TREE_ITEM_GETTOOLTIP( ID_TREECTRL, PWSTreeCtrl::OnGetToolTip )
-  EVT_MENU( ID_ADDGROUP, PWSTreeCtrl::OnAddGroup )
-  EVT_MENU( ID_RENAME, PWSTreeCtrl::OnRenameGroup )
-  EVT_TREE_END_LABEL_EDIT( ID_TREECTRL, PWSTreeCtrl::OnEndLabelEdit )
-  EVT_TREE_END_LABEL_EDIT( ID_TREECTRL_1, PWSTreeCtrl::OnEndLabelEdit )
-  EVT_TREE_KEY_DOWN( ID_TREECTRL, PWSTreeCtrl::OnKeyDown )
-////@end PWSTreeCtrl event table entries
+////@begin TreeCtrl event table entries
+  EVT_TREE_SEL_CHANGED( ID_TREECTRL, TreeCtrl::OnTreectrlSelChanged )
+  EVT_TREE_ITEM_ACTIVATED( ID_TREECTRL, TreeCtrl::OnTreectrlItemActivated )
+  EVT_TREE_ITEM_MENU( ID_TREECTRL, TreeCtrl::OnContextMenu )
+  EVT_TREE_ITEM_GETTOOLTIP( ID_TREECTRL, TreeCtrl::OnGetToolTip )
+  EVT_MENU( ID_ADDGROUP, TreeCtrl::OnAddGroup )
+  EVT_MENU( ID_RENAME, TreeCtrl::OnRenameGroup )
+  EVT_TREE_END_LABEL_EDIT( ID_TREECTRL, TreeCtrl::OnEndLabelEdit )
+  EVT_TREE_END_LABEL_EDIT( ID_TREECTRL_1, TreeCtrl::OnEndLabelEdit )
+  EVT_TREE_KEY_DOWN( ID_TREECTRL, TreeCtrl::OnKeyDown )
+////@end TreeCtrl event table entries
 END_EVENT_TABLE()
 
 const wchar_t GROUP_SEP = L'.';
@@ -141,15 +142,15 @@ private:
 };
 
 /*!
- * PWSTreeCtrl constructors
+ * TreeCtrl constructors
  */
 
-PWSTreeCtrl::PWSTreeCtrl(PWScore &core) : m_core(core)
+TreeCtrl::TreeCtrl(PWScore &core) : m_core(core)
 {
   Init();
 }
 
-PWSTreeCtrl::PWSTreeCtrl(wxWindow* parent, PWScore &core,
+TreeCtrl::TreeCtrl(wxWindow* parent, PWScore &core,
                          wxWindowID id, const wxPoint& pos,
                          const wxSize& size, long style) : m_core(core)
 {
@@ -158,46 +159,46 @@ PWSTreeCtrl::PWSTreeCtrl(wxWindow* parent, PWScore &core,
 }
 
 /*!
- * PWSTreeCtrl creator
+ * TreeCtrl creator
  */
 
-bool PWSTreeCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
+bool TreeCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 {
-////@begin PWSTreeCtrl creation
+////@begin TreeCtrl creation
   wxTreeCtrl::Create(parent, id, pos, size, style);
   CreateControls();
-////@end PWSTreeCtrl creation
+////@end TreeCtrl creation
   return true;
 }
 
 /*!
- * PWSTreeCtrl destructor
+ * TreeCtrl destructor
  */
 
-PWSTreeCtrl::~PWSTreeCtrl()
+TreeCtrl::~TreeCtrl()
 {
-////@begin PWSTreeCtrl destruction
-////@end PWSTreeCtrl destruction
+////@begin TreeCtrl destruction
+////@end TreeCtrl destruction
 }
 
 /*!
  * Member initialisation
  */
 
-void PWSTreeCtrl::Init()
+void TreeCtrl::Init()
 {
-////@begin PWSTreeCtrl member initialisation
-////@end PWSTreeCtrl member initialisation
+////@begin TreeCtrl member initialisation
+////@end TreeCtrl member initialisation
 }
 
 /*!
- * Control creation for PWSTreeCtrl
+ * Control creation for TreeCtrl
  */
 
-void PWSTreeCtrl::CreateControls()
+void TreeCtrl::CreateControls()
 {
-////@begin PWSTreeCtrl content construction
-////@end PWSTreeCtrl content construction
+////@begin TreeCtrl content construction
+////@end TreeCtrl content construction
   const char **xpmList[] = {
     abase_exp_xpm,    // 0
     abase_warn_xpm,   // 1
@@ -223,7 +224,7 @@ void PWSTreeCtrl::CreateControls()
 /**
  * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
  */
-void PWSTreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft)
+void TreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &entry_uuid, CItemData::FieldType ft)
 {
   CItemData *item = nullptr;
 
@@ -235,7 +236,7 @@ void PWSTreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID
   else if (ga == UpdateGUICommand::GUI_ADD_ENTRY ||
            ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
            ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
-    pws_os::Trace(wxT("PWSTreeCtrl - Couldn't find uuid %ls"), StringX(CUUID(entry_uuid)).c_str());
+    pws_os::Trace(wxT("TreeCtrl - Couldn't find uuid %ls"), StringX(CUUID(entry_uuid)).c_str());
     return;
   }
 
@@ -277,7 +278,7 @@ void PWSTreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID
       // TODO: ???
       break;
     default:
-      wxFAIL_MSG(wxT("PWSTreeCtrl - Unsupported GUI action received."));
+      wxFAIL_MSG(wxT("TreeCtrl - Unsupported GUI action received."));
       break;
   }
 }
@@ -285,9 +286,9 @@ void PWSTreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID
 /**
  * Implements Observer::GUIRefreshEntry(const CItemData&, bool)
  */
-void PWSTreeCtrl::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
+void TreeCtrl::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
 {
-  pws_os::Trace(wxT("PWSTreeCtrl::GUIRefreshEntry"));
+  pws_os::Trace(wxT("TreeCtrl::GUIRefreshEntry"));
 
   if (item.GetStatus() == CItemData::ES_DELETED) {
     uuid_array_t uuid;
@@ -299,13 +300,13 @@ void PWSTreeCtrl::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFai
   }
 }
 
-bool PWSTreeCtrl::ItemIsGroup(const wxTreeItemId& item) const
+bool TreeCtrl::ItemIsGroup(const wxTreeItemId& item) const
 {
   int image = GetItemImage(item);
   return image == NODE_II || GetRootItem() == item;
 }
 
-// XXX taken from Windows PWSTreeCtrl.cpp
+// XXX taken from Windows TreeCtrl.cpp
 // XXX move to core
 static StringX GetPathElem(StringX &sxPath)
 {
@@ -338,7 +339,7 @@ static StringX GetPathElem(StringX &sxPath)
   return sxElement;
 }
 
-bool PWSTreeCtrl::ExistsInTree(wxTreeItemId node,
+bool TreeCtrl::ExistsInTree(wxTreeItemId node,
                                const StringX &s, wxTreeItemId &si) const
 {
   // returns true iff s is a direct descendant of node
@@ -356,7 +357,7 @@ bool PWSTreeCtrl::ExistsInTree(wxTreeItemId node,
   return false;
 }
 
-wxTreeItemId PWSTreeCtrl::AddGroup(const StringX &group)
+wxTreeItemId TreeCtrl::AddGroup(const StringX &group)
 {
   wxTreeItemId ti = GetRootItem();
   if (!ti.IsOk())
@@ -379,7 +380,7 @@ wxTreeItemId PWSTreeCtrl::AddGroup(const StringX &group)
   return ti;
 }
 
-wxString PWSTreeCtrl::ItemDisplayString(const CItemData &item) const
+wxString TreeCtrl::ItemDisplayString(const CItemData &item) const
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   const wxString title = item.GetTitle().c_str();
@@ -411,7 +412,7 @@ wxString PWSTreeCtrl::ItemDisplayString(const CItemData &item) const
   return disp;
 }
 
-wxString PWSTreeCtrl::GetPath(const wxTreeItemId &node) const
+wxString TreeCtrl::GetPath(const wxTreeItemId &node) const
 {
   wxString retval;
   std::vector<wxString> v;
@@ -431,7 +432,7 @@ wxString PWSTreeCtrl::GetPath(const wxTreeItemId &node) const
   return retval;
 }
 
-wxString PWSTreeCtrl::GetItemGroup(const wxTreeItemId& item) const
+wxString TreeCtrl::GetItemGroup(const wxTreeItemId& item) const
 {
   if (!item.IsOk() || item == GetRootItem())
     return wxEmptyString;
@@ -447,7 +448,7 @@ wxString PWSTreeCtrl::GetItemGroup(const wxTreeItemId& item) const
     return GetPath(item);
 }
 
-void PWSTreeCtrl::UpdateItem(const CItemData &item)
+void TreeCtrl::UpdateItem(const CItemData &item)
 {
   const wxTreeItemId node = Find(item);
   if (node.IsOk()) {
@@ -471,7 +472,7 @@ void PWSTreeCtrl::UpdateItem(const CItemData &item)
 }
 
 //Just update the item's text, don't move it into its sorted position
-void PWSTreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft)
+void TreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft)
 {
   PWSprefs* prefs = PWSprefs::GetInstance();
   if (ft == CItemData::GROUP) {
@@ -489,7 +490,7 @@ void PWSTreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft
   }
 }
 
-void PWSTreeCtrl::AddItem(const CItemData &item)
+void TreeCtrl::AddItem(const CItemData &item)
 {
   wxTreeItemData *data = new PWTreeItemData(item);
   wxTreeItemId gnode = AddGroup(item.GetGroup());
@@ -502,7 +503,7 @@ void PWSTreeCtrl::AddItem(const CItemData &item)
   m_item_map.insert(std::make_pair(CUUID(uuid), titem));
 }
 
-CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
+CItemData *TreeCtrl::GetItem(const wxTreeItemId &id) const
 {
   if (!id.IsOk())
     return nullptr;
@@ -519,7 +520,7 @@ CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
 }
 
 //overridden from base for case-insensitive sort
-int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2)
+int TreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2)
 {
   const bool groupsFirst = PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree),
              item1isGroup = ItemIsGroup(item1),
@@ -537,7 +538,7 @@ int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& i
   return text1.CmpNoCase(text2);
 }
 
-void PWSTreeCtrl::SortChildrenRecursively(const wxTreeItemId& item)
+void TreeCtrl::SortChildrenRecursively(const wxTreeItemId& item)
 {
   if (!ItemIsGroup(item) || GetChildrenCount(item) <= 0)
     return;
@@ -552,7 +553,7 @@ void PWSTreeCtrl::SortChildrenRecursively(const wxTreeItemId& item)
   }
 }
 
-wxTreeItemId PWSTreeCtrl::Find(const CUUID &uuid) const
+wxTreeItemId TreeCtrl::Find(const CUUID &uuid) const
 {
   wxTreeItemId fail;
   auto iter = m_item_map.find(uuid);
@@ -562,14 +563,14 @@ wxTreeItemId PWSTreeCtrl::Find(const CUUID &uuid) const
     return fail;
 }
 
-wxTreeItemId PWSTreeCtrl::Find(const CItemData &item) const
+wxTreeItemId TreeCtrl::Find(const CItemData &item) const
 {
   uuid_array_t uuid;
   item.GetUUID(uuid);
   return Find(uuid);
 }
 
-wxTreeItemId PWSTreeCtrl::Find(const wxString &path, wxTreeItemId subtree) const
+wxTreeItemId TreeCtrl::Find(const wxString &path, wxTreeItemId subtree) const
 {
   wxArrayString elems(::wxStringTokenize(path, wxT('.')));
   for( size_t idx = 0; idx < elems.Count(); ++idx) {
@@ -582,7 +583,7 @@ wxTreeItemId PWSTreeCtrl::Find(const wxString &path, wxTreeItemId subtree) const
   return subtree;
 }
 
-bool PWSTreeCtrl::Remove(const CUUID &uuid)
+bool TreeCtrl::Remove(const CUUID &uuid)
 {
   wxTreeItemId id = Find(uuid);
   if (id.IsOk()) {
@@ -607,7 +608,7 @@ bool PWSTreeCtrl::Remove(const CUUID &uuid)
   }
 }
 
-void PWSTreeCtrl::SetItemImage(const wxTreeItemId &node,
+void TreeCtrl::SetItemImage(const wxTreeItemId &node,
                                const CItemData &item)
 {
   // TODO: modify to display warning and expired states
@@ -628,7 +629,7 @@ void PWSTreeCtrl::SetItemImage(const wxTreeItemId &node,
  * wxEVT_COMMAND_TREE_ITEM_ACTIVATED event handler for ID_TREECTRL
  */
 
-void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
+void TreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
 {
   const wxTreeItemId item = evt.GetItem();
   if (ItemIsGroup(item) && GetChildrenCount(item) > 0){
@@ -654,12 +655,12 @@ void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
  * wxEVT_TREE_ITEM_MENU event handler for ID_TREECTRL
  */
 
-void PWSTreeCtrl::OnContextMenu( wxTreeEvent& evt )
+void TreeCtrl::OnContextMenu( wxTreeEvent& evt )
 {
   dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(evt.GetItem()));
 }
 
-void PWSTreeCtrl::SelectItem(const CUUID & uuid)
+void TreeCtrl::SelectItem(const CUUID & uuid)
 {
   uuid_array_t uuid_array;
   uuid.GetARep(uuid_array);
@@ -668,7 +669,7 @@ void PWSTreeCtrl::SelectItem(const CUUID & uuid)
       wxTreeCtrl::SelectItem(id);
 }
 
-void PWSTreeCtrl::OnGetToolTip( wxTreeEvent& evt )
+void TreeCtrl::OnGetToolTip( wxTreeEvent& evt )
 { // Added manually
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesAsTooltipsInViews)) {
     wxTreeItemId id = evt.GetItem();
@@ -680,7 +681,7 @@ void PWSTreeCtrl::OnGetToolTip( wxTreeEvent& evt )
   }
 }
 
-void PWSTreeCtrl::PreferencesChanged()
+void TreeCtrl::PreferencesChanged()
 {
   ;
 }
@@ -697,7 +698,7 @@ void EditTreeLabel(wxTreeCtrl* tree, const wxTreeItemId& id)
     edit->SelectAll();
   }
 }
-void PWSTreeCtrl::OnAddGroup(wxCommandEvent& WXUNUSED(evt))
+void TreeCtrl::OnAddGroup(wxCommandEvent& WXUNUSED(evt))
 {
   wxCHECK_RET(IsShown(), wxT("Group can only be added while in tree view"));
   wxTreeItemId parentId = GetSelection();
@@ -712,7 +713,7 @@ void PWSTreeCtrl::OnAddGroup(wxCommandEvent& WXUNUSED(evt))
   EditTreeLabel(this, newItem);
 }
 
-void PWSTreeCtrl::OnRenameGroup(wxCommandEvent& WXUNUSED(evt))
+void TreeCtrl::OnRenameGroup(wxCommandEvent& WXUNUSED(evt))
 {
   wxTreeItemId sel = GetSelection();
   if (sel.IsOk()) {
@@ -722,7 +723,7 @@ void PWSTreeCtrl::OnRenameGroup(wxCommandEvent& WXUNUSED(evt))
   }
 }
 
-void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
+void TreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
 {
   const wxString &label =evt.GetLabel();
 
@@ -769,7 +770,7 @@ void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
   }
 }
 
-void PWSTreeCtrl::OnKeyDown(wxTreeEvent& evt)
+void TreeCtrl::OnKeyDown(wxTreeEvent& evt)
 {
   if (evt.GetKeyCode() == WXK_LEFT) {
 
@@ -784,7 +785,7 @@ void PWSTreeCtrl::OnKeyDown(wxTreeEvent& evt)
   evt.Skip();
 }
 
-void PWSTreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
+void TreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
 {
   if (evt.IsEditCancelled()) {
     // New item, not yet in db.  So we could just remove from the tree
@@ -814,7 +815,7 @@ void PWSTreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
   }
 }
 
-void PWSTreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, const wxString& oldPath)
+void TreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, const wxString& oldPath)
 {
   wxCHECK_RET(ItemIsGroup(groupItem), wxT("Cannot handle renaming of non-group items"));
 
@@ -862,14 +863,14 @@ void PWSTreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, 
  * wxEVT_COMMAND_TREE_SEL_CHANGED event handler for ID_TREECTRL
  */
 
-void PWSTreeCtrl::OnTreectrlSelChanged( wxTreeEvent& evt )
+void TreeCtrl::OnTreectrlSelChanged( wxTreeEvent& evt )
 {
   CItemData *pci = GetItem(evt.GetItem());
 
   dynamic_cast<PasswordSafeFrame *>(GetParent())->UpdateSelChanged(pci);
 }
 
-static void ColourChildren(PWSTreeCtrl *tree, wxTreeItemId parent, const wxColour &colour)
+static void ColourChildren(TreeCtrl *tree, wxTreeItemId parent, const wxColour &colour)
 {
   wxTreeItemIdValue cookie;
   wxTreeItemId child = tree->GetFirstChild(parent, cookie);
@@ -882,7 +883,7 @@ static void ColourChildren(PWSTreeCtrl *tree, wxTreeItemId parent, const wxColou
   }
 }
 
-void PWSTreeCtrl::SetFilterState(bool state)
+void TreeCtrl::SetFilterState(bool state)
 {
   const wxColour *colour = state ? wxRED : wxBLACK;
   // iterate over all items, no way to do this en-mass
@@ -894,7 +895,7 @@ void PWSTreeCtrl::SetFilterState(bool state)
 /**
  * Saves the state of all groups that have child items in tree view.
  */
-void PWSTreeCtrl::SaveGroupDisplayState()
+void TreeCtrl::SaveGroupDisplayState()
 {
   auto groupstates = GetGroupDisplayState();
 
@@ -908,7 +909,7 @@ void PWSTreeCtrl::SaveGroupDisplayState()
  * If the amount of groups in the tree view differs from the 
  * amount of stored group states nothing will be done.
  */
-void PWSTreeCtrl::RestoreGroupDisplayState()
+void TreeCtrl::RestoreGroupDisplayState()
 {
   auto currentstates = GetGroupDisplayState();
   auto groupstates   = m_core.GetDisplayStatus();
@@ -932,7 +933,7 @@ void PWSTreeCtrl::RestoreGroupDisplayState()
  *       they appear in the tree from top to bottom.
  * @return a vector of booleans representing the state of each group.
  */
-std::vector<bool> PWSTreeCtrl::GetGroupDisplayState()
+std::vector<bool> TreeCtrl::GetGroupDisplayState()
 {
   std::vector<bool> groupstates;
 
@@ -957,7 +958,7 @@ std::vector<bool> PWSTreeCtrl::GetGroupDisplayState()
  *       they appear in the tree from top to bottom.
  * @param groupstates a vector of booleans representing the state of each group.
  */
-void PWSTreeCtrl::SetGroupDisplayState(const std::vector<bool> &groupstates)
+void TreeCtrl::SetGroupDisplayState(const std::vector<bool> &groupstates)
 {
   size_t groupIndex = 0;
 
@@ -974,7 +975,7 @@ void PWSTreeCtrl::SetGroupDisplayState(const std::vector<bool> &groupstates)
 /**
  * Sets the state for each individual group item to be visually expanded.
  */
-void PWSTreeCtrl::SetGroupDisplayStateAllExpanded()
+void TreeCtrl::SetGroupDisplayStateAllExpanded()
 {
   auto groupstates = GetGroupDisplayState();
 
@@ -988,7 +989,7 @@ void PWSTreeCtrl::SetGroupDisplayStateAllExpanded()
 /**
  * Sets the state for each individual group item to be visually collapsed.
  */
-void PWSTreeCtrl::SetGroupDisplayStateAllCollapsed()
+void TreeCtrl::SetGroupDisplayStateAllCollapsed()
 {
   auto groupstates = GetGroupDisplayState();
 
@@ -1000,7 +1001,7 @@ void PWSTreeCtrl::SetGroupDisplayStateAllCollapsed()
 }
 
 template<typename GroupItemConsumer>
-void PWSTreeCtrl::TraverseTree(wxTreeItemId itemId, GroupItemConsumer&& consumer)
+void TreeCtrl::TraverseTree(wxTreeItemId itemId, GroupItemConsumer&& consumer)
 {
   wxTreeItemIdValue cookie;
 

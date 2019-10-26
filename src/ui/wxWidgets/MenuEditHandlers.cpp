@@ -75,12 +75,12 @@ void PasswordSafeFrame::DoEdit(CItemData item)
   int rc = 0;
   if (!item.IsShortcut()) {
     bool read_only = m_core.IsReadOnly() || item.IsProtected();
-    AddEditPropSheet editDbox(this, m_core,
-                              read_only ? AddEditPropSheet::SheetType::VIEW : AddEditPropSheet::SheetType::EDIT,
+    AddEditPropSheetDlg editDbox(this, m_core,
+                              read_only ? AddEditPropSheetDlg::SheetType::VIEW : AddEditPropSheetDlg::SheetType::EDIT,
                               &item);
     rc = editDbox.ShowModal();
   } else {
-    EditShortcut editDbox(this, m_core, &item);
+    EditShortcutDlg editDbox(this, m_core, &item);
     rc = editDbox.ShowModal();
   }
   if (rc == wxID_OK) {
@@ -91,7 +91,7 @@ void PasswordSafeFrame::DoEdit(CItemData item)
     auto iter = m_core.Find(uuid);
     if ( iter != m_core.GetEntryEndIter()) {
       CItemData& origItem = m_core.GetEntry(iter);
-      //The Item is updated in DB by AddEditPropSheet
+      //The Item is updated in DB by AddEditPropSheetDlg
       UpdateAccessTime(origItem);
       UpdateSelChanged(&origItem);
       UpdateStatusBar();
@@ -114,7 +114,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
     selectedGroup = m_tree->GetItemGroup(selection);
   }
 
-  AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::SheetType::ADD, nullptr, selectedGroup);
+  AddEditPropSheetDlg addDbox(this, m_core, AddEditPropSheetDlg::SheetType::ADD, nullptr, selectedGroup);
   if (addDbox.ShowModal() == wxID_OK) {
     const CItemData &item = addDbox.GetItem();
     m_core.Execute(AddEntryCommand::Create(&m_core, item, item.GetBaseUUID()));
@@ -143,7 +143,7 @@ void PasswordSafeFrame::OnDeleteClick( wxCommandEvent& /* evt */ )
 
   //Confirm whether to delete the item
   if (!dontaskquestion) {
-    DeleteConfirmation deleteDlg(this, num_children);
+    DeleteConfirmationDlg deleteDlg(this, num_children);
     deleteDlg.SetConfirmdelete(PWSprefs::GetInstance()->GetPref(PWSprefs::DeleteQuestion));
     int rc = deleteDlg.ShowModal();
     if (rc != wxID_YES) {
@@ -261,7 +261,7 @@ void PasswordSafeFrame::OnFindPrevious( wxCommandEvent& /* evt */ )
 void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& /* evt */ )
 {
   UpdateLastClipboardAction(CItemData::FieldType::END);
-  PWSclipboard::GetInstance()->ClearCBData();
+  Clipboard::GetInstance()->ClearCBData();
 }
 
 /*!
@@ -279,11 +279,11 @@ void PasswordSafeFrame::OnCopypasswordClick(wxCommandEvent& evt)
 void PasswordSafeFrame::DoCopyPassword(CItemData &item)
 {
   if (!item.IsDependent())
-    PWSclipboard::GetInstance()->SetData(item.GetPassword());
+    Clipboard::GetInstance()->SetData(item.GetPassword());
   else {
     const CUUID &base = item.GetBaseUUID();
     const StringX &passwd = m_core.GetEntry(m_core.Find(base)).GetPassword();
-    PWSclipboard::GetInstance()->SetData(passwd);
+    Clipboard::GetInstance()->SetData(passwd);
   }
   UpdateLastClipboardAction(CItemData::FieldType::PASSWORD);
   UpdateAccessTime(item);
@@ -303,7 +303,7 @@ void PasswordSafeFrame::OnCopyRunCmd(wxCommandEvent& evt)
 
 void PasswordSafeFrame::DoCopyRunCmd(CItemData &item)
 {
-  PWSclipboard::GetInstance()->SetData(item.GetRunCommand());
+  Clipboard::GetInstance()->SetData(item.GetRunCommand());
   UpdateLastClipboardAction(CItemData::FieldType::RUNCMD);
   UpdateAccessTime(item);
 }
@@ -322,7 +322,7 @@ void PasswordSafeFrame::OnCopyusernameClick(wxCommandEvent& evt)
 
 void PasswordSafeFrame::DoCopyUsername(CItemData &item)
 {
-  PWSclipboard::GetInstance()->SetData(item.GetUser());
+  Clipboard::GetInstance()->SetData(item.GetUser());
   UpdateLastClipboardAction(CItemData::FieldType::USER);
   UpdateAccessTime(item);
 }
@@ -341,7 +341,7 @@ void PasswordSafeFrame::OnCopynotesfldClick(wxCommandEvent& evt)
 
 void PasswordSafeFrame::DoCopyNotes(CItemData &item)
 {
-  PWSclipboard::GetInstance()->SetData(item.GetNotes());
+  Clipboard::GetInstance()->SetData(item.GetNotes());
   UpdateLastClipboardAction(CItemData::FieldType::NOTES);
   UpdateAccessTime(item);
 }
@@ -471,7 +471,7 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
 
 void PasswordSafeFrame::DoCopyURL(CItemData &item)
 {
-  PWSclipboard::GetInstance()->SetData(item.GetURL());
+  Clipboard::GetInstance()->SetData(item.GetURL());
   UpdateLastClipboardAction(CItemData::FieldType::URL);
   UpdateAccessTime(item);
 }
@@ -483,7 +483,7 @@ void PasswordSafeFrame::DoCopyEmail(CItemData &item)
                       : item.GetEmail();
 
   if (!mailto.empty()) {
-    PWSclipboard::GetInstance()->SetData(mailto);
+    Clipboard::GetInstance()->SetData(mailto);
     UpdateLastClipboardAction(CItemData::FieldType::EMAIL);
     UpdateAccessTime(item);
   }
@@ -735,7 +735,7 @@ void PasswordSafeFrame::DoBrowse(CItemData &item, bool bAutotype)
     LaunchBrowser(cs_command, sxautotype, vactionverboffsets, bAutotype);
 
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
-      PWSclipboard::GetInstance()->SetData(sx_pswd);
+      Clipboard::GetInstance()->SetData(sx_pswd);
       UpdateLastClipboardAction(CItemData::FieldType::PASSWORD);
     }
 
@@ -901,7 +901,7 @@ void PasswordSafeFrame::DoRun(CItemData& item)
 
   // FR856 - Copy Password to Clipboard on Run-Command When copy-on-browse set.
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
-    PWSclipboard::GetInstance()->SetData(password);
+    Clipboard::GetInstance()->SetData(password);
     UpdateLastClipboardAction(CItemData::FieldType::PASSWORD);
   }
 
@@ -925,7 +925,7 @@ void PasswordSafeFrame::DoEmail(CItemData& item )
 
 void PasswordSafeFrame::DoPasswordSubset(CItemData& item )
 {
-  CPasswordSubset psDlg(this, item.GetPassword());
+  PasswordSubsetDlg psDlg(this, item.GetPassword());
   psDlg.ShowModal();
   UpdateAccessTime(item);
 }
@@ -959,7 +959,7 @@ void PasswordSafeFrame::OnPasswordQRCode(wxCommandEvent &evt)
     CItemData* item = GetSelectedEntry(evt, rueItem);
     if (item != nullptr) {
 #ifndef NO_QR
-    PWSQRCodeDlg dlg(this, item->GetPassword(),
+    QRCodeDlg dlg(this, item->GetPassword(),
               towxstring(CItemData::FieldName(CItem::PASSWORD)) + _T(" of ") +
               towxstring(item->GetGroup()) +
               _T('[') + towxstring(item->GetTitle()) + _T(']') +

@@ -36,14 +36,14 @@
  */
 
 ////@begin forward declarations
-class PWSGrid;
-class PWSTreeCtrl;
-class CPWStatusBar;
+class GridCtrl;
+class TreeCtrl;
+class StatusBar;
 ////@end forward declarations
 class SystemTray;
-class GUIInfo;
+class GuiInfo;
 struct SelectionCriteria;
-class PWSDragBar;
+class DragBarCtrl;
 class PasswordSafeSearch;
 
 /*!
@@ -169,7 +169,7 @@ enum {
  * PasswordSafeFrame class declaration
  */
 
-class PasswordSafeFrame: public wxFrame, public Observer
+class PasswordSafeFrame : public wxFrame, public Observer
 {
     DECLARE_CLASS( PasswordSafeFrame )
     DECLARE_EVENT_TABLE()
@@ -490,9 +490,9 @@ public:
   bool IsClosed() const;
 
 ////@begin PasswordSafeFrame member variables
-  PWSGrid* m_grid;
-  PWSTreeCtrl* m_tree;
-  CPWStatusBar* m_statusBar;
+  GridCtrl* m_grid;
+  TreeCtrl* m_tree;
+  StatusBar* m_statusBar;
 ////@end PasswordSafeFrame member variables
 
 private:
@@ -529,7 +529,7 @@ private:
   void RebuildGUI(const int iView = iBothViews);
   void CreateDragBar();
   void RefreshToolbarButtons();
-  PWSDragBar* GetDragBar();
+  DragBarCtrl* GetDragBar();
   void CreateStatusBar();
   void SaveSettings() const;
   void LockDb();
@@ -587,7 +587,7 @@ private:
   bool m_exitFromMenu;
   bool m_bRestoredDBUnsaved;
   CRUEList m_RUEList;
-  GUIInfo* m_guiInfo;
+  GuiInfo* m_guiInfo;
   bool m_bTSUpdated;
   wxString m_savedDBPrefs;
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};

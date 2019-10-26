@@ -6,6 +6,10 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+/** \file QRCodeDlg.cpp
+ *
+ */
+
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
@@ -25,85 +29,88 @@
 
 ////////////////////////////////////////////////////////////////////////////
 // PasswordSafeSerach implementation
-IMPLEMENT_CLASS( PWSQRCodeDlg, wxDialog )
+IMPLEMENT_CLASS(QRCodeDlg, wxDialog)
 
-BEGIN_EVENT_TABLE(PWSQRCodeDlg, wxDialog)
-	EVT_BUTTON(wxID_CLOSE, PWSQRCodeDlg::OnClose)
-	EVT_INIT_DIALOG(PWSQRCodeDlg::OnInitDialog)
-	EVT_TIMER(wxID_ANY, PWSQRCodeDlg::OnTimer)
+BEGIN_EVENT_TABLE(QRCodeDlg, wxDialog)
+  EVT_BUTTON(wxID_CLOSE, QRCodeDlg::OnClose)
+  EVT_INIT_DIALOG(QRCodeDlg::OnInitDialog)
+  EVT_TIMER(wxID_ANY, QRCodeDlg::OnTimer)
 END_EVENT_TABLE()
 
-
-PWSQRCodeDlg::PWSQRCodeDlg(wxWindow* parent,
-		                   const StringX &data,
-						   const wxString& dlgTitle,
-					       const int seconds,
-					       const wxPoint &pos,
-					       const wxSize &size,
-					       long style,
-					       const wxString &name): wxDialog(parent, wxID_ANY, dlgTitle, pos, size, style, name), timer(this), secondsRemaining(seconds)
+QRCodeDlg::QRCodeDlg(wxWindow *parent,
+                     const StringX &data,
+                     const wxString &dlgTitle,
+                     const int seconds,
+                     const wxPoint &pos,
+                     const wxSize &size,
+                     long style,
+                     const wxString &name) : wxDialog(parent, wxID_ANY, dlgTitle, pos, size, style, name), timer(this), secondsRemaining(seconds)
 {
-	CreateControls(data);
-}
- 
-void PWSQRCodeDlg::CreateControls(const StringX &data)
-{
-	wxSizer *dlgSizer = new wxBoxSizer(wxVERTICAL);
-
-	dlgSizer->AddSpacer(TopMargin);
-
-	wxBoxSizer *promptSizer = new wxBoxSizer(wxHORIZONTAL);
-	promptSizer->Add( new wxStaticText(this, wxID_ANY, _T("Closing in ")) );
-	promptSizer->Add( secondsText = new wxStaticText(this, wxID_ANY, _T("")) );
-	dlgSizer->Add(promptSizer);
-
-	dlgSizer->AddSpacer(RowSeparation);
-	dlgSizer->Add( new wxStaticLine(this), wxSizerFlags().Expand() );
-	dlgSizer->AddSpacer(RowSeparation);
-
-	wxBitmap bmp = QRCodeBitmap(data);
-	if (bmp.IsOk() ) {
-		dlgSizer->Add( new wxStaticBitmap(this, wxID_ANY, bmp), wxSizerFlags().Expand().Proportion(1) );
-	}
-	else {
-		dlgSizer->Add( new wxStaticText(this, wxID_ANY, _T("Could not generate QR code")) );
-	}
-
-	dlgSizer->AddSpacer(RowSeparation);
-	dlgSizer->Add( CreateSeparatedButtonSizer(wxCLOSE), wxSizerFlags().Expand() );
-	dlgSizer->AddSpacer(BottomMargin);
-	wxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
-	hSizer->Add(dlgSizer, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand().Proportion(1));
-	SetSizerAndFit(hSizer);
+  CreateControls(data);
 }
 
-void PWSQRCodeDlg::OnClose(wxCommandEvent &/*evt*/)
+void QRCodeDlg::CreateControls(const StringX &data)
 {
-	EndModal(wxID_CLOSE);
+  wxSizer *dlgSizer = new wxBoxSizer(wxVERTICAL);
+
+  dlgSizer->AddSpacer(TopMargin);
+
+  wxBoxSizer *promptSizer = new wxBoxSizer(wxHORIZONTAL);
+  promptSizer->Add(new wxStaticText(this, wxID_ANY, _T("Closing in ")));
+  promptSizer->Add(secondsText = new wxStaticText(this, wxID_ANY, _T("")));
+  dlgSizer->Add(promptSizer);
+
+  dlgSizer->AddSpacer(RowSeparation);
+  dlgSizer->Add(new wxStaticLine(this), wxSizerFlags().Expand());
+  dlgSizer->AddSpacer(RowSeparation);
+
+  wxBitmap bmp = QRCodeBitmap(data);
+  if (bmp.IsOk())
+  {
+    dlgSizer->Add(new wxStaticBitmap(this, wxID_ANY, bmp), wxSizerFlags().Expand().Proportion(1));
+  }
+  else
+  {
+    dlgSizer->Add(new wxStaticText(this, wxID_ANY, _T("Could not generate QR code")));
+  }
+
+  dlgSizer->AddSpacer(RowSeparation);
+  dlgSizer->Add(CreateSeparatedButtonSizer(wxCLOSE), wxSizerFlags().Expand());
+  dlgSizer->AddSpacer(BottomMargin);
+  wxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
+  hSizer->Add(dlgSizer, wxSizerFlags().Border(wxLEFT | wxRIGHT, SideMargin).Expand().Proportion(1));
+  SetSizerAndFit(hSizer);
 }
 
-void PWSQRCodeDlg::OnTimer(wxTimerEvent &/*evt*/)
+void QRCodeDlg::OnClose(wxCommandEvent & /*evt*/)
 {
-	if ( --secondsRemaining > 0 ) {
-		UpdateTimeRemaining();
-		timer.Start(1000);
-	} else {
-		EndModal(0);
-	}
+  EndModal(wxID_CLOSE);
 }
 
-void PWSQRCodeDlg::OnInitDialog(wxInitDialogEvent &/*evt*/)
+void QRCodeDlg::OnTimer(wxTimerEvent & /*evt*/)
 {
-	// true => oneshot. We don't want to be called every millisecond
-	timer.Start( 1000, true );
-	UpdateTimeRemaining();
+  if (--secondsRemaining > 0)
+  {
+    UpdateTimeRemaining();
+    timer.Start(1000);
+  }
+  else
+  {
+    EndModal(0);
+  }
 }
 
-void PWSQRCodeDlg::UpdateTimeRemaining()
+void QRCodeDlg::OnInitDialog(wxInitDialogEvent & /*evt*/)
 {
-	secondsText->SetLabel( wxString::Format(_T("%d seconds"), secondsRemaining) );
+  // true => oneshot. We don't want to be called every millisecond
+  timer.Start(1000, true);
+  UpdateTimeRemaining();
 }
 
+void QRCodeDlg::UpdateTimeRemaining()
+{
+  secondsText->SetLabel(wxString::Format(_T("%d seconds"), secondsRemaining));
+}
 
 #ifdef __TEST_QR_CODE__
 ///////////////////////////////////////////////////////
@@ -114,35 +121,38 @@ void PWSQRCodeDlg::UpdateTimeRemaining()
 //
 #include <wx/cmdline.h>
 #include <wx/filename.h>
-class QRTestApp: public wxApp {
-	public:
+class QRTestApp : public wxApp
+{
+public:
+  void OnInitCmdLine(wxCmdLineParser &parser)
+  {
+    wxAppConsole::OnInitCmdLine(parser);
+    static const wxCmdLineEntryDesc cmdLineDesc[] =
+        {
+            {wxCMD_LINE_PARAM, nullptr, nullptr, "secret", wxCMD_LINE_VAL_STRING, 0},
+            {wxCMD_LINE_NONE}};
+    parser.SetDesc(cmdLineDesc);
+  }
 
-		void OnInitCmdLine( wxCmdLineParser &parser) {
-			wxAppConsole::OnInitCmdLine(parser);
-			static const wxCmdLineEntryDesc cmdLineDesc[] =
-			{
-				{ wxCMD_LINE_PARAM, nullptr, nullptr, "secret", wxCMD_LINE_VAL_STRING, 0},
-				{ wxCMD_LINE_NONE }
-			};
-			parser.SetDesc(cmdLineDesc);
-		}
+  bool OnInit() override
+  {
+    if (!wxApp::OnInit())
+      return false;
 
-		bool OnInit() override {
-			if ( !wxApp::OnInit() )
-				return false;
-
-			if ( this->argc != 2 ) {
-				std::cerr << "usage: " << wxFileName(argv[0]).GetFullName() << " <text to generate qr code for>\n";
-				return false;
-			} else {
-				PWSQRCodeDlg dlg(nullptr, StringX(argv[1]), "Scan this QR Code and comapre with the program argument" );
-				dlg.ShowModal();
-				// Normall we return true here
-				return false;
-			}
-		}
+    if (this->argc != 2)
+    {
+      std::cerr << "usage: " << wxFileName(argv[0]).GetFullName() << " <text to generate qr code for>\n";
+      return false;
+    }
+    else
+    {
+      QRCodeDlg dlg(nullptr, StringX(argv[1]), "Scan this QR Code and comapre with the program argument");
+      dlg.ShowModal();
+      // Normall we return true here
+      return false;
+    }
+  }
 };
 
 wxIMPLEMENT_APP(QRTestApp);
 #endif
-

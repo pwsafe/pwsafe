@@ -6,6 +6,10 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+/** \file PasswordSafeSearch.cpp
+*
+*/
+
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif

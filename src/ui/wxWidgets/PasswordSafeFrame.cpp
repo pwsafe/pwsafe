@@ -266,7 +266,7 @@ static void DisplayFileWriteError(int rc, const StringX &fname);
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(ViewType::GRID), m_search(0), m_sysTray(new SystemTray(this)),
   m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
-  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
+  m_RUEList(core), m_guiInfo(new GuiInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
   m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
   m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
 {
@@ -279,7 +279,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      long style)
   : m_core(core), m_currentView(ViewType::GRID), m_search(0), m_sysTray(new SystemTray(this)),
     m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
-    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
+    m_RUEList(core), m_guiInfo(new GuiInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
     m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
     m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
 {
@@ -333,7 +333,7 @@ void PasswordSafeFrame::CreateDragBar()
   wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
   wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
 
-  PWSDragBar* dragbar = new PWSDragBar(this);
+  DragBarCtrl* dragbar = new DragBarCtrl(this);
   origSizer->Insert(0, dragbar, 0, wxEXPAND);
 
   const bool bShow = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
@@ -345,7 +345,7 @@ void PasswordSafeFrame::CreateDragBar()
 
 void PasswordSafeFrame::CreateStatusBar()
 {
-  m_statusBar = new CPWStatusBar(this, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER);
+  m_statusBar = new StatusBar(this, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER);
   m_statusBar->Setup();
   SetStatusBar(m_statusBar);
 }
@@ -622,24 +622,24 @@ void PasswordSafeFrame::CreateControls()
   mainsizer->Add(itemBoxSizer83, 1, wxEXPAND);
   SetSizer(mainsizer);
 
-  m_grid = new PWSGrid( this, m_core, ID_LISTBOX, wxDefaultPosition,
+  m_grid = new GridCtrl( this, m_core, ID_LISTBOX, wxDefaultPosition,
                         wxDefaultSize, wxHSCROLL|wxVSCROLL );
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0).Proportion(1));
 
-  m_tree = new PWSTreeCtrl( this, m_core, ID_TREECTRL, wxDefaultPosition,
+  m_tree = new TreeCtrl( this, m_core, ID_TREECTRL, wxDefaultPosition,
                             wxDefaultSize,
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
 
   // let the tree ctrl handle ID_ADDGROUP & ID_RENAME all by itself
   Connect(ID_ADDGROUP, wxEVT_COMMAND_MENU_SELECTED,
-                       wxCommandEventHandler(PWSTreeCtrl::OnAddGroup), nullptr, m_tree);
+                       wxCommandEventHandler(TreeCtrl::OnAddGroup), nullptr, m_tree);
   Connect(ID_RENAME, wxEVT_COMMAND_MENU_SELECTED,
-                       wxCommandEventHandler(PWSTreeCtrl::OnRenameGroup), nullptr, m_tree);
+                       wxCommandEventHandler(TreeCtrl::OnRenameGroup), nullptr, m_tree);
 
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
 
-  const CRecentDBList& rdb = wxGetApp().recentDatabases();
+  const RecentDbList& rdb = wxGetApp().recentDatabases();
   Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
 }
@@ -743,7 +743,7 @@ void PasswordSafeFrame::ReCreateMainToolbar()
  */
 void PasswordSafeFrame::ReCreateDragToolbar()
 {
-    PWSDragBar* dragbar = GetDragBar();
+    DragBarCtrl* dragbar = GetDragBar();
     wxCHECK_RET(dragbar, wxT("Couldn't find dragbar"));
     dragbar->ClearTools();
     dragbar->RefreshButtons();
@@ -887,7 +887,7 @@ void PasswordSafeFrame::OnExitClick( wxCommandEvent& /* evt */ )
 void PasswordSafeFrame::ShowGrid(bool show)
 {
   if (show) {
-    m_grid->SetTable(new PWSGridTable(m_grid), true, wxGrid::wxGridSelectRows); // true => auto-delete
+    m_grid->SetTable(new GridTable(m_grid), true, wxGrid::wxGridSelectRows); // true => auto-delete
     m_grid->EnableEditing(false);
     m_grid->Clear();
     wxFont font(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::TreeFont)));
@@ -971,7 +971,7 @@ void PasswordSafeFrame::ShowTree(bool show)
   GetSizer()->Layout();
 }
 
-PWSDragBar* PasswordSafeFrame::GetDragBar()
+DragBarCtrl* PasswordSafeFrame::GetDragBar()
 {
   wxSizer* origSizer = GetSizer();
 
@@ -981,10 +981,10 @@ PWSDragBar* PasswordSafeFrame::GetDragBar()
 
   wxSizerItem* dragbarItem = origSizer->GetItem(size_t(0));
   wxASSERT_MSG(dragbarItem && dragbarItem->IsWindow() &&
-                      wxIS_KIND_OF(dragbarItem->GetWindow(), PWSDragBar),
+                      wxIS_KIND_OF(dragbarItem->GetWindow(), DragBarCtrl),
                     wxT("Found unexpected item while searching for DragBar"));
 
-  PWSDragBar* dragbar = wxDynamicCast(dragbarItem->GetWindow(), PWSDragBar);
+  DragBarCtrl* dragbar = wxDynamicCast(dragbarItem->GetWindow(), DragBarCtrl);
   return dragbar;
 }
 
@@ -1284,7 +1284,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
     return rc;
 
   // prompt for password, try to Load.
-  CSafeCombinationPrompt pwdprompt(this, m_core, fname);
+  SafeCombinationPromptDlg pwdprompt(this, m_core, fname);
   if (pwdprompt.ShowModal() == wxID_OK) {
     m_core.SetCurFile(tostringx(fname));
     StringX password = pwdprompt.GetPassword();
@@ -1392,7 +1392,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
 
 void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
 {
-  CProperties propsDialog(this, m_core);
+  PropertiesDlg propsDialog(this, m_core);
   propsDialog.ShowModal();
 
   if (propsDialog.HasDbNameChanged() || propsDialog.HasDbDescriptionChanged()) {
@@ -1432,7 +1432,7 @@ void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
 
 void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& /* evt */ )
 {
-  CSafeCombinationChange* window = new CSafeCombinationChange(this, m_core);
+  SafeCombinationChangeDlg* window = new SafeCombinationChangeDlg(this, m_core);
   int returnValue = window->ShowModal();
   if (returnValue == wxID_OK) {
     m_core.ChangePasskey(window->GetNewpasswd());
@@ -1596,7 +1596,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
     }
 
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnExit)) {
-      PWSclipboard::GetInstance()->ClearCBData();
+      Clipboard::GetInstance()->ClearCBData();
     }
 
     // Don't leave dangling locks!
@@ -1616,7 +1616,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
     const bool lockOnMinimize = PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear);
 
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnExit)) {
-      PWSclipboard::GetInstance()->ClearCBData();
+      Clipboard::GetInstance()->ClearCBData();
     }
 #if wxCHECK_VERSION(2,9,5)
     CallAfter(&PasswordSafeFrame::HideUI, lockOnMinimize);
@@ -1673,7 +1673,7 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnAboutClick( wxCommandEvent& /* evt */ )
 {
-  CAbout* window = new CAbout(this);
+  AboutDlg* window = new AboutDlg(this);
   window->ShowModal();
   window->Destroy();
 }
@@ -1869,7 +1869,7 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
   }
 }
 
-static void FlattenTree(wxTreeItemId id, PWSTreeCtrl* tree, OrderedItemList& olist)
+static void FlattenTree(wxTreeItemId id, TreeCtrl* tree, OrderedItemList& olist)
 {
   wxTreeItemIdValue cookie;
 
@@ -2446,7 +2446,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
       return PWScore::USER_CANCEL;
   }
 
-  CSafeCombinationSetup dbox_pksetup(this);
+  SafeCombinationSetupDlg dbox_pksetup(this);
   rc = dbox_pksetup.ShowModal();
 
   if (rc == wxID_CANCEL)
@@ -2534,7 +2534,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
 
   if (m_sysTray->IsLocked()) {
 
-    CSafeCombinationPrompt scp(nullptr, m_core, towxstring(m_core.GetCurFile()));
+    SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()));
 
     switch (scp.ShowModal()) {
       case (wxID_OK):
@@ -2625,7 +2625,7 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
       LockDb();
 #endif
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
-        PWSclipboard::GetInstance()->ClearCBData();
+        Clipboard::GetInstance()->ClearCBData();
       }
     }
     else {
@@ -2663,7 +2663,7 @@ void PasswordSafeFrame::HideUI(bool lock)
 
   // As HideUI doesn't produce iconize event we need to process clear clipboard options
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
-    PWSclipboard::GetInstance()->ClearCBData();
+    Clipboard::GetInstance()->ClearCBData();
   }
 
   m_guiInfo->Save(this);
@@ -2747,7 +2747,7 @@ void PasswordSafeFrame::ShowTrayIcon()
 
 void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
 {
-  CRecentDBList& db = wxGetApp().recentDatabases();
+  RecentDbList& db = wxGetApp().recentDatabases();
   const size_t index = evt.GetId() - db.GetBaseId();
   const wxString dbfile = db.GetHistoryFile(index);
   switch(Open(dbfile))
@@ -2800,7 +2800,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
     return;
   }
 
-  CImportTextDlg dlg(this);
+  ImportTextDlg dlg(this);
   if (dlg.ShowModal() != wxID_OK)
     return;
 
@@ -3008,7 +3008,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   }
 #endif
 
-  CImportXMLDlg dlg(this);
+  ImportXmlDlg dlg(this);
   if (dlg.ShowModal() != wxID_OK)
     return;
 
@@ -3130,7 +3130,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
 
 void PasswordSafeFrame::ViewReport(CReport& rpt)
 {
-  CViewReport vr(this, &rpt);
+  ViewReportDlg vr(this, &rpt);
   vr.ShowModal();
 }
 
@@ -3304,7 +3304,7 @@ void PasswordSafeFrame::DoExportText()
     return;
   }
 
-  CExportTextWarningDlg<ExportType> et(this);
+  ExportTextWarningDlg<ExportType> et(this);
   if (et.ShowModal() != wxID_OK)
     return;
 
@@ -3454,7 +3454,7 @@ void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
   wxCHECK_RET(!m_core.IsReadOnly() && m_core.IsDbOpen() && m_core.GetNumEntries() != 0,
                 wxT("Synchronize menu enabled for empty or read-only database!"));
 
-  PwsSyncWizard wiz(this, &m_core);
+  SyncWizard wiz(this, &m_core);
   wiz.RunWizard(wiz.GetFirstPage());
 
   if (wiz.GetNumUpdated() > 0)
@@ -3488,28 +3488,28 @@ void PasswordSafeFrame::UpdateStatusBar()
     wxString text;
     // SB_DBLCLICK pane is set per selected entry, not here
 
-    m_statusBar->SetStatusText(m_LastClipboardAction, CPWStatusBar::Field::CLIPBOARDACTION);
+    m_statusBar->SetStatusText(m_LastClipboardAction, StatusBar::Field::CLIPBOARDACTION);
 
     text  = m_core.HasDBChanged()       ? wxT("*") : wxT(" ");
     text += m_core.HaveDBPrefsChanged() ? wxT("°") : wxT(" ");
-    m_statusBar->SetStatusText(text, CPWStatusBar::Field::MODIFIED);
+    m_statusBar->SetStatusText(text, StatusBar::Field::MODIFIED);
 
     text = m_core.IsReadOnly() ? wxT("R-O") : wxT("R/W");
-    m_statusBar->SetStatusText(text, CPWStatusBar::Field::READONLY);
+    m_statusBar->SetStatusText(text, StatusBar::Field::READONLY);
 
     text.Clear(); text <<  m_core.GetNumEntries();
-    m_statusBar->SetStatusText(text, CPWStatusBar::Field::NUM_ENT);
+    m_statusBar->SetStatusText(text, StatusBar::Field::NUM_ENT);
 
     text = m_bFilterActive ? wxT("[F]") : wxT("   ");
-    m_statusBar->SetStatusText(text, CPWStatusBar::Field::FILTER);
+    m_statusBar->SetStatusText(text, StatusBar::Field::FILTER);
   }
   else { // no open file
-    m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(-1)), CPWStatusBar::Field::DOUBLECLICK);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::CLIPBOARDACTION);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::MODIFIED);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::READONLY);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::NUM_ENT);
-    m_statusBar->SetStatusText(wxEmptyString, CPWStatusBar::Field::FILTER);
+    m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(-1)), StatusBar::Field::DOUBLECLICK);
+    m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::CLIPBOARDACTION);
+    m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::MODIFIED);
+    m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::READONLY);
+    m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::NUM_ENT);
+    m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::FILTER);
   }
 }
 
@@ -3578,7 +3578,7 @@ void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
     if (dca == -1)
       dca = PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
   }
-  m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(dca)), CPWStatusBar::Field::DOUBLECLICK);
+  m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(dca)), StatusBar::Field::DOUBLECLICK);
 }
 
 void PasswordSafeFrame::ChangeFontPreference(const PWSprefs::StringPrefs fontPreference)

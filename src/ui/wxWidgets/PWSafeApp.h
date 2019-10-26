@@ -9,6 +9,10 @@
 // Licence:
 /////////////////////////////////////////////////////////////////////////////
 
+/** \file PWSafeApp.h
+*
+*/
+
 #ifndef _PWSAFEAPP_H_
 #define _PWSAFEAPP_H_
 
@@ -41,20 +45,20 @@ class wxLocale;
 ////@end control identifiers
 
 /*!
- * PwsafeApp class declaration
+ * PWSafeApp class declaration
  */
 
-class PwsafeApp: public wxApp
+class PWSafeApp : public wxApp
 {
-    DECLARE_CLASS( PwsafeApp )
+    DECLARE_CLASS( PWSafeApp )
     DECLARE_EVENT_TABLE()
 
 public:
     /// Constructor
-    PwsafeApp();
+    PWSafeApp();
 
     /// Destructor
-    ~PwsafeApp();
+    ~PWSafeApp();
 
     void Init();
 
@@ -68,16 +72,16 @@ public:
     /// Called on exit
     virtual int OnExit();
 
-////@begin PwsafeApp event handler declarations
+////@begin PWSafeApp event handler declarations
 
-////@end PwsafeApp event handler declarations
+////@end PWSafeApp event handler declarations
 
-////@begin PwsafeApp member function declarations
+////@begin PWSafeApp member function declarations
 
-////@end PwsafeApp member function declarations
+////@end PWSafeApp member function declarations
 
-////@begin PwsafeApp member variables
-////@end PwsafeApp member variables
+////@begin PWSafeApp member variables
+////@end PWSafeApp member variables
 
   void OnIdleTimer(wxTimerEvent& timerEvent);
   void ConfigureIdleTimer();
@@ -98,7 +102,7 @@ public:
     wxTimer* m_idleTimer;
     PasswordSafeFrame* m_frame;
     enum { IDLE_TIMER_ID = 33 } ;
-    CRecentDBList *m_recentDatabases;
+    RecentDbList *m_recentDatabases;
 
     //A map of dialog titles (or tab names) vs help sections
     WX_DECLARE_STRING_HASH_MAP( wxString, StringToStringMap );
@@ -110,7 +114,7 @@ public:
     bool ActivateHelp(wxLanguage language);
     
  public:
-    CRecentDBList &recentDatabases();
+    RecentDbList &recentDatabases();
     uint32 GetHashIters() const {return m_core.GetHashIters();}
     bool ActivateLanguage(wxLanguage language, bool tryOnly);
     wxLanguage GetSystemLanguage();
@@ -122,8 +126,7 @@ public:
  */
 
 ////@begin declare app
-DECLARE_APP(PwsafeApp)
+DECLARE_APP(PWSafeApp)
 ////@end declare app
 
-#endif
-    // _PWSAFEAPP_H_
+#endif // _PWSAFEAPP_H_

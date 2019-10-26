@@ -9,6 +9,7 @@
 /** \file DeleteConfirmationDlg.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -34,37 +35,37 @@
 ////@end XPM images
 
 /*!
- * DeleteConfirmation type definition
+ * DeleteConfirmationDlg type definition
  */
 
-IMPLEMENT_CLASS( DeleteConfirmation, wxDialog )
+IMPLEMENT_CLASS( DeleteConfirmationDlg, wxDialog )
 
 /*!
- * DeleteConfirmation event table definition
+ * DeleteConfirmationDlg event table definition
  */
 
-BEGIN_EVENT_TABLE( DeleteConfirmation, wxDialog )
+BEGIN_EVENT_TABLE( DeleteConfirmationDlg, wxDialog )
 
-////@begin DeleteConfirmation event table entries
-  EVT_BUTTON( wxID_YES, DeleteConfirmation::OnYesClick )
+////@begin DeleteConfirmationDlg event table entries
+  EVT_BUTTON( wxID_YES, DeleteConfirmationDlg::OnYesClick )
 
-  EVT_BUTTON( wxID_NO, DeleteConfirmation::OnNoClick )
+  EVT_BUTTON( wxID_NO, DeleteConfirmationDlg::OnNoClick )
 
-////@end DeleteConfirmation event table entries
+////@end DeleteConfirmationDlg event table entries
 
 END_EVENT_TABLE()
 
 /*!
- * DeleteConfirmation constructors
+ * DeleteConfirmationDlg constructors
  */
 
-DeleteConfirmation::DeleteConfirmation(int num_children)
+DeleteConfirmationDlg::DeleteConfirmationDlg(int num_children)
 : m_numchildren(num_children)
 {
   Init();
 }
 
-DeleteConfirmation::DeleteConfirmation( wxWindow* parent, int num_children, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+DeleteConfirmationDlg::DeleteConfirmationDlg( wxWindow* parent, int num_children, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
   : m_numchildren(num_children)
 {
   Init();
@@ -72,12 +73,12 @@ DeleteConfirmation::DeleteConfirmation( wxWindow* parent, int num_children, wxWi
 }
 
 /*!
- * DeleteConfirmation creator
+ * DeleteConfirmationDlg creator
  */
 
-bool DeleteConfirmation::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool DeleteConfirmationDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin DeleteConfirmation creation
+////@begin DeleteConfirmationDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -87,38 +88,38 @@ bool DeleteConfirmation::Create( wxWindow* parent, wxWindowID id, const wxString
     GetSizer()->SetSizeHints(this);
   }
   Centre();
-////@end DeleteConfirmation creation
+////@end DeleteConfirmationDlg creation
   return true;
 }
 
 /*!
- * DeleteConfirmation destructor
+ * DeleteConfirmationDlg destructor
  */
 
-DeleteConfirmation::~DeleteConfirmation()
+DeleteConfirmationDlg::~DeleteConfirmationDlg()
 {
-////@begin DeleteConfirmation destruction
-////@end DeleteConfirmation destruction
+////@begin DeleteConfirmationDlg destruction
+////@end DeleteConfirmationDlg destruction
 }
 
 /*!
  * Member initialisation
  */
 
-void DeleteConfirmation::Init()
+void DeleteConfirmationDlg::Init()
 {
-////@begin DeleteConfirmation member initialisation
+////@begin DeleteConfirmationDlg member initialisation
   m_areyousure = nullptr;
-////@end DeleteConfirmation member initialisation
+////@end DeleteConfirmationDlg member initialisation
 }
 
 /*!
- * Control creation for DeleteConfirmation
+ * Control creation for DeleteConfirmationDlg
  */
 
-void DeleteConfirmation::CreateControls()
+void DeleteConfirmationDlg::CreateControls()
 {
-  DeleteConfirmation* itemDialog1 = this;
+  DeleteConfirmationDlg* itemDialog1 = this;
 
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
@@ -157,7 +158,7 @@ void DeleteConfirmation::CreateControls()
  * Should we show tooltips?
  */
 
-bool DeleteConfirmation::ShowToolTips()
+bool DeleteConfirmationDlg::ShowToolTips()
 {
   return true;
 }
@@ -166,31 +167,31 @@ bool DeleteConfirmation::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap DeleteConfirmation::GetBitmapResource( const wxString& WXUNUSED(name) )
+wxBitmap DeleteConfirmationDlg::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
   // Bitmap retrieval
-////@begin DeleteConfirmation bitmap retrieval
+////@begin DeleteConfirmationDlg bitmap retrieval
   return wxNullBitmap;
-////@end DeleteConfirmation bitmap retrieval
+////@end DeleteConfirmationDlg bitmap retrieval
 }
 
 /*!
  * Get icon resources
  */
 
-wxIcon DeleteConfirmation::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon DeleteConfirmationDlg::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
-////@begin DeleteConfirmation icon retrieval
+////@begin DeleteConfirmationDlg icon retrieval
   return wxNullIcon;
-////@end DeleteConfirmation icon retrieval
+////@end DeleteConfirmationDlg icon retrieval
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_NO
  */
 
-void DeleteConfirmation::OnNoClick( wxCommandEvent& /* evt */ )
+void DeleteConfirmationDlg::OnNoClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::DeleteQuestion,
@@ -204,7 +205,7 @@ void DeleteConfirmation::OnNoClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_YES
  */
 
-void DeleteConfirmation::OnYesClick( wxCommandEvent& /* evt */ )
+void DeleteConfirmationDlg::OnYesClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::DeleteQuestion,

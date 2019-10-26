@@ -10,8 +10,8 @@
 * 
 */
 
-#ifndef _SAFECOMBINATIONCHANGE_H_
-#define _SAFECOMBINATIONCHANGE_H_
+#ifndef _SAFECOMBINATIONCHANGEDLG_H_
+#define _SAFECOMBINATIONCHANGEDLG_H_
 
 /*!
  * Includes
@@ -30,7 +30,7 @@
  */
 
 ////@begin forward declarations
-class CSafeCombinationCtrl;
+class SafeCombinationCtrl;
 ////@end forward declarations
 class wxTimer;
 
@@ -39,43 +39,43 @@ class wxTimer;
  */
 
 ////@begin control identifiers
-#define ID_CSAFECOMBINATIONCHANGE 10074
+#define ID_SAFECOMBINATIONCHANGEDLG 10074
 #define ID_OLDPASSWD 10075
 #if WXWIN_COMPATIBILITY_2_6
-#define SYMBOL_CSAFECOMBINATIONCHANGE_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
+#define SYMBOL_SAFECOMBINATIONCHANGEDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #else
-#define SYMBOL_CSAFECOMBINATIONCHANGE_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL
+#define SYMBOL_SAFECOMBINATIONCHANGEDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL
 #endif
 #define ID_YUBIBTN 10229
 #define ID_NEWPASSWD 10076
 #define ID_YUBIBTN2 10000
 #define ID_CONFIRM 10077
 #define ID_YUBISTATUS 10230
-#define SYMBOL_CSAFECOMBINATIONCHANGE_TITLE _("Change Safe Combination")
-#define SYMBOL_CSAFECOMBINATIONCHANGE_IDNAME ID_CSAFECOMBINATIONCHANGE
-#define SYMBOL_CSAFECOMBINATIONCHANGE_SIZE wxSize(400, 300)
-#define SYMBOL_CSAFECOMBINATIONCHANGE_POSITION wxDefaultPosition
+#define SYMBOL_SAFECOMBINATIONCHANGEDLG_TITLE _("Change Safe Combination")
+#define SYMBOL_SAFECOMBINATIONCHANGEDLG_IDNAME ID_SAFECOMBINATIONCHANGEDLG
+#define SYMBOL_SAFECOMBINATIONCHANGEDLG_SIZE wxSize(400, 300)
+#define SYMBOL_SAFECOMBINATIONCHANGEDLG_POSITION wxDefaultPosition
 ////@end control identifiers
 
 /*!
- * CSafeCombinationChange class declaration
+ * SafeCombinationChangeDlg class declaration
  */
 
-class CSafeCombinationChange: public wxDialog
-{    
-  DECLARE_CLASS( CSafeCombinationChange )
+class SafeCombinationChangeDlg : public wxDialog
+{
+  DECLARE_CLASS( SafeCombinationChangeDlg )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  CSafeCombinationChange(wxWindow* parent, PWScore &core,
-                         wxWindowID id = SYMBOL_CSAFECOMBINATIONCHANGE_IDNAME, const wxString& caption = SYMBOL_CSAFECOMBINATIONCHANGE_TITLE, const wxPoint& pos = SYMBOL_CSAFECOMBINATIONCHANGE_POSITION, const wxSize& size = SYMBOL_CSAFECOMBINATIONCHANGE_SIZE, long style = SYMBOL_CSAFECOMBINATIONCHANGE_STYLE );
+  SafeCombinationChangeDlg(wxWindow* parent, PWScore &core,
+                         wxWindowID id = SYMBOL_SAFECOMBINATIONCHANGEDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONCHANGEDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONCHANGEDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONCHANGEDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONCHANGEDLG_STYLE );
 
   /// Creation
-  bool Create(wxWindow* parent, wxWindowID id = SYMBOL_CSAFECOMBINATIONCHANGE_IDNAME, const wxString& caption = SYMBOL_CSAFECOMBINATIONCHANGE_TITLE, const wxPoint& pos = SYMBOL_CSAFECOMBINATIONCHANGE_POSITION, const wxSize& size = SYMBOL_CSAFECOMBINATIONCHANGE_SIZE, long style = SYMBOL_CSAFECOMBINATIONCHANGE_STYLE );
+  bool Create(wxWindow* parent, wxWindowID id = SYMBOL_SAFECOMBINATIONCHANGEDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONCHANGEDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONCHANGEDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONCHANGEDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONCHANGEDLG_STYLE );
 
   /// Destructor
-  ~CSafeCombinationChange();
+  ~SafeCombinationChangeDlg();
 
   /// Initialises member variables
   void Init();
@@ -83,7 +83,7 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-////@begin CSafeCombinationChange event handler declarations
+////@begin SafeCombinationChangeDlg event handler declarations
 
 #ifndef NO_YUBI
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
@@ -99,10 +99,10 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
   void OnCancelClick( wxCommandEvent& event );
 
-////@end CSafeCombinationChange event handler declarations
+////@end SafeCombinationChangeDlg event handler declarations
   void OnPollingTimer(wxTimerEvent& timerEvent);
 
-////@begin CSafeCombinationChange member function declarations
+////@begin SafeCombinationChangeDlg member function declarations
 
   StringX GetConfirm() const { return m_confirm ; }
   void SetConfirm(StringX value) { m_confirm = value ; }
@@ -118,34 +118,33 @@ public:
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
-////@end CSafeCombinationChange member function declarations
+////@end SafeCombinationChangeDlg member function declarations
 
   /// Should we show tooltips?
   static bool ShowToolTips();
 
-////@begin CSafeCombinationChange member variables
-  CSafeCombinationCtrl* m_oldPasswdEntry;
-  CSafeCombinationCtrl* m_newPasswdEntry;
+////@begin SafeCombinationChangeDlg member variables
+  SafeCombinationCtrl* m_oldPasswdEntry;
+  SafeCombinationCtrl* m_newPasswdEntry;
 #ifndef NO_YUBI
   wxBitmapButton* m_YubiBtn;
   wxBitmapButton* m_YubiBtn2;
   wxStaticText* m_yubiStatusCtrl;
 #endif
-  CSafeCombinationCtrl* m_confirmEntry;
+  SafeCombinationCtrl* m_confirmEntry;
 private:
   StringX m_confirm;
   StringX m_newpasswd;
   StringX m_oldpasswd;
-////@end CSafeCombinationChange member variables
+////@end SafeCombinationChangeDlg member variables
   StringX m_oldresponse;
   PWScore &m_core;
 
 #ifndef NO_YUBI
   // try having 2 mixin objects to handle things:
-  CYubiMixin m_yubiMixin1, m_yubiMixin2;
+  YubiMixin m_yubiMixin1, m_yubiMixin2;
   wxTimer* m_pollingTimer; // for Yubi
 #endif
 };
 
-#endif
-  // _SAFECOMBINATIONCHANGE_H_
+#endif // _SAFECOMBINATIONCHANGEDLG_H_

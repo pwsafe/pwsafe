@@ -11,17 +11,19 @@
  * Small wrapper for Clipboard operations
  */
 
-#ifndef _PWSCLIP_H_
-#define _PWSCLIP_H_
+#ifndef _CLIPBOARD_
+#define _CLIPBOARD_
+
 #include <wx/thread.h> // for wxMutex
 
 #include "core/crypto/sha256.h"
 #include "core/StringX.h"
-class PWSclipboard
+
+class Clipboard
 {
 public:
-  static PWSclipboard *self; //*< singleton pointer
-  static PWSclipboard *GetInstance();
+  static Clipboard *self; //*< singleton pointer
+  static Clipboard *GetInstance();
   static void DeleteInstance();
   bool SetData(const StringX &data);
   bool ClearCBData();
@@ -29,14 +31,14 @@ public:
   void UsePrimarySelection(bool primary, bool clearOnChange=true);
 #endif
 private:
-  PWSclipboard();
-  ~PWSclipboard() {};
-  PWSclipboard(const PWSclipboard &);
-  PWSclipboard &operator=(const PWSclipboard &);
+  Clipboard();
+  ~Clipboard() {};
+  Clipboard(const Clipboard &);
+  Clipboard &operator=(const Clipboard &);
 
   bool m_set;//<* true if we stored our data
   unsigned char m_digest[SHA256::HASHLEN];//*< our data hash
   wxMutex m_clipboardMutex;//*< mutex for clipboard access
 };
 
-#endif /* _PWSCLIP_H_ */
+#endif /* _CLIPBOARD_ */

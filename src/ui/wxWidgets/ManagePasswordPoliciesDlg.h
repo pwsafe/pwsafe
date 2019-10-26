@@ -10,8 +10,8 @@
 * 
 */
 
-#ifndef _MANAGEPWDPOLICIES_H_
-#define _MANAGEPWDPOLICIES_H_
+#ifndef _MANAGEPWDPOLICIESDLG_H_
+#define _MANAGEPWDPOLICIESDLG_H_
 
 /*!
  * Includes
@@ -45,7 +45,7 @@ class wxGrid;
 #endif
 
 ////@begin control identifiers
-#define ID_CMANAGEPASSWORDPOLICIES 10216
+#define ID_MANAGEPASSWORDPOLICIESDLG 10216
 #define ID_POLICYLIST 10218
 #define ID_EDIT_PP 10220
 #define ID_LIST 10222
@@ -54,36 +54,36 @@ class wxGrid;
 #define ID_BITMAPBUTTON 10227
 #define ID_POLICYPROPERTIES 10217
 #define ID_POLICYENTRIES 10219
-#define SYMBOL_CMANAGEPASSWORDPOLICIES_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
-#define SYMBOL_CMANAGEPASSWORDPOLICIES_TITLE _("Manage Password Policies")
-#define SYMBOL_CMANAGEPASSWORDPOLICIES_IDNAME ID_CMANAGEPASSWORDPOLICIES
-#define SYMBOL_CMANAGEPASSWORDPOLICIES_SIZE wxSize(400, 300)
-#define SYMBOL_CMANAGEPASSWORDPOLICIES_POSITION wxDefaultPosition
+#define SYMBOL_MANAGEPASSWORDPOLICIESDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
+#define SYMBOL_MANAGEPASSWORDPOLICIESDLG_TITLE _("Manage Password Policies")
+#define SYMBOL_MANAGEPASSWORDPOLICIESDLG_IDNAME ID_MANAGEPASSWORDPOLICIESDLG
+#define SYMBOL_MANAGEPASSWORDPOLICIESDLG_SIZE wxSize(400, 300)
+#define SYMBOL_MANAGEPASSWORDPOLICIESDLG_POSITION wxDefaultPosition
 ////@end control identifiers
 
 /*!
- * CManagePasswordPolicies class declaration
+ * ManagePasswordPoliciesDlg class declaration
  */
 
-class CManagePasswordPolicies: public wxDialog
-{    
-  DECLARE_DYNAMIC_CLASS( CManagePasswordPolicies )
+class ManagePasswordPoliciesDlg: public wxDialog
+{
+  DECLARE_DYNAMIC_CLASS( ManagePasswordPoliciesDlg )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  CManagePasswordPolicies( wxWindow* parent,  PWScore &core,
-         wxWindowID id = SYMBOL_CMANAGEPASSWORDPOLICIES_IDNAME,
-         const wxString& caption = SYMBOL_CMANAGEPASSWORDPOLICIES_TITLE,
-         const wxPoint& pos = SYMBOL_CMANAGEPASSWORDPOLICIES_POSITION,
-         const wxSize& size = SYMBOL_CMANAGEPASSWORDPOLICIES_SIZE,
-         long style = SYMBOL_CMANAGEPASSWORDPOLICIES_STYLE );
+  ManagePasswordPoliciesDlg( wxWindow* parent,  PWScore &core,
+         wxWindowID id = SYMBOL_MANAGEPASSWORDPOLICIESDLG_IDNAME,
+         const wxString& caption = SYMBOL_MANAGEPASSWORDPOLICIESDLG_TITLE,
+         const wxPoint& pos = SYMBOL_MANAGEPASSWORDPOLICIESDLG_POSITION,
+         const wxSize& size = SYMBOL_MANAGEPASSWORDPOLICIESDLG_SIZE,
+         long style = SYMBOL_MANAGEPASSWORDPOLICIESDLG_STYLE );
 
   /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_CMANAGEPASSWORDPOLICIES_IDNAME, const wxString& caption = SYMBOL_CMANAGEPASSWORDPOLICIES_TITLE, const wxPoint& pos = SYMBOL_CMANAGEPASSWORDPOLICIES_POSITION, const wxSize& size = SYMBOL_CMANAGEPASSWORDPOLICIES_SIZE, long style = SYMBOL_CMANAGEPASSWORDPOLICIES_STYLE );
+  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_MANAGEPASSWORDPOLICIESDLG_IDNAME, const wxString& caption = SYMBOL_MANAGEPASSWORDPOLICIESDLG_TITLE, const wxPoint& pos = SYMBOL_MANAGEPASSWORDPOLICIESDLG_POSITION, const wxSize& size = SYMBOL_MANAGEPASSWORDPOLICIESDLG_SIZE, long style = SYMBOL_MANAGEPASSWORDPOLICIESDLG_STYLE );
 
   /// Destructor
-  ~CManagePasswordPolicies();
+  ~ManagePasswordPoliciesDlg();
 
   /// Initialises member variables
   void Init();
@@ -91,7 +91,7 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-////@begin CManagePasswordPolicies event handler declarations
+////@begin ManagePasswordPoliciesDlg event handler declarations
 
   /// wxEVT_GRID_SELECT_CELL event handler for ID_POLICYLIST
   void OnSelectCell( wxGridEvent& event );
@@ -129,20 +129,20 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
   void OnHelpClick( wxCommandEvent& event );
 
-////@end CManagePasswordPolicies event handler declarations
+////@end ManagePasswordPoliciesDlg event handler declarations
 
   void OnSize(wxSizeEvent& event);
   
   void OnMaximize(wxMaximizeEvent& event);
 
-////@begin CManagePasswordPolicies member function declarations
+////@begin ManagePasswordPoliciesDlg member function declarations
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
-////@end CManagePasswordPolicies member function declarations
+////@end ManagePasswordPoliciesDlg member function declarations
 
   /// Should we show tooltips?
   static bool ShowToolTips();
@@ -150,13 +150,13 @@ public:
   // Overridden virtuals
   virtual bool Show(bool show = true);
 
-////@begin CManagePasswordPolicies member variables
+////@begin ManagePasswordPoliciesDlg member variables
   wxGrid* m_PolicyNames;
   wxTextCtrl* m_passwordCtrl;
   wxStaticText* m_lowerTableDesc;
   wxGrid* m_PolicyDetails;
   wxGrid* m_PolicyEntries;
-////@end CManagePasswordPolicies member variables
+////@end ManagePasswordPoliciesDlg member variables
  private:
   void UpdateNames();
   void UpdateDetails();
@@ -187,5 +187,4 @@ public:
   std::unique_ptr<PolicyManager> m_PolicyManager;
 };
 
-#endif
-  // _MANAGEPWDPOLICIES_H_
+#endif // _MANAGEPWDPOLICIESDLG_H_

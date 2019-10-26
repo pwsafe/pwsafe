@@ -7,32 +7,36 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+/** \file CryptKeyEntryDlg.cpp
+* 
+*/
+
 #include "CryptKeyEntryDlg.h"
 #include <wx/msgdlg.h>
 
-//(*InternalHeaders(CryptKeyEntry)
+//(*InternalHeaders(CryptKeyEntryDlg)
 #include <wx/button.h>
 #include <wx/string.h>
 #include <wx/intl.h>
 //*)
 
 
-//(*IdInit(CryptKeyEntry)
-const long CryptKeyEntry::ID_TEXTCTRL_KEY1 = wxNewId();
-const long CryptKeyEntry::ID_TEXTCTRL_KEY2 = wxNewId();
+//(*IdInit(CryptKeyEntryDlg)
+const long CryptKeyEntryDlg::ID_TEXTCTRL_KEY1 = wxNewId();
+const long CryptKeyEntryDlg::ID_TEXTCTRL_KEY2 = wxNewId();
 //*)
 
-BEGIN_EVENT_TABLE(CryptKeyEntry, wxDialog)
-  //(*EventTable(CryptKeyEntry)
-  EVT_BUTTON( wxID_OK,     CryptKeyEntry::OnOk     )
-  EVT_BUTTON( wxID_CANCEL, CryptKeyEntry::OnCancel )
-  EVT_CLOSE(               CryptKeyEntry::OnClose  )
+BEGIN_EVENT_TABLE(CryptKeyEntryDlg, wxDialog)
+  //(*EventTable(CryptKeyEntryDlg)
+  EVT_BUTTON( wxID_OK,     CryptKeyEntryDlg::OnOk     )
+  EVT_BUTTON( wxID_CANCEL, CryptKeyEntryDlg::OnCancel )
+  EVT_CLOSE(               CryptKeyEntryDlg::OnClose  )
   //*)
 END_EVENT_TABLE()
 
-CryptKeyEntry::CryptKeyEntry(Mode mode)
+CryptKeyEntryDlg::CryptKeyEntryDlg(Mode mode)
 {
-    //(*Initialize(CryptKeyEntry)
+    //(*Initialize(CryptKeyEntryDlg)
     wxStaticText* StaticTextKey2;
     wxFlexGridSizer* FlexGridSizer1;
     wxStaticText* StaticTextKey1;
@@ -86,13 +90,13 @@ CryptKeyEntry::CryptKeyEntry(Mode mode)
     m_Mode = mode;
 }
 
-CryptKeyEntry::~CryptKeyEntry()
+CryptKeyEntryDlg::~CryptKeyEntryDlg()
 {
-  //(*Destroy(CryptKeyEntry)
+  //(*Destroy(CryptKeyEntryDlg)
   //*)
 }
 
-void CryptKeyEntry::OnOk(wxCommandEvent& WXUNUSED(event))
+void CryptKeyEntryDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 {
   if (Validate() && TransferDataFromWindow()) {
 
@@ -140,12 +144,12 @@ void CryptKeyEntry::OnOk(wxCommandEvent& WXUNUSED(event))
   }
 }
 
-void CryptKeyEntry::OnCancel(wxCommandEvent& WXUNUSED(event))
+void CryptKeyEntryDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
 {
   EndModal(wxID_CANCEL);
 }
 
-void CryptKeyEntry::OnClose(wxCloseEvent& WXUNUSED(event))
+void CryptKeyEntryDlg::OnClose(wxCloseEvent& WXUNUSED(event))
 {
   EndModal(wxID_CLOSE);
 }

@@ -154,32 +154,32 @@ static void cleanup_handler(int /*signum */, void *p)
  */
 
 ////@begin implement app
-IMPLEMENT_APP( PwsafeApp )
+IMPLEMENT_APP( PWSafeApp )
 ////@end implement app
 
 /*!
- * PwsafeApp type definition
+ * PWSafeApp type definition
  */
 
-IMPLEMENT_CLASS( PwsafeApp, wxApp )
+IMPLEMENT_CLASS( PWSafeApp, wxApp )
 
 /*!
- * PwsafeApp event table definition
+ * PWSafeApp event table definition
  */
 
-  BEGIN_EVENT_TABLE( PwsafeApp, wxApp )
+  BEGIN_EVENT_TABLE( PWSafeApp, wxApp )
 
-////@begin PwsafeApp event table entries
-////@end PwsafeApp event table entries
-  EVT_TIMER(IDLE_TIMER_ID, PwsafeApp::OnIdleTimer)
-  EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PwsafeApp::OnDBGUIPrefsChange)
+////@begin PWSafeApp event table entries
+////@end PWSafeApp event table entries
+  EVT_TIMER(IDLE_TIMER_ID, PWSafeApp::OnIdleTimer)
+  EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PWSafeApp::OnDBGUIPrefsChange)
   END_EVENT_TABLE()
 
 /*!
- * Constructor for PwsafeApp
+ * Constructor for PWSafeApp
  */
 
-PwsafeApp::PwsafeApp() : m_idleTimer(new wxTimer(this, IDLE_TIMER_ID)),
+PWSafeApp::PWSafeApp() : m_idleTimer(new wxTimer(this, IDLE_TIMER_ID)),
                          m_frame(0), m_recentDatabases(0),
                          m_locale(nullptr)
 {
@@ -187,9 +187,9 @@ PwsafeApp::PwsafeApp() : m_idleTimer(new wxTimer(this, IDLE_TIMER_ID)),
 }
 
 /*!
- * Destructor for PwsafeApp
+ * Destructor for PWSafeApp
  */
-PwsafeApp::~PwsafeApp()
+PWSafeApp::~PWSafeApp()
 {
   delete m_idleTimer;
   delete m_recentDatabases;
@@ -197,7 +197,7 @@ PwsafeApp::~PwsafeApp()
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
   PWSLog::DeleteLog();
-  PWSclipboard::DeleteInstance();
+  Clipboard::DeleteInstance();
 
   delete m_locale;
 }
@@ -206,7 +206,7 @@ PwsafeApp::~PwsafeApp()
  * Member initialisation
  */
 
-void PwsafeApp::Init()
+void PWSafeApp::Init()
 {
   pws_os::install_cleanup_handler(cleanup_handler, &m_core);
   m_locale = new wxLocale;
@@ -217,12 +217,12 @@ void PwsafeApp::Init()
   wxLocale::AddCatalogLookupPathPrefix(L"../I18N/mos");
 #endif
 
-////@begin PwsafeApp member initialisation
-////@end PwsafeApp member initialisation
+////@begin PWSafeApp member initialisation
+////@end PWSafeApp member initialisation
 }
 
 #ifdef __WXDEBUG__
-void PwsafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func,
+void PWSafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func,
                 const wxChar *cond, const wxChar *msg)
 {
   if (m_locale)
@@ -237,7 +237,7 @@ void PwsafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func
 /** Activate help subsystem for given language
 * @param language help language for activation (if not found, default will be used)
 */
-bool PwsafeApp::ActivateHelp(wxLanguage language) {
+bool PWSafeApp::ActivateHelp(wxLanguage language) {
   wxString fileNameBase = L"help", fileExt=L".zip", defaultSuffix=L"EN"+fileExt;
   wxString langSuffix = wxLocale::GetLanguageCanonicalName(language);
   // Get only two letters
@@ -266,10 +266,10 @@ bool PwsafeApp::ActivateHelp(wxLanguage language) {
 }
 
 /*!
- * Initialisation for PwsafeApp
+ * Initialisation for PWSafeApp
  */
 
-bool PwsafeApp::OnInit()
+bool PWSafeApp::OnInit()
 {
   // Get the locale environment variable 'LC_CTYPE' specified by the environment
   // For instance, the behavior of function 'wcstombs' depends on the LC_CTYPE 
@@ -340,10 +340,10 @@ bool PwsafeApp::OnInit()
   // Process encryption/decryption command line arguments
   if ((cmd_encrypt || cmd_decrypt) && !filename.IsEmpty()) {
 
-    auto processCryption = [&](CryptKeyEntry::Mode mode, std::function<bool(const stringT &fn, const StringX &passwd, stringT &errmess)> func) {
+    auto processCryption = [&](CryptKeyEntryDlg::Mode mode, std::function<bool(const stringT &fn, const StringX &passwd, stringT &errmess)> func) {
       stringT errstr;
 
-      CryptKeyEntry dialog(mode);
+      CryptKeyEntryDlg dialog(mode);
 
       if (dialog.ShowModal() == wxID_OK) {
         if (!func(filename.wc_str(), dialog.getCryptKey(), errstr)) {
@@ -357,13 +357,13 @@ bool PwsafeApp::OnInit()
 
     if (cmd_encrypt) {
       processCryption(
-        CryptKeyEntry::Mode::ENCRYPT,
+        CryptKeyEntryDlg::Mode::ENCRYPT,
         PWSfile::Encrypt
       );
     }
     else {
       processCryption(
-        CryptKeyEntry::Mode::DECRYPT,
+        CryptKeyEntryDlg::Mode::DECRYPT,
         PWSfile::Decrypt
       );
     }
@@ -413,7 +413,7 @@ bool PwsafeApp::OnInit()
   }
 
 #if defined(__X__) || defined(__WXGTK__)
-  PWSclipboard::GetInstance()->UsePrimarySelection(prefs->GetPref(PWSprefs::UsePrimarySelectionForClipboard));
+  Clipboard::GetInstance()->UsePrimarySelection(prefs->GetPref(PWSprefs::UsePrimarySelectionForClipboard));
 #endif
 
   // here if we're the child
@@ -462,7 +462,7 @@ bool PwsafeApp::OnInit()
   if (!cmd_closed && !cmd_silent && !cmd_minimized) {
     // Get the file, r/w mode and password from user
     // Note that file may be new
-    CSafeCombinationEntry* initWindow = new CSafeCombinationEntry(nullptr, m_core);
+    SafeCombinationEntryDlg* initWindow = new SafeCombinationEntryDlg(nullptr, m_core);
     int returnValue = initWindow->ShowModal();
 
     initWindow->Destroy();
@@ -511,7 +511,7 @@ bool PwsafeApp::OnInit()
  * to determine the system default language and
  * activate this one for the application.
  */
-wxLanguage PwsafeApp::GetSystemLanguage()
+wxLanguage PWSafeApp::GetSystemLanguage()
 {
   int language = wxLocale::GetSystemLanguage();
 
@@ -541,7 +541,7 @@ wxLanguage PwsafeApp::GetSystemLanguage()
 }
 
 /* Get selected language (user preference or system) */
-wxLanguage PwsafeApp::GetSelectedLanguage() {
+wxLanguage PWSafeApp::GetSelectedLanguage() {
   StringX sxUserLang=PWSprefs::GetInstance()->GetPref(PWSprefs::LanguageFile);
   const wxLanguageInfo* langInfo=wxLocale::FindLanguageInfo(towxstring(sxUserLang));
   if (langInfo && ActivateLanguage(static_cast<wxLanguage>(langInfo->Language), true)){
@@ -566,7 +566,7 @@ wxLanguage PwsafeApp::GetSelectedLanguage() {
  * \see http://docs.wxwidgets.org/trunk/language_8h.html#a7d1c74ce43b2fb7acf7a6fa438c0ee86
  * \param tryOnly only try to load locale without resettings global instance
  */
-bool PwsafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
+bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
 {
   static wxString DOMAIN_(L"pwsafe");
 
@@ -603,10 +603,10 @@ bool PwsafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
 }
 
 /*!
- * Cleanup for PwsafeApp
+ * Cleanup for PWSafeApp
  */
 
-int PwsafeApp::OnExit()
+int PWSafeApp::OnExit()
 {
   m_idleTimer->Stop();
   recentDatabases().Save();
@@ -620,12 +620,12 @@ int PwsafeApp::OnExit()
 
   PWSMenuShortcuts::DestroyShortcutsManager();
   
-////@begin PwsafeApp cleanup
+////@begin PWSafeApp cleanup
   return wxApp::OnExit();
-////@end PwsafeApp cleanup
+////@end PWSafeApp cleanup
 }
 
-void PwsafeApp::ConfigureIdleTimer()
+void PWSafeApp::ConfigureIdleTimer()
 {
   const PWSprefs *prefs =   PWSprefs::GetInstance();
 
@@ -648,7 +648,7 @@ void PwsafeApp::ConfigureIdleTimer()
   }
 }
 
-void PwsafeApp::OnIdleTimer(wxTimerEvent &evt)
+void PWSafeApp::OnIdleTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == IDLE_TIMER_ID && PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
     if (m_frame != nullptr && !m_frame->GetCurrentSafe().IsEmpty()) {
@@ -657,23 +657,23 @@ void PwsafeApp::OnIdleTimer(wxTimerEvent &evt)
   }
 }
 
-void PwsafeApp::OnDBGUIPrefsChange(wxEvent& evt)
+void PWSafeApp::OnDBGUIPrefsChange(wxEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
   ConfigureIdleTimer();
 }
 
-CRecentDBList &PwsafeApp::recentDatabases()
+RecentDbList &PWSafeApp::recentDatabases()
 {
   // we create an instance of m_recentDatabases
   // as late as possible in order to make
   // sure that prefs' is set correctly (user, machine, etc.)
   if (m_recentDatabases == nullptr)
-    m_recentDatabases = new CRecentDBList;
+    m_recentDatabases = new RecentDbList;
   return *m_recentDatabases;
 }
 
-void PwsafeApp::SaveFrameCoords(void)
+void PWSafeApp::SaveFrameCoords(void)
 {
   if (m_frame->IsMaximized()) {
     PWSprefs::GetInstance()->SetPrefRect(-1, -1, -1, -1);
@@ -689,7 +689,7 @@ void PwsafeApp::SaveFrameCoords(void)
   }
 }
 
-void PwsafeApp::RestoreFrameCoords(void)
+void PWSafeApp::RestoreFrameCoords(void)
 {
   long top, bottom, left, right;
   PWSprefs::GetInstance()->GetPrefRect(top, bottom, left, right);
@@ -705,7 +705,7 @@ void PwsafeApp::RestoreFrameCoords(void)
   }
 }
 
-int PwsafeApp::FilterEvent(wxEvent& evt) {
+int PWSafeApp::FilterEvent(wxEvent& evt) {
   const wxEventType et = evt.GetEventType();
 
   // Clear idle flag for lock-on-idle timer
@@ -791,7 +791,7 @@ int PwsafeApp::FilterEvent(wxEvent& evt) {
   return wxApp::FilterEvent(evt);
 }
 
-void PwsafeApp::OnHelp(wxCommandEvent& evt)
+void PWSafeApp::OnHelp(wxCommandEvent& evt)
 {
   if (!isHelpActivated)
     return;
@@ -840,7 +840,7 @@ void PwsafeApp::OnHelp(wxCommandEvent& evt)
   }
 }
 
-PwsafeApp::StringToStringMap& PwsafeApp::GetHelpMap()
+PWSafeApp::StringToStringMap& PWSafeApp::GetHelpMap()
 {
   //may be its worth defining a class and doing all this in its ctor, but
   //I don't want to introduce yet another set of source/header files just for this
@@ -861,7 +861,7 @@ PwsafeApp::StringToStringMap& PwsafeApp::GetHelpMap()
 /**
  * Restart timer using the same notification interval
 */
-void PwsafeApp::RestartIdleTimer()
+void PWSafeApp::RestartIdleTimer()
 {
   if (m_idleTimer->IsRunning()) {
     int interval = m_idleTimer->GetInterval();

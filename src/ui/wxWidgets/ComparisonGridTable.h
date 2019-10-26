@@ -5,6 +5,7 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
+
 /** \file ComparisonGridTable.h
 * 
 */
@@ -23,7 +24,7 @@
 struct SelectionCriteria;
 class PWScore;
 
-class ComparisonGrid: public wxGrid
+class ComparisonGrid : public wxGrid
 {
 public:
   ComparisonGrid(wxWindow* parent, wxWindowID id);
@@ -154,4 +155,4 @@ private:
 
 };
 
-#endif
+#endif /* _COMPARISONGRIDTABLE_H_ */

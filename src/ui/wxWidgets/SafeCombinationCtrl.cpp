@@ -9,6 +9,7 @@
 /** \file SafeCombinationCtrl.cpp
 * 
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -108,7 +109,7 @@ bool SafeCombinationValidator::TransferFromWindow()
   return true;
 }
 
-void CSafeCombinationCtrl::Init(wxWindow* parent, 
+void SafeCombinationCtrl::Init(wxWindow* parent, 
                                 wxWindowID textCtrlID /*= wxID_ANY*/,
                                 StringX* valPtr /*= 0*/,
                                 const wxPoint& pos /* = wxDefaultPosition*/,
@@ -125,28 +126,28 @@ void CSafeCombinationCtrl::Init(wxWindow* parent,
   Add(vkbdButton, wxSizerFlags().Border(wxLEFT));
 }
 
-CSafeCombinationCtrl::~CSafeCombinationCtrl()
+SafeCombinationCtrl::~SafeCombinationCtrl()
 {
 }
 
-StringX CSafeCombinationCtrl::GetCombination() const
+StringX SafeCombinationCtrl::GetCombination() const
 {
   return tostringx(m_textCtrl->GetValue());
 }
 
-void CSafeCombinationCtrl::SetValidatorTarget(StringX* str)
+void SafeCombinationCtrl::SetValidatorTarget(StringX* str)
 {
   SafeCombinationValidator scValidator(str);
   m_textCtrl->SetValidator(scValidator);
 }
 
-void CSafeCombinationCtrl::SelectCombinationText() const
+void SafeCombinationCtrl::SelectCombinationText() const
 {
   m_textCtrl->SetFocus();
   m_textCtrl->SetSelection(-1,-1);
 }
 
-void CSafeCombinationCtrl::AllowEmptyCombinationOnce()
+void SafeCombinationCtrl::AllowEmptyCombinationOnce()
 {
   SafeCombinationValidator *scValidator = dynamic_cast<SafeCombinationValidator *>(m_textCtrl->GetValidator());
   if (scValidator != nullptr)
@@ -164,7 +165,7 @@ void CSafeCombinationCtrl::AllowEmptyCombinationOnce()
  *       not supported on all platforms, we replace the existing control with
  *       a newly created one having the desired style.
  */
-void CSafeCombinationCtrl::SecureTextfield(bool secured)
+void SafeCombinationCtrl::SecureTextfield(bool secured)
 {
   if (m_textCtrl) {
 
@@ -186,7 +187,7 @@ void CSafeCombinationCtrl::SecureTextfield(bool secured)
       Layout();
     }
     else {
-      pws_os::Trace(wxT("CSafeCombinationCtrl - Couldn't destroy text entry control."));
+      pws_os::Trace(wxT("SafeCombinationCtrl - Couldn't destroy text entry control."));
     }
   }
 }

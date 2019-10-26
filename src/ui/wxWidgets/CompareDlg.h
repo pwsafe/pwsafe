@@ -5,7 +5,8 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
-/** \file
+
+/** \file ComapreDlg.h
 * 
 */
 
@@ -25,7 +26,7 @@ struct ComparisonData;
 class wxGridEvent;
 class wxGridRangeSelectEvent;
 
-class CompareDlg: public wxDialog
+class CompareDlg : public wxDialog
 {
   void CreateControls();
   wxCollapsiblePane* CreateDBSelectionPanel(wxSizer* sizer);
@@ -61,4 +62,4 @@ private:
   DECLARE_EVENT_TABLE()
 };
 
-#endif
+#endif /* _COMPAREDLG_H_ */

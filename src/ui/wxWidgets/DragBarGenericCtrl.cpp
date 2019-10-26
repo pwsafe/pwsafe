@@ -35,16 +35,16 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-BEGIN_EVENT_TABLE( CDragBar, wxControl )
-  EVT_LEFT_DOWN(CDragBar::OnLeftDown)
-  EVT_PAINT(CDragBar::OnPaint)
-  EVT_MOTION(CDragBar::OnMouseMove)
-  EVT_LEAVE_WINDOW(CDragBar::OnMouseLeave)
+BEGIN_EVENT_TABLE( DragBarGenericCtrl, wxControl )
+  EVT_LEFT_DOWN(DragBarGenericCtrl::OnLeftDown)
+  EVT_PAINT(DragBarGenericCtrl::OnPaint)
+  EVT_MOTION(DragBarGenericCtrl::OnMouseMove)
+  EVT_LEAVE_WINDOW(DragBarGenericCtrl::OnMouseLeave)
 END_EVENT_TABLE()
 
-IMPLEMENT_CLASS( CDragBar, wxControl )
+IMPLEMENT_CLASS( DragBarGenericCtrl, wxControl )
 
-CDragBar::CDragBar(wxFrame* parent, IDragSourceTextProvider* provider,
+DragBarGenericCtrl::DragBarGenericCtrl(wxFrame* parent, IDragSourceTextProvider* provider,
                                 wxOrientation orient /*= wxHORIZONTAL*/) :
                                                 wxControl(parent, wxID_ANY),
                                                 m_margins(5, 3),
@@ -53,14 +53,14 @@ CDragBar::CDragBar(wxFrame* parent, IDragSourceTextProvider* provider,
                                                 m_bmpHeight(0),
                                                 m_provider(provider)
 {
-  Connect(GetId(), wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CDragBar::OnUpdateUI));
+  Connect(GetId(), wxEVT_UPDATE_UI, wxUpdateUIEventHandler(DragBarGenericCtrl::OnUpdateUI));
 }
 
-CDragBar::~CDragBar()
+DragBarGenericCtrl::~DragBarGenericCtrl()
 {
 }
 
-void CDragBar::OnLeftDown(wxMouseEvent& evt)
+void DragBarGenericCtrl::OnLeftDown(wxMouseEvent& evt)
 {
   const int idx = FindToolFromCoords(evt.GetPosition());
   if (idx == -1)
@@ -95,7 +95,7 @@ void CDragBar::OnLeftDown(wxMouseEvent& evt)
   }
 }
 
-void CDragBar::AddTool(int id, const wxBitmap& bmp, const wxString& tooltip /*= wxEmptyString*/,
+void DragBarGenericCtrl::AddTool(int id, const wxBitmap& bmp, const wxString& tooltip /*= wxEmptyString*/,
                                     const wxBitmap& bmpDisabled /*= wxNullBitmap*/)
 {
   //all bitmaps must be same size
@@ -126,7 +126,7 @@ void CDragBar::AddTool(int id, const wxBitmap& bmp, const wxString& tooltip /*= 
   m_items.push_back( item );
 }
 
-int CDragBar::FindToolFromCoords(const wxPoint& pt)
+int DragBarGenericCtrl::FindToolFromCoords(const wxPoint& pt)
 {
   int idx = -1;
 
@@ -158,7 +158,7 @@ int CDragBar::FindToolFromCoords(const wxPoint& pt)
   return (idx < 0 || size_t(idx) >= m_items.size()) ? -1 : idx;
 }
 
-wxSize CDragBar::GetInvalidatedIconRange(const wxRect& rect)
+wxSize DragBarGenericCtrl::GetInvalidatedIconRange(const wxRect& rect)
 {
   switch(m_orientation) {
     case wxHORIZONTAL:
@@ -196,7 +196,7 @@ wxSize CDragBar::GetInvalidatedIconRange(const wxRect& rect)
       return wxSize(0, 0);
   }
 }
-void CDragBar::OnPaint(wxPaintEvent& /*evt*/)
+void DragBarGenericCtrl::OnPaint(wxPaintEvent& /*evt*/)
 {
   wxRect rcWin = GetRect(); //draw along the entire window rect, since clipping rect is always (0, 0, -1, -1)
 
@@ -240,7 +240,7 @@ void CDragBar::OnPaint(wxPaintEvent& /*evt*/)
 
 }
 
-wxSize CDragBar::DoGetBestSize() const
+wxSize DragBarGenericCtrl::DoGetBestSize() const
 {
   switch(m_orientation) {
     case wxHORIZONTAL:
@@ -260,7 +260,7 @@ void RemoveToolTip(wxWindow* win)
   win->SetToolTip(nullptr); // == UnsetToolTip()
 }
 
-void CDragBar::OnMouseMove(wxMouseEvent& evt)
+void DragBarGenericCtrl::OnMouseMove(wxMouseEvent& evt)
 {
   if (!evt.Dragging()) {
     int idx = FindToolFromCoords(evt.GetPosition());
@@ -277,14 +277,14 @@ void CDragBar::OnMouseMove(wxMouseEvent& evt)
   }
 }
 
-void CDragBar::OnMouseLeave(wxMouseEvent& evt)
+void DragBarGenericCtrl::OnMouseLeave(wxMouseEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
   RemoveToolTip(this);
   //wxLogDebug(wxT("Removed tooltip since mouse left the window"));
 }
 
-void CDragBar::OnUpdateUI(wxUpdateUIEvent& evt)
+void DragBarGenericCtrl::OnUpdateUI(wxUpdateUIEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
   for (size_t idx = 0; idx < m_items.size(); ++idx) {
@@ -296,7 +296,7 @@ void CDragBar::OnUpdateUI(wxUpdateUIEvent& evt)
   }
 }
 
-void CDragBar::SetToolBitmaps(int id, const wxBitmap& bmp, const wxBitmap& bmpDisabled /*= wxNullBitmap*/)
+void DragBarGenericCtrl::SetToolBitmaps(int id, const wxBitmap& bmp, const wxBitmap& bmpDisabled /*= wxNullBitmap*/)
 {
   for (size_t idx = 0; idx < m_items.size(); ++idx) {
     if (m_items[idx].id == id) {

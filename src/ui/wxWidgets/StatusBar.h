@@ -6,16 +6,16 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-/** \file
+/** \file StatusBar.h
  * Wrapper for wxStatusBar, same name/functionality as MFC version
  */
 
-#ifndef __PWSTATUSBAR_H
-#define __PWSTATUSBAR_H
+#ifndef _STATUSBAR_H_
+#define _STATUSBAR_H_
 
 #include <wx/statusbr.h>
 
-class CPWStatusBar : public wxStatusBar
+class StatusBar : public wxStatusBar
 {
  public:
   enum class Field { 
@@ -24,11 +24,11 @@ class CPWStatusBar : public wxStatusBar
     COUNT
   };
 
-  CPWStatusBar(wxWindow *parent, wxWindowID id = wxID_ANY, long style = wxSTB_DEFAULT_STYLE)
+  StatusBar(wxWindow *parent, wxWindowID id = wxID_ANY, long style = wxSTB_DEFAULT_STYLE)
     : wxStatusBar(parent, id, style)
     {}
 
-  virtual ~CPWStatusBar() {}
+  virtual ~StatusBar() {}
 
   void Setup()
   {
@@ -44,4 +44,4 @@ class CPWStatusBar : public wxStatusBar
   }
 };
 
-#endif /* __PWSTATUSBAR_H */
+#endif /* _STATUSBAR_H_ */

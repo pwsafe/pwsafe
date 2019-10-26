@@ -6,17 +6,17 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __HELPMAP_H__
-#define __HELPMAP_H__
+#ifndef _HELPMAP_H_
+#define _HELPMAP_H_
 
 //For both export text and export XML
-DLG_HELP(CExportTextWarningDlgBase,                     html/export.html)
-DLG_HELP(CSafeCombinationChange,                        html/change_combo.html)
+DLG_HELP(ExportTextWarningDlgBase,                      html/export.html)
+DLG_HELP(SafeCombinationChangeDlg,                      html/change_combo.html)
 DLG_HELP(MergeDlg,                                      html/file_menu.html)
-DLG_HELP(CSafeCombinationSetup,                         html/about_combinations.html)
-DLG_HELP(CImportTextDlg,                                html/import.html)
-DLG_HELP(CImportXMLDlg,                                 html/import.html#XML)
-DLG_HELP(CSafeCombinationEntry,                         html/create_new_db.html)
+DLG_HELP(SafeCombinationSetupDlg,                       html/about_combinations.html)
+DLG_HELP(ImportTextDlg,                                 html/import.html)
+DLG_HELP(ImportXmlDlg,                                  html/import.html#XML)
+DLG_HELP(SafeCombinationEntryDlg,                       html/create_new_db.html)
 
 //The Contents page from main toolbar
 DLG_HELP(wxToolBar,                                     html/Welcome.html)
@@ -27,7 +27,7 @@ DLG_HELP(AdvancedSelectionDlg<ExportFullText>,          html/export.html#text)
 DLG_HELP(AdvancedSelectionDlg<FindDlgType>,             html/searching.html)
 
 //The help for Manage Password Policies dialog
-DLG_HELP(CManagePasswordPolicies,                       html/named_password_policies.html)
+DLG_HELP(ManagePasswordPoliciesDlg,                     html/named_password_policies.html)
 
 //
 //for property sheet help, note that the second parameter is a locale-specific string
@@ -35,18 +35,18 @@ DLG_HELP(CManagePasswordPolicies,                       html/named_password_poli
 //
 
 //Options dialog
-PROPSHEET_HELP(COptions,         _("Backups"),          html/backups_tab.html)
-PROPSHEET_HELP(COptions,         _("Display"),          html/display_tab.html)
-PROPSHEET_HELP(COptions,         _("Misc."),            html/misc_tab.html)
-PROPSHEET_HELP(COptions,         _("Password Policy"),  html/password_policies.html)
-PROPSHEET_HELP(COptions,         _("Password History"), html/password_history_tab.html)
-PROPSHEET_HELP(COptions,         _("Security"),         html/security_tab.html)
-PROPSHEET_HELP(COptions,         _("System"),           html/system_tab.html)
-PROPSHEET_HELP(COptions,         _("Shortcuts"),        html/shortcuts_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Backups"),          html/backups_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Display"),          html/display_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Misc."),            html/misc_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Password Policy"),  html/password_policies.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Password History"), html/password_history_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Security"),         html/security_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("System"),           html/system_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Shortcuts"),        html/shortcuts_tab.html)
 
-PROPSHEET_HELP(AddEditPropSheet, _("Basic"),            html/entering_pwd.html)
-PROPSHEET_HELP(AddEditPropSheet, _("Dates and Times"),  html/entering_pwd_date.html)
-PROPSHEET_HELP(AddEditPropSheet, _("Password Policy"),  html/entering_pwd_pp.html)
-PROPSHEET_HELP(AddEditPropSheet, _("Additional"),       html/entering_pwd_add.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, _("Basic"),            html/entering_pwd.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, _("Dates and Times"),  html/entering_pwd_date.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, _("Password Policy"),  html/entering_pwd_pp.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, _("Additional"),       html/entering_pwd_add.html)
 
-#endif
+#endif // _HELPMAP_H_
