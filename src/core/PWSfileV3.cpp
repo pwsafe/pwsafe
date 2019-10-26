@@ -191,7 +191,7 @@ int PWSfileV3::SanityCheck(FILE *stream)
     goto err;
   }
   if (memcmp(eof_block, TERMINAL_BLOCK, sizeof(TERMINAL_BLOCK)) != 0)
-    retval = TRUNCATED_FILE;
+    retval = SUCCESS; // because this is a sanity check: We might still be able to recover some data
 
 err:
   fseek(stream, pos, SEEK_SET);
