@@ -22,11 +22,12 @@
 class wxTimer;
 class wxWindow;
 
-class CYubiMixin {
+class YubiMixin
+{
  public:
   enum {POLLING_INTERVAL = 500}; // mSec
- CYubiMixin() : m_present(false), m_btn(nullptr), m_status(nullptr) {}
-  ~CYubiMixin() {}
+  YubiMixin() : m_present(false), m_btn(nullptr), m_status(nullptr) {}
+  ~YubiMixin() {}
 
   void SetupMixin(wxWindow *btn, wxWindow *status);
   bool yubiExists() const;

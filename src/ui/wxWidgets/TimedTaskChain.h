@@ -46,47 +46,51 @@
 // the task chain throws, in which case the rest of the tasks in the chain
 // are not invoked.
 
-#ifndef __TIMEDTASKCHAIN_H__
-#define __TIMEDTASKCHAIN_H__
+/** \file TimedTaskChain.h
+* 
+*/
+
+#ifndef _TIMEDTASKCHAIN_H_
+#define _TIMEDTASKCHAIN_H_
 
 #include <wx/timer.h>
 
 #include <list>
 #include <functional>
 
-class TimedTaskChain: public wxTimer
+class TimedTaskChain : public wxTimer
 {
-	typedef std::function<void(void)> TaskType;
+  typedef std::function<void(void)> TaskType;
   typedef std::pair<TaskType, int> TaskWithInterval;
-	typedef std::list<TaskWithInterval> TaskList;
+  typedef std::list<TaskWithInterval> TaskList;
 
-	typedef std::function<void(const std::exception&)> ErrorHandlerType;
+  typedef std::function<void(const std::exception&)> ErrorHandlerType;
 
-	ErrorHandlerType m_errorHandler;
-	TaskList m_tasks;
-	TaskList::iterator m_nextTask;
+  ErrorHandlerType m_errorHandler;
+  TaskList m_tasks;
+  TaskList::iterator m_nextTask;
 
-	TimedTaskChain(std::initializer_list<TaskWithInterval> tasks);
-	TimedTaskChain(std::initializer_list<TaskType> tasks);
-    ~TimedTaskChain() {}
+  TimedTaskChain(std::initializer_list<TaskWithInterval> tasks);
+  TimedTaskChain(std::initializer_list<TaskType> tasks);
+   ~TimedTaskChain() {}
 
-    static int DefaultTaskDelay();
+  static int DefaultTaskDelay();
 
 public:
-	static TimedTaskChain& CreateTaskChain(std::initializer_list<TaskWithInterval> tasks);
+  static TimedTaskChain& CreateTaskChain(std::initializer_list<TaskWithInterval> tasks);
   static TimedTaskChain& CreateTaskChain(std::initializer_list<TaskType> tasks);
   static TimedTaskChain& CreateTaskChain(const TaskType &tasks);
 
-	TimedTaskChain& then(const TaskType& task, int delay = DefaultTaskDelay() ) { m_tasks.push_back({task, delay}); return *this; }
+  TimedTaskChain& then(const TaskType& task, int delay = DefaultTaskDelay() ) { m_tasks.push_back({task, delay}); return *this; }
 
-	void OnError(ErrorHandlerType errHandler) { m_errorHandler = errHandler; }
+  void OnError(ErrorHandlerType errHandler) { m_errorHandler = errHandler; }
 
-    // overridden from wxTimer
-    void Notify();
+  // overridden from wxTimer
+  void Notify();
 
 private:
-	void RunTask();
-	void Next();
+  void RunTask();
+  void Next();
 };
 
-#endif
+#endif // _TIMEDTASKCHAIN_H_

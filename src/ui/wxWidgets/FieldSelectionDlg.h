@@ -22,8 +22,8 @@
 #include "./FieldSelectionPanel.h"
 #include "../../core/ItemData.h"
 
-class FieldSelectionDlg : public wxDialog {
-
+class FieldSelectionDlg : public wxDialog
+{
   DECLARE_EVENT_TABLE()
 
 public:

@@ -9,6 +9,7 @@
 /** \file YubiCfgDlg.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -208,7 +209,7 @@ void YubiCfgDlg::CreateControls()
   itemTextCtrl5->SetValidator( wxGenericValidator(& m_yksernum) );
   m_SKCtrl->SetValidator( wxGenericValidator(& m_yksk) );
 ////@end YubiCfgDlg content construction
-  m_pollingTimer->Start(CYubiMixin::POLLING_INTERVAL);
+  m_pollingTimer->Start(YubiMixin::POLLING_INTERVAL);
 }
 
 /*!

@@ -6,8 +6,12 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-#ifndef __GUIINFO_H__
-#define __GUIINFO_H__
+/** \file GuiInfo.h
+* 
+*/
+
+#ifndef _GUIINFO_H_
+#define _GUIINFO_H_
 
 #include "../../os/UUID.h"
 #include <wx/string.h>
@@ -15,8 +19,8 @@
 #include <wx/arrstr.h>
 
 class PasswordSafeFrame;
-class PWSTreeCtrl;
-class PWSGrid;
+class TreeCtrl;
+class GridCtrl;
 
 class string_or_uuid
 {
@@ -57,22 +61,22 @@ class string_or_uuid
     ItemType       m_type;
 };
 
-class GUIInfo
+class GuiInfo
 {
   public:
     //Let the compiler generate these
-    //GUIInfo();
-    //GUIInfo(const GUIInfo& other);
-    //GUIInfo& operator=(const GUIInfo& other);
+    //GuiInfo();
+    //GuiInfo(const GuiInfo& other);
+    //GuiInfo& operator=(const GuiInfo& other);
 
     void Save(PasswordSafeFrame* frame);
     void Restore(PasswordSafeFrame* frame);
 
-    void SaveTreeViewInfo(PWSTreeCtrl* tree);
-    void SaveGridViewInfo(PWSGrid* grid);
+    void SaveTreeViewInfo(TreeCtrl* tree);
+    void SaveGridViewInfo(GridCtrl* grid);
 
-    void RestoreTreeViewInfo(PWSTreeCtrl* tree);
-    void RestoreGridViewInfo(PWSGrid* grid);
+    void RestoreTreeViewInfo(TreeCtrl* tree);
+    void RestoreGridViewInfo(GridCtrl* grid);
 
   private:
 
@@ -85,4 +89,4 @@ class GUIInfo
     pws_os::CUUID  m_gridSelection;                 //selected elements, only one per view
 };
 
-#endif
+#endif // _GUIINFO_H_

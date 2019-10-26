@@ -6,12 +6,12 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/**
- *  \file AddEditPropSheetDlg.h
+/** \file AddEditPropSheetDlg.h
+ *
  */
 
-#ifndef _ADDEDITPROPSHEET_H_
-#define _ADDEDITPROPSHEET_H_
+#ifndef _ADDEDITPROPSHEETDLG_H_
+#define _ADDEDITPROPSHEETDLG_H_
 
 /*!
  * Includes
@@ -52,7 +52,7 @@ class wxBoxSizer;
  */
 
 ////@begin control identifiers
-#define ID_ADDEDITPROPSHEET 10083
+#define ID_ADDEDITPROPSHEETDLG 10083
 #define ID_PANEL_BASIC 10084
 #define ID_COMBOBOX_GROUP 10095
 #define ID_TEXTCTRL_TITLE 10096
@@ -101,44 +101,44 @@ class wxBoxSizer;
 #define ID_CHECKBOX8 10123
 #define ID_CHECKBOX9 10124
 #define ID_STATICTEXT_DAYS 11125
-#define SYMBOL_ADDEDITPROPSHEET_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
-#define SYMBOL_ADDEDITPROPSHEET_TITLE _("Edit Entry")
-#define SYMBOL_ADDEDITPROPSHEET_IDNAME ID_ADDEDITPROPSHEET
-#define SYMBOL_ADDEDITPROPSHEET_SIZE wxSize(400, 300)
-#define SYMBOL_ADDEDITPROPSHEET_POSITION wxDefaultPosition
+#define SYMBOL_ADDEDITPROPSHEETDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
+#define SYMBOL_ADDEDITPROPSHEETDLG_TITLE _("Edit Entry")
+#define SYMBOL_ADDEDITPROPSHEETDLG_IDNAME ID_ADDEDITPROPSHEETDLG
+#define SYMBOL_ADDEDITPROPSHEETDLG_SIZE wxSize(400, 300)
+#define SYMBOL_ADDEDITPROPSHEETDLG_POSITION wxDefaultPosition
 ////@end control identifiers
-#define SYMBOL_ADDPROPSHEET_TITLE _("Add Entry")
-#define SYMBOL_EDITPROPSHEET_TITLE _("Edit Entry")
-#define SYMBOL_VIEWPROPSHEET_TITLE _("View Entry")
-#define SYMBOL_AUTOPROPSHEET_TITLE _("Add, Edit or View Entry")
+#define SYMBOL_ADDPROPSHEETDLG_TITLE _("Add Entry")
+#define SYMBOL_EDITPROPSHEETDLG_TITLE _("Edit Entry")
+#define SYMBOL_VIEWPROPSHEETDLG_TITLE _("View Entry")
+#define SYMBOL_AUTOPROPSHEETDLG_TITLE _("Add, Edit or View Entry")
 
 /*!
- * AddEditPropSheet class declaration
+ * AddEditPropSheetDlg class declaration
  */
 
-class AddEditPropSheet: public wxPropertySheetDialog
+class AddEditPropSheetDlg : public wxPropertySheetDialog
 {
-  DECLARE_CLASS( AddEditPropSheet )
+  DECLARE_CLASS( AddEditPropSheetDlg )
   DECLARE_EVENT_TABLE()
 
 public:
   enum class SheetType {ADD, EDIT, VIEW}; // to tweak UI, mainly
   /// Constructor
   // item is nullptr for ADD, otherwise its values are retrieved and displayed
-  AddEditPropSheet(wxWindow* parent, PWScore &core,
+  AddEditPropSheetDlg(wxWindow* parent, PWScore &core,
                    SheetType type, const CItemData *item = nullptr,
                    const wxString& selectedGroup = wxEmptyString,
-                   wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME,
-                   const wxString& caption = SYMBOL_AUTOPROPSHEET_TITLE,
-                   const wxPoint& pos = SYMBOL_ADDEDITPROPSHEET_POSITION,
-                   const wxSize& size = SYMBOL_ADDEDITPROPSHEET_SIZE,
-                   long style = SYMBOL_ADDEDITPROPSHEET_STYLE );
+                   wxWindowID id = SYMBOL_ADDEDITPROPSHEETDLG_IDNAME,
+                   const wxString& caption = SYMBOL_AUTOPROPSHEETDLG_TITLE,
+                   const wxPoint& pos = SYMBOL_ADDEDITPROPSHEETDLG_POSITION,
+                   const wxSize& size = SYMBOL_ADDEDITPROPSHEETDLG_SIZE,
+                   long style = SYMBOL_ADDEDITPROPSHEETDLG_STYLE );
 
   /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME, const wxString& caption = SYMBOL_AUTOPROPSHEET_TITLE, const wxPoint& pos = SYMBOL_ADDEDITPROPSHEET_POSITION, const wxSize& size = SYMBOL_ADDEDITPROPSHEET_SIZE, long style = SYMBOL_ADDEDITPROPSHEET_STYLE );
+  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_ADDEDITPROPSHEETDLG_IDNAME, const wxString& caption = SYMBOL_AUTOPROPSHEETDLG_TITLE, const wxPoint& pos = SYMBOL_ADDEDITPROPSHEETDLG_POSITION, const wxSize& size = SYMBOL_ADDEDITPROPSHEETDLG_SIZE, long style = SYMBOL_ADDEDITPROPSHEETDLG_STYLE );
 
   /// Destructor
-  ~AddEditPropSheet();
+  ~AddEditPropSheetDlg();
 
   /// Initialises member variables
   void Init();
@@ -146,7 +146,7 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-////@begin AddEditPropSheet event handler declarations
+////@begin AddEditPropSheetDlg event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
   void OnShowHideClick( wxCommandEvent& event );
@@ -211,14 +211,14 @@ public:
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent& event );
 
-////@end AddEditPropSheet event handler declarations
+////@end AddEditPropSheetDlg event handler declarations
   void OnEZreadOrPronounceable( wxCommandEvent& evt);
   void OnClearPWHist(wxCommandEvent& evt);
   void OnOk(wxCommandEvent& evt);
 
   /// wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, ID_SPINCTRL7, ID_SPINCTRL8
   void OnAtLeastPasswordChars(wxSpinEvent& evt);
-////@begin AddEditPropSheet member function declarations
+////@begin AddEditPropSheetDlg member function declarations
 
   wxString GetATime() const { return m_ATime ; }
   void SetATime(wxString value) { m_ATime = value ; }
@@ -282,12 +282,12 @@ public:
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
-////@end AddEditPropSheet member function declarations
+////@end AddEditPropSheetDlg member function declarations
   const CItemData &GetItem() const {return m_item;} // for ADD mode
   /// Should we show tooltips?
   static bool ShowToolTips();
 
-////@begin AddEditPropSheet member variables
+////@begin AddEditPropSheetDlg member variables
   wxPanel* m_BasicPanel;
   wxPanel* m_AdditionalPanel;
   wxPanel* m_PasswordPolicyPanel;
@@ -348,7 +348,7 @@ private:
   wxString m_title;
   wxString m_url;
   wxString m_user;
-  ////@end AddEditPropSheet member variables
+  ////@end AddEditPropSheetDlg member variables
   short m_DCA;
   short m_ShiftDCA;
   time_t m_tttXTime; // Password Exp.date in time_t
@@ -375,5 +375,4 @@ private:
   int GetRequiredPWLength() const;
 };
 
-#endif
-  // _ADDEDITPROPSHEET_H_
+#endif // _ADDEDITPROPSHEETDLG_H_

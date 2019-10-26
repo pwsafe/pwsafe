@@ -6,14 +6,18 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __DBSELECTIONPANEL_H__
-#define __DBSELECTIONPANEL_H__
+/** \file DbSelectionPanel.h
+* 
+*/
+
+#ifndef _DBSELECTIONPANEL_H_
+#define _DBSELECTIONPANEL_H_
 
 #include <wx/panel.h>
 #include "../../core/StringX.h"
 
 class wxFilePickerCtrl;
-class CSafeCombinationCtrl;
+class SafeCombinationCtrl;
 class PWScore;
 class wxFileDirPickerEvent;
 
@@ -32,13 +36,8 @@ class wxFileDirPickerEvent;
  * rowsep - the multiplying factor for the separation between the first and second
  * rows.  A small dialog might pass a value of 2, while a wizard page might pass 5
  */
-class DbSelectionPanel : public wxPanel {
-
-  wxFilePickerCtrl* m_filepicker;
-  CSafeCombinationCtrl* m_sc;
-  bool m_bAutoValidate;
-  PWScore* m_core;
-  
+class DbSelectionPanel : public wxPanel
+{
 public:
   DbSelectionPanel(wxWindow* parent, const wxString& filePrompt,
                     const wxString& filePickerCtrlTitle, bool autoValidate,
@@ -59,6 +58,12 @@ public:
 
   wxString m_filepath;
   StringX m_combination;
+
+private:
+  wxFilePickerCtrl* m_filepicker;
+  SafeCombinationCtrl* m_sc;
+  bool m_bAutoValidate;
+  PWScore* m_core;
 };
 
-#endif // __DBSELECTIONPANEL_H__
+#endif // _DBSELECTIONPANEL_H_

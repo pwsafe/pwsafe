@@ -6,8 +6,12 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-#ifndef __MERGEDLG_H__
-#define __MERGEDLG_H__
+/** \file MergeDlg.h
+* 
+*/
+
+#ifndef _MERGEDLG_H_
+#define _MERGEDLG_H_
 
 #include <wx/dialog.h>
 #include "../../core/StringX.h"
@@ -16,8 +20,8 @@ class PWScore;
 struct SelectionCriteria;
 class DbSelectionPanel;
 
-class MergeDlg : public wxDialog {
-  
+class MergeDlg : public wxDialog
+{
   DECLARE_CLASS( MergeDlg )
   DECLARE_EVENT_TABLE()
   
@@ -37,4 +41,4 @@ private:
   DbSelectionPanel* m_dbPanel;
 };
 
-#endif // __MERGEDLG_H__
+#endif // _MERGEDLG_H_

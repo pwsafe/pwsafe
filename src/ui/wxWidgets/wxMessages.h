@@ -6,8 +6,12 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-#ifndef __WXMESSAGES_H
-#define __WXMESSAGES_H
+/** \file wxMessages.h
+* 
+*/
+
+#ifndef _WXMESSAGES_H_
+#define _WXMESSAGES_H_
 
 #include "core/Proxy.h"
 #include <wx/msgdlg.h>
@@ -42,4 +46,4 @@ class wxReporter : public Reporter
   }
 };
 
-#endif /* __WXMESSAGES_H */
+#endif /* _WXMESSAGES_H_ */

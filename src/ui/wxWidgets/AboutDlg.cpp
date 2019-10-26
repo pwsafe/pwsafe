@@ -9,6 +9,7 @@
 /** \file AboutDlg.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -38,40 +39,40 @@
 ////@end XPM images
 
 /*!
- * CAbout type definition
+ * AboutDlg type definition
  */
 
-IMPLEMENT_CLASS( CAbout, wxDialog )
+IMPLEMENT_CLASS( AboutDlg, wxDialog )
 
 /*!
- * CAbout event table definition
+ * AboutDlg event table definition
  */
 
-BEGIN_EVENT_TABLE( CAbout, wxDialog )
+BEGIN_EVENT_TABLE( AboutDlg, wxDialog )
 
-  EVT_CLOSE(                       CAbout::OnCloseWindow       )
-  EVT_HYPERLINK( ID_CHECKNEW     , CAbout::OnCheckNewClicked   )
-  EVT_HYPERLINK( ID_SITEHYPERLINK, CAbout::OnVisitSiteClicked  )
-  EVT_BUTTON(    wxID_CLOSE      , CAbout::OnCloseClick        )
-  EVT_THREAD(    wxID_ANY        , CAbout::OnDownloadCompleted )
+  EVT_CLOSE(                       AboutDlg::OnCloseWindow       )
+  EVT_HYPERLINK( ID_CHECKNEW     , AboutDlg::OnCheckNewClicked   )
+  EVT_HYPERLINK( ID_SITEHYPERLINK, AboutDlg::OnVisitSiteClicked  )
+  EVT_BUTTON(    wxID_CLOSE      , AboutDlg::OnCloseClick        )
+  EVT_THREAD(    wxID_ANY        , AboutDlg::OnDownloadCompleted )
 
 END_EVENT_TABLE()
 
-wxString CAbout::s_VersionData = wxEmptyString;
+wxString AboutDlg::s_VersionData = wxEmptyString;
 
 const wstringT s_URL_HOME      = L"https://pwsafe.org";
 const cstringT s_URL_VERSION   =  "https://pwsafe.org/latest.xml";
 
 /*!
- * CAbout constructors
+ * AboutDlg constructors
  */
 
-CAbout::CAbout()
+AboutDlg::AboutDlg()
 {
   Init();
 }
 
-CAbout::CAbout( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+AboutDlg::AboutDlg( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -82,10 +83,10 @@ CAbout::CAbout( wxWindow* parent, wxWindowID id, const wxString& caption, const 
 }
 
 /*!
- * CAbout creator
+ * AboutDlg creator
  */
 
-bool CAbout::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool AboutDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
@@ -106,32 +107,32 @@ bool CAbout::Create( wxWindow* parent, wxWindowID id, const wxString& caption, c
 }
 
 /*!
- * CAbout destructor
+ * AboutDlg destructor
  */
 
-CAbout::~CAbout()
+AboutDlg::~AboutDlg()
 {
-////@begin CAbout destruction
-////@end CAbout destruction
+////@begin AboutDlg destruction
+////@end AboutDlg destruction
 }
 
 /*!
  * Member initialization
  */
 
-void CAbout::Init()
+void AboutDlg::Init()
 {
   m_VersionStatus = nullptr;
   m_CurlHandle = nullptr;
 }
 
 /*!
- * Control creation for CAbout
+ * Control creation for AboutDlg
  */
 
-void CAbout::CreateControls()
+void AboutDlg::CreateControls()
 {
-  CAbout* aboutDialog = this;
+  AboutDlg* aboutDialog = this;
 
   wxBoxSizer* mainSizer = new wxBoxSizer(wxHORIZONTAL);
   aboutDialog->SetSizer(mainSizer);
@@ -195,7 +196,7 @@ void CAbout::CreateControls()
  * Should we show tooltips?
  */
 
-bool CAbout::ShowToolTips()
+bool AboutDlg::ShowToolTips()
 {
   return true;
 }
@@ -204,7 +205,7 @@ bool CAbout::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap CAbout::GetBitmapResource( const wxString& name )
+wxBitmap AboutDlg::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
   if (name == L"graphics/cpane.xpm")
@@ -219,19 +220,19 @@ wxBitmap CAbout::GetBitmapResource( const wxString& name )
  * Get icon resources
  */
 
-wxIcon CAbout::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon AboutDlg::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
-////@begin CAbout icon retrieval
+////@begin AboutDlg icon retrieval
   return wxNullIcon;
-////@end CAbout icon retrieval
+////@end AboutDlg icon retrieval
 }
 
 /*!
  * wxEVT_CLOSE_WINDOW event handler
  */
 
-void CAbout::OnCloseWindow( wxCloseEvent& WXUNUSED(event) )
+void AboutDlg::OnCloseWindow( wxCloseEvent& WXUNUSED(event) )
 {
   Cleanup();
   EndModal(wxID_CLOSE);
@@ -241,7 +242,7 @@ void CAbout::OnCloseWindow( wxCloseEvent& WXUNUSED(event) )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
  */
 
-void CAbout::OnCloseClick( wxCommandEvent& WXUNUSED(event) )
+void AboutDlg::OnCloseClick( wxCommandEvent& WXUNUSED(event) )
 {
   Cleanup();
   EndModal(wxID_CLOSE);
@@ -254,7 +255,7 @@ void CAbout::OnCloseClick( wxCommandEvent& WXUNUSED(event) )
  *
  * @return a static <code>wxCriticalSection</code> instance.
  */
-wxCriticalSection& CAbout::CriticalSection()
+wxCriticalSection& AboutDlg::CriticalSection()
 {
   static wxCriticalSection criticalSectionObject;
 
@@ -277,11 +278,11 @@ wxCriticalSection& CAbout::CriticalSection()
  *
  * Once libcurl was successfully initialized and all needed options set a handle 
  * represents the connection and can be used for further activities during the 
- * lifetime of the <code>CAbout</code> instance.
+ * lifetime of the <code>AboutDlg</code> instance.
  *
  * @see https://curl.haxx.se/libcurl/c/curl_easy_setopt.html
  */
-bool CAbout::SetupConnection()
+bool AboutDlg::SetupConnection()
 {
   //
   // Setup Curl by creating a handle and setting options to configure how Curl should behave.
@@ -341,7 +342,7 @@ bool CAbout::SetupConnection()
     //
     // Callback function to handle received data
     //
-    curlResult = curl_easy_setopt(m_CurlHandle, CURLOPT_WRITEFUNCTION, CAbout::WriteCallback);
+    curlResult = curl_easy_setopt(m_CurlHandle, CURLOPT_WRITEFUNCTION, AboutDlg::WriteCallback);
 
     if (curlResult != CURLE_OK) {
       m_VersionStatus->Clear();
@@ -358,7 +359,7 @@ bool CAbout::SetupConnection()
 /**
  * Releases all resources that has been established to request version data from server.
  */
-void CAbout::Cleanup()
+void AboutDlg::Cleanup()
 {
   // Stop the worker thread if it is still active
   if (GetThread() && GetThread()->IsRunning()) {
@@ -376,7 +377,7 @@ void CAbout::Cleanup()
 /**
  * Provides version information about Curl library.
  */
-wxString CAbout::GetLibCurlVersion()
+wxString AboutDlg::GetLibCurlVersion()
 {
   wxString versionInfo;
 
@@ -405,7 +406,7 @@ wxString CAbout::GetLibCurlVersion()
 /**
  * Provides version information about wxWidgets framework.
  */
-wxString CAbout::GetLibWxVersion()
+wxString AboutDlg::GetLibWxVersion()
 {
   return wxString::Format("[wx] Wx Version:\n%s\n", wxGetLibraryVersionInfo().ToString());
 }
@@ -417,7 +418,7 @@ wxString CAbout::GetLibWxVersion()
  *
  * @return true if database is closed, otherwise false.
  */
-bool CAbout::CheckDatabaseStatus()
+bool AboutDlg::CheckDatabaseStatus()
 {
   PasswordSafeFrame *pwsafe = static_cast<PasswordSafeFrame *>(GetParent());
 
@@ -465,7 +466,7 @@ bool CAbout::CheckDatabaseStatus()
 /*!
  * wxEVT_COMMAND_HYPERLINK event handler for ID_HYPERLINKCHECK
  */
-void CAbout::CheckNewVersion()
+void AboutDlg::CheckNewVersion()
 {
   //
   // Version check might have been issued already and data transfer in worker thread is still ongoing.
@@ -522,7 +523,7 @@ void CAbout::CheckNewVersion()
  * @see core routine <code>CheckVersion::CheckLatestVersion</code> for version 
  *      check algorithm and details about format of the downloaded xml file.
  */
-void CAbout::CompareVersionData()
+void AboutDlg::CompareVersionData()
 {
   CheckVersion::CheckStatus status = CheckVersion::CheckStatus::UP2DATE;
   stringT latest_xml;
@@ -600,11 +601,11 @@ void CAbout::CompareVersionData()
  *                 -1 indicates that no Curl handle exists,
  *                 positive values correspond to Curl error codes
  *
- * @see method <code>CAbout::WriteCallback(char *receivedData, size_t size, size_t bytes, void *userData)</code>
+ * @see method <code>AboutDlg::WriteCallback(char *receivedData, size_t size, size_t bytes, void *userData)</code>
  * @see https://curl.haxx.se/libcurl/c/libcurl-errors.html
  * @see https://curl.haxx.se/libcurl/c/curl_easy_perform.html
  */
-wxThread::ExitCode CAbout::Entry()
+wxThread::ExitCode AboutDlg::Entry()
 {
   CURLcode curlResult;
   auto event = new wxThreadEvent();
@@ -641,10 +642,10 @@ wxThread::ExitCode CAbout::Entry()
  * The version data might be received in chunks, which are collected in the static
  * variable <code>s_VersionData</code>, until data transfer is accomplished.
  *
- * @see method <code>CAbout::Entry()</code>
+ * @see method <code>AboutDlg::Entry()</code>
  * @see https://curl.haxx.se/libcurl/c/CURLOPT_WRITEFUNCTION.html
  */
-size_t CAbout::WriteCallback(char *receivedData, size_t size, size_t bytes, void* WXUNUSED(userData))
+size_t AboutDlg::WriteCallback(char *receivedData, size_t size, size_t bytes, void* WXUNUSED(userData))
 {
   size_t receivedDataSize = size * bytes;
 
@@ -669,9 +670,9 @@ size_t CAbout::WriteCallback(char *receivedData, size_t size, size_t bytes, void
  * CURLE_OK is the only acceptable exit code from worker thread to continue with version check.
  * All other exit codes indicate some sort of occured problem.
  *
- * @see method <code>CAbout::Entry()</code> regarding worker thread and its exit codes.
+ * @see method <code>AboutDlg::Entry()</code> regarding worker thread and its exit codes.
  */
-void CAbout::OnDownloadCompleted(wxThreadEvent& event)
+void AboutDlg::OnDownloadCompleted(wxThreadEvent& event)
 {
   pws_os::Trace(wxString::Format("Got notification from worker thread. Exit Code = %d ; Result = %s", event.GetInt(), event.GetString()).wc_str());
 
@@ -695,6 +696,6 @@ void CAbout::OnDownloadCompleted(wxThreadEvent& event)
 /**
  * wxEVT_HYPERLINK event handler for ID_SITEHYPERLINK
  */
-void CAbout::OnVisitSiteClicked(wxHyperlinkEvent& WXUNUSED(event)) {
+void AboutDlg::OnVisitSiteClicked(wxHyperlinkEvent& WXUNUSED(event)) {
   wxLaunchDefaultBrowser(s_URL_HOME);
 }

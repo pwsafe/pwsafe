@@ -6,8 +6,8 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __SELECTIONCRITERIA_H__
-#define __SELECTIONCRITERIA_H__
+#ifndef _SELECTIONCRITERIA_H_
+#define _SELECTIONCRITERIA_H_
 
 #include "../../core/ItemData.h"
 #include "./wxUtilities.h"
@@ -113,4 +113,4 @@ inline bool operator!=(const SelectionCriteria& a, const SelectionCriteria& b)
          a.m_subgroupObject   != b.m_subgroupObject; 
 }
 
-#endif
+#endif // _SELECTIONCRITERIA_H_

@@ -6,8 +6,12 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __IMPORTTEXTDLG_H__
-#define __IMPORTTEXTDLG_H__
+/** \file ImportTextDlg.h
+* 
+*/
+
+#ifndef _IMPORTTEXTDLG_H_
+#define _IMPORTTEXTDLG_H_
 
 #include <wx/dialog.h> // Base class: wxDialog
 #include <wx/grid.h>
@@ -20,14 +24,14 @@ class wxRadioButton;
 
 //Usage: Instantiate this class and if ShowModal() returns Ok, check
 //the member variables which are automatically set by validators
-class CImportTextDlg : public wxDialog {
-
-  DECLARE_CLASS( CImportTextDlg )
+class ImportTextDlg : public wxDialog
+{
+  DECLARE_CLASS( ImportTextDlg )
   DECLARE_EVENT_TABLE()
 
 public:
-  CImportTextDlg(wxWindow* parent);
-  virtual ~CImportTextDlg();
+  ImportTextDlg(wxWindow* parent);
+  virtual ~ImportTextDlg();
 
   void CreateControls();
 

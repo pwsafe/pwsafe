@@ -6,6 +6,10 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+/** \file GridShortcutsValidator.cpp
+* 
+*/
+
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
@@ -236,7 +240,7 @@ template <class Iter>
 void GetShortcutsFromMenu(wxMenu* menu, Iter cont_itr, const wxString& menuLabel)
 {
   wxMenuItemList& items = menu->GetMenuItems();
-  const CRecentDBList& rdb = wxGetApp().recentDatabases();
+  const RecentDbList& rdb = wxGetApp().recentDatabases();
   for (wxMenuItemList::iterator itr = items.begin(); itr != items.end(); ++itr) {
     wxMenuItem* item = *itr;
     if (item->IsSeparator())

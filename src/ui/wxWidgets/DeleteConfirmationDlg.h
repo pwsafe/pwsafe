@@ -6,8 +6,12 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef _DELETECONFIRMATION_H_
-#define _DELETECONFIRMATION_H_
+/** \file DeleteConfirmationDlg.h
+* 
+*/
+
+#ifndef _DELETECONFIRMATIONDLG_H_
+#define _DELETECONFIRMATIONDLG_H_
 
 /*!
  * Includes
@@ -29,38 +33,38 @@
  */
 
 ////@begin control identifiers
-#define ID_DELETECONFIRMATION 10199
+#define ID_DELETECONFIRMATIONDLG 10199
 #define ID_CHECKBOX37 10200
 #if WXWIN_COMPATIBILITY_2_6
-#define SYMBOL_DELETECONFIRMATION_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
+#define SYMBOL_DELETECONFIRMATIONDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #else
-#define SYMBOL_DELETECONFIRMATION_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL
+#define SYMBOL_DELETECONFIRMATIONDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL
 #endif
-#define SYMBOL_DELETECONFIRMATION_TITLE _("Delete Confirmation")
-#define SYMBOL_DELETECONFIRMATION_IDNAME ID_DELETECONFIRMATION
-#define SYMBOL_DELETECONFIRMATION_SIZE wxSize(400, 300)
-#define SYMBOL_DELETECONFIRMATION_POSITION wxDefaultPosition
+#define SYMBOL_DELETECONFIRMATIONDLG_TITLE _("Delete Confirmation")
+#define SYMBOL_DELETECONFIRMATIONDLG_IDNAME ID_DELETECONFIRMATIONDLG
+#define SYMBOL_DELETECONFIRMATIONDLG_SIZE wxSize(400, 300)
+#define SYMBOL_DELETECONFIRMATIONDLG_POSITION wxDefaultPosition
 ////@end control identifiers
 
 /*!
- * DeleteConfirmation class declaration
+ * DeleteConfirmationDlg class declaration
  */
 
-class DeleteConfirmation: public wxDialog
-{    
-  DECLARE_CLASS( DeleteConfirmation )
+class DeleteConfirmationDlg : public wxDialog
+{
+  DECLARE_CLASS( DeleteConfirmationDlg )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  DeleteConfirmation(int num_children);
-  DeleteConfirmation( wxWindow* parent, int num_children, wxWindowID id = SYMBOL_DELETECONFIRMATION_IDNAME, const wxString& caption = SYMBOL_DELETECONFIRMATION_TITLE, const wxPoint& pos = SYMBOL_DELETECONFIRMATION_POSITION, const wxSize& size = SYMBOL_DELETECONFIRMATION_SIZE, long style = SYMBOL_DELETECONFIRMATION_STYLE );
+  DeleteConfirmationDlg(int num_children);
+  DeleteConfirmationDlg( wxWindow* parent, int num_children, wxWindowID id = SYMBOL_DELETECONFIRMATIONDLG_IDNAME, const wxString& caption = SYMBOL_DELETECONFIRMATIONDLG_TITLE, const wxPoint& pos = SYMBOL_DELETECONFIRMATIONDLG_POSITION, const wxSize& size = SYMBOL_DELETECONFIRMATIONDLG_SIZE, long style = SYMBOL_DELETECONFIRMATIONDLG_STYLE );
 
   /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_DELETECONFIRMATION_IDNAME, const wxString& caption = SYMBOL_DELETECONFIRMATION_TITLE, const wxPoint& pos = SYMBOL_DELETECONFIRMATION_POSITION, const wxSize& size = SYMBOL_DELETECONFIRMATION_SIZE, long style = SYMBOL_DELETECONFIRMATION_STYLE );
+  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_DELETECONFIRMATIONDLG_IDNAME, const wxString& caption = SYMBOL_DELETECONFIRMATIONDLG_TITLE, const wxPoint& pos = SYMBOL_DELETECONFIRMATIONDLG_POSITION, const wxSize& size = SYMBOL_DELETECONFIRMATIONDLG_SIZE, long style = SYMBOL_DELETECONFIRMATIONDLG_STYLE );
 
   /// Destructor
-  ~DeleteConfirmation();
+  ~DeleteConfirmationDlg();
 
   /// Initialises member variables
   void Init();
@@ -68,7 +72,7 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-////@begin DeleteConfirmation event handler declarations
+////@begin DeleteConfirmationDlg event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_YES
   void OnYesClick( wxCommandEvent& evt);
@@ -76,9 +80,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_NO
   void OnNoClick( wxCommandEvent& evt);
 
-////@end DeleteConfirmation event handler declarations
+////@end DeleteConfirmationDlg event handler declarations
 
-////@begin DeleteConfirmation member function declarations
+////@begin DeleteConfirmationDlg member function declarations
 
   bool GetConfirmdelete() const { return m_confirmdelete ; }
   void SetConfirmdelete(bool value) { m_confirmdelete = value ; }
@@ -88,18 +92,17 @@ public:
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
-////@end DeleteConfirmation member function declarations
+////@end DeleteConfirmationDlg member function declarations
 
   /// Should we show tooltips?
   static bool ShowToolTips();
 
-////@begin DeleteConfirmation member variables
+////@begin DeleteConfirmationDlg member variables
   wxStaticText* m_areyousure;
 private:
   bool m_confirmdelete;
-////@end DeleteConfirmation member variables
+////@end DeleteConfirmationDlg member variables
   int m_numchildren;
 };
 
-#endif
-  // _DELETECONFIRMATION_H_
+#endif // _DELETECONFIRMATIONDLG_H_

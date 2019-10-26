@@ -9,6 +9,7 @@
 /** \file DbSelectionPanel.cpp
 * 
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -54,7 +55,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
 
   panelSizer->Add(new wxStaticText(this, wxID_ANY, filePrompt), borderFlags);
   panelSizer->AddSpacer(RowSeparation);
-  COpenFilePickerValidator validator(m_filepath);
+  OpenFilePickerValidator validator(m_filepath);
   m_filepicker = new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString, 
                                           filePickerCtrlTitle,
                                           _("Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"), 
@@ -70,7 +71,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   panelSizer->Add(new wxStaticText(this, wxID_ANY, _("Safe Combination:")), borderFlags);
   panelSizer->AddSpacer(RowSeparation);
   
-  m_sc = new CSafeCombinationCtrl(this);
+  m_sc = new SafeCombinationCtrl(this);
   m_sc->SetValidatorTarget(&m_combination);
   panelSizer->Add(m_sc, borderFlags.Expand());
   

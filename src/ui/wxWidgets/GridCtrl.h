@@ -5,12 +5,13 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
-/** \file
+
+/** \file GridCtrl.h
 * 
 */
 
-#ifndef _PWSGRID_H_
-#define _PWSGRID_H_
+#ifndef _GRIDCTRL_H_
+#define _GRIDCTRL_H_
 
 /*!
  * Includes
@@ -34,7 +35,7 @@
  */
 
 ////@begin forward declarations
-class PWSGrid;
+class GridCtrl;
 ////@end forward declarations
 
 /*!
@@ -43,31 +44,31 @@ class PWSGrid;
 
 ////@begin control identifiers
 #define ID_LISTBOX 10060
-#define SYMBOL_PWSGRID_STYLE wxHSCROLL|wxVSCROLL
-#define SYMBOL_PWSGRID_IDNAME ID_LISTBOX
-#define SYMBOL_PWSGRID_SIZE wxDefaultSize
-#define SYMBOL_PWSGRID_POSITION wxDefaultPosition
+#define SYMBOL_GRIDCTRL_STYLE wxHSCROLL|wxVSCROLL
+#define SYMBOL_GRIDCTRL_IDNAME ID_LISTBOX
+#define SYMBOL_GRIDCTRL_SIZE wxDefaultSize
+#define SYMBOL_GRIDCTRL_POSITION wxDefaultPosition
 ////@end control identifiers
 
 typedef std::map<int, pws_os::CUUID> RowUUIDMapT;
 typedef std::map<pws_os::CUUID, int, std::less<pws_os::CUUID> > UUIDRowMapT;
 
 /*!
- * PWSGrid class declaration
+ * GridCtrl class declaration
  */
 
-class PWSGrid: public wxGrid, public Observer
+class GridCtrl : public wxGrid, public Observer
 {
   typedef std::multimap<wxString, const CItemData*, std::greater<wxString> > DescendingSortedMultimap;
   typedef std::multimap<wxString, const CItemData*, std::less<wxString> >    AscendingSortedMultimap;
 
-  DECLARE_CLASS( PWSGrid )
+  DECLARE_CLASS( GridCtrl )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  PWSGrid(PWScore &core);
-  PWSGrid(wxWindow* parent, PWScore &core,
+  GridCtrl(PWScore &core);
+  GridCtrl(wxWindow* parent, PWScore &core,
           wxWindowID id = ID_LISTBOX, const wxPoint& pos = wxDefaultPosition,
           const wxSize& size = wxDefaultSize, long style = wxHSCROLL|wxVSCROLL);
 
@@ -75,7 +76,7 @@ public:
   bool Create(wxWindow* parent, wxWindowID id = ID_LISTBOX, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxHSCROLL|wxVSCROLL);
 
   /// Destructor
-  ~PWSGrid();
+  ~GridCtrl();
 
   /// Initialises member variables
   void Init();
@@ -106,7 +107,7 @@ public:
   void DeleteAllItems();
   void Clear();
 
-////@begin PWSGrid event handler declarations
+////@begin GridCtrl event handler declarations
 
   /// wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX
   void OnCellRightClick( wxGridEvent& evt);
@@ -122,9 +123,9 @@ public:
   /// EVT_HEADER_CLICK
   void OnHeaderClick(wxHeaderCtrlEvent& event);
 
-////@end PWSGrid event handler declarations
+////@end GridCtrl event handler declarations
 
-////@begin PWSGrid member function declarations
+////@begin GridCtrl member function declarations
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -132,7 +133,7 @@ public:
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
 
-////@end PWSGrid member function declarations
+////@end GridCtrl member function declarations
 
   /// Should we show tooltips?
   static bool ShowToolTips();
@@ -149,8 +150,8 @@ public:
 
   void UpdateSorting();
 
-////@begin PWSGrid member variables
-////@end PWSGrid member variables
+////@begin GridCtrl member variables
+////@end GridCtrl member variables
 
  private:
   void PreferencesChanged();
@@ -165,4 +166,4 @@ public:
   UUIDRowMapT m_uuid_map;
 };
 
-#endif  // _PWSGRID_H_
+#endif // _GRIDCTRL_H_

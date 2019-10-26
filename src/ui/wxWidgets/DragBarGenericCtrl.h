@@ -16,8 +16,8 @@
  * on which a click happens (if it were possible) is a pain
  */
 
-#ifndef __DRAGBAR_H__
-#define __DRAGBAR_H__
+#ifndef _DRAGBARGENERICCTRL_H_
+#define _DRAGBARGENERICCTRL_H_
 
 #include <wx/control.h> // Base class: wxToolBar
 #include <wx/vector.h>
@@ -32,7 +32,7 @@ struct DragBarItem {
 
 WX_DECLARE_OBJARRAY(DragBarItem, DragBarItemsArray);
 
-class CDragBar : public wxControl
+class DragBarGenericCtrl : public wxControl
 {
   wxSize              m_margins;
   DragBarItemsArray   m_items;
@@ -48,8 +48,8 @@ public:
     virtual ~IDragSourceTextProvider() {}
   };
 
-  CDragBar(wxFrame* parent, IDragSourceTextProvider* provider, wxOrientation orient = wxHORIZONTAL);
-  ~CDragBar();
+  DragBarGenericCtrl(wxFrame* parent, IDragSourceTextProvider* provider, wxOrientation orient = wxHORIZONTAL);
+  ~DragBarGenericCtrl();
 
   void AddTool(int id, const wxBitmap& bmp, const wxString& tooltip = wxEmptyString,
                                     const wxBitmap& bmpDisabled = wxNullBitmap);
@@ -66,7 +66,7 @@ public:
   void OnMouseLeave(wxMouseEvent& evt);
   void OnUpdateUI(wxUpdateUIEvent& evt);
 
-  DECLARE_CLASS(CDragBar)
+  DECLARE_CLASS(DragBarGenericCtrl)
   DECLARE_EVENT_TABLE()
 
 private:
@@ -104,4 +104,4 @@ private:
 
 };
 
-#endif // __DRAGBAR_H__
+#endif // _DRAGBARGENERICCTRL_H_

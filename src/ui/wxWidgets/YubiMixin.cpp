@@ -9,6 +9,7 @@
 /** \file YubiMixin.cpp
 * 
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -27,7 +28,7 @@
 #include "os/unix/PWYubi.h"
 #include "os/sleep.h"
 
-void CYubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
+void YubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
 {
   m_prompt1 = _("<- Click on button to the left"); // change via SetPrompt1
   m_prompt2 = _("Now touch your YubiKey's button"); // change via SetPrompt2
@@ -39,32 +40,32 @@ void CYubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
   if (m_status != nullptr) m_status->Show(yubiExists());
 }
 
-bool CYubiMixin::yubiExists() const
+bool YubiMixin::yubiExists() const
 {
   return PWYubi::YubiExists();
 }
 
-void CYubiMixin::yubiInserted(void)
+void YubiMixin::yubiInserted(void)
 {
   m_btn->Enable(true);
   m_status->SetForegroundColour(wxNullColour);
   m_status->SetLabel(m_prompt1);
 }
 
-void CYubiMixin::yubiRemoved(void)
+void YubiMixin::yubiRemoved(void)
 {
   m_btn->Enable(false);
   m_status->SetForegroundColour(wxNullColour);
   m_status->SetLabel(_("Please insert your YubiKey"));
 }
 
-bool CYubiMixin::IsYubiInserted() const
+bool YubiMixin::IsYubiInserted() const
 {
   const PWYubi yubi;
   return yubi.IsYubiInserted();
 }
 
-void CYubiMixin::HandlePollingTimer()
+void YubiMixin::HandlePollingTimer()
 {
   // Show Yubi controls when inserted first time:
   if (yubiExists()) {
@@ -83,7 +84,7 @@ void CYubiMixin::HandlePollingTimer()
   }
 }
 
-void CYubiMixin::UpdateStatus()
+void YubiMixin::UpdateStatus()
 {
   if (m_present)
     yubiInserted();
@@ -91,7 +92,7 @@ void CYubiMixin::UpdateStatus()
     yubiRemoved();
 }
 
-bool CYubiMixin::PerformChallengeResponse(wxWindow *win,
+bool YubiMixin::PerformChallengeResponse(wxWindow *win,
             const StringX &challenge,
             StringX &response,
             bool oldYubiChallenge)
@@ -168,7 +169,7 @@ bool CYubiMixin::PerformChallengeResponse(wxWindow *win,
   return retval;
 }
 
-StringX CYubiMixin::Bin2Hex(const unsigned char *buf, int len) const
+StringX YubiMixin::Bin2Hex(const unsigned char *buf, int len) const
 {
   std::wostringstream os;
   os << std::setw(2);

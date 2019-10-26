@@ -6,6 +6,10 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+/** \file GridShortcutsValidator.h
+* 
+*/
+
 #ifndef __PWSMENUSHORTCUTS_H__
 #define __PWSMENUSHORTCUTS_H__
 
@@ -18,7 +22,8 @@ class wxGridEvent;
 /*
  * data we need to track for managing menuitem shortcuts
  */
-class MenuItemData{
+class MenuItemData
+{
   wxMenuItem*         m_item;
   int                 m_menuId;
   wxString            m_label;
@@ -26,8 +31,8 @@ class MenuItemData{
   wxAcceleratorEntry  m_userShortcut;
 
 public:
-  class ShortcutStatus {
-  
+  class ShortcutStatus
+  {
     enum {
       SC_NORMAL    = 1,      /* unmodified.  Might have user, original, both or none */
       SC_CHANGED   = 2,      /* user shortcut has been added/changed */
@@ -96,8 +101,8 @@ public:
  * The access is index-based.  You give it a menubar or a string (from prefs), and access
  * all the menu items and their accelerators by index
  */
-class PWSMenuShortcuts : public wxEvtHandler {
-
+class PWSMenuShortcuts : public wxEvtHandler
+{
   typedef std::vector<MenuItemData> MenuItemDataArray;
 
   MenuItemDataArray m_midata;

@@ -7,26 +7,30 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef CRYPTKEYENTRY_H
-#define CRYPTKEYENTRY_H
+/** \file CryptKeyEntryDlg.h
+* 
+*/
+
+#ifndef _CRYPTKEYENTRYDLG_H_
+#define _CRYPTKEYENTRYDLG_H_
 
 #include "core/StringX.h"
 
-//(*Headers(CryptKeyEntry)
+//(*Headers(CryptKeyEntryDlg)
 #include <wx/dialog.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 //*)
 
-class CryptKeyEntry: public wxDialog
+class CryptKeyEntryDlg : public wxDialog
 {
 public:
 
   enum class Mode { ENCRYPT, DECRYPT };
 
-  CryptKeyEntry(Mode mode = Mode::ENCRYPT);
-  virtual ~CryptKeyEntry();
+  CryptKeyEntryDlg(Mode mode = Mode::ENCRYPT);
+  virtual ~CryptKeyEntryDlg();
 
   StringX getCryptKey() const {
     return m_CryptKey;
@@ -56,4 +60,4 @@ protected:
   DECLARE_EVENT_TABLE()
 };
 
-#endif // CRYPTKEYENTRY_H
+#endif // _CRYPTKEYENTRYDLG_H_

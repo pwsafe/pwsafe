@@ -5,12 +5,13 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
-/** \file
+
+/** \file PropertiesDlg.h
 * 
 */
 
-#ifndef _PROPERTIES_H_
-#define _PROPERTIES_H_
+#ifndef _PROPERTIESDLG_H_
+#define _PROPERTIESDLG_H_
 
 /*!
  * Includes
@@ -33,7 +34,7 @@
  */
 
 ////@begin control identifiers
-#define ID_CPROPERTIES 10064
+#define ID_PROPERTIESDLG 10064
 #define wxID_DATABASE 10065
 #define wxID_DATABASEFORMAT 10066
 #define wxID_NUMGROUPS 10067
@@ -50,39 +51,39 @@
 #define wxID_CHANGE_NAME 10304
 #define wxID_CHANGE_DESCRIPTION 10305
 #if WXWIN_COMPATIBILITY_2_6
-#define SYMBOL_CPROPERTIES_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE
+#define SYMBOL_PROPERTIESDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE
 #else
-#define SYMBOL_CPROPERTIES_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE
+#define SYMBOL_PROPERTIESDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE
 #endif
-#define SYMBOL_CPROPERTIES_TITLE _("Properties")
-#define SYMBOL_CPROPERTIES_IDNAME ID_CPROPERTIES
-#define SYMBOL_CPROPERTIES_SIZE wxSize(400, 300)
-#define SYMBOL_CPROPERTIES_POSITION wxDefaultPosition
+#define SYMBOL_PROPERTIESDLG_TITLE _("Properties")
+#define SYMBOL_PROPERTIESDLG_IDNAME ID_PROPERTIESDLG
+#define SYMBOL_PROPERTIESDLG_SIZE wxSize(400, 300)
+#define SYMBOL_PROPERTIESDLG_POSITION wxDefaultPosition
 ////@end control identifiers
 
 /*!
- * CProperties class declaration
+ * PropertiesDlg class declaration
  */
 
-class CProperties: public wxDialog
+class PropertiesDlg : public wxDialog
 {
-  DECLARE_CLASS( CProperties )
+  DECLARE_CLASS( PropertiesDlg )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  CProperties(wxWindow* parent, const PWScore &core,
-              wxWindowID id = SYMBOL_CPROPERTIES_IDNAME,
-              const wxString& caption = SYMBOL_CPROPERTIES_TITLE,
-              const wxPoint& pos = SYMBOL_CPROPERTIES_POSITION,
-              const wxSize& size = SYMBOL_CPROPERTIES_SIZE,
-              long style = SYMBOL_CPROPERTIES_STYLE );
+  PropertiesDlg(wxWindow* parent, const PWScore &core,
+              wxWindowID id = SYMBOL_PROPERTIESDLG_IDNAME,
+              const wxString& caption = SYMBOL_PROPERTIESDLG_TITLE,
+              const wxPoint& pos = SYMBOL_PROPERTIESDLG_POSITION,
+              const wxSize& size = SYMBOL_PROPERTIESDLG_SIZE,
+              long style = SYMBOL_PROPERTIESDLG_STYLE );
 
   /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_CPROPERTIES_IDNAME, const wxString& caption = SYMBOL_CPROPERTIES_TITLE, const wxPoint& pos = SYMBOL_CPROPERTIES_POSITION, const wxSize& size = SYMBOL_CPROPERTIES_SIZE, long style = SYMBOL_CPROPERTIES_STYLE );
+  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_PROPERTIESDLG_IDNAME, const wxString& caption = SYMBOL_PROPERTIESDLG_TITLE, const wxPoint& pos = SYMBOL_PROPERTIESDLG_POSITION, const wxSize& size = SYMBOL_PROPERTIESDLG_SIZE, long style = SYMBOL_PROPERTIESDLG_STYLE );
 
   /// Destructor
-  ~CProperties();
+  ~PropertiesDlg();
 
   /// Initialises member variables
   void Init();
@@ -90,7 +91,7 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-////@begin CProperties event handler declarations
+////@begin PropertiesDlg event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick(wxCommandEvent& evt);
@@ -101,9 +102,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CHANGE_DESCRIPTION
   void OnEditDescription(wxCommandEvent& evt);
 
-////@end CProperties event handler declarations
+////@end PropertiesDlg event handler declarations
 
-////@begin CProperties member function declarations
+////@begin PropertiesDlg member function declarations
 
   wxString GetDatabase() const { return m_database ; }
   void SetDatabase(wxString value) { m_database = value ; }
@@ -143,12 +144,12 @@ public:
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
-////@end CProperties member function declarations
+////@end PropertiesDlg member function declarations
 
   /// Should we show tooltips?
   static bool ShowToolTips();
 
-////@begin CProperties member variables
+////@begin PropertiesDlg member variables
 private:
   wxString m_database;
   wxString m_databaseformat;
@@ -163,11 +164,10 @@ private:
   wxString m_unknownfields;
   wxString m_DbName;
   wxString m_DbDescription;
-////@end CProperties member variables
+////@end PropertiesDlg member variables
   StringX m_NewDbName;
   StringX m_NewDbDescription;
   const PWScore &m_core;
 };
 
-#endif
-  // _PROPERTIES_H_
+#endif // _PROPERTIESDLG_H_

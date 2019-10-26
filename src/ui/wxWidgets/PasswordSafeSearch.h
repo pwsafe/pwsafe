@@ -5,12 +5,13 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
-/** \file
+
+/** \file PasswordSafeSearch.h
 *
 */
 
-#ifndef __PASSWORDSAFESEARCH_H__
-#define __PASSWORDSAFESEARCH_H__
+#ifndef _PASSWORDSAFESEARCH_H_
+#define _PASSWORDSAFESEARCH_H_
 
 /*!
  * Includes
@@ -163,4 +164,4 @@ private:
   size_t               m_ToolsWidth;
 };
 
-#endif  // __PASSWORDSAFESEARCH_H__
+#endif // _PASSWORDSAFESEARCH_H_

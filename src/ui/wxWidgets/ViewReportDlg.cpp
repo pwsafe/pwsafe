@@ -6,6 +6,10 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+/** \file ViewReportDlg.cpp
+* 
+*/
+
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
@@ -23,7 +27,7 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-CViewReport::CViewReport(wxWindow* parent, CReport* pRpt) :
+ViewReportDlg::ViewReportDlg(wxWindow* parent, CReport* pRpt) :
                 wxDialog(parent, wxID_ANY, _("View Report"), wxDefaultPosition, wxDefaultSize,
                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),  m_pRpt(pRpt)
 {
@@ -49,33 +53,33 @@ CViewReport::CViewReport(wxWindow* parent, CReport* pRpt) :
 
   bs->Realize();
 
-  Connect(wxID_SAVE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(CViewReport::OnSave) );
-  Connect(wxID_COPY, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(CViewReport::OnCopy) );
-  Connect(wxID_CLOSE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(CViewReport::OnClose) );
+  Connect(wxID_SAVE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ViewReportDlg::OnSave) );
+  Connect(wxID_COPY, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ViewReportDlg::OnCopy) );
+  Connect(wxID_CLOSE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ViewReportDlg::OnClose) );
 
   dlgSizer->Add(bs, wxSizerFlags().Border(wxLEFT|wxRIGHT|wxBOTTOM).Expand());
 
   SetSizerAndFit(dlgSizer);
 }
 
-CViewReport::~CViewReport()
+ViewReportDlg::~ViewReportDlg()
 {
 }
 
-void CViewReport::OnSave(wxCommandEvent& evt)
+void ViewReportDlg::OnSave(wxCommandEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
   m_pRpt->SaveToDisk();
 }
 
-void CViewReport::OnClose(wxCommandEvent& evt)
+void ViewReportDlg::OnClose(wxCommandEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
   EndModal(0);
 }
 
-void CViewReport::OnCopy(wxCommandEvent& evt)
+void ViewReportDlg::OnCopy(wxCommandEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
-  PWSclipboard::GetInstance()->SetData(m_pRpt->GetString());
+  Clipboard::GetInstance()->SetData(m_pRpt->GetString());
 }

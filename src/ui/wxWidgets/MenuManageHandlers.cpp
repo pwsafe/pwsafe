@@ -47,7 +47,7 @@ void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
 {
   PWSprefs* prefs = PWSprefs::GetInstance();
   const StringX sxOldDBPrefsString(prefs->Store());
-  COptions *window = new COptions(this, m_core);
+  OptionsPropertySheetDlg *window = new OptionsPropertySheetDlg(this, m_core);
   if (window->ShowModal() == wxID_OK) {
     StringX sxNewDBPrefsString(prefs->Store(true));
     // Update system tray icon if visible so changes show up immediately
@@ -167,7 +167,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
   }
 #endif
 
-  CSafeCombinationPrompt pwdprompt(this, m_core, wxbf);
+  SafeCombinationPromptDlg pwdprompt(this, m_core, wxbf);
   if (pwdprompt.ShowModal() == wxID_OK) {
     const StringX passkey = pwdprompt.GetPassword();
     // unlock the file we're leaving
@@ -208,7 +208,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
 
 void PasswordSafeFrame::OnPwdPolsMClick( wxCommandEvent&  )
 {
-  CManagePasswordPolicies ppols(this, m_core);
+  ManagePasswordPoliciesDlg ppols(this, m_core);
   ppols.ShowModal();
 }
 
@@ -225,7 +225,7 @@ void PasswordSafeFrame::OnGeneratePassword(wxCommandEvent& WXUNUSED(event))
 
   customPolicies[std2stringx(defaultName)] = defaultPolicy;
 
-  CPasswordPolicy ppdlg(this, m_core, customPolicies, CPasswordPolicy::DialogType::GENERATOR);
+  PasswordPolicyDlg ppdlg(this, m_core, customPolicies, PasswordPolicyDlg::DialogType::GENERATOR);
   ppdlg.SetPolicyData(defaultName, defaultPolicy);
 
   ppdlg.ShowModal();

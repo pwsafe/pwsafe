@@ -6,8 +6,8 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __PWS_TOOLBAR_BUTTONS_H
-#define __PWS_TOOLBAR_BUTTONS_H
+#ifndef _TOOLBARBUTTONS_H_
+#define _TOOLBARBUTTONS_H_
 
 #include "./graphics/toolbar/new/new.xpm"
 #include "./graphics/toolbar/new/new_disabled.xpm"
@@ -219,4 +219,4 @@ _PwsToolbarInfo(int aid, const wxString &atooltip, const char** abitmap_normal,
 
 #undef SEPARATOR
 
-#endif
+#endif // _TOOLBARBUTTONS_H_

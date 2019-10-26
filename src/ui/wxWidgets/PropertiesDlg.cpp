@@ -9,6 +9,7 @@
 /** \file PropertiesDlg.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -36,31 +37,31 @@
 ////@end XPM images
 
 /*!
- * CProperties type definition
+ * PropertiesDlg type definition
  */
 
-IMPLEMENT_CLASS( CProperties, wxDialog )
+IMPLEMENT_CLASS( PropertiesDlg, wxDialog )
 
 /*!
- * CProperties event table definition
+ * PropertiesDlg event table definition
  */
 
-BEGIN_EVENT_TABLE( CProperties, wxDialog )
+BEGIN_EVENT_TABLE( PropertiesDlg, wxDialog )
 
-////@begin CProperties event table entries
-  EVT_BUTTON( wxID_OK,                  CProperties::OnOkClick )
-  EVT_BUTTON( wxID_CHANGE_NAME,         CProperties::OnEditName )
-  EVT_BUTTON( wxID_CHANGE_DESCRIPTION,  CProperties::OnEditDescription )
+////@begin PropertiesDlg event table entries
+  EVT_BUTTON( wxID_OK,                  PropertiesDlg::OnOkClick )
+  EVT_BUTTON( wxID_CHANGE_NAME,         PropertiesDlg::OnEditName )
+  EVT_BUTTON( wxID_CHANGE_DESCRIPTION,  PropertiesDlg::OnEditDescription )
 
-////@end CProperties event table entries
+////@end PropertiesDlg event table entries
 
 END_EVENT_TABLE()
 
 /*!
- * CProperties constructors
+ * PropertiesDlg constructors
  */
 
-CProperties::CProperties(wxWindow* parent, const PWScore &core,
+PropertiesDlg::PropertiesDlg(wxWindow* parent, const PWScore &core,
                          wxWindowID id, const wxString& caption,
                          const wxPoint& pos, const wxSize& size, long style)
   : m_core(core)
@@ -70,12 +71,12 @@ CProperties::CProperties(wxWindow* parent, const PWScore &core,
 }
 
 /*!
- * CProperties creator
+ * PropertiesDlg creator
  */
 
-bool CProperties::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool PropertiesDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin CProperties creation
+////@begin PropertiesDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -85,28 +86,28 @@ bool CProperties::Create( wxWindow* parent, wxWindowID id, const wxString& capti
     GetSizer()->SetSizeHints(this);
   }
   Centre();
-////@end CProperties creation
+////@end PropertiesDlg creation
   return true;
 }
 
 /*!
- * CProperties destructor
+ * PropertiesDlg destructor
  */
 
-CProperties::~CProperties()
+PropertiesDlg::~PropertiesDlg()
 {
-////@begin CProperties destruction
-////@end CProperties destruction
+////@begin PropertiesDlg destruction
+////@end PropertiesDlg destruction
 }
 
 /*!
  * Member initialisation
  */
 
-void CProperties::Init()
+void PropertiesDlg::Init()
 {
-////@begin CProperties member initialisation
-////@end CProperties member initialisation
+////@begin PropertiesDlg member initialisation
+////@end PropertiesDlg member initialisation
 
   /////////////////////////////////////////////////////////////////////////////
   // Property: Database file name
@@ -268,12 +269,12 @@ void CProperties::Init()
 }
 
 /*!
- * Control creation for CProperties
+ * Control creation for PropertiesDlg
  */
 
-void CProperties::CreateControls()
+void PropertiesDlg::CreateControls()
 {
-////@begin CProperties content construction
+////@begin PropertiesDlg content construction
   auto mainSizer = new wxBoxSizer(wxVERTICAL);
   this->SetSizer(mainSizer);
 
@@ -389,14 +390,14 @@ void CProperties::CreateControls()
   dbNameText->SetValidator( wxGenericValidator(& m_DbName) );
   dbDescriptionText->SetValidator( wxGenericValidator(& m_DbDescription) );
 
-////@end CProperties content construction
+////@end PropertiesDlg content construction
 }
 
 /*!
  * Should we show tooltips?
  */
 
-bool CProperties::ShowToolTips()
+bool PropertiesDlg::ShowToolTips()
 {
   return true;
 }
@@ -405,42 +406,42 @@ bool CProperties::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap CProperties::GetBitmapResource( const wxString& WXUNUSED(name) )
+wxBitmap PropertiesDlg::GetBitmapResource( const wxString& WXUNUSED(name) )
 {
   // Bitmap retrieval
-////@begin CProperties bitmap retrieval
+////@begin PropertiesDlg bitmap retrieval
   return wxNullBitmap;
-////@end CProperties bitmap retrieval
+////@end PropertiesDlg bitmap retrieval
 }
 
 /*!
  * Get icon resources
  */
 
-wxIcon CProperties::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon PropertiesDlg::GetIconResource( const wxString& WXUNUSED(name) )
 {
   // Icon retrieval
-////@begin CProperties icon retrieval
+////@begin PropertiesDlg icon retrieval
   return wxNullIcon;
-////@end CProperties icon retrieval
+////@end PropertiesDlg icon retrieval
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CProperties::OnOkClick( wxCommandEvent& WXUNUSED(evt) )
+void PropertiesDlg::OnOkClick( wxCommandEvent& WXUNUSED(evt) )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CProperties.
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in PropertiesDlg.
   // Before editing this code, remove the block markers.
   EndModal(wxID_OK);
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CProperties.
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in PropertiesDlg.
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CHANGE_NAME
  */
-void CProperties::OnEditName( wxCommandEvent& WXUNUSED(evt) )
+void PropertiesDlg::OnEditName( wxCommandEvent& WXUNUSED(evt) )
 {
   wxTextEntryDialog textInputDialog(
     this, _("Name:"), _("Please enter the new database name"), m_NewDbName.c_str(), wxOK|wxCANCEL
@@ -468,7 +469,7 @@ void CProperties::OnEditName( wxCommandEvent& WXUNUSED(evt) )
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CHANGE_DESCRIPTION
  */
-void CProperties::OnEditDescription( wxCommandEvent& WXUNUSED(evt) )
+void PropertiesDlg::OnEditDescription( wxCommandEvent& WXUNUSED(evt) )
 {
   wxTextEntryDialog textInputDialog(
     this, _("Description:"), _("Please enter the new database description"), m_NewDbDescription.c_str(), wxOK|wxCANCEL|wxTE_MULTILINE

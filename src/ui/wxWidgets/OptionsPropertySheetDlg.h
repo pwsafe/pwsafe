@@ -5,12 +5,13 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
-/** \file
-* 
+
+/** \file OptionsPropertySheetDlg.h
+*
 */
 
-#ifndef _OPTIONSPROPSHEET_H_
-#define _OPTIONSPROPSHEET_H_
+#ifndef _OPTIONSPROPERTYSHEETDLG_H_
+#define _OPTIONSPROPERTYSHEETDLG_H_
 
 /*!
  * Includes
@@ -136,21 +137,21 @@ class wxBookCtrlEvent;
  * Options class declaration
  */
 
-class COptions: public wxPropertySheetDialog
+class OptionsPropertySheetDlg : public wxPropertySheetDialog
 {
-  DECLARE_CLASS( COptions )
+  DECLARE_CLASS( OptionsPropertySheetDlg )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  COptions(PWScore &core);
-  COptions( wxWindow* parent, PWScore &core, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
+  OptionsPropertySheetDlg(PWScore &core);
+  OptionsPropertySheetDlg( wxWindow* parent, PWScore &core, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
 
   /// Destructor
-  ~COptions();
+  ~OptionsPropertySheetDlg();
 
   /// Initialises member variables
   void Init();
@@ -158,7 +159,7 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-////@begin COptions event handler declarations
+////@begin OptionsPropertySheetDlg event handler declarations
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX11
   void OnBackupB4SaveClick( wxCommandEvent& event );
@@ -193,12 +194,12 @@ public:
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent& evt);
 
-////@end COptions event handler declarations
+////@end OptionsPropertySheetDlg event handler declarations
 
   /// wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGING event handler for all pages (wxID_ANY)
   void OnPageChanging(wxBookCtrlEvent& evt);
 
-////@begin COptions member function declarations
+////@begin OptionsPropertySheetDlg member function declarations
   uint32 GetHashItersValue() const { return m_hashIterValue; }
 
   /// Retrieves bitmap resources
@@ -206,12 +207,12 @@ public:
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
-////@end COptions member function declarations
+////@end OptionsPropertySheetDlg member function declarations
   void OnOk(wxCommandEvent& evt);
   /// Should we show tooltips?
   static bool ShowToolTips();
 
-////@begin COptions member variables
+////@begin OptionsPropertySheetDlg member variables
 private:
   wxRadioButton*  m_Backup_DefaultPrefixRB;
   wxRadioButton*  m_Backup_UserPrefixRB;
@@ -308,7 +309,7 @@ private:
   int  m_PasswordHistory_DefaultExpiryDays;
 
   PWScore &m_core;
-////@end COptions member variables
+////@end OptionsPropertySheetDlg member variables
 
 private:
   void PrefsToPropSheet();
@@ -316,4 +317,4 @@ private:
   int GetRequiredPWLength() const;
 };
 
-#endif // _OPTIONSPROPSHEET_H_
+#endif // _OPTIONSPROPERTYSHEETDLG_H_
