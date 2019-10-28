@@ -55,6 +55,7 @@ file-devel
 libXt-devel
 libXtst-devel
 libcurl-devel
+libmagic-devel
 libuuid-devel
 libyubikey-devel
 make
@@ -63,6 +64,9 @@ wxGTK3-devel
 xerces-c-devel
 ykpers-devel (see note 3 below)
 qrencode-devel
+
+The script Misc/setup-rpm-dev-env.sh can be run (sudo or as root) to
+install these and setup the gtest library.
 
 To compile without Yubikey support, set the NO_YUBI flag
 for make, e.g.,
@@ -148,14 +152,32 @@ Install the Debian Package
 ==========================
 * sudo dpkg -i passwordsafe-\<debian|ubuntu\>-\<version\>.\<arch\>.deb
 
-Create a RPM Package
-====================
-Based on the procedure for building a Debian package a RPM based package can be created as well.
+Create an RPM Package - Fedora
+==============================
+Based on the procedure for building a Debian package, an RPM based
+package can be created as well:
 
 * mkdir build
 * cd build
 * cmake ..
 * cpack -G RPM ..
+
+Create an RPM Package using mock (Fedora or CentOS)
+===================================================
+
+(Following from ykne)
+To build pwsafe rpm from git on Fedora or CentOS Linux using mock:
+- Install and configure mock
+  https://github.com/rpm-software-management/mock/wiki
+- Note that CentOS needs https://fedoraproject.org/wiki/EPEL
+  repository installed.
+- Review and execute Misc/mock-build.sh (with no argument will compile
+  for current system).
+- If invoked with -r mock_arch, where mock_arch is a file name in
+  /etc/mock without .cfg, then rpm will be compiled for the specified
+  architecture. 
+
+(Tested on Fedora-29 and CentOS-7)
 
 Install the RPM Package
 =======================

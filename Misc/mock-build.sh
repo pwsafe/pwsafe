@@ -10,7 +10,7 @@
 # should be installed.
 
 mock --init "$@"
-mock "$@" install cmake gcc-c++ git gtest-devel libXt-devel libXtst-devel libcurl-devel libuuid-devel libyubikey-devel make openssl-devel wxGTK3-devel xerces-c-devel ykpers-devel qrencode-devel
+mock "$@" install cmake gcc-c++ git gtest-devel libXt-devel libXtst-devel libcurl-devel libuuid-devel libyubikey-devel make openssl-devel wxGTK3-devel xerces-c-devel ykpers-devel qrencode-devel magic-devel
 mock "$@" --chroot 'su - mockbuild -c "git clone https://github.com/pwsafe/pwsafe.git; mkdir -p pwsafe/build; cd pwsafe/build;  cmake -D wxWidgets_CONFIG_EXECUTABLE=/usr/libexec/wxGTK3/wx-config ..; cpack -G RPM"'
 mock "$@" --copyout '/builddir/pwsafe/build/passwordsafe*.rpm' .
 
