@@ -418,6 +418,7 @@
 		<Unit filename="../../src/ui/wxWidgets/GuiInfo.h" />
 		<Unit filename="../../src/ui/wxWidgets/HelpMap.h" />
 		<Unit filename="../../src/ui/wxWidgets/MenuEditHandlers.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/MenuFileHandlers.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/MenuManageHandlers.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/MenuViewHandlers.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/OptionsPropertySheetDlg.cpp" />
@@ -472,13 +473,13 @@
 		<Unit filename="../../src/ui/wxWidgets/wxMessages.h" />
 		<Unit filename="../../src/ui/wxWidgets/wxUtilities.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/wxUtilities.h" />
-		<Unit filename="../../src/ui/wxWidgets/YubiCfg.cpp">
+		<Unit filename="../../src/ui/wxWidgets/YubiCfgDlg.cpp">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />
 			<Option target="Release_L32Y" />
 		</Unit>
-		<Unit filename="../../src/ui/wxWidgets/YubiCfg.h">
+		<Unit filename="../../src/ui/wxWidgets/YubiCfgDlg.h">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />

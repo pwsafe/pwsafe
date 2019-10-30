@@ -24,49 +24,38 @@
 #endif
 #include "wx/utils.h" // for wxLaunchDefaultBrowser
 
-#include "GridCtrl.h"
-#include "TreeCtrl.h"
-
-#include "PasswordSafeFrame.h"
-#include "AddEditPropSheetDlg.h"
-#include "Clipboard.h"
-#include "PasswordSafeSearch.h"
-#include "DeleteConfirmationDlg.h"
-#include "EditShortcutDlg.h"
-#include "CreateShortcutDlg.h"
-#include "wxUtilities.h"
-#include "GuiInfo.h"
-#include "PasswordSubsetDlg.h"
-#include "./QRCodeDlg.h"
-
-#include "../../core/PWSAuxParse.h"
-#include "../../core/Util.h"
-#include "../../os/KeySend.h"
-#include "../../os/run.h"
-#include "../../os/sleep.h"
-#include "../../os/utf8conv.h"
-#include "./TimedTaskChain.h"
-#include <wx/tokenzr.h>
-#include <array>
-
-#include <algorithm>
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
 
+#include <wx/tokenzr.h>
+
+#include "core/PWSAuxParse.h"
+#include "core/Util.h"
+#include "os/KeySend.h"
+#include "os/run.h"
+#include "os/sleep.h"
+#include "os/utf8conv.h"
+
+#include "AddEditPropSheetDlg.h"
+#include "Clipboard.h"
+#include "CreateShortcutDlg.h"
+#include "DeleteConfirmationDlg.h"
+#include "EditShortcutDlg.h"
+#include "GridCtrl.h"
+#include "GuiInfo.h"
+#include "PasswordSafeFrame.h"
+#include "PasswordSafeSearch.h"
+#include "PasswordSubsetDlg.h"
+#include "QRCodeDlg.h"
+#include "TimedTaskChain.h"
+#include "TreeCtrl.h"
+#include "wxUtilities.h"
+
+#include <array>
+#include <algorithm>
+
 using pws_os::CUUID;
-
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
- */
-
-void PasswordSafeFrame::OnEditClick( wxCommandEvent& /* evt */ )
-{
-  CItemData *item = GetSelectedEntry();
-  if (item != nullptr)
-    DoEdit(*item);
-}
 
 //This function intentionally takes the argument by value and not by
 //reference to avoid touching an item invalidated by idle timeout
@@ -120,6 +109,17 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
     m_core.Execute(AddEntryCommand::Create(&m_core, item, item.GetBaseUUID()));
     UpdateStatusBar();
   }
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
+ */
+
+void PasswordSafeFrame::OnEditClick( wxCommandEvent& /* evt */ )
+{
+  CItemData *item = GetSelectedEntry();
+  if (item != nullptr)
+    DoEdit(*item);
 }
 
 /*!
@@ -254,140 +254,6 @@ void PasswordSafeFrame::OnFindPrevious( wxCommandEvent& /* evt */ )
   m_search->FindPrevious();
 }
 
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
- */
-
-void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& /* evt */ )
-{
-  UpdateLastClipboardAction(CItemData::FieldType::END);
-  Clipboard::GetInstance()->ClearCBData();
-}
-
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYPASSWORD
- */
-
-void PasswordSafeFrame::OnCopypasswordClick(wxCommandEvent& evt)
-{
-  CItemData rueItem;
-  CItemData* item = GetSelectedEntry(evt, rueItem);
-  if (item != nullptr)
-    DoCopyPassword(*item);
-}
-
-void PasswordSafeFrame::DoCopyPassword(CItemData &item)
-{
-  if (!item.IsDependent())
-    Clipboard::GetInstance()->SetData(item.GetPassword());
-  else {
-    const CUUID &base = item.GetBaseUUID();
-    const StringX &passwd = m_core.GetEntry(m_core.Find(base)).GetPassword();
-    Clipboard::GetInstance()->SetData(passwd);
-  }
-  UpdateLastClipboardAction(CItemData::FieldType::PASSWORD);
-  UpdateAccessTime(item);
-}
-
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYRUNCOMMAND
- */
-
-void PasswordSafeFrame::OnCopyRunCmd(wxCommandEvent& evt)
-{
-  CItemData rueItem;
-  CItemData* item = GetSelectedEntry(evt, rueItem);
-  if (item != nullptr)
-    DoCopyRunCmd(*item);
-}
-
-void PasswordSafeFrame::DoCopyRunCmd(CItemData &item)
-{
-  Clipboard::GetInstance()->SetData(item.GetRunCommand());
-  UpdateLastClipboardAction(CItemData::FieldType::RUNCMD);
-  UpdateAccessTime(item);
-}
-
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYUSERNAME
- */
-
-void PasswordSafeFrame::OnCopyusernameClick(wxCommandEvent& evt)
-{
-  CItemData rueItem;
-  CItemData* item = GetSelectedEntry(evt, rueItem);
-  if (item != nullptr)
-    DoCopyUsername(*item);
-}
-
-void PasswordSafeFrame::DoCopyUsername(CItemData &item)
-{
-  Clipboard::GetInstance()->SetData(item.GetUser());
-  UpdateLastClipboardAction(CItemData::FieldType::USER);
-  UpdateAccessTime(item);
-}
-
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYNOTESFLD
- */
-
-void PasswordSafeFrame::OnCopynotesfldClick(wxCommandEvent& evt)
-{
-  CItemData rueItem;
-  CItemData* item = GetSelectedEntry(evt, rueItem);
-  if (item != nullptr)
-    DoCopyNotes(*item);
-}
-
-void PasswordSafeFrame::DoCopyNotes(CItemData &item)
-{
-  Clipboard::GetInstance()->SetData(item.GetNotes());
-  UpdateLastClipboardAction(CItemData::FieldType::NOTES);
-  UpdateAccessTime(item);
-}
-
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYURL
- */
-
-void PasswordSafeFrame::OnCopyurlClick(wxCommandEvent& evt)
-{
-  CItemData rueItem;
-  CItemData* item = GetSelectedEntry(evt, rueItem);
-  if (item != nullptr)
-    DoCopyURL(*item);
-}
-
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYEMAIL
- */
-
-void PasswordSafeFrame::OnCopyEmailClick(wxCommandEvent& evt)
-{
-  CItemData rueItem;
-  CItemData* item = GetSelectedEntry(evt, rueItem);
-  if (item != nullptr)
-    DoCopyEmail(*item);
-}
-
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CREATESHORTCUT
- */
-
-void PasswordSafeFrame::OnCreateShortcut(wxCommandEvent& WXUNUSED(event))
-{
-  CItemData* item = GetSelectedEntry();
-  if (item && !item->IsDependent()) {
-    CreateShortcutDlg dlg(this, m_core, item);
-    int rc = dlg.ShowModal();
-    if (rc == wxID_OK) {
-      UpdateAccessTime(*item);
-      Show(true);
-      UpdateStatusBar();
-    }
-  }
-}
-
 // Duplicate selected entry but make title unique
 void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
 {
@@ -467,6 +333,192 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
 //    ChangeOkUpdate();
     m_RUEList.AddRUEntry(uuid);
 //  }
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
+ */
+
+void PasswordSafeFrame::OnClearClipboardClick( wxCommandEvent& /* evt */ )
+{
+  UpdateLastClipboardAction(CItemData::FieldType::END);
+  Clipboard::GetInstance()->ClearCBData();
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYPASSWORD
+ */
+
+void PasswordSafeFrame::OnCopyPasswordClick(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item != nullptr)
+    DoCopyPassword(*item);
+}
+
+void PasswordSafeFrame::DoCopyPassword(CItemData &item)
+{
+  if (!item.IsDependent())
+    Clipboard::GetInstance()->SetData(item.GetPassword());
+  else {
+    const CUUID &base = item.GetBaseUUID();
+    const StringX &passwd = m_core.GetEntry(m_core.Find(base)).GetPassword();
+    Clipboard::GetInstance()->SetData(passwd);
+  }
+  UpdateLastClipboardAction(CItemData::FieldType::PASSWORD);
+  UpdateAccessTime(item);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYRUNCOMMAND
+ */
+
+void PasswordSafeFrame::OnCopyRunCmd(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item != nullptr)
+    DoCopyRunCmd(*item);
+}
+
+void PasswordSafeFrame::DoCopyRunCmd(CItemData &item)
+{
+  Clipboard::GetInstance()->SetData(item.GetRunCommand());
+  UpdateLastClipboardAction(CItemData::FieldType::RUNCMD);
+  UpdateAccessTime(item);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYUSERNAME
+ */
+
+void PasswordSafeFrame::OnCopyUsernameClick(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item != nullptr)
+    DoCopyUsername(*item);
+}
+
+void PasswordSafeFrame::DoCopyUsername(CItemData &item)
+{
+  Clipboard::GetInstance()->SetData(item.GetUser());
+  UpdateLastClipboardAction(CItemData::FieldType::USER);
+  UpdateAccessTime(item);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYNOTESFLD
+ */
+
+void PasswordSafeFrame::OnCopyNotesFieldClick(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item != nullptr)
+    DoCopyNotes(*item);
+}
+
+void PasswordSafeFrame::DoCopyNotes(CItemData &item)
+{
+  Clipboard::GetInstance()->SetData(item.GetNotes());
+  UpdateLastClipboardAction(CItemData::FieldType::NOTES);
+  UpdateAccessTime(item);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYURL
+ */
+
+void PasswordSafeFrame::OnCopyUrlClick(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item != nullptr)
+    DoCopyURL(*item);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYEMAIL
+ */
+
+void PasswordSafeFrame::OnCopyEmailClick(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item != nullptr)
+    DoCopyEmail(*item);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_BROWSEURL
+ */
+
+void PasswordSafeFrame::OnBrowseUrl(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item)
+    DoBrowse(*item, false); //false => no autotype
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_BROWSEURLPLUS
+ */
+
+void PasswordSafeFrame::OnBrowseUrlAndAutotype(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item) {
+    DoBrowse(*item, true); //true => autotype
+  }
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_AUTOTYPE
+ */
+
+void PasswordSafeFrame::OnAutoType(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item) {
+#ifdef __WXMAC__
+    Lower();
+#endif
+    DoAutotype(*item);
+  }
+}
+
+void PasswordSafeFrame::OnGotoBase(wxCommandEvent& /*evt*/)
+{
+  CItemData* item = GetSelectedEntry();
+  if (item && (item->IsAlias() || item->IsShortcut())) {
+    item = m_core.GetBaseEntry(item);
+    CUUID base_uuid = item->GetUUID();
+    SelectItem(base_uuid);
+    UpdateAccessTime(*item);
+  }
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CREATESHORTCUT
+ */
+
+void PasswordSafeFrame::OnCreateShortcut(wxCommandEvent& WXUNUSED(event))
+{
+  CItemData* item = GetSelectedEntry();
+  if (item && !item->IsDependent()) {
+    CreateShortcutDlg dlg(this, m_core, item);
+    int rc = dlg.ShowModal();
+    if (rc == wxID_OK) {
+      UpdateAccessTime(*item);
+      Show(true);
+      UpdateStatusBar();
+    }
+  }
 }
 
 void PasswordSafeFrame::DoCopyURL(CItemData &item)

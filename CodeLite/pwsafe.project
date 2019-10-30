@@ -41,6 +41,7 @@
     <File Name="../src/ui/wxWidgets/version.h"/>
     <File Name="../src/ui/wxWidgets/Clipboard.h"/>
     <File Name="../src/ui/wxWidgets/PWSafeApp.cpp"/>
+    <File Name="../src/ui/wxWidgets/MenuFileHandlers.cpp"/>
     <File Name="../src/ui/wxWidgets/MenuEditHandlers.cpp"/>
     <File Name="../src/ui/wxWidgets/SafeCombinationSetupDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/SafeCombinationPromptDlg.h"/>
@@ -135,6 +136,8 @@
     <File Name="../src/ui/wxWidgets/QRCodeDlg.h"/>
     <File Name="../src/ui/wxWidgets/QREncode.cpp"/>
     <File Name="../src/ui/wxWidgets/QREncode.h"/>
+    <File Name="../src/ui/wxWidgets/YubiCfgDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/YubiCfgDlg.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
