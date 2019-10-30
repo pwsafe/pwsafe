@@ -62,12 +62,13 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/PasswordSafeSearch.cpp
     src/ui/wxWidgets/SystemTray.cpp
     src/ui/wxWidgets/AboutDlg.cpp
-    src/ui/wxWidgets/MenuManageHandlers.cpp
     src/ui/wxWidgets/GuiInfo.cpp
     src/ui/wxWidgets/Version.cpp
     src/ui/wxWidgets/Clipboard.cpp
     src/ui/wxWidgets/SafeCombinationEntryDlg.cpp
     src/ui/wxWidgets/MenuEditHandlers.cpp
+    src/ui/wxWidgets/MenuFileHandlers.cpp
+    src/ui/wxWidgets/MenuManageHandlers.cpp
     src/ui/wxWidgets/MenuViewHandlers.cpp
     src/ui/wxWidgets/ViewReportDlg.cpp
     src/ui/wxWidgets/SafeCombinationPromptDlg.cpp

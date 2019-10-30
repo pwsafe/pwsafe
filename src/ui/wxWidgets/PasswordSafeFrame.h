@@ -19,16 +19,17 @@
  * Includes
  */
 
-////@begin includes
 #include <wx/frame.h>
 #include <wx/statusbr.h>
-////@end includes
 #include <wx/treebase.h> // for wxTreeItemId
+
 #include "core/PWScore.h"
-#include "core/UIinterface.h"
-#include "core/RUEList.h"
 #include "core/PWSFilters.h"
-#include "./wxUtilities.h"
+#include "core/RUEList.h"
+#include "core/UIinterface.h"
+
+#include "wxUtilities.h"
+
 #include <tuple>
 
 /*!
@@ -247,19 +248,19 @@ public:
   void OnProtectUnprotectClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
-  void OnClearclipboardClick( wxCommandEvent& event );
+  void OnClearClipboardClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYPASSWORD
-  void OnCopypasswordClick( wxCommandEvent& event );
+  void OnCopyPasswordClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYUSERNAME
-  void OnCopyusernameClick( wxCommandEvent& event );
+  void OnCopyUsernameClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYNOTESFLD
-  void OnCopynotesfldClick( wxCommandEvent& event );
+  void OnCopyNotesFieldClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYURL
-  void OnCopyurlClick( wxCommandEvent& event );
+  void OnCopyUrlClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_LIST_VIEW
   void OnListViewClick( wxCommandEvent& event );
@@ -274,7 +275,7 @@ public:
   void OnShowAllExpiryClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
-  void OnChangePasswdClick( wxCommandEvent& event );
+  void OnChangePasswordClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_PREFERENCES
   void OnPreferencesClick( wxCommandEvent& event );
@@ -307,7 +308,7 @@ public:
   void OnFindPrevious(wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_BROWSEURL
-  void OnBrowseURL(wxCommandEvent& evt);
+  void OnBrowseUrl(wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SENDEMAIL
   void OnSendEmail(wxCommandEvent& evt);

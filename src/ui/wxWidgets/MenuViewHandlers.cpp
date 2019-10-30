@@ -23,18 +23,19 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/fontdlg.h> 
-
-#include "PasswordSafeFrame.h"
-#include "GridCtrl.h"
-#include "TreeCtrl.h"
-#include "DragBarCtrl.h"
-#include "PasswordSafeSearch.h"
-#include "core/PWSprefs.h"
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <wx/fontdlg.h> 
+
+#include "core/PWSprefs.h"
+
+#include "DragBarCtrl.h"
+#include "GridCtrl.h"
+#include "PasswordSafeFrame.h"
+#include "PasswordSafeSearch.h"
+#include "TreeCtrl.h"
 
 void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
 {
