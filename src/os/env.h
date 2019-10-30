@@ -26,7 +26,6 @@ namespace pws_os {
 
 #if defined(_MSC_VER)
   // Windows only - MFC or wxWidgets
-  extern bool    RtlGetVersion(DWORD &dwMajor, DWORD &dwMinor, DWORD &dwBuild);
   extern bool    IsWindowsVistaOrGreater();
   extern bool    IsWindows7OrGreater();
   extern bool    IsWindows8OrGreater();

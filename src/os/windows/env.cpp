@@ -147,7 +147,7 @@ stringT pws_os::getprocessid()
 
 typedef void (WINAPI * RtlGetVersion_FUNC) (OSVERSIONINFOEXW *);
 
-bool pws_os::RtlGetVersion(DWORD &dwMajor, DWORD &dwMinor, DWORD &dwBuild)
+static bool RtlGetVersion(DWORD &dwMajor, DWORD &dwMinor, DWORD &dwBuild)
 {
   RtlGetVersion_FUNC rtl_func;
   dwMajor = dwMinor = dwBuild = 0;
