@@ -24,8 +24,6 @@
 
 
 //(*IdInit(CryptKeyEntryDlg)
-const long CryptKeyEntryDlg::ID_TEXTCTRL_KEY1 = wxNewId();
-const long CryptKeyEntryDlg::ID_TEXTCTRL_KEY2 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CryptKeyEntryDlg, wxDialog)
@@ -61,14 +59,14 @@ CryptKeyEntryDlg::CryptKeyEntryDlg(Mode mode)
     FlexGridSizer1->AddGrowableCol(1);
     StaticTextKey1 = new wxStaticText(this, wxID_ANY, _("Enter Key:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
     FlexGridSizer1->Add(StaticTextKey1, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-    TextCtrlKey1 = new wxTextCtrl(this, ID_TEXTCTRL_KEY1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD, wxDefaultValidator, _T("ID_TEXTCTRL_KEY1"));
+    TextCtrlKey1 = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD, wxDefaultValidator, _T("wxID_ANY"));
     TextCtrlKey1->SetFocus();
     FlexGridSizer1->Add(TextCtrlKey1, 1, wxALL|wxEXPAND, 5);
 
     if (mode == Mode::ENCRYPT) {
       StaticTextKey2 = new wxStaticText(this, wxID_ANY, _("Verify Key:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
       FlexGridSizer1->Add(StaticTextKey2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-      TextCtrlKey2 = new wxTextCtrl(this, ID_TEXTCTRL_KEY2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD, wxDefaultValidator, _T("ID_TEXTCTRL_KEY2"));
+      TextCtrlKey2 = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD, wxDefaultValidator, _T("wxID_ANY"));
       FlexGridSizer1->Add(TextCtrlKey2, 1, wxALL|wxEXPAND, 5);
     }
 

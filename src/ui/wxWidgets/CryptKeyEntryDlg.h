@@ -47,8 +47,6 @@ protected:
   //*)
 
   //(*Identifiers(CryptKeyEntryDialog)
-  static const long ID_TEXTCTRL_KEY1;
-  static const long ID_TEXTCTRL_KEY2;
   //*)
 
   //(*Declarations(CryptKeyEntryDialog)
