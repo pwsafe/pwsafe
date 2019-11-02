@@ -22,22 +22,41 @@
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
-#include "wx/filename.h"
-
-#include "PasswordSafeFrame.h"
-#include "SafeCombinationPromptDlg.h"
-#include "OptionsPropertySheetDlg.h"
-#include "SystemTray.h"
-#include "ManagePasswordPoliciesDlg.h"
-#include "PasswordPolicyDlg.h"
-#ifndef NO_YUBI
-#include "YubiCfgDlg.h"
-#endif
-#include "core/PWSdirs.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <wx/filename.h>
+
+#include "core/PWSdirs.h"
+
+#include "ManagePasswordPoliciesDlg.h"
+#include "OptionsPropertySheetDlg.h"
+#include "PasswordPolicyDlg.h"
+#include "PasswordSafeFrame.h"
+#include "PasswordSafeSearch.h"
+#include "PWSafeApp.h"
+#include "SafeCombinationChangeDlg.h"
+#include "SafeCombinationPromptDlg.h"
+#include "SystemTray.h"
+#ifndef NO_YUBI
+#include "YubiCfgDlg.h"
+#endif
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
+ */
+
+void PasswordSafeFrame::OnChangePasswordClick( wxCommandEvent& /* evt */ )
+{
+  auto window = new SafeCombinationChangeDlg(this, m_core);
+  int returnValue = window->ShowModal();
+  if (returnValue == wxID_OK) {
+    m_core.ChangePasskey(window->GetNewpasswd());
+  }
+  window->Destroy();
+}
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS_M
@@ -74,9 +93,9 @@ void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
   window->Destroy();
 }
 
-//////////////////////////////////////////
-// Backup and Restore
-//
+/*
+ * Backup and Restore
+ */
 void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
@@ -242,3 +261,44 @@ void PasswordSafeFrame::OnYubikeyMngClick( wxCommandEvent& /* event */ )
   ykCfg.ShowModal();
 }
 #endif
+
+/**
+ * Changes the language on the fly to one of the supported languages.
+ *
+ * \see PasswordSafeFrame::Init() for currently supported languages.
+ */
+void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
+{
+  auto id = evt.GetId();
+  // First, uncheck all language menu items, hence the previously selected but also the new one
+  for (size_t menu_id = ID_LANGUAGE_BEGIN+1; menu_id<ID_LANGUAGE_END; menu_id++)
+    GetMenuBar()->Check( menu_id, false );
+
+  // If a new language has been selected successfully we have to
+  // recreate the UI so that the language change takes effect
+  wxLanguage userLang=std::get<0>(m_languages[id]);
+  if (wxGetApp().ActivateLanguage(userLang, false)) {
+    m_selectedLanguage = id;
+    wxString userLangName=wxLocale::GetLanguageCanonicalName(userLang);
+    if (!userLangName.IsEmpty()){
+      PWSprefs::GetInstance()->SetPref(PWSprefs::LanguageFile, tostringx(userLangName));
+      pws_os::Trace(L"Saved user-preferred language: name= %ls\n", ToStr(userLangName));
+    }
+
+    // Recreate menubar
+    CreateMenubar();
+    UpdateMenuBar();
+
+    // Recreate toolbar
+    ReCreateMainToolbar();
+
+    // Recreate dragbar
+    ReCreateDragToolbar();
+
+    // Recreate search bar
+    wxCHECK_RET(m_search, wxT("Search object not created so far"));
+    m_search->ReCreateSearchBar();
+  } else {
+    GetMenuBar()->Check( m_selectedLanguage, true );
+  }
+}

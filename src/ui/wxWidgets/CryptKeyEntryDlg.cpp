@@ -1,6 +1,6 @@
 /*
  * Initial version created as 'CryptKeyEntryDlg.cpp'
- * by rafaelx 2019-03-02.
+ * by rafaelx on 2019-03-02.
  *
  * Copyright (c) 2019 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
