@@ -101,7 +101,7 @@ class wxBoxSizer;
 #define ID_CHECKBOX8 10123
 #define ID_CHECKBOX9 10124
 #define ID_STATICTEXT_DAYS 11125
-#define SYMBOL_ADDEDITPROPSHEETDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
+#define SYMBOL_ADDEDITPROPSHEETDLG_STYLE wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX | wxDIALOG_MODAL
 #define SYMBOL_ADDEDITPROPSHEETDLG_TITLE _("Edit Entry")
 #define SYMBOL_ADDEDITPROPSHEETDLG_IDNAME ID_ADDEDITPROPSHEETDLG
 #define SYMBOL_ADDEDITPROPSHEETDLG_SIZE wxSize(400, 300)
@@ -118,253 +118,152 @@ class wxBoxSizer;
 
 class AddEditPropSheetDlg : public wxPropertySheetDialog
 {
-  DECLARE_CLASS( AddEditPropSheetDlg )
+  DECLARE_CLASS(AddEditPropSheetDlg)
   DECLARE_EVENT_TABLE()
 
 public:
-  enum class SheetType {ADD, EDIT, VIEW}; // to tweak UI, mainly
+  enum class SheetType
+  {
+    ADD,
+    EDIT,
+    VIEW
+  }; // to tweak UI, mainly
+
   /// Constructor
   // item is nullptr for ADD, otherwise its values are retrieved and displayed
-  AddEditPropSheetDlg(wxWindow* parent, PWScore &core,
-                   SheetType type, const CItemData *item = nullptr,
-                   const wxString& selectedGroup = wxEmptyString,
-                   wxWindowID id = SYMBOL_ADDEDITPROPSHEETDLG_IDNAME,
-                   const wxString& caption = SYMBOL_AUTOPROPSHEETDLG_TITLE,
-                   const wxPoint& pos = SYMBOL_ADDEDITPROPSHEETDLG_POSITION,
-                   const wxSize& size = SYMBOL_ADDEDITPROPSHEETDLG_SIZE,
-                   long style = SYMBOL_ADDEDITPROPSHEETDLG_STYLE );
+  AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
+                      SheetType type, const CItemData *item = nullptr,
+                      const wxString &selectedGroup = wxEmptyString,
+                      wxWindowID id = SYMBOL_ADDEDITPROPSHEETDLG_IDNAME,
+                      const wxString &caption = SYMBOL_AUTOPROPSHEETDLG_TITLE,
+                      const wxPoint &pos = SYMBOL_ADDEDITPROPSHEETDLG_POSITION,
+                      const wxSize &size = SYMBOL_ADDEDITPROPSHEETDLG_SIZE,
+                      long style = SYMBOL_ADDEDITPROPSHEETDLG_STYLE);
 
   /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_ADDEDITPROPSHEETDLG_IDNAME, const wxString& caption = SYMBOL_AUTOPROPSHEETDLG_TITLE, const wxPoint& pos = SYMBOL_ADDEDITPROPSHEETDLG_POSITION, const wxSize& size = SYMBOL_ADDEDITPROPSHEETDLG_SIZE, long style = SYMBOL_ADDEDITPROPSHEETDLG_STYLE );
+  bool Create(wxWindow *parent, wxWindowID id = SYMBOL_ADDEDITPROPSHEETDLG_IDNAME, const wxString &caption = SYMBOL_AUTOPROPSHEETDLG_TITLE, const wxPoint &pos = SYMBOL_ADDEDITPROPSHEETDLG_POSITION, const wxSize &size = SYMBOL_ADDEDITPROPSHEETDLG_SIZE, long style = SYMBOL_ADDEDITPROPSHEETDLG_STYLE);
 
   /// Destructor
   ~AddEditPropSheetDlg();
 
-  /// Initialises member variables
-  void Init();
-
-  /// Creates the controls and sizers
-  void CreateControls();
-
-////@begin AddEditPropSheetDlg event handler declarations
+  ////@begin AddEditPropSheetDlg event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
-  void OnShowHideClick( wxCommandEvent& event );
+  void OnShowHideClick(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON3
-  void OnGenerateButtonClick( wxCommandEvent& event );
+  void OnGenerateButtonClick(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN
-  void OnGoButtonClick( wxCommandEvent& event );
+  void OnGoButtonClick(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_SEND_BTN
-  void OnSendButtonClick( wxCommandEvent& event );
+  void OnSendButtonClick(wxCommandEvent &event);
 
   /// wxEVT_SET_FOCUS event handler for ID_TEXTCTRL_NOTES
-  void OnNoteSetFocus( wxFocusEvent& event );
+  void OnNoteSetFocus(wxFocusEvent &event);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX_KEEP
-  void OnKeepHistoryClick( wxCommandEvent& event );
+  void OnKeepHistoryClick(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON_ON
-  void OnExpRadiobuttonSelected( wxCommandEvent& event );
+  void OnExpRadiobuttonSelected(wxCommandEvent &event);
 
   /// wxEVT_DATE_CHANGED event handler for ID_DATECTRL_EXP_DATE
-  void OnExpDateChanged( wxDateEvent& event );
+  void OnExpDateChanged(wxDateEvent &event);
 
   /// wxEVT_COMMAND_SPINCTRL_UPDATED event handler for ID_SPINCTRL_EXP_TIME
-  void OnExpIntervalChanged( wxSpinEvent& event );
+  void OnExpIntervalChanged(wxSpinEvent &event);
 
   /// wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_CHECKBOX42
-  void OnPasswordPolicySelected( wxCommandEvent& event );
+  void OnPasswordPolicySelected(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_POLICYLIST
-  void OnPolicylistSelected( wxCommandEvent& event );
+  void OnPolicylistSelected(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
-  void OnLowercaseCB( wxCommandEvent& event );
+  void OnLowercaseCB(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX4
-  void OnUppercaseCB( wxCommandEvent& event );
+  void OnUppercaseCB(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX5
-  void OnDigitsCB( wxCommandEvent& event );
+  void OnDigitsCB(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
-  void OnSymbolsCB( wxCommandEvent& event );
+  void OnSymbolsCB(wxCommandEvent &event);
 
   /// wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS
-  void OnOwnSymSetFocus( wxFocusEvent& event );
+  void OnOwnSymSetFocus(wxFocusEvent &event);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_RESET_SYMBOLS
-  void OnResetSymbolsClick( wxCommandEvent& event );
+  void OnResetSymbolsClick(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
-  void OnEZreadCBClick( wxCommandEvent& event );
+  void OnEeasyReadCBClick(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
-  void OnPronouceableCBClick( wxCommandEvent& event );
+  void OnPronouceableCBClick(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX9
-  void OnUseHexCBClick( wxCommandEvent& event );
+  void OnUseHexCBClick(wxCommandEvent &event);
 
   /// wxEVT_UPDATE_UI event handler for all command ids
-  void OnUpdateUI(wxUpdateUIEvent& event );
+  void OnUpdateUI(wxUpdateUIEvent &event);
 
-////@end AddEditPropSheetDlg event handler declarations
-  void OnEZreadOrPronounceable( wxCommandEvent& evt);
-  void OnClearPWHist(wxCommandEvent& evt);
-  void OnOk(wxCommandEvent& evt);
+  ////@end AddEditPropSheetDlg event handler declarations
+  void OnEasyReadOrPronounceable(wxCommandEvent &event);
+  void OnClearPasswordHistory(wxCommandEvent &event);
+  void OnOk(wxCommandEvent &event);
 
   /// wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, ID_SPINCTRL7, ID_SPINCTRL8
-  void OnAtLeastPasswordChars(wxSpinEvent& evt);
-////@begin AddEditPropSheetDlg member function declarations
-
-  wxString GetATime() const { return m_ATime ; }
-  void SetATime(wxString value) { m_ATime = value ; }
-
-  wxString GetCTime() const { return m_CTime ; }
-  void SetCTime(wxString value) { m_CTime = value ; }
-
-  wxString GetCurXTime() const { return m_CurXTime ; }
-  void SetCurXTime(wxString value) { m_CurXTime = value ; }
-
-  wxString GetPMTime() const { return m_PMTime ; }
-  void SetPMTime(wxString value) { m_PMTime = value ; }
-
-  wxString GetRMTime() const { return m_RMTime ; }
-  void SetRMTime(wxString value) { m_RMTime = value ; }
-
-  bool GetRecurring() const { return m_Recurring ; }
-  void SetRecurring(bool value) { m_Recurring = value ; }
-
-  wxString GetXTime() const { return m_XTime ; }
-  void SetXTime(wxString value) { m_XTime = value ; }
-
-  int GetExpInterval() const { return m_XTimeInt ; }
-  void SetExpInterval(int value) { m_XTimeInt = value ; }
-
-  wxString GetAutotype() const { return m_autotype ; }
-  void SetAutotype(wxString value) { m_autotype = value ; }
-
-  wxString GetEmail() const { return m_email ; }
-  void SetEmail(wxString value) { m_email = value ; }
-
-  bool GetIsNotesHidden() const { return m_isNotesHidden ; }
-  void SetIsNotesHidden(bool value) { m_isNotesHidden = value ; }
-
-  bool GetKeepPWHist() const { return m_keepPWHist ; }
-  void SetKeepPWHist(bool value) { m_keepPWHist = value ; }
-
-  int GetMaxPWHist() const { return m_maxPWHist ; }
-  void SetMaxPWHist(int value) { m_maxPWHist = value ; }
-
-  wxString GetNotes() const { return m_notes ; }
-  void SetNotes(wxString value) { m_notes = value ; }
-
-  wxString GetRuncmd() const { return m_runcmd ; }
-  void SetRuncmd(wxString value) { m_runcmd = value ; }
-
-  wxString GetSymbols() const { return m_symbols ; }
-  void SetSymbols(wxString value) { m_symbols = value ; }
-
-  wxString GetTitle() const { return m_title ; }
-  void SetTitle(wxString value) { m_title = value ; }
-
-  wxString GetUrl() const { return m_url ; }
-  void SetUrl(wxString value) { m_url = value ; }
-
-  wxString GetUser() const { return m_user ; }
-  void SetUser(wxString value) { m_user = value ; }
+  void OnAtLeastPasswordChars(wxSpinEvent &event);
+  ////@begin AddEditPropSheetDlg member function declarations
 
   /// Retrieves bitmap resources
-  wxBitmap GetBitmapResource( const wxString& name );
+  wxBitmap GetBitmapResource(const wxString &name);
 
   /// Retrieves icon resources
-  wxIcon GetIconResource( const wxString& name );
-////@end AddEditPropSheetDlg member function declarations
-  const CItemData &GetItem() const {return m_item;} // for ADD mode
+  wxIcon GetIconResource(const wxString &name);
+  ////@end AddEditPropSheetDlg member function declarations
+
+  const CItemData &GetItem() const { return m_Item; } // for ADD mode
+
   /// Should we show tooltips?
   static bool ShowToolTips();
 
-////@begin AddEditPropSheetDlg member variables
-  wxPanel* m_BasicPanel;
-  wxPanel* m_AdditionalPanel;
-  wxPanel* m_PasswordPolicyPanel;
-  wxGridBagSizer* m_BasicGBSizer;
-  wxComboBox* m_groupCtrl;
-  wxTextCtrl* m_UsernameCtrl;
-  wxTextCtrl* m_PasswordCtrl;
-  wxButton* m_ShowHideCtrl;
-  wxTextCtrl* m_Password2Ctrl;
-  wxTextCtrl* m_noteTX;
-  wxComboBox* m_DCAcomboBox;
-  wxComboBox* m_SDCAcomboBox;
-  wxSpinCtrl* m_MaxPWHistCtrl;
-  wxGrid* m_PWHgrid;
-  wxRadioButton* m_OnRB;
-  wxDatePickerCtrl* m_ExpDate;
-  wxRadioButton* m_InRB;
-  wxSpinCtrl* m_ExpTimeCtrl;
-  wxCheckBox* m_RecurringCtrl;
-  wxRadioButton* m_NeverRB;
-  wxCheckBox* m_UseDatabasePolicyCtrl;
-  wxComboBox* m_cbxPolicyNames;
-  wxSpinCtrl* m_pwpLenCtrl;
-  wxGridSizer* m_pwMinsGSzr;
-  wxCheckBox* m_pwpUseLowerCtrl;
-  wxBoxSizer* m_pwNumLCbox;
-  wxSpinCtrl* m_pwpLCSpin;
-  wxCheckBox* m_pwpUseUpperCtrl;
-  wxBoxSizer* m_pwNumUCbox;
-  wxSpinCtrl* m_pwpUCSpin;
-  wxCheckBox* m_pwpUseDigitsCtrl;
-  wxBoxSizer* m_pwNumDigbox;
-  wxSpinCtrl* m_pwpDigSpin;
-  wxCheckBox* m_pwpSymCtrl;
-  wxBoxSizer* m_pwNumSymbox;
-  wxSpinCtrl* m_pwpSymSpin;
-  wxTextCtrl* m_ownsymbols;
-  wxCheckBox* m_pwpEasyCtrl;
-  wxCheckBox* m_pwpPronounceCtrl;
-  wxCheckBox* m_pwpHexCtrl;
-  wxString m_RMTime; // Any field modification time
-private:
-  wxString m_ATime; // Access Time
-  wxString m_CTime; // Creation time
-  wxString m_CurXTime; // Current Exp. time
-  wxString m_PMTime; // Password Modification time
-  bool m_Recurring;
-  wxString m_XTime; // Password eXpiration time
-  int m_XTimeInt; // Password Exp. Interval (days)
-  wxString m_autotype;
-  wxString m_email;
-  bool m_isNotesHidden;
-  bool m_keepPWHist;
-  int m_maxPWHist; // How many passwords to keep
-  wxString m_notes;
-  wxString m_runcmd;
-  wxString m_symbols;
-  wxString m_title;
-  wxString m_url;
-  wxString m_user;
-  ////@end AddEditPropSheetDlg member variables
-  short m_DCA;
-  short m_ShiftDCA;
-  time_t m_tttXTime; // Password Exp.date in time_t
-  wxString m_PWHistory; // string as stored in CItemData
-  StringX m_password;
-  bool m_isPWHidden;
-  PWScore &m_core;
-  wxString m_selectedGroup;  //Group title in tree view user right-clicked on to add an item
+  ////@begin AddEditPropSheetDlg member variables
 
-  SheetType m_type;
-  CItemData m_item;
+private:
+  // Initialises member variables
+  void Init();
+
+  // Creates the controls and sizers
+  void CreateControls();
+
+  // Creates the controls of 'Basic' tab
+  wxPanel *CreateBasicPanel();
+
+  // Creates the controls of 'Additional' tab
+  wxPanel *CreateAdditionalPanel();
+
+  // Creates the controls of 'DatesTimes' tab
+  wxPanel *CreateDatesTimesPanel();
+
+  // Creates the controls of 'Password Policy' tab
+  wxPanel *CreatePasswordPolicyPanel();
+
+  // Creates the controls of 'Attachment' tab
+  wxPanel *CreateAttachmentPanel();
+
+  // Applies font preferences to corresponding controls
+  void ApplyFontPreferences();
+
   void ItemFieldsToPropSheet();
   void SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift);
-  void UpdateExpTimes(); // entry -> controls
+  void UpdateExpTimes();        // entry -> controls
   void SetXTime(wxObject *src); // sync controls + controls -> entry
-  void UpdatePWPolicyControls(const PWPolicy& pwp);
+  void UpdatePWPolicyControls(const PWPolicy &pwp);
   void EnablePWPolicyControls(bool enable);
   PWPolicy GetPWPolicyFromUI();
   PWPolicy GetSelectedPWPolicy();
@@ -373,6 +272,96 @@ private:
   void ShowPassword();
   void HidePassword();
   int GetRequiredPWLength() const;
+
+  // Tab: "Basic"
+  wxPanel *m_BasicPanel;
+  wxGridBagSizer *m_BasicSizer;
+  wxComboBox *m_BasicGroupNamesCtrl;
+  wxTextCtrl *m_BasicTitleTextCtrl;
+  wxTextCtrl *m_BasicUsernameTextCtrl;
+  wxTextCtrl *m_BasicPasswordTextCtrl;
+  wxButton *m_BasicShowHideCtrl;
+  wxTextCtrl *m_BasicPasswordConfirmationTextCtrl;
+  wxTextCtrl *m_BasicUrlTextCtrl;
+  wxTextCtrl *m_BasicEmailTextCtrl;
+  wxTextCtrl *m_BasicNotesTextCtrl;
+
+  wxString m_Title;
+  wxString m_User;
+  wxString m_Url;
+  wxString m_Email;
+  wxString m_Notes;
+  bool m_IsNotesHidden;
+  StringX m_Password;
+  bool m_IsPasswordHidden;
+
+  // Tab: "Additional"
+  wxPanel *m_AdditionalPanel;
+  wxComboBox *m_AdditionalDoubleClickActionCtrl;
+  wxComboBox *m_AdditionalShiftDoubleClickActionCtrl;
+  wxSpinCtrl *m_AdditionalMaxPasswordHistoryCtrl;
+  wxGrid *m_AdditionalPasswordHistoryGrid;
+
+  wxString m_Autotype;
+  wxString m_RunCommand;
+  wxString m_PasswordHistory; // String as stored in CItemData
+  bool m_KeepPasswordHistory;
+  int m_MaxPasswordHistory; // How many passwords to keep
+  short m_DoubleClickAction;
+  short m_ShiftDoubleClickAction;
+
+  // Tab: "Dates and Times"
+  wxRadioButton *m_DatesTimesExpireOnCtrl;
+  wxDatePickerCtrl *m_DatesTimesExpiryDateCtrl;
+  wxRadioButton *m_DatesTimesExpireInCtrl;
+  wxSpinCtrl *m_DatesTimesExpiryTimeCtrl;
+  wxCheckBox *m_DatesTimesRecurringExpiryCtrl;
+  wxRadioButton *m_DatesTimesNeverExpireCtrl;
+
+  wxString m_RMTime; // Any field modification time
+  wxString m_AccessTime;
+  wxString m_CreationTime;
+  wxString m_CurrentExpirationTime;
+  wxString m_ModificationTime;
+  bool m_Recurring;
+  wxString m_ExpirationTime;
+  int m_ExpirationTimeInterval; // Password expiration interval in days
+  time_t m_tttExpirationTime;   // Password expiration date in time_t
+
+  // Tab: "Password Policy"
+  wxPanel *m_PasswordPolicyPanel;
+  wxCheckBox *m_PasswordPolicyUseDatabaseCtrl;
+  wxComboBox *m_PasswordPolicyNamesCtrl;
+  wxSpinCtrl *m_PasswordPolicyPasswordLengthCtrl;
+  wxGridSizer *m_PasswordPolicySizer;
+  wxCheckBox *m_PasswordPolicyUseLowerCaseCtrl;
+  wxBoxSizer *m_PasswordPolicyLowerCaseMinSizer;
+  wxSpinCtrl *m_PasswordPolicyLowerCaseMinCtrl;
+  wxCheckBox *m_PasswordPolicyUseUpperCaseCtrl;
+  wxBoxSizer *m_PasswordPolicyUpperCaseMinSizer;
+  wxSpinCtrl *m_PasswordPolicyUpperCaseMinCtrl;
+  wxCheckBox *m_PasswordPolicyUseDigitsCtrl;
+  wxBoxSizer *m_PasswordPolicyDigitsMinSizer;
+  wxSpinCtrl *m_PasswordPolicyDigitsMinCtrl;
+  wxCheckBox *m_PasswordPolicyUseSymbolsCtrl;
+  wxBoxSizer *m_PasswordPolicySymbolsMinSizer;
+  wxSpinCtrl *m_PasswordPolicySymbolsMinCtrl;
+  wxTextCtrl *m_PasswordPolicyOwnSymbolsTextCtrl;
+  wxCheckBox *m_PasswordPolicyUseEasyCtrl;
+  wxCheckBox *m_PasswordPolicyUsePronounceableCtrl;
+  wxCheckBox *m_PasswordPolicyUseHexadecimalOnlyCtrl;
+
+  wxString m_Symbols;
+
+  // Tab: "Attachment"
+
+  ////@end AddEditPropSheetDlg member variables
+
+  PWScore &m_Core;
+  wxString m_SelectedGroup; // Group title in tree view user right-clicked on to add an item
+
+  SheetType m_Type;
+  CItemData m_Item;
 };
 
 #endif // _ADDEDITPROPSHEETDLG_H_
