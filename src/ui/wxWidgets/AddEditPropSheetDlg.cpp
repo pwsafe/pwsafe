@@ -77,7 +77,7 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_CHECKBOX(     ID_CHECKBOX5,            AddEditPropSheetDlg::OnDigitsCB                )
   EVT_CHECKBOX(     ID_CHECKBOX6,            AddEditPropSheetDlg::OnSymbolsCB               )
   EVT_BUTTON(       ID_RESET_SYMBOLS,        AddEditPropSheetDlg::OnResetSymbolsClick       )
-  EVT_CHECKBOX(     ID_CHECKBOX7,            AddEditPropSheetDlg::OnEeasyReadCBClick           )
+  EVT_CHECKBOX(     ID_CHECKBOX7,            AddEditPropSheetDlg::OnEasyReadCBClick         )
   EVT_CHECKBOX(     ID_CHECKBOX8,            AddEditPropSheetDlg::OnPronouceableCBClick     )
   EVT_CHECKBOX(     ID_CHECKBOX9,            AddEditPropSheetDlg::OnUseHexCBClick           )
 ////@end AddEditPropSheetDlg event table entries
@@ -2015,7 +2015,7 @@ void AddEditPropSheetDlg::OnClearPasswordHistory(wxCommandEvent& /*evt*/)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
  */
 
-void AddEditPropSheetDlg::OnEeasyReadCBClick(wxCommandEvent& evt)
+void AddEditPropSheetDlg::OnEasyReadCBClick(wxCommandEvent& evt)
 {
   stringT st_symbols;
   if (evt.IsChecked()) {

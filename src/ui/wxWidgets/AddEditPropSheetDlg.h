@@ -200,7 +200,7 @@ public:
   void OnResetSymbolsClick(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
-  void OnEeasyReadCBClick(wxCommandEvent &event);
+  void OnEasyReadCBClick(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
   void OnPronouceableCBClick(wxCommandEvent &event);
