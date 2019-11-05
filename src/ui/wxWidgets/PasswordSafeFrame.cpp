@@ -324,9 +324,8 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
     style |= wxSTAY_ON_TOP;
   }
 
-  Create( parent, id, caption, pos, size, style );
-
   RegisterLanguageMenuItems();
+  Create( parent, id, caption, pos, size, style );
 
   // Register all observers for notifications at the core
   m_core.RegisterObserver(this);
