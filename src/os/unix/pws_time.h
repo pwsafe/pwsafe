@@ -14,8 +14,11 @@
 #include <time.h>
 #endif
 
-#if !defined(__time64_t) && !defined(__TIME64_T_TYPE)
-typedef uint64_t __time64_t;
+#ifndef __TIME64_T_TYPE
+#define __TIME64_T_TYPE uint64_t
+#endif
+#ifndef time64_t
+typedef __TIME64_T_TYPE __time64_t;
 #endif
 
 extern int localtime64_r(const __time64_t *timep, struct tm *result);
