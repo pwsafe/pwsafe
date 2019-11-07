@@ -541,19 +541,29 @@ wxLanguage PWSafeApp::GetSystemLanguage()
 }
 
 /* Get selected language (user preference or system) */
-wxLanguage PWSafeApp::GetSelectedLanguage() {
-  StringX sxUserLang=PWSprefs::GetInstance()->GetPref(PWSprefs::LanguageFile);
-  const wxLanguageInfo* langInfo=wxLocale::FindLanguageInfo(towxstring(sxUserLang));
-  if (langInfo && ActivateLanguage(static_cast<wxLanguage>(langInfo->Language), true)){
+wxLanguage PWSafeApp::GetSelectedLanguage()
+{
+  StringX sxUserLang = PWSprefs::GetInstance()->GetPref(PWSprefs::LanguageFile);
+
+  const wxLanguageInfo *langInfo = nullptr;
+
+  if (sxUserLang.empty()) {
+    langInfo = wxLocale::GetLanguageInfo(wxLANGUAGE_DEFAULT);
+  }
+  else {
+    langInfo = wxLocale::FindLanguageInfo(towxstring(sxUserLang));
+  }
+
+  if (langInfo && ActivateLanguage(static_cast<wxLanguage>(langInfo->Language), true)) {
     pws_os::Trace(L"Found user-preferred language: id= %d, name= %ls\n", langInfo->Language, sxUserLang.c_str());
     return static_cast<wxLanguage>(langInfo->Language);
   }
-  else{
-      // language settings found, but wasn't activated
+  else {
+    // language settings found, but wasn't activated
 #ifdef DEBUG
-      if (langInfo) {
-        pws_os::Trace(L"User-preferred language can't be activated: id= %d, name= %ls\n", langInfo->Language, sxUserLang.c_str());
-      }
+    if (langInfo) {
+      pws_os::Trace(L"User-preferred language can't be activated: id= %d, name= %ls\n", langInfo->Language, sxUserLang.c_str());
+    }
 #endif
     return GetSystemLanguage();
   }
