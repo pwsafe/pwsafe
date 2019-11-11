@@ -40,7 +40,7 @@ namespace pws_os {
       time_t ctime, time_t mtime, time_t atime);
   extern bool ProgramExists(const stringT &filename);
   extern const TCHAR PathSeparator; // slash for Unix, backslash for Windows
-
+  extern bool RenameFile(const stringT &oldname, const stringT &newname);
   // Most stdio.h routines return -1 for an error (not INVALID_HANDLE_VALUE)
   #define INVALID_FILE_DESCRIPTOR (int)-1
 }
