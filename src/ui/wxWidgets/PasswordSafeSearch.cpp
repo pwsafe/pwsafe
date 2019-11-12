@@ -555,8 +555,8 @@ void PasswordSafeSearch::OnChar(wxKeyEvent& event)
       else {
         // If nothing is marked in search text field,
         // the item's password shall be copied.
-        wxCommandEvent event(wxEVT_MENU, ID_COPYPASSWORD);
-        m_parentFrame->GetEventHandler()->AddPendingEvent(event);
+        wxCommandEvent copy_password_event(wxEVT_MENU, ID_COPYPASSWORD);
+        m_parentFrame->GetEventHandler()->AddPendingEvent(copy_password_event);
       }
     }
   }
