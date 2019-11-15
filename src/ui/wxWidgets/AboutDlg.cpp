@@ -288,6 +288,7 @@ bool AboutDlg::SetupConnection()
   // Setup Curl by creating a handle and setting options to configure how Curl should behave.
   // If we already have a handle from a previous call we reuse it.
   //
+#ifdef HAS_CURL
   if (m_CurlHandle == nullptr) {
 
     //
@@ -354,6 +355,9 @@ bool AboutDlg::SetupConnection()
   }
 
   return true;
+#else // !HAS_CURL
+  return false;
+#endif // HAS_CURL
 }
 
 /**
@@ -367,11 +371,13 @@ void AboutDlg::Cleanup()
   }
 
   // Free resources concerning the server connection
+#ifdef HAS_CURL
   if (m_CurlHandle != nullptr) {
     curl_easy_cleanup(m_CurlHandle);
     curl_global_cleanup();
     m_CurlHandle = nullptr;
   }
+#endif // HAS_CURL
 }
 
 /**
@@ -380,7 +386,7 @@ void AboutDlg::Cleanup()
 wxString AboutDlg::GetLibCurlVersion()
 {
   wxString versionInfo;
-
+#ifdef HAS_CURL
   auto curlVersion = curl_version_info(CURLVERSION_NOW);
 
   versionInfo << "[libcurl] Curl Version: " << curlVersion->version << "\n";
@@ -399,7 +405,9 @@ wxString AboutDlg::GetLibCurlVersion()
   }
 
   versionInfo << "[libcurl] Supported Protocols: " << protocols << "\n";
-
+#else // !HAS_CURL
+  versionInfo = "No libcurl";
+#endif // HAS_CURL
   return versionInfo;
 }
 
@@ -607,13 +615,13 @@ void AboutDlg::CompareVersionData()
  */
 wxThread::ExitCode AboutDlg::Entry()
 {
-  CURLcode curlResult;
+#ifdef HAS_CURL
   auto event = new wxThreadEvent();
 
   if (m_CurlHandle != nullptr) {
     pws_os::Trace(L"Fetching version data...");
 
-    curlResult = curl_easy_perform(m_CurlHandle);
+    CURLcode curlResult = curl_easy_perform(m_CurlHandle);
 
     event->SetInt(curlResult);                        // error code
     event->SetString(curl_easy_strerror(curlResult)); // description of the error code
@@ -633,6 +641,9 @@ wxThread::ExitCode AboutDlg::Entry()
 
     return (wxThread::ExitCode)-1;
   }
+#else // !HAS_CURL
+  return (wxThread::ExitCode)-1;
+#endif // HAS_CURL
 }
 
 /**

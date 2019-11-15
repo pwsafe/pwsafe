@@ -24,6 +24,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <atlcomcli.h>
 #include <comutil.h>
 
 MFileXMLProcessor::MFileXMLProcessor(PWScore *pcore,

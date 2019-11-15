@@ -1505,7 +1505,7 @@ void DboxMain::OnWindowPosChanging(WINDOWPOS* lpwndpos)
    * creation of the main window until appropriate, but that's major rocket surgery
    * at this stage...
    */
-  static int countDown = 6;
+  static int countDown = 5;
   static bool oneShot = false;
 
   pws_os::Trace(L"countDown=%d, oneShot=%s, x=%d, y=%d, cx=%d, cy=%d\n",

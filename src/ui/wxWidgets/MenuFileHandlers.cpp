@@ -33,6 +33,7 @@
 
 #include "core/PWSdirs.h"
 #include "os/sleep.h"
+#include "os/file.h"
 
 #include "CompareDlg.h"
 #include "ExportTextWarningDlg.h"

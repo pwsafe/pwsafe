@@ -21,6 +21,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <atlcomcli.h>
 #include <comutil.h>
 
 #include <map>

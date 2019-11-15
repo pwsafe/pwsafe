@@ -25,7 +25,13 @@
 
 #include "os/typedefs.h"
 
+#ifndef __WINDOWS__
+#define HAS_CURL
+#endif // !__WINDOWS__
+
+#ifdef HAS_CURL
 #include <curl/curl.h>
+#endif // HAS_CURL
 
 /*!
  * Forward declarations
@@ -127,7 +133,11 @@ private:
 ////@end AboutDlg member variables
 
   /// The CURL handle with connection specific options for request of version data
+#ifdef HAS_CURL
   CURL *m_CurlHandle;
+#else
+  void *m_CurlHandle;
+#endif // HAS_CURL
 
   /// Set to downloaded data by worker thread, resp. WriteCallback, and read by main thread for final version check
   static wxString s_VersionData;

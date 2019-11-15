@@ -84,7 +84,7 @@ End If
 
 Dim cmd
 ' Create command string
-cmd = "perl -w " & "..\..\Misc\rc2cpp.pl" & " " & "core.rc2"
+cmd = "C:\local\cygwin64\bin\perl.exe -w " & "..\..\Misc\rc2cpp.pl" & " " & "core.rc2"
 
 ' If prefix script by "Perl", may get return code:
 '    80070002 - System cannot find file (i.e. "Perl") if not in the path, or
