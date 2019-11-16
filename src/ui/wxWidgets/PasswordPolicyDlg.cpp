@@ -782,10 +782,10 @@ void PasswordPolicyDlg::EnableSizerChildren(wxSizer* sizer, bool state)
     }
     else if (item->IsSizer()) {
 
-      auto sizer = item->GetSizer();
+      auto childSizer = item->GetSizer();
 
-      if (sizer) {
-        EnableSizerChildren(sizer, state);
+      if (childSizer) {
+        EnableSizerChildren(childSizer, state);
       }
     }
     else {

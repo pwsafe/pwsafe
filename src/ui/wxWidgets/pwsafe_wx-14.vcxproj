@@ -142,7 +142,7 @@
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;USE_XML_LIBRARY=XERCES;NO_YUBI=1;NO_QR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <PrecompiledHeaderOutputFile>..\$(PWSObj)64\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
@@ -163,7 +163,7 @@
     <Link>
       <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;msxml6.lib;wxmsw31ud_xrc.lib;wxmsw31ud_qa.lib;wxmsw31ud_html.lib;wxmsw31ud_adv.lib;wxbase31ud_xml.lib;wxbase31ud_net.lib;wxmsw31ud_richtext.lib;wxbase31ud.lib;wxmsw31ud_core.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;setupapi.lib;Urlmon.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_x64_lib;$(Xerces64Dir)/lib;..\$(PWSLib)64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>uafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)64/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -242,9 +242,9 @@
       <UndefinePreprocessorDefinitions>WX_CPU_X86</UndefinePreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;msxml6.lib;wxmsw30u_xrc.lib;wxmsw30u_qa.lib;wxmsw30u_html.lib;wxmsw30u_adv.lib;wxmsw30u_core.lib;wxbase30u_xml.lib;wxbase30u_net.lib;wxmsw30u_richtext.lib;wxbase30u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;xerces-c_static_3.lib;setupapi.lib;Urlmon.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;msxml6.lib;wxmsw31u_xrc.lib;wxmsw31u_qa.lib;wxmsw31u_html.lib;wxmsw31u_adv.lib;wxmsw31u_core.lib;wxbase31u_xml.lib;wxbase31u_net.lib;wxmsw31u_richtext.lib;wxbase31u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;setupapi.lib;Urlmon.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_x64_lib;$(Xerces64Dir)/lib;..\$(PWSLib)64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)64/pwsafe.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -260,6 +260,7 @@
     <ClInclude Include="CompareDlg.h" />
     <ClInclude Include="ComparisonGridTable.h" />
     <ClInclude Include="CreateShortcutDlg.h" />
+    <ClInclude Include="CryptKeyEntryDlg.h" />
     <ClInclude Include="DbSelectionPanel.h" />
     <ClInclude Include="DeleteConfirmationDlg.h" />
     <ClInclude Include="DragBarGenericCtrl.h" />
@@ -318,6 +319,7 @@
     <ClCompile Include="CompareDlg.cpp" />
     <ClCompile Include="ComparisonGridTable.cpp" />
     <ClCompile Include="CreateShortcutDlg.cpp" />
+    <ClCompile Include="CryptKeyEntryDlg.cpp" />
     <ClCompile Include="DbSelectionPanel.cpp" />
     <ClCompile Include="DeleteConfirmationDlg.cpp" />
     <ClCompile Include="DragBarGenericCtrl.cpp" />

@@ -128,7 +128,7 @@
       <AdditionalIncludeDirectories>$(WXDIR)\include\msvc;$(WXDIR)\include;..;$(Xerces64Dir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;USE_XML_LIBRARY=MSXML;WIN64;_DEBUG;_WINDOWS;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <PrecompiledHeaderOutputFile>$(PWSobj)64\$(ProjectName)/core.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>$(PWSobj)64\$(ProjectName)/</AssemblerListingLocation>
@@ -139,6 +139,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <ShowIncludes>false</ShowIncludes>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -234,6 +235,7 @@
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="ItemField.cpp" />
     <ClCompile Include="Match.cpp" />
+    <ClCompile Include="PolicyManager.cpp" />
     <ClCompile Include="pugixml\pugixml.cpp" />
     <ClCompile Include="PWSfileHeader.cpp" />
     <ClCompile Include="PWSfileV4.cpp" />
@@ -259,6 +261,8 @@
     <ClCompile Include="UTF8Conv.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="VerifyFormat.cpp" />
+    <ClCompile Include="XML\MSXML\MFileSAX2Handlers.cpp" />
+    <ClCompile Include="XML\MSXML\MFileValidator.cpp" />
     <ClCompile Include="XML\MSXML\MFileXMLProcessor.cpp" />
     <ClCompile Include="XML\MSXML\MFilterSAX2Handlers.cpp" />
     <ClCompile Include="XML\MSXML\MFilterXMLProcessor.cpp" />
@@ -295,6 +299,7 @@
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="ItemField.h" />
     <ClInclude Include="Match.h" />
+    <ClInclude Include="PolicyManager.h" />
     <ClInclude Include="pugixml\pugiconfig.hpp" />
     <ClInclude Include="pugixml\pugixml.hpp" />
     <ClInclude Include="PWSfileHeader.h" />
@@ -326,6 +331,8 @@
     <ClInclude Include="UTF8Conv.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="VerifyFormat.h" />
+    <ClInclude Include="XML\MSXML\MFileSAX2Handlers.h" />
+    <ClInclude Include="XML\MSXML\MFileValidator.h" />
     <ClInclude Include="XML\MSXML\MFileXMLProcessor.h" />
     <ClInclude Include="XML\MSXML\MFilterSAX2Handlers.h" />
     <ClInclude Include="XML\MSXML\MFilterXMLProcessor.h" />

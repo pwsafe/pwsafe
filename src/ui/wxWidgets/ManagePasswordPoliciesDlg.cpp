@@ -404,7 +404,6 @@ void ManagePasswordPoliciesDlg::UpdateNames()
 {
   int row = 0;
   const auto& policies      = m_PolicyManager->GetPolicies();
-  const auto& defaultPolicy = m_PolicyManager->GetDefaultPolicy();
 
   m_PolicyNames->ClearGrid();
 

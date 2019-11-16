@@ -176,6 +176,15 @@
     <ClCompile Include="XML\MSXML\MFilterSAX2Handlers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PolicyManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\MSXML\MFileSAX2Handlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\MSXML\MFileValidator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CheckVersion.h">
@@ -374,6 +383,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="XML\MSXML\MFilterSAX2Handlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PolicyManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\MSXML\MFileSAX2Handlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\MSXML\MFileValidator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
