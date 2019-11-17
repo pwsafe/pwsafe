@@ -365,7 +365,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
     "To add a new entry, simply fill in the fields below. At least a title and\n"
     "a password are required. If you have set a default username, it will\n"
     "appear in the username field."), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer3->Add(itemStaticText4, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer3->Add(itemStaticText4, 0, wxALIGN_LEFT/*|wxALIGN_CENTER_VERTICAL*/|wxALL, 5);
 
   m_BasicSizer = new wxGridBagSizer();
 

@@ -150,7 +150,7 @@ void SafeCombinationPromptDlg::CreateControls()
   itemDialog1->SetSizer(itemBoxSizer2);
 
   auto *itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer3, 1, wxALIGN_CENTER_HORIZONTAL|wxALL|wxEXPAND, 5);
+  itemBoxSizer2->Add(itemBoxSizer3, 1, /*wxALIGN_CENTER_HORIZONTAL|*/wxALL|wxEXPAND, 5);
 
   wxStaticBitmap* itemStaticBitmap4 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(L"graphics/cpane.xpm"), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
   itemBoxSizer3->Add(itemStaticBitmap4, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5);
