@@ -1623,7 +1623,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_EXPANDALL:
     case ID_COLLAPSEALL:
-      evt.Enable(bTreeView && m_core.IsDbOpen());
+      evt.Enable(bTreeView && m_core.IsDbOpen() && !m_tree->IsEmpty());
       break;
 
     case ID_RENAME:
