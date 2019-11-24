@@ -92,12 +92,19 @@ void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& /* evt */ )
 void PasswordSafeFrame::OnExpandAll(wxCommandEvent& /*evt*/)
 {
   wxASSERT(IsTreeView());
-  m_tree->ExpandAll();
+
+  if (!m_tree->IsEmpty()) {
+    m_tree->ExpandAll();
+  }
 }
 
 void PasswordSafeFrame::OnCollapseAll(wxCommandEvent& /*evt*/)
 {
   wxASSERT(IsTreeView());
+
+  if (m_tree->IsEmpty()) {
+    return;
+  }
 
   //we cannot just call wxTreeCtrl::CollapseAll(), since it tries to
   //collapse the invisible root item also, and thus ASSERTs
