@@ -218,6 +218,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   // Update menu items
   EVT_UPDATE_UI( ID_LIST_VIEW,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_TREE_VIEW,          PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SHOWHIDE_TOOLBAR,   PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SHOWHIDE_DRAGBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOWHIDE_UNSAVED,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOW_ALL_EXPIRY,    PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_COLLAPSEALL,        PasswordSafeFrame::OnUpdateUI                    )
@@ -1704,10 +1706,12 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_SHOWHIDE_UNSAVED:
       evt.Enable(!m_bShowExpiry && m_core.IsDbOpen());
+      evt.Check(m_bShowUnsaved);
       break;
 
     case ID_SHOW_ALL_EXPIRY:
       evt.Enable(!m_bShowUnsaved && m_core.IsDbOpen());
+      evt.Check(m_bShowExpiry);
       break;
 
     case ID_MERGE:
@@ -1736,6 +1740,14 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_FILTERMENU:
     case ID_CUSTOMIZETOOLBAR:
       evt.Enable(false); // Mark unimplemented
+      break;
+
+    case ID_SHOWHIDE_TOOLBAR:
+      GetToolBar() ? evt.Check(GetToolBar()->IsShown()) : evt.Check(false);
+      break;
+
+    case ID_SHOWHIDE_DRAGBAR:
+      GetDragBar() ? evt.Check(GetDragBar()->IsShown()) : evt.Check(false);
       break;
 
     default:
