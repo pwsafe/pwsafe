@@ -21,22 +21,24 @@
 #include <wx/wx.h>
 #endif
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 ////@begin includes
 #include <wx/imaglist.h>
 #include <wx/tokenzr.h>
 ////@end includes
 
-#include "TreeCtrl.h"
-#include "PasswordSafeFrame.h"
 #include "core/PWSprefs.h"
 #include "core/Command.h"
 
+#include "PasswordSafeFrame.h"
+#include "PWSafeApp.h"
+#include "TreeCtrl.h"
+
 #include <utility> // for make_pair
 #include <vector>
-
-#ifdef __WXMSW__
-#include <wx/msw/msvcrt.h>
-#endif
 
 ////@begin XPM images
 ////@end XPM images
@@ -99,6 +101,24 @@ BEGIN_EVENT_TABLE( TreeCtrl, wxTreeCtrl )
   EVT_TREE_END_LABEL_EDIT( ID_TREECTRL, TreeCtrl::OnEndLabelEdit )
   EVT_TREE_END_LABEL_EDIT( ID_TREECTRL_1, TreeCtrl::OnEndLabelEdit )
   EVT_TREE_KEY_DOWN( ID_TREECTRL, TreeCtrl::OnKeyDown )
+  /*
+    In Linux environments context menus appear on Right-Down mouse click.
+    Which mouse click type (Right-Down/Right-Up) is the right one on a platform
+    is considered by 'EVT_CONTEXT_MENU(TreeCtrl::OnContextMenu)' which doesn't
+    work for wxTreeCtrl prior wx version 3.1.1. See also the following URL.
+    https://github.com/wxWidgets/wxWidgets/commit/caea08e6b2b9e4843e84c61abc879880a08634b0
+  */
+#if wxCHECK_VERSION(3, 1, 1)
+  EVT_CONTEXT_MENU(TreeCtrl::OnContextMenu)
+#else
+#ifdef __WINDOWS__
+  EVT_RIGHT_UP(TreeCtrl::OnMouseRightClick)
+#else
+  EVT_RIGHT_DOWN(TreeCtrl::OnMouseRightClick)
+#endif
+#endif // wxCHECK_VERSION(3, 1, 1)
+
+  EVT_LEFT_DOWN(TreeCtrl::OnMouseLeftClick)
 ////@end TreeCtrl event table entries
 END_EVENT_TABLE()
 
@@ -298,6 +318,20 @@ void TreeCtrl::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
   else {
     UpdateItem(item);
   }
+}
+
+/**
+ * Provides the information wether a group tree item is selected.
+ * It considers the root item as a group via 'ItemIsGroup'.
+ */
+bool TreeCtrl::IsGroupSelected() const
+{
+  return GetSelection().IsOk() && ItemIsGroup(GetSelection());
+}
+
+bool TreeCtrl::IsRootSelected() const
+{
+  return GetSelection().IsOk() && GetSelection() == GetRootItem();
 }
 
 bool TreeCtrl::ItemIsGroup(const wxTreeItemId& item) const
@@ -783,6 +817,46 @@ void TreeCtrl::OnKeyDown(wxTreeEvent& evt)
   }
 
   evt.Skip();
+}
+
+void TreeCtrl::OnMouseRightClick(wxMouseEvent& event)
+{
+  wxPoint mouseClickPosition = event.GetPosition();
+  int positionInfo;
+
+  HitTest(mouseClickPosition, positionInfo);
+
+  if ((positionInfo | wxTREE_HITTEST_NOWHERE) == wxTREE_HITTEST_NOWHERE) {
+    auto *parentWindow = dynamic_cast<PasswordSafeFrame*>(GetParent());
+    wxASSERT(parentWindow != nullptr);
+    /*
+      Triggers an event that interferes with the popup menu in that sense that 
+      an invalid wxTreeItemId is provided at the moment when the popup menu shows.
+      This causes the menu items to get disabled at PasswordFrame::OnUpdateUI.
+      'Yield' solves this problem so that events are handled in the right order.
+    */
+    Unselect();
+    wxGetApp().SafeYieldFor(parentWindow, wxEVT_CATEGORY_USER_INPUT);
+    parentWindow->OnContextMenu(nullptr);
+  }
+  else {
+    event.Skip();
+  }
+}
+
+void TreeCtrl::OnMouseLeftClick(wxMouseEvent& event)
+{
+  wxPoint mouseClickPosition = event.GetPosition();
+  int positionInfo;
+
+  HitTest(mouseClickPosition, positionInfo);
+
+  if ((positionInfo | wxTREE_HITTEST_NOWHERE) == wxTREE_HITTEST_NOWHERE) {
+    Unselect();
+  }
+  else {
+    event.Skip();
+  }
 }
 
 void TreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)

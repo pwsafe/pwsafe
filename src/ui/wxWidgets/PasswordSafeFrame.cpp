@@ -704,6 +704,7 @@ void PasswordSafeFrame::CreateControls()
                        wxCommandEventHandler(TreeCtrl::OnRenameGroup), nullptr, m_tree);
 
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
+
   itemBoxSizer83->Layout();
 
   const RecentDbList& rdb = wxGetApp().recentDatabases();
@@ -1462,11 +1463,22 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     wxMenu groupEditMenu;
     groupEditMenu.Append(wxID_ADD, _("Add &Entry"));
     groupEditMenu.Append(ID_ADDGROUP, _("Add &Group"));
-    groupEditMenu.Append(ID_RENAME, _("&Rename Group"));
-    groupEditMenu.Append(wxID_DELETE, _("&Delete Group"));
-    if (IsTreeView())
+
+    /*
+      The tree's root item is considered as a group,
+      but is not allowed to and cannot be modified.
+      Only groups from the users database are editable.
+    */
+    if (IsTreeView() && !m_tree->IsRootSelected()) {
+      groupEditMenu.Append(ID_RENAME, _("&Rename Group"));
+      groupEditMenu.Append(wxID_DELETE, _("&Delete Group"));
+    }
+
+    if (IsTreeView()) {
       m_tree->PopupMenu(&groupEditMenu);
-  } else {
+    }
+  }
+  else {
     wxMenu itemEditMenu;
     itemEditMenu.Append(ID_COPYUSERNAME,   _("Copy &Username to Clipboard"));
     itemEditMenu.Append(ID_COPYPASSWORD,   _("&Copy Password to Clipboard"));
@@ -1486,10 +1498,10 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     itemEditMenu.Append(ID_AUTOTYPE,       _("Perform Auto &Type"));
     itemEditMenu.AppendSeparator();
     if (m_core.IsReadOnly()) {
-      itemEditMenu.Append(ID_EDIT,           _("&View Entry..."));
+      itemEditMenu.Append(ID_EDIT,         _("&View Entry..."));
     }
     else {
-      itemEditMenu.Append(ID_EDIT,           _("Edit Entry..."));
+      itemEditMenu.Append(ID_EDIT,         _("Edit Entry..."));
     }
     itemEditMenu.Append(ID_DUPLICATEENTRY, _("&Duplicate Entry"));
     itemEditMenu.Append(wxID_DELETE,       _("Delete Entry"));
@@ -1576,14 +1588,11 @@ CItemData* PasswordSafeFrame::GetBaseEntry(const CItemData *item) const
 //
 void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 {
-  bool bGroupSelected(false), bFileIsReadOnly(false), bTreeView(IsTreeView());
   const CItemData *pci(nullptr), *pbci(nullptr);
 
-  bFileIsReadOnly = m_core.IsReadOnly();
-  bGroupSelected = (bTreeView &&
-      m_tree->GetSelection().IsOk() &&
-      m_tree->GetSelection() != m_tree->GetRootItem() &&
-      m_tree->ItemIsGroup(m_tree->GetSelection()));
+  bool isFileReadOnly = m_core.IsReadOnly();
+  bool isTreeView = IsTreeView();
+  bool isGroupSelected = (isTreeView && m_tree->IsGroupSelected());
 
   pci = GetSelectedEntry();
 
@@ -1595,7 +1604,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
   switch (evt.GetId()) {
     case wxID_SAVE:
-      evt.Enable((m_core.IsDbOpen()) && (m_core.HasDBChanged() || m_core.HaveDBPrefsChanged()));
+      evt.Enable(m_core.IsDbOpen() && !isFileReadOnly && (m_core.HasDBChanged() || m_core.HaveDBPrefsChanged()));
       break;
 
     case wxID_SAVEAS:
@@ -1618,47 +1627,47 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_ADDGROUP:
-      evt.Enable(bTreeView && !bFileIsReadOnly && m_core.IsDbOpen());
+      evt.Enable(isGroupSelected && !isFileReadOnly && m_core.IsDbOpen());
       break;
 
     case ID_EXPANDALL:
     case ID_COLLAPSEALL:
-      evt.Enable(bTreeView && m_core.IsDbOpen() && !m_tree->IsEmpty());
+      evt.Enable(isTreeView && m_core.IsDbOpen() && !m_tree->IsEmpty());
       break;
 
     case ID_RENAME:
       // only allowed if a GROUP item is selected in tree view
-      evt.Enable(bGroupSelected && !bFileIsReadOnly);
+      evt.Enable(isGroupSelected && !isFileReadOnly);
       break;
 
     case ID_BROWSEURL:
     case ID_BROWSEURLPLUS:
     case ID_COPYURL:
-      evt.Enable(!bGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::URL, pbci));
+      evt.Enable(!isGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::URL, pbci));
       break;
 
     case ID_SENDEMAIL:
     case ID_COPYEMAIL:
-      evt.Enable(!bGroupSelected && pci &&
+      evt.Enable(!isGroupSelected && pci &&
           (!pci->IsFieldValueEmpty(CItemData::EMAIL, pbci) ||
           (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && pci->IsURLEmail(pbci))));
       break;
 
     case ID_COPYUSERNAME:
-      evt.Enable(!bGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::USER, pbci));
+      evt.Enable(!isGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::USER, pbci));
       break;
 
     case ID_COPYNOTESFLD:
-      evt.Enable(!bGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::NOTES, pbci));
+      evt.Enable(!isGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::NOTES, pbci));
       break;
 
     case ID_RUNCOMMAND:
     case ID_COPYRUNCOMMAND:
-      evt.Enable(!bGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci));
+      evt.Enable(!isGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci));
       break;
 
     case ID_CREATESHORTCUT:
-      evt.Enable(!bGroupSelected && !bFileIsReadOnly && pci &&
+      evt.Enable(!isGroupSelected && !isFileReadOnly && pci &&
           (pci->IsNormal() || pci->IsShortcutBase()));
       break;
 
@@ -1667,12 +1676,12 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_AUTOTYPE:
     case ID_PASSWORDSUBSET:
     case ID_PASSWORDQRCODE:
-      evt.Enable(!bGroupSelected && pci);
+      evt.Enable(!isGroupSelected && pci);
       break;
 
     case ID_GOTOBASEENTRY:
     case ID_EDITBASEENTRY:
-      evt.Enable(!bGroupSelected && pci && (pci->IsShortcut() || pci->IsAlias()));
+      evt.Enable(!isGroupSelected && pci && (pci->IsShortcut() || pci->IsAlias()));
       break;
 
     case wxID_UNDO:
@@ -1685,7 +1694,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_SYNCHRONIZE:
     case ID_CHANGECOMBO:
-      evt.Enable(!bFileIsReadOnly && m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
+      evt.Enable(!isFileReadOnly && m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
       break;
 
     case wxID_FIND:
@@ -1693,15 +1702,15 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case wxID_ADD:
-      evt.Enable(!bFileIsReadOnly && m_core.IsDbOpen());
+      evt.Enable((isGroupSelected || !isTreeView) && !isFileReadOnly && m_core.IsDbOpen());
       break;
 
     case wxID_DELETE:
-      evt.Enable(!bFileIsReadOnly && ((pci && !pci->IsProtected()) || bGroupSelected));
+      evt.Enable(!isFileReadOnly && ((pci && !pci->IsProtected()) || isGroupSelected));
       break;
 
     case ID_DUPLICATEENTRY:
-      evt.Enable(!bFileIsReadOnly && pci);
+      evt.Enable(!isFileReadOnly && pci);
       break;
 
     case ID_SHOWHIDE_UNSAVED:
@@ -1716,11 +1725,11 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_MERGE:
     case ID_IMPORTMENU:
-      evt.Enable(!bFileIsReadOnly && m_core.IsDbOpen());
+      evt.Enable(!isFileReadOnly && m_core.IsDbOpen());
       break;
 
     case ID_PROTECT:
-      evt.Enable(!bFileIsReadOnly && pci && !pci->IsShortcut());
+      evt.Enable(!isFileReadOnly && pci && !pci->IsShortcut());
       evt.Check(pci && pci->IsProtected());
       break;
 
