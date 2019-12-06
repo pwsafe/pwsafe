@@ -112,6 +112,16 @@ public:
   /// wxEVT_TREE_KEY_DOWN event handler for ID_TREECTRL
   void OnKeyDown(wxTreeEvent& evt);
 
+#if wxCHECK_VERSION(3, 1, 1)
+  void OnContextMenu(wxContextMenuEvent& event);
+#else
+  /// wxEVT_RIGHT_DOWN event handler for mouse events
+  void OnMouseRightClick(wxMouseEvent& event);
+#endif // wxCHECK_VERSION(3, 1, 1)
+
+  /// wxEVT_LEFT_DOWN event handler for mouse events
+  void OnMouseLeftClick(wxMouseEvent& event);
+
 ////@begin TreeCtrl member function declarations
 ////@end TreeCtrl member function declarations
 
@@ -127,7 +137,9 @@ public:
   void SelectItem(const pws_os::CUUID& uuid);
   void SortChildrenRecursively(const wxTreeItemId& item);
   wxString GetItemGroup(const wxTreeItemId& item) const;
-  bool ItemIsGroup(const wxTreeItemId& item) const ;
+  bool IsGroupSelected() const;
+  bool IsRootSelected() const;
+  bool ItemIsGroup(const wxTreeItemId& item) const;
   void AddEmptyGroup(const StringX& group) { AddGroup(group); }
   void SetFilterState(bool state);
 
