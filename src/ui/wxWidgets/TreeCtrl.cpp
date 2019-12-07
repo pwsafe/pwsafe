@@ -826,7 +826,7 @@ void TreeCtrl::OnMouseRightClick(wxMouseEvent& event)
 
   HitTest(mouseClickPosition, positionInfo);
 
-  if ((positionInfo | wxTREE_HITTEST_NOWHERE) == wxTREE_HITTEST_NOWHERE) {
+  if ((positionInfo & wxTREE_HITTEST_NOWHERE) == wxTREE_HITTEST_NOWHERE) {
     auto *parentWindow = dynamic_cast<PasswordSafeFrame*>(GetParent());
     wxASSERT(parentWindow != nullptr);
     /*
