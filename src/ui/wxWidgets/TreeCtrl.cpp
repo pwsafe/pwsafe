@@ -851,7 +851,7 @@ void TreeCtrl::OnMouseLeftClick(wxMouseEvent& event)
 
   HitTest(mouseClickPosition, positionInfo);
 
-  if ((positionInfo | wxTREE_HITTEST_NOWHERE) == wxTREE_HITTEST_NOWHERE) {
+  if ((positionInfo & wxTREE_HITTEST_NOWHERE) == wxTREE_HITTEST_NOWHERE) {
     Unselect();
   }
   else {
