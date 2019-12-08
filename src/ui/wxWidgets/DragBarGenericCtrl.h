@@ -58,7 +58,7 @@ public:
   void SetToolBitmaps(int id, const wxBitmap& bmp, const wxBitmap& bmpDisabled = wxNullBitmap);
 
   //overridden from wxWindow
-  virtual wxSize DoGetBestSize() const ;
+  virtual wxSize DoGetBestSize() const override;
 
   void OnLeftDown(wxMouseEvent& evt);
   void OnPaint(wxPaintEvent& evt);

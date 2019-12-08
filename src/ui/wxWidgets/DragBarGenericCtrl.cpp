@@ -20,20 +20,22 @@
 #include <wx/wx.h>
 #endif
 
-////@begin includes
-#include "DragBarGenericCtrl.h"
-#include "../../os/pws_tchar.h"
-#include "../../core/PwsPlatform.h"
-#include "../../core/ItemData.h"
-#include "./wxUtilities.h"
-#include <wx/dnd.h>
-////@end includes
-
-#include <algorithm>
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+////@begin includes
+#include <wx/dnd.h>
+
+#include "core/PwsPlatform.h"
+#include "core/ItemData.h"
+#include "os/pws_tchar.h"
+
+#include "DragBarGenericCtrl.h"
+#include "wxUtilities.h"
+////@end includes
+
+#include <algorithm>
 
 BEGIN_EVENT_TABLE( DragBarGenericCtrl, wxControl )
   EVT_LEFT_DOWN(DragBarGenericCtrl::OnLeftDown)
@@ -44,14 +46,14 @@ END_EVENT_TABLE()
 
 IMPLEMENT_CLASS( DragBarGenericCtrl, wxControl )
 
-DragBarGenericCtrl::DragBarGenericCtrl(wxFrame* parent, IDragSourceTextProvider* provider,
-                                wxOrientation orient /*= wxHORIZONTAL*/) :
-                                                wxControl(parent, wxID_ANY),
-                                                m_margins(10, 5),
-                                                m_orientation(orient),
-                                                m_bmpWidth(0),
-                                                m_bmpHeight(0),
-                                                m_provider(provider)
+DragBarGenericCtrl::DragBarGenericCtrl(wxFrame *parent, IDragSourceTextProvider *provider,
+                                       wxOrientation orient /*= wxHORIZONTAL*/) :
+                                       wxControl(parent, wxID_ANY),
+                                       m_margins(10, 5),
+                                       m_orientation(orient),
+                                       m_bmpWidth(0),
+                                       m_bmpHeight(0),
+                                       m_provider(provider)
 {
   Connect(GetId(), wxEVT_UPDATE_UI, wxUpdateUIEventHandler(DragBarGenericCtrl::OnUpdateUI));
 }
@@ -63,8 +65,9 @@ DragBarGenericCtrl::~DragBarGenericCtrl()
 void DragBarGenericCtrl::OnLeftDown(wxMouseEvent& evt)
 {
   const int idx = FindToolFromCoords(evt.GetPosition());
-  if (idx == -1)
+  if (idx == -1) {
     return;
+  }
 
   wxASSERT(idx >= 0 && size_t(idx) < m_items.size());
 
@@ -96,17 +99,19 @@ void DragBarGenericCtrl::OnLeftDown(wxMouseEvent& evt)
 }
 
 void DragBarGenericCtrl::AddTool(int id, const wxBitmap& bmp, const wxString& tooltip /*= wxEmptyString*/,
-                                    const wxBitmap& bmpDisabled /*= wxNullBitmap*/)
+                                 const wxBitmap& bmpDisabled /*= wxNullBitmap*/)
 {
   //all bitmaps must be same size
-  if (m_bmpWidth == 0)
+  if (m_bmpWidth == 0) {
     m_bmpWidth = bmp.GetWidth();
+  }
   else {
     wxASSERT(m_bmpWidth == bmp.GetWidth());
   }
 
-  if (m_bmpHeight == 0)
+  if (m_bmpHeight == 0) {
     m_bmpHeight = bmp.GetHeight();
+  }
   else {
     wxASSERT(m_bmpHeight == bmp.GetHeight());
   }
@@ -134,20 +139,24 @@ int DragBarGenericCtrl::FindToolFromCoords(const wxPoint& pt)
     case wxHORIZONTAL:
     {
       int w = m_bmpWidth + m_margins.GetWidth();
-      if ((pt.x % w) < m_margins.GetWidth())
+      if ((pt.x % w) < m_margins.GetWidth()) {
         return -1;
-      else
+      }
+      else {
         idx = pt.x/w;
+      }
       break;
 
     }
     case wxVERTICAL:
     {
       int h = m_bmpHeight + m_margins.GetHeight();
-      if ((pt.y % h) < m_margins.GetHeight())
+      if ((pt.y % h) < m_margins.GetHeight()) {
         return -1;
-      else
+      }
+      else {
         idx = pt.y/h;
+      }
       break;
     }
     default:
@@ -164,14 +173,16 @@ wxSize DragBarGenericCtrl::GetInvalidatedIconRange(const wxRect& rect)
     case wxHORIZONTAL:
     {
       int first = FindToolFromCoords(rect.GetTopLeft());
-      if (first == -1)
+      if (first == -1) {
         first = FindToolFromCoords(rect.GetTopLeft() + wxSize(m_margins.GetWidth(), 0));
+      }
 
       int last = FindToolFromCoords(rect.GetTopRight());
       if (last == -1) {
         last = FindToolFromCoords(rect.GetTopRight() - wxSize(m_margins.GetWidth(), 0));
-        if (last == -1)
+        if (last == -1) {
           last = static_cast<int>(m_items.size() - 1);
+        }
       }
 
       return wxSize(first, last);
@@ -179,14 +190,16 @@ wxSize DragBarGenericCtrl::GetInvalidatedIconRange(const wxRect& rect)
     case wxVERTICAL:
     {
       int first = FindToolFromCoords(rect.GetTopLeft());
-      if (first == -1)
+      if (first == -1) {
         first = FindToolFromCoords(rect.GetTopLeft() + wxSize(0, m_margins.GetHeight()));
+      }
 
       int last = FindToolFromCoords(rect.GetBottomLeft());
       if (last == -1) {
         last = FindToolFromCoords(rect.GetBottomLeft() - wxSize(0, m_margins.GetHeight()));
-        if (last == -1)
+        if (last == -1) {
           last = static_cast<int>(m_items.size() - 1);
+        }
       }
 
       return wxSize(first, last);
@@ -198,7 +211,8 @@ wxSize DragBarGenericCtrl::GetInvalidatedIconRange(const wxRect& rect)
 }
 void DragBarGenericCtrl::OnPaint(wxPaintEvent& /*evt*/)
 {
-  wxRect rcWin = GetRect(); //draw along the entire window rect, since clipping rect is always (0, 0, -1, -1)
+  //draw along the entire window rect, since clipping rect is always (0, 0, -1, -1)
+  wxRect rcWin = GetRect();
 
   wxPaintDC dc(this);
   dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE)));
@@ -210,10 +224,12 @@ void DragBarGenericCtrl::OnPaint(wxPaintEvent& /*evt*/)
   dc.SetPen(shadow);
 
   //draw a shadow along the bottom or the right edge, depending on orientation
-  if (m_orientation == wxHORIZONTAL)
+  if (m_orientation == wxHORIZONTAL) {
     dc.DrawLine(rcWin.GetBottomLeft(), rcWin.GetBottomRight());
-  else
+  }
+  else {
     dc.DrawLine(rcWin.GetTopRight(), rcWin.GetBottomRight());
+  }
 
   //remove the shadown pen
   dc.SetPen(wxNullPen);
@@ -237,7 +253,6 @@ void DragBarGenericCtrl::OnPaint(wxPaintEvent& /*evt*/)
   else {
     //wxLogDebug(wxT("all dragbar icons valid"));
   }
-
 }
 
 wxSize DragBarGenericCtrl::DoGetBestSize() const
@@ -264,8 +279,9 @@ void DragBarGenericCtrl::OnMouseMove(wxMouseEvent& evt)
 {
   if (!evt.Dragging()) {
     int idx = FindToolFromCoords(evt.GetPosition());
-    if (idx >= 0 && size_t(idx) < m_items.size())
+    if (idx >= 0 && size_t(idx) < m_items.size()) {
       SetToolTip(m_items[idx].tooltip);
+    }
     else {
       RemoveToolTip(this);
       //wxLogDebug(wxT("Removed tooltip, idx was %d"), idx);
