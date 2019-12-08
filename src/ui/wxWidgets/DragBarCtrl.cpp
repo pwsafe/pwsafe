@@ -21,49 +21,50 @@
 #include <wx/wx.h>
 #endif
 
-////@begin includes
-#include "DragBarCtrl.h"
-#include "PasswordSafeFrame.h"
-#include "../../os/pws_tchar.h"
-#include "../../core/PwsPlatform.h"
-#include "../../core/ItemData.h"
-#include "./wxUtilities.h"
-////@end includes
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
 
+////@begin includes
+#include "core/PwsPlatform.h"
+#include "core/ItemData.h"
+#include "os/pws_tchar.h"
+
+#include "DragBarCtrl.h"
+#include "PasswordSafeFrame.h"
+#include "wxUtilities.h"
+////@end includes
+
 ////@begin XPM images
-#include "./graphics/dragbar/new/Email.xpm"
-#include "./graphics/dragbar/new/EmailX.xpm"
-#include "./graphics/dragbar/new/Group.xpm"
-#include "./graphics/dragbar/new/GroupX.xpm"
-#include "./graphics/dragbar/new/Notes.xpm"
-#include "./graphics/dragbar/new/NotesX.xpm"
-#include "./graphics/dragbar/new/Password.xpm"
-#include "./graphics/dragbar/new/PasswordX.xpm"
-#include "./graphics/dragbar/new/Title.xpm"
-#include "./graphics/dragbar/new/TitleX.xpm"
-#include "./graphics/dragbar/new/URL.xpm"
-#include "./graphics/dragbar/new/URLX.xpm"
-#include "./graphics/dragbar/new/User.xpm"
-#include "./graphics/dragbar/new/UserX.xpm"
+#include "graphics/dragbar/new/Email.xpm"
+#include "graphics/dragbar/new/EmailX.xpm"
+#include "graphics/dragbar/new/Group.xpm"
+#include "graphics/dragbar/new/GroupX.xpm"
+#include "graphics/dragbar/new/Notes.xpm"
+#include "graphics/dragbar/new/NotesX.xpm"
+#include "graphics/dragbar/new/Password.xpm"
+#include "graphics/dragbar/new/PasswordX.xpm"
+#include "graphics/dragbar/new/Title.xpm"
+#include "graphics/dragbar/new/TitleX.xpm"
+#include "graphics/dragbar/new/URL.xpm"
+#include "graphics/dragbar/new/URLX.xpm"
+#include "graphics/dragbar/new/User.xpm"
+#include "graphics/dragbar/new/UserX.xpm"
 //-- classic bitmaps...
-#include "./graphics/dragbar/classic/email.xpm"
-#include "./graphics/dragbar/classic/emailx.xpm"
-#include "./graphics/dragbar/classic/Group.xpm"
-#include "./graphics/dragbar/classic/GroupX.xpm"
-#include "./graphics/dragbar/classic/Notes.xpm"
-#include "./graphics/dragbar/classic/NotesX.xpm"
-#include "./graphics/dragbar/classic/Password.xpm"
-#include "./graphics/dragbar/classic/PasswordX.xpm"
-#include "./graphics/dragbar/classic/Title.xpm"
-#include "./graphics/dragbar/classic/TitleX.xpm"
-#include "./graphics/dragbar/classic/URL.xpm"
-#include "./graphics/dragbar/classic/URLX.xpm"
-#include "./graphics/dragbar/classic/User.xpm"
-#include "./graphics/dragbar/classic/UserX.xpm"
+#include "graphics/dragbar/classic/email.xpm"
+#include "graphics/dragbar/classic/emailx.xpm"
+#include "graphics/dragbar/classic/Group.xpm"
+#include "graphics/dragbar/classic/GroupX.xpm"
+#include "graphics/dragbar/classic/Notes.xpm"
+#include "graphics/dragbar/classic/NotesX.xpm"
+#include "graphics/dragbar/classic/Password.xpm"
+#include "graphics/dragbar/classic/PasswordX.xpm"
+#include "graphics/dragbar/classic/Title.xpm"
+#include "graphics/dragbar/classic/TitleX.xpm"
+#include "graphics/dragbar/classic/URL.xpm"
+#include "graphics/dragbar/classic/URLX.xpm"
+#include "graphics/dragbar/classic/User.xpm"
+#include "graphics/dragbar/classic/UserX.xpm"
 
 ////@end XPM images
 
