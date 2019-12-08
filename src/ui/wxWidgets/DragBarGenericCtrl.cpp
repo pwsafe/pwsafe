@@ -47,7 +47,7 @@ IMPLEMENT_CLASS( DragBarGenericCtrl, wxControl )
 DragBarGenericCtrl::DragBarGenericCtrl(wxFrame* parent, IDragSourceTextProvider* provider,
                                 wxOrientation orient /*= wxHORIZONTAL*/) :
                                                 wxControl(parent, wxID_ANY),
-                                                m_margins(5, 3),
+                                                m_margins(10, 5),
                                                 m_orientation(orient),
                                                 m_bmpWidth(0),
                                                 m_bmpHeight(0),
