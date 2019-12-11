@@ -95,7 +95,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  bool ParseCommandLine(DboxMain &dbox, bool &allDone);
+  bool ParseCommandLine(DboxMain &dbox, bool &allDone, bool &postMinimize);
   bool GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost, StringX &sxUser);
   void LoadLocalizedStuff();
   void SetupMenu();

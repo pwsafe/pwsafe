@@ -4173,10 +4173,8 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
   return PWScore::SUCCESS;
 }
 
-void DboxMain::CleanUpAndExit(const bool bNormalExit)
+void DboxMain::CleanUpAndExit()
 {
-  PWS_LOGIT_ARGS("bNormalExit=%s", bNormalExit ? L"true" : L"false");
-
   // Clear clipboard on Exit?  Yes if:
   // a. the app is minimized and the systemtray is enabled
   // b. the user has set the "ClearClipboardOnExit" pref
@@ -4202,15 +4200,11 @@ void DboxMain::CleanUpAndExit(const bool bNormalExit)
   if (m_pTrayIcon != NULL) {
     m_pTrayIcon->DestroyWindow();
     delete m_pTrayIcon;
+    m_pTrayIcon = nullptr;
   }
 
-  // If we are called normally, then exit gracefully. If not, force the issue
-  // after the caller has processed the current message by posting another message
-  // for later (PostQuitMessage).
-  if (bNormalExit)
-    CDialog::OnOK();
-  else
-    PostQuitMessage(0);
+  CDialog::OnOK();
+  PostQuitMessage(0);
 }
 
 void DboxMain::OnCancel()

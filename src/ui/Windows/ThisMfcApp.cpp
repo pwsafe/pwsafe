@@ -72,12 +72,12 @@ static MFCAsker    anAsker;
 
 ThisMfcApp::ThisMfcApp() :
   m_bUseAccelerator(true),
-  m_pMRU(NULL),
+  m_pMRU(nullptr),
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
-  m_ghAccelTable(NULL), m_pMainMenu(NULL),
+  m_ghAccelTable(NULL), m_pMainMenu(nullptr),
   m_bACCEL_Table_Created(false), m_noSysEnvWarnings(false),
   m_bPermitTestdump(false), m_hInstResDLL(NULL), m_ResLangID(0),
-  m_pMRUMenu(NULL)
+  m_pMRUMenu(nullptr), m_pDbx(nullptr)
 {
   // Get my Thread ID
   m_nBaseThreadID = AfxGetThread()->m_nThreadID;
@@ -217,7 +217,7 @@ int ThisMfcApp::ExitInstance()
 {
   if (m_hInstResDLL != m_hInstance)
     pws_os::FreeLibrary(m_hInstResDLL);
-
+  delete m_pDbx;
   CWinApp::ExitInstance();
   return 0;
 }
@@ -822,7 +822,7 @@ bool ThisMfcApp::GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost
   return true;
 }
 
-bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
+bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone, bool &postMinimize)
 {
   /*
    * Command line processing:
@@ -840,7 +840,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
 
   int dialogOrientation = -1; // update pref only if set
 
-  allDone = false;
+  allDone = postMinimize = false;
   if (m_lpCmdLine[0] != L'\0') {
     CString args = m_lpCmdLine;
 
@@ -960,6 +960,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
           dbox.SetStartClosed();
           break;
         case L'M': case L'm':// closed & minimized
+          postMinimize = true;
           m_core.SetCurFile(L"");
           dbox.SetStartNoDB();
           dbox.SetStartMinimized();
@@ -972,6 +973,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
           break;
         case L'S': case L's':
           startSilent = true;
+          postMinimize = true;
           dbox.SetStartSilent();
           break;
         case L'V': case L'v':
@@ -1050,6 +1052,7 @@ BOOL ThisMfcApp::InitInstance()
   // Command line parsing MUST be done before the first PWSprefs lookup!
   // (since user/host/config file may be overridden!)
   bool allDone = false;
+  bool postMinimize = false;
 
   // Get config information from the command line before "really" parsing the command line!
   StringX sxConfigFile, sxHost, sxUser;
@@ -1084,13 +1087,13 @@ BOOL ThisMfcApp::InitInstance()
 
   // Do not create dbox before config data obtained as it would create PWSprefs
   // using the potentially incorrect config data
-  DboxMain dbox(m_core);
+  m_pDbx = new DboxMain(m_core);
 
   // Parse the command line again.  If there were errors getting the config file,
   // host or user before, then this time around we will issue messages but they
   // will probably be in English unless the config data was OK previously and
   // the config file specifies a different language.
-  bool parseVal = ParseCommandLine(dbox, allDone);
+  bool parseVal = ParseCommandLine(*m_pDbx, allDone, postMinimize);
 
   // allDone will be true iff -e or -d options given, in which case
   // we're just a batch encryptor/decryptor
@@ -1168,17 +1171,9 @@ BOOL ThisMfcApp::InitInstance()
   * normal startup
   */
 
-  /*
-  Here's where PWS currently does DboxMain, which in turn will do
-  the initial PasskeyEntry (the one that looks like a splash screen).
-  This makes things very hard to control.
-  The app object (here) should instead do the initial PasskeyEntry,
-  and, if successful, move on to DboxMain.  I think. {jpr}
-  */
-  m_pDbx = &dbox;
   m_pMainWnd = m_pDbx;
 
-  CLWnd ListenerWnd(dbox);
+  CLWnd ListenerWnd(*m_pDbx);
   if (SysInfo::IsUnderU3()) {
     // See comment under CLWnd to understand this.
     ListenerWnd.m_hWnd = NULL;
@@ -1191,11 +1186,13 @@ BOOL ThisMfcApp::InitInstance()
   }
 
   // Run dialog - note that we don't particularly care what the response was
-  dbox.DoModal();
+  m_pDbx->Create(IDD_PASSWORDSAFE_DIALOG);
+  m_pDbx->ShowWindow(SW_SHOW);
+  m_pDbx->UpdateWindow();
 
-  // Since the dialog has been closed, return FALSE so that we exit the
-  // application, rather than start the application's message pump.
-  return FALSE;
+  if (postMinimize) // as returned by parser
+    m_pDbx->PostMessage(WM_SYSCOMMAND, SC_MINIMIZE);
+  return TRUE;
 }
 
 void ThisMfcApp::AddToMRU(const CString &pszFilename)

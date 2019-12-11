@@ -2592,7 +2592,7 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
       // handle this event - but just in case!
       SavePreferencesOnExit();
       SaveDatabaseOnExit(ST_WTSLOGOFFEXIT);
-      CleanUpAndExit(false);
+      CleanUpAndExit();
       break;
     case WTS_SESSION_REMOTE_CONTROL:
     default:

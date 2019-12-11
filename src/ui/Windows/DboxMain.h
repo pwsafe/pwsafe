@@ -671,7 +671,6 @@ public:
   afx_msg void OnHelp();
   afx_msg void OnUpdateMenuToolbar(CCmdUI *pCmdUI);
   afx_msg void OnDestroy();
-  afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
   afx_msg void OnMove(int x, int y);
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnAbout();
@@ -890,7 +889,7 @@ private:
   // Split up OnOK to support various ways to exit
   int SaveDatabaseOnExit(const SaveType saveType);
   void SavePreferencesOnExit();
-  void CleanUpAndExit(const bool bNormalExit = true);
+  void CleanUpAndExit();
 
   void RegisterSessionNotification(const bool bRegister);
   bool LockDataBase();

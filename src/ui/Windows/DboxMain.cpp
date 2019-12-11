@@ -482,7 +482,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_WM_SIZING()
   ON_WM_SYSCOMMAND()
   ON_WM_TIMER()
-  ON_WM_WINDOWPOSCHANGING()
 
   // Nofication messages
   ON_NOTIFY(NM_CLICK, IDC_ITEMLIST, OnListItemSelected)
@@ -1493,37 +1492,7 @@ void DboxMain::OnDestroy()
   CDialog::OnDestroy();
 }
 
-void DboxMain::OnWindowPosChanging(WINDOWPOS* lpwndpos)
-{
-  /**
-   * Following hack is to cause the main window to be minimized upon startup
-   * when so specified by user (-s or -m cli args)
-   * Used to work without countDown/oneShot logic, but something changed
-   * that caused this to be called multiple time before it would actually take effect
-   * hence the current kludge.
-   * The Right Thing would be to separate the startup flows completely, delaying the
-   * creation of the main window until appropriate, but that's major rocket surgery
-   * at this stage...
-   */
-  static int countDown = 5;
-  static bool oneShot = false;
 
-  pws_os::Trace(L"countDown=%d, oneShot=%s, x=%d, y=%d, cx=%d, cy=%d\n",
-                countDown, oneShot ? L"T" : L"F", lpwndpos->x, lpwndpos->y, lpwndpos->cx, lpwndpos->cy);
-
-  if ((m_InitMode == SilentInit || m_InitMode == MinimizedInit) &&
-      !oneShot && --countDown == 0)
-    {
-    
-    // Here's where we enforce the '-m/s' flag
-    // semantics, causing main window to minimize ASAP.
-    oneShot = true;
-    lpwndpos->flags |= (SWP_HIDEWINDOW | SWP_NOACTIVATE);
-    lpwndpos->flags &= ~SWP_SHOWWINDOW;
-    PostMessage(WM_COMMAND, ID_MENUITEM_MINIMIZE);
-  }
-  CDialog::OnWindowPosChanging(lpwndpos);
-}
 
 void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 {
@@ -2286,7 +2255,10 @@ void DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
 
 LRESULT DboxMain::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 {
-  return m_pTrayIcon->OnTrayNotification(wParam, lParam);
+  if (m_pTrayIcon)
+    return m_pTrayIcon->OnTrayNotification(wParam, lParam);
+  else
+    return 0L;
 }
 
 bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
@@ -2422,7 +2394,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
             rc_readdatabase = New();
             break;
           case IDS_EXIT:
-            CleanUpAndExit(true);
+            CleanUpAndExit();
             brc = false;
             goto exit;
             break;
@@ -3044,7 +3016,7 @@ LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
     }
 
     m_bBlockShutdown = false;
-    CleanUpAndExit(false);
+    CleanUpAndExit();
   } else {
     // Reset status since the EndSession was cancelled
     m_iSessionEndingStatus = IDIGNORE;
