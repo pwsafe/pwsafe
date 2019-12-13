@@ -1,5 +1,5 @@
-Password Safe 3.51pre Release October 2019
-==========================================
+Password Safe 3.51pre Release December 2019
+===========================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -17,6 +17,7 @@ New Features in 3.51pre
 =======================
 [884] Copying password in Edit window of alias entry now copies the
 "real" password (that of the base entry).
+[1490,G359,G550] Fixed -s switch regression.
 
 Bugs Fixed in 3.50
 ==================
