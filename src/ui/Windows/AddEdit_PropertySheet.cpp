@@ -411,6 +411,14 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
         if (bIsPSWDModified) {
           m_AEMD.pci->UpdatePassword(m_AEMD.realpassword);
           m_AEMD.locPMTime = m_AEMD.pci->GetPMTimeL();
+         if (m_AEMD.XTimeInt != 0) {
+           // if entry has a recurring password interval, then
+           // changing the password ==> update expiry
+            m_AEMD.tttXTime = m_AEMD.tttCPMTime + 24 * 60 * 60 * m_AEMD.XTimeInt;
+            pciA->SetXTime(m_AEMD.tttXTime);
+            m_AEMD.locXTime = pciA->GetXTimeL();
+            m_bIsModified = true;
+          }
         }
 
         if (m_AEMD.locXTime != m_AEMD.oldlocXTime) {

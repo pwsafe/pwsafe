@@ -13,11 +13,17 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
 
+Bugs Fixed in 3.51pre
+=====================
+[1497] Changing the password now updates the expiration date if
+recurring expiration set.
+[1490,G359,G550] Fixed -s switch regression.
+
 New Features in 3.51pre
 =======================
 [884] Copying password in Edit window of alias entry now copies the
 "real" password (that of the base entry).
-[1490,G359,G550] Fixed -s switch regression.
+
 
 Bugs Fixed in 3.50
 ==================
