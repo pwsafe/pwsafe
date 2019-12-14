@@ -119,8 +119,8 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
 {
   // Last 32-bit date is 03:14:07 UTC on Tuesday, January 19, 2038
   // Find number of days from now to 2038/01/18 = max value here
-  // Need to do this early, since base classe's OnInitDialog()
-  // Calls UpdateData() which calls Validator, which uses m_maxDays (phew!)
+  // Need to do this early, since base class's OnInitDialog()
+  // calls UpdateData() which calls Validator, which uses m_maxDays (phew!)
   const CTime ct_Latest(2038, 1, 18, 0, 0, 0);
 
   CTimeSpan elapsedTime = ct_Latest - CTime::GetCurrentTime();
