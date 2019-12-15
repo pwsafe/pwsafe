@@ -168,8 +168,8 @@ public:
   template<typename ItemsCollection>
   void RearrangeItems(ItemsCollection& collection, int column);
 
-  std::tuple<int, int> HitTest(const wxPoint& point);
-  bool HasGridCell(std::tuple<int, int> cellGridCoordinates);
+  std::tuple<int, int> HitTest(const wxPoint& point) const;
+  bool HasGridCell(const std::tuple<int, int>& cellGridCoordinates) const;
 
   PWScore &m_core;
   RowUUIDMapT m_row_map;
