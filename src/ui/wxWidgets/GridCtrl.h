@@ -29,6 +29,7 @@
 
 #include <functional>
 #include <map>
+#include <tuple>
 
 /*!
  * Forward declarations
@@ -123,6 +124,12 @@ public:
   /// EVT_HEADER_CLICK
   void OnHeaderClick(wxHeaderCtrlEvent& event);
 
+  /// wxEVT_RIGHT_DOWN event handler for mouse events
+  void OnMouseRightClick(wxMouseEvent& event);
+
+  /// wxEVT_LEFT_DOWN event handler for mouse events
+  void OnMouseLeftClick(wxMouseEvent& event);
+
 ////@end GridCtrl event handler declarations
 
 ////@begin GridCtrl member function declarations
@@ -160,6 +167,9 @@ public:
 
   template<typename ItemsCollection>
   void RearrangeItems(ItemsCollection& collection, int column);
+
+  std::tuple<int, int> HitTest(const wxPoint& point);
+  bool HasGridCell(std::tuple<int, int> cellGridCoordinates);
 
   PWScore &m_core;
   RowUUIDMapT m_row_map;

@@ -84,7 +84,7 @@ GridCtrl::GridCtrl(wxWindow* parent, PWScore &core,
 
   if (header) {
 
-    // Handler for double click events on column header separator
+    // Handler for double click events on column header separator.
     header->Bind(
       wxEVT_HEADER_SEPARATOR_DCLICK, 
       [=](wxHeaderCtrlEvent& event) {
@@ -92,13 +92,31 @@ GridCtrl::GridCtrl(wxWindow* parent, PWScore &core,
       }
     );
 
-    // Handler for single click events on column header
+    // Handler for single click events on column header.
     header->Bind(
       wxEVT_HEADER_CLICK, 
       &GridCtrl::OnHeaderClick,
       this
     );
   }
+
+  // Handler for mouse right click events outside of grid, resp. within grid window.
+  GetGridWindow()->Bind(
+#ifdef __WINDOWS__
+    wxEVT_RIGHT_UP,
+#else
+    wxEVT_RIGHT_DOWN,
+#endif
+    &GridCtrl::OnMouseRightClick,
+    this
+  );
+
+  // Handler for mouse left click events outside of grid, resp. within grid window.
+  GetGridWindow()->Bind(
+    wxEVT_LEFT_DOWN,
+    &GridCtrl::OnMouseLeftClick,
+    this
+  );
 }
 
 /*!
@@ -602,6 +620,33 @@ void GridCtrl::OnHeaderClick(wxHeaderCtrlEvent& event)
   }
 }
 
+void GridCtrl::OnMouseRightClick(wxMouseEvent& event)
+{
+  auto gridCellInfo = HitTest(event.GetPosition());
+
+  /* check cell column index and cell row index */
+  if (!HasGridCell(gridCellInfo)) {
+    ClearSelection();
+    dynamic_cast<PasswordSafeFrame *>(GetParent())->OnContextMenu(nullptr);
+  }
+  else {
+    event.Skip();
+  }
+}
+
+void GridCtrl::OnMouseLeftClick(wxMouseEvent& event)
+{
+  auto gridCellInfo = HitTest(event.GetPosition());
+
+  /* check cell column index and cell row index */
+  if (!HasGridCell(gridCellInfo)) {
+    ClearSelection();
+  }
+  else {
+    event.Skip();
+  }
+}
+
 void GridCtrl::SortByColumn(int column, bool ascending)
 {
   UnsetSortingColumn();
@@ -636,5 +681,35 @@ void GridCtrl::RearrangeItems(ItemsCollection& collection, int column)
 
   for (auto& item : collection) {
     RefreshItem(*item.second, row++);
+  }
+}
+
+/**
+ * Determines whether a cell or row is below the specified position.
+ * 
+ * @param point reflects the position to be checked for a grid cell.
+ * @return the cell index and row index as tuple.
+ *         -1 indicates that no grid cell exists at the given position.
+ */
+std::tuple<int, int> GridCtrl::HitTest(const wxPoint& point)
+{
+  auto gridCellCoordinates = XYToCell(point);
+
+  return std::make_tuple(gridCellCoordinates.GetCol(), gridCellCoordinates.GetRow());
+}
+
+/**
+ * Determines whether a grid cell exists at given grid coordinates.
+ * 
+ * @param cellGridCoordinates the column and row index pointing possibly to a grid cell.
+ * @return true if a grid cell exists at the given coordinates, otherwise false.
+ */
+bool GridCtrl::HasGridCell(std::tuple<int, int> cellGridCoordinates)
+{
+  if ((std::get<0>(cellGridCoordinates) < 0) && (std::get<1>(cellGridCoordinates) < 0)) {
+    return false;
+  }
+  else {
+    return true;
   }
 }
