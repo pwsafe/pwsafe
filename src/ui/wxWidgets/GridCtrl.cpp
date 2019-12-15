@@ -624,7 +624,7 @@ void GridCtrl::OnMouseRightClick(wxMouseEvent& event)
 {
   auto gridCellInfo = HitTest(event.GetPosition());
 
-  /* check cell column index and cell row index */
+  /* check whether a grid cell was hit */
   if (!HasGridCell(gridCellInfo)) {
     ClearSelection();
     dynamic_cast<PasswordSafeFrame *>(GetParent())->OnContextMenu(nullptr);
@@ -638,7 +638,7 @@ void GridCtrl::OnMouseLeftClick(wxMouseEvent& event)
 {
   auto gridCellInfo = HitTest(event.GetPosition());
 
-  /* check cell column index and cell row index */
+  /* check whether a grid cell was hit */
   if (!HasGridCell(gridCellInfo)) {
     ClearSelection();
   }
@@ -691,7 +691,7 @@ void GridCtrl::RearrangeItems(ItemsCollection& collection, int column)
  * @return the cell index and row index as tuple.
  *         -1 indicates that no grid cell exists at the given position.
  */
-std::tuple<int, int> GridCtrl::HitTest(const wxPoint& point)
+std::tuple<int, int> GridCtrl::HitTest(const wxPoint& point) const
 {
   auto gridCellCoordinates = XYToCell(point);
 
@@ -704,7 +704,7 @@ std::tuple<int, int> GridCtrl::HitTest(const wxPoint& point)
  * @param cellGridCoordinates the column and row index pointing possibly to a grid cell.
  * @return true if a grid cell exists at the given coordinates, otherwise false.
  */
-bool GridCtrl::HasGridCell(std::tuple<int, int> cellGridCoordinates)
+bool GridCtrl::HasGridCell(const std::tuple<int, int>& cellGridCoordinates) const
 {
   if ((std::get<0>(cellGridCoordinates) < 0) && (std::get<1>(cellGridCoordinates) < 0)) {
     return false;
