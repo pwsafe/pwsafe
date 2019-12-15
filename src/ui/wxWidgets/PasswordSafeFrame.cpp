@@ -1460,22 +1460,30 @@ void PasswordSafeFrame::FlattenTree(OrderedItemList& olist)
 void PasswordSafeFrame::OnContextMenu(const CItemData* item)
 {
   if (item == nullptr) {
-    wxMenu groupEditMenu;
-    groupEditMenu.Append(wxID_ADD, _("Add &Entry"));
-    groupEditMenu.Append(ID_ADDGROUP, _("Add &Group"));
-
-    /*
-      The tree's root item is considered as a group,
-      but is not allowed to and cannot be modified.
-      Only groups from the users database are editable.
-    */
-    if (IsTreeView() && !m_tree->IsRootSelected()) {
-      groupEditMenu.Append(ID_RENAME, _("&Rename Group"));
-      groupEditMenu.Append(wxID_DELETE, _("&Delete Group"));
-    }
-
     if (IsTreeView()) {
+      wxMenu groupEditMenu;
+
+      groupEditMenu.Append(wxID_ADD, _("Add &Entry"));
+      groupEditMenu.Append(ID_ADDGROUP, _("Add &Group"));
+
+      /*
+        The tree's root item is considered as a group,
+        but is not allowed to and cannot be modified.
+        Only groups from the users database are editable.
+      */
+      if (!m_tree->IsRootSelected()) {
+        groupEditMenu.Append(ID_RENAME, _("&Rename Group"));
+        groupEditMenu.Append(wxID_DELETE, _("&Delete Group"));
+      }
+
       m_tree->PopupMenu(&groupEditMenu);
+    }
+    else {
+      wxMenu contextMenu;
+
+      contextMenu.Append(wxID_ADD, _("Add &Entry"));
+
+      m_grid->PopupMenu(&contextMenu);
     }
   }
   else {
