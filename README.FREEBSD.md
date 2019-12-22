@@ -32,18 +32,22 @@ Here are the packages/tools required for building "pwsafe".
 - textproc/xerces-c3
 - x11-toolkits/wxgtk30
 
+
 ## Build
 1. Create the build directory
-
-    `mkdir build; cd build;`
+    ```
+    mkdir build; cd build;
+    ```
  
 2. Create the makefiles
- 
-    `cmake -D wxWidgets_CONFIG_EXECUTABLE=/usr/local/bin/wxgtk2u-3.0-config -D CMAKE_C_COMPILER=clang38 -DCMAKE_CXX_COMPILER=clang++38 ..`
+    ```
+    cmake -D wxWidgets_CONFIG_EXECUTABLE=/usr/local/bin/wxgtk2u-3.0-config -D CMAKE_C_COMPILER=clang38 -DCMAKE_CXX_COMPILER=clang++38 ..
+    ```
     
 3. Start the build process
-
-    `gmake`
+    ```
+    gmake
+    ```
 
 4. Your `pwsafe` binary is in `build` (your current directory)
 
