@@ -1,5 +1,5 @@
-Password Safe 3.51pre Release December 2019
-===========================================
+Password Safe 3.51 Release December 2019
+========================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -13,14 +13,14 @@ SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
 
-Bugs Fixed in 3.51pre
-=====================
+Bugs Fixed in 3.51
+==================
 [1497] Changing the password now updates the expiration date if
 recurring expiration set.
 [1490,G359,G550] Fixed -s switch regression.
 
-New Features in 3.51pre
-=======================
+New Features in 3.51
+====================
 [884] Copying password in Edit window of alias entry now copies the
 "real" password (that of the base entry).
 
@@ -45,6 +45,3 @@ New Features in 3.49.0
 [856] Setting the "Copy password to clipboard upon browse" implies copy
 password upon Run command.
 [-] Added command-line program pwsafe-cli, suitable for scripting.
-
-Bugs Fixed in 3.49.0
-====================
