@@ -1355,16 +1355,16 @@ bool CCompareResultsDlg::CompareEntries(st_CompareData *pst_data)
   if (currentItem.GetEntryType() == CItemData::ET_ALIAS ||
       currentItem.GetEntryType() == CItemData::ET_SHORTCUT) {
      CItemData *pci_base = m_pcore0->GetBaseEntry(&currentItem);
-     sxCurrentPassword == pci_base->GetPassword();
+     sxCurrentPassword = pci_base->GetPassword();
   } else
-    sxCurrentPassword == currentItem.GetPassword();
+    sxCurrentPassword = currentItem.GetPassword();
 
   if (compItem.GetEntryType() == CItemData::ET_ALIAS ||
       compItem.GetEntryType() == CItemData::ET_SHORTCUT) {
     CItemData *pci_base = m_pcore1->GetBaseEntry(&compItem);
-    sxComparisonPassword == pci_base->GetPassword();
+    sxComparisonPassword = pci_base->GetPassword();
   } else
-    sxComparisonPassword == compItem.GetPassword();
+    sxComparisonPassword = compItem.GetPassword();
 
   if (m_bsFields.test(CItemData::PASSWORD) &&
       sxCurrentPassword != sxComparisonPassword)
