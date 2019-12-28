@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-12-17 19:21+0100\n"
+"PO-Revision-Date: 2019-12-18 22:08+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -58,7 +58,7 @@ msgstr ""
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
 #. Resource IDs: (3263)
 msgid "  All Password History ignored."
-msgstr "  Alle Wachtwoord Geschiedenis genegeerd."
+msgstr "  Alle Wachtwoordgeschiedenis genegeerd."
 
 #. Resource IDs: (3040)
 msgid "  Field is too long."
@@ -201,11 +201,11 @@ msgstr " 'symbolen'"
 
 #. Resource IDs: (4105)
 msgid " (EasyVision Symbols)"
-msgstr ""
+msgstr " (EasyVision-symbolen)"
 
 #. Resource IDs: (4106)
 msgid " (Pronounceable Symbols)"
-msgstr ""
+msgstr " (Uitspreekbare Symbolen)"
 
 #. Resource IDs: (4011)
 msgid " (application default)"
@@ -213,7 +213,7 @@ msgstr " (applicatie standaard)"
 
 #. Resource IDs: (4115)
 msgid " (at least N restrictions may be ignored)"
-msgstr ""
+msgstr " (ten minste N beperkingen kunnen worden genegeerd)"
 
 #. Resource IDs: (5781)
 #, c-format
@@ -1561,7 +1561,7 @@ msgstr "Geavanceerde veld selectie criteria"
 
 #. Resource IDs: (1077)
 msgid "After"
-msgstr ""
+msgstr "Na"
 
 #. Resource IDs: (8223)
 msgid "Albanian"
@@ -2059,6 +2059,9 @@ msgid ""
 "* indicates the database has been changed\n"
 "° indicates a database preference has been changed"
 msgstr ""
+"Status wijzigen sinds laatste opslaan:\n"
+"* geeft aan dat de database is gewijzigd\n"
+"° geeft aan dat een database-voorkeur is gewijzigd"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2771,7 +2774,7 @@ msgstr "Standaard aantal bewaarde wachtwoorden voor de wachtwoord geschiedenis m
 
 #. Resource IDs: (1447)
 msgid "Default password expiration (days)"
-msgstr ""
+msgstr "Standaard wachtwoord verloopt (dagen)"
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -4566,7 +4569,7 @@ msgstr "Vergrendel de kluis"
 
 #. Resource IDs: (65535)
 msgid "Lock password database "
-msgstr ""
+msgstr "Vergrendel wachtwoorddatabase "
 
 #. Resource IDs: (5113)
 msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
@@ -4619,7 +4622,7 @@ msgstr "Marathi"
 
 #. Resource IDs: (65535)
 msgid "Master Password last set on:"
-msgstr ""
+msgstr "Hoofdwachtwoord laatst ingesteld op:"
 
 #. Resource IDs: (1212)
 msgid "Max."
@@ -5117,11 +5120,11 @@ msgstr "Aan"
 
 #. Resource IDs: (1026)
 msgid "On minimize"
-msgstr ""
+msgstr "Bij minimaliseren"
 
 #. Resource IDs: (1073)
 msgid "On workstation lock"
-msgstr ""
+msgstr "Bij PC vergrendeling"
 
 #. Resource IDs: (5894)
 msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
@@ -5667,7 +5670,7 @@ msgstr "Programma's (*.exe)|*.exe|Alle bestanden  (*.*)|*.*||"
 
 #. Resource IDs: (1030)
 msgid "Prompt user for default username"
-msgstr ""
+msgstr "Gebruiker vragen om standaard gebruikersnaam"
 
 #. Resource IDs: (4112)
 msgid "Pronounceable passwords"
@@ -6278,11 +6281,11 @@ msgstr "Shift"
 
 #. Resource IDs: (65535)
 msgid "Shift Double-Click Action"
-msgstr ""
+msgstr "Shift+Dubbelklik Actie"
 
 #. Resource IDs: (65535)
 msgid "Shift Double-Click Action:"
-msgstr ""
+msgstr "Shift+Dubbelklik Actie:"
 
 #. Resource IDs: (5689)
 msgid "Shift+"
@@ -7134,7 +7137,7 @@ msgstr "Dit is een alias van:"
 #. Resource IDs: (5121)
 #, c-format
 msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
-msgstr "Dit is het percentage van het Venster transparantie. 0%  betekent normaal volledig ondoorzichtig en 100% is volledig transparant en onzichtbaar. Waarden groter dan 50% worden niet ondersteund. Merk op: dit geldt alleen voor het hoofd dialoogvenster."
+msgstr "Dit is het percentage van het Venster transparantie. 0% mbetekent normaal volledig ondoorzichtig en 100% is volledig transparant en onzichtbaar. Waarden groter dan 50% aworden niet ondersteund. Merk op: dit geldt alleen voor het hoofd dialoogvenster."
 
 #. Resource IDs: (61710)
 #, c-format
@@ -7905,7 +7908,7 @@ msgstr "Ja (minstens %d)"
 #. Resource IDs: (4107)
 #, c-format
 msgid "Yes - At least %d from %ls: %ls%ls"
-msgstr ""
+msgstr "Ja - Ten minste% d van% ls:% ls% ls"
 
 #. Resource IDs: (1084)
 msgid "Yes:"
