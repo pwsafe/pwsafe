@@ -71,7 +71,7 @@ described here.
 Where:
 
 2.1 Nonce is a 256 bit random value, used (a) to verify that the file
-has not not changed since last read (although this is not foolproof,
+has not changed since last read (although this is not foolproof,
 it's the best we can do across file sharers), and (b) to help detect
 the end of the key blocks, as described below.
 
@@ -167,7 +167,7 @@ the need to decrypt and re-encrypt. See Section 3.4 for details.
 
 2.5.2.5 For all records, all non-mandatory fields may either be absent
 or have zero length. When a field is absent or zero-length, its
-default value shall be used. Aside from first UUID field and the the
+default value shall be used. Aside from first UUID field and the
 terminating 'END' field, no order is assumed on the field types unless
 otherwise specified.
 
