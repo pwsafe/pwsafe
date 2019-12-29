@@ -220,7 +220,7 @@ END_EVENT_TABLE()
 
 SyncWizard::SyncWizard(wxWindow* parent, PWScore* core):
                 wxWizard(parent, wxID_ANY, _("Synchronize another database with currently open database")),
-                m_page1(0), m_syncData(new SyncData)
+                m_page1(nullptr), m_syncData(new SyncData)
 {
   //select all fields, except those below
   m_syncData->selCriteria.SelectAllFields();
@@ -261,7 +261,7 @@ SyncWizard::SyncWizard(wxWindow* parent, PWScore* core):
 SyncWizard::~SyncWizard()
 {
   delete m_syncData;
-  m_syncData = 0;
+  m_syncData = nullptr;
 }
 
 void SyncWizard::OnWizardPageChanging(wxWizardEvent& evt)
@@ -428,8 +428,8 @@ void SyncFieldSelectionPage::SaveData(SyncData* data)
 //
 SyncOptionsSummaryPage::SyncOptionsSummaryPage(wxWizard* parent, SyncData* data)
                               : SyncWizardPage(parent, data, _("Options Summary")),
-                                m_updatedFieldsGrid(0),
-                                m_notUpdatedFieldsGrid(0)
+                                m_updatedFieldsGrid(nullptr),
+                                m_notUpdatedFieldsGrid(nullptr)
 {
   wxSizerFlags flags = wxSizerFlags().Expand().Proportion(0).Border(wxLEFT+wxRIGHT, SideMargin);
   wxSizerFlags gridFlags = wxSizerFlags().Expand().Proportion(1).Border(wxLEFT+wxRIGHT, SideMargin*2);

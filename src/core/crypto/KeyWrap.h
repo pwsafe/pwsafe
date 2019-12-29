@@ -21,7 +21,7 @@ class Fish;
 class KeyWrap
 {
 public:
- KeyWrap(Fish *fish = 0) : m_fish(fish) {}
+ KeyWrap(Fish *fish = nullptr) : m_fish(fish) {}
   ~KeyWrap() {}
 
   void SetFish(Fish *fish) {m_fish = fish;} // if not set in c'tor

@@ -331,7 +331,7 @@ void SetFont(wxGrid *grid, int row)
 /////////////////////////////////////////////////////////////////////////////////
 // PWSMenuShortcuts
 ///////////////////
-PWSMenuShortcuts::PWSMenuShortcuts(wxMenuBar* menuBar): m_shortcutsGrid(0)
+PWSMenuShortcuts::PWSMenuShortcuts(wxMenuBar* menuBar): m_shortcutsGrid(nullptr)
 {
   std::back_insert_iterator<MenuItemDataArray> inserter = std::back_inserter(m_midata);
   for( unsigned menuIndex = 0; menuIndex < menuBar->GetMenuCount(); ++menuIndex) {
@@ -343,11 +343,11 @@ PWSMenuShortcuts::~PWSMenuShortcuts()
 {
 }
 
-PWSMenuShortcuts* g_pShortcutsManager = 0;
+PWSMenuShortcuts* g_pShortcutsManager = nullptr;
 
 PWSMenuShortcuts* PWSMenuShortcuts::CreateShortcutsManager(wxMenuBar* menubar)
 {
-  wxCHECK_MSG(g_pShortcutsManager == 0, g_pShortcutsManager, wxT("Shortcuts manager being created multiple times"));
+  wxCHECK_MSG(g_pShortcutsManager == nullptr, g_pShortcutsManager, wxT("Shortcuts manager being created multiple times"));
   g_pShortcutsManager = new PWSMenuShortcuts(menubar);
   return g_pShortcutsManager;
 }
@@ -361,7 +361,7 @@ PWSMenuShortcuts* PWSMenuShortcuts::GetShortcutsManager()
 void PWSMenuShortcuts::DestroyShortcutsManager()
 {
   delete g_pShortcutsManager;
-  g_pShortcutsManager = 0;
+  g_pShortcutsManager = nullptr;
 }
 
 wxString PWSMenuShortcuts::MenuLabelAt(size_t index) const
@@ -384,7 +384,7 @@ wxAcceleratorEntry PWSMenuShortcuts::OriginalShortcutAt(size_t index) const
 
 wxMenuItem* PWSMenuShortcuts::MenuItemAt(size_t index) const
 {
-  wxCHECK_MSG(index < Count(), 0, wxT("Index for menuitem exceeds number of menu items retrieved"));
+  wxCHECK_MSG(index < Count(), nullptr, wxT("Index for menuitem exceeds number of menu items retrieved"));
   return m_midata[index].GetMenuItem();
 }
 

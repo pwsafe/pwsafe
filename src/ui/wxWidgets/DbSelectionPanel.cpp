@@ -38,8 +38,8 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
                                     const wxString& filePickerCtrlTitle,
                                     bool autoValidate,
                                     PWScore* core,
-                                    unsigned rowsep) : wxPanel(parent), m_filepicker(0),
-                                                                        m_sc(0),
+                                    unsigned rowsep) : wxPanel(parent), m_filepicker(nullptr),
+                                                                        m_sc(nullptr),
                                                                         m_bAutoValidate(autoValidate),
                                                                         m_core(core)
 {

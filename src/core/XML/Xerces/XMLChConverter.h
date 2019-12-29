@@ -42,7 +42,7 @@ struct _XMLChDeallocator {
       allocations[utf8str] = newstr;
       return newstr;
     }
-    return 0;
+    return nullptr;
   }
 
   static StringX Xml2StringX(const XMLCh* xs) {

@@ -27,7 +27,7 @@ int localtime64_r(const __time64_t *timep, struct tm *result)
   }
 #endif
 
-  return localtime_r(tp, result) != 0;
+  return localtime_r(tp, result) != nullptr;
 }
 
 int pws_os::asctime(TCHAR *s, size_t, tm const *t)

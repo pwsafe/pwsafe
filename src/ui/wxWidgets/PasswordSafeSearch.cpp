@@ -72,7 +72,7 @@ enum {
   ID_FIND_STATUS_AREA
 }; // see also PasswordSafeSearch::CalculateToolsWidth() in case of updates
 
-PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(0),
+PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(nullptr),
                                                                     m_parentFrame(parent),
                                                                     m_criteria(new SelectionCriteria)
 {
@@ -81,10 +81,10 @@ PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(0)
 PasswordSafeSearch::~PasswordSafeSearch()
 {
   delete m_toolbar;
-  m_toolbar = 0;
+  m_toolbar = nullptr;
 
   delete m_criteria;
-  m_criteria = 0;
+  m_criteria = nullptr;
 }
 
 void PasswordSafeSearch::OnSearchTextChanged(wxCommandEvent& event)
@@ -159,7 +159,7 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   UpdateView();
 
   // Replace the "Find" menu item under Edit menu by "Find Next" and "Find Previous"
-  wxMenu* editMenu = 0;
+  wxMenu* editMenu = nullptr;
   wxMenuItem* findItem = m_parentFrame->GetMenuBar()->FindItem(wxID_FIND, &editMenu);
   if (findItem && editMenu) {
     //Is there a way to do this without hard-coding the insert position?
@@ -308,13 +308,13 @@ void PasswordSafeSearch::HideSearchToolbar()
   m_parentFrame->GetSizer()->Layout();
   m_parentFrame->SetFocus();
 
-  wxMenu* editMenu = 0; // will be set by FindItem() below
+  wxMenu* editMenu = nullptr; // will be set by FindItem() below
   wxMenuItem* findNextItem = m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_NEXT, &editMenu);
   if (editMenu) {       // the menu might not have been modified if nothing was actually searched for
     if (findNextItem) {
       editMenu->Delete(findNextItem);
     }
-    wxMenuItem* findPreviousItem = m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_PREVIOUS, 0);
+    wxMenuItem* findPreviousItem = m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_PREVIOUS, nullptr);
     if (findPreviousItem) {
       editMenu->Delete(findPreviousItem);
     }

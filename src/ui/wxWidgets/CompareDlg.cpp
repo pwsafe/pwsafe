@@ -78,7 +78,7 @@ struct ComparisonData {
   CompareData data;
   wxSizerItem* sizerBelow;  //for managing the spacers in between
 
-  ComparisonData(): pane(0), grid(0), sizerBelow(0){}
+  ComparisonData(): pane(nullptr), grid(nullptr), sizerBelow(nullptr){}
   ~ComparisonData() { /*nothing to do.  All window objects deleted automatically */ }
 };
 
@@ -100,9 +100,9 @@ CompareDlg::CompareDlg(wxWindow* parent, PWScore* currentCore): wxDialog(parent,
                                                                 m_currentCore(currentCore),
                                                                 m_otherCore(new PWSAuxCore),
                                                                 m_selCriteria(new SelectionCriteria),
-                                                                m_dbPanel(0),
-                                                                m_dbSelectionPane(0),
-                                                                m_optionsPane(0),
+                                                                m_dbPanel(nullptr),
+                                                                m_dbSelectionPane(nullptr),
+                                                                m_optionsPane(nullptr),
                                                                 m_current(new ComparisonData),
                                                                 m_comparison(new ComparisonData),
                                                                 m_conflicts(new ComparisonData),
@@ -259,7 +259,7 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
   else
     cd->grid = new wxGrid(sizedPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0); //don't have wxWANTS_CHARS
   //create a way to get to the ComparisonData object from the grid, which is the only thing we have in events
-  wxASSERT_MSG(cd->grid->GetClientData() == 0, wxT("wxGrid::ClientData is not nullptr on creation.  Need to use that for our purposes"));
+  wxASSERT_MSG(cd->grid->GetClientData() == nullptr, wxT("wxGrid::ClientData is not nullptr on creation.  Need to use that for our purposes"));
   cd->grid->SetClientData(cd);
 #ifndef __WXMSW__
   wxFont monospacedFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
@@ -337,7 +337,7 @@ void CompareDlg::DoCompare(wxCommandEvent& /*evt*/)
                    {m_comparison, true,  false, true},
                    {m_identical,  false, false, false}
   };
-  wxSizerItem* prevSizer = 0;
+  wxSizerItem* prevSizer = nullptr;
   for(size_t idx =0; idx < WXSIZEOF(sections); ++idx) {
     ComparisonGridTable* table;
     if (sections[idx].multiSource) {

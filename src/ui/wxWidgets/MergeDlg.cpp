@@ -40,7 +40,7 @@ END_EVENT_TABLE()
 
 MergeDlg::MergeDlg(wxWindow* parent, PWScore* core) :
                       wxDialog(parent, wxID_ANY, wxString(_("Merge Another Database"))),
-                      m_core(core), m_selection(new SelectionCriteria), m_dbPanel(0)
+                      m_core(core), m_selection(new SelectionCriteria), m_dbPanel(nullptr)
 {
   const wxString filePrompt(wxString(_("Choose Database to Merge into \"")) <<
                                           towxstring(m_core->GetCurFile()) << wxT("\""));

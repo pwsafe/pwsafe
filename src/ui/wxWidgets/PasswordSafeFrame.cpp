@@ -314,7 +314,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-  : m_core(core), m_currentView(ViewType::GRID), m_search(0), m_sysTray(new SystemTray(this)),
+  : m_core(core), m_currentView(ViewType::GRID), m_search(nullptr), m_sysTray(new SystemTray(this)),
     m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
     m_RUEList(core), m_guiInfo(new GuiInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
     m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
@@ -395,13 +395,13 @@ PasswordSafeFrame::~PasswordSafeFrame()
 ////@begin PasswordSafeFrame destruction
 ////@end PasswordSafeFrame destruction
   delete m_search;
-  m_search = 0;
+  m_search = nullptr;
 
   delete m_sysTray;
-  m_sysTray = 0;
+  m_sysTray = nullptr;
 
   delete m_guiInfo;
-  m_guiInfo = 0;
+  m_guiInfo = nullptr;
 
   m_core.ClearDBData();
   m_core.UnregisterObserver(this);

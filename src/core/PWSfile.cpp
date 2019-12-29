@@ -422,7 +422,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     Fish *fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<unsigned int &>(passlen), salt, SaltLength);
     trashMemory(pwd, passlen);
     delete[] pwd; // gross - ConvertPasskey allocates.
-    if (_readcbc(in, buf, len,dummyType, fish, ipthing, 0, file_len) == 0) {
+    if (_readcbc(in, buf, len,dummyType, fish, ipthing, nullptr, file_len) == 0) {
       delete fish;
       delete[] buf; // if not yet allocated, delete[] nullptr, which is OK
       return false;

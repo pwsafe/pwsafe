@@ -180,7 +180,7 @@ IMPLEMENT_CLASS( PWSafeApp, wxApp )
  */
 
 PWSafeApp::PWSafeApp() : m_idleTimer(new wxTimer(this, IDLE_TIMER_ID)),
-                         m_frame(0), m_recentDatabases(0),
+                         m_frame(nullptr), m_recentDatabases(nullptr),
                          m_locale(nullptr)
 {
   Init();

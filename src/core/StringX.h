@@ -95,7 +95,7 @@ namespace S_Alloc
         };
 
       // Allocate raw memory
-      pointer allocate(size_type n, const_pointer hint = 0) {
+      pointer allocate(size_type n, const_pointer hint = nullptr) {
         UNREFERENCED_PARAMETER(hint);
         pointer p = static_cast<pointer>(std::malloc(n * sizeof(T)));
         if (p == nullptr)

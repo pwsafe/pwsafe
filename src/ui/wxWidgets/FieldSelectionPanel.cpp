@@ -63,8 +63,8 @@ BEGIN_EVENT_TABLE( FieldSelectionPanel, wxPanel )
 END_EVENT_TABLE()
 
 FieldSelectionPanel::FieldSelectionPanel(wxWindow* parent): wxPanel(parent),
-                                                            m_lbSelected(0),
-                                                            m_lbAvailable(0)
+                                                            m_lbSelected(nullptr),
+                                                            m_lbAvailable(nullptr)
 {
   wxFlexGridSizer* grid = new wxFlexGridSizer(3, RowSeparation, ColSeparation);
 
@@ -181,7 +181,7 @@ void FieldSelectionPanel::MoveItem(int index, wxListBox* from, wxListBox* to)
 {
 
   FieldData* oldData = dynamic_cast<FieldData*>(from->GetClientObject(index));
-  FieldData* newData = oldData? new FieldData(*oldData): 0;
+  FieldData* newData = oldData? new FieldData(*oldData): nullptr;
   to->Append(from->GetString(index), newData);
   from->Delete(index);
 }
