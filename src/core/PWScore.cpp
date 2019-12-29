@@ -1299,7 +1299,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
           (*m_pReporter)(cs_msg);
         }
       }
-      // deliberate fall-through
+      [[fallthrough]];
       case PWSfile::SUCCESS:
         ProcessReadEntry(ci_temp, vGTU_INVALID_UUID, vGTU_DUPLICATE_UUID, st_vr);
         break;

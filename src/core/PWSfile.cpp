@@ -66,12 +66,14 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
         break;
       case NEWFILE:
         ASSERT(0);
-        // deliberate fallthrough
+        [[fallthrough]];
       case UNKNOWN_VERSION:
+      default:
         status = FAILURE;
       } // inner switch
       break;
   case NEWFILE: // should never happen
+  default:
     status = FAILURE;
     ASSERT(0);
   }

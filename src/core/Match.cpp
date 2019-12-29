@@ -337,6 +337,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
         break;
       }
       // Note: purpose drop through to standard 'string' processing
+      [[fallthrough]];
     case MT_STRING:
       cs1 = fstring;
       LoadAString(cs2, fcase ? IDSC_CASE_SENSITIVE : IDSC_CASE_INSENSITIVE);

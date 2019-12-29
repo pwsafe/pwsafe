@@ -335,6 +335,7 @@ int PasswordSafeFrame::Save(SaveType savetype /* = SaveType::INVALID*/)
               if (wxMessageBox(_("Unable to create intermediate backup.  Do you wish to save changes to your database without it?"),
                 _("Write Error"), wxYES_NO | wxICON_EXCLAMATION, this) == wxID_NO)
                 return PWScore::USER_CANCEL;
+              break; // continue save
             case SaveType::INVALID:
               // No particular end of PWS exit i.e. user clicked Save or
               // saving a changed database before opening another
@@ -346,10 +347,9 @@ int PasswordSafeFrame::Save(SaveType savetype /* = SaveType::INVALID*/)
                * SaveType::WTSLOGOFFEXIT
                * SaveType::FAILSAFESAVE
                */
-              break;
+               wxMessageBox(_("Unable to create intermediate backup."), _("Write Error"), wxOK|wxICON_ERROR, this);
+               return SaveAs();
           }
-          wxMessageBox(_("Unable to create intermediate backup."), _("Write Error"), wxOK|wxICON_ERROR, this);
-          return SaveAs();
         } // BackupCurFile failed
       } // BackupBeforeEverySave
       break;
@@ -570,6 +570,8 @@ int PasswordSafeFrame::SaveIfChanged()
         // Make sure that file was successfully written
         if (rc != PWScore::SUCCESS)
           return PWScore::CANT_OPEN_FILE;
+        UpdateStatusBar();
+        break;
       case wxID_NO:
         UpdateStatusBar();
         break;
