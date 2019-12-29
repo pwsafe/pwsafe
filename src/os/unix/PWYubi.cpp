@@ -16,6 +16,7 @@
 
 #include <ykcore.h>
 #include <ykpers.h>
+#include <ykpers-version.h>
 #include <string>
 #include <cstring>
 #include <sstream>
@@ -139,7 +140,7 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
       goto done;
     }
     // ykp_HMAC_key_from_raw() was added in version 1.15.0 of ykpers
-#if ((YKPERS_VERSION_MAJOR >= 1) && (YKPERS_VERSION_MINOR >= 15))
+#if (YKPERS_VERSION_MAJOR > 1) || ((YKPERS_VERSION_MAJOR == 1) && (YKPERS_VERSION_MINOR >= 15))
     if (ykp_HMAC_key_from_raw(cfg, reinterpret_cast<const char *>(yubi_sk_bin))) {
       m_ykerrstr = _S("Internal error: couldn't configure key");
       goto done;

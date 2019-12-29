@@ -32,6 +32,7 @@
 #include <wx/utils.h> // for wxLaunchDefaultBrowser
 
 #include "core/PWSdirs.h"
+#include "core/XML/XMLDefs.h"
 #include "os/sleep.h"
 #include "os/file.h"
 
