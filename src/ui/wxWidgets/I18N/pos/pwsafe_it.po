@@ -3334,8 +3334,8 @@ msgid "See LICENSE for open source details."
 msgstr "Per dettagli sul codice sorgente, si veda la LICENZA."
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:178
-msgid "Copyright (c) 2003-2019 Rony Shapiro"
-msgstr "Copyright (c) 2003-2019 di Rony Shapiro"
+msgid "Copyright (c) 2003-2020 Rony Shapiro"
+msgstr "Copyright (c) 2003-2020 di Rony Shapiro"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:299
 #, fuzzy

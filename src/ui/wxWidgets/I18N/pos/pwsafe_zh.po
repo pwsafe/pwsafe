@@ -3463,7 +3463,7 @@ msgid "See LICENSE for open source details."
 msgstr "简体中文: 小镇医生"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:178
-msgid "Copyright (c) 2003-2019 Rony Shapiro"
+msgid "Copyright (c) 2003-2020 Rony Shapiro"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:299

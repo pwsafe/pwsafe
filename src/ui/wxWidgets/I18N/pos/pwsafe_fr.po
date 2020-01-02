@@ -3506,7 +3506,7 @@ msgid "See LICENSE for open source details."
 msgstr "Voir la LICENCE à propos des détails 'open source'"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:178
-msgid "Copyright (c) 2003-2019 Rony Shapiro"
+msgid "Copyright (c) 2003-2020 Rony Shapiro"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:299
