@@ -239,7 +239,7 @@ void PasswordSafeSearch::UpdateStatusAreaWidth()
   auto control = m_toolbar->FindControl(ID_FIND_STATUS_AREA);
 
   if (control) {
-    auto statusAreaWidth = (m_toolbar->GetParent()->GetClientSize()).GetWidth() - m_ToolsWidth;
+    int statusAreaWidth = (m_toolbar->GetParent()->GetClientSize()).GetWidth() - static_cast<int>(m_ToolsWidth);
 
     if (statusAreaWidth < 0) {
       return;
