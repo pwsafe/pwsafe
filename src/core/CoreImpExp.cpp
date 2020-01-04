@@ -887,7 +887,16 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     i_Offset[i] = -1;
   }
 
-  pSeps[0] = static_cast<const char>(fieldSeparator);
+
+  if (fieldSeparator > 0 && fieldSeparator <= 127) {
+    // we parse header as ASCII, so separator must be plain ASCII too
+    pSeps[0] = static_cast<char>(fieldSeparator);
+  }
+  else {
+    LoadAString(strError, IDSC_IMPORTINVALIDDELIMITER);
+    rpt.WriteLine(strError);
+    return FAILURE;
+  }
 
   // Capture individual column titles:
   string::size_type to = 0, from;
