@@ -201,38 +201,39 @@ public:
  * hooking itself in as a dynamic event handler entry into the
  * event source, which are called before other types of handlers
  */
-template <class evtClass>
-class EventDataInjector: public wxEvtHandler
-{
+class EventDataInjector {
   wxEvtHandler* m_evtSource;
   void* m_clientData;
   wxEventType m_eventType;
-  int m_windowId;
   bool  m_oneShot;
 public:
   EventDataInjector(wxEvtHandler* evtSource, void* clientData,
-                    wxEventType evtType, int winid = wxID_ANY,
+                    wxEventType evtType,
                     bool oneShot = true): m_evtSource(evtSource),
                                           m_clientData(clientData),
                                           m_eventType(evtType),
-                                          m_windowId(winid),
                                           m_oneShot(oneShot)
   {
-    evtSource->Connect(winid, evtType,
-                  evtType,
-                  (wxObjectEventFunction)&EventDataInjector::OnHookedEvent,
-                  nullptr, //this is for wxWidgets' private use only
+    // no need for id, we bind directly to source
+    evtSource->Bind(evtType,
+                  &EventDataInjector::OnHookedEvent,
                   this);
   }
 
-  void OnHookedEvent(evtClass& evt) {
-    evt.Skip();
-    wxCHECK_RET(!evt.GetClientData(), wxT("Command event already has client data"));
-    evt.SetClientData(m_clientData);
+  void OnHookedEvent(wxEvent& event) {
+    event.Skip();
+    wxCommandEvent *cmdEvent = dynamic_cast<wxCommandEvent*>(&event);
+    if (cmdEvent) {
+      wxCHECK_RET(!cmdEvent->GetClientData(), wxT("Command event already has client data"));
+      cmdEvent->SetClientData(m_clientData);
+    }
+    else {
+      wxASSERT_MSG(false, wxT("Non-command event in EventDataInjector"));
+    }
     if (m_oneShot) {
-      wxCHECK_RET(m_evtSource->Disconnect(m_windowId, m_eventType,
-                              (wxObjectEventFunction)&EventDataInjector::OnHookedEvent,
-                              nullptr, this), wxT("Could not remove dynamic event parameter injection hook"));
+      wxCHECK_RET(m_evtSource->Unbind(m_eventType,
+                              &EventDataInjector::OnHookedEvent,
+                              this), wxT("Could not remove dynamic event parameter injection hook"));
     }
   }
 };

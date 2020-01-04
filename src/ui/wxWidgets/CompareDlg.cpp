@@ -410,7 +410,7 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   size_t selectionCount = menuContext.selectedRows.GetCount();
   if (menuContext.cdata == m_conflicts) {
     selectionCount /= 2;
-    wxCHECK_RET(menuContext.selectedItems.GetCount()%2 ==0, wxT("Conflicts grid should always select an even numer of items"));
+    wxCHECK_RET(menuContext.selectedItems.GetCount()%2 ==0, wxT("Conflicts grid should always select an even number of items"));
     //Our algorithm requires the indexes to be in order, and sometimes these are actually unsorted
     menuContext.selectedItems.Sort(pless);
     for( size_t idx = 1; idx <= selectionCount; ++idx) {
@@ -495,7 +495,7 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   }
 
   // Make the menuContext object available to the handlers
-  EventDataInjector<wxCommandEvent> inject(&itemEditMenu, &menuContext, wxEVT_COMMAND_MENU_SELECTED);
+  EventDataInjector inject(&itemEditMenu, &menuContext, wxEVT_COMMAND_MENU_SELECTED);
 
   menuContext.cdata->grid->PopupMenu(&itemEditMenu);
 }
