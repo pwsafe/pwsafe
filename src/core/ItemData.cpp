@@ -2127,7 +2127,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   for (auto ft : uuidfts) {
     if (IsFieldSet(ft)) {
       GetUUID(uuid_array);
-      v.push_back(static_cast<const char>(ft));
+      v.push_back(static_cast<char>(ft));
       push_length(v, sizeof(uuid_array_t));
       v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
       break;
@@ -2201,7 +2201,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   }
 
   int end = END; // just to keep the compiler happy...
-  v.push_back(static_cast<const char>(end));
+  v.push_back(static_cast<char>(end));
   push_length(v, 0);
 }
 
