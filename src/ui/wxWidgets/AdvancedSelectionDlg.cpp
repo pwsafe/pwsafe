@@ -298,9 +298,9 @@ void AdvancedSelectionPanel::OnRemoveAll( wxCommandEvent& /* evt */ )
   wxASSERT(lbSelected);
 
   for(size_t itemsLeft = lbSelected->GetCount(), idx = 0; idx < itemsLeft; ) {
-      size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(reinterpret_cast<unsigned int &>(idx)));
+      size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(static_cast<unsigned int>(idx)));
       if (!IsMandatoryField(SelectionCriteria::GetSelectableField(which))) {
-        lbSelected->Delete(reinterpret_cast<unsigned int &>(idx));
+        lbSelected->Delete(static_cast<unsigned int>(idx));
         lbAvailable->Append(SelectionCriteria::GetSelectableFieldName(SelectionCriteria::GetSelectableField(which)), reinterpret_cast<void *>(which));
         --itemsLeft;
       }

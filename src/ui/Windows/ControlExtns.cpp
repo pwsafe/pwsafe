@@ -1153,7 +1153,7 @@ void CSymbolEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     return;
   }
 
-  wint_t wChar = reinterpret_cast<wint_t &>(nChar);
+  wint_t wChar = static_cast<wint_t>(nChar);
   // Do not limit user to 'our' definition of symbols
   // i.e. allow such things as currency symbols - £, € & ¥ etc.
   // Note: EasyVision and MakePronounceable symbols will still be

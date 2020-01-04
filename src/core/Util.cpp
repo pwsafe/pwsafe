@@ -130,7 +130,7 @@ void GenRandhash(const StringX &a_passkey,
   */
   SHA1 keyHash;
   keyHash.Update(a_randstuff, StuffSize);
-  keyHash.Update(pstr, reinterpret_cast<int &>(pkeyLen));
+  keyHash.Update(pstr, static_cast<int>(pkeyLen));
 
   trashMemory(pstr, pkeyLen);
   delete[] pstr;
@@ -570,7 +570,7 @@ void PWSUtil::Base64Decode(const StringX &inString, BYTE * &outData, size_t &out
     for (i1 = 0; i1 < sizeof(szCS) - 1; i1++) {
       for (i3 = i2; i3 < i2 + 4; i3++) {
         if (i3 < in_length &&  inString[i3] == szCS[i1])
-          iDigits[i3 - i2] = reinterpret_cast<int &>(i1) - 1;
+          iDigits[i3 - i2] = static_cast<int>(i1) - 1;
       }
     }
 

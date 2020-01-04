@@ -307,8 +307,8 @@ bool UniSafeCompareGridTable::DeleteRows(size_t pos, size_t numRows)
     //This will actually remove the item from grid display
     wxGridTableMessage msg(this,
                            wxGRIDTABLE_NOTIFY_ROWS_DELETED,
-                           reinterpret_cast<int &>(pos),
-                           reinterpret_cast<int &>(numRows));
+                           static_cast<int>(pos),
+                           static_cast<int>(numRows));
     GetView()->ProcessTableMessage(msg);
   }
 
@@ -323,7 +323,7 @@ bool UniSafeCompareGridTable::AppendRows(size_t numRows/*=1*/)
                 wxT("Items must be added to UnisafeComparisonGridTable's data before adding rows"));
     wxGridTableMessage msg(this,
                            wxGRIDTABLE_NOTIFY_ROWS_APPENDED,
-                           reinterpret_cast<int &>(numRows));
+                           static_cast<int>(numRows));
     GetView()->ProcessTableMessage(msg);
   }
   return true;
@@ -508,8 +508,8 @@ bool MultiSafeCompareGridTable::DeleteRows(size_t pos, size_t numRows)
     //This will actually remove the item from grid display
     wxGridTableMessage msg(this,
                            wxGRIDTABLE_NOTIFY_ROWS_DELETED,
-                           reinterpret_cast<int &>(pos),
-                           reinterpret_cast<int &>(numRows));
+                           static_cast<int>(pos),
+                           static_cast<int>(numRows));
     GetView()->ProcessTableMessage(msg);
   }
 

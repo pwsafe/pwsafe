@@ -1724,10 +1724,10 @@ bool CItemData::Matches(int num1, int num2, int iObject,
       GetXTimeInt(iValue);
       break;
     case ENTRYSIZE:
-      GetSize(reinterpret_cast<size_t &>(iValue));
+      iValue = static_cast<int>(GetSize());
       break;
     case PASSWORDLEN:
-      iValue = (int)GetPasswordLength();
+      iValue = static_cast<int>(GetPasswordLength());
       break;
     case KBSHORTCUT:
       GetKBShortcut(iValue);

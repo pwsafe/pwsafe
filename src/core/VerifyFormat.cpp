@@ -146,7 +146,7 @@ bool VerifyASCDateTimeString(const stringT &time_str, time_t &t)
   if (iMON == stringT::npos)
     return false;
 
-  mon = ((reinterpret_cast<int &>(iMON) / 3) + 1);
+  mon = ((static_cast<int>(iMON) / 3) + 1);
 
   if (!verifyDTvalues(yyyy, mon, dd, hh, min, ss))
     return false;

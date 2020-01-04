@@ -102,7 +102,7 @@ void EditShortcutDlg::ItemFieldsToDialog()
   if (!group.empty())
     for (size_t igrp = 0; igrp < aryGroups.size(); igrp++)
       if (group == aryGroups[igrp].c_str()) {
-        m_groupCtrl->SetSelection(reinterpret_cast<int &>(igrp));
+        m_groupCtrl->SetSelection(static_cast<int>(igrp));
         break;
       }
 
