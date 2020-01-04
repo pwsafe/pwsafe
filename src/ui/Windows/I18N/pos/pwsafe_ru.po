@@ -6570,9 +6570,10 @@ msgstr "Телугу"
 msgid "Test Selected Policy"
 msgstr "Проверить выбранную политику"
 
+# Первая подстановка в "%s file being imported/exported: %s"
 #. Resource IDs: (5544)
 msgid "Text"
-msgstr "Текст"
+msgstr "Текстовый"
 
 #. Resource IDs: (5059)
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*||"
