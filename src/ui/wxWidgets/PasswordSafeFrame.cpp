@@ -1601,6 +1601,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
   bool isFileReadOnly = m_core.IsReadOnly();
   bool isTreeView = IsTreeView();
   bool isGroupSelected = (isTreeView && m_tree->IsGroupSelected());
+  const bool isEmptyTreeView = isTreeView && m_tree->IsEmpty();
 
   pci = GetSelectedEntry();
 
@@ -1635,7 +1636,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_ADDGROUP:
-      evt.Enable(isGroupSelected && !isFileReadOnly && m_core.IsDbOpen());
+      evt.Enable((isGroupSelected || isEmptyTreeView) && !isFileReadOnly && m_core.IsDbOpen());
       break;
 
     case ID_EXPANDALL:
@@ -1710,7 +1711,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case wxID_ADD:
-      evt.Enable((isGroupSelected || !isTreeView) && !isFileReadOnly && m_core.IsDbOpen());
+      evt.Enable((isGroupSelected || isEmptyTreeView || !isTreeView) && !isFileReadOnly && m_core.IsDbOpen());
       break;
 
     case wxID_DELETE:
