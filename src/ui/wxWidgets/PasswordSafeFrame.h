@@ -432,9 +432,9 @@ public:
   static bool ShowToolTips();
 
   // Overridden virtuals
-  virtual bool Show(bool show = true);
-  virtual void SetTitle(const wxString& title);
-  virtual void SetFocus();
+  virtual bool Show(bool show = true) override;
+  virtual void SetTitle(const wxString& title) override;
+  virtual void SetFocus() override;
 
   // PasswordSafe specifics:
   int Load(const StringX &passwd);

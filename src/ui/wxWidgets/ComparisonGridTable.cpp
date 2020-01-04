@@ -93,7 +93,7 @@ ComparisonGridTable::ComparisonGridTable(SelectionCriteria* criteria): m_criteri
 ComparisonGridTable::~ComparisonGridTable()
 {
   delete [] m_colFields;
-  m_criteria = 0;
+  m_criteria = nullptr;
 }
 
 int ComparisonGridTable::GetNumberCols()
