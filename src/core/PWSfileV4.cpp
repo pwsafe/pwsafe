@@ -440,7 +440,7 @@ struct PWSfileV4::CKeyBlocks::KeyBlockFinder {
     return retval;
   }
 private:
-  KeyBlockFinder& operator=(const KeyBlockFinder&); // Do not implement
+  KeyBlockFinder& operator=(const KeyBlockFinder&) = delete; // Do not implement
   const StringX &passkey;
 };
 

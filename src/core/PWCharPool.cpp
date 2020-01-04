@@ -338,7 +338,7 @@ public:
   }
 
 private:
-  FillSC& operator=(const FillSC&); // Do not implement
+  FillSC& operator=(const FillSC&) = delete; // Do not implement
   vector<int> &m_sc;
   bool m_digits, m_symbols;
   int m_i;

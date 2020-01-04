@@ -64,7 +64,7 @@ public:
   stringT getXMLErrors() {return m_strXMLErrors;}
 
 private:
-  XFilterXMLProcessor& operator=(const XFilterXMLProcessor&); // Do not implement
+  XFilterXMLProcessor& operator=(const XFilterXMLProcessor&) = delete; // Do not implement
   Asker *m_pAsker;
   PWSFilters &m_MapXMLFilters; // So as not to confuse with UI & core
   FilterPool m_FPool;

@@ -536,7 +536,7 @@ struct RecordWriter {
   }
 
 private:
-  RecordWriter& operator=(const RecordWriter&); // Do not implement
+  RecordWriter& operator=(const RecordWriter&) = delete; // Do not implement
   PWSfile *m_pout;
   PWScore *m_pcore;
   const PWSfile::VERSION m_version;
@@ -1931,7 +1931,7 @@ struct AddEntry {
   }
 
 private:
-  AddEntry& operator=(const AddEntry&); // Do not implement
+  AddEntry& operator=(const AddEntry&) = delete; // Do not implement
   StringX m_sxPolicyName;
   std::vector<st_GroupTitleUser> *m_pventries;
 };
