@@ -1837,10 +1837,9 @@ void PasswordSafeFrame::DatabaseModified(bool modified)
 /**
  * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
  */
-void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &entry_uuid, CItemData::FieldType WXUNUSED(ft))
+void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID & WXUNUSED(entry_uuid), CItemData::FieldType WXUNUSED(ft))
 {
   // Callback from PWScore if GUI needs updating
-  // Note: For some values of 'ga', 'ci' & ft are invalid and not used.
 
   // "bUpdateGUI" is only used by GUI_DELETE_ENTRY when called as part
   // of the Edit Entry Command where the entry is deleted and then added and

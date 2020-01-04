@@ -738,7 +738,7 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
   // Symbols Rules
   m_PasswordPolicyUseSymbolsCtrl = new wxCheckBox(panel, ID_CHECKBOX6, _("Use symbols"), wxDefaultPosition, wxDefaultSize, 0);
   m_PasswordPolicyUseSymbolsCtrl->SetValue(false);
-  m_PasswordPolicyUseSymbolsCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent &event) { m_PasswordPolicyUseSymbolsCtrl->SetToolTip(_("i.e., ., %, $, etc.")); });
+  m_PasswordPolicyUseSymbolsCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent &/*event*/) { m_PasswordPolicyUseSymbolsCtrl->SetToolTip(_("i.e., ., %, $, etc.")); });
   m_PasswordPolicySizer->Add(m_PasswordPolicyUseSymbolsCtrl, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_PasswordPolicySymbolsMinSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -767,7 +767,7 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 
   m_PasswordPolicyUseEasyCtrl = new wxCheckBox(panel, ID_CHECKBOX7, _("Use only easy-to-read characters"), wxDefaultPosition, wxDefaultSize, 0);
   m_PasswordPolicyUseEasyCtrl->SetValue(false);
-  m_PasswordPolicyUseEasyCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent &event) { m_PasswordPolicyUseEasyCtrl->SetToolTip(_("i.e., no 'l', '1', etc.")); });
+  m_PasswordPolicyUseEasyCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent &/*event*/) { m_PasswordPolicyUseEasyCtrl->SetToolTip(_("i.e., no 'l', '1', etc.")); });
   m_PasswordPolicySizer->Add(m_PasswordPolicyUseEasyCtrl, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_PasswordPolicySizer->AddStretchSpacer();
@@ -785,7 +785,7 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 
   m_PasswordPolicyUseHexadecimalOnlyCtrl = new wxCheckBox(panel, ID_CHECKBOX9, _("Use hexadecimal digits only"), wxDefaultPosition, wxDefaultSize, 0);
   m_PasswordPolicyUseHexadecimalOnlyCtrl->SetValue(false);
-  m_PasswordPolicyUseHexadecimalOnlyCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent &event) { m_PasswordPolicyUseHexadecimalOnlyCtrl->SetToolTip(_("0-9, a-f")); });
+  m_PasswordPolicyUseHexadecimalOnlyCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent &/*event*/) { m_PasswordPolicyUseHexadecimalOnlyCtrl->SetToolTip(_("0-9, a-f")); });
   m_PasswordPolicySizer->Add(m_PasswordPolicyUseHexadecimalOnlyCtrl, 0, wxALIGN_LEFT | wxALL, 5);
 
   m_PasswordPolicyOwnSymbolsTextCtrl->SetValidator(wxGenericValidator(&m_Symbols));

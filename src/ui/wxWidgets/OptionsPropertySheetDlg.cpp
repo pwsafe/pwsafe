@@ -1247,7 +1247,7 @@ void OptionsPropertySheetDlg::OnBrowseLocationClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTAPPLY
  */
 
-void OptionsPropertySheetDlg::OnPWHistApply( wxCommandEvent& evt )
+void OptionsPropertySheetDlg::OnPWHistApply( wxCommandEvent& /*evt*/)
 {
   int applytoprotected = m_PasswordHistory_Apply2ProtectedCB->GetValue();
   int pwhistaction = 0;

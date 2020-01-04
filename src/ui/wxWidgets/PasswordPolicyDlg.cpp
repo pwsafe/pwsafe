@@ -85,6 +85,7 @@ PasswordPolicyDlg::PasswordPolicyDlg( wxWindow* parent, PWScore &core,
 bool PasswordPolicyDlg::Create( wxWindow* parent, DialogType type, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
 ////@begin PasswordPolicyDlg creation
+  m_DialogType = type;
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -297,7 +298,7 @@ void PasswordPolicyDlg::CreateControls()
 
   m_pwpSymCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX6, _("Use symbols"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpSymCtrl->SetValue(false);
-  m_pwpSymCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent& event) { m_pwpSymCtrl->SetToolTip(_("i.e., ., %, $, etc.")); });
+  m_pwpSymCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent& /*event*/) { m_pwpSymCtrl->SetToolTip(_("i.e., ., %, $, etc.")); });
   m_pwMinsGSzr->Add(m_pwpSymCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwNumSymbox = new wxBoxSizer(wxHORIZONTAL);
@@ -327,7 +328,7 @@ void PasswordPolicyDlg::CreateControls()
 
   m_pwpEasyCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX7, _("Use only easy-to-read characters"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpEasyCtrl->SetValue(false);
-  m_pwpEasyCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent& event) { m_pwpEasyCtrl->SetToolTip(_("i.e., no 'l', '1', etc.")); });
+  m_pwpEasyCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent& /*event*/) { m_pwpEasyCtrl->SetToolTip(_("i.e., no 'l', '1', etc.")); });
   m_pwMinsGSzr->Add(m_pwpEasyCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwMinsGSzr->AddStretchSpacer();
@@ -345,7 +346,7 @@ void PasswordPolicyDlg::CreateControls()
 
   m_pwpHexCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX9, _("Use hexadecimal digits only"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpHexCtrl->SetValue(false);
-  m_pwpHexCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent& event) { m_pwpHexCtrl->SetToolTip(_("0-9, a-f")); });
+  m_pwpHexCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent& /*event*/) { m_pwpHexCtrl->SetToolTip(_("0-9, a-f")); });
   m_pwMinsGSzr->Add(m_pwpHexCtrl, 0, wxALIGN_LEFT|wxALL, 5);
 
   /////////////////////////////////////////////////////////////////////////////

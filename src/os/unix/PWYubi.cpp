@@ -141,6 +141,7 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
     }
     // ykp_HMAC_key_from_raw() was added in version 1.15.0 of ykpers
 #if (YKPERS_VERSION_MAJOR > 1) || ((YKPERS_VERSION_MAJOR == 1) && (YKPERS_VERSION_MINOR >= 15))
+    UNREFERENCED_PARAMETER(sklen);
     if (ykp_HMAC_key_from_raw(cfg, reinterpret_cast<const char *>(yubi_sk_bin))) {
       m_ykerrstr = _S("Internal error: couldn't configure key");
       goto done;

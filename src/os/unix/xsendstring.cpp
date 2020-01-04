@@ -239,7 +239,7 @@ public:
               klist unset_events = { KeyEventType::RELEASE });
   ModifierKey(Display *disp, KeySym ks, klist set_events = { KeyEventType::PRESS },
               klist unset_events = { KeyEventType::RELEASE });
-  ModifierKey(Display *disp, KeyCode code, int mask,
+  ModifierKey(KeyCode code, int mask,
               klist set_events = { KeyEventType::PRESS },
               klist unset_events = { KeyEventType::RELEASE });
 
@@ -271,7 +271,7 @@ ModifierKey::ModifierKey(Display *disp, KeySym ks, klist set_events,
   mask = pos.mask();
 }
 
-ModifierKey::ModifierKey(Display *disp, KeyCode kcode, int kmask,
+ModifierKey::ModifierKey(KeyCode kcode, int kmask,
                          klist set_events, klist unset_events)
     : ModifierKey(set_events, unset_events) {
   code = kcode;
@@ -714,7 +714,7 @@ void CKeySendImpl::SelectAll(unsigned delayMS, int code /*= 0*/,
         KeyCode kc = modmap.ModifierKeyCode(pos);
         if (kc) {
           // note that the press & hold behavior is hardcoded here
-          modkeys.push_back(ModifierKey{ m_display, kc, pos.mask() });
+          modkeys.push_back(ModifierKey{ kc, pos.mask() });
         } else {
           g_xerrormsg << "No KeyCode mapped to mask bit " << pos.index()
                       << " for generating Select-All event";
