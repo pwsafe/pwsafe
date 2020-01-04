@@ -557,8 +557,11 @@ void SafeCombinationEntryDlg::UpdateReadOnlyCheckbox()
     bool writeable = fn.IsFileWritable();
     bool defaultRO = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
     wxCheckBox *ro = wxDynamicCast(FindWindow(ID_READONLY), wxCheckBox);
-    ro->SetValue( writeable? (m_core.IsReadOnly() || defaultRO) : true );
-    ro->Enable(writeable);
+    wxASSERT_MSG(ro, wxT("Could not get RO checkbox"));
+    if (ro) {
+      ro->SetValue( writeable? (m_core.IsReadOnly() || defaultRO) : true );
+      ro->Enable(writeable);
+    }
     UpdateNew(!writeable || defaultRO);
   }
 }

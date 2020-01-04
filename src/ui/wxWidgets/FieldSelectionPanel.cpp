@@ -149,7 +149,7 @@ int FieldSelectionPanel::FindField(CItemData::FieldType ft, wxListBox* lb) const
   unsigned int count = lb->GetCount();
   for (int idx = 0; (unsigned int)idx < count; ++idx) {
     FieldData* fd = dynamic_cast<FieldData*>(lb->GetClientObject(idx));
-    if (*fd == ft)
+    if (fd && *fd == ft)
       return idx;
   }
   return wxNOT_FOUND;

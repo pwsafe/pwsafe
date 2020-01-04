@@ -118,7 +118,7 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   wxASSERT(m_toolbar);
 
   wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
-  wxASSERT(txtCtrl);
+  wxCHECK_RET(txtCtrl, wxT("Could not get search control of toolbar"));
 
   const wxString searchText = txtCtrl->GetLineText(0);
 

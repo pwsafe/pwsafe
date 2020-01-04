@@ -620,6 +620,7 @@ void PWSMenuShortcuts::OnShortcutKey(wxKeyEvent& evt)
 void PWSMenuShortcuts::OnKeyChar(wxKeyEvent& evt)
 {
   wxWindow* gridWindow = wxDynamicCast(evt.GetEventObject(), wxWindow);
+  wxCHECK_RET(gridWindow, wxT("Could not get gridWindow from wxKeyEvent"));
   wxGrid* grid = wxDynamicCast(gridWindow->GetParent(), wxGrid);
   wxCHECK_RET(grid, wxT("Could not get grid from wxKeyEvent"));
   wxASSERT_MSG(grid == m_shortcutsGrid, wxT("Events from unexpected grid"));

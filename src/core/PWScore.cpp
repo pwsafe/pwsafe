@@ -3091,7 +3091,7 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
       (Password[Password.length() - 1] == _T(']')) &&
       num_colonsP1 <= 3) {
     StringX tmp;
-    ItemListIter iter;
+    ItemListIter iter = m_pwlist.end();
     switch (num_colonsP1) {
       case 1:
         // [X] - OK if unique entry [g:X:u], [g:X:], [:X:u] or [:X:] exists for any value of g or u

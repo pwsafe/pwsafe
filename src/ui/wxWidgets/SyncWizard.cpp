@@ -321,7 +321,7 @@ void SyncWizardPage::OnWizardPageChanging(wxWizardEvent& evt)
   SyncWizardPage* page = wxDynamicCast(evt.GetPage(), SyncWizardPage);
   wxASSERT_MSG(page, wxT("Sync wizard page not derived from SyncWizardPage class"));
 
-  if (!page->OnPageLeave(evt.GetDirection() ? PageDirection::FORWARD : PageDirection::BACKWARD))
+  if (page && !page->OnPageLeave(evt.GetDirection() ? PageDirection::FORWARD : PageDirection::BACKWARD))
     evt.Veto();
 
   //must always do this, to let the wizard see the event as well
@@ -332,8 +332,9 @@ void SyncWizardPage::OnWizardPageChanged(wxWizardEvent& evt)
 {
   SyncWizardPage* page = wxDynamicCast(evt.GetPage(), SyncWizardPage);
   wxASSERT_MSG(page, wxT("Sync wizard page not derived from SyncWizardPage class"));
-
-  page->OnPageEnter(evt.GetDirection() ? PageDirection::FORWARD : PageDirection::BACKWARD);
+  if (page) {
+    page->OnPageEnter(evt.GetDirection() ? PageDirection::FORWARD : PageDirection::BACKWARD);
+  }
 
   //must always do this, to let the wizard see the event as well
   evt.Skip();

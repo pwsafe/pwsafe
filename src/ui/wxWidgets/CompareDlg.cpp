@@ -536,6 +536,7 @@ void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
 void CompareDlg::OnViewInComparisonDB(wxCommandEvent& evt)
 {
   auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+  wxCHECK_RET(menuContext, wxT("Empty client data"));
   const ComparisonGridTable& table = *wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   const pws_os::CUUID& uuid = table[menuContext->selectedRows[0]].uuid1;
   wxCHECK_RET(!ViewEditEntry(m_otherCore, uuid, true), wxT("Should not need to refresh grid for just viewing entry"));
