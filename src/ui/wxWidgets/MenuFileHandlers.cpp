@@ -749,7 +749,7 @@ void PasswordSafeFrame::DoExportText()
   //to use core.GetcurFile() later
   if (sx_temp.empty()) {
     //  Database has not been saved - prompt user to do so first!
-    wxMessageBox(_T("You must save this database before it can be exported."), title, wxOK|wxICON_EXCLAMATION, this);
+    wxMessageBox(_("You must save this database before it can be exported."), title, wxOK|wxICON_EXCLAMATION, this);
     return;
   }
 
@@ -808,7 +808,7 @@ void PasswordSafeFrame::DoExportText()
             DisplayFileWriteError(rc, newfile);
           }
           else {
-            if ( wxMessageBox(_T("Export complete.  Do you wish to see a detailed report?"), ExportType::GetTitle(),
+            if ( wxMessageBox(_("Export complete.  Do you wish to see a detailed report?"), ExportType::GetTitle(),
                               wxYES_NO|wxICON_QUESTION, this) == wxYES )
               ViewReport(rpt);
           }

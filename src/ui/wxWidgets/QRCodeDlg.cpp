@@ -56,7 +56,7 @@ void QRCodeDlg::CreateControls(const StringX &data)
   dlgSizer->AddSpacer(TopMargin);
 
   wxBoxSizer *promptSizer = new wxBoxSizer(wxHORIZONTAL);
-  promptSizer->Add(new wxStaticText(this, wxID_ANY, _T("Closing in ")));
+  promptSizer->Add(new wxStaticText(this, wxID_ANY, _("Closing in ")));
   promptSizer->Add(secondsText = new wxStaticText(this, wxID_ANY, _T("")));
   dlgSizer->Add(promptSizer);
 
@@ -71,7 +71,7 @@ void QRCodeDlg::CreateControls(const StringX &data)
   }
   else
   {
-    dlgSizer->Add(new wxStaticText(this, wxID_ANY, _T("Could not generate QR code")));
+    dlgSizer->Add(new wxStaticText(this, wxID_ANY, _("Could not generate QR code")));
   }
 
   dlgSizer->AddSpacer(RowSeparation);
@@ -109,7 +109,7 @@ void QRCodeDlg::OnInitDialog(wxInitDialogEvent & /*evt*/)
 
 void QRCodeDlg::UpdateTimeRemaining()
 {
-  secondsText->SetLabel(wxString::Format(_T("%d seconds"), secondsRemaining));
+  secondsText->SetLabel(wxString::Format(_("%d seconds"), secondsRemaining));
 }
 
 #ifdef __TEST_QR_CODE__

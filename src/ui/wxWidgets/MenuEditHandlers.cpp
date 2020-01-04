@@ -618,7 +618,7 @@ void PasswordSafeFrame::MaybeRestoreUI(bool autotype_err, wxString autotype_err_
     }
   }
   if (autotype_err)
-    wxMessageBox(_("There was an error autotyping.  ") + autotype_err_msg, _T("Autotype error"), wxOK|wxICON_ERROR, this);
+    wxMessageBox(_("There was an error autotyping.  ") + autotype_err_msg, _("Autotype error"), wxOK|wxICON_ERROR, this);
 }
 
 /*
