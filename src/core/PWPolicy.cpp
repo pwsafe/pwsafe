@@ -296,7 +296,7 @@ StringX PWPolicy::GetDisplayString()
 
 void PWPolicy::Validate() const
 {
-  int total_sublength = (
+  [[maybe_unused]] int total_sublength = (
     ((flags & PWPolicy::UseLowercase) ? lowerminlength : 0) +
     ((flags & PWPolicy::UseUppercase) ? upperminlength : 0) +
     ((flags & PWPolicy::UseDigits) ? digitminlength : 0) +

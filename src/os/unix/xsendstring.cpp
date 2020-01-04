@@ -584,7 +584,7 @@ void SequenceAutotypeEvents(ContIter ci, ModIter mbegin, ModIter mend,
   };
 
   std::for_each(mbegin, mend,
-                [](const ModifierKey &m) { assert(m.IsValid()); });
+                []([[maybe_unused]] const ModifierKey &m) { assert(m.IsValid()); });
 
   if (emulateMods) {
     add_mods(&ModifierKey::set_events);
@@ -668,7 +668,7 @@ void CKeySendImpl::DoSendString(const StringX &str, unsigned delayMS,
       const std::vector<ModifierKey> modkeys =
           m_modFactory->GetModifiersForKeySym(code, sym);
       std::for_each(modkeys.begin(), modkeys.end(),
-                    [](const ModifierKey &m) { assert(m.IsValid()); });
+                    []([[maybe_unused]] const ModifierKey &m) { assert(m.IsValid()); });
 
       const AutotypeEventVector::size_type count = keypresses.size();
 
@@ -729,7 +729,7 @@ void CKeySendImpl::SelectAll(unsigned delayMS, int code /*= 0*/,
   }
 
   std::for_each(modkeys.cbegin(), modkeys.cend(),
-                [](const ModifierKey &m) { assert(m.IsValid()); });
+                []([[maybe_unused]] const ModifierKey &m) { assert(m.IsValid()); });
 
   std::vector<AutotypeEvent> selectAllEvents;
   SequenceAutotypeEvents(std::back_inserter(selectAllEvents), modkeys.cbegin(),

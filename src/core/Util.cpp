@@ -107,7 +107,7 @@ void ConvertPasskey(const StringX &text,
 #endif
   char *dst = new char[dstlen];
 
-  size_t res = pws_os::wcstombs(dst, dstlen, txtstr, txtlen, isUTF8);
+  [[maybe_unused]] size_t res = pws_os::wcstombs(dst, dstlen, txtstr, txtlen, isUTF8);
   ASSERT(res != 0);
   txt = reinterpret_cast<unsigned char *>(dst);
   txtlen = dstlen - 1;
