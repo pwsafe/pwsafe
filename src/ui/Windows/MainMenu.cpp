@@ -591,15 +591,15 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                    MF_BYCOMMAND);
 
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_TOOLBAR, MF_BYCOMMAND |
-                              m_MainToolBar.IsWindowVisible() ? MF_CHECKED : MF_UNCHECKED);
+                              (m_MainToolBar.IsWindowVisible() ? MF_CHECKED : MF_UNCHECKED));
 
     bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_DRAGBAR, MF_BYCOMMAND |
-                              bDragBarState ? MF_CHECKED : MF_UNCHECKED);
+                              (bDragBarState ? MF_CHECKED : MF_UNCHECKED));
 
     // Don't show filter menu if "internal" menu active
     pPopupMenu->EnableMenuItem(ID_FILTERMENU, MF_BYCOMMAND |
-             (m_bUnsavedDisplayed || m_bExpireDisplayed || m_bFindFilterDisplayed) ? MF_GRAYED : MF_ENABLED);
+             ((m_bUnsavedDisplayed || m_bExpireDisplayed || m_bFindFilterDisplayed) ? MF_GRAYED : MF_ENABLED));
 
     pPopupMenu->CheckMenuRadioItem(ID_MENUITEM_NEW_TOOLBAR,
                                    ID_MENUITEM_OLD_TOOLBAR,
@@ -613,13 +613,13 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
 
   if (uiMenuID == ID_SUBVIEWMENU) {
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_UNSAVED, MF_BYCOMMAND |
-                              m_bUnsavedDisplayed ? MF_CHECKED : MF_UNCHECKED);
+                              (m_bUnsavedDisplayed ? MF_CHECKED : MF_UNCHECKED));
 
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_ALL_EXPIRY, MF_BYCOMMAND |
-                              m_bExpireDisplayed ? MF_CHECKED : MF_UNCHECKED);
+                              (m_bExpireDisplayed ? MF_CHECKED : MF_UNCHECKED));
 
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_FOUNDENTRIES, MF_BYCOMMAND |
-                              m_bFindFilterDisplayed ? MF_CHECKED : MF_UNCHECKED);
+                              (m_bFindFilterDisplayed ? MF_CHECKED : MF_UNCHECKED));
     goto exit;
   } // Subview
 
@@ -1722,7 +1722,7 @@ bool DboxMain::ProcessLanguageMenu(CMenu *pPopupMenu)
   // Add languages
   for (i = 0; i < app.m_vlanguagefiles.size(); i++) {
     UINT uiFlags = MF_STRING | MF_ENABLED | 
-       ((app.m_vlanguagefiles[i].xFlags & 0x80) == 0x80) ? MF_CHECKED : MF_UNCHECKED;
+       (((app.m_vlanguagefiles[i].xFlags & 0x80) == 0x80) ? MF_CHECKED : MF_UNCHECKED);
     pPopupMenu->AppendMenu(uiFlags, nID++, app.m_vlanguagefiles[i].wsLanguage.c_str());
   }
 
@@ -1734,7 +1734,7 @@ const unsigned int DboxMain::GetMenuShortcut(const unsigned short int &siVirtKey
                                              StringX &sxMenuItemName)
 {
   unsigned int nControlID(0);
-  sxMenuItemName.empty();
+  sxMenuItemName.clear();
 
   st_MenuShortcut st_mst;
   st_mst.siVirtKey = siVirtKey;
