@@ -111,7 +111,7 @@ private:
     typeFreq_s(const CPasswordCharPool *parent, CharType ct, uint nc);
   };
 
-  CPasswordCharPool &operator=(const CPasswordCharPool &);
+  CPasswordCharPool &operator=(const CPasswordCharPool &) = delete;
 };
 
 #endif /*  __PWCHARPOOL_H */
