@@ -32,9 +32,10 @@ MFileXMLProcessor::MFileXMLProcessor(PWScore *pcore,
                                      UUIDVector *pPossible_Shortcuts,
                                      MultiCommands *p_multicmds,
                                      CReport *prpt)
-  : m_pXMLcore(pcore), m_delimiter(TCHAR('^')),
+  : m_pXMLcore(pcore),
   m_pPossible_Aliases(pPossible_Aliases), m_pPossible_Shortcuts(pPossible_Shortcuts),
-  m_pmulticmds(p_multicmds), m_prpt(prpt)
+  m_pmulticmds(p_multicmds), m_prpt(prpt),
+  m_delimiter(TCHAR('^'))
 {
 }
 
@@ -49,7 +50,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 {
   HRESULT hr, hr0, hr60;
   bool b_ok = false;
-  bool b_into_empty;
+  bool b_into_empty = false;
   stringT cs_validation;
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
   stringT cs_import;
