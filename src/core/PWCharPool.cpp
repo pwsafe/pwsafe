@@ -66,7 +66,7 @@ CPasswordCharPool::typeFreq_s::typeFreq_s(const CPasswordCharPool *parent, CharT
 {
   vchars.resize(parent->m_pwlen);
   std::generate(vchars.begin(), vchars.end(),
-                [this, parent, ct] () {return parent->GetRandomChar(ct);});
+                [parent, ct] () {return parent->GetRandomChar(ct);});
 }
 
 //-----------------------------------------------------------------------------
