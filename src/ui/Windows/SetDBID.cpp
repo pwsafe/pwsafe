@@ -69,9 +69,10 @@ LRESULT CNPEdit::OnPaste(WPARAM, LPARAM)
 IMPLEMENT_DYNAMIC(CSetDBID, CPWDialog)
 
 CSetDBID::CSetDBID(CWnd *pParent, int iDBIndex)
-	: CPWDialog(IDD_SETDBID, pParent), m_pParent((DboxMain *)pParent),
-  m_iInitialDBIndex(iDBIndex), m_iDBIndex(iDBIndex), m_iLockedTextColour(0),
-  m_iUnLockedTextColour(0), m_bInitDone(false)
+	: CPWDialog(IDD_SETDBID, pParent), 
+  m_iDBIndex(iDBIndex), m_iInitialDBIndex(iDBIndex), m_iLockedTextColour(0),
+  m_iUnLockedTextColour(0), m_bInitDone(false),
+  m_pParent((DboxMain*)pParent)
 {
   // Locked
   m_clrLockedTextOptions[0] = RGB(255, 255,   0); // Yellow - default

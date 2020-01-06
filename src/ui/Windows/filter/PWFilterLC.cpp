@@ -29,14 +29,14 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CPWFilterLC::CPWFilterLC()
-  : m_pPWF(NULL), m_iType(DFTYPE_INVALID), m_pfilters(NULL), m_bInitDone(false),
-   m_fwidth(-1), m_lwidth(-1), m_rowheight(-1),
-   m_bSetFieldActive(false), m_bSetLogicActive(false),
-   m_iItem(-1), m_numfilters(0), m_pFont(NULL),
-   m_pwchTip(NULL),
+  : m_pfilters(nullptr), m_pwchTip(nullptr), m_pPWF(nullptr),
+  m_bInitDone(false), m_bSetFieldActive(false), m_bSetLogicActive(false),
+  m_numfilters(0), m_iType(DFTYPE_INVALID),
   // Following 4 variables only used if "m_iType == DFTYPE_MAIN"
   m_bPWHIST_Set(false), m_bPOLICY_Set(false), m_bATTACHMENT_Set(false),
-  m_GoodHistory(false), m_GoodPolicy(false), m_GoodAttachment(false)
+  m_GoodHistory(false), m_GoodPolicy(false), m_GoodAttachment(false),
+  m_fwidth(-1), m_lwidth(-1), m_rowheight(-1),
+  m_pFont(nullptr), m_iItem(-1)
 {
   m_crGrayText   = ::GetSysColor(COLOR_GRAYTEXT);
   m_crWindow     = ::GetSysColor(COLOR_WINDOW);

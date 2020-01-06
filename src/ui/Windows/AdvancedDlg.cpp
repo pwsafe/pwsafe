@@ -40,8 +40,9 @@ int CAdvancedDlg::dialog_lookup[LAST] = {
 
 CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
                            st_SaveAdvValues *pst_SADV)
-  : CPWDialog(dialog_lookup[iIndex], pParent), m_iIndex(iIndex), m_pst_SADV(pst_SADV),
-  m_treatwhitespaceasempty(BST_CHECKED)
+  : CPWDialog(dialog_lookup[iIndex], pParent), 
+  m_treatwhitespaceasempty(BST_CHECKED), 
+  m_iIndex(iIndex), m_pst_SADV(pst_SADV)
 {
   if (m_pst_SADV != NULL) {
     m_bsFields = m_pst_SADV->bsFields;

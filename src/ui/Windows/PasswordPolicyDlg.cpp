@@ -59,9 +59,12 @@ IMPLEMENT_DYNAMIC(CPasswordPolicyDlg, CPWDialog)
 CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongPPs,
                                        bool bReadOnly, PWPolicy &st_default_pp)
   : CPWDialog(bLongPPs ? CPasswordPolicyDlg::IDD : CPasswordPolicyDlg::IDD_SHORT, pParent),
-  m_uicaller(uicaller), m_bReadOnly(bReadOnly), m_password(L""),
-  m_UseNamedPolicy(FALSE), m_st_default_pp(st_default_pp), m_bLongPPs(bLongPPs), m_pCopyBtn(NULL),
-  m_bCopyPasswordEnabled(false), m_bImageLoaded(FALSE), m_bDisabledImageLoaded(FALSE)
+  m_uicaller(uicaller), 
+  m_UseNamedPolicy(FALSE),
+  m_password(L""), m_st_default_pp(st_default_pp), m_bReadOnly(bReadOnly),
+  m_pCopyBtn(nullptr), m_bLongPPs(bLongPPs),
+  m_bImageLoaded(FALSE), m_bDisabledImageLoaded(FALSE),
+  m_bCopyPasswordEnabled(false)
 {
   m_PWUseLowercase = m_oldPWUseLowercase =
     (m_st_default_pp.flags & PWPolicy::UseLowercase) != 0;

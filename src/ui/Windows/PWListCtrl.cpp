@@ -21,8 +21,10 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CPWListCtrlX::CPWListCtrlX()
-  : m_FindTimerID(0), m_csFind(L""), m_bMouseInWindow(false), 
-  m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bListFilterActive(false),
+  : m_csFind(L""), m_FindTimerID(0),
+  m_nHoverNDTimerID(0), m_nShowNDTimerID(0), 
+  m_bMouseInWindow(false),
+  m_bListFilterActive(false),
   m_bUseHighLighting(false)
 {
 }

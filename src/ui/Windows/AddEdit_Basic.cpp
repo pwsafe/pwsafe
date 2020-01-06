@@ -1,4 +1,4 @@
-/*
+﻿/*
 * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -60,7 +60,8 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
     CAddEdit_Basic::IDD, CAddEdit_Basic::IDD_SHORT,
     pAEMD),
-  m_bInitdone(false), m_thread(NULL), m_isNotesHidden(false),
+  m_thread(nullptr), m_isNotesHidden(false),
+  m_bInitdone(false),
   m_bUsingNotesExternalEditor(false)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations

@@ -19,24 +19,25 @@ class CWZFinish;
 class PWScore;
 class CReport;
 
-#define NULL 0
-
 struct WZExecuteThreadParms {
   WZExecuteThreadParms()
-  : status(0), nID(0), pWZPSH(NULL), pWZFinish(NULL), pcore(NULL),
-  prpt(NULL), sx_Filename(L""), sx_exportpasskey(L""), 
-  bAdvanced(false), bExportDBFilters(false),
-  csResults(L""), numProcessed(0), bCancel(false)
+  : nID(0), status(0),
+  sx_Filename(L""), sx_exportpasskey(L""),
+  pWZPSH(nullptr), pWZFinish(nullptr), 
+  pcore(nullptr), prpt(nullptr), 
+  csResults(L""),
+  bAdvanced(false), bExportDBFilters(false), bCancel(false),
+  numProcessed(0)
   {}
 
   WZExecuteThreadParms(const WZExecuteThreadParms &thpms)
-    : status(thpms.status), nID(thpms.nID), pWZPSH(thpms.pWZPSH),
-    pWZFinish(thpms.pWZFinish), pcore(thpms.pcore), prpt(thpms.prpt),
+    : nID(thpms.nID), status(thpms.status), 
     sx_Filename(thpms.sx_Filename), sx_exportpasskey(thpms.sx_exportpasskey),
+    pWZPSH(thpms.pWZPSH), pWZFinish(thpms.pWZFinish), 
+    pcore(thpms.pcore), prpt(thpms.prpt),
     csResults(thpms.csResults),
-    bAdvanced(thpms.bAdvanced), bExportDBFilters(thpms.bExportDBFilters),
-    numProcessed(thpms.numProcessed),
-    bCancel(thpms.bCancel)
+    bAdvanced(thpms.bAdvanced), bExportDBFilters(thpms.bExportDBFilters), bCancel(thpms.bCancel),
+    numProcessed(thpms.numProcessed)
   {
   }
 

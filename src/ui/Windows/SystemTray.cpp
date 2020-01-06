@@ -96,11 +96,13 @@ const UINT CSystemTray::m_nTaskbarCreatedMsg = ::RegisterWindowMessage(L"Taskbar
 CSystemTray::CSystemTray(CWnd *pParent, UINT uCallbackMessage, LPCWSTR szToolTip,
                          HICON icon, CRUEList &RUEList,
                          UINT uID, UINT menuID)
-  : m_RUEList(RUEList), m_pParent((DboxMain *)pParent), m_bEnabled(FALSE),
-  m_bHidden(FALSE), m_uIDTimer(0), m_hSavedIcon(NULL), m_DefaultMenuItemID(ID_MENUITEM_RESTORE),
-  m_DefaultMenuItemByPos(FALSE), m_pTarget(NULL), m_menuID(0)
+  : m_bEnabled(FALSE), m_bHidden(FALSE), 
+  m_uIDTimer(0), m_menuID(0), 
+  m_hSavedIcon(nullptr), m_DefaultMenuItemID(ID_MENUITEM_RESTORE),
+  m_DefaultMenuItemByPos(FALSE), m_pTarget(nullptr), 
+  m_RUEList(RUEList), m_pParent((DboxMain*)pParent)
 {
-  ASSERT(m_pParent != NULL);
+  ASSERT(m_pParent != nullptr);
   SecureZeroMemory(&m_tnd, sizeof(m_tnd));
   Create(pParent, uCallbackMessage, szToolTip, icon, uID, menuID);
 }

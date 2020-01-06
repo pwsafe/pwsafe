@@ -40,7 +40,7 @@ CAddEdit_Attachment::CAddEdit_Attachment(CWnd *pParent, st_AE_master_data *pAEMD
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_Attachment::IDD, CAddEdit_Attachment::IDD_SHORT,
                           pAEMD),
-   m_bInitdone(false), m_AttName(L""), m_AttFileName(L""), m_attType(NO_ATTACHMENT)
+   m_bInitdone(false), m_attType(NO_ATTACHMENT), m_AttName(L""), m_AttFileName(L"")
 {
 }
 

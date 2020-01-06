@@ -19,8 +19,8 @@ IMPLEMENT_DYNAMIC(CInputBox, CPWDialog)
 
 CInputBox::CInputBox(UINT nIDCaption, CString csInitalText, int maxlen,
     const bool bReadOnly, CWnd *pParent)
-  : CPWDialog(CInputBox::IDD, pParent), m_nIDCaption(nIDCaption), m_maxlen(maxlen),
-  m_csText(csInitalText), m_bReadOnly(bReadOnly), m_bInitDone(false)
+  : CPWDialog(CInputBox::IDD, pParent), m_nIDCaption(nIDCaption), 
+  m_csText(csInitalText), m_maxlen(maxlen), m_bReadOnly(bReadOnly), m_bInitDone(false)
 { 
 }
 

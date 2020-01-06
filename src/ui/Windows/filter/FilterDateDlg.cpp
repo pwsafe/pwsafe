@@ -56,9 +56,9 @@ IMPLEMENT_DYNAMIC(CFilterDateDlg, CFilterBaseDlg)
 
 CFilterDateDlg::CFilterDateDlg(CWnd* pParent /*=NULL*/)
   : CFilterBaseDlg(CFilterDateDlg::IDD, pParent),
-  m_num1(0), m_num2(0), m_datetype(0),
-  m_time_t1(0), m_time_t2(0),
   m_ctime1((time_t)0), m_ctime2((time_t)0),
+  m_datetype(0), m_num1(0), m_num2(0),
+  m_time_t1(0), m_time_t2(0),
   m_add_present(false), m_ft(FT_INVALID)
 {
   time_t now;

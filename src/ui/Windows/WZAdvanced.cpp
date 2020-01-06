@@ -52,8 +52,9 @@ IMPLEMENT_DYNAMIC(CWZAdvanced, CWZPropertyPage)
 
 CWZAdvanced::CWZAdvanced(CWnd *pParent, UINT nIDCaption, const int nType, WZAdvanced::AdvType iIndex,
                              st_SaveAdvValues *pst_SADV)
-  : CWZPropertyPage(dialog_lookup[iIndex], nIDCaption, nType), m_iIndex(iIndex), 
-  m_pst_SADV(pst_SADV), m_treatwhitespaceasempty(BST_CHECKED)
+  : CWZPropertyPage(dialog_lookup[iIndex], nIDCaption, nType), 
+  m_treatwhitespaceasempty(BST_CHECKED), m_iIndex(iIndex),
+  m_pst_SADV(pst_SADV)
 {
   ASSERT(sizeof(dialog_lookup) / sizeof(int) == WZAdvanced::LAST);
 

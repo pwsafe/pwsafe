@@ -25,8 +25,8 @@
 
 IMPLEMENT_DYNAMIC(CInfoDisplay, CWnd)
 
-CInfoDisplay::CInfoDisplay(bool use_current_monitor): m_use_current_monitor(use_current_monitor),
-  m_font(NULL), m_pTextFont(NULL)
+CInfoDisplay::CInfoDisplay(bool use_current_monitor): m_pTextFont(nullptr), 
+  m_font(nullptr), m_use_current_monitor(use_current_monitor)
 {
 }
 
