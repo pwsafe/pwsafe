@@ -542,7 +542,7 @@ bool CItemAtt::Matches(const stringT &stValue, int iObject,
   ASSERT(iFunction != 0); // must be positive or negative!
 
   StringX sx_Object;
-  auto ft = static_cast<FieldType>(iObject);
+  auto ft = static_cast<::FieldType>(iObject);
   switch (ft) {
     case AT_TITLE:
     case AT_FILENAME:
