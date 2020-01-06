@@ -1158,7 +1158,7 @@ void CSymbolEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 
   wint_t wChar = static_cast<wint_t>(nChar);
   // Do not limit user to 'our' definition of symbols
-  // i.e. allow such things as currency symbols - �, � & � etc.
+  // i.e. allow such things as currency symbols - £, € & ¥ etc.
   // Note: EasyVision and MakePronounceable symbols will still be
   // restricted to our lists defined in CPasswordCharPool as will the
   // default symbol set.
