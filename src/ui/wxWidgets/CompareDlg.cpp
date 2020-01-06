@@ -748,7 +748,11 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
                         nullptr, 0, //no fields are left unselected by default
                         nullptr, 0, //But no fields are mandatory
                         userSelection,
-                        _T("Synchronize"));
+                        _T("Synchronize"),
+                        _("Synchronize items"),
+                        _("Select fields to synchronize"),
+                        _("You must select some fields to synchronize"),
+                        _("Synchronize items"));
   if (dlg.ShowModal() == wxID_OK) {
     wxCHECK_RET(!userSelection.empty(), wxT("User did not select any fields to sync?"));
     auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
