@@ -1913,8 +1913,8 @@ a password are required.</seg>
       <tuv lang="en-US">
         <seg>Compare current database with another database</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T142202Z">
-        <seg>Сравнить текущий контейнера с другим</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20200106T190410Z">
+        <seg>Сравнение текущего контейнера с другим</seg>
       </tuv>
     </tu>
     <tu>
@@ -6048,7 +6048,7 @@ to the base entry</seg>
       <tuv lang="en-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2020-01-04 22:03+0300
+POT-Creation-Date: 2020-01-06 21:49+0300
 PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE
 Last-Translator: FULL NAME &lt;EMAIL@ADDRESS&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
@@ -6057,11 +6057,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20200104T190337Z" creationid="pm_kan" creationdate="20200104T190337Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20200106T184940Z" creationid="pm_kan" creationdate="20200106T184940Z">
         <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2020-01-04 22:00+0300
-PO-Revision-Date: 2020-01-04 22:00+0300
+POT-Creation-Date: 2020-01-06 22:00+0300
+PO-Revision-Date: 2020-01-06 22:00+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
@@ -6563,6 +6563,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Select fields to synchronize</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20200106T185039Z" creationid="pm_kan" creationdate="20200106T185039Z">
+        <seg>Выберите поля для синхронизации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Selected file doesn't exist.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20150418T091257Z">
@@ -6967,6 +6975,14 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Синхронизация завершена: %d %ls обновлено</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Synchronize items</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20200106T185019Z" creationid="pm_kan" creationdate="20200106T185019Z">
+        <seg>Синхронизация элементов</seg>
       </tuv>
     </tu>
     <tu>
@@ -8441,6 +8457,14 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T142636Z">
         <seg>Для продолжения нужно указать подходящий файл.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>You must select some fields to synchronize</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20200106T185139Z" creationid="pm_kan" creationdate="20200106T185139Z">
+        <seg>Необходимо выбрать одно или несколько полей, чтобы выполнить синхронизацию</seg>
       </tuv>
     </tu>
     <tu>

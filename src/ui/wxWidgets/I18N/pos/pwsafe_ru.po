@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-04 22:00+0300\n"
-"PO-Revision-Date: 2020-01-04 22:00+0300\n"
+"POT-Creation-Date: 2020-01-06 22:00+0300\n"
+"PO-Revision-Date: 2020-01-06 22:00+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: none\n"
 "Language: ru_RU\n"
@@ -832,7 +832,7 @@ msgstr "Не выбраны поля"
 
 #: src/ui/wxWidgets/CompareDlg.cpp:96
 msgid "Compare current database with another database"
-msgstr "Сравнить текущий контейнера с другим"
+msgstr "Сравнение текущего контейнера с другим"
 
 #: src/ui/wxWidgets/CompareDlg.cpp:139
 msgid "Conflicting items"
@@ -962,6 +962,19 @@ msgstr ""
 #: src/ui/wxWidgets/CompareDlg.cpp:731 src/ui/wxWidgets/SyncWizard.cpp:618
 msgid "Synchronization failed"
 msgstr "Сбой при синхронизации"
+
+#: src/ui/wxWidgets/CompareDlg.cpp:752 src/ui/wxWidgets/CompareDlg.cpp:755
+msgid "Synchronize items"
+msgstr "Синхронизация элементов"
+
+#: src/ui/wxWidgets/CompareDlg.cpp:753
+msgid "Select fields to synchronize"
+msgstr "Выберите поля для синхронизации"
+
+#: src/ui/wxWidgets/CompareDlg.cpp:754
+msgid "You must select some fields to synchronize"
+msgstr ""
+"Необходимо выбрать одно или несколько полей, чтобы выполнить синхронизацию"
 
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:140
 msgid ""
