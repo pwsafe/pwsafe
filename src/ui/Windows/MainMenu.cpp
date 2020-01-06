@@ -1729,7 +1729,7 @@ bool DboxMain::ProcessLanguageMenu(CMenu *pPopupMenu)
   return true;
 }
 
-const unsigned int DboxMain::GetMenuShortcut(const unsigned short int &siVirtKey,
+unsigned int DboxMain::GetMenuShortcut(const unsigned short int &siVirtKey,
                                              const unsigned char &cPWSModifier,
                                              StringX &sxMenuItemName)
 {
