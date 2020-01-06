@@ -247,7 +247,6 @@ private:
                   const Command *pcmd = nullptr);
   CItemData m_ci;
   CItemAtt m_att;
-  bool m_bExpired;
 };
 
 class DeleteEntryCommand : public Command
