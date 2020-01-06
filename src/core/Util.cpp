@@ -38,6 +38,11 @@
 
 #include <errno.h>
 
+#ifdef _MSC_VER
+// suppress unknown attribute warning
+#pragma warning(disable : 5051)
+#endif
+
 using namespace std;
 
 // used by CBC routines...

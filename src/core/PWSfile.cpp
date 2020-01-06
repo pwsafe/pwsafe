@@ -22,6 +22,11 @@
 #include <errno.h>
 #include <limits>
 
+#ifdef _MSC_VER
+ // suppress unknown attribute warning
+#pragma warning(disable : 5051)
+#endif
+
 PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
                               VERSION &version, RWmode mode, int &status,
                               Asker *pAsker, Reporter *pReporter)

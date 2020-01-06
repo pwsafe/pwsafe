@@ -17,6 +17,12 @@
 
 #include <time.h>
 
+#ifdef _MSC_VER
+// suppress unknown attribute warning
+#pragma warning(disable : 5051)
+#endif
+
+
 bool PWSMatch::Match(const StringX &stValue, StringX sx_Object,
                      const int &iFunction)
 {

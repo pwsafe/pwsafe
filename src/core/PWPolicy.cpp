@@ -18,6 +18,12 @@
 #include "os/debug.h"
 
 #include <iomanip>
+
+#ifdef _MSC_VER
+// suppress unknown attribute warning
+#pragma warning(disable : 5051)
+#endif
+
 /**
  * A policy is encoded as string (for persistence) as follows:
  * We need flags(4), length(3), lower_len(3), upper_len(3)

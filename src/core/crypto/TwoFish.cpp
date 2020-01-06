@@ -14,6 +14,11 @@
 #include "bitops.h"
 #include "../Util.h"
 
+#ifdef _MSC_VER
+// suppress unknown attribute warning
+#pragma warning(disable : 5051)
+#endif
+
 #define LTC_CLEAN_STACK
 #define TWOFISH_ALL_TABLES
 

@@ -39,6 +39,12 @@
 #include <set>
 #include <iterator>
 
+#ifdef _MSC_VER
+// suppress unknown attribute warning
+#pragma warning(disable : 5051)
+#endif
+
+
 const TCHAR *PWScore::GROUPTITLEUSERINCHEVRONS = _T("\xab%ls\xbb \xab%ls\xbb \xab%ls\xbb");
 
 using pws_os::CUUID;
