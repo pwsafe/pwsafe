@@ -17,12 +17,6 @@
 
 #include <time.h>
 
-#ifdef _MSC_VER
-// suppress unknown attribute warning
-#pragma warning(disable : 5051)
-#endif
-
-
 bool PWSMatch::Match(const StringX &stValue, StringX sx_Object,
                      const int &iFunction)
 {
@@ -343,7 +337,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
         break;
       }
       // Note: purpose drop through to standard 'string' processing
-      [[fallthrough]];
+      //[[fallthrough]];
     case MT_STRING:
       cs1 = fstring;
       LoadAString(cs2, fcase ? IDSC_CASE_SENSITIVE : IDSC_CASE_INSENSITIVE);

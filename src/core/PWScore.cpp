@@ -39,12 +39,6 @@
 #include <set>
 #include <iterator>
 
-#ifdef _MSC_VER
-// suppress unknown attribute warning
-#pragma warning(disable : 5051)
-#endif
-
-
 const TCHAR *PWScore::GROUPTITLEUSERINCHEVRONS = _T("\xab%ls\xbb \xab%ls\xbb \xab%ls\xbb");
 
 using pws_os::CUUID;
@@ -1305,7 +1299,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
           (*m_pReporter)(cs_msg);
         }
       }
-      [[fallthrough]];
+      //[[fallthrough]];
       case PWSfile::SUCCESS:
         ProcessReadEntry(ci_temp, vGTU_INVALID_UUID, vGTU_DUPLICATE_UUID, st_vr);
         break;

@@ -38,11 +38,6 @@
 
 #include <errno.h>
 
-#ifdef _MSC_VER
-// suppress unknown attribute warning
-#pragma warning(disable : 5051)
-#endif
-
 using namespace std;
 
 // used by CBC routines...
@@ -112,8 +107,8 @@ void ConvertPasskey(const StringX &text,
 #endif
   char *dst = new char[dstlen];
 
-  [[maybe_unused]] size_t res = pws_os::wcstombs(dst, dstlen, txtstr, txtlen, isUTF8);
-  ASSERT(res != 0);
+  size_t res = pws_os::wcstombs(dst, dstlen, txtstr, txtlen, isUTF8);
+  ASSERT(res != 0); UNREFERENCED_PARAMETER(res);
   txt = reinterpret_cast<unsigned char *>(dst);
   txtlen = dstlen - 1;
   txt[txtlen] = '\0'; // not strictly needed, since txtlen returned, but helps debug
@@ -548,10 +543,10 @@ stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
   switch (len % 3) {
     case 1:
       cs_Out += TCHAR('=');
-      [[fallthrough]];
+      //[[fallthrough]];
     case 2:
       cs_Out += TCHAR('=');
-      [[fallthrough]];
+      //[[fallthrough]];
     default:
       break;
   }

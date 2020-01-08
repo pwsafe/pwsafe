@@ -19,11 +19,6 @@
 
 #include <iomanip>
 
-#ifdef _MSC_VER
-// suppress unknown attribute warning
-#pragma warning(disable : 5051)
-#endif
-
 /**
  * A policy is encoded as string (for persistence) as follows:
  * We need flags(4), length(3), lower_len(3), upper_len(3)
@@ -302,13 +297,16 @@ StringX PWPolicy::GetDisplayString()
 
 void PWPolicy::Validate() const
 {
-  [[maybe_unused]] int total_sublength = (
+#ifdef DEBUG
+  int total_sublength = (
     ((flags & PWPolicy::UseLowercase) ? lowerminlength : 0) +
     ((flags & PWPolicy::UseUppercase) ? upperminlength : 0) +
     ((flags & PWPolicy::UseDigits) ? digitminlength : 0) +
     ((flags & PWPolicy::UseSymbols) ? symbolminlength : 0));
 
 	ASSERT(length >= total_sublength);
+#endif
+
 	if (length != 0) {// if length != 0 we assume the policy isn't empty, and so the following must hold:
 		// At least one set of characters is specified
 		ASSERT((flags & PWPolicy::UseLowercase) || (flags & PWPolicy::UseUppercase) || (flags & PWPolicy::UseDigits) || (flags & PWPolicy::UseSymbols) || (flags & PWPolicy::UseHexDigits));

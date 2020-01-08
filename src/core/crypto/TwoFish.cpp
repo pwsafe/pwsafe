@@ -14,11 +14,6 @@
 #include "bitops.h"
 #include "../Util.h"
 
-#ifdef _MSC_VER
-// suppress unknown attribute warning
-#pragma warning(disable : 5051)
-#endif
-
 #define LTC_CLEAN_STACK
 #define TWOFISH_ALL_TABLES
 
@@ -270,19 +265,19 @@ static void h_func(const unsigned char *in, unsigned char *out, unsigned char *M
       y[1] = static_cast<unsigned char>(sbox(0, static_cast<uint32>(y[1])) ^ M[4 * (6 + offset) + 1]);
       y[2] = static_cast<unsigned char>(sbox(0, static_cast<uint32>(y[2])) ^ M[4 * (6 + offset) + 2]);
       y[3] = static_cast<unsigned char>(sbox(1, static_cast<uint32>(y[3])) ^ M[4 * (6 + offset) + 3]);
-      [[fallthrough]];
+      //[[fallthrough]];
     case 3:
       y[0] = static_cast<unsigned char>(sbox(1, static_cast<uint32>(y[0])) ^ M[4 * (4 + offset) + 0]);
       y[1] = static_cast<unsigned char>(sbox(1, static_cast<uint32>(y[1])) ^ M[4 * (4 + offset) + 1]);
       y[2] = static_cast<unsigned char>(sbox(0, static_cast<uint32>(y[2])) ^ M[4 * (4 + offset) + 2]);
       y[3] = static_cast<unsigned char>(sbox(0, static_cast<uint32>(y[3])) ^ M[4 * (4 + offset) + 3]);
-      [[fallthrough]];
+      //[[fallthrough]];
     case 2:
       y[0] = static_cast<unsigned char>(sbox(1, sbox(0, sbox(0, static_cast<uint32>(y[0])) ^ M[4 * (2 + offset) + 0]) ^ M[4 * (0 + offset) + 0]));
       y[1] = static_cast<unsigned char>(sbox(0, sbox(0, sbox(1, static_cast<uint32>(y[1])) ^ M[4 * (2 + offset) + 1]) ^ M[4 * (0 + offset) + 1]));
       y[2] = static_cast<unsigned char>(sbox(1, sbox(1, sbox(0, static_cast<uint32>(y[2])) ^ M[4 * (2 + offset) + 2]) ^ M[4 * (0 + offset) + 2]));
       y[3] = static_cast<unsigned char>(sbox(0, sbox(1, sbox(1, static_cast<uint32>(y[3])) ^ M[4 * (2 + offset) + 3]) ^ M[4 * (0 + offset) + 3]));
-      [[fallthrough]];
+      //[[fallthrough]];
     default:
       break;
   }
