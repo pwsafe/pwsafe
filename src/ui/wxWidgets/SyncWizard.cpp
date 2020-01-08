@@ -75,9 +75,9 @@ public:
   void OnWizardPageChanging(wxWizardEvent& evt);
   void OnWizardPageChanged(wxWizardEvent& evt);
 
-  virtual void OnPageEnter(PageDirection /*direction*/) {}
+  virtual void OnPageEnter(PageDirection WXUNUSED(direction)) {}
   //return false to veto the page change
-  virtual bool OnPageLeave(PageDirection /*direction*/) { return true; }
+  virtual bool OnPageLeave(PageDirection WXUNUSED(direction)) { return true; }
 
   void SetChildWindowText(unsigned id, const wxString& str);
 
@@ -95,7 +95,7 @@ class SyncStartPage : public SyncWizardPage
 public:
   SyncStartPage(wxWizard* parent, SyncData* data);
 
-  virtual void SaveData(SyncData* /*data*/) {}
+  virtual void SaveData(SyncData* WXUNUSED(data)) {}
 };
 
 /*!
@@ -119,11 +119,11 @@ public:
 
 //helper class used by field selection page to construct the UI
 struct SyncFieldSelection {
-  static bool IsMandatoryField(CItemData::FieldType /*field*/) {
+  static bool IsMandatoryField(CItemData::FieldType WXUNUSED(field)) {
     return false;
   }
 
-  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+  static bool IsPreselectedField(CItemData::FieldType WXUNUSED(field)) {
     return true;
   }
 
@@ -181,7 +181,7 @@ public:
   SyncOptionsSummaryPage(wxWizard* parent, SyncData* data);
 
   virtual void OnPageEnter(PageDirection dir);
-  virtual void SaveData(SyncData* /*data*/) {}
+  virtual void SaveData(SyncData* WXUNUSED(data)) {}
 };
 
 /*!
@@ -207,7 +207,7 @@ class SyncStatusPage: public SyncWizardPage
 public:
   SyncStatusPage(wxWizard* parent, SyncData* data);
 
-  virtual void SaveData(SyncData* /*data*/) {}
+  virtual void SaveData(SyncData* WXUNUSED(data)) {}
   virtual void OnPageEnter(PageDirection dir);
 };
 

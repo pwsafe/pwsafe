@@ -333,11 +333,11 @@ struct FindDlgType {
     return _("Advanced Find Options");
   }
 
-  static bool IsMandatoryField(CItemData::FieldType /*field*/) {
+  static bool IsMandatoryField(CItemData::FieldType WXUNUSED(field)) {
     return false;
   }
 
-  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+  static bool IsPreselectedField(CItemData::FieldType WXUNUSED(field)) {
     return true;
   }
 

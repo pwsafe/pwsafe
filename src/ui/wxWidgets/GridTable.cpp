@@ -144,7 +144,7 @@ wxString GridTable::GetValue(int row, int col)
   return wxEmptyString;
 }
 
-void GridTable::SetValue(int /*row*/, int /*col*/, const wxString& /*value*/)
+void GridTable::SetValue(int WXUNUSED(row), int WXUNUSED(col), const wxString& WXUNUSED(value))
 {
   //I think it comes here only if the grid is editable
 }

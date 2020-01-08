@@ -191,7 +191,7 @@ struct CompareDlgType {
     }
   }
 
-  static bool IsUsableField(CItemData::FieldType /*field*/) {
+  static bool IsUsableField(CItemData::FieldType WXUNUSED(field)) {
     return true;
   }
 
@@ -312,7 +312,7 @@ void CompareDlg::OnCompare(wxCommandEvent& )
   }
 }
 
-void CompareDlg::DoCompare(wxCommandEvent& /*evt*/)
+void CompareDlg::DoCompare(wxCommandEvent& WXUNUSED(evt))
 {
   bool treatWhitespacesAsEmpty = false;
   m_currentCore->Compare(m_otherCore,
@@ -551,7 +551,7 @@ bool CompareDlg::ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool re
   return ae.ShowModal() == wxID_OK && !readOnly;
 }
 
-void CompareDlg::OnExpandDataPanels(wxCommandEvent& /*evt*/)
+void CompareDlg::OnExpandDataPanels(wxCommandEvent& WXUNUSED(evt))
 {
   m_dbSelectionPane->Collapse();
   m_optionsPane->Collapse();

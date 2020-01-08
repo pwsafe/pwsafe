@@ -48,7 +48,7 @@
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
  */
 
-void PasswordSafeFrame::OnChangePasswordClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnChangePasswordClick(wxCommandEvent& WXUNUSED(evt))
 {
   auto window = new SafeCombinationChangeDlg(this, m_core);
   int returnValue = window->ShowModal();
@@ -62,7 +62,7 @@ void PasswordSafeFrame::OnChangePasswordClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS_M
  */
 
-void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnPreferencesClick(wxCommandEvent& WXUNUSED(evt))
 {
   PWSprefs* prefs = PWSprefs::GetInstance();
   const StringX sxOldDBPrefsString(prefs->Store());
@@ -96,7 +96,7 @@ void PasswordSafeFrame::OnPreferencesClick( wxCommandEvent& /* evt */ )
 /*
  * Backup and Restore
  */
-void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& WXUNUSED(evt))
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   const wxFileName currbackup(towxstring(prefs->GetPref(PWSprefs::CurrentBackup)));
@@ -150,7 +150,7 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
   }
 }
 
-void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& WXUNUSED(evt))
 {
   if (SaveIfChanged() != PWScore::SUCCESS)
     return;
@@ -255,7 +255,7 @@ void PasswordSafeFrame::OnGeneratePassword(wxCommandEvent& WXUNUSED(event))
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_YUBIKEY_MNG
  */
 
-void PasswordSafeFrame::OnYubikeyMngClick( wxCommandEvent& /* event */ )
+void PasswordSafeFrame::OnYubikeyMngClick(wxCommandEvent& WXUNUSED(event))
 {
   YubiCfgDlg ykCfg(this, m_core);
   ykCfg.ShowModal();

@@ -186,7 +186,7 @@ void FieldSelectionPanel::MoveItem(int index, wxListBox* from, wxListBox* to)
   from->Delete(index);
 }
 
-void FieldSelectionPanel::OnSelectSome( wxCommandEvent& /* evt */ )
+void FieldSelectionPanel::OnSelectSome(wxCommandEvent& WXUNUSED(evt))
 {
   wxArrayInt aSelected;
   if (m_lbAvailable->GetSelections(aSelected)) {
@@ -197,14 +197,14 @@ void FieldSelectionPanel::OnSelectSome( wxCommandEvent& /* evt */ )
   }
 }
 
-void FieldSelectionPanel::OnSelectAll( wxCommandEvent& /* evt */ )
+void FieldSelectionPanel::OnSelectAll(wxCommandEvent& WXUNUSED(evt))
 {
   while (m_lbAvailable->GetCount()) {
     MoveItem(0, m_lbAvailable, m_lbSelected);
   }
 }
 
-void FieldSelectionPanel::OnRemoveSome( wxCommandEvent& /* evt */ )
+void FieldSelectionPanel::OnRemoveSome(wxCommandEvent& WXUNUSED(evt))
 {
   wxArrayInt aSelected;
   if (m_lbSelected->GetSelections(aSelected)) {
@@ -219,7 +219,7 @@ void FieldSelectionPanel::OnRemoveSome( wxCommandEvent& /* evt */ )
   }
 }
 
-void FieldSelectionPanel::OnRemoveAll( wxCommandEvent& /* evt */ )
+void FieldSelectionPanel::OnRemoveAll(wxCommandEvent& WXUNUSED(evt))
 {
   for(size_t itemsLeft = m_lbSelected->GetCount(), idx = 0; idx < itemsLeft; ) {
     if (!ItemIsMandatory(idx)) {

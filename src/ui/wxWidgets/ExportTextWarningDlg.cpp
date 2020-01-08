@@ -139,7 +139,7 @@ void ExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void ExportTextWarningDlgBase::OnYubibtnClick( wxCommandEvent& /* event */ )
+void ExportTextWarningDlgBase::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
 

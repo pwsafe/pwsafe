@@ -427,7 +427,7 @@ void SafeCombinationEntryDlg::OnCancel( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_ELLIPSIS
  */
 
-void SafeCombinationEntryDlg::OnEllipsisClick( wxCommandEvent& /* evt */ )
+void SafeCombinationEntryDlg::OnEllipsisClick(wxCommandEvent& WXUNUSED(evt))
 {
   wxFileDialog fd(this, _("Please Choose a Database to Open:"),
                   PWSdirs::GetSafeDir().c_str(), wxEmptyString,
@@ -446,7 +446,7 @@ void SafeCombinationEntryDlg::OnEllipsisClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEWDB
  */
 
-void SafeCombinationEntryDlg::OnNewDbClick( wxCommandEvent& /* evt */ )
+void SafeCombinationEntryDlg::OnNewDbClick(wxCommandEvent& WXUNUSED(evt))
 {
   // 1. Get a filename from a file dialog box
   // 2. Get a password
@@ -512,7 +512,7 @@ void SafeCombinationEntryDlg::OnNewDbClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void SafeCombinationEntryDlg::OnYubibtnClick( wxCommandEvent& /* event */ )
+void SafeCombinationEntryDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
 
@@ -543,7 +543,7 @@ void SafeCombinationEntryDlg::OnPollingTimer(wxTimerEvent &evt)
 }
 #endif
 
-void SafeCombinationEntryDlg::OnDBSelectionChange( wxCommandEvent& /*event*/ )
+void SafeCombinationEntryDlg::OnDBSelectionChange(wxCommandEvent& WXUNUSED(event))
 {
   UpdateReadOnlyCheckbox();
 }

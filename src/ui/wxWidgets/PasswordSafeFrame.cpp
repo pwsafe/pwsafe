@@ -1284,7 +1284,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
  */
 
-void PasswordSafeFrame::OnAboutClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnAboutClick(wxCommandEvent& WXUNUSED(evt))
 {
   AboutDlg* window = new AboutDlg(this);
   window->ShowModal();
@@ -1315,7 +1315,7 @@ void PasswordSafeFrame::OnRunCommand(wxCommandEvent& evt)
     DoRun(*item);
 }
 
-void PasswordSafeFrame::OnEditBase(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnEditBase(wxCommandEvent& WXUNUSED(evt))
 {
   CItemData* item = GetSelectedEntry();
   if (item && item->IsDependent()) {

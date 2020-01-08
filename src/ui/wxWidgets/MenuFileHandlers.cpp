@@ -79,7 +79,7 @@ static void DisplayFileWriteError(int rc, const StringX &fname)
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_NEW
  */
 
-void PasswordSafeFrame::OnNewClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnNewClick(wxCommandEvent& WXUNUSED(evt))
 {
   New();
 }
@@ -206,7 +206,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN
  */
 
-void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnOpenClick(wxCommandEvent& WXUNUSED(evt))
 {
   int rc = DoOpen(_("Please Choose a Database to Open:"));
 
@@ -220,7 +220,7 @@ void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_CLOSE
  */
 
-void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnCloseClick(wxCommandEvent& WXUNUSED(evt))
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -279,7 +279,7 @@ void PasswordSafeFrame::OnClearRecentHistory(wxCommandEvent& evt)
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVE
  */
 
-void PasswordSafeFrame::OnSaveClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnSaveClick(wxCommandEvent& WXUNUSED(evt))
 {
   Save();
 }
@@ -608,15 +608,15 @@ struct ExportFullText
     return _("Advanced Text Export Options");
   }
 
-  static bool IsMandatoryField(CItemData::FieldType /*field*/) {
+  static bool IsMandatoryField(CItemData::FieldType WXUNUSED(field)) {
     return false;
   }
 
-  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+  static bool IsPreselectedField(CItemData::FieldType WXUNUSED(field)) {
     return true;
   }
 
-  static bool IsUsableField(CItemData::FieldType /*field*/) {
+  static bool IsUsableField(CItemData::FieldType WXUNUSED(field)) {
     return true;
   }
 
@@ -655,11 +655,11 @@ struct ExportFullXml {
     return field == CItemData::TITLE || field == CItemData::PASSWORD;
   }
 
-  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+  static bool IsPreselectedField(CItemData::FieldType WXUNUSED(field)) {
     return true;
   }
 
-  static bool IsUsableField(CItemData::FieldType /*field*/) {
+  static bool IsUsableField(CItemData::FieldType WXUNUSED(field)) {
     return true;
   }
 
@@ -1249,13 +1249,13 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
   }
 }
 
-void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnCompare(wxCommandEvent& WXUNUSED(evt))
 {
   CompareDlg dlg(this, &m_core);
   dlg.ShowModal();
 }
 
-void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnSynchronize(wxCommandEvent& WXUNUSED(evt))
 {
   // disable in read-only mode or empty
   wxCHECK_RET(!m_core.IsReadOnly() && m_core.IsDbOpen() && m_core.GetNumEntries() != 0,
@@ -1277,7 +1277,7 @@ void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
     ViewReport(*wiz.GetReport());
 }
 
-void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnPropertiesClick(wxCommandEvent& WXUNUSED(evt))
 {
   PropertiesDlg propsDialog(this, m_core);
   propsDialog.ShowModal();
@@ -1317,7 +1317,7 @@ void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
  */
 
-void PasswordSafeFrame::OnExitClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnExitClick(wxCommandEvent& WXUNUSED(evt))
 {
   m_exitFromMenu = true;
 

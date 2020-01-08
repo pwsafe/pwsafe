@@ -220,7 +220,7 @@ wxIcon CreateShortcutDlg::GetIconResource( const wxString& WXUNUSED(name) )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CreateShortcutDlg::OnOkClick( wxCommandEvent& /* evt */ )
+void CreateShortcutDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     bool valid = !m_title.empty();

@@ -296,7 +296,7 @@ void SafeCombinationPromptDlg::ProcessPhrase()
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void SafeCombinationPromptDlg::OnOkClick( wxCommandEvent& /* evt */ )
+void SafeCombinationPromptDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     if (m_password.empty()) {
@@ -319,7 +319,7 @@ void SafeCombinationPromptDlg::OnOkClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void SafeCombinationPromptDlg::OnCancelClick( wxCommandEvent& /* evt */ )
+void SafeCombinationPromptDlg::OnCancelClick(wxCommandEvent& WXUNUSED(evt))
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationPromptDlg.
   // Before editing this code, remove the block markers.
@@ -331,7 +331,7 @@ void SafeCombinationPromptDlg::OnCancelClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_EXIT
  */
 
-void SafeCombinationPromptDlg::OnExitClick( wxCommandEvent& /* evt */ )
+void SafeCombinationPromptDlg::OnExitClick(wxCommandEvent& WXUNUSED(evt))
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_EXIT in SafeCombinationPromptDlg.
   // Before editing this code, remove the block markers.
@@ -344,7 +344,7 @@ void SafeCombinationPromptDlg::OnExitClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void SafeCombinationPromptDlg::OnYubibtnClick( wxCommandEvent& /* event */ )
+void SafeCombinationPromptDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   m_scctrl->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
   if (Validate() && TransferDataFromWindow()) {

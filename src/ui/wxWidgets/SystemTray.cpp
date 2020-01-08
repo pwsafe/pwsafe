@@ -272,7 +272,7 @@ void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
   }
 }
 
-void SystemTray::OnTaskBarLeftDoubleClick(wxTaskBarIconEvent& /*evt*/)
+void SystemTray::OnTaskBarLeftDoubleClick(wxTaskBarIconEvent& WXUNUSED(evt))
 {
   EventHandlerDisabler ehd(this);
   m_frame->UnlockSafe(true, false); //true => restore UI
