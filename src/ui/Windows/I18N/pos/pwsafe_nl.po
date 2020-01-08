@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2019-12-18 22:08+0100\n"
+"PO-Revision-Date: 2020-01-07 22:29+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -800,7 +800,7 @@ msgstr "&Lijst"
 
 #. Resource IDs: (32027 - MenuEx)
 msgid "&Lock"
-msgstr "&Vergrendeld"
+msgstr "&Vergrendel"
 
 #. Resource IDs: (32150 - PopupMenuEx)
 msgid "&Manage"
@@ -2996,7 +2996,7 @@ msgstr "Nederlands"
 
 #. Resource IDs: (2, 32021 - Menu, 5549)
 msgid "E&xit"
-msgstr "A&fsluiten"
+msgstr "&Sluit Programma"
 
 #. Resource IDs: (32021 - MenuEx)
 msgid "E&xit\tCtrl+Q\\Alt+F4"
@@ -3804,7 +3804,7 @@ msgstr "Genereer"
 
 #. Resource IDs: (32157 - MenuEx)
 msgid "Generate &Password"
-msgstr "Maak &wachtwoord"
+msgstr "&Maak Wachtwoord"
 
 #. Resource IDs: (1052)
 msgid "Generate &Pronounceable passwords"
@@ -4337,7 +4337,7 @@ msgstr "Interne programma fout: Er werd een ongeldige vlag opgegeven"
 
 #. Resource IDs: (3327)
 msgid "Internal error: Couldn't initialize config file XML structure"
-msgstr "Interne programma fout: De configuratiebestand XML-structuur kan niet worden geÃ¯nitialiseerd"
+msgstr "Interne fout: kan XML-structuur van configuratiebestand niet initialiseren"
 
 #. Resource IDs: (3022)
 msgid "Internal error: Invalid oflag or pmode argument"
@@ -5165,7 +5165,7 @@ msgstr "Open database"
 
 #. Resource IDs: (1300)
 msgid "Open database read-only by default"
-msgstr "Open database standaard in alleen-lezen"
+msgstr "Database standaard openen in alleen-lezen"
 
 #. Resource IDs: (5218)
 msgid "Options"
@@ -6022,7 +6022,7 @@ msgstr "Opslaan"
 
 #. Resource IDs: (32006 - MenuEx)
 msgid "Save &As..."
-msgstr "Opslaan &als..."
+msgstr "&Opslaan als..."
 
 #. Resource IDs: (5797, 61441)
 msgid "Save As"
@@ -6281,11 +6281,11 @@ msgstr "Shift"
 
 #. Resource IDs: (65535)
 msgid "Shift Double-Click Action"
-msgstr "Shift+Dubbelklik Actie"
+msgstr "Shift Dubbelklik Actie"
 
 #. Resource IDs: (65535)
 msgid "Shift Double-Click Action:"
-msgstr "Shift+Dubbelklik Actie:"
+msgstr "Shift Dubbelklik Actie:"
 
 #. Resource IDs: (5689)
 msgid "Shift+"
@@ -7137,7 +7137,7 @@ msgstr "Dit is een alias van:"
 #. Resource IDs: (5121)
 #, c-format
 msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
-msgstr "Dit is het percentage van het Venster transparantie. 0% mbetekent normaal volledig ondoorzichtig en 100% is volledig transparant en onzichtbaar. Waarden groter dan 50% aworden niet ondersteund. Merk op: dit geldt alleen voor het hoofd dialoogvenster."
+msgstr "Dit is het percentage van het Venster transparantie. 0% betekent normaal volledig ondoorzichtig en 100% is volledig transparant en onzichtbaar. Waarden groter dan 50% worden niet ondersteund. Merk op: dit geldt alleen voor het hoofd dialoogvenster."
 
 #. Resource IDs: (61710)
 #, c-format
@@ -7908,7 +7908,7 @@ msgstr "Ja (minstens %d)"
 #. Resource IDs: (4107)
 #, c-format
 msgid "Yes - At least %d from %ls: %ls%ls"
-msgstr "Ja - Ten minste% d van% ls:% ls% ls"
+msgstr "Ja - Ten minste %d van %ls: %ls%ls"
 
 #. Resource IDs: (1084)
 msgid "Yes:"
