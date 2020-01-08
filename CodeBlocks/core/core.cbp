@@ -17,10 +17,9 @@
 				<Option run_host_application_in_terminal="1" />
 				<Option createDefFile="1" />
 				<Compiler>
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m64" />
 					<Add option="-g" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
@@ -51,12 +50,11 @@
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="-g" />
-					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
+					<Add option="-std=c++11" />
+					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fno-omit-frame-pointer" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
@@ -87,9 +85,8 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m64" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
@@ -116,9 +113,8 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m32" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
@@ -143,10 +139,9 @@
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m64" />
 					<Add option="-g" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
@@ -176,10 +171,9 @@
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="-g" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
@@ -211,9 +205,8 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m64" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
@@ -239,9 +232,8 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m32" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
@@ -250,6 +242,49 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m32" />
+				</Linker>
+				<ExtraCommands>
+					<Add before="../../Misc/rc2cpp.pl ../../src/core/core.rc2" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+			<Target title="Release_L64Y-Clang">
+				<Option platforms="Unix;" />
+				<Option output="core64y" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release64YCLang/" />
+				<Option type="2" />
+				<Option compiler="clang" />
+				<Option createDefFile="1" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Compiler>
+					<Add option="-fsanitize=address" />
+					<Add option="-fPIC" />
+					<Add option="-m64" />
+					<Add option="-fomit-frame-pointer" />
+					<Add option="-O2" />
+					<Add option="-Wnon-virtual-dtor" />
+					<Add option="-Wbind-to-temporary-copy" />
+					<Add option="-Wextra-tokens" />
+					<Add option="-Weverything" />
+					<Add option="-Wall" />
+					<Add option="-std=c++11" />
+					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
+					<Add option="-Wformat=2" />
+					<Add option="-Wdouble-promotion" />
+					<Add option="-Wnull-dereference" />
+					<Add option="-Wduplicated-enum" />
+					<Add option="-Winvalid-pch" />
+					<Add option="-Wno-shadow-field-in-constructor" />
+					<Add option="-DNDEBUG" />
+					<Add option="-DUSE_XML_LIBRARY=XERCES" />
+					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
+					<Add option="-DUNICODE" />
+					<Add directory="../../src" />
+				</Compiler>
+				<Linker>
+					<Add option="-fsanitize=address" />
+					<Add option="-m64" />
 				</Linker>
 				<ExtraCommands>
 					<Add before="../../Misc/rc2cpp.pl ../../src/core/core.rc2" />
@@ -269,11 +304,12 @@
 			<Add option="-Wfloat-equal" />
 			<Add option="-Wunreachable-code" />
 			<Add option="-Wmissing-include-dirs" />
-			<Add option="-Wswitch-enum" />
 			<Add option="-Wswitch-default" />
 			<Add option="-Wzero-as-null-pointer-constant" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
+			<Add option="-std=c11" />
+			<Add option="-fPIC" />
 			<Add option="-std=c++11" />
 			<Add option="-Wformat=2" />
 			<Add option="-Wdouble-promotion" />
@@ -282,6 +318,7 @@
 			<Add option="-Wduplicated-cond" />
 			<Add option="-Winvalid-pch" />
 			<Add option="-Wlogical-op" />
+			<Add option="-Wno-shadow-field-in-constructor" />
 			<Add option="-DUNICODE" />
 		</Compiler>
 		<Unit filename="../../src/core/CheckVersion.cpp" />
@@ -405,9 +442,6 @@
 		<Unit filename="../../src/core/pugixml/pugixml.hpp" />
 		<Unit filename="../../src/core/trigram.h" />
 		<Extensions>
-			<envvars />
-			<code_completion />
-			<debugger />
 			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>

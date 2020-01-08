@@ -35,15 +35,16 @@ CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
                                PWSFilters &mapfilters,
                                bool bCanHaveAttachments)
   : CPWDialog(CManageFiltersDlg::IDD, pParent),
-  m_bMFFilterActive(bFilterActive), m_MapMFDFilters(mapfilters),
-  m_selectedfilterpool(FPOOL_LAST), m_selectedfiltername(L""),
-  m_activefilterpool(FPOOL_LAST), m_activefiltername(L""),
+  m_MapMFDFilters(mapfilters),
+  m_pImageList(nullptr), m_pCheckImageList(nullptr),
+  m_selectedfilterpool(FPOOL_LAST), m_activefilterpool(FPOOL_LAST),
+  m_selectedfiltername(L""), m_activefiltername(L""),
   m_selectedfilter(-1), m_activefilter(-1),
-  m_bDBFiltersChanged(false),
   m_num_to_export(0), m_num_to_copy(0),
-  m_pCheckImageList(NULL), m_pImageList(NULL),
-  m_iSortColumn(-1), m_bSortAscending(-1), m_bDBReadOnly(false),
-  m_bCanHaveAttachments(bCanHaveAttachments)
+  m_bMFFilterActive(bFilterActive), m_bDBFiltersChanged(false),
+  m_iSortColumn(-1), m_bSortAscending(-1), 
+  m_bCanHaveAttachments(bCanHaveAttachments),
+  m_bDBReadOnly(false)
 {
   PWSFilters::iterator mf_iter;
 

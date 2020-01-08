@@ -19,8 +19,9 @@
 IMPLEMENT_DYNAMIC(CProperties, CPWDialog)
 
 CProperties::CProperties(st_DBProperties *pdbp, const bool bReadonly, CWnd *pParent)
-  : CPWDialog(CProperties::IDD, pParent), m_bReadOnly(bReadonly), m_pdbp(pdbp),
-  m_bChanged(false)
+  : CPWDialog(CProperties::IDD, pParent), 
+  m_pdbp(pdbp), 
+  m_bReadOnly(bReadonly), m_bChanged(false)
 {
   m_old_name = m_pdbp->db_name;
   m_old_description = m_pdbp->db_description;

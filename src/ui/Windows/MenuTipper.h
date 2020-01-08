@@ -32,7 +32,7 @@ protected:
 public:
   int m_iDelay;         // tooltip delay: you can change
 
-  CMenuTipManager() : m_iDelay(2000), m_bSticky(FALSE), m_bMouseSelect(FALSE) {}
+  CMenuTipManager() : m_bMouseSelect(FALSE), m_bSticky(FALSE), m_iDelay(2000) {}
   ~CMenuTipManager() {}
 
   // call this to install tips

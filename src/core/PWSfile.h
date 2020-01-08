@@ -188,7 +188,7 @@ protected:
   Reporter *m_pReporter;
 
 private:
-  PWSfile& operator=(const PWSfile&); // Do not implement
+  PWSfile& operator=(const PWSfile&) = delete; // Do not implement
 };
 
 // A quick way to determine if two files are equal,

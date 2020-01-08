@@ -75,9 +75,9 @@ public:
   void OnWizardPageChanging(wxWizardEvent& evt);
   void OnWizardPageChanged(wxWizardEvent& evt);
 
-  virtual void OnPageEnter(PageDirection /*direction*/) {}
+  virtual void OnPageEnter(PageDirection WXUNUSED(direction)) {}
   //return false to veto the page change
-  virtual bool OnPageLeave(PageDirection /*direction*/) { return true; }
+  virtual bool OnPageLeave(PageDirection WXUNUSED(direction)) { return true; }
 
   void SetChildWindowText(unsigned id, const wxString& str);
 
@@ -95,7 +95,7 @@ class SyncStartPage : public SyncWizardPage
 public:
   SyncStartPage(wxWizard* parent, SyncData* data);
 
-  virtual void SaveData(SyncData* /*data*/) {}
+  virtual void SaveData(SyncData* WXUNUSED(data)) {}
 };
 
 /*!
@@ -119,11 +119,11 @@ public:
 
 //helper class used by field selection page to construct the UI
 struct SyncFieldSelection {
-  static bool IsMandatoryField(CItemData::FieldType /*field*/) {
+  static bool IsMandatoryField(CItemData::FieldType WXUNUSED(field)) {
     return false;
   }
 
-  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+  static bool IsPreselectedField(CItemData::FieldType WXUNUSED(field)) {
     return true;
   }
 
@@ -181,7 +181,7 @@ public:
   SyncOptionsSummaryPage(wxWizard* parent, SyncData* data);
 
   virtual void OnPageEnter(PageDirection dir);
-  virtual void SaveData(SyncData* /*data*/) {}
+  virtual void SaveData(SyncData* WXUNUSED(data)) {}
 };
 
 /*!
@@ -207,7 +207,7 @@ class SyncStatusPage: public SyncWizardPage
 public:
   SyncStatusPage(wxWizard* parent, SyncData* data);
 
-  virtual void SaveData(SyncData* /*data*/) {}
+  virtual void SaveData(SyncData* WXUNUSED(data)) {}
   virtual void OnPageEnter(PageDirection dir);
 };
 
@@ -220,7 +220,7 @@ END_EVENT_TABLE()
 
 SyncWizard::SyncWizard(wxWindow* parent, PWScore* core):
                 wxWizard(parent, wxID_ANY, _("Synchronize another database with currently open database")),
-                m_page1(0), m_syncData(new SyncData)
+                m_page1(nullptr), m_syncData(new SyncData)
 {
   //select all fields, except those below
   m_syncData->selCriteria.SelectAllFields();
@@ -261,7 +261,7 @@ SyncWizard::SyncWizard(wxWindow* parent, PWScore* core):
 SyncWizard::~SyncWizard()
 {
   delete m_syncData;
-  m_syncData = 0;
+  m_syncData = nullptr;
 }
 
 void SyncWizard::OnWizardPageChanging(wxWizardEvent& evt)
@@ -321,7 +321,7 @@ void SyncWizardPage::OnWizardPageChanging(wxWizardEvent& evt)
   SyncWizardPage* page = wxDynamicCast(evt.GetPage(), SyncWizardPage);
   wxASSERT_MSG(page, wxT("Sync wizard page not derived from SyncWizardPage class"));
 
-  if (!page->OnPageLeave(evt.GetDirection() ? PageDirection::FORWARD : PageDirection::BACKWARD))
+  if (page && !page->OnPageLeave(evt.GetDirection() ? PageDirection::FORWARD : PageDirection::BACKWARD))
     evt.Veto();
 
   //must always do this, to let the wizard see the event as well
@@ -332,8 +332,9 @@ void SyncWizardPage::OnWizardPageChanged(wxWizardEvent& evt)
 {
   SyncWizardPage* page = wxDynamicCast(evt.GetPage(), SyncWizardPage);
   wxASSERT_MSG(page, wxT("Sync wizard page not derived from SyncWizardPage class"));
-
-  page->OnPageEnter(evt.GetDirection() ? PageDirection::FORWARD : PageDirection::BACKWARD);
+  if (page) {
+    page->OnPageEnter(evt.GetDirection() ? PageDirection::FORWARD : PageDirection::BACKWARD);
+  }
 
   //must always do this, to let the wizard see the event as well
   evt.Skip();
@@ -428,8 +429,8 @@ void SyncFieldSelectionPage::SaveData(SyncData* data)
 //
 SyncOptionsSummaryPage::SyncOptionsSummaryPage(wxWizard* parent, SyncData* data)
                               : SyncWizardPage(parent, data, _("Options Summary")),
-                                m_updatedFieldsGrid(0),
-                                m_notUpdatedFieldsGrid(0)
+                                m_updatedFieldsGrid(nullptr),
+                                m_notUpdatedFieldsGrid(nullptr)
 {
   wxSizerFlags flags = wxSizerFlags().Expand().Proportion(0).Border(wxLEFT+wxRIGHT, SideMargin);
   wxSizerFlags gridFlags = wxSizerFlags().Expand().Proportion(1).Border(wxLEFT+wxRIGHT, SideMargin*2);
@@ -695,13 +696,13 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
       uuid_array_t current_uuid, other_uuid;
       curItem.GetUUID(current_uuid);
       otherItem.GetUUID(other_uuid);
-      if (memcmp((void *)current_uuid, (void *)other_uuid, sizeof(uuid_array_t)) != 0) {
+      if (memcmp(static_cast<void *>(current_uuid), static_cast<void *>(other_uuid), sizeof(uuid_array_t)) != 0) {
         pws_os::Trace(wxT("Synchronize: Mis-match UUIDs for [%ls:%ls:%ls]\n"), otherGroup.c_str(), otherTitle.c_str(), otherUser.c_str());
       }
 
       bool bUpdated(false);
-      for (int i = 0; i < (int)criteria.TotalFieldsCount(); i++) {
-        auto ft = (CItemData::FieldType)i;
+      for (size_t i = 0; i < criteria.TotalFieldsCount(); i++) {
+        auto ft = static_cast<CItemData::FieldType>(i);
         if (criteria.IsFieldSelected(ft)) {
           const StringX sxValue = otherItem.GetFieldValue(ft);
           if (sxValue != updItem.GetFieldValue(ft)) {

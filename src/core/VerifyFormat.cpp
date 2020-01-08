@@ -146,7 +146,7 @@ bool VerifyASCDateTimeString(const stringT &time_str, time_t &t)
   if (iMON == stringT::npos)
     return false;
 
-  mon = ((reinterpret_cast<int &>(iMON) / 3) + 1);
+  mon = ((static_cast<int>(iMON) / 3) + 1);
 
   if (!verifyDTvalues(yyyy, mon, dd, hh, min, ss))
     return false;
@@ -635,7 +635,7 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
   if (rc != PWH_OK)
     nerror = ie;
 
-  n = (unsigned int)out_entries.size();
+  n = static_cast<unsigned int>(out_entries.size());
   Format(sxBuffer, L"%01d%02x%02x", s, m, n);
   newPWHistory = sxBuffer;
 

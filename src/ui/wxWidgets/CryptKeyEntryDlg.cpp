@@ -84,7 +84,7 @@ CryptKeyEntryDlg::CryptKeyEntryDlg(Mode mode)
     //*)
 
     // Allow to resize the dialog only in width.
-    SetMinSize(wxSize(GetMinSize().x * 1.5, GetMinSize().y));
+    SetMinSize(wxSize(static_cast<int>(GetMinSize().x * 1.5), GetMinSize().y));
     SetMaxSize(wxSize(wxDefaultCoord, GetMinSize().y));
 
     m_Mode = mode;

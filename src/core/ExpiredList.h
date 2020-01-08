@@ -26,7 +26,7 @@ struct ExpPWEntry {
       uuid = that.uuid;
     }
     return *this;
-  };
+  }
 
   operator pws_os::CUUID() {return uuid;}
   pws_os::CUUID uuid;

@@ -82,12 +82,12 @@ void QRCodeDlg::CreateControls(const StringX &data)
   SetSizerAndFit(hSizer);
 }
 
-void QRCodeDlg::OnClose(wxCommandEvent & /*evt*/)
+void QRCodeDlg::OnClose(wxCommandEvent& WXUNUSED(evt))
 {
   EndModal(wxID_CLOSE);
 }
 
-void QRCodeDlg::OnTimer(wxTimerEvent & /*evt*/)
+void QRCodeDlg::OnTimer(wxTimerEvent& WXUNUSED(evt))
 {
   if (--secondsRemaining > 0)
   {
@@ -100,7 +100,7 @@ void QRCodeDlg::OnTimer(wxTimerEvent & /*evt*/)
   }
 }
 
-void QRCodeDlg::OnInitDialog(wxInitDialogEvent & /*evt*/)
+void QRCodeDlg::OnInitDialog(wxInitDialogEvent& WXUNUSED(evt))
 {
   // true => oneshot. We don't want to be called every millisecond
   timer.Start(1000, true);

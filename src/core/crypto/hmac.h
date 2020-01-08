@@ -40,7 +40,7 @@ class HMAC : public HMAC_BASE
 {
 public:
   HMAC(const unsigned char *key, unsigned long keylen)
-    : HMAC_BASE(), Hash(0)
+    : HMAC_BASE(), Hash(nullptr)
   {
     ASSERT(key != nullptr);
     
@@ -48,7 +48,7 @@ public:
     Init(key, keylen);
   }
 
-  HMAC() : HMAC_BASE(), Hash(0)
+  HMAC() : HMAC_BASE(), Hash(nullptr)
   { // Init needs to be called separately
     memset(K, 0, sizeof(K));
   }

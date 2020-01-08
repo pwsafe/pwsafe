@@ -81,6 +81,7 @@ BEGIN
   IDSC_IMPORTCONFLICTSX2  "Entry with no group"
   IDSC_IMPORTABORTED      "Import aborted. Please see report."
   IDSC_IMPORTMISSINGTITLE "Could not find the next entry's title field in the KeePass V1 TXT (should be within square brackets)."
+  IDSC_IMPORTINVALIDDELIMITER "Invalid field delimiter: must be within ASCII range."
 END
 
 STRINGTABLE

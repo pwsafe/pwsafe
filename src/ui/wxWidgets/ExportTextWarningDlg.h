@@ -51,8 +51,6 @@ private:
 #endif
   const wxString defDelim;
   SafeCombinationCtrl* m_combinationEntry;
-  wxBitmapButton* m_YubiBtn;
-  wxStaticText* m_yubiStatusCtrl;
   wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
 };
 

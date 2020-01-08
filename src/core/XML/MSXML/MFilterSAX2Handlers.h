@@ -143,12 +143,9 @@ private:
   StringX m_sxElemContent;
   BSTR * m_pSchema_Version;
 
-  int m_fieldlen;
   int m_iXMLVersion, m_iSchemaVersion;
   bool m_bEntryBeingProcessed;
   bool m_bValidation;
-  unsigned char m_ctype;
-  unsigned char * m_pfield;
 
   // REQUIRED variable
   ULONG m_refCnt;

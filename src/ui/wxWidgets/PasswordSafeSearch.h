@@ -105,7 +105,7 @@ public:
   const wxString& GetLabel(void) const { return m_label; }
 
 private:
-  void PrintLabel(const TCHAR* prefix = 0);
+  void PrintLabel(const TCHAR* prefix = nullptr);
 };
 
 /*!

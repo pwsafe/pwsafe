@@ -536,7 +536,7 @@ struct RecordWriter {
   }
 
 private:
-  RecordWriter& operator=(const RecordWriter&); // Do not implement
+  RecordWriter& operator=(const RecordWriter&) = delete; // Do not implement
   PWSfile *m_pout;
   PWScore *m_pcore;
   const PWSfile::VERSION m_version;
@@ -1299,7 +1299,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
           (*m_pReporter)(cs_msg);
         }
       }
-      // deliberate fall-through
+      //[[fallthrough]];
       case PWSfile::SUCCESS:
         ProcessReadEntry(ci_temp, vGTU_INVALID_UUID, vGTU_DUPLICATE_UUID, st_vr);
         break;
@@ -1422,7 +1422,7 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
     unsigned int m = 1;
     for (x = 0; x < file_nums.size(); x++)
       if (file_nums[x] < next)
-        file_nums[x] = (unsigned long)(next <= 999 ? next++ : m++);
+        file_nums[x] = static_cast<unsigned long>(next <= 999 ? next++ : m++);
   }
 
   Format(cs_newname, L"%ls_%03d", cs_filenamebase.c_str(), nnn);
@@ -1931,7 +1931,7 @@ struct AddEntry {
   }
 
 private:
-  AddEntry& operator=(const AddEntry&); // Do not implement
+  AddEntry& operator=(const AddEntry&) = delete; // Do not implement
   StringX m_sxPolicyName;
   std::vector<st_GroupTitleUser> *m_pventries;
 };
@@ -3091,7 +3091,7 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
       (Password[Password.length() - 1] == _T(']')) &&
       num_colonsP1 <= 3) {
     StringX tmp;
-    ItemListIter iter;
+    ItemListIter iter = m_pwlist.end();
     switch (num_colonsP1) {
       case 1:
         // [X] - OK if unique entry [g:X:u], [g:X:], [:X:u] or [:X:] exists for any value of g or u

@@ -337,6 +337,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
         break;
       }
       // Note: purpose drop through to standard 'string' processing
+      //[[fallthrough]];
     case MT_STRING:
       cs1 = fstring;
       LoadAString(cs2, fcase ? IDSC_CASE_SENSITIVE : IDSC_CASE_INSENSITIVE);
@@ -390,7 +391,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
           ASSERT(0);
           id = IDSC_INVALID;
       }
-      LoadAString(cs1, id);
+      LoadAString(cs1, static_cast<int>(id));
       break;
     case MT_DCA:
     case MT_SHIFTDCA:
@@ -410,11 +411,11 @@ void PWSMatch::GetMatchType(MatchType mtype,
           ASSERT(0);
           id = IDSC_INVALID;
       }
-      LoadAString(cs1, id);
+      LoadAString(cs1, static_cast<int>(id));
       if (fdca == -1) {
         // Fill in the current message with the default action
-        short iDCA = (short)PWSprefs::GetInstance()->GetPref(mtype == MT_SHIFTDCA ?
-          PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction);
+        short iDCA = static_cast<short>(PWSprefs::GetInstance()->GetPref(mtype == MT_SHIFTDCA ?
+          PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction));
         UINT id2;
         switch (iDCA) {
           case PWSprefs::DoubleClickCopyPassword:         id2 = IDSC_DCACOPYPASSWORD;    break;
@@ -432,7 +433,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
             id2 = IDSC_INVALID;
         }
         stringT cs3;
-        LoadAString(cs3, id2);
+        LoadAString(cs3, static_cast<int>(id2));
         Format(cs1, cs1.c_str(), cs3.c_str());
       }
       break;
@@ -445,7 +446,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
           ASSERT(0);
           id = IDSC_INVALID;
       }
-      LoadAString(cs1, id);
+      LoadAString(cs1, static_cast<int>(id));
       break;
     case MT_ENTRYSIZE:
       {

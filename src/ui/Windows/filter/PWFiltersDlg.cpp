@@ -34,9 +34,9 @@ CPWFiltersDlg::CPWFiltersDlg(CWnd* pParent /* = NULL */,
                              bool bCanHaveAttachments /* = false */,
                              const std::set<StringX> *psMediaTypes /* = NULL */)
   : CPWResizeDialog(CPWFiltersDlg::IDD, pParent),
-  m_numfilters(0), m_iType(filtertype), m_hAccel(NULL), 
   m_filtername(filtername), m_bAllowSet(true),
-  m_bCanHaveAttachments(bCanHaveAttachments), m_psMediaTypes(psMediaTypes)
+  m_bCanHaveAttachments(bCanHaveAttachments), m_psMediaTypes(psMediaTypes),
+  m_hAccel(nullptr), m_numfilters(0), m_iType(filtertype)
 {
 }
 
@@ -173,8 +173,8 @@ void CPWFiltersDlg::OnOk()
 struct FilterValidator
 {
   FilterValidator(CString &text, int &iHistory, int &iPolicy, int &iAttachment)
-    : i(0), text(text), iHistory(iHistory), iPolicy(iPolicy),
-    iAttachment(iAttachment) {}
+    : i(0), iHistory(iHistory), iPolicy(iPolicy),
+    iAttachment(iAttachment), text(text) {}
   bool operator()(const st_FilterRow &st_fldata) {
     // return true if FAILS validation, so that find_if will
     // "find" it.

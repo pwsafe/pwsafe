@@ -25,7 +25,7 @@ struct UnknownFieldEntry {
   size_t st_length;
   unsigned char * uc_pUField;
 
-  UnknownFieldEntry() :uc_Type(0), st_length(0), uc_pUField(0) {}
+  UnknownFieldEntry() :uc_Type(0), st_length(0), uc_pUField(nullptr) {}
   UnknownFieldEntry(unsigned char t, size_t s, unsigned char *d);
   ~UnknownFieldEntry();
   // copy c'tor and assignment operator, standard idioms

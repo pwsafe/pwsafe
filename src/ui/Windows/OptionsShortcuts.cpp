@@ -46,10 +46,10 @@ COptionsShortcuts::COptionsShortcuts(CWnd *pParent, st_Opt_master_data *pOPTMD)
 : COptions_PropertyPage(pParent,
                         COptionsShortcuts::IDD, COptionsShortcuts::IDD_SHORT,
                         pOPTMD),
-  m_bShortcutsChanged(false),
-  m_bSortAscending(true), m_iSortedColumn(0),
-  m_bKBSortAscending(true), m_iKBSortedColumn(0),
-  m_bWarnUserKBShortcut(false), m_iOldAppHotKey(0)
+  m_iOldAppHotKey(0),
+  m_bShortcutsChanged(false), m_bWarnUserKBShortcut(false),
+  m_iSortedColumn(0), m_iKBSortedColumn(0),
+  m_bSortAscending(true), m_bKBSortAscending(true)
 {
   m_AppHotKeyValue = M_AppHotKey_Value();
   m_bAppHotKeyEnabled = M_AppHotKeyEnabled();
@@ -763,7 +763,7 @@ int COptionsShortcuts::CheckAppHotKey()
 
       CGeneralMsgBox gmb;
       CString cs_title(MAKEINTRESOURCE(IDS_SHORTCUT_WARNING));
-      gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONSTOP); gmb;
+      gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONSTOP);
 
       ((CHotKeyCtrl *)GetDlgItem(IDC_APPHOTKEY_CTRL))->SetFocus();
 

@@ -738,7 +738,7 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
   // Symbols Rules
   m_PasswordPolicyUseSymbolsCtrl = new wxCheckBox(panel, ID_CHECKBOX6, _("Use symbols"), wxDefaultPosition, wxDefaultSize, 0);
   m_PasswordPolicyUseSymbolsCtrl->SetValue(false);
-  m_PasswordPolicyUseSymbolsCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent &event) { m_PasswordPolicyUseSymbolsCtrl->SetToolTip(_("i.e., ., %, $, etc.")); });
+  m_PasswordPolicyUseSymbolsCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent & WXUNUSED(event)) { m_PasswordPolicyUseSymbolsCtrl->SetToolTip(_("i.e., ., %, $, etc.")); });
   m_PasswordPolicySizer->Add(m_PasswordPolicyUseSymbolsCtrl, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_PasswordPolicySymbolsMinSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -767,7 +767,7 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 
   m_PasswordPolicyUseEasyCtrl = new wxCheckBox(panel, ID_CHECKBOX7, _("Use only easy-to-read characters"), wxDefaultPosition, wxDefaultSize, 0);
   m_PasswordPolicyUseEasyCtrl->SetValue(false);
-  m_PasswordPolicyUseEasyCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent &event) { m_PasswordPolicyUseEasyCtrl->SetToolTip(_("i.e., no 'l', '1', etc.")); });
+  m_PasswordPolicyUseEasyCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent & WXUNUSED(event)) { m_PasswordPolicyUseEasyCtrl->SetToolTip(_("i.e., no 'l', '1', etc.")); });
   m_PasswordPolicySizer->Add(m_PasswordPolicyUseEasyCtrl, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_PasswordPolicySizer->AddStretchSpacer();
@@ -785,7 +785,7 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 
   m_PasswordPolicyUseHexadecimalOnlyCtrl = new wxCheckBox(panel, ID_CHECKBOX9, _("Use hexadecimal digits only"), wxDefaultPosition, wxDefaultSize, 0);
   m_PasswordPolicyUseHexadecimalOnlyCtrl->SetValue(false);
-  m_PasswordPolicyUseHexadecimalOnlyCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent &event) { m_PasswordPolicyUseHexadecimalOnlyCtrl->SetToolTip(_("0-9, a-f")); });
+  m_PasswordPolicyUseHexadecimalOnlyCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent & WXUNUSED(event)) { m_PasswordPolicyUseHexadecimalOnlyCtrl->SetToolTip(_("0-9, a-f")); });
   m_PasswordPolicySizer->Add(m_PasswordPolicyUseHexadecimalOnlyCtrl, 0, wxALIGN_LEFT | wxALL, 5);
 
   m_PasswordPolicyOwnSymbolsTextCtrl->SetValidator(wxGenericValidator(&m_Symbols));
@@ -1038,7 +1038,7 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
     bool foundGroup = false;
     for (size_t igrp = 0; igrp < svec.size(); igrp++) {
       if (group == svec[igrp].c_str()) {
-        m_BasicGroupNamesCtrl->SetSelection((int)igrp);
+        m_BasicGroupNamesCtrl->SetSelection(static_cast<int>(igrp));
         foundGroup =true;
         break;
       }
@@ -1189,7 +1189,7 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN
  */
 
-void AddEditPropSheetDlg::OnGoButtonClick( wxCommandEvent& /* evt */ )
+void AddEditPropSheetDlg::OnGoButtonClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow() && !m_Url.IsEmpty())
     ::wxLaunchDefaultBrowser(m_Url, wxBROWSER_NEW_WINDOW);
@@ -1199,7 +1199,7 @@ void AddEditPropSheetDlg::OnGoButtonClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_GENERATE
  */
 
-void AddEditPropSheetDlg::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
+void AddEditPropSheetDlg::OnGenerateButtonClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     PWPolicy pwp = GetSelectedPWPolicy();
@@ -1223,7 +1223,7 @@ void AddEditPropSheetDlg::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
  */
 
-void AddEditPropSheetDlg::OnShowHideClick( wxCommandEvent& /* evt */ )
+void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
 {
   m_Password = m_BasicPasswordTextCtrl->GetValue().c_str(); // save visible password
   if (m_IsPasswordHidden) {
@@ -1626,7 +1626,7 @@ void AddEditPropSheetDlg::OnOk(wxCommandEvent& WXUNUSED(evt))
         }
   #endif
         if (m_Item.IsAlias()) {
-          m_Item.SetXTime((time_t)0);
+          m_Item.SetXTime(time_t(0));
           m_Item.SetPWPolicy(wxEmptyString);
         }
         else {
@@ -1660,7 +1660,7 @@ void AddEditPropSheetDlg::OnKeepHistoryClick(wxCommandEvent &)
 }
 
 #if 0 // XXX Remove, as we did away with this checkbox!
-void AddEditPropSheetDlg::OnOverrideDCAClick( wxCommandEvent& /* evt */ )
+void AddEditPropSheetDlg::OnOverrideDCAClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     m_DCAcomboBox->Enable(!m_useDefaultDCA);
@@ -1785,7 +1785,7 @@ void AddEditPropSheetDlg::EnableNonHexCBs(bool enable)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX9
  */
 
-void AddEditPropSheetDlg::OnUseHexCBClick( wxCommandEvent& /* evt */ )
+void AddEditPropSheetDlg::OnUseHexCBClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     bool useHex = m_PasswordPolicyUseHexadecimalOnlyCtrl->GetValue();
@@ -1901,7 +1901,7 @@ void AddEditPropSheetDlg::OnUpdateUI(wxUpdateUIEvent& event)
  * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL_NOTES
  */
 
-void AddEditPropSheetDlg::OnNoteSetFocus( wxFocusEvent& /* evt */ )
+void AddEditPropSheetDlg::OnNoteSetFocus(wxFocusEvent& WXUNUSED(evt))
 {
   if (m_Type != SheetType::ADD && m_IsNotesHidden) {
     m_IsNotesHidden = false;
@@ -2001,7 +2001,7 @@ int AddEditPropSheetDlg::GetRequiredPWLength() const
   return total;
 }
 
-void AddEditPropSheetDlg::OnClearPasswordHistory(wxCommandEvent& /*evt*/)
+void AddEditPropSheetDlg::OnClearPasswordHistory(wxCommandEvent& WXUNUSED(evt))
 {
   m_AdditionalPasswordHistoryGrid->ClearGrid();
   if (m_AdditionalMaxPasswordHistoryCtrl->TransferDataFromWindow() && m_KeepPasswordHistory && m_MaxPasswordHistory > 0) {

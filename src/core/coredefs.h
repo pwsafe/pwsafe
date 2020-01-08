@@ -132,7 +132,7 @@ struct PopulatePWPVector {
   }
 
 private:
-  PopulatePWPVector& operator=(const PopulatePWPVector&); // Do not implement
+  PopulatePWPVector& operator=(const PopulatePWPVector&) = delete; // Do not implement
   std::vector<StringX> *m_pvPWPolicies;
 };
 

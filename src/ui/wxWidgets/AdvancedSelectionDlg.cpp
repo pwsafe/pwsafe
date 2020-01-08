@@ -232,7 +232,7 @@ bool AdvancedSelectionPanel::TransferDataFromWindow()
   return false;
 }
 
-void AdvancedSelectionPanel::OnSelectSome( wxCommandEvent& /* evt */ )
+void AdvancedSelectionPanel::OnSelectSome(wxCommandEvent& WXUNUSED(evt))
 {
   wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
   wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
@@ -252,7 +252,7 @@ void AdvancedSelectionPanel::OnSelectSome( wxCommandEvent& /* evt */ )
   }
 }
 
-void AdvancedSelectionPanel::OnSelectAll( wxCommandEvent& /* evt */ )
+void AdvancedSelectionPanel::OnSelectAll(wxCommandEvent& WXUNUSED(evt))
 {
   wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
   wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
@@ -267,7 +267,7 @@ void AdvancedSelectionPanel::OnSelectAll( wxCommandEvent& /* evt */ )
   }
 }
 
-void AdvancedSelectionPanel::OnRemoveSome( wxCommandEvent& /* evt */ )
+void AdvancedSelectionPanel::OnRemoveSome(wxCommandEvent& WXUNUSED(evt))
 {
   wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
   wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
@@ -289,7 +289,7 @@ void AdvancedSelectionPanel::OnRemoveSome( wxCommandEvent& /* evt */ )
   }
 }
 
-void AdvancedSelectionPanel::OnRemoveAll( wxCommandEvent& /* evt */ )
+void AdvancedSelectionPanel::OnRemoveAll(wxCommandEvent& WXUNUSED(evt))
 {
   wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
   wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
@@ -298,9 +298,9 @@ void AdvancedSelectionPanel::OnRemoveAll( wxCommandEvent& /* evt */ )
   wxASSERT(lbSelected);
 
   for(size_t itemsLeft = lbSelected->GetCount(), idx = 0; idx < itemsLeft; ) {
-      size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(reinterpret_cast<unsigned int &>(idx)));
+      size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(static_cast<unsigned int>(idx)));
       if (!IsMandatoryField(SelectionCriteria::GetSelectableField(which))) {
-        lbSelected->Delete(reinterpret_cast<unsigned int &>(idx));
+        lbSelected->Delete(static_cast<unsigned int>(idx));
         lbAvailable->Append(SelectionCriteria::GetSelectableFieldName(SelectionCriteria::GetSelectableField(which)), reinterpret_cast<void *>(which));
         --itemsLeft;
       }

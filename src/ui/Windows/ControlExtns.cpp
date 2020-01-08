@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -55,8 +55,9 @@ TIMEINT_LB_SHOWING The length of time the tool tip window remains visible
 // CStaticExtn
 
 CStaticExtn::CStaticExtn()
-  : m_bUserColour(false), m_bUserBkColour(false), m_bMouseInWindow(false), 
-  m_iFlashing(0), m_bHighlight(false)
+  : m_iFlashing(0), 
+  m_bUserColour(false), m_bMouseInWindow(false), m_bHighlight(false),
+  m_bUserBkColour(false)
 {
 }
 
@@ -157,8 +158,8 @@ HBRUSH CStaticExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 // CEditExtnX
 
 CEditExtnX::CEditExtnX(COLORREF focusColor)
-  : m_bIsFocused(FALSE), m_lastposition(-1),
-    m_crefInFocus(focusColor)
+  : m_bIsFocused(FALSE), m_crefInFocus(focusColor),
+  m_lastposition(-1)
 {
   m_brInFocus.CreateSolidBrush(focusColor);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
@@ -168,8 +169,8 @@ CEditExtnX::CEditExtnX(COLORREF focusColor)
 
 CEditExtnX::CEditExtnX(std::vector<st_context_menu> vmenu_items,
                        COLORREF focusColor)
-  : m_bIsFocused(FALSE), m_lastposition(-1),
-    m_crefInFocus(focusColor)
+  : m_bIsFocused(FALSE), m_crefInFocus(focusColor),
+  m_lastposition(-1)
 {
   m_brInFocus.CreateSolidBrush(focusColor);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
@@ -637,9 +638,9 @@ void CRichEditExtnX::EnableMenuItem(const int message_number, const bool bEnable
 // CListBoxExtn
 
 CListBoxExtn::CListBoxExtn()
-  : m_bIsFocused(FALSE), m_pLBToolTips(NULL), m_bUseToolTips(false),
-  m_bMouseInWindow(false), m_nHoverLBTimerID(0), m_nShowLBTimerID(0),
-  m_HoverLBnItem(-1), m_pCombo(NULL)
+  : m_bIsFocused(FALSE), m_pCombo(nullptr), m_pLBToolTips(nullptr), 
+  m_nHoverLBTimerID(0), m_nShowLBTimerID(0), m_HoverLBnItem(-1),
+  m_bUseToolTips(false), m_bMouseInWindow(false)
 {
   m_brInFocus.CreateSolidBrush(crefInFocus);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
@@ -826,8 +827,10 @@ LRESULT CListBoxExtn::OnMouseLeave(WPARAM, LPARAM)
 // CComboBoxExtn
 
 CComboBoxExtn::CComboBoxExtn()
-  : m_bUseToolTips(false), m_nPenStyle(PS_SOLID), m_crColor(RGB(64, 64, 64)),
-  m_nBottomMargin(2), m_nSepWidth(1), m_nHorizontalMargin(2)
+  : m_bUseToolTips(false), 
+  m_nHorizontalMargin(2), m_nBottomMargin(2),
+  m_nSepWidth(1), m_nPenStyle(PS_SOLID), 
+  m_crColor(RGB(64, 64, 64))
 {
 }
 
@@ -1153,9 +1156,9 @@ void CSymbolEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     return;
   }
 
-  wint_t wChar = reinterpret_cast<wint_t &>(nChar);
+  wint_t wChar = static_cast<wint_t>(nChar);
   // Do not limit user to 'our' definition of symbols
-  // i.e. allow such things as currency symbols - £, € & ¥ etc.
+  // i.e. allow such things as currency symbols - Â£, â‚¬ & Â¥ etc.
   // Note: EasyVision and MakePronounceable symbols will still be
   // restricted to our lists defined in CPasswordCharPool as will the
   // default symbol set.
@@ -1216,8 +1219,9 @@ LRESULT CSymbolEdit::OnPaste(WPARAM , LPARAM )
 // CButtonExtn
 
 CButtonExtn::CButtonExtn()
-  : m_bUseTextColour(false), m_bUseBkgColour(false),
-  m_caption(L""), m_type(BS_AUTOCHECKBOX)
+  : m_caption(L""), 
+  m_bUseTextColour(false), m_bUseBkgColour(false),
+  m_type(BS_AUTOCHECKBOX)
 {
 }
 

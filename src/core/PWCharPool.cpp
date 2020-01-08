@@ -66,7 +66,7 @@ CPasswordCharPool::typeFreq_s::typeFreq_s(const CPasswordCharPool *parent, CharT
 {
   vchars.resize(parent->m_pwlen);
   std::generate(vchars.begin(), vchars.end(),
-                [this, parent, ct] () {return parent->GetRandomChar(ct);});
+                [parent, ct] () {return parent->GetRandomChar(ct);});
 }
 
 //-----------------------------------------------------------------------------
@@ -338,7 +338,7 @@ public:
   }
 
 private:
-  FillSC& operator=(const FillSC&); // Do not implement
+  FillSC& operator=(const FillSC&) = delete; // Do not implement
   vector<int> &m_sc;
   bool m_digits, m_symbols;
   int m_i;
@@ -382,7 +382,7 @@ StringX CPasswordCharPool::MakePronounceable() const
      generates "mmitify" even though no word in my dictionary
      begins with mmi. So what.) */
   sumfreq = sigma;  // sigma calculated by loadtris
-  ranno = static_cast<long>(pwsrnd->RangeRand((size_t)(sumfreq + 1))); // Weight by sum of frequencies
+  ranno = static_cast<long>(pwsrnd->RangeRand(static_cast<size_t>(sumfreq + 1))); // Weight by sum of frequencies
   sum = 0;
   for (c1 = 0; c1 < 26; c1++) {
     for (c2 = 0; c2 < 26; c2++) {
@@ -413,7 +413,7 @@ StringX CPasswordCharPool::MakePronounceable() const
       break;  // Break while nchar loop & print what we have.
     }
     /* Choose a continuation. */
-    ranno = static_cast<long>(pwsrnd->RangeRand((size_t)(sumfreq + 1))); // Weight by sum of frequencies
+    ranno = static_cast<long>(pwsrnd->RangeRand(static_cast<size_t>(sumfreq + 1))); // Weight by sum of frequencies
     sum = 0;
     for (c3 = 0; c3 < 26; c3++) {
       sum += tris[int(c1)][int(c2)][int(c3)];

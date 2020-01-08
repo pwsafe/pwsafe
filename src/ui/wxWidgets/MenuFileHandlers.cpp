@@ -32,6 +32,7 @@
 #include <wx/utils.h> // for wxLaunchDefaultBrowser
 
 #include "core/PWSdirs.h"
+#include "core/XML/XMLDefs.h"
 #include "os/sleep.h"
 #include "os/file.h"
 
@@ -78,7 +79,7 @@ static void DisplayFileWriteError(int rc, const StringX &fname)
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_NEW
  */
 
-void PasswordSafeFrame::OnNewClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnNewClick(wxCommandEvent& WXUNUSED(evt))
 {
   New();
 }
@@ -205,7 +206,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN
  */
 
-void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnOpenClick(wxCommandEvent& WXUNUSED(evt))
 {
   int rc = DoOpen(_("Please Choose a Database to Open:"));
 
@@ -219,7 +220,7 @@ void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_CLOSE
  */
 
-void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnCloseClick(wxCommandEvent& WXUNUSED(evt))
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -278,7 +279,7 @@ void PasswordSafeFrame::OnClearRecentHistory(wxCommandEvent& evt)
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVE
  */
 
-void PasswordSafeFrame::OnSaveClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnSaveClick(wxCommandEvent& WXUNUSED(evt))
 {
   Save();
 }
@@ -334,6 +335,7 @@ int PasswordSafeFrame::Save(SaveType savetype /* = SaveType::INVALID*/)
               if (wxMessageBox(_("Unable to create intermediate backup.  Do you wish to save changes to your database without it?"),
                 _("Write Error"), wxYES_NO | wxICON_EXCLAMATION, this) == wxID_NO)
                 return PWScore::USER_CANCEL;
+              break; // continue save
             case SaveType::INVALID:
               // No particular end of PWS exit i.e. user clicked Save or
               // saving a changed database before opening another
@@ -345,10 +347,9 @@ int PasswordSafeFrame::Save(SaveType savetype /* = SaveType::INVALID*/)
                * SaveType::WTSLOGOFFEXIT
                * SaveType::FAILSAFESAVE
                */
-              break;
+               wxMessageBox(_("Unable to create intermediate backup."), _("Write Error"), wxOK|wxICON_ERROR, this);
+               return SaveAs();
           }
-          wxMessageBox(_("Unable to create intermediate backup."), _("Write Error"), wxOK|wxICON_ERROR, this);
-          return SaveAs();
         } // BackupCurFile failed
       } // BackupBeforeEverySave
       break;
@@ -569,6 +570,8 @@ int PasswordSafeFrame::SaveIfChanged()
         // Make sure that file was successfully written
         if (rc != PWScore::SUCCESS)
           return PWScore::CANT_OPEN_FILE;
+        UpdateStatusBar();
+        break;
       case wxID_NO:
         UpdateStatusBar();
         break;
@@ -605,15 +608,15 @@ struct ExportFullText
     return _("Advanced Text Export Options");
   }
 
-  static bool IsMandatoryField(CItemData::FieldType /*field*/) {
+  static bool IsMandatoryField(CItemData::FieldType WXUNUSED(field)) {
     return false;
   }
 
-  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+  static bool IsPreselectedField(CItemData::FieldType WXUNUSED(field)) {
     return true;
   }
 
-  static bool IsUsableField(CItemData::FieldType /*field*/) {
+  static bool IsUsableField(CItemData::FieldType WXUNUSED(field)) {
     return true;
   }
 
@@ -652,11 +655,11 @@ struct ExportFullXml {
     return field == CItemData::TITLE || field == CItemData::PASSWORD;
   }
 
-  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+  static bool IsPreselectedField(CItemData::FieldType WXUNUSED(field)) {
     return true;
   }
 
-  static bool IsUsableField(CItemData::FieldType /*field*/) {
+  static bool IsUsableField(CItemData::FieldType WXUNUSED(field)) {
     return true;
   }
 
@@ -1246,13 +1249,13 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
   }
 }
 
-void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnCompare(wxCommandEvent& WXUNUSED(evt))
 {
   CompareDlg dlg(this, &m_core);
   dlg.ShowModal();
 }
 
-void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnSynchronize(wxCommandEvent& WXUNUSED(evt))
 {
   // disable in read-only mode or empty
   wxCHECK_RET(!m_core.IsReadOnly() && m_core.IsDbOpen() && m_core.GetNumEntries() != 0,
@@ -1274,7 +1277,7 @@ void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
     ViewReport(*wiz.GetReport());
 }
 
-void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnPropertiesClick(wxCommandEvent& WXUNUSED(evt))
 {
   PropertiesDlg propsDialog(this, m_core);
   propsDialog.ShowModal();
@@ -1314,7 +1317,7 @@ void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
  */
 
-void PasswordSafeFrame::OnExitClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnExitClick(wxCommandEvent& WXUNUSED(evt))
 {
   m_exitFromMenu = true;
 

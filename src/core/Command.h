@@ -137,7 +137,7 @@ public:
   void Undo();
 
 private:
-  UpdateGUICommand& operator=(const UpdateGUICommand&); // Do not implement
+  UpdateGUICommand& operator=(const UpdateGUICommand&) = delete; // Do not implement
   UpdateGUICommand(CommandInterface *pcomInt, ExecuteFn When,
                    GUI_Action ga, const pws_os::CUUID &entryUUID);
   const ExecuteFn m_When;
@@ -241,13 +241,12 @@ public:
   friend class DeleteEntryCommand; // allow access to c'tor
 
 private:
-  AddEntryCommand& operator=(const AddEntryCommand&); // Do not implement
+  AddEntryCommand& operator=(const AddEntryCommand&) = delete; // Do not implement
   AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
                   const pws_os::CUUID &baseUUID, const CItemAtt *att,
                   const Command *pcmd = nullptr);
   CItemData m_ci;
   CItemAtt m_att;
-  bool m_bExpired;
 };
 
 class DeleteEntryCommand : public Command
@@ -264,7 +263,7 @@ public:
   friend class AddEntryCommand; // allow access to c'tor
 
 private:
-  DeleteEntryCommand& operator=(const DeleteEntryCommand&); // Do not implement
+  DeleteEntryCommand& operator=(const DeleteEntryCommand&) = delete; // Do not implement
   DeleteEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
                      const Command *pcmd = nullptr);
   const CItemData m_ci;

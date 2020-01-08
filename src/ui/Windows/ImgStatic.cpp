@@ -22,9 +22,9 @@
 #pragma warning(pop)
 
 CImgStatic::CImgStatic()
-  : CStatic(), m_pStream(NULL), m_bInitDone(false), m_bImageLoaded(false),
+  : CStatic(), m_pStream(nullptr), m_bInitDone(false), m_bImageLoaded(false),
   m_bUseScrollBars(false), m_bZooming(false), 
-  m_iZoomFactor(10), m_iHPos(0), m_iVPos(0), m_gdiplusToken(0)
+  m_gdiplusToken(0), m_iZoomFactor(10), m_iHPos(0), m_iVPos(0)
 {
   // Initialise Gdiplus graphics
   Gdiplus::GdiplusStartupInput gdiplusStartupInput;
@@ -362,25 +362,26 @@ void CImgStatic::ClearImage()
 void CImgStatic::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
   if (pScrollBar->GetDlgCtrlID() == IDC_IMAGE_HSCROLL) {
+    int iPos = static_cast<int>(nPos);
     switch (nSBCode) {
       break;
     case SB_LINELEFT:
-      nPos -= 1;
+      iPos -= 1;
       break;
     case SB_LINERIGHT:
-      nPos += 1;
+      iPos += 1;
       break;
     case SB_PAGELEFT:
-      nPos -= 10;
+      iPos -= 10;
       break;
     case SB_PAGERIGHT:
-      nPos += 10;
+      iPos += 10;
       break;
     case SB_LEFT:
-      nPos = 0;
+      iPos = 0;
       break;
     case SB_RIGHT:
-      nPos = 100;
+      iPos = 100;
       break;
     case SB_THUMBPOSITION:
     case SB_THUMBTRACK:
@@ -389,15 +390,15 @@ void CImgStatic::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
       return;
     }
 
-    if (nPos < 0) {
-      nPos = 0;
-    } else if (nPos > 100) {
-      nPos = 100;
+    if (iPos < 0) {
+      iPos = 0;
+    } else if (iPos > 100) {
+      iPos = 100;
     }
 
-    m_iHPos = nPos;
+    m_iHPos = iPos;
 
-    pScrollBar->SetScrollPos(nPos, TRUE);
+    pScrollBar->SetScrollPos(m_iHPos, TRUE);
 
     m_bZooming = true;
     RedrawWindow();
@@ -408,25 +409,26 @@ void CImgStatic::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 void CImgStatic::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
   if (pScrollBar->GetDlgCtrlID() == IDC_IMAGE_VSCROLL) {
+    int iPos = static_cast<int>(nPos);
     switch (nSBCode) {
       break;
     case SB_LINEUP:
-      nPos += 1;
+      iPos += 1;
       break;
     case SB_LINEDOWN:
-      nPos -= 1;
+      iPos -= 1;
       break;
     case SB_PAGEUP:
-      nPos += 10;
+      iPos += 10;
       break;
     case SB_PAGEDOWN:
-      nPos -= 10;
+      iPos -= 10;
       break;
     case SB_TOP:
-      nPos = 0;
+      iPos = 0;
       break;
     case SB_BOTTOM:
-      nPos = 100;
+      iPos = 100;
       break;
     case SB_THUMBPOSITION:
     case SB_THUMBTRACK:
@@ -435,15 +437,15 @@ void CImgStatic::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
       return;
     }
 
-    if (nPos < 0) {
-      nPos = 0;
-    } else if (nPos > 100) {
-      nPos = 100;
+    if (iPos < 0) {
+      iPos = 0;
+    } else if (iPos > 100) {
+      iPos = 100;
     }
 
-    m_iVPos = nPos;
+    m_iVPos = iPos;
 
-    pScrollBar->SetScrollPos(nPos, TRUE);
+    pScrollBar->SetScrollPos(m_iVPos, TRUE);
 
     m_bZooming = true;
     RedrawWindow();

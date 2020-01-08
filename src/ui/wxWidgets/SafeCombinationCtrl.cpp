@@ -42,7 +42,7 @@ class SafeCombinationValidator: public wxValidator
 
 public:
   SafeCombinationValidator(StringX* str): m_str(str), m_allowBlank(false) {}
-  virtual ~SafeCombinationValidator() { m_str = 0; }
+  virtual ~SafeCombinationValidator() { m_str = nullptr; }
 
   virtual wxObject *Clone() const { return new SafeCombinationValidator(m_str); }
 

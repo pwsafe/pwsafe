@@ -77,7 +77,7 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
         slen = ent_bits >= MAX_ENT_BITS ? MAX_ENT_BITS/8 : ent_bits/8;
         data = new char[slen];
         ifstream rnd;
-        rnd.rdbuf()->pubsetbuf(0, 0);
+        rnd.rdbuf()->pubsetbuf(nullptr, 0);
         rnd.open("/dev/random");
         if (rnd.read(data, slen))
           return;

@@ -29,7 +29,7 @@
 
 MFilterXMLProcessor::MFilterXMLProcessor(PWSFilters &mapfilters, const FilterPool fpool,
                                          Asker *pAsker)
-  : m_MapXMLFilters(mapfilters), m_FPool(fpool), m_pAsker(pAsker)
+  : m_pAsker(pAsker), m_MapXMLFilters(mapfilters), m_FPool(fpool)
 {
 }
 

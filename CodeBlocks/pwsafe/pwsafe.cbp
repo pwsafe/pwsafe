@@ -15,11 +15,9 @@
 				<Option parameters="-s" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
-					<Add option="-Wall" />
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m64" />
 					<Add option="-g" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter  --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
@@ -50,11 +48,9 @@
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
-					<Add option="-Wall" />
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="-g" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
@@ -88,10 +84,8 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
-					<Add option="-Wall" />
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m64" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-Wno-type-limits" />
 					<Add option="-DNDEBUG" />
@@ -120,10 +114,8 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
-					<Add option="-Wall" />
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m32" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-Wno-type-limits" />
 					<Add option="-DNDEBUG" />
@@ -151,23 +143,9 @@
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
-					<Add option="-Wnon-virtual-dtor" />
-					<Add option="-Wshadow" />
-					<Add option="-Winit-self" />
-					<Add option="-Wredundant-decls" />
-					<Add option="-Wcast-align" />
-					<Add option="-Wfloat-equal" />
-					<Add option="-Wunreachable-code" />
-					<Add option="-Wmissing-include-dirs" />
-					<Add option="-Wswitch-default" />
-					<Add option="-Wzero-as-null-pointer-constant" />
-					<Add option="-pedantic" />
-					<Add option="-Wextra" />
-					<Add option="-Wall" />
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m64" />
 					<Add option="-g" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-fsanitize=address" />
@@ -199,11 +177,9 @@
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
-					<Add option="-Wall" />
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add option="-g" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-fsanitize=address" />
@@ -238,10 +214,8 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
-					<Add option="-Wall" />
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m64" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-Wno-type-limits" />
@@ -271,10 +245,8 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
-					<Add option="-Wall" />
-					<Add option="-std=c++11" />
-					<Add option="-fPIC" />
 					<Add option="-m32" />
+					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-Wno-type-limits" />
@@ -295,6 +267,45 @@
 					<Add directory="../os" />
 				</Linker>
 			</Target>
+			<Target title="Release_L64YClang">
+				<Option platforms="Unix;" />
+				<Option output="bin/Release64YClang/pwsafe" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release64YClang/" />
+				<Option type="0" />
+				<Option compiler="clang" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-fsanitize=address" />
+					<Add option="-fPIC" />
+					<Add option="-m64" />
+					<Add option="-fomit-frame-pointer" />
+					<Add option="-O2" />
+					<Add option="-Wnon-virtual-dtor" />
+					<Add option="-Wbind-to-temporary-copy" />
+					<Add option="-Wextra-tokens" />
+					<Add option="-Wall" />
+					<Add option="-std=c++11" />
+					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
+					<Add option="`pkg-config --cflags ykpers-1`" />
+					<Add option="-DNDEBUG" />
+					<Add option="-DUSE_XML_LIBRARY=XERCES" />
+					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
+					<Add option="-DUNICODE" />
+					<Add directory="../../src" />
+				</Compiler>
+				<Linker>
+					<Add option="-fsanitize=address" />
+					<Add option="-m64" />
+					<Add option="`wx-config --version=3.0 --libs --unicode=yes --debug=no --inplace`" />
+					<Add option="`pkg-config --libs ykpers-1`" />
+					<Add option="`pkg-config --libs libqrencode`" />
+					<Add library="core64y" />
+					<Add library="os64y" />
+					<Add directory="../core" />
+					<Add directory="../os" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wnon-virtual-dtor" />
@@ -305,13 +316,13 @@
 			<Add option="-Wfloat-equal" />
 			<Add option="-Wunreachable-code" />
 			<Add option="-Wmissing-include-dirs" />
-			<Add option="-Wswitch-enum" />
 			<Add option="-Wswitch-default" />
 			<Add option="-Wzero-as-null-pointer-constant" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
-			<Add option="-std=c++11" />
+			<Add option="-std=c11" />
 			<Add option="-fPIC" />
+			<Add option="-std=c++11" />
 			<Add option="-Wformat=2" />
 			<Add option="-Wno-unused-local-typedefs" />
 			<Add option="-Wdouble-promotion" />
@@ -320,6 +331,7 @@
 			<Add option="-Wduplicated-cond" />
 			<Add option="-Winvalid-pch" />
 			<Add option="-Wlogical-op" />
+			<Add option="-Wno-shadow-field-in-constructor" />
 			<Add option="-DUNICODE" />
 		</Compiler>
 		<Linker>
@@ -333,161 +345,167 @@
 		<ExtraCommands>
 			<Add before="../cb-ver-update" />
 		</ExtraCommands>
+		<Unit filename="../../src/ui/wxWidgets/AboutDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/AboutDlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/AddEditPropSheetDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/AddEditPropSheetDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/AdvancedSelectionDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/AdvancedSelectionDlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/Clipboard.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/Clipboard.h" />
 		<Unit filename="../../src/ui/wxWidgets/CompareDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/CompareDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/ComparisonGridTable.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ComparisonGridTable.h" />
+		<Unit filename="../../src/ui/wxWidgets/CreateShortcutDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/CreateShortcutDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/CryptKeyEntryDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/CryptKeyEntryDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/DbSelectionPanel.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/DbSelectionPanel.h" />
+		<Unit filename="../../src/ui/wxWidgets/DeleteConfirmationDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/DeleteConfirmationDlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/DragBarCtrl.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/DragBarCtrl.h" />
+		<Unit filename="../../src/ui/wxWidgets/DragBarGenericCtrl.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/DragBarGenericCtrl.h" />
+		<Unit filename="../../src/ui/wxWidgets/EditShortcutDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/EditShortcutDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/ExportTextWarningDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ExportTextWarningDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/ExternalKeyboardButton.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ExternalKeyboardButton.h" />
+		<Unit filename="../../src/ui/wxWidgets/FieldSelectionDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/FieldSelectionDlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/FieldSelectionPanel.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/FieldSelectionPanel.h" />
+		<Unit filename="../../src/ui/wxWidgets/GridCtrl.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/GridCtrl.h" />
+		<Unit filename="../../src/ui/wxWidgets/GridShortcutsValidator.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/GridShortcutsValidator.h" />
+		<Unit filename="../../src/ui/wxWidgets/GridTable.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/GridTable.h" />
+		<Unit filename="../../src/ui/wxWidgets/GuiInfo.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/GuiInfo.h" />
+		<Unit filename="../../src/ui/wxWidgets/HelpMap.h" />
 		<Unit filename="../../src/ui/wxWidgets/ImportTextDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ImportTextDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/ImportXmlDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ImportXmlDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ManagePasswordPoliciesDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/MergeDlg.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/MergeDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/OpenFilePickerValidator.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/OpenFilePickerValidator.h" />
-		<Unit filename="../../src/ui/wxWidgets/DragBarCtrl.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/DragBarCtrl.h" />
-		<Unit filename="../../src/ui/wxWidgets/GridCtrl.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/GridCtrl.h" />
-		<Unit filename="../../src/ui/wxWidgets/GridTable.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/GridTable.h" />
-		<Unit filename="../../src/ui/wxWidgets/TreeCtrl.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/TreeCtrl.h" />
-		<Unit filename="../../src/ui/wxWidgets/PasswordPolicyDlg.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/PasswordPolicyDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/PasswordSafeSearch.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/PasswordSafeSearch.h" />
-		<Unit filename="../../src/ui/wxWidgets/SyncWizard.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/SyncWizard.h" />
-		<Unit filename="../../src/ui/wxWidgets/ToolbarButtons.h" />
-		<Unit filename="../../src/ui/wxWidgets/RecentDbList.h" />
-		<Unit filename="../../src/ui/wxWidgets/SafeCombinationCtrl.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/SafeCombinationCtrl.h" />
-		<Unit filename="../../src/ui/wxWidgets/SelectionCriteria.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/SelectionCriteria.h" />
-		<Unit filename="../../src/ui/wxWidgets/SizeRestrictedPanel.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/SizeRestrictedPanel.h" />
-		<Unit filename="../../src/ui/wxWidgets/SystemTray.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/SystemTray.h" />
-		<Unit filename="../../src/ui/wxWidgets/SystemTrayMenuId.h" />
-		<Unit filename="../../src/ui/wxWidgets/TimedTaskChain.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/TimedTaskChain.h" />
-		<Unit filename="../../src/ui/wxWidgets/ViewReportDlg.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/ViewReportDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/YubiMixin.cpp">
-			<Option target="Debug_L64Y" />
-			<Option target="Debug_L32Y" />
-			<Option target="Release_L64Y" />
-			<Option target="Release_L32Y" />
-		</Unit>
-		<Unit filename="../../src/ui/wxWidgets/YubiMixin.h">
-			<Option target="Debug_L64Y" />
-			<Option target="Debug_L32Y" />
-			<Option target="Release_L64Y" />
-			<Option target="Release_L32Y" />
-		</Unit>
-		<Unit filename="../../src/ui/wxWidgets/AboutDlg.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/AboutDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/AddEditPropSheetDlg.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/AddEditPropSheetDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/CreateShortcutDlg.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/CreateShortcutDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/DeleteConfirmationDlg.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/DeleteConfirmationDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/DragBarGenericCtrl.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/DragBarGenericCtrl.h" />
-		<Unit filename="../../src/ui/wxWidgets/EditShortcutDlg.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/EditShortcutDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/FieldSelectionDlg.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/FieldSelectionDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/FieldSelectionPanel.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/FieldSelectionPanel.h" />
-		<Unit filename="../../src/ui/wxWidgets/GuiInfo.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/GuiInfo.h" />
-		<Unit filename="../../src/ui/wxWidgets/HelpMap.h" />
 		<Unit filename="../../src/ui/wxWidgets/MenuEditHandlers.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/MenuFileHandlers.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/MenuManageHandlers.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/MenuViewHandlers.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/MergeDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/MergeDlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/OpenFilePickerValidator.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/OpenFilePickerValidator.h" />
 		<Unit filename="../../src/ui/wxWidgets/OptionsPropertySheetDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/OptionsPropertySheetDlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/PWSafeApp.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/PWSafeApp.h" />
+		<Unit filename="../../src/ui/wxWidgets/PasswordPolicyDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/PasswordPolicyDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordSafeFrame.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordSafeFrame.h" />
+		<Unit filename="../../src/ui/wxWidgets/PasswordSafeSearch.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/PasswordSafeSearch.h" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordSubsetDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordSubsetDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/PropertiesDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PropertiesDlg.h" />
-		<Unit filename="../../src/ui/wxWidgets/PWSafeApp.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/PWSafeApp.h" />
-		<Unit filename="../../src/ui/wxWidgets/Clipboard.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/Clipboard.h" />
-		<Unit filename="../../src/ui/wxWidgets/GridShortcutsValidator.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/GridShortcutsValidator.h" />
 		<Unit filename="../../src/ui/wxWidgets/QRCodeDlg.cpp">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />
 			<Option target="Release_L32Y" />
+			<Option target="Release_L64YClang" />
 		</Unit>
 		<Unit filename="../../src/ui/wxWidgets/QRCodeDlg.h">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />
 			<Option target="Release_L32Y" />
+			<Option target="Release_L64YClang" />
 		</Unit>
 		<Unit filename="../../src/ui/wxWidgets/QREncode.cpp">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />
 			<Option target="Release_L32Y" />
+			<Option target="Release_L64YClang" />
 		</Unit>
 		<Unit filename="../../src/ui/wxWidgets/QREncode.h">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />
 			<Option target="Release_L32Y" />
+			<Option target="Release_L64YClang" />
 		</Unit>
+		<Unit filename="../../src/ui/wxWidgets/RecentDbList.h" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationChangeDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationChangeDlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/SafeCombinationCtrl.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/SafeCombinationCtrl.h" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationEntryDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationEntryDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationPromptDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationPromptDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationSetupDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationSetupDlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/SelectionCriteria.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/SelectionCriteria.h" />
+		<Unit filename="../../src/ui/wxWidgets/SizeRestrictedPanel.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/SizeRestrictedPanel.h" />
+		<Unit filename="../../src/ui/wxWidgets/SyncWizard.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/SyncWizard.h" />
+		<Unit filename="../../src/ui/wxWidgets/SystemTray.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/SystemTray.h" />
+		<Unit filename="../../src/ui/wxWidgets/SystemTrayMenuId.h" />
+		<Unit filename="../../src/ui/wxWidgets/TimedTaskChain.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/TimedTaskChain.h" />
+		<Unit filename="../../src/ui/wxWidgets/ToolbarButtons.h" />
+		<Unit filename="../../src/ui/wxWidgets/TreeCtrl.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/TreeCtrl.h" />
 		<Unit filename="../../src/ui/wxWidgets/Version.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/version.h" />
-		<Unit filename="../../src/ui/wxWidgets/version.in" />
-		<Unit filename="../../src/ui/wxWidgets/wxMessages.h" />
-		<Unit filename="../../src/ui/wxWidgets/wxUtilities.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/wxUtilities.h" />
+		<Unit filename="../../src/ui/wxWidgets/ViewReportDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/ViewReportDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/YubiCfgDlg.cpp">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />
 			<Option target="Release_L32Y" />
+			<Option target="Release_L64YClang" />
 		</Unit>
 		<Unit filename="../../src/ui/wxWidgets/YubiCfgDlg.h">
 			<Option target="Debug_L64Y" />
 			<Option target="Debug_L32Y" />
 			<Option target="Release_L64Y" />
 			<Option target="Release_L32Y" />
+			<Option target="Release_L64YClang" />
 		</Unit>
+		<Unit filename="../../src/ui/wxWidgets/YubiMixin.cpp">
+			<Option target="Debug_L64Y" />
+			<Option target="Debug_L32Y" />
+			<Option target="Release_L64Y" />
+			<Option target="Release_L32Y" />
+			<Option target="Release_L64YClang" />
+		</Unit>
+		<Unit filename="../../src/ui/wxWidgets/YubiMixin.h">
+			<Option target="Debug_L64Y" />
+			<Option target="Debug_L32Y" />
+			<Option target="Release_L64Y" />
+			<Option target="Release_L32Y" />
+			<Option target="Release_L64YClang" />
+		</Unit>
+		<Unit filename="../../src/ui/wxWidgets/version.h" />
+		<Unit filename="../../src/ui/wxWidgets/version.in" />
+		<Unit filename="../../src/ui/wxWidgets/wxMessages.h" />
+		<Unit filename="../../src/ui/wxWidgets/wxUtilities.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/wxUtilities.h" />
 		<Extensions>
-			<envvars />
-			<code_completion />
 			<debugger>
 				<search_path add="../../../wxWidgets-3.0.2" />
 			</debugger>

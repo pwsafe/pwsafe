@@ -96,7 +96,7 @@ public:
     KeyBlock &at(unsigned i) {return m_kbs.at(i);}
     const KeyBlock &at(unsigned i) const {return m_kbs.at(i);}
     bool empty() const {return m_kbs.empty();}
-    unsigned size() const {return (unsigned)m_kbs.size();}
+    unsigned size() const {return static_cast<unsigned>(m_kbs.size());}
     const size_t KBLEN = PWSaltLength + sizeof(uint32) + KWLEN + KWLEN;
   };
 

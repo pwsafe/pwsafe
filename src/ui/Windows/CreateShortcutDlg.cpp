@@ -26,8 +26,8 @@ static char THIS_FILE[] = __FILE__;
 CCreateShortcutDlg::CCreateShortcutDlg(CWnd* pParent, 
   const CSecString &cs_basegroup, const CSecString &cs_basetitle, const CSecString &cs_baseuser)
   : CPWDialog(CCreateShortcutDlg::IDD, pParent),
-  m_basegroup(cs_basegroup), m_basetitle(cs_basetitle), m_baseuser(cs_baseuser),
-  m_group(cs_basegroup), m_username(cs_baseuser)
+  m_username(cs_baseuser), m_group(cs_basegroup),
+  m_basegroup(cs_basegroup), m_basetitle(cs_basetitle), m_baseuser(cs_baseuser)
 {
 }
 

@@ -83,7 +83,7 @@ namespace PWHist {
                CLEAR_INCL_PROT = -4,
                CLEAR_EXCL_PROT  = 4,
   };
-};
+}
 
 typedef std::vector<PWHistEntry> PWHistList;
 

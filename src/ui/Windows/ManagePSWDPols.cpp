@@ -30,10 +30,13 @@ using namespace std;
 // CManagePSWDPols dialog
 CManagePSWDPols::CManagePSWDPols(CWnd* pParent, const bool bLongPPs)
   : CPWDialog(CManagePSWDPols::IDD, pParent),
-  m_iSelectedItem(-1), m_bChanged(false), m_iSortEntriesIndex(0),
-  m_bSortEntriesAscending(true), m_iSortNamesIndex(0), m_bSortNamesAscending(true),
-  m_bViewPolicy(true), m_bLongPPs(bLongPPs), m_iundo_pos(-1), m_pCopyBtn(NULL),
-  m_bCopyPasswordEnabled(false), m_bImageLoaded(FALSE), m_bDisabledImageLoaded(FALSE)
+  m_iundo_pos(-1),
+  m_pCopyBtn(nullptr), m_bCopyPasswordEnabled(false),
+  m_bImageLoaded(FALSE), m_bDisabledImageLoaded(FALSE),
+  m_iSortNamesIndex(0), m_iSortEntriesIndex(0), 
+  m_bSortNamesAscending(true), m_bSortEntriesAscending(true), 
+  m_iSelectedItem(-1), m_bChanged(false),
+  m_bViewPolicy(true), m_bLongPPs(bLongPPs)
 {
   ASSERT(pParent != NULL);
 

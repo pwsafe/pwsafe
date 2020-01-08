@@ -169,8 +169,9 @@ private:
 
 CPWTreeCtrlX::CPWTreeCtrlX()
   : m_isRestoring(false), m_bWithinThisInstance(true),
-  m_bMouseInWindow(false), m_nHoverNDTimerID(0), m_nShowNDTimerID(0),
-  m_hgDataALL(NULL), m_hgDataTXT(NULL), m_hgDataUTXT(NULL),
+  m_hgDataALL(nullptr), m_hgDataUTXT(nullptr), m_hgDataTXT(nullptr),
+  m_nHoverNDTimerID(0), m_nShowNDTimerID(0),
+  m_bMouseInWindow(false), 
   m_bTreeFilterActive(false), m_bUseHighLighting(false)
 {
   // Register a clipboard format for column drag & drop.

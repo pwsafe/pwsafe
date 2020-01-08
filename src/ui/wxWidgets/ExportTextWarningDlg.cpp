@@ -54,10 +54,8 @@ END_EVENT_TABLE()
 ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxEmptyString,
                       wxDefaultPosition, wxDefaultSize,
                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),
-  selCriteria(new SelectionCriteria), m_combinationEntry(nullptr), m_YubiBtn(nullptr), m_yubiStatusCtrl(nullptr), m_pollingTimer(nullptr)
+  selCriteria(new SelectionCriteria), m_combinationEntry(nullptr), m_pollingTimer(nullptr)
 {
-  enum { TopMargin = 20, BottomMargin = 20, SideMargin = 30, RowSeparation = 10, ColSeparation = 20};
-
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
   dlgSizer->AddSpacer(TopMargin);
 
@@ -92,7 +90,7 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(
 
   delimiter = wxT('\xbb');
   wxTextValidator delimValidator(wxFILTER_EXCLUDE_CHAR_LIST, &delimiter);
-  const wxChar* excludes[] = {wxT("\""), 0};
+  const wxChar* excludes[] = {wxT("\""), nullptr};
   delimValidator.SetExcludes(wxArrayString(1, excludes));
   wxBoxSizer* delimRow = new wxBoxSizer(wxHORIZONTAL);
   delimRow->Add(new wxStaticText(this, wxID_ANY, _("Line delimiter in Notes field:")));
@@ -141,7 +139,7 @@ void ExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void ExportTextWarningDlgBase::OnYubibtnClick( wxCommandEvent& /* event */ )
+void ExportTextWarningDlgBase::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
 

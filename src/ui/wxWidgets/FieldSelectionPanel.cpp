@@ -63,8 +63,8 @@ BEGIN_EVENT_TABLE( FieldSelectionPanel, wxPanel )
 END_EVENT_TABLE()
 
 FieldSelectionPanel::FieldSelectionPanel(wxWindow* parent): wxPanel(parent),
-                                                            m_lbSelected(0),
-                                                            m_lbAvailable(0)
+                                                            m_lbSelected(nullptr),
+                                                            m_lbAvailable(nullptr)
 {
   wxFlexGridSizer* grid = new wxFlexGridSizer(3, RowSeparation, ColSeparation);
 
@@ -147,9 +147,9 @@ void FieldSelectionPanel::AddField(CItemData::FieldType ft, bool selected, bool 
 int FieldSelectionPanel::FindField(CItemData::FieldType ft, wxListBox* lb) const
 {
   unsigned int count = lb->GetCount();
-  for (int idx = 0; (unsigned int)idx < count; ++idx) {
+  for (unsigned int idx = 0; idx < count; ++idx) {
     FieldData* fd = dynamic_cast<FieldData*>(lb->GetClientObject(idx));
-    if (*fd == ft)
+    if (fd && *fd == ft)
       return idx;
   }
   return wxNOT_FOUND;
@@ -181,12 +181,12 @@ void FieldSelectionPanel::MoveItem(int index, wxListBox* from, wxListBox* to)
 {
 
   FieldData* oldData = dynamic_cast<FieldData*>(from->GetClientObject(index));
-  FieldData* newData = oldData? new FieldData(*oldData): 0;
+  FieldData* newData = oldData? new FieldData(*oldData): nullptr;
   to->Append(from->GetString(index), newData);
   from->Delete(index);
 }
 
-void FieldSelectionPanel::OnSelectSome( wxCommandEvent& /* evt */ )
+void FieldSelectionPanel::OnSelectSome(wxCommandEvent& WXUNUSED(evt))
 {
   wxArrayInt aSelected;
   if (m_lbAvailable->GetSelections(aSelected)) {
@@ -197,14 +197,14 @@ void FieldSelectionPanel::OnSelectSome( wxCommandEvent& /* evt */ )
   }
 }
 
-void FieldSelectionPanel::OnSelectAll( wxCommandEvent& /* evt */ )
+void FieldSelectionPanel::OnSelectAll(wxCommandEvent& WXUNUSED(evt))
 {
   while (m_lbAvailable->GetCount()) {
     MoveItem(0, m_lbAvailable, m_lbSelected);
   }
 }
 
-void FieldSelectionPanel::OnRemoveSome( wxCommandEvent& /* evt */ )
+void FieldSelectionPanel::OnRemoveSome(wxCommandEvent& WXUNUSED(evt))
 {
   wxArrayInt aSelected;
   if (m_lbSelected->GetSelections(aSelected)) {
@@ -219,7 +219,7 @@ void FieldSelectionPanel::OnRemoveSome( wxCommandEvent& /* evt */ )
   }
 }
 
-void FieldSelectionPanel::OnRemoveAll( wxCommandEvent& /* evt */ )
+void FieldSelectionPanel::OnRemoveAll(wxCommandEvent& WXUNUSED(evt))
 {
   for(size_t itemsLeft = m_lbSelected->GetCount(), idx = 0; idx < itemsLeft; ) {
     if (!ItemIsMandatory(idx)) {

@@ -108,7 +108,7 @@ void ConvertPasskey(const StringX &text,
   char *dst = new char[dstlen];
 
   size_t res = pws_os::wcstombs(dst, dstlen, txtstr, txtlen, isUTF8);
-  ASSERT(res != 0);
+  ASSERT(res != 0); UNREFERENCED_PARAMETER(res);
   txt = reinterpret_cast<unsigned char *>(dst);
   txtlen = dstlen - 1;
   txt[txtlen] = '\0'; // not strictly needed, since txtlen returned, but helps debug
@@ -130,7 +130,7 @@ void GenRandhash(const StringX &a_passkey,
   */
   SHA1 keyHash;
   keyHash.Update(a_randstuff, StuffSize);
-  keyHash.Update(pstr, reinterpret_cast<int &>(pkeyLen));
+  keyHash.Update(pstr, static_cast<unsigned int>(pkeyLen));
 
   trashMemory(pstr, pkeyLen);
   delete[] pstr;
@@ -543,8 +543,10 @@ stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
   switch (len % 3) {
     case 1:
       cs_Out += TCHAR('=');
+      //[[fallthrough]];
     case 2:
       cs_Out += TCHAR('=');
+      //[[fallthrough]];
     default:
       break;
   }
@@ -568,7 +570,7 @@ void PWSUtil::Base64Decode(const StringX &inString, BYTE * &outData, size_t &out
     for (i1 = 0; i1 < sizeof(szCS) - 1; i1++) {
       for (i3 = i2; i3 < i2 + 4; i3++) {
         if (i3 < in_length &&  inString[i3] == szCS[i1])
-          iDigits[i3 - i2] = reinterpret_cast<int &>(i1) - 1;
+          iDigits[i3 - i2] = static_cast<int>(i1) - 1;
       }
     }
 

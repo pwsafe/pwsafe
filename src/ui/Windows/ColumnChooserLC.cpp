@@ -20,7 +20,7 @@
 // CColumnChooserLC
 
 CColumnChooserLC::CColumnChooserLC()
-  : m_iItem(-1), m_pDragImage(NULL)
+  : m_pDragImage(nullptr), m_iItem(-1)
 {
   // Register a clipboard format for column drag & drop. 
   // Note that it's OK to register same format more than once:

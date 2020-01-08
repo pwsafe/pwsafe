@@ -71,13 +71,15 @@ static MFCReporter aReporter;
 static MFCAsker    anAsker;
 
 ThisMfcApp::ThisMfcApp() :
+  m_ghAccelTable(nullptr),
+  m_pDbx(nullptr), 
+  m_pMainMenu(nullptr), m_pMRUMenu(nullptr), m_pMRU(nullptr),
   m_bUseAccelerator(true),
-  m_pMRU(nullptr),
-  m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
-  m_ghAccelTable(NULL), m_pMainMenu(nullptr),
-  m_bACCEL_Table_Created(false), m_noSysEnvWarnings(false),
-  m_bPermitTestdump(false), m_hInstResDLL(NULL), m_ResLangID(0),
-  m_pMRUMenu(nullptr), m_pDbx(nullptr)
+  m_hMutexOneInstance(nullptr), m_hInstResDLL(nullptr),
+  m_HotKeyPressed(false), m_bACCEL_Table_Created(false),
+  m_ResLangID(0),
+  m_noSysEnvWarnings(false),
+  m_bPermitTestdump(false)
 {
   // Get my Thread ID
   m_nBaseThreadID = AfxGetThread()->m_nThreadID;

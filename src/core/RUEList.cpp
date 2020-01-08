@@ -35,12 +35,12 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
   bool retval = false;
 
   for (auto iter = m_RUEList.begin(); iter != m_RUEList.end(); iter++) {
-    ItemListConstIter pw_listpos = m_core.Find(*iter);
+    ItemListIter pw_listpos = m_core.Find(*iter);
     if (pw_listpos == m_core.GetEntryEndIter()) {
       ruentrydata.string = L"";
       ruentrydata.pci = nullptr;
     } else {
-      const CItemData &ci = m_core.GetEntry(pw_listpos);
+      CItemData &ci = m_core.GetEntry(pw_listpos);
       StringX group = ci.GetGroup();
       StringX title = ci.GetTitle();
       StringX user = ci.GetUser();
@@ -58,7 +58,7 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
       ruentrydata.string = L"\xab" + group + L"\xbb " + 
                            L"\xab" + title + L"\xbb " + 
                            L"\xab" + user  + L"\xbb";
-      ruentrydata.pci = (CItemData *)&ci;
+      ruentrydata.pci = &ci;
     }
     ListofAllMenuStrings.push_back(ruentrydata);
     retval = true;

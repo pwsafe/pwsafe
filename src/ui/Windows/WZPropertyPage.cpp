@@ -17,8 +17,9 @@
 IMPLEMENT_DYNAMIC(CWZPropertyPage, CPropertyPage)
 
 CWZPropertyPage::CWZPropertyPage(UINT nID, UINT nIDCaption, const int nType)
-  : CPropertyPage(nID, nIDCaption), m_nID(nID), m_nType(nType),
-  m_pToolTipCtrl(NULL)
+  : CPropertyPage(nID, nIDCaption), 
+  m_pToolTipCtrl(nullptr),
+  m_nType(nType), m_nID(nID)
 {
 }
 

@@ -88,7 +88,7 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   // Initialize the XML4C2 system
   try
   {
-    XMLPlatformUtils::Initialize(XMLUni::fgXercescDefaultLocale, 0, 0, &sec_mm);
+    XMLPlatformUtils::Initialize(XMLUni::fgXercescDefaultLocale, nullptr, nullptr, &sec_mm);
   }
   catch (const XMLException& toCatch)
   {

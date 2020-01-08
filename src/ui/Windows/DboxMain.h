@@ -453,7 +453,7 @@ public:
   const MapMenuShortcuts &GetMapMenuShortcuts() {return m_MapMenuShortcuts;}
   const std::vector<UINT> &GetExcludedMenuItems() {return m_ExcludedMenuItems;}
   const std::vector<st_MenuShortcut> &GetReservedShortcuts() {return m_ReservedShortcuts;}
-  const unsigned int GetMenuShortcut(const unsigned short int &siVirtKey,
+  unsigned int GetMenuShortcut(const unsigned short int &siVirtKey,
                                      const unsigned char &cModifier, StringX &sxMenuItemName);
   
   bool ChangeMode(bool promptUser); // r-o <-> r/w
@@ -1058,9 +1058,11 @@ private:
 
     st_SaveGUIInfo(const st_SaveGUIInfo &that)
     : blSelectedValid(that.blSelectedValid), btSelectedValid(that.btSelectedValid),
-      btGroupValid(that.btGroupValid), vGroupDisplayState(that.vGroupDisplayState),
+      btGroupValid(that.btGroupValid), 
       lSelected(that.lSelected), tSelected(that.tSelected),
-      sxGroupName(that.sxGroupName) {}
+      sxGroupName(that.sxGroupName),
+      vGroupDisplayState(that.vGroupDisplayState)
+      {}
 
     st_SaveGUIInfo &operator=(const st_SaveGUIInfo &that)
     {

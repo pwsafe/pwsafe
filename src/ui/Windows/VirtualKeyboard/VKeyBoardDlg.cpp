@@ -332,17 +332,19 @@ exit:
 
 //-----------------------------------------------------------------------------
 CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
-  : CPWDialog(CVKeyBoardDlg::IDD, pParent), m_pParent(pParent),
-    m_pToolTipCtrl(NULL), m_pPassphraseFont(NULL),
-    m_phrase(L""), m_phrasecount(0), m_State(0), m_SaveState(0),
+  : CPWDialog(CVKeyBoardDlg::IDD, pParent), 
+    m_phrasecount(0), m_iKeyboard(0),
+    m_pToolTipCtrl(nullptr), m_pPassphraseFont(nullptr),
+    m_phrase(L""),
+    m_Size(0), m_Hiragana(0), m_Kana(0),
+    m_bAltNum(false), m_bAltGr(false), m_bCapsLock(false), m_bRandom(false),
     m_bShift(false), m_bLCtrl(false), m_bRCtrl(false),
-    m_bAltGr(false), m_bAltNum(false),
-    m_bCapsLock(false), m_bRandom(false),
     m_bLCtrlChars(false), m_bAltGrChars(false), m_bRCtrlChars(false),
     m_bDeadKeyActive(false), m_bDeadKeySaved(false),
-    m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0),
-    m_uiMouseDblClkTime(0), m_bSaveKLID(BST_CHECKED), m_bPlaySound(BST_UNCHECKED),
-    m_bShowPassphrase(BST_UNCHECKED)
+    m_bSaveKLID(BST_CHECKED), m_bPlaySound(BST_UNCHECKED),
+    m_bShowPassphrase(BST_UNCHECKED),
+    m_State(0), m_SaveState(0),
+    m_pParent(pParent), m_uiMouseDblClkTime(0)
 {
   // Verify all is OK
   ASSERT(_countof(defscancodes101) == NUM_KEYS);

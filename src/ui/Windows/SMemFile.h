@@ -17,10 +17,10 @@ class CSMemFile : public CMemFile
 {
   // Construction
 public:
-  CSMemFile(UINT nGrowBytes = 1024) : m_size(0), CMemFile(nGrowBytes) {}
+  CSMemFile(UINT nGrowBytes = 1024) : CMemFile(nGrowBytes), m_size(0) {}
 
   CSMemFile(BYTE* lpBuffer, UINT nBufferSize, UINT nGrowBytes = 0)
-    : m_size(0), CMemFile(lpBuffer, nBufferSize, nGrowBytes) {}
+    : CMemFile(lpBuffer, nBufferSize, nGrowBytes), m_size(0) {}
 
   // Implementation
 public:

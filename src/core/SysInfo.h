@@ -42,7 +42,7 @@ public:
 
 private:
   SysInfo();
-  ~SysInfo() {};
+  ~SysInfo() {}
 
   static SysInfo *self;
 
