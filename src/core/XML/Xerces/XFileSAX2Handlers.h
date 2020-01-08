@@ -83,7 +83,6 @@ private:
   const Locator *m_pLocator;
 
   stringT m_strValidationResult;
-  bool m_bErrorsFound;
 };
 
 #endif /* __XFILESAX2HANDLERS_H */

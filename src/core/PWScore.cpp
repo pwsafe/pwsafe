@@ -1422,7 +1422,7 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
     unsigned int m = 1;
     for (x = 0; x < file_nums.size(); x++)
       if (file_nums[x] < next)
-        file_nums[x] = (unsigned long)(next <= 999 ? next++ : m++);
+        file_nums[x] = static_cast<unsigned long>(next <= 999 ? next++ : m++);
   }
 
   Format(cs_newname, L"%ls_%03d", cs_filenamebase.c_str(), nnn);

@@ -73,7 +73,7 @@ public:
       m_Observers.end());
   }
 
-  virtual ~Observable() {};
+  virtual ~Observable() {}
 
 protected:
   std::vector<Observer*> m_Observers;

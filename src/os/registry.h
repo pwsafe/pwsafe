@@ -18,7 +18,7 @@
 #include "typedefs.h" // for TCHAR
 
 namespace pws_os {
-  bool RegCheckExists(const TCHAR *stree = NULL); // check for app's registry subtree by default
+  bool RegCheckExists(const TCHAR *stree = nullptr); // check for app's registry subtree by default
   bool RegWriteValue(const TCHAR *section, const TCHAR *entry, int value);
   inline bool RegWriteValue(const TCHAR *section, const TCHAR *entry, bool value)
   { return RegWriteValue(section, entry, value ? 1 : 0); }

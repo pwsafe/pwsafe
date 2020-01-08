@@ -382,7 +382,7 @@ StringX CPasswordCharPool::MakePronounceable() const
      generates "mmitify" even though no word in my dictionary
      begins with mmi. So what.) */
   sumfreq = sigma;  // sigma calculated by loadtris
-  ranno = static_cast<long>(pwsrnd->RangeRand((size_t)(sumfreq + 1))); // Weight by sum of frequencies
+  ranno = static_cast<long>(pwsrnd->RangeRand(static_cast<size_t>(sumfreq + 1))); // Weight by sum of frequencies
   sum = 0;
   for (c1 = 0; c1 < 26; c1++) {
     for (c2 = 0; c2 < 26; c2++) {
@@ -413,7 +413,7 @@ StringX CPasswordCharPool::MakePronounceable() const
       break;  // Break while nchar loop & print what we have.
     }
     /* Choose a continuation. */
-    ranno = static_cast<long>(pwsrnd->RangeRand((size_t)(sumfreq + 1))); // Weight by sum of frequencies
+    ranno = static_cast<long>(pwsrnd->RangeRand(static_cast<size_t>(sumfreq + 1))); // Weight by sum of frequencies
     sum = 0;
     for (c3 = 0; c3 < 26; c3++) {
       sum += tris[int(c1)][int(c2)][int(c3)];

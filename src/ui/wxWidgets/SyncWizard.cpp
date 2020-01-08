@@ -696,13 +696,13 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
       uuid_array_t current_uuid, other_uuid;
       curItem.GetUUID(current_uuid);
       otherItem.GetUUID(other_uuid);
-      if (memcmp((void *)current_uuid, (void *)other_uuid, sizeof(uuid_array_t)) != 0) {
+      if (memcmp(static_cast<void *>(current_uuid), static_cast<void *>(other_uuid), sizeof(uuid_array_t)) != 0) {
         pws_os::Trace(wxT("Synchronize: Mis-match UUIDs for [%ls:%ls:%ls]\n"), otherGroup.c_str(), otherTitle.c_str(), otherUser.c_str());
       }
 
       bool bUpdated(false);
-      for (int i = 0; i < (int)criteria.TotalFieldsCount(); i++) {
-        auto ft = (CItemData::FieldType)i;
+      for (size_t i = 0; i < criteria.TotalFieldsCount(); i++) {
+        auto ft = static_cast<CItemData::FieldType>(i);
         if (criteria.IsFieldSelected(ft)) {
           const StringX sxValue = otherItem.GetFieldValue(ft);
           if (sxValue != updItem.GetFieldValue(ft)) {

@@ -318,7 +318,7 @@ private:
 
 class wxTextDataObjectEx : public wxTextDataObject {
 public:
-  wxTextDataObjectEx(const wxString &text = wxEmptyString) : wxTextDataObject(text) {};
+  wxTextDataObjectEx(const wxString &text = wxEmptyString) : wxTextDataObject(text) {}
 
   virtual size_t GetFormatCount(Direction dir = Get) const wxOVERRIDE {
     // add one more format

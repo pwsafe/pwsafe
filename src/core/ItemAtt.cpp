@@ -378,7 +378,7 @@ int CItemAtt::Read(PWSfile *in)
         ASSERT(utf8Len == sizeof(uint32));
         if (!gotIV || !gotEK || gotContent || utf8Len != sizeof(uint32))
           goto exit;
-        content_len = getInt32(utf8);
+        content_len = static_cast<size_t>(getInt32(utf8));
 
         TwoFish fish(EK, sizeof(EK));
         trashMemory(EK, sizeof(EK));
@@ -431,7 +431,7 @@ int CItemAtt::Read(PWSfile *in)
     trashMemory(AK, sizeof(AK));
     
     // calculate HMAC
-    hmac.Update(content, (unsigned long)content_len);
+    hmac.Update(content, static_cast<unsigned long>(content_len));
     hmac.Final(calculated_digest);
 
     if (memcmp(expected_digest, calculated_digest,

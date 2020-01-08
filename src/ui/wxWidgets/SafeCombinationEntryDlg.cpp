@@ -406,9 +406,11 @@ void SafeCombinationEntryDlg::ProcessPhrase()
   wxMessageDialog err(this, errmess,
                       _("Error"), wxOK | wxICON_EXCLAMATION);
   err.ShowModal();
-  auto *txt = (wxTextCtrl *)FindWindow(ID_COMBINATION);
-  txt->SetSelection(-1,-1);
-  txt->SetFocus();
+  auto *txt = wxDynamicCast(FindWindow(ID_COMBINATION), wxTextCtrl);
+  if (txt) {
+    txt->SetSelection(-1,-1);
+    txt->SetFocus();
+  }
 }
 
 /*!

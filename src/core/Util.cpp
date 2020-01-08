@@ -130,7 +130,7 @@ void GenRandhash(const StringX &a_passkey,
   */
   SHA1 keyHash;
   keyHash.Update(a_randstuff, StuffSize);
-  keyHash.Update(pstr, static_cast<int>(pkeyLen));
+  keyHash.Update(pstr, static_cast<unsigned int>(pkeyLen));
 
   trashMemory(pstr, pkeyLen);
   delete[] pstr;

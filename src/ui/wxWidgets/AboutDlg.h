@@ -100,7 +100,7 @@ public:
 ////@begin AboutDlg event handler declarations
 
   /// event handler for ID_CHECKNEW
-  void OnCheckNewClicked(wxHyperlinkEvent& WXUNUSED(event)) { CheckNewVersion(); };
+  void OnCheckNewClicked(wxHyperlinkEvent& WXUNUSED(event)) { CheckNewVersion(); }
 
   /// event handler for ID_SITEHYPERLINK
   void OnVisitSiteClicked(wxHyperlinkEvent& event);

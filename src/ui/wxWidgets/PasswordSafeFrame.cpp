@@ -367,7 +367,7 @@ void PasswordSafeFrame::CreateDragBar()
 
   wxASSERT(origSizer);
   wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
-  wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
+  wxASSERT(static_cast<wxBoxSizer*>(origSizer)->GetOrientation() == wxVERTICAL);
 
   DragBarCtrl* dragbar = new DragBarCtrl(this);
   origSizer->Insert(0, dragbar, 0, wxEXPAND);
@@ -1034,7 +1034,7 @@ DragBarCtrl* PasswordSafeFrame::GetDragBar()
 
   wxASSERT(origSizer);
   wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
-  wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
+  wxASSERT(static_cast<wxBoxSizer*>(origSizer)->GetOrientation() == wxVERTICAL);
 
   wxSizerItem* dragbarItem = origSizer->GetItem(size_t(0));
   wxASSERT_MSG(dragbarItem && dragbarItem->IsWindow() &&
@@ -2183,7 +2183,7 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
       if (pws_os::FileExists(stringT(dbfile)))
         break;          // An existing file doesn't need to be removed from history
 
-      //fall through
+      //[[fallthrough]];
     default:
       wxMessageBox(wxString(_("There was an error loading the database: ")) << dbfile,
                      _("Could not load database"), wxOK|wxICON_ERROR, this);

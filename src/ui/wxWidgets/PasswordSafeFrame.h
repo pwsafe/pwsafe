@@ -471,7 +471,7 @@ public:
   /// Called by system tray unlock the UI (and optionally restore the main window)
   void UnlockUI(bool restoreFrame);
 
-  void GetAllMenuItemStrings(std::vector<RUEntryData>& vec) const { m_RUEList.GetAllMenuItemStrings(vec); };
+  void GetAllMenuItemStrings(std::vector<RUEntryData>& vec) const { m_RUEList.GetAllMenuItemStrings(vec); }
   void DeleteRUEntry(size_t index) { m_RUEList.DeleteRUEntry(index); }
 
   void ClearRUEList() { m_RUEList.ClearEntries(); }

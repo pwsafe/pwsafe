@@ -1038,7 +1038,7 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
     bool foundGroup = false;
     for (size_t igrp = 0; igrp < svec.size(); igrp++) {
       if (group == svec[igrp].c_str()) {
-        m_BasicGroupNamesCtrl->SetSelection((int)igrp);
+        m_BasicGroupNamesCtrl->SetSelection(static_cast<int>(igrp));
         foundGroup =true;
         break;
       }
@@ -1626,7 +1626,7 @@ void AddEditPropSheetDlg::OnOk(wxCommandEvent& WXUNUSED(evt))
         }
   #endif
         if (m_Item.IsAlias()) {
-          m_Item.SetXTime((time_t)0);
+          m_Item.SetXTime(time_t(0));
           m_Item.SetPWPolicy(wxEmptyString);
         }
         else {

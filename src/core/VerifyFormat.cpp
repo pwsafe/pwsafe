@@ -635,7 +635,7 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
   if (rc != PWH_OK)
     nerror = ie;
 
-  n = (unsigned int)out_entries.size();
+  n = static_cast<unsigned int>(out_entries.size());
   Format(sxBuffer, L"%01d%02x%02x", s, m, n);
   newPWHistory = sxBuffer;
 

@@ -250,7 +250,7 @@ size_t PWSfileV4::WriteCBC(unsigned char type, const unsigned char *data,
 
   m_hmac.Update(&type, 1);
   m_hmac.Update(buf, sizeof(buf));
-  m_hmac.Update(data, (unsigned long)length);
+  m_hmac.Update(data, static_cast<unsigned long>(length));
 
   return PWSfile::WriteCBC(type, data, length);
 }
@@ -309,7 +309,7 @@ size_t PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
   _writecbc(m_fd, content, len, &fish, IV);
 
   // update content's HMAC
-  hmac.Update(content, (unsigned long)len);
+  hmac.Update(content, static_cast<unsigned long>(len));
 
   // write content's HMAC
   unsigned char digest[SHA256::HASHLEN];
@@ -343,7 +343,7 @@ size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
 
     m_hmac.Update(&type, 1);
     m_hmac.Update(buf, sizeof(buf));
-    m_hmac.Update(data, (unsigned long)length);
+    m_hmac.Update(data, static_cast<unsigned long>(length));
   }
 
   return numRead;
@@ -410,7 +410,7 @@ void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,
 
   HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> hmac;
   ConvertPasskey(passkey, pstr, passLen);
-  pbkdf2(pstr, (unsigned long)passLen, salt, saltLen, N, &hmac, Ptag, &PtagLen);
+  pbkdf2(pstr, static_cast<unsigned long>(passLen), salt, saltLen, N, &hmac, Ptag, &PtagLen);
 
 #ifdef UNICODE
   trashMemory(pstr, passLen);
@@ -671,7 +671,7 @@ int PWSfileV4::WriteHeader()
 
     size_t buflen = (num * sizeof(uuid_array_t)) + 1;
     auto *buf = new unsigned char[buflen];
-    buf[0] = (unsigned char)num;
+    buf[0] = static_cast<unsigned char>(num);
     unsigned char *buf_ptr = buf + 1;
 
     auto iter = m_hdr.m_RUEList.begin();
@@ -716,14 +716,14 @@ int PWSfileV4::WriteHeader()
     memset(buf, 0, totlen); // in case we truncate some names, don't leak info.
 
     // fill buffer
-    buf[0] = (unsigned char)numPols;
+    buf[0] = static_cast<unsigned char>(numPols);
     unsigned char *buf_ptr = buf + 1;
     for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
       size_t polNameLen = pws_os::wcstombs(nullptr, 0, iter->first.c_str(), iter->first.length());
       if (polNameLen > 255) // too bad if too long...
         polNameLen = 255;
-      *buf_ptr++ = (unsigned char)polNameLen;
-      pws_os::wcstombs((char *)buf_ptr, polNameLen, iter->first.c_str(), iter->first.length());
+      *buf_ptr++ = static_cast<unsigned char>(polNameLen);
+      pws_os::wcstombs(reinterpret_cast<char *>(buf_ptr), polNameLen, iter->first.c_str(), iter->first.length());
       buf_ptr += polNameLen;
 
       const PWPolicy &pwpol = iter->second;
@@ -741,8 +741,8 @@ int PWSfileV4::WriteHeader()
                                           pwpol.symbols.c_str(), pwpol.symbols.length());
       if (symSetLen > 255) // too bad if too long...
         symSetLen = 255;
-      *buf_ptr++ = (unsigned char)symSetLen;
-      pws_os::wcstombs((char *)buf_ptr, symSetLen,
+      *buf_ptr++ = static_cast<unsigned char>(symSetLen);
+      pws_os::wcstombs(reinterpret_cast<char *>(buf_ptr), symSetLen,
                        pwpol.symbols.c_str(), pwpol.symbols.length());
       buf_ptr += symSetLen;
       }
@@ -842,10 +842,10 @@ bool PWSfileV4::VerifyKeyBlocks()
   unsigned char ReadEndKB[SHA256::HASHLEN];
   unsigned char CalcEndKB[SHA256::HASHLEN];
 
-  int nRead = (int)fread(hnonce, sizeof(hnonce), 1, m_fd);
+  size_t nRead = fread(hnonce, sizeof(hnonce), 1, m_fd);
   if (nRead != 1)
     return false;
-  nRead = (int)fread(ReadEndKB, sizeof(ReadEndKB), 1, m_fd);
+  nRead = fread(ReadEndKB, sizeof(ReadEndKB), 1, m_fd);
   if (nRead != 1)
     return false;
 

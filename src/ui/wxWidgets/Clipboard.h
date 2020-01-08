@@ -32,7 +32,7 @@ public:
 #endif
 private:
   Clipboard();
-  ~Clipboard() {};
+  ~Clipboard() {}
   Clipboard(const Clipboard &);
   Clipboard &operator=(const Clipboard &);
 

@@ -664,7 +664,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
         case L'w':
         case L'W':
         {
-           if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), (size_t)(n - 1)) ==
+           if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), static_cast<size_t>(n - 1)) ==
                vactionverboffsets.end()) {
              // Not in the list of found action verbs - treat as-is
              sxtmp += L'\\';
@@ -710,7 +710,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
           break; // case 'd', 'w' & 'W'
         }
         case L'c':
-          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), (size_t)(n - 1)) ==
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), static_cast<size_t>(n - 1)) ==
               vactionverboffsets.end()) {
             // Not in the list of found action verbs - treat as-is
             sxtmp += L'\\';
@@ -722,7 +722,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
           break;
         case L'j':
         case L'k':
-          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), (size_t)(n - 1)) ==
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), static_cast<size_t>(n - 1)) ==
               vactionverboffsets.end()) {
             // Not in the list of found action verbs - treat as-is
             sxtmp += L'\\';
@@ -733,7 +733,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
           }
           break;
         case L'z':
-          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), (size_t)(n - 1)) ==
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), static_cast<size_t>(n - 1)) ==
               vactionverboffsets.end()) {
             // Not in the list of found action verbs - treat as-is
             sxtmp += L'\\';
@@ -741,7 +741,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
           }
           break;
         case L'b':
-          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), (size_t)(n - 1)) ==
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), static_cast<size_t>(n - 1)) ==
               vactionverboffsets.end()) {
             // Not in the list of found action verbs - treat as-is
             sxtmp += L'\\';
@@ -910,7 +910,7 @@ void PasswordSafeFrame::DoRun(CItemData& item)
 
   if (!errorMessage.empty()) {
     wxMessageBox(
-      wxString::Format(_("Error at column %d:\n\n%s"), (int)columnPosition, errorMessage.c_str()), 
+      wxString::Format(_("Error at column %d:\n\n%s"), static_cast<int>(columnPosition), errorMessage.c_str()), 
       _("Error parsing Run Command"), 
       wxOK|wxICON_ERROR, this);
 
