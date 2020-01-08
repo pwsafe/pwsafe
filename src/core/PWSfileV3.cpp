@@ -286,7 +286,7 @@ size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
   size_t numRead = PWSfile::ReadCBC(type, data, length);
 
   if (numRead > 0) {
-    m_hmac.Update(data, reinterpret_cast<unsigned long &>(length));
+    m_hmac.Update(data, static_cast<unsigned long>(length));
   }
 
   return numRead;

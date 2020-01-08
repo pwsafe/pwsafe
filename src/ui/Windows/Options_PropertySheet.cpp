@@ -18,20 +18,19 @@ IMPLEMENT_DYNAMIC(COptions_PropertySheet, CPWPropertySheet)
 COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
   const bool bLongPPs)
   : CPWPropertySheet(nID, pParent, bLongPPs),
-  m_save_bSymbols(L""), m_save_iUseOwnSymbols(DEFAULT_SYMBOLS),
-  m_save_iPreExpiryWarnDays(0),
+  m_save_bSymbols(L""), m_save_iPreExpiryWarnDays(0), m_save_iUseOwnSymbols(DEFAULT_SYMBOLS),
   m_bIsModified(false), m_bChanged(false),
   m_bRefreshViews(false), m_bSaveGroupDisplayState(false), m_bUpdateShortcuts(false),
   m_bCheckExpired(false),
-  m_save_bShowUsernameInTree(FALSE), m_save_bShowPasswordInTree(FALSE), 
-  m_save_bExplorerTypeTree(FALSE), m_save_bPreExpiryWarn(FALSE),
-  m_save_bLockOnWindowLock(FALSE), m_bStartupShortcutExists(FALSE),
   m_save_bSaveImmediately(TRUE), m_save_bHighlightChanges(FALSE),
-  m_pp_backup(NULL), m_pp_display(NULL), m_pp_misc(NULL),
-  m_pp_passwordhistory(NULL), m_pp_security(NULL),
-  m_pp_shortcuts(NULL), m_pp_system(NULL)
+  m_save_bPreExpiryWarn(FALSE), m_save_bShowUsernameInTree(FALSE), 
+  m_save_bShowPasswordInTree(FALSE), m_save_bExplorerTypeTree(FALSE), 
+  m_save_bLockOnWindowLock(FALSE), m_bStartupShortcutExists(FALSE),
+  m_pp_backup(nullptr), m_pp_display(nullptr), m_pp_misc(nullptr),
+  m_pp_passwordhistory(nullptr), m_pp_security(nullptr),
+  m_pp_shortcuts(nullptr), m_pp_system(nullptr)
 {
-  ASSERT(pParent != NULL);
+  ASSERT(pParent != nullptr);
 
   // Set up initial values
   SetupInitialValues();

@@ -95,7 +95,7 @@ void PasswordSafeFrame::DoEdit(CItemData item)
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ADD
  */
 
-void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnAddClick(wxCommandEvent& WXUNUSED(evt))
 {
   wxString selectedGroup = wxEmptyString;
   wxTreeItemId selection;
@@ -115,7 +115,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
  */
 
-void PasswordSafeFrame::OnEditClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnEditClick(wxCommandEvent& WXUNUSED(evt))
 {
   CItemData *item = GetSelectedEntry();
   if (item != nullptr)
@@ -126,7 +126,7 @@ void PasswordSafeFrame::OnEditClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_DELETE
  */
 
-void PasswordSafeFrame::OnDeleteClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnDeleteClick(wxCommandEvent& WXUNUSED(evt))
 {
   bool dontaskquestion = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DeleteQuestion);
@@ -231,7 +231,7 @@ Command *PasswordSafeFrame::Delete(wxTreeItemId tid)
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_FIND
  */
 
-void PasswordSafeFrame::OnFindClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnFindClick(wxCommandEvent& WXUNUSED(evt))
 {
   m_search->Activate();
 }
@@ -240,7 +240,7 @@ void PasswordSafeFrame::OnFindClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EDITMENU_FIND_NEXT
  */
 
-void PasswordSafeFrame::OnFindNext( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnFindNext(wxCommandEvent& WXUNUSED(evt))
 {
   m_search->FindNext();
 }
@@ -249,7 +249,7 @@ void PasswordSafeFrame::OnFindNext( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EDITMENU_FIND_PREVIOUS
  */
 
-void PasswordSafeFrame::OnFindPrevious( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnFindPrevious(wxCommandEvent& WXUNUSED(evt))
 {
   m_search->FindPrevious();
 }
@@ -339,7 +339,7 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
  */
 
-void PasswordSafeFrame::OnClearClipboardClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnClearClipboardClick(wxCommandEvent& WXUNUSED(evt))
 {
   UpdateLastClipboardAction(CItemData::FieldType::END);
   Clipboard::GetInstance()->ClearCBData();
@@ -492,7 +492,7 @@ void PasswordSafeFrame::OnAutoType(wxCommandEvent& evt)
   }
 }
 
-void PasswordSafeFrame::OnGotoBase(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnGotoBase(wxCommandEvent& WXUNUSED(evt))
 {
   CItemData* item = GetSelectedEntry();
   if (item && (item->IsAlias() || item->IsShortcut())) {
@@ -664,7 +664,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
         case L'w':
         case L'W':
         {
-           if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), (size_t)(n - 1)) ==
+           if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), static_cast<size_t>(n - 1)) ==
                vactionverboffsets.end()) {
              // Not in the list of found action verbs - treat as-is
              sxtmp += L'\\';
@@ -710,7 +710,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
           break; // case 'd', 'w' & 'W'
         }
         case L'c':
-          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), (size_t)(n - 1)) ==
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), static_cast<size_t>(n - 1)) ==
               vactionverboffsets.end()) {
             // Not in the list of found action verbs - treat as-is
             sxtmp += L'\\';
@@ -722,7 +722,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
           break;
         case L'j':
         case L'k':
-          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), (size_t)(n - 1)) ==
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), static_cast<size_t>(n - 1)) ==
               vactionverboffsets.end()) {
             // Not in the list of found action verbs - treat as-is
             sxtmp += L'\\';
@@ -733,7 +733,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
           }
           break;
         case L'z':
-          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), (size_t)(n - 1)) ==
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), static_cast<size_t>(n - 1)) ==
               vactionverboffsets.end()) {
             // Not in the list of found action verbs - treat as-is
             sxtmp += L'\\';
@@ -741,7 +741,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
           }
           break;
         case L'b':
-          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), (size_t)(n - 1)) ==
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), static_cast<size_t>(n - 1)) ==
               vactionverboffsets.end()) {
             // Not in the list of found action verbs - treat as-is
             sxtmp += L'\\';
@@ -797,9 +797,9 @@ void PasswordSafeFrame::DoBrowse(CItemData &item, bool bAutotype)
   }
 }
 
-bool PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sxAutotype*/,
-                             const std::vector<size_t> &/*vactionverboffsets*/,
-                             bool /*bDoAutotype*/)
+bool PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX & WXUNUSED(sxAutotype),
+                             const std::vector<size_t> & WXUNUSED(vactionverboffsets),
+                             bool WXUNUSED(bDoAutotype))
 {
   /*
    * This is a straight port of DBoxMain::LaunchBrowser.  See the comments in that function
@@ -910,7 +910,7 @@ void PasswordSafeFrame::DoRun(CItemData& item)
 
   if (!errorMessage.empty()) {
     wxMessageBox(
-      wxString::Format(_("Error at column %d:\n\n%s"), (int)columnPosition, errorMessage.c_str()), 
+      wxString::Format(_("Error at column %d:\n\n%s"), static_cast<int>(columnPosition), errorMessage.c_str()), 
       _("Error parsing Run Command"), 
       wxOK|wxICON_ERROR, this);
 

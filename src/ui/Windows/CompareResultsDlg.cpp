@@ -76,13 +76,14 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
                                        CString &csProtect, CString &csAttachment,
                                        CReport *pRpt)
   : CPWResizeDialog(CCompareResultsDlg::IDD, pParent),
+  m_iSortedColumn(0), m_bSortAscending(true),
+  m_ShowIdenticalEntries(BST_UNCHECKED),
+  m_OriginalDBChanged(false),
+  m_bTreatWhiteSpaceasEmpty(false),
   m_OnlyInCurrent(OnlyInCurrent), m_OnlyInComp(OnlyInComp),
   m_Conflicts(Conflicts), m_Identical(Identical),
   m_bsFields(bsFields), m_pcore0(pcore0), m_pcore1(pcore1),
-  m_pRpt(pRpt), m_bSortAscending(true), m_iSortedColumn(0),
-  m_OriginalDBChanged(false),
-  m_bTreatWhiteSpaceasEmpty(false),
-  m_ShowIdenticalEntries(BST_UNCHECKED),
+  m_pRpt(pRpt),
   m_csProtect(csProtect), m_csAttachment(csAttachment)
 {
 }

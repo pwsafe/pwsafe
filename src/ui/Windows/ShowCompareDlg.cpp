@@ -28,10 +28,11 @@ static char THIS_FILE[] = __FILE__;
 CShowCompareDlg::CShowCompareDlg(CItemData *pci, CItemData *pci_other, CWnd *pParent,
                                  const bool bDifferentDB)
   : CPWDialog(CShowCompareDlg::IDD, pParent),
-  m_pci(pci), m_pci_other(pci_other), m_ShowIdenticalFields(BST_UNCHECKED),
-  m_pNotesDisplay(NULL), m_bDifferentDB(bDifferentDB)
+  m_ShowIdenticalFields(BST_UNCHECKED),
+  m_pci(pci), m_pci_other(pci_other), 
+  m_pNotesDisplay(nullptr), m_bDifferentDB(bDifferentDB)
 {
-  ASSERT(m_pci != NULL && m_pci_other != NULL && pParent != NULL);
+  ASSERT(m_pci != nullptr && m_pci_other != nullptr && pParent != nullptr);
 
   // Set up DCA to string values
   m_DCA.resize(PWSprefs::maxDCA + 1);

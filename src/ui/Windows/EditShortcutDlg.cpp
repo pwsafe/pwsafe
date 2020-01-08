@@ -35,8 +35,10 @@ bool CEditShortcutDlg::m_bShowUUID = false;
 CEditShortcutDlg::CEditShortcutDlg(CItemData *pci, CWnd* pParent,
   const CSecString &cs_tg, const CSecString &cs_tt, const CSecString &cs_tu)
   : CPWDialog(CEditShortcutDlg::IDD, pParent),
-  m_tg(cs_tg), m_tt(cs_tt), m_tu(cs_tu), m_group(cs_tg),
-  m_pci(pci), m_bIsModified(false), m_Edit_IsReadOnly(false)
+  m_Edit_IsReadOnly(false),
+  m_pci(pci), m_group(cs_tg), 
+  m_tg(cs_tg), m_tt(cs_tt), m_tu(cs_tu),
+  m_bIsModified(false)
 {
   ASSERT(pci != NULL);
 

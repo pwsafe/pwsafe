@@ -40,7 +40,7 @@ END_EVENT_TABLE()
 
 MergeDlg::MergeDlg(wxWindow* parent, PWScore* core) :
                       wxDialog(parent, wxID_ANY, wxString(_("Merge Another Database"))),
-                      m_core(core), m_selection(new SelectionCriteria), m_dbPanel(0)
+                      m_core(core), m_selection(new SelectionCriteria), m_dbPanel(nullptr)
 {
   const wxString filePrompt(wxString(_("Choose Database to Merge into \"")) <<
                                           towxstring(m_core->GetCurFile()) << wxT("\""));
@@ -83,16 +83,16 @@ struct AdvancedMergeOptions {
     return _("Advanced Merge Options");
   }
 
-  static bool IsMandatoryField(CItemData::FieldType /*field*/) {
+  static bool IsMandatoryField(CItemData::FieldType WXUNUSED(field)) {
     return false;
   }
 
-  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+  static bool IsPreselectedField(CItemData::FieldType WXUNUSED(field)) {
     wxFAIL_MSG(wxT("Advanced field pre-selection options are not available for Merge"));
     return true;
   }
 
-  static bool IsUsableField(CItemData::FieldType /*field*/) {
+  static bool IsUsableField(CItemData::FieldType WXUNUSED(field)) {
     wxFAIL_MSG(wxT("Advanced field usability options are not available for Merge"));
     return true;
   }

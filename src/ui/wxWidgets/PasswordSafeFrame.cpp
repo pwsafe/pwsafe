@@ -301,7 +301,7 @@ END_EVENT_TABLE()
  */
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
-: m_core(core), m_currentView(ViewType::GRID), m_search(0), m_sysTray(new SystemTray(this)),
+: m_core(core), m_currentView(ViewType::GRID), m_search(nullptr), m_sysTray(new SystemTray(this)),
   m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
   m_RUEList(core), m_guiInfo(new GuiInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
   m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
@@ -314,7 +314,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-  : m_core(core), m_currentView(ViewType::GRID), m_search(0), m_sysTray(new SystemTray(this)),
+  : m_core(core), m_currentView(ViewType::GRID), m_search(nullptr), m_sysTray(new SystemTray(this)),
     m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
     m_RUEList(core), m_guiInfo(new GuiInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
     m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
@@ -367,7 +367,7 @@ void PasswordSafeFrame::CreateDragBar()
 
   wxASSERT(origSizer);
   wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
-  wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
+  wxASSERT(static_cast<wxBoxSizer*>(origSizer)->GetOrientation() == wxVERTICAL);
 
   DragBarCtrl* dragbar = new DragBarCtrl(this);
   origSizer->Insert(0, dragbar, 0, wxEXPAND);
@@ -395,13 +395,13 @@ PasswordSafeFrame::~PasswordSafeFrame()
 ////@begin PasswordSafeFrame destruction
 ////@end PasswordSafeFrame destruction
   delete m_search;
-  m_search = 0;
+  m_search = nullptr;
 
   delete m_sysTray;
-  m_sysTray = 0;
+  m_sysTray = nullptr;
 
   delete m_guiInfo;
-  m_guiInfo = 0;
+  m_guiInfo = nullptr;
 
   m_core.ClearDBData();
   m_core.UnregisterObserver(this);
@@ -1034,7 +1034,7 @@ DragBarCtrl* PasswordSafeFrame::GetDragBar()
 
   wxASSERT(origSizer);
   wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
-  wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
+  wxASSERT(static_cast<wxBoxSizer*>(origSizer)->GetOrientation() == wxVERTICAL);
 
   wxSizerItem* dragbarItem = origSizer->GetItem(size_t(0));
   wxASSERT_MSG(dragbarItem && dragbarItem->IsWindow() &&
@@ -1284,7 +1284,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
  */
 
-void PasswordSafeFrame::OnAboutClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnAboutClick(wxCommandEvent& WXUNUSED(evt))
 {
   AboutDlg* window = new AboutDlg(this);
   window->ShowModal();
@@ -1315,7 +1315,7 @@ void PasswordSafeFrame::OnRunCommand(wxCommandEvent& evt)
     DoRun(*item);
 }
 
-void PasswordSafeFrame::OnEditBase(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnEditBase(wxCommandEvent& WXUNUSED(evt))
 {
   CItemData* item = GetSelectedEntry();
   if (item && item->IsDependent()) {
@@ -1837,10 +1837,9 @@ void PasswordSafeFrame::DatabaseModified(bool modified)
 /**
  * Implements Observer::UpdateGUI(UpdateGUICommand::GUI_Action, const pws_os::CUUID&, CItemData::FieldType)
  */
-void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &entry_uuid, CItemData::FieldType WXUNUSED(ft))
+void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID & WXUNUSED(entry_uuid), CItemData::FieldType WXUNUSED(ft))
 {
   // Callback from PWScore if GUI needs updating
-  // Note: For some values of 'ga', 'ci' & ft are invalid and not used.
 
   // "bUpdateGUI" is only used by GUI_DELETE_ENTRY when called as part
   // of the Edit Entry Command where the entry is deleted and then added and
@@ -2184,7 +2183,7 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
       if (pws_os::FileExists(stringT(dbfile)))
         break;          // An existing file doesn't need to be removed from history
 
-      //fall through
+      //[[fallthrough]];
     default:
       wxMessageBox(wxString(_("There was an error loading the database: ")) << dbfile,
                      _("Could not load database"), wxOK|wxICON_ERROR, this);

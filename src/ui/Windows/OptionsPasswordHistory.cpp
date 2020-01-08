@@ -38,7 +38,7 @@ IMPLEMENT_DYNAMIC(COptionsPasswordHistory, COptions_PropertyPage)
 
 COptionsPasswordHistory::COptionsPasswordHistory(CWnd *pParent, st_Opt_master_data *pOPTMD)
   : COptions_PropertyPage(pParent, COptionsPasswordHistory::IDD, pOPTMD),
-  m_PWHAction(0), mApplyToProtected(BST_UNCHECKED)
+  mApplyToProtected(BST_UNCHECKED), m_PWHAction(0)
 {
   m_SavePWHistory = M_SavePWHistory();
   m_PWHistoryNumDefault = M_PWHistoryNumDefault();

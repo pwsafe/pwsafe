@@ -391,7 +391,7 @@ void GridCtrl::Remove(const CUUID &uuid)
 
     //move all the rows up by 1
     for (size_t newRow = row + 1; newRow < m_row_map.size(); ++newRow) {
-      m_row_map[reinterpret_cast<int &>(newRow) - 1] = m_row_map[reinterpret_cast<int &>(newRow)];
+      m_row_map[static_cast<int>(newRow) - 1] = m_row_map[static_cast<int>(newRow)];
     }
 
     //remove the last row, which is now extraneous

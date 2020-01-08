@@ -239,7 +239,7 @@ public:
               klist unset_events = { KeyEventType::RELEASE });
   ModifierKey(Display *disp, KeySym ks, klist set_events = { KeyEventType::PRESS },
               klist unset_events = { KeyEventType::RELEASE });
-  ModifierKey(Display *disp, KeyCode code, int mask,
+  ModifierKey(KeyCode code, int mask,
               klist set_events = { KeyEventType::PRESS },
               klist unset_events = { KeyEventType::RELEASE });
 
@@ -271,7 +271,7 @@ ModifierKey::ModifierKey(Display *disp, KeySym ks, klist set_events,
   mask = pos.mask();
 }
 
-ModifierKey::ModifierKey(Display *disp, KeyCode kcode, int kmask,
+ModifierKey::ModifierKey(KeyCode kcode, int kmask,
                          klist set_events, klist unset_events)
     : ModifierKey(set_events, unset_events) {
   code = kcode;
@@ -582,9 +582,10 @@ void SequenceAutotypeEvents(ContIter ci, ModIter mbegin, ModIter mend,
       });
     });
   };
-
+#ifdef DEBUG
   std::for_each(mbegin, mend,
                 [](const ModifierKey &m) { assert(m.IsValid()); });
+#endif
 
   if (emulateMods) {
     add_mods(&ModifierKey::set_events);
@@ -667,9 +668,10 @@ void CKeySendImpl::DoSendString(const StringX &str, unsigned delayMS,
 
       const std::vector<ModifierKey> modkeys =
           m_modFactory->GetModifiersForKeySym(code, sym);
+#ifdef DEBUG
       std::for_each(modkeys.begin(), modkeys.end(),
                     [](const ModifierKey &m) { assert(m.IsValid()); });
-
+#endif
       const AutotypeEventVector::size_type count = keypresses.size();
 
       SequenceAutotypeEvents(std::back_inserter(keypresses), modkeys.begin(),
@@ -714,7 +716,7 @@ void CKeySendImpl::SelectAll(unsigned delayMS, int code /*= 0*/,
         KeyCode kc = modmap.ModifierKeyCode(pos);
         if (kc) {
           // note that the press & hold behavior is hardcoded here
-          modkeys.push_back(ModifierKey{ m_display, kc, pos.mask() });
+          modkeys.push_back(ModifierKey{ kc, pos.mask() });
         } else {
           g_xerrormsg << "No KeyCode mapped to mask bit " << pos.index()
                       << " for generating Select-All event";
@@ -727,10 +729,10 @@ void CKeySendImpl::SelectAll(unsigned delayMS, int code /*= 0*/,
     code = KeySymToKeyCode(m_display, XK_A);
     modkeys.push_back( m_modFactory->Control() );
   }
-
+#ifdef DEBUG
   std::for_each(modkeys.cbegin(), modkeys.cend(),
                 [](const ModifierKey &m) { assert(m.IsValid()); });
-
+#endif
   std::vector<AutotypeEvent> selectAllEvents;
   SequenceAutotypeEvents(std::back_inserter(selectAllEvents), modkeys.cbegin(),
                          modkeys.cend(), m_display, code,

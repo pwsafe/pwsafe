@@ -140,7 +140,7 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
 static wxReporter aReporter;
 static wxAsker    anAsker;
 
-static void cleanup_handler(int /*signum */, void *p)
+static void cleanup_handler(int WXUNUSED(signum), void *p)
 {
   // Called if we get a signal - don't try to save, since we don't
   // know what's valid, if anything. Just unlock file, if any.
@@ -180,7 +180,7 @@ IMPLEMENT_CLASS( PWSafeApp, wxApp )
  */
 
 PWSafeApp::PWSafeApp() : m_idleTimer(new wxTimer(this, IDLE_TIMER_ID)),
-                         m_frame(0), m_recentDatabases(0),
+                         m_frame(nullptr), m_recentDatabases(nullptr),
                          m_locale(nullptr)
 {
   Init();

@@ -144,7 +144,7 @@ wxString GridTable::GetValue(int row, int col)
   return wxEmptyString;
 }
 
-void GridTable::SetValue(int /*row*/, int /*col*/, const wxString& /*value*/)
+void GridTable::SetValue(int WXUNUSED(row), int WXUNUSED(col), const wxString& WXUNUSED(value))
 {
   //I think it comes here only if the grid is editable
 }
@@ -215,8 +215,8 @@ bool GridTable::DeleteRows(size_t pos, size_t numRows)
     //This will actually remove the item from grid display
     wxGridTableMessage msg(this,
                            wxGRIDTABLE_NOTIFY_ROWS_DELETED,
-                           reinterpret_cast<int &>(pos),
-                           reinterpret_cast<int &>(numRows));
+                           static_cast<int>(pos),
+                           static_cast<int>(numRows));
     GetView()->ProcessTableMessage(msg);
   }
     
@@ -228,7 +228,7 @@ bool GridTable::AppendRows(size_t numRows/*=1*/)
   if (GetView()) {
     wxGridTableMessage msg(this,
                            wxGRIDTABLE_NOTIFY_ROWS_APPENDED,
-                           reinterpret_cast<int &>(numRows));
+                           static_cast<int>(numRows));
     GetView()->ProcessTableMessage(msg);
   }
   return true;
@@ -239,8 +239,8 @@ bool GridTable::InsertRows(size_t pos/*=0*/, size_t numRows/*=1*/)
   if (GetView()) {
     wxGridTableMessage msg(this,
                            wxGRIDTABLE_NOTIFY_ROWS_INSERTED,
-                           reinterpret_cast<int &>(pos),
-                           reinterpret_cast<int &>(numRows));
+                           static_cast<int>(pos),
+                           static_cast<int>(numRows));
     GetView()->ProcessTableMessage(msg);
   }
   return true;

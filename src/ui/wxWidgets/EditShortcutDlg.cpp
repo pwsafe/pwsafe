@@ -102,7 +102,7 @@ void EditShortcutDlg::ItemFieldsToDialog()
   if (!group.empty())
     for (size_t igrp = 0; igrp < aryGroups.size(); igrp++)
       if (group == aryGroups[igrp].c_str()) {
-        m_groupCtrl->SetSelection(reinterpret_cast<int &>(igrp));
+        m_groupCtrl->SetSelection(static_cast<int>(igrp));
         break;
       }
 
@@ -269,7 +269,7 @@ wxIcon EditShortcutDlg::GetIconResource( const wxString& WXUNUSED(name) )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void EditShortcutDlg::OnOkClick( wxCommandEvent& /* evt */ )
+void EditShortcutDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     bool modified = false;

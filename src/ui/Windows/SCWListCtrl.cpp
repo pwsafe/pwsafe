@@ -19,8 +19,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CSCWListCtrl::CSCWListCtrl()
-  : m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bMouseInWindow(false),
-  m_pParent(NULL)
+  : m_pParent(nullptr), 
+  m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bMouseInWindow(false)
 {
 }
 

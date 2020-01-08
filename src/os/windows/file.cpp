@@ -245,8 +245,8 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
 
   BOOL brc(TRUE);
   if (dwerr == ERROR_FILE_NOT_FOUND || 
-      (dwAttrib != INVALID_FILE_ATTRIBUTES) &&
-      !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
+      ((dwAttrib != INVALID_FILE_ATTRIBUTES) &&
+      !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY))) {
     SECURITY_ATTRIBUTES secatt = {0};
     secatt.nLength = sizeof(secatt);
     brc = ::CreateDirectory(sNewDir.c_str(), &secatt);

@@ -50,18 +50,18 @@ namespace S_Alloc
 
     public:
       // Constructors
-      SecureAlloc() throw() {}
-      SecureAlloc(const SecureAlloc&) throw() {}
+      SecureAlloc() noexcept {}
+      SecureAlloc(const SecureAlloc&) noexcept {}
 
       template <typename U>
-        SecureAlloc(const SecureAlloc<U>&) throw() {}
+        SecureAlloc(const SecureAlloc<U>&) noexcept {}
 
       SecureAlloc& operator=(const SecureAlloc&) {
         return *this;
       }
 
       // Destructor
-      ~SecureAlloc() throw() {}
+      ~SecureAlloc() noexcept {}
 
       // Utility functions
       pointer address(reference r) const {
@@ -95,7 +95,7 @@ namespace S_Alloc
         };
 
       // Allocate raw memory
-      pointer allocate(size_type n, const_pointer hint = 0) {
+      pointer allocate(size_type n, const_pointer hint = nullptr) {
         UNREFERENCED_PARAMETER(hint);
         pointer p = static_cast<pointer>(std::malloc(n * sizeof(T)));
         if (p == nullptr)
@@ -119,7 +119,7 @@ namespace S_Alloc
 
         if (n > 0) {
           const size_type N = n * sizeof(T);
-          trashMemory((void *)p, N);
+          trashMemory(static_cast<void *>(p), N);
         }
         std::free(p);
       }
@@ -135,13 +135,13 @@ namespace S_Alloc
   // Comparison
   template <typename T1, typename T2>
     bool operator==(const SecureAlloc<T1>&,
-                    const SecureAlloc<T2>&) throw() {
+                    const SecureAlloc<T2>&) noexcept {
     return true;
   }
 
   template <typename T1, typename T2>
     bool operator!=(const SecureAlloc<T1>&,
-                    const SecureAlloc<T2>&) throw() {
+                    const SecureAlloc<T2>&) noexcept {
     return false;
   }
 

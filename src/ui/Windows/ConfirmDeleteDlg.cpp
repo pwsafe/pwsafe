@@ -27,7 +27,7 @@ static char THIS_FILE[] = __FILE__;
 CConfirmDeleteDlg::CConfirmDeleteDlg(CWnd* pParent, const int numchildren,
      const StringX sxGroup, const StringX sxTitle, const StringX sxUser)
   : CPWDialog(CConfirmDeleteDlg::IDD, pParent),
-  m_numchildren(numchildren), m_sxGroup(sxGroup), m_sxTitle(sxTitle), m_sxUser(sxUser)
+  m_sxGroup(sxGroup), m_sxTitle(sxTitle), m_sxUser(sxUser), m_numchildren(numchildren)
 {
   m_dontaskquestion = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DeleteQuestion);

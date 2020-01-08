@@ -102,7 +102,7 @@ void InvalidateBestSizeRecursively(wxWindow* win)
   
 }
 
-void FieldSelectionDlg::OnRelayoutDlg(wxCommandEvent& /*evt*/)  
+void FieldSelectionDlg::OnRelayoutDlg(wxCommandEvent& WXUNUSED(evt))  
 {
   InvalidateBestSizeRecursively(this);
   GetSizer()->RecalcSizes();

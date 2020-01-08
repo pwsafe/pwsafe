@@ -43,7 +43,8 @@ static char THIS_FILE[] = __FILE__;
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core)
   : CPKBaseDlg(CPasskeySetup::IDD, pParent),
-    m_LastFocus(IDC_PASSKEY), m_core(core), m_btnShowCombination(FALSE)
+  m_btnShowCombination(FALSE),
+  m_LastFocus(IDC_PASSKEY), m_core(core)
 {
   m_verify = L"";
   m_pctlVerify = new CSecEditExtn;

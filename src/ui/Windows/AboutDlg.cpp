@@ -154,9 +154,9 @@ void CAboutDlg::CheckNewVer()
   m_newVerStatus.LoadString(IDS_TRYING2CONTACT_SERVER);
   UpdateData(FALSE);
   std::wstring latest;
-  wchar_t *html_redfont = L"<b><font color=\"red\">";
-  wchar_t *html_greenfont = L"<b><font color=\"green\">";
-  wchar_t *html_endfont = L"</font></b>";
+  const wchar_t *html_redfont = L"<b><font color=\"red\">";
+  const wchar_t *html_greenfont = L"<b><font color=\"green\">";
+  const wchar_t *html_endfont = L"</font></b>";
   switch (CheckLatestVersion(latest)) {
     case CheckVersion::CheckStatus::CANT_CONNECT:
       m_newVerStatus.Format(IDS_CANT_CONTACT_SERVER, html_redfont, html_endfont);

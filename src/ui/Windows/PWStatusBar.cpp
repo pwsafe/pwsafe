@@ -38,7 +38,7 @@ TIMEINT_SB_SHOWING The length of time the tool tip window remains visible
 IMPLEMENT_DYNAMIC(CPWStatusBar, CStatusBar)
 
 CPWStatusBar::CPWStatusBar()
-  : m_bSTBFilterStatus(false), m_pSBToolTips(NULL), m_bUseToolTips(false),
+  : m_pSBToolTips(nullptr), m_bSTBFilterStatus(false), m_bUseToolTips(false),
   m_bMouseInWindow(false), m_bFileReadOnly(false), m_bFileOpen(false)
 {
   m_FilterBitmap.LoadBitmap(IDB_FILTER_ACTIVE);

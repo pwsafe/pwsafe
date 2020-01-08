@@ -33,14 +33,15 @@ struct RUEntryData {
 
 // private struct: one of these for each owner-draw menu item
 struct CRUEItemData {
+private:
+  // identifies menu owner-draw data as mine
+  const unsigned long RUEMENUITEMID = MAKELONG(MAKEWORD('R', 'U'),MAKEWORD('E', 'M'));
+public:
   unsigned long magicNum;      // magic number identifying me
   int           nImage;        // index of button image in image list
 
   CRUEItemData() : magicNum(RUEMENUITEMID), nImage(-1) {}
   bool IsRUEID() const {return magicNum == RUEMENUITEMID;}
-private:
-  // identifies menu owner-draw data as mine
-  const unsigned long RUEMENUITEMID = MAKELONG(MAKEWORD('R', 'U'),MAKEWORD('E', 'M'));
 };
 
 typedef std::deque<pws_os::CUUID> RUEList;

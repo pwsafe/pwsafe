@@ -46,9 +46,9 @@
 #include <type_traits> // for static_assert
 
 // These column names must match the field names defined in core_st.cpp
-const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift+DCA\te-mail\tProtected\tSymbols\tKeyboard Shortcut\tNotes");
-const TCHAR *KPEXPORTHEADER  = _T("Password Groups\tGroup Tree\tAccount\tLogin Name\tPassword\tWeb Site\tComments\tUUID\tIcon\tCreation Time\tLast Access\tLast Modification\tExpires\tAttachment Description\tAttachment");
-const TCHAR *KPIMPORTEDPREFIX = _T("ImportedKeePass");
+static const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift+DCA\te-mail\tProtected\tSymbols\tKeyboard Shortcut\tNotes");
+static const TCHAR *KPEXPORTHEADER  = _T("Password Groups\tGroup Tree\tAccount\tLogin Name\tPassword\tWeb Site\tComments\tUUID\tIcon\tCreation Time\tLast Access\tLast Modification\tExpires\tAttachment Description\tAttachment");
+static const TCHAR *KPIMPORTEDPREFIX = _T("ImportedKeePass");
 
 using namespace std;
 using pws_os::CUUID;
@@ -887,7 +887,16 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     i_Offset[i] = -1;
   }
 
-  pSeps[0] = static_cast<const char>(fieldSeparator);
+
+  if (fieldSeparator > 0 && fieldSeparator <= 127) {
+    // we parse header as ASCII, so separator must be plain ASCII too
+    pSeps[0] = static_cast<char>(fieldSeparator);
+  }
+  else {
+    LoadAString(strError, IDSC_IMPORTINVALIDDELIMITER);
+    rpt.WriteLine(strError);
+    return FAILURE;
+  }
 
   // Capture individual column titles:
   string::size_type to = 0, from;
@@ -2005,7 +2014,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   for (size_t i = 0; i < hdr_tokens.size(); i++) {
     vector<StringX>::iterator it(std::find(vs_Header.begin(), vs_Header.end(), hdr_tokens[i]));
     if (it != vs_Header.end()) {
-      i_Offset[it - vs_Header.begin()] = (int)i;
+      i_Offset[it - vs_Header.begin()] = static_cast<int>(i);
       num_found++;
     }
   }

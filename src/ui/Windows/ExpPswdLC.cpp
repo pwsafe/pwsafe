@@ -23,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CExpPswdLC::CExpPswdLC()
-  : m_pToolTipCtrl(NULL), m_LastToolTipRow(-1), m_pwchTip(NULL)
+  : m_pwchTip(nullptr), m_pToolTipCtrl(nullptr), m_LastToolTipRow(-1)
 {
   m_clrDisabled = GetSysColor(COLOR_GRAYTEXT);
 }

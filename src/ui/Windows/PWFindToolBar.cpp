@@ -137,17 +137,17 @@ exit:
 IMPLEMENT_DYNAMIC(CPWFindToolBar, CToolBar)
 
 CPWFindToolBar::CPWFindToolBar()
-  : m_bitmode(1), m_bVisible(true), 
-  m_bCaseSensitive(false), m_bAdvanced(false),
+  : m_bitmode(1), m_iFindDirection(FIND_DOWN), m_bVisible(true),
+  m_bCaseSensitive(false), m_bAdvanced(false), m_bFontSet(false),
+  m_last_cs_search(false), m_last_search_text(L""),
+  m_subgroup_name(L""), m_last_subgroup_name(L""),
+  m_subgroup_bset(false), m_last_subgroup_bset(false),
+  m_subgroup_object(CItemData::GROUP), m_last_subgroup_object(CItemData::GROUP), 
+  m_subgroup_function(0), m_last_subgroup_function(0),
   m_lastshown(size_t(-1)), m_numFound(size_t(-1)),
-  m_last_search_text(L""), m_last_cs_search(false),
-  m_subgroup_name(L""), m_subgroup_bset(false),
-  m_subgroup_object(CItemData::GROUP), m_subgroup_function(0),
-  m_last_subgroup_name(L""), m_last_subgroup_bset(false),
-  m_last_subgroup_object(CItemData::GROUP), m_last_subgroup_function(0),
-  m_iCase_Insensitive_BM_offset(-1), m_iCase_Sensitive_BM_offset(-1),
-  m_iAdvanced_BM_offset(-1), m_iAdvancedOn_BM_offset(-1),
-  m_iFindDirection(FIND_DOWN), m_bFontSet(false), m_bUseSavedFindValues(false)
+  m_iCase_Insensitive_BM_offset(-1), m_iAdvanced_BM_offset(-1),
+  m_iCase_Sensitive_BM_offset(-1), m_iAdvancedOn_BM_offset(-1),
+  m_bUseSavedFindValues(false)
 {
   m_last_bsFields.reset();
   m_last_bsAttFields.reset();

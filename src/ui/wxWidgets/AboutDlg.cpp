@@ -629,7 +629,7 @@ wxThread::ExitCode AboutDlg::Entry()
     // We are done. Let's inform the parent thread about the status.
     wxQueueEvent(GetEventHandler(), event);
 
-    return (wxThread::ExitCode)curlResult;
+    return reinterpret_cast<wxThread::ExitCode>(curlResult);
   }
   else {
     // Unexpected case that thread was started while no Curl handle exists
@@ -639,10 +639,10 @@ wxThread::ExitCode AboutDlg::Entry()
     // We are done. Let's inform the parent thread about the status.
     wxQueueEvent(GetEventHandler(), event);
 
-    return (wxThread::ExitCode)-1;
+    return reinterpret_cast<wxThread::ExitCode>(-1);
   }
 #else // !HAS_CURL
-  return (wxThread::ExitCode)-1;
+  return reinterpret_cast<wxThread::ExitCode>(-1);
 #endif // HAS_CURL
 }
 

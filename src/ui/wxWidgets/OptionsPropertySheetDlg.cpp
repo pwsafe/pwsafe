@@ -1093,7 +1093,7 @@ void OptionsPropertySheetDlg::PropSheetToPrefs()
   wxGetApp().ConfigureIdleTimer();
 }
 
-void OptionsPropertySheetDlg::OnOk(wxCommandEvent& /* evt */)
+void OptionsPropertySheetDlg::OnOk(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     PropSheetToPrefs();
@@ -1108,7 +1108,7 @@ void OptionsPropertySheetDlg::OnOk(wxCommandEvent& /* evt */)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX11
  */
 
-void OptionsPropertySheetDlg::OnBackupB4SaveClick( wxCommandEvent& /* evt */ )
+void OptionsPropertySheetDlg::OnBackupB4SaveClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     m_Backup_DefaultPrefixRB->Enable(m_Backup_BackupBeforeSave);
@@ -1132,7 +1132,7 @@ void OptionsPropertySheetDlg::OnBuPrefix( wxCommandEvent& evt )
  * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL9
  */
 
-void OptionsPropertySheetDlg::OnBuPrefixTxtSetFocus( wxFocusEvent& /* evt */ )
+void OptionsPropertySheetDlg::OnBuPrefixTxtSetFocus(wxFocusEvent& WXUNUSED(evt))
 {
   m_Backup_DefaultPrefixRB->SetValue(false);
   m_Backup_UserPrefixRB->SetValue(true);
@@ -1142,7 +1142,7 @@ void OptionsPropertySheetDlg::OnBuPrefixTxtSetFocus( wxFocusEvent& /* evt */ )
  * wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_COMBOBOX2
  */
 
-void OptionsPropertySheetDlg::OnSuffixCBSet( wxCommandEvent& /* evt */ )
+void OptionsPropertySheetDlg::OnSuffixCBSet(wxCommandEvent& WXUNUSED(evt))
 {
   int suffixIndex = m_Backup_SuffixCB->GetCurrentSelection();
   wxString example = m_Backup_UserPrefixTXT->GetValue();
@@ -1183,7 +1183,7 @@ void OptionsPropertySheetDlg::OnSuffixCBSet( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON
  */
 
-void OptionsPropertySheetDlg::OnBuDirBrowseClick( wxCommandEvent& /* evt */ )
+void OptionsPropertySheetDlg::OnBuDirBrowseClick(wxCommandEvent& WXUNUSED(evt))
 {
   wxDirDialog dirdlg(this);
   int status = dirdlg.ShowModal();
@@ -1195,7 +1195,7 @@ void OptionsPropertySheetDlg::OnBuDirBrowseClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX13
  */
 
-void OptionsPropertySheetDlg::OnShowUsernameInTreeCB( wxCommandEvent& /* evt */ )
+void OptionsPropertySheetDlg::OnShowUsernameInTreeCB(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     if (!m_Display_ShowUsernameInTree)
@@ -1208,7 +1208,7 @@ void OptionsPropertySheetDlg::OnShowUsernameInTreeCB( wxCommandEvent& /* evt */ 
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX19
  */
 
-void OptionsPropertySheetDlg::OnPreExpiryWarnClick( wxCommandEvent& /* evt */ )
+void OptionsPropertySheetDlg::OnPreExpiryWarnClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     m_Display_PreExpiryWarnDaysSB->Enable(m_Display_PreExpiryWarn);
@@ -1219,7 +1219,7 @@ void OptionsPropertySheetDlg::OnPreExpiryWarnClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX24
  */
 
-void OptionsPropertySheetDlg::OnUseDefaultUserClick( wxCommandEvent& /* evt */ )
+void OptionsPropertySheetDlg::OnUseDefaultUserClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     m_Misc_DefaultUsernameTXT->Enable(m_Misc_UseDefUsername);
@@ -1231,7 +1231,7 @@ void OptionsPropertySheetDlg::OnUseDefaultUserClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON8
  */
 
-void OptionsPropertySheetDlg::OnBrowseLocationClick( wxCommandEvent& /* evt */ )
+void OptionsPropertySheetDlg::OnBrowseLocationClick(wxCommandEvent& WXUNUSED(evt))
 {
   wxFileDialog fd(this, _("Select a Browser"));
   if (Validate() && TransferDataFromWindow()) {
@@ -1247,7 +1247,7 @@ void OptionsPropertySheetDlg::OnBrowseLocationClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTAPPLY
  */
 
-void OptionsPropertySheetDlg::OnPWHistApply( wxCommandEvent& evt )
+void OptionsPropertySheetDlg::OnPWHistApply(wxCommandEvent& WXUNUSED(evt))
 {
   int applytoprotected = m_PasswordHistory_Apply2ProtectedCB->GetValue();
   int pwhistaction = 0;

@@ -23,8 +23,6 @@
 #include <sstream>
 #include <fstream>
 
-const TCHAR *CRLF = _T("\r\n");
-
 /*
   It writes a header record and a "Start Report" record.
 */

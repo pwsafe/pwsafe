@@ -155,7 +155,7 @@ public:
 
   // R/O file status
   void SetReadOnly(bool state) {m_bIsReadOnly = state;}
-  bool IsReadOnly() const {return m_bIsReadOnly;};
+  bool IsReadOnly() const {return m_bIsReadOnly;}
 
   // Check/Change master passphrase
   int CheckPasskey(const StringX &filename, const StringX &passkey);

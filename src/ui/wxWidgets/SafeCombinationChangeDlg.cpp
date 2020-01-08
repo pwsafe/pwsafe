@@ -262,7 +262,7 @@ wxIcon SafeCombinationChangeDlg::GetIconResource( const wxString& WXUNUSED(name)
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void SafeCombinationChangeDlg::OnOkClick( wxCommandEvent& /* evt */ )
+void SafeCombinationChangeDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     StringX errmess;
@@ -313,7 +313,7 @@ void SafeCombinationChangeDlg::OnOkClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void SafeCombinationChangeDlg::OnCancelClick( wxCommandEvent& /* evt */ )
+void SafeCombinationChangeDlg::OnCancelClick(wxCommandEvent& WXUNUSED(evt))
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationChangeDlg.
   // Before editing this code, remove the block markers.
@@ -326,7 +326,7 @@ void SafeCombinationChangeDlg::OnCancelClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void SafeCombinationChangeDlg::OnYubibtnClick( wxCommandEvent& /* event */ )
+void SafeCombinationChangeDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   // Here we just need to get the existing c/r. We verify it as a courtesy to the user,
   // that is, to indicate asap that it's incorrect.
@@ -358,7 +358,7 @@ void SafeCombinationChangeDlg::OnYubibtnClick( wxCommandEvent& /* event */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2
  */
 
-void SafeCombinationChangeDlg::OnYubibtn2Click( wxCommandEvent& /* event */ )
+void SafeCombinationChangeDlg::OnYubibtn2Click(wxCommandEvent& WXUNUSED(event))
 {
   // Allow blank password when Yubi's used:
   m_oldPasswdEntry->AllowEmptyCombinationOnce();

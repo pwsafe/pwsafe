@@ -23,9 +23,10 @@ IMPLEMENT_DYNAMIC(CPWPListEntries, CPWDialog)
 
 CPWPListEntries::CPWPListEntries(CWnd* pParent, StringX sxPolicyName, 
   std::vector<st_GroupTitleUser> *pventries)
-	: CPWDialog(CPWPListEntries::IDD, pParent), m_sxPolicyName(sxPolicyName),
-  m_pventries(pventries), m_iSortedColumn(0),  m_bSortAscending(FALSE),
-  m_pAddEditFont(NULL)
+	: CPWDialog(CPWPListEntries::IDD, pParent), 
+  m_iSortedColumn(0), m_bSortAscending(FALSE),
+  m_pventries(pventries), m_sxPolicyName(sxPolicyName), 
+  m_pAddEditFont(nullptr)
 {
 }
 

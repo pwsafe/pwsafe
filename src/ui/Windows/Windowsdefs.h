@@ -79,7 +79,7 @@ Timer related values (note - all documented her but some defined only where need
 #define TIMER_DRAGBAR             0x09
 /* Timer event numbers used to by ControlExtns for ListBox tooltips.  Here for doc. only
 #define TIMER_LB_HOVER            0x0A
-#define TIMER_LB_SHOWING          0x0B
+#define TIMER_LB_SHOWING          0x0B*/
 /* Timer event numbers used by StatusBar for tooltips.  Here for doc. only
 #define TIMER_SB_HOVER            0x0C
 #define TIMER_SB_SHOWING          0x0D */

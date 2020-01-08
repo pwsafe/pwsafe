@@ -93,7 +93,7 @@ ComparisonGridTable::ComparisonGridTable(SelectionCriteria* criteria): m_criteri
 ComparisonGridTable::~ComparisonGridTable()
 {
   delete [] m_colFields;
-  m_criteria = 0;
+  m_criteria = nullptr;
 }
 
 int ComparisonGridTable::GetNumberCols()
@@ -104,7 +104,7 @@ int ComparisonGridTable::GetNumberCols()
   return m_criteria->GetNumSelectedFields() - 1; 
 }
 
-void ComparisonGridTable::SetValue(int /*row*/, int /*col*/, const wxString& /*value*/)
+void ComparisonGridTable::SetValue(int WXUNUSED(row), int WXUNUSED(col), const wxString& WXUNUSED(value))
 {
 }
 
@@ -253,7 +253,7 @@ wxString UniSafeCompareGridTable::GetValue(int row, int col)
   return retval;
 }
 
-wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int /*row*/, int /*col*/, wxGridCellAttr::wxAttrKind /*kind*/)
+wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int WXUNUSED(row), int WXUNUSED(col), wxGridCellAttr::wxAttrKind WXUNUSED(kind))
 {
   //wxLogDebug(wxT("UniSafeCompareGridTable::GetAttr called for %d, %d"), row, col);
   m_gridAttr->IncRef();
@@ -307,8 +307,8 @@ bool UniSafeCompareGridTable::DeleteRows(size_t pos, size_t numRows)
     //This will actually remove the item from grid display
     wxGridTableMessage msg(this,
                            wxGRIDTABLE_NOTIFY_ROWS_DELETED,
-                           reinterpret_cast<int &>(pos),
-                           reinterpret_cast<int &>(numRows));
+                           static_cast<int>(pos),
+                           static_cast<int>(numRows));
     GetView()->ProcessTableMessage(msg);
   }
 
@@ -323,7 +323,7 @@ bool UniSafeCompareGridTable::AppendRows(size_t numRows/*=1*/)
                 wxT("Items must be added to UnisafeComparisonGridTable's data before adding rows"));
     wxGridTableMessage msg(this,
                            wxGRIDTABLE_NOTIFY_ROWS_APPENDED,
-                           reinterpret_cast<int &>(numRows));
+                           static_cast<int>(numRows));
     GetView()->ProcessTableMessage(msg);
   }
   return true;
@@ -431,7 +431,7 @@ wxString MultiSafeCompareGridTable::GetValue(int row, int col)
   return retval;
 }
 
-wxGridCellAttr* MultiSafeCompareGridTable::GetAttr(int row, int col, wxGridCellAttr::wxAttrKind /*kind*/)
+wxGridCellAttr* MultiSafeCompareGridTable::GetAttr(int row, int col, wxGridCellAttr::wxAttrKind WXUNUSED(kind))
 {
   //wxLogDebug(wxT("MultiSafeCompareGridTable::GetAttr called for %d, %d"), row, col);
   wxGridCellAttr* attr = ( row%2 == 0? m_currentAttr: m_comparisonAttr );
@@ -508,8 +508,8 @@ bool MultiSafeCompareGridTable::DeleteRows(size_t pos, size_t numRows)
     //This will actually remove the item from grid display
     wxGridTableMessage msg(this,
                            wxGRIDTABLE_NOTIFY_ROWS_DELETED,
-                           reinterpret_cast<int &>(pos),
-                           reinterpret_cast<int &>(numRows));
+                           static_cast<int>(pos),
+                           static_cast<int>(numRows));
     GetView()->ProcessTableMessage(msg);
   }
 

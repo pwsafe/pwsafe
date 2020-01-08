@@ -42,11 +42,11 @@ void KeyWrap::Wrap(const unsigned char *in, unsigned char *out,
 		for (i = 0; i < inlen; i += 8, t++, R += 8) {
       memcpy(B + 8, R, 8);
       m_fish->Encrypt(B, B);
-      A[7] ^= (unsigned char)(t & 0xff);
+      A[7] ^= static_cast<unsigned char>(t & 0xff);
       if (t > 0xff)	 {
-        A[6] ^= (unsigned char)((t >> 8) & 0xff);
-        A[5] ^= (unsigned char)((t >> 16) & 0xff);
-        A[4] ^= (unsigned char)((t >> 24) & 0xff);
+        A[6] ^= static_cast<unsigned char>((t >> 8) & 0xff);
+        A[5] ^= static_cast<unsigned char>((t >> 16) & 0xff);
+        A[4] ^= static_cast<unsigned char>((t >> 24) & 0xff);
       }
       std::memcpy(R, B + 8, 8);
     }
@@ -73,11 +73,11 @@ bool KeyWrap::Unwrap(const unsigned char *in, unsigned char *out,
 	for (j = 0; j < 6; j++) {
     R = out + inlen - 8;
     for (i = 0; i < inlen; i += 8, t--, R -= 8) {
-      A[7] ^= (unsigned char)(t & 0xff);
+      A[7] ^= static_cast<unsigned char>(t & 0xff);
       if (t > 0xff)	{
-        A[6] ^= (unsigned char)((t >> 8) & 0xff);
-        A[5] ^= (unsigned char)((t >> 16) & 0xff);
-        A[4] ^= (unsigned char)((t >> 24) & 0xff);
+        A[6] ^= static_cast<unsigned char>((t >> 8) & 0xff);
+        A[5] ^= static_cast<unsigned char>((t >> 16) & 0xff);
+        A[4] ^= static_cast<unsigned char>((t >> 24) & 0xff);
       }
       std::memcpy(B + 8, R, 8);
       m_fish->Decrypt(B, B);

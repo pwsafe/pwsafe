@@ -44,9 +44,9 @@ struct st_run_impl {
     // Support Autotype with Launch Browser and Run Command
     // Try to load DLL to call back when window active for Autotype
 #if defined( _DEBUG ) || defined( DEBUG )
-    TCHAR *dll_name = _T("pws_at_D.dll");
+    const TCHAR *dll_name = _T("pws_at_D.dll");
 #else
-    TCHAR *dll_name = _T("pws_at.dll");
+    const TCHAR *dll_name = _T("pws_at.dll");
 #endif
     m_AT_HK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::loadLibraryTypes::APP));
     if (m_AT_HK_module != NULL) {

@@ -66,12 +66,14 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
         break;
       case NEWFILE:
         ASSERT(0);
-        // deliberate fallthrough
+        //[[fallthrough]];
       case UNKNOWN_VERSION:
+      default:
         status = FAILURE;
       } // inner switch
       break;
   case NEWFILE: // should never happen
+  default:
     status = FAILURE;
     ASSERT(0);
   }
@@ -354,7 +356,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   SAFE_FWRITE(ipthing, 1, 8, out);
 
   ConvertPasskey(passwd, pwd, passlen);
-  fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<unsigned int &>(passlen), thesalt, SaltLength);
+  fish = BlowFish::MakeBlowFish(pwd, static_cast<unsigned int>(passlen), thesalt, SaltLength);
   trashMemory(pwd, passlen);
   delete[] pwd; // gross - ConvertPasskey allocates.
   try {
@@ -419,10 +421,10 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     unsigned char *pwd = nullptr;
     size_t passlen = 0;
     ConvertPasskey(passwd, pwd, passlen);
-    Fish *fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<unsigned int &>(passlen), salt, SaltLength);
+    Fish *fish = BlowFish::MakeBlowFish(pwd, static_cast<unsigned int>(passlen), salt, SaltLength);
     trashMemory(pwd, passlen);
     delete[] pwd; // gross - ConvertPasskey allocates.
-    if (_readcbc(in, buf, len,dummyType, fish, ipthing, 0, file_len) == 0) {
+    if (_readcbc(in, buf, len,dummyType, fish, ipthing, nullptr, file_len) == 0) {
       delete fish;
       delete[] buf; // if not yet allocated, delete[] nullptr, which is OK
       return false;

@@ -78,7 +78,7 @@ struct ComparisonData {
   CompareData data;
   wxSizerItem* sizerBelow;  //for managing the spacers in between
 
-  ComparisonData(): pane(0), grid(0), sizerBelow(0){}
+  ComparisonData(): pane(nullptr), grid(nullptr), sizerBelow(nullptr){}
   ~ComparisonData() { /*nothing to do.  All window objects deleted automatically */ }
 };
 
@@ -100,9 +100,9 @@ CompareDlg::CompareDlg(wxWindow* parent, PWScore* currentCore): wxDialog(parent,
                                                                 m_currentCore(currentCore),
                                                                 m_otherCore(new PWSAuxCore),
                                                                 m_selCriteria(new SelectionCriteria),
-                                                                m_dbPanel(0),
-                                                                m_dbSelectionPane(0),
-                                                                m_optionsPane(0),
+                                                                m_dbPanel(nullptr),
+                                                                m_dbSelectionPane(nullptr),
+                                                                m_optionsPane(nullptr),
                                                                 m_current(new ComparisonData),
                                                                 m_comparison(new ComparisonData),
                                                                 m_conflicts(new ComparisonData),
@@ -191,7 +191,7 @@ struct CompareDlgType {
     }
   }
 
-  static bool IsUsableField(CItemData::FieldType /*field*/) {
+  static bool IsUsableField(CItemData::FieldType WXUNUSED(field)) {
     return true;
   }
 
@@ -259,7 +259,7 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
   else
     cd->grid = new wxGrid(sizedPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0); //don't have wxWANTS_CHARS
   //create a way to get to the ComparisonData object from the grid, which is the only thing we have in events
-  wxASSERT_MSG(cd->grid->GetClientData() == 0, wxT("wxGrid::ClientData is not nullptr on creation.  Need to use that for our purposes"));
+  wxASSERT_MSG(cd->grid->GetClientData() == nullptr, wxT("wxGrid::ClientData is not nullptr on creation.  Need to use that for our purposes"));
   cd->grid->SetClientData(cd);
 #ifndef __WXMSW__
   wxFont monospacedFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
@@ -312,7 +312,7 @@ void CompareDlg::OnCompare(wxCommandEvent& )
   }
 }
 
-void CompareDlg::DoCompare(wxCommandEvent& /*evt*/)
+void CompareDlg::DoCompare(wxCommandEvent& WXUNUSED(evt))
 {
   bool treatWhitespacesAsEmpty = false;
   m_currentCore->Compare(m_otherCore,
@@ -337,7 +337,7 @@ void CompareDlg::DoCompare(wxCommandEvent& /*evt*/)
                    {m_comparison, true,  false, true},
                    {m_identical,  false, false, false}
   };
-  wxSizerItem* prevSizer = 0;
+  wxSizerItem* prevSizer = nullptr;
   for(size_t idx =0; idx < WXSIZEOF(sections); ++idx) {
     ComparisonGridTable* table;
     if (sections[idx].multiSource) {
@@ -410,7 +410,7 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   size_t selectionCount = menuContext.selectedRows.GetCount();
   if (menuContext.cdata == m_conflicts) {
     selectionCount /= 2;
-    wxCHECK_RET(menuContext.selectedItems.GetCount()%2 ==0, wxT("Conflicts grid should always select an even numer of items"));
+    wxCHECK_RET(menuContext.selectedItems.GetCount()%2 ==0, wxT("Conflicts grid should always select an even number of items"));
     //Our algorithm requires the indexes to be in order, and sometimes these are actually unsorted
     menuContext.selectedItems.Sort(pless);
     for( size_t idx = 1; idx <= selectionCount; ++idx) {
@@ -495,7 +495,7 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   }
 
   // Make the menuContext object available to the handlers
-  EventDataInjector<wxCommandEvent> inject(&itemEditMenu, &menuContext, wxEVT_COMMAND_MENU_SELECTED);
+  EventDataInjector inject(&itemEditMenu, &menuContext, wxEVT_COMMAND_MENU_SELECTED);
 
   menuContext.cdata->grid->PopupMenu(&itemEditMenu);
 }
@@ -536,6 +536,7 @@ void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
 void CompareDlg::OnViewInComparisonDB(wxCommandEvent& evt)
 {
   auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+  wxCHECK_RET(menuContext, wxT("Empty client data"));
   const ComparisonGridTable& table = *wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   const pws_os::CUUID& uuid = table[menuContext->selectedRows[0]].uuid1;
   wxCHECK_RET(!ViewEditEntry(m_otherCore, uuid, true), wxT("Should not need to refresh grid for just viewing entry"));
@@ -550,7 +551,7 @@ bool CompareDlg::ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool re
   return ae.ShowModal() == wxID_OK && !readOnly;
 }
 
-void CompareDlg::OnExpandDataPanels(wxCommandEvent& /*evt*/)
+void CompareDlg::OnExpandDataPanels(wxCommandEvent& WXUNUSED(evt))
 {
   m_dbSelectionPane->Collapse();
   m_optionsPane->Collapse();

@@ -1,4 +1,4 @@
-/*
+﻿/*
 * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -38,8 +38,8 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEM
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_Additional::IDD, CAddEdit_Additional::IDD_SHORT,
                           pAEMD),
-  m_bClearPWHistory(false), m_bSortAscending(true),
-  m_bInitdone(false), m_iSortedColumn(-1),
+  m_iSortedColumn(-1), m_bSortAscending(true), m_bClearPWHistory(false),
+  m_bInitdone(false),
   m_bWarnUserKBShortcut(false), m_iOldHotKey(0)
 {
   if (M_MaxPWHistory() == 0)

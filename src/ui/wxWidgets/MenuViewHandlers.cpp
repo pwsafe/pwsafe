@@ -55,7 +55,7 @@ void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_LIST_VIEW
  */
 
-void PasswordSafeFrame::OnListViewClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnListViewClick(wxCommandEvent& WXUNUSED(evt))
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("list"));
 
@@ -74,7 +74,7 @@ void PasswordSafeFrame::OnListViewClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_TREE_VIEW
  */
 
-void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnTreeViewClick(wxCommandEvent& WXUNUSED(evt))
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("tree"));
 
@@ -89,7 +89,7 @@ void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& /* evt */ )
   m_core.RegisterObserver(m_tree);
 }
 
-void PasswordSafeFrame::OnExpandAll(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnExpandAll(wxCommandEvent& WXUNUSED(evt))
 {
   wxASSERT(IsTreeView());
 
@@ -98,7 +98,7 @@ void PasswordSafeFrame::OnExpandAll(wxCommandEvent& /*evt*/)
   }
 }
 
-void PasswordSafeFrame::OnCollapseAll(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnCollapseAll(wxCommandEvent& WXUNUSED(evt))
 {
   wxASSERT(IsTreeView());
 

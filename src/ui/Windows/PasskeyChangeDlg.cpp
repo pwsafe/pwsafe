@@ -39,8 +39,9 @@ static char THIS_FILE[] = __FILE__;
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
   : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent),
-    m_LastFocus(IDC_PASSKEY), m_Yubi1pressed(false), m_Yubi2pressed(false),
-    m_oldpasskeyConfirmed(false), m_btnShowCombination(FALSE)
+  m_btnShowCombination(FALSE),
+  m_LastFocus(IDC_PASSKEY), m_Yubi1pressed(false), m_Yubi2pressed(false),
+  m_oldpasskeyConfirmed(false)
 {
   m_newpasskey = L"";
   m_confirmnew = L"";

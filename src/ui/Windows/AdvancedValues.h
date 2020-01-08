@@ -32,9 +32,9 @@ namespace WZAdvanced {
 struct st_SaveAdvValues {
   st_SaveAdvValues()
   : subgroup_name(L""),
-    subgroup_bset(false), subgroup_bcase(false), 
-    btreatwhitespaceasempty(true),
-    subgroup_object(0), subgroup_function(0)
+    subgroup_object(0), subgroup_function(0),
+    subgroup_bset(false), subgroup_bcase(false),
+    btreatwhitespaceasempty(true)
   {
     bsFields.set();
     bsAttFields.reset();
@@ -43,8 +43,8 @@ struct st_SaveAdvValues {
   st_SaveAdvValues(const st_SaveAdvValues &adv)
     : bsFields(adv.bsFields), bsAttFields(adv.bsAttFields),
     subgroup_name(adv.subgroup_name),
-    subgroup_bset(adv.subgroup_bset), subgroup_object(adv.subgroup_object),
-    subgroup_function(adv.subgroup_function), subgroup_bcase(adv.subgroup_bcase),
+    subgroup_object(adv.subgroup_object), subgroup_function(adv.subgroup_function),
+    subgroup_bset(adv.subgroup_bset), subgroup_bcase(adv.subgroup_bcase),
     btreatwhitespaceasempty(adv.btreatwhitespaceasempty)
   {
   }

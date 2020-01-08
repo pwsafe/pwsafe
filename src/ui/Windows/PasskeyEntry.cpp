@@ -59,15 +59,14 @@ int CPasskeyEntry::dialog_lookup[5] = {
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
   bool bReadOnly, bool bFileReadOnly, bool bForceReadOnly, bool bHideReadOnly)
   : CPKBaseDlg(dialog_lookup[index], pParent),
-  m_filespec(a_filespec), m_orig_filespec(a_filespec),
-  m_tries(0),
-  m_status(TAR_INVALID),
   m_btnReadOnly((bReadOnly || bFileReadOnly) ? TRUE : FALSE),
   m_btnShowCombination(FALSE),
   m_bFileReadOnly(bFileReadOnly),
   m_bForceReadOnly(bForceReadOnly),
   m_bHideReadOnly(bHideReadOnly),
-  m_yubi_sk(NULL)
+  m_filespec(a_filespec), m_orig_filespec(a_filespec),
+  m_tries(0), m_status(TAR_INVALID),
+  m_yubi_sk(nullptr)
 {
   m_index = index;
 

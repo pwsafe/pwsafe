@@ -39,7 +39,7 @@ typedef std::vector<stringT>::iterator viter;
 //  MFilterSAX2ErrorHandler Methods
 //  -----------------------------------------------------------------------
 MFilterSAX2ErrorHandler::MFilterSAX2ErrorHandler()
-  : bErrorsFound(FALSE), m_strValidationResult(_T(""))
+  : m_strValidationResult(_T("")), bErrorsFound(FALSE)
 {
   m_refCnt = 0;
 }
@@ -104,16 +104,16 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ErrorHandler::error(struct ISAXLocator * pL
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE MFilterSAX2ErrorHandler::fatalError(struct ISAXLocator * pLocator,
-                                                          const wchar_t * pwchErrorMessage,
-                                                          HRESULT hrErrorCode )
+HRESULT STDMETHODCALLTYPE MFilterSAX2ErrorHandler::fatalError(struct ISAXLocator * /*pLocator*/,
+                                                          const wchar_t * /*pwchErrorMessage*/,
+                                                          HRESULT /*hrErrorCode*/ )
 {
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE MFilterSAX2ErrorHandler::ignorableWarning(struct ISAXLocator * pLocator,
-                                                                const wchar_t * pwchErrorMessage,
-                                                                HRESULT hrErrorCode )
+HRESULT STDMETHODCALLTYPE MFilterSAX2ErrorHandler::ignorableWarning(struct ISAXLocator * /*pLocator*/,
+                                                                const wchar_t * /*pwchErrorMessage*/,
+                                                                HRESULT /*hrErrorCode*/ )
 {
   return S_OK;
 }
@@ -173,17 +173,17 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startDocument ( )
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::putDocumentLocator (struct ISAXLocator * pLocator )
+HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::putDocumentLocator (struct ISAXLocator * /*pLocator*/ )
 {
   return S_OK;
 }
 
 //  ---------------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startElement(
-  /* [in] */ const wchar_t __RPC_FAR *pwchNamespaceUri,
-  /* [in] */ int cchNamespaceUri,
-  /* [in] */ const wchar_t __RPC_FAR *pwchLocalName,
-  /* [in] */ int cchLocalName,
+  /* [in] */ const wchar_t __RPC_FAR * /*pwchNamespaceUri*/,
+  /* [in] */ int /*cchNamespaceUri*/,
+  /* [in] */ const wchar_t __RPC_FAR * /*pwchLocalName*/,
+  /* [in] */ int /*cchLocalName*/,
   /* [in] */ const wchar_t __RPC_FAR *pwchRawName,
   /* [in] */ int cchRawName,
   /* [in] */ ISAXAttributes __RPC_FAR *pAttributes)
@@ -292,10 +292,10 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::characters(
 
 //  -----------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
-  const wchar_t * pwchNamespaceUri,
-  int cchNamespaceUri,
-  const wchar_t * pwchLocalName,
-  int cchLocalName,
+  const wchar_t * /*pwchNamespaceUri*/,
+  int /*cchNamespaceUri*/,
+  const wchar_t * /*pwchLocalName*/,
+  int /*cchLocalName*/,
   const wchar_t * pwchQName,
   int cchQName)
 {
@@ -793,40 +793,40 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endDocument ( )
 }
 
 HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startPrefixMapping (
-  const wchar_t * pwchPrefix,
-  int cchPrefix,
-  const wchar_t * pwchUri,
-  int cchUri )
+  const wchar_t * /*pwchPrefix*/,
+  int /*cchPrefix*/,
+  const wchar_t * /*pwchUri*/,
+  int /*cchUri*/ )
 {
   return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endPrefixMapping (
-  const wchar_t * pwchPrefix,
-  int cchPrefix )
+  const wchar_t * /*pwchPrefix*/,
+  int /*cchPrefix*/ )
 {
   return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::ignorableWhitespace (
-  const wchar_t * pwchChars,
-  int cchChars )
+  const wchar_t * /*pwchChars*/,
+  int /*cchChars*/ )
 {
   return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::processingInstruction (
-  const wchar_t * pwchTarget,
-  int cchTarget,
-  const wchar_t * pwchData,
-  int cchData )
+  const wchar_t * /*pwchTarget*/,
+  int /*cchTarget*/,
+  const wchar_t * /*pwchData*/,
+  int /*cchData*/ )
 {
   return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::skippedEntity (
-  const wchar_t * pwchName,
-  int cchName )
+  const wchar_t * /*pwchName*/,
+  int /*cchName*/ )
 {
   return S_OK;
 }

@@ -25,9 +25,9 @@ CDisplayFSBkupFiles::CDisplayFSBkupFiles(CWnd* pParent,
                                      std::wstring &wsDBPath,
                                      st_DBProperties &st_dbpcore,
                                      std::vector<st_recfile> &vValidEBackupfiles)
-  : CPWDialog(CDisplayFSBkupFiles::IDD, pParent), m_wsDBPath(wsDBPath),
-  m_st_dbpcore(st_dbpcore), m_vValidEBackupfiles(vValidEBackupfiles),
-  m_iSelectedItem(-1)
+  : CPWDialog(CDisplayFSBkupFiles::IDD, pParent), m_iSelectedItem(-1),
+  m_wsDBPath(wsDBPath),
+  m_st_dbpcore(st_dbpcore), m_vValidEBackupfiles(vValidEBackupfiles)
 {
   m_DriveType = GetDriveType(wsDBDrive.c_str());
 }

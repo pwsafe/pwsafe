@@ -209,7 +209,7 @@ wxSize DragBarGenericCtrl::GetInvalidatedIconRange(const wxRect& rect)
       return wxSize(0, 0);
   }
 }
-void DragBarGenericCtrl::OnPaint(wxPaintEvent& /*evt*/)
+void DragBarGenericCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 {
   //draw along the entire window rect, since clipping rect is always (0, 0, -1, -1)
   wxRect rcWin = GetRect();

@@ -123,7 +123,7 @@ private:
 */
 
 CDDStatic::CDDStatic()
-  : m_pci(NULL), m_hgDataTXT(NULL), m_hgDataUTXT(NULL),
+  : m_pci(nullptr), m_hgDataUTXT(nullptr), m_hgDataTXT(nullptr),
   m_TimerID(0), m_bMouseInClient(false)
 {
   m_pDropTarget = new CStaticDropTarget(this);

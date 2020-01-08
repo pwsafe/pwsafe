@@ -43,12 +43,15 @@ IMPLEMENT_DYNAMIC(CWZSelectDB, CWZPropertyPage)
 
 CWZSelectDB::CWZSelectDB(CWnd *pParent, int idd, UINT nIDCaption,
        const int nType)
- : CWZPropertyPage(idd, nIDCaption, nType), m_tries(0), m_state(0),
-  m_pVKeyBoardDlg(NULL), m_bAdvanced(BST_UNCHECKED), m_bExportDBFilters(BST_UNCHECKED),
-  m_bFileExistsUserAsked(false),
-  m_filespec(L""), m_passkey(L""), m_passkey2(L""), m_verify2(L""),
-  m_defexpdelim(L"\xbb"), m_pctlDB(new CEditExtn),
+ : CWZPropertyPage(idd, nIDCaption, nType), 
+  m_defexpdelim(L"\xbb"),
   m_pctlPasskey(new CSecEditExtn), m_pctlPasskey2(new CSecEditExtn), m_pctlVerify2(new CSecEditExtn),
+  m_pctlDB(new CEditExtn),
+  m_passkey(L""), m_passkey2(L""), m_verify2(L""), m_filespec(L""),
+  m_tries(0), m_state(0),
+  m_bAdvanced(BST_UNCHECKED), m_bExportDBFilters(BST_UNCHECKED),
+  m_bFileExistsUserAsked(false),
+  m_pVKeyBoardDlg(nullptr),
   m_LastFocus(IDC_PASSKEY)
 {
   m_pWZPSH = (CWZPropertySheet *)pParent;

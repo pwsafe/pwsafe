@@ -50,7 +50,7 @@ public:
 
   const CSecString &GetBase() const {return m_AEMD.base;}
 
-  const int GetIBasedata() const {return m_AEMD.ibasedata;}
+  int GetIBasedata() const {return m_AEMD.ibasedata;}
   pws_os::CUUID &GetBaseUUID() {return m_AEMD.base_uuid;}
   pws_os::CUUID &GetOriginalkBaseUUID() { return m_AEMD.original_base_uuid; }
 

@@ -409,8 +409,8 @@ unsigned int PWSprefs::GetMRUList(stringT *MRUFiles) const
   if (m_ConfigOption == CF_NONE || m_ConfigOption == CF_REGISTRY)
     return 0;
 
-  const int n = GetPref(PWSprefs::MaxMRUItems);
-  for (int i = 0; i < n; i++)
+  const unsigned int n = GetPref(PWSprefs::MaxMRUItems);
+  for (unsigned int i = 0; i < n; i++)
     MRUFiles[i] = m_MRUitems[i];
 
   return n;

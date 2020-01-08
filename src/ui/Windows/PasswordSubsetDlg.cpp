@@ -117,8 +117,11 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 //-----------------------------------------------------------------------------
 CPasswordSubsetDlg::CPasswordSubsetDlg(CWnd* pParent, const StringX &sxPasswordd)
   : CPWDialog(CPasswordSubsetDlg::IDD, pParent),
-  m_sxPassword(sxPasswordd), m_bShown(false), m_csWarningMsg(L""), m_pCopyBtn(NULL),
-  m_bCopyPasswordEnabled(false), m_bImageLoaded(FALSE), m_bDisabledImageLoaded(FALSE)
+  m_pCopyBtn(nullptr),
+  m_sxPassword(sxPasswordd), 
+  m_csWarningMsg(L""),
+  m_bShown(false), m_bCopyPasswordEnabled(false),
+  m_bImageLoaded(FALSE), m_bDisabledImageLoaded(FALSE)
 {
 }
 

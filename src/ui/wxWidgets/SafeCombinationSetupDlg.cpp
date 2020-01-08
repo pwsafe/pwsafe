@@ -239,7 +239,7 @@ wxIcon SafeCombinationSetupDlg::GetIconResource( const wxString& WXUNUSED(name) 
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void SafeCombinationSetupDlg::OnOkClick( wxCommandEvent& /* evt */ )
+void SafeCombinationSetupDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     if (m_password != m_verify) {
@@ -312,7 +312,7 @@ void SafeCombinationSetupDlg::OnPollingTimer(wxTimerEvent &evt)
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void SafeCombinationSetupDlg::OnYubibtnClick( wxCommandEvent& /* event */ )
+void SafeCombinationSetupDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   if (Validate() && TransferDataFromWindow()) {
     if (m_password != m_verify) {
