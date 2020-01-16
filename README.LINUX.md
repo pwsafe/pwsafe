@@ -38,6 +38,14 @@ Slackware is independently supported, see below.
    $ sudo yum install passwordsafe-*.rpm
    ```
 
+## Installation on Gentoo
+As usual there are USE flags to control the features of the package. 
+On Gentoo, suport for Yubi keys and QR is disabled by default.
+
+```
+$ sudo emerge app-admin/passwordsafe
+```
+
 ## Slackware
 Slackware users can download SlackBuild for PasswordSafe from
 https://slackbuilds.org, courtesy of rfmae (search for passwordsafe).
