@@ -20,6 +20,15 @@ README.LINUX.DEVELOPERS.md.
 Slackware is independently supported, see below.
 
 ## Installation on Debian or Ubuntu
+
+passwordsafe is available as package (https://packages.debian.org/buster/passwordsafe). To install it just use the following command. For Debian stable there are newer versions found in the backports (\*-backports).
+
+```
+$ sudo apt install passwordsafe
+```
+
+or 
+
 1. Download the .deb file that corresponds to your distribution.
 2. Install it using dpkg:
    ```
