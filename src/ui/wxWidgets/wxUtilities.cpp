@@ -22,9 +22,6 @@
 #include <wx/wx.h>
 #endif
 
-#include "../../core/PWScore.h"
-#include "./wxUtilities.h"
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
@@ -32,6 +29,10 @@
 #include <wx/taskbar.h>
 #include <wx/tokenzr.h>
 #include <wx/versioninfo.h>
+
+#include "core/PWScore.h"
+
+#include "wxUtilities.h"
 
 /*
  * Reads a file into a PWScore object, and displays an appropriate msgbox

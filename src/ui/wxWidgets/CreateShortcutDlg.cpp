@@ -21,16 +21,17 @@
 #include "wx/wx.h"
 #endif
 
-////@begin includes
-////@end includes
-
-#include "CreateShortcutDlg.h"
-#include "core/ItemData.h"
-#include "./wxUtilities.h"
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+////@begin includes
+////@end includes
+
+#include "core/ItemData.h"
+
+#include "CreateShortcutDlg.h"
+#include "wxUtilities.h"
 
 ////@begin XPM images
 ////@end XPM images

@@ -13,8 +13,8 @@
 #ifndef _ADVANCEDSELECTIONDLG_H_
 #define _ADVANCEDSELECTIONDLG_H_
 
-#include "../../core/ItemData.h"
-#include "./wxUtilities.h"
+#include "core/ItemData.h"
+#include "wxUtilities.h"
 
 /*
  *

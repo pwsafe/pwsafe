@@ -21,15 +21,15 @@
 #include <wx/wx.h>
 #endif
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 #include <wx/valgen.h>
 #include <wx/statline.h>
 
 #include "AdvancedSelectionDlg.h"
 #include "SelectionCriteria.h"
-
-#ifdef __WXMSW__
-#include <wx/msw/msvcrt.h>
-#endif
 
 void EnableSizerElements(wxSizer* sizer, wxWindow* ignore, bool enable);
 

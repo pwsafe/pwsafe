@@ -11,24 +11,27 @@
 */
 
 // For compilers that support precompilation, includes "wx/wx.h".
-#include <wx/wxprec.h>
-#include "../../core/PwsPlatform.h"
-#include "../../os/file.h"
+#include "wx/wxprec.h"
+
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-#include <wx/wx.h>
+#include "wx/wx.h"
 #endif
-
-#include "./ExternalKeyboardButton.h"
-
-#include "./graphics/vkbd.xpm"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include "core/PwsPlatform.h"
+#include "os/file.h"
+
+#include "ExternalKeyboardButton.h"
+#include "wxUtilities.h"
+
+#include "graphics/vkbd.xpm"
 
 ExternalKeyboardButton::ExternalKeyboardButton( wxWindow* parent, 
                                                 wxWindowID id, 
@@ -69,7 +72,7 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
 #endif
   wxString command = wxString(wxT("xvkbd"));
 
-  if (!pws_os::ProgramExists(command.wc_str())) {
+  if (!pws_os::ProgramExists(tostdstring(command))) {
     wxMessageBox(_("Could not launch xvkbd.  Please make sure it's installed and in your PATH"), 
                   _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);
     return;

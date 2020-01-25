@@ -21,18 +21,20 @@
 #include "wx/wx.h"
 #endif
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
+#include "core/PWCharPool.h" // for CheckPassword()
+
+#include "ExternalKeyboardButton.h"
+
 ////@begin includes
 #include "SafeCombinationCtrl.h"
 ////@end includes
 
 #include "SafeCombinationChangeDlg.h"
-#include "core/PWCharPool.h" // for CheckPassword()
-#include "./wxUtilities.h"          // for ApplyPasswordFont
-#include "./ExternalKeyboardButton.h"
-
-#ifdef __WXMSW__
-#include <wx/msw/msvcrt.h>
-#endif
+#include "wxUtilities.h"          // for ApplyPasswordFont
 
 #ifndef NO_YUBI
 ////@begin XPM images

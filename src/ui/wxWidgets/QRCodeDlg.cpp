@@ -10,22 +10,24 @@
  *
  */
 
-#ifndef WX_PRECOMP
-#include "wx/wx.h"
+// For compilers that support precompilation, includes "wx/wx.h".
+#include <wx/wxprec.h>
+
+#ifdef __BORLANDC__
+#pragma hdrstop
 #endif
-
-#include "./QRCodeDlg.h"
-#include "./wxUtilities.h"
-
-#include <algorithm>
-
-#include <wx/statline.h>
-
-#include "./QREncode.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <wx/statline.h>
+
+#include "QREncode.h"
+#include "QRCodeDlg.h"
+#include "wxUtilities.h"
+
+#include <algorithm>
 
 ////////////////////////////////////////////////////////////////////////////
 // PasswordSafeSerach implementation

@@ -12,17 +12,22 @@
 
 #include <wx/wxprec.h>
 
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif
+
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
 
-#include "./OpenFilePickerValidator.h"
-#include "./wxUtilities.h"
-#include "../../os/file.h"
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include "os/file.h"
+
+#include "OpenFilePickerValidator.h"
+#include "wxUtilities.h"
 
 bool OpenFilePickerValidator::TransferFromWindow() {
   if (GetWindow() && GetWindow()->IsKindOf(&wxFilePickerCtrl::ms_classInfo)) {

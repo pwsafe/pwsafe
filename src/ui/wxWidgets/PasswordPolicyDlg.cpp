@@ -28,7 +28,7 @@
 #include "core/PolicyManager.h"
 #include "core/PWCharPool.h"
 #include "Clipboard.h"
-#include "./wxUtilities.h"
+#include "wxUtilities.h"
 
 ////@begin XPM images
 #include "graphics/toolbar/new/copypassword.xpm"
@@ -528,7 +528,7 @@ bool PasswordPolicyDlg::Verify()
     id = ID_POLICYNAME;
     retval = false;
   } else if ((m_polname != m_oldpolname) &&
-             PolicyManager::IsDefaultPolicy(m_polname.wc_str())) {
+             PolicyManager::IsDefaultPolicy(tostdstring(m_polname))) {
     mess = _("Default policy name is not allowed");
     id = ID_POLICYNAME;
     retval = false;
@@ -639,7 +639,7 @@ void PasswordPolicyDlg::SetPolicyData(const wxString &policyname, const PWPolicy
 
   m_oldSymbols = m_Symbols;
 
-  if (PolicyManager::IsDefaultPolicy(m_polname.wc_str())) {
+  if (PolicyManager::IsDefaultPolicy(tostdstring(m_polname))) {
 
     // Disallow renaming of default policy in Edit/Manage mode
     FindWindow(ID_POLICYNAME)->Enable(false);

@@ -21,15 +21,15 @@
 #include "wx/wx.h"
 #endif
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 ////@begin includes
 ////@end includes
 
 #include "EditShortcutDlg.h"
-#include "./wxUtilities.h"
-
-#ifdef __WXMSW__
-#include <wx/msw/msvcrt.h>
-#endif
+#include "wxUtilities.h"
 
 ////@begin XPM images
 ////@end XPM images
