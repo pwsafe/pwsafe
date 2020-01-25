@@ -21,17 +21,19 @@
 #include "wx/wx.h"
 #endif
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 ////@begin includes
 #include <wx/grid.h>
 #include <wx/textdlg.h>
 ////@end includes
 
-#include <vector>
 #include "PropertiesDlg.h"
+#include "wxUtilities.h"
 
-#ifdef __WXMSW__
-#include <wx/msw/msvcrt.h>
-#endif
+#include <vector>
 
 ////@begin XPM images
 ////@end XPM images
@@ -461,7 +463,7 @@ void PropertiesDlg::OnEditName( wxCommandEvent& WXUNUSED(evt) )
     }
 
     if (Validate() && TransferDataToWindow()) {
-      m_NewDbName = std2stringx(newDbName.wc_str());
+      m_NewDbName = tostringx(newDbName);
     }
   }
 }
@@ -489,7 +491,7 @@ void PropertiesDlg::OnEditDescription( wxCommandEvent& WXUNUSED(evt) )
     }
 
     if (Validate() && TransferDataToWindow()) {
-      m_NewDbDescription = std2stringx(newDbDescription.wc_str());
+      m_NewDbDescription = tostringx(newDbDescription);
     }
   }
 }

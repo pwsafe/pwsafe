@@ -21,14 +21,19 @@
 #include "wx/wx.h"
 #endif
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 ////@begin includes
 ////@end includes
 
+#include "core/PWCharPool.h"
+
+#include "Clipboard.h"
 #include "ManagePasswordPoliciesDlg.h"
 #include "PasswordPolicyDlg.h"
-#include "Clipboard.h"
-#include "core/PWCharPool.h"
-#include "./wxUtilities.h"
+#include "wxUtilities.h"
 
 ////@begin XPM images
 #include "graphics/toolbar/new/copypassword.xpm"

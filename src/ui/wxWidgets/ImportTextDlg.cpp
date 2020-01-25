@@ -16,7 +16,9 @@
 #include <wx/wx.h>
 #endif
 
-#include "ImportTextDlg.h"
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
 
 /*
 #include <wx/sizer.h>
@@ -29,23 +31,22 @@
 #include <wx/grid.h>
 #include <wx/wx.h>
 */
+#include <wx/display.h>
+#include <wx/filepicker.h>
+#include <wx/gbsizer.h>
 #include <wx/spinctrl.h>
 #include <wx/statline.h>
-#include <wx/display.h>
-#include <wx/wfstream.h>
 #include <wx/txtstrm.h>
-#include <wx/gbsizer.h>
-#include "../../core/StringX.h"
-#include "./wxUtilities.h"
-#include "../../core/PwsPlatform.h"
+#include <wx/wfstream.h>
 #include <wx/valgen.h>
-#include <wx/filepicker.h>
-#include "../../os/file.h"
-#include "./OpenFilePickerValidator.h"
 
-#ifdef __WXMSW__
-#include <wx/msw/msvcrt.h>
-#endif
+#include "core/PwsPlatform.h"
+#include "core/StringX.h"
+#include "os/file.h"
+
+#include "ImportTextDlg.h"
+#include "OpenFilePickerValidator.h"
+#include "wxUtilities.h"
 
 IMPLEMENT_CLASS( ImportTextDlg, wxDialog )
 

@@ -21,17 +21,18 @@
 #include <wx/wx.h>
 #endif
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
+#include "os/file.h"
+
 ////@begin includes
 #include "SafeCombinationCtrl.h"
 ////@end includes
 
 #include "SafeCombinationPromptDlg.h"
-#include "os/file.h"
-#include "./wxUtilities.h"
-
-#ifdef __WXMSW__
-#include <wx/msw/msvcrt.h>
-#endif
+#include "wxUtilities.h"
 
 #ifndef NO_YUBI
 ////@begin XPM images

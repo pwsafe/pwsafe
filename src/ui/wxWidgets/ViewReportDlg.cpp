@@ -12,20 +12,23 @@
 
 #include <wx/wxprec.h>
 
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif
+
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
 
-#include "ViewReportDlg.h"
-#include "./wxUtilities.h"
-
-#include "../../core/Report.h"
-
-#include "Clipboard.h"
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include "core/Report.h"
+
+#include "Clipboard.h"
+#include "ViewReportDlg.h"
+#include "wxUtilities.h"
 
 ViewReportDlg::ViewReportDlg(wxWindow* parent, CReport* pRpt) :
                 wxDialog(parent, wxID_ANY, _("View Report"), wxDefaultPosition, wxDefaultSize,

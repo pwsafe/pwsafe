@@ -50,6 +50,7 @@ using namespace std;
 #include "core/PWSprefs.h"
 #include "core/PWSrand.h"
 #include "core/SysInfo.h"
+#include "wxUtilities.h"
 
 #include <wx/fs_arc.h>
 #include <wx/html/helpctrl.h>
@@ -346,7 +347,7 @@ bool PWSafeApp::OnInit()
       CryptKeyEntryDlg dialog(mode);
 
       if (dialog.ShowModal() == wxID_OK) {
-        if (!func(filename.wc_str(), dialog.getCryptKey(), errstr)) {
+        if (!func(tostdstring(filename), dialog.getCryptKey(), errstr)) {
           wxMessageDialog messageBox(
             nullptr, errstr, _("Error"), wxOK | wxICON_ERROR
           );

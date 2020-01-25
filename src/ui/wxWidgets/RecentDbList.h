@@ -15,7 +15,8 @@
 
 // For wxFileHistory
 #include <wx/docview.h>
-#include "./wxUtilities.h"
+
+#include "wxUtilities.h"
 
 class RecentDbList : public wxFileHistory
 {

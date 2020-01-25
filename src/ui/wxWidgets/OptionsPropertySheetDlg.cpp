@@ -21,6 +21,10 @@
 #include <wx/wx.h>
 #endif
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 ////@begin includes
 #include <wx/bookctrl.h>
 ////@end includes
@@ -30,22 +34,19 @@
 #include <wx/debug.h>
 #include <wx/taskbar.h>
 
-#include "PasswordSafeFrame.h"
-#include "OptionsPropertySheetDlg.h"
 #include "core/PWSprefs.h"
 #include "core/Util.h" // for datetime string
 #include "core/PWSAuxParse.h" // for DEFAULT_AUTOTYPE
 #include "core/PWHistory.h" // for history actions
-#include "./wxUtilities.h"
-#include "./GridShortcutsValidator.h"
-#include "PWSafeApp.h" // for GetHashIters()
+
 #if defined(__X__) || defined(__WXGTK__)
 #include "Clipboard.h"
 #endif
-
-#ifdef __WXMSW__
-#include <wx/msw/msvcrt.h>
-#endif
+#include "GridShortcutsValidator.h"
+#include "OptionsPropertySheetDlg.h"
+#include "PasswordSafeFrame.h"
+#include "PWSafeApp.h" // for GetHashIters()
+#include "wxUtilities.h"
 
 ////@begin XPM images
 ////@end XPM images

@@ -12,23 +12,28 @@
 
 #include <wx/wxprec.h>
 
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif
+
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
 
-#include "./MergeDlg.h"
-#include "../../core/PWScore.h"
-#include "./wxUtilities.h"
-#include "./AdvancedSelectionDlg.h"
-#include "../../os/file.h"
-#include "./DbSelectionPanel.h"
-#include "./SelectionCriteria.h"
-
-#include <wx/statline.h>
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <wx/statline.h>
+
+#include "core/PWScore.h"
+#include "os/file.h"
+
+#include "AdvancedSelectionDlg.h"
+#include "DbSelectionPanel.h"
+#include "MergeDlg.h"
+#include "SelectionCriteria.h"
+#include "wxUtilities.h"
 
 enum {ID_ADVANCED = 5126, ID_COMBINATION = 6982};
 

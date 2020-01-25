@@ -21,18 +21,19 @@
 #include "wx/wx.h"
 #endif
 
-#include "./ComparisonGridTable.h"
-
-#include "./AdvancedSelectionDlg.h"
-#include "./SelectionCriteria.h"
-#include "../../core/PWScore.h"
-#include "./wxUtilities.h"
-#include <algorithm>
-#include <functional>
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include "core/PWScore.h"
+
+#include "AdvancedSelectionDlg.h"
+#include "ComparisonGridTable.h"
+#include "SelectionCriteria.h"
+#include "wxUtilities.h"
+
+#include <algorithm>
+#include <functional>
 
 class ComparisonGridCellAttr: public wxGridCellAttr
 {

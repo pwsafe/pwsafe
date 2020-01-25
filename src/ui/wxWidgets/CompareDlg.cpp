@@ -21,26 +21,27 @@
 #include "wx/wx.h"
 #endif
 
-#include "./CompareDlg.h"
-#include "./DbSelectionPanel.h"
-#include "./wxUtilities.h"
-#include "../../core/PWScore.h"
-#include "./AdvancedSelectionDlg.h"
-#include "./ComparisonGridTable.h"
-#include "./SizeRestrictedPanel.h"
-#include "../../core/core.h"
-#include "./AddEditPropSheetDlg.h"
-#include "./FieldSelectionDlg.h"
-#include "./SelectionCriteria.h"
-
-#include <wx/statline.h>
-#include <wx/grid.h>
-#include <wx/ptr_scpd.h>
-#include <wx/filename.h>
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <wx/filename.h>
+#include <wx/grid.h>
+#include <wx/ptr_scpd.h>
+#include <wx/statline.h>
+
+#include "core/core.h"
+#include "core/PWScore.h"
+
+#include "AddEditPropSheetDlg.h"
+#include "AdvancedSelectionDlg.h"
+#include "CompareDlg.h"
+#include "ComparisonGridTable.h"
+#include "DbSelectionPanel.h"
+#include "FieldSelectionDlg.h"
+#include "SelectionCriteria.h"
+#include "SizeRestrictedPanel.h"
+#include "wxUtilities.h"
 
 enum {ID_BTN_COMPARE = 100 };
 

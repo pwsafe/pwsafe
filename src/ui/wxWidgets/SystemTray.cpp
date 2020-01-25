@@ -12,40 +12,45 @@
 
 #include <wx/wxprec.h>
 
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif
+
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
-
-#include "./PasswordSafeFrame.h"
-#include "./SystemTray.h"
-#include "../../core/PWSprefs.h"
-#include "./wxUtilities.h"
-#include "./SystemTrayMenuId.h"
-
-#include <wx/menu.h>
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
 
-#include "./graphics/tray.xpm"
-#include "./graphics/locked_tray.xpm"
-#include "./graphics/unlocked_tray.xpm"
-#include "./graphics/about.xpm"
-#include "./graphics/exit.xpm"
-#include "./graphics/lock.xpm"
-#include "./graphics/unlock.xpm"
+#include "core/PWSprefs.h"
 
-#include "./graphics/toolbar/new/copypassword.xpm"
-#include "./graphics/toolbar/new/copyuser.xpm"
-#include "./graphics/toolbar/new/copynotes.xpm"
-#include "./graphics/toolbar/new/clearclipboard.xpm"
-#include "./graphics/toolbar/new/autotype.xpm"
-#include "./graphics/toolbar/new/browseurl.xpm"
-#include "./graphics/toolbar/new/browseurlplus.xpm"
-#include "./graphics/toolbar/new/sendemail.xpm"
-#include "./graphics/toolbar/new/delete.xpm"
-#include "./graphics/toolbar/new/close.xpm"
+#include "PasswordSafeFrame.h"
+#include "SystemTray.h"
+#include "SystemTrayMenuId.h"
+#include "wxUtilities.h"
+
+#include <wx/menu.h>
+
+#include "graphics/tray.xpm"
+#include "graphics/locked_tray.xpm"
+#include "graphics/unlocked_tray.xpm"
+#include "graphics/about.xpm"
+#include "graphics/exit.xpm"
+#include "graphics/lock.xpm"
+#include "graphics/unlock.xpm"
+
+#include "graphics/toolbar/new/copypassword.xpm"
+#include "graphics/toolbar/new/copyuser.xpm"
+#include "graphics/toolbar/new/copynotes.xpm"
+#include "graphics/toolbar/new/clearclipboard.xpm"
+#include "graphics/toolbar/new/autotype.xpm"
+#include "graphics/toolbar/new/browseurl.xpm"
+#include "graphics/toolbar/new/browseurlplus.xpm"
+#include "graphics/toolbar/new/sendemail.xpm"
+#include "graphics/toolbar/new/delete.xpm"
+#include "graphics/toolbar/new/close.xpm"
 
 // Classic icons currently not used
 //#include "./graphics/toolbar/classic/copypassword.xpm"

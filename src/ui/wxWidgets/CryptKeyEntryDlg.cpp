@@ -13,7 +13,6 @@
 * 
 */
 
-#include "CryptKeyEntryDlg.h"
 #include <wx/msgdlg.h>
 
 //(*InternalHeaders(CryptKeyEntryDlg)
@@ -22,6 +21,8 @@
 #include <wx/intl.h>
 //*)
 
+#include "CryptKeyEntryDlg.h"
+#include "wxUtilities.h"
 
 //(*IdInit(CryptKeyEntryDlg)
 //*)
@@ -120,7 +121,7 @@ void CryptKeyEntryDlg::OnOk(wxCommandEvent& WXUNUSED(event))
         return;
       }
       else {
-        m_CryptKey = std2stringx((TextCtrlKey1->GetValue()).wc_str());
+        m_CryptKey = tostringx(TextCtrlKey1->GetValue());
 
         EndModal(wxID_OK);
       }
@@ -136,7 +137,7 @@ void CryptKeyEntryDlg::OnOk(wxCommandEvent& WXUNUSED(event))
         return;
       }
       else {
-        m_CryptKey = std2stringx((TextCtrlKey1->GetValue()).wc_str());
+        m_CryptKey = tostringx(TextCtrlKey1->GetValue());
 
         EndModal(wxID_OK);
       }

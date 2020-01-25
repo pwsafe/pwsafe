@@ -23,17 +23,18 @@
 #include "wx/wx.h"
 #endif
 
-////@begin includes
-////@end includes
-
-#include "SafeCombinationSetupDlg.h"
-#include "core/PWCharPool.h" // for CheckPassword()
-#include "./wxUtilities.h"          // for ApplyPasswordFont()
-#include "./ExternalKeyboardButton.h"
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+////@begin includes
+////@end includes
+
+#include "core/PWCharPool.h" // for CheckPassword()
+
+#include "ExternalKeyboardButton.h"
+#include "SafeCombinationSetupDlg.h"
+#include "wxUtilities.h"          // for ApplyPasswordFont()
 
 #ifndef NO_YUBI
 ////@begin XPM images

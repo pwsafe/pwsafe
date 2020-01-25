@@ -21,17 +21,18 @@
 #include "wx/wx.h"
 #endif
 
-#include "./DbSelectionPanel.h"
-#include "./OpenFilePickerValidator.h"
-#include "./SafeCombinationCtrl.h"
-#include "./wxUtilities.h"
-#include "../../core/PWScore.h"
-
-#include <wx/filename.h>
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <wx/filename.h>
+
+#include "core/PWScore.h"
+
+#include "DbSelectionPanel.h"
+#include "OpenFilePickerValidator.h"
+#include "SafeCombinationCtrl.h"
+#include "wxUtilities.h"
 
 DbSelectionPanel::DbSelectionPanel(wxWindow* parent, 
                                     const wxString& filePrompt,

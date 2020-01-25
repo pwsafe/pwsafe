@@ -13,8 +13,9 @@
 #ifndef _SELECTIONCRITERIA_H_
 #define _SELECTIONCRITERIA_H_
 
-#include "../../core/ItemData.h"
-#include "./wxUtilities.h"
+#include "core/ItemData.h"
+
+#include "wxUtilities.h"
 
 /*
  * SelectionCriteria data structure backs the AdvancedSelectionPanel widget

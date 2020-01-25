@@ -13,8 +13,12 @@
 #ifndef _WXUTILITIES_H_
 #define _WXUTILITIES_H_
 
-#include "../../core/StringX.h"
-#include "../../core/PWSprefs.h"
+#include <wx/eventfilter.h>
+#include <wx/dataobj.h>
+
+#include "core/StringX.h"
+#include "core/PWSprefs.h"
+
 #include <set>
 
 #if !wxCHECK_VERSION(3,1,0)
