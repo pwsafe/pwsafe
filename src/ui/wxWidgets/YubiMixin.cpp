@@ -11,22 +11,19 @@
 */
 
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
+#include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
+
+#include "os/unix/PWYubi.h"
+#include "os/sleep.h"
+
+#include "YubiMixin.h"
 
 #include <iomanip>
 #include <sstream>
-
-#include "YubiMixin.h"
-#include "os/unix/PWYubi.h"
-#include "os/sleep.h"
 
 void YubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
 {

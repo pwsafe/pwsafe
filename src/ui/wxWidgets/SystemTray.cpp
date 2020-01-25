@@ -12,17 +12,15 @@
 
 #include <wx/wxprec.h>
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <wx/menu.h>
 
 #include "core/PWSprefs.h"
 
@@ -30,8 +28,6 @@
 #include "SystemTray.h"
 #include "SystemTrayMenuId.h"
 #include "wxUtilities.h"
-
-#include <wx/menu.h>
 
 #include "graphics/tray.xpm"
 #include "graphics/locked_tray.xpm"

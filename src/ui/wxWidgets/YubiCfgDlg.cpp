@@ -11,32 +11,29 @@
 */
 
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
+#include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
 ////@begin includes
 ////@end includes
 
-#include <iomanip>
-#include <sstream>
-
 #include <wx/timer.h>
-#include "YubiCfgDlg.h"
-#include "YubiMixin.h" // for POLLING_INTERVAL
-#include "./wxUtilities.h"
 
 #include "core/StringX.h"
 #include "core/PWScore.h"
 
 #include "os/rand.h"
 #include "os/unix/PWYubi.h"
+
+#include "YubiCfgDlg.h"
+#include "YubiMixin.h" // for POLLING_INTERVAL
+#include "wxUtilities.h"
+
+#include <iomanip>
+#include <sstream>
 
 using namespace std;
 

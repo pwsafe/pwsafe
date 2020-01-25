@@ -13,10 +13,6 @@
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
@@ -29,10 +25,9 @@
 
 ////@begin includes
 #include "SafeCombinationCtrl.h"
-////@end includes
-
 #include "SafeCombinationPromptDlg.h"
 #include "wxUtilities.h"
+////@end includes
 
 #ifndef NO_YUBI
 ////@begin XPM images
@@ -40,7 +35,7 @@
 ////@end XPM images
 #endif
 
-#include "./graphics/cpane.xpm"
+#include "graphics/cpane.xpm"
 
 /*!
  * SafeCombinationPromptDlg type definition

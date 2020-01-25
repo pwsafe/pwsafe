@@ -11,34 +11,32 @@
 */
 
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
+#include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
 
-#include "./SyncWizard.h"
-#include "./OpenFilePickerValidator.h"
-#include "./SafeCombinationCtrl.h"
-#include "./DbSelectionPanel.h"
-#include "./AdvancedSelectionDlg.h"
-#include "../../core/PWScore.h"
-#include "./SelectionCriteria.h"
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
 
 #include <wx/filename.h>
 #include <wx/valgen.h>
 #include <wx/statline.h>
 #include <wx/collpane.h>
+
+#include "core/PWScore.h"
+
+#include "AdvancedSelectionDlg.h"
+#include "DbSelectionPanel.h"
+#include "OpenFilePickerValidator.h"
+#include "SafeCombinationCtrl.h"
+#include "SelectionCriteria.h"
+#include "SyncWizard.h"
+
 #include <algorithm>
 #include <iterator>
-
-#ifdef __WXMSW__
-#include <wx/msw/msvcrt.h>
-#endif
 
 /*!
  * SyncData class declaration

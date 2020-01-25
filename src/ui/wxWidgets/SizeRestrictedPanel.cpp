@@ -13,19 +13,15 @@
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
 
-#include "./SizeRestrictedPanel.h"
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include "SizeRestrictedPanel.h"
 
 SizeRestrictedPanel::SizeRestrictedPanel(wxWindow* parent, wxWindow* sizingParent, wxWindowID id /*= wxID_ANY*/):
               wxPanel(parent, id), m_sizingParent(sizingParent)

@@ -11,47 +11,18 @@
 */
 
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-#include "wx/cmdline.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
+#include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
 
-////@begin includes
-////@end includes
-
-#include <iostream> // currently for debugging
-#include <clocale>  // to get the locales specified by the environment 
-                    // for used functions like wcstombs in src/os/file.h
-#include <functional>
-
-using namespace std;
-
-#include "PWSafeApp.h"
-#include "PasswordSafeFrame.h"
-#include "version.h"
-#include "wxMessages.h"
-#include "Clipboard.h"
-#include "GridShortcutsValidator.h"
-#include "CryptKeyEntryDlg.h"
-#if defined(__X__) || defined(__WXGTK__)
-#include "Clipboard.h"
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
 #endif
 
-#include "os/cleanup.h"
-#include "os/dir.h"
-#include "core/PWSfile.h"
-#include "core/PWSLog.h"
-#include "core/PWSprefs.h"
-#include "core/PWSrand.h"
-#include "core/SysInfo.h"
-#include "wxUtilities.h"
-
+////@begin includes
+#include <wx/cmdline.h>
 #include <wx/fs_arc.h>
 #include <wx/html/helpctrl.h>
 #include <wx/propdlg.h>
@@ -62,17 +33,41 @@ using namespace std;
 #include <wx/tokenzr.h>
 #include <wx/spinctrl.h>
 
-#ifdef __WXMSW__
-#include <wx/msw/msvcrt.h>
-#endif
 #if wxCHECK_VERSION(2,9,2)
 #include <wx/richmsgdlg.h>
 #endif
-////@begin XPM images
-#include "./graphics/pwsafe16.xpm"
-#include "./graphics/pwsafe32.xpm"
-#include "./graphics/pwsafe48.xpm"
+////@end includes
 
+#include "os/cleanup.h"
+#include "os/dir.h"
+#include "core/PWSfile.h"
+#include "core/PWSLog.h"
+#include "core/PWSprefs.h"
+#include "core/PWSrand.h"
+#include "core/SysInfo.h"
+#include "wxUtilities.h"
+
+#if defined(__X__) || defined(__WXGTK__)
+#include "Clipboard.h"
+#endif
+#include "CryptKeyEntryDlg.h"
+#include "GridShortcutsValidator.h"
+#include "PasswordSafeFrame.h"
+#include "PWSafeApp.h"
+#include "version.h"
+#include "wxMessages.h"
+
+#include <iostream> // currently for debugging
+#include <clocale>  // to get the locales specified by the environment 
+                    // for used functions like wcstombs in src/os/file.h
+#include <functional>
+
+using namespace std;
+
+////@begin XPM images
+#include "graphics/pwsafe16.xpm"
+#include "graphics/pwsafe32.xpm"
+#include "graphics/pwsafe48.xpm"
 ////@end XPM images
 
 #if wxCHECK_VERSION(2,9,0)

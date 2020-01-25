@@ -13,10 +13,6 @@
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
@@ -27,20 +23,17 @@
 
 #include "core/PWCharPool.h" // for CheckPassword()
 
-#include "ExternalKeyboardButton.h"
-
 ////@begin includes
+#include "ExternalKeyboardButton.h"
 #include "SafeCombinationCtrl.h"
-////@end includes
-
 #include "SafeCombinationChangeDlg.h"
 #include "wxUtilities.h"          // for ApplyPasswordFont
+////@end includes
 
 #ifndef NO_YUBI
 ////@begin XPM images
 #include "graphics/Yubikey-button.xpm"
 ////@end XPM images
-
 #endif
 
 /*!
