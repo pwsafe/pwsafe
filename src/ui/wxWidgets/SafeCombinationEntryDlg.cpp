@@ -15,33 +15,32 @@
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
-
-#include <wx/timer.h>
-#include <wx/filename.h>
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
 
-////@begin includes
-#include "SafeCombinationCtrl.h"
-////@end includes
+#include <wx/timer.h>
+#include <wx/filename.h>
 
-#include "PWSafeApp.h"
-#include "SafeCombinationEntryDlg.h"
-#include "SafeCombinationSetupDlg.h"
-#include "version.h"
 #include "core/core.h"
 #include "core/PWSdirs.h"
 #include "core/PWSprefs.h"
 #include "os/file.h"
+
+////@begin includes
+#include "PWSafeApp.h"
+#include "SafeCombinationCtrl.h"
+#include "SafeCombinationEntryDlg.h"
+#include "SafeCombinationSetupDlg.h"
+#include "version.h"
+////@end includes
+
+#include <iostream> // for debugging
+#include <iomanip>
 
 #ifndef NO_YUBI
 ////@begin XPM images
@@ -49,11 +48,8 @@
 ////@end XPM images
 #endif
 
-#include "./graphics/cpane.xpm"
-#include "./graphics/psafetxt.xpm"
-
-#include <iostream> // for debugging
-#include <iomanip>
+#include "graphics/cpane.xpm"
+#include "graphics/psafetxt.xpm"
 
 /*!
  * SafeCombinationEntryDlg type definition
