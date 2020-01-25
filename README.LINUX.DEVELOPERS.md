@@ -3,7 +3,7 @@ PasswordSafe is being ported to Linux using the wxWidgets user
 interface library. Following are notes for programmers wishing to
 build the Linux version. Currently, PasswordSafe is being built on
 Debian-based platforms (Debian and Ubuntu), and Fedora, so
-requirements are described in terms of .deb and .rpmpackages.
+requirements are described in terms of .deb and .rpm packages.
 
 
 ## Source Code
@@ -89,11 +89,31 @@ development packages)
 --------------------
 Note #1 - cmake
 As of Dec. 2015 PasswordSafe can be built on Linux platforms using
-cmake, e.g., mkdir build; cd build; cmake ..; make
+cmake, e.g.
+
+    mkdir build; cd build; cmake ..; make
+
 Currently, this is in addition to the 'standard' toplevel make. In the
 long term, it will probably replace it.
 The cmake build can be configured in the standard manner, e.g, via
 cmake-gui.
+
+If you have a custom build of the Wx library you would like to use 
+you can point to its 'wx-config' command by use of cmake's command 
+line option 'wxWidgets_CONFIG_EXECUTABLE'. You can also disable the 
+gtest unit testing (option NO_GTEST), YubiKey support (option NO_YUBI) 
+and QR support (option NO_QR) if they are not required.
+
+With the mentioned cmake options, resp. preprocessor symbols the command 
+line could look as follows to created a debug build.
+
+    cmake -D CMAKE_BUILD_TYPE=Debug -D NO_QR=ON -D -D NO_GTEST=ON -D wxWidgets_CONFIG_EXECUTABLE=~/wxWidgets-3.1.3/wxbuild/wx-config ..
+
+To speed up the build process on a multi core system, make can be 
+instructed with the option '-j' to distribute the compilation process 
+over several cores or jobs.
+
+    make -j 8
 
 --------------------
 Note #2 - wxWidgets
@@ -126,6 +146,28 @@ and build the libraries yourself. If you do so:
 Note that we use a static build of wxWidgets in order to simplify the
 distribution, not requiring users to get the wx3 package, and avoiding
 potential conflicts with 2.8.
+
+Alternatively, the Wx library can be build using cmake.
+By default shared libraries with unicode support are build. For a static 
+build set option 'wxBUILD_SHARED' to 'OFF'.
+
+Unpack the downloaded wxWidgets package and change into its directory. 
+Create a new directory for the build artefacts and change to that one. 
+Execute cmake with appropriate preprocessor symbols and run make (consider
+using option '-j').
+
+    cd <wxWidgets directory, e.g. wxWidgets-3.1.3>
+    mkdir <build directory, e.g. wxbuild>
+    cd <build directory, e.g. wxbuild>
+    cmake -D wxUSE_STL=ON -D wxBUILD_SHARED=OFF ..
+
+The internationalization system (option wxUSE_INTL) and x-locale support 
+(option wxUSE_XLOCALE) is also enabled by default. For a list of options 
+to tune the build see also the documentation (
+[3.0](https://docs.wxwidgets.org/3.0/page_wxusedef.html), 
+[3.1](https://docs.wxwidgets.org/3.1/page_wxusedef.html)
+) about wxUSE preprocessor symbols.
+
 
 --------------------
 Note #3 - libykpers-1/ykpers-devel:
