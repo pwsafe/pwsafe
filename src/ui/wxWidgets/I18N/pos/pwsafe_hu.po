@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: pwsafe\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-05-24 14:12+0300\n"
-"PO-Revision-Date: 2019-01-20 17:13+0100\n"
+"PO-Revision-Date: 2020-01-26 15:41+0100\n"
 "Last-Translator: Attila Rajmund Nohl <attila.r.nohl@gmail.com>\n"
 "Language-Team: NAR <attila.r.nohl@gmail.com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:27
 msgid "Import XML Settings"
@@ -59,7 +59,8 @@ msgstr "Széfkombináció:"
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:186
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:85
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:236
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:366 ../../../ui/wxWidgets/YubiMixin.cpp:58
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:366
+#: ../../../ui/wxWidgets/YubiMixin.cpp:58
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:198
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:171
 msgid "Please insert your YubiKey"
@@ -217,7 +218,8 @@ msgstr "&Megnyitás..."
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:199
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:165
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:396
-#: ../../../ui/wxWidgets/AboutDlg.cpp:185 ../../../ui/wxWidgets/SystemTray.cpp:135
+#: ../../../ui/wxWidgets/AboutDlg.cpp:185
+#: ../../../ui/wxWidgets/SystemTray.cpp:135
 msgid "&Close"
 msgstr "&Bezár"
 
@@ -449,18 +451,16 @@ msgid "&Tree/List Font"
 msgstr "&Fanézet/Lista betűtípusa"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:556
-#, fuzzy
 msgid "&Add/Edit Font"
-msgstr "&Fanézet/Lista betűtípusa"
+msgstr "&Hozzáadás/szerkesztés betűtípusa"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:557
 msgid "&Password Font"
 msgstr "&Jelszó betűtípusa"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:558
-#, fuzzy
 msgid "&Notes Font"
-msgstr "Jegyzetek"
+msgstr "&Megjegyzések betűtípusa"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:561
 msgid "Change &Font"
@@ -883,8 +883,10 @@ msgstr "Szöveg"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2835
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2840
-#: ../../../ui/wxWidgets/SyncWizard.cpp:573 ../../../ui/wxWidgets/wxUtilities.cpp:61
-#: ../../../ui/wxWidgets/wxUtilities.cpp:66 ../../../ui/wxWidgets/wxUtilities.cpp:73
+#: ../../../ui/wxWidgets/SyncWizard.cpp:573
+#: ../../../ui/wxWidgets/wxUtilities.cpp:61
+#: ../../../ui/wxWidgets/wxUtilities.cpp:66
+#: ../../../ui/wxWidgets/wxUtilities.cpp:73
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:184
 msgid "File Read Error"
 msgstr "Fájlolvasási hiba"
@@ -1028,7 +1030,8 @@ msgstr "Importálás sikertelen"
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2971
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3102
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3103
-#: ../../../ui/wxWidgets/SyncWizard.cpp:588 ../../../ui/wxWidgets/SyncWizard.cpp:731
+#: ../../../ui/wxWidgets/SyncWizard.cpp:588
+#: ../../../ui/wxWidgets/SyncWizard.cpp:731
 #: ../../../ui/wxWidgets/SyncWizard.cpp:748
 msgid "entry"
 msgstr "bejegyzés"
@@ -1036,7 +1039,8 @@ msgstr "bejegyzés"
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2971
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3102
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3103
-#: ../../../ui/wxWidgets/SyncWizard.cpp:588 ../../../ui/wxWidgets/SyncWizard.cpp:731
+#: ../../../ui/wxWidgets/SyncWizard.cpp:588
+#: ../../../ui/wxWidgets/SyncWizard.cpp:731
 #: ../../../ui/wxWidgets/SyncWizard.cpp:748
 msgid "entries"
 msgstr "bejegyzések"
@@ -1311,24 +1315,20 @@ msgid "Old Pswd copied "
 msgstr "Jelszó másolva"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3597
-#, fuzzy
 msgid "Select Tree/List display font"
-msgstr "Jelszó megjelenítéséhez használt betűtípus"
+msgstr "Fa- és listanézet betűtípusának kiválasztása"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3614
-#, fuzzy
 msgid "Select Add/Edit display font"
-msgstr "Jelszó megjelenítéséhez használt betűtípus"
+msgstr "Hozzáadás és szerkesztés betűtípusának kiválasztása"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3618
-#, fuzzy
 msgid "Select Password display font"
-msgstr "Jelszó megjelenítéséhez használt betűtípus"
+msgstr "Jelszó betűtípusának kiválasztása"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3622
-#, fuzzy
 msgid "Select Notes display font"
-msgstr "Jelszó megjelenítéséhez használt betűtípus"
+msgstr "Megjegyzések betűtípusának kiválasztása"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3626
 #, fuzzy
@@ -1586,12 +1586,14 @@ msgstr "(kis- és nagybetűk megkülönböztetése)"
 msgid ""
 "Could not launch xvkbd.  Please make sure it's installed and in your PATH"
 msgstr ""
+"Nem sikerült elindítani az xvkbd-t. Győződjön meg, hogy telepítve van és "
+"elérhető a PATH elérési útvonalon"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:73
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:81
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:86
 msgid "Could not launch external onscreen keyboard"
-msgstr ""
+msgstr "Nem sikerült elindítani a képernyő-billentyűzetet"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:80
 msgid "Could not launch xvkbd.  Please make sure it's in your PATH"
@@ -1611,9 +1613,8 @@ msgid "Open as read-only"
 msgstr "Megnyitás csak olvasásra"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:222
-#, fuzzy
 msgid "Show Combination"
-msgstr "Széf kombináció:"
+msgstr "Kombináció megjelenítése"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:226
 msgid "New..."
@@ -1722,7 +1723,8 @@ msgstr "YubiKey sorozatszám: "
 msgid "YubiKey Secret Key (20 Byte Hex)"
 msgstr "YubiKey titkos kulcs (20 hexadecimális számjegy)"
 
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:187 ../../../ui/wxWidgets/YubiCfgDlg.cpp:320
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:187
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:320
 msgid "Hide"
 msgstr "Elrejtés"
 
@@ -1898,11 +1900,11 @@ msgstr "Az Escape billentyű bezárja a programot"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:428
 msgid "Double-click action"
-msgstr "Duplakattintás esemény"
+msgstr "Duplakattintás hatása"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:449
 msgid "Shift double-click action"
-msgstr "Shift-Duplakattintás esemény"
+msgstr "Shift-duplakattintás hatása"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:455
 msgid "Autotype"
@@ -2887,18 +2889,12 @@ msgid "Run Cmd:"
 msgstr "Parancs futtatása:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:412
-#, fuzzy
 msgid "Double-Click Action:"
-msgstr ""
-"Duplakattintás\n"
-"esemény:"
+msgstr "Duplakattintás hatása:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:420
-#, fuzzy
 msgid "Shift-Double-Click Action:"
-msgstr ""
-"Shift-duplakattintás\n"
-"esemény:"
+msgstr "Shift-duplakattintás hatása:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:433
 msgid "Keep"
@@ -2988,8 +2984,8 @@ msgstr ")"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:720
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1712
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.h:69 ../../../ui/wxWidgets/HelpMap.h:41
-#: ../../../ui/wxWidgets/HelpMap.h:49
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.h:69
+#: ../../../ui/wxWidgets/HelpMap.h:41 ../../../ui/wxWidgets/HelpMap.h:49
 msgid "Password Policy"
 msgstr "Jelszószabály"
 
@@ -3284,32 +3280,30 @@ msgid ""
 " for shortcut to "
 msgstr ""
 
-#: ../../../ui/wxWidgets/AboutDlg.cpp:148 ../../../ui/wxWidgets/AboutDlg.cpp:190
+#: ../../../ui/wxWidgets/AboutDlg.cpp:148
+#: ../../../ui/wxWidgets/AboutDlg.cpp:190
 msgid "Build date:"
 msgstr "Készítés dátuma:"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:154
 msgid "Latest version? Click "
-msgstr "Legfrissebb verzió? Kattintson"
+msgstr "Legfrissebb verzió? Kattintson "
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:157
-#, fuzzy
 msgid "here"
-msgstr "hol"
+msgstr "ide"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:160
 msgid " to check."
-msgstr ""
+msgstr " az ellenőrzéshez."
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:166
-#, fuzzy
 msgid "Please visit the "
-msgstr "Kérem adja meg a szöveget"
+msgstr "Látogasson el a "
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:169
-#, fuzzy
 msgid "PasswordSafe website"
-msgstr "A Password Safe &weboldalának meglátogatása..."
+msgstr "PasswordSafe weboldalára"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:172
 msgid "."
@@ -3885,6 +3879,9 @@ msgstr "Széfkombináció megváltoztatása"
 msgid "Manage Password Policies"
 msgstr "Jelszószabályok kezelése"
 
+msgid "Password is too short"
+msgstr "A jelszó túl rövid"
+
 #~ msgid "Confirm item copy to clipboard"
 #~ msgstr "Vágólapra másolás megerősítése"
 
@@ -3939,9 +3936,6 @@ msgstr "Jelszószabályok kezelése"
 
 #~ msgid "Easyvision characters"
 #~ msgstr "Könnyen olvasható karakterek"
-
-#~ msgid "Password is too short"
-#~ msgstr "A jelszó túl rövid"
 
 #~ msgid "Hexadecimal characters"
 #~ msgstr "Hexadecimális karakterek"
