@@ -1,5 +1,5 @@
-Password Safe 3.51 Release December 2019
-========================================
+Password Safe 3.52pre Release ??? 2020
+======================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -12,6 +12,11 @@ Bug Reports, Feature Requests and Service Requests are in the PasswordSafe
 SourceForge Project tickets.  Any beginning with 'G' are issues raised on
 PasswordSafe's GitHub project, where the current source can also be found.
 The ReleaseNotes.html file has links to the relevant tickets/issues.
+
+Bugs Fixed in 3.52pre
+=====================
+[GH634] Clearing an entry's username no longer causes a revert to
+default.
 
 Bugs Fixed in 3.51
 ==================

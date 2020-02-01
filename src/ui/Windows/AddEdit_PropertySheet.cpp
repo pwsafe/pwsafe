@@ -344,8 +344,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
         // Just modify all - even though only 1 may have actually been modified
         m_AEMD.pci->SetGroup(m_AEMD.group);
         m_AEMD.pci->SetTitle(m_AEMD.title);
-        m_AEMD.pci->SetUser(m_AEMD.username.IsEmpty() ?
-                                  m_AEMD.defusername : m_AEMD.username);
+        m_AEMD.pci->SetUser(m_AEMD.username);
         if (m_bNotesChanged)
           m_AEMD.pci->SetNotes(m_AEMD.notes);
 
