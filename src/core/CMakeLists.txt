@@ -99,4 +99,4 @@ else (NOT WIN32 OR WX_WINDOWS)
   list (APPEND CORE_SRCS core.rc2)
 endif(NOT WIN32 OR WX_WINDOWS)
 
-add_library(core ${CORE_SRCS})
+add_library(core STATIC ${CORE_SRCS})

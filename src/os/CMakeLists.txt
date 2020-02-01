@@ -87,4 +87,4 @@ if(HAVE_YKPERS_H)
     list(APPEND OS_SRCS ${OS_YUBI_SRC})
 endif()
 
-add_library(os ${OS_SRCS})
+add_library(os STATIC ${OS_SRCS})
