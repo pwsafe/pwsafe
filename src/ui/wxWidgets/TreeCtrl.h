@@ -97,6 +97,16 @@ public:
   /// wxEVT_TREE_ITEM_MENU event handler for ID_TREECTRL
   void OnContextMenu( wxTreeEvent& evt);
 
+#if wxCHECK_VERSION(3, 1, 1)
+  void OnContextMenu(wxContextMenuEvent& event);
+#else
+  /// wxEVT_RIGHT_DOWN event handler for mouse events
+  void OnMouseRightClick(wxMouseEvent& event);
+#endif // wxCHECK_VERSION(3, 1, 1)
+
+  /// wxEVT_LEFT_DOWN event handler for mouse events
+  void OnMouseLeftClick(wxMouseEvent& event);
+
 ////@end TreeCtrl event handler declarations
 
   void OnGetToolTip( wxTreeEvent& evt); // Added manually
@@ -112,20 +122,10 @@ public:
   /// wxEVT_TREE_KEY_DOWN event handler for ID_TREECTRL
   void OnKeyDown(wxTreeEvent& evt);
 
-#if wxCHECK_VERSION(3, 1, 1)
-  void OnContextMenu(wxContextMenuEvent& event);
-#else
-  /// wxEVT_RIGHT_DOWN event handler for mouse events
-  void OnMouseRightClick(wxMouseEvent& event);
-#endif // wxCHECK_VERSION(3, 1, 1)
-
-  /// wxEVT_LEFT_DOWN event handler for mouse events
-  void OnMouseLeftClick(wxMouseEvent& event);
-
 ////@begin TreeCtrl member function declarations
 ////@end TreeCtrl member function declarations
 
-  void Clear() {DeleteAllItems(); m_item_map.clear();} // consistent name w/GridCtrl
+  void Clear(); // consistent name w/GridCtrl
   void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
   void UpdateItemField(const CItemData &item, CItemData::FieldType ft);
@@ -138,7 +138,8 @@ public:
   void SortChildrenRecursively(const wxTreeItemId& item);
   wxString GetItemGroup(const wxTreeItemId& item) const;
   bool IsGroupSelected() const;
-  bool IsRootSelected() const;
+  bool HasItems() const;
+  bool HasSelection() const;
   bool ItemIsGroup(const wxTreeItemId& item) const;
   void AddEmptyGroup(const StringX& group) { AddGroup(group); }
   void SetFilterState(bool state);
@@ -147,6 +148,8 @@ public:
   void SetGroupDisplayStateAllCollapsed();
   void SaveGroupDisplayState();
   void RestoreGroupDisplayState();
+
+  virtual bool Show(bool show = true) override;
 
 private:
   void PreferencesChanged();
