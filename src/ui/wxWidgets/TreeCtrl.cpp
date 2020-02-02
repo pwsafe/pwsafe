@@ -318,22 +318,41 @@ void TreeCtrl::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
 
 /**
  * Provides the information wether a group tree item is selected.
- * It considers the root item as a group via 'ItemIsGroup'.
+ * It considers the root item as no group via 'ItemIsGroup'.
  */
 bool TreeCtrl::IsGroupSelected() const
 {
   return GetSelection().IsOk() && ItemIsGroup(GetSelection());
 }
 
-bool TreeCtrl::IsRootSelected() const
+/**
+ * Provides the indication whether any editable items exists in
+ * the tree view. Editable items are items from the database,
+ * hence the tree's root item is excluded.
+ */
+bool TreeCtrl::HasItems() const
 {
-  return GetSelection().IsOk() && GetSelection() == GetRootItem();
+  return (GetCount() > 0);
 }
 
+/**
+ * Provides the indication whether any in the tree visible item
+ * is selected. This excludes the tree's root item.
+ */
+bool TreeCtrl::HasSelection() const
+{
+  return GetSelection().IsOk() && (GetSelection() != GetRootItem());
+}
+
+/**
+ * Provides the information whether a tree item is a group.
+ * The tree's root item, as a not editable element, is considered
+ * as no group.
+ */
 bool TreeCtrl::ItemIsGroup(const wxTreeItemId& item) const
 {
   int image = GetItemImage(item);
-  return image == NODE_II || GetRootItem() == item;
+  return image == NODE_II && GetRootItem() != item;
 }
 
 // XXX taken from Windows TreeCtrl.cpp
@@ -533,6 +552,21 @@ void TreeCtrl::AddItem(const CItemData &item)
   m_item_map.insert(std::make_pair(CUUID(uuid), titem));
 }
 
+void TreeCtrl::Clear()
+{
+  DeleteAllItems();
+  m_item_map.clear();
+
+  /*
+    At least one tree element is needed to make the context menu work,
+    otherwise it won't show. TreeCtrl::AddGroup checks if a root item
+    is needed or an existing one is available.
+  */
+  if (IsEmpty()) {
+    AddRoot(wxT("root"));
+  }
+}
+
 CItemData *TreeCtrl::GetItem(const wxTreeItemId &id) const
 {
   if (!id.IsOk())
@@ -681,15 +715,6 @@ void TreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
   }
 }
 
-/*!
- * wxEVT_TREE_ITEM_MENU event handler for ID_TREECTRL
- */
-
-void TreeCtrl::OnContextMenu( wxTreeEvent& evt )
-{
-  dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(evt.GetItem()));
-}
-
 void TreeCtrl::SelectItem(const CUUID & uuid)
 {
   uuid_array_t uuid_array;
@@ -815,24 +840,34 @@ void TreeCtrl::OnKeyDown(wxTreeEvent& evt)
   evt.Skip();
 }
 
+/*!
+ * wxEVT_TREE_ITEM_MENU event handler for ID_TREECTRL
+ */
+
+void TreeCtrl::OnContextMenu( wxTreeEvent& evt )
+{
+  dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(evt.GetItem()));
+}
+
+#if wxCHECK_VERSION(3, 1, 1)
+void TreeCtrl::OnContextMenu(wxContextMenuEvent& event)
+#else
 void TreeCtrl::OnMouseRightClick(wxMouseEvent& event)
+#endif // wxCHECK_VERSION(3, 1, 1)
 {
   wxPoint mouseClickPosition = event.GetPosition();
   int positionInfo;
 
+#if wxCHECK_VERSION(3, 1, 1)
+  HitTest(wxWindow::ScreenToClient(mouseClickPosition), positionInfo);
+#else
   HitTest(mouseClickPosition, positionInfo);
+#endif // wxCHECK_VERSION(3, 1, 1)
 
   if ((positionInfo & wxTREE_HITTEST_NOWHERE) == wxTREE_HITTEST_NOWHERE) {
     auto *parentWindow = dynamic_cast<PasswordSafeFrame*>(GetParent());
     wxASSERT(parentWindow != nullptr);
-    /*
-      Triggers an event that interferes with the popup menu in that sense that 
-      an invalid wxTreeItemId is provided at the moment when the popup menu shows.
-      This causes the menu items to get disabled at PasswordFrame::OnUpdateUI.
-      'Yield' solves this problem so that events are handled in the right order.
-    */
     Unselect();
-    wxGetApp().SafeYieldFor(parentWindow, wxEVT_CATEGORY_USER_INPUT);
     parentWindow->OnContextMenu(nullptr);
   }
   else {
@@ -991,6 +1026,20 @@ void TreeCtrl::RestoreGroupDisplayState()
   if (!groupstates.empty()) {
     SetGroupDisplayState(groupstates);
   }
+}
+
+bool TreeCtrl::Show(bool show)
+{
+  /*
+    At least one tree element is needed to make the context menu work,
+    otherwise it won't show. TreeCtrl::AddGroup checks if a root item
+    is needed or an existing one is available.
+  */
+  if (IsEmpty()) {
+    AddRoot(wxT("root"));
+  }
+
+  return wxWindow::Show(show);
 }
 
 /**
