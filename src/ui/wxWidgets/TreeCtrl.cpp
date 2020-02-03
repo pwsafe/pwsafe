@@ -266,6 +266,7 @@ void TreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &e
       break;
     case UpdateGUICommand::GUI_DELETE_ENTRY:
       Remove(entry_uuid);
+      AddRootItem();
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
     case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
@@ -520,7 +521,9 @@ void TreeCtrl::UpdateItem(const CItemData &item)
   }
 }
 
-//Just update the item's text, don't move it into its sorted position
+/**
+ * Just update the item's text, don't move it into its sorted position.
+ */
 void TreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft)
 {
   PWSprefs* prefs = PWSprefs::GetInstance();
@@ -552,19 +555,25 @@ void TreeCtrl::AddItem(const CItemData &item)
   m_item_map.insert(std::make_pair(CUUID(uuid), titem));
 }
 
+/**
+ * Adds the root element to the tree if there is none.
+ *
+ * @note At least one tree element is needed to make the context menu work,
+ * otherwise it won't show. TreeCtrl::AddGroup checks if a root item is
+ * needed or an existing one is available.
+ */
+void TreeCtrl::AddRootItem()
+{
+  if (IsEmpty()) {
+    AddRoot(wxEmptyString);
+  }
+}
+
 void TreeCtrl::Clear()
 {
   DeleteAllItems();
+  AddRootItem();
   m_item_map.clear();
-
-  /*
-    At least one tree element is needed to make the context menu work,
-    otherwise it won't show. TreeCtrl::AddGroup checks if a root item
-    is needed or an existing one is available.
-  */
-  if (IsEmpty()) {
-    AddRoot(wxT("root"));
-  }
 }
 
 CItemData *TreeCtrl::GetItem(const wxTreeItemId &id) const
@@ -583,7 +592,6 @@ CItemData *TreeCtrl::GetItem(const wxTreeItemId &id) const
   return &itemiter->second;
 }
 
-//overridden from base for case-insensitive sort
 int TreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2)
 {
   const bool groupsFirst = PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree),
@@ -753,6 +761,7 @@ void EditTreeLabel(wxTreeCtrl* tree, const wxTreeItemId& id)
     edit->SelectAll();
   }
 }
+
 void TreeCtrl::OnAddGroup(wxCommandEvent& WXUNUSED(evt))
 {
   wxCHECK_RET(IsShown(), wxT("Group can only be added while in tree view"));
@@ -1026,20 +1035,6 @@ void TreeCtrl::RestoreGroupDisplayState()
   if (!groupstates.empty()) {
     SetGroupDisplayState(groupstates);
   }
-}
-
-bool TreeCtrl::Show(bool show)
-{
-  /*
-    At least one tree element is needed to make the context menu work,
-    otherwise it won't show. TreeCtrl::AddGroup checks if a root item
-    is needed or an existing one is available.
-  */
-  if (IsEmpty()) {
-    AddRoot(wxT("root"));
-  }
-
-  return wxWindow::Show(show);
 }
 
 /**

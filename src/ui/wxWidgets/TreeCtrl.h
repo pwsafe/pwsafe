@@ -142,6 +142,7 @@ public:
   bool HasSelection() const;
   bool ItemIsGroup(const wxTreeItemId& item) const;
   void AddEmptyGroup(const StringX& group) { AddGroup(group); }
+  void AddRootItem();
   void SetFilterState(bool state);
 
   void SetGroupDisplayStateAllExpanded();
@@ -149,12 +150,9 @@ public:
   void SaveGroupDisplayState();
   void RestoreGroupDisplayState();
 
-  virtual bool Show(bool show = true) override;
-
 private:
   void PreferencesChanged();
 
-  //overridden from base for case-insensitive sort
   virtual int OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2) override;
   bool ExistsInTree(wxTreeItemId node, const StringX &s, wxTreeItemId &si) const;
   wxTreeItemId AddGroup(const StringX &group);
