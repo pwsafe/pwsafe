@@ -153,7 +153,7 @@ void CompareDlg::CreateControls()
 
   m_dbSelectionPane->Expand();
 
-  dlgSizer->Add(new wxStaticLine(this), wxSizerFlags().Center().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(0));
+  dlgSizer->Add(new wxStaticLine(this), wxSizerFlags().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(0));
   dlgSizer->AddSpacer(RowSeparation);
   auto *buttons = new wxStdDialogButtonSizer;
   buttons->Add(new wxButton(this, wxID_CANCEL));
@@ -161,7 +161,7 @@ void CompareDlg::CreateControls()
   compareButton->SetDefault();
   buttons->SetAffirmativeButton(compareButton);
   buttons->Realize();
-  dlgSizer->Add(buttons, wxSizerFlags().Center().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(0));
+  dlgSizer->Add(buttons, wxSizerFlags().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(0));
   dlgSizer->AddSpacer(BottomMargin);
 
   SetSizerAndFit(dlgSizer);

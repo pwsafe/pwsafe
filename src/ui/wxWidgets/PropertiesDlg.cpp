@@ -281,7 +281,7 @@ void PropertiesDlg::CreateControls()
 
   auto flexGridSizer = new wxFlexGridSizer(3 /*cols*/, 0 /*vgap*/, 0 /*hgap*/);
   flexGridSizer->AddGrowableCol(1);
-  mainSizer->Add(flexGridSizer, 1, /*wxALIGN_CENTER_HORIZONTAL|*/wxALL|wxEXPAND, 5);
+  mainSizer->Add(flexGridSizer, 1, wxALL|wxEXPAND, 5);
 
   auto itemStaticText6 = new wxStaticText( this, wxID_STATIC, _("Database format:"), wxDefaultPosition, wxDefaultSize, 0 );
   auto dbFormatText = new wxStaticText( this, wxID_DATABASEFORMAT, wxT("9.99"), wxDefaultPosition, wxDefaultSize, 0 );

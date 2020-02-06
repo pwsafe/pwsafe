@@ -147,19 +147,19 @@ void SafeCombinationSetupDlg::CreateControls()
   itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 15);
 
   wxFlexGridSizer* itemGridSizer4 = new wxFlexGridSizer(2, 0, 10);
-  itemBoxSizer2->Add(itemGridSizer4, 0, wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxRIGHT|wxEXPAND, 30);
+  itemBoxSizer2->Add(itemGridSizer4, 0, wxLEFT|wxRIGHT|wxEXPAND, 15);
 
   wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe Combination:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemStaticText5, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemGridSizer4->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl6 = new wxTextCtrl( itemDialog1, ID_PASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-  itemGridSizer4->Add(itemTextCtrl6, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
+  itemGridSizer4->Add(itemTextCtrl6, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
   wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Verify:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemStaticText7, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemGridSizer4->Add(itemStaticText7, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl8 = new wxTextCtrl( itemDialog1, ID_VERIFY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-  itemGridSizer4->Add(itemTextCtrl8, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
+  itemGridSizer4->Add(itemTextCtrl8, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
 #ifndef NO_YUBI
   m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );

@@ -454,7 +454,7 @@ SyncOptionsSummaryPage::SyncOptionsSummaryPage(wxWizard* parent, SyncData* data)
   const wxString warning(_("WARNING!!\n\nIf you continue, fields will be updated in your existing database\nfrom your selected input database"));
   wxStaticText* txtWarn = new wxStaticText(this, wxID_ANY, warning);
   txtWarn->SetForegroundColour(*wxRED);
-  sizer->Add(txtWarn, flags.Proportion(0).Bottom());
+  sizer->Add(txtWarn, flags.Proportion(0));
 
   SetSizerAndFit(sizer);
 }
@@ -507,7 +507,7 @@ DEFINE_EVENT_TYPE(wxEVT_SYNC_START)
 SyncStatusPage::SyncStatusPage(wxWizard* parent, SyncData* data): SyncWizardPage(parent, data, _("Synchronization status"))
 {
   wxBoxSizer* sizer = m_pageSizer;
-  wxSizerFlags flags = wxSizerFlags().Expand().Proportion(1).Border(wxLEFT|wxRIGHT, SideMargin).Align(wxALIGN_CENTER_VERTICAL);
+  wxSizerFlags flags = wxSizerFlags().Expand().Proportion(1).Border(wxLEFT|wxRIGHT, SideMargin);
 
   sizer->Add(new wxStaticText(this, ID_HEADER_TXT, wxEmptyString), flags.Proportion(1));
   sizer->AddSpacer(RowSeparation);
@@ -524,7 +524,7 @@ SyncStatusPage::SyncStatusPage(wxWizard* parent, SyncData* data): SyncWizardPage
   horizSizer->Add(new wxStaticText(this, ID_FINISH_TXT, wxEmptyString), wxSizerFlags().Expand().Proportion(1));
   horizSizer->Add(new wxCheckBox(this, ID_SHOW_REPORT, _("See a detailed report"), wxDefaultPosition,
                       wxDefaultSize, 0, wxGenericValidator(&m_syncData->showReport)),
-                    wxSizerFlags().Proportion(0).Right());
+                    wxSizerFlags().Proportion(0));
   sizer->Add(horizSizer, flags.Proportion(1));
 
   SetSizerAndFit(sizer);
@@ -583,7 +583,7 @@ void SyncStatusPage::OnSyncStartEvent(wxCommandEvent& evt)
   Synchronize(m_syncData->core, otherCore);
 
   SetHeaderText(wxString::Format(_("Your database has been synchronized with \"%ls\""), otherCore->GetCurFile().c_str()));
-  SetProgressText(wxString::Format(_("%d %ls updated"), m_syncData->numUpdated,
+  SetProgressText(wxString::Format(_("%ld %ls updated"), m_syncData->numUpdated,
                       m_syncData->numUpdated == 1? _("entry"): _("entries")));
   SetSyncSummary(_("Synchronization completed successfully"));
 

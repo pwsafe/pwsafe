@@ -170,14 +170,14 @@ void YubiCfgDlg::CreateControls()
 
   wxStaticBox* itemStaticBoxSizer6Static = new wxStaticBox(itemDialog1, wxID_ANY, _("YubiKey Secret Key (20 Byte Hex)"));
   m_SKSizer = new wxStaticBoxSizer(itemStaticBoxSizer6Static, wxVERTICAL);
-  itemBoxSizer2->Add(m_SKSizer, 0, wxGROW|wxALL, 5);
+  itemBoxSizer2->Add(m_SKSizer, 0, wxEXPAND|wxALL, 5);
 
   m_SKCtrl = new wxTextCtrl( itemDialog1, ID_YKSK, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-  m_SKSizer->Add(m_SKCtrl, 0, wxGROW|wxALL, 5);
+  m_SKSizer->Add(m_SKCtrl, 0, wxEXPAND|wxALL, 5);
 
   m_ykstatus = new wxStaticText( itemDialog1, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_ykstatus->SetForegroundColour(wxColour(165, 42, 42));
-  m_SKSizer->Add(m_ykstatus, 0, wxGROW|wxALL, 5);
+  m_SKSizer->Add(m_ykstatus, 0, wxEXPAND|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
   m_SKSizer->Add(itemBoxSizer9, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);

@@ -126,13 +126,13 @@ void PasswordSubsetDlg::CreateControls()
   itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   wxGridSizer* itemGridSizer4 = new wxGridSizer(2, 3, 0, 0);
-  itemBoxSizer2->Add(itemGridSizer4, 0, wxGROW|wxALL, 5);
+  itemBoxSizer2->Add(itemGridSizer4, 0, wxEXPAND|wxALL, 5);
 
   wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Positions:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemGridSizer4->Add(itemStaticText5, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pos = new wxTextCtrl( itemDialog1, ID_TEXTCTRL_POS, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(m_pos, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemGridSizer4->Add(m_pos, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   itemGridSizer4->Add(5, 5, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -140,7 +140,7 @@ void PasswordSubsetDlg::CreateControls()
   itemGridSizer4->Add(itemStaticText8, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_vals = new wxTextCtrl( itemDialog1, ID_TEXTCTRL_VAL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-  itemGridSizer4->Add(m_vals, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemGridSizer4->Add(m_vals, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBitmapButton* itemBitmapButton10 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
   wxBitmap itemBitmapButton10BitmapSel(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
@@ -157,7 +157,7 @@ void PasswordSubsetDlg::CreateControls()
 
   m_error = new wxStaticText( itemDialog1, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_error->SetForegroundColour(wxColour(255, 0, 0));
-  itemBoxSizer2->Add(m_error, 0, wxGROW|wxALL, 5);
+  itemBoxSizer2->Add(m_error, 0, wxEXPAND|wxALL, 5);
 
   wxButton* itemButton12 = new wxButton( itemDialog1, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer2->Add(itemButton12, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);

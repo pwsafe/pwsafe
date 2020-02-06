@@ -160,7 +160,7 @@ void ManagePasswordPoliciesDlg::CreateControls()
   itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer4, 1, wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  itemBoxSizer2->Add(itemBoxSizer4, 1, wxEXPAND|wxALL, 5);
 
   m_PolicyNames = new wxGrid( itemDialog1, ID_POLICYLIST, wxDefaultPosition, wxSize(-1, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
   m_PolicyNames->SetDefaultColSize(100);
@@ -197,13 +197,13 @@ void ManagePasswordPoliciesDlg::CreateControls()
 
   wxStaticBox* itemStaticBoxSizer14Static = new wxStaticBox(itemDialog1, wxID_STATIC, _("Test Selected Policy"));
   auto *itemStaticBoxSizer14 = new wxStaticBoxSizer(itemStaticBoxSizer14Static, wxVERTICAL);
-  itemBoxSizer6->Add(itemStaticBoxSizer14, 0, wxGROW|wxALL, 5);
+  itemBoxSizer6->Add(itemStaticBoxSizer14, 0, wxEXPAND|wxALL, 5);
 
   wxButton* itemButton15 = new wxButton( itemDialog1, ID_GENERATE_PASSWORD, _("Generate"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer14->Add(itemButton15, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   auto *itemBoxSizer16 = new wxBoxSizer(wxHORIZONTAL);
-  itemStaticBoxSizer14->Add(itemBoxSizer16, 0, wxGROW|wxALL, 5);
+  itemStaticBoxSizer14->Add(itemBoxSizer16, 0, wxEXPAND|wxALL, 5);
 
   m_passwordCtrl = new wxTextCtrl( itemDialog1, ID_PASSWORD_TXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer16->Add(m_passwordCtrl, 5, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -229,7 +229,7 @@ void ManagePasswordPoliciesDlg::CreateControls()
   m_PolicyDetails->SetRowLabelSize(0);
   m_PolicyDetails->CreateGrid(8, 2, wxGrid::wxGridSelectRows);
   m_PolicyDetails->EnableEditing(false);
-  itemBoxSizer20->Add(m_PolicyDetails, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer20->Add(m_PolicyDetails, 1, wxEXPAND|wxALL, 5);
 
   m_PolicyEntries = new wxGrid( itemDialog1, ID_POLICYENTRIES, wxDefaultPosition, wxSize(-1, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
   m_PolicyEntries->SetDefaultColSize(140);
@@ -238,7 +238,7 @@ void ManagePasswordPoliciesDlg::CreateControls()
   m_PolicyEntries->SetRowLabelSize(0);
   m_PolicyEntries->CreateGrid(8, 3, wxGrid::wxGridSelectRows);
   m_PolicyEntries->EnableEditing(false);
-  itemBoxSizer20->Add(m_PolicyEntries, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer20->Add(m_PolicyEntries, 1, wxEXPAND|wxALL, 5);
 
   auto *itemStdDialogButtonSizer23 = new wxStdDialogButtonSizer;
 

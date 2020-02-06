@@ -176,7 +176,7 @@ void SafeCombinationEntryDlg::CreateControls()
   itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
-  itemBoxSizer2->Add(itemBoxSizer4, 1, wxGROW|/*wxALIGN_CENTER_VERTICAL|*/wxALL, 5);
+  itemBoxSizer2->Add(itemBoxSizer4, 1, wxEXPAND|wxALL, 5);
 
   auto *itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
@@ -191,11 +191,11 @@ void SafeCombinationEntryDlg::CreateControls()
   itemBoxSizer4->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL, 3);
 
   auto *itemBoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemBoxSizer9, 0, wxGROW|wxALL, 0);
+  itemBoxSizer4->Add(itemBoxSizer9, 0, wxEXPAND|wxALL, 0);
 
   wxArrayString m_filenameCBStrings;
   m_filenameCB = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), m_filenameCBStrings, wxCB_DROPDOWN );
-  itemBoxSizer9->Add(m_filenameCB, 1, wxGROW|/*wxALIGN_CENTER_VERTICAL|*/wxTOP|wxBOTTOM, 5);
+  itemBoxSizer9->Add(m_filenameCB, 1, wxEXPAND|wxTOP|wxBOTTOM, 5);
 
   wxButton* itemButton11 = new wxButton( itemDialog1, ID_ELLIPSIS, wxT("..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
   itemBoxSizer9->Add(itemButton11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -204,10 +204,10 @@ void SafeCombinationEntryDlg::CreateControls()
   itemBoxSizer4->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL, 3);
 
   m_combinationEntry = new SafeCombinationCtrl( itemDialog1, ID_COMBINATION, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer4->Add(m_combinationEntry, 0, wxGROW|wxRIGHT|wxTOP|wxBOTTOM, 5);
+  itemBoxSizer4->Add(m_combinationEntry, 0, wxEXPAND|wxRIGHT|wxTOP|wxBOTTOM, 5);
 
   auto *itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemBoxSizer14, 0, wxGROW|wxALL, 5);
+  itemBoxSizer4->Add(itemBoxSizer14, 0, wxEXPAND|wxALL, 5);
 
   wxCheckBox* itemCheckBox15 = new wxCheckBox( itemDialog1, ID_READONLY, _("Open as read-only"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox15->SetValue(false);
@@ -224,7 +224,7 @@ void SafeCombinationEntryDlg::CreateControls()
   itemBoxSizer14->Add(itemButton17, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxTOP|wxBOTTOM, 5);
 
   auto *itemBoxSizer18 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemBoxSizer18, 0, wxGROW|wxALL, 5);
+  itemBoxSizer4->Add(itemBoxSizer18, 0, wxEXPAND|wxALL, 5);
 
 #ifndef NO_YUBI
   m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
@@ -236,7 +236,7 @@ void SafeCombinationEntryDlg::CreateControls()
 
   auto *itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
 
-  itemBoxSizer4->Add(itemStdDialogButtonSizer21, 0, wxGROW|wxALL, 5);
+  itemBoxSizer4->Add(itemStdDialogButtonSizer21, 0, wxEXPAND|wxALL, 5);
   wxButton* itemButton22 = new wxButton( itemDialog1, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
   itemButton22->SetDefault();
   itemStdDialogButtonSizer21->AddButton(itemButton22);

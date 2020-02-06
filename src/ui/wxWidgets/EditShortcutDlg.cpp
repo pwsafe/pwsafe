@@ -152,33 +152,33 @@ void EditShortcutDlg::CreateControls()
   itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   wxGridSizer* itemGridSizer4 = new wxGridSizer(3, 2, 0, 0);
-  itemBoxSizer2->Add(itemGridSizer4, 0, wxGROW|wxALL, 5);
+  itemBoxSizer2->Add(itemGridSizer4, 0, wxEXPAND|wxALL, 5);
 
   wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Group:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemGridSizer4->Add(itemStaticText5, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString m_groupCtrlStrings;
   m_groupCtrl = new wxComboBox( itemDialog1, ID_SC_GROUP, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_groupCtrlStrings, wxCB_DROPDOWN );
-  itemGridSizer4->Add(m_groupCtrl, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemGridSizer4->Add(m_groupCtrl, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemGridSizer4->Add(itemStaticText7, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl8 = new wxTextCtrl( itemDialog1, ID_TEXTCTRL16, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemTextCtrl8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemGridSizer4->Add(itemTextCtrl8, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemGridSizer4->Add(itemStaticText9, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( itemDialog1, ID_TEXTCTRL17, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemTextCtrl10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemGridSizer4->Add(itemTextCtrl10, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer11Static = new wxStaticBox(itemDialog1, wxID_ANY, _("Date/Time Information"));
   wxStaticBoxSizer* itemStaticBoxSizer11 = new wxStaticBoxSizer(itemStaticBoxSizer11Static, wxVERTICAL);
   itemBoxSizer2->Add(itemStaticBoxSizer11, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   wxGridSizer* itemGridSizer12 = new wxGridSizer(4, 2, 0, 0);
-  itemStaticBoxSizer11->Add(itemGridSizer12, 0, wxGROW|wxALL, 5);
+  itemStaticBoxSizer11->Add(itemGridSizer12, 0, wxEXPAND|wxALL, 5);
 
   wxStaticText* itemStaticText13 = new wxStaticText( itemDialog1, wxID_STATIC, _("Created on:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemGridSizer12->Add(itemStaticText13, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -206,7 +206,7 @@ void EditShortcutDlg::CreateControls()
 
   wxStdDialogButtonSizer* itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
 
-  itemBoxSizer2->Add(itemStdDialogButtonSizer21, 0, wxGROW|wxALL, 5);
+  itemBoxSizer2->Add(itemStdDialogButtonSizer21, 0, wxEXPAND|wxALL, 5);
   wxButton* itemButton22 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStdDialogButtonSizer21->AddButton(itemButton22);
 

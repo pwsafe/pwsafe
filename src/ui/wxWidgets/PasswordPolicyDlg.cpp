@@ -176,7 +176,7 @@ void PasswordPolicyDlg::CreateControls()
   /////////////////////////////////////////////////////////////////////////////
 
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer3, 0, wxALIGN_CENTER_HORIZONTAL|wxEXPAND|wxALL, 5);
+  itemBoxSizer2->Add(itemBoxSizer3, 0, wxEXPAND|wxALL, 5);
 
   wxStaticText* itemStaticText4 = new wxStaticText( itemDialog1, wxID_STATIC, _("Policy Name:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer3->Add(itemStaticText4, 1, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -190,7 +190,7 @@ void PasswordPolicyDlg::CreateControls()
   /////////////////////////////////////////////////////////////////////////////
 
   wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer4, 0, wxALIGN_CENTER_HORIZONTAL|wxEXPAND|wxALL, 5);
+  itemBoxSizer2->Add(itemBoxSizer4, 0, wxEXPAND|wxALL, 5);
 
   m_UseDatabasePolicyCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX41, _("Use Database Policy"), wxDefaultPosition, wxDefaultSize, 0 );
   m_UseDatabasePolicyCtrl->SetValue(true);
@@ -206,7 +206,7 @@ void PasswordPolicyDlg::CreateControls()
 
   wxStaticBox* itemStaticBoxSizer6Static = new wxStaticBox(itemDialog1, wxID_ANY, _("Random password generation rules"));
   m_itemStaticBoxSizer6 = new wxStaticBoxSizer(itemStaticBoxSizer6Static, wxVERTICAL);
-  itemBoxSizer2->Add(m_itemStaticBoxSizer6, 1, wxALIGN_CENTER_HORIZONTAL|wxEXPAND|wxALL, 5);
+  itemBoxSizer2->Add(m_itemStaticBoxSizer6, 1, wxEXPAND|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
   m_itemStaticBoxSizer6->Add(itemBoxSizer7, 0, wxALIGN_LEFT|wxALL, 5);
@@ -317,7 +317,7 @@ void PasswordPolicyDlg::CreateControls()
 
   m_OwnSymbols = new wxTextCtrl( itemDialog1, IDC_OWNSYMBOLS, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   ApplyFontPreference(m_OwnSymbols, PWSprefs::StringPrefs::PasswordFont);
-  m_pwMinsGSzr->Add(m_OwnSymbols, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxEXPAND|wxALL, 5);
+  m_pwMinsGSzr->Add(m_OwnSymbols, 1, wxALIGN_LEFT|wxEXPAND|wxALL, 5);
 
   wxButton* itemButton32 = new wxButton( itemDialog1, ID_RESET_SYMBOLS, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwMinsGSzr->Add(itemButton32, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -350,7 +350,7 @@ void PasswordPolicyDlg::CreateControls()
   /////////////////////////////////////////////////////////////////////////////
 
   wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxEXPAND|wxALL, 5);
+  itemBoxSizer2->Add(itemBoxSizer5, 0, wxEXPAND|wxALL, 5);
 
   m_passwordCtrl = new wxTextCtrl( itemDialog1, ID_GENERATEDPASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(m_passwordCtrl, 1, wxALIGN_CENTER_VERTICAL|wxLEFT, 20);
