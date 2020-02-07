@@ -146,31 +146,31 @@ void SafeCombinationPromptDlg::CreateControls()
   itemDialog1->SetSizer(itemBoxSizer2);
 
   auto *itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer3, 1, /*wxALIGN_CENTER_HORIZONTAL|*/wxALL|wxEXPAND, 5);
+  itemBoxSizer2->Add(itemBoxSizer3, 1, wxALL|wxEXPAND, 5);
 
   wxStaticBitmap* itemStaticBitmap4 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(L"graphics/cpane.xpm"), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
   itemBoxSizer3->Add(itemStaticBitmap4, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer5 = new wxBoxSizer(wxVERTICAL);
-  itemBoxSizer3->Add(itemBoxSizer5, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxGROW, 5);
+  itemBoxSizer3->Add(itemBoxSizer5, 1, wxALL|wxEXPAND, 5);
 
   wxStaticText* itemStaticText6 = new wxStaticText( itemDialog1, wxID_STATIC, _("Please enter the safe combination for this password database."), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticText6, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5);
+  itemBoxSizer5->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("filename"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemStaticText7, 0, wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer5->Add(itemBoxSizer8, 0, wxGROW|wxALL|wxEXPAND, 5);
+  itemBoxSizer5->Add(itemBoxSizer8, 0, wxALL|wxEXPAND, 5);
 
   wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe combination:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer8->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_scctrl = new SafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxDefaultSize );
-  itemBoxSizer8->Add(m_scctrl, 1, wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
+  itemBoxSizer8->Add(m_scctrl, 1, wxALL|wxEXPAND, 5);
 
   auto *itemBoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer5->Add(itemBoxSizer11, 0, wxGROW|wxALL, 5);
+  itemBoxSizer5->Add(itemBoxSizer11, 0, wxEXPAND|wxALL, 5);
 
 #ifndef NO_YUBI
   m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
@@ -185,7 +185,7 @@ void SafeCombinationPromptDlg::CreateControls()
 #endif
 
   auto itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer4, 0, wxALIGN_BOTTOM|wxALL|wxEXPAND, 5);
+  itemBoxSizer2->Add(itemBoxSizer4, 0, wxALL|wxEXPAND, 5);
 
   itemBoxSizer4->Add(
     new wxButton(itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0), 
@@ -201,12 +201,12 @@ void SafeCombinationPromptDlg::CreateControls()
 
   itemBoxSizer4->Add(
     new wxButton(itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0), 
-    0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5
+    0, wxALIGN_CENTER_VERTICAL|wxALL, 5
   );
 
   auto *okButton = new wxButton(itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
   itemBoxSizer4->Add(
-    okButton, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5
+    okButton, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5
   );
   okButton->SetDefault();
 

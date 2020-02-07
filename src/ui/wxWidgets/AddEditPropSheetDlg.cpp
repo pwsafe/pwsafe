@@ -365,31 +365,31 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
 
   m_BasicSizer = new wxGridBagSizer();
 
-  itemBoxSizer3->Add(m_BasicSizer, 1, wxGROW|wxALIGN_LEFT|wxALIGN_TOP|wxALL, 0);
+  itemBoxSizer3->Add(m_BasicSizer, 1, wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP|wxALL, 0);
   auto *itemStaticText6 = new wxStaticText( panel, wxID_STATIC, _("Group:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemStaticText6, wxGBPosition(/*row:*/ 0, /*column:*/ 0), wxDefaultSpan,  wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxArrayString groupCtrlStrings;
   m_BasicGroupNamesCtrl = new wxComboBox( panel, ID_COMBOBOX_GROUP, wxEmptyString, wxDefaultPosition, wxDefaultSize, groupCtrlStrings, wxCB_DROPDOWN );
-  m_BasicSizer->Add(m_BasicGroupNamesCtrl, wxGBPosition(/*row:*/ 0, /*column:*/ 1), wxDefaultSpan, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicGroupNamesCtrl, wxGBPosition(/*row:*/ 0, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemStaticText9 = new wxStaticText( panel, wxID_STATIC, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemStaticText9, wxGBPosition(/*row:*/ 1, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_BasicTitleTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_TITLE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicTitleTextCtrl, wxGBPosition(/*row:*/ 1, /*column:*/ 1), wxDefaultSpan, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicTitleTextCtrl, wxGBPosition(/*row:*/ 1, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemStaticText12 = new wxStaticText( panel, wxID_STATIC, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemStaticText12, wxGBPosition(/*row:*/ 2, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_BasicUsernameTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_USERNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicUsernameTextCtrl , wxGBPosition(/*row:*/ 2, /*column:*/ 1), wxDefaultSpan, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicUsernameTextCtrl , wxGBPosition(/*row:*/ 2, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemStaticText15 = new wxStaticText( panel, wxID_STATIC, _("Password:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemStaticText15, wxGBPosition(/*row:*/ 3, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_BasicPasswordTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicPasswordTextCtrl, wxGBPosition(/*row:*/ 3, /*column:*/ 1), wxDefaultSpan, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicPasswordTextCtrl, wxGBPosition(/*row:*/ 3, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_BasicShowHideCtrl = new wxButton( panel, ID_BUTTON2, _("&Hide"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(m_BasicShowHideCtrl, wxGBPosition(/*row:*/ 3, /*column:*/ 2), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -401,13 +401,13 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicSizer->Add(itemStaticText22, wxGBPosition(/*row:*/ 4, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_BasicPasswordConfirmationTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-  m_BasicSizer->Add(m_BasicPasswordConfirmationTextCtrl, wxGBPosition(/*row:*/ 4, /*column:*/ 1), wxDefaultSpan, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicPasswordConfirmationTextCtrl, wxGBPosition(/*row:*/ 4, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemStaticText25 = new wxStaticText( panel, wxID_STATIC, _("URL:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemStaticText25, wxGBPosition(/*row:*/ 5, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_BasicUrlTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_URL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicUrlTextCtrl, wxGBPosition(/*row:*/ 5, /*column:*/ 1), wxDefaultSpan, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicUrlTextCtrl, wxGBPosition(/*row:*/ 5, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemButton29 = new wxButton( panel, ID_GO_BTN, _("Go"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemButton29, wxGBPosition(/*row:*/ 5, /*column:*/ 2), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT, 5);
@@ -416,7 +416,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicSizer->Add(itemStaticText30, wxGBPosition(/*row:*/ 6, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_BasicEmailTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_EMAIL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicEmailTextCtrl, wxGBPosition(/*row:*/ 6, /*column:*/ 1), wxDefaultSpan, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicEmailTextCtrl, wxGBPosition(/*row:*/ 6, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemButton34 = new wxButton( panel, ID_SEND_BTN, _("Send"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemButton34, wxGBPosition(/*row:*/ 6, /*column:*/ 2), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT, 5);
@@ -425,7 +425,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicSizer->Add(itemStaticText36, wxGBPosition(/*row:*/ 7, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_TOP|wxALL, 5);
 
   m_BasicNotesTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_NOTES, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
-  m_BasicSizer->Add(m_BasicNotesTextCtrl, wxGBPosition(/*row:*/ 7, /*column:*/ 1), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3) , wxGROW|wxALL, 5);
+  m_BasicSizer->Add(m_BasicNotesTextCtrl, wxGBPosition(/*row:*/ 7, /*column:*/ 1), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3) , wxEXPAND|wxALL, 5);
 
   m_BasicSizer->AddGrowableCol(1);  // Growable text entry fields
   m_BasicSizer->AddGrowableRow(7);  // Growable notes field
@@ -446,18 +446,18 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
   panel->SetSizer(itemBoxSizer39);
 
   auto *itemFlexGridSizer40 = new wxFlexGridSizer(0, 2, 0, 0);
-  itemBoxSizer39->Add(itemFlexGridSizer40, 0, wxGROW | wxALL, 5);
+  itemBoxSizer39->Add(itemFlexGridSizer40, 0, wxEXPAND | wxALL, 5);
   auto *itemStaticText41 = new wxStaticText(panel, wxID_STATIC, _("Autotype:"), wxDefaultPosition, wxDefaultSize, 0);
   itemFlexGridSizer40->Add(itemStaticText41, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemTextCtrl42 = new wxTextCtrl(panel, ID_TEXTCTRL_AUTOTYPE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-  itemFlexGridSizer40->Add(itemTextCtrl42, 0, wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  itemFlexGridSizer40->Add(itemTextCtrl42, 0, wxEXPAND | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemStaticText43 = new wxStaticText(panel, wxID_STATIC, _("Run Cmd:"), wxDefaultPosition, wxDefaultSize, 0);
   itemFlexGridSizer40->Add(itemStaticText43, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemTextCtrl44 = new wxTextCtrl(panel, ID_TEXTCTRL_RUN_CMD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-  itemFlexGridSizer40->Add(itemTextCtrl44, 0, wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  itemFlexGridSizer40->Add(itemTextCtrl44, 0, wxEXPAND | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemStaticText45 = new wxStaticText(panel, wxID_STATIC, _("Double-Click Action:"), wxDefaultPosition, wxDefaultSize, 0);
   itemFlexGridSizer40->Add(itemStaticText45, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -477,9 +477,9 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
 
   auto *itemStaticBoxSizer49Static = new wxStaticBox(panel, wxID_ANY, _("Password History"));
   auto *itemStaticBoxSizer49 = new wxStaticBoxSizer(itemStaticBoxSizer49Static, wxVERTICAL);
-  itemBoxSizer39->Add(itemStaticBoxSizer49, 0, wxGROW | wxALL, 5);
+  itemBoxSizer39->Add(itemStaticBoxSizer49, 0, wxEXPAND | wxALL, 5);
   auto *itemBoxSizer50 = new wxBoxSizer(wxHORIZONTAL);
-  itemStaticBoxSizer49->Add(itemBoxSizer50, 0, wxGROW | wxALL, 5);
+  itemStaticBoxSizer49->Add(itemBoxSizer50, 0, wxEXPAND | wxALL, 5);
   auto *itemCheckBox51 = new wxCheckBox(panel, ID_CHECKBOX_KEEP, _("Keep"), wxDefaultPosition, wxDefaultSize, 0);
   itemCheckBox51->SetValue(false);
   itemBoxSizer50->Add(itemCheckBox51, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -502,10 +502,10 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
   m_AdditionalPasswordHistoryGrid->SetColLabelSize(25);
   m_AdditionalPasswordHistoryGrid->SetRowLabelSize(0);
   m_AdditionalPasswordHistoryGrid->CreateGrid(5, 2, wxGrid::wxGridSelectRows);
-  itemStaticBoxSizer49->Add(m_AdditionalPasswordHistoryGrid, 0, wxGROW | wxALL, 5);
+  itemStaticBoxSizer49->Add(m_AdditionalPasswordHistoryGrid, 0, wxEXPAND | wxALL, 5);
 
   auto *itemBoxSizer55 = new wxBoxSizer(wxHORIZONTAL);
-  itemStaticBoxSizer49->Add(itemBoxSizer55, 0, wxGROW | wxALL, 5);
+  itemStaticBoxSizer49->Add(itemBoxSizer55, 0, wxEXPAND | wxALL, 5);
   wxButton *itemButton56 = new wxButton(panel, ID_BUTTON_CLEAR_HIST, _("Clear History"), wxDefaultPosition, wxDefaultSize, 0);
   itemBoxSizer55->Add(itemButton56, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -531,11 +531,11 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
 
   auto *itemStaticBoxSizer61Static = new wxStaticBox(panel, wxID_ANY, _("Password Expiry"));
   auto *itemStaticBoxSizer61 = new wxStaticBoxSizer(itemStaticBoxSizer61Static, wxVERTICAL);
-  itemBoxSizer60->Add(itemStaticBoxSizer61, 0, wxGROW | wxALL, 5);
+  itemBoxSizer60->Add(itemStaticBoxSizer61, 0, wxEXPAND | wxALL, 5);
   auto *itemBoxSizer62 = new wxBoxSizer(wxVERTICAL);
-  itemStaticBoxSizer61->Add(itemBoxSizer62, 0, wxGROW | wxALL, 0);
+  itemStaticBoxSizer61->Add(itemBoxSizer62, 0, wxEXPAND | wxALL, 0);
   auto *itemFlexGridSizer63 = new wxFlexGridSizer(0, 3, 0, 0);
-  itemBoxSizer62->Add(itemFlexGridSizer63, 0, wxGROW | wxALL, 5);
+  itemBoxSizer62->Add(itemFlexGridSizer63, 0, wxEXPAND | wxALL, 5);
   m_DatesTimesExpireOnCtrl = new wxRadioButton(panel, ID_RADIOBUTTON_ON, _("On"), wxDefaultPosition, wxDefaultSize, 0);
   m_DatesTimesExpireOnCtrl->SetValue(false);
   itemFlexGridSizer63->Add(m_DatesTimesExpireOnCtrl, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -575,7 +575,7 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
   itemBoxSizer72->Add(m_DatesTimesNeverExpireCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemBoxSizer74 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer62->Add(itemBoxSizer74, 0, wxGROW | wxALL, 5);
+  itemBoxSizer62->Add(itemBoxSizer74, 0, wxEXPAND | wxALL, 5);
   auto *itemStaticText75 = new wxStaticText(panel, wxID_STATIC, _("Original Value:"), wxDefaultPosition, wxDefaultSize, 0);
   itemBoxSizer74->Add(itemStaticText75, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -584,7 +584,7 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
 
   auto *itemStaticBoxSizer77Static = new wxStaticBox(panel, wxID_ANY, _("Statistics"));
   auto *itemStaticBoxSizer77 = new wxStaticBoxSizer(itemStaticBoxSizer77Static, wxVERTICAL);
-  itemBoxSizer60->Add(itemStaticBoxSizer77, 0, wxGROW | wxALL, 5);
+  itemBoxSizer60->Add(itemStaticBoxSizer77, 0, wxEXPAND | wxALL, 5);
   auto *itemFlexGridSizer78 = new wxFlexGridSizer(0, 2, 0, 0);
   itemStaticBoxSizer77->Add(itemFlexGridSizer78, 0, wxALIGN_LEFT | wxALL, 5);
   auto *itemStaticText79 = new wxStaticText(panel, wxID_STATIC, _("Created on:"), wxDefaultPosition, wxDefaultSize, 0);
@@ -630,10 +630,10 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 
   auto *itemStaticBoxSizer88Static = new wxStaticBox(panel, wxID_ANY, _("Random password generation rules"));
   auto *itemStaticBoxSizer88 = new wxStaticBoxSizer(itemStaticBoxSizer88Static, wxVERTICAL);
-  itemBoxSizer61->Add(itemStaticBoxSizer88, 0, wxGROW | wxALL, 5);
+  itemBoxSizer61->Add(itemStaticBoxSizer88, 0, wxEXPAND | wxALL, 5);
 
   auto *itemBoxSizer89 = new wxBoxSizer(wxHORIZONTAL);
-  itemStaticBoxSizer88->Add(itemBoxSizer89, 0, wxGROW | wxALL, 0);
+  itemStaticBoxSizer88->Add(itemBoxSizer89, 0, wxEXPAND | wxALL, 0);
 
   m_PasswordPolicyUseDatabaseCtrl = new wxCheckBox(panel, ID_CHECKBOX42, _("Use Database Policy"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
   m_PasswordPolicyUseDatabaseCtrl->SetValue(false);
@@ -646,7 +646,7 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
   itemBoxSizer89->Add(m_PasswordPolicyNamesCtrl, 0, wxALIGN_TOP | wxALL, 5);
 
   auto *itemStaticLine94 = new wxStaticLine(panel, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
-  itemStaticBoxSizer88->Add(itemStaticLine94, 0, wxGROW | wxALL, 5);
+  itemStaticBoxSizer88->Add(itemStaticLine94, 0, wxEXPAND | wxALL, 5);
 
   auto *itemBoxSizer95 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer88->Add(itemBoxSizer95, 0, wxALIGN_LEFT | wxALL, 5);
@@ -756,7 +756,7 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 
   // Own Symbols Rules
   m_PasswordPolicyOwnSymbolsTextCtrl = new wxTextCtrl(panel, IDC_OWNSYMBOLS, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-  m_PasswordPolicySizer->Add(m_PasswordPolicyOwnSymbolsTextCtrl, 1, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALL, 5);
+  m_PasswordPolicySizer->Add(m_PasswordPolicyOwnSymbolsTextCtrl, 1, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
 
   auto *itemButton120 = new wxButton(panel, ID_RESET_SYMBOLS, _("Reset"), wxDefaultPosition, wxDefaultSize, 0);
   m_PasswordPolicySizer->Add(itemButton120, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);

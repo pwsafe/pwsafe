@@ -164,7 +164,7 @@ void SafeCombinationChangeDlg::CreateControls()
   itemFlexGridSizer4->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_oldPasswdEntry = new SafeCombinationCtrl( itemDialog1, ID_OLDPASSWD, &m_oldpasswd, wxDefaultPosition, wxDefaultSize );
-  itemFlexGridSizer4->Add(m_oldPasswdEntry, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
+  itemFlexGridSizer4->Add(m_oldPasswdEntry, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
 #ifndef NO_YUBI
   m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
@@ -175,7 +175,7 @@ void SafeCombinationChangeDlg::CreateControls()
   itemFlexGridSizer4->Add(itemStaticText8, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_newPasswdEntry = new SafeCombinationCtrl( itemDialog1, ID_NEWPASSWD, &m_newpasswd, wxDefaultPosition, wxDefaultSize );
-  itemFlexGridSizer4->Add(m_newPasswdEntry, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
+  itemFlexGridSizer4->Add(m_newPasswdEntry, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
 #ifndef NO_YUBI
   m_YubiBtn2 = new wxBitmapButton( itemDialog1, ID_YUBIBTN2, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
@@ -186,18 +186,18 @@ void SafeCombinationChangeDlg::CreateControls()
   itemFlexGridSizer4->Add(itemStaticText11, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_confirmEntry = new SafeCombinationCtrl( itemDialog1, ID_CONFIRM, &m_confirm, wxDefaultPosition, wxDefaultSize );
-  itemFlexGridSizer4->Add(m_confirmEntry, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
+  itemFlexGridSizer4->Add(m_confirmEntry, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
   itemFlexGridSizer4->Add(10, 10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
 #ifndef NO_YUBI
   m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer2->Add(m_yubiStatusCtrl, 0, wxGROW|wxALL, 5);
+  itemBoxSizer2->Add(m_yubiStatusCtrl, 0, wxEXPAND|wxALL, 5);
 #endif
 
   wxStdDialogButtonSizer* itemStdDialogButtonSizer15 = new wxStdDialogButtonSizer;
 
-  itemBoxSizer2->Add(itemStdDialogButtonSizer15, 0, wxGROW|wxALL, 5);
+  itemBoxSizer2->Add(itemStdDialogButtonSizer15, 0, wxEXPAND|wxALL, 5);
   wxButton* itemButton16 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
   itemButton16->SetDefault();
   itemStdDialogButtonSizer15->AddButton(itemButton16);
