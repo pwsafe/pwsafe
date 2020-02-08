@@ -1655,16 +1655,11 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
   // As pci may be invalidated if database is Locked while in this routine,
   // we use a clone
-  CItemData ci_original(*pci);
+  const CItemData ci_original(*pci);
 
   pci = NULL; // Set to NULL - use ci_original
 
   pws_os::CUUID entryuuid = ci_original.GetUUID();
-
-  // Determine if last entry in this group just in case the user changes the group
-  DisplayInfo *pdi = GetEntryGUIInfo(ci_original);
-  bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
-                    (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
 
   const CItemData *pbci = GetBaseEntry(&ci_original);
 
@@ -1686,6 +1681,11 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
   INT_PTR rc = dlg_editshortcut.DoModal();
 
   if (rc == IDOK && dlg_editshortcut.IsEntryModified()) {
+    // Determine if last entry in this group just in case the user changed the group
+    DisplayInfo *pdi = GetEntryGUIInfo(ci_original);
+    bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
+        (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
+
     // Out with the old, in with the new
     // User cannot change a shortcut entry to anything else!
     ItemListIter listpos = Find(ci_original.GetUUID());
@@ -1740,7 +1740,7 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
     UpdateToolBarForSelectedItem(&ci_edit);
     return true;
-  } // rc == IDOK
+  } // rc == IDOK && dlg_editshortcut.IsEntryModified()
   return false;
 }
 
