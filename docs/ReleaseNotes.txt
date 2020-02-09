@@ -17,6 +17,8 @@ Bugs Fixed in 3.52pre
 =====================
 [GH634] Clearing an entry's username no longer causes a revert to
 default.
+[1505] No longer crashes when trying to view or copy a shortcut from
+the "compare databases" results.
 
 Bugs Fixed in 3.51
 ==================
