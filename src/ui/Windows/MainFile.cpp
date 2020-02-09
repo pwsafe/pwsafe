@@ -3656,6 +3656,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
 {
   // This is always from Comparison DB to Current DB
   bool bWasEmpty = ptocore->GetNumEntries() == 0;
+  CUUID baseUUID = CUUID::NullUUID();
 
   // Copy *pfromcore entry -> *ptocore entry
   ItemListIter fromPos = pfromcore->Find(fromUUID);
@@ -3674,6 +3675,24 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   }
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+  // Are we copying a dependent entry? If so, need to handle the base first
+  if (ci_temp.IsDependent()) {
+    baseUUID = ci_temp.GetBaseUUID();
+    if (ptocore->Find(baseUUID) == ptocore->GetEntryEndIter()) {
+      // do we have an entry with the same group/title/user in the target core?
+      const CItemData &ci_base(pfromcore->Find(baseUUID)->second);
+      auto to_baseIter = ptocore->Find(ci_base.GetGroup(), ci_base.GetTitle(), ci_base.GetUser());
+      if (to_baseIter != ptocore->GetEntryEndIter()) {
+        baseUUID = to_baseIter->second.GetUUID();
+      } else {
+        // no matching base entry, we'll have to add it ourselves
+        pmulticmds->Add(AddEntryCommand::Create(ptocore, ci_base));
+      }
+    } else {
+      // easy case, base is already in target core.
+    }
+  }
 
   // Check policy names
   // Don't really need the map and vector as only copying 1 entry
@@ -3713,7 +3732,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
       ci_temp.SetKBShortcut(0);
     }
     ci_temp.SetStatus(CItemData::ES_ADDED);
-    pmulticmds->Add(AddEntryCommand::Create(ptocore, ci_temp));
+    pmulticmds->Add(AddEntryCommand::Create(ptocore, ci_temp, baseUUID));
   }
 
   // Do it
