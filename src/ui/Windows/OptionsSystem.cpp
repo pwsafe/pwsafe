@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,6 +13,7 @@
 #include "ThisMfcApp.h"    // For Help
 #include "Options_PropertySheet.h"
 #include "GeneralMsgBox.h"
+#include "winutils.h"
 
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
@@ -23,9 +24,6 @@
 #include "resource3.h"  // String resources
 
 #include "OptionsSystem.h" // Must be after resource.h
-
-extern bool OfferConfigMigration();
-extern bool PerformConfigMigration();
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -146,7 +144,7 @@ BOOL COptionsSystem::OnInitDialog()
 
   bool bofferdeleteregistry = prefs->OfferDeleteRegistry();
 
-  bool boffermigrate2appdata = OfferConfigMigration();
+  bool boffermigrate2appdata = WinUtil::OfferConfigMigration();
 
   if (!bofferdeleteregistry) {
     GetDlgItem(IDC_REGDEL)->ShowWindow(SW_HIDE);
@@ -168,16 +166,14 @@ BOOL COptionsSystem::OnInitDialog()
   GetDlgItem(IDC_APPLYCONFIGCHANGES)->EnableWindow(FALSE);
 
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_RESPIN);
-
   pspin->SetBuddy(GetDlgItem(IDC_MAXREITEMS));
-  pspin->SetRange(0, ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1);
+  pspin->SetRange(M_prefminREItems(), M_prefmaxREItems());
   pspin->SetBase(10);
   pspin->SetPos(m_MaxREItems);
 
   pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_MRUSPIN);
-
   pspin->SetBuddy(GetDlgItem(IDC_MAXMRUITEMS));
-  pspin->SetRange(0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
+  pspin->SetRange(M_prefminMRU(), M_prefmaxMRU());
   pspin->SetBase(10);
   pspin->SetPos(m_MaxMRUItems);
 
@@ -342,7 +338,7 @@ void COptionsSystem::OnApplyConfigChanges()
 
   if (m_Migrate2Appdata == TRUE) {
     GetDlgItem(IDC_MIGRATETOAPPDATA)->EnableWindow(FALSE);
-    PerformConfigMigration();
+    WinUtil::PerformConfigMigration();
   }
 
   if (!GetDlgItem(IDC_REGDEL)->IsWindowEnabled() && 

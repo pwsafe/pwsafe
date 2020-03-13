@@ -34,6 +34,7 @@ if (NOT NO_YUBI)
 endif ()
   elseif (APPLE)
   set (OS_SRCS
+    mac/cleanup.cpp
     mac/debug.cpp
     mac/dir.cpp
     mac/env.cpp
@@ -56,10 +57,12 @@ endif ()
   set (OS_SRCS
     unix/KeySend.cpp
     unix/UUID.cpp
+    unix/cleanup.cpp
     unix/debug.cpp
     unix/dir.cpp
     unix/env.cpp
     unix/file.cpp
+    unix/keyname.cpp
     unix/logit.cpp
     unix/media.cpp
     unix/mem.cpp
@@ -84,4 +87,4 @@ if(HAVE_YKPERS_H)
     list(APPEND OS_SRCS ${OS_YUBI_SRC})
 endif()
 
-add_library(os ${OS_SRCS})
+add_library(os STATIC ${OS_SRCS})

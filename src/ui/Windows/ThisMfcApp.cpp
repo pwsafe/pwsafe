@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -33,7 +33,6 @@
 #include "PWSversion.h"
 
 #include "core/Util.h"
-#include "core/BlowFish.h"
 #include "core/PWSprefs.h"
 #include "core/PWSrand.h"
 #include "core/PWSdirs.h"
@@ -62,8 +61,6 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define UNIQUE_PWS_GUID L"PasswordSafe-{3FE0D665-1AE6-49b2-8359-326407D56470}"
-
 const UINT ThisMfcApp::m_uiRegMsg   = RegisterWindowMessage(UNIQUE_PWS_GUID);
 const UINT ThisMfcApp::m_uiWH_SHELL = RegisterWindowMessage(UNIQUE_PWS_SHELL);
 
@@ -72,22 +69,17 @@ END_MESSAGE_MAP()
 
 static MFCReporter aReporter;
 static MFCAsker    anAsker;
-#ifndef _DEBUG
-extern wchar_t *wcRevision;
-extern wchar_t *wcMsg1;
-extern wchar_t *wcMsg2;
-extern wchar_t *wcMsg3;
-extern wchar_t *wcCaption;
-#endif
 
 ThisMfcApp::ThisMfcApp() :
+  m_ghAccelTable(nullptr),
+  m_pDbx(nullptr), 
+  m_pMainMenu(nullptr), m_pMRUMenu(nullptr), m_pMRU(nullptr),
   m_bUseAccelerator(true),
-  m_pMRU(NULL), m_TrayLockedState(LOCKED), m_pTrayIcon(NULL),
-  m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
-  m_ghAccelTable(NULL), m_pMainMenu(NULL),
-  m_bACCEL_Table_Created(false), m_noSysEnvWarnings(false),
-  m_bPermitTestdump(false), m_hInstResDLL(NULL), m_ResLangID(0),
-  m_pMRUMenu(NULL)
+  m_hMutexOneInstance(nullptr), m_hInstResDLL(nullptr),
+  m_HotKeyPressed(false), m_bACCEL_Table_Created(false),
+  m_ResLangID(0),
+  m_noSysEnvWarnings(false),
+  m_bPermitTestdump(false)
 {
   // Get my Thread ID
   m_nBaseThreadID = AfxGetThread()->m_nThreadID;
@@ -127,12 +119,16 @@ ThisMfcApp::ThisMfcApp() :
 
   // Set this process to be one of the first to be shut down:
   SetProcessShutdownParameters(0x3ff, 0);
+
   PWSprefs::SetReporter(&aReporter);
   PWScore::SetReporter(&aReporter);
   PWScore::SetAsker(&anAsker);
+
   EnableHtmlHelp();
+
   CoInitializeEx(NULL, COINIT_APARTMENTTHREADED); // Initializes the COM library
   //                                                 (for XML and Yubikeyprocessing)
+  
   AfxEnableControlContainer();
   AfxOleInit();
 }
@@ -223,7 +219,7 @@ int ThisMfcApp::ExitInstance()
 {
   if (m_hInstResDLL != m_hInstance)
     pws_os::FreeLibrary(m_hInstResDLL);
-
+  delete m_pDbx;
   CWinApp::ExitInstance();
   return 0;
 }
@@ -373,20 +369,20 @@ void ThisMfcApp::LoadLocalizedStuff()
   cs_ResPath.Format(format_string, static_cast<LPCWSTR>(cs_LANG),
                        static_cast<LPCWSTR>(cs_CTRY));
   m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
-                                              pws_os::LOAD_LIBRARY_RESOURCE));
+                                              pws_os::loadLibraryTypes::RESOURCE));
 
   if (m_hInstResDLL == NULL && !cs_CTRY.IsEmpty()) {
     // Now try base
     cs_ResPath.Format(L"pwsafe%s.dll", static_cast<LPCWSTR>(cs_LANG));
     m_hInstResDLL = HMODULE(pws_os::LoadLibrary(LPCTSTR(cs_ResPath),
-                                                pws_os::LOAD_LIBRARY_RESOURCE));
+                                                pws_os::loadLibraryTypes::RESOURCE));
   }
 
   if (m_hInstResDLL == NULL) {
     pws_os::Trace(L"Could not load language DLLs - using embedded resources.\n");
     // If the requested DLL is not default English, show an error so we know the specifics.
     // At a minimum this will show the actual error code.
-    if (!(cs_LANG == L"EN" && cs_CTRY.IsEmpty())) {
+    if (cs_LANG != L"EN") {
 		  CString errMessage;
 		  errMessage.Format(L"Attempt to load %s", LPCTSTR(cs_ResPath));
 		  pws_os::IssueError(LPCTSTR(errMessage));
@@ -828,7 +824,7 @@ bool ThisMfcApp::GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost
   return true;
 }
 
-bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
+bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone, bool &postMinimize)
 {
   /*
    * Command line processing:
@@ -846,7 +842,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
 
   int dialogOrientation = -1; // update pref only if set
 
-  allDone = false;
+  allDone = postMinimize = false;
   if (m_lpCmdLine[0] != L'\0') {
     CString args = m_lpCmdLine;
 
@@ -890,7 +886,6 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
            * '--setup' is meant to be used when invoking PasswordSafe at the end of the installation process.
            * It will cause the application to create a new database with the default name at the default location,
            * prompting the user for the safe combination.
-           * State of m_bSetup is accessible via public IsSetup() member function
            */
           dbox.SetSetup();
         } else if ((*arg) == L"--novalidate") {
@@ -963,12 +958,14 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
         } // -e or -d flag
         case L'C': case L'c':
           m_core.SetCurFile(L"");
-          dbox.SetStartClosed(true);
+          dbox.SetStartNoDB();
+          dbox.SetStartClosed();
           break;
         case L'M': case L'm':// closed & minimized
+          postMinimize = true;
           m_core.SetCurFile(L"");
-          dbox.SetStartClosed(true);
-          dbox.SetStartSilent(true);
+          dbox.SetStartNoDB();
+          dbox.SetStartMinimized();
           break;
         case L'R': case L'r':
           m_core.SetReadOnly(true);
@@ -978,7 +975,8 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
           break;
         case L'S': case L's':
           startSilent = true;
-          dbox.SetStartSilent(true);
+          postMinimize = true;
+          dbox.SetStartSilent();
           break;
         case L'V': case L'v':
           // Obsolete - databases are always validated during opening unless --novalidate specified
@@ -1013,7 +1011,10 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
 
     // If start silent && no filename specified, start closed as well
     if (startSilent && !fileGiven)
-      dbox.SetStartClosed(true);
+      dbox.SetStartNoDB();
+    // start silent implies system tray:
+    if (startSilent)
+      PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);
   } // Command line not empty
 
   if (!allDone) {
@@ -1053,6 +1054,7 @@ BOOL ThisMfcApp::InitInstance()
   // Command line parsing MUST be done before the first PWSprefs lookup!
   // (since user/host/config file may be overridden!)
   bool allDone = false;
+  bool postMinimize = false;
 
   // Get config information from the command line before "really" parsing the command line!
   StringX sxConfigFile, sxHost, sxUser;
@@ -1087,22 +1089,13 @@ BOOL ThisMfcApp::InitInstance()
 
   // Do not create dbox before config data obtained as it would create PWSprefs
   // using the potentially incorrect config data
-  DboxMain dbox(NULL);
-
-  std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions;
-  bsSupportedFunctions.set(UIInterFace::DATABASEMODIFIED);
-  bsSupportedFunctions.set(UIInterFace::UPDATEGUI);
-  bsSupportedFunctions.set(UIInterFace::GUIREFRESHENTRY);
-  bsSupportedFunctions.set(UIInterFace::UPDATEWIZARD);
-  bsSupportedFunctions.set(UIInterFace::UPDATEGUIGROUPS);
-
-  m_core.SetUIInterFace(&dbox, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
+  m_pDbx = new DboxMain(m_core);
 
   // Parse the command line again.  If there were errors getting the config file,
   // host or user before, then this time around we will issue messages but they
   // will probably be in English unless the config data was OK previously and
   // the config file specifies a different language.
-  bool parseVal = ParseCommandLine(dbox, allDone);
+  bool parseVal = ParseCommandLine(*m_pDbx, allDone, postMinimize);
 
   // allDone will be true iff -e or -d options given, in which case
   // we're just a batch encryptor/decryptor
@@ -1168,7 +1161,7 @@ BOOL ThisMfcApp::InitInstance()
   // PWScore needs it to get into database header if/when saved
   m_core.SetApplicationNameAndVersion(AfxGetAppName(), m_dwMajorMinor, m_dwBuildRevision);
 
-  if (m_core.GetCurFile().empty()) {
+  if (!m_core.IsDbOpen()) {
     std::wstring path = prefs->GetPref(PWSprefs::CurrentFile).c_str();
     pws_os::AddDrive(path);
     m_core.SetCurFile(path.c_str());
@@ -1180,28 +1173,9 @@ BOOL ThisMfcApp::InitInstance()
   * normal startup
   */
 
-  /*
-  Here's where PWS currently does DboxMain, which in turn will do
-  the initial PasskeyEntry (the one that looks like a splash screen).
-  This makes things very hard to control.
-  The app object (here) should instead do the initial PasskeyEntry,
-  and, if successful, move on to DboxMain.  I think. {jpr}
-  */
-  m_pDbx = &dbox;
   m_pMainWnd = m_pDbx;
 
-  //HICON stIcon = app.LoadIcon(IDI_TRAY);
-  //ASSERT(stIcon != NULL);
-  m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
-  m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
-  int iData = prefs->GetPref(PWSprefs::ClosedTrayIconColour);
-  SetClosedTrayIcon(iData);
-  m_pTrayIcon = new CSystemTray(m_pDbx, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
-                                m_LockedIcon, dbox.m_RUEList,
-                                PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
-  m_pTrayIcon->SetTarget(&dbox);
-
-  CLWnd ListenerWnd(dbox);
+  CLWnd ListenerWnd(*m_pDbx);
   if (SysInfo::IsUnderU3()) {
     // See comment under CLWnd to understand this.
     ListenerWnd.m_hWnd = NULL;
@@ -1214,19 +1188,13 @@ BOOL ThisMfcApp::InitInstance()
   }
 
   // Run dialog - note that we don't particularly care what the response was
-  dbox.DoModal();
+  m_pDbx->Create(IDD_PASSWORDSAFE_DIALOG);
+  m_pDbx->ShowWindow(SW_SHOW);
+  m_pDbx->UpdateWindow();
 
-  if (m_pTrayIcon != NULL)
-    m_pTrayIcon->DestroyWindow();
-  delete m_pTrayIcon;
-
-  ::DestroyIcon(m_LockedIcon);
-  ::DestroyIcon(m_UnLockedIcon);
-  ::DestroyIcon(m_ClosedIcon);
-
-  // Since the dialog has been closed, return FALSE so that we exit the
-  // application, rather than start the application's message pump.
-  return FALSE;
+  if (postMinimize) // as returned by parser
+    m_pDbx->PostMessage(WM_SYSCOMMAND, SC_MINIMIZE);
+  return TRUE;
 }
 
 void ThisMfcApp::AddToMRU(const CString &pszFilename)
@@ -1289,59 +1257,6 @@ void ThisMfcApp::ClearMRU()
       pFile_Submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
 
     return;
-  }
-}
-
-int ThisMfcApp::SetClosedTrayIcon(int &iData, bool bSet)
-{
-  int icon;
-  switch (iData) {
-    case PWSprefs::stiBlack:
-      icon = IDI_TRAY;  // This is black.
-      break;
-    case PWSprefs::stiBlue:
-      icon = IDI_TRAY_BLUE;
-      break;
-    case PWSprefs::stiWhite:
-      icon = IDI_TRAY_WHITE;
-      break;
-    case PWSprefs::stiYellow:
-      icon = IDI_TRAY_YELLOW;
-      break;
-    default:
-      iData = PWSprefs::stiBlack;
-      icon = IDI_TRAY;
-      break;
-  }
-  if (bSet) {
-    ::DestroyIcon(m_ClosedIcon);
-    m_ClosedIcon = app.LoadIcon(icon);
-  }
-
-  return icon;
-}
-
-void ThisMfcApp::SetSystemTrayState(STATE s)
-{
-  // need to protect against null m_pTrayIcon due to
-  // tricky initialization order
-  if (m_pTrayIcon != NULL && s != m_TrayLockedState) {
-    m_TrayLockedState = s;
-    HICON hIcon(m_LockedIcon);
-    switch (s) {
-      case LOCKED:
-        hIcon = m_LockedIcon;
-        break;
-      case UNLOCKED:
-        hIcon = m_UnLockedIcon;
-        break;
-      case CLOSED:
-        hIcon = m_ClosedIcon;
-        break;
-      default:
-        break;
-    }
-    m_pTrayIcon->SetIcon(hIcon);
   }
 }
 

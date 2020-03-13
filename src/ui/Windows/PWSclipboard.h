@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -17,7 +17,7 @@
 * if isSensitive was true when we added it.
 */
 
-#include "core/sha256.h"
+#include "core/crypto/sha256.h"
 
 #define CLIPBOARD_TEXT_FORMAT CF_UNICODETEXT
 
@@ -28,7 +28,8 @@ class PWSclipboard
 public:
   PWSclipboard();
   ~PWSclipboard();
-
+  PWSclipboard(const PWSclipboard &) = delete;
+  PWSclipboard &operator=(const PWSclipboard &)= delete;
   bool SetData(const StringX &data,
     bool isSensitive = true,
     CLIPFORMAT cfFormat = CLIPBOARD_TEXT_FORMAT);
@@ -36,9 +37,6 @@ public:
   bool ClearCBData(); // return true if cleared or if data wasn't ours
 
 private:
-  PWSclipboard(const PWSclipboard &); // don't even THINK of implementing this!
-  PWSclipboard &operator=(const PWSclipboard &); // ditto!
-  
   bool m_set;
   unsigned char m_digest[SHA256::HASHLEN];
 };

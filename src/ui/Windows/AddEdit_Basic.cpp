@@ -1,5 +1,5 @@
-/*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+﻿/*
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -60,7 +60,8 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
     CAddEdit_Basic::IDD, CAddEdit_Basic::IDD_SHORT,
     pAEMD),
-  m_bInitdone(false), m_thread(NULL), m_isNotesHidden(false),
+  m_thread(nullptr), m_isNotesHidden(false),
+  m_bInitdone(false),
   m_bUsingNotesExternalEditor(false)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
@@ -247,8 +248,8 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   // Set Notes font!
   if (prefs->GetPref(PWSprefs::NotesFont).empty()) {
-    m_ex_notes.SetFont(pFonts->GetCurrentFont());
-    m_ex_hidden_notes.SetFont(pFonts->GetCurrentFont());
+    m_ex_notes.SetFont(pFonts->GetAddEditFont());
+    m_ex_hidden_notes.SetFont(pFonts->GetAddEditFont());
   } else {
     m_ex_notes.SetFont(pFonts->GetNotesFont());
     m_ex_hidden_notes.SetFont(pFonts->GetNotesFont());
@@ -689,16 +690,12 @@ BOOL CAddEdit_Basic::OnApply()
 
   // If there is a matching entry in our list, tell the user to try again.
   listindex = GetMainDlg()->Find(M_group(), M_title(), M_username());
-  if (M_uicaller() == IDS_ADDENTRY) {
-    // Add entry
-    if (listindex != GetMainDlg()->End()) {
+  if (listindex != GetMainDlg()->End()) {
+    if (M_uicaller() == IDS_ADDENTRY) { // Add entry
       gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
       pFocus = &m_ex_title;
       goto error;
-    }
-  } else {
-    // Edit entry
-    if (listindex != GetMainDlg()->End()) {
+    } else { // Edit entry
       const CItemData &listItem = GetMainDlg()->GetEntryAt(listindex);
       if (listItem.GetUUID() != M_pci()->GetUUID()) {
         gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
@@ -1126,6 +1123,11 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
     case IDC_STATIC_PASSWORD:
       m_stc_password.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
       cs_data = M_realpassword();
+      if (M_pci() && M_pci()->IsAlias()) {
+        const CItemData *pcbi = M_pcore()->GetBaseEntry(M_pci());
+        if (pcbi != nullptr) // can be null if user changed password, breaking relation
+          cs_data = M_pci()->GetEffectiveFieldValue(CItem::PASSWORD, pcbi);
+      }
       iaction = CItemData::PASSWORD;
       break;
     case IDC_STATIC_NOTES:
@@ -1269,6 +1271,8 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   wchar_t lpPathBuffer[4096];
   DWORD dwBufSize(4096);
 
+  StringX sxEditorCmdLineParms = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditorCmdLineParms);
+
   StringX sxEditor = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditor);
   if (sxEditor.empty()) {
     // Find out the users default editor for "txt" files
@@ -1355,8 +1359,15 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   CString cs_CommandLine;
 
-  // Make the command line = "<program>" "file"
-  cs_CommandLine.Format(L"\"%s\" \"%s\"", sxEditor.c_str(), self->m_szTempName);
+  // Make the command line = "<program>" <parameters> "filename"
+  // Note: the parameters reproduce the user's input as-is - it is up to them
+  // to add quotes or not as required by their chosen external editor.
+  // We add double quotes around the full path to the program and its name and
+  // similarly for the temporary file name e.g.
+  // "C:\somewhere\editor.exe" paramters "C:\somewhere_else\temp.txt"
+  cs_CommandLine.Format(L"\"%s\" %s \"%s\"", sxEditor.c_str(),
+                               sxEditorCmdLineParms.c_str(), self->m_szTempName);
+
   int ilen = cs_CommandLine.GetLength();
   LPWSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
 
@@ -1713,7 +1724,14 @@ void CAddEdit_Basic::OnCopyPassword()
 {
   UpdateData(TRUE);
 
-  GetMainDlg()->SetClipboardData(m_password);
+  StringX effectivePassword = m_password;
+
+  if (M_pci() && M_pci()->IsAlias()) {
+    const CItemData *pcbi = M_pcore()->GetBaseEntry(M_pci());
+    if (pcbi != nullptr) // can be null if user changed password, breaking relation
+      effectivePassword = M_pci()->GetEffectiveFieldValue(CItem::PASSWORD, pcbi);
+  }
+  GetMainDlg()->SetClipboardData(effectivePassword);
   GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 }
 

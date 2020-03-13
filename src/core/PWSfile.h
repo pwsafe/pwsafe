@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -23,7 +23,7 @@
 #include "StringX.h"
 #include "PWSfileHeader.h"
 #include "Proxy.h"
-#include "sha256.h"
+#include "crypto/sha256.h"
 
 #include "coredefs.h"
 
@@ -93,16 +93,17 @@ public:
                    HDR_PSWDPOLICIES          = 0x10,     // added in format 0x030A
                    HDR_EMPTYGROUP            = 0x11,     // added in format 0x030B
                    HDR_YUBI_SK               = 0x12,     // Yubi-specific: format 0x030c
+                   HDR_LASTPWDUPDATETIME     = 0x13,     // added in format 0x030E
                    HDR_LAST,                             // Start of unknown fields!
                    HDR_END                   = 0xff};    // header field types, per formatV{2,3}.txt
 
   static PWSfile *MakePWSfile(const StringX &a_filename, const StringX &passkey,
                               VERSION &version, RWmode mode, int &status, 
-                              Asker *pAsker = NULL, Reporter *pReporter = NULL);
+                              Asker *pAsker = nullptr, Reporter *pReporter = nullptr);
 
   static VERSION ReadVersion(const StringX &filename, const StringX &passkey);
-  static int CheckPasskey(const StringX &filename,
-                          const StringX &passkey, VERSION &version);
+  static int CheckPasskey(const StringX &filename, const StringX &passkey,
+                          VERSION &version);
 
   // Following for 'legacy' use of pwsafe as file encryptor/decryptor
   static bool Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess);
@@ -187,7 +188,7 @@ protected:
   Reporter *m_pReporter;
 
 private:
-  PWSfile& operator=(const PWSfile&); // Do not implement
+  PWSfile& operator=(const PWSfile&) = delete; // Do not implement
 };
 
 // A quick way to determine if two files are equal,

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -18,6 +18,7 @@
 
 #include "core/ItemData.h"
 #include "core/Util.h"
+#include "core/UTF8Conv.h"
 #include "core/Pwsprefs.h"
 
 #include "os/debug.h"
@@ -35,8 +36,8 @@ static char THIS_FILE[] = __FILE__;
 // Hover time of 1.5 seconds before expanding a group during D&D
 #define HOVERTIME 1500
 
-extern const wchar_t GROUP_SEP = L'.';
-extern const wchar_t *GROUP_SEP2 = L".";
+const wchar_t CPWTreeCtrlX::GROUP_SEP = L'.';
+const wchar_t *CPWTreeCtrlX::GROUP_SEP2 = L".";
 
 // following header for D&D data passed over OLE:
 // Process ID of sender (to determine if src == tgt)
@@ -168,9 +169,10 @@ private:
 
 CPWTreeCtrlX::CPWTreeCtrlX()
   : m_isRestoring(false), m_bWithinThisInstance(true),
-  m_bMouseInWindow(false), m_nHoverNDTimerID(0), m_nShowNDTimerID(0),
-  m_hgDataALL(NULL), m_hgDataTXT(NULL), m_hgDataUTXT(NULL),
-  m_bTreeFilterActive(false), m_bUseHighLighting(false), m_bUseNew(true)
+  m_hgDataALL(nullptr), m_hgDataUTXT(nullptr), m_hgDataTXT(nullptr),
+  m_nHoverNDTimerID(0), m_nShowNDTimerID(0),
+  m_bMouseInWindow(false), 
+  m_bTreeFilterActive(false), m_bUseHighLighting(false)
 {
   // Register a clipboard format for column drag & drop.
   // Note that it's OK to register same format more than once:
@@ -440,7 +442,7 @@ void CPWTreeCtrlX::OnDragLeave()
 
 void CPWTreeCtrlX::SetUpFont()
 {
-  Fonts::GetInstance()->SetUpFont(this, Fonts::GetInstance()->GetCurrentFont());
+  Fonts::GetInstance()->SetUpFont(this, Fonts::GetInstance()->GetTreeListFont());
 }
 
 void CPWTreeCtrlX::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -1072,13 +1074,13 @@ static StringX GetFirstPathElem(StringX &sxPath)
    // (assuming GROUP_SEP is '.')
 
   StringX sxElement;
-  size_t dotPos = sxPath.find_first_of(GROUP_SEP);
+  size_t dotPos = sxPath.find_first_of(CPWTreeCtrl::GROUP_SEP);
   size_t len=sxPath.length();
   if (dotPos == StringX::npos){
     sxElement = sxPath;
     sxPath = L"";
   } else {
-    while ((dotPos < len) && (sxPath[dotPos] == GROUP_SEP)) {// look for consecutive dots
+    while ((dotPos < len) && (sxPath[dotPos] == CPWTreeCtrl::GROUP_SEP)) {// look for consecutive dots
       dotPos++;
     }
     if (dotPos < len) {
@@ -1710,7 +1712,7 @@ void CPWTreeCtrlX::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
   // the entry's text as well as the drag image if the font is not MS Sans Serif !!!!
   SetFont(Fonts::GetInstance()->GetDragFixFont(), false);
   CImageList *pil = CreateDragImage(m_hitemDrag);
-  SetFont(Fonts::GetInstance()->GetCurrentFont(), false);
+  SetFont(Fonts::GetInstance()->GetTreeListFont(), false);
 
   pil->SetDragCursorImage(0, CPoint(0, 0));
   pil->BeginDrag(0, CPoint(0,0));
@@ -2216,13 +2218,15 @@ CSecString CPWTreeCtrlX::MakeTreeDisplayString(const CItemData &ci) const
     }
   }
 
-  if (ci.IsProtected()) {
+  if (ci.IsProtected() || ci.HasAttRef()) {
     treeDispString += L" ";
-    treeDispString +=  m_bUseNew ? m_sProtectSymbol.c_str() : L"#";
   }
 
-  if (ci.HasAttRef())
-    treeDispString += L" +";
+  if (ci.IsProtected())
+    treeDispString += Fonts::GetInstance()->GetProtectedSymbol();
+
+   if (ci.HasAttRef())
+    treeDispString += Fonts::GetInstance()->GetAttachmentSymbol();
 
   return treeDispString;
 }
@@ -2627,7 +2631,7 @@ CFont *CPWTreeCtrlX::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLO
     StringX path = GetGroup(hItem);
     if (app.GetMainDlg()->IsNodeModified(path)) {
       cf = pFonts->GetModified_Color();
-      return pFonts->GetModifiedFont();
+      return pFonts->GetItalicTreeListFont();
     } else
       return NULL;
   }
@@ -2636,7 +2640,7 @@ CFont *CPWTreeCtrlX::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLO
     case CItemData::ES_ADDED:
     case CItemData::ES_MODIFIED:
       cf = pFonts->GetModified_Color();
-      return pFonts->GetModifiedFont();
+      return pFonts->GetItalicTreeListFont();
     default:
       break;
   }
@@ -2651,7 +2655,7 @@ void CPWTreeCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   static bool bchanged_item_font(false);
   static bool bitem_selected(false);
-  static CFont *pcurrentfont;
+  static CFont *pTreeListFont;
   static CDC *pDC = NULL;
   
   HTREEITEM hItem = (HTREEITEM)pTVCD->nmcd.dwItemSpec;
@@ -2662,7 +2666,7 @@ void CPWTreeCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // PrePaint
       pDC = CDC::FromHandle(pTVCD->nmcd.hdc);
       bchanged_item_font = false;
-      pcurrentfont = Fonts::GetInstance()->GetCurrentFont();
+      pTreeListFont = Fonts::GetInstance()->GetTreeListFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
 
@@ -2687,7 +2691,7 @@ void CPWTreeCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Item PostPaint - restore old font if any
       if (bchanged_item_font) {
         bchanged_item_font = bitem_selected = false;
-        SelectObject(pTVCD->nmcd.hdc, (HFONT)pcurrentfont);
+        SelectObject(pTVCD->nmcd.hdc, (HFONT)pTreeListFont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;

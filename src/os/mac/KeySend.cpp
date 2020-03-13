@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -8,7 +8,7 @@
 #include "../KeySend.h"
 #include "../sleep.h"
 #include "./macsendstring.h"
-#include "../../core/Util.h"
+#include "../../core/UTF8Conv.h"
 
 CKeySend::CKeySend(bool, unsigned defaultDelay)
   : m_delayMS(defaultDelay)
@@ -21,12 +21,12 @@ CKeySend::~CKeySend()
 
 void CKeySend::SendString(const StringX &data)
 {
-  unsigned char* str = 0;
+  CUTF8Conv conv;
+  const unsigned char* str = 0;
   size_t len = 0;
-  ConvertString(data, str, len);
+  conv.ToUTF8(data, str, len);
   if (len && str && str[0])
     pws_os::SendString(reinterpret_cast<const char *>(str), m_delayMS);
-  delete [] str;
 }
 
 void CKeySend::SetDelay(unsigned d)

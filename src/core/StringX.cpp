@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -16,6 +16,7 @@
 #include "os/pws_tchar.h"
 
 #if !defined(_WIN32) || defined(__WX__)
+#include <wx/intl.h>
 #include "core_st.h"
 #endif
 
@@ -48,7 +49,7 @@ template<class T> void ToUpper(T &s)
 template<class T> T &Trim(T &s, const TCHAR *set)
 {
   const TCHAR *ws = _T(" \t\r\n");
-  const TCHAR *tset = (set == NULL) ? ws : set;
+  const TCHAR *tset = (set == nullptr) ? ws : set;
 
   typename T::size_type b = s.find_first_not_of(tset);
   if (b == T::npos) {
@@ -64,7 +65,7 @@ template<class T> T &Trim(T &s, const TCHAR *set)
 template<class T> T &TrimRight(T &s, const TCHAR *set)
 {
   const TCHAR *ws = _T(" \t\r\n");
-  const TCHAR *tset = (set == NULL) ? ws : set;
+  const TCHAR *tset = (set == nullptr) ? ws : set;
 
   typename T::size_type e = s.find_last_not_of(tset);
   if (e == T::npos) {
@@ -79,7 +80,7 @@ template<class T> T &TrimRight(T &s, const TCHAR *set)
 template<class T> T &TrimLeft(T &s, const TCHAR *set)
 {
   const TCHAR *ws = _T(" \t\r\n");
-  const TCHAR *tset = (set == NULL) ? ws : set;
+  const TCHAR *tset = (set == nullptr) ? ws : set;
 
   typename T::size_type b = s.find_first_not_of(tset);
   if (b == T::npos) {
@@ -155,7 +156,7 @@ template<class T> void LoadAString(T &s, int id)
   cs.LoadString(id);
   s = cs;
 #else
-  s = core_st[id];
+  s = _(core_st[id]).c_str();
 #endif
 }
 

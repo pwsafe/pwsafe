@@ -5,7 +5,7 @@
 ; first edit : Karlo Van der Gucht
 ;---------------------------------------------------
 ; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
-; Copyright 2005-2007 Rony Shapiro <ronys@pwsafe.org>
+; Copyright 2005-2020 Rony Shapiro <ronys@pwsafe.org>
 ; 2009 extended by Karlo Van der Gucht for multiple language use
 ; 2010 extended by Karlo Van der Gucht Danish language
 ; This script may be redistributed and/or modified under the Artistic
@@ -47,6 +47,9 @@ LangString UNINSTALL_SHORTCUT ${LANG_DUTCH} "Verwijder snelkoppeling"
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
 LangString DESC_ProgramFiles ${LANG_DUTCH} "Installeert de basisbestanden die nodig zijn om Password Safe te gebruiken."
+
+; DESC_CliTool "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_DUTCH} "Installs pwsafe-cli, a command line utility."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
 LangString DESC_LangSupport ${LANG_DUTCH} "Kies de talen waarmee Password Safe zal moeten werken."
@@ -93,12 +96,16 @@ LangString LANG_INSTALL ${LANG_DUTCH} "Installatietaal"
 
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_DUTCH} "Kies een taal voor de installatie"
+
+; CLI_TOOL "Command-line tool"
+LangString CLI_TOOL ${LANG_DUTCH} "Command-line tool"
+
 LangString LANGUAGE_SUPPORT ${LANG_DUTCH} "Taal support"
 LangString ENGLISH_SUPPORT ${LANG_DUTCH} "Engels"
 ; CHINESE_CN_SUPPORT "Chinese (Simplified)"
-LangString CHINESE_CN_SUPPORT ${LANG_NEW} "en:Chinese (Simplified)"
+LangString CHINESE_CN_SUPPORT ${LANG_DUTCH} "en:Chinese (Simplified)"
 ; CHINESE_TW_SUPPORT "Chinese (Traditional)"
-LangString CHINESE_TW_SUPPORT ${LANG_NEW} "en:Chinese (Traditional)"
+LangString CHINESE_TW_SUPPORT ${LANG_DUTCH} "en:Chinese (Traditional)"
 LangString GERMAN_SUPPORT ${LANG_DUTCH} "Duits"
 LangString SPANISH_SUPPORT ${LANG_DUTCH} "Spaans"
 LangString SWEDISH_SUPPORT ${LANG_DUTCH} "Zweeds"
@@ -113,6 +120,7 @@ LangString KOREAN_SUPPORT ${LANG_DUTCH} "Koreaans"
 LangString CZECH_SUPPORT ${LANG_DUTCH} "Tsjechisch"
 LangString TURKISH_SUPPORT ${LANG_DUTCH} "Turks"
 LangString HUNGARIAN_SUPPORT ${LANG_DUTCH} "Hongaars"
+LangString SLOVENIAN_SUPPORT ${LANG_DUTCH} "Slovenian"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_DUTCH} "Programma-taal"
@@ -128,6 +136,12 @@ LangString SORRY_NO_ME ${LANG_DUTCH} "Sorry, Windows ME wordt niet meer onderste
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
 LangString SORRY_NO_2K ${LANG_DUTCH} "Sorry, Windows 2000 wordt niet meer ondersteund. Probeer PasswordSafe 3.18"
+
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_DUTCH} "Password Safe Uninstall"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_DUTCH} "Password Safe Help"
 
 ;=================================================================
 ; End of pwsafe_nl.lng

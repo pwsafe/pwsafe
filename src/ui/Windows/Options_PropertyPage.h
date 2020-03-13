@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -30,6 +30,9 @@ struct st_Opt_master_data {
   int BackupLocation;
   int BackupSuffix;
   int MaxNumIncBackups;
+  // Preferences min/max values
+  short prefminBackupIncrement;
+  short prefmaxBackupIncrement;
 
   // Display Data
   BOOL AlwaysOnTop;
@@ -43,9 +46,15 @@ struct st_Opt_master_data {
   BOOL WordWrapNotes;
   BOOL PreExpiryWarn;
   BOOL HighlightChanges;
+  BOOL EnableTransparency;
   int PreExpiryWarnDays;
   int TreeDisplayStatusAtOpen;
-  int TrayIconColour;
+  int PercentTransparency;
+  // Preferences min/max values
+  short prefminExpiryDays;
+  short prefmaxExpiryDays;
+  short prefminPercentTransparency;
+  short prefmaxPercentTransparency;
   
   // Misc Data
   BOOL ConfirmDelete;
@@ -55,18 +64,26 @@ struct st_Opt_master_data {
 
   CSecString DefUsername;
   CSecString OtherBrowserLocation;
-  CSecString BrowserCmdLineParms;
+  CSecString OtherBrowserCmdLineParms;
   CSecString OtherEditorLocation;
+  CSecString OtherEditorCmdLineParms;
   CSecString AutotypeText;
   unsigned AutotypeDelay;
   BOOL UseDefuser;
   BOOL QuerySetDef;
   BOOL MinAuto;
+  // Preferences min/max values
+  int prefminAutotypeDelay;
+  int prefmaxAutotypeDelay;
 
   // Password History Data
   BOOL SavePWHistory;
   int PWHistoryNumDefault;
   int PWHAction;
+  int PWHDefExpDays; // not strictly password history, but in the same tab.
+  // Preferences min/max values
+  short prefminPWHNumber;
+  short prefmaxPWHNumber;
 
   // Security Data
   BOOL ClearClipboardOnMinimize;
@@ -78,6 +95,9 @@ struct st_Opt_master_data {
   BOOL CopyPswdBrowseURL;
   int IdleTimeOut;
   uint32 HashIters;
+  // Preferences min/max values
+  short prefminIdleTimeout;
+  short prefmaxIdleTimeout;
 
   // Shortcut Data
   int32 AppHotKeyValue;
@@ -94,6 +114,11 @@ struct st_Opt_master_data {
   BOOL MultipleInstances;
   int MaxREItems;
   int MaxMRUItems;
+  // Preferences min/max values
+  short prefminREItems;
+  short prefmaxREItems;
+  short prefminMRU;
+  short prefmaxMRU;
 };
 
 class COptions_PropertyPage : public CPWPropertyPage
@@ -122,6 +147,9 @@ public:
   inline int &M_BackupLocation() {return m_OPTMD.BackupLocation;}
   inline int &M_BackupSuffix() {return m_OPTMD.BackupSuffix;}
   inline int &M_MaxNumIncBackups() {return m_OPTMD.MaxNumIncBackups;}
+  // Preferences min/max values
+  inline short &M_prefminBackupIncrement() { return m_OPTMD.prefminBackupIncrement; }
+  inline short &M_prefmaxBackupIncrement() { return m_OPTMD.prefmaxBackupIncrement; }
 
   // Display Data
   inline BOOL &M_AlwaysOnTop() {return m_OPTMD.AlwaysOnTop;}
@@ -135,9 +163,13 @@ public:
   inline BOOL &M_WordWrapNotes() {return m_OPTMD.WordWrapNotes;}
   inline BOOL &M_PreExpiryWarn() {return m_OPTMD.PreExpiryWarn;}
   inline BOOL &M_HighlightChanges() {return m_OPTMD.HighlightChanges;}
+  inline BOOL &M_EnableTransparency() {return m_OPTMD.EnableTransparency;}
   inline int &M_PreExpiryWarnDays() {return m_OPTMD.PreExpiryWarnDays;}
   inline int &M_TreeDisplayStatusAtOpen() {return m_OPTMD.TreeDisplayStatusAtOpen;}
-  inline int &M_TrayIconColour() {return m_OPTMD.TrayIconColour;}
+  inline int &M_PercentTransparency() { return m_OPTMD.PercentTransparency; }
+  // Preferences min/max values
+  inline short &M_prefminExpiryDays() { return m_OPTMD.prefminExpiryDays; }
+  inline short &M_prefmaxExpiryDays() { return m_OPTMD.prefmaxExpiryDays; }
   
   // Misc Data
   inline BOOL &M_ConfirmDelete() {return m_OPTMD.ConfirmDelete;}
@@ -145,21 +177,31 @@ public:
   inline BOOL &M_EscExits() {return m_OPTMD.EscExits;}
   inline int &M_DoubleClickAction() {return m_OPTMD.DoubleClickAction;}
   inline int &M_ShiftDoubleClickAction() {return m_OPTMD.ShiftDoubleClickAction;}
+  inline short &M_prefminPercentTransparency() { return m_OPTMD.prefminPercentTransparency; }
+  inline short &M_prefmaxPercentTransparency() { return m_OPTMD.prefmaxPercentTransparency; }
 
   inline CSecString &M_DefUsername() {return m_OPTMD.DefUsername;}
   inline CString &M_OtherBrowserLocation() {return m_OPTMD.OtherBrowserLocation;}
-  inline CString &M_BrowserCmdLineParms() {return m_OPTMD.BrowserCmdLineParms;}
+  inline CString &M_OtherBrowserCmdLineParms() {return m_OPTMD.OtherBrowserCmdLineParms;}
   inline CString &M_OtherEditorLocation() {return m_OPTMD.OtherEditorLocation;}
+  inline CString &M_OtherEditorCmdLineParms() {return m_OPTMD.OtherEditorCmdLineParms;}
   inline CString &M_AutotypeText() {return m_OPTMD.AutotypeText;}
   inline unsigned &M_AutotypeDelay() {return m_OPTMD.AutotypeDelay;}
   inline BOOL &M_UseDefUsername() {return m_OPTMD.UseDefuser;}
   inline BOOL &M_QuerySetDefUsername() {return m_OPTMD.QuerySetDef;}
   inline BOOL &M_AutotypeMinimize() {return m_OPTMD.MinAuto;}
+  // Preferences min/max values
+  inline int &M_prefminAutotypeDelay() { return m_OPTMD.prefminAutotypeDelay; }
+  inline int &M_prefmaxAutotypeDelay() { return m_OPTMD.prefmaxAutotypeDelay; }
 
   // Password History Data
   inline BOOL &M_SavePWHistory() {return m_OPTMD.SavePWHistory;}
   inline int &M_PWHistoryNumDefault() {return m_OPTMD.PWHistoryNumDefault;}
+  inline int &M_PWHDefExpDays() {return m_OPTMD.PWHDefExpDays;}
   inline int &M_PWHAction() {return m_OPTMD.PWHAction;}
+  // Preferences min/max values
+  inline short &M_prefminPWHNumber() { return m_OPTMD.prefminPWHNumber; }
+  inline short &M_prefmaxPWHNumber() { return m_OPTMD.prefmaxPWHNumber; }
 
   // Security Data
   inline BOOL &M_ClearClipboardOnMinimize() {return m_OPTMD.ClearClipboardOnMinimize;}
@@ -171,6 +213,9 @@ public:
   inline BOOL &M_CopyPswdBrowseURL() {return m_OPTMD.CopyPswdBrowseURL;}
   inline int &M_IdleTimeOut() {return m_OPTMD.IdleTimeOut;}
   inline uint32 &M_HashIters() {return m_OPTMD.HashIters;}
+  // Preferences min/max values
+  inline short &M_prefminIdleTimeout() { return m_OPTMD.prefminIdleTimeout; }
+  inline short &M_prefmaxIdleTimeout() { return m_OPTMD.prefmaxIdleTimeout; }
 
   // Shortcut Data
   inline int32 &M_AppHotKey_Value() {return m_OPTMD.AppHotKeyValue;}
@@ -187,6 +232,11 @@ public:
   inline BOOL &M_MultipleInstances() {return m_OPTMD.MultipleInstances;}
   inline int &M_MaxREItems() {return m_OPTMD.MaxREItems;}
   inline int &M_MaxMRUItems() {return m_OPTMD.MaxMRUItems;}
+  // Preferences min/max values
+  inline short &M_prefminREItems() { return m_OPTMD.prefminREItems; }
+  inline short &M_prefmaxREItems() { return m_OPTMD.prefmaxREItems; }
+  inline short &M_prefminMRU() { return m_OPTMD.prefminMRU; }
+  inline short &M_prefmaxMRU() { return m_OPTMD.prefmaxMRU; }
 
 protected:
   COptions_PropertySheet *m_options_psh;

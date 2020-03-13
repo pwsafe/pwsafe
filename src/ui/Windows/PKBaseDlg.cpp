@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -63,10 +63,12 @@ CPKBaseDlg::~CPKBaseDlg()
 
 void CPKBaseDlg::OnDestroy()
 {
+  KillTimer(TIMER_YUBIKEYPOLL);
+
   CPWDialog::OnDestroy();
 }
 
-void CPKBaseDlg::DoDataExchange(CDataExchange* pDX)
+void CPKBaseDlg::DoDataExchange(CDataExchange *pDX)
 {
   CPWDialog::DoDataExchange(pDX);
 
@@ -79,8 +81,9 @@ void CPKBaseDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CPKBaseDlg, CPWDialog)
-  ON_WM_CTLCOLOR()
   //{{AFX_MSG_MAP(CPKBaseDlg)
+  ON_WM_CTLCOLOR()
+  ON_WM_TIMER()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -89,7 +92,7 @@ BOOL CPKBaseDlg::OnInitDialog(void)
   CPWDialog::OnInitDialog();
 
   // Setup a timer to poll the key every 250 ms
-  SetTimer(1, 250, 0);
+  SetTimer(TIMER_YUBIKEYPOLL, 250, 0);
 
   m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
   m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);
@@ -206,8 +209,13 @@ void CPKBaseDlg::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYT
   }
 }
 
-void CPKBaseDlg::OnTimer(UINT_PTR )
+void CPKBaseDlg::OnTimer(UINT_PTR nIDEvent)
 {
+  if (nIDEvent != TIMER_YUBIKEYPOLL) {
+    CPWDialog::OnTimer(nIDEvent);
+    return;
+  }
+
   if (!m_yubiPollDisable)
     YubiPoll();
 }

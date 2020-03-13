@@ -6,7 +6,7 @@
 #
 
 set (LANGS "cz" "de" "dk" "es" "fr" "hu" "it" "kr" "nl" "pl" "ru" "sv"
-     "tr" "zh")
+     "sl" "tr" "zh")
 
 set (TOOLS_BIN_DIR "${CMAKE_BINARY_DIR}/src/Tools/Windows/I18N")
 set (RESTEXT "${TOOLS_BIN_DIR}/ResText/Release/ResText.exe")
@@ -46,6 +46,7 @@ add_custom_target("update-pos"
                    pos/pwsafe_pl.po
                    pos/pwsafe_ru.po
                    pos/pwsafe_sv.po
+                   pos/pwsafe_sl.po
                    pos/pwsafe_tr.po
                    pos/pwsafe_zh.po
                    )
@@ -73,6 +74,7 @@ add_custom_target("dlls"
                    ${DLL_DIR}/pwsafeNL.dll
                    ${DLL_DIR}/pwsafePL.dll
                    ${DLL_DIR}/pwsafeRU.dll
+                   ${DLL_DIR}/pwsafeSL.dll
                    ${DLL_DIR}/pwsafeSV.dll
                    ${DLL_DIR}/pwsafeTR.dll
                    ${DLL_DIR}/pwsafeZH.dll
@@ -104,6 +106,7 @@ make_dll( "nl" "0x0413" "NL_NL")
 make_dll( "pl" "0x0415" "PL_PL")
 make_dll( "ru" "0x0419" "RU_RU")
 make_dll( "sv" "0x041d" "SV_SE")
+make_dll( "sl" "0x0424" "SL_SI")
 make_dll( "tr" "0x041f" "TR_TR")
 make_dll( "zh" "0x0804" "ZH_CN")
 

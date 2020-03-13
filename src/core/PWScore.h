@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -49,6 +49,7 @@ struct st_DBProperties {
   StringX numentries;
   StringX numattachments;
   StringX whenlastsaved;
+  StringX whenpwdlastchanged;
   StringX wholastsaved;
   StringX whatlastsaved;
   StringX file_uuid;
@@ -59,7 +60,7 @@ struct st_DBProperties {
 
 struct st_ValidateResults;
 
-class PWScore : public CommandInterface
+class PWScore : public Observable, public CommandInterface
 {
 public:
   enum {
@@ -94,20 +95,19 @@ public:
   PWScore();
   ~PWScore();
 
-  bool SetUIInterFace(UIInterFace *pUIIF, size_t num_supported,
-                      std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions);
-
   // Set following to a Reporter-derived object
   // so that we can inform user of events of interest
   static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
   static void SetAsker(Asker *pAsker) {m_pAsker = pAsker;}
-  static bool IsAskerSet() {return m_pAsker != NULL;}
-  static bool IsReporterSet() {return m_pReporter != NULL;}
+  static bool IsAskerSet() {return m_pAsker != nullptr;}
+  static bool IsReporterSet() {return m_pReporter != nullptr;}
 
   // Get/Set File UUIDs
   void ClearFileUUID() { m_hdr.m_file_uuid = pws_os::CUUID::NullUUID(); }
   void SetFileUUID(const pws_os::CUUID &fu) { m_hdr.m_file_uuid = fu; }
   const pws_os::CUUID &GetFileUUID() const { return m_hdr.m_file_uuid; }
+
+  static const TCHAR *GROUPTITLEUSERINCHEVRONS;
 
   // Get/Set Unknown Fields info
   bool HasHeaderUnknownFields() const
@@ -124,15 +124,16 @@ public:
   void ReInit(bool bNewfile = false);
 
   // Following used to read/write databases and Get/Set file name
+  bool IsDbOpen() const { return !m_currfile.empty(); }
   StringX GetCurFile() const {return m_currfile;}
   void SetCurFile(const StringX &file) {m_currfile = file;}
 
   int ReadCurFile(const StringX &passkey, const bool bValidate = false,
-                  const size_t iMAXCHARS = 0, CReport *pRpt = NULL)
+                  const size_t iMAXCHARS = 0, CReport *pRpt = nullptr)
   {return ReadFile(m_currfile, passkey, bValidate, iMAXCHARS, pRpt);}
   int ReadFile(const StringX &filename, const StringX &passkey,
                const bool bValidate = false, const size_t iMAXCHARS = 0,
-               CReport *pRpt = NULL);
+               CReport *pRpt = nullptr);
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
   bool BackupCurFile(unsigned int maxNumIncBackups, int backupSuffix,
                      const stringT &userBackupPrefix,
@@ -145,7 +146,8 @@ public:
   int WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
                       PWScore *pINcore, PWSfile::VERSION version,
                       std::vector<StringX> &vEmptyGroups, 
-                      bool bExportDBFilters, CReport *pRpt = NULL);
+                      bool bExportDBFilters,
+                      std::vector<pws_os::CUUID> &vuuidAddedBases, CReport *pRpt = nullptr);
   int WriteV17File(const StringX &filename)
   {return WriteFile(filename, PWSfile::V17, false);}
   int WriteV2File(const StringX &filename)
@@ -153,7 +155,7 @@ public:
 
   // R/O file status
   void SetReadOnly(bool state) {m_bIsReadOnly = state;}
-  bool IsReadOnly() const {return m_bIsReadOnly;};
+  bool IsReadOnly() const {return m_bIsReadOnly;}
 
   // Check/Change master passphrase
   int CheckPasskey(const StringX &filename, const StringX &passkey);
@@ -173,19 +175,19 @@ public:
                const int &subgroup_object, const int &subgroup_function,
                CompareData &list_OnlyInCurrent, CompareData &list_OnlyInComp,
                CompareData &list_Conflicts, CompareData &list_Identical,
-               bool *pbCancel = NULL);
+               bool *pbCancel = nullptr);
 
   stringT Merge(PWScore *pothercore,
                 const bool &subgroup_bset,
                 const stringT &subgroup_name,
                 const int &subgroup_object, const int &subgroup_function,
-                CReport *pRpt, bool *pbCancel = NULL);
+                CReport *pRpt, bool *pbCancel = nullptr);
 
   void Synchronize(PWScore *pothercore, 
                    const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
                    const stringT &subgroup_name,
                    const int &subgroup_object, const int &subgroup_function,
-                   int &numUpdated, CReport *pRpt, bool *pbCancel = NULL);
+                   int &numUpdated, CReport *pRpt, bool *pbCancel = nullptr);
 
   // Used for Empty Groups during Merge
   bool MatchGroupName(const StringX &stValue, const StringX &subgroup_name,
@@ -196,17 +198,17 @@ public:
                          const CItemData::FieldBits &bsExport,
                          const stringT &subgroup, const int &iObject,
                          const int &iFunction, const TCHAR &delimiter,
-                         int &numExported, const OrderedItemList *pOIL = NULL,
-                         CReport *pRpt = NULL);
+                         int &numExported, const OrderedItemList *pOIL = nullptr,
+                         CReport *pRpt = nullptr);
 
   int WriteXMLFile(const StringX &filename,
                    const CItemData::FieldBits &bsExport,
                    const stringT &subgroup, const int &iObject,
                    const int &iFunction, const TCHAR &delimiter,
                    const stringT &exportgroup,
-                   int &numExported, const OrderedItemList *pOIL = NULL,
+                   int &numExported, const OrderedItemList *pOIL = nullptr,
                    const bool &bFilterActive = false,
-                   CReport *pRpt = NULL);
+                   CReport *pRpt = nullptr);
 
   // Import databases
   // If returned status is SUCCESS, then returned Command * can be executed.
@@ -244,13 +246,14 @@ public:
   bool IsLockedFile(const stringT &filename) const;
   void UnlockFile(const stringT &filename);
 
+  void SafeUnlockCurFile(); // unlocks current file iff we locked it.
+
   // Following 3 routines only for SaveAs to use a temporary lock handle
   // LockFile2, UnLockFile2 & MoveLock
   bool LockFile2(const stringT &filename, stringT &locker);
   void UnlockFile2(const stringT &filename);
   void MoveLock()
-  {m_lockFileHandle = m_lockFileHandle2; m_lockFileHandle2 = INVALID_HANDLE_VALUE;
-   m_LockCount = m_LockCount2; m_LockCount2 = 0;}
+  {m_lockFileHandle = m_lockFileHandle2; m_lockFileHandle2 = INVALID_HANDLE_VALUE;}
 
   // Set application data
   void SetApplicationNameAndVersion(const stringT &appName, DWORD dwMajorMinor,
@@ -469,8 +472,8 @@ private:
   virtual int DoAddDependentEntries(UUIDVector &dependentslist, CReport *pRpt, 
                                     const CItemData::EntryType type, 
                                     const int &iVia,
-                                    ItemList *pmapDeletedItems = NULL,
-                                    SaveTypePWMap *pmapSaveTypePW = NULL);
+                                    ItemList *pmapDeletedItems = nullptr,
+                                    SaveTypePWMap *pmapSaveTypePW = nullptr);
   virtual void UndoAddDependentEntries(ItemList *pmapDeletedItems,
                                        SaveTypePWMap *pmapSaveTypePW);
   virtual bool DoMoveDependentEntries(const pws_os::CUUID &from_baseuuid, 
@@ -553,8 +556,6 @@ private:
 
   HANDLE m_lockFileHandle;
   HANDLE m_lockFileHandle2;
-  int m_LockCount;
-  int m_LockCount2;
 
   stringT m_AppNameAndVersion;
   PWSfile::VERSION m_ReadFileVersion;
@@ -588,7 +589,6 @@ private:
   const ItemMMap &GetBase2ShortcutsMmap() const {return m_base2shortcuts_mmap;}
   void SetBase2ShortcutsMmap(ItemMMap &b2smm) {m_base2shortcuts_mmap = b2smm;}
   
- 
   // Following are private in PWScore, public in CommandInterface:
   void AddChangedNodes(StringX path);
 
@@ -602,9 +602,6 @@ private:
   UUIDList m_RUEList;
   UUIDList m_InitialRUEList;
 
-  UIInterFace *m_pUIIF; // pointer to UI interface abtraction
-  std::bitset<UIInterFace::NUM_SUPPORTED> m_bsSupportedFunctions;
-  
   void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action, const pws_os::CUUID &,
                               CItemData::FieldType ft = CItemData::START);
 
@@ -647,7 +644,7 @@ private:
   void RemoveExpiryEntry(const CItemData &ci)
   {m_ExpireCandidates.Remove(ci);}
 
-  stringT GetXMLPWPolicies(const OrderedItemList *pOIL = NULL);
+  stringT GetXMLPWPolicies(const OrderedItemList *pOIL = nullptr);
   PSWDPolicyMap m_MapPSWDPLC;
   PSWDPolicyMap m_InitialMapPSWDPLC;  // Needed for HavePasswordPolicyNamesChanged
   

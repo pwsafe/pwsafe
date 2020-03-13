@@ -86,7 +86,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
 <xs:simpleType name="timeoutType">
   <xs:restriction base="xs:int">
     <xs:minInclusive value="1" />
-    <xs:maxInclusive value="120" />
+    <xs:maxInclusive value="600" />
   </xs:restriction>
 </xs:simpleType>
 
@@ -119,7 +119,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
          Virtual Key: Any except: space (&\20), tab (\t), newline (\n) and return (\r)
                       Written as 4 hex characters
       -->
-    <xs:pattern value="(A|C|S|E|M|W|D)+:[0-9a-fA-F]{4}" />
+    <xs:pattern value="[ACSEMWD]+:[0-9a-fA-F]{4}" />
   </xs:restriction>
 </xs:simpleType>
 
@@ -282,6 +282,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
       <xs:attribute name="WhatSaved" type="stringType" use="optional" />
       <xs:attribute name="WhoSaved" type="stringType" use="optional" />
       <xs:attribute name="WhenLastSaved" type="xs:dateTime" use="optional" />
+      <xs:attribute name="WhenPwdLastChanged" type="xs:dateTime" use="optional" />
       <xs:attribute name="Database_uuid" type="fileuuidType" use="optional" />
       <!-- End Database Attributes -->
     </xs:complexType>

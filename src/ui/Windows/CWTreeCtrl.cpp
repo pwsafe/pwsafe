@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "CWTreeCtrl.h"
+#include "PWTreeCtrl.h" // for GROUP_SEP
 
 #include "core/ItemData.h"
 #include "core/PWSprefs.h"
@@ -17,9 +18,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-extern const wchar_t GROUP_SEP;
-extern const wchar_t *GROUP_SEP2;
 
 CCWTreeCtrl::CCWTreeCtrl()
 {
@@ -84,16 +82,16 @@ static StringX GetFirstPathElem(StringX &sxPath)
   // will return "a" and path will be "b.c.d"
   // path = "a..b.c.d"
   // will return "a." and path will be "b.c.d"
-  // (assuming GROUP_SEP is '.')
+  // (assuming CPWTreeCtrl::GROUP_SEP is '.')
 
   StringX sxElement;
-  size_t dotPos = sxPath.find_first_of(GROUP_SEP);
+  size_t dotPos = sxPath.find_first_of(CPWTreeCtrl::GROUP_SEP);
   size_t len=sxPath.length();
   if (dotPos == StringX::npos){
     sxElement = sxPath;
     sxPath = L"";
   } else {
-    while ((dotPos < len) && (sxPath[dotPos] == GROUP_SEP)) {// look for consecutive dots
+    while ((dotPos < len) && (sxPath[dotPos] == CPWTreeCtrl::GROUP_SEP)) {// look for consecutive dots
       dotPos++;
     }
     if (dotPos < len) {
@@ -138,7 +136,7 @@ HTREEITEM CCWTreeCtrl::AddGroup(const CString &group)
       if (sxPath2Root.empty())
         sxPath2Root = sxTemp;
       else
-        sxPath2Root += GROUP_SEP2 + sxTemp;
+        sxPath2Root += CPWTreeCtrl::GROUP_SEP2 + sxTemp;
 
       if (!ExistsInTree(ti, sxTemp, si)) {
         ti = InsertItem(sxTemp.c_str(), ti, TVI_SORT);
@@ -213,7 +211,8 @@ HTREEITEM CCWTreeCtrl::GetNextTreeItem(HTREEITEM hItem)
   return hReturn;
 }
 
-CSecString CCWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
+CSecString CCWTreeCtrl::MakeTreeDisplayString(const CItemData &ci,
+                        CString &csProtect, CString &csAttachment) const
 {
   CSecString treeDispString = ci.GetTitle();
 
@@ -222,10 +221,10 @@ CSecString CCWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
   treeDispString += L"]";
 
   if (ci.IsProtected())
-    treeDispString += L" #";
+    treeDispString += CSecString(csProtect);
 
   if (ci.HasAttRef())
-    treeDispString += L" +";
+    treeDispString += CSecString(csAttachment);
 
   return treeDispString;
 }

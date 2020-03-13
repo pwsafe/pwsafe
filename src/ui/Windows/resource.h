@@ -83,10 +83,6 @@
 #define IDI_SBASE_EXPIRED               194
 #define IDI_SBASE_WARNEXPIRED           195
 #define IDI_SHORTCUT                    196
-#define IDI_TRAY                        205
-#define IDI_TRAY_BLUE                   206
-#define IDI_TRAY_WHITE                  207
-#define IDI_TRAY_YELLOW                 208
 #define IDI_UNLOCKEDICON                209
 #define IDR_POPLANGUAGES                210
 #define IDR_POPCOPYALLTOORIGINAL        211
@@ -391,7 +387,15 @@
 #define IDB_EMPTY_DISABLED              549
 #define IDB_REDEXCLAMATION              550
 #define IDB_LOCK_CLASSIC                551
-#define IDB_COPYPASSWORD_CLASSIC_D      552
+#define IDD_SETDBID                     552
+#define IDB_BLACK                       553
+#define IDB_RED                         554
+#define IDB_GREEN                       555
+#define IDB_WHITE                       556
+#define IDB_YELLOW                      557
+#define IDB_LOCKED_TRAY_INDEX           558
+#define IDB_UNLOCKED_TRAY_INDEX         559
+#define IDB_COPYPASSWORD_CLASSIC_D      560
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -505,11 +509,14 @@
 #define IDC_RESPIN                      1132
 #define IDC_MRUSPIN                     1133
 #define IDC_PWHSPIN                     1134
+#define IDC_PWHSPIN2                    1135
+#define IDC_DEDSPIN                     1135
 #define IDC_PWHISTORY_LIST              1136
 #define IDC_SAVEPWHISTORY               1137
 #define IDC_MAXPWHISTORY                1138
 #define IDC_DEFPWHNUM                   1139
 #define IDC_COPY_OLDPW_TO_CLIPBOARD     1140
+#define IDC_DEFEXPIRYDAYS               1140
 #define IDC_CLEAR_PWHIST                1141
 #define IDC_SAVE_PWHIST                 1143
 #define IDC_STATIC_OLDPW1               1144
@@ -549,6 +556,8 @@
 #define IDC_SAVEDAPP                    1197
 #define IDC_NUMATTACHMENTS              1198
 #define IDC_BACKUPBEFORESAVE            1199
+#define IDC_SAVEDON2                    1199
+#define IDC_PWDSETON                    1199
 #define IDC_DFLTBACKUPPREFIX            1200
 #define IDC_USERBACKUPPREFIX            1201
 #define IDC_USERBACKUPPREFIXVALUE       1202
@@ -603,10 +612,6 @@
 #define IDC_STATIC_ISANALIAS            1269
 #define IDC_NEWVER_STATUS               1272
 #define IDC_VISIT_WEBSITE               1273
-#define IDC_RST_BLK                     1276
-#define IDC_RST_BLUE                    1277
-#define IDC_RST_WHITE                   1278
-#define IDC_RST_YELLOW                  1279
 #define IDC_SAMPLETEXT                  1283
 #define IDC_TREATWHITESPACEASEMPTY      1284
 #define IDC_STATIC_LC1                  1285
@@ -758,6 +763,7 @@
 #define IDC_STATIC_IDLEMINS             1445
 #define IDC_STATIC_NUMPWSDHIST          1446
 #define IDC_STATIC_DEFAUTOTYPE          1447
+#define IDC_STATIC_DEFEXPIRYDAYS        1447
 #define IDC_STATIC_PSWDLENGTH           1448
 #define IDC_SHIFT_DOUBLE_CLICK_ACTION   1449
 #define IDC_STATIC_PREFERENCES          1451
@@ -868,18 +874,38 @@
 #define IDC_PWHHELP                     1560
 #define IDC_STATIC_HOSTUSER             1561
 #define IDC_STATIC_DEPENDENT            1562
-#define IDC_COPYPASSWORDHELP            1563
-#define IDC_COPYPASSWORDHELP1           1564
-#define IDC_COPYPASSWORDHELP2           1565
-#define IDC_STATIC_MESSAGE              1566
+#define IDC_DBINDEX                     1563
+#define IDC_SETCOLOUR                   1564
+#define IDC_UNLOCKEDIMAGE               1565
+#define IDC_LOCKEDIMAGE                 1566
+#define IDC_DBINDEX_TEXTCOLOURL0        1567
+#define IDC_DBINDEX_TEXTCOLOURL1        1568
+#define IDC_DBINDEX_TEXTCOLOURL2        1579
+#define IDC_DBINDEX_TEXTCOLOURL3        1580
+#define IDC_DBINDEX_TEXTCOLOURUL0       1581
+#define IDC_DBINDEX_TEXTCOLOURUL1       1582
+#define IDC_DBINDEX_TEXTCOLOURUL2       1583
+#define IDC_DBINDEX_TEXTCOLOURUL3       1584
+#define IDC_COPYPASSWORDHELP            1585
+#define IDC_COPYPASSWORDHELP1           1586
+#define IDC_COPYPASSWORDHELP2           1587
+#define IDC_STATIC_MESSAGE              1588
+#define IDC_ALTEDITOR_CMDLINE           1589
+#define IDC_SHOWCOMBINATION             1590
+#define IDC_ENABLETRANSPARENCY          1591
+#define IDC_TRANSPARENCY                1592
+#define IDC_TRANSPARENCYHELP            1593
+#define IDC_STATIC_MAXTRANSPARENCY      1594
+#define IDC_STATIC_MINTRANSPARENCY      1595
+#define IDC_TESTTRANSPARENCY            1596
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        555
+#define _APS_NEXT_RESOURCE_VALUE        561
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1567
-#define _APS_NEXT_SYMED_VALUE           553
+#define _APS_NEXT_CONTROL_VALUE         1597
+#define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif

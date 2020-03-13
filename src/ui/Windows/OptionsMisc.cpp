@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -48,7 +48,8 @@ COptionsMisc::COptionsMisc(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_DefUsername = (CString)M_DefUsername();
   m_OtherBrowserLocation = M_OtherBrowserLocation();
   m_OtherEditorLocation = M_OtherEditorLocation();
-  m_BrowserCmdLineParms = M_BrowserCmdLineParms();
+  m_OtherBrowserCmdLineParms = M_OtherBrowserCmdLineParms();
+  m_OtherEditorCmdLineParms = M_OtherEditorCmdLineParms();
   m_AutotypeText = M_AutotypeText();
   m_AutotypeDelay = M_AutotypeDelay();
   m_ConfirmDelete = M_ConfirmDelete();
@@ -84,9 +85,12 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_DOUBLE_CLICK_ACTION, m_dblclk_cbox);
   DDX_Control(pDX, IDC_SHIFT_DOUBLE_CLICK_ACTION, m_shiftdblclk_cbox);
   DDX_Check(pDX, IDC_QUERYSETDEF, m_QuerySetDefUsername);
+
   DDX_Text(pDX, IDC_OTHERBROWSERLOCATION, m_OtherBrowserLocation);
   DDX_Text(pDX, IDC_OTHEREDITORLOCATION, m_OtherEditorLocation);
-  DDX_Text(pDX, IDC_ALTBROWSER_CMDLINE, m_BrowserCmdLineParms);
+  DDX_Text(pDX, IDC_ALTBROWSER_CMDLINE, m_OtherBrowserCmdLineParms);
+  DDX_Text(pDX, IDC_ALTEDITOR_CMDLINE, m_OtherEditorCmdLineParms);
+
   DDX_Check(pDX, IDC_MINIMIZEONAUTOTYPE, m_AutotypeMinimize);
 
   DDX_Control(pDX, IDC_MAINTAINDATETIMESTAMPS, m_chkbox[0]);
@@ -149,10 +153,10 @@ BOOL COptionsMisc::OnInitDialog()
   GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_OtherBrowserLocation);
   GetDlgItem(IDC_OTHEREDITORLOCATION)->SetWindowText(m_OtherEditorLocation);
 
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_DADSPIN);
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_DADSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_DB_DEF_AUTOTYPE_DELAY));
-  pspin->SetRange32(1, 60000);
+  pspin->SetRange32(M_prefminAutotypeDelay(), M_prefmaxAutotypeDelay());
   pspin->SetBase(10);
   pspin->SetPos(m_AutotypeDelay);
 
@@ -192,21 +196,22 @@ LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
       return 1L;
       }
     case PP_DATA_CHANGED:
-      if (M_ConfirmDelete()          != m_ConfirmDelete            || 
-          M_MaintainDatetimeStamps() != m_MaintainDatetimeStamps   ||
-          M_EscExits()               != m_EscExits                 ||
-          M_UseDefUsername()         != m_UseDefUsername           ||
-          (M_UseDefUsername()        == TRUE &&
-           M_DefUsername()           != CSecString(m_DefUsername)) ||
-          M_QuerySetDefUsername()    != m_QuerySetDefUsername      ||
-          M_DoubleClickAction()      != m_DoubleClickAction        ||
-          M_ShiftDoubleClickAction() != m_ShiftDoubleClickAction   ||
-          M_OtherBrowserLocation()   != m_OtherBrowserLocation     ||
-          M_OtherEditorLocation()    != m_OtherEditorLocation      ||
-          M_BrowserCmdLineParms()    != m_BrowserCmdLineParms      ||
-          M_AutotypeText()           != m_AutotypeText             ||
-          M_AutotypeDelay()          != m_AutotypeDelay            ||
-          M_AutotypeMinimize()       != m_AutotypeMinimize)
+      if (M_ConfirmDelete()            != m_ConfirmDelete            || 
+          M_MaintainDatetimeStamps()   != m_MaintainDatetimeStamps   ||
+          M_EscExits()                 != m_EscExits                 ||
+          M_UseDefUsername()           != m_UseDefUsername           ||
+          (M_UseDefUsername()          == TRUE &&
+           M_DefUsername()             != CSecString(m_DefUsername)) ||
+          M_QuerySetDefUsername()      != m_QuerySetDefUsername      ||
+          M_DoubleClickAction()        != m_DoubleClickAction        ||
+          M_ShiftDoubleClickAction()   != m_ShiftDoubleClickAction   ||
+          M_OtherBrowserLocation()     != m_OtherBrowserLocation     ||
+          M_OtherEditorLocation()      != m_OtherEditorLocation      ||
+          M_OtherBrowserCmdLineParms() != m_OtherBrowserCmdLineParms ||
+          M_OtherEditorCmdLineParms()  != m_OtherEditorCmdLineParms  ||
+          M_AutotypeText()             != m_AutotypeText             ||
+          M_AutotypeDelay()            != m_AutotypeDelay            ||
+          M_AutotypeMinimize()         != m_AutotypeMinimize)
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:
@@ -249,7 +254,8 @@ BOOL COptionsMisc::OnApply()
   M_DefUsername() = (CSecString)m_DefUsername;
   M_OtherBrowserLocation() = m_OtherBrowserLocation;
   M_OtherEditorLocation() = m_OtherEditorLocation;
-  M_BrowserCmdLineParms() = m_BrowserCmdLineParms;
+  M_OtherBrowserCmdLineParms() = m_OtherBrowserCmdLineParms;
+  M_OtherEditorCmdLineParms() = m_OtherEditorCmdLineParms;
   M_AutotypeText() = m_AutotypeText;
   M_AutotypeDelay() = m_AutotypeDelay;
   M_ConfirmDelete() = m_ConfirmDelete;

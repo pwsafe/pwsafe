@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -43,12 +43,15 @@ IMPLEMENT_DYNAMIC(CWZSelectDB, CWZPropertyPage)
 
 CWZSelectDB::CWZSelectDB(CWnd *pParent, int idd, UINT nIDCaption,
        const int nType)
- : CWZPropertyPage(idd, nIDCaption, nType), m_tries(0), m_state(0),
-  m_pVKeyBoardDlg(NULL), m_bAdvanced(BST_UNCHECKED), m_bExportDBFilters(BST_UNCHECKED),
-  m_bFileExistsUserAsked(false),
-  m_filespec(L""), m_passkey(L""), m_passkey2(L""), m_verify2(L""),
-  m_defexpdelim(L"\xbb"), m_pctlDB(new CEditExtn),
+ : CWZPropertyPage(idd, nIDCaption, nType), 
+  m_defexpdelim(L"\xbb"),
   m_pctlPasskey(new CSecEditExtn), m_pctlPasskey2(new CSecEditExtn), m_pctlVerify2(new CSecEditExtn),
+  m_pctlDB(new CEditExtn),
+  m_passkey(L""), m_passkey2(L""), m_verify2(L""), m_filespec(L""),
+  m_tries(0), m_state(0),
+  m_bAdvanced(BST_UNCHECKED), m_bExportDBFilters(BST_UNCHECKED),
+  m_bFileExistsUserAsked(false),
+  m_pVKeyBoardDlg(nullptr),
   m_LastFocus(IDC_PASSKEY)
 {
   m_pWZPSH = (CWZPropertySheet *)pParent;
@@ -118,7 +121,8 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
       nID == ID_MENUITEM_EXPORTENT2XML       ||
       nID == ID_MENUITEM_EXPORTGRP2XML       ||
       nID == ID_MENUITEM_EXPORTENT2DB        ||
-      nID == ID_MENUITEM_EXPORTGRP2DB) {
+      nID == ID_MENUITEM_EXPORTGRP2DB        ||
+      nID == ID_MENUITEM_EXPORTFILTERED2DB) {
     DDX_Control(pDX, IDC_STATIC_WZWARNING, m_stc_warning);
 
     if (nID != ID_MENUITEM_SYNCHRONIZE) {
@@ -223,6 +227,11 @@ BOOL CWZSelectDB::OnInitDialog()
         bEXPORTDBCTRLS = true;
       }
       break;
+    case ID_MENUITEM_EXPORTFILTERED2DB:
+      cs_temp.LoadString(IDS_WSSLCT_FILTERED);
+      bWARNINGTEXT = false;
+      bEXPORTDBCTRLS = true;
+      break;
     case ID_MENUITEM_COMPARE:
     case ID_MENUITEM_MERGE:
       bWARNINGTEXT = false;
@@ -272,6 +281,7 @@ BOOL CWZSelectDB::OnInitDialog()
   switch (nID) {
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
+    case ID_MENUITEM_EXPORTFILTERED2DB:
     {
       // Disable & hide - Advanced checkbox & specifying delimiter
       GetDlgItem(IDC_ADVANCED)->ShowWindow(SW_HIDE);
@@ -283,8 +293,8 @@ BOOL CWZSelectDB::OnInitDialog()
       GetDlgItem(IDC_WZDEFEXPDELIM)->EnableWindow(FALSE);
 
       // Potentially allow user to export DB filters
-      bool bEnableExportFilters = (nID == ID_MENUITEM_EXPORTGRP2DB) &&
-                                   app.GetMainDlg()->GetCore()->GetDBFilters().size() > 0;
+      bool bEnableExportFilters = ((nID == ID_MENUITEM_EXPORTGRP2DB || nID == ID_MENUITEM_EXPORTFILTERED2DB) &&
+                                   !app.GetCore()->GetDBFilters().empty());
       GetDlgItem(IDC_EXPORTFILTERS)->ShowWindow(bEnableExportFilters ? SW_SHOW : SW_HIDE);
       GetDlgItem(IDC_EXPORTFILTERS)->EnableWindow(bEnableExportFilters ? TRUE : FALSE);
 
@@ -321,7 +331,6 @@ BOOL CWZSelectDB::OnInitDialog()
 
       GetDlgItem(IDC_EXPORTFILTERS)->ShowWindow(SW_HIDE);
       GetDlgItem(IDC_EXPORTFILTERS)->EnableWindow(FALSE);
-
       break;
 
     case ID_MENUITEM_SYNCHRONIZE:
@@ -486,7 +495,8 @@ void CWZSelectDB::OnPassKeyChange()
   const UINT nID = m_pWZPSH->GetID();
   bool bReady;
 
-  if (nID == ID_MENUITEM_EXPORTENT2DB || nID == ID_MENUITEM_EXPORTGRP2DB) {
+  if (nID == ID_MENUITEM_EXPORTENT2DB || nID == ID_MENUITEM_EXPORTGRP2DB ||
+      nID == ID_MENUITEM_EXPORTFILTERED2DB) {
     bReady = m_state == ALLPRESENT;
   } else {
     bReady = m_state == BOTHPRESENT;
@@ -559,6 +569,32 @@ LRESULT CWZSelectDB::OnWizardNext()
   CGeneralMsgBox gmb;
 
   const UINT nID = m_pWZPSH->GetID();
+
+  // Current DB passkey
+  if (m_passkey.IsEmpty()) {
+    gmb.AfxMessageBox(IDS_CANNOTBEBLANK);
+    m_pctlPasskey->SetFocus();
+    return -1;
+  }
+
+  if (nID == ID_MENUITEM_EXPORTENT2DB || nID == ID_MENUITEM_EXPORTGRP2DB ||
+      nID == ID_MENUITEM_EXPORTFILTERED2DB) {
+    // New Export DB passkey
+    if (m_passkey2 != m_verify2) {
+      // This shouldn't happen as the Wizard Next button shouldn't be
+      // active unless they are equal!
+      gmb.AfxMessageBox(IDS_ENTRIESDONOTMATCH);
+      ((CEdit *)GetDlgItem(IDC_VERIFY2))->SetFocus();
+      return -1;
+    }
+
+    if (m_passkey2.IsEmpty()) {
+      gmb.AfxMessageBox(IDS_ENTERKEYANDVERIFY);
+      ((CEdit *)GetDlgItem(IDC_PASSKEY2))->SetFocus();
+      return -1;
+    }
+  }
+
   bool bFileExists = pws_os::FileExists(m_filespec.GetString());
   int iExportType(-1);  // -1 = Not set, IDS_WZEXPORTTEXT = Text, IDS_WZEXPORTXML = XML, IDS_WZEXPORTDB = DB
 
@@ -584,16 +620,22 @@ LRESULT CWZSelectDB::OnWizardNext()
         iExportType = IDS_WZEXPORTXML;
     case ID_MENUITEM_EXPORTENT2DB:
     case ID_MENUITEM_EXPORTGRP2DB:
+    case ID_MENUITEM_EXPORTFILTERED2DB:
       if (iExportType < 0)
         iExportType = IDS_WZEXPORTDB;
       if (bFileExists) {
         // Check if OK to overwrite existing file - if not already asked by user clicking
         // file browser button
         if (!m_bFileExistsUserAsked) {
+          // As possibility to drop through after using gmb, need our own
+          // in case another message is required - CGeneralMsgBox is NOT reusable
+          CGeneralMsgBox gmbx;
           CString cs_msg, cs_title(MAKEINTRESOURCE(iExportType));
           cs_msg.Format(IDS_REPLACEEXPORTFILE, static_cast<LPCWSTR>(m_filespec));
-          INT_PTR rc = gmb.AfxMessageBox(cs_msg, cs_title,
+
+          INT_PTR rc = gmbx.AfxMessageBox(cs_msg, cs_title,
                          MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
+          
           if (rc == IDNO) {
             m_pctlDB->SetFocus();
             return -1;
@@ -627,30 +669,6 @@ LRESULT CWZSelectDB::OnWizardNext()
       // No idea why here!
       ASSERT(0);
       return -1;
-  }
-
-  // Current DB passkey
-  if (m_passkey.IsEmpty()) {
-    gmb.AfxMessageBox(IDS_CANNOTBEBLANK);
-    m_pctlPasskey->SetFocus();
-    return -1;
-  }
-
-  if (nID == ID_MENUITEM_EXPORTENT2DB || nID == ID_MENUITEM_EXPORTGRP2DB) {
-    // New Export DB passkey
-    if (m_passkey2 != m_verify2) {
-      // This shouldn't happen as the Wizard Next button shouldn't be
-      // active unless they are equal!
-      gmb.AfxMessageBox(IDS_ENTRIESDONOTMATCH);
-      ((CEdit*)GetDlgItem(IDC_VERIFY2))->SetFocus();
-      return -1;
-    }
-
-    if (m_passkey2.IsEmpty()) {
-      gmb.AfxMessageBox(IDS_ENTERKEYANDVERIFY);
-      ((CEdit*)GetDlgItem(IDC_PASSKEY2))->SetFocus();
-      return -1;
-    }
   }
 
   // Check that this file isn't already open

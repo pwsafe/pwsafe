@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -17,7 +17,7 @@ namespace pws_os {
   
   extern bool GetRandomData(void *p, unsigned long len);
   
-  // Calling following with p == NULL wil return the size of
+  // Calling following with a null p will return the size of
   // the generated seed in byte in slen. A pointer to slen
   // bytes should then be passed, which will be filled with
   // (hopefully) enough entropy to get the ball rolling...

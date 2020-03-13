@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -12,7 +12,7 @@
 
 #include "ItemField.h"
 #include "Util.h"
-#include "Fish.h"
+#include "crypto/Fish.h"
 #include "PWSrand.h"
 #include "os/funcwrap.h"
 
@@ -30,7 +30,7 @@ CItemField::CItemField(const CItemField &that)
     m_Data = new unsigned char[bs];
     memcpy(m_Data, that.m_Data, bs);
   } else {
-    m_Data = NULL;
+    m_Data = nullptr;
   }
 }
 
@@ -45,7 +45,7 @@ CItemField &CItemField::operator=(const CItemField &that)
       m_Data = new unsigned char[bs];
       memcpy(m_Data, that.m_Data, bs);
     } else {
-      m_Data = NULL;
+      m_Data = nullptr;
     }
   }
   return *this;
@@ -53,9 +53,9 @@ CItemField &CItemField::operator=(const CItemField &that)
 
 void CItemField::Empty()
 {
-  if (m_Data != NULL) {
+  if (m_Data != nullptr) {
     delete[] m_Data;
-    m_Data = NULL;
+    m_Data = nullptr;
     m_Length = 0;
   }
 }
@@ -71,15 +71,15 @@ void CItemField::Set(const unsigned char* value, size_t length,
   delete[] m_Data;
 
   if (m_Length == 0) {
-    m_Data = NULL;
+    m_Data = nullptr;
   } else {
     m_Data = new unsigned char[BlockLength];
-    if (m_Data == NULL) { // out of memory - try to fail gracefully
+    if (m_Data == nullptr) { // out of memory - try to fail gracefully
       m_Length = 0; // at least keep structure consistent
       return;
     }
 
-    unsigned char *tempmem = new unsigned char[BlockLength];
+    auto *tempmem = new unsigned char[BlockLength];
     // invariant: BlockLength >= plainlength
     memcpy_s(tempmem, BlockLength, value, m_Length);
 
@@ -107,9 +107,9 @@ void CItemField::Set(const StringX &value, const Fish *bf, unsigned char type)
 
 void CItemField::Get(unsigned char *value, size_t &length, const Fish *bf) const
 {
-  // Sanity check: length is 0 iff data ptr is NULL
-  ASSERT((m_Length == 0 && m_Data == NULL) ||
-         (m_Length > 0 && m_Data != NULL));
+  // Sanity check: length is 0 iff data ptr is nullptr
+  ASSERT((m_Length == 0 && m_Data == nullptr) ||
+         (m_Length > 0 && m_Data != nullptr));
   /*
   * length is an in/out parameter:
   * In: size of value array - must be at least BlockLength
@@ -122,7 +122,7 @@ void CItemField::Get(unsigned char *value, size_t &length, const Fish *bf) const
   } else { // we have data to decrypt
     size_t BlockLength = GetBlockSize(m_Length);
     ASSERT(length >= BlockLength);
-    unsigned char *tempmem = new unsigned char[BlockLength];
+    auto *tempmem = new unsigned char[BlockLength];
 
     size_t x;
     for (x = 0; x < BlockLength; x += 8)
@@ -138,15 +138,15 @@ void CItemField::Get(unsigned char *value, size_t &length, const Fish *bf) const
 
 void CItemField::Get(StringX &value, const Fish *bf) const
 {
-  // Sanity check: length is 0 iff data ptr is NULL
-  ASSERT((m_Length == 0 && m_Data == NULL) ||
-         (m_Length > 0 && m_Data != NULL && m_Length % sizeof(TCHAR) == 0));
+  // Sanity check: length is 0 iff data ptr is nullptr
+  ASSERT((m_Length == 0 && m_Data == nullptr) ||
+         (m_Length > 0 && m_Data != nullptr && m_Length % sizeof(TCHAR) == 0));
 
   if (m_Length == 0) {
     value = _T("");
   } else { // we have data to decrypt
     size_t BlockLength = GetBlockSize(m_Length);
-    unsigned char *tempmem = new unsigned char[BlockLength];
+    auto *tempmem = new unsigned char[BlockLength];
     TCHAR *pt = reinterpret_cast<TCHAR *>(tempmem);
     size_t x;
 

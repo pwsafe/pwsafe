@@ -3,7 +3,7 @@ Auto Index=Yes
 Compatibility=1.1 or later
 Compiled file=pwsafeFR.chm
 Contents file=pwsafefr.hhc
-Default topic=html\pws_intro.htm
+Default topic=html/pws_intro.htm
 Display compile progress=Yes
 Error log file=pwsafefr.log
 Full-text search=Yes
@@ -12,14 +12,14 @@ Title=HTML Help pour Password Safe
 
 
 [FILES]
-html\pws_opts.htm
-html\pws_combo_chg.htm
-html\pws_combo_entry.htm
-html\pws_combo_err.htm
-html\pws_edit.htm
-html\pws_intro.htm
-html\pws_main.htm
-html\pws_add_data.htm
+html/pws_opts.htm
+html/pws_combo_chg.htm
+html/pws_combo_entry.htm
+html/pws_combo_err.htm
+html/pws_edit.htm
+html/pws_intro.htm
+html/pws_main.htm
+html/pws_add_data.htm
 
 [INFOTYPES]
 

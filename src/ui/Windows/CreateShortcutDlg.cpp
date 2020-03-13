@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -26,8 +26,8 @@ static char THIS_FILE[] = __FILE__;
 CCreateShortcutDlg::CCreateShortcutDlg(CWnd* pParent, 
   const CSecString &cs_basegroup, const CSecString &cs_basetitle, const CSecString &cs_baseuser)
   : CPWDialog(CCreateShortcutDlg::IDD, pParent),
-  m_basegroup(cs_basegroup), m_basetitle(cs_basetitle), m_baseuser(cs_baseuser),
-  m_group(cs_basegroup), m_username(cs_baseuser)
+  m_username(cs_baseuser), m_group(cs_basegroup),
+  m_basegroup(cs_basegroup), m_basetitle(cs_basetitle), m_baseuser(cs_baseuser)
 {
 }
 

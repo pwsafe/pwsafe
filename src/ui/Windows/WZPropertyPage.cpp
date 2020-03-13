@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -14,13 +14,12 @@
 #include "WZPropertyPage.h"
 #include "WZPropertySheet.h"
 
-extern const wchar_t *EYE_CATCHER;
-
 IMPLEMENT_DYNAMIC(CWZPropertyPage, CPropertyPage)
 
 CWZPropertyPage::CWZPropertyPage(UINT nID, UINT nIDCaption, const int nType)
-  : CPropertyPage(nID, nIDCaption), m_nID(nID), m_nType(nType),
-  m_pToolTipCtrl(NULL)
+  : CPropertyPage(nID, nIDCaption), 
+  m_pToolTipCtrl(nullptr),
+  m_nType(nType), m_nID(nID)
 {
 }
 
@@ -86,13 +85,7 @@ void CWZPropertyPage::ShowHelp(const CString &topicFile)
 
 LRESULT CWZPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  if (app.GetMainDlg()->m_eye_catcher != NULL &&
-      wcscmp(app.GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
-    app.GetMainDlg()->ResetIdleLockCounter(message);
-  } else {
-    pws_os::Trace(L"CWZPropertyPage::WindowProc - couldn't find DboxMain ancestor\n");
-  }
-
+  app.GetMainDlg()->ResetIdleLockCounter(message);
   return CPropertyPage::WindowProc(message, wParam, lParam);
 }
 

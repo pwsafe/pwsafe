@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -40,8 +40,9 @@ int CAdvancedDlg::dialog_lookup[LAST] = {
 
 CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
                            st_SaveAdvValues *pst_SADV)
-  : CPWDialog(dialog_lookup[iIndex], pParent), m_iIndex(iIndex), m_pst_SADV(pst_SADV),
-  m_treatwhitespaceasempty(BST_CHECKED)
+  : CPWDialog(dialog_lookup[iIndex], pParent), 
+  m_treatwhitespaceasempty(BST_CHECKED), 
+  m_iIndex(iIndex), m_pst_SADV(pst_SADV)
 {
   if (m_pst_SADV != NULL) {
     m_bsFields = m_pst_SADV->bsFields;

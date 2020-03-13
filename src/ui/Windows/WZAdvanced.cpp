@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -52,8 +52,9 @@ IMPLEMENT_DYNAMIC(CWZAdvanced, CWZPropertyPage)
 
 CWZAdvanced::CWZAdvanced(CWnd *pParent, UINT nIDCaption, const int nType, WZAdvanced::AdvType iIndex,
                              st_SaveAdvValues *pst_SADV)
-  : CWZPropertyPage(dialog_lookup[iIndex], nIDCaption, nType), m_iIndex(iIndex), 
-  m_pst_SADV(pst_SADV), m_treatwhitespaceasempty(BST_CHECKED)
+  : CWZPropertyPage(dialog_lookup[iIndex], nIDCaption, nType), 
+  m_treatwhitespaceasempty(BST_CHECKED), m_iIndex(iIndex),
+  m_pst_SADV(pst_SADV)
 {
   ASSERT(sizeof(dialog_lookup) / sizeof(int) == WZAdvanced::LAST);
 

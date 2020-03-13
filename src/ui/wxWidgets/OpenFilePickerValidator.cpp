@@ -1,10 +1,14 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
+
+/** \file OpenFilePickerValidator.cpp
+*
+*/
 
 #include <wx/wxprec.h>
 
@@ -12,15 +16,16 @@
 #include <wx/wx.h>
 #endif
 
-#include "./OpenFilePickerValidator.h"
-#include "./wxutils.h"
-#include "../../os/file.h"
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
 
-bool COpenFilePickerValidator::TransferFromWindow() {
+#include "os/file.h"
+
+#include "OpenFilePickerValidator.h"
+#include "wxUtilities.h"
+
+bool OpenFilePickerValidator::TransferFromWindow() {
   if (GetWindow() && GetWindow()->IsKindOf(&wxFilePickerCtrl::ms_classInfo)) {
     wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl *>(GetWindow());
     wxASSERT(ctrl);
@@ -30,7 +35,7 @@ bool COpenFilePickerValidator::TransferFromWindow() {
   return false;
 }
 
-bool COpenFilePickerValidator::TransferToWindow() {
+bool OpenFilePickerValidator::TransferToWindow() {
   if (GetWindow() && GetWindow()->IsKindOf(&wxFilePickerCtrl::ms_classInfo)) {
     wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl *>(GetWindow());
     wxASSERT(ctrl);
@@ -40,7 +45,7 @@ bool COpenFilePickerValidator::TransferToWindow() {
   return false;
 }
 
-bool COpenFilePickerValidator::Validate(wxWindow * parent) {
+bool OpenFilePickerValidator::Validate(wxWindow * parent) {
   if (GetWindow() && GetWindow()->IsKindOf(&wxFilePickerCtrl::ms_classInfo)) {
     wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl *>(GetWindow());
     wxASSERT(ctrl);

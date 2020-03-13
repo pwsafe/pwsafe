@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -108,7 +108,9 @@ typedef int64_t int64;
 typedef uint8_t  uint8;
 typedef uint16_t uint16;
 typedef uint32_t uint32;
+typedef uint32_t ulong32;
 typedef uint64_t uint64;
+typedef uint64_t ulong64;
 
 #ifndef _ERRNO_T
 typedef int errno_t;
@@ -122,25 +124,24 @@ typedef wchar_t TCHAR;
 // mimic Microsoft conventional typdefs:
 typedef TCHAR *LPTSTR;
 typedef const TCHAR *LPCTSTR;
-typedef bool BOOL;
 typedef unsigned char BYTE;
 typedef uint16_t WORD;
 typedef uint32_t DWORD;
 typedef int32_t LONG;
 #if defined(PWS_LITTLE_ENDIAN)
-#define LOBYTE(w) ((BYTE)(w))
-#define HIBYTE(w) ((BYTE)(((WORD)(w) >> 8) & 0xFF))
+#define LOBYTE(w) (static_cast<BYTE>(w))
+#define HIBYTE(w) (static_cast<BYTE>((static_cast<WORD>(w) >> 8) & 0xFF))
 #define LOWORD(ul) (WORD(DWORD(ul) & 0xffff))
 #define HIWORD(ul) (WORD(DWORD(ul) >> 16))
-#define MAKELONG(low, high) ((LONG) (((WORD) (low)) | ((DWORD) ((WORD) (high))) << 16))
-#define MAKEWORD(low, high) ((WORD)((((WORD)(high)) << 8) | ((BYTE)(low))))
+#define MAKELONG(low, high) (static_cast<LONG>(static_cast<WORD>(low) | static_cast<DWORD>(static_cast<WORD>(high)) << 16))
+#define MAKEWORD(low, high) (static_cast<WORD>((static_cast<WORD>(high) << 8) | static_cast<BYTE>(low)))
 #elif defined(PWS_BIG_ENDIAN)
-#define HIBYTE(w) ((BYTE)(w))
-#define LOBYTE(w) ((BYTE)(((WORD)(w) >> 8) & 0xFF))
+#define HIBYTE(w) (static_cast<BYTE>(w))
+#define LOBYTE(w) (static_cast<BYTE>((static_cast<WORD>(w) >> 8) & 0xFF))
 #define HIWORD(ul) (WORD(DWORD(ul) & 0xffff))
 #define LOWORD(ul) (WORD(DWORD(ul) >> 16))
-#define MAKELONG(low, high) ((LONG) (((WORD) (high)) | ((DWORD) ((WORD) (low))) << 16))
-#define MAKEWORD(low, high) ((WORD)((((WORD)(low)) << 8) | ((BYTE)(high))))
+#define MAKELONG(low, high) (static_cast<LONG>(static_cast<WORD>(high) | static_cast<DWORD>(static_cast<WORD>(low)) << 16))
+#define MAKEWORD(low, high) (static_cast<WORD>((static_cast<WORD>(low) << 8) | static_cast<BYTE>(high)))
 #else
 #error "One of PWS_LITTLE_ENDIAN or PWS_BIG_ENDIAN must be defined before including typedefs.h"
 #endif

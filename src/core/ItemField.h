@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -26,7 +26,7 @@ class Fish;
 class CItemField
 {
 public:
-  explicit CItemField(unsigned char type = 0xff): m_Type(type), m_Length(0), m_Data(NULL)
+  explicit CItemField(unsigned char type = 0xff): m_Type(type), m_Length(0), m_Data(nullptr)
   {}
   CItemField(const CItemField &that); // copy ctor
   ~CItemField() {if (m_Length > 0) delete[] m_Data;}

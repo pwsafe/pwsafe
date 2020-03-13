@@ -1,13 +1,17 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __IMPORTTEXTDLG_H__
-#define __IMPORTTEXTDLG_H__
+/** \file ImportTextDlg.h
+* 
+*/
+
+#ifndef _IMPORTTEXTDLG_H_
+#define _IMPORTTEXTDLG_H_
 
 #include <wx/dialog.h> // Base class: wxDialog
 #include <wx/grid.h>
@@ -20,14 +24,14 @@ class wxRadioButton;
 
 //Usage: Instantiate this class and if ShowModal() returns Ok, check
 //the member variables which are automatically set by validators
-class CImportTextDlg : public wxDialog {
-
-  DECLARE_CLASS( CImportTextDlg )
+class ImportTextDlg : public wxDialog
+{
+  DECLARE_CLASS( ImportTextDlg )
   DECLARE_EVENT_TABLE()
 
 public:
-  CImportTextDlg(wxWindow* parent);
-  virtual ~CImportTextDlg();
+  ImportTextDlg(wxWindow* parent);
+  virtual ~ImportTextDlg();
 
   void CreateControls();
 

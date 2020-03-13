@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -49,13 +49,13 @@ void DboxMain::OnTrayLockUnLock()
 {
   PWS_LOGIT;
 
-  switch(app.GetSystemTrayState()) {
-    case ThisMfcApp::LOCKED:            // User clicked UnLock!
+  switch(m_TrayLockedState) {
+    case LOCKED:            // User clicked UnLock!
       // This only unlocks the database - it does not restore the window
       if (RestoreWindowsData(false, false))
         TellUserAboutExpiredPasswords();
       break;
-    case ThisMfcApp::UNLOCKED:          // User clicked Lock!
+    case UNLOCKED:          // User clicked Lock!
       UpdateSystemTray(LOCKED);
       ClearClipboardData();
       if (!IsIconic())
@@ -74,7 +74,7 @@ void DboxMain::OnTrayLockUnLock()
           ShowWindow(SW_MINIMIZE);
       }
       break;
-    case ThisMfcApp::CLOSED:
+    case CLOSED:
       break;
     default:
       ASSERT(0);
@@ -477,5 +477,19 @@ void DboxMain::OnTrayRunCommand(UINT nID)
 }
 
 void DboxMain::OnUpdateTrayRunCommand(CCmdUI *)
+{
+}
+
+void DboxMain::OnGotoDependant(UINT nID)
+{
+  ASSERT((nID >= ID_MENUITEM_GOTODEPENDANT1) && (nID <= ID_MENUITEM_GOTODEPENDANTMAX));
+
+  if ((nID - ID_MENUITEM_GOTODEPENDANT1 + 1) > m_vGotoDependants.size())
+    return;
+
+  SelectEntry(m_vGotoDependants[nID - ID_MENUITEM_GOTODEPENDANT1], TRUE);
+}
+
+void DboxMain::OnUpdateGotoDependant(CCmdUI *)
 {
 }

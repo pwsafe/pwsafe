@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -27,6 +27,9 @@ public:
 protected:
   //{{AFX_MSG(CNumEdit)
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+  afx_msg void OnPaste();
+  afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+  afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 

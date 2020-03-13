@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -23,7 +23,8 @@ class CCompareWithSelectDlg : public CPWDialog
 {
 public:
   // default constructor
-  CCompareWithSelectDlg(CItemData *pci, PWScore *pcore, CWnd *pParent);
+  CCompareWithSelectDlg(CWnd *pParent, CItemData *pci, PWScore *pcore,
+                        CString &csProtect, CString &csAttachment);
   virtual ~CCompareWithSelectDlg();
 
   pws_os::CUUID GetUUID();
@@ -52,6 +53,8 @@ private:
 
   PWScore *m_pcore;
   CItemData *m_pci, *m_pSelected;
+  
+  CString m_csProtect, m_csAttachment;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

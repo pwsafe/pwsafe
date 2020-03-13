@@ -50,6 +50,7 @@
 #define IDS_AUTOTYPEHELP                5118
 #define IDS_PWHHELP                     5119
 #define IDS_PASSWORDHELP2               5120
+#define IDS_TRANSPARENCYHELP            5121
 
 // Program strings
 #define IDS_FILEERROR1                  5210
@@ -796,3 +797,9 @@
 #define IDS_PASSWORDCOPIED              6048
 #define IDS_COPYPASSWORDHELP1           6049
 #define IDS_COPYPASSWORDHELP2           6050
+#define IDS_WSSLCT_FILTERED             6051
+#define IDS_GOTOSHORTCUTS               6052
+#define IDS_VIEWBASEENTRY               6053
+#define IDS_DBIDINUSE                   6054
+#define IDS_INCLUDEDBASES               6055
+

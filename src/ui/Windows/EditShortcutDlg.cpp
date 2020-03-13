@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -35,8 +35,10 @@ bool CEditShortcutDlg::m_bShowUUID = false;
 CEditShortcutDlg::CEditShortcutDlg(CItemData *pci, CWnd* pParent,
   const CSecString &cs_tg, const CSecString &cs_tt, const CSecString &cs_tu)
   : CPWDialog(CEditShortcutDlg::IDD, pParent),
-  m_tg(cs_tg), m_tt(cs_tt), m_tu(cs_tu), m_group(cs_tg),
-  m_pci(pci), m_bIsModified(false), m_Edit_IsReadOnly(false)
+  m_Edit_IsReadOnly(false),
+  m_pci(pci), m_group(cs_tg), 
+  m_tg(cs_tg), m_tt(cs_tt), m_tu(cs_tu),
+  m_bIsModified(false)
 {
   ASSERT(pci != NULL);
 

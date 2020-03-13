@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -11,15 +11,15 @@
 // Util.h
 //-----------------------------------------------------------------------------
 
-#include "sha256.h"
+#include "crypto/sha256.h"
 #include "StringX.h"
-#include "Fish.h"
+#include "StringXStream.h"
+#include "crypto/Fish.h"
 #include "PwsPlatform.h"
-#include "UTF8Conv.h"
 
-#include "../os/debug.h"
-#include "../os/typedefs.h"
-#include "../os/mem.h"
+#include "os/debug.h"
+#include "os/typedefs.h"
+#include "os/mem.h"
 
 #include <sstream>
 #include <stdarg.h>
@@ -37,11 +37,13 @@
 #define V10 0
 #define V15 1
 
+class CUTF8Conv;
+
 extern void trashMemory(void *buffer, size_t length);
 extern void trashMemory(LPTSTR buffer, size_t length);
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt
 
-extern void ConvertString(const StringX &text,
+extern void ConvertPasskey(const StringX &text,
                           unsigned char *&txt, size_t &txtlen);
 
 extern void GenRandhash(const StringX &passkey,
@@ -53,7 +55,7 @@ extern size_t _readcbc(FILE *fp, unsigned char * &buffer,
                        size_t &buffer_len,
                        unsigned char &type, Fish *Algorithm,
                        unsigned char *cbcbuffer,
-                       const unsigned char *TERMINAL_BLOCK = NULL, 
+                       const unsigned char *TERMINAL_BLOCK = nullptr,
                        ulong64 file_len = 0);
 
 // typeless version for V4 content (caller pre-allocates buffer)
@@ -101,7 +103,9 @@ inline int32 getInt32(const unsigned char buf[4])
 #if defined(_DEBUG)
   // Following code works for big or little endian architectures but we'll warn anyway
   // if CPU is really little endian
-  if ( *reinterpret_cast<const int32 *>(buf) == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
+  if (
+      *reinterpret_cast<const int32 *>(buf) != 0 &&
+      *reinterpret_cast<const int32 *>(buf) == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
     pws_os::Trace0(_T("Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n"));
   }
@@ -157,7 +161,9 @@ inline void putInt32(unsigned char buf[4], const int32 val )
 #if defined(_DEBUG)
   // Above code works for big or little endian architectures but we'll warn anyway
   // if CPU is really little endian
-  if ( *(int32*) buf == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
+  if (
+      *reinterpret_cast<const int32 *>(buf) != 0 &&
+      *reinterpret_cast<int32*>(buf) == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
     pws_os::Trace0(_T("Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n"));
   }
@@ -230,6 +236,18 @@ void inline putInt(unsigned char *buf, const T val) { GetPutImpl<T, sizeof(T)>::
 bool operator==(const std::string& str1, const stringT& str2);
 inline bool operator==(const stringT& str1, const std::string &str2) { return str2 == str1; }
 
+inline void byteswap(unsigned char * begin, unsigned char * end) {
+    unsigned char *a = begin;
+    unsigned char *b = end;
+    ASSERT(a < b);
+    unsigned char tmp;
+    while (a < b) {
+        tmp = *a;
+        *a++ = *b;
+        *b-- = tmp;
+    }
+}
+
 namespace PWSUtil {
   // namespace of common utility functions
 
@@ -258,18 +276,20 @@ namespace PWSUtil {
   stringT GetSafeXMLString(const StringX &sxInString);
 
   bool pull_time(time_t &t, const unsigned char *data, size_t len);
+  // load file to stream
+  bool loadFile(const StringX &filename, StringXStream &stream);
 }
 
 ///////////////////////////////////////////////////////
 // Following two templates lets us use the two types
-// of iterators in a common (templatized) function when 
+// of iterators in a common (templatized) function when
 // all we need to do is to access the underlying value
 template <typename PairAssociativeContainer>
 class get_second {
   public:
     typedef typename PairAssociativeContainer::mapped_type mapped_type;
     typedef typename PairAssociativeContainer::const_iterator const_iterator;
-    const mapped_type& operator()(const_iterator val) { return val->second; }
+    const mapped_type& operator()(const_iterator val) const { return val->second; }
 };
 
 template <typename SequenceContainer>
@@ -277,10 +297,16 @@ class dereference {
   public:
     typedef typename SequenceContainer::value_type value_type;
     typedef typename SequenceContainer::const_iterator const_iterator;
-    const value_type& operator()(const_iterator itr) { return *itr; }
+    const value_type& operator()(const_iterator itr) const { return *itr; }
 };
 
 extern unsigned int GetStringBufSize(const TCHAR *fmt, va_list args);
+
+bool FindNoCase( const StringX& src, const StringX& dest);
+
+
+std::string toutf8(const std::wstring &w);
+
 #endif /* __UTIL_H */
 //-----------------------------------------------------------------------------
 // Local variables:

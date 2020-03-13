@@ -25,7 +25,7 @@ HELPDIR := ../../help
 MODIR   := ../../src/ui/wxWidgets/I18N/mos
 
 PWSAFE-BIN := $(RELDIR)/pwsafe
-DOCS := ../../README.txt $(DOCSDIR)/ReleaseNotes.txt \
+DOCS := ../../README.md $(DOCSDIR)/ReleaseNotes.txt \
 	$(DOCSDIR)/ChangeLog.txt
 MANPAGE := $(DOCSDIR)/pwsafe.1
 XMLFILES := $(foreach i,\
@@ -70,8 +70,8 @@ deb: debtree
 
 debtree:
 	@$(MKDIR) debian/usr/bin
-	@$(MKDIR) debian/usr/share/pwsafe/xml
-	@$(MKDIR) debian/usr/share/doc/passwordsafe/help
+	@$(MKDIR) debian/usr/share/passwordsafe/xml
+	@$(MKDIR) debian/usr/share/passwordsafe/help
 	@$(MKDIR) debian/usr/share/man/man1
 	@$(MKDIR) debian/usr/share/locale
 	@$(CP) $(PWSAFE-BIN) debian/usr/bin
@@ -85,15 +85,16 @@ debtree:
 		$(MV) ChangeLog.txt changelog; gzip -9 changelog; gzip -9 changelog.Debian)
 	@$(CP) $(MANPAGE) debian/usr/share/man/man1
 	@gzip -9 debian/usr/share/man/man1/pwsafe.1
-	@$(CP) $(XMLFILES) debian/usr/share/pwsafe/xml
-	@$(CP) $(HELPFILES) debian/usr/share/doc/passwordsafe/help
+	@$(CP) $(XMLFILES) debian/usr/share/passwordsafe/xml
+	@$(CP) $(HELPFILES) debian/usr/share/passwordsafe/help
 	@$(CP) -r $(MODIR)/* debian/usr/share/locale
 	@$(MKDIR) debian/DEBIAN
 	@$(SED) s/VERSION/$(RELEASENAME)/ < control > debian/DEBIAN/control
-	@$(CP) ../desktop/pwsafe.desktop debian/usr/share/pwsafe
-	@$(CP) ../graphics/pwsafe.png debian/usr/share/pwsafe
+	@$(CP) ../desktop/pwsafe.desktop debian/usr/share/applications
+	@$(MKDIR) debian/usr/share/icons/hicolor/48x48/apps
+	@$(CP) ../graphics/pwsafe.png debian/usr/share/icons/hicolor/48x48/apps
 	@$(FIND) debian -type d -exec $(CHMOD) 755 {} \;
-	@$(CHMOD) -R g-w debian/usr/share/pwsafe
+	@$(CHMOD) -R g-w debian/usr/share/passwordsafe
 	@$(CHMOD) -R g-w debian/usr/share/doc/passwordsafe/*
 	@$(CHMOD) g-w debian/usr/share/man/man1/pwsafe.1.gz
 	@$(CP) postinst debian/DEBIAN

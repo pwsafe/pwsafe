@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -27,7 +27,7 @@ static char THIS_FILE[] = __FILE__;
 CConfirmDeleteDlg::CConfirmDeleteDlg(CWnd* pParent, const int numchildren,
      const StringX sxGroup, const StringX sxTitle, const StringX sxUser)
   : CPWDialog(CConfirmDeleteDlg::IDD, pParent),
-  m_numchildren(numchildren), m_sxGroup(sxGroup), m_sxTitle(sxTitle), m_sxUser(sxUser)
+  m_sxGroup(sxGroup), m_sxTitle(sxTitle), m_sxUser(sxUser), m_numchildren(numchildren)
 {
   m_dontaskquestion = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DeleteQuestion);

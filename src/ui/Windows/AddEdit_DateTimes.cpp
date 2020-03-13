@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,9 +28,6 @@ using pws_os::CUUID;
 bool CAddEdit_DateTimes::m_bNumDaysFailed = false;
 bool CAddEdit_DateTimes::m_bShowUUID = false;
 
-// If no expiry set, this is what we offer:
-#define DEFAULT_EXP_INTERVAL 90
-
 static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
                                     int &numDays, const int &maxDays);
 
@@ -43,8 +40,9 @@ CAddEdit_DateTimes::CAddEdit_DateTimes(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_DateTimes::IDD, CAddEdit_DateTimes::IDD_SHORT,
                           pAEMD),
-  m_how(NONE_EXP), m_numDays(DEFAULT_EXP_INTERVAL), m_inSetX(false),
-  m_bRecurringPswdExpiry(FALSE), m_bInitdone(false)
+  m_bRecurringPswdExpiry(FALSE), m_how(NONE_EXP), m_numDays(PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays)), 
+  m_inSetX(false),
+  m_bInitdone(false)
 {
 #ifdef _DEBUG
   m_bShowUUID = true;
@@ -122,8 +120,8 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
 {
   // Last 32-bit date is 03:14:07 UTC on Tuesday, January 19, 2038
   // Find number of days from now to 2038/01/18 = max value here
-  // Need to do this early, since base classe's OnInitDialog()
-  // Calls UpdateData() which calls Validator, which uses m_maxDays (phew!)
+  // Need to do this early, since base class's OnInitDialog()
+  // calls UpdateData() which calls Validator, which uses m_maxDays (phew!)
   const CTime ct_Latest(2038, 1, 18, 0, 0, 0);
 
   CTimeSpan elapsedTime = ct_Latest - CTime::GetCurrentTime();
@@ -266,7 +264,7 @@ void CAddEdit_DateTimes::UpdateTimes()
   if (M_tttXTime() != (time_t)0) {
     xt = CTime(M_tttXTime());
   } else {
-    xt = now + CTimeSpan(DEFAULT_EXP_INTERVAL, 0, 1, 0);
+    xt = now + CTimeSpan(PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays), 0, 1, 0);
   }
 
   const CTime sMinDate(xt.GetTime() < now.GetTime() ? xt : now);
@@ -283,7 +281,7 @@ void CAddEdit_DateTimes::UpdateTimes()
     if (xt > now) {
       m_numDays = int(CTimeSpan(xt - now).GetDays());
     } else
-      m_numDays = DEFAULT_EXP_INTERVAL;
+      m_numDays = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays);
   }
 
   GetDlgItem(IDC_STATIC_CURRENT_XTIME)->SetWindowText(M_locXTime());
@@ -460,12 +458,13 @@ void CAddEdit_DateTimes::OnRecurringPswdExpiry()
 
   m_ae_psh->SetChanged(true);
 
-  // If user chose "recurring", then set the max interval to ~10 years
+  // If user chose "recurring", then set the max interval to pref max (~10 years)
   // (should suffice for most purposes). For non-recurring, limit is
   // the max that won't overflow time_t
-  const int new_max = (m_bRecurringPswdExpiry == TRUE) ? 3650 : m_maxDays;
+  const int new_max = (m_bRecurringPswdExpiry == TRUE) ?
+    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays) : m_maxDays;
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
-  pspin->SetRange32(1, new_max);
+  pspin->SetRange32(PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::DefaultExpiryDays), new_max);
   if (m_numDays > new_max)
     m_numDays = 1;
 

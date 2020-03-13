@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -332,7 +332,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
                                                   L"filters.xml");
   cs_text.LoadString(IDS_NAMEXMLFILE);
   std::wstring dir;
-  if (m_core.GetCurFile().empty())
+  if (!m_core.IsDbOpen())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -400,7 +400,7 @@ void DboxMain::ImportFilters()
   }
 
   std::wstring dir;
-  if (m_core.GetCurFile().empty())
+  if (!m_core.IsDbOpen())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;

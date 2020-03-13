@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -23,19 +23,16 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   va_list args;
   va_start(args, lpszFormat);
 
-  unsigned int num_required;
-  int num_written;
-
-  num_required = GetStringBufSize(lpszFormat, args);
+  unsigned int num_required = GetStringBufSize(lpszFormat, args);
   va_end(args);//after using args we should reset list
   va_start(args, lpszFormat);
 
   wchar_t *wcbuffer = new wchar_t[num_required];
-  num_written = vswprintf(wcbuffer, num_required, lpszFormat, args);
-  assert(num_required == num_written+1);
+  int num_written = vswprintf(wcbuffer, num_required, lpszFormat, args);
+  assert(static_cast<int>(num_required) == num_written+1);
   wcbuffer[num_required-1] = L'\0';
 
-  size_t N = wcstombs(NULL, wcbuffer, 0) + 1;
+  size_t N = wcstombs(nullptr, wcbuffer, 0) + 1;
   char *szbuffer = new char[N];
   wcstombs(szbuffer, wcbuffer, N);
   delete[] wcbuffer;
@@ -51,7 +48,7 @@ void pws_os::Trace0(LPCTSTR lpszFormat)
 {
   openlog("pwsafe:", LOG_PID|LOG_PERROR, LOG_USER);
 
-  size_t N = wcstombs(NULL, lpszFormat, 0) + 1;
+  size_t N = wcstombs(nullptr, lpszFormat, 0) + 1;
   char *szbuffer = new char[N];
   wcstombs(szbuffer, lpszFormat, N);
 

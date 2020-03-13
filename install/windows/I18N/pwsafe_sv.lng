@@ -5,7 +5,7 @@
 ; first edit : Karlo Van der Gucht
 ;---------------------------------------------------
 ; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
-; Copyright 2005-2007 Rony Shapiro <ronys@pwsafe.org>
+; Copyright 2005-2020 Rony Shapiro <ronys@pwsafe.org>
 ; 2009 extended by Karlo Van der Gucht for multiple language use
 ; 2010 extended by Karlo Van der Gucht Danish language
 ; This script may be redistributed and/or modified under the Artistic
@@ -48,6 +48,9 @@ LangString UNINSTALL_SHORTCUT ${LANG_SWEDISH} "Installera genväg för avinstallat
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
 LangString DESC_ProgramFiles ${LANG_SWEDISH} "Installerar de filer som är nödvändiga för att använda Password Safe."
  
+; DESC_CliTool "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_SWEDISH} "Installs pwsafe-cli, a command line utility."
+
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
 LangString DESC_LangSupport ${LANG_SWEDISH} "Välj det/de språk som Password Safe skall använda."
  
@@ -97,6 +100,9 @@ LangString LANG_SELECT ${LANG_SWEDISH} "Vänligen, välj språk för installationen"
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_SWEDISH} "Programspråk"
  
+; CLI_TOOL "Command-line tool"
+LangString CLI_TOOL ${LANG_SWEDISH} "Command-line tool"
+
 LangString LANGUAGE_SUPPORT ${LANG_SWEDISH} "Språkstöd"
 LangString ENGLISH_SUPPORT ${LANG_SWEDISH} "Engelska"
 ; CHINESE_CN_SUPPORT "Chinese (Simplified)"
@@ -117,6 +123,7 @@ LangString KOREAN_SUPPORT ${LANG_SWEDISH} "Koreanska"
 LangString CZECH_SUPPORT ${LANG_SWEDISH} "Tjeck"
 LangString TURKISH_SUPPORT ${LANG_SWEDISH} "Turkisk"
 LangString HUNGARIAN_SUPPORT ${LANG_SWEDISH} "Ungerska"
+LangString SLOVENIAN_SUPPORT ${LANG_SWEDISH} "Slovenska"
  
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_95 ${LANG_SWEDISH} "Tyvärr, Windows 95 stöds inte längre. Försök med PasswordSafe 2.16"
@@ -130,5 +137,11 @@ LangString SORRY_NO_ME ${LANG_SWEDISH} "Tyvärr, Windows ME stöds inte längre. Fö
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
 LangString SORRY_NO_2K ${LANG_SWEDISH} "Tyvärr, Windows 2000 stöds inte längre. Försök med PasswordSafe 3.18"
  
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_SWEDISH} "Password Safe Uninstall"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_SWEDISH} "Password Safe Help"
+
 ;=================================================================
 ; End of pwsafe_sv.lng

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -16,13 +16,13 @@
 
 bool pws_os::mlock(void *p, size_t size)
 {
-  assert(p != NULL);
+  assert(p != nullptr);
   return ::mlock(p, size) == 0;
 }
 
 bool pws_os::munlock(void *p, size_t size)
 {
-  assert(p != NULL);
+  assert(p != nullptr);
   return ::munlock(p, size) == 0;
 }
 

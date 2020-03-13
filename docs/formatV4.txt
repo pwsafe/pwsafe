@@ -1,7 +1,7 @@
 PasswordSafe database format description version 4.01
 -----------------------------------------------------
 
-Copyright (c) 2013-2017 Rony Shapiro <ronys@pwsafe.org>.
+Copyright (c) 2013-2020 Rony Shapiro <ronys@pwsafe.org>.
 All rights reserved. Use of the code is allowed under the Artistic
 License terms, as specified in the LICENSE file distributed with this
 code, or available from
@@ -71,7 +71,7 @@ described here.
 Where:
 
 2.1 Nonce is a 256 bit random value, used (a) to verify that the file
-has not not changed since last read (although this is not foolproof,
+has not changed since last read (although this is not foolproof,
 it's the best we can do across file sharers), and (b) to help detect
 the end of the key blocks, as described below.
 
@@ -167,7 +167,7 @@ the need to decrypt and re-encrypt. See Section 3.4 for details.
 
 2.5.2.5 For all records, all non-mandatory fields may either be absent
 or have zero length. When a field is absent or zero-length, its
-default value shall be used. Aside from first UUID field and the the
+default value shall be used. Aside from first UUID field and the
 terminating 'END' field, no order is assumed on the field types unless
 otherwise specified.
 
@@ -232,6 +232,8 @@ Recently Used Entries       0x0f        Text                         [14]
 Named Password Policies     0x10        Text                         [15]
 Empty Groups                0x11        Text                         [16]
 Yubico                      0x12        Text                         [13]
+Timestamp of last master
+password change             0x13        time_t        Y              [5]
 End of Entry                0xff        [empty]       Y              [17]
 
 [1] The version number of the database format. For this version, the value

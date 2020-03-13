@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -18,7 +18,7 @@
 #include "typedefs.h" // for TCHAR
 
 namespace pws_os {
-  bool RegCheckExists(const TCHAR *stree = NULL); // check for app's registry subtree by default
+  bool RegCheckExists(const TCHAR *stree = nullptr); // check for app's registry subtree by default
   bool RegWriteValue(const TCHAR *section, const TCHAR *entry, int value);
   inline bool RegWriteValue(const TCHAR *section, const TCHAR *entry, bool value)
   { return RegWriteValue(section, entry, value ? 1 : 0); }

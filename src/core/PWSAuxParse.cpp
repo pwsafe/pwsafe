@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -87,8 +87,8 @@ bool PWSAuxParse::GetEffectiveValues(const CItemData *pci, const CItemData *pbci
   // The one place to get the values needed for AutoType & RunCmd based on entry type
 
   if (pci->IsDependent()) {
-    ASSERT(pbci != NULL);
-    if (pbci == NULL)
+    ASSERT(pbci != nullptr);
+    if (pbci == nullptr)
       return false;
   }
 
@@ -125,8 +125,8 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
                                bAutoType, sxAutotype, 
                                serrmsg, st_column);
 
-  // if called with NULL ci, then we just parse to validate
-  if (uierr > 0 || pci == NULL || sxCurrentDB.empty()) {
+  // if called with nullptr ci, then we just parse to validate
+  if (uierr > 0 || pci == nullptr) {
     v_rctokens.clear();
     return sxretval;
   }
@@ -136,7 +136,7 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   pws_os::splitpath(spath, sdrive, sdir, sfname, sextn);
   sdbdir = pws_os::makepath(sdrive, sdir, _T(""), _T(""));
 
-  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype;
 
   // GetEffectiveFieldValue() encapsulates what we take from where depending in the entry type (alias, shortcut, etc.)
   sx_group    = pci->GetEffectiveFieldValue(CItem::GROUP, pbci);
@@ -148,7 +148,6 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   sx_url      = pci->GetEffectiveFieldValue(CItem::URL, pbci);
   sx_email    = pci->GetEffectiveFieldValue(CItem::EMAIL, pbci);
   sx_autotype = pci->GetEffectiveFieldValue(CItem::AUTOTYPE, pbci);
-  sx_runcmd   = pci->GetEffectiveFieldValue(CItem::RUNCMD, pbci);
 
   for (rc_iter = v_rctokens.begin(); rc_iter < v_rctokens.end(); rc_iter++) {
     st_RunCommandTokens &st_rctoken = *rc_iter;
@@ -179,7 +178,7 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
     if (st_rctoken.sxname == _T("G") || st_rctoken.sxname == _T("GROUP")) {
       StringX sxg = sx_group;
       StringX::size_type st_index;
-      st_index = sxg.rfind(_T("."));
+      st_index = sxg.rfind(_T('.'));
       if (st_index != StringX::npos) {
         sxg = sxg.substr(st_index + 1);
       }
@@ -585,7 +584,7 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
                                        const PWScore &core,
                                        std::vector<size_t> &vactionverboffsets)
 {
-  const CItemData *pbci(NULL);
+  const CItemData *pbci(nullptr);
   StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
 
   if (ci.IsDependent()) {
@@ -765,7 +764,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
         case L'{':
         {
           // Send what we have
-          if (sxtmp.length() > 0) {
+          if (!sxtmp.empty()) {
             ks.SendString(sxtmp);
             sxtmp.clear();
           }
@@ -773,6 +772,11 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
           // Get this field
           StringX sxSpecial = sxautotype.substr(n + 1);
           StringX::size_type iEndBracket = sxSpecial.find(_T('}'));
+          if (iEndBracket == StringX::npos) { // malformed - no '}'
+            sxtmp += L'\\';
+            sxtmp += curChar;
+            break;
+          }
           sxSpecial.erase(iEndBracket);
           StringX::size_type iModifiersLength = sxSpecial.find_last_of(_T("!^+"));
 
@@ -796,7 +800,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
                 continue;
               }
             }
-          } else {
+          } else { // no modifier
             iModifiersLength = 0;
           }
 
@@ -855,7 +859,6 @@ static UINT ParseRunCommand(const StringX &sxInputString,
     uierr = IDSC_EXS_INPUTEMPTY;
     goto exit;
   }
-
   for (StringX::size_type l = 0; l < sxInputString.length(); l++) {
     if (sxInputString[l] == _T('"'))
       st_num_quotes++;
@@ -893,8 +896,10 @@ static UINT ParseRunCommand(const StringX &sxInputString,
     st_RunCommandTokens &st_rctokens = v_rctokens[st_idx - 1];
     StringX::size_type name_len = st_rctokens.sxname.length();
     if (name_len == 0 || (name_len >= 2 &&
-            st_rctokens.sxname.substr(name_len - 2, 2).compare(_T("\\\\")) == 0))
+                          st_rctokens.sxname.substr(name_len - 2, 2).compare(_T("\\\\")) == 0)) {
+      st_rctokens.sxname.erase(name_len - 2, 1);
       continue;
+    }
 
     if (st_rctokens.sxname.substr(name_len - 1, 1).compare(_T("\\")) == 0) {
       st_rctokens.sxname = st_rctokens.sxname.substr(0, name_len - 1) + 

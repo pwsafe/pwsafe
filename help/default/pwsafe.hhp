@@ -3,7 +3,7 @@ Auto Index=Yes
 Compatibility=1.1 or later
 Compiled file=pwsafe.chm
 Contents file=pwsafe.hhc
-Default topic=html\Welcome.html
+Default topic=html/Welcome.html
 Display compile progress=Yes
 Error log file=pwsafe.log
 Full-text search=Yes
@@ -13,54 +13,55 @@ Title=HTML Help for Password Safe
 
 
 [FILES]
-html\about_combinations.html
-html\about_pws.html
-html\about_pws_yubi.html
-html\advanced.html
-html\aliases.html
-html\autotype.html
-html\backups_tab.html
-html\backup_and_restore.html
-html\change_combo.html
-html\compare_results.html
-html\create_new_db.html
-html\credits.html
-html\display_tab.html
-html\edit_menu.html
-html\entering_pwd.html
-html\entering_pwd_add.html
-html\entering_pwd_date.html
-html\entering_pwd_pp.html
-html\export.html
-html\failsafebackups.html
-html\file_menu.html
-html\filters.html
-html\help_menu.html
-html\images.html
-html\import.html
-html\imp_exp_text_details.html
-html\manage_menu.html
-html\menu_toolbar.html
-html\misc_tab.html
-html\named_password_policies.html
-html\password_history.html
-html\password_history_tab.html
-html\password_policies.html
-html\popups.js
-html\preferences.html
-html\retrieve_pwd.html
-html\run_command.html
-html\searching.html
-html\security_tab.html
-html\shortcuts_tab.html
-html\Shortcut_Keys.html
-html\style.css
-html\system_tab.html
-html\upgrade_from_v1x.html
-html\view_menu.html
-html\Welcome.html
-html\wzselectdb.html
-html\wzfinish.html
+html/about_combinations.html
+html/about_pws.html
+html/about_pws_yubi.html
+html/advanced.html
+html/aliases.html
+html/autotype.html
+html/backups_tab.html
+html/backup_and_restore.html
+html/change_combo.html
+html/compare_results.html
+html/create_new_db.html
+html/credits.html
+html/display_tab.html
+html/edit_menu.html
+html/entering_pwd.html
+html/entering_pwd_add.html
+html/entering_pwd_date.html
+html/entering_pwd_pp.html
+html/export.html
+html/failsafebackups.html
+html/file_menu.html
+html/filters.html
+html/help_menu.html
+html/images.html
+html/import.html
+html/imp_exp_text_details.html
+html/manage_menu.html
+html/menu_toolbar.html
+html/misc_tab.html
+html/named_password_policies.html
+html/password_history.html
+html/password_history_tab.html
+html/password_policies.html
+html/popups.js
+html/preferences.html
+html/retrieve_pwd.html
+html/run_command.html
+html/searching.html
+html/security_tab.html
+html/shortcuts_tab.html
+html/Shortcut_Keys.html
+html/style.css
+html/system_tab.html
+html/system_tray.html
+html/upgrade_from_v1x.html
+html/view_menu.html
+html/Welcome.html
+html/wzselectdb.html
+html/wzfinish.html
 
 [INFOTYPES]
 

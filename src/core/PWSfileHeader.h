@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -34,6 +34,7 @@ struct PWSfileHeader {
   StringX m_prefString;                 // Preferences stored in the file
   std::vector<bool> m_displaystatus;    // Tree expansion state vector
   time_t m_whenlastsaved;               // When last saved
+  time_t m_whenpwdlastchanged;          // When last saved
   StringX m_lastsavedby;                // and by whom
   StringX m_lastsavedon;                // and by which machine
   StringX m_whatlastsaved;              // and by what application

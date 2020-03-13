@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -9,25 +9,23 @@
 /** \file YubiMixin.cpp
 * 
 */
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
+// For compilers that support precompilation, includes "wx/wx.h".
+#include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/wx.h>
 #endif
+
+#include "os/unix/PWYubi.h"
+#include "os/sleep.h"
+
+#include "YubiMixin.h"
 
 #include <iomanip>
 #include <sstream>
 
-#include "YubiMixin.h"
-#include "os/unix/PWYubi.h"
-#include "os/sleep.h"
-
-void CYubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
+void YubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
 {
   m_prompt1 = _("<- Click on button to the left"); // change via SetPrompt1
   m_prompt2 = _("Now touch your YubiKey's button"); // change via SetPrompt2
@@ -35,43 +33,43 @@ void CYubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
   m_status = status;
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
   // Hide Yubi controls if user doesn't have one:
-  if (m_btn != NULL) m_btn->Show(yubiExists());
-  if (m_status != NULL) m_status->Show(yubiExists());
+  if (m_btn != nullptr) m_btn->Show(yubiExists());
+  if (m_status != nullptr) m_status->Show(yubiExists());
 }
 
-bool CYubiMixin::yubiExists() const
+bool YubiMixin::yubiExists() const
 {
   return PWYubi::YubiExists();
 }
 
-void CYubiMixin::yubiInserted(void)
+void YubiMixin::yubiInserted(void)
 {
   m_btn->Enable(true);
   m_status->SetForegroundColour(wxNullColour);
   m_status->SetLabel(m_prompt1);
 }
 
-void CYubiMixin::yubiRemoved(void)
+void YubiMixin::yubiRemoved(void)
 {
   m_btn->Enable(false);
   m_status->SetForegroundColour(wxNullColour);
   m_status->SetLabel(_("Please insert your YubiKey"));
 }
 
-bool CYubiMixin::IsYubiInserted() const
+bool YubiMixin::IsYubiInserted() const
 {
   const PWYubi yubi;
   return yubi.IsYubiInserted();
 }
 
-void CYubiMixin::HandlePollingTimer()
+void YubiMixin::HandlePollingTimer()
 {
   // Show Yubi controls when inserted first time:
   if (yubiExists()) {
-    wxWindow *parent = NULL; // assume both have same parent
-    if (m_btn != NULL) {m_btn->Show(true); parent = m_btn->GetParent();}
-    if (m_status != NULL) {m_status->Show(true); parent = m_btn->GetParent();}
-    if (parent != NULL) parent->Layout();
+    wxWindow *parent = nullptr; // assume both have same parent
+    if (m_btn != nullptr) {m_btn->Show(true); parent = m_btn->GetParent();}
+    if (m_status != nullptr) {m_status->Show(true); parent = m_btn->GetParent();}
+    if (parent != nullptr) parent->Layout();
   }
 
   // Currently hmac check is blocking (ugh), so no need to check here
@@ -83,7 +81,7 @@ void CYubiMixin::HandlePollingTimer()
   }
 }
 
-void CYubiMixin::UpdateStatus()
+void YubiMixin::UpdateStatus()
 {
   if (m_present)
     yubiInserted();
@@ -91,7 +89,7 @@ void CYubiMixin::UpdateStatus()
     yubiRemoved();
 }
 
-bool CYubiMixin::PerformChallengeResponse(wxWindow *win,
+bool YubiMixin::PerformChallengeResponse(wxWindow *win,
             const StringX &challenge,
             StringX &response,
             bool oldYubiChallenge)
@@ -168,7 +166,7 @@ bool CYubiMixin::PerformChallengeResponse(wxWindow *win,
   return retval;
 }
 
-StringX CYubiMixin::Bin2Hex(const unsigned char *buf, int len) const
+StringX YubiMixin::Bin2Hex(const unsigned char *buf, int len) const
 {
   std::wostringstream os;
   os << std::setw(2);

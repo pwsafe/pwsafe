@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -8,6 +8,7 @@
 #include "PWSfileV1V2.h"
 #include "PWSrand.h"
 #include "core.h"
+#include "crypto/sha1.h"
 #include "os/file.h"
 #include "os/utf8conv.h"
 #include "os/UUID.h"
@@ -118,7 +119,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
 
   m_passkey = passkey;
   FOpen();
-  if (m_fd == NULL)
+  if (m_fd == nullptr)
     return CANT_OPEN_FILE;
 
   LPCTSTR passstr = m_passkey.c_str();
@@ -152,7 +153,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
     PWSrand::GetInstance()->GetRandomData( m_ipthing, 8);
     SAFE_FWRITE(m_ipthing, 1, 8, m_fd);
 
-    m_fish = BlowFish::MakeBlowFish(pstr, reinterpret_cast<unsigned int &>(passLen),
+    m_fish = BlowFish::MakeBlowFish(pstr, static_cast<unsigned int>(passLen),
                                     m_salt, SaltLength);
     if (m_curversion == V20) {
       status = WriteV2Header();
@@ -168,7 +169,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
     fread(m_salt, 1, SaltLength, m_fd);
     fread(m_ipthing, 1, 8, m_fd);
 
-    m_fish = BlowFish::MakeBlowFish(pstr, reinterpret_cast<unsigned int &>(passLen),
+    m_fish = BlowFish::MakeBlowFish(pstr, static_cast<unsigned int>(passLen),
                                     m_salt, SaltLength);
     if (m_curversion == V20)
       status = ReadV2Header();
@@ -190,23 +191,23 @@ int PWSfileV1V2::CheckPasskey(const StringX &filename,
                               const StringX &passkey, FILE *a_fd)
 {
   FILE *fd = a_fd;
-  if (fd == NULL) {
+  if (fd == nullptr) {
     fd = pws_os::FOpen(filename.c_str(), _T("rb"));
   }
-  if (fd == NULL)
+  if (fd == nullptr)
     return CANT_OPEN_FILE;
 
   unsigned char randstuff[StuffSize];
-  unsigned char randhash[20];   // HashSize
+  unsigned char randhash[SHA1::HASHLEN];
 
   fread(randstuff, 1, 8, fd);
   randstuff[8] = randstuff[9] = '\0'; // Gross fugbix
-  fread(randhash, 1, 20, fd);
+  fread(randhash, 1, sizeof(randhash), fd);
 
-  if (a_fd == NULL) // if we opened the file, we close it...
+  if (a_fd == nullptr) // if we opened the file, we close it...
     fclose(fd);
 
-  unsigned char temphash[20]; // HashSize
+  unsigned char temphash[SHA1::HASHLEN];
   GenRandhash(passkey, randstuff, temphash);
 
   if (0 != memcmp(reinterpret_cast<char *>(randhash), reinterpret_cast<char *>(temphash),
@@ -253,7 +254,7 @@ size_t PWSfileV1V2::WriteCBC(unsigned char type, const StringX &data)
 
 int PWSfileV1V2::WriteRecord(const CItemData &item)
 {
-  ASSERT(m_fd != NULL);
+  ASSERT(m_fd != nullptr);
   ASSERT(m_curversion != UNKNOWN_VERSION);
   int status = SUCCESS;
 
@@ -368,25 +369,30 @@ static void ExtractURL(StringX &notesStr, StringX &outurl)
 
 size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
 {
-  unsigned char *buffer = NULL;
+  unsigned char *buffer = nullptr;
   size_t buffer_len = 0;
   size_t retval;
 
-  ASSERT(m_fish != NULL && m_IV != NULL);
+  ASSERT(m_fish != nullptr && m_IV != nullptr);
   retval = _readcbc(m_fd, buffer, buffer_len, type,
                     m_fish, m_IV, m_terminal);
 
   if (buffer_len > 0) {
-    wchar_t *wc = new wchar_t[buffer_len+1];
 
-    size_t wcLen = pws_os::mbstowcs(wc, buffer_len + 1,
+    //edge cases can make wc bigger than buffer, so calculate the size needed
+    size_t wcsize = pws_os::mbstowcs(nullptr, 0,
+                                     reinterpret_cast<const char *>(buffer), buffer_len) + 1;
+
+    wchar_t *wc = new wchar_t[wcsize+1];
+
+    size_t wcLen = pws_os::mbstowcs(wc, wcsize,
                                     reinterpret_cast<const char *>(buffer),
                                     buffer_len, false);
     ASSERT(wcLen != 0);
-    if (wcLen < buffer_len + 1)
+    if (wcLen < wcsize + 1)
       wc[wcLen] = TCHAR('\0');
     else
-      wc[buffer_len] = TCHAR('\0');
+      wc[wcsize] = TCHAR('\0');
     data = wc;
     trashMemory(wc, wcLen);
     delete[] wc;
@@ -402,7 +408,7 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
 
 int PWSfileV1V2::ReadRecord(CItemData &item)
 {
-  ASSERT(m_fd != NULL);
+  ASSERT(m_fd != nullptr);
   ASSERT(m_curversion != UNKNOWN_VERSION);
 
   StringX tempdata;

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -35,12 +35,12 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
   bool retval = false;
 
   for (auto iter = m_RUEList.begin(); iter != m_RUEList.end(); iter++) {
-    ItemListConstIter pw_listpos = m_core.Find(*iter);
+    ItemListIter pw_listpos = m_core.Find(*iter);
     if (pw_listpos == m_core.GetEntryEndIter()) {
       ruentrydata.string = L"";
-      ruentrydata.pci = NULL;
+      ruentrydata.pci = nullptr;
     } else {
-      const CItemData &ci = m_core.GetEntry(pw_listpos);
+      CItemData &ci = m_core.GetEntry(pw_listpos);
       StringX group = ci.GetGroup();
       StringX title = ci.GetTitle();
       StringX user = ci.GetUser();
@@ -58,7 +58,7 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
       ruentrydata.string = L"\xab" + group + L"\xbb " + 
                            L"\xab" + title + L"\xbb " + 
                            L"\xab" + user  + L"\xbb";
-      ruentrydata.pci = (CItemData *)&ci;
+      ruentrydata.pci = &ci;
     }
     ListofAllMenuStrings.push_back(ruentrydata);
     retval = true;
@@ -149,15 +149,6 @@ void CRUEList::SetRUEList(const UUIDList &RUElist)
   std::copy(RUElist.rbegin(), RUElist.rend(), m_RUEList.begin());
   if (m_RUEList.size() > m_maxentries)
     m_RUEList.resize(m_maxentries);
-}
-
-CRUEList& CRUEList::operator=(const CRUEList &that)
-{
-  if (this != &that) {
-    m_maxentries = that.m_maxentries;
-    m_RUEList = that.m_RUEList;
-  }
-  return *this;
 }
 
 //-----------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,6 +28,8 @@
 #include "GeneralMsgBox.h"
 #include "InfoDisplay.h"
 #include "PasskeySetup.h"
+#include "SetDBID.h"
+#include "winutils.h"
 
 // Set Ctrl/Alt/Shift strings for menus
 #include "MenuShortcuts.h"
@@ -58,11 +60,9 @@
 
 #include "psapi.h"    // For EnumProcesses
 #include <afxpriv.h>
-#include <stdlib.h>   // for qsort
+
 #include <bitset>
 #include <algorithm>
-
-#include <usp10.h>    // for support of Unicode character (Uniscribe)
 
 // Need to add Windows SDK 6.0 (or later) 'include' and 'lib' libraries to
 // Visual Studio "VC++ directories" in their respective search orders to find
@@ -78,10 +78,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// Also needed by CInfoDisplay and CPasswordSubsetDlg
-extern HRGN GetWorkAreaRegion();
-extern BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC , LPRECT , LPARAM lParam);
-
 IMPLEMENT_DYNAMIC(DboxMain, CDialog)
 
 /*
@@ -90,16 +86,10 @@ IMPLEMENT_DYNAMIC(DboxMain, CDialog)
 */
 const wchar_t *HIDDEN_PASSWORD = L"**************";
 
-// Eyecatcher for looking for the parent within child windows based on
-// CPWDialog, CPWFileDialog and CPWPropertySheet
-const wchar_t *EYE_CATCHER = L"DBXM";
-
 CString DboxMain::CS_SETFILTERS;
 CString DboxMain::CS_CLEARFILTERS;
 CString DboxMain::CS_READWRITE;
 CString DboxMain::CS_READONLY;
-
-LOGFONT dfltTreeListFont;
 
 void DboxMain::SetLocalStrings()
 {
@@ -115,61 +105,80 @@ void DboxMain::SetLocalStrings()
 }
 
 //-----------------------------------------------------------------------------
-DboxMain::DboxMain(CWnd* pParent)
+DboxMain::DboxMain(PWScore &core, CWnd* pParent)
   : CDialog(DboxMain::IDD, pParent),
-  m_pPasskeyEntryDlg(NULL), m_bSizing(false), m_bDBNeedsReading(true), m_bInitDone(false),
+  m_pCC(nullptr),
+  m_RUEList(core),
+  m_bDoAutoType(false),
+  m_sxAutoType(L""),
+  m_bSizing(false), m_bIsRestoring(false), m_bOpen(false),
+  m_bInRestoreWindowsData(false),
+  m_bUserDeclinedSave(false), m_bRestoredDBUnsaved(false), m_bSuspendGUIUpdates(false),
+  m_iNeedRefresh(NONE),
+  m_bSetup(false), m_bNoValidation(false), m_bCompareEntries(false),
   m_toolbarsSetup(FALSE),
+  m_lastclipboardaction(L""),
+  m_bInitDone(false), m_bDBNeedsReading(true),
   m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
-  m_core(*app.GetCore()),
   m_bEntryTimestampsChanged(false),
   m_iSessionEndingStatus(IDIGNORE),
-  m_pwchTip(NULL),
-  m_bOpen(false), 
-  m_IsStartClosed(false), m_IsStartSilent(false),
-  m_bStartHiddenAndMinimized(false),
-  m_bAlreadyToldUserNoSave(false), m_inExit(false),
-  m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false),
-  m_lastclipboardaction(L""), m_pNotesDisplay(NULL),
-  m_LastFoundTreeItem(NULL), m_LastFoundListItem(-1), m_iCurrentItemFound(-1),
-  m_bFilterActive(false), m_bNumPassedFiltering(0),
-  m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
-  m_sxAutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bWTSRegistered(false),
-  m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
-  m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
-  m_bUnsavedDisplayed(false), m_bExpireDisplayed(false), m_bFindFilterDisplayed(false),
-  m_RUEList(*app.GetCore()), m_eye_catcher(_wcsdup(EYE_CATCHER)),
-  m_hUser32(NULL), m_bInAddGroup(false), m_bWizardActive(false),
+  m_LastFoundTreeItem(nullptr), m_LastFoundListItem(-1), m_iCurrentItemFound(-1),
+  m_bBoldItem(false), m_bFindToolBarVisibleAtLock(false),
+  m_pwchTip(nullptr),
+  m_core(core),
+  m_pPasskeyEntryDlg(nullptr), m_pTrayIcon(nullptr), m_TrayLockedState(LOCKED),
+  m_IsStartNoDB(false), m_bAlreadyToldUserNoSave(false), 
+  m_bInRefresh(false), m_bInRestoreWindows(false),
+  m_bDBInitiallyRO(false), m_bViaDCA(false),
+  m_LUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
+  m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
+  m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
+  m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
+  m_inExit(false),
+  m_savedDBprefs(EMPTYSAVEDDBPREFS),
+  m_bImageInLV(false),
+  m_pNotesDisplay(nullptr),
+  m_bFilterActive(false), m_bUnsavedDisplayed(false), m_bExpireDisplayed(false), m_bFindFilterDisplayed(false),
+  m_currentfilterpool(FPOOL_LAST),
+  m_bNumPassedFiltering(0),
+  m_pToolTipCtrl(nullptr),
+  m_bWSLocked(false), m_bWTSRegistered(false), m_bBlockShutdown(false),
+  m_hUser32(nullptr),
+  m_pfcnShutdownBlockReasonCreate(nullptr), m_pfcnShutdownBlockReasonDestroy(nullptr),
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
   m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
   m_wpAutotypeUPMsg(WM_KEYUP), m_wpAutotypeDNMsg(WM_KEYDOWN), m_wpAutotypeKey('T'),
   m_bDeleteCtrl(false), m_bDeleteShift(false),
   m_bRenameCtrl(false), m_bRenameShift(false),
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
-  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false), m_bCompareEntries(false),
-  m_bInRefresh(false), m_bInRestoreWindows(false),
-  m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
-  m_ilastaction(0), m_bNoValidation(false), m_bDBInitiallyRO(false), m_bViaDCA(false),
-  m_bUserDeclinedSave(false), m_bRestoredDBUnsaved(false),
-  m_LUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
-  m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
-  m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
-  m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
-  m_bFindToolBarVisibleAtLock(false), m_bSuspendGUIUpdates(false), m_iNeedRefresh(NONE)
+  m_bOnStartupTransparancyEnabled(false),
+  m_bInAT(false),
+  m_bTellUserExpired(false), m_bInRename(false), m_bInAddGroup(false), 
+  m_bWhitespaceRightClick(false),
+  m_bWizardActive(false),
+  m_ilastaction(0),
+  m_iDBIndex(0), 
+  m_DBLockedIndexColour(RGB(255, 255, 0)), m_DBUnlockedIndexColour(RGB(255, 255, 0)),
+  m_hMutexDBIndex(nullptr)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
-  m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::LOAD_LIBRARY_SYS));
+  m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::loadLibraryTypes::SYS));
   if (m_hUser32 != NULL) {
     m_pfcnShutdownBlockReasonCreate = PSBR_CREATE(pws_os::GetFunction(m_hUser32,
                                                                       "ShutdownBlockReasonCreate"));
     m_pfcnShutdownBlockReasonDestroy = PSBR_DESTROY(pws_os::GetFunction(m_hUser32, "ShutdownBlockReasonDestroy"));
 
+    m_pfcnSetLayeredWindowAttributes = PSLWA(pws_os::GetFunction(m_hUser32, "SetLayeredWindowAttributes"));
+
     // Do not free library until the end or the addresses may become invalid
     // On the other hand - if either of these addresses are NULL, why keep it?
     if (m_pfcnShutdownBlockReasonCreate == NULL || 
-        m_pfcnShutdownBlockReasonDestroy == NULL) {
-      // Make both NULL in case only one was
+        m_pfcnShutdownBlockReasonDestroy == NULL ||
+        m_pfcnSetLayeredWindowAttributes == NULL) {
+      // Make all NULL in case only one was
       m_pfcnShutdownBlockReasonCreate = NULL;
       m_pfcnShutdownBlockReasonDestroy = NULL;
+      m_pfcnSetLayeredWindowAttributes = NULL;
       pws_os::FreeLibrary(m_hUser32);
       m_hUser32 = NULL;
     }
@@ -192,13 +201,12 @@ DboxMain::DboxMain(CWnd* pParent)
 
   // Zero Autotype bits
   m_btAT.reset();
+
+  m_core.RegisterObserver(this);
 }
 
 DboxMain::~DboxMain()
 {
-  std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions(0);
-  m_core.SetUIInterFace(NULL, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
-
   ::DestroyIcon(m_hIcon);
   ::DestroyIcon(m_hIconSm);
 
@@ -206,8 +214,13 @@ DboxMain::~DboxMain()
   delete m_pToolTipCtrl;
 
   pws_os::FreeLibrary(m_hUser32);
+  m_core.UnregisterObserver(this);
+}
 
-  free(m_eye_catcher);
+INT_PTR DboxMain::DoModal()
+{
+	SetThreadDpiAwarenessContext();
+	return CDialog::DoModal();
 }
 
 LRESULT DboxMain::OnAreYouMe(WPARAM, LPARAM)
@@ -227,7 +240,7 @@ void DboxMain::RegisterSessionNotification(const bool bRegister)
   typedef DWORD (WINAPI *PWTS_UnRegSN) (HWND);
 
   m_bWTSRegistered = false;
-  HMODULE hWTSAPI32 = HMODULE(pws_os::LoadLibrary(L"wtsapi32.dll", pws_os::LOAD_LIBRARY_SYS));
+  HMODULE hWTSAPI32 = HMODULE(pws_os::LoadLibrary(L"wtsapi32.dll", pws_os::loadLibraryTypes::SYS));
   if (hWTSAPI32 == NULL)
     return;
 
@@ -410,6 +423,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2XML, OnExportGroupXML)
   ON_COMMAND(ID_MENUITEM_EXPORTGRP2DB, OnExportGroupDB)
   ON_COMMAND(ID_MENUITEM_EXPORT_ATTACHMENT, OnExportAttachment)
+  ON_COMMAND(ID_MENUITEM_EXPORTFILTERED2DB, OnExportFilteredDB)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -434,7 +448,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_CLEARFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_EDITFILTER, OnSetFilter)
-  ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters)
+  ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters) 
+  ON_COMMAND(ID_MENUITEM_EXPORTFILTERED2DB, OnExportFilteredDB)
   ON_COMMAND(ID_MENUITEM_PASSWORDSUBSET, OnDisplayPswdSubset)
   ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
   ON_COMMAND(ID_MENUITEM_SHOWHIDE_UNSAVED, OnShowUnsavedEntries)
@@ -448,6 +463,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
   ON_COMMAND(ID_MENUITEM_GENERATEPASSWORD, OnGeneratePassword)
   ON_COMMAND(ID_MENUITEM_YUBIKEY, OnYubikey)
+  ON_COMMAND(ID_MENUITEM_SETDBID, OnSetDBID)
   ON_COMMAND(ID_MENUITEM_PSWD_POLICIES, OnManagePasswordPolicies)
 
   // Help Menu
@@ -478,7 +494,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_WM_SIZING()
   ON_WM_SYSCOMMAND()
   ON_WM_TIMER()
-  ON_WM_WINDOWPOSCHANGING()
 
   // Nofication messages
   ON_NOTIFY(NM_CLICK, IDC_ITEMLIST, OnListItemSelected)
@@ -503,7 +518,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_TOOLBUTTON_LISTTREE, OnToggleView)
   ON_COMMAND(ID_TOOLBUTTON_VIEWREPORTS, OnViewReports)
 
-  ON_COMMAND(ID_TOOLBUTTON_CLOSEFIND, OnHideFindToolBar)
+  ON_COMMAND(ID_TOOLBUTTON_CLOSEFIND, OnHideFindToolbar)
   ON_COMMAND(ID_MENUITEM_FIND, OnToolBarFind)
   ON_COMMAND(ID_MENUITEM_FINDUP, OnToolBarFindUp)
   ON_COMMAND(ID_TOOLBUTTON_FINDCASE, OnToolBarFindCase)
@@ -559,6 +574,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYSENDEMAIL1, ID_MENUITEM_TRAYSENDEMAILMAX, OnUpdateTraySendEmail)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnTraySelect)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnUpdateTraySelect)
+  ON_COMMAND_RANGE(ID_MENUITEM_GOTODEPENDANT1, ID_MENUITEM_GOTODEPENDANTMAX, OnGotoDependant)
+  ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_GOTODEPENDANT1, ID_MENUITEM_GOTODEPENDANTMAX, OnUpdateGotoDependant)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXT, 0, 0xFFFF, OnToolTipText)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -664,6 +681,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_APPLYFILTER, true, true, false, false},
   {ID_MENUITEM_CLEARFILTER, true, true, false, false},
   {ID_MENUITEM_MANAGEFILTERS, true, true, true, true},
+  {ID_MENUITEM_EXPORTFILTERED2DB, true, true, false, false},
   {ID_MENUITEM_PASSWORDSUBSET, true, true, false, false},
   {ID_MENUITEM_REFRESH, true, true, false, false},
   {ID_MENUITEM_SHOWHIDE_UNSAVED, true, false, false, false},
@@ -676,6 +694,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_OPTIONS, true, true, true, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
   {ID_MENUITEM_YUBIKEY, true, false, true, false},
+  {ID_MENUITEM_SETDBID, true, true, true, false},
   {ID_MENUITEM_PSWD_POLICIES, true, true, true, false},
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
@@ -714,106 +733,15 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_CUSTOMIZETOOLBAR, true, true, true, true},
 };
 
-std::wstring Utf32ToUtf16(uint32_t codepoint)
-{
-  wchar_t wc[3];
-  if (codepoint < 0x10000) {
-    // Length 1
-    wc[0] = static_cast<wchar_t>(codepoint);
-    wc[1] = wc[2] = 0;
-  } else {
-    if (codepoint <= 0x10FFFF) {
-      codepoint -= 0x10000;
-      // Length 2
-      wc[0] = (unsigned short)(codepoint >> 10) + (unsigned short)0xD800;
-      wc[1] = (unsigned short)(codepoint & 0x3FF) + (unsigned short)0xDC00;
-      wc[2] = 0;
-    } else {
-      // Length 1
-      wc[0] = 0xFFFD;
-      wc[1] = wc[2] = 0;
-    }
-  }
-  std::wstring s = wc;
-  return s;
-}
-
-bool DboxMain::IsCharacterSupported(std::wstring &sProtect)
-{
-  HRESULT hr;
-  int cItems, cMaxItems = 2;
-  bool bSupported(false);
-  SCRIPT_ITEM items[3];  // Number should be (cMaxItems + 1)
-
-  ASSERT(sProtect.length() < 3);
-
-  // Itemize - Uniscribe function
-  hr = ScriptItemize(sProtect.c_str(), (int)sProtect.length(), cMaxItems, NULL, NULL, items, &cItems);
-
-  if (SUCCEEDED(hr) == FALSE)
-    return bSupported;
-
-  ASSERT(cItems == 1);
-
-  SCRIPT_CACHE sc = NULL;
-
-  CDC *ptreeDC = m_ctlItemTree.GetDC();
-  HFONT hOldFont;
-  CFont *pFont = Fonts::GetInstance()->GetCurrentFont();
-  hOldFont = (HFONT)ptreeDC->SelectObject(pFont->GetSafeHandle());
-
-  for (int i = 0; i < cItems; i++) {
-    int idx = items[i].iCharPos;
-    int len = items[i + 1].iCharPos - idx;
-    int cMaxGlyphs = len * 2 + 16;  // As recommended by Uniscribe documentation
-    int cGlyphs = 0;
-
-    WORD *pwLogClust = (WORD *)malloc(sizeof(WORD) * cMaxGlyphs);
-    WORD *pwOutGlyphs = (WORD *)malloc(sizeof(WORD) * cMaxGlyphs);
-    SCRIPT_VISATTR *psva = (SCRIPT_VISATTR *)malloc(sizeof(SCRIPT_VISATTR) * cMaxGlyphs);
-
-    // Shape - Uniscribe function
-    hr = ScriptShape(ptreeDC->GetSafeHdc(), &sc, sProtect.substr(idx).c_str(), len, cMaxGlyphs,
-      &items[i].a, pwOutGlyphs, pwLogClust, psva, &cGlyphs);
-
-    if (SUCCEEDED(hr) == FALSE)
-      goto clean;
-
-    if (pwOutGlyphs[0] != 0)
-      bSupported = true;
-
-  clean:
-    // Free up storage
-    free(pwOutGlyphs);
-    free(pwLogClust);
-    free(psva);
-
-    if (SUCCEEDED(hr) == FALSE)
-      break;
-  }
-
-  // Free cache - Uniscribe function
-  ScriptFreeCache(&sc);
-
-  ptreeDC->SelectObject(hOldFont);
-
-  return bSupported;
-}
-
 void DboxMain::InitPasswordSafe()
 {
   PWS_LOGIT;
 
   PWSprefs *prefs = PWSprefs::GetInstance();
+
   // Real initialization done here
   // Requires OnInitDialog to have passed OK
   UpdateAlwaysOnTop();
-  UpdateSystemMenu();
-
-  // ... same for UseSystemTray
-  // StartSilent trumps preference (but StartClosed doesn't)
-  if (!m_IsStartSilent && !prefs->GetPref(PWSprefs::UseSystemTray))
-    app.HideIcon();
 
   m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
 
@@ -853,7 +781,7 @@ void DboxMain::InitPasswordSafe()
   bitmap.GetBitmap(&bm);
   
   m_pImageList = new CImageList();
-  // Number (12) corresponds to number in CPWTreeCtrl public enum
+
   BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight, 
                                      ILC_MASK | ILC_COLORDDB, 
                                      CPWTreeCtrl::NUM_IMAGES, 0);
@@ -908,118 +836,17 @@ void DboxMain::InitPasswordSafe()
   m_ctlItemTree.Initialize();
 
   // Set up fonts before playing with Tree/List views
-  LOGFONT LF;
-  int iFontSize;
+  SetupUserFonts();
 
-  // Get resolution
-  HDC hDC = ::GetWindowDC(GetSafeHwnd());
-  const int Ypixels = GetDeviceCaps(hDC, LOGPIXELSY);
-  ::ReleaseDC(GetSafeHwnd(), hDC);
-
-  // Get current font (as specified in .rc file for IDD_PASSWORDSAFE_DIALOG) & save it
-  // If it's not available, fall back to font used in pre-3.18 versions, rather than
-  // 'System' default.
-  CFont *pCurrentFont = GetFont();
-  pCurrentFont->GetLogFont(&dfltTreeListFont);
-
-  std::wstring szTreeFont = prefs->GetPref(PWSprefs::TreeFont).c_str();
   Fonts *pFonts = Fonts::GetInstance();
 
-  // If we didn't find font specified in rc, and user didn't select anything
-  // fallback to MS Sans Serif
-  if (CString(dfltTreeListFont.lfFaceName) == L"System" &&
-      szTreeFont.empty()) {
-    const CString MS_SanSerif8 = L"-11,0,0,0,400,0,0,0,177,1,2,1,34,MS Sans Serif";
-    szTreeFont = MS_SanSerif8;
-    pFonts->ExtractFont(szTreeFont, dfltTreeListFont); // Save for 'Reset font' action
-  }
-  
-  LOGFONT tree_lf;
-  // either preference or our own fallback
-  if (!szTreeFont.empty() && pFonts->ExtractFont(szTreeFont, tree_lf)) {
-    iFontSize = prefs->GetPref(PWSprefs::TreeFontPtSz);
-    if (iFontSize == 0) {
-      iFontSize = -MulDiv(tree_lf.lfHeight, 72, Ypixels) * 10;
-      prefs->SetPref(PWSprefs::TreeFontPtSz, iFontSize);
-    }
-    pFonts->SetCurrentFont(&tree_lf, iFontSize);
-  } else {
-    pFonts->SetCurrentFont(&dfltTreeListFont, 0);
-    iFontSize = -MulDiv(dfltTreeListFont.lfHeight, 72, Ypixels) * 10;
-    prefs->SetPref(PWSprefs::TreeFontPtSz, iFontSize);
-  }
+  // Verify protect and attachment symbols supported
+  pFonts->VerifySymbolsSupported();
 
-  uint32_t newprotectedsymbol = 0x1f512;
-
-  // Convert UTF-32 to UTF-16 or a surrogate pair of UTF-16
-  std::wstring sProtect = Utf32ToUtf16(newprotectedsymbol);
-  m_ctlItemTree.SetNewProtectedSymbol(sProtect);
-
-  bool bSupported = IsCharacterSupported(sProtect);
-  bool bWindows10 = pws_os::IsWindows10OrGreater();
-
-  // If supported - fine - use it
-  // If not, use it if running under Windows 10 which seems to handle this nicely
-  m_ctlItemTree.UseNewProtectedSymbol(bSupported ? true : bWindows10);
-
-  // Set up Add/Edit font too.
-  std::wstring szAddEditFont = prefs->GetPref(PWSprefs::AddEditFont).c_str();
-
-  if (!szAddEditFont.empty() && pFonts->ExtractFont(szAddEditFont, LF)) {
-    iFontSize = prefs->GetPref(PWSprefs::AddEditFontPtSz);
-    if (iFontSize == 0) {
-      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
-      prefs->SetPref(PWSprefs::AddEditFontPtSz, iFontSize);
-    }
-    pFonts->SetAddEditFont(&LF, iFontSize);
-  } else {
-    // Not set - use add/Edit dialog font - difficult to get so use hard
-    // coded default
-    pFonts->GetDefaultAddEditFont(LF);
-    iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
-    prefs->SetPref(PWSprefs::AddEditFontPtSz, iFontSize);
-    pFonts->SetAddEditFont(&LF, iFontSize);
-  }
-
-  // Set up Password font too.
-  std::wstring szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont).c_str();
-
-  if (!szPasswordFont.empty() && pFonts->ExtractFont(szPasswordFont, LF)) {
-    iFontSize = prefs->GetPref(PWSprefs::PasswordFontPtSz);
-    if (iFontSize == 0) {
-      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
-      prefs->SetPref(PWSprefs::PasswordFontPtSz, iFontSize);
-    }
-    pFonts->SetPasswordFont(&LF, iFontSize);
-  } else {
-    // Not set - use default password font
-    pFonts->SetPasswordFont(NULL, 0);
-    iFontSize = -MulDiv(-16, 72, Ypixels) * 10;  // Taken from default password font 12pt
-    prefs->SetPref(PWSprefs::PasswordFontPtSz, iFontSize);
-  }
-
-  // Set up Notes font too.
-  std::wstring szNotesFont = prefs->GetPref(PWSprefs::NotesFont).c_str();
-
-  if (!szNotesFont.empty() && pFonts->ExtractFont(szNotesFont, LF)) {
-    iFontSize = prefs->GetPref(PWSprefs::NotesFontPtSz);
-    if (iFontSize == 0) {
-      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
-      prefs->SetPref(PWSprefs::NotesFontPtSz, iFontSize);
-    }
-    pFonts->SetNotesFont(&LF, iFontSize);
-  } else {
-    // Not set - use tree/list font set above
-    pFonts->GetCurrentFont(&LF);
-    iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
-    prefs->SetPref(PWSprefs::NotesFontPtSz, iFontSize);
-    pFonts->SetNotesFont(&LF, iFontSize);
-  }
-
-  // transfer the fonts to the tree windows
+  // Transfer the fonts to the tree windows
   m_ctlItemTree.SetUpFont();
   m_ctlItemList.SetUpFont();
-  m_LVHdrCtrl.SetFont(pFonts->GetCurrentFont());
+  m_LVHdrCtrl.SetFont(pFonts->GetTreeListFont());
 
   const CString lastView = prefs->GetPref(PWSprefs::LastView).c_str();
   if (lastView != L"list")
@@ -1052,19 +879,6 @@ void DboxMain::InitPasswordSafe()
   ChangeOkUpdate();
 
   DragAcceptFiles(TRUE);
-
-  CRect rect;
-  prefs->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
-  
-  HRGN hrgnWork = GetWorkAreaRegion();
-  // also check that window will be visible
-  if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) || !RectInRegion(hrgnWork, rect)){
-    GetWindowRect(&rect);
-    SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
-  } else {
-    PlaceWindow(this, &rect, SW_HIDE);
-  }
-  ::DeleteObject(hrgnWork);
 
   // Now do widths!
   if (!cs_ListColumns.IsEmpty())
@@ -1133,6 +947,92 @@ void DboxMain::InitPasswordSafe()
 #endif
 }
 
+void DboxMain::SetupUserFonts()
+{
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  Fonts *pFonts = Fonts::GetInstance();
+
+  LOGFONT LF;
+  int iFontSize;
+  std::wstring szFontPrefString;
+
+  // Get resolution
+  HDC hDC = ::GetWindowDC(GetSafeHwnd());
+  const int Ypixels = GetDeviceCaps(hDC, LOGPIXELSY);
+  ::ReleaseDC(GetSafeHwnd(), hDC);
+
+  // Set up Tree/list font.
+  szFontPrefString = prefs->GetPref(PWSprefs::TreeFont).c_str();
+
+  if (!szFontPrefString.empty() && pFonts->ExtractFont(szFontPrefString, LF)) {
+    iFontSize = prefs->GetPref(PWSprefs::TreeFontPtSz);
+    if (iFontSize == 0) {
+      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+      prefs->SetPref(PWSprefs::TreeFontPtSz, iFontSize);
+    }
+    pFonts->SetTreeListFont(&LF, iFontSize);
+  } else {
+    // Not set - use Tree/List dialog font
+    pFonts->GetDefaultTreeListFont(LF);
+    iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+    prefs->SetPref(PWSprefs::TreeFontPtSz, iFontSize);
+    pFonts->SetTreeListFont(&LF, iFontSize);
+  }
+
+  // Set up Add/Edit font too.
+  szFontPrefString = prefs->GetPref(PWSprefs::AddEditFont).c_str();
+
+  if (!szFontPrefString.empty() && pFonts->ExtractFont(szFontPrefString, LF)) {
+    iFontSize = prefs->GetPref(PWSprefs::AddEditFontPtSz);
+    if (iFontSize == 0) {
+      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+      prefs->SetPref(PWSprefs::AddEditFontPtSz, iFontSize);
+    }
+    pFonts->SetAddEditFont(&LF, iFontSize);
+  } else {
+    // Not set - use Add/Edit dialog font
+    pFonts->GetDefaultAddEditFont(LF);
+    iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+    prefs->SetPref(PWSprefs::AddEditFontPtSz, iFontSize);
+    pFonts->SetAddEditFont(&LF, iFontSize);
+  }
+
+  // Set up Password font too.
+  szFontPrefString = prefs->GetPref(PWSprefs::PasswordFont).c_str();
+
+  if (!szFontPrefString.empty() && pFonts->ExtractFont(szFontPrefString, LF)) {
+    iFontSize = prefs->GetPref(PWSprefs::PasswordFontPtSz);
+    if (iFontSize == 0) {
+      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+      prefs->SetPref(PWSprefs::PasswordFontPtSz, iFontSize);
+    }
+    pFonts->SetPasswordFont(&LF, iFontSize);
+  } else {
+    // Not set - use default password font
+    pFonts->SetPasswordFont(NULL, 0);
+    iFontSize = -MulDiv(-16, 72, Ypixels) * 10;
+    prefs->SetPref(PWSprefs::PasswordFontPtSz, iFontSize);
+  }
+
+  // Set up Notes font too.
+  szFontPrefString = prefs->GetPref(PWSprefs::NotesFont).c_str();
+
+  if (!szFontPrefString.empty() && pFonts->ExtractFont(szFontPrefString, LF)) {
+    iFontSize = prefs->GetPref(PWSprefs::NotesFontPtSz);
+    if (iFontSize == 0) {
+      iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+      prefs->SetPref(PWSprefs::NotesFontPtSz, iFontSize);
+    }
+    pFonts->SetNotesFont(&LF, iFontSize);
+  } else {
+    // Not set - use Add/Edit font set
+    pFonts->GetDefaultAddEditFont(LF);
+    iFontSize = -MulDiv(LF.lfHeight, 72, Ypixels) * 10;
+    prefs->SetPref(PWSprefs::NotesFontPtSz, iFontSize);
+    pFonts->SetNotesFont(&LF, iFontSize);
+  }
+}
+
 LRESULT DboxMain::OnHotKey(WPARAM wParam, LPARAM )
 {
   // The main hotkey is used to invoke the app window, prompting
@@ -1142,7 +1042,7 @@ LRESULT DboxMain::OnHotKey(WPARAM wParam, LPARAM )
 
     // Because LockDataBase actually doesn't minimize the window,
     // have to also use the current state i.e. Locked
-    if (app.GetSystemTrayState() == LOCKED || IsIconic()) {
+    if (m_TrayLockedState == LOCKED || IsIconic()) {
       SendMessage(WM_COMMAND, ID_MENUITEM_RESTORE);
     }
 
@@ -1224,6 +1124,30 @@ BOOL DboxMain::OnInitDialog()
 
   CDialog::OnInitDialog();
 
+  if (m_pfcnSetLayeredWindowAttributes) {
+    m_bOnStartupTransparancyEnabled =
+      PWSprefs::GetInstance()->GetPref(PWSprefs::EnableWindowTransparency);
+  }
+
+  // Only do after above OnInitDialog otherwise window will not have been created
+  SetLayered((CWnd *)this);
+
+  m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
+  m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
+
+  m_ClosedIcon = app.LoadIcon(IDI_CORNERICON);
+  auto initialIcon = m_core.IsDbOpen() ? m_LockedIcon : m_ClosedIcon;
+  m_pTrayIcon = new CSystemTray(this, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
+                                initialIcon, m_RUEList,
+                                PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
+  
+  m_pTrayIcon->SetTarget(this);
+
+  // Hide icon if pref not set, unless '-s' in commandline
+  if (m_InitMode != SilentInit &&
+      !PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
+    HideIcon();
+
   // Set up UPDATE_UI data map.
   const int num_CommandTable_entries = _countof(m_UICommandTable);
   for (int i = 0; i < num_CommandTable_entries; i++)
@@ -1234,7 +1158,7 @@ BOOL DboxMain::OnInitDialog()
   m_menuTipManager.Install(this);
 
   // Subclass the ListView HeaderCtrl
-  CHeaderCtrl* pHeader = m_ctlItemList.GetHeaderCtrl();
+  CHeaderCtrl *pHeader = m_ctlItemList.GetHeaderCtrl();
   if (pHeader && pHeader->GetSafeHwnd()) {
     m_LVHdrCtrl.SubclassWindow(pHeader->GetSafeHwnd());
   }
@@ -1244,74 +1168,69 @@ BOOL DboxMain::OnInitDialog()
   SetLocalStrings();
   ConfigureSystemMenu();
   SetMenu(app.GetMainMenu());  // Now show menu...
-
+  SetDragbarToolTips();
+  
   InitPasswordSafe();
 
-  if (m_IsStartSilent) {
-    m_bStartHiddenAndMinimized = true;
-  }
-
-  if (m_IsStartClosed) {
-    Close();
-    if (!m_IsStartSilent)
-      ShowWindow(SW_SHOW);
-  }
-
   BOOL bOOI(TRUE);
-  if (!m_IsStartClosed && !m_IsStartSilent) {
-    if (m_bSetup) { // --setup flag passed?
-      // If default dbase exists, DO NOT overwrite it, else
-      // prompt for new combination, create it.
-      // Meant for use when running after install
-      CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME));
-      std::wstring fname = PWSUtil::GetNewFileName(LPCWSTR(cf),
-                                                   DEFAULT_SUFFIX);
-      std::wstring dir = PWSdirs::GetSafeDir();
-      if (dir[dir.length()-1] != L'\\') dir += L"\\";
-      fname = dir + fname;
-      if (pws_os::FileExists(fname)) 
-        bOOI = OpenOnInit();
-      else { // really first install!
-        CSecString sPasskey;
-        CPasskeySetup dbox_pksetup(this, m_core);
-        INT_PTR rc = dbox_pksetup.DoModal();
-
-        if (rc == IDOK)
-          sPasskey = dbox_pksetup.GetPassKey();
-        else {
-          PostQuitMessage(0);
-          return TRUE;  // return TRUE unless you set the focus to a control
-        }
-
-        m_core.SetCurFile(fname.c_str());
-        m_core.NewFile(sPasskey);
-        m_core.SetReadOnly(false); 
-        rc = m_core.WriteCurFile();
-        if (rc == PWScore::CANT_OPEN_FILE) {
-          CGeneralMsgBox gmb;
-          CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
-          cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
-          gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-          PostQuitMessage(0); // can we do something better here?
-          return TRUE;  // return TRUE unless you set the focus to a control
-        }
-      } // first install
-    } else
+  if (!m_bSetup) { // --setup flag not passed (common case)
+    if (m_InitMode == NormalInit)
       bOOI = OpenOnInit();
-    // No need for another RefreshViews as OpenOnInit does one via PostOpenProcessing
-  }
+  } else { // --setup flag passed (post install/upgrade)
+    // If default dbase exists, DO NOT overwrite it, else
+    // prompt for new combination, create it.
+    CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME));
+    std::wstring fname = PWSUtil::GetNewFileName(LPCWSTR(cf),
+                                                 DEFAULT_SUFFIX);
+    std::wstring dir = PWSdirs::GetSafeDir();
+    if (dir[dir.length()-1] != L'\\') dir += L"\\";
+    fname = dir + fname;
+    if (!pws_os::FileExists(fname)) { // really first install!
+      CSecString sPasskey;
+      CPasskeySetup dbox_pksetup(this, m_core);
+      INT_PTR rc = dbox_pksetup.DoModal();
 
+      if (rc == IDOK)
+        sPasskey = dbox_pksetup.GetPassKey();
+      else {
+        PostQuitMessage(0);
+        return TRUE;  // return TRUE unless you set the focus to a control
+      }
+
+      m_core.SetCurFile(fname.c_str());
+      m_core.NewFile(sPasskey);
+      m_core.SetReadOnly(false); 
+      rc = m_core.WriteCurFile();
+      if (rc == PWScore::CANT_OPEN_FILE) {
+        CGeneralMsgBox gmb;
+        CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
+        cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
+        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+        PostQuitMessage(0); // can we do something better here?
+        return TRUE;  // return TRUE unless you set the focus to a control
+      }
+      PostOpenProcessing();
+    } else { // first install, but file exists - i.e., an upgrade
+      bOOI = OpenOnInit();
+    }
+  } // --setup flag handling
+  
   // Check if user cancelled
   if (bOOI == FALSE) {
     PostQuitMessage(0);
     return TRUE;  // return TRUE unless you set the focus to a control
   }
 
+  //  if (m_IsStartNoDB)
+  //Close();
+  if (m_InitMode != SilentInit)
+    ShowWindow(SW_SHOW);
+
   SetInitialDatabaseDisplay();
   if (m_bOpen && PWSprefs::GetInstance()->GetPref(PWSprefs::ShowFindToolBarOnOpen))
-    SetFindToolBar(true);
+    OnShowFindToolbar();
   else
-    OnHideFindToolBar();
+    OnHideFindToolbar();
 
   if (m_bOpen) {
     SelectFirstEntry();
@@ -1324,13 +1243,147 @@ BOOL DboxMain::OnInitDialog()
     gmb.AfxMessageBox(IDS_CANTLOAD_AUTOTYPEDLL, MB_ICONERROR);
   }
 
-  // Set up DragBar Tooltips
-  SetDragbarToolTips();
-
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
 
   return TRUE;  // return TRUE unless you set the focus to a control
+}
+
+void DboxMain::OnSetDBID()
+{
+  CSetDBID SBIdlg((CWnd *)this, m_iDBIndex);
+
+  INT_PTR rc = SBIdlg.DoModal();
+
+  if (rc != -1) {
+    // Index may have changed
+    if (m_iDBIndex != rc) {
+      // Clear current one if it exists
+      if (m_hMutexDBIndex != NULL) {
+        CloseHandle(m_hMutexDBIndex);
+        m_hMutexDBIndex = NULL;
+      }
+
+      // Remember mutex handle to close on DB close or assignment of new index
+      m_hMutexDBIndex = SBIdlg.GetMutexHandle();
+    }
+
+    // Colour may have changed
+    m_DBLockedIndexColour = SBIdlg.GetLockedIndexColour();
+    m_DBUnlockedIndexColour = SBIdlg.GetUnlockedIndexColour();
+
+    m_iDBIndex = (int)rc;
+    UpdateSystemTray(m_TrayLockedState == LOCKED ? LOCKED : UNLOCKED);
+  }
+}
+
+HICON DboxMain::CreateIcon(const HICON &hIcon, const int &iIndex, const COLORREF clrText)
+{
+  CString csValue;
+  csValue.Format(L"%2d", iIndex);
+
+  HDC hDc = ::GetDC(NULL);
+  HDC hMemDC = ::CreateCompatibleDC(hDc);
+
+  // Load up background icon
+  ICONINFO ii = { 0 };
+  ::GetIconInfo(hIcon, &ii);
+
+  HGDIOBJ hOldBmp = ::SelectObject(hMemDC, ii.hbmColor);
+
+  // Create font
+  LOGFONT lf = { 0 };
+  lf.lfHeight = -22;
+  lf.lfWeight = FW_NORMAL;
+  lf.lfOutPrecision = PROOF_QUALITY;
+  lf.lfQuality = ANTIALIASED_QUALITY;
+  wmemset(lf.lfFaceName, 0, LF_FACESIZE);
+  lstrcpy(lf.lfFaceName, L"Arial Black");
+
+  HFONT hFont = ::CreateFontIndirect(&lf);
+  HGDIOBJ hOldFont = ::SelectObject(hMemDC, hFont);
+
+  // Write text - Do NOT use SetTextAlign
+  ::SetBkMode(hMemDC, TRANSPARENT);
+  ::SetTextColor(hMemDC, clrText);
+  ::TextOut(hMemDC, 0, 0, (LPCWSTR)csValue, 2);
+
+  // Set up mask
+  HDC hMaskDC = ::CreateCompatibleDC(hDc);
+  HGDIOBJ hOldMaskBmp = ::SelectObject(hMaskDC, ii.hbmMask);
+
+  // Also write text on here - Do NOT use SetTextAlign
+  HGDIOBJ hOldMaskFont = ::SelectObject(hMaskDC, hFont);
+  ::SetBkMode(hMaskDC, TRANSPARENT);
+  ::SetTextColor(hMaskDC, clrText);
+  ::TextOut(hMaskDC, 0, 0, (LPCWSTR)csValue, 2);
+
+  HBITMAP hMaskBmp = (HBITMAP)::SelectObject(hMaskDC, hOldMaskBmp);
+
+  ICONINFO ii2 = { 0 };
+  ii2.fIcon = TRUE;
+  ii2.hbmMask = hMaskBmp;
+  ii2.hbmColor = ii.hbmColor;
+
+  // Create updated icon
+  HICON hIndexIcon = ::CreateIconIndirect(&ii2);
+
+  // Cleanup bitmap mask
+  ::DeleteObject(hMaskBmp);
+  ::DeleteDC(hMaskDC);
+
+  // Cleanup font
+  ::SelectObject(hMaskDC, hOldMaskFont);
+  ::SelectObject(hMemDC, hOldFont);
+  ::DeleteObject(hFont);
+
+  // Release background bitmap
+  ::SelectObject(hMemDC, hOldBmp);
+
+  // Delete background icon bitmap info
+  ::DeleteObject(ii.hbmColor);
+  ::DeleteObject(ii.hbmMask);
+
+  ::DeleteDC(hMemDC);
+  ::ReleaseDC(NULL, hDc);
+
+  return hIndexIcon;
+}
+
+void DboxMain::SetSystemTrayState(DBSTATE state)
+{
+  // need to protect against null m_pTrayIcon due to
+  // tricky initialization order
+  int iDBIndex = GetDBIndex();
+  if (m_pTrayIcon != NULL) {
+    m_TrayLockedState = state;
+    HICON hIcon(m_LockedIcon);
+    switch (state) {
+    case LOCKED:
+      hIcon = m_LockedIcon;
+      break;
+    case UNLOCKED:
+      hIcon = m_UnLockedIcon;
+      break;
+    case CLOSED:
+      hIcon = m_ClosedIcon;
+      m_iDBIndex = 0;
+      break;
+    default:
+      break;
+    }
+
+    if (iDBIndex != 0 && state != CLOSED) {
+      m_iDBIndex = iDBIndex;
+      ::DestroyIcon(m_IndexIcon);
+
+      COLORREF clrText = state == LOCKED ? m_DBLockedIndexColour : m_DBUnlockedIndexColour;
+      m_IndexIcon = CreateIcon(hIcon, iDBIndex, clrText);
+      m_pTrayIcon->SetIcon(m_IndexIcon);
+    } else {
+      m_pTrayIcon->SetIcon(hIcon);
+    }
+  }
 }
 
 void DboxMain::SetDragbarToolTips()
@@ -1423,11 +1476,14 @@ void DboxMain::SetInitialDatabaseDisplay()
 
 void DboxMain::OnDestroy()
 {
-  const std::wstring filename(m_core.GetCurFile().c_str());
+  if (m_pTrayIcon != nullptr)
+    m_pTrayIcon->RemoveIcon();
+  ::DestroyIcon(m_LockedIcon);
+  ::DestroyIcon(m_UnLockedIcon);
+  ::DestroyIcon(m_ClosedIcon);
+  ::DestroyIcon(m_IndexIcon);
 
-  // The only way we're the locker is if it's locked & we're !readonly
-  if (!filename.empty() && !m_core.IsReadOnly() && m_core.IsLockedFile(filename))
-    m_core.UnlockFile(filename);
+  m_core.SafeUnlockCurFile();
 
   // Get rid of hotkey
   UnregisterHotKey(GetSafeHwnd(), PWS_HOTKEY_ID);
@@ -1448,16 +1504,7 @@ void DboxMain::OnDestroy()
   CDialog::OnDestroy();
 }
 
-void DboxMain::OnWindowPosChanging(WINDOWPOS* lpwndpos)
-{
-  if (m_bStartHiddenAndMinimized) {
-    lpwndpos->flags |= (SWP_HIDEWINDOW | SWP_NOACTIVATE);
-    lpwndpos->flags &= ~SWP_SHOWWINDOW;
-    PostMessage(WM_COMMAND, ID_MENUITEM_MINIMIZE);
-  }
 
-  CDialog::OnWindowPosChanging(lpwndpos);
-}
 
 void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 {
@@ -1793,16 +1840,6 @@ void DboxMain::OnUpdateNSCommand(CCmdUI *pCmdUI)
   pCmdUI->Enable(FALSE);
 }
 
-void DboxMain::SetStartSilent(bool state)
-{
-  m_IsStartSilent = state;
-  if (state) {
-    // start silent implies use system tray.
-    PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);
-    UpdateSystemMenu();
-  }
-}
-
 void DboxMain::ChangeOkUpdate()
 {
   if (!m_bInitDone || 
@@ -1851,8 +1888,7 @@ int DboxMain::CheckPasskey(const StringX &filename, const StringX &passkey,
 int DboxMain::GetAndCheckPassword(const StringX &filename,
                                   StringX &passkey,
                                   int index,
-                                  int flags,
-                                  PWScore *pcore)
+                                  int flags)
 {
   PWS_LOGIT_ARGS("index=%d; flags=0x%04x", index, flags);
 
@@ -1861,9 +1897,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   //  GCP_NORMAL        (1) OK, CANCEL & HELP buttons
   //  GCP_RESTORE       (2) OK, CANCEL & HELP buttons
   //  GCP_WITHEXIT      (3) OK, CANCEL, EXIT & HELP buttons
-  //  GCB_CHANGEMODE    (4) OK, CANCEL & HELP buttons
-
-  // for adv_type values, see enum in AdvancedDlg.h
+  //  GCP_CHANGEMODE    (4) OK, CANCEL & HELP buttons
 
   // Called for an existing database. Prompt user
   // for password, verify against file. Lock file to
@@ -1883,9 +1917,6 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     // original thread will continue processing
   }
 
-  if (pcore == 0)
-    pcore = &m_core;
-
   if (!filename.empty()) {
     bool exists = pws_os::FileExists(filename.c_str(), bFileIsReadOnly);
 
@@ -1896,7 +1927,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
   if (bFileIsReadOnly || bForceReadOnly) {
     // As file is read-only, we must honour it and not permit user to change it
-    pcore->SetReadOnly(true);
+    m_core.SetReadOnly(true);
   }
 
   // set all field bits
@@ -1914,7 +1945,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
   // Ensure blank DboxMain dialog is not shown if user double-clicks
   // on SystemTray icon when being prompted for passphrase
-  app.SetSystemTrayTarget(m_pPasskeyEntryDlg);
+  SetSystemTrayTarget(m_pPasskeyEntryDlg);
   
   INT_PTR rc = m_pPasskeyEntryDlg->DoModal();
 
@@ -1922,11 +1953,10 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     DBGMSG("PasskeyEntry returns IDOK\n");
 
     const StringX curFile = m_pPasskeyEntryDlg->GetFileName().GetString();
-    pcore->SetCurFile(curFile);
+    m_core.SetCurFile(curFile);
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems) != 0) {
-      extern void RelativizePath(std::wstring &);
       std::wstring cf = curFile.c_str(); // relativize and set pref
-      RelativizePath(cf);
+      WinUtil::RelativizePath(cf);
       PWSprefs::GetInstance()->SetPref(PWSprefs::CurrentFile, cf.c_str());
     }
 
@@ -1935,26 +1965,26 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
     // This dialog's setting of read-only overrides file dialog
     bool bWantReadOnly = m_pPasskeyEntryDlg->IsReadOnly();  // Requested state
-    bool bWasReadOnly = pcore->IsReadOnly();                // Previous state
+    bool bWasReadOnly = m_core.IsReadOnly();                // Previous state
 
     // Set read-only mode if user explicitly requested it OR
     // if we failed to create a lock file.
     switch (index) {
       case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
-        pcore->SetReadOnly(bWantReadOnly || !pcore->LockFile(curFile.c_str(), locker));
+        m_core.SetReadOnly(bWantReadOnly || !m_core.LockFile(curFile.c_str(), locker));
         break;
       case GCP_NORMAL:
         if (!bWantReadOnly) // !first, lock if !bIsReadOnly
-          pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
+          m_core.SetReadOnly(!m_core.LockFile(curFile.c_str(), locker));
         else
-          pcore->SetReadOnly(bWantReadOnly);
+          m_core.SetReadOnly(bWantReadOnly);
         break;
       case GCP_RESTORE:
       case GCP_WITHEXIT:
         // Only lock if DB was R-O and now isn't otherwise lockcount is
         // increased too much and the lock file won't be deleted on close
         if (!bWantReadOnly && bWasReadOnly)
-          pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
+          m_core.SetReadOnly(!m_core.LockFile(curFile.c_str(), locker));
         break;
       case GCP_CHANGEMODE:
       default:
@@ -1964,8 +1994,9 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
     // Update to current state
     // This is not necessarily what was wanted if we couldn't get lock for R/W
-    UpdateToolBarROStatus(pcore->IsReadOnly());
-
+    UpdateToolBarROStatus(m_core.IsReadOnly());
+    UpdateEditViewAccelerator(m_core.IsReadOnly());
+    
     // locker won't be null IFF tried to lock and failed, in which case
     // it shows the current file locker
     if (!locker.empty()) {
@@ -2003,12 +2034,12 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       INT_PTR user_choice = gmb.DoModal();
       switch (user_choice) {
         case IDS_READONLY:
-          pcore->SetReadOnly(true);
+          m_core.SetReadOnly(true);
           UpdateToolBarROStatus(true);
           retval = PWScore::SUCCESS;
           break;
         case IDS_READWRITE:
-          pcore->SetReadOnly(false); // Caveat Emptor!
+          m_core.SetReadOnly(false); // Caveat Emptor!
           UpdateToolBarROStatus(false);
           retval = PWScore::SUCCESS;
           break;
@@ -2022,18 +2053,18 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     } else { // locker.IsEmpty() means no lock needed or lock was successful
       if (m_pPasskeyEntryDlg->GetStatus() == TAR_NEW) {
         // Save new file
-        pcore->NewFile(m_pPasskeyEntryDlg->GetPasskey());
-        rc = pcore->WriteCurFile();
+        m_core.NewFile(m_pPasskeyEntryDlg->GetPasskey());
+        rc = m_core.WriteCurFile();
 
         if (rc == PWScore::CANT_OPEN_FILE) {
           CGeneralMsgBox gmbx;
           CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
-          cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile().c_str());
+          cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
           gmbx.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
           retval = PWScore::USER_CANCEL;
         } else {
           // By definition - new files can't be read-only!
-          pcore->SetReadOnly(false); 
+          m_core.SetReadOnly(false); 
           retval = PWScore::SUCCESS;
         }
       } else // no need to create file
@@ -2061,7 +2092,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   }
 
   // Put us back
-  app.SetSystemTrayTarget(this);
+  SetSystemTrayTarget(this);
 
   delete m_pPasskeyEntryDlg;
   m_pPasskeyEntryDlg = NULL;
@@ -2177,7 +2208,7 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
       break;
     case SC_MAXIMIZE:
     case SC_RESTORE:
-      if (app.GetSystemTrayState() == ThisMfcApp::LOCKED &&
+      if (m_TrayLockedState == LOCKED &&
           !RestoreWindowsData(nSysID == SC_RESTORE))
         return; // password bad or cancel pressed
       break;
@@ -2234,13 +2265,12 @@ void DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
   }
 }
 
-LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM)
+LRESULT DboxMain::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 {
-#if 0
-  return m_pTrayIcon.OnTrayNotification(wParam, lParam);
-#else
-  return 0L;
-#endif
+  if (m_pTrayIcon)
+    return m_pTrayIcon->OnTrayNotification(wParam, lParam);
+  else
+    return 0L;
 }
 
 bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
@@ -2265,32 +2295,29 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   if (!m_bOpen) {
     // First they may be nothing to do!
     if (bUpdateWindows) {
-      if (m_IsStartSilent) {
+      if (m_InitMode == SilentInit) {
         // Show initial dialog ONCE (if succeeds)
-        if (!m_IsStartClosed) {
-          if (OpenOnInit()) {
-            m_IsStartSilent = false;
-            RefreshViews();
-            ShowWindow(SW_RESTORE);
-            SetInitialDatabaseDisplay();
-            UpdateSystemTray(UNLOCKED);
-          }
-        } else { // m_IsStartClosed (&& m_IsStartSilent)
-          m_IsStartClosed = m_IsStartSilent = false;
+        if (OpenOnInit()) {
+          m_InitMode = NormalInit;
+          SetInitialDatabaseDisplay();
+          RefreshViews();
           ShowWindow(SW_RESTORE);
+          brc = true;
         }
-        goto exit;  // return false
-      } // m_IsStartSilent
+        goto exit;
+      } // SilentInit
       ShowWindow(SW_RESTORE);
+      brc = true;
     } // bUpdateWindows == true
     UpdateSystemTray(CLOSED);
-    goto exit;  // return false
-  }
+    goto exit;
+  } // !m_bOpen
 
+  ASSERT(m_bOpen); // all closed dbase handling should have been done above
+  
   // Case 1 - data available but is currently locked
-  // By definition - data available implies m_bInitDone
   if (!m_bDBNeedsReading &&
-      (app.GetSystemTrayState() == ThisMfcApp::LOCKED) &&
+      (m_TrayLockedState == LOCKED) &&
       (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
 
     StringX passkey;
@@ -2301,7 +2328,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       goto exit;  // return false - don't even think of restoring window!
     }
 
-    app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
+    SetSystemTrayState(UNLOCKED);
     if (bUpdateWindows) {
       RefreshViews();
       ShowWindow(SW_RESTORE);
@@ -2324,7 +2351,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   // Case 2 - data unavailable
   if (m_bInitDone && m_bDBNeedsReading) {
     StringX passkey;
-    int rc_passphrase(PWScore::USER_CANCEL), rc_readdatabase;
+    int rc_passphrase(PWScore::USER_CANCEL), rc_readdatabase(PWScore::NOT_SUCCESS);
     const bool bUseSysTray = PWSprefs::GetInstance()->
                              GetPref(PWSprefs::UseSystemTray);
 
@@ -2356,11 +2383,36 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
         m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                            m_core.GetCurFile()).c_str();
         break;
-      case PWScore::CANT_OPEN_FILE:
-        cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile().c_str());
+      case PWScore::CANT_OPEN_FILE: {
+        cs_temp.Format(IDS_CANTOPENSAFE, m_core.GetCurFile().c_str());
         cs_title.LoadString(IDS_FILEOPEN);
-        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-        // Drop thorugh to ask for a new database
+        gmb.SetTitle(cs_title);
+        gmb.SetMsg(cs_temp);
+        gmb.SetStandardIcon(MB_ICONQUESTION);
+        gmb.AddButton(IDS_SEARCH, IDS_SEARCH);
+        gmb.AddButton(IDS_RETRY, IDS_RETRY);
+        gmb.AddButton(IDS_NEW, IDS_NEW);
+        gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
+        INT_PTR rc3 = gmb.DoModal();
+        switch (rc3) {
+          case IDS_SEARCH:
+            rc_readdatabase = Open();
+            break;
+          case IDS_RETRY:
+            brc = false;
+            goto exit;
+            break;
+          case IDS_NEW:
+            rc_readdatabase = New();
+            break;
+          case IDS_EXIT:
+            CleanUpAndExit();
+            brc = false;
+            goto exit;
+            break;
+          }
+        }
+        break; // just fail with the basic error message.
       case TAR_NEW:
         rc_readdatabase = New();
         break;
@@ -2374,7 +2426,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
         rc_readdatabase = PWScore::NOT_SUCCESS;
         break;
       case PWScore::USER_EXIT:
-        m_core.UnlockFile(m_core.GetCurFile().c_str());
+        m_core.SafeUnlockCurFile();
         PostQuitMessage(0);
         return false;
       default:
@@ -2470,7 +2522,7 @@ BOOL DboxMain::PreTranslateMessage(MSG *pMsg)
       {
         // If Find Toolbar visible, close it and do not pass the ESC along.
         if (m_FindToolBar.IsVisible()) {
-          OnHideFindToolBar();
+          OnHideFindToolbar();
           return TRUE;
         }
         // Do NOT pass the ESC along if preference EscExits is false.
@@ -2629,6 +2681,7 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
   const WORD wNCode = HIWORD(wParam);
   const WORD wID = LOWORD(wParam);
+
   /*
     wNCode = Notification Code if from a control, 1 if from an accelerator
              and 0 if from a menu.
@@ -2774,7 +2827,7 @@ void DboxMain::CheckExpireList(const bool bAtOpen)
   int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
   ExpiredList expiredEntries = m_core.GetExpired(idays);
 
-  if (!expiredEntries.empty() && (app.GetSystemTrayState() == LOCKED || IsIconic() == TRUE || bAtOpen))
+  if (!expiredEntries.empty() && (m_TrayLockedState == LOCKED || IsIconic() == TRUE || bAtOpen))
     m_bTellUserExpired = true;
 }
 
@@ -2801,8 +2854,16 @@ void DboxMain::TellUserAboutExpiredPasswords()
     INT_PTR rc = gmb.MessageBox(cs_text, cs_title, MB_ICONEXCLAMATION | MB_YESNO);
 
     if (rc == IDYES) {
-      CExpPWListDlg dlg(this, expiredEntries, m_core.GetCurFile().c_str());
+      CString csProtect = Fonts::GetInstance()->GetProtectedSymbol().c_str();
+      CString csAttachment = Fonts::GetInstance()->GetAttachmentSymbol().c_str();
+
+      CExpPWListDlg dlg(this, expiredEntries, m_core.GetCurFile().c_str(), csProtect, csAttachment);
       dlg.DoModal();
+
+      // If user has changed anything and has "Save database immediately after any change" - save
+      if (m_core.HasDBChanged() && PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+        SaveImmediately();
+      }
     }
   }
 }
@@ -2967,7 +3028,7 @@ LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
     }
 
     m_bBlockShutdown = false;
-    CleanUpAndExit(false);
+    CleanUpAndExit();
   } else {
     // Reset status since the EndSession was cancelled
     m_iSessionEndingStatus = IDIGNORE;
@@ -3110,47 +3171,87 @@ private:
   pws_os::CUUID m_uuid;
 };
 
+// Functor for MakeOrderedItemList
+struct TreeCollector : public CPWTreeCtrlX::TreeItemFunctor {
+  TreeCollector(CPWTreeCtrl &it) : itemTree(it) {}
+  void operator() (HTREEITEM hi) {
+    CItemData *pci = (CItemData *)itemTree.GetItemData(hi);
+    if (pci != nullptr)
+      pcis.push_back(pci);
+  };
+  CPWTreeCtrlX &itemTree;
+  std::vector<CItemData *> pcis;
+};
+
 // Returns a list of entries as they appear in tree in DFS order
-void DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
+std::vector<pws_os::CUUID> DboxMain::MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem)
 {
-  // Walk the Tree - either complete tree or only this group!
+  TreeCollector tc(m_ctlItemTree);
+  m_ctlItemTree.Iterate(hItem, tc);
+
+  std::vector<pws_os::CUUID> vuuidAddedBases;
+
+  // Walk the Tree - either complete tree (may not be the complete DB if a filter is active)
+  // or only the group being exported
+  // The if() on hItem is due to the evolution of this function. Should probably be eliminated and code
+  // be the same for all cases, e.g., what if someone's exporting a filtered group?
+
   if (hItem == NULL) {
-    // The whole tree
-    while (NULL != (hItem = const_cast<DboxMain *>(this)->m_ctlItemTree.GetNextTreeItem(hItem))) {
-      if (!m_ctlItemTree.ItemHasChildren(hItem)) {
-        CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
-        if (pci != NULL) {
-          OIL.push_back(*pci);
-        }
-      }
-    }
-  } else {
-    // Just this group - used for Export Group
-    const HTREEITEM hNextSibling = m_ctlItemTree.GetNextSiblingItem(hItem);
+    // The whole tree (a filter may be active)
+    for (auto pci = tc.pcis.begin(); pci != tc.pcis.end(); pci++) {
+      OIL.push_back(**pci);
 
-    // Get all of the children
-    if (m_ctlItemTree.ItemHasChildren(hItem)) {
-      HTREEITEM hNextItem = m_ctlItemTree.GetNextTreeItem(hItem);
+      // This is for exporting Filtered Entries ONLY
+      // Walk the reduced Tree but include base entries even if not in the filtered results
+      if (m_bFilterActive && (*pci)->IsDependent()) {
+        CItemData *pcibase = GetBaseEntry(*pci);
 
-      while (hNextItem != NULL && hNextItem != hNextSibling) {
-        CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hNextItem);
-        // Include base entires of any aliases or shortcuts
-        // and ensure no duplicates (an entry could have been previously added
-        // if it was the base of a previously added alias/shortcut
-        if (pci != NULL) {
-          if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
-            OIL.push_back(*pci);
+        // Only add the base entry once
+        if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pcibase->GetUUID())) == OIL.end()) {
+          OIL.push_back(*pcibase);
 
-          if (pci->IsDependent()) {
-            pci = GetBaseEntry(pci);
-            if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pci->GetUUID())) == OIL.end())
-              OIL.push_back(*pci);
+          DisplayInfo *pdi = GetEntryGUIInfo(*pcibase);
+          if (pdi == NULL || pdi->list_index == -1) {
+            // The base is not in the filtered results - add to list
+            vuuidAddedBases.push_back(pcibase->GetUUID());
           }
         }
-        hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
       }
-    }
-  }
+    } // iterate over collected pcis
+  } else { // hItem not null, just this group - used for Export Group
+    const StringX sxThisGroup = m_ctlItemTree.GetGroup(hItem);
+    const StringX sxThisGroupDot = sxThisGroup + L".";
+
+    for (auto pci = tc.pcis.begin(); pci != tc.pcis.end(); pci++) {
+      if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates((*pci)->GetUUID())) == OIL.end())
+        OIL.push_back(**pci);
+
+      if ((*pci)->IsDependent()) {
+        // Include base entries of any aliases or shortcuts, but only once
+        // (an entry could have been previously added
+        // if it was the base of a previously added alias/shortcut)
+        CItemData *pcibase = GetBaseEntry(*pci);
+
+        if (std::find_if(OIL.begin(), OIL.end(), NoDuplicates(pcibase->GetUUID())) == OIL.end()) {
+          OIL.push_back(*pcibase);
+
+          // List this included base for the report if not in the group being exported
+          StringX sxBaseGroup = pcibase->GetGroup();
+          bool bNotInThisGroup = CompareNoCase(sxThisGroup, sxBaseGroup) != 0;
+          bool bNotInASubgroupOfThisGroup = 
+            sxThisGroupDot.length() < sxBaseGroup.length() ?
+                                      CompareNoCase(sxThisGroupDot, sxBaseGroup.substr(sxThisGroupDot.length())) != 0 : true;
+             
+          if (bNotInThisGroup && bNotInASubgroupOfThisGroup) {
+            // The base is not in the filtered results - add to list
+            vuuidAddedBases.push_back(pcibase->GetUUID());
+          }
+        }
+      } // dependent handling
+    } // iterate over collected pcis
+  } // hItem not null
+
+  return vuuidAddedBases;
 }
 
 void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
@@ -3158,7 +3259,6 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
   // Initial setup of menu items and toolbar buttons
   // First set new open/close status
   m_bOpen = bOpen;
-  UpdateSystemMenu();
 
   // For open/close
   const UINT imenuflags = bOpen ? MF_ENABLED : MF_DISABLED | MF_GRAYED;
@@ -3202,7 +3302,7 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
     }
 
     if (m_FindToolBar.IsVisible() && !bOpen) {
-      OnHideFindToolBar();
+      OnHideFindToolbar();
     }
   }
 }
@@ -3225,12 +3325,11 @@ void DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
     case ID_MENUITEM_TRAYUNLOCK:
     case ID_MENUITEM_TRAYLOCK:
     {
-      const int i_state = app.GetSystemTrayState();
-      switch (i_state) {
-        case ThisMfcApp::UNLOCKED:
-        case ThisMfcApp::LOCKED:
+      switch (m_TrayLockedState) {
+        case UNLOCKED:
+        case LOCKED:
           break;
-        case ThisMfcApp::CLOSED:
+        case CLOSED:
         {
           const CString csClosed(MAKEINTRESOURCE(IDS_NOSAFE));
           pCmdUI->SetText(csClosed);
@@ -3246,7 +3345,7 @@ void DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
           ASSERT(0);
           break;
       }
-      if (i_state != ThisMfcApp::CLOSED) {
+      if (m_TrayLockedState != CLOSED) {
         // If dialog visible - obviously unlocked and no need to have option to lock
         iEnable = this->IsWindowVisible() == FALSE ? TRUE : FALSE;
       }
@@ -3259,7 +3358,7 @@ void DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
         // CCmdUI::Enable is a no-op for this case, so we
         //   must do what it would have done.
         pCmdUI->m_pMenu->EnableMenuItem(pCmdUI->m_nIndex, MF_BYPOSITION |
-          (app.GetSystemTrayState() == ThisMfcApp::UNLOCKED ? MF_ENABLED : MF_GRAYED));
+          (m_TrayLockedState == UNLOCKED ? MF_ENABLED : MF_GRAYED));
         return;
       }
       // otherwise enable
@@ -3351,6 +3450,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_COPYPASSWORD:
     case ID_MENUITEM_AUTOTYPE:
     case ID_MENUITEM_EDITENTRY:
+    case ID_MENUITEM_VIEWENTRY:
     case ID_MENUITEM_PASSWORDSUBSET:
       if (bGroupSelected)
         iEnable = FALSE;
@@ -3568,6 +3668,10 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       if (m_bUnsavedDisplayed)
         iEnable = FALSE;
       break;
+    case ID_MENUITEM_EXPORTFILTERED2DB:
+      if (!m_bFilterActive)
+        iEnable = FALSE;
+      break;
     case ID_MENUITEM_CHANGEMODE:
       // For prior versions, no DB open or file is R-O on disk -
       //  don't give the user the option to change to R/W
@@ -3583,7 +3687,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
 void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
 {
   WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
-  HRGN hrgnWork = GetWorkAreaRegion();
+  HRGN hrgnWork = WinUtil::GetWorkAreaRegion();
 
   pWnd->GetWindowPlacement(&wp);  // Get min/max positions - then add what we know
   wp.flags = 0;
@@ -3599,34 +3703,6 @@ void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
 
   pWnd->SetWindowPlacement(&wp);
   ::DeleteObject(hrgnWork);
-}
-
-HRGN GetWorkAreaRegion()
-{
-  HRGN hrgn = CreateRectRgn(0, 0, 0, 0);
-
-  HDC hdc = ::GetDC(NULL);
-  EnumDisplayMonitors(hdc, NULL, EnumScreens, (LPARAM)&hrgn);
-  ::ReleaseDC(NULL, hdc);
-
-  return hrgn;
-}
-
-BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC , LPRECT , LPARAM lParam)
-{
-  MONITORINFO mi;
-  HRGN hrgn2;
-
-  HRGN *phrgn = (HRGN *)lParam;
-
-  mi.cbSize = sizeof(mi);
-  GetMonitorInfo(hMonitor, &mi);
-
-  hrgn2 = CreateRectRgnIndirect(&mi.rcWork);
-  CombineRgn(*phrgn, *phrgn, hrgn2, RGN_OR);
-  ::DeleteObject(hrgn2);
-
-  return TRUE;
 }
 
 void DboxMain::GetMonitorRect(HWND hwnd, RECT *prc, BOOL fWork)
@@ -3663,45 +3739,6 @@ void DboxMain::ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork)
   prc->top = std::max(rc.top, std::min(rc.bottom-h, prc->top));
   prc->right = prc->left + w;
   prc->bottom = prc->top + h;
-}
-
-void DboxMain::UpdateSystemMenu()
-{
-  /**
-   * Currently we leave the system menu untouched, even if the
-   * last entry ("X Close Alt+F4") is a bit ambiguous:
-   * With UseSystemTray, we minimize to the system tray
-   * Without it, we exit the application.
-   *
-   * Leaving this as a 'placeholder' if/when we change out minds.
-   */
-#if 0
-  CMenu *pSysMenu = GetSystemMenu(FALSE);
-  if (pSysMenu == NULL) // docs don't say when this can occur,
-    return;             // but MS's example check this as well!
-  BYTE flag = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray) ? 1 : 0;
-  flag |= m_bOpen ? 2 : 0;
-
-  CString cs_text;
-  switch (flag) {
-    case 0: // Closed + No System Tray : Exit
-      cs_text.LoadString(IDS_EXIT);
-      break;
-    case 1: // Closed +    System Tray : Minimize to System Tray
-      cs_text.LoadString(IDS_MIN2ST);
-      break;
-    case 2: // Open   + No System Tray : Close DB + Exit
-      cs_text.LoadString(IDS_CLOSE_EXIT);
-      break;
-    case 3: // Open   +    System Tray : Minimize to System Tray & maybe lock
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear))
-        cs_text.LoadString(IDS_MIN2STLOCK);
-      else
-        cs_text.LoadString(IDS_MIN2ST);
-      break;
-   }
-   pSysMenu->ModifyMenu(SC_CLOSE, MF_BYCOMMAND, SC_CLOSE, cs_text);
-#endif
 }
 
 bool DboxMain::CheckPreTranslateDelete(MSG* pMsg)

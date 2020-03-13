@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -38,7 +38,7 @@ TIMEINT_SB_SHOWING The length of time the tool tip window remains visible
 IMPLEMENT_DYNAMIC(CPWStatusBar, CStatusBar)
 
 CPWStatusBar::CPWStatusBar()
-  : m_bSTBFilterStatus(false), m_pSBToolTips(NULL), m_bUseToolTips(false),
+  : m_pSBToolTips(nullptr), m_bSTBFilterStatus(false), m_bUseToolTips(false),
   m_bMouseInWindow(false), m_bFileReadOnly(false), m_bFileOpen(false)
 {
   m_FilterBitmap.LoadBitmap(IDB_FILTER_ACTIVE);

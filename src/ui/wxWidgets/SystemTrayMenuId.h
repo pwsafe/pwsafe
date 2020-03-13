@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -8,9 +8,6 @@
 
 /** \file SystemTrayMenuId.h
  *
- */
-
-/*
  * This file contains the logic behind generating the command-ids
  * used by the dynamically generated system tray menu.
  *
@@ -39,7 +36,7 @@
  *      see wx/defs.h
  *      
  *   2. The ids must not conflict with the dialogblocks generated ids
- *      defined in passwordsafeframe.h, and some of the hand-defined values
+ *      defined in PasswordSafeFrame.h, and some of the hand-defined values
  *      which follow the dialogblocks ids in the same file.  These values
  *      start from 10000 and don't have a defined upper bound as of yet
  *
@@ -71,6 +68,9 @@
  * 00001111 11111111 (4095), well clear of all the ranges defined in precautions
  * listed above
  */
+
+#ifndef _SYSTEMTRAYMENUID_H_
+#define _SYSTEMTRAYMENUID_H_
 
 #include "../../os/typedefs.h"
 
@@ -137,3 +137,5 @@ inline int GetFrameCommandId(RUEOperation opn) {
   wxASSERT(opn > 0 && size_t(opn) <= NumberOf(frameCommands));
   return frameCommands[opn-1];
 }
+
+#endif // _SYSTEMTRAYMENUID_H_

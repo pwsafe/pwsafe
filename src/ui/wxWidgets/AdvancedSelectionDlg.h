@@ -1,16 +1,20 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __ADVANCEDDSELECTIONDLG_H__
-#define __ADVANCEDDSELECTIONDLG_H__
+/** \file AdvancedSelectionDlg.h
+*
+*/
 
-#include "../../core/ItemData.h"
-#include "./wxutils.h"
+#ifndef _ADVANCEDSELECTIONDLG_H_
+#define _ADVANCEDSELECTIONDLG_H_
+
+#include "core/ItemData.h"
+#include "wxUtilities.h"
 
 /*
  *
@@ -66,7 +70,7 @@ struct SelectionCriteria;
  * AdvancedSelectionDlg class declaration
  */
 
-class AdvancedSelectionPanel: public wxPanel
+class AdvancedSelectionPanel : public wxPanel
 {
   DECLARE_CLASS(AdvancedSelectionPanel)
   DECLARE_EVENT_TABLE()
@@ -101,7 +105,7 @@ public:
 };
 
 template <class DlgType>
-class AdvancedSelectionImpl: public AdvancedSelectionPanel
+class AdvancedSelectionImpl : public AdvancedSelectionPanel
 {
 public:
   AdvancedSelectionImpl(wxWindow* wnd, SelectionCriteria* existingCriteria, bool autoValidate):
@@ -138,7 +142,7 @@ class AdvancedSelectionDlg : public wxDialog
   PanelType* m_panel;
 
 public:
-  AdvancedSelectionDlg(wxWindow* parent, SelectionCriteria* existingCriteria): m_panel(0)
+  AdvancedSelectionDlg(wxWindow* parent, SelectionCriteria* existingCriteria): m_panel(nullptr)
   {
     wxDialog::Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, 
                             wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
@@ -162,4 +166,4 @@ public:
   }
 };
 
-#endif
+#endif /* _ADVANCEDSELECTIONDLG_H_ */

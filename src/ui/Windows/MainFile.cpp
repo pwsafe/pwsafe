@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,11 +28,10 @@
 #include "AddEdit_DateTimes.h"
 #include "PasskeyEntry.h"
 #include "PWSFaultHandler.h"
-
+#include "winutils.h"
 #include "WZPropertySheet.h"
 
 #include "core/PWSprefs.h"
-#include "core/Util.h"
 #include "core/PWSdirs.h"
 #include "core/Report.h"
 #include "core/ItemData.h"
@@ -127,6 +126,7 @@ BOOL DboxMain::OpenOnInit()
   MFCAsker q;
   MFCReporter r;
   CReport Rpt;
+  CRect rect;
 
   if (!bAskerSet)
     m_core.SetAsker(&q);
@@ -156,7 +156,7 @@ BOOL DboxMain::OpenOnInit()
       UpdateSystemTray(UNLOCKED);
       break;
     case PWScore::CANT_OPEN_FILE:
-      if (m_core.GetCurFile().empty()) {
+      if (!m_core.IsDbOpen()) {
         // Empty filename. Assume they are starting Password Safe
         // for the first time and don't confuse them.
         // fall through to New()
@@ -241,7 +241,7 @@ BOOL DboxMain::OpenOnInit()
 
   if (rc2 != PWScore::SUCCESS && !go_ahead) {
     // not a good return status, fold.
-    if (!m_IsStartSilent)
+    if (m_InitMode != SilentInit)
       CDialog::OnCancel();
     goto exit;
   }
@@ -252,6 +252,20 @@ BOOL DboxMain::OpenOnInit()
   }
 
   PostOpenProcessing();
+
+  // Now get window sizes
+  PWSprefs::GetInstance()->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
+
+  HRGN hrgnWork = WinUtil::GetWorkAreaRegion();
+  // also check that window will be visible
+  if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) ||
+    !RectInRegion(hrgnWork, rect)) {
+    GetWindowRect(&rect);
+    SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
+  } else {
+    PlaceWindow(this, &rect, SW_HIDE);
+  }
+  ::DeleteObject(hrgnWork);
 
   bool bFileIsReadOnly;
   pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
@@ -369,7 +383,7 @@ int DboxMain::NewFile(StringX &newfilename)
   CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
   std::wstring newFileName = PWSUtil::GetNewFileName(LPCWSTR(cf), DEFAULT_SUFFIX);
   std::wstring dir;
-  if (m_core.GetCurFile().empty())
+  if (!m_core.IsDbOpen())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -425,14 +439,7 @@ int DboxMain::NewFile(StringX &newfilename)
 
   // Clear application data
   ClearAppData();
-
-  const StringX &oldfilename = m_core.GetCurFile();
-  // The only way we're the locker is if it's locked & we're !readonly
-  if (!oldfilename.empty() &&
-      !m_core.IsReadOnly() &&
-      m_core.IsLockedFile(oldfilename.c_str()))
-    m_core.UnlockFile(oldfilename.c_str());
-
+  m_core.SafeUnlockCurFile();
   m_core.SetCurFile(newfilename);
 
   // Now lock the new file
@@ -458,6 +465,15 @@ int DboxMain::NewFile(StringX &newfilename)
 void DboxMain::OnClose()
 {
   PWS_LOGIT;
+
+  // We will allow DB Close to close open dialogs IFF the DB is open in R-O and any open
+  // dialogs can be closed
+  bool bCloseOpenDialogs = IsDBReadOnly() && CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
+
+  if (bCloseOpenDialogs) {
+    // Close all open dialogs - R-O mode ONLY + as above
+    CPWDialog::GetDialogTracker()->CloseOpenDialogs();
+  }
 
   Close();
 }
@@ -488,11 +504,10 @@ int DboxMain::Close(const bool bTrySave)
   if (m_bUnsavedDisplayed)
     OnShowUnsavedEntries();
 
-  // Unlock the current file
-  if (!m_core.GetCurFile().empty()) {
-    m_core.UnlockFile(m_core.GetCurFile().c_str());
-    m_core.SetCurFile(L"");
-  }
+  m_core.SafeUnlockCurFile();
+  m_core.SetCurFile(L"");
+
+  SetDBInitiallyRO(false);
 
   CAddEdit_DateTimes::m_bShowUUID = false;
 
@@ -521,7 +536,14 @@ int DboxMain::Close(const bool bTrySave)
   m_DDemail.SetStaticState(false);
   m_DDAutotype.SetStaticState(false);
 
-  app.SetTooltipText(L"PasswordSafe");
+  SetTooltipText(L"PasswordSafe");
+
+  m_iDBIndex = 0;
+  if (m_hMutexDBIndex != NULL) {
+    CloseHandle(m_hMutexDBIndex);
+    m_hMutexDBIndex = NULL;
+  }
+
   UpdateSystemTray(CLOSED);
 
   // Call UpdateMenuAndToolBar before UpdateStatusBar
@@ -607,7 +629,7 @@ int DboxMain::Open(const UINT uiTitle)
   StringX sx_Filename;
   CString cs_text(MAKEINTRESOURCE(uiTitle));
   std::wstring DBpath, cdrive, cdir, dontCare;
-  if (m_core.GetCurFile().empty()) {
+  if (!m_core.IsDbOpen()) {
     // Can't use same directory as currently open DB as there isn't one.
     // Attempt to get path from last opened database from MRU
     // If valid and accessible, use it, if not valid or not accessible use
@@ -676,11 +698,11 @@ int DboxMain::Open(const UINT uiTitle)
     }
 
     const bool last_ro = m_core.IsReadOnly(); // restore if user cancels
-    m_core.SetReadOnly(fd.GetReadOnlyPref() == TRUE);
+    m_core.SetReadOnly(m_bDBInitiallyRO || fd.GetReadOnlyPref() == TRUE);
     if (rc2 == IDOK) {
       sx_Filename = LPCWSTR(fd.GetPathName());
 
-      rc = Open(sx_Filename, fd.GetReadOnlyPref() == TRUE, uiTitle == IDS_CHOOSEDATABASEV);
+      rc = Open(sx_Filename, m_core.IsReadOnly(), uiTitle == IDS_CHOOSEDATABASEV);
 
       if (rc == PWScore::SUCCESS) {
         UpdateSystemTray(UNLOCKED);
@@ -731,11 +753,10 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
 
   // If we were using a different file, unlock it do this before
   // GetAndCheckPassword() as that routine gets a lock on the new file
-  if (!m_core.GetCurFile().empty()) {
-    m_core.UnlockFile(m_core.GetCurFile().c_str());
-  }
+  m_core.SafeUnlockCurFile();
 
-  const int flags = (bReadOnly ? GCP_READONLY : 0) | (bHideReadOnly ? GCP_HIDEREADONLY : 0);
+  const int flags = ((bReadOnly ? GCP_READONLY : 0) | (bHideReadOnly ? GCP_HIDEREADONLY : 0) |
+                     (m_bDBInitiallyRO ? GCP_FORCEREADONLY : 0));
   rc = GetAndCheckPassword(sx_Filename, passkey, GCP_NORMAL, flags);  // OK, CANCEL, HELP
 
   // Just need file extension
@@ -916,6 +937,7 @@ void DboxMain::PostOpenProcessing()
   UpdateSystemTray(UNLOCKED);
   UpdateMenuAndToolBar(true); // sets m_bOpen too...
   UpdateToolBarROStatus(m_core.IsReadOnly());
+  UpdateToolBarDoUndo(); // BR1466
   UpdateStatusBar();
 
   CheckExpireList(true);
@@ -1389,7 +1411,7 @@ int DboxMain::SaveAs()
                 current_version == PWSfile::V40 ? V4_SUFFIX : V3_SUFFIX);
 
   std::wstring dir;
-  if (m_core.GetCurFile().empty())
+  if (!m_core.IsDbOpen())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -1405,7 +1427,7 @@ int DboxMain::SaveAs()
                         OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
                         CString(MAKEINTRESOURCE(current_version == PWSfile::V40 ? IDS_FDF_V4_ALL : IDS_FDF_V3_ALL)),
                      this);
-    if (m_core.GetCurFile().empty())
+    if (!m_core.IsDbOpen())
       cs_text.LoadString(IDS_NEWNAME1);
     else
       cs_text.LoadString(IDS_NEWNAME2);
@@ -1473,8 +1495,7 @@ int DboxMain::SaveAs()
 
   BlockLogoffShutdown(false);
 
-  if (!m_core.GetCurFile().empty())
-    m_core.UnlockFile(m_core.GetCurFile().c_str());
+  m_core.SafeUnlockCurFile();
 
   // Move the newfile lock to the right place
   m_core.MoveLock();
@@ -1483,7 +1504,19 @@ int DboxMain::SaveAs()
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
-  app.SetTooltipText(m_core.GetCurFile().c_str());
+
+  std::wstring cdrive, cdir, cFilename, cExtn;
+  pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, cFilename, cExtn);
+  
+  CString csTooltip;
+  if (m_iDBIndex == 0) {
+    csTooltip.Format(L"%s\n%s", (cdrive + cdir).c_str(), (cFilename + cExtn).c_str());
+  } else {
+    csTooltip.Format(L"%2d: %s\n    %s", m_iDBIndex, (cdrive + cdir).c_str(),
+      (cFilename + cExtn).c_str());
+  }
+
+  SetTooltipText(csTooltip);
 
   // Reset all indications entry times changed
   m_bEntryTimestampsChanged = false;
@@ -1570,7 +1603,7 @@ void DboxMain::OnExportVx(UINT nID)
   cs_text.LoadString(IDS_NAMEEXPORTFILE);
 
   std::wstring dir;
-  if (m_core.GetCurFile().empty())
+  if (!m_core.IsDbOpen())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -1666,6 +1699,7 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   OrderedItemList OIL;
   CString cs_temp;
   std::vector<StringX> vEmptyGroups;
+  std::vector<pws_os::CUUID> vuuidAddedBases;
 
   std::wstring str_text;
   LoadAString(str_text, IDS_RPTEXPORTDB);
@@ -1676,11 +1710,13 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
 
-  if (nID == ID_MENUITEM_EXPORTGRP2DB) {
+  if (nID == ID_MENUITEM_EXPORTGRP2DB || nID == ID_MENUITEM_EXPORTFILTERED2DB) {
     // Note: MakeOrderedItemList gets its members by walking the
-    // tree therefore, if a filter is active, it will ONLY export
-    // those being displayed.
-    MakeOrderedItemList(OIL, m_ctlItemTree.GetSelectedItem());
+    // tree therefore, if a filter is active, it will only export
+    // those being displayed - except it will include bases of eligible entries
+    // that not in the group or displayed because of the filter.
+    vuuidAddedBases = MakeOrderedItemList(OIL,
+                     (nID == ID_MENUITEM_EXPORTGRP2DB) ? m_ctlItemTree.GetSelectedItem() : NULL);
 
     // Get empty groups being exported
     std::vector<StringX> vAllEmptyGroups;
@@ -1722,7 +1758,7 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   export_core.NewFile(sx_ExportKey);
   export_core.SetApplicationNameAndVersion(AfxGetAppName(), app.GetOSMajorMinor());
   rc = export_core.WriteExportFile(sx_Filename, &OIL, &m_core, m_core.GetReadFileVersion(), 
-                                   vEmptyGroups, bExportDBFilters, prpt);
+                                   vEmptyGroups, bExportDBFilters, vuuidAddedBases, prpt);
 
   OIL.clear();
   export_core.ClearDBData();
@@ -1731,8 +1767,22 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
     DisplayFileWriteError(rc, sx_Filename);
   }
 
-  prpt->EndReport();
+  if (!vuuidAddedBases.empty()) {
+    prpt->WriteLine();
+    CString csMessage(MAKEINTRESOURCE(IDS_INCLUDEDBASES));
+    prpt->WriteLine(csMessage, true);
 
+    for (size_t i = 0; i < vuuidAddedBases.size(); i++) {
+      ItemListIter iter = Find(vuuidAddedBases[i]);
+      StringX sx_exported;
+      Format(sx_exported, PWScore::GROUPTITLEUSERINCHEVRONS,
+        iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(), iter->second.GetUser().c_str());
+      prpt->WriteLine(sx_exported.c_str(), true);
+    }
+  }
+
+  prpt->EndReport();
+    
   return PWScore::SUCCESS;
 }
 
@@ -1834,8 +1884,7 @@ int DboxMain::DoExportText(const StringX &sx_Filename, const UINT nID,
     // Note: MakeOrderedItemList gets its members by walking the
     // tree therefore, if a filter is active, it will ONLY export
     // those being displayed.
-    HTREEITEM hi = nID == ID_MENUITEM_EXPORTGRP2PLAINTEXT ? m_ctlItemTree.GetSelectedItem() : NULL;
-    MakeOrderedItemList(OIL, hi);
+    MakeOrderedItemList(OIL, (nID == ID_MENUITEM_EXPORTGRP2PLAINTEXT) ? m_ctlItemTree.GetSelectedItem() : NULL);
   } else {
     // Note: Only selected entry but...
     // if Alias - use entry with base's password
@@ -2067,7 +2116,7 @@ void DboxMain::OnExportAttachment()
   soutputfile = fullfilename;
 
   // Default suffix should be the same as the original file (skip over leading ".")
-  CString cs_ext = ext + 1;
+  CString cs_ext = ext[0] == '.' ? ext + 1 : ext;
 
   // Get media type
   csMediaType = att.GetMediaType().c_str();
@@ -2226,6 +2275,19 @@ void DboxMain::OnExportAttachment()
   }
 }
 
+void DboxMain::OnExportFilteredDB()
+{
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORTFILTERED2DB,
+    this, WZAdvanced::INVALID, NULL);
+
+  wizard.SetDBVersion(m_core.GetReadFileVersion());
+
+  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  m_bWizardActive = true;
+  wizard.DoModal();
+  m_bWizardActive = false;
+}
+
 void DboxMain::OnImportText()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
@@ -2254,7 +2316,7 @@ void DboxMain::OnImportText()
   CString cs_text;
 
   std::wstring dir;
-  if (m_core.GetCurFile().empty())
+  if (!m_core.IsDbOpen())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -2416,7 +2478,7 @@ void DboxMain::OnImportKeePassV1CSV()
   CString cs_title, cs_msg;
   cs_title.LoadString(IDS_PICKKEEPASSFILE);
   std::wstring dir;
-  if (m_core.GetCurFile().empty())
+  if (!m_core.IsDbOpen())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -2531,7 +2593,7 @@ void DboxMain::OnImportKeePassV1TXT()
   CString cs_title, cs_msg;
   cs_title.LoadString(IDS_PICKKEEPASSFILE);
   std::wstring dir;
-  if (m_core.GetCurFile().empty())
+  if (!m_core.IsDbOpen())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -2675,7 +2737,7 @@ void DboxMain::OnImportXML()
 
   std::wstring ImportedPrefix(dlg.m_groupName);
   std::wstring dir;
-  if (m_core.GetCurFile().empty())
+  if (!m_core.IsDbOpen())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -3018,6 +3080,9 @@ bool DboxMain::ChangeMode(bool promptUser)
     }
   }
 
+  if (bWasRO != IsDBReadOnly())
+    UpdateEditViewAccelerator(IsDBReadOnly());
+
   // Update Minidump user streams - mode is in user stream 0
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), us0);
 
@@ -3047,7 +3112,7 @@ void DboxMain::OnChangeMode()
 
 void DboxMain::OnCompare()
 {
-  if (m_core.GetCurFile().empty() || m_core.GetNumEntries() == 0) {
+  if (!m_core.IsDbOpen() || m_core.GetNumEntries() == 0) {
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_NOCOMPAREFILE, MB_OK | MB_ICONWARNING);
     return;
@@ -3095,7 +3160,7 @@ void DboxMain::OnMerge()
 void DboxMain::OnSynchronize()
 {
   // disable in read-only mode or empty
-  if (m_core.IsReadOnly() || m_core.GetCurFile().empty() || m_core.GetNumEntries() == 0)
+  if (m_core.IsReadOnly() || !m_core.IsDbOpen() || m_core.GetNumEntries() == 0)
     return;
 
   CWZPropertySheet wizard(ID_MENUITEM_SYNCHRONIZE,
@@ -3314,10 +3379,15 @@ CString DboxMain::ShowCompareResults(const StringX sx_Filename1,
                                      const StringX sx_Filename2,
                                      PWScore *pothercore, CReport *prpt)
 {
+  CString csProtect = Fonts::GetInstance()->GetProtectedSymbol().c_str();
+  CString csAttachment = Fonts::GetInstance()->GetAttachmentSymbol().c_str();
+
+
   // Can't do UI from a worker thread!
   CCompareResultsDlg CmpRes(this, m_list_OnlyInCurrent, m_list_OnlyInComp,
                             m_list_Conflicts, m_list_Identical,
-                            m_bsFields, &m_core, pothercore, prpt);
+                            m_bsFields, &m_core, pothercore,
+                            csProtect, csAttachment, prpt);
 
   CmpRes.m_scFilename1 = sx_Filename1;
   CmpRes.m_scFilename2 = sx_Filename2;
@@ -3462,11 +3532,8 @@ LRESULT DboxMain::OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM )
     pELLE->sx_group = pci->GetGroup();
     pELLE->sx_title = pci->GetTitle();
     pELLE->sx_user  = pci->GetUser();
-    if (pci->IsProtected())
-      pELLE->sx_title += L" #";
-
-    if (pci->HasAttRef())
-      pELLE->sx_title += L" +";
+    pELLE->bIsProtected = pci->IsProtected();
+    pELLE->bHasAttachment = pci->HasAttRef();
 
     // Update time fields
     time_t tttXTime;
@@ -3589,6 +3656,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
 {
   // This is always from Comparison DB to Current DB
   bool bWasEmpty = ptocore->GetNumEntries() == 0;
+  CUUID baseUUID = CUUID::NullUUID();
 
   // Copy *pfromcore entry -> *ptocore entry
   ItemListIter fromPos = pfromcore->Find(fromUUID);
@@ -3607,6 +3675,24 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   }
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+  // Are we copying a dependent entry? If so, need to handle the base first
+  if (ci_temp.IsDependent()) {
+    baseUUID = ci_temp.GetBaseUUID();
+    if (ptocore->Find(baseUUID) == ptocore->GetEntryEndIter()) {
+      // do we have an entry with the same group/title/user in the target core?
+      const CItemData &ci_base(pfromcore->Find(baseUUID)->second);
+      auto to_baseIter = ptocore->Find(ci_base.GetGroup(), ci_base.GetTitle(), ci_base.GetUser());
+      if (to_baseIter != ptocore->GetEntryEndIter()) {
+        baseUUID = to_baseIter->second.GetUUID();
+      } else {
+        // no matching base entry, we'll have to add it ourselves
+        pmulticmds->Add(AddEntryCommand::Create(ptocore, ci_base));
+      }
+    } else {
+      // easy case, base is already in target core.
+    }
+  }
 
   // Check policy names
   // Don't really need the map and vector as only copying 1 entry
@@ -3646,7 +3732,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
       ci_temp.SetKBShortcut(0);
     }
     ci_temp.SetStatus(CItemData::ES_ADDED);
-    pmulticmds->Add(AddEntryCommand::Create(ptocore, ci_temp));
+    pmulticmds->Add(AddEntryCommand::Create(ptocore, ci_temp, baseUUID));
   }
 
   // Do it
@@ -3921,26 +4007,18 @@ void DboxMain::OnOK()
 
   SavePreferencesOnExit();
 
+  // We will allow pgm Exit to close open dialogs IFF the DB is open in R-O and any open
+  // dialogs can be closed
+  bool bCloseOpenDialogs = IsDBReadOnly() && CPWDialog::GetDialogTracker()->VerifyCanCloseDialogs();
+
+  if (bCloseOpenDialogs) {
+    // Close all open dialogs - R-O mode ONLY + as above
+    CPWDialog::GetDialogTracker()->CloseOpenDialogs();
+  }
+
   int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
   if (rc == PWScore::SUCCESS || rc == PWScore::USER_EXIT) {
     CleanUpAndExit();
-  }
-}
-
-void RelativizePath(std::wstring &curfile)
-{
-  // If  IsUnderPw2go() && exec's drive == curfile's drive, remove
-  // from latter's path. This supports DoK usage
-  if (SysInfo::IsUnderPw2go()) {
-    const std::wstring execDir = pws_os::getexecdir();
-    std::wstring execDrive, dontCare;
-    pws_os::splitpath(execDir, execDrive, dontCare, dontCare, dontCare);
-    std::wstring fileDrive, fileDir, fileFile, fileExt;
-    pws_os::splitpath(curfile, fileDrive, fileDir, fileFile, fileExt);
-    ToUpper(fileDrive); ToUpper(execDrive);
-    if (fileDrive == execDrive) {
-      curfile = pws_os::makepath(L"", fileDir, fileFile, fileExt);
-    }
   }
 }
 
@@ -3997,9 +4075,9 @@ void DboxMain::SavePreferencesOnExit()
     // Naughty Windows saves information in the registry for every Open and Save!
     RegistryAnonymity();
   } else
-    if (!m_core.GetCurFile().empty()) {
+    if (m_core.IsDbOpen()) {
       std::wstring curFile = m_core.GetCurFile().c_str();
-      RelativizePath(curFile);
+      WinUtil::RelativizePath(curFile);
       prefs->SetPref(PWSprefs::CurrentFile, curFile.c_str());
     }
   // Now save the Find Toolbar display status
@@ -4114,10 +4192,8 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
   return PWScore::SUCCESS;
 }
 
-void DboxMain::CleanUpAndExit(const bool bNormalExit)
+void DboxMain::CleanUpAndExit()
 {
-  PWS_LOGIT_ARGS("bNormalExit=%s", bNormalExit ? L"true" : L"false");
-
   // Clear clipboard on Exit?  Yes if:
   // a. the app is minimized and the systemtray is enabled
   // b. the user has set the "ClearClipboardOnExit" pref
@@ -4140,13 +4216,14 @@ void DboxMain::CleanUpAndExit(const bool bNormalExit)
   // Clear out filters
   m_MapAllFilters.clear();
 
-  // If we are called normally, then exit gracefully. If not, force the issue
-  // after the caller has processed the current message by posting another message
-  // for later (PostQuitMessage).
-  if (bNormalExit)
-    CDialog::OnOK();
-  else
-    PostQuitMessage(0);
+  if (m_pTrayIcon != NULL) {
+    m_pTrayIcon->DestroyWindow();
+    delete m_pTrayIcon;
+    m_pTrayIcon = nullptr;
+  }
+
+  CDialog::OnOK();
+  PostQuitMessage(0);
 }
 
 void DboxMain::OnCancel()

@@ -175,8 +175,20 @@ msgstr " 'protegido'"
 msgid " 'symbols'"
 msgstr " 'símbolos'"
 
+#. Resource IDs: (4105)
+msgid " (EasyVision Symbols)"
+msgstr ""
+
+#. Resource IDs: (4106)
+msgid " (Pronounceable Symbols)"
+msgstr ""
+
 #. Resource IDs: (4011)
 msgid " (application default)"
+msgstr ""
+
+#. Resource IDs: (4115)
+msgid " (at least N restrictions may be ignored)"
 msgstr ""
 
 #. Resource IDs: (5781)
@@ -269,7 +281,7 @@ msgstr "#uuid"
 msgid "#what"
 msgstr "#what"
 
-#. Resource IDs: (1196)
+#. Resource IDs: (1196, 1199)
 msgid "#when"
 msgstr "#when"
 
@@ -640,6 +652,10 @@ msgstr "&Exportar"
 msgid "&File"
 msgstr "&Archivo"
 
+#. Resource IDs: (32028 - MenuEx)
+msgid "&Filtered entries to PasswordSafe..."
+msgstr ""
+
 #. Resource IDs: (32112 - PopupMenuEx)
 msgid "&Filters"
 msgstr "&Filtros"
@@ -900,7 +916,7 @@ msgstr "&Validar"
 msgid "&View"
 msgstr "&Ver"
 
-#. Resource IDs: (32097 - Menu, 32097 - MenuEx)
+#. Resource IDs: (32097 - Menu)
 msgid "&View Attachment"
 msgstr ""
 
@@ -949,8 +965,8 @@ msgid "(Also used to replace periods in Title field)"
 msgstr "(También usado para remplazar puntos en el campo título)"
 
 #. Resource IDs: (65535)
-msgid "(Double-click an entry to edit it)"
-msgstr "(Doble-clic en entrada para editarla)"
+msgid "(Double-click an entry to edit it. Entries in italics are protected and need to be unprotected first.)"
+msgstr ""
 
 #. Resource IDs: (5957)
 msgid "(Empty)"
@@ -959,6 +975,10 @@ msgstr ""
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
 msgstr "(Es necesario reiniciar Password Safe para aplicar cambios.)"
+
+#. Resource IDs: (65535)
+msgid "(Restart of PasswordSafe required to enable.)"
+msgstr ""
 
 #. Resource IDs: (1285, 1287, 1289, 1291)
 msgid "(at least"
@@ -1422,6 +1442,10 @@ msgstr ""
 msgid "Advanced field selection criteria"
 msgstr "Criterios avanzados de selección de campos"
 
+#. Resource IDs: (1077)
+msgid "After"
+msgstr ""
+
 #. Resource IDs: (8223)
 msgid "Albanian"
 msgstr "Albanés"
@@ -1591,6 +1615,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Attachment Properties"
+msgstr ""
+
+#. Resource IDs: (3074)
+msgid "Attachment Reference"
 msgstr ""
 
 #. Resource IDs: (5976)
@@ -1789,8 +1817,9 @@ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "archivos CSV (*.csv)|*.csv|Todos (*.*)|*.*||"
 
 #. Resource IDs: (5410)
-msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "Solo puede avisarse entre 1 y 30 días antes de la caducidad"
+#, c-format
+msgid "Can only warn between %d and %d days before passwords expire"
+msgstr "Solo puede avisarse entre %d y %d días antes de la caducidad"
 
 #. Resource IDs: (3345)
 #, c-format
@@ -2536,8 +2565,13 @@ msgid "Default is the same directory as the database. If changed, make sure that
 msgstr ""
 
 #. Resource IDs: (5294)
-msgid "Default number of saved password history entries must be between 1 and 255."
-msgstr "El número de entradas del historial de contraseñas debe estar entre 1 y 255."
+#, c-format
+msgid "Default number of saved password history entries must be between %d and %d."
+msgstr "El número de entradas del historial de contraseñas debe estar entre %d y %d."
+
+#. Resource IDs: (1447)
+msgid "Default password expiration (days)"
+msgstr ""
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -2651,7 +2685,7 @@ msgstr "No recuperar los documentos guardados automáticamente\nUtiliza la últi
 msgid "Double click an entry to Edit/View it."
 msgstr ""
 
-#. Resource IDs: (5738)
+#. Resource IDs: (5738, 65535)
 msgid "Double-Click Action"
 msgstr ""
 
@@ -2699,10 +2733,6 @@ msgstr ""
 msgid "Double-Click on entry to View/Edit it"
 msgstr "Doble clic en la entrada para ver/editar"
 
-#. Resource IDs: (65535)
-msgid "Double-click action"
-msgstr "Acción de doble clic"
-
 #. Resource IDs: (5910)
 msgid "Double-click an entry to Edit/View it"
 msgstr "Haga doble clic en una entrada para editarla o verla. "
@@ -2713,11 +2743,11 @@ msgstr "Acción en doble clic en entrada actual"
 
 #. Resource IDs: (5697)
 #, c-format
-msgid "Drag this image onto a another window to paste the '%s' field."
+msgid "Drag this image onto another window to paste the '%s' field."
 msgstr "Arrastra esta imagen a otra ventana para pegar el campo '%s'."
 
 #. Resource IDs: (5862)
-msgid "Drag this image onto a another window to start AutoType from there."
+msgid "Drag this image onto another window to start AutoType from there."
 msgstr "Arrastra esta imagen a otra ventana para iniciar AutoEscritura allí."
 
 #. Resource IDs: (5464)
@@ -2782,6 +2812,10 @@ msgstr "Editar acceso directo"
 msgid "Edit/&View Entry..."
 msgstr "Editar/&ver entrada..."
 
+#. Resource IDs: (65535)
+msgid "Editor Command Line parameters:"
+msgstr ""
+
 #. Resource IDs: (3243)
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
 msgstr "Alguna o ambas columnas Grupo/Título y Contraseña no existen. No se han importado registros."
@@ -2797,6 +2831,10 @@ msgstr "Ignorada línea %d vacía"
 
 #. Resource IDs: (1088)
 msgid "Enable"
+msgstr ""
+
+#. Resource IDs: (1591)
+msgid "Enable Transparency"
 msgstr ""
 
 #. Resource IDs: (61866)
@@ -2880,6 +2918,10 @@ msgstr "Introduce un entero positivo."
 #. Resource IDs: (61723)
 msgid "Enter a time."
 msgstr "Introduce una hora."
+
+#. Resource IDs: (65535)
+msgid "Enter a value between 0 and 99 (a value of 0 disables icon overlay):"
+msgstr ""
 
 #. Resource IDs: (61714)
 #, c-format
@@ -3523,6 +3565,14 @@ msgstr "Ir"
 msgid "Go "
 msgstr "Ir"
 
+#. Resource IDs: (65535 - PopupMenu)
+msgid "Go to Aliases..."
+msgstr ""
+
+#. Resource IDs: (6052)
+msgid "Go to Shortcuts..."
+msgstr ""
+
 #. Resource IDs: (5668)
 msgid "Go+"
 msgstr "Ir+"
@@ -3936,8 +3986,9 @@ msgid "Incorrect password"
 msgstr "Contraseña incorrecta"
 
 #. Resource IDs: (5387)
-msgid "Incremented Number [001-999]"
-msgstr "Número Incrementado [001-999]"
+#, c-format
+msgid "Incremented Number [%d-%d]"
+msgstr "Número Incrementado [%d-%d]"
 
 #. Resource IDs: (3356)
 msgid "Index is invalid or missing"
@@ -3960,10 +4011,6 @@ msgstr ""
 #. Resource IDs: (1542)
 msgid "Initial Tree View"
 msgstr "Vista inicial en árbol"
-
-#. Resource IDs: (65535)
-msgid "Initial system tray icon"
-msgstr "Icono inicial en área de notificación"
 
 #. Resource IDs: (3350)
 msgid "Input string is empty"
@@ -4215,17 +4262,9 @@ msgstr "Lituano estandar"
 msgid "Lock Safe"
 msgstr "Bloquear"
 
-#. Resource IDs: (1077)
-msgid "Lock password database after "
-msgstr "Bloquear base de datos después de"
-
-#. Resource IDs: (1026)
-msgid "Lock password database on minimize"
-msgstr "Bloquear base de datos al minimizar"
-
-#. Resource IDs: (1073)
-msgid "Lock password database on workstation lock"
-msgstr "Bloquear base de datos al bloquear equipo"
+#. Resource IDs: (65535)
+msgid "Lock password database "
+msgstr ""
 
 #. Resource IDs: (5113)
 msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
@@ -4276,6 +4315,10 @@ msgstr "Maori"
 msgid "Marathi"
 msgstr "Marathi"
 
+#. Resource IDs: (65535)
+msgid "Master Password last set on:"
+msgstr ""
+
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "Máx."
@@ -4285,7 +4328,8 @@ msgid "Maximum"
 msgstr ""
 
 #. Resource IDs: (5392)
-msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
+#, c-format
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
 msgstr "El máximo número de respaldos usando sufijo incrementado\ndebe estar entre 1 y 999."
 
 #. Resource IDs: (5407)
@@ -4602,11 +4646,11 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr ""
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as »*»"
+msgid "Note: Empty fields are shown as « »"
 msgstr "Nota: Los campos vacíos se muestran como « »"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is »Group»Title»Username»"
+msgid "Note: Entry format is «Group» «Title» «Username»"
 msgstr "Nota: El formato de la entrada es «Grupo» «Título» «Usuario»"
 
 #. Resource IDs: (3428)
@@ -4730,9 +4774,13 @@ msgstr "Contraseña actual:"
 msgid "On"
 msgstr "El"
 
-#. Resource IDs: (5732)
-msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
-msgstr "Hay cambios en las preferencias. ¿Seguro que deseas cancelar?"
+#. Resource IDs: (1026)
+msgid "On minimize"
+msgstr ""
+
+#. Resource IDs: (1073)
+msgid "On workstation lock"
+msgstr ""
 
 #. Resource IDs: (5894)
 msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
@@ -4742,9 +4790,17 @@ msgstr "Una o más políticas de contraseñas han cambiado. ¿Seguro que quiere 
 msgid "One or more auto-saved documents were found."
 msgstr "Se encontraron uno o más documentos guardados automáticamente."
 
+#. Resource IDs: (5732)
+msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
+msgstr "Hay cambios en las preferencias. ¿Seguro que deseas cancelar?"
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
+msgstr ""
+
+#. Resource IDs: (1595)
+msgid "Opaque"
 msgstr ""
 
 #. Resource IDs: (61440)
@@ -4795,7 +4851,7 @@ msgstr "Oriya"
 msgid "Other value last changed on:"
 msgstr "Otro valor cambió por última vez en: "
 
-#. Resource IDs: (1081, 1201)
+#. Resource IDs: (1081, 1201, 1206)
 msgid "Other:"
 msgstr "Otro:"
 
@@ -4951,6 +5007,10 @@ msgstr "Password Safe x.xx"
 msgid "Password [Mandatory Field]"
 msgstr "Contraseña [Campo Requerido]"
 
+#. Resource IDs: (6048)
+msgid "Password copied to clipboard"
+msgstr ""
+
 #. Resource IDs: (5455)
 msgid "Password implies this is an alias entry, but "
 msgstr "La contraseña indica que esta entrada es un alias, pero "
@@ -4976,8 +5036,9 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "La longitud de la contraseña es menor que la indicada por las resticciones"
 
 #. Resource IDs: (5293)
-msgid "Password length must be between 4 and 1024 characters."
-msgstr "La longitud de la cotraseña debe estar entre 4 y 1024 caracteres. "
+#, c-format
+msgid "Password length must be between %d and %d characters."
+msgstr "La longitud de la cotraseña debe estar entre %d y %d caracteres. "
 
 #. Resource IDs: (1400, 1448)
 msgid "Password length:"
@@ -5205,8 +5266,8 @@ msgstr "Portugués"
 msgid "Portuguese (Brazilian ABNT)"
 msgstr "Portugués (Brasileño ABNT)"
 
-#. Resource IDs: (65535)
-msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character."
+#. Resource IDs: (6049)
+msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character. Positions must be separated by either spaces, commas or semi-colons to be recognised. There must also be a space, comma or semi-colon at the end of the list."
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -5244,6 +5305,10 @@ msgstr ""
 #. Resource IDs: (5058)
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
 msgstr "Programas (*.exe)|*.exe|Todos los archivos (*.*)|*.*||"
+
+#. Resource IDs: (1030)
+msgid "Prompt user for default username"
+msgstr ""
 
 #. Resource IDs: (4112)
 msgid "Pronounceable passwords"
@@ -5293,10 +5358,6 @@ msgstr "Poner grupos primero en vista de árbol"
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
 msgstr "Mostrar icono en el área de notificación"
-
-#. Resource IDs: (1030)
-msgid "Query user to set default username"
-msgstr "Consultar al usuario sobre el nombre de usuario por defecto"
 
 #. Resource IDs: (8010)
 msgid "R Ctrl"
@@ -5678,9 +5739,17 @@ msgstr "Seleccionar teclado:"
 msgid "Select Location for Intermediate Backups"
 msgstr "Seleccionar destino de copias de respaldo intermedias"
 
+#. Resource IDs: (65535)
+msgid "Select Locked Text Color:"
+msgstr ""
+
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
 msgstr "Seleccionar tipo de descarga de pruebas"
+
+#. Resource IDs: (65535)
+msgid "Select Unlocked Text Color:"
+msgstr ""
 
 #. Resource IDs: (61717)
 msgid "Select a button."
@@ -5755,6 +5824,14 @@ msgstr ""
 msgid "Set Attachment Filters: %d Added; %d Active"
 msgstr ""
 
+#. Resource IDs: (32256 - Menu)
+msgid "Set Database ID"
+msgstr ""
+
+#. Resource IDs: (552)
+msgid "Set Database Index to overlay on System Tray icon"
+msgstr ""
+
 #. Resource IDs: (5295)
 msgid "Set Date/Time"
 msgstr "Establecer fecha/hora"
@@ -5827,12 +5904,12 @@ msgid "Shift"
 msgstr "Mays."
 
 #. Resource IDs: (65535)
-msgid "Shift + Double-Click Action:"
-msgstr "Acción de Mayúsc + Doble clic:"
+msgid "Shift Double-Click Action"
+msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Shift Double-click action"
-msgstr "Acción de Doble clic:"
+msgid "Shift Double-Click Action:"
+msgstr ""
 
 #. Resource IDs: (5689)
 msgid "Shift+"
@@ -5886,6 +5963,10 @@ msgstr "Atajos"
 
 #. Resource IDs: (1471)
 msgid "Show"
+msgstr ""
+
+#. Resource IDs: (1590)
+msgid "Show Combination"
 msgstr ""
 
 #. Resource IDs: (5653)
@@ -6025,11 +6106,11 @@ msgid "Spanish Variation"
 msgstr "Variación del español"
 
 #. Resource IDs: (5109)
-msgid "Specify a program for editing an entry's Notes field via the right-click context menu during Add/Edit."
+msgid "Specify a program for editing an entry's Notes field via the right-click context menu during Add/Edit. You can specify command line options to the external editor via the external  editor command line parameters field. Do not enclose this value in single or double quotes unless your chosen external editor requires them."
 msgstr ""
 
 #. Resource IDs: (5108)
-msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
+msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'. You can specify command line options to the browser via the Browser command line parameters field. Do not enclose this value in single or double quotes unless your chosen browser requires them."
 msgstr ""
 
 #. Resource IDs: (1497)
@@ -6052,7 +6133,7 @@ msgstr "Empezar a guardar historial de contraseñas para todas las entradas, al 
 msgid "Start saving previous passwords"
 msgstr "Empezar a guardar contraseñas previas"
 
-#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 8103)
+#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 1588, 8103)
 msgid "Static"
 msgstr "Estático"
 
@@ -6255,8 +6336,8 @@ msgid "The Ctrl key has been added."
 msgstr ""
 
 #. Resource IDs: (3424)
-msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
-msgstr "El archivo TXT o CSV no se exportó ya que los registros de entrada se dividen en varias líneas en el archivo CSV.\n\nExportación abortada."
+msgid "The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
+msgstr ""
 
 #. Resource IDs: (6003)
 msgid "The YubiKey appears uninitialized. Initialize it?"
@@ -6328,6 +6409,10 @@ msgstr "Las siguientes ADVERTENCIAS fueron detectadas - debería revisarlas y ar
 msgid "The following attachments are not referred to by any entry."
 msgstr ""
 
+#. Resource IDs: (6055)
+msgid "The following base entries have been exported because one or more of their dependents have been included."
+msgstr ""
+
 #. Resource IDs: (3375)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "Las siguientes columnas fueron reconocidas, pero sólo Grupo/Título, nombre de usuario y contraseña serán procesados:"
@@ -6381,8 +6466,8 @@ msgid "The following entries were duplicates of an existing entry."
 msgstr "Las siguientes entradas eran duplicados de una entrada existente."
 
 #. Resource IDs: (65535)
-msgid "The following entries' passwords are about to expire or expired:"
-msgstr "Las siguientes contraseñas están a punto de caducar o caducadas:"
+msgid "The following entries' passwords are about to expire or have already expired:"
+msgstr ""
 
 #. Resource IDs: (5481)
 #, c-format
@@ -6418,8 +6503,8 @@ msgstr ""
 
 #. Resource IDs: (5792)
 #, c-format
-msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either copy it to an editor via the clipboard or export this entry to XML before changing it."
-msgstr "El campo notas de esta entrada tiene más texto del que se pueden mostrar. Cambiar este campo y guardar la entrada dará como resultado que este campo se trunca después de %d caracteres. Para ver el contenido íntegro, copialo a un editor a través del portapapeles o exporta esta entrada a XML antes de cambiarlo."
+msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either export this entry to XML before changing it or open the database in read-only mode and copy it to an editor via the clipboard."
+msgstr ""
 
 #. Resource IDs: (5284)
 msgid "The old safe combination is not correct"
@@ -6515,6 +6600,10 @@ msgstr "Esta entrada debe tener una entrada destino válida."
 msgid "This filter already exists"
 msgstr "El filtro ya existe"
 
+#. Resource IDs: (6054)
+msgid "This index is currently in use. Please select another."
+msgstr ""
+
 #. Resource IDs: (8170)
 msgid "This is a DeadKey. Press it and then one of the combined keys then shown to add that new character to the Passphrase."
 msgstr "Tecla combinada. Pulsa esta tecla y luego uno de las teclas combinadas que se muestran para añadir un nuevo caracter a la frase."
@@ -6533,6 +6622,11 @@ msgstr "Esto es un alias de entrada base."
 
 #. Resource IDs: (1269)
 msgid "This is an alias of:"
+msgstr ""
+
+#. Resource IDs: (5121)
+#, c-format
+msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
 msgstr ""
 
 #. Resource IDs: (61710)
@@ -6580,8 +6674,9 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Esto eliminará el archivo de respaldo seleccionado.  Si el dispositivo es compatible con papelera de reciclaje, se moverá allí. En otro caso, se borrará definitivamente."
 
 #. Resource IDs: (5289)
-msgid "Timeout period must be between 1 and 120 minutes."
-msgstr "El tiempo de espera debe estar entre 1 y 120 minutos."
+#, c-format
+msgid "Timeout period must be between %d and %d minutes."
+msgstr "El tiempo de espera debe estar entre %d y %d minutos."
 
 #. Resource IDs: (3056, 5222, 5981)
 msgid "Title"
@@ -7006,8 +7101,12 @@ msgstr "Vietnamita"
 msgid "View"
 msgstr "Ver"
 
-#. Resource IDs: (548, 6025)
+#. Resource IDs: (32097 - MenuEx, 548, 6025)
 msgid "View Attachment"
+msgstr ""
+
+#. Resource IDs: (6053)
+msgid "View Base entry"
 msgstr ""
 
 #. Resource IDs: (32220 - Menu, 5261)
@@ -7077,6 +7176,10 @@ msgstr "Qué guardó"
 msgid "Whatever"
 msgstr ""
 
+#. Resource IDs: (6050)
+msgid "When a subset is visible and there is no warning message, the button will be enabled and can be clicked to copy the subset to the clipboard."
+msgstr ""
+
 #. Resource IDs: (5761)
 msgid "When saved"
 msgstr "Cuando guardó"
@@ -7092,6 +7195,10 @@ msgstr "Quién guardó"
 #. Resource IDs: (1385)
 msgid "Win32 Unhandled Exception"
 msgstr "Excepción no controlada Win32"
+
+#. Resource IDs: (65535)
+msgid "Window Transparency"
+msgstr ""
 
 #. Resource IDs: (5799)
 msgid "Windows Registry"
@@ -7176,18 +7283,8 @@ msgstr "Sí (por lo menos %d)"
 
 #. Resource IDs: (4107)
 #, c-format
-msgid "Yes - At least %d from %ls: %ls"
-msgstr "Sí - Por lo menos %d desde %ls: %ls"
-
-#. Resource IDs: (4105)
-#, c-format
-msgid "Yes - EasyVision Symbols: %ls"
-msgstr "Sí - Símbolos de fácil lectura: %ls"
-
-#. Resource IDs: (4106)
-#, c-format
-msgid "Yes - Pronounceable Symbols: %ls"
-msgstr "Sí - Símbolos pronunciables: %ls"
+msgid "Yes - At least %d from %ls: %ls%ls"
+msgstr ""
 
 #. Resource IDs: (1084)
 msgid "Yes:"
@@ -7443,6 +7540,10 @@ msgstr "\nExportar a XML"
 
 #. Resource IDs: (32026)
 msgid "\nExport to v4 database (EXPERIMENTAL)"
+msgstr ""
+
+#. Resource IDs: (32028)
+msgid "\nFiltered entries to PasswordSafe..."
 msgstr ""
 
 #. Resource IDs: (32061)
@@ -7798,10 +7899,6 @@ msgstr "empieza con"
 msgid "between"
 msgstr "entre"
 
-#. Resource IDs: (5665)
-msgid "bottom"
-msgstr "final"
-
 #. Resource IDs: (3371)
 msgid "changed but not yet saved to database"
 msgstr "cambiado pero aun no guardado en la base de datos"
@@ -8105,6 +8202,10 @@ msgstr "el siguiente texto:"
 msgid "the passwords and data of all entries in this group"
 msgstr ""
 
+#. Resource IDs: (6051)
+msgid "the passwords and data of these filtered entries"
+msgstr ""
+
 #. Resource IDs: (5815)
 msgid "this entry's password and data"
 msgstr "contraseña y datos de esta entrada"
@@ -8161,6 +8262,10 @@ msgstr "caducará"
 #, c-format
 msgid "within %d day(s)"
 msgstr "durante %d día(s)"
+
+#. Resource IDs: (1594)
+msgid "xx%"
+msgstr ""
 
 #. Resource IDs: (8004)
 msgid "xxxxxx"

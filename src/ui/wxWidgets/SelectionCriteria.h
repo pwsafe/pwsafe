@@ -1,16 +1,21 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __SELECTIONCRITERIA_H__
-#define __SELECTIONCRITERIA_H__
+/** \file SelectionCriteria.h
+*
+*/
 
-#include "../../core/ItemData.h"
-#include "./wxutils.h"
+#ifndef _SELECTIONCRITERIA_H_
+#define _SELECTIONCRITERIA_H_
+
+#include "core/ItemData.h"
+
+#include "wxUtilities.h"
 
 /*
  * SelectionCriteria data structure backs the AdvancedSelectionPanel widget
@@ -113,4 +118,4 @@ inline bool operator!=(const SelectionCriteria& a, const SelectionCriteria& b)
          a.m_subgroupObject   != b.m_subgroupObject; 
 }
 
-#endif
+#endif // _SELECTIONCRITERIA_H_

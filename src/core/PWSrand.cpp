@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -11,11 +11,11 @@
 #include "PwsPlatform.h"
 #include "PWSrand.h"
 
-PWSrand *PWSrand::self = NULL;
+PWSrand *PWSrand::self = nullptr;
 
 PWSrand *PWSrand::GetInstance()
 {
-  if (self == NULL) {
+  if (self == nullptr) {
     self = new PWSrand;
   }
   return self;
@@ -24,7 +24,7 @@ PWSrand *PWSrand::GetInstance()
 void PWSrand::DeleteInstance()
 {
   delete self;
-  self = NULL;
+  self = nullptr;
 }
 
 PWSrand::PWSrand()
@@ -36,7 +36,7 @@ PWSrand::PWSrand()
   unsigned slen = 0;
   unsigned char *p;
 
-  pws_os::GetRandomSeed(NULL, slen);
+  pws_os::GetRandomSeed(nullptr, slen);
   p = new unsigned char[slen];
   pws_os::GetRandomSeed(p, slen);
   s.Update(p, slen);
@@ -50,7 +50,7 @@ PWSrand::~PWSrand()
 
 void PWSrand::AddEntropy(unsigned char *bytes, unsigned int numBytes)
 {
-  ASSERT(bytes != NULL);
+  ASSERT(bytes != nullptr);
 
   SHA256 s;
 
@@ -91,7 +91,7 @@ void PWSrand::GetRandomData( void * const buffer, unsigned long length )
   unsigned char *pb = static_cast<unsigned char *>(buffer);
   while (length > SHA256::HASHLEN) {
     NextRandBlock();
-    for (int j = 0; j < SHA256::HASHLEN; j++)
+    for (unsigned int j = 0; j < SHA256::HASHLEN; j++)
       pb[j] = (m_IsInternalPRNG) ? R[j] : pb[j] ^ R[j];
     length -= SHA256::HASHLEN;
     pb += SHA256::HASHLEN;

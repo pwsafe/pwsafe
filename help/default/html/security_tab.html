@@ -83,6 +83,13 @@ clipboard during this action.</p>
 a <b>Password Safe</b> database. The <em>Standard</em> setting should provide sufficient security without
 delaying the opening of a database significantly on most platforms. When increasing this value, consider
 the slowest CPU that you will use to access the database.</p>
+
+<p>PasswordSafe uses the <!-- [V4Format:] <a href="https://en.wikipedia.org/wiki/PBKDF2">PBKDF2</a> -->
+original <a href="http://www.schneier.com/paper-low-entropy.pdf">Key
+Stretching</a> algorithm published by Bruce Schneier, which expands the 
+password to contain more entropy to make it significantly harder to
+employ brute-force processing. The slider sets the number of iterations
+of the stretching, between 2048 and 2<sup><small>22</small></sup>.</p>
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>
 <br>

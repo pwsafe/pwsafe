@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -21,8 +21,10 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CPWListCtrlX::CPWListCtrlX()
-  : m_FindTimerID(0), m_csFind(L""), m_bMouseInWindow(false), 
-  m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bListFilterActive(false),
+  : m_csFind(L""), m_FindTimerID(0),
+  m_nHoverNDTimerID(0), m_nShowNDTimerID(0), 
+  m_bMouseInWindow(false),
+  m_bListFilterActive(false),
   m_bUseHighLighting(false)
 {
 }
@@ -81,7 +83,7 @@ bool CPWListCtrlX::IsNotesColumnPresent()
 
 void CPWListCtrlX::SetUpFont()
 {
-  Fonts::GetInstance()->SetUpFont(this, Fonts::GetInstance()->GetCurrentFont());
+  Fonts::GetInstance()->SetUpFont(this, Fonts::GetInstance()->GetTreeListFont());
 }
 
 LRESULT CPWListCtrlX::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
@@ -378,7 +380,7 @@ CFont *CPWListCtrlX::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
     case CItemData::ES_ADDED:
     case CItemData::ES_MODIFIED:
       cf = pFonts->GetModified_Color();
-      return pFonts->GetModifiedFont();
+      return pFonts->GetItalicTreeListFont();
     default:
       break;
   }
@@ -393,7 +395,7 @@ void CPWListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   static bool bitem_selected(false);
   static bool bchanged_item_font(false), bchanged_subitem_font(false);
-  static CFont *pCurrentFont = NULL;
+  static CFont *pAddEditFont = NULL;
   static CFont *pPasswordFont = NULL;
   static CFont *pNotesFont = NULL;
   static CDC *pDC = NULL;
@@ -408,7 +410,7 @@ void CPWListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // PrePaint
       pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
       bchanged_item_font = bchanged_subitem_font = false;
-      pCurrentFont = Fonts::GetInstance()->GetCurrentFont();
+      pAddEditFont = Fonts::GetInstance()->GetAddEditFont();
       pPasswordFont = Fonts::GetInstance()->GetPasswordFont();
       pNotesFont = Fonts::GetInstance()->GetNotesFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
@@ -423,7 +425,7 @@ void CPWListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Item PostPaint - restore old font if any
       if (bchanged_item_font) {
         bchanged_item_font = false;
-        pDC->SelectObject(pCurrentFont);
+        pDC->SelectObject(pAddEditFont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;
@@ -461,7 +463,7 @@ void CPWListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Restore old font if any
       if (bchanged_subitem_font) {
         bchanged_subitem_font = bitem_selected = false;
-        pDC->SelectObject(pCurrentFont);
+        pDC->SelectObject(pAddEditFont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -9,24 +9,25 @@
 /** \file ExternalKeyboardButton.cpp
 * 
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
-#include "../../core/PwsPlatform.h"
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
 
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
 
-#include "./ExternalKeyboardButton.h"
-
-#include "./graphics/vkbd.xpm"
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include "core/PwsPlatform.h"
+#include "os/file.h"
+
+#include "ExternalKeyboardButton.h"
+#include "wxUtilities.h"
+
+#include "graphics/vkbd.xpm"
 
 ExternalKeyboardButton::ExternalKeyboardButton( wxWindow* parent, 
                                                 wxWindowID id, 
@@ -66,8 +67,14 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
   int xwinid = GDK_WINDOW_XWINDOW(window);
 #endif
   wxString command = wxString(wxT("xvkbd"));
-  
-  switch(wxExecute(command, wxEXEC_ASYNC, NULL)) //NULL => we don't want a wxProcess as callback
+
+  if (!pws_os::ProgramExists(tostdstring(command))) {
+    wxMessageBox(_("Could not launch xvkbd.  Please make sure it's installed and in your PATH"), 
+                  _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);
+    return;
+  }
+
+  switch(wxExecute(command, wxEXEC_ASYNC, nullptr)) //nullptr => we don't want a wxProcess as callback
   {
     case 0:
       wxMessageBox(_("Could not launch xvkbd.  Please make sure it's in your PATH"), 
@@ -83,4 +90,5 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
       break;
   }
 #endif
+
 }

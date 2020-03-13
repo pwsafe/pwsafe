@@ -1,10 +1,14 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
+
+/** \file ImportXmlDlg.cpp
+* 
+*/
 
 #include <wx/wxprec.h>
 
@@ -22,9 +26,9 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-IMPLEMENT_CLASS( CImportXMLDlg, wxDialog )
+IMPLEMENT_CLASS( ImportXmlDlg, wxDialog )
 
-CImportXMLDlg::CImportXMLDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxString(_("Import XML Settings"))),
+ImportXmlDlg::ImportXmlDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxString(_("Import XML Settings"))),
                                                   importUnderGroup(false), 
                                                   importPasswordsOnly(false)
 {
@@ -38,7 +42,7 @@ CImportXMLDlg::CImportXMLDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxSt
 
   dlgSizer->Add(new wxStaticText(this, wxID_ANY, _("XML file to import:")), borderFlags);
   dlgSizer->AddSpacer(RowSeparation/2);
-  COpenFilePickerValidator validator(filepath);
+  OpenFilePickerValidator validator(filepath);
   dlgSizer->Add(new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString, 
                                           _("Please Choose a XML File to Import"), 
                                           _("XML files (*.xml)|*.xml"), 
@@ -70,13 +74,13 @@ CImportXMLDlg::CImportXMLDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxSt
   SetSizerAndFit(dlgSizer);
 }
 
-wxCheckBox* CImportXMLDlg::CheckBox(const wxString& label, bool* validatorTarget)
+wxCheckBox* ImportXmlDlg::CheckBox(const wxString& label, bool* validatorTarget)
 {
   return new wxCheckBox(this, wxID_ANY, label, wxDefaultPosition, wxDefaultSize, 0,
                           wxGenericValidator(validatorTarget));
 }
 
-wxTextCtrl* CImportXMLDlg::TextCtrl(wxString* validatorTarget)
+wxTextCtrl* ImportXmlDlg::TextCtrl(wxString* validatorTarget)
 {
   return new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 
                                   wxTextValidator(wxFILTER_NONE, validatorTarget));

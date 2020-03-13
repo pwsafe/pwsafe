@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,7 +28,7 @@ stringT pws_os::getexecdir()
     return _T("?");
   else {
     stringT retval(pws_os::towc(path));
-    stringT::size_type last_slash = retval.find_last_of(_T("/"));
+    stringT::size_type last_slash = retval.find_last_of(_T('/'));
     return retval.substr(0, last_slash + 1);
   }
 }
@@ -36,7 +36,7 @@ stringT pws_os::getexecdir()
 stringT pws_os::getcwd()
 {
   char curdir[PATH_MAX];
-  if (::getcwd(curdir, PATH_MAX) == NULL) {
+  if (::getcwd(curdir, PATH_MAX) == nullptr) {
     curdir[0] = '?'; curdir[1] = '\0';
   }
   stringT CurDir(pws_os::towc(curdir));
@@ -46,8 +46,8 @@ stringT pws_os::getcwd()
 bool pws_os::chdir(const stringT &dir)
 {
   assert(!dir.empty());
-  const char *szdir = NULL;
-  size_t N = std::wcstombs(NULL, dir.c_str(), 0) + 1;
+  const char *szdir = nullptr;
+  size_t N = std::wcstombs(nullptr, dir.c_str(), 0) + 1;
   assert(N > 0);
   szdir = new char[N];
   std::wcstombs(const_cast<char *>(szdir), dir.c_str(), N);
@@ -63,12 +63,12 @@ bool pws_os::splitpath(const stringT &path,
   if (path.empty())
     return false;
 
-  stringT::size_type last_slash = path.find_last_of(_T("/"));
+  stringT::size_type last_slash = path.find_last_of(_T('/'));
   dir = path.substr(0, last_slash + 1);
   if (dir.empty())
     dir = _T("./");
   drive = (dir[0] == '/') ? _T("/") : _T("./");
-  stringT::size_type last_dot = path.find_last_of(_T("."));
+  stringT::size_type last_dot = path.find_last_of(_T('.'));
   if (last_dot != stringT::npos && last_dot > last_slash) {
     file = path.substr(last_slash + 1, last_dot - last_slash - 1);
     ext = path.substr(last_dot + 1);
@@ -108,14 +108,14 @@ stringT pws_os::fullpath(const stringT &relpath)
   char full[PATH_MAX];
 
   // relpath -> char *path
-  size_t N = std::wcstombs(NULL, relpath.c_str(), 0) + 1;
+  size_t N = std::wcstombs(nullptr, relpath.c_str(), 0) + 1;
   assert(N > 0);
   char *path = new char[N];
   std::wcstombs(path, relpath.c_str(), N);
 
-  if (realpath(path, full) != NULL) {
+  if (realpath(path, full) != nullptr) {
     // full -> retval
-    size_t wfull_len = ::mbstowcs(NULL, full, 0) + 1;
+    size_t wfull_len = ::mbstowcs(nullptr, full, 0) + 1;
     wchar_t *wfull = new wchar_t[wfull_len];
     std::mbstowcs(wfull, full, wfull_len);
     retval = wfull;
@@ -129,12 +129,12 @@ static stringT createuserprefsdir(void)
 {
   stringT cfgdir = pws_os::getenv("HOME", true);
   if (!cfgdir.empty()) {
-    cfgdir += _S("/.pwsafe");
+    cfgdir += _S(".pwsafe");
     struct stat statbuf;
     switch (::lstat(pws_os::tomb(cfgdir).c_str(), &statbuf)) {
     case 0:
-      if (!S_ISDIR(statbuf.st_mode))
-        cfgdir.clear();  // not a dir - can't use it.
+      if (!S_ISDIR(statbuf.st_mode) && !S_ISLNK(statbuf.st_mode))
+        cfgdir.clear();  // not a dir or symbolic link - can't use it.
       break;
     case -1:  // dir doesn't exist.  Or should we check errno too?
       {
@@ -176,15 +176,17 @@ stringT pws_os::getxmldir(void)
 #ifdef __FreeBSD__
   return _S("/usr/local/share/pwsafe/xml/");
 #else
-  return _S("/usr/share/pwsafe/xml/");
+  return _S("/usr/share/passwordsafe/xml/");
 #endif
 }
 
 stringT pws_os::gethelpdir(void)
 {
-#ifdef __FreeBSD__
+#if defined(__FreeBSD__) && !(defined(_DEBUG) || defined(DEBUG))
   return _S("/usr/local/share/doc/passwordsafe/help/");
+#elif defined(_DEBUG) || defined(DEBUG)
+  return _S("help/");
 #else
-  return _S("/usr/share/doc/passwordsafe/help/");
+  return _S("/usr/share/passwordsafe/help/");
 #endif
 }

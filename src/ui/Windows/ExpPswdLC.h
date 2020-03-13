@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -7,6 +7,8 @@
 */
 
 #pragma once
+
+class CExpPWListDlg;
 
 class CExpPswdLC : public CListCtrl
 {
@@ -23,6 +25,7 @@ protected:
   //{{AFX_MSG(CEBListCtrl)
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg BOOL OnToolTipText(UINT id, NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -30,4 +33,9 @@ protected:
 private:
   CToolTipCtrl *m_pToolTipCtrl;
   int m_LastToolTipRow;
+
+  COLORREF m_clrDisabled;
+  CFont *m_pAddEditFont, *m_pItalicAddEditFont;
+
+  CExpPWListDlg *m_pParent;
 };

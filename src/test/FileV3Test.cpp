@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -111,6 +111,7 @@ TEST_F(FileV3Test, HeaderTest)
   PWSfileHeader hdr1, hdr2;
   hdr1.m_prefString = _T("aPrefString");
   hdr1.m_whenlastsaved = 1413129351; // overwritten in Open()
+  hdr1.m_whenpwdlastchanged = 1529684734;
   hdr1.m_lastsavedby = _T("aUser");
   hdr1.m_lastsavedon = _T("aMachine");
   hdr1.m_whatlastsaved = _T("PasswordSafe test framework");

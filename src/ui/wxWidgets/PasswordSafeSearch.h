@@ -1,16 +1,17 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
-/** \file
+
+/** \file PasswordSafeSearch.h
 *
 */
 
-#ifndef __PASSWORDSAFESEARCH_H__
-#define __PASSWORDSAFESEARCH_H__
+#ifndef _PASSWORDSAFESEARCH_H_
+#define _PASSWORDSAFESEARCH_H_
 
 /*!
  * Includes
@@ -20,7 +21,7 @@
 #include <wx/event.h>
 #include <wx/toolbar.h>
 
-#include "../../core/ItemData.h"
+#include "core/ItemData.h"
 ////@end includes
 
 ////@begin forward declarations
@@ -68,45 +69,43 @@ private:
  */
 class SearchPointer
 {
-    typedef UUIDVector SearchIndices;
-    SearchIndices m_indices;
+  typedef UUIDVector SearchIndices;
+  SearchIndices m_indices;
 
-    SearchIndices::const_iterator m_currentIndex;
-    wxString m_label;
+  SearchIndices::const_iterator m_currentIndex;
+  wxString m_label;
 
 public:
-    SearchPointer() {
-        m_currentIndex = m_indices.end();
-        PrintLabel();
-    }
+  SearchPointer() {
+    m_currentIndex = m_indices.end();
+    PrintLabel();
+  }
 
-    void Clear() { m_indices.clear() ; m_currentIndex = m_indices.end(); PrintLabel(); }
-    bool IsEmpty() const { return m_indices.empty(); }
-    const pws_os::CUUID& operator*() const {
-      wxCHECK_MSG(!IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Empty search pointer dereferenced"));
-      return *m_currentIndex;
-    }
-    size_t Size() const { return m_indices.size(); }
+  void Clear() { m_indices.clear() ; m_currentIndex = m_indices.end(); PrintLabel(); }
+  bool IsEmpty() const { return m_indices.empty(); }
+  const pws_os::CUUID& operator*() const {
+    wxCHECK_MSG(!IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Empty search pointer dereferenced"));
+    return *m_currentIndex;
+  }
+  size_t Size() const { return m_indices.size(); }
 
-    void InitIndex(void) {
-        m_currentIndex = m_indices.begin();
-    }
+  void InitIndex(void) { m_currentIndex = m_indices.begin(); }
 
-    void Add(const pws_os::CUUID& uuid) {
-      // every time we add to the array, we risk getting the iterators invalidated
-      const bool restart = (m_indices.empty() || m_currentIndex == m_indices.begin());
-      m_indices.push_back(uuid);
-      if (restart) { InitIndex(); }
-      PrintLabel();
-    }
+  void Add(const pws_os::CUUID& uuid) {
+    // every time we add to the array, we risk getting the iterators invalidated
+    const bool restart = (m_indices.empty() || m_currentIndex == m_indices.begin());
+    m_indices.push_back(uuid);
+    if (restart) { InitIndex(); }
+    PrintLabel();
+  }
 
-    SearchPointer& operator++();
-    SearchPointer& operator--();
+  SearchPointer& operator++();
+  SearchPointer& operator--();
 
-    const wxString& GetLabel(void) const { return m_label; }
+  const wxString& GetLabel(void) const { return m_label; }
 
 private:
-    void PrintLabel(const TCHAR* prefix = 0);
+  void PrintLabel(const TCHAR* prefix = nullptr);
 };
 
 /*!
@@ -125,44 +124,44 @@ public:
   /// Destructor
   ~PasswordSafeSearch();
 
-  // wxEVT_COMMAND_TEXT_ENTER event handler for ENTER key press in search text box
-  void OnDoSearch( wxCommandEvent& evt );
-  void OnSearchClose(wxCommandEvent& evt);
-  void OnAdvancedSearchOptions(wxCommandEvent& evt);
-  void OnChar(wxKeyEvent& evt);
-  void OnSearchClear(wxCommandEvent& evt);
-  void FindNext(void);
-  void FindPrevious(void);
-  void UpdateView();
-  void OnSearchBarTextChar(wxKeyEvent& evt);
-  void OnSearchTextChanged(wxCommandEvent& evt);
+  void OnSearchClose(wxCommandEvent& event);
+  void FindNext();
+  void FindPrevious();
 
-  void Activate(void);
-  void RefreshButtons(void);
-  void Invalidate(void) { m_searchPointer.Clear(); }
-  void ReCreateSearchBar(void);
+  void Activate();
+  void RefreshButtons();
+  void Invalidate() { m_searchPointer.Clear(); }
+  void ReCreateSearchBar();
 
 private:
   template <class Iter, class Accessor>
   void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr, Iter begin, Iter end, Accessor afn);
 
-  template <class Iter, class Accessor>
-  void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr,
-                     const CItemData::FieldBits& bsFields, bool fUseSubgroups, const wxString& subgroupText,
-                     CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction,
-                     bool subgroupFunctionCaseSensitive, Iter begin, Iter end, Accessor afn);
+  // wxEVT_COMMAND_TEXT_ENTER event handler for ENTER key press in search text box
+  void OnDoSearch( wxCommandEvent& event );
+  void OnAdvancedSearchOptions(wxCommandEvent& event);
+  void OnChar(wxKeyEvent& event);
+  void OnSearchClear(wxCommandEvent& event);
+  void OnSize(wxSizeEvent& event);
+  void UpdateView();
+  void OnSearchTextChanged(wxCommandEvent& event);
+  void OnSearchBarTextChar(wxKeyEvent& event);
 
-  void CreateSearchBar(void);
+  void CreateSearchBar();
   void HideSearchToolbar();
   void ClearToolbarStatusArea();
+  void CalculateToolsWidth();
+  wxSize CalculateSearchWidth();
+  void UpdateStatusAreaWidth();
 
   template <class Iter, class Accessor>
   void OnDoSearchT( Iter begin, Iter end, Accessor afn);
 
   wxToolBar*           m_toolbar;
   PasswordSafeFrame*   m_parentFrame;
-  SelectionCriteria*    m_criteria;
+  SelectionCriteria*   m_criteria;
   SearchPointer        m_searchPointer;
+  size_t               m_ToolsWidth;
 };
 
-#endif
+#endif // _PASSWORDSAFESEARCH_H_

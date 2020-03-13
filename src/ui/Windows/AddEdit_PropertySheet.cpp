@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -46,6 +46,12 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
 
   m_AEMD.default_pwp = prefs->GetDefaultPolicy();
   m_AEMD.default_symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
+
+  // Preferences min/max values
+  m_AEMD.prefminPWLength = (short)prefs->GetPrefMinVal(PWSprefs::PWDefaultLength);
+  m_AEMD.prefmaxPWLength = (short)prefs->GetPrefMaxVal(PWSprefs::PWDefaultLength);
+  m_AEMD.prefminPWHNumber = (short)prefs->GetPrefMinVal(PWSprefs::NumPWHistoryDefault);
+  m_AEMD.prefmaxPWHNumber = (short)prefs->GetPrefMaxVal(PWSprefs::NumPWHistoryDefault);
 
   // Set up data used by all Property Pages, as appropriate
   if (m_AEMD.uicaller == IDS_ADDENTRY) {
@@ -338,8 +344,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
         // Just modify all - even though only 1 may have actually been modified
         m_AEMD.pci->SetGroup(m_AEMD.group);
         m_AEMD.pci->SetTitle(m_AEMD.title);
-        m_AEMD.pci->SetUser(m_AEMD.username.IsEmpty() ?
-                                  m_AEMD.defusername : m_AEMD.username);
+        m_AEMD.pci->SetUser(m_AEMD.username);
         if (m_bNotesChanged)
           m_AEMD.pci->SetNotes(m_AEMD.notes);
 
@@ -405,6 +410,14 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
         if (bIsPSWDModified) {
           m_AEMD.pci->UpdatePassword(m_AEMD.realpassword);
           m_AEMD.locPMTime = m_AEMD.pci->GetPMTimeL();
+         if (m_AEMD.XTimeInt != 0) {
+           // if entry has a recurring password interval, then
+           // changing the password ==> update expiry
+            m_AEMD.tttXTime = m_AEMD.tttCPMTime + 24 * 60 * 60 * m_AEMD.XTimeInt;
+            pciA->SetXTime(m_AEMD.tttXTime);
+            m_AEMD.locXTime = pciA->GetXTimeL();
+            m_bIsModified = true;
+          }
         }
 
         if (m_AEMD.locXTime != m_AEMD.oldlocXTime) {

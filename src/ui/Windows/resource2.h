@@ -58,6 +58,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_EXPORT2V3FORMAT     32025
 #define ID_MENUITEM_EXPORT2V4FORMAT     32026
 #define ID_MENUITEM_LOCK                32027
+#define ID_MENUITEM_EXPORTFILTERED2DB   32028
 
 // Edit menu
 #define ID_EDITMENU                     32050
@@ -190,6 +191,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_MINIMIZE            32253
 #define ID_MENUITEM_RESTORE             32254
 #define ID_MENUITEM_TRAYSELECT          32255
+#define ID_MENUITEM_SETDBID             32256
 
 // Main Toolbar - only those items not also menu items
 // or only on mouse right-click popup menu
@@ -280,6 +282,9 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 
 #define ID_MENUITEM_TRAYSELECT1         33451
 #define ID_MENUITEM_TRAYSELECTMAX       33475
+
+#define ID_MENUITEM_GOTODEPENDANT1      33476
+#define ID_MENUITEM_GOTODEPENDANTMAX    33500
 
 // Following for CEditExtn context menu
 // Really string constants, but "logically" they're menus...

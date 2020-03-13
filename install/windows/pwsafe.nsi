@@ -3,7 +3,7 @@
 ; Password Safe Installation Script
 ;
 ; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
-; Copyright 2005-2017 Rony Shapiro <ronys@pwsafe.org>
+; Copyright 2005-2020 Rony Shapiro <ronys@pwsafe.org>
 ; 2009 extended by Karel Van der Gucht for multiple language use
 ; This script may be redistributed and/or modified under the Artistic
 ; License 2.0 terms as available at 
@@ -248,6 +248,8 @@
   !include ".\I18N\pwsafe_tr.lng"
   !insertmacro MUI_LANGUAGE "Hungarian"
   !include ".\I18N\pwsafe_hu.lng"
+  !insertmacro MUI_LANGUAGE "Slovenian"
+  !include ".\I18N\pwsafe_sl.lng"
 
 ; English texts here
 ; Note that if we add a string, it needs to be added in all the
@@ -275,6 +277,7 @@ LangString UNINSTALL_SHORTCUT ${LANG_ENGLISH} "Uninstall shortcut"
 
 ; Descriptions
 LangString DESC_ProgramFiles ${LANG_ENGLISH} "Installs the basic files necessary to run Password Safe."
+LangString DESC_CliTool ${LANG_ENGLISH} "Installs pwsafe-cli, a command line utility."
 LangString DESC_StartUp ${LANG_ENGLISH} "Starts Password Safe as part of Windows boot/login."
 LangString DESC_StartMenu ${LANG_ENGLISH} "Creates an entry in the start menu for Password Safe."
 LangString DESC_DesktopShortcut ${LANG_ENGLISH} "Places a shortcut to Password Safe on your desktop."
@@ -291,6 +294,7 @@ LangString RUNNING_INSTALL ${LANG_ENGLISH} "The installer is already running."
 LangString RUNNING_APPLICATION ${LANG_ENGLISH} "Please exit all running instances of PasswordSafe before installing a new version"
 LangString LANG_INSTALL ${LANG_ENGLISH} "Installation Language"
 LangString LANG_SELECT ${LANG_ENGLISH} "Please select the language for the installation"
+LangString CLI_TOOL ${LANG_ENGLISH} "Command-line tool"
 LangString LANGUAGE_SUPPORT ${LANG_ENGLISH} "Language Support"
 LangString ENGLISH_SUPPORT ${LANG_ENGLISH} "English"
 LangString CHINESE_CN_SUPPORT ${LANG_ENGLISH} "Chinese (Simplified)"
@@ -309,12 +313,16 @@ LangString PORTUGUESEBR_SUPPORT ${LANG_ENGLISH} "Portuguese (Brazil)"
 LangString CZECH_SUPPORT ${LANG_ENGLISH} "Czech"
 LangString TURKISH_SUPPORT ${LANG_ENGLISH} "Turkish"
 LangString HUNGARIAN_SUPPORT ${LANG_ENGLISH} "Hungarian"
+LangString SLOVENIAN_SUPPORT ${LANG_ENGLISH} "Slovenian"
 
 LangString LANG_PROGRAM ${LANG_ENGLISH} "Program Language"
 LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_98 ${LANG_ENGLISH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_ME ${LANG_ENGLISH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_2K ${LANG_ENGLISH} "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
+
+LangString Icon_description_Uninstall ${LANG_ENGLISH} "Password Safe Uninstall"
+LangString Icon_description_Help ${LANG_ENGLISH} "Password Safe Help"
 
 ;--------------------------------
 ; Interface Settings
@@ -346,9 +354,8 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "${BIN_DIR}\pwsafe.exe"
   File "${BIN_DIR}\pws_at.dll"
   File "${BIN_DIR}\pws_osk.dll"
-  File "..\..\help\default\pwsafe.chm"
   File "..\..\LICENSE"
-  File "..\..\README.TXT"
+  File "..\..\README.md"
   File "..\..\docs\ReleaseNotes.txt"
   File "..\..\docs\ReleaseNotes.html"
   File "..\..\docs\ChangeLog.txt"
@@ -394,6 +401,11 @@ GreenInstall:
 SectionEnd
 
 ;--------------------------------
+Section /o "$(CLI_TOOL)" CliTool
+  SetOutPath "$INSTDIR"
+  File "${BIN_DIR}\pwsafe-cli.exe"
+SectionEnd
+
 ; Section per-supported language
 SectionGroup /e "$(LANGUAGE_SUPPORT)" LanguageSupport
 Section  "$(ENGLISH_SUPPORT)" EnglishSection
@@ -476,11 +488,16 @@ Section /o "$(HUNGARIAN_SUPPORT)" HungarianSection
   File /nonfatal "${LANG_DLL}\pwsafeHU.dll"
   File /nonfatal "..\..\help\pwsafeHU\pwsafeHU.chm"
 SectionEnd
+Section /o "$(SLOVENIAN_SUPPORT)" SlovenianSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL}\pwsafeSL.dll"
+  File /nonfatal "..\..\help\pwsafeSL\pwsafeSL.chm"
+SectionEnd
 SectionGroupEnd
-
 
 ;--------------------------------
 ; Start with Windows
+; May be deselected by .onInit
 Section "$(START_AUTO)" StartUp
   CreateShortCut "$SMSTARTUP\Password Safe.lnk" "$INSTDIR\pwsafe.exe" "-s"
 SectionEnd
@@ -495,8 +512,57 @@ Section "$(START_SHOW)" StartMenu
 
   ; Create shortcuts
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe.lnk" "$INSTDIR\pwsafe.exe"
-  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help.lnk" "$INSTDIR\pwsafe.chm"
-  
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(ENGLISH_SUPPORT)).lnk" "$INSTDIR\pwsafe.chm"
+
+  ; Shortcuts for help in other languages
+  SectionGetFlags ${GermanSection} $0
+  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(GERMAN_SUPPORT)).lnk" "$INSTDIR\pwsafeDE.chm"
+  SectionGetFlags ${ChineseSection} $0
+  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(CHINESE_CN_SUPPORT)).lnk" "$INSTDIR\pwsafeZH.chm"
+;  SectionGetFlags ${ChineseTWSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(CHINESE_TW_SUPPORT)).lnk" "$INSTDIR\pwsafeZH_TW.chm"
+  SectionGetFlags ${SpanishSection} $0
+  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(SPANISH_SUPPORT)).lnk" "$INSTDIR\pwsafeES.chm"
+;  SectionGetFlags ${SwedishSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(SWEDISH_SUPPORT)).lnk" "$INSTDIR\pwsafeSV.chm"
+;  SectionGetFlags ${DutchSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(DUTCH_SUPPORT)).lnk" "$INSTDIR\pwsafeNL.chm"
+  SectionGetFlags ${FrenchSection} $0
+  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(FRENCH_SUPPORT)).lnk" "$INSTDIR\pwsafeFR.chm"
+  SectionGetFlags ${RussianSection} $0
+  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(RUSSIAN_SUPPORT)).lnk" "$INSTDIR\pwsafeRU.chm"
+  SectionGetFlags ${PolishSection} $0
+  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(POLISH_SUPPORT)).lnk" "$INSTDIR\pwsafePL.chm"
+;  SectionGetFlags ${ItalianSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(ITALIAN_SUPPORT)).lnk" "$INSTDIR\pwsafeIT.chm"
+;  SectionGetFlags ${DanishSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(DANISH_SUPPORT)).lnk" "$INSTDIR\pwsafeDA.chm"
+;  SectionGetFlags ${KoreanSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(KOREAN_SUPPORT)).lnk" "$INSTDIR\pwsafeKO.chm"
+;  SectionGetFlags ${CzechSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(CZECH_SUPPORT)).lnk" "$INSTDIR\pwsafeCZ.chm"
+;  SectionGetFlags ${TurkishSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(TURKISH_SUPPORT)).lnk" "$INSTDIR\pwsafeTR.chm"
+;  SectionGetFlags ${HungarianSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(HUNGARIAN_SUPPORT)).lnk" "$INSTDIR\pwsafeHU.chm"
+;  SectionGetFlags ${SlovenianSection} $0
+;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(SLOVENIAN_SUPPORT)).lnk" "$INSTDIR\pwsafeSL.chm"
 SectionEnd
 
 ;--------------------------------
@@ -509,7 +575,7 @@ Section "$(UNINSTALL_SHORTCUT)" UninstallMenu
   CreateDirectory "$SMPROGRAMS\Password Safe"
 
   ; Create Uninstall icon
-  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Uninstall.lnk" "$INSTDIR\Uninstall.exe"
+  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Uninstall).lnk" "$INSTDIR\Uninstall.exe"
 
 SectionEnd
 
@@ -529,6 +595,7 @@ SectionEnd
   ; Assign language strings to sections
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
     !insertmacro MUI_DESCRIPTION_TEXT ${ProgramFiles} $(DESC_ProgramFiles)
+    !insertmacro MUI_DESCRIPTION_TEXT ${CliTool} $(DESC_CliTool)
     !insertmacro MUI_DESCRIPTION_TEXT ${StartUp} $(DESC_StartUp)
     !insertmacro MUI_DESCRIPTION_TEXT ${StartMenu} $(DESC_StartMenu)
     !insertmacro MUI_DESCRIPTION_TEXT ${UninstallMenu} $(DESC_UninstallMenu)
@@ -554,39 +621,62 @@ Section "Uninstall"
   Delete "$INSTDIR\pws_at.dll"
   Delete "$INSTDIR\pws_osk.dll"
   Delete "$INSTDIR\pwsafe.chm"
+  Delete "$INSTDIR\pwsafe.chw"
   Delete "$INSTDIR\pwsafe.xsd"
   Delete "$INSTDIR\pwsafe.xsl"
   Delete "$INSTDIR\pwsafe_filter.xsd"
   Delete "$INSTDIR\KPV1_to_PWS.xslt"
   Delete "$INSTDIR\KPV2_to_PWS.xslt"
   Delete "$INSTDIR\LICENSE"
-  Delete "$INSTDIR\README.TXT"
+  Delete "$INSTDIR\README.md"
   Delete "$INSTDIR\ReleaseNotes.txt"
   Delete "$INSTDIR\ReleaseNotes.html"
   Delete "$INSTDIR\ChangeLog.txt"
-  Delete "$INSTDIR\pwsafeDE.dll"
-  Delete "$INSTDIR\pwsafeDE.chm"
-  Delete "$INSTDIR\pwsafeZH.dll"
-  Delete "$INSTDIR\pwsafeZH.chm"
-  Delete "$INSTDIR\pwsafeES.dll"
-  Delete "$INSTDIR\pwsafeES.chm"
-  Delete "$INSTDIR\pwsafeSV.dll"
-  Delete "$INSTDIR\pwsafeSV.chm"
-  Delete "$INSTDIR\pwsafeNL.dll"
-  Delete "$INSTDIR\pwsafeNL.chm"
-  Delete "$INSTDIR\pwsafeFR.dll"
-  Delete "$INSTDIR\pwsafeFR.chm"
-  Delete "$INSTDIR\pwsafeRU.dll"
-  Delete "$INSTDIR\pwsafeRU.chm"
-  Delete "$INSTDIR\pwsafePL.dll"
-  Delete "$INSTDIR\pwsafePL.chm"
-  Delete "$INSTDIR\pwsafeIT.dll"
-  Delete "$INSTDIR\pwsafeIT.chm"
-  Delete "$INSTDIR\pwsafeDA.dll"
+  Delete "$INSTDIR\pwsafeCZ.chm"
+  Delete "$INSTDIR\pwsafeCZ.chw"
+  Delete "$INSTDIR\pwsafeCZ.dll"
   Delete "$INSTDIR\pwsafeDA.chm"
-  Delete "$INSTDIR\pwsafeKO.dll"
+  Delete "$INSTDIR\pwsafeDA.chw"
+  Delete "$INSTDIR\pwsafeDA.dll"
+  Delete "$INSTDIR\pwsafeDE.chm"
+  Delete "$INSTDIR\pwsafeDE.chw"
+  Delete "$INSTDIR\pwsafeDE.dll"
+  Delete "$INSTDIR\pwsafeES.chm"
+  Delete "$INSTDIR\pwsafeES.chw"
+  Delete "$INSTDIR\pwsafeES.dll"
+  Delete "$INSTDIR\pwsafeFR.chm"
+  Delete "$INSTDIR\pwsafeFR.chw"
+  Delete "$INSTDIR\pwsafeFR.dll"
+  Delete "$INSTDIR\pwsafeHU.chm"
+  Delete "$INSTDIR\pwsafeHU.chw"
+  Delete "$INSTDIR\pwsafeHU.dll"
+  Delete "$INSTDIR\pwsafeIT.chm"
+  Delete "$INSTDIR\pwsafeIT.chw"
+  Delete "$INSTDIR\pwsafeIT.dll"
   Delete "$INSTDIR\pwsafeKO.chm"
-
+  Delete "$INSTDIR\pwsafeKO.chw"
+  Delete "$INSTDIR\pwsafeKO.dll"
+  Delete "$INSTDIR\pwsafeNL.chm"
+  Delete "$INSTDIR\pwsafeNL.chw"
+  Delete "$INSTDIR\pwsafeNL.dll"
+  Delete "$INSTDIR\pwsafePL.chm"
+  Delete "$INSTDIR\pwsafePL.chw"
+  Delete "$INSTDIR\pwsafePL.dll"
+  Delete "$INSTDIR\pwsafeRU.chm"
+  Delete "$INSTDIR\pwsafeRU.chw"
+  Delete "$INSTDIR\pwsafeRU.dll"
+  Delete "$INSTDIR\pwsafeSL.chm"
+  Delete "$INSTDIR\pwsafeSL.chw"
+  Delete "$INSTDIR\pwsafeSL.dll"
+  Delete "$INSTDIR\pwsafeSV.chm"
+  Delete "$INSTDIR\pwsafeSV.chw"
+  Delete "$INSTDIR\pwsafeSV.dll"
+  Delete "$INSTDIR\pwsafeTR.chm"
+  Delete "$INSTDIR\pwsafeTR.chw"
+  Delete "$INSTDIR\pwsafeTR.dll"
+  Delete "$INSTDIR\pwsafeZH.chm"
+  Delete "$INSTDIR\pwsafeZH.chw"
+  Delete "$INSTDIR\pwsafeZH.dll"
 
   ; remove directory if it's empty
   RMDir  "$INSTDIR"
@@ -602,7 +692,7 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe"
   ; Delete shortcuts, if created
   Delete "$SMPROGRAMS\Password Safe\Password Safe.lnk"
-  Delete "$SMPROGRAMS\Password Safe\Password Safe Help.lnk"
+  Delete "$SMPROGRAMS\Password Safe\$(Icon_description_Help).lnk"
   RMDir /r "$SMPROGRAMS\Password Safe"
   Delete "$DESKTOP\Password Safe.lnk"
   Delete "$SMSTARTUP\Password Safe.lnk"
@@ -697,6 +787,8 @@ Function .onInit
   Push "Turkish"
   Push ${LANG_HUNGARIAN}
   Push "Magyar"
+  Push ${LANG_SLOVENIAN}
+  Push "Slovenian"
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
   LangDLL::LangDialog $(LANG_INSTALL) $(LANG_SELECT)
@@ -704,6 +796,48 @@ Function .onInit
   Pop $LANGUAGE
   StrCmp $LANGUAGE "cancel" 0 +2
   Abort
+  ; autoselect language for selected installer language
+  StrCmp $LANGUAGE  ${LANG_GERMAN} 0 +2
+  SectionSetFlags ${GermanSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_SIMPCHINESE} 0 +2
+  SectionSetFlags ${ChineseSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_TRADCHINESE} 0 +2
+  SectionSetFlags ${ChineseTWSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_SPANISH} 0 +2
+  SectionSetFlags ${SpanishSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_SWEDISH} 0 +2
+  SectionSetFlags ${SwedishSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_DUTCH} 0 +2
+  SectionSetFlags ${DutchSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_FRENCH} 0 +2
+  SectionSetFlags ${FrenchSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_RUSSIAN} 0 +2
+  SectionSetFlags ${RussianSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_POLISH} 0 +2
+  SectionSetFlags ${PolishSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_ITALIAN} 0 +2
+  SectionSetFlags ${ItalianSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_DANISH} 0 +2
+  SectionSetFlags ${DanishSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_KOREAN} 0 +2
+  SectionSetFlags ${KoreanSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_CZECH} 0 +2
+  SectionSetFlags ${CzechSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_TURKISH} 0 +2
+  SectionSetFlags ${TurkishSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_HUNGARIAN} 0 +2
+  SectionSetFlags ${HungarianSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_SLOVENIAN} 0 +2
+  SectionSetFlags ${SlovenianSection} ${SF_SELECTED}
+
+  ;
+  ; Check if this is an upgrade or not. If so, default "startup" to
+  ; disabled, so as not to create unwanted shortcut
+  IfFileExists "$INSTDIR\pwsafe.exe" 0 NewInstall
+    SectionSetFlags ${StartUp} 0
+NewInstall:
+
+  
 FunctionEnd
 
 Function GreenOrRegular

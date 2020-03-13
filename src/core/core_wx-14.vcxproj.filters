@@ -11,9 +11,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BlowFish.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CheckVersion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -71,19 +68,10 @@
     <ClCompile Include="Report.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sha1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sha256.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StringX.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SysInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TwoFish.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UnknownField.cpp">
@@ -140,19 +128,10 @@
     <ClCompile Include="pugixml\pugixml.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AES.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ItemAtt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyWrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pbkdf2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PWSfileV4.cpp">
@@ -167,11 +146,47 @@
     <ClCompile Include="RUEList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="crypto\AES.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\BlowFish.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\KeyWrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\pbkdf2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\sha1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\sha256.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\TwoFish.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\MSXML\MFilterXMLProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\MSXML\MFileXMLProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\MSXML\MFilterSAX2Handlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PolicyManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\MSXML\MFileSAX2Handlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\MSXML\MFileValidator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BlowFish.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CheckVersion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -185,12 +200,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Fish.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hmac.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ItemData.h">
@@ -247,12 +256,6 @@
     <ClInclude Include="Report.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sha1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sha256.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StringX.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -263,9 +266,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="trigram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TwoFish.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UIinterface.h">
@@ -331,19 +331,10 @@
     <ClInclude Include="pugixml\pugixml.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AES.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ItemAtt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyWrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pbkdf2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWSfileV4.h">
@@ -356,6 +347,51 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RUEList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\AES.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\BlowFish.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\Fish.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\hmac.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\KeyWrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\pbkdf2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\sha1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\sha256.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\TwoFish.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\MSXML\MFilterXMLProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\MSXML\MFileXMLProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\MSXML\MFilterSAX2Handlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PolicyManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\MSXML\MFileSAX2Handlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\MSXML\MFileValidator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

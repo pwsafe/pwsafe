@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -35,7 +35,8 @@ protected:
   CString m_DefUsername;
   CString m_OtherBrowserLocation;
   CString m_OtherEditorLocation;
-  CString m_BrowserCmdLineParms;
+  CString m_OtherBrowserCmdLineParms;
+  CString m_OtherEditorCmdLineParms;
   CString m_AutotypeText;
   unsigned m_AutotypeDelay;
 

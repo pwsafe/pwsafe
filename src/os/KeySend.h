@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,6 +13,9 @@
 // Windows implementation updated by dk
 // Linux implementation by sauravg
 //-----------------------------------------------------------------------------
+
+#ifndef _KEYSEND_H_
+#define _KEYSEND_H_
 
 #include "typedefs.h"
 #include "../core/StringX.h"
@@ -65,3 +68,5 @@ private:
   unsigned m_delayMS; //delay between keystrokes in milliseconds
   CKeySendImpl *m_impl;
 };
+
+#endif // _KEYSEND_H_

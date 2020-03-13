@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -16,6 +16,7 @@
 
 #include <ykcore.h>
 #include <ykpers.h>
+#include <ykpers-version.h>
 #include <string>
 #include <cstring>
 #include <sstream>
@@ -48,7 +49,7 @@ bool PWYubi::IsYubiInserted() const
   pthread_mutex_lock(&s_mutex);
   if (m_isInited) {
     YK_KEY *ykey = yk_open_first_key();
-    if (ykey != NULL) {
+    if (ykey != nullptr) {
       yk_close_key(ykey);
       retval = true;
     } else {
@@ -86,12 +87,12 @@ static bool check_firmware_version(YK_KEY *yk)
 bool PWYubi::GetSerial(unsigned int &serial) const
 {
   bool retval = false;
-  YK_KEY *ykey = NULL;
+  YK_KEY *ykey = nullptr;
   pthread_mutex_lock(&s_mutex);
   // if yk isn't init'ed, don't bother
   if (m_isInited) {
     ykey = yk_open_first_key();
-    if (ykey != NULL) {
+    if (ykey != nullptr) {
       if (!check_firmware_version(ykey)) {
         m_ykerrstr = _S("YubiKey firmware version unsupported");
         goto done;
@@ -101,12 +102,12 @@ bool PWYubi::GetSerial(unsigned int &serial) const
         goto done;
       }
       retval = true;
-    } else { // NULL ykey, perhaps removed?
+    } else { // nullptr ykey, perhaps removed?
       report_error();
     }
   }
   done:
-  if (ykey != NULL)
+  if (ykey != nullptr)
     yk_close_key(ykey);
   pthread_mutex_unlock(&s_mutex);
   return retval;
@@ -115,14 +116,14 @@ bool PWYubi::GetSerial(unsigned int &serial) const
 bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
 {
   bool retval = false;
-  YK_KEY *ykey = NULL;
+  YK_KEY *ykey = nullptr;
   YKP_CONFIG *cfg = ykp_alloc();
   YK_STATUS *st = ykds_alloc();
   pthread_mutex_lock(&s_mutex);
   // if yk isn't init'ed, don't bother
   if (m_isInited) {
     ykey = yk_open_first_key();
-    if (ykey == NULL)
+    if (ykey == nullptr)
       goto done;
     if (!yk_get_status(ykey, st) ||
         (ykp_configure_version(cfg, st), !ykp_set_tktflag_CHAL_RESP(cfg,true)) ||
@@ -139,7 +140,8 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
       goto done;
     }
     // ykp_HMAC_key_from_raw() was added in version 1.15.0 of ykpers
-#if ((YKPERS_VERSION_MAJOR >= 1) && (YKPERS_VERSION_MINOR >= 15))
+#if (YKPERS_VERSION_MAJOR > 1) || ((YKPERS_VERSION_MAJOR == 1) && (YKPERS_VERSION_MINOR >= 15))
+    UNREFERENCED_PARAMETER(sklen);
     if (ykp_HMAC_key_from_raw(cfg, reinterpret_cast<const char *>(yubi_sk_bin))) {
       m_ykerrstr = _S("Internal error: couldn't configure key");
       goto done;
@@ -156,14 +158,14 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
 
     if (!yk_write_command(ykey,
                           ykp_core_config(cfg), ykp_command(cfg),
-                          NULL)) {
+                          nullptr)) {
           m_ykerrstr = _S("Internal error: couldn't configure key");
           goto done;
     }
     retval = true;
   } // m_isInited
   done:
-  if (ykey != NULL)
+  if (ykey != nullptr)
     yk_close_key(ykey);
   pthread_mutex_unlock(&s_mutex);
   free(cfg);
@@ -175,12 +177,12 @@ bool PWYubi::RequestHMacSHA1(const unsigned char *challenge, unsigned int len)
 {
   bool retval = false;
   m_reqstat = ERROR;
-  YK_KEY *ykey = NULL;
+  YK_KEY *ykey = nullptr;
   pthread_mutex_lock(&s_mutex);
   // if yk isn't init'ed, don't bother
   if (m_isInited) {
     ykey = yk_open_first_key();
-    if (ykey == NULL)
+    if (ykey == nullptr)
       goto done;
   if (yk_write_to_key(ykey, SLOT_CHAL_HMAC2, challenge, len)) {
       m_reqstat = PENDING;
@@ -188,7 +190,7 @@ bool PWYubi::RequestHMacSHA1(const unsigned char *challenge, unsigned int len)
     }
   }
  done:
-  if (ykey != NULL)
+  if (ykey != nullptr)
     yk_close_key(ykey);
   pthread_mutex_unlock(&s_mutex);
   return retval;
@@ -196,12 +198,12 @@ bool PWYubi::RequestHMacSHA1(const unsigned char *challenge, unsigned int len)
 
 PWYubi::RequestStatus PWYubi::GetResponse(unsigned char resp[PWYubi::RESPLEN])
 {
- YK_KEY *ykey = NULL;
+ YK_KEY *ykey = nullptr;
   pthread_mutex_lock(&s_mutex);
   // if yk isn't init'ed, don't bother
   if (m_isInited && m_reqstat == PENDING) {
     ykey = yk_open_first_key();
-    if (ykey == NULL) {
+    if (ykey == nullptr) {
       m_reqstat = ERROR;
       goto done;
     }
@@ -222,7 +224,7 @@ PWYubi::RequestStatus PWYubi::GetResponse(unsigned char resp[PWYubi::RESPLEN])
     }
   }
  done:
-  if (ykey != NULL)
+  if (ykey != nullptr)
     yk_close_key(ykey);
   pthread_mutex_unlock(&s_mutex);
   return m_reqstat;

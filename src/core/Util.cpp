@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -8,19 +8,24 @@
 /// \file Util.cpp
 //-----------------------------------------------------------------------------
 
-#include "sha1.h"
-#include "BlowFish.h"
+#include "crypto/sha1.h"
+#include "crypto/BlowFish.h"
 #include "PWSrand.h"
 #include "PwsPlatform.h"
 #include "core.h"
 #include "StringXStream.h"
 #include "PWPolicy.h"
+#include "UTF8Conv.h"
+#include "SysInfo.h"
 
 #include "Util.h"
 
 #include "os/debug.h"
 #include "os/pws_tchar.h"
 #include "os/dir.h"
+#include "os/env.h"
+#include "os/file.h"
+#include "os/utf8conv.h"
 
 #include <stdio.h>
 #ifdef _WIN32
@@ -54,7 +59,7 @@ static void xormem(unsigned char *mem1, const unsigned char *mem2, int length)
 #endif
 void trashMemory(void *buffer, size_t length)
 {
-  ASSERT(buffer != NULL);
+  ASSERT(buffer != nullptr);
   // {kjp} no point in looping around doing nothing is there?
   if (length > 0) {
     std::memset(buffer, 0x55, length);
@@ -88,51 +93,49 @@ void burnStack(unsigned long len)
     burnStack(len - sizeof(buf));
 }
 
-void ConvertString(const StringX &text,
+void ConvertPasskey(const StringX &text,
                    unsigned char *&txt,
                    size_t &txtlen)
 {
+  bool isUTF8 = pws_os::getenv("PWS_PK_CP_ACP", false).empty();
   LPCTSTR txtstr = text.c_str();
   txtlen = text.length();
 
-#ifdef _WIN32
-  txt = new unsigned char[3 * txtlen]; // safe upper limit
-  int len = WideCharToMultiByte(CP_ACP, 0, txtstr, static_cast<int>(txtlen),
-                                LPSTR(txt), static_cast<int>(3 * txtlen), NULL, NULL);
-  ASSERT(len != 0);
-#else
-  mbstate_t mbs;
-  memset(&mbs, 0, sizeof(mbstate_t));
-  size_t len = wcsrtombs(NULL, &txtstr, 0, &mbs);
-  txt = new unsigned char[len + 1];
-  len = wcsrtombs(reinterpret_cast<char *>(txt), &txtstr, len, &mbs);
-  ASSERT(len != size_t(-1));
+  size_t dstlen = pws_os::wcstombs(nullptr, 0, txtstr, txtlen, isUTF8);
+#ifdef _MSC_VER
+  dstlen++; // ugly, but no easy way around this now
 #endif
-  txtlen = len;
-  txt[len] = '\0';
+  char *dst = new char[dstlen];
+
+  size_t res = pws_os::wcstombs(dst, dstlen, txtstr, txtlen, isUTF8);
+  ASSERT(res != 0); UNREFERENCED_PARAMETER(res);
+  txt = reinterpret_cast<unsigned char *>(dst);
+  txtlen = dstlen - 1;
+  txt[txtlen] = '\0'; // not strictly needed, since txtlen returned, but helps debug
 }
 
-//Generates a passkey-based hash from stuff - used to validate the passkey
+// Generates a passkey-based hash from stuff - used to validate the passkey
+// Used by file encryption/decryption and by V1V2 
 void GenRandhash(const StringX &a_passkey,
                  const unsigned char *a_randstuff,
                  unsigned char *a_randhash)
 {
   size_t pkeyLen = 0;
-  unsigned char *pstr = NULL;
+  unsigned char *pstr = nullptr;
 
-  ConvertString(a_passkey, pstr, pkeyLen);
+  ConvertPasskey(a_passkey, pstr, pkeyLen);
 
   /*
   tempSalt <- H(a_randstuff + a_passkey)
   */
   SHA1 keyHash;
   keyHash.Update(a_randstuff, StuffSize);
-  keyHash.Update(pstr, reinterpret_cast<int &>(pkeyLen));
+  keyHash.Update(pstr, static_cast<unsigned int>(pkeyLen));
 
   trashMemory(pstr, pkeyLen);
   delete[] pstr;
 
-  unsigned char tempSalt[20]; // HashSize
+  unsigned char tempSalt[SHA1::HASHLEN];
   keyHash.Final(tempSalt);
 
   /*
@@ -164,7 +167,7 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length, unsigned 
   // some trickery to avoid new/delete
   unsigned char block1[16];
 
-  unsigned char *curblock = NULL;
+  unsigned char *curblock = nullptr;
   ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
 
   // First encrypt and write the length of the buffer
@@ -173,7 +176,7 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length, unsigned 
   // a dictionary attack harder
   PWSrand::GetInstance()->GetRandomData(curblock, BS);
   // block length overwrites 4 bytes of the above randomness.
-  putInt32(curblock, reinterpret_cast<int32 &>(length));
+  putInt32(curblock, static_cast<int32>(length));
 
   // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
   curblock[sizeof(int32)] = type;
@@ -216,7 +219,7 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
   // some trickery to avoid new/delete
   unsigned char block1[16];
 
-  unsigned char *curblock = NULL;
+  unsigned char *curblock = nullptr;
   ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
 
   // First encrypt and write the length of the buffer
@@ -267,7 +270,7 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
 * bytes. This means that any data can be passed, and we don't
 * care at this level if strings are char or wchar_t.
 *
-* If TERMINAL_BLOCK is non-NULL, the first block read is tested against it,
+* If TERMINAL_BLOCK is non-nullptr, the first block read is tested against it,
 * and -1 is returned if it matches. (used in V3)
 */
 size_t _readcbc(FILE *fp,
@@ -283,7 +286,7 @@ size_t _readcbc(FILE *fp,
   unsigned char block1[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   unsigned char block2[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   unsigned char block3[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  unsigned char *lengthblock = NULL;
+  unsigned char *lengthblock = nullptr;
 
   ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
 
@@ -299,7 +302,7 @@ size_t _readcbc(FILE *fp,
     return 0;
   }
 
-  if (TERMINAL_BLOCK != NULL &&
+  if (TERMINAL_BLOCK != nullptr &&
     memcmp(lengthblock, TERMINAL_BLOCK, BS) == 0)
     return static_cast<size_t>(-1);
 
@@ -317,7 +320,7 @@ size_t _readcbc(FILE *fp,
 
   if ((file_len != 0 && length >= file_len)) {
     pws_os::Trace0(_T("_readcbc: Read size larger than file length - aborting\n"));
-    buffer = NULL;
+    buffer = nullptr;
     buffer_len = 0;
     trashMemory(lengthblock, BS);
     return 0;
@@ -377,7 +380,7 @@ size_t _readcbc(FILE *fp, unsigned char *buffer,
   ASSERT((buffer_len % BS) == 0);
   size_t nread = 0;
   unsigned char *p = buffer;
-  unsigned char *tmpcbc = new unsigned char[BS];
+  auto *tmpcbc = new unsigned char[BS];
 
   do {
     size_t nr = fread(p, 1, BS, fp);
@@ -410,7 +413,7 @@ size_t PWSUtil::strLength(const LPCTSTR str)
   return _tcslen(str);
 }
 
-const TCHAR *PWSUtil::UNKNOWN_XML_TIME_STR = _T("1970-01-01 00:00:00");
+const TCHAR *PWSUtil::UNKNOWN_XML_TIME_STR = _T("1970-01-01T00:00:00");
 const TCHAR *PWSUtil::UNKNOWN_ASC_TIME_STR = _T("Unknown");
 
 StringX PWSUtil::ConvertToDateTimeString(const time_t &t, TMC result_format)
@@ -501,7 +504,7 @@ void PWSUtil::GetTimeStamp(stringT &sTimeStamp, const bool bShort)
 #else
   struct timeval *ptimebuffer;
   ptimebuffer = new timeval;
-  gettimeofday(ptimebuffer, NULL);
+  gettimeofday(ptimebuffer, nullptr);
   time_t the_time = ptimebuffer->tv_sec;
 #endif
   StringX cmys_now = ConvertToDateTimeString(the_time, TMC_EXPORT_IMPORT);
@@ -540,8 +543,10 @@ stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
   switch (len % 3) {
     case 1:
       cs_Out += TCHAR('=');
+      //[[fallthrough]];
     case 2:
       cs_Out += TCHAR('=');
+      //[[fallthrough]];
     default:
       break;
   }
@@ -565,7 +570,7 @@ void PWSUtil::Base64Decode(const StringX &inString, BYTE * &outData, size_t &out
     for (i1 = 0; i1 < sizeof(szCS) - 1; i1++) {
       for (i3 = i2; i3 < i2 + 4; i3++) {
         if (i3 < in_length &&  inString[i3] == szCS[i1])
-          iDigits[i3 - i2] = reinterpret_cast<int &>(i1) - 1;
+          iDigits[i3 - i2] = static_cast<int>(i1) - 1;
       }
     }
 
@@ -646,7 +651,7 @@ bool PWSUtil::WriteXMLField(ostream &os, const char *fname,
                             const StringX &value, CUTF8Conv &utf8conv,
                             const char *tabs)
 {
-  const unsigned char *utf8 = NULL;
+  const unsigned char *utf8 = nullptr;
   size_t utf8Len = 0;
   ostringstream ostInvalidPositions;
   if (!ValidateXMLCharacters(value, ostInvalidPositions)) {
@@ -707,7 +712,7 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
   int i;
   const StringX tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
   ostringstream oss;
-  const unsigned char *utf8 = NULL;
+  const unsigned char *utf8 = nullptr;
   size_t utf8Len = 0;
 
   for (i = 0; i < indent; i++) oss << "\t";
@@ -725,11 +730,11 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
  * Get TCHAR buffer size by format string with parameters
  * @param[in] fmt - format string
  * @param[in] args - arguments for format string
- * @return buffer size including NULL-terminating character
+ * @return buffer size including nullptr-terminating character
 */
 unsigned int GetStringBufSize(const TCHAR *fmt, va_list args)
 {
-  TCHAR *buffer=NULL;
+  TCHAR *buffer=nullptr;
 
   unsigned int len = 0;
 
@@ -741,7 +746,7 @@ unsigned int GetStringBufSize(const TCHAR *fmt, va_list args)
   // Linux doesn't do this correctly :-(
   unsigned int guess = 16;
   int nBytes = -1;
-  while (1) {
+  while (true) {
     len = guess;
     buffer = new TCHAR[len];
     nBytes = _vstprintf_s(buffer, len, fmt, ar);
@@ -752,7 +757,7 @@ unsigned int GetStringBufSize(const TCHAR *fmt, va_list args)
       break;
     } else { // too small, resize & try again
       delete[] buffer;
-      buffer = NULL;
+      buffer = nullptr;
       guess *= 2;
     }
   }
@@ -848,7 +853,7 @@ bool PWSUtil::pull_time(time_t &t, const unsigned char *data, size_t len)
     unsigned char buf[sizeof(__time64_t)] = {0};
     memcpy(buf, data, len); // not needed if len == 8, but no harm
     struct tm ts;
-    const __time64_t t64 = getInt<__time64_t>(buf);
+    const auto t64 = getInt<__time64_t>(buf);
     if (_localtime64_s(&ts, &t64) != 0) {
       ASSERT(0); return false;
     }
@@ -858,4 +863,53 @@ bool PWSUtil::pull_time(time_t &t, const unsigned char *data, size_t len)
     }
   }
   return true;
+}
+
+bool FindNoCase( const StringX& src, const StringX& dest)
+{
+    StringX srcLower = src;
+    ToLower(srcLower);
+
+    StringX destLower = dest;
+    ToLower(destLower);
+
+    return destLower.find(srcLower) != StringX::npos;
+}
+
+std::string toutf8(const std::wstring &w)
+{
+  CUTF8Conv conv;
+  const unsigned char *utf8str = nullptr;
+  size_t length = 0;
+  if (conv.ToUTF8(std2stringx(w), utf8str, length))
+    return string{ reinterpret_cast<const char *>(utf8str), length};
+  return string{};
+}
+
+bool PWSUtil::loadFile(const StringX &filename, StringXStream &stream) {
+  // We need to use FOpen as the file name/file path may contain non-Latin
+  // characters
+  FILE *fs = pws_os::FOpen(filename.c_str(), _T("rb"));
+  if (fs == nullptr)
+    return false;
+
+  // when using wifstream, each byte will be converted to wchar_t, but we need to load
+  // each n-bytes as one wchar, so read in whole file and put it in a StringXStream
+  const size_t BUFFER_SIZE = 1024;
+
+  wchar_t buffer[BUFFER_SIZE];
+  bool bError(false);
+  while(!feof(fs)) {
+    auto count = fread(buffer, sizeof(wchar_t), BUFFER_SIZE, fs);
+    if (ferror(fs)) {
+      bError = true;
+      break;
+    }
+    stream.write(buffer, count);
+  }
+
+  // Close the file
+  fclose(fs);
+
+  return !bError;
 }

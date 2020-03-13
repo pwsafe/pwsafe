@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -67,7 +67,6 @@ protected:
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM lParam);
   afx_msg void OnHelp();
   afx_msg void OnLockOnIdleTimeout();
-  afx_msg void OnLockOnMinimize();
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   //}}AFX_MSG
 

@@ -71,6 +71,7 @@
 #define IDSC_FLDNMSHIFTDCA              3071
 #define IDSC_FLDNMPWPOLICYNAME          3072
 #define IDSC_FLDNMKBSHORTCUT            3073
+#define IDSC_FLDNMATTREF                3074
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231
@@ -286,6 +287,7 @@
 #define IDSC_IMPORTEDEMPTYGROUPS        3459
 #define IDSC_FILTERSEXPORTEDTODB        3460
 #define IDSC_FOUNDENTRIESFILTER         3461
+#define IDSC_IMPORTINVALIDDELIMITER     3462
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000
@@ -329,3 +331,4 @@
 #define IDSC_PPRONOUNCEABLE             4112
 #define IDSC_PHEXADECIMAL               4113
 #define IDSC_DEFAULT_POLICY             4114
+#define IDSC_ATLEASTIGNORED             4115

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -38,11 +38,12 @@ IMPLEMENT_DYNAMIC(COptionsPasswordHistory, COptions_PropertyPage)
 
 COptionsPasswordHistory::COptionsPasswordHistory(CWnd *pParent, st_Opt_master_data *pOPTMD)
   : COptions_PropertyPage(pParent, COptionsPasswordHistory::IDD, pOPTMD),
-  m_PWHAction(0), mApplyToProtected(BST_UNCHECKED)
+  mApplyToProtected(BST_UNCHECKED), m_PWHAction(0)
 {
   m_SavePWHistory = M_SavePWHistory();
   m_PWHistoryNumDefault = M_PWHistoryNumDefault();
   m_PWHAction = M_PWHAction();
+  m_PWHDefExpDays = M_PWHDefExpDays();
 }
 
 void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
@@ -53,6 +54,7 @@ void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_SAVEPWHISTORY, m_SavePWHistory);
   DDX_Check(pDX, IDC_UPDATEPROTECTEDPWH, mApplyToProtected);
   DDX_Text(pDX, IDC_DEFPWHNUM, m_PWHistoryNumDefault);
+  DDX_Text(pDX, IDC_DEFEXPIRYDAYS, m_PWHDefExpDays);
   DDX_Radio(pDX, IDC_PWHISTORYNOACTION, m_PWHAction);
 
   DDX_Control(pDX, IDC_SAVEPWHISTORY, m_chkbox);
@@ -111,11 +113,17 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   }
 
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
-
   pspin->SetBuddy(GetDlgItem(IDC_DEFPWHNUM));
-  pspin->SetRange(1, 255);
+  pspin->SetRange(M_prefminPWHNumber(), M_prefmaxPWHNumber());
   pspin->SetBase(10);
   pspin->SetPos(m_PWHistoryNumDefault);
+
+  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_DEDSPIN);
+  pspin->SetBuddy(GetDlgItem(IDC_DEFEXPIRYDAYS));
+  pspin->SetRange(static_cast<short>(PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::DefaultExpiryDays)),
+                  static_cast<short>(PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays)));
+  pspin->SetBase(10);
+  pspin->SetPos(m_PWHDefExpDays);
 
   // Disable text re: PWHistory changes on existing entries to start
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
@@ -159,7 +167,8 @@ LRESULT COptionsPasswordHistory::OnQuerySiblings(WPARAM wParam, LPARAM )
     case PP_DATA_CHANGED:
       if (M_SavePWHistory()        != m_SavePWHistory        ||
           (m_SavePWHistory         == TRUE &&
-           M_PWHistoryNumDefault() != m_PWHistoryNumDefault))
+           M_PWHistoryNumDefault() != m_PWHistoryNumDefault) ||
+          M_PWHDefExpDays()        != m_PWHDefExpDays)
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:
@@ -178,6 +187,7 @@ BOOL COptionsPasswordHistory::OnApply()
   M_SavePWHistory() = m_SavePWHistory;
   M_PWHistoryNumDefault() = m_PWHistoryNumDefault;
   M_PWHAction() = m_PWHAction * (mApplyToProtected == 0 ? 1 : -1);
+  M_PWHDefExpDays() = m_PWHDefExpDays;
 
   return COptions_PropertyPage::OnApply();
 }
@@ -196,11 +206,22 @@ BOOL COptionsPasswordHistory::PreTranslateMessage(MSG *pMsg)
 
 BOOL COptionsPasswordHistory::OnKillActive()
 {
-  CGeneralMsgBox gmb;
+  if (UpdateData(TRUE) == FALSE)
+    return FALSE;
+
+  // Update variable from text box
+  CString csText;
+  ((CEdit *)GetDlgItem(IDC_DEFPWHNUM))->GetWindowText(csText);
+  m_PWHistoryNumDefault = _wtoi(csText);
+
   // Check that options, as set, are valid.
-  if (m_SavePWHistory && ((m_PWHistoryNumDefault < 1) || (m_PWHistoryNumDefault > 255))) {
-    gmb.AfxMessageBox(IDS_DEFAULTNUMPWH);
-    ((CEdit*)GetDlgItem(IDC_DEFPWHNUM))->SetFocus();
+  if (m_SavePWHistory &&
+      ((m_PWHistoryNumDefault < M_prefminPWHNumber()) ||
+       (m_PWHistoryNumDefault > M_prefmaxPWHNumber()))) {
+    CGeneralMsgBox gmb;
+    csText.Format(IDS_DEFAULTNUMPWH, M_prefminPWHNumber(), M_prefmaxPWHNumber());
+    gmb.AfxMessageBox(csText);
+    ((CEdit *)GetDlgItem(IDC_DEFPWHNUM))->SetFocus();
     return FALSE;
   }
   //End check

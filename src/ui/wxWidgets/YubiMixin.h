@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -22,11 +22,12 @@
 class wxTimer;
 class wxWindow;
 
-class CYubiMixin {
+class YubiMixin
+{
  public:
   enum {POLLING_INTERVAL = 500}; // mSec
- CYubiMixin() : m_present(false), m_btn(NULL), m_status(NULL) {}
-  ~CYubiMixin() {}
+  YubiMixin() : m_present(false), m_btn(nullptr), m_status(nullptr) {}
+  ~YubiMixin() {}
 
   void SetupMixin(wxWindow *btn, wxWindow *status);
   bool yubiExists() const;

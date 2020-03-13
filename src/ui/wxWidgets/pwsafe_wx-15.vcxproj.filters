@@ -15,25 +15,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="about.h">
+    <ClInclude Include="AboutDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="addeditpropsheet.h">
+    <ClInclude Include="AddEditPropSheetDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="createshortcutdlg.h">
+    <ClInclude Include="CreateShortcutDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="deleteconfirmation.h">
+    <ClInclude Include="DeleteConfirmationDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="editshortcut.h">
+    <ClInclude Include="EditShortcutDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExportTextWarningDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="guiinfo.h">
+    <ClInclude Include="GuiInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImportTextDlg.h">
@@ -45,49 +45,49 @@
     <ClInclude Include="OpenFilePickerValidator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="optionspropsheet.h">
+    <ClInclude Include="OptionsPropertySheetDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="passwordsafeframe.h">
+    <ClInclude Include="PasswordSafeFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PasswordSafeSearch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="properties.h">
+    <ClInclude Include="PropertiesDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pwsafeapp.h">
+    <ClInclude Include="PWSafeApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pwsclip.h">
+    <ClInclude Include="Clipboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PWSgrid.h">
+    <ClInclude Include="GridCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PWSgridtable.h">
+    <ClInclude Include="GridTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PWStree.h">
+    <ClInclude Include="TreeCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RecentDBList.h">
+    <ClInclude Include="RecentDbList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="safecombinationchange.h">
+    <ClInclude Include="SafeCombinationChangeDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SafeCombinationCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="safecombinationentry.h">
+    <ClInclude Include="SafeCombinationEntryDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="safecombinationprompt.h">
+    <ClInclude Include="SafeCombinationPromptDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="safecombinationsetup.h">
+    <ClInclude Include="SafeCombinationSetupDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SystemTray.h">
@@ -102,16 +102,16 @@
     <ClInclude Include="wxMessages.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wxutils.h">
+    <ClInclude Include="wxUtilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ViewReport.h">
+    <ClInclude Include="ViewReportDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dragbar.h">
+    <ClInclude Include="DragBarGenericCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PWSDragBar.h">
+    <ClInclude Include="DragBarCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MergeDlg.h">
@@ -120,7 +120,7 @@
     <ClInclude Include="ExternalKeyboardButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PwsSync.h">
+    <ClInclude Include="SyncWizard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DbSelectionPanel.h">
@@ -132,28 +132,28 @@
     <ClInclude Include="CompareDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="helpmap.h">
+    <ClInclude Include="HelpMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fieldselectiondlg.h">
+    <ClInclude Include="FieldSelectionDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pwsmenushortcuts.h">
+    <ClInclude Include="GridShortcutsValidator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fieldselectionpanel.h">
+    <ClInclude Include="FieldSelectionPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ComparisonGridTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ManagePwdPolicies.h">
+    <ClInclude Include="ManagePasswordPoliciesDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PasswordPolicy.h">
+    <ClInclude Include="PasswordPolicyDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PwsToolbarButtons.h">
+    <ClInclude Include="ToolbarButtons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SizeRestrictedPanel.h">
@@ -162,7 +162,7 @@
     <ClInclude Include="SelectionCriteria.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="yubicfg.h">
+    <ClInclude Include="YubiCfgDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="YubiMixin.h">
@@ -171,7 +171,7 @@
     <ClInclude Include="TimedTaskChain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="passwordsubset.h">
+    <ClInclude Include="PasswordSubsetDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -181,28 +181,28 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="about.cpp">
+    <ClCompile Include="AboutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="addeditpropsheet.cpp">
+    <ClCompile Include="AddEditPropSheetDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AdvancedSelectionDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="createshortcutdlg.cpp">
+    <ClCompile Include="CreateShortcutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="deleteconfirmation.cpp">
+    <ClCompile Include="DeleteConfirmationDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="editshortcut.cpp">
+    <ClCompile Include="EditShortcutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ExportTextWarningDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="guiinfo.cpp">
+    <ClCompile Include="GuiInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImportTextDlg.cpp">
@@ -211,67 +211,67 @@
     <ClCompile Include="ImportXmlDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainEdit.cpp">
+    <ClCompile Include="MenuEditHandlers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OpenFilePickerValidator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="optionspropsheet.cpp">
+    <ClCompile Include="OptionsPropertySheetDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="passwordsafeframe.cpp">
+    <ClCompile Include="PasswordSafeFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PasswordSafeSearch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="properties.cpp">
+    <ClCompile Include="PropertiesDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pwsafeapp.cpp">
+    <ClCompile Include="PWSafeApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pwsclip.cpp">
+    <ClCompile Include="Clipboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PWSgrid.cpp">
+    <ClCompile Include="GridCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PWSgridtable.cpp">
+    <ClCompile Include="GridTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PWStree.cpp">
+    <ClCompile Include="TreeCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="safecombinationchange.cpp">
+    <ClCompile Include="SafeCombinationChangeDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SafeCombinationCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="safecombinationentry.cpp">
+    <ClCompile Include="SafeCombinationEntryDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="safecombinationprompt.cpp">
+    <ClCompile Include="SafeCombinationPromptDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="safecombinationsetup.cpp">
+    <ClCompile Include="SafeCombinationSetupDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SystemTray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="version.cpp">
+    <ClCompile Include="Version.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ViewReport.cpp">
+    <ClCompile Include="ViewReportDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dragbar.cpp">
+    <ClCompile Include="DragBarGenericCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PWSDragBar.cpp">
+    <ClCompile Include="DragBarCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MergeDlg.cpp">
@@ -280,7 +280,7 @@
     <ClCompile Include="ExternalKeyboardButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PwsSync.cpp">
+    <ClCompile Include="SyncWizard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DbSelectionPanel.cpp">
@@ -289,7 +289,7 @@
     <ClCompile Include="CompareDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="wxutils.cpp">
+    <ClCompile Include="wxUtilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ComparisonGridTable.cpp">
@@ -298,28 +298,28 @@
     <ClCompile Include="SizeRestrictedPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fieldselectiondlg.cpp">
+    <ClCompile Include="FieldSelectionDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pwsmenushortcuts.cpp">
+    <ClCompile Include="GridShortcutsValidator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fieldselectionpanel.cpp">
+    <ClCompile Include="FieldSelectionPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainManage.cpp">
+    <ClCompile Include="MenuManageHandlers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ManagePwdPolicies.cpp">
+    <ClCompile Include="ManagePasswordPoliciesDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PasswordPolicy.cpp">
+    <ClCompile Include="PasswordPolicyDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SelectionCriteria.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="yubicfg.cpp">
+    <ClCompile Include="YubiCfgDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="YubiMixin.cpp">
@@ -328,10 +328,10 @@
     <ClCompile Include="TimedTaskChain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainView.cpp">
+    <ClCompile Include="MenuViewHandlers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="passwordsubset.cpp">
+    <ClCompile Include="PasswordSubsetDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

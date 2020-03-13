@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2009 David Kelvin <c-273@users.sourceforge.net>.
+* Copyright (c) 2009-2017 David Kelvin <c-273@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -214,7 +214,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
 #else
   wchar_t *dll_name = L"pws_osk.dll";
 #endif
-  HINSTANCE OSK_module = HINSTANCE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
+  HINSTANCE OSK_module = HINSTANCE(pws_os::LoadLibrary(dll_name, pws_os::loadLibraryTypes::APP));
 
   if (OSK_module == NULL) {
     pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Unable to load OSK DLL. OSK not available.\n");
@@ -332,17 +332,19 @@ exit:
 
 //-----------------------------------------------------------------------------
 CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
-  : CPWDialog(CVKeyBoardDlg::IDD, pParent), m_pParent(pParent),
-    m_pToolTipCtrl(NULL), m_pPassphraseFont(NULL),
-    m_phrase(L""), m_phrasecount(0), m_State(0), m_SaveState(0),
+  : CPWDialog(CVKeyBoardDlg::IDD, pParent), 
+    m_phrasecount(0), m_iKeyboard(0),
+    m_pToolTipCtrl(nullptr), m_pPassphraseFont(nullptr),
+    m_phrase(L""),
+    m_Size(0), m_Hiragana(0), m_Kana(0),
+    m_bAltNum(false), m_bAltGr(false), m_bCapsLock(false), m_bRandom(false),
     m_bShift(false), m_bLCtrl(false), m_bRCtrl(false),
-    m_bAltGr(false), m_bAltNum(false),
-    m_bCapsLock(false), m_bRandom(false),
     m_bLCtrlChars(false), m_bAltGrChars(false), m_bRCtrlChars(false),
     m_bDeadKeyActive(false), m_bDeadKeySaved(false),
-    m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0),
-    m_uiMouseDblClkTime(0), m_bSaveKLID(BST_CHECKED), m_bPlaySound(BST_UNCHECKED),
-    m_bShowPassphrase(BST_UNCHECKED)
+    m_bSaveKLID(BST_CHECKED), m_bPlaySound(BST_UNCHECKED),
+    m_bShowPassphrase(BST_UNCHECKED),
+    m_State(0), m_SaveState(0),
+    m_pParent(pParent), m_uiMouseDblClkTime(0)
 {
   // Verify all is OK
   ASSERT(_countof(defscancodes101) == NUM_KEYS);
@@ -364,7 +366,7 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
 #else
   wchar_t *dll_name = L"pws_osk.dll";
 #endif
-  m_OSK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
+  m_OSK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::loadLibraryTypes::APP));
 
   ASSERT(m_OSK_module != NULL);
   m_pGetKBData = LP_OSK_GetKeyboardData(pws_os::GetFunction(m_OSK_module,
@@ -2111,9 +2113,21 @@ void CVKeyBoardDlg::ApplyUnicodeFont(CWnd* pDlgItem)
 
     // Initialize a CFont object with the characteristics given
     // in a LOGFONT structure.
+    // Get resolution
+    HDC hDC = ::GetWindowDC(GetSafeHwnd());
+    const int Ypixels = GetDeviceCaps(hDC, LOGPIXELSY);
+    ::ReleaseDC(GetSafeHwnd(), hDC);
+
+    int iFontSize = PWSprefs::GetInstance()->GetPref(PWSprefs::VKFontPtSz);
+    if (iFontSize == 0) {
+      // Use default
+      iFontSize = MulDiv(16, 72, Ypixels) * 10;
+      PWSprefs::GetInstance()->SetPref(PWSprefs::VKFontPtSz, iFontSize);
+    }
+
     LOGFONT lf;
     SecureZeroMemory(&lf, sizeof(lf));
-    lf.lfHeight = -16;
+    lf.lfHeight = -MulDiv(iFontSize / 10, Ypixels, 72);
     lf.lfWeight = FW_NORMAL;
     lf.lfCharSet = DEFAULT_CHARSET;
     wcsncpy_s(lf.lfFaceName, LF_FACESIZE, pszFont, wcslen(pszFont));

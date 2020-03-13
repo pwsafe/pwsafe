@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -154,17 +154,17 @@ void CAboutDlg::CheckNewVer()
   m_newVerStatus.LoadString(IDS_TRYING2CONTACT_SERVER);
   UpdateData(FALSE);
   std::wstring latest;
-  wchar_t *html_redfont = L"<b><font color=\"red\">";
-  wchar_t *html_greenfont = L"<b><font color=\"green\">";
-  wchar_t *html_endfont = L"</font></b>";
+  const wchar_t *html_redfont = L"<b><font color=\"red\">";
+  const wchar_t *html_greenfont = L"<b><font color=\"green\">";
+  const wchar_t *html_endfont = L"</font></b>";
   switch (CheckLatestVersion(latest)) {
-    case CheckVersion::CANT_CONNECT:
+    case CheckVersion::CheckStatus::CANT_CONNECT:
       m_newVerStatus.Format(IDS_CANT_CONTACT_SERVER, html_redfont, html_endfont);
       break;
-    case CheckVersion::UP2DATE:
+    case CheckVersion::CheckStatus::UP2DATE:
       m_newVerStatus.Format(IDS_UP2DATE, html_greenfont, html_endfont);
       break;
-    case CheckVersion::NEWER_AVAILABLE:
+    case CheckVersion::CheckStatus::NEWER_AVAILABLE:
       {
       CGeneralMsgBox gmb;
       CString newer;
@@ -175,7 +175,7 @@ void CAboutDlg::CheckNewVer()
       gmb.MessageBox(newer, CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)), MB_ICONEXCLAMATION);
       break;
       }
-    case CheckVersion::CANT_READ:
+    case CheckVersion::CheckStatus::CANT_READ:
       m_newVerStatus.Format(IDS_CANT_READ_VERINFO, html_redfont, html_endfont);
       break;
     default:
@@ -204,7 +204,7 @@ CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(std::wstring &latest)
                          1, (INTERNET_FLAG_TRANSFER_BINARY | INTERNET_FLAG_RELOAD));
   } catch (CInternetException *) {
     // throw;
-    return CheckVersion::CANT_CONNECT;
+    return CheckVersion::CheckStatus::CANT_CONNECT;
   }
 
   ASSERT(fh != NULL);
@@ -221,7 +221,7 @@ CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(std::wstring &latest)
       fh->Close();
       delete fh;
       session.Close();
-      return CheckVersion::CANT_READ;
+      return CheckVersion::CheckStatus::CANT_READ;
     } else
       latest_xml += chunk.c_str();
   }

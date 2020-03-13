@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,10 +28,11 @@ static char THIS_FILE[] = __FILE__;
 CShowCompareDlg::CShowCompareDlg(CItemData *pci, CItemData *pci_other, CWnd *pParent,
                                  const bool bDifferentDB)
   : CPWDialog(CShowCompareDlg::IDD, pParent),
-  m_pci(pci), m_pci_other(pci_other), m_ShowIdenticalFields(BST_UNCHECKED),
-  m_pNotesDisplay(NULL), m_bDifferentDB(bDifferentDB)
+  m_ShowIdenticalFields(BST_UNCHECKED),
+  m_pci(pci), m_pci_other(pci_other), 
+  m_pNotesDisplay(nullptr), m_bDifferentDB(bDifferentDB)
 {
-  ASSERT(m_pci != NULL && m_pci_other != NULL && pParent != NULL);
+  ASSERT(m_pci != nullptr && m_pci_other != nullptr && pParent != nullptr);
 
   // Set up DCA to string values
   m_DCA.resize(PWSprefs::maxDCA + 1);
@@ -146,9 +147,12 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
   // Too convoluted to change this process to a switch statement where the compiler can
   // produce an error if any of the CItemData::FieldType enum values is missing!
 
-  // Exclude 5: UUID/GROUP/TITLE/USERNAME & RESERVED (01,02,03,04,0B) but include 1: ENTRYTYPE
+  // Exclude 5: UUID/GROUP/TITLE/USERNAME & RESERVED (01,02,03,04,0B) but
+  // Include 1: ENTRYTYPE
   // The developer will still need to ensure new fields are processed below
-  ASSERT(sizeof(iFields)/sizeof(iFields[0]) == (CItem::LAST_DATA - 5 + 1));
+  // Put in compilation check as this may not be regression tested every time
+  static_assert((sizeof(iFields) / sizeof(iFields[0]) == (CItem::LAST_USER_FIELD - 5 + 1)),
+    "Check user comparison items - there are some missing! They must be before LAST_USER_FIELD");
 
   StringX sxDefPolicyStr;
   LoadAString(sxDefPolicyStr, IDSC_DEFAULT_POLICY);

@@ -24,6 +24,8 @@ DEPDIR= ./deps
 
 NAME=os
 
+PKG_CONFIG ?= pkg-config
+
 ifndef NO_YUBI
 YUBI_SRC=PWYubi.cpp
 # Use the following if you've installed ykpers-1 manually
@@ -32,15 +34,15 @@ YUBI_SRC=PWYubi.cpp
 
 # If you've installed it from your distro's package repo, you
 # should use this instead:
-YBPERSFLAGS=$(shell pkg-config --cflags ykpers-1)
+YBPERSFLAGS=$(shell $(PKG_CONFIG) --cflags ykpers-1)
 endif
 
-LIBSRC          = debug.cpp dir.cpp env.cpp \
+LIBSRC          = cleanup.cpp debug.cpp dir.cpp env.cpp \
                   file.cpp logit.cpp media.cpp \
 									mem.cpp pws_str.cpp \
                   pws_time.cpp rand.cpp run.cpp\
                   utf8conv.cpp KeySend.cpp\
-                  sleep.cpp xsendstring.cpp\
+                  sleep.cpp xsendstring.cpp keyname.cpp \
                   registry.cpp UUID.cpp\
                   unicode2keysym.cpp $(YUBI_SRC)
 

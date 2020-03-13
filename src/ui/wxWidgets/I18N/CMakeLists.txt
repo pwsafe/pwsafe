@@ -28,6 +28,7 @@ file (GLOB I18N_SRCS
   "${SRC_BASE_DIR}/ui/wxWidgets/*.h"
   "${SRC_BASE_DIR}/core/*.cpp"
   "${SRC_BASE_DIR}/core/*.h"
+  "${CMAKE_BINARY_DIR}/src/core/core_st.*"
   "${SRC_BASE_DIR}/os/unix/*.cpp"
   "${SRC_BASE_DIR}/os/unix/*.h"
   )
@@ -38,7 +39,7 @@ add_custom_target("pot"
 add_custom_command(OUTPUT "pwsafe.pot"
   COMMAND "xgettext"
   ARGS "--default-domain=pwsafe" "--from-code=UTF-8"
-  "--language=C++" "--keyword=_" "--output=pwsafe.pot" ${I18N_SRCS}
+  "--language=C++" "--keyword=_" "--keyword=wxTRANSLATE" "--output=pwsafe.pot" ${I18N_SRCS}
   DEPENDS ${I18N_SRCS}
   COMMENT "Updating pwsafe.pot"
   )

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -14,11 +14,11 @@ using namespace std;
 
 #define NUM_LOG_ENTRIES 256
 
-PWSLog *PWSLog::self = NULL;
+PWSLog *PWSLog::self = nullptr;
 
 PWSLog *PWSLog::GetLog()
 {
-  if (self == NULL) {
+  if (self == nullptr) {
     self = new PWSLog();
     // The following sets the queue size once, avoiding
     // memory management @ each call to Add(). (reference TBD)
@@ -30,7 +30,7 @@ PWSLog *PWSLog::GetLog()
 void PWSLog::DeleteLog()
 {
   delete self;
-  self = NULL;
+  self = nullptr;
 }
 
 void PWSLog::Add(const stringT &sLogRecord)
@@ -39,12 +39,12 @@ void PWSLog::Add(const stringT &sLogRecord)
   stringT sTimeStamp;
   PWSUtil::GetTimeStamp(sTimeStamp);
 
-  // m_log preloaded, so pop_fornt is always valid (see GetLog).
+  // m_log preloaded, so pop_front is always valid (see GetLog).
   m_log.pop_front();
   m_log.push_back(sTimeStamp + sb + sLogRecord);
 }
 
-stringT PWSLog::DumpLog()
+stringT PWSLog::DumpLog() const
 {
   const TCHAR *sHeader = _T("US04 ");
   ostringstreamT stLog;

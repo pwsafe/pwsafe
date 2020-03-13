@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -17,7 +17,7 @@
 using namespace std;
 
 CEBListCtrl::CEBListCtrl()
-: m_pToolTipCtrl(NULL), m_LastToolTipRow(-1), m_pwchTip(NULL)
+: m_pwchTip(nullptr), m_pToolTipCtrl(nullptr), m_LastToolTipRow(-1)
 {
 }
 

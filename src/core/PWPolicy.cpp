@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -14,10 +14,11 @@
 #include "core.h"
 #include "StringXStream.h"
 
-#include "../os/typedefs.h"
-#include "../os/debug.h"
+#include "os/typedefs.h"
+#include "os/debug.h"
 
 #include <iomanip>
+
 /**
  * A policy is encoded as string (for persistence) as follows:
  * We need flags(4), length(3), lower_len(3), upper_len(3)
@@ -32,6 +33,12 @@
 
 PWPolicy::PWPolicy(const StringX &str) : usecount(0)
 {
+  const int maxPWLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDefaultLength);
+  const int maxPWDigitLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDigitMinLength);
+  const int maxPWLowercaseLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWLowercaseMinLength);
+  const int maxPWUppercaseLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWUppercaseMinLength);
+  const int maxPWSymbolLength = PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWSymbolMinLength);
+
   if (str.empty() || str.length() != POL_STR_ENC_LEN) {
     if (!str.empty()) {
       ASSERT(str.length() == POL_STR_ENC_LEN);
@@ -54,8 +61,9 @@ PWPolicy::PWPolicy(const StringX &str) : usecount(0)
   // Put them into PWPolicy structure
   bool bhex_flag;
   bool bother_flags;
-  int total_sublength;
   unsigned int f; // dain bramaged istringstream requires this runaround
+  int total_sublength; // define before any goto to keep pickey compilers happy
+
   if (!(is_flags >> std::hex >> f)) goto fail;
   flags = static_cast<unsigned short>(f);
   if (!(is_length >> std::hex >> length)) goto fail;
@@ -65,16 +73,21 @@ PWPolicy::PWPolicy(const StringX &str) : usecount(0)
   if (!(is_upperminlength >> std::hex >> upperminlength)) goto fail;
 
   // Sanity checks:
+  Validate();
   // Must be some flags; however hex incompatible with other flags
   // lengths also have restrictions.
   bhex_flag = (flags & PWPolicy::UseHexDigits) != 0;
   bother_flags = (flags & (~PWPolicy::UseHexDigits)) != 0;
-  total_sublength = digitminlength + lowerminlength + symbolminlength + upperminlength;
+  total_sublength = (
+    ((flags & PWPolicy::UseLowercase) ? lowerminlength : 0) +
+    ((flags & PWPolicy::UseUppercase) ? upperminlength : 0) +
+    ((flags & PWPolicy::UseDigits) ? digitminlength : 0) +
+    ((flags & PWPolicy::UseSymbols) ? symbolminlength : 0));
 
   if (flags == 0 || (bhex_flag && bother_flags) ||
-      length > 1024 || total_sublength > length ||
-      digitminlength > 1024 || lowerminlength > 1024 ||
-      symbolminlength > 1024 || upperminlength > 1024) {
+      length > maxPWLength || total_sublength > length ||
+      digitminlength > maxPWDigitLength || lowerminlength > maxPWLowercaseLength ||
+      symbolminlength > maxPWSymbolLength || upperminlength > maxPWUppercaseLength) {
     goto fail;
   }
   return;
@@ -90,6 +103,7 @@ PWPolicy::operator StringX() const
   if (flags == 0) {
     return retval;
   }
+  Validate();
   ostringstreamT os;
   unsigned int f; // dain bramaged istringstream requires this runaround
   f = static_cast<unsigned int>(flags);
@@ -108,6 +122,8 @@ PWPolicy::operator StringX() const
 bool PWPolicy::operator==(const PWPolicy &that) const
 {
   if (this != &that) {
+	  Validate();
+	  that.Validate();
     if (flags != that.flags ||
         length != that.length ||
         ((flags & PWPolicy::UseDigits) == PWPolicy::UseDigits &&
@@ -137,7 +153,7 @@ StringX PWPolicy::MakeRandomPassword() const
   return pwchars.MakePassword();
 }
 
-static stringT PolValueString(int flag, bool override, int count)
+static stringT PolValueString(int flag, int count)
 {
   // helper function for Policy2Table
   stringT yes, no;
@@ -145,11 +161,10 @@ static stringT PolValueString(int flag, bool override, int count)
 
   stringT retval;
   if (flag != 0) {
-    if (override)
+    if (count == 0)
       retval = yes;
-    else {
+    else
       Format(retval, IDSC_YESNUMBER, count);
-    }
   } else {
     retval = no;
   }
@@ -158,6 +173,7 @@ static stringT PolValueString(int flag, bool override, int count)
 
 void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
 {
+  Validate();
   stringT yes, no;
   LoadAString(yes, IDSC_YES); LoadAString(no, IDSC_NO);
 
@@ -179,17 +195,17 @@ void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
   nPos++;
 
   LoadAString(col1, IDSC_PUSELOWER);
-  col2 = PolValueString((flags & PWPolicy::UseLowercase), bEV || bPR, lowerminlength);
+  col2 = PolValueString((flags & PWPolicy::UseLowercase), lowerminlength);
   rp(nPos, col1, col2, table);
   nPos++;
 
   LoadAString(col1, IDSC_PUSEUPPER);
-  col2 = PolValueString((flags & PWPolicy::UseUppercase), bEV || bPR, upperminlength);
+  col2 = PolValueString((flags & PWPolicy::UseUppercase), upperminlength);
   rp(nPos, col1, col2, table);
   nPos++;
 
   LoadAString(col1, IDSC_PUSEDIGITS);
-  col2 = PolValueString((flags & PWPolicy::UseDigits), bEV || bPR, digitminlength);
+  col2 = PolValueString((flags & PWPolicy::UseDigits), digitminlength);
   rp(nPos, col1, col2, table);
   nPos++;
 
@@ -197,16 +213,15 @@ void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
   if ((flags & PWPolicy::UseSymbols) != 0) {
     // Assume that when user selects either EasyVision or Pronounceable
     // Then default appropriate symbol set loaded for user to change
+    stringT sym, tmp, descr;
     if (bEV || bPR) {
-      stringT sym;
       sym = symbols.empty() ? (bEV ? easyvision_symbols.c_str() : pronounceable_symbols.c_str()) : symbols.c_str();
-      Format(col2, bEV ? IDSC_YESEASYVISON : IDSC_YESPRONOUNCEABLE, sym.c_str());
+      LoadAString(descr, bEV ? IDSC_YESEASYVISON : IDSC_YESPRONOUNCEABLE);
     } else {
-      stringT tmp, sym;
       LoadAString(tmp, symbols.empty() ? IDSC_DEFAULTSYMBOLS : IDSC_SPECFICSYMBOLS);
       sym = symbols.empty() ? std_symbols.c_str() : symbols.c_str();
-      Format(col2, IDSC_YESSYMBOLS, symbolminlength, tmp.c_str(), sym.c_str());
     }
+    Format(col2, IDSC_YESSYMBOLS, symbolminlength, tmp.c_str(), sym.c_str(), descr.c_str());
   } else {
     col2 = no;
   }
@@ -218,7 +233,13 @@ void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
   nPos++;
 
   LoadAString(col1, IDSC_PPRONOUNCEABLE);
-  rp(nPos, col1, bPR ? yes : no, table);
+  col2 = bPR ? yes : no;
+  if (bPR && ((lowerminlength > 0) || (upperminlength > 0) || (digitminlength > 0) || (symbolminlength > 0))) {
+    stringT note;
+    LoadAString(note, IDSC_ATLEASTIGNORED);
+    col2 += note;
+  }
+  rp(nPos, col1, col2, table);
   nPos++;
 
   LoadAString(col1, IDSC_PHEXADECIMAL);
@@ -230,6 +251,7 @@ StringX PWPolicy::GetDisplayString()
 {
   // Display string for policy in List View and Show entries' differences
   // when comparing entries in this or in different databases
+  Validate();
   if (flags != 0) {
     stringT st_pwp(_T("")), st_text;
     if (flags & PWPolicy::UseLowercase) {
@@ -271,4 +293,25 @@ StringX PWPolicy::GetDisplayString()
     return osx.str().c_str();
   }
   return _T("");
+}
+
+void PWPolicy::Validate() const
+{
+#ifdef DEBUG
+  int total_sublength = (
+    ((flags & PWPolicy::UseLowercase) ? lowerminlength : 0) +
+    ((flags & PWPolicy::UseUppercase) ? upperminlength : 0) +
+    ((flags & PWPolicy::UseDigits) ? digitminlength : 0) +
+    ((flags & PWPolicy::UseSymbols) ? symbolminlength : 0));
+
+	ASSERT(length >= total_sublength);
+#endif
+
+	if (length != 0) {// if length != 0 we assume the policy isn't empty, and so the following must hold:
+		// At least one set of characters is specified
+		ASSERT((flags & PWPolicy::UseLowercase) || (flags & PWPolicy::UseUppercase) || (flags & PWPolicy::UseDigits) || (flags & PWPolicy::UseSymbols) || (flags & PWPolicy::UseHexDigits));
+		// HexDigits imples no easyvision or pronounceable
+		if (flags & PWPolicy::UseHexDigits)
+			ASSERT((flags & (PWPolicy::UseEasyVision | PWPolicy::MakePronounceable)) == 0);
+	}
 }

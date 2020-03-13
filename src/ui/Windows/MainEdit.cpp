@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -41,8 +41,6 @@
 #include <time.h>
 #include <vector>
 #include <algorithm>
-
-extern const wchar_t *GROUP_SEP2;
 
 using pws_os::CUUID;
 
@@ -179,6 +177,11 @@ void DboxMain::OnAdd()
     ItemListIter iter = m_core.Find(newentry_uuid);
     UpdateToolBarForSelectedItem(&iter->second);
 
+    // Now select item
+    DisplayInfo *pdi = GetEntryGUIInfo(iter->second);
+    ASSERT(pdi->list_index != -1);
+    SelectEntry(pdi->list_index);
+
     m_RUEList.AddRUEntry(newentry_uuid);
 
     // May need to update menu/toolbar if database was previously empty
@@ -211,46 +214,18 @@ void DboxMain::OnCreateShortcut()
   CCreateShortcutDlg dlg_createshortcut(this, pci->GetGroup(),
     pci->GetTitle(), pci->GetUser());
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  if (prefs->GetPref(PWSprefs::UseDefaultUser)) {
-    dlg_createshortcut.m_username = prefs->GetPref(PWSprefs::DefaultUsername).c_str();
-  }
-
   INT_PTR rc = dlg_createshortcut.DoModal();
 
   if (rc == IDOK) {
-    //Check if they wish to set a default username
-    if (!prefs->GetPref(PWSprefs::UseDefaultUser) &&
-        (prefs->GetPref(PWSprefs::QuerySetDef)) &&
-        (!dlg_createshortcut.m_username.IsEmpty())) {
-      CQuerySetDef defDlg(this);
-      defDlg.m_defaultusername.Format(IDS_SETUSERNAME,
-                 static_cast<LPCWSTR>((const CString&)dlg_createshortcut.m_username));
-
-      INT_PTR rc2 = defDlg.DoModal();
-
-      if (rc2 == IDOK) {
-        // Initialise a copy of the DB preferences
-        prefs->SetupCopyPrefs();
-        // Update Copy with new values
-        prefs->SetPref(PWSprefs::UseDefaultUser, true, true);
-        prefs->SetPref(PWSprefs::DefaultUsername, dlg_createshortcut.m_username, true);
-        // Get old DB preferences String value (from current preferences) &
-        // new DB preferences String value (from Copy)
-        const StringX sxOldDBPrefsString(prefs->Store());
-        sxNewDBPrefsString = prefs->Store(true);
-        if (sxOldDBPrefsString == sxNewDBPrefsString) {
-          sxNewDBPrefsString = L"";
-        }
-      }
-    }
-    if (dlg_createshortcut.m_username.IsEmpty() &&
-        prefs->GetPref(PWSprefs::UseDefaultUser))
-      dlg_createshortcut.m_username = prefs->GetPref(PWSprefs::DefaultUsername).c_str();
-
     CreateShortcutEntry(pci, dlg_createshortcut.m_group,
                         dlg_createshortcut.m_title,
                         dlg_createshortcut.m_username, sxNewDBPrefsString);
+
+    // Ensure selected item looks selected as focus may have been lost
+    if (m_ctlItemTree.IsWindowVisible())
+      m_ctlItemTree.SetFocus();
+    else
+      m_ctlItemList.SetFocus();
   }
 }
 
@@ -734,7 +709,10 @@ void DboxMain::OnCompareEntries()
     if (pci != NULL) {
       // Entry - selected - shouldn't be called when group is selected
       // Now get the other entry
-      CCompareWithSelectDlg dlg(pci, &m_core, this);
+      CString csProtect = Fonts::GetInstance()->GetProtectedSymbol().c_str();
+      CString csAttachment = Fonts::GetInstance()->GetAttachmentSymbol().c_str();
+
+      CCompareWithSelectDlg dlg(this, pci, &m_core, csProtect, csAttachment);
 
       if (dlg.DoModal() == IDOK) {
         // Get UUID of the entry
@@ -945,19 +923,20 @@ void DboxMain::OnDelete()
 
     POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
     if (pos != NULL) {
-      pci = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos - 1);
+      const int nItem = m_ctlItemList.GetNextSelectedItem(pos);
+      pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
 
       // Check that it wasn't the bottom entry in the list (can't select next)
-      if ((int)pos < m_ctlItemList.GetItemCount()) {
+      if (nItem < (m_ctlItemList.GetItemCount() - 1)) {
         bSelectNext = true;
-        CItemData *pci_next = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos);
+        CItemData *pci_next = (CItemData *)m_ctlItemList.GetItemData(nItem + 1);
         nextUUID = pci_next->GetUUID();
       }
 
       // Check that it wasn't the top entry in the list (can't select previous)
-      if ((int)pos > 1) {
+      if (nItem > 0) {
         bSelectPrev = true;
-        CItemData *pci_prev = (CItemData *)m_ctlItemList.GetItemData((int)(INT_PTR)pos - 2);
+        CItemData *pci_prev = (CItemData *)m_ctlItemList.GetItemData(nItem - 1);
         prevUUID = pci_prev->GetUUID();
       }
     }
@@ -1676,16 +1655,11 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
   // As pci may be invalidated if database is Locked while in this routine,
   // we use a clone
-  CItemData ci_original(*pci);
+  const CItemData ci_original(*pci);
 
   pci = NULL; // Set to NULL - use ci_original
 
   pws_os::CUUID entryuuid = ci_original.GetUUID();
-
-  // Determine if last entry in this group just in case the user changes the group
-  DisplayInfo *pdi = GetEntryGUIInfo(ci_original);
-  bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
-                    (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
 
   const CItemData *pbci = GetBaseEntry(&ci_original);
 
@@ -1707,6 +1681,11 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
   INT_PTR rc = dlg_editshortcut.DoModal();
 
   if (rc == IDOK && dlg_editshortcut.IsEntryModified()) {
+    // Determine if last entry in this group just in case the user changed the group
+    DisplayInfo *pdi = GetEntryGUIInfo(ci_original);
+    bool bLastEntry = (m_ctlItemTree.GetNextSiblingItem(pdi->tree_item) == NULL) &&
+        (m_ctlItemTree.GetPrevSiblingItem(pdi->tree_item) == NULL);
+
     // Out with the old, in with the new
     // User cannot change a shortcut entry to anything else!
     ItemListIter listpos = Find(ci_original.GetUUID());
@@ -1761,7 +1740,7 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
     UpdateToolBarForSelectedItem(&ci_edit);
     return true;
-  } // rc == IDOK
+  } // rc == IDOK && dlg_editshortcut.IsEntryModified()
   return false;
 }
 
@@ -2091,13 +2070,24 @@ void DboxMain::PerformAutoType()
 void DboxMain::OnAutoType()
 {
   CItemData *pci(NULL);
+
+  CItemData *pci_selected = getSelectedItem();
+
   if (m_ctlItemTree.IsWindowVisible() && m_LastFoundTreeItem != NULL) {
     pci = (CItemData *)m_ctlItemTree.GetItemData(m_LastFoundTreeItem);
   } else
   if (m_ctlItemList.IsWindowVisible() && m_LastFoundListItem >= 0) {
     pci = (CItemData *)m_ctlItemList.GetItemData(m_LastFoundListItem);
-  } else {
-    pci = getSelectedItem();
+  }
+
+  /*
+    BR1432 - If the user has selected an entry, which is not the previous result of
+    a Find request, then use the selected item.
+
+    Otherwise, use the last found item (if present)
+  */
+  if (pci_selected != NULL && pci != pci_selected) {
+    pci = pci_selected;
   }
 
   if (pci == NULL)
@@ -2168,6 +2158,21 @@ void DboxMain::OnGotoBaseEntry()
   if (SelItemOk() == TRUE) {
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
+
+    if (m_bFilterActive) {
+      // Although the menu entry may have been removed if the base entry
+      // is not in the view, this won't stop the accelerator key working
+      // as TranslateAccelerator only ignores a menu entry if disabled but
+      // doesn't check that it has been removed.
+
+      // If a filter is active, then might not be able to go to
+      // entry's base entry as not in Tree or List view
+      pws_os::CUUID uuidBase = pci->GetBaseUUID();
+      auto iter = m_MapEntryToGUI.find(uuidBase);
+      ASSERT(iter != m_MapEntryToGUI.end());
+      if (iter->second.list_index == -1)
+        return;
+    }
 
     const CItemData *pbci = GetBaseEntry(pci);
     if (pbci != NULL) {
@@ -2280,8 +2285,6 @@ void DboxMain::OnRunCommand()
                                                 sx_pswd, sx_lastpswd,
                                                 sx_notes, sx_url, sx_email,
                                                 m_vactionverboffsets);
-  SetClipboardData(sx_pswd);
-  UpdateLastClipboardAction(CItemData::PASSWORD);
   UpdateAccessTime(uuid);
 
   // Now honour presence of [alt], {alt} or [ssh] in the url if present
@@ -2303,6 +2306,12 @@ void DboxMain::OnRunCommand()
       sx_Expanded_ES = sxAltBrowser + StringX(L" ") + sx_Expanded_ES;
   }
 
+  // FR856 - Copy Password to Clipboard on Run-Command When copy-on-browse set.
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
+    SetClipboardData(sx_pswd);
+    UpdateLastClipboardAction(CItemData::PASSWORD);
+  }
+  
   bool rc = m_runner.runcmd(sx_Expanded_ES, !m_sxAutoType.empty());
   if (!rc) {
     m_bDoAutoType = false;
@@ -2322,7 +2331,6 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
   std::map<StringX, StringX> mapRenamedPolicies;
   StringX sxgroup, sxtitle, sxuser;
   POSITION pos;
-  wchar_t *dot;
 
   const StringX sxDD_DateTime = PWSUtil::GetTimeStamp(true).c_str();
 
@@ -2343,6 +2351,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     // Only set to false if adding a shortcut where the base isn't there (yet)
     bool bAddToViews = true;
     pDDObject->ToItem(ci_temp);
+    ASSERT(ci_temp.GetBaseUUID() != CUUID::NullUUID());
 
     StringX sxPolicyName = ci_temp.GetPolicyName();
     if (!sxPolicyName.empty()) {
@@ -2385,7 +2394,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     }
 
     if (in_oblist.m_bDragNode) {
-      dot = (!DropGroup.empty() && !ci_temp.GetGroup().empty()) ? L"." : L"";
+      wchar_t *dot = (!DropGroup.empty() && !ci_temp.GetGroup().empty()) ? L"." : L"";
       sxgroup = DropGroup + dot + ci_temp.GetGroup();
     } else {
       sxgroup = DropGroup;
@@ -2431,9 +2440,20 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
       pl.InputType = CItemData::ET_SHORTCUT;
     }
 
-    m_core.ParseBaseEntryPWD(cs_tmp, pl);
+    // If we have BASEUUID, life is simple
+    if (ci_temp.GetBaseUUID() != CUUID::NullUUID()) {
+      pl.ibasedata = 1;
+      pl.base_uuid = ci_temp.GetBaseUUID();
+      pl.TargetType = CItemData::ET_NORMAL;
+    } else {
+      m_core.ParseBaseEntryPWD(cs_tmp, pl);
+    }
     if (pl.ibasedata > 0) {
+      // Add to pwlist
+      pmulticmds->Add(AddEntryCommand::Create(&m_core,
+                                              ci_temp, ci_temp.GetBaseUUID())); // need to do this as well as AddDep...
       CGeneralMsgBox gmb;
+      CString cs_msg;
       // Password in alias/shortcut format AND base entry exists
       if (pl.InputType == CItemData::ET_ALIAS) {
         ItemListIter iter = m_core.Find(pl.base_uuid);
@@ -2441,15 +2461,12 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
         if (pl.TargetType == CItemData::ET_ALIAS) {
           // This base is in fact an alias. ParseBaseEntryPWD already found 'proper base'
           // So dropped entry will point to the 'proper base' and tell the user.
-          CString cs_msg;
           cs_msg.Format(IDS_DDBASEISALIAS, static_cast<LPCWSTR>(sxgroup.c_str()),
                         static_cast<LPCWSTR>(sxtitle.c_str()),
                         static_cast<LPCWSTR>(sxuser.c_str()));
           gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
-        } else
-        if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
+        } else if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
           // Only normal or alias base allowed as target
-          CString cs_msg;
           cs_msg.Format(IDS_ABASEINVALID, static_cast<LPCWSTR>(sxgroup.c_str()),
                         static_cast<LPCWSTR>(sxtitle.c_str()),
                         static_cast<LPCWSTR>(sxuser.c_str()));
@@ -2463,13 +2480,11 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
 
         ci_temp.SetPassword(L"[Alias]");
         ci_temp.SetAlias();
-      } else
-      if (pl.InputType == CItemData::ET_SHORTCUT) {
+      } else if (pl.InputType == CItemData::ET_SHORTCUT) {
         ItemListIter iter = m_core.Find(pl.base_uuid);
         ASSERT(iter != End());
         if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_SHORTCUTBASE) {
           // Only normal or shortcut base allowed as target
-          CString cs_msg;
           cs_msg.Format(IDS_SBASEINVALID, static_cast<LPCWSTR>(sxgroup.c_str()),
                         static_cast<LPCWSTR>(sxtitle.c_str()),
                         static_cast<LPCWSTR>(sxuser.c_str()));
@@ -2485,12 +2500,10 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
         ci_temp.SetPassword(L"[Shortcut]");
         ci_temp.SetShortcut();
       }
-    } else
-    if (pl.ibasedata == 0) {
+    } else if (pl.ibasedata == 0) {
       // Password NOT in alias/shortcut format
       ci_temp.SetNormal();
-    } else
-    if (pl.ibasedata < 0) {
+    } else if (pl.ibasedata < 0) {
       // Password in alias/shortcut format AND base entry does not exist or multiple possible
       // base entries exit.
       // Note: As more entries are added, what was "not exist" may become "OK",
@@ -2498,8 +2511,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
       // Let the code that processes the possible aliases after all have been added sort this out.
       if (pl.InputType == CItemData::ET_ALIAS) {
         Possible_Aliases.push_back(ci_temp.GetUUID());
-      } else
-      if (pl.InputType == CItemData::ET_SHORTCUT) {
+      } else if (pl.InputType == CItemData::ET_SHORTCUT) {
         Possible_Shortcuts.push_back(ci_temp.GetUUID());
         bAddToViews = false;
       }
@@ -2516,17 +2528,18 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
       ci_temp.SetKBShortcut(0);
     }
 
-    // Add to pwlist
-    Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
+    if (!ci_temp.IsDependent()) { // Dependents handled later
+      // Add to pwlist
+      Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
 
-    if (!bAddToViews) {
-      // ONLY Add to pwlist and NOT to Tree or List views
-      // After the call to AddDependentEntries for shortcuts, check if still
-      // in password list and, if so, then add to Tree + List views
-      pcmd->SetNoGUINotify();
+      if (!bAddToViews) {
+        // ONLY Add to pwlist and NOT to Tree or List views
+        // After the call to AddDependentEntries for shortcuts, check if still
+        // in password list and, if so, then add to Tree + List views
+        pcmd->SetNoGUINotify();
+      }
+      pmulticmds->Add(pcmd);
     }
-
-    pmulticmds->Add(pcmd);
   } // iteration over in_oblist
 
   // Now try to add aliases/shortcuts we couldn't add in previous processing

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -21,6 +21,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <atlcomcli.h>
 #include <comutil.h>
 
 #include <map>
@@ -28,7 +29,7 @@
 
 MFilterXMLProcessor::MFilterXMLProcessor(PWSFilters &mapfilters, const FilterPool fpool,
                                          Asker *pAsker)
-  : m_MapXMLFilters(mapfilters), m_FPool(fpool), m_pAsker(pAsker)
+  : m_pAsker(pAsker), m_MapXMLFilters(mapfilters), m_FPool(fpool)
 {
 }
 
@@ -52,19 +53,19 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
   m_bValidation = bvalidation;  // Validate or Import
 
   //  Create SAXReader object
-  ISAXXMLReader *pSAX2Reader = NULL;
+  ISAXXMLReader *pSAX2Reader = nullptr;
   //  Get ready for XSD schema validation
-  IXMLDOMSchemaCollection2 *pSchemaCache = NULL;
+  IXMLDOMSchemaCollection2 *pSchemaCache = nullptr;
 
   if (m_bValidation) { //XMLValidate
-    hr60 = CoCreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL,
+    hr60 = CoCreateInstance(__uuidof(SAXXMLReader60), nullptr, CLSCTX_ALL,
                             __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
     if (FAILED(hr60)) {
       LoadAString(m_strXMLErrors, IDSC_NOMSXMLREADER);
       goto exit;
     }
   } else {  // XMLImport
-    hr0 = CoCreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL,
+    hr0 = CoCreateInstance(__uuidof(SAXXMLReader60), nullptr, CLSCTX_ALL,
                            __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
 
   }
@@ -82,7 +83,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
   //  Set Error Handler
   hr = pSAX2Reader->putErrorHandler(pEH);
 
-  hr = CoCreateInstance(__uuidof(XMLSchemaCache60), NULL, CLSCTX_ALL,
+  hr = CoCreateInstance(__uuidof(XMLSchemaCache60), nullptr, CLSCTX_ALL,
                         __uuidof(IXMLDOMSchemaCollection2), (void **)&pSchemaCache);
 
   if (!FAILED(hr)) {  // Create SchemaCache
@@ -180,10 +181,10 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
   }  // End Create Schema Cache
 
 exit:
-  if (pSchemaCache != NULL)
+  if (pSchemaCache != nullptr)
     pSchemaCache->Release();
 
-  if (pSAX2Reader != NULL)
+  if (pSAX2Reader != nullptr)
     pSAX2Reader->Release();
 
   return b_ok;

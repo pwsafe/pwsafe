@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -19,8 +19,8 @@ IMPLEMENT_DYNAMIC(CPWResizeDialog, CPWDialog)
 CPWResizeDialog::CPWResizeDialog(UINT nIDTemplate, CWnd* pParent /*=NULL*/)
   : CPWDialog(nIDTemplate, pParent),
   m_bInitDone(false), m_bStatusBarOK(false),
-  m_DialogMaxHeight(-1), m_DialogMaxWidth(-1),
-  m_iMainCtrl(0), m_numbtns(-1), m_numsbpanes(-1), m_pstatustext(NULL)
+  m_DialogMaxWidth(-1), m_DialogMaxHeight(-1),
+  m_iMainCtrl(0), m_pstatustext(nullptr), m_numbtns(-1), m_numsbpanes(-1)
 {
 }
 

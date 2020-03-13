@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -12,7 +12,7 @@ IMPLEMENT_DYNAMIC(CFilterBaseDlg, CPWDialog)
 
 CFilterBaseDlg::CFilterBaseDlg(UINT nIDTemplate, CWnd* pParentWnd)
 : CPWDialog(nIDTemplate, pParentWnd),
-  m_bFirst(true), m_rule(PWSMatch::MR_INVALID)
+  m_rule(PWSMatch::MR_INVALID), m_bFirst(true)
 {
   for (int i = (int)PWSMatch::MR_INVALID; i < (int)PWSMatch::MR_LAST; i++) {
     m_rule2selection[i] = -1;

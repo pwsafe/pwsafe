@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -19,8 +19,9 @@
 IMPLEMENT_DYNAMIC(CProperties, CPWDialog)
 
 CProperties::CProperties(st_DBProperties *pdbp, const bool bReadonly, CWnd *pParent)
-  : CPWDialog(CProperties::IDD, pParent), m_bReadOnly(bReadonly), m_pdbp(pdbp),
-  m_bChanged(false)
+  : CPWDialog(CProperties::IDD, pParent), 
+  m_pdbp(pdbp), 
+  m_bReadOnly(bReadonly), m_bChanged(false)
 {
   m_old_name = m_pdbp->db_name;
   m_old_description = m_pdbp->db_description;
@@ -61,6 +62,7 @@ BOOL CProperties::OnInitDialog()
   GetDlgItem(IDC_SAVEDON)->SetWindowText(m_pdbp->whenlastsaved.c_str());
   GetDlgItem(IDC_SAVEDBY)->SetWindowText(m_pdbp->wholastsaved.c_str());
   GetDlgItem(IDC_SAVEDAPP)->SetWindowText(m_pdbp->whatlastsaved.c_str());
+  GetDlgItem(IDC_PWDSETON)->SetWindowText(m_pdbp->whenpwdlastchanged.c_str());
   GetDlgItem(IDC_FILEUUID)->SetWindowText(m_pdbp->file_uuid.c_str());
   GetDlgItem(IDC_UNKNOWNFIELDS)->SetWindowText(m_pdbp->unknownfields.c_str());
 

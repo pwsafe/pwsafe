@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -36,7 +36,7 @@ class CXMLprefs
   // Construction & Destruction
 public:
   CXMLprefs(const stringT &configFile)
-  : m_pXMLDoc(NULL), m_csConfigFile(configFile), m_bIsLocked(false) {}
+  : m_pXMLDoc(nullptr), m_csConfigFile(configFile), m_bIsLocked(false) {}
 
   ~CXMLprefs() { UnloadXML(); }
 
@@ -83,7 +83,7 @@ public:
 
 private:
   int SetPreference(const stringT &sPath, const stringT &sValue,
-                    std::vector<st_prefAttribs> *pvprefAttribs = NULL);
+                    std::vector<st_prefAttribs> *pvprefAttribs = nullptr);
 
   pugi::xml_document *m_pXMLDoc;
   stringT m_csConfigFile;

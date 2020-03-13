@@ -97,7 +97,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;USE_XML_LIBRARY=XERCES;NO_YUBI=1;NO_QR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
@@ -137,7 +137,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;USE_XML_LIBRARY=XERCES;NO_YUBI=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;USE_XML_LIBRARY=XERCES;NO_YUBI=1;NO_QR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
@@ -178,7 +178,7 @@
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;NO_QR;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -215,7 +215,7 @@
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(WXDIR)/include/msvc;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxMSVC_VERSION_AUTO;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;_CRT_SECURE_NO_WARNINGS;__NO_VC_CRTDBG__;NO_YUBI=1;NO_QR;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -244,114 +244,114 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="about.h" />
-    <ClInclude Include="addeditpropsheet.h" />
+    <ClInclude Include="AboutDlg.h" />
+    <ClInclude Include="AddEditPropSheetDlg.h" />
     <ClInclude Include="AdvancedSelectionDlg.h" />
     <ClInclude Include="CompareDlg.h" />
     <ClInclude Include="ComparisonGridTable.h" />
-    <ClInclude Include="createshortcutdlg.h" />
+    <ClInclude Include="CreateShortcutDlg.h" />
     <ClInclude Include="DbSelectionPanel.h" />
-    <ClInclude Include="deleteconfirmation.h" />
-    <ClInclude Include="dragbar.h" />
-    <ClInclude Include="editshortcut.h" />
+    <ClInclude Include="DeleteConfirmationDlg.h" />
+    <ClInclude Include="DragBarGenericCtrl.h" />
+    <ClInclude Include="EditShortcutDlg.h" />
     <ClInclude Include="ExportTextWarningDlg.h" />
     <ClInclude Include="ExternalKeyboardButton.h" />
-    <ClInclude Include="fieldselectiondlg.h" />
-    <ClInclude Include="fieldselectionpanel.h" />
-    <ClInclude Include="guiinfo.h" />
-    <ClInclude Include="helpmap.h" />
+    <ClInclude Include="FieldSelectionDlg.h" />
+    <ClInclude Include="FieldSelectionPanel.h" />
+    <ClInclude Include="GuiInfo.h" />
+    <ClInclude Include="HelpMap.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXmlDlg.h" />
-    <ClInclude Include="ManagePwdPolicies.h" />
+    <ClInclude Include="ManagePasswordPoliciesDlg.h" />
     <ClInclude Include="MergeDlg.h" />
     <ClInclude Include="OpenFilePickerValidator.h" />
-    <ClInclude Include="optionspropsheet.h" />
-    <ClInclude Include="PasswordPolicy.h" />
-    <ClInclude Include="passwordsafeframe.h" />
+    <ClInclude Include="OptionsPropertySheetDlg.h" />
+    <ClInclude Include="PasswordPolicyDlg.h" />
+    <ClInclude Include="PasswordSafeFrame.h" />
     <ClInclude Include="PasswordSafeSearch.h" />
-    <ClInclude Include="passwordsubset.h" />
-    <ClInclude Include="properties.h" />
-    <ClInclude Include="pwsafeapp.h" />
-    <ClInclude Include="pwsclip.h" />
-    <ClInclude Include="PWSDragBar.h" />
-    <ClInclude Include="PWSgrid.h" />
-    <ClInclude Include="PWSgridtable.h" />
-    <ClInclude Include="pwsmenushortcuts.h" />
-    <ClInclude Include="PwsSync.h" />
-    <ClInclude Include="PwsToolbarButtons.h" />
-    <ClInclude Include="PWStree.h" />
-    <ClInclude Include="RecentDBList.h" />
-    <ClInclude Include="safecombinationchange.h" />
+    <ClInclude Include="PasswordSubsetDlg.h" />
+    <ClInclude Include="PropertiesDlg.h" />
+    <ClInclude Include="PWSafeApp.h" />
+    <ClInclude Include="Clipboard.h" />
+    <ClInclude Include="DragBarCtrl.h" />
+    <ClInclude Include="GridCtrl.h" />
+    <ClInclude Include="GridTable.h" />
+    <ClInclude Include="GridShortcutsValidator.h" />
+    <ClInclude Include="SyncWizard.h" />
+    <ClInclude Include="ToolbarButtons.h" />
+    <ClInclude Include="TreeCtrl.h" />
+    <ClInclude Include="RecentDbList.h" />
+    <ClInclude Include="SafeCombinationChangeDlg.h" />
     <ClInclude Include="SafeCombinationCtrl.h" />
-    <ClInclude Include="safecombinationentry.h" />
-    <ClInclude Include="safecombinationprompt.h" />
-    <ClInclude Include="safecombinationsetup.h" />
+    <ClInclude Include="SafeCombinationEntryDlg.h" />
+    <ClInclude Include="SafeCombinationPromptDlg.h" />
+    <ClInclude Include="SafeCombinationSetupDlg.h" />
     <ClInclude Include="SelectionCriteria.h" />
     <ClInclude Include="SizeRestrictedPanel.h" />
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="SystemTrayMenuId.h" />
     <ClInclude Include="TimedTaskChain.h" />
     <ClInclude Include="version.h" />
-    <ClInclude Include="ViewReport.h" />
+    <ClInclude Include="ViewReportDlg.h" />
     <ClInclude Include="wxMessages.h" />
-    <ClInclude Include="wxutils.h" />
-    <ClInclude Include="yubicfg.h" />
+    <ClInclude Include="wxUtilities.h" />
+    <ClInclude Include="YubiCfgDlg.h" />
     <ClInclude Include="YubiMixin.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pwsafe.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="about.cpp" />
-    <ClCompile Include="addeditpropsheet.cpp" />
+    <ClCompile Include="AboutDlg.cpp" />
+    <ClCompile Include="AddEditPropSheetDlg.cpp" />
     <ClCompile Include="AdvancedSelectionDlg.cpp" />
     <ClCompile Include="CompareDlg.cpp" />
     <ClCompile Include="ComparisonGridTable.cpp" />
-    <ClCompile Include="createshortcutdlg.cpp" />
+    <ClCompile Include="CreateShortcutDlg.cpp" />
     <ClCompile Include="DbSelectionPanel.cpp" />
-    <ClCompile Include="deleteconfirmation.cpp" />
-    <ClCompile Include="dragbar.cpp" />
-    <ClCompile Include="editshortcut.cpp" />
+    <ClCompile Include="DeleteConfirmationDlg.cpp" />
+    <ClCompile Include="DragBarGenericCtrl.cpp" />
+    <ClCompile Include="EditShortcutDlg.cpp" />
     <ClCompile Include="ExportTextWarningDlg.cpp" />
     <ClCompile Include="ExternalKeyboardButton.cpp" />
-    <ClCompile Include="fieldselectiondlg.cpp" />
-    <ClCompile Include="fieldselectionpanel.cpp" />
-    <ClCompile Include="guiinfo.cpp" />
+    <ClCompile Include="FieldSelectionDlg.cpp" />
+    <ClCompile Include="FieldSelectionPanel.cpp" />
+    <ClCompile Include="GuiInfo.cpp" />
     <ClCompile Include="ImportTextDlg.cpp" />
     <ClCompile Include="ImportXmlDlg.cpp" />
-    <ClCompile Include="mainEdit.cpp" />
-    <ClCompile Include="mainManage.cpp" />
-    <ClCompile Include="mainView.cpp" />
-    <ClCompile Include="ManagePwdPolicies.cpp" />
+    <ClCompile Include="MenuEditHandlers.cpp" />
+    <ClCompile Include="MenuManageHandlers.cpp" />
+    <ClCompile Include="MenuViewHandlers.cpp" />
+    <ClCompile Include="ManagePasswordPoliciesDlg.cpp" />
     <ClCompile Include="MergeDlg.cpp" />
     <ClCompile Include="OpenFilePickerValidator.cpp" />
-    <ClCompile Include="optionspropsheet.cpp" />
-    <ClCompile Include="PasswordPolicy.cpp" />
-    <ClCompile Include="passwordsafeframe.cpp" />
+    <ClCompile Include="OptionsPropertySheetDlg.cpp" />
+    <ClCompile Include="PasswordPolicyDlg.cpp" />
+    <ClCompile Include="PasswordSafeFrame.cpp" />
     <ClCompile Include="PasswordSafeSearch.cpp" />
-    <ClCompile Include="passwordsubset.cpp" />
-    <ClCompile Include="properties.cpp" />
-    <ClCompile Include="pwsafeapp.cpp" />
-    <ClCompile Include="pwsclip.cpp" />
-    <ClCompile Include="PWSDragBar.cpp" />
-    <ClCompile Include="PWSgrid.cpp" />
-    <ClCompile Include="PWSgridtable.cpp" />
-    <ClCompile Include="pwsmenushortcuts.cpp" />
-    <ClCompile Include="PwsSync.cpp" />
-    <ClCompile Include="PWStree.cpp" />
-    <ClCompile Include="safecombinationchange.cpp" />
+    <ClCompile Include="PasswordSubsetDlg.cpp" />
+    <ClCompile Include="PropertiesDlg.cpp" />
+    <ClCompile Include="PWSafeApp.cpp" />
+    <ClCompile Include="Clipboard.cpp" />
+    <ClCompile Include="DragBarCtrl.cpp" />
+    <ClCompile Include="GridCtrl.cpp" />
+    <ClCompile Include="GridTable.cpp" />
+    <ClCompile Include="GridShortcutsValidator.cpp" />
+    <ClCompile Include="SyncWizard.cpp" />
+    <ClCompile Include="TreeCtrl.cpp" />
+    <ClCompile Include="SafeCombinationChangeDlg.cpp" />
     <ClCompile Include="SafeCombinationCtrl.cpp" />
-    <ClCompile Include="safecombinationentry.cpp" />
-    <ClCompile Include="safecombinationprompt.cpp" />
-    <ClCompile Include="safecombinationsetup.cpp" />
+    <ClCompile Include="SafeCombinationEntryDlg.cpp" />
+    <ClCompile Include="SafeCombinationPromptDlg.cpp" />
+    <ClCompile Include="SafeCombinationSetupDlg.cpp" />
     <ClCompile Include="SelectionCriteria.cpp" />
     <ClCompile Include="SizeRestrictedPanel.cpp" />
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="TimedTaskChain.cpp" />
-    <ClCompile Include="version.cpp" />
-    <ClCompile Include="ViewReport.cpp" />
-    <ClCompile Include="wxutils.cpp" />
-    <ClCompile Include="yubicfg.cpp">
+    <ClCompile Include="Version.cpp" />
+    <ClCompile Include="ViewReportDlg.cpp" />
+    <ClCompile Include="wxUtilities.cpp" />
+    <ClCompile Include="YubiCfgDlg.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debugwx|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">true</ExcludedFromBuild>

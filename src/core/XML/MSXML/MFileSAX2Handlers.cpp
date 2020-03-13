@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -29,7 +29,7 @@
 //  MFileSAX2ErrorHandler Methods
 //  -----------------------------------------------------------------------
 MFileSAX2ErrorHandler::MFileSAX2ErrorHandler()
-  : bErrorsFound(FALSE), m_strValidationResult(_T(""))
+  : m_strValidationResult(_T("")), bErrorsFound(FALSE)
 {
   m_refCnt = 0;
 }
@@ -40,7 +40,7 @@ MFileSAX2ErrorHandler::~MFileSAX2ErrorHandler()
 
 long __stdcall MFileSAX2ErrorHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
 {
-  *ppvObject = NULL;
+  *ppvObject = nullptr;
   if (riid == IID_IUnknown || riid == __uuidof(ISAXContentHandler)) {
     *ppvObject = static_cast<ISAXErrorHandler *>(this);
   }
@@ -99,9 +99,9 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ErrorHandler::fatalError(struct ISAXLocator *
   return error(pLocator, pwchErrorMessage, hrErrorCode);
 }
 
-HRESULT STDMETHODCALLTYPE MFileSAX2ErrorHandler::ignorableWarning(struct ISAXLocator * pLocator,
-                                                                  const wchar_t * pwchErrorMessage,
-                                                                  HRESULT hrErrorCode )
+HRESULT STDMETHODCALLTYPE MFileSAX2ErrorHandler::ignorableWarning(struct ISAXLocator * /*pLocator*/,
+                                                                  const wchar_t * /*pwchErrorMessage*/,
+                                                                  HRESULT /*hrErrorCode*/ )
 {
   return S_OK;
 }
@@ -123,7 +123,7 @@ MFileSAX2ContentHandler::~MFileSAX2ContentHandler()
 
 long __stdcall MFileSAX2ContentHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
 {
-  *ppvObject = NULL;
+  *ppvObject = nullptr;
   if (riid == IID_IUnknown || riid == __uuidof(ISAXContentHandler)) {
     *ppvObject = static_cast<ISAXContentHandler *>(this);
   }
@@ -188,15 +188,15 @@ TCHAR * FileProcessAttributes(
       return _tcsdup(szValue);
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 //  ---------------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
-  /* [in] */ const wchar_t __RPC_FAR *pwchNamespaceUri,
-  /* [in] */ int cchNamespaceUri,
-  /* [in] */ const wchar_t __RPC_FAR *pwchLocalName,
-  /* [in] */ int cchLocalName,
+  /* [in] */ const wchar_t __RPC_FAR * /*pwchNamespaceUri*/,
+  /* [in] */ int /*cchNamespaceUri*/,
+  /* [in] */ const wchar_t __RPC_FAR * /*pwchLocalName*/,
+  /* [in] */ int /*cchLocalName*/,
   /* [in] */ const wchar_t __RPC_FAR *pwchRawName,
   /* [in] */ int cchRawName,
   /* [in] */ ISAXAttributes __RPC_FAR *pAttributes)
@@ -209,7 +209,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
     if (wcscmp(szCurElement, L"passwordsafe") == 0) {
       // Only interested in the delimiter
       TCHAR *lpValue = FileProcessAttributes(pAttributes, _T("delimiter"));
-      if (lpValue != NULL) {
+      if (lpValue != nullptr) {
         m_delimiter = lpValue[0];
         free(lpValue);
       }
@@ -228,13 +228,13 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
     case XLE_ENTRY:
       {
         TCHAR *lpValue1 = FileProcessAttributes(pAttributes, _T("normal"));
-        if (lpValue1 != NULL) {
+        if (lpValue1 != nullptr) {
           m_cur_entry->bforce_normal_entry =
                _ttoi(lpValue1) == 1 || _tcscmp(lpValue1, _T("true")) == 0;
           free(lpValue1);
         }
         TCHAR *lpValue2 = FileProcessAttributes(pAttributes, _T("id"));
-        if (lpValue2 != NULL) {
+        if (lpValue2 != nullptr) {
           m_cur_entry->id = _ttoi(lpValue2);
           free(lpValue2);
         }
@@ -262,17 +262,17 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::characters(
   m_sxElemContent += szData;
 
   delete [] szData;
-  szData = NULL;
+  szData = nullptr;
 
   return S_OK;
 }
 
 //  -----------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::endElement(
-  const wchar_t * pwchNamespaceUri,
-  int cchNamespaceUri,
-  const wchar_t * pwchLocalName,
-  int cchLocalName,
+  const wchar_t * /*pwchNamespaceUri*/,
+  int /*cchNamespaceUri*/,
+  const wchar_t * /*pwchLocalName*/,
+  int /*cchLocalName*/,
   const wchar_t * pwchQName,
   int cchQName)
 {
@@ -305,40 +305,40 @@ HRESULT STDMETHODCALLTYPE  MFileSAX2ContentHandler::endDocument()
 }
 
 HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startPrefixMapping(
-  const wchar_t * pwchPrefix,
-  int cchPrefix,
-  const wchar_t * pwchUri,
-  int cchUri)
+  const wchar_t * /*pwchPrefix*/,
+  int /*cchPrefix*/,
+  const wchar_t * /*pwchUri*/,
+  int /*cchUri*/)
 {
   return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::endPrefixMapping(
-  const wchar_t * pwchPrefix,
-  int cchPrefix)
+  const wchar_t * /*pwchPrefix*/,
+  int /*cchPrefix*/)
 {
   return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::ignorableWhitespace(
-  const wchar_t * pwchChars,
-  int cchChars)
+  const wchar_t * /*pwchChars*/,
+  int /*cchChars*/)
 {
   return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::processingInstruction(
-  const wchar_t * pwchTarget,
-  int cchTarget,
-  const wchar_t * pwchData,
-  int cchData)
+  const wchar_t * /*pwchTarget*/,
+  int /*cchTarget*/,
+  const wchar_t * /*pwchData*/,
+  int /*cchData*/)
 {
   return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::skippedEntity(
-  const wchar_t * pwchName,
-  int cchName)
+  const wchar_t * /*pwchName*/,
+  int /*cchName*/)
 {
   return S_OK;
 }

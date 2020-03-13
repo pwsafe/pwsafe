@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -30,11 +30,11 @@
 #include "MenuShortcuts.h"
 #include "AdvancedDlg.h"
 #include "FontsDialog.h"
+#include "SystemTray.h"
 
 #include "core/UIinterface.h"
 #include "core/PWScore.h"
 #include "core/StringX.h"
-#include "core/sha256.h"
 #include "core/PwsPlatform.h"
 #include "core/PWSFilters.h"
 #include "core/Command.h"
@@ -48,9 +48,20 @@
 #include <list>
 #include <stack>
 
+// TODO: Remove once winver support increased
+#ifndef _DPI_AWARENESS_CONTEXTS_
+#define _DPI_AWARENESS_CONTEXTS_
+DECLARE_HANDLE(DPI_AWARENESS_CONTEXT);
+#endif
+
+#ifndef DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2
+#define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2  ((DPI_AWARENESS_CONTEXT)-4)
+#endif
+
 // For ShutdownBlockReasonCreate & ShutdownBlockReasonDestroy
 typedef BOOL (WINAPI *PSBR_CREATE) (HWND, LPCWSTR);
 typedef BOOL (WINAPI *PSBR_DESTROY) (HWND);
+typedef DPI_AWARENESS_CONTEXT (WINAPI *PSBR_DPIAWARE) (DPI_AWARENESS_CONTEXT);
 
 // Entry to GUI mapping
 // Following used to keep track of display vs data
@@ -108,17 +119,21 @@ class CAddEdit_PropertySheet;
 class CPasskeyEntry;
 
 //-----------------------------------------------------------------------------
-class DboxMain : public CDialog, public UIInterFace
+class DboxMain : public CDialog, public Observer
 {
 public:
   DECLARE_DYNAMIC(DboxMain)
 
-  // default constructor
-  DboxMain(CWnd* pParent = NULL);
+  DboxMain(PWScore &core, CWnd* pParent = NULL);
   ~DboxMain();
+
+  // To enable DPI awareness
+  virtual INT_PTR DoModal();
 
   enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, ST_SAVEIMMEDIATELY,
                  ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
+
+  enum DBSTATE { LOCKED, UNLOCKED, CLOSED };
 
   // Find entry by title and user name, exact match
   ItemListIter Find(const StringX &a_group,
@@ -221,8 +236,10 @@ public:
   bool IsDBReadOnly() const {return m_core.IsReadOnly();}
   bool IsDBOpen() const { return m_bOpen; }
   void SetDBprefsState(const bool bState) { m_bDBState = bState; }
-  void SetStartSilent(bool state);
-  void SetStartClosed(bool state) {m_IsStartClosed = state;}
+  void SetStartSilent() {m_InitMode = SilentInit;} // start minimized, forces UseSystemTray
+  void SetStartClosed() {m_InitMode = ClosedInit;} // start with main window, no password prompt
+  void SetStartMinimized() {m_InitMode = MinimizedInit;} // Like closed, but also minimized
+  void SetStartNoDB() {m_IsStartNoDB = true;} // start with no db, w/o password prompt
   void SetDBInitiallyRO(bool state) {m_bDBInitiallyRO = state;}
   void MakeRandomPassword(StringX &password, PWPolicy &pwp, bool bIssueMsg = false);
   BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
@@ -313,7 +330,6 @@ public:
 
   // HashIters relaying
   uint32 GetHashIters() const {return m_core.GetHashIters();}
-  void SetHashIters(uint32 value) {m_core.SetHashIters(value);}
 
   // Need this to be public
   bool LongPPs(CWnd *pWnd);
@@ -361,7 +377,7 @@ public:
   {return m_core.TestSelection(bAdvanced, subgroup_name,
                                subgroup_object, subgroup_function, pOIL);}
 
-  void MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem = NULL);
+  std::vector<pws_os::CUUID> MakeOrderedItemList(OrderedItemList &OIL, HTREEITEM hItem = NULL);
   bool MakeMatchingGTUSet(GTUSet &setGTU, const StringX &sxPolicyName) const
   {return m_core.InitialiseGTU(setGTU, sxPolicyName);}
   CItemData *getSelectedItem();
@@ -379,6 +395,13 @@ public:
   void ResetInAddGroup() {m_bInAddGroup = false;}
   void SetRenameGroups(const StringX sxNewPath)
   { m_sxNewPath = sxNewPath; }
+
+  int GetDBIndex() { return m_iDBIndex; }
+  COLORREF GetLockedIndexColour() { return m_DBLockedIndexColour; }
+  COLORREF GetUnlockedIndexColour() { return m_DBUnlockedIndexColour; }
+
+  DBSTATE GetSystemTrayState() const { return m_TrayLockedState; }
+  BOOL IsIconVisible() const { return m_pTrayIcon->Visible(); }
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -430,7 +453,7 @@ public:
   const MapMenuShortcuts &GetMapMenuShortcuts() {return m_MapMenuShortcuts;}
   const std::vector<UINT> &GetExcludedMenuItems() {return m_ExcludedMenuItems;}
   const std::vector<st_MenuShortcut> &GetReservedShortcuts() {return m_ReservedShortcuts;}
-  const unsigned int GetMenuShortcut(const unsigned short int &siVirtKey,
+  unsigned int GetMenuShortcut(const unsigned short int &siVirtKey,
                                      const unsigned char &cModifier, StringX &sxMenuItemName);
   
   bool ChangeMode(bool promptUser); // r-o <-> r/w
@@ -443,7 +466,15 @@ public:
   std::set<StringX> GetAllMediaTypes() const
   {return m_core.GetAllMediaTypes();}
 
+  // For latered Windows
+  PSLWA GetSetLayeredWindowAttributes() { return m_pfcnSetLayeredWindowAttributes; }
+  bool GetInitialTransparencyState() { return m_bOnStartupTransparancyEnabled; }
+  bool SetLayered(CWnd *pWnd, const int value = -1);
+  void SetThreadDpiAwarenessContext();
+
  protected:
+   friend class CSetDBID;  // To access icon creation etc.
+
    // ClassWizard generated virtual function overrides
    //{{AFX_VIRTUAL(DboxMain)
    virtual BOOL PreTranslateMessage(MSG *pMsg);
@@ -523,13 +554,20 @@ public:
   // For UPDATE_UI
   int OnUpdateMenuToolbar(const UINT nID);
   int OnUpdateViewReports(const int nID);
-  void OnUpdateMRU(CCmdUI* pCmdUI);
+  void OnUpdateMRU(CCmdUI *pCmdUI);
 
   void ConfigureSystemMenu();
 
-  // 'STATE' also defined in ThisMfcApp.h - ensure identical
-  enum STATE { LOCKED, UNLOCKED, CLOSED };
-  void UpdateSystemTray(const STATE s);
+  void UpdateSystemTray(const DBSTATE s);
+  BOOL SetTooltipText(LPCWSTR ttt) { return m_pTrayIcon->SetTooltipText(ttt); }
+  void ShowIcon() { m_pTrayIcon->ShowIcon(); }
+  void HideIcon() { m_pTrayIcon->HideIcon(); }
+
+  void SetSystemTrayState(DBSTATE s);
+  void SetSystemTrayTarget(CWnd *pWnd) { m_pTrayIcon->SetTarget(pWnd); }
+
+  HICON CreateIcon(const HICON &hIcon, const int &iIndex,
+                   const COLORREF clrText = RGB(255, 255, 0));
 
   LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
   LRESULT OnCCToHdrDragComplete(WPARAM wParam, LPARAM lParam);
@@ -564,7 +602,7 @@ public:
   void UpdateMenuAndToolBar(const bool bOpen);
   void SortListView();
 
-  //Version of message functions with return values
+  // Version of message functions with return values
   int Save(const SaveType savetype = DboxMain::ST_INVALID);
   int SaveAs();
   int Open(const UINT uiTitle = IDS_CHOOSEDATABASE);
@@ -591,6 +629,7 @@ public:
   void SaveGUIStatus();
   void RestoreGUIStatus();
 
+  void SetupUserFonts();
   void ChangeFont(const CFontsDialog::FontType iType);
 
   // Generated message map functions
@@ -620,6 +659,8 @@ public:
   afx_msg void OnUpdateTraySendEmail(CCmdUI *pCmdUI);
   afx_msg void OnTraySelect(UINT nID);
   afx_msg void OnUpdateTraySelect(CCmdUI *pCmdUI);
+  afx_msg void OnGotoDependant(UINT nID);
+  afx_msg void OnUpdateGotoDependant(CCmdUI *pCmdUI);
 
   afx_msg LRESULT OnAreYouMe(WPARAM, LPARAM);
   afx_msg LRESULT OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam);
@@ -630,7 +671,6 @@ public:
   afx_msg void OnHelp();
   afx_msg void OnUpdateMenuToolbar(CCmdUI *pCmdUI);
   afx_msg void OnDestroy();
-  afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
   afx_msg void OnMove(int x, int y);
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnAbout();
@@ -680,6 +720,7 @@ public:
   afx_msg void OnManagePasswordPolicies();
   afx_msg void OnGeneratePassword();
   afx_msg void OnYubikey();
+  afx_msg void OnSetDBID();
   afx_msg void OnSave();
   afx_msg void OnAdd();
   afx_msg void OnAddGroup();
@@ -692,7 +733,6 @@ public:
   afx_msg void OnShowHideDragbar();
   afx_msg void OnOldToolbar();
   afx_msg void OnNewToolbar();
-  afx_msg void OnShowFindToolbar();
   afx_msg void OnExpandAll();
   afx_msg void OnCollapseAll();
   afx_msg void OnChangeTreeFont();
@@ -703,6 +743,7 @@ public:
   afx_msg void OnViewReportsByID(UINT nID);  // From View->Reports menu
   afx_msg void OnViewReports();
   afx_msg void OnManageFilters(); // From Toolbar button
+  afx_msg void OnExportFilteredDB();
   afx_msg void OnCancelFilter();
   afx_msg void OnApplyFilter();
   afx_msg void OnSetFilter();
@@ -751,7 +792,8 @@ public:
   afx_msg void OnToolBarFindAdvanced();
   afx_msg void OnToolBarFindReport();
   afx_msg void OnToolBarClearFind();
-  afx_msg void OnHideFindToolBar();
+  afx_msg void OnShowFindToolbar();
+  afx_msg void OnHideFindToolbar();
 
   afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
@@ -761,11 +803,12 @@ public:
   DECLARE_MESSAGE_MAP()
 
   int GetAndCheckPassword(const StringX &filename, StringX& passkey,
-                          int index, int flags = 0,
-                          PWScore *pcore = NULL);
+                          int index, int flags = 0);
 
 private:
-  // UIInterFace implementations:
+  enum InitType {NormalInit, SilentInit, ClosedInit, MinimizedInit};
+
+  // Observer interface implementations:
   virtual void DatabaseModified(bool bChanged);
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                          const pws_os::CUUID &entry_uuid,
@@ -787,15 +830,23 @@ private:
 
   CPasskeyEntry *m_pPasskeyEntryDlg;
 
-  bool m_IsStartSilent;
-  bool m_IsStartClosed;
-  bool m_bStartHiddenAndMinimized;
+  CSystemTray *m_pTrayIcon; // DboxMain needs to be constructed first
+  DBSTATE m_TrayLockedState;
+
+  HICON m_LockedIcon;
+  HICON m_UnLockedIcon;
+  HICON m_ClosedIcon;
+  HICON m_IndexIcon;
+
+  InitType m_InitMode = NormalInit;
+  bool m_IsStartNoDB;
   bool m_IsListView;
   bool m_bAlreadyToldUserNoSave;
   bool m_bPasswordColumnShowing;
   bool m_bInRefresh, m_bInRestoreWindows;
   bool m_bDBInitiallyRO;
   bool m_bViaDCA;
+  bool m_bFindBarShown;
   int m_iDateTimeFieldWidth;
   int m_nColumns;
   int m_nColumnIndexByOrder[CItem::LAST_DATA];
@@ -816,6 +867,9 @@ private:
  
   // Here lies the mapping between an entry and its place on the GUI (Tree/List views)
   std::map<pws_os::CUUID, DisplayInfo, std::less<pws_os::CUUID> > m_MapEntryToGUI;
+
+  // Mapping between visible dependants and their base (might not be visible if filter active)
+  std::vector<int> m_vGotoDependants;
   
   // Set link between entry and GUI
   void SetEntryGUIInfo(const CItemData &ci, const DisplayInfo &di)
@@ -835,7 +889,7 @@ private:
   // Split up OnOK to support various ways to exit
   int SaveDatabaseOnExit(const SaveType saveType);
   void SavePreferencesOnExit();
-  void CleanUpAndExit(const bool bNormalExit = true);
+  void CleanUpAndExit();
 
   void RegisterSessionNotification(const bool bRegister);
   bool LockDataBase();
@@ -864,12 +918,12 @@ private:
   void SetUpInitialMenuStrings();
   void UpdateAccelTable();
   void SetupSpecialShortcuts();
+  void UpdateEditViewAccelerator(bool isRO);
   bool ProcessLanguageMenu(CMenu *pPopupMenu);
   void DoBrowse(const bool bDoAutotype, const bool bSendEmail);
   bool GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected);
   void ChangeSubtreeEntriesProtectStatus(const UINT nID);
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSpecial = false);
-  void UpdateSystemMenu();
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
   void CancelPendingPasswordDialog();
 
@@ -882,7 +936,6 @@ private:
   void UpdateGroupsInGUI(const std::vector<StringX> &vGroups);
   StringX GetListViewItemText(CItemData &ci, const int &icolumn);
   void DoCommand(Command *pcmd = NULL, PWScore *pcore = NULL, const bool bUndo = true);
-  bool IsCharacterSupported(std::wstring &sProtect);
   
   static const struct UICommandTableEntry {
     UINT ID;
@@ -941,6 +994,9 @@ private:
   PSBR_CREATE m_pfcnShutdownBlockReasonCreate;
   PSBR_DESTROY m_pfcnShutdownBlockReasonDestroy;
 
+  // For Layered Windows
+  PSLWA m_pfcnSetLayeredWindowAttributes;
+
   // Delete/Rename/AutoType Shortcuts
   WPARAM m_wpDeleteMsg, m_wpDeleteKey;
   WPARAM m_wpRenameMsg, m_wpRenameKey;
@@ -948,6 +1004,7 @@ private:
   bool m_bDeleteCtrl, m_bDeleteShift;
   bool m_bRenameCtrl, m_bRenameShift;
   bool m_bAutotypeCtrl, m_bAutotypeShift;
+  bool m_bOnStartupTransparancyEnabled;
 
   // Do Autotype
   bool m_bInAT;
@@ -981,6 +1038,11 @@ private:
   int m_ilastaction;  // Last action
   void SetDragbarToolTips();
 
+  // Database index on Tray icon
+  int m_iDBIndex;
+  COLORREF m_DBLockedIndexColour, m_DBUnlockedIndexColour;
+  HANDLE m_hMutexDBIndex;
+
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?
   struct st_SaveGUIInfo {
@@ -996,9 +1058,11 @@ private:
 
     st_SaveGUIInfo(const st_SaveGUIInfo &that)
     : blSelectedValid(that.blSelectedValid), btSelectedValid(that.btSelectedValid),
-      btGroupValid(that.btGroupValid), vGroupDisplayState(that.vGroupDisplayState),
+      btGroupValid(that.btGroupValid), 
       lSelected(that.lSelected), tSelected(that.tSelected),
-      sxGroupName(that.sxGroupName) {}
+      sxGroupName(that.sxGroupName),
+      vGroupDisplayState(that.vGroupDisplayState)
+      {}
 
     st_SaveGUIInfo &operator=(const st_SaveGUIInfo &that)
     {

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -25,7 +25,7 @@ struct UnknownFieldEntry {
   size_t st_length;
   unsigned char * uc_pUField;
 
-  UnknownFieldEntry() :uc_Type(0), st_length(0), uc_pUField(0) {}
+  UnknownFieldEntry() :uc_Type(0), st_length(0), uc_pUField(nullptr) {}
   UnknownFieldEntry(unsigned char t, size_t s, unsigned char *d);
   ~UnknownFieldEntry();
   // copy c'tor and assignment operator, standard idioms

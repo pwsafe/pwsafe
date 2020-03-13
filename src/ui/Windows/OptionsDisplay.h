@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,6 +13,9 @@
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDisplay dialog
 #include "Options_PropertyPage.h"
+#include "TBMStatic.h"
+#include "Fonts.h"
+
 #include "resource.h"
 
 class COptionsDisplay : public COptions_PropertyPage
@@ -40,13 +43,16 @@ protected:
   BOOL m_WordWrapNotes;
   BOOL m_PreExpiryWarn;
   BOOL m_HighlightChanges;
+  BOOL m_EnableTransparency;
   int m_TreeDisplayStatusAtOpen;
   int m_PreExpiryWarnDays;
-  int m_TrayIconColour;
+  int m_PercentTransparency;
   //}}AFX_DATA
 
   CButtonExtn m_chkbox[4];
   CButtonExtn m_radiobtn[3];
+
+  CTBMStatic m_Help1;
 
   // Overrides
   // ClassWizard generate virtual function overrides
@@ -65,6 +71,7 @@ protected:
   afx_msg void OnHelp();
   afx_msg void OnPreWarn();
   afx_msg void OnDisplayUserInTree();
+  afx_msg void OnEnabletransparency();
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   //}}AFX_MSG
 

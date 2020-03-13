@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -34,7 +34,7 @@
 
 static bool SafeCompare(const TCHAR *v1, const TCHAR *v2)
 {
-  return (v1 != NULL && v2 != NULL && stringT(v1) == v2);
+  return (v1 != nullptr && v2 != nullptr && stringT(v1) == v2);
 }
 
 CheckVersion::CheckStatus
@@ -44,12 +44,12 @@ CheckVersion::CheckLatestVersion(const stringT &xml, stringT &latest) const
   pugi::xml_document doc; 
   pugi::xml_parse_result result = doc.load(xml.c_str());
   if (!result)
-    return CANT_READ;
+    return CheckStatus::CANT_READ;
 
   pugi::xml_node Root = doc.first_child();
 
   if (!Root || !SafeCompare(Root.name(), _T("VersionInfo")))
-    return CANT_READ;
+    return CheckStatus::CANT_READ;
 
   for (pugi::xml_node_iterator it = Root.begin(); it != Root.end(); ++it) {
     if (SafeCompare(it->name(), _T("Product"))) {
@@ -84,12 +84,12 @@ CheckVersion::CheckLatestVersion(const stringT &xml, stringT &latest) const
                   Format(latest, L"PasswordSafe V%d.%02d.%02d (%s)",
                          xmajor, xminor, xbuild, xrevision);
                 }
-                return NEWER_AVAILABLE;
+                return CheckStatus::NEWER_AVAILABLE;
             }
-            return UP2DATE;
+            return CheckStatus::UP2DATE;
         } // handled our variant
       } // Product name == PasswordSafe
     } // Product element
   } // IterateChildren
-  return CANT_READ;
+  return CheckStatus::CANT_READ;
 }

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -9,8 +9,6 @@
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "PWPropertySheet.h"
-
-extern const wchar_t *EYE_CATCHER;
 
 IMPLEMENT_DYNAMIC(CPWPropertySheet, CPropertySheet)
 
@@ -43,12 +41,7 @@ DboxMain *CPWPropertySheet::GetMainDlg() const
 
 LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  if (GetMainDlg()->m_eye_catcher != NULL &&
-      wcscmp(GetMainDlg()->m_eye_catcher, EYE_CATCHER) == 0) {
-    GetMainDlg()->ResetIdleLockCounter(message);
-  } else
-    pws_os::Trace(L"CPWPropertySheet::WindowProc - couldn't find DboxMain ancestor\n");
-
+  GetMainDlg()->ResetIdleLockCounter(message);
   return CPropertySheet::WindowProc(message, wParam, lParam);
 }
 

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -44,11 +44,11 @@ struct st_run_impl {
     // Support Autotype with Launch Browser and Run Command
     // Try to load DLL to call back when window active for Autotype
 #if defined( _DEBUG ) || defined( DEBUG )
-    TCHAR *dll_name = _T("pws_at_D.dll");
+    const TCHAR *dll_name = _T("pws_at_D.dll");
 #else
-    TCHAR *dll_name = _T("pws_at.dll");
+    const TCHAR *dll_name = _T("pws_at.dll");
 #endif
-    m_AT_HK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
+    m_AT_HK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::loadLibraryTypes::APP));
     if (m_AT_HK_module != NULL) {
       pws_os::Trace(_T("st_run_impl::st_run_impl - AutoType DLL Loaded: OK\n"));
       pInit  = AT_PROC_BOOL(pws_os::GetFunction(m_AT_HK_module, "AT_HK_Initialise"));

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -147,12 +147,12 @@ stringT pws_os::getprocessid()
 
 typedef void (WINAPI * RtlGetVersion_FUNC) (OSVERSIONINFOEXW *);
 
-bool pws_os::RtlGetVersion(DWORD &dwMajor, DWORD &dwMinor, DWORD &dwBuild)
+static bool RtlGetVersion(DWORD &dwMajor, DWORD &dwMinor, DWORD &dwBuild)
 {
   RtlGetVersion_FUNC rtl_func;
   dwMajor = dwMinor = dwBuild = 0;
 
-  HMODULE hMod = HMODULE(pws_os::LoadLibrary(L"ntdll.dll", pws_os::LOAD_LIBRARY_SYS));
+  HMODULE hMod = HMODULE(pws_os::LoadLibrary(L"ntdll.dll", pws_os::loadLibraryTypes::SYS));
 
   if (hMod != NULL) {
     rtl_func = (RtlGetVersion_FUNC)GetProcAddress(hMod, "RtlGetVersion");

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -353,9 +353,7 @@ void DboxMain::SetUpInitialMenuStrings()
   // change shortcuts as per preferences
   std::vector<st_prefShortcut> vShortcuts(PWSprefs::GetInstance()->GetPrefShortcuts());
 
-  const size_t N = vShortcuts.size();
-  for (size_t i = 0; i < N; i++) {
-    const st_prefShortcut &stxst = vShortcuts[i];
+  for (auto &stxst : vShortcuts) {
     // User should not have these sub-entries in their config file
     if (stxst.id == ID_MENUITEM_GROUPENTER  ||
         stxst.id == ID_MENUITEM_VIEWENTRY   ||
@@ -383,7 +381,7 @@ void DboxMain::SetUpInitialMenuStrings()
 
     name += iter->second.name;
     Remove(name, L'&');
-    vShortcuts[i].Menu_Name = name;
+    stxst.Menu_Name = name;
 
     // Check not already in use (ignore if deleting current shortcut)
     if (stxst.siVirtKey != 0) {
@@ -406,26 +404,18 @@ void DboxMain::SetUpInitialMenuStrings()
       iter->second.siVirtKey  = stxst.siVirtKey;
       iter->second.cPWSModifier = stxst.cPWSModifier;
     }
-  }
+  } // user preference shortcut handling
 
   // Update Menu names for later XML comment
   PWSprefs::GetInstance()->SetPrefShortcuts(vShortcuts);
 
-  // Set up the shortcuts based on the main entry
-  // for View, Delete and Rename
-  iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDITENTRY);
-  ASSERT(iter != m_MapMenuShortcuts.end());
-  iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEWENTRY);
-  ASSERT(iter_entry != m_MapMenuShortcuts.end());
-  iter_entry->second.SetKeyFlags(iter->second);
-
   SetupSpecialShortcuts();
-
   UpdateAccelTable();
 }
 
 void DboxMain::UpdateAccelTable()
 {
+  // m)MapMenuShortcuts -> app.m_ghAccelTable
   ACCEL *pacceltbl, *pxatbl;
   int numscs(0);
   CountShortcuts cntscs;
@@ -601,15 +591,15 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                    MF_BYCOMMAND);
 
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_TOOLBAR, MF_BYCOMMAND |
-                              m_MainToolBar.IsWindowVisible() ? MF_CHECKED : MF_UNCHECKED);
+                              (m_MainToolBar.IsWindowVisible() ? MF_CHECKED : MF_UNCHECKED));
 
     bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_DRAGBAR, MF_BYCOMMAND |
-                              bDragBarState ? MF_CHECKED : MF_UNCHECKED);
+                              (bDragBarState ? MF_CHECKED : MF_UNCHECKED));
 
     // Don't show filter menu if "internal" menu active
     pPopupMenu->EnableMenuItem(ID_FILTERMENU, MF_BYCOMMAND |
-             (m_bUnsavedDisplayed || m_bExpireDisplayed || m_bFindFilterDisplayed) ? MF_GRAYED : MF_ENABLED);
+             ((m_bUnsavedDisplayed || m_bExpireDisplayed || m_bFindFilterDisplayed) ? MF_GRAYED : MF_ENABLED));
 
     pPopupMenu->CheckMenuRadioItem(ID_MENUITEM_NEW_TOOLBAR,
                                    ID_MENUITEM_OLD_TOOLBAR,
@@ -623,13 +613,13 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
 
   if (uiMenuID == ID_SUBVIEWMENU) {
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_UNSAVED, MF_BYCOMMAND |
-                              m_bUnsavedDisplayed ? MF_CHECKED : MF_UNCHECKED);
+                              (m_bUnsavedDisplayed ? MF_CHECKED : MF_UNCHECKED));
 
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_ALL_EXPIRY, MF_BYCOMMAND |
-                              m_bExpireDisplayed ? MF_CHECKED : MF_UNCHECKED);
+                              (m_bExpireDisplayed ? MF_CHECKED : MF_UNCHECKED));
 
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_FOUNDENTRIES, MF_BYCOMMAND |
-                              m_bFindFilterDisplayed ? MF_CHECKED : MF_UNCHECKED);
+                              (m_bFindFilterDisplayed ? MF_CHECKED : MF_UNCHECKED));
     goto exit;
   } // Subview
 
@@ -725,8 +715,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_REDO, tc_dummy);
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
+
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       goto exit;
     }
 
@@ -804,8 +794,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_REDO, tc_dummy);
         pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       }
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
+
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       goto exit;
     }
 
@@ -966,10 +956,22 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         case CItemData::ET_ALIAS:
         case CItemData::ET_SHORTCUT:
           // Allow going to/editing the appropriate base entry
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_GOTOBASEENTRY, tc_dummy); 
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_EDITBASEENTRY, tc_dummy);
+          if (m_bFilterActive) {
+            // If a filter is active, then might not be able to go to
+            // entry's base entry as not in Tree or List view
+            pws_os::CUUID uuidBase = pci->GetBaseUUID();
+            auto iter = m_MapEntryToGUI.find(uuidBase);
+            ASSERT(iter != m_MapEntryToGUI.end());
+            if (iter->second.list_index != -1) {
+              pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                ID_MENUITEM_GOTOBASEENTRY, tc_dummy);
+              pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                ID_MENUITEM_EDITBASEENTRY, tc_dummy);
+            } else {
+              pPopupMenu->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+              pPopupMenu->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
+            }
+          }
          break;
         default:
           ASSERT(0);
@@ -1409,34 +1411,158 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
     }
 
     const CItemData::EntryType etype_original = pci->GetEntryType();
+
+    if (pci->IsDependent()) {
+      pbci = m_core.GetBaseEntry(pci);
+    }
+
+    // Get list of UUIDs of a base's dependants.
+    // Add entry's [g:t:u] and its display position into a map, which will
+    // sort the entries.
+    UUIDVector tlist;
+    std::map<StringX, int> mapDependants;
+    int iMaxVisibleEntries(0);
+
+    if (etype_original == CItemData::ET_SHORTCUTBASE || etype_original == CItemData::ET_ALIASBASE) {
+      m_core.GetAllDependentEntries(pci->GetUUID(), tlist,
+        etype_original == CItemData::ET_SHORTCUTBASE ? CItemData::ET_SHORTCUT : CItemData::ET_ALIAS);
+
+      for (size_t i = 0; i < tlist.size(); i++) {
+        ItemListIter iter = Find(tlist[i]);
+        DisplayInfo *pdi = GetEntryGUIInfo(iter->second, true);
+
+        // Check in Tree (filter may be active and so may not be there)
+        int index = pdi->list_index;
+        if (pdi == NULL) {
+          index = -1;
+        } else {
+          iMaxVisibleEntries++;
+        }
+
+        StringX sxGroup = iter->second.GetGroup();
+        StringX sxTitle = iter->second.GetTitle();
+        StringX sxUser = iter->second.GetUser();
+        StringX sxEntry;
+        Format(sxEntry, L"\xab%s\xbb \xab%s\xbb \xab%s\xbb", sxGroup.c_str(),
+          sxTitle.c_str(), sxUser.c_str());
+
+        // Add to map which will sort by entry name
+        mapDependants.insert(make_pair(sxEntry, pdi->list_index));
+      }
+    }
+
+    // Set up "Go to Aliases/Shortcuts"
+    int nID = ID_MENUITEM_GOTODEPENDANT1;
+    m_vGotoDependants.clear();
+
+    // Find popup menu for this - not can't have a command ID for context menu
+    // popups and so must go by position. This is after "Edit Base Entry"
+    int isubmenu_pos = app.FindMenuItem(pPopup, ID_MENUITEM_EDITBASEENTRY) + 1;
+
+    // Get pointer to this popup
+    CMenu *pGotoDpdPopup = pPopup->GetSubMenu(isubmenu_pos);
+
     switch (etype_original) {
-      case CItemData::ET_NORMAL:
       case CItemData::ET_SHORTCUTBASE:
+      {
+        // Need to change menu text
+        CString csMenuText1(MAKEINTRESOURCE(IDS_GOTOSHORTCUTS));
+        pPopup->ModifyMenu(isubmenu_pos, MF_BYPOSITION, 0, csMenuText1);
+
+        // Remove dummy separator in menu definition
+        pGotoDpdPopup->RemoveMenu(0, MF_BYPOSITION);
+
+        // Got through shortcuts and add to popup menu
+        // Fill the dependant vector with its corresponding position to be used
+        // by the command to select it if the user selects it
+        for (auto iter = mapDependants.begin(); iter != mapDependants.end(); iter++) {
+          StringX sxEntry = iter->first;
+
+          if (iter->second == -1 || nID > ID_MENUITEM_GOTODEPENDANTMAX) {
+            // Dependant is NOT available or reached maximum
+            pGotoDpdPopup->InsertMenu((UINT)-1, MF_BYPOSITION | MF_STRING | MF_GRAYED,
+                                      0, sxEntry.c_str());
+          } else {
+            // Dependant is visible
+            m_vGotoDependants.push_back(iter->second);
+            pGotoDpdPopup->InsertMenu((UINT)-1, MF_BYPOSITION | MF_STRING, nID, sxEntry.c_str());
+            nID++;
+          }
+        }
+
+        // As a base entry - remove menu items for a base
+        pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+        pPopup->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
+        break;
+      }
+      case CItemData::ET_NORMAL:
+        // As a normal entry - remove menu items for a base
+        pPopup->RemoveMenu(isubmenu_pos, MF_BYPOSITION);
         pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
         pPopup->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
         break;
       case CItemData::ET_ALIASBASE:
+        // Remove dummy separator in menu definition
+        pGotoDpdPopup->RemoveMenu(0, MF_BYPOSITION);
+
+        // Got throogh aliases and add to popup menu
+        // Fill the dependant vector with its corresponding position to be used
+        // by the command to select it if the user selects it
+        for (auto iter = mapDependants.begin(); iter != mapDependants.end(); iter++) {
+          StringX sxEntry = iter->first;
+          if (iter->second == -1 || nID > ID_MENUITEM_GOTODEPENDANTMAX) {
+            // Dependant is NOT available or reached maximum
+            pGotoDpdPopup->InsertMenu((UINT)-1, MF_BYPOSITION | MF_STRING | MF_GRAYED,
+              0, sxEntry.c_str());
+          } else {
+            // Dependant is visible
+            m_vGotoDependants.push_back(iter->second);
+            pGotoDpdPopup->InsertMenu((UINT)-1, MF_BYPOSITION | MF_STRING, nID, sxEntry.c_str());
+            nID++;
+          }
+        }
+
+        // As a base entry - remove menu items for a base - also can't have a shoretcut to an alias
         pPopup->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
         pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
         pPopup->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
         break;
       case CItemData::ET_ALIAS:
       case CItemData::ET_SHORTCUT:
+        pPopup->RemoveMenu(isubmenu_pos, MF_BYPOSITION);
         pPopup->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
+        if (m_bFilterActive) {
+          // If a filter is active, then might not be able to go to
+          // entry's base entry as not in Tree or List view
+          pws_os::CUUID uuidBase = pci->GetBaseUUID();
+          auto iter = m_MapEntryToGUI.find(uuidBase);
+          ASSERT(iter != m_MapEntryToGUI.end());
+          if (iter->second.list_index == -1) {
+            pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+            pPopup->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
+          }
+        } else {
+          if (m_core.IsReadOnly() || pbci->IsProtected()) {
+            CString csMenuText(MAKEINTRESOURCE(IDS_VIEWBASEENTRY));
+            pPopup->ModifyMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND, 
+                               ID_MENUITEM_EDITBASEENTRY, csMenuText);
+          }
+        }
         break;
       default:
         ASSERT(0);
     }
+
+    // Clear up list of dependant UUIDs and map between the dependant [g:t:u] and
+    // display position in list
+    tlist.clear();
+    mapDependants.clear();
 
     if (m_core.IsReadOnly() || pci->IsShortcut()) {
       pPopup->RemoveMenu(ID_MENUITEM_PROTECT, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_UNPROTECT, MF_BYCOMMAND);
     } else {
       pPopup->RemoveMenu(pci->IsProtected() ? ID_MENUITEM_PROTECT : ID_MENUITEM_UNPROTECT, MF_BYCOMMAND);
-    }
-
-    if (pci->IsDependent()) {
-      pbci = m_core.GetBaseEntry(pci);
     }
 
     bool bCopyEmail = !pci->IsFieldValueEmpty(CItemData::EMAIL, pbci);
@@ -1496,7 +1622,8 @@ void DboxMain::SetupSpecialShortcuts()
 {
   MapMenuShortcutsIter iter, iter_entry, iter_group;
 
-  // Find Delete Shortcut
+  // Set up some shortcuts based on the main entry
+
   iter = m_MapMenuShortcuts.find(ID_MENUITEM_DELETE);
 
   // Save for CTreeCtrl & CListCtrl PreTranslateMessage
@@ -1551,6 +1678,25 @@ void DboxMain::SetupSpecialShortcuts()
   }
 }
 
+void DboxMain::UpdateEditViewAccelerator(bool isRO)
+{
+  // If isRO, remove Ctrl-Enter from ID_MENUITEM_EDITENTRY, set to ID_MENUITEM_VIEWENTRY
+  // else, vice-versa
+  auto edit_iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDITENTRY);
+  ASSERT(edit_iter != m_MapMenuShortcuts.end());
+  auto view_iter = m_MapMenuShortcuts.find(ID_MENUITEM_VIEWENTRY);
+  ASSERT(view_iter != m_MapMenuShortcuts.end());
+  
+  if (isRO) {
+    view_iter->second.SetKeyFlags(edit_iter->second);
+    edit_iter->second.ClearKeyFlags();
+  } else { // !isRO
+    edit_iter->second.SetKeyFlags(view_iter->second);
+    view_iter->second.ClearKeyFlags();
+  } // !isRO
+  UpdateAccelTable();
+}
+
 bool DboxMain::ProcessLanguageMenu(CMenu *pPopupMenu)
 {
   app.GetLanguageFiles();
@@ -1576,39 +1722,37 @@ bool DboxMain::ProcessLanguageMenu(CMenu *pPopupMenu)
   // Add languages
   for (i = 0; i < app.m_vlanguagefiles.size(); i++) {
     UINT uiFlags = MF_STRING | MF_ENABLED | 
-       ((app.m_vlanguagefiles[i].xFlags & 0x80) == 0x80) ? MF_CHECKED : MF_UNCHECKED;
+       (((app.m_vlanguagefiles[i].xFlags & 0x80) == 0x80) ? MF_CHECKED : MF_UNCHECKED);
     pPopupMenu->AppendMenu(uiFlags, nID++, app.m_vlanguagefiles[i].wsLanguage.c_str());
   }
 
   return true;
 }
 
-const unsigned int DboxMain::GetMenuShortcut(const unsigned short int &siVirtKey,
+unsigned int DboxMain::GetMenuShortcut(const unsigned short int &siVirtKey,
                                              const unsigned char &cPWSModifier,
                                              StringX &sxMenuItemName)
 {
   unsigned int nControlID(0);
-  sxMenuItemName.empty();
-  MapMenuShortcutsIter inuse_iter;
+  sxMenuItemName.clear();
 
   st_MenuShortcut st_mst;
   st_mst.siVirtKey = siVirtKey;
   st_mst.cPWSModifier = cPWSModifier;
   
-  inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
-                            m_MapMenuShortcuts.end(),
-                            already_inuse(st_mst));
+  auto inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
+                                 m_MapMenuShortcuts.end(),
+                                 already_inuse(st_mst));
 
   if (inuse_iter != m_MapMenuShortcuts.end()) {
     nControlID = inuse_iter->first;
     sxMenuItemName = inuse_iter->second.name.c_str();
   }
 
-  // std::vector<st_MenuShortcut> m_ReservedShortcuts
+  // is it in the reserved shortcuts?
   if (nControlID == 0) {
-    std::vector<st_MenuShortcut>::iterator iter;
-    iter = std::find_if(m_ReservedShortcuts.begin(), m_ReservedShortcuts.end(),
-                        reserved(st_mst));
+    auto iter = std::find_if(m_ReservedShortcuts.begin(), m_ReservedShortcuts.end(),
+                             reserved(st_mst));
 
     if (iter != m_ReservedShortcuts.end()) {
       nControlID = iter->nControlID;

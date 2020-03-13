@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,11 +13,11 @@
 // such as hostname, username, pid
 //-----------------------------------------------------------------
 
-SysInfo *SysInfo::self = NULL;
+SysInfo *SysInfo::self = nullptr;
 
 SysInfo *SysInfo::GetInstance()
 {
-  if (self == NULL)
+  if (self == nullptr)
     self = new SysInfo;
   return self;
 }
@@ -25,7 +25,7 @@ SysInfo *SysInfo::GetInstance()
 void SysInfo::DeleteInstance()
 {
   delete self;
-  self = NULL;
+  self = nullptr;
 }
 
 SysInfo::SysInfo()

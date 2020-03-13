@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<title>System Tray</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control --><script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>System Tray</h2>
+
+<table class="MsoNormalTable" style="border: medium none ; border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td align="center">No database open</td>
+<td style="width: 10px;"></td>
+<td align="center">Locked database</td>
+<td style="width: 10px;"></td>
+<td align="center">Unlocked database</td>
+</tr>
+<tr>
+<td><img alt="Locked System Tray" src="images/system_tray_nodb.jpg"></td>
+<td></td>
+<td><img alt="Unlocked System Tray" src="images/system_tray_locked.jpg"></td>
+<td></td>
+<td><img alt="Locked System Tray" src="images/system_tray_unlocked.jpg"></td>
+</tr>
+</tbody>
+</table>
+
+<p>The <b>System Tray</b> context menu gives quick access to recently used entries (if the
+  database is unlocked) and to unlock the database if locked. You can
+  also use it to minimize the main <b>PasswordSafe</b> window and
+  restore it if already minimized but not locked.</p>
+
+<h3>Set Database ID</h3>
+
+<p>If you regularly keep several databases open, you may
+set a unique temporary ID (a number between 1 and 99) that will be superimposed on top of
+the System Tray icon. Setting an ID of zero will remove the number from the image.</p>
+
+<p>An ID is reserved once assigned to an open database but will be free to be used again
+either when a new ID is assigned or the database is closed. In addition, the System Tray
+tooltip shows the ID before the database name.
+
+<br>
+<br>
+
+Notes:
+<ul>
+<li>The ID is only a visual indicator. <b>PasswordSafe</b> doesn't
+  store or use this in any way.</li>
+<li>An ID can only be assigned to an opened database. When the database is closed, the ID
+is free to be assigned to another open database.</li>
+<li>The same ID can't be assigned to two open databases at the same time.</li>
+<li>The ID can only be changed when the database is unlocked.</li>
+<li>The association of an ID to a particular database is not
+  persistent (remembered), that is, you need to reassign it each time
+  the database is opened (if needed, of course).</li>
+<li>Since the color of the Windows Taskbar and Notification Area
+  varies across versions of Windows, you can set the color of the text
+  for the best contrast on your system.</li>
+<li>In the enhanced tooltip, if the database is locked, the database name will be shown between
+square brackets as shown below.</li>
+</ul>
+</p>
+
+<img alt="Database Index" src="images/database_index.jpg">
+<img alt="Database Index2" src="images/database_index2.jpg">
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+</object>
+
+</body>
+</html>

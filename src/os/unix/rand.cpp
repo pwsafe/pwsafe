@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -46,7 +46,7 @@ static void get_failsafe_rnd(char * &p, unsigned &slen)
   slen = sizeof(suseconds_t);
   p = new char[slen];
   struct timeval tv;
-  gettimeofday(&tv, NULL);
+  gettimeofday(&tv, nullptr);
   memcpy(p, &tv.tv_usec, slen);
 }
 
@@ -56,19 +56,19 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
    * Return a cryptographically strong seed
    * from /dev/random, if possible.
    *
-   * When called with p == NULL, return number of bytes currently
+   * When called with p == nullptr, return number of bytes currently
    * in entropy pool.
    * To minimize TOCTTOU, we also read the data at this time,
-   * and deliver it when called with non-NULL p.
+   * and deliver it when called with non-nullptr p.
    *
    * This implies a strict calling pattern, but hey, it's
    * our application...
    */
   const unsigned MAX_ENT_BITS = 256;
-  static char *data = NULL;
-  if (p == NULL) {
+  static char *data = nullptr;
+  if (p == nullptr) {
     delete[] data;
-    data = NULL;
+    data = nullptr;
 
     ifstream ent_avail("/proc/sys/kernel/random/entropy_avail");
     if (ent_avail) {
@@ -77,23 +77,23 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
         slen = ent_bits >= MAX_ENT_BITS ? MAX_ENT_BITS/8 : ent_bits/8;
         data = new char[slen];
         ifstream rnd;
-        rnd.rdbuf()->pubsetbuf(0, 0);
+        rnd.rdbuf()->pubsetbuf(nullptr, 0);
         rnd.open("/dev/random");
         if (rnd.read(data, slen))
           return;
         else { // trouble reading
           delete[] data;
-          data = NULL;
+          data = nullptr;
           // will get randomness from failsafe.
         }
       }
     }
     // here if we had any trouble getting data from /dev/random
     get_failsafe_rnd(data, slen);
-  } else { // called with non-NULL p, just return our hard-earned entropy
-    assert(data != NULL); // MUST call with p == NULL first!
+  } else { // called with non-nullptr p, just return our hard-earned entropy
+    assert(data != nullptr); // MUST call with p == nullptr first!
     memcpy(p, data, slen);
     delete[] data;
-    data = NULL;
+    data = nullptr;
   }
 }    

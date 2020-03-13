@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -27,15 +27,13 @@
 
 #include <algorithm>
 
-extern const TCHAR *GROUPTITLEUSERINCHEVRONS;
-
 using namespace std;
 using pws_os::CUUID;
 
 XMLFileHandlers::XMLFileHandlers()
 {
-  m_cur_entry = NULL;
-  m_cur_pwhistory_entry = NULL;
+  m_cur_entry = nullptr;
+  m_cur_pwhistory_entry = nullptr;
   m_sxElemContent = _T("");
 
   m_delimiter = _T('\0');
@@ -134,7 +132,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       if (m_bValidation)
         return false;
 
-      ASSERT(m_cur_pwhistory_entry == NULL);
+      ASSERT(m_cur_pwhistory_entry == nullptr);
       m_cur_pwhistory_entry = new pwhistory_entry;
       m_cur_pwhistory_entry->changed = _T("");
       m_cur_pwhistory_entry->oldpassword = _T("");
@@ -480,20 +478,20 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       m_cur_entry->pwhistory += buffer;
       break;
     case XLE_HISTORY_ENTRY:
-      ASSERT(m_cur_pwhistory_entry != NULL);
-      Format(buffer, _T("\xff%s\xff%04x\xff%s"),
+      ASSERT(m_cur_pwhistory_entry != nullptr);
+      Format(buffer, _T("\xff%ls\xff%04x\xff%ls"),
              m_cur_pwhistory_entry->changed.c_str(),
              m_cur_pwhistory_entry->oldpassword.length(),
              m_cur_pwhistory_entry->oldpassword.c_str());
       m_cur_entry->pwhistory += buffer;
       delete m_cur_pwhistory_entry;
-      m_cur_pwhistory_entry = NULL;
+      m_cur_pwhistory_entry = nullptr;
       break;
     case XLE_CHANGEDX:
       m_cur_pwhistory_entry->changed = m_sxElemContent;
       break;
     case XLE_OLDPASSWORD:
-      ASSERT(m_cur_pwhistory_entry != NULL);
+      ASSERT(m_cur_pwhistory_entry != nullptr);
       m_cur_pwhistory_entry->oldpassword = m_sxElemContent;
       break;
     case XLE_ENTRY_PWLENGTH:
@@ -648,7 +646,7 @@ void XMLFileHandlers::AddXMLEntries()
         cs_p = CItemData::EngFieldName(CItemData::PASSWORD);
       }
 
-      Format(cs_tp, _T("%s%s%s"), cs_t.c_str(), num == 2 ? _T(" & ") : _T(""), cs_p.c_str());
+      Format(cs_tp, _T("%ls%ls%ls"), cs_t.c_str(), num == 2 ? _T(" & ") : _T(""), cs_p.c_str());
       stringT::iterator new_end = std::remove(cs_tp.begin(), cs_tp.end(), TCHAR('\t'));
       cs_tp.erase(new_end, cs_tp.end());
 
@@ -914,7 +912,7 @@ void XMLFileHandlers::AddXMLEntries()
 
     StringX sxImportedEntry;
     // Use new group if the entries have been imported under a new level.
-    Format(sxImportedEntry, GROUPTITLEUSERINCHEVRONS,
+    Format(sxImportedEntry, PWScore::GROUPTITLEUSERINCHEVRONS,
                         sxnewgroup.c_str(), cur_entry->title.c_str(),
                         cur_entry->username.c_str());
     m_prpt->WriteLine(sxImportedEntry.c_str());
@@ -940,7 +938,7 @@ void XMLFileHandlers::AddXMLEntries()
 
         // Tell the user via the report
         StringX sxExistingEntry;
-        Format(sxExistingEntry, GROUPTITLEUSERINCHEVRONS,
+        Format(sxExistingEntry, PWScore::GROUPTITLEUSERINCHEVRONS,
                            iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(),
                            iter->second.GetUser().c_str());
 

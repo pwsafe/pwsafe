@@ -5,7 +5,7 @@
 ; first edit : poserpro
 ;---------------------------------------------------
 ; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
-; Copyright 2005-2007 Rony Shapiro <ronys@pwsafe.org>
+; Copyright 2005-2020 Rony Shapiro <ronys@pwsafe.org>
 ; 2009 extended by Karlo Van der Gucht for multiple language use
 ; 2011 extended by poserpro Traditional Chinese language
 ; This script may be redistributed and/or modified under the Artistic
@@ -47,6 +47,9 @@ LangString UNINSTALL_SHORTCUT ${LANG_TRADCHINESE} "移除程式捷徑"
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
 LangString DESC_ProgramFiles ${LANG_TRADCHINESE} "安裝執行Password Safe所須的基本檔案"
+
+; DESC_CliTool "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_TRADCHINESE} "Installs pwsafe-cli, a command line utility."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
 LangString DESC_LangSupport ${LANG_TRADCHINESE} "請選擇執行Password Safe所使用的語文"
@@ -94,6 +97,9 @@ LangString LANG_INSTALL ${LANG_TRADCHINESE} "安裝語言"
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_TRADCHINESE} "請選擇安裝的語言"
 
+; CLI_TOOL "Command-line tool"
+LangString CLI_TOOL ${LANG_TRADCHINESE} "Command-line tool"
+
 ;LANGUAGE_SUPPORT "Language Support"
 LangString LANGUAGE_SUPPORT ${LANG_TRADCHINESE} "支援語言"
 ;ENGLISH_SUPPORT "English"
@@ -125,6 +131,7 @@ LangString KOREAN_SUPPORT ${LANG_TRADCHINESE} "韓文"
 LangString CZECH_SUPPORT ${LANG_TRADCHINESE} "Czech"
 LangString TURKISH_SUPPORT ${LANG_TRADCHINESE} "Turkish"
 LangString HUNGARIAN_SUPPORT ${LANG_TRADCHINESE} "Hungarian"
+LangString SLOVENIAN_SUPPORT ${LANG_TRADCHINESE} "Slovenian"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_TRADCHINESE} "程式語言"
@@ -140,6 +147,12 @@ LangString SORRY_NO_ME ${LANG_TRADCHINESE} "抱歉，我們已經不支援Windows ME，請改
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
 LangString SORRY_NO_2K ${LANG_TRADCHINESE} "抱歉，我們已經不支援Windows 2000，請改用PasswordSafe 3.18版"
+
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_TRADCHINESE} "Password Safe Uninstall"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_TRADCHINESE} "Password Safe Help"
 
 ;=================================================================
 ; End of pwsafe_tw.lng

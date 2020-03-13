@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,13 +13,13 @@
 #define __PWSFILEV1V2_H
 
 #include "PWSfile.h"
-#include "BlowFish.h"
+#include "crypto/BlowFish.h"
 
 class PWSfileV1V2 : public PWSfile
 {
 public:
   static int CheckPasskey(const StringX &filename,
-                          const StringX &passkey, FILE *a_fd = NULL);
+                          const StringX &passkey, FILE *a_fd = nullptr);
 
   PWSfileV1V2(const StringX &filename, RWmode mode, VERSION version);
   ~PWSfileV1V2();
@@ -34,7 +34,7 @@ protected:
   virtual size_t WriteCBC(unsigned char type, const StringX &data);
 
 private:
-  PWSfileV1V2& operator=(const PWSfileV1V2&); // Do not implement
+  PWSfileV1V2& operator=(const PWSfileV1V2&) = delete; // Do not implement
   size_t ReadCBC(unsigned char &type, StringX &data);
   // crypto stuff for reading/writing files:
   unsigned char m_salt[SaltLength];

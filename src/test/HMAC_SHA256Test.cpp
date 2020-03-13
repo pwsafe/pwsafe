@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -12,8 +12,8 @@
 #include "../ui/Windows/stdafx.h"
 #endif
 
-#include "core/hmac.h"
-#include "core/sha256.h"
+#include "core/crypto/hmac.h"
+#include "core/crypto/sha256.h"
 #include "gtest/gtest.h"
 
 TEST(HMAC_SHA256Test, hmac_sha256_test)

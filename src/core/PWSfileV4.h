@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2013-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2013-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,9 +13,9 @@
 //-----------------------------------------------------------------------------
 
 #include "PWSfile.h"
-#include "TwoFish.h"
-#include "sha256.h"
-#include "hmac.h"
+#include "crypto/TwoFish.h"
+#include "crypto/sha256.h"
+#include "crypto/hmac.h"
 #include "UTF8Conv.h"
 
 #include <vector>
@@ -28,8 +28,8 @@ public:
   
   static int CheckPasskey(const StringX &filename,
                           const StringX &passkey,
-                          FILE *a_fd = NULL,
-                          unsigned char *aPtag = NULL, uint32 *nIter = NULL);
+                          FILE *a_fd = nullptr,
+                          unsigned char *aPtag = nullptr, uint32 *nIter = nullptr);
   static bool IsV4x(const StringX &filename, const StringX &passkey, VERSION &v);
 
   PWSfileV4(const StringX &filename, RWmode mode, VERSION version);
@@ -67,7 +67,7 @@ public:
     CKeyBlocks();
     CKeyBlocks(const CKeyBlocks &ckb);
     ~CKeyBlocks();
-    CKeyBlocks operator=(const CKeyBlocks &that);
+    CKeyBlocks & operator=(const CKeyBlocks &that);
     bool AddKeyBlock(const StringX &current_passkey, const StringX &new_passkey,
                      uint nHashIters = MIN_HASH_ITERATIONS);
     bool RemoveKeyBlock(const StringX &passkey); // fails if m_keyblocks.size() <= 1...
@@ -96,7 +96,7 @@ public:
     KeyBlock &at(unsigned i) {return m_kbs.at(i);}
     const KeyBlock &at(unsigned i) const {return m_kbs.at(i);}
     bool empty() const {return m_kbs.empty();}
-    unsigned size() const {return (unsigned)m_kbs.size();}
+    unsigned size() const {return static_cast<unsigned>(m_kbs.size());}
     const size_t KBLEN = PWSaltLength + sizeof(uint32) + KWLEN + KWLEN;
   };
 

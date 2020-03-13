@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -9,6 +9,8 @@
 
 // Windowsdefs.h
 //-----------------------------------------------------------------------------
+
+#define UNIQUE_PWS_GUID L"PasswordSafe-{3FE0D665-1AE6-49b2-8359-326407D56470}"
 
 // Custom message event used for system tray handling
 #define PWS_MSG_ICON_NOTIFY             (WM_APP + 10)
@@ -77,12 +79,14 @@ Timer related values (note - all documented her but some defined only where need
 #define TIMER_DRAGBAR             0x09
 /* Timer event numbers used to by ControlExtns for ListBox tooltips.  Here for doc. only
 #define TIMER_LB_HOVER            0x0A
-#define TIMER_LB_SHOWING          0x0B
+#define TIMER_LB_SHOWING          0x0B*/
 /* Timer event numbers used by StatusBar for tooltips.  Here for doc. only
 #define TIMER_SB_HOVER            0x0C
 #define TIMER_SB_SHOWING          0x0D */
 // Timer event for daily expired entries check
 #define TIMER_EXPENT              0x0E
+// Timer event number used to to poll the YubiKey when used
+#define TIMER_YUBIKEYPOLL         0x0F
 
 /*
 HOVER_TIME_ND       The length of time the pointer must remain stationary
@@ -112,3 +116,6 @@ rectangle.
 // Although this limit can be changed to up to 2GB of characters
 // (4GB memory if Unicode), it would make the database size absolutely enormous!
 #define MAXTEXTCHARS       30000
+
+// For Layered Windows
+typedef DWORD(WINAPI *PSLWA) (HWND, DWORD, BYTE, DWORD);

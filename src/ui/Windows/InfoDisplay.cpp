@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -19,15 +19,14 @@
 #include "stdafx.h"
 #include "InfoDisplay.h"
 #include "SecString.h"
+#include "winutils.h"
 
 // CInfoDisplay
 
-extern HRGN GetWorkAreaRegion();
-
 IMPLEMENT_DYNAMIC(CInfoDisplay, CWnd)
 
-CInfoDisplay::CInfoDisplay(bool use_current_monitor): m_use_current_monitor(use_current_monitor),
-  m_font(NULL), m_pTextFont(NULL)
+CInfoDisplay::CInfoDisplay(bool use_current_monitor): m_pTextFont(nullptr), 
+  m_font(nullptr), m_use_current_monitor(use_current_monitor)
 {
 }
 
@@ -109,7 +108,7 @@ void CInfoDisplay::OnPaint()
        hrgn = CreateRectRgn(mi.rcWork.left, mi.rcWork.top, mi.rcWork.right, mi.rcWork.bottom);
     }
     else
-      hrgn = GetWorkAreaRegion();
+      hrgn = WinUtil::GetWorkAreaRegion();
 
     if (hrgn != NULL) {
       // Test that all tip window is visible in the desktop rectangle.

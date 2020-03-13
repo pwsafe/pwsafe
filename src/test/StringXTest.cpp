@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -17,6 +17,8 @@
 #include "core/StringXStream.h"
 #include "os/typedefs.h"
 #include "gtest/gtest.h"
+
+using std::wstring;
 
 TEST(StringXTest, testConstructors)
 {
@@ -175,4 +177,143 @@ TEST(StringXTest, testAssign)
   StringX s2;
   s2.assign(s1);
   EXPECT_TRUE(s1 == s2);
+}
+
+
+TEST(TrimLeft, SpaceOnLeft) {
+  wstring s{L" abc"};
+  EXPECT_EQ(TrimLeft(s), L"abc");
+  EXPECT_EQ(s, L"abc");
+}
+
+TEST(TrimLeft, SpaceOnRight) {
+  wstring s{L"abc "};
+  EXPECT_EQ(TrimLeft(s), L"abc ");
+  EXPECT_EQ(s,  L"abc ");
+}
+
+TEST(TrimLeft, SpaceOnBothSides) {
+  wstring s{L" abc "};
+  EXPECT_EQ(TrimLeft(s), L"abc ");
+  EXPECT_EQ(s,  L"abc ");
+}
+
+TEST(TrimLeft, SpaceInMiddle) {
+  wstring s{L"ab cd"};
+ EXPECT_EQ(TrimLeft(s), L"ab cd");
+ EXPECT_EQ(s, L"ab cd");
+}
+
+
+TEST(TrimLeft, SpaceInMiddleAndLeft) {
+  wstring s{L" ab cd"};
+  EXPECT_EQ(TrimLeft(s), L"ab cd");
+  EXPECT_EQ(s, L"ab cd");
+}
+
+
+TEST(TrimLeft, SpaceInMiddleAndRight) {
+  wstring s{L"ab cd "};
+  EXPECT_EQ(TrimLeft(s), L"ab cd ");
+  EXPECT_EQ(s, L"ab cd ");
+}
+
+TEST(TrimLeft, SpaceInLeftMiddleAndRight) {
+  wstring s{L" ab cd "};
+  EXPECT_EQ(TrimLeft(s), L"ab cd ");
+  EXPECT_EQ(s, L"ab cd ");
+}
+
+TEST(TrimLeft, AllSpaces) {
+  wstring s{L" "};
+  EXPECT_EQ(TrimLeft(s), L"");
+  EXPECT_EQ(s, L"");
+}
+
+TEST(TrimLeft, EmptyString) {
+  wstring s{L""};
+  EXPECT_EQ(TrimLeft(s), L"");
+  EXPECT_EQ(s, L"");
+}
+
+/////////////// TrimRight ////////////////////
+
+TEST(TrimRight, SpaceOnRight) {
+  wstring s{L"abc "};
+ EXPECT_EQ(TrimRight(s), L"abc");
+ EXPECT_EQ(s, L"abc");
+}
+
+TEST(TrimRight, SpaceOnBothSides) {
+  wstring s{L" abc "};
+  EXPECT_EQ(TrimRight(s), L" abc");
+  EXPECT_EQ(s, L" abc");
+}
+
+TEST(TrimRight, SpaceInMiddle) {
+  wstring s{L"ab cd"};
+  EXPECT_EQ(TrimRight(s), L"ab cd");
+  EXPECT_EQ(s, L"ab cd");
+}
+
+TEST(TrimRight, SpaceInMiddleAndLeft) {
+  wstring s{L" ab cd"};
+  EXPECT_EQ(TrimRight(s), L" ab cd");
+  EXPECT_EQ(s, L" ab cd");
+}
+
+TEST(TrimRight, SpaceInMiddleAndRight) {
+  wstring s{L"ab cd "};
+  EXPECT_EQ(TrimRight(s), L"ab cd");
+  EXPECT_EQ(s, L"ab cd");
+}
+
+TEST(TrimRight, AllSpaces) {
+  wstring s{L" "};
+  EXPECT_EQ(TrimRight(s), L"");
+  EXPECT_EQ(s, L"");
+}
+
+TEST(TrimRight, EmptyString) {
+  wstring s{L""};
+  EXPECT_EQ(TrimRight(s), L"");
+  EXPECT_EQ(s, L"");
+}
+
+///////////// trim //////////////////////
+
+TEST(trim, SpaceOnBothSides) {
+  wstring s{L" abcd "};
+  EXPECT_EQ(Trim(s), L"abcd");
+  EXPECT_EQ(s, L"abcd");
+}
+
+TEST(trim, SpaceOnLeft) {
+  wstring s{L" abc"};
+  EXPECT_EQ(Trim(s), L"abc");
+  EXPECT_EQ(s, L"abc");
+}
+
+TEST(trim, SpaceOnRight) {
+  wstring s{L"abc "};
+  EXPECT_EQ(Trim(s), L"abc");
+  EXPECT_EQ(s, L"abc");
+}
+
+TEST(trim, SpaceInMiddle) {
+  wstring s{L"ab cd"};
+  EXPECT_EQ(Trim(s), L"ab cd");
+  EXPECT_EQ(s, L"ab cd");
+}
+
+TEST(trim, AllSpaces) {
+  wstring s{L" "};
+  EXPECT_EQ(Trim(s), L"");
+  EXPECT_EQ(s, L"");
+}
+
+TEST(trim, EmptyString) {
+  wstring s{L""};
+  EXPECT_EQ(Trim(s), L"");
+  EXPECT_EQ(s, L"");
 }

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -24,7 +24,7 @@ static BOOLEAN (APIENTRY *pfnGetRandomData)(void*, ULONG) = NULL;
 
 bool pws_os::InitRandomDataFunction()
 {
-  HMODULE hLib = HMODULE(pws_os::LoadLibrary(_T("ADVAPI32.DLL"), LOAD_LIBRARY_SYS));
+  HMODULE hLib = HMODULE(pws_os::LoadLibrary(_T("ADVAPI32.DLL"), loadLibraryTypes::SYS));
 
   BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG) = NULL;
   if (hLib != NULL) {
@@ -55,6 +55,10 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
     slen = sizeof(t) + sizeof(pid) + sizeof(ticks);
   } else {
     ASSERT(slen == sizeof(t) + sizeof(pid) + sizeof(ticks));
+
+    // BR1475 - if we have a good crypto source, use it here too.
+    if ((pfnGetRandomData != nullptr) && (*pfnGetRandomData)(p, slen) == TRUE)
+      return; // adding a time-based "seed" is wrong when using RtlGenRandom
 
     SYSTEMTIME st;
     struct tm tms;

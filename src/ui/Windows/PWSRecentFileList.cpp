@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -9,6 +9,7 @@
 #include <afxadv.h>
 
 #include "PWSRecentFileList.h"
+#include "winutils.h"
 #include "core/PWSprefs.h"
 #include "os/file.h"
 #include "resource2.h" // for ID_FILE_MRU_*
@@ -47,7 +48,6 @@ void CPWSRecentFileList::ReadList()
 
 void CPWSRecentFileList::WriteList()
 {
-  extern void RelativizePath(std::wstring &);
   PWSprefs *pref = PWSprefs::GetInstance();
   // writes to registry or config file
   if (pref->IsUsingRegistry()) {
@@ -61,7 +61,7 @@ void CPWSRecentFileList::WriteList()
       sMRUFiles[i] = (*this)[i];
       if (!sMRUFiles[i].empty()) {
         Trim(sMRUFiles[i]);
-        RelativizePath(sMRUFiles[i]);
+        WinUtil::RelativizePath(sMRUFiles[i]);
       }
     }
 

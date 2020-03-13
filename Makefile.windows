@@ -32,7 +32,7 @@ MKDIR := /usr/bin/mkdir -p
 TAR := /usr/bin/tar
 SED := /usr/bin/sed
 ZIP := /usr/bin/zip
-GIT := "/cygdrive/c/Program Files (x86)/Git/bin/git"
+GIT := /usr/bin/git
 GPG := /usr/bin/gpg
 GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
 SHA1SUM := /usr/bin/sha1sum
@@ -58,7 +58,7 @@ POT_FILE := $(I18N_DIR)/pwsafe.pot
 HELP_DIR := ./help
 BIN_DIR := ./build/bin/pwsafe/release
 BIN_DIR_64 := ./build/bin/pwsafe/release64
-TMPDIR := /cygdrive/c/tmp
+TMPDIR := /tmp
 RELNOTES := $(CURDIR)/docs/ReleaseNotes.txt
 
 XMLS := $(foreach i,\
@@ -75,14 +75,14 @@ I18N_DLLS_64 := $(foreach i,\
 								CZ DE ES PL RU SV ZH FR DA KO NL,\
 								$(I18N_DLL_DIR_64)/pwsafe$(i).dll)
 
-BIN_MANIFEST = README.txt docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
+BIN_MANIFEST = README.md docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
     $(XMLS) \
-		docs/ChangeLog.txt $(BIN_DIR)/pwsafe.exe $(BIN_DIR)/pws_at.dll \
+		docs/ChangeLog.txt $(BIN_DIR)/pwsafe.exe $(BIN_DIR)/pwsafe-cli.exe $(BIN_DIR)/pws_at.dll \
 		$(BIN_DIR)/pws_osk.dll help/default/pwsafe.chm \
 		docs/pad_file.xml
-BIN_MANIFEST_64 = README.txt docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
+BIN_MANIFEST_64 = README.md docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
     $(XMLS) \
-		docs/ChangeLog.txt $(BIN_DIR_64)/pwsafe.exe $(BIN_DIR_64)/pws_at.dll \
+		docs/ChangeLog.txt $(BIN_DIR_64)/pwsafe.exe $(BIN_DIR_64)/pwsafe-cli.exe $(BIN_DIR_64)/pws_at.dll \
 		$(BIN_DIR_64)/pws_osk.dll help/default/pwsafe.chm \
 		docs/pad_file.xml
 
@@ -110,7 +110,7 @@ endif
 
 .PHONY: all release bin-release bin-release-64 src-release installables signatures \
 	upload upload-sf upload-github upload-latest sha1sums msi msi-64 nsis nsis-64 \
-	update-pos i18n save-map save-map-64 help git-tag build
+	update-pos i18n save-map save-map-64 help git-tag build cmpsrc-github
 
 all: help release installables signatures sha1sums
 
@@ -157,6 +157,21 @@ endif
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe64-$(RELEASENAME)-map+pdb.zip \
 			-f pwsafe64-$(RELEASENAME)-map+pdb.zip)
 	(cd docs; $(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n ReleaseNotes.txt -f ReleaseNotes.txt)
+
+# Following needed because GitHub creates its own tar.gz and .zip files for a release
+# and we need to verify those before signing them
+cmpsrc-github:
+	(cd $(TMPDIR); unzip -q $(RELEASEDIR)/$(SRCRELNAME).zip)
+	./Misc/sighlp_cmp.py -f ChangeLog -f pwsafe.pot -f version.h -v 0 -s $(TMPDIR)/$(RELEASENAME).zip \
+												https://github.com/pwsafe/$(GITHUB_REPO)/archive/$(RELEASENAME).zip \
+												$(TMPDIR)/pwsafe-$(RELEASENAME)-src/ && $(GPG_SIGN) $(TMPDIR)/$(RELEASENAME).zip \
+												&& $(RM) $(TMPDIR)/$(RELEASENAME).zip
+	./Misc/sighlp_cmp.py -f ChangeLog -f pwsafe.pot -f version.h -v 0 -s $(TMPDIR)/$(RELEASENAME).tar.gz \
+												https://github.com/pwsafe/$(GITHUB_REPO)/archive/$(RELEASENAME).tar.gz \
+												$(TMPDIR)/pwsafe-$(RELEASENAME)-src/ && $(GPG_SIGN) $(TMPDIR)/$(RELEASENAME).tar.gz \
+												&& $(RM) $(TMPDIR)/$(RELEASENAME).tar.gz
+	@$(RM) -rf $(TMPDIR)/pwsafe-$(RELEASENAME)-src/
+	@echo "GitHub source signature files ready to upload from $(TMPDIR)"
 
 upload-latest: latest.xml
 	echo "cd public_html" > putlatest.tmp

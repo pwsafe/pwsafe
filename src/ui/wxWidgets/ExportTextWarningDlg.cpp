@@ -1,20 +1,17 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file editshortcut.cpp
+/** \file ExportTextWarningDlg.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
 
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
@@ -40,23 +37,21 @@
 
 enum { ID_COMBINATION = 100, ID_VKBD, ID_LINE_DELIMITER, ID_ADVANCED };
 
-IMPLEMENT_CLASS( CExportTextWarningDlgBase, wxDialog )
+IMPLEMENT_CLASS( ExportTextWarningDlgBase, wxDialog )
 
-BEGIN_EVENT_TABLE( CExportTextWarningDlgBase, wxDialog )
-  EVT_BUTTON( ID_ADVANCED, CExportTextWarningDlgBase::OnAdvancedSelection )
+BEGIN_EVENT_TABLE( ExportTextWarningDlgBase, wxDialog )
+  EVT_BUTTON( ID_ADVANCED, ExportTextWarningDlgBase::OnAdvancedSelection )
 #ifndef NO_YUBI
-  EVT_BUTTON( ID_YUBIBTN, CExportTextWarningDlgBase::OnYubibtnClick )
-  EVT_TIMER(POLLING_TIMER_ID, CExportTextWarningDlgBase::OnPollingTimer)
+  EVT_BUTTON( ID_YUBIBTN, ExportTextWarningDlgBase::OnYubibtnClick )
+  EVT_TIMER(POLLING_TIMER_ID, ExportTextWarningDlgBase::OnPollingTimer)
 #endif
 END_EVENT_TABLE()
 
-CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxEmptyString,
+ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxEmptyString,
                       wxDefaultPosition, wxDefaultSize,
                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),
-  selCriteria(new SelectionCriteria), m_combinationEntry(NULL), m_YubiBtn(NULL), m_yubiStatusCtrl(NULL), m_pollingTimer(NULL)
+  selCriteria(new SelectionCriteria), m_combinationEntry(nullptr), m_pollingTimer(nullptr)
 {
-  enum { TopMargin = 20, BottomMargin = 20, SideMargin = 30, RowSeparation = 10, ColSeparation = 20};
-
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
   dlgSizer->AddSpacer(TopMargin);
 
@@ -72,7 +67,7 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
   wxBoxSizer* pwdCtrl = new wxBoxSizer(wxHORIZONTAL);
   pwdCtrl->Add(new wxStaticText(this, wxID_ANY, _("Safe Combination:")));
   pwdCtrl->AddSpacer(ColSeparation);
-  m_combinationEntry = new CSafeCombinationCtrl(this, wxID_ANY, &passKey);
+  m_combinationEntry = new SafeCombinationCtrl(this, wxID_ANY, &passKey);
   pwdCtrl->Add(m_combinationEntry, wxSizerFlags().Expand().Proportion(1));
   dlgSizer->Add(pwdCtrl, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
 #ifndef NO_YUBI
@@ -91,7 +86,7 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
 
   delimiter = wxT('\xbb');
   wxTextValidator delimValidator(wxFILTER_EXCLUDE_CHAR_LIST, &delimiter);
-  const wxChar* excludes[] = {wxT("\""), 0};
+  const wxChar* excludes[] = {wxT("\""), nullptr};
   delimValidator.SetExcludes(wxArrayString(1, excludes));
   wxBoxSizer* delimRow = new wxBoxSizer(wxHORIZONTAL);
   delimRow->Add(new wxStaticText(this, wxID_ANY, _("Line delimiter in Notes field:")));
@@ -119,17 +114,17 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
 #ifndef NO_YUBI
   SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
-  m_pollingTimer->Start(CYubiMixin::POLLING_INTERVAL);
+  m_pollingTimer->Start(YubiMixin::POLLING_INTERVAL);
 #endif
 }
 
-CExportTextWarningDlgBase::~CExportTextWarningDlgBase()
+ExportTextWarningDlgBase::~ExportTextWarningDlgBase()
 {
   delete selCriteria;
   delete m_pollingTimer;
 }
 
-void CExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )
+void ExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )
 {
   UNREFERENCED_PARAMETER(evt);
   DoAdvancedSelection();
@@ -140,7 +135,7 @@ void CExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-void CExportTextWarningDlgBase::OnYubibtnClick( wxCommandEvent& /* event */ )
+void ExportTextWarningDlgBase::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
 
@@ -155,10 +150,10 @@ void CExportTextWarningDlgBase::OnYubibtnClick( wxCommandEvent& /* event */ )
   }
 }
 
-void CExportTextWarningDlgBase::OnPollingTimer(wxTimerEvent &evt)
+void ExportTextWarningDlgBase::OnPollingTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == POLLING_TIMER_ID) {
-    HandlePollingTimer(); // in CYubiMixin
+    HandlePollingTimer(); // in YubiMixin
   }
 }
 #endif

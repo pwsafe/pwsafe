@@ -5,7 +5,7 @@
 ; first edit : Karlo Van der Gucht
 ;---------------------------------------------------
 ; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
-; Copyright 2005-2007 Rony Shapiro <ronys@pwsafe.org>
+; Copyright 2005-2020 Rony Shapiro <ronys@pwsafe.org>
 ; 2009 extended by Karlo Van der Gucht for multiple language use
 ; 2010 extended by Karlo Van der Gucht Danish language
 ; This script may be redistributed and/or modified under the Artistic
@@ -47,6 +47,9 @@ LangString UNINSTALL_SHORTCUT ${LANG_SPANISH} "Menú desinstalar"
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
 LangString DESC_ProgramFiles ${LANG_SPANISH} "Instala los archivos imprescindibles para ejecutar Password Safe"
+
+; DESC_CliTool "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_SPANISH} "Installs pwsafe-cli, a command line utility."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
 LangString DESC_LangSupport ${LANG_SPANISH} "Por favor, selecciona el idioma(s) que usará PasswordSafe."
@@ -94,6 +97,9 @@ LangString LANG_INSTALL ${LANG_SPANISH} "Lenguaje de instalación"
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_SPANISH} "Por favor, selecciona el lenguaje de la instalación"
 
+; CLI_TOOL "Command-line tool"
+LangString CLI_TOOL ${LANG_SPANISH} "Command-line tool"
+
 ; LANGUAGE_SUPPORT "Language Support"
 LangString LANGUAGE_SUPPORT ${LANG_SPANISH} "Idioma de asistencia"
 ; ENGLISH_SUPPORT "English"
@@ -125,6 +131,8 @@ LangString KOREAN_SUPPORT ${LANG_SPANISH} "Coreano"
 LangString CZECH_SUPPORT ${LANG_SPANISH} "Czech"
 LangString TURKISH_SUPPORT ${LANG_SPANISH} "Turco"
 LangString HUNGARIAN_SUPPORT ${Lang_Spanish} "Húngaro"
+LangString SLOVENIAN_SUPPORT ${Lang_Spanish} "Sloveno"
+
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_SPANISH} "Idioma del programa"
 
@@ -139,6 +147,12 @@ LangString SORRY_NO_ME ${LANG_SPANISH} "No hay soporte para Windows ME. Prueba c
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
 LangString SORRY_NO_2K ${LANG_SPANISH} "No hay soporte para Windows 2000. Prueba con PasswordSafe 3.18"
+
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_SPANISH} "Password Safe Uninstall"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_SPANISH} "Password Safe Help"
 
 ;=================================================================
 ; End of pwsafe_es.lng

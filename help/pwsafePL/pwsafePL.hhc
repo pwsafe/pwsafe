@@ -10,11 +10,11 @@
 <UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Witamy">
-		<param name="Local" value="html\Welcome.html">
+		<param name="Local" value="html/Welcome.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Password Safe - informacje">
-		<param name="Local" value="html\about_pws.html">
+		<param name="Local" value="html/about_pws.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Rozpoczynanie pracy">
@@ -22,15 +22,15 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Tworzenie i otwieranie sejfu">
-			<param name="Local" value="html\create_new_db.html">
+			<param name="Local" value="html/create_new_db.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="U&iquest;ywanie przechowywanych hase&sup3;">
-			<param name="Local" value="html\retrieve_pwd.html">
+			<param name="Local" value="html/retrieve_pwd.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Aktualizacja z poprzedniej wersji">
-			<param name="Local" value="html\upgrade_from_v1x.html">
+			<param name="Local" value="html/upgrade_from_v1x.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -39,47 +39,47 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="S&sup3;owo na temat has&sup3;a g&sup3;&oacute;wnego">
-			<param name="Local" value="html\about_combinations.html">
+			<param name="Local" value="html/about_combinations.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Tworzenie i otwieranie sejfu">
-			<param name="Local" value="html\create_new_db.html">
+			<param name="Local" value="html/create_new_db.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Nazwy u&iquest;ytkownik&oacute;w, has&sup3;a i grupy">
-			<param name="Local" value="html\entering_pwd.html">
+			<param name="Local" value="html/entering_pwd.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Ustawianie polityki hase&sup3;">
-			<param name="Local" value="html\password_policies.html">
+			<param name="Local" value="html/password_policies.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Zmienianie hase&sup3; g&sup3;&oacute;wnych">
-			<param name="Local" value="html\change_combo.html">
+			<param name="Local" value="html/change_combo.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="U&iquest;ywanie automatycznego uzupe&sup3;niania">
-			<param name="Local" value="html\autotype.html">
+			<param name="Local" value="html/autotype.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Tworzenie kopii zapasowych i przywracanie baz danych">
-			<param name="Local" value="html\backup_and_restore.html">
+			<param name="Local" value="html/backup_and_restore.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Automatyczne poœrednie kopie zapasowe">
-			<param name="Local" value="html\backups_tab.html">
+			<param name="Local" value="html/backups_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Improtowanie wpis&oacute;w">
-			<param name="Local" value="html\import.html">
+			<param name="Local" value="html/import.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Eksportowanie wpis&oacute;w">
-			<param name="Local" value="html\export.html">
+			<param name="Local" value="html/export.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Parametry wiersza polece&ntilde;">
-			<param name="Local" value="html\cli.html">
+			<param name="Local" value="html/cli.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -88,27 +88,27 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Menu File">
-			<param name="Local" value="html\file_menu.html">
+			<param name="Local" value="html/file_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Menu Edit">
-			<param name="Local" value="html\edit_menu.html">
+			<param name="Local" value="html/edit_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Menu View">
-			<param name="Local" value="html\view_menu.html">
+			<param name="Local" value="html/view_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Menu Manage">
-			<param name="Local" value="html\manage_menu.html">
+			<param name="Local" value="html/manage_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Menu Help">
-			<param name="Local" value="html\help_menu.html">
+			<param name="Local" value="html/help_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Pasek narz&ecirc;dzi">
-			<param name="Local" value="html\menu_toolbar.html">
+			<param name="Local" value="html/menu_toolbar.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -117,7 +117,7 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Napisy ko&ntilde;cowe">
-			<param name="Local" value="html\credits.html">
+			<param name="Local" value="html/credits.html">
 			</OBJECT>
 	</UL>
 </UL>

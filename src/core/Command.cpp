@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -45,8 +45,8 @@
 using pws_os::CUUID;
 
 Command::Command(CommandInterface *pcomInt)
-:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0), m_CommandDBChange(NONE),
-   m_CommandChangeType(NONE), m_bInMultiCommand(false)
+:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_bInMultiCommand(false),
+   m_RC(0), m_CommandChangeType(NONE), m_CommandDBChange(NONE)
 {
 }
 
@@ -59,7 +59,7 @@ void Command::SaveDBInformation()
   // Currently only modified nodes are dealt with - could add any other DB information
   // at a later date if required
   // right predicate's only relevant for nested MultiCommands
-  if (!InMultiCommand() || (dynamic_cast<MultiCommands *>(this) != NULL)) {
+  if (!InMultiCommand() || (dynamic_cast<MultiCommands *>(this) != nullptr)) {
     // Only do this if executed outside a MultiCommand or it is the Multicommand itself
     // We could change an entry and so here is where we save DB information
     // just in case.  Currently only modified nodes.
@@ -73,7 +73,7 @@ void Command::RestoreDBInformation()
   // Currently only modified nodes are dealt with - could add any other DB information
   // at a later date if required
   // right predicate's only relevant for nested MultiCommands
-  if (!InMultiCommand() || (dynamic_cast<MultiCommands *>(this) != NULL)) {
+  if (!InMultiCommand() || (dynamic_cast<MultiCommands *>(this) != nullptr)) {
     // Get current modified nodes vector
     std::vector<StringX> vModifiedNodes = m_pcomInt->GetModifiedNodes();
 
@@ -134,7 +134,7 @@ int MultiCommands::Execute()
   std::vector<Command *>::iterator cmd_Iter;
 
   for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
-    if (*cmd_Iter != NULL && (*cmd_Iter)->IsEntryChangeType()) {
+    if (*cmd_Iter != nullptr && (*cmd_Iter)->IsEntryChangeType()) {
       // We could change an entry and so here is where we save DB information
       // just in case.  Currently only modified nodes.
       SaveDBInformation();
@@ -144,7 +144,7 @@ int MultiCommands::Execute()
 
   for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
     int rc(-1);
-    if (*cmd_Iter != NULL) {
+    if (*cmd_Iter != nullptr) {
       rc = (*cmd_Iter)->Execute();
 
       if ((*cmd_Iter)->WasDBChanged())
@@ -161,12 +161,12 @@ void MultiCommands::Undo()
   std::vector<Command *>::reverse_iterator cmd_rIter;
 
   for (cmd_rIter = m_vpcmds.rbegin(); cmd_rIter != m_vpcmds.rend(); cmd_rIter++) {
-    if (*cmd_rIter != NULL)
+    if (*cmd_rIter != nullptr)
       (*cmd_rIter)->Undo();
   }
 
   for (cmd_rIter = m_vpcmds.rbegin(); cmd_rIter != m_vpcmds.rend(); cmd_rIter++) {
-    if (*cmd_rIter != NULL && (*cmd_rIter)->IsEntryChangeType()) {
+    if (*cmd_rIter != nullptr && (*cmd_rIter)->IsEntryChangeType()) {
       // We could change an entry and so here is where we save DB information
       // just in case.  Currently only modified nodes.
       RestoreDBInformation();
@@ -177,7 +177,7 @@ void MultiCommands::Undo()
 
 void MultiCommands::Add(Command *pcmd)
 {
-  ASSERT(pcmd != NULL);
+  ASSERT(pcmd != nullptr);
   pcmd->SetInMultiCommand();
   m_vpcmds.push_back(pcmd);
 }
@@ -186,7 +186,7 @@ void MultiCommands::Insert(Command *pcmd, size_t ioffset)
 {
   // VERY INEFFICIENT - use sparingly to insert commands into the
   // multi-command vector
-  ASSERT(pcmd != NULL);
+  ASSERT(pcmd != nullptr);
   pcmd->SetInMultiCommand();
   m_vpcmds.insert(m_vpcmds.begin() + ioffset, pcmd);
 }
@@ -247,16 +247,23 @@ void UpdateGUICommand::Undo()
 // DBPrefsCommand
 // ------------------------------------------------
 
-DBPrefsCommand::DBPrefsCommand(CommandInterface *pcomInt, StringX &sxDBPrefs)
-  : Command(pcomInt), m_sxNewDBPrefs(sxDBPrefs)
+DBPrefsCommand::DBPrefsCommand(CommandInterface *pcomInt, StringX &sxDBPrefs, uint32 newHashIters)
+  : Command(pcomInt),
+    m_sxOldDBPrefs(PWSprefs::GetInstance()->Store()),
+    m_sxNewDBPrefs(sxDBPrefs),
+    m_oldHashIters(pcomInt->GetHashIters()),
+    m_newHashIters(newHashIters)
 {
-  m_sxOldDBPrefs = PWSprefs::GetInstance()->Store();
 }
 
 int DBPrefsCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
     PWSprefs::GetInstance()->Load(m_sxNewDBPrefs);
+    // m_newHashIters may be zero if command created only with pref string,
+    // in places where the value was certainly unchanged.
+    if (m_newHashIters != 0)
+      m_pcomInt->SetHashIters(m_newHashIters);
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
         CUUID::NullUUID());
@@ -270,6 +277,7 @@ void DBPrefsCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DBPREFS) {
     PWSprefs::GetInstance()->Load(m_sxOldDBPrefs);
+    m_pcomInt->SetHashIters(m_oldHashIters);
 
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
@@ -504,7 +512,7 @@ AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
 {
   m_CommandChangeType = DB;
 
-  if (att != NULL)
+  if (att != nullptr)
     m_att = *att;
 
   if (m_ci.IsDependent()) {
@@ -512,7 +520,7 @@ AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
     m_ci.SetBaseUUID(baseUUID);
   }
 
-  if (pcmd != NULL)
+  if (pcmd != nullptr)
     m_bNotifyGUI = pcmd->GetGUINotify();
 }
 
@@ -574,7 +582,7 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
 {
   m_CommandChangeType = DB;
 
-  if (pcmd != NULL) {
+  if (pcmd != nullptr) {
     m_bNotifyGUI = pcmd->GetGUINotify();
   }
 
@@ -667,7 +675,7 @@ void DeleteEntryCommand::Undo()
       if (m_ci.IsShortcutBase()) { // restore dependents
         for (std::vector<CItemData>::iterator iter = m_vdependents.begin();
              iter != m_vdependents.end(); iter++) {
-          pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL));
+          pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), nullptr));
         }
       } else if (m_ci.IsAliasBase()) {
         // Undeleting an alias base means making all the dependents refer to the alias
@@ -683,7 +691,7 @@ void DeleteEntryCommand::Undo()
           // out with the old...
           pmulticmds->Add(DeleteEntryCommand::Create(m_pcomInt, *iter, this));
           // in with the new!
-          pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), NULL, this));
+          pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), nullptr, this));
         }
       } // IsAliasBase
     } // !IsDependent
@@ -1118,7 +1126,7 @@ void UpdatePasswordHistoryCommand::Undo()
 
 RenameGroupCommand::RenameGroupCommand(CommandInterface *pcomInt,
                                        const StringX sxOldPath, const StringX sxNewPath)
- : Command(pcomInt), m_sxOldPath(sxOldPath), m_sxNewPath(sxNewPath), m_pmulticmds(NULL)
+ : Command(pcomInt), m_sxOldPath(sxOldPath), m_sxNewPath(sxNewPath), m_pmulticmds(nullptr)
 {
   m_CommandChangeType = DB;
 }
@@ -1134,8 +1142,8 @@ int RenameGroupCommand::Execute()
   if (!m_pcomInt->IsReadOnly() && m_sxOldPath != m_sxNewPath) {
     SaveDBInformation();
 
-    if (m_pmulticmds == NULL) {
-      // Execute (will not be NULL if performing a Redo)
+    if (m_pmulticmds == nullptr) {
+      // Execute (will not be nullptr if performing a Redo)
       rc = m_pcomInt->DoRenameGroup(m_sxOldPath, m_sxNewPath, m_pmulticmds);
     }
 
@@ -1225,5 +1233,181 @@ void DBFiltersCommand::Undo()
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
                                         CUUID::NullUUID());
     }
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// class MultiPolicyCollector
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+MultiPolicyCollector::MultiPolicyCollector(PSWDPolicyMap& policies) : m_Policies(policies)
+{
+  ;
+}
+
+MultiPolicyCollector::~MultiPolicyCollector() = default;
+
+void MultiPolicyCollector::AddPolicy(const StringX& name, const PWPolicy& policy)
+{
+  m_Policies[name] = policy;
+}
+
+void MultiPolicyCollector::RemovePolicy(const StringX& name)
+{
+  m_Policies.erase(name);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// class SinglePolicyCollector
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+SinglePolicyCollector::SinglePolicyCollector(PWPolicy& defaultPolicy) : m_DefaultPolicy(defaultPolicy)
+{
+  ;
+}
+
+SinglePolicyCollector::~SinglePolicyCollector() = default;
+
+void SinglePolicyCollector::AddPolicy(const StringX& name, const PWPolicy& policy)
+{
+  m_Name = name;
+  m_DefaultPolicy = policy;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// class PolicyCommandAdd : public Command, public MultiPolicyCollector
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+PolicyCommandAdd::PolicyCommandAdd(
+  CommandInterface& commandInterface, PSWDPolicyMap& policies, 
+  const stringT& name, const PWPolicy& policy
+)
+: Command(&commandInterface), MultiPolicyCollector(policies)
+, m_Name(std2stringx(name)), m_Policy(policy)
+{
+  ;
+}
+
+PolicyCommandAdd::~PolicyCommandAdd() = default;
+
+int PolicyCommandAdd::Execute()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    AddPolicy(m_Name, m_Policy);
+  }
+  
+  return 0;
+}
+
+void PolicyCommandAdd::Undo()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    RemovePolicy(m_Name);
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// class PolicyCommandRemove : public Command, public MultiPolicyCollector
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+PolicyCommandRemove::PolicyCommandRemove(
+  CommandInterface& commandInterface, PSWDPolicyMap& policies, 
+  const stringT& name, const PWPolicy& policy
+)
+: Command(&commandInterface), MultiPolicyCollector(policies)
+, m_Name(std2stringx(name)), m_Policy(policy)
+{
+  ;
+}
+
+PolicyCommandRemove::~PolicyCommandRemove() = default;
+
+int PolicyCommandRemove::Execute()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    RemovePolicy(m_Name);
+  }
+  
+  return 0;
+}
+
+void PolicyCommandRemove::Undo()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    AddPolicy(m_Name, m_Policy);
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// class PolicyCommandModify : public Command, public Collector
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <typename Collector, typename T>
+PolicyCommandModify<Collector, T>::PolicyCommandModify(
+  CommandInterface& commandInterface, T& data, 
+  const stringT& name, const PWPolicy& original, const PWPolicy& modified
+)
+: Command(&commandInterface), Collector(data)
+, m_Name(std2stringx(name)), m_OriginalPolicy(original), m_ModifiedPolicy(modified)
+{
+  ;
+}
+
+template <typename Collector, typename T>
+PolicyCommandModify<Collector, T>::~PolicyCommandModify() = default;
+
+template <typename Collector, typename T>
+int PolicyCommandModify<Collector, T>::Execute()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    Collector::AddPolicy(m_Name, m_ModifiedPolicy);
+  }
+  
+  return 0;
+}
+
+template <typename Collector, typename T>
+void PolicyCommandModify<Collector, T>::Undo()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    Collector::AddPolicy(m_Name, m_OriginalPolicy);
+  }
+}
+
+template class PolicyCommandModify<SinglePolicyCollector, PWPolicy     >;
+template class PolicyCommandModify<MultiPolicyCollector,  PSWDPolicyMap>;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// class PolicyCommandRename : public Command, public MultiPolicyCollector
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+PolicyCommandRename::PolicyCommandRename(
+  CommandInterface& commandInterface, PSWDPolicyMap& policies, 
+  const stringT& oldName, const stringT& newName, const PWPolicy& original, const PWPolicy& modified
+)
+: Command(&commandInterface), MultiPolicyCollector(policies)
+, m_OldName(std2stringx(oldName)), m_NewName(std2stringx(newName)), m_OriginalPolicy(original), m_ModifiedPolicy(modified)
+{
+  ;
+}
+
+PolicyCommandRename::~PolicyCommandRename() = default;
+
+int PolicyCommandRename::Execute()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    RemovePolicy(m_OldName);
+    AddPolicy(m_NewName, m_ModifiedPolicy);
+  }
+  
+  return 0;
+}
+
+void PolicyCommandRename::Undo()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    RemovePolicy(m_NewName);
+    AddPolicy(m_OldName, m_OriginalPolicy);
   }
 }

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -9,8 +9,6 @@
 #pragma once
 
 // CFontsDialog
-
-extern LOGFONT dfltTreeListFont;
 
 class CFontsDialog : public CFontDialog
 {
@@ -24,13 +22,6 @@ public:
                  CDC* pdcPrinter = NULL,
                  CWnd* pParentWnd = NULL,
                  FontType iType = PASSWORDFONT);
-#ifndef _AFX_NO_RICHEDIT_SUPPORT
-  CFontsDialog(const CHARFORMAT& charformat,
-                 DWORD dwFlags = CF_SCREENFONTS,
-                 CDC* pdcPrinter = NULL,
-                 CWnd* pParentWnd = NULL,
-                 FontType iType = PASSWORDFONT);
-#endif
   virtual ~CFontsDialog();
 
   // Following override to reset idle timeout on any event

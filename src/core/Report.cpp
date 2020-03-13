@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -22,8 +22,6 @@
 
 #include <sstream>
 #include <fstream>
-
-const TCHAR *CRLF = _T("\r\n");
 
 /*
   It writes a header record and a "Start Report" record.
@@ -60,7 +58,7 @@ static bool isFileUnicode(const stringT &fname)
   bool retval = false;
 
   FILE *fn = pws_os::FOpen(fname, _T("rb"));
-  if (fn == NULL)
+  if (fn == nullptr)
     return false;
   if (pws_os::fileLength(fn) < 2)
     retval = false;
@@ -90,7 +88,7 @@ bool CReport::SaveToDisk()
   Format(m_cs_filename, IDSC_REPORTFILENAME,
          drive.c_str(), dir.c_str(), m_tcAction.c_str());
 
-  if ((fd = pws_os::FOpen(m_cs_filename, _T("a+b"))) == NULL) {
+  if ((fd = pws_os::FOpen(m_cs_filename, _T("a+b"))) == nullptr) {
     pws_os::IssueError(_T("StartReport: Opening log file"));
     return false;
   }
@@ -149,7 +147,7 @@ bool CReport::SaveToDisk()
       pws_os::RenameFile(cs_out, m_cs_filename);
 
       // Re-open file
-      if ((fd = pws_os::FOpen(m_cs_filename, _S("ab"))) == NULL) {
+      if ((fd = pws_os::FOpen(m_cs_filename, _S("ab"))) == nullptr) {
         pws_os::IssueError(_T("StartReport: Opening log file"));
         return false;
       }
@@ -172,14 +170,14 @@ void CReport::WriteLine(LPCTSTR tc_line, bool bCRLF)
 {
   m_osxs << tc_line;
   if (bCRLF) {
-    m_osxs << CRLF;
+    m_osxs << std::endl;
   }
 }
 
 // Write a new line
 void CReport::WriteLine()
 {
-  m_osxs << CRLF;
+  m_osxs << std::endl;
 }
 
 //  EndReport writes a "End Report" record and closes the report file.

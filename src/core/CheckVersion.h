@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -25,7 +25,7 @@ class CheckVersion {
  CheckVersion(int nMajor, int nMinor, int nBuild)
    : m_nMajor(nMajor), m_nMinor(nMinor), m_nBuild(nBuild) {}
   
-  enum CheckStatus {UP2DATE, NEWER_AVAILABLE, CANT_CONNECT, CANT_READ};
+  enum class CheckStatus {UP2DATE, NEWER_AVAILABLE, CANT_CONNECT, CANT_READ};
   CheckStatus CheckLatestVersion(const stringT &xml, stringT &latest) const;
  private:
   int m_nMajor, m_nMinor, m_nBuild;

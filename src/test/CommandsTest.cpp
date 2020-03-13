@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -267,7 +267,7 @@ TEST_F(CommandsTest, UpdatePassword)
   it.SetPassword(sxOldPassword);
   it.SetPWHistory(L"10300");  // On and save 3
   it.SetPMTime(tPMtime);       // Say password set yesterday
-  it.SetXTimeInt(i1day * 10);
+  it.SetXTimeInt(10);
   it.SetXTime(t - i1day * 2); // Say expired 2 days ago
 
   Command *pcmd = AddEntryCommand::Create(&core, it);

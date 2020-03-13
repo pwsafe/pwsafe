@@ -58,4 +58,888 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\graphics\cpane.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\tray.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\tray_blue.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\tray_white.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\tray_yellow.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\W95MBX01.ICO">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\W95MBX02.ICO">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\W95MBX03.ICO">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\W95MBX04.ICO">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\locked_tray.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\unlocked_tray.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\normal.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\normal_exp.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\normal_warn.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\alias.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\abase.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\abase_exp.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\abase_warn.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\shortcut.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\sbase.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\sbase_exp.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\sbase_warn.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\psafetxt.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\cpane.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\cpane_s.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\pws_db.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\node.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\empty_node.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\normal.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\normal_exp.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\normal_warn.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\alias.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\abase.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\abase_exp.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\abase_warn.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\shortcut.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\sbase.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\sbase_exp.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\sbase_warn.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\about.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\about.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\about_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\add.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\add.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\add_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\autotype.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\autotype.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\autotype_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\backup.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\backup.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\backup_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\browseurl.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\browseurl.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\browseurl_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\browseurlplus.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\browseurlplus.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\browseurlplus_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\changecombo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\changecombo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\changecombo_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\changefont.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\changefont.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\changefont_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\changepswdfont.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\changepswdfont.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\changepswdfont_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\clearclipboard.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\clearclipboard.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\clearclipboard_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\close.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\close.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\close_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\lock_database.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\collapseall.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\collapseall.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\collapseall_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\compare.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\compare.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\compare_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\copynotes.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\copynotes.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\copynotes_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\copypassword.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\copypassword_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\copypassword.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\copypassword_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\copyuser.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\copyuser.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\copyuser_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\createshortcut.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\createshortcut.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\createshortcut_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\cutsomizetoolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\cutsomizetoolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\delete.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\delete.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\delete_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\duplicate.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\duplicate.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\duplicate_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\runcmd.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\runcmd.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\runcmd_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\exit.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exit.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exit_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\expandall.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\expandall.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\expandall_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\export.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\export.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\export_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\exporttext.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exporttext.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exporttext_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\exportxml.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exportxml.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exportXML_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\exportDB.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exportDB.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exportDB_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\exportV1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exportV1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exportV1_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\exportV2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exportV2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exportV2_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\exportV3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exportV3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exportV3_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\exportV4.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exportV4.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\exportV4_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\classic\find.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\new\find.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\new\find_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\groupenter.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\groupenter.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\groupenter_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\help.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\help.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\help_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\import.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\import.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\import_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\importtext.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\importtext.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\importtext_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\importxml.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\importxml.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\importXML_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\listtree.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\listtree.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\listtree_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\merge.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\merge.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\merge_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\new.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\new.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\new_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\open.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\open.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\open_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\options.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\options.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\options_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\properties.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\properties.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\properties_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\restore.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\restore.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\restore_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\saveas.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\saveas.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\saveas_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\save.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\save.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\save_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\sendemail.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\sendemail.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\sendemail_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\lock_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\unlock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\unlock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\unlock_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\validate.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\validate.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\validate_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\viewedit.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\viewedit.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\viewedit_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\viewreports.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\viewreports.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\viewreports_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\applyfilter.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\applyfilter.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\applyfilter_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\setfilter.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\setfilter.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\setfilter_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\managefilters.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\managefilters.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\managefilters_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\passwordchars.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\passwordchars.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\passwordchars_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\classic\findadvanced.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\classic\findadvancedon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\new\findadvanced.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\new\findadvancedon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\classic\findcase_i.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\new\findcase_i.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\classic\findcase_s.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\new\findcase_s.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\classic\findclear.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\new\findclear.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\classic\findclose.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\new\findclose.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\classic\findreport.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\new\findreport.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findtoolbar\findctrlplaceholder.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\filter_active.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\checked.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\unchecked.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\checked_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\unchecked_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\findreplace.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\empty.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\empty_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\blank.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\Group.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\Title.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\User.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\Password.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\Notes.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\URL.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\email.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\GroupX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\TitleX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\UserX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\PasswordX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\NotesX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\URLX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\emailX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\Group.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\Title.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\User.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\Password.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\Notes.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\URL.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\email.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\GroupX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\TitleX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\UserX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\PasswordX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\NotesX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\URLX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\emailX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\vkbd.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\exclamation.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\changevkbdfont.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\changevkbdfont.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\changevkbdfont_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\undo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\redo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\undo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\redo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\undo_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\redo_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\synchronize.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\synchronize.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\synchronize_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\addgroup.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\addgroup.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\addgroup_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\duplicategroup.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\duplicategroup.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\duplicategroup_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\classic\AutotypeX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\dragbar\new\AutotypeX.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\Yubikey-button.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\Yubikey-button-disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\clearfilter.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\clearfilter.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\clearfilter_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\passwordpolicy.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\passwordpolicy.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\passwordpolicy_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\classic\copytoclipboard.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\toolbar\new\copytoclipboard.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\question_mark.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\graphics\red_exclamation.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

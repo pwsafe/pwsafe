@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -39,6 +39,8 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray window
+
+class DboxMain;
 
 class CSystemTray : public CWnd
 {
@@ -87,7 +89,7 @@ public:
   
   // Change or retrieve the window to send notification messages to
   BOOL SetNotificationWnd(CWnd *NotifyWnd);
-  CWnd* GetNotificationWnd() const;
+  CWnd *GetNotificationWnd() const;
 
   // Default handler for tray notification message
   virtual LRESULT OnTrayNotification(WPARAM uID, LPARAM lEvent);
@@ -97,7 +99,7 @@ protected:
 
   BOOL m_bEnabled;   // does O/S support tray icon?
   BOOL m_bHidden;    // Has the icon been hidden?
-  NOTIFYICONDATA  m_tnd;
+  NOTIFYICONDATA m_tnd;
 
   CArray<HICON, HICON> m_IconList;
   static UINT m_nIDEvent;
@@ -122,5 +124,5 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CWnd *m_pParent;
+  DboxMain *m_pParent;
 };

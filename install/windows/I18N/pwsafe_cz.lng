@@ -6,7 +6,7 @@
 ; second edit: David Luksch
 ;---------------------------------------------------
 ; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
-; Copyright 2005-2007 Rony Shapiro <ronys@pwsafe.org>
+; Copyright 2005-2020 Rony Shapiro <ronys@pwsafe.org>
 ; 2009 extended by Karlo Van der Gucht for multiple language use
 ; 2010 extended by Karlo Van der Gucht Danish language
 ; This script may be redistributed and/or modified under the Artistic
@@ -48,6 +48,9 @@ LangString UNINSTALL_SHORTCUT ${LANG_CZECH} "Zástupce odinstalace"
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
 LangString DESC_ProgramFiles ${LANG_CZECH} "Nainstaluje základní soubory nutné pro bìh Password Safe."
+
+; DESC_CliTool "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_CZECH} "Installs pwsafe-cli, a command line utility."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
 LangString DESC_LangSupport ${LANG_CZECH} "Prosím vyberte jazyk(y), které bude Password Safe používat."
@@ -95,6 +98,9 @@ LangString LANG_INSTALL ${LANG_CZECH} "Jazyk instalace"
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_CZECH} "Prosím vyberte jazyk instalace"
 
+; CLI_TOOL "Command-line tool"
+LangString CLI_TOOL ${LANG_CZECH} "Command-line tool"
+
 ; LANGUAGE_SUPPORT "Language Support"
 LangString LANGUAGE_SUPPORT ${LANG_CZECH} "Jazyky"
 ; ENGLISH_SUPPORT "English"
@@ -129,6 +135,8 @@ LangString CZECH_SUPPORT ${LANG_CZECH} "Èeština"
 LangString TURKISH_SUPPORT ${LANG_CZECH} "Tureètina"
 ; HUNGARIAN_SUPPORT "Hungarian"
 LangString HUNGARIAN_SUPPORT ${LANG_CZECH} "Maïarština"
+; SLOVENIAN_SUPPORT "Slovenian"
+LangString SLOVENIAN_SUPPORT ${LANG_CZECH} "Slovština"
 
 ; LANG_PROGRAM "Czech Language"
 LangString LANG_PROGRAM ${LANG_CZECH} "Èeština"
@@ -144,6 +152,12 @@ LangString SORRY_NO_ME ${LANG_CZECH} "Omlouváme se, Windows ME již není podporov
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
 LangString SORRY_NO_2K ${LANG_CZECH} "Omlouváme se, Windows 2000 již není podporován. Zkuste Password Safe 3.18"
+
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_CZECH} "Password Safe Uninstall"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_CZECH} "Password Safe Help"
 
 ;=================================================================
 ; End of pwsafe_cz.lng

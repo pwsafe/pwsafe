@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -15,6 +15,7 @@
 #define __PWSAUXPARSE_H
 
 #include "StringX.h"
+#include <vector>
 
 #define DEFAULT_AUTOTYPE _T("\\u\\t\\p\\n")
 
@@ -32,7 +33,7 @@ namespace PWSAuxParse {
                           StringX &sx_email, StringX &sx_autotype, StringX &sx_runcmd);
 
   
-  // Call following with NULL ci and/or empty sxCurrentDB
+  // Call following with nullptr ci and/or empty sxCurrentDB
   // will only validate the run command (non-empty serrmsg means
   // parse failed, reason in same).
   StringX GetExpandedString(const StringX &sxRun_Command,

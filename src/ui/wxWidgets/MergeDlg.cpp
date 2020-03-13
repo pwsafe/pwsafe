@@ -1,29 +1,35 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
+
+/** \file MergeDlg.cpp
+* 
+*/
+
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
 
-#include "./MergeDlg.h"
-#include "../../core/PWScore.h"
-#include "./wxutils.h"
-#include "./AdvancedSelectionDlg.h"
-#include "../../os/file.h"
-#include "./DbSelectionPanel.h"
-#include "./SelectionCriteria.h"
-
-#include <wx/statline.h>
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <wx/statline.h>
+
+#include "core/PWScore.h"
+#include "os/file.h"
+
+#include "AdvancedSelectionDlg.h"
+#include "DbSelectionPanel.h"
+#include "MergeDlg.h"
+#include "SelectionCriteria.h"
+#include "wxUtilities.h"
 
 enum {ID_ADVANCED = 5126, ID_COMBINATION = 6982};
 
@@ -35,7 +41,7 @@ END_EVENT_TABLE()
 
 MergeDlg::MergeDlg(wxWindow* parent, PWScore* core) :
                       wxDialog(parent, wxID_ANY, wxString(_("Merge Another Database"))),
-                      m_core(core), m_selection(new SelectionCriteria), m_dbPanel(0)
+                      m_core(core), m_selection(new SelectionCriteria), m_dbPanel(nullptr)
 {
   const wxString filePrompt(wxString(_("Choose Database to Merge into \"")) <<
                                           towxstring(m_core->GetCurFile()) << wxT("\""));
@@ -78,16 +84,16 @@ struct AdvancedMergeOptions {
     return _("Advanced Merge Options");
   }
 
-  static bool IsMandatoryField(CItemData::FieldType /*field*/) {
+  static bool IsMandatoryField(CItemData::FieldType WXUNUSED(field)) {
     return false;
   }
 
-  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+  static bool IsPreselectedField(CItemData::FieldType WXUNUSED(field)) {
     wxFAIL_MSG(wxT("Advanced field pre-selection options are not available for Merge"));
     return true;
   }
 
-  static bool IsUsableField(CItemData::FieldType /*field*/) {
+  static bool IsUsableField(CItemData::FieldType WXUNUSED(field)) {
     wxFAIL_MSG(wxT("Advanced field usability options are not available for Merge"));
     return true;
   }

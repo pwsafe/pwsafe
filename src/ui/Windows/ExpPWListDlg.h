@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -22,12 +22,15 @@ struct st_ExpLocalListEntry {
   st_ExpLocalListEntry()
   : sx_group(L""), sx_title(L""), sx_user(L""), sx_expirylocdate(L""),
     expirytttXTime(time_t(0)), et(CItemData::ET_INVALID),
+    bIsProtected(false), bHasAttachment(false),
     uuid(pws_os::CUUID::NullUUID()) {}
 
   st_ExpLocalListEntry(const st_ExpLocalListEntry &elle)
   : sx_group(elle.sx_group), sx_title(elle.sx_title), sx_user(elle.sx_user),
     sx_expirylocdate(elle.sx_expirylocdate),
-    expirytttXTime(elle.expirytttXTime), et(elle.et), uuid(elle.uuid) {}
+    expirytttXTime(elle.expirytttXTime), et(elle.et),
+    bIsProtected(elle.bIsProtected), bHasAttachment(elle.bHasAttachment),
+    uuid(elle.uuid) {}
 
   st_ExpLocalListEntry &operator =(const st_ExpLocalListEntry &elle)
   {
@@ -38,6 +41,8 @@ struct st_ExpLocalListEntry {
       sx_expirylocdate = elle.sx_expirylocdate;
       expirytttXTime = elle.expirytttXTime;
       et = elle.et;
+      bIsProtected = elle.bIsProtected;
+      bHasAttachment = elle.bHasAttachment;
       uuid = elle.uuid;
     }
     return *this;
@@ -51,6 +56,8 @@ struct st_ExpLocalListEntry {
   CItemData::EntryType et; // Used to select image for display to user e.g.
                            // 'warn will expire' or 'has expired' &
                            // 'normal, aliasbase or shortcut base' entry
+  bool bIsProtected;
+  bool bHasAttachment;
   pws_os::CUUID uuid;
 };
 
@@ -58,7 +65,9 @@ class CExpPWListDlg : public CPWDialog
 {
 public:
   CExpPWListDlg(CWnd* pParent, ExpiredList &expPWList,
-                const CString& a_filespec = L"");
+    const CString &a_filespec = L"",
+    const CString &csProtect = L"#", const CString &csAttachment = L"+");
+    
   virtual ~CExpPWListDlg();
 
   // Dialog Data
@@ -66,8 +75,10 @@ public:
   CExpPswdLC m_expPWListCtrl;
   CImageList *m_pImageList;
   CString m_Database;
-  int m_iSortedColumn; 
-  BOOL m_bSortAscending; 
+  int m_iSortedColumn;
+  BOOL m_bSortAscending;
+
+  bool IsExpiryEntryProtected(size_t i) { return m_vExpLocalListEntries[i].bIsProtected; }
 
 protected:
   virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
@@ -89,4 +100,6 @@ private:
   std::vector<st_ExpLocalListEntry> m_vExpLocalListEntries;
   int m_idays;
   static int CALLBACK ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+  
+  CString m_csProtect, m_csAttachment;
 };

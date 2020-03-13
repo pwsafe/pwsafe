@@ -159,6 +159,9 @@
     <ClCompile Include="GeneralMsgBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GridListCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ImgStatic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -208,9 +211,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MenuTipper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MigratePrefs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Options_PropertyPage.cpp">
@@ -414,7 +414,10 @@
     <ClCompile Include="YubiMixin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GridListCtrl.cpp">
+    <ClCompile Include="SetDBID.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -561,6 +564,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneralMsgBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GridListCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HKModifiers.h">
@@ -710,6 +716,9 @@
     <ClInclude Include="PWToolBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PWTouch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="PWTreeCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -833,10 +842,10 @@
     <ClInclude Include="Windowsdefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PWTouch.h">
+    <ClInclude Include="SetDBID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GridListCtrl.h">
+    <ClInclude Include="winutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1510,18 +1519,6 @@
     <None Include="graphics\dragbar\classic\TitleX.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="graphics\tray.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="graphics\tray_blue.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="graphics\tray_white.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="graphics\tray_yellow.ico">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="graphics\unchecked.bmp">
       <Filter>Resource Files</Filter>
     </None>
@@ -1734,6 +1731,33 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="graphics\toolbar\classic\lock_database.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\black.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\red.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\green.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\white.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\yellow.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\locked_tray_index.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\unlocked_tray_index.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\checked_black.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="graphics\findreplace.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="graphics\toolbar\classic\copypassword_disabled.bmp">

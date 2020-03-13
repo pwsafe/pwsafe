@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -95,7 +95,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   // Initialize the XML4C2 system
   try
   {
-    XMLPlatformUtils::Initialize(XMLUni::fgXercescDefaultLocale, 0, 0, &sec_mm);
+    XMLPlatformUtils::Initialize(XMLUni::fgXercescDefaultLocale, nullptr, nullptr, &sec_mm);
   }
   catch (const XMLException& toCatch)
   {
@@ -132,10 +132,10 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   pSAX2Parser->setContentHandler(pSAX2Handler);
   pSAX2Parser->setErrorHandler(pSAX2Handler);
 
-  pSAX2Handler->SetVariables(m_bValidation ? NULL : m_pXMLcore, m_bValidation,
+  pSAX2Handler->SetVariables(m_bValidation ? nullptr : m_pXMLcore, m_bValidation,
                              ImportedPrefix, m_delimiter, bImportPSWDsOnly,
-                             m_bValidation ? NULL : m_pPossible_Aliases,
-                             m_bValidation ? NULL : m_pPossible_Shortcuts,
+                             m_bValidation ? nullptr : m_pPossible_Aliases,
+                             m_bValidation ? nullptr : m_pPossible_Shortcuts,
                              m_pmulticmds, m_prpt);
   if (!m_bValidation) {
     b_into_empty = m_pXMLcore->GetNumEntries() == 0;

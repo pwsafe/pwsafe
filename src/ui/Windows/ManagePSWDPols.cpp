@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -30,10 +30,13 @@ using namespace std;
 // CManagePSWDPols dialog
 CManagePSWDPols::CManagePSWDPols(CWnd* pParent, const bool bLongPPs)
   : CPWDialog(CManagePSWDPols::IDD, pParent),
-  m_iSelectedItem(-1), m_bChanged(false), m_iSortEntriesIndex(0),
-  m_bSortEntriesAscending(true), m_iSortNamesIndex(0), m_bSortNamesAscending(true),
-  m_bViewPolicy(true), m_bLongPPs(bLongPPs), m_iundo_pos(-1), m_pCopyBtn(NULL),
-  m_bCopyPasswordEnabled(false), m_bImageLoaded(FALSE), m_bDisabledImageLoaded(FALSE)
+  m_iundo_pos(-1),
+  m_pCopyBtn(nullptr), m_bCopyPasswordEnabled(false),
+  m_bImageLoaded(FALSE), m_bDisabledImageLoaded(FALSE),
+  m_iSortNamesIndex(0), m_iSortEntriesIndex(0), 
+  m_bSortNamesAscending(true), m_bSortEntriesAscending(true), 
+  m_iSelectedItem(-1), m_bChanged(false),
+  m_bViewPolicy(true), m_bLongPPs(bLongPPs)
 {
   ASSERT(pParent != NULL);
 
@@ -101,7 +104,6 @@ BOOL CManagePSWDPols::OnInitDialog()
     GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
 
     // Hide cancel button & change OK button text
-    GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
     GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
 
     // Change button text
@@ -165,9 +167,9 @@ BOOL CManagePSWDPols::OnInitDialog()
   m_PolicyEntries.GetHeaderCtrl()->SetDlgCtrlID(IDC_POLICYENTRIES_HEADER);
 
   // BR1108 - Allow user to config these fonts as well
-  // Currently use same font as specified for list/tree view
-  m_PolicyNames.SetFont(Fonts::GetInstance()->GetCurrentFont());
-  m_PolicyDetails.SetFont(Fonts::GetInstance()->GetCurrentFont());
+  // Currently use same font as specified for Add/Edit
+  m_PolicyNames.SetFont(Fonts::GetInstance()->GetAddEditFont());
+  m_PolicyDetails.SetFont(Fonts::GetInstance()->GetAddEditFont());
 
   CString cs_text;
 
@@ -388,7 +390,7 @@ void CManagePSWDPols::OnNew()
     // Save changes for Undo/Redo
     st_PSWDPolicyChange st_change;
     st_change.name = cs_policyname;
-    st_change.flags = CPP_ADD;
+    st_change.mode = st_PSWDPolicyChange::Mode::ADD;
     st_change.st_pp_save.Empty();
 
     // Added a named password policy
@@ -464,7 +466,7 @@ void CManagePSWDPols::OnEdit()
     // Save changes for Undo/Redo
     st_PSWDPolicyChange st_change;
     st_change.name = m_iSelectedItem != 0 ? cs_policyname : L"";
-    st_change.flags = CPP_MODIFIED;
+    st_change.mode = st_PSWDPolicyChange::Mode::MODIFIED;
     st_change.st_pp_save = m_iSelectedItem != 0 ?iter->second : m_st_default_pp;
 
     // Update default (if changed) or the named policies
@@ -548,7 +550,7 @@ void CManagePSWDPols::OnDelete()
   // Save changes for Undo/Redo
   st_PSWDPolicyChange st_change;
   st_change.name = cs_policyname;
-  st_change.flags = CPP_DELETE;
+  st_change.mode = st_PSWDPolicyChange::Mode::REMOVE;
   st_change.st_pp_save.Empty();
   st_change.st_pp_new = iter->second;
 
@@ -1011,8 +1013,8 @@ void CManagePSWDPols::OnUndo()
 
   bool bDefaultPolicy = st_last_change.name.empty();
 
-  switch (st_last_change.flags) {
-    case CPP_ADD:
+  switch (st_last_change.mode) {
+    case st_PSWDPolicyChange::Mode::ADD:
     {
       // We added a new policy - delete it
       PSWDPolicyMapIter iter = m_MapPSWDPLC.find(st_last_change.name);
@@ -1023,14 +1025,14 @@ void CManagePSWDPols::OnUndo()
       m_iSelectedItem = 0;
       break;
     }
-    case CPP_DELETE:
+    case st_PSWDPolicyChange::Mode::REMOVE:
       // We deleted a policy - add it
       m_MapPSWDPLC[st_last_change.name] = st_last_change.st_pp_save;
 
       // Select it - but we do not yet know the m_PolicyNames index yet
       m_iSelectedItem = -1;
       break;
-    case CPP_MODIFIED:
+    case st_PSWDPolicyChange::Mode::MODIFIED:
       if (bDefaultPolicy) {
         m_st_default_pp = st_last_change.st_pp_save;
         m_iSelectedItem = 0;
@@ -1077,15 +1079,15 @@ void CManagePSWDPols::OnRedo()
 
   bool bDefaultPolicy = st_next_change.name.empty();
 
-  switch (st_next_change.flags) {
-    case CPP_ADD:
+  switch (st_next_change.mode) {
+    case st_PSWDPolicyChange::Mode::ADD:
       // We need to add a new policy
       m_MapPSWDPLC[st_next_change.name] = st_next_change.st_pp_new;
 
       // Select it - but we do not yet know the m_PolicyNames index yet
       m_iSelectedItem = -1;
       break;
-    case CPP_DELETE:
+    case st_PSWDPolicyChange::Mode::REMOVE:
       {
       // We need to delete a policy
       PSWDPolicyMapIter iter = m_MapPSWDPLC.find(st_next_change.name);
@@ -1096,7 +1098,7 @@ void CManagePSWDPols::OnRedo()
       m_iSelectedItem = 0;
       break;
       }
-    case CPP_MODIFIED:
+    case st_PSWDPolicyChange::Mode::MODIFIED:
       if (bDefaultPolicy) {
         m_st_default_pp = st_next_change.st_pp_new;
         m_iSelectedItem = 0;

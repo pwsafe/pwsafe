@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -50,7 +50,7 @@ public:
   // Local variables & functions
   void SetVariables(Asker *pAsker, PWSFilters *mapfilters, const FilterPool fpool, 
                     const bool &bValidation)
-  {m_pAsker = pAsker; m_MapXMLFilters = mapfilters, m_FPool = fpool; m_bValidation = bValidation;}
+  {m_pAsker = pAsker; m_MapXMLFilters = mapfilters; m_FPool = fpool; m_bValidation = bValidation;}
   void SetSchemaVersion(int ischema_version)
   {m_iSchema_Version = ischema_version;}
 
@@ -96,14 +96,11 @@ private:
   stringT m_strValidationResult;
   stringT m_strXMLErrors;
 
-  int m_fieldlen;
   int m_iXMLVersion, m_iSchemaVersion;
   int m_iSchema_Version;
   bool m_bValidation;
   bool m_bEntryBeingProcessed;
   bool m_bErrors;
-  unsigned char m_ctype;
-  unsigned char *m_pfield;
 };
 
 #endif /* __XFILTERSAX2HANDLERS_H */

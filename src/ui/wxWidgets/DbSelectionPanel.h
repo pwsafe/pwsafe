@@ -1,19 +1,23 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __DBSELECTIONPANEL_H__
-#define __DBSELECTIONPANEL_H__
+/** \file DbSelectionPanel.h
+* 
+*/
+
+#ifndef _DBSELECTIONPANEL_H_
+#define _DBSELECTIONPANEL_H_
 
 #include <wx/panel.h>
 #include "../../core/StringX.h"
 
 class wxFilePickerCtrl;
-class CSafeCombinationCtrl;
+class SafeCombinationCtrl;
 class PWScore;
 class wxFileDirPickerEvent;
 
@@ -23,7 +27,7 @@ class wxFileDirPickerEvent;
  * row and a masked textctrl + virtual keyboard button for entering
  * the combination in the second row.  It is meant to be used like
  * a child control by embedding in a wxSizer  See MergeDlg.cpp
- * and PwsSync.cpp for its usage
+ * and SyncWizard.cpp for its usage
  * 
  * filePrompt - the static text displayed just above the file picker ctrl
  * 
@@ -32,13 +36,8 @@ class wxFileDirPickerEvent;
  * rowsep - the multiplying factor for the separation between the first and second
  * rows.  A small dialog might pass a value of 2, while a wizard page might pass 5
  */
-class DbSelectionPanel : public wxPanel {
-
-  wxFilePickerCtrl* m_filepicker;
-  CSafeCombinationCtrl* m_sc;
-  bool m_bAutoValidate;
-  PWScore* m_core;
-  
+class DbSelectionPanel : public wxPanel
+{
 public:
   DbSelectionPanel(wxWindow* parent, const wxString& filePrompt,
                     const wxString& filePickerCtrlTitle, bool autoValidate,
@@ -59,6 +58,12 @@ public:
 
   wxString m_filepath;
   StringX m_combination;
+
+private:
+  wxFilePickerCtrl* m_filepicker;
+  SafeCombinationCtrl* m_sc;
+  bool m_bAutoValidate;
+  PWScore* m_core;
 };
 
-#endif // __DBSELECTIONPANEL_H__
+#endif // _DBSELECTIONPANEL_H_

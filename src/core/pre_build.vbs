@@ -1,5 +1,5 @@
 '
-' Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+' Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 ' All rights reserved. Use of the code is allowed under the
 ' Artistic License 2.0 terms, as specified in the LICENSE file
 ' distributed with this code, or available from
@@ -84,7 +84,7 @@ End If
 
 Dim cmd
 ' Create command string
-cmd = "perl -w " & "..\..\Misc\rc2cpp.pl" & " " & "core.rc2"
+cmd = "C:\local\cygwin64\bin\perl.exe -w " & "..\..\Misc\rc2cpp.pl" & " " & "core.rc2"
 
 ' If prefix script by "Perl", may get return code:
 '    80070002 - System cannot find file (i.e. "Perl") if not in the path, or

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -48,35 +48,37 @@ COptionsDisplay::COptionsDisplay(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_WordWrapNotes = M_WordWrapNotes();
   m_PreExpiryWarn = M_PreExpiryWarn();
   m_HighlightChanges = M_HighlightChanges();
+  m_EnableTransparency = M_EnableTransparency();
   m_PreExpiryWarnDays = M_PreExpiryWarnDays();
   m_TreeDisplayStatusAtOpen = M_TreeDisplayStatusAtOpen();
-  m_TrayIconColour = M_TrayIconColour();
+  m_PercentTransparency = M_PercentTransparency();
 }
 
 COptionsDisplay::~COptionsDisplay()
 {
 }
 
-void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
+void COptionsDisplay::DoDataExchange(CDataExchange *pDX)
 {
   COptions_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsDisplay)
-  
+  DDX_Text(pDX, IDC_PREEXPIRYWARNDAYS, m_PreExpiryWarnDays);
+
   DDX_Check(pDX, IDC_DEFUNSHOWINTREE, m_ShowUsernameInTree);
   DDX_Check(pDX, IDC_DEFPWSHOWINTREE, m_ShowPasswordInTree);
   DDX_Check(pDX, IDC_DEFPWSHOWINEDIT, m_ShowPasswordInEdit);
   DDX_Check(pDX, IDC_DEFNOTESSHOWINEDIT, m_ShowNotesInEdit);
-  DDX_Radio(pDX, IDC_TREE_DISPLAY_COLLAPSED, m_TreeDisplayStatusAtOpen); // only first!
   DDX_Check(pDX, IDC_ALWAYSONTOP, m_AlwaysOnTop);
   DDX_Check(pDX, IDC_DEFNTSHOWASTIPSINVIEWS, m_ShowNotesAsTipsInViews);
   DDX_Check(pDX, IDC_DEFEXPLORERTREE, m_ExplorerTypeTree);
   DDX_Check(pDX, IDC_DEFNOTESWRAP, m_WordWrapNotes);
   DDX_Check(pDX, IDC_DEFENABLEGRIDLINES, m_EnableGrid);
   DDX_Check(pDX, IDC_PREWARNEXPIRY, m_PreExpiryWarn);
-  DDX_Text(pDX, IDC_PREEXPIRYWARNDAYS, m_PreExpiryWarnDays);
   DDX_Check(pDX, IDC_HIGHLIGHTCHANGES, m_HighlightChanges);
-  DDX_Radio(pDX, IDC_RST_BLK, m_TrayIconColour); // only first!
+  DDX_Check(pDX, IDC_ENABLETRANSPARENCY, m_EnableTransparency);
+
+  DDX_Radio(pDX, IDC_TREE_DISPLAY_COLLAPSED, m_TreeDisplayStatusAtOpen); // only first!
 
   DDX_Control(pDX, IDC_DEFUNSHOWINTREE, m_chkbox[0]);
   DDX_Control(pDX, IDC_DEFPWSHOWINTREE, m_chkbox[1]);
@@ -85,16 +87,22 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_TREE_DISPLAY_COLLAPSED, m_radiobtn[0]);
   DDX_Control(pDX, IDC_TREE_DISPLAY_EXPANDED, m_radiobtn[1]);
   DDX_Control(pDX, IDC_TREE_DISPLAY_LASTSAVE, m_radiobtn[2]);
+
+  DDX_Slider(pDX, IDC_TRANSPARENCY, m_PercentTransparency);
+
+  DDX_Control(pDX, IDC_TRANSPARENCYHELP, m_Help1);
   //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(COptionsDisplay, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsDisplay)
   ON_WM_CTLCOLOR()
-  ON_BN_CLICKED(ID_HELP, OnHelp)
 
+  ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_PREWARNEXPIRY, OnPreWarn)
   ON_BN_CLICKED(IDC_DEFUNSHOWINTREE, OnDisplayUserInTree)
+  ON_BN_CLICKED(IDC_ENABLETRANSPARENCY, OnEnabletransparency)
+
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -135,12 +143,40 @@ BOOL COptionsDisplay::OnInitDialog()
   }
 
   OnPreWarn();
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PREWARNEXPIRYSPIN);
 
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PREWARNEXPIRYSPIN);
   pspin->SetBuddy(GetDlgItem(IDC_PREEXPIRYWARNDAYS));
-  pspin->SetRange(1, 30);
+  pspin->SetRange(M_prefminExpiryDays(), M_prefmaxExpiryDays());
   pspin->SetBase(10);
   pspin->SetPos(m_PreExpiryWarnDays);
+
+  CSliderCtrl *pslider = (CSliderCtrl *)GetDlgItem(IDC_TRANSPARENCY);
+  pslider->SetRange(M_prefminPercentTransparency(), M_prefmaxPercentTransparency());
+  pslider->SetTicFreq((M_prefminPercentTransparency() - M_prefmaxPercentTransparency()) / 10);
+  pslider->SetPos(m_PercentTransparency);
+  pslider->SetTipSide(TBTS_TOP);
+
+  CString csText;
+  csText.Format(L"%d%%", M_prefmaxPercentTransparency());
+  GetDlgItem(IDC_STATIC_MAXTRANSPARENCY)->SetWindowText(csText);
+
+  if (!app.GetMainDlg()->GetInitialTransparencyState()) {
+    // Don't allow use of slider until transparency enabled at startup
+    GetDlgItem(IDC_TRANSPARENCY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_MINTRANSPARENCY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_MAXTRANSPARENCY)->EnableWindow(FALSE);
+  }
+
+  if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    m_Help1.Init(IDB_QUESTIONMARK);
+
+    // Note naming convention: string IDS_xxx corresponds to control IDC_xxx_HELP
+    AddTool(IDC_TRANSPARENCYHELP, IDS_TRANSPARENCYHELP);
+    ActivateToolTip();
+  } else {
+    m_Help1.EnableWindow(FALSE);
+    m_Help1.ShowWindow(SW_HIDE);
+  }
 
   return TRUE;  // return TRUE unless you set the focus to a control
 }
@@ -164,8 +200,9 @@ LRESULT COptionsDisplay::OnQuerySiblings(WPARAM wParam, LPARAM )
           (m_PreExpiryWarn            == TRUE &&
            M_PreExpiryWarnDays()      != m_PreExpiryWarnDays)      ||
           M_TreeDisplayStatusAtOpen() != m_TreeDisplayStatusAtOpen ||
-          M_TrayIconColour()          != m_TrayIconColour          ||
-          M_HighlightChanges()        != m_HighlightChanges)
+          M_HighlightChanges()        != m_HighlightChanges        ||
+          M_EnableTransparency()      != m_EnableTransparency      ||
+          M_PercentTransparency()     != m_PercentTransparency)
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:
@@ -192,15 +229,18 @@ BOOL COptionsDisplay::OnApply()
   M_WordWrapNotes() = m_WordWrapNotes;
   M_PreExpiryWarn() = m_PreExpiryWarn;
   M_HighlightChanges() = m_HighlightChanges;
+  M_EnableTransparency() = m_EnableTransparency;
   M_PreExpiryWarnDays() = m_PreExpiryWarnDays;
   M_TreeDisplayStatusAtOpen() = m_TreeDisplayStatusAtOpen;
-  M_TrayIconColour() = m_TrayIconColour;
+  M_PercentTransparency() = m_PercentTransparency;
 
   return COptions_PropertyPage::OnApply();
 }
 
 BOOL COptionsDisplay::PreTranslateMessage(MSG *pMsg)
 {
+  RelayToolTipEvent(pMsg);
+
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;
@@ -211,11 +251,22 @@ BOOL COptionsDisplay::PreTranslateMessage(MSG *pMsg)
 
 BOOL COptionsDisplay::OnKillActive()
 {
+  if (UpdateData(TRUE) == FALSE)
+    return FALSE;
+
   CGeneralMsgBox gmb;
+
+  // Update variable from text box
+  CString csText;
+  ((CEdit *)GetDlgItem(IDC_PREEXPIRYWARNDAYS))->GetWindowText(csText);
+  m_PreExpiryWarnDays = _wtoi(csText);
+
   // Check that options, as set, are valid.
-  if ((m_PreExpiryWarnDays < 1) || (m_PreExpiryWarnDays > 30)) {
-    gmb.AfxMessageBox(IDS_INVALIDEXPIRYWARNDAYS);
-    ((CEdit*)GetDlgItem(IDC_PREEXPIRYWARNDAYS))->SetFocus();
+  if (m_PreExpiryWarn == TRUE &&
+      (m_PreExpiryWarnDays < M_prefminExpiryDays() || m_PreExpiryWarnDays > M_prefmaxExpiryDays())) {
+    csText.Format(IDS_INVALIDEXPIRYWARNDAYS, M_prefminExpiryDays(), M_prefmaxExpiryDays());
+    gmb.AfxMessageBox(csText);
+    ((CEdit *)GetDlgItem(IDC_PREEXPIRYWARNDAYS))->SetFocus();
     return FALSE;
   }
 
@@ -264,4 +315,15 @@ HBRUSH COptionsDisplay::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   }
 
   return hbr;
+}
+
+void COptionsDisplay::OnEnabletransparency()
+{
+  UpdateData(TRUE);
+
+  BOOL bEnable = m_EnableTransparency == TRUE && app.GetMainDlg()->GetInitialTransparencyState();
+
+  GetDlgItem(IDC_TRANSPARENCY)->EnableWindow(bEnable);
+  GetDlgItem(IDC_STATIC_MINTRANSPARENCY)->EnableWindow(bEnable);
+  GetDlgItem(IDC_STATIC_MAXTRANSPARENCY)->EnableWindow(bEnable);
 }

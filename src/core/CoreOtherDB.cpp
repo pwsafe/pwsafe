@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -35,8 +35,6 @@ using pws_os::CUUID;
 typedef std::wifstream ifstreamT;
 typedef std::wofstream ofstreamT;
 typedef std::vector<stringT>::iterator viter;
-
-extern const TCHAR *GROUPTITLEUSERINCHEVRONS;
 
 static void CompareField(CItemData::FieldType field,
                          const CItemData::FieldBits &bsTest,
@@ -103,7 +101,7 @@ void PWScore::Compare(PWScore *pothercore,
        currentPos != GetEntryEndIter();
        currentPos++) {
     // See if user has cancelled
-    if (pbCancel != NULL && *pbCancel) {
+    if (pbCancel != nullptr && *pbCancel) {
       return;
     }
 
@@ -118,7 +116,7 @@ void PWScore::Compare(PWScore *pothercore,
       st_data.user = currentItem.GetUser();
 
       StringX sx_original;
-      Format(sx_original, GROUPTITLEUSERINCHEVRONS,
+      Format(sx_original, PWScore::GROUPTITLEUSERINCHEVRONS,
                 st_data.group.c_str(), st_data.title.c_str(), st_data.user.c_str());
 
       // Update the Wizard page
@@ -277,7 +275,7 @@ void PWScore::Compare(PWScore *pothercore,
        compPos != pothercore->GetEntryEndIter();
        compPos++) {
     // See if user has cancelled
-    if (pbCancel != NULL && *pbCancel) {
+    if (pbCancel != nullptr && *pbCancel) {
       return;
     }
 
@@ -292,7 +290,7 @@ void PWScore::Compare(PWScore *pothercore,
       st_data.user = compItem.GetUser();
 
       StringX sx_compare;
-      Format(sx_compare, GROUPTITLEUSERINCHEVRONS,
+      Format(sx_compare, PWScore::GROUPTITLEUSERINCHEVRONS,
                 st_data.group.c_str(), st_data.title.c_str(), st_data.user.c_str());
 
       // Update the Wizard page
@@ -315,7 +313,7 @@ void PWScore::Compare(PWScore *pothercore,
   } // iteration over other core's element
 
   // See if user has cancelled too late - reset flag so incorrect information not given to user
-  if (pbCancel != NULL && *pbCancel) {
+  if (pbCancel != nullptr && *pbCancel) {
     *pbCancel = false;
   }
 }
@@ -437,7 +435,7 @@ stringT PWScore::Merge(PWScore *pothercore,
        otherPos != pothercore->GetEntryEndIter();
        otherPos++) {
     // See if user has cancelled
-    if (pbCancel != NULL && *pbCancel) {
+    if (pbCancel != nullptr && *pbCancel) {
       delete pmulticmds;
       return _T("");
     }
@@ -464,7 +462,7 @@ stringT PWScore::Merge(PWScore *pothercore,
     const StringX sx_otherUser = otherItem.GetUser();
 
     StringX sxMergedEntry;
-    Format(sxMergedEntry, GROUPTITLEUSERINCHEVRONS,
+    Format(sxMergedEntry, PWScore::GROUPTITLEUSERINCHEVRONS,
                 sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
 
     ItemListConstIter foundPos = Find(sx_otherGroup, sx_otherTitle, sx_otherUser);
@@ -624,7 +622,7 @@ stringT PWScore::Merge(PWScore *pothercore,
                        str_diffs.c_str());
 
         // log it
-        if (pRpt != NULL)
+        if (pRpt != nullptr)
           pRpt->WriteLine(strWarnMsg.c_str());
 
         // Check no conflict of unique uuid
@@ -641,7 +639,7 @@ stringT PWScore::Merge(PWScore *pothercore,
                              sxOtherPolicyName, bUpdated,
                              sxMerge_DateTime, IDSC_MERGEPOLICY);
 
-        if (pPolicyCmd != NULL)
+        if (pPolicyCmd != nullptr)
           pmulticmds->Add(pPolicyCmd);
 
         // About to add entry - check keyboard shortcut
@@ -652,7 +650,7 @@ stringT PWScore::Merge(PWScore *pothercore,
           ItemListIter iter = Find(kbshortcut_uuid);
           if (iter != m_pwlist.end()) {
             StringX sxTemp, sxExistingEntry;
-            Format(sxExistingEntry, GROUPTITLEUSERINCHEVRONS,
+            Format(sxExistingEntry, PWScore::GROUPTITLEUSERINCHEVRONS,
                 iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(),
                 iter->second.GetUser().c_str());
             Format(sxTemp, IDSC_KBSHORTCUT_REMOVED, sx_merged.c_str(), sxMergedEntry.c_str(),
@@ -689,7 +687,7 @@ stringT PWScore::Merge(PWScore *pothercore,
                            sxOtherPolicyName, bUpdated,
                            sxMerge_DateTime, IDSC_MERGEPOLICY);
 
-      if (pPolicyCmd != NULL)
+      if (pPolicyCmd != nullptr)
         pmulticmds->Add(pPolicyCmd);
 
       // About to add entry - check keyboard shortcut
@@ -700,7 +698,7 @@ stringT PWScore::Merge(PWScore *pothercore,
         ItemListIter iter = Find(kbshortcut_uuid);
         if (iter != m_pwlist.end()) {
           StringX sxTemp, sxExistingEntry;
-          Format(sxExistingEntry, GROUPTITLEUSERINCHEVRONS,
+          Format(sxExistingEntry, PWScore::GROUPTITLEUSERINCHEVRONS,
                 iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(),
                 iter->second.GetUser().c_str());
           Format(sxTemp, IDSC_KBSHORTCUT_REMOVED, sx_merged.c_str(), sxMergedEntry.c_str(),
@@ -715,7 +713,7 @@ stringT PWScore::Merge(PWScore *pothercore,
       pmulticmds->Add(pcmd);
 
       StringX sx_added;
-      Format(sx_added, GROUPTITLEUSERINCHEVRONS,
+      Format(sx_added, PWScore::GROUPTITLEUSERINCHEVRONS,
                 sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
       vs_added.push_back(sx_added);
 
@@ -738,7 +736,7 @@ stringT PWScore::Merge(PWScore *pothercore,
   } // iteration over other core's entries
 
   stringT str_results;
-  if (numAdded > 0 && pRpt != NULL) {
+  if (numAdded > 0 && pRpt != nullptr) {
     std::sort(vs_added.begin(), vs_added.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
     LoadAString(str_singular_plural_type, numAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
@@ -752,7 +750,7 @@ stringT PWScore::Merge(PWScore *pothercore,
     }
   }
 
-  if (numAliasesAdded > 0 && pRpt != NULL) {
+  if (numAliasesAdded > 0 && pRpt != nullptr) {
     std::sort(vs_AliasesAdded.begin(), vs_AliasesAdded.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
     LoadAString(str_singular_plural_type, numAliasesAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
@@ -766,7 +764,7 @@ stringT PWScore::Merge(PWScore *pothercore,
     }
   }
 
-  if (numShortcutsAdded > 0 && pRpt != NULL) {
+  if (numShortcutsAdded > 0 && pRpt != nullptr) {
     std::sort(vs_ShortcutsAdded.begin(), vs_ShortcutsAdded.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
     LoadAString(str_singular_plural_type, numShortcutsAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
@@ -781,7 +779,7 @@ stringT PWScore::Merge(PWScore *pothercore,
   }
 
   // See if user has cancelled
-  if (pbCancel != NULL && *pbCancel) {
+  if (pbCancel != nullptr && *pbCancel) {
     delete pmulticmds;
     return _T("");
   }
@@ -808,7 +806,7 @@ stringT PWScore::Merge(PWScore *pothercore,
   Execute(pmulticmds);
 
   // See if user has cancelled too late - reset flag so incorrect information not given to user
-  if (pbCancel != NULL && *pbCancel) {
+  if (pbCancel != nullptr && *pbCancel) {
     *pbCancel = false;
   }
 
@@ -895,7 +893,7 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
       ASSERT(0);
 
     StringX sx_added;
-    Format(sx_added, GROUPTITLEUSERINCHEVRONS,
+    Format(sx_added, PWScore::GROUPTITLEUSERINCHEVRONS,
                 ci_temp.GetGroup().c_str(), ci_temp.GetTitle().c_str(),
                 ci_temp.GetUser().c_str());
     vs_added.push_back(sx_added);
@@ -930,7 +928,7 @@ void PWScore::Synchronize(PWScore *pothercore,
     CItemData::BASEUUID, CItemData::ALIASUUID, CItemData::SHORTCUTUUID };
 
   // Turn them off
-  for (int i = 0; i < sizeof(ftInappropriateSyncFields) / sizeof(CItemData::FieldType); i++) {
+  for (size_t i = 0; i < sizeof(ftInappropriateSyncFields) / sizeof(CItemData::FieldType); i++) {
     bsSyncFields.reset(ftInappropriateSyncFields[i]);
   }
 
@@ -955,7 +953,7 @@ void PWScore::Synchronize(PWScore *pothercore,
        otherPos != pothercore->GetEntryEndIter();
        otherPos++) {
     // See if user has cancelled
-    if (pbCancel != NULL && *pbCancel) {
+    if (pbCancel != nullptr && *pbCancel) {
       delete pmulticmds;
       return;
     }
@@ -976,7 +974,7 @@ void PWScore::Synchronize(PWScore *pothercore,
     const StringX sx_otherUser = otherItem.GetUser();
 
     StringX sx_mergedentry;
-    Format(sx_mergedentry, GROUPTITLEUSERINCHEVRONS,
+    Format(sx_mergedentry, PWScore::GROUPTITLEUSERINCHEVRONS,
                 sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
 
     ItemListConstIter foundPos = Find(sx_otherGroup, sx_otherTitle, sx_otherUser);
@@ -1008,7 +1006,7 @@ void PWScore::Synchronize(PWScore *pothercore,
                                    mapRenamedPolicies, vs_PoliciesAdded,
                                    sxValue, bUpdated,
                                    sxSync_DateTime, IDSC_SYNCPOLICY);
-            if (pPolicyCmd != NULL)
+            if (pPolicyCmd != nullptr)
               pmulticmds->Add(pPolicyCmd);
           } else {
             if (sxValue != updItem.GetFieldValue(static_cast<CItemData::FieldType>(i))) {
@@ -1025,7 +1023,7 @@ void PWScore::Synchronize(PWScore *pothercore,
       updItem.SetStatus(CItemData::ES_MODIFIED);
 
       StringX sx_updated;
-      Format(sx_updated, GROUPTITLEUSERINCHEVRONS,
+      Format(sx_updated, PWScore::GROUPTITLEUSERINCHEVRONS,
                 sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
       vs_updated.push_back(sx_updated);
 
@@ -1040,7 +1038,7 @@ void PWScore::Synchronize(PWScore *pothercore,
   } // iteration over other core's entries
 
   stringT str_results;
-  if (numUpdated > 0 && pRpt != NULL) {
+  if (numUpdated > 0 && pRpt != nullptr) {
     std::sort(vs_updated.begin(), vs_updated.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
     LoadAString(str_singular_plural_type, numUpdated == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
@@ -1055,7 +1053,7 @@ void PWScore::Synchronize(PWScore *pothercore,
   }
 
   // See if user has cancelled
-  if (pbCancel != NULL && *pbCancel) {
+  if (pbCancel != nullptr && *pbCancel) {
     delete pmulticmds;
     ResumeOnDBNotification();
     return;
@@ -1070,7 +1068,7 @@ void PWScore::Synchronize(PWScore *pothercore,
   ResumeOnDBNotification();
 
   // See if user has cancelled too late - reset flag so incorrect information not given to user
-  if (pbCancel != NULL && *pbCancel) {
+  if (pbCancel != nullptr && *pbCancel) {
     *pbCancel = false;
     return;
   }
@@ -1088,7 +1086,7 @@ Command *PWScore::ProcessPolicyName(PWScore *pothercore, CItemData &updtEntry,
                                     StringX &sxOtherPolicyName, bool &bUpdated,
                                     const StringX &sxDateTime, const UINT &IDS_MESSAGE)
 {
-  Command *pcmd(NULL);
+  Command *pcmd(nullptr);
 
   if (sxOtherPolicyName.empty()) {
     // If now blank, meaning default, are the defaults the same?
@@ -1111,7 +1109,7 @@ Command *PWScore::ProcessPolicyName(PWScore *pothercore, CItemData &updtEntry,
 
     if (!bInFrom) {
       ASSERT(bInFrom); // Problem if set but not there!
-      return NULL;
+      return nullptr;
     }
 
     if (bInTo) {

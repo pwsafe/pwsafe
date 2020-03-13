@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,6 +13,7 @@
 #include "PasswordSubsetDlg.h"
 #include "DboxMain.h"
 #include "Fonts.h"
+#include "winutils.h"
 
 #include "core/StringX.h"
 #include "core/PWSprefs.h"
@@ -25,8 +26,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-extern HRGN GetWorkAreaRegion();
-
 //-----------------------------------------------------------------------------
 
 CNumEdit::CNumEdit()
@@ -37,8 +36,27 @@ CNumEdit::CNumEdit()
 BEGIN_MESSAGE_MAP(CNumEdit, CEdit)
   //{{AFX_MSG_MAP(CNumEdit)
   ON_WM_CHAR()
+  ON_WM_PASTE()
+  ON_WM_RBUTTONDOWN()
+  ON_WM_RBUTTONUP()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+void CNumEdit::OnPaste()
+{
+  // Do nothing as processing text pasted in the middle of current text
+  // would be unnecessarily complicated (see processing in OnChar).
+  // Not really a loss to the user in this function
+}
+
+void CNumEdit::OnRButtonDown(UINT /*nFlags*/, CPoint /*point*/)
+{
+  // Do nothing to prevent context menu and paste
+}
+void CNumEdit::OnRButtonUp(UINT /*nFlags*/, CPoint /*point*/)
+{
+  // Do nothing to prevent context menu and paste
+}
 
 void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
@@ -99,8 +117,11 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 //-----------------------------------------------------------------------------
 CPasswordSubsetDlg::CPasswordSubsetDlg(CWnd* pParent, const StringX &sxPasswordd)
   : CPWDialog(CPasswordSubsetDlg::IDD, pParent),
-  m_sxPassword(sxPasswordd), m_bShown(false), m_csWarningMsg(L""), m_pCopyBtn(NULL),
-  m_bCopyPasswordEnabled(false), m_bImageLoaded(FALSE), m_bDisabledImageLoaded(FALSE)
+  m_pCopyBtn(nullptr),
+  m_sxPassword(sxPasswordd), 
+  m_csWarningMsg(L""),
+  m_bShown(false), m_bCopyPasswordEnabled(false),
+  m_bImageLoaded(FALSE), m_bDisabledImageLoaded(FALSE)
 {
 }
 
@@ -152,7 +173,7 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
   PWSprefs::GetInstance()->GetPrefPSSRect(rect.top, rect.bottom, 
                                           rect.left, rect.right);
 
-  HRGN hrgnWork = GetWorkAreaRegion();
+  HRGN hrgnWork = WinUtil::GetWorkAreaRegion();
   // also check that window will be visible
   if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) || !RectInRegion(hrgnWork, rect)){
     rect = dlgRect;

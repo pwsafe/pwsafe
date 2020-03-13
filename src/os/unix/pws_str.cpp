@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -18,12 +18,12 @@
 
 int pws_os::wctoi(const wchar_t *s)
 {
-  return int(wcstol(s, NULL, 10));
+  return int(wcstol(s, nullptr, 10));
 }
 
 double pws_os::wctof(const wchar_t *s)
 {
-  return double(wcstold(s, NULL));
+  return double(wcstold(s, nullptr));
 }
 
 TCHAR* pws_os::pws_itot(int val, TCHAR* out, unsigned base)

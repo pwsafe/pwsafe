@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -9,18 +9,15 @@
 /** \file SelectionCriteria.cpp
 *
 */
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
 
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
 
-#include "./SelectionCriteria.h"
+#include "SelectionCriteria.h"
 
 CItemData::FieldType subgroups[] = {  CItemData::GROUP,
                                       CItemData::GROUPTITLE,

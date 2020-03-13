@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -24,6 +24,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <atlcomcli.h>
 #include <comutil.h>
 
 MFileXMLProcessor::MFileXMLProcessor(PWScore *pcore,
@@ -31,9 +32,10 @@ MFileXMLProcessor::MFileXMLProcessor(PWScore *pcore,
                                      UUIDVector *pPossible_Shortcuts,
                                      MultiCommands *p_multicmds,
                                      CReport *prpt)
-  : m_pXMLcore(pcore), m_delimiter(TCHAR('^')),
+  : m_pXMLcore(pcore),
   m_pPossible_Aliases(pPossible_Aliases), m_pPossible_Shortcuts(pPossible_Shortcuts),
-  m_pmulticmds(p_multicmds), m_prpt(prpt)
+  m_pmulticmds(p_multicmds), m_prpt(prpt),
+  m_delimiter(TCHAR('^'))
 {
 }
 
@@ -48,7 +50,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 {
   HRESULT hr, hr0, hr60;
   bool b_ok = false;
-  bool b_into_empty;
+  bool b_into_empty = false;
   stringT cs_validation;
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
   stringT cs_import;
@@ -58,12 +60,12 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   m_bValidation = bvalidation;  // Validate or Import
 
   //  Create SAXReader object
-  ISAXXMLReader *pSAX2Reader = NULL;
+  ISAXXMLReader *pSAX2Reader = nullptr;
   //  Get ready for XSD schema validation
-  IXMLDOMSchemaCollection2 *pSchemaCache = NULL;
+  IXMLDOMSchemaCollection2 *pSchemaCache = nullptr;
 
   if (m_bValidation) { //XMLValidate
-    hr60 = CoCreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL,
+    hr60 = CoCreateInstance(__uuidof(SAXXMLReader60), nullptr, CLSCTX_ALL,
                             __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
     if (FAILED(hr60)) {
       LoadAString(m_strXMLErrors, IDSC_NOMSXMLREADER);
@@ -71,16 +73,16 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
     }
   } else {  // XMLImport
     b_into_empty = m_pXMLcore->GetNumEntries() == 0;
-    hr0 = CoCreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL,
+    hr0 = CoCreateInstance(__uuidof(SAXXMLReader60), nullptr, CLSCTX_ALL,
                            __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
   }
 
   //  Create ContentHandlerImpl object
   MFileSAX2ContentHandler *pCH = new MFileSAX2ContentHandler();
-  pCH->SetVariables(m_bValidation ? NULL : m_pXMLcore, m_bValidation, 
+  pCH->SetVariables(m_bValidation ? nullptr : m_pXMLcore, m_bValidation, 
                     ImportedPrefix, m_delimiter, bImportPSWDsOnly,
-                    m_bValidation ? NULL : m_pPossible_Aliases, 
-                    m_bValidation ? NULL : m_pPossible_Shortcuts,
+                    m_bValidation ? nullptr : m_pPossible_Aliases, 
+                    m_bValidation ? nullptr : m_pPossible_Shortcuts,
                     m_pmulticmds, m_prpt);
 
   //  Create ErrorHandlerImpl object
@@ -92,7 +94,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   //  Set Error Handler
   hr = pSAX2Reader->putErrorHandler(pEH);
 
-  hr = CoCreateInstance(__uuidof(XMLSchemaCache60), NULL, CLSCTX_ALL,
+  hr = CoCreateInstance(__uuidof(XMLSchemaCache60), nullptr, CLSCTX_ALL,
                         __uuidof(IXMLDOMSchemaCollection2), (void **)&pSchemaCache);
 
   if (!FAILED(hr)) {  // Create SchemaCache
@@ -187,10 +189,10 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   }  // End Create Schema Cache
 
 exit:
-  if (pSchemaCache != NULL)
+  if (pSchemaCache != nullptr)
     pSchemaCache->Release();
 
-  if (pSAX2Reader != NULL)
+  if (pSAX2Reader != nullptr)
     pSAX2Reader->Release();
 
   return b_ok;

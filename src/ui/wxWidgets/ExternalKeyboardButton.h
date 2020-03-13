@@ -1,18 +1,22 @@
 /*
- * Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef __ExternalKeyboardButton__
-#define __ExternalKeyboardButton__
+/** \file ExternalKeyboardButton.h
+* 
+*/
+
+#ifndef _ExternalKeyboardButton_
+#define _ExternalKeyboardButton_
 
 #include <wx/bmpbuttn.h> // Base class: wxBitmapButton
 
-class ExternalKeyboardButton : public wxBitmapButton {
-
+class ExternalKeyboardButton : public wxBitmapButton
+{
 public:
   ExternalKeyboardButton(wxWindow* parent, wxWindowID id = wxID_ANY,
                                             const wxPoint& pos = wxDefaultPosition,
@@ -26,4 +30,4 @@ public:
 
 };
 
-#endif // __ExternalKeyboardButton__
+#endif // _ExternalKeyboardButton_

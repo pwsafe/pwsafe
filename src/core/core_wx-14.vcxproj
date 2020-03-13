@@ -92,8 +92,8 @@
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..;$(XercesDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(WXDIR)\include\msvc;$(WXDIR)\include;..;$(XercesDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;USE_XML_LIBRARY=MSXML;_DEBUG;_WINDOWS;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -125,8 +125,8 @@
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..;$(Xerces64Dir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(WXDIR)\include\msvc;$(WXDIR)\include;..;$(Xerces64Dir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;USE_XML_LIBRARY=MSXML;WIN64;_DEBUG;_WINDOWS;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -139,6 +139,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <ShowIncludes>false</ShowIncludes>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -158,8 +159,8 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..;$(XercesDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__WX__;__WXMSW__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(WXDIR)\include\msvc;$(WXDIR)\include;..;$(XercesDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;USE_XML_LIBRARY=MSXML;NDEBUG;_WINDOWS;__WX__;__WXMSW__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -191,8 +192,8 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..;$(Xerces64Dir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;__WX__;__WXMSW__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(WXDIR)\include\msvc;$(WXDIR)\include;..;$(Xerces64Dir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;USE_XML_LIBRARY=MSXML;WIN64;NDEBUG;_WINDOWS;__WX__;__WXMSW__;wxUSE_UNICODE;_LIB;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -216,21 +217,25 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AES.cpp" />
-    <ClCompile Include="BlowFish.cpp" />
     <ClCompile Include="CheckVersion.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CoreOtherDB.cpp" />
     <ClCompile Include="CoreImpExp.cpp" />
     <ClCompile Include="core_st.cpp" />
+    <ClCompile Include="crypto\AES.cpp" />
+    <ClCompile Include="crypto\BlowFish.cpp" />
+    <ClCompile Include="crypto\KeyWrap.cpp" />
+    <ClCompile Include="crypto\pbkdf2.cpp" />
+    <ClCompile Include="crypto\sha1.cpp" />
+    <ClCompile Include="crypto\sha256.cpp" />
+    <ClCompile Include="crypto\TwoFish.cpp" />
     <ClCompile Include="ExpiredList.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemAtt.cpp" />
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="ItemField.cpp" />
-    <ClCompile Include="KeyWrap.cpp" />
     <ClCompile Include="Match.cpp" />
-    <ClCompile Include="pbkdf2.cpp" />
+    <ClCompile Include="PolicyManager.cpp" />
     <ClCompile Include="pugixml\pugixml.cpp" />
     <ClCompile Include="PWSfileHeader.cpp" />
     <ClCompile Include="PWSfileV4.cpp" />
@@ -250,15 +255,17 @@
     <ClCompile Include="PWStime.cpp" />
     <ClCompile Include="Report.cpp" />
     <ClCompile Include="RUEList.cpp" />
-    <ClCompile Include="sha1.cpp" />
-    <ClCompile Include="sha256.cpp" />
     <ClCompile Include="StringX.cpp" />
     <ClCompile Include="SysInfo.cpp" />
-    <ClCompile Include="TwoFish.cpp" />
     <ClCompile Include="UnknownField.cpp" />
     <ClCompile Include="UTF8Conv.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="VerifyFormat.cpp" />
+    <ClCompile Include="XML\MSXML\MFileSAX2Handlers.cpp" />
+    <ClCompile Include="XML\MSXML\MFileValidator.cpp" />
+    <ClCompile Include="XML\MSXML\MFileXMLProcessor.cpp" />
+    <ClCompile Include="XML\MSXML\MFilterSAX2Handlers.cpp" />
+    <ClCompile Include="XML\MSXML\MFilterXMLProcessor.cpp" />
     <ClCompile Include="XML\XERCES\XFileSAX2Handlers.cpp" />
     <ClCompile Include="XML\Xerces\XFileValidator.cpp" />
     <ClCompile Include="XML\XERCES\XFileXMLProcessor.cpp" />
@@ -270,25 +277,29 @@
     <ClCompile Include="XML\XERCES\XSecMemMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AES.h" />
-    <ClInclude Include="BlowFish.h" />
     <ClInclude Include="CheckVersion.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="CommandInterface.h" />
     <ClInclude Include="coredefs.h" />
     <ClInclude Include="core.h" />
     <ClInclude Include="core_st.h" />
+    <ClInclude Include="crypto\AES.h" />
+    <ClInclude Include="crypto\BlowFish.h" />
+    <ClInclude Include="crypto\Fish.h" />
+    <ClInclude Include="crypto\hmac.h" />
+    <ClInclude Include="crypto\KeyWrap.h" />
+    <ClInclude Include="crypto\pbkdf2.h" />
+    <ClInclude Include="crypto\sha1.h" />
+    <ClInclude Include="crypto\sha256.h" />
+    <ClInclude Include="crypto\TwoFish.h" />
     <ClInclude Include="DBCompareData.h" />
     <ClInclude Include="ExpiredList.h" />
-    <ClInclude Include="Fish.h" />
-    <ClInclude Include="hmac.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemAtt.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="ItemField.h" />
-    <ClInclude Include="KeyWrap.h" />
     <ClInclude Include="Match.h" />
-    <ClInclude Include="pbkdf2.h" />
+    <ClInclude Include="PolicyManager.h" />
     <ClInclude Include="pugixml\pugiconfig.hpp" />
     <ClInclude Include="pugixml\pugixml.hpp" />
     <ClInclude Include="PWSfileHeader.h" />
@@ -311,18 +322,20 @@
     <ClInclude Include="PWStime.h" />
     <ClInclude Include="Report.h" />
     <ClInclude Include="RUEList.h" />
-    <ClInclude Include="sha1.h" />
-    <ClInclude Include="sha256.h" />
     <ClInclude Include="StringX.h" />
     <ClInclude Include="StringXStream.h" />
     <ClInclude Include="SysInfo.h" />
     <ClInclude Include="trigram.h" />
-    <ClInclude Include="TwoFish.h" />
     <ClInclude Include="UIinterface.h" />
     <ClInclude Include="UnknownField.h" />
     <ClInclude Include="UTF8Conv.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="VerifyFormat.h" />
+    <ClInclude Include="XML\MSXML\MFileSAX2Handlers.h" />
+    <ClInclude Include="XML\MSXML\MFileValidator.h" />
+    <ClInclude Include="XML\MSXML\MFileXMLProcessor.h" />
+    <ClInclude Include="XML\MSXML\MFilterSAX2Handlers.h" />
+    <ClInclude Include="XML\MSXML\MFilterXMLProcessor.h" />
     <ClInclude Include="XML\XERCES\XFileSAX2Handlers.h" />
     <ClInclude Include="XML\Xerces\XFileValidator.h" />
     <ClInclude Include="XML\XERCES\XFileXMLProcessor.h" />

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2017 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -35,8 +35,9 @@ using namespace std;
 static const wchar_t PSSWDCHAR = L'*';
 
 CYubiCfgDlg::CYubiCfgDlg(CWnd* pParent, PWScore &core)
-  : CPWDialog(CYubiCfgDlg::IDD, pParent), m_core(core),
-    m_YubiSN(L""), m_YubiSK(L""), m_isSKHidden(true)
+  : CPWDialog(CYubiCfgDlg::IDD, pParent),
+  m_YubiSN(L""), m_YubiSK(L""), m_isSKHidden(true),
+  m_core(core)
 {
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer event
 }
