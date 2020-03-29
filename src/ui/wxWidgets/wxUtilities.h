@@ -314,10 +314,11 @@ private:
 
 #ifdef __WXGTK20__
 /* We need to add one more format to support DnD into Firefox, that wants
- "text/plain" ("text/plain;charset=utf-8")
+ "text/plain" and Firefox's clipboard with Wayland backend wants "text/plain;charset=utf-8",
+(X11 backend works fine with STRING/UTF8_STRING in clipboard)
  https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Recommended_Drag_Types
  https://hg.mozilla.org/mozilla-central/file/tip/widget/gtk/nsDragService.cpp
- [no need to use it with clipboard, Firefox works fine with STRING/UTF8_STRING in clipboard]
+ https://hg.mozilla.org/mozilla-central/file/tip/widget/gtk/nsClipboardWayland.cpp
  */
 
 class wxTextDataObjectEx : public wxTextDataObject {
@@ -326,13 +327,17 @@ public:
 
   virtual size_t GetFormatCount(Direction dir = Get) const wxOVERRIDE {
     // add one more format
-    return wxTextDataObject::GetFormatCount(dir) + 1;
+    return wxTextDataObject::GetFormatCount(dir) + 2;
   }
 
   virtual void GetAllFormats(wxDataFormat *formats, Direction dir = Get) const wxOVERRIDE {
     wxTextDataObject::GetAllFormats(formats, dir);
-    // set type for new format (for some reason "text/plain;charset=utf-8" don't work)
-    formats[wxTextDataObject::GetFormatCount(dir)].SetId("text/plain");
+    // set types for new format
+    // for some reason "text/plain;charset=utf-8" don't work for DnD, but works for Wayland's clipboard,
+    // and reverse
+    size_t formatCount = wxTextDataObject::GetFormatCount(dir);
+    formats[formatCount++].SetId("text/plain");
+    formats[formatCount].SetId("text/plain;charset=utf-8");
   }
   // No need to override SetData, wxTextDataObject put "preferred format" text
   // into all formats
