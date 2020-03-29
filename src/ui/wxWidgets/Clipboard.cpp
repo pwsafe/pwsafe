@@ -10,6 +10,13 @@
  *
  */
 
+// For compilers that support precompilation, includes "wx/wx.h".
+#include <wx/wxprec.h>
+
+#ifndef WX_PRECOMP
+#include <wx/wx.h>
+#endif
+
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
 
@@ -36,6 +43,8 @@
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include "wxUtilities.h"
 
 Clipboard *Clipboard::self = nullptr;
 
@@ -76,7 +85,7 @@ bool Clipboard::SetData(const StringX &data)
 
   bool res = false;
   if (wxTheClipboard->Open()) {
-    res = wxTheClipboard->SetData(new wxTextDataObject(data.c_str()));
+    res = wxTheClipboard->SetData(new wxTextDataObjectEx(data.c_str()));
     wxTheClipboard->Close();
   }
   m_set = true;
