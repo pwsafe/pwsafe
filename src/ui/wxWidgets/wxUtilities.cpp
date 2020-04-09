@@ -215,3 +215,213 @@ bool IsTaskBarIconAvailable()
 #endif
   return wxTaskBarIcon::IsAvailable();
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// ImagePanel Implementation
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+ImagePanel::ImagePanel(wxPanel *parent, const wxSize &size) : wxPanel(parent, wxID_ANY, wxDefaultPosition, size), m_ImageWidth(), m_ImageHeight(0), m_ImageAspectRatio(0)
+{
+  Bind(wxEVT_PAINT, &ImagePanel::OnPaint, this);
+  Bind(wxEVT_SIZE, &ImagePanel::OnSize, this);
+}
+
+ImagePanel::~ImagePanel()
+{
+  Unbind(wxEVT_PAINT, &ImagePanel::OnPaint, this);
+  Unbind(wxEVT_SIZE, &ImagePanel::OnSize, this);
+}
+
+bool ImagePanel::LoadFromFile(const wxString &file, wxBitmapType format)
+{
+  if (m_Image.LoadFile(file, format)) {
+
+    DetermineImageProperties(m_Image);
+    Refresh(); // Triggers OnPaint to display the image
+
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+bool ImagePanel::LoadFromMemory(wxInputStream &stream, const wxString &mimetype)
+{
+  if (m_Image.LoadFile(stream, mimetype)) {
+
+    DetermineImageProperties(m_Image);
+    Refresh(); // Triggers OnPaint to display the image
+
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+void ImagePanel::DetermineImageProperties(const wxImage &image)
+{
+  auto width = image.GetWidth();
+
+  if (width < 0) {
+    m_ImageWidth = -1 * width;
+  }
+  else {
+    m_ImageWidth = width;
+  }
+
+  auto height = image.GetHeight();
+
+  if (height < 0) {
+    m_ImageHeight = -1 * height;
+  }
+  else {
+    m_ImageHeight = height;
+  }
+
+  m_ImageAspectRatio = (double)m_ImageWidth / (double)m_ImageHeight;
+}
+
+/**
+ * Called by the system of by wxWidgets when the panel needs
+ * to be redrawn. You can also trigger this call by
+ * calling Refresh()/Update().
+ */
+void ImagePanel::OnPaint(wxPaintEvent &event)
+{
+  // depending on your system you may need to look at double-buffered dcs
+  wxPaintDC dc(this);
+  Render(dc);
+}
+
+/**
+ * Here we call refresh to tell the panel to draw itself again.
+ * So when the user resizes the image panel the image should be resized too.
+ */
+void ImagePanel::OnSize(wxSizeEvent &event)
+{
+  Refresh();
+  event.Skip();
+}
+
+/**
+ * Alternatively, you can use a clientDC to paint on the panel
+ * at any time. Using this generally does not free you from
+ * catching paint events, since it is possible that e.g. the window
+ * manager throws away your drawing when the window comes to the
+ * background, and expects you will redraw it when the window comes
+ * back (by sending a paint event).
+ */
+void ImagePanel::Paint()
+{
+  // depending on your system you may need to look at double-buffered dcs
+  wxClientDC dc(this);
+  Render(dc);
+}
+
+void ImagePanel::Clear()
+{
+  m_Image.Destroy();
+}
+
+/**
+ * Here we do the actual rendering. I put it in a separate
+ * method so that it can work no matter what type of DC
+ * (e.g. wxPaintDC or wxClientDC) is used.
+ */
+void ImagePanel::Render(wxDC &dc)
+{
+  static const double WIDTH_OR_HEIGHT_FITS_THRESHOLD = 1.0;
+
+  if (!m_Image.IsOk()) {
+    return;
+  }
+
+  int newWidth = 0, newHeight = 0;
+
+  // Width and height of the drawing area
+  int areaWidth = 0, areaHeight = 0;
+  dc.GetSize(&areaWidth, &areaHeight);
+
+  if ((areaWidth <= 0) || (areaHeight <= 0)) {
+    return;
+  }
+
+  // Does the image needs to be scaled to fit into the drawing area?
+  if ((m_ImageWidth > areaWidth) || (m_ImageHeight > areaHeight)) {
+
+    /*
+      A ratio of less than 1 indicates that the width or height is less than
+      the drawing area.
+      If the ratio is 1, it means that the width or height exactly matches
+      that of the drawing area.
+      Only if the ratio is greater than 1 does the width or height of the
+      image not fit in the drawing area.
+
+      See constant 'WIDTH_OR_HEIGHT_FITS_THRESHOLD'.
+    */
+    double widthRatio = (double)m_ImageWidth / (double)areaWidth;
+    double heightRatio = (double)m_ImageHeight / (double)areaHeight;
+
+    // Does the image needs scaling in both directions, width and height?
+    if ((widthRatio > WIDTH_OR_HEIGHT_FITS_THRESHOLD) && (heightRatio > WIDTH_OR_HEIGHT_FITS_THRESHOLD)) {
+
+      // Limit image to area width and adapt image height by keeping the width height ratio
+      if (widthRatio > heightRatio) {
+        newWidth = areaWidth;
+        newHeight = newWidth / m_ImageAspectRatio;
+      }
+      // Limit image to area height and adapt image width by keeping the width height ratio
+      else if (heightRatio > widthRatio) {
+        newHeight = areaHeight;
+        newWidth = newHeight * m_ImageAspectRatio;
+      }
+      // Limit image to area width and height
+      else {
+        newWidth = areaWidth;
+        newHeight = areaHeight;
+      }
+    }
+    // Does the image needs scaling in width, only?
+    else if ((widthRatio > WIDTH_OR_HEIGHT_FITS_THRESHOLD) && (heightRatio <= WIDTH_OR_HEIGHT_FITS_THRESHOLD)) {
+      newWidth = areaWidth;
+      newHeight = newWidth / m_ImageAspectRatio;
+    }
+    // Does the image needs scaling in height, only?
+    else if ((widthRatio <= WIDTH_OR_HEIGHT_FITS_THRESHOLD) && (heightRatio > WIDTH_OR_HEIGHT_FITS_THRESHOLD)) {
+      newHeight = areaHeight;
+      newWidth = newHeight * m_ImageAspectRatio;
+    }
+    else {
+      // The image already fits in the drawing area, so no actions regarding width and height are required
+      return;
+    }
+
+    // Limit new values for scaling to prevent assert violations
+    if (newWidth < 1) {
+      newWidth = 1;
+    }
+
+    if (newHeight < 1) {
+      newHeight = 1;
+    }
+
+    // Scale the image and show it with its new dimensions
+    m_Bitmap = wxBitmap(m_Image.Scale(newWidth, newHeight));
+    DrawBitmapCentered(dc, wxSize(areaWidth, areaHeight), wxSize(newWidth, newHeight));
+  }
+  else {
+    // No scaling needed, so we use the image with its original dimensions
+    m_Bitmap = wxBitmap(m_Image);
+    DrawBitmapCentered(dc, wxSize(areaWidth, areaHeight), wxSize(m_ImageWidth, m_ImageHeight));
+  }
+}
+
+void ImagePanel::DrawBitmapCentered(wxDC &dc, const wxSize &drawAreaSize, const wxSize &imageSize)
+{
+  int xCenterPosition = (drawAreaSize.GetWidth() - imageSize.GetWidth()) / 2;
+  int yCenterPosition = (drawAreaSize.GetHeight() - imageSize.GetHeight()) / 2;
+
+  dc.DrawBitmap(m_Bitmap, xCenterPosition, yCenterPosition, false);
+}

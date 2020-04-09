@@ -15,11 +15,14 @@
 
 #include <wx/eventfilter.h>
 #include <wx/dataobj.h>
+#include <wx/panel.h>
+#include <wx/stream.h>
 
 #include "core/StringX.h"
 #include "core/PWSprefs.h"
 
 #include <set>
+//#include <tuple>
 
 #if !wxCHECK_VERSION(3,1,0)
 #define wxOVERRIDE
@@ -349,5 +352,39 @@ typedef wxTextDataObject wxTextDataObjectEx;
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable();
+
+/**
+ * A panel in which the image resizes.
+ *
+ * @see https://wiki.wxwidgets.org/An_image_panel
+ */
+class ImagePanel : public wxPanel
+{
+public:
+  ImagePanel(wxPanel *parent, const wxSize &size = wxDefaultSize);
+  ~ImagePanel();
+
+  void OnPaint(wxPaintEvent &event);
+  void OnSize(wxSizeEvent &event);
+
+  bool LoadFromFile(const wxString &file, wxBitmapType format = wxBITMAP_TYPE_ANY);
+  bool LoadFromMemory(wxInputStream &stream, const wxString &mimetype);
+
+  void Paint();
+
+  void Clear();
+
+protected:
+  void Render(wxDC &dc);
+  void DrawBitmapCentered(wxDC &dc, const wxSize &drawAreaSize, const wxSize &imageSize);
+  void DetermineImageProperties(const wxImage &image);
+
+private:
+  int m_ImageWidth;           // The non-scaled width of the image.
+  int m_ImageHeight;          // The non-scaled height of the image.
+  double m_ImageAspectRatio;  // The image's aspect ratio.
+  wxImage m_Image;            // The non-scaled image.
+  wxBitmap m_Bitmap;          // The possibly scaled bitmap representation of the image.
+};
 
 #endif // _WXUTILITIES_H_
