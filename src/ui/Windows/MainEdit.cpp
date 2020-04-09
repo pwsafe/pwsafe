@@ -832,7 +832,7 @@ void DboxMain::OnDelete()
                                      GetPref(PWSprefs::DeleteQuestion));
   bool dodelete = true;
   int num_children = 0;
-  m_sxOriginalGroup = L""; // Needed if deleting a groups due to Delete recusrsion
+  m_sxOriginalGroup = L""; // Needed if deleting a group due to Delete recursion
 
   // Entry to be selected after deletion
   bool bSelectNext(false), bSelectPrev(false);
@@ -894,7 +894,7 @@ void DboxMain::OnDelete()
           }
 
           // Was this empty group the only child of its parent?
-          // If so - make it empty too.
+          // If so - make the parent empty too.
           HTREEITEM parent = m_ctlItemTree.GetParentItem(hStartItem);
           num_children = m_ctlItemTree.CountChildren(parent);
           if (num_children == 1 && parent != NULL && parent != TVI_ROOT) {
@@ -912,11 +912,11 @@ void DboxMain::OnDelete()
           ChangeOkUpdate();
           goto Select_Next_Prev;
         }
-      } else {
+      } else { // an entry, not a group
         pci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
       }
     }
-  } else {
+  } else { // list view
     // Ignore if more than one selected - List view only
     if (m_ctlItemList.GetSelectedCount() > 1)
       return;
@@ -940,7 +940,7 @@ void DboxMain::OnDelete()
         prevUUID = pci_prev->GetUUID();
       }
     }
-  }
+  } // tree or list view
 
   if (pci != NULL) {
     if (pci->IsProtected())
@@ -993,6 +993,8 @@ void DboxMain::OnDelete()
       RefreshViews();
 
     ChangeOkUpdate();
+  } else { // !dodelete
+    return; // BR1509 - don't change selection if user cancelled.
   }
 
 Select_Next_Prev:
