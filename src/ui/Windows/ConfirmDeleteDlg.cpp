@@ -78,10 +78,6 @@ BOOL CConfirmDeleteDlg::OnInitDialog()
               L"\xab" + m_sxUser  + L"\xbb";
     GetDlgItem(IDC_ENTRY)->SetWindowText(sxEntry.c_str());
 
-    // Get Add/Edit font
-    CFont *pFont = Fonts::GetInstance()->GetAddEditFont();
-    GetDlgItem(IDC_ENTRY)->SetFont(pFont);
-
     // Disable/hide children info - n/a for a single entry
     GetDlgItem(IDC_DELETECHILDREN)->EnableWindow(FALSE);
     GetDlgItem(IDC_DELETECHILDREN)->ShowWindow(SW_HIDE);
