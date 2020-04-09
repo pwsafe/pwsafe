@@ -115,12 +115,6 @@ void CItemAtt::SetContent(const unsigned char *content, size_t clen)
   SetField(CONTENT, content, clen);
 }
 
-time_t CItemAtt::GetCTime(time_t &t) const
-{
-  CItem::GetTime(ATTCTIME, t);
-  return t;
-}
-
 StringX CItemAtt::GetTime(int whichtime, PWSUtil::TMC result_format) const
 {
   time_t t;
@@ -175,6 +169,11 @@ int CItemAtt::Import(const stringT &fname)
     return PWScore::CANT_OPEN_FILE;
 
   auto flen = static_cast<size_t>(pws_os::fileLength(fhandle));
+  if (flen > CItemAtt::MAX_SIZE) {
+    fclose(fhandle);
+    return PWScore::MAX_SIZE_EXCEEDED;
+  }
+
   auto *data = new unsigned char[flen];
   if (data == nullptr)
     return PWScore::FAILURE;
@@ -197,7 +196,7 @@ int CItemAtt::Import(const stringT &fname)
   pws_os::splitpath(fname, sdrive, sdir, sfname, sextn);
   spath = pws_os::makepath(sdrive, sdir, _T(""), _T(""));
 
-  CItem::SetField(FILENAME, (sfname + sextn).c_str());
+  CItem::SetField(FILENAME, (sfname + _T(".") + sextn).c_str());
   CItem::SetField(FILEPATH, spath.c_str());
   CItem::SetField(MEDIATYPE, pws_os::GetMediaType(fname.c_str()).c_str());
 
