@@ -38,6 +38,10 @@ class PWSfile;
 class CItemAtt : public CItem
 {
 public:
+  // The maximum supported attachment size
+  // according to section 3.4 of formatV4 specification.
+  const static size_t MAX_SIZE = 4294967296; // 2^32
+
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST_SEARCHABLE - START + 1> AttFieldBits;
 
@@ -77,7 +81,9 @@ public:
   size_t GetContentSize() const; // size needed for GetContent (!= len due to block cipher)
   bool GetContent(unsigned char *content, size_t csize) const;
 
-  time_t GetCTime(time_t &t) const;
+  StringX GetCTime() const { return GetTime(ATTCTIME, PWSUtil::TMC_LOCALE); }
+
+  time_t GetCTime(time_t &t) const { CItem::GetTime(ATTCTIME, t); return t; }
 
   StringX GetTime(int whichtime, PWSUtil::TMC result_format) const;
   void SetTime(const int whichtime); // V30

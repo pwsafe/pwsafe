@@ -89,7 +89,8 @@ public:
     DB_HAS_DUPLICATES,                        //  21
     OK_WITH_ERRORS,                           //  22
     OK_WITH_VALIDATION_ERRORS,                //  23
-    OPEN_NODB                                 //  24
+    OPEN_NODB,                                //  24
+    MAX_SIZE_EXCEEDED                         //  25
   };
 
   PWScore();
