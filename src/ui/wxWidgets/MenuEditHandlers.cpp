@@ -53,28 +53,37 @@
 
 using pws_os::CUUID;
 
-//This function intentionally takes the argument by value and not by
-//reference to avoid touching an item invalidated by idle timeout
+/**
+ * This function intentionally takes the argument by value and not by
+ * reference to avoid touching an item invalidated by idle timeout.
+ */
 void PasswordSafeFrame::DoEdit(CItemData item)
 {
-  int rc = 0;
+  int returnCode = 0;
+
   if (!item.IsShortcut()) {
-    bool read_only = m_core.IsReadOnly() || item.IsProtected();
-    AddEditPropSheetDlg editDbox(this, m_core,
-                              read_only ? AddEditPropSheetDlg::SheetType::VIEW : AddEditPropSheetDlg::SheetType::EDIT,
-                              &item);
-    rc = editDbox.ShowModal();
-  } else {
-    EditShortcutDlg editDbox(this, m_core, &item);
-    rc = editDbox.ShowModal();
+    bool isItemReadOnly = m_core.IsReadOnly() || item.IsProtected();
+
+    AddEditPropSheetDlg dialog(
+      this, m_core,
+      isItemReadOnly ? AddEditPropSheetDlg::SheetType::VIEW : AddEditPropSheetDlg::SheetType::EDIT,
+      &item
+    );
+
+    returnCode = dialog.ShowModal();
   }
-  if (rc == wxID_OK) {
+  else {
+    EditShortcutDlg dialog(this, m_core, &item);
+    returnCode = dialog.ShowModal();
+  }
+
+  if (returnCode == wxID_OK) {
     uuid_array_t uuid;
     item.GetUUID(uuid);
     //Find the item in the database, which might have been loaded afresh
     //after lock/unlock, so the old data structures are no longer valid
-    auto iter = m_core.Find(uuid);
-    if ( iter != m_core.GetEntryEndIter()) {
+    const auto iter = m_core.Find(uuid);
+    if (iter != m_core.GetEntryEndIter()) {
       CItemData& origItem = m_core.GetEntry(iter);
       //The Item is updated in DB by AddEditPropSheetDlg
       UpdateAccessTime(origItem);
