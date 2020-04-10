@@ -402,29 +402,24 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
       m_AEMD.pci->SetXTimeInt(m_AEMD.XTimeInt);
 
       if (bIsPSWDModified || m_AEMD.locXTime != m_AEMD.oldlocXTime) {
-        CItemData *pciA(m_AEMD.pci);
-        if (m_AEMD.pci->IsAlias()) {
-          pciA = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci);
-        }
-
-        if (bIsPSWDModified) {
-          m_AEMD.pci->UpdatePassword(m_AEMD.realpassword);
-          m_AEMD.locPMTime = m_AEMD.pci->GetPMTimeL();
-         if (m_AEMD.XTimeInt != 0) {
-           // if entry has a recurring password interval, then
-           // changing the password ==> update expiry
-            m_AEMD.tttXTime = m_AEMD.tttCPMTime + 24 * 60 * 60 * m_AEMD.XTimeInt;
-            pciA->SetXTime(m_AEMD.tttXTime);
-            m_AEMD.locXTime = pciA->GetXTimeL();
-            m_bIsModified = true;
-          }
-        }
+        CItemData *pciA = (m_AEMD.pci->IsAlias()) ? m_AEMD.pcore->GetBaseEntry(m_AEMD.pci) : m_AEMD.pci;
 
         if (m_AEMD.locXTime != m_AEMD.oldlocXTime) {
           pciA->SetXTime(m_AEMD.tttXTime);
           m_AEMD.locXTime = pciA->GetXTimeL();
           m_AEMD.oldlocXTime = m_AEMD.locXTime;
         }
+
+        if (bIsPSWDModified) {
+          m_AEMD.pci->UpdatePassword(m_AEMD.realpassword); // also updates exp time if entry's recurring exp set
+          m_AEMD.locPMTime = m_AEMD.pci->GetPMTimeL();
+         if (m_AEMD.XTimeInt != 0) {
+           // if entry has a recurring password interval, then
+           // changing the password ==> updated expiry
+            pciA->GetXTime(m_AEMD.tttXTime);
+            m_AEMD.locXTime = pciA->GetXTimeL();
+          }
+        } // bIsPSWDModified
       }
 
       if (m_bIsModified && !bIsPSWDModified) {
@@ -432,11 +427,11 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
         m_AEMD.pci->SetRMTime(t);
       }
 
+      m_bIsModified = m_bIsModified || bIsPSWDModified;
+
       if (m_bIsModified)
         SendMessage(PSM_QUERYSIBLINGS,
               (WPARAM)CPWPropertyPage::PP_UPDATE_TIMES, 0L);
-
-      m_bIsModified = m_bIsModified || bIsPSWDModified;
       break;
 
     case IDS_ADDENTRY:
