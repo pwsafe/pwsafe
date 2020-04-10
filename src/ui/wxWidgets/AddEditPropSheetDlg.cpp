@@ -1151,6 +1151,8 @@ void AddEditPropSheetDlg::OnImport(wxCommandEvent& WXUNUSED(event))
 #endif
 #if wxUSE_XPM
   _("XMP files (*.xmp)|*.xmp")
+#else
+  _("")
 #endif
   ;
 
