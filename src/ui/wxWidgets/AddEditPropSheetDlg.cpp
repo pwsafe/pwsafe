@@ -1001,7 +1001,7 @@ void AddEditPropSheetDlg::ShowAttachmentData(const CItemAtt &itemAttachment)
     }
   }
   else {
-    HideImagePreview(_("No preview available"));
+    HideImagePreview(_("No preview available - unsupported media type"));
   }
 }
 
