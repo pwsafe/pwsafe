@@ -220,7 +220,7 @@ bool IsTaskBarIconAvailable()
 // ImagePanel Implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-ImagePanel::ImagePanel(wxPanel *parent, const wxSize &size) : wxPanel(parent, wxID_ANY, wxDefaultPosition, size), m_ImageWidth(), m_ImageHeight(0), m_ImageAspectRatio(0)
+ImagePanel::ImagePanel(wxPanel *parent, const wxSize &size) : wxPanel(parent, wxID_ANY, wxDefaultPosition, size), m_ImageWidth(0), m_ImageHeight(0), m_ImageAspectRatio(0)
 {
   Bind(wxEVT_PAINT, &ImagePanel::OnPaint, this);
   Bind(wxEVT_SIZE, &ImagePanel::OnSize, this);
@@ -252,7 +252,6 @@ bool ImagePanel::LoadFromMemory(wxInputStream &stream, const wxString &mimetype)
 
     DetermineImageProperties(m_Image);
     Refresh(); // Triggers OnPaint to display the image
-
     return true;
   }
   else {
@@ -395,7 +394,7 @@ void ImagePanel::Render(wxDC &dc)
     }
     else {
       // The image already fits in the drawing area, so no actions regarding width and height are required
-      return;
+      ;
     }
 
     // Limit new values for scaling to prevent assert violations
