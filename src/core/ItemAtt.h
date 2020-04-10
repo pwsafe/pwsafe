@@ -40,7 +40,7 @@ class CItemAtt : public CItem
 public:
   // The maximum supported attachment size
   // according to section 3.4 of formatV4 specification.
-  const static size_t MAX_SIZE = 4294967296; // 2^32
+  const static size_t MAX_SIZE = 4294967295U; // 2^32
 
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST_SEARCHABLE - START + 1> AttFieldBits;
