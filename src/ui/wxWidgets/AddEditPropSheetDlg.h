@@ -30,6 +30,8 @@
 #include "core/ItemData.h"
 #include "core/PWScore.h"
 
+#include "wxUtilities.h"
+
 /*!
  * Forward declarations
  */
@@ -58,7 +60,7 @@ class wxBoxSizer;
 #define ID_TEXTCTRL_TITLE 10096
 #define ID_TEXTCTRL_USERNAME 10088
 #define ID_TEXTCTRL_PASSWORD 10089
-#define ID_BUTTON2 10090
+#define ID_BUTTON_SHOWHIDE 10090
 #define ID_BUTTON_GENERATE 10097
 #define ID_TEXTCTRL_PASSWORD2 10091
 #define ID_TEXTCTRL_URL 10092
@@ -256,6 +258,18 @@ private:
   // Creates the controls of 'Attachment' tab
   wxPanel *CreateAttachmentPanel();
 
+  void InitAttachmentTab();
+  void ShowAttachmentData(const CItemAtt &attachmentItem);
+  void ResetAttachmentData();
+  bool LoadImagePreview(const CItemAtt &itemAttachment);
+  void ShowImagePreview();
+  void HideImagePreview(const wxString &reason = _("No preview available"));
+  bool IsFileMimeTypeImage(const wxString &filename);
+  bool IsMimeTypeImage(const stringT &mimeTypeDescription);
+  wxString GetMimeTypeExtension(const stringT &mimeTypeDescription);
+  void EnableImport();
+  void DisableImport();
+
   // Applies font preferences to corresponding controls
   void ApplyFontPreferences();
 
@@ -355,6 +369,42 @@ private:
 
   // Tab: "Attachment"
 
+  //(*Handlers(AttachmentTab)
+  void OnImport(wxCommandEvent& event);
+  void OnExport(wxCommandEvent& event);
+  void OnRemove(wxCommandEvent& event);
+  //*)
+
+  //(*Identifiers(AttachmentTab)
+  static const long ID_IMAGEPANEL1;
+  static const long ID_STATICTEXT1;
+  static const long ID_BUTTON_IMPORT;
+  static const long ID_BUTTON_EXPORT;
+  static const long ID_BUTTON_REMOVE;
+  static const long ID_TEXTCTRL2;
+  static const long ID_STATICTEXT4;
+  static const long ID_STATICTEXT5;
+  static const long ID_STATICTEXT6;
+  static const long ID_STATICTEXT8;
+  static const long ID_STATICTEXT10;
+  //*)
+
+  //(*Declarations(AttachmentTab)
+  wxPanel *m_AttachmentPanel;
+  ImagePanel *m_AttachmentImagePanel;
+  wxButton *m_AttachmentButtonImport;
+  wxButton *m_AttachmentButtonExport;
+  wxButton *m_AttachmentButtonRemove;
+  wxStaticText *m_AttachmentFilePath;
+  wxTextCtrl *m_AttachmentTitle;
+  wxStaticText *m_AttachmentMediaType;
+  wxStaticText *m_AttachmentCreationDate;
+  wxStaticText *m_AttachmentFileSize;
+  wxStaticText *m_AttachmentFileCreationDate;
+  wxStaticText *m_AttachmentFileLastModifiedDate;
+  wxStaticText *m_AttachmentPreviewStatus;
+  //*)
+wxStaticBoxSizer *StaticBoxSizerPreview;
   ////@end AddEditPropSheetDlg member variables
 
   PWScore &m_Core;
@@ -362,6 +412,7 @@ private:
 
   SheetType m_Type;
   CItemData m_Item;
+  CItemAtt  m_ItemAttachment;
 };
 
 #endif // _ADDEDITPROPSHEETDLG_H_
