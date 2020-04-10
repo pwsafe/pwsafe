@@ -22,7 +22,6 @@
 #include "core/PWSprefs.h"
 
 #include <set>
-//#include <tuple>
 
 #if !wxCHECK_VERSION(3,1,0)
 #define wxOVERRIDE
