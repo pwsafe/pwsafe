@@ -1044,7 +1044,7 @@ bool AddEditPropSheetDlg::LoadImagePreview(const CItemAtt &itemAttachment)
 
   wxMemoryInputStream stream(&buffer, size);
 
-  if (!m_AttachmentImagePanel->LoadFromMemory(stream, stringx2std(itemAttachment.GetMediaType()))) {
+  if (!m_AttachmentImagePanel->LoadFromMemory(stream)) {
     wxMessageDialog(
       this,
       _("An error occurred while trying to load the image data into the preview area.\n"
@@ -1139,22 +1139,9 @@ void AddEditPropSheetDlg::DisableImport()
 void AddEditPropSheetDlg::OnImport(wxCommandEvent& WXUNUSED(event))
 {
   wxString fileFilter =
-  _("All files (*.*)|*.*|") +
-#if wxUSE_GIF
-  _("GIF files (*.gif)|*.gif|") +
-#endif
-#if wxUSE_LIBJPEG
-  _("JPEG files (*.jpeg;*.jpg)|*.jpeg;*.jpg|") +
-#endif
-#if wxUSE_LIBPNG
-  _("PNG files (*.png)|*.png|") +
-#endif
-#if wxUSE_XPM
-  _("XMP files (*.xmp)|*.xmp")
-#else
-  _("")
-#endif
-  ;
+  _("Image files ") + 
+  wxImage::GetImageExtWildcard() + wxT("|") +
+  _("All files (*.*)|*.*");
 
   wxFileDialog fileDialog(
     this, _("Import Attachment"), "", "",
@@ -1179,18 +1166,6 @@ void AddEditPropSheetDlg::OnImport(wxCommandEvent& WXUNUSED(event))
 
       // Attachment must be removed before a new one can be imported again.
       DisableImport();
-
-      if (IsFileMimeTypeImage(fileDialog.GetPath())) {
-        if (LoadImagePreview(m_ItemAttachment)) {
-          ShowImagePreview();
-        }
-        else {
-          HideImagePreview(_("No preview available due to an error"));
-        }
-      }
-      else {
-        HideImagePreview(_("No preview available"));
-      }
     }
     break;
   case PWScore::FAILURE:

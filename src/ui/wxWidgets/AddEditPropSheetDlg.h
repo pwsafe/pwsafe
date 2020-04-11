@@ -390,6 +390,7 @@ private:
   //*)
 
   //(*Declarations(AttachmentTab)
+  wxStaticBoxSizer *StaticBoxSizerPreview;
   wxPanel *m_AttachmentPanel;
   ImagePanel *m_AttachmentImagePanel;
   wxButton *m_AttachmentButtonImport;
@@ -404,7 +405,6 @@ private:
   wxStaticText *m_AttachmentFileLastModifiedDate;
   wxStaticText *m_AttachmentPreviewStatus;
   //*)
-wxStaticBoxSizer *StaticBoxSizerPreview;
   ////@end AddEditPropSheetDlg member variables
 
   PWScore &m_Core;
