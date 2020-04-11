@@ -101,13 +101,16 @@ bool pws_os::splitpath(const stringT &path,
 {
   if (path.empty())
     return false;
-  drive = _T("");
-  stringT::size_type last_slash = path.find_last_of(_T("/"));
+
+  stringT::size_type last_slash = path.find_last_of(_T('/'));
   dir = path.substr(0, last_slash + 1);
-  stringT::size_type last_dot = path.find_last_of(_T("."));
+  if (dir.empty())
+    dir = _T("./");
+  drive = (dir[0] == '/') ? _T("") : _T("./");
+  stringT::size_type last_dot = path.find_last_of(_T('.'));
   if (last_dot != stringT::npos && last_dot > last_slash) {
     file = path.substr(last_slash + 1, last_dot - last_slash - 1);
-    ext = path.substr(last_dot + 1);
+    ext = path.substr(last_dot);
   } else {
     file = path.substr(last_slash + 1);
     ext = _T("");
@@ -118,13 +121,22 @@ bool pws_os::splitpath(const stringT &path,
 stringT pws_os::makepath(const stringT &drive, const stringT &dir,
                          const stringT &file, const stringT &ext)
 {
-  stringT retval(drive);
-  retval += dir;
-  if (!dir.empty() && retval[retval.length()-1] != '/')
-    retval += _T("/");
+  stringT retval;
+  /**
+   * drive and dir can semantically be "./" with no ill effect,
+   * but wxFileDialog doesn't like a "filename" with "/"s.
+   */
+  if (drive != L"./")
+    retval = drive;
+  if (dir != L"./") {
+    retval += dir;
+    if (!dir.empty() && retval[retval.length()-1] != '/')
+      retval += _T("/");
+  }
   retval += file;
   if (!ext.empty()) {
-    retval += _T(".");
+    if (ext[0] != L'.')
+      retval += _T(".");
     retval += ext;
   }
   return retval;
