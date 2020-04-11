@@ -234,6 +234,10 @@ ImagePanel::~ImagePanel()
 
 bool ImagePanel::LoadFromFile(const wxString &file, wxBitmapType format)
 {
+  if (!m_Image.CanRead(file)) {
+    return false;
+  }
+
   if (m_Image.LoadFile(file, format)) {
 
     DetermineImageProperties(m_Image);
@@ -246,9 +250,13 @@ bool ImagePanel::LoadFromFile(const wxString &file, wxBitmapType format)
   }
 }
 
-bool ImagePanel::LoadFromMemory(wxInputStream &stream, const wxString &mimetype)
+bool ImagePanel::LoadFromMemory(wxInputStream &stream)
 {
-  if (m_Image.LoadFile(stream, mimetype)) {
+  if (!m_Image.CanRead(stream)) {
+    return false;
+  }
+
+  if (m_Image.LoadFile(stream)) {
 
     DetermineImageProperties(m_Image);
     Refresh(); // Triggers OnPaint to display the image

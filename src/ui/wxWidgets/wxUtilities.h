@@ -367,7 +367,7 @@ public:
   void OnSize(wxSizeEvent &event);
 
   bool LoadFromFile(const wxString &file, wxBitmapType format = wxBITMAP_TYPE_ANY);
-  bool LoadFromMemory(wxInputStream &stream, const wxString &mimetype);
+  bool LoadFromMemory(wxInputStream &stream);
 
   void Paint();
 
