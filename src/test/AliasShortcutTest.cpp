@@ -66,7 +66,7 @@ TEST_F(AliasShortcutTest, Alias)
   pmulticmds->Add(AddEntryCommand::Create(&core, base));
   pmulticmds->Add(AddEntryCommand::Create(&core, al, base_uuid));
   core.Execute(pmulticmds);
-  EXPECT_EQ(2, core.GetNumEntries());
+  EXPECT_EQ(2U, core.GetNumEntries());
 
   const CItemData al2 = core.GetEntry(core.Find(al.GetUUID()));
 
@@ -106,7 +106,7 @@ TEST_F(AliasShortcutTest, Shortcut)
   pmulticmds->Add(AddEntryCommand::Create(&core, base));
   pmulticmds->Add(AddEntryCommand::Create(&core, sc, base_uuid));
   core.Execute(pmulticmds);
-  EXPECT_EQ(2, core.GetNumEntries());
+  EXPECT_EQ(2U, core.GetNumEntries());
 
   const CItemData sc2 = core.GetEntry(core.Find(sc.GetUUID()));
 

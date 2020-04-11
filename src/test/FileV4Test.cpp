@@ -269,8 +269,8 @@ TEST_F(FileV4Test, CoreRWTest)
   core.ClearDBData();
   EXPECT_EQ(PWSfile::FAILURE, core.ReadFile(fname.c_str(), L"WrongPassword", true));
   EXPECT_EQ(PWSfile::SUCCESS, core.ReadFile(fname.c_str(), passkey, true));
-  ASSERT_EQ(1, core.GetNumEntries());
-  ASSERT_EQ(1, core.GetNumAtts());
+  ASSERT_EQ(1U, core.GetNumEntries());
+  ASSERT_EQ(1U, core.GetNumAtts());
   ASSERT_TRUE(core.Find(fullItem.GetUUID()) != core.GetEntryEndIter());
 
   const CItemData readFullItem = core.GetEntry(core.Find(fullItem.GetUUID()));
@@ -281,8 +281,8 @@ TEST_F(FileV4Test, CoreRWTest)
   EXPECT_EQ(1U, core.GetAtt(attItem.GetUUID()).GetRefcount());
 
   core.Execute(DeleteEntryCommand::Create(&core, readFullItem));
-  ASSERT_EQ(0, core.GetNumEntries());
-  ASSERT_EQ(0, core.GetNumAtts());
+  ASSERT_EQ(0U, core.GetNumEntries());
+  ASSERT_EQ(0U, core.GetNumAtts());
 
   // Get core to delete any existing commands
   core.ClearCommands();

@@ -175,18 +175,18 @@ TEST_F(ItemDataTest, PasswordHistory)
 
   EXPECT_TRUE(CreatePWHistoryList(di.GetPWHistory(), pwh_max, num_err,
                                   pwhl, PWSUtil::TMC_ASC_UNKNOWN));
-  EXPECT_EQ(0, num_err);
-  EXPECT_EQ(3, pwh_max);
-  EXPECT_EQ(1, pwhl.size());
+  EXPECT_EQ(0U, num_err);
+  EXPECT_EQ(3U, pwh_max);
+  EXPECT_EQ(1U, pwhl.size());
   EXPECT_EQ(pw1, pwhl[0].password);
 
   di.UpdatePassword(pw3);
 
   EXPECT_TRUE(CreatePWHistoryList(di.GetPWHistory(), pwh_max, num_err,
                                   pwhl, PWSUtil::TMC_ASC_UNKNOWN));
-  EXPECT_EQ(0, num_err);
-  EXPECT_EQ(3, pwh_max);
-  EXPECT_EQ(2, pwhl.size());
+  EXPECT_EQ(0U, num_err);
+  EXPECT_EQ(3U, pwh_max);
+  EXPECT_EQ(2U, pwhl.size());
   EXPECT_EQ(pw1, pwhl[0].password);
   EXPECT_EQ(pw2, pwhl[1].password);
 
@@ -194,9 +194,9 @@ TEST_F(ItemDataTest, PasswordHistory)
 
   EXPECT_TRUE(CreatePWHistoryList(di.GetPWHistory(), pwh_max, num_err,
                                   pwhl, PWSUtil::TMC_ASC_UNKNOWN));
-  EXPECT_EQ(0, num_err);
-  EXPECT_EQ(3, pwh_max);
-  EXPECT_EQ(3, pwhl.size());
+  EXPECT_EQ(0U, num_err);
+  EXPECT_EQ(3U, pwh_max);
+  EXPECT_EQ(3U, pwhl.size());
   EXPECT_EQ(pw1, pwhl[0].password);
   EXPECT_EQ(pw2, pwhl[1].password);
   EXPECT_EQ(pw3, pwhl[2].password);
@@ -205,9 +205,9 @@ TEST_F(ItemDataTest, PasswordHistory)
 
   EXPECT_TRUE(CreatePWHistoryList(di.GetPWHistory(), pwh_max, num_err,
                                   pwhl, PWSUtil::TMC_ASC_UNKNOWN));
-  EXPECT_EQ(0, num_err);
-  EXPECT_EQ(3, pwh_max);
-  EXPECT_EQ(3, pwhl.size());
+  EXPECT_EQ(0U, num_err);
+  EXPECT_EQ(3U, pwh_max);
+  EXPECT_EQ(3U, pwhl.size());
   EXPECT_EQ(pw2, pwhl[0].password);
   EXPECT_EQ(pw3, pwhl[1].password);
   EXPECT_EQ(pw4, pwhl[2].password);
@@ -221,11 +221,11 @@ TEST_F(ItemDataTest, UnknownFields)
 
   CItemData d1, d2;
 
-  ASSERT_EQ(0, d1.NumberUnknownFields());
+  ASSERT_EQ(0U, d1.NumberUnknownFields());
   d1.SetUnknownField(CItemData::UNKNOWN_TESTING, sizeof(u1v), u1v);
   d1.SetUnknownField(CItemData::UNKNOWN_TESTING, sizeof(u2v), u2v);
   d1.SetUnknownField(CItemData::UNKNOWN_TESTING, sizeof(u3v), u3v);
-  EXPECT_EQ(3, d1.NumberUnknownFields());
+  EXPECT_EQ(3U, d1.NumberUnknownFields());
 
   EXPECT_NE(d1, d2);
   d2 = d1;

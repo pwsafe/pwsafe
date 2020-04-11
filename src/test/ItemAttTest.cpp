@@ -107,8 +107,8 @@ TEST_F(ItemAttTest, ImpExp)
   unsigned char *m1 = new unsigned char[flen];
   unsigned char *m2 = new unsigned char[flen];
 
-  ASSERT_EQ(1, fread(m1, flen, 1, f1));
-  ASSERT_EQ(1, fread(m2, flen, 1, f2));
+  ASSERT_EQ(1U, fread(m1, flen, 1, f1));
+  ASSERT_EQ(1U, fread(m2, flen, 1, f2));
 
   fclose(f1); fclose(f2);
   EXPECT_EQ(0, memcmp(m1, m2, flen));

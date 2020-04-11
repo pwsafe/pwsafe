@@ -46,7 +46,7 @@ TEST_F(CommandsTest, AddItem)
 
   core.Undo();
   EXPECT_FALSE(core.HasDBChanged());
-  EXPECT_EQ(0, core.GetNumEntries());
+  EXPECT_EQ(0U, core.GetNumEntries());
 
   // Get core to delete any existing commands
   core.ClearCommands();
@@ -76,7 +76,7 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   pmulticmds->Add(AddEntryCommand::Create(&core, bi));
   pmulticmds->Add(AddEntryCommand::Create(&core, si, base_uuid));
   core.Execute(pmulticmds);
-  EXPECT_EQ(2, core.GetNumEntries());
+  EXPECT_EQ(2U, core.GetNumEntries());
   EXPECT_TRUE(core.HasDBChanged());
 
   // Check that the base entry is correctly marked
@@ -85,11 +85,11 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   EXPECT_TRUE(core.GetEntry(iter).IsShortcutBase());
 
   core.Undo();
-  EXPECT_EQ(0, core.GetNumEntries());
+  EXPECT_EQ(0U, core.GetNumEntries());
   EXPECT_FALSE(core.HasDBChanged());
 
   core.Redo();
-  EXPECT_EQ(2, core.GetNumEntries());
+  EXPECT_EQ(2U, core.GetNumEntries());
   EXPECT_TRUE(core.HasDBChanged());
 
   // Delete base, expect both to be gone
@@ -98,11 +98,11 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   DeleteEntryCommand *pcmd1 = DeleteEntryCommand::Create(&core, bi2);
 
   core.Execute(pcmd1);
-  EXPECT_EQ(0, core.GetNumEntries());
+  EXPECT_EQ(0U, core.GetNumEntries());
   EXPECT_TRUE(core.HasDBChanged());
 
   core.Undo();
-  EXPECT_EQ(2, core.GetNumEntries());
+  EXPECT_EQ(2U, core.GetNumEntries());
   EXPECT_TRUE(core.HasDBChanged());
 
   // Now just delete the shortcut, check that
@@ -111,7 +111,7 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   DeleteEntryCommand *pcmd2 = DeleteEntryCommand::Create(&core, si2);
 
   core.Execute(pcmd2);
-  ASSERT_EQ(1, core.GetNumEntries());
+  ASSERT_EQ(1U, core.GetNumEntries());
   EXPECT_TRUE(core.GetEntry(core.Find(base_uuid)).IsNormal());
   EXPECT_TRUE(core.HasDBChanged());
 
@@ -150,12 +150,12 @@ TEST_F(CommandsTest, EditEntry)
   iter = core.Find(it.GetUUID());
   EXPECT_EQ(core.GetEntry(iter).GetTitle(), it.GetTitle());
   core.Undo();
-  EXPECT_EQ(core.GetNumEntries(), 0);
+  EXPECT_EQ(0U, core.GetNumEntries());
   EXPECT_FALSE(core.HasDBChanged());
 
   core.Redo();
   EXPECT_TRUE(core.HasDBChanged());
-  EXPECT_EQ(core.GetNumEntries(), 1);
+  EXPECT_EQ(1U, core.GetNumEntries());
 
   // Get core to delete any existing commands
   core.ClearCommands();
@@ -219,7 +219,7 @@ TEST_F(CommandsTest, CountGroups)
   core.Execute(pcmd);
 
   core.GetAllGroups(vGroups);
-  EXPECT_EQ(1, vGroups.size());
+  EXPECT_EQ(1U, vGroups.size());
 
   iter = core.Find(di.GetUUID());
   di = core.GetEntry(iter);
@@ -228,7 +228,7 @@ TEST_F(CommandsTest, CountGroups)
   core.Execute(pcmd);
 
   core.GetAllGroups(vGroups);
-  EXPECT_EQ(2, vGroups.size());
+  EXPECT_EQ(2U, vGroups.size());
 
   std::vector<StringX> eg;
   eg.push_back(L"e1");
@@ -236,7 +236,7 @@ TEST_F(CommandsTest, CountGroups)
   core.Execute(pcmd);
 
   core.GetAllGroups(vGroups);
-  EXPECT_EQ(3, vGroups.size());
+  EXPECT_EQ(3U, vGroups.size());
 
   // Get core to delete any existing commands
   core.ClearCommands();
@@ -295,9 +295,9 @@ TEST_F(CommandsTest, UpdatePassword)
   EXPECT_TRUE(CreatePWHistoryList(it3.GetPWHistory(), pwh_max, num_err,
                                   pwhl, PWSUtil::TMC_ASC_UNKNOWN));
 
-  EXPECT_EQ(0, num_err);
-  EXPECT_EQ(3, pwh_max);
-  EXPECT_EQ(1, pwhl.size());
+  EXPECT_EQ(0U, num_err);
+  EXPECT_EQ(3U, pwh_max);
+  EXPECT_EQ(1U, pwhl.size());
   EXPECT_EQ(sxOldPassword, pwhl[0].password);
   EXPECT_EQ(tPMtime, pwhl[0].changetttdate);
 
@@ -311,9 +311,9 @@ TEST_F(CommandsTest, UpdatePassword)
   EXPECT_TRUE(CreatePWHistoryList(it4.GetPWHistory(), pwh_max, num_err,
                                   pwhl, PWSUtil::TMC_ASC_UNKNOWN));
 
-  EXPECT_EQ(0, num_err);
-  EXPECT_EQ(3, pwh_max);
-  EXPECT_EQ(0, pwhl.size());
+  EXPECT_EQ(0U, num_err);
+  EXPECT_EQ(3U, pwh_max);
+  EXPECT_EQ(0U, pwhl.size());
 
   core.Redo();
   EXPECT_TRUE(core.HasDBChanged());
@@ -327,9 +327,9 @@ TEST_F(CommandsTest, UpdatePassword)
 
   EXPECT_TRUE(CreatePWHistoryList(it5.GetPWHistory(), pwh_max, num_err,
                                   pwhl, PWSUtil::TMC_ASC_UNKNOWN));
-  EXPECT_EQ(0, num_err);
-  EXPECT_EQ(3, pwh_max);
-  EXPECT_EQ(1, pwhl.size());
+  EXPECT_EQ(0U, num_err);
+  EXPECT_EQ(3U, pwh_max);
+  EXPECT_EQ(1U, pwhl.size());
   EXPECT_EQ(sxOldPassword, pwhl[0].password);
   EXPECT_EQ(tPMtime, pwhl[0].changetttdate);
 

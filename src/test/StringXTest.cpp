@@ -24,13 +24,13 @@ TEST(StringXTest, testConstructors)
 {
   StringX s0;
   // StringX()
-  EXPECT_EQ(0, s0.length());
+  EXPECT_EQ(0U, s0.length());
   EXPECT_TRUE(s0.empty());
 
   // StringX( const char* str )
   charT v1[] = _S("abcd");
   StringX s1(v1);
-  EXPECT_EQ(4, s1.length());
+  EXPECT_EQ(4U, s1.length());
 
   for (int i = 0; i < 4; i++)
     EXPECT_TRUE(v1[i] == s1[i]);
@@ -46,13 +46,13 @@ TEST(StringXTest, testConstructors)
 
   // StringX( const char* str, size_type length )
   StringX s5(v1, 2);
-  EXPECT_EQ(2, s5.length());
+  EXPECT_EQ(2U, s5.length());
   for (int i = 0; i < 2; i++)
     EXPECT_TRUE(v1[i] == s5[i]);
 
   // StringX( const string& str, size_type index, size_type length )
   StringX s6(s1, 1, 2);
-  EXPECT_EQ(2, s6.length());
+  EXPECT_EQ(2U, s6.length());
   EXPECT_TRUE(s6[0] == s1[1] && s6[1] == s1[2]);
 
   // StringX( input_iterator start, input_iterator end )
