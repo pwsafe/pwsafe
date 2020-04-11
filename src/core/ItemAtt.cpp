@@ -196,7 +196,7 @@ int CItemAtt::Import(const stringT &fname)
   pws_os::splitpath(fname, sdrive, sdir, sfname, sextn);
   spath = pws_os::makepath(sdrive, sdir, _T(""), _T(""));
 
-  CItem::SetField(FILENAME, (sfname + _T(".") + sextn).c_str());
+  CItem::SetField(FILENAME, (sfname + sextn).c_str());
   CItem::SetField(FILEPATH, spath.c_str());
   CItem::SetField(MEDIATYPE, pws_os::GetMediaType(fname.c_str()).c_str());
 
