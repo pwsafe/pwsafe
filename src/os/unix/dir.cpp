@@ -67,11 +67,11 @@ bool pws_os::splitpath(const stringT &path,
   dir = path.substr(0, last_slash + 1);
   if (dir.empty())
     dir = _T("./");
-  drive = (dir[0] == '/') ? _T("/") : _T("./");
+  drive = (dir[0] == '/') ? _T("") : _T("./");
   stringT::size_type last_dot = path.find_last_of(_T('.'));
   if (last_dot != stringT::npos && last_dot > last_slash) {
     file = path.substr(last_slash + 1, last_dot - last_slash - 1);
-    ext = path.substr(last_dot + 1);
+    ext = path.substr(last_dot);
   } else {
     file = path.substr(last_slash + 1);
     ext = _T("");
@@ -96,7 +96,8 @@ stringT pws_os::makepath(const stringT &drive, const stringT &dir,
   }
   retval += file;
   if (!ext.empty()) {
-    retval += _T(".");
+    if (ext[0] != L'.')
+      retval += _T(".");
     retval += ext;
   }
   return retval;
