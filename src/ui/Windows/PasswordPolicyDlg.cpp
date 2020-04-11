@@ -150,6 +150,15 @@ void CPasswordPolicyDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_STATIC_MESSAGE, m_stcMessage);
     DDX_Control(pDX, IDC_COPYPASSWORDHELP, m_Help1);
     //}}AFX_DATA_MAP
+
+    if (pDX->m_bSaveAndValidate) {
+      if (m_PolicyNameEdit.IsWindowVisible()) {
+        m_PolicyNameEdit.GetWindowText((CString &)m_policyname);
+      } else {
+        int index = m_cbxPolicyNames.GetCurSel();
+        m_cbxPolicyNames.GetLBText(index, m_policyname);
+      }
+    }
 }
 
 BEGIN_MESSAGE_MAP(CPasswordPolicyDlg, CPWDialog)
@@ -921,12 +930,7 @@ void CPasswordPolicyDlg::OnGeneratePassword()
     st_pp.symbols = LPCWSTR(m_Symbols);
   } else {
     // Use named policy
-    if (m_PolicyNameEdit.IsWindowVisible()) {
-      m_PolicyNameEdit.GetWindowText((CString &)m_policyname);
-    } else {
-      int index = m_cbxPolicyNames.GetCurSel();
-      m_cbxPolicyNames.GetLBText(index, m_policyname);
-    }
+    ASSERT(!m_policyname.IsEmpty());
     StringX sxPolicyName(m_policyname);
     GetMainDlg()->GetPolicyFromName(sxPolicyName, st_pp);
   }

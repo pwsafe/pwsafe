@@ -21,6 +21,8 @@ Bugs Fixed in 3.52pre
 default.
 [1505] No longer crashes when trying to view or copy a shortcut from
 the "compare databases" results.
+[1503,1512] Recurring password expiration update fixed (1497 redo).
+[1495] Accepts policy name via Enter as well as click on OK.
 
 Bugs Fixed in 3.51
 ==================
