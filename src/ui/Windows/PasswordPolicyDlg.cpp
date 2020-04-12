@@ -154,10 +154,10 @@ void CPasswordPolicyDlg::DoDataExchange(CDataExchange* pDX)
     if (pDX->m_bSaveAndValidate) {
       if (m_PolicyNameEdit.IsWindowVisible()) {
         m_PolicyNameEdit.GetWindowText((CString &)m_policyname);
-      } else {
+      } else  if (m_cbxPolicyNames.IsWindowVisible()) {
         int index = m_cbxPolicyNames.GetCurSel();
         m_cbxPolicyNames.GetLBText(index, m_policyname);
-      }
+      } // else default policy edit
     }
 }
 
