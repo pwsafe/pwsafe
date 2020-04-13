@@ -222,6 +222,9 @@ void GridCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &e
       // Not relevant for this view
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRY:
+      ASSERT(item != nullptr);
+      RefreshItem(*item);
+      break;
     case UpdateGUICommand::GUI_REFRESH_GROUPS:
     case UpdateGUICommand::GUI_REFRESH_BOTHVIEWS:
       // TODO: ???
