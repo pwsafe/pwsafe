@@ -17,13 +17,13 @@
  * Includes
  */
 
-//#include "wx/valgen.h"
 #include <wx/choice.h>
 #include <wx/dialog.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 
+#include "core/ItemData.h"
 #include "core/PWScore.h"
 
 /*!
@@ -46,11 +46,11 @@ public:
   /// Constructors
   CreateShortcutDlg(wxWindow* parent, PWScore &core, CItemData *base);
 
-  /// Creation
-  bool Create(wxWindow* parent);
-
   /// Destructor
   virtual ~CreateShortcutDlg();
+
+  /// Creation
+  bool Create(wxWindow* parent);
 
   /// Initialises member variables
   void Init();
@@ -96,9 +96,6 @@ private:
   wxStaticText* m_StaticTextBaseEntryUsername;
   //*)
 
-  PWScore &m_core;
-  CItemData *m_base;
-
   wxString m_ShortcutGroup;
   wxString m_ShortcutTitle;
   wxString m_ShortcutUsername;
@@ -106,6 +103,9 @@ private:
   wxString m_BaseEntryGroup;
   wxString m_BaseEntryTitle;
   wxString m_BaseEntryUsername;
+
+  PWScore &m_Core;
+  CItemData *m_Base;
 };
 
 #endif // _CREATESHORTCUTDLG_H_

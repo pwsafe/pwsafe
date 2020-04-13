@@ -23,8 +23,6 @@
 
 #include <wx/valgen.h>
 
-#include "core/ItemData.h"
-
 #include "CreateShortcutDlg.h"
 #include "wxUtilities.h"
 
@@ -58,11 +56,19 @@ END_EVENT_TABLE()
  */
 
 CreateShortcutDlg::CreateShortcutDlg(wxWindow* parent, PWScore &core, CItemData *base)
-: m_core(core), m_base(base)
+: m_Core(core), m_Base(base)
 {
-  ASSERT(m_base != nullptr);
+  ASSERT(m_Base != nullptr);
   Init();
   Create(parent);
+}
+
+/*!
+ * CreateShortcutDlg destructor
+ */
+
+CreateShortcutDlg::~CreateShortcutDlg()
+{
 }
 
 /*!
@@ -91,31 +97,43 @@ void CreateShortcutDlg::ItemFieldsToDialog()
   // Populate the combo box
   std::vector<stringT> allGroupNames;
 
-  m_core.GetAllGroups(allGroupNames, false);
+  m_Core.GetAllGroups(allGroupNames, false);
 
   for (auto const& groupName : allGroupNames) {
     m_ComboBoxShortcutGroup->Append(groupName);
   }
 
-  if (m_base != nullptr) {
-    m_BaseEntryTitle = stringx2std(m_base->GetTitle());
-    m_BaseEntryUsername = stringx2std(m_base->GetUser());
+  if (m_Base != nullptr) {
+    m_BaseEntryTitle = stringx2std(m_Base->GetTitle());
+    m_BaseEntryUsername = stringx2std(m_Base->GetUser());
 
     m_ShortcutTitle = _("Shortcut to ") + m_BaseEntryTitle;
     m_ShortcutUsername = m_BaseEntryUsername;
 
-    if (m_base->IsGroupSet()) {
-      m_BaseEntryGroup = stringx2std(m_base->GetGroup());
+    if (m_Base->IsGroupSet() && !(m_Base->GetGroup().empty())) {
+      m_BaseEntryGroup = stringx2std(m_Base->GetGroup());
 
       auto position = m_ComboBoxShortcutGroup->FindString(m_BaseEntryGroup);
 
       if (position != wxNOT_FOUND) {
         m_ComboBoxShortcutGroup->SetSelection(position);
       }
+      else {
+        m_BaseEntryGroup = wxEmptyString;
+      }
     }
     else {
       m_BaseEntryGroup = wxEmptyString;
     }
+  }
+  else {
+    m_ShortcutGroup = wxEmptyString;
+    m_ShortcutTitle = wxEmptyString;
+    m_ShortcutUsername = wxEmptyString;
+
+    m_BaseEntryGroup = _("N/A");
+    m_BaseEntryTitle = _("N/A");
+    m_BaseEntryUsername = _("N/A");
   }
 }
 
@@ -132,19 +150,11 @@ void CreateShortcutDlg::SetValidators()
 
 void CreateShortcutDlg::UpdateControls()
 {
-  if (m_core.IsReadOnly()) {
+  if (m_Core.IsReadOnly()) {
     m_ComboBoxShortcutGroup->Disable();
     m_TextCtrlShortcutTitle->Disable();
     m_TextCtrlShortcutUsername->Disable();
   }
-}
-
-/*!
- * CreateShortcutDlg destructor
- */
-
-CreateShortcutDlg::~CreateShortcutDlg()
-{
 }
 
 /*!
@@ -291,8 +301,8 @@ void CreateShortcutDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     shortcut.SetXTime(time_t(0));
     shortcut.SetStatus(CItemData::ES_ADDED);
 
-    m_core.Execute(
-      AddEntryCommand::Create(&m_core, shortcut, m_base->GetUUID())
+    m_Core.Execute(
+      AddEntryCommand::Create(&m_Core, shortcut, m_Base->GetUUID())
     );
   }
   EndModal(wxID_OK);

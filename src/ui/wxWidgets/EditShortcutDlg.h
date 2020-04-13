@@ -17,11 +17,14 @@
  * Includes
  */
 
-////@begin includes
-#include "wx/valgen.h"
-////@end includes
-#include "core/PWScore.h"
+#include <wx/combobox.h>
+#include <wx/dialog.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
+
 #include "core/ItemData.h"
+#include "core/PWScore.h"
 
 /*!
  * Forward declarations
@@ -31,49 +34,23 @@
 ////@end forward declarations
 
 /*!
- * Control identifiers
- */
-
-////@begin control identifiers
-#define ID_EDITSHORTCUTDLG 10174
-#define ID_SC_DISP 10201
-#define ID_SC_GROUP 10202
-#define ID_TEXTCTRL16 10203
-#define ID_TEXTCTRL17 10204
-#if WXWIN_COMPATIBILITY_2_6
-#define SYMBOL_EDITSHORTCUTDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
-#else
-#define SYMBOL_EDITSHORTCUTDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL
-#endif
-#define SYMBOL_EDITSHORTCUTDLG_TITLE _("Edit Shortcut")
-#define SYMBOL_EDITSHORTCUTDLG_IDNAME ID_EDITSHORTCUTDLG
-#define SYMBOL_EDITSHORTCUTDLG_SIZE wxSize(400, 300)
-#define SYMBOL_EDITSHORTCUTDLG_POSITION wxDefaultPosition
-////@end control identifiers
-
-/*!
  * EditShortcutDlg class declaration
  */
 
 class EditShortcutDlg : public wxDialog
 {
-  DECLARE_CLASS( EditShortcutDlg )
+  DECLARE_CLASS(EditShortcutDlg)
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  EditShortcutDlg(wxWindow* parent, PWScore &core, CItemData *item,
-               wxWindowID id = SYMBOL_EDITSHORTCUTDLG_IDNAME,
-               const wxString& caption = SYMBOL_EDITSHORTCUTDLG_TITLE,
-               const wxPoint& pos = SYMBOL_EDITSHORTCUTDLG_POSITION,
-               const wxSize& size = SYMBOL_EDITSHORTCUTDLG_SIZE,
-               long style = SYMBOL_EDITSHORTCUTDLG_STYLE);
-
-  /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_EDITSHORTCUTDLG_IDNAME, const wxString& caption = SYMBOL_EDITSHORTCUTDLG_TITLE, const wxPoint& pos = SYMBOL_EDITSHORTCUTDLG_POSITION, const wxSize& size = SYMBOL_EDITSHORTCUTDLG_SIZE, long style = SYMBOL_EDITSHORTCUTDLG_STYLE );
+  EditShortcutDlg(wxWindow* parent, PWScore &core, CItemData *shortcut);
 
   /// Destructor
-  ~EditShortcutDlg();
+  virtual ~EditShortcutDlg();
+
+  /// Creation
+  bool Create(wxWindow* parent);
 
   /// Initialises member variables
   void Init();
@@ -81,39 +58,11 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-////@begin EditShortcutDlg event handler declarations
-
-  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
-  void OnOkClick( wxCommandEvent& evt);
-
-////@end EditShortcutDlg event handler declarations
-
-////@begin EditShortcutDlg member function declarations
-
-  wxString GetCreated() const { return m_created ; }
-  void SetCreated(wxString value) { m_created = value ; }
-
-  wxString GetLastChanged() const { return m_lastChanged ; }
-  void SetLastChanged(wxString value) { m_lastChanged = value ; }
-
-  wxString GetLastAccess() const { return m_lastAccess ; }
-  void SetLastAccess(wxString value) { m_lastAccess = value ; }
-
-  wxString GetLastAny() const { return m_lastAny ; }
-  void SetLastAny(wxString value) { m_lastAny = value ; }
-
-  wxString GetTitle() const { return m_title ; }
-  void SetTitle(wxString value) { m_title = value ; }
-
-  wxString GetUser() const { return m_user ; }
-  void SetUser(wxString value) { m_user = value ; }
-
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
-////@end EditShortcutDlg member function declarations
 
   /// Should we show tooltips?
   static bool ShowToolTips();
@@ -121,17 +70,57 @@ public:
 ////@begin EditShortcutDlg member variables
 
 private:
-  wxComboBox* m_groupCtrl;
-  wxString m_created;
-  wxString m_lastChanged;
-  wxString m_lastAccess;
-  wxString m_lastAny;
-  wxString m_title;
-  wxString m_user;
-////@end EditShortcutDlg member variables
+
   void ItemFieldsToDialog();
-  PWScore &m_core;
-  CItemData *m_item;
+  void SetValidators();
+  void UpdateControls();
+
+  //(*Handlers(CreateShortcutDlg)
+  void OnOk(wxCommandEvent& event);
+  //*)
+
+  //(*Identifiers(EditShortcutDlgDialog)
+  static const long ID_COMBOBOX1;
+  static const long ID_TEXTCTRL2;
+  static const long ID_TEXTCTRL3;
+  static const long ID_STATICTEXT6;
+  static const long ID_STATICTEXT8;
+  static const long ID_STATICTEXT10;
+  static const long ID_STATICTEXT2;
+  static const long ID_STATICTEXT4;
+  static const long ID_STATICTEXT7;
+  //*)
+
+  //(*Declarations(EditShortcutDlgDialog)
+  wxComboBox* m_ComboBoxShortcutGroup;
+  wxTextCtrl* m_TextCtrlShortcutTitle;
+  wxTextCtrl* m_TextCtrlShortcutUsername;
+
+  wxStaticText* m_StaticTextShortcutCreated;
+  wxStaticText* m_StaticTextShortcutChanged;
+  wxStaticText* m_StaticTextShortcutAccessed;
+  wxStaticText* m_StaticTextShortcutAnyChange;
+
+  wxStaticText* m_StaticTextBaseEntryGroup;
+  wxStaticText* m_StaticTextBaseEntryTitle;
+  wxStaticText* m_StaticTextBaseEntryUsername;
+  //*)
+
+  wxString m_ShortcutGroup;
+  wxString m_ShortcutTitle;
+  wxString m_ShortcutUsername;
+
+  wxString m_ShortcutCreated;
+  wxString m_ShortcutChanged;
+  wxString m_ShortcutAccessed;
+  wxString m_ShortcutAnyChange;
+
+  wxString m_BaseEntryGroup;
+  wxString m_BaseEntryTitle;
+  wxString m_BaseEntryUsername;
+
+  PWScore &m_Core;
+  CItemData *m_Shortcut;
 };
 
 #endif // _EDITSHORTCUTDLG_H_
