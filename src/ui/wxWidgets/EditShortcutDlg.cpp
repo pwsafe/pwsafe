@@ -21,14 +21,22 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-////@begin includes
-////@end includes
+#include "wx/valgen.h"
 
 #include "EditShortcutDlg.h"
 #include "wxUtilities.h"
 
-////@begin XPM images
-////@end XPM images
+//(*IdInit(EditShortcutDlg)
+const long EditShortcutDlg::ID_COMBOBOX1 = wxNewId();
+const long EditShortcutDlg::ID_TEXTCTRL2 = wxNewId();
+const long EditShortcutDlg::ID_TEXTCTRL3 = wxNewId();
+const long EditShortcutDlg::ID_STATICTEXT6 = wxNewId();
+const long EditShortcutDlg::ID_STATICTEXT8 = wxNewId();
+const long EditShortcutDlg::ID_STATICTEXT10 = wxNewId();
+const long EditShortcutDlg::ID_STATICTEXT2 = wxNewId();
+const long EditShortcutDlg::ID_STATICTEXT4 = wxNewId();
+const long EditShortcutDlg::ID_STATICTEXT7 = wxNewId();
+//*)
 
 /*!
  * EditShortcutDlg type definition
@@ -42,10 +50,7 @@ IMPLEMENT_CLASS( EditShortcutDlg, wxDialog )
 
 BEGIN_EVENT_TABLE( EditShortcutDlg, wxDialog )
 
-////@begin EditShortcutDlg event table entries
-  EVT_BUTTON( wxID_OK, EditShortcutDlg::OnOkClick )
-
-////@end EditShortcutDlg event table entries
+  EVT_BUTTON( wxID_OK, EditShortcutDlg::OnOk )
 
 END_EVENT_TABLE()
 
@@ -53,66 +58,12 @@ END_EVENT_TABLE()
  * EditShortcutDlg constructors
  */
 
-EditShortcutDlg::EditShortcutDlg(wxWindow* parent,
-                           PWScore &core, CItemData *item,
-                           wxWindowID id, const wxString& caption,
-                           const wxPoint& pos, const wxSize& size, long style)
-: m_core(core), m_item(item)
+EditShortcutDlg::EditShortcutDlg(wxWindow* parent, PWScore &core, CItemData *shortcut)
+: m_Core(core), m_Shortcut(shortcut)
 {
-  ASSERT(m_item != nullptr);
+  ASSERT(m_Shortcut != nullptr);
   Init();
-  Create(parent, id, caption, pos, size, style);
-}
-
-/*!
- * EditShortcutDlg creator
- */
-
-bool EditShortcutDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
-////@begin EditShortcutDlg creation
-  SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( parent, id, caption, pos, size, style );
-
-  CreateControls();
-  if (GetSizer())
-  {
-    GetSizer()->SetSizeHints(this);
-  }
-  Centre();
-////@end EditShortcutDlg creation
-  ItemFieldsToDialog();
-  return true;
-}
-
-void EditShortcutDlg::ItemFieldsToDialog()
-{
-  // Populate the combo box
-  std::vector<stringT> aryGroups;
-  m_core.GetAllGroups(aryGroups);
-  for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
-    m_groupCtrl->Append(aryGroups[igrp].c_str());
-  }
-  // select relevant group
-  const StringX group = m_item->GetGroup();
-  if (!group.empty())
-    for (size_t igrp = 0; igrp < aryGroups.size(); igrp++)
-      if (group == aryGroups[igrp].c_str()) {
-        m_groupCtrl->SetSelection(static_cast<int>(igrp));
-        break;
-      }
-
-  m_title = m_item->GetTitle().c_str();
-  m_user = m_item->GetUser().c_str();
-  m_created = m_item->GetCTimeL().c_str();
-  m_lastAccess = m_item->GetATimeL().c_str();
-  m_lastAny = m_item->GetRMTimeL().c_str();
-  const CItemData *base = m_core.GetBaseEntry(m_item);
-  if (base != nullptr) {
-    m_lastChanged = base->GetRMTimeL().c_str();
-  } else {
-    m_lastChanged = _("Unknown"); // Internal error
-  }
+  Create(parent);
 }
 
 /*!
@@ -121,8 +72,140 @@ void EditShortcutDlg::ItemFieldsToDialog()
 
 EditShortcutDlg::~EditShortcutDlg()
 {
-////@begin EditShortcutDlg destruction
-////@end EditShortcutDlg destruction
+}
+
+/*!
+ * EditShortcutDlg creator
+ */
+
+bool EditShortcutDlg::Create(wxWindow* parent)
+{
+  SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+  wxDialog::Create(parent, wxID_ANY, _("Edit Shortcut"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+
+  CreateControls();
+
+  // Allow to resize the dialog in width, only.
+  SetMaxSize(wxSize(wxDefaultCoord, GetMinSize().y));
+  Centre();
+
+  SetValidators();
+  UpdateControls();
+  ItemFieldsToDialog();
+  return true;
+}
+
+void EditShortcutDlg::ItemFieldsToDialog()
+{
+  // Populate the combo box
+  std::vector<stringT> allGroupNames;
+
+  m_Core.GetAllGroups(allGroupNames, false);
+
+  for (auto const& groupName : allGroupNames) {
+    m_ComboBoxShortcutGroup->Append(groupName);
+  }
+
+  if (m_Shortcut != nullptr) {
+
+    // Set shortcut group
+    if (m_Shortcut->IsGroupSet() && !(m_Shortcut->GetGroup()).empty()) {
+
+      const auto shortcutGroupName = m_Shortcut->GetGroup();
+
+      auto position = m_ComboBoxShortcutGroup->FindString(stringx2std(shortcutGroupName));
+
+      if (position != wxNOT_FOUND) {
+        m_ComboBoxShortcutGroup->SetSelection(position);
+      }
+      else {
+        m_BaseEntryGroup = wxEmptyString;
+      }
+    }
+    else {
+      m_BaseEntryGroup = wxEmptyString;
+    }
+
+    // Set shortcut title
+    m_ShortcutTitle = stringx2std(m_Shortcut->GetTitle());
+
+    // Set shortcut username
+    m_ShortcutUsername = stringx2std(m_Shortcut->GetUser());
+
+    // Set shortcut created on date/time
+    m_ShortcutCreated = stringx2std(m_Shortcut->GetCTimeL());
+
+    // Set shortcut's base entry last changed on date/time
+    const auto base = m_Core.GetBaseEntry(m_Shortcut);
+
+    if (base != nullptr) {
+      m_ShortcutChanged = stringx2std(base->GetRMTimeL());
+    }
+    else {
+      m_ShortcutChanged = _("N/A");
+    }
+
+    // Set shortcut last accessed on date/time
+    m_ShortcutAccessed = stringx2std(m_Shortcut->GetATimeL());
+
+    // Set shortcut any field last changed on date/time
+    m_ShortcutAnyChange = stringx2std(m_Shortcut->GetRMTimeL());
+
+    if (base != nullptr) {
+      // Set base entry group
+      m_BaseEntryGroup = stringx2std(base->GetGroup());
+
+      // Set base entry title
+      m_BaseEntryTitle = stringx2std(base->GetTitle());
+
+      // Set base entry username
+      m_BaseEntryUsername = stringx2std(base->GetUser());
+    }
+    else {
+      m_BaseEntryGroup = _("N/A");
+      m_BaseEntryTitle = _("N/A");
+      m_BaseEntryUsername = _("N/A");
+    }
+  }
+  else {
+    m_ShortcutGroup = wxEmptyString;
+    m_ShortcutTitle = wxEmptyString;
+    m_ShortcutUsername = wxEmptyString;
+
+    m_ShortcutCreated = _("N/A");
+    m_ShortcutChanged = _("N/A");
+    m_ShortcutAccessed = _("N/A");
+    m_ShortcutAnyChange = _("N/A");
+
+    m_BaseEntryGroup = _("N/A");
+    m_BaseEntryTitle = _("N/A");
+    m_BaseEntryUsername = _("N/A");
+  }
+}
+
+void EditShortcutDlg::SetValidators()
+{
+  m_ComboBoxShortcutGroup->SetValidator(wxGenericValidator(&m_ShortcutGroup));
+  m_TextCtrlShortcutTitle->SetValidator(wxGenericValidator(&m_ShortcutTitle));
+  m_TextCtrlShortcutUsername->SetValidator(wxGenericValidator(&m_ShortcutUsername));
+
+  m_StaticTextShortcutCreated->SetValidator(wxGenericValidator(&m_ShortcutCreated));
+  m_StaticTextShortcutChanged->SetValidator(wxGenericValidator(&m_ShortcutChanged));
+  m_StaticTextShortcutAccessed->SetValidator(wxGenericValidator(&m_ShortcutAccessed));
+  m_StaticTextShortcutAnyChange->SetValidator(wxGenericValidator(&m_ShortcutAnyChange));
+
+  m_StaticTextBaseEntryGroup->SetValidator(wxGenericValidator(&m_BaseEntryGroup));
+  m_StaticTextBaseEntryTitle->SetValidator(wxGenericValidator(&m_BaseEntryTitle));
+  m_StaticTextBaseEntryUsername->SetValidator(wxGenericValidator(&m_BaseEntryUsername));
+}
+
+void EditShortcutDlg::UpdateControls()
+{
+  if (m_Core.IsReadOnly()) {
+    m_ComboBoxShortcutGroup->Disable();
+    m_TextCtrlShortcutTitle->Disable();
+    m_TextCtrlShortcutUsername->Disable();
+  }
 }
 
 /*!
@@ -131,9 +214,16 @@ EditShortcutDlg::~EditShortcutDlg()
 
 void EditShortcutDlg::Init()
 {
-////@begin EditShortcutDlg member initialisation
-  m_groupCtrl = nullptr;
-////@end EditShortcutDlg member initialisation
+  m_ComboBoxShortcutGroup = nullptr;
+  m_TextCtrlShortcutTitle = nullptr;
+  m_TextCtrlShortcutUsername = nullptr;
+  m_StaticTextShortcutCreated = nullptr;
+  m_StaticTextShortcutChanged = nullptr;
+  m_StaticTextShortcutAccessed = nullptr;
+  m_StaticTextShortcutAnyChange = nullptr;
+  m_StaticTextBaseEntryGroup = nullptr;
+  m_StaticTextBaseEntryTitle = nullptr;
+  m_StaticTextBaseEntryUsername = nullptr;
 }
 
 /*!
@@ -142,90 +232,85 @@ void EditShortcutDlg::Init()
 
 void EditShortcutDlg::CreateControls()
 {
-////@begin EditShortcutDlg content construction
-  EditShortcutDlg* itemDialog1 = this;
+  //(*Initialize(EditShortcutDlgDialog)
+  auto BoxSizer1 = new wxBoxSizer(wxVERTICAL);
+  auto StaticText1 = new wxStaticText(this, wxID_ANY, _("Please edit the shortcut properties to the selected base entry."), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  BoxSizer1->Add(StaticText1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 10);
 
-  wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
-  itemDialog1->SetSizer(itemBoxSizer2);
+  auto StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Shortcut"));
+  auto FlexGridSizer1 = new wxFlexGridSizer(0, 2, 0, 0);
+  FlexGridSizer1->AddGrowableCol(1);
 
-  wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, ID_SC_DISP, _("Please specify the name and group for this shortcut\nto the base entry "), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  auto StaticTextShortcutGroup = new wxStaticText(this, wxID_ANY, _("Group:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer1->Add(StaticTextShortcutGroup, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  // TBD Following should be wxCB_DROPDOWN instead of wxCB_READONLY, but for some reason we can't pre-select an entry with the former.
+  m_ComboBoxShortcutGroup = new wxComboBox(this, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 0, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX1"));
+  FlexGridSizer1->Add(m_ComboBoxShortcutGroup, 1, wxALL|wxEXPAND, 5);
 
-  wxGridSizer* itemGridSizer4 = new wxGridSizer(3, 2, 0, 0);
-  itemBoxSizer2->Add(itemGridSizer4, 0, wxEXPAND|wxALL, 5);
+  auto StaticTextShortcutTitle = new wxStaticText(this, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer1->Add(StaticTextShortcutTitle, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_TextCtrlShortcutTitle = new wxTextCtrl(this, ID_TEXTCTRL2, _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+  FlexGridSizer1->Add(m_TextCtrlShortcutTitle, 1, wxALL|wxEXPAND, 5);
 
-  wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Group:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemStaticText5, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto StaticTextShortcutUsername = new wxStaticText(this, wxID_ANY, _("Username:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer1->Add(StaticTextShortcutUsername, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_TextCtrlShortcutUsername = new wxTextCtrl(this, ID_TEXTCTRL3, _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
+  FlexGridSizer1->Add(m_TextCtrlShortcutUsername, 1, wxALL|wxEXPAND, 5);
 
-  wxArrayString m_groupCtrlStrings;
-  m_groupCtrl = new wxComboBox( itemDialog1, ID_SC_GROUP, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_groupCtrlStrings, wxCB_DROPDOWN );
-  itemGridSizer4->Add(m_groupCtrl, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto StaticTextShortcutCreated = new wxStaticText(this, wxID_ANY, _("Created on:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer1->Add(StaticTextShortcutCreated, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_StaticTextShortcutCreated = new wxStaticText(this, wxID_ANY, _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer1->Add(m_StaticTextShortcutCreated, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
-  wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemStaticText7, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto StaticTextShortcutChanged = new wxStaticText(this, wxID_ANY, _("Target last changed on:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer1->Add(StaticTextShortcutChanged, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_StaticTextShortcutChanged = new wxStaticText(this, ID_STATICTEXT6, _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
+  FlexGridSizer1->Add(m_StaticTextShortcutChanged, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
-  wxTextCtrl* itemTextCtrl8 = new wxTextCtrl( itemDialog1, ID_TEXTCTRL16, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemTextCtrl8, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto StaticTextShortcutAccessed = new wxStaticText(this, wxID_ANY, _("Last accessed on:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer1->Add(StaticTextShortcutAccessed, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_StaticTextShortcutAccessed = new wxStaticText(this, ID_STATICTEXT8, _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
+  FlexGridSizer1->Add(m_StaticTextShortcutAccessed, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
-  wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemStaticText9, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto StaticTextShortcutAnyChanged = new wxStaticText(this, wxID_ANY, _("Any field last changed on:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer1->Add(StaticTextShortcutAnyChanged, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_StaticTextShortcutAnyChange = new wxStaticText(this, ID_STATICTEXT10, _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
+  FlexGridSizer1->Add(m_StaticTextShortcutAnyChange, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+  StaticBoxSizer1->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 5);
+  BoxSizer1->Add(StaticBoxSizer1, 0, wxALL|wxEXPAND, 5);
 
-  wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( itemDialog1, ID_TEXTCTRL17, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemTextCtrl10, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Base Entry"));
+  auto FlexGridSizer2 = new wxFlexGridSizer(0, 2, 0, 0);
+  FlexGridSizer2->AddGrowableCol(1);
 
-  wxStaticBox* itemStaticBoxSizer11Static = new wxStaticBox(itemDialog1, wxID_ANY, _("Date/Time Information"));
-  wxStaticBoxSizer* itemStaticBoxSizer11 = new wxStaticBoxSizer(itemStaticBoxSizer11Static, wxVERTICAL);
-  itemBoxSizer2->Add(itemStaticBoxSizer11, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  auto StaticTextBaseEntryGroup = new wxStaticText(this, wxID_ANY, _("Group:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer2->Add(StaticTextBaseEntryGroup, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_StaticTextBaseEntryGroup = new wxStaticText(this, ID_STATICTEXT2, _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+  FlexGridSizer2->Add(m_StaticTextBaseEntryGroup, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
-  wxGridSizer* itemGridSizer12 = new wxGridSizer(4, 2, 0, 0);
-  itemStaticBoxSizer11->Add(itemGridSizer12, 0, wxEXPAND|wxALL, 5);
+  auto StaticTextBaseEntryTitle = new wxStaticText(this, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer2->Add(StaticTextBaseEntryTitle, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_StaticTextBaseEntryTitle = new wxStaticText(this, ID_STATICTEXT4, _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+  FlexGridSizer2->Add(m_StaticTextBaseEntryTitle, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
-  wxStaticText* itemStaticText13 = new wxStaticText( itemDialog1, wxID_STATIC, _("Created on:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer12->Add(itemStaticText13, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto StaticTextBaseEntryUsername = new wxStaticText(this, wxID_ANY, _("Username:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer2->Add(StaticTextBaseEntryUsername, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_StaticTextBaseEntryUsername = new wxStaticText(this, ID_STATICTEXT7, _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
+  FlexGridSizer2->Add(m_StaticTextBaseEntryUsername, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+  StaticBoxSizer2->Add(FlexGridSizer2, 1, wxALL|wxEXPAND, 5);
+  BoxSizer1->Add(StaticBoxSizer2, 0, wxALL|wxEXPAND, 5);
 
-  wxStaticText* itemStaticText14 = new wxStaticText( itemDialog1, wxID_STATIC, _("DDD DD MMM YYYY HH:MM:SS XM ZZZ"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer12->Add(itemStaticText14, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto StdDialogButtonSizer1 = new wxStdDialogButtonSizer();
+  StdDialogButtonSizer1->AddButton(new wxButton(this, wxID_OK, wxEmptyString));
+  StdDialogButtonSizer1->AddButton(new wxButton(this, wxID_CANCEL, wxEmptyString));
+  StdDialogButtonSizer1->AddButton(new wxButton(this, wxID_HELP, wxEmptyString));
+  StdDialogButtonSizer1->Realize();
+  BoxSizer1->Add(StdDialogButtonSizer1, 0, wxALL|wxEXPAND, 5);
 
-  wxStaticText* itemStaticText15 = new wxStaticText( itemDialog1, wxID_STATIC, _("Target last changed on:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer12->Add(itemStaticText15, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  wxStaticText* itemStaticText16 = new wxStaticText( itemDialog1, wxID_STATIC, _("DDD DD MMM YYYY HH:MM:SS XM ZZZ"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer12->Add(itemStaticText16, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  wxStaticText* itemStaticText17 = new wxStaticText( itemDialog1, wxID_STATIC, _("Last accessed on:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer12->Add(itemStaticText17, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  wxStaticText* itemStaticText18 = new wxStaticText( itemDialog1, wxID_STATIC, _("DDD DD MMM YYYY HH:MM:SS XM ZZZ"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer12->Add(itemStaticText18, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  wxStaticText* itemStaticText19 = new wxStaticText( itemDialog1, wxID_STATIC, _("Any field last changed on:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer12->Add(itemStaticText19, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  wxStaticText* itemStaticText20 = new wxStaticText( itemDialog1, wxID_STATIC, _("DDD DD MMM YYYY HH:MM:SS XM ZZZ"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer12->Add(itemStaticText20, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
-
-  itemBoxSizer2->Add(itemStdDialogButtonSizer21, 0, wxEXPAND|wxALL, 5);
-  wxButton* itemButton22 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer21->AddButton(itemButton22);
-
-  wxButton* itemButton23 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer21->AddButton(itemButton23);
-
-  wxButton* itemButton24 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer21->AddButton(itemButton24);
-
-  itemStdDialogButtonSizer21->Realize();
-
-  // Set validators
-  itemTextCtrl8->SetValidator( wxGenericValidator(& m_title) );
-  itemTextCtrl10->SetValidator( wxGenericValidator(& m_user) );
-  itemStaticText14->SetValidator( wxGenericValidator(& m_created) );
-  itemStaticText16->SetValidator( wxGenericValidator(& m_lastChanged) );
-  itemStaticText18->SetValidator( wxGenericValidator(& m_lastAccess) );
-  itemStaticText20->SetValidator( wxGenericValidator(& m_lastAny) );
-////@end EditShortcutDlg content construction
+  SetSizer(BoxSizer1);
+  BoxSizer1->Fit(this);
+  BoxSizer1->SetSizeHints(this);
+  //*)
 }
 
 /*!
@@ -241,54 +326,60 @@ bool EditShortcutDlg::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap EditShortcutDlg::GetBitmapResource( const wxString& WXUNUSED(name) )
+wxBitmap EditShortcutDlg::GetBitmapResource(const wxString& WXUNUSED(name))
 {
   // Bitmap retrieval
-////@begin EditShortcutDlg bitmap retrieval
   return wxNullBitmap;
-////@end EditShortcutDlg bitmap retrieval
 }
 
 /*!
  * Get icon resources
  */
 
-wxIcon EditShortcutDlg::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon EditShortcutDlg::GetIconResource(const wxString& WXUNUSED(name))
 {
   // Icon retrieval
-////@begin EditShortcutDlg icon retrieval
   return wxNullIcon;
-////@end EditShortcutDlg icon retrieval
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void EditShortcutDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
+void EditShortcutDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 {
   if (Validate() && TransferDataFromWindow()) {
     bool modified = false;
-    CItemData modified_item(*m_item);
-    const wxString group = m_groupCtrl->GetValue();
-    if (group != m_item->GetGroup().c_str()) {
+
+    CItemData modifiedShortcut(*m_Shortcut);
+
+    // Has group changed?
+    if (m_ShortcutGroup != stringx2std(m_Shortcut->GetGroup())) {
       modified = true;
-      modified_item.SetGroup(tostringx(group));
+      modifiedShortcut.SetGroup(tostringx(m_ShortcutGroup));
     }
-    if (m_title != m_item->GetTitle().c_str()) {
+
+    // Has title changed?
+    if (m_ShortcutTitle != stringx2std(m_Shortcut->GetTitle())) {
       modified = true;
-      modified_item.SetTitle(tostringx(m_title));
+      modifiedShortcut.SetTitle(tostringx(m_ShortcutTitle));
     }
-    if (m_user != m_item->GetUser().c_str()) {
+
+    // Has username changed?
+    if (m_ShortcutUsername != stringx2std(m_Shortcut->GetUser())) {
       modified = true;
-      modified_item.SetUser(tostringx(m_user));
+      modifiedShortcut.SetUser(tostringx(m_ShortcutUsername));
     }
+
     if (modified) {
       time_t t;
       time(&t);
-      modified_item.SetRMTime(t);
-      m_core.Execute(EditEntryCommand::Create(&m_core,*m_item,
-                                              modified_item));
+
+      modifiedShortcut.SetRMTime(t);
+
+      m_Core.Execute(
+        EditEntryCommand::Create(&m_Core, *m_Shortcut, modifiedShortcut)
+      );
     }
   }
   EndModal(wxID_OK);

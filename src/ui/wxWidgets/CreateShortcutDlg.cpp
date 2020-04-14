@@ -21,16 +21,19 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-////@begin includes
-////@end includes
-
-#include "core/ItemData.h"
+#include <wx/valgen.h>
 
 #include "CreateShortcutDlg.h"
 #include "wxUtilities.h"
 
-////@begin XPM images
-////@end XPM images
+//(*IdInit(CreateShortcutDlg)
+const long CreateShortcutDlg::ID_COMBOBOX1 = wxNewId();
+const long CreateShortcutDlg::ID_TEXTCTRL1 = wxNewId();
+const long CreateShortcutDlg::ID_TEXTCTRL2 = wxNewId();
+const long CreateShortcutDlg::ID_STATICTEXT7 = wxNewId();
+const long CreateShortcutDlg::ID_STATICTEXT8 = wxNewId();
+const long CreateShortcutDlg::ID_STATICTEXT9 = wxNewId();
+//*)
 
 /*!
  * CreateShortcutDlg type definition
@@ -44,10 +47,7 @@ IMPLEMENT_CLASS( CreateShortcutDlg, wxDialog )
 
 BEGIN_EVENT_TABLE( CreateShortcutDlg, wxDialog )
 
-////@begin CreateShortcutDlg event table entries
-  EVT_BUTTON( wxID_OK, CreateShortcutDlg::OnOkClick )
-
-////@end CreateShortcutDlg event table entries
+  EVT_BUTTON( wxID_OK, CreateShortcutDlg::OnOk )
 
 END_EVENT_TABLE()
 
@@ -55,50 +55,12 @@ END_EVENT_TABLE()
  * CreateShortcutDlg constructors
  */
 
-CreateShortcutDlg::CreateShortcutDlg(wxWindow* parent, PWScore &core,
-                                     CItemData *base,
-                                     wxWindowID id, const wxString& caption,
-                                     const wxPoint& pos, const wxSize& size,
-                                     long style)
-: m_core(core), m_base(base)
+CreateShortcutDlg::CreateShortcutDlg(wxWindow* parent, PWScore &core, CItemData *base)
+: m_Core(core), m_Base(base)
 {
-  ASSERT(m_base != nullptr);
+  ASSERT(m_Base != nullptr);
   Init();
-  Create(parent, id, caption, pos, size, style);
-}
-
-/*!
- * CreateShortcutDlg creator
- */
-
-bool CreateShortcutDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
-////@begin CreateShortcutDlg creation
-  SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( parent, id, caption, pos, size, style );
-
-  CreateControls();
-  if (GetSizer())
-  {
-    GetSizer()->SetSizeHints(this);
-  }
-  Centre();
-////@end CreateShortcutDlg creation
-  ItemFieldsToDialog();
-  return true;
-}
-
-void CreateShortcutDlg::ItemFieldsToDialog()
-{
-  // Populate the combo box
-  std::vector<stringT> aryGroups;
-  m_core.GetAllGroups(aryGroups);
-  for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
-    m_groupCtrl->Append(aryGroups[igrp].c_str());
-  }
-  // XXX TBD: Determine if there's a current
-  // group that we can pre-select for user, e.g.,
-  // we're invoked via right-click n a node
+  Create(parent);
 }
 
 /*!
@@ -107,8 +69,92 @@ void CreateShortcutDlg::ItemFieldsToDialog()
 
 CreateShortcutDlg::~CreateShortcutDlg()
 {
-////@begin CreateShortcutDlg destruction
-////@end CreateShortcutDlg destruction
+}
+
+/*!
+ * CreateShortcutDlg creator
+ */
+
+bool CreateShortcutDlg::Create(wxWindow* parent)
+{
+  SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+  wxDialog::Create(parent, wxID_ANY, _("Create Shortcut"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+
+  CreateControls();
+
+  // Allow to resize the dialog in width, only.
+  SetMaxSize(wxSize(wxDefaultCoord, GetMinSize().y));
+  Centre();
+
+  SetValidators();
+  UpdateControls();
+  ItemFieldsToDialog();
+  return true;
+}
+
+void CreateShortcutDlg::ItemFieldsToDialog()
+{
+  // Populate the combo box
+  std::vector<stringT> allGroupNames;
+
+  m_Core.GetAllGroups(allGroupNames, false);
+
+  for (auto const& groupName : allGroupNames) {
+    m_ComboBoxShortcutGroup->Append(groupName);
+  }
+
+  if (m_Base != nullptr) {
+    m_BaseEntryTitle = stringx2std(m_Base->GetTitle());
+    m_BaseEntryUsername = stringx2std(m_Base->GetUser());
+
+    m_ShortcutTitle = _("Shortcut to ") + m_BaseEntryTitle;
+    m_ShortcutUsername = m_BaseEntryUsername;
+
+    if (m_Base->IsGroupSet() && !(m_Base->GetGroup().empty())) {
+      m_BaseEntryGroup = stringx2std(m_Base->GetGroup());
+
+      auto position = m_ComboBoxShortcutGroup->FindString(m_BaseEntryGroup);
+
+      if (position != wxNOT_FOUND) {
+        m_ComboBoxShortcutGroup->SetSelection(position);
+      }
+      else {
+        m_BaseEntryGroup = wxEmptyString;
+      }
+    }
+    else {
+      m_BaseEntryGroup = wxEmptyString;
+    }
+  }
+  else {
+    m_ShortcutGroup = wxEmptyString;
+    m_ShortcutTitle = wxEmptyString;
+    m_ShortcutUsername = wxEmptyString;
+
+    m_BaseEntryGroup = _("N/A");
+    m_BaseEntryTitle = _("N/A");
+    m_BaseEntryUsername = _("N/A");
+  }
+}
+
+void CreateShortcutDlg::SetValidators()
+{
+  m_ComboBoxShortcutGroup->SetValidator(wxGenericValidator(&m_ShortcutGroup));
+  m_TextCtrlShortcutTitle->SetValidator(wxGenericValidator(&m_ShortcutTitle));
+  m_TextCtrlShortcutUsername->SetValidator(wxGenericValidator(&m_ShortcutUsername));
+
+  m_StaticTextBaseEntryGroup->SetValidator(wxGenericValidator(&m_BaseEntryGroup));
+  m_StaticTextBaseEntryTitle->SetValidator(wxGenericValidator(&m_BaseEntryTitle));
+  m_StaticTextBaseEntryUsername->SetValidator(wxGenericValidator(&m_BaseEntryUsername));
+}
+
+void CreateShortcutDlg::UpdateControls()
+{
+  if (m_Core.IsReadOnly()) {
+    m_ComboBoxShortcutGroup->Disable();
+    m_TextCtrlShortcutTitle->Disable();
+    m_TextCtrlShortcutUsername->Disable();
+  }
 }
 
 /*!
@@ -117,9 +163,12 @@ CreateShortcutDlg::~CreateShortcutDlg()
 
 void CreateShortcutDlg::Init()
 {
-////@begin CreateShortcutDlg member initialisation
-  m_groupCtrl = nullptr;
-////@end CreateShortcutDlg member initialisation
+  m_ComboBoxShortcutGroup = nullptr;
+  m_TextCtrlShortcutTitle = nullptr;
+  m_TextCtrlShortcutUsername = nullptr;
+  m_StaticTextBaseEntryGroup = nullptr;
+  m_StaticTextBaseEntryTitle = nullptr;
+  m_StaticTextBaseEntryUsername = nullptr;
 }
 
 /*!
@@ -128,56 +177,67 @@ void CreateShortcutDlg::Init()
 
 void CreateShortcutDlg::CreateControls()
 {
-////@begin CreateShortcutDlg content construction
-  CreateShortcutDlg* itemDialog1 = this;
+  //(*Initialize(ShortcutsDialogDial
+  auto BoxSizer1 = new wxBoxSizer(wxVERTICAL);
+  auto StaticText1 = new wxStaticText(this, wxID_ANY, _("Please enter the shortcut properties to the selected base entry."), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  BoxSizer1->Add(StaticText1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 10);
 
-  wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
-  itemDialog1->SetSizer(itemBoxSizer2);
+  auto StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Shortcut"));
+  auto FlexGridSizer1 = new wxFlexGridSizer(0, 2, 0, 0);
+  FlexGridSizer1->AddGrowableCol(1);
 
-  wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("Please specify the name & group\n for shortcut to "), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 5);
+  auto StaticTextShortcutGroup = new wxStaticText(this, wxID_ANY, _("Group:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer1->Add(StaticTextShortcutGroup, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  // TBD Following should be wxCB_DROPDOWN instead of wxCB_READONLY, but for some reason we can't pre-select an entry with the former.
+  m_ComboBoxShortcutGroup = new wxComboBox(this, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX1"));
+  FlexGridSizer1->Add(m_ComboBoxShortcutGroup, 1, wxALL|wxEXPAND, 5);
 
-  wxGridSizer* itemGridSizer4 = new wxGridSizer(3, 2, 0, 0);
-  itemBoxSizer2->Add(itemGridSizer4, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  auto StaticTextShortcutTitle = new wxStaticText(this, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer1->Add(StaticTextShortcutTitle, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_TextCtrlShortcutTitle = new wxTextCtrl(this, ID_TEXTCTRL1, _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+  FlexGridSizer1->Add(m_TextCtrlShortcutTitle, 1, wxALL|wxEXPAND, 5);
 
-  wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Group:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemStaticText5, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto StaticTextShortcutUsername = new wxStaticText(this, wxID_ANY, _("Username:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer1->Add(StaticTextShortcutUsername, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_TextCtrlShortcutUsername = new wxTextCtrl(this, ID_TEXTCTRL2, _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+  FlexGridSizer1->Add(m_TextCtrlShortcutUsername, 1, wxALL|wxEXPAND, 5);
 
-  wxArrayString m_groupCtrlStrings;
-  m_groupCtrl = new wxComboBox( itemDialog1, ID_COMBOBOX4, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_groupCtrlStrings, wxCB_DROPDOWN );
-  itemGridSizer4->Add(m_groupCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  StaticBoxSizer1->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 5);
+  BoxSizer1->Add(StaticBoxSizer1, 0, wxALL|wxEXPAND, 5);
 
-  wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemStaticText7, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Base Entry"));
+  auto FlexGridSizer2 = new wxFlexGridSizer(0, 2, 0, 0);
+  FlexGridSizer2->AddGrowableCol(1);
 
-  wxTextCtrl* itemTextCtrl8 = new wxTextCtrl( itemDialog1, ID_TEXTCTRL18, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemTextCtrl8, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto StaticTextBaseEntryGroup = new wxStaticText(this, wxID_ANY, _("Group:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer2->Add(StaticTextBaseEntryGroup, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_StaticTextBaseEntryGroup = new wxStaticText(this, ID_STATICTEXT7, _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
+  FlexGridSizer2->Add(m_StaticTextBaseEntryGroup, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
-  wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemStaticText9, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto StaticTextBaseEntryTitle = new wxStaticText(this, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer2->Add(StaticTextBaseEntryTitle, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_StaticTextBaseEntryTitle = new wxStaticText(this, ID_STATICTEXT8, _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
+  FlexGridSizer2->Add(m_StaticTextBaseEntryTitle, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
-  wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( itemDialog1, ID_TEXTCTRL19, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemTextCtrl10, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto StaticTextBaseEntryUsername = new wxStaticText(this, wxID_ANY, _("Username:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  FlexGridSizer2->Add(StaticTextBaseEntryUsername, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+  m_StaticTextBaseEntryUsername = new wxStaticText(this, ID_STATICTEXT9, _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
+  FlexGridSizer2->Add(m_StaticTextBaseEntryUsername, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer11 = new wxStdDialogButtonSizer;
+  StaticBoxSizer2->Add(FlexGridSizer2, 1, wxALL|wxEXPAND, 5);
+  BoxSizer1->Add(StaticBoxSizer2, 0, wxALL|wxEXPAND, 5);
 
-  itemBoxSizer2->Add(itemStdDialogButtonSizer11, 0, wxEXPAND|wxALL, 5);
-  wxButton* itemButton12 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer11->AddButton(itemButton12);
+  auto StdDialogButtonSizer1 = new wxStdDialogButtonSizer();
+  StdDialogButtonSizer1->AddButton(new wxButton(this, wxID_OK, wxEmptyString));
+  StdDialogButtonSizer1->AddButton(new wxButton(this, wxID_CANCEL, wxEmptyString));
+  StdDialogButtonSizer1->AddButton(new wxButton(this, wxID_HELP, wxEmptyString));
+  StdDialogButtonSizer1->Realize();
+  BoxSizer1->Add(StdDialogButtonSizer1, 0, wxALL|wxEXPAND, 5);
 
-  wxButton* itemButton13 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer11->AddButton(itemButton13);
-
-  wxButton* itemButton14 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer11->AddButton(itemButton14);
-
-  itemStdDialogButtonSizer11->Realize();
-
-  // Set validators
-  itemStaticText3->SetValidator( wxGenericValidator(& m_heading) );
-  itemTextCtrl8->SetValidator( wxGenericValidator(& m_title) );
-  itemTextCtrl10->SetValidator( wxGenericValidator(& m_user) );
-////@end CreateShortcutDlg content construction
+  SetSizer(BoxSizer1);
+  BoxSizer1->Fit(this);
+  BoxSizer1->SetSizeHints(this);
+  //*)
 }
 
 /*!
@@ -193,34 +253,30 @@ bool CreateShortcutDlg::ShowToolTips()
  * Get bitmap resources
  */
 
-wxBitmap CreateShortcutDlg::GetBitmapResource( const wxString& WXUNUSED(name) )
+wxBitmap CreateShortcutDlg::GetBitmapResource(const wxString& WXUNUSED(name))
 {
   // Bitmap retrieval
-////@begin CreateShortcutDlg bitmap retrieval
   return wxNullBitmap;
-////@end CreateShortcutDlg bitmap retrieval
 }
 
 /*!
  * Get icon resources
  */
 
-wxIcon CreateShortcutDlg::GetIconResource( const wxString& WXUNUSED(name) )
+wxIcon CreateShortcutDlg::GetIconResource(const wxString& WXUNUSED(name))
 {
   // Icon retrieval
-////@begin CreateShortcutDlg icon retrieval
   return wxNullIcon;
-////@end CreateShortcutDlg icon retrieval
 }
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CreateShortcutDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
+void CreateShortcutDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 {
   if (Validate() && TransferDataFromWindow()) {
-    bool valid = !m_title.empty();
+    bool valid = !m_ShortcutTitle.empty();
 
     if (!valid)
       return;
@@ -229,21 +285,26 @@ void CreateShortcutDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
     shortcut.SetShortcut();
     shortcut.CreateUUID();
     shortcut.SetPassword(wxT("[Shortcut]"));
-    const wxString group = m_groupCtrl->GetValue();
 
-    if (!group.empty())
-      shortcut.SetGroup(tostringx(group));
-    shortcut.SetTitle(tostringx(m_title));
-    if (!m_user.empty())
-      shortcut.SetUser(tostringx(m_user));
+    if (!m_ShortcutGroup.empty()) {
+      shortcut.SetGroup(tostringx(m_ShortcutGroup));
+    }
+
+    shortcut.SetTitle(tostringx(m_ShortcutTitle));
+
+    if (!m_ShortcutUsername.empty()) {
+      shortcut.SetUser(tostringx(m_ShortcutUsername));
+    }
+
     time_t t;
     time(&t);
     shortcut.SetCTime(t);
     shortcut.SetXTime(time_t(0));
     shortcut.SetStatus(CItemData::ES_ADDED);
 
-    m_core.Execute(AddEntryCommand::Create(&m_core, shortcut,
-					   m_base->GetUUID()));
+    m_Core.Execute(
+      AddEntryCommand::Create(&m_Core, shortcut, m_Base->GetUUID())
+    );
   }
   EndModal(wxID_OK);
 }

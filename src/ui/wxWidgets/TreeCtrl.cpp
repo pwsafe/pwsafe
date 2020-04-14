@@ -283,6 +283,9 @@ void TreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &e
       // Handled by PasswordSafeFrame
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRY:
+      ASSERT(item != nullptr);
+      UpdateItem(*item);
+      break;
     case UpdateGUICommand::GUI_REFRESH_GROUPS:
     case UpdateGUICommand::GUI_REFRESH_BOTHVIEWS:
       // TODO: ???
