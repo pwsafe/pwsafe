@@ -45,6 +45,7 @@ or
 2. Install it using yum:
    ```
    $ sudo yum install passwordsafe-*.rpm
+   $ sudo dnf install pwsafe
    ```
 
 ## Installation on Gentoo
