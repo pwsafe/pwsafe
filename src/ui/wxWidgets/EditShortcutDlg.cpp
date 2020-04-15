@@ -116,14 +116,14 @@ void EditShortcutDlg::ItemFieldsToDialog()
       auto position = m_ComboBoxShortcutGroup->FindString(stringx2std(shortcutGroupName));
 
       if (position != wxNOT_FOUND) {
-        m_ComboBoxShortcutGroup->SetSelection(position);
+        m_ShortcutGroup = stringx2std(shortcutGroupName);
       }
       else {
-        m_BaseEntryGroup = wxEmptyString;
+        m_ShortcutGroup = wxEmptyString;
       }
     }
     else {
-      m_BaseEntryGroup = wxEmptyString;
+      m_ShortcutGroup = wxEmptyString;
     }
 
     // Set shortcut title
@@ -243,8 +243,7 @@ void EditShortcutDlg::CreateControls()
 
   auto StaticTextShortcutGroup = new wxStaticText(this, wxID_ANY, _("Group:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   FlexGridSizer1->Add(StaticTextShortcutGroup, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  // TBD Following should be wxCB_DROPDOWN instead of wxCB_READONLY, but for some reason we can't pre-select an entry with the former.
-  m_ComboBoxShortcutGroup = new wxComboBox(this, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 0, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX1"));
+  m_ComboBoxShortcutGroup = new wxComboBox(this, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxCB_DROPDOWN, wxDefaultValidator, _T("ID_COMBOBOX1"));
   FlexGridSizer1->Add(m_ComboBoxShortcutGroup, 1, wxALL|wxEXPAND, 5);
 
   auto StaticTextShortcutTitle = new wxStaticText(this, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));

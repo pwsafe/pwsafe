@@ -242,7 +242,7 @@ void ManagePasswordPoliciesDlg::CreateControls()
 
   auto *itemStdDialogButtonSizer23 = new wxStdDialogButtonSizer;
 
-  itemBoxSizer2->Add(itemStdDialogButtonSizer23, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  itemBoxSizer2->Add(itemStdDialogButtonSizer23, 0, wxALL|wxEXPAND, 5);
   wxButton* itemButton24 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStdDialogButtonSizer23->AddButton(itemButton24);
 
