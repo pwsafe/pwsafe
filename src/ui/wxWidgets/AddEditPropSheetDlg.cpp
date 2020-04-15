@@ -402,8 +402,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   auto *itemStaticText6 = new wxStaticText( panel, wxID_STATIC, _("Group:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemStaticText6, wxGBPosition(/*row:*/ 0, /*column:*/ 0), wxDefaultSpan,  wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxArrayString groupCtrlStrings;
-  m_BasicGroupNamesCtrl = new wxComboBox( panel, ID_COMBOBOX_GROUP, wxEmptyString, wxDefaultPosition, wxDefaultSize, groupCtrlStrings, wxCB_DROPDOWN );
+  m_BasicGroupNamesCtrl = new wxComboBox( panel, ID_COMBOBOX_GROUP, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxCB_DROPDOWN);
   m_BasicSizer->Add(m_BasicGroupNamesCtrl, wxGBPosition(/*row:*/ 0, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemStaticText9 = new wxStaticText( panel, wxID_STATIC, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1529,29 +1528,26 @@ void AddEditPropSheetDlg::UpdateExpTimes()
 
 void AddEditPropSheetDlg::ItemFieldsToPropSheet()
 {
-  std::vector<stringT> svec;
-  std::vector<stringT>::iterator sviter;
+  std::vector<stringT> names;
 
   PWSprefs *prefs = PWSprefs::GetInstance();
   
   // Populate the group combo box
-  m_Core.GetAllGroups(svec);
-  for (sviter = svec.begin(); sviter != svec.end(); sviter++)
-    m_BasicGroupNamesCtrl->Append(sviter->c_str());
+  m_Core.GetAllGroups(names);
+  for (auto const& name : names) {
+    m_BasicGroupNamesCtrl->Append(name);
+  }
 
   // select relevant group
   const StringX group = (m_Type == SheetType::ADD ? tostringx(m_SelectedGroup): m_Item.GetGroup());
   if (!group.empty()) {
-    bool foundGroup = false;
-    for (size_t igrp = 0; igrp < svec.size(); igrp++) {
-      if (group == svec[igrp].c_str()) {
-        m_BasicGroupNamesCtrl->SetSelection(static_cast<int>(igrp));
-        foundGroup =true;
-        break;
-      }
+    auto position = m_BasicGroupNamesCtrl->FindString(stringx2std(group));
+    if (position != wxNOT_FOUND) {
+      m_BasicGroupNamesCtrl->SetSelection(position);
     }
-    if (!foundGroup)
+    else {
       m_BasicGroupNamesCtrl->SetValue(m_SelectedGroup);
+    }
   }
   m_Title = m_Item.GetTitle().c_str();
   m_User = m_Item.GetUser().c_str();
@@ -1661,9 +1657,10 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
   PWPolicy policy;
   // Populate the policy names combo box:
   m_PasswordPolicyNamesCtrl->Append(_("Default Policy"));
-  m_Core.GetPolicyNames(svec);
-  for (sviter = svec.begin(); sviter != svec.end(); sviter++)
-    m_PasswordPolicyNamesCtrl->Append(sviter->c_str());
+  m_Core.GetPolicyNames(names);
+  for (auto const& name : names) {
+    m_PasswordPolicyNamesCtrl->Append(name);
+  }
   // Does item use a named policy or item-specific policy?
   bool namedPwPolicy = !m_Item.GetPolicyName().empty();
   UNREFERENCED_PARAMETER(namedPwPolicy); // Remove MS Compiler warning
