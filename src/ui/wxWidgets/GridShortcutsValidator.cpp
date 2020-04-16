@@ -291,7 +291,7 @@ void SetFont(wxGrid *grid, int row)
 
   struct FontAttr {
     wxFontWeight weight;
-    int          style;
+    wxFontStyle   style;
   } fattr[3][2] = {  // rows = {orig, custom, deleted}, cols = {shortcut, label}
     { {wxFONTWEIGHT_NORMAL, wxFONTSTYLE_NORMAL}, {wxFONTWEIGHT_NORMAL, wxFONTSTYLE_NORMAL} },
     { {wxFONTWEIGHT_BOLD,   wxFONTSTYLE_SLANT},  {wxFONTWEIGHT_BOLD,    wxFONTSTYLE_SLANT} },
