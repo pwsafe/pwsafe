@@ -2,6 +2,36 @@ This file lists the changes made to older versions of
 PasswordSafe. The changes for the current version and those
 immediately preceding it are noted in ReleaseNotes.txt.
 
+New Features in 3.49.1
+======================
+[-] Installaion of pwsafe-cli is now optional in Windows installer.
+
+Bugs Fixed in 3.49.1
+====================
+[1490,G359,G550] Fixed -s switch (again).
+
+New Features in 3.49.0
+======================
+[856] Setting the "Copy password to clipboard upon browse" implies copy
+password upon Run command.
+[-] Added command-line program pwsafe-cli, suitable for scripting.
+
+New Features for V3.33
+======================
+728	The default delay between characters on autotype is now configurable.
+
+Bugs fixed in V3.33
+===================
+1160	Don't create config dir if config file passed in command line.
+1155	Number of shortcuts is now correctly initialized.
+1148	No longer crashes when canceling unlock with expired password entries.
+1146	Edit button now enabled correctly in Manage->Password Policies.
+1139	Backup file numbers now rollover 999 correctly.
+1134	Filtering by type now works correctly for shortcuts & shortcut bases.
+1130	Database field isn't highlighted when it doesn't have the focus.
+1125	Increased range of unlock difficulty by a factor of four. This should give an order or magnitude or so between max and min settings.
+1067	Fail gracefully when trying to encrypt a file > 2GB.
+
 New Features for 3.32
 =====================
 [705] User can choose not to let PasswordSafe record which virtual

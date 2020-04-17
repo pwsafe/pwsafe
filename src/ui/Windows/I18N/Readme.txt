@@ -21,7 +21,8 @@ Where
   FileName - the name of the file containing the translation source.
     A typical file name is something like pwsafe_zh.po. The file must be in 
     the pos directory. thus, it's path must be pos/FileName.
-  LCID - the language ID(aka a locale). See https://msdn.microsoft.com/en-us/library/cc233982.aspx
+  LCID - the language ID(aka a locale).
+    See https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-lcid/70feba9f-294e-491e-b6eb-56532684c37f
     Expressed as hex digits of the form 0xnnnn. For example, 0x0804 is ZH_CN (or zh-CN), 
     which is Chinese Simplified, Republic of China.
   LL_CC - language tag. For example, ZH_CN.

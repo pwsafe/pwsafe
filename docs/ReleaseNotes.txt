@@ -43,16 +43,3 @@ Bugs Fixed in 3.50
 [1494] Improve password policy checks and display.
 [1491] Workaround 4K monitor display problem.
 
-New Features in 3.49.1
-======================
-[-] Installaion of pwsafe-cli is now optional in Windows installer.
-
-Bugs Fixed in 3.49.1
-====================
-[1490,G359,G550] Fixed -s switch (again).
-
-New Features in 3.49.0
-======================
-[856] Setting the "Copy password to clipboard upon browse" implies copy
-password upon Run command.
-[-] Added command-line program pwsafe-cli, suitable for scripting.
