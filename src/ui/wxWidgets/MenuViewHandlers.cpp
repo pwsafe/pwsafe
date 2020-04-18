@@ -196,3 +196,18 @@ void PasswordSafeFrame::ApplyFilters()
   m_grid->SetFilterState(m_bFilterActive);
   UpdateStatusBar();
 }
+
+void PasswordSafeFrame::OnEditFilter(wxCommandEvent& )
+{
+
+}
+
+void PasswordSafeFrame::OnApplyFilter(wxCommandEvent& )
+{
+
+}
+
+void PasswordSafeFrame::OnManageFilters(wxCommandEvent& )
+{
+
+}

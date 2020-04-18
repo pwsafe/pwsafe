@@ -115,6 +115,8 @@ class PasswordSafeSearch;
 #define ID_LANGUAGEMENU 10011
 #define ID_VISITWEBSITE 10012
 #define ID_MRUMENU 10061
+#define ID_SUBVIEWSMENU 10070
+#define ID_SHOW_LAST_FIND_RESULTS 10073
 #define ID_STATUSBAR 10000
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
@@ -412,6 +414,10 @@ public:
 
   void OnBackupSafe(wxCommandEvent& evt);
   void OnRestoreSafe(wxCommandEvent& evt);
+
+  void OnEditFilter(wxCommandEvent& evt);
+  void OnApplyFilter(wxCommandEvent& evt);
+  void OnManageFilters(wxCommandEvent& evt);
 
   void OnVisitWebsite(wxCommandEvent&);
 

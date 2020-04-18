@@ -196,9 +196,10 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_COLLAPSEALL,             PasswordSafeFrame::OnCollapseAll                 )
   EVT_MENU( ID_SHOWHIDE_UNSAVED,        PasswordSafeFrame::OnShowUnsavedEntriesClick     )
   EVT_MENU( ID_SHOW_ALL_EXPIRY,         PasswordSafeFrame::OnShowAllExpiryClick          )
-  // TODO: ID_EDITFILTER
-  // TODO: EVT_MENU( ID_APPLYFILTER, PasswordSafeFrame::ApplyFilters) -> Handler alread exists
-  // TODO: ID_MANAGEFILTERS
+  // TODO  ID_SHOW_LAST_FIND_RESULTS
+  EVT_MENU( ID_EDITFILTER,              PasswordSafeFrame::OnEditFilter                  )
+  EVT_MENU( ID_APPLYFILTER,             PasswordSafeFrame::OnApplyFilter                 )
+  EVT_MENU( ID_MANAGEFILTERS,           PasswordSafeFrame::OnManageFilters               )
   EVT_MENU( ID_CHANGETREEFONT,          PasswordSafeFrame::OnChangeTreeFont              )
   EVT_MENU( ID_CHANGEADDEDITFONT,       PasswordSafeFrame::OnChangeAddEditFont           )
   EVT_MENU( ID_CHANGEPSWDFONT,          PasswordSafeFrame::OnChangePasswordFont          )
@@ -596,6 +597,12 @@ void PasswordSafeFrame::CreateMenubar()
   menuView->Append(ID_SHOWHIDE_UNSAVED, _("Show &Unsaved Changes"), wxEmptyString, wxITEM_CHECK);
   menuView->Append(ID_SHOW_ALL_EXPIRY, _("Show entries with E&xpiry dates"), wxEmptyString, wxITEM_CHECK);
 
+  auto menuSubViews = new wxMenu;
+  menuSubViews->Append(ID_SHOWHIDE_UNSAVED, _("&Unsaved Changes"), wxEmptyString, wxITEM_CHECK);
+  menuSubViews->Append(ID_SHOW_ALL_EXPIRY, _("Entries with E&xpiry Dates"), wxEmptyString, wxITEM_CHECK);
+  menuSubViews->Append(ID_SHOW_LAST_FIND_RESULTS, _("Last Find results"), wxEmptyString, wxITEM_CHECK);
+  menuView->Append(ID_SUBVIEWSMENU, _("Subviews"), menuSubViews);
+  
   auto menuFilters = new wxMenu;
   menuFilters->Append(ID_EDITFILTER, _("&New/Edit Filter..."), wxEmptyString, wxITEM_NORMAL); // TODO
   menuFilters->Append(ID_APPLYFILTER, _("&Apply current"), wxEmptyString, wxITEM_NORMAL); // TODO
@@ -1793,6 +1800,10 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_FILTERMENU:
+    case ID_SUBVIEWSMENU:
+      evt.Enable(m_core.IsDbOpen());
+      break;
+
     case ID_CUSTOMIZETOOLBAR:
       evt.Enable(false); // Mark unimplemented
       break;
