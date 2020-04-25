@@ -23,23 +23,3 @@ default.
 the "compare databases" results.
 [1503,1512] Recurring password expiration update fixed (1497 redo).
 [1495] Accepts policy name via Enter as well as click on OK.
-
-Bugs Fixed in 3.51
-==================
-[1497] Changing the password now updates the expiration date if
-recurring expiration set.
-[1490,G359,G550] Fixed -s switch regression.
-
-New Features in 3.51
-====================
-[884] Copying password in Edit window of alias entry now copies the
-"real" password (that of the base entry).
-
-
-Bugs Fixed in 3.50
-==================
-[GH406] No longer flashes main window if user cancels opening screen.
-[1496] Easy-to-use password policies now enforces symbol constraint.
-[1494] Improve password policy checks and display.
-[1491] Workaround 4K monitor display problem.
-
