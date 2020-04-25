@@ -574,6 +574,7 @@ void PasswordSafeFrame::CreateMenubar()
   menuEdit->Append(ID_COPYURL, _("Copy URL to Clipboard\tCtrl+Alt+L"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_BROWSEURL, _("&Browse to URL\tCtrl+L"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_AUTOTYPE, _("Perform Auto&type\tCtrl+T"), wxEmptyString, wxITEM_NORMAL);
+  menuEdit->Append(ID_CREATESHORTCUT, _("Create &Shortcut"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_GOTOBASEENTRY, _("Go to Base entry"), wxEmptyString, wxITEM_NORMAL);
   menuBar->Append(menuEdit, _("&Edit"));
 
@@ -1506,6 +1507,52 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     itemEditMenu.Append(ID_DUPLICATEENTRY, _("&Duplicate Entry"));
     itemEditMenu.Append(wxID_DELETE,       _("Delete Entry"));
     itemEditMenu.Append(ID_CREATESHORTCUT, _("Create &Shortcut"));
+
+    UUIDVector shortcutUUIDs;
+    m_core.GetAllDependentEntries(item->GetUUID(), shortcutUUIDs, CItemData::EntryType::ET_SHORTCUT);
+
+    if (!shortcutUUIDs.empty()) {
+
+      auto shortcutsMenu = new wxMenu;
+
+      for (auto const& shortcutUUID : shortcutUUIDs) {
+
+        auto entryIterator = m_core.Find(shortcutUUID);
+
+        if (entryIterator != m_core.GetEntryEndIter()) {
+          auto shortcutItem = m_core.GetEntry(entryIterator);
+
+          wxString group = wxT("N/A");
+          if (!shortcutItem.GetGroup().empty()) {
+            group = stringx2std(shortcutItem.GetGroup());
+          }
+
+          wxString title = wxT("N/A");
+          if (!shortcutItem.GetTitle().empty()) {
+            title = stringx2std(shortcutItem.GetTitle());
+          }
+
+          wxString username  = wxT("N/A");
+          if (!shortcutItem.GetUser().empty()) {
+            username = stringx2std(shortcutItem.GetUser());
+          }
+
+          auto menuID = wxNewId();
+          shortcutsMenu->Append(
+            menuID,
+            wxT("<")     + towxstring(group) +
+            wxT("> / <") + towxstring(title) +
+            wxT("> / <") + towxstring(username) +
+            wxT(">")
+          );
+
+          Bind(wxEVT_MENU, [&](wxCommandEvent& event) { SelectItem(shortcutUUID); }, menuID);
+        }
+      }
+
+      itemEditMenu.AppendSubMenu(shortcutsMenu, _("Goto &Shortcuts..."));
+    }
+
     itemEditMenu.Append(ID_GOTOBASEENTRY,  _("&Go to Base entry"));
     itemEditMenu.Append(ID_EDITBASEENTRY,  _("&Edit Base entry"));
     if (!item->IsShortcut()) {
