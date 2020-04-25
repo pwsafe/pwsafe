@@ -42,9 +42,9 @@ or
 
 ## Installation on Fedora
 1. Download the .rpm file that corresponds to your distribution.
-2. Install it using yum:
+2. Install it using dnf:
    ```
-   $ sudo yum install passwordsafe-*.rpm
+   $ sudo dnf install passwordsafe-*.rpm
    ```
 
 ## Installation on Gentoo

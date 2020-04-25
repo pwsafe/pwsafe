@@ -248,8 +248,4 @@ To build pwsafe rpm from git on Fedora or CentOS Linux using mock:
 ## Install the RPM Package
 To install the RPM package use the following command as root.
 
-    rpm -ivh passwordsafe-fedora-\<version\>.\<arch\>.rpm
-
-Upgrading an already installed RPM package can be done with the following command as root. This is the same as install, except all other version(s) of the package are removed after the new package is installed.
-
-    rpm -Uvh passwordsafe-fedora-\<version\>.\<arch\>.rpm
+    dnf install passwordsafe-fedora-\<version\>.\<arch\>.rpm
