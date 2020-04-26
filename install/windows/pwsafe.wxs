@@ -62,10 +62,8 @@
 	    Source='docs\ChangeLog.txt' /> 
 	    <File Id='file1' Name='LICENSE' DiskId='1' Source='LICENSE' />
 	    <File Id='file2' Name='README.md' DiskId='1' Source='README.md' />
-	    <File Id='file3' Name='ReleaseNotes.txt' DiskId='1'
-	    Source='docs\ReleaseNotes.txt' />
-	    <File Id='file4' Name='ReleaseNotes.html' DiskId='1'
-	    Source='docs\ReleaseNotes.html' />
+	    <File Id='file3' Name='ReleaseNotes.md' DiskId='1'
+	    Source='docs\ReleaseNotes.md' />
 	    <File Id='file5' Name='pwsafe.chm' DiskId='1'
 	    Source='help\default\pwsafe.chm' /> 
 	    <File Id='file6' Name='pwsafeDE.chm' DiskId='1'

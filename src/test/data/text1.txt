@@ -104,7 +104,7 @@ https://pwsafe.org
 Release Notes:
 ==============
 For information on the latest features, bugfixes and known problems,
-see the ReleaseNotes.txt file that comes with the package.
+see the ReleaseNotes.md file that comes with the package.
 
 Credits:
 ========

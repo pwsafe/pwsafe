@@ -57,10 +57,10 @@ PrivilegesRequired=poweruser
 [Files]
 Source: "pwsafe.exe";              DestDir: "{app}"
 Source: "pwsafe.chm";              DestDir: "{app}"
-Source: "README.TXT";              DestDir: "{app}"; Flags: isreadme
+Source: "README.MD";              DestDir: "{app}"; Flags: isreadme
 Source: "LICENSE";                 DestDir: "{app}"
 Source: "pwsafe.chm";              DestDir: "{app}"
-Source: "ReleaseNotes.txt";        DestDir: "{app}"
+Source: "ReleaseNotes.md";        DestDir: "{app}"
 Source: "ChangeLog.txt";           DestDir: "{app}"
 Source: "mfc71.dll";               DestDir: "{app}"
 Source: "msvcp71.dll";             DestDir: "{app}"

@@ -13058,10 +13058,10 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Please read the <bpt i="0" x="0">&lt;i0&gt;</bpt>Readme.txt<ept i="0">&lt;/i0&gt;</ept>, <bpt i="1" x="1">&lt;i1&gt;</bpt>Changelog.txt<ept i="1">&lt;/i1&gt;</ept>, and <bpt i="2" x="2">&lt;i2&gt;</bpt>ReleaseNotes.txt<ept i="2">&lt;/i2&gt;</ept> or <bpt i="3" x="3">&lt;i3&gt;</bpt>ReleaseNotes.html<ept i="3">&lt;/i3&gt;</ept> files in the installation package for the latest changes, bug fixes, and documentation addenda.</seg>
+        <seg>Please read the <bpt i="0" x="0">&lt;i0&gt;</bpt>Readme.txt<ept i="0">&lt;/i0&gt;</ept>, <bpt i="1" x="1">&lt;i1&gt;</bpt>Changelog.txt<ept i="1">&lt;/i1&gt;</ept>, and <bpt i="2" x="2">&lt;i2&gt;</bpt>ReleaseNotes.md<ept i="2">&lt;/i2&gt;</ept> files in the installation package for the latest changes, bug fixes, and documentation addenda.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20110620T112230Z">
-        <seg>Файлы <bpt i="0" x="0">&lt;i0&gt;</bpt>Readme.txt,<ept i="0">&lt;/i0&gt;</ept> <bpt i="1" x="1">&lt;i1&gt;</bpt>Changelog.txt,<ept i="1">&lt;/i1&gt;</ept> и <bpt i="2" x="2">&lt;i2&gt;</bpt>ReleaseNotes.txt<ept i="2">&lt;/i2&gt;</ept> (<bpt i="3" x="3">&lt;i3&gt;</bpt>ReleaseNotes.html<ept i="3">&lt;/i3&gt;</ept>) содержат перечень последних изменений, а также информацию об исправленных ошибках и дополнениях в документации.</seg>
+        <seg>Файлы <bpt i="0" x="0">&lt;i0&gt;</bpt>Readme.txt,<ept i="0">&lt;/i0&gt;</ept> <bpt i="1" x="1">&lt;i1&gt;</bpt>Changelog.txt,<ept i="1">&lt;/i1&gt;</ept> и <bpt i="2" x="2">&lt;i2&gt;</bpt>ReleaseNotes.md<ept i="2">&lt;/i2&gt;</ept> содержат перечень последних изменений, а также информацию об исправленных ошибках и дополнениях в документации.</seg>
       </tuv>
     </tu>
     <tu>
