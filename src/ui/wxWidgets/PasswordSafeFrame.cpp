@@ -594,8 +594,6 @@ void PasswordSafeFrame::CreateMenubar()
   menuView->AppendSeparator();
   menuView->Append(ID_EXPANDALL, _("Expand All"), wxEmptyString, wxITEM_NORMAL);
   menuView->Append(ID_COLLAPSEALL, _("Collapse All"), wxEmptyString, wxITEM_NORMAL);
-  menuView->Append(ID_SHOWHIDE_UNSAVED, _("Show &Unsaved Changes"), wxEmptyString, wxITEM_CHECK);
-  menuView->Append(ID_SHOW_ALL_EXPIRY, _("Show entries with E&xpiry dates"), wxEmptyString, wxITEM_CHECK);
 
   auto menuSubViews = new wxMenu;
   menuSubViews->Append(ID_SHOWHIDE_UNSAVED, _("&Unsaved Changes"), wxEmptyString, wxITEM_CHECK);

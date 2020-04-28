@@ -180,7 +180,7 @@ void PasswordSafeFrame::OnShowUnsavedEntriesClick( wxCommandEvent& event )
     return; // should be disabled - we support only one predefined at a time
 
   m_bShowUnsaved = event.IsChecked();
-  m_bFilterActive = m_bShowExpiry; //for now these are synonymous
+  m_bFilterActive = m_bShowUnsaved;
   if (m_bShowUnsaved) {
     CurrentFilter() = m_FilterManager.GetUnsavedFilter();
   } else
