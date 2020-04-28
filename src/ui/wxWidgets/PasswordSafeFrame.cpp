@@ -1540,10 +1540,7 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
           auto menuID = wxNewId();
           shortcutsMenu->Append(
             menuID,
-            wxT("<")     + towxstring(group) +
-            wxT("> / <") + towxstring(title) +
-            wxT("> / <") + towxstring(username) +
-            wxT(">")
+            wxT("<") + group + wxT("> / <") + title + wxT("> / <") + username + wxT(">")
           );
 
           Bind(wxEVT_MENU, [&](wxCommandEvent& event) { SelectItem(shortcutUUID); }, menuID);
