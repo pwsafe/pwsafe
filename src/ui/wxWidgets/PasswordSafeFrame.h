@@ -276,6 +276,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOW_ALL_EXPIRY
   void OnShowAllExpiryClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOW_LAST_FIND_RESULTS
+  void OnShowLastFindClick( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
   void OnChangePasswordClick( wxCommandEvent& event );
 

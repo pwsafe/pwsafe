@@ -191,6 +191,22 @@ void PasswordSafeFrame::OnShowUnsavedEntriesClick( wxCommandEvent& event )
   ApplyFilters();
 }
 
+void PasswordSafeFrame::OnShowLastFindClick( wxCommandEvent& event )
+{
+  if (!(m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == LASTFIND))
+    return; // should be disabled - we support only one predefined at a time
+
+  bool showLastFind = event.IsChecked();
+  m_CurrentPredefinedFilter = showLastFind ? LASTFIND : NONE;
+
+  m_bFilterActive = showLastFind;
+  if (showLastFind) {
+    CurrentFilter() = m_FilterManager.GetFoundFilter();
+  } else
+    CurrentFilter().Empty();
+  ApplyFilters();
+}
+
 void PasswordSafeFrame::ApplyFilters()
 {
   m_FilterManager.CreateGroups();

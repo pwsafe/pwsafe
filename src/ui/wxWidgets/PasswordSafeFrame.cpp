@@ -196,7 +196,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_COLLAPSEALL,             PasswordSafeFrame::OnCollapseAll                 )
   EVT_MENU( ID_SHOWHIDE_UNSAVED,        PasswordSafeFrame::OnShowUnsavedEntriesClick     )
   EVT_MENU( ID_SHOW_ALL_EXPIRY,         PasswordSafeFrame::OnShowAllExpiryClick          )
-  // TODO  ID_SHOW_LAST_FIND_RESULTS
+  EVT_MENU( ID_SHOW_LAST_FIND_RESULTS,  PasswordSafeFrame::OnShowLastFindClick           )
   EVT_MENU( ID_EDITFILTER,              PasswordSafeFrame::OnEditFilter                  )
   EVT_MENU( ID_APPLYFILTER,             PasswordSafeFrame::OnApplyFilter                 )
   EVT_MENU( ID_MANAGEFILTERS,           PasswordSafeFrame::OnManageFilters               )
@@ -219,6 +219,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_SHOWHIDE_DRAGBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOWHIDE_UNSAVED,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOW_ALL_EXPIRY,    PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SHOW_LAST_FIND_RESULTS, PasswordSafeFrame::OnUpdateUI                )
   EVT_UPDATE_UI( ID_COLLAPSEALL,        PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_EXPANDALL,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_FILTERMENU,         PasswordSafeFrame::OnUpdateUI                    ) // To mark unimplemented
@@ -1770,8 +1771,17 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SHOW_ALL_EXPIRY:
-      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == EXPIRY) && m_core.IsDbOpen());
+      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == EXPIRY) &&
+       m_core.IsDbOpen() &&
+       m_core.GetExpirySize() != 0);
       evt.Check(m_CurrentPredefinedFilter == EXPIRY);
+      break;
+
+    case ID_SHOW_LAST_FIND_RESULTS:
+      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == LASTFIND) &&
+                  m_core.IsDbOpen() &&
+                  m_FilterManager.GetFindFilterSize() != 0);
+      evt.Check(m_CurrentPredefinedFilter == LASTFIND);
       break;
 
     case ID_MERGE:
