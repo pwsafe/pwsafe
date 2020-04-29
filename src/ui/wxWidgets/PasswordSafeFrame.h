@@ -621,7 +621,7 @@ private:
   // Current filter
   st_filters &CurrentFilter() {return m_FilterManager.m_currentfilter;}
 
-  bool m_bShowExpiry, m_bShowUnsaved; // predefined filters
+  enum {NONE, EXPIRY, UNSAVED, LASTFIND} m_CurrentPredefinedFilter;
   bool m_bFilterActive;
   void ApplyFilters();
 

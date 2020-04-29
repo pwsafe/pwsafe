@@ -301,7 +301,7 @@ PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(ViewType::GRID), m_search(nullptr), m_sysTray(new SystemTray(this)),
   m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
   m_RUEList(core), m_guiInfo(new GuiInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
-  m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
+  m_CurrentPredefinedFilter(NONE), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
   m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
 {
   Init();
@@ -314,7 +314,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
   : m_core(core), m_currentView(ViewType::GRID), m_search(nullptr), m_sysTray(new SystemTray(this)),
     m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
     m_RUEList(core), m_guiInfo(new GuiInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
-    m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
+    m_CurrentPredefinedFilter(NONE), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
     m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
 {
   Init();
@@ -1765,13 +1765,13 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SHOWHIDE_UNSAVED:
-      evt.Enable(!m_bShowExpiry && m_core.IsDbOpen());
-      evt.Check(m_bShowUnsaved);
+      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == UNSAVED) && m_core.IsDbOpen());
+      evt.Check(m_CurrentPredefinedFilter == UNSAVED);
       break;
 
     case ID_SHOW_ALL_EXPIRY:
-      evt.Enable(!m_bShowUnsaved && m_core.IsDbOpen());
-      evt.Check(m_bShowExpiry);
+      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == EXPIRY) && m_core.IsDbOpen());
+      evt.Check(m_CurrentPredefinedFilter == EXPIRY);
       break;
 
     case ID_MERGE:

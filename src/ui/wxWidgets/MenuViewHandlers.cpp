@@ -162,12 +162,13 @@ void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
 //-----------------------------------------------------------------
 void PasswordSafeFrame::OnShowAllExpiryClick( wxCommandEvent& event )
 {
-  if (m_bShowUnsaved)
+  if (!(m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == EXPIRY))
     return; // should be disabled - we support only one predefined at a time
 
-  m_bShowExpiry = event.IsChecked();
-  m_bFilterActive = m_bShowExpiry;
-  if (m_bShowExpiry) {
+  bool showExpiry = event.IsChecked();
+  m_CurrentPredefinedFilter = showExpiry ? EXPIRY : NONE;
+  m_bFilterActive = showExpiry;
+  if (showExpiry) {
     CurrentFilter() = m_FilterManager.GetExpireFilter();
   } else
     CurrentFilter().Empty();
@@ -176,12 +177,14 @@ void PasswordSafeFrame::OnShowAllExpiryClick( wxCommandEvent& event )
 
 void PasswordSafeFrame::OnShowUnsavedEntriesClick( wxCommandEvent& event )
 {
-  if (m_bShowExpiry)
+  if (!(m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == UNSAVED))
     return; // should be disabled - we support only one predefined at a time
 
-  m_bShowUnsaved = event.IsChecked();
-  m_bFilterActive = m_bShowUnsaved;
-  if (m_bShowUnsaved) {
+  bool showUnsaved = event.IsChecked();
+  m_CurrentPredefinedFilter = showUnsaved ? UNSAVED : NONE;
+
+  m_bFilterActive = showUnsaved;
+  if (showUnsaved) {
     CurrentFilter() = m_FilterManager.GetUnsavedFilter();
   } else
     CurrentFilter().Empty();
@@ -191,10 +194,9 @@ void PasswordSafeFrame::OnShowUnsavedEntriesClick( wxCommandEvent& event )
 void PasswordSafeFrame::ApplyFilters()
 {
   m_FilterManager.CreateGroups();
-  RefreshViews();
   m_tree->SetFilterState(m_bFilterActive);
   m_grid->SetFilterState(m_bFilterActive);
-  UpdateStatusBar();
+  RefreshViews();
 }
 
 void PasswordSafeFrame::OnEditFilter(wxCommandEvent& )
