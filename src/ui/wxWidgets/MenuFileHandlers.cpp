@@ -133,6 +133,7 @@ int PasswordSafeFrame::New()
   m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
   m_RUEList.ClearEntries();
   wxGetApp().recentDatabases().AddFileToHistory(towxstring(cs_newfile));
+  ResetFilters();
   // XXX TODO: Reset IdleLockTimer, as preference has reverted to default
   return PWScore::SUCCESS;
 }

@@ -196,9 +196,10 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_COLLAPSEALL,             PasswordSafeFrame::OnCollapseAll                 )
   EVT_MENU( ID_SHOWHIDE_UNSAVED,        PasswordSafeFrame::OnShowUnsavedEntriesClick     )
   EVT_MENU( ID_SHOW_ALL_EXPIRY,         PasswordSafeFrame::OnShowAllExpiryClick          )
-  // TODO: ID_EDITFILTER
-  // TODO: EVT_MENU( ID_APPLYFILTER, PasswordSafeFrame::ApplyFilters) -> Handler alread exists
-  // TODO: ID_MANAGEFILTERS
+  EVT_MENU( ID_SHOW_LAST_FIND_RESULTS,  PasswordSafeFrame::OnShowLastFindClick           )
+  EVT_MENU( ID_EDITFILTER,              PasswordSafeFrame::OnEditFilter                  )
+  EVT_MENU( ID_APPLYFILTER,             PasswordSafeFrame::OnApplyFilter                 )
+  EVT_MENU( ID_MANAGEFILTERS,           PasswordSafeFrame::OnManageFilters               )
   EVT_MENU( ID_CHANGETREEFONT,          PasswordSafeFrame::OnChangeTreeFont              )
   EVT_MENU( ID_CHANGEADDEDITFONT,       PasswordSafeFrame::OnChangeAddEditFont           )
   EVT_MENU( ID_CHANGEPSWDFONT,          PasswordSafeFrame::OnChangePasswordFont          )
@@ -218,10 +219,11 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_SHOWHIDE_DRAGBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOWHIDE_UNSAVED,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOW_ALL_EXPIRY,    PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SHOW_LAST_FIND_RESULTS, PasswordSafeFrame::OnUpdateUI                )
   EVT_UPDATE_UI( ID_COLLAPSEALL,        PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_EXPANDALL,          PasswordSafeFrame::OnUpdateUI                    )
-  EVT_UPDATE_UI( ID_FILTERMENU,         PasswordSafeFrame::OnUpdateUI                    ) // To mark unimplemented
-  EVT_UPDATE_UI( ID_CUSTOMIZETOOLBAR,   PasswordSafeFrame::OnUpdateUI                    ) // To mark unimplemented
+  EVT_UPDATE_UI( ID_FILTERMENU,         PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_CUSTOMIZETOOLBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_REPORTSMENU,        PasswordSafeFrame::OnUpdateUI                    )
 
   ////////////////////////////////////////////////////////////////////////////////////////
@@ -300,7 +302,7 @@ PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(ViewType::GRID), m_search(nullptr), m_sysTray(new SystemTray(this)),
   m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
   m_RUEList(core), m_guiInfo(new GuiInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
-  m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
+  m_CurrentPredefinedFilter(NONE), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
   m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
 {
   Init();
@@ -313,7 +315,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
   : m_core(core), m_currentView(ViewType::GRID), m_search(nullptr), m_sysTray(new SystemTray(this)),
     m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
     m_RUEList(core), m_guiInfo(new GuiInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
-    m_bShowExpiry(false), m_bShowUnsaved(false), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
+    m_CurrentPredefinedFilter(NONE), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
     m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
 {
   Init();
@@ -593,9 +595,13 @@ void PasswordSafeFrame::CreateMenubar()
   menuView->AppendSeparator();
   menuView->Append(ID_EXPANDALL, _("Expand All"), wxEmptyString, wxITEM_NORMAL);
   menuView->Append(ID_COLLAPSEALL, _("Collapse All"), wxEmptyString, wxITEM_NORMAL);
-  menuView->Append(ID_SHOWHIDE_UNSAVED, _("Show &Unsaved Changes"), wxEmptyString, wxITEM_CHECK);
-  menuView->Append(ID_SHOW_ALL_EXPIRY, _("Show entries with E&xpiry dates"), wxEmptyString, wxITEM_CHECK);
 
+  auto menuSubViews = new wxMenu;
+  menuSubViews->Append(ID_SHOWHIDE_UNSAVED, _("&Unsaved Changes"), wxEmptyString, wxITEM_CHECK);
+  menuSubViews->Append(ID_SHOW_ALL_EXPIRY, _("Entries with E&xpiry Dates"), wxEmptyString, wxITEM_CHECK);
+  menuSubViews->Append(ID_SHOW_LAST_FIND_RESULTS, _("Last Find results"), wxEmptyString, wxITEM_CHECK);
+  menuView->Append(ID_SUBVIEWSMENU, _("Subviews"), menuSubViews);
+  
   auto menuFilters = new wxMenu;
   menuFilters->Append(ID_EDITFILTER, _("&New/Edit Filter..."), wxEmptyString, wxITEM_NORMAL); // TODO
   menuFilters->Append(ID_APPLYFILTER, _("&Apply current"), wxEmptyString, wxITEM_NORMAL); // TODO
@@ -1047,6 +1053,7 @@ void PasswordSafeFrame::ClearAppData()
 {
   m_grid->Clear();
   m_tree->Clear();
+  ResetFilters();
 }
 
 CItemData *PasswordSafeFrame::GetSelectedEntry() const
@@ -1760,13 +1767,22 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SHOWHIDE_UNSAVED:
-      evt.Enable(!m_bShowExpiry && m_core.IsDbOpen());
-      evt.Check(m_bShowUnsaved);
+      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == UNSAVED) && m_core.IsDbOpen());
+      evt.Check(m_CurrentPredefinedFilter == UNSAVED);
       break;
 
     case ID_SHOW_ALL_EXPIRY:
-      evt.Enable(!m_bShowUnsaved && m_core.IsDbOpen());
-      evt.Check(m_bShowExpiry);
+      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == EXPIRY) &&
+       m_core.IsDbOpen() &&
+       m_core.GetExpirySize() != 0);
+      evt.Check(m_CurrentPredefinedFilter == EXPIRY);
+      break;
+
+    case ID_SHOW_LAST_FIND_RESULTS:
+      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == LASTFIND) &&
+                  m_core.IsDbOpen() &&
+                  m_FilterManager.GetFindFilterSize() != 0);
+      evt.Check(m_CurrentPredefinedFilter == LASTFIND);
       break;
 
     case ID_MERGE:
@@ -1793,6 +1809,13 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_FILTERMENU:
+      evt.Enable(false); // Mark unimplemented
+      break;
+
+    case ID_SUBVIEWSMENU:
+      evt.Enable(m_core.IsDbOpen());
+      break;
+
     case ID_CUSTOMIZETOOLBAR:
       evt.Enable(false); // Mark unimplemented
       break;
@@ -2394,6 +2417,26 @@ void PasswordSafeFrame::ChangeFontPreference(const PWSprefs::StringPrefs fontPre
   {
     PWSprefs::GetInstance()->SetPref(fontPreference, tostringx(newFont.GetNativeFontInfoDesc()));
   }
+}
+
+
+void PasswordSafeFrame::SetFilterFindEntries(UUIDVector *pvFoundUUIDs)
+{
+  // If the "Show entries from last Find" is active, we should not change this
+  // as it will override the results - say if the user maximizes the PWS window
+  // and the view is Refreshed using these entries rather than the original list
+  // used for the filter.
+  if (!(m_bFilterActive && m_CurrentPredefinedFilter == LASTFIND))
+    m_FilterManager.SetFilterFindEntries(pvFoundUUIDs);
+}
+
+void PasswordSafeFrame::ResetFilters()
+{ // Tidy up filters
+  CurrentFilter().Empty();
+  m_bFilterActive = false;
+  m_CurrentPredefinedFilter = NONE;
+  m_FilterManager.SetFindFilter(false);
+  m_FilterManager.SetFilterFindEntries(nullptr);
 }
 
   //-----------------------------------------------------------------

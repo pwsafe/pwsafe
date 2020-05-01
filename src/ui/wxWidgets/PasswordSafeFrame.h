@@ -27,10 +27,12 @@
 #include "core/PWSFilters.h"
 #include "core/RUEList.h"
 #include "core/UIinterface.h"
+#include "os/UUID.h"
 
 #include "wxUtilities.h"
 
 #include <tuple>
+#include <vector>
 
 /*!
  * Forward declarations
@@ -115,6 +117,8 @@ class PasswordSafeSearch;
 #define ID_LANGUAGEMENU 10011
 #define ID_VISITWEBSITE 10012
 #define ID_MRUMENU 10061
+#define ID_SUBVIEWSMENU 10070
+#define ID_SHOW_LAST_FIND_RESULTS 10073
 #define ID_STATUSBAR 10000
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
@@ -274,6 +278,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOW_ALL_EXPIRY
   void OnShowAllExpiryClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOW_LAST_FIND_RESULTS
+  void OnShowLastFindClick( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
   void OnChangePasswordClick( wxCommandEvent& event );
 
@@ -413,6 +420,10 @@ public:
   void OnBackupSafe(wxCommandEvent& evt);
   void OnRestoreSafe(wxCommandEvent& evt);
 
+  void OnEditFilter(wxCommandEvent& evt);
+  void OnApplyFilter(wxCommandEvent& evt);
+  void OnManageFilters(wxCommandEvent& evt);
+
   void OnVisitWebsite(wxCommandEvent&);
 
   void OnPasswordSubset(wxCommandEvent& evt);
@@ -441,6 +452,9 @@ public:
 
   // Highlights the item.  Used for search
   void SelectItem(const pws_os::CUUID& uuid);
+  // For predefined "last search" filter:
+  void SetFilterFindEntries(UUIDVector *pvFoundUUIDs);
+
 
   ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
   ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
@@ -614,8 +628,9 @@ private:
   PWSFilterManager m_FilterManager;
   // Current filter
   st_filters &CurrentFilter() {return m_FilterManager.m_currentfilter;}
+  void ResetFilters();
 
-  bool m_bShowExpiry, m_bShowUnsaved; // predefined filters
+  enum {NONE, EXPIRY, UNSAVED, LASTFIND} m_CurrentPredefinedFilter;
   bool m_bFilterActive;
   void ApplyFilters();
 

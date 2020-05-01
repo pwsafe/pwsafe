@@ -29,40 +29,6 @@ class PasswordSafeFrame;
 struct SelectionCriteria;
 ////@end forward declarations
 
-#if 0
-/*!
- * PasswordSafeSearchContext class declaration.  This class tracks whether a
- * contained PasswordSafeSearchData object has been modified
- */
-
-class PasswordSafeSearchContext
-{
-  DECLARE_NO_COPY_CLASS(PasswordSafeSearchContext);
-
-public:
-  PasswordSafeSearchContext() : m_searchData(new PasswordSafeSearchData), m_fDirty(false)
-  {}
-
-  ~PasswordSafeSearchContext()
-  {
-    delete m_searchData;
-    m_searchData = 0;
-  }
-
-  inline const PasswordSafeSearchData* operator->() const { return m_searchData; }
-  inline void SetSearchText(const wxString& txt) { m_searchData->m_searchText = txt; m_fDirty = true;}
-  inline void SetCaseSensitivity(bool ic) { m_searchData->m_fCaseSensitive = ic; m_fDirty = true; }
-  inline bool IsSame(const PasswordSafeSearchData& data) const { return *m_searchData == data; }
-  inline void Set(const PasswordSafeSearchData& data) { *m_searchData = data; m_fDirty = true; }
-  inline const PasswordSafeSearchData& Get(void) const  { return *m_searchData; }
-  inline bool IsDirty(void) const { return m_fDirty; }
-  inline void Reset(void) { m_fDirty = false; }
-
-private:
-  PasswordSafeSearchData* m_searchData;
-  bool                    m_fDirty;
-};
-#endif
 
 /*!
  * Encapsulates a search index
@@ -87,6 +53,7 @@ public:
     wxCHECK_MSG(!IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Empty search pointer dereferenced"));
     return *m_currentIndex;
   }
+  operator const UUIDVector() const {return m_indices;}
   size_t Size() const { return m_indices.size(); }
 
   void InitIndex(void) { m_currentIndex = m_indices.begin(); }

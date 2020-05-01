@@ -51,6 +51,8 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/TimedTaskChain.h
     src/ui/wxWidgets/PasswordSubsetDlg.h
     src/ui/wxWidgets/CryptKeyEntryDlg.h
+    src/ui/wxWidgets/SetFiltersDlg.h
+    src/ui/wxWidgets/ManageFiltersDlg.h
     )
 
 
@@ -106,6 +108,8 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/TimedTaskChain.cpp
     src/ui/wxWidgets/PasswordSubsetDlg.cpp
     src/ui/wxWidgets/CryptKeyEntryDlg.cpp
+    src/ui/wxWidgets/SetFiltersDlg.cpp
+    src/ui/wxWidgets/ManageFiltersDlg.cpp
     )
 
 if(HAVE_YKPERS_H)
