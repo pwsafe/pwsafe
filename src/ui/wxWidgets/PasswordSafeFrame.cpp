@@ -222,8 +222,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_SHOW_LAST_FIND_RESULTS, PasswordSafeFrame::OnUpdateUI                )
   EVT_UPDATE_UI( ID_COLLAPSEALL,        PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_EXPANDALL,          PasswordSafeFrame::OnUpdateUI                    )
-  EVT_UPDATE_UI( ID_FILTERMENU,         PasswordSafeFrame::OnUpdateUI                    ) // To mark unimplemented
-  EVT_UPDATE_UI( ID_CUSTOMIZETOOLBAR,   PasswordSafeFrame::OnUpdateUI                    ) // To mark unimplemented
+  EVT_UPDATE_UI( ID_FILTERMENU,         PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_CUSTOMIZETOOLBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_REPORTSMENU,        PasswordSafeFrame::OnUpdateUI                    )
 
   ////////////////////////////////////////////////////////////////////////////////////////
@@ -1809,6 +1809,9 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_FILTERMENU:
+      evt.Enable(false); // Mark unimplemented
+      break;
+
     case ID_SUBVIEWSMENU:
       evt.Enable(m_core.IsDbOpen());
       break;
