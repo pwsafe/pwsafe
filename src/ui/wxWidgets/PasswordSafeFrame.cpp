@@ -1053,6 +1053,7 @@ void PasswordSafeFrame::ClearAppData()
 {
   m_grid->Clear();
   m_tree->Clear();
+  ResetFilters();
 }
 
 CItemData *PasswordSafeFrame::GetSelectedEntry() const
@@ -2413,6 +2414,26 @@ void PasswordSafeFrame::ChangeFontPreference(const PWSprefs::StringPrefs fontPre
   {
     PWSprefs::GetInstance()->SetPref(fontPreference, tostringx(newFont.GetNativeFontInfoDesc()));
   }
+}
+
+
+void PasswordSafeFrame::SetFilterFindEntries(UUIDVector *pvFoundUUIDs)
+{
+  // If the "Show entries from last Find" is active, we should not change this
+  // as it will override the results - say if the user maximizes the PWS window
+  // and the view is Refreshed using these entries rather than the original list
+  // used for the filter.
+  if (!(m_bFilterActive && m_CurrentPredefinedFilter == LASTFIND))
+    m_FilterManager.SetFilterFindEntries(pvFoundUUIDs);
+}
+
+void PasswordSafeFrame::ResetFilters()
+{ // Tidy up filters
+  CurrentFilter().Empty();
+  m_bFilterActive = false;
+  m_CurrentPredefinedFilter = NONE;
+  m_FilterManager.SetFindFilter(false);
+  m_FilterManager.SetFilterFindEntries(nullptr);
 }
 
   //-----------------------------------------------------------------

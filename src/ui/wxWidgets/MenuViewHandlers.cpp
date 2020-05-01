@@ -198,6 +198,8 @@ void PasswordSafeFrame::OnShowLastFindClick( wxCommandEvent& event )
 
   bool showLastFind = event.IsChecked();
   m_CurrentPredefinedFilter = showLastFind ? LASTFIND : NONE;
+  m_FilterManager.SetFindFilter(showLastFind);
+
 
   m_bFilterActive = showLastFind;
   if (showLastFind) {

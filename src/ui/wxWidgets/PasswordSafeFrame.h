@@ -27,10 +27,12 @@
 #include "core/PWSFilters.h"
 #include "core/RUEList.h"
 #include "core/UIinterface.h"
+#include "os/UUID.h"
 
 #include "wxUtilities.h"
 
 #include <tuple>
+#include <vector>
 
 /*!
  * Forward declarations
@@ -450,6 +452,9 @@ public:
 
   // Highlights the item.  Used for search
   void SelectItem(const pws_os::CUUID& uuid);
+  // For predefined "last search" filter:
+  void SetFilterFindEntries(UUIDVector *pvFoundUUIDs);
+
 
   ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
   ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
@@ -623,6 +628,7 @@ private:
   PWSFilterManager m_FilterManager;
   // Current filter
   st_filters &CurrentFilter() {return m_FilterManager.m_currentfilter;}
+  void ResetFilters();
 
   enum {NONE, EXPIRY, UNSAVED, LASTFIND} m_CurrentPredefinedFilter;
   bool m_bFilterActive;
