@@ -394,7 +394,7 @@ class PWSFilterManager {
   bool PassesFiltering(const CItemData &ci, const PWScore &core);
   bool PassesEmptyGroupFiltering(const StringX &sxGroup);
   void SetFindFilter(const bool &bFilter) { m_bFindFilterActive = bFilter; }
-  void SetFilterFindEntries(std::vector<pws_os::CUUID> *pvFoundUUIDs);
+  void SetFilterFindEntries(UUIDVector *pvFoundUUIDs);
 
   // predefined filters accessors, use by assigning to m_currentfilter
   const st_filters &GetExpireFilter() const {return m_expirefilter;}
@@ -418,7 +418,7 @@ class PWSFilterManager {
    bool m_bFindFilterActive;
    // Vector of found entries' UUID for advance search to display only those
    // entries satisfying a search
-   std::vector<pws_os::CUUID> m_vFltrFoundUUIDs;
+   UUIDVector m_vFltrFoundUUIDs;
 };
 
 #endif  /* __PWSFILTERS_H */
