@@ -1295,7 +1295,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
           stringT cs_msg, cs_caption;
           LoadAString(cs_caption, IDSC_READ_ERROR);
           Format(cs_msg, IDSC_ENCODING_PROBLEM, ci_temp.GetTitle().c_str());
-          cs_msg = cs_caption + _S(": ") + cs_caption;
+          cs_msg = cs_caption + _S(": ") + cs_msg;
           (*m_pReporter)(cs_msg);
         }
       }
