@@ -293,7 +293,7 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer15->Add(itemStaticText17, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_Backup_MaxIncrSB = new wxSpinCtrl(
-    itemPanel2, ID_SPINCTRL9, _T("0"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS,
+    itemPanel2, ID_SPINCTRL9, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::BackupMaxIncremented),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::BackupMaxIncremented),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::BackupMaxIncremented)
@@ -380,7 +380,7 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer39->Add(m_Display_PreExpiryWarnCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_Display_PreExpiryWarnDaysSB = new wxSpinCtrl(
-    itemPanel29, ID_SPINCTRL10, _T("0"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS,
+    itemPanel29, ID_SPINCTRL10, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PreExpiryWarnDays),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PreExpiryWarnDays),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PreExpiryWarnDays)
@@ -423,8 +423,8 @@ void OptionsPropertySheetDlg::CreateControls()
 
   auto *itemFlexGridSizer50 = new wxFlexGridSizer(0, 2, 0, 0);
   itemBoxSizer45->Add(itemFlexGridSizer50, 0, wxEXPAND|wxALL, 5);
-  wxStaticText* itemStaticText50 = new wxStaticText( itemPanel44, wxID_STATIC, _("Double-click action"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemFlexGridSizer50->Add(itemStaticText50, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticText* itemStaticText50 = new wxStaticText( itemPanel44, wxID_STATIC, _("Double-Click Action:"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemFlexGridSizer50->Add(itemStaticText50, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5);
 
   // Prepare strings for DblClick & Shift+DblClick combos
   wxArrayString m_Misc_DoubleClickActionCBStrings;
@@ -444,8 +444,8 @@ void OptionsPropertySheetDlg::CreateControls()
   m_Misc_DoubleClickActionCB = new wxComboBox( itemPanel44, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_Misc_DoubleClickActionCBStrings, cbStyle );
   itemFlexGridSizer50->Add(m_Misc_DoubleClickActionCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText54 = new wxStaticText( itemPanel44, wxID_STATIC, _("Shift double-click action"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemFlexGridSizer50->Add(itemStaticText54, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticText* itemStaticText54 = new wxStaticText( itemPanel44, wxID_STATIC, _("Shift-Double-Click Action:"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemFlexGridSizer50->Add(itemStaticText54, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL, 5);
 
   m_Misc_ShiftDoubleClickActionCB = new wxComboBox( itemPanel44, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_Misc_ShiftDoubleClickActionCBStrings, cbStyle );
   itemFlexGridSizer50->Add(m_Misc_ShiftDoubleClickActionCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -476,10 +476,10 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer62->Add(itemCheckBox63, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_Misc_DefaultUsernameTXT = new wxTextCtrl( itemPanel44, ID_TEXTCTRL12, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer62->Add(m_Misc_DefaultUsernameTXT, 2, wxEXPAND|wxALL, 5);
+  itemBoxSizer62->Add(m_Misc_DefaultUsernameTXT, 1, wxEXPAND|wxALL, 5);
 
   m_Misc_DefaultUsernameLBL = new wxStaticText( itemPanel44, ID_STATICTEXT_1, _("as default username"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer62->Add(m_Misc_DefaultUsernameLBL, 2, wxEXPAND|wxALL, 5);
+  itemBoxSizer62->Add(m_Misc_DefaultUsernameLBL, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
   itemBoxSizer62->AddStretchSpacer();
 
   wxCheckBox* itemCheckBox66 = new wxCheckBox( itemPanel44, ID_CHECKBOX25, _("Query user to set default username"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -523,7 +523,7 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer76->Add(m_PasswordHistory_SaveCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_PasswordHistory_NumDefaultSB = new wxSpinCtrl(
-    itemPanel74, ID_SPINCTRL11, _T("0"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS,
+    itemPanel74, ID_SPINCTRL11, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::NumPWHistoryDefault),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::NumPWHistoryDefault),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::NumPWHistoryDefault)
@@ -543,7 +543,7 @@ void OptionsPropertySheetDlg::CreateControls()
   );
 
   m_PasswordHistory_DefaultExpiryDaysSB = new wxSpinCtrl(
-    itemPanel74, ID_SPINCTRL14, _T("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    itemPanel74, ID_SPINCTRL14, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::DefaultExpiryDays),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::DefaultExpiryDays)
@@ -622,7 +622,7 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer93->Add(m_Security_LockOnIdleTimeoutCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_Security_IdleTimeoutSB = new wxSpinCtrl(
-    itemPanel86, ID_SPINCTRL12, _T("0"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS,
+    itemPanel86, ID_SPINCTRL12, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::IdleTimeout),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::IdleTimeout),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::IdleTimeout)
@@ -693,7 +693,7 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer108->Add(itemStaticText109, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_System_MaxREItemsSB = new wxSpinCtrl(
-    itemPanel104, ID_SPINCTRL13, _T("0"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS,
+    itemPanel104, ID_SPINCTRL13, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::MaxREItems),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::MaxREItems),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::MaxREItems)
@@ -722,7 +722,7 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer114->Add(itemStaticText115, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxSpinCtrl* itemSpinCtrl116 = new wxSpinCtrl(
-    itemPanel104, ID_SPINCTRL, _T("0"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS,
+    itemPanel104, ID_SPINCTRL, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::MaxMRUItems),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::MaxMRUItems),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::MaxMRUItems)
