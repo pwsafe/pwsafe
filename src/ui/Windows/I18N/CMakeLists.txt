@@ -34,6 +34,7 @@ set_property( TARGET pot PROPERTY FOLDER I18N )
 #
 add_custom_target("update-pos"
                   DEPENDS
+                   pos/pwsafe_pt_br.po
                    pos/pwsafe_cz.po
                    pos/pwsafe_de.po
                    pos/pwsafe_dk.po
@@ -73,6 +74,7 @@ add_custom_target("dlls"
                    ${DLL_DIR}/pwsafeKR.dll
                    ${DLL_DIR}/pwsafeNL.dll
                    ${DLL_DIR}/pwsafePL.dll
+                   ${DLL_DIR}/pwsafePT.dll
                    ${DLL_DIR}/pwsafeRU.dll
                    ${DLL_DIR}/pwsafeSL.dll
                    ${DLL_DIR}/pwsafeSV.dll
@@ -104,6 +106,7 @@ make_dll( "it" "0x0410" "IT_IT")
 make_dll( "kr" "0x0412" "KO_KR")
 make_dll( "nl" "0x0413" "NL_NL")
 make_dll( "pl" "0x0415" "PL_PL")
+make_dll( "pt_br" "0x0416" "PT_BR")
 make_dll( "ru" "0x0419" "RU_RU")
 make_dll( "sv" "0x041d" "SV_SE")
 make_dll( "sl" "0x0424" "SL_SI")
