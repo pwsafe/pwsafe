@@ -217,7 +217,7 @@ void PasswordPolicyDlg::CreateControls()
   itemBoxSizer7->Add(itemStaticText8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwpLenCtrl = new wxSpinCtrl(
-    itemDialog1, ID_PWLENSB, _T("12"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
+    itemDialog1, ID_PWLENSB, _T("12"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWDefaultLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDefaultLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWDefaultLength)
@@ -239,7 +239,7 @@ void PasswordPolicyDlg::CreateControls()
   m_pwNumLCbox->Add(itemStaticText13, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5);
 
   m_pwpLCSpin = new wxSpinCtrl(
-    itemDialog1, ID_SPINCTRL5, wxT("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
+    itemDialog1, ID_SPINCTRL5, wxT("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWLowercaseMinLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWLowercaseMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWLowercaseMinLength)
@@ -261,7 +261,7 @@ void PasswordPolicyDlg::CreateControls()
   m_pwNumUCbox->Add(itemStaticText18, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5);
 
   m_pwpUCSpin = new wxSpinCtrl(
-    itemDialog1, ID_SPINCTRL6, wxT("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
+    itemDialog1, ID_SPINCTRL6, wxT("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWUppercaseMinLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWUppercaseMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWUppercaseMinLength)
@@ -283,7 +283,7 @@ void PasswordPolicyDlg::CreateControls()
   m_pwNumDigbox->Add(itemStaticText23, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5);
 
   m_pwpDigSpin = new wxSpinCtrl(
-    itemDialog1, ID_SPINCTRL7, wxT("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
+    itemDialog1, ID_SPINCTRL7, wxT("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWDigitMinLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDigitMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWDigitMinLength)
@@ -306,7 +306,7 @@ void PasswordPolicyDlg::CreateControls()
   m_pwNumSymbox->Add(itemStaticText28, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5);
 
   m_pwpSymSpin = new wxSpinCtrl(
-    itemDialog1, ID_SPINCTRL8, wxT("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
+    itemDialog1, ID_SPINCTRL8, wxT("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWSymbolMinLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWSymbolMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWSymbolMinLength)
