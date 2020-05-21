@@ -359,6 +359,15 @@ bool TreeCtrl::ItemIsGroup(const wxTreeItemId& item) const
   return image == NODE_II && GetRootItem() != item;
 }
 
+/**
+ * Provides the information whether a tree item is a group or root.
+ */
+bool TreeCtrl::ItemIsGroupOrRoot(const wxTreeItemId& item) const
+{
+  int image = GetItemImage(item);
+  return image == NODE_II || GetRootItem() == item;
+}
+
 // XXX taken from Windows TreeCtrl.cpp
 // XXX move to core
 static StringX GetPathElem(StringX &sxPath)
@@ -615,7 +624,7 @@ int TreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item
 
 void TreeCtrl::SortChildrenRecursively(const wxTreeItemId& item)
 {
-  if (!ItemIsGroup(item) || GetChildrenCount(item) <= 0)
+  if (!ItemIsGroupOrRoot(item) || GetChildrenCount(item) <= 0)
     return;
 
   SortChildren(item);
