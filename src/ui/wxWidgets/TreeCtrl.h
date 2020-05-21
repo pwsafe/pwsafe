@@ -141,6 +141,7 @@ public:
   bool HasItems() const;
   bool HasSelection() const;
   bool ItemIsGroup(const wxTreeItemId& item) const;
+  bool ItemIsGroupOrRoot(const wxTreeItemId& item) const;
   void AddEmptyGroup(const StringX& group) { AddGroup(group); }
   void AddRootItem();
   void SetFilterState(bool state);
