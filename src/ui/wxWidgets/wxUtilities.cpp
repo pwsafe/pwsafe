@@ -216,6 +216,43 @@ bool IsTaskBarIconAvailable()
   return wxTaskBarIcon::IsAvailable();
 }
 
+/**
+ * Fixes a spinners initial, resp. minimum required size that is needed to fully show the control.
+ * 
+ * Remark:
+ * For GTK2, the fixed size wxSize(60, -1) resulted in a suitable width for the control element.
+ * Building the application with Gtk3 results in partially hidden controls on the right, where
+ * horizontally aligned buttons appear instead of vertically aligned arrows.
+ * Choosing wxDefaultSize will result in a text entry field that is much wider then necessary.
+ * 
+ * @see https://trac.wxwidgets.org/ticket/18568
+ */
+void FixInitialSpinnerSize(wxSpinCtrl* control)
+{
+  auto text = wxT("00000");
+
+  auto platformInfo = wxPlatformInfo();
+
+  switch (platformInfo.GetPortId())
+  {
+    case wxPortId::wxPORT_GTK:
+    {
+      if (platformInfo.GetToolkitMajorVersion() >= 3) {
+        text = wxT("00");
+      }
+      break;
+    }
+    default:
+      break;
+  }
+
+  control->SetInitialSize(
+    control->GetSizeFromTextSize(
+        control->GetTextExtent(text)
+    )
+  );
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // ImagePanel Implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////

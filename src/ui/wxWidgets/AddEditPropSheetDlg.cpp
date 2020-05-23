@@ -237,6 +237,7 @@ void AddEditPropSheetDlg::Init()
   m_DatesTimesNeverExpireCtrl = nullptr;
   m_PasswordPolicyUseDatabaseCtrl = nullptr;
   m_PasswordPolicyNamesCtrl = nullptr;
+  m_PasswordPolicyPasswordLengthText = nullptr;
   m_PasswordPolicyPasswordLengthCtrl = nullptr;
   m_PasswordPolicySizer = nullptr;
   m_PasswordPolicyUseLowerCaseCtrl = nullptr;
@@ -517,11 +518,13 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
   itemBoxSizer50->Add(itemCheckBox51, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_AdditionalMaxPasswordHistoryCtrl = new wxSpinCtrl(
-    panel, ID_SPINCTRL_MAX_PW_HIST, _T("0"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS,
+    panel, ID_SPINCTRL_MAX_PW_HIST, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::NumPWHistoryDefault),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::NumPWHistoryDefault),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::NumPWHistoryDefault)
   );
+
+  FixInitialSpinnerSize(m_AdditionalMaxPasswordHistoryCtrl);
 
   itemBoxSizer50->Add(m_AdditionalMaxPasswordHistoryCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -585,11 +588,13 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
   itemFlexGridSizer63->Add(itemBoxSizer68, 0, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
   m_DatesTimesExpiryTimeCtrl = new wxSpinCtrl(
-    panel, ID_SPINCTRL_EXP_TIME, _T("90"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    panel, ID_SPINCTRL_EXP_TIME, _T("90"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::DefaultExpiryDays),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::DefaultExpiryDays)
   );
+
+  FixInitialSpinnerSize(m_DatesTimesExpiryTimeCtrl);
 
   itemBoxSizer68->Add(m_DatesTimesExpiryTimeCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -665,7 +670,7 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
   itemBoxSizer61->Add(itemStaticBoxSizer88, 0, wxEXPAND | wxALL, 5);
 
   auto *itemBoxSizer89 = new wxBoxSizer(wxHORIZONTAL);
-  itemStaticBoxSizer88->Add(itemBoxSizer89, 0, wxEXPAND | wxALL, 0);
+  itemStaticBoxSizer88->Add(itemBoxSizer89, 2, wxEXPAND | wxALL, 0);
 
   m_PasswordPolicyUseDatabaseCtrl = new wxCheckBox(panel, ID_CHECKBOX42, _("Use Database Policy"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
   m_PasswordPolicyUseDatabaseCtrl->SetValue(false);
@@ -675,22 +680,24 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 
   wxArrayString m_cbxPolicyNamesStrings;
   m_PasswordPolicyNamesCtrl = new wxComboBox(panel, ID_POLICYLIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_cbxPolicyNamesStrings, wxCB_READONLY);
-  itemBoxSizer89->Add(m_PasswordPolicyNamesCtrl, 0, wxALIGN_TOP | wxALL, 5);
+  itemBoxSizer89->Add(m_PasswordPolicyNamesCtrl, 3, wxALIGN_TOP | wxALL, 5);
 
   auto *itemStaticLine94 = new wxStaticLine(panel, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
   itemStaticBoxSizer88->Add(itemStaticLine94, 0, wxEXPAND | wxALL, 5);
 
   auto *itemBoxSizer95 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer88->Add(itemBoxSizer95, 0, wxALIGN_LEFT | wxALL, 5);
-  auto *itemStaticText96 = new wxStaticText(panel, wxID_STATIC, _("Password length:"), wxDefaultPosition, wxDefaultSize, 0);
-  itemBoxSizer95->Add(itemStaticText96, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 5);
+  m_PasswordPolicyPasswordLengthText = new wxStaticText(panel, wxID_STATIC, _("Password length:"), wxDefaultPosition, wxDefaultSize, 0);
+  itemBoxSizer95->Add(m_PasswordPolicyPasswordLengthText, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 5);
 
   m_PasswordPolicyPasswordLengthCtrl = new wxSpinCtrl(
-    panel, ID_SPINCTRL3, _T("12"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    panel, ID_SPINCTRL3, _T("12"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWDefaultLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDefaultLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWDefaultLength)
   );
+
+  FixInitialSpinnerSize(m_PasswordPolicyPasswordLengthCtrl);
 
   itemBoxSizer95->Add(m_PasswordPolicyPasswordLengthCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -705,19 +712,21 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
   m_PasswordPolicyLowerCaseMinSizer = new wxBoxSizer(wxHORIZONTAL);
   m_PasswordPolicySizer->Add(m_PasswordPolicyLowerCaseMinSizer, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 0);
   auto *itemStaticText101 = new wxStaticText(panel, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0);
-  m_PasswordPolicyLowerCaseMinSizer->Add(itemStaticText101, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  m_PasswordPolicyLowerCaseMinSizer->Add(itemStaticText101, 0, wxALIGN_CENTER_VERTICAL | wxLEFT|wxBOTTOM|wxRIGHT, 5);
 
   m_PasswordPolicyLowerCaseMinCtrl = new wxSpinCtrl(
-    panel, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    panel, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWLowercaseMinLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWLowercaseMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWLowercaseMinLength)
   );
 
+  FixInitialSpinnerSize(m_PasswordPolicyLowerCaseMinCtrl);
+
   m_PasswordPolicyLowerCaseMinSizer->Add(m_PasswordPolicyLowerCaseMinCtrl, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM, 5);
 
   auto *itemStaticText103 = new wxStaticText(panel, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0);
-  m_PasswordPolicyLowerCaseMinSizer->Add(itemStaticText103, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  m_PasswordPolicyLowerCaseMinSizer->Add(itemStaticText103, 0, wxALIGN_CENTER_VERTICAL | wxLEFT|wxBOTTOM|wxRIGHT, 5);
 
   // Upper Case Rules
   m_PasswordPolicyUseUpperCaseCtrl = new wxCheckBox(panel, ID_CHECKBOX4, _("Use UPPERCASE letters"), wxDefaultPosition, wxDefaultSize, 0);
@@ -727,19 +736,21 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
   m_PasswordPolicyUpperCaseMinSizer = new wxBoxSizer(wxHORIZONTAL);
   m_PasswordPolicySizer->Add(m_PasswordPolicyUpperCaseMinSizer, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 0);
   auto *itemStaticText106 = new wxStaticText(panel, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0);
-  m_PasswordPolicyUpperCaseMinSizer->Add(itemStaticText106, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  m_PasswordPolicyUpperCaseMinSizer->Add(itemStaticText106, 0, wxALIGN_CENTER_VERTICAL | wxLEFT|wxBOTTOM|wxRIGHT, 5);
 
   m_PasswordPolicyUpperCaseMinCtrl = new wxSpinCtrl(
-    panel, ID_SPINCTRL6, _T("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    panel, ID_SPINCTRL6, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWUppercaseMinLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWUppercaseMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWUppercaseMinLength)
   );
 
+  FixInitialSpinnerSize(m_PasswordPolicyUpperCaseMinCtrl);
+
   m_PasswordPolicyUpperCaseMinSizer->Add(m_PasswordPolicyUpperCaseMinCtrl, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM, 5);
 
   auto *itemStaticText108 = new wxStaticText(panel, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0);
-  m_PasswordPolicyUpperCaseMinSizer->Add(itemStaticText108, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  m_PasswordPolicyUpperCaseMinSizer->Add(itemStaticText108, 0, wxALIGN_CENTER_VERTICAL | wxLEFT|wxBOTTOM|wxRIGHT, 5);
 
   // Digits Rules
   m_PasswordPolicyUseDigitsCtrl = new wxCheckBox(panel, ID_CHECKBOX5, _("Use digits"), wxDefaultPosition, wxDefaultSize, 0);
@@ -749,19 +760,21 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
   m_PasswordPolicyDigitsMinSizer = new wxBoxSizer(wxHORIZONTAL);
   m_PasswordPolicySizer->Add(m_PasswordPolicyDigitsMinSizer, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 0);
   auto *itemStaticText111 = new wxStaticText(panel, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0);
-  m_PasswordPolicyDigitsMinSizer->Add(itemStaticText111, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  m_PasswordPolicyDigitsMinSizer->Add(itemStaticText111, 0, wxALIGN_CENTER_VERTICAL | wxLEFT|wxBOTTOM|wxRIGHT, 5);
 
   m_PasswordPolicyDigitsMinCtrl = new wxSpinCtrl(
-    panel, ID_SPINCTRL7, _T("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    panel, ID_SPINCTRL7, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWDigitMinLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDigitMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWDigitMinLength)
   );
 
+  FixInitialSpinnerSize(m_PasswordPolicyDigitsMinCtrl);
+
   m_PasswordPolicyDigitsMinSizer->Add(m_PasswordPolicyDigitsMinCtrl, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM, 5);
 
   auto *itemStaticText113 = new wxStaticText(panel, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0);
-  m_PasswordPolicyDigitsMinSizer->Add(itemStaticText113, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  m_PasswordPolicyDigitsMinSizer->Add(itemStaticText113, 0, wxALIGN_CENTER_VERTICAL | wxLEFT|wxBOTTOM|wxRIGHT, 5);
 
   // Symbols Rules
   m_PasswordPolicyUseSymbolsCtrl = new wxCheckBox(panel, ID_CHECKBOX6, _("Use symbols"), wxDefaultPosition, wxDefaultSize, 0);
@@ -772,19 +785,21 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
   m_PasswordPolicySymbolsMinSizer = new wxBoxSizer(wxHORIZONTAL);
   m_PasswordPolicySizer->Add(m_PasswordPolicySymbolsMinSizer, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 0);
   auto *itemStaticText116 = new wxStaticText(panel, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0);
-  m_PasswordPolicySymbolsMinSizer->Add(itemStaticText116, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  m_PasswordPolicySymbolsMinSizer->Add(itemStaticText116, 0, wxALIGN_CENTER_VERTICAL | wxLEFT|wxBOTTOM|wxRIGHT, 5);
 
   m_PasswordPolicySymbolsMinCtrl = new wxSpinCtrl(
-    panel, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    panel, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWSymbolMinLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWSymbolMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWSymbolMinLength)
   );
 
+  FixInitialSpinnerSize(m_PasswordPolicySymbolsMinCtrl);
+
   m_PasswordPolicySymbolsMinSizer->Add(m_PasswordPolicySymbolsMinCtrl, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM, 5);
 
   auto *itemStaticText118 = new wxStaticText(panel, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0);
-  m_PasswordPolicySymbolsMinSizer->Add(itemStaticText118, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  m_PasswordPolicySymbolsMinSizer->Add(itemStaticText118, 0, wxALIGN_CENTER_VERTICAL | wxLEFT|wxBOTTOM|wxRIGHT, 5);
 
   // Own Symbols Rules
   m_PasswordPolicyOwnSymbolsTextCtrl = new wxTextCtrl(panel, IDC_OWNSYMBOLS, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
@@ -1413,6 +1428,7 @@ void AddEditPropSheetDlg::UpdatePWPolicyControls(const PWPolicy& pwp)
 void AddEditPropSheetDlg::EnablePWPolicyControls(bool enable)
 {
   m_PasswordPolicyNamesCtrl->Enable(!enable);
+  m_PasswordPolicyPasswordLengthText->Enable(enable);
   m_PasswordPolicyPasswordLengthCtrl->Enable(enable);
   EnableSizerChildren(m_PasswordPolicySizer, enable && !m_PasswordPolicyUseHexadecimalOnlyCtrl->GetValue());
   m_PasswordPolicyUseHexadecimalOnlyCtrl->Enable(enable);
