@@ -293,11 +293,13 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer15->Add(itemStaticText17, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_Backup_MaxIncrSB = new wxSpinCtrl(
-    itemPanel2, ID_SPINCTRL9, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
+    itemPanel2, ID_SPINCTRL9, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::BackupMaxIncremented),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::BackupMaxIncremented),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::BackupMaxIncremented)
   );
+
+  FixInitialSpinnerSize(m_Backup_MaxIncrSB);
 
   itemBoxSizer15->Add(m_Backup_MaxIncrSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -380,11 +382,13 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer39->Add(m_Display_PreExpiryWarnCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_Display_PreExpiryWarnDaysSB = new wxSpinCtrl(
-    itemPanel29, ID_SPINCTRL10, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
+    itemPanel29, ID_SPINCTRL10, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PreExpiryWarnDays),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PreExpiryWarnDays),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PreExpiryWarnDays)
   );
+
+  FixInitialSpinnerSize(m_Display_PreExpiryWarnDaysSB);
 
   itemBoxSizer39->Add(m_Display_PreExpiryWarnDaysSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -523,11 +527,13 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer76->Add(m_PasswordHistory_SaveCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_PasswordHistory_NumDefaultSB = new wxSpinCtrl(
-    itemPanel74, ID_SPINCTRL11, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
+    itemPanel74, ID_SPINCTRL11, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::NumPWHistoryDefault),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::NumPWHistoryDefault),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::NumPWHistoryDefault)
   );
+
+  FixInitialSpinnerSize(m_PasswordHistory_NumDefaultSB);
 
   itemBoxSizer76->Add(m_PasswordHistory_NumDefaultSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -543,11 +549,13 @@ void OptionsPropertySheetDlg::CreateControls()
   );
 
   m_PasswordHistory_DefaultExpiryDaysSB = new wxSpinCtrl(
-    itemPanel74, ID_SPINCTRL14, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
+    itemPanel74, ID_SPINCTRL14, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::DefaultExpiryDays),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::DefaultExpiryDays)
   );
+
+  FixInitialSpinnerSize(m_PasswordHistory_DefaultExpiryDaysSB);
 
   itemBoxSizer77->Add(m_PasswordHistory_DefaultExpiryDaysSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -622,11 +630,13 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer93->Add(m_Security_LockOnIdleTimeoutCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_Security_IdleTimeoutSB = new wxSpinCtrl(
-    itemPanel86, ID_SPINCTRL12, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
+    itemPanel86, ID_SPINCTRL12, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::IdleTimeout),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::IdleTimeout),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::IdleTimeout)
   );
+
+  FixInitialSpinnerSize(m_Security_IdleTimeoutSB);
 
   itemBoxSizer93->Add(m_Security_IdleTimeoutSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -693,11 +703,13 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer108->Add(itemStaticText109, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_System_MaxREItemsSB = new wxSpinCtrl(
-    itemPanel104, ID_SPINCTRL13, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
+    itemPanel104, ID_SPINCTRL13, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::MaxREItems),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::MaxREItems),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::MaxREItems)
   );
+
+  FixInitialSpinnerSize(m_System_MaxREItemsSB);
 
   itemBoxSizer108->Add(m_System_MaxREItemsSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -722,11 +734,13 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer114->Add(itemStaticText115, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxSpinCtrl* itemSpinCtrl116 = new wxSpinCtrl(
-    itemPanel104, ID_SPINCTRL, _T("0"), wxDefaultPosition, wxSize(110, -1), wxSP_ARROW_KEYS,
+    itemPanel104, ID_SPINCTRL, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::MaxMRUItems),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::MaxMRUItems),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::MaxMRUItems)
   );
+
+  FixInitialSpinnerSize(itemSpinCtrl116);
 
   itemBoxSizer114->Add(itemSpinCtrl116, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 

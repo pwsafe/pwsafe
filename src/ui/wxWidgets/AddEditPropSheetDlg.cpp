@@ -524,6 +524,8 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::NumPWHistoryDefault)
   );
 
+  FixInitialSpinnerSize(m_AdditionalMaxPasswordHistoryCtrl);
+
   itemBoxSizer50->Add(m_AdditionalMaxPasswordHistoryCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemStaticText53 = new wxStaticText(panel, wxID_STATIC, _("last passwords"), wxDefaultPosition, wxDefaultSize, 0);
@@ -591,6 +593,8 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::DefaultExpiryDays)
   );
+
+  FixInitialSpinnerSize(m_DatesTimesExpiryTimeCtrl);
 
   itemBoxSizer68->Add(m_DatesTimesExpiryTimeCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -693,6 +697,8 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWDefaultLength)
   );
 
+  FixInitialSpinnerSize(m_PasswordPolicyPasswordLengthCtrl);
+
   itemBoxSizer95->Add(m_PasswordPolicyPasswordLengthCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_PasswordPolicySizer = new wxFlexGridSizer(0, 2, 0, 0);
@@ -714,6 +720,8 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWLowercaseMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWLowercaseMinLength)
   );
+
+  FixInitialSpinnerSize(m_PasswordPolicyLowerCaseMinCtrl);
 
   m_PasswordPolicyLowerCaseMinSizer->Add(m_PasswordPolicyLowerCaseMinCtrl, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM, 5);
 
@@ -737,6 +745,8 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWUppercaseMinLength)
   );
 
+  FixInitialSpinnerSize(m_PasswordPolicyUpperCaseMinCtrl);
+
   m_PasswordPolicyUpperCaseMinSizer->Add(m_PasswordPolicyUpperCaseMinCtrl, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM, 5);
 
   auto *itemStaticText108 = new wxStaticText(panel, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0);
@@ -758,6 +768,8 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDigitMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWDigitMinLength)
   );
+
+  FixInitialSpinnerSize(m_PasswordPolicyDigitsMinCtrl);
 
   m_PasswordPolicyDigitsMinSizer->Add(m_PasswordPolicyDigitsMinCtrl, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM, 5);
 
@@ -781,6 +793,8 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWSymbolMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWSymbolMinLength)
   );
+
+  FixInitialSpinnerSize(m_PasswordPolicySymbolsMinCtrl);
 
   m_PasswordPolicySymbolsMinSizer->Add(m_PasswordPolicySymbolsMinCtrl, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM, 5);
 
