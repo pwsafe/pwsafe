@@ -10,6 +10,6 @@ USER gitpod
 # More information: https://www.gitpod.io/docs/config-docker/
 RUN sudo apt-get -q update && sudo apt-get install -yq cmake fakeroot g++ gettext git libgtest-dev \
         libcurl4-openssl-dev libqrencode-dev  libssl-dev libuuid1 \
-        libwxgtk3.0-dev libxerces-c-dev libxt-dev libxtst-dev \
+        libwxgtk3.0-gtk3-dev libxerces-c-dev libxt-dev libxtst-dev \
         libykpers-1-dev libyubikey-dev make pkg-config uuid-dev zip \
         libmagic-dev
