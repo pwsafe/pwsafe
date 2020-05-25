@@ -13,3 +13,5 @@ RUN sudo apt-get -q update && sudo apt-get install -yq cmake fakeroot g++ gettex
         libwxgtk3.0-gtk3-dev libxerces-c-dev libxt-dev libxtst-dev \
         libykpers-1-dev libyubikey-dev make pkg-config uuid-dev zip \
         libmagic-dev
+# Set debconf back to normal.
+RUN echo 'debconf debconf/frontend select Dialog' | sudo debconf-set-selections
