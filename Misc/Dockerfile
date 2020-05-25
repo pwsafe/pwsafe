@@ -29,7 +29,7 @@ LABEL "maintainer"="The Passwordsafe Project <Passwordsafe-linux@lists.sourcefor
 # Install deps for PWSafe (LOTS and LOTS!)
 # See https://docs.docker.com/develop/develop-images/dockerfile_best-practices#apt-get
 RUN apt-get update \
-     && apt-get install -qy libwxgtk3.0-0v5 libxtst6 libxerces-c3.2 libykpers-1-1 libqrencode3 libcurl4 locales \
+     && apt-get install -qy libwxgtk3.0-0v5 libxtst6 libxerces-c3.2 libykpers-1-1 libqrencode3 libcurl4 libmagic1 locales \
      && rm -rf /var/lib/apt/lists/*
 
 # Set the locale, per http://jaredmarkell.com/docker-and-locales/
@@ -43,11 +43,11 @@ RUN mkdir -p /root/.local/share
 
 # This is here to leave everything above UNCHANGED as much as possible
 # to allow layer caching to work at build time!
-ARG deb_file=passwordsafe-ubuntu18-1.10.amd64.deb
+ARG deb_file=passwordsafe-ubuntu18-1.10-amd64.deb
 
 LABEL "pwsafe"="$deb_file"
 
-ADD https://github.com/pwsafe/pwsafe/releases/download/1.10/$deb_file \
+ADD https://github.com/pwsafe/pwsafe/releases/download/1.010.0/$deb_file \
      /tmp/$deb_file
 
 RUN dpkg -i /tmp/$deb_file && rm /tmp/$deb_file
