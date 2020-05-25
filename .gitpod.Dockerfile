@@ -1,7 +1,8 @@
 FROM gitpod/workspace-full-vnc
                     
 USER gitpod
-
+# Set debconf to noninteractive mode.
+RUN echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
 # Install custom tools, runtime, etc. using apt-get
 # For example, the command below would install "bastet" - a command line tetris clone:
 #
