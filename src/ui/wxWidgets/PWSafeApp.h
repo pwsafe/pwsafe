@@ -21,7 +21,8 @@
  */
 
 ////@begin includes
-#include "wx/image.h"
+#include <wx/image.h>
+#include <wx/utils.h>
 #include "SafeCombinationEntryDlg.h"
 ////@end includes
 #include "core/PWScore.h"
@@ -36,6 +37,8 @@
 class wxTimer;
 class PasswordSafeFrame;
 class wxLocale;
+
+extern long SpinboxWidthFix;
 
 /*!
  * Control identifiers
@@ -115,6 +118,7 @@ private:
   wxString helpFileNamePath;
   bool isHelpActivated;
   bool ActivateHelp(wxLanguage language);
+  void GetEnvironmentVariables();
 
 public:
   RecentDbList &recentDatabases();
