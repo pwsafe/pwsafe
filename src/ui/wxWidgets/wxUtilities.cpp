@@ -216,6 +216,117 @@ bool IsTaskBarIconAvailable()
   return wxTaskBarIcon::IsAvailable();
 }
 
+
+/**
+ * The following works around a bug in several versions of GTK3 which causes
+ * spinbox controls to be displayed incorrectly - too wide or too narrow.
+ * 
+ * In addition to some heuristics based on the distribution type and version, we allow
+ * the user control of the width of the spinbox via the PWS_FIX_GTK_SPINBOX environment variable as follows:
+ * 
+ * 0 - This is the same as not setting the environment variable, i.e., let PasswordSafe try to determine the correct width
+ * 1 - This lets wx set the width to wxDefaultSize, which may be way too wide for some versions of GTK
+ * 2..10 - This sets the width to display this many characters in the text entry field of the spinner.
+ * 
+ * More details:
+ * For GTK2, the fixed size wxSize(60, -1) resulted in a suitable width for the control element.
+ * Building the application with Gtk3 results in partially hidden controls on the right, where
+ * horizontally aligned buttons appear instead of vertically aligned arrows.
+ * Choosing wxDefaultSize in this case will result in a text entry field that is much too wide.
+ * 
+ * @see https://trac.wxwidgets.org/ticket/18568
+ */
+ 
+void FixInitialSpinnerSize(wxSpinCtrl* control)
+{
+  static long spinboxWidthFix = -1L;
+
+  // Get the env. variable only once
+  if (spinboxWidthFix == -1L) {
+    wxString PWS_FIX_GTK_SPINBOX = wxEmptyString;
+    if (wxGetEnv(wxT("PWS_FIX_GTK_SPINBOX"), &PWS_FIX_GTK_SPINBOX)) {
+
+      if (!PWS_FIX_GTK_SPINBOX.IsEmpty() && PWS_FIX_GTK_SPINBOX.ToLong(&spinboxWidthFix)) {
+        if (spinboxWidthFix < 0) {
+          spinboxWidthFix = 0L;
+        } else if (spinboxWidthFix > 10) {
+          spinboxWidthFix = 10L;
+        }
+      }
+    }
+  }
+
+
+  // Set default size
+  if (spinboxWidthFix == 1) {
+    control->SetInitialSize(wxDefaultSize);
+  }
+  // Set size according to text width
+  else if (spinboxWidthFix > 1) {
+    auto text = wxString('0', spinboxWidthFix);
+
+    control->SetInitialSize(
+      control->GetSizeFromTextSize(
+          control->GetTextExtent(text)
+      )
+    );
+  }
+
+  // Determine necessary text entry field width
+  else if (spinboxWidthFix == 0) {
+    auto platformInfo = wxPlatformInfo::Get();
+
+    // wxGtk
+    if (platformInfo.GetPortId() == wxPortId::wxPORT_GTK) {
+
+      // GTK3 workaround
+      if (platformInfo.GetToolkitMajorVersion() >= 3) {
+
+        auto linuxInfo = platformInfo.GetLinuxDistributionInfo();
+
+        if (linuxInfo.Id.IsEmpty() || linuxInfo.Release.IsEmpty()) {
+          pws_os::Trace(L"FixInitialSpinnerSize: Consider installing 'lsb_release'.");
+          control->SetInitialSize(wxDefaultSize);
+        }
+
+        // Fedora 32 with GTK
+        else if (
+          (linuxInfo.Id.Lower() == wxT("fedora")) &&
+          (linuxInfo.Release == wxT("32"))
+        ) {
+          control->SetInitialSize(wxDefaultSize);
+        }
+
+        // Limit the spinners width on any other Linux distribution with GTK
+        else {
+          auto text = wxT("00");
+
+          control->SetInitialSize(
+            control->GetSizeFromTextSize(
+                control->GetTextExtent(text)
+            )
+          );
+        }
+      }
+
+      // GTK2
+      else {
+        control->SetInitialSize(wxSize(65, -1));
+      }
+    }
+
+    // Any other toolkit (wxMSW; wxMac; wxOSX/Carbon; ...)
+    else {
+      control->SetInitialSize(wxSize(65, -1));
+    }
+  }
+
+  // Keep the size that was passed to spinners constructor
+  else {
+    ;
+  }
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // ImagePanel Implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////

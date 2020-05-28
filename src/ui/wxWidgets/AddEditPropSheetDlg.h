@@ -346,6 +346,7 @@ private:
   wxPanel *m_PasswordPolicyPanel;
   wxCheckBox *m_PasswordPolicyUseDatabaseCtrl;
   wxComboBox *m_PasswordPolicyNamesCtrl;
+  wxStaticText *m_PasswordPolicyPasswordLengthText;
   wxSpinCtrl *m_PasswordPolicyPasswordLengthCtrl;
   wxGridSizer *m_PasswordPolicySizer;
   wxCheckBox *m_PasswordPolicyUseLowerCaseCtrl;

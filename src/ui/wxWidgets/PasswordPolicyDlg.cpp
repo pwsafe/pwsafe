@@ -181,9 +181,10 @@ void PasswordPolicyDlg::CreateControls()
   wxStaticText* itemStaticText4 = new wxStaticText( itemDialog1, wxID_STATIC, _("Policy Name:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer3->Add(itemStaticText4, 1, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
+  itemBoxSizer3->AddStretchSpacer();
+
   wxTextCtrl* itemTextCtrl5 = new wxTextCtrl( itemDialog1, ID_POLICYNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer3->Add(itemTextCtrl5, 2, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-  itemBoxSizer3->AddStretchSpacer();
 
   /////////////////////////////////////////////////////////////////////////////
   // Top: Generator Mode
@@ -196,9 +197,10 @@ void PasswordPolicyDlg::CreateControls()
   m_UseDatabasePolicyCtrl->SetValue(true);
   itemBoxSizer4->Add(m_UseDatabasePolicyCtrl, 2, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
+  itemBoxSizer4->AddStretchSpacer();
+
   m_PoliciesSelectionCtrl = new wxComboBox( itemDialog1, ID_COMBOBOX41, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_Policynames, wxCB_READONLY );
   itemBoxSizer4->Add(m_PoliciesSelectionCtrl, 3, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-  itemBoxSizer4->AddStretchSpacer();
 
   /////////////////////////////////////////////////////////////////////////////
   // Center: Password Generation Rules
@@ -215,11 +217,13 @@ void PasswordPolicyDlg::CreateControls()
   itemBoxSizer7->Add(itemStaticText8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwpLenCtrl = new wxSpinCtrl(
-    itemDialog1, ID_PWLENSB, _T("12"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    itemDialog1, ID_PWLENSB, _T("12"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWDefaultLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDefaultLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWDefaultLength)
   );
+
+  FixInitialSpinnerSize(m_pwpLenCtrl);
 
   itemBoxSizer7->Add(m_pwpLenCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -234,19 +238,21 @@ void PasswordPolicyDlg::CreateControls()
   m_pwMinsGSzr->Add(m_pwNumLCbox, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText13 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwNumLCbox->Add(itemStaticText13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_pwNumLCbox->Add(itemStaticText13, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5);
 
   m_pwpLCSpin = new wxSpinCtrl(
-    itemDialog1, ID_SPINCTRL5, wxT("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    itemDialog1, ID_SPINCTRL5, wxT("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWLowercaseMinLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWLowercaseMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWLowercaseMinLength)
   );
 
+  FixInitialSpinnerSize(m_pwpLCSpin);
+
   m_pwNumLCbox->Add(m_pwpLCSpin, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5);
 
   wxStaticText* itemStaticText15 = new wxStaticText( itemDialog1, wxID_STATIC, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwNumLCbox->Add(itemStaticText15, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_pwNumLCbox->Add(itemStaticText15, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxLEFT, 5);
 
   m_pwpUseUpperCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX4, _("Use UPPERCASE letters"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpUseUpperCtrl->SetValue(false);
@@ -256,19 +262,21 @@ void PasswordPolicyDlg::CreateControls()
   m_pwMinsGSzr->Add(m_pwNumUCbox, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText18 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwNumUCbox->Add(itemStaticText18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_pwNumUCbox->Add(itemStaticText18, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5);
 
   m_pwpUCSpin = new wxSpinCtrl(
-    itemDialog1, ID_SPINCTRL6, wxT("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    itemDialog1, ID_SPINCTRL6, wxT("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWUppercaseMinLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWUppercaseMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWUppercaseMinLength)
   );
 
+  FixInitialSpinnerSize(m_pwpUCSpin);
+
   m_pwNumUCbox->Add(m_pwpUCSpin, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5);
 
   wxStaticText* itemStaticText20 = new wxStaticText( itemDialog1, wxID_STATIC, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwNumUCbox->Add(itemStaticText20, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_pwNumUCbox->Add(itemStaticText20, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxLEFT, 5);
 
   m_pwpUseDigitsCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX5, _("Use digits"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpUseDigitsCtrl->SetValue(false);
@@ -278,19 +286,21 @@ void PasswordPolicyDlg::CreateControls()
   m_pwMinsGSzr->Add(m_pwNumDigbox, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText23 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwNumDigbox->Add(itemStaticText23, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_pwNumDigbox->Add(itemStaticText23, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5);
 
   m_pwpDigSpin = new wxSpinCtrl(
-    itemDialog1, ID_SPINCTRL7, wxT("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    itemDialog1, ID_SPINCTRL7, wxT("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWDigitMinLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWDigitMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWDigitMinLength)
   );
 
+  FixInitialSpinnerSize(m_pwpDigSpin);
+
   m_pwNumDigbox->Add(m_pwpDigSpin, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5);
 
   wxStaticText* itemStaticText25 = new wxStaticText( itemDialog1, wxID_STATIC, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwNumDigbox->Add(itemStaticText25, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_pwNumDigbox->Add(itemStaticText25, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxLEFT, 5);
 
   m_pwpSymCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX6, _("Use symbols"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpSymCtrl->SetValue(false);
@@ -301,19 +311,21 @@ void PasswordPolicyDlg::CreateControls()
   m_pwMinsGSzr->Add(m_pwNumSymbox, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText28 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwNumSymbox->Add(itemStaticText28, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_pwNumSymbox->Add(itemStaticText28, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxRIGHT, 5);
 
   m_pwpSymSpin = new wxSpinCtrl(
-    itemDialog1, ID_SPINCTRL8, wxT("0"), wxDefaultPosition, wxSize(80, -1), wxSP_ARROW_KEYS,
+    itemDialog1, ID_SPINCTRL8, wxT("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PWSymbolMinLength),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PWSymbolMinLength),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PWSymbolMinLength)
   );
 
+  FixInitialSpinnerSize(m_pwpSymSpin);
+
   m_pwNumSymbox->Add(m_pwpSymSpin, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5);
 
   wxStaticText* itemStaticText30 = new wxStaticText( itemDialog1, wxID_STATIC, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_pwNumSymbox->Add(itemStaticText30, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_pwNumSymbox->Add(itemStaticText30, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxLEFT, 5);
 
   m_OwnSymbols = new wxTextCtrl( itemDialog1, IDC_OWNSYMBOLS, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   ApplyFontPreference(m_OwnSymbols, PWSprefs::StringPrefs::PasswordFont);

@@ -21,7 +21,8 @@
  */
 
 ////@begin includes
-#include "wx/image.h"
+#include <wx/image.h>
+#include <wx/utils.h>
 #include "SafeCombinationEntryDlg.h"
 ////@end includes
 #include "core/PWScore.h"

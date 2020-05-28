@@ -271,7 +271,7 @@ bool PWSafeApp::OnInit()
   // For instance, the behavior of function 'wcstombs' depends on the LC_CTYPE 
   // category of the selected C locale.
   setlocale(LC_CTYPE, "");
-  
+
   //Used by help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
 

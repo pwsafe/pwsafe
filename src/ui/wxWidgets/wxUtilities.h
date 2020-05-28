@@ -16,6 +16,7 @@
 #include <wx/eventfilter.h>
 #include <wx/dataobj.h>
 #include <wx/panel.h>
+#include <wx/spinctrl.h>
 #include <wx/stream.h>
 
 #include "core/StringX.h"
@@ -351,6 +352,11 @@ typedef wxTextDataObject wxTextDataObjectEx;
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable();
+
+/**
+ * Fixes a spinners initial, resp. minimum required size that is needed to fully show the control.
+ */
+void FixInitialSpinnerSize(wxSpinCtrl* control);
 
 /**
  * A panel in which the image resizes.
