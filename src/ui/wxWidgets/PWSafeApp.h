@@ -38,8 +38,6 @@ class wxTimer;
 class PasswordSafeFrame;
 class wxLocale;
 
-extern long SpinboxWidthFix;
-
 /*!
  * Control identifiers
  */
@@ -118,7 +116,6 @@ private:
   wxString helpFileNamePath;
   bool isHelpActivated;
   bool ActivateHelp(wxLanguage language);
-  void GetEnvironmentVariables();
 
 public:
   RecentDbList &recentDatabases();

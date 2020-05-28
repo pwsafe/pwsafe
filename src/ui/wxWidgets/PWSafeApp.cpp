@@ -261,34 +261,6 @@ bool PWSafeApp::ActivateHelp(wxLanguage language) {
   return true;
 }
 
-void PWSafeApp::GetEnvironmentVariables()
-{
-  // Environment Variable: PWS_FIX_GTK_SPINBOX
-  // - 0     : This is the same as if no environment variable is present, means to use the
-  //           automatic correction mechanism of 'wxUtilities::FixInitialSpinnerSize'.
-  // - 1     : This lets wx decide to choose the proper width by use of wxDefaultSize.
-  // - 2..10 : This specifies the number of characters that are likely to be displayed
-  //           in the text entry field of the spinner.
-  wxString PWS_FIX_GTK_SPINBOX = wxEmptyString;
-
-  long SpinboxWidthFixValue = 0L;
-
-  if (wxGetEnv(wxT("PWS_FIX_GTK_SPINBOX"), &PWS_FIX_GTK_SPINBOX)) {
-
-    if (!PWS_FIX_GTK_SPINBOX.IsEmpty() && PWS_FIX_GTK_SPINBOX.ToLong(&SpinboxWidthFixValue)) {
-      if (SpinboxWidthFixValue < 0) {
-        SpinboxWidthFix = 0L;
-      }
-      else if (SpinboxWidthFixValue > 10) {
-        SpinboxWidthFix = 10L;
-      }
-      else {
-        SpinboxWidthFix = SpinboxWidthFixValue;
-      }
-    }
-  }
-}
-
 /*!
  * Initialisation for PWSafeApp
  */
@@ -299,8 +271,6 @@ bool PWSafeApp::OnInit()
   // For instance, the behavior of function 'wcstombs' depends on the LC_CTYPE 
   // category of the selected C locale.
   setlocale(LC_CTYPE, "");
-
-  GetEnvironmentVariables();
 
   //Used by help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
