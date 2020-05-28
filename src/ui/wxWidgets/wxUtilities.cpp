@@ -217,6 +217,14 @@ bool IsTaskBarIconAvailable()
 }
 
 /**
+ * Specifies the number of characters as the maximum expected text
+ * that could be displayed in the text entry field of the spinner.
+ *
+ * @see PWSafeApp::GetEnvironmentVariables()
+ */
+long SpinboxWidthFix = 0L;
+
+/**
  * Fixes a spinners initial, resp. minimum required size that is needed to fully show the control.
  * 
  * Remark:
@@ -229,28 +237,76 @@ bool IsTaskBarIconAvailable()
  */
 void FixInitialSpinnerSize(wxSpinCtrl* control)
 {
-  auto text = wxT("00000");
-
-  auto platformInfo = wxPlatformInfo();
-
-  switch (platformInfo.GetPortId())
-  {
-    case wxPortId::wxPORT_GTK:
-    {
-      if (platformInfo.GetToolkitMajorVersion() >= 3) {
-        text = wxT("00");
-      }
-      break;
-    }
-    default:
-      break;
+  // Set default size
+  if (SpinboxWidthFix == 1) {
+    control->SetInitialSize(wxDefaultSize);
   }
 
-  control->SetInitialSize(
-    control->GetSizeFromTextSize(
-        control->GetTextExtent(text)
-    )
-  );
+  // Set size according to text width
+  else if (SpinboxWidthFix > 1) {
+    auto text = wxString('0', SpinboxWidthFix);
+
+    control->SetInitialSize(
+      control->GetSizeFromTextSize(
+          control->GetTextExtent(text)
+      )
+    );
+  }
+
+  // Determine necessary text entry field width
+  else if (SpinboxWidthFix == 0) {
+
+    auto platformInfo = wxPlatformInfo::Get();
+
+    // wxGtk
+    if (platformInfo.GetPortId() == wxPortId::wxPORT_GTK) {
+
+      // GTK3 workaround
+      if (platformInfo.GetToolkitMajorVersion() >= 3) {
+
+        auto linuxInfo = platformInfo.GetLinuxDistributionInfo();
+
+        if (linuxInfo.Id.IsEmpty() || linuxInfo.Release.IsEmpty()) {
+          pws_os::Trace(L"FixInitialSpinnerSize: Consider to install 'lsb_release'.");
+          control->SetInitialSize(wxDefaultSize);
+        }
+
+        // Fedora 32 with GTK
+        else if (
+          (linuxInfo.Id.Lower() == wxT("fedora")) &&
+          (linuxInfo.Release == wxT("32"))
+        ) {
+          control->SetInitialSize(wxDefaultSize);
+        }
+
+        // Limit the spinners width on any other Linux distribution with GTK
+        else {
+          auto text = wxT("00");
+
+          control->SetInitialSize(
+            control->GetSizeFromTextSize(
+                control->GetTextExtent(text)
+            )
+          );
+        }
+      }
+
+      // GTK2
+      else {
+        control->SetInitialSize(wxSize(65, -1));
+      }
+    }
+
+    // Any other toolkit (wxMSW; wxMac; wxOSX/Carbon; ...)
+    else {
+      control->SetInitialSize(wxSize(65, -1));
+    }
+  }
+
+  // Keep the size that was passed to spinners constructor
+  else {
+    ;
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
