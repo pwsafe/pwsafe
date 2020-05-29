@@ -12,29 +12,7 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-sel
 USER root
 RUN true \
   && apt-get -q update \
-  && apt-get install -yq \
-    cmake-gui \
-    cmake \
-    fakeroot \
-    g++ \
-    gettext \
-    git \
-    libgtest-dev \
-    libcurl4-openssl-dev \
-    libqrencode-dev  \
-    libssl-dev \
-    libuuid1 \
-    ibwxgtk3.0-dev \
-    libxerces-c-dev \
-    libxt-dev \
-    libxtst-dev \
-    libykpers-1-dev \
-    libyubikey-dev \
-    make \
-    pkg-config \
-    uuid-dev \
-    zip \
-    libmagic-dev \
+  && sh ./Misc/setup-deb-dev-env.sh
   && apt-get autoremove -yq \
   && rm -rf /var/lib/apt/lists/*
 
