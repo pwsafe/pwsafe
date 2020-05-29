@@ -12,7 +12,7 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-sel
 USER root
 RUN true \
   && apt-get -q update \
-  && sh ./Misc/setup-deb-dev-env.sh
+  && sh ./Misc/setup-deb-dev-env.sh \
   && apt-get autoremove -yq \
   && rm -rf /var/lib/apt/lists/*
 
