@@ -10,9 +10,11 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-sel
 #
 # More information: https://www.gitpod.io/docs/config-docker/
 USER root
+# Install dependencies.
+COPY ./Misc/setup-deb-dev-env.sh /tmp/setup-deb-dev-env.sh
 RUN true \
   && apt-get -q update \
-  && sh ./Misc/setup-deb-dev-env.sh \
+  && sh /tmp/setup-deb-dev-env.sh \
   && apt-get autoremove -yq \
   && rm -rf /var/lib/apt/lists/*
 
