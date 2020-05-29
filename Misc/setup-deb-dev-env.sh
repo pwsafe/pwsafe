@@ -7,9 +7,9 @@
 # and you should be all set.
 
 # Ubuntu 20 decided to rename the following
-#LIBWXDEV="ibwxgtk3.0-gtk3-dev"
+#LIBWXDEV="libwxgtk3.0-gtk3-dev"
 #The rest of the Debiverse should use
-LIBWXDEV="ibwxgtk3.0-dev"
+LIBWXDEV="libwxgtk3.0-dev"
 # Two internet points for writing the correct if statement to handle the above...
 
 apt-get install -qy \
