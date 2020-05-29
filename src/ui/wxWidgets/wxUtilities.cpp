@@ -252,7 +252,11 @@ void FixInitialSpinnerSize(wxSpinCtrl* control)
         } else if (spinboxWidthFix > 10) {
           spinboxWidthFix = 10L;
         }
+      } else { // Don't call wxGetEnv() more than once per process if value bad
+        spinboxWidthFix = 0L;
       }
+    } else { // Don't call wxGetEnv() more than once per process if not set
+      spinboxWidthFix = 0L;
     }
   }
 
