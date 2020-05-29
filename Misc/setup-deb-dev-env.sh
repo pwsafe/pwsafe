@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Silly script to setup the development pre-requisites for
 # building PasswordSafe on Debian-based distros.
 # Meant to be run as root or sudo'd
