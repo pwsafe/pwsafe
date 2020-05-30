@@ -6,7 +6,7 @@ sources:
 tasks:
   - build: |
       cd pwsafe
-      apt-get -q update
-      apt-get install -qy busybox
-      Misc/name-me.sh
+      sudo apt-get -q update
+      sudo apt-get install -qy busybox
+      sudo pwsafe/Misc/name-me.sh
       complete-build
