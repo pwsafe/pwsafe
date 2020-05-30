@@ -3,6 +3,7 @@ GPG_KEY := 7F2F1BB9
 
 SF_UPLOAD_ROOT := ronys@frs.sourceforge.net:/home/frs/project/p/pa/passwordsafe
 
+# Target to test gitpod on gitpod
 test-gitpod:
 	@ [ -n "$GITPOD_GIT_USER_EMAIL" ] || { printf '\033[31m\033[1mFATAL:\033[0m %s\n' "This is not a gitpod envrionment capable of testing gitpod"; exit 1 ;}
 	@ printf '\033[31m\033[1m!!! WARNING !!!:\033[0m %s\n' "This is going to create a new commit with a random message in your name, only test this in a new commit and ideally in a profile fork (y/n)"
