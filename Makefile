@@ -16,7 +16,7 @@ test-gitpod:
 	@ gp preview "$$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10)"
 	@ # Disable caching
 	@ cat temporary.Dockerfile | sed -E "s#(RUN\s{1}true\s{1}\")(replace)(\"\s{1})#\1$$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10)\3#gm" > test.Dockerfile
-	@ printf '%s\n' "" "RUN printf '%s\n' \"SUCCESS!\" && exit 99" >> test.Dockerfile
+	@ #printf '%s\n' "" "RUN printf '%s\n' \"SUCCESS!\" && exit 99" >> test.Dockerfile
 	@ git add * || true
 	@ git commit -m "$$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10)" || true
 	@ git push || true
