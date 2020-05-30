@@ -4,7 +4,7 @@ USER root
 
 # Get dependencies
 COPY Misc/name-me.sh /usr/bin/name-me.sh
-RUN true "llbMk10MKw" \
+RUN true "bqH6C702gi" \
 	&& apt-get update -q \
 	&& apt-get install -qy busybox lsb-release \
 	&& chmod +x /usr/bin/name-me.sh \

@@ -25,7 +25,7 @@
 [ -z "$CHMOD" ] && CHMOD="chmod"
 
 # DNM: Used for debugging
-SUDO=sudo
+unset SUDO
 
 # Exit on anything unexpected
 set -e
