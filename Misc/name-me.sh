@@ -34,7 +34,7 @@ set -e
 myName="${0##*/}"
 
 # Used to prefix logs with timestemps, uses ISO 8601 by default
-logPrefix="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+logPrefix="[ $(date -u +"%Y-%m-%dT%H:%M:%SZ") ] "
 # Path to which we will save logs
 logPath="$HOME/.$myName.log"
 
