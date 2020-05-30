@@ -6,7 +6,7 @@ image: debian/stable
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -17,7 +17,7 @@ image: debian/testing
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -30,7 +30,7 @@ image: fedora/32
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -41,7 +41,7 @@ image: fedora/31
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -52,7 +52,7 @@ image: fedora/30
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -65,7 +65,7 @@ image: nixos/latest
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -76,7 +76,7 @@ image: nixos/unstable
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -89,7 +89,7 @@ image: alpine/edge
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -100,7 +100,7 @@ image: alpine/3.12
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -111,7 +111,7 @@ image: alpine/3.11
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -122,7 +122,7 @@ image: alpine/3.10
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -133,7 +133,7 @@ image: alpine/3.9
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -146,7 +146,7 @@ image: ubuntu/latest
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -157,7 +157,7 @@ image: ubuntu/focal
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -168,7 +168,7 @@ image: archlinux
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -181,7 +181,7 @@ image: freebsd/latest
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -192,7 +192,7 @@ image: freebsd/11.x
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
@@ -205,7 +205,7 @@ image: openbsd/6.6
 packages:
   - busybox
 sources:
-  - https://github.com/Kreyren/pwsafe
+  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
       sudo /home/build/pwsafe/Misc/name-me.sh
