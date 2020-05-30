@@ -209,10 +209,13 @@ if command -v uname 1>/dev/null; then
 					$SUDO apt-get install -qy \
 						cmake \
 						gettext \
-						libwxgtk3.0-dev
+						libwxgtk3.0-dev \
+						shellcheck
 				;;
 				ubuntu/*)
-					efixme "Implement logic for dependencies" 
+					efixme "Implement logic for dependencies"
+					$SUDO apt-get install -qy \
+						shellcheck
 				;;
 				archlinux/*)
 					efixme "Implement logic for dependencies" 
