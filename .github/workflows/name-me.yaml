@@ -1,0 +1,22 @@
+name: name-me
+
+# Relevant to events - https://help.github.com/en/actions/automating-your-workflow-with-github-actions/events-that-trigger-workflows
+on: 
+  pull_request:
+    types: [synchronize, opened, reopened, ready_for_review]
+    paths:
+    - 'Misc/name-me.sh'
+
+jobs:
+  test-debian-stable:
+    runs-on: ubuntu-latest
+    container: debian:stable
+    steps:
+      - name: Installing dependencies..
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -qy busybox
+      - name: Testing name-me
+          run: |
+          chmod +x "$GITHUB_WORKSPACE/Misc/name-me.sh"
+          "$GITHUB_WORKSPACE/Misc/name-me.sh"
