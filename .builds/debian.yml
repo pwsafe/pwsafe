@@ -1,5 +1,4 @@
-#
-image: debian
+image: debian:stable
 packages:
   - busybox
 sources:
