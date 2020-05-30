@@ -52,6 +52,8 @@ die() { funcname=die
 				# NOTICE(Krey): Do not use die() here
 				printf 'FATAL: %s\n' "Unexpected happend while processing variable DEBUG with value '$DEBUG' in $funcname"
 			fi
+
+			exit 38
 		;;
 		255) # Unexpected trap
 			if [ "$DEBUG" = 0 ] || [ -z "$DEBUG" ]; then
@@ -194,12 +196,12 @@ if command -v uname 1>/dev/null; then
 
 			# Install dependencies
 			case "$DISTRO" in
-				ubuntu) true ;;
-				debian) true ;;
+				debian)
+					efixme "Implement logic for dependencies" ;;
+				ubuntu)
+					efixme "Implement logic for dependencies" ;;
 				*) die fixme "Unsupported distribution '$DISTRO' has been parsed in $myName"
 			esac
-
-			die fixme "CI needs to be adapted"
 		;;
 		*) die fixme "Platform '$(uname -s)' is not supported by this script"
 	esac
