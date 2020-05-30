@@ -18,6 +18,6 @@ jobs:
           sudo apt-get update -q
           sudo apt-get install -qy busybox
       - name: Testing name-me
-          run: |
-            chmod +x "$GITHUB_WORKSPACE/Misc/name-me.sh"
-            "$GITHUB_WORKSPACE/Misc/name-me.sh"
+        run: |
+          chmod +x "$GITHUB_WORKSPACE/Misc/name-me.sh"
+          "$GITHUB_WORKSPACE/Misc/name-me.sh"
