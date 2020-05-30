@@ -39,7 +39,7 @@ printf '%s\n' "Started $myName on $(uname -s) at $(date -u +"%Y-%m-%dT%H:%M:%SZ"
 # NOTICE(Krey): Aliases are required for posix-compatible line output (https://gist.github.com/Kreyren/4fc76d929efbea1bc874760e7f78c810)
 die() { funcname=die
 	case "$2" in
-		38) # FIXME
+		38|fixme) # FIXME
 			if [ "$DEBUG" = 0 ] || [ -z "$DEBUG" ]; then
 				printf 'FATAL: %s, fixme?\n' "$3"
 				printf "${logPrefix}FATAL($myName:$1): %s, fixme?\\n" "$3" >> "$logPath"
