@@ -1,0 +1,26 @@
+image: archlinux
+packages:
+  - meson
+  - scdoc
+  - wayland-protocols
+  - wlroots-git
+  - wayland
+  - libxkbcommon
+  - cairo
+  - cargo
+  - pango
+  - gdk-pixbuf2
+  - pixman
+  - libinput
+  - xorg-server-xwayland
+sources:
+  - https://github.com/RXT0112/Zernit
+tasks:
+  - build: |
+      cd Zernit
+      if git --no-pager diff --name-only origin/master | grep -q ".*.rs$"; then cargo build; fi
+      complete-build
+  - bench: |
+      cd Zernit
+      if git --no-pager diff --name-only origin/master | grep -q ".*.rs$"; then cargo bench; fi
+      complete-build
