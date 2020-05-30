@@ -10,11 +10,11 @@
 * Linux-specific implementation of media.h
 */
 
-#include "../media.h"
-#include "../file.h"
+#include "linux/media.h"
+#include "file/file.h"
 #include "../utf8conv.h"
 
-#include <linux/magic.h>
+#include "linux/magic.h"
 
 using namespace std;
 

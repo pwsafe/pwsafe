@@ -3,6 +3,12 @@ GPG_KEY := 7F2F1BB9
 
 SF_UPLOAD_ROOT := ronys@frs.sourceforge.net:/home/frs/project/p/pa/passwordsafe
 
+build-release:
+	@ [ ! -d build ] && mkdir build 
+	@ [ ! -d build-dbg ] && mkdir build-dbg 
+	@ cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
+	@ cmake -S . -B build-dbg -D CMAKE_BUILD_TYPE=Debug
+
 ifeq ($(findstring Linux, $(shell uname -s)), Linux)
 include Makefile.linux
 else ifeq ($(findstring CYGWIN, $(shell uname -s)), CYGWIN)

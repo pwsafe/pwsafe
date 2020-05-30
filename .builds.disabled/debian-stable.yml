@@ -1,10 +1,12 @@
 image: debian/stable
 packages:
   - busybox
+  - lsb-release
 sources:
   - https://github.com/Kreyren/forkless-pwsafe
 tasks:
   - build: |
+      cd /home/build/forkless-pwsafe
       sudo /home/build/pwsafe/Misc/name-me.sh
       make
       complete-build
