@@ -5,8 +5,5 @@ sources:
   - https://github.com/Kreyren/pwsafe
 tasks:
   - build: |
-      cd pwsafe
-      sudo apt-get -q update
-      sudo apt-get install -qy busybox
-      sudo pwsafe/Misc/name-me.sh
+      sudo /home/build/pwsafe/Misc/name-me.sh
       complete-build
