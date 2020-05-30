@@ -19,7 +19,7 @@ test-gitpod:
 	@ git add * || true
 	@ git commit -m "$$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10)" || true
 	@ git push || true
-	@ gp preview https://gitpod.io/#$$(git remote -v | grep -m1 origin | sed 's/origin\s//g' | sed 's/ (fetch)//g')
+	@ gp preview https://gitpod.io/#$$(git remote -v | grep -m1 origin | sed 's/origin\s//g' | sed 's/ (fetch)//g' | sed 's/\.git//g')
 
 build-release:
 	@ [ ! -d build ] && mkdir build 
