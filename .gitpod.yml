@@ -1,4 +1,4 @@
 image:
   file: test.Dockerfile
 # DNM: Used for testing
-priviledged: true
+privileged: true
