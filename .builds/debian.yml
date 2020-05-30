@@ -1,9 +1,0 @@
-image: debian/stable
-packages:
-  - busybox
-sources:
-  - https://github.com/Kreyren/pwsafe
-tasks:
-  - build: |
-      sudo /home/build/pwsafe/Misc/name-me.sh
-      complete-build

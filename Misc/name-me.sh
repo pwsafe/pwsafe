@@ -8,6 +8,8 @@
 ###! - DNM: TBD
 ###! Platforms:
 ###! - [ ] Linux
+###!  - [?] Debian
+###!  - [ ] Ubuntu
 ###! - [ ] FreeBSD
 ###! - [ ] Darwin
 ###! - [ ] Redox
@@ -21,6 +23,9 @@
 [ -z "$CURL" ] && CURL="curl"
 [ -z "$ARIA2C" ] && ARIA2C="aria2c"
 [ -z "$CHMOD" ] && CHMOD="chmod"
+
+# DNM: Used for debugging
+SUDO=sudo
 
 # Exit on anything unexpected
 set -e
@@ -194,14 +199,44 @@ if command -v uname 1>/dev/null; then
 				die 255 "identifying distro in $myName running logic for Linux"
 			fi
 
+			# FIXME(Krey): Better logic needed
+			RELEASE="$(lsb_release -cs)"
+
 			# Install dependencies
-			case "$DISTRO" in
-				debian)
-					efixme "Implement logic for dependencies" ;;
-				ubuntu)
-					efixme "Implement logic for dependencies" ;;
+			case "$DISTRO/$RELEASE" in
+				debian/*)
+					efixme "Implement logic for dependencies"
+					$SUDO apt-get install -qy \
+						cmake \
+						gettext \
+						libwxgtk3.0-dev
+				;;
+				ubuntu/*)
+					efixme "Implement logic for dependencies" 
+				;;
+				archlinux/*)
+					efixme "Implement logic for dependencies" 
+				;;
+				alpine/*)
+					efixme "Implement logic for dependencies" 
+				;;
+				nixos/*)
+					efixme "Implement logic for dependencies" 
+				;;
 				*) die fixme "Unsupported distribution '$DISTRO' has been parsed in $myName"
 			esac
+		;;
+		FreeBSD)
+			efixme "Implement logic for dependencies"
+		;;
+		OpenBSD)
+			efixme "Implement logic for dependencies"
+		;;
+		Redox)
+			efixme "Implement logic for dependencies"
+		;;
+		Windows)
+			efixme "Implement logic for dependencies"
 		;;
 		*) die fixme "Platform '$(uname -s)' is not supported by this script"
 	esac

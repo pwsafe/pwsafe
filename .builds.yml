@@ -1,0 +1,213 @@
+# List of supported images https://man.sr.ht/builds.sr.ht/compatibility.md
+
+# Debian
+## Debian - Stable
+image: debian/stable
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+## Debian - Testing
+image: debian/testing
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+
+# Fedora 
+## Fedora - 32
+image: fedora/32
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+## Fedora - 31
+image: fedora/31
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+## Fedora - 30
+image: fedora/30
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+
+# NixOS
+## NixOS - latest
+image: nixos/latest
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+## NixOS - unstable
+image: nixos/unstable
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+
+# Alpine
+## Alpine edge
+image: alpine/edge
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+## Alpine 3.12 (latest as of 30/05/2020)
+image: alpine/3.12
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+## Alpine 3.11
+image: alpine/3.11
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+## Alpine 3.10
+image: alpine/3.10
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+## Alpine 3.9
+image: alpine/3.9
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+
+# Ubuntu
+## Ubuntu - Latest
+image: ubuntu/latest
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+## Ubuntu - Focal
+image: ubuntu/focal
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+## Archlinux
+image: archlinux
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+
+# FreeBSD
+## FreeBSD/latest (as of 30/05/2020 FreeBSD 12.x)
+image: freebsd/latest
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+# FreeBSD/11.x
+image: freebsd/11.x
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build
+
+# OpenBSD
+## OpenBSD - 6.6
+image: openbsd/6.6
+packages:
+  - busybox
+sources:
+  - https://github.com/Kreyren/pwsafe
+tasks:
+  - build: |
+      sudo /home/build/pwsafe/Misc/name-me.sh
+      make
+      complete-build

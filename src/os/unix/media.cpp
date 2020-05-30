@@ -14,7 +14,7 @@
 #include "../file.h"
 #include "../utf8conv.h"
 
-#include <magic.h>
+#include <linux/magic.h>
 
 using namespace std;
 
