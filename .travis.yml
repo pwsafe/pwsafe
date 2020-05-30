@@ -11,9 +11,11 @@ matrix:
     - name: "Stablebian"
       env:
         DOCKER="debian:stable"
+      run: sudo apt-get update -q && sudo apt-get install -qy busybox
     - name: "Ubuntu"
       env:
         DOCKER="ubuntu:latest"
+      run: sudo apt-get update -q && sudo apt-get install -qy busybox
 
 script:
   - Misc/name-me.sh || cat "$HOME/.name-me.log" && exit 23
