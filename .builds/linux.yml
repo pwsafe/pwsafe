@@ -1,20 +1,7 @@
 image: debian/stable
 packages:
-  - busybox
-  - lsb-release
   - docker.io
-sources:
-  - https://github.com/Kreyren/forkless-pwsafe
 tasks:
-  - setup: |
-      sudo docker pull debian
-      sudo docker run debian apt-get update -q
-      sudo docker run debian apt-get install -qy \
-        busybox
-        lsb-release
   - build: |
-      cd /home/build/forkless-pwsafe
-      # Test on Debian
-      sudo docker run debian /home/build/pwsafe/Misc/name-me.sh
-      sudo docker run debian make build
-      complete-build
+      sudo docker run debian sh -c 'apt-get update -q && apt-get install -qy busybox git lsb-release && git clone https://github.com/Kreyren/forkless-pwsafe.git && busybox sh forkless-pwsafe/Misc/name-me.sh && make -C forkless-pwsafe build'
+      sudo docker run ubuntu sh -c 'apt-get update -q && apt-get install -qy busybox git lsb-release && git clone https://github.com/Kreyren/forkless-pwsafe.git && busybox sh forkless-pwsafe/Misc/name-me.sh && make -C forkless-pwsafe build'

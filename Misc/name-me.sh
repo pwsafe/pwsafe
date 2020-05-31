@@ -279,7 +279,7 @@ if command -v $UNAME 1>/dev/null; then
 				efixme "Do not run 'apt-get update' if it's not needed"
 			esac
 			case "$DISTRO/$RELEASE" in
-				debian/*)
+				debian/buster)
 					edebug "Identified distribution as '$DISTRO' with release '$RELEASE"
 					efixme "Implement logic for dependencies"
 					# libwxgtk3.0-dev - Provides wx-config used during the build 
@@ -287,6 +287,8 @@ if command -v $UNAME 1>/dev/null; then
 						cmake \
 						gettext \
 						libwxgtk3.0-dev \
+						g++ \
+						pkg-config \
 						shellcheck || die 1 "Unable to install all required dependencies on $DISTRO"
 				;;
 				ubuntu/focal)
