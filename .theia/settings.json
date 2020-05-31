@@ -1,0 +1,10 @@
+{
+	// Display invisibles
+	"editor.renderWhitespace": "all",
+	"code-eol.newlineCharacter": "¬",
+	"code-eol.returnCharacter" : "¤",
+	"code-eol.crlfCharacter" : "¤¬",
+	// Shellcheck configuration
+	"shellcheck.enableQuickFix": true,
+	"shellcheck.run": "onSave",
+}

@@ -1,0 +1,7 @@
+image: debian/stable
+packages:
+  - docker.io
+tasks:
+  - build: |
+      make test-nameme-all
+      complete_build

@@ -1,4 +1,4 @@
-tasks:
-  - init: mkdir build build-dbg && cmake -S . -B build -D CMAKE_BUILD_TYPE=Release && cmake -S . -B build-dbg -D CMAKE_BUILD_TYPE=Debug
 image:
-  file: .gitpod.Dockerfile
+  file: test.Dockerfile
+# DNM: Used for testing
+privileged: true

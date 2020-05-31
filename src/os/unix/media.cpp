@@ -10,11 +10,12 @@
 * Linux-specific implementation of media.h
 */
 
+// FIXME-QA(Krey): Why are we providing linux header files within the repository?
 #include "../media.h"
 #include "../file.h"
 #include "../utf8conv.h"
 
-#include <magic.h>
+#include "linux/magic.h"
 
 using namespace std;
 
