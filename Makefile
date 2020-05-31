@@ -3,11 +3,21 @@ GPG_KEY := 7F2F1BB9
 
 SF_UPLOAD_ROOT := ronys@frs.sourceforge.net:/home/frs/project/p/pa/passwordsafe
 
+.PHONY: all build test clean
+
+all:
+	@ exit 2
+
+install-deps:
+	@ Misc/name-me.sh
+
+test-nameme: install-deps build
+
 # Target to test gitpod on gitpod
 test-gitpod:
-	@ [ -n "$GITPOD_GIT_USER_EMAIL" ] || { printf '\033[31m\033[1mFATAL:\033[0m %s\n' "This is not a gitpod envrionment capable of testing gitpod"; exit 1 ;}
+	@ [ -n "$$GITPOD_GIT_USER_EMAIL" ] || { printf '\033[31m\033[1mFATAL:\033[0m %s\n' "This is not a gitpod envrionment capable of testing gitpod"; exit 1 ;}
 	@ printf '\033[31m\033[1m!!! WARNING !!!:\033[0m %s\n' "This is going to create a new commit with a random message in your name, only test this in a new commit and ideally in a profile fork (y/n)"
-	@ read -r something && [ "$something" != y ] || exit 1
+	@ read -r something && [ "$$something" != y ] || exit 1
 	@ [ -f DO_NOT_MERGE ] || printf '!!!WARNING!!! %s\n' "Target 'test-gitpod' has been invoked in this environment, verify prior merging!!!" > DO_NOT_MERGE
 	@ [ -f temporary.Dockerfile ] || { printf '\033[31m\033[1mFATAL:\033[0m %s\n' "Expected file 'temporary.Dockerfile' for test-gitpod target is not present, create it?"; exit 1 ;}
 	@ # Configure .gitpod.yml to accept temporary image
@@ -29,14 +39,17 @@ build-release:
 	@ cmake -S . -B build-dbg -D CMAKE_BUILD_TYPE=Debug
 
 ifeq ($(findstring Linux, $(shell uname -s)), Linux)
-include Makefile.linux
+build:
+	$(MAKE) -f Makefile.linux
 else ifeq ($(findstring CYGWIN, $(shell uname -s)), CYGWIN)
-include Makefile.windows
+build:
+	$(MAKE) -f Makefile.windows
 else ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
-include Makefile.macos
+build:
+	$(MAKE) -f Makefile.macos
 else ifeq ($(findstring FreeBSD, $(shell uname -s)), FreeBSD)
-include Makefile.freebsd
+build:
+	$(MAKE) -f Makefile.freebsd
 else
-$(error "Unsupported OS or unable to determine OS")
+	$(error "Unsupported OS or unable to determine OS")
 endif
-

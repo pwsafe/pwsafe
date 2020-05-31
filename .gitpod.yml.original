@@ -2,9 +2,7 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - init: mkdir build build-dbg && cmake -S . -B build -D CMAKE_BUILD_TYPE=Release && cmake -S . -B build-dbg -D CMAKE_BUILD_TYPE=Debug
-  # Required for shell linting
-  - init: brew install shellcheck
+  - init: make release
 
 vscode:
   extensions:
