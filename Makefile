@@ -6,12 +6,33 @@ SF_UPLOAD_ROOT := ronys@frs.sourceforge.net:/home/frs/project/p/pa/passwordsafe
 .PHONY: all build test clean
 
 all:
+	@ $(error Invalid argument)
 	@ exit 2
 
 install-deps:
 	@ Misc/name-me.sh
 
-test-nameme: install-deps build
+test-nameme-all: test-nameme-*
+
+test-nameme-debian:
+	@ sudo docker run debian sh -c 'apt-get update -q && apt-get install -qy busybox git lsb-release && git clone https://github.com/Kreyren/forkless-pwsafe.git && busybox sh forkless-pwsafe/Misc/name-me.sh && make -C forkless-pwsafe build'
+
+test-nameme-ubuntu:
+	@ sudo docker run ubuntu sh -c 'apt-get update -q && apt-get install -qy busybox git lsb-release && git clone https://github.com/Kreyren/forkless-pwsafe.git && busybox sh forkless-pwsafe/Misc/name-me.sh && make -C forkless-pwsafe build'
+
+test-nameme-fedora:
+	@ sudo docker run fedora sh -c 'dnf install -y busybox git redhat-lsb-core && git clone https://github.com/Kreyren/forkless-pwsafe.git && busybox sh forkless-pwsafe/Misc/name-me.sh && make -C forkless-pwsafe build'
+
+test-nameme-archlinux:
+	@ sudo docker run archlinux sh -c 'pacman -S busybox git lsb-release && git clone https://github.com/Kreyren/forkless-pwsafe.git && busybox sh forkless-pwsafe/Misc/name-me.sh && make -C forkless-pwsafe build'
+
+# FIXME(Krey): lsb-release was not verified
+test-nameme-nixos:
+	@ sudo docker run nixos sh -c 'nix-env -iA busybox git lsb-release && git clone https://github.com/Kreyren/forkless-pwsafe.git && busybox sh forkless-pwsafe/Misc/name-me.sh && make -C forkless-pwsafe build'
+
+# FIXME(Krey): Wasn't verified
+test-nameme-alpine:
+	@ sudo docker run alpine sh -c 'apk add busybox git lsb-release && git clone https://github.com/Kreyren/forkless-pwsafe.git && busybox sh forkless-pwsafe/Misc/name-me.sh && make -C forkless-pwsafe build'
 
 # Target to test gitpod on gitpod
 test-gitpod:

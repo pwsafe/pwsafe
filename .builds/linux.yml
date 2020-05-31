@@ -3,5 +3,5 @@ packages:
   - docker.io
 tasks:
   - build: |
-      sudo docker run debian sh -c 'apt-get update -q && apt-get install -qy busybox git lsb-release && git clone https://github.com/Kreyren/forkless-pwsafe.git && busybox sh forkless-pwsafe/Misc/name-me.sh && make -C forkless-pwsafe build'
-      sudo docker run ubuntu sh -c 'apt-get update -q && apt-get install -qy busybox git lsb-release && git clone https://github.com/Kreyren/forkless-pwsafe.git && busybox sh forkless-pwsafe/Misc/name-me.sh && make -C forkless-pwsafe build'
+      make test-nameme-all
+      complete_build

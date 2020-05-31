@@ -5,11 +5,16 @@
 
 ###! Script to provide dependencies to work on this repository
 ###! Requires:
-###! - DNM: TBD
+###! - Command 'lsb_release' to identify distribution on linux
+###! - Command 'busybox' with 'sh' to install dependencies
+###! - Command 'git' to clone the repository (used for tests if you already have the repository)
+###! Exit codes:
+###! - FIXME-DOCS(Krey): Defined in die()
 ###! Platforms:
 ###! - [ ] Linux
 ###!  - [ ] Debian
 ###!  - [ ] Ubuntu
+###!  - [ ] Fedora
 ###! - [ ] FreeBSD
 ###! - [ ] Darwin
 ###! - [ ] Redox
@@ -289,6 +294,7 @@ if command -v $UNAME 1>/dev/null; then
 						libwxgtk3.0-dev \
 						g++ \
 						pkg-config \
+						libykpers-1-1 \
 						shellcheck || die 1 "Unable to install all required dependencies on $DISTRO"
 				;;
 				ubuntu/focal)
@@ -316,6 +322,11 @@ if command -v $UNAME 1>/dev/null; then
 				nixos/*)
 					edebug "Identified distribution as '$DISTRO' with release '$RELEASE"
 					efixme "Implement logic for dependencies" 
+				;;
+				fedora/ThirtyOne)
+					edebug "Identified distribution as '$DISTRO' with release '$RELEASE"
+					efixme "Implement logic for dependencies" 
+					#$SUDO dnf install -y \
 				;;
 				*) die fixme "Unsupported distribution '$DISTRO' with release '$RELEASE' has been parsed in $myName located at $0"
 			esac
