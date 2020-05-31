@@ -34,6 +34,9 @@ test-nameme-nixos:
 test-nameme-alpine:
 	@ sudo docker run alpine sh -c 'apk add busybox git lsb-release && git clone https://github.com/Kreyren/forkless-pwsafe.git && busybox sh forkless-pwsafe/Misc/name-me.sh && make -C forkless-pwsafe build'
 
+test-nameme-freebsd:
+	@ true
+
 # Target to test gitpod on gitpod
 test-gitpod:
 	@ [ -n "$$GITPOD_GIT_USER_EMAIL" ] || { printf '\033[31m\033[1mFATAL:\033[0m %s\n' "This is not a gitpod envrionment capable of testing gitpod"; exit 1 ;}
@@ -59,18 +62,9 @@ build-release:
 	@ cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
 	@ cmake -S . -B build-dbg -D CMAKE_BUILD_TYPE=Debug
 
-ifeq ($(findstring Linux, $(shell uname -s)), Linux)
 build:
-	$(MAKE) -f Makefile.linux
-else ifeq ($(findstring CYGWIN, $(shell uname -s)), CYGWIN)
-build:
-	$(MAKE) -f Makefile.windows
-else ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
-build:
-	$(MAKE) -f Makefile.macos
-else ifeq ($(findstring FreeBSD, $(shell uname -s)), FreeBSD)
-build:
-	$(MAKE) -f Makefile.freebsd
-else
-	$(error "Unsupported OS or unable to determine OS")
-endif
+	@ [ "$$(uname -s)" != Linux ] || $(MAKE) -f Makefile.linux
+	@ [ "$$(uname -s)" != FreeBSD ] || $(MAKE) -f Makefile.freebsd
+	@ [ "$$(uname -s)" != Darwin ] || $(MAKE) -f Makefile.macos
+	@ # FIXME(Krey): Needs to be verified
+	@ [ "$$(uname -s)" != Windows/Cygwin ] || $(MAKE) -f Makefile.windows

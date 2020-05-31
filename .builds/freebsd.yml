@@ -1,0 +1,7 @@
+image: freebsd/latest
+packages:
+  - docker.io
+tasks:
+  - build: |
+      make test-nameme-freebsd
+      complete_build
