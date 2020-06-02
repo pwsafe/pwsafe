@@ -9,10 +9,15 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-sel
 # RUN sudo apt-get -q update && #     sudo apt-get install -yq bastet && #     sudo rm -rf /var/lib/apt/lists/*
 #
 # More information: https://www.gitpod.io/docs/config-docker/
-RUN sudo apt-get -q update && sudo apt-get install -yq cmake fakeroot g++ gettext git libgtest-dev \
-        libcurl4-openssl-dev libqrencode-dev  libssl-dev libuuid1 \
-        libwxgtk3.0-gtk3-dev libxerces-c-dev libxt-dev libxtst-dev \
-        libykpers-1-dev libyubikey-dev make pkg-config uuid-dev zip \
-        libmagic-dev
+USER root
+# Install dependencies.
+COPY /Misc/setup-linux-dev-env.sh /tmp/setup-linux-dev-env.sh
+RUN true \
+  && apt-get -q update \
+  && sh /tmp/setup-linux-dev-env.sh \
+  && apt-get autoremove -yq \
+  && rm -rf /var/lib/apt/lists/*
+
 # Set debconf back to normal.
+USER gitpod
 RUN echo 'debconf debconf/frontend select Dialog' | sudo debconf-set-selections
