@@ -45,7 +45,7 @@ if [ "$KERNEL" = "Linux" ]; then
 
     # ... and the release number
    if command -v $LSB_RELEASE 1>/dev/null; then
-        RELEASE="$($LSB_RELEASE -rs)"
+        RELEASE="$($LSB_RELEASE -rs | sed 's/\([0-9]\)\..*/\1/')" # integer part, e.g., 20.04 --> 20
     elif [ -f /etc/os-release ]; then
         RELEASE=$(awk -F= '/VERSION_ID/ {print $2}' /etc/os-release |sed s/\"//g)
     else
