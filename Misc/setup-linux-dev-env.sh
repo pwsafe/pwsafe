@@ -9,11 +9,11 @@
 #
 # Command overrides
 [ -z "$UNAME" ] && UNAME="/usr/bin/uname"
-[ -z "$UNAME" ] && LSB_RELEASE="/usr/bin/lsb_release"
+[ -z "$LSB_RELEASE" ] && LSB_RELEASE="/usr/bin/lsb_release"
 
 die() {
-    echo $2
-    exit $1
+    echo "$2"
+    exit "$1"
 }
 
 # Exit on anything unexpected
@@ -33,19 +33,19 @@ fi
 
 if [ "$KERNEL" = "Linux" ]; then
     # OK, let's see what distro we have here
-    if command -v lsb_release 1>/dev/null; then
-        DISTRO="$(lsb_release -si | tr '[:upper:]' '[:lower:]')"
+    if command -v $LSB_RELEASE 1>/dev/null; then
+        DISTRO="$($LSB_RELEASE -si | tr '[:upper:]' '[:lower:]')"
     elif [ -f /etc/os-release ]; then
-        DISTRO="$(grep -o "^ID\=.*" /etc/os-release | sed 's#^ID\=##gm')"
-    elif ! command -v lsb_release 1>/dev/null && [ ! -f /etc/os-release ]; then
-        die 4 "Unable to identify distribution since command 'lsb_release' and file /etc/os-release are not present"
+        DISTRO="$(grep -o "^ID=.*" /etc/os-release | sed 's#^ID=##gm')"
+    elif ! command -v $LSB_RELEASE 1>/dev/null && [ ! -f /etc/os-release ]; then
+        die 4 "Unable to identify distribution since command '$LSB_RELEASE' and file /etc/os-release are not present"
     else
         die 5 "Failed to identify distro in $0 running logic for Linux"
     fi
 
     # ... and the release number
-   if command -v lsb_release 1>/dev/null; then
-        RELEASE="$(lsb_release -rs)"
+   if command -v $LSB_RELEASE 1>/dev/null; then
+        RELEASE="$($LSB_RELEASE -rs)"
     elif [ -f /etc/os-release ]; then
         RELEASE=$(awk -F= '/VERSION_ID/ {print $2}' /etc/os-release |sed s/\"//g)
     else
@@ -59,7 +59,7 @@ fi
 
 case "$DISTRO" in
     debian|ubuntu)
-        if [ "$DISTRO" = "ubuntu" ] && [ $RELEASE -ge 20 ]; then
+        if [ "$DISTRO" = "ubuntu" ] && [ "$RELEASE" -ge 20 ]; then
             LIBWXDEV="ibwxgtk3.0-gtk3-dev"
         else
             LIBWXDEV="ibwxgtk3.0-dev"
