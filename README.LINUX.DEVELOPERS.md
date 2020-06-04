@@ -28,6 +28,10 @@ retrofit a new gcc on an old distro.
 
 Here are the packages/tools required for building the Linux version.
 
+The script Misc/setup-linux-dev-env.sh can be run (sudo or as root) to
+install these.
+
+
 ### Debian/Ubuntu
 - cmake (See note 1 below)
 - fakeroot
@@ -52,9 +56,6 @@ Here are the packages/tools required for building the Linux version.
 - uuid-dev
 - zip
 
-The script Misc/setup-deb-dev-env.sh can be run (sudo or as root) to
-install these and setup the gtest library.
-
 ### Fedora
 - cmake (See note 1 below)
 - gcc-c++
@@ -72,9 +73,6 @@ install these and setup the gtest library.
 - xerces-c-devel
 - ykpers-devel (see note 3 below)
 - qrencode-devel
-
-The script Misc/setup-rpm-dev-env.sh can be run (sudo or as root) to
-install these and setup the gtest library.
 
 
 ## Build
