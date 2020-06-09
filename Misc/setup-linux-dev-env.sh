@@ -76,7 +76,7 @@ case "$DISTRO" in
         #cmake ..
     ;;
     fedora)
-        dnf install cmake file-devel gcc-c++ git gtest-devel libXt-devel libXtst-devel \
+        dnf -y install cmake file-devel gcc-c++ git gtest-devel libXt-devel libXtst-devel \
         libcurl-devel libuuid-devel libyubikey-devel \
         make openssl-devel rpmdevtools wxGTK3-devel xerces-c-devel \
         ykpers-devel qrencode-devel
