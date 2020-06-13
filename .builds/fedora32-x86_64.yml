@@ -1,5 +1,9 @@
 image: fedora/32
 arch: x86_64
+triggers:
+    - action: email
+      condition: failure
+      to: build@pwsafe.org
 sources: 
 - https://github.com/pwsafe/pwsafe.git
 tasks:

@@ -1,5 +1,9 @@
 image: ubuntu/20.04
 arch: amd64
+triggers:
+    - action: email
+      condition: failure
+      to: build@pwsafe.org
 sources: 
 - https://github.com/pwsafe/pwsafe.git
 tasks:
