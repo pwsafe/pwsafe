@@ -45,6 +45,13 @@
 #include "wxUtilities.h"
 
 ////@begin XPM images
+#include "graphics/OptionsPropertySheetDlg/backups.xpm"
+#include "graphics/OptionsPropertySheetDlg/display.xpm"
+#include "graphics/OptionsPropertySheetDlg/miscellaneous.xpm"
+#include "graphics/OptionsPropertySheetDlg/history.xpm"
+#include "graphics/OptionsPropertySheetDlg/shortcuts.xpm"
+#include "graphics/OptionsPropertySheetDlg/security.xpm"
+#include "graphics/OptionsPropertySheetDlg/system.xpm"
 ////@end XPM images
 
 /*!
@@ -157,6 +164,7 @@ OptionsPropertySheetDlg::OptionsPropertySheetDlg( wxWindow* parent, PWScore &cor
 bool OptionsPropertySheetDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
 ////@begin OptionsPropertySheetDlg creation
+  SetSheetStyle(wxPROPSHEET_LISTBOOK);
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
 
@@ -179,6 +187,7 @@ OptionsPropertySheetDlg::~OptionsPropertySheetDlg()
 {
 ////@begin OptionsPropertySheetDlg destruction
 ////@end OptionsPropertySheetDlg destruction
+  delete m_imageList;
 }
 
 /*!
@@ -226,6 +235,17 @@ void OptionsPropertySheetDlg::Init()
   m_System_MaxREItemsSB = nullptr;
   m_System_SystemTrayWarningST = nullptr;
 ////@end OptionsPropertySheetDlg member initialisation
+
+  const wxSize imageSize(64, 64);
+
+  m_imageList = new wxImageList(imageSize.GetWidth(), imageSize.GetHeight());
+  m_imageList->Add(wxIcon(backups_xpm));        // https://www.pngrepo.com/svg/224774/database
+  m_imageList->Add(wxIcon(display_xpm));        // https://www.pngrepo.com/svg/131986/computer
+  m_imageList->Add(wxIcon(miscellaneous_xpm));  // https://www.pngrepo.com/svg/230756/test
+  m_imageList->Add(wxIcon(history_xpm));        // https://www.pngrepo.com/svg/95031/file
+  m_imageList->Add(wxIcon(security_xpm));       // https://www.pngrepo.com/svg/219291/security-shield
+  m_imageList->Add(wxIcon(shortcuts_xpm));      // https://www.pngrepo.com/svg/153991/keyboard
+  m_imageList->Add(wxIcon(system_xpm));         // https://www.pngrepo.com/svg/230728/settings-gear
 }
 
 /*!
@@ -235,6 +255,8 @@ void OptionsPropertySheetDlg::Init()
 void OptionsPropertySheetDlg::CreateControls()
 {
 ////@begin OptionsPropertySheetDlg content construction
+
+  GetBookCtrl()->SetImageList(m_imageList);
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Backups"
@@ -333,7 +355,7 @@ void OptionsPropertySheetDlg::CreateControls()
   m_Backup_DirBN = new wxButton( itemPanel2, ID_BUTTON, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer25->Add(m_Backup_DirBN, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  GetBookCtrl()->AddPage(itemPanel2, _("Backups"));
+  GetBookCtrl()->AddPage(itemPanel2, _("Backups"), false, 0);
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Display"
@@ -403,10 +425,10 @@ void OptionsPropertySheetDlg::CreateControls()
   itemRadioBox43->SetSelection(0);
   itemBoxSizer30->Add(itemRadioBox43, 0, wxEXPAND|wxALL, 5);
 
-  GetBookCtrl()->AddPage(itemPanel29, _("Display"));
+  GetBookCtrl()->AddPage(itemPanel29, _("Display"), false, 1);
 
   /////////////////////////////////////////////////////////////////////////////
-  // Tab: "Misc."
+  // Tab: "Miscellaneous"
   /////////////////////////////////////////////////////////////////////////////
 
   wxPanel* itemPanel44 = new wxPanel( GetBookCtrl(), ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
@@ -510,7 +532,7 @@ void OptionsPropertySheetDlg::CreateControls()
   wxTextCtrl* itemTextCtrl72 = new wxTextCtrl( itemPanel44, ID_TEXTCTRL14, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer71->Add(itemTextCtrl72, 1, wxEXPAND|wxALL, 5);
 
-  GetBookCtrl()->AddPage(itemPanel44, _("Misc."));
+  GetBookCtrl()->AddPage(itemPanel44, _("Miscellaneous"), false, 2);
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Password History"
@@ -589,7 +611,7 @@ void OptionsPropertySheetDlg::CreateControls()
   m_PasswordHistory_ApplyBN = new wxButton( itemPanel74, ID_PWHISTAPPLY, _("Apply"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer80->Add(m_PasswordHistory_ApplyBN, 0, wxALIGN_LEFT|wxALL, 5);
 
-  GetBookCtrl()->AddPage(itemPanel74, _("Password History"));
+  GetBookCtrl()->AddPage(itemPanel74, _("Password History"), false, 3);
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Security"
@@ -661,7 +683,7 @@ void OptionsPropertySheetDlg::CreateControls()
   wxStaticText* itemStaticText103 = new wxStaticText( itemPanel86, ID_STATICTEXT_5, _("Maximum"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer100->Add(itemStaticText103, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  GetBookCtrl()->AddPage(itemPanel86, _("Security"));
+  GetBookCtrl()->AddPage(itemPanel86, _("Security"), false, 4);
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Shortcuts"
@@ -680,7 +702,7 @@ void OptionsPropertySheetDlg::CreateControls()
 
   itemBoxSizer155->Add(itemGrid124, 1, wxEXPAND|wxALL, 5);
 
-  GetBookCtrl()->AddPage(itemPanel123, _("Shortcuts"));
+  GetBookCtrl()->AddPage(itemPanel123, _("Shortcuts"), false, 5);
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "System"
@@ -774,7 +796,7 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer105->Add(itemCheckBox122, 0, wxALIGN_LEFT|wxALL, 5);
 #endif
 
-  GetBookCtrl()->AddPage(itemPanel104, _("System"));
+  GetBookCtrl()->AddPage(itemPanel104, _("System"), false, 6);
 
   /////////////////////////////////////////////////////////////////////////////
   // End of Tab Creation

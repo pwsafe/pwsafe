@@ -18,6 +18,8 @@
  */
 
 ////@begin includes
+#include <wx/imaglist.h>
+#include <wx/artprov.h>
 #include <wx/propdlg.h>
 #include <wx/valgen.h>
 #include <wx/statline.h>
@@ -214,6 +216,8 @@ public:
 
 ////@begin OptionsPropertySheetDlg member variables
 private:
+  wxImageList*    m_imageList;
+
   wxRadioButton*  m_Backup_DefaultPrefixRB;
   wxRadioButton*  m_Backup_UserPrefixRB;
   wxTextCtrl*     m_Backup_UserPrefixTXT;
