@@ -170,10 +170,10 @@ bool OptionsPropertySheetDlg::Create( wxWindow* parent, wxWindowID id, const wxS
 
   CreateButtons(wxOK|wxCANCEL|wxHELP);
   CreateControls();
+  PrefsToPropSheet();
   LayoutDialog();
   Centre();
 ////@end OptionsPropertySheetDlg creation
-  PrefsToPropSheet();
   wxCommandEvent dummyEv;
   OnSuffixCBSet(dummyEv);
   return true;
@@ -989,7 +989,6 @@ void OptionsPropertySheetDlg::PrefsToPropSheet()
   m_System_UseSystemTrayCB->SetValue(prefs->GetPref(PWSprefs::UseSystemTray));
   if (!IsTaskBarIconAvailable()) {
     m_System_SystemTrayWarningST->Show();
-    Layout();
   }
   m_System_Startup = false; // XXX TBD
   m_System_MaxMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
