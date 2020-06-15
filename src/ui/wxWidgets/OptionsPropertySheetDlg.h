@@ -214,10 +214,27 @@ public:
   /// Should we show tooltips?
   static bool ShowToolTips();
 
+
+private:
+  void PrefsToPropSheet();
+  void PropSheetToPrefs();
+  int GetRequiredPWLength() const;
+
+  wxPanel* CreateBackupsPanel();
+  wxPanel* CreateDisplayPanel();
+  wxPanel* CreateMiscellaneousPanel();
+  wxPanel* CreatePasswordHistoryPanel();
+  wxPanel* CreateSecurityPanel();
+  wxPanel* CreateShortcutsPanel();
+  wxPanel* CreateSystemPanel();
+
 ////@begin OptionsPropertySheetDlg member variables
 private:
-  wxImageList*    m_imageList;
+  // Tab Icons
+  wxImageList*    m_ImageList;
 
+  // Tab: "Backups"
+  wxPanel*        m_Backup_Panel;
   wxRadioButton*  m_Backup_DefaultPrefixRB;
   wxRadioButton*  m_Backup_UserPrefixRB;
   wxTextCtrl*     m_Backup_UserPrefixTXT;
@@ -228,24 +245,41 @@ private:
   wxRadioButton*  m_Backup_UserDirRB;
   wxTextCtrl*     m_Backup_UserDirTXT;
   wxButton*       m_Backup_DirBN;
+  wxCheckBox*     m_Backup_SaveImmediatelyCB; // itemCheckBox4
+  wxCheckBox*     m_Backup_BackupBeforeSaveCB; // itemCheckBox6
 
+  // Tab: "Display"
+  wxPanel*        m_Display_Panel;
   wxCheckBox*     m_Display_ShowPasswordInTreeCB;
   wxCheckBox*     m_Display_PreExpiryWarnCB;
   wxSpinCtrl*     m_Display_PreExpiryWarnDaysSB;
+  wxCheckBox*     m_Display_AlwaysOnTopCB;
+  wxCheckBox*     m_Display_ShowUsernameInTreeCB;
+  wxCheckBox*     m_Display_ShowNotesAsTipsInViewsCB;
+  wxCheckBox*     m_Display_ShowPasswordInEditCB;
+  wxCheckBox*     m_Display_ShowNotesInEditCB;
+  wxCheckBox*     m_Display_WordWrapNotesCB;
+  wxCheckBox*     m_Display_GroupsFirstCB;
+  wxRadioBox*     m_Display_TreeDisplayStatusAtOpenRB;
 
+  // Tab: "Miscellaneous"
+  wxPanel*        m_Misc_Panel;
   wxComboBox*     m_Misc_DoubleClickActionCB;
   wxComboBox*     m_Misc_ShiftDoubleClickActionCB;
   wxTextCtrl*     m_Misc_DefaultUsernameTXT;
   wxStaticText*   m_Misc_DefaultUsernameLBL;
   wxString        m_Misc_OtherBrowserLocationparams;
+  wxCheckBox*     m_Misc_ConfirmDeleteCB;
+  wxCheckBox*     m_Misc_MaintainDatetimeStampsCB;
+  wxCheckBox*     m_Misc_EscExitsCB;
+  wxCheckBox*     m_Misc_AutotypeMinimizeCB;
+  wxTextCtrl*     m_Misc_AutotypeStringTXT;
+  wxCheckBox*     m_Misc_UseDefUsernameCB;
+  wxCheckBox*     m_Misc_QuerySetDefUsernameCB;
+  wxTextCtrl*     m_Misc_OtherBrowserLocationTXT;
 
-  wxCheckBox*     m_Security_LockOnIdleTimeoutCB;
-  wxSpinCtrl*     m_Security_IdleTimeoutSB;
-
-  wxCheckBox*     m_System_UseSystemTrayCB;
-  wxSpinCtrl*     m_System_MaxREItemsSB;
-  wxStaticText*   m_System_SystemTrayWarningST;
-
+  // Tab: "Password History"
+  wxPanel*        m_PasswordHistory_Panel;
   wxCheckBox*     m_PasswordHistory_SaveCB;
   wxSpinCtrl*     m_PasswordHistory_NumDefaultSB;
   wxSpinCtrl*     m_PasswordHistory_DefaultExpiryDaysSB;
@@ -256,6 +290,37 @@ private:
   wxRadioButton*  m_PasswordHistory_ClearRB;
   wxButton*       m_PasswordHistory_ApplyBN;
   wxCheckBox*     m_PasswordHistory_Apply2ProtectedCB;
+
+  // Tab: "Security"
+  wxPanel*        m_Security_Panel;
+  wxCheckBox*     m_Security_LockOnIdleTimeoutCB;
+  wxSpinCtrl*     m_Security_IdleTimeoutSB;
+  wxCheckBox*     m_Security_ClearClipboardOnMinimizeCB;
+  wxCheckBox*     m_Security_ClearClipboardOnExitCB;
+  wxCheckBox*     m_Security_ConfirmCopyCB;
+  wxCheckBox*     m_Security_CopyPswdBrowseURLCB;
+  wxCheckBox*     m_Security_LockOnMinimizeCB;
+  wxCheckBox*     m_Security_LockOnWindowLockCB;
+  wxSlider*       m_Security_HashIterSliderSL;
+
+  // Tab: "Shortcuts"
+  wxPanel*        m_Shortcuts_Panel;
+
+  // Tab: "System"
+  wxPanel*        m_System_Panel;
+  wxCheckBox*     m_System_UseSystemTrayCB;
+  wxSpinCtrl*     m_System_MaxREItemsSB;
+  wxStaticText*   m_System_SystemTrayWarningST;
+  wxCheckBox*     m_System_StartupCB;
+  wxSpinCtrl*     m_System_MaxMRUItemsSB;
+  wxCheckBox*     m_System_MRUOnFileMenuCB;
+  wxCheckBox*     m_System_DefaultOpenROCB;
+  wxCheckBox*     m_System_MultipleInstancesCB;
+
+#if defined(__WXX11__) || defined(__WXGTK__)
+  wxCheckBox*     m_System_UsePrimarySelectionCB;
+  wxCheckBox*     m_System_UseAltAutoTypeCB;
+#endif
 
   uint32 m_hashIterValue;
   int m_DoubleClickAction;
@@ -314,11 +379,6 @@ private:
 
   PWScore &m_core;
 ////@end OptionsPropertySheetDlg member variables
-
-private:
-  void PrefsToPropSheet();
-  void PropSheetToPrefs();
-  int GetRequiredPWLength() const;
 };
 
 #endif // _OPTIONSPROPERTYSHEETDLG_H_

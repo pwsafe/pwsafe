@@ -187,7 +187,7 @@ OptionsPropertySheetDlg::~OptionsPropertySheetDlg()
 {
 ////@begin OptionsPropertySheetDlg destruction
 ////@end OptionsPropertySheetDlg destruction
-  delete m_imageList;
+  delete m_ImageList;
 }
 
 /*!
@@ -197,6 +197,7 @@ OptionsPropertySheetDlg::~OptionsPropertySheetDlg()
 void OptionsPropertySheetDlg::Init()
 {
 ////@begin OptionsPropertySheetDlg member initialisation
+  m_Backup_Panel = nullptr;
   m_Backup_DefaultPrefixRB = nullptr;
   m_Backup_UserPrefixRB = nullptr;
   m_Backup_UserPrefixTXT = nullptr;
@@ -207,16 +208,37 @@ void OptionsPropertySheetDlg::Init()
   m_Backup_UserDirRB = nullptr;
   m_Backup_UserDirTXT = nullptr;
   m_Backup_DirBN = nullptr;
+  m_Backup_SaveImmediatelyCB = nullptr;
+  m_Backup_BackupBeforeSaveCB = nullptr;
 
+  m_Display_Panel = nullptr;
   m_Display_ShowPasswordInTreeCB = nullptr;
   m_Display_PreExpiryWarnCB = nullptr;
   m_Display_PreExpiryWarnDaysSB = nullptr;
+  m_Display_AlwaysOnTopCB = nullptr;
+  m_Display_ShowUsernameInTreeCB = nullptr;
+  m_Display_ShowNotesAsTipsInViewsCB = nullptr;
+  m_Display_ShowPasswordInEditCB = nullptr;
+  m_Display_ShowNotesInEditCB = nullptr;
+  m_Display_WordWrapNotesCB = nullptr;
+  m_Display_GroupsFirstCB = nullptr;
+  m_Display_TreeDisplayStatusAtOpenRB = nullptr;
 
+  m_Misc_Panel = nullptr;
   m_Misc_DoubleClickActionCB = nullptr;
   m_Misc_ShiftDoubleClickActionCB = nullptr;
   m_Misc_DefaultUsernameTXT = nullptr;
   m_Misc_DefaultUsernameLBL = nullptr;
+  m_Misc_ConfirmDeleteCB = nullptr;
+  m_Misc_MaintainDatetimeStampsCB = nullptr;
+  m_Misc_EscExitsCB = nullptr;
+  m_Misc_AutotypeMinimizeCB = nullptr;
+  m_Misc_AutotypeStringTXT = nullptr;
+  m_Misc_UseDefUsernameCB = nullptr;
+  m_Misc_QuerySetDefUsernameCB = nullptr;
+  m_Misc_OtherBrowserLocationTXT = nullptr;
 
+  m_PasswordHistory_Panel = nullptr;
   m_PasswordHistory_SaveCB = nullptr;
   m_PasswordHistory_NumDefaultSB = nullptr;
   m_PasswordHistory_DefaultExpiryDaysSB = nullptr;
@@ -228,24 +250,45 @@ void OptionsPropertySheetDlg::Init()
   m_PasswordHistory_ClearRB = nullptr;
   m_PasswordHistory_Apply2ProtectedCB = nullptr;
 
+  m_Security_Panel = nullptr;
   m_Security_LockOnIdleTimeoutCB = nullptr;
   m_Security_IdleTimeoutSB = nullptr;
+  m_Security_ClearClipboardOnMinimizeCB = nullptr;
+  m_Security_ClearClipboardOnExitCB = nullptr;
+  m_Security_ConfirmCopyCB = nullptr;
+  m_Security_CopyPswdBrowseURLCB = nullptr;
+  m_Security_LockOnMinimizeCB = nullptr;
+  m_Security_LockOnWindowLockCB = nullptr;
+  m_Security_HashIterSliderSL = nullptr;
 
+  m_Shortcuts_Panel = nullptr;
+
+  m_System_Panel = nullptr;
   m_System_UseSystemTrayCB = nullptr;
   m_System_MaxREItemsSB = nullptr;
   m_System_SystemTrayWarningST = nullptr;
+  m_System_StartupCB = nullptr;
+  m_System_MaxMRUItemsSB = nullptr;
+  m_System_MRUOnFileMenuCB = nullptr;
+  m_System_DefaultOpenROCB = nullptr;
+  m_System_MultipleInstancesCB = nullptr;
+
+#if defined(__WXX11__) || defined(__WXGTK__)
+  m_System_UsePrimarySelectionCB = nullptr;
+  m_System_UseAltAutoTypeCB = nullptr;
+#endif
 ////@end OptionsPropertySheetDlg member initialisation
 
   const wxSize imageSize(64, 64);
 
-  m_imageList = new wxImageList(imageSize.GetWidth(), imageSize.GetHeight());
-  m_imageList->Add(wxIcon(backups_xpm));        // https://www.pngrepo.com/svg/224774/database
-  m_imageList->Add(wxIcon(display_xpm));        // https://www.pngrepo.com/svg/131986/computer
-  m_imageList->Add(wxIcon(miscellaneous_xpm));  // https://www.pngrepo.com/svg/230756/test
-  m_imageList->Add(wxIcon(history_xpm));        // https://www.pngrepo.com/svg/95031/file
-  m_imageList->Add(wxIcon(security_xpm));       // https://www.pngrepo.com/svg/219291/security-shield
-  m_imageList->Add(wxIcon(shortcuts_xpm));      // https://www.pngrepo.com/svg/153991/keyboard
-  m_imageList->Add(wxIcon(system_xpm));         // https://www.pngrepo.com/svg/230728/settings-gear
+  m_ImageList = new wxImageList(imageSize.GetWidth(), imageSize.GetHeight());
+  m_ImageList->Add(wxIcon(backups_xpm));        // https://www.pngrepo.com/svg/224774/database
+  m_ImageList->Add(wxIcon(display_xpm));        // https://www.pngrepo.com/svg/131986/computer
+  m_ImageList->Add(wxIcon(miscellaneous_xpm));  // https://www.pngrepo.com/svg/230756/test
+  m_ImageList->Add(wxIcon(history_xpm));        // https://www.pngrepo.com/svg/95031/file
+  m_ImageList->Add(wxIcon(security_xpm));       // https://www.pngrepo.com/svg/219291/security-shield
+  m_ImageList->Add(wxIcon(shortcuts_xpm));      // https://www.pngrepo.com/svg/153991/keyboard
+  m_ImageList->Add(wxIcon(system_xpm));         // https://www.pngrepo.com/svg/230728/settings-gear
 }
 
 /*!
@@ -256,26 +299,146 @@ void OptionsPropertySheetDlg::CreateControls()
 {
 ////@begin OptionsPropertySheetDlg content construction
 
-  GetBookCtrl()->SetImageList(m_imageList);
+  GetBookCtrl()->SetImageList(m_ImageList);
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Backups"
   /////////////////////////////////////////////////////////////////////////////
 
+  m_Backup_Panel = CreateBackupsPanel();
+
+  GetBookCtrl()->AddPage(m_Backup_Panel, _("Backups"), false, 0);
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Display"
+  /////////////////////////////////////////////////////////////////////////////
+
+  m_Display_Panel = CreateDisplayPanel();
+
+  GetBookCtrl()->AddPage(m_Display_Panel, _("Display"), false, 1);
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Miscellaneous"
+  /////////////////////////////////////////////////////////////////////////////
+
+  m_Misc_Panel = CreateMiscellaneousPanel();
+
+  GetBookCtrl()->AddPage(m_Misc_Panel, _("Miscellaneous"), false, 2);
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Password History"
+  /////////////////////////////////////////////////////////////////////////////
+
+  m_PasswordHistory_Panel = CreatePasswordHistoryPanel();
+
+  GetBookCtrl()->AddPage(m_PasswordHistory_Panel, _("Password History"), false, 3);
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Security"
+  /////////////////////////////////////////////////////////////////////////////
+
+  m_Security_Panel = CreateSecurityPanel();
+
+  GetBookCtrl()->AddPage(m_Security_Panel, _("Security"), false, 4);
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Shortcuts"
+  /////////////////////////////////////////////////////////////////////////////
+
+  m_Shortcuts_Panel = CreateShortcutsPanel();
+
+  GetBookCtrl()->AddPage(m_Shortcuts_Panel, _("Shortcuts"), false, 5);
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "System"
+  /////////////////////////////////////////////////////////////////////////////
+
+  m_Backup_Panel = CreateSystemPanel();
+
+  GetBookCtrl()->AddPage(m_Backup_Panel, _("System"), false, 6);
+
+  /////////////////////////////////////////////////////////////////////////////
+  // End of Tab Creation
+  /////////////////////////////////////////////////////////////////////////////
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Set validators
+  /////////////////////////////////////////////////////////////////////////////
+
+  // Backups Preferences
+  m_Backup_SaveImmediatelyCB->SetValidator( wxGenericValidator(& m_Backup_SaveImmediately) );
+  m_Backup_BackupBeforeSaveCB->SetValidator( wxGenericValidator(& m_Backup_BackupBeforeSave) );
+
+  // Display Preferences
+  m_Display_AlwaysOnTopCB->SetValidator( wxGenericValidator(& m_Display_AlwaysOnTop) );
+  m_Display_ShowUsernameInTreeCB->SetValidator( wxGenericValidator(& m_Display_ShowUsernameInTree) );
+  m_Display_ShowNotesAsTipsInViewsCB->SetValidator( wxGenericValidator(& m_Display_ShowNotesAsTipsInViews) );
+  m_Display_ShowPasswordInEditCB->SetValidator( wxGenericValidator(& m_Display_ShowPasswordInEdit) );
+  m_Display_ShowNotesInEditCB->SetValidator( wxGenericValidator(& m_Display_ShowNotesInEdit) );
+  m_Display_WordWrapNotesCB->SetValidator( wxGenericValidator(& m_Display_WordWrapNotes) );
+  m_Display_GroupsFirstCB->SetValidator( wxGenericValidator(& m_Display_GroupsFirst) );
+  m_Display_PreExpiryWarnCB->SetValidator( wxGenericValidator(& m_Display_PreExpiryWarn) );
+  m_Display_TreeDisplayStatusAtOpenRB->SetValidator( wxGenericValidator(& m_Display_TreeDisplayStatusAtOpen) );
+
+  // Misc. Preferences
+  m_Misc_ConfirmDeleteCB->SetValidator( wxGenericValidator(& m_Misc_ConfirmDelete) );
+  m_Misc_MaintainDatetimeStampsCB->SetValidator( wxGenericValidator(& m_Misc_MaintainDatetimeStamps) );
+  m_Misc_EscExitsCB->SetValidator( wxGenericValidator(& m_Misc_EscExits) );
+  m_Misc_AutotypeMinimizeCB->SetValidator( wxGenericValidator(& m_Misc_AutotypeMinimize) );
+  m_Misc_AutotypeStringTXT->SetValidator( wxGenericValidator(& m_Misc_AutotypeString) );
+  m_Misc_UseDefUsernameCB->SetValidator( wxGenericValidator(& m_Misc_UseDefUsername) );
+  m_Misc_QuerySetDefUsernameCB->SetValidator( wxGenericValidator(& m_Misc_QuerySetDefUsername) );
+  m_Misc_OtherBrowserLocationTXT->SetValidator( wxGenericValidator(& m_Misc_OtherBrowserLocation) );
+
+  // Security Preferences
+  m_Security_ClearClipboardOnMinimizeCB->SetValidator( wxGenericValidator(& m_Security_ClearClipboardOnMinimize) );
+  m_Security_ClearClipboardOnExitCB->SetValidator( wxGenericValidator(& m_Security_ClearClipboardOnExit) );
+  m_Security_ConfirmCopyCB->SetValidator( wxGenericValidator(& m_Security_ConfirmCopy) );
+  m_Security_CopyPswdBrowseURLCB->SetValidator( wxGenericValidator(& m_Security_CopyPswdBrowseURL) );
+  m_Security_LockOnMinimizeCB->SetValidator( wxGenericValidator(& m_Security_LockOnMinimize) );
+  m_Security_LockOnWindowLockCB->SetValidator( wxGenericValidator(& m_Security_LockOnWindowLock) );
+  m_Security_LockOnIdleTimeoutCB->SetValidator( wxGenericValidator(& m_Security_LockOnIdleTimeout) );
+
+  m_Security_HashIterSliderSL->SetValidator( wxGenericValidator(& m_Security_HashIterSlider) );
+
+  // System Preferences
+  m_System_StartupCB->SetValidator( wxGenericValidator(& m_System_Startup) );
+  m_System_MaxMRUItemsSB->SetValidator( wxGenericValidator(& m_System_MaxMRUItems) );
+  m_System_MRUOnFileMenuCB->SetValidator( wxGenericValidator(& m_System_MRUOnFileMenu) );
+  m_System_DefaultOpenROCB->SetValidator( wxGenericValidator(& m_System_DefaultOpenRO) );
+  m_System_MultipleInstancesCB->SetValidator( wxGenericValidator(& m_System_MultipleInstances) );
+#if defined(__WXX11__) || defined(__WXGTK__)
+  m_System_UsePrimarySelectionCB->SetValidator( wxGenericValidator(& m_System_UsePrimarySelection) );
+  m_System_UseAltAutoTypeCB->SetValidator( wxGenericValidator(& m_System_UseAltAutoType) );
+#endif
+
+  // Password History Preferences
+  m_PasswordHistory_SaveCB->SetValidator( wxGenericValidator(& m_PasswordHistory_Save) );
+  m_PasswordHistory_NumDefaultSB->SetValidator( wxGenericValidator(& m_PasswordHistory_NumDefault) );
+  m_PasswordHistory_DefaultExpiryDaysSB->SetValidator( wxGenericValidator(& m_PasswordHistory_DefaultExpiryDays) );
+
+  // Connect events and objects
+  m_Backup_UserPrefixTXT->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(OptionsPropertySheetDlg::OnBuPrefixTxtSetFocus), nullptr, this); // backup
+////@end OptionsPropertySheetDlg content construction
+}
+
+wxPanel* OptionsPropertySheetDlg::CreateBackupsPanel()
+{
   wxPanel* itemPanel2 = new wxPanel( GetBookCtrl(), ID_PANEL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   itemPanel2->SetSizer(itemBoxSizer3);
 
-  wxCheckBox* itemCheckBox4 = new wxCheckBox( itemPanel2, ID_CHECKBOX10, _("Save database immediately after any change"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox4->SetValue(false);
-  itemBoxSizer3->Add(itemCheckBox4, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Backup_SaveImmediatelyCB = new wxCheckBox( itemPanel2, ID_CHECKBOX10, _("Save database immediately after any change"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Backup_SaveImmediatelyCB->SetValue(false);
+  itemBoxSizer3->Add(m_Backup_SaveImmediatelyCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer5Static = new wxStaticBox(itemPanel2, wxID_ANY, _("Intermediate Backups"));
   auto *itemStaticBoxSizer5 = new wxStaticBoxSizer(itemStaticBoxSizer5Static, wxVERTICAL);
   itemBoxSizer3->Add(itemStaticBoxSizer5, 0, wxEXPAND|wxALL, 5);
-  wxCheckBox* itemCheckBox6 = new wxCheckBox( itemPanel2, ID_CHECKBOX11, _("Create intermediate backups (.ibak) before saving"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox6->SetValue(false);
-  itemStaticBoxSizer5->Add(itemCheckBox6, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Backup_BackupBeforeSaveCB = new wxCheckBox( itemPanel2, ID_CHECKBOX11, _("Create intermediate backups (.ibak) before saving"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Backup_BackupBeforeSaveCB->SetValue(false);
+  itemStaticBoxSizer5->Add(m_Backup_BackupBeforeSaveCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer7Static = new wxStaticBox(itemPanel2, wxID_ANY, _("Backup Name"));
   auto *itemStaticBoxSizer7 = new wxStaticBoxSizer(itemStaticBoxSizer7Static, wxVERTICAL);
@@ -355,47 +518,46 @@ void OptionsPropertySheetDlg::CreateControls()
   m_Backup_DirBN = new wxButton( itemPanel2, ID_BUTTON, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer25->Add(m_Backup_DirBN, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  GetBookCtrl()->AddPage(itemPanel2, _("Backups"), false, 0);
+  return itemPanel2;
+}
 
-  /////////////////////////////////////////////////////////////////////////////
-  // Tab: "Display"
-  /////////////////////////////////////////////////////////////////////////////
-
+wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel()
+{
   wxPanel* itemPanel29 = new wxPanel( GetBookCtrl(), ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer30 = new wxBoxSizer(wxVERTICAL);
   itemPanel29->SetSizer(itemBoxSizer30);
 
-  wxCheckBox* itemCheckBox31 = new wxCheckBox( itemPanel29, ID_CHECKBOX12, _("Always keep Password Safe on top"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox31->SetValue(false);
-  itemBoxSizer30->Add(itemCheckBox31, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Display_AlwaysOnTopCB = new wxCheckBox( itemPanel29, ID_CHECKBOX12, _("Always keep Password Safe on top"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Display_AlwaysOnTopCB->SetValue(false);
+  itemBoxSizer30->Add(m_Display_AlwaysOnTopCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox32 = new wxCheckBox( itemPanel29, ID_CHECKBOX13, _("Show Username in Tree View"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox32->SetValue(false);
-  itemBoxSizer30->Add(itemCheckBox32, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Display_ShowUsernameInTreeCB = new wxCheckBox( itemPanel29, ID_CHECKBOX13, _("Show Username in Tree View"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Display_ShowUsernameInTreeCB->SetValue(false);
+  itemBoxSizer30->Add(m_Display_ShowUsernameInTreeCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   m_Display_ShowPasswordInTreeCB = new wxCheckBox( itemPanel29, ID_CHECKBOX14, _("Show Password in Tree View"), wxDefaultPosition, wxDefaultSize, 0 );
   m_Display_ShowPasswordInTreeCB->SetValue(false);
   itemBoxSizer30->Add(m_Display_ShowPasswordInTreeCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox35 = new wxCheckBox( itemPanel29, ID_CHECKBOX16, _("Show Password in Add && Edit"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox35->SetValue(false);
-  itemBoxSizer30->Add(itemCheckBox35, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Display_ShowPasswordInEditCB = new wxCheckBox( itemPanel29, ID_CHECKBOX16, _("Show Password in Add && Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Display_ShowPasswordInEditCB->SetValue(false);
+  itemBoxSizer30->Add(m_Display_ShowPasswordInEditCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox36 = new wxCheckBox( itemPanel29, ID_CHECKBOX17, _("Show Notes in Edit"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox36->SetValue(false);
-  itemBoxSizer30->Add(itemCheckBox36, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Display_ShowNotesInEditCB = new wxCheckBox( itemPanel29, ID_CHECKBOX17, _("Show Notes in Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Display_ShowNotesInEditCB->SetValue(false);
+  itemBoxSizer30->Add(m_Display_ShowNotesInEditCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox34 = new wxCheckBox( itemPanel29, ID_CHECKBOX15, _("Show Notes as ToolTips in Tree && List views"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox34->SetValue(false);
-  itemBoxSizer30->Add(itemCheckBox34, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Display_ShowNotesAsTipsInViewsCB = new wxCheckBox( itemPanel29, ID_CHECKBOX15, _("Show Notes as ToolTips in Tree && List views"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Display_ShowNotesAsTipsInViewsCB->SetValue(false);
+  itemBoxSizer30->Add(m_Display_ShowNotesAsTipsInViewsCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox37 = new wxCheckBox( itemPanel29, ID_CHECKBOX18, _("Word Wrap Notes in Add && Edit"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox37->SetValue(false);
-  itemBoxSizer30->Add(itemCheckBox37, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Display_WordWrapNotesCB = new wxCheckBox( itemPanel29, ID_CHECKBOX18, _("Word Wrap Notes in Add && Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Display_WordWrapNotesCB->SetValue(false);
+  itemBoxSizer30->Add(m_Display_WordWrapNotesCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox38 = new wxCheckBox( itemPanel29, ID_CHECKBOX38, _("Put Groups first in Tree View"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox38->SetValue(false);
-  itemBoxSizer30->Add(itemCheckBox38, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Display_GroupsFirstCB = new wxCheckBox( itemPanel29, ID_CHECKBOX38, _("Put Groups first in Tree View"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Display_GroupsFirstCB->SetValue(false);
+  itemBoxSizer30->Add(m_Display_GroupsFirstCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer39 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer30->Add(itemBoxSizer39, 0, wxEXPAND|wxALL, 0);
@@ -421,31 +583,30 @@ void OptionsPropertySheetDlg::CreateControls()
   itemRadioBox43Strings.Add(_("&Fully collapsed"));
   itemRadioBox43Strings.Add(_("&Fully expanded"));
   itemRadioBox43Strings.Add(_("&Same as when last saved"));
-  wxRadioBox* itemRadioBox43 = new wxRadioBox( itemPanel29, ID_RADIOBOX, _("Initial Tree View"), wxDefaultPosition, wxDefaultSize, itemRadioBox43Strings, 1, wxRA_SPECIFY_COLS );
-  itemRadioBox43->SetSelection(0);
-  itemBoxSizer30->Add(itemRadioBox43, 0, wxEXPAND|wxALL, 5);
+  m_Display_TreeDisplayStatusAtOpenRB = new wxRadioBox( itemPanel29, ID_RADIOBOX, _("Initial Tree View"), wxDefaultPosition, wxDefaultSize, itemRadioBox43Strings, 1, wxRA_SPECIFY_COLS );
+  m_Display_TreeDisplayStatusAtOpenRB->SetSelection(0);
+  itemBoxSizer30->Add(m_Display_TreeDisplayStatusAtOpenRB, 0, wxEXPAND|wxALL, 5);
 
-  GetBookCtrl()->AddPage(itemPanel29, _("Display"), false, 1);
+  return itemPanel29;
+}
 
-  /////////////////////////////////////////////////////////////////////////////
-  // Tab: "Miscellaneous"
-  /////////////////////////////////////////////////////////////////////////////
-
+wxPanel* OptionsPropertySheetDlg::CreateMiscellaneousPanel()
+{
   wxPanel* itemPanel44 = new wxPanel( GetBookCtrl(), ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer45 = new wxBoxSizer(wxVERTICAL);
   itemPanel44->SetSizer(itemBoxSizer45);
 
-  wxCheckBox* itemCheckBox46 = new wxCheckBox( itemPanel44, ID_CHECKBOX20, _("Confirm deletion of items"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox46->SetValue(false);
-  itemBoxSizer45->Add(itemCheckBox46, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Misc_ConfirmDeleteCB = new wxCheckBox( itemPanel44, ID_CHECKBOX20, _("Confirm deletion of items"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Misc_ConfirmDeleteCB->SetValue(false);
+  itemBoxSizer45->Add(m_Misc_ConfirmDeleteCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox47 = new wxCheckBox( itemPanel44, ID_CHECKBOX21, _("Record last access times"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox47->SetValue(false);
-  itemBoxSizer45->Add(itemCheckBox47, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Misc_MaintainDatetimeStampsCB = new wxCheckBox( itemPanel44, ID_CHECKBOX21, _("Record last access times"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Misc_MaintainDatetimeStampsCB->SetValue(false);
+  itemBoxSizer45->Add(m_Misc_MaintainDatetimeStampsCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox48 = new wxCheckBox( itemPanel44, ID_CHECKBOX22, _("Escape key closes application"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox48->SetValue(false);
-  itemBoxSizer45->Add(itemCheckBox48, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Misc_EscExitsCB = new wxCheckBox( itemPanel44, ID_CHECKBOX22, _("Escape key closes application"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Misc_EscExitsCB->SetValue(false);
+  itemBoxSizer45->Add(m_Misc_EscExitsCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   auto *itemFlexGridSizer50 = new wxFlexGridSizer(0, 2, 0, 0);
   itemBoxSizer45->Add(itemFlexGridSizer50, 0, wxEXPAND|wxALL, 5);
@@ -479,17 +640,17 @@ void OptionsPropertySheetDlg::CreateControls()
   wxStaticBox* itemStaticBoxSizer56Static = new wxStaticBox(itemPanel44, wxID_ANY, _("Autotype"));
   auto *itemStaticBoxSizer56 = new wxStaticBoxSizer(itemStaticBoxSizer56Static, wxVERTICAL);
   itemBoxSizer45->Add(itemStaticBoxSizer56, 0, wxEXPAND|wxALL, 5);
-  wxCheckBox* itemCheckBox57 = new wxCheckBox( itemPanel44, ID_CHECKBOX23, _("Minimize after Autotype"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox57->SetValue(false);
-  itemStaticBoxSizer56->Add(itemCheckBox57, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Misc_AutotypeMinimizeCB = new wxCheckBox( itemPanel44, ID_CHECKBOX23, _("Minimize after Autotype"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Misc_AutotypeMinimizeCB->SetValue(false);
+  itemStaticBoxSizer56->Add(m_Misc_AutotypeMinimizeCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer58 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer56->Add(itemBoxSizer58, 0, wxEXPAND|wxALL, 0);
   wxStaticText* itemStaticText59 = new wxStaticText( itemPanel44, wxID_STATIC, _("Default Autotype string:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer58->Add(itemStaticText59, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl60 = new wxTextCtrl( itemPanel44, ID_TEXTCTRL11, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer58->Add(itemTextCtrl60, 2, wxEXPAND|wxALL, 5);
+  m_Misc_AutotypeStringTXT = new wxTextCtrl( itemPanel44, ID_TEXTCTRL11, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer58->Add(m_Misc_AutotypeStringTXT, 2, wxEXPAND|wxALL, 5);
   itemBoxSizer58->AddStretchSpacer();
 
   wxStaticBox* itemStaticBoxSizer61Static = new wxStaticBox(itemPanel44, wxID_ANY, _("Default Username"));
@@ -497,9 +658,9 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer45->Add(itemStaticBoxSizer61, 0, wxEXPAND|wxALL, 5);
   auto *itemBoxSizer62 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer61->Add(itemBoxSizer62, 0, wxEXPAND|wxALL, 0);
-  wxCheckBox* itemCheckBox63 = new wxCheckBox( itemPanel44, ID_CHECKBOX24, _("Use"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox63->SetValue(false);
-  itemBoxSizer62->Add(itemCheckBox63, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Misc_UseDefUsernameCB = new wxCheckBox( itemPanel44, ID_CHECKBOX24, _("Use"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Misc_UseDefUsernameCB->SetValue(false);
+  itemBoxSizer62->Add(m_Misc_UseDefUsernameCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_Misc_DefaultUsernameTXT = new wxTextCtrl( itemPanel44, ID_TEXTCTRL12, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer62->Add(m_Misc_DefaultUsernameTXT, 1, wxEXPAND|wxALL, 5);
@@ -508,17 +669,17 @@ void OptionsPropertySheetDlg::CreateControls()
   itemBoxSizer62->Add(m_Misc_DefaultUsernameLBL, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
   itemBoxSizer62->AddStretchSpacer();
 
-  wxCheckBox* itemCheckBox66 = new wxCheckBox( itemPanel44, ID_CHECKBOX25, _("Query user to set default username"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox66->SetValue(false);
-  itemStaticBoxSizer61->Add(itemCheckBox66, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Misc_QuerySetDefUsernameCB = new wxCheckBox( itemPanel44, ID_CHECKBOX25, _("Query user to set default username"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Misc_QuerySetDefUsernameCB->SetValue(false);
+  itemStaticBoxSizer61->Add(m_Misc_QuerySetDefUsernameCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer67Static = new wxStaticBox(itemPanel44, wxID_ANY, _("Alternate Browser"));
   auto *itemStaticBoxSizer67 = new wxStaticBoxSizer(itemStaticBoxSizer67Static, wxVERTICAL);
   itemBoxSizer45->Add(itemStaticBoxSizer67, 0, wxEXPAND|wxALL, 5);
   auto *itemBoxSizer68 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer67->Add(itemBoxSizer68, 0, wxEXPAND|wxALL, 0);
-  wxTextCtrl* itemTextCtrl69 = new wxTextCtrl( itemPanel44, ID_TEXTCTRL13, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer68->Add(itemTextCtrl69, 1, wxEXPAND|wxALL, 5);
+  m_Misc_OtherBrowserLocationTXT = new wxTextCtrl( itemPanel44, ID_TEXTCTRL13, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer68->Add(m_Misc_OtherBrowserLocationTXT, 1, wxEXPAND|wxALL, 5);
 
   wxButton* itemButton70 = new wxButton( itemPanel44, ID_BUTTON8, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer68->Add(itemButton70, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -532,12 +693,11 @@ void OptionsPropertySheetDlg::CreateControls()
   wxTextCtrl* itemTextCtrl72 = new wxTextCtrl( itemPanel44, ID_TEXTCTRL14, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer71->Add(itemTextCtrl72, 1, wxEXPAND|wxALL, 5);
 
-  GetBookCtrl()->AddPage(itemPanel44, _("Miscellaneous"), false, 2);
+  return itemPanel44;
+}
 
-  /////////////////////////////////////////////////////////////////////////////
-  // Tab: "Password History"
-  /////////////////////////////////////////////////////////////////////////////
-
+wxPanel* OptionsPropertySheetDlg::CreatePasswordHistoryPanel()
+{
   wxPanel* itemPanel74 = new wxPanel( GetBookCtrl(), ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer75 = new wxBoxSizer(wxVERTICAL);
   itemPanel74->SetSizer(itemBoxSizer75);
@@ -611,39 +771,38 @@ void OptionsPropertySheetDlg::CreateControls()
   m_PasswordHistory_ApplyBN = new wxButton( itemPanel74, ID_PWHISTAPPLY, _("Apply"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer80->Add(m_PasswordHistory_ApplyBN, 0, wxALIGN_LEFT|wxALL, 5);
 
-  GetBookCtrl()->AddPage(itemPanel74, _("Password History"), false, 3);
+  return itemPanel74;
+}
 
-  /////////////////////////////////////////////////////////////////////////////
-  // Tab: "Security"
-  /////////////////////////////////////////////////////////////////////////////
-
+wxPanel* OptionsPropertySheetDlg::CreateSecurityPanel()
+{
   wxPanel* itemPanel86 = new wxPanel( GetBookCtrl(), ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer87 = new wxBoxSizer(wxVERTICAL);
   itemPanel86->SetSizer(itemBoxSizer87);
 
-  wxCheckBox* itemCheckBox88 = new wxCheckBox( itemPanel86, ID_CHECKBOX27, _("Clear clipboard upon minimize"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox88->SetValue(false);
-  itemBoxSizer87->Add(itemCheckBox88, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Security_ClearClipboardOnMinimizeCB = new wxCheckBox( itemPanel86, ID_CHECKBOX27, _("Clear clipboard upon minimize"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Security_ClearClipboardOnMinimizeCB->SetValue(false);
+  itemBoxSizer87->Add(m_Security_ClearClipboardOnMinimizeCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox89 = new wxCheckBox( itemPanel86, ID_CHECKBOX, _("Clear clipboard upon exit"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox89->SetValue(false);
-  itemBoxSizer87->Add(itemCheckBox89, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Security_ClearClipboardOnExitCB = new wxCheckBox( itemPanel86, ID_CHECKBOX, _("Clear clipboard upon exit"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Security_ClearClipboardOnExitCB->SetValue(false);
+  itemBoxSizer87->Add(m_Security_ClearClipboardOnExitCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox90 = new wxCheckBox( itemPanel86, ID_CHECKBOX1, _("Confirm copy of password to clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox90->SetValue(false);
-  itemBoxSizer87->Add(itemCheckBox90, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Security_ConfirmCopyCB = new wxCheckBox( itemPanel86, ID_CHECKBOX1, _("Confirm copy of password to clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Security_ConfirmCopyCB->SetValue(false);
+  itemBoxSizer87->Add(m_Security_ConfirmCopyCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox93 = new wxCheckBox( itemPanel86, ID_CHECKBOX35, _("'Browse to URL' copies password to clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox93->SetValue(false);
-  itemBoxSizer87->Add(itemCheckBox93, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Security_CopyPswdBrowseURLCB = new wxCheckBox( itemPanel86, ID_CHECKBOX35, _("'Browse to URL' copies password to clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Security_CopyPswdBrowseURLCB->SetValue(false);
+  itemBoxSizer87->Add(m_Security_CopyPswdBrowseURLCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox91 = new wxCheckBox( itemPanel86, ID_CHECKBOX2, _("Lock password database on minimize"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox91->SetValue(false);
-  itemBoxSizer87->Add(itemCheckBox91, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Security_LockOnMinimizeCB = new wxCheckBox( itemPanel86, ID_CHECKBOX2, _("Lock password database on minimize"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Security_LockOnMinimizeCB->SetValue(false);
+  itemBoxSizer87->Add(m_Security_LockOnMinimizeCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox92 = new wxCheckBox( itemPanel86, ID_CHECKBOX28, _("Lock password database on workstation lock"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox92->SetValue(false);
-  itemBoxSizer87->Add(itemCheckBox92, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Security_LockOnWindowLockCB = new wxCheckBox( itemPanel86, ID_CHECKBOX28, _("Lock password database on workstation lock"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Security_LockOnWindowLockCB->SetValue(false);
+  itemBoxSizer87->Add(m_Security_LockOnWindowLockCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer93 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer87->Add(itemBoxSizer93, 0, wxEXPAND|wxALL, 0);
@@ -670,8 +829,8 @@ void OptionsPropertySheetDlg::CreateControls()
   wxStaticText* itemStaticText98 = new wxStaticText( itemPanel86, ID_STATICTEXT_3, _("Unlock Difficulty:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer97->Add(itemStaticText98, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxSlider* itemSlider99 = new wxSlider( itemPanel86, ID_SLIDER, 0, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_AUTOTICKS );
-  itemBoxSizer97->Add(itemSlider99, 0, wxEXPAND|wxALL, 5);
+  m_Security_HashIterSliderSL = new wxSlider( itemPanel86, ID_SLIDER, 0, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_AUTOTICKS );
+  itemBoxSizer97->Add(m_Security_HashIterSliderSL, 0, wxEXPAND|wxALL, 5);
 
   auto *itemBoxSizer100 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer97->Add(itemBoxSizer100, 0, wxEXPAND|wxALL, 5);
@@ -683,12 +842,11 @@ void OptionsPropertySheetDlg::CreateControls()
   wxStaticText* itemStaticText103 = new wxStaticText( itemPanel86, ID_STATICTEXT_5, _("Maximum"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer100->Add(itemStaticText103, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  GetBookCtrl()->AddPage(itemPanel86, _("Security"), false, 4);
+  return itemPanel86;
+}
 
-  /////////////////////////////////////////////////////////////////////////////
-  // Tab: "Shortcuts"
-  /////////////////////////////////////////////////////////////////////////////
-
+wxPanel* OptionsPropertySheetDlg::CreateShortcutsPanel()
+{
   wxPanel* itemPanel123 = new wxPanel(GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
   auto *itemBoxSizer155 = new wxBoxSizer(wxVERTICAL);
   itemPanel123->SetSizer(itemBoxSizer155);
@@ -702,12 +860,11 @@ void OptionsPropertySheetDlg::CreateControls()
 
   itemBoxSizer155->Add(itemGrid124, 1, wxEXPAND|wxALL, 5);
 
-  GetBookCtrl()->AddPage(itemPanel123, _("Shortcuts"), false, 5);
+  return itemPanel123;
+}
 
-  /////////////////////////////////////////////////////////////////////////////
-  // Tab: "System"
-  /////////////////////////////////////////////////////////////////////////////
-
+wxPanel* OptionsPropertySheetDlg::CreateSystemPanel()
+{
   wxPanel* itemPanel104 = new wxPanel( GetBookCtrl(), ID_PANEL6, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer105 = new wxBoxSizer(wxVERTICAL);
   itemPanel104->SetSizer(itemBoxSizer105);
@@ -738,9 +895,9 @@ void OptionsPropertySheetDlg::CreateControls()
   wxStaticText* itemStaticText111 = new wxStaticText( itemPanel104, ID_STATICTEXT_7, _("used entries in System Tray menu"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer108->Add(itemStaticText111, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxCheckBox* itemCheckBox112 = new wxCheckBox( itemPanel104, ID_CHECKBOX31, _("Start PasswordSafe at Login"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox112->SetValue(false);
-  itemStaticBoxSizer106->Add(itemCheckBox112, 0, wxALIGN_LEFT|wxALL, 5);
+  m_System_StartupCB = new wxCheckBox( itemPanel104, ID_CHECKBOX31, _("Start PasswordSafe at Login"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_System_StartupCB->SetValue(false);
+  itemStaticBoxSizer106->Add(m_System_StartupCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   m_System_SystemTrayWarningST = new wxStaticText( itemPanel104, wxID_STATIC, _("There appears to be no system tray support in your current environment.\nAny related functionality may not work as expected."), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer106->Add(m_System_SystemTrayWarningST, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
@@ -755,113 +912,48 @@ void OptionsPropertySheetDlg::CreateControls()
   wxStaticText* itemStaticText115 = new wxStaticText( itemPanel104, wxID_STATIC, _("  Remember last"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer114->Add(itemStaticText115, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxSpinCtrl* itemSpinCtrl116 = new wxSpinCtrl(
+  m_System_MaxMRUItemsSB = new wxSpinCtrl(
     itemPanel104, ID_SPINCTRL, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::MaxMRUItems),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::MaxMRUItems),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::MaxMRUItems)
   );
 
-  FixInitialSpinnerSize(itemSpinCtrl116);
+  FixInitialSpinnerSize(m_System_MaxMRUItemsSB);
 
-  itemBoxSizer114->Add(itemSpinCtrl116, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer114->Add(m_System_MaxMRUItemsSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText117 = new wxStaticText( itemPanel104, wxID_STATIC, _("databases"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer114->Add(itemStaticText117, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxCheckBox* itemCheckBox118 = new wxCheckBox( itemPanel104, ID_CHECKBOX32, _("Recent Databases on File Menu rather than as a sub-menu"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox118->SetValue(false);
-  itemStaticBoxSizer113->Add(itemCheckBox118, 0, wxALIGN_LEFT|wxALL, 5);
+  m_System_MRUOnFileMenuCB = new wxCheckBox( itemPanel104, ID_CHECKBOX32, _("Recent Databases on File Menu rather than as a sub-menu"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_System_MRUOnFileMenuCB->SetValue(false);
+  itemStaticBoxSizer113->Add(m_System_MRUOnFileMenuCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox119 = new wxCheckBox( itemPanel104, ID_CHECKBOX33, _("Open database as read-only by default"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox119->SetValue(false);
-  itemBoxSizer105->Add(itemCheckBox119, 0, wxALIGN_LEFT|wxALL, 5);
+  m_System_DefaultOpenROCB = new wxCheckBox( itemPanel104, ID_CHECKBOX33, _("Open database as read-only by default"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_System_DefaultOpenROCB->SetValue(false);
+  itemBoxSizer105->Add(m_System_DefaultOpenROCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox120 = new wxCheckBox( itemPanel104, ID_CHECKBOX34, _("Allow multiple instances"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox120->SetValue(false);
-  itemBoxSizer105->Add(itemCheckBox120, 0, wxALIGN_LEFT|wxALL, 5);
+  m_System_MultipleInstancesCB = new wxCheckBox( itemPanel104, ID_CHECKBOX34, _("Allow multiple instances"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_System_MultipleInstancesCB->SetValue(false);
+  itemBoxSizer105->Add(m_System_MultipleInstancesCB, 0, wxALIGN_LEFT|wxALL, 5);
 
 #if defined(__WXX11__) || defined(__WXGTK__)
-  wxCheckBox* itemCheckBox121 = new wxCheckBox( itemPanel104, ID_CHECKBOX39, _("Use Primary Selection for clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox121->SetValue(false);
-  itemBoxSizer105->Add(itemCheckBox121, 0, wxALIGN_LEFT|wxALL, 5);
+  m_System_UsePrimarySelectionCB = new wxCheckBox( itemPanel104, ID_CHECKBOX39, _("Use Primary Selection for clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_System_UsePrimarySelectionCB->SetValue(false);
+  itemBoxSizer105->Add(m_System_UsePrimarySelectionCB, 0, wxALIGN_LEFT|wxALL, 5);
 #endif
 
 #if defined(__WXX11__) || defined(__WXGTK__)
-  wxCheckBox* itemCheckBox122 = new wxCheckBox( itemPanel104, ID_CHECKBOX40, _("Use alternate AutoType method"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox122->SetValue(false);
-  itemCheckBox122->SetHelpText(_("When set, use XTEST for AutoType instead of XSendEvent.\nXSendEvent can handle more control keys, but may be blocked by some applications."));
+  m_System_UseAltAutoTypeCB = new wxCheckBox( itemPanel104, ID_CHECKBOX40, _("Use alternate AutoType method"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_System_UseAltAutoTypeCB->SetValue(false);
+  m_System_UseAltAutoTypeCB->SetHelpText(_("When set, use XTEST for AutoType instead of XSendEvent.\nXSendEvent can handle more control keys, but may be blocked by some applications."));
   if (OptionsPropertySheetDlg::ShowToolTips())
-    itemCheckBox122->SetToolTip(_("If AutoType doesn't work, setting this may help."));
-  itemBoxSizer105->Add(itemCheckBox122, 0, wxALIGN_LEFT|wxALL, 5);
+    m_System_UseAltAutoTypeCB->SetToolTip(_("If AutoType doesn't work, setting this may help."));
+  itemBoxSizer105->Add(m_System_UseAltAutoTypeCB, 0, wxALIGN_LEFT|wxALL, 5);
 #endif
 
-  GetBookCtrl()->AddPage(itemPanel104, _("System"), false, 6);
-
-  /////////////////////////////////////////////////////////////////////////////
-  // End of Tab Creation
-  /////////////////////////////////////////////////////////////////////////////
-
-
-  /////////////////////////////////////////////////////////////////////////////
-  // Set validators
-  /////////////////////////////////////////////////////////////////////////////
-
-  // Backups Preferences
-  itemCheckBox4->SetValidator( wxGenericValidator(& m_Backup_SaveImmediately) );
-  itemCheckBox6->SetValidator( wxGenericValidator(& m_Backup_BackupBeforeSave) );
-
-  // Display Preferences
-  itemCheckBox31->SetValidator( wxGenericValidator(& m_Display_AlwaysOnTop) );
-  itemCheckBox32->SetValidator( wxGenericValidator(& m_Display_ShowUsernameInTree) );
-  itemCheckBox34->SetValidator( wxGenericValidator(& m_Display_ShowNotesAsTipsInViews) );
-  itemCheckBox35->SetValidator( wxGenericValidator(& m_Display_ShowPasswordInEdit) );
-  itemCheckBox36->SetValidator( wxGenericValidator(& m_Display_ShowNotesInEdit) );
-  itemCheckBox37->SetValidator( wxGenericValidator(& m_Display_WordWrapNotes) );
-  itemCheckBox38->SetValidator( wxGenericValidator(& m_Display_GroupsFirst) );
-  m_Display_PreExpiryWarnCB->SetValidator( wxGenericValidator(& m_Display_PreExpiryWarn) );
-  itemRadioBox43->SetValidator( wxGenericValidator(& m_Display_TreeDisplayStatusAtOpen) );
-
-  // Misc. Preferences
-  itemCheckBox46->SetValidator( wxGenericValidator(& m_Misc_ConfirmDelete) );
-  itemCheckBox47->SetValidator( wxGenericValidator(& m_Misc_MaintainDatetimeStamps) );
-  itemCheckBox48->SetValidator( wxGenericValidator(& m_Misc_EscExits) );
-  itemCheckBox57->SetValidator( wxGenericValidator(& m_Misc_AutotypeMinimize) );
-  itemTextCtrl60->SetValidator( wxGenericValidator(& m_Misc_AutotypeString) );
-  itemCheckBox63->SetValidator( wxGenericValidator(& m_Misc_UseDefUsername) );
-  itemCheckBox66->SetValidator( wxGenericValidator(& m_Misc_QuerySetDefUsername) );
-  itemTextCtrl69->SetValidator( wxGenericValidator(& m_Misc_OtherBrowserLocation) );
-
-  // Security Preferences
-  itemCheckBox88->SetValidator( wxGenericValidator(& m_Security_ClearClipboardOnMinimize) );
-  itemCheckBox89->SetValidator( wxGenericValidator(& m_Security_ClearClipboardOnExit) );
-  itemCheckBox90->SetValidator( wxGenericValidator(& m_Security_ConfirmCopy) );
-  itemCheckBox93->SetValidator( wxGenericValidator(& m_Security_CopyPswdBrowseURL) );
-  itemCheckBox91->SetValidator( wxGenericValidator(& m_Security_LockOnMinimize) );
-  itemCheckBox92->SetValidator( wxGenericValidator(& m_Security_LockOnWindowLock) );
-  m_Security_LockOnIdleTimeoutCB->SetValidator( wxGenericValidator(& m_Security_LockOnIdleTimeout) );
-
-  itemSlider99->SetValidator( wxGenericValidator(& m_Security_HashIterSlider) );
-
-  // System Preferences
-  itemCheckBox112->SetValidator( wxGenericValidator(& m_System_Startup) );
-  itemSpinCtrl116->SetValidator( wxGenericValidator(& m_System_MaxMRUItems) );
-  itemCheckBox118->SetValidator( wxGenericValidator(& m_System_MRUOnFileMenu) );
-  itemCheckBox119->SetValidator( wxGenericValidator(& m_System_DefaultOpenRO) );
-  itemCheckBox120->SetValidator( wxGenericValidator(& m_System_MultipleInstances) );
-#if defined(__WXX11__) || defined(__WXGTK__)
-  itemCheckBox121->SetValidator( wxGenericValidator(& m_System_UsePrimarySelection) );
-  itemCheckBox122->SetValidator( wxGenericValidator(& m_System_UseAltAutoType) );
-#endif
-
-  // Password History Preferences
-  m_PasswordHistory_SaveCB->SetValidator( wxGenericValidator(& m_PasswordHistory_Save) );
-  m_PasswordHistory_NumDefaultSB->SetValidator( wxGenericValidator(& m_PasswordHistory_NumDefault) );
-  m_PasswordHistory_DefaultExpiryDaysSB->SetValidator( wxGenericValidator(& m_PasswordHistory_DefaultExpiryDays) );
-
-  // Connect events and objects
-  m_Backup_UserPrefixTXT->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(OptionsPropertySheetDlg::OnBuPrefixTxtSetFocus), nullptr, this); // backup
-////@end OptionsPropertySheetDlg content construction
+  return itemPanel104;
 }
 
 /*!
