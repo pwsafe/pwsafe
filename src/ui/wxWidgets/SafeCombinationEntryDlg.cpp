@@ -390,10 +390,9 @@ void SafeCombinationEntryDlg::ProcessPhrase()
     break;
   case PWScore::WRONG_PASSWORD:
   default:
-    if (m_tries >= 2) {
+    if (m_tries++ >= 2) {
       errmess = _("Too many retries - exiting");
     } else {
-      m_tries++;
       errmess = _("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')");
     }
     break;
@@ -402,10 +401,14 @@ void SafeCombinationEntryDlg::ProcessPhrase()
   wxMessageDialog err(this, errmess,
                       _("Error"), wxOK | wxICON_EXCLAMATION);
   err.ShowModal();
-  auto *txt = wxDynamicCast(FindWindow(ID_COMBINATION), wxTextCtrl);
-  if (txt) {
-    txt->SetSelection(-1,-1);
-    txt->SetFocus();
+  if (m_tries >= 3) {
+    EndModal(wxCANCEL);
+  } else {
+    auto *txt = wxDynamicCast(FindWindow(ID_COMBINATION), wxTextCtrl);
+    if (txt) {
+      txt->SetSelection(-1,-1);
+      txt->SetFocus();
+    }
   }
 }
 
