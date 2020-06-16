@@ -297,8 +297,6 @@ void OptionsPropertySheetDlg::Init()
 
 void OptionsPropertySheetDlg::CreateControls()
 {
-////@begin OptionsPropertySheetDlg content construction
-
   GetBookCtrl()->SetImageList(m_ImageList);
 
   /////////////////////////////////////////////////////////////////////////////
@@ -360,67 +358,6 @@ void OptionsPropertySheetDlg::CreateControls()
   /////////////////////////////////////////////////////////////////////////////
   // End of Tab Creation
   /////////////////////////////////////////////////////////////////////////////
-
-
-  /////////////////////////////////////////////////////////////////////////////
-  // Set validators
-  /////////////////////////////////////////////////////////////////////////////
-
-  // Backups Preferences
-  m_Backup_SaveImmediatelyCB->SetValidator( wxGenericValidator(& m_Backup_SaveImmediately) );
-  m_Backup_BackupBeforeSaveCB->SetValidator( wxGenericValidator(& m_Backup_BackupBeforeSave) );
-
-  // Display Preferences
-  m_Display_AlwaysOnTopCB->SetValidator( wxGenericValidator(& m_Display_AlwaysOnTop) );
-  m_Display_ShowUsernameInTreeCB->SetValidator( wxGenericValidator(& m_Display_ShowUsernameInTree) );
-  m_Display_ShowNotesAsTipsInViewsCB->SetValidator( wxGenericValidator(& m_Display_ShowNotesAsTipsInViews) );
-  m_Display_ShowPasswordInEditCB->SetValidator( wxGenericValidator(& m_Display_ShowPasswordInEdit) );
-  m_Display_ShowNotesInEditCB->SetValidator( wxGenericValidator(& m_Display_ShowNotesInEdit) );
-  m_Display_WordWrapNotesCB->SetValidator( wxGenericValidator(& m_Display_WordWrapNotes) );
-  m_Display_GroupsFirstCB->SetValidator( wxGenericValidator(& m_Display_GroupsFirst) );
-  m_Display_PreExpiryWarnCB->SetValidator( wxGenericValidator(& m_Display_PreExpiryWarn) );
-  m_Display_TreeDisplayStatusAtOpenRB->SetValidator( wxGenericValidator(& m_Display_TreeDisplayStatusAtOpen) );
-
-  // Misc. Preferences
-  m_Misc_ConfirmDeleteCB->SetValidator( wxGenericValidator(& m_Misc_ConfirmDelete) );
-  m_Misc_MaintainDatetimeStampsCB->SetValidator( wxGenericValidator(& m_Misc_MaintainDatetimeStamps) );
-  m_Misc_EscExitsCB->SetValidator( wxGenericValidator(& m_Misc_EscExits) );
-  m_Misc_AutotypeMinimizeCB->SetValidator( wxGenericValidator(& m_Misc_AutotypeMinimize) );
-  m_Misc_AutotypeStringTXT->SetValidator( wxGenericValidator(& m_Misc_AutotypeString) );
-  m_Misc_UseDefUsernameCB->SetValidator( wxGenericValidator(& m_Misc_UseDefUsername) );
-  m_Misc_QuerySetDefUsernameCB->SetValidator( wxGenericValidator(& m_Misc_QuerySetDefUsername) );
-  m_Misc_OtherBrowserLocationTXT->SetValidator( wxGenericValidator(& m_Misc_OtherBrowserLocation) );
-
-  // Security Preferences
-  m_Security_ClearClipboardOnMinimizeCB->SetValidator( wxGenericValidator(& m_Security_ClearClipboardOnMinimize) );
-  m_Security_ClearClipboardOnExitCB->SetValidator( wxGenericValidator(& m_Security_ClearClipboardOnExit) );
-  m_Security_ConfirmCopyCB->SetValidator( wxGenericValidator(& m_Security_ConfirmCopy) );
-  m_Security_CopyPswdBrowseURLCB->SetValidator( wxGenericValidator(& m_Security_CopyPswdBrowseURL) );
-  m_Security_LockOnMinimizeCB->SetValidator( wxGenericValidator(& m_Security_LockOnMinimize) );
-  m_Security_LockOnWindowLockCB->SetValidator( wxGenericValidator(& m_Security_LockOnWindowLock) );
-  m_Security_LockOnIdleTimeoutCB->SetValidator( wxGenericValidator(& m_Security_LockOnIdleTimeout) );
-
-  m_Security_HashIterSliderSL->SetValidator( wxGenericValidator(& m_Security_HashIterSlider) );
-
-  // System Preferences
-  m_System_StartupCB->SetValidator( wxGenericValidator(& m_System_Startup) );
-  m_System_MaxMRUItemsSB->SetValidator( wxGenericValidator(& m_System_MaxMRUItems) );
-  m_System_MRUOnFileMenuCB->SetValidator( wxGenericValidator(& m_System_MRUOnFileMenu) );
-  m_System_DefaultOpenROCB->SetValidator( wxGenericValidator(& m_System_DefaultOpenRO) );
-  m_System_MultipleInstancesCB->SetValidator( wxGenericValidator(& m_System_MultipleInstances) );
-#if defined(__WXX11__) || defined(__WXGTK__)
-  m_System_UsePrimarySelectionCB->SetValidator( wxGenericValidator(& m_System_UsePrimarySelection) );
-  m_System_UseAltAutoTypeCB->SetValidator( wxGenericValidator(& m_System_UseAltAutoType) );
-#endif
-
-  // Password History Preferences
-  m_PasswordHistory_SaveCB->SetValidator( wxGenericValidator(& m_PasswordHistory_Save) );
-  m_PasswordHistory_NumDefaultSB->SetValidator( wxGenericValidator(& m_PasswordHistory_NumDefault) );
-  m_PasswordHistory_DefaultExpiryDaysSB->SetValidator( wxGenericValidator(& m_PasswordHistory_DefaultExpiryDays) );
-
-  // Connect events and objects
-  m_Backup_UserPrefixTXT->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(OptionsPropertySheetDlg::OnBuPrefixTxtSetFocus), nullptr, this); // backup
-////@end OptionsPropertySheetDlg content construction
 }
 
 wxPanel* OptionsPropertySheetDlg::CreateBackupsPanel()
@@ -518,6 +455,13 @@ wxPanel* OptionsPropertySheetDlg::CreateBackupsPanel()
   m_Backup_DirBN = new wxButton( itemPanel2, ID_BUTTON, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer25->Add(m_Backup_DirBN, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
+  // Backups Preferences
+  m_Backup_SaveImmediatelyCB->SetValidator( wxGenericValidator(& m_Backup_SaveImmediately) );
+  m_Backup_BackupBeforeSaveCB->SetValidator( wxGenericValidator(& m_Backup_BackupBeforeSave) );
+
+  // Connect events and objects
+  m_Backup_UserPrefixTXT->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(OptionsPropertySheetDlg::OnBuPrefixTxtSetFocus), nullptr, this);
+
   return itemPanel2;
 }
 
@@ -586,6 +530,17 @@ wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel()
   m_Display_TreeDisplayStatusAtOpenRB = new wxRadioBox( itemPanel29, ID_RADIOBOX, _("Initial Tree View"), wxDefaultPosition, wxDefaultSize, itemRadioBox43Strings, 1, wxRA_SPECIFY_COLS );
   m_Display_TreeDisplayStatusAtOpenRB->SetSelection(0);
   itemBoxSizer30->Add(m_Display_TreeDisplayStatusAtOpenRB, 0, wxEXPAND|wxALL, 5);
+
+  // Display Preferences
+  m_Display_AlwaysOnTopCB->SetValidator( wxGenericValidator(& m_Display_AlwaysOnTop) );
+  m_Display_ShowUsernameInTreeCB->SetValidator( wxGenericValidator(& m_Display_ShowUsernameInTree) );
+  m_Display_ShowNotesAsTipsInViewsCB->SetValidator( wxGenericValidator(& m_Display_ShowNotesAsTipsInViews) );
+  m_Display_ShowPasswordInEditCB->SetValidator( wxGenericValidator(& m_Display_ShowPasswordInEdit) );
+  m_Display_ShowNotesInEditCB->SetValidator( wxGenericValidator(& m_Display_ShowNotesInEdit) );
+  m_Display_WordWrapNotesCB->SetValidator( wxGenericValidator(& m_Display_WordWrapNotes) );
+  m_Display_GroupsFirstCB->SetValidator( wxGenericValidator(& m_Display_GroupsFirst) );
+  m_Display_PreExpiryWarnCB->SetValidator( wxGenericValidator(& m_Display_PreExpiryWarn) );
+  m_Display_TreeDisplayStatusAtOpenRB->SetValidator( wxGenericValidator(& m_Display_TreeDisplayStatusAtOpen) );
 
   return itemPanel29;
 }
@@ -693,6 +648,16 @@ wxPanel* OptionsPropertySheetDlg::CreateMiscellaneousPanel()
   wxTextCtrl* itemTextCtrl72 = new wxTextCtrl( itemPanel44, ID_TEXTCTRL14, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer71->Add(itemTextCtrl72, 1, wxEXPAND|wxALL, 5);
 
+  // Miscellaneous Preferences
+  m_Misc_ConfirmDeleteCB->SetValidator( wxGenericValidator(& m_Misc_ConfirmDelete) );
+  m_Misc_MaintainDatetimeStampsCB->SetValidator( wxGenericValidator(& m_Misc_MaintainDatetimeStamps) );
+  m_Misc_EscExitsCB->SetValidator( wxGenericValidator(& m_Misc_EscExits) );
+  m_Misc_AutotypeMinimizeCB->SetValidator( wxGenericValidator(& m_Misc_AutotypeMinimize) );
+  m_Misc_AutotypeStringTXT->SetValidator( wxGenericValidator(& m_Misc_AutotypeString) );
+  m_Misc_UseDefUsernameCB->SetValidator( wxGenericValidator(& m_Misc_UseDefUsername) );
+  m_Misc_QuerySetDefUsernameCB->SetValidator( wxGenericValidator(& m_Misc_QuerySetDefUsername) );
+  m_Misc_OtherBrowserLocationTXT->SetValidator( wxGenericValidator(& m_Misc_OtherBrowserLocation) );
+
   return itemPanel44;
 }
 
@@ -771,6 +736,11 @@ wxPanel* OptionsPropertySheetDlg::CreatePasswordHistoryPanel()
   m_PasswordHistory_ApplyBN = new wxButton( itemPanel74, ID_PWHISTAPPLY, _("Apply"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer80->Add(m_PasswordHistory_ApplyBN, 0, wxALIGN_LEFT|wxALL, 5);
 
+  // Password History Preferences
+  m_PasswordHistory_SaveCB->SetValidator( wxGenericValidator(& m_PasswordHistory_Save) );
+  m_PasswordHistory_NumDefaultSB->SetValidator( wxGenericValidator(& m_PasswordHistory_NumDefault) );
+  m_PasswordHistory_DefaultExpiryDaysSB->SetValidator( wxGenericValidator(& m_PasswordHistory_DefaultExpiryDays) );
+
   return itemPanel74;
 }
 
@@ -841,6 +811,16 @@ wxPanel* OptionsPropertySheetDlg::CreateSecurityPanel()
 
   wxStaticText* itemStaticText103 = new wxStaticText( itemPanel86, ID_STATICTEXT_5, _("Maximum"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer100->Add(itemStaticText103, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+
+  // Security Preferences
+  m_Security_ClearClipboardOnMinimizeCB->SetValidator( wxGenericValidator(& m_Security_ClearClipboardOnMinimize) );
+  m_Security_ClearClipboardOnExitCB->SetValidator( wxGenericValidator(& m_Security_ClearClipboardOnExit) );
+  m_Security_ConfirmCopyCB->SetValidator( wxGenericValidator(& m_Security_ConfirmCopy) );
+  m_Security_CopyPswdBrowseURLCB->SetValidator( wxGenericValidator(& m_Security_CopyPswdBrowseURL) );
+  m_Security_LockOnMinimizeCB->SetValidator( wxGenericValidator(& m_Security_LockOnMinimize) );
+  m_Security_LockOnWindowLockCB->SetValidator( wxGenericValidator(& m_Security_LockOnWindowLock) );
+  m_Security_LockOnIdleTimeoutCB->SetValidator( wxGenericValidator(& m_Security_LockOnIdleTimeout) );
+  m_Security_HashIterSliderSL->SetValidator( wxGenericValidator(& m_Security_HashIterSlider) );
 
   return itemPanel86;
 }
@@ -942,15 +922,24 @@ wxPanel* OptionsPropertySheetDlg::CreateSystemPanel()
   m_System_UsePrimarySelectionCB = new wxCheckBox( itemPanel104, ID_CHECKBOX39, _("Use Primary Selection for clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
   m_System_UsePrimarySelectionCB->SetValue(false);
   itemBoxSizer105->Add(m_System_UsePrimarySelectionCB, 0, wxALIGN_LEFT|wxALL, 5);
-#endif
 
-#if defined(__WXX11__) || defined(__WXGTK__)
   m_System_UseAltAutoTypeCB = new wxCheckBox( itemPanel104, ID_CHECKBOX40, _("Use alternate AutoType method"), wxDefaultPosition, wxDefaultSize, 0 );
   m_System_UseAltAutoTypeCB->SetValue(false);
   m_System_UseAltAutoTypeCB->SetHelpText(_("When set, use XTEST for AutoType instead of XSendEvent.\nXSendEvent can handle more control keys, but may be blocked by some applications."));
   if (OptionsPropertySheetDlg::ShowToolTips())
     m_System_UseAltAutoTypeCB->SetToolTip(_("If AutoType doesn't work, setting this may help."));
   itemBoxSizer105->Add(m_System_UseAltAutoTypeCB, 0, wxALIGN_LEFT|wxALL, 5);
+#endif
+
+  // System Preferences
+  m_System_StartupCB->SetValidator( wxGenericValidator(& m_System_Startup) );
+  m_System_MaxMRUItemsSB->SetValidator( wxGenericValidator(& m_System_MaxMRUItems) );
+  m_System_MRUOnFileMenuCB->SetValidator( wxGenericValidator(& m_System_MRUOnFileMenu) );
+  m_System_DefaultOpenROCB->SetValidator( wxGenericValidator(& m_System_DefaultOpenRO) );
+  m_System_MultipleInstancesCB->SetValidator( wxGenericValidator(& m_System_MultipleInstances) );
+#if defined(__WXX11__) || defined(__WXGTK__)
+  m_System_UsePrimarySelectionCB->SetValidator( wxGenericValidator(& m_System_UsePrimarySelection) );
+  m_System_UseAltAutoTypeCB->SetValidator( wxGenericValidator(& m_System_UseAltAutoType) );
 #endif
 
   return itemPanel104;
