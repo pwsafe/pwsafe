@@ -486,24 +486,25 @@ endif ()
 #
 # Determine the architecture (amd64, i386) with command 'uname -m'
 #
-if (NOT CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
-  find_program(UNAME_EXECUTABLE uname)
-  mark_as_advanced(UNAME_EXECUTABLE)
+if (NOT WIN32)
+    if (NOT CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
+      find_program(UNAME_EXECUTABLE uname)
+      mark_as_advanced(UNAME_EXECUTABLE)
 
-  if (NOT UNAME_EXECUTABLE)
-    message(STATUS "Cannot find 'uname' in your path. Set architecture to default i386.")
-    set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE i386)
-  else ()
-    execute_process(COMMAND "${UNAME_EXECUTABLE}" -m
-                    OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE
-                    OUTPUT_STRIP_TRAILING_WHITESPACE)
+      if (NOT UNAME_EXECUTABLE)
+        message(STATUS "Cannot find 'uname' in your path. Set architecture to default i386.")
+        set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE i386)
+      else ()
+        execute_process(COMMAND "${UNAME_EXECUTABLE}" -m
+                        OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE
+                        OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-    if (CPACK_DEBIAN_PACKAGE_ARCHITECTURE MATCHES "x86_64")
-      set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE amd64)
+        if (CPACK_DEBIAN_PACKAGE_ARCHITECTURE MATCHES "x86_64")
+          set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE amd64)
+        endif ()
+      endif ()
     endif ()
-  endif ()
-endif ()
-
+endif (NOT WIN32)
 #
 # Determine name of distribution (Ubuntu, LinuxMint, ...)
 #
