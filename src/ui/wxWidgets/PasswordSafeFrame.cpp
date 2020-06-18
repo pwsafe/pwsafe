@@ -1755,7 +1755,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case wxID_ADD:
-      evt.Enable((isTreeViewGroupSelected || isTreeViewEmpty || !isTreeViewItemSelected || !isTreeView) && !isFileReadOnly && m_core.IsDbOpen());
+      evt.Enable(!isFileReadOnly && m_core.IsDbOpen());
       break;
 
     case wxID_DELETE:
