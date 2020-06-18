@@ -5,7 +5,7 @@
 # Running this after cloning the git repo (or unpacking the sources)
 # and you should be all set.
 #
-# Upgrade to this inspired by a simailar script by kreyren
+# Upgrade to this inspired by a similar script by kreyren
 #
 # Command overrides
 [ -z "$UNAME" ] && UNAME="/usr/bin/uname"
@@ -28,7 +28,7 @@ fi
 if command -v $UNAME 1>/dev/null; then
 	KERNEL="$($UNAME -s)"
 else
-    die 2 "Could not find unname command, can't identify kernel"
+    die 2 "Could not find uname command, can't identify kernel"
 fi
 
 if [ "$KERNEL" = "Linux" ]; then
@@ -58,7 +58,7 @@ fi
 # We have distro and release, let's get to work
 
 case "$DISTRO" in
-    debian|ubuntu)
+    debian|ubuntu|linuxmint)
         if [ "$DISTRO" = "ubuntu" ] && [ "$RELEASE" -ge 20 ]; then
             LIBWXDEV="ibwxgtk3.0-gtk3-dev"
         else
