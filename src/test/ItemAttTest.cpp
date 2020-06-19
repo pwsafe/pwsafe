@@ -48,6 +48,10 @@ ItemAttTest::ItemAttTest()
 
 void ItemAttTest::SetUp()
 {
+    if (!pws_os::FileExists(fullfileName)) {
+        wcout << L"Can't find " << fullfileName << L", no sense in continuing." << endl;
+        FAIL();
+    }
 }
 
 // And now the tests...
