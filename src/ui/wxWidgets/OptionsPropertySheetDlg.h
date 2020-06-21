@@ -245,22 +245,12 @@ private:
   wxRadioButton*  m_Backup_UserDirRB;
   wxTextCtrl*     m_Backup_UserDirTXT;
   wxButton*       m_Backup_DirBN;
-  wxCheckBox*     m_Backup_SaveImmediatelyCB; // itemCheckBox4
-  wxCheckBox*     m_Backup_BackupBeforeSaveCB; // itemCheckBox6
 
   // Tab: "Display"
   wxPanel*        m_Display_Panel;
   wxCheckBox*     m_Display_ShowPasswordInTreeCB;
   wxCheckBox*     m_Display_PreExpiryWarnCB;
   wxSpinCtrl*     m_Display_PreExpiryWarnDaysSB;
-  wxCheckBox*     m_Display_AlwaysOnTopCB;
-  wxCheckBox*     m_Display_ShowUsernameInTreeCB;
-  wxCheckBox*     m_Display_ShowNotesAsTipsInViewsCB;
-  wxCheckBox*     m_Display_ShowPasswordInEditCB;
-  wxCheckBox*     m_Display_ShowNotesInEditCB;
-  wxCheckBox*     m_Display_WordWrapNotesCB;
-  wxCheckBox*     m_Display_GroupsFirstCB;
-  wxRadioBox*     m_Display_TreeDisplayStatusAtOpenRB;
 
   // Tab: "Miscellaneous"
   wxPanel*        m_Misc_Panel;
@@ -269,14 +259,6 @@ private:
   wxTextCtrl*     m_Misc_DefaultUsernameTXT;
   wxStaticText*   m_Misc_DefaultUsernameLBL;
   wxString        m_Misc_OtherBrowserLocationparams;
-  wxCheckBox*     m_Misc_ConfirmDeleteCB;
-  wxCheckBox*     m_Misc_MaintainDatetimeStampsCB;
-  wxCheckBox*     m_Misc_EscExitsCB;
-  wxCheckBox*     m_Misc_AutotypeMinimizeCB;
-  wxTextCtrl*     m_Misc_AutotypeStringTXT;
-  wxCheckBox*     m_Misc_UseDefUsernameCB;
-  wxCheckBox*     m_Misc_QuerySetDefUsernameCB;
-  wxTextCtrl*     m_Misc_OtherBrowserLocationTXT;
 
   // Tab: "Password History"
   wxPanel*        m_PasswordHistory_Panel;
@@ -295,13 +277,6 @@ private:
   wxPanel*        m_Security_Panel;
   wxCheckBox*     m_Security_LockOnIdleTimeoutCB;
   wxSpinCtrl*     m_Security_IdleTimeoutSB;
-  wxCheckBox*     m_Security_ClearClipboardOnMinimizeCB;
-  wxCheckBox*     m_Security_ClearClipboardOnExitCB;
-  wxCheckBox*     m_Security_ConfirmCopyCB;
-  wxCheckBox*     m_Security_CopyPswdBrowseURLCB;
-  wxCheckBox*     m_Security_LockOnMinimizeCB;
-  wxCheckBox*     m_Security_LockOnWindowLockCB;
-  wxSlider*       m_Security_HashIterSliderSL;
 
   // Tab: "Shortcuts"
   wxPanel*        m_Shortcuts_Panel;
@@ -311,16 +286,6 @@ private:
   wxCheckBox*     m_System_UseSystemTrayCB;
   wxSpinCtrl*     m_System_MaxREItemsSB;
   wxStaticText*   m_System_SystemTrayWarningST;
-  wxCheckBox*     m_System_StartupCB;
-  wxSpinCtrl*     m_System_MaxMRUItemsSB;
-  wxCheckBox*     m_System_MRUOnFileMenuCB;
-  wxCheckBox*     m_System_DefaultOpenROCB;
-  wxCheckBox*     m_System_MultipleInstancesCB;
-
-#if defined(__WXX11__) || defined(__WXGTK__)
-  wxCheckBox*     m_System_UsePrimarySelectionCB;
-  wxCheckBox*     m_System_UseAltAutoTypeCB;
-#endif
 
   uint32 m_hashIterValue;
   int m_DoubleClickAction;
