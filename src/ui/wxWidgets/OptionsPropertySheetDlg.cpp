@@ -316,9 +316,9 @@ void OptionsPropertySheetDlg::CreateControls()
   // Tab: "System"
   /////////////////////////////////////////////////////////////////////////////
 
-  m_Backup_Panel = CreateSystemPanel();
+  m_System_Panel = CreateSystemPanel();
 
-  GetBookCtrl()->AddPage(m_Backup_Panel, _("System"), false, 6);
+  GetBookCtrl()->AddPage(m_System_Panel, _("System"), false, 6);
 
   /////////////////////////////////////////////////////////////////////////////
   // End of Tab Creation
