@@ -444,9 +444,9 @@ wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel()
   display_ShowUsernameInTreeCB->SetValue(false);
   itemBoxSizer30->Add(display_ShowUsernameInTreeCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* display_ShowPasswordInTreeCB = new wxCheckBox( itemPanel29, ID_CHECKBOX14, _("Show Password in Tree View"), wxDefaultPosition, wxDefaultSize, 0 );
-  display_ShowPasswordInTreeCB->SetValue(false);
-  itemBoxSizer30->Add(display_ShowPasswordInTreeCB, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Display_ShowPasswordInTreeCB = new wxCheckBox( itemPanel29, ID_CHECKBOX14, _("Show Password in Tree View"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Display_ShowPasswordInTreeCB->SetValue(false);
+  itemBoxSizer30->Add(m_Display_ShowPasswordInTreeCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxCheckBox* display_ShowPasswordInEditCB = new wxCheckBox( itemPanel29, ID_CHECKBOX16, _("Show Password in Add && Edit"), wxDefaultPosition, wxDefaultSize, 0 );
   display_ShowPasswordInEditCB->SetValue(false);
@@ -474,16 +474,16 @@ wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel()
   display_PreExpiryWarnCB->SetValue(false);
   itemBoxSizer39->Add(display_PreExpiryWarnCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxSpinCtrl* display_PreExpiryWarnDaysSB = new wxSpinCtrl(
+  m_Display_PreExpiryWarnDaysSB = new wxSpinCtrl(
     itemPanel29, ID_SPINCTRL10, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::PreExpiryWarnDays),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::PreExpiryWarnDays),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::PreExpiryWarnDays)
   );
 
-  FixInitialSpinnerSize(display_PreExpiryWarnDaysSB);
+  FixInitialSpinnerSize(m_Display_PreExpiryWarnDaysSB);
 
-  itemBoxSizer39->Add(display_PreExpiryWarnDaysSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer39->Add(m_Display_PreExpiryWarnDaysSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText42 = new wxStaticText( itemPanel29, wxID_STATIC, _("days before passwords expire"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer39->Add(itemStaticText42, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
