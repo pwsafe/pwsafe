@@ -197,17 +197,17 @@ OptionsPropertySheetDlg::~OptionsPropertySheetDlg()
 void OptionsPropertySheetDlg::Init()
 {
 ////@begin OptionsPropertySheetDlg member initialisation
-  m_Backup_Panel = nullptr;
-  m_Backup_DefaultPrefixRB = nullptr;
-  m_Backup_UserPrefixRB = nullptr;
-  m_Backup_UserPrefixTXT = nullptr;
-  m_Backup_SuffixCB = nullptr;
-  m_Backup_MaxIncrSB = nullptr;
-  m_Backup_SuffixExampleST = nullptr;
-  m_Backup_DefaultDirRB = nullptr;
-  m_Backup_UserDirRB = nullptr;
-  m_Backup_UserDirTXT = nullptr;
-  m_Backup_DirBN = nullptr;
+  m_Backups_Panel = nullptr;
+  m_Backups_DefaultPrefixRB = nullptr;
+  m_Backups_UserPrefixRB = nullptr;
+  m_Backups_UserPrefixTXT = nullptr;
+  m_Backups_SuffixCB = nullptr;
+  m_Backups_MaxIncrSB = nullptr;
+  m_Backups_SuffixExampleST = nullptr;
+  m_Backups_DefaultDirRB = nullptr;
+  m_Backups_UserDirRB = nullptr;
+  m_Backups_UserDirTXT = nullptr;
+  m_Backups_DirBN = nullptr;
 
   m_Display_Panel = nullptr;
   m_Display_ShowPasswordInTreeCB = nullptr;
@@ -268,68 +268,112 @@ void OptionsPropertySheetDlg::CreateControls()
   // Tab: "Backups"
   /////////////////////////////////////////////////////////////////////////////
 
-  m_Backup_Panel = CreateBackupsPanel();
+  wxString backupsTabTitle = _("Backups");
 
-  GetBookCtrl()->AddPage(m_Backup_Panel, _("Backups"), false, 0);
+  m_Backups_Panel = CreateBackupsPanel(backupsTabTitle);
+
+  GetBookCtrl()->AddPage(m_Backups_Panel, backupsTabTitle, false, 0);
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Display"
   /////////////////////////////////////////////////////////////////////////////
 
-  m_Display_Panel = CreateDisplayPanel();
+  wxString displayTabTitle = _("Display");
 
-  GetBookCtrl()->AddPage(m_Display_Panel, _("Display"), false, 1);
+  m_Display_Panel = CreateDisplayPanel(displayTabTitle);
+
+  GetBookCtrl()->AddPage(m_Display_Panel, displayTabTitle, false, 1);
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Miscellaneous"
   /////////////////////////////////////////////////////////////////////////////
 
-  m_Misc_Panel = CreateMiscellaneousPanel();
+  wxString miscTabTitle = _("Miscellaneous");
 
-  GetBookCtrl()->AddPage(m_Misc_Panel, _("Miscellaneous"), false, 2);
+  m_Misc_Panel = CreateMiscellaneousPanel(miscTabTitle);
+
+  GetBookCtrl()->AddPage(m_Misc_Panel, miscTabTitle, false, 2);
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Password History"
   /////////////////////////////////////////////////////////////////////////////
 
-  m_PasswordHistory_Panel = CreatePasswordHistoryPanel();
+  wxString passwordHistoryTabTitle = _("Password History");
 
-  GetBookCtrl()->AddPage(m_PasswordHistory_Panel, _("Password History"), false, 3);
+  m_PasswordHistory_Panel = CreatePasswordHistoryPanel(passwordHistoryTabTitle);
+
+  GetBookCtrl()->AddPage(m_PasswordHistory_Panel, passwordHistoryTabTitle, false, 3);
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Security"
   /////////////////////////////////////////////////////////////////////////////
 
-  m_Security_Panel = CreateSecurityPanel();
+  wxString securityTabTitle = _("Security");
 
-  GetBookCtrl()->AddPage(m_Security_Panel, _("Security"), false, 4);
+  m_Security_Panel = CreateSecurityPanel(securityTabTitle);
+
+  GetBookCtrl()->AddPage(m_Security_Panel, securityTabTitle, false, 4);
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Shortcuts"
   /////////////////////////////////////////////////////////////////////////////
 
-  m_Shortcuts_Panel = CreateShortcutsPanel();
+  wxString shortcutsTabTitle = _("Shortcuts");
 
-  GetBookCtrl()->AddPage(m_Shortcuts_Panel, _("Shortcuts"), false, 5);
+  m_Shortcuts_Panel = CreateShortcutsPanel(shortcutsTabTitle);
+
+  GetBookCtrl()->AddPage(m_Shortcuts_Panel, shortcutsTabTitle, false, 5);
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "System"
   /////////////////////////////////////////////////////////////////////////////
 
-  m_System_Panel = CreateSystemPanel();
+  wxString systemTabTitle = _("System");
 
-  GetBookCtrl()->AddPage(m_System_Panel, _("System"), false, 6);
+  m_System_Panel = CreateSystemPanel(systemTabTitle);
+
+  GetBookCtrl()->AddPage(m_System_Panel, systemTabTitle, false, 6);
 
   /////////////////////////////////////////////////////////////////////////////
   // End of Tab Creation
   /////////////////////////////////////////////////////////////////////////////
 }
 
-wxPanel* OptionsPropertySheetDlg::CreateBackupsPanel()
+wxPanel* OptionsPropertySheetDlg::CreateHeaderPanel(wxWindow* parent, const wxString& title)
+{
+  auto headerPanel = new wxPanel(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+  auto bgColor = headerPanel->GetBackgroundColour();
+
+  auto red   = bgColor.Red();
+  auto green = bgColor.Green();
+  auto blue  = bgColor.Blue();
+
+  const auto alpha = 80; // make the panel slightly darker than the default color
+
+  wxColor::ChangeLightness(&red, &green, &blue, alpha);
+  headerPanel->SetBackgroundColour(wxColor(red, green, blue));
+
+  auto sizer = new wxBoxSizer(wxVERTICAL);
+  headerPanel->SetSizer(sizer);
+
+  const int FONT_SIZE = 16;
+  auto headerTitle = new wxStaticText(headerPanel, wxID_ANY, title, wxDefaultPosition, wxSize(-1, 2 * FONT_SIZE), wxALIGN_CENTRE_HORIZONTAL);
+  headerTitle->SetOwnFont(
+    wxFont(FONT_SIZE, wxFONTFAMILY_MODERN, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_BOLD)
+  );
+
+  sizer->Add(headerTitle, 0, wxEXPAND|wxALL, 5);
+
+  return headerPanel;
+}
+
+wxPanel* OptionsPropertySheetDlg::CreateBackupsPanel(const wxString& title)
 {
   wxPanel* itemPanel2 = new wxPanel( GetBookCtrl(), ID_PANEL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   itemPanel2->SetSizer(itemBoxSizer3);
+
+  itemBoxSizer3->Add(CreateHeaderPanel(itemPanel2, title), 0, wxEXPAND|wxALL, 5);
 
   wxCheckBox* backup_SaveImmediatelyCB = new wxCheckBox( itemPanel2, ID_CHECKBOX10, _("Save database immediately after any change"), wxDefaultPosition, wxDefaultSize, 0 );
   backup_SaveImmediatelyCB->SetValue(false);
@@ -348,18 +392,18 @@ wxPanel* OptionsPropertySheetDlg::CreateBackupsPanel()
   wxStaticText* itemStaticText8 = new wxStaticText( itemPanel2, wxID_STATIC, _("Base:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer7->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_Backup_DefaultPrefixRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON4, _("Database name"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-  m_Backup_DefaultPrefixRB->SetValue(false);
-  itemStaticBoxSizer7->Add(m_Backup_DefaultPrefixRB, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Backups_DefaultPrefixRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON4, _("Database name"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+  m_Backups_DefaultPrefixRB->SetValue(false);
+  itemStaticBoxSizer7->Add(m_Backups_DefaultPrefixRB, 0, wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer7->Add(itemBoxSizer10, 0, wxEXPAND|wxALL, 0);
-  m_Backup_UserPrefixRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON5, _("Other:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_Backup_UserPrefixRB->SetValue(false);
-  itemBoxSizer10->Add(m_Backup_UserPrefixRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Backups_UserPrefixRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON5, _("Other:"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Backups_UserPrefixRB->SetValue(false);
+  itemBoxSizer10->Add(m_Backups_UserPrefixRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_Backup_UserPrefixTXT = new wxTextCtrl( itemPanel2, ID_TEXTCTRL9, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(100, -1)).x, -1), 0 );
-  itemBoxSizer10->Add(m_Backup_UserPrefixTXT, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Backups_UserPrefixTXT = new wxTextCtrl( itemPanel2, ID_TEXTCTRL9, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(100, -1)).x, -1), 0 );
+  itemBoxSizer10->Add(m_Backups_UserPrefixTXT, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticLine* itemStaticLine13 = new wxStaticLine( itemPanel2, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
   itemStaticBoxSizer7->Add(itemStaticLine13, 0, wxEXPAND|wxALL, 5);
@@ -373,30 +417,30 @@ wxPanel* OptionsPropertySheetDlg::CreateBackupsPanel()
   for (int i = 0; i < int(sizeof(BACKUP_SUFFIX)/sizeof(BACKUP_SUFFIX[0])); ++i) {
     Backup_SuffixCBStrings.Add(_(BACKUP_SUFFIX[i]));
   }
-  m_Backup_SuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), Backup_SuffixCBStrings, wxCB_READONLY );
-  itemBoxSizer15->Add(m_Backup_SuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Backups_SuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), Backup_SuffixCBStrings, wxCB_READONLY );
+  itemBoxSizer15->Add(m_Backups_SuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText17 = new wxStaticText( itemPanel2, wxID_STATIC, _("Max."), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer15->Add(itemStaticText17, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_Backup_MaxIncrSB = new wxSpinCtrl(
+  m_Backups_MaxIncrSB = new wxSpinCtrl(
     itemPanel2, ID_SPINCTRL9, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
     PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::BackupMaxIncremented),
     PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::BackupMaxIncremented),
     PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::BackupMaxIncremented)
   );
 
-  FixInitialSpinnerSize(m_Backup_MaxIncrSB);
+  FixInitialSpinnerSize(m_Backups_MaxIncrSB);
 
-  itemBoxSizer15->Add(m_Backup_MaxIncrSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer15->Add(m_Backups_MaxIncrSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemBoxSizer19 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer7->Add(itemBoxSizer19, 0, wxEXPAND|wxALL, 5);
   wxStaticText* itemStaticText20 = new wxStaticText( itemPanel2, wxID_STATIC, _("Example:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer19->Add(itemStaticText20, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_Backup_SuffixExampleST = new wxStaticText( itemPanel2, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(160, -1)).x, -1), 0 );
-  itemBoxSizer19->Add(m_Backup_SuffixExampleST, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Backups_SuffixExampleST = new wxStaticText( itemPanel2, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(160, -1)).x, -1), 0 );
+  itemBoxSizer19->Add(m_Backups_SuffixExampleST, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticLine* itemStaticLine22 = new wxStaticLine( itemPanel2, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
   itemStaticBoxSizer5->Add(itemStaticLine22, 0, wxEXPAND|wxALL, 5);
@@ -404,37 +448,39 @@ wxPanel* OptionsPropertySheetDlg::CreateBackupsPanel()
   wxStaticText* itemStaticText23 = new wxStaticText( itemPanel2, wxID_STATIC, _("Backup directory:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer5->Add(itemStaticText23, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_Backup_DefaultDirRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON6, _("Same as database's"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-  m_Backup_DefaultDirRB->SetValue(false);
-  itemStaticBoxSizer5->Add(m_Backup_DefaultDirRB, 0, wxALIGN_LEFT|wxALL, 5);
+  m_Backups_DefaultDirRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON6, _("Same as database's"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+  m_Backups_DefaultDirRB->SetValue(false);
+  itemStaticBoxSizer5->Add(m_Backups_DefaultDirRB, 0, wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer25 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer5->Add(itemBoxSizer25, 0, wxEXPAND|wxALL, 0);
-  m_Backup_UserDirRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON7, _("Other:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_Backup_UserDirRB->SetValue(false);
-  itemBoxSizer25->Add(m_Backup_UserDirRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Backups_UserDirRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON7, _("Other:"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Backups_UserDirRB->SetValue(false);
+  itemBoxSizer25->Add(m_Backups_UserDirRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_Backup_UserDirTXT = new wxTextCtrl( itemPanel2, ID_TEXTCTRL10, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer25->Add(m_Backup_UserDirTXT, 1, wxEXPAND|wxALL, 5);
+  m_Backups_UserDirTXT = new wxTextCtrl( itemPanel2, ID_TEXTCTRL10, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer25->Add(m_Backups_UserDirTXT, 1, wxEXPAND|wxALL, 5);
 
-  m_Backup_DirBN = new wxButton( itemPanel2, ID_BUTTON, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer25->Add(m_Backup_DirBN, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Backups_DirBN = new wxButton( itemPanel2, ID_BUTTON, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer25->Add(m_Backups_DirBN, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   // Backups Preferences
   backup_SaveImmediatelyCB->SetValidator( wxGenericValidator(& m_Backup_SaveImmediately) );
   backup_BackupBeforeSaveCB->SetValidator( wxGenericValidator(& m_Backup_BackupBeforeSave) );
 
   // Connect events and objects
-  m_Backup_UserPrefixTXT->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(OptionsPropertySheetDlg::OnBuPrefixTxtSetFocus), nullptr, this);
+  m_Backups_UserPrefixTXT->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(OptionsPropertySheetDlg::OnBuPrefixTxtSetFocus), nullptr, this);
 
   return itemPanel2;
 }
 
-wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel()
+wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel(const wxString& title)
 {
   wxPanel* itemPanel29 = new wxPanel( GetBookCtrl(), ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer30 = new wxBoxSizer(wxVERTICAL);
   itemPanel29->SetSizer(itemBoxSizer30);
+
+  itemBoxSizer30->Add(CreateHeaderPanel(itemPanel29, title), 0, wxEXPAND|wxALL, 5);
 
   wxCheckBox* display_AlwaysOnTopCB = new wxCheckBox( itemPanel29, ID_CHECKBOX12, _("Always keep Password Safe on top"), wxDefaultPosition, wxDefaultSize, 0 );
   display_AlwaysOnTopCB->SetValue(false);
@@ -510,11 +556,13 @@ wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel()
   return itemPanel29;
 }
 
-wxPanel* OptionsPropertySheetDlg::CreateMiscellaneousPanel()
+wxPanel* OptionsPropertySheetDlg::CreateMiscellaneousPanel(const wxString& title)
 {
   wxPanel* itemPanel44 = new wxPanel( GetBookCtrl(), ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer45 = new wxBoxSizer(wxVERTICAL);
   itemPanel44->SetSizer(itemBoxSizer45);
+
+  itemBoxSizer45->Add(CreateHeaderPanel(itemPanel44, title), 0, wxEXPAND|wxALL, 5);
 
   wxCheckBox* misc_ConfirmDeleteCB = new wxCheckBox( itemPanel44, ID_CHECKBOX20, _("Confirm deletion of items"), wxDefaultPosition, wxDefaultSize, 0 );
   misc_ConfirmDeleteCB->SetValue(false);
@@ -626,11 +674,13 @@ wxPanel* OptionsPropertySheetDlg::CreateMiscellaneousPanel()
   return itemPanel44;
 }
 
-wxPanel* OptionsPropertySheetDlg::CreatePasswordHistoryPanel()
+wxPanel* OptionsPropertySheetDlg::CreatePasswordHistoryPanel(const wxString& title)
 {
   wxPanel* itemPanel74 = new wxPanel( GetBookCtrl(), ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer75 = new wxBoxSizer(wxVERTICAL);
   itemPanel74->SetSizer(itemBoxSizer75);
+
+  itemBoxSizer75->Add(CreateHeaderPanel(itemPanel74, title), 0, wxEXPAND|wxALL, 5);
 
   auto *itemBoxSizer76 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer75->Add(itemBoxSizer76, 0, wxEXPAND|wxALL, 5);
@@ -709,11 +759,13 @@ wxPanel* OptionsPropertySheetDlg::CreatePasswordHistoryPanel()
   return itemPanel74;
 }
 
-wxPanel* OptionsPropertySheetDlg::CreateSecurityPanel()
+wxPanel* OptionsPropertySheetDlg::CreateSecurityPanel(const wxString& title)
 {
   wxPanel* itemPanel86 = new wxPanel( GetBookCtrl(), ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer87 = new wxBoxSizer(wxVERTICAL);
   itemPanel86->SetSizer(itemBoxSizer87);
+
+  itemBoxSizer87->Add(CreateHeaderPanel(itemPanel86, title), 0, wxEXPAND|wxALL, 5);
 
   wxCheckBox* security_ClearClipboardOnMinimizeCB = new wxCheckBox( itemPanel86, ID_CHECKBOX27, _("Clear clipboard upon minimize"), wxDefaultPosition, wxDefaultSize, 0 );
   security_ClearClipboardOnMinimizeCB->SetValue(false);
@@ -790,11 +842,13 @@ wxPanel* OptionsPropertySheetDlg::CreateSecurityPanel()
   return itemPanel86;
 }
 
-wxPanel* OptionsPropertySheetDlg::CreateShortcutsPanel()
+wxPanel* OptionsPropertySheetDlg::CreateShortcutsPanel(const wxString& title)
 {
   wxPanel* itemPanel123 = new wxPanel(GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
   auto *itemBoxSizer155 = new wxBoxSizer(wxVERTICAL);
   itemPanel123->SetSizer(itemBoxSizer155);
+
+  itemBoxSizer155->Add(CreateHeaderPanel(itemPanel123, title), 0, wxEXPAND|wxALL, 5);
 
   wxGrid* itemGrid124 = new wxGrid(itemPanel123, ID_GRID1, wxDefaultPosition, itemPanel123->ConvertDialogToPixels(wxSize(200, 150)), wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL);
   itemGrid124->SetDefaultColSize(150);
@@ -808,11 +862,13 @@ wxPanel* OptionsPropertySheetDlg::CreateShortcutsPanel()
   return itemPanel123;
 }
 
-wxPanel* OptionsPropertySheetDlg::CreateSystemPanel()
+wxPanel* OptionsPropertySheetDlg::CreateSystemPanel(const wxString& title)
 {
   wxPanel* itemPanel104 = new wxPanel( GetBookCtrl(), ID_PANEL6, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
   auto *itemBoxSizer105 = new wxBoxSizer(wxVERTICAL);
   itemPanel104->SetSizer(itemBoxSizer105);
+
+  itemBoxSizer105->Add(CreateHeaderPanel(itemPanel104, title), 0, wxEXPAND|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer106Static = new wxStaticBox(itemPanel104, wxID_ANY, _("System Tray"));
   auto *itemStaticBoxSizer106 = new wxStaticBoxSizer(itemStaticBoxSizer106Static, wxVERTICAL);
@@ -951,16 +1007,16 @@ void OptionsPropertySheetDlg::PrefsToPropSheet()
   m_Backup_SaveImmediately = prefs->GetPref(PWSprefs::SaveImmediately);
   m_Backup_BackupBeforeSave = prefs->GetPref(PWSprefs::BackupBeforeEverySave);
   wxString buprefixValue = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
-  m_Backup_DefaultPrefixRB->SetValue(buprefixValue.empty());
-  m_Backup_UserPrefixRB->SetValue(!buprefixValue.empty());
-  m_Backup_UserPrefixTXT->SetValue(buprefixValue);
+  m_Backups_DefaultPrefixRB->SetValue(buprefixValue.empty());
+  m_Backups_UserPrefixRB->SetValue(!buprefixValue.empty());
+  m_Backups_UserPrefixTXT->SetValue(buprefixValue);
   int suffixIndex = prefs->GetPref(PWSprefs::BackupSuffix);
-  m_Backup_SuffixCB->Select(suffixIndex);
-  m_Backup_MaxIncrSB->SetValue(prefs->GetPref(PWSprefs::BackupMaxIncremented));
+  m_Backups_SuffixCB->Select(suffixIndex);
+  m_Backups_MaxIncrSB->SetValue(prefs->GetPref(PWSprefs::BackupMaxIncremented));
   wxString budirValue = prefs->GetPref(PWSprefs::BackupDir).c_str();
-  m_Backup_DefaultDirRB->SetValue(budirValue.empty());
-  m_Backup_UserDirRB->SetValue(!budirValue.empty());
-  m_Backup_UserDirTXT->SetValue(budirValue);
+  m_Backups_DefaultDirRB->SetValue(budirValue.empty());
+  m_Backups_UserDirRB->SetValue(!budirValue.empty());
+  m_Backups_UserDirTXT->SetValue(budirValue);
 
   // display-related preferences
   m_Display_AlwaysOnTop = prefs->GetPref(PWSprefs::AlwaysOnTop);
@@ -1063,16 +1119,16 @@ void OptionsPropertySheetDlg::PropSheetToPrefs()
   // Backup-related preferences
   prefs->SetPref(PWSprefs::BackupBeforeEverySave, m_Backup_BackupBeforeSave);
   wxString buprefixValue;
-  if (m_Backup_UserPrefixRB->GetValue())
-    buprefixValue = m_Backup_UserPrefixTXT->GetValue();
+  if (m_Backups_UserPrefixRB->GetValue())
+    buprefixValue = m_Backups_UserPrefixTXT->GetValue();
   prefs->SetPref(PWSprefs::BackupPrefixValue, tostringx(buprefixValue));
-  int suffixIndex = m_Backup_SuffixCB->GetCurrentSelection();
+  int suffixIndex = m_Backups_SuffixCB->GetCurrentSelection();
   prefs->SetPref(PWSprefs::BackupSuffix, suffixIndex);
   if (suffixIndex == INC_SFX)
-    prefs->SetPref(PWSprefs::BackupMaxIncremented, m_Backup_MaxIncrSB->GetValue());
+    prefs->SetPref(PWSprefs::BackupMaxIncremented, m_Backups_MaxIncrSB->GetValue());
   wxString budirValue;
-  if (m_Backup_UserDirRB->GetValue())
-    budirValue = m_Backup_UserDirTXT->GetValue();
+  if (m_Backups_UserDirRB->GetValue())
+    budirValue = m_Backups_UserDirTXT->GetValue();
   prefs->SetPref(PWSprefs::BackupDir, tostringx(budirValue));
 
   // display-related preferences
@@ -1189,11 +1245,11 @@ void OptionsPropertySheetDlg::OnOk(wxCommandEvent& WXUNUSED(evt))
 void OptionsPropertySheetDlg::OnBackupB4SaveClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
-    m_Backup_DefaultPrefixRB->Enable(m_Backup_BackupBeforeSave);
-    m_Backup_UserPrefixRB->Enable(m_Backup_BackupBeforeSave);
-    m_Backup_UserPrefixTXT->Enable(m_Backup_BackupBeforeSave);
-    m_Backup_SuffixCB->Enable(m_Backup_BackupBeforeSave);
-    m_Backup_MaxIncrSB->Enable(m_Backup_BackupBeforeSave);
+    m_Backups_DefaultPrefixRB->Enable(m_Backup_BackupBeforeSave);
+    m_Backups_UserPrefixRB->Enable(m_Backup_BackupBeforeSave);
+    m_Backups_UserPrefixTXT->Enable(m_Backup_BackupBeforeSave);
+    m_Backups_SuffixCB->Enable(m_Backup_BackupBeforeSave);
+    m_Backups_MaxIncrSB->Enable(m_Backup_BackupBeforeSave);
   }
 }
 
@@ -1212,8 +1268,8 @@ void OptionsPropertySheetDlg::OnBuPrefix( wxCommandEvent& evt )
 
 void OptionsPropertySheetDlg::OnBuPrefixTxtSetFocus(wxFocusEvent& WXUNUSED(evt))
 {
-  m_Backup_DefaultPrefixRB->SetValue(false);
-  m_Backup_UserPrefixRB->SetValue(true);
+  m_Backups_DefaultPrefixRB->SetValue(false);
+  m_Backups_UserPrefixRB->SetValue(true);
 }
 
 /*!
@@ -1222,16 +1278,16 @@ void OptionsPropertySheetDlg::OnBuPrefixTxtSetFocus(wxFocusEvent& WXUNUSED(evt))
 
 void OptionsPropertySheetDlg::OnSuffixCBSet(wxCommandEvent& WXUNUSED(evt))
 {
-  int suffixIndex = m_Backup_SuffixCB->GetCurrentSelection();
-  wxString example = m_Backup_UserPrefixTXT->GetValue();
+  int suffixIndex = m_Backups_SuffixCB->GetCurrentSelection();
+  wxString example = m_Backups_UserPrefixTXT->GetValue();
 
   if (example.empty())
     example = wxT("pwsafe"); // XXXX get current file's basename!
 
-  m_Backup_MaxIncrSB->Enable(suffixIndex == INC_SFX);
+  m_Backups_MaxIncrSB->Enable(suffixIndex == INC_SFX);
   switch (suffixIndex) {
   case NO_SFX:
-    m_Backup_SuffixExampleST->SetLabel(wxEmptyString);
+    m_Backups_SuffixExampleST->SetLabel(wxEmptyString);
     break;
   case TS_SFX: {
     time_t now;
@@ -1254,7 +1310,7 @@ void OptionsPropertySheetDlg::OnSuffixCBSet(wxCommandEvent& WXUNUSED(evt))
   default:
     break;
   }
-  m_Backup_SuffixExampleST->SetLabel(example);
+  m_Backups_SuffixExampleST->SetLabel(example);
 }
 
 /*!
@@ -1266,7 +1322,7 @@ void OptionsPropertySheetDlg::OnBuDirBrowseClick(wxCommandEvent& WXUNUSED(evt))
   wxDirDialog dirdlg(this);
   int status = dirdlg.ShowModal();
   if (status == wxID_OK)
-    m_Backup_UserDirTXT->SetValue(dirdlg.GetPath());
+    m_Backups_UserDirTXT->SetValue(dirdlg.GetPath());
 }
 
 /*!
@@ -1384,8 +1440,8 @@ void OptionsPropertySheetDlg::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!dbIsReadOnly);
       break;
     case ID_RADIOBUTTON7:
-      m_Backup_UserDirTXT->Enable(m_Backup_UserDirRB->GetValue());
-      m_Backup_DirBN->Enable(m_Backup_UserDirRB->GetValue());
+      m_Backups_UserDirTXT->Enable(m_Backups_UserDirRB->GetValue());
+      m_Backups_DirBN->Enable(m_Backups_UserDirRB->GetValue());
       break;
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Display"

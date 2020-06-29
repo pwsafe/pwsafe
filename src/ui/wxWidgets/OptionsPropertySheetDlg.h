@@ -220,13 +220,14 @@ private:
   void PropSheetToPrefs();
   int GetRequiredPWLength() const;
 
-  wxPanel* CreateBackupsPanel();
-  wxPanel* CreateDisplayPanel();
-  wxPanel* CreateMiscellaneousPanel();
-  wxPanel* CreatePasswordHistoryPanel();
-  wxPanel* CreateSecurityPanel();
-  wxPanel* CreateShortcutsPanel();
-  wxPanel* CreateSystemPanel();
+  wxPanel* CreateHeaderPanel(wxWindow* parent, const wxString& title);
+  wxPanel* CreateBackupsPanel(const wxString& title);
+  wxPanel* CreateDisplayPanel(const wxString& title);
+  wxPanel* CreateMiscellaneousPanel(const wxString& title);
+  wxPanel* CreatePasswordHistoryPanel(const wxString& title);
+  wxPanel* CreateSecurityPanel(const wxString& title);
+  wxPanel* CreateShortcutsPanel(const wxString& title);
+  wxPanel* CreateSystemPanel(const wxString& title);
 
 ////@begin OptionsPropertySheetDlg member variables
 private:
@@ -234,17 +235,17 @@ private:
   wxImageList*    m_ImageList;
 
   // Tab: "Backups"
-  wxPanel*        m_Backup_Panel;
-  wxRadioButton*  m_Backup_DefaultPrefixRB;
-  wxRadioButton*  m_Backup_UserPrefixRB;
-  wxTextCtrl*     m_Backup_UserPrefixTXT;
-  wxComboBox*     m_Backup_SuffixCB;
-  wxSpinCtrl*     m_Backup_MaxIncrSB;
-  wxStaticText*   m_Backup_SuffixExampleST;
-  wxRadioButton*  m_Backup_DefaultDirRB;
-  wxRadioButton*  m_Backup_UserDirRB;
-  wxTextCtrl*     m_Backup_UserDirTXT;
-  wxButton*       m_Backup_DirBN;
+  wxPanel*        m_Backups_Panel;
+  wxRadioButton*  m_Backups_DefaultPrefixRB;
+  wxRadioButton*  m_Backups_UserPrefixRB;
+  wxTextCtrl*     m_Backups_UserPrefixTXT;
+  wxComboBox*     m_Backups_SuffixCB;
+  wxSpinCtrl*     m_Backups_MaxIncrSB;
+  wxStaticText*   m_Backups_SuffixExampleST;
+  wxRadioButton*  m_Backups_DefaultDirRB;
+  wxRadioButton*  m_Backups_UserDirRB;
+  wxTextCtrl*     m_Backups_UserDirTXT;
+  wxButton*       m_Backups_DirBN;
 
   // Tab: "Display"
   wxPanel*        m_Display_Panel;
