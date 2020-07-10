@@ -202,7 +202,7 @@ public:
 
   bool GetPrefDefVal(BoolPrefs pref_enum) const;
   unsigned int GetPrefDefVal(IntPrefs pref_enum) const;
-  StringX GetPrefDefVal(StringPrefs pref_enum) const;
+  const TCHAR* const GetPrefDefVal(StringPrefs pref_enum) const;
 
   int GetPrefMinVal(IntPrefs pref_enum) const;
   int GetPrefMaxVal(IntPrefs pref_enum) const;

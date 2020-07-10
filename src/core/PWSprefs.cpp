@@ -288,7 +288,7 @@ unsigned int PWSprefs::GetPrefDefVal(IntPrefs pref_enum) const
   return m_int_prefs[pref_enum].defVal;
 }
 
-StringX PWSprefs::GetPrefDefVal(StringPrefs pref_enum) const
+const TCHAR* const PWSprefs::GetPrefDefVal(StringPrefs pref_enum) const
 {
   return m_string_prefs[pref_enum].defVal;
 }

@@ -28,7 +28,7 @@ void PWSrand::DeleteInstance()
 }
 
 PWSrand::PWSrand()
-  : ibRandomData(SHA256::HASHLEN)
+  : R{}, rgbRandomData{}, ibRandomData(SHA256::HASHLEN)
 {
   m_IsInternalPRNG = !pws_os::InitRandomDataFunction();
 
