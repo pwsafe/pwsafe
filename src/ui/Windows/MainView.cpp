@@ -1465,11 +1465,11 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
   PWS_LOGIT_ARGS("nType=%d", nType);
 
   // Note that onsize runs before InitDialog (Gee, I love MFC)
-  //  Also, OnSize is called AFTER the function has been peformed.
+  //  Also, OnSize is called AFTER the function has been performed.
   //  To verify IF the function should be done at all, it must be checked in OnSysCommand.
   CDialog::OnSize(nType, cx, cy);
 
-  // If m_bInitDone not true, then dialog has not yet been completely initialised
+  // If m_bInitDone not true, then dialog has not yet been completely initialized
   if (!m_bInitDone) 
     return;
 
@@ -1613,7 +1613,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       }
 
       GetWindowRect(&rc);
-      PWSprefs::GetInstance()->SetPrefRect(rc.top, rc.bottom, rc.left, rc.right);
+      prefs->SetPrefRect(rc.top, rc.bottom, rc.left, rc.right);
 
       // Set timer for user-defined idle lockout, if selected (DB preference)
       KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
