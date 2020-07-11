@@ -2656,7 +2656,7 @@ void CPWTreeCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   static bool bchanged_item_font(false);
   static bool bitem_selected(false);
   static CFont *pTreeListFont;
-  static CDC *pDC = NULL;
+  static CDC *pDC = nullptr;
   
   HTREEITEM hItem = (HTREEITEM)pTVCD->nmcd.dwItemSpec;
   CItemData *pci = (CItemData *)pTVCD->nmcd.lItemlParam;
@@ -2676,7 +2676,7 @@ void CPWTreeCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       if (m_bUseHighLighting) {
         COLORREF cf;
         CFont *uFont = GetFontBasedOnStatus(hItem, pci, cf);
-        if (uFont != NULL) {
+        if (uFont != nullptr && pDC != nullptr) {
           bchanged_item_font = true;
           pDC->SelectObject(uFont);
           // Set text color only when current node isn't selected

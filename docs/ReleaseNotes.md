@@ -1,3 +1,19 @@
+Password Safe 3.53pre Release July 2020
+=======================================
+
+This note describes the new features, fixed bugs and known problems
+with the latest versions of Password Safe. For a short description of
+Password Safe, please see the accompanying README.md file. For more
+information on the product and the project, please visit
+https://pwsafe.org/. Details about changes to older
+releases may be found in the file ChangeLog.txt.
+
+In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
+
+Bugs Fixed in 3.523pre
+----------------------
+* [SF1518](https://sourceforge.net/p/passwordsafe/bugs/1518) Fixed rare crash after dragging item outside of PasswordSafe.
+
 PasswordSafe non-Windows release 1.11
 =====================================
 
@@ -11,15 +27,6 @@ PasswordSafe non-Windows release 1.11
 
 Password Safe 3.52 Release April 2020
 =====================================
-
-This note describes the new features, fixed bugs and known problems
-with the latest versions of Password Safe. For a short description of
-Password Safe, please see the accompanying README.md file. For more
-information on the product and the project, please visit
-https://pwsafe.org/. Details about changes to older
-releases may be found in the file ChangeLog.txt.
-
-In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
 Bugs Fixed in 3.52
 ------------------
