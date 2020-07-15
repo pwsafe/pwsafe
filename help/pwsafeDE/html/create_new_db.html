@@ -27,7 +27,8 @@ Name und Speicherort  der Datenbank festzulegen (standardm&auml;&szlig;ig wird "
 Darum enpfehlen regelm&auml;&szlig;ig Kopien anzufertigen von der Passwortdatenbank 'off-line', d.h auf einem anderen PC oder Festplatte. 
 Dies k&ouml;nnen Sie entweder h&auml;ndisch machen, oder mit einem Cloud Speicherdienst wie <a href="https://www.dropbox.com/home">DropBox</a>,
       <a href="https://www.sugarsync.com/">SugarSync</a> oder <a href="https://www.jungledisk.com/">JungleDisk</a>, um nur ein paar zu nennen.</p>
-    <p>Ebenfalls ein &Uuml;berlegung wert w&auml;re es Ma&szlig;nahmen zu treffen f&uuml;r den Zugriff auf Ihre Datenbanken, sei es f&uuml;r Verwandte oder Mitarbeiter, im Falle Sie nicht mehr weitermachen k&ouml;nnen.
+    <p>Ebenfalls ein &Uuml;berlegung wert w&auml;re es Ma&szlig;nahmen zu treffen f&uuml;r den Zugriff auf Ihre Datenbanken, sei es f&uuml;r Verwandte oder Mitarbeiter, 
+    im Falle Sie nicht mehr weitermachen k&ouml;nnen.
     Vom Konzept her hat <strong>Password Safe</strong> von Haus aus <strong>kein</strong> 'Hintert&uuml;rchen' oder 'Passwortwiederherstellung'.
     Das bedeutet dass Sie selbst daf&uuml;r verantwortlich sind anderen Zugang zu Ihrem Master-Passwort zu geben und zu gew&auml;hrleisten.
     Dies kann einfach in einem geschlossenen Umschlag geschehen, vielleicht sogar im Tresor.
@@ -35,9 +36,13 @@ Dies k&ouml;nnen Sie entweder h&auml;ndisch machen, oder mit einem Cloud Speiche
 
 
 <h3>Neue Datenbank erstellen</h3>
-<p>Es gibt zwei M&ouml;glichkeiten eine neue Datenbank zu erstellen. Durch Klicken auf <b>Neue Datenbank</b> im <b>Eingabe des Master-Passwortes</b> Dialog beim Start der Anwendung, oder mit Men&uuml; <b>Datei-&gt;Neu</b>, wenn <b>Password Safe</b> ge&ouml;ffnet ist. Beide Methoden rufen dann den Dialog <b>Einstellung Master-Passwort</b> auf.</p>
+<p>Es gibt zwei M&ouml;glichkeiten eine neue Datenbank zu erstellen. Durch Klicken auf <b>Neue Datenbank</b> im <b>Eingabe des Master-Passwortes</b> Dialog beim Start der Anwendung, 
+oder mit Men&uuml; <b>Datei-&gt;Neu</b>, wenn <b>Password Safe</b> ge&ouml;ffnet ist. Beide Methoden rufen dann den Dialog <b>Einstellung Master-Passwort</b> auf.</p>
 <hr>
-			<small><b>Hinweis:</b> Standardm&auml;&szlig;ig wird <b>Password Safe</b> die zuletzt benutzte Datenbank vorschlagen und zur Eingabe des Master-Passwortes auffordern. Wenn Sie mehrere Datenbanken verwenden, k&ouml;nnen Sie eine Auswahl aus der Liste treffen. Sie k&ouml;nnen auch den Pfad der Datenbank h&auml;ndisch eingeben, oder sogar eine Datei ausw&auml;hlen im Dialog "Datei" indem Sie die Taste ("...") dr&uuml;cken. Wenn bereits eine Datenbank ge&ouml;ffnet ist, k&ouml;nnen Sie mit <b>Datei-&gt;&Ouml;ffnen</b> oder mit dem Symbol <b>Andere Datenbank &ouml;ffnen</b> auf eine andere Datenbank umschalten.</small>
+			<small><b>Hinweis:</b> Standardm&auml;&szlig;ig wird <b>Password Safe</b> die zuletzt benutzte Datenbank vorschlagen und zur Eingabe des Master-Passwortes auffordern. 
+      Wenn Sie mehrere Datenbanken verwenden, k&ouml;nnen Sie eine Auswahl aus der Liste treffen. Sie k&ouml;nnen auch den Pfad der Datenbank h&auml;ndisch eingeben, 
+      oder sogar eine Datei ausw&auml;hlen im Dialog "Datei" indem Sie die Taste ("...") dr&uuml;cken. 
+      Wenn bereits eine Datenbank ge&ouml;ffnet ist, k&ouml;nnen Sie mit <b>Datei-&gt;&Ouml;ffnen</b> oder mit dem Symbol <b>Andere Datenbank &ouml;ffnen</b> auf eine andere Datenbank umschalten.</small>
 <hr>
 
 <center>
@@ -46,8 +51,74 @@ Dies k&ouml;nnen Sie entweder h&auml;ndisch machen, oder mit einem Cloud Speiche
 <br>
 <img alt="Abfrage des Passwortes einer neuen Datenbank" src="images/new_safe.jpg">
 </center>
+
+<p>Wenn sie "Master-Passwort anzeigen" anklicken, wird das alte und das neue Master Passwort in Klarschrift angezeigt und die Wiederholung 
+ist ausgegraut weil sie nicht l&auml;nger ben&ouml;tigt wird.</p>
+
+<h3>Einsatz von YubiKey mit PasswordSafe</h3>
+
+<p><b>Password Safe</b> funktioniert auch mit dem <a href="about_pws_yubi.html">YubiKey</a> um Zwei-Faktor-Authentifizierung zu erm&ouml;glichen.
+D.h. die Datenbank wird gesch&uuml;tzt mit etwas was sie wissen (Master-Passwort) UND mit etwas was sie haben (YubiKey). Wenn sie kein YubiKey haben, werden 
+die YubiKey-spezifische Tasten und Texte in <b>Password Safe</b> nicht dargestellt, und die untenstehenden Anweisungen treffen nicht zu. </p>
+
+<p>
+Wenn der YubiKey mit dem PC verbunden ist, wird eine "YubiKey"-Taste und -Text dargestellt in dem Fenster "Einstellung Master-Passwort". 
+Dies erm&ouml;glicht den Zugriff auf die Password Safe Datenbank entweder zusammen mit oder anstelle von dem Master-Passwort. 
+F&uuml;r maximale Sicherheit empfehlen wir dass sie Ihre Datenbank mit <b>beide</b> Methoden absichern, sowohl mit YubiKey und als auch mit Master-Passwort. 
+Dies ist bekannt als Zwei-Faktor-Authentifizierung.</p>
+
+<h4>Setzen eines Master-Passwort mit YubiKey</h4>
+
+<p>Um das <a href="about_pws_yubi.html">konfigurierte</a> YubiKey als Schutz f&uuml;r die Datenbank einzusetzen:</p>
+<ol>
+<li>Wenn sie es noch nicht gemacht haben, stecken sie den YubiKey in einem USB-Eingang an ihrem PC. 
+Die YubiKey-Taste im Fenster "Einstellung Master-Passwort" wird damit aktiv, und der Text rechts von der Taste
+ &auml;ndert sich zu "Dr&uuml;cke die taste, dann ber&uuml;hre das YubiKey"</li>
+<li>Setze das Master-Passwort wie folgt:</li>
+<ol type="a">
+<li>
+Wenn sie die Datenbank sch&uuml;tzen wollen mit <b>beiden</b> (YubiKey UND Master-Passwort, Zwei-Faktor-Authentifizierung) 
+dann f&uuml;llen sie <b>erstens</b> das Master-Passwort und die Wiederholung dazu aus, und dann <b>zweitens</b> klicken sie auf die YubiKey-Taste.</li>
+<li>Wenn sie die Datenbank <b>nur</b> mit dem Yubikey sch&uuml;tzen wollen, dann lassen sie das Master-Passwort und die Wiederholung dazu <b>leer</b>,  
+und klicken sie auf die YubiKey-Taste.</li>
+<li>Nat&uuml;rlich k&ouml;nnen sie die  Datenbank auch nur mit dem Master-Passwort sch&uuml;tzen. Geben sie dazu nur das Master-Passwort und die Wiederholung 
+ein und klicken of OK.</li>
+</ol>
+<li>
+Klicken sie auf die YubiKey-Taste. Das "Dr&uuml;cke die Taste, dann ber&uuml;hre das YubiKey" wird ersetzt durch einen laufenden Balken 
+der die verbleibende Zeit angibt die zum Aktivieren des YubiKey noch verbleiben. Bitte bet&auml;tigen sie den YubiKey wo die gr&uuml;ne Lampe blinkt. 
+Wenn sie in der Zeit (ca. 15 Sekunden) den YubiKey nicht dr&uuml;cken, wird eine Fehlermeldung angezeigt. Sie k&ouml;nnen es dann nocmal probieren, oder abbrechen.</li>
+<li>Wenn der YubiKey aktiviert ist, wird eine <b>Password Safe</b> Datenbank erstellt.</li>
+</ol>
+
+<h3>&Ouml;ffnen einer Datenbank mit YubiKey</h3>
+
+<p>Um eine Datenbank die mit dem YubiKey gesch&uuml;tzt ist zu &ouml;ffnen:
+</p>
+<ol>
+<li>Stellen sie sicher das die gew&uuml;nschte Datenbank in "Passwortdatenbank &ouml;ffnen" ausgew&auml;hlt ist.
+Wenn nicht, klicken sie (...) und w&auml;hlen sie die Richtige aus.
+</li>
+<li>
+Wenn sie die Datenbank mit <b>beiden</b> (YubiKey und Master-Passwort) gesch&uuml;tzt haben, 
+geben sie <b>zuerst</b> das Master-Passwort ein, und <b>dann</b> klicken sie die YubiKey-Taste. 
+Wenn sie die Datenbank <b>nur</b> mit YubiKey gesch&uuml;tzt haben, dann lassen sie das Feld 
+f&uuml;r das Master-Passwort leer, und klicken sie die YubiKey-Taste.</li>
+<li>
+Wenn sie die YubiKey-Taste dr&uuml;cken, wird das "Dr&uuml;cke die Taste, dann ber&uuml;hre das YubiKey" ersetzt durch einen laufenden Balken 
+der die verbleibende Zeit angibt die zum Aktivieren des YubiKey noch verbleiben (durch bet&auml;tigen des YubiKey wo die gr&uuml;ne Lampe blinkt).
+Wenn sie in der Zeit (ca. 15 Sekunden) den YubiKey nicht dr&uuml;cken, wird eine Fehlermeldung angezeigt. Sie k&ouml;nnen es dann nochmal probieren, oder abbrechen.</li>
+<li>Wenn der YubiKey einmal aktiviert ist, wird die <b>Password Safe</b> Datenbank ge&ouml;ffnet.</li>
+</ol>
+
 <h3>Virtuelle Tastatur</h3>
-<p>Um ein Master-Passwort sicher zu gestalten, k&ouml;nnen auch Zeichen (z.B. von einer Deutschen Tastatur) wie <b>&auml;</b>, <b>&ouml;</b> oder &auml;hnliche verwendet werden. Zur Eingabe der Zeichen dieses Master-Passwortes an einer fremden Tastatur, kann eine virtuelle Tastatur benutzt werden. Diese Tastatur bildet die fremden Tastatur nach, mit allen da vorhandenen Zeichen. Die virtuelle Tastatur kann durch Dr&uuml;cken des Symboles <span><img alt="Symbol virtuelle Tastatur" src="images/vk_small.jpg"></span> aufgerufen werden. Fremdw&ouml;rtliche Zeichen, die an der eigenen physischen Tastatur nicht eingegeben werden k&ouml;nnten, k&ouml;nnen somit eingegeben werden, um so das gew&uuml;nschte "richtige" Master-Passwort zu bilden. Auch Teile eines Master-Passwortes k&ouml;nnen mit der virtuellen Tastatur gestaltet werden.</p>
+<p>Um ein Master-Passwort sicher zu gestalten, k&ouml;nnen auch Zeichen (z.B. von einer Deutschen Tastatur) wie <b>&auml;</b>, <b>&ouml;</b> 
+oder &auml;hnliche verwendet werden. Zur Eingabe der Zeichen dieses Master-Passwortes an einer fremden Tastatur, kann eine virtuelle Tastatur 
+benutzt werden. Diese Tastatur bildet die fremden Tastatur nach, mit allen da vorhandenen Zeichen. Die virtuelle Tastatur kann 
+durch Dr&uuml;cken des Symbols <span><img alt="Symbol virtuelle Tastatur" src="images/vk_small.jpg"></span> aufgerufen werden. 
+Fremdw&ouml;rtliche Zeichen, die an der eigenen physischen Tastatur nicht eingegeben werden k&ouml;nnten, k&ouml;nnen somit eingegeben 
+werden, um so das gew&uuml;nschte "richtige" Master-Passwort zu bilden. Auch Teile eines Master-Passwortes k&ouml;nnen mit der virtuellen 
+Tastatur gestaltet werden.</p>
 <center>
 <br><img alt="Eingabe des Master-Passwortes mit einer virtuellen tastatur" src="images/virtual_keyboard.jpg">
 </center>

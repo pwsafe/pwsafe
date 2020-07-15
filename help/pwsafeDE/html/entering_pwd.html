@@ -13,12 +13,12 @@
 <h2>Benutzernamen, Passw&ouml;rter und Gruppen: Basis</h2>
 <p>Die Verwaltung von Benutzernamen, Passw&ouml;rter und Gruppen, zusammen mit den dazugeh&ouml;rigen Parametern, erfolgt &uuml;ber mehrere Reiter:
 <ul>
-  <li><b><i>Basis</i>:</b> alle notwendigen Angaben f&uuml;r die Passwordverwaltung</li>
+  <li><b><i>Basis</i>:</b> alle notwendigen Angaben f&uuml;r die Passwortverwaltung</li>
   <li><b><i><a href="entering_pwd_add.html">Zus&auml;tzlich</a></i>:</b> weitere Angaben, inklusive Historie</li>
   <li><b><i><a href="entering_pwd_date.html">Datum und Uhrzeit</a></i>:</b> Ablaufzeiten und Statistiken</li>
   <li><b><i><a href="entering_pwd_pp.html">Passwortrichtlinie</a></i>:</b> Abweichungen vom Standard</li>
 </ul>
-<p>Die meisten Eingabefelder im Basis- und den zus&auml;tzlichen Reiter, sind soganannte <i>Smarte Felder</i>.
+<p>Die meisten Eingabefelder im Basis- und den zus&auml;tzlichen Reiter, sind sogenannte <i>Smarte Felder</i>.
 Dies bedeutet  dass, wenn man sie anklickt, der aktuelle Inhalt dieses Feldes in die Zwischenablage kopiert wird.
 Der Hintergrund des Feldes leuchtet gr&uuml;n auf, um anzudeuten dass es kopiert wurde. Zur Zeit werden folgende Felder unterst&uuml;tzt:
 <ul>
@@ -53,23 +53,56 @@ Die wichtigsten Elemente sind in diesem Reiter zusammengefasst.</p>
   <li><b>Notizen</b>: allgemeine Notizen zu diesem Eintrag</li>
 </ul>
 <i>Nur das <b>Titel</b>- und das <b>Passwort</b>feld sind Pflichtfelder. Alle anderen sind optional.</i>
+
+<p>Das Feld <b>Notizen</b> ist gedacht f&uuml;r eine <i>kleine Menge Text mit max. 30.000 Zeichen</i>. 
+W&auml;hrend es m&ouml;glich ist beim Hinzuf&uuml;gen des Eintrags mehr Zeichen als diese Grenze einzugeben, 
+werden Warnungen beim wieder &Ouml;ffnen dieses Eintrags ausgegeben. Das Feld Notizen wird dann bei dieser Grenze 
+gekappt, wenn der Eintrag bearbeitet wird. Aber, wenn der Eintrag gesch&uuml;tzt ist und die Datenbank im Nur Lesen Modus 
+ge&ouml;ffnet wird, tritt dieses Kappen nicht auf, und kann dadurch komplett gesehen werden.</p>
+
+<a name="notes_external_editor"></a>
+<p>
+Das Feld <b>Notizen</b> kann auch mit einem externen Editor bearbeite werden durch Rechts-Klicken inm Feld. 
+Es soll aber klar sein dass der Inhalt in dieser Zeit auf der Fetsplatte als lesbare Text steht. 
+Zus&auml;tzlich benutzen einige externe Editoren eine schon bestehende Instanz um den Text zu bearbeiten, 
+mit der Folge dass <b>Password Safe</b> beim Abspeichern diesen Text unver&auml;ndert im externen Editor bel&auml;sst. 
+Wenn der externen Editor dies unterst&uuml;tzt, ist es m&ouml;glich eine Kommandozeile zu hinterlegen, 
+die den externen Editor zwingt eine neue Intanz zu benutzen um diesen text zu bearbeiten (zum Beispiel: "-multiInst"
+f&uuml;r den Notepad++ editor).
+
+Siehe <a href="misc_tab.html">"Verwalten&nbsp;&rarr;&nbsp;Optionen&nbsp;&rarr;&nbsp;Verschiedenes"</a>.
+Wenn sie die Kommandozeile festlegen, sollten sie dies <b>nicht</b> in G&auml;nsef&uuml;&szlig;chen 
+einschlie&szlig;en, au&szlig;er der externe Editor verlangt sie. Der Wert den sie definieren wird 
+<i>wie er ist</i> gesendet, ohne jede &Auml;nderung.</p>
+
 <p>In diesem Reiter kann auch die URL eingestellt werden:</p>
 <ul>
   <li><b>URL:</b> Die URL die sich auf diesen Eintrag bezieht. Wenn dieses Feld nicht leer ist, dann ist die "Los" Taste aktiviert.
-Wenn kein Protokoll angegeben ist, wird "http://" angenommen (z.B. "www.foo.net" ist gleich mit "http://www.foo.net").Vorausgesetzt das Feld URL ist nicht leer, bewirkt ein Dr&uuml;cken der Taste <b>Los</b> dass der Browser zu der eingegebenen Adresse geht. Wenn Sie die Taste <i>Los</i> zusammen mit der Strg Taste dr&uuml;cken, wird nach dem &Ouml;ffnen des Browsers auch die Autom.Eingabe ausgef&uuml;hrt. Der nachstehende Hinweis beschreibt die Funktionsweise in allen Einzelheiten.</li>
-  <li><b>Email:</b> Die Email-Adresse die sich auf diesen Eintrag bezieht. Wenn dieses Feld nicht leer ist, dann ist die "Senden" Taste aktiviert. Wenn sie diese Taste dr&uuml;cken, wird die standardm&auml;&szlig;ige Email-Anwendung ge&ouml;ffnet; im "An:"-Feld wird die Email-Adresse dieses Eintrages vorbelegt. Der nachstehende Hinweis beschreibt die Funktionsweise in allen Einzelheiten.</li>
+Wenn kein Protokoll angegeben ist, wird "http://" angenommen (z.B. "www.foo.net" ist gleich mit "http://www.foo.net").Vorausgesetzt das Feld URL ist nicht leer, 
+bewirkt ein Dr&uuml;cken der Taste <b>Los</b> dass der Browser zu der eingegebenen Adresse geht. Wenn Sie die Taste <i>Los</i> zusammen mit der Strg Taste dr&uuml;cken, 
+wird nach dem &Ouml;ffnen des Browsers auch die Autom. Eingabe ausgef&uuml;hrt. Der nachstehende Hinweis beschreibt die Funktionsweise in allen Einzelheiten.</li>
+  <li><b>Email:</b> Die Email-Adresse die sich auf diesen Eintrag bezieht. Wenn dieses Feld nicht leer ist, dann ist die "Senden" Taste aktiviert.
+  Wenn sie diese Taste dr&uuml;cken, wird die standardm&auml;&szlig;ige Email-Anwendung ge&ouml;ffnet; im "An:"-Feld wird die Email-Adresse dieses Eintrages vorbelegt. 
+  Der nachstehende Hinweis beschreibt die Funktionsweise in allen Einzelheiten.</li>
 </ul>
 <hr>
 <ul><small>
   <b>Die nachfolgenden Hinweise beschreiben das Verhalten der URL-Eingabe genauer:</b>
-  <li>Standardm&auml;&szlig;ig wird <b>Password Safe</b> den Browser verwenden, welchen Ihr PC in der Regel zum &ouml;ffnen von Internetseiten hernimmt. Wenn erw&uuml;nscht, k&ouml;nnen Sie einen <i>alternativen Browser</i> angeben durch Angabe von '[alt]' in eckigen Klammern vor der URL, z.B. "[alt]http://www.foo.net". Dies ist n&uuml;tzlich, wenn der Standardbrowser Firefox ist, und Sie w&uuml;nschen aber auf eine Seite zuzugreifen, die am besten mit dem Internet Explorer funktioniert. Den alternativen Browser k&ouml;nnen Sie konfigurieren im Dialogfenster <b><a href="misc_tab.html#AltBrowser">Verwalten-&gt;Optionen-&gt;Verschiedenes</a></b>.</li>
-  <li>Wenn '{alt}' in geschweiften Klammern vor der URL gesetzt wird, dann wird es 'wie-es-ist' dem alternativen Browser &uuml;bergeben, ohne dass 'http://' hinzugef&uuml;gt wird, wenn kein Protokoll definiert ist. Die ist dann sinnvoll, wenn der alternative Browser eine Anwendung mit Fernzugriff ist, z.B. ein SSH Client. [ssh] w&uuml;rde denselben Effekt haben.<br></li>
-  <li>Wenn '[autotype]' vor der URL steht, wird Password Safe nach der Anzeige und Aktivierung des Browsers die Funktion Autom.Eingabe ausf&uuml;hren. Wenn im Feld Autom.Eingabe nichts eingegeben ist, wird der standardm&auml;&szlig;ige Wert eingesetzt.</li>
+  <li>Standardm&auml;&szlig;ig wird <b>Password Safe</b> den Browser verwenden, welchen Ihr PC in der Regel zum &ouml;ffnen von Internetseiten hernimmt. 
+  Wenn erw&uuml;nscht, k&ouml;nnen Sie einen <i>alternativen Browser</i> angeben durch Angabe von '[alt]' in eckigen Klammern vor der URL, z.B. "[alt]http://www.foo.net". 
+  Dies ist n&uuml;tzlich, wenn der Standardbrowser Firefox ist, und Sie w&uuml;nschen aber auf eine Seite zuzugreifen, die am besten mit dem Internet Explorer funktioniert. 
+  Den alternativen Browser k&ouml;nnen Sie konfigurieren im Dialogfenster <b><a href="misc_tab.html#AltBrowser">Verwalten-&gt;Optionen-&gt;Verschiedenes</a></b>.</li>
+  <li>Wenn '{alt}' in geschweiften Klammern vor der URL gesetzt wird, dann wird es 'wie-es-ist' dem alternativen Browser &uuml;bergeben, ohne dass 'http://' hinzugef&uuml;gt wird, 
+  wenn kein Protokoll definiert ist. Die ist dann sinnvoll, wenn der alternative Browser eine Anwendung mit Fernzugriff ist, z.B. ein SSH Client. [ssh] w&uuml;rde denselben Effekt haben.<br></li>
+  <li>Wenn '[autotype]' vor der URL steht, wird Password Safe nach der Anzeige und Aktivierung des Browsers die Funktion Autom. Eingabe ausf&uuml;hren. 
+  Wenn im Feld Autom. Eingabe nichts eingegeben ist, wird der standardm&auml;&szlig;ige Wert eingesetzt.</li>
 </small></ul>
 <ul><small>
   <b>Die Email-Adresse entspricht den Standardregeln nach RFC 2368:</b>
-  <li>Sie k&ouml;nnen im Feld Email eine oder mehrere Email-Adressen hinterlegen, mit ';' getrennt. Sie sollten Internet-sichere Zeichen verwenden. F&uuml;r das Leer-Zeichen sollte ein %20 verwendet werden.</li>
-  <li>Der Email-Adresse k&ouml;nnen einige Name-Wert P&auml;rchen angeh&auml;ngt werden. Dem ersten Paar soll das Zeichen '?' vorgesetzt werden, bei allen anderen muss ein '&' vorgesetzt werden.
+  <li>Sie k&ouml;nnen im Feld Email eine oder mehrere Email-Adressen hinterlegen, mit ';' getrennt. Sie sollten Internet-sichere Zeichen verwenden. 
+  F&uuml;r das Leer-Zeichen sollte ein %20 verwendet werden.</li>
+  <li>Der Email-Adresse k&ouml;nnen einige Name-Wert P&auml;rchen angeh&auml;ngt werden. Dem ersten Paar soll das Zeichen '?' vorgesetzt werden, 
+  bei allen anderen muss ein '&' vorgesetzt werden.
   <ul>
   <li>subject - gefolgt von Text der im "Betreff" stehen soll.</li>
   <li>body - gefolgt von Text der in der Email selber stehen soll.</li>
@@ -79,22 +112,27 @@ Wenn kein Protokoll angegeben ist, wird "http://" angenommen (z.B. "www.foo.net"
   Beispiel: benutzer@beispiel.com?subject=Hinweis Titel&body=Inhalt&CC=empfaenger@ziel.de
   </li>
 </small></ul><hr>
-<div class="instr">
+
 <h3>Erstellen eines neuen Eintrag mit Benutzername und Passwort</h3>
 <ol>
   <li>Die Datenbank &ouml;ffnen wo der neue Eintrag eingef&uuml;gt werden soll</li>
   <li>W&auml;hlen Sie im Men&uuml; <b>Bearbeiten &gt; Eintrag einf&uuml;gen</b> aus</li>
   <li>Geben Sie die notwendige Information im Dialogfenster <b>Eintrag Einf&uuml;gen</b> ein</li>
 </ol>
-<small><b>Hinweis:</b> Wenn ein Gruppenname ausgew&auml;hlt ist, und dann eine neuer Eintrag eingef&uuml;gt wird, wird f&uuml;r diesen Eintrag der Gruppenname im Dialogfenster <b>F&uuml;ge Eintrag ein</b> vorbelegt. Wenn ein neuer Name im Gruppenfeld eingegeben wird, wird diese Gruppe neu erstellt.<br>
+<hr>
+<small><b>Hinweis:</b> Wenn ein Gruppenname ausgew&auml;hlt ist, und dann eine neuer Eintrag eingef&uuml;gt wird, wird f&uuml;r diesen Eintrag der Gruppenname 
+im Dialogfenster <b>F&uuml;ge Eintrag ein</b> vorbelegt. Wenn ein neuer Name im Gruppenfeld eingegeben wird, wird diese Gruppe neu erstellt.<br>
 </small>
 <hr>
+
 <h3>Passw&ouml;rter generieren und bearbeiten</h3>
-<p>Wenn gew&uuml;nscht, k&ouml;nnen ein eigenes Passwort h&auml;ndisch im Passwortfeld eingegeben werden, oder <b>Password Safe</b> generiert eine neues Passwort auf Basis der derzeitig g&uuml;ltige <a href="password_policies.html">Passwortrichtlinien</a>.</p>
+<p>Wenn gew&uuml;nscht, k&ouml;nnen ein eigenes Passwort h&auml;ndisch im Passwortfeld eingegeben werden, oder <b>Password Safe</b> generiert eine neues Passwort 
+auf Basis der derzeitig g&uuml;ltige <a href="password_policies.html">Passwortrichtlinien</a>.</p>
 <ol>
   <li>Im Dialogfenster <b>Eintrag Einf&uuml;gen</b> die Taste <b>Generierung</b> klicken</li>
   <li>Wenn Sie nicht zufrieden sind mit dem Ergebnis, klicken Sie erneut <b>Generierung</b>, oder geben Sie das Passwort h&auml;ndisch ein.</li>
 </ol>
+<hr>
 <small><b>Hinweis:</b>
 Wenn Sie ein "single sign-on" System einsetzen das erlaubt dasselbe Passwort f&uuml;r verschiedene Maschinen/Server/Anwendungen usw. gleichzeitig einzusetzen, 
 kann mit <b>Password Safe</b> so ein Eintrag entsprechend verwaltet werden. Wenn Sie ein Passwort &auml;ndern, werden alle anderen gleichverwandte 
@@ -103,10 +141,39 @@ Passw&ouml;rter mit ge&auml;ndert. Diese werden "Alias" Eintr&auml;ge genannt, u
 <hr>
 <h3>Bestehende Eintr&auml;ge bearbeiten</h3>
 <ol>
-  <li>W&auml;hlen Sie den Passworteintrag zum Bearbeiten in der Liste aus</li>
+  <li>W&auml;hlen Sie den Eintrag zum Bearbeiten in der Liste aus</li>
   <li>W&auml;hlen Sie <b>Eintrag bearbeiten</b> im <b>Bearbeiten</b> Men&uuml; aus</li>
 </ol>
-<small><b>Hinweis:</b> Standardm&auml;&szlig;ig werden Passw&ouml;rter ausgeblendet. Um das Passwort zum Eintrag zu sehen, dr&uuml;cken Sie <b>Anzeigen</b>.<br>
+<!-- <small><b>Hinweis:</b> Standardm&auml;&szlig;ig werden Passw&ouml;rter ausgeblendet. Um das Passwort zum Eintrag zu sehen, dr&uuml;cken Sie <b>Anzeigen</b>.<br>
+</small> -->
+<hr>
+
+<h3>Bestehende Eintr&auml;ge bearbeiten in der Baumdarstellung</h3>
+
+<ol>
+<li>W&auml;hle den Eintrag aus der Liste aus</li>
+<li>W&auml;hle <b>Eintrag bearbeiten</b> im Men&uuml; <b>Bearbeiten</b> <b>ODER</b></li>
+<li>mach ein Rechts-Klick auf den Eintrag und w&auml;hle <b>Eintrag bearbeiten</b></li>
+<li>Sie k&ouml;nnen die Felder die angezeigt werden, wie folgt sofort bearbeiten:
+<ul>
+<li>Rechts-Klick auf der Gruppe und w&auml;hle  <b>Gruppe umbenennen</b> <b>ODER</b></li>
+<li>Dr&uuml;cke die Schnelltaste zum Umbenennen (standardm&auml;&szlig;ig F2) und &uuml;berschriebe den angezeigten Text (Format ist "titel [benutzername] {passwort}").</li>
+</ul>
+</ol>
+
+<hr>
+<small>
+<b>Notizen:</b>
+<ol>
+<li>Standardm&auml;&szlig;ig werden Benutzername und Passwort nicht angezeigt. Dies wird eingestellt in den Voreinstellungen (siehe: 
+<a href="display_tab.html">Options -> Anzeige</a>). Dies funktioniert hierarchisch, z.B. Passw&ouml;rter k&ouml;nnen nur angezeigt werden wenn Benutzernamen angezeigt werden.</li>
+<li>Ebenfalls werden Passw&ouml;rter w&auml;hrend der Eingabe standardm&auml;&szlig;ig verdeckt angezeigt. Um das Passwort zu sehen sollten sie beim Bearbeiten <b>Anzeigen</b> dr&uuml;cken.</li>
+<li>Titel und Passwort sind die einzigen Pflichtfelder bei einem Eintrag. Darum behalten sie den alten Wert bei, solange der Eintrag angezeigt wird. 
+Sie k&ouml;nnen jedoch den Benutzernamen l&ouml;schen durch Ausf&uuml;llen mit "[]", wenn ein leerer Wert verlangt wird.</li>
+<li><i>Weil eckige und geschweifte Klammern verwendet werden um Benutzername und Passwort einzugrenzen, ist es <b>nicht</b> m&ouml;glich auf diese Weise einen Eintrag zu &auml;ndern 
+wenn der Eintrag eines dieser Zeichen enth&auml;llt. In diesem Fall m&uuml;ssen sie den Eintrag &uuml;ber <i>Bearbeiten -> Eintag bearbeiten</i> oder mit dem Rechts-Klick Men&uuml; bearbeiten.</i></li>
+</ol>
+
 </small>
 <hr>
 <h3>Neue Gruppe einf&uuml;gen</h3>
@@ -114,23 +181,46 @@ Passw&ouml;rter mit ge&auml;ndert. Diese werden "Alias" Eintr&auml;ge genannt, u
   <li>W&auml;hlen Sie <b>Gruppe einf&uuml;gen</b> im Men&uuml; <b>Bearbeiten</b> aus</li>
   <li>Geben Sie den Gruppenname ein</li>
 </ol>
-<hr>
+
+<h3>Neue Gruppe einf&uuml;gen in der Baumdarstellung</h3>
+<ol>
+<li>W&auml;hle <b>Gruppe hinzuf&uuml;gen</b> nach Rechts-Klick aus</li>
+<li>Geben Sie den Gruppenname ein</li>
+</ol>
+
 <h3>Gruppenname bearbeiten</h3>
 <ul>
   <li>Rechtsklick auf die Gruppe und w&auml;hlen Sie <b>Gruppe umbenennen</b> aus der Liste aus</li>
+  <li>W&auml;hle die Gruppe aus, und dr&uuml;cke die Schnelltaste zum Umbenennen (Standard F2) und 
+  &uuml;berschreiben sie den Gruppennamen.</li>
 </ul>
+<hr>
 <small><b>Hinweis:</b>
 <ol>
 <li>Gruppennamen k&ouml;nnen verschachtelt werden, durch Setzen eines Gruppennamens in einer anderen Gruppe.</li>
-<li>Gruppen bestehen nicht f&uuml; sich selbst. Sie bestehen nur als Wirt eines Eintrages oder einer anderen Gruppe. Darum wird eine leere (d.h. ohne Eintrag und ohne Untergruppe) Gruppe verschwinden wenn sie gesichert wird in die Datenbank. Die einfachste M&ouml;glichkeit um sicherzustellen dass eine neue Gruppe bestehen bleibt, ist ein neuer Eintrag zu machen und die neue Gruppe im Gruppenfeld einzugeben (Gruppen werden dabei mit einem '.' getrennt).</li>
+<li>Eine Gruppe kann nicht zu mehreren Gruppen umbenannt werden durch den Men&uuml;punkt oder die Verkn&uuml;pfung 
+<b>Gruppe umbenennen</b>, z.B. die Gruppe 'a' kann nicht zu Gruppe 'x.y' umbenannt werden.</li>
 </ol>
 </small>
+<hr>
+
+<small>
+<b>Notes:</b>
+<ol>
+<li>Group names can be "nested" i.e. placing a group name within/under another group name.</li>
+<li>A group cannot be renamed to multiple groups through the <b>Rename Group</b> menu item or
+shortcut, i.e., group "a" cannot be renamed to "x.y".</li>
+</ol>
+</small>
+
+<hr>
 <h3>Gesch&uuml;tzte Eintr&auml;ge</h3>
-<p>Wenn ein Eintrag gesch&uuml;tzt ist, sind Sie nicht in der Lage irgendein Feld zu ver&auml;ndern. Erst nachdem der Schutz weggenommen ist, sind wieder &Auml;nderungen m&ouml;glich. Gesch&uuml;tzte Eintr&auml;ge sind Rot gekennzeichnet (unten links).</p>
+<p>Wenn ein Eintrag gesch&uuml;tzt ist, sind Sie nicht in der Lage irgendein Feld zu ver&auml;ndern. Erst nachdem der Schutz weggenommen ist, sind wieder &Auml;nderungen m&ouml;glich. 
+Gesch&uuml;tzte Eintr&auml;ge sind Rot gekennzeichnet (unten links).</p>
 <img alt="Edit/View Entry" src="images/edit_protected.jpg">
 
 
- </div>
+
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>
 <br>

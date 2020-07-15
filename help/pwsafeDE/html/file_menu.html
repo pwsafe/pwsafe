@@ -19,53 +19,107 @@
 <h3>Neu</h3>
 <p>Erstellt eine neue leere <b>Password Safe</b> Datenbank.</p>
 <h3>&Ouml;ffnen</h3>
-<p>&Ouml;ffnet eine bereits bestehende <b>Password Safe</b> Datenbank.</p>
+<p>&Ouml;ffnet eine bereits bestehende <b>Password Safe</b> Datenbank. 
+Im &Ouml;ffnen-Dialog k&ouml;nnen sie festlegen ob sie die Datenbank als Lesen/Schreiben oder als Nur Lesen &ouml;ffnen wollen. 
+Nach dem &Ouml;ffnen wird der aktuelle Status in der unteren Status Bar von <b>Password Safe</b> angezeigt. 
+Ab dann k&ouml;nnen sie zwischen den beiden Status (R/W oder R-O) hin- und herschalten, entweder mit einem Doppel-Klick auf das Element 
+in der Status-Bar oder &uuml;ber das Men&uuml; Datei. Wenn ein anderer Anwender diese Datenbank in Modus Lesen/Schreiben ge&ouml;ffnet hat, ist es 
+nicht m&ouml;glich zu diesem Modus umzuschalten. 
+<!-- You may also use the change mode menu item further down this menu to switch modes instead of double-clicking on the Status Bar. -->
+</p>
+
+
 <h3>Schlie&szlig;en</h3>
 <p>Schlie&szlig;t die aktuell ge&ouml;ffnete <b>Password Safe</b> Datenbank, ohne die Anwendung zu verlassen.</p>
+
+<h3>Sperren</h3>
+<p>Abh&auml;ngig davon ob der Anwender die Verwendung des <i>Symbol im Infobereich</i> zugelassen hat, sperrt dies die aktuell ge&ouml;ffnete 
+Datenbank entweder in der Taskleiste (links-Klick zur Dialog-Anzeige zum Entsperren) oder im Infobereich (rechts-Klick zur 
+Men&uuml;-Anzeige wo die datenbank wiederhegestellt oder entsperrt werden kann). Das Masterpasswort wird dann abgefragt um die Datenbank 
+zu er&ouml;ffnen oder zu entsperren. Der Sperrr-Knopf kann auch in der Tool-Leiste gesetzt werden, mit "Toolleiste anpassen" 
+(Rechts-Klick auf der Toolleiste).
+
 <h3>Zuletzt</h3>
-<p>Dieser Teil im Men&uuml; Datei enth&auml;lt die Liste der zuletzt ge&ouml;ffneten Datenbanken. Diese Liste ist leer beim ersten Einsatz von <b>Password Safe</b>.</p>
+<p>Dieser Teil im Men&uuml; Datei enth&auml;lt die Liste der zuletzt ge&ouml;ffneten Datenbanken. 
+Diese Liste ist leer beim ersten Einsatz von <b>Password Safe</b>.</p>
 <hr>
 <small>
 <b>Hinweis:</b>
 <ul>
   <li>Die Liste der zuletzt ge&ouml;ffneten Dateien kann gel&ouml;scht werden, wenn Sie "<b>Aktuelle Liste l&ouml;schen</b>" ausw&auml;hlen.</li>
-  <li>Die Anzahl der zuletzt ge&ouml;ffneten Dateien die sich <b>Password Safe</b> merkt kann mit dem Dialog <b><a href="system_tab.html">Verwalten-&gt;Optionen-&gt;System</a></b> eingestellt werden. Hier k&ouml;nnen Sie auch festlegen ob Sie die Liste im Men&uuml; Datei sehen wollen, oder lieber in einem Untermen&uuml;.</li>
+  <li>Die Anzahl der zuletzt ge&ouml;ffneten Dateien die sich <b>Password Safe</b> merkt kann mit dem Dialog 
+  <b><a href="system_tab.html">Verwalten-&gt;Optionen-&gt;System</a></b> eingestellt werden. Hier k&ouml;nnen Sie auch festlegen ob Sie die Liste im Men&uuml; 
+  Datei sehen wollen, oder lieber in einem Untermen&uuml;.</li>
 </ul>
 </small>
 <hr>
 <ul>
 </ul>
 <h3>Speichern</h3>
-<p>Speichert jede &Auml;nderung zur aktuellen Datei ab. Wenn seit der letzten Speicherung keine &Auml;nderungen gemacht wurden, oder wenn die Datenbank im NUR Lesen Modus ge&ouml;ffnet wurde, ist dieser Punkt ausgegraut.</p>
+<p>Speichert jede &Auml;nderung zur aktuellen Datei ab. Wenn seit der letzten Speicherung keine &Auml;nderungen gemacht wurden, oder wenn die Datenbank 
+im NUR Lesen Modus ge&ouml;ffnet wurde, ist dieser Punkt ausgegraut.</p>
 <h3>Speichern unter</h3>
 <p>Speichert eine Kopie der aktuellen Datenbank mit neuem Namen und Speicherort ab.</p>
 <h3>Exportiere zu</h3>
-<p>Exportiert den Inhalt der aktuellen Datenbank zu einer <a href="JavaScript:popup.TextPopup(strExternalFile,popFont,9,9,-1,-1)">externen Datei</a> in einem fr&uuml;heren <b>Password Safe</b> Datenbankformat, in XML, oder als Text ab. Siehe <a href="export.html">hier</a> f&uuml;r mehr Information wie man Datenbanken exportiert in anderen Formaten.
-			</p>
+<p>Exportiert den Inhalt der aktuellen Datenbank zu einer externen Datei 
+in einem fr&uuml;heren <b>Password Safe</b> Datenbankformat, in XML, oder als Text ab. 
+Wenn ein Filter aktiv ist, k&ouml;nnen sie die Eintr&auml;ge die den Filterkriterin entsprechen im aktuelle Format exportieren. 
+Weiterhin wird, wenn ain Alias-Eintrag oder eine Verkn&uuml;pfung den Filterkriterien entspricht, auch die Basis dazu exportiert 
+auch wenn diese die Filterkriterien nicht entspricht.
+Siehe <a href="export.html">hier</a> f&uuml;r 
+mehr Information wie man Datenbanken exportiert in anderen Formaten.
+</p>
+
 <h3>Importiere von</h3>
 <p>Importiert den Inhalt einer fr&uuml;her <a href="export.html">exportierten</a> oder korrekt formatierten Textdatei, XML, oder eine KeePass Passwort Datenbank in die aktuelle Datenbank. Siehe <a href="import.html">hier</a> f&uuml;r mehr Information wie man Textdateien importiert.</p>
+
 <h3>Zusammenf&uuml;hren</h3>
-<p>F&uuml;hrt eine <b>Password Safe</b> Datenbank oder ein Sicherungskopie (.bak) zusammen mit der aktuellen Datenbank. Dies ist im NUR Lesen Modus gesperrt.</p>
+<p>F&uuml;hrt eine <b>Password Safe</b> Datenbank oder ein Sicherungskopie (.bak) zusammen mit der aktuellen Datenbank. 
+Dies ist im NUR Lesen Modus gesperrt.
+Zusammenf&uuml;hren nutzt einen Assistenten. 
+Sie k&ouml;nnen auch das erweierte feld f&uuml;r Asuwahlkriterien ankreuzen um einzugrenzen welche Eintr&auml;ge und welche Felder der Eintr&auml;ge
+ zur Zusammenf&uuml;hrung der beiden Datenbanken dienen.
+</p>
+
+
 <h3>Vergleichen</h3>
-<p>Vergleicht die aktuell ge&ouml;ffnete Datenbank mit einer anderen <b>Password Safe</b> Datenbank.</p>
+<p>Vergleicht die aktuell ge&ouml;ffnete Datenbank mit einer anderen <b>Password Safe</b> Datenbank.
+Der Vergleich nutzt einen Assistenten. 
+Sie k&ouml;nnen auch das erweierte feld f&uuml;r Asuwahlkriterien ankreuzen um einzugrenzen welche Eintr&auml;ge und welche Felder der Eintr&auml;ge 
+zum Vergleichen der beiden Datenbanken dienen.
+Siehe <a href="compare_results.html">hier</a> f&uuml;r mehr Informationen wenn die Ergenisse angezeigt werden.
+
 <h3>Synchronisieren</h3>
-<p>Synchronisiert die aktuell ge&ouml;ffnete Datenbank mit einer anderen <b>Password Safe</b> Datenbank. Dies ist im NUR Lesen Modus gesperrt.</p>
+<p>Synchronisiert die aktuell ge&ouml;ffnete Datenbank mit einer anderen <b>Password Safe</b> Datenbank.</p>
 <p>Der Unterschied zwischen Zusammenf&uuml;hren und Synchronieren besteht in der Tatsache das beim Zusammenf&uuml;hren s&auml;mtliche Elemente aus der synchonisierenden <b>Password Safe</b>
-Datenbank in die aktuell ge&ouml;ffneten Datenbank &uuml;bernommen werden, beim Synchronisieren werden nur die in der aktuell ge&ouml;ffneten Datenbank vorhandenen Elemente abgearbeitet.</p>
+Datenbank in die aktuell ge&ouml;ffneten Datenbank &uuml;bernommen werden. Beim Synchronisieren hingegen werden nur die in der aktuell ge&ouml;ffneten Datenbank vorhandenen Elemente abgearbeitet.</p>
+Synchronisieren nutzt einen Assistenten. 
+Sie k&ouml;nnen auch das erweierte feld f&uuml;r Asuwahlkriterien ankreuzen um einzugrenzen welche Eintr&auml;ge und welche Felder der Eintr&auml;ge 
+zum Synchronisieren der beiden Datenbanken dienen.
+
+
+<h3>Zu R-O &auml;ndern / zu R/W &auml;ndern</h3>
+
+<p>Ein Datenbank die (standardm&auml;&szlig;ig) ge&ouml;ffnet ist f&uuml;r Lesen/Schreiben, kann gegen versehentliches &Auml;ndern gesch&uuml;tzt werden 
+durch Asuwahl von <b>Zu R-O &auml;ndern</b>. Gleicherma&szlig;en kann eine eine Nur-Lesen Datenbank ge&auml;ndert werden nach der Auswahl 
+von <b>Zu R/W &auml;ndern</b>. Wenn sie zu Lesen/Schreiben &auml;ndern, werden sie aufgefordert das Masterpasswort einzugeben. 
+Zwischen diese beiden Modi kann auch umgeschaltet werden durch Doppel-Klick auf R/W bzw. R-O in der Stauszeile dieser Anwendung.</p>
 <hr>
 <small style="color:red"><b>Hinweis:</b> Die Punkte <i>Zusammenf&uuml;hren</i>, <i>Vergleichen</i> und <i>Synchronisieren</i> k&ouml;nnen einige Zeit in Anspruch nehmen, vor allem bei gro&szlig;e Datenbanken.</small>
 <hr>
-<h3>Zu R-O &auml;ndern</h3>
-<p>Die aktuell ge&ouml;ffnete Datenbank ist entweder im Modus R-O (read only = nur Lesen) oder Modus R/W (read / write = Lesen / Schreiben). Zwischen diese beiden Modi kann umgeschaltet werden.</p>
-<hr>
-<small>Hinweis: Ein in Modus R-O ge&ouml;ffnete Datenbank kann nur dann in Modus R/W umgeschaltet werden, solange keine &Auml;nderung vorgenommen wurde.</small>
-<hr>
+
+
 <h3>Eigenschaften</h3>
-<p>Zeigt Informationen zur aktuell ge&ouml;ffneten <b>Password Safe</b> Datenbank an, wie da sind: Format, Version, Anzahl Gruppen, Anzahl Eintr&auml;ge, wer was zuletzt gespeichert hat. Der Name der Datenbank und eine Beschreibung derselben k&ouml;nnen bearbeitet werden.</p>
+<p>Zeigt Informationen zur aktuell ge&ouml;ffneten <b>Password Safe</b> Datenbank an, wie da sind: Format, Version, 
+Anzahl Gruppen, Anzahl Eintr&auml;ge, wer was zuletzt gespeichert hat. </p>
 <img alt="Password Safe Eigenschaften" src="images/db_properties.jpg">
 
+
+
+
 <h3>Beenden</h3>
-<p>Beendet die <b>Password Safe</b> Anwendung. Wenn seit der letzten Speicherung noch &Auml;nderungen vorgenommen wurden, werden Sie aufgefordert die Datenbank  abzuspeichern.</p>
+<p>Beendet die <b>Password Safe</b> Anwendung. Wenn seit der letzten Speicherung noch &Auml;nderungen vorgenommen wurden, 
+werden Sie aufgefordert die Datenbank abzuspeichern.</p>
 
 
 <hr>
@@ -73,7 +127,7 @@ Datenbank in die aktuell ge&ouml;ffneten Datenbank &uuml;bernommen werden, beim 
 <h4>Berichte</h4>
 
 <p><b>Hinweis:</b> 
-Die Aktionen Vergleichen, Exportieren, Inportieren, Zusammenf&uuml;hren und Synchronisieren erzeugen alle einen Bericht.
+Die Aktionen Vergleichen, Exportieren, Importieren, Zusammenf&uuml;hren und Synchronisieren erzeugen alle einen Bericht.
 Dieser Bericht kann eingesehen werden, und dann in die Zwischenablage oder als Datei kopiert werden als Textdatei im selben Verzeichnis wie die Datenbank.
 Das Men&uuml; <a href="view_menu.html">"Ansicht&nbsp;&rarr;&nbsp;Berichte"</a> kann dazu verwendet werden diese Berichte zu einem sp&auml;teren Zeitpunkt anzuschauen.
 Der Name der Berichtsdatei ist fest eingestellt und abh&auml;ngig von der Funktion die den Bericht erzeugt hat.

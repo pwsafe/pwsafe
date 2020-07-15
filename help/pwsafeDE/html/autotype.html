@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Automatische Eingabe</title>
-<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!-- pwsafe version: 3.52--><!-- Modified: 15/05/2020 --><!--Popup control -->
   <script language="javascript" src="html/popups.js">
   </script>                               
   <link rel="stylesheet" type="text/css" href="style.css">
@@ -11,61 +11,205 @@
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
 <h2>Automatische Eingabe</h2>
-<p>Die <b>Automatische Eingabe</b> ist eine einfache und schnelle Methode, um Benutzernamen und Passw&ouml;rter einzugeben. Mit einem einzigen Klick werden Benutzername und Passwort angegeben und die Daten werden zur Freigabe dem System &uuml;bergeben. Standardm&auml;&szlig;ig ist die Formel f&uuml;r den automatisierten Tastenanschlag wie folgt: <a name="defautotext"></a>Benutzername, gefolgt vom TAB Zeichen, gefolgt vom Passwort, noch ein TAB Zeichen und dann die Eingabe-Taste (<i>Benutzername</i>
-<b>TAB</b> <i>Passwort</i> <b>TAB</b> <b>ENTER</b>). Dies funktioniert f&uuml;r die meisten WEB Seiten, die eine Authentifikation mit Benutzername/Passwort ben&ouml;tigen.</p>
-<p>F&uuml;r WEB Seiten oder Anwendungen die andere Daten erfordern, ist es m&ouml;glich das Verhalten der 'Automatischen Eingabe', wie weiter unten im Absatz <a href="#autotype_details">Automatische Eingabe anpassen</a> beschrieben, anzupassen . Bemerkung: Man kann auch den Text f&uuml;r die <i><a href="#defautotext">standardm&auml;&szlig;ige</a>&nbsp;</i>Automatische&nbsp;Eingabe im Men&uuml; <b>Verwalten-&gt;Optionen-&gt;<i><a href="misc_tab.html">Verschiedenes</a></i></b> anpassen. Dies kann z.B. dann n&uuml;tzlich sein, wenn die Automatische Eingabe f&uuml;r Ihre Maschine zu schnell ist.</p>
-
-<h3>Automatische Eingabe anwenden</h3>
+<p>Die <b>Automatische Eingabe</b> ist eine einfache und schnelle Methode, um Benutzernamen und Passw&ouml;rter einzugeben. 
+Mit einem einzigen Klick werden Benutzername und Passwort angegeben und die Daten werden zur Freigabe dem System &uuml;bergeben. 
+In der Regel wird et wie folgt angewandt:
 <ol>
-  <li>Setzen Sie den Kursor im Feld Benutzername des Formblattes</li>
+  <li>Gehe mit dem Browser zur der gew&uuml;nschten Seite um sich anzumelden.</li>
+  <li>Klicke in das erste Feld das ausgef&uuml;llt werden muss (normalerweise das Feld 'Benutzername' oder 'login').</li>
+  <li>Schalte um zu Password Safe, w&auml;hle den Eintrag aus, der zur Webseite passt</li>
+  <li>Starte Autom. Eingabe (mit Control-T oder rechts-Klick und 'Autom. Eingabe ausf&uuml;hren').</li>
+  <li>Es werden dann Benutzername und Passwort ausgef&uuml;llt und abgeschickt.</li>
+</ol>
+Standardm&auml;&szlig;ig ist die Formel f&uuml;r den automatisierten Tastenanschlag wie folgt: <a name="defautotext"></a>Benutzername, gefolgt vom TAB Zeichen, 
+gefolgt vom Passwort, noch ein TAB Zeichen und dann die Eingabe-Taste (<i>Benutzername</i> <b>TAB</b> <i>Passwort</i> <b>TAB</b> <b>ENTER</b>). 
+Dies funktioniert f&uuml;r die meisten WEB Seiten, die eine Authentifizierung mit Benutzername/Passwort ben&ouml;tigen.</p>
+
+<p>F&uuml;r WEB Seiten oder Anwendungen die andere Daten erfordern, ist es m&ouml;glich das Verhalten der 'Automatischen Eingabe', wie weiter unten im Absatz 
+<a href="#autotype_details">Automatische Eingabe anpassen</a> beschrieben, anzupassen . Bemerkung: Man kann auch den Text f&uuml;r die <i><a href="#defautotext">standardm&auml;&szlig;ige</a>
+&nbsp;</i>Autom.&nbsp;Eingabe im Men&uuml; <b>Verwalten-&gt;Optionen-&gt;<i><a href="misc_tab.html">Verschiedenes</a></i></b> anpassen. 
+Dies kann z.B. dann n&uuml;tzlich sein, wenn die Autom. Eingabe f&uuml;r Ihre Maschine zu schnell ist.</p>
+<p>
+Au&szlig;erdem k&ouml;nnte man eine 'Autom. Eingabe' mit einem beliebigen Kommando was im 'Ausf&uuml;hren'-Feld hinterlegt ist bewerkstelligen. 
+Dies ist sehr praktisch.
+</p>
+<p>
+<b>Hinweis:</b><i> wenn ein Eintrag ausgew&auml;hlt ist beim Suchen, wird der Men&uuml;punkt 'Autom. Eingabe ausf&uuml;hren' 
+(mit den Schnelltasten wenn sie noch definiert sind) die Informationen dieses Eintrages verwenden. 
+Aber, wenn dann ein anderer Eintrag ausgew&auml;hlt wird, auch wenn der gefundene Eintrag noch hervorgehoben ist, 
+wird die Information des neu ausgew&auml;hlten Eintrages verwendet.</i>
+</p>
+<h3>Autom. Eingabe anwenden</h3>
+<ol>
+  <li>Setzen Sie den Kursor im Feld Benutzername des gew&uuml;nschten Feldes</li>
   <li>Maximieren Sie oder &ouml;ffne Password Safe</li>
   <li>W&auml;hlen Sie den Passworteintrag aus</li>
   <li><b>Strg -T</b> oder rechter Mausklick und w&auml;hlen Sie <b>Autom. Eingabe ausf&uuml;hren</b> aus oder klicken Sie in der Toolleiste den entsprechenden Knopf zum Beginnen.</li>
 </ol>
 <h3><a name="autotype_details"></a>Automatische Eingabe anpassen</h3>
-<p>F&uuml;r WEB Seiten oder Anwendungen, bei denen das Feld 'Benutzername' nicht vom Feld 'Passwort' und vom Feld 'Anmelden' gefolgt wird, k&ouml;nnen Sie das Verhalten ab&auml;ndern, indem Sie im Feld <a href="#N1">"Automatische Eingabe"</a> den Text ausf&uuml;llen, der f&uuml;r das erhoffte Verhalten spezifiziert ist. Dies geht wie folgt:</p>
+<p>F&uuml;r WEB Seiten oder Anwendungen, bei denen das Feld 'Benutzername' nicht vom Feld 'Passwort' und vom Feld 'Anmelden' gefolgt wird, k&ouml;nnen Sie das Verhalten ab&auml;ndern, 
+indem Sie im Feld <a href="#N1">"Autom. Eingabe"</a> den Text ausf&uuml;llen, der f&uuml;r das erhoffte Verhalten spezifiziert ist. Dies geht wie folgt:</p>
 <ul>
   <li><b>\u</b> wird ersetzt durch den Benutzernamen vom Eintrag.</li>
   <li><b>\p</b> wird ersetzt durch das Passwort vom Eintrag.</li>
+<!-- neu ab 3.52 -->
+   <li><b>\q</b> wird ersetzt durch das letzte Passwort in der Historie dieses Eintrages, solange diese Historie noch aktiv ist.
+Wenn die Historie nicht mehr aktiv ist oder es  kein altes Passwort mehr gibt, wird das Feld entfernt und durch nichts anderes ersetzt.
+</li>
 <!-- ab hier: neu ab >3.15 -->
   <li><b>\g</b> wird ersetzt durch die Gruppe, die mit dem  Eintrag verkn&uuml;pft ist.</li>
   <li><b>\i</b> wird ersetzt durch den Titel, die mit dem Eintrag verkn&uuml;pft ist.</li>
-  <li><b>\o</b> wird ersetzt durch den Inhalt des Feldes Notizen (m&ouml;glicherweise mehrzeilig).</li>
+<!-- neu ab 3.52 -->
+  <li><b>\l</b> wird ersetzt durch die URL vom Eintrag. (dies ist der Buchstabe 'l', und nicht die Ziffer '1').</li>
+<li><b>\m</b> is replaced by the e-mail associated with the entry.</li>
+
+  <li><b>\o</b> wird ersetzt durch den Inhalt des Feldes Notizen (m&ouml;glicherweise mehrere Zeilen).</li>
   <ul>
     <li>Alle Zeilenende Zeichen "\n", "\r" oder "\r\n" werden umgeformt zu "\r" (carriage return).</li>
-    <li>Es erfolgt keine Ersetzung f&uuml;r Escape Sequenzen im Feld Notizen (z.B. "\u", "\p" usw.) au&szlig;er f&uuml;r die "\t" Sequenz, die ersetzt wird durch das TAB Zeichen.</li>
+    <li>Es erfolgt keine Ersetzung f&uuml;r Escape Sequenzen im Feld Notizen (z.B. "\u", "\p" usw.) au&szlig;er f&uuml;r die "\t" Sequenz, 
+    die ersetzt wird durch das TAB Zeichen.</li>
   </ul>
   <li><b>\o<i>NNN</i></b> wird ersetzt durch den Inhalt von der n<sup>ten</sup> Zeile im Feld Notizen.</li>
   <ul>
     <li><i>NNN</i> kann aus 1 bis 3 Ziffern bestehen (z.B., \o5 f&uuml;r die 5<sup>te</sup> Zeile, \o45 f&uuml;r die 45<sup>ste</sup>, usw.</li>
+    <li>wenn <i>NNN</i> gr&ouml;&szlig;er ist als die Anzahl Zeilen im Feld Notizen, dann hat dies keine Auswirkung, und keine Zeilen 
+    werden vom Feld Notizen kopiert.</li>
+    <li>wenn <i>NNN</i> Null ist, werden alle Zeilen kopiert, d.h. \o0 ist &auml;quivalent mit \o.</li> 
     <li>Zeilenende Zeichen sind <i>nicht</i> eingeschlossen.</li>
-    <li>wenn <i>NNN</i> gr&ouml;&szlig;er ist als die Anzahl Zeilen im Feld Notizen, dann hat dies keine Auswirkung.<br>
- </li>
   </ul>
-  <hr><small><b>Hinweis:</b> F&uuml;r Anwendungen, die ein zweites Passwort verlangen oder einen beliebigen Text als Teil des Autorisierungsprozesses ben&ouml;tigen, ist dies eine bequeme M&ouml;glichkeit <i>Autom. Eingabe</i> zu unterst&uuml;tzen.</small>
+  <hr><small><b>Hinweis:</b> F&uuml;r Anwendungen, die ein zweites Passwort verlangen oder einen beliebigen Text als Teil des 
+  Autorisierungsprozesses ben&ouml;tigen, ist dies eine bequeme M&ouml;glichkeit <i>Autom. Eingabe</i> zu unterst&uuml;tzen.</small>
   <hr> <li><b>\b</b> wird ersetzt durch die Backspace-Taste.</li>
 <!-- bis hier: neu ab >3.15 -->
   <li><b>\t</b> wird ersetzt durch die TAB Taste, um das Feld zu &uuml;berspringen.</li>
+<!-- neu ab 3.52 -->
+<li><b>\s</b> wird ersetzt durch "Umsch+Tab", um zum vorherigen Feld zur&uuml;zugehen.</li>
   <li><b>\n</b> wird ersetzt durch die ENTER Taste, um die Taste zu 'Dr&uuml;cken'.</li>
   <li><b>\\</b> wird ersetzt durch die Gegenschr&auml;gstrich (\) Taste.</li>
   <li><b>\d<i>NNN</i></b> setzt die Verz&ouml;gerung zwischen Zeichen auf <i>NNN</i> Millisekunden, anstelle von 10 (Standard).<br>
-Dies &auml;ndert die Verz&ouml;gerung des aktuellen und alle folgenden Zeichen . Z.B. "schnell\d500langsam" bewirkt dass 'schnell' im normalem Tempo ausgegeben wird, und die Zeichen 'l','a' bis 'm' ausgegeben werden mit jeweils einer halben Sekunde Verz&ouml;gerung vor der Ausgabe. Wenn Sie eine Verz&ouml;gerung nur 1x wollen, und keine Verz&ouml;gerung der folgenden Zeichen, setzen Sie '\w' bzw. '\W' ein, wie weiter unten beschrieben.  </li>
+Dies &auml;ndert die Verz&ouml;gerung des aktuellen und alle folgenden Zeichen . Z.B. "schnell\d500langsam" bewirkt dass 'schnell' im normalem Tempo ausgegeben wird, 
+und die Zeichen 'l','a' bis 'm' ausgegeben werden mit jeweils einer halben Sekunde Verz&ouml;gerung vor der Ausgabe. Wenn Sie eine Verz&ouml;gerung nur 1x wollen, 
+und keine Verz&ouml;gerung der folgenden Zeichen, setzen Sie '\w' bzw. '\W' ein, wie weiter unten beschrieben.</li>
   <li><b>\WNNN</b> macht eine einmalige Verz&ouml;gerung an der Stelle wo es erscheint. Die Verz&ouml;gerung  betr&auml;gt <i>NNN</i> Sekunden.</li>
   <li><b>\wNNN</b> macht eine einmalige Verz&ouml;gerung an der Stelle wo es erscheint. Die Verz&ouml;gerung  betr&auml;gt <i>NNN</i> Millisekunden.<br>
-Z.B. bei "wie\w500jetzt" wird zuerst 'wie' ausgeben (mit der Geschwindigkeit des zuletzt definierten '\d'), gefolgt von einer Verz&ouml;gerung mit 0,5 Sekunden, und die Ausgabe von 'jetzt', in derselben Geschwindigkeit wie 'wie'. Gleicherma&szlig;en wird bei "das\W2Gleiche" eine Pause von 2 Sekunden zwischen den beiden W&ouml;rtern ausgegeben. Diese Vorgehensweise ist sinnvoll um die Ausgabe an einigen WEB-Seiten genau abzustimmen.</li>
-  <li><b>\z</b> ruft den alten Mechanismus f&uuml;r Automatische Eingabe auf. Dieser Mechanismus behandelt nicht-Latein Buchstaben eventuell nicht ganz richtig, 
-    aber bringt Automatische Eingabe an problematische WEB-Seiten zum "Spielen". Wenn Sie feststellen das Automatische Eingabe auf bestimmte WEB-seiten nicht funktioniert,
-    versuchen Sie es mit diesem Kode.</li>
-  <li>S&auml;mtliche andere Text wird so wie er ist eingegeben.</li>
-</ul>
-<p><b>Beispiel:</b>
-Folgendes kann verwendet werden wo das Bankkonto (12345) vor dem Benutzernamen und das Passwort kommen muss:<br>
-<br>
-<b><i>12345\t\u\t\p\t\n</i></b></p>
+Z.B. bei "wie\w500jetzt" wird zuerst 'wie' ausgeben (mit der Geschwindigkeit des zuletzt definierten '\d'), gefolgt von einer Verz&ouml;gerung mit 0,5 Sekunden, 
+und die Ausgabe von 'jetzt', in derselben Geschwindigkeit wie 'wie'. Gleicherma&szlig;en wird bei "das\W2Gleiche" eine Pause von 2 Sekunden zwischen den beiden W&ouml;rtern ausgegeben. 
+Diese Vorgehensweise ist sinnvoll um die Ausgabe an einigen WEB-Seiten genau abzustimmen.</li>
+  <a name="z"></a><li><b>\z</b> ruft den alten Mechanismus f&uuml;r Autom. Eingabe auf. Dieser Mechanismus behandelt nicht-Latein Buchstaben eventuell nicht ganz richtig, 
+    aber bringt Autom. Eingabe an problematische WEB-Seiten zum "Spielen". <u>Wenn Sie feststellen dass Autom. Eingabe auf bestimmte WEB-seiten nicht funktioniert,
+    versuchen Sie es mit diesem Kode, am Anfang vom Kommando f&uuml;r die Autom. Eingabe. Auch wenn dieses Zeichen in der Mitte des Kommandos erscheint, 
+    gilt die Wirkung f&uuml;r das ganze Kommando. </u>
 
-<hr> <small><b>Anmerkung:</b> Wenn Sie ein Problem mit der 'Automatischen Eingabe' haben, w&auml;re es empfehlenswert Popup-Blocker von Dritthersteller abzuschalten. Einige Benutzer haben &uuml;ber Probleme berichtet wegen der gegenseitigen Beeinflussung von Popup-Blocker und der Funktion 'Automatischen Eingabe'.</a></small>
-<hr><!-- Added some white space at the bottom for natural scrolling -->
-<a name="N1"><br>
+<li><b>\&#35;</b> (nur Windows) ist genau dasselbe wie \z oben, nur dass es den alten Modus ein- bzw. ausschaltet f&uuml;r den Code zwischen diesen beiden Zeichen.
+Der Einsatz von \&#35; anstatt von \z <i>k&ouml;nnte</i> Probleme verhindern beim Senden von nicht-Latein Zeichen in anderen Teilen der Autom. Eingabe, 
+wie es vorkommen k&ouml;nnte beim Einsatz von \z.<i><u>Aber \&#35; wird ignoriert, wenn <b>irgendwo</b> \z in der Autom. Eingabe auftaucht.</u></i> 
+Z.B. Folgendes schaltet zum Alten Modus um Tabulator und ein Leerzeichen zu schicken:
+<pre>
+\&#35;\t \&#35;
+</pre></li>
+<li><b>\c</b> (nur Linux) generiert eine Zeichenfolge die ein Platform-spezifisches 'Alle ausw&auml;hlen' erzeugt. Dies ist dienlich wenn Autom. Eingabe in Konflikt kommt 
+mit der Autovervollst&auml;nigen-Funktion des Browsers, wo die beiden Texte zusammengef&uuml;gt werden w&uuml;rden, obwohl das Autom. Eingabe den bereits ausgef&uum;llten text ersetzen soll. 
+Des Einsetzen von <b>\c</b> am Anfang der Autom. Eingabe (ganz vorne im der Zeichenfolge der Autom. Eingabe) oder direkt nach dem <b>\t</b>) stellt sicher 
+das der automatisch eingesetzte Text ersetzt wird durch den Text des Autom. Eingabe. F&uuml; einige Webseiten ist es auch angebracht <i>langsam</i> die Zeichenabfolge ablaufen zu lassen. 
+Dabei k&ouml;nnte ein <b>\d100</b> am Anfang der Autom. Eingabe Zeichenfolge. Diese k&ouml;nnte dann wie folgt aussehen:
+<pre>
+\d100\c\u\t\c\p\n
+</pre>
+</li> 
+<li><b>\j</b> (nur Linux) startet das Generieren von eigenen Kodes f&uuml;r die Tasten ALT, UMSCH, usw.</li>
+<li><b>\k</b> (nur Linux) stoppt das Generieren von eigenen Kodes f&uuml;r die Tasten ALT, UMSCH, usw.</li>
+<li><b>\j</b> und <b>\k</b> k&ouml;nnten behilflich sein um beim Autom. Eingabe die Erkennung von  Gro&szlig;- und Kleinschreibung zu unterbinden (auch f&uuml;r andere Zeichen als 'a'..'z'!).</li>
+<li><u>S&auml;mtliche andere Text wird so geschrieben wie er ist.</u></li>
+</ul> 
+
+<p><u>Nur f&uuml;r Windows</u> gibt es noch folgende spezielle Kodes
+</p> <table style="margin-left:20px; border-spacing:5px"> 
+<tr><td><b>\{Enter}</b></td><td>Return Taste</td></tr> 
+<tr><td><b>\{Up}</b></td><td>Nach Oben Taste</td></tr> 
+<tr><td><b>\{Down}</b></td><td>Nach Unten Taste</td></tr> 
+<tr><td><b>\{Left}</b></td><td>Nach Links Taste</td></tr> 
+<tr><td><b>\{Right}</b></td><td>Nach Rechts Taste</td></tr> 
+<tr><td><b>\{Home}</b></td><td>Home Taste</td></tr> 
+<tr><td><b>\{End}</b></td><td>Ende Taste</td></tr> 
+<tr><td><b>\{PgUp}</b></td><td>Bild Rauf Taste</td></tr> 
+<tr><td><b>\{PgDn}</b></td><td>Bild Runter Taste</td></tr> 
+<tr><td><b>\{Tab}</b></td><td>Tabulator Taste</td></tr> 
+<tr><td><b>\{Space}</b></td><td>Leerzeichen</td></tr> </table> 
+
+<p>
+Bei dem speziellen Kode zwischen den geschweiften Klammern ist die Gro&szlig;-/Kleinschreibung nicht zu beachten, und wird nicht durch das Vorhandensein von "\z" beeinflusst.</p> 
+
+<p>
+Zus&auml;tzlich k&ouml;nnen die nachstehenden Modifizierer mit den obenstehenden speziellen Kodes kombiniert werden. 
+Diese <b>m&uuml;ssen</b> dem Kode vorausgehen, und k&ouml;nnen in beliebiger reihenfolge eingesetzt werden. Dies sind:
+</p>
+<table style="margin-left:20px; border-spacing:10px"> 
+<tr><td><b>!</b></td><td>Alt Taste</td></tr> 
+<tr><td><b>^</b></td><td>Strg Taste</td></tr> 
+<tr><td><b>+</b></td><td>Umsch. Taste</td></tr>
+</table> 
+
+<p>Zum beispiel:<br>
+ "\{+Tab}" ist &auml;quivalent zu "Umsch+Tab"<br>
+ "\{+^Tab}" ist &auml;quivalent zu "Strg+Umsch+Tab"<br>
+ "\{^Home}" ist &auml;quivalent zu "Strg+Home".</p> 
+
+<h3>Schnelltasten und Alias</h3>
+
+<h4>Schnelltasten</h4>
+<p>
+Die Autom. Eingabe  einer Verkn&uuml;pfung wird die Angaben vom Basis-Eintrag verwenden. 
+Die Werte die in dieser Zeichenfolge ersetzt werden (z.B. \p f&uuml;r das Passwort) kommen vom Basis-Eintrag, 
+<u>ausgenommen</u> die Felder die f&uuml;r die Verkn&uuml;pfung selber gesetzt werden k&ouml;nnen, wie da sind: 
+Gruppe, Titel und Benutzer.</p>
+
+<h4>Alias</h4>
+<p>
+Die Zeichenfolge f&uuml;r die Autom. Eingabe und alle Variablen des Eintrages kommen vom Alias Eintrag, 
+<u>ausgenommen</u> die Felder f&uuml;r das aktuelle Passwort (\p) und  das vorherige Passwort (\q). 
+Diese Beide kommen vom Basis-Eintrag.</p>
+
+<h3>Standard Autom. Eingabe</h3>
+
+<p>Der Standard f&uuml;r die  Autom. Eingabe in Password Safe ist \u\t\p\n. 
+Dieser Standard kann abge&auml;ndert werden in Verwalten --&gt; Verschiedenes.
+</p> 
+
+<h3>Beispiele</h3> 
+<p><b>Beispiel 1:</b>
+Folgendes kann verwendet werden wo das Bankkonto (12345) vor dem Benutzernamen und das Passwort kommen muss:
+<a name="N1"></a>
+<pre>
+<i>12345\t\u\t\p\t\n</i>
+</pre> 
+</p>
+
+<p><b>Beispiel 2:</b> Wenn der Anwender folgendes sendet, wird das Feld f&uuml;r Benutzername und Passwort geleert, bevor die Autom. Eingabe erfolgt. 
+"Best&uuml;ckte" Benutzernamen kommen oft vor. Einige Seiten merken sich den Benutzernamen, auch wenn dies der Benutzer nicht will. 
+Oder der Benutzer hat vergessen das Feld 'Benutzername nicht merken' zu setzen, und durch die Cookies beim Browser wird es sowieso festgehalten. 
+Oder wenn die Anmeldung nicht klappt bleibt in der Regel der Benutzername erhalten. Diese Autom. Eingabe dient dazu zu gew&auml;hrleisten 
+dass der Benutzer den Benutzernamen vorher nicht selber l&ouml;schen muss.
+<pre>
+<i>\t\s\u\t\p\n</i>
+</pre>
+</p>
+
+<p><b>Beispiel 3:</b> Wenn der Anwender folgendes sendet, wird ein eventuell vorhandenes Kontrollk&auml;stchen umgeschaltet 
+(z.B. Unterbinden das man eingemeldet bleibt):
+<pre> 
+<i>\&#35;\t \&#35;</i>
+</pre>
+
+Hinweis: 
+Sie k&ouml;nnte mehrere Tabs ('\t') brauchen um ein Kontrollk&auml;stchen auf irgendeine Webseite zu erreichen.
+Siehe ebenso <a href="#z">oben</a> f&uuml;r einige Aspekte beim Einsatz von '\z'.</p> 
+
+<hr>
+<small><b>Anmerkung:</b> Wenn Sie ein Problem mit der 'Autom. Eingabe' haben, w&auml;re es empfehlenswert 
+Popup-Blocker von Dritthersteller abzuschalten. Einige Benutzer haben &uuml;ber Probleme berichtet wegen der gegenseitigen 
+Beeinflussung von Popup-Blocker und der Funktion 'Autom. Eingabe'.</small>
+<hr>
+<!-- Added some white space at the bottom for natural scrolling -->
 <br>
 <br>
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">

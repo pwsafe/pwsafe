@@ -16,26 +16,55 @@
 
 <h3>Zwischenablage nach Minimieren l&ouml;schen</h3>
 <p>Wenn  markiert, wird die Anwendung, wenn sie minimiert wird, in der Zwischenablage alle gespeicherten Informationen l&ouml;schen (z.B. das Passwort). Dies verhindert dass jemand anderes oder eine andere Anwendung den Inhalt der Zwischenablage lesen kann. Beachten Sie, dass das Markieren dieser Option zusammen mit der Doppelklick-Aktion "Passwort in die Zwischenablage kopieren, minimieren" im Reiter <a href="misc_tab.html">Verschiedenes</a> zu unerwartete Ergebnisse f&uuml;hren kann (das Passwort wird kopiert, aber anschlie&szlig;end gleich wieder gel&ouml;scht).</p>
+
 <h3>Zwischenablage nach Beenden l&ouml;schen</h3>
 <p>Wenn markiert, wird die Anwendung, wenn sie minimiert oder geschlossen wird, in der Zwischenablage alle von <b>Password Safe</b> gespeicherten Informationen l&ouml;schen (z.B. das Passwort). Dies verhindert dass jemand anderes oder eine andere Anwendung den Inhalt der Zwischenablage lesen kann.
 </p>
-<h3></h3>
+
 <h3>Kopieren von Elementen in Zwischenablage best&auml;tigen</h3>
 <p>Wenn markiert, wird der Benutzer jedes Mal aufgefordert das Kopieren des Passwortes aus der Datenbank zur Zwischenablage zu best&auml;tigen.</p>
-<h3>Passwortdatenbank sperren wenn minimiert</h3>
-<p>Wenn markiert, wird die Datenbank gesperrt, wenn die Anwendung minimiert wird. Wenn die Anwendung wieder maximiert wird, m&uuml;ssen Sie den Zugang zur Datenbank durch die Eingabe des Master-Passwortes freigeben.</p>
-<h3>Passwortdatenbank sperren wenn Computer gesperrt</h3>
-<p>Wenn markiert, wird die Datenbank gesperrt, wenn der Computer gesperrt wird. Somit werden unberechtigte Zugriffe verhindert von Anwender oder Anwendungen die noch auf dem Computer Zugriff haben (auch von au&szlig;en).</p>
-<h3>Passwortdatenbank sperren nach <i>N</i> Minuten Leerlauf</h3>
-<p>Wenn dies markiert ist und die Zeit gesetzt ist, wird <b>Password Safe</b> die Passwortdatenbank nach der gegebenen Zeit sperren, ohne Zutun des Benutzers.</p>
+
+<h3>Datenbank sperren</h3> 
+
+<p>Wenn die Datenbank aus einem der Gr&uuml;nde die unten stehen gesperrt wird, wird die Datenbank gespeichert 
+und alle Daten im Arbeitsspeicher werden gel&ouml;scht. Die Werte f&uuml;r R&uuml;ckg&auml;ngig und 
+Wiederherstellen werden beibehalten, sodass diese nach dem Entsperren wieder zur Verf&uuml;gung stehen. 
+Hinweis: alle Informationen zum Eintrag (auch R&uuml;ckg&auml;ngig und Wiederherstellen) stehen verschl&uuml;sselt im Arbeitsspeicher.</p> 
+
+<ul>
+<li><b>Passwortdatenbank sperren wenn minimiert</b>
+<p>Wenn markiert, wird die Datenbank gesperrt, wenn die Anwendung minimiert wird. Wenn die Anwendung wieder maximiert wird, 
+m&uuml;ssen Sie den Zugang zur Datenbank durch die Eingabe des Master-Passwortes freigeben.</p>
+</li>
+<li><b>Passwortdatenbank sperren wenn Computer gesperrt</b>
+<p>Wenn markiert, wird die Datenbank gesperrt, wenn der Computer gesperrt wird. Somit werden unberechtigte Zugriffe verhindert 
+von Anwender oder Anwendungen die noch auf dem Computer Zugriff haben (auch von au&szlig;en).</p>
+</li>
+<li><b>Passwortdatenbank sperren nach <i>N</i> Minuten Leerlauf</b>
+<p>Wenn dies markiert ist und die Zeit gesetzt ist, wird <b>Password Safe</b> die Passwortdatenbank nach der gegebenen Zeit sperren, 
+ohne Zutun des Benutzers.</p>
+</li>
+</ul>
+
 <h3>'Gehe zu URL' kopiert Passwort in die Zwischenablage</h3>
-<p>Wenn dies markiert ist, wird beim Ausf&uuml;hren des Kommandos 'Gehe zu URL'  das Passwort in die Zwischenablage kopiert.</p>
+<p>Standardm&auml;&szlig;ig wird beim Ausf&uuml;hren des Kommandos 'Gehe zu URL' das Passwort in die Zwischenablage kopiert. 
+Somit kann es im daf&uuml;r vorgesehenen Feld kopiert werden. Allerdings verlangen einige Webseiten andere oder sogar keine Informationen 
+(z.B. eine Suchmaschine). Durch Abw&auml;hlen dieser Option wird <b>Password Safe</b> 
+bei diesem Kommando nichts in der Zwischenablage abspeichern.</p>
 
 <h3>Entsperrschwierigkeitsgrad</h3>
-<p>Die Stellung des Schiebers stellt dar wieviel Berechnungszeit ben&ouml;tigt wird um die <b>Password Safe</b> 
+<p>Die Stellung des Schiebers stellt dar wie viel Berechnungszeit ben&ouml;tigt wird um die <b>Password Safe</b> 
 Datenbank zu &ouml;ffnen bzw. zu speichern. Die Stellung <em>Normal</em> sollte gen&uuml;gend Sicherheit bieten,
-um das &Ouml;ffnen einer Datenbank auf den meisten Plattformen nicht allzuviel zu verz&ouml;gern. Wenn dieser Wert erh&ouml;ht wird,
+um das &Ouml;ffnen einer Datenbank auf den meisten Plattformen nicht allzu viel zu verz&ouml;gern. Wenn dieser Wert erh&ouml;ht wird,
 sollten Sie die langsamste CPU die Sie verwenden um eine Datenbank zu bearbeiten ber&uuml;cksichtigen.</p>
+<p>
+PasswordSafe verwendet den  <!-- [V4Format:] <a href="https://en.wikipedia.org/wiki/PBKDF2">PBKDF2</a> -->
+originalen <a href="http://www.schneier.com/paper-low-entropy.pdf">Key Stretching</a> Algorithmus, herausgegeben von Bruce Schneier. 
+Dieser vergr&ouml;&szlig;ert das Passwort, sodass es mehr Entropie besitzt. Dadurch ist es wesentlich schwieriger zu entschl&uuml;sseln, 
+auch bei einem Brute-Force-Angriff. Der Schieber setzt die Anzahl Schleifen f&uuml;r das <i>Key Stretching</i> 
+zwischen 2048 and 2<sup><small>22</small></sup>.</p>
+
+</p>
 
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>

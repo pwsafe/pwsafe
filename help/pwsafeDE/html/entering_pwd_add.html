@@ -13,7 +13,7 @@
 <h2>Benutzernamen, Passw&ouml;rter und Gruppen: Zus&auml;tzlich</h2>
 <p>Die Verwaltung von Benutzernamen, Passw&ouml;rter und Gruppen, zusammen mit den dazugeh&ouml;rigen Parametern, erfolgt &uuml;ber mehrere Reiter:
 <ul>
-  <li><b><i><a href="entering_pwd.html">Basis</a></i>:</b> alle notwendigen Angaben f&uuml;r die Passwordverwaltung</li>
+  <li><b><i><a href="entering_pwd.html">Basis</a></i>:</b> alle notwendigen Angaben f&uuml;r die Passwortverwaltung</li>
   <li><b><i>Zus&auml;tzlich</i>:</b> weitere Angaben, inklusive Historie</li>
   <li><b><i><a href="entering_pwd_date.html">Datum und Uhrzeit</a></i>:</b> Ablaufzeiten und Statistiken</li>
   <li><b><i><a href="entering_pwd_pp.html">Passwortrichtlinie</a></i>:</b> Abweichungen vom Standard</li>
@@ -30,9 +30,9 @@
     Es k&ouml;nnen Variablen wie Anwendername, Passwort, usw. mit &uuml;bergeben werden. F&uuml;r mehr Information, 
     siehe Hilfe zu "<a href="execute_string.html">Ausf&uuml;hren</a>".</li>
   <p></p>
-  <li><b>Doppelklick-Aktion und Shift Doppelklick-Aktion :</b></li> Dies erlaubt es festzulegen welche Aktion <b>Password Safe</b> ausf&uuml;hrt, 
-    wenn Sie ein Doppelklick bzw. Shift-Doppelklick auf diesem Eintrag ausf&uuml;hren. Standardm&auml;&szlig;ig wird <i>Kopiere Passwort</i> 
-    f&uuml;r Doppelklick , und <i>Kopiere Benutzername</i> f&uuml;r Shift-Doppelklick vorbelegt. Die standardm&auml;&szlig;igen Aktionen werden 
+  <li><b>Doppelklick-Aktion und Umsch Doppelklick-Aktion :</b></li> Dies erlaubt es festzulegen welche Aktion <b>Password Safe</b> ausf&uuml;hrt, 
+    wenn Sie ein Doppelklick bzw. Umsch-Doppelklick auf diesem Eintrag ausf&uuml;hren. Standardm&auml;&szlig;ig wird <i>Kopiere Passwort</i> 
+    f&uuml;r Doppelklick , und <i>Kopiere Benutzername</i> f&uuml;r Umsch-Doppelklick vorbelegt. Die standardm&auml;&szlig;igen Aktionen werden 
     im Dialog <a href="misc_tab.html">Verwalten&nbsp;&rarr;&nbsp;Optionen&nbsp;&rarr;&nbsp;Verschiedenes</a> festgelegt.</li>
   <p></p>
   <li><b>Passworthistorie:</b> Es ist m&ouml;glich <b>Password Safe</b> so zu konfigurieren, dass es sich die letzten paar Passw&ouml;rter eines Eintrages merkt. 
@@ -47,20 +47,20 @@
     <blockquote>
       <i>Zus&auml;tzliche Hinweise zu Tastaturk&uuml;rzel f&uuml;r Eintr&auml;ge:</i>
       <ul>
-        <li>Tastaturk&uuml;rzel f&uuml;r Eintr&auml;ge werden aggespeichert als Teil des Datenbanksatzes zum Eintrag.
+        <li>Tastaturk&uuml;rzel f&uuml;r Eintr&auml;ge werden abgespeichert als Teil des Datenbanksatzes zum Eintrag.
           Allerdings sind in <b>Password Safe</b> auch schon Schnelltasten f&uuml;r verschiedene Men&uuml;punkte hinterlegt.
           Der G&uuml;ltigkeitsbereich dieser Men&uuml;-Schnelltasten erstreckt sich &uuml;ber alle Datenbanken die ein Anwender auf einem PC ge&ouml;ffnet hat.
           Diese Men&uuml;-Schnelltasten k&ouml;nnen vom Anwender angepasst werden (Verwalten&nbsp;&rarr;&nbsp;Optionen, <a href="shortcuts_tab.html">Schnelltasten</a>).
-          Sie k&ouml;nnen sich auch unterscheiden, abh&auml;ngig von der ausgew&auml;hlten Anwendungssprache z.B. Englisch, Deutsch, usw.</li>
+          Sie k&ouml;nnen sich auch unterscheiden, abh&auml;ngig von der ausgew&auml;hlten Sprache z.B. Englisch, Deutsch, usw.</li>
         <li>Darum tritt, obwohl eine Warnung ausgegeben wird wenn ein Tastaturk&uuml;rzel ausgew&auml;hlt wird das schon einem Men&uuml;punkt zugeordnet wurde, 
-          kein Konflikt auf wenn Sie sp&auml;ter die Men&uuml;-Schnelltaste anpassen, oder die Anwendungssprache wechseln.
+          kein Konflikt auf wenn Sie sp&auml;ter die Men&uuml;-Schnelltaste anpassen, oder die Sprache wechseln.
           Gleicherma&szlig;en k&ouml;nnte ein Tastaturk&uuml;rzel (noch) unbelegt sein, wenn es einem Eintrag zugewiesen wird, und sp&auml;ter zu einem Konflikt f&uuml;hren 
-          wenn eine Men&uuml;-Schnelltaste definiert wird, oder die Anwendungssprache ge&auml;ndert wird.</li>
+          wenn eine Men&uuml;-Schnelltaste definiert wird, oder die Sprache ge&auml;ndert wird.</li>
         <li>Weil Tastaturk&uuml;rzel zu einem Eintrag keine &Auml;nderungen in die Datenbank vornehmen k&ouml;nnen -anders als ein Men&uuml;punkt-Schnelltaste, z.B. zum L&ouml;schen eines Eintrages-
         haben diese als Sicherheitsma&szlig;nahme Vorrang vor Men&uuml;punkt-Schnelltasten.</li>
-        <li>Tastaturk&uuml;rzel zu einem Eintrag m&uuml;ssen entweder die Alt- oder Strg-Taste (mit oder ohne Shift-Taste) enthalten. Wenn eine der beiden bei der Eingabe nicht dabei ist,
-        werden alle Kombinationen von Alt, Strg und Shift in dieser Reihenfolge (Alt; Alt+Shift; Strg; Strg+Shift, Alt+Strg; Alt+Strg+Shift) ausprobiert, bis eine einzigartige Kombination gefunden wurde.
-        Zum Beispiel, wenn der Anwender "Shift + 6" ausw&auml;hlt, k&ouml;nnte das Tastaturk&uuml;rzel zu "Alt + Shift + 6" abge&auml;ndert werden. Wenn hingegen aber "Strg + 6" ausgew&auml;hlt w&uuml;rde, wird es nicht ge&auml;ndert.</li>
+        <li>Tastaturk&uuml;rzel zu einem Eintrag m&uuml;ssen entweder die Alt- oder Strg-Taste (mit oder ohne Umsch-Taste) enthalten. Wenn eine der beiden bei der Eingabe nicht dabei ist,
+        werden alle Kombinationen von Alt, Strg und Umsch in dieser Reihenfolge (Alt; Alt+Umsch; Strg; Strg+Umsch, Alt+Strg; Alt+Strg+Umsch) ausprobiert, bis eine einzigartige Kombination gefunden wurde.
+        Zum Beispiel, wenn der Anwender "Umsch + 6" ausw&auml;hlt, k&ouml;nnte das Tastaturk&uuml;rzel zu "Alt + Umsch + 6" abge&auml;ndert werden. Wenn hingegen aber "Strg + 6" ausgew&auml;hlt w&uuml;rde, wird es nicht ge&auml;ndert.</li>
         <li>Wenn ein Tastaturk&uuml;rzel schon zu einem Eintrag zugeordnet ist, wird es unter folgenden Umst&auml;nden von einem Eintrag entfernt: 
           <ul>
             <li>Wenn ein Eintrag importiert wird (via XML oder Text). 

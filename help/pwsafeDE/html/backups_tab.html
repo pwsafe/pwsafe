@@ -13,16 +13,29 @@
 <h2>Sicherungen</h2>
 <img alt="Reiter Sicherungen" src="images/options/backups_tab.jpg">
 <p>Im Reiter <b>Sicherungen</b> k&ouml;nnen Sie die Vorgehensweise konfigurieren, wie automatische Sicherungen erstellt und verwaltet werden.</p>
+
 <h3>Datenbank sofort nach Bearbeiten oder Einf&uuml;gen speichern</h3>
-<p>Wenn markiert, speichert <b>Password Safe</b> alle &Auml;nderungen in einem Passworteintrag sofort ab, ohne abzuwarten, ob der Benutzer <b>Speichern</b> oder <b>Speichern unter</b> bet&auml;tigt. Wenn nicht markiert, werden die ge&auml;nderten S&auml;tze farblich markiert. Das &uuml;berhaupt ge&auml;nderte Eintr&auml;ge vorhanden sind, l&auml;&szlig;t sich auch am "*" in der Statuszeile abelesen.</p>
+<p>Wenn markiert, speichert <b>Password Safe</b> alle &Auml;nderungen in einem Passworteintrag sofort ab, ohne abzuwarten, ob der Benutzer <b>Speichern</b> oder 
+<b>Speichern unter</b> bet&auml;tigt. 
+Wenn nicht markiert, werden die ge&auml;nderten S&auml;tze farblich markiert. Das &uuml;berhaupt ge&auml;nderte Eintr&auml;ge vorhanden sind, l&auml;sst 
+sich auch am "*" in der Statuszeile ablesen.</p>
 <h3>Vor dem Speichern Zwischen-Sicherungen (.ibak) erstellen</h3>
-<p>Wenn markiert, wird <b>Password Safe</b> die Datenbank vor jeder Sicherung eine Zwischen-Sicherung anlegen. Name, Speicherort sowie die Anzahl der Zwischen-Sicherungen werden in folgenden Feldern definiert.</p>
+<p>Wenn markiert, wird <b>Password Safe</b> die Datenbank vor jeder Sicherung eine Zwischen-Sicherung anlegen. 
+Name, Speicherort sowie die Anzahl der Zwischen-Sicherungen werden in folgenden Feldern definiert.</p>
+
 <h3>Name der Sicherungen</h3>
-<p>Der Name der Sicherungen besteht aus einer <b>Basis</b> (standardm&auml;&szlig;ig, der Name der Datenbank ohne Erweiterung .psafe3), und einer <b>Erweiterung</b> (keine, eine fortlaufende Nummer oder Datum und Uhrzeit der Sicherung). Hier k&ouml;nnen Sie auch konfigurieren wie der Name der Zwischen-Sicherung sein soll und wie viele Sicherungen abgespeichert werden sollen. <b>Password Safe</b> wird automatisch die Sicherungen l&ouml;schen, die au&szlig;erhalb der festgelegten Anzahl liegen. Bemerkung: <b>Password Safe </b> wird sie nur dann l&ouml;schen, wenn die Erweiterung eine fortlaufend aufsteigende Nummer ist.</p>
+<p>Der Name der Sicherungen besteht aus einer <b>Basis</b> (standardm&auml;&szlig;ig, der Name der Datenbank ohne Erweiterung .psafe3), und einer <b>Erweiterung</b> 
+(keine, eine fortlaufende Nummer oder Datum und Uhrzeit der Sicherung). Hier k&ouml;nnen Sie auch konfigurieren wie der Name der Zwischen-Sicherung sein soll und wie viele Sicherungen 
+abgespeichert werden sollen. <b>Password Safe</b> wird automatisch die Sicherungen l&ouml;schen, die au&szlig;erhalb der festgelegten Anzahl liegen. 
+Bemerkung: <b>Password Safe </b> wird sie nur dann l&ouml;schen, wenn die Erweiterung eine fortlaufend aufsteigende Nummer ist.</p>
+
 <h3>Verzeichnis der Sicherungen</h3>
-<p>Standardm&auml;&szlig;ig wird <b>Password Safe</b> die Sicherungen im selben Verzeichnis ablegen, in welchem sich die ge&ouml;ffnete Datenbank befindet. In diesem Feld k&ouml;nnen Sie einen alternativen Speicherort festlegen, z.B. ein spezielles Sicherungsverzeichnis, Netzlaufwerk,  disk-on-key, usw. Sie sollten nat&uuml;rlich Schreibenden Zugriff auf dieses Laufwerk haben.</p>
-<p><span style="color:blue;">Klicken Sie hier f&uuml;r Details zu den unterschiedlichen Einstellungen.</span></p>
-Die <b>Password Safe Voreinstellungen</b> werden dargestellt.</p>
+<p>Standardm&auml;&szlig;ig wird <b>Password Safe</b> die Sicherungen im selben Verzeichnis ablegen, in welchem sich die ge&ouml;ffnete Datenbank befindet. 
+In diesem Feld k&ouml;nnen Sie einen alternativen Speicherort festlegen, z.B. ein spezielles Sicherungsverzeichnis, Netzlaufwerk,  disk-on-key, usw. 
+Sie sollten nat&uuml;rlich schreibenden Zugriff auf dieses Laufwerk haben.</p>
+<p>Sie k&ouml;nnten ebenfalls Umgebungsvariablen verwenden um einen anderen Speicherplatz zu definieren. Z.B. 
+"<code>%homedrive%%homepath%\Documents\PWS Backups\</code>". Wenn sie diese Umgebungsvariablen verwenden, wird der expandierte Pfad unten angezeigt, 
+sobald sie sich auf eine andere Stelle auf diese Seite befinden.</p>
 
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>

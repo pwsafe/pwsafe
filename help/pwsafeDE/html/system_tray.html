@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<title>Taskleiste</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control --><script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Taskleiste</h2>
+
+<table class="MsoNormalTable" style="border: medium none ; border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td align="center">Keine Datenbank offen</td>
+<td style="width: 10px;"></td>
+<td align="center">Gesperrte Datenbank</td>
+<td style="width: 10px;"></td>
+<td align="center">Offene Datenbank</td>
+</tr>
+<tr>
+<td><img alt="Locked System Tray" src="images/system_tray_nodb.jpg"></td>
+<td></td>
+<td><img alt="Unlocked System Tray" src="images/system_tray_locked.jpg"></td>
+<td></td>
+<td><img alt="Locked System Tray" src="images/system_tray_unlocked.jpg"></td>
+</tr>
+</tbody>
+</table>
+
+<p>Die <b>Taskleiste</b> erlaubt einen schnellen Zugriff auf zuletzt verwendete Eintr&auml;ge (wenn die Datenbank frei geschaltet ist) und 
+frei zu schalten wenn die Datenbank wenn sie gesperrt ist. Es kann auch dazu verwendet werden das Hauptfenster von <b>PasswordSafe</b> 
+zu minimieren, oder es wieder herzustellen wenn es minimiert war, aber nicht gesperrt.</p>
+
+<h3>Databank ID setzen</h3>
+
+<p>Wenn sie regelm&auml;&szlig;ig mehrere Datenbanken offen haben, k&ouml;nnen sie eine eindeutige vorl&auml;ufige ID (eine Nummer zwischen 1 und 99) 
+das in der Taskleiste aufgesetzt wird. Wenn die ID auf 0 gesetzt wird, ist die ID wieder weg.</p>
+
+<p>Einmal gesetzt, ist die ID reserviert f&uuml;r eine ge&ouml;ffnete Datenbank, solange bis die datenbank geschlossen wird oder eine neue ID 
+zugewiesen wird. Zus&auml;tzlich wird im Kurzinfo der Taskleiste die ID vorangestellt.
+
+<br>
+<br>
+
+Bemerkungen:
+<ul>
+<li>Die ID ist nur ein visueller Indikator. <b>PasswordSafe</b> speichert sie nicht oder benutzt sie in irgendeiner Form.</li>
+<li>Eine ID kann nur einer ge&ouml;ffneten Datenbank zugewiesen werden. Wenn die Datenbank geschlossen wird, ist die ID wieder frei 
+und kann einer anderen Datenbank zugewiesen werden.</li>
+<li>Dieselbe ID kann nicht an mehr als eine ge&ouml;ffnete Datenbank zugewiesen werden.</li>
+<li>Die ID kann nur ge&auml;ndert werden wenn die Datenbank nicht gesperrt ist.</li>
+<li>Die Zuweisung einer ID an einer Datenbank bleibt nicht erhalten, wenn die Datenbank geschlossen wird. 
+Die ID muss bei Wiederer&ouml;ffnen der Datenbank deshalb erneut zugewiesen werden (wenn es notwendig w&auml;re).</li>
+<li>Weil sich die Farbe der Taskleiste &uuml;ber die verschiedenen Versionen von Windows &auml;ndert, k&ouml;nnen sie die Farbe 
+vom Text f&uuml;r die beste Darstellung am jeweiligen System einstellen.</li>
+<li>In der verbesserten Kurzinfo wird, wenn die Datenbank gesperrt ist, der Name der Datenbank in eckigen Klammern gezeigt (siehe unten):</li>
+</ul>
+</p>
+
+<img alt="Database Index" src="images/database_index.jpg">
+<img alt="Database Index2" src="images/database_index2.jpg">
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+</object>
+
+</body>
+</html>

@@ -143,6 +143,10 @@
 			<param name="Name" value="Men&uuml; Toolleiste">
 			<param name="Local" value="html/menu_toolbar.html">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="System Tray">
+			<param name="Local" value="html/system_tray.html">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Optionen">

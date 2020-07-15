@@ -22,23 +22,33 @@
   <li>W&auml;hlen Sie <b>Tabelle</b> oder <b>Baumstruktur</b> aus</li>
 </ol>
 <h3>Einstellung der Toolleiste</h3>
-Um die Toolleiste anzuzeigen oder zu verbergen, markieren Sie das Element <b>Toolleiste sichtbar</b> oder nicht.<br><br>
-Um die "klassische" oder die "moderne" Symbole f&uuml;r die Toolleiste zu setzen, w&auml;hlen Sie das Element "<b>Klassische Toolleiste</b>" oder "<b>Moderne Toolleiste</b>" aus.<br>
-<br>
-Die "<b>Dragleiste</b>" ist eine spezielle Toolleiste, die es erlaubt vom ausgew&auml;hlten Eintrag bestimmte Elemente zu "ziehen" (drag). 
+<p>Um die Toolleiste anzuzeigen oder zu verbergen, markieren Sie das Element <b>Toolleiste anzeigen</b> oder nicht.</p><p>
+Um die "klassische" oder die "moderne" Symbole f&uuml;r die Toolleiste zu setzen, w&auml;hlen Sie das Element "<b>Klassische Toolleiste</b>" 
+oder "<b>Moderne Toolleiste</b>" aus.</p>
+<h3>Dragbar</h3>
+<p>Die "<b>Dragleiste</b>" ist eine spezielle Toolleiste, die es erlaubt vom ausgew&auml;hlten Eintrag bestimmte Elemente zu "ziehen" (drag). 
 Mit dem Bild in der Dragleiste k&ouml;nnen die Elemente gezogen werden, die Sie in einem anderen Fenster kopiert haben wollen. 
 Zum Beispiel, um die Notizen von einem bestimmten Eintrag zu einem Fenster in einer anderen Anwendung zu ziehen mit Hilfe der Dragleiste,
- w&auml;hlen Sie den Eintrag aus, und ziehen Sie das Symbol "N" aus der Dragleiste in die Anwendung. Wenn Sie die Maustaste loslassen, wird 
- der Inhalt vom Notizen-Feld in die Anwendung kopiert. In der Dragleiste sind die Elemente die im ausgew&auml;hlten Eintrag leer sind, ausgegraut. <br>
-
-<p><b>Hinweis:</b><i>Es scheint ein Problem zu bestehen beim Einsetzen der neuen Autom. Eingabe in der Dragleiste mit dem 
+w&auml;hlen Sie den Eintrag aus, und ziehen Sie das Symbol "N" aus der Dragleiste in die Anwendung. Wenn Sie die Maustaste loslassen, wird 
+der Inhalt vom Notizen-Feld in die Anwendung kopiert. In der Dragleiste sind die Elemente die im ausgew&auml;hlten Eintrag leer sind, ausgegraut. <br>
+Die 'Autom. Eingabe' Dragbar Tasten verhalten sich leicht anders: wenn man die Taste zu einem Eingabefeld in einem anderen Fenster (z.B. der Browser) 
+bewegt, startet <b>Password Safe</b> die Autom. Eingabe an dieser Stelle.</p>
+<p>
+<b>Hinweis:</b>
+<ul>
+<li>Es scheint ein Problem zu bestehen beim Einsetzen der neuen Autom. Eingabe in der Dragleiste mit dem 
 Internet Explorer (getestet mit V7, V8 &amp; V9): alle Zeichen vor dem ersten Tabulator gehen verloren. Dies passiert <u>NICHT</u> beim Firefox und Chrome Browser.
 Obwohl wir daf&uuml;r eine L&ouml;sung haben (wir senden TAB und Shift-TAB, um zum ausgew&auml;hlten Fenster zur&uuml;ck zu kehren, aber <u>nur</u> aus der Dragleiste),
- funktioniert dies (als unsch&ouml;ne Nebenerscheinung) nur beim Ersetzen eines bereits vorhandenen String im Eingabefeld. Wenn ins Fenster einer andere Anwendung
- gezogen wird, wird das Endergebnis davon abh&auml;ngen wie diese Anwendung mit TAB und Shift-TAB umgeht.</i></p>
+ funktioniert dies (als unsch&ouml;ne Nebenerscheinung) nur beim Ersetzen eines bereits vorhandenen String im Eingabefeld. Wenn ins Fenster einer anderen Anwendung
+ gezogen wird, wird das Endergebnis davon abh&auml;ngen wie diese Anwendung mit TAB und Shift-TAB umgeht.</li>
+ <li>Wenn die <i>Strg</i>-Taste gedr&uuml;ckt wird w&auml;hrend man das Dragbar-Zeichen anklickt, wird der dazugeh&ouml;rige Text <em>zus&auml;tzlich</em> in die 
+ Zwischenablage kopiert, wenn die Maus-Taste losgelassen wird. Dies kann dann n&uuml;tzlich sein wenn der "drop" um ein paar Pixel daneben liegt, weil man dann 
+ mit einem normalen Einf&uuml;gen (Strg-V) den Vorgang beenden k&ouml;nnte, ohne einen erneuten Drag-Versuch machen zu m&uuml;ssen.</li>
+</ul></p>
 
-<p>Um die Dragleiste anzuzeigen bzw. zu verbergen, markieren Sie das Element <b>Dragleiste sichtbar</b> oder nicht.</p>
-<p> Folgende Symbole sind in der Dragleiste vorhanden:
+
+<p>Um die Dragleiste anzuzeigen bzw. zu verbergen, markieren Sie das Element <b>Dragleiste anzeigen</b> oder nicht.</p>
+<!-- <p> Folgende Symbole sind in der Dragleiste vorhanden:
 <ul><li> "G" = Gruppe</li>
 <li> "T" = Titel</li>
 <li>  "U" = Benutzer ('U'ser)</li>
@@ -47,33 +57,80 @@ Obwohl wir daf&uuml;r eine L&ouml;sung haben (wir senden TAB und Shift-TAB, um z
 <li>  "B" = URL ('B'rowse)</li
 ><li>  "E" = E-Mail</li>
 <li> "A" = Autom. Eingabe.</li>
-</ul> </p>
+</ul> </p> -->
+
 <h3>Alle ausklappen</h3>
 <p>Klappt alle Gruppen aus, sodass s&auml;mtliche Eintr&auml;ge sichtbar sind. <i>(nur in der Baumstruktur)</i>.</p>
+
 <h3>Alle zuklappen</h3>
 <p>Klappt alle Gruppen zu <i>(nur in der Baumstruktur)</i>.</p>
-<h3>Aktualisieren F5</h3>
-<p>Durch Bet&auml;tigen der Taste F5 oder durch Dr&uuml;cken dieses Men&uuml;punktes kann die Anzeige der vorhandenen Daten aktualisiert werden.
-</p>
-<h3>Zeige ungespeicherte &Auml;nderungen</h3>
-<p>Wenn das Feld "<b>Datenbank sofort nach Bearbeiten oder Einf&uuml;gen speichern</b>" in den <a href="backups_tab.html">Verwalten&nbsp;&rarr;&nbsp;Optionen&nbsp;&rarr;&nbsp;Sicherungen</a> nicht markiert ist, werden die ge&auml;nderten Felder nicht sofort abgespeichert, sondern farblich gekennzeichnet. Siehe hierzu auch das n&auml;chste Bild:</p>
-<p><img alt="Daten mit &Auml;nderungen" src="images/tree_view_change.jpg"><br>Die &Uuml;bersicht mit allen Eintr&auml;gen</p>
-<p>Durch Markieren dieses Men&uuml;punktes werden -zur &Uuml;bersicht- ausschlie&szlig;lich die ge&auml;nderten Felder angezeigt.</p><p><img alt="Daten, nur die &Auml;nderungen" src="images/tree_view_change_only.jpg"><br>Die &Uuml;bersicht, ausschlie&szlig;lich der ge&auml;nderten Eintr&auml;ge.</p>
-<p><small>Bemerkung: Solange &uuml;berhaupt ge&auml;nderte aber noch nicht abgespeicherte Eintr&auml;ge vorhanden sind, erscheint in der Statuszeile ein "*".</small></p>
-<h3>Zeige Eintr&auml;ge mit Ablaufdatum</h3>
-<p>Durch Markieren  dieses Men&uuml;punktes werden -zur &Uuml;bersicht- ausschlie&szlig;lich die Eintr&auml;ge angezeigt, die ein Ablaufdatum haben.</p>
+
+<h3>Unteransicht</h3>
+
+<img alt="Subviews" src="images/subviews_menu.jpg">
+
+<p>"Unteransichten" sind vordefinierte Filter, die -wenn sie ausgew&auml;hlt sind- nur die Eintr&auml;ge anzeigen wo die Kriterien stimmen.</p>
+
+<p>Wie bei allen Filtern, kann man sie L&ouml;schen durch Doppel-Klick auf den rot weis gestreiften Indikator rechts unten in der Statuszeile. 
+Diesen Indikator k&ouml;nnen sie in den folgenden Bildern sehen, wenn das Filter aktiv ist.</p>
+
+
+<h4>1. Zeige ungespeicherte &Auml;nderungen</h4>
+<p>Wenn das Feld "<b>Datenbank sofort nach Bearbeiten oder Einf&uuml;gen speichern</b>" in den <a href="backups_tab.html">Verwalten&nbsp;&rarr;&nbsp;Optionen&nbsp;&rarr;&nbsp;Sicherungen</a>
+ nicht markiert ist, werden die ge&auml;nderten Felder nicht sofort abgespeichert, sondern farblich gekennzeichnet. Siehe hierzu auch das n&auml;chste Bild:</p>
+
+<p>
+<img alt="Daten mit &Auml;nderungen" src="images/tree_view_change.jpg"><br>Die &Uuml;bersicht mit allen Eintr&auml;gen</p>
+<p>Durch Markieren dieses Men&uuml;punktes werden -zur &Uuml;bersicht- ausschlie&szlig;lich die ge&auml;nderten Felder angezeigt.</p>
+
+<p>
+<img alt="Daten, nur die &Auml;nderungen" src="images/tree_view_change_only.jpg"><br>Die &Uuml;bersicht, 
+ausschlie&szlig;lich der ge&auml;nderten Eintr&auml;ge.</p>
+<p><small>Bemerkung: Solange &uuml;berhaupt ge&auml;nderte aber noch nicht abgespeicherte Eintr&auml;ge 
+vorhanden sind, erscheint in der Statuszeile ein "*".</small></p>
+
+<h4>2. Zeige Eintr&auml;ge mit Ablaufdatum</h4>
+<p>Durch Markieren dieses Men&uuml;punktes werden -zur &Uuml;bersicht- ausschlie&szlig;lich die Eintr&auml;ge angezeigt, 
+die ein Ablaufdatum haben. Es spielt dabei keine Rolle ob das Ablaufdatum schon vorbei ist, oder erst noch kommt. </p>
 <p>Wenn gar keine Eintr&auml;ge mit Ablaufdatum vorhanden sind, ist dieser Men&uuml;punkt ausgegraut.</p>
-<h3>Filter</h3>
-Ein "Filter" ist ein Kriterium (oder ein Satz an Kriterien) mit dem ein Eintrag &uuml;bereinstimmt oder nicht. <b>Password Safe</b> erlaubt es Filter zu definieren und  nur die Eintr&auml;ge anzuzeigen die mit einem gegebenen Filter &uuml;bereinstimmen. F&uuml;r mehr Informationen wie Filter zu definieren und verwenden sind, siehe
-<a href="filters.html">hier</a>.<br>
+
+<img alt="Expired Password Filter" src="images/expired_password_filter.jpg">
+
+<h4>3. zuletzt gefundene Ergebnisse</h4>
+<p>Wenn sie dieses ausw&auml;hlen, werden nur die Eintr&auml;ge angezeigt die beim letzten Suchen gefunden wurden. 
+Wenn die Suchen-Aktion noch nicht statt gefunden hat oder gel&ouml;scht wurde, wird dieser Punkt im Men&uuml; ausgegraut. 
+Wenn die Suchen-Leiste noch sichtbar war beim Einschalten dieses Kriteriums, wird diese weggeschaltet, weil w&auml;hrenddessen 
+keine neue Such-Aktion stattfinden sollte. Such n&auml;chster (F3) und Such vorheriger (Umsch-F3) stehen weiterhin zur Verf&uuml;gung.</p>
+<p><b>Hinweis</b>: wenn dieses Filter aktiv ist -es zeigt ja die Eintr&auml;ge an die bei der letzten Suchen-Aktion gefunden wurden- 
+<u>wird die Such-Aktion nicht wiederholt</u>. Zum Beispiel:
+<ul>
+<li>Wenn ein Eintrag so ge&auml;ndert wurde dass das Such-Kriterium nicht erf&uuml;llt ist, wird er trotzdem angezeigt.</li>
+<li>Wenn ein Eintrag dupliziert wird, wird die neuerliche Kopie nicht in die Anzeige mit eingeschlossen.</li>
+<li>Wenn ein Eintrag gel&ouml;scht wird, wird es von der Anzeige entfernt.</li>
+<li>Wenn ein Eintrag wiederhergestellt wird (z.B. mit Strg-Z), wird er wieder angezeigt.</li>
+<li>Wenn neue Eintr&auml;ge dazu kommen, entweder direkt oder durch Zusammenf&uuml;hren (Merge), werden diese angezeigt, 
+weil sie in m Ergebnis der letzten Such-Aktion nicht in der Datenbank vorhanden waren.</li>
+</ul></p>
+
+<img alt="Last Find Filter" src="images/last_find_filter.jpg">
+
+<h3><a name="user_defined_filters"></a>Vom Anwender definierte Filter</h3>
+<p>
+Ein "Filter" ist ein Kriterium (oder ein Satz an Kriterien) mit dem ein Eintrag &uuml;bereinstimmt oder nicht. 
+<b>Password Safe</b> erlaubt es Filter zu definieren und  nur die Eintr&auml;ge anzuzeigen die mit einem gegebenen 
+Filter &uuml;bereinstimmen. F&uuml;r mehr Informationen wie Filter zu definieren und verwenden sind, siehe
+<a href="filters.html">hier</a>.</p>
+
 <h3>Schriftart wechseln</h3>
 <img alt="Change Fonts" src="images/change_font_menu.jpg">
-<p>W&auml;hlen Sie eine andere Schriftart aus, um Eintr&auml;ge in der Tabellenansicht oder Baumstruktur darzustellen. Dies gilt ebenso f&uuml;r die Darstellung der Passw&ouml;rter im  Men&uuml; <i>Einf&uuml;gen</i> bzw. <i>Bearbeiten</i>.</p>
+<p>W&auml;hlen Sie eine andere Schriftart aus, um Eintr&auml;ge in der Tabellenansicht oder Baumstruktur darzustellen. 
+Dies gilt ebenso f&uuml;r die Darstellung der Passw&ouml;rter im  Men&uuml; <i>Einf&uuml;gen</i> bzw. <i>Bearbeiten</i>.</p>
 
 
 <p>Sie k&ouml;nnen ebenfalls die Schriftart f&uuml;r die virtuelle Tastatur festlegen.
-Achten Sie darauf das diese Schriftart Unicode Zeichen darstellen k&ouml;nnen muss. Die unterst&uuml;tzte Schriftarten sind: 
- "Arial Unicode MS" (kommt mit Microsoft's Office suite), "Arial Unicode" und "Lucida Sans Unicode". Sie k&ouml;nnen aber auch eine andere Schriftart ausw&auml;hlen mit dem angebrachten Men&uuml;punkt.</p>
+Achten Sie darauf dass diese Schriftart Unicode Zeichen darstellen k&ouml;nnen muss. Die unterst&uuml;tzte Schriftarten sind: 
+ "Arial Unicode MS" (kommt mit Microsoft's Office suite), "Arial Unicode" und "Lucida Sans Unicode". 
+ Sie k&ouml;nnen aber auch eine andere Schriftart ausw&auml;hlen mit dem angebrachten Men&uuml;punkt.</p>
 
 <h3>Berichte</h3>
 
@@ -82,8 +139,13 @@ Achten Sie darauf das diese Schriftart Unicode Zeichen darstellen k&ouml;nnen mu
 <p>Wenn Sie die Berichte vom Vergleichen, Exportieren, Importieren, Zusammenf&uuml;hren und Synchronisieren auf Festplatte abspeichern,
 werden sie im selben Verzeichnis wie die Datenbank abgespeichert.
 Bei wiederholten Aktionen und nochmaligem Abspeichern auf Festplatte, wird der alte Bericht unweigerlich &uuml;berschrieben.
-Die Berichte k&ouml;nnen zu einem sp&auml;teren Zeitpunkt eingesehn werden, solange die Datenbank im selben Verzeichnis steht.</p>
-		
+Die Berichte k&ouml;nnen zu einem sp&auml;teren Zeitpunkt eingesehen werden, solange die Datenbank im selben Verzeichnis steht.</p>
+
+<h3>Aktualisieren F5</h3>
+<p>Durch Bet&auml;tigen der Taste F5 oder durch Dr&uuml;cken dieses Men&uuml;punktes kann die Anzeige der vorhandenen Daten aktualisiert werden.
+</p>
+
+ 
 		<!-- Added some white space at the bottom for natural scrolling -->
 		<br>
 <br>

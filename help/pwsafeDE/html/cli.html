@@ -18,7 +18,9 @@
 Es ist aber auch m&ouml;glich dies durch Aufrufen von <b>Password Safe</b> wie folgt abzu&auml;ndern:</p>
 <ul>
   <li><i>pwsafe</i> <b>Datenbank</b><br>
-Dies wird die angegebene Datenbank &ouml;ffnen, anstelle der zuletzt ge&ouml;ffneten. Wenn nur ein Dateiname ohne Pfad angegeben ist, wird in dem Verzeichnis gesucht, aus welchem die Anwendung aufgerufen wurde. Wenn im Dateinamen und/oder der Pfad Leerzeichen vorkommen, sollte es mit G&auml;nsef&uuml;&szlig;chen eingeschlossen sein.
+Dies wird die angegebene Datenbank &ouml;ffnen, anstelle der zuletzt ge&ouml;ffneten. Wenn nur ein Dateiname ohne Pfad angegeben ist, wird 
+in dem Verzeichnis gesucht, aus welchem die Anwendung aufgerufen wurde. Wenn im Dateinamen und/oder der Pfad Leerzeichen vorkommen, 
+sollte es mit G&auml;nsef&uuml;&szlig;chen eingeschlossen sein.
   </li>
   <li><i>pwsafe</i> <b>-r Datenbank</b><br>
 Dies wird die angegebene Datenbank in NUR-Lese Modus &ouml;ffnen.</li>
@@ -26,40 +28,63 @@ Dies wird die angegebene Datenbank in NUR-Lese Modus &ouml;ffnen.</li>
   Nachdem das richtige Master-Passwort eingegeben wurde, wird die Datenbank &uuml;berpr&uuml;ft. Hierbei werden eventuell vorhandene interne Inkonsistenzen ausgebessert. 
   Dies ist n&uuml;tzlich, wenn Datenbanken verwendet werden die von anderen Anwendungen erzeugt wurden.</li> -->
   <li><i>pwsafe</i> <b>-e Dateiname</b><br>
-  Hierbei wird der Benutzer aufgefordert, eine Passphrase (ein Kennwort bestehend aus mehreren W&ouml;rtern) einzugeben. Die Datei wird anschlie&szlig;end mit einem Schl&uuml;ssel, der von der Passphrase abgeleitet wurde, verschl&uuml;sselt.
+  Hierbei wird der Benutzer aufgefordert, eine Passphrase (ein Kennwort bestehend aus mehreren W&ouml;rtern) einzugeben. Die Datei wird anschlie&szlig;end 
+  mit einem Schl&uuml;ssel, der von der Passphrase abgeleitet wurde, verschl&uuml;sselt.
   <b>Bemerkung:</b> Die Datei kann <i>jede Art</i> von Datei sein. Die verschl&uuml;sselte Datei hat denselben Dateinamen,
   mit der angeh&auml;ngten Erweiterung ".PSF".<br>
   </li>
   <li><i>pwsafe</i> <b>-d Dateiname</b><br>
 Hierbei wird der Benutzer aufgefordert eine Passphrase (ein Kennwort bestehend aus mehreren W&ouml;rtern) einzugeben.
 Die Datei wird anschlie&szlig;end entschl&uuml;sselt mit einem Schl&uuml;ssel der von der Passphase abgeleitet ist.
-<b>Bemerkung:</b> Dies wird nur funktionieren mit Dateien die vorher mit pwsafe und dem Argument '-e'
+<b>Bemerkung:</b> Dies wird nur funktionieren mit Dateien die vorher mit <i>pwsafe</i> und dem Argument '-e'
 aufgerufen wurden (siehe oben).</li>
   <li><i>pwsafe </i><b>-c</b><br>
     Dies wird die Anwendung starten, ohne dass eine Datenbank ge&ouml;ffnet wird. Auch der anf&auml;ngliche Er&ouml;ffnungsdialog wird nicht ausgef&uuml;hrt.
     (Um eine Datenbank zu er&ouml;ffnen, gehe zum Men&uuml; Datei).</li>
   <li><i>pwsafe </i><b>-s [Datenbank]</b><br>
     Dies wird die Anwendung "leise" (<b>s</b>ilent) starten, d.h. minimiert und ohne Datenbank. Wenn die Datenbank aus der Minimierung rausgeholt wird,
-    erscheint der Er&ouml;ffnungdialog. (Diese Option wird eingesetzt, um die Anwendung bei der Benutzeranmeldung zu starten mit einer Verkn&uuml;pfung im Startverzeichnis).  <b>Bemerkung:</b> Dies stellt die Anwendung implizit in die Systemleiste.</li>
+    erscheint der Er&ouml;ffnungsdialog. (Diese Option wird eingesetzt, um die Anwendung bei der Benutzeranmeldung zu starten mit einer 
+    Verkn&uuml;pfung im Startverzeichnis).  <b>Bemerkung:</b> Dies stellt die Anwendung implizit in die Systemleiste.</li>
   <li><i>pwsafe</i> <b>-m</b><br>
     Dies ist dasselbe wie '<b>-c</b>'. Au&szlig;erdem wird die Anwendung minimiert gestartet.</li>
 </ul>
-Zus&auml;tzlich werden folgende Argumente akzeptiert:<br>Diese Argumente k&ouml;nnten n&uuml;tzlich sein, wenn Sie dieselben Einstellungen &uuml;ber mehrere Maschinen gemeinsam benutzen m&ouml;chten, z.B. wenn Sie <b>Password Safe</b> aus einer disk-on-key betreiben.
+Zus&auml;tzlich werden folgende Argumente akzeptiert:<br>Diese Argumente k&ouml;nnten n&uuml;tzlich sein, wenn Sie dieselben Einstellungen &uuml;ber 
+mehrere Maschinen gemeinsam benutzen m&ouml;chten, z.B. wenn Sie <b>Password Safe</b> aus einer disk-on-key betreiben.
 <ul>
   <li><b>-u</b> <i>Benutzername</i><br>
-Hiermit kann die Anwendung angehalten werden, das Lesen und Schreiben der Einstellungen unter dem angegebenen <i>Benutzername</i> zu machen, anstatt es unter dem Anmeldenamen zu tun.</li>
+Hiermit kann die Anwendung angehalten werden, das Lesen und Schreiben der Einstellungen unter dem angegebenen <i>Benutzername</i> zu machen, 
+anstatt es unter dem Anmeldenamen zu tun.</li>
   <li><b>-h</b> <i>Rechnername</i><br>
-  Hiermit kann die Anwendung angehalten werden, das Lesen und Schreiben der Einstellungen auf dem angegebenen <i>Rechnernamen</i> zu machen, anstatt es unter dem Maschinennamen zu tun.</li>
-  <li><b>-g</b> <i>konfig_datei</i><br>
-  Hiermit kann die Anwendung angehalten werden, die angegebene Datei f&uuml;r das Laden und Abspeichern der Einstellungen zu verwenden, anstatt der standardm&auml;&szlig;ige  pwsafe.cfg. Wenn nur eine Dateiname ohne Pfad angegeben ist, wird in dem Verzeichnis gesucht, aus welchem die Anwendung aufgerufen wurde. Wenn im Dateinamen und/oder der Pfad Leerzeichen vorkommen, sollte es in G&auml;nsef&uuml;&szlig;chen eingeschlossen sein.</li>
+  Hiermit kann die Anwendung angehalten werden, das Lesen und Schreiben der Einstellungen auf dem angegebenen <i>Rechnernamen</i> zu machen, 
+  anstatt es unter dem Maschinennamen zu tun.</li>
+  <li><b>-g</b> <i>Konfig-Ddatei</i><br>
+  Hiermit kann die Anwendung angehalten werden, die angegebene Datei f&uuml;r das Laden und Abspeichern der Einstellungen zu verwenden, 
+  anstatt der standardm&auml;&szlig;ige pwsafe.cfg. Wenn nur eine Dateiname ohne Pfad angegeben ist, wird in dem Verzeichnis gesucht, 
+  aus welchem die Anwendung aufgerufen wurde, solange es nicht schon mit der Umgebungsvarable <b>PWS_PREFSDIR</i> definiert wurde (Die Beschreibung hierzu 
+  steht unter <a href="preferences.html">Pr&auml;ferenz</a>). Wenn im Dateinamen und/oder der Pfad Leerzeichen vorkommen, sollte es in G&auml;nsef&uuml;&szlig;chen 
+  eingeschlossen sein.</li>
 </ul>
 <ul>
 </ul>
 
-<p>Zu guter letzt, sind da noch ein paar spezielle Kommandozeilen 4flags die mit "--" beginnen. Dies sind:
+<p>Hinweis: weil die Konfigurations-Datei in XML geschrieben wird, m&uuml;ssen Benutzername und Komputername der Regeln vom XML-Standard befolgen:
+
+<ul>
+<li>Das ertse Zeichen muss alfanumerisch sein. Wenn nicht wird gegebenenfalls dem Benutzernamen ein "u" vorgesetzt bzw. dem Konputernamen ein "h" vorgesetzt.</li>
+<li>Weiter sollten nur alfanumerische Zeichen oder eines oder mehrere dieser Zeichen vorkommen: Unterstrich, Trennstrich, Doppelpunkt und Punkt ("_-:."). 
+Andere Zeichen werden mit einem Unterstrich ("_") ersetzt.</li>
+</ul>
 </p>
 
+<p>Zu guter letzt, sind da noch ein paar spezielle Kommandozeilen Flags die mit "--" beginnen. Dies sind:
+</p>
 <ul>
+<li><b>--do-tall, --do-wide, --do-auto</b><br>
+Standardm&auml;&szlig; &uuml;berpr&uuml;ft <b>Password Safe</b> die Abmessungen vom Bildschirm und w&auml;hlt entsprechend die schmale ode breite Version 
+vom gr&ouml;eren Bildschirm aus. Das Setzen von <b>--do-tall</b> oder <b>--do-wide</b> erzwingt die Wahl, und <b>--do-auto</b> &uuml;berl&auml;sst 
+die Wahl der internen Logik. 
+Dies wird als <a href="preferences.html">Pr&auml;ferenz</a> abgespeichert. Somit ist es ausreichend dies nur einmal zu setzen f&uuml; die ausgew&auml;hlte Maschine.</li>
+
 <li><b>--novalidate</b><br>
 Dies verhindert dass <b>Password Safe</b> automatisch Datenbanken validiert beim Er&ouml;ffnen.
 Einige Sachen m&uuml;ssen aber immer validiert werden, z.B. Eindeutichkeit der ID der Eintr&auml;ge und der Kombination Gruppe / Titel / Benutzername.</li>
@@ -71,7 +96,7 @@ Dies erlaubt es Testern bei der Erstellung eines Mini-Dump, wenn <b>Password Saf
 Dieses neue Merkmal erlaubt es zwei Eintr&auml;ge auszuw&auml;hlen und zu vergleichen im <i>Bearbeiten</i> Men&uuml; oder durch ein Rechtsklick auf einem Eintrag.
 Die Auswahl mehrere Eintr&auml;ge wird von Hause aus in der Listenansicht unterst&uuml;tzt, aber nicht in der Baumstruktur. 
 Dieses Flag schaltet <i>Vergleiche Eintrag</i> frei, mit einem extra Dialog um den 'anderen' Eintrag auszuw&auml;hlen.
-Die Unterst&uuml;tzung dieses Merkmales in der Baumstruktur wird noch entwickelt. Wenn es implementiert ist, wird dieses Flag ignoroert.</li>
+Die Unterst&uuml;tzung dieses Merkmales in der Baumstruktur wird noch entwickelt. Wenn es implementiert ist, wird dieses Flag ignoriert.</li>
 </ul>
 
 <br>

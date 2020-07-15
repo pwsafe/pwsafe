@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Compare Results</title>
+<!-- pwsafe version: 3.28--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Ergebnisse vergleichen</h2>  <!-- Compare Results -->
+
+<img alt="Compare Results dialog" src="images/compare_results.jpg">
+
+<p>Nachdem beide Datenbanken verglichen wurden und Unterschiede festgestellt wurden, 
+wird die oben stehende Grafik angezeigt. <i><b>Hinweis:</b> nur die vom Anwender ausgew&auml;hlten 
+Felder werden verglichen. Somit kann eine datenbank als identisch ausgewiesen werden, obwohl 
+einige der Felder unterschiedlich sind aber nicht ausgew&auml;hlt wurden.</i> Standardm&auml;&szlig;ig werden 
+<u>alle</u> Felder verglichen. Aber, wenn sie eine andere Zusammenstellung der Felder ausw&auml;hlen 
+mit den erweiterten Auswahlkriterien, dann werden diese Felder nur bei diesem Aufruf von 
+<b>Password Safe</b> ber&uuml;cksichtigt, au&szlig;er sie w&auml;hlen mit den erweiterten Auswahlkriterien 
+andere Felder aus. Dieses gilt f&uuml;r alle Assistenten, wobei auch die werte unabh&auml;ngig sind:</p>
+
+<ul>
+<li>Vergleichen</li>
+<li>Exportiere zu Volltext (die ganze Datenbank oder ein einzelner Eintrag)</li>
+<li>Exportiere zu XML (die ganze Datenbank oder ein einzelner Eintrag)</li>
+<li>Zusammenf&uuml;hren</li>
+<li>Synchronisieren</li>
+</ul>
+
+<p>Hier ein paar Optionen die dem anwender zur Verf&uuml;gung stehen, wenn Unterschiede da sind:</p>
+
+<ul>
+<li>Rechts-Klick auf einem Eintrag in der aktuellen Datenbank (erste Splate):</li>
+<ul>
+<li>Bearbeite einen Eintrag wenn der Modus R/W ist und der Entrag nicht gesch&uuml;tzt ist</li>
+<li>Zeige einen Eintrag an wenn der Modus R-O ist und der Entrag gesch&uuml;tzt ist</li>
+</ul>
+<li>Rechts-Klick auf einem Eintrag in der Vergleichsdatenbank (zweite Splate):</li>
+<ul>
+<li>Zeige den Eintrag an (die Vergleichsdatenbank ist immer im Modus R-O weil es nicht m&ouml;glich ist 
+die R&uuml;ckg&auml;ngig M&ouml;glichkeit anzubieten, wenn mal etwas ge&auml;ndert wird.) 
+
+<li>Kopiere den Eintrag zur aktuellen Datenbank. Es wird dann der entsprechender Eintrag &uuml;berschrieben 
+in der aktuelle Datenbank wenn der Modus R/W ist und der bestehende Eintrag nicht gesch&uuml;tzt ist.</li>
+<li>Synchronisiere den Eintrag zur aktuellen Datenbank. Es wird dann der entsprechender Eintrag &uuml;berschrieben 
+in der aktuelle Datenbank wenn der Modus R/W ist und der bestehende Eintrag nicht gesch&uuml;tzt ist.</li>
+<li>Wenn der Eintrag in beiden Datenbanken vorkommt und Unterschiede aufweist, dann k&ouml;nnen sie auch "Eintr&auml;ge 
+vergleichen" wobei alle Felder mit Inhalt angezeigt werden, und auch die Unterschiede.</li>
+</ul>
+</ul>
+
+<p>Zus&auml;tzlich k&ouml;nnen mehrere Eintr&auml;ge in der Vergleichsdatenbank ausgew&auml;hlt werden (Links-Klick in der zweiten 
+Spalte mit dem STRG-Taste gedr&uuml;ckt f&uuml;r den zewiten oder weitere Eintr&auml;ge). Wenn einege ausgew&auml;hlt sind, 
+k&ouml;nnen sie entweder "Kopiere alle Eintr&auml;ge zum Original" oder "Alle Eintr&auml;ge synchronisieren" mit den 
+entsprechenden Eintr&auml;gen in den Datenbanken. <b>Nota:</b> Synchronisieren wird nur dann wirksam wenn alle Eintr&auml;ge 
+auch in der aktuellen Datenbank vorhanden sind. Auch ein gesch&uuml;tzter Eintrag in der aktuellen Datenbank kann nicht 
+eingeschlossen werden in die mehrfach-Auswahl, weil er nicht ge&auml;ndert werden kann. Wie in der Baumansicht auch hat 
+ein Eintrag im Titel-Feld ein '&#35;' angeh&auml;ngt, wenn er gesch&uuml;tzt ist.</p>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Compare Results">
+<param name="Keyword" value="Compare">
+</object>
+
+</body>
+</html>

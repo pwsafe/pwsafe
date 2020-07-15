@@ -15,18 +15,20 @@
 <p>Zus&auml;tzlich kann <b>Password Safe</b> Parameter zum Kommando &uuml;bergeben, wie da sind: Benutzername, Passwort, usw. So k&ouml;nnen einigerma&szlig;en komplizierte Aktionen programmiert werden, wie z.B. Aufrufen eines Programms &uuml;ber Fernzugriff mit &Uuml;bergabe von Benutzername und Passwort.</p>
 <p>In der Regel werden 'Variablen' ersetzt durch die dazugeh&ouml;rigen Werte, bevor das Kommando dem Computer &uuml;bergeben wird. Ein Dollarzeichen ('$') kennzeichnet die Variablen.</p>
 <ul>
-  <li>Variablen sind spezifiziert mit '$name' und <i>sie sind case sensitive</i>. Namen von Variablen beginnen immer mit einem alphabetischen Zeichen, gefolgt von alphanumerischen Zeichen. Der Variablenname endet beim n&auml;chsten nicht-alphanumerischen Zeichen, oder am Ende des Kommandostrings.</li>
+  <li>Variablen sind spezifiziert mit '$name' und <i>sie sind case sensitive</i>. Namen von Variablen beginnen immer mit einem alphabetischen Zeichen, gefolgt von alphanumerischen Zeichen. 
+  Der Variablenname endet beim n&auml;chsten nicht-alphanumerischen Zeichen, oder am Ende des Kommandostrings.
   <ul>
     <li>Wenn direkt an einem Variablenname ein alphanumerisches Zeichen anschlie&szlig;t, sollte der Variablenname in geschweifte Klammer gesetzt werden. Z.B. '${varname}blabla'.</li>
-    <li>Um das Zeichen '$' in einem normalen Text nicht als Variablenindikator zu verwenden, muss ein umgekehrter Schr&auml;gstrich ('\') vorangestellt werden, z.B.  '\$text' wird als Text '$text' und nicht als Variable 'text' interpretiert.</li>
-    <li>Um vor dem Zeichen '$' ein umgekehrter Schr&auml;gstrich einzusetzen, setzt man ein doppelter ('\\') ein, z.B. aus '\\$name' wird '\$name', und '$name' wird als Variable interpretiert. Ein umgekehrter Schr&auml;gstrich ('\'), der nicht zum Zeichen '$' verwendet wird, kann als einzelnes Zeichen dargestellt werden.</li>
-    <li>Eine Variable die von einem numerischen Wert in eckigen Klammern gefolgt wird, wird als Indexwert bezeichnet. Der Indexwert 'n' kann einem '+' oder '-' vorangestellt sein. Es kann z.B. [-2] oder [2] oder [+2] sein. <b>Password Safe</b> behandelt ein Indexwert von Null als das komplette Feld.</li>
-  </ul>
-  <br>
-  <li>Folgende Variablen werden momentan erkannt:</li>
-  <br>
+    <li>Um das Zeichen '$' in einem normalen Text nicht als Variablenindikator zu verwenden, muss ein umgekehrter Schr&auml;gstrich ('\') vorangestellt werden, 
+    z.B.  '\$text' wird als Text '$text' und nicht als Variable 'text' interpretiert.</li>
+    <li>Um vor dem Zeichen '$' ein umgekehrter Schr&auml;gstrich einzusetzen, setzt man ein doppelter ('\\') ein, z.B. aus '\\$name' wird '\$name', und '$name' 
+    wird als Variable interpretiert. Ein umgekehrter Schr&auml;gstrich ('\'), der nicht zum Zeichen '$' verwendet wird, kann als einzelnes Zeichen dargestellt werden.</li>
+    <li>Eine Variable die von einem numerischen Wert in eckigen Klammern gefolgt wird, wird als Indexwert bezeichnet. Der Indexwert 'n' kann einem '+' oder '-' vorangestellt sein. 
+    Es kann z.B. [-2] oder [2] oder [+2] sein. <b>Password Safe</b> behandelt ein Indexwert von Null als das komplette Feld.</li>
+  </ul></li>
+  <li>Folgende Variablen werden momentan erkannt:
   <ul>
-    <li>Bezogen auf die Applikation:</li>
+    <li>Bezogen auf die Applikation:
     <table border="0" cellpadding="10" cellspacing="0" width="90%">
  <colgroup><col width="20%"><col width="80%"></colgroup>
  <tbody>
@@ -35,9 +37,9 @@
           <td>Verzeichnis des Programms Password Safe. Siehe Noten <a href="#n1">1</a> und <a href="#n2">2</a> unten.</td>
         </tr>
       </tbody>
-    </table>
-    <br>
-    <li>Bezogen auf die aktuelle Datenbank:</li>
+    </table></li>
+
+    <li>Bezogen auf die aktuelle Datenbank:
     <table border="0" cellpadding="10" cellspacing="0" width="90%">
  <colgroup><col width="20%"><col width="80%"></colgroup>
  <tbody>
@@ -58,9 +60,8 @@
           <td>Erweiterung der aktuell ge&ouml;ffneten Datenbank.</td>
         </tr>
       </tbody>
-    </table>
-    <br>
-    <li>Bezogen auf den aktuellen Eintrag:</li>
+    </table></li>
+    <li>Bezogen auf den aktuellen Eintrag:
     <table border="0" cellpadding="10" cellspacing="0" width="90%">
  <colgroup><col width="20%"><col width="80%"></colgroup>
  <tbody>
@@ -84,6 +85,10 @@
           <td style="font-weight: bold;">p <span style="font-weight: normal;">oder</span> password</td>
           <td>Passwort</td>
         </tr>
+<tr>
+          <td style="font-weight: bold;">e <span style="font-weight: normal;">or</span> email</td>
+          <td>Email</td>
+        </tr>
  <tr>
           <td style="font-weight: bold;">a <span style="font-weight: normal;">oder </span>autotype</td>
           <td>Autom. Eingabe. Siehe Note <a href="#n5">5</a> unten.</td>
@@ -106,7 +111,6 @@
         </tr>
       </tbody>
     </table>
-    <br>
     <table border="0" cellpadding="10" cellspacing="0" width="90%">
  <colgroup><col width="5%"><col width="95%"></colgroup>
  <tbody>
@@ -132,7 +136,7 @@
         </tr>
  <tr>
           <td align="center">5<a name="n5"></a></td>
-          <td>Wenn die Variable f&uuml;r Autom.Eingabe vorhanden ist, wird die Autom.Eingabe ausgef&uuml;hrt im Moment wo das Windows Fenster aktiv ist. Die Variable und der Wert (soweit vorhanden) werden entfernt aus dem auszuf&uuml;hrenden Kommando. Diese Variable kann beliebig im auszuf&uuml;hrenden Kommando stehen, weil es nur definiert was <b>Password Safe</b> tut nach der Ausf&uuml;hrung des Kommandos. Im Unterschied zu den anderen Variablen, kann es dadurch den aktuellen Wert im Eintrag &uuml;bergehen. Das Format ist ($autotype k&ouml;nnte $a ersetzen in den folgenden Beispiele):<br>
+          <td>Wenn die Variable f&uuml;r Autom..Eingabe vorhanden ist, wird die Autom..Eingabe ausgef&uuml;hrt im Moment wo das Windows Fenster aktiv ist. Die Variable und der Wert (soweit vorhanden) werden entfernt aus dem auszuf&uuml;hrenden Kommando. Diese Variable kann beliebig im auszuf&uuml;hrenden Kommando stehen, weil es nur definiert was <b>Password Safe</b> tut nach der Ausf&uuml;hrung des Kommandos. Im Unterschied zu den anderen Variablen, kann es dadurch den aktuellen Wert im Eintrag &uuml;bergehen. Das Format ist ($autotype k&ouml;nnte $a ersetzen in den folgenden Beispiele):<br>
           <table border="0" cellpadding="10" cellspacing="0">
    <colgroup><col width="20%"><col width="80%"></colgroup>
    <tbody>
@@ -146,11 +150,11 @@
               </tr>
    <tr>
                 <td>$a(Wert)</td>
-                <td>Verwende den Wert in runden Klammern als Autom.Eingabe.</td>
+                <td>Verwende den Wert in runden Klammern als Autom..Eingabe.</td>
               </tr>
    <tr>
                 <td>${a}(Wert)</td>
-                <td>Verwende den Wert in runden Klammern als Autom.Eingabe.</td>
+                <td>Verwende den Wert in runden Klammern als Autom..Eingabe.</td>
               </tr>
             </tbody>
           </table>
@@ -158,28 +162,44 @@
         </tr>
       </tbody>
     </table>
-    <p><b>Hinweis:</b> Stellen sie sicher das das Kommando gegebenenfalls in G&auml;nsef&uuml;&szlig;chen eingeschlossen ist. Z.B. wenn das Datenbankverzeichnis Leerzeichen enth&auml;lt, ist f&uuml;r den Zugriff auf eine Textdatei mit dem Namen der aktuellen Datenbank folgendes notwendig (inkl. Hochkomma):</p>
+    
+    
+    <p><b>Hinweis:</b> Stellen sie sicher das das Kommando gegebenenfalls in G&auml;nsef&uuml;&szlig;chen eingeschlossen ist. Z.B. wenn das Datenbankverzeichnis Leerzeichen enth&auml;lt, 
+    ist f&uuml;r den Zugriff auf eine Textdatei mit dem Namen der aktuellen Datenbank folgendes notwendig (inkl. Hochkomma):</p>
 <pre>
 '$dbdir\\$dbname.txt'
 </pre>
 <p>
 Bemerken sie dass der umgekehrter Schr&auml;gstrich ('\\') zweimal eingesetzt ist, um '$dbname' als Variable zu erkennen.</p>
-    <p>F&uuml;r Windows werden Umgebungsvariable (definiert als %Variablenname%) normal ersetzt. Z.B., '%windir%\notepad.exe' wird (abh&auml;ngig von der Installation) in 'C:\Windows\notepad.exe' umgewandelt. Die aktuellen Werte der Umgebungsvariablen k&ouml;nnen ermittelt werden durch Ausf&uuml;hren von 'cmd.exe' und Absetzen des Befehles 'set' ohne Parameter. S&auml;mtliche unbekannte Umgebungsvariablen bleiben unver&auml;ndert im auszuf&uuml;hrenden Kommando, z.B. %xyz%\notepad.exe bleibt %xyz%\notepad.exe wenn die Variable 'xyz' nicht besteht. Hinweis: Windows Umgebungsvariablen sind <b>nicht</b> case sensitive.</p>
-    <br>
-
+    <p>F&uuml;r Windows werden Umgebungsvariable (definiert als %Variablenname%) normal ersetzt. Z.B., '%windir%\notepad.exe' wird (abh&auml;ngig von der Installation) 
+    in 'C:\Windows\notepad.exe' umgewandelt. Die aktuellen Werte der Umgebungsvariablen k&ouml;nnen ermittelt werden durch Ausf&uuml;hren von 'cmd.exe' und Absetzen des Befehles 'set' ohne Parameter. 
+    S&auml;mtliche unbekannte Umgebungsvariablen bleiben unver&auml;ndert im auszuf&uuml;hrenden Kommando, z.B. %xyz%\notepad.exe bleibt %xyz%\notepad.exe wenn die Variable 'xyz' nicht besteht. 
+    Hinweis: Windows Umgebungsvariablen sind <b>nicht</b> case sensitive.</p>
+    </li></ul>
+  </ul>
 <hr style="width: 100%; height: 2px;">
+<h3>Beispiele</h3>
 
-<h3>Beispiel</h3>
-<p>Das folgende ausf&uuml;hrbare Kommando 
-wird das Program <a href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/" target="_blank">Putty</a> veranlassen eine Verbindung zu myHost  zu machen, mit Benutzername und Passwort:</p>
+<ul>
+<li>Das folgende ausf&uuml;hrbare Kommando 
+wird das Program <a href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/" target="_blank">Putty</a> veranlassen eine Verbindung zu myHost  zu machen, mit Benutzername und Passwort:
+
 <pre>
 "C:\Program Files\PuTTY\putty.exe" -ssh ${u}@myHost 22 -pw $p
 </pre>
-
+</li>
+<li>Dies wird eine neue Instanz von <b>Password Safe</b> &ouml;ffnen mit der angegebenen datenbank (Dank an Dave daf&uuml;r)
+<pre> ${autotype}(\p\n)"${appdir}\pwsafe.exe" \UNC\path\to\database.psafe3</pre></li>
+<ul>
+<li>Stellen sie sicher dass in Verwalten&nbsp;&rarr;&nbsp;Optionen&nbsp;&rarr;&nbsp;System "Mehrere Instanzen erlauben" eingeschaltet ist, um dies funktionieren zu lassen</li>
+<li>Sie k&ouml;nnten eventuell auch die Doppelklick Aktion f&uuml;r diesen Eintrag auf "Ausf&uuml;hren" stellen</li>
+</ul> 
+</ul> 
+<hr>
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
     <param name="Keyword" value="Kommando ausf&uuml;hren">
 </object>
-  </ul>
+
 </ul>
 </body>
 </html>
