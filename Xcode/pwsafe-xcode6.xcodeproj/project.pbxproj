@@ -1683,10 +1683,12 @@
 			);
 			name = "Generate core_st";
 			outputPaths = (
+				"${PROJECT_DIR}/../src/core/core_st.cpp",
+				"${PROJECT_DIR}/../src/core/core_st.h",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Generating coelib_st.cpp and core_st.h ...\"\n../Misc/rc2cpp.pl ../src/core/core.rc2";
+			shellScript = "echo \"Generating core_st.cpp and core_st.h ...\"\n\"${PROJECT_DIR}\"/../Misc/rc2cpp.pl \"${PROJECT_DIR}\"/../src/core/core.rc2\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
