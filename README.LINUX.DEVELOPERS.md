@@ -67,6 +67,8 @@ install these.
 - libcurl-devel
 - libuuid-devel
 - libyubikey-devel
+- file-devel
+- libcurl-devel
 - make
 - openssl-devel
 - wxGTK3-devel
