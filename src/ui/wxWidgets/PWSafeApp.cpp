@@ -56,6 +56,7 @@
 #include "PWSafeApp.h"
 #include "version.h"
 #include "wxMessages.h"
+#include "Clipboard.h"
 
 #include <iostream> // currently for debugging
 #include <clocale>  // to get the locales specified by the environment 
