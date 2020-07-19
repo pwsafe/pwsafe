@@ -53,7 +53,7 @@ public:
     wxCHECK_MSG(!IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Empty search pointer dereferenced"));
     return *m_currentIndex;
   }
-  operator const UUIDVector() const {return m_indices;}
+  operator UUIDVector() const {return m_indices;}
   size_t Size() const { return m_indices.size(); }
 
   void InitIndex(void) { m_currentIndex = m_indices.begin(); }
