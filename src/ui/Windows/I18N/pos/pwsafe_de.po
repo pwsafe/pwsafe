@@ -5323,11 +5323,11 @@ msgstr "Mit Drücken von OK wird das Passwort des ausgewählten Eintrages in die
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
-msgstr "Vorausschau verfügbar"
+msgstr "Vorschau nicht verfügbar"
 
 #. Resource IDs: (5975)
 msgid "Preview is unavailable"
-msgstr "Vorausschau nicht verfügbar"
+msgstr "Vorschau ist nicht verfügbar"
 
 #. Resource IDs: (5580)
 msgid "Previous Passwords"
@@ -5355,7 +5355,7 @@ msgstr "Aussprechbare Passwörter"
 
 #. Resource IDs: (5918)
 msgid "Pronounceable passwords must contain either lowercase or uppercase characters or both"
-msgstr "Aussprechbare Passwörter müssen  Klein- und/oder Großbuchstaben enthalten."
+msgstr "Aussprechbare Passwörter müssen Klein- und/oder Großbuchstaben enthalten."
 
 #. Resource IDs: (136)
 msgid "Properties"
