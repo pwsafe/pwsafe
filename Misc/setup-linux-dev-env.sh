@@ -65,7 +65,7 @@ case "$DISTRO" in
         if [ "$DISTRO" = "ubuntu" ] && [ "$RELEASE" -ge 20 ]; then
             LIBWXDEV="ibwxgtk3.0-gtk3-dev"
         else
-            LIBWXDEV="ibwxgtk3.0-dev"
+            LIBWXDEV="libwxgtk3.0-dev"
         fi
         apt-get install -qy cmake fakeroot g++ gettext git libgtest-dev \
             libcurl4-openssl-dev libqrencode-dev  libssl-dev libuuid1 \
