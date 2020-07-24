@@ -13,9 +13,9 @@ tasks:
         cd pwsafe
         mkdir build build-dbg
         cd build
-        cmake .. -D CMAKE_BUILD_TYPE=Release
+        cmake -D CMAKE_BUILD_TYPE=Release ..
         cd ../build-dbg
-        cmake .. -D CMAKE_BUILD_TYPE=Debug
+        cmake -D CMAKE_BUILD_TYPE=Debug ..
 
     - build-dbg: |
         cd pwsafe/build-dbg
