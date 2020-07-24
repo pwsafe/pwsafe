@@ -8,7 +8,10 @@
 # Upgrade to this inspired by a similar script by kreyren
 #
 # Command overrides
-[ -z "$UNAME" ] && UNAME="/usr/bin/uname"
+if [ -z "$UNAME" ]; then
+    UNAME="/usr/bin/uname"
+    [ ! -x "$UNAME" ] && UNAME="/bin/uname"
+fi
 [ -z "$LSB_RELEASE" ] && LSB_RELEASE="/usr/bin/lsb_release"
 
 die() {
