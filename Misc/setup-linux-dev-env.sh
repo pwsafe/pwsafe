@@ -58,11 +58,13 @@ else
     die 3 "Sorry, can't configure for $KERNEL systems (yet)."
 fi
 
+[ -z "$RELEASE" ] && RELEASE=0 # debian testing doesn't have a release number
+
 # We have distro and release, let's get to work
 
 case "$DISTRO" in
     debian|ubuntu|linuxmint)
-        if test \( "$DISTRO" = "ubuntu" -a "$RELEASE" -ge 20 \) -o \( "$DISTRO" = "debian" -a  "$RELEASE" = "" \) ; then
+        if test \( "$DISTRO" = "ubuntu" -a "$RELEASE" -ge 20 \) -o \( "$DISTRO" = "debian" -a  "$RELEASE" -eq 0 \) ; then
             LIBWXDEV="libwxgtk3.0-gtk3-dev"
         else
             LIBWXDEV="libwxgtk3.0-dev"
