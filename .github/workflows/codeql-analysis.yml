@@ -68,9 +68,9 @@ jobs:
     #    uses a compiled language
 
     - run: |
-       ./pwsafe/Misc/setup-linux-dev-env.sh
-       mkdir pwsafe/build
-       cd pwsafe/build
+       sudo ./Misc/setup-linux-dev-env.sh
+       mkdir build
+       cd build
        cmake ..
        make
 
