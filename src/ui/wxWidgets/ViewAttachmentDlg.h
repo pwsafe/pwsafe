@@ -22,9 +22,10 @@
 #include <wx/panel.h>
 #include <wx/scrolwin.h>
 #include <wx/stattext.h>
-#include <ItemAtt.h>
-#include "wxUtilities.h"
 //*)
+#include "ItemAtt.h"
+#include "wxUtilities.h"
+
 
 class ViewAttachmentDlg: public wxDialog
 {
