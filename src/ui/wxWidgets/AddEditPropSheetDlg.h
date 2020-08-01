@@ -18,6 +18,7 @@
  */
 
 ////@begin includes
+#include <wx/combobox.h>
 #include <wx/propdlg.h>
 #include <wx/valgen.h>
 #include <wx/spinctrl.h>
@@ -25,7 +26,9 @@
 #include <wx/grid.h>
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
+#include <wx/radiobut.h>
 #include <wx/statline.h>
+#include <wx/stattext.h>
 ////@end includes
 #include "core/ItemData.h"
 #include "core/PWScore.h"
@@ -265,7 +268,6 @@ private:
   void ShowImagePreview();
   void HideImagePreview(const wxString &reason = _("No preview available"));
   bool IsFileMimeTypeImage(const wxString &filename);
-  bool IsMimeTypeImage(const stringT &mimeTypeDescription);
   wxString GetMimeTypeExtension(const stringT &mimeTypeDescription);
   void EnableImport();
   void DisableImport();

@@ -22,6 +22,7 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
+#include <wx/mstream.h>
 #include <wx/taskbar.h>
 #include <wx/tokenzr.h>
 #include <wx/versioninfo.h>
@@ -331,6 +332,23 @@ void FixInitialSpinnerSize(wxSpinCtrl* control)
   }
 }
 
+/**
+ * Returns 'true' if the mime type description begins with 'image'.
+ *
+ * Example: "image/png", "application/zip"
+ */
+bool IsMimeTypeImage(const stringT& mimeTypeDescription)
+{
+  const stringT IMAGE = L"image";
+
+  if (mimeTypeDescription.length() < IMAGE.length()) {
+    return false;
+  }
+  else {
+    return (mimeTypeDescription.substr(0, 5) == IMAGE) ? true : false;
+  }
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // ImagePanel Implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -345,6 +363,43 @@ ImagePanel::~ImagePanel()
 {
   Unbind(wxEVT_PAINT, &ImagePanel::OnPaint, this);
   Unbind(wxEVT_SIZE, &ImagePanel::OnSize, this);
+}
+
+bool ImagePanel::LoadFromAttachment(const CItemAtt& itemAttachment, wxWindow* parent, const wxString& messageBoxTitle)
+{
+  auto size = itemAttachment.GetContentSize();
+
+  if (size <= 0) {
+    return false;
+  }
+
+  unsigned char buffer[size];
+
+  if (!itemAttachment.GetContent(buffer, size)) {
+    wxMessageDialog(
+      parent,
+      _("An error occurred while trying to get the image data from database item.\n"
+        "Therefore, the image cannot be displayed in the preview."), messageBoxTitle,
+      wxICON_ERROR
+    ).ShowModal();
+
+    return false;
+  }
+
+  wxMemoryInputStream stream(&buffer, size);
+
+  if (!LoadFromMemory(stream)) {
+    wxMessageDialog(
+      parent,
+      _("An error occurred while trying to load the image data into the preview area.\n"
+        "Therefore, the image cannot be displayed in the preview."), messageBoxTitle,
+      wxICON_ERROR
+    ).ShowModal();
+
+    return false;
+  }
+
+  return true;
 }
 
 bool ImagePanel::LoadFromFile(const wxString &file, wxBitmapType format)
