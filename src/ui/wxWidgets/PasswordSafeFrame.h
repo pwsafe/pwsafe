@@ -81,6 +81,7 @@ class PasswordSafeSearch;
 #define ID_COPYURL 10032
 #define ID_BROWSEURL 10033
 #define ID_AUTOTYPE 10034
+#define ID_VIEWATTACHMENT 10434
 #define ID_GOTOBASEENTRY 10035
 #define ID_LIST_VIEW 10036
 #define ID_TREE_VIEW 10037
@@ -328,6 +329,9 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_AUTOTYPE
   void OnAutoType(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_VIEWATTACHMENT
+  void OnViewAttachment(wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_BROWSEURLPLUS
   void OnBrowseUrlAndAutotype(wxCommandEvent& evt);

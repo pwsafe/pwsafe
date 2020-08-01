@@ -18,7 +18,10 @@
 #include <wx/panel.h>
 #include <wx/spinctrl.h>
 #include <wx/stream.h>
+#include <wx/textctrl.h>
+#include <wx/toplevel.h>
 
+#include "core/ItemAtt.h"
 #include "core/StringX.h"
 #include "core/PWSprefs.h"
 
@@ -359,6 +362,11 @@ bool IsTaskBarIconAvailable();
 void FixInitialSpinnerSize(wxSpinCtrl* control);
 
 /**
+ * Returns 'true' if the mime type description begins with 'image'.
+ */
+bool IsMimeTypeImage(const stringT &mimeTypeDescription);
+
+/**
  * A panel in which the image resizes.
  *
  * @see https://wiki.wxwidgets.org/An_image_panel
@@ -372,6 +380,7 @@ public:
   void OnPaint(wxPaintEvent &event);
   void OnSize(wxSizeEvent &event);
 
+  bool LoadFromAttachment(const CItemAtt& itemAttachment, wxWindow* parent, const wxString& messageBoxTitle);
   bool LoadFromFile(const wxString &file, wxBitmapType format = wxBITMAP_TYPE_ANY);
   bool LoadFromMemory(wxInputStream &stream);
 

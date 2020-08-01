@@ -53,6 +53,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/CryptKeyEntryDlg.h
     src/ui/wxWidgets/SetFiltersDlg.h
     src/ui/wxWidgets/ManageFiltersDlg.h
+    src/ui/wxWidgets/ViewAttachmentDlg.h
     )
 
 
@@ -110,6 +111,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/CryptKeyEntryDlg.cpp
     src/ui/wxWidgets/SetFiltersDlg.cpp
     src/ui/wxWidgets/ManageFiltersDlg.cpp
+    src/ui/wxWidgets/ViewAttachmentDlg.cpp
     )
 
 if(HAVE_YKPERS_H)

@@ -850,15 +850,15 @@ wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
   BoxSizerMain->Add(StaticBoxSizerPreview, 1, wxALL|wxEXPAND, 5);
 
   auto *StaticBoxSizerFile = new wxStaticBoxSizer(wxVERTICAL, panel, _("File"));
-  m_AttachmentFilePath = new wxStaticText(panel, wxID_ANY, _("N/A"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT|wxST_ELLIPSIZE_MIDDLE, _T("ID_STATICTEXT_STATUS"));
+  m_AttachmentFilePath = new wxStaticText(panel, wxID_ANY, _("N/A"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT|wxST_ELLIPSIZE_MIDDLE, _T("ID_STATICTEXT_PATH"));
   StaticBoxSizerFile->Add(m_AttachmentFilePath, 0, wxALL|wxEXPAND, 5);
 
   auto *BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-  m_AttachmentButtonImport = new wxButton(panel, ID_BUTTON_IMPORT, _("Import..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+  m_AttachmentButtonImport = new wxButton(panel, ID_BUTTON_IMPORT, _("Import..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_IMPORT"));
   BoxSizer3->Add(m_AttachmentButtonImport, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentButtonExport = new wxButton(panel, ID_BUTTON_EXPORT, _("Export..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
+  m_AttachmentButtonExport = new wxButton(panel, ID_BUTTON_EXPORT, _("Export..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_EXPORT"));
   BoxSizer3->Add(m_AttachmentButtonExport, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentButtonRemove = new wxButton(panel, ID_BUTTON_REMOVE, _("Remove"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
+  m_AttachmentButtonRemove = new wxButton(panel, ID_BUTTON_REMOVE, _("Remove"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_REMOVE"));
   BoxSizer3->Add(m_AttachmentButtonRemove, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
   StaticBoxSizerFile->Add(BoxSizer3, 0, wxALL|wxEXPAND, 5);
   BoxSizerMain->Add(StaticBoxSizerFile, 0, wxALL|wxEXPAND, 5);
@@ -1037,39 +1037,7 @@ void AddEditPropSheetDlg::ResetAttachmentData()
  */
 bool AddEditPropSheetDlg::LoadImagePreview(const CItemAtt &itemAttachment)
 {
-  auto size = itemAttachment.GetContentSize();
-
-  if (size <= 0) {
-    return false;
-  }
-
-  unsigned char buffer[size];
-
-  if (!itemAttachment.GetContent(buffer, size)) {
-    wxMessageDialog(
-      this,
-      _("An error occurred while trying to get the image data from database item.\n"
-      "Therefore, the image cannot be displayed in the preview."), _("Image Preview"),
-      wxICON_ERROR
-    ).ShowModal();
-
-    return false;
-  }
-
-  wxMemoryInputStream stream(&buffer, size);
-
-  if (!m_AttachmentImagePanel->LoadFromMemory(stream)) {
-    wxMessageDialog(
-      this,
-      _("An error occurred while trying to load the image data into the preview area.\n"
-      "Therefore, the image cannot be displayed in the preview."), _("Image Preview"),
-      wxICON_ERROR
-    ).ShowModal();
-
-    return false;
-  }
-
-  return true;
+  return m_AttachmentImagePanel->LoadFromAttachment(itemAttachment, this, _("Image Preview"));
 }
 
 /**
@@ -1102,23 +1070,6 @@ void AddEditPropSheetDlg::HideImagePreview(const wxString &reason)
 bool AddEditPropSheetDlg::IsFileMimeTypeImage(const wxString &filename)
 {
   return IsMimeTypeImage(pws_os::GetMediaType(tostdstring(filename)));
-}
-
-/**
- * Returns 'true' if the mime type description begins with 'image'.
- *
- * Example: "image/png", "application/zip"
- */
-bool AddEditPropSheetDlg::IsMimeTypeImage(const stringT &mimeTypeDescription)
-{
-  const stringT IMAGE = L"image";
-
-  if (mimeTypeDescription.length() < IMAGE.length()) {
-    return false;
-  }
-  else {
-    return (mimeTypeDescription.substr(0, 5) == IMAGE) ? true : false;
-  }
 }
 
 /**

@@ -159,6 +159,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_COPYURL,                 PasswordSafeFrame::OnCopyUrlClick                )
   EVT_MENU( ID_BROWSEURL,               PasswordSafeFrame::OnBrowseUrl                   )
   EVT_MENU( ID_AUTOTYPE,                PasswordSafeFrame::OnAutoType                    )
+  EVT_MENU( ID_VIEWATTACHMENT,          PasswordSafeFrame::OnViewAttachment              )
   EVT_MENU( ID_GOTOBASEENTRY,           PasswordSafeFrame::OnGotoBase                    )
 
   // Update menu items
@@ -179,6 +180,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_COPYURL,            PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_BROWSEURL,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_AUTOTYPE,           PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_VIEWATTACHMENT,     PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_GOTOBASEENTRY,      PasswordSafeFrame::OnUpdateUI                    )
 
   ////////////////////////////////////////////////////////////////////////////////////////
@@ -578,6 +580,9 @@ void PasswordSafeFrame::CreateMenubar()
   menuEdit->Append(ID_AUTOTYPE, _("Perform Auto&type\tCtrl+T"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_CREATESHORTCUT, _("Create &Shortcut"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_GOTOBASEENTRY, _("Go to Base entry"), wxEmptyString, wxITEM_NORMAL);
+  if (m_core.GetReadFileVersion() == PWSfile::V40) {
+    menuEdit->Append(ID_VIEWATTACHMENT, _("View Attachment"), wxEmptyString, wxITEM_NORMAL);
+  }
   menuBar->Append(menuEdit, _("&Edit"));
 
   /////////////////////////////////////////////////////////////////////////////
@@ -1559,6 +1564,9 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
 
     itemEditMenu.Append(ID_GOTOBASEENTRY,  _("&Go to Base entry"));
     itemEditMenu.Append(ID_EDITBASEENTRY,  _("&Edit Base entry"));
+    if (item->HasAttRef()) {
+      itemEditMenu.Append(ID_VIEWATTACHMENT, _("View Attachment"));
+    }
     if (!item->IsShortcut()) {
       itemEditMenu.AppendCheckItem(ID_PROTECT,  _("Protect Entry"));
       itemEditMenu.Check(ID_PROTECT, item->IsProtected());
@@ -1730,6 +1738,10 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_PASSWORDSUBSET:
     case ID_PASSWORDQRCODE:
       evt.Enable(!isTreeViewGroupSelected && pci);
+      break;
+
+    case ID_VIEWATTACHMENT:
+      evt.Enable(pci && pci->HasAttRef());
       break;
 
     case ID_GOTOBASEENTRY:

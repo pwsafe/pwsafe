@@ -46,6 +46,7 @@
 #include "QRCodeDlg.h"
 #include "TimedTaskChain.h"
 #include "TreeCtrl.h"
+#include "ViewAttachmentDlg.h"
 #include "wxUtilities.h"
 
 #include <array>
@@ -494,6 +495,56 @@ void PasswordSafeFrame::OnAutoType(wxCommandEvent& evt)
     Lower();
 #endif
     DoAutotype(*item);
+  }
+}
+
+void PasswordSafeFrame::OnViewAttachment(wxCommandEvent& WXUNUSED(evt))
+{
+  CItemData* item = GetSelectedEntry();
+
+  if (item == nullptr) {
+    return;
+  }
+
+  if (!item->HasAttRef()) {
+    return;
+  }
+
+  ASSERT(m_core.HasAtt(item->GetAttUUID()));
+
+  CItemAtt itemAttachment = m_core.GetAtt(item->GetAttUUID());
+
+  // Shouldn't be here if no content
+  if (!itemAttachment.HasContent()) {
+    return;
+  }
+
+  // Get media type before we find we can't load it
+  auto mediaTypeDescription = stringx2std(itemAttachment.GetMediaType());
+
+  if (!IsMimeTypeImage(mediaTypeDescription)) {
+    wxMessageDialog(
+      this,
+      _("There is no view available for attachments that are not of image media type.\n"),
+      _("View Attachment"),
+      wxICON_INFORMATION
+    ).ShowModal();
+
+    return;
+  }
+
+  ViewAttachmentDlg viewAttachmentDlg(this);
+
+  if (viewAttachmentDlg.LoadImage(itemAttachment)) {
+    viewAttachmentDlg.ShowModal();
+  }
+  else {
+    wxMessageDialog(
+      this,
+      _("No preview available due to an error."),
+      _("View Attachment"),
+      wxICON_ERROR
+    ).ShowModal();
   }
 }
 
