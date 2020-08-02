@@ -28,6 +28,7 @@
 		A2FE25911C5ACF7500210C36 /* PWSfileHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25891C5ACF7500210C36 /* PWSfileHeader.cpp */; };
 		A2FE25921C5ACF7500210C36 /* PWSfileV4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE258B1C5ACF7500210C36 /* PWSfileV4.cpp */; };
 		A2FE25951C5ACFBD00210C36 /* PWStime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25931C5ACFBD00210C36 /* PWStime.cpp */; };
+		E090D35824D742E90083BA2B /* ViewAttachmentDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E090D35624D742E90083BA2B /* ViewAttachmentDlg.cpp */; };
 		E0A70B9821C8FF8900A2FEA8 /* PolicyManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */; };
 		E0A70B9B21C905A500A2FEA8 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */; };
 		E0C3C4422379B2C200715124 /* AES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C42F2379B2C200715124 /* AES.cpp */; };
@@ -253,6 +254,8 @@
 		A2FE258C1C5ACF7500210C36 /* PWSfileV4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSfileV4.h; sourceTree = "<group>"; };
 		A2FE25931C5ACFBD00210C36 /* PWStime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWStime.cpp; sourceTree = "<group>"; };
 		A2FE25941C5ACFBD00210C36 /* PWStime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWStime.h; sourceTree = "<group>"; };
+		E090D35624D742E90083BA2B /* ViewAttachmentDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewAttachmentDlg.cpp; sourceTree = "<group>"; };
+		E090D35724D742E90083BA2B /* ViewAttachmentDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewAttachmentDlg.h; sourceTree = "<group>"; };
 		E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolicyManager.cpp; sourceTree = "<group>"; };
 		E0A70B9721C8FF8900A2FEA8 /* PolicyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolicyManager.h; sourceTree = "<group>"; };
 		E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
@@ -1210,6 +1213,8 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E090D35624D742E90083BA2B /* ViewAttachmentDlg.cpp */,
+				E090D35724D742E90083BA2B /* ViewAttachmentDlg.h */,
 				E0C3C44D2379CA7300715124 /* MenuFileHandlers.cpp */,
 				E0C3C44A2379CA2A00715124 /* CryptKeyEntryDlg.cpp */,
 				E0C3C44B2379CA2A00715124 /* CryptKeyEntryDlg.h */,
@@ -1836,6 +1841,7 @@
 				6FF5D4A11DA14EE80032F5B6 /* PasswordSubsetDlg.cpp in Sources */,
 				E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */,
 				E6A7ECAE12CDEAA40021D898 /* DbSelectionPanel.cpp in Sources */,
+				E090D35824D742E90083BA2B /* ViewAttachmentDlg.cpp in Sources */,
 				E6A7ECAF12CDEAA40021D898 /* SyncWizard.cpp in Sources */,
 				E6DDC6FC138911CB00F0C0D1 /* CompareDlg.cpp in Sources */,
 				E6DDC714138914B700F0C0D1 /* wxUtilities.cpp in Sources */,
