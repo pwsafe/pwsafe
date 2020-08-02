@@ -216,8 +216,6 @@ public:
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent &event);
 
-  ////@end AddEditPropSheetDlg event handler declarations
-  void OnEasyReadOrPronounceable(wxCommandEvent &event);
   void OnClearPasswordHistory(wxCommandEvent &event);
   void OnOk(wxCommandEvent &event);
 
@@ -267,7 +265,6 @@ private:
   bool LoadImagePreview(const CItemAtt &itemAttachment);
   void ShowImagePreview();
   void HideImagePreview(const wxString &reason = _("No preview available"));
-  bool IsFileMimeTypeImage(const wxString &filename);
   wxString GetMimeTypeExtension(const stringT &mimeTypeDescription);
   void EnableImport();
   void DisableImport();
@@ -379,8 +376,6 @@ private:
   //*)
 
   //(*Identifiers(AttachmentTab)
-  static const long ID_IMAGEPANEL1;
-  static const long ID_STATICTEXT1;
   static const long ID_BUTTON_IMPORT;
   static const long ID_BUTTON_EXPORT;
   static const long ID_BUTTON_REMOVE;

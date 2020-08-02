@@ -116,8 +116,6 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
 END_EVENT_TABLE()
 
 //(*IdInit(AttachmentTab)
-const long AddEditPropSheetDlg::ID_IMAGEPANEL1 = wxWindow::NewControlId();
-const long AddEditPropSheetDlg::ID_STATICTEXT1 = wxWindow::NewControlId();
 const long AddEditPropSheetDlg::ID_BUTTON_IMPORT = wxWindow::NewControlId();
 const long AddEditPropSheetDlg::ID_BUTTON_EXPORT = wxWindow::NewControlId();
 const long AddEditPropSheetDlg::ID_BUTTON_REMOVE = wxWindow::NewControlId();
@@ -1062,14 +1060,6 @@ void AddEditPropSheetDlg::HideImagePreview(const wxString &reason)
   StaticBoxSizerPreview->Hide(m_AttachmentImagePanel);
   StaticBoxSizerPreview->Show(m_AttachmentPreviewStatus);
   StaticBoxSizerPreview->Layout();
-}
-
-/**
- * Returns 'true' if file's mime type is image, otherwise 'false'.
- */
-bool AddEditPropSheetDlg::IsFileMimeTypeImage(const wxString &filename)
-{
-  return IsMimeTypeImage(pws_os::GetMediaType(tostdstring(filename)));
 }
 
 /**
@@ -2400,27 +2390,6 @@ void AddEditPropSheetDlg::ShowPWPSpinners(bool show)
   m_PasswordPolicySizer->Show(m_PasswordPolicyDigitsMinSizer, show, true);
   m_PasswordPolicySizer->Show(m_PasswordPolicySymbolsMinSizer, show, true);
   m_PasswordPolicySizer->Layout();
-}
-
-/*!
- * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
- */
-
-void AddEditPropSheetDlg::OnEasyReadOrPronounceable(wxCommandEvent& evt)
-{
- if (Validate() && TransferDataFromWindow()) {
-   if (m_PasswordPolicyUseEasyCtrl->GetValue() && m_PasswordPolicyUsePronounceableCtrl->GetValue()) {
-    wxMessageBox(_("Sorry, 'pronounceable' and 'easy-to-read' are not supported together"),
-                        _("Password Policy"), wxOK | wxICON_EXCLAMATION, this);
-    if (evt.GetEventObject() == m_PasswordPolicyUsePronounceableCtrl)
-      m_PasswordPolicyUsePronounceableCtrl->SetValue(false);
-    else
-      m_PasswordPolicyUseEasyCtrl->SetValue(false);
-   }
-   else {
-     ShowPWPSpinners(!evt.IsChecked());
-   }
- }
 }
 
 void AddEditPropSheetDlg::EnableNonHexCBs(bool enable)
