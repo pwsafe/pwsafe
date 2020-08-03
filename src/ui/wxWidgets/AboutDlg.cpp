@@ -16,7 +16,6 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
-#include <wx/url.h>
 
 ////@begin includes
 ////@end includes
