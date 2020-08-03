@@ -22,7 +22,6 @@
 #endif
 
 #include <wx/valgen.h>
-#include <wx/statline.h>
 
 #include "AdvancedSelectionDlg.h"
 #include "SelectionCriteria.h"
