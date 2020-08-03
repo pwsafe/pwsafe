@@ -23,22 +23,15 @@
 
 ////@begin includes
 #include <wx/bookctrl.h>
-#include <wx/datetime.h>
-#include <wx/mstream.h>
 ////@end includes
 
 #include "AddEditPropSheetDlg.h"
 #include "Clipboard.h"
-#include "wxUtilities.h"
 
 #include "core/PWCharPool.h"
 #include "core/PWHistory.h"
-#include "core/PWSprefs.h"
 #include "os/media.h"
 #include "os/run.h"
-
-#include <algorithm>
-#include <vector>
 
 
 ////@begin XPM images
