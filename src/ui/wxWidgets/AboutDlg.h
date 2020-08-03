@@ -142,8 +142,8 @@ private:
   /// Set to downloaded data by worker thread, resp. WriteCallback, and read by main thread for final version check
   static wxString s_VersionData;
 
-  static const wstringT s_HOME_URL;
-  static const cstringT s_VERSION_URL;
+  static const wstringT s_URL_HOME;
+  static const cstringT s_URL_VERSION;
 };
 
 #endif /* _ABOUTDLG_H_ */
