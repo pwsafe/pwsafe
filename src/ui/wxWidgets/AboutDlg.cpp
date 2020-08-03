@@ -56,8 +56,8 @@ END_EVENT_TABLE()
 
 wxString AboutDlg::s_VersionData = wxEmptyString;
 
-const wstringT s_URL_HOME      = L"https://pwsafe.org";
-const cstringT s_URL_VERSION   =  "https://pwsafe.org/latest.xml";
+const wstringT AboutDlg::s_URL_HOME      = L"https://pwsafe.org";
+const cstringT AboutDlg::s_URL_VERSION   =  "https://pwsafe.org/latest.xml";
 
 /*!
  * AboutDlg constructors
