@@ -26,9 +26,7 @@
 #include "AdvancedSelectionDlg.h"
 #include "ComparisonGridTable.h"
 #include "SelectionCriteria.h"
-#include "wxUtilities.h"
 
-#include <algorithm>
 #include <functional>
 
 class ComparisonGridCellAttr: public wxGridCellAttr
