@@ -37,7 +37,6 @@
 #include "FieldSelectionDlg.h"
 #include "SelectionCriteria.h"
 #include "SizeRestrictedPanel.h"
-#include "wxUtilities.h"
 
 enum {ID_BTN_COMPARE = 100 };
 
