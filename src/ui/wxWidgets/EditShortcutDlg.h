@@ -80,15 +80,15 @@ private:
   //*)
 
   //(*Identifiers(EditShortcutDlgDialog)
-  static const long ID_COMBOBOX1;
-  static const long ID_TEXTCTRL2;
-  static const long ID_TEXTCTRL3;
-  static const long ID_STATICTEXT6;
-  static const long ID_STATICTEXT8;
-  static const long ID_STATICTEXT10;
-  static const long ID_STATICTEXT2;
-  static const long ID_STATICTEXT4;
-  static const long ID_STATICTEXT7;
+  static const wxWindowID ID_COMBOBOX1;
+  static const wxWindowID ID_TEXTCTRL2;
+  static const wxWindowID ID_TEXTCTRL3;
+  static const wxWindowID ID_STATICTEXT6;
+  static const wxWindowID ID_STATICTEXT8;
+  static const wxWindowID ID_STATICTEXT10;
+  static const wxWindowID ID_STATICTEXT2;
+  static const wxWindowID ID_STATICTEXT4;
+  static const wxWindowID ID_STATICTEXT7;
   //*)
 
   //(*Declarations(EditShortcutDlgDialog)
