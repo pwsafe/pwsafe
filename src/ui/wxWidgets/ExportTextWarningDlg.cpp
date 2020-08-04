@@ -20,7 +20,6 @@
 #include "SafeCombinationCtrl.h"
 #include "ExportTextWarningDlg.h"
 #include "SelectionCriteria.h"
-#include "os/file.h"
 
 #include <wx/statline.h>
 
