@@ -24,11 +24,9 @@
 ////@begin includes
 #include "core/PwsPlatform.h"
 #include "core/ItemData.h"
-#include "os/pws_tchar.h"
 
 #include "DragBarCtrl.h"
 #include "PasswordSafeFrame.h"
-#include "wxUtilities.h"
 ////@end includes
 
 ////@begin XPM images
