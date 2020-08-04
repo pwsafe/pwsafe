@@ -699,10 +699,5 @@ std::tuple<int, int> GridCtrl::HitTest(const wxPoint& point) const
  */
 bool GridCtrl::HasGridCell(const std::tuple<int, int>& cellGridCoordinates) const
 {
-  if ((std::get<0>(cellGridCoordinates) < 0) && (std::get<1>(cellGridCoordinates) < 0)) {
-    return false;
-  }
-  else {
-    return true;
-  }
+  return !((std::get<0>(cellGridCoordinates) < 0) && (std::get<1>(cellGridCoordinates) < 0));
 }
