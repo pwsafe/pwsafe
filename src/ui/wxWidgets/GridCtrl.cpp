@@ -20,15 +20,9 @@
 ////@begin includes
 ////@end includes
 
-#include <wx/memory.h>
-
 #include "GridCtrl.h"
+#include "GridTable.h"
 #include "PasswordSafeFrame.h" // for DispatchDblClickAction()
-#include "./GridTable.h"
-#include "core/Command.h"
-
-#include <algorithm>
-#include <utility> // for make_pair
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
