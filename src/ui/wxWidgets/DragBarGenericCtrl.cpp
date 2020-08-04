@@ -24,8 +24,6 @@
 #include <wx/dnd.h>
 
 #include "core/PwsPlatform.h"
-#include "core/ItemData.h"
-#include "os/pws_tchar.h"
 
 #include "DragBarGenericCtrl.h"
 #include "wxUtilities.h"
