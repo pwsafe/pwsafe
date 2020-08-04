@@ -27,15 +27,15 @@
 #include "wxUtilities.h"
 
 //(*IdInit(EditShortcutDlg)
-const long EditShortcutDlg::ID_COMBOBOX1 = wxNewId();
-const long EditShortcutDlg::ID_TEXTCTRL2 = wxNewId();
-const long EditShortcutDlg::ID_TEXTCTRL3 = wxNewId();
-const long EditShortcutDlg::ID_STATICTEXT6 = wxNewId();
-const long EditShortcutDlg::ID_STATICTEXT8 = wxNewId();
-const long EditShortcutDlg::ID_STATICTEXT10 = wxNewId();
-const long EditShortcutDlg::ID_STATICTEXT2 = wxNewId();
-const long EditShortcutDlg::ID_STATICTEXT4 = wxNewId();
-const long EditShortcutDlg::ID_STATICTEXT7 = wxNewId();
+const wxWindowID EditShortcutDlg::ID_COMBOBOX1 = wxNewId();
+const wxWindowID EditShortcutDlg::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID EditShortcutDlg::ID_TEXTCTRL3 = wxNewId();
+const wxWindowID EditShortcutDlg::ID_STATICTEXT6 = wxNewId();
+const wxWindowID EditShortcutDlg::ID_STATICTEXT8 = wxNewId();
+const wxWindowID EditShortcutDlg::ID_STATICTEXT10 = wxNewId();
+const wxWindowID EditShortcutDlg::ID_STATICTEXT2 = wxNewId();
+const wxWindowID EditShortcutDlg::ID_STATICTEXT4 = wxNewId();
+const wxWindowID EditShortcutDlg::ID_STATICTEXT7 = wxNewId();
 //*)
 
 /*!
@@ -353,19 +353,19 @@ void EditShortcutDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     CItemData modifiedShortcut(*m_Shortcut);
 
     // Has group changed?
-    if (m_ShortcutGroup != stringx2std(m_Shortcut->GetGroup())) {
+    if (m_ShortcutGroup != towxstring(m_Shortcut->GetGroup())) {
       modified = true;
       modifiedShortcut.SetGroup(tostringx(m_ShortcutGroup));
     }
 
     // Has title changed?
-    if (m_ShortcutTitle != stringx2std(m_Shortcut->GetTitle())) {
+    if (m_ShortcutTitle != towxstring(m_Shortcut->GetTitle())) {
       modified = true;
       modifiedShortcut.SetTitle(tostringx(m_ShortcutTitle));
     }
 
     // Has username changed?
-    if (m_ShortcutUsername != stringx2std(m_Shortcut->GetUser())) {
+    if (m_ShortcutUsername != towxstring(m_Shortcut->GetUser())) {
       modified = true;
       modifiedShortcut.SetUser(tostringx(m_ShortcutUsername));
     }
