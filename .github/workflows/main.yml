@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: mac-pwsafe
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -12,8 +12,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+  build_mac_pwsafe:
+    name: Build pwsafe for macOS
     # The type of runner that the job will run on
     runs-on: macos-latest
 
@@ -43,16 +43,26 @@ jobs:
     - name: Build pwsafe
       working-directory: ${{ github.workspace }}
       run: xcodebuild -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe
-      
-    - name: Install dependencies for creating dmg
-      run: brew install create-dmg
-    
+
     - name: Get Xcode build output location
       run: echo "::set-env name=BUILD_OUTPUT_DIR::$(xcodebuild -showBuildSettings -project Xcode/pwsafe-xcode6.xcodeproj | fgrep CONFIGURATION_BUILD_DIR | cut -d= -f2 | sed 's/^ *\(.*\)/\1/')"
 
     - name: Move app to another folder
       run: mkdir "$BUILD_OUTPUT_DIR"/app && mv "$BUILD_OUTPUT_DIR"/pwsafe.app "$BUILD_OUTPUT_DIR"/app/
-      
+
+    - name: Fetch dylib bundler
+      run: git clone https://github.com/auriamg/macdylibbundler ~/work/macdylibbundler
+
+    - name: Build dylib bundler
+      run: /usr/bin/make
+      working-directory: /Users/runner/work/macdylibbundler/
+
+    - name: Copy dependencies
+      run: ~/work/macdylibbundler/dylibbundler -b -cd -x "$BUILD_OUTPUT_DIR"/app/pwsafe.app/Contents/MacOS/pwsafe -d "$BUILD_OUTPUT_DIR"/app/pwsafe.app/Contents/MacOS/libs -p '@executable_path/libs/'
+
+    - name: Install dependencies for creating dmg
+      run: brew install create-dmg
+
     - name: Create dmg
       run: create-dmg --volname "Password Safe" --volicon "src/ui/wxWidgets/graphics/pwsafe.icns" --eula LICENSE ${{ github.workspace }}/PasswordSafe.dmg "$BUILD_OUTPUT_DIR/app"
 
