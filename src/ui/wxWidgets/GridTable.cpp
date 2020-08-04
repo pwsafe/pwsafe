@@ -17,21 +17,18 @@
 #include "wx/wx.h"
 #endif
 
-////@begin includes
-////@end includes
-
-#include <utility> // for make_pair
-#include <limits> //for MAX_INT
-#include "GridTable.h"
-#include "PasswordSafeFrame.h"
-#include "GridCtrl.h"
-#include "../../core/ItemData.h"
-#include "../../core/PWScore.h"
-#include <wx/tokenzr.h>
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <wx/tokenzr.h>
+
+#include "GridTable.h"
+#include "GridCtrl.h"
+#include "PasswordSafeFrame.h"
+
+////@begin includes
+////@end includes
 
 ////@begin XPM images
 ////@end XPM images
