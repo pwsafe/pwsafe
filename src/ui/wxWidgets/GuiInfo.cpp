@@ -17,15 +17,14 @@
 #include "wx/wx.h"
 #endif
 
-#include "./GuiInfo.h"
-#include "./PasswordSafeFrame.h"
-#include "./TreeCtrl.h"
-#include "./GridCtrl.h"
-#include <functional>
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include "GuiInfo.h"
+#include "GridCtrl.h"
+#include "TreeCtrl.h"
+#include "PasswordSafeFrame.h"
 
 void GuiInfo::Save(PasswordSafeFrame* frame)
 {
