@@ -16,22 +16,18 @@
 #include <wx/wx.h>
 #endif
 
-#include "GridShortcutsValidator.h"
-
-#include "./RecentDbList.h"
-#include "./PWSafeApp.h"
-#include "../../core/PWSprefs.h"
-
-#include <wx/stockitem.h>
-
-#include <wx/grid.h>
-#include <algorithm>
-#include <functional>
-#include <iterator>
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <wx/grid.h>
+
+#include "GridShortcutsValidator.h"
+
+#include "RecentDbList.h"
+#include "PWSafeApp.h"
+
+#include <functional>
 
 static wxAcceleratorEntry nullAccel;
 
