@@ -23,8 +23,6 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-#include <wx/fontdlg.h> 
-
 #include "core/PWSprefs.h"
 
 #include "DragBarCtrl.h"
