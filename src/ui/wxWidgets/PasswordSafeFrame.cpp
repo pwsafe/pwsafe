@@ -831,40 +831,40 @@ void PasswordSafeFrame::RefreshToolbarButtons()
   wxASSERT(tb);
   if (tb->GetToolsCount() == 0) {  //being created?
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)) {
-      for (size_t idx = 0; idx < NumberOf(PwsToolbarButtons); ++idx) {
-        if (PwsToolbarButtons[idx].id == ID_SEPARATOR)
+      for (auto & PwsToolbarButton : PwsToolbarButtons) {
+        if (PwsToolbarButton.id == ID_SEPARATOR)
           tb->AddSeparator();
         else
-          tb->AddTool(PwsToolbarButtons[idx].id, wxEmptyString, wxBitmap(PwsToolbarButtons[idx].bitmap_normal),
-                              wxBitmap(PwsToolbarButtons[idx].bitmap_disabled), wxITEM_NORMAL,
-                              wxGetTranslation(PwsToolbarButtons[idx].tooltip) );
+          tb->AddTool(PwsToolbarButton.id, wxEmptyString, wxBitmap(PwsToolbarButton.bitmap_normal),
+                              wxBitmap(PwsToolbarButton.bitmap_disabled), wxITEM_NORMAL,
+                              wxGetTranslation(PwsToolbarButton.tooltip) );
       }
     }
     else {
-      for (size_t idx = 0; idx < NumberOf(PwsToolbarButtons); ++idx) {
-        if (PwsToolbarButtons[idx].id == ID_SEPARATOR)
+      for (auto & PwsToolbarButton : PwsToolbarButtons) {
+        if (PwsToolbarButton.id == ID_SEPARATOR)
           tb->AddSeparator();
         else
-          tb->AddTool(PwsToolbarButtons[idx].id, wxEmptyString, wxBitmap(PwsToolbarButtons[idx].bitmap_classic),
-                          wxGetTranslation(PwsToolbarButtons[idx].tooltip) );
+          tb->AddTool(PwsToolbarButton.id, wxEmptyString, wxBitmap(PwsToolbarButton.bitmap_classic),
+                          wxGetTranslation(PwsToolbarButton.tooltip) );
       }
     }
   }
   else { //toolbar type was changed from the menu
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)) {
-      for (size_t idx = 0; idx < NumberOf(PwsToolbarButtons); ++idx) {
-        if (PwsToolbarButtons[idx].id == ID_SEPARATOR)
+      for (auto & PwsToolbarButton : PwsToolbarButtons) {
+        if (PwsToolbarButton.id == ID_SEPARATOR)
           continue;
-        tb->SetToolNormalBitmap(PwsToolbarButtons[idx].id, wxBitmap(PwsToolbarButtons[idx].bitmap_normal));
-        tb->SetToolDisabledBitmap(PwsToolbarButtons[idx].id, wxBitmap(PwsToolbarButtons[idx].bitmap_disabled));
+        tb->SetToolNormalBitmap(PwsToolbarButton.id, wxBitmap(PwsToolbarButton.bitmap_normal));
+        tb->SetToolDisabledBitmap(PwsToolbarButton.id, wxBitmap(PwsToolbarButton.bitmap_disabled));
       }
     }
     else {
-      for (size_t idx = 0; idx < NumberOf(PwsToolbarButtons); ++idx) {
-        if (PwsToolbarButtons[idx].id == ID_SEPARATOR)
+      for (auto & PwsToolbarButton : PwsToolbarButtons) {
+        if (PwsToolbarButton.id == ID_SEPARATOR)
           continue;
-        tb->SetToolNormalBitmap(PwsToolbarButtons[idx].id, wxBitmap(PwsToolbarButtons[idx].bitmap_classic));
-        tb->SetToolDisabledBitmap(PwsToolbarButtons[idx].id, wxNullBitmap);
+        tb->SetToolNormalBitmap(PwsToolbarButton.id, wxBitmap(PwsToolbarButton.bitmap_classic));
+        tb->SetToolDisabledBitmap(PwsToolbarButton.id, wxNullBitmap);
       }
     }
   }
@@ -999,8 +999,8 @@ void PasswordSafeFrame::ShowTree(bool show)
     // Empty groups need to be added separately
     typedef std::vector<StringX> StringVectorX;
     const StringVectorX& emptyGroups = m_core.GetEmptyGroups();
-    for (StringVectorX::const_iterator itr = emptyGroups.begin(); itr != emptyGroups.end(); ++itr)
-      m_tree->AddEmptyGroup(*itr);
+    for (const auto & emptyGroup : emptyGroups)
+      m_tree->AddEmptyGroup(emptyGroup);
 
     if (m_tree->HasItems()) {// avoid assertion!
       m_tree->SortChildrenRecursively(m_tree->GetRootItem());
