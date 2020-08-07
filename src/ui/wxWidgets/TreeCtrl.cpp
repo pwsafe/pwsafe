@@ -967,11 +967,11 @@ void TreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, con
   typedef std::vector<StringX> EmptyGroupsArray;
   const EmptyGroupsArray& emptyGroups = m_core.GetEmptyGroups();
   StringX sxOldPathWithDot = sxOldPath + _T('.');
-  for( EmptyGroupsArray::const_iterator itr = emptyGroups.begin(); itr != emptyGroups.end(); ++itr)
+  for(const auto & emptyGroup : emptyGroups)
   {
-    if (*itr == sxOldPath || itr->find(sxOldPathWithDot) == 0) {
-      StringX sxOld = *itr;
-      StringX sxNew = sxNewPath + itr->substr(sxOldPath.size());
+    if (emptyGroup == sxOldPath || emptyGroup.find(sxOldPathWithDot) == 0) {
+      StringX sxOld = emptyGroup;
+      StringX sxNew = sxNewPath + emptyGroup.substr(sxOldPath.size());
       pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxOld, sxNew, DBEmptyGroupsCommand::EG_RENAME));
     }
   }
