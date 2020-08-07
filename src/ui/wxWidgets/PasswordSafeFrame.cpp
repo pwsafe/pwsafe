@@ -1900,9 +1900,7 @@ void PasswordSafeFrame::DatabaseModified(bool modified)
 
   // Save Immediately if user requested it
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
-    int rc = SaveImmediately();
-    if (rc == PWScore::SUCCESS)
-      modified = false;
+    SaveImmediately();
   }
 }
 
