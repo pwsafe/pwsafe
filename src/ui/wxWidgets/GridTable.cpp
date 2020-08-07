@@ -299,19 +299,19 @@ void GridTable::RestoreSettings(void) const
     return;
 
   //turn off all the columns first
-  for(size_t n = 0; n < WXSIZEOF(PWSGridCellData); ++n) {
-    PWSGridCellData[n].visible = false;
+  for(auto & GridCellData : PWSGridCellData) {
+    GridCellData.visible = false;
   }
 
   //now turn on the selected columns
   for( size_t idx = 0; idx < colShownArray.Count(); ++idx) {
     const int fieldType = wxAtoi(colShownArray[idx]);
     const int fieldWidth = wxAtoi(colWidthArray[idx]);
-    for(size_t n = 0; n < WXSIZEOF(PWSGridCellData); ++n) {
-      if (PWSGridCellData[n].ft == fieldType) {
-        PWSGridCellData[n].visible = true;
-        PWSGridCellData[n].width = fieldWidth;
-        PWSGridCellData[n].position = idx;
+    for(auto & GridCellData : PWSGridCellData) {
+      if (GridCellData.ft == fieldType) {
+        GridCellData.visible = true;
+        GridCellData.width = fieldWidth;
+        GridCellData.position = idx;
         break;
       }
     }
