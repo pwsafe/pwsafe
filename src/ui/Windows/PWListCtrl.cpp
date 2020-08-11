@@ -264,6 +264,11 @@ bool CPWListCtrlX::FindNext(const CString &cs_find, const int iSubItem)
   }
 
   if (bFound) {
+    auto curItemPos = GetFirstSelectedItemPosition();
+    if (curItemPos) {// BR1030 - deselect previous selection
+      int curItem = GetNextSelectedItem(curItemPos);
+      SetItemState(curItem, 0, LVIS_FOCUSED | LVIS_SELECTED);
+    }
     SetItemState(iItem, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
     EnsureVisible(iItem, FALSE);
     Invalidate();
