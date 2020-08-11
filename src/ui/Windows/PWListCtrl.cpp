@@ -25,6 +25,7 @@ CPWListCtrlX::CPWListCtrlX()
   m_nHoverNDTimerID(0), m_nShowNDTimerID(0), 
   m_bMouseInWindow(false),
   m_bListFilterActive(false),
+  m_bShowNotes(false),
   m_bUseHighLighting(false)
 {
 }
@@ -233,10 +234,10 @@ bool CPWListCtrlX::FindNext(const CString &cs_find, const int iSubItem)
   POSITION pos = GetFirstSelectedItemPosition();
 
   // First search down.
-  if (pos == NULL)
+  if (pos == nullptr)
     iItem = 0;
   else
-    iItem = (int)(INT_PTR)pos;
+    iItem = GetNextSelectedItem(pos);
 
   do {
     cs_text = GetItemText(iItem, iSubItem);
@@ -250,7 +251,7 @@ bool CPWListCtrlX::FindNext(const CString &cs_find, const int iSubItem)
 
   // Not found searching down and we didn't start from the top, now start from the top until
   // we get to where we started!
-  if (!bFound && pos != NULL) {
+  if (!bFound && pos != nullptr) {
     iItem = 0;
     do {
       cs_text = GetItemText(iItem, iSubItem);
@@ -272,7 +273,7 @@ bool CPWListCtrlX::FindNext(const CString &cs_find, const int iSubItem)
     SetItemState(iItem, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
     EnsureVisible(iItem, FALSE);
     Invalidate();
-    CItemData *pci = (CItemData *)GetItemData(iItem);
+    auto *pci = reinterpret_cast<CItemData *>(GetItemData(iItem));
     app.GetMainDlg()->UpdateToolBarForSelectedItem(pci);
   }
 
