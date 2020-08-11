@@ -13,6 +13,7 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 Bugs Fixed in 3.523pre
 ----------------------
 * [SF1518](https://sourceforge.net/p/passwordsafe/bugs/1518) Fixed rare crash after dragging item outside of PasswordSafe.
+* [SF1030](https://sourceforge.net/p/passwordsafe/bugs/1030) Incremental search in list view no longer messes up selection.
 
 PasswordSafe non-Windows release 1.11
 =====================================
