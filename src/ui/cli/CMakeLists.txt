@@ -31,7 +31,15 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set_target_properties(pwsafe-cli PROPERTIES LINK_FLAGS "-z relro")
 endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
-target_link_libraries(pwsafe-cli core os core uuid pthread magic ${wxWidgets_LIBRARIES})
+
+
+target_link_libraries(pwsafe-cli core os core uuid ${wxWidgets_LIBRARIES})
 if (XercesC_LIBRARY)
   target_link_libraries(pwsafe-cli ${XercesC_LIBRARY})
 endif (XercesC_LIBRARY)
+
+if (NOT WIN32)
+	target_link_libraries(pwsafe-cli pthread magic)
+else ()
+	target_link_libraries(pwsafe-cli Rpcrt4)
+endif (NOT WIN32)

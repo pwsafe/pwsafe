@@ -6,6 +6,7 @@ if (WIN32)
     windows/dir.cpp
     windows/env.cpp
     windows/file.cpp
+    windows/getopt.c
     windows/KeySend.cpp
     windows/lib.cpp
     windows/logit.cpp
