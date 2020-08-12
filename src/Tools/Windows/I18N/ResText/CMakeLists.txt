@@ -10,9 +10,7 @@ set (RESTEXT_SRCS
 
 set (RESTEXT_RES ResText.rc)
 
-add_executable( ResText
-                EXCLUDE_FROM_ALL
-                ${RESTEXT_SRCS} ${RESTEXT_RES})
+add_executable( ResText ${RESTEXT_SRCS} ${RESTEXT_RES})
 
 set_property( TARGET ResText
               PROPERTY FOLDER Tools )
