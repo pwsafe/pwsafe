@@ -348,6 +348,7 @@ if (NOT WIN32)
 endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 else (NOT WIN32)
    add_executable(pwsafe WIN32 ${PWSAFE_SRCS})
+   add_dependencies( pwsafe dlls) # i18n dlls
    if (NOT WX_WINDOWS)
       set (CMAKE_MFC_FLAG 1)
       set (PWS_DLL_LIBS "pws_at" "pws_osk")
