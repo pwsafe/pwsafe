@@ -52,12 +52,12 @@ SIGNTOOL := /cygdrive/c/Program\ Files\ \(x86\)/Windows\ Kits/10/bin/10.0.18362.
 RELTAG = V$(subst .,_,$(RELEASENAME))
 
 I18N_DIR := ./src/ui/Windows/I18N
-I18N_DLL_DIR := ./build/bin/pwsafe/I18N
-I18N_DLL_DIR_64 := ./build/bin/pwsafe/I18N64
+I18N_DLL_DIR := ./out/build/x86-Release/I18N
+I18N_DLL_DIR_64 := ./out/build/x64-Release/I18N
 POT_FILE := $(I18N_DIR)/pwsafe.pot
 HELP_DIR := ./help
-BIN_DIR := ./build/bin/pwsafe/release
-BIN_DIR_64 := ./build/bin/pwsafe/release64
+BIN_DIR := ./out/build/x86-Release/Release/
+BIN_DIR_64 := ./out/build/x64-Release/Release/
 TMPDIR := /tmp
 RELNOTES := $(CURDIR)/docs/ReleaseNotes.md
 
@@ -69,10 +69,10 @@ I18N_HELPS := $(foreach i,\
 								DE ES FR RU ZH,\
 								help/pwsafe$(i)/pwsafe$(i).chm)
 I18N_DLLS := $(foreach i,\
-								CZ DE ES PL RU SV ZH FR DA KO NL,\
+								CZ DE ES PL RU SV ZH FR DK KR NL,\
 								$(I18N_DLL_DIR)/pwsafe$(i).dll)
 I18N_DLLS_64 := $(foreach i,\
-								CZ DE ES PL RU SV ZH FR DA KO NL,\
+								CZ DE ES PL RU SV ZH FR DK KR NL,\
 								$(I18N_DLL_DIR_64)/pwsafe$(i).dll)
 
 BIN_MANIFEST = README.md docs/ReleaseNotes.md LICENSE \
@@ -94,9 +94,10 @@ I18N_MANIFEST_64 := $(I18N_HELPS) $(I18N_DLLS_64)
 # * 11 for Visual Studio 2012
 # * 12 for Visual Studio 2013
 # * 14 for Visual Studio 2015
+# * 16 for Visual Studio 2019 (Community Edition)
 # This can be set by a higher-level Makefile
 
-MSVSVER ?= 14
+MSVSVER ?= 16
 
 ifeq ($(MSVSVER),11)
 VCBUILD = /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v4.0.30319/MSBuild.exe
@@ -104,6 +105,8 @@ else ifeq ($(MSVSVER),12)
 VCBUILD = "/cygdrive/c/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
 else ifeq ($(MSVSVER),14)
 VCBUILD = "/cygdrive/c/Program Files (x86)/MSBuild/14.0/Bin/MSBuild.exe"
+else ifeq ($(MSVSVER),16)
+VCBUILD = "/cygdrive/c/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin"
 else
 $(error "Unsupported MSVSVER")
 endif

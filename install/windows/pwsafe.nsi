@@ -191,8 +191,8 @@
     ; Name and file
     Name "Password Safe ${VERSION} (32-bit)"
     BrandingText "PasswordSafe ${VERSION} (32-bit) Installer"
-    !define LANG_DLL "..\..\build\bin\pwsafe\I18N"
-    !define BIN_DIR "..\..\build\bin\pwsafe\release"
+    !define LANG_DLL "..\..\out\build\x86-Release\I18N"
+    !define BIN_DIR "..\..\out\build\x86-Release\Release"
     !define TARGET_ARCH "(32-bit)"
     !echo "Building x86 installer"
   !else if ${ARCH} == "x64" 
@@ -201,8 +201,8 @@
     ; Name and file
     Name "Password Safe ${VERSION} (64-bit)"
     BrandingText "PasswordSafe ${VERSION} (64-bit) Installer"
-    !define LANG_DLL "..\..\build\bin\pwsafe\I18N64"
-    !define BIN_DIR "..\..\build\bin\pwsafe\release64"
+    !define LANG_DLL "..\..\out\build\x64-Release\I18N"
+    !define BIN_DIR "..\..\out\build\x64-Release\Release"
     !define TARGET_ARCH "(64-bit)"
     !echo "Building x64 installer"
   !else

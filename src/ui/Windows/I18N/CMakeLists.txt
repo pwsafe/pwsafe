@@ -17,7 +17,7 @@ string (REGEX REPLACE "(..)" "pos/pwsafe_\\1.po; " POS ${LANGS})
 set (BASE_DLL
      "${CMAKE_BINARY_DIR}/Release/pwsafe_base.dll")
 
-set (DLL_DIR "${CMAKE_BINARY_DIR}/bin")
+set (DLL_DIR "${CMAKE_BINARY_DIR}/I18N")
 
 add_custom_target("pot" DEPENDS "pwsafe.pot")
 add_custom_command(OUTPUT "pwsafe.pot"
@@ -97,8 +97,8 @@ macro( make_dll LANG CODE OUT)
 endmacro( make_dll LANG CODE )
 
 make_dll( "cz" "0x0405" "CS_CZ")
-make_dll( "da" "0x0406" "DA_DK")
 make_dll( "de" "0x0407" "DE_DE")
+make_dll( "dk" "0x0406" "DA_DK")
 make_dll( "es" "0x0c0a" "ES_ES")
 make_dll( "fr" "0x040c" "FR_FR")
 make_dll( "hu" "0x040e" "HU_HU")
