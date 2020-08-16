@@ -464,12 +464,12 @@ Section /o "$(ITALIAN_SUPPORT)" ItalianSection
 SectionEnd
 Section /o "$(DANISH_SUPPORT)" DanishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeDA.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeDK.dll"
   File /nonfatal "..\..\help\pwsafeDA\pwsafeDA.chm"
 SectionEnd
 Section /o "$(KOREAN_SUPPORT)" KoreanSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeKO.dll"
+  File /nonfatal "${LANG_DLL}\pwsafeKR.dll"
   File /nonfatal "..\..\help\pwsafeKO\pwsafeKO.chm"
 SectionEnd
 Section /o "$(CZECH_SUPPORT)" CzechSection
