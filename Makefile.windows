@@ -269,7 +269,7 @@ src-release: ChangeLog $(POT_FILE)
 	@$(MKDIR) $(RELEASEDIR)/$(SRCRELNAME)
 	$(GIT) archive HEAD | $(TAR) -x -C $(RELEASEDIR)/$(SRCRELNAME)
 	$(MV) ChangeLog $(RELEASEDIR)/$(SRCRELNAME)
-	$(CP) src/ui/Windows/version.h $(RELEASEDIR)/$(SRCRELNAME)/src/ui/Windows
+	$(CP) out/build/x64-Release/version.h $(RELEASEDIR)/$(SRCRELNAME)/src/ui/Windows
 	$(CP) $(POT_FILE) $(RELEASEDIR)/$(SRCRELNAME)
 	(cd $(RELEASEDIR); $(ZIP) -9 -r  bar ./$(SRCRELNAME); \
 	$(MV) bar.zip $(SRCRELNAME).zip)

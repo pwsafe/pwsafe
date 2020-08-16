@@ -18,15 +18,15 @@
     <?define Win64 = "yes" ?>
     <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
     <?define Architecture = "64-bit" ?>
-    <?define BinDir = "build\bin\pwsafe\release64" ?>
-    <?define LangDir = "build\bin\pwsafe\I18N64" ?>
+    <?define BinDir = "out\build\x64-Release\Release" ?>
+    <?define LangDir = "out/build/x64-Release/I18N/" ?>
   <?else ?>
     <?define ProductName = "Password Safe $(var.PWSAFE_VERSION) for Windows (32 bit)" ?>
     <?define Win64 = "no" ?>
     <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
     <?define Architecture = "32-bit" ?>
-    <?define BinDir = "build\bin\pwsafe\release" ?>
-    <?define LangDir = "build\bin\pwsafe\I18N" ?>
+    <?define BinDir = "out\build\x86-Release\Release" ?>
+    <?define LangDir = "out/build/x86-Release/I18N" ?>
   <?endif ?>
 
   <Product Id='c2a02857-d138-446b-b181-442dee20c8e6'
@@ -131,14 +131,14 @@
 	    <File Id='file21' Name='pwsafeZH.dll' DiskId='1'
 	      Source='$(var.LangDir)\pwsafeZH.dll' Vital='yes'> 
 	    </File>
-	    <File Id='file22' Name='pwsafeKO.dll' DiskId='1'
-	      Source='$(var.LangDir)\pwsafeKO.dll' Vital='yes'> 
+	    <File Id='file22' Name='pwsafeKR.dll' DiskId='1'
+	      Source='$(var.LangDir)\pwsafeKR.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file23' Name='pwsafeNL.dll' DiskId='1'
 	      Source='$(var.LangDir)\pwsafeNL.dll' Vital='yes'> 
 	    </File>
-	    <File Id='file24' Name='pwsafeDA.dll' DiskId='1'
-	      Source='$(var.LangDir)\pwsafeDA.dll' Vital='yes'> 
+	    <File Id='file24' Name='pwsafeDK.dll' DiskId='1'
+	      Source='$(var.LangDir)\pwsafeDK.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file25' Name='pwsafeFR.dll' DiskId='1'
 	      Source='$(var.LangDir)\pwsafeFR.dll' Vital='yes'> 
