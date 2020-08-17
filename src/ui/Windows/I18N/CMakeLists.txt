@@ -9,13 +9,19 @@ set (LANGS "cz" "de" "dk" "es" "fr" "hu" "it" "kr" "nl" "pl" "ru" "sv"
      "sl" "tr" "zh")
 
 set (TOOLS_BIN_DIR "${CMAKE_BINARY_DIR}/src/Tools/Windows/I18N")
-set (RESTEXT "${TOOLS_BIN_DIR}/ResText/Release/ResText.exe")
-set (RESPWSL "${TOOLS_BIN_DIR}/ResPWSL/Release/ResPWSL.exe")
+set (RESTEXT "${TOOLS_BIN_DIR}/ResText/${CMAKE_CONFIGURATION_TYPES}/ResText.exe")
+set (RESPWSL "${TOOLS_BIN_DIR}/ResPWSL/${CMAKE_CONFIGURATION_TYPES}/ResPWSL.exe")
 
 string (REGEX REPLACE "(..)" "pos/pwsafe_\\1.po; " POS ${LANGS})
 
-set (BASE_DLL
-     "${CMAKE_BINARY_DIR}/Release/pwsafe_base.dll")
+if ( ${CMAKE_CONFIGURATION_TYPES} STREQUAL "Debug" )
+    set (BASE_DLL
+     "${CMAKE_BINARY_DIR}/${CMAKE_CONFIGURATION_TYPES}/pwsafe_base_D.dll")
+else ( ${CMAKE_CONFIGURATION_TYPES} STREQUAL "Debug" )
+    set (BASE_DLL
+     "${CMAKE_BINARY_DIR}/${CMAKE_CONFIGURATION_TYPES}/pwsafe_base.dll")
+endif ( ${CMAKE_CONFIGURATION_TYPES} STREQUAL "Debug" )
+
 
 set (DLL_DIR "${CMAKE_BINARY_DIR}/I18N")
 
@@ -56,7 +62,7 @@ foreach (LANG ${LANGS})
  add_custom_command(OUTPUT "pos/pwsafe_${LANG}.po"
 	  COMMAND ${RESTEXT} "extract" "${BASE_DLL}" "${CMAKE_CURRENT_SOURCE_DIR}/pos/pwsafe_${LANG}.po"
     DEPENDS "${BASE_DLL}"
-    COMMENT "Updating pwsafe_${LANG}.po"
+    COMMENT "Updating pwsafe_${LANG}.po using ${RESTEXT}"
     )
 endforeach(LANG)
 
@@ -92,7 +98,7 @@ macro( make_dll LANG CODE OUT)
                      COMMAND "DEL" "foo.dll" "pwsafe${UCLANG}.dll"
                      COMMAND "REN" "pwsafe${OUT}.dll" "pwsafe${UCLANG}.dll"
                      WORKING_DIRECTORY ${DLL_DIR}
-                     COMMENT "Making pwsafe${UCLANG}.dll"
+                     COMMENT "Making pwsafe${UCLANG}.dll using ${RESTEXT} and ${RESPWSL}"
                      )
 endmacro( make_dll LANG CODE )
 
