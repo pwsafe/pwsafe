@@ -19,6 +19,10 @@ set (CLI_TEST_SRC
   search-test.cpp
   search.cpp)
 
+if (WIN32)
+  list (APPEND CLI_SRCS cli.rc)
+endif(WIN32)
+
 
 add_executable(pwsafe-cli ${CLI_SRCS})
 install (TARGETS pwsafe-cli RUNTIME DESTINATION "bin")
