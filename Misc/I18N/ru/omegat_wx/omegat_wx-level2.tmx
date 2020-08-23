@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx14.dtd">
 <tmx version="1.4">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.1.0_0_54fc30ee" segtype="sentence" srclang="en-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.3.0_0_2fd7a9ec" segtype="sentence" srclang="en-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -14,18 +14,18 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>%d %ls updated</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20141226T152147Z" creationid="pm_kan" creationdate="20141226T152147Z">
-        <seg>%d %ls обновлено</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
         <seg>%d seconds</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200104T190526Z" creationid="pm_kan" creationdate="20200104T190526Z">
         <seg>%d секунд</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>%ld %ls updated</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122431Z" creationid="pm_kan" creationdate="20200823T122431Z">
+        <seg>%ld %ls обновлено</seg>
       </tuv>
     </tu>
     <tu>
@@ -182,6 +182,30 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>%s files (*.%s)|*.%s|</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T124511Z" creationid="pm_kan" creationdate="20200823T124511Z">
+        <seg>%s файлы (*.%s)|*.%s|</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>%s files (*.%s;*.gz)|*.%s;*.gz|</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T124504Z" creationid="pm_kan" creationdate="20200823T124504Z">
+        <seg>%s файлы (*.%s;*.gz)|*.%s;*.gz|</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>%s files (*.%s;*.jpg)|*.%s;*.jpg|</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T124458Z" creationid="pm_kan" creationdate="20200823T124458Z">
+        <seg>%s файлы (*.%s;*.jpg)|*.%s;*.jpg|</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>&amp;About Password Safe...</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -202,6 +226,14 @@ Unknown error</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Шрифт в диалоге &amp;Вставки/Редактирования</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>&amp;Apply</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>&amp;Применить</seg>
       </tuv>
     </tu>
     <tu>
@@ -550,6 +582,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>&amp;Import</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>&amp;Импорт</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>&amp;KeePass...</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T114653Z">
@@ -866,6 +906,14 @@ Unknown error</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20190819T162115Z" creationid="pm_kan" creationdate="20190819T162115Z">
         <seg>&amp;Разблокировать контейнер	Ctrl+I</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>&amp;Unsaved Changes</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>&amp;Несохранённые изменения</seg>
       </tuv>
     </tu>
     <tu>
@@ -1350,6 +1398,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>All files (*.*)|*.*</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T123431Z" creationid="pm_kan" creationdate="20200823T123431Z">
+        <seg>Все файлы (*.*)|*.*</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Allow multiple instances</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T113712Z">
@@ -1386,6 +1442,38 @@ Unknown error</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Элемент или ярлык с такими же значениями Группы, Заголовка и Имени пользователя уже существует.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>An error occurred while reading the file.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T124348Z" creationid="pm_kan" creationdate="20200823T124348Z">
+        <seg>Ошибка при чтении файла.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>An error occurred while trying to get the image data from database item.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122715Z" creationid="pm_kan" creationdate="20200823T122626Z">
+        <seg>Ошибка при получении данных об изображении из элемента контейнера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>An error occurred while trying to load the image data into the preview area.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T143546Z" creationid="pm_kan" creationdate="20200823T122712Z">
+        <seg>Ошибка при загрузке данных изображения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>An error occurred while writing the file.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T124537Z" creationid="pm_kan" creationdate="20200823T124537Z">
+        <seg>Ошибка при записи файла.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1471,6 +1559,14 @@ a password are required.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Attachment</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Вложение</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Attachment Reference</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20170930T164304Z" creationid="pm_kan" creationdate="20170930T164304Z">
@@ -1527,6 +1623,14 @@ a password are required.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Available Filters:</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Доступные фильтры:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Available Password Policies:</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -1555,6 +1659,14 @@ a password are required.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Резервные копии</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Base Entry</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T115012Z" creationid="pm_kan" creationdate="20200823T115012Z">
+        <seg>Исходный элемент</seg>
       </tuv>
     </tu>
     <tu>
@@ -2527,6 +2639,14 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Creation Date:</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122912Z" creationid="pm_kan" creationdate="20200823T122912Z">
+        <seg>Дата создания:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Ctrl+A</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T114715Z">
@@ -2647,14 +2767,6 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>DDD DD MMM YYYY HH:MM:SS XM ZZZ</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T111813Z">
-        <seg>DDD DD MMM YYYY HH:MM:SS XM ZZZ</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
         <seg>Data may have been lost or modified.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T132026Z">
@@ -2699,14 +2811,6 @@ Locked by</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20150418T091558Z">
         <seg>Настройки контейнера будут сохранены в открытом контейнере, если он доступен для записи и не␣заблокирован другим пользователем.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Date/Time Information</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU">
-        <seg>Информация о дате/времени</seg>
       </tuv>
     </tu>
     <tu>
@@ -3023,14 +3127,6 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>Double-click action</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20150418T090828Z">
-        <seg>По двойному␣клику</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
         <seg>Drag this image onto another window to paste the '</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T125847Z">
@@ -3059,6 +3155,14 @@ Locked by</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Вы&amp;ход</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>E&amp;xport</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T115712Z" creationid="pm_kan" creationdate="20200823T115712Z">
+        <seg>&amp;Экспорт</seg>
       </tuv>
     </tu>
     <tu>
@@ -3227,6 +3331,14 @@ Locked by</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T133322Z">
         <seg>Элементы, чьи</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Entries with E&amp;xpiry Dates</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T120119Z" creationid="pm_kan" creationdate="20200823T120119Z">
+        <seg>Элементы с заданными &amp;датами истечения пароля</seg>
       </tuv>
     </tu>
     <tu>
@@ -3491,6 +3603,14 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Export Attachment</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T124444Z" creationid="pm_kan" creationdate="20200823T124444Z">
+        <seg>Экспортировать вложение</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Export Text</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -3547,6 +3667,14 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Export...</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Экспорт...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Exporting database:</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20130915T180318Z">
@@ -3563,10 +3691,34 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Failed to allocate required memory to export attachment data.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T124528Z" creationid="pm_kan" creationdate="20200823T124528Z">
+        <seg>Не удалось выделить память для экспорта вложения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Failed to allocate required memory to import attachment data.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T123607Z" creationid="pm_kan" creationdate="20200823T123607Z">
+        <seg>Не удалось выделить память для импорта вложения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Failed to lock configuration file - opened by another instance of PasswordSafe?</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20150418T091956Z">
         <seg>Ошибка при блокировке файла настроек. Проверьте, не␣открыт ли другой экземпляр Password Safe?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Failed to open file.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T123614Z" creationid="pm_kan" creationdate="20200823T123614Z">
+        <seg>Не удалось открыть файл.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3603,10 +3755,42 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>File</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Файл</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>File Creation Date:</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122931Z" creationid="pm_kan" creationdate="20200823T122931Z">
+        <seg>Дата создания файла:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>File Last Modified Date:</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122940Z" creationid="pm_kan" creationdate="20200823T122940Z">
+        <seg>Дата изменения файла:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>File Read Error</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Ошибка при чтении файла</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>File Size:</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Размер файла:</seg>
       </tuv>
     </tu>
     <tu>
@@ -3623,6 +3807,14 @@ Locked by</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Обнаружен конец файла в строке %d до того как была найдена закрывающая двойная кавычка для последнего поля с заметками.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>File exceeds the allowed maximum size of 4.3GB (2^32GB).</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T144235Z" creationid="pm_kan" creationdate="20200823T124334Z">
+        <seg>Размер файла больше максимально разрешённых 4 ГиБ (2^32 Б)</seg>
       </tuv>
     </tu>
     <tu>
@@ -3735,6 +3927,14 @@ Locked by</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Фильтр %ls уже существует в контейнере. Заменить его?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Filter name:</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Имя фильтра:</seg>
       </tuv>
     </tu>
     <tu>
@@ -3855,6 +4055,14 @@ Locked by</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T115401Z">
         <seg>Перейти к исходному элементу</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Goto &amp;Shortcuts...</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122416Z" creationid="pm_kan" creationdate="20200823T122416Z">
+        <seg>Перейти к ярлыку...</seg>
       </tuv>
     </tu>
     <tu>
@@ -3998,6 +4206,22 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Image Preview</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T123415Z" creationid="pm_kan" creationdate="20200823T123331Z">
+        <seg>Предпросмотр изображения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Image files</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T123422Z" creationid="pm_kan" creationdate="20200823T123422Z">
+        <seg>Файлы изображений</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Import # %d</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -4026,6 +4250,14 @@ appear in the username field.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Импорт из &amp;XML</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Import Attachment</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T123553Z" creationid="pm_kan" creationdate="20200823T123553Z">
+        <seg>Импортировать вложение</seg>
       </tuv>
     </tu>
     <tu>
@@ -4122,6 +4354,14 @@ appear in the username field.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20130428T142345Z">
         <seg>Импортировать в группу</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Import...</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Импорт...</seg>
       </tuv>
     </tu>
     <tu>
@@ -4334,6 +4574,14 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Invalid field delimiter: must be within ASCII range.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Неверный разделитель полей: должен быть ASCII-символом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Invalid field separator character found - only a single blank is allowed between fields.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -4470,10 +4718,58 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Label1</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122908Z" creationid="pm_kan" creationdate="20200823T122908Z">
+        <seg>Метка 1</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Label2</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122916Z" creationid="pm_kan" creationdate="20200823T122916Z">
+        <seg>Метка 2</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Label3</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122922Z" creationid="pm_kan" creationdate="20200823T122922Z">
+        <seg>Метка 3</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Label4</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122935Z" creationid="pm_kan" creationdate="20200823T122935Z">
+        <seg>Метка 4</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Label5</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122944Z" creationid="pm_kan" creationdate="20200823T122944Z">
+        <seg>Метка 5</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Last Access Time</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Время последнего доступа</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Last Find results</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Результаты последнего поиска</seg>
       </tuv>
     </tu>
     <tu>
@@ -4638,6 +4934,14 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Manage Filters</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Управление фильтрами</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Manage Password Policies</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -4674,6 +4978,14 @@ appear in the username field.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>максимальная</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Media Type:</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Тип файла:</seg>
       </tuv>
     </tu>
     <tu>
@@ -4729,6 +5041,14 @@ appear in the username field.</seg>
         <seg>Misc.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
+        <seg>Разное</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Miscellaneous</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T120111Z" creationid="pm_kan" creationdate="20200823T120111Z">
         <seg>Разное</seg>
       </tuv>
     </tu>
@@ -4902,6 +5222,14 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>No Attachment Available</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T123052Z" creationid="pm_kan" creationdate="20200823T123052Z">
+        <seg>Вложение отсутствует</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>No Curl handle to perform download.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20190503T165558Z" creationid="pm_kan" creationdate="20190503T165558Z">
@@ -4922,6 +5250,14 @@ appear in the username field.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20150418T091607Z">
         <seg>Настройки приложения не␣были сохранены.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>No attachment data to export.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T124439Z" creationid="pm_kan" creationdate="20200823T124439Z">
+        <seg>Отсутствует вложение для экспорта.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4963,6 +5299,38 @@ added or existing entries removed during this process.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20150418T091450Z">
         <seg>Во время синхронизации не␣происходит удаления или добавления элементов.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>No preview available</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122841Z" creationid="pm_kan" creationdate="20200823T122841Z">
+        <seg>Предпросмотр недоступен</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>No preview available - unsupported media type</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T123229Z" creationid="pm_kan" creationdate="20200823T123229Z">
+        <seg>Предпросмотр недоступен — неподдерживаемый тип.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>No preview available due to an error</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T123059Z" creationid="pm_kan" creationdate="20200823T123059Z">
+        <seg>Предпросмотр недоступен из-за ошибки</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>No preview available due to an error.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122850Z" creationid="pm_kan" creationdate="20200823T120047Z">
+        <seg>Предпросмотр недоступен из-за ошибки.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5787,6 +6155,14 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Please edit the shortcut properties to the selected base entry.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T115049Z" creationid="pm_kan" creationdate="20200823T115049Z">
+        <seg>Изменение параметров ярлыка для выбранного исходного элемента</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Please enter a decryption key.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20190503T175631Z" creationid="pm_kan" creationdate="20190503T175411Z">
@@ -5839,6 +6215,14 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Введите пароль для указанного контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Please enter the shortcut properties to the selected base entry.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T114954Z" creationid="pm_kan" creationdate="20200823T114954Z">
+        <seg>Укажите параметры ярлыка для выбранного исходного элемента</seg>
       </tuv>
     </tu>
     <tu>
@@ -5919,23 +6303,6 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20130428T142656Z">
         <seg>Укажите подходящий файл</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Please specify the name &amp; group</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T110554Z">
-        <seg>Укажите имя и группу</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Please specify the name and group for this shortcut
-to the base entry</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T111753Z">
-        <seg>Укажите имя и группу для ярлыка на исходный элемент</seg>
       </tuv>
     </tu>
     <tu>
@@ -6046,22 +6413,30 @@ to the base entry</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Preview</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122858Z" creationid="pm_kan" creationdate="20200823T122858Z">
+        <seg>Предпросмотр</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2020-01-06 21:49+0300
-PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE
-Last-Translator: FULL NAME &lt;EMAIL@ADDRESS&gt;
+POT-Creation-Date: 2020-08-23 14:46+0300
+PO-Revision-Date: 2020-08-32 13:30+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: 
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200106T184940Z" creationid="pm_kan" creationdate="20200106T184940Z">
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122803Z" creationid="pm_kan" creationdate="20200823T122803Z">
         <seg>Project-Id-Version: Password Safe
-Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2020-01-06 22:00+0300
-PO-Revision-Date: 2020-01-06 22:00+0300
+Report-Msgid-Bugs-To: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+POT-Creation-Date: 2020-08-23 15:30+0300
+PO-Revision-Date: 2020-08-23 15:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
@@ -6204,6 +6579,14 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T113558Z">
         <seg>Хранить последние</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Remove</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Удалить</seg>
       </tuv>
     </tu>
     <tu>
@@ -6571,6 +6954,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Selected Filter Details:</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T115723Z" creationid="pm_kan" creationdate="20200823T115723Z">
+        <seg>Параметры фильтра:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Selected file doesn't exist.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20150418T091257Z">
@@ -6635,6 +7026,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Set Display Filters</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Настройки фильтров отображения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Set YubiKey</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20130915T181401Z">
@@ -6647,14 +7046,6 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Установить максимальное количество сохраняемых паролей равным указанному значению</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Shift double-click action</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20150418T091042Z">
-        <seg>По Shift␣+ двойной␣клик</seg>
       </tuv>
     </tu>
     <tu>
@@ -6675,10 +7066,26 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Shortcut</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T115004Z" creationid="pm_kan" creationdate="20200823T115004Z">
+        <seg>Ярлык</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Shortcut #</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20130428T150355Z">
         <seg>Комбинация клавиш #</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Shortcut to</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T114902Z" creationid="pm_kan" creationdate="20200823T114902Z">
+        <seg>Ярлык для </seg>
       </tuv>
     </tu>
     <tu>
@@ -6695,14 +7102,6 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Показать</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Show &amp;Unsaved Changes</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20161105T145145Z">
-        <seg>Показать несо&amp;хранённые изменения</seg>
       </tuv>
     </tu>
     <tu>
@@ -6763,14 +7162,6 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>Show entries with E&amp;xpiry dates</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20161105T145333Z">
-        <seg>Показать элементы с заданными датами исте&amp;чения пароля</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
         <seg>Simultaneous execution disabled?</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20141226T145946Z" creationid="pm_kan" creationdate="20141226T145946Z">
@@ -6798,14 +7189,6 @@ Content-Transfer-Encoding: 8bit</seg>
         <seg>Sorry, "pronounceable" and "easy-to-read" cannot be both selected</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20160617T172235Z" creationid="pm_kan" creationdate="20160617T172235Z">
-        <seg>Параметры «произносимые» и «удобочитаемые» несовместимы</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Sorry, 'pronounceable' and 'easy-to-read' are not supported together</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU">
         <seg>Параметры «произносимые» и «удобочитаемые» несовместимы</seg>
       </tuv>
     </tu>
@@ -6887,6 +7270,14 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Подмножество элементов отобрано по правилу:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Subviews</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122156Z" creationid="pm_kan" creationdate="20200823T122156Z">
+        <seg>Стандартные фильтры</seg>
       </tuv>
     </tu>
     <tu>
@@ -7468,6 +7859,14 @@ has duplicate entries with the same group/title/user combination.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>There is no view available for attachments that are not of image media type.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T120038Z" creationid="pm_kan" creationdate="20200823T115748Z">
+        <seg>Просмотр недоступен для вложений не являющихся картинками.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>There may be some loss of history.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T140300Z">
@@ -7496,6 +7895,14 @@ has duplicate entries with the same group/title/user combination.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20130428T142814Z">
         <seg>Ошибка при загрузке контейнера:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Therefore, the image cannot be displayed in the preview.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T122656Z" creationid="pm_kan" creationdate="20200823T122656Z">
+        <seg>Поэтому, картинка не может быть отображена.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7863,6 +8270,22 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Unexpected error occured during attachment export.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T124602Z" creationid="pm_kan" creationdate="20200823T124602Z">
+        <seg>Ошибка при экспорте вложения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Unexpected error occured during attachment import.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T124414Z" creationid="pm_kan" creationdate="20200823T124414Z">
+        <seg>Ошибка при импорте вложения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Unexpected exception during parsing.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -8191,6 +8614,14 @@ Imported %d %ls</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Просмотреть</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>View Attachment</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Просмотр вложения</seg>
       </tuv>
     </tu>
     <tu>
@@ -8923,14 +9354,6 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>имя файла</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>for shortcut to</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T110605Z">
-        <seg>для ярлыка на</seg>
       </tuv>
     </tu>
     <tu>
