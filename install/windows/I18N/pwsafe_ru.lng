@@ -49,7 +49,7 @@ LangString UNINSTALL_SHORTCUT ${LANG_RUSSIAN} "Ярлык для удалени�
 LangString DESC_ProgramFiles ${LANG_RUSSIAN} "Основные файлы, необходимые для работы Password Safe."
 
 ; DESC_CliTool "Installs pwsafe-cli, a command line utility."
-LangString DESC_CliTool ${LANG_RUSSIAN} "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_RUSSIAN} "Установить утилиту командной строки pwsafe-cli."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
 LangString DESC_LangSupport ${LANG_RUSSIAN} "Выберите язык(и) для интерфейса программы"
@@ -98,7 +98,7 @@ LangString LANG_INSTALL ${LANG_RUSSIAN} "Язык установки (Installati
 LangString LANG_SELECT ${LANG_RUSSIAN} "Выберите язык для установки $\n(Please select the language for the installation)"
 
 ; CLI_TOOL "Command-line tool"
-LangString CLI_TOOL ${LANG_RUSSIAN} "Command-line tool"
+LangString CLI_TOOL ${LANG_RUSSIAN} "Утилита командной строки"
 
 LangString LANGUAGE_SUPPORT ${LANG_RUSSIAN} "Языки интерфейса"
 LangString ENGLISH_SUPPORT ${LANG_RUSSIAN} "Английский"
