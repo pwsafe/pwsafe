@@ -1,3 +1,4 @@
+#!/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Simple hhk generator
@@ -199,7 +200,7 @@ def save_index(index, out_file):
 
     ul = etree.SubElement(body, "ul")
 
-    for keyword, links in index.iteritems():
+    for keyword, links in iter(index.items()):
         li = etree.SubElement(ul, "li")
         obj = etree.SubElement(li, "object")
         obj.set("type", "text/sitemap")
