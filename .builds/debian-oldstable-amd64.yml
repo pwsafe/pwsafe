@@ -6,6 +6,8 @@ triggers:
       to: build@pwsafe.org
 sources: 
 - https://github.com/pwsafe/pwsafe.git
+artifacts:
+- pwsafe/build/pwsafe-debian9-xx-amd64.deb
 tasks:
     - setup: |
         sudo apt-get update
@@ -23,3 +25,8 @@ tasks:
     - test: |
         cd pwsafe/build-dbg
         LC_ALL=C.UTF-8 make test
+    - release: |
+        cd pwsafe/build
+        make
+        cpack -G DEB ..
+        mv *.deb pwsafe-debian9-xx-amd64.deb
