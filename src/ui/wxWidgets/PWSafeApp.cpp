@@ -47,7 +47,7 @@
 #include "core/SysInfo.h"
 #include "wxUtilities.h"
 
-#if defined(__X__) || defined(__WXGTK__)
+#if defined(__X__) || defined(__WXGTK__) || defined(__WXOSX__)
 #include "Clipboard.h"
 #endif
 #include "CryptKeyEntryDlg.h"
