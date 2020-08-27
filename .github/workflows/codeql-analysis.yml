@@ -68,6 +68,7 @@ jobs:
     #    uses a compiled language
 
     - run: |
+       sudo apt-get update
        sudo ./Misc/setup-linux-dev-env.sh
        mkdir build
        cd build
