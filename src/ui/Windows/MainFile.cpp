@@ -4204,6 +4204,8 @@ void DboxMain::CleanUpAndExit()
     ClearClipboardData();
   }
 
+  m_core.SafeUnlockCurFile();
+
   // Reset core and clear ALL associated data
   m_core.ReInit();
 

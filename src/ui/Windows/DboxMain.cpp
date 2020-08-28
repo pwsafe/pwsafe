@@ -2998,12 +2998,14 @@ LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
   if (wParam == TRUE) {
     if (m_pfcnShutdownBlockReasonDestroy != NULL)
       m_pfcnShutdownBlockReasonDestroy(m_hWnd);
+    bool are_we_exiting = true;
 
     switch (m_iSessionEndingStatus) {
       case IDIGNORE:
       case IDCANCEL:
         // How did we get here - IDIGNORE means we are not ending and IDCANCEL
         // means the user said to cancel the shutdown\restart\logoff!!!
+        are_we_exiting = false;
         break;
       case IDOK:
         // User never asked a question (Vista or later)
@@ -3028,7 +3030,9 @@ LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
     }
 
     m_bBlockShutdown = false;
-    CleanUpAndExit();
+    if (are_we_exiting) {
+      CleanUpAndExit();
+    }
   } else {
     // Reset status since the EndSession was cancelled
     m_iSessionEndingStatus = IDIGNORE;
