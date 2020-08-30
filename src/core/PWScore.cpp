@@ -416,21 +416,31 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
   }
 }
 
-#if 0
+void PWScore::DoAddAttachment(const CItemAtt &att)
+{
+  if (HasAtt(att.GetUUID())) {
+    GetAtt(att.GetUUID()).IncRefcount();
+  }
+  else {
+    PutAtt(att);
+  }
+}
 
-void PWScore::DoDeleteAtt(const CItemAtt &att)
+void PWScore::DoDeleteAttachment(const CItemAtt &att)
 {
   /**
    * Note that we do NOT erase reference uuid in owner record(s)
    */
 
-  // Make sure att's there
-  auto pos = m_attlist.find(att.GetUUID());
-  ASSERT(pos != m_attlist.end());
-
-  m_attlist.erase(pos);
+  RemoveAtt(att.GetUUID());
 }
-#endif
+
+void PWScore::DoReplaceAttachment(const CItemAtt &old_cia, const CItemAtt &new_cia)
+{
+  // Assumes that old_uuid == new_uuid
+  ASSERT(old_cia.GetUUID() == new_cia.GetUUID());
+  m_attlist[old_cia.GetUUID()] = new_cia;
+}
 
 void PWScore::ClearDBData()
 {

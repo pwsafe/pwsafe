@@ -290,6 +290,43 @@ private:
   CItemData m_new_ci;
 };
 
+class DeleteAttachmentCommand : public Command
+{
+public:
+  static DeleteAttachmentCommand *Create(CommandInterface *pcomInt,
+    const CItemData &ci,
+    const Command *pcmd = nullptr)
+  { return new DeleteAttachmentCommand(pcomInt, ci, pcmd); }
+  ~DeleteAttachmentCommand();
+  int Execute();
+  void Undo();
+
+private:
+  DeleteAttachmentCommand& operator=(const DeleteEntryCommand&) = delete; // Do not implement
+  DeleteAttachmentCommand(CommandInterface *pcomInt, const CItemData &ci,
+    const Command *pcmd = nullptr);
+  const CItemData m_ci;
+  CItemAtt m_att;
+};
+
+class EditAttachmentCommand : public Command
+{
+public:
+  static EditAttachmentCommand *Create(CommandInterface *pcomInt,
+    const CItemAtt &old_att,
+    const CItemAtt &new_att)
+  { return new EditAttachmentCommand(pcomInt, old_att, new_att); }
+  ~EditAttachmentCommand();
+  int Execute();
+  void Undo();
+
+private:
+  EditAttachmentCommand(CommandInterface *pcomInt, const CItemAtt &old_att,
+    const CItemAtt &new_att);
+  CItemAtt m_old_att;
+  CItemAtt m_new_att;
+};
+
 class UpdateEntryCommand : public Command
 {
 public:

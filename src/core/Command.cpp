@@ -649,6 +649,14 @@ int DeleteEntryCommand::Execute()
   }
   // XXX if entry has an attachment, find and store it in m_att for undo.
   // XXX as well as removing it / decrementing its refcount
+  if (m_ci.HasAttRef() && m_pcomInt->HasAtt(m_ci.GetAttUUID())) {
+    auto att = m_pcomInt->GetAtt(m_ci.GetAttUUID());
+
+    // The attachment is going to be deleted if its reference count is one.
+    if (att.GetRefcount() == 1) {
+      m_att = att;
+    }
+  }
   m_pcomInt->DoDeleteEntry(m_ci);
   m_pcomInt->AddChangedNodes(m_ci.GetGroup());
   m_pcomInt->RemoveExpiryEntry(m_ci);
@@ -667,10 +675,20 @@ void DeleteEntryCommand::Undo()
       // Check if dep entry hasn't already been added - can happen if
       // base and dep in group that's being undeleted.
       if (m_pcomInt->Find(m_ci.GetUUID()) == m_pcomInt->GetEntryEndIter()) {
-        pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetBaseUUID(), &m_att, this));
+        pmulticmds->Add(
+          AddEntryCommand::Create(
+            m_pcomInt, m_ci, m_ci.GetBaseUUID(),
+            (m_att.HasUUID() && m_att.HasContent()) ? &m_att : nullptr, this
+          )
+        );
       }
     } else {
-      pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, m_ci, m_ci.GetUUID(), &m_att, this));
+      pmulticmds->Add(
+        AddEntryCommand::Create(
+          m_pcomInt, m_ci, m_ci.GetUUID(),
+          (m_att.HasUUID() && m_att.HasContent()) ? &m_att : nullptr, this
+        )
+      );
 
       if (m_ci.IsShortcutBase()) { // restore dependents
         for (std::vector<CItemData>::iterator iter = m_vdependents.begin();
@@ -703,6 +721,55 @@ void DeleteEntryCommand::Undo()
     // Since not needed for Undo/Redo again - delete it
     delete pmulticmds;
 
+    RestoreDBInformation();
+  } // R/W & change to undo
+}
+
+// ------------------------------------------------
+// DeleteAttachmentCommand
+// ------------------------------------------------
+
+DeleteAttachmentCommand::DeleteAttachmentCommand(CommandInterface *pcomInt,
+  const CItemData &ci, const Command *pcmd)
+  : Command(pcomInt), m_ci(ci)
+{
+  m_CommandChangeType = DB;
+
+  if (pcmd != nullptr) {
+    m_bNotifyGUI = pcmd->GetGUINotify();
+  }
+}
+
+DeleteAttachmentCommand::~DeleteAttachmentCommand()
+{
+}
+
+int DeleteAttachmentCommand::Execute()
+{
+  // Get out quick if R-O
+  if (m_pcomInt->IsReadOnly())
+    return 0;
+
+  SaveDBInformation();
+
+  if (m_bNotifyGUI) {
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DELETE_ENTRY,
+      m_ci.GetUUID());
+  }
+
+  if (m_ci.IsNormal() && m_ci.HasAttRef() && m_pcomInt->HasAtt(m_ci.GetAttUUID())) {
+    m_att = m_pcomInt->GetAtt(m_ci.GetAttUUID());
+    m_pcomInt->DoDeleteAttachment(m_att);
+  }
+
+  m_CommandDBChange = DB;
+  return 0;
+}
+
+void DeleteAttachmentCommand::Undo()
+{
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    m_pcomInt->DoAddAttachment(m_att);
     RestoreDBInformation();
   } // R/W & change to undo
 }
@@ -766,6 +833,43 @@ void EditEntryCommand::Undo()
     }
 
     RestoreDBInformation();
+  }
+}
+
+// ------------------------------------------------
+// EditAttachmentCommand
+// ------------------------------------------------
+
+EditAttachmentCommand::EditAttachmentCommand(CommandInterface *pcomInt,
+  const CItemAtt &old_att,
+  const CItemAtt &new_att)
+  : Command(pcomInt), m_old_att(old_att), m_new_att(new_att)
+{
+  // We're only supposed to operate on entries
+  // with same uuids, and possibly different fields
+  ASSERT(m_old_att.GetUUID() == m_new_att.GetUUID());
+
+  m_CommandChangeType = DB;
+}
+
+EditAttachmentCommand::~EditAttachmentCommand()
+{
+}
+
+int EditAttachmentCommand::Execute()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    m_pcomInt->DoReplaceAttachment(m_old_att, m_new_att);
+
+    m_CommandDBChange = DB;
+  }
+  return 0;
+}
+
+void EditAttachmentCommand::Undo()
+{
+  if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
+    m_pcomInt->DoReplaceAttachment(m_new_att, m_old_att);
   }
 }
 
