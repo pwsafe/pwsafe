@@ -105,14 +105,13 @@ void PasswordSafeFrame::OnAddClick(wxCommandEvent& WXUNUSED(evt))
 {
   wxString selectedGroup = wxEmptyString;
   wxTreeItemId selection;
+
   if (IsTreeView() && (selection = m_tree->GetSelection()).IsOk() && m_tree->ItemIsGroup(selection)) {
     selectedGroup = m_tree->GetItemGroup(selection);
   }
 
   AddEditPropSheetDlg addDbox(this, m_core, AddEditPropSheetDlg::SheetType::ADD, nullptr, selectedGroup);
   if (addDbox.ShowModal() == wxID_OK) {
-    const CItemData &item = addDbox.GetItem();
-    m_core.Execute(AddEntryCommand::Create(&m_core, item, item.GetBaseUUID()));
     UpdateStatusBar();
   }
 }
