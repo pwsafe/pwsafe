@@ -1,5 +1,5 @@
-Password Safe 3.53pre Release July 2020
-=======================================
+Password Safe 3.53 Release September 2020
+=========================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -10,11 +10,15 @@ releases may be found in the file ChangeLog.txt.
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-Bugs Fixed in 3.523pre
-----------------------
+Bugs Fixed in 3.53
+------------------
 * [SF1518](https://sourceforge.net/p/passwordsafe/bugs/1518) Fixed rare crash after dragging item outside of PasswordSafe.
 * [SF1504](https://sourceforge.net/p/passwordsafe/bugs/1504/) Fixed regression: lock file is now deleted upon exit.
 * [SF1030](https://sourceforge.net/p/passwordsafe/bugs/1030) Incremental search in list view no longer messes up selection.
+
+Changes in 3.53
+---------------
+* This is the first release built with Visual Studio 2019 Community Edition and CMake.
 
 PasswordSafe non-Windows release 1.11
 =====================================
