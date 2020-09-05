@@ -21,7 +21,7 @@
 IMPLEMENT_DYNAMIC(CSHCTHotKey, CHotKeyCtrl)
 
 CSHCTHotKey::CSHCTHotKey()
-: m_pParent(NULL), m_bHandled(false)
+  : m_pParent(nullptr), m_bHandled(false)
 {
 }
 
@@ -35,9 +35,9 @@ END_MESSAGE_MAP()
 
 // SHCTHotKey message handlers
 
-void CSHCTHotKey::OnKillFocus(CWnd *)
+void CSHCTHotKey::OnKillFocus(CWnd*)
 {
-  if (m_pParent != NULL) {
+  if (m_pParent != nullptr) {
     WORD wVirtualKeyCode, wHKModifiers, wPWSModifiers;
     GetHotKey(wVirtualKeyCode, wHKModifiers);
     wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
@@ -45,25 +45,25 @@ void CSHCTHotKey::OnKillFocus(CWnd *)
   }
 }
 
-BOOL CSHCTHotKey::PreTranslateMessage(MSG *pMsg)
+BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
 {
   // This is all to allow user to add special characters like ENTER, DELETE into
   // their assigned Hotkey
   if (pMsg->message == WM_KEYDOWN || pMsg->message == WM_KEYUP) {
     const UINT_PTR nChar = pMsg->wParam;
-    if ((nChar == VK_RETURN && 
-            (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
-        (nChar == VK_TAB &&
-            (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
-        (nChar == VK_NUMLOCK &&
-            (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
-        (nChar == VK_SCROLL &&
-            (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
-        (nChar == VK_CANCEL &&
-            (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
-        (nChar == VK_DELETE) ||
-        (nChar == VK_SPACE)  ||
-        (nChar == VK_BACK)) {
+    if ((nChar == VK_RETURN &&
+        (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
+      (nChar == VK_TAB &&
+        (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
+      (nChar == VK_NUMLOCK &&
+        (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
+      (nChar == VK_SCROLL &&
+        (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
+      (nChar == VK_CANCEL &&
+        (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
+      (nChar == VK_DELETE) ||
+      (nChar == VK_SPACE) ||
+      (nChar == VK_BACK)) {
       if (pMsg->message == WM_KEYUP)
         return TRUE;
 
@@ -72,9 +72,9 @@ BOOL CSHCTHotKey::PreTranslateMessage(MSG *pMsg)
 
       // Enter sets the Hotkey unless user did Ctrl+Enter, or
       // Alt+Enter or Ctrl+Alt+Enter, in which is taken as a HotKey
-      if (nChar == VK_RETURN && 
-          ((wHKModifiers & HOTKEYF_CONTROL) != HOTKEYF_CONTROL &&
-           (wHKModifiers & HOTKEYF_ALT    ) != HOTKEYF_ALT    )) {
+      if (nChar == VK_RETURN &&
+        ((wHKModifiers & HOTKEYF_CONTROL) != HOTKEYF_CONTROL &&
+          (wHKModifiers & HOTKEYF_ALT) != HOTKEYF_ALT)) {
         CHotKeyCtrl::PreTranslateMessage(pMsg);
       }
 
@@ -86,7 +86,7 @@ BOOL CSHCTHotKey::PreTranslateMessage(MSG *pMsg)
       if (nChar == VK_DELETE)
         wHKModifiers |= HOTKEYF_EXT;
 
-      wVirtualKeyCode = (WORD)nChar;
+      wVirtualKeyCode = static_cast<WORD>(nChar);
       SetHotKey(wVirtualKeyCode, wHKModifiers);
 
       // Just in case parent requires notification of a change
