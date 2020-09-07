@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2020-09-06 13:57+0200\n"
+"PO-Revision-Date: 2020-09-07 11:25+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -683,7 +683,7 @@ msgstr "&Gå till URL"
 
 #. Resource IDs: (32151 - MenuEx)
 msgid "&Change Safe Combination..."
-msgstr "&Ändra safekombination..."
+msgstr "&Ändra Safe-kombination..."
 
 #. Resource IDs: (32105 - MenuEx)
 msgid "&Classic Toolbar"
@@ -695,7 +695,7 @@ msgstr "&Radera senaste historik"
 
 #. Resource IDs: (32008 - MenuEx)
 msgid "&Clear Recent Safe List"
-msgstr "&Rensa senaste öppnadelista"
+msgstr "&Rensa senaste Safe-lista"
 
 #. Resource IDs: (5606)
 msgid "&Clear current"
@@ -779,7 +779,7 @@ msgstr "&Arkiv"
 
 #. Resource IDs: (32028 - MenuEx)
 msgid "&Filtered entries to PasswordSafe..."
-msgstr "&Filtrerade poster till Password..."
+msgstr "&Filtrerade poster till PasswordSafe.."
 
 #. Resource IDs: (32112 - PopupMenuEx)
 msgid "&Filters"
@@ -939,7 +939,7 @@ msgstr "&Aktuell posthistorik"
 
 #. Resource IDs: (5217)
 msgid "&Recent Safes"
-msgstr "&Senaste r"
+msgstr "&Senaste Safer"
 
 #. Resource IDs: (32111 - MenuEx)
 msgid "&Refresh"
@@ -1101,7 +1101,7 @@ msgstr ""
 "\n"
 "Men, om du föredrar (och problemet kan upprepas med en testdatabas) kan du skicka oss denna minidumpfil samt testdatabasen.\n"
 "\n"
-"Tack för din hjälp med att förbättra Password."
+"Tack för din hjälp med att förbättra PasswordSafe."
 
 #. Resource IDs: (65535)
 msgid "(Also used to replace periods in Title field)"
@@ -1117,11 +1117,11 @@ msgstr "(Tom)"
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
-msgstr "(Kräver en omstart av Password för att träda i kraft.)"
+msgstr "(Kräver en omstart av PasswordSafe för att träda i kraft.)"
 
 #. Resource IDs: (65535)
 msgid "(Restart of PasswordSafe required to enable.)"
-msgstr "(Omstart av Password krävs för aktivering.)"
+msgstr "(Omstart av PasswordSafe krävs för aktivering.)"
 
 #. Resource IDs: (1285, 1287, 1289, 1291)
 msgid "(at least"
@@ -1488,7 +1488,7 @@ msgstr "Ett dolt lösenord måste också anges i fältet Bekräfta lösenord. Om
 
 #. Resource IDs: (65535)
 msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
-msgstr "En ny lösenordsdatabas kommer att skapas. Safekombination som du anger kommer att användas för att kryptera databasens lösenordsfil. Safekombinationen kan innehålla vilka tangentbordstecken som helst och är skiftlägeskänslig."
+msgstr "En ny lösenordsdatabas kommer att skapas. Safe-kombination som du anger kommer att användas för att kryptera databasens lösenordsfil. Safekombinationen kan innehålla vilka tangentbordstecken som helst och är skiftlägeskänslig."
 
 #. Resource IDs: (5861)
 msgid ""
@@ -2038,7 +2038,7 @@ msgstr "Kan inte läsa filen. Vänligen, kontrollera filrättigheterna."
 
 #. Resource IDs: (5285)
 msgid "Cannot verify old safe combination - file gone?"
-msgstr "Kan inte verifiera gamla safekombinationen - saknas filen?"
+msgstr "Kan inte verifiera den gamla säkra kombination - saknas filen?"
 
 #. Resource IDs: (8015)
 msgid "Caps Lock"
@@ -2082,7 +2082,7 @@ msgstr "Byt datum"
 
 #. Resource IDs: (127)
 msgid "Change Safe Combination"
-msgstr "Ändra ssafekombination"
+msgstr "Ändra Ssafekombination"
 
 #. Resource IDs: (6039)
 #, c-format
@@ -2157,7 +2157,7 @@ msgstr "Rensa historik"
 
 #. Resource IDs: (6032)
 msgid "Clear Recent Safe list"
-msgstr "Rensas senaste säkra lista"
+msgstr "Rensas senaste Safe-lista"
 
 #. Resource IDs: (1062)
 msgid "Clear clipboard upon exit"
@@ -2606,7 +2606,7 @@ msgstr "Skapa en ny lösenordspolicy"
 
 #. Resource IDs: (1199)
 msgid "Create intermediate backups (.ibak) before saving"
-msgstr "Skapa mellanlagrade säkerhetskopior (.ibak) innan filen sparas"
+msgstr "Skapa mellanlagrade Backup-kopior (.ibak) innan filen sparas"
 
 #. Resource IDs: (32308 - MenuEx)
 msgid "Create report of previous Find search"
@@ -2654,7 +2654,7 @@ msgstr "Aktuell post"
 
 #. Resource IDs: (65535)
 msgid "Current Safe Combination:"
-msgstr "Aktuell safekombination:"
+msgstr "Aktuell Safe-kombination:"
 
 #. Resource IDs: (3460)
 msgid "Current database filters have been exported to this database."
@@ -3157,7 +3157,7 @@ msgstr "Ange nyckel:"
 
 #. Resource IDs: (130, 132)
 msgid "Enter Safe Combination"
-msgstr "Ange safekombination"
+msgstr "Ange Safe-kombination"
 
 #. Resource IDs: (61722)
 msgid "Enter a GUID."
@@ -3611,11 +3611,11 @@ msgstr ""
 
 #. Resource IDs: (5766)
 msgid "Failsafe Backup Deletion"
-msgstr "Radering av felsäker säkerhetskopia"
+msgstr "Radering av felsäker Backup-kopia"
 
 #. Resource IDs: (164)
 msgid "Failsafe Backup Files"
-msgstr "Felsäkra säkerhetskopieringsfiler"
+msgstr "Felsäkra backup-filer"
 
 #. Resource IDs: (3328)
 msgid "Fatal Error"
@@ -4183,7 +4183,7 @@ msgstr "Om så begärs, måste ett avgränsande tecken införas."
 
 #. Resource IDs: (5774)
 msgid "If the passphrase is the same as the currently opened database, properties of this backup are shown."
-msgstr "Om lösenfrasen är densamma som för den nu öppna databasen, så visas egenskaperna för denna säkerhetskopia."
+msgstr "Om lösenfrasen är densamma som för den nu öppna databasen, så visas egenskaperna för denna Backup-kopia."
 
 #. Resource IDs: (5771)
 msgid "If this is the first database opened on the startup of PasswordSafe, PasswordSafe will exit.  If not, the new open will be cancelled and the existing opened database, if any, will remain open."
@@ -4214,7 +4214,7 @@ msgstr "Igbo"
 
 #. Resource IDs: (5768)
 msgid "Ignore all Failsafe Backup files and continue with the currently selected database."
-msgstr "Ignorera alla felsäkra säkerhetskopieringsfiler och fortsätt med den nu valda databasen."
+msgstr "Ignorera alla felsäkra backup-filer och fortsätt med den nu valda databasen."
 
 #. Resource IDs: (32014 - PopupMenuEx)
 msgid "Import &From"
@@ -4363,7 +4363,7 @@ msgstr "Otillräckligt minne för att utföra åtgärden."
 
 #. Resource IDs: (65535)
 msgid "Intermediate Backups"
-msgstr "Mellanlagrade säkerhetskopior"
+msgstr "Mellanlagrade Backup-kopior"
 
 #. Resource IDs: (61704)
 msgid "Internal application error."
@@ -4681,7 +4681,7 @@ msgid ""
 "Maximum number of backups kept using incremented number suffix\n"
 "must be between %d and %d."
 msgstr ""
-"Maximala antalet sparade säkerhetskopior med inkrementella suffixtal\n"
+"Maximala antalet sparade Backup-kopior med inkrementella suffixtal\n"
 "måste vara mellan %d och %d."
 
 #. Resource IDs: (5407)
@@ -4833,7 +4833,7 @@ msgstr "Ny grupp"
 
 #. Resource IDs: (65535)
 msgid "New Safe Combination:"
-msgstr "Ny safekombination:"
+msgstr "Ny Safe-kombination:"
 
 #. Resource IDs: (5476)
 msgid "New Version Found!"
@@ -4841,7 +4841,7 @@ msgstr "Ny version finns!"
 
 #. Resource IDs: (5286)
 msgid "New safe combination and confirmation do not match"
-msgstr "Nya safekombinationen och bekräftelsen matchar inte"
+msgstr "Ny säker kombination och bekräftelse matchar inte"
 
 #. Resource IDs: (1003)
 msgid "New..."
@@ -4857,7 +4857,7 @@ msgstr "Nej"
 
 #. Resource IDs: (5259)
 msgid "No Safe open"
-msgstr "Ingen säker öppen"
+msgstr "Ingen Safe öppen"
 
 #. Resource IDs: (1183)
 msgid "No change"
@@ -5154,7 +5154,7 @@ msgstr "Gamla Pswd kopierade"
 
 #. Resource IDs: (65535)
 msgid "Old Safe Combination:"
-msgstr "Gammal safekombination:"
+msgstr "Gammal Safekombination:"
 
 #. Resource IDs: (5265)
 msgid "On"
@@ -5351,7 +5351,7 @@ msgstr "Password Safe"
 
 #. Resource IDs: (5377)
 msgid "Password Safe - <Untitled Restored Backup>"
-msgstr "Password Safe - <Icke namngiven återställd säkerhetskopia>"
+msgstr "Password Safe - <Icke namngiven återställd Backup-kopia>"
 
 #. Resource IDs: (5955)
 msgid "Password Safe Application HotKey"
@@ -5359,11 +5359,11 @@ msgstr "Password Safe-programmets Snabbtangent"
 
 #. Resource IDs: (5057)
 msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
-msgstr "Password Safe säkerhetskopior(*.bak)|*.bak|Password Safe mellanlagrade säkerhetskopior (*.ibak)|*.ibak||"
+msgstr "Password Safe Backup-kopior(*.bak)|*.bak|Password Safe mellanlagrade Backup-kopior (*.ibak)|*.ibak||"
 
 #. Resource IDs: (5056)
 msgid "Password Safe Backups (*.bak)|*.bak||"
-msgstr "Password Safe säkerhetskopior (*.bak)|*.bak||"
+msgstr "Password Safe Backup-kopior (*.bak)|*.bak||"
 
 #. Resource IDs: (5061)
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
@@ -5477,7 +5477,7 @@ msgstr "Spela ljud vid tangenttrycking"
 
 #. Resource IDs: (5376)
 msgid "Please Choose a Backup to restore:"
-msgstr "Vänligen, välj en säkerhetskopia att återställa:"
+msgstr "Vänligen, välj en Backupkopia att återställa:"
 
 #. Resource IDs: (5315)
 msgid "Please Choose a Database to Open:"
@@ -5493,7 +5493,7 @@ msgstr "Vänligen, välj en KeePass Text-fil att importera"
 
 #. Resource IDs: (5375)
 msgid "Please Choose a Name for this Backup:"
-msgstr "Vänligen, välj ett namn på denna säkerhetskopia:"
+msgstr "Vänligen, välj ett namn på denna Backupkopia:"
 
 #. Resource IDs: (5335)
 msgid "Please Choose a Text File to Import"
@@ -5534,7 +5534,7 @@ msgstr "Vänligen, bekräfta radering av %s filter %s?"
 
 #. Resource IDs: (6033)
 msgid "Please confirm that you wish to clear the recent Safe list."
-msgstr "Vänligen, bekräfta att Du vill rensa senaste Sparalistan."
+msgstr "Vänligen, bekräfta att Du vill rensa senaste Safe-lista."
 
 #. Resource IDs: (5287)
 msgid ""
@@ -5578,7 +5578,7 @@ msgstr "Vänligen, ange den nya databasens namn"
 
 #. Resource IDs: (65535)
 msgid "Please enter the safe combination for this password database."
-msgstr "Vänligen, ange safekombinationen till denna lösenordsdatabas."
+msgstr "Vänligen, ange Safekombinationen till denna lösenordsdatabas."
 
 #. Resource IDs: (5388)
 msgid "Please enter your backup database prefix."
@@ -5622,11 +5622,11 @@ msgstr "Vänligen, ange text"
 
 #. Resource IDs: (5390)
 msgid "Please specify the destination location to contain all backups."
-msgstr "Vänligen, ange målplatsen som ska innehålla alla säkerhetskopior."
+msgstr "Vänligen, ange målplatsen som ska innehålla alla Backup-kopior."
 
 #. Resource IDs: (5389)
 msgid "Please specify the sub-directory to contain all backups."
-msgstr "Vänligen, ange undermapp som ska innehålla alla säkerhetskopior."
+msgstr "Vänligen, ange undermapp som ska innehålla alla Backup-kopior."
 
 #. Resource IDs: (5489)
 msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
@@ -5929,7 +5929,7 @@ msgstr "Återställ denna genväg"
 
 #. Resource IDs: (32153 - MenuEx)
 msgid "Restore from Backup..."
-msgstr "Återställ från säkerhetskopia..."
+msgstr "Återställ från Backup-kopia..."
 
 #. Resource IDs: (1158)
 msgid "Restrict to a subset of entries:"
@@ -6024,15 +6024,15 @@ msgstr "SAX parse60-fel 0x%08X i %ls."
 
 #. Resource IDs: (131)
 msgid "Safe Combination Entry"
-msgstr "Inmatning av safekombination"
+msgstr "Inmatning av Safe-kombination"
 
 #. Resource IDs: (133)
 msgid "Safe Combination Setup"
-msgstr "Inställningar av safekombination"
+msgstr "Inställningar av Safe-kombination"
 
 #. Resource IDs: (1506, 65535)
 msgid "Safe Combination:"
-msgstr "Safekombination:"
+msgstr "Safe-kombination:"
 
 #. Resource IDs: (1205)
 msgid "Same as database's"
@@ -6155,7 +6155,7 @@ msgstr "Välj tangentbord:"
 
 #. Resource IDs: (5393)
 msgid "Select Location for Intermediate Backups"
-msgstr "Välj plats för mellanlagrade säkerhetskopior"
+msgstr "Välj plats för mellanlagrade Backup-kopior"
 
 #. Resource IDs: (65535)
 msgid "Select Locked Text Color:"
@@ -7038,7 +7038,7 @@ msgstr "Postens noteringsfält har mer text än vad som kan visas. Ändringar i 
 
 #. Resource IDs: (5284)
 msgid "The old safe combination is not correct"
-msgstr "Den gamla safekombinationen är inte rätt"
+msgstr "Den gamla Safe-kombinationen är inte rätt"
 
 #. Resource IDs: (5323)
 #, c-format
@@ -7059,7 +7059,7 @@ msgid ""
 "- Is this the correct database?\n"
 "- Perhaps the database was damaged. Try opening a backup copy."
 msgstr ""
-"Den safekombinationen har lästs in %d gånger utan framgång;\n"
+"Den Safe-kombinationen har lästs in %d gånger utan framgång;\n"
 "- Är Caps Lock av?\n"
 "- Är språkvalet rätt (om flerspråksval)?\n"
 "- Är det rätt databas?\n"
@@ -7067,7 +7067,7 @@ msgstr ""
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
-msgstr "Den valda felsäkra säkerhetsfilen kommer att öppnas istället för vald databas."
+msgstr "Den valda felsäkra backup-filen kommer att öppnas istället för vald databas."
 
 #. Resource IDs: (5970)
 msgid "The selected output format does not support all features of the current database. If these features are used, information may be lost. Continue?"
@@ -7339,7 +7339,7 @@ msgstr ""
 
 #. Resource IDs: (5385)
 msgid "Unable to create intermediate backup."
-msgstr "Kunde inte skapa en mellanlagrande säkerhetskopia."
+msgstr "Kunde inte skapa en mellanlagrande Backup-kopia."
 
 #. Resource IDs: (5310)
 msgid "Unable to display URL"
