@@ -24,8 +24,8 @@ CPWListCtrlX::CPWListCtrlX()
   : m_csFind(L""), m_FindTimerID(0),
   m_nHoverNDTimerID(0), m_nShowNDTimerID(0), 
   m_bMouseInWindow(false),
-  m_bListFilterActive(false),
   m_bShowNotes(false),
+  m_bListFilterActive(false),
   m_bUseHighLighting(false)
 {
 }
@@ -68,7 +68,7 @@ void CPWListCtrlX::ActivateND(const bool bActivate)
 bool CPWListCtrlX::IsNotesColumnPresent()
 {
   CHeaderCtrl *pHeader = GetHeaderCtrl();
-  if (pHeader == NULL)
+  if (pHeader == nullptr)
     return false;
 
   HDITEM hdi;
@@ -94,22 +94,22 @@ LRESULT CPWListCtrlX::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
 
   if (m_FindTimerID != 0) {
     KillTimer(TIMER_FIND);
-    m_csFind += (wchar_t)wParam;
+    m_csFind += static_cast<wchar_t>(wParam);
     bFirst = false;
   } else {
-    m_csFind = (wchar_t)wParam;
+    m_csFind = static_cast<wchar_t>(wParam);
     bFirst = true;
   }
 
   if (!FindNext(m_csFind, iSubItem) && !bFirst) {
     // Didn't find a match when more than one character
     // Emulate CListCtrl and try again (once) with this matching the first character
-    m_csFind = (wchar_t)wParam;
+    m_csFind = static_cast<wchar_t>(wParam);
     FindNext(m_csFind, iSubItem);
   }
 
   // Set timer going again
-  m_FindTimerID = SetTimer(TIMER_FIND, 1000, NULL);
+  m_FindTimerID = SetTimer(TIMER_FIND, 1000, nullptr);
   return 0L;
 }
 
@@ -163,7 +163,7 @@ void CPWListCtrlX::OnTimer(UINT_PTR nIDEvent)
           KillTimer(m_nShowNDTimerID);
           m_nShowNDTimerID = 0;
         }
-        m_nShowNDTimerID = SetTimer(TIMER_ND_SHOWING, TIMEINT_ND_SHOWING, NULL);
+        m_nShowNDTimerID = SetTimer(TIMER_ND_SHOWING, TIMEINT_ND_SHOWING, nullptr);
       }
       break;
     case TIMER_ND_SHOWING:
@@ -205,7 +205,7 @@ void CPWListCtrlX::OnMouseMove(UINT nFlags, CPoint point)
     VERIFY(TrackMouseEvent(&tme));
   }
 
-  m_nHoverNDTimerID = SetTimer(TIMER_ND_HOVER, HOVER_TIME_ND, NULL);
+  m_nHoverNDTimerID = SetTimer(TIMER_ND_HOVER, HOVER_TIME_ND, nullptr);
   m_HoverNDPoint = point;
 
   CListCtrl::OnMouseMove(nFlags, point);
@@ -231,7 +231,7 @@ bool CPWListCtrlX::FindNext(const CString &cs_find, const int iSubItem)
   const int iFindLen = cs_find.GetLength();
 
   // Get selected item, if any
-  const POSITION first_pos = GetFirstSelectedItemPosition();
+  POSITION first_pos = GetFirstSelectedItemPosition();
   POSITION pos = first_pos;
 
   // First search down.
@@ -268,7 +268,7 @@ bool CPWListCtrlX::FindNext(const CString &cs_find, const int iSubItem)
   if (bFound) {
     auto curItemPos = GetFirstSelectedItemPosition();
     if (curItemPos) {// BR1030 - deselect previous selection
-      int curItem = GetNextSelectedItem(curItemPos);
+      const int curItem = GetNextSelectedItem(curItemPos);
       SetItemState(curItem, 0, LVIS_FOCUSED | LVIS_SELECTED);
     }
     SetItemState(iItem, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
@@ -341,7 +341,7 @@ void CPWListCtrlX::OnItemChanging(NMHDR *pNMHDR, LRESULT *pLResult)
 {
   *pLResult = FALSE;  // Allow change
 
-  NMLISTVIEW *pNMLV = reinterpret_cast<NMLISTVIEW *>(pNMHDR);
+  auto pNMLV = reinterpret_cast<NMLISTVIEW *>(pNMHDR);
   
   // Check if state unchanged - unchanged == not interested
   if ((pNMLV->uChanged & LVIF_STATE) != LVIF_STATE)
@@ -365,7 +365,7 @@ void CPWListCtrlX::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
   if (GetItemCount() == 0)
     return;
 
-  LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNotifyStruct);
+  auto pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNotifyStruct);
 
   switch(pLVKeyDown->wVKey) {
     case VK_UP:
@@ -379,8 +379,8 @@ void CPWListCtrlX::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
 CFont *CPWListCtrlX::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
 {
-  if (pci == NULL)
-    return NULL;
+  if (pci == nullptr)
+    return nullptr;
 
   Fonts *pFonts = Fonts::GetInstance();
   switch (pci->GetStatus()) {
@@ -391,21 +391,21 @@ CFont *CPWListCtrlX::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
     default:
       break;
   }
-  return NULL;
+  return nullptr;
 }
 
 void CPWListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMLVCUSTOMDRAW *pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
+  auto *pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
   *pLResult = CDRF_DODEFAULT;
 
   static bool bitem_selected(false);
   static bool bchanged_item_font(false), bchanged_subitem_font(false);
-  static CFont *pAddEditFont = NULL;
-  static CFont *pPasswordFont = NULL;
-  static CFont *pNotesFont = NULL;
-  static CDC *pDC = NULL;
+  static CFont *pAddEditFont = nullptr;
+  static CFont *pPasswordFont = nullptr;
+  static CFont *pNotesFont = nullptr;
+  static CDC *pDC = nullptr;
 
   HDITEM hdi = {0};
   hdi.mask = HDI_LPARAM;
@@ -455,7 +455,7 @@ void CPWListCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       if (m_bUseHighLighting) {
         COLORREF cf;
         CFont *uFont = GetFontBasedOnStatus(pci, cf);
-        if (uFont != NULL) {
+        if (uFont != nullptr) {
           bchanged_subitem_font = true;
           pDC->SelectObject(uFont);
           if (!bitem_selected)
