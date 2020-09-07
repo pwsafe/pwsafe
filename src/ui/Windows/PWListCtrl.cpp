@@ -231,13 +231,14 @@ bool CPWListCtrlX::FindNext(const CString &cs_find, const int iSubItem)
   const int iFindLen = cs_find.GetLength();
 
   // Get selected item, if any
-  POSITION pos = GetFirstSelectedItemPosition();
+  const POSITION first_pos = GetFirstSelectedItemPosition();
+  POSITION pos = first_pos;
 
   // First search down.
   if (pos == nullptr)
     iItem = 0;
   else
-    iItem = GetNextSelectedItem(pos);
+    iItem = GetNextSelectedItem(pos); // this changes pos, hence first_pos...
 
   do {
     cs_text = GetItemText(iItem, iSubItem);
@@ -251,7 +252,7 @@ bool CPWListCtrlX::FindNext(const CString &cs_find, const int iSubItem)
 
   // Not found searching down and we didn't start from the top, now start from the top until
   // we get to where we started!
-  if (!bFound && pos != nullptr) {
+  if (!bFound && first_pos != nullptr) {
     iItem = 0;
     do {
       cs_text = GetItemText(iItem, iSubItem);
@@ -261,7 +262,7 @@ bool CPWListCtrlX::FindNext(const CString &cs_find, const int iSubItem)
         break;
       }
       iItem++;
-    } while (iItem != (INT_PTR)pos);
+    } while (iItem != reinterpret_cast<INT_PTR>(first_pos));
   }
 
   if (bFound) {
