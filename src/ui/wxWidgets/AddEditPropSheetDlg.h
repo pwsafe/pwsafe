@@ -232,6 +232,8 @@ public:
 
   const CItemData &GetItem() const { return m_Item; } // for ADD mode
 
+  const CItemAtt &GetItemAttachment() const { return m_ItemAttachment; } // for ADD mode
+
   /// Should we show tooltips?
   static bool ShowToolTips();
 
@@ -285,6 +287,13 @@ private:
   void ShowPassword();
   void HidePassword();
   int GetRequiredPWLength() const;
+
+  bool ValidateBasicData();
+  bool ValidatePasswordPolicy();
+  bool IsGroupUsernameTitleCombinationUnique();
+
+  Command* NewAddEntryCommand();
+  Command* NewEditEntryCommand();
 
   // Tab: "Basic"
   wxPanel *m_BasicPanel;

@@ -37,6 +37,9 @@ class CommandInterface {
   virtual void DoAddEntry(const CItemData &item, const CItemAtt *att) = 0;
   virtual void DoDeleteEntry(const CItemData &item) = 0;
   virtual void DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci) = 0;
+  virtual void DoAddAttachment(const CItemAtt &att) = 0;
+  virtual void DoDeleteAttachment(const CItemAtt &att) = 0;
+  virtual void DoReplaceAttachment(const CItemAtt &old_att, const CItemAtt &new_att) = 0;
 
   // General routines for aliases and shortcuts
   virtual void DoAddDependentEntry(const pws_os::CUUID &base_uuid,
@@ -77,6 +80,8 @@ class CommandInterface {
   virtual void SetBase2AliasesMmap(ItemMMap &) = 0;
   virtual const ItemMMap &GetBase2ShortcutsMmap() const = 0;
   virtual void SetBase2ShortcutsMmap(ItemMMap &) = 0;
+  virtual const CItemAtt &GetAtt(const pws_os::CUUID &attuuid) const = 0;
+  virtual bool HasAtt(const pws_os::CUUID &attuuid) const = 0;
 
   virtual void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action,
                                       const pws_os::CUUID &,

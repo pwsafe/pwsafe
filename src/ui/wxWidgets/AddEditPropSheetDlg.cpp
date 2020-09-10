@@ -1147,7 +1147,7 @@ void AddEditPropSheetDlg::OnImport(wxCommandEvent& WXUNUSED(event))
   default:
     wxMessageDialog(
       this,
-      _("Unexpected error occured during attachment import."), _("Import Attachment"),
+      _("Unexpected error occurred during attachment import."), _("Import Attachment"),
       wxICON_ERROR
     ).ShowModal();
     break;
@@ -1757,444 +1757,174 @@ static short GetSelectedDCA(const wxComboBox *pcbox,
   }
 }
 
-void AddEditPropSheetDlg::OnOk(wxCommandEvent& WXUNUSED(evt))
+bool AddEditPropSheetDlg::ValidateBasicData()
 {
-  if (Validate() && TransferDataFromWindow()) {
-    time_t t;
-    const wxString group = m_BasicGroupNamesCtrl->GetValue();
-    const StringX password = tostringx(m_BasicPasswordTextCtrl->GetValue());
+  const StringX password = tostringx(m_BasicPasswordTextCtrl->GetValue());
 
-    /////////////////////////////////////////////////////////////////////////////
-    // Tab: "Basic"
-    /////////////////////////////////////////////////////////////////////////////
+  if (m_Title.IsEmpty() || password.empty()) {
+    GetBookCtrl()->SetSelection(0);
 
-    if (m_Title.IsEmpty() || password.empty()) {
-      GetBookCtrl()->SetSelection(0);
-
-      if (m_Title.IsEmpty()) {
-        FindWindow(ID_TEXTCTRL_TITLE)->SetFocus();
-      }
-      else {
-        m_BasicPasswordTextCtrl->SetFocus();
-      }
-
-      wxMessageBox(
-        wxString::Format(
-          wxString(_("This entry must have a %ls")),
-                    (m_Title.IsEmpty() ? _("title"): _("password"))),
-          _("Error"), wxOK|wxICON_INFORMATION, this
-      );
-      return;
+    if (m_Title.IsEmpty()) {
+      FindWindow(ID_TEXTCTRL_TITLE)->SetFocus();
+    }
+    else {
+      m_BasicPasswordTextCtrl->SetFocus();
     }
 
-    if (m_IsPasswordHidden) { // hidden passwords - compare both values
-      const StringX secondPassword = tostringx(m_BasicPasswordConfirmationTextCtrl->GetValue());
+    wxMessageBox(
+      wxString::Format(
+        wxString(_("This entry must have a %ls")),
+        (m_Title.IsEmpty() ? _("title"): _("password"))),
+      _("Error"), wxOK|wxICON_INFORMATION, this
+    );
 
-      if (password != secondPassword) {
-        wxMessageDialog msg(
-          this,
-          _("Passwords do not match"),
-          _("Error"),
-          wxOK|wxICON_ERROR
-        );
-        msg.ShowModal();
-        return;
-      }
-    }
+    return false;
+  }
 
-    /////////////////////////////////////////////////////////////////////////////
-    // Tab: "Password Policy"
-    /////////////////////////////////////////////////////////////////////////////
+  if (m_IsPasswordHidden) { // hidden passwords - compare both values
+    const StringX secondPassword = tostringx(m_BasicPasswordConfirmationTextCtrl->GetValue());
 
-    if (m_PasswordPolicyUseDatabaseCtrl->GetValue() && (m_PasswordPolicyNamesCtrl->GetValue().IsEmpty())) {
+    if (password != secondPassword) {
       wxMessageDialog msg(
         this,
-        _("Database name must not be empty if a database policy shall be used."),
+        _("Passwords do not match"),
         _("Error"),
         wxOK|wxICON_ERROR
       );
       msg.ShowModal();
-      return;
+
+      return false;
     }
+  }
 
-    switch (m_Type) {
-      case SheetType::EDIT: {
-        bool bIsModified, bIsPSWDModified;
-        short lastDCA, lastShiftDCA;
-        const PWSprefs *prefs = PWSprefs::GetInstance();
-        m_Item.GetDCA(lastDCA);
-        m_DoubleClickAction = GetSelectedDCA(m_AdditionalDoubleClickActionCtrl, lastDCA,
-                              short(prefs->GetPref(PWSprefs::DoubleClickAction)));
+  if (m_Type == SheetType::ADD) {
+    return IsGroupUsernameTitleCombinationUnique();
+  }
 
-        m_Item.GetShiftDCA(lastShiftDCA);
-        m_ShiftDoubleClickAction = GetSelectedDCA(m_AdditionalShiftDoubleClickActionCtrl, lastShiftDCA,
-                                    short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
-        // Check if modified
-        int lastXTimeInt;
-        m_Item.GetXTimeInt(lastXTimeInt);
-        time_t lastXtime;
-        m_Item.GetXTime(lastXtime);
-        // Following ensures that untouched & hidden note
-        // isn't marked as modified. Relies on fact that
-        // Note field can't be modified w/o first getting focus
-        // and that we turn off m_isNotesHidden when that happens.
-        if (m_Type != SheetType::ADD && m_IsNotesHidden)
-          m_Notes = m_Item.GetNotes(TCHAR('\n')).c_str();
+  return true;
+}
 
-        // Create a new PWHistory string based on settings in this dialog, and compare it
-        // with the PWHistory string from the item being edited, to see if the user modified it.
-        // Note that we are not erasing the history here, even if the user has chosen to not
-        // track PWHistory.  So there could be some password entries in the history
-        // but the first byte could be zero, meaning we are not tracking it _FROM_NOW_.
-        // Clearing the history is something the user must do himself with the "Clear History" button
+bool AddEditPropSheetDlg::ValidatePasswordPolicy()
+{
+  if (m_PasswordPolicyUseDatabaseCtrl->GetValue() && (m_PasswordPolicyNamesCtrl->GetValue().IsEmpty())) {
+    wxMessageDialog msg(
+      this,
+      _("Database name must not be empty if a database policy shall be used."),
+      _("Error"),
+      wxOK|wxICON_ERROR
+    );
+    msg.ShowModal();
+    return false;
+  }
 
-        // First, Get a list of all password history entries
-        size_t pwh_max, num_err;
-        PWHistList pwhl;
-        (void)CreatePWHistoryList(tostringx(m_PasswordHistory), pwh_max, num_err,
-                                  pwhl, PWSUtil::TMC_LOCALE);
+  return true;
+}
 
-        // Create a new PWHistory header, as per settings in this dialog
-        size_t numEntries = std::min(pwhl.size(), static_cast<size_t>(m_MaxPasswordHistory));
-        m_PasswordHistory = towxstring(MakePWHistoryHeader(m_KeepPasswordHistory, m_MaxPasswordHistory, numEntries));
-        //reverse-sort the history entries to retain only the newest
-        std::sort(pwhl.begin(), pwhl.end(), newer());
-        // Now add all the existing history entries, up to a max of what the user wants to track
-        // This code is from CItemData::UpdatePasswordHistory()
-        PWHistList::iterator iter;
-        for (iter = pwhl.begin(); iter != pwhl.end() && numEntries > 0; iter++, numEntries--) {
-          StringX buffer;
-          Format(buffer, _T("%08x%04x%ls"),
-                static_cast<long>(iter->changetttdate), iter->password.length(),
-                iter->password.c_str());
-          m_PasswordHistory += towxstring(buffer);
-        }
+bool AddEditPropSheetDlg::IsGroupUsernameTitleCombinationUnique()
+{
+  // Check for Group/Username/Title uniqueness
+  auto listindex = m_Core.Find(m_Item.GetGroup(), m_Item.GetTitle(), m_Item.GetUser());
+  if (listindex != m_Core.GetEntryEndIter()) {
+    auto listItem = m_Core.GetEntry(listindex);
+    if (listItem.GetUUID() != m_Item.GetUUID()) {
+      wxMessageDialog msg(
+        this,
+        _("An entry or shortcut with the same Group, Title and Username already exists."),
+        _("Error"),
+        wxOK|wxICON_ERROR
+      );
+      msg.ShowModal();
 
-        wxASSERT_MSG(numEntries ==0, wxT("Could not save existing password history entries"));
+      return false;
+    }
+  }
 
-        PWPolicy oldPWP, pwp;
-        // get item's effective policy:
-        const StringX oldPolName = m_Item.GetPolicyName();
-        if (oldPolName.empty()) { // either item-specific or default:
-          if (m_Item.GetPWPolicy().empty()) {
-            oldPWP = PWSprefs::GetInstance()->GetDefaultPolicy();
-          }
-          else {
-            m_Item.GetPWPolicy(oldPWP);
-          }
-        }
-        else {
-          m_Core.GetPolicyFromName(oldPolName, oldPWP);
-        }
-        // now get dbox's effective policy:
-        pwp = GetSelectedPWPolicy();
+  return true;
+}
+//{
+//  // Check for Group/Username/Title uniqueness
+//  if (m_Core.Find(m_Item.GetGroup(), m_Item.GetTitle(), m_Item.GetUser()) !=
+//    m_Core.GetEntryEndIter()) {
+//    wxMessageDialog msg(
+//      this,
+//      _("An entry or shortcut with the same Group, Title and Username already exists."),
+//      _("Error"),
+//      wxOK|wxICON_ERROR
+//    );
+//    msg.ShowModal();
+//
+//    return false;
+//  }
+//
+//  return true;
+//}
 
-        bIsModified = (
-          group                     != m_Item.GetGroup().c_str()            ||
-          m_Title                   != m_Item.GetTitle().c_str()            ||
-          m_User                    != m_Item.GetUser().c_str()             ||
-          m_Notes                   != m_Item.GetNotes(TCHAR('\n')).c_str() ||
-          m_Url                     != m_Item.GetURL().c_str()              ||
-          m_Email                   != m_Item.GetEmail().c_str()            ||
-          m_Autotype                != m_Item.GetAutoType().c_str()         ||
-          m_RunCommand              != m_Item.GetRunCommand().c_str()       ||
-          m_DoubleClickAction       != lastDCA                              ||
-          m_ShiftDoubleClickAction  != lastShiftDCA                         ||
-          m_PasswordHistory         != m_Item.GetPWHistory().c_str()        ||
-          m_tttExpirationTime       != lastXtime                            ||
-          m_ExpirationTimeInterval  != lastXTimeInt                         ||
-          m_Symbols                 != m_Item.GetSymbols().c_str()          ||
-          oldPWP                    != pwp
-        );
+Command* AddEditPropSheetDlg::NewAddEntryCommand()
+{
+  time_t t;
+  const wxString group = m_BasicGroupNamesCtrl->GetValue();
+  const StringX password = tostringx(m_BasicPasswordTextCtrl->GetValue());
 
-        /*
-          Fixme:
-          Even if there have been no changes and the user has pressed the Ok button,
-          the password history check and symbols check result to 'true'.
-        */
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Basic"
+  /////////////////////////////////////////////////////////////////////////////
 
-        if (!m_Item.IsAlias()) {
-          bIsPSWDModified = (password != m_Item.GetPassword());
-        }
-        else {
-          // Update password to alias form
-          // Show text stating that it is an alias
-          const CItemData *pbci = m_Core.GetBaseEntry(&m_Item);
-          ASSERT(pbci);
-          if (pbci) {
-            StringX alias = L"[" +
-                pbci->GetGroup() + L":" +
-                pbci->GetTitle() + L":" +
-                pbci->GetUser()  + L"]";
-            bIsPSWDModified = (password != alias);
-          }
-          else {
-            bIsPSWDModified = true;
-          }
-        }
+  m_Item.SetGroup(tostringx(group));
+  m_Item.SetTitle(tostringx(m_Title));
+  m_Item.SetUser(m_User.empty() ?
+                 PWSprefs::GetInstance()->
+                   GetPref(PWSprefs::DefaultUsername).c_str() : m_User.c_str());
 
-        if (bIsModified) {
-          // Just modify all - even though only 1 may have actually been modified
-          m_Item.SetGroup(tostringx(group));
-          m_Item.SetTitle(tostringx(m_Title));
-          m_Item.SetUser(m_User.empty() ?
-                        PWSprefs::GetInstance()->
-                        GetPref(PWSprefs::DefaultUsername).c_str() : m_User.c_str());
-          m_Item.SetNotes(tostringx(m_Notes));
-          m_Item.SetURL(tostringx(m_Url));
-          m_Item.SetEmail(tostringx(m_Email));
-          m_Item.SetAutoType(tostringx(m_Autotype));
-          m_Item.SetRunCommand(tostringx(m_RunCommand));
-          m_Item.SetPWHistory(tostringx(m_PasswordHistory));
+  m_Item.SetNotes(tostringx(m_Notes));
+  m_Item.SetURL(tostringx(m_Url));
+  m_Item.SetEmail(tostringx(m_Email));
+  m_Item.SetPassword(password);
 
-          if (m_PasswordPolicyUseDatabaseCtrl->GetValue()) {
-            // User has selected to use a named policy
-            wxString polName = m_PasswordPolicyNamesCtrl->GetValue();
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Additional"
+  /////////////////////////////////////////////////////////////////////////////
 
-            // The default policy is neither item specific nor stored in the database
-            if (polName == _("Default Policy")) {
-              // Remove database policy information from item
-              m_Item.SetPolicyName(tostringx(wxEmptyString));
+  m_Item.SetAutoType(tostringx(m_Autotype));
+  m_Item.SetRunCommand(tostringx(m_RunCommand));
+  m_Item.SetDCA(m_DoubleClickAction);
+  m_Item.SetShiftDCA(m_ShiftDoubleClickAction);
 
-              // Remove item specific policy information from item
-              m_Item.SetPWPolicy(tostringx(wxEmptyString));
-            }
-            // If it is not the default policy than it's a named policy from the database
-            else {
-              // Use policy that is stored in the database
-              m_Item.SetPolicyName(tostringx(polName));
+  time(&t);
+  m_Item.SetCTime(t);
+  if (m_KeepPasswordHistory) {
+    m_Item.SetPWHistory(MakePWHistoryHeader(true, m_MaxPasswordHistory, 0));
+  }
 
-              // Remove item specific policy information from item
-              m_Item.SetPWPolicy(tostringx(wxEmptyString));
-            }
-          }
-          // User has selected to use an item specific policy
-          else {
-            // Use the data of the item specific policy collected from the UI
-            m_Item.SetPWPolicy(pwp);
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Dates and Times"
+  /////////////////////////////////////////////////////////////////////////////
 
-            // Remove database policy information from item
-            m_Item.SetPolicyName(tostringx(wxEmptyString));
-          }
-          m_Item.SetDCA(m_DoubleClickAction);
-          m_Item.SetShiftDCA(m_ShiftDoubleClickAction);
-          // Check for Group/Username/Title uniqueness
-          auto listindex = m_Core.Find(m_Item.GetGroup(), m_Item.GetTitle(), m_Item.GetUser());
-          if (listindex != m_Core.GetEntryEndIter()) {
-            auto listItem = m_Core.GetEntry(listindex);
-            if (listItem.GetUUID() != m_Item.GetUUID()) {
-              wxMessageDialog msg(
-                this,
-                _("An entry or shortcut with the same Group, Title and Username already exists."),
-                _("Error"),
-                wxOK|wxICON_ERROR
-              );
-              msg.ShowModal();
-              return;
-            }
-          }
-        } // bIsModified
+  m_Item.SetXTime(m_tttExpirationTime);
+  if (m_ExpirationTimeInterval > 0 && m_ExpirationTimeInterval <= 3650) {
+    m_Item.SetXTimeInt(m_ExpirationTimeInterval);
+  }
 
-        time(&t);
-        if (bIsPSWDModified) {
-          m_Item.UpdatePassword(password);
-          m_Item.SetPMTime(t);
-        }
-        if (bIsModified || bIsPSWDModified) {
-          m_Item.SetRMTime(t);
-        }
-        if (m_tttExpirationTime != lastXtime) {
-          m_Item.SetXTime(m_tttExpirationTime);
-        }
-        if (m_Recurring) {
-          if (m_ExpirationTimeInterval != lastXTimeInt) {
-            m_Item.SetXTimeInt(m_ExpirationTimeInterval);
-          }
-        } else {
-          m_Item.SetXTimeInt(0);
-        }
+  if (m_Item.IsAlias()) {
+    m_Item.SetXTime(time_t(0));
+  }
+  else {
+    m_Item.SetXTime(m_tttExpirationTime);
+  }
 
-        /////////////////////////////////////////////////////////////////////////////
-        // Tab: "Attachment"
-        /////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Password Policy"
+  /////////////////////////////////////////////////////////////////////////////
 
-        bool isAttachmentModified = false;
+  if (!m_PasswordPolicyUseDatabaseCtrl->GetValue()) {
+    m_Item.SetPWPolicy(GetPWPolicyFromUI());
+  }
 
-        if (m_Core.GetReadFileVersion() == PWSfile::V40) {
+  if (m_Item.IsAlias()) {
+    m_Item.SetPWPolicy(wxEmptyString);
+  }
 
-          if (m_Item.HasAttRef()) {
-            auto uuid = m_Item.GetAttUUID();
-            auto itemAttachment = m_Core.GetAtt(uuid);
-
-            auto hasTitleChanges = (towxstring(m_ItemAttachment.GetTitle()) != m_AttachmentTitle->GetValue());
-            auto hasAttachmentChanges = (m_ItemAttachment != itemAttachment);
-
-            isAttachmentModified = (
-              hasTitleChanges ||
-              hasAttachmentChanges
-            );
-          }
-
-          /*
-            Case: Item doesn't have an attachment and doesn't get one.
-            Steps:
-              - none
-            */
-          if (!m_Item.HasAttRef() && !m_ItemAttachment.HasUUID() && !m_ItemAttachment.HasContent()) {
-            ; // Nothing to do. - Phew!
-          }
-
-          /*
-            Case: Item doesn't have an attachment and shall get one.
-            Steps:
-              1) Update attachment meta data.
-              2) Associate the attachment with the item (CItemData).
-              3) Add attachment (CItemAtt) to the core.
-              4) Update item's status.
-          */
-          else if (!m_Item.HasAttRef() && m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) {
-
-            // Step 1)
-            if (m_AttachmentTitle->GetValue() != _T("N/A")) {
-              m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
-            }
-
-            time_t timestamp;
-            time(&timestamp);
-            m_ItemAttachment.SetCTime(timestamp);
-
-            // Step 2)
-            m_Item.SetAttUUID(m_ItemAttachment.GetUUID());
-            m_ItemAttachment.IncRefcount();
-
-            // Step 3)
-            m_Core.PutAtt(m_ItemAttachment);
-
-            // Step 4)
-            m_ItemAttachment.SetStatus(CItem::EntryStatus::ES_ADDED);
-            m_Item.SetStatus(CItem::EntryStatus::ES_MODIFIED);
-          }
-
-          /*
-            Case: Item has an attachment which shall be removed.
-            Steps:
-              1) Detach the attachment (CItemAtt) from the item.
-              2) Remove the attachment from the core.
-              3) Update item's status.
-          */
-          else if (m_Item.HasAttRef() && !m_ItemAttachment.HasUUID() && !m_ItemAttachment.HasContent()) {
-
-            // Step 1)
-            auto uuid = m_Item.GetAttUUID();
-            auto itemAttachment = m_Core.GetAtt(uuid);
-            m_Item.ClearAttUUID();
-            itemAttachment.DecRefcount();
-
-            // Step 2)
-            m_Core.RemoveAtt(itemAttachment.GetUUID());
-
-            // Step 3)
-            m_Item.SetStatus(CItem::EntryStatus::ES_MODIFIED);
-          }
-
-          /*
-            Case: Item has an attachment which shall be replaced by a new one.
-            Steps:
-              1) Update attachment meta data.
-              2) Detach the attachment (CItemAtt) from the item.
-              3) Remove the attachment from the Core.
-              4) Associate the new attachment with the item (CItemData).
-              5) Add new attachment (CItemAtt) to the core.
-              6) Update item's status.
-          */
-          else if (isAttachmentModified) {
-
-            // Step 1)
-            if (m_AttachmentTitle->GetValue() != _T("N/A")) {
-              m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
-            }
-
-            time_t timestamp;
-            time(&timestamp);
-            m_ItemAttachment.SetCTime(timestamp);
-
-            // Step 2)
-            auto uuid = m_Item.GetAttUUID();
-            auto itemAttachment = m_Core.GetAtt(uuid);
-            m_Item.ClearAttUUID();
-            itemAttachment.DecRefcount();
-
-            // Step 3)
-            m_Core.RemoveAtt(itemAttachment.GetUUID());
-
-            // Step 4)
-            m_Item.SetAttUUID(m_ItemAttachment.GetUUID());
-            m_ItemAttachment.IncRefcount();
-
-            // Step 5)
-            m_Core.PutAtt(m_ItemAttachment);
-
-            // Step 6)
-            m_Item.SetStatus(CItem::EntryStatus::ES_MODIFIED);
-          }
-          else {
-            ;
-          }
-        }
-
-        if (bIsModified || bIsPSWDModified || isAttachmentModified) {
-          // All fields in m_item now reflect user's edits
-          // Let's update the core's data
-          uuid_array_t uuid;
-          m_Item.GetUUID(uuid);
-          auto listpos = m_Core.Find(uuid);
-          ASSERT(listpos != m_Core.GetEntryEndIter());
-          m_Core.Execute(EditEntryCommand::Create(&m_Core,
-                                                  m_Core.GetEntry(listpos),
-                                                  m_Item));
-        }
-      }
-      break;
-      case SheetType::ADD: {
-        m_Item.SetGroup(tostringx(group));
-        m_Item.SetTitle(tostringx(m_Title));
-        m_Item.SetUser(m_User.empty() ?
-                      PWSprefs::GetInstance()->
-                        GetPref(PWSprefs::DefaultUsername).c_str() : m_User.c_str());
-        // Check for Group/Username/Title uniqueness
-        if (m_Core.Find(m_Item.GetGroup(), m_Item.GetTitle(), m_Item.GetUser()) !=
-            m_Core.GetEntryEndIter()) {
-          wxMessageDialog msg(
-            this,
-            _("An entry or shortcut with the same Group, Title and Username already exists."),
-            _("Error"),
-            wxOK|wxICON_ERROR
-          );
-          msg.ShowModal();
-          return;
-        }
-        m_Item.SetNotes(tostringx(m_Notes));
-        m_Item.SetURL(tostringx(m_Url));
-        m_Item.SetEmail(tostringx(m_Email));
-        m_Item.SetPassword(password);
-        m_Item.SetAutoType(tostringx(m_Autotype));
-        m_Item.SetRunCommand(tostringx(m_RunCommand));
-        m_Item.SetDCA(m_DoubleClickAction);
-        m_Item.SetShiftDCA(m_ShiftDoubleClickAction);
-        time(&t);
-        m_Item.SetCTime(t);
-        if (m_KeepPasswordHistory) {
-          m_Item.SetPWHistory(MakePWHistoryHeader(true, m_MaxPasswordHistory, 0));
-        }
-        m_Item.SetXTime(m_tttExpirationTime);
-        if (m_ExpirationTimeInterval > 0 && m_ExpirationTimeInterval <= 3650) {
-          m_Item.SetXTimeInt(m_ExpirationTimeInterval);
-        }
-        if (!m_PasswordPolicyUseDatabaseCtrl->GetValue()) {
-          m_Item.SetPWPolicy(GetPWPolicyFromUI());
-        }
-  #ifdef NOTYET
-        if (m_AEMD.ibasedata > 0) {
+#ifdef NOTYET
+  if (m_AEMD.ibasedata > 0) {
           // Password in alias format AND base entry exists
           // No need to check if base is an alias as already done in
           // call to PWScore::ParseBaseEntryPWD
@@ -2216,63 +1946,404 @@ void AddEditPropSheetDlg::OnOk(wxCommandEvent& WXUNUSED(evt))
           m_item.SetPassword(m_AEMD.realpassword);
           m_item.SetNormal();
         }
-  #endif
-        if (m_Item.IsAlias()) {
-          m_Item.SetXTime(time_t(0));
-          m_Item.SetPWPolicy(wxEmptyString);
-        }
-        else {
-          m_Item.SetXTime(m_tttExpirationTime);
-        }
+#endif
 
-        /////////////////////////////////////////////////////////////////////////////
-        // Tab: "Attachment"
-        /////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Attachment"
+  /////////////////////////////////////////////////////////////////////////////
 
-        if (m_Core.GetReadFileVersion() == PWSfile::V40) {
+  if (m_Core.GetReadFileVersion() == PWSfile::V40) {
 
-          /*
-            Case: New item shall get an attachment.
-            Steps:
-              1) Update attachment meta data.
-              2) Associate the attachment with the item (CItemData).
-              3) Add attachment (CItemAtt) to the core.
-              4) Update item's status.
-          */
-          if (!m_Item.HasAttRef() && m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) {
+    /*
+      Case: New item shall get an attachment.
+      Steps:
+        1) Update attachment meta data.
+    */
+    if (!m_Item.HasAttRef() && m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) {
 
-            // Step 1)
-            if (m_AttachmentTitle->GetValue() != _T("N/A")) {
-              m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
-            }
-
-            time_t timestamp;
-            time(&timestamp);
-            m_ItemAttachment.SetCTime(timestamp);
-
-            // Step 2)
-            m_Item.SetAttUUID(m_ItemAttachment.GetUUID());
-            m_ItemAttachment.IncRefcount();
-
-            // Step 3)
-            m_Core.PutAtt(m_ItemAttachment);
-
-            // Step 4)
-            m_ItemAttachment.SetStatus(CItem::EntryStatus::ES_ADDED);
-            m_Item.SetStatus(CItem::EntryStatus::ES_MODIFIED);
-          }
-        }
+      // Step 1)
+      if (m_AttachmentTitle->GetValue() != _T("N/A")) {
+        m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
       }
-      break;
-      case SheetType::VIEW: {
+
+      time_t timestamp;
+      time(&timestamp);
+      m_ItemAttachment.SetCTime(timestamp);
+    }
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Create Command
+  /////////////////////////////////////////////////////////////////////////////
+
+  return AddEntryCommand::Create(
+    &m_Core,
+    m_Item, m_Item.GetBaseUUID(),
+    (m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) ? &m_ItemAttachment : nullptr
+  );
+}
+
+Command* AddEditPropSheetDlg::NewEditEntryCommand()
+{
+  time_t t;
+  const wxString group = m_BasicGroupNamesCtrl->GetValue();
+  const StringX password = tostringx(m_BasicPasswordTextCtrl->GetValue());
+
+  bool bIsModified, bIsPSWDModified;
+  short lastDCA, lastShiftDCA;
+  const PWSprefs *prefs = PWSprefs::GetInstance();
+  m_Item.GetDCA(lastDCA);
+  m_DoubleClickAction = GetSelectedDCA(m_AdditionalDoubleClickActionCtrl, lastDCA,
+    short(prefs->GetPref(PWSprefs::DoubleClickAction)));
+
+  m_Item.GetShiftDCA(lastShiftDCA);
+  m_ShiftDoubleClickAction = GetSelectedDCA(m_AdditionalShiftDoubleClickActionCtrl, lastShiftDCA,
+    short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
+  // Check if modified
+  int lastXTimeInt;
+  m_Item.GetXTimeInt(lastXTimeInt);
+  time_t lastXtime;
+  m_Item.GetXTime(lastXtime);
+  // Following ensures that untouched & hidden note
+  // isn't marked as modified. Relies on fact that
+  // Note field can't be modified w/o first getting focus
+  // and that we turn off m_isNotesHidden when that happens.
+  if (m_Type != SheetType::ADD && m_IsNotesHidden)
+    m_Notes = m_Item.GetNotes(TCHAR('\n')).c_str();
+
+  // Create a new PWHistory string based on settings in this dialog, and compare it
+  // with the PWHistory string from the item being edited, to see if the user modified it.
+  // Note that we are not erasing the history here, even if the user has chosen to not
+  // track PWHistory.  So there could be some password entries in the history
+  // but the first byte could be zero, meaning we are not tracking it _FROM_NOW_.
+  // Clearing the history is something the user must do himself with the "Clear History" button
+
+  // First, Get a list of all password history entries
+  size_t pwh_max, num_err;
+  PWHistList pwhl;
+  (void)CreatePWHistoryList(tostringx(m_PasswordHistory), pwh_max, num_err,
+    pwhl, PWSUtil::TMC_LOCALE);
+
+  // Create a new PWHistory header, as per settings in this dialog
+  size_t numEntries = std::min(pwhl.size(), static_cast<size_t>(m_MaxPasswordHistory));
+  m_PasswordHistory = towxstring(MakePWHistoryHeader(m_KeepPasswordHistory, m_MaxPasswordHistory, numEntries));
+  //reverse-sort the history entries to retain only the newest
+  std::sort(pwhl.begin(), pwhl.end(), newer());
+  // Now add all the existing history entries, up to a max of what the user wants to track
+  // This code is from CItemData::UpdatePasswordHistory()
+  PWHistList::iterator iter;
+  for (iter = pwhl.begin(); iter != pwhl.end() && numEntries > 0; iter++, numEntries--) {
+    StringX buffer;
+    Format(buffer, _T("%08x%04x%ls"),
+      static_cast<long>(iter->changetttdate), iter->password.length(),
+      iter->password.c_str());
+    m_PasswordHistory += towxstring(buffer);
+  }
+
+  wxASSERT_MSG(numEntries ==0, wxT("Could not save existing password history entries"));
+
+  PWPolicy oldPWP, pwp;
+  // get item's effective policy:
+  const StringX oldPolName = m_Item.GetPolicyName();
+  if (oldPolName.empty()) { // either item-specific or default:
+    if (m_Item.GetPWPolicy().empty()) {
+      oldPWP = PWSprefs::GetInstance()->GetDefaultPolicy();
+    }
+    else {
+      m_Item.GetPWPolicy(oldPWP);
+    }
+  }
+  else {
+    m_Core.GetPolicyFromName(oldPolName, oldPWP);
+  }
+  // now get dbox's effective policy:
+  pwp = GetSelectedPWPolicy();
+
+  bIsModified = (
+    group                     != m_Item.GetGroup().c_str()            ||
+    m_Title                   != m_Item.GetTitle().c_str()            ||
+    m_User                    != m_Item.GetUser().c_str()             ||
+    m_Notes                   != m_Item.GetNotes(TCHAR('\n')).c_str() ||
+    m_Url                     != m_Item.GetURL().c_str()              ||
+    m_Email                   != m_Item.GetEmail().c_str()            ||
+    m_Autotype                != m_Item.GetAutoType().c_str()         ||
+    m_RunCommand              != m_Item.GetRunCommand().c_str()       ||
+    m_DoubleClickAction       != lastDCA                              ||
+    m_ShiftDoubleClickAction  != lastShiftDCA                         ||
+    m_PasswordHistory         != m_Item.GetPWHistory().c_str()        ||
+    m_tttExpirationTime       != lastXtime                            ||
+    m_ExpirationTimeInterval  != lastXTimeInt                         ||
+    m_Symbols                 != m_Item.GetSymbols().c_str()          ||
+    oldPWP                    != pwp
+  );
+
+  /*
+    TODO:
+    Even if there have been no changes and the user has pressed the Ok button,
+    the password history check and symbols check result to 'true'.
+  */
+
+  if (!m_Item.IsAlias()) {
+    bIsPSWDModified = (password != m_Item.GetPassword());
+  }
+  else {
+    // Update password to alias form
+    // Show text stating that it is an alias
+    const CItemData *pbci = m_Core.GetBaseEntry(&m_Item);
+    ASSERT(pbci);
+    if (pbci) {
+      StringX alias = L"[" +
+        pbci->GetGroup() + L":" +
+        pbci->GetTitle() + L":" +
+        pbci->GetUser()  + L"]";
+      bIsPSWDModified = (password != alias);
+    }
+    else {
+      bIsPSWDModified = true;
+    }
+  }
+
+  if (bIsModified) {
+    // Just modify all - even though only 1 may have actually been modified
+    m_Item.SetGroup(tostringx(group));
+    m_Item.SetTitle(tostringx(m_Title));
+    m_Item.SetUser(m_User.empty() ?
+                   PWSprefs::GetInstance()->
+                     GetPref(PWSprefs::DefaultUsername).c_str() : m_User.c_str());
+    m_Item.SetNotes(tostringx(m_Notes));
+    m_Item.SetURL(tostringx(m_Url));
+    m_Item.SetEmail(tostringx(m_Email));
+    m_Item.SetAutoType(tostringx(m_Autotype));
+    m_Item.SetRunCommand(tostringx(m_RunCommand));
+    m_Item.SetPWHistory(tostringx(m_PasswordHistory));
+
+    if (m_PasswordPolicyUseDatabaseCtrl->GetValue()) {
+      // User has selected to use a named policy
+      wxString polName = m_PasswordPolicyNamesCtrl->GetValue();
+
+      // The default policy is neither item specific nor stored in the database
+      if (polName == _("Default Policy")) {
+        // Remove database policy information from item
+        m_Item.SetPolicyName(tostringx(wxEmptyString));
+
+        // Remove item specific policy information from item
+        m_Item.SetPWPolicy(tostringx(wxEmptyString));
+      }
+      // If it is not the default policy than it's a named policy from the database
+      else {
+        // Use policy that is stored in the database
+        m_Item.SetPolicyName(tostringx(polName));
+
+        // Remove item specific policy information from item
+        m_Item.SetPWPolicy(tostringx(wxEmptyString));
+      }
+    }
+    // User has selected to use an item specific policy
+    else {
+      // Use the data of the item specific policy collected from the UI
+      m_Item.SetPWPolicy(pwp);
+
+      // Remove database policy information from item
+      m_Item.SetPolicyName(tostringx(wxEmptyString));
+    }
+    m_Item.SetDCA(m_DoubleClickAction);
+    m_Item.SetShiftDCA(m_ShiftDoubleClickAction);
+
+    if (!IsGroupUsernameTitleCombinationUnique()) {
+      return nullptr;
+    }
+  } // bIsModified
+
+  time(&t);
+  if (bIsPSWDModified) {
+    m_Item.UpdatePassword(password);
+    m_Item.SetPMTime(t);
+  }
+  if (bIsModified || bIsPSWDModified) {
+    m_Item.SetRMTime(t);
+  }
+  if (m_tttExpirationTime != lastXtime) {
+    m_Item.SetXTime(m_tttExpirationTime);
+  }
+  if (m_Recurring) {
+    if (m_ExpirationTimeInterval != lastXTimeInt) {
+      m_Item.SetXTimeInt(m_ExpirationTimeInterval);
+    }
+  } else {
+    m_Item.SetXTimeInt(0);
+  }
+
+  auto commands = MultiCommands::Create(&m_Core);
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Tab: "Attachment"
+  /////////////////////////////////////////////////////////////////////////////
+
+  if (m_Core.GetReadFileVersion() == PWSfile::V40) {
+
+    /*
+      Case: Item doesn't have an attachment and doesn't get one.
+      Steps:
+        - none
+    */
+    if (!m_Item.HasAttRef() && !m_ItemAttachment.HasUUID() && !m_ItemAttachment.HasContent()) {
+      ; // Nothing to do. - Phew!
+    }
+
+    /*
+      Case: Item doesn't have an attachment and shall get one.
+      Steps:
+        1) Update attachment meta data.
+        2) Create DeleteEntryCommand to remove the item without attachment reference.
+        3) Create AddEntryCommand for item and attachment.
+           Only AddEntryCommand will associate an attachment item with a password item.
+           The "delete existing - create new" approach also takes into account any changes
+           to the password element that all other commands cannot.
+
+           TODO: Check Undo if password item and attachment item have changed.
+                 A command like EditEntryCommand would handle this proparly,
+                 but unfortunately doesn't support attaching an attachment.
+    */
+    else if (!m_Item.HasAttRef() && m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) {
+
+      // Step 1)
+      if (m_AttachmentTitle->GetValue() != _T("N/A")) {
+        m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
+      }
+
+      time_t timestamp;
+      time(&timestamp);
+      m_ItemAttachment.SetCTime(timestamp);
+
+      // Step 2)
+      commands->Add(DeleteEntryCommand::Create(&m_Core, m_Item));
+
+      // Step 3)
+      commands->Add(NewAddEntryCommand());
+
+      // If additional changes were made to the password element,
+      // these are also taken into account by NewAddEntryCommand,
+      // so that we can return with this command.
+      return commands;
+    }
+
+    /*
+      Case: Item has an attachment which shall be removed.
+      Steps:
+        1) Create DeleteAttachmentCommand command.
+        2) Remove reference to attachment item.
+        3) Create EditEntryCommand to update the password item.
+    */
+    else if (m_Item.HasAttRef() && !m_ItemAttachment.HasUUID() && !m_ItemAttachment.HasContent()) {
+
+      // Step 1)
+      commands->Add(DeleteAttachmentCommand::Create(&m_Core, m_Item));
+
+      // Step 2)
+      m_Item.ClearAttUUID();
+
+      // Step 3)
+      bIsModified = true;
+    }
+
+    /*
+      Case: Item has an attachment which shall be replaced by a new one.
+      Steps:
+        1) Update attachment meta data.
+        2) Create EditAttachmentCommand command to update attachment
+    */
+    else if (m_Item.HasAttRef()) {
+      auto uuid = m_Item.GetAttUUID();
+      auto itemAttachment = m_Core.GetAtt(uuid);
+
+      auto hasTitleChanges = (towxstring(m_ItemAttachment.GetTitle()) != m_AttachmentTitle->GetValue());
+      auto hasAttachmentChanges = (m_ItemAttachment != itemAttachment);
+
+      if (hasTitleChanges || hasAttachmentChanges) {
+
+        // Step 1)
+        if (m_AttachmentTitle->GetValue() != _T("N/A"))
+        {
+          m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
+        }
+
+        time_t timestamp;
+        time(&timestamp);
+        m_ItemAttachment.SetCTime(timestamp);
+
+        // Step 2)
+        commands->Add(
+          EditAttachmentCommand::Create(&m_Core, itemAttachment, m_ItemAttachment)
+        );
+
+        // Note:
+        // The item might also have modifications,
+        // so we still do not return with the commands we have so far.
+      }
+    }
+    else {
+      ;
+    }
+  }
+
+  if (bIsModified || bIsPSWDModified) {
+    // All fields in m_item now reflect user's edits
+    // Let's update the core's data
+    uuid_array_t uuid;
+    m_Item.GetUUID(uuid);
+    auto listpos = m_Core.Find(uuid);
+    ASSERT(listpos != m_Core.GetEntryEndIter());
+
+    if (listpos != m_Core.GetEntryEndIter()) {
+      commands->Add(
+        EditEntryCommand::Create(&m_Core, m_Core.GetEntry(listpos), m_Item)
+      );
+    }
+
+    return commands;
+  }
+
+  // No changes
+  delete commands;
+  return nullptr;
+}
+
+void AddEditPropSheetDlg::OnOk(wxCommandEvent& WXUNUSED(evt))
+{
+  if (Validate() && TransferDataFromWindow()) {
+
+    if (!ValidateBasicData()) {
+      EndModal(wxID_CANCEL);
+      return;
+    }
+
+    if (!ValidatePasswordPolicy()) {
+      EndModal(wxID_CANCEL);
+      return;
+    }
+
+    Command *command = nullptr;
+
+    switch (m_Type) {
+      case SheetType::EDIT:
+        command = NewEditEntryCommand();
+        break;
+      case SheetType::ADD:
+        command = NewAddEntryCommand();
+        break;
+      case SheetType::VIEW:
         // No Update
-      }
-      break;
+        break;
       default: {
         ASSERT(0);
         break;
       }
     }
+
+    if (command) {
+      m_Core.Execute(command);
+    }
+
     EndModal(wxID_OK);
   }
 }

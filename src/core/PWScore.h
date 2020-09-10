@@ -460,6 +460,9 @@ private:
   virtual void DoAddEntry(const CItemData &item, const CItemAtt *att);
   virtual void DoDeleteEntry(const CItemData &item);
   virtual void DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci);
+  virtual void DoAddAttachment(const CItemAtt &att);
+  virtual void DoDeleteAttachment(const CItemAtt &att);
+  virtual void DoReplaceAttachment(const CItemAtt &old_att, const CItemAtt &new_att);
 
   // General routines for aliases and shortcuts
   virtual void DoAddDependentEntry(const pws_os::CUUID &base_uuid,
