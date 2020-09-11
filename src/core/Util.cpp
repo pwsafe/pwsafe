@@ -913,3 +913,50 @@ bool PWSUtil::loadFile(const StringX &filename, StringXStream &stream) {
 
   return !bError;
 }
+
+bool PWSUtil::GetLockerData(const stringT& locker, stringT& plkUser, stringT& plkHost, int& plkPid)
+{
+  // Provides characters from the beginning of str up to given delimiter
+  // and removes them finally from str.
+  const auto getStringToken = [](stringT &str, const stringT &delimiter) -> stringT {
+    stringT token(_T(""));
+    size_t pos = str.find(delimiter);
+    if (pos != std::string::npos) {
+      token = str.substr(0, pos);
+      str.erase(0, pos + delimiter.length());
+    }
+    return token;
+  };
+
+  auto lockData = locker;
+
+  plkUser = getStringToken(lockData, _T("@")); // input -> "user@machine:nnnnnnnn"
+  plkHost = getStringToken(lockData, _T(":")); // input -> "machine:nnnnnnnn"
+  plkPid  = -1;
+
+  try {
+    plkPid = std::stoi(lockData);              // input -> "nnnnnnnn"
+  }
+  catch (const std::invalid_argument& ex) {
+    pws_os::Trace(L"PWSUtil::GetLockerData - Invalid argument passed to std::stoi: %ls", ex.what());
+  }
+  catch (const std::out_of_range& ex) {
+    pws_os::Trace(L"PWSUtil::GetLockerData - Out of Range error at std::stoi: %ls", ex.what());
+  }
+
+  if (plkUser.empty() || plkHost.empty() || plkPid < 0) {
+    return false;
+  }
+  else {
+    return true;
+  }
+}
+
+bool PWSUtil::HasValidLockerData(const stringT& locker)
+{
+  stringT plkUser(_T(""));
+  stringT plkHost(_T(""));
+  int plkPid = -1;
+
+  return PWSUtil::GetLockerData(locker, plkUser, plkHost, plkPid);
+}

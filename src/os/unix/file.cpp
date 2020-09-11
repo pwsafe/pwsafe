@@ -310,6 +310,11 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
         StringXStream lockerStream;
         if (PWSUtil::loadFile(lock_filename.c_str(), lockerStream)) {
           locker = stringx2std(lockerStream.str());
+
+          if (!PWSUtil::HasValidLockerData(locker)) {
+            locker = _T("");
+            Format(locker, IDSC_INVALIDLOCKER, lock_filename.c_str());
+          }
         }
         else {
           LoadAString(locker, IDSC_CANTREADLOCKER);
