@@ -377,11 +377,9 @@ void SafeCombinationEntryDlg::ProcessPhrase()
 
       if (PWSUtil::HasValidLockerData(locker)) {
         errmess += _("Locked by ");
-        errmess += locker.c_str();
       }
-      else {
-        errmess += locker.c_str();
-      }
+
+      errmess += locker.c_str();
 
       wxMessageDialog warn(this, errmess,
                            _("Warning"), wxOK | wxICON_WARNING);
