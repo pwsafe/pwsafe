@@ -221,18 +221,6 @@ static stringT GetLockFileName(const stringT &filename)
  */
 void pws_os::TryUnlockFile(const stringT &filename, HANDLE &lockFileHandle)
 {
-  // Provides characters from the beginning of str up to given delimiter
-  // and removes them finally from str.
-  const auto getStringToken = [](stringT &str, const stringT &delimiter) -> stringT {
-    stringT token;
-    size_t pos = str.find(delimiter);
-    if (pos != std::string::npos) {
-      token = str.substr(0, pos);
-      str.erase(0, pos + delimiter.length());
-    }
-    return token;
-  };
-
   const stringT lockFilename = GetLockFileName(filename);
 
   size_t mbsSize = wcstombs(nullptr, lockFilename.c_str(), lockFilename.length()) + 1;
@@ -248,12 +236,11 @@ void pws_os::TryUnlockFile(const stringT &filename, HANDLE &lockFileHandle)
     if (PWSUtil::loadFile(lockFilename.c_str(), lockerStream)) {
       stringT locker = stringx2std(lockerStream.str());
 
-      const auto plkUser = getStringToken(locker, _T("@"));                 // input -> "user@machine:nnnnnnnn"
-      const auto plkHost = getStringToken(locker, _T(":"));                 // input -> "machine:nnnnnnnn"
+      stringT plkUser(_T(""));
+      stringT plkHost(_T(""));
+      int plkPid = -1;
 
-      try {
-        int plkPid  = std::stoi(locker);                                    // input -> "nnnnnnnn"
-
+      if (PWSUtil::GetLockerData(locker, plkUser, plkHost, plkPid)) {
         if (
           (plkUser == pws_os::getusername()) &&                             // Is it the same user...
           (plkHost == pws_os::gethostname()) &&                             // at the same machine...
@@ -265,12 +252,6 @@ void pws_os::TryUnlockFile(const stringT &filename, HANDLE &lockFileHandle)
             lockFilename.c_str(), plkUser.c_str(), plkHost.c_str(), plkPid
           );
         }
-      }
-      catch (const std::invalid_argument& ex) {
-        pws_os::Trace(L"pws_os::TryUnlockFile - Invalid argument passed to std::stoi: %ls", ex.what());
-      }
-      catch (const std::out_of_range& ex) {
-        pws_os::Trace(L"pws_os::TryUnlockFile - Out of Range error at std::stoi: %ls", ex.what());
       }
     }
 
