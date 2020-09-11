@@ -373,8 +373,16 @@ void SafeCombinationEntryDlg::ProcessPhrase()
     const stringT fname(m_filename.c_str());
     stringT locker(L"");
     if (!m_readOnly && !m_core.LockFile(fname, locker)) {
-      errmess = _("Could not lock file, opening read-only\nLocked by ");
-      errmess += locker.c_str();
+      errmess = _("Could not lock file, opening read-only.\n");
+
+      if (PWSUtil::HasValidLockerData(locker)) {
+        errmess += _("Locked by ");
+        errmess += locker.c_str();
+      }
+      else {
+        errmess += locker.c_str();
+      }
+
       wxMessageDialog warn(this, errmess,
                            _("Warning"), wxOK | wxICON_WARNING);
       warn.ShowModal();
