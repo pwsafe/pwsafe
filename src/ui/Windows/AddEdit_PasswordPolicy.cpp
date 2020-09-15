@@ -678,10 +678,9 @@ void CAddEdit_PasswordPolicy::SetPolicyControls()
      (M_uicaller() == IDS_EDITENTRY && M_protected() == 0)) {
     bEnableSpecificPolicy = (M_ipolicy() == SPECIFIC_POLICY) ? TRUE : FALSE;
     bEnableLengths = ((bEnableSpecificPolicy == TRUE) &&
-                      (m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE &&
+                      (m_pwmakepronounceable == FALSE &&
                        m_pwusehexdigits == FALSE));
-    iShowLengths = (m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) ? 
-                       SW_HIDE : SW_SHOW;
+    iShowLengths = m_pwmakepronounceable == TRUE ? SW_HIDE : SW_SHOW;
   }
 
   GetDlgItem(IDC_DEFPWLENGTH)->EnableWindow(bEnableSpecificPolicy);
