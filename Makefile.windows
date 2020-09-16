@@ -48,6 +48,7 @@ WIXDIR := /cygdrive/c/local/WIX
 CANDLE := $(WIXDIR)/candle.exe
 LIGHT := $(WIXDIR)/light.exe
 SIGNTOOL := /cygdrive/c/Program\ Files\ \(x86\)/Windows\ Kits/10/bin/10.0.18362.0/x64/signtool.exe
+SIGNTOOL_ARGS := /t http://timestamp.digicert.com /a /fd sha256 
 
 RELTAG = V$(subst .,_,$(RELEASENAME))
 
@@ -211,19 +212,19 @@ installables: nsis msi nsis-64 msi-64
 
 nsis:
 	$(MAKENSIS) /DVERSION=$(RELEASENAME) /DARCH=x86 install/windows/pwsafe.nsi
-	(cd install/windows; $(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe-$(RELEASENAME).exe)
+	(cd install/windows; $(SIGNTOOL) sign $(SIGNTOOL_ARGS) pwsafe-$(RELEASENAME).exe)
 	$(MV) install/windows/pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
 
 nsis-64:
 	$(MAKENSIS) /DVERSION=$(RELEASENAME) /DARCH=x64 install/windows/pwsafe.nsi
-	(cd install/windows; $(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe64-$(RELEASENAME).exe)
+	(cd install/windows; $(SIGNTOOL) sign $(SIGNTOOL_ARGS) pwsafe64-$(RELEASENAME).exe)
 	$(MV) install/windows/pwsafe64-$(RELEASENAME).exe $(RELEASEDIR)
 
 msi:
 	$(CANDLE) -dPWSAFE_VERSION=$(RELEASENUM) -dPlatform=x86 install/windows/pwsafe.wxs
 	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe.wixobj \
 					-out pwsafe.msi
-	$(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe.msi
+	$(SIGNTOOL) sign $(SIGNTOOL_ARGS) pwsafe.msi
 	$(MV) pwsafe.msi $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
 	$(RM) pwsafe.wixobj
 
@@ -231,34 +232,40 @@ msi-64:
 	$(CANDLE) -dPWSAFE_VERSION=$(RELEASENUM) -dPlatform=x64 -arch x64 install/windows/pwsafe.wxs
 	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe.wixobj \
 					-out pwsafe64.msi
-	$(SIGNTOOL) sign /t http://timestamp.digicert.com /a /fd sha256 pwsafe64.msi
+	$(SIGNTOOL) sign $(SIGNTOOL_ARGS) pwsafe64.msi
 	$(MV) pwsafe64.msi $(RELEASEDIR)/pwsafe64-$(RELEASENAME).msi
 	$(RM) pwsafe.wixobj
 
 release:  i18n bin-release bin-release-64 src-release
 
-bin-release: save-map
+bin-release: sign-bins save-map
 	@-mkdir $(RELEASEDIR)/$(BINRELNAME)
-
 	$(CP) $(BIN_MANIFEST) $(RELEASEDIR)/$(BINRELNAME)
 	$(CP) $(I18N_MANIFEST) $(RELEASEDIR)/$(BINRELNAME)
 	(cd $(RELEASEDIR); $(ZIP) -9 -r  foo ./$(BINRELNAME); \
 	$(MV) foo.zip $(BINRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME)
 
+sign-bins:
+	$(SIGNTOOL) sign $(SIGNTOOL_ARGS) $(BIN_DIR)/pwsafe.exe $(BIN_DIR)/pwsafe-cli.exe \
+	$(BIN_DIR)/pws_at.dll $(BIN_DIR)/pws_osk.dll $(I18N_DLLS)
+
 save-map:
 	$(ZIP) -9 $(RELEASEDIR)/pwsafe-$(RELEASENAME)-map+pdb.zip \
 	 $(BIN_DIR)/pwsafe.map $(BIN_DIR)/pwsafe.pdb \
    $(BIN_DIR)/pws_*.pdb		
 
-bin-release-64: save-map-64
+bin-release-64: sign-bins-64 save-map-64
 	@-mkdir $(RELEASEDIR)/$(BINRELNAME64)
-
 	$(CP) $(BIN_MANIFEST_64) $(RELEASEDIR)/$(BINRELNAME64)
 	$(CP) $(I18N_MANIFEST_64) $(RELEASEDIR)/$(BINRELNAME64)
 	(cd $(RELEASEDIR); $(ZIP) -9 -r  foo ./$(BINRELNAME64); \
 	$(MV) foo.zip $(BINRELNAME64).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME64)
+
+sign-bins-64:
+	$(SIGNTOOL) sign $(SIGNTOOL_ARGS) $(BIN_DIR_64)/pwsafe.exe $(BIN_DIR_64)/pwsafe-cli.exe \
+	$(BIN_DIR_64)/pws_at.dll $(BIN_DIR_64)/pws_osk.dll $(I18N_DLLS_64)
 
 save-map-64:
 	$(ZIP) -9 $(RELEASEDIR)/pwsafe64-$(RELEASENAME)-map+pdb.zip \
