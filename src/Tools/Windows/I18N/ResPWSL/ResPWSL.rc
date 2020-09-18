@@ -71,7 +71,7 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "Comments", "Utility to create/modify Version String table in Password Safe Language Resource-Only DLLs - using code produced by Denis Zabavchik.  See http://www.codeproject.com/library/VerInfoLib.asp"
-            VALUE "CompanyName", "SourceForge.net"
+            VALUE "CompanyName", "Rony Shapiro"
             VALUE "FileDescription", "Password Safe DLL Creator/Modifier"
             VALUE "FileVersion", "2, 0, 0, 0\0"
             VALUE "InternalName", "ResPWSL"
