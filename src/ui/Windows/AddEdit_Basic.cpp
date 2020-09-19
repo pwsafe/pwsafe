@@ -1714,7 +1714,8 @@ void CAddEdit_Basic::SetGroupComboBoxWidth()
   m_ex_group.ReleaseDC(pDC);
 
   // Adjust the width for the vertical scroll bar and the left and right border.
-  dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2 * ::GetSystemMetrics(SM_CXEDGE);
+  UINT dpi = GetDpiForWindow(m_hWnd);
+  dx += ::GetSystemMetricsForDpi(SM_CXVSCROLL, dpi) + 2 * ::GetSystemMetricsForDpi(SM_CXEDGE, dpi);
 
   // Set the width of the list box so that every item is completely visible.
   m_ex_group.SetDroppedWidth(dx);
@@ -1786,7 +1787,8 @@ void CAddEdit_Basic::SetComboBoxWidth()
   m_cmbDependents.ReleaseDC(pDC);
 
   // Adjust the width for the vertical scroll bar and the left and right border.
-  dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2 * ::GetSystemMetrics(SM_CXEDGE);
+  UINT dpi = GetDpiForWindow(m_hWnd);
+  dx += ::GetSystemMetricsForDpi(SM_CXVSCROLL, dpi) + 2 * ::GetSystemMetricsForDpi(SM_CXEDGE, dpi);
 
   // If the width of the list box is too small, adjust it so that every
   // item is completely visible.

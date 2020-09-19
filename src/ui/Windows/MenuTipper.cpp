@@ -107,7 +107,8 @@ CRect CMenuTipManager::GetMenuTipRect(HMENU hmenu, UINT nID)
 
   // add heights of menu items until i reach nID
   int count = ::GetMenuItemCount(hmenu);
-  int cy = rcMenu.top + GetSystemMetrics(SM_CYEDGE) + 1;
+  UINT dpi = GetDpiForWindow(m_hWnd);
+  int cy = rcMenu.top + GetSystemMetricsForDpi(SM_CYEDGE, dpi) + 1;
   for (int i = 0; i < count; i++) {
     CRect rc;
     ::GetMenuItemRect(m_hWnd, hmenu, i, &rc);

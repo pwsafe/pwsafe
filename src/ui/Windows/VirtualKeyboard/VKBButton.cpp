@@ -64,7 +64,8 @@ void CVKBButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                                 (m_bFlat ? DFCS_FLAT : 0));
 
   // Fill the interior colour if necessary
-  rect.DeflateRect(CSize(GetSystemMetrics(SM_CXEDGE), GetSystemMetrics(SM_CYEDGE)));
+  UINT dpi = GetDpiForWindow(m_hWnd);
+  rect.DeflateRect(CSize(GetSystemMetricsForDpi(SM_CXEDGE, dpi), GetSystemMetricsForDpi(SM_CYEDGE, dpi)));
   if (m_bDeadKey) {
     pDC->FillSolidRect(rect, crefOrange);
   } else {

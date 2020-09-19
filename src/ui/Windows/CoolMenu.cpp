@@ -135,9 +135,10 @@ BOOL CCoolMenuManager::CMOnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
   if (lpmis->CtlType != ODT_MENU || pmd == NULL || !pmd->IsCMID())
     return FALSE; // not handled by me
 
+  UINT dpi = GetDpiForWindow(m_hWnd);
   if (pmd->fType & MFT_SEPARATOR) {
     // separator: use half system height and zero width
-    lpmis->itemHeight = GetSystemMetrics(SM_CYMENU) >> 1;
+    lpmis->itemHeight = GetSystemMetricsForDpi(SM_CYMENU, dpi) >> 1;
     lpmis->itemWidth  = 0;
   } else {
     // compute size of text: use DrawText with DT_CALCRECT
@@ -149,7 +150,7 @@ BOOL CCoolMenuManager::CMOnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
     dc.SelectObject(pOldFont);
 
     // height of item is just height of a standard menu item
-    lpmis->itemHeight = std::max(GetSystemMetrics(SM_CYMENU), rcText.Height());
+    lpmis->itemHeight = std::max(GetSystemMetricsForDpi(SM_CYMENU, dpi), rcText.Height());
 
     // width is width of text plus a bunch of stuff
     int cx = rcText.Width();    // text width
@@ -160,7 +161,7 @@ BOOL CCoolMenuManager::CMOnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
     // whatever value I return in lpmis->itemWidth, Windows will add the
     // width of a menu checkmark, so I must subtract to defeat Windows. Argh.
     //
-    cx -= GetSystemMetrics(SM_CXMENUCHECK)-1;
+    cx -= GetSystemMetricsForDpi(SM_CXMENUCHECK, dpi)-1;
     lpmis->itemWidth = cx;    // done deal
   }
   return TRUE; // handled

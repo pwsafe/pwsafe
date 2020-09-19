@@ -1487,7 +1487,8 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
     bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
     if (bDragBarState) {
-      const int i = GetSystemMetrics(SM_CYBORDER);
+      UINT dpi = GetDpiForWindow(m_hWnd);
+      const int i = GetSystemMetricsForDpi(SM_CYBORDER, dpi);
       const int j = rect.top + i;
       m_DDGroup.GetWindowRect(&dragrect);
       ScreenToClient(&dragrect);
@@ -4079,7 +4080,8 @@ void DboxMain::SetToolBarPositions()
       m_DDAutotype.SetStaticState(true);
     }
 
-    const int i = GetSystemMetrics(SM_CYBORDER);
+    UINT dpi = GetDpiForWindow(m_hWnd);
+    const int i = GetSystemMetricsForDpi(SM_CYBORDER, dpi);
 
     for (int j = 0; j < sizeof(DDs)/sizeof(DDs[0]); j++) {
       DDs[j]->ShowWindow(SW_SHOW);
@@ -4562,7 +4564,8 @@ bool DboxMain::SetNotesWindow(const CPoint ptClient, const bool bVisible)
       pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
     }
   }
-  ptScreen.y += ::GetSystemMetrics(SM_CYCURSOR) / 2; // half-height of cursor
+  UINT dpi = GetDpiForWindow(m_hWnd);
+  ptScreen.y += ::GetSystemMetricsForDpi(SM_CYCURSOR, dpi) / 2; // half-height of cursor
 
   if (pci != NULL) {
     if (pci->IsShortcut())
@@ -5479,10 +5482,6 @@ void DboxMain::SetThreadDpiAwarenessContext()
 	PSBR_DPIAWARE pfcnSetThreadDpiAwarenessContext = PSBR_DPIAWARE(pws_os::GetFunction(m_hUser32, "SetThreadDpiAwarenessContext"));
 	if (!pfcnSetThreadDpiAwarenessContext)
 		return;
-#ifdef BR1491_WORKAROUND
-  // This call seems to break the display of graphics on hi resolution monitors
-  // Disabling for now, until someone finds a better fox, or I get a monitor that I can
-  // reproduce the problem with...
+
 	pfcnSetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
-#endif
 }
