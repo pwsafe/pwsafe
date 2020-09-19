@@ -175,7 +175,8 @@ bool CPWStatusBar::ShowToolTip(int nPane, const bool bVisible)
   CPoint pt;
   ::GetCursorPos(&pt);
 
-  pt.y += ::GetSystemMetrics(SM_CYCURSOR) / 2; // half-height of cursor
+  UINT dpi = GetDpiForWindow(m_hWnd);
+  pt.y += ::GetSystemMetricsForDpi(SM_CYCURSOR, dpi) / 2; // half-height of cursor
 
   m_pSBToolTips->SetWindowPos(&wndTopMost, pt.x, pt.y, 0, 0,
                               SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
@@ -231,8 +232,10 @@ void CPWStatusBar::OnMouseMove(UINT nFlags, CPoint point)
            UINT uiID, uiStyle;
            int cxWidth;
            GetPaneInfo(i, uiID, uiStyle, cxWidth);
-           if (rc.right - rc.left < cxWidth)
-             rc.right = rc.left + ::GetSystemMetrics(SM_CXVSCROLL) + ::GetSystemMetrics(SM_CXBORDER) * 2;
+           if (rc.right - rc.left < cxWidth) {
+             UINT dpi = GetDpiForWindow(m_hWnd);
+             rc.right = rc.left + ::GetSystemMetricsForDpi(SM_CXVSCROLL, dpi) + ::GetSystemMetricsForDpi(SM_CXBORDER, dpi) * 2;
+           }
         }
         if (PtInRect(&rc, point)) {
           nPane = i;

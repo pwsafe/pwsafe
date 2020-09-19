@@ -54,8 +54,9 @@ void CImgStatic::PreSubclassWindow()
   ModifyStyle(0, SS_OWNERDRAW);
 
   if (m_bUseScrollBars) {
-    UINT uiHHeight = GetSystemMetrics(SM_CYHSCROLL);
-    UINT uiVWidth = GetSystemMetrics(SM_CXVSCROLL);
+    UINT dpi = GetDpiForWindow(m_hWnd);
+    UINT uiHHeight = GetSystemMetricsForDpi(SM_CYHSCROLL, dpi);
+    UINT uiVWidth = GetSystemMetricsForDpi(SM_CXVSCROLL, dpi);
     CRect rectClient, rectH, rectV;
     GetClientRect(rectClient);
     rectH = rectClient;
@@ -261,8 +262,9 @@ void CImgStatic::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     GetClientRect(&rc);
 
     if (m_bUseScrollBars) {
-      UINT uiHHeight = GetSystemMetrics(SM_CYHSCROLL);
-      UINT uiVWidth = GetSystemMetrics(SM_CXVSCROLL);
+      UINT dpi = GetDpiForWindow(m_hWnd);
+      UINT uiHHeight = GetSystemMetricsForDpi(SM_CYHSCROLL, dpi);
+      UINT uiVWidth = GetSystemMetricsForDpi(SM_CXVSCROLL, dpi);
       CRect rectH, rectV;
       rectH = rc;
       rectH.top = rectH.bottom - uiHHeight;

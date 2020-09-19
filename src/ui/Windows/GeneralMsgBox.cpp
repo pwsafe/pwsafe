@@ -572,7 +572,8 @@ void CGeneralMsgBox::CreateRtfCtrl()
 
   // Performing a binary search for the best dimension
   int cxFirst = 0;
-  int cxLast = ::GetSystemMetrics(SM_CXFULLSCREEN);
+  UINT dpi = GetDpiForWindow(m_hWnd);
+  int cxLast = ::GetSystemMetricsForDpi(SM_CXFULLSCREEN, dpi);
   int cyMax = 0;
 
   do {

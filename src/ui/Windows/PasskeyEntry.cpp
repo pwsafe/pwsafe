@@ -588,9 +588,10 @@ void CPasskeyEntry::SetHeight(const int num)
   sz.cx = rect.Width();
   sz.cy = ht * (num + 2);
 
+  UINT dpi = GetDpiForWindow(m_hWnd);
   if ((rect.top - sz.cy) < 0 || 
-      (rect.bottom + sz.cy > ::GetSystemMetrics(SM_CYSCREEN))) {
-    int ifit = std::max((rect.top / ht), (::GetSystemMetrics(SM_CYSCREEN) - rect.bottom) / ht);
+      (rect.bottom + sz.cy > ::GetSystemMetricsForDpi(SM_CYSCREEN, dpi))) {
+    int ifit = std::max((rect.top / ht), (::GetSystemMetricsForDpi(SM_CYSCREEN, dpi) - rect.bottom) / ht);
     int ht2 = ht * ifit;
     sz.cy = std::min((long)ht2, sz.cy);
   }

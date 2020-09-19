@@ -2036,10 +2036,10 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
   if (ht * n >= wrc.Height()) {
     // Only resize if combobox listctrl won't fit in dialog
     sz.cy = ht * ((n / 2) + 2);
-
+    UINT dpi = GetDpiForWindow(m_hWnd);
     if ((rect.top - sz.cy) < 0 ||
-        (rect.bottom + sz.cy > ::GetSystemMetrics(SM_CYSCREEN))) {
-      int ifit = max((rect.top / ht), (::GetSystemMetrics(SM_CYSCREEN) - rect.bottom) / ht);
+        (rect.bottom + sz.cy > ::GetSystemMetricsForDpi(SM_CYSCREEN, dpi))) {
+      int ifit = max((rect.top / ht), (::GetSystemMetricsForDpi(SM_CYSCREEN, dpi) - rect.bottom) / ht);
       int ht2 = ht * ifit;
       sz.cy = std::min((long)ht2, sz.cy);
     }
@@ -2104,7 +2104,8 @@ void CPWFilterLC::SetComboBoxWidth(const int iSubItem)
   m_ComboBox.ReleaseDC(pDC);
 
   // Adjust the width for the vertical scroll bar and the left and right border.
-  dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2 * ::GetSystemMetrics(SM_CXEDGE);
+  UINT dpi = GetDpiForWindow(m_hWnd);
+  dx += ::GetSystemMetricsForDpi(SM_CXVSCROLL, dpi) + 2 * ::GetSystemMetricsForDpi(SM_CXEDGE, dpi);
 
   // Now set column widths
   if (iSubItem == FLC_FLD_COMBOBOX) {

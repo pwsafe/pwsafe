@@ -86,7 +86,8 @@ void CInfoDisplay::OnPaint()
     } /* scan string */
 
     // Having computed the width, allow for the borders and extra space for margins
-    inf = 4 * ::GetSystemMetrics(SM_CXBORDER);
+    UINT dpi = GetDpiForWindow(m_hWnd);
+    inf = 4 * ::GetSystemMetricsForDpi(SM_CXBORDER, dpi);
     box.cx += 2 * inf;
     box.cy += 2 * inf;
 
