@@ -733,6 +733,25 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_CUSTOMIZETOOLBAR, true, true, true, true},
 };
 
+static void ResizeBitmap(CBitmap& bmp_src, CBitmap& bmp_dst, int dstW, int dstH)
+{
+  // from https://stackoverflow.com/questions/2770855/how-do-you-scale-a-cbitmap-object
+  BITMAP bm = { 0 };
+  bmp_src.GetBitmap(&bm);
+  auto size = CSize(bm.bmWidth, bm.bmHeight);
+  CWindowDC wndDC(nullptr);
+  CDC srcDC;
+  srcDC.CreateCompatibleDC(&wndDC);
+  srcDC.SelectObject(&bmp_src);
+
+  CDC destDC;
+  destDC.CreateCompatibleDC(&wndDC);
+  bmp_dst.CreateCompatibleBitmap(&wndDC, dstW, dstH);
+  destDC.SelectObject(&bmp_dst);
+
+  destDC.StretchBlt(0, 0, dstW, dstH, &srcDC, 0, 0, size.cx, size.cy, SRCCOPY);
+}
+
 void DboxMain::InitPasswordSafe()
 {
   PWS_LOGIT;
@@ -771,7 +790,7 @@ void DboxMain::InitPasswordSafe()
   SetIcon(m_hIconSm, FALSE); // Set small icon
 
   // Init stuff for tree view
-  CBitmap bitmap;
+  CBitmap bitmap, scaledBitmap;
   BITMAP bm;
 
   // Change all pixels in this 'grey' to transparent
@@ -779,6 +798,16 @@ void DboxMain::InitPasswordSafe()
 
   bitmap.LoadBitmap(IDB_GROUP);
   bitmap.GetBitmap(&bm);
+
+  // Scale for DPI stuff
+  // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
+  int dpi = GetDpiForWindow(m_hWnd);
+  int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
+  int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
+
+  ResizeBitmap(bitmap, scaledBitmap, dpiScaledWidth, dpiScaledHeight);
+  bitmap.DeleteObject();
+  scaledBitmap.GetBitmap(&bm);
   
   m_pImageList = new CImageList();
 
@@ -795,8 +824,8 @@ void DboxMain::InitPasswordSafe()
   // Order of LoadBitmap() calls matches CPWTreeCtrl public enum
   // Also now used by CListCtrl!
   //bitmap.LoadBitmap(IDB_GROUP); - already loaded above to get width
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
+  m_pImageList->Add(&scaledBitmap, crTransparent);
+  scaledBitmap.DeleteObject();
   UINT bitmapResIDs[] = {
     IDB_NORMAL, IDB_NORMAL_WARNEXPIRED, IDB_NORMAL_EXPIRED,
     IDB_ABASE, IDB_ABASE_WARNEXPIRED, IDB_ABASE_EXPIRED,
@@ -808,8 +837,10 @@ void DboxMain::InitPasswordSafe()
 
   for (int i = 0; i < sizeof(bitmapResIDs) / sizeof(bitmapResIDs[0]); i++) {
     bitmap.LoadBitmap(bitmapResIDs[i]);
-    m_pImageList->Add(&bitmap, crTransparent);
+    ResizeBitmap(bitmap, scaledBitmap, dpiScaledWidth, dpiScaledHeight);
     bitmap.DeleteObject();
+    m_pImageList->Add(&scaledBitmap, crTransparent);
+    scaledBitmap.DeleteObject();
   }
 
   m_ctlItemTree.SetImageList(m_pImageList, TVSIL_NORMAL);
