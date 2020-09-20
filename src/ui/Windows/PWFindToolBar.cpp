@@ -16,6 +16,7 @@
 #include "PWFindToolBar.h"
 #include "ControlExtns.h"
 #include "Fonts.h"
+#include "winutils.h"
 
 #include "resource.h"
 #include "resource2.h"
@@ -23,6 +24,7 @@
 
 #include <vector>
 #include <algorithm>
+
 
 // CPWFindToolBar
 
@@ -274,15 +276,36 @@ void CPWFindToolBar::Init(const int NumBits, int iWMSGID,
     m_bitmode = 2;
   }
 
-  CBitmap bmTemp;
-  m_ImageLists[0].Create(16, 16, iClassicFlags, m_iNum_Bitmaps, 2);
-  m_ImageLists[1].Create(16, 16, iNewFlags1, m_iNum_Bitmaps, 2);
-  m_ImageLists[2].Create(16, 16, iNewFlags2, m_iNum_Bitmaps, 2);
+  // Scale for DPI stuff
+  int origX = 16, origY = 16; // original toolbar button sizes
+
+  // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
+  int dpi = WinUtil::GetDPI(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
+  int dpiScaledX = MulDiv(origX, dpi, 96);
+  int dpiScaledY = MulDiv(origY, dpi, 96);
+
+  int btnX = 24, btnY = 22; // original toolbar button dimensions
+  int dpiScaledBtnX = MulDiv(btnX, dpi, 96);
+  int dpiScaledBtnY = MulDiv(btnY, dpi, 96);
+
+  GetToolBarCtrl().SetButtonSize(CSize(dpiScaledBtnX, dpiScaledBtnY));
+
+  m_ImageLists[0].Create(dpiScaledX, dpiScaledY, iClassicFlags, m_iNum_Bitmaps, 2);
+  m_ImageLists[1].Create(dpiScaledX, dpiScaledY, iNewFlags1, m_iNum_Bitmaps, 2);
+  m_ImageLists[2].Create(dpiScaledX, dpiScaledY, iNewFlags2, m_iNum_Bitmaps, 2);
+
+  CBitmap bmTemp, bmTempScaled;
+  BITMAP bm;
 
   for (i = 0; i < m_iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_FindToolBarClassicBMs[i]);
-    m_ImageLists[0].Add(&bmTemp, crClassicBackground);
+    bmTemp.GetBitmap(&bm);
+    int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
+    int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
+    WinUtil::ResizeBitmap(bmTemp, bmTempScaled, dpiScaledWidth, dpiScaledHeight);
     bmTemp.DeleteObject();
+    m_ImageLists[0].Add(&bmTempScaled, crClassicBackground);
+    bmTempScaled.DeleteObject();
     if (m_FindToolBarClassicBMs[i] == IDB_FINDCASE_I_CLASSIC)
       m_iCase_Insensitive_BM_offset = i;
     if (m_FindToolBarClassicBMs[i] == IDB_FINDCASE_S_CLASSIC)
@@ -295,14 +318,24 @@ void CPWFindToolBar::Init(const int NumBits, int iWMSGID,
 
   for (i = 0; i < m_iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_FindToolBarNewBMs[i]);
-    m_ImageLists[1].Add(&bmTemp, crNewBackground);
+    bmTemp.GetBitmap(&bm);
+    int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
+    int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
+    WinUtil::ResizeBitmap(bmTemp, bmTempScaled, dpiScaledWidth, dpiScaledHeight);
     bmTemp.DeleteObject();
+    m_ImageLists[1].Add(&bmTempScaled, crNewBackground);
+    bmTempScaled.DeleteObject();
   }
 
   for (i = 0; i < m_iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_FindToolBarNewBMs[i]);
-    m_ImageLists[2].Add(&bmTemp, crNewBackground);
+    bmTemp.GetBitmap(&bm);
+    int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
+    int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
+    WinUtil::ResizeBitmap(bmTemp, bmTempScaled, dpiScaledWidth, dpiScaledHeight);
     bmTemp.DeleteObject();
+    m_ImageLists[2].Add(&bmTempScaled, crNewBackground);
+    bmTempScaled.DeleteObject();
   }
 
   j = 0;
