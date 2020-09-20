@@ -733,24 +733,6 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_CUSTOMIZETOOLBAR, true, true, true, true},
 };
 
-static void ResizeBitmap(CBitmap& bmp_src, CBitmap& bmp_dst, int dstW, int dstH)
-{
-  // from https://stackoverflow.com/questions/2770855/how-do-you-scale-a-cbitmap-object
-  BITMAP bm = { 0 };
-  bmp_src.GetBitmap(&bm);
-  auto size = CSize(bm.bmWidth, bm.bmHeight);
-  CWindowDC wndDC(nullptr);
-  CDC srcDC;
-  srcDC.CreateCompatibleDC(&wndDC);
-  srcDC.SelectObject(&bmp_src);
-
-  CDC destDC;
-  destDC.CreateCompatibleDC(&wndDC);
-  bmp_dst.CreateCompatibleBitmap(&wndDC, dstW, dstH);
-  destDC.SelectObject(&bmp_dst);
-
-  destDC.StretchBlt(0, 0, dstW, dstH, &srcDC, 0, 0, size.cx, size.cy, SRCCOPY);
-}
 
 void DboxMain::InitPasswordSafe()
 {
@@ -805,7 +787,7 @@ void DboxMain::InitPasswordSafe()
   int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
   int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
 
-  ResizeBitmap(bitmap, scaledBitmap, dpiScaledWidth, dpiScaledHeight);
+  WinUtil::ResizeBitmap(bitmap, scaledBitmap, dpiScaledWidth, dpiScaledHeight);
   bitmap.DeleteObject();
   scaledBitmap.GetBitmap(&bm);
   
@@ -837,7 +819,7 @@ void DboxMain::InitPasswordSafe()
 
   for (int i = 0; i < sizeof(bitmapResIDs) / sizeof(bitmapResIDs[0]); i++) {
     bitmap.LoadBitmap(bitmapResIDs[i]);
-    ResizeBitmap(bitmap, scaledBitmap, dpiScaledWidth, dpiScaledHeight);
+    WinUtil::ResizeBitmap(bitmap, scaledBitmap, dpiScaledWidth, dpiScaledHeight);
     bitmap.DeleteObject();
     m_pImageList->Add(&scaledBitmap, crTransparent);
     scaledBitmap.DeleteObject();

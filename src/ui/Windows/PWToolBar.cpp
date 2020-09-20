@@ -11,12 +11,15 @@
 
 #include "stdafx.h"
 #include "PWToolBar.h"
+
+#include "winutils.h" // for ResizeBitmap
 #include "resource.h"
 #include "resource2.h"
 
 #include <map>
 #include <algorithm>
 #include <iterator>
+
 
 // CPWToolBarX
 
@@ -272,11 +275,19 @@ void CPWToolBarX::Init(const int NumBits, bool bRefresh)
     m_bitmode = 2;
   }
 
-  m_ImageLists[0].Create(16, 16, iClassicFlags, m_iNum_Bitmaps, 2);
-  m_ImageLists[1].Create(16, 16, iNewFlags1, m_iNum_Bitmaps, 2);
-  m_ImageLists[2].Create(16, 16, iNewFlags2, m_iNum_Bitmaps, 2);
-  m_DisabledImageLists[0].Create(16, 16, iNewFlags1, m_iNum_Bitmaps, 2);
-  m_DisabledImageLists[1].Create(16, 16, iNewFlags2, m_iNum_Bitmaps, 2);
+
+  int origX = 16, origY = 16;
+  // Scale for DPI stuff
+ // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
+  int dpi = GetDpiForSystem(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
+  int dpiScaledX = MulDiv(origX, dpi, 96);
+  int dpiScaledY = MulDiv(origY, dpi, 96);
+
+  m_ImageLists[0].Create(dpiScaledX, dpiScaledY, iClassicFlags, m_iNum_Bitmaps, 2);
+  m_ImageLists[1].Create(dpiScaledX, dpiScaledY, iNewFlags1, m_iNum_Bitmaps, 2);
+  m_ImageLists[2].Create(dpiScaledX, dpiScaledY, iNewFlags2, m_iNum_Bitmaps, 2);
+  m_DisabledImageLists[0].Create(dpiScaledX, dpiScaledY, iNewFlags1, m_iNum_Bitmaps, 2);
+  m_DisabledImageLists[1].Create(dpiScaledX, dpiScaledY, iNewFlags2, m_iNum_Bitmaps, 2);
 
   int iNum_Main = _countof(MainGuiInfo);
   int iNum_Other = _countof(OtherGuiInfo);
@@ -547,9 +558,14 @@ void CPWToolBarX::SetupImageList(const GuiRecord *guiInfo,
   // See http://www.parashift.com/c++-faq/macro-for-ptr-to-memfn.html
 #define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember))
 
+    // Scale for DPI stuff
+ // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
+  int dpi = GetDpiForSystem(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
+
   const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
 
-  CBitmap bmNormal, bmDisabled;
+  CBitmap bmNormal, bmNormalScaled, bmDisabled, bmDisabledScaled;
+  BITMAP bm;
 
   for (int i = 0; i < numBMs; i++) {
     UINT bmID = CALL_MEMBER_FN(guiInfo[i], GetBM)();
@@ -559,18 +575,35 @@ void CPWToolBarX::SetupImageList(const GuiRecord *guiInfo,
     VERIFY(bmNormal.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(bmID), RT_BITMAP),
                                        MAKEINTRESOURCE(bmID), IMAGE_BITMAP, 0, 0,
                                        (LR_DEFAULTSIZE | LR_CREATEDIBSECTION))));
+    bmNormal.GetBitmap(&bm);
     SetBitmapBackground(bmNormal, crCOLOR_3DFACE);
-    m_ImageLists[nImageList].Add(&bmNormal, crCOLOR_3DFACE);
+
+    int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
+    int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
+
+    WinUtil::ResizeBitmap(bmNormal, bmNormalScaled, dpiScaledWidth, dpiScaledHeight);
     bmNormal.DeleteObject();
+
+    m_ImageLists[nImageList].Add(&bmNormalScaled, crCOLOR_3DFACE);
+    bmNormalScaled.DeleteObject();
 
     if (nImageList != 0) {
       bmID = CALL_MEMBER_FN(guiInfo[i], GetDisBM)();
       bmDisabled.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(bmID), RT_BITMAP),
                                     MAKEINTRESOURCE(bmID), IMAGE_BITMAP, 0, 0,
                                     (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
+
+      bmDisabled.GetBitmap(&bm);
       SetBitmapBackground(bmDisabled, crCOLOR_3DFACE);
-      m_DisabledImageLists[nImageList - 1].Add(&bmDisabled, crCOLOR_3DFACE);
+
+      dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
+      dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
+
+      WinUtil::ResizeBitmap(bmDisabled, bmDisabledScaled, dpiScaledWidth, dpiScaledHeight);
       bmDisabled.DeleteObject();
+
+      m_DisabledImageLists[nImageList - 1].Add(&bmDisabledScaled, crCOLOR_3DFACE);
+      bmDisabledScaled.DeleteObject();
     }
   }
 }
