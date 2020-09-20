@@ -1950,8 +1950,6 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   INT_PTR rc = m_pPasskeyEntryDlg->DoModal();
 
   if (rc == IDOK) {
-    DBGMSG("PasskeyEntry returns IDOK\n");
-
     const StringX curFile = m_pPasskeyEntryDlg->GetFileName().GetString();
     m_core.SetCurFile(curFile);
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems) != 0) {
@@ -2085,7 +2083,6 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
         retval = PWScore::OPEN_NODB;
         break;
       default:
-        DBGMSG("Default to WRONG_PASSWORD\n");
         retval = PWScore::WRONG_PASSWORD;  //Just a normal cancel
         break;
     }

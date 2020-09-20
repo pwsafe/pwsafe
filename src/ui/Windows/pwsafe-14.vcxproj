@@ -702,7 +702,6 @@
     <ClInclude Include="ImportXMLDlg.h" />
     <ClInclude Include="InfoDisplay.h" />
     <ClInclude Include="InputBox.h" />
-    <ClInclude Include="jprdebug.h" />
     <ClInclude Include="LVHdrCtrl.h" />
     <ClInclude Include="filter\ManageFiltersDlg.h" />
     <ClInclude Include="ManagePSWDPols.h" />

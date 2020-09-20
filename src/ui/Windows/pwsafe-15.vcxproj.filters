@@ -584,9 +584,7 @@
     <ClInclude Include="InputBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="jprdebug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+
     <ClInclude Include="LVHdrCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>

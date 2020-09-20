@@ -185,7 +185,6 @@
     <File Name="../src/ui/Windows/ControlExtns.cpp"/>
     <File Name="../src/ui/Windows/PupText.h"/>
     <File Name="../src/ui/Windows/AddEdit_PropertyPage.cpp"/>
-    <File Name="../src/ui/Windows/jprdebug.h"/>
     <File Name="../src/ui/Windows/MenuTipper.cpp"/>
     <File Name="../src/ui/Windows/OptionsBackup.cpp"/>
     <File Name="../src/ui/Windows/PWResizeDialog.h"/>

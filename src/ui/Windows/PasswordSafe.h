@@ -15,12 +15,6 @@
 #include "stdafx.h"
 #endif
 
-
-/*
-jpr debug stuff
-*/
-#include "jprdebug.h"
-
 /*
 a globally available reference to the app object, which is a whole lot
 cleaner (in my mind) than constantly calling AfxGetApp() for the same

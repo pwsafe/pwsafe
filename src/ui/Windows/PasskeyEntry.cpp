@@ -69,11 +69,6 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
 {
   m_index = index;
 
-  DBGMSG("CPasskeyEntry()\n");
-  if (m_index == GCP_FIRST) {
-    DBGMSG("** FIRST **\n");
-  }
-
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_SelectedDatabase = a_filespec;
 
