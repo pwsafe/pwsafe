@@ -40,7 +40,6 @@
 #include <wx/wfstream.h>
 #include <wx/valgen.h>
 
-#include "core/PwsPlatform.h"
 #include "core/StringX.h"
 #include "os/file.h"
 

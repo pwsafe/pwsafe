@@ -23,7 +23,6 @@
 ////@begin includes
 #include <wx/dnd.h>
 
-#include "core/PwsPlatform.h"
 
 #include "DragBarGenericCtrl.h"
 #include "wxUtilities.h"

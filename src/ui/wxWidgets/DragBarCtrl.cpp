@@ -22,7 +22,6 @@
 #endif
 
 ////@begin includes
-#include "core/PwsPlatform.h"
 #include "core/ItemData.h"
 
 #include "DragBarCtrl.h"

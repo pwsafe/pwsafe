@@ -12,7 +12,6 @@
 #include "StringX.h"
 #include "Util.h"
 
-#include "PwsPlatform.h"
 #include "os/pws_tchar.h"
 
 #if !defined(_WIN32) || defined(__WX__)

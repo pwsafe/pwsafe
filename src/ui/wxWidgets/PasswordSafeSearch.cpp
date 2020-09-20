@@ -22,7 +22,6 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-#include "core/PwsPlatform.h"
 #include "core/PWHistory.h"
 #include "core/Util.h"
 #include "wxUtilities.h"

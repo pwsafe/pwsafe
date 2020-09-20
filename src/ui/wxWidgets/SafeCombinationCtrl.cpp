@@ -21,8 +21,6 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-#include "core/PwsPlatform.h"
-
 #include "ExternalKeyboardButton.h"
 #include "SafeCombinationCtrl.h"
 #include "wxUtilities.h"
