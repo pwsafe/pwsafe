@@ -22,23 +22,52 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
+    - name: Set build parameters
+      # If you need to rebuild wxWidgets for some reason, say you changed the build params, just increment FORCE_REBUILD_WX
+      run: |
+        echo "::set-env name=WX_VERS::3.0.5"
+        echo "::set-env name=MACOS_VER_MIN::10.9"
+        echo "::set-env name=WX_SRC_DIR::$HOME/wxWidgets"
+        echo "::set-env name=WX_BUILD_DIR::$HOME/wxbuild"
+        echo "::set-env name=XCODE_VER::11.7"
+        echo "::set-env name=FORCE_REBUILD_WX::2"
+
     - name: Force compatible Xcode version
-      run: sudo xcode-select -s /Applications/Xcode_10.3.app/Contents/Developer
-    
+      run: sudo xcode-select -s /Applications/Xcode_${XCODE_VER}.app/Contents/Developer
+
     - name: Print Xcode version in use
       run: xcode-select -p
-      
-    # Runs a single command using the runners shell
-    - name: Run a one-line script
-      run: echo "$GITHUB_WORKSPACE"
 
-    # Runs a set of commands using the runners shell
-    - name: Install wxWidgets
-      run: brew install wxwidgets
+    - name: Cache wxWidgets build
+      id: cache-wxWidgets-build
+      uses: actions/cache@v2
+      with:
+        path: ${{ env.WX_BUILD_DIR }}
+        key: wx-${{ env.WX_VERS }}-macOS-${{ env.MACOS_VER_MIN }}-Xcode-${{ env.XCODE_VER }}-build-${{ env.FORCE_REBUILD_WX }}
+
+    - name: Checkout wxWidgets
+      if: steps.cache-wxWidgets-build.outputs.cache-hit != 'true'
+      run: git clone https://github.com/wxWidgets/wxWidgets.git $WX_SRC_DIR
+
+    - name: Build wxWidgets
+      if: steps.cache-wxWidgets-build.outputs.cache-hit != 'true'
+      working-directory: ${{ env.WX_SRC_DIR }}
+      run: |
+        git pull --ff-only origin
+        git -C $WX_SRC_DIR reset --hard v${{ env.WX_VERS }}
+        git -C $WX_SRC_DIR submodule update --init
+        rm -rf $WX_BUILD_DIR
+        mkdir -p $WX_BUILD_DIR
+        cd $WX_SRC_DIR
+        # use built-in versions of jpeg, tiff & png libs to avoid linking with those in /usr/local/opt
+        ./configure --prefix=$WX_BUILD_DIR --disable-shared --enable-unicode --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --without-liblzma
+        make
+        make install
+        du -sh $WX_BUILD_DIR
 
     - name: Generate xcconfigs
       working-directory: ${{ github.workspace }}
-      run: Xcode/generate-configs -r /usr/local/bin/wx-config > Xcode/pwsafe-release.xcconfig
+      run: Xcode/generate-configs -r $WX_BUILD_DIR/bin/wx-config > Xcode/pwsafe-release.xcconfig
     
     - name: Build pwsafe
       working-directory: ${{ github.workspace }}
@@ -49,16 +78,6 @@ jobs:
 
     - name: Move app to another folder
       run: mkdir "$BUILD_OUTPUT_DIR"/app && mv "$BUILD_OUTPUT_DIR"/pwsafe.app "$BUILD_OUTPUT_DIR"/app/
-
-    - name: Fetch dylib bundler
-      run: git clone https://github.com/auriamg/macdylibbundler ~/work/macdylibbundler
-
-    - name: Build dylib bundler
-      run: /usr/bin/make
-      working-directory: /Users/runner/work/macdylibbundler/
-
-    - name: Copy dependencies
-      run: ~/work/macdylibbundler/dylibbundler -b -cd -x "$BUILD_OUTPUT_DIR"/app/pwsafe.app/Contents/MacOS/pwsafe -d "$BUILD_OUTPUT_DIR"/app/pwsafe.app/Contents/MacOS/libs -p '@executable_path/libs/'
 
     - name: Install dependencies for creating dmg
       run: brew install create-dmg
