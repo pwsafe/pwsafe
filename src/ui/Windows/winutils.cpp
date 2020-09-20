@@ -13,6 +13,9 @@
 
 #include "stdafx.h"
 #include "winutils.h"
+
+#include <sstream>
+
 #include "core/StringX.h"
 #include "core/SysInfo.h"
 #include "os/dir.h"
@@ -23,7 +26,7 @@
 #include "core/PWSdirs.h"
 #include "core/SysInfo.h"
 #include "core/XMLprefs.h"
-#include "os/dir.h"
+#include "os/env.h"
 #include "os/file.h"
 
 void WinUtil::RelativizePath(std::wstring &curfile)
@@ -246,6 +249,19 @@ exit:
   if (bRetVal)
     PWSprefs::SetConfigFile(wsDefaultCfgFile);
   return bRetVal;
+}
+
+UINT WinUtil::GetDPI(HWND hwnd) // wrapper for debugging
+{
+  UINT retval = (hwnd == nullptr) ? ::GetDpiForSystem() : ::GetDpiForWindow(hwnd);
+  stringT dbg_dpi = pws_os::getenv("PWS_DPI", false);
+  if (!dbg_dpi.empty()) {
+    std::wistringstream iss(dbg_dpi);
+    iss >> retval;
+
+  }
+  // retval = 192; // XXX debug - remove before flight
+  return retval;
 }
 
 void WinUtil::ResizeBitmap(CBitmap& bmp_src, CBitmap& bmp_dst, int dstW, int dstH)

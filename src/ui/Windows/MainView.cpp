@@ -44,6 +44,8 @@
 #include "resource3.h"  // String resources
 
 #include "commctrl.h"
+#include "winutils.h"
+
 #include <shlwapi.h>
 #include <vector>
 #include <algorithm>
@@ -1487,7 +1489,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
     bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
     if (bDragBarState) {
-      UINT dpi = GetDpiForWindow(m_hWnd);
+      UINT dpi = WinUtil::GetDPI(m_hWnd);
       const int i = GetSystemMetricsForDpi(SM_CYBORDER, dpi);
       const int j = rect.top + i;
       m_DDGroup.GetWindowRect(&dragrect);
@@ -4080,7 +4082,7 @@ void DboxMain::SetToolBarPositions()
       m_DDAutotype.SetStaticState(true);
     }
 
-    UINT dpi = GetDpiForWindow(m_hWnd);
+    UINT dpi = WinUtil::GetDPI(m_hWnd);
     const int i = GetSystemMetricsForDpi(SM_CYBORDER, dpi);
 
     for (int j = 0; j < sizeof(DDs)/sizeof(DDs[0]); j++) {
@@ -4564,7 +4566,7 @@ bool DboxMain::SetNotesWindow(const CPoint ptClient, const bool bVisible)
       pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
     }
   }
-  UINT dpi = GetDpiForWindow(m_hWnd);
+  UINT dpi = WinUtil::GetDPI(m_hWnd);
   ptScreen.y += ::GetSystemMetricsForDpi(SM_CYCURSOR, dpi) / 2; // half-height of cursor
 
   if (pci != NULL) {

@@ -13,6 +13,7 @@
 //
 #include "stdafx.h"
 #include "puptext.h"
+#include "winutils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -61,7 +62,7 @@ int CPopupText::Create(CPoint pt, CWnd* pParentWnd, UINT nID)
 LRESULT CPopupText::OnSetText(WPARAM , LPARAM lp)
 {
   CRect rc;
-  UINT dpi = GetDpiForWindow(m_hWnd);
+  UINT dpi = WinUtil::GetDPI(m_hWnd);
   const int screenWidth = GetSystemMetricsForDpi(SM_CXSCREEN, dpi);
   GetWindowRect(&rc);
   int h = rc.Height();

@@ -40,10 +40,11 @@ down the streetsky.  [Groucho Marx]
 #include "resource3.h"  // String resources
 
 #include "SecString.h"
-
 #include "SysColStatic.h"
+#include "winutils.h"
 
 #include <iomanip>  // For setbase and setw
+
 
 // See DboxMain.h for the relevant enum
 int CPasskeyEntry::dialog_lookup[5] = {
@@ -588,7 +589,7 @@ void CPasskeyEntry::SetHeight(const int num)
   sz.cx = rect.Width();
   sz.cy = ht * (num + 2);
 
-  UINT dpi = GetDpiForWindow(m_hWnd);
+  UINT dpi = WinUtil::GetDPI(m_hWnd);
   if ((rect.top - sz.cy) < 0 || 
       (rect.bottom + sz.cy > ::GetSystemMetricsForDpi(SM_CYSCREEN, dpi))) {
     int ifit = std::max((rect.top / ht), (::GetSystemMetricsForDpi(SM_CYSCREEN, dpi) - rect.bottom) / ht);

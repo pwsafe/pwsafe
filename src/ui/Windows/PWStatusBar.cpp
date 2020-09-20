@@ -44,7 +44,7 @@ CPWStatusBar::CPWStatusBar()
 {
 
   // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
-  int dpi = GetDpiForSystem(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
+  int dpi = WinUtil::GetDPI(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
   CBitmap origBmp;
   origBmp.LoadBitmap(IDB_FILTER_ACTIVE);
 
@@ -183,7 +183,7 @@ bool CPWStatusBar::ShowToolTip(int nPane, const bool bVisible)
   CPoint pt;
   ::GetCursorPos(&pt);
 
-  UINT dpi = GetDpiForWindow(m_hWnd);
+  UINT dpi = WinUtil::GetDPI(m_hWnd);
   pt.y += ::GetSystemMetricsForDpi(SM_CYCURSOR, dpi) / 2; // half-height of cursor
 
   m_pSBToolTips->SetWindowPos(&wndTopMost, pt.x, pt.y, 0, 0,
@@ -241,7 +241,7 @@ void CPWStatusBar::OnMouseMove(UINT nFlags, CPoint point)
            int cxWidth;
            GetPaneInfo(i, uiID, uiStyle, cxWidth);
            if (rc.right - rc.left < cxWidth) {
-             UINT dpi = GetDpiForWindow(m_hWnd);
+             UINT dpi = WinUtil::GetDPI(m_hWnd);
              rc.right = rc.left + ::GetSystemMetricsForDpi(SM_CXVSCROLL, dpi) + ::GetSystemMetricsForDpi(SM_CXBORDER, dpi) * 2;
            }
         }
