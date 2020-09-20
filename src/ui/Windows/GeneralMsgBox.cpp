@@ -23,6 +23,7 @@
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "RichEditCtrlExtn.h"
+#include "winutils.h"
 #include <RichEdit.h>
 
 #include "resource3.h"
@@ -572,7 +573,7 @@ void CGeneralMsgBox::CreateRtfCtrl()
 
   // Performing a binary search for the best dimension
   int cxFirst = 0;
-  UINT dpi = GetDpiForWindow(m_hWnd);
+  UINT dpi = WinUtil::GetDPI(m_hWnd);
   int cxLast = ::GetSystemMetricsForDpi(SM_CXFULLSCREEN, dpi);
   int cyMax = 0;
 

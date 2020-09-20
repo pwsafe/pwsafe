@@ -279,7 +279,7 @@ void CPWToolBarX::Init(const int NumBits, bool bRefresh)
   int origX = 16, origY = 16;
   // Scale for DPI stuff
  // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
-  int dpi = GetDpiForSystem(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
+  int dpi = WinUtil::GetDPI(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
   int dpiScaledX = MulDiv(origX, dpi, 96);
   int dpiScaledY = MulDiv(origY, dpi, 96);
 
@@ -560,7 +560,7 @@ void CPWToolBarX::SetupImageList(const GuiRecord *guiInfo,
 
     // Scale for DPI stuff
  // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
-  int dpi = GetDpiForSystem(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
+  int dpi = WinUtil::GetDPI(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
 
   const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
 

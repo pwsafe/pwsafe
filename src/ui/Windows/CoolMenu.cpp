@@ -21,8 +21,10 @@
 #include "StdAfx.h"
 #include "CoolMenu.h"
 #include "PWToolbar.h"
+#include "winutils.h"
 #include "resource2.h"
 #include "resource3.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -135,7 +137,7 @@ BOOL CCoolMenuManager::CMOnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
   if (lpmis->CtlType != ODT_MENU || pmd == NULL || !pmd->IsCMID())
     return FALSE; // not handled by me
 
-  UINT dpi = GetDpiForWindow(m_hWnd);
+  UINT dpi = WinUtil::GetDPI(m_hWnd);
   if (pmd->fType & MFT_SEPARATOR) {
     // separator: use half system height and zero width
     lpmis->itemHeight = GetSystemMetricsForDpi(SM_CYMENU, dpi) >> 1;

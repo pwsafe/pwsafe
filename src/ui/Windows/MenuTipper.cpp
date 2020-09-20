@@ -17,7 +17,9 @@
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
 #include "MenuTipper.h"
+#include "winutils.h"
 #include <afxpriv.h> // for AfxLoadString
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -107,7 +109,7 @@ CRect CMenuTipManager::GetMenuTipRect(HMENU hmenu, UINT nID)
 
   // add heights of menu items until i reach nID
   int count = ::GetMenuItemCount(hmenu);
-  UINT dpi = GetDpiForWindow(m_hWnd);
+  UINT dpi = WinUtil::GetDPI(m_hWnd);
   int cy = rcMenu.top + GetSystemMetricsForDpi(SM_CYEDGE, dpi) + 1;
   for (int i = 0; i < count; i++) {
     CRect rc;

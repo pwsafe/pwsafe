@@ -728,7 +728,7 @@ bool CListBoxExtn::ShowToolTip(int nItem, const bool bVisible)
 
   CPoint pt;
   ::GetCursorPos(&pt);
-  UINT dpi = GetDpiForWindow(m_hWnd);
+  UINT dpi = WinUtil::GetDPI(m_hWnd);
   pt.y += ::GetSystemMetricsForDpi(SM_CYCURSOR, dpi) / 2; // half-height of cursor
 
   m_pLBToolTips->SetWindowPos(&wndTopMost, pt.x, pt.y, 0, 0,
@@ -1360,7 +1360,7 @@ void CButtonBitmapExtn::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
   // Scale for DPI stuff
   // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
-  int dpi = GetDpiForWindow(m_hWnd);
+  int dpi = WinUtil::GetDPI(m_hWnd);
   int dpiScaledWidth = MulDiv(bitMapInfo.bmWidth, dpi, 96);
   int dpiScaledHeight = MulDiv(bitMapInfo.bmHeight, dpi, 96);
 

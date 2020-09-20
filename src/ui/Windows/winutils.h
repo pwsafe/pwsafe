@@ -21,6 +21,7 @@ namespace WinUtil {
   HRGN GetWorkAreaRegion();
   bool OfferConfigMigration();
   bool PerformConfigMigration();
+  UINT GetDPI(HWND hwnd = nullptr); // wrapper for debugging
   void ResizeBitmap(CBitmap& bmp_src, CBitmap& bmp_dst, int dstW, int dstH);
 }
 #endif // __WINUTILS_H__

@@ -15,6 +15,7 @@
 #include "DboxMain.h"
 #include "CreateShortcutDlg.h"
 #include "ControlExtns.h"
+#include "winutils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -164,7 +165,7 @@ void CCreateShortcutDlg::SetGroupComboBoxWidth()
   m_ex_group.ReleaseDC(pDC);
 
   // Adjust the width for the vertical scroll bar and the left and right border.
-  UINT dpi = GetDpiForWindow(m_hWnd);
+  UINT dpi = WinUtil::GetDPI(m_hWnd);
   dx += ::GetSystemMetricsForDpi(SM_CXVSCROLL, dpi) + 2 * ::GetSystemMetricsForDpi(SM_CXEDGE, dpi);
 
   // Set the width of the list box so that every item is completely visible.

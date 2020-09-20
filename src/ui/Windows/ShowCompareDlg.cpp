@@ -13,6 +13,7 @@
 #include "ShowCompareDlg.h"
 #include "DboxMain.h"
 #include "InfoDisplay.h"
+#include "winutils.h"
 
 #include "core/ItemData.h"
 #include "core/Util.h"
@@ -659,7 +660,7 @@ bool CShowCompareDlg::SetNotesWindow(const CPoint ptClient, const bool bVisible)
       return false;
   }
 
-  UINT dpi = GetDpiForWindow(m_hWnd);
+  UINT dpi = WinUtil::GetDPI(m_hWnd);
   ptScreen.y += ::GetSystemMetricsForDpi(SM_CYCURSOR, dpi) / 2; // half-height of cursor
 
   if (!sx_notes.empty()) {

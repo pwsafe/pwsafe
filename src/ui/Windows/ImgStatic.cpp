@@ -13,12 +13,14 @@
 #include "ImgStatic.h"
 
 #include "GeneralMsgBox.h"
+#include "winutils.h"
 #include "os/debug.h"
 #include "resource3.h"
 
 #pragma warning(push)
 #pragma warning(disable:4458) // declaration of 'xxx' hides class member
 #include <GdiPlus.h>
+
 #pragma warning(pop)
 
 CImgStatic::CImgStatic()
@@ -54,7 +56,7 @@ void CImgStatic::PreSubclassWindow()
   ModifyStyle(0, SS_OWNERDRAW);
 
   if (m_bUseScrollBars) {
-    UINT dpi = GetDpiForWindow(m_hWnd);
+    UINT dpi = WinUtil::GetDPI(m_hWnd);
     UINT uiHHeight = GetSystemMetricsForDpi(SM_CYHSCROLL, dpi);
     UINT uiVWidth = GetSystemMetricsForDpi(SM_CXVSCROLL, dpi);
     CRect rectClient, rectH, rectV;
@@ -262,7 +264,7 @@ void CImgStatic::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     GetClientRect(&rc);
 
     if (m_bUseScrollBars) {
-      UINT dpi = GetDpiForWindow(m_hWnd);
+      UINT dpi = WinUtil::GetDPI(m_hWnd);
       UINT uiHHeight = GetSystemMetricsForDpi(SM_CYHSCROLL, dpi);
       UINT uiVWidth = GetSystemMetricsForDpi(SM_CXVSCROLL, dpi);
       CRect rectH, rectV;
