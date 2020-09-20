@@ -661,9 +661,6 @@ void DboxMain::setupBars()
 
   CDC *pDC = this->GetDC();
   int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
-  m_MainToolBar.Init(NumBits);
-  m_FindToolBar.Init(NumBits, PWS_MSG_TOOLBAR_FIND,
-                     &m_SaveAdvValues[CAdvancedDlg::FIND]);
   ReleaseDC(pDC);
 
   // Add the Main ToolBar.
@@ -674,6 +671,7 @@ void DboxMain::setupBars()
     pws_os::Trace(L"Failed to create Main toolbar\n");
     return;      // fail to create
   }
+  m_MainToolBar.Init(NumBits); // Must be after CreateEx() due to DPI fixes
 
   DWORD dwStyle = m_MainToolBar.GetBarStyle();
   dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP   |
@@ -690,7 +688,7 @@ void DboxMain::setupBars()
     pws_os::Trace(L"Failed to create Find toolbar\n");
     return;      // fail to create
   }
-
+  m_FindToolBar.Init(NumBits, PWS_MSG_TOOLBAR_FIND, &m_SaveAdvValues[CAdvancedDlg::FIND]);
   dwStyle = m_FindToolBar.GetBarStyle();
   dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP |
                       CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
