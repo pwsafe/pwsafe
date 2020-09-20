@@ -23,7 +23,6 @@ down the streetsky.  [Groucho Marx]
 #include "PWSversion.h"
 #include "GeneralMsgBox.h"
 
-#include "core/PwsPlatform.h"
 #include "core/Pwsdirs.h"
 #include "core/pwsprefs.h"
 #include "core/PWScore.h"

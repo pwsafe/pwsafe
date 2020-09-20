@@ -19,7 +19,6 @@
 #include "PWFileDialog.h"
 
 #include "core/core.h"
-#include "core/PwsPlatform.h"
 #include "core/PWSprefs.h" // for DoubleClickAction enums
 
 #include "os/dir.h"

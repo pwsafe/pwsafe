@@ -9,7 +9,6 @@
 
 // ConfirmDeleteDlg.h
 //-----------------------------------------------------------------------------
-#include "core/PwsPlatform.h"
 
 #include "PWDialog.h"
 

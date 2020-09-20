@@ -10,7 +10,6 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-#include "core/PwsPlatform.h"
 
 #include "ThisMfcApp.h"
 #include "resource.h"

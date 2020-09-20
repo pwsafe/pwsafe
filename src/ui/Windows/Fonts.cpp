@@ -18,7 +18,6 @@ static char THIS_FILE[] = __FILE__;
 
 #include "Fonts.h"
 
-#include "core/PwsPlatform.h"
 #include "os/env.h"
 
 #include <usp10.h>    // for support of Unicode character (Uniscribe)

@@ -19,7 +19,6 @@
 #include "YubiCfgDlg.h"
 
 #include "core/PWCharPool.h" // for CheckPassword()
-#include "core/PwsPlatform.h"
 #include "core/pwsprefs.h"
 #include "core/PWScore.h"
 #include "core/util.h"

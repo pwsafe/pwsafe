@@ -15,16 +15,11 @@
 #include "stdafx.h"
 #endif
 
-#include "core/PwsPlatform.h"
 
 /*
 jpr debug stuff
 */
 #include "jprdebug.h"
-
-/*
-eventually, this breaks off into pws_mfc.h
-*/
 
 /*
 a globally available reference to the app object, which is a whole lot

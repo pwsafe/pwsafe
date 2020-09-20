@@ -18,8 +18,6 @@
 
 #include "GeneralMsgBox.h"
 
-#include "core/PwsPlatform.h"
-
 #include "resource.h"
 #include "resource3.h"  // String resources
 

@@ -9,7 +9,6 @@
 //
 
 #include "stdafx.h"
-#include "passwordsafe.h"
 
 #include "DboxMain.h"
 
@@ -19,7 +18,6 @@
 #include "Fonts.h"
 
 #include "core/core.h"
-#include "core/PwsPlatform.h"
 #include "core/ItemData.h"
 #include "core/PWSprefs.h"
 #include "core/PWCharPool.h"

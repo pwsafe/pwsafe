@@ -10,7 +10,6 @@
 // QuerySetDef.h
 //-----------------------------------------------------------------------------
 
-#include "core/PwsPlatform.h"
 #include "PWDialog.h"
 
 class CQuerySetDef : public CPWDialog

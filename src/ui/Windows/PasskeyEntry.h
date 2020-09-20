@@ -15,10 +15,6 @@
 #include "SysColStatic.h"
 #include "SecString.h"
 
-#include "core/PwsPlatform.h"
-
-#include "afxcmn.h"
-
 //-----------------------------------------------------------------------------
 /**
 * This class is a bit schizophrenic - it has multiple personalities,

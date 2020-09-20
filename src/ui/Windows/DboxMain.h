@@ -35,7 +35,6 @@
 #include "core/UIinterface.h"
 #include "core/PWScore.h"
 #include "core/StringX.h"
-#include "core/PwsPlatform.h"
 #include "core/PWSFilters.h"
 #include "core/Command.h"
 #include "core/RUEList.h"

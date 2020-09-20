@@ -16,7 +16,6 @@
 
 #include "core/core.h"
 #include "core/PWCharPool.h"
-#include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
 
 #include "resource.h"

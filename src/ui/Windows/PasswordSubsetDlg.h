@@ -14,8 +14,6 @@
 #include "ControlExtns.h"
 #include "TBMStatic.h"
 
-#include "core/PwsPlatform.h"
-
 // Simple class to ensure only numbers, space, comma and semi-colons
 // are entered
 class CNumEdit : public CEdit

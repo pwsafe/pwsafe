@@ -11,7 +11,6 @@
 //-----------------------------------------------------------------------------
 
 #include "SecString.h"
-#include "core/PwsPlatform.h"
 #include <afxwin.h>
 
 /**

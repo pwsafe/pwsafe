@@ -14,7 +14,6 @@
 #include "Options_PropertySheet.h"
 #include "GeneralMsgBox.h"
 
-#include "core/PwsPlatform.h"
 #include "core/PWSprefs.h" // for DoubleClickAction enums
 #include "core/util.h" // for datetime string
 

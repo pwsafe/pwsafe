@@ -11,10 +11,8 @@
 #include "stdafx.h"
 
 #include "ThisMfcApp.h"
-#include "fonts.h"
 
 #include "ConfirmDeleteDlg.h"
-#include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
 
 #ifdef _DEBUG

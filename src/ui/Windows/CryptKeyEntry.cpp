@@ -15,8 +15,6 @@
 
 #include "CryptKeyEntry.h"
 
-#include "core/util.h"
-
 #include "resource.h"
 #include "resource3.h"  // String resources
 

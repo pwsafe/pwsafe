@@ -15,7 +15,6 @@
 #include "GeneralMsgBox.h"
 #include "winutils.h"
 
-#include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
 #include "core/SysInfo.h"
 
