@@ -46,6 +46,7 @@ protected:
 
 private:
   void SendToClipboard();
+  void SetupBitmap(CBitmap &bitmap, UINT id);
   void SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour);
   StringX GetData(const CItemData *pci);
 

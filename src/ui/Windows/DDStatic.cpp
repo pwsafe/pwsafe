@@ -15,6 +15,7 @@
 #include "DDStatic.h"
 #include "DboxMain.h"
 #include "ThisMfcApp.h"
+#include "winutils.h" // for ResizeBitmap
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -144,6 +145,31 @@ CDDStatic::~CDDStatic()
   delete m_pDropSource;
 }
 
+void CDDStatic::SetupBitmap(CBitmap& bitmap, UINT id)
+{
+  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
+  CBitmap tmpBitmap;
+  BITMAP bm;
+
+  VERIFY(tmpBitmap.Attach(::LoadImage(
+      ::AfxFindResourceHandle(MAKEINTRESOURCE(id), RT_BITMAP),
+      MAKEINTRESOURCE(id), IMAGE_BITMAP, 0, 0,
+      (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
+
+  SetBitmapBackground(tmpBitmap, crCOLOR_3DFACE);
+  tmpBitmap.GetBitmap(&bm);
+
+  // Scale for DPI stuff
+  // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
+  int dpi = WinUtil::GetDPI(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
+  int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
+  int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
+
+  WinUtil::ResizeBitmap(tmpBitmap, bitmap, dpiScaledWidth, dpiScaledHeight);
+  tmpBitmap.DeleteObject();
+}
+
+
 void CDDStatic::Init(const UINT nImageID, const UINT nDisabledImageID)
 {
   m_pDropTarget->Register(this);
@@ -151,21 +177,10 @@ void CDDStatic::Init(const UINT nImageID, const UINT nDisabledImageID)
   // Save resource IDs (Static and required image)
   m_nID = GetDlgCtrlID();
 
-  // Load bitmap
-  VERIFY(m_OKbitmap.Attach(::LoadImage(
-                  ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
-                  MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
-
-  VERIFY(m_NOTOKbitmap.Attach(::LoadImage(
-                  ::AfxFindResourceHandle(MAKEINTRESOURCE(nDisabledImageID), RT_BITMAP),
-                  MAKEINTRESOURCE(nDisabledImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
-
-  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
-  SetBitmapBackground(m_OKbitmap, crCOLOR_3DFACE);
-  SetBitmapBackground(m_NOTOKbitmap, crCOLOR_3DFACE);
-
+  // Load bitmaps
+  SetupBitmap(m_OKbitmap, nImageID);
+  SetupBitmap(m_NOTOKbitmap, nDisabledImageID);
+ 
   // Set bitmap in Static
   m_bState = false;
   SetBitmap((HBITMAP)m_NOTOKbitmap);
@@ -177,19 +192,8 @@ void CDDStatic::ReInit(const UINT nImageID, const UINT nDisabledImageID)
   m_OKbitmap.Detach();
   m_NOTOKbitmap.Detach();
 
-  VERIFY(m_OKbitmap.Attach(::LoadImage(
-                  ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
-                  MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
-  
-  VERIFY(m_NOTOKbitmap.Attach(::LoadImage(
-                  ::AfxFindResourceHandle(MAKEINTRESOURCE(nDisabledImageID), RT_BITMAP),
-                  MAKEINTRESOURCE(nDisabledImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
-
-  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
-  SetBitmapBackground(m_OKbitmap, crCOLOR_3DFACE);
-  SetBitmapBackground(m_NOTOKbitmap, crCOLOR_3DFACE);
+  SetupBitmap(m_OKbitmap, nImageID);
+  SetupBitmap(m_NOTOKbitmap, nDisabledImageID);
 
   if (m_bState) {
     SetBitmap((HBITMAP)m_OKbitmap);
