@@ -247,3 +247,22 @@ exit:
     PWSprefs::SetConfigFile(wsDefaultCfgFile);
   return bRetVal;
 }
+
+void WinUtil::ResizeBitmap(CBitmap& bmp_src, CBitmap& bmp_dst, int dstW, int dstH)
+{
+  // from https://stackoverflow.com/questions/2770855/how-do-you-scale-a-cbitmap-object
+  BITMAP bm = { 0 };
+  bmp_src.GetBitmap(&bm);
+  auto size = CSize(bm.bmWidth, bm.bmHeight);
+  CWindowDC wndDC(nullptr);
+  CDC srcDC;
+  srcDC.CreateCompatibleDC(&wndDC);
+  srcDC.SelectObject(&bmp_src);
+
+  CDC destDC;
+  destDC.CreateCompatibleDC(&wndDC);
+  bmp_dst.CreateCompatibleBitmap(&wndDC, dstW, dstH);
+  destDC.SelectObject(&bmp_dst);
+
+  destDC.StretchBlt(0, 0, dstW, dstH, &srcDC, 0, 0, size.cx, size.cy, SRCCOPY);
+}

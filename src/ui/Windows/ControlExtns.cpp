@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "ControlExtns.h"
 #include "InfoDisplay.h"      // for Listbox Tooltips
+#include "winutils.h"         // for ResizeBitmap()
 
 #include "core/ItemField.h"   // for CSecEditExtn
 #include "core/crypto/BlowFish.h"    // ditto
@@ -1352,19 +1353,27 @@ END_MESSAGE_MAP()
 
 void CButtonBitmapExtn::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
-  CDC dc;
-  dc.Attach(lpDrawItemStruct->hDC);
-
-  CBitmap bmp;
+  CBitmap bmp, scaledBmp;
   bmp.LoadBitmap(m_IDB);
-
   BITMAP bitMapInfo;
   bmp.GetBitmap(&bitMapInfo);
 
+  // Scale for DPI stuff
+  // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
+  int dpi = GetDpiForWindow(m_hWnd);
+  int dpiScaledWidth = MulDiv(bitMapInfo.bmWidth, dpi, 96);
+  int dpiScaledHeight = MulDiv(bitMapInfo.bmHeight, dpi, 96);
+
+  WinUtil::ResizeBitmap(bmp, scaledBmp, dpiScaledWidth, dpiScaledHeight);
+  bmp.DeleteObject();
+  scaledBmp.GetBitmap(&bitMapInfo);
+
+  CDC dc;
+  dc.Attach(lpDrawItemStruct->hDC);
   CDC memDC;
   memDC.CreateCompatibleDC(&dc);
 
-  memDC.SelectObject(&bmp);
+  memDC.SelectObject(&scaledBmp);
   int bmw = bitMapInfo.bmWidth;
   int bmh = bitMapInfo.bmHeight;
 

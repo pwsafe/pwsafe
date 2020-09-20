@@ -11,6 +11,7 @@
 
 #include "stdafx.h"
 #include "PWStatusBar.h"
+#include "winutils.h"
 
 #include "os/debug.h"
 
@@ -41,12 +42,19 @@ CPWStatusBar::CPWStatusBar()
   : m_pSBToolTips(nullptr), m_bSTBFilterStatus(false), m_bUseToolTips(false),
   m_bMouseInWindow(false), m_bFileReadOnly(false), m_bFileOpen(false)
 {
-  m_FilterBitmap.LoadBitmap(IDB_FILTER_ACTIVE);
-  BITMAP bm;
 
-  m_FilterBitmap.GetBitmap(&bm);
-  m_bmWidth = bm.bmWidth;
-  m_bmHeight = bm.bmHeight;
+  // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
+  int dpi = GetDpiForSystem(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
+  CBitmap origBmp;
+  origBmp.LoadBitmap(IDB_FILTER_ACTIVE);
+
+  BITMAP bm;
+  origBmp.GetBitmap(&bm);
+  m_bmWidth = MulDiv(bm.bmWidth, dpi, 96);
+  m_bmHeight = MulDiv(bm.bmHeight, dpi, 96);
+
+  WinUtil::ResizeBitmap(origBmp, m_FilterBitmap, m_bmWidth, m_bmHeight);
+  origBmp.DeleteObject();
 }
 
 CPWStatusBar::~CPWStatusBar()
