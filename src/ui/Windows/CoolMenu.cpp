@@ -91,11 +91,11 @@ LRESULT CCoolMenuManager::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
 {
   switch(msg) {
     case WM_MEASUREITEM:
-      if (CMOnMeasureItem((MEASUREITEMSTRUCT*)lp))
+      if (CMOnMeasureItem(reinterpret_cast<MEASUREITEMSTRUCT*>(lp)))
         return TRUE; // handled
       break;
     case WM_DRAWITEM:
-      if (CMOnDrawItem((DRAWITEMSTRUCT*)lp))
+      if (CMOnDrawItem(reinterpret_cast<DRAWITEMSTRUCT*>(lp)))
         return TRUE; // handled
       break;
     case WM_INITMENUPOPUP:
@@ -104,16 +104,20 @@ LRESULT CCoolMenuManager::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
       // MFT_STRING, so I must change back to MFT_OWNERDRAW.
       //
       CSubclassWnd::WindowProc(msg, wp, lp);
-      CMOnInitMenuPopup(CMenu::FromHandle((HMENU)wp), (UINT)LOWORD(lp), (BOOL)HIWORD(lp));
+      CMOnInitMenuPopup(CMenu::FromHandle(reinterpret_cast<HMENU>(wp)), static_cast<UINT>(LOWORD(lp)), static_cast<BOOL>(HIWORD(lp)));
       return FALSE;
     case WM_MENUSELECT:
-      CMOnMenuSelect((UINT)LOWORD(wp), (UINT)HIWORD(wp), (HMENU)lp);
+      CMOnMenuSelect(static_cast<UINT>(LOWORD(wp)), static_cast<UINT>(HIWORD(wp)), reinterpret_cast<HMENU>(lp));
       break;
     case WM_MENUCHAR:
-      LRESULT lr = CMOnMenuChar((wchar_t)LOWORD(wp), (UINT)HIWORD(wp), 
-                                CMenu::FromHandle((HMENU)lp));
+    {
+      LRESULT lr = CMOnMenuChar(static_cast<wchar_t>(LOWORD(wp)), static_cast<UINT>(HIWORD(wp)),
+        CMenu::FromHandle(reinterpret_cast<HMENU>(lp)));
       if (lr != 0)
         return lr;
+    }
+      break;
+    default:
       break;
   }
   return CSubclassWnd::WindowProc(msg, wp, lp);
@@ -139,8 +143,8 @@ CFont * CCoolMenuManager::GetMenuFont()
 BOOL CCoolMenuManager::CMOnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
 {
   ASSERT(lpmis);
-  CMenuItemData *pmd = (CMenuItemData *)lpmis->itemData;
-  if (lpmis->CtlType != ODT_MENU || pmd == NULL || !pmd->IsCMID())
+  auto pmd = (CMenuItemData *)lpmis->itemData;
+  if (lpmis->CtlType != ODT_MENU || pmd == nullptr || !pmd->IsCMID())
     return FALSE; // not handled by me
 
   UINT dpi = WinUtil::GetDPI(m_hWnd);
@@ -151,7 +155,7 @@ BOOL CCoolMenuManager::CMOnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
   } else {
     // compute size of text: use DrawText with DT_CALCRECT
 
-    CWindowDC dc(NULL);  // screen DC--I won't actually draw on it
+    CWindowDC dc(nullptr);  // screen DC--I won't actually draw on it
     CRect rcText(0, 0, 0, 0);
     CFont *pOldFont = dc.SelectObject(GetMenuFont());
     dc.DrawText(pmd->text, rcText, DT_MYSTANDARD|DT_CALCRECT);
@@ -182,8 +186,8 @@ BOOL CCoolMenuManager::CMOnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
 BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
 {
   ASSERT(lpdis);
-  CMenuItemData *pmd = (CMenuItemData *)lpdis->itemData;
-  if (lpdis->CtlType != ODT_MENU || pmd == NULL || !pmd->IsCMID())
+  auto pmd = (CMenuItemData *)lpdis->itemData;
+  if (lpdis->CtlType != ODT_MENU || pmd == nullptr || !pmd->IsCMID())
     return FALSE; // not handled by me
 
   ASSERT(lpdis->itemAction != ODA_FOCUS);
@@ -245,7 +249,7 @@ BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
       // no button: look for custom checked/unchecked bitmaps
       CMenuItemInfo miinfo;
       miinfo.fMask = MIIM_CHECKMARKS;
-      GetMenuItemInfo((HMENU)lpdis->hwndItem,
+      GetMenuItemInfo(reinterpret_cast<HMENU>(lpdis->hwndItem),
                       lpdis->itemID, MF_BYCOMMAND, &miinfo);
       if (bChecked || miinfo.hbmpUnchecked) {
         bHaveButn = Draw3DCheckmark(dc, rcButn, bSelected,
@@ -330,7 +334,7 @@ BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
   if (!hbmCheck) {
     CBitmap bm;
     VERIFY(bm.LoadOEMBitmap(OBM_CHECK));
-    hbmCheck = (HBITMAP)bm.Detach();
+    hbmCheck = static_cast<HBITMAP>(bm.Detach());
     ASSERT(hbmCheck);
   }
 
@@ -350,7 +354,7 @@ BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
   // select checkmark into memory DC
   CDC memdc;
   memdc.CreateCompatibleDC(&dc);
-  HBITMAP hOldBM = (HBITMAP)::SelectObject(memdc, hbmCheck);
+  auto hOldBM = static_cast<HBITMAP>(::SelectObject(memdc, hbmCheck));
 
   // set BG color based on selected state
   COLORREF colorOld =
@@ -401,7 +405,7 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
     miinfo.dwTypeData = itemname;
     miinfo.cch = sizeof(itemname);
     pMenu->GetMenuItemInfo(i, &miinfo, TRUE);
-    CMenuItemData* pmd = (CMenuItemData*)miinfo.dwItemData;
+    auto pmd = reinterpret_cast<CMenuItemData*>(miinfo.dwItemData);
 
     if (pmd != NULL && !pmd->IsCMID()) {
       continue; // owner-draw menu item isn't mine--leave it alone
@@ -493,8 +497,8 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
       // now add the menu to list of "converted" menus
       HMENU hmenu = pMenu->GetSafeHmenu();
       ASSERT(hmenu);
-      MenuVectorIter iter = std::find(m_menuList.begin(), m_menuList.end(),
-                                      hmenu);
+      auto iter = std::find(m_menuList.begin(), m_menuList.end(),
+                            hmenu);
       if (iter == m_menuList.end())
         m_menuList.push_back(hmenu);
 
@@ -516,7 +520,7 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
       miinfo.dwItemData = NULL;               // item data is NULL
       miinfo.fMask |= MIIM_DATA;              // change it
       delete pmd;                             // and item data too
-      PMDVectorIter iter = std::find(m_pmdList.begin(), m_pmdList.end(), pmd);
+      auto iter = std::find(m_pmdList.begin(), m_pmdList.end(), pmd);
       if (iter != m_pmdList.end())
         m_pmdList.erase(iter);
 
@@ -542,7 +546,7 @@ LRESULT CCoolMenuManager::CMOnMenuChar(UINT nChar, UINT /* nFlags */, CMenu* pMe
 {
   ASSERT_VALID(pMenu);
 
-  UINT iCurrentItem = (UINT)-1; // guaranteed higher than any command ID
+  UINT iCurrentItem = static_cast<UINT>(-1); // guaranteed higher than any command ID
   CUIntArray arItemsMatched;    // items that match the character typed
 
   UINT nItem = pMenu->GetMenuItemCount();
@@ -552,7 +556,7 @@ LRESULT CCoolMenuManager::CMOnMenuChar(UINT nChar, UINT /* nFlags */, CMenu* pMe
     miinfo.fMask = MIIM_DATA | MIIM_TYPE | MIIM_STATE;
     pMenu->GetMenuItemInfo(i, &miinfo, TRUE);
 
-    CMenuItemData* pmd = (CMenuItemData*)miinfo.dwItemData;
+    auto pmd = reinterpret_cast<CMenuItemData*>(miinfo.dwItemData);
     if ((miinfo.fType & MFT_OWNERDRAW) && pmd && pmd->IsCMID()) {
       CString& text = pmd->text;
       int iAmpersand = text.Find(L'&');
@@ -593,7 +597,7 @@ LRESULT CCoolMenuManager::CMOnMenuChar(UINT nChar, UINT /* nFlags */, CMenu* pMe
 //
 void CCoolMenuManager::CMOnMenuSelect(UINT /* nItemID */, UINT nFlags, HMENU hSysMenu)
 {
-  if (hSysMenu == NULL && nFlags == 0xFFFF) {
+  if (hSysMenu == nullptr && nFlags == 0xFFFF) {
     // Windows has closed the menu: restore all menus to original state
     while (!m_menuList.empty()) {
       HMENU &hmenu = m_menuList.back();
@@ -669,7 +673,7 @@ void CCoolMenuManager::SetImageList(CPWToolBar *pwtoolbar)
   m_ImageList.Create(pil);
 
   CImageList *pdil = tbCtrl.GetDisabledImageList();
-  if (pdil != NULL) {
+  if (pdil != nullptr) {
     m_DisabledImageList.Create(pdil);
     m_bNoDIL = false;
   } else
