@@ -16,6 +16,7 @@
 #include "stdafx.h"
 
 #include "TBMStatic.h"
+#include "winutils.h" // for ResizeBitmap
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -26,17 +27,31 @@ void CTBMStatic::Init(const UINT nImageID)
 {
   // Save resource IDs (Static and required image)
   m_nID = GetDlgCtrlID();
+  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
+  CBitmap tmpBitmap;
+  BITMAP bm;
 
   // Load bitmap
-  VERIFY(m_Bitmap.Attach(::LoadImage(
+  VERIFY(tmpBitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
                   (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED))));
 
-  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
-  SetBitmapBackground(m_Bitmap, crCOLOR_3DFACE);
+  SetBitmapBackground(tmpBitmap, crCOLOR_3DFACE);
 
+  tmpBitmap.GetBitmap(&bm);
+
+
+  // Scale for DPI stuff
+// from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
+  int dpi = WinUtil::GetDPI(m_hWnd);
+  int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
+  int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
+
+  WinUtil::ResizeBitmap(tmpBitmap, m_Bitmap, dpiScaledWidth, dpiScaledHeight);
+  tmpBitmap.DeleteObject();
   SetBitmap((HBITMAP)m_Bitmap);
+
 }
 
 BEGIN_MESSAGE_MAP(CTBMStatic, CStatic)
@@ -56,7 +71,7 @@ void CTBMStatic::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour
   DIBSECTION ds;
   VERIFY(bm.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
 
-  RGBTRIPLE *pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
+  auto pixels = static_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
   ASSERT(pixels != NULL);
 
   const RGBTRIPLE newbkgrndColourRGB = {GetBValue(newbkgrndColour),
