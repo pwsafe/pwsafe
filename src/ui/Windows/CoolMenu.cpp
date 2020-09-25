@@ -49,8 +49,14 @@ CCoolMenuManager::CCoolMenuManager()
   FixMFCDotBitmap();
 
   // These are PWS specific.
-  m_szBitmap = CSize(16, 16);
-  m_szButton = CSize(16, 16) + CSize(CXBUTTONMARGIN << 1, CYBUTTONMARGIN << 1);
+  int bmpWidth = 16;
+  int bmpHeight = 16;
+  UINT dpi = WinUtil::GetDPI(m_hWnd);
+  bmpWidth = MulDiv(bmpWidth, dpi, 96);
+  bmpHeight = MulDiv(bmpHeight, dpi, 96);
+
+  m_szBitmap = CSize(bmpWidth, bmpHeight);
+  m_szButton = CSize(bmpWidth, bmpHeight) + CSize(CXBUTTONMARGIN << 1, CYBUTTONMARGIN << 1);
 }
 
 CCoolMenuManager::~CCoolMenuManager()
