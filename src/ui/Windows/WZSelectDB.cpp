@@ -20,6 +20,7 @@
 #include "PWFileDialog.h"
 #include "PKBaseDlg.h"
 #include "VirtualKeyboard/VKeyBoardDlg.h"
+#include "winutils.h"
 
 #include "core/core.h" // for IDSC_UNKNOWN_ERROR
 #include "core/Util.h"
@@ -268,6 +269,10 @@ BOOL CWZSelectDB::OnInitDialog()
     m_stc_warning.GetFont()->GetLogFont(&LogFont);
     LogFont.lfHeight = -14; // -14 stands for the size 14
     LogFont.lfWeight = FW_BOLD;
+
+    // Scale text for hi-dpi monitors:
+    UINT dpi = WinUtil::GetDPI(m_hWnd);
+    LogFont.lfHeight = MulDiv(LogFont.lfHeight, dpi, 96);
 
     m_WarningFont.CreateFontIndirect(&LogFont);
     m_stc_warning.SetFont(&m_WarningFont);
