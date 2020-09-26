@@ -260,7 +260,6 @@ UINT WinUtil::GetDPI(HWND hwnd) // wrapper for debugging
     iss >> retval;
 
   }
-  // retval = 192; // XXX debug - remove before flight
   return retval;
 }
 
@@ -281,4 +280,69 @@ void WinUtil::ResizeBitmap(CBitmap& bmp_src, CBitmap& bmp_dst, int dstW, int dst
   destDC.SelectObject(&bmp_dst);
 
   destDC.StretchBlt(0, 0, dstW, dstH, &srcDC, 0, 0, size.cx, size.cy, SRCCOPY);
+}
+
+void WinUtil::FixBitmapBackground(CBitmap& bm)
+{
+  // Change bitmap's {192,192,192} pixels
+  // to current flavor of the month default background
+
+  // Get how many pixels in the bitmap
+  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
+  BITMAP bmInfo;
+  int rc = bm.GetBitmap(&bmInfo);
+
+  if (rc == 0) {
+    ASSERT(0);
+    return;
+  }
+  const UINT numPixels(bmInfo.bmHeight * bmInfo.bmWidth);
+
+  // get a pointer to the pixels
+  DIBSECTION ds;
+  VERIFY(bm.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
+
+  RGBTRIPLE* pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
+  if (pixels == NULL) {
+    ASSERT(0);
+    return;
+  }
+
+  const RGBTRIPLE newbkgrndColourRGB = { GetBValue(crCOLOR_3DFACE),
+                                        GetGValue(crCOLOR_3DFACE),
+                                        GetRValue(crCOLOR_3DFACE) };
+
+  for (UINT i = 0; i < numPixels; ++i) {
+    if (pixels[i].rgbtBlue == 192 &&
+      pixels[i].rgbtGreen == 192 &&
+      pixels[i].rgbtRed == 192) {
+      pixels[i] = newbkgrndColourRGB;
+    }
+  }
+}
+
+BOOL WinUtil::LoadScaledBitmap(CBitmap &bitmap, UINT nID, bool fixBckgrnd, HWND hwnd)
+{
+  CBitmap tmpBitmap;
+  BITMAP bm;
+
+  BOOL retval = tmpBitmap.Attach(
+      ::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(nID), RT_BITMAP),
+      MAKEINTRESOURCE(nID), IMAGE_BITMAP, 0, 0,
+      (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+  if (retval == FALSE)
+    return retval;
+
+  if (fixBckgrnd) {
+    FixBitmapBackground(tmpBitmap);
+  }
+
+  UINT dpi = GetDPI(hwnd);
+  tmpBitmap.GetBitmap(&bm);
+  int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
+  int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
+
+  WinUtil::ResizeBitmap(tmpBitmap, bitmap, dpiScaledWidth, dpiScaledHeight);
+  tmpBitmap.DeleteObject();
+  return TRUE;
 }

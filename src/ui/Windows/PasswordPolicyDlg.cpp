@@ -9,7 +9,6 @@
 //
 
 #include "stdafx.h"
-#include "passwordsafe.h"
 #include "DboxMain.h"
 #include "PasswordPolicyDlg.h"
 #include "GeneralMsgBox.h"
@@ -20,6 +19,7 @@
 
 #include "resource.h"
 #include "resource3.h"  // String resources
+#include "winutils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -318,27 +318,17 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
       // Load bitmaps
       UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
         IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
-      m_bImageLoaded = m_CopyPswdBitmap.Attach(
-                    ::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
-                    MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                    (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+      m_bImageLoaded = WinUtil::LoadScaledBitmap(m_CopyPswdBitmap, nImageID, true, m_hWnd);
 
       ASSERT(m_bImageLoaded);
-      if (m_bImageLoaded) {
-        FixBitmapBackground(m_CopyPswdBitmap);
-      }
 
       nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
         IDB_COPYPASSWORD_NEW_D : IDB_COPYPASSWORD_CLASSIC_D;
 
-      m_bDisabledImageLoaded = m_DisabledCopyPswdBitmap.Attach(
-        ::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
-          MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-          (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+      m_bDisabledImageLoaded = WinUtil::LoadScaledBitmap(m_DisabledCopyPswdBitmap, nImageID, true, m_hWnd);
 
       ASSERT(m_bDisabledImageLoaded);
       if (m_bDisabledImageLoaded) {
-        FixBitmapBackground(m_DisabledCopyPswdBitmap);
         m_pCopyBtn->SetBitmap(m_DisabledCopyPswdBitmap);
       }
       break;

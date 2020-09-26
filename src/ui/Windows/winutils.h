@@ -23,6 +23,8 @@ namespace WinUtil {
   bool PerformConfigMigration();
   UINT GetDPI(HWND hwnd = nullptr); // wrapper for debugging
   void ResizeBitmap(CBitmap& bmp_src, CBitmap& bmp_dst, int dstW, int dstH);
+  void FixBitmapBackground(CBitmap& bm);
+  BOOL LoadScaledBitmap(CBitmap& bitmap, UINT nID, bool fixBckgrnd = true, HWND hwnd = nullptr);
 }
 #endif // __WINUTILS_H__
 
