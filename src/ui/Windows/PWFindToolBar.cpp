@@ -40,8 +40,6 @@
 * Also, the Case Sensitive bitmap must be the last bitmap in the arrays.
 */
 
-#define EDITCTRL_WIDTH 100    // width of Edit control for Search Text
-#define FINDRESULTS_WIDTH 400 // width of Edit control for Search Results
 
 const UINT CPWFindToolBar::m_FindToolBarIDs[] = {
   ID_TOOLBUTTON_CLOSEFIND,
@@ -259,6 +257,8 @@ BOOL CPWFindToolBar::PreTranslateMessage(MSG *pMsg)
 void CPWFindToolBar::Init(const int NumBits, int iWMSGID,
                           st_SaveAdvValues *pst_SADV)
 {
+  const int EDITCTRL_WIDTH = 100;    // unscaled width of Edit control for Search Text
+  const int FINDRESULTS_WIDTH = 400; // unscaled width of Edit control for Search Results
   ASSERT(pst_SADV != NULL);
   
   int i, j;
@@ -283,6 +283,9 @@ void CPWFindToolBar::Init(const int NumBits, int iWMSGID,
   int dpi = WinUtil::GetDPI(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
   int dpiScaledX = MulDiv(origX, dpi, 96);
   int dpiScaledY = MulDiv(origY, dpi, 96);
+
+  m_editCtrlWidth = MulDiv(EDITCTRL_WIDTH, dpi, 96);
+  m_findResultsWidth = MulDiv(FINDRESULTS_WIDTH, dpi, 96);
 
   int btnX = 24, btnY = 22; // original toolbar button dimensions
   int dpiScaledBtnX = MulDiv(btnX, dpi, 96);
@@ -462,12 +465,12 @@ void CPWFindToolBar::AddExtraControls()
   }
 
   // Convert that button to a separator
-  SetButtonInfo(index, ID_TOOLBUTTON_FINDEDITCTRL, TBBS_SEPARATOR, EDITCTRL_WIDTH);
+  SetButtonInfo(index, ID_TOOLBUTTON_FINDEDITCTRL, TBBS_SEPARATOR, m_editCtrlWidth);
 
   // Note: "ES_WANTRETURN | ES_MULTILINE".  This is to allow the return key to be
   // trapped by PreTranslateMessage and treated as if the Find button had been
   // pressed
-  rect = CRect(0, 0, EDITCTRL_WIDTH, iHeight);
+  rect = CRect(0, 0, m_editCtrlWidth, iHeight);
   VERIFY(m_edtFindText.Create(WS_CHILD | WS_VISIBLE |
                            ES_AUTOHSCROLL | ES_LEFT | ES_WANTRETURN | ES_MULTILINE,
                            CRect(rect.left + 2, rect.top, rect.right - 2, rect.bottom),
@@ -492,9 +495,9 @@ void CPWFindToolBar::AddExtraControls()
   }
 
   // Convert that button to a separator
-  SetButtonInfo(index, ID_TOOLBUTTON_FINDRESULTS, TBBS_SEPARATOR, FINDRESULTS_WIDTH);
+  SetButtonInfo(index, ID_TOOLBUTTON_FINDRESULTS, TBBS_SEPARATOR, m_findResultsWidth);
 
-  rect = CRect(0, 0, FINDRESULTS_WIDTH, iHeight);
+  rect = CRect(0, 0, m_findResultsWidth, iHeight);
   VERIFY(m_stcFindResults.Create(L"", WS_CHILD | WS_VISIBLE |
                               SS_LEFTNOWORDWRAP | SS_CENTERIMAGE,
                               CRect(rect.left + 2, rect.top, rect.right - 2, rect.bottom),
@@ -541,13 +544,13 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
 
     SetHeight(iBtnHeight + 4);  // Add border
     m_edtFindText.ChangeColour();
-    m_edtFindText.SetWindowPos(NULL, 0, 0, EDITCTRL_WIDTH, iBtnHeight,
+    m_edtFindText.SetWindowPos(NULL, 0, 0, m_editCtrlWidth, iBtnHeight,
                             SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
 
     m_edtFindText.SetSel(0, -1);  // Select all text
     m_edtFindText.Invalidate();
 
-    m_stcFindResults.SetWindowPos(NULL, 0, 0, FINDRESULTS_WIDTH, iBtnHeight,
+    m_stcFindResults.SetWindowPos(NULL, 0, 0, m_findResultsWidth, iBtnHeight,
                                SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
   }
 

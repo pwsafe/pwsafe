@@ -130,4 +130,6 @@ private:
   st_SaveAdvValues m_SaveFindValues;
   CSecString m_save_search_text;
   bool m_save_cs_search, m_bUseSavedFindValues;
+
+  int m_editCtrlWidth, m_findResultsWidth; // dynamically set per DPI
 };
