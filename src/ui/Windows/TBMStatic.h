@@ -31,8 +31,6 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  void SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour);
-
   UINT m_nID;
   CBitmap m_Bitmap;
 };
