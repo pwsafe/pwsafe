@@ -367,8 +367,8 @@ BOOL CWZSelectDB::OnInitDialog()
   m_pWZPSH->GetDlgItem(ID_WIZNEXT)->SetWindowText(cs_tmp);
 
   // Yubi-related initializations:
-  m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
-  m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);
+  VERIFY(WinUtil::LoadScaledBitmap(m_yubiLogo, IDB_YUBI_LOGO) == TRUE);
+  VERIFY(WinUtil::LoadScaledBitmap(m_yubiLogoDisabled, IDB_YUBI_LOGO_DIS) == TRUE);
 
   // Disable passphrase until database name filled in
   m_pctlPasskey->EnableWindow(TRUE);

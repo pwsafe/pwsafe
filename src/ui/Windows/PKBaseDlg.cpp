@@ -10,6 +10,7 @@
 
 #include "PKBaseDlg.h"
 #include "Fonts.h"
+#include "winutils.h"
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
 #include "resource.h"
@@ -21,6 +22,7 @@
 
 #include <iomanip>
 #include <sstream>
+
 
 using namespace std;
 
@@ -93,9 +95,9 @@ BOOL CPKBaseDlg::OnInitDialog(void)
 
   // Setup a timer to poll the key every 250 ms
   SetTimer(TIMER_YUBIKEYPOLL, 250, 0);
-
-  m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
-  m_yubiLogoDisabled.LoadBitmap(IDB_YUBI_LOGO_DIS);
+  
+  VERIFY(WinUtil::LoadScaledBitmap(m_yubiLogo, IDB_YUBI_LOGO) == TRUE);
+  VERIFY(WinUtil::LoadScaledBitmap(m_yubiLogoDisabled, IDB_YUBI_LOGO_DIS) == TRUE);
 
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
 
