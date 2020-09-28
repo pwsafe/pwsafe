@@ -1,5 +1,5 @@
-Password Safe 3.53 Release September 2020
-=========================================
+Password Safe 3.54pre Release September 2020
+============================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -12,8 +12,11 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 
 Bugs fixed in 3.54pre
 ---------------------
-* [SF1521](https://sourceforge.net/p/passwordsafe/bugs/1521) In Add/Edit entry's Policy tab, allow lenghts to be set when easy vision is selected.
+* [SF1523](https://sourceforge.net/p/passwordsafe/bugs/1523) PasswordSafe now displays correctly on high DPI monitors.
+* [SF1521](https://sourceforge.net/p/passwordsafe/bugs/1521) In Add/Edit entry's Policy tab, allow lengths to be set when easy vision is selected.
 
+Password Safe 3.53 Release September 2020
+=========================================
 Bugs Fixed in 3.53
 ------------------
 * [SF1518](https://sourceforge.net/p/passwordsafe/bugs/1518) Fixed rare crash after dragging item outside of PasswordSafe.
