@@ -12,6 +12,7 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 
 Bugs fixed in 3.54pre
 ---------------------
+* [SF1524](https://sourceforge.net/p/passwordsafe/bugs/1524) Added missing "Show Combination" checkbox to Export Dialogs.
 * [SF1523](https://sourceforge.net/p/passwordsafe/bugs/1523) PasswordSafe now displays correctly on high DPI monitors.
 * [SF1521](https://sourceforge.net/p/passwordsafe/bugs/1521) In Add/Edit entry's Policy tab, allow lengths to be set when easy vision is selected.
 

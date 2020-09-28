@@ -57,6 +57,7 @@ protected:
   afx_msg void OnPasskey2Setfocus();
   afx_msg void OnVerify2keySetfocus();
   afx_msg void OnYubikeyBtn();
+  afx_msg void OnShowCombination();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
@@ -73,6 +74,8 @@ private:
 
   bool ProcessPhrase(const StringX &filename, const StringX &passkey);
   bool m_bFileExistsUserAsked;
+  BOOL m_btnShowCombination;
+
 
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   bool m_bVKAvailable;
