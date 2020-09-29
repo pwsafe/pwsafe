@@ -564,80 +564,26 @@ void CPWToolBarX::SetupImageList(const GuiRecord *guiInfo,
   // See http://www.parashift.com/c++-faq/macro-for-ptr-to-memfn.html
 #define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember))
 
-    // Scale for DPI stuff
- // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
-  int dpi = WinUtil::GetDPI(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
-
   const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
 
-  CBitmap bmNormal, bmNormalScaled, bmDisabled, bmDisabledScaled;
-  BITMAP bm;
+  CBitmap bmNormal, bmDisabled;
 
   for (int i = 0; i < numBMs; i++) {
     UINT bmID = CALL_MEMBER_FN(guiInfo[i], GetBM)();
     if (bmID == 0)
       continue; // skip over separator
 
-    VERIFY(bmNormal.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(bmID), RT_BITMAP),
-                                       MAKEINTRESOURCE(bmID), IMAGE_BITMAP, 0, 0,
-                                       (LR_DEFAULTSIZE | LR_CREATEDIBSECTION))));
-    bmNormal.GetBitmap(&bm);
-    SetBitmapBackground(bmNormal, crCOLOR_3DFACE);
+    WinUtil::LoadScaledBitmap(bmNormal, bmID);
 
-    int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
-    int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
-
-    WinUtil::ResizeBitmap(bmNormal, bmNormalScaled, dpiScaledWidth, dpiScaledHeight);
+    m_ImageLists[nImageList].Add(&bmNormal, crCOLOR_3DFACE);
     bmNormal.DeleteObject();
-
-    m_ImageLists[nImageList].Add(&bmNormalScaled, crCOLOR_3DFACE);
-    bmNormalScaled.DeleteObject();
 
     if (nImageList != 0) {
       bmID = CALL_MEMBER_FN(guiInfo[i], GetDisBM)();
-      bmDisabled.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(bmID), RT_BITMAP),
-                                    MAKEINTRESOURCE(bmID), IMAGE_BITMAP, 0, 0,
-                                    (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
+      WinUtil::LoadScaledBitmap(bmDisabled, bmID);
 
-      bmDisabled.GetBitmap(&bm);
-      SetBitmapBackground(bmDisabled, crCOLOR_3DFACE);
-
-      dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
-      dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
-
-      WinUtil::ResizeBitmap(bmDisabled, bmDisabledScaled, dpiScaledWidth, dpiScaledHeight);
+      m_DisabledImageLists[nImageList - 1].Add(&bmDisabled, crCOLOR_3DFACE);
       bmDisabled.DeleteObject();
-
-      m_DisabledImageLists[nImageList - 1].Add(&bmDisabledScaled, crCOLOR_3DFACE);
-      bmDisabledScaled.DeleteObject();
-    }
-  }
-}
-
-void CPWToolBarX::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour)
-{
-  // Get how many pixels in the bitmap
-  BITMAP bmInfo;
-  bm.GetBitmap(&bmInfo);
-
-  const UINT numPixels(bmInfo.bmHeight * bmInfo.bmWidth);
-
-  // get a pointer to the pixels
-  DIBSECTION ds;
-  VERIFY(bm.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
-
-  RGBTRIPLE *pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
-  ASSERT(pixels != NULL);
-
-  const RGBTRIPLE newbkgrndColourRGB = {GetBValue(newbkgrndColour),
-    GetGValue(newbkgrndColour),
-    GetRValue(newbkgrndColour)};
-
-  for (UINT i = 0; i < numPixels; ++i) {
-    if (pixels[i].rgbtBlue  == 192 &&
-        pixels[i].rgbtGreen == 192 &&
-        pixels[i].rgbtRed   == 192) {
-      pixels[i] = newbkgrndColourRGB;
     }
   }
 }

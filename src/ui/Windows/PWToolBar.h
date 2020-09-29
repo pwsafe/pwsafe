@@ -35,7 +35,6 @@ public:
   int GetBrowseURLImageIndex() const {return m_iBrowseURL_BM_offset;}
   int GetSendEmailImageIndex() {return m_iSendEmail_BM_offset;}
   void MapControlIDtoImage(ID2ImageMap &IDtoImages);
-  void SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour);
   void RefreshImages();
 
 protected:
