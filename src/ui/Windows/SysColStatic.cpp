@@ -15,7 +15,6 @@ and was written by Pål K. Tønder
 
 #include "stdafx.h"
 #include "SysColStatic.h"
-#include "PasswordSafe.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -24,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CSysColStatic::CSysColStatic() :
-  m_nImageID(-1), m_hBmp(NULL)
+  m_nImageID(-1), m_hBmp(nullptr)
 {
 }
 
@@ -55,7 +54,7 @@ void CSysColStatic::ReloadBitmap(int nImageID)
   // those with higher colour information
   const int noOfCTableEntries = m_imt.GetMaxColorTableEntries();
   if (noOfCTableEntries > 0) {
-    RGBQUAD *ctable = new RGBQUAD[noOfCTableEntries]; 
+    auto ctable = new RGBQUAD[noOfCTableEntries]; 
     m_imt.GetColorTable(0, noOfCTableEntries, ctable);
 
     for (int ic = 0; ic < noOfCTableEntries; ic++) {
@@ -79,10 +78,10 @@ void CSysColStatic::ReloadBitmap(int nImageID)
     }
   }
 
-  HBITMAP hBmpOld = SetBitmap(HBITMAP(m_imt));
+  HBITMAP hBmpOld = SetBitmap(static_cast<HBITMAP>(m_imt));
   ::DeleteObject(hBmpOld);
   ::DeleteObject(m_hBmp);
-  m_hBmp = HBITMAP(m_imt);
+  m_hBmp = static_cast<HBITMAP>(m_imt);
 }
 
 BEGIN_MESSAGE_MAP(CSysColStatic, CStatic)

@@ -303,7 +303,7 @@ void WinUtil::FixBitmapBackground(CBitmap& bm)
   VERIFY(bm.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
 
   RGBTRIPLE* pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
-  if (pixels == NULL) {
+  if (pixels == nullptr) {
     ASSERT(0);
     return;
   }
