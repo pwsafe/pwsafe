@@ -986,7 +986,7 @@ void CWZSelectDB::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BY
     m_yubi_status.ShowWindow(SW_SHOW);
     break;
 
-  default:                // A non-recoverable error has occured
+  default:                // A non-recoverable error has occurred
     m_state &= ~KEYPRESENT;
     m_pending = false;
     m_yubi_timeout.ShowWindow(SW_HIDE);

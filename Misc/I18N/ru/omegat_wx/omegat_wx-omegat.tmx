@@ -8270,7 +8270,7 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Unexpected error occured during attachment export.</seg>
+        <seg>Unexpected error occurred during attachment export.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T124602Z" creationid="pm_kan" creationdate="20200823T124602Z">
         <seg>Ошибка при экспорте вложения.</seg>
@@ -8278,7 +8278,7 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Unexpected error occured during attachment import.</seg>
+        <seg>Unexpected error occurred during attachment import.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T124414Z" creationid="pm_kan" creationdate="20200823T124414Z">
         <seg>Ошибка при импорте вложения.</seg>

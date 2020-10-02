@@ -1357,7 +1357,7 @@ msgid "A dot cannot be used as the first character of the Group field."
 msgstr "Ein Punkt kan nicht als erstes Zeichen für eine Gruppe verwendet werden"
 
 #. Resource IDs: (5212)
-msgid "A fatal error occured: "
+msgid "A fatal error occurred: "
 msgstr "Fataler Fehler aufgetreten: "
 
 #. Resource IDs: (3363)

@@ -5735,7 +5735,7 @@ msgstr "Passwortrichtlinien verwalten"
 #~ msgid "A dot is invalid as the first character of the Group field."
 #~ msgstr "Ein Punkt ist als erstes Zeichen einer Gruppe nicht zulässig."
 
-#~ msgid "A fatal error occured: "
+#~ msgid "A fatal error occurred: "
 #~ msgstr "Fataler Fehler aufgetreten: "
 
 #~ msgid "A future date is not valid for this field"

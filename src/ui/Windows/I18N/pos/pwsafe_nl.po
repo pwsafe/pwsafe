@@ -1431,7 +1431,7 @@ msgid "A dot cannot be used as the first character of the Group field."
 msgstr "Een punt kan niet het eerste teken zijn in het Groepenveld."
 
 #. Resource IDs: (5212)
-msgid "A fatal error occured: "
+msgid "A fatal error occurred: "
 msgstr "Een fatale fout heeft zich voorgedaan: "
 
 #. Resource IDs: (3363)

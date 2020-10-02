@@ -201,7 +201,7 @@ void CPKBaseDlg::yubiProcessCompleted(YKLIB_RC yrc, unsigned short ts, const BYT
     YubiFailed(); // allow subclass to do something useful
     break;
 
-  default:                // A non-recoverable error has occured
+  default:                // A non-recoverable error has occurred
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_status.ShowWindow(SW_SHOW);
     // Generic error message

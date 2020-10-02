@@ -5391,7 +5391,7 @@ msgstr "YubiKey Konfiguráció"
 #~ msgid ">>"
 #~ msgstr ">>"
 
-#~ msgid "A fatal error occured: "
+#~ msgid "A fatal error occurred: "
 #~ msgstr "Végzetes hiba történt: "
 
 #~ msgid "A future date is not valid for this field"

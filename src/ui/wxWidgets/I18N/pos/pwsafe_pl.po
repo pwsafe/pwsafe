@@ -6103,7 +6103,7 @@ msgstr "Dostępne polityki haseł:"
 #~ msgid "A dot is invalid as the first character of the Group field."
 #~ msgstr "Kropka nie może być pierwszym znakiem w nazwie Grupy."
 
-#~ msgid "A fatal error occured: "
+#~ msgid "A fatal error occurred: "
 #~ msgstr "Wystąpił błąd krytyczny: "
 
 #~ msgid "A future date is not valid for this field"

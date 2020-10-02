@@ -5981,7 +5981,7 @@ msgstr "Se lösenords policyfilter"
 #~ msgid "A dot is invalid as the first character of the Group field."
 #~ msgstr "En punkt är inte giltig som första tecken i Grupp-fältet."
 
-#~ msgid "A fatal error occured: "
+#~ msgid "A fatal error occurred: "
 #~ msgstr "Ett fatalt fel uppstod:"
 
 #~ msgid "A future date is not valid for this field"

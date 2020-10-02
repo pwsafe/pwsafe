@@ -6049,7 +6049,7 @@ msgstr "Géger les stratégies de mot de passe"
 #~ msgstr ""
 #~ "Le point est invalide en tant que premier caractère du champ Groupe."
 
-#~ msgid "A fatal error occured: "
+#~ msgid "A fatal error occurred: "
 #~ msgstr "Une erreur fatale est arrivée: "
 
 #~ msgid "A future date is not valid for this field"

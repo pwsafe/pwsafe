@@ -596,7 +596,7 @@ void AboutDlg::CompareVersionData()
  * This function gets executed in the secondary thread context and will use the
  * blocking function <code>curl_easy_perform</code> to perform the download,
  * which returns when download was successful, it failed or the configured timeout
- * occured. After <code>curl_easy_perform</code> completed the worker thread sends
+ * occurred. After <code>curl_easy_perform</code> completed the worker thread sends
  * a notification event to its parent thread to inform it about the result. The
  * parent thread will decide on the received exit code how to proceed.
  *
@@ -674,7 +674,7 @@ size_t AboutDlg::WriteCallback(char *receivedData, size_t size, size_t bytes, vo
  *
  * This event handler is called by worker thread when file download is accomplished.
  * CURLE_OK is the only acceptable exit code from worker thread to continue with version check.
- * All other exit codes indicate some sort of occured problem.
+ * All other exit codes indicate some sort of occurred problem.
  *
  * @see method <code>AboutDlg::Entry()</code> regarding worker thread and its exit codes.
  */
