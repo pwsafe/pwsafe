@@ -6028,7 +6028,7 @@ msgstr "Zie wachtwoord beleids filters"
 #~ msgid "A dot is invalid as the first character of the Group field."
 #~ msgstr "Een stip is niet geldig als het eerste teken van een Groep veld."
 
-#~ msgid "A fatal error occured: "
+#~ msgid "A fatal error occurred: "
 #~ msgstr "Een fatale fout heeft zich voorgedaan:"
 
 #~ msgid "A future date is not valid for this field"

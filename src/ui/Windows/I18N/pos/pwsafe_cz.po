@@ -1318,7 +1318,7 @@ msgid "A dot cannot be used as the first character of the Group field."
 msgstr ""
 
 #. Resource IDs: (5212)
-msgid "A fatal error occured: "
+msgid "A fatal error occurred: "
 msgstr "Kritická chyba: "
 
 #. Resource IDs: (3363)

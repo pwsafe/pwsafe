@@ -867,7 +867,7 @@ msgid "An error occurred while reading the file."
 msgstr "Ошибка при чтении файла."
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1150
-msgid "Unexpected error occured during attachment import."
+msgid "Unexpected error occurred during attachment import."
 msgstr "Ошибка при импорте вложения."
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1163
@@ -907,7 +907,7 @@ msgid "An error occurred while writing the file."
 msgstr "Ошибка при записи файла."
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1239
-msgid "Unexpected error occured during attachment export."
+msgid "Unexpected error occurred during attachment export."
 msgstr "Ошибка при экспорте вложения."
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1420
@@ -6612,7 +6612,7 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "A dot cannot be used as the first character of the Group field."
 #~ msgstr "Имя группы не может начинаться с точки"
 
-#~ msgid "A fatal error occured: "
+#~ msgid "A fatal error occurred: "
 #~ msgstr "Произошла фатальная ошибка: "
 
 #~ msgid "A future date is not valid for this field"

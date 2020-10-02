@@ -1236,7 +1236,7 @@ void AddEditPropSheetDlg::OnExport(wxCommandEvent& WXUNUSED(event))
   default:
     wxMessageDialog(
       this,
-      _("Unexpected error occured during attachment export."), _("Export Attachment"),
+      _("Unexpected error occurred during attachment export."), _("Export Attachment"),
       wxICON_ERROR
     ).ShowModal();
     break;

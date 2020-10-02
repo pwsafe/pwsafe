@@ -5862,7 +5862,7 @@ msgstr "비밀번호 정책 필터 보기"
 #~ msgid "A dot is invalid as the first character of the Group field."
 #~ msgstr "점 기호는 그룹 필드의 첫번째 글자로 사용할 수 없습니다."
 
-#~ msgid "A fatal error occured: "
+#~ msgid "A fatal error occurred: "
 #~ msgstr "치명적인 오류가 발생했습니다: "
 
 #~ msgid "A future date is not valid for this field"

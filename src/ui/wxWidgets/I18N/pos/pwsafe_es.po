@@ -6021,7 +6021,7 @@ msgstr "Ver filtros de políticas de contraseñas"
 #~ msgid "A dot is invalid as the first character of the Group field."
 #~ msgstr "No se permite un punto al comienzo del nombre de Grupo."
 
-#~ msgid "A fatal error occured: "
+#~ msgid "A fatal error occurred: "
 #~ msgstr "Ha ocurrido un error grave: "
 
 #~ msgid "A future date is not valid for this field"

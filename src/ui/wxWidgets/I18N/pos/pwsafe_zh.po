@@ -5766,7 +5766,7 @@ msgstr "查看密码策略筛选"
 #~ msgid "A dot is invalid as the first character of the Group field."
 #~ msgstr "组字段首字符使用一个点无效！"
 
-#~ msgid "A fatal error occured: "
+#~ msgid "A fatal error occurred: "
 #~ msgstr "发生一个不可恢复的错误:"
 
 #~ msgid "A future date is not valid for this field"

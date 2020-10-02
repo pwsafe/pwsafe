@@ -5751,7 +5751,7 @@ msgstr "Se Adgangskode Politik filtrene"
 #~ msgid "A dot is invalid as the first character of the Group field."
 #~ msgstr "Et punktum er ugyldig som den første karakter i Gruppe feltet."
 
-#~ msgid "A fatal error occured: "
+#~ msgid "A fatal error occurred: "
 #~ msgstr "En fatal fejl opstod: "
 
 #~ msgid "A required resource was unavailable."
