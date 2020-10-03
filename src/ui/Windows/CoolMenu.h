@@ -58,7 +58,6 @@ public:
   DECLARE_DYNAMIC(CCoolMenuManager)
   CCoolMenuManager();
   ~CCoolMenuManager();
-  void Cleanup();
 
   // You can set these any time
   BOOL m_bShowButtons;      // use to control whether buttons are shown

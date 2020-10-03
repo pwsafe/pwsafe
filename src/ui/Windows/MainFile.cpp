@@ -4212,17 +4212,16 @@ void DboxMain::CleanUpAndExit()
   // Clear application data
   ClearAppData();
 
-  // Cleanup here - doesn't work in ~DboxMain or ~CCoolMenuManager
-  m_menuManager.Cleanup();
-
   // Clear out filters
   m_MapAllFilters.clear();
 
-  if (m_pTrayIcon != NULL) {
+  if (m_pTrayIcon != nullptr) {
     m_pTrayIcon->DestroyWindow();
     delete m_pTrayIcon;
     m_pTrayIcon = nullptr;
   }
+
+  m_inExit = true;
 
   CDialog::OnOK();
   PostQuitMessage(0);

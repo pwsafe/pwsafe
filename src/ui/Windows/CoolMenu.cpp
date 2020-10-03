@@ -61,27 +61,23 @@ CCoolMenuManager::CCoolMenuManager()
 
 CCoolMenuManager::~CCoolMenuManager()
 {
-}
-
-void CCoolMenuManager::Cleanup()
-{
-  // For some reason - the destructor doesn't get called!
   m_ImageList.DeleteImageList();
   if (!m_bNoDIL)
     m_DisabledImageList.DeleteImageList();
-  m_IDtoImages.clear(); 
+  m_IDtoImages.clear();
   m_fontMenu.DeleteObject();
 
   // Somehow, for Dialog applications, if the user exits using the accelerator, 
   // it doesn't tidy up by calling OnMenuSelect(0, 0xFFFF, NULL), so do it now
   // the hard way!
   while (!m_pmdList.empty()) {
-    CMenuItemData * &pmd = m_pmdList.back();
+    CMenuItemData*& pmd = m_pmdList.back();
     if (pmd && pmd->IsCMID())
       delete pmd;
     m_pmdList.pop_back();
   }
 }
+
 
 //////////////////
 // Virtual CSubclassWnd window proc. All messages come here before frame

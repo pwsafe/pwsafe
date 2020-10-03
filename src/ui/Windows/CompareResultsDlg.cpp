@@ -406,8 +406,6 @@ void CCompareResultsDlg::OnCancel()
   if (m_bDBNotificationState)
     GetMainDlg()->ResumeOnDBNotification();
 
-  m_menuManager.Cleanup();
-
   CPWResizeDialog::OnCancel();
 }
 
@@ -416,8 +414,6 @@ void CCompareResultsDlg::OnOK()
   // Reset Save Immediately if set originally
   if (m_bDBNotificationState)
     GetMainDlg()->ResumeOnDBNotification();
-
-  m_menuManager.Cleanup();
 
   CPWResizeDialog::OnOK();
 }
