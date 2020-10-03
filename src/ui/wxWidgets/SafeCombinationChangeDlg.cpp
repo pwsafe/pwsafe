@@ -144,11 +144,11 @@ void SafeCombinationChangeDlg::CreateControls()
 ////@begin SafeCombinationChangeDlg content construction
   SafeCombinationChangeDlg* itemDialog1 = this;
 
-  wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
-  itemDialog1->SetSizer(itemBoxSizer2);
+  wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
+  itemDialog1->SetSizer(mainSizer);
 
   wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("Please enter the current combination, followed by a new combination.\nType the new combination once again to confirm it."), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 5);
+  mainSizer->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 5);
 
 #ifndef NO_YUBI
   enum { DLGITEM_COLS = 3 };
@@ -158,7 +158,7 @@ void SafeCombinationChangeDlg::CreateControls()
 
   wxFlexGridSizer* itemFlexGridSizer4 = new wxFlexGridSizer(DLGITEM_COLS, 0, 0);
   itemFlexGridSizer4->AddGrowableCol(1);
-  itemBoxSizer2->Add(itemFlexGridSizer4, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  mainSizer->Add(itemFlexGridSizer4, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
   wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Old safe combination:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -188,16 +188,32 @@ void SafeCombinationChangeDlg::CreateControls()
   m_confirmEntry = new SafeCombinationCtrl( itemDialog1, ID_CONFIRM, &m_confirm, wxDefaultPosition, wxDefaultSize );
   itemFlexGridSizer4->Add(m_confirmEntry, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
-  itemFlexGridSizer4->Add(10, 10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+#ifndef NO_YUBI
+  itemFlexGridSizer4->AddStretchSpacer(0);
+#endif
+
+  itemFlexGridSizer4->AddStretchSpacer(0);
+  auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
+  showCombinationCheckBox->SetValue(false);
+  showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {
+    m_oldPasswdEntry->SecureTextfield(!event.IsChecked());
+    m_newPasswdEntry->SecureTextfield(!event.IsChecked());
+    m_confirmEntry->SecureTextfield(!event.IsChecked());
+  });
+  itemFlexGridSizer4->Add(showCombinationCheckBox, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+
+#ifndef NO_YUBI
+  itemFlexGridSizer4->AddStretchSpacer(0);
+#endif
 
 #ifndef NO_YUBI
   m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer2->Add(m_yubiStatusCtrl, 0, wxEXPAND|wxALL, 5);
+  mainSizer->Add(m_yubiStatusCtrl, 0, wxEXPAND|wxALL, 5);
 #endif
 
   wxStdDialogButtonSizer* itemStdDialogButtonSizer15 = new wxStdDialogButtonSizer;
 
-  itemBoxSizer2->Add(itemStdDialogButtonSizer15, 0, wxEXPAND|wxALL, 5);
+  mainSizer->Add(itemStdDialogButtonSizer15, 0, wxEXPAND|wxALL, 5);
   wxButton* itemButton16 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
   itemButton16->SetDefault();
   itemStdDialogButtonSizer15->AddButton(itemButton16);
