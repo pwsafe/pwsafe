@@ -1,5 +1,8 @@
 #!/bin/bash -e
-xdg-desktop-menu uninstall --mode system pwsafe.desktop
-xdg-icon-resource uninstall --size 48 --mode system \
-                  pwsafe.png
+
+if [[ -d "/usr/share/desktop-directories" || -d "/usr/local/share/desktop-directories" ]]; then
+    xdg-desktop-menu uninstall --mode system pwsafe.desktop
+    xdg-icon-resource uninstall --size 48 --mode system \
+                    pwsafe.png
+fi
 exit 0
