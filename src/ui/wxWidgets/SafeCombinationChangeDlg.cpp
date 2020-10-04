@@ -164,6 +164,7 @@ void SafeCombinationChangeDlg::CreateControls()
   itemFlexGridSizer4->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_oldPasswdEntry = new SafeCombinationCtrl( itemDialog1, ID_OLDPASSWD, &m_oldpasswd, wxDefaultPosition, wxDefaultSize );
+  m_oldPasswdEntry->SetFocus();
   itemFlexGridSizer4->Add(m_oldPasswdEntry, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
 #ifndef NO_YUBI

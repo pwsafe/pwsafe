@@ -170,6 +170,7 @@ void SafeCombinationPromptDlg::CreateControls()
   flexGridSizer->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_scctrl = new SafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxDefaultSize );
+  m_scctrl->SetFocus();
   flexGridSizer->Add(m_scctrl, 1, wxALL|wxEXPAND, 5);
 
   flexGridSizer->AddStretchSpacer(0);

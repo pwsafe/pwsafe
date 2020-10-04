@@ -71,6 +71,7 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(
 
   auto safeCombinationStaticText = new wxStaticText(this, wxID_ANY, _("Safe Combination:"), wxDefaultPosition, wxDefaultSize, 0);
   m_combinationEntry = new SafeCombinationCtrl(this, wxID_ANY, &passKey);
+  m_combinationEntry->SetFocus();
   auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
   showCombinationCheckBox->SetValue(false);
   showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_combinationEntry->SecureTextfield(!event.IsChecked());});
@@ -118,11 +119,26 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(
   mainSizer->Add(new wxStaticLine(this), 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
   mainSizer->AddSpacer(RowSeparation);
 
-  wxStdDialogButtonSizer* buttons = CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP);
+  auto stdDialogButtonSizer = new wxStdDialogButtonSizer;
+
+  auto okButton = new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
+  okButton->SetDefault();
+  stdDialogButtonSizer->AddButton(okButton);
+
+  auto cancelButton = new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+  stdDialogButtonSizer->AddButton(cancelButton);
+
+  auto helpButton = new wxButton(this, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0);
+  stdDialogButtonSizer->AddButton(helpButton);
+
+  stdDialogButtonSizer->Realize();
+
   //This might not be a very wise thing to do.  We are only supposed to add certain
   //pre-defined button-ids to StdDlgBtnSizer
-  buttons->Add(new wxButton(this, ID_ADVANCED, _("Advanced...")), wxSizerFlags().Border(wxLEFT|wxRIGHT));
-  mainSizer->Add(buttons, 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
+  auto advancedButton = new wxButton(this, ID_ADVANCED, _("&Advanced..."), wxDefaultPosition, wxDefaultSize, 0);
+  stdDialogButtonSizer->Add(advancedButton, wxSizerFlags().Border(wxLEFT|wxRIGHT));
+
+  mainSizer->Add(stdDialogButtonSizer, 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
 
   SetSizerAndFit(mainSizer);
 #ifndef NO_YUBI

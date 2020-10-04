@@ -186,3 +186,8 @@ void SafeCombinationCtrl::SecureTextfield(bool secured)
     }
   }
 }
+
+void SafeCombinationCtrl::SetFocus() const
+{
+  m_textCtrl->SetFocus();
+}
