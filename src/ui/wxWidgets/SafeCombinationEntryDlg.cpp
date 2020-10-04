@@ -208,6 +208,7 @@ void SafeCombinationEntryDlg::CreateControls()
   itemBoxSizer4->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL, 3);
 
   m_combinationEntry = new SafeCombinationCtrl( itemDialog1, ID_COMBINATION, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  m_combinationEntry->SetFocus();
   itemBoxSizer4->Add(m_combinationEntry, 0, wxEXPAND|wxRIGHT|wxTOP|wxBOTTOM, 5);
 
   auto *itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
@@ -241,11 +242,11 @@ void SafeCombinationEntryDlg::CreateControls()
   auto *itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
 
   itemBoxSizer4->Add(itemStdDialogButtonSizer21, 0, wxEXPAND|wxALL, 5);
-  wxButton* itemButton22 = new wxButton( itemDialog1, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxButton* itemButton22 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
   itemButton22->SetDefault();
   itemStdDialogButtonSizer21->AddButton(itemButton22);
 
-  wxButton* itemButton23 = new wxButton( itemDialog1, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxButton* itemButton23 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStdDialogButtonSizer21->AddButton(itemButton23);
 
   wxButton* itemButton24 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
