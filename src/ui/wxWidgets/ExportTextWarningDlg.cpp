@@ -75,11 +75,11 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(
   showCombinationCheckBox->SetValue(false);
   showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_combinationEntry->SecureTextfield(!event.IsChecked());});
 
-  flexGridSizer->Add(safeCombinationStaticText, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL        , 5);
-  flexGridSizer->Add(m_combinationEntry       , 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
+  flexGridSizer->Add(safeCombinationStaticText, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  flexGridSizer->Add(m_combinationEntry       , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
   flexGridSizer->AddStretchSpacer(); // 1st column of wxFlexGridSizer
-  flexGridSizer->Add(showCombinationCheckBox, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
+  flexGridSizer->Add(showCombinationCheckBox, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
 #ifndef NO_YUBI
   auto yubiSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -122,7 +122,7 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(
   //This might not be a very wise thing to do.  We are only supposed to add certain
   //pre-defined button-ids to StdDlgBtnSizer
   buttons->Add(new wxButton(this, ID_ADVANCED, _("Advanced...")), wxSizerFlags().Border(wxLEFT|wxRIGHT));
-  mainSizer->Add(buttons, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
+  mainSizer->Add(buttons, 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
 
   SetSizerAndFit(mainSizer);
 #ifndef NO_YUBI
