@@ -2677,6 +2677,7 @@ void CPWTreeCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
         COLORREF cf;
         CFont *uFont = GetFontBasedOnStatus(hItem, pci, cf);
         if (uFont != nullptr && pDC != nullptr) {
+          pDC = CDC::FromHandle(pTVCD->nmcd.hdc);
           bchanged_item_font = true;
           pDC->SelectObject(uFont);
           // Set text color only when current node isn't selected
