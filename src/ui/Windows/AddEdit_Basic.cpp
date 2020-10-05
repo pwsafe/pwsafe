@@ -21,7 +21,6 @@
 
 #include "core/PWSprefs.h"
 #include "core/PWSAuxParse.h"
-#include "core/core.h"
 #include "core/command.h"
 
 #include "os/file.h"
@@ -73,7 +72,7 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   }
 
   // Clear external editor events
-  ghEvents[0] = ghEvents[1] = NULL;
+  ghEvents[0] = ghEvents[1] = nullptr;
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -139,12 +138,12 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange *pDX)
   m_ex_password.DoDDX(pDX, m_password);
   m_ex_password2.DoDDX(pDX, m_password2);
 
-  DDX_CBString(pDX, IDC_GROUP, (CString&)M_group());
-  DDX_Text(pDX, IDC_TITLE, (CString&)M_title());
-  DDX_Text(pDX, IDC_USERNAME, (CString&)M_username());
-  DDX_Text(pDX, IDC_URL, (CString&)M_URL());
-  DDX_Text(pDX, IDC_EMAIL, (CString&)M_email());
-  DDX_Text(pDX, IDC_NOTES, (CString&)M_notes());
+  DDX_CBString(pDX, IDC_GROUP, static_cast<CString&>(M_group()));
+  DDX_Text(pDX, IDC_TITLE, static_cast<CString&>(M_title()));
+  DDX_Text(pDX, IDC_USERNAME, static_cast<CString&>(M_username()));
+  DDX_Text(pDX, IDC_URL, static_cast<CString&>(M_URL()));
+  DDX_Text(pDX, IDC_EMAIL, static_cast<CString&>(M_email()));
+  DDX_Text(pDX, IDC_NOTES, static_cast<CString&>(M_notes()));
 
   DDX_Control(pDX, IDC_GROUP, m_ex_group);
   DDX_Control(pDX, IDC_TITLE, m_ex_title);
@@ -336,7 +335,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   std::vector<std::wstring> vGroups;
   GetMainDlg()->GetAllGroups(vGroups);
 
-  for (std::vector<std::wstring>::iterator iter = vGroups.begin();
+  for (auto iter = vGroups.begin();
        iter != vGroups.end(); ++iter) {
     m_ex_group.AddString(iter->c_str());
   }
@@ -436,14 +435,14 @@ BOOL CAddEdit_Basic::OnInitDialog()
   ASSERT(brc);
   
   if (brc) {
-    CButton *pBtn = (CButton *)GetDlgItem(IDC_COPYPASSWORD);
-    ASSERT(pBtn != NULL);
-    if (pBtn != NULL)
+    auto pBtn = static_cast<CButton*>(GetDlgItem(IDC_COPYPASSWORD));
+    ASSERT(pBtn != nullptr);
+    if (pBtn != nullptr)
       pBtn->SetBitmap(m_CopyPswdBitmap);
   }
 
   // Set initial Word Wrap
-  m_ex_notes.SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
+  m_ex_notes.SetTargetDevice(nullptr, m_bWordWrap ? 0 : 1);
   m_ex_notes.UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
 
   UpdateData(FALSE);
@@ -492,21 +491,21 @@ HBRUSH CAddEdit_Basic::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
         return hbr;
     }
 
-    int iFlashing = ((CStaticExtn *)pWnd)->IsFlashing();
-    BOOL bHighlight = ((CStaticExtn *)pWnd)->IsHighlighted();
-    BOOL bMouseInWindow = ((CStaticExtn *)pWnd)->IsMouseInWindow();
+    int iFlashing = static_cast<CStaticExtn*>(pWnd)->IsFlashing();
+    BOOL bHighlight = static_cast<CStaticExtn*>(pWnd)->IsHighlighted();
+    BOOL bMouseInWindow = static_cast<CStaticExtn*>(pWnd)->IsMouseInWindow();
 
     if (iFlashing != 0) {
       pDC->SetBkMode(iFlashing == 1 || (iFlashing && bHighlight && bMouseInWindow) ?
                      OPAQUE : TRANSPARENT);
-      COLORREF cfFlashColour = ((CStaticExtn *)pWnd)->GetFlashColour();
+      COLORREF cfFlashColour = static_cast<CStaticExtn*>(pWnd)->GetFlashColour();
       *pcfOld = pDC->SetBkColor(iFlashing == 1 ? cfFlashColour : *pcfOld);
     } else if (bHighlight) {
       pDC->SetBkMode(bMouseInWindow ? OPAQUE : TRANSPARENT);
-      COLORREF cfHighlightColour = ((CStaticExtn *)pWnd)->GetHighlightColour();
+      COLORREF cfHighlightColour = static_cast<CStaticExtn*>(pWnd)->GetHighlightColour();
       *pcfOld = pDC->SetBkColor(bMouseInWindow ? cfHighlightColour : *pcfOld);
-    } else if (((CStaticExtn *)pWnd)->GetColourState()) {
-      COLORREF cfUser = ((CStaticExtn *)pWnd)->GetUserColour();
+    } else if (static_cast<CStaticExtn*>(pWnd)->GetColourState()) {
+      COLORREF cfUser = static_cast<CStaticExtn*>(pWnd)->GetUserColour();
       pDC->SetTextColor(cfUser);
     }
   }
@@ -569,6 +568,12 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
       if (OnApply() == FALSE)
         return 1L;
       break;
+    case PP_UPDATE_PWPOLICY:
+    case PP_UPDATE_TIMES:
+      break;
+    default:
+      ASSERT(0);
+      break;
   }
   return 0L;
 }
@@ -592,6 +597,8 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG *pMsg)
     case WM_LBUTTONUP:
     case WM_RBUTTONUP:
       return TRUE;
+    default:
+      break;
     }
   }
 
@@ -613,6 +620,8 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG *pMsg)
       // Zoom in/out
       OnZoomNotes(0, pMsg->wParam == VK_ADD ? 1 : -1);
       return TRUE;
+    default:
+      break;
     }
   }
 
@@ -632,7 +641,7 @@ BOOL CAddEdit_Basic::OnApply()
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return FALSE; //CAddEdit_PropertyPage::OnApply();
 
-  CWnd *pFocus(NULL);
+  CWnd *pFocus(nullptr);
   CGeneralMsgBox gmb;
   ItemListIter listindex;
   bool bPswdIsInAliasFormat, b_msg_issued;
@@ -737,7 +746,7 @@ BOOL CAddEdit_Basic::OnApply()
       cs_errmsg.Format(M_original_entrytype() == CItemData::ET_ALIASBASE ?
                        IDS_CHANGINGBASEENTRY1 : IDS_CHANGINGBASEENTRY2,
                        static_cast<LPCWSTR>(cs_alias));
-      int rc = (int)gmb.MessageBox(cs_errmsg, cs_title, MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
+      int rc = static_cast<int>(gmb.MessageBox(cs_errmsg, cs_title, MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2));
 
       if (rc == IDNO) {
         UpdateData(FALSE);
@@ -763,14 +772,14 @@ BOOL CAddEdit_Basic::OnApply()
     if (M_original_base_uuid() != pws_os::CUUID::NullUUID() &&
         M_original_base_uuid() != M_base_uuid()) {
       // User has changed the alias to point to a different base entry
-      CItemData *pbci(NULL);
+      CItemData *pbci(nullptr);
       ItemListIter iter = M_pcore()->Find(M_base_uuid());
       if (iter != M_pcore()->GetEntryEndIter())
         pbci = &iter->second;
 
       ASSERT(pbci != NULL);
 
-      if (pbci != NULL) {
+      if (pbci != nullptr) {
         csBase = L"[" +
           pbci->GetGroup() + L":" +
           pbci->GetTitle() + L":" +
@@ -786,13 +795,13 @@ BOOL CAddEdit_Basic::OnApply()
     if (M_original_base_uuid() == pws_os::CUUID::NullUUID() &&
         M_original_base_uuid() != M_base_uuid()) {
       // User has changed the normal entry into an alias
-      CItemData *pbci(NULL);
-      ItemListIter iter = M_pcore()->Find(M_base_uuid());
+      CItemData *pbci(nullptr);
+      auto iter = M_pcore()->Find(M_base_uuid());
       if (iter != M_pcore()->GetEntryEndIter())
         pbci = &iter->second;
 
       ASSERT(pbci != NULL);
-      if (pbci != NULL) {
+      if (pbci != nullptr) {
         csBase = L"[" +
           pbci->GetGroup() + L":" +
           pbci->GetTitle() + L":" +
@@ -812,10 +821,10 @@ BOOL CAddEdit_Basic::OnApply()
 
 error:
   // Are we the current page, if not activate this page
-  if (m_ae_psh->GetActivePage() != (CAddEdit_PropertyPage *)this)
+  if (m_ae_psh->GetActivePage() != static_cast<CAddEdit_PropertyPage*>(this))
     m_ae_psh->SetActivePage(this);
 
-  if (pFocus != NULL)
+  if (pFocus != nullptr)
     pFocus->SetFocus();
 
   if (pFocus == &m_ex_title)
@@ -1030,7 +1039,7 @@ void CAddEdit_Basic::OnGeneratePassword()
       policy.symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
     } else {
       // This entry has its own list of symbols
-      policy.symbols = LPCWSTR(M_symbols());
+      policy.symbols = static_cast<LPCWSTR>(M_symbols());
     }
     GetMainDlg()->MakeRandomPassword(passwd, policy);
   }
@@ -1159,17 +1168,17 @@ void CAddEdit_Basic::SelectAllNotes()
 {
   // Here from PreTranslateMessage iff User pressed Ctrl+A
   // in Notes control
-  ((CEdit *)GetDlgItem(IDC_NOTES))->SetSel(0, -1, TRUE);
+  static_cast<CEdit*>(GetDlgItem(IDC_NOTES))->SetSel(0, -1, TRUE);
 }
 
 LRESULT CAddEdit_Basic::OnWordWrap(WPARAM, LPARAM)
 {
   m_bWordWrap = !m_bWordWrap;
-  m_ex_notes.SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
+  m_ex_notes.SetTargetDevice(nullptr, m_bWordWrap ? 0 : 1);
 
   m_ex_notes.UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
 
-  // No idea why this is necessary but fixes the issue of no horizontaol
+  // No idea why this is necessary but fixes the issue of no horizontal
   // scroll bar active after turning off Word Wrap if the preferences
   // are Word Wrap and Hidden Notes. Without this "fix", user would have to
   // ensure that the Notes field looses focus by clicking on another field.
@@ -1255,7 +1264,7 @@ LRESULT CAddEdit_Basic::OnCallExternalEditor(WPARAM, LPARAM)
   m_bUsingNotesExternalEditor = true;
 
   // Clear events
-  ghEvents[0] = ghEvents[1] = NULL;
+  ghEvents[0] = ghEvents[1] = nullptr;
 
   m_thread = CExtThread::BeginThread(ExternalEditorThread, this);
   return 0L;
@@ -1263,7 +1272,7 @@ LRESULT CAddEdit_Basic::OnCallExternalEditor(WPARAM, LPARAM)
 
 UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 {
-  CAddEdit_Basic *self = (CAddEdit_Basic *)me;
+  auto*self = static_cast<CAddEdit_Basic*>(me);
 
   wchar_t szExecName[MAX_PATH + 1];
   wchar_t lpPathBuffer[4096];
@@ -1277,7 +1286,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
     DWORD dwSize(MAX_PATH);
     HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", L"Open",
                                       szExecName, &dwSize);
-    if (int(stat) != S_OK) {
+    if (static_cast<int>(stat) != S_OK) {
 #ifdef _DEBUG
       CGeneralMsgBox gmb;
       gmb.AfxMessageBox(L"oops");
@@ -1327,7 +1336,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   FILE *fd;
 
-  if ((fd = pws_os::FOpen(self->m_szTempName, L"w+b")) == NULL) {
+  if ((fd = pws_os::FOpen(self->m_szTempName, L"w+b")) == nullptr) {
     self->SendMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 20, 0);
     self->ResetHiddenNotes();
     return 20;
@@ -1338,7 +1347,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   putwc(iBOM, fd);
 
   // Write out text
-  fwrite(reinterpret_cast<const void *>((LPCWSTR)self->M_notes()), sizeof(BYTE),
+  fwrite(reinterpret_cast<const void *>(static_cast<LPCWSTR>(self->M_notes())), sizeof(BYTE),
              self->M_notes().GetLength() * sizeof(wchar_t), fd);
 
   // Close file before invoking editor
@@ -1394,7 +1403,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   // Wait until child process exits or we cancel it
   ghEvents[0] = pi.hProcess;                            // Thread ended
-  ghEvents[1] = CreateEvent(NULL, FALSE, FALSE, NULL);  // We cancelled
+  ghEvents[1] = CreateEvent(nullptr, FALSE, FALSE, nullptr);  // We cancelled
 
   // Now wait for editor to end or user to cancel
   DWORD dwEvent = WaitForMultipleObjects(2, ghEvents, FALSE, INFINITE);
@@ -1440,7 +1449,7 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
   // Now get what the user saved in this file and put it back into Notes field
   FILE *fd;
 
-  if ((fd = pws_os::FOpen(m_szTempName, L"r+b")) == NULL) {
+  if ((fd = pws_os::FOpen(m_szTempName, L"r+b")) == nullptr) {
     goto error_exit;
   }
 

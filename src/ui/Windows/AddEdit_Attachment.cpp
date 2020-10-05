@@ -9,9 +9,7 @@
 //
 
 #include "stdafx.h"
-#include "PasswordSafe.h"
 
-#include "ThisMfcApp.h"    // For Help
 #include "DboxMain.h"
 
 #include "AddEdit_Attachment.h"
@@ -25,11 +23,9 @@
 #include "os/file.h"
 #include "os/debug.h"
 
-#include <sys/types.h>
 #include <sys/stat.h>
 
 #include <Shellapi.h>
-#include <algorithm>
 
 /////////////////////////////////////////////////////////////////////////////
 // CAddEdit_Attachment property page
@@ -98,8 +94,8 @@ BOOL CAddEdit_Attachment::OnInitDialog()
   CAddEdit_PropertyPage::OnInitDialog();
 
   // Get Add/Edit font
-  Fonts *pFonts = Fonts::GetInstance();
-  CFont *pFont = pFonts->GetAddEditFont();
+  auto pFonts = Fonts::GetInstance();
+  auto pFont = pFonts->GetAddEditFont();
 
   // Change font size of the attachment name and file name fields
   GetDlgItem(IDC_ATT_NAME)->SetFont(pFont);
@@ -167,6 +163,9 @@ LRESULT CAddEdit_Attachment::OnQuerySiblings(WPARAM wParam, LPARAM)
       if (OnApply() == FALSE)
         return 1L;
       break;
+    default:
+      ASSERT(0);
+      break;
   }
   return 0L;
 }
@@ -211,7 +210,7 @@ LRESULT CAddEdit_Attachment::OnDroppedFile(WPARAM wParam, LPARAM lParam)
   UNREFERENCED_PARAMETER(lParam);
 #endif
 
-  wchar_t *sxFileName = reinterpret_cast<wchar_t *>(wParam);
+  auto sxFileName = reinterpret_cast<wchar_t *>(wParam);
   m_AttFileName = sxFileName;
 
   // Update dialog with filename so that Import uses it
@@ -234,7 +233,7 @@ void CAddEdit_Attachment::OnAttImport()
     // Ask user for file name - annoyingly - returned string is all in upper case!
     // Remove last separator
     const CString cs_allimages(MAKEINTRESOURCE(IDS_ALL_IMAGE_FILES));
-    const DWORD dwExclude = CImage::excludeOther;
+    const auto dwExclude = CImage::excludeOther;
     hr = m_AttImage.GetImporterFilterString(filter, aguidFileTypes, cs_allimages, dwExclude);
     ASSERT(hr >= 0);
 
@@ -250,7 +249,7 @@ void CAddEdit_Attachment::OnAttImport()
     const CString cs_allfiles(MAKEINTRESOURCE(IDS_FDF_ALL));
     filter.Append(cs_allfiles);
 
-    CFileDialog fileDlg(TRUE, NULL, NULL, OFN_FILEMUSTEXIST, filter, this);
+    CFileDialog fileDlg(TRUE, nullptr, nullptr, OFN_FILEMUSTEXIST, filter, this);
     if (fileDlg.DoModal() == IDCANCEL)
       return;
 
@@ -287,7 +286,7 @@ void CAddEdit_Attachment::OnAttExport()
   std::wstring soutputfile;
 
   wchar_t fname[_MAX_FNAME], ext[_MAX_EXT], new_ext[_MAX_EXT];
-  _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
+  _wsplitpath_s(m_AttFileName, nullptr, 0, nullptr, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
 
   // Default suffix should be the same as the original file (skip over leading ".")
   CString cs_ext = ext[0] == '.' ? ext + 1 : ext;
@@ -308,10 +307,10 @@ void CAddEdit_Attachment::OnAttExport()
       filter.MakeLower();
 
       // Get index of current extension in filter string - note in pairs so need to skip every other one
-      int cPos = 0;
-      int iIndex = 1;  // Unusually, the filter index starts at 1 not 0
+      auto cPos = 0;
+      auto iIndex = 1;  // Unusually, the filter index starts at 1 not 0
       CString cs_ext_nocase(ext); cs_ext_nocase.MakeLower();
-      CString cs_filter_nocase(filter);
+      auto cs_filter_nocase(filter);
       CString cs_token;
       cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Descriptions
       cs_token = cs_filter_nocase.Tokenize(L"|", cPos);  // Extensions
@@ -332,12 +331,12 @@ void CAddEdit_Attachment::OnAttExport()
         soutputfile = fileDlg.GetPathName();
 
         // Get new extension
-        _wsplitpath_s(m_AttFileName, NULL, 0, NULL, 0, NULL, 0, new_ext, _MAX_EXT);
+        _wsplitpath_s(m_AttFileName, nullptr, 0, nullptr, 0, nullptr, 0, new_ext, _MAX_EXT);
         
         // If new extension is the same as old, export the file rather than use
         // CImage to save it (which may well change its size)
         if (_wcsicmp(ext, new_ext) == 0) {
-          int rc = M_attachment().Export(soutputfile);
+          auto rc = M_attachment().Export(soutputfile);
           hr = (rc == PWScore::SUCCESS) ? S_OK : E_FAIL;
         } else {
           hr = m_AttImage.Save(soutputfile.c_str());
@@ -358,8 +357,8 @@ void CAddEdit_Attachment::OnAttExport()
     case ATTACHMENT_NOT_IMAGE:
     {
       // Set filter "??? files (*.???)|*.???||"
-      SHFILEINFO sfi = {0};
-      DWORD_PTR dw = SHGetFileInfo(m_AttFileName, 0, &sfi, sizeof(sfi), SHGFI_TYPENAME);
+      SHFILEINFO sfi = {nullptr};
+      auto dw = SHGetFileInfo(m_AttFileName, 0, &sfi, sizeof(sfi), SHGFI_TYPENAME);
       if (dw != 0) {
         filter.Format(IDS_FDF_FILES, static_cast<LPCWSTR>(sfi.szTypeName), ext, ext);
       } else {
@@ -391,8 +390,8 @@ void CAddEdit_Attachment::OnAttExport()
   M_attachment().GetFileCTime(ctime);
   M_attachment().GetFileMTime(mtime);
   M_attachment().GetFileATime(atime);
-  
-  bool bUpdateFileTimes = pws_os::SetFileTimes(soutputfile, ctime, mtime, atime);
+
+  auto bUpdateFileTimes = pws_os::SetFileTimes(soutputfile, ctime, mtime, atime);
   if (!bUpdateFileTimes) {
     pws_os::Trace(L"Unable to open newly exported file to set file times.");
   }
@@ -422,8 +421,8 @@ void CAddEdit_Attachment::OnAttRemove()
 
  void CAddEdit_Attachment::UpdateControls()
  {
-   bool bHasAttachment = M_attachment().HasContent();
-   bool bIsRO = (M_uicaller() == IDS_VIEWENTRY ||
+   auto bHasAttachment = M_attachment().HasContent();
+   auto bIsRO = (M_uicaller() == IDS_VIEWENTRY ||
                  (M_uicaller() == IDS_EDITENTRY && M_protected() != 0));
 
    ((CEdit *)GetDlgItem(IDC_ATT_NAME))->SetReadOnly(bIsRO);
@@ -455,10 +454,10 @@ void CAddEdit_Attachment::OnAttRemove()
  
 void CAddEdit_Attachment::ShowPreview()
 {
-  CItemAtt &att = M_attachment();
-  HRESULT hr(S_OK);
+  auto& att = M_attachment();
+  auto hr(S_OK);
 
-  int rc(0);
+  auto rc(0);
 
   // Assume not an image
   m_attType = ATTACHMENT_NOT_IMAGE;
@@ -468,7 +467,7 @@ void CAddEdit_Attachment::ShowPreview()
     if (m_AttFileName.IsEmpty())
       return;
 
-    int status = att.Import(LPCWSTR(m_AttFileName));
+    auto status = att.Import(LPCWSTR(m_AttFileName));
     if (status != PWScore::SUCCESS) {
       // most likely file error - TBD better error reporting
       rc = 1;
@@ -513,19 +512,19 @@ void CAddEdit_Attachment::ShowPreview()
     if (m_csMediaType.Left(5) == L"image") {
       // Should be an image file - but may not be supported by CImage - try..
       // Allocate attachment buffer
-      UINT imagesize = (UINT)att.GetContentSize();
-      HGLOBAL gMemory = GlobalAlloc(GMEM_MOVEABLE, imagesize);
+      auto imagesize = (UINT)att.GetContentSize();
+      auto gMemory = GlobalAlloc(GMEM_MOVEABLE, imagesize);
       ASSERT(gMemory);
 
-      if (gMemory == NULL) {
+      if (gMemory == nullptr) {
         rc = 2;
         goto load_error;
       }
 
-      BYTE *pBuffer = (BYTE *)GlobalLock(gMemory);
+      auto pBuffer = (BYTE *)GlobalLock(gMemory);
       ASSERT(pBuffer);
 
-      if (pBuffer == NULL) {
+      if (pBuffer == nullptr) {
         rc = 3;
         GlobalFree(gMemory);
         goto load_error;
@@ -535,7 +534,7 @@ void CAddEdit_Attachment::ShowPreview()
       att.GetContent(pBuffer, imagesize);
 
       // Put it into a IStream
-      IStream *pStream = NULL;
+      IStream *pStream = nullptr;
       hr = CreateStreamOnHGlobal(gMemory, FALSE, &pStream);
       if (SUCCEEDED(hr)) {
         // Load it
@@ -546,7 +545,7 @@ void CAddEdit_Attachment::ShowPreview()
       }
 
       // Clean up - no real need to trash the buffer
-      if (pStream != NULL)
+      if (pStream != nullptr)
         pStream->Release();
 
       GlobalUnlock(gMemory);

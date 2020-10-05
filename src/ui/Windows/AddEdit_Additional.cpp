@@ -9,9 +9,7 @@
 //
 
 #include "stdafx.h"
-#include "PasswordSafe.h"
 
-#include "ThisMfcApp.h"    // For Help
 #include "DboxMain.h"
 
 #include "AddEdit_Additional.h"
@@ -47,7 +45,7 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEM
                            GetPref(PWSprefs::NumPWHistoryDefault);
 
   // Save PWS HotKey info
-  m_iAppHotKey = int32(PWSprefs::GetInstance()->GetPref(PWSprefs::HotKey));
+  m_iAppHotKey = static_cast<int32>(PWSprefs::GetInstance()->GetPref(PWSprefs::HotKey));
   m_wAppVirtualKeyCode = m_iAppHotKey & 0xff;
   m_wAppPWSModifiers = m_iAppHotKey >> 16;
 
@@ -64,8 +62,8 @@ void CAddEdit_Additional::DoDataExchange(CDataExchange* pDX)
   CAddEdit_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(CAddEdit_Additional)
-  DDX_Text(pDX, IDC_AUTOTYPE, (CString&)M_autotype());
-  DDX_Text(pDX, IDC_RUNCMD, (CString&)M_runcommand());
+  DDX_Text(pDX, IDC_AUTOTYPE, static_cast<CString&>(M_autotype()));
+  DDX_Text(pDX, IDC_RUNCMD, static_cast<CString&>(M_runcommand()));
 
   DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
   DDX_Control(pDX, IDC_RUNCMD, m_ex_runcommand);
@@ -150,8 +148,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
   m_stc_warning.ShowWindow(SW_HIDE);
 
   CString cs_dats;
-  StringX sx_dats = PWSprefs::GetInstance()->
-                           GetPref(PWSprefs::DefaultAutotypeString);
+  auto sx_dats = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultAutotypeString);
   if (sx_dats.empty())
     cs_dats = DEFAULT_AUTOTYPE;
   else
@@ -205,13 +202,13 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   short iDCA;
   if (M_DCA() < PWSprefs::minDCA || M_DCA() > PWSprefs::maxDCA)
-    iDCA = (short)PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
+    iDCA = static_cast<short>(PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction));
   else
     iDCA = M_DCA();
   m_dblclk_cbox.SetCurSel(m_DCA_to_Index[iDCA]);
 
   if (M_ShiftDCA() < PWSprefs::minDCA || M_ShiftDCA() > PWSprefs::maxDCA)
-    iDCA = (short)PWSprefs::GetInstance()->GetPref(PWSprefs::ShiftDoubleClickAction);
+    iDCA = static_cast<short>(PWSprefs::GetInstance()->GetPref(PWSprefs::ShiftDoubleClickAction));
   else
     iDCA = M_ShiftDCA();
   m_shiftdblclk_cbox.SetCurSel(m_DCA_to_Index[iDCA]);
@@ -221,12 +218,12 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(M_SavePWHistory());
 
-  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
+  auto pspin = static_cast<CSpinButtonCtrl*>(GetDlgItem(IDC_PWHSPIN));
 
   pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
   pspin->SetRange(M_prefminPWHNumber(), M_prefmaxPWHNumber());
   pspin->SetBase(10);
-  pspin->SetPos((int)M_MaxPWHistory());
+  pspin->SetPos(static_cast<int>(M_MaxPWHistory()));
 
   if (M_uicaller() == IDS_ADDENTRY) {
     GetDlgItem(IDC_CLEAR_PWHIST)->ShowWindow(SW_HIDE);
@@ -379,21 +376,21 @@ HBRUSH CAddEdit_Additional::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
         break;
     }
 
-    int iFlashing = ((CStaticExtn *)pWnd)->IsFlashing();
-    BOOL bHighlight = ((CStaticExtn *)pWnd)->IsHighlighted();
-    BOOL bMouseInWindow = ((CStaticExtn *)pWnd)->IsMouseInWindow();
+    int iFlashing = static_cast<CStaticExtn*>(pWnd)->IsFlashing();
+    BOOL bHighlight = static_cast<CStaticExtn*>(pWnd)->IsHighlighted();
+    BOOL bMouseInWindow = static_cast<CStaticExtn*>(pWnd)->IsMouseInWindow();
 
     if (iFlashing != 0) {
       pDC->SetBkMode(iFlashing == 1 || (iFlashing && bHighlight && bMouseInWindow) ?
                       OPAQUE : TRANSPARENT);
-      COLORREF cfFlashColour = ((CStaticExtn *)pWnd)->GetFlashColour();
+      COLORREF cfFlashColour = static_cast<CStaticExtn*>(pWnd)->GetFlashColour();
       *pcfOld = pDC->SetBkColor(iFlashing == 1 ? cfFlashColour : *pcfOld);
     } else if (bHighlight) {
       pDC->SetBkMode(bMouseInWindow ? OPAQUE : TRANSPARENT);
-      COLORREF cfHighlightColour = ((CStaticExtn *)pWnd)->GetHighlightColour();
+      COLORREF cfHighlightColour = static_cast<CStaticExtn*>(pWnd)->GetHighlightColour();
       *pcfOld = pDC->SetBkColor(bMouseInWindow ? cfHighlightColour : *pcfOld);
-    } else if (((CStaticExtn *)pWnd)->GetColourState()) {
-      COLORREF cfUser = ((CStaticExtn *)pWnd)->GetUserColour();
+    } else if (static_cast<CStaticExtn*>(pWnd)->GetColourState()) {
+      COLORREF cfUser = static_cast<CStaticExtn*>(pWnd)->GetUserColour();
       pDC->SetTextColor(cfUser);
     }
   }
@@ -409,14 +406,14 @@ BOOL CAddEdit_Additional::OnKillActive()
 
   // Update variable from text box
   CString csText;
-  ((CEdit *)GetDlgItem(IDC_MAXPWHISTORY))->GetWindowText(csText);
+  static_cast<CEdit*>(GetDlgItem(IDC_MAXPWHISTORY))->GetWindowText(csText);
   int maxpwh = _wtoi(csText);
 
   if (maxpwh < M_prefminPWHNumber() || maxpwh > M_prefmaxPWHNumber()) {
     CGeneralMsgBox gmb;
     csText.Format(IDS_DEFAULTNUMPWH, M_prefminPWHNumber(), M_prefmaxPWHNumber());
     gmb.AfxMessageBox(csText);
-    ((CEdit *)GetDlgItem(IDC_MAXPWHISTORY))->SetFocus();
+    static_cast<CEdit*>(GetDlgItem(IDC_MAXPWHISTORY))->SetFocus();
     return FALSE;
   }
 
@@ -437,7 +434,7 @@ void CAddEdit_Additional::OnEntryHotKeyKillFocus()
   // this entry's Hot Key, put it back
   WORD wAppWindowsModifiers = ConvertModifersPWS2Windows(m_wAppPWSModifiers);
   BOOL brc = RegisterHotKey(GetMainDlg()->m_hWnd, PWS_HOTKEY_ID,
-                      UINT(wAppWindowsModifiers), UINT(m_wAppVirtualKeyCode));
+                      static_cast<UINT>(wAppWindowsModifiers), static_cast<UINT>(m_wAppVirtualKeyCode));
   if (brc)
     m_bAppHotKeyEnabled = true;
 }
@@ -479,7 +476,7 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
     // is the same as the ASCII character - no need for any conversion
     static const wchar_t *wcValidKeys = 
              L"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    if (wcschr(wcValidKeys, wVirtualKeyCode) == NULL) {
+    if (wcschr(wcValidKeys, wVirtualKeyCode) == nullptr) {
       // Not alphanumeric
       cs_msg.LoadString(IDS_KBS_INVALID);
       m_stc_warning.SetWindowText(cs_msg);
@@ -548,7 +545,7 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
 
       // Get new keyboard shortcut
       m_iOldHotKey = iKBShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
-      ((CHotKeyCtrl *)GetDlgItem(IDC_ENTKBSHCTHOTKEY))->SetFocus();
+      static_cast<CHotKeyCtrl*>(GetDlgItem(IDC_ENTKBSHCTHOTKEY))->SetFocus();
       m_bWarnUserKBShortcut = true;
       m_KBShortcutCtrl.SetHotKey(wVirtualKeyCode, wHKModifiers);
       return iRC;
@@ -559,7 +556,7 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
 
     if (uuid != CUUID::NullUUID() && uuid != M_entry_uuid()) {
       // Tell user that it already exists as an entry keyboard shortcut
-      ItemListIter iter = M_pcore()->Find(uuid);
+      auto iter = M_pcore()->Find(uuid);
       const StringX sxGroup = iter->second.GetGroup();
       const StringX sxTitle = iter->second.GetTitle();
       const StringX sxUser  = iter->second.GetUser();
@@ -570,7 +567,7 @@ int CAddEdit_Additional::CheckKeyboardShortcut()
       m_stc_warning.SetWindowText(cs_errmsg);
       m_stc_warning.ShowWindow(SW_SHOW);
 
-      ((CHotKeyCtrl *)GetDlgItem(IDC_ENTKBSHCTHOTKEY))->SetFocus();
+      static_cast<CHotKeyCtrl*>(GetDlgItem(IDC_ENTKBSHCTHOTKEY))->SetFocus();
 
       // Reset keyboard shortcut
       wVirtualKeyCode = wHKModifiers = wPWSModifiers = 0;
@@ -651,7 +648,7 @@ BOOL CAddEdit_Additional::OnApply()
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return FALSE; //CAddEdit_PropertyPage::OnApply();
 
-  CWnd *pFocus(NULL);
+  CWnd *pFocus(nullptr);
 
   UpdateData(TRUE);
   M_autotype().EmptyIfOnlyWhiteSpace();
@@ -674,7 +671,7 @@ BOOL CAddEdit_Additional::OnApply()
     bool bAutoType(false);
     StringX sxAutotype(L"");
     bool bURLSpecial;
-    PWSAuxParse::GetExpandedString(M_runcommand(), L"", NULL, NULL,
+    PWSAuxParse::GetExpandedString(M_runcommand(), L"", nullptr, nullptr,
                                    bAutoType, sxAutotype, errmsg, st_column,
                                    bURLSpecial);
     if (errmsg.length() > 0) {
@@ -682,14 +679,14 @@ BOOL CAddEdit_Additional::OnApply()
       CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
       CString cs_temp(MAKEINTRESOURCE(IDS_RUN_IGNOREORFIX));
       CString cs_errmsg;
-      cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, static_cast<LPCWSTR>(errmsg.c_str()));
+      cs_errmsg.Format(IDS_RUN_ERRORMSG, static_cast<int>(st_column), static_cast<LPCWSTR>(errmsg.c_str()));
       cs_errmsg += cs_temp;
       INT_PTR rc = gmb.MessageBox(cs_errmsg, cs_title,
                            MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
       if (rc == IDNO) {
         UpdateData(FALSE);
         // Are we the current page, if not activate this page
-        if (m_ae_psh->GetActivePage() != (CAddEdit_PropertyPage *)this)
+        if (m_ae_psh->GetActivePage() != static_cast<CAddEdit_PropertyPage*>(this))
           m_ae_psh->SetActivePage(this);
 
         pFocus = &m_ex_runcommand;
@@ -716,7 +713,7 @@ BOOL CAddEdit_Additional::OnApply()
   }
 
   if (M_SavePWHistory() == TRUE &&
-      ((int)M_MaxPWHistory() < M_prefminPWHNumber() || (int)M_MaxPWHistory() > M_prefmaxPWHNumber())) {
+      (static_cast<int>(M_MaxPWHistory()) < M_prefminPWHNumber() || static_cast<int>(M_MaxPWHistory()) > M_prefmaxPWHNumber())) {
     CGeneralMsgBox gmb;
     CString csText;
     csText.Format(IDS_DEFAULTNUMPWH, M_prefminPWHNumber(), M_prefmaxPWHNumber());
@@ -729,8 +726,8 @@ BOOL CAddEdit_Additional::OnApply()
     wchar_t buffer[6];
     swprintf_s(buffer, 6, L"%1x%02x%02x",
               (M_SavePWHistory() == FALSE) ? 0 : 1,
-              (unsigned int)M_MaxPWHistory(),
-              (unsigned int)M_pwhistlist().size());
+              static_cast<unsigned>(M_MaxPWHistory()),
+              static_cast<unsigned>(M_pwhistlist().size()));
     if (M_PWHistory().GetLength() >= 5) {
       for (int i = 0; i < 5; i++) {
         M_PWHistory().SetAt(i, buffer[i]);
@@ -745,14 +742,14 @@ BOOL CAddEdit_Additional::OnApply()
 
 error:
   // Are we the current page, if not activate this page
-  if (m_ae_psh->GetActivePage() != (CAddEdit_PropertyPage *)this)
+  if (m_ae_psh->GetActivePage() != static_cast<CAddEdit_PropertyPage*>(this))
     m_ae_psh->SetActivePage(this);
 
-  if (pFocus != NULL)
+  if (pFocus != nullptr)
     pFocus->SetFocus();
 
   if (pFocus == GetDlgItem(IDC_MAXPWHISTORY))
-    ((CEdit *)pFocus)->SetSel(MAKEWORD(-1, 0));
+    static_cast<CEdit*>(pFocus)->SetSel(MAKEWORD(-1, 0));
 
   return FALSE;
 }
@@ -762,7 +759,7 @@ void CAddEdit_Additional::OnDCAComboChanged()
   m_ae_psh->SetChanged(true);
 
   int nIndex = m_dblclk_cbox.GetCurSel();
-  M_DCA() = (short)m_dblclk_cbox.GetItemData(nIndex);
+  M_DCA() = static_cast<short>(m_dblclk_cbox.GetItemData(nIndex));
 }
 
 void CAddEdit_Additional::OnShiftDCAComboChanged()
@@ -770,7 +767,7 @@ void CAddEdit_Additional::OnShiftDCAComboChanged()
   m_ae_psh->SetChanged(true);
 
   int nIndex = m_shiftdblclk_cbox.GetCurSel();
-  M_ShiftDCA() = (short)m_shiftdblclk_cbox.GetItemData(nIndex);
+  M_ShiftDCA() = static_cast<short>(m_shiftdblclk_cbox.GetItemData(nIndex));
 }
 
 void CAddEdit_Additional::OnSTCExClicked(UINT nID)
@@ -794,7 +791,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
             sxData = DEFAULT_AUTOTYPE;
           }
         } else
-          sxData = (LPCWSTR)M_autotype();
+          sxData = static_cast<LPCWSTR>(M_autotype());
       } else {
         CSecString sPassword(M_realpassword()), sLastPassword(M_lastpassword());
         if (m_AEMD.pci->IsAlias()) {
@@ -828,13 +825,13 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
       // If Ctrl pressed - just copy un-substituted Run Command
       // else substitute
       if ((GetKeyState(VK_CONTROL) & 0x8000) != 0 || M_runcommand().IsEmpty()) {
-        sxData = (LPCWSTR)M_runcommand();
+        sxData = static_cast<LPCWSTR>(M_runcommand());
       } else {
         std::wstring errmsg;
         size_t st_column;
         bool bURLSpecial;
 
-        CItemData *pbci = NULL;
+        CItemData *pbci = nullptr;
         if (M_pci()->IsAlias()) {
           pbci = M_pcore()->GetBaseEntry(M_pci());
         }
@@ -849,7 +846,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
           CGeneralMsgBox gmb;
           CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
           CString cs_errmsg;
-          cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, static_cast<LPCWSTR>(errmsg.c_str()));
+          cs_errmsg.Format(IDS_RUN_ERRORMSG, static_cast<int>(st_column), static_cast<LPCWSTR>(errmsg.c_str()));
           gmb.MessageBox(cs_errmsg, cs_title, MB_ICONERROR);
         }
       }
@@ -864,7 +861,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
 
 void CAddEdit_Additional::OnCheckedSavePasswordHistory()
 {
-  M_SavePWHistory() = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck() == BST_CHECKED ?
+  M_SavePWHistory() = static_cast<CButton*>(GetDlgItem(IDC_SAVE_PWHIST))->GetCheck() == BST_CHECKED ?
                            TRUE : FALSE;
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(M_SavePWHistory());
   GetDlgItem(IDC_PWHSPIN)->EnableWindow(M_SavePWHistory());
@@ -892,7 +889,7 @@ void CAddEdit_Additional::OnClearPWHist()
 
 void CAddEdit_Additional::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  HD_NOTIFY *phdn = (HD_NOTIFY *) pNotifyStruct;
+  auto*phdn = reinterpret_cast<NMHEADERA*>(pNotifyStruct);
 
   if (phdn->iButton == 0) {
     // User clicked on header using left mouse button
@@ -920,10 +917,10 @@ void CAddEdit_Additional::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResul
 int CALLBACK CAddEdit_Additional::PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
                                                     LPARAM closure)
 {
-  CAddEdit_Additional *self = (CAddEdit_Additional *)closure;
+  auto*self = reinterpret_cast<CAddEdit_Additional*>(closure);
   int nSortColumn = self->m_iSortedColumn;
-  size_t Lpos = (size_t)lParam1;
-  size_t Rpos = (size_t)lParam2;
+  size_t Lpos = static_cast<size_t>(lParam1);
+  size_t Rpos = static_cast<size_t>(lParam2);
   const PWHistEntry pLHS = self->M_pwhistlist()[Lpos];
   const PWHistEntry pRHS = self->M_pwhistlist()[Rpos];
   CSecString password1, changedate1;
@@ -936,7 +933,7 @@ int CALLBACK CAddEdit_Additional::PWHistCompareFunc(LPARAM lParam1, LPARAM lPara
       t1 = pLHS.changetttdate;
       t2 = pRHS.changetttdate;
       if (t1 != t2)
-        iResult = ((long) t1 < (long) t2) ? -1 : 1;
+        iResult = (static_cast<long>(t1) < static_cast<long>(t2)) ? -1 : 1;
       break;
     case 1:
       password1 = pLHS.password;
@@ -956,9 +953,8 @@ int CALLBACK CAddEdit_Additional::PWHistCompareFunc(LPARAM lParam1, LPARAM lPara
 void CAddEdit_Additional::OnPWHCopyAll()
 {
   CSecString HistStr;
-  PWHistList::iterator iter;
 
-  for (iter = M_pwhistlist().begin(); iter != M_pwhistlist().end(); iter++) {
+  for (PWHistList::iterator iter = M_pwhistlist().begin(); iter != M_pwhistlist().end(); iter++) {
     const PWHistEntry &ent = *iter;
     HistStr += ent.changedate;
     HistStr += L"\t";
@@ -972,10 +968,10 @@ void CAddEdit_Additional::OnPWHCopyAll()
 
 void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *pResult)
 {
-  LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+  auto pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
   int selectedRow = pNMItemActivate->iItem;
   if (selectedRow >= 0) {
-    int indx = (int)m_PWHistListCtrl.GetItemData(selectedRow);
+    int indx = static_cast<int>(m_PWHistListCtrl.GetItemData(selectedRow));
     const StringX histpasswd = M_pwhistlist()[indx].password;
     GetMainDlg()->SetClipboardData(histpasswd);
 

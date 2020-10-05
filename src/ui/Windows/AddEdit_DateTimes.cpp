@@ -9,9 +9,7 @@
 //
 
 #include "stdafx.h"
-#include "PasswordSafe.h"
 
-#include "ThisMfcApp.h"    // For Help
 #include "DboxMain.h"
 
 #include "AddEdit_DateTimes.h"
@@ -19,7 +17,6 @@
 #include "GeneralMsgBox.h"
 
 #include "core/PWSprefs.h"
-#include "core/PWSAuxParse.h"
 
 #include "resource3.h"
 
@@ -58,10 +55,10 @@ void CAddEdit_DateTimes::DoDataExchange(CDataExchange* pDX)
   CAddEdit_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(CAddEdit_DateTimes)
-  DDX_Text(pDX, IDC_CTIME, (CString&)M_locCTime());
-  DDX_Text(pDX, IDC_PMTIME, (CString&)M_locPMTime());
-  DDX_Text(pDX, IDC_ATIME, (CString&)M_locATime());
-  DDX_Text(pDX, IDC_RMTIME, (CString&)M_locRMTime());
+  DDX_Text(pDX, IDC_CTIME, static_cast<CString&>(M_locCTime()));
+  DDX_Text(pDX, IDC_PMTIME, static_cast<CString&>(M_locPMTime()));
+  DDX_Text(pDX, IDC_ATIME, static_cast<CString&>(M_locATime()));
+  DDX_Text(pDX, IDC_RMTIME, static_cast<CString&>(M_locRMTime()));
 
   DDX_Text(pDX, IDC_EXPDAYS, m_numDays);
   DDX_Radio(pDX, IDC_SELECTBYDATETIME, m_how);
@@ -124,8 +121,8 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   // calls UpdateData() which calls Validator, which uses m_maxDays (phew!)
   const CTime ct_Latest(2038, 1, 18, 0, 0, 0);
 
-  CTimeSpan elapsedTime = ct_Latest - CTime::GetCurrentTime();
-  m_maxDays = (int)elapsedTime.GetDays();
+  auto elapsedTime = ct_Latest - CTime::GetCurrentTime();
+  m_maxDays = static_cast<int>(elapsedTime.GetDays());
 
   CAddEdit_PropertyPage::OnInitDialog();
 
@@ -179,7 +176,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
   }
 
-  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
+  auto pspin = static_cast<CSpinButtonCtrl*>(GetDlgItem(IDC_EXPDAYSSPIN));
 
   pspin->SetBuddy(GetDlgItem(IDC_EXPDAYS));
   pspin->SetBase(10);
@@ -189,9 +186,9 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     // if non-recurring, set num days to correspond to delta
     // between exp date & now, if delta > 0
     const CTime xt(M_tttXTime());
-    const CTime now(CTime::GetCurrentTime());
+    const auto now(CTime::GetCurrentTime());
     if (xt > now) {
-      pspin->SetPos(int(CTimeSpan(xt - now).GetDays()));
+      pspin->SetPos(static_cast<int>(CTimeSpan(xt - now).GetDays()));
     }
   }
 
@@ -201,7 +198,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
   CString sDateFormat = szBuf;
 
-  CDateTimeCtrl *pDateCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYDATE);
+  auto pDateCtl = static_cast<CDateTimeCtrl*>(GetDlgItem(IDC_EXPIRYDATE));
   pDateCtl->SetFormat(sDateFormat);
 
   // Refresh dialog
@@ -228,7 +225,7 @@ void CAddEdit_DateTimes::UpdateTimes()
   if (M_XTimeInt() > 0) {
     m_how = RELATIVE_EXP;
   } else {
-    m_how = (M_tttXTime() == (time_t)0) ? NONE_EXP : ABSOLUTE_EXP;
+    m_how = (M_tttXTime() == static_cast<time_t>(0)) ? NONE_EXP : ABSOLUTE_EXP;
   }
 
   // enable/disable relevant controls, depending on 'how' state
@@ -258,19 +255,19 @@ void CAddEdit_DateTimes::UpdateTimes()
     ASSERT(0);
   }
 
-  const CTime now(CTime::GetCurrentTime());
+  const auto now(CTime::GetCurrentTime());
 
   CTime xt;
-  if (M_tttXTime() != (time_t)0) {
+  if (M_tttXTime() != static_cast<time_t>(0)) {
     xt = CTime(M_tttXTime());
   } else {
     xt = now + CTimeSpan(PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays), 0, 1, 0);
   }
 
-  const CTime sMinDate(xt.GetTime() < now.GetTime() ? xt : now);
-  const CTime sMaxDate(CTime(2038, 1, 1, 0, 0, 0, -1));
+  const auto sMinDate(xt.GetTime() < now.GetTime() ? xt : now);
+  const auto sMaxDate(CTime(2038, 1, 1, 0, 0, 0, -1));
 
-  CDateTimeCtrl *pDateCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYDATE);
+  auto pDateCtl = static_cast<CDateTimeCtrl*>(GetDlgItem(IDC_EXPIRYDATE));
 
   // Set approx. limit of 32-bit times!
   pDateCtl->SetRange(&sMinDate, &sMaxDate);
@@ -279,7 +276,7 @@ void CAddEdit_DateTimes::UpdateTimes()
 
   if (m_bRecurringPswdExpiry == FALSE) {
     if (xt > now) {
-      m_numDays = int(CTimeSpan(xt - now).GetDays());
+      m_numDays = static_cast<int>(CTimeSpan(xt - now).GetDays());
     } else
       m_numDays = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays);
   }
@@ -297,7 +294,7 @@ void CAddEdit_DateTimes::UpdateStats()
   CString cs_text;
   cs_text.Format(L"%lu", M_entrysize());
 
-  for (int i = cs_text.GetLength() - 3; i > 0; i -= 3) {
+  for (auto i = cs_text.GetLength() - 3; i > 0; i -= 3) {
     cs_text.Insert(i, L",");
   }
 
@@ -335,6 +332,9 @@ LRESULT CAddEdit_DateTimes::OnQuerySiblings(WPARAM wParam, LPARAM )
     case PP_UPDATE_TIMES:
       UpdateTimes();
       UpdateWindow();
+      break;
+    default:
+      ASSERT(0);
       break;
   }
   return 0L;
@@ -385,10 +385,10 @@ void CAddEdit_DateTimes::OnHowChanged()
   switch (m_how) {
   case NONE_EXP:
     M_locXTime().LoadString(IDS_NEVER);
-    if (M_tttXTime() != (time_t)0 || M_XTimeInt() != 0)
+    if (M_tttXTime() != static_cast<time_t>(0) || M_XTimeInt() != 0)
       m_ae_psh->SetChanged(true);
 
-    M_tttXTime() = (time_t)0;
+    M_tttXTime() = static_cast<time_t>(0);
     M_XTimeInt() = 0;
 
     GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
@@ -426,7 +426,7 @@ void CAddEdit_DateTimes::SetXTime()
   m_inSetX = true;
   UpdateData(TRUE);
   CTime LDate, LDateTime;
-  const CTime now(CTime::GetCurrentTime());
+  const auto now(CTime::GetCurrentTime());
 
   if (m_how == ABSOLUTE_EXP) {
     VERIFY(m_pDateCtl.GetTime(LDate) == GDT_VALID);
@@ -444,7 +444,7 @@ void CAddEdit_DateTimes::SetXTime()
     M_XTimeInt() = m_bRecurringPswdExpiry == FALSE ? 0 : m_numDays;
   }
 
-  M_tttXTime() = (time_t)LDateTime.GetTime();
+  M_tttXTime() = static_cast<time_t>(LDateTime.GetTime());
   M_locXTime() = PWSUtil::ConvertToDateTimeString(M_tttXTime(), PWSUtil::TMC_LOCALE_DATE_ONLY);
 
   m_ae_psh->SetChanged(true);
@@ -461,9 +461,9 @@ void CAddEdit_DateTimes::OnRecurringPswdExpiry()
   // If user chose "recurring", then set the max interval to pref max (~10 years)
   // (should suffice for most purposes). For non-recurring, limit is
   // the max that won't overflow time_t
-  const int new_max = (m_bRecurringPswdExpiry == TRUE) ?
-    PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays) : m_maxDays;
-  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
+  const auto new_max = (m_bRecurringPswdExpiry == TRUE) ?
+                         PWSprefs::GetInstance()->GetPrefMaxVal(PWSprefs::DefaultExpiryDays) : m_maxDays;
+  auto pspin = static_cast<CSpinButtonCtrl*>(GetDlgItem(IDC_EXPDAYSSPIN));
   pspin->SetRange32(PWSprefs::GetInstance()->GetPrefMinVal(PWSprefs::DefaultExpiryDays), new_max);
   if (m_numDays > new_max)
     m_numDays = 1;
