@@ -1,5 +1,5 @@
-Password Safe 3.54pre Release September 2020
-============================================
+Password Safe 3.54 Release October 2020
+=======================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -10,8 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-Bugs fixed in 3.54pre
----------------------
+Bugs fixed in 3.54
+------------------
 * [SF1524](https://sourceforge.net/p/passwordsafe/bugs/1524) Added missing "Show Combination" checkbox to Export Dialogs.
 * [SF1523](https://sourceforge.net/p/passwordsafe/bugs/1523) PasswordSafe now displays correctly on high DPI monitors.
 * [SF1521](https://sourceforge.net/p/passwordsafe/bugs/1521) In Add/Edit entry's Policy tab, allow lengths to be set when easy vision is selected.
