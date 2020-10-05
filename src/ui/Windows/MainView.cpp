@@ -1613,8 +1613,13 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         }
       }
 
-      GetWindowRect(&rc);
-      prefs->SetPrefRect(rc.top, rc.bottom, rc.left, rc.right);
+      if (nType == SIZE_RESTORED) {
+        GetWindowRect(&rc);
+        prefs->SetPrefRect(rc.top, rc.bottom, rc.left, rc.right);
+      } else { // maximized - mark as such for restore
+        prefs->SetPrefRect(0, 0, 0, 0);
+      }
+
 
       // Set timer for user-defined idle lockout, if selected (DB preference)
       KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
