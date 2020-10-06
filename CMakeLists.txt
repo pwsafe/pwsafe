@@ -400,7 +400,7 @@ if (NOT WIN32)
   ADD_CUSTOM_TARGET(manpage ALL DEPENDS ${CMAKE_BINARY_DIR}/pwsafe.1.gz)
   install (FILES ${CMAKE_BINARY_DIR}/pwsafe.1.gz DESTINATION "share/man/man1") 
   install (FILES "install/desktop/pwsafe.desktop" DESTINATION "share/applications")
-  install (FILES "install/graphics/pwsafe.png" DESTINATION "share/pixmaps")
+  install (FILES "install/graphics/pwsafe.png" DESTINATION "share/icons/hicolor/48x48/apps/")
   install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
            DESTINATION "share/locale")
 
@@ -642,7 +642,7 @@ endif (${RELEASE_ID_SHORT} STREQUAL "LinuxMint")
 set (CPACK_DEBIAN_PACKAGE_DESCRIPTION "Password Safe is a password database utility.\n Like many other such products, commercial and otherwise,\n it stores your passwords in an encrypted file.")
 
 set (CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA 
-  "${CMAKE_CURRENT_SOURCE_DIR}/install/deb/prerm;${CMAKE_CURRENT_SOURCE_DIR}/install/deb/postrm")
+  "${CMAKE_CURRENT_SOURCE_DIR}/install/deb/prerm;${CMAKE_CURRENT_SOURCE_DIR}/install/deb/postinst")
 endif (EXISTS "/etc/debian_version")
 
 ## RPM-specific

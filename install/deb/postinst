@@ -4,7 +4,7 @@ if [[ -d "/usr/share/desktop-directories" || -d "/usr/local/share/desktop-direct
     xdg-icon-resource install --novendor --size 48 --mode system \
                     /usr/share/icons/hicolor/48x48/apps/pwsafe.png
     xdg-desktop-menu install --novendor --mode system \
-                    /usr/share/applications/passwordsafe.desktop
+                    /usr/share/applications/pwsafe.desktop
 fi
 [ -f /usr/share/man/pwsafe.1 ] && gzip /usr/share/man/pwsafe.1
 exit 0
