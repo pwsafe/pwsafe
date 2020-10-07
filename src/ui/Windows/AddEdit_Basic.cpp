@@ -172,6 +172,10 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange *pDX)
   DDX_Control(pDX, IDC_PASSWORDHELP2, m_Help3);
   DDX_Control(pDX, IDC_NOTESHELP, m_Help4);
   //}}AFX_DATA_MAP
+  if (pDX->m_bSaveAndValidate == TRUE) { //normalize for change detection
+    M_notes().Replace(L"\r\n", L"\n");
+    M_notes().Remove(L'\r');
+  }
 }
 
 BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
