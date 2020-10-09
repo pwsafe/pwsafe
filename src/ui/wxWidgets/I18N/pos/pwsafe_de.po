@@ -1384,7 +1384,8 @@ msgid ""
 "bypasses the security provided by this program."
 msgstr ""
 "Bitte verwenden Sie diese Option nur dann wenn Sie die Risiken verstehen und "
-"akzeptieren. Diese Option umgeht die Sicherheit, die dieses Programm bietet."
+"akzeptieren. Diese Option\n"
+"umgeht die Sicherheit, die dieses Programm bietet."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:73
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:70

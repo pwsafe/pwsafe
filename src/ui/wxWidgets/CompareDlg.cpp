@@ -152,6 +152,7 @@ void CompareDlg::CreateControls()
 
   m_dbSelectionPane->Expand();
 
+  dlgSizer->AddStretchSpacer();
   dlgSizer->Add(new wxStaticLine(this), wxSizerFlags().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(0));
   dlgSizer->AddSpacer(RowSeparation);
   auto *buttons = new wxStdDialogButtonSizer;
