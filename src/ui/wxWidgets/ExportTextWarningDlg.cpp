@@ -66,7 +66,13 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(
   mainSizer->Add(warningText, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT, SideMargin);
   mainSizer->AddSpacer(BottomMargin);
 
-  auto flexGridSizer = new wxFlexGridSizer(2 /*cols*/, 0 /*vgap*/, 0 /*hgap*/);
+#ifndef NO_YUBI
+  int DLGITEM_COLS = 3;
+#else
+  int DLGITEM_COLS = 2;
+#endif
+
+  auto flexGridSizer = new wxFlexGridSizer(DLGITEM_COLS /*cols*/, 0 /*vgap*/, 0 /*hgap*/);
   flexGridSizer->AddGrowableCol(1);
 
   auto safeCombinationStaticText = new wxStaticText(this, wxID_ANY, _("Safe Combination:"), wxDefaultPosition, wxDefaultSize, 0);
@@ -79,23 +85,26 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(
   flexGridSizer->Add(safeCombinationStaticText, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   flexGridSizer->Add(m_combinationEntry       , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
-  flexGridSizer->AddStretchSpacer(); // 1st column of wxFlexGridSizer
-
-  auto yubiSizer = new wxBoxSizer(wxHORIZONTAL);
-  yubiSizer->Add(showCombinationCheckBox, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5);
-
 #ifndef NO_YUBI
-  yubiSizer->AddStretchSpacer();
   auto yubiBtn = new wxBitmapButton(this , ID_YUBIBTN, wxBitmap(Yubikey_button_xpm),
-                                    wxDefaultPosition, ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
-  yubiSizer->Add(yubiBtn, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
-
-  auto yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Please insert your YubiKey"),
-                                         wxDefaultPosition, wxDefaultSize, 0 );
-  yubiSizer->Add(yubiStatusCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+    wxDefaultPosition, ConvertDialogToPixels(wxSize(40, 12)), wxBU_AUTODRAW );
+  flexGridSizer->Add(yubiBtn, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxSHAPED, 5);
 #endif
 
-  flexGridSizer->Add(yubiSizer, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  flexGridSizer->AddStretchSpacer(0);                                // 1st column of wxFlexGridSizer
+  flexGridSizer->Add(showCombinationCheckBox, 0, wxALL|wxEXPAND, 5); // 2nd column of wxFlexGridSizer
+
+#ifndef NO_YUBI
+  flexGridSizer->AddStretchSpacer(0);                                // 3rd column of wxFlexGridSizer
+#endif
+
+#ifndef NO_YUBI
+  auto yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Please insert your YubiKey"),
+                                         wxDefaultPosition, wxDefaultSize, 0 );
+  flexGridSizer->AddStretchSpacer(0);                                // 1st column of wxFlexGridSizer
+  flexGridSizer->Add(yubiStatusCtrl, 1, wxALL|wxEXPAND, 5);          // 2nd column of wxFlexGridSizer
+  flexGridSizer->AddStretchSpacer(0);                                // 3rd column of wxFlexGridSizer
+#endif
 
   delimiter = wxT('\xbb');
   wxTextValidator delimValidator(wxFILTER_EXCLUDE_CHAR_LIST, &delimiter);
@@ -115,6 +124,8 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(
 
   mainSizer->Add(flexGridSizer, 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
   mainSizer->AddSpacer(RowSeparation);
+
+  mainSizer->AddStretchSpacer();
 
   mainSizer->Add(new wxStaticLine(this), 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
   mainSizer->AddSpacer(RowSeparation);

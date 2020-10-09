@@ -207,9 +207,16 @@ void SafeCombinationEntryDlg::CreateControls()
   wxStaticText* itemStaticText12 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe Combination:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer4->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL, 3);
 
+  auto itemBoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
   m_combinationEntry = new SafeCombinationCtrl( itemDialog1, ID_COMBINATION, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_combinationEntry->SetFocus();
-  itemBoxSizer4->Add(m_combinationEntry, 0, wxEXPAND|wxRIGHT|wxTOP|wxBOTTOM, 5);
+  itemBoxSizer10->Add(m_combinationEntry, 1, wxEXPAND|wxRIGHT|wxTOP|wxBOTTOM, 5);
+
+#ifndef NO_YUBI
+  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 12)), wxBU_AUTODRAW );
+  itemBoxSizer10->Add(m_YubiBtn, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxSHAPED, 5);
+#endif
+  itemBoxSizer4->Add(itemBoxSizer10, 0, wxEXPAND, 0);
 
   auto *itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer14, 0, wxEXPAND|wxALL, 5);
@@ -232,12 +239,11 @@ void SafeCombinationEntryDlg::CreateControls()
   itemBoxSizer4->Add(itemBoxSizer18, 0, wxEXPAND|wxALL, 5);
 
 #ifndef NO_YUBI
-  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
-  itemBoxSizer18->Add(m_YubiBtn, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
-
   m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer18->Add(m_yubiStatusCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 #endif
+
+  itemBoxSizer4->AddStretchSpacer();
 
   auto *itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
 

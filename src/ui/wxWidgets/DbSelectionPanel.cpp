@@ -71,7 +71,14 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   m_sc = new SafeCombinationCtrl(this);
   m_sc->SetValidatorTarget(&m_combination);
   panelSizer->Add(m_sc, borderFlags.Expand());
-  
+  panelSizer->AddSpacer(5);
+
+  auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
+  showCombinationCheckBox->SetValue(false);
+  showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_sc->SecureTextfield(!event.IsChecked());});
+
+  panelSizer->Add(showCombinationCheckBox, borderFlags.Expand());
+
   SetSizerAndFit(panelSizer);
   
   //The parent window must call our TransferDataToWindow and TransferDataFromWindow

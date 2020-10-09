@@ -112,7 +112,7 @@ inline void ApplyFontPreference(wxWindow* window, const PWSprefs::StringPrefs fo
 enum {
       TopMargin     = 20,
       BottomMargin  = 20,
-      SideMargin    = 30,
+      SideMargin    = 20,
       RowSeparation = 10,
       ColSeparation = 20
 };
