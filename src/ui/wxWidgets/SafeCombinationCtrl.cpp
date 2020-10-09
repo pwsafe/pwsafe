@@ -186,3 +186,14 @@ void SafeCombinationCtrl::SecureTextfield(bool secured)
     }
   }
 }
+
+void SafeCombinationCtrl::SetFocus() const
+{
+  m_textCtrl->SetFocus();
+}
+
+void SafeCombinationCtrl::DisableAndClear(bool disableClear)
+{
+  m_textCtrl->Enable(!disableClear);
+  m_textCtrl->Clear();
+}

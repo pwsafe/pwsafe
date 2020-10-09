@@ -27,7 +27,7 @@
 
 void YubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
 {
-  m_prompt1 = _("<- Click on button to the left"); // change via SetPrompt1
+  m_prompt1 = _("Click the button labeled 'Yubikey' in green"); // change via SetPrompt1
   m_prompt2 = _("Now touch your YubiKey's button"); // change via SetPrompt2
   m_btn = btn;
   m_status = status;

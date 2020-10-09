@@ -46,6 +46,8 @@ public:
   void SelectCombinationText() const;
   void AllowEmptyCombinationOnce(); // for YubiKey, one-shot for use in YubiBtn event handlers
   void SecureTextfield(bool secured);
+  void SetFocus() const;
+  void DisableAndClear(bool disableClear = true);
 
 private:
   wxTextCtrl* m_textCtrl;

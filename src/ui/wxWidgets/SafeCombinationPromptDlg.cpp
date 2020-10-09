@@ -163,18 +163,30 @@ void SafeCombinationPromptDlg::CreateControls()
   auto *itemBoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer5->Add(itemBoxSizer8, 0, wxALL|wxEXPAND, 5);
 
+  auto flexGridSizer = new wxFlexGridSizer(2 /*cols*/, 0 /*vgap*/, 0 /*hgap*/);
+  flexGridSizer->AddGrowableCol(1);
+
   wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe combination:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer8->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  flexGridSizer->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_scctrl = new SafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxDefaultSize );
-  itemBoxSizer8->Add(m_scctrl, 1, wxALL|wxEXPAND, 5);
+  m_scctrl->SetFocus();
+  flexGridSizer->Add(m_scctrl, 1, wxALL|wxEXPAND, 5);
+
+  flexGridSizer->AddStretchSpacer(0);
+  auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
+  showCombinationCheckBox->SetValue(false);
+  showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_scctrl->SecureTextfield(!event.IsChecked());});
+  flexGridSizer->Add(showCombinationCheckBox, 1, wxALL|wxEXPAND, 5);
+
+  itemBoxSizer5->Add(flexGridSizer, 0, wxEXPAND|wxALL, 5);
 
   auto *itemBoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer5->Add(itemBoxSizer11, 0, wxEXPAND|wxALL, 5);
 
 #ifndef NO_YUBI
-  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
-  itemBoxSizer11->Add(m_YubiBtn, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
+  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 12)), wxBU_AUTODRAW );
+  itemBoxSizer11->Add(m_YubiBtn, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxSHAPED, 5);
 #endif
 
   itemBoxSizer11->Add(4, 10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 1);
