@@ -15,6 +15,9 @@
 
 #include <wx/panel.h>
 #include "../../core/StringX.h"
+#ifndef NO_YUBI
+#include "YubiMixin.h"
+#endif
 
 class wxFilePickerCtrl;
 class SafeCombinationCtrl;
@@ -36,7 +39,7 @@ class wxFileDirPickerEvent;
  * rowsep - the multiplying factor for the separation between the first and second
  * rows.  A small dialog might pass a value of 2, while a wizard page might pass 5
  */
-class DbSelectionPanel : public wxPanel
+class DbSelectionPanel : public wxPanel, private YubiMixin
 {
 public:
   DbSelectionPanel(wxWindow* parent, const wxString& filePrompt,
@@ -60,6 +63,12 @@ public:
   StringX m_combination;
 
 private:
+#ifndef NO_YUBI
+  void OnYubibtnClick(wxCommandEvent& event);
+  void OnPollingTimer(wxTimerEvent& event);
+#endif
+
+  wxTimer* m_pollingTimer;
   wxFilePickerCtrl* m_filepicker;
   SafeCombinationCtrl* m_sc;
   bool m_bAutoValidate;
