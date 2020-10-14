@@ -660,8 +660,7 @@ bool CShowCompareDlg::SetNotesWindow(const CPoint ptClient, const bool bVisible)
       return false;
   }
 
-  UINT dpi = WinUtil::GetDPI(m_hWnd);
-  ptScreen.y += ::GetSystemMetricsForDpi(SM_CYCURSOR, dpi) / 2; // half-height of cursor
+  ptScreen.y += WinUtil::GetSystemMetrics(SM_CYCURSOR, m_hWnd) / 2; // half-height of cursor
 
   if (!sx_notes.empty()) {
     Replace(sx_notes, StringX(L"\r\n"), StringX(L"\n"));

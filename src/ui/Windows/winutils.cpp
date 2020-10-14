@@ -28,6 +28,7 @@
 #include "core/XMLprefs.h"
 #include "os/env.h"
 #include "os/file.h"
+#include "os/lib.h"
 
 void WinUtil::RelativizePath(std::wstring &curfile)
 {
@@ -345,4 +346,27 @@ BOOL WinUtil::LoadScaledBitmap(CBitmap &bitmap, UINT nID, bool fixBckgrnd, HWND 
   WinUtil::ResizeBitmap(tmpBitmap, bitmap, dpiScaledWidth, dpiScaledHeight);
   tmpBitmap.DeleteObject();
   return TRUE;
+}
+
+typedef int (WINAPI* FP_GETSYSMETRICS4DPI) (int, UINT);
+
+int  WinUtil::GetSystemMetrics(int nIndex, HWND hwnd)
+{
+  static FP_GETSYSMETRICS4DPI fp_getsysmetrics_4dpi = nullptr;
+  static bool inited = false;
+
+  if (!inited) {
+    auto hUser32 = static_cast<HMODULE>(pws_os::LoadLibrary(L"User32.dll", pws_os::loadLibraryTypes::SYS));
+    ASSERT(hUser32 != nullptr);
+    if (hUser32 != nullptr) {
+      fp_getsysmetrics_4dpi = static_cast<FP_GETSYSMETRICS4DPI>(pws_os::GetFunction(hUser32, "GetSystemMetricsForDpi"));
+      inited = true;
+    }
+  }
+    if (fp_getsysmetrics_4dpi != nullptr) { // Windows 10 or greater
+      UINT dpi = GetDPI(hwnd);
+      return fp_getsysmetrics_4dpi(nIndex, dpi);
+    } else { // server or older than Win10, punt to older API
+      return ::GetSystemMetrics(nIndex);
+    }
 }
