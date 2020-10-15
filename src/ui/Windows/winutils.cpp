@@ -30,6 +30,12 @@
 #include "os/file.h"
 #include "os/lib.h"
 
+// typedefs for function pointers:
+typedef int (WINAPI* FP_GETDPI4SYSTEM) ();
+typedef int (WINAPI* FP_GETDPI4WINDOW) (HWND);
+typedef int (WINAPI* FP_GETSYSMETRICS4DPI) (int, UINT);
+
+
 void WinUtil::RelativizePath(std::wstring &curfile)
 {
   // If  IsUnderPw2go() && exec's drive == curfile's drive, remove
@@ -252,14 +258,35 @@ exit:
   return bRetVal;
 }
 
-UINT WinUtil::GetDPI(HWND hwnd) // wrapper for debugging
+/**
+ * Following started out as a way to test hi-resolution support without access to a hires monitor.
+ * Now it's a wrapper to support pre-Windows 10 systems as well.
+ *
+ */
+UINT WinUtil::GetDPI(HWND hwnd)
 {
-  UINT retval = (hwnd == nullptr) ? ::GetDpiForSystem() : ::GetDpiForWindow(hwnd);
-  stringT dbg_dpi = pws_os::getenv("PWS_DPI", false);
-  if (!dbg_dpi.empty()) {
+  static bool inited = false;
+  static FP_GETDPI4SYSTEM fp_getdpi4_system = nullptr;
+  static FP_GETDPI4WINDOW fp_getdpi4_window = nullptr;
+
+
+  if (!inited) {
+    auto hUser32 = static_cast<HMODULE>(pws_os::LoadLibrary(L"User32.dll", pws_os::loadLibraryTypes::SYS));
+    ASSERT(hUser32 != nullptr);
+    if (hUser32 != nullptr) {
+      fp_getdpi4_system = static_cast<FP_GETDPI4SYSTEM>(pws_os::GetFunction(hUser32, "GetDpiForSystem"));
+      fp_getdpi4_window = static_cast<FP_GETDPI4WINDOW>(pws_os::GetFunction(hUser32, "GetDpiForWindow"));
+      inited = true;
+    }
+  }
+  UINT retval = 96;
+  const stringT dbg_dpi = pws_os::getenv("PWS_DPI", false);
+  if (dbg_dpi.empty()) {
+    if (fp_getdpi4_window != nullptr && fp_getdpi4_system != nullptr)
+      retval = (hwnd == nullptr) ? fp_getdpi4_system() : fp_getdpi4_window(hwnd);
+  } else { // !dbg_dpi.empty()
     std::wistringstream iss(dbg_dpi);
     iss >> retval;
-
   }
   return retval;
 }
@@ -347,8 +374,6 @@ BOOL WinUtil::LoadScaledBitmap(CBitmap &bitmap, UINT nID, bool fixBckgrnd, HWND 
   tmpBitmap.DeleteObject();
   return TRUE;
 }
-
-typedef int (WINAPI* FP_GETSYSMETRICS4DPI) (int, UINT);
 
 int  WinUtil::GetSystemMetrics(int nIndex, HWND hwnd)
 {
