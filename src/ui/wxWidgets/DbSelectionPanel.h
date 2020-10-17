@@ -39,7 +39,11 @@ class wxFileDirPickerEvent;
  * rowsep - the multiplying factor for the separation between the first and second
  * rows.  A small dialog might pass a value of 2, while a wizard page might pass 5
  */
+#ifndef NO_YUBI
 class DbSelectionPanel : public wxPanel, private YubiMixin
+#else
+  class DbSelectionPanel : public wxPanel
+#endif
 {
 public:
   DbSelectionPanel(wxWindow* parent, const wxString& filePrompt,
