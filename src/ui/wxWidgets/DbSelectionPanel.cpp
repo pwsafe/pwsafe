@@ -42,11 +42,13 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
                                     const wxString& filePickerCtrlTitle,
                                     bool autoValidate,
                                     PWScore* core,
-                                    unsigned rowsep) : wxPanel(parent), m_pollingTimer(nullptr),
-                                                                        m_filepicker(nullptr),
-                                                                        m_sc(nullptr),
-                                                                        m_bAutoValidate(autoValidate),
-                                                                        m_core(core)
+                                    unsigned rowsep,
+                                    int buttonConfirmationId) : wxPanel(parent), m_pollingTimer(nullptr),
+                                                                m_filepicker(nullptr),
+                                                                m_sc(nullptr),
+                                                                m_bAutoValidate(autoValidate),
+                                                                m_core(core),
+                                                                m_confirmationButtonId(buttonConfirmationId)
 {
   wxSizerFlags borderFlags = wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin);
 
@@ -132,31 +134,31 @@ bool DbSelectionPanel::DoValidation()
   if (wxWindow::Validate()) {
 
     wxFileName wxfn(m_filepicker->GetPath());
-    
+
     //Did the user enter a valid file path
     if (!wxfn.FileExists()) {
       wxMessageBox( _("File or path not found."), _("Error"), wxOK | wxICON_EXCLAMATION, this);
       return false;
     }
-    
+
     //Did he enter the same file that's currently open?
     if (wxfn.SameAs(wxFileName(towxstring(m_core->GetCurFile())))) {
       // It is the same damn file
       wxMessageBox(_("That file is already open."), _("Error"), wxOK | wxICON_WARNING, this);
       return false;
     }
-    
-    StringX combination = m_sc->GetCombination();
+
+    m_combination = m_sc->GetCombination();
     //Does the combination match?
-    if (m_core->CheckPasskey(tostringx(wxfn.GetFullPath()), combination) != PWScore::SUCCESS) {
+    if (m_core->CheckPasskey(tostringx(wxfn.GetFullPath()), m_combination) != PWScore::SUCCESS) {
       wxString errmess(_("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')"));
       wxMessageBox(errmess, _("Error"), wxOK | wxICON_ERROR, this);
       SelectCombinationText();
+      m_combination.clear();
       return false;
     }
-    
+
     return true;
-    
   }
   else {
     return false;
@@ -184,15 +186,7 @@ void DbSelectionPanel::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
     bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
     if (PerformChallengeResponse(this, m_combination, response, oldYubiChallenge)) {
       m_combination = response;
-
-      /* Compare Dialog
-      GetParent()->GetEventHandler()->AddPendingEvent(wxCommandEvent(wxEVT_BUTTON, ID_BTN_COMPARE));
-      */
-
-      /* Merge Dialog
-      GetParent()->GetEventHandler()->AddPendingEvent(wxCommandEvent(wxEVT_BUTTON, wxID_OK));
-      */
-
+      GetParent()->GetEventHandler()->AddPendingEvent(wxCommandEvent(wxEVT_BUTTON, m_confirmationButtonId));
       return;
     }
   }
