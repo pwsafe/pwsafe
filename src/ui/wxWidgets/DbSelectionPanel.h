@@ -44,7 +44,7 @@ class DbSelectionPanel : public wxPanel, private YubiMixin
 public:
   DbSelectionPanel(wxWindow* parent, const wxString& filePrompt,
                     const wxString& filePickerCtrlTitle, bool autoValidate,
-                    PWScore* core, unsigned rowsep); 
+                    PWScore* core, unsigned rowsep, int buttonConfirmationId = wxID_OK);
   ~DbSelectionPanel();
 
   //Set the keyboard focus on combination entry box and select-all
@@ -73,6 +73,7 @@ private:
   SafeCombinationCtrl* m_sc;
   bool m_bAutoValidate;
   PWScore* m_core;
+  int m_confirmationButtonId;
 };
 
 #endif // _DBSELECTIONPANEL_H_
