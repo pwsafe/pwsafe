@@ -1,3 +1,4 @@
+
 list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/AboutDlg.h
             src/ui/Windows/AddEdit_Additional.h

@@ -21,10 +21,7 @@
 #include "os/dir.h"
 
 #include "GeneralMsgBox.h"
-#include "core/VerifyFormat.h"
 #include "core/PWSprefs.h"
-#include "core/PWSdirs.h"
-#include "core/SysInfo.h"
 #include "core/XMLprefs.h"
 #include "os/env.h"
 #include "os/file.h"
@@ -56,14 +53,13 @@ void WinUtil::RelativizePath(std::wstring &curfile)
 static BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC, LPRECT, LPARAM lParam)
 {
   MONITORINFO mi;
-  HRGN hrgn2;
 
   HRGN *phrgn = (HRGN *)lParam;
 
   mi.cbSize = sizeof(mi);
   GetMonitorInfo(hMonitor, &mi);
 
-  hrgn2 = CreateRectRgnIndirect(&mi.rcWork);
+  HRGN hrgn2 = CreateRectRgnIndirect(&mi.rcWork);
   CombineRgn(*phrgn, *phrgn, hrgn2, RGN_OR);
   ::DeleteObject(hrgn2);
 
@@ -74,9 +70,9 @@ HRGN WinUtil::GetWorkAreaRegion()
 {
   HRGN hrgn = CreateRectRgn(0, 0, 0, 0);
 
-  HDC hdc = ::GetDC(NULL);
-  EnumDisplayMonitors(hdc, NULL, EnumScreens, (LPARAM)&hrgn);
-  ::ReleaseDC(NULL, hdc);
+  HDC hdc = ::GetDC(nullptr);
+  EnumDisplayMonitors(hdc, nullptr, EnumScreens, (LPARAM)&hrgn);
+  ::ReleaseDC(nullptr, hdc);
 
   return hrgn;
 }
@@ -381,7 +377,7 @@ int  WinUtil::GetSystemMetrics(int nIndex, HWND hwnd)
   static bool inited = false;
 
   if (!inited) {
-    auto hUser32 = static_cast<HMODULE>(pws_os::LoadLibrary(L"User32.dll", pws_os::loadLibraryTypes::SYS));
+    auto hUser32 = static_cast<HMODULE>(pws_os::LoadLibrary(reinterpret_cast<const TCHAR *>(L"User32.dll"), pws_os::loadLibraryTypes::SYS));
     ASSERT(hUser32 != nullptr);
     if (hUser32 != nullptr) {
       fp_getsysmetrics_4dpi = static_cast<FP_GETSYSMETRICS4DPI>(pws_os::GetFunction(hUser32, "GetSystemMetricsForDpi"));
