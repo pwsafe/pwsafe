@@ -353,7 +353,7 @@ else (NOT WIN32)
       set (CMAKE_MFC_FLAG 1)
       set (PWS_DLL_LIBS "pws_at" "pws_osk")
       set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS
-                            _BIND_TO_CURRENT_CRT_VERSION,_BIND_TO_CURRENT_MFC_VERSION
+                            "_BIND_TO_CURRENT_CRT_VERSION;_BIND_TO_CURRENT_MFC_VERSION"
                             LINK_FLAGS "/ENTRY:\"wWinMainCRTStartup\" /MAP /DEBUG")
    else (NOT WX_WINDOWS)
 #      set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS

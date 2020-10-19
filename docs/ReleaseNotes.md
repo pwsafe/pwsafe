@@ -1,5 +1,5 @@
-Password Safe 3.54 Release October 2020
-=======================================
+Password Safe 3.54.01 Release October 2020
+==========================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -9,6 +9,10 @@ https://pwsafe.org/. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
+
+Bugs fixed in 3.54.01
+---------------------
+*  [GH696](https://github.com/pwsafe/pwsafe/issues/696), [SF1526](https://sourceforge.net/p/passwordsafe/bugs/1526) Regression: Works again under Windows 7 and 8.
 
 Bugs fixed in 3.54
 ------------------

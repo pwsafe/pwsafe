@@ -62,8 +62,7 @@ int CPopupText::Create(CPoint pt, CWnd* pParentWnd, UINT nID)
 LRESULT CPopupText::OnSetText(WPARAM , LPARAM lp)
 {
   CRect rc;
-  UINT dpi = WinUtil::GetDPI(m_hWnd);
-  const int screenWidth = GetSystemMetricsForDpi(SM_CXSCREEN, dpi);
+  const int screenWidth = WinUtil::GetSystemMetrics(SM_CXSCREEN, m_hWnd);
   GetWindowRect(&rc);
   int h = rc.Height();
   CClientDC dc(this);

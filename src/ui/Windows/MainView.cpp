@@ -1487,8 +1487,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
     bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
     if (bDragBarState) {
-      UINT dpi = WinUtil::GetDPI(m_hWnd);
-      const int i = GetSystemMetricsForDpi(SM_CYBORDER, dpi);
+      const int i = WinUtil::GetSystemMetrics(SM_CYBORDER, m_hWnd);
       const int j = rect.top + i;
       m_DDGroup.GetWindowRect(&dragrect);
       ScreenToClient(&dragrect);
@@ -4085,8 +4084,7 @@ void DboxMain::SetToolBarPositions()
       m_DDAutotype.SetStaticState(true);
     }
 
-    UINT dpi = WinUtil::GetDPI(m_hWnd);
-    const int i = GetSystemMetricsForDpi(SM_CYBORDER, dpi);
+    const int i = WinUtil::GetSystemMetrics(SM_CYBORDER, m_hWnd);
 
     for (int j = 0; j < sizeof(DDs)/sizeof(DDs[0]); j++) {
       DDs[j]->ShowWindow(SW_SHOW);
@@ -4569,8 +4567,7 @@ bool DboxMain::SetNotesWindow(const CPoint ptClient, const bool bVisible)
       pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
     }
   }
-  UINT dpi = WinUtil::GetDPI(m_hWnd);
-  ptScreen.y += ::GetSystemMetricsForDpi(SM_CYCURSOR, dpi) / 2; // half-height of cursor
+  ptScreen.y += WinUtil::GetSystemMetrics(SM_CYCURSOR, m_hWnd) / 2; // half-height of cursor
 
   if (pci != NULL) {
     if (pci->IsShortcut())
