@@ -1156,7 +1156,7 @@ BOOL ThisMfcApp::InitInstance()
   AllowSetForegroundWindow(ASFW_ANY);
 
   // Needed for RichEditCtrls in Dialogs (i.e. not explicitly "created").
- // AfxInitRichEdit2();
+  AfxInitRichEdit2();
 
   // PWScore needs it to get into database header if/when saved
   m_core.SetApplicationNameAndVersion(AfxGetAppName(), m_dwMajorMinor, m_dwBuildRevision);
