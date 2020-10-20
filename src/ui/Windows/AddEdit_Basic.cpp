@@ -8,7 +8,7 @@
 // AddEdit_Basic.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "PasswordSafe.h"
 
 #include "DboxMain.h"
@@ -21,7 +21,7 @@
 
 #include "core/PWSprefs.h"
 #include "core/PWSAuxParse.h"
-#include "core/command.h"
+#include "core/Command.h"
 
 #include "os/file.h"
 
@@ -553,16 +553,24 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
               M_realpassword() != M_oldRealPassword()      )
             return 1L;
           break;
-        case IDS_ADDENTRY:
-          if (!M_group().IsEmpty()        ||
-              !M_title().IsEmpty()        ||
-              !M_username().IsEmpty()     ||
-              !M_realpassword().IsEmpty() ||
-              !M_notes().IsEmpty()        ||
-              !M_URL().IsEmpty()          ||
-              !M_email().IsEmpty()        ||
-              !M_symbols().IsEmpty()        )
+        case IDS_ADDENTRY: {
+          bool nameClean;
+          auto pref = PWSprefs::GetInstance();
+          if (pref->GetPref(PWSprefs::UseDefaultUser))
+            nameClean = M_username() == pref->GetPref(PWSprefs::DefaultUsername);
+          else
+            nameClean = M_username().IsEmpty();
+
+          if (!M_group().IsEmpty()      ||
+            !M_title().IsEmpty()        ||
+            !nameClean                  ||
+            !M_realpassword().IsEmpty() ||
+            !M_notes().IsEmpty()        ||
+            !M_URL().IsEmpty()          ||
+            !M_email().IsEmpty()        ||
+            !M_symbols().IsEmpty())
             return 1L;
+        }
           break;
       }
       break;
