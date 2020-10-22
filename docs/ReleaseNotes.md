@@ -12,7 +12,8 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 
 Bugs fixed in 3.54.01
 ---------------------
-*  [GH696](https://github.com/pwsafe/pwsafe/issues/696), [SF1526](https://sourceforge.net/p/passwordsafe/bugs/1526) Regression: Works again under Windows 7 and 8.
+* [GH696](https://github.com/pwsafe/pwsafe/issues/696), [SF1526](https://sourceforge.net/p/passwordsafe/bugs/1526) Regression: Works again under Windows 7 and 8.
+* [SF1519](https://sourceforge.net/p/passwordsafe/bugs/1519) Fixed false change detection due to different line endings.
 
 Bugs fixed in 3.54
 ------------------

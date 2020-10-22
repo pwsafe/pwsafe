@@ -541,17 +541,22 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
   switch (wParam) {
     case PP_DATA_CHANGED:
       switch (M_uicaller()) {
-        case IDS_EDITENTRY:
-          if (M_group()        != M_pci()->GetGroup()      ||
-              M_title()        != M_pci()->GetTitle()      ||
-              M_username()     != M_pci()->GetUser()       ||
-              M_notes()        != M_originalnotesTRC()     ||
-              M_URL()          != M_pci()->GetURL()        ||
-              M_email()        != M_pci()->GetEmail()      ||
-              (M_ipolicy()     != NAMED_POLICY &&
-               M_symbols()     != M_pci()->GetSymbols())   ||
-              M_realpassword() != M_oldRealPassword()      )
-            return 1L;
+      case IDS_EDITENTRY: {
+        // BR1519 - we need to ignore the difference between \r\n and \n, regardless of how they got there.
+        CSecString notes1(M_notes()), notes2(M_originalnotesTRC());
+        notes1.Replace(L"\r\n", L"\n"); notes2.Replace(L"\r\n", L"\n");
+
+        if (M_group() != M_pci()->GetGroup() ||
+          M_title() != M_pci()->GetTitle() ||
+          M_username() != M_pci()->GetUser() ||
+          notes1 != notes2 ||
+          M_URL() != M_pci()->GetURL() ||
+          M_email() != M_pci()->GetEmail() ||
+          (M_ipolicy() != NAMED_POLICY &&
+            M_symbols() != M_pci()->GetSymbols()) ||
+          M_realpassword() != M_oldRealPassword())
+          return 1L;
+      }
           break;
         case IDS_ADDENTRY: {
           bool nameClean;
@@ -572,7 +577,10 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
             return 1L;
         }
           break;
-      }
+        default:
+          ASSERT(0);
+          break;
+      } // switch (M_uicaller())
       break;
     case PP_UPDATE_VARIABLES:
       // Since OnOK calls OnApply after we need to verify and/or
