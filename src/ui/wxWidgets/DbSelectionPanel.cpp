@@ -30,15 +30,25 @@
 #include "SafeCombinationCtrl.h"
 #include "wxUtilities.h"
 
+#ifndef NO_YUBI
+#include "graphics/Yubikey-button.xpm"
+
+#define ID_YUBIBTN 10001
+#define ID_YUBISTATUS 10002
+#endif
+
 DbSelectionPanel::DbSelectionPanel(wxWindow* parent, 
                                     const wxString& filePrompt,
                                     const wxString& filePickerCtrlTitle,
                                     bool autoValidate,
                                     PWScore* core,
-                                    unsigned rowsep) : wxPanel(parent), m_filepicker(nullptr),
-                                                                        m_sc(nullptr),
-                                                                        m_bAutoValidate(autoValidate),
-                                                                        m_core(core)
+                                    unsigned rowsep,
+                                    int buttonConfirmationId) : wxPanel(parent), m_pollingTimer(nullptr),
+                                                                m_filepicker(nullptr),
+                                                                m_sc(nullptr),
+                                                                m_bAutoValidate(autoValidate),
+                                                                m_core(core),
+                                                                m_confirmationButtonId(buttonConfirmationId)
 {
   wxSizerFlags borderFlags = wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin);
 
@@ -70,7 +80,18 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   
   m_sc = new SafeCombinationCtrl(this);
   m_sc->SetValidatorTarget(&m_combination);
-  panelSizer->Add(m_sc, borderFlags.Expand());
+
+  auto horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+  horizontalSizer->Add(m_sc, 1, wxALL|wxEXPAND, 0);
+
+#ifndef NO_YUBI
+  auto yubiBtn = new wxBitmapButton(this , ID_YUBIBTN, wxBitmap(Yubikey_button_xpm),
+    wxDefaultPosition, ConvertDialogToPixels(wxSize(40, 12)), wxBU_AUTODRAW );
+  horizontalSizer->Add(yubiBtn, 0, wxALIGN_CENTER|wxLEFT|wxSHAPED, 5);
+  Bind(wxEVT_BUTTON, &DbSelectionPanel::OnYubibtnClick, this);
+#endif
+
+  panelSizer->Add(horizontalSizer, borderFlags.Expand());
   panelSizer->AddSpacer(5);
 
   auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -78,8 +99,22 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_sc->SecureTextfield(!event.IsChecked());});
 
   panelSizer->Add(showCombinationCheckBox, borderFlags.Expand());
+  panelSizer->AddSpacer(RowSeparation);
+
+#ifndef NO_YUBI
+  auto yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Please insert your YubiKey"),
+    wxDefaultPosition, wxDefaultSize, 0 );
+  panelSizer->Add(yubiStatusCtrl, borderFlags.Expand());
+#endif
 
   SetSizerAndFit(panelSizer);
+
+#ifndef NO_YUBI
+  SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
+  Bind(wxEVT_TIMER, &DbSelectionPanel::OnPollingTimer, this);
+  m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
+  m_pollingTimer->Start(YubiMixin::POLLING_INTERVAL);
+#endif
   
   //The parent window must call our TransferDataToWindow and TransferDataFromWindow
   m_parent->SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
@@ -87,6 +122,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
 
 DbSelectionPanel::~DbSelectionPanel()
 {
+  delete m_pollingTimer;
 }
 
 void DbSelectionPanel::SelectCombinationText()
@@ -100,31 +136,31 @@ bool DbSelectionPanel::DoValidation()
   if (wxWindow::Validate()) {
 
     wxFileName wxfn(m_filepicker->GetPath());
-    
+
     //Did the user enter a valid file path
     if (!wxfn.FileExists()) {
       wxMessageBox( _("File or path not found."), _("Error"), wxOK | wxICON_EXCLAMATION, this);
       return false;
     }
-    
+
     //Did he enter the same file that's currently open?
     if (wxfn.SameAs(wxFileName(towxstring(m_core->GetCurFile())))) {
       // It is the same damn file
       wxMessageBox(_("That file is already open."), _("Error"), wxOK | wxICON_WARNING, this);
       return false;
     }
-    
-    StringX combination = m_sc->GetCombination();
+
+    m_combination = m_sc->GetCombination();
     //Does the combination match?
-    if (m_core->CheckPasskey(tostringx(wxfn.GetFullPath()), combination) != PWScore::SUCCESS) {
+    if (m_core->CheckPasskey(tostringx(wxfn.GetFullPath()), m_combination) != PWScore::SUCCESS) {
       wxString errmess(_("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')"));
       wxMessageBox(errmess, _("Error"), wxOK | wxICON_ERROR, this);
       SelectCombinationText();
+      m_combination.clear();
       return false;
     }
-    
+
     return true;
-    
   }
   else {
     return false;
@@ -137,3 +173,31 @@ void DbSelectionPanel::OnFilePicked(wxFileDirPickerEvent& WXUNUSED(event))
   if ( !wxDynamicCast(FindFocus(), wxTextCtrl) )
     m_sc->SelectCombinationText();
 }
+
+#ifndef NO_YUBI
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
+ */
+
+void DbSelectionPanel::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
+{
+  m_sc->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
+
+  if (Validate() && TransferDataFromWindow()) {
+    StringX response;
+    bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
+    if (PerformChallengeResponse(this, m_combination, response, oldYubiChallenge)) {
+      m_combination = response;
+      GetParent()->GetEventHandler()->AddPendingEvent(wxCommandEvent(wxEVT_BUTTON, m_confirmationButtonId));
+      return;
+    }
+  }
+}
+
+void DbSelectionPanel::OnPollingTimer(wxTimerEvent& event)
+{
+  if (event.GetId() == POLLING_TIMER_ID) {
+    HandlePollingTimer(); // in YubiMixin
+  }
+}
+#endif

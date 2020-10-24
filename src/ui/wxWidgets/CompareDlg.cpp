@@ -214,7 +214,8 @@ wxCollapsiblePane* CompareDlg::CreateDBSelectionPanel(wxSizer* dlgSizer)
                                                wxString(_("Select a PasswordSafe database to compare")),
                                                true,
                                                m_currentCore,
-                                               1);
+                                               1,
+                                               ID_BTN_COMPARE);
   dbPanelSizer->Add(m_dbPanel, wxSizerFlags().Expand().Proportion(1));
 
   dlgSizer->Add(pane, wxSizerFlags().Proportion(0).Expand().Border(wxLEFT|wxRIGHT, SideMargin/2));
