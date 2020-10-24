@@ -88,6 +88,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   auto yubiBtn = new wxBitmapButton(this , ID_YUBIBTN, wxBitmap(Yubikey_button_xpm),
     wxDefaultPosition, ConvertDialogToPixels(wxSize(40, 12)), wxBU_AUTODRAW );
   horizontalSizer->Add(yubiBtn, 0, wxALIGN_CENTER|wxLEFT|wxSHAPED, 5);
+  Bind(wxEVT_BUTTON, &DbSelectionPanel::OnYubibtnClick, this);
 #endif
 
   panelSizer->Add(horizontalSizer, borderFlags.Expand());
@@ -110,6 +111,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
 
 #ifndef NO_YUBI
   SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
+  Bind(wxEVT_TIMER, &DbSelectionPanel::OnPollingTimer, this);
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
   m_pollingTimer->Start(YubiMixin::POLLING_INTERVAL);
 #endif
