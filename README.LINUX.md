@@ -1,17 +1,12 @@
 ## Introduction
-The Linux port of PasswordSafe is currently in BETA.
-This means that (1) you should take care to keep copies of the
-database to protect against possible loss of data due to bugs, and (2)
-there are several unimplemented features. Nonetheless, we feel that
-this is good enough to release as an early beta to gather feedback
-from a wider audience.
+The Linux port of PasswordSafe is currently stable, although lacking some of the more advanced features of the Windows version.
 
 ## Supported Distributions
 Packages for the versions of Debian, Ubuntu and Fedora that were
 current at the time of release may be found on the Github (primary)
 and SourceForge (secondary) sites under
 https://github.com/pwsafe/pwsafe/releases and
-https://sourceforge.net/projects/passwordsafe/files/Linux-BETA/,
+https://sourceforge.net/projects/passwordsafe/files/Linux/,
 respectively.
 If you don't find the package for the distribution of your choice, you
 can contact the developers via https://pwsafe.org/contact.php or build
@@ -21,7 +16,7 @@ Slackware is independently supported, see below.
 
 ## Installation on Debian or Ubuntu
 
-passwordsafe is available as package (https://packages.debian.org/buster/passwordsafe). To install it just use the following command. For Debian stable there are newer versions found in the backports (\*-backports).
+PasswordSafe is available as package (https://packages.debian.org/stable/passwordsafe). To install it just use the following command.
 
 ```
 $ sudo apt install passwordsafe
