@@ -21,6 +21,8 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
+#include <wx/filename.h>
+
 #include "os/file.h"
 
 ////@begin includes
@@ -59,6 +61,7 @@ BEGIN_EVENT_TABLE( SafeCombinationPromptDlg, wxDialog )
   EVT_BUTTON( wxID_OK,     SafeCombinationPromptDlg::OnOkClick           )
   EVT_BUTTON( wxID_CANCEL, SafeCombinationPromptDlg::OnCancelClick       )
   EVT_BUTTON( wxID_EXIT,   SafeCombinationPromptDlg::OnExitClick         )
+  EVT_CHECKBOX(ID_READONLY,SafeCombinationPromptDlg::OnReadonlyClick     )
 
 END_EVENT_TABLE()
 
@@ -172,14 +175,27 @@ void SafeCombinationPromptDlg::CreateControls()
   m_scctrl = new SafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxDefaultSize );
   m_scctrl->SetFocus();
   flexGridSizer->Add(m_scctrl, 1, wxALL|wxEXPAND, 5);
-
-  flexGridSizer->AddStretchSpacer(0);
+// Show Combination is moved down to right side of new field "Open as read-only"
   auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
   showCombinationCheckBox->SetValue(false);
   showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_scctrl->SecureTextfield(!event.IsChecked());});
-  flexGridSizer->Add(showCombinationCheckBox, 1, wxALL|wxEXPAND, 5);
 
   itemBoxSizer5->Add(flexGridSizer, 0, wxEXPAND|wxALL, 5);
+
+  auto *itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer5->Add(itemBoxSizer14, 0, wxEXPAND|wxALL, 5);
+
+  auto itemCheckBox15 = new wxCheckBox(this, ID_READONLY, _("Open as read-only"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemCheckBox15->SetValue(false);
+  m_readOnly = false;
+
+  itemBoxSizer14->Add(itemCheckBox15, 1, wxALIGN_LEFT|wxALL, 5);
+  itemBoxSizer14->AddSpacer(1);
+  itemBoxSizer14->Add(showCombinationCheckBox, 1, wxALIGN_LEFT|wxALL, 5);
+  itemBoxSizer14->AddStretchSpacer();
+  
+  itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly) );
+  UpdateReadOnlyCheckbox(itemCheckBox15);
 
   auto *itemBoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer5->Add(itemBoxSizer11, 0, wxEXPAND|wxALL, 5);
@@ -295,7 +311,7 @@ void SafeCombinationPromptDlg::ProcessPhrase()
     txt->SetFocus();
     return;
   }
-  // m_core.SetReadOnly(m_readOnly);
+  m_core.SetReadOnly(m_readOnly);
   m_core.SetCurFile(tostringx(m_filename));
   EndModal(wxID_OK);
 }
@@ -345,6 +361,33 @@ void SafeCombinationPromptDlg::OnExitClick(wxCommandEvent& WXUNUSED(evt))
   // Before editing this code, remove the block markers.
   EndModal(wxID_EXIT);
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationPromptDlg.
+}
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_READONLY
+ */
+
+void SafeCombinationPromptDlg::OnReadonlyClick( wxCommandEvent& event )
+{
+  m_readOnly = event.IsChecked();
+}
+
+void SafeCombinationPromptDlg::UpdateReadOnlyCheckbox(wxCheckBox *checkBox)
+{
+  wxFileName fn(m_filename);
+
+  wxASSERT_MSG(checkBox, wxT("checkbox NULL"));
+  if (m_core.IsDbOpen()) {
+    m_readOnly = m_core.IsReadOnly();
+    checkBox->SetValue(m_readOnly);
+    checkBox->Enable(false);
+  } else if ( fn.FileExists() ) { // Do nothing if the file doesn't exist
+    bool writeable = fn.IsFileWritable();
+    bool defaultRO = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
+    m_readOnly = (writeable? defaultRO : true);
+    checkBox->SetValue(m_readOnly);
+    checkBox->Enable(writeable);
+  }
 }
 
 #ifndef NO_YUBI

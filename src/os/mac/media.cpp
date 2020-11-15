@@ -11,7 +11,7 @@
 
 using namespace std;
 
-stringT pws_os::GetMediaType(const stringT &sfilename)
+stringT pws_os::GetMediaType(const stringT & /*sfilename*/)
 {
     return _T("unknown");
 }

@@ -108,7 +108,7 @@ wxBoxSizer* ImportTextDlg::CreateVerticalButtonSizer(long flags)
   wxBoxSizer* box = new wxBoxSizer(wxVERTICAL);
   box->AddSpacer(TopMargin);
 
-  long buttons[] = {wxID_OK, wxID_CANCEL, wxID_HELP};
+  wxWindowID buttons[] = {wxID_OK, wxID_CANCEL, wxID_HELP};
   for (size_t idx = 0; idx < NumberOf(buttons); ++idx) {
     if ((flags & buttons[idx]) == buttons[idx]){
       box->Add(new wxButton(this, buttons[idx]));

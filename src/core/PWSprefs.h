@@ -128,6 +128,7 @@ public:
     VKPlaySound, // Windows only
     ListSortAscending,
     EnableWindowTransparency,
+    ShowMenuSeparator,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
@@ -202,7 +203,7 @@ public:
 
   bool GetPrefDefVal(BoolPrefs pref_enum) const;
   unsigned int GetPrefDefVal(IntPrefs pref_enum) const;
-  const TCHAR* const GetPrefDefVal(StringPrefs pref_enum) const;
+    const TCHAR* GetPrefDefVal(StringPrefs pref_enum) const;
 
   int GetPrefMinVal(IntPrefs pref_enum) const;
   int GetPrefMaxVal(IntPrefs pref_enum) const;

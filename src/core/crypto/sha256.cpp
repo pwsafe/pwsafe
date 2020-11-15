@@ -41,7 +41,7 @@ static const unsigned long K[64] = {
 /* Various logical functions */
 #define Ch(x,y,z)       (z ^ (x & (y ^ z)))
 #define Maj(x,y,z)      (((x | y) & z) | (x & y)) 
-#define S(x, n)         RORc((x),(n))
+#define S(x, n)         RORc(static_cast<unsigned>(x),(n))
 #define R(x, n)         (((x)&0xFFFFFFFFUL)>>(n))
 #define Sigma0(x)       (S(x, 2) ^ S(x, 13) ^ S(x, 22))
 #define Sigma1(x)       (S(x, 6) ^ S(x, 11) ^ S(x, 25))
@@ -167,7 +167,7 @@ static void  sha256_compress(ulong32 state[8], const unsigned char *buf)
 
   /* feedback */
   for (i = 0; i < 8; i++) {
-    state[i] = state[i] + S[i];
+    state[i] = state[i] + static_cast<ulong32>(S[i]);
   }
 }
 

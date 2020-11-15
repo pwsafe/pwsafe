@@ -355,6 +355,8 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   Centre();
 ////@end PasswordSafeFrame creation
   m_search = new PasswordSafeSearch(this);
+  wxASSERT(m_search);
+  
   CreateMainToolbar();
   CreateDragBar();
   CreateStatusBar();
@@ -699,11 +701,14 @@ void PasswordSafeFrame::CreateControls()
 
   m_grid = new GridCtrl( this, m_core, ID_LISTBOX, wxDefaultPosition,
                         wxDefaultSize, wxHSCROLL|wxVSCROLL );
+  wxASSERT(m_grid);
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0).Proportion(1));
 
   m_tree = new TreeCtrl( this, m_core, ID_TREECTRL, wxDefaultPosition,
                             wxDefaultSize,
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
+  wxASSERT(m_tree);
+  SetBackgroundColour(CurrentBackgroundColor);
 
   // let the tree ctrl handle ID_ADDGROUP & ID_RENAME all by itself
   Connect(ID_ADDGROUP, wxEVT_COMMAND_MENU_SELECTED,
@@ -828,13 +833,16 @@ void PasswordSafeFrame::ReCreateDragToolbar()
 void PasswordSafeFrame::RefreshToolbarButtons()
 {
   wxToolBar* tb = GetToolBar();
+  PWSprefs *pref = PWSprefs::GetInstance();
   wxASSERT(tb);
+  wxASSERT(pref);
   if (tb->GetToolsCount() == 0) {  //being created?
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)) {
       for (auto & PwsToolbarButton : PwsToolbarButtons) {
-        if (PwsToolbarButton.id == ID_SEPARATOR)
-          tb->AddSeparator();
-        else
+        if (PwsToolbarButton.id == ID_SEPARATOR) {
+          if(pref->GetPref(PWSprefs::ShowMenuSeparator))
+            tb->AddSeparator();
+        } else
           tb->AddTool(PwsToolbarButton.id, wxEmptyString, wxBitmap(PwsToolbarButton.bitmap_normal),
                               wxBitmap(PwsToolbarButton.bitmap_disabled), wxITEM_NORMAL,
                               wxGetTranslation(PwsToolbarButton.tooltip) );
@@ -842,16 +850,17 @@ void PasswordSafeFrame::RefreshToolbarButtons()
     }
     else {
       for (auto & PwsToolbarButton : PwsToolbarButtons) {
-        if (PwsToolbarButton.id == ID_SEPARATOR)
-          tb->AddSeparator();
-        else
+        if (PwsToolbarButton.id == ID_SEPARATOR) {
+          if(pref->GetPref(PWSprefs::ShowMenuSeparator))
+            tb->AddSeparator();
+        } else
           tb->AddTool(PwsToolbarButton.id, wxEmptyString, wxBitmap(PwsToolbarButton.bitmap_classic),
                           wxGetTranslation(PwsToolbarButton.tooltip) );
       }
     }
   }
   else { //toolbar type was changed from the menu
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)) {
+    if (pref->GetPref(PWSprefs::UseNewToolbar)) {
       for (auto & PwsToolbarButton : PwsToolbarButtons) {
         if (PwsToolbarButton.id == ID_SEPARATOR)
           continue;
@@ -868,6 +877,30 @@ void PasswordSafeFrame::RefreshToolbarButtons()
       }
     }
   }
+  tb->Realize();
+}
+
+void PasswordSafeFrame::ReCreateMainToolbarSepartor(bool bInsert)
+{
+  wxToolBar* tb = GetToolBar();
+  size_t pos = 0;
+  wxASSERT(tb);
+  wxASSERT(tb->GetToolsCount() > 0);
+  if(bInsert) {
+    for (auto & PwsToolbarButton : PwsToolbarButtons) {
+      if (PwsToolbarButton.id == ID_SEPARATOR) {
+        tb->InsertSeparator(pos);
+      }
+      ++pos;
+    }
+  }
+  else { // Delete
+    for (pos = 0; pos < tb->GetToolsCount(); ++pos) {
+      if(tb->GetToolByPos(static_cast<int>(pos))->IsSeparator())
+        tb->DeleteToolByPos(pos);
+    }
+  }
+  tb->Realize();
 }
 
 /*!

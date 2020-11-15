@@ -61,9 +61,13 @@ void PasswordSafeFrame::OnChangePasswordClick(wxCommandEvent& WXUNUSED(evt))
 void PasswordSafeFrame::OnPreferencesClick(wxCommandEvent& WXUNUSED(evt))
 {
   PWSprefs* prefs = PWSprefs::GetInstance();
+  bool showMenuSeprator = prefs->GetPref(PWSprefs::ShowMenuSeparator);
   const StringX sxOldDBPrefsString(prefs->Store());
   OptionsPropertySheetDlg *window = new OptionsPropertySheetDlg(this, m_core);
   if (window->ShowModal() == wxID_OK) {
+    if(showMenuSeprator != prefs->GetPref(PWSprefs::ShowMenuSeparator))
+      ReCreateMainToolbarSepartor(prefs->GetPref(PWSprefs::ShowMenuSeparator));
+    
     StringX sxNewDBPrefsString(prefs->Store(true));
     // Update system tray icon if visible so changes show up immediately
     if (m_sysTray && prefs->GetPref(PWSprefs::UseSystemTray))
@@ -267,7 +271,7 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
 {
   auto id = evt.GetId();
   // First, uncheck all language menu items, hence the previously selected but also the new one
-  for (size_t menu_id = ID_LANGUAGE_BEGIN+1; menu_id<ID_LANGUAGE_END; menu_id++)
+  for (int menu_id = ID_LANGUAGE_BEGIN+1; menu_id<ID_LANGUAGE_END; menu_id++)
     GetMenuBar()->Check( menu_id, false );
 
   // If a new language has been selected successfully we have to

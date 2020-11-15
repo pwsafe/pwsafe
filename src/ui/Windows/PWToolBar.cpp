@@ -322,9 +322,11 @@ void CPWToolBarX::Init(const int NumBits, bool bRefresh)
   j = 0;
   m_csDefaultButtonString.Empty();
   m_iNumDefaultButtons = _countof(MainGuiInfo);
+  bool bShowMenuSeparator = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowMenuSeparator);
   for (i = 0; i < _countof(MainGuiInfo); i++) {
     bool bIsSeparator = MainGuiInfo[i].ID == ID_SEPARATOR;
     BYTE fsStyle = bIsSeparator ? TBSTYLE_SEP : TBSTYLE_BUTTON;
+    if(bIsSeparator && !bShowMenuSeparator) continue;
     fsStyle &= ~BTNS_SHOWTEXT;
     if (!bIsSeparator) {
       fsStyle |= TBSTYLE_AUTOSIZE;

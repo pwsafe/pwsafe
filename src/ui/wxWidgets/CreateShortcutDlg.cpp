@@ -188,17 +188,17 @@ void CreateShortcutDlg::CreateControls()
 
   auto StaticTextShortcutGroup = new wxStaticText(this, wxID_ANY, _("Group:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   FlexGridSizer1->Add(StaticTextShortcutGroup, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_ComboBoxShortcutGroup = new wxComboBox(this, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxCB_DROPDOWN, wxDefaultValidator, _T("ID_COMBOBOX1"));
+  m_ComboBoxShortcutGroup = new wxComboBox(this, static_cast<wxWindowID>(ID_COMBOBOX1), wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxCB_DROPDOWN, wxDefaultValidator, _T("ID_COMBOBOX1"));
   FlexGridSizer1->Add(m_ComboBoxShortcutGroup, 1, wxALL|wxEXPAND, 5);
 
   auto StaticTextShortcutTitle = new wxStaticText(this, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   FlexGridSizer1->Add(StaticTextShortcutTitle, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_TextCtrlShortcutTitle = new wxTextCtrl(this, ID_TEXTCTRL1, _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+  m_TextCtrlShortcutTitle = new wxTextCtrl(this, static_cast<wxWindowID>(ID_TEXTCTRL1), _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
   FlexGridSizer1->Add(m_TextCtrlShortcutTitle, 1, wxALL|wxEXPAND, 5);
 
   auto StaticTextShortcutUsername = new wxStaticText(this, wxID_ANY, _("Username:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   FlexGridSizer1->Add(StaticTextShortcutUsername, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_TextCtrlShortcutUsername = new wxTextCtrl(this, ID_TEXTCTRL2, _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+  m_TextCtrlShortcutUsername = new wxTextCtrl(this, static_cast<wxWindowID>(ID_TEXTCTRL2), _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
   FlexGridSizer1->Add(m_TextCtrlShortcutUsername, 1, wxALL|wxEXPAND, 5);
 
   StaticBoxSizer1->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 5);
@@ -210,17 +210,17 @@ void CreateShortcutDlg::CreateControls()
 
   auto StaticTextBaseEntryGroup = new wxStaticText(this, wxID_ANY, _("Group:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   FlexGridSizer2->Add(StaticTextBaseEntryGroup, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_StaticTextBaseEntryGroup = new wxStaticText(this, ID_STATICTEXT7, _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
+  m_StaticTextBaseEntryGroup = new wxStaticText(this, static_cast<wxWindowID>(ID_STATICTEXT7), _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
   FlexGridSizer2->Add(m_StaticTextBaseEntryGroup, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
   auto StaticTextBaseEntryTitle = new wxStaticText(this, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   FlexGridSizer2->Add(StaticTextBaseEntryTitle, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_StaticTextBaseEntryTitle = new wxStaticText(this, ID_STATICTEXT8, _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
+  m_StaticTextBaseEntryTitle = new wxStaticText(this, static_cast<wxWindowID>(ID_STATICTEXT8), _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
   FlexGridSizer2->Add(m_StaticTextBaseEntryTitle, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
   auto StaticTextBaseEntryUsername = new wxStaticText(this, wxID_ANY, _("Username:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   FlexGridSizer2->Add(StaticTextBaseEntryUsername, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_StaticTextBaseEntryUsername = new wxStaticText(this, ID_STATICTEXT9, _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
+  m_StaticTextBaseEntryUsername = new wxStaticText(this, static_cast<wxWindowID>(ID_STATICTEXT9), _("N/A"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
   FlexGridSizer2->Add(m_StaticTextBaseEntryUsername, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 
   StaticBoxSizer2->Add(FlexGridSizer2, 1, wxALL|wxEXPAND, 5);

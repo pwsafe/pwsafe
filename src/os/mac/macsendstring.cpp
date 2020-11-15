@@ -33,7 +33,7 @@ void SendString(CFStringRef str, unsigned delayMS)
   
   assert(CFStringGetLength(specialChars) == NumberOf(specialKeyCodes));
 
-  for (unsigned i = 0, len = CFStringGetLength(str); i < len; ++i) {
+  for (unsigned i = 0, len = static_cast<unsigned>(CFStringGetLength(str)); i < len; ++i) {
     //The next char to send
     UniChar c = CFStringGetCharacterAtIndex(str, i);
     

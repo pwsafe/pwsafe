@@ -42,14 +42,6 @@ private:
   ComparisonGridTable* m_table;
 };
 
-struct st_CompareData_match : public std::binary_function<st_CompareData, pws_os::CUUID, bool>
-{
-  result_type operator()(const first_argument_type& arg1, const second_argument_type& arg2) const
-  {
-    return arg1.uuid0 == arg2 || arg1.uuid1 == arg2;
-  }
-};
-
 ///////////////////////////////////////////////////////////
 // ComparisonGridTable
 // base class for the other two types of grid table
@@ -96,7 +88,7 @@ int ComparisonGridTable::GetNumberCols()
   //GetSelectedFields() will return at-least G+T+U
   //We club T & U and display only Group + title[user] + fields
   //Hence return one less
-  return m_criteria->GetNumSelectedFields() - 1; 
+  return static_cast<int>(m_criteria->GetNumSelectedFields() - 1);
 }
 
 void ComparisonGridTable::SetValue(int WXUNUSED(row), int WXUNUSED(col), const wxString& WXUNUSED(value))
@@ -258,10 +250,9 @@ wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int WXUNUSED(row), int WXUNUSED
 int UniSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid) const
 {
   CompareData::iterator itr = std::find_if(m_compData->begin(),
-                                            m_compData->end(),
-                                            std::bind2nd(st_CompareData_match(), uuid));
+                                           m_compData->end(), [uuid](st_CompareData& arg){return arg.uuid0 == uuid || arg.uuid1 == uuid;});
   if (itr != m_compData->end())
-    return std::distance(m_compData->begin(), itr);
+    return (int) std::distance(m_compData->begin(), itr);
   else
     return wxNOT_FOUND;
 }
@@ -453,10 +444,10 @@ wxString MultiSafeCompareGridTable::GetRowLabelValue(int row)
 int MultiSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid) const
 {
   CompareData::iterator itr = std::find_if(m_compData->begin(),
-                                            m_compData->end(),
-                                            std::bind2nd(st_CompareData_match(), uuid));
+                                           m_compData->end(),
+                                           [uuid](st_CompareData& arg){return arg.uuid0 == uuid || arg.uuid1 == uuid;});
   if (itr != m_compData->end())
-    return std::distance(m_compData->begin(), itr)*2 + (itr->uuid0 == uuid? 0: 1);
+    return (int) std::distance(m_compData->begin(), itr)*2 + (itr->uuid0 == uuid? 0: 1);
   else
     return wxNOT_FOUND;
 }

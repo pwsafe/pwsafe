@@ -176,7 +176,7 @@ int CItemData::Read(PWSfile *in)
           trashMemory(utf8, utf8Len * sizeof(utf8[0]));
           delete[] utf8;
         }
-        return -numread;
+        return static_cast<int>(-numread);
       } else if (type != END) { // unknown field
         SetUnknownField(type, utf8Len, utf8);
       }

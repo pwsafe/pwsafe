@@ -158,7 +158,7 @@ size_t FieldSelectionPanel::GetNumSelectedFields() const
 bool FieldSelectionPanel::ItemIsMandatory(size_t index) const
 {
   if (m_lbSelected->GetCount() > index) {
-    FieldData* data = dynamic_cast<FieldData*>(m_lbSelected->GetClientObject(index));
+    FieldData* data = dynamic_cast<FieldData*>(m_lbSelected->GetClientObject(static_cast<unsigned int>(index)));
     return data && data->IsMandatory();
   }
   return false;
@@ -166,7 +166,7 @@ bool FieldSelectionPanel::ItemIsMandatory(size_t index) const
 
 CItemData::FieldType FieldSelectionPanel::GetSelectedFieldAt(size_t index) const
 {
-  FieldData* data = dynamic_cast<FieldData*>(m_lbSelected->GetClientObject(index));
+  FieldData* data = dynamic_cast<FieldData*>(m_lbSelected->GetClientObject(static_cast<unsigned int>(index)));
   if (data)
     return *data;
   return CItemData::END;
@@ -187,7 +187,7 @@ void FieldSelectionPanel::OnSelectSome(wxCommandEvent& WXUNUSED(evt))
   if (m_lbAvailable->GetSelections(aSelected)) {
     aSelected.Sort(pless);
     for (size_t idx = 0; idx < aSelected.GetCount(); ++idx) {
-      MoveItem(aSelected[idx] - idx, m_lbAvailable, m_lbSelected);
+      MoveItem(aSelected[idx] - static_cast<int>(idx), m_lbAvailable, m_lbSelected);
     }
   }
 }
@@ -205,7 +205,7 @@ void FieldSelectionPanel::OnRemoveSome(wxCommandEvent& WXUNUSED(evt))
   if (m_lbSelected->GetSelections(aSelected)) {
     aSelected.Sort(pless);
     for (size_t idx = 0, nRemoved = 0; idx < aSelected.GetCount(); ++idx) {
-      const int listIndex = aSelected[idx] - nRemoved;
+      const int listIndex = aSelected[idx] - static_cast<int>(nRemoved);
       if (!ItemIsMandatory(listIndex)) {
         MoveItem(listIndex, m_lbSelected, m_lbAvailable);
         nRemoved++;
@@ -218,7 +218,7 @@ void FieldSelectionPanel::OnRemoveAll(wxCommandEvent& WXUNUSED(evt))
 {
   for(size_t itemsLeft = m_lbSelected->GetCount(), idx = 0; idx < itemsLeft; ) {
     if (!ItemIsMandatory(idx)) {
-      MoveItem(idx, m_lbSelected, m_lbAvailable);
+      MoveItem(static_cast<int>(idx), m_lbSelected, m_lbAvailable);
       --itemsLeft;
     }
     else

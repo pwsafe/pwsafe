@@ -21,6 +21,9 @@
 #include <string>
 #include <vector>
 
+#include <random>
+#include <algorithm>
+
 using namespace std;
 
 // Following macro get length of std_*_chars less the trailing \0
@@ -220,7 +223,10 @@ charT CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t) const
 
 StringX CPasswordCharPool::MakePassword() const
 {
-  // We don't care if the policy is inconsistent e.g. 
+  std::random_device rd;
+  std::mt19937 g(rd());
+    
+  // We don't care if the policy is inconsistent e.g.
   // number of lower case chars > 1 + make pronounceable
   // The individual routines (normal, hex, pronounceable) will
   // ignore what they don't need.
@@ -283,23 +289,15 @@ StringX CPasswordCharPool::MakePassword() const
     while ((m_pwlen - retval.length()) > cat.length())
       cat += cat0;
   }
-
-  random_shuffle(cat.begin(), cat.end(),
-                 [](size_t i)
-                 {
-                   return PWSrand::GetInstance()->RangeRand(i);
-                 });
+    
+  std::shuffle(cat.begin(), cat.end(), g);
 
   retval += cat.substr(0, m_pwlen - retval.length());
 
  do_shuffle:
   // If 'at least' values were non-zero, we have some unwanted order,
   // so we mix things up a bit:
-  random_shuffle(retval.begin(), retval.end(),
-                 [](size_t i)
-                 {
-                   return PWSrand::GetInstance()->RangeRand(i);
-                 });
+  std::shuffle(retval.begin(), retval.end(), g);
 
   ASSERT(retval.length() == size_t(m_pwlen));
   return retval;
@@ -374,6 +372,8 @@ StringX CPasswordCharPool::MakePronounceable() const
   uint nchar;        /* number of chars in password so far */
   PWSrand *pwsrnd = PWSrand::GetInstance();
   stringT password(m_pwlen, 0);
+  std::random_device rd;
+  std::mt19937 g(rd());
 
   /* Pick a random starting point. */
   /* (This cheats a little; the statistics for three-letter
@@ -440,11 +440,7 @@ StringX CPasswordCharPool::MakePronounceable() const
       // choose how many to replace (not too many, but at least one)
       unsigned int rn = pwsrnd->RangeRand(sc.size() - 1)/2 + 1;
       // replace some of them
-      random_shuffle(sc.begin(), sc.end(),
-                     [](size_t i)
-                     {
-                       return PWSrand::GetInstance()->RangeRand(i);
-                     });
+      std::shuffle(sc.begin(), sc.end(), g);
 
       for (unsigned int i = 0; i < rn; i++)
         leet_replace(password, sc[i], m_usedigits, m_usesymbols);

@@ -131,10 +131,10 @@ typedef unsigned ulong32;
   (y)[2] = static_cast<unsigned char>(((x)>>8)&255); (y)[3] = static_cast<unsigned char>((x)&255); }
 
 #define LOAD32H(x, y)                            \
-{ x = (static_cast<unsigned long>((y)[0] & 255)<<24) | \
+{ x = static_cast<ulong32>((static_cast<unsigned long>((y)[0] & 255)<<24) | \
   (static_cast<unsigned long>((y)[1] & 255)<<16) | \
   (static_cast<unsigned long>((y)[2] & 255)<<8)  | \
-  (static_cast<unsigned long>((y)[3] & 255)); }
+  (static_cast<unsigned long>((y)[3] & 255))); }
 
 #define STORE64H(x, y)                                                                     \
 { (y)[0] = static_cast<unsigned char>(((x)>>56)&255); (y)[1] = static_cast<unsigned char>(((x)>>48)&255);     \

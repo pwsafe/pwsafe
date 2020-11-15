@@ -51,28 +51,34 @@ Implementation of Twofish by Tom St Denis
 #define RS_POLY           0x14D
 
 /* The 4x4 MDS Linear Transform */
+/* MDS not used
 static const unsigned char MDS[4][4] = {
   { 0x01, 0xEF, 0x5B, 0x5B },
   { 0x5B, 0xEF, 0xEF, 0x01 },
   { 0xEF, 0x5B, 0x01, 0xEF },
   { 0xEF, 0x01, 0xEF, 0x5B }
 };
+ */
 
 /* The 4x8 RS Linear Transform */
+/* RS not used
 static const unsigned char RS[4][8] = {
   { 0x01, 0xA4, 0x55, 0x87, 0x5A, 0x58, 0xDB, 0x9E },
   { 0xA4, 0x56, 0x82, 0xF3, 0X1E, 0XC6, 0X68, 0XE5 },
   { 0X02, 0XA1, 0XFC, 0XC1, 0X47, 0XAE, 0X3D, 0X19 },
   { 0XA4, 0X55, 0X87, 0X5A, 0X58, 0XDB, 0X9E, 0X03 }
 };
+ */
 
 /* sbox usage orderings */
+/* qord not used
 static const unsigned char qord[4][5] = {
   { 1, 1, 0, 0, 1 },
   { 0, 1, 1, 0, 0 },
   { 0, 0, 0, 1, 1 },
   { 1, 0, 1, 1, 0 }
 };
+ */
 
 #ifdef TWOFISH_TABLES
 
@@ -229,7 +235,7 @@ static void mds_mult(const unsigned char *in, unsigned char *out)
 /* computes [y0 y1 y2 y3] = RS . [x0 x1 x2 x3 x4 x5 x6 x7] */
 static void rs_mult(const unsigned char *in, unsigned char *out)
 {
-  uint32 tmp;
+  unsigned long tmp;
   tmp = rs_tab0[in[0]] ^ rs_tab1[in[1]] ^ rs_tab2[in[2]] ^ rs_tab3[in[3]] ^
     rs_tab4[in[4]] ^ rs_tab5[in[5]] ^ rs_tab6[in[6]] ^ rs_tab7[in[7]];
   STORE32L(tmp, out);
@@ -427,28 +433,28 @@ static CryptStatus twofish_setup(const unsigned char *key, int keylen, int num_r
     for (x = 0; x < 256; x++) {
       tmpx0 = static_cast<unsigned char>(sbox(0, x));
       tmpx1 = static_cast<unsigned char>(sbox(1, x));
-      skey->S[0][x] = mds_column_mult(sbox(1, (sbox(0, tmpx0 ^ S[0]) ^ S[4])),0);
-      skey->S[1][x] = mds_column_mult(sbox(0, (sbox(0, tmpx1 ^ S[1]) ^ S[5])),1);
-      skey->S[2][x] = mds_column_mult(sbox(1, (sbox(1, tmpx0 ^ S[2]) ^ S[6])),2);
-      skey->S[3][x] = mds_column_mult(sbox(0, (sbox(1, tmpx1 ^ S[3]) ^ S[7])),3);
+      skey->S[0][x] = static_cast<uint32>(mds_column_mult(sbox(1, (sbox(0, tmpx0 ^ S[0]) ^ S[4])),0));
+      skey->S[1][x] = static_cast<uint32>(mds_column_mult(sbox(0, (sbox(0, tmpx1 ^ S[1]) ^ S[5])),1));
+      skey->S[2][x] = static_cast<uint32>(mds_column_mult(sbox(1, (sbox(1, tmpx0 ^ S[2]) ^ S[6])),2));
+      skey->S[3][x] = static_cast<uint32>(mds_column_mult(sbox(0, (sbox(1, tmpx1 ^ S[3]) ^ S[7])),3));
     }
   } else if (k == 3) {
     for (x = 0; x < 256; x++) {
       tmpx0 = static_cast<unsigned char>(sbox(0, x));
       tmpx1 = static_cast<unsigned char>(sbox(1, x));
-      skey->S[0][x] = mds_column_mult(sbox(1, (sbox(0, sbox(0, tmpx1 ^ S[0]) ^ S[4]) ^ S[8])),0);
-      skey->S[1][x] = mds_column_mult(sbox(0, (sbox(0, sbox(1, tmpx1 ^ S[1]) ^ S[5]) ^ S[9])),1);
-      skey->S[2][x] = mds_column_mult(sbox(1, (sbox(1, sbox(0, tmpx0 ^ S[2]) ^ S[6]) ^ S[10])),2);
-      skey->S[3][x] = mds_column_mult(sbox(0, (sbox(1, sbox(1, tmpx0 ^ S[3]) ^ S[7]) ^ S[11])),3);
+      skey->S[0][x] = static_cast<uint32>(mds_column_mult(sbox(1, (sbox(0, sbox(0, tmpx1 ^ S[0]) ^ S[4]) ^ S[8])),0));
+      skey->S[1][x] = static_cast<uint32>(mds_column_mult(sbox(0, (sbox(0, sbox(1, tmpx1 ^ S[1]) ^ S[5]) ^ S[9])),1));
+      skey->S[2][x] = static_cast<uint32>(mds_column_mult(sbox(1, (sbox(1, sbox(0, tmpx0 ^ S[2]) ^ S[6]) ^ S[10])),2));
+      skey->S[3][x] = static_cast<uint32>(mds_column_mult(sbox(0, (sbox(1, sbox(1, tmpx0 ^ S[3]) ^ S[7]) ^ S[11])),3));
     }
   } else {
     for (x = 0; x < 256; x++) {
       tmpx0 = static_cast<unsigned char>(sbox(0, x));
       tmpx1 = static_cast<unsigned char>(sbox(1, x));
-      skey->S[0][x] = mds_column_mult(sbox(1, (sbox(0, sbox(0, sbox(1, tmpx1 ^ S[0]) ^ S[4]) ^ S[8]) ^ S[12])),0);
-      skey->S[1][x] = mds_column_mult(sbox(0, (sbox(0, sbox(1, sbox(1, tmpx0 ^ S[1]) ^ S[5]) ^ S[9]) ^ S[13])),1);
-      skey->S[2][x] = mds_column_mult(sbox(1, (sbox(1, sbox(0, sbox(0, tmpx0 ^ S[2]) ^ S[6]) ^ S[10]) ^ S[14])),2);
-      skey->S[3][x] = mds_column_mult(sbox(0, (sbox(1, sbox(1, sbox(0, tmpx1 ^ S[3]) ^ S[7]) ^ S[11]) ^ S[15])),3);
+      skey->S[0][x] = static_cast<uint32>(mds_column_mult(sbox(1, (sbox(0, sbox(0, sbox(1, tmpx1 ^ S[0]) ^ S[4]) ^ S[8]) ^ S[12])),0));
+      skey->S[1][x] = static_cast<uint32>(mds_column_mult(sbox(0, (sbox(0, sbox(1, sbox(1, tmpx0 ^ S[1]) ^ S[5]) ^ S[9]) ^ S[13])),1));
+      skey->S[2][x] = static_cast<uint32>(mds_column_mult(sbox(1, (sbox(1, sbox(0, sbox(0, tmpx0 ^ S[2]) ^ S[6]) ^ S[10]) ^ S[14])),2));
+      skey->S[3][x] = static_cast<uint32>(mds_column_mult(sbox(0, (sbox(1, sbox(1, sbox(0, tmpx1 ^ S[3]) ^ S[7]) ^ S[11]) ^ S[15])),3));
     }
   }
 #else

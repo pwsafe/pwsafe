@@ -271,7 +271,7 @@ bool PWSafeApp::OnInit()
   // Get the locale environment variable 'LC_CTYPE' specified by the environment
   // For instance, the behavior of function 'wcstombs' depends on the LC_CTYPE 
   // category of the selected C locale.
-  setlocale(LC_CTYPE, "");
+  setlocale(LC_CTYPE, "en_US.UTF-8");
 
   //Used by help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
@@ -701,7 +701,7 @@ void PWSafeApp::RestoreFrameCoords(void)
   long top, bottom, left, right;
   PWSprefs::GetInstance()->GetPrefRect(top, bottom, left, right);
   if (!(left == -1 && top == -1 && right == -1 && bottom == -1)) {
-    wxRect rcApp(left, top, right - left, bottom - top);
+    wxRect rcApp(static_cast<int>(left), static_cast<int>(top), static_cast<int>(right - left), static_cast<int>(bottom - top));
 
     int displayWidth, displayHeight;
     ::wxDisplaySize(&displayWidth, &displayHeight);

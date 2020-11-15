@@ -259,13 +259,6 @@ void GetShortcutsFromMenu(wxMenu* menu, Iter cont_itr, const wxString& menuLabel
   }
 }
 
-struct SameShortcutTarget: public std::binary_function<st_prefShortcut, MenuItemData, bool>
-{
-  bool operator()(const st_prefShortcut& a, const MenuItemData& b) const {
-    return a.id == unsigned(b.GetMenuItem()->GetId());
-  }
-};
-
 struct ApplyEditedShortcuts {
   void operator()(MenuItemData& mi) const {
     if (mi.IsDirty()) {
@@ -421,7 +414,7 @@ int ModifiersToAccelFlags(int mods)
 
 bool PWSMenuShortcuts::IsDirty() const
 {
-  return std::find_if(m_midata.begin(), m_midata.end(), std::mem_fun_ref(&MenuItemData::IsDirty)) != m_midata.end();
+  return std::find_if(m_midata.begin(), m_midata.end(), [](const MenuItemData& a)->bool{return a.IsDirty();}) != m_midata.end();
 }
 
 /*
@@ -433,7 +426,7 @@ void PWSMenuShortcuts::ReadApplyUserShortcuts()
   const std::vector<st_prefShortcut>& userShortcuts = PWSprefs::GetInstance()->GetPrefShortcuts();
   for (userShortcut_t::const_iterator usrItr = userShortcuts.begin(); usrItr != userShortcuts.end(); ++usrItr) {
     auto itr = std::find_if(m_midata.begin(), m_midata.end(),
-                            std::bind1st(SameShortcutTarget(), *usrItr));
+                            [usrItr](MenuItemData& b){return usrItr->id == unsigned(b.GetMenuItem()->GetId());});
     if (itr != m_midata.end()) {
       itr->SetUserShortcut(*usrItr);
       itr->ApplyEffectiveShortcut();
@@ -478,10 +471,10 @@ void PWSMenuShortcuts::GridResetAllShortcuts()
       wxCHECK2_MSG(index < m_midata.size(), continue, wxT("ShortcutStatusArray is not the same size as menu item data"));
       wxAcceleratorEntry origShortcut = OriginalShortcutAt(index);
       if (IsNotNull(origShortcut))
-        m_shortcutsGrid->SetCellValue(index, COL_SHORTCUT_KEY, origShortcut.ToString());
+        m_shortcutsGrid->SetCellValue(static_cast<int>(index), COL_SHORTCUT_KEY, origShortcut.ToString());
       else
-        m_shortcutsGrid->SetCellValue(index, COL_SHORTCUT_KEY, wxEmptyString);
-      SetFont(m_shortcutsGrid, index);
+        m_shortcutsGrid->SetCellValue(static_cast<int>(index), COL_SHORTCUT_KEY, wxEmptyString);
+      SetFont(m_shortcutsGrid, static_cast<int>(index));
     }
   }
 }
@@ -496,15 +489,15 @@ void PWSMenuShortcuts::GridResetOrRemoveShortcut(wxGrid* grid, size_t index)
   if (status.ischanged() || status.isdeleted()) {
     status.setorig();
     if (IsNotNull(m_midata[index].GetOriginalShortcut()))
-      grid->SetCellValue(index, COL_SHORTCUT_KEY, m_midata[index].GetOriginalShortcut().ToString());
+      grid->SetCellValue(static_cast<int>(index), COL_SHORTCUT_KEY, m_midata[index].GetOriginalShortcut().ToString());
     else
-      grid->SetCellValue(index, COL_SHORTCUT_KEY, wxEmptyString);
+      grid->SetCellValue(static_cast<int>(index), COL_SHORTCUT_KEY, wxEmptyString);
   }
   else if (status.isorig() && IsNotNull(m_midata[index].GetOriginalShortcut())) {
     status.setdeleted();
-    grid->SetCellValue(index, COL_SHORTCUT_KEY, wxEmptyString);
+    grid->SetCellValue(static_cast<int>(index), COL_SHORTCUT_KEY, wxEmptyString);
   }
-  SetFont(grid, index);
+  SetFont(grid, static_cast<int>(index));
 }
 
 bool PWSMenuShortcuts::IsShortcutCustomizedAt(size_t idx) const
@@ -544,7 +537,7 @@ void PWSMenuShortcuts::RemoveShortcutAt(size_t idx)
 void PWSMenuShortcuts::SetShorcutsGridEventHandlers(wxGrid* grid, wxButton* resetAllButton)
 {
   m_shortcutGridStatus.resize(m_midata.size());
-  std::transform(m_midata.begin(), m_midata.end(), m_shortcutGridStatus.begin(), std::mem_fun_ref(&MenuItemData::GetStatus));
+  std::transform(m_midata.begin(), m_midata.end(), m_shortcutGridStatus.begin(), [](MenuItemData& a){return a.GetStatus();} /*std::mem_fun_ref(&MenuItemData::GetStatus)*/);
 
   grid->Connect(wxEVT_GRID_CELL_CHANGED, wxGridEventHandler(PWSMenuShortcuts::OnShortcutChange), nullptr, this);
   grid->Connect(wxEVT_GRID_CELL_RIGHT_CLICK, wxGridEventHandler(PWSMenuShortcuts::OnShortcutRightClick), nullptr, this);
@@ -724,10 +717,10 @@ bool ShortcutsGridValidator::TransferToWindow()
   wxCHECK_MSG(menuBar, false, wxT("Could not get menu bar from frame"));
 
   if (m_shortcuts.Count() > unsigned(grid->GetNumberRows())) {
-    grid->AppendRows(m_shortcuts.Count() - grid->GetNumberRows());
+    grid->AppendRows(static_cast<int>(m_shortcuts.Count()) - grid->GetNumberRows());
   }
   else if (m_shortcuts.Count() < unsigned(grid->GetNumberRows())) {
-    grid->DeleteRows(grid->GetNumberRows() - m_shortcuts.Count());
+    grid->DeleteRows(static_cast<int>(grid->GetNumberRows() - m_shortcuts.Count()));
   }
 
   for( unsigned row = 0; row < m_shortcuts.Count(); ++row) {
