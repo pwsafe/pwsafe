@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pwsafe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 15:33+0100\n"
+"POT-Creation-Date: 2020-11-15 19:40+0100\n"
 "PO-Revision-Date: 2020-03-01 22:00+0100\n"
 "Last-Translator: Attila Rajmund Nohl <attila.r.nohl@gmail.com>\n"
 "Language-Team: NAR <attila.r.nohl@gmail.com>\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/AboutDlg.cpp:141
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1429
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:407
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:505
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:508
 msgid "Password Safe"
 msgstr "Password Safe"
 
@@ -64,7 +64,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/AboutDlg.cpp:181
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:169
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:406
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:494
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:496
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:162
 #: ../../../ui/wxWidgets/SystemTray.cpp:137
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:197
@@ -775,7 +775,7 @@ msgstr "Nem sikerült jelszót generálni - érvénytelen szabály"
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:348
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1468
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1470
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:292
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:296
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:300
@@ -786,10 +786,10 @@ msgstr "Nem sikerült jelszót generálni - érvénytelen szabály"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:365
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:419
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:540
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:291
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:312
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:318
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:361
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:307
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:328
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:334
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:404
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:243
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:249
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:277
@@ -918,7 +918,7 @@ msgid "Identical items"
 msgstr "Megegyező tételek"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:160
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:628
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:630
 msgid "&Compare"
 msgstr "&Összehasonlítás"
 
@@ -1117,7 +1117,7 @@ msgstr "Ellenőrzés:"
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:105
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:71
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:357
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:311
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:327
 msgid "The combination cannot be blank."
 msgstr "A kombináció nem lehet üres."
 
@@ -1133,7 +1133,7 @@ msgid "The entry cannot be blank."
 msgstr "A kombináció nem lehet üres."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:68
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1121
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1123
 msgid ""
 "Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
 "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
@@ -1154,7 +1154,7 @@ msgstr "Széf kombináció:"
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:81
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:200
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:231
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:177
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:179
 msgid "Show Combination"
 msgstr "Kombináció megjelenítése"
 
@@ -1162,7 +1162,7 @@ msgstr "Kombináció megjelenítése"
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:102
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:242
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:195
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:211
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:168
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:364
 #: ../../../ui/wxWidgets/YubiMixin.cpp:56
@@ -1172,19 +1172,19 @@ msgstr "Kérem helyezze be a Yubikey-t"
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:142
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:364
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:539
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:317
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:360
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:333
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:403
 msgid "File or path not found."
 msgstr "Fájl vagy útvonal nem található."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:149
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1141
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1143
 msgid "That file is already open."
 msgstr "Ez a fájl már meg van nyitva."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:156
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:413
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:288
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:304
 msgid ""
 "Incorrect passkey, not a PasswordSafe database, or a corrupt database. "
 "(Backup database has same name as original, ending with '~')"
@@ -1296,7 +1296,7 @@ msgstr "A Cím mezőben is ezzel lesznek a pontok lecserélve"
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:366
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:223
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:251
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:219
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:235
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:177
 #, fuzzy
 msgid "&OK"
@@ -1307,7 +1307,7 @@ msgstr "OK"
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:391
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:227
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:255
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:215
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:231
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:180
 #, fuzzy
 msgid "&Cancel"
@@ -1317,10 +1317,10 @@ msgstr "Mégse"
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:166
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:252
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:394
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:666
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:668
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:230
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:258
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:203
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:219
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:157
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:200
@@ -1468,7 +1468,7 @@ msgid "&New"
 msgstr "&Új"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:151
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:586
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:588
 msgid "&Edit"
 msgstr "Sze&rkesztés"
 
@@ -1596,8 +1596,8 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:528
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:544
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:584
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1599
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:586
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1601
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:37
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:71
 #, fuzzy
@@ -2796,543 +2796,543 @@ msgstr ""
 msgid "Policy Error"
 msgstr "Szabály hiba"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:492
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:494
 msgid "&New..."
 msgstr "&Új..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:493
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:495
 msgid "&Open..."
 msgstr "&Megnyitás..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:498
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:500
 #, fuzzy
 msgid "&Unlock Safe\tCtrl+I"
 msgstr "Szé&f nyitása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:501
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:503
 #, fuzzy
 msgid "&Lock Safe\tCtrl+J"
 msgstr "&Széf zárolása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:515
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:517
 #, fuzzy
 msgid "&Recent Safes..."
 msgstr "&Legutóbbi széfek"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:522
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:524
 msgid "Clear Recent Safe List"
 msgstr "Legutóbbi széfek listájának törlése"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:524
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:526
 msgid "&Save..."
 msgstr "M&entés..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:525
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:527
 msgid "Save &As..."
 msgstr "Me&ntés másként..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:529
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:531
 msgid "v&1.x format..."
 msgstr "v&1.x formátum..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:530
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:532
 msgid "v&2 format..."
 msgstr "v&2 formátum..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:531
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:533
 msgid "v&4 format (EXPERIMENTAL)..."
 msgstr "v&4 formátum (KÍSÉRLETI)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:532
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:534
 msgid "&Plain Text (tab separated)..."
 msgstr "&Egyszerű szöveg (tabbal határolt)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:533
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:538
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:535
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:540
 msgid "&XML format..."
 msgstr "&XML formátum..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:534
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:536
 msgid "Export &To"
 msgstr "Exportálás &formátumba"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:537
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:539
 msgid "&Plain Text..."
 msgstr "&Egyszerű szöveg..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:539
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:541
 msgid "&KeePass..."
 msgstr "&KeePass..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:540
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:542
 msgid "Import &From"
 msgstr "Importálás &innen:"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:542
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:544
 msgid "&Merge..."
 msgstr "Összefűzés..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:543
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:545
 msgid "&Compare..."
 msgstr "Össze&hasonlítás..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:544
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:546
 msgid "S&ynchronize..."
 msgstr "&Szinkronizálás..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:546
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:548
 msgid "&Properties"
 msgstr "&Tulajdonságok"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:548
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:550
 msgid "E&xit"
 msgstr "&Kilépés"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:549
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:551
 msgid "&File"
 msgstr "&Fájl"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:556
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:558
 msgid "&Add Entry...\tCtrl+A"
 msgstr "&Bejegyzés hozzáadása...\tCtrl-A"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:558
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:560
 msgid "&View Entry...\tCtrl+Enter"
 msgstr "Bejegyzés &megtekintése...\tCtrl+Enter"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:561
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:563
 msgid "Edit Entry...\tCtrl+Enter"
 msgstr "Bejegyzés szerkesztése...\tCtrl+Enter"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:563
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:565
 msgid "&Delete Entry\tDel"
 msgstr "Bejegyzés &törlése\tDel"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:564
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:566
 msgid "Rename Entry\tF2"
 msgstr "Bejegyzés átnevezése\tF2"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:565
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:567
 msgid "&Find Entry...\tCtrl+F"
 msgstr "Bejegyzés &keresése...\tCtrl-F"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:566
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:568
 msgid "&Duplicate Entry\tCtrl+D"
 msgstr "Bejegyzés &duplikálása\tCtrl+D"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:567
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1602
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:569
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1604
 msgid "Protect Entry"
 msgstr "Bejegyzés védelme"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:569
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:571
 msgid "Add Group"
 msgstr "Csoport hozzáadása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:573
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:575
 msgid "C&lear Clipboard\tCtrl+Del"
 msgstr "Vágólap tör&lése\tCtrl+Del"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:575
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:577
 msgid "&Copy Password to Clipboard\tCtrl+C"
 msgstr "&Jelszó másolása a vágólapra\tCtrl+C"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:576
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:578
 msgid "Copy &Username to Clipboard\tCtrl+U"
 msgstr "Felhasználónév &vágólapra másolása\tCtrl+U"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:577
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:579
 msgid "Copy &Notes to Clipboard\tCtrl+G"
 msgstr "&Megjegyzés vágólapra másolása\tCtrl+G"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:578
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:580
 msgid "Copy URL to Clipboard\tCtrl+Alt+L"
 msgstr "URL vágólapra másolása\tCtrl+Alt+L"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:579
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:581
 msgid "&Browse to URL\tCtrl+L"
 msgstr "&Navigálás URL-re\tCtrl+L"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:580
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:582
 msgid "Perform Auto&type\tCtrl+T"
 msgstr "&Autogépelés\tCtrl+T"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:581
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1552
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:583
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1554
 msgid "Create &Shortcut"
 msgstr "&Parancsikon létrehozása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:582
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:584
 msgid "Go to Base entry"
 msgstr "&Ugrás az alapbejegyzésre"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:593
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:595
 msgid "Flattened &List"
 msgstr "Egyszerű &lista"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:594
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:596
 msgid "Nested &Tree"
 msgstr "Többszintű &fa"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:596
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:598
 msgid "Toolbar &visible"
 msgstr "Eszköztár &látható"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:597
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:599
 msgid "&New Toolbar"
 msgstr "&Új eszköztár"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:598
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:600
 msgid "&Classic Toolbar"
 msgstr "&Klasszikus eszközsor"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:599
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:601
 msgid "&Dragbar visible"
 msgstr "&Áthúzósáv (Dragbar) látható"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:601
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:603
 #: ../../../ui/wxWidgets/ToolbarButtons.h:216
 msgid "Expand All"
 msgstr "Összes kibontása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:602
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:604
 #: ../../../ui/wxWidgets/ToolbarButtons.h:217
 msgid "Collapse All"
 msgstr "Összes összecsukása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:605
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:607
 #, fuzzy
 msgid "&Unsaved Changes"
 msgstr "Nem &mentett változtatások mutatása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:606
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:608
 #, fuzzy
 msgid "Entries with E&xpiry Dates"
 msgstr "Jelszó&lejárattal rendelkező bejegyzések mutatása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:607
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:609
 #, fuzzy
 msgid "Last Find results"
 msgstr "bejegyzések"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:608
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:610
 msgid "Subviews"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:611
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:613
 msgid "&New/Edit Filter..."
 msgstr "&Szűrő hozzáadása/szerkesztése..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:612
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:614
 msgid "&Apply current"
 msgstr "&Az aktuális alkalmazása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:613
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:615
 msgid "&Manage..."
 msgstr "&Kezelés..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:614
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:616
 msgid "&Filters"
 msgstr "&Szűrők"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:616
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:618
 msgid "Customize &Main Toolbar..."
 msgstr "Fő &eszközsor testreszabása..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:619
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:621
 msgid "&Tree/List Font"
 msgstr "&Fanézet/Lista betűtípusa"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:620
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:622
 msgid "&Add/Edit Font"
 msgstr "&Hozzáadás/szerkesztés betűtípusa"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:621
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:623
 msgid "&Password Font"
 msgstr "&Jelszó betűtípusa"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:622
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:624
 msgid "&Notes Font"
 msgstr "&Megjegyzések betűtípusa"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:625
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:627
 msgid "Change &Font"
 msgstr "&Betűtípus megváltoztatása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:629
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:631
 msgid "&Find"
 msgstr "&Keresés"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:630
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:632
 msgid "Import &Text"
 msgstr "&Szöveg importálása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:631
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:633
 msgid "Import &XML"
 msgstr "&XML importálása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:632
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:634
 msgid "&Merge"
 msgstr "&Összefűzés"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:633
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:635
 msgid "&Validate"
 msgstr "&Érvényesítés"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:634
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:636
 msgid "Reports"
 msgstr "&Jelentések"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:635
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:637
 msgid "&View"
 msgstr "&Nézet"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:642
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:644
 msgid "&Change Safe Combination..."
 msgstr "&Széf kombinációjának megváltoztatása..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:644
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:646
 msgid "Make &Backup...\tCtrl+B"
 msgstr "&Mentés készítése...\tCtrl+B"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:645
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:647
 msgid "&Restore from Backup...\tCtrl+R"
 msgstr "Visszaállítás mentésből...\tCtrl+R"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:647
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:649
 msgid "&Options...\tCtrl+M"
 msgstr "&Beállítások...\tCtrl+M"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:648
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:650
 msgid "Password Policies..."
 msgstr "Jelszószabályok..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:650
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:652
 msgid "Generate &Password...\tCtrl+P"
 msgstr "&Jelszó generálása...\tCtrl+P"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:650
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:652
 msgid "Generate Password"
 msgstr "Jelszó generálása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:652
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:654
 msgid "YubiKey..."
 msgstr "Yubikey..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:652
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:654
 msgid "Configure and backup YubiKeys"
 msgstr "YubiKey-ek beállítása és mentése"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:656
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:658
 msgid "&Manage"
 msgstr "&Kezelés"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:663
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:665
 msgid "Get &Help"
 msgstr "&Súgó\tF1"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:664
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:666
 msgid "Visit Password Safe &website..."
 msgstr "A Password Safe &weboldalának meglátogatása..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:665
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:667
 #: ../../../ui/wxWidgets/SystemTray.cpp:146
 msgid "&About Password Safe..."
 msgstr "&A Password Safe program névjegye..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:765
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:767
 msgid "Select Language"
 msgstr "Nyelv kiválasztása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1141
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1143
 msgid "Open database"
 msgstr "Adatbázis megnyitása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1466
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1468
 #, fuzzy, c-format
 msgid "Unknown code: %d"
 msgstr "Ismeretlen mezők"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1507
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1520
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1509
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1522
 msgid "Add &Entry"
 msgstr "&Bejegyzés hozzáadása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1508
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1510
 msgid "Add &Group"
 msgstr "&Csoport hozzáadása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1511
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1513
 #, fuzzy
 msgid "&Rename Group"
 msgstr "Csoport átnevezése"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1512
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1514
 msgid "&Delete Group"
 msgstr "&Csoport törlése"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1527
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1529
 msgid "Copy &Username to Clipboard"
 msgstr "&Felhasználónév vágólapra másolása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1528
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1530
 msgid "&Copy Password to Clipboard"
 msgstr "&Jelszó másolása a vágólapra"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1529
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1531
 msgid "Display subset of Password"
 msgstr "Jelszó egy részletének megjelenítése"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1531
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1533
 msgid "Display Password as &QR code"
 msgstr "Jelszó megjelenítése &QR kódként"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1533
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1535
 msgid "Copy &Notes to Clipboard"
 msgstr "&Megjegyzés vágólapra másolása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1534
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1536
 msgid "Copy UR&L to Clipboard"
 msgstr "UR&L vágólapra másolása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1535
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1537
 msgid "Copy email to Clipboard"
 msgstr "Email vágólapra másolása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1536
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1538
 msgid "Copy Run Command to Clipboard"
 msgstr "Futtatási parancs vágólapra másolása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1538
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1540
 #: ../../../ui/wxWidgets/SystemTray.cpp:205
 msgid "&Browse to URL"
 msgstr "&Navigálás URL-re"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1539
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1541
 #: ../../../ui/wxWidgets/SystemTray.cpp:206
 msgid "Browse to URL + &Autotype"
 msgstr "Navigálás az URL-re + Autogépelés"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1540
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1542
 msgid "Send &email"
 msgstr "E-mail &küldése"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1541
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1543
 #: ../../../ui/wxWidgets/SystemTray.cpp:213
 msgid "&Run Command"
 msgstr "&Parancs futtatása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1542
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1544
 msgid "Perform Auto &Type"
 msgstr "&Autogépelés"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1545
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1547
 msgid "&View Entry..."
 msgstr "&Bejegyzés megtekintése..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1548
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1550
 msgid "Edit Entry..."
 msgstr "Bejegyzés szerkesztése..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1550
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1552
 msgid "&Duplicate Entry"
 msgstr "&Bejegyzés duplikálása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1551
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1553
 msgid "Delete Entry"
 msgstr "Bejegyzés törlése"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1593
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1595
 #, fuzzy
 msgid "Goto &Shortcuts..."
 msgstr "Billentyűsorozatok"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1596
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1598
 msgid "&Go to Base entry"
 msgstr "&Ugrás az alapbejegyzésre"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1597
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1599
 msgid "&Edit Base entry"
 msgstr "&Alapbejegyzés szerkesztése"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2041
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2043
 msgid "Could not re-load database: "
 msgstr "Nem sikerült újratölteni az adatbázist: "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2042
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2044
 msgid "Error re-loading last database"
 msgstr "Hiba történt az utolsó adatbázis újratöltése közben"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2289
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2291
 msgid "There was an error loading the database: "
 msgstr "Hiba történt az adatbázis betöltése közben: "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2290
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2292
 msgid "Could not load database"
 msgstr "Nem sikerült betölteni az adatbázist"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2352
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2354
 msgid "Group copied "
 msgstr "Csoport másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2355
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2357
 msgid "Title copied "
 msgstr "Jegyzetek másolva  "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2358
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2360
 msgid "User copied "
 msgstr "Felhasználó másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2361
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2363
 msgid "Pswd copied "
 msgstr "Jelszó másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2364
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2366
 msgid "Notes copied "
 msgstr "Jegyzetek másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2367
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2369
 msgid "URL copied "
 msgstr "URL másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2370
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2372
 msgid "Autotype copied "
 msgstr "Autogépelés másolva  "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2373
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2375
 msgid "RunCmd copied "
 msgstr "Parancsfuttatás másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2376
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2378
 msgid "Email copied "
 msgstr "Email másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2379
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2381
 #, fuzzy
 msgid "Password History copied "
 msgstr "Jelszótörténet"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2382
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2384
 msgid "Old Pswd copied "
 msgstr "Régi jelszó másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2421
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2423
 msgid "Select Tree/List display font"
 msgstr "Fa- és listanézet betűtípusának kiválasztása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2438
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2440
 msgid "Select Add/Edit display font"
 msgstr "Hozzáadás és szerkesztés betűtípusának kiválasztása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2442
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2444
 msgid "Select Password display font"
 msgstr "Jelszó betűtípusának kiválasztása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2446
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2448
 msgid "Select Notes display font"
 msgstr "Megjegyzések betűtípusának kiválasztása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2450
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2452
 #, fuzzy
 msgid "Select Virtual Keyboard font"
 msgstr "Virtuális billentyűzet betűtípusának megadása"
@@ -3347,7 +3347,7 @@ msgid "&Find previous...\tSHIFT+F3"
 msgstr "Előző keresése"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:338
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:494
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:497
 msgid "Advanced Find Options"
 msgstr "Speciális keresési beállítások"
 
@@ -3356,68 +3356,68 @@ msgstr "Speciális keresési beállítások"
 msgid "search"
 msgstr "&Keresés"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:483
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:486
 msgid "Close SearchBar"
 msgstr "Keresősáv bezárása"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:492
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:495
 msgid "Find Next"
 msgstr "Következő keresése"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:493
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:496
 msgid "Case Insensitive Search"
 msgstr "Kis- és nagybetűre érzéketlen keresés"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:495
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:498
 msgid "Create report of previous Find search"
 msgstr "Jelentés létrehozása az előző keresésből"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:496
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:499
 msgid "Clear Find"
 msgstr "Keresés törlése"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:505
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:508
 msgid "Could not create Search Bar"
 msgstr "Nem sikerült létrehozni a keresősávot"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:516
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:519
 msgid "Could not display searchbar"
 msgstr "Nem sikerült a keresősáv megjelenítése"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:592
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:595
 msgid "Could not re-display searchbar at "
 msgstr "Nem sikerült a keresősáv újbóli megjelenítése"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:592
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:595
 msgid " of size "
 msgstr " méretben "
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:593
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:596
 msgid " because "
 msgstr " mivel "
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:593
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:596
 msgid "it's already visible"
 msgstr "már meg van jelenítve"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:593
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:596
 #, fuzzy
 msgid " of an error"
 msgstr "Fájlmegnyitási hiba"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:630
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:633
 msgid "Search hit bottom, continuing at top"
 msgstr "A keresés az aljára ért, folytatás az tetején"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:648
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:651
 msgid "Search hit top, continuing at bottom"
 msgstr "A keresés a tetejére ért, folytatás az alján"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:665
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:668
 msgid "No matches found"
 msgstr "Nincs találat"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:668
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:671
 msgid "1 match"
 msgstr "1 találat"
 
@@ -3625,6 +3625,7 @@ msgid "Open Password Database:"
 msgstr "Jelszóadatbázis megnyitása:"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:224
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:188
 msgid "Open as read-only"
 msgstr "Megnyitás csak olvasásra"
 
@@ -3669,24 +3670,24 @@ msgstr ""
 "Password Safe adatbázisok (*.psafe3; *.dat)|*.psafe3;*.dat| Minden fájl (*."
 "*; *)|*.*;*"
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:157
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:160
 msgid "Please enter the safe combination for this password database."
 msgstr "Kérem adja meg ezen adatbázis jelszókombinációját."
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:160
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:163
 msgid "filename"
 msgstr "fájlnév"
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:169
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:172
 msgid "Safe combination:"
 msgstr "Széfkombináció:"
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:208
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:224
 #: ../../../ui/wxWidgets/SystemTray.cpp:148
 msgid "&Exit"
 msgstr "K&ilépés"
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:285
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:301
 msgid "Three strikes - yer out!"
 msgstr "Harmadik hiba - kiestél!"
 
@@ -4073,23 +4074,23 @@ msgstr ""
 msgid "&Delete from Recent Entry List"
 msgstr "&Törlés a legutóbbi bejgyegyzések listájáról"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:781
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:810
 msgid "New Group"
 msgstr "Új csoport"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:783
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:812
 msgid "Could not add empty group item to tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:796
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:825
 msgid "Renaming of non-Group items is not implemented"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:823
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:852
 msgid "Dots are not allowed in group names"
 msgstr "Csoport nevében nem szerepelhet pont"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:823
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:852
 msgid "Invalid Character"
 msgstr "Érvénytelen karakter"
 
@@ -4239,7 +4240,7 @@ msgstr "Széfkombináció megváltoztatása"
 msgid "Safe Combination Entry"
 msgstr "Széf kombináció megadása"
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.h:52
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.h:53
 msgid "Enter Safe Combination"
 msgstr "Adja meg a széf kombinációt"
 

@@ -66,7 +66,9 @@ public:
 
 private:
   unsigned m_delayMS; //delay between keystrokes in milliseconds
-  /* CKeySendImpl *m_impl; NOT USED */
+#ifndef __PWS_MACINTOSH__
+  CKeySendImpl *m_impl;
+#endif
 };
 
 #endif // _KEYSEND_H_

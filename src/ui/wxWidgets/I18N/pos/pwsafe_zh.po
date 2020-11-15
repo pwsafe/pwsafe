@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 15:33+0100\n"
+"POT-Creation-Date: 2020-11-15 19:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/AboutDlg.cpp:141
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1429
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:407
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:505
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:508
 msgid "Password Safe"
 msgstr "Password Safe"
 
@@ -69,7 +69,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/AboutDlg.cpp:181
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:169
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:406
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:494
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:496
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:162
 #: ../../../ui/wxWidgets/SystemTray.cpp:137
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:197
@@ -816,7 +816,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:348
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1468
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1470
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:292
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:296
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:300
@@ -827,10 +827,10 @@ msgstr ""
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:365
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:419
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:540
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:291
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:312
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:318
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:361
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:307
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:328
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:334
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:404
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:243
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:249
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:277
@@ -968,7 +968,7 @@ msgid "Identical items"
 msgstr "%d 个项目"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:160
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:628
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:630
 msgid "&Compare"
 msgstr "比较(&C)"
 
@@ -1175,7 +1175,7 @@ msgstr "验证密匙:"
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:105
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:71
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:357
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:311
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:327
 msgid "The combination cannot be blank."
 msgstr "密码不可空缺！"
 
@@ -1191,7 +1191,7 @@ msgid "The entry cannot be blank."
 msgstr "密码不可空缺！"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:68
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1121
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1123
 #, fuzzy
 msgid ""
 "Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
@@ -1212,7 +1212,7 @@ msgstr "保险箱密码:"
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:81
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:200
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:231
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:177
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:179
 #, fuzzy
 msgid "Show Combination"
 msgstr "保险箱密码:"
@@ -1221,7 +1221,7 @@ msgstr "保险箱密码:"
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:102
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:242
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:195
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:211
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:168
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:364
 #: ../../../ui/wxWidgets/YubiMixin.cpp:56
@@ -1231,19 +1231,19 @@ msgstr ""
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:142
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:364
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:539
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:317
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:360
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:333
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:403
 msgid "File or path not found."
 msgstr "文件或路径未建立！"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:149
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1141
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1143
 msgid "That file is already open."
 msgstr "文件已经打开！"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:156
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:413
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:288
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:304
 msgid ""
 "Incorrect passkey, not a PasswordSafe database, or a corrupt database. "
 "(Backup database has same name as original, ending with '~')"
@@ -1352,7 +1352,7 @@ msgstr "同时代替标题字段的句号"
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:366
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:223
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:251
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:219
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:235
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:177
 #, fuzzy
 msgid "&OK"
@@ -1363,7 +1363,7 @@ msgstr "确定"
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:391
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:227
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:255
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:215
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:231
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:180
 #, fuzzy
 msgid "&Cancel"
@@ -1373,10 +1373,10 @@ msgstr "取消"
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:166
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:252
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:394
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:666
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:668
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:230
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:258
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:203
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:219
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:157
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:200
@@ -1527,7 +1527,7 @@ msgid "&New"
 msgstr "新建(&N)"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:151
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:586
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:588
 msgid "&Edit"
 msgstr "编辑(&E)"
 
@@ -1665,8 +1665,8 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:528
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:544
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:584
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1599
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:586
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1601
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:37
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:71
 #, fuzzy
@@ -2912,595 +2912,595 @@ msgstr ""
 msgid "Policy Error"
 msgstr "密码策略"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:492
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:494
 #, fuzzy
 msgid "&New..."
 msgstr "新建(&N)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:493
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:495
 msgid "&Open..."
 msgstr "打开(&O)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:498
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:500
 #, fuzzy
 msgid "&Unlock Safe\tCtrl+I"
 msgstr "解除锁定"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:501
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:503
 #, fuzzy
 msgid "&Lock Safe\tCtrl+J"
 msgstr "锁定保险箱"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:515
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:517
 #, fuzzy
 msgid "&Recent Safes..."
 msgstr "最近保险箱(&R)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:522
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:524
 #, fuzzy
 msgid "Clear Recent Safe List"
 msgstr "清除最近保险箱列表(&C)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:524
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:526
 msgid "&Save..."
 msgstr "保存(&S)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:525
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:527
 msgid "Save &As..."
 msgstr "另存为(&A)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:529
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:531
 msgid "v&1.x format..."
 msgstr "v1.x 旧版格式(&1)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:530
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:532
 msgid "v&2 format..."
 msgstr "v2 旧版格式(&2)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:531
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:533
 msgid "v&4 format (EXPERIMENTAL)..."
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:532
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:534
 msgid "&Plain Text (tab separated)..."
 msgstr "纯文本文件(分隔符标记)(&P)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:533
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:538
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:535
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:540
 msgid "&XML format..."
 msgstr "XML 格式(&X)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:534
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:536
 msgid "Export &To"
 msgstr "导出为(&T)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:537
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:539
 msgid "&Plain Text..."
 msgstr "纯文本文件(&P)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:539
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:541
 msgid "&KeePass..."
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:540
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:542
 msgid "Import &From"
 msgstr "导入(&F)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:542
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:544
 #, fuzzy
 msgid "&Merge..."
 msgstr "合并..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:543
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:545
 #, fuzzy
 msgid "&Compare..."
 msgstr "比较..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:544
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:546
 msgid "S&ynchronize..."
 msgstr "同步(&Y)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:546
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:548
 msgid "&Properties"
 msgstr "属性(&P)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:548
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:550
 msgid "E&xit"
 msgstr "退出(&X)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:549
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:551
 msgid "&File"
 msgstr "文件(&F)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:556
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:558
 #, fuzzy
 msgid "&Add Entry...\tCtrl+A"
 msgstr "添加项目(&A)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:558
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:560
 #, fuzzy
 msgid "&View Entry...\tCtrl+Enter"
 msgstr "编辑/查看项目(&V)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:561
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:563
 #, fuzzy
 msgid "Edit Entry...\tCtrl+Enter"
 msgstr "编辑/查看项目(&V)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:563
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:565
 #, fuzzy
 msgid "&Delete Entry\tDel"
 msgstr "删除项目(&D)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:564
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:566
 #, fuzzy
 msgid "Rename Entry\tF2"
 msgstr "重命名项目"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:565
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:567
 #, fuzzy
 msgid "&Find Entry...\tCtrl+F"
 msgstr "添加项目(&A)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:566
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:568
 #, fuzzy
 msgid "&Duplicate Entry\tCtrl+D"
 msgstr "复制项目(&D)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:567
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1602
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:569
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1604
 msgid "Protect Entry"
 msgstr "保护项目"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:569
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:571
 msgid "Add Group"
 msgstr "添加组"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:573
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:575
 #, fuzzy
 msgid "C&lear Clipboard\tCtrl+Del"
 msgstr "清空剪贴板(&L)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:575
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:577
 #, fuzzy
 msgid "&Copy Password to Clipboard\tCtrl+C"
 msgstr "复制密码到剪贴板(&C)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:576
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:578
 #, fuzzy
 msgid "Copy &Username to Clipboard\tCtrl+U"
 msgstr "复制用户名到剪贴板(&U)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:577
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:579
 #, fuzzy
 msgid "Copy &Notes to Clipboard\tCtrl+G"
 msgstr "复制备注到剪贴板(&N)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:578
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:580
 #, fuzzy
 msgid "Copy URL to Clipboard\tCtrl+Alt+L"
 msgstr "复制网址到剪贴板"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:579
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:581
 #, fuzzy
 msgid "&Browse to URL\tCtrl+L"
 msgstr "浏览网址(&B)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:580
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:582
 #, fuzzy
 msgid "Perform Auto&type\tCtrl+T"
 msgstr "执行自动输入(&t)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:581
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1552
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:583
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1554
 msgid "Create &Shortcut"
 msgstr "创建快捷方式(&S)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:582
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:584
 #, fuzzy
 msgid "Go to Base entry"
 msgstr "转到基本项目(&G)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:593
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:595
 msgid "Flattened &List"
 msgstr "展开列表(&L)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:594
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:596
 msgid "Nested &Tree"
 msgstr "树状目录(&T)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:596
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:598
 msgid "Toolbar &visible"
 msgstr "显示工具栏(&V)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:597
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:599
 msgid "&New Toolbar"
 msgstr "新式工具栏(&N)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:598
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:600
 msgid "&Classic Toolbar"
 msgstr "经典工具栏(&C)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:599
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:601
 msgid "&Dragbar visible"
 msgstr "显示拖放栏(&D)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:601
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:603
 #: ../../../ui/wxWidgets/ToolbarButtons.h:216
 msgid "Expand All"
 msgstr "全部展开"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:602
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:604
 #: ../../../ui/wxWidgets/ToolbarButtons.h:217
 msgid "Collapse All"
 msgstr "全部收缩"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:605
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:607
 #, fuzzy
 msgid "&Unsaved Changes"
 msgstr "显示未保存更改(&U)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:606
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:608
 #, fuzzy
 msgid "Entries with E&xpiry Dates"
 msgstr "显示具有失效日期的项目(&X)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:607
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:609
 #, fuzzy
 msgid "Last Find results"
 msgstr "个项目"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:608
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:610
 msgid "Subviews"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:611
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:613
 #, fuzzy
 msgid "&New/Edit Filter..."
 msgstr "新建/编辑筛选(&N)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:612
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:614
 msgid "&Apply current"
 msgstr "应用当前(&A)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:613
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:615
 msgid "&Manage..."
 msgstr "管理(&M)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:614
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:616
 msgid "&Filters"
 msgstr "筛选(&F)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:616
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:618
 #, fuzzy
 msgid "Customize &Main Toolbar..."
 msgstr "自定义工具栏(&M)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:619
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:621
 msgid "&Tree/List Font"
 msgstr "树状目录/列表字体(&T)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:620
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:622
 #, fuzzy
 msgid "&Add/Edit Font"
 msgstr "树状目录/列表字体(&T)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:621
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:623
 msgid "&Password Font"
 msgstr "密码字体(&P)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:622
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:624
 #, fuzzy
 msgid "&Notes Font"
 msgstr "备注"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:625
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:627
 msgid "Change &Font"
 msgstr "更改字体(&F)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:629
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:631
 msgid "&Find"
 msgstr "查找(&F)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:630
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:632
 msgid "Import &Text"
 msgstr "导入文本(&T)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:631
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:633
 msgid "Import &XML"
 msgstr "导入 XML(&X)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:632
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:634
 #, fuzzy
 msgid "&Merge"
 msgstr "合并(&M)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:633
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:635
 msgid "&Validate"
 msgstr "验证(&V)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:634
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:636
 #, fuzzy
 msgid "Reports"
 msgstr "报告(&R)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:635
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:637
 msgid "&View"
 msgstr "查看(&V)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:642
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:644
 msgid "&Change Safe Combination..."
 msgstr "更改保险箱密码(&C)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:644
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:646
 #, fuzzy
 msgid "Make &Backup...\tCtrl+B"
 msgstr "生成备份"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:645
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:647
 #, fuzzy
 msgid "&Restore from Backup...\tCtrl+R"
 msgstr "恢复备份..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:647
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:649
 #, fuzzy
 msgid "&Options...\tCtrl+M"
 msgstr "选项(&O)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:648
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:650
 #, fuzzy
 msgid "Password Policies..."
 msgstr "密码策略"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:650
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:652
 #, fuzzy
 msgid "Generate &Password...\tCtrl+P"
 msgstr "生成密码(&P)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:650
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:652
 msgid "Generate Password"
 msgstr "生成密码"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:652
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:654
 msgid "YubiKey..."
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:652
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:654
 msgid "Configure and backup YubiKeys"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:656
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:658
 msgid "&Manage"
 msgstr "管理(&M)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:663
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:665
 msgid "Get &Help"
 msgstr "获取帮助(&H)\tF1"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:664
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:666
 msgid "Visit Password Safe &website..."
 msgstr "访问 Password Safe 网站(&W)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:665
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:667
 #: ../../../ui/wxWidgets/SystemTray.cpp:146
 msgid "&About Password Safe..."
 msgstr "关于 Password Safe(&A)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:765
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:767
 #, fuzzy
 msgid "Select Language"
 msgstr "选择所有项目"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1141
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1143
 msgid "Open database"
 msgstr "打开数据库"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1466
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1468
 #, fuzzy, c-format
 msgid "Unknown code: %d"
 msgstr "未知字段"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1507
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1520
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1509
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1522
 msgid "Add &Entry"
 msgstr "添加项目(&E)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1508
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1510
 msgid "Add &Group"
 msgstr "添加组(&G)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1511
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1513
 #, fuzzy
 msgid "&Rename Group"
 msgstr "重命名组"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1512
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1514
 msgid "&Delete Group"
 msgstr "删除组(&D)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1527
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1529
 #, fuzzy
 msgid "Copy &Username to Clipboard"
 msgstr "复制用户名到剪贴板(&U)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1528
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1530
 #, fuzzy
 msgid "&Copy Password to Clipboard"
 msgstr ""
 "\n"
 "复制密码到剪贴板"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1529
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1531
 msgid "Display subset of Password"
 msgstr "显示密码子集"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1531
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1533
 msgid "Display Password as &QR code"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1533
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1535
 #, fuzzy
 msgid "Copy &Notes to Clipboard"
 msgstr "复制备注到剪贴板(&N)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1534
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1536
 msgid "Copy UR&L to Clipboard"
 msgstr "复制网址到剪贴板(&L)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1535
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1537
 msgid "Copy email to Clipboard"
 msgstr "复制邮箱到剪贴板"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1536
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1538
 msgid "Copy Run Command to Clipboard"
 msgstr "复制运行命令到剪贴板"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1538
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1540
 #: ../../../ui/wxWidgets/SystemTray.cpp:205
 #, fuzzy
 msgid "&Browse to URL"
 msgstr "浏览网址"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1539
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1541
 #: ../../../ui/wxWidgets/SystemTray.cpp:206
 msgid "Browse to URL + &Autotype"
 msgstr "浏览网址+自动输入(&A)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1540
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1542
 msgid "Send &email"
 msgstr "发送邮件(&E)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1541
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1543
 #: ../../../ui/wxWidgets/SystemTray.cpp:213
 msgid "&Run Command"
 msgstr "运行命令(&R)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1542
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1544
 msgid "Perform Auto &Type"
 msgstr "执行自动输入(&T)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1545
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1547
 #, fuzzy
 msgid "&View Entry..."
 msgstr "查看项目"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1548
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1550
 #, fuzzy
 msgid "Edit Entry..."
 msgstr "编辑项目..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1550
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1552
 #, fuzzy
 msgid "&Duplicate Entry"
 msgstr ""
 "\n"
 "复制项目"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1551
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1553
 msgid "Delete Entry"
 msgstr "删除项目"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1593
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1595
 #, fuzzy
 msgid "Goto &Shortcuts..."
 msgstr "快捷方式"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1596
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1598
 #, fuzzy
 msgid "&Go to Base entry"
 msgstr "转到基本项目(&G)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1597
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1599
 msgid "&Edit Base entry"
 msgstr "编辑基本项目(&E)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2041
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2043
 #, fuzzy
 msgid "Could not re-load database: "
 msgstr "项目仅在当前数据库 (%s):"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2042
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2044
 msgid "Error re-loading last database"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2289
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2291
 msgid "There was an error loading the database: "
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2290
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2292
 #, fuzzy
 msgid "Could not load database"
 msgstr "选择数据库"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2352
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2354
 msgid "Group copied "
 msgstr "复制组"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2355
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2357
 msgid "Title copied "
 msgstr "复制标题"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2358
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2360
 msgid "User copied "
 msgstr "复制用户"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2361
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2363
 msgid "Pswd copied "
 msgstr "复制密码"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2364
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2366
 msgid "Notes copied "
 msgstr "复制备注"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2367
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2369
 #, fuzzy
 msgid "URL copied "
 msgstr "复制用户"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2370
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2372
 msgid "Autotype copied "
 msgstr "自动输入"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2373
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2375
 msgid "RunCmd copied "
 msgstr "运行复制命令"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2376
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2378
 #, fuzzy
 msgid "Email copied "
 msgstr "复制电子邮箱"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2379
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2381
 #, fuzzy
 msgid "Password History copied "
 msgstr "历史密码筛选"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2382
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2384
 #, fuzzy
 msgid "Old Pswd copied "
 msgstr "复制密码"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2421
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2423
 #, fuzzy
 msgid "Select Tree/List display font"
 msgstr "设定树目录/列表显示字体"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2438
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2440
 #, fuzzy
 msgid "Select Add/Edit display font"
 msgstr "设定树目录/列表显示字体"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2442
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2444
 #, fuzzy
 msgid "Select Password display font"
 msgstr "设定密码显示字体"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2446
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2448
 #, fuzzy
 msgid "Select Notes display font"
 msgstr "设定树目录/列表显示字体"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2450
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2452
 #, fuzzy
 msgid "Select Virtual Keyboard font"
 msgstr "设定虚拟键盘字体"
@@ -3516,7 +3516,7 @@ msgid "&Find previous...\tSHIFT+F3"
 msgstr "查找上一个"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:338
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:494
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:497
 msgid "Advanced Find Options"
 msgstr "高级查找选项"
 
@@ -3525,74 +3525,74 @@ msgstr "高级查找选项"
 msgid "search"
 msgstr "搜索(&S)"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:483
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:486
 #, fuzzy
 msgid "Close SearchBar"
 msgstr "不能访问文件: %s"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:492
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:495
 msgid "Find Next"
 msgstr "查找下一个"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:493
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:496
 #, fuzzy
 msgid "Case Insensitive Search"
 msgstr "不区分大小写查找"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:495
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:498
 msgid "Create report of previous Find search"
 msgstr "创建前一页查找报告"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:496
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:499
 msgid "Clear Find"
 msgstr "清除查找"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:505
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:508
 #, fuzzy
 msgid "Could not create Search Bar"
 msgstr "不能访问文件: %s"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:516
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:519
 msgid "Could not display searchbar"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:592
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:595
 msgid "Could not re-display searchbar at "
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:592
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:595
 msgid " of size "
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:593
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:596
 msgid " because "
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:593
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:596
 msgid "it's already visible"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:593
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:596
 #, fuzzy
 msgid " of an error"
 msgstr "打开文件错误！"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:630
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:633
 #, fuzzy
 msgid "Search hit bottom, continuing at top"
 msgstr "查找已结束，继续从%s开始。"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:648
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:651
 #, fuzzy
 msgid "Search hit top, continuing at bottom"
 msgstr "查找已结束，继续从%s开始。"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:665
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:668
 #, fuzzy
 msgid "No matches found"
 msgstr "未找到匹配的项目！"
 
-#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:668
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:671
 #, fuzzy
 msgid "1 match"
 msgstr "找到 1 个匹配项！"
@@ -3815,6 +3815,7 @@ msgid "Open Password Database:"
 msgstr "打开密码数据库:"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:224
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:188
 msgid "Open as read-only"
 msgstr "打开为只读"
 
@@ -3861,26 +3862,26 @@ msgid ""
 msgstr ""
 "Password Safe 数据库 (*.psafe3; *.dat)|*.psafe3; *.dat|所有文件 (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:157
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:160
 msgid "Please enter the safe combination for this password database."
 msgstr "请输入该保险箱数据库密码"
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:160
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:163
 msgid "filename"
 msgstr "文件名称"
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:169
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:172
 #, fuzzy
 msgid "Safe combination:"
 msgstr "保险箱密码:"
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:208
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:224
 #: ../../../ui/wxWidgets/SystemTray.cpp:148
 #, fuzzy
 msgid "&Exit"
 msgstr "退出"
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:285
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:301
 msgid "Three strikes - yer out!"
 msgstr ""
 
@@ -4264,23 +4265,23 @@ msgstr "发送邮件(&S)"
 msgid "&Delete from Recent Entry List"
 msgstr "删除最近项目列表(&D)"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:781
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:810
 msgid "New Group"
 msgstr "新建组"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:783
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:812
 msgid "Could not add empty group item to tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:796
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:825
 msgid "Renaming of non-Group items is not implemented"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:823
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:852
 msgid "Dots are not allowed in group names"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:823
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:852
 #, fuzzy
 msgid "Invalid Character"
 msgstr "无效参数！"
@@ -4442,7 +4443,7 @@ msgstr "更改保险箱密码"
 msgid "Safe Combination Entry"
 msgstr "密码保险箱项目"
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.h:52
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.h:53
 msgid "Enter Safe Combination"
 msgstr "输入保险箱密码"
 
