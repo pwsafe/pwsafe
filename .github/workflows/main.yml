@@ -25,12 +25,12 @@ jobs:
     - name: Set build parameters
       # If you need to rebuild wxWidgets for some reason, say you changed the build params, just increment FORCE_REBUILD_WX
       run: |
-        echo "::set-env name=WX_VERS::3.0.5"
-        echo "::set-env name=MACOS_VER_MIN::10.9"
-        echo "::set-env name=WX_SRC_DIR::$HOME/wxWidgets"
-        echo "::set-env name=WX_BUILD_DIR::$HOME/wxbuild"
-        echo "::set-env name=XCODE_VER::11.7"
-        echo "::set-env name=FORCE_REBUILD_WX::2"
+        echo "WX_VERS=3.0.5" >> $GITHUB_ENV
+        echo "MACOS_VER_MIN=10.9" >> $GITHUB_ENV
+        echo "WX_SRC_DIR=$HOME/wxWidgets" >> $GITHUB_ENV
+        echo "WX_BUILD_DIR=$HOME/wxbuild" >> $GITHUB_ENV
+        echo "XCODE_VER=11.7" >> $GITHUB_ENV
+        echo "FORCE_REBUILD_WX=2" >> $GITHUB_ENV
 
     - name: Force compatible Xcode version
       run: sudo xcode-select -s /Applications/Xcode_${XCODE_VER}.app/Contents/Developer
@@ -74,7 +74,7 @@ jobs:
       run: xcodebuild -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe
 
     - name: Get Xcode build output location
-      run: echo "::set-env name=BUILD_OUTPUT_DIR::$(xcodebuild -showBuildSettings -project Xcode/pwsafe-xcode6.xcodeproj | fgrep CONFIGURATION_BUILD_DIR | cut -d= -f2 | sed 's/^ *\(.*\)/\1/')"
+      run: echo "BUILD_OUTPUT_DIR=$(xcodebuild -showBuildSettings -project Xcode/pwsafe-xcode6.xcodeproj | fgrep CONFIGURATION_BUILD_DIR | cut -d= -f2 | sed 's/^ *\(.*\)/\1/')" >> $GITHUB_ENV
 
     - name: Move app to another folder
       run: mkdir "$BUILD_OUTPUT_DIR"/app && mv "$BUILD_OUTPUT_DIR"/pwsafe.app "$BUILD_OUTPUT_DIR"/app/
