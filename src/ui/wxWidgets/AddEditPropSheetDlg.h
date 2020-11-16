@@ -385,15 +385,15 @@ private:
   //*)
 
   //(*Identifiers(AttachmentTab)
-  static const long ID_BUTTON_IMPORT;
-  static const long ID_BUTTON_EXPORT;
-  static const long ID_BUTTON_REMOVE;
-  static const long ID_TEXTCTRL2;
-  static const long ID_STATICTEXT4;
-  static const long ID_STATICTEXT5;
-  static const long ID_STATICTEXT6;
-  static const long ID_STATICTEXT8;
-  static const long ID_STATICTEXT10;
+  static const wxWindowID ID_BUTTON_IMPORT;
+  static const wxWindowID ID_BUTTON_EXPORT;
+  static const wxWindowID ID_BUTTON_REMOVE;
+  static const wxWindowID ID_TEXTCTRL2;
+  static const wxWindowID ID_STATICTEXT4;
+  static const wxWindowID ID_STATICTEXT5;
+  static const wxWindowID ID_STATICTEXT6;
+  static const wxWindowID ID_STATICTEXT8;
+  static const wxWindowID ID_STATICTEXT10;
   //*)
 
   //(*Declarations(AttachmentTab)
