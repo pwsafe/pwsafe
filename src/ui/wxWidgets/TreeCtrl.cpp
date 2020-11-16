@@ -50,6 +50,7 @@
 #include "graphics/sbase_warn.xpm"
 #include "graphics/sbase.xpm"
 #include "graphics/shortcut.xpm"
+#if wxVERSION_NUMBER >= 3103
 // Same in dark
 #include "graphics/abase_exp_dark.xpm"
 #include "graphics/abase_warn_dark.xpm"
@@ -63,6 +64,7 @@
 #include "graphics/sbase_warn_dark.xpm"
 #include "graphics/sbase_dark.xpm"
 #include "graphics/shortcut_dark.xpm"
+#endif
 
 using pws_os::CUUID;
 
@@ -269,7 +271,7 @@ void TreeCtrl::CreateControls()
 #if wxVERSION_NUMBER >= 3103
     iList->Add(wxBitmap(bIsDark ? xpmDarkList[i] : xpmList[i]));
 #else
-    iList->Add(xpmList[i]));
+    iList->Add(xpmList[i]);
 #endif
   }
   AssignImageList(iList);
