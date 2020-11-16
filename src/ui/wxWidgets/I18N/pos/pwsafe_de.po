@@ -5834,20 +5834,20 @@ msgstr "Ja - Mindestens %d von %ls: %ls"
 #~ "(z.B. kein 'l', '1', usw.)"
 
 # Kai, new for MacOS
-#~ msgid "Services"
-#~ msgstr "Dienste"
+msgid "Services"
+msgstr "Dienste"
 
-#~ msgid "Hide Others"
-#~ msgstr "Andere ausblenden"
+msgid "Hide Others"
+msgstr "Andere ausblenden"
 
-#~ msgid "Show All"
-#~ msgstr "Alle einblenden"
+msgid "Show All"
+msgstr "Alle einblenden"
 
-#~ msgid "Quit %s"
-#~ msgstr "%s beenden"
+msgid "Quit %s"
+msgstr "PasswordSafe beenden"
 
-#~ msgid "Hide %s"
-#~ msgstr "%s ausblenden"
+msgid "Hide %s"
+msgstr "PasswordSafe ausblenden"
 
 #, fuzzy
 #~ msgid "Initial tray icon color"
@@ -5865,8 +5865,8 @@ msgstr "Ja - Mindestens %d von %ls: %ls"
 #~ msgid "French"
 #~ msgstr "Französisch"
 
-#~ msgid "German"
-#~ msgstr "Deutsch"
+msgid "German"
+msgstr "Deutsch"
 
 #~ msgid "Italian"
 #~ msgstr "Italienisch"
@@ -9628,3 +9628,12 @@ msgstr "Ja - Mindestens %d von %ls: %ls"
 
 #~ msgid "xxxxxx"
 #~ msgstr "xxxxxx"
+
+msgid "Bring All to Front"
+msgstr "Alle Einblenden"
+
+msgid "Quit PasswordSafe (wxWidgets)"
+msgstr "PasswordSafe beenden"
+
+msgid "Hide PasswordSafe (wxWidgets)"
+msgstr "PasswordSafe ausbelenden"

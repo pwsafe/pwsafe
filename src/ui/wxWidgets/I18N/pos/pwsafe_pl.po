@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-15 19:40+0100\n"
+"POT-Creation-Date: 2020-11-16 12:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4241,23 +4241,23 @@ msgstr "Wyślij email"
 msgid "&Delete from Recent Entry List"
 msgstr "Usuń z listy Ostatnich Wpisów"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:810
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:821
 msgid "New Group"
 msgstr "Nowa Grupa"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:812
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:823
 msgid "Could not add empty group item to tree"
 msgstr "Nie można dodać pustej grupy do drzewa"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:825
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:836
 msgid "Renaming of non-Group items is not implemented"
 msgstr "Zamiana nazwy nie-grupy nie jest zaimplementowana"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:852
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:863
 msgid "Dots are not allowed in group names"
 msgstr "Kropki nie są dozwolone w nazwie grupy"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:852
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:863
 msgid "Invalid Character"
 msgstr "Nieprawidłowy znak"
 
