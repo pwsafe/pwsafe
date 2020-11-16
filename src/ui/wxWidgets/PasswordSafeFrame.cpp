@@ -880,7 +880,7 @@ void PasswordSafeFrame::RefreshToolbarButtons()
   tb->Realize();
 }
 
-void PasswordSafeFrame::ReCreateMainToolbarSepartor(bool bInsert)
+void PasswordSafeFrame::ReCreateMainToolbarSeparator(bool bInsert)
 {
   wxToolBar* tb = GetToolBar();
   size_t pos = 0;
