@@ -763,8 +763,8 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
       syncIndexes.Empty();
       const size_t numIndexes = menuContext->cdata->data.size();
       syncIndexes.Alloc(numIndexes);
-      for(int i = 0; i < numIndexes; ++i)
-        syncIndexes.Add(i);
+      for(size_t i = 0; i < numIndexes; ++i)
+        syncIndexes.Add(static_cast<int>(i));
     }
     else {
       wxCHECK_RET(evt.GetId() == ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, wxT("Sync menu id is neither for all nor for selected items"));

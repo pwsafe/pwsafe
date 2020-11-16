@@ -66,7 +66,7 @@ void PasswordSafeFrame::OnPreferencesClick(wxCommandEvent& WXUNUSED(evt))
   OptionsPropertySheetDlg *window = new OptionsPropertySheetDlg(this, m_core);
   if (window->ShowModal() == wxID_OK) {
     if(showMenuSeprator != prefs->GetPref(PWSprefs::ShowMenuSeparator))
-      ReCreateMainToolbarSepartor(prefs->GetPref(PWSprefs::ShowMenuSeparator));
+      ReCreateMainToolbarSeparator(prefs->GetPref(PWSprefs::ShowMenuSeparator));
     
     StringX sxNewDBPrefsString(prefs->Store(true));
     // Update system tray icon if visible so changes show up immediately

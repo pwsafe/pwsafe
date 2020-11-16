@@ -81,7 +81,6 @@
 		E6ADBA3C1195709A004E2BE5 /* EditShortcutDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AE11957099004E2BE5 /* EditShortcutDlg.cpp */; };
 		E6ADBA3D1195709A004E2BE5 /* MenuEditHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B011957099004E2BE5 /* MenuEditHandlers.cpp */; };
 		E6ADBA3F1195709A004E2BE5 /* OptionsPropertySheetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B211957099004E2BE5 /* OptionsPropertySheetDlg.cpp */; };
-		E6ADBA401195709A004E2BE5 /* passwordsafeframe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */; };
 		E6ADBA411195709A004E2BE5 /* PasswordSafeSearch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */; };
 		E6ADBA431195709A004E2BE5 /* PropertiesDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B911957099004E2BE5 /* PropertiesDlg.cpp */; };
 		E6ADBA921195709A004E2BE5 /* PWSafeApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1B1195709A004E2BE5 /* PWSafeApp.cpp */; };
@@ -258,6 +257,7 @@
 		A2FE258C1C5ACF7500210C36 /* PWSfileV4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSfileV4.h; sourceTree = "<group>"; };
 		A2FE25931C5ACFBD00210C36 /* PWStime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWStime.cpp; sourceTree = "<group>"; };
 		A2FE25941C5ACFBD00210C36 /* PWStime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWStime.h; sourceTree = "<group>"; };
+		D3A203BE25625CBC00CD4679 /* PasswordSafeFrame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSafeFrame.cpp; sourceTree = "<group>"; };
 		D3A7B656254817F700E780B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D3A7B67C254824C000E780B8 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E090D35624D742E90083BA2B /* ViewAttachmentDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewAttachmentDlg.cpp; sourceTree = "<group>"; };
@@ -572,7 +572,6 @@
 		E6ADB9B011957099004E2BE5 /* MenuEditHandlers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuEditHandlers.cpp; sourceTree = "<group>"; };
 		E6ADB9B211957099004E2BE5 /* OptionsPropertySheetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionsPropertySheetDlg.cpp; sourceTree = "<group>"; };
 		E6ADB9B311957099004E2BE5 /* OptionsPropertySheetDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionsPropertySheetDlg.h; sourceTree = "<group>"; };
-		E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = passwordsafeframe.cpp; sourceTree = "<group>"; };
 		E6ADB9B511957099004E2BE5 /* PasswordSafeFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSafeFrame.h; sourceTree = "<group>"; };
 		E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSafeSearch.cpp; sourceTree = "<group>"; };
 		E6ADB9B711957099004E2BE5 /* PasswordSafeSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSafeSearch.h; sourceTree = "<group>"; };
@@ -1302,7 +1301,7 @@
 				E6ADB9B011957099004E2BE5 /* MenuEditHandlers.cpp */,
 				E6ADB9B211957099004E2BE5 /* OptionsPropertySheetDlg.cpp */,
 				E6ADB9B311957099004E2BE5 /* OptionsPropertySheetDlg.h */,
-				E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */,
+				D3A203BE25625CBC00CD4679 /* PasswordSafeFrame.cpp */,
 				E6ADB9B511957099004E2BE5 /* PasswordSafeFrame.h */,
 				E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */,
 				E6ADB9B711957099004E2BE5 /* PasswordSafeSearch.h */,
@@ -1823,7 +1822,6 @@
 				E6ADBA3C1195709A004E2BE5 /* EditShortcutDlg.cpp in Sources */,
 				E6ADBA3D1195709A004E2BE5 /* MenuEditHandlers.cpp in Sources */,
 				E6ADBA3F1195709A004E2BE5 /* OptionsPropertySheetDlg.cpp in Sources */,
-				E6ADBA401195709A004E2BE5 /* passwordsafeframe.cpp in Sources */,
 				E6ADBA411195709A004E2BE5 /* PasswordSafeSearch.cpp in Sources */,
 				E6ADBA431195709A004E2BE5 /* PropertiesDlg.cpp in Sources */,
 				E0C3C44F2379CD7500715124 /* MenuFileHandlers.cpp in Sources */,

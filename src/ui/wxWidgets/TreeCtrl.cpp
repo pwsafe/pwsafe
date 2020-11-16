@@ -242,6 +242,7 @@ void TreeCtrl::CreateControls()
     sbase_xpm,        // 10
     shortcut_xpm,     // 11
   };
+#if wxVERSION_NUMBER >= 3103
   const char **xpmDarkList[] = {
     abase_exp_dark_xpm,    // 1
     abase_warn_dark_xpm,   // 2
@@ -256,13 +257,21 @@ void TreeCtrl::CreateControls()
     sbase_dark_xpm,        // 11
     shortcut_dark_xpm,     // 12
   };
+#endif
   const int Nimages = sizeof(xpmList)/sizeof(xpmList[0]);
+#if wxVERSION_NUMBER >= 3103
   const bool bIsDark = wxSystemSettings::GetAppearance().IsUsingDarkBackground();
   wxASSERT(Nimages == (sizeof(xpmDarkList)/sizeof(xpmDarkList[0])));
+#endif
   
   auto *iList = new wxImageList(13, 13, true, Nimages);
-  for (int i = 0; i < Nimages; i++)
+  for (int i = 0; i < Nimages; i++) {
+#if wxVERSION_NUMBER >= 3103
     iList->Add(wxBitmap(bIsDark ? xpmDarkList[i] : xpmList[i]));
+#else
+    iList->Add(xpmList[i]));
+#endif
+  }
   AssignImageList(iList);
 }
 

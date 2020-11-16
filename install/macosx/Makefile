@@ -5,12 +5,14 @@
 # Uncomment the correct TARGET and RELDIR below:
 #TARGET=pwsafe
 #TARGET=pwsafe-i386
-TARGET=pwsafe64
+###TARGET=pwsafe64
+TARGET=pwsafe
 #TARGET=pwsafe-llvm
 #RELDIR=../../Xcode/build/Release/
 #RELDIR=../../Xcode/build-i386/Release/
-RELDIR=../../Xcode/build64/Release/
+###RELDIR=../../Xcode/build64/Release/
 #RELDIR=../../Xcode/build-llvm/Release/
+RELDIR=/Users/zingler/Library/Developer/Xcode/DerivedData/pwsafe-xcode6-dbwpzvfbhbblyifeamzvolxpmbzm/Build/Products/Release/
 
 CPBIN=/bin/cp
 RMBIN=/bin/rm

@@ -537,7 +537,7 @@ void PWSMenuShortcuts::RemoveShortcutAt(size_t idx)
 void PWSMenuShortcuts::SetShorcutsGridEventHandlers(wxGrid* grid, wxButton* resetAllButton)
 {
   m_shortcutGridStatus.resize(m_midata.size());
-  std::transform(m_midata.begin(), m_midata.end(), m_shortcutGridStatus.begin(), [](MenuItemData& a){return a.GetStatus();} /*std::mem_fun_ref(&MenuItemData::GetStatus)*/);
+  std::transform(m_midata.begin(), m_midata.end(), m_shortcutGridStatus.begin(), [](MenuItemData& a){return a.GetStatus();} );
 
   grid->Connect(wxEVT_GRID_CELL_CHANGED, wxGridEventHandler(PWSMenuShortcuts::OnShortcutChange), nullptr, this);
   grid->Connect(wxEVT_GRID_CELL_RIGHT_CLICK, wxGridEventHandler(PWSMenuShortcuts::OnShortcutRightClick), nullptr, this);

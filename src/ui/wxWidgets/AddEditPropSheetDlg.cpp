@@ -1414,11 +1414,11 @@ static struct {short pv; wxString name;}
   // - Adds " (default)" to default string
   // - Selects current value
   for (size_t i = 0; i < sizeof(dcaMapping)/sizeof(dcaMapping[0]); i++) {
-    pcbox->SetClientData((unsigned int) i, reinterpret_cast<void *>(dcaMapping[i].pv));
+    pcbox->SetClientData(static_cast<unsigned int>(i), reinterpret_cast<void *>(dcaMapping[i].pv));
     if (dcaMapping[i].pv == defDCA) {
       wxString dv = dcaMapping[i].name;
       dv += wxT(" ("); dv += _("default"); dv += wxT(")");
-      pcbox->SetString((unsigned int) i, dv);
+      pcbox->SetString(static_cast<unsigned int>(i), dv);
       if (useDefault || iDCA == defDCA) {
         pcbox->SetValue(dv);
       }
