@@ -175,24 +175,27 @@ void SafeCombinationPromptDlg::CreateControls()
   m_scctrl = new SafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxDefaultSize );
   m_scctrl->SetFocus();
   flexGridSizer->Add(m_scctrl, 1, wxALL|wxEXPAND, 5);
-// Show Combination is moved down to right side of new field "Open as read-only"
-  auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
-  showCombinationCheckBox->SetValue(false);
-  showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_scctrl->SecureTextfield(!event.IsChecked());});
-
-  itemBoxSizer5->Add(flexGridSizer, 0, wxEXPAND|wxALL, 5);
+  
+  flexGridSizer->AddStretchSpacer(0);
 
   auto *itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer5->Add(itemBoxSizer14, 0, wxEXPAND|wxALL, 5);
 
   auto itemCheckBox15 = new wxCheckBox(this, ID_READONLY, _("Open as read-only"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox15->SetValue(false);
   m_readOnly = false;
 
+// Show Combination is moved down to right side of new field "Open as read-only"
+  auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
+  showCombinationCheckBox->SetValue(false);
+  showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_scctrl->SecureTextfield(!event.IsChecked());});
+
   itemBoxSizer14->Add(itemCheckBox15, 1, wxALIGN_LEFT|wxALL, 5);
   itemBoxSizer14->AddSpacer(1);
   itemBoxSizer14->Add(showCombinationCheckBox, 1, wxALIGN_LEFT|wxALL, 5);
   itemBoxSizer14->AddStretchSpacer();
+  flexGridSizer->Add(itemBoxSizer14, 0, wxEXPAND|wxALL, 5);
+  
+  itemBoxSizer5->Add(flexGridSizer, 0, wxEXPAND|wxALL, 5);
   
   itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly) );
   UpdateReadOnlyCheckbox(itemCheckBox15);
