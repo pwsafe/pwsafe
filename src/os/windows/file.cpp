@@ -20,7 +20,6 @@
 #include <shlwapi.h>
 
 #include <io.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <fstream>
 
@@ -202,7 +201,7 @@ static void GetLocker(const stringT &lock_filename, stringT &locker)
   if (h2 != INVALID_HANDLE_VALUE) {
     DWORD bytesRead;
     (void)::ReadFile(h2, lockerStr, sizeof(lockerStr) - 1,
-                     &bytesRead, NULL);
+                     &bytesRead, nullptr);
     CloseHandle(h2);
     if (bytesRead > 0) {
       lockerStr[bytesRead / sizeof(TCHAR)] = TCHAR('\0');
@@ -285,13 +284,13 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
     default:
     {
       // Give detailed error message, if possible
-      LPTSTR lpMsgBuf = NULL;
+      LPTSTR lpMsgBuf = nullptr;
       if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-                        NULL,
+                        nullptr,
                         error,
                         MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
                         (LPTSTR)&lpMsgBuf,
-                        0, NULL) != 0) {
+                        0, nullptr) != 0) {
         locker = lpMsgBuf;
         LocalFree(lpMsgBuf);
       } else { // should never happen!
@@ -306,22 +305,22 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
     BOOL write_status;
     write_status = ::WriteFile(lockFileHandle,
                                user.c_str(), (DWORD)(user.length() * sizeof(TCHAR)),
-                               &sumWrit, NULL);
+                               &sumWrit, nullptr);
     write_status &= ::WriteFile(lockFileHandle,
                                 _T("@"), (DWORD)(sizeof(TCHAR)),
-                                &numWrit, NULL);
+                                &numWrit, nullptr);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
                                 host.c_str(), (DWORD)(host.length() * sizeof(TCHAR)),
-                                &numWrit, NULL);
+                                &numWrit, nullptr);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
                                 _T(":"), (DWORD)(sizeof(TCHAR)),
-                                &numWrit, NULL);
+                                &numWrit, nullptr);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
                                 pid.c_str(), (DWORD)(pid.length() * sizeof(TCHAR)),
-                                &numWrit, NULL);
+                                &numWrit, nullptr);
     sumWrit += numWrit;
     ASSERT(sumWrit > 0);
     return (write_status == TRUE);
@@ -433,7 +432,7 @@ int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
 }
 
 ulong64 pws_os::fileLength(std::FILE *fp) {
-  if (fp != NULL) {
+  if (fp != nullptr) {
     __int64 pos = _ftelli64(fp);
     _fseeki64(fp, 0, SEEK_END);
     __int64 len = _ftelli64(fp);
@@ -484,7 +483,7 @@ bool pws_os::SetFileTimes(const stringT &filename,
     OPEN_EXISTING, 0, NULL);
 
   if (hFile != INVALID_HANDLE_VALUE) {
-    SetFileTime(hFile, ctime != 0 ? &fctime : NULL, atime == 0 ? &fatime : NULL, mtime != 0 ? &fmtime : NULL);
+    SetFileTime(hFile, ctime != 0 ? &fctime : nullptr, atime == 0 ? &fatime : nullptr, mtime != 0 ? &fmtime : nullptr);
     CloseHandle(hFile);
     return true;
   } else {
