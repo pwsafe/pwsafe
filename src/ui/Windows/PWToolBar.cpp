@@ -11,6 +11,7 @@
 
 #include "stdafx.h"
 #include "PWToolBar.h"
+#include "PWSprefs.h"
 
 #include "winutils.h" // for ResizeBitmap
 #include "resource.h"
@@ -29,7 +30,7 @@
      design).  All have a background colour of RGB(192, 192, 192).  Note: Create
      the 'New Disabled' from the 'New' by using a program to convert the bitmap
      to 8-bit greyscale.
-  2. Add them to PaswordSafe.rc as BITMAPs
+  2. Add them to PasswordSafe.rc as BITMAPs
   3. Assign new resource Bitmap IDs to these i.e. "IDB_<new name>_CLASSIC",
      "IDB_<new name>_NEW" and "IDB_<new name>_NEW_D"
   4. Assign a new resource ID for the corresponding button e.g. 
