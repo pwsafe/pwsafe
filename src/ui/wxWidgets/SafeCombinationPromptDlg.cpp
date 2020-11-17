@@ -184,7 +184,6 @@ void SafeCombinationPromptDlg::CreateControls()
   itemCheckBox15->SetValue(false);
   m_readOnly = false;
 
-// Show Combination is moved down to right side of new field "Open as read-only"
   auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
   showCombinationCheckBox->SetValue(false);
   showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_scctrl->SecureTextfield(!event.IsChecked());});
