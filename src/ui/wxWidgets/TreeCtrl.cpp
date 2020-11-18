@@ -271,7 +271,7 @@ void TreeCtrl::CreateControls()
 #if wxVERSION_NUMBER >= 3103
     iList->Add(wxBitmap(bIsDark ? xpmDarkList[i] : xpmList[i]));
 #else
-    iList->Add(xpmList[i]);
+    iList->Add(wxBitmap(xpmList[i]));
 #endif
   }
   AssignImageList(iList);
