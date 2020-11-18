@@ -272,16 +272,19 @@ bool PWSafeApp::OnInit()
   // For instance, the behavior of function 'wcstombs' depends on the LC_CTYPE 
   // category of the selected C locale.
 #if defined(__WXMAC__)
-  char *lcCType = setlocale(LC_CTYPE, NULL);
+  const char *lcCType = setlocale(LC_CTYPE, NULL);
 
   if (lcCType && strcmp(lcCType, "UTF-8")) { // MAC OS only have UTF-8 as default, but conversion with this string is not running well
     setlocale(LC_CTYPE, "");
+    setlocale(LC_TIME, "");
   }
   else {
     setlocale(LC_CTYPE, "en_US.UTF-8");
+    setlocale(LC_TIME, "en_US.UTF-8");
   }
 #else
   setlocale(LC_CTYPE, "");
+  setlocale(LC_TIME, "");
 #endif
 
   //Used by help subsystem
@@ -622,8 +625,8 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
     langInfo = wxLocale::GetLanguageInfo(language);
     if(langInfo) {
       wxString envString = langInfo->CanonicalName + ".UTF-8";
-      pws_os::Trace(L"Setlocale LC_TYPE type to %ls\n", ToStr(envString));
       setlocale(LC_CTYPE, envString.c_str());
+      setlocale(LC_TIME, envString.c_str());
     }
   }
   return bRes;
