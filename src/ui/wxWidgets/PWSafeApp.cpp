@@ -274,7 +274,7 @@ bool PWSafeApp::OnInit()
 #if defined(__WXMAC__)
   char *lcCType = setlocale(LC_CTYPE, NULL);
 
-  if (lcCType && strcmp(lcCType, "UTF-8")) { // MAC OS only have UTF-8 as default, but conversion with this string is nut running well
+  if (lcCType && strcmp(lcCType, "UTF-8")) { // MAC OS only have UTF-8 as default, but conversion with this string is not running well
     setlocale(LC_CTYPE, "");
   }
   else {
