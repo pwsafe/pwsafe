@@ -191,7 +191,7 @@ void SafeCombinationPromptDlg::CreateControls()
   itemBoxSizer14->Add(itemCheckBox15, 1, wxALIGN_LEFT|wxALL, 5);
   itemBoxSizer14->AddSpacer(1);
   itemBoxSizer14->Add(showCombinationCheckBox, 1, wxALIGN_LEFT|wxALL, 5);
-  itemBoxSizer14->AddStretchSpacer();
+
   flexGridSizer->Add(itemBoxSizer14, 0, wxEXPAND|wxALL, 5);
   
   itemBoxSizer5->Add(flexGridSizer, 0, wxEXPAND|wxALL, 5);
