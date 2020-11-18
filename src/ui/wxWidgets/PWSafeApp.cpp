@@ -271,7 +271,17 @@ bool PWSafeApp::OnInit()
   // Get the locale environment variable 'LC_CTYPE' specified by the environment
   // For instance, the behavior of function 'wcstombs' depends on the LC_CTYPE 
   // category of the selected C locale.
-  setlocale(LC_CTYPE, "en_US.UTF-8");
+#if defined(__WXMAC__)
+  wxString typeFull;
+  if (wxGetEnv(wxT("LC_CTYPE"), &typeFull)) {
+    setlocale(LC_CTYPE, typeFull.c_str());
+  }
+  else {
+    setlocale(LC_CTYPE, "en_US.UTF-8");
+  }
+#else
+  setlocale(LC_CTYPE, "");
+#endif
 
   //Used by help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
@@ -594,6 +604,7 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
     if ( !translations->AddCatalog(DOMAIN_) ) {
       pws_os::Trace(L"Couldn't load %ls language catalog for %ls\n", ToStr(DOMAIN_), ToStr(wxLocale::GetLanguageName(language)));
       translations->SetLanguage(wxLANGUAGE_ENGLISH);
+      language = wxLANGUAGE_ENGLISH; // Back to default language english
     }
     bRes = translations->IsLoaded(DOMAIN_);
   }
@@ -605,6 +616,14 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
     // (re)set global translation and take care of occupied memory by wxTranslations
     wxTranslations::Set(translations);
     isHelpActivated = ActivateHelp(language);
+
+    const wxLanguageInfo *langInfo = nullptr;
+    langInfo = wxLocale::GetLanguageInfo(language);
+    if(langInfo) {
+      wxString envString = langInfo->CanonicalName + ".UTF-8";
+      pws_os::Trace(L"Setlocale LC_TYPE type to %ls\n", ToStr(envString));
+      setlocale(LC_CTYPE, envString.c_str());
+    }
   }
   return bRes;
 }
