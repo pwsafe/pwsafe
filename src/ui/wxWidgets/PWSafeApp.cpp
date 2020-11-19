@@ -276,17 +276,22 @@ bool PWSafeApp::OnInit()
 
   if (lcCType && strcmp(lcCType, "UTF-8")) { // MAC OS only have UTF-8 as default, but conversion with this string is not running well
     setlocale(LC_CTYPE, "");
-    setlocale(LC_TIME, "");
   }
   else {
-    setlocale(LC_CTYPE, "en_US.UTF-8");
-    setlocale(LC_TIME, "en_US.UTF-8");
+    const char *env_lc_cType = std::getenv("LC_CTYPE");
+    
+    if(env_lc_cType) {
+      setlocale(LC_CTYPE, env_lc_cType);
+    }
+    else {
+      setlocale(LC_CTYPE, "en_US.UTF-8");
+    }
   }
 #else
   setlocale(LC_CTYPE, "");
-  setlocale(LC_TIME, "");
 #endif
-
+  setlocale(LC_TIME, "");
+  
   //Used by help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
 
