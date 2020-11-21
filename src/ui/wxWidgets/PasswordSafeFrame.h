@@ -22,6 +22,7 @@
 #include <wx/frame.h>
 #include <wx/statusbr.h>
 #include <wx/treebase.h> // for wxTreeItemId
+#include <wx/settings.h>
 
 #include "core/PWScore.h"
 #include "core/PWSFilters.h"
@@ -170,6 +171,12 @@ enum {
   ID_LANGUAGE_SWEDISH,
   ID_LANGUAGE_END
 };
+
+#if wxVERSION_NUMBER >= 3103
+#define CurrentBackgroundColor    (wxSystemSettings::GetAppearance().IsUsingDarkBackground() ? wxColor(29, 30, 32) : *wxWHITE)
+#else
+#define CurrentBackgroundColor    (*wxWHITE)
+#endif
 
 /*!
  * PasswordSafeFrame class declaration
@@ -542,6 +549,7 @@ private:
   void UpdateAccessTime(CItemData &ci);
   void CreateMainToolbar();
   void ReCreateMainToolbar();
+  void ReCreateMainToolbarSeparator(bool bInsert);
   void ReCreateDragToolbar();
   long GetEventRUEIndex(const wxCommandEvent& evt) const;
   bool IsRUEEvent(const wxCommandEvent& evt) const;

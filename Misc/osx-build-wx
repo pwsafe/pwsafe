@@ -67,7 +67,8 @@ error() {
 while getopts "dc:t:nk:t:" opt; do
 	case $opt in
 		d)
-			DEBUG_FLAG=--enable-debug
+#KAI add enable-debug_info
+			DEBUG_FLAG="--enable-debug --enable-debug_info"
 			;;
 		c)
 			if [ -x $OPTARG ]
@@ -207,7 +208,7 @@ else
             SDKFLAG="--with-macosx-sdk=$SDKPATH"
         fi
 
-        # This is required for C++14
+        # This is required for C++15
         export CC=clang
         export CPP="clang -E"
         export CXX=clang++
@@ -220,10 +221,12 @@ else
                               $SDKFLAG                          \
                               --with-osx_cocoa                  \
                               --disable-shared                  \
-                              --disable-compat24                \
                               --enable-unicode                  \
-                              --with-macosx-version-min=10.7    \
-                              --without-liblzma
+                              --with-macosx-version-min=10.10   \
+                              --disable-compat30                \
+                              --without-liblzma                 \
+                              --enable-cxx11                    \
+                              --with-zlib
 	fi
 fi
 

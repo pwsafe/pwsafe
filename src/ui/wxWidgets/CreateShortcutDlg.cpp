@@ -27,12 +27,12 @@
 #include "wxUtilities.h"
 
 //(*IdInit(CreateShortcutDlg)
-const long CreateShortcutDlg::ID_COMBOBOX1 = wxNewId();
-const long CreateShortcutDlg::ID_TEXTCTRL1 = wxNewId();
-const long CreateShortcutDlg::ID_TEXTCTRL2 = wxNewId();
-const long CreateShortcutDlg::ID_STATICTEXT7 = wxNewId();
-const long CreateShortcutDlg::ID_STATICTEXT8 = wxNewId();
-const long CreateShortcutDlg::ID_STATICTEXT9 = wxNewId();
+const wxWindowID CreateShortcutDlg::ID_COMBOBOX1 = wxNewId();
+const wxWindowID CreateShortcutDlg::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID CreateShortcutDlg::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID CreateShortcutDlg::ID_STATICTEXT7 = wxNewId();
+const wxWindowID CreateShortcutDlg::ID_STATICTEXT8 = wxNewId();
+const wxWindowID CreateShortcutDlg::ID_STATICTEXT9 = wxNewId();
 //*)
 
 /*!

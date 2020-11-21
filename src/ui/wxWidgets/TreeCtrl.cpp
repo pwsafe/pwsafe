@@ -50,6 +50,21 @@
 #include "graphics/sbase_warn.xpm"
 #include "graphics/sbase.xpm"
 #include "graphics/shortcut.xpm"
+#if wxVERSION_NUMBER >= 3103
+// Same in dark
+#include "graphics/abase_exp_dark.xpm"
+#include "graphics/abase_warn_dark.xpm"
+#include "graphics/abase_dark.xpm"
+#include "graphics/alias_dark.xpm"
+#include "graphics/node_dark.xpm"
+#include "graphics/normal_exp_dark.xpm"
+#include "graphics/normal_warn_dark.xpm"
+#include "graphics/normal_dark.xpm"
+#include "graphics/sbase_exp_dark.xpm"
+#include "graphics/sbase_warn_dark.xpm"
+#include "graphics/sbase_dark.xpm"
+#include "graphics/shortcut_dark.xpm"
+#endif
 
 using pws_os::CUUID;
 
@@ -229,11 +244,36 @@ void TreeCtrl::CreateControls()
     sbase_xpm,        // 10
     shortcut_xpm,     // 11
   };
+#if wxVERSION_NUMBER >= 3103
+  const char **xpmDarkList[] = {
+    abase_exp_dark_xpm,    // 1
+    abase_warn_dark_xpm,   // 2
+    abase_dark_xpm,        // 3
+    alias_dark_xpm,        // 4
+    node_dark_xpm,         // 5
+    normal_exp_dark_xpm,   // 6
+    normal_warn_dark_xpm,  // 7
+    normal_dark_xpm,       // 8
+    sbase_exp_dark_xpm,    // 9
+    sbase_warn_dark_xpm,   // 10
+    sbase_dark_xpm,        // 11
+    shortcut_dark_xpm,     // 12
+  };
+#endif
   const int Nimages = sizeof(xpmList)/sizeof(xpmList[0]);
-
+#if wxVERSION_NUMBER >= 3103
+  const bool bIsDark = wxSystemSettings::GetAppearance().IsUsingDarkBackground();
+  wxASSERT(Nimages == (sizeof(xpmDarkList)/sizeof(xpmDarkList[0])));
+#endif
+  
   auto *iList = new wxImageList(13, 13, true, Nimages);
-  for (int i = 0; i < Nimages; i++)
+  for (int i = 0; i < Nimages; i++) {
+#if wxVERSION_NUMBER >= 3103
+    iList->Add(wxBitmap(bIsDark ? xpmDarkList[i] : xpmList[i]));
+#else
     iList->Add(wxBitmap(xpmList[i]));
+#endif
+  }
   AssignImageList(iList);
 }
 

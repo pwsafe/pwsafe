@@ -297,7 +297,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker, HANDLE &)
     } // switch (errno)
     return false;
   } else { // valid filehandle, write our info
-    int numWrit;
+    ssize_t numWrit;
     const stringT user = pws_os::getusername();
     const stringT host = pws_os::gethostname();
     const stringT pid = pws_os::getprocessid();

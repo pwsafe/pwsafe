@@ -28,6 +28,10 @@
 		A2FE25911C5ACF7500210C36 /* PWSfileHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25891C5ACF7500210C36 /* PWSfileHeader.cpp */; };
 		A2FE25921C5ACF7500210C36 /* PWSfileV4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE258B1C5ACF7500210C36 /* PWSfileV4.cpp */; };
 		A2FE25951C5ACFBD00210C36 /* PWStime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25931C5ACFBD00210C36 /* PWStime.cpp */; };
+		D3A7B657254817F700E780B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B656254817F700E780B8 /* Foundation.framework */; };
+		D3A7B6712548229D00E780B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B656254817F700E780B8 /* Foundation.framework */; };
+		D3A7B67D254824C000E780B8 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B67C254824C000E780B8 /* AppKit.framework */; };
+		D3A7B67E254824CB00E780B8 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B67C254824C000E780B8 /* AppKit.framework */; };
 		E090D35824D742E90083BA2B /* ViewAttachmentDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E090D35624D742E90083BA2B /* ViewAttachmentDlg.cpp */; };
 		E0A70B9821C8FF8900A2FEA8 /* PolicyManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */; };
 		E0A70B9B21C905A500A2FEA8 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */; };
@@ -77,7 +81,7 @@
 		E6ADBA3C1195709A004E2BE5 /* EditShortcutDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AE11957099004E2BE5 /* EditShortcutDlg.cpp */; };
 		E6ADBA3D1195709A004E2BE5 /* MenuEditHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B011957099004E2BE5 /* MenuEditHandlers.cpp */; };
 		E6ADBA3F1195709A004E2BE5 /* OptionsPropertySheetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B211957099004E2BE5 /* OptionsPropertySheetDlg.cpp */; };
-		E6ADBA401195709A004E2BE5 /* passwordsafeframe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */; };
+		E6ADBA401195709A004E2BE5 /* PasswordSafeFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B411957099004E2BE5 /* PasswordSafeFrame.cpp */; };
 		E6ADBA411195709A004E2BE5 /* PasswordSafeSearch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */; };
 		E6ADBA431195709A004E2BE5 /* PropertiesDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B911957099004E2BE5 /* PropertiesDlg.cpp */; };
 		E6ADBA921195709A004E2BE5 /* PWSafeApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1B1195709A004E2BE5 /* PWSafeApp.cpp */; };
@@ -254,6 +258,8 @@
 		A2FE258C1C5ACF7500210C36 /* PWSfileV4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSfileV4.h; sourceTree = "<group>"; };
 		A2FE25931C5ACFBD00210C36 /* PWStime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWStime.cpp; sourceTree = "<group>"; };
 		A2FE25941C5ACFBD00210C36 /* PWStime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWStime.h; sourceTree = "<group>"; };
+		D3A7B656254817F700E780B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D3A7B67C254824C000E780B8 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E090D35624D742E90083BA2B /* ViewAttachmentDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewAttachmentDlg.cpp; sourceTree = "<group>"; };
 		E090D35724D742E90083BA2B /* ViewAttachmentDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewAttachmentDlg.h; sourceTree = "<group>"; };
 		E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolicyManager.cpp; sourceTree = "<group>"; };
@@ -566,7 +572,7 @@
 		E6ADB9B011957099004E2BE5 /* MenuEditHandlers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuEditHandlers.cpp; sourceTree = "<group>"; };
 		E6ADB9B211957099004E2BE5 /* OptionsPropertySheetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionsPropertySheetDlg.cpp; sourceTree = "<group>"; };
 		E6ADB9B311957099004E2BE5 /* OptionsPropertySheetDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionsPropertySheetDlg.h; sourceTree = "<group>"; };
-		E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = passwordsafeframe.cpp; sourceTree = "<group>"; };
+		E6ADB9B411957099004E2BE5 /* PasswordSafeFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSafeFrame.cpp; sourceTree = "<group>"; };
 		E6ADB9B511957099004E2BE5 /* PasswordSafeFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSafeFrame.h; sourceTree = "<group>"; };
 		E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSafeSearch.cpp; sourceTree = "<group>"; };
 		E6ADB9B711957099004E2BE5 /* PasswordSafeSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSafeSearch.h; sourceTree = "<group>"; };
@@ -767,7 +773,9 @@
 			files = (
 				E66D293E1D02B94C00C9BCBF /* Carbon.framework in Frameworks */,
 				E66D293C1D02B92F00C9BCBF /* libcore.a in Frameworks */,
+				D3A7B67D254824C000E780B8 /* AppKit.framework in Frameworks */,
 				E66D293D1D02B92F00C9BCBF /* libos.a in Frameworks */,
+				D3A7B6712548229D00E780B8 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -776,11 +784,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0A70B9B21C905A500A2FEA8 /* libcurl.tbd in Frameworks */,
+				D3A7B657254817F700E780B8 /* Foundation.framework in Frameworks */,
 				E6ADBB2111957CCB004E2BE5 /* libcore.a in Frameworks */,
 				E6ADBB2211957CD3004E2BE5 /* libos.a in Frameworks */,
 				E6B1447B12B26CB700415AAE /* Carbon.framework in Frameworks */,
 				E6B1448212B26CEE00415AAE /* OpenGL.framework in Frameworks */,
 				E6B1448812B26D1500415AAE /* Cocoa.framework in Frameworks */,
+				D3A7B67E254824CB00E780B8 /* AppKit.framework in Frameworks */,
 				E6B1449412B26D7E00415AAE /* IOKit.framework in Frameworks */,
 				E6C94E9A1FA33BA6008F0072 /* QuartzCore.framework in Frameworks */,
 			);
@@ -792,6 +802,8 @@
 		E0A70B9921C905A500A2FEA8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D3A7B67C254824C000E780B8 /* AppKit.framework */,
+				D3A7B656254817F700E780B8 /* Foundation.framework */,
 				E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */,
 			);
 			name = Frameworks;
@@ -1290,7 +1302,7 @@
 				E6ADB9B011957099004E2BE5 /* MenuEditHandlers.cpp */,
 				E6ADB9B211957099004E2BE5 /* OptionsPropertySheetDlg.cpp */,
 				E6ADB9B311957099004E2BE5 /* OptionsPropertySheetDlg.h */,
-				E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */,
+				E6ADB9B411957099004E2BE5 /* PasswordSafeFrame.cpp */,
 				E6ADB9B511957099004E2BE5 /* PasswordSafeFrame.h */,
 				E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */,
 				E6ADB9B711957099004E2BE5 /* PasswordSafeSearch.h */,
@@ -1597,7 +1609,7 @@
 		E6ADB7F0119569CC004E2BE5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 1210;
 				ORGANIZATIONNAME = "Open Source Software";
 				TargetAttributes = {
 					E66D292E1D02B49B00C9BCBF = {
@@ -1607,13 +1619,14 @@
 			};
 			buildConfigurationList = E6ADB7F3119569CC004E2BE5 /* Build configuration list for PBXProject "pwsafe-xcode6" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
+				ja,
+				de,
+				fr,
+				en,
+				Base,
 			);
 			mainGroup = E6ADB7EE119569CC004E2BE5;
 			productRefGroup = E6ADB80411956A93004E2BE5 /* Products */;
@@ -1810,7 +1823,7 @@
 				E6ADBA3C1195709A004E2BE5 /* EditShortcutDlg.cpp in Sources */,
 				E6ADBA3D1195709A004E2BE5 /* MenuEditHandlers.cpp in Sources */,
 				E6ADBA3F1195709A004E2BE5 /* OptionsPropertySheetDlg.cpp in Sources */,
-				E6ADBA401195709A004E2BE5 /* passwordsafeframe.cpp in Sources */,
+				E6ADBA401195709A004E2BE5 /* PasswordSafeFrame.cpp in Sources */,
 				E6ADBA411195709A004E2BE5 /* PasswordSafeSearch.cpp in Sources */,
 				E6ADBA431195709A004E2BE5 /* PropertiesDlg.cpp in Sources */,
 				E0C3C44F2379CD7500715124 /* MenuFileHandlers.cpp in Sources */,
@@ -1912,6 +1925,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1956,6 +1970,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1981,6 +1996,8 @@
 		E690B53112980BDD007EA508 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1991,9 +2008,10 @@
 		E690B53212980BDD007EA508 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PRODUCT_NAME = "Help Files";
 				ZERO_LINK = NO;
 			};
@@ -2002,17 +2020,44 @@
 		E6ADB7F1119569CC004E2BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_LINK_OBJC_RUNTIME = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NO_YUBI,
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -2020,15 +2065,42 @@
 		E6ADB7F2119569CC004E2BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_LINK_OBJC_RUNTIME = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Release;
@@ -2037,6 +2109,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2049,6 +2123,7 @@
 					__WXMAC__,
 					__WXOSX_COCOA__,
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -2062,6 +2137,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
@@ -2071,6 +2148,7 @@
 					__WXMAC__,
 					__WXOSX_COCOA__,
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -2084,6 +2162,8 @@
 		E6ADB91D11956DD0004E2BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2105,6 +2185,8 @@
 		E6ADB91E11956DD0004E2BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
@@ -2126,6 +2208,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2142,6 +2227,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
@@ -2153,6 +2239,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2167,6 +2256,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;

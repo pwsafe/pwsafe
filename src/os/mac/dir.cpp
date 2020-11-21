@@ -169,7 +169,11 @@ static stringT createuserprefsdir(void)
 {
   stringT cfgdir = pws_os::getenv("HOME", true);
   if (!cfgdir.empty()) {
-    cfgdir += _S("/.pwsafe");
+    if(cfgdir[cfgdir.length()-1] != '/') {
+      cfgdir += _S("/.pwsafe");
+    } else {
+      cfgdir += _S(".pwsafe");
+    }
     struct stat statbuf;
     switch (::lstat(pws_os::tomb(cfgdir).c_str(), &statbuf)) {
     case 0:

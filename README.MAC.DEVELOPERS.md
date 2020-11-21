@@ -12,6 +12,7 @@ It is organized in the following sections.
 * [Build pwsafe](#build-pwsafe)
   * Debug and Release Configs
   * Where is pwsafe.app?
+* [Build installation package](#build-dmg)
 
 
 ## Requirements
@@ -19,6 +20,7 @@ It is organized in the following sections.
 * Xcode
 * wxWidgets
 * Perl
+* gettext (can be fetched from brew)
 
 
 ### Xcode
@@ -161,4 +163,14 @@ At this point, just hitting Cmd-B or click Product Menu => Build to build pwsafe
 
 ### Where is pwsafe.app?
 In Xcode/build/Debug or Xcode/build/Release directories, depending
-on the configuration you built.
+on the configuration you built. It might be located by default in the users folder
+~/Library/Developer/Xcode/DerivedData/pwsafe-xcode6-.../Build/Products/Debug or
+~/Library/Developer/Xcode/DerivedData/pwsafe-xcode6-.../Build/Products/Release,
+where ... is a complex unique number for the build.
+
+
+## Build installation package
+You have to create or update help and translations files. Call "make" in folder
+"help" and "src/ui/wxWidgets/I18N". For missing tools install "gettext" from "brew" for instance.
+
+After building of pwsafe.app (in Xcode), language files and help you might call "make" in "install/macosx" to create the package in main folder.

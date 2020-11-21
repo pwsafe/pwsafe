@@ -109,15 +109,15 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
 END_EVENT_TABLE()
 
 //(*IdInit(AttachmentTab)
-const long AddEditPropSheetDlg::ID_BUTTON_IMPORT = wxWindow::NewControlId();
-const long AddEditPropSheetDlg::ID_BUTTON_EXPORT = wxWindow::NewControlId();
-const long AddEditPropSheetDlg::ID_BUTTON_REMOVE = wxWindow::NewControlId();
-const long AddEditPropSheetDlg::ID_TEXTCTRL2 = wxWindow::NewControlId();
-const long AddEditPropSheetDlg::ID_STATICTEXT4 = wxWindow::NewControlId();
-const long AddEditPropSheetDlg::ID_STATICTEXT5 = wxWindow::NewControlId();
-const long AddEditPropSheetDlg::ID_STATICTEXT6 = wxWindow::NewControlId();
-const long AddEditPropSheetDlg::ID_STATICTEXT8 = wxWindow::NewControlId();
-const long AddEditPropSheetDlg::ID_STATICTEXT10 = wxWindow::NewControlId();
+const wxWindowID AddEditPropSheetDlg::ID_BUTTON_IMPORT = wxWindow::NewControlId();
+const wxWindowID AddEditPropSheetDlg::ID_BUTTON_EXPORT = wxWindow::NewControlId();
+const wxWindowID AddEditPropSheetDlg::ID_BUTTON_REMOVE = wxWindow::NewControlId();
+const wxWindowID AddEditPropSheetDlg::ID_TEXTCTRL2 = wxWindow::NewControlId();
+const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT4 = wxWindow::NewControlId();
+const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT5 = wxWindow::NewControlId();
+const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT6 = wxWindow::NewControlId();
+const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT8 = wxWindow::NewControlId();
+const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT10 = wxWindow::NewControlId();
 //*)
 
 
@@ -892,9 +892,9 @@ wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
 
   panel->SetSizer(BoxSizerMain);
 
-  Bind(wxEVT_COMMAND_BUTTON_CLICKED, &AddEditPropSheetDlg::OnImport, this, ID_BUTTON_IMPORT);
-  Bind(wxEVT_COMMAND_BUTTON_CLICKED, &AddEditPropSheetDlg::OnExport, this, ID_BUTTON_EXPORT);
-  Bind(wxEVT_COMMAND_BUTTON_CLICKED, &AddEditPropSheetDlg::OnRemove, this, ID_BUTTON_REMOVE);
+  Bind(wxEVT_COMMAND_BUTTON_CLICKED, &AddEditPropSheetDlg::OnImport, this, static_cast<int>(ID_BUTTON_IMPORT));
+  Bind(wxEVT_COMMAND_BUTTON_CLICKED, &AddEditPropSheetDlg::OnExport, this, static_cast<int>(ID_BUTTON_EXPORT));
+  Bind(wxEVT_COMMAND_BUTTON_CLICKED, &AddEditPropSheetDlg::OnRemove, this, static_cast<int>(ID_BUTTON_REMOVE));
   //*)
 
   return panel;
@@ -1414,11 +1414,11 @@ static struct {short pv; wxString name;}
   // - Adds " (default)" to default string
   // - Selects current value
   for (size_t i = 0; i < sizeof(dcaMapping)/sizeof(dcaMapping[0]); i++) {
-    pcbox->SetClientData(i, reinterpret_cast<void *>(dcaMapping[i].pv));
+    pcbox->SetClientData(static_cast<unsigned int>(i), reinterpret_cast<void *>(dcaMapping[i].pv));
     if (dcaMapping[i].pv == defDCA) {
       wxString dv = dcaMapping[i].name;
       dv += wxT(" ("); dv += _("default"); dv += wxT(")");
-      pcbox->SetString(i, dv);
+      pcbox->SetString(static_cast<unsigned int>(i), dv);
       if (useDefault || iDCA == defDCA) {
         pcbox->SetValue(dv);
       }
@@ -1576,7 +1576,7 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
                                          pwh_max, num_err,
                                          pwhl, PWSUtil::TMC_LOCALE);
       if (size_t(m_AdditionalPasswordHistoryGrid->GetNumberRows()) < pwhl.size()) {
-        m_AdditionalPasswordHistoryGrid->AppendRows(pwhl.size() - m_AdditionalPasswordHistoryGrid->GetNumberRows());
+        m_AdditionalPasswordHistoryGrid->AppendRows(static_cast<int>(pwhl.size() - m_AdditionalPasswordHistoryGrid->GetNumberRows()));
       }
       m_MaxPasswordHistory = int(pwh_max);
       //reverse-sort the history entries so that we list the newest first

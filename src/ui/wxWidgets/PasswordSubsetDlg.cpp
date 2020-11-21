@@ -225,7 +225,7 @@ void PasswordSubsetDlg::OnChar( wxKeyEvent& event )
 
   wxChar uc = event.GetUnicodeKey();
   if (uc != WXK_NONE) {
-    const int N = m_password.length();
+    const int N = static_cast<int>(m_password.length());
     if (charSet.Matches(wxString(uc, 1))) {
       event.Skip(true); // accept
       // Check against valid pos regexp and update vals accordingly

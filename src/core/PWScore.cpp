@@ -688,9 +688,9 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
 // Writes out subset of records to a PasswordSafe database at the current version
 // Used by Export entry or Export Group
 struct ExportRecordWriter {
-  ExportRecordWriter(PWSfile *pout, PWScore *pcore, std::vector<pws_os::CUUID> &vuuidAddedBases,
+  ExportRecordWriter(PWSfile *pout, PWScore * /*pcore*/, std::vector<pws_os::CUUID> &vuuidAddedBases,
     CReport *pRpt) :
-    m_pout(pout), m_pcore(pcore), m_pRpt(pRpt), m_vuuidAddedBases(vuuidAddedBases) {}
+    m_pout(pout), /*m_pcore(pcore),*/ m_pRpt(pRpt), m_vuuidAddedBases(vuuidAddedBases) {}
 
   void operator()(CItemData &item)
   {
@@ -731,7 +731,7 @@ struct ExportRecordWriter {
 
 private:
   PWSfile *m_pout;
-  PWScore *m_pcore;
+  /*PWScore *m_pcore; // variable not used */
   CReport *m_pRpt;
   std::vector<pws_os::CUUID> m_vuuidAddedBases;
 };
@@ -1432,7 +1432,7 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
     unsigned int m = 1;
     for (x = 0; x < file_nums.size(); x++)
       if (file_nums[x] < next)
-        file_nums[x] = static_cast<unsigned long>(next <= 999 ? next++ : m++);
+        file_nums[x] = static_cast<unsigned int>(next <= 999 ? next++ : m++);
   }
 
   Format(cs_newname, L"%ls_%03d", cs_filenamebase.c_str(), nnn);
@@ -3690,7 +3690,7 @@ void PWScore::UpdateExpiryEntry(const CUUID &uuid, const CItemData::FieldType ft
   ExpiredList::iterator iter;
 
   iter = std::find_if(m_ExpireCandidates.begin(), m_ExpireCandidates.end(),
-                      std::bind2nd(std::equal_to<pws_os::CUUID>(), uuid));
+                      [uuid](pws_os::CUUID v){return v == uuid;});
   if (iter == m_ExpireCandidates.end())
     return;
 

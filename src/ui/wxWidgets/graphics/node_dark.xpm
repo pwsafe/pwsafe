@@ -1,0 +1,37 @@
+/* XPM */
+static const char *node_dark_xpm[] = {
+/* width height ncolors chars_per_pixel */
+"13 13 17 1",
+/* colors */
+"  c #F7B71E",
+". c #FBD885",
+"X c #F8BF36",
+"o c #FAD57D",
+"O c #FBDA8B",
+"+ c #F8BD31",
+"@ c #FBDB8D",
+"# c #FAD57B",
+"$ c #F8C343",
+"% c #FBD988",
+"& c #FAD680",
+"* c #FBDE98",
+"= c #1D1E20", /* Background */
+"- c #F8BC2E",
+"; c #FBD783",
+": c #FAD478",
+"> c None",
+/* pixels */
+"=====*$*=====",
+"====;   &====",
+"===;     o===",
+"==;       o==",
+"=;         o=",
+"@           .",
+"X           +",
+"O           .",
+"=o         :=",
+"==o       :==",
+"===#     :===",
+"====#   :====",
+"=====%-%====="
+};

@@ -128,6 +128,7 @@ class wxBookCtrlEvent;
 #define ID_STATICTEXT_10 11198
 #define ID_STATICBOX_1 10198
 #define ID_PWHISTAPPLY 10199
+#define ID_CHECKBOX43 10210
 #define SYMBOL_COPTIONS_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
 #define SYMBOL_COPTIONS_TITLE _("Options")
 #define SYMBOL_COPTIONS_IDNAME ID_OPTIONS
@@ -306,6 +307,7 @@ private:
   bool m_Display_GroupsFirst;
   bool m_Display_PreExpiryWarn;
   int  m_Display_TreeDisplayStatusAtOpen;
+  bool m_Display_ShowMenuSeparator;
 
   // Misc. Preferences
   bool m_Misc_ConfirmDelete;

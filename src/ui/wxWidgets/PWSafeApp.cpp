@@ -271,8 +271,27 @@ bool PWSafeApp::OnInit()
   // Get the locale environment variable 'LC_CTYPE' specified by the environment
   // For instance, the behavior of function 'wcstombs' depends on the LC_CTYPE 
   // category of the selected C locale.
-  setlocale(LC_CTYPE, "");
+#if defined(__WXMAC__)
+  const char *lcCType = setlocale(LC_CTYPE, NULL);
 
+  if (lcCType && strcmp(lcCType, "UTF-8")) { // MAC OS only have UTF-8 as default, but conversion with this string is not running well
+    setlocale(LC_CTYPE, "");
+  }
+  else {
+    const char *env_lc_cType = std::getenv("LC_CTYPE");
+    
+    if(env_lc_cType) {
+      setlocale(LC_CTYPE, env_lc_cType);
+    }
+    else {
+      setlocale(LC_CTYPE, "en_US.UTF-8");
+    }
+  }
+#else
+  setlocale(LC_CTYPE, "");
+#endif
+  setlocale(LC_TIME, "");
+  
   //Used by help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
 
@@ -594,6 +613,7 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
     if ( !translations->AddCatalog(DOMAIN_) ) {
       pws_os::Trace(L"Couldn't load %ls language catalog for %ls\n", ToStr(DOMAIN_), ToStr(wxLocale::GetLanguageName(language)));
       translations->SetLanguage(wxLANGUAGE_ENGLISH);
+      language = wxLANGUAGE_ENGLISH; // Back to default language english
     }
     bRes = translations->IsLoaded(DOMAIN_);
   }
@@ -605,6 +625,14 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
     // (re)set global translation and take care of occupied memory by wxTranslations
     wxTranslations::Set(translations);
     isHelpActivated = ActivateHelp(language);
+
+    const wxLanguageInfo *langInfo = nullptr;
+    langInfo = wxLocale::GetLanguageInfo(language);
+    if(langInfo) {
+      wxString envString = langInfo->CanonicalName + ".UTF-8";
+      setlocale(LC_CTYPE, envString.c_str());
+      setlocale(LC_TIME, envString.c_str());
+    }
   }
   return bRes;
 }
@@ -701,7 +729,7 @@ void PWSafeApp::RestoreFrameCoords(void)
   long top, bottom, left, right;
   PWSprefs::GetInstance()->GetPrefRect(top, bottom, left, right);
   if (!(left == -1 && top == -1 && right == -1 && bottom == -1)) {
-    wxRect rcApp(left, top, right - left, bottom - top);
+    wxRect rcApp(static_cast<int>(left), static_cast<int>(top), static_cast<int>(right - left), static_cast<int>(bottom - top));
 
     int displayWidth, displayHeight;
     ::wxDisplaySize(&displayWidth, &displayHeight);

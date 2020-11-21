@@ -438,12 +438,10 @@ StringX PWSUtil::ConvertToDateTimeString(const time_t &t, TMC result_format)
                 _T("%Y-%m-%dT%H:%M:%S"), st);
       break;
     case TMC_LOCALE:
-      setlocale(LC_TIME, "");
       _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%c"), st);
       break;
     case TMC_LOCALE_DATE_ONLY:
-      setlocale(LC_TIME, "");
       _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%x"), st);
       break;

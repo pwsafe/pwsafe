@@ -267,7 +267,7 @@ void PasswordSafeSearch::CalculateToolsWidth()
 {
   m_ToolsWidth = 0;
 
-  std::vector<size_t> ids = {
+  std::vector<int> ids = {
     ID_FIND_CLOSE,
     ID_FIND_EDITBOX,
     ID_FIND_NEXT,
@@ -475,6 +475,9 @@ void PasswordSafeSearch::CreateSearchBar()
   auto panel = new wxPanel(m_parentFrame, wxID_ANY);
   auto panelSizer = new wxBoxSizer(wxHORIZONTAL);
   panel->SetSizer(panelSizer);
+  
+  auto bgColor = m_parentFrame->GetMenuBar()->GetBackgroundColour();
+  panel->SetBackgroundColour(bgColor);
 
   m_toolbar = new wxToolBar(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_BOTTOM | wxTB_DEFAULT_STYLE,  wxT("SearchBar"));
   panelSizer->Add(m_toolbar, wxSizerFlags().Proportion(1).Expand());

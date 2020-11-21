@@ -42,6 +42,7 @@ class wxTimer;
 ////@begin control identifiers
 #define ID_SAFECOMBINATIONPROMPTDLG 10062
 #define ID_PASSWORD 10008
+#define ID_READONLY 10005
 #if WXWIN_COMPATIBILITY_2_6
 #define SYMBOL_SAFECOMBINATIONPROMPTDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #else
@@ -106,6 +107,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_EXIT
   void OnExitClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_READONLY
+  void OnReadonlyClick( wxCommandEvent& event );
+  
 ////@begin SafeCombinationPromptDlg member function declarations
 
   /// Retrieves bitmap resources
@@ -125,7 +129,8 @@ public:
   wxString m_filename;
   StringX  m_password;
   unsigned m_tries;
-
+  bool m_readOnly;
+  
 #ifndef NO_YUBI
   wxBitmapButton* m_YubiBtn;
   wxStaticText* m_yubiStatusCtrl;
@@ -133,6 +138,7 @@ public:
 #endif
 
   void ProcessPhrase();
+  void UpdateReadOnlyCheckbox(wxCheckBox *checkBox);
 };
 
 #endif // _SAFECOMBINATIONPROMPTDLG_H_

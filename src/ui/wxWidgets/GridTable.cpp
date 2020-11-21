@@ -154,7 +154,7 @@ void GridTable::SetView(wxGrid* newGrid)
   wxGridTableBase::SetView(newGrid);
   if (newGrid) {
     //A new gridtable is being installed.  Update the grid with our settings
-    for (size_t idx = 0; idx < WXSIZEOF(PWSGridCellData); ++idx) {
+    for (unsigned int idx = 0; idx < WXSIZEOF(PWSGridCellData); ++idx) {
 
 #if wxCHECK_VERSION(2, 9, 1)
       if (PWSGridCellData[idx].visible)
@@ -176,7 +176,7 @@ void GridTable::SetView(wxGrid* newGrid)
   else {
     wxCHECK_RET(oldGrid, wxT("Both old and new grid views are nullptr"));
     //This gridtable is about to be deleted.  Save current settings
-    for (size_t idx = 0; idx < WXSIZEOF(PWSGridCellData); ++idx) {
+    for (unsigned int idx = 0; idx < WXSIZEOF(PWSGridCellData); ++idx) {
 
       bool visible = true;
 
@@ -311,7 +311,7 @@ void GridTable::RestoreSettings(void) const
       if (GridCellData.ft == fieldType) {
         GridCellData.visible = true;
         GridCellData.width = fieldWidth;
-        GridCellData.position = idx;
+        GridCellData.position = static_cast<int>(idx);
         break;
       }
     }

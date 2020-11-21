@@ -78,12 +78,12 @@ private:
   //*)
 
   //(*Identifiers(CreateShortcutDlg)
-  static const long ID_COMBOBOX1;
-  static const long ID_TEXTCTRL1;
-  static const long ID_TEXTCTRL2;
-  static const long ID_STATICTEXT7;
-  static const long ID_STATICTEXT8;
-  static const long ID_STATICTEXT9;
+  static const wxWindowID ID_COMBOBOX1;
+  static const wxWindowID ID_TEXTCTRL1;
+  static const wxWindowID ID_TEXTCTRL2;
+  static const wxWindowID ID_STATICTEXT7;
+  static const wxWindowID ID_STATICTEXT8;
+  static const wxWindowID ID_STATICTEXT9;
   //*)
 
   //(*Declarations(CreateShortcutDlg)

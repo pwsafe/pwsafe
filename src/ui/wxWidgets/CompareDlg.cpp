@@ -600,7 +600,7 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
   if (pmulticmds->GetSize() > 0) {
     m_currentCore->Execute(pmulticmds.release());
     for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
-      const int row = menuContext->selectedRows[idx]-idx;
+      const int row = static_cast<int>(menuContext->selectedRows[idx]-idx);
       st_CompareData data = table[row];
       data.uuid0 = data.uuid1; //so far, uuid0 was nullptr since it was not found in current db
       m_identical->data.push_back(data);
@@ -653,7 +653,7 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
     if (menuContext->cdata == m_current) {
       //just delete them from the grid
       for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
-        const int row = menuContext->selectedRows[idx] - idx;
+        const int row = static_cast<int>(menuContext->selectedRows[idx] - idx);
         menuContext->cdata->grid->DeleteRows(row);
       }
     }
@@ -662,7 +662,7 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
                       wxT("If deleted item was not in comparison grid, it should have been in conflicts or identicals grid"));
       // move items to comparison grid, and then delete the item
       for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
-        const int row = menuContext->selectedRows[idx] - idx;
+        const int row = static_cast<int>(menuContext->selectedRows[idx] - idx);
         st_CompareData data = table[row];
         data.uuid0 = pws_os::CUUID::NullUUID(); //removed from current db, so make it null
         m_comparison->data.push_back(data);
@@ -764,7 +764,7 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
       const size_t numIndexes = menuContext->cdata->data.size();
       syncIndexes.Alloc(numIndexes);
       for(size_t i = 0; i < numIndexes; ++i)
-        syncIndexes.Add(i);
+        syncIndexes.Add(static_cast<int>(i));
     }
     else {
       wxCHECK_RET(evt.GetId() == ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, wxT("Sync menu id is neither for all nor for selected items"));
