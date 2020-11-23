@@ -5,6 +5,12 @@ set (TEST_SRCS
   FileEncDecTest.cpp
   )
 
+if (WIN32)
+  list (APPEND TEST_SRCS ../core/core.rc2)
+  set_source_files_properties(../core/core.rc2 PROPERTIES LANGUAGE RC)
+endif(WIN32)
+
+
 # Setup test data
 file (MAKE_DIRECTORY "data")
 file (COPY "data/image1.jpg" DESTINATION "data")
