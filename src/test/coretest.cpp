@@ -33,19 +33,10 @@ int main(int argc, char **argv)
   system("pause");
 #endif
 
-  // Need to find these in order to delete them
-  PWSLog *pwslog = PWSLog::GetLog();
-  PWSprefs *pwsprefs = PWSprefs::GetInstance();
-  PWSrand *pwsrand = PWSrand::GetInstance();
-
-  pwsprefs->DeleteInstance();
-  pwslog->DeleteLog();
-  pwsrand->DeleteInstance();
-
-  // To stop Compiler warning C4189
-  pwsprefs = NULL;
-  pwslog = NULL;
-  pwsrand = NULL;
+  // Delete singletons
+  PWSLog::GetLog()->DeleteLog();
+  PWSprefs::GetInstance()->DeleteInstance();
+  PWSrand::GetInstance()->DeleteInstance();
 
   return rc;
 }
