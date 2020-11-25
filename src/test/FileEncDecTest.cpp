@@ -52,15 +52,12 @@ void FileEncDecTest::TearDown()
 
 TEST_F(FileEncDecTest, NoFile)
 {
-  bool res;
 
-  res = PWSfile::Encrypt(L"nosuchfile", passphrase, errmes);
-  EXPECT_FALSE(res);
+  EXPECT_FALSE(PWSfile::Encrypt(L"nosuchfile", passphrase, errmes));
   EXPECT_FALSE(errmes.empty());
 
   errmes = L"";
-  res = PWSfile::Decrypt(L"nosuchfile", passphrase, errmes);
-  EXPECT_FALSE(res);
+  EXPECT_FALSE(PWSfile::Decrypt(L"nosuchfile", passphrase, errmes));
   EXPECT_FALSE(errmes.empty());
 }
 
@@ -69,35 +66,30 @@ TEST_F(FileEncDecTest, EmptyFile)
   const stringT emptyFile(L"anEmptyFile");
   const stringT emptyCipherFile = emptyFile + suffix;
 
-  int res;
-
+  // create an empty file
   auto fp = pws_os::FOpen(emptyFile, L"w");
   ASSERT_TRUE(fp != nullptr);
-  res = pws_os::FClose(fp, true);
+  auto res = pws_os::FClose(fp, true);
   ASSERT_TRUE(res == 0);
 
   // decrypting an empty file should fail (too small)
   errmes = L"";
-  res = PWSfile::Decrypt(emptyCipherFile, emptyFile.c_str(), errmes);
-  EXPECT_FALSE(res);
+  EXPECT_FALSE(PWSfile::Decrypt(emptyCipherFile, emptyFile.c_str(), errmes));
   EXPECT_FALSE(errmes.empty());
 
   errmes = L"";
-  res = PWSfile::Encrypt(emptyFile, passphrase, errmes);
-  EXPECT_TRUE(res);
+  EXPECT_TRUE(PWSfile::Encrypt(emptyFile, passphrase, errmes));
   EXPECT_TRUE(errmes.empty());
   ASSERT_TRUE(pws_os::FileExists(emptyCipherFile));
 
   // try decrypting with wrong passphrase
   errmes = L"";
-  res = PWSfile::Decrypt(emptyCipherFile, emptyFile.c_str(), errmes);
-  EXPECT_FALSE(res);
+  EXPECT_FALSE(PWSfile::Decrypt(emptyCipherFile, emptyFile.c_str(), errmes));
   EXPECT_FALSE(errmes.empty());
 
   // now with the correct passphrase
   errmes = L"";
-  res = PWSfile::Decrypt(emptyCipherFile, passphrase, errmes);
-  EXPECT_TRUE(res);
+  EXPECT_TRUE(PWSfile::Decrypt(emptyCipherFile, passphrase, errmes));
   EXPECT_TRUE(errmes.empty());
 
   // check decrypted file
@@ -113,77 +105,56 @@ TEST_F(FileEncDecTest, EmptyFile)
   ASSERT_TRUE(pws_os::DeleteAFile(emptyCipherFile));
 }
 
-#if 0
-TEST_F(FileEncDecTest, HeaderTest)
+TEST_F(FileEncDecTest, RegularFile)
 {
-  // header is written when file's opened for write.
-  PWSfileHeader hdr1, hdr2;
-  hdr1.m_prefString = _T("aPrefString");
-  hdr1.m_whenlastsaved = 1413129351; // overwritten in Open()
-  hdr1.m_whenpwdlastchanged = 1529684734;
-  hdr1.m_lastsavedby = _T("aUser");
-  hdr1.m_lastsavedon = _T("aMachine");
-  hdr1.m_whatlastsaved = _T("PasswordSafe test framework");
-  hdr1.m_DB_Name = fname.c_str();
-  hdr1.m_DB_Description = _T("Test the header's persistency");
+  const stringT originalTestFile = L"text1.txt"; // part of source repo
+  const stringT workTestFile = L"EncDecText";
+  const stringT workCipherFile = workTestFile + suffix;
 
-  PWSFileEncDec fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
-  fw.SetHeader(hdr1);
-  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  ASSERT_TRUE(pws_os::FileExists(originalTestFile));
 
-  hdr1 = fw.GetHeader(); // Some fields set by Open()
-  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
-  ASSERT_TRUE(pws_os::FileExists(fname));
+  // create a copy
+  const stringT curdir = pws_os::getcwd() + L"/";
+  ASSERT_TRUE(pws_os::CopyAFile(curdir + originalTestFile, curdir + workTestFile));
 
-  PWSFileEncDec fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
-  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
 
-  hdr2 = fr.GetHeader();
-  // We need the following to read past the termination block!
-  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
-  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
-  ASSERT_EQ(hdr1, hdr2);
+  errmes = L"";
+  EXPECT_TRUE(PWSfile::Encrypt(workTestFile, passphrase, errmes));
+  EXPECT_TRUE(errmes.empty());
+  ASSERT_TRUE(pws_os::FileExists(workCipherFile));
+
+  // try decrypting with wrong passphrase
+  errmes = L"";
+  EXPECT_FALSE(PWSfile::Decrypt(workCipherFile, originalTestFile.c_str(), errmes));
+  EXPECT_FALSE(errmes.empty());
+
+  // now with the correct passphrase
+  errmes = L"";
+  EXPECT_TRUE(PWSfile::Decrypt(workCipherFile, passphrase, errmes));
+  EXPECT_TRUE(errmes.empty());
+
+  // check decrypted file
+  auto fp = pws_os::FOpen(originalTestFile, L"r");
+  ASSERT_TRUE(fp != nullptr);
+  auto len1 = pws_os::fileLength(fp);
+  auto origBuf = new char[len1];
+  ASSERT_EQ(len1, fread(origBuf, 1, len1, fp));
+  auto res = pws_os::FClose(fp, true);
+  ASSERT_TRUE(res == 0);
+
+  fp = pws_os::FOpen(workTestFile, L"r");
+  ASSERT_TRUE(fp != nullptr);
+  auto len2 = pws_os::fileLength(fp);
+  EXPECT_EQ(len1, len2);
+  auto workBuf = new char[len2];
+  ASSERT_EQ(len2, fread(workBuf, 1, len2, fp));
+  res = pws_os::FClose(fp, true);
+  ASSERT_TRUE(res == 0);
+  ASSERT_EQ(memcmp(origBuf, workBuf, len1), 0);
+
+  //cleanup
+  delete[] origBuf;
+  delete[] workBuf;
+  ASSERT_TRUE(pws_os::DeleteAFile(workTestFile));
+  ASSERT_TRUE(pws_os::DeleteAFile(workCipherFile));
 }
-
-TEST_F(FileEncDecTest, ItemTest)
-{
-  PWSFileEncDec fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
-  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
-  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(smallItem));
-  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(fullItem));
-  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
-  ASSERT_TRUE(pws_os::FileExists(fname));
-
-  PWSFileEncDec fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
-  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
-  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
-  EXPECT_EQ(smallItem, item);
-  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
-  EXPECT_EQ(fullItem, item);
-  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
-  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
-}
-
-TEST_F(FileEncDecTest, UnknownPersistencyTest)
-{
-  CItemData d1;
-  d1.CreateUUID();
-  d1.SetTitle(_T("future"));
-  d1.SetPassword(_T("possible"));
-  unsigned char uv[] = {55, 42, 78, 30, 16, 93};
-  d1.SetUnknownField(CItemData::UNKNOWN_TESTING, sizeof(uv), uv);
-
-  PWSFileEncDec fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
-  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
-  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(d1));
-  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
-  ASSERT_TRUE(pws_os::FileExists(fname));
-
-  PWSFileEncDec fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
-  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
-  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
-  EXPECT_EQ(d1, item);
-  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
-  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
-}
-#endif 0
