@@ -379,7 +379,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess)
 {
   ulong64 file_len;
-  size_t len;
+  size_t len = 0;
   unsigned char* buf = nullptr;
   bool status = true;
   unsigned char salt[SaltLength];
@@ -461,7 +461,8 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
  exit:
   if (!status)
     errmess = ErrorMessages();
-  delete[] buf; // allocated by _readcbc
+  if (len != 0) // if len == 0, buf deleted by _readcbc...
+    delete[] buf; // allocated by _readcbc
   return status;
 }
 

@@ -13,6 +13,7 @@
 
 #include "core/PWSfile.h"
 #include "os/file.h"
+#include "os/dir.h"
 
 #include "gtest/gtest.h"
 
@@ -26,21 +27,25 @@ protected:
 
   const StringX passphrase;
   stringT fname;
+  stringT errmes;
+  static const stringT suffix;
 };
 
+const stringT FileEncDecTest::suffix = L".PSF";
+
 FileEncDecTest::FileEncDecTest()
-  : passphrase(_T("strawberry_phasers")), fname(_T("data/text1.txt"))
+  : passphrase(_T("strawberry_phasers")), fname(_T("text1.txt")), errmes(L"")
 {}
 
 void FileEncDecTest::SetUp()
 {
-
+  // tests require writable data dir with text1.txt file
+  ASSERT_TRUE(pws_os::chdir(L"data"));
 }
 
 void FileEncDecTest::TearDown()
 {
-  // ASSERT_TRUE(pws_os::DeleteAFile(fname));
-  // ASSERT_FALSE(pws_os::FileExists(fname));
+  ASSERT_TRUE(pws_os::chdir(L".."));
 }
 
 // And now the tests...
@@ -48,7 +53,6 @@ void FileEncDecTest::TearDown()
 TEST_F(FileEncDecTest, NoFile)
 {
   bool res;
-  stringT errmes(L"");
 
   res = PWSfile::Encrypt(L"nosuchfile", passphrase, errmes);
   EXPECT_FALSE(res);
@@ -58,6 +62,55 @@ TEST_F(FileEncDecTest, NoFile)
   res = PWSfile::Decrypt(L"nosuchfile", passphrase, errmes);
   EXPECT_FALSE(res);
   EXPECT_FALSE(errmes.empty());
+}
+
+TEST_F(FileEncDecTest, EmptyFile)
+{
+  const stringT emptyFile(L"anEmptyFile");
+  const stringT emptyCipherFile = emptyFile + suffix;
+
+  int res;
+
+  auto fp = pws_os::FOpen(emptyFile, L"w");
+  ASSERT_TRUE(fp != nullptr);
+  res = pws_os::FClose(fp, true);
+  ASSERT_TRUE(res == 0);
+
+  // decrypting an empty file should fail (too small)
+  errmes = L"";
+  res = PWSfile::Decrypt(emptyCipherFile, emptyFile.c_str(), errmes);
+  EXPECT_FALSE(res);
+  EXPECT_FALSE(errmes.empty());
+
+  errmes = L"";
+  res = PWSfile::Encrypt(emptyFile, passphrase, errmes);
+  EXPECT_TRUE(res);
+  EXPECT_TRUE(errmes.empty());
+  ASSERT_TRUE(pws_os::FileExists(emptyCipherFile));
+
+  // try decrypting with wrong passphrase
+  errmes = L"";
+  res = PWSfile::Decrypt(emptyCipherFile, emptyFile.c_str(), errmes);
+  EXPECT_FALSE(res);
+  EXPECT_FALSE(errmes.empty());
+
+  // now with the correct passphrase
+  errmes = L"";
+  res = PWSfile::Decrypt(emptyCipherFile, passphrase, errmes);
+  EXPECT_TRUE(res);
+  EXPECT_TRUE(errmes.empty());
+
+  // check decrypted file
+  fp = pws_os::FOpen(emptyFile, L"r");
+  ASSERT_TRUE(fp != nullptr);
+  EXPECT_EQ(pws_os::fileLength(fp), 0);
+  res = pws_os::FClose(fp, true);
+  ASSERT_TRUE(res == 0);
+
+
+  // cleanup
+  ASSERT_TRUE(pws_os::DeleteAFile(emptyFile));
+  ASSERT_TRUE(pws_os::DeleteAFile(emptyCipherFile));
 }
 
 #if 0
