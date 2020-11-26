@@ -63,10 +63,17 @@ extern size_t _readcbc(FILE *fp, unsigned char *buffer,
                        const size_t buffer_len, Fish *Algorithm,
                        unsigned char *cbcbuffer);
 
-// _writecbc will throw(EIO) iff a write fail occurs!
-extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
-                        unsigned char type, Fish *Algorithm,
-                        unsigned char *cbcbuffer);
+// _writecbc* will throw(EIO) iff a write fail occurs!
+// version used to write records:
+extern size_t _writecbc(FILE* fp, const unsigned char* buffer, size_t length,
+  unsigned char type, Fish* Algorithm, unsigned char* cbcbuffer);
+
+// externalized implementation of above for whole-file encryption:
+extern size_t _writecbc1st(FILE* fp, const unsigned char** buffer, size_t* length, unsigned char type,
+  Fish* Algorithm, unsigned char* cbcbuffer);
+extern size_t _writecbcRest(FILE* fp, const unsigned char* buffer, size_t length,
+  Fish* Algorithm, unsigned char* cbcbuffer);
+
 
 // typeless version for V4 content:
 extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
