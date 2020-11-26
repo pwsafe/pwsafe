@@ -121,6 +121,10 @@ class PasswordSafeSearch;
 #define ID_MRUMENU 10061
 #define ID_SUBVIEWSMENU 10070
 #define ID_SHOW_LAST_FIND_RESULTS 10073
+#define ID_SORT_TREE_MENU 10310
+#define ID_SORT_TREE_BY_GROUP 10311
+#define ID_SORT_TREE_BY_NAME 10312
+#define ID_SORT_TREE_BY_DATE 10313
 #define ID_STATUSBAR 10000
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
@@ -189,7 +193,7 @@ class PasswordSafeFrame : public wxFrame, public Observer
 
 private:
     enum class ViewType { TREE, GRID };
-
+    enum class SortType { GROUP, NAME, DATE };
 public:
   /// Constructors
   PasswordSafeFrame(PWScore &core);
@@ -280,6 +284,15 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TREE_VIEW
   void OnTreeViewClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SORT_TREE_BY_GROUP
+  void OnSortByGroupClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SORT_TREE_BY_NAME
+  void OnSortByNameClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SORT_TREE_BY_DATE
+  void OnSortByDateClick( wxCommandEvent& event );
+  
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOWHIDE_UNSAVED
   void OnShowUnsavedEntriesClick( wxCommandEvent& event );
 
@@ -475,6 +488,12 @@ public:
   void SetViewType(const ViewType& view) { m_currentView = view; }
   bool IsTreeView() const { return m_currentView == ViewType::TREE; }
   bool IsGridView() const { return m_currentView == ViewType::GRID; }
+ 
+  void SetTreeSortType(const SortType& view) { m_currentSort = view; }
+  bool IsTreeSortGroup() const { return m_currentSort == SortType::GROUP; }
+  bool IsTreeSortName() const { return m_currentSort == SortType::NAME; }
+  bool IsTreeSortDate() const { return m_currentSort == SortType::DATE; }
+  void UpdateTreeSortMenu();
 
   void RefreshViews();
   void FlattenTree(OrderedItemList& olist);
@@ -609,6 +628,7 @@ private:
 
   PWScore &m_core;
   ViewType m_currentView;
+  SortType m_currentSort;
   PasswordSafeSearch* m_search;
   SystemTray* m_sysTray;
   bool m_exitFromMenu;

@@ -61,6 +61,8 @@ class TreeCtrl : public wxTreeCtrl, public Observer
   DECLARE_EVENT_TABLE()
 
 public:
+  enum class TreeSortType { GROUP, NAME, DATE };
+
   /// Constructors
   TreeCtrl(); // Declared, never defined, as we don't support this!
   TreeCtrl(PWScore &core);
@@ -126,6 +128,7 @@ public:
 ////@end TreeCtrl member function declarations
 
   void Clear(); // consistent name w/GridCtrl
+  StringX GroupNameOfItem(const CItemData &item);
   void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
   void UpdateItemField(const CItemData &item, CItemData::FieldType ft);
@@ -150,6 +153,16 @@ public:
   void SetGroupDisplayStateAllCollapsed();
   void SaveGroupDisplayState();
   void RestoreGroupDisplayState();
+  
+  void SetSorting(TreeSortType &v) { m_sort = v; }
+  void SetSortingGroup() { m_sort = TreeSortType::GROUP; }
+  void SetSortingName() { m_sort = TreeSortType::NAME; }
+  void SetSortingDate() { m_sort = TreeSortType::DATE; }
+  void SetShowGroup(bool v) { m_show_group = v; }
+  bool IsSortingGroup() const { return m_sort == TreeSortType::GROUP; }
+  bool IsSortingName() const { return m_sort == TreeSortType::NAME; }
+  bool IsSortingDate() const { return m_sort == TreeSortType::DATE; }
+  bool IsShowGroup() const { return m_show_group; }
 
 private:
   void PreferencesChanged();
@@ -174,6 +187,9 @@ private:
 
   PWScore &m_core;
   UUIDTIMapT m_item_map; // given a uuid, find the tree item pronto!
+  
+  TreeSortType m_sort;
+  bool m_show_group;
 };
 
 #endif // _TREECTRL_H_

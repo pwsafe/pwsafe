@@ -219,6 +219,8 @@ TreeCtrl::~TreeCtrl()
 void TreeCtrl::Init()
 {
 ////@begin TreeCtrl member initialisation
+  m_sort = TreeSortType::GROUP;
+  m_show_group = false;
 ////@end TreeCtrl member initialisation
 }
 
@@ -489,6 +491,11 @@ wxString TreeCtrl::ItemDisplayString(const CItemData &item) const
 
   // Title is a mandatory field - no need to worry if empty
   wxString disp = title;
+  
+  if (IsShowGroup()) {
+    const wxString group = item.GetGroup().c_str();
+    disp += wxT(" <") + group + wxT(">");
+  }
 
   if (prefs->GetPref(PWSprefs::ShowUsernameInTree)) {
     const wxString user = item.GetUser().c_str();
@@ -555,7 +562,7 @@ void TreeCtrl::UpdateItem(const CItemData &item)
   const wxTreeItemId node = Find(item);
   if (node.IsOk()) {
     const wxString oldGroup = GetPath(node);
-    const wxString newGroup = item.GetGroup().c_str();
+    const wxString newGroup = GroupNameOfItem(item).c_str();
     if (oldGroup == newGroup) {
       const wxString disp = ItemDisplayString(item);
       SetItemText(node, disp);
@@ -579,7 +586,7 @@ void TreeCtrl::UpdateItem(const CItemData &item)
 void TreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft)
 {
   PWSprefs* prefs = PWSprefs::GetInstance();
-  if (ft == CItemData::GROUP) {
+  if (ft == CItemData::GROUP || (IsSortingName() && (ft == CItemData::TITLE || ft == CItemData::NAME)) || (IsSortingDate() && (ft == CItemData::CTIME || ft == CItemData::PMTIME || ft == CItemData::ATIME || ft == CItemData::XTIME || ft == CItemData::RMTIME))) {
     //remove & add again
     UpdateItem(item);
   }
@@ -594,10 +601,75 @@ void TreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft)
   }
 }
 
+StringX TreeCtrl::GroupNameOfItem(const CItemData &item)
+{
+  StringX group, title;
+  time_t gt, t;
+  
+  if (IsSortingGroup()) {
+    group = item.GetGroup();
+  } else if (IsSortingName()) {
+    title = item.GetTitle();
+    if (title.empty()) {
+      title = item.GetName();
+    }
+    if (! title.empty()) {
+      group = title.substr(0, 1);
+    } else {
+      group = L"?";
+    }
+    ToUpper(group);
+    if(! iswalnum(group[0]) && (group[0] <= 127)) {
+      group = L"#";
+    }
+  } else if (IsSortingDate()) {
+    if(item.GetCTime(t)) {
+      gt = t;
+    }
+    else {
+      gt = 0;
+    }
+    if(item.GetRMTime(t) && (t > gt)) {
+      gt = t;
+    }
+    if(item.GetPMTime(t) && (t > gt)) {
+      gt = t;
+    }
+    if(item.GetATime(t) && (t > gt)) {
+      gt = t;
+    }
+    
+    if (gt == 0) {
+      group = L"Undefind Time Value";
+    }
+    else {
+      TCHAR datetime_str[80];
+      struct tm *st;
+      struct tm st_s;
+      errno_t err;
+      err = localtime_s(&st_s, &gt);
+      if (err) {
+        group = L"Conversion Error on Time Value";
+      }
+      else {
+        st = &st_s;
+        _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
+                  _T("%Y.%m.%d"), st);
+        group = datetime_str;
+      }
+    }
+  } else {
+    wxASSERT(false);
+    group = L"Error";
+  }
+  
+  return group;
+}
+
 void TreeCtrl::AddItem(const CItemData &item)
 {
   wxTreeItemData *data = new PWTreeItemData(item);
-  wxTreeItemId gnode = AddGroup(item.GetGroup());
+  wxTreeItemId gnode = AddGroup(GroupNameOfItem(item));
   const wxString disp = ItemDisplayString(item);
   wxTreeItemId titem = AppendItem(gnode, disp, -1, -1, data);
   SetItemImage(titem, item);

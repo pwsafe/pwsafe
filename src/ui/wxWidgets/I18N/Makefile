@@ -39,7 +39,8 @@ $(POS) : $(POT)
 
 mos/%/LC_MESSAGES/pwsafe.mo : pos/pwsafe_%.po
 	@mkdir -p $(dir $@)
-	@msgfmt --check --output-file=$@ $^
+# do not remove wanted entries:	@msgfmt --check --output-file=$@ $^
+	@msgfmt --output-file=$@ $^
 
 check:
 	POFileChecker --ignore-fuzzy $(POS)
