@@ -400,6 +400,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   unsigned char randstuff[StuffSize];
   unsigned char randhash[SHA1::HASHLEN];
   unsigned char temphash[SHA1::HASHLEN];
+  FILE* out = nullptr;
 
   FILE *in = pws_os::FOpen(fn, _T("rb"));
   if (in == nullptr) {
@@ -410,7 +411,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   file_len = pws_os::fileLength(in);
 
   if (file_len < (8 + sizeof(randhash) + 8 + SaltLength)) {
-    fclose(in);
+    pws_os::FClose(in, false);
     LoadAString(errmess, IDSC_FILE_TOO_SHORT);
     return false;
   }
@@ -421,14 +422,17 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
   GenRandhash(passwd, randstuff, temphash);
   if (memcmp(reinterpret_cast<char *>(randhash), reinterpret_cast<char *>(temphash), SHA1::HASHLEN) != 0) {
-    fclose(in);
+    pws_os::FClose(in, false);
     LoadAString(errmess, IDSC_BADPASSWORD);
     return false;
   }
 
   { // decryption in a block, since we use goto
-    fread(salt,    1, SaltLength, in);
-    fread(ipthing, 1, 8,          in);
+    if (fread(salt,    1, SaltLength, in) != SaltLength ||
+      fread(ipthing, 1, 8,          in) != 8) {
+      status = false;
+      goto exit;
+    }
 
     unsigned char dummyType;
     unsigned char *pwd = nullptr;
@@ -453,13 +457,11 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     stringT out_fn = fn;
     out_fn = out_fn.substr(0,filepath_len - suffix_len);
 
-    FILE *out = pws_os::FOpen(out_fn, _T("wb"));
+    out = pws_os::FOpen(out_fn, _T("wb"));
     if (out != nullptr) {
       size_t fret = fwrite(buf, 1, len, out);
       if (fret != len) {
-        int save_errno = errno;
-        fclose(out);
-        errno = save_errno;
+        status = false;
         goto exit;
       }
       if (fclose(out) != 0) {
@@ -474,6 +476,8 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
  exit:
   if (!status)
     errmess = ErrorMessages();
+  pws_os::FClose(in, false);
+  pws_os::FClose(out, true);
   if (len != 0) // if len == 0, buf deleted by _readcbc...
     delete[] buf; // allocated by _readcbc
   return status;
