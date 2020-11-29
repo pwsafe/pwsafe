@@ -298,7 +298,8 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   Fish *fish = nullptr;
   bool status = true;
   const stringT out_fn = fn + CIPHERTEXT_SUFFIX;
-  unsigned char *pwd = nullptr;
+  unsigned char *pass = nullptr;
+  unsigned char* ipthing = nullptr;
   size_t passlen = 0;
   
   FILE *in = pws_os::FOpen(fn, _T("rb"));
@@ -313,28 +314,30 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     status = false; goto exit;
   }
 
-  ConvertPasskey(passwd, pwd, passlen);
+  ConvertPasskey(passwd, pass, passlen);
   unsigned char thesalt[SaltLength];
   PWSrand::GetInstance()->GetRandomData(thesalt, SaltLength);
 
   // TODO: change to TwoFish for large (> 4GB) files
-  fish = BlowFish::MakeBlowFish(pwd, static_cast<unsigned int>(passlen), thesalt, SaltLength);
-  trashMemory(pwd, passlen);
-  delete[] pwd; // gross - ConvertPasskey allocates.
+  fish = BlowFish::MakeBlowFish(pass, static_cast<unsigned int>(passlen), thesalt, SaltLength);
+  trashMemory(pass, passlen);
+  delete[] pass; // gross - ConvertPasskey allocates.
+  auto const BS = fish->GetBlockSize();
 
   unsigned char randstuff[StuffSize];
   unsigned char randhash[SHA1::HASHLEN];   // HashSize
-  PWSrand::GetInstance()->GetRandomData(randstuff, 8);
+  PWSrand::GetInstance()->GetRandomData(randstuff, StuffSize - 2);
   // miserable bug - have to fix this way to avoid breaking existing files
-  randstuff[8] = randstuff[9] = TCHAR('\0');
+  randstuff[StuffSize - 2] = randstuff[StuffSize - 1] = TCHAR('\0');
+  
   GenRandhash(passwd, randstuff, randhash);
-  SAFE_FWRITE(randstuff, 1, 8, out);
-  SAFE_FWRITE(randhash, 1, sizeof(randhash), out);
-  SAFE_FWRITE(thesalt, 1, SaltLength, out);
+  SAFE_FWRITE(randstuff, 1, StuffSize - 2, out)
+  SAFE_FWRITE(randhash, 1, sizeof(randhash), out)
+  SAFE_FWRITE(thesalt, 1, SaltLength, out)
 
-  unsigned char ipthing[8];
-  PWSrand::GetInstance()->GetRandomData(ipthing, 8);
-  SAFE_FWRITE(ipthing, 1, 8, out);
+  ipthing = new unsigned char[BS];
+  PWSrand::GetInstance()->GetRandomData(ipthing, BS);
+  SAFE_FWRITE(ipthing, 1, BS, out)
 
 #ifndef BUFSIZ
 #define BUFSIZ 2048
@@ -345,38 +348,42 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   size_t nread = fread(buf, 1, BUFSIZ, in);
   auto orig_filelen = filelen;
 
-  //write first block: length + dummy type +  bytes of data
-  size_t nwritten = _writecbc1st(out, &bufp, &filelen, 0, fish, ipthing);
-  if (nwritten != fish->GetBlockSize()) {
-    // fail
-    status = false;
-    goto exit;
-  }
-  // write rest of first buffer
-  nread -= orig_filelen - filelen;
-  nwritten = _writecbcRest(out, bufp, nread, fish, ipthing);
-  if (nwritten < nread) {
-    status = false;
-    goto exit;
-  }
-
-
-  do { // main read/encrypt/write loop
-    nread = fread(buf, 1, BUFSIZ, in);
-    if (ferror(in)) { // this is how to detect fread errors
+  try {
+    //write first block: length + dummy type +  bytes of data
+    size_t nwritten = _writecbc1st(out, &bufp, &filelen, 0, fish, ipthing);
+    if (nwritten != BS) {
+      status = false;
+      goto exit;
+    }
+    // write rest of first buffer
+    nread -= orig_filelen - filelen;
+    nwritten = _writecbcRest(out, bufp, nread, fish, ipthing);
+    if (nwritten < nread) {
       status = false;
       goto exit;
     }
 
-    try {
+
+    do { // main read/encrypt/write loop
+      nread = fread(buf, 1, BUFSIZ, in);
+      if (ferror(in)) { // this is how to detect fread errors
+       status = false;
+        goto exit;
+      }
+
+      if (nread == 0) // save writing a block or two.
+        break;
+
       _writecbcRest(out, buf, nread, fish, ipthing);
-    }
-    catch (...) { // _writecbc* throws an exception if it fails to write
-      errno = EIO;
-      status = false;
-      goto exit;
-    }
-  } while (!feof(in));
+    
+    } while (!feof(in));
+
+  } catch (...) { // _writecbc* throws an exception if it fails to write
+    errno = EIO;
+    status = false;
+    goto exit;
+  } // catch
+
   status = (pws_os::FClose(out, true) == 0); out = nullptr;
 
  exit:
@@ -384,6 +391,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     errmess = ErrorMessages();
   delete fish;
   trashMemory(buf, BUFSIZ);
+  delete[] ipthing;
   pws_os::FClose(in, false);
   pws_os::FClose(out, true);
   return status;
@@ -416,9 +424,15 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     return false;
   }
 
-  fread(randstuff, 1, 8, in);
-  randstuff[8] = randstuff[9] = TCHAR('\0'); // ugly bug workaround
-  fread(randhash, 1, sizeof(randhash), in);
+  if (fread(randstuff, 1, StuffSize - 2, in) != StuffSize -2) {
+    status = false;
+    goto exit;
+  }
+  randstuff[StuffSize - 2] = randstuff[StuffSize - 1] = TCHAR('\0'); // ugly bug workaround
+  if (fread(randhash, 1, sizeof(randhash), in) != sizeof(randhash)) {
+    status = false;
+    goto exit;
+  }
 
   GenRandhash(passwd, randstuff, temphash);
   if (memcmp(reinterpret_cast<char *>(randhash), reinterpret_cast<char *>(temphash), SHA1::HASHLEN) != 0) {
