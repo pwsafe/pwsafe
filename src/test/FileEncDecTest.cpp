@@ -29,6 +29,8 @@ protected:
   stringT fname;
   stringT errmes;
   static const stringT suffix;
+
+  void TestFile(const stringT& testfile); // encrypt, decrypt and compare against original
 };
 
 const stringT FileEncDecTest::suffix = L".PSF";
@@ -107,8 +109,15 @@ TEST_F(FileEncDecTest, EmptyFile)
 
 TEST_F(FileEncDecTest, RegularFile)
 {
-  const stringT originalTestFile = L"text1.txt"; // part of source repo
-  const stringT workTestFile = L"EncDecText";
+  // test files are part of source tree
+  TestFile(L"text1.txt");
+  TestFile(L"image1.jpg");
+}
+
+void FileEncDecTest::TestFile(const stringT& testfile)
+{
+  const stringT originalTestFile = testfile; 
+  const stringT workTestFile = L"EncDecTest";
   const stringT workCipherFile = workTestFile + suffix;
 
   ASSERT_TRUE(pws_os::FileExists(originalTestFile));
