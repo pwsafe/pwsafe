@@ -134,7 +134,7 @@ TEST_F(FileEncDecTest, RegularFile)
   EXPECT_TRUE(errmes.empty());
 
   // check decrypted file
-  auto fp = pws_os::FOpen(originalTestFile, L"r");
+  auto fp = pws_os::FOpen(originalTestFile, L"rb");
   ASSERT_TRUE(fp != nullptr);
   auto len1 = pws_os::fileLength(fp);
   auto origBuf = new char[len1];
@@ -142,7 +142,7 @@ TEST_F(FileEncDecTest, RegularFile)
   auto res = pws_os::FClose(fp, true);
   ASSERT_TRUE(res == 0);
 
-  fp = pws_os::FOpen(workTestFile, L"r");
+  fp = pws_os::FOpen(workTestFile, L"rb");
   ASSERT_TRUE(fp != nullptr);
   auto len2 = pws_os::fileLength(fp);
   EXPECT_EQ(len1, len2);
