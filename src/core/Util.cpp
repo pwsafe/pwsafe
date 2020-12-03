@@ -269,6 +269,28 @@ size_t _writecbcRest(FILE *fp, const unsigned char *buffer, size_t length,
   return numWritten;
 }
 
+
+size_t readcbc1st(FILE *fp, size_t &record_size, Fish *Algorithm, unsigned char *cbcbuffer)
+{
+  const unsigned int BS = Algorithm->GetBlockSize();
+  unsigned char* block = new unsigned char[BS];
+  memset(block, 0, BS);
+
+  if (fread(block, 1, BS, fp) != BS) {
+    delete[] block;
+    record_size = 0;
+    return 0;
+  }
+
+  Algorithm->Decrypt(block, block);
+  xormem(block, cbcbuffer, BS);
+  memcpy(cbcbuffer, block, BS);
+
+  record_size = getInt32(block);
+  delete[] block;
+  return BS;
+}
+
 /*
 * Reads an encrypted record into buffer.
 * The first block of the record contains the encrypted record length

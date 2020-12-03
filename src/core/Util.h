@@ -50,6 +50,8 @@ extern void GenRandhash(const StringX &passkey,
                         const unsigned char *m_randstuff,
                         unsigned char *m_randhash);
 
+extern size_t readcbc1st(FILE* fp, size_t& record_size, Fish* Algorithm, unsigned char* cbcbuffer);
+
 // buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
 extern size_t _readcbc(FILE *fp, unsigned char * &buffer,
                        size_t &buffer_len,

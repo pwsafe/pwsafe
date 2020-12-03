@@ -292,6 +292,10 @@ static stringT ErrorMessages()
 #undef max
 #endif
 
+#ifndef BUFSIZ
+#define BUFSIZ 2048
+#endif
+
 bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess)
 {
   FILE* out = nullptr;
@@ -338,10 +342,6 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   ipthing = new unsigned char[BS];
   PWSrand::GetInstance()->GetRandomData(ipthing, BS);
   SAFE_FWRITE(ipthing, 1, BS, out)
-
-#ifndef BUFSIZ
-#define BUFSIZ 2048
-#endif
 
   unsigned char buf[BUFSIZ];
   const unsigned char* bufp = buf;
@@ -400,8 +400,6 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess)
 {
   ulong64 file_len;
-  size_t len = 0;
-  unsigned char* buf = nullptr;
   bool status = true;
   unsigned char salt[SaltLength];
   unsigned char ipthing[8];
@@ -448,13 +446,69 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
       goto exit;
     }
 
-    unsigned char dummyType;
     unsigned char *pwd = nullptr;
     size_t passlen = 0;
     ConvertPasskey(passwd, pwd, passlen);
     Fish *fish = BlowFish::MakeBlowFish(pwd, static_cast<unsigned int>(passlen), salt, SaltLength);
     trashMemory(pwd, passlen);
     delete[] pwd; // gross - ConvertPasskey allocates.
+    const unsigned int BS = fish->GetBlockSize();
+
+
+    // read first block, containing plaintext length
+    size_t plaintext_length;
+    if (readcbc1st(in, plaintext_length, fish, ipthing) != BS) {
+      delete fish;
+      status = false;
+      goto exit;
+    }
+
+    // Open output file
+    size_t suffix_len = CIPHERTEXT_SUFFIX.length();
+    size_t filepath_len = fn.length();
+
+    stringT out_fn = fn;
+    out_fn = out_fn.substr(0, filepath_len - suffix_len);
+
+    out = pws_os::FOpen(out_fn, _T("wb"));
+    if (out == nullptr) {
+      delete fish;
+      status = false;
+      goto exit;
+    }
+
+    // now iterate over rest of file
+    unsigned char buf[BUFSIZ];
+    size_t nleft = plaintext_length;
+
+    do {
+      size_t nread = fread(buf, 1, BUFSIZ, in);
+      if (ferror(in)) {
+        delete fish;
+        status = false;
+        goto exit;
+      }
+      if (nread == 0) { // no plaintext or we hit the exact end. In any case, break loop peacefully
+        break;
+      }
+      // write plaintext
+      auto nwrite = nleft > BUFSIZ ? BUFSIZ : nleft;
+      if (fwrite(buf,1, nwrite, out) != nwrite) {
+        delete fish;
+        status = false;
+        goto exit;
+      }
+      nleft -= nwrite;
+    } while (!feof(in));
+
+    if (nleft != 0) {
+      // truncated ciphertext?
+      status = false;
+    }
+    delete fish;
+
+#if 0
+
     if (_readcbc(in, buf, len,dummyType, fish, ipthing, nullptr, file_len) == 0) {
       delete fish;
       delete[] buf; // if not yet allocated, delete[] nullptr, which is OK
@@ -486,14 +540,14 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
       status = false;
       goto exit;
     }
+#endif
   } // write decrypted
  exit:
   if (!status)
     errmess = ErrorMessages();
   pws_os::FClose(in, false);
   pws_os::FClose(out, true);
-  if (len != 0) // if len == 0, buf deleted by _readcbc...
-    delete[] buf; // allocated by _readcbc
+
   return status;
 }
 
