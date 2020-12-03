@@ -482,7 +482,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     size_t nleft = plaintext_length;
 
     do {
-      size_t nread = fread(buf, 1, BUFSIZ, in);
+      size_t nread = _readcbc(in, buf, BUFSIZ, fish, ipthing);
       if (ferror(in)) {
         delete fish;
         status = false;
@@ -506,41 +506,6 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
       status = false;
     }
     delete fish;
-
-#if 0
-
-    if (_readcbc(in, buf, len,dummyType, fish, ipthing, nullptr, file_len) == 0) {
-      delete fish;
-      delete[] buf; // if not yet allocated, delete[] nullptr, which is OK
-      return false;
-    }
-    delete fish;
-    fclose(in);
-  } // decrypt
-
-  { // write decrypted data
-    size_t suffix_len = CIPHERTEXT_SUFFIX.length();
-    size_t filepath_len = fn.length();
-
-    stringT out_fn = fn;
-    out_fn = out_fn.substr(0,filepath_len - suffix_len);
-
-    out = pws_os::FOpen(out_fn, _T("wb"));
-    if (out != nullptr) {
-      size_t fret = fwrite(buf, 1, len, out);
-      if (fret != len) {
-        status = false;
-        goto exit;
-      }
-      if (fclose(out) != 0) {
-        status = false;
-        goto exit;
-      }
-    } else { // open failed
-      status = false;
-      goto exit;
-    }
-#endif
   } // write decrypted
  exit:
   if (!status)

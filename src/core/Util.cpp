@@ -273,21 +273,22 @@ size_t _writecbcRest(FILE *fp, const unsigned char *buffer, size_t length,
 size_t readcbc1st(FILE *fp, size_t &record_size, Fish *Algorithm, unsigned char *cbcbuffer)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
-  unsigned char* block = new unsigned char[BS];
-  memset(block, 0, BS);
+  unsigned char* ctblock = new unsigned char[2 * BS];
+  memset(ctblock, 0, 2 * BS);
+  unsigned char* ptblock = ctblock + BS; // too lazy to allocate twice...
 
-  if (fread(block, 1, BS, fp) != BS) {
-    delete[] block;
+  if (fread(ctblock, 1, BS, fp) != BS) {
+    delete[] ctblock;
     record_size = 0;
     return 0;
   }
 
-  Algorithm->Decrypt(block, block);
-  xormem(block, cbcbuffer, BS);
-  memcpy(cbcbuffer, block, BS);
+  Algorithm->Decrypt(ctblock, ptblock);
+  xormem(ptblock, cbcbuffer, BS);
+  memcpy(cbcbuffer, ctblock, BS);
 
-  record_size = getInt32(block);
-  delete[] block;
+  record_size = getInt32(ptblock);
+  delete[] ctblock;
   return BS;
 }
 
