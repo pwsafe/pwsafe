@@ -303,15 +303,21 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   bool status = true;
   const stringT out_fn = fn + CIPHERTEXT_SUFFIX;
   unsigned char *pass = nullptr;
-  unsigned char* ipthing = nullptr;
+  unsigned char* ivthing = nullptr;
   size_t passlen = 0;
+  size_t filelen = 0, orig_filelen = 0;
+  size_t nread = 0;
+  unsigned char thesalt[SaltLength];
+  unsigned int BS = 0;
+  const unsigned char* bufp = nullptr;
+
   
   FILE *in = pws_os::FOpen(fn, _T("rb"));
   if (in == nullptr) {
     status = false; goto exit;
   }
 
-  auto filelen = pws_os::fileLength(in);
+  filelen = pws_os::fileLength(in);
 
   out = pws_os::FOpen(out_fn, _T("wb"));
   if (out == nullptr) {
@@ -319,14 +325,13 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   }
 
   ConvertPasskey(passwd, pass, passlen);
-  unsigned char thesalt[SaltLength];
   PWSrand::GetInstance()->GetRandomData(thesalt, SaltLength);
 
   // TODO: change to TwoFish for large (> 4GB) files
   fish = BlowFish::MakeBlowFish(pass, static_cast<unsigned int>(passlen), thesalt, SaltLength);
   trashMemory(pass, passlen);
   delete[] pass; // gross - ConvertPasskey allocates.
-  auto const BS = fish->GetBlockSize();
+  BS = fish->GetBlockSize();
 
   unsigned char randstuff[StuffSize];
   unsigned char randhash[SHA1::HASHLEN];   // HashSize
@@ -339,25 +344,25 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   SAFE_FWRITE(randhash, 1, sizeof(randhash), out)
   SAFE_FWRITE(thesalt, 1, SaltLength, out)
 
-  ipthing = new unsigned char[BS];
-  PWSrand::GetInstance()->GetRandomData(ipthing, BS);
-  SAFE_FWRITE(ipthing, 1, BS, out)
+  ivthing = new unsigned char[BS];
+  PWSrand::GetInstance()->GetRandomData(ivthing, BS);
+  SAFE_FWRITE(ivthing, 1, BS, out)
 
   unsigned char buf[BUFSIZ];
-  const unsigned char* bufp = buf;
-  size_t nread = fread(buf, 1, BUFSIZ, in);
-  auto orig_filelen = filelen;
+  bufp = buf;
+  nread = fread(buf, 1, BUFSIZ, in);
+  orig_filelen = filelen;
 
   try {
     //write first block: length + dummy type +  bytes of data
-    size_t nwritten = _writecbc1st(out, &bufp, &filelen, 0, fish, ipthing);
+    size_t nwritten = _writecbc1st(out, &bufp, &filelen, 0, fish, ivthing);
     if (nwritten != BS) {
       status = false;
       goto exit;
     }
     // write rest of first buffer
     nread -= orig_filelen - filelen;
-    nwritten = _writecbcRest(out, bufp, nread, fish, ipthing);
+    nwritten = _writecbcRest(out, bufp, nread, fish, ivthing);
     if (nwritten < nread) {
       status = false;
       goto exit;
@@ -374,7 +379,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
       if (nread == 0) // save writing a block or two.
         break;
 
-      _writecbcRest(out, buf, nread, fish, ipthing);
+      _writecbcRest(out, buf, nread, fish, ivthing);
     
     } while (!feof(in));
 
@@ -391,7 +396,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     errmess = ErrorMessages();
   delete fish;
   trashMemory(buf, BUFSIZ);
-  delete[] ipthing;
+  delete[] ivthing;
   pws_os::FClose(in, false);
   pws_os::FClose(out, true);
   return status;
