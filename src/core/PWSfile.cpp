@@ -318,6 +318,14 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
   filelen = pws_os::fileLength(in);
 
+  if (filelen > fileThresholdSize)
+  {
+    // fail for now
+    status = false;
+    errno = EFBIG;
+    goto exit;
+  }
+
   out = pws_os::FOpen(out_fn, _T("wb"));
   if (out == nullptr) {
     status = false; goto exit;
