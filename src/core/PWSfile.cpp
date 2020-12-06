@@ -244,6 +244,9 @@ long PWSfile::GetOffset() const
 // this is for the undocumented 'command line file encryption'
 static const stringT CIPHERTEXT_SUFFIX(_S(".PSF"));
 
+size_t PWSfile::fileThresholdSize = std::numeric_limits<uint32>::max(); // files this size and above encrypted differently - configurable for testing
+
+
 static stringT ErrorMessages()
 {
   stringT cs_text;

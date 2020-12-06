@@ -114,6 +114,15 @@ TEST_F(FileEncDecTest, RegularFile)
   TestFile(L"image1.jpg");
 }
 
+TEST_F(FileEncDecTest, BigFile)
+{
+  // fake big file by changing definition of "big"
+  auto oldThreshold = PWSfile::fileThresholdSize;
+  PWSfile::fileThresholdSize = 100000; // smaller than image1.jpg
+  TestFile(L"image1.jpg");
+  PWSfile::fileThresholdSize = oldThreshold;
+}
+
 void FileEncDecTest::TestFile(const stringT& testfile)
 {
   const stringT originalTestFile = testfile; 

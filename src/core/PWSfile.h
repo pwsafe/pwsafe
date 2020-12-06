@@ -107,6 +107,7 @@ public:
   // Following for 'legacy' use of pwsafe as file encryptor/decryptor
   static bool Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess);
   static bool Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess);
+  static size_t fileThresholdSize; // files this size and above encrypted differently - configurable for testing
 
   virtual ~PWSfile();
 
