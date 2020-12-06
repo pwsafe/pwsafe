@@ -13,11 +13,10 @@
 // Abstract the gory details of reading and writing an encrypted database
 //-----------------------------------------------------------------------------
 
-#include <stdio.h> // for FILE *
+#include <cstdio> // for FILE *
 #include <vector>
 
 #include "ItemData.h"
-#include "os/UUID.h"
 #include "UnknownField.h"
 #include "PWSFilters.h"
 #include "StringX.h"

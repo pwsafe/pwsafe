@@ -12,15 +12,11 @@
 #include "SysInfo.h"
 #include "core.h"
 #include "os/file.h"
-#include "os/dir.h"  // for splitpath
 
 #include "crypto/sha1.h" // for simple encrypt/decrypt
 #include "PWSrand.h"
 
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <errno.h>
-#include <limits>
+#include <cerrno>
 
 PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
                               VERSION &version, RWmode mode, int &status,
@@ -407,7 +403,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   ulong64 file_len;
   bool status = true;
   unsigned char salt[SaltLength];
-  unsigned char ipthing[8];
+  unsigned char ivthing[8];
   unsigned char randstuff[StuffSize];
   unsigned char randhash[SHA1::HASHLEN];
   unsigned char temphash[SHA1::HASHLEN];
@@ -446,7 +442,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
   { // decryption in a block, since we use goto
     if (fread(salt,    1, SaltLength, in) != SaltLength ||
-      fread(ipthing, 1, 8,          in) != 8) {
+      fread(ivthing, 1, 8,          in) != 8) {
       status = false;
       goto exit;
     }
@@ -462,7 +458,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
     // read first block, containing plaintext length
     size_t plaintext_length;
-    if (readcbc1st(in, plaintext_length, fish, ipthing) != BS) {
+    if (readcbc1st(in, plaintext_length, fish, ivthing) != BS) {
       delete fish;
       status = false;
       goto exit;
@@ -487,7 +483,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     size_t nleft = plaintext_length;
 
     do {
-      size_t nread = _readcbc(in, buf, BUFSIZ, fish, ipthing);
+      size_t nread = _readcbc(in, buf, BUFSIZ, fish, ivthing);
       if (ferror(in)) {
         delete fish;
         status = false;
