@@ -860,7 +860,7 @@ void TreeCtrl::SelectItem(const CUUID & uuid)
   wxTreeItemId id = Find(uuid_array);
   if (id.IsOk()) {
     wxTreeItemId parent = GetItemParent(id);
-    if(parent.IsOk() && ! IsExpanded(parent))
+    if(parent.IsOk() && (parent != GetRootItem()) && ! IsExpanded(parent))
       Expand(parent);
     ::wxYield();
     EnsureVisible(id);
