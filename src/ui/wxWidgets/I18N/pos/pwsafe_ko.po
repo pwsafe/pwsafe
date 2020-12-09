@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-26 19:09+0100\n"
+"POT-Creation-Date: 2020-12-09 16:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:141
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1429
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1436
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:426
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:508
 msgid "Password Safe"
@@ -173,7 +173,7 @@ msgstr "자동입력"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:305
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1392
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:464
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:657
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:662
 msgid "Browse"
 msgstr "탐색"
 
@@ -266,28 +266,28 @@ msgstr ""
 "표시될 것입니다."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:394
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:189
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:211
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:244
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:285
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:206
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:228
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:261
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:302
 msgid "Group:"
 msgstr "그룹:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:400
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:861
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:194
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:216
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:249
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:290
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:211
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:233
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:266
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:307
 #, fuzzy
 msgid "Title:"
 msgstr "주제(&T)"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:406
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:199
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:221
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:254
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:295
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:216
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:238
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:271
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:312
 #, fuzzy
 msgid "Username:"
 msgstr "사용자 이름(&U):"
@@ -298,7 +298,7 @@ msgid "Password:"
 msgstr "비밀번호(&P):"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:418
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1693
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1709
 msgid "&Hide"
 msgstr "숨기기(&H)"
 
@@ -343,13 +343,13 @@ msgid "Run Cmd:"
 msgstr "명령 실행:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:486
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:586
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:591
 #, fuzzy
 msgid "Double-Click Action:"
 msgstr "더블클릭 행동:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:494
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:607
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:612
 #, fuzzy
 msgid "Shift-Double-Click Action:"
 msgstr "더블클릭 행동:"
@@ -399,7 +399,7 @@ msgstr "되풀이"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:601
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1440
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2425
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2441
 msgid "Never"
 msgstr "전혀"
 
@@ -412,7 +412,7 @@ msgid "Statistics"
 msgstr "통계:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:618
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:259
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:276
 msgid "Created on:"
 msgstr "생성된 일자:"
 
@@ -428,7 +428,7 @@ msgid "Static text"
 msgstr "정적"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:630
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:269
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:286
 msgid "Last accessed on:"
 msgstr "최종 접근 시간:"
 
@@ -447,30 +447,30 @@ msgstr "최종 접근 시간:"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1019
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1020
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1021
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:134
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:135
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:136
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:213
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:218
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:223
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:145
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:165
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:166
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:167
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:175
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:176
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:177
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:178
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:180
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:181
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:151
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:152
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:153
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:230
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:235
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:240
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:162
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:182
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:261
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:266
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:271
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:276
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:287
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:292
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:297
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:183
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:184
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:192
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:193
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:194
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:195
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:197
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:198
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:199
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:278
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:283
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:288
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:293
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:304
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:309
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:314
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:413
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:255
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:265
@@ -480,7 +480,7 @@ msgid "N/A"
 msgstr "N/A"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:636
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:274
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:291
 msgid "Any field last changed on:"
 msgstr "마지막으로 변경된 날짜:"
 
@@ -620,10 +620,10 @@ msgid "Properties"
 msgstr "속성"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:863
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:196
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:201
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:251
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:256
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:213
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:218
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:268
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:273
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:877
 msgid "Text"
 msgstr "텍스트"
@@ -787,29 +787,29 @@ msgstr ""
 msgid "default"
 msgstr "기본값 사용"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1540
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1556
 msgid "[Notes hidden - click here to display]"
 msgstr "[노트가 숨겨져있음 - 표시하려면 이곳을 클릭하세요]"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1609
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1635
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2125
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2799
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1625
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1651
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2141
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2815
 #: ../../../core/core_st.cpp:74
 msgid "Default Policy"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1662
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1678
 msgid "Couldn't generate password - invalid policy"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1663
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1778
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1791
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1813
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1833
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2706
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2733
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1679
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1794
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1807
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1829
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1849
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2722
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2749
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:106
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:115
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:131
@@ -842,35 +842,35 @@ msgstr ""
 msgid "Error"
 msgstr "오류"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1721
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1737
 msgid "&Show"
 msgstr "보이기(&S)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1776
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1792
 #, c-format
 msgid "This entry must have a %ls"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1777
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1793
 #, fuzzy
 msgid "title"
 msgstr "주제"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1777
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1793
 #, fuzzy
 msgid "password"
 msgstr "비밀번호"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1790
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1806
 #, fuzzy
 msgid "Passwords do not match"
 msgstr "두 항목이 일치하지 않습니다."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1812
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1828
 msgid "Database name must not be empty if a database policy shall be used."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1832
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1848
 #, fuzzy
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
@@ -878,12 +878,12 @@ msgstr ""
 "빈 그룹, 제목 \"%s\" 그리고 사용자 이름 \"%s\" 으로 된 항목이 이미 존재합니"
 "다."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2404
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2420
 #, fuzzy, c-format
 msgid " (every %d days)"
 msgstr "되풀이 (%d 일)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2705
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2721
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:755
 #, fuzzy
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
@@ -891,7 +891,7 @@ msgstr ""
 "죄송합니다만, '발음할 수 있는' 속성과 '읽기쉬운' 속성이 동시에 지원되지 않습"
 "니다"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2732
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2748
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:736
 #, fuzzy
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
@@ -899,7 +899,7 @@ msgstr ""
 "죄송합니다만, '발음할 수 있는' 속성과 '읽기쉬운' 속성이 동시에 지원되지 않습"
 "니다"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2784
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2800
 #, fuzzy
 msgid "mailto:"
 msgstr "전자우편(&E)"
@@ -1133,24 +1133,24 @@ msgstr "동기화 할 필드가 선택되지 않았습니다!"
 msgid "Create Shortcut"
 msgstr "바로가기 만들기(&S)"
 
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:110
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:126
 #, fuzzy
 msgid "Shortcut to "
 msgstr "바로가기"
 
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:182
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:199
 #, fuzzy
 msgid "Please enter the shortcut properties to the selected base entry."
 msgstr "기본 항목 '%s'으로으 바로가기의 자세한 속성:"
 
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:185
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:240
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:202
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:257
 #, fuzzy
 msgid "Shortcut"
 msgstr "바로가기"
 
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:207
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:281
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:224
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:298
 #, fuzzy
 msgid "Base Entry"
 msgstr "기본 항목:"
@@ -1325,12 +1325,12 @@ msgstr ""
 msgid "Edit Shortcut"
 msgstr "바로가기 편집"
 
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:237
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:254
 #, fuzzy
 msgid "Please edit the shortcut properties to the selected base entry."
 msgstr "기본 항목 '%s'으로으 바로가기의 자세한 속성:"
 
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:264
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:281
 msgid "Target last changed on:"
 msgstr "대상의 마지막 변경 시점:"
 
@@ -1671,6 +1671,7 @@ msgid "Not used"
 msgstr ""
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:286
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1312
 #, fuzzy
 msgid " Copy # "
 msgstr "# %d 을(를) 복사"
@@ -1738,13 +1739,13 @@ msgstr "실행 명령 분석 실패"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:333
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:339
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:347
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:146
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:149
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:524
 msgid "Write Error"
 msgstr "쓰기 오류"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:60
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:145
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:148
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:523
 #, fuzzy
 msgid "Could not open file for writing!"
@@ -2031,7 +2032,7 @@ msgstr "%ls 파일을 불러왔습니다: %ls"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:892
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:897
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:203
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:206
 #: ../../../ui/wxWidgets/SyncWizard.cpp:572
 #: ../../../ui/wxWidgets/wxUtilities.cpp:59
 #: ../../../ui/wxWidgets/wxUtilities.cpp:64
@@ -2040,7 +2041,7 @@ msgid "File Read Error"
 msgstr "파일 읽기 오류"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:893
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:202
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:205
 #: ../../../ui/wxWidgets/wxUtilities.cpp:58
 #, fuzzy
 msgid "Could not open file for reading!"
@@ -2320,27 +2321,27 @@ msgstr "데이터베이스 병합: %s\n"
 msgid "Merge Complete"
 msgstr "비교 완료"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:104
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:107
 msgid "Please Choose a Name for this Backup:"
 msgstr "이 백업본에 사용할 이름을 선택해 주십시오:"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:111
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:165
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:114
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:168
 #, fuzzy
 msgid "Could not parse current file path"
 msgstr "파일에 액세스할 수 없었습니다: %s"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:119
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:122
 #, fuzzy
 msgid "Password Safe Backups (*.bak)|*.bak"
 msgstr "Password Safe 백업본 (*.bak)|*.bak||"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:169
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:172
 #, fuzzy
 msgid "Please Choose a Backup to Restore:"
 msgstr "복원할 백업본을 선택하세요:"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:173
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:176
 msgid ""
 "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
 "ibak)|*.ibak||"
@@ -2348,7 +2349,7 @@ msgstr ""
 "Password Safe 백업본 (*.bak)|*.bak|Password Safe 임시 백업본 (*.ibak)|*."
 "ibak||"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:210
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:213
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <복원된 이름없는 백업본>"
 
@@ -2427,7 +2428,7 @@ msgid "Edit/View selected entry"
 msgstr "선택한 항목을 편집"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:134
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:613
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:618
 #: ../../../core/core_st.cpp:62
 msgid "Autotype"
 msgstr "자동 입력"
@@ -2588,260 +2589,264 @@ msgid "Show Menu Separator"
 msgstr "필드 구분자"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:538
+msgid "Show Optimized Cell size"
+msgstr ""
+
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:542
 msgid "days before passwords expire"
 msgstr "days before passwords expire"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:542
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:546
 #, fuzzy
 msgid "&Fully collapsed"
 msgstr "모두 접힘"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:543
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:547
 #, fuzzy
 msgid "&Fully expanded"
 msgstr "모두 펼쳐짐"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:544
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:548
 #, fuzzy
 msgid "&Same as when last saved"
 msgstr "마지막에 저장된 다음 항목과 같음:"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:545
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:549
 msgid "Initial Tree View"
 msgstr "트리 보기 기본값"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:572
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:577
 msgid "Confirm deletion of items"
 msgstr "항목 삭제 확인"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:576
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:581
 msgid "Record last access times"
 msgstr "마지막 기록 변경 시점"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:580
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:585
 msgid "Escape key closes application"
 msgstr "Esc 키로 프로그램을 닫습니다"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:616
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:621
 msgid "Minimize after Autotype"
 msgstr "자동입력 후 최소화"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:622
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:627
 msgid "Default Autotype string:"
 msgstr "기본 자동입력 문자열:"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:629
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:634
 msgid "Default Username"
 msgstr "기본 사용자 이름"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:634
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:639
 msgid "Use"
 msgstr "Use"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:641
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:646
 msgid "as default username"
 msgstr "기본 사용자 이름으로 사용"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:645
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:650
 msgid "Query user to set default username"
 msgstr "사용자를 기본 사용자 이름으로 요청"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:649
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:654
 #, fuzzy
 msgid "Alternate Browser"
 msgstr "대체 브라우저"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:663
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:668
 msgid "Browser Command Line parameters"
 msgstr "브라우저 명령줄 변수"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:692
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:697
 msgid "Save"
 msgstr "저장"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:707
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:712
 msgid "previous passwords per entry"
 msgstr "항목별 비밀번호 내역의 수"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:714
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:719
 #, fuzzy
 msgid "Default password expiration (days)"
 msgstr "난수 비밀번호 생성 규칙"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:729
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:734
 msgid "Manage password history of current entries"
 msgstr "현재 항목의 과거 비밀번호 내역 관리"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:732
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:737
 msgid "No change"
 msgstr "변경 안함"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:736
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:741
 msgid "Stop saving previous passwords"
 msgstr "이전 비밀번호 저장 안함"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:740
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:745
 msgid "Start saving previous passwords"
 msgstr "이전 비밀번호 저장 시작"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:744
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:749
 #, fuzzy
 msgid "Set maximum number of passwords saved to above value"
 msgstr "최대 저장가능한 비밀번호의 수량 설정"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:748
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:753
 #, fuzzy
 msgid "Clear password history for ALL entries"
 msgstr "현재 항목의 과거 비밀번호 내역 관리"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:752
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:757
 msgid "Apply these changes to Protected Entries (if required)."
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:756
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:761
 msgid "Apply"
 msgstr "적용"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:775
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:780
 msgid "Clear clipboard upon minimize"
 msgstr "최소화 시 클립보드 비우기"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:779
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:784
 msgid "Clear clipboard upon exit"
 msgstr "종료 시 클립보드 비우기"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:783
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:788
 #, fuzzy
 msgid "Confirm copy of password to clipboard"
 msgstr "클립보드에 비밀번호 복사"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:787
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:792
 #, fuzzy
 msgid "'Browse to URL' copies password to clipboard"
 msgstr "클립보드에 비밀번호 복사"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:791
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:796
 msgid "Lock password database on minimize"
 msgstr "최소화할 때 비밀번호 데이터베이스 잠그기"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:795
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:800
 msgid "Lock password database on workstation lock"
 msgstr "컴퓨터 잠금 시 비밀번호 데이터베이스 잠금"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:801
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:806
 #, fuzzy
 msgid "Lock password database after"
 msgstr "비밀번호 데이터베이스를 다음 시간 이후로 잠금:"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:816
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:821
 msgid "minutes idle"
 msgstr "minutes idle"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:821
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:826
 msgid "Unlock Difficulty:"
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:829
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:834
 #, fuzzy
 msgid "Standard"
 msgstr "Sorbian Standard"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:834
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:839
 msgid "Maximum"
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:878
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:883
 #, fuzzy
 msgid "System Tray"
 msgstr "시스템 트레이"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:881
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:886
 msgid "Put icon in System Tray"
 msgstr "시스템 트레이에 아이콘 감추기"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:887
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:918
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:892
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:923
 #, fuzzy
 msgid "  Remember last"
 msgstr "마지막에 사용한 항목 불러오기"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:901
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:906
 #, fuzzy
 msgid "used entries in System Tray menu"
 msgstr "used entries in System Tray menu."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:904
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:909
 msgid "Start PasswordSafe at Login"
 msgstr "로그인 때 Password Safe 시작"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:908
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:913
 msgid ""
 "There appears to be no system tray support in your current environment.\n"
 "Any related functionality may not work as expected."
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:913
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:918
 msgid "Recent PasswordSafe Databases"
 msgstr "최근 Password Safe 데이터베이스"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:932
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:937
 #, fuzzy
 msgid "databases"
 msgstr "databases."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:935
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:940
 #, fuzzy
 msgid "Recent Databases on File Menu rather than as a sub-menu"
 msgstr "최근 데이터베이스 목록을 파일 메뉴에 표시"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:939
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:944
 #, fuzzy
 msgid "Open database as read-only by default"
 msgstr "데이터베이스를 읽기전용으로 여는 것을 기본값으로 설정"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:943
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:948
 msgid "Allow multiple instances"
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:948
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:953
 msgid "Use Primary Selection for clipboard"
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:952
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:957
 msgid "Use alternate AutoType method"
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:954
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:959
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
 "XSendEvent can handle more control keys, but may be blocked by some "
 "applications."
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:956
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:961
 msgid "If AutoType doesn't work, setting this may help."
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1377
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1384
 #, fuzzy
 msgid "Select a Browser"
 msgstr "브라우저 선택:"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1401
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1408
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to not save password "
 "history was: %d"
 msgstr "비밀번호 내역을 저장하지 않기 위해 설정을 변경한 항목의 수: %d"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1406
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1413
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to save password history "
 "was: %d"
 msgstr "비밀번호 내역을 저장하기 위해 설정을 변경한 항목의 수: %d"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1411
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1418
 #, c-format
 msgid ""
 "Number of entries that had their 'maximum saved passwords' changed to the "
@@ -2849,7 +2854,7 @@ msgid ""
 msgstr ""
 "'최대 저장가능 비밀번호' 설정값이 새 기본값으로 바뀌는 항목의 수는 %d 입니다"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1416
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1423
 #, fuzzy, c-format
 msgid "Number of entries that had their password history removed was %d"
 msgstr "비밀번호 내역을 저장하기 위해 설정을 변경한 항목의 수: %d"
@@ -4321,26 +4326,72 @@ msgstr "전자우편 보내기(&S)"
 msgid "&Delete from Recent Entry List"
 msgstr "최근 항목 목록에서 삭제(&D)"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:893
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:907
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:909
 msgid "New Group"
 msgstr "새 그룹 만들기"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:895
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:909
+msgid "\""
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:909
+msgid "\" "
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:909
+msgid "name exists"
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:909
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:955
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1111
+msgid "Double group name"
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:913
 msgid "Could not add empty group item to tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:908
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:926
 msgid "Renaming of non-Group items is not implemented"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:935
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:955
+msgid "Same group name exists"
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:969
 msgid "Dots are not allowed in group names"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:935
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:969
 #, fuzzy
 msgid "Invalid Character"
 msgstr "잘못된 변수"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1045
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1051
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1057
+msgid "Drag and Drop failed"
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1045
+#, fuzzy
+msgid "Destination is no group"
+msgstr "대상 디스크의 용량이 꽉 찼습니다."
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1051
+msgid "Destination cannot be inside source tree"
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1057
+msgid "Root may carry only group"
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1111
+msgid "Same group name exists (use Shift to overrule)"
+msgstr ""
 
 #: ../../../ui/wxWidgets/ViewReportDlg.cpp:30
 msgid "View Report"
@@ -7251,9 +7302,6 @@ msgstr ""
 
 #~ msgid "Deselect some entries"
 #~ msgstr "일부 항목 선택취소"
-
-#~ msgid "Destination disk drive is full."
-#~ msgstr "대상 디스크의 용량이 꽉 찼습니다."
 
 #~ msgid "Destination location does not exist or is not accessible."
 #~ msgstr "대상 위치가 존재하지 않거나 접근할 수 없습니다."

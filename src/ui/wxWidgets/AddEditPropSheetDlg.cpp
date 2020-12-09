@@ -1479,13 +1479,29 @@ void AddEditPropSheetDlg::UpdateExpTimes()
 void AddEditPropSheetDlg::ItemFieldsToPropSheet()
 {
   std::vector<stringT> names;
-
+  wxSize actSize = m_BasicGroupNamesCtrl->GetSize(), oldSize = actSize, borderSize = m_BasicGroupNamesCtrl->GetWindowBorderSize();
+  wxScreenDC dc;
+  wxCoord width, height, border = (borderSize.GetWidth() * 2) + 2;
+  
   PWSprefs *prefs = PWSprefs::GetInstance();
+
+  dc.SetFont(m_BasicGroupNamesCtrl->GetFont());
   
   // Populate the group combo box
   m_Core.GetAllGroups(names);
   for (auto const& name : names) {
     m_BasicGroupNamesCtrl->Append(name);
+    dc.GetTextExtent(name, &width, &height);
+    width += border;
+    if(width > actSize.GetWidth()) actSize.SetWidth(width);
+  }
+  if(actSize.GetWidth() != oldSize.GetWidth()) {
+    GetSize(&width, &height);
+    width += actSize.GetWidth() - oldSize.GetWidth();
+    int displayWidth, displayHight;
+    ::wxDisplaySize(&displayWidth, &displayHight);
+    if(width > displayWidth) width = displayWidth;
+    SetSize(width, height);
   }
 
   // select relevant group

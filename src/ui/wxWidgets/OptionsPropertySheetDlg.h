@@ -308,7 +308,8 @@ private:
   bool m_Display_PreExpiryWarn;
   int  m_Display_TreeDisplayStatusAtOpen;
   bool m_Display_ShowMenuSeparator;
-
+  bool m_Display_OptimizedCellSize;
+  
   // Misc. Preferences
   bool m_Misc_ConfirmDelete;
   bool m_Misc_MaintainDatetimeStamps;

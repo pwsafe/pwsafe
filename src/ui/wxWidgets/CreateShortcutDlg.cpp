@@ -96,13 +96,29 @@ void CreateShortcutDlg::ItemFieldsToDialog()
 {
   // Populate the combo box
   std::vector<stringT> allGroupNames;
-
-  m_Core.GetAllGroups(allGroupNames, false);
+  wxSize actSize = m_ComboBoxShortcutGroup->GetSize(), oldSize = actSize, borderSize = m_ComboBoxShortcutGroup->GetWindowBorderSize();
+  wxScreenDC dc;
+  wxCoord width, height, border = (borderSize.GetWidth() * 2) + 2;
+  
+  dc.SetFont(m_ComboBoxShortcutGroup->GetFont());
+  
+  m_Core.GetAllGroups(allGroupNames, true); // Also allow short cut in empty groups
 
   for (auto const& groupName : allGroupNames) {
     m_ComboBoxShortcutGroup->Append(groupName);
+    dc.GetTextExtent(groupName, &width, &height);
+    width += border; // Align
+    if(width > actSize.GetWidth()) actSize.SetWidth(width);
   }
-
+  if(actSize.GetWidth() != oldSize.GetWidth()) {
+    GetSize(&width, &height);
+    width += actSize.GetWidth() - oldSize.GetWidth();
+    int displayWidth, displayHight;
+    ::wxDisplaySize(&displayWidth, &displayHight);
+    if(width > displayWidth) width = displayWidth;
+    SetSize(width, height);
+  }
+  
   if (m_Base != nullptr) {
     m_BaseEntryTitle = stringx2std(m_Base->GetTitle());
     m_BaseEntryUsername = stringx2std(m_Base->GetUser());
@@ -117,6 +133,7 @@ void CreateShortcutDlg::ItemFieldsToDialog()
 
       if (position != wxNOT_FOUND) {
         m_ShortcutGroup = m_BaseEntryGroup;
+        m_ComboBoxShortcutGroup->SetSelection(position);
       }
       else {
         m_ShortcutGroup = wxEmptyString;
