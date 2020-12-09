@@ -2,7 +2,14 @@ set (TEST_SRCS
   AESTest.cpp AliasShortcutTest.cpp FileV3Test.cpp ItemAttTest.cpp OSTest.cpp BlowFishTest.cpp
   FileV4Test.cpp ItemDataTest.cpp SHA256Test.cpp CommandsTest.cpp ItemFieldTest.cpp StringXTest.cpp
   coretest.cpp HMAC_SHA256Test.cpp KeyWrapTest.cpp TwoFishTest.cpp AuxParseTest.cpp UtilTest.cpp
+  FileEncDecTest.cpp
   )
+
+if (WIN32)
+  list (APPEND TEST_SRCS ../core/core.rc2)
+  set_source_files_properties(../core/core.rc2 PROPERTIES LANGUAGE RC)
+endif(WIN32)
+
 
 # Setup test data
 file (MAKE_DIRECTORY "data")

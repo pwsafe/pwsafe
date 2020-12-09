@@ -306,7 +306,7 @@ size_t PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
   trashMemory(AK, sizeof(AK));
 
   // write actual content using EK
-  _writecbc(m_fd, content, len, &fish, IV);
+  _writecbcRest(m_fd, content, len, &fish, IV); // length already written
 
   // update content's HMAC
   hmac.Update(content, static_cast<unsigned long>(len));

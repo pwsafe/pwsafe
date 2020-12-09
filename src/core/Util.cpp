@@ -59,9 +59,8 @@ static void xormem(unsigned char *mem1, const unsigned char *mem2, int length)
 #endif
 void trashMemory(void *buffer, size_t length)
 {
-  ASSERT(buffer != nullptr);
   // {kjp} no point in looping around doing nothing is there?
-  if (length > 0) {
+  if (buffer != nullptr && length > 0) {
     std::memset(buffer, 0x55, length);
     std::memset(buffer, 0xAA, length);
     std::memset(buffer,    0, length);
@@ -158,25 +157,40 @@ void GenRandhash(const StringX &a_passkey,
   keyHash.Final(a_randhash);
 }
 
-size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length, unsigned char type,
-                 Fish *Algorithm, unsigned char *cbcbuffer)
+
+size_t _writecbc(FILE* fp, const unsigned char* buffer, size_t length, unsigned char type,
+  Fish* Algorithm, unsigned char* cbcbuffer)
 {
-  const unsigned int BS = Algorithm->GetBlockSize();
   size_t numWritten = 0;
 
+
+
+  // First encrypt and write the length of the buffer and type
+  numWritten = _writecbc1st(fp, &buffer, &length, type, Algorithm, cbcbuffer);
+  // now write the actual data
+  numWritten += _writecbcRest(fp, buffer, length, Algorithm, cbcbuffer);
+
+  return numWritten;
+}
+
+
+size_t _writecbc1st(FILE* fp, const unsigned char** buffer, size_t *length, unsigned char type,
+  Fish* Algorithm, unsigned char* cbcbuffer)
+{
+  size_t numWritten = 0;
+  const unsigned int BS = Algorithm->GetBlockSize();
   // some trickery to avoid new/delete
   unsigned char block1[16];
 
-  unsigned char *curblock = nullptr;
+  unsigned char* curblock = nullptr;
   ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
 
-  // First encrypt and write the length of the buffer
   curblock = block1;
   // Fill unused bytes of length with random data, to make
   // a dictionary attack harder
   PWSrand::GetInstance()->GetRandomData(curblock, BS);
   // block length overwrites 4 bytes of the above randomness.
-  putInt32(curblock, static_cast<int32>(length));
+  putInt32(curblock, static_cast<int32>(*length));
 
   // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
   curblock[sizeof(int32)] = type;
@@ -185,10 +199,10 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length, unsigned 
     // In this case, we've too many (11) wasted bytes in the length block
     // So we store actual data there:
     // (11 = BlockSize - 4 (length) - 1 (type)
-    const size_t len1 = (length > 11) ? 11 : length;
-    memcpy(curblock + 5, buffer, len1);
-    length -= len1;
-    buffer += len1;
+    const size_t len1 = (*length > 11) ? 11 : *length;
+    memcpy(curblock + 5, *buffer, len1);
+    *length -= len1;
+    *buffer += len1;
   }
 
   xormem(curblock, cbcbuffer, BS); // do the CBC thing
@@ -200,14 +214,12 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length, unsigned 
     trashMemory(curblock, BS);
     throw(EIO);
   }
-
-  numWritten += _writecbc(fp, buffer, length, Algorithm, cbcbuffer);
-
   trashMemory(curblock, BS);
   return numWritten;
 }
 
-size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
+
+size_t _writecbcRest(FILE *fp, const unsigned char *buffer, size_t length,
                  Fish *Algorithm, unsigned char *cbcbuffer)
 {
   // Doesn't write out length, just CBC's the data, padding with randomness
@@ -255,6 +267,29 @@ size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
   }
   trashMemory(curblock, BS);
   return numWritten;
+}
+
+
+size_t readcbc1st(FILE *fp, size_t &record_size, Fish *Algorithm, unsigned char *cbcbuffer)
+{
+  const unsigned int BS = Algorithm->GetBlockSize();
+  unsigned char* ctblock = new unsigned char[2 * BS];
+  memset(ctblock, 0, 2 * BS);
+  unsigned char* ptblock = ctblock + BS; // too lazy to allocate twice...
+
+  if (fread(ctblock, 1, BS, fp) != BS) {
+    delete[] ctblock;
+    record_size = 0;
+    return 0;
+  }
+
+  Algorithm->Decrypt(ctblock, ptblock);
+  xormem(ptblock, cbcbuffer, BS);
+  memcpy(cbcbuffer, ctblock, BS);
+
+  record_size = getInt32(ptblock);
+  delete[] ctblock;
+  return BS;
 }
 
 /*

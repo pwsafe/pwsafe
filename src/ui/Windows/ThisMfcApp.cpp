@@ -17,16 +17,12 @@
 
 #include "PasswordSafe.h"
 
-#include "resource.h"
-#include "resource2.h"  // Menu, Toolbar & Accelerator resources
-#include "resource3.h"  // String resources
-
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "SingleInstance.h"
 #include "CryptKeyEntry.h"
 #include "PWSRecentFileList.h"
-#include "MFCMessages.h"
+#include "MFCmessages.h"
 #include "GeneralMsgBox.h"
 #include "PWSFaultHandler.h"
 #include "Fonts.h"
@@ -49,9 +45,7 @@
 #include "Shlwapi.h"
 
 #include <vector>
-#include <errno.h>
 #include <fstream>
-#include <io.h>
 
 using namespace std;
 
