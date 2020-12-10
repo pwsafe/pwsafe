@@ -153,8 +153,8 @@ int PWSfileV1V2::Open(const StringX &passkey)
     PWSrand::GetInstance()->GetRandomData( m_ipthing, 8);
     SAFE_FWRITE(m_ipthing, 1, 8, m_fd);
 
-    m_fish = BlowFish::MakeBlowFish(pstr, static_cast<unsigned int>(passLen),
-                                    m_salt, SaltLength);
+    m_fish = makeFish<BlowFish, SHA1>(pstr, static_cast<unsigned int>(passLen),
+                                m_salt, SaltLength);
     if (m_curversion == V20) {
       status = WriteV2Header();
     }
@@ -169,8 +169,8 @@ int PWSfileV1V2::Open(const StringX &passkey)
     fread(m_salt, 1, SaltLength, m_fd);
     fread(m_ipthing, 1, 8, m_fd);
 
-    m_fish = BlowFish::MakeBlowFish(pstr, static_cast<unsigned int>(passLen),
-                                    m_salt, SaltLength);
+    m_fish = makeFish<BlowFish, SHA1>(pstr, static_cast<unsigned int>(passLen),
+                                m_salt, SaltLength);
     if (m_curversion == V20)
       status = ReadV2Header();
   } // read mode

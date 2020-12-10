@@ -24,6 +24,8 @@
 #include <sstream>
 #include <stdarg.h>
 
+class Fish;
+
 // For V1V2 and file encryption, NOT for V3 and later:
 #define SaltLength 20
 #define StuffSize 10

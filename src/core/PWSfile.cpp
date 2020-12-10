@@ -318,13 +318,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
   filelen = pws_os::fileLength(in);
 
-  if (filelen > fileThresholdSize)
-  {
-    // fail for now
-    status = false;
-    errno = EFBIG;
-    goto exit;
-  }
+  const bool isBigFile = (filelen > fileThresholdSize);
 
   out = pws_os::FOpen(out_fn, _T("wb"));
   if (out == nullptr) {
@@ -334,8 +328,11 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   ConvertPasskey(passwd, pass, passlen);
   PWSrand::GetInstance()->GetRandomData(thesalt, SaltLength);
 
-  // TODO: change to TwoFish for large (> 4GB) files
-  fish = BlowFish::MakeBlowFish(pass, static_cast<unsigned int>(passlen), thesalt, SaltLength);
+  if (isBigFile)
+    fish = makeFish<TwoFish, SHA256>(pass, static_cast<unsigned int>(passlen), thesalt, SaltLength);
+  else
+    fish = makeFish<BlowFish, SHA1>(pass, static_cast<unsigned int>(passlen), thesalt, SaltLength);
+
   trashMemory(pass, passlen);
   delete[] pass; // gross - ConvertPasskey allocates.
   BS = fish->GetBlockSize();
@@ -461,7 +458,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     unsigned char *pwd = nullptr;
     size_t passlen = 0;
     ConvertPasskey(passwd, pwd, passlen);
-    Fish *fish = BlowFish::MakeBlowFish(pwd, static_cast<unsigned int>(passlen), salt, SaltLength);
+    Fish *fish = makeFish<BlowFish, SHA1>(pwd, static_cast<unsigned int>(passlen), salt, SaltLength);
     trashMemory(pwd, passlen);
     delete[] pwd; // gross - ConvertPasskey allocates.
     const unsigned int BS = fish->GetBlockSize();

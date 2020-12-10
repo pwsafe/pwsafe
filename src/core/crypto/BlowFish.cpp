@@ -474,35 +474,4 @@ void BlowFish::Decrypt(const unsigned char *in, unsigned char *out) const
 
 }
 
-/*
-* Returns a BlowFish object set up for encryption or decryption.
-*
-* The main issue here is that the BlowFish key is SHA1(passphrase|salt)
-* Aside from saving duplicate code, we win here by minimizing the exposure
-* of the actual key.
-* The lose is that the BlowFish object is now dynamically allocated.
-* This could be fixed by having a ctor of BlowFish that works without a key,
-* which would be set by another member function, but I doubt that it's worth the bother.
-*
-* Note that it's the caller's responsibility to delete the BlowFish object allocated here
-*/
-
-BlowFish *BlowFish::MakeBlowFish(const unsigned char *pass, unsigned int passlen,
-                                 const unsigned char *salt, unsigned int saltlen)
-{
-  unsigned char passkey[SHA1::HASHLEN];
-  pws_os::mlock(passkey, sizeof(passkey));
-
-  SHA1 context;
-  context.Update(pass, passlen);
-  context.Update(salt, saltlen);
-  context.Final(passkey);
-
-  BlowFish *retval = new BlowFish(passkey, sizeof(passkey));
-  trashMemory(passkey, sizeof(passkey));
-  pws_os::munlock(passkey, sizeof(passkey));
-  return retval;
-}
-
-//-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
