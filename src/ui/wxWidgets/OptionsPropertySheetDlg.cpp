@@ -535,6 +535,10 @@ wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel(const wxString& title)
   display_ShowMenuSeparatorCB->SetValue(false);
   itemBoxSizer30->Add(display_ShowMenuSeparatorCB, 0, wxALIGN_LEFT|wxALL, 5);
 
+  wxCheckBox* display_OptimizedCellSizeCB = new wxCheckBox( itemPanel29, ID_CHECKBOX43, _("Show Optimized Cell size"), wxDefaultPosition, wxDefaultSize, 0 );
+  display_OptimizedCellSizeCB->SetValue(false);
+  itemBoxSizer30->Add(display_OptimizedCellSizeCB, 0, wxALIGN_LEFT|wxALL, 5);
+  
   wxStaticText* itemStaticText42 = new wxStaticText( itemPanel29, wxID_STATIC, _("days before passwords expire"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer39->Add(itemStaticText42, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -557,7 +561,8 @@ wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel(const wxString& title)
   display_PreExpiryWarnCB->SetValidator( wxGenericValidator(& m_Display_PreExpiryWarn) );
   display_TreeDisplayStatusAtOpenRB->SetValidator( wxGenericValidator(& m_Display_TreeDisplayStatusAtOpen) );
   display_ShowMenuSeparatorCB->SetValidator( wxGenericValidator(& m_Display_ShowMenuSeparator) );
-
+  display_OptimizedCellSizeCB->SetValidator( wxGenericValidator(& m_Display_OptimizedCellSize) );
+  
   return itemPanel29;
 }
 
@@ -1040,7 +1045,8 @@ void OptionsPropertySheetDlg::PrefsToPropSheet()
   m_Display_PreExpiryWarnDaysSB->Enable(m_Display_PreExpiryWarn);
   m_Display_TreeDisplayStatusAtOpen = prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen);
   m_Display_ShowMenuSeparator = prefs->GetPref(PWSprefs::ShowMenuSeparator);
-
+  m_Display_OptimizedCellSize = prefs->GetPref(PWSprefs::OptimizedCellSize);
+  
   // Misc. preferences
   m_Misc_ConfirmDelete = !prefs->GetPref(PWSprefs::DeleteQuestion);
   m_Misc_MaintainDatetimeStamps = prefs->GetPref(PWSprefs::MaintainDateTimeStamps);
@@ -1219,6 +1225,7 @@ void OptionsPropertySheetDlg::PropSheetToPrefs()
 
   prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, m_Display_TreeDisplayStatusAtOpen, true);
   prefs->SetPref(PWSprefs::ShowMenuSeparator, m_Display_ShowMenuSeparator);
+  prefs->SetPref(PWSprefs::OptimizedCellSize, m_Display_OptimizedCellSize);
   prefs->SetPref(PWSprefs::ShowNotesDefault, m_Display_ShowNotesInEdit, true);
   prefs->SetPref(PWSprefs::MaintainDateTimeStamps, m_Misc_MaintainDatetimeStamps, true);
   prefs->SetPref(PWSprefs::UseDefaultUser, m_Misc_UseDefUsername, true);

@@ -129,6 +129,7 @@ public:
     ListSortAscending,
     EnableWindowTransparency,
     ShowMenuSeparator,
+    OptimizedCellSize,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
@@ -150,7 +151,7 @@ public:
     MainToolBarButtons, PasswordFont, TreeListSampleText, PswdSampleText,
     LastUsedKeyboard, VKeyboardFontName, VKSampleText, AltNotesEditor,
     LanguageFile, DefaultSymbols, NotesFont, NotesSampleText, AutotypeTaskDelays,
-    AddEditFont, AddEditSampleText, AltNotesEditorCmdLineParms,
+    AddEditFont, AddEditSampleText, AltNotesEditorCmdLineParms, LastSort,
     NumStringPrefs};
 
   // for DoubleClickAction and ShiftDoubleClickAction

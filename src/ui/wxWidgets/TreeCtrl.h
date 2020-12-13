@@ -61,6 +61,8 @@ class TreeCtrl : public wxTreeCtrl, public Observer
   DECLARE_EVENT_TABLE()
 
 public:
+  enum class TreeSortType { GROUP, NAME, DATE };
+
   /// Constructors
   TreeCtrl(); // Declared, never defined, as we don't support this!
   TreeCtrl(PWScore &core);
@@ -122,10 +124,17 @@ public:
   /// wxEVT_TREE_KEY_DOWN event handler for ID_TREECTRL
   void OnKeyDown(wxTreeEvent& evt);
 
+  /// EVT_TREE_BEGIN_DRAG event handler for ID_TREECTRL
+  void OnBeginDrag(wxTreeEvent& evt);
+
+  /// EVT_TREE_END_DRAG event handler for ID_TREECTRL
+  void OnEndDrag(wxTreeEvent& evt);
+  
 ////@begin TreeCtrl member function declarations
 ////@end TreeCtrl member function declarations
 
   void Clear(); // consistent name w/GridCtrl
+  StringX GroupNameOfItem(const CItemData &item);
   void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
   void UpdateItemField(const CItemData &item, CItemData::FieldType ft);
@@ -150,6 +159,16 @@ public:
   void SetGroupDisplayStateAllCollapsed();
   void SaveGroupDisplayState();
   void RestoreGroupDisplayState();
+  
+  void SetSorting(TreeSortType &v) { m_sort = v; }
+  void SetSortingGroup() { m_sort = TreeSortType::GROUP; }
+  void SetSortingName() { m_sort = TreeSortType::NAME; }
+  void SetSortingDate() { m_sort = TreeSortType::DATE; }
+  void SetShowGroup(bool v) { m_show_group = v; }
+  bool IsSortingGroup() const { return m_sort == TreeSortType::GROUP; }
+  bool IsSortingName() const { return m_sort == TreeSortType::NAME; }
+  bool IsSortingDate() const { return m_sort == TreeSortType::DATE; }
+  bool IsShowGroup() const { return m_show_group; }
 
 private:
   void PreferencesChanged();
@@ -162,6 +181,11 @@ private:
   void SetItemImage(const wxTreeItemId &node, const CItemData &item);
   void FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem);
   void FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, const wxString& oldPath);
+  CItemData CreateNewItemAsCopy(const CItemData *dataSrc, StringX sxNewPath, bool checkName, bool newEntry = false);
+  void ExtendCommandCopyGroup(MultiCommands* pmCmd, wxTreeItemId itemSrc, StringX sxNewPath, bool checkName);
+  void CreateCommandRenamingGroup(StringX sxNewPath, StringX sxOldPath);
+  void CreateCommandCopyGroup(wxTreeItemId itemSrc, StringX sxNewPath, StringX sxOldPath, bool checkName);
+  bool IsDescendant(const wxTreeItemId itemDst, const wxTreeItemId itemSrc);
 
   std::vector<bool> GetGroupDisplayState();
   void SetGroupDisplayState(const std::vector<bool> &groupstates);
@@ -174,6 +198,13 @@ private:
 
   PWScore &m_core;
   UUIDTIMapT m_item_map; // given a uuid, find the tree item pronto!
+  
+  TreeSortType m_sort;
+  bool m_show_group;
+  
+  wxTreeItemId m_drag_item;
+  
+  long m_style;
 };
 
 #endif // _TREECTRL_H_

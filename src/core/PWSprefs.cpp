@@ -132,6 +132,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ListSortAscending"), true, ptApplication},           // application
   {_T("EnableWindowTransparency"), false, ptApplication},   // application
   {_T("ShowMenuSeparator"), true, ptApplication},           // application
+  {_T("OptimizedCellSize"), false, ptApplication},          // application
 };
 
 // Default value = -1 means set at runtime
@@ -210,6 +211,8 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("AddEditFont"), _T(""), ptApplication },                      // application
   {_T("AddEditSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},  // application
   {_T("AltNotesEditorCmdLineParms"), _T(""), ptApplication},        // application
+  {_T("lastsort"), _T("group"), ptApplication},                     // application
+
 };
 
 PWSprefs *PWSprefs::GetInstance()
@@ -341,7 +344,7 @@ StringX PWSprefs::GetAllStringPrefs(const bool bUseCopy)
     LastView, TreeFont, BackupPrefixValue, ListColumns,
     ColumnWidths, MainToolBarButtons, PasswordFont,
     TreeListSampleText, PswdSampleText,
-    LastUsedKeyboard, VKeyboardFontName, VKSampleText, LanguageFile
+    LastUsedKeyboard, VKeyboardFontName, VKSampleText, LanguageFile, LastSort
   };
 
   TCHAR delim;

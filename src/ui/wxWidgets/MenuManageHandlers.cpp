@@ -62,11 +62,14 @@ void PasswordSafeFrame::OnPreferencesClick(wxCommandEvent& WXUNUSED(evt))
 {
   PWSprefs* prefs = PWSprefs::GetInstance();
   bool showMenuSeprator = prefs->GetPref(PWSprefs::ShowMenuSeparator);
+  bool optimizedCellSize = prefs->GetPref(PWSprefs::OptimizedCellSize);
   const StringX sxOldDBPrefsString(prefs->Store());
   OptionsPropertySheetDlg *window = new OptionsPropertySheetDlg(this, m_core);
   if (window->ShowModal() == wxID_OK) {
     if(showMenuSeprator != prefs->GetPref(PWSprefs::ShowMenuSeparator))
       ReCreateMainToolbarSeparator(prefs->GetPref(PWSprefs::ShowMenuSeparator));
+    if((optimizedCellSize != prefs->GetPref(PWSprefs::OptimizedCellSize)) && IsGridView() && IsShown())
+      Show(true);
     
     StringX sxNewDBPrefsString(prefs->Store(true));
     // Update system tray icon if visible so changes show up immediately
