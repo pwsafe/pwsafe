@@ -175,8 +175,17 @@ size_t _writecbc(FILE* fp, const unsigned char* buffer, size_t length, unsigned 
 
 
 size_t _writecbc1st(FILE* fp, const unsigned char** buffer, size_t *length, unsigned char type,
-  Fish* Algorithm, unsigned char* cbcbuffer)
+  Fish* Algorithm, unsigned char* cbcbuffer, bool isAboveThreshold)
 {
+  /**
+   * Write the length, type and perhaps a few bytes of data.
+   *
+   * aboveThreshold means the length value doesn't fit into 4 bytes (passed explicitly
+   * for testing with sub-gigabyte test data)
+   * In this case we just store the length as 8 bytes and the type, not bothering with the
+   * extra few bytes in the length block, since this is an optimization for small amounts of data,
+   * irrelevant for large lengths.
+   */
   size_t numWritten = 0;
   const unsigned int BS = Algorithm->GetBlockSize();
   // some trickery to avoid new/delete
@@ -189,13 +198,20 @@ size_t _writecbc1st(FILE* fp, const unsigned char** buffer, size_t *length, unsi
   // Fill unused bytes of length with random data, to make
   // a dictionary attack harder
   PWSrand::GetInstance()->GetRandomData(curblock, BS);
-  // block length overwrites 4 bytes of the above randomness.
-  putInt32(curblock, static_cast<int32>(*length));
+
+  if (!isAboveThreshold) {
+    // block length overwrites 4 bytes of the above randomness.
+    putInt32(curblock, static_cast<int32>(*length));
+  } else {
+    ASSERT(BS >= 16);
+    memcpy(curblock, length, sizeof(size_t));
+  }
 
   // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
-  curblock[sizeof(int32)] = type;
 
-  if (BS == 16) {
+  curblock[isAboveThreshold ? sizeof(size_t) : sizeof(int32)] = type;
+
+  if (BS == 16 && !isAboveThreshold) {
     // In this case, we've too many (11) wasted bytes in the length block
     // So we store actual data there:
     // (11 = BlockSize - 4 (length) - 1 (type)
@@ -270,7 +286,7 @@ size_t _writecbcRest(FILE *fp, const unsigned char *buffer, size_t length,
 }
 
 
-size_t readcbc1st(FILE *fp, size_t &record_size, Fish *Algorithm, unsigned char *cbcbuffer)
+size_t readcbc1st(FILE *fp, size_t &record_size, Fish *Algorithm, unsigned char *cbcbuffer, bool isAboveThreshold)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
   unsigned char* ctblock = new unsigned char[2 * BS];
@@ -287,7 +303,10 @@ size_t readcbc1st(FILE *fp, size_t &record_size, Fish *Algorithm, unsigned char 
   xormem(ptblock, cbcbuffer, BS);
   memcpy(cbcbuffer, ctblock, BS);
 
-  record_size = getInt32(ptblock);
+  if (isAboveThreshold)
+    memcpy(&record_size, ptblock, sizeof(size_t));
+  else
+    record_size = getInt32(ptblock);
   delete[] ctblock;
   return BS;
 }
