@@ -309,6 +309,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   unsigned char thesalt[SaltLength];
   unsigned int BS = 0;
   const unsigned char* bufp = nullptr;
+  bool isBigFile = false;
 
   
   FILE *in = pws_os::FOpen(fn, _T("rb"));
@@ -318,7 +319,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
   file_len = pws_os::fileLength(in);
 
-  const bool isBigFile = (file_len > fileThresholdSize);
+  isBigFile = (file_len > fileThresholdSize);
 
   out = pws_os::FOpen(out_fn, _T("wb"));
   if (out == nullptr) {
@@ -423,6 +424,8 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   unsigned char randhash[SHA1::HASHLEN];
   unsigned char temphash[SHA1::HASHLEN];
   FILE* out = nullptr;
+  bool isBigFile(false);
+  size_t stuffLen(0);
 
   FILE *in = pws_os::FOpen(fn, _T("rb"));
   if (in == nullptr) {
@@ -438,9 +441,9 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     return false;
   }
 
-  const bool isBigFile = (file_len > fileThresholdSize);
+  isBigFile = (file_len > fileThresholdSize);
 
-  const auto stuffLen = isBigFile ? StuffSize : (StuffSize - 2);
+  stuffLen = isBigFile ? StuffSize : (StuffSize - 2);
 
   if (fread(randstuff, 1, stuffLen, in) != stuffLen) {
     status = false;
