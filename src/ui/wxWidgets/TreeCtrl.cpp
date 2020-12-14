@@ -1020,6 +1020,7 @@ void TreeCtrl::OnBeginDrag(wxTreeEvent& evt)
     m_drag_item = item;
     SetWindowStyle(m_style & ~wxTR_HIDE_ROOT);
     evt.Allow();
+    markDragItem(item);
     Refresh();
     return;
   }
@@ -1027,10 +1028,28 @@ void TreeCtrl::OnBeginDrag(wxTreeEvent& evt)
   evt.Skip();
 }
 
+void TreeCtrl::markDragItem(const wxTreeItemId itemSrc, bool markIt)
+{
+  if(markIt) {
+    m_drag_text_colour = GetItemTextColour(itemSrc);
+    m_drag_background_colour = GetItemBackgroundColour(itemSrc);
+    
+    SetItemTextColour(itemSrc, *wxWHITE);
+    SetItemBackgroundColour(itemSrc, *wxBLUE);
+  }
+  else {
+    SetItemTextColour(itemSrc, m_drag_text_colour);
+    SetItemBackgroundColour(itemSrc, m_drag_background_colour);
+  }
+}
+
 void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
 {
+  bool makeCopy = ::wxGetKeyState(WXK_CONTROL);
+  bool doOverride = ::wxGetKeyState(WXK_SHIFT);
   // Restore Hiden Root
   SetWindowStyle(m_style);
+  markDragItem(m_drag_item, false);
   Refresh();
   // Do not drag on itself
   if ((m_drag_item != NULL) && (m_drag_item == GetSelection())) {
@@ -1039,6 +1058,7 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
 
     if(itemDst && itemDst.IsOk() &&
        (itemDst != m_drag_item) &&
+       (itemDst != GetItemParent(m_drag_item)) &&
        ((GetRootItem() != itemDst) || (GetRootItem() != GetItemParent(m_drag_item)))) { // Do not Drag and Drop on its own
       if(GetRootItem() != itemDst) {
         if(! ItemIsGroup(itemDst)) {                   // Only group may be destination
@@ -1053,27 +1073,20 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
           m_drag_item = NULL;
           return;
         }
-      } else if(! ItemIsGroup(m_drag_item)) { // Destination is root, but source is no group
-        wxMessageBox(_("Drag and Drop failed"), _("Root may carry only group"), wxOK|wxICON_ERROR);
-        evt.Skip();
-        m_drag_item = NULL;
-        return;
       }
 
       if(! ItemIsGroup(m_drag_item)) {
         // It's only one item to handle
         CItemData *dataSrc = TreeCtrl::GetItem(m_drag_item);
         wxASSERT(dataSrc);
-        StringX sxNewPath = tostringx(GetItemGroup(itemDst));
-        bool makeCopy = ::wxGetKeyState(WXK_CONTROL);
-        CItemData modifiedItem = CreateNewItemAsCopy(dataSrc, sxNewPath, ! ::wxGetKeyState(WXK_SHIFT), makeCopy);
+        StringX sxNewPath = tostringx((GetRootItem() != itemDst) ? GetItemGroup(itemDst) : "");
+        CItemData modifiedItem = CreateNewItemAsCopy(dataSrc, sxNewPath, ! doOverride, makeCopy);
 
         if(makeCopy) {
           if (dataSrc->IsDependent()) {
             m_core.Execute(
               AddEntryCommand::Create(&m_core, modifiedItem, dataSrc->GetBaseUUID())
             );
-          
           } else { // not alias or shortcut
             m_core.Execute(
               AddEntryCommand::Create(&m_core, modifiedItem)
@@ -1104,7 +1117,7 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
         else {
           sxNewPath = tostringx(label);
         }
-        if(! ::wxGetKeyState(WXK_SHIFT)) {
+        if(! doOverride) {
           wxTreeItemId si;
           if(ExistsInTree(itemDst, tostringx(label), si)) {
             evt.Veto();
@@ -1114,9 +1127,9 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
           }
         }
 
-        if(::wxGetKeyState(WXK_CONTROL)) {
+        if(makeCopy) {
           // On control key pressed do copy the tree
-          CreateCommandCopyGroup(m_drag_item, sxNewPath, sxOldPath, ! ::wxGetKeyState(WXK_SHIFT));
+          CreateCommandCopyGroup(m_drag_item, sxNewPath, sxOldPath, ! doOverride);
         }
         else {
           // Without key board pressed to move, same as rename
