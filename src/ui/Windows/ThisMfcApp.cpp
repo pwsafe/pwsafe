@@ -214,8 +214,7 @@ int ThisMfcApp::ExitInstance()
   if (m_hInstResDLL != m_hInstance)
     pws_os::FreeLibrary(m_hInstResDLL);
   delete m_pDbx;
-  CWinApp::ExitInstance();
-  return 0;
+  return CWinApp::ExitInstance();
 }
 
 // Listener window whose sole purpose in life is to receive
