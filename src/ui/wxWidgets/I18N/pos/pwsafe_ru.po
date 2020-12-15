@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-09 16:09+0100\n"
+"POT-Creation-Date: 2020-12-14 10:41+0100\n"
 "PO-Revision-Date: 2020-08-23 15:30+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: none\n"
@@ -1562,7 +1562,7 @@ msgid "Not used"
 msgstr "Не используется"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:286
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1312
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1325
 msgid " Copy # "
 msgstr " Копия № "
 
@@ -4095,7 +4095,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:909
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:955
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1111
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1124
 msgid "Double group name"
 msgstr ""
 
@@ -4119,27 +4119,22 @@ msgstr "Использование точек в имени группы зап�
 msgid "Invalid Character"
 msgstr "Недопустимый символ"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1045
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1051
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1057
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1065
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1071
 msgid "Drag and Drop failed"
 msgstr ""
 
 # AFX_IDP_FAILED_DISK_FULL
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1045
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1065
 #, fuzzy
 msgid "Destination is no group"
 msgstr "На конечном диске нет места."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1051
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1071
 msgid "Destination cannot be inside source tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1057
-msgid "Root may carry only group"
-msgstr ""
-
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1111
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1124
 msgid "Same group name exists (use Shift to overrule)"
 msgstr ""
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-09 16:09+0100\n"
+"POT-Creation-Date: 2020-12-14 10:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1653,7 +1653,7 @@ msgid "Not used"
 msgstr ""
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:286
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1312
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1325
 #, fuzzy
 msgid " Copy # "
 msgstr " 复制 # %d"
@@ -4307,7 +4307,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:909
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:955
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1111
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1124
 msgid "Double group name"
 msgstr ""
 
@@ -4332,26 +4332,21 @@ msgstr ""
 msgid "Invalid Character"
 msgstr "无效参数！"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1045
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1051
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1057
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1065
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1071
 msgid "Drag and Drop failed"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1045
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1065
 #, fuzzy
 msgid "Destination is no group"
 msgstr "目标磁盘驱动器已满！"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1051
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1071
 msgid "Destination cannot be inside source tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1057
-msgid "Root may carry only group"
-msgstr ""
-
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1111
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1124
 msgid "Same group name exists (use Shift to overrule)"
 msgstr ""
 
