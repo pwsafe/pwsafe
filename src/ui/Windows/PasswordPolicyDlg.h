@@ -64,8 +64,6 @@ protected:
   PWPolicy m_default_pwp;
   CSecString m_password;
   CSecEditExtn m_ex_password;
-
-  CTBMStatic m_Help1;
   
   CString m_Symbols, m_oldSymbols;
   CString m_policyname, m_oldpolicyname;
