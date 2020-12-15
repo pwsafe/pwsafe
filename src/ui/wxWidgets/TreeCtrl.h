@@ -186,6 +186,7 @@ private:
   void CreateCommandRenamingGroup(StringX sxNewPath, StringX sxOldPath);
   void CreateCommandCopyGroup(wxTreeItemId itemSrc, StringX sxNewPath, StringX sxOldPath, bool checkName);
   bool IsDescendant(const wxTreeItemId itemDst, const wxTreeItemId itemSrc);
+  void markDragItem(const wxTreeItemId itemSrc, bool markIt = true);
 
   std::vector<bool> GetGroupDisplayState();
   void SetGroupDisplayState(const std::vector<bool> &groupstates);
@@ -203,6 +204,8 @@ private:
   bool m_show_group;
   
   wxTreeItemId m_drag_item;
+  wxColour m_drag_text_colour;
+  wxColour m_drag_background_colour;
   
   long m_style;
 };

@@ -370,6 +370,16 @@ void CompareDlg::DoCompare(wxCommandEvent& WXUNUSED(evt))
       if (prevSizer)
         prevSizer->Show(true);
       prevSizer = sections[idx].cd->sizerBelow;
+      
+      if (sections[idx].cd->data.size() == 1) {
+        // If only one row the slider will be too big, increase minimum size of window to add place for a slider
+        wxScreenDC dc;
+        wxCoord width, height;
+        dc.SetFont(sections[idx].cd->grid->GetDefaultCellFont());
+        dc.GetTextExtent("T", &width, &height);
+        wxSize gridPanelSize(wxDefaultCoord, 11 * height); // Width, Height - have not found a better way to calculate
+        pane->SetMinSize(gridPanelSize);
+      }
     }
     else {
       pane->Collapse();
@@ -422,6 +432,8 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
       menuContext.selectedItems[idx] /= 2;
     }
   }
+  
+  bool bDbIsRW = ! m_currentCore->IsReadOnly();
 
   stringT itemStr;
   LoadAString(itemStr, selectionCount > 1? IDSC_ENTRIES: IDSC_ENTRY);
@@ -437,22 +449,27 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
     strSyncSelectedItemsMenu << _("Synchronize this item...");
   else
     strSyncSelectedItemsMenu << _("Synchronize") << selCountStr << _("selected ") << towxstring(itemStr) << _("...");
-  itemEditMenu.Append(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, strSyncSelectedItemsMenu);
+  if(bDbIsRW)
+    itemEditMenu.Append(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, strSyncSelectedItemsMenu);
 
-  itemEditMenu.Append(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB, _("Synchronize all items..."));
+  if(bDbIsRW)
+    itemEditMenu.Append(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB, _("Synchronize all items..."));
 
   wxString strCopyItemsMenu;
   strCopyItemsMenu << _("Copy") << selCountStr << _("selected ") << towxstring(itemStr) << _(" to current db");
-  itemEditMenu.Append(ID_COPY_ITEMS_TO_CURRENT_DB, strCopyItemsMenu);
+  if(bDbIsRW)
+    itemEditMenu.Append(ID_COPY_ITEMS_TO_CURRENT_DB, strCopyItemsMenu);
 
   wxString strDeleteItemsMenu;
   strDeleteItemsMenu << _("Delete") << selCountStr << _("selected ") << towxstring(itemStr) << _(" from current db");
-  itemEditMenu.Append(ID_DELETE_ITEMS_FROM_CURRENT_DB, strDeleteItemsMenu);
+  if(bDbIsRW)
+    itemEditMenu.Append(ID_DELETE_ITEMS_FROM_CURRENT_DB, strDeleteItemsMenu);
 
   if (selectionCount == 1) {
-    itemEditMenu.AppendSeparator();
+    if(bDbIsRW)
+      itemEditMenu.AppendSeparator();
 
-    itemEditMenu.Append(ID_EDIT_IN_CURRENT_DB,   _("&Edit entry in current db"));
+    itemEditMenu.Append(ID_EDIT_IN_CURRENT_DB, m_currentCore->IsReadOnly() ?   _("&View entry in current db") :  _("&Edit entry in current db"));
     itemEditMenu.Append(ID_VIEW_IN_COMPARISON_DB,   _("&View entry in comparison db"));
   }
 
@@ -467,29 +484,37 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
     else
       strCopyFieldMenu << _("&Copy this ") << towxstring(CItemData::FieldName(menuContext.field)) << _(" to current db");
 
-    itemEditMenu.Insert(0, ID_COPY_FIELD_TO_CURRENT_DB, strCopyFieldMenu);
+    if(bDbIsRW) {
+      itemEditMenu.Insert(0, ID_COPY_FIELD_TO_CURRENT_DB, strCopyFieldMenu);
 
-    itemEditMenu.InsertSeparator(1);
-    itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
+      itemEditMenu.InsertSeparator(1);
+      itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
+    }
   }
   else if (menuContext.cdata == m_current) {
-    itemEditMenu.Delete(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB);
-    itemEditMenu.Delete(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB);
-    itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
+    if(bDbIsRW) {
+      itemEditMenu.Delete(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB);
+      itemEditMenu.Delete(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB);
+      itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
+    }
     if (selectionCount == 1)
       itemEditMenu.Delete(ID_VIEW_IN_COMPARISON_DB);
   }
   else if (menuContext.cdata == m_comparison) {
-    itemEditMenu.Delete(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB);
-    itemEditMenu.Delete(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB);
-    itemEditMenu.Delete(ID_DELETE_ITEMS_FROM_CURRENT_DB);
+    if(bDbIsRW) {
+      itemEditMenu.Delete(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB);
+      itemEditMenu.Delete(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB);
+      itemEditMenu.Delete(ID_DELETE_ITEMS_FROM_CURRENT_DB);
+    }
     if (selectionCount == 1)
       itemEditMenu.Delete(ID_EDIT_IN_CURRENT_DB);
   }
   else if (menuContext.cdata == m_identical) {
-    itemEditMenu.Delete(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB);
-    itemEditMenu.Delete(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB);
-    itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
+    if(bDbIsRW) {
+      itemEditMenu.Delete(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB);
+      itemEditMenu.Delete(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB);
+      itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
+    }
   }
 
   // Make the menuContext object available to the handlers
@@ -503,7 +528,7 @@ void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
   auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
   const ComparisonGridTable& table = *wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   const pws_os::CUUID& uuid = table[menuContext->selectedRows[0]].uuid0;
-  if (ViewEditEntry(m_currentCore, uuid, false)) {
+  if (ViewEditEntry(m_currentCore, uuid, m_currentCore->IsReadOnly())) {
     int idx = menuContext->selectedRows[0];
     if (menuContext->cdata == m_conflicts)
       idx = idx/2;
