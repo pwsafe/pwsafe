@@ -16,9 +16,7 @@
 class BlowFish : public Fish
 {
 public:
-  static BlowFish *MakeBlowFish(const unsigned char *pass, unsigned int passlen,
-                                const unsigned char *salt, unsigned int saltlen);
-// Simple version for protecting ItemFields in memory:
+// For protecting ItemFields in memory:
   static BlowFish *MakeBlowFish(const unsigned char *key, int keylen) {
     return new BlowFish(key, keylen);
   }

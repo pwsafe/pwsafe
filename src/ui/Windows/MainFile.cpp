@@ -4225,7 +4225,7 @@ void DboxMain::CleanUpAndExit()
 
   m_inExit = true;
 
-  CDialog::OnOK();
+  DestroyWindow();
   PostQuitMessage(0);
 }
 

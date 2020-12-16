@@ -24,6 +24,8 @@
 #include <sstream>
 #include <stdarg.h>
 
+class Fish;
+
 // For V1V2 and file encryption, NOT for V3 and later:
 #define SaltLength 20
 #define StuffSize 10
@@ -50,7 +52,7 @@ extern void GenRandhash(const StringX &passkey,
                         const unsigned char *m_randstuff,
                         unsigned char *m_randhash);
 
-extern size_t readcbc1st(FILE* fp, size_t& record_size, Fish* Algorithm, unsigned char* cbcbuffer);
+extern size_t readcbc1st(FILE* fp, size_t& record_size, Fish* Algorithm, unsigned char* cbcbuffer, bool isAboveThreshold = false);
 
 // buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
 extern size_t _readcbc(FILE *fp, unsigned char * &buffer,
@@ -72,7 +74,7 @@ extern size_t _writecbc(FILE* fp, const unsigned char* buffer, size_t length,
 
 // externalized implementation of above for whole-file encryption:
 extern size_t _writecbc1st(FILE* fp, const unsigned char** buffer, size_t* length, unsigned char type,
-  Fish* Algorithm, unsigned char* cbcbuffer);
+  Fish* Algorithm, unsigned char* cbcbuffer, bool isAboveThreshold = false);
 extern size_t _writecbcRest(FILE* fp, const unsigned char* buffer, size_t length,
   Fish* Algorithm, unsigned char* cbcbuffer);
 

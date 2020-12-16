@@ -1,5 +1,5 @@
-Password Safe 3.54.01 Release October 2020
-==========================================
+Password Safe 3.55 Release ???
+==============================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -9,6 +9,11 @@ https://pwsafe.org/. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
+
+New features in 3.55
+--------------------
+* [SF892](https://sourceforge.net/p/passwordsafe/feature-requests/892/) Added tooltip to copy password button in Add/Edit and Password Policy windows.
+* [SF525](https://sourceforge.net/p/passwordsafe/support-requests/525/) Removed limitation on encrytping/decrypting files larger than 2GB.
 
 Bugs fixed in 3.54.01
 ---------------------

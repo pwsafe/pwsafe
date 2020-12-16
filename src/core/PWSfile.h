@@ -13,11 +13,10 @@
 // Abstract the gory details of reading and writing an encrypted database
 //-----------------------------------------------------------------------------
 
-#include <stdio.h> // for FILE *
+#include <cstdio> // for FILE *
 #include <vector>
 
 #include "ItemData.h"
-#include "os/UUID.h"
 #include "UnknownField.h"
 #include "PWSFilters.h"
 #include "StringX.h"
@@ -108,6 +107,7 @@ public:
   // Following for 'legacy' use of pwsafe as file encryptor/decryptor
   static bool Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess);
   static bool Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess);
+  static size_t fileThresholdSize; // files this size and above encrypted differently - configurable for testing
 
   virtual ~PWSfile();
 
