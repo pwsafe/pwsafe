@@ -39,7 +39,7 @@ $(POS) : $(POT)
 
 mos/%/LC_MESSAGES/pwsafe.mo : pos/pwsafe_%.po
 	@mkdir -p $(dir $@)
-# do not remove wanted entries:	@msgfmt --check --output-file=$@ $^
+# "--check" option would remove potential used entries, so do not add it to the following line
 	@msgfmt --output-file=$@ $^
 
 check:
