@@ -57,36 +57,36 @@ class TreeScrollTimer: public wxTimer
 {
 public:
     // start scrolling half a second (if the mouse hasn't been clicked)
-    enum { DELAY = 500 };
+  enum { DELAY = 500 };
     
-    TreeScrollTimer();
+  TreeScrollTimer();
   
-    void setOwner(TreeCtrl *owner) { m_owner = owner; }
+  void setOwner(TreeCtrl *owner) { m_owner = owner; };
 
-    virtual void Notify() wxOVERRIDE;
+  virtual void Notify();
 
 private:
-    TreeCtrl *m_owner;
+  TreeCtrl *m_owner;
 
-    wxDECLARE_NO_COPY_CLASS(TreeScrollTimer);
+  wxDECLARE_NO_COPY_CLASS(TreeScrollTimer);
 };
 
 class TreeCollapseTimer: public wxTimer
 {
 public:
     // start Collapse or Expand after one second (if the mouse hasn't been clicked/moved)
-    enum { DELAY = 1000 };
+  enum { DELAY = 1000 };
     
-    TreeCollapseTimer();
+  TreeCollapseTimer();
   
-    void setOwner(TreeCtrl *owner) { m_owner = owner; }
+  void setOwner(TreeCtrl *owner) { m_owner = owner; };
 
-    virtual void Notify() wxOVERRIDE;
+  virtual void Notify();
 
 private:
-    TreeCtrl *m_owner;
+  TreeCtrl *m_owner;
 
-    wxDECLARE_NO_COPY_CLASS(TreeCollapseTimer);
+  wxDECLARE_NO_COPY_CLASS(TreeCollapseTimer);
 };
 
 /*!
