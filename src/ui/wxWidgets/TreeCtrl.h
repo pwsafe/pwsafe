@@ -51,6 +51,44 @@ class TreeCtrl;
 
 typedef std::map<pws_os::CUUID, wxTreeItemId, std::less<pws_os::CUUID> > UUIDTIMapT;
 
+class TreeCtrl;
+
+class TreeScrollTimer: public wxTimer
+{
+public:
+    // start scrolling half a second (if the mouse hasn't been clicked)
+    enum { DELAY = 500 };
+    
+    TreeScrollTimer();
+  
+    void setOwner(TreeCtrl *owner) { m_owner = owner; }
+
+    virtual void Notify() wxOVERRIDE;
+
+private:
+    TreeCtrl *m_owner;
+
+    wxDECLARE_NO_COPY_CLASS(TreeScrollTimer);
+};
+
+class TreeCollapseTimer: public wxTimer
+{
+public:
+    // start Collapse or Expand after one second (if the mouse hasn't been clicked/moved)
+    enum { DELAY = 1000 };
+    
+    TreeCollapseTimer();
+  
+    void setOwner(TreeCtrl *owner) { m_owner = owner; }
+
+    virtual void Notify() wxOVERRIDE;
+
+private:
+    TreeCtrl *m_owner;
+
+    wxDECLARE_NO_COPY_CLASS(TreeCollapseTimer);
+};
+
 /*!
  * TreeCtrl class declaration
  */
@@ -108,8 +146,11 @@ public:
 
   /// wxEVT_LEFT_DOWN event handler for mouse events
   void OnMouseLeftClick(wxMouseEvent& event);
+  
+  /// wxEVT_MOTION event handler for mouse events
+  void OnMouseMove(wxMouseEvent& event);
 
-////@end TreeCtrl event handler declarations
+  ////@end TreeCtrl event handler declarations
 
   void OnGetToolTip( wxTreeEvent& evt); // Added manually
 
@@ -169,6 +210,9 @@ public:
   bool IsSortingName() const { return m_sort == TreeSortType::NAME; }
   bool IsSortingDate() const { return m_sort == TreeSortType::DATE; }
   bool IsShowGroup() const { return m_show_group; }
+  
+  void CheckScrollList();
+  void CheckCollapsEntry();
 
 private:
   void PreferencesChanged();
@@ -187,6 +231,7 @@ private:
   void CreateCommandCopyGroup(wxTreeItemId itemSrc, StringX sxNewPath, StringX sxOldPath, bool checkName);
   bool IsDescendant(const wxTreeItemId itemDst, const wxTreeItemId itemSrc);
   void markDragItem(const wxTreeItemId itemSrc, bool markIt = true);
+  void resetDragItems(bool initSize = false);
 
   std::vector<bool> GetGroupDisplayState();
   void SetGroupDisplayState(const std::vector<bool> &groupstates);
@@ -206,6 +251,15 @@ private:
   wxTreeItemId m_drag_item;
   wxColour m_drag_text_colour;
   wxColour m_drag_background_colour;
+
+  TreeCollapseTimer m_collapse_timer;
+  wxTreeItemId m_last_mice_item_in_drag_and_drop;
+  
+  int m_lower_scroll_limit, m_upper_scroll_limit;
+  
+  TreeScrollTimer m_scroll_timer;
+  int m_scroll_direction;
+  int m_scroll_time;
   
   long m_style;
 };
