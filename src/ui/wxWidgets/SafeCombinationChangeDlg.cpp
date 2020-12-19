@@ -197,12 +197,18 @@ void SafeCombinationChangeDlg::CreateControls()
 #endif
 
   itemFlexGridSizer4->AddStretchSpacer(0);
-  auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto showCombinationCheckBox = new wxCheckBox(this, ID_SHOWCOMBINATION, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
   showCombinationCheckBox->SetValue(false);
+  m_isPasswordHidden = true;
   showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {
     m_oldPasswdEntry->SecureTextfield(!event.IsChecked());
     m_newPasswdEntry->SecureTextfield(!event.IsChecked());
     m_confirmEntry->DisableAndClear(event.IsChecked());
+    m_isPasswordHidden = !event.IsChecked();
+    if(event.IsChecked())
+      m_confirmEntry->AllowEmptyCombinationOnce();
+    else
+      m_confirmEntry->ForbidEmptyCombinationOnce();
   });
   itemFlexGridSizer4->Add(showCombinationCheckBox, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
@@ -295,7 +301,7 @@ void SafeCombinationChangeDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
       wxMessageDialog err(this, _("Cannot verify old safe combination - file gone?"),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-    } else if (m_confirm != m_newpasswd) {
+    } else if (m_isPasswordHidden && (m_confirm != m_newpasswd)) {
       wxMessageDialog err(this, _("New safe combination and confirmation do not match"),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
