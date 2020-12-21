@@ -114,7 +114,7 @@ BEGIN_EVENT_TABLE( TreeCtrl, wxTreeCtrl )
   EVT_TREE_KEY_DOWN( ID_TREECTRL, TreeCtrl::OnKeyDown )
   EVT_TREE_BEGIN_DRAG(ID_TREECTRL, TreeCtrl::OnBeginDrag )
   EVT_TREE_END_DRAG(ID_TREECTRL, TreeCtrl::OnEndDrag )
-  EVT_MOUSE_EVENTS( TreeCtrl::OnMouseMove )
+  EVT_MOTION( TreeCtrl::OnMouseMove )
   /*
     In Linux environments context menus appear on Right-Down mouse click.
     Which mouse click type (Right-Down/Right-Up) is the right one on a platform
@@ -137,6 +137,7 @@ BEGIN_EVENT_TABLE( TreeCtrl, wxTreeCtrl )
 END_EVENT_TABLE()
 
 const wchar_t GROUP_SEP = L'.';
+#define GROUP_SEL_STR wxT(".")
 
 // helper class to match CItemData with wxTreeItemId
 class PWTreeItemData : public wxTreeItemData
@@ -213,6 +214,7 @@ bool TreeCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 TreeCtrl::~TreeCtrl()
 {
 ////@begin TreeCtrl destruction
+if(m_drag_image) wxDELETE(m_drag_image);
 ////@end TreeCtrl destruction
 }
 
@@ -228,10 +230,10 @@ void TreeCtrl::Init()
   m_drag_item = NULL;
   m_style = 0L;
   m_lower_scroll_limit = m_upper_scroll_limit = 0;
-  m_scroll_direction = 0;
-  m_scroll_time = TreeScrollTimer::DELAY;
   m_scroll_timer.setOwner(this);
   m_collapse_timer.setOwner(this);
+  m_drag_image = NULL;
+  m_had_been_out = false;
 ////@end TreeCtrl member initialisation
 }
 
@@ -545,7 +547,7 @@ wxString TreeCtrl::GetPath(const wxTreeItemId &node) const
   for(iter = v.rbegin(); iter != v.rend(); iter++) {
     retval += *iter;
     if ((iter + 1) != v.rend())
-      retval += wxT(".");
+      retval += GROUP_SEL_STR;
   }
   return retval;
 }
@@ -560,7 +562,7 @@ wxString TreeCtrl::GetItemGroup(const wxTreeItemId& item) const
     if (path.IsEmpty())//parent is root
       return name; //group under root
     else
-      return path + wxT(".") + name; //sub-group of some (non-root) group
+      return path + GROUP_SEL_STR + name; //sub-group of some (non-root) group
   }
   else
     return GetPath(item);
@@ -897,7 +899,7 @@ void EditTreeLabel(wxTreeCtrl* tree, const wxTreeItemId& id)
   wxTextCtrl* edit = tree->EditLabel(id);
   if (edit) {
     wxTextValidator val(wxFILTER_EXCLUDE_CHAR_LIST);
-    const wxChar* dot = wxT(".");
+    const wxChar* dot = GROUP_SEL_STR;
     val.SetExcludes(wxArrayString(1, &dot));
     edit->SetValidator(val);
     edit->SelectAll();
@@ -908,7 +910,7 @@ void TreeCtrl::OnAddGroup(wxCommandEvent& WXUNUSED(evt))
 {
   wxCHECK_RET(IsShown(), wxT("Group can only be added while in tree view"));
   wxTreeItemId parentId = GetSelection();
-  wxString newItemPath = (!parentId || !parentId.IsOk() || parentId == GetRootItem() || !ItemIsGroup(parentId))? wxString(_("New Group")): GetItemGroup(parentId) + wxT(".") + _("New Group");
+  wxString newItemPath = (!parentId || !parentId.IsOk() || parentId == GetRootItem() || !ItemIsGroup(parentId))? wxString(_("New Group")): GetItemGroup(parentId) + GROUP_SEL_STR + _("New Group");
   if(Find(newItemPath, GetRootItem())) {
     wxMessageBox(_("\"") + _("New Group") + _("\" ") + _("name exists"), _("Double group name"), wxOK|wxICON_ERROR);
     return;
@@ -1035,86 +1037,52 @@ void TreeCollapseTimer::Notify()
 
 void TreeCtrl::CheckScrollList()
 {
-  if(m_scroll_direction)
-  {
+  if(m_isDragging) {
     int width, height;
-    bool do2nd = false;
     wxPoint mousePt = ScreenToClient(wxGetMousePosition());  // Find where the mouse is in relation to the (exited) pane
     
     GetSize(&width, &height);  // Store window dimensions
     
-    if((mousePt.x < 0) || (mousePt.x > width)) { // Not in same area
-      m_scroll_direction = 0;
-      m_scroll_time = TreeScrollTimer::DELAY;
+    if((mousePt.x < 0) || (mousePt.x >= width)) { // Not in same area
+      resetScrolling();
       return;
     }
     
     int ThumbVert = GetScrollThumb (wxVERTICAL);
     int PosVert = GetScrollPos (wxVERTICAL);
     int RangeVert = GetScrollRange (wxVERTICAL);
-
-    if(mousePt.y <= m_upper_scroll_limit) {
+    wxEventType commandType = wxEVT_NULL;
+    
+    if(mousePt.y <= 0) { // We're above the pane
+      StopAutoScrolling();
       if(PosVert > 0) {
-        m_scroll_direction = -1;
-        wxScrollWinEvent scrollEvent( wxEVT_SCROLLWIN_LINEUP, GetId(), 0);
-        GetEventHandler()->ProcessEvent(scrollEvent);
+        commandType = wxEVT_SCROLLWIN_PAGEUP;
       }
-      else {
-        m_scroll_direction = 0;
-        m_scroll_time = TreeScrollTimer::DELAY;
-        return;
+    }
+    else if(mousePt.y > height) {  // We're below the pane
+      StopAutoScrolling();
+      if((PosVert + ThumbVert) < RangeVert) {
+        commandType = wxEVT_SCROLLWIN_PAGEDOWN;
+      }
+    }
+    else if(mousePt.y <= m_upper_scroll_limit) {
+      if(PosVert > 0) {
+        commandType = wxEVT_SCROLLWIN_LINEUP;
       }
     }
     else if(mousePt.y >= m_lower_scroll_limit) {
       if((PosVert + ThumbVert) < RangeVert) {
-        m_scroll_direction = +1;
-        wxScrollWinEvent scrollEvent( wxEVT_SCROLLWIN_LINEDOWN, GetId(), 0);
-        GetEventHandler()->ProcessEvent(scrollEvent);
-      }
-      else {
-        m_scroll_direction = 0;
-        m_scroll_time = TreeScrollTimer::DELAY;
-        return;
-      }
-    }
-    else { // When we are inside the window area it must stop
-      m_scroll_direction = 0;
-      m_scroll_time = TreeScrollTimer::DELAY;
-      return;
-    }
-
-    PosVert = GetScrollPos (wxVERTICAL);
-    
-    if(mousePt.y <= 0) { // We're above the pane
-      if(PosVert > 0) {
-        m_scroll_direction = -1;
-        wxScrollWinEvent scrollEvent( wxEVT_SCROLLWIN_LINEUP, GetId(), 0);
-        GetEventHandler()->ProcessEvent(scrollEvent);
-        do2nd = true;
-      }
-      else {
-        m_scroll_direction = 0;
-      }
-    }
-    else if(mousePt.y >= height) {  // We're below the pane
-      if((PosVert + ThumbVert) < RangeVert) {
-        m_scroll_direction = +1;
-        wxScrollWinEvent scrollEvent( wxEVT_SCROLLWIN_LINEDOWN, GetId(), 0);
-        GetEventHandler()->ProcessEvent(scrollEvent);
-        do2nd = true;
-      }
-      else {
-        m_scroll_direction = 0;
+        commandType = wxEVT_SCROLLWIN_LINEDOWN;
       }
     }
     
-    if(! do2nd)
-      m_scroll_time = TreeScrollTimer::DELAY;
-    
-    if(m_scroll_direction) {
-      if(do2nd && (m_scroll_time > 50))
-        m_scroll_time /= 2;
-      m_scroll_timer.Start( m_scroll_time, true );
+    if(commandType != wxEVT_NULL) {
+      wxScrollWinEvent scrollEvent( commandType, GetId(), 0);
+      GetEventHandler()->ProcessEvent(scrollEvent);
+      m_scroll_timer.Start( TreeScrollTimer::DELAY, true );
+    }
+    else {
+      resetScrolling();
     }
   }
 }
@@ -1128,19 +1096,21 @@ void TreeCtrl::CheckCollapsEntry()
   
   GetSize(&width, &height);  // Store window dimensions
   
-  if((mousePt.x < 0) || (mousePt.x > width) || (mousePt.y < 0) || (mousePt.y > height)) { // Not in same area
+  if((mousePt.x < 0) || (mousePt.x >= width) || (mousePt.y < 0) || (mousePt.y >= height)) { // Not in same area
     m_last_mice_item_in_drag_and_drop = NULL;
     return;
   }
   
   int flags = wxTREE_HITTEST_ONITEMICON|wxTREE_HITTEST_ONITEMLABEL;
   wxTreeItemId currentItem = DoTreeHitTest(mousePt, flags);
-  bool itemSame = currentItem == m_last_mice_item_in_drag_and_drop;
+  bool itemSame = (currentItem == m_last_mice_item_in_drag_and_drop);
   
   if(itemSame) {
     if(currentItem.IsOk() && ItemHasChildren(currentItem) && (currentItem != GetRootItem())) {
       if(IsExpanded(currentItem)) {
         Collapse(currentItem);
+        wxTreeItemId selectedItem = GetSelection();
+        if(selectedItem.IsOk()) UnselectAll();
       }
       else { // Is Collapsed
         Expand(currentItem);
@@ -1158,73 +1128,96 @@ void TreeCtrl::CheckCollapsEntry()
 
 void TreeCtrl::OnMouseMove(wxMouseEvent& event)
 {
-  if(m_drag_item && event.LeftIsDown())
+  if(m_isDragging && m_drag_item.IsOk())
   {
-    wxPoint pt = event.GetPosition();
+    int width, height;
+    wxPoint pt = ScreenToClient(wxGetMousePosition());
+  
+    GetSize(&width,  &height);
     
-    if(pt.y != wxDefaultCoord) {
-      int width, height;
-      GetSize(&width,  &height);
-
-      if((pt.x >= 0) && (pt.x <= width)) { // When inside of the windows area
-        int flags = wxTREE_HITTEST_ONITEMICON|wxTREE_HITTEST_ONITEMLABEL;
-        wxTreeItemId currentItem = DoTreeHitTest(pt, flags);
-        bool itemChanged = currentItem != m_last_mice_item_in_drag_and_drop;
-        int ThumbVert = GetScrollThumb (wxVERTICAL);
-        int PosVert = GetScrollPos (wxVERTICAL);
-        int RangeVert = GetScrollRange (wxVERTICAL);
+    if((pt.x >= 0) && (pt.x < width)) { // When inside of the windows area
+      int flags = wxTREE_HITTEST_ONITEMICON|wxTREE_HITTEST_ONITEMLABEL;
+      wxTreeItemId currentItem = DoTreeHitTest(pt, flags);
+      bool itemChanged = (currentItem != m_last_mice_item_in_drag_and_drop);
+      int ThumbVert = GetScrollThumb (wxVERTICAL);
+      int PosVert = GetScrollPos (wxVERTICAL);
+      int RangeVert = GetScrollRange (wxVERTICAL);
         
-        if((PosVert > 0) && (pt.y <= m_upper_scroll_limit)) {
-          if(! m_scroll_timer.IsRunning()) {
-            m_scroll_direction = -1;
-            wxScrollWinEvent scrollEvent( wxEVT_SCROLLWIN_LINEUP, GetId(), 0);
-            GetEventHandler()->ProcessEvent(scrollEvent);
-            m_scroll_time = TreeScrollTimer::DELAY;
-            m_scroll_timer.Start( TreeScrollTimer::DELAY, true );
-          }
-        } else if(((PosVert + ThumbVert) < RangeVert) && (pt.y >= m_lower_scroll_limit)){
-          if(! m_scroll_timer.IsRunning()) {
-            m_scroll_direction = +1;
-            wxScrollWinEvent scrollEvent( wxEVT_SCROLLWIN_LINEDOWN, GetId(), 0);
-            GetEventHandler()->ProcessEvent(scrollEvent);
-            m_scroll_time = TreeScrollTimer::DELAY;
-            m_scroll_timer.Start( TreeScrollTimer::DELAY, true );
-          }
+      if((PosVert > 0) && (pt.y <= m_upper_scroll_limit)) {
+        if(! m_scroll_timer.IsRunning()) {
+          m_scroll_timer.Start( TreeScrollTimer::DELAY, true );
+        }
+      } else if(((PosVert + ThumbVert) < RangeVert) && (pt.y >= m_lower_scroll_limit)){
+        if(! m_scroll_timer.IsRunning()) {
+          m_scroll_timer.Start( TreeScrollTimer::DELAY, true );
+        }
+      }
+      else if(m_scroll_timer.IsRunning()) {
+        resetScrolling();
+      }
+        
+      if(currentItem.IsOk()) {
+        wxString label = GetItemText(m_drag_item);
+        wxTreeItemId si;
+        // Set Cursor depending from kind of entry
+        if(ItemIsGroupOrRoot(currentItem) && ! IsDescendant(currentItem, m_drag_item) && (::wxGetKeyState(WXK_SHIFT) || ! ExistsInTree(currentItem, tostringx(label), si))) {
+          SetCursor(wxNullCursor);
         }
         else {
-          if(m_scroll_timer.IsRunning()) m_scroll_timer.Stop();
-          m_scroll_direction = 0;
+          SetCursor(wxCURSOR_NO_ENTRY);
         }
-        
-        if(currentItem.IsOk()) {
-          if(m_last_mice_item_in_drag_and_drop == NULL) {
-            if(ItemHasChildren(currentItem)) {
-              m_last_mice_item_in_drag_and_drop = currentItem;
-              m_collapse_timer.Start( TreeCollapseTimer::DELAY, true );
-            }
-          } else if(itemChanged) {
-            if(m_collapse_timer.IsRunning())
-              m_collapse_timer.Stop();
-            if(ItemHasChildren(currentItem)) {
-              m_last_mice_item_in_drag_and_drop = currentItem;
-              m_collapse_timer.Start( TreeCollapseTimer::DELAY, true );
-            }
+        // Check Collapse or Expand when taying for longer time over group entry
+        if(m_last_mice_item_in_drag_and_drop == NULL) {
+          if(ItemHasChildren(currentItem)) {
+            m_last_mice_item_in_drag_and_drop = currentItem;
+            m_collapse_timer.Start( TreeCollapseTimer::DELAY, true );
           }
-          else { // Still the same, wait for timer expiry
-            // Do nothing
-          }
-        }
-        else {
+        } else if(itemChanged) {
           if(m_collapse_timer.IsRunning())
             m_collapse_timer.Stop();
-          m_last_mice_item_in_drag_and_drop = NULL;
+          if(ItemHasChildren(currentItem)) {
+            m_last_mice_item_in_drag_and_drop = currentItem;
+            m_collapse_timer.Start( TreeCollapseTimer::DELAY, true );
+          }
+        }
+        else { // Still the same, wait for timer expiry
+          // Do nothing
         }
       }
       else {
+        if(m_last_mice_item_in_drag_and_drop)
+          SetCursor(wxNullCursor);
+        if(m_collapse_timer.IsRunning())
+          m_collapse_timer.Stop();
+        m_last_mice_item_in_drag_and_drop = NULL;
+      }
+    }
+    else {
+      if(m_drag_image) {
+        m_drag_image->Hide();
+      }
+      if(m_last_mice_item_in_drag_and_drop || m_scroll_timer.IsRunning()) { // left or right from tree window, reset scrolling
+        resetScrolling();
         resetDragItems();
       }
     }
+    
+    if((pt.x >= 0) && (pt.x < width) && (pt.y >= 0) && (pt.y < height)) {
+      StopAutoScrolling();
+      if(m_drag_image) {
+        m_drag_image->Hide();
+        m_drag_image->Move(pt);
+        m_drag_image->Show();
+      }
+      if(m_had_been_out) {
+        SetCursor(wxNullCursor);  // TO BE FIXED: This cursor is not visible because macOS means the cursor is not on the current windows area
+        m_had_been_out = false;
+      }
+    }
+    else
+      m_had_been_out = true;
   }
+  
   wxTreeCtrl::OnMouse(event);
 }
 
@@ -1239,24 +1232,43 @@ void TreeCtrl::OnBeginDrag(wxTreeEvent& evt)
 
   if (item.IsOk() && (GetRootItem() != item)) {
     m_drag_item = item;
+    m_had_been_out = false;
     SetWindowStyle(m_style & ~wxTR_HIDE_ROOT);
     evt.Allow();
     markDragItem(item);
     Refresh();
     resetDragItems(true);
+    m_drag_image = new wxDragImage(*this, item);
+    if(m_drag_image) {
+      wxPoint mousePt = ScreenToClient(wxGetMousePosition());
+      wxRect rect;
+      GetBoundingRect(item, rect, true);
+      if(! m_drag_image->BeginDrag(mousePt - rect.GetLeftTop(), this, true)) {
+        pws_os::Trace(L"BeginDrag failed");
+        wxDELETE(m_drag_image);
+      }
+      else {
+        ReleaseMouse(); // Must be released because BeginDrag() will Capture Mouse, but the code following event BeginDragging() will do as well
+        m_drag_image->Show();
+      }
+    }
     return;
   }
 
   evt.Skip();
 }
 
+void TreeCtrl::resetScrolling()
+{
+  StopAutoScrolling();
+  if(m_scroll_timer.IsRunning()) m_scroll_timer.Stop();
+}
+
 void TreeCtrl::resetDragItems(bool initSize)
 {
   if(m_scroll_timer.IsRunning()) m_scroll_timer.Stop();
   if(m_collapse_timer.IsRunning()) m_collapse_timer.Stop();
-  m_scroll_direction = 0;
   m_last_mice_item_in_drag_and_drop = NULL;
-  m_scroll_time = TreeScrollTimer::DELAY;
   if(initSize) {
     int width, height;
     GetSize(&width,  &height);
@@ -1284,16 +1296,41 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
 {
   bool makeCopy = ::wxGetKeyState(WXK_CONTROL);
   bool doOverride = ::wxGetKeyState(WXK_SHIFT);
-  
+  int width, height;
+  wxPoint mousePt = ScreenToClient(wxGetMousePosition());  // Find where the mouse is in relation to the (exited) pane
+  GetSize(&width, &height);  // Store window dimensions
+  int flags = wxTREE_HITTEST_ONITEMICON|wxTREE_HITTEST_ONITEMLABEL;
+  wxTreeItemId currentItem = DoTreeHitTest(mousePt, flags); // Check current before removing root from screen
   resetDragItems();
   // Restore Hiden Root
   SetWindowStyle(m_style);
   markDragItem(m_drag_item, false);
+  if(m_drag_image) {
+    m_drag_image->Hide();
+    CaptureMouse(); // EndDrag() will release the Mouse, but before call the mouse had been released from event handler
+    m_drag_image->EndDrag();
+    wxDELETE(m_drag_image);
+  }
   Refresh();
-  // Do not drag on itself
-  if ((m_drag_item != NULL) && (m_drag_item == GetSelection())) {
+  
+  wxTreeItemId selectedItem = GetSelection();
+  if(selectedItem.IsOk()) UnselectAll();
+  
+  if((mousePt.x < 0) || (mousePt.x >= width) || (mousePt.y < 0) || (mousePt.y >= height)) { // Not in same area
+    evt.Skip();
+    m_drag_item = NULL;
+    return;
+  }
+  
+  if (m_drag_item != NULL) { // Drag and drop started
 
     wxTreeItemId itemDst = evt.GetItem();
+    
+    if(itemDst.IsOk() && (currentItem != itemDst)) { // Mice is not over destination item, skip dragging
+      evt.Skip();
+      m_drag_item = NULL;
+      return;
+    }
 
     if(itemDst && itemDst.IsOk() &&
        (itemDst != m_drag_item) &&
@@ -1351,7 +1388,7 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
         StringX sxNewPath;
         
         if(GetRootItem() != itemDst) {
-          sxNewPath = tostringx(GetItemGroup(itemDst) + wxT(".") + label);
+          sxNewPath = tostringx(GetItemGroup(itemDst) + GROUP_SEL_STR + label);
         }
         else {
           sxNewPath = tostringx(label);
@@ -1379,6 +1416,10 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
         if (newItem.IsOk())
           wxTreeCtrl::SelectItem(newItem);
       }
+    }
+    else {
+      if(m_drag_item.IsOk())
+        wxTreeCtrl::SelectItem(m_drag_item);
     }
   }
 
@@ -1463,7 +1504,7 @@ void TreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
     wxString groupName = evt.GetLabel();
     for (wxTreeItemId parent = GetItemParent(groupItem);
                       parent != GetRootItem(); parent = GetItemParent(parent)) {
-      groupName = GetItemText(parent) + wxT(".") + groupName;
+      groupName = GetItemText(parent) + GROUP_SEL_STR + groupName;
     }
     StringX sxGroup = tostringx(groupName);
 
@@ -1597,7 +1638,7 @@ void TreeCtrl::ExtendCommandCopyGroup(MultiCommands* pmCmd, wxTreeItemId itemSrc
     const StringX label = tostringx(GetItemText(ti));
     
     if(ItemIsGroup(ti)) {
-      ExtendCommandCopyGroup(pmCmd, ti, sxNewPath + wxT(".") + label, checkName);
+      ExtendCommandCopyGroup(pmCmd, ti, sxNewPath + GROUP_SEL_STR + label, checkName);
     }
     else {
       CItemData *dataSrc = TreeCtrl::GetItem(ti);

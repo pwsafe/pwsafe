@@ -20,6 +20,7 @@
 ////@begin includes
 #include <wx/treebase.h>
 #include <wx/treectrl.h>
+#include <wx/dragimag.h>
 ////@end includes
 
 #include "core/ItemData.h"
@@ -56,8 +57,8 @@ class TreeCtrl;
 class TreeScrollTimer: public wxTimer
 {
 public:
-    // start scrolling half a second (if the mouse hasn't been clicked)
-  enum { DELAY = 500 };
+    // start scrolling 1/4 second (if the mouse hasn't been clicked)
+  enum { DELAY = 250 };
     
   TreeScrollTimer();
   
@@ -74,8 +75,8 @@ private:
 class TreeCollapseTimer: public wxTimer
 {
 public:
-    // start Collapse or Expand after one second (if the mouse hasn't been clicked/moved)
-  enum { DELAY = 1000 };
+    // start Collapse or Expand after 1.5 second (if the mouse hasn't been clicked/moved)
+  enum { DELAY = 1500 };
     
   TreeCollapseTimer();
   
@@ -150,8 +151,6 @@ public:
   /// wxEVT_MOTION event handler for mouse events
   void OnMouseMove(wxMouseEvent& event);
 
-  ////@end TreeCtrl event handler declarations
-
   void OnGetToolTip( wxTreeEvent& evt); // Added manually
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_ADDGROUP
@@ -160,17 +159,20 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_RENAME
   void OnRenameGroup(wxCommandEvent& evt);
 
+  /// EVT_TREE_END_LABEL_EDIT event handler for ID_TREECTRL and ID_TREECTRL_1
   void OnEndLabelEdit( wxTreeEvent& evt );
 
   /// wxEVT_TREE_KEY_DOWN event handler for ID_TREECTRL
   void OnKeyDown(wxTreeEvent& evt);
 
-  /// EVT_TREE_BEGIN_DRAG event handler for ID_TREECTRL
+  /// wxEVT_TREE_BEGIN_DRAG event handler for ID_TREECTRL
   void OnBeginDrag(wxTreeEvent& evt);
 
-  /// EVT_TREE_END_DRAG event handler for ID_TREECTRL
+  /// wxEVT_TREE_END_DRAG event handler for ID_TREECTRL
   void OnEndDrag(wxTreeEvent& evt);
-  
+
+////@end TreeCtrl event handler declarations
+
 ////@begin TreeCtrl member function declarations
 ////@end TreeCtrl member function declarations
 
@@ -232,6 +234,7 @@ private:
   bool IsDescendant(const wxTreeItemId itemDst, const wxTreeItemId itemSrc);
   void markDragItem(const wxTreeItemId itemSrc, bool markIt = true);
   void resetDragItems(bool initSize = false);
+  void resetScrolling();
 
   std::vector<bool> GetGroupDisplayState();
   void SetGroupDisplayState(const std::vector<bool> &groupstates);
@@ -256,10 +259,11 @@ private:
   wxTreeItemId m_last_mice_item_in_drag_and_drop;
   
   int m_lower_scroll_limit, m_upper_scroll_limit;
+  bool m_had_been_out;
   
   TreeScrollTimer m_scroll_timer;
-  int m_scroll_direction;
-  int m_scroll_time;
+  
+  wxDragImage *m_drag_image;
   
   long m_style;
 };
