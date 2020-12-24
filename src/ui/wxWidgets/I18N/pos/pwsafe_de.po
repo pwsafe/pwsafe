@@ -3888,7 +3888,7 @@ msgstr "Ihre Datenbank wurde synchronisiert mit \"%ls\""
 #: ../../../ui/wxWidgets/SyncWizard.cpp:586
 #, c-format
 msgid "%ld %ls updated"
-msgstr "%d %ls aktualisiert"
+msgstr "%ld %ls aktualisiert"
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:588
 msgid "Synchronization completed successfully"
