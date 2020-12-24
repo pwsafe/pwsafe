@@ -838,7 +838,7 @@ void PasswordSafeFrame::AddLanguage(int menu_id, wxLanguage lang_id, const wxStr
  */
 void PasswordSafeFrame::CreateMainToolbar()
 {
-  wxToolBar* toolbar = CreateToolBar(wxBORDER_NONE | wxTB_TOP | wxTB_HORIZONTAL, wxID_ANY, wxT("Main Toolbar"));
+  wxToolBar* toolbar = CreateToolBar(wxBORDER_NONE | wxTB_TOP | wxTB_HORIZONTAL | (PWSprefs::GetInstance()->GetPref(PWSprefs::ToolbarShowText) ? wxTB_TEXT : 0), wxID_ANY, wxT("Main Toolbar"));
 
   RefreshToolbarButtons();
 
@@ -893,10 +893,12 @@ void PasswordSafeFrame::RefreshToolbarButtons()
         if (PwsToolbarButton.id == ID_SEPARATOR) {
           if(pref->GetPref(PWSprefs::ShowMenuSeparator))
             tb->AddSeparator();
-        } else
-          tb->AddTool(PwsToolbarButton.id, wxEmptyString, wxBitmap(PwsToolbarButton.bitmap_normal),
+        }
+        else {
+          tb->AddTool(PwsToolbarButton.id, wxGetTranslation(PwsToolbarButton.toollabel), wxBitmap(PwsToolbarButton.bitmap_normal),
                               wxBitmap(PwsToolbarButton.bitmap_disabled), wxITEM_NORMAL,
                               wxGetTranslation(PwsToolbarButton.tooltip) );
+        }
       }
     }
     else {
@@ -904,9 +906,11 @@ void PasswordSafeFrame::RefreshToolbarButtons()
         if (PwsToolbarButton.id == ID_SEPARATOR) {
           if(pref->GetPref(PWSprefs::ShowMenuSeparator))
             tb->AddSeparator();
-        } else
-          tb->AddTool(PwsToolbarButton.id, wxEmptyString, wxBitmap(PwsToolbarButton.bitmap_classic),
-                          wxGetTranslation(PwsToolbarButton.tooltip) );
+        }
+        else {
+           tb->AddTool(PwsToolbarButton.id, wxGetTranslation(PwsToolbarButton.toollabel), wxBitmap(PwsToolbarButton.bitmap_classic),
+                      wxGetTranslation(PwsToolbarButton.tooltip) );
+        }
       }
     }
   }

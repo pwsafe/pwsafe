@@ -133,6 +133,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("EnableWindowTransparency"), false, ptApplication},   // application
   {_T("ShowMenuSeparator"), true, ptApplication},           // application
   {_T("OptimizedCellSize"), false, ptApplication},          // application
+  {_T("ToolbarShowText"), true, ptApplication},             // application
 };
 
 // Default value = -1 means set at runtime

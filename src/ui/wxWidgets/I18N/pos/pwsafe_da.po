@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-14 10:41+0100\n"
+"POT-Creation-Date: 2020-12-23 15:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:141
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1436
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1443
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:426
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:508
 msgid "Password Safe"
@@ -168,7 +168,7 @@ msgstr "Autoindsæt"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:305
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1392
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:464
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:662
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:667
 msgid "Browse"
 msgstr "Gennemse"
 
@@ -245,7 +245,7 @@ msgid "Set Date/Time"
 msgstr "Sæt Dato/Tid"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:370
-#: ../../../core/core_st.cpp:135
+#: ../../../ui/wxWidgets/ToolbarButtons.h:203 ../../../core/core_st.cpp:135
 msgid "Password"
 msgstr "Adgangskode"
 
@@ -338,13 +338,13 @@ msgid "Run Cmd:"
 msgstr "Kør Cmd:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:486
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:591
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:596
 #, fuzzy
 msgid "Double-Click Action:"
 msgstr "Dobbelt Klik Handling:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:494
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:612
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:617
 #, fuzzy
 msgid "Shift-Double-Click Action:"
 msgstr "Dobbelt Klik Handling:"
@@ -816,12 +816,12 @@ msgstr ""
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1523
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:292
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:296
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:300
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:316
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:298
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:306
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:322
-#: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:71
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:328
+#: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:72
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:358
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:365
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:419
@@ -997,89 +997,95 @@ msgstr "Seneste PasswordSafe Databaser"
 msgid "Advanced Options..."
 msgstr "Avancerede Find muligheder..."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:437
+#: ../../../ui/wxWidgets/CompareDlg.cpp:449
 #, fuzzy
 msgid "Synchronize this item..."
 msgstr "Synkroniser..."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:439
-#: ../../../ui/wxWidgets/CompareDlg.cpp:722
+#: ../../../ui/wxWidgets/CompareDlg.cpp:451
+#: ../../../ui/wxWidgets/CompareDlg.cpp:747
 #: ../../../ui/wxWidgets/SyncWizard.cpp:639
 msgid "Synchronize"
 msgstr "Synkroniser"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:439
-#: ../../../ui/wxWidgets/CompareDlg.cpp:445
-#: ../../../ui/wxWidgets/CompareDlg.cpp:449
+#: ../../../ui/wxWidgets/CompareDlg.cpp:451
+#: ../../../ui/wxWidgets/CompareDlg.cpp:459
+#: ../../../ui/wxWidgets/CompareDlg.cpp:464
 #, fuzzy
 msgid "selected "
 msgstr "Valgt"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:439
+#: ../../../ui/wxWidgets/CompareDlg.cpp:451
 msgid "..."
 msgstr "..."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:442
+#: ../../../ui/wxWidgets/CompareDlg.cpp:456
 #, fuzzy
 msgid "Synchronize all items..."
 msgstr "Synkroniser..."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:445
+#: ../../../ui/wxWidgets/CompareDlg.cpp:459
 #, fuzzy
 msgid "Copy"
 msgstr "Kopier"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:445
-#: ../../../ui/wxWidgets/CompareDlg.cpp:468
+#: ../../../ui/wxWidgets/CompareDlg.cpp:459
+#: ../../../ui/wxWidgets/CompareDlg.cpp:485
 #, fuzzy
 msgid " to current db"
 msgstr "Sæt nuværende"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:449
+#: ../../../ui/wxWidgets/CompareDlg.cpp:464
+#: ../../../ui/wxWidgets/ToolbarButtons.h:215
 msgid "Delete"
 msgstr "Slet"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:449
+#: ../../../ui/wxWidgets/CompareDlg.cpp:464
 #, fuzzy
 msgid " from current db"
 msgstr "[Ingen nuværende database]"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:455
+#: ../../../ui/wxWidgets/CompareDlg.cpp:472
+#, fuzzy
+msgid "&View entry in current db"
+msgstr "&Sæt nuværende"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:472
 #, fuzzy
 msgid "&Edit entry in current db"
 msgstr "&Sæt nuværende"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:456
+#: ../../../ui/wxWidgets/CompareDlg.cpp:473
 #, fuzzy
 msgid "&View entry in comparison db"
 msgstr "&Poster kun i sammenlignings databasen"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:464
+#: ../../../ui/wxWidgets/CompareDlg.cpp:481
 #, fuzzy
 msgid "&Copy "
 msgstr "&Kopier"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:464
+#: ../../../ui/wxWidgets/CompareDlg.cpp:481
 #, fuzzy
 msgid " selected "
 msgstr "Valgt"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:466
+#: ../../../ui/wxWidgets/CompareDlg.cpp:483
 #, fuzzy
 msgid " fields to current db"
 msgstr "Sæt nuværende"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:468
+#: ../../../ui/wxWidgets/CompareDlg.cpp:485
 #, fuzzy
 msgid "&Copy this "
 msgstr "Kopier til DB"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:722
+#: ../../../ui/wxWidgets/CompareDlg.cpp:747
 #, fuzzy
 msgid "Current safe was opened read-only"
 msgstr "Åben som læs-kun"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:729
+#: ../../../ui/wxWidgets/CompareDlg.cpp:754
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:968
 #: ../../../ui/wxWidgets/SyncWizard.cpp:618
 #, fuzzy, c-format
@@ -1098,22 +1104,22 @@ msgstr ""
 "har duplikerede poster med den samme gruppe/titel/Bruger kombination. Orden "
 "det venligst ved at teste databasen."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:730
+#: ../../../ui/wxWidgets/CompareDlg.cpp:755
 #: ../../../ui/wxWidgets/SyncWizard.cpp:617
 msgid "Synchronization failed"
 msgstr "Synkronisering fejlede"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:751
-#: ../../../ui/wxWidgets/CompareDlg.cpp:754
+#: ../../../ui/wxWidgets/CompareDlg.cpp:776
+#: ../../../ui/wxWidgets/CompareDlg.cpp:779
 #, fuzzy
 msgid "Synchronize items"
 msgstr "Synkroniser Adgange"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:752
+#: ../../../ui/wxWidgets/CompareDlg.cpp:777
 msgid "Select fields to synchronize"
 msgstr ""
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:753
+#: ../../../ui/wxWidgets/CompareDlg.cpp:778
 msgid "You must select some fields to synchronize"
 msgstr ""
 
@@ -1172,7 +1178,7 @@ msgid "Verify Key:"
 msgstr "Test nøgle:"
 
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:105
-#: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:71
+#: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:72
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:357
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:329
 msgid "The combination cannot be blank."
@@ -1219,7 +1225,7 @@ msgstr "Hoved Nøgle:"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:105
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:102
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:218
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:242
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:213
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:168
@@ -1348,7 +1354,7 @@ msgstr "Også brugt til at erstatte punktummer i Titel feltet."
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:246
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:388
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:366
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:223
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:229
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:251
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:237
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:177
@@ -1359,7 +1365,7 @@ msgstr "&OK"
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:139
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:249
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:391
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:227
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:233
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:255
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:233
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:180
@@ -1372,7 +1378,7 @@ msgstr "&Afbryd"
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:252
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:394
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:690
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:230
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:236
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:258
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:221
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
@@ -1560,6 +1566,7 @@ msgid "Available Password Policies:"
 msgstr "Se Adgangskode Politik filtrene:"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:183
+#: ../../../ui/wxWidgets/ToolbarButtons.h:213
 #, fuzzy
 msgid "Edit"
 msgstr "Rediger"
@@ -1602,6 +1609,7 @@ msgid "Selected policy details:"
 msgstr "Valgt filters detaljer:"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:267
+#: ../../../ui/wxWidgets/ToolbarButtons.h:199
 msgid "Close"
 msgstr "Luk"
 
@@ -1651,7 +1659,7 @@ msgid "Not used"
 msgstr ""
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:286
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1325
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1605
 #, fuzzy
 msgid " Copy # "
 msgstr "Kopier # %d"
@@ -1719,13 +1727,13 @@ msgstr "Fejl ved analyse af Kør Kommando"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:333
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:339
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:347
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:149
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:158
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:524
 msgid "Write Error"
 msgstr "Skrive Fejl"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:60
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:148
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:157
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:523
 #, fuzzy
 msgid "Could not open file for writing!"
@@ -2003,7 +2011,7 @@ msgstr "%ls filen der importeres: %ls"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:892
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:897
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:206
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:215
 #: ../../../ui/wxWidgets/SyncWizard.cpp:572
 #: ../../../ui/wxWidgets/wxUtilities.cpp:59
 #: ../../../ui/wxWidgets/wxUtilities.cpp:64
@@ -2012,7 +2020,7 @@ msgid "File Read Error"
 msgstr "Fil Læse Fejl"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:893
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:205
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:214
 #: ../../../ui/wxWidgets/wxUtilities.cpp:58
 #, fuzzy
 msgid "Could not open file for reading!"
@@ -2283,27 +2291,27 @@ msgstr "Fletter databasen: "
 msgid "Merge Complete"
 msgstr "Sammenlign Komplet"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:107
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:116
 msgid "Please Choose a Name for this Backup:"
 msgstr "Vælg Venligst et Navn til denne Sikkerhedskopi:"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:114
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:168
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:123
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:177
 #, fuzzy
 msgid "Could not parse current file path"
 msgstr "Kunne ikke få adgang til filen: %s"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:122
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:131
 #, fuzzy
 msgid "Password Safe Backups (*.bak)|*.bak"
 msgstr "Password Safe Sikkerhedskopier(*.bak)|*.bak||"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:172
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:181
 #, fuzzy
 msgid "Please Choose a Backup to Restore:"
 msgstr "Vælg Venligst en Sikkerhedskopi til gendannelse:"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:176
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:185
 msgid ""
 "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
 "ibak)|*.ibak||"
@@ -2311,7 +2319,7 @@ msgstr ""
 "Password Safe Sikkerhedskopier (*.bak)|*.bak|Password Safe Mellemliggende "
 "Sikkerhedskopier (*.ibak)|*.ibak||"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:213
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:222
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <Ubetitlet Gendannet Sikkerhedskopi>"
 
@@ -2388,13 +2396,13 @@ msgid "Edit/View selected entry"
 msgstr "Se/Rediger valgte adgang"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:134
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:618
-#: ../../../core/core_st.cpp:62
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:623
+#: ../../../ui/wxWidgets/ToolbarButtons.h:208 ../../../core/core_st.cpp:62
 msgid "Autotype"
 msgstr "Autoindsæt"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:135
-#: ../../../ui/wxWidgets/ToolbarButtons.h:208 ../../../core/core_st.cpp:63
+#: ../../../ui/wxWidgets/ToolbarButtons.h:209 ../../../core/core_st.cpp:63
 msgid "Browse to URL"
 msgstr "Gennemse efter URL"
 
@@ -2552,246 +2560,252 @@ msgid "Show Optimized Cell size"
 msgstr ""
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:542
+#, fuzzy
+msgid "Show Text in Toolbar"
+msgstr "Vis &Find Værktøjslinien"
+
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:546
 msgid "days before passwords expire"
 msgstr "dage før adgangskode udløber"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:546
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:550
 #, fuzzy
 msgid "&Fully collapsed"
 msgstr "&Alle lukket"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:547
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:551
 #, fuzzy
 msgid "&Fully expanded"
 msgstr "&Fudt udvidet"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:548
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:552
 #, fuzzy
 msgid "&Same as when last saved"
 msgstr "&Samme som sidst gemt"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:549
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:553
 msgid "Initial Tree View"
 msgstr "Først Træ-visning"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:577
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:582
 msgid "Confirm deletion of items"
 msgstr "Bekræft sletning af post"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:581
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:586
 msgid "Record last access times"
 msgstr "Sidste post tilgangs tider"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:585
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:590
 msgid "Escape key closes application"
 msgstr "Escape tasten lukker programmet"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:621
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:626
 msgid "Minimize after Autotype"
 msgstr "Minimer efter Autoindsæt"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:627
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:632
 msgid "Default Autotype string:"
 msgstr "Standart Autoindsæt streng:"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:634
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:639
 msgid "Default Username"
 msgstr "Standart Brugernavn"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:639
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:644
 msgid "Use"
 msgstr "Brug"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:646
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:651
 msgid "as default username"
 msgstr "som standart brugernavn"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:650
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:655
 msgid "Query user to set default username"
 msgstr "Spørg bruger om at indsætte standart brugernavn"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:654
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:659
 #, fuzzy
 msgid "Alternate Browser"
 msgstr "Alternativ Browser "
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:668
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:673
 msgid "Browser Command Line parameters"
 msgstr "Browser Kommando Linie parametre"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:697
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:702
+#: ../../../ui/wxWidgets/ToolbarButtons.h:201
 msgid "Save"
 msgstr "Gem"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:712
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:717
 msgid "previous passwords per entry"
 msgstr "tidligere adgangskoder pr post"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:719
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:724
 #, fuzzy
 msgid "Default password expiration (days)"
 msgstr "Tilfældig adgangskode udviklings regel"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:734
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:739
 msgid "Manage password history of current entries"
 msgstr "Håndter adgangskode historik over nuværende poster"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:737
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:742
 msgid "No change"
 msgstr "Ingen ændring"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:741
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:746
 msgid "Stop saving previous passwords"
 msgstr "Stop med at gemme tidligere adgangskoder"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:745
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:750
 msgid "Start saving previous passwords"
 msgstr "Begynd med at gemme tidligere adgangskoder."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:749
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:754
 #, fuzzy
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Sæt maximum antal af gemte adgangskoder til ovenstående værdi"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:753
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:758
 #, fuzzy
 msgid "Clear password history for ALL entries"
 msgstr "Håndter adgangskode historik over nuværende poster"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:757
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:762
 msgid "Apply these changes to Protected Entries (if required)."
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:761
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:766
 msgid "Apply"
 msgstr "Anvend"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:780
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:785
 msgid "Clear clipboard upon minimize"
 msgstr "Tøm klipbord ved minimering"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:784
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:789
 msgid "Clear clipboard upon exit"
 msgstr "Tøm klipbord ved afslut"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:788
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:793
 #, fuzzy
 msgid "Confirm copy of password to clipboard"
 msgstr "Kopier adgangskode til klipbord"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:792
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:797
 #, fuzzy
 msgid "'Browse to URL' copies password to clipboard"
 msgstr "Kopier adgangskode til klipbord"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:796
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:801
 msgid "Lock password database on minimize"
 msgstr "Lås adgangskode databasen ved minimering"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:800
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:805
 msgid "Lock password database on workstation lock"
 msgstr "Lås adgangskode databasen ved arbejdsstation låsning"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:806
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:811
 #, fuzzy
 msgid "Lock password database after"
 msgstr "Lås adgangskode databasen efter "
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:821
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:826
 msgid "minutes idle"
 msgstr "minutter ubeskæftiget"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:826
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:831
 msgid "Unlock Difficulty:"
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:834
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:839
 #, fuzzy
 msgid "Standard"
 msgstr "Sorbian Standard"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:839
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:844
 msgid "Maximum"
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:883
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:888
 #, fuzzy
 msgid "System Tray"
 msgstr "SystemTray"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:886
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:891
 msgid "Put icon in System Tray"
 msgstr "Anbring ikon i System Tray"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:892
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:923
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:897
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:928
 #, fuzzy
 msgid "  Remember last"
 msgstr "Husk sidste"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:906
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:911
 #, fuzzy
 msgid "used entries in System Tray menu"
 msgstr "brugte poster i System Tray menuen."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:909
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:914
 msgid "Start PasswordSafe at Login"
 msgstr "Start PasswordSafe med windows"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:913
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:918
 msgid ""
 "There appears to be no system tray support in your current environment.\n"
 "Any related functionality may not work as expected."
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:918
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:923
 msgid "Recent PasswordSafe Databases"
 msgstr "Seneste PasswordSafe Databaser"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:937
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:942
 #, fuzzy
 msgid "databases"
 msgstr "databaser."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:940
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:945
 #, fuzzy
 msgid "Recent Databases on File Menu rather than as a sub-menu"
 msgstr "Seneste Databaser i Fil Menu hellere end en under-menu."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:944
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:949
 #, fuzzy
 msgid "Open database as read-only by default"
 msgstr "Åben databasen som læs-kun, som standart"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:948
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:953
 msgid "Allow multiple instances"
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:953
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:958
 msgid "Use Primary Selection for clipboard"
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:957
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:962
 msgid "Use alternate AutoType method"
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:959
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:964
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
 "XSendEvent can handle more control keys, but may be blocked by some "
 "applications."
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:961
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:966
 msgid "If AutoType doesn't work, setting this may help."
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1384
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1391
 #, fuzzy
 msgid "Select a Browser"
 msgstr "Vælg Browser:"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1408
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1415
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to not save password "
@@ -2800,7 +2814,7 @@ msgstr ""
 "Antal poster der fik deres indstillinger ændret til ikke at gemme "
 "adgangskode historik er: %d"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1413
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1420
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to save password history "
@@ -2809,7 +2823,7 @@ msgstr ""
 "Antal poster med ændrede indstillinger for at gemme adgangskode historik "
 "var: %d"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1418
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1425
 #, c-format
 msgid ""
 "Number of entries that had their 'maximum saved passwords' changed to the "
@@ -2818,7 +2832,7 @@ msgstr ""
 "Antal poster der fik deres  'maximum gemte adgangskoder' ændret til den nye "
 "standart er %d"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1423
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1430
 #, fuzzy, c-format
 msgid "Number of entries that had their password history removed was %d"
 msgstr ""
@@ -3150,12 +3164,12 @@ msgid "&Dragbar visible"
 msgstr "&Linien Træk synlig"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:625
-#: ../../../ui/wxWidgets/ToolbarButtons.h:216
+#: ../../../ui/wxWidgets/ToolbarButtons.h:217
 msgid "Expand All"
 msgstr "Udvid Alle"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:626
-#: ../../../ui/wxWidgets/ToolbarButtons.h:217
+#: ../../../ui/wxWidgets/ToolbarButtons.h:218
 msgid "Collapse All"
 msgstr "Luk Alle"
 
@@ -3781,45 +3795,45 @@ msgstr "Ny Hoved nøgle:"
 msgid "Confirmation:"
 msgstr "Bekræftelse:"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:291
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:297
 msgid "The old safe combination is not correct"
 msgstr "Den gamle hoved nøgle er ikke korrekt"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:295
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:301
 msgid "Cannot verify old safe combination - file gone?"
 msgstr "Kan ikke bekræfte den gamle safe kombination - fil slettet?"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:299
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:305
 msgid "New safe combination and confirmation do not match"
 msgstr "Ny hoved nøgle og bekræftelse matcher ikke"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:309
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:315
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:263
 #, fuzzy
 msgid "Weak passphrase:"
 msgstr "Svagt adgangskodeord:"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:314
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:320
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:268
 #, fuzzy
 msgid "Use it anyway?"
 msgstr "Bruge den alligevel?"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:367
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:401
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:373
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:407
 #, fuzzy
 msgid "YubiKey safe combination incorrect"
 msgstr "Den gamle hoved nøgle er ikke korrekt"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:369
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:375
 msgid "Enter new safe combination (if any) and click on bottom Yubikey button"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:392
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:398
 msgid "Please confirm existing combination"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:409
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:415
 #, fuzzy
 msgid "Current safe combination incorrect"
 msgstr "Den gamle hoved nøgle er ikke korrekt"
@@ -4277,65 +4291,65 @@ msgstr "&Send email"
 msgid "&Delete from Recent Entry List"
 msgstr "&Slet fra Seneste Post Liste"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:907
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:909
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:913
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:915
 msgid "New Group"
 msgstr "Ny Gruppe"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:909
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:915
 msgid "\""
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:909
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:915
 msgid "\" "
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:909
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:915
 msgid "name exists"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:909
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:955
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1124
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:915
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:961
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1400
 msgid "Double group name"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:913
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:919
 msgid "Could not add empty group item to tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:926
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:932
 msgid "Renaming of non-Group items is not implemented"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:955
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:961
 msgid "Same group name exists"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:969
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:975
 msgid "Dots are not allowed in group names"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:969
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:975
 #, fuzzy
 msgid "Invalid Character"
 msgstr "Ugyldig Parameter"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1065
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1071
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1341
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1347
 msgid "Drag and Drop failed"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1065
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1341
 #, fuzzy
 msgid "Destination is no group"
 msgstr "Destinations disk drevet er fuld."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1071
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1347
 msgid "Destination cannot be inside source tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1124
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1400
 msgid "Same group name exists (use Shift to overrule)"
 msgstr ""
 
@@ -4471,8 +4485,8 @@ msgstr "Håndter Filtre"
 msgid "Manage Password Policies"
 msgstr "Se Adgangskode Politik filtrene"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:133
-#: ../../../ui/wxWidgets/ToolbarButtons.h:219
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:135
+#: ../../../ui/wxWidgets/ToolbarButtons.h:220
 #, fuzzy
 msgid "Options"
 msgstr "Valgmuligheder"
@@ -4487,7 +4501,7 @@ msgstr "Password Safe"
 msgid "Show a subset of the Password"
 msgstr "Vis en delmængde af Adgangskoden"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.h:54
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.h:55
 msgid "Change Safe Combination"
 msgstr "Skift Safe Kombination"
 
@@ -4507,77 +4521,125 @@ msgstr "Hoved Nøgle sætop"
 msgid "Set Display Filters"
 msgstr "Sæt Visnings Filtre"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:196
+#: ../../../ui/wxWidgets/ToolbarButtons.h:197
+msgid "New"
+msgstr "Ny"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:197
 #, fuzzy
 msgid "Make New Database"
 msgstr "Lav Ny Database"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:197
+#: ../../../ui/wxWidgets/ToolbarButtons.h:198
+msgid "Open"
+msgstr "Åben"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:198
 #, fuzzy
 msgid "Open Another Database"
 msgstr "Åben en Anden Database"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:198
+#: ../../../ui/wxWidgets/ToolbarButtons.h:199
 #, fuzzy
 msgid "Close Database"
 msgstr "Luk Databasen"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:199
+#: ../../../ui/wxWidgets/ToolbarButtons.h:200
+#, fuzzy
+msgid "Lock"
+msgstr "Lås skift tasten"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:200
 #, fuzzy
 msgid "Lock Database"
 msgstr "Database"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:200
+#: ../../../ui/wxWidgets/ToolbarButtons.h:201
 #, fuzzy
 msgid "Save Database"
 msgstr "Gem Databasen"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:202
+#: ../../../ui/wxWidgets/ToolbarButtons.h:203
 #, fuzzy
 msgid "Copy Password to Clipboard"
 msgstr "Kopier Adgangskode til Klipbord"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:203
+#: ../../../ui/wxWidgets/ToolbarButtons.h:204 ../../../core/core_st.cpp:147
+#, fuzzy
+msgid "Username"
+msgstr "Brugernavn:"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:204
 #, fuzzy
 msgid "Copy Username to Clipboard"
 msgstr "Kopier Brugernavn til Klipbord"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:204
+#: ../../../ui/wxWidgets/ToolbarButtons.h:205 ../../../core/core_st.cpp:134
+#, fuzzy
+msgid "Notes"
+msgstr "Notater:"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:205
 #, fuzzy
 msgid "Copy Notes to Clipboard"
 msgstr "Kopier Notater til Klipbord"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:205
+#: ../../../ui/wxWidgets/ToolbarButtons.h:206
+#, fuzzy
+msgid "Clr Clipboard"
+msgstr "&Tøm Klipbord"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:206
 #, fuzzy
 msgid "Clear the clipboard contents"
 msgstr "Tøm klipbordet"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:207
+#: ../../../ui/wxWidgets/ToolbarButtons.h:208
 #, fuzzy
 msgid "Perform Autotype"
 msgstr "Udfør Autoindsæt"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:209 ../../../core/core_st.cpp:70
+#: ../../../ui/wxWidgets/ToolbarButtons.h:209
+#, fuzzy
+msgid "Browse URL"
+msgstr "Gennemse efter URL"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:210 ../../../core/core_st.cpp:70
 #, fuzzy
 msgid "Send Email"
 msgstr "Send email"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:211
+#: ../../../ui/wxWidgets/ToolbarButtons.h:212
+#, fuzzy
+msgid "Add"
+msgstr "Og"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:212
 #, fuzzy
 msgid "Add New Entry"
 msgstr "Tilføj ny adgang"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:212
+#: ../../../ui/wxWidgets/ToolbarButtons.h:213
 #, fuzzy
 msgid "Edit an Entry"
 msgstr "Rediger en post"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:214
+#: ../../../ui/wxWidgets/ToolbarButtons.h:215
 #, fuzzy
 msgid "Delete an Entry"
 msgstr "Slet en post"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:221
+#: ../../../ui/wxWidgets/ToolbarButtons.h:217
+#, fuzzy
+msgid "Expand"
+msgstr "Udvid Alle"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:218
+#, fuzzy
+msgid "Collapse"
+msgstr "Luk Alle"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:222
 msgid "Help"
 msgstr "Hjælp"
 
@@ -5036,11 +5098,6 @@ msgstr "Gruppe/Titel"
 msgid "Keyboard Shortcut"
 msgstr "Opret Genvej"
 
-#: ../../../core/core_st.cpp:134
-#, fuzzy
-msgid "Notes"
-msgstr "Notater:"
-
 #: ../../../core/core_st.cpp:136
 #, fuzzy
 msgid "Password Modified Time"
@@ -5081,11 +5138,6 @@ msgstr "Standart Brugernavn"
 #: ../../../core/core_st.cpp:146
 msgid "URL"
 msgstr "URL"
-
-#: ../../../core/core_st.cpp:147
-#, fuzzy
-msgid "Username"
-msgstr "Brugernavn:"
 
 #: ../../../core/core_st.cpp:148
 msgid "UUID"
@@ -6063,6 +6115,34 @@ msgstr "Udtal-bare adgangskoder"
 msgid "Yes - At least %d from %ls: %ls%ls"
 msgstr "Skal være mindst %d from %ls: %ls"
 
+#, fuzzy
+#~ msgid "»Password"
+#~ msgstr "Adgangskode"
+
+#, fuzzy
+#~ msgid "->Username"
+#~ msgstr "Brugernavn:"
+
+#, fuzzy
+#~ msgid "->Notes"
+#~ msgstr "Notater:"
+
+#, fuzzy
+#~ msgid "->Password"
+#~ msgstr "Adgangskode"
+
+#, fuzzy
+#~ msgid "C. Password"
+#~ msgstr "Adgangskode"
+
+#, fuzzy
+#~ msgid "C. Username"
+#~ msgstr "Brugernavn:"
+
+#, fuzzy
+#~ msgid "C. Notes"
+#~ msgstr "Vis Notater"
+
 #~ msgid "Show &Unsaved Changes"
 #~ msgstr "Vis &Ugemte Ændringer"
 
@@ -6899,9 +6979,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 #~ "Kan ikke behandles fordi denne adgang er blevet slettet fra den åbne "
 #~ "database."
 
-#~ msgid "Caps Lock"
-#~ msgstr "Lås skift tasten"
-
 #~ msgid "Case sensitive search"
 #~ msgstr "Følsom over for små/store bogst. søgning"
 
@@ -7697,9 +7774,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 #~ msgid "Name. Name. Name."
 #~ msgstr "Navn. Navn. Navn."
 
-#~ msgid "New"
-#~ msgstr "Ny"
-
 #~ msgid "No criteria defined"
 #~ msgstr "Intet kriterier defineret"
 
@@ -7789,9 +7863,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 #~ msgstr ""
 #~ "Kun i Original DB: %d; Kun i Sammenlignings DB: %d; I begge (forskelle): "
 #~ "%d; I begge (identiske): %d"
-
-#~ msgid "Open"
-#~ msgstr "Åben"
 
 #~ msgid "Original"
 #~ msgstr "Original"
@@ -8090,9 +8161,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 
 #~ msgid "Shortcut '%s' already assigned to menu item '%s'."
 #~ msgstr "Genvej '%s' er allerede anvist til menu post '%s'."
-
-#~ msgid "Show &Find Toolbar"
-#~ msgstr "Vis &Find Værktøjslinien"
 
 #~ msgid "Show Virtual Keyboard"
 #~ msgstr "Vis Virtuelt Tastatur"
