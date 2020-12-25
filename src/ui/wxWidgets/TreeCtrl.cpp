@@ -1338,13 +1338,13 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
        ((GetRootItem() != itemDst) || (GetRootItem() != GetItemParent(m_drag_item)))) { // Do not Drag and Drop on its own
       if(GetRootItem() != itemDst) {
         if(! ItemIsGroup(itemDst)) {                   // Only group may be destination
-          wxMessageBox(_("Drag and Drop failed"), _("Destination is no group"), wxOK|wxICON_ERROR);
+          wxMessageBox(_("Destination is no group"), _("Drag and Drop failed"), wxOK|wxICON_ERROR);
           evt.Skip();
           m_drag_item = NULL;
           return;
         }
         else if(IsDescendant(itemDst, m_drag_item)) {  // Do not drag and drop into the moved tree
-          wxMessageBox(_("Drag and Drop failed"), _("Destination cannot be inside source tree"), wxOK|wxICON_ERROR);
+          wxMessageBox(_("Destination cannot be inside source tree"), _("Drag and Drop failed"), wxOK|wxICON_ERROR);
           evt.Skip();
           m_drag_item = NULL;
           return;
