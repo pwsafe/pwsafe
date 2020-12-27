@@ -716,14 +716,9 @@ void PasswordSafeFrame::UpdateTreeSortMenu()
 {
   auto menuBar = GetMenuBar();
   
-  menuBar->Check(ID_SORT_TREE_BY_GROUP, IsTreeSortGroup() ? true : false);
-  menuBar->Check(ID_SORT_TREE_BY_NAME, IsTreeSortName() ? true : false);
-  menuBar->Check(ID_SORT_TREE_BY_DATE, IsTreeSortDate() ? true : false);
-
-  menuBar->Enable(ID_SORT_TREE_MENU, IsTreeView() ? true : false);
-  menuBar->Enable(ID_SORT_TREE_BY_GROUP, IsTreeView() ? true : false);
-  menuBar->Enable(ID_SORT_TREE_BY_NAME, IsTreeView() ? true : false);
-  menuBar->Enable(ID_SORT_TREE_BY_DATE, IsTreeView() ? true : false);
+  menuBar->Check(ID_SORT_TREE_BY_GROUP, IsTreeSortGroup());
+  menuBar->Check(ID_SORT_TREE_BY_NAME, IsTreeSortName());
+  menuBar->Check(ID_SORT_TREE_BY_DATE, IsTreeSortDate());
   menuBar->Refresh();
 }
 

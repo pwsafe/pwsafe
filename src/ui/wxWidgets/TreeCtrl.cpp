@@ -227,12 +227,12 @@ void TreeCtrl::Init()
 ////@begin TreeCtrl member initialisation
   m_sort = TreeSortType::GROUP;
   m_show_group = false;
-  m_drag_item = NULL;
+  m_drag_item = nullptr;
   m_style = 0L;
   m_lower_scroll_limit = m_upper_scroll_limit = 0;
   m_scroll_timer.setOwner(this);
   m_collapse_timer.setOwner(this);
-  m_drag_image = NULL;
+  m_drag_image = nullptr;
   m_had_been_out = false;
 ////@end TreeCtrl member initialisation
 }
@@ -1032,7 +1032,7 @@ TreeCollapseTimer::TreeCollapseTimer()
 void TreeCollapseTimer::Notify()
 {
   wxASSERT(m_owner);
-  m_owner->CheckCollapsEntry();
+  m_owner->CheckCollapseEntry();
 }
 
 void TreeCtrl::CheckScrollList()
@@ -1087,7 +1087,7 @@ void TreeCtrl::CheckScrollList()
   }
 }
 
-void TreeCtrl::CheckCollapsEntry()
+void TreeCtrl::CheckCollapseEntry()
 {
   if(! m_last_mice_item_in_drag_and_drop.IsOk()) return;
   
@@ -1097,11 +1097,11 @@ void TreeCtrl::CheckCollapsEntry()
   GetSize(&width, &height);  // Store window dimensions
   
   if((mousePt.x < 0) || (mousePt.x >= width) || (mousePt.y < 0) || (mousePt.y >= height)) { // Not in same area
-    m_last_mice_item_in_drag_and_drop = NULL;
+    m_last_mice_item_in_drag_and_drop = nullptr;
     return;
   }
   
-  int flags = wxTREE_HITTEST_ONITEMICON|wxTREE_HITTEST_ONITEMLABEL;
+  int flags = wxTREE_HITTEST_ONITEM;
   wxTreeItemId currentItem = DoTreeHitTest(mousePt, flags);
   bool itemSame = (currentItem == m_last_mice_item_in_drag_and_drop);
   
@@ -1122,7 +1122,7 @@ void TreeCtrl::CheckCollapsEntry()
     }
   }
   else {
-    m_last_mice_item_in_drag_and_drop = NULL;
+    m_last_mice_item_in_drag_and_drop = nullptr;
   }
 }
 
@@ -1136,7 +1136,7 @@ void TreeCtrl::OnMouseMove(wxMouseEvent& event)
     GetSize(&width,  &height);
     
     if((pt.x >= 0) && (pt.x < width)) { // When inside of the windows area
-      int flags = wxTREE_HITTEST_ONITEMICON|wxTREE_HITTEST_ONITEMLABEL;
+      int flags = wxTREE_HITTEST_ONITEM;
       wxTreeItemId currentItem = DoTreeHitTest(pt, flags);
       bool itemChanged = (currentItem != m_last_mice_item_in_drag_and_drop);
       int ThumbVert = GetScrollThumb (wxVERTICAL);
@@ -1167,7 +1167,7 @@ void TreeCtrl::OnMouseMove(wxMouseEvent& event)
           SetCursor(wxCURSOR_NO_ENTRY);
         }
         // Check Collapse or Expand when taying for longer time over group entry
-        if(m_last_mice_item_in_drag_and_drop == NULL) {
+        if(m_last_mice_item_in_drag_and_drop == nullptr) {
           if(ItemHasChildren(currentItem)) {
             m_last_mice_item_in_drag_and_drop = currentItem;
             m_collapse_timer.Start( TreeCollapseTimer::DELAY, true );
@@ -1189,7 +1189,7 @@ void TreeCtrl::OnMouseMove(wxMouseEvent& event)
           SetCursor(wxNullCursor);
         if(m_collapse_timer.IsRunning())
           m_collapse_timer.Stop();
-        m_last_mice_item_in_drag_and_drop = NULL;
+        m_last_mice_item_in_drag_and_drop = nullptr;
       }
     }
     else {
@@ -1268,7 +1268,7 @@ void TreeCtrl::resetDragItems(bool initSize)
 {
   if(m_scroll_timer.IsRunning()) m_scroll_timer.Stop();
   if(m_collapse_timer.IsRunning()) m_collapse_timer.Stop();
-  m_last_mice_item_in_drag_and_drop = NULL;
+  m_last_mice_item_in_drag_and_drop = nullptr;
   if(initSize) {
     int width, height;
     GetSize(&width,  &height);
@@ -1299,7 +1299,7 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
   int width, height;
   wxPoint mousePt = ScreenToClient(wxGetMousePosition());  // Find where the mouse is in relation to the (exited) pane
   GetSize(&width, &height);  // Store window dimensions
-  int flags = wxTREE_HITTEST_ONITEMICON|wxTREE_HITTEST_ONITEMLABEL;
+  int flags = wxTREE_HITTEST_ONITEM;
   wxTreeItemId currentItem = DoTreeHitTest(mousePt, flags); // Check current before removing root from screen
   resetDragItems();
   // Restore Hiden Root
@@ -1318,17 +1318,17 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
   
   if((mousePt.x < 0) || (mousePt.x >= width) || (mousePt.y < 0) || (mousePt.y >= height)) { // Not in same area
     evt.Skip();
-    m_drag_item = NULL;
+    m_drag_item = nullptr;
     return;
   }
   
-  if (m_drag_item != NULL) { // Drag and drop started
+  if (m_drag_item != nullptr) { // Drag and drop started
 
     wxTreeItemId itemDst = evt.GetItem();
     
     if(itemDst.IsOk() && (currentItem != itemDst)) { // Mice is not over destination item, skip dragging
       evt.Skip();
-      m_drag_item = NULL;
+      m_drag_item = nullptr;
       return;
     }
 
@@ -1338,15 +1338,15 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
        ((GetRootItem() != itemDst) || (GetRootItem() != GetItemParent(m_drag_item)))) { // Do not Drag and Drop on its own
       if(GetRootItem() != itemDst) {
         if(! ItemIsGroup(itemDst)) {                   // Only group may be destination
-          wxMessageBox(_("Destination is no group"), _("Drag and Drop failed"), wxOK|wxICON_ERROR);
+          wxMessageBox(_("Destination is not a group"), _("Drag and Drop failed"), wxOK|wxICON_ERROR);
           evt.Skip();
-          m_drag_item = NULL;
+          m_drag_item = nullptr;
           return;
         }
         else if(IsDescendant(itemDst, m_drag_item)) {  // Do not drag and drop into the moved tree
           wxMessageBox(_("Destination cannot be inside source tree"), _("Drag and Drop failed"), wxOK|wxICON_ERROR);
           evt.Skip();
-          m_drag_item = NULL;
+          m_drag_item = nullptr;
           return;
         }
       }
@@ -1397,8 +1397,8 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
           wxTreeItemId si;
           if(ExistsInTree(itemDst, tostringx(label), si)) {
             evt.Veto();
-            wxMessageBox(_("Same group name exists (use Shift to overrule)"), _("Double group name"), wxOK|wxICON_ERROR);
-            m_drag_item = NULL;
+            wxMessageBox(_("Duplicate group name (use Shift to overrule)"), _("Double group name"), wxOK|wxICON_ERROR);
+            m_drag_item = nullptr;
             return;
           }
         }
@@ -1424,7 +1424,7 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
   }
 
   evt.Skip();
-  m_drag_item = NULL;
+  m_drag_item = nullptr;
 }
 
 bool TreeCtrl::IsDescendant(const wxTreeItemId itemDst, const wxTreeItemId itemSrc)

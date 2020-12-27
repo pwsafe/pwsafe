@@ -39,8 +39,7 @@ $(POS) : $(POT)
 
 mos/%/LC_MESSAGES/pwsafe.mo : pos/pwsafe_%.po
 	@mkdir -p $(dir $@)
-# "--check" option would remove potential used entries, so do not add it to the following line
-	@msgfmt --output-file=$@ $^
+	@msgfmt --check --output-file=$@ $^
 
 check:
 	POFileChecker --ignore-fuzzy $(POS)

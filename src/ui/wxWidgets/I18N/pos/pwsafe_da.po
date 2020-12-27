@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-24 12:49+0100\n"
+"POT-Creation-Date: 2020-12-27 10:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -815,7 +815,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:367
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1527
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1522
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:298
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:306
@@ -1196,7 +1196,7 @@ msgid "The entry cannot be blank."
 msgstr "Kodefeltet kan ikke være tomt."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:68
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1180
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1175
 #, fuzzy
 msgid ""
 "Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
@@ -1243,7 +1243,7 @@ msgid "File or path not found."
 msgstr "Fil eller sti ikke fundet."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:149
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1200
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1195
 msgid "That file is already open."
 msgstr "Den fil er allerede åben."
 
@@ -1673,7 +1673,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:528
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:544
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:600
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1661
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1656
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:37
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:71
 #, fuzzy
@@ -3065,7 +3065,7 @@ msgid "&Duplicate Entry\tCtrl+D"
 msgstr "&Dupliker Adgang"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:583
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1664
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1659
 #, fuzzy
 msgid "Protect Entry"
 msgstr ""
@@ -3112,7 +3112,7 @@ msgid "Perform Auto&type\tCtrl+T"
 msgstr "Udfør Auto &Indsæt"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:597
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1614
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1609
 msgid "Create &Shortcut"
 msgstr "Opret &Genvej"
 
@@ -3324,217 +3324,217 @@ msgstr "Besøg Password Safe &websiden..."
 msgid "&About Password Safe..."
 msgstr "&Om Password Safe..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:818
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:813
 #, fuzzy
 msgid "Select Language"
 msgstr "Vælg alle poster"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1200
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1195
 msgid "Open database"
 msgstr "Åben databasen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1525
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1520
 #, fuzzy, c-format
 msgid "Unknown code: %d"
 msgstr "Ukendte felter"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1566
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1582
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1561
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1577
 msgid "Add &Entry"
 msgstr "Tilføj &Post"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1569
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1564
 msgid "Add &Group"
 msgstr "Tilføj &Gruppe"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1572
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1567
 #, fuzzy
 msgid "&Rename Group"
 msgstr "&Omdøb Gruppe"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1573
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1568
 msgid "&Delete Group"
 msgstr "&Slet Gruppe"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1589
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1584
 #, fuzzy
 msgid "Copy &Username to Clipboard"
 msgstr "Kopier &Brugernavn til klipbord"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1590
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1585
 #, fuzzy
 msgid "&Copy Password to Clipboard"
 msgstr "&Kopier Adgangskode til Klipbord"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1591
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1586
 msgid "Display subset of Password"
 msgstr "Vis delmængde af Adgangskode"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1593
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1588
 msgid "Display Password as &QR code"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1595
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1590
 #, fuzzy
 msgid "Copy &Notes to Clipboard"
 msgstr "Kopier &Notater til Klipbord"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1596
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1591
 msgid "Copy UR&L to Clipboard"
 msgstr "Kopier UR&L til Klipbord"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1597
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1592
 msgid "Copy email to Clipboard"
 msgstr "Kopier email til Klipbord"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1598
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1593
 msgid "Copy Run Command to Clipboard"
 msgstr "Kopier Kør Kommando til Klipbord"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1600
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1595
 #: ../../../ui/wxWidgets/SystemTray.cpp:205
 #, fuzzy
 msgid "&Browse to URL"
 msgstr "&Gennemse efter URL"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1601
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1596
 #: ../../../ui/wxWidgets/SystemTray.cpp:206
 msgid "Browse to URL + &Autotype"
 msgstr "Gennemse efter URL + &Autoindsæt"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1602
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1597
 msgid "Send &email"
 msgstr "Send &email"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1603
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1598
 #: ../../../ui/wxWidgets/SystemTray.cpp:213
 msgid "&Run Command"
 msgstr "&Kør Kommando"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1604
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1599
 msgid "Perform Auto &Type"
 msgstr "Udfør Auto &Indsæt"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1607
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1602
 #, fuzzy
 msgid "&View Entry..."
 msgstr "Se Adgang"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1610
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1605
 #, fuzzy
 msgid "Edit Entry..."
 msgstr "Rediger Post"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1612
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1607
 #, fuzzy
 msgid "&Duplicate Entry"
 msgstr "&Dupliker post"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1613
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1608
 msgid "Delete Entry"
 msgstr "Slet Post"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1655
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1650
 #, fuzzy
 msgid "Goto &Shortcuts..."
 msgstr "Genveje"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1658
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1653
 #, fuzzy
 msgid "&Go to Base entry"
 msgstr "&Gå til Basis adgang"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1659
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1654
 msgid "&Edit Base entry"
 msgstr "&Rediger Basis adgang"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2110
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2105
 #, fuzzy
 msgid "Could not re-load database: "
 msgstr "Poster kun i nuværende database: "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2111
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2106
 msgid "Error re-loading last database"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2358
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2353
 msgid "There was an error loading the database: "
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2359
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2354
 #, fuzzy
 msgid "Could not load database"
 msgstr "Åben en Anden Database"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2421
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2416
 msgid "Group copied "
 msgstr "Gruppe kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2424
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2419
 msgid "Title copied "
 msgstr "Titel kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2427
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2422
 msgid "User copied "
 msgstr "Bruger kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2430
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2425
 msgid "Pswd copied "
 msgstr "Adkod kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2433
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2428
 msgid "Notes copied "
 msgstr "Notater kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2436
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2431
 #, fuzzy
 msgid "URL copied "
 msgstr "Bruger kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2439
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2434
 msgid "Autotype copied "
 msgstr "Autoindsæt kopieret"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2442
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2437
 msgid "RunCmd copied "
 msgstr "KørCmd kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2445
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2440
 #, fuzzy
 msgid "Email copied "
 msgstr "email kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2448
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2443
 #, fuzzy
 msgid "Password History copied "
 msgstr "Adgangskode Historik Filter"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2451
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2446
 #, fuzzy
 msgid "Old Pswd copied "
 msgstr "Adkod kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2490
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2485
 #, fuzzy
 msgid "Select Tree/List display font"
 msgstr "Sæt Træ/Liste skrift"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2507
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2502
 #, fuzzy
 msgid "Select Add/Edit display font"
 msgstr "Sæt Træ/Liste skrift"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2511
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2506
 #, fuzzy
 msgid "Select Password display font"
 msgstr "Sæt Adgangskode skrift"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2515
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2510
 #, fuzzy
 msgid "Select Notes display font"
 msgstr "Sæt Træ/Liste skrift"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2519
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2514
 #, fuzzy
 msgid "Select Virtual Keyboard font"
 msgstr "Sæt Virtuelt Tastatur skrift"
@@ -4336,21 +4336,21 @@ msgid "Invalid Character"
 msgstr "Ugyldig Parameter"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1341
+#, fuzzy
+msgid "Destination is not a group"
+msgstr "Destinations disk drevet er fuld."
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1341
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1347
 msgid "Drag and Drop failed"
 msgstr ""
-
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1341
-#, fuzzy
-msgid "Destination is no group"
-msgstr "Destinations disk drevet er fuld."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1347
 msgid "Destination cannot be inside source tree"
 msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1400
-msgid "Same group name exists (use Shift to overrule)"
+msgid "Duplicate group name (use Shift to overrule)"
 msgstr ""
 
 #: ../../../ui/wxWidgets/ViewReportDlg.cpp:30

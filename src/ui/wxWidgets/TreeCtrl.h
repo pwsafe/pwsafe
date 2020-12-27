@@ -214,7 +214,7 @@ public:
   bool IsShowGroup() const { return m_show_group; }
   
   void CheckScrollList();
-  void CheckCollapsEntry();
+  void CheckCollapseEntry();
 
 private:
   void PreferencesChanged();
