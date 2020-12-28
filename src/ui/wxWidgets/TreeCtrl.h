@@ -63,6 +63,7 @@ public:
   TreeScrollTimer();
   
   void setOwner(TreeCtrl *owner) { m_owner = owner; };
+  bool Start() { return wxTimer::Start( TreeScrollTimer::DELAY, true ); };
 
   virtual void Notify();
 
@@ -81,6 +82,7 @@ public:
   TreeCollapseTimer();
   
   void setOwner(TreeCtrl *owner) { m_owner = owner; };
+  bool Start() { return wxTimer::Start( TreeCollapseTimer::DELAY, true ); };
 
   virtual void Notify();
 

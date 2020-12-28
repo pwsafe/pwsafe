@@ -1079,7 +1079,7 @@ void TreeCtrl::CheckScrollList()
     if(commandType != wxEVT_NULL) {
       wxScrollWinEvent scrollEvent( commandType, GetId(), 0);
       GetEventHandler()->ProcessEvent(scrollEvent);
-      m_scroll_timer.Start( TreeScrollTimer::DELAY, true );
+      m_scroll_timer.Start();
     }
     else {
       resetScrolling();
@@ -1145,11 +1145,11 @@ void TreeCtrl::OnMouseMove(wxMouseEvent& event)
         
       if((PosVert > 0) && (pt.y <= m_upper_scroll_limit)) {
         if(! m_scroll_timer.IsRunning()) {
-          m_scroll_timer.Start( TreeScrollTimer::DELAY, true );
+          m_scroll_timer.Start();
         }
       } else if(((PosVert + ThumbVert) < RangeVert) && (pt.y >= m_lower_scroll_limit)){
         if(! m_scroll_timer.IsRunning()) {
-          m_scroll_timer.Start( TreeScrollTimer::DELAY, true );
+          m_scroll_timer.Start();
         }
       }
       else if(m_scroll_timer.IsRunning()) {
@@ -1170,14 +1170,14 @@ void TreeCtrl::OnMouseMove(wxMouseEvent& event)
         if(m_last_mice_item_in_drag_and_drop == nullptr) {
           if(ItemHasChildren(currentItem)) {
             m_last_mice_item_in_drag_and_drop = currentItem;
-            m_collapse_timer.Start( TreeCollapseTimer::DELAY, true );
+            m_collapse_timer.Start();
           }
         } else if(itemChanged) {
           if(m_collapse_timer.IsRunning())
             m_collapse_timer.Stop();
           if(ItemHasChildren(currentItem)) {
             m_last_mice_item_in_drag_and_drop = currentItem;
-            m_collapse_timer.Start( TreeCollapseTimer::DELAY, true );
+            m_collapse_timer.Start();
           }
         }
         else { // Still the same, wait for timer expiry
