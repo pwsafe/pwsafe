@@ -162,24 +162,6 @@ void GridTable::SetView(wxGrid* newGrid)
       else
         newGrid->HideCol(idx);
 #endif
-      
-      if(PWSprefs::GetInstance()->GetPref(PWSprefs::OptimizedCellSize)) {
-        //Determin best fit column width
-        wxSize borderSize = m_pwsgrid->GetWindowBorderSize();
-        wxScreenDC dc;
-        wxCoord width, height, border = (borderSize.GetWidth() * 2) + 2;
-        dc.SetFont(m_pwsgrid->GetFont());
-      
-        for(unsigned int row = 0, noRows = GetNumberRows(); row < noRows; ++row) {
-          if(!IsEmptyCell(row, idx)) {
-            dc.GetTextExtent(GetValue(row, idx), &width, &height);
-            width += border;
-            if(width > PWSGridCellData[idx].width) {
-              PWSGridCellData[idx].width = width;
-            }
-          }
-        }
-      }
 
       //calling SetColSize, SetColPos would make them visible, so don't call them
       //unless they are really visible
@@ -190,6 +172,8 @@ void GridTable::SetView(wxGrid* newGrid)
         newGrid->SetColPos(idx, PWSGridCellData[idx].position);
       }
     }
+    if(PWSprefs::GetInstance()->GetPref(PWSprefs::OptimizedCellSize))
+      newGrid->AutoSizeColumns(false);
   }
   else {
     wxCHECK_RET(oldGrid, wxT("Both old and new grid views are nullptr"));

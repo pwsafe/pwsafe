@@ -716,14 +716,9 @@ void PasswordSafeFrame::UpdateTreeSortMenu()
 {
   auto menuBar = GetMenuBar();
   
-  menuBar->Check(ID_SORT_TREE_BY_GROUP, IsTreeSortGroup() ? true : false);
-  menuBar->Check(ID_SORT_TREE_BY_NAME, IsTreeSortName() ? true : false);
-  menuBar->Check(ID_SORT_TREE_BY_DATE, IsTreeSortDate() ? true : false);
-
-  menuBar->Enable(ID_SORT_TREE_MENU, IsTreeView() ? true : false);
-  menuBar->Enable(ID_SORT_TREE_BY_GROUP, IsTreeView() ? true : false);
-  menuBar->Enable(ID_SORT_TREE_BY_NAME, IsTreeView() ? true : false);
-  menuBar->Enable(ID_SORT_TREE_BY_DATE, IsTreeView() ? true : false);
+  menuBar->Check(ID_SORT_TREE_BY_GROUP, IsTreeSortGroup());
+  menuBar->Check(ID_SORT_TREE_BY_NAME, IsTreeSortName());
+  menuBar->Check(ID_SORT_TREE_BY_DATE, IsTreeSortDate());
   menuBar->Refresh();
 }
 
@@ -838,7 +833,7 @@ void PasswordSafeFrame::AddLanguage(int menu_id, wxLanguage lang_id, const wxStr
  */
 void PasswordSafeFrame::CreateMainToolbar()
 {
-  wxToolBar* toolbar = CreateToolBar(wxBORDER_NONE | wxTB_TOP | wxTB_HORIZONTAL, wxID_ANY, wxT("Main Toolbar"));
+  wxToolBar* toolbar = CreateToolBar(wxBORDER_NONE | wxTB_TOP | wxTB_HORIZONTAL | (PWSprefs::GetInstance()->GetPref(PWSprefs::ToolbarShowText) ? wxTB_TEXT : 0), wxID_ANY, wxT("Main Toolbar"));
 
   RefreshToolbarButtons();
 
@@ -893,10 +888,12 @@ void PasswordSafeFrame::RefreshToolbarButtons()
         if (PwsToolbarButton.id == ID_SEPARATOR) {
           if(pref->GetPref(PWSprefs::ShowMenuSeparator))
             tb->AddSeparator();
-        } else
-          tb->AddTool(PwsToolbarButton.id, wxEmptyString, wxBitmap(PwsToolbarButton.bitmap_normal),
+        }
+        else {
+          tb->AddTool(PwsToolbarButton.id, wxGetTranslation(PwsToolbarButton.toollabel), wxBitmap(PwsToolbarButton.bitmap_normal),
                               wxBitmap(PwsToolbarButton.bitmap_disabled), wxITEM_NORMAL,
                               wxGetTranslation(PwsToolbarButton.tooltip) );
+        }
       }
     }
     else {
@@ -904,9 +901,11 @@ void PasswordSafeFrame::RefreshToolbarButtons()
         if (PwsToolbarButton.id == ID_SEPARATOR) {
           if(pref->GetPref(PWSprefs::ShowMenuSeparator))
             tb->AddSeparator();
-        } else
-          tb->AddTool(PwsToolbarButton.id, wxEmptyString, wxBitmap(PwsToolbarButton.bitmap_classic),
-                          wxGetTranslation(PwsToolbarButton.tooltip) );
+        }
+        else {
+           tb->AddTool(PwsToolbarButton.id, wxGetTranslation(PwsToolbarButton.toollabel), wxBitmap(PwsToolbarButton.bitmap_classic),
+                      wxGetTranslation(PwsToolbarButton.tooltip) );
+        }
       }
     }
   }

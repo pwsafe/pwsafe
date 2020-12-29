@@ -51,6 +51,7 @@ public:
   virtual bool TransferFromWindow();
 
   void AllowEmptyCombinationOnce() {m_allowBlank = true;}
+  void ForbidEmptyCombinationOnce() {m_allowBlank = false;}
 
 private:
   StringX* m_str;
@@ -147,6 +148,13 @@ void SafeCombinationCtrl::AllowEmptyCombinationOnce()
   SafeCombinationValidator *scValidator = dynamic_cast<SafeCombinationValidator *>(m_textCtrl->GetValidator());
   if (scValidator != nullptr)
     scValidator->AllowEmptyCombinationOnce();
+}
+
+void SafeCombinationCtrl::ForbidEmptyCombinationOnce()
+{
+  SafeCombinationValidator *scValidator = dynamic_cast<SafeCombinationValidator *>(m_textCtrl->GetValidator());
+  if (scValidator != nullptr)
+    scValidator->ForbidEmptyCombinationOnce();
 }
 
 /**

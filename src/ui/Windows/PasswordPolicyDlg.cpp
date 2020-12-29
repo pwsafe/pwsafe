@@ -147,7 +147,6 @@ void CPasswordPolicyDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_POLICYLIST, m_cbxPolicyNames);
 
     DDX_Control(pDX, IDC_STATIC_MESSAGE, m_stcMessage);
-    DDX_Control(pDX, IDC_COPYPASSWORDHELP, m_Help1);
     //}}AFX_DATA_MAP
 
     if (pDX->m_bSaveAndValidate) {
@@ -405,13 +404,8 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
 
     // Set up Tooltips
     if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
-      m_Help1.Init(IDB_QUESTIONMARK);
-
-      AddTool(IDC_COPYPASSWORDHELP, IDS_CLICKTOCOPYGENPSWD);
+      AddTool(IDC_COPYPASSWORD, IDS_CLICKTOCOPYGENPSWD);
       ActivateToolTip();
-    } else {
-      m_Help1.EnableWindow(FALSE);
-      m_Help1.ShowWindow(SW_HIDE);
     }
   }
 
