@@ -193,7 +193,7 @@ class PasswordSafeFrame : public wxFrame, public Observer
 
 private:
     enum class ViewType { TREE, GRID };
-    enum class SortType { GROUP, NAME, DATE };
+    enum class TreeSortType { GROUP, NAME, DATE };
 public:
   /// Constructors
   PasswordSafeFrame(PWScore &core);
@@ -489,10 +489,10 @@ public:
   bool IsTreeView() const { return m_currentView == ViewType::TREE; }
   bool IsGridView() const { return m_currentView == ViewType::GRID; }
  
-  void SetTreeSortType(const SortType& view) { m_currentSort = view; }
-  bool IsTreeSortGroup() const { return m_currentSort == SortType::GROUP; }
-  bool IsTreeSortName() const { return m_currentSort == SortType::NAME; }
-  bool IsTreeSortDate() const { return m_currentSort == SortType::DATE; }
+  void SetTreeSortType(const TreeSortType& view) { m_currentSort = view; }
+  bool IsTreeSortGroup() const { return m_currentSort == TreeSortType::GROUP; }
+  bool IsTreeSortName() const { return m_currentSort == TreeSortType::NAME; }
+  bool IsTreeSortDate() const { return m_currentSort == TreeSortType::DATE; }
   void UpdateTreeSortMenu();
 
   void RefreshViews();
@@ -628,7 +628,7 @@ private:
 
   PWScore &m_core;
   ViewType m_currentView;
-  SortType m_currentSort;
+  TreeSortType m_currentSort;
   PasswordSafeSearch* m_search;
   SystemTray* m_sysTray;
   bool m_exitFromMenu;

@@ -152,7 +152,7 @@ public:
     MainToolBarButtons, PasswordFont, TreeListSampleText, PswdSampleText,
     LastUsedKeyboard, VKeyboardFontName, VKSampleText, AltNotesEditor,
     LanguageFile, DefaultSymbols, NotesFont, NotesSampleText, AutotypeTaskDelays,
-    AddEditFont, AddEditSampleText, AltNotesEditorCmdLineParms, LastSort,
+    AddEditFont, AddEditSampleText, AltNotesEditorCmdLineParms, TreeSort,
     NumStringPrefs};
 
   // for DoubleClickAction and ShiftDoubleClickAction

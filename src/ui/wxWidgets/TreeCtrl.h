@@ -101,9 +101,9 @@ class TreeCtrl : public wxTreeCtrl, public Observer
   DECLARE_CLASS( TreeCtrl )
   DECLARE_EVENT_TABLE()
 
-public:
+private:
   enum class TreeSortType { GROUP, NAME, DATE };
-
+public:
   /// Constructors
   TreeCtrl(); // Declared, never defined, as we don't support this!
   TreeCtrl(PWScore &core);
