@@ -181,8 +181,8 @@ private:
  */
 
 TreeCtrl::TreeCtrl(PWScore &core) : m_core(core),
-                                    m_scroll_timer(this, &TreeCtrl::CheckScrollList, TreeCtrlTimer::DELAY_SCROLLING),
-                                    m_collapse_timer(this, &TreeCtrl::CheckCollapseEntry, TreeCtrlTimer::DELAY_COLLAPSE)
+                                    m_collapse_timer(this, &TreeCtrl::CheckCollapseEntry, TreeCtrlTimer::DELAY_COLLAPSE),
+                                    m_scroll_timer(this, &TreeCtrl::CheckScrollList, TreeCtrlTimer::DELAY_SCROLLING)
 {
   Init();
 }
@@ -190,8 +190,8 @@ TreeCtrl::TreeCtrl(PWScore &core) : m_core(core),
 TreeCtrl::TreeCtrl(wxWindow* parent, PWScore &core,
                          wxWindowID id, const wxPoint& pos,
                          const wxSize& size, long style) : m_core(core),
-                                                           m_scroll_timer(this, &TreeCtrl::CheckScrollList, TreeCtrlTimer::DELAY_SCROLLING),
-                                                           m_collapse_timer(this, &TreeCtrl::CheckCollapseEntry, TreeCtrlTimer::DELAY_COLLAPSE)
+                                                           m_collapse_timer(this, &TreeCtrl::CheckCollapseEntry, TreeCtrlTimer::DELAY_COLLAPSE),
+                                                           m_scroll_timer(this, &TreeCtrl::CheckScrollList, TreeCtrlTimer::DELAY_SCROLLING)
 {
   Init();
   Create(parent, id, pos, size, style);
