@@ -423,12 +423,12 @@ void PasswordSafeFrame::Init()
 {
   m_currentView = (PWSprefs::GetInstance()->GetPref(PWSprefs::LastView) == _T("list")) ? ViewType::GRID : ViewType::TREE;
 
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::LastSort) == _T("date")) {
-    SetTreeSortType(SortType::DATE);
-  } else if (PWSprefs::GetInstance()->GetPref(PWSprefs::LastSort) == _T("name")) {
-    SetTreeSortType(SortType::NAME);
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeSort) == _T("date")) {
+    SetTreeSortType(TreeSortType::DATE);
+  } else if (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeSort) == _T("name")) {
+    SetTreeSortType(TreeSortType::NAME);
   } else {
-    SetTreeSortType(SortType::GROUP);
+    SetTreeSortType(TreeSortType::GROUP);
   }
   
   m_RUEList.SetMax(PWSprefs::GetInstance()->PWSprefs::MaxREItems);

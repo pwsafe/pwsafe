@@ -180,14 +180,18 @@ private:
  * TreeCtrl constructors
  */
 
-TreeCtrl::TreeCtrl(PWScore &core) : m_core(core)
+TreeCtrl::TreeCtrl(PWScore &core) : m_core(core),
+                                    m_collapse_timer(this, &TreeCtrl::CheckCollapseEntry, TreeCtrlTimer::DELAY_COLLAPSE),
+                                    m_scroll_timer(this, &TreeCtrl::CheckScrollList, TreeCtrlTimer::DELAY_SCROLLING)
 {
   Init();
 }
 
 TreeCtrl::TreeCtrl(wxWindow* parent, PWScore &core,
                          wxWindowID id, const wxPoint& pos,
-                         const wxSize& size, long style) : m_core(core)
+                         const wxSize& size, long style) : m_core(core),
+                                                           m_collapse_timer(this, &TreeCtrl::CheckCollapseEntry, TreeCtrlTimer::DELAY_COLLAPSE),
+                                                           m_scroll_timer(this, &TreeCtrl::CheckScrollList, TreeCtrlTimer::DELAY_SCROLLING)
 {
   Init();
   Create(parent, id, pos, size, style);
@@ -230,8 +234,6 @@ void TreeCtrl::Init()
   m_drag_item = nullptr;
   m_style = 0L;
   m_lower_scroll_limit = m_upper_scroll_limit = 0;
-  m_scroll_timer.setOwner(this);
-  m_collapse_timer.setOwner(this);
   m_drag_image = nullptr;
   m_had_been_out = false;
 ////@end TreeCtrl member initialisation
@@ -1013,26 +1015,9 @@ void TreeCtrl::OnKeyDown(wxTreeEvent& evt)
   evt.Skip();
 }
 
-TreeScrollTimer::TreeScrollTimer()
-{
-  m_owner = NULL;
-}
-
-void TreeScrollTimer::Notify()
-{
+void TreeCtrlTimer::Notify() {
   wxASSERT(m_owner);
-  m_owner->CheckScrollList();
-}
-
-TreeCollapseTimer::TreeCollapseTimer()
-{
-    m_owner = NULL;
-}
-
-void TreeCollapseTimer::Notify()
-{
-  wxASSERT(m_owner);
-  m_owner->CheckCollapseEntry();
+  (m_owner->*m_callback)();
 }
 
 void TreeCtrl::CheckScrollList()

@@ -93,10 +93,10 @@ void PasswordSafeFrame::OnTreeViewClick(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::OnSortByGroupClick(wxCommandEvent& WXUNUSED(evt))
 {
-  const SortType oldSortType = m_currentSort;
+  const TreeSortType oldSortType = m_currentSort;
   
-  PWSprefs::GetInstance()->SetPref(PWSprefs::LastSort, _T("group"));
-  SetTreeSortType(SortType::GROUP);
+  PWSprefs::GetInstance()->SetPref(PWSprefs::TreeSort, _T("group"));
+  SetTreeSortType(TreeSortType::GROUP);
   UpdateTreeSortMenu();
   m_tree->SetSortingGroup();
   m_tree->SetShowGroup(false);
@@ -111,10 +111,10 @@ void PasswordSafeFrame::OnSortByGroupClick(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::OnSortByNameClick(wxCommandEvent& WXUNUSED(evt))
 {
-  const SortType oldSortType = m_currentSort;
+  const TreeSortType oldSortType = m_currentSort;
   
-  PWSprefs::GetInstance()->SetPref(PWSprefs::LastSort, _T("name"));
-  SetTreeSortType(SortType::NAME);
+  PWSprefs::GetInstance()->SetPref(PWSprefs::TreeSort, _T("name"));
+  SetTreeSortType(TreeSortType::NAME);
   UpdateTreeSortMenu();
   m_tree->SetSortingName();
   m_tree->SetShowGroup(true);
@@ -129,10 +129,10 @@ void PasswordSafeFrame::OnSortByNameClick(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::OnSortByDateClick(wxCommandEvent& WXUNUSED(evt))
 {
-  const SortType oldSortType = m_currentSort;
+  const TreeSortType oldSortType = m_currentSort;
   
-  PWSprefs::GetInstance()->SetPref(PWSprefs::LastSort, _T("date"));
-  SetTreeSortType(SortType::DATE);
+  PWSprefs::GetInstance()->SetPref(PWSprefs::TreeSort, _T("date"));
+  SetTreeSortType(TreeSortType::DATE);
   UpdateTreeSortMenu();
   m_tree->SetSortingDate();
   m_tree->SetShowGroup(true);

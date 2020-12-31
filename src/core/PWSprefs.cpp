@@ -212,7 +212,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("AddEditFont"), _T(""), ptApplication },                      // application
   {_T("AddEditSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},  // application
   {_T("AltNotesEditorCmdLineParms"), _T(""), ptApplication},        // application
-  {_T("lastsort"), _T("group"), ptApplication},                     // application
+  {_T("TreeSort"), _T("group"), ptApplication},                     // application
 
 };
 
@@ -345,7 +345,7 @@ StringX PWSprefs::GetAllStringPrefs(const bool bUseCopy)
     LastView, TreeFont, BackupPrefixValue, ListColumns,
     ColumnWidths, MainToolBarButtons, PasswordFont,
     TreeListSampleText, PswdSampleText,
-    LastUsedKeyboard, VKeyboardFontName, VKSampleText, LanguageFile, LastSort
+    LastUsedKeyboard, VKeyboardFontName, VKSampleText, LanguageFile, TreeSort
   };
 
   TCHAR delim;

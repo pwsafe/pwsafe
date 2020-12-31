@@ -54,42 +54,34 @@ typedef std::map<pws_os::CUUID, wxTreeItemId, std::less<pws_os::CUUID> > UUIDTIM
 
 class TreeCtrl;
 
-class TreeScrollTimer: public wxTimer
+typedef void (TreeCtrl:: *TreeCtrlMemberFncPtr)(void);
+
+class TreeCtrlTimer: public wxTimer
 {
 public:
+  enum {
     // start scrolling 1/4 second (if the mouse hasn't been clicked)
-  enum { DELAY = 250 };
-    
-  TreeScrollTimer();
-  
-  void setOwner(TreeCtrl *owner) { m_owner = owner; };
-  bool Start() { return wxTimer::Start( TreeScrollTimer::DELAY, true ); };
-
-  virtual void Notify();
-
-private:
-  TreeCtrl *m_owner;
-
-  wxDECLARE_NO_COPY_CLASS(TreeScrollTimer);
-};
-
-class TreeCollapseTimer: public wxTimer
-{
-public:
+    DELAY_SCROLLING = 250,
     // start Collapse or Expand after 1.5 second (if the mouse hasn't been clicked/moved)
-  enum { DELAY = 1500 };
-    
-  TreeCollapseTimer();
+    DELAY_COLLAPSE = 1500
+  };
+  
+  TreeCtrlTimer(TreeCtrl *aowner, TreeCtrlMemberFncPtr acallback, int atime, bool aonetime = true) : m_owner(aowner), m_callback(acallback), m_time(atime), m_one_time(aonetime) { }
+  TreeCtrlTimer(TreeCtrlMemberFncPtr acallback, int atime, bool aonetime = true) : m_owner(nullptr), m_callback(acallback), m_time(atime), m_one_time(aonetime) { }
   
   void setOwner(TreeCtrl *owner) { m_owner = owner; };
-  bool Start() { return wxTimer::Start( TreeCollapseTimer::DELAY, true ); };
+  bool Start() { return wxTimer::Start( m_time, m_one_time ); };
 
   virtual void Notify();
 
 private:
+  // Avoid -Wreorder warning when using the same order of variable declaration and order in constructor
   TreeCtrl *m_owner;
+  TreeCtrlMemberFncPtr m_callback;
+  int m_time;
+  bool m_one_time;
 
-  wxDECLARE_NO_COPY_CLASS(TreeCollapseTimer);
+  wxDECLARE_NO_COPY_CLASS(TreeCtrlTimer);
 };
 
 /*!
@@ -101,9 +93,9 @@ class TreeCtrl : public wxTreeCtrl, public Observer
   DECLARE_CLASS( TreeCtrl )
   DECLARE_EVENT_TABLE()
 
-public:
+private:
   enum class TreeSortType { GROUP, NAME, DATE };
-
+public:
   /// Constructors
   TreeCtrl(); // Declared, never defined, as we don't support this!
   TreeCtrl(PWScore &core);
@@ -257,13 +249,13 @@ private:
   wxColour m_drag_text_colour;
   wxColour m_drag_background_colour;
 
-  TreeCollapseTimer m_collapse_timer;
+  TreeCtrlTimer m_collapse_timer;
   wxTreeItemId m_last_mice_item_in_drag_and_drop;
   
   int m_lower_scroll_limit, m_upper_scroll_limit;
   bool m_had_been_out;
   
-  TreeScrollTimer m_scroll_timer;
+  TreeCtrlTimer m_scroll_timer;
   
   wxDragImage *m_drag_image;
   
