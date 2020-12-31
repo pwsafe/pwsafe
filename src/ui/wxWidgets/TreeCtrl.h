@@ -75,10 +75,11 @@ public:
   virtual void Notify();
 
 private:
+  // Avoid -Wreorder warning when using the same order of variable declaration and order in constructor
   TreeCtrl *m_owner;
+  TreeCtrlMemberFncPtr m_callback;
   int m_time;
   bool m_one_time;
-  TreeCtrlMemberFncPtr m_callback;
 
   wxDECLARE_NO_COPY_CLASS(TreeCtrlTimer);
 };
