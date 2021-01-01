@@ -131,6 +131,7 @@ public:
     ShowMenuSeparator,
     OptimizedCellSize,
     ToolbarShowText,
+    DragAndDropShowRoot,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,

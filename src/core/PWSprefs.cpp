@@ -134,6 +134,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ShowMenuSeparator"), true, ptApplication},           // application
   {_T("OptimizedCellSize"), false, ptApplication},          // application
   {_T("ToolbarShowText"), false, ptApplication},            // application
+  {_T("DragAndDropShowRoot"), false, ptApplication},        // application
 };
 
 // Default value = -1 means set at runtime
