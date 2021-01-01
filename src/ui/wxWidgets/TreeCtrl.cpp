@@ -1145,7 +1145,7 @@ void TreeCtrl::OnMouseMove(wxMouseEvent& event)
         wxString label = GetItemText(m_drag_item);
         wxTreeItemId si;
         // Set Cursor depending from kind of entry
-        if(ItemIsGroupOrRoot(currentItem) && ! IsDescendant(currentItem, m_drag_item) && (::wxGetKeyState(WXK_SHIFT) || ! ExistsInTree(currentItem, tostringx(label), si))) {
+        if(! IsDescendant(currentItem, m_drag_item) && (::wxGetKeyState(WXK_SHIFT) || ! ExistsInTree(currentItem, tostringx(label), si))) {
           SetCursor(wxNullCursor);
         }
         else {
@@ -1322,13 +1322,10 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
        (itemDst != GetItemParent(m_drag_item)) &&
        ((GetRootItem() != itemDst) || (GetRootItem() != GetItemParent(m_drag_item)))) { // Do not Drag and Drop on its own
       if(GetRootItem() != itemDst) {
-        if(! ItemIsGroup(itemDst)) {                   // Only group may be destination
-          wxMessageBox(_("Destination is not a group"), _("Drag and Drop failed"), wxOK|wxICON_ERROR);
-          evt.Skip();
-          m_drag_item = nullptr;
-          return;
+        if(! ItemIsGroup(itemDst)) {              // On no group, use parent as destination
+          itemDst = GetItemParent(itemDst);
         }
-        else if(IsDescendant(itemDst, m_drag_item)) {  // Do not drag and drop into the moved tree
+        if(IsDescendant(itemDst, m_drag_item)) {  // Do not drag and drop into the moved tree
           wxMessageBox(_("Destination cannot be inside source tree"), _("Drag and Drop failed"), wxOK|wxICON_ERROR);
           evt.Skip();
           m_drag_item = nullptr;
