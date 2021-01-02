@@ -65,7 +65,7 @@ msgstr "Siehe LICENSE für Open Source Details."
 
 # no translation needed
 #: ../../../ui/wxWidgets/AboutDlg.cpp:174
-msgid "Copyright (c) 2003-2020 Rony Shapiro"
+msgid "Copyright (c) 2003-2021 Rony Shapiro"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:181
