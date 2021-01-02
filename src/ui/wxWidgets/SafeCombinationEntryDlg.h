@@ -153,6 +153,7 @@ public:
 private:
   StringX m_password;
   wxString m_filename;
+  wxString m_ellipsizedFilename;
   bool m_readOnly;
   PWScore &m_core;
   unsigned m_tries;
@@ -165,6 +166,7 @@ private:
   void ProcessPhrase();
   void UpdateReadOnlyCheckbox();
   void UpdateNew(bool isRO);
+  wxString EllipsizeFilePathname(const wxString& filename);
 };
 
 #endif // _SAFECOMBINATIONENTRYDLG_H_
