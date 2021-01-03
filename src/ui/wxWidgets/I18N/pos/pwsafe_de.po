@@ -5961,11 +5961,13 @@ msgstr "Alle Einblenden"
 
 msgid "Quit PasswordSafe (wxWidgets)"
 msgstr "PasswordSafe beenden"
-msgid "Hide PasswordSafe (wxWidgets)" msgstr "PasswordSafe ausbelenden"
+
+msgid "Hide PasswordSafe (wxWidgets)"
+msgstr "PasswordSafe ausblenden"
 
 # wxString standard strings
 msgid "Create new document"
-msgstr "Erzeuge ein neues Dokument"
+msgstr "Ein neues Dokument erstellen"
 
 # wxString standard strings
 msgid "Open an existing document"
