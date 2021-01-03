@@ -107,6 +107,7 @@ void EditShortcutDlg::ItemFieldsToDialog()
   
   m_Core.GetAllGroups(allGroupNames, true);  // Also allow short cut in empty groups
 
+  m_ComboBoxShortcutGroup->Append(""); // Also allow selection of emtpy group
   for (auto const& groupName : allGroupNames) {
     m_ComboBoxShortcutGroup->Append(groupName);
     dc.GetTextExtent(groupName, &width, &height);

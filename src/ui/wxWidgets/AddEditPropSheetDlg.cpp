@@ -1489,6 +1489,8 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
   
   // Populate the group combo box
   m_Core.GetAllGroups(names);
+  
+  m_BasicGroupNamesCtrl->Append(""); // Also allow selection of emtpy group
   for (auto const& name : names) {
     m_BasicGroupNamesCtrl->Append(name);
     dc.GetTextExtent(name, &width, &height);
