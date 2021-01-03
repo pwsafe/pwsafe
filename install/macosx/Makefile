@@ -13,6 +13,8 @@ TARGET=pwsafe
 ###RELDIR=../../Xcode/build64/Release/
 #RELDIR=../../Xcode/build-llvm/Release/
 RELDIR=$(HOME)/Library/Developer/Xcode/DerivedData/pwsafe-xcode6-*/Build/Products/Release/
+# Path to wxWidgets library path has to be adapted for each environment
+WXDIR=../../../wxWidgets/wxWidgets-3.1.4/locale
 
 CPBIN=/bin/cp
 RMBIN=/bin/rm
@@ -38,26 +40,37 @@ dist:
 	$(CPBIN) $(HELP) $(RESOURCES)
 	$(MDBIN) $(RESOURCES)/da.lproj
 	$(CPBIN) $(MOS)/da/LC_MESSAGES/pwsafe.mo $(RESOURCES)/da.lproj
+	$(CPBIN) $(WXDIR)/da.mo $(RESOURCES)/da.lproj/wxstd.mo
 	$(MDBIN) $(RESOURCES)/de.lproj
 	$(CPBIN) $(MOS)/de/LC_MESSAGES/pwsafe.mo $(RESOURCES)/de.lproj
+	$(CPBIN) $(WXDIR)/de.mo $(RESOURCES)/de.lproj/wxstd.mo
 	$(MDBIN) $(RESOURCES)/es.lproj
 	$(CPBIN) $(MOS)/es/LC_MESSAGES/pwsafe.mo $(RESOURCES)/es.lproj
+	$(CPBIN) $(WXDIR)/es.mo $(RESOURCES)/es.lproj/wxstd.mo
 	$(MDBIN) $(RESOURCES)/it.lproj
 	$(CPBIN) $(MOS)/it/LC_MESSAGES/pwsafe.mo $(RESOURCES)/it.lproj
+	$(CPBIN) $(WXDIR)/it.mo $(RESOURCES)/it.lproj/wxstd.mo
 	$(MDBIN) $(RESOURCES)/sv.lproj
 	$(CPBIN) $(MOS)/sv/LC_MESSAGES/pwsafe.mo $(RESOURCES)/sv.lproj
+	$(CPBIN) $(WXDIR)/sv.mo $(RESOURCES)/sv.lproj/wxstd.mo
 	$(MDBIN) $(RESOURCES)/ko.lproj
 	$(CPBIN) $(MOS)/ko/LC_MESSAGES/pwsafe.mo $(RESOURCES)/ko.lproj
 	$(MDBIN) $(RESOURCES)/nl.lproj
 	$(CPBIN) $(MOS)/nl/LC_MESSAGES/pwsafe.mo $(RESOURCES)/nl.lproj
+	$(CPBIN) $(WXDIR)/nl.mo $(RESOURCES)/nl.lproj/wxstd.mo
 	$(MDBIN) $(RESOURCES)/pl.lproj
 	$(CPBIN) $(MOS)/pl/LC_MESSAGES/pwsafe.mo $(RESOURCES)/pl.lproj
+	$(CPBIN) $(WXDIR)/pl.mo $(RESOURCES)/pl.lproj/wxstd.mo
 	$(MDBIN) $(RESOURCES)/ru.lproj
 	$(CPBIN) $(MOS)/ru/LC_MESSAGES/pwsafe.mo $(RESOURCES)/ru.lproj
+	$(CPBIN) $(WXDIR)/ru.mo $(RESOURCES)/ru.lproj/wxstd.mo
 	$(MDBIN) $(RESOURCES)/sv.lproj
 	$(CPBIN) $(MOS)/sv/LC_MESSAGES/pwsafe.mo $(RESOURCES)/sv.lproj
+	$(CPBIN) $(WXDIR)/sv.mo $(RESOURCES)/sv.lproj/wxstd.mo
 	$(MDBIN) $(RESOURCES)/zh.lproj
 	$(CPBIN) $(MOS)/zh/LC_MESSAGES/pwsafe.mo $(RESOURCES)/zh.lproj
+#	$(CPBIN) $(WXDIR)/zh_TW.mo $(RESOURCES)/zh.lproj/wxstd.mo
+	$(CPBIN) $(WXDIR)/zh_CN.mo $(RESOURCES)/zh.lproj/wxstd.mo
 	./create-dmg \
 			--window-size 410 370 \
 			--background ./background.png \
