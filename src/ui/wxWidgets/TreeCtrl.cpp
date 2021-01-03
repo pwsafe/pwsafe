@@ -1614,7 +1614,8 @@ CItemData TreeCtrl::CreateNewItemAsCopy(const CItemData *dataSrc, StringX sxNewP
       modifiedItem.SetShortcut();
     }
   } else { // not alias or shortcut
-    modifiedItem.SetNormal();
+    if(newEntry)
+      modifiedItem.SetNormal();
   }
   return modifiedItem;
 }
