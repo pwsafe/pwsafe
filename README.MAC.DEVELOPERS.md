@@ -77,6 +77,14 @@ the tarball. My recommendation is to use the tarball. That's what I always do on
 Use wxWidgets 3.0.2 or newer. pwsafe code is no longer compatible with older 
 versions of wxWidgets.
 
+If you use homebrew, you can just install the latest version supported by it (3.0.5 as of now).
+
+### M1 Macs
+You'd need to use the latest version, i.e. 3.1.4 as of this writing. The current
+stable version (3.0.5) has several issues. You may see the app crash when you try to search (Cmd-F)
+
+https://trac.wxwidgets.org/ticket/19005
+
 
 ### Building wxWidgets for pwsafe
 pwsafe uses wxWidgets as the cross-platform toolkit for its UI. To build pwsafe, you 
@@ -129,6 +137,15 @@ Pass that to the build script with the -k option
 Or, just pass the command's output directly
 
     wx3/static/debug $ <path-to-pwsafe's osx-build-wx> -d -k `xcodebuild -version -sdk macosx10.9 Path`
+
+### M1 Macs
+You'd need to build it yourself, like this
+
+cd wxWidgets  # chdir into wxWidgets sources
+mkdir arm     # make a folder for arm64 + x86_64 builds
+cmake -B arm -DCMAKE_OSX_ARCHITECTURES='arm64;x86_64'
+
+This will build wxWidgets for both architectures.
 
 
 ### Point Xcode to your wxWidgets Build
