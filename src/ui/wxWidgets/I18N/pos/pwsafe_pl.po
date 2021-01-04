@@ -66,8 +66,8 @@ msgstr "Zobacz LICENCJĘ po szczególy open source."
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:174
 #, fuzzy
-msgid "Copyright (c) 2003-2020 Rony Shapiro"
-msgstr "Copyright (c) 2003-2020 Rony Shapiro"
+msgid "Copyright (c) 2003-2021 Rony Shapiro"
+msgstr "Copyright (c) 2003-2021 Rony Shapiro"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:181
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:169
