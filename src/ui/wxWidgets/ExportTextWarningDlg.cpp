@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -147,7 +147,7 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(
   //This might not be a very wise thing to do.  We are only supposed to add certain
   //pre-defined button-ids to StdDlgBtnSizer
   auto advancedButton = new wxButton(this, ID_ADVANCED, _("&Advanced..."), wxDefaultPosition, wxDefaultSize, 0);
-  stdDialogButtonSizer->Add(advancedButton, wxSizerFlags().Border(wxLEFT|wxRIGHT));
+  stdDialogButtonSizer->Add(advancedButton, 0, wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, SideMargin);
 
   mainSizer->Add(stdDialogButtonSizer, 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
 

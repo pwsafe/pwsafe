@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -1033,7 +1033,6 @@ void TreeCtrl::CheckScrollList()
       return;
     }
     
-    int ThumbVert = GetScrollThumb (wxVERTICAL);
     int PosVert = GetScrollPos (wxVERTICAL);
     int RangeVert = GetScrollRange (wxVERTICAL);
     wxEventType commandType = wxEVT_NULL;
@@ -1046,7 +1045,7 @@ void TreeCtrl::CheckScrollList()
     }
     else if(mousePt.y > height) {  // We're below the pane
       StopAutoScrolling();
-      if((PosVert + ThumbVert) < RangeVert) {
+      if(PosVert < RangeVert) { // Normally ThumVert should be added to PosVert = GetScrollThumb (wxVERTICAL), but we like to have more space at the end of the list
         commandType = wxEVT_SCROLLWIN_PAGEDOWN;
       }
     }
@@ -1056,7 +1055,7 @@ void TreeCtrl::CheckScrollList()
       }
     }
     else if(mousePt.y >= m_lower_scroll_limit) {
-      if((PosVert + ThumbVert) < RangeVert) {
+      if(PosVert < RangeVert) { // Normally ThumVert should be added to PosVert = GetScrollThumb (wxVERTICAL), but we like to have more space at the end of the list
         commandType = wxEVT_SCROLLWIN_LINEDOWN;
       }
     }
@@ -1113,6 +1112,9 @@ void TreeCtrl::CheckCollapseEntry()
 
 void TreeCtrl::OnMouseMove(wxMouseEvent& event)
 {
+  bool bSetCursor = false;
+  wxCursor newCursor = wxNullCursor;
+  
   if(m_isDragging && m_drag_item.IsOk())
   {
     int width, height;
@@ -1121,10 +1123,9 @@ void TreeCtrl::OnMouseMove(wxMouseEvent& event)
     GetSize(&width,  &height);
     
     if((pt.x >= 0) && (pt.x < width)) { // When inside of the windows area
-      int flags = wxTREE_HITTEST_ONITEM;
+      int flags = wxTREE_HITTEST_ONITEM | wxTREE_HITTEST_BELOW | wxTREE_HITTEST_NOWHERE;
       wxTreeItemId currentItem = DoTreeHitTest(pt, flags);
       bool itemChanged = (currentItem != m_last_mice_item_in_drag_and_drop);
-      int ThumbVert = GetScrollThumb (wxVERTICAL);
       int PosVert = GetScrollPos (wxVERTICAL);
       int RangeVert = GetScrollRange (wxVERTICAL);
         
@@ -1132,7 +1133,7 @@ void TreeCtrl::OnMouseMove(wxMouseEvent& event)
         if(! m_scroll_timer.IsRunning()) {
           m_scroll_timer.Start();
         }
-      } else if(((PosVert + ThumbVert) < RangeVert) && (pt.y >= m_lower_scroll_limit)){
+      } else if((PosVert < RangeVert) && (pt.y >= m_lower_scroll_limit)){ // Normally ThumVert should be added to PosVert = GetScrollThumb (wxVERTICAL), but we like to have more space at the end of the list
         if(! m_scroll_timer.IsRunning()) {
           m_scroll_timer.Start();
         }
@@ -1145,11 +1146,12 @@ void TreeCtrl::OnMouseMove(wxMouseEvent& event)
         wxString label = GetItemText(m_drag_item);
         wxTreeItemId si;
         // Set Cursor depending from kind of entry
-        if(ItemIsGroupOrRoot(currentItem) && ! IsDescendant(currentItem, m_drag_item) && (::wxGetKeyState(WXK_SHIFT) || ! ExistsInTree(currentItem, tostringx(label), si))) {
-          SetCursor(wxNullCursor);
+        if(ItemIsGroup(m_drag_item) && (IsDescendant(currentItem, m_drag_item) || (! ::wxGetKeyState(WXK_SHIFT) && ExistsInTree(currentItem, tostringx(label), si)))) {
+          bSetCursor = true; // Is already set to wxNullCursor, the default one, so change to wxCURSOR_NO_ENTRY
+          newCursor = wxCURSOR_NO_ENTRY;
         }
         else {
-          SetCursor(wxCURSOR_NO_ENTRY);
+          bSetCursor = true; // Is already set to wxNullCursor, the default one
         }
         // Check Collapse or Expand when taying for longer time over group entry
         if(m_last_mice_item_in_drag_and_drop == nullptr) {
@@ -1170,8 +1172,9 @@ void TreeCtrl::OnMouseMove(wxMouseEvent& event)
         }
       }
       else {
-        if(m_last_mice_item_in_drag_and_drop)
-          SetCursor(wxNullCursor);
+        if(m_last_mice_item_in_drag_and_drop) {
+          bSetCursor = true; // Is already set to wxNullCursor, the default one
+        }
         if(m_collapse_timer.IsRunning())
           m_collapse_timer.Stop();
         m_last_mice_item_in_drag_and_drop = nullptr;
@@ -1195,7 +1198,8 @@ void TreeCtrl::OnMouseMove(wxMouseEvent& event)
         m_drag_image->Show();
       }
       if(m_had_been_out) {
-        SetCursor(wxNullCursor);  // TO BE FIXED: This cursor is not visible because macOS means the cursor is not on the current windows area
+        bSetCursor = true; // Is already set to wxNullCursor, the default one
+        // TO BE FIXED: This cursor is not visible because macOS means the cursor is not on the current windows area
         m_had_been_out = false;
       }
     }
@@ -1204,6 +1208,11 @@ void TreeCtrl::OnMouseMove(wxMouseEvent& event)
   }
   
   wxTreeCtrl::OnMouse(event);
+  
+  // Call SetCurosr after wxTreeCtrl::OnMouse to overrule the setting of the library, which is working fine as long as we are not leaving the window in macOS, where the size change cursor is shown from now on.
+  if(bSetCursor) {
+    SetCursor(newCursor);
+  }
 }
 
 void TreeCtrl::OnBeginDrag(wxTreeEvent& evt)
@@ -1218,7 +1227,8 @@ void TreeCtrl::OnBeginDrag(wxTreeEvent& evt)
   if (item.IsOk() && (GetRootItem() != item)) {
     m_drag_item = item;
     m_had_been_out = false;
-    SetWindowStyle(m_style & ~wxTR_HIDE_ROOT);
+    if(PWSprefs::GetInstance()->GetPref(PWSprefs::DragAndDropShowRoot)) // Show root for hard core user, setting in XML config only
+      SetWindowStyle(m_style & ~wxTR_HIDE_ROOT);
     evt.Allow();
     markDragItem(item);
     Refresh();
@@ -1284,11 +1294,11 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
   int width, height;
   wxPoint mousePt = ScreenToClient(wxGetMousePosition());  // Find where the mouse is in relation to the (exited) pane
   GetSize(&width, &height);  // Store window dimensions
-  int flags = wxTREE_HITTEST_ONITEM;
+  int flags = wxTREE_HITTEST_ONITEM | wxTREE_HITTEST_BELOW | wxTREE_HITTEST_NOWHERE;
   wxTreeItemId currentItem = DoTreeHitTest(mousePt, flags); // Check current before removing root from screen
   resetDragItems();
-  // Restore Hiden Root
-  SetWindowStyle(m_style);
+  if(PWSprefs::GetInstance()->GetPref(PWSprefs::DragAndDropShowRoot)) // Restore Hiden Root
+    SetWindowStyle(m_style);
   markDragItem(m_drag_item, false);
   if(m_drag_image) {
     m_drag_image->Hide();
@@ -1311,7 +1321,10 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
 
     wxTreeItemId itemDst = evt.GetItem();
     
-    if(itemDst.IsOk() && (currentItem != itemDst)) { // Mice is not over destination item, skip dragging
+    if(! currentItem.IsOk() && (flags & (wxTREE_HITTEST_BELOW|wxTREE_HITTEST_NOWHERE))) {
+      itemDst = GetRootItem();
+    }
+    else if(itemDst.IsOk() && !(flags & wxTREE_HITTEST_ONITEM) && (currentItem != itemDst)) { // Mice is not over destination item, skip dragging
       evt.Skip();
       m_drag_item = nullptr;
       return;
@@ -1322,13 +1335,10 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
        (itemDst != GetItemParent(m_drag_item)) &&
        ((GetRootItem() != itemDst) || (GetRootItem() != GetItemParent(m_drag_item)))) { // Do not Drag and Drop on its own
       if(GetRootItem() != itemDst) {
-        if(! ItemIsGroup(itemDst)) {                   // Only group may be destination
-          wxMessageBox(_("Destination is not a group"), _("Drag and Drop failed"), wxOK|wxICON_ERROR);
-          evt.Skip();
-          m_drag_item = nullptr;
-          return;
+        if(! ItemIsGroup(itemDst)) {              // On no group, use parent as destination
+          itemDst = GetItemParent(itemDst);
         }
-        else if(IsDescendant(itemDst, m_drag_item)) {  // Do not drag and drop into the moved tree
+        if(IsDescendant(itemDst, m_drag_item)) {  // Do not drag and drop into the moved tree
           wxMessageBox(_("Destination cannot be inside source tree"), _("Drag and Drop failed"), wxOK|wxICON_ERROR);
           evt.Skip();
           m_drag_item = nullptr;
@@ -1604,7 +1614,8 @@ CItemData TreeCtrl::CreateNewItemAsCopy(const CItemData *dataSrc, StringX sxNewP
       modifiedItem.SetShortcut();
     }
   } else { // not alias or shortcut
-    modifiedItem.SetNormal();
+    if(newEntry)
+      modifiedItem.SetNormal();
   }
   return modifiedItem;
 }

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -134,6 +134,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ShowMenuSeparator"), true, ptApplication},           // application
   {_T("OptimizedCellSize"), false, ptApplication},          // application
   {_T("ToolbarShowText"), false, ptApplication},            // application
+  {_T("DragAndDropShowRoot"), false, ptApplication},        // application
 };
 
 // Default value = -1 means set at runtime

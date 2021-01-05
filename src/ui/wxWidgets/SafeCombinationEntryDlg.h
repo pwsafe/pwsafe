@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -153,6 +153,7 @@ public:
 private:
   StringX m_password;
   wxString m_filename;
+  wxString m_ellipsizedFilename;
   bool m_readOnly;
   PWScore &m_core;
   unsigned m_tries;
@@ -165,6 +166,7 @@ private:
   void ProcessPhrase();
   void UpdateReadOnlyCheckbox();
   void UpdateNew(bool isRO);
+  wxString EllipsizeFilePathname(const wxString& filename);
 };
 
 #endif // _SAFECOMBINATIONENTRYDLG_H_

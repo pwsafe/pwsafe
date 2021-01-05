@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2020 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -107,6 +107,7 @@ void EditShortcutDlg::ItemFieldsToDialog()
   
   m_Core.GetAllGroups(allGroupNames, true);  // Also allow short cut in empty groups
 
+  m_ComboBoxShortcutGroup->Append(""); // Also allow selection of emtpy group
   for (auto const& groupName : allGroupNames) {
     m_ComboBoxShortcutGroup->Append(groupName);
     dc.GetTextExtent(groupName, &width, &height);
