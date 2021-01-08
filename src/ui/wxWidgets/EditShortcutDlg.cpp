@@ -393,6 +393,7 @@ void EditShortcutDlg::OnOk(wxCommandEvent& WXUNUSED(event))
       time(&t);
 
       modifiedShortcut.SetRMTime(t);
+      modifiedShortcut.SetStatus(CItemData::ES_MODIFIED);
 
       m_Core.Execute(
         EditEntryCommand::Create(&m_Core, *m_Shortcut, modifiedShortcut)
