@@ -1583,10 +1583,10 @@ void PWSprefs::SaveApplicationPreferences()
         break;
       case CF_FILE_RW:
       case CF_FILE_RW_NEW:
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"top", m_rect.top) == 0);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"bottom", m_rect.bottom) == 0);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"left", m_rect.left) == 0);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"right", m_rect.right) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"top", static_cast<int>(m_rect.top)) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"bottom", static_cast<int>(m_rect.bottom)) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"left", static_cast<int>(m_rect.left)) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"right", static_cast<int>(m_rect.right)) == 0);
         break;
       case CF_FILE_RO:
       case CF_NONE:
@@ -1610,10 +1610,10 @@ void PWSprefs::SaveApplicationPreferences()
         break;
       case CF_FILE_RW:
       case CF_FILE_RW_NEW:
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_top", m_PSSrect.top) == 0);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_bottom", m_PSSrect.bottom) == 0);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_left", m_PSSrect.left) == 0);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_right", m_PSSrect.right) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_top", static_cast<int>(m_PSSrect.top)) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_bottom", static_cast<int>(m_PSSrect.bottom)) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_left", static_cast<int>(m_PSSrect.left)) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_right", static_cast<int>(m_PSSrect.right)) == 0);
         break;
       case CF_FILE_RO:
       case CF_NONE:
