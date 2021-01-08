@@ -1883,6 +1883,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       if((m_CurrentPredefinedFilter == UNSAVED) && (!m_core.IsDbOpen() || isFileReadOnly || !m_core.HasDBChanged())) {
         // Must set back filter when disable
         ResetFilters();
+        RebuildGUI();
       }
       evt.Check(m_CurrentPredefinedFilter == UNSAVED);
       break;
@@ -1894,6 +1895,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       if((m_CurrentPredefinedFilter == EXPIRY) && (!m_core.IsDbOpen() || m_core.GetExpirySize() == 0)) {
         // Must set back filter when disable
         ResetFilters();
+        RebuildGUI();
       }
       evt.Check(m_CurrentPredefinedFilter == EXPIRY);
       break;
@@ -1905,6 +1907,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       if((m_CurrentPredefinedFilter == LASTFIND) && (!m_core.IsDbOpen() || m_FilterManager.GetFindFilterSize() == 0)) {
         // Must set back filter when disable
         ResetFilters();
+        RebuildGUI();
       }
       evt.Check(m_CurrentPredefinedFilter == LASTFIND);
       break;
@@ -2036,12 +2039,12 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &
     case UpdateGUICommand::GUI_ADD_ENTRY:
       // Handled by individual views.
       if(m_bFilterActive)
-        RebuildGUI(iTreeOnly);
+        RebuildGUI();
       break;
     case UpdateGUICommand::GUI_DELETE_ENTRY:
       // Handled by individual views.
       if(m_bFilterActive)
-        RebuildGUI(iTreeOnly);
+        RebuildGUI();
       break;
     case UpdateGUICommand::GUI_REFRESH_TREE:
       // Caused by Database preference changed about showing username and/or
@@ -2051,7 +2054,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &
     case UpdateGUICommand::GUI_REFRESH_ENTRY:
       // Handled by individual views.
       if(m_bFilterActive)
-        RebuildGUI(iTreeOnly);
+        RebuildGUI();
       break;
     case UpdateGUICommand::GUI_REDO_MERGESYNC:
     case UpdateGUICommand::GUI_UNDO_MERGESYNC:
@@ -2069,12 +2072,12 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &
     case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
       // Handled by individual views.
       if(m_bFilterActive)
-        RebuildGUI(iTreeOnly);
+        RebuildGUI();
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
       // Handled by individual views.
       if(m_bFilterActive)
-        RebuildGUI(iTreeOnly);
+        RebuildGUI();
       break;
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
     {
