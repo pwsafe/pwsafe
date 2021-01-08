@@ -10,7 +10,7 @@
 
 class DboxMain; // for GetMainDlg()
 
-class CPWPropertySheet : public CPropertySheet
+class CPWPropertySheet : public CMFCPropertySheet
 {
 public:
   CPWPropertySheet(UINT nID, CWnd* pParent, const bool bLongPPs);
