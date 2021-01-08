@@ -132,7 +132,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ListSortAscending"), true, ptApplication},           // application
   {_T("EnableWindowTransparency"), false, ptApplication},   // application
   {_T("ShowMenuSeparator"), true, ptApplication},           // application
-  {_T("OptimizedCellSize"), false, ptApplication},          // application
+  {_T("AutoAdjColWidth"), false, ptApplication},            // application
   {_T("ToolbarShowText"), false, ptApplication},            // application
   {_T("DragAndDropShowRoot"), false, ptApplication},        // application
 };
