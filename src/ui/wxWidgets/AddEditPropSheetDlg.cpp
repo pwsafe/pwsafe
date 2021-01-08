@@ -1994,6 +1994,8 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand()
   // Create Command
   /////////////////////////////////////////////////////////////////////////////
 
+  m_Item.SetStatus(CItemData::ES_ADDED);
+  
   return AddEntryCommand::Create(
     &m_Core,
     m_Item, m_Item.GetBaseUUID(),
@@ -2179,6 +2181,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   }
   if (bIsModified || bIsPSWDModified) {
     m_Item.SetRMTime(t);
+    m_Item.SetStatus(CItemData::ES_MODIFIED);
   }
   if (m_tttExpirationTime != lastXtime) {
     m_Item.SetXTime(m_tttExpirationTime);
