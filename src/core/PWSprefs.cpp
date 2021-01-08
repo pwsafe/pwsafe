@@ -1578,18 +1578,11 @@ void PWSprefs::SaveApplicationPreferences()
         break;
       case CF_FILE_RW:
       case CF_FILE_RW_NEW:
-      {
-        stringT obuff;
-        Format(obuff, L"%d", m_rect.top);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"top", obuff) == 0);
-        Format(obuff, L"%d", m_rect.bottom);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"bottom", obuff) == 0);
-        Format(obuff, L"%d", m_rect.left);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"left", obuff) == 0);
-        Format(obuff, L"%d", m_rect.right);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"right", obuff) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"top", m_rect.top) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"bottom", m_rect.bottom) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"left", m_rect.left) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"right", m_rect.right) == 0);
         break;
-      }
       case CF_FILE_RO:
       case CF_NONE:
       default:
@@ -1612,25 +1605,18 @@ void PWSprefs::SaveApplicationPreferences()
         break;
       case CF_FILE_RW:
       case CF_FILE_RW_NEW:
-      {
-        stringT obuff;
-        Format(obuff, L"%d", m_PSSrect.top);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_top", obuff) == 0);
-        Format(obuff, L"%d", m_PSSrect.bottom);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_bottom", obuff) == 0);
-        Format(obuff, L"%d", m_PSSrect.left);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_left", obuff) == 0);
-        Format(obuff, L"%d", m_PSSrect.right);
-        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_right", obuff) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_top", m_PSSrect.top) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_bottom", m_PSSrect.bottom) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_left", m_PSSrect.left) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"PSS_right", m_PSSrect.right) == 0);
         break;
-      }
       case CF_FILE_RO:
       case CF_NONE:
       default:
         break;
     }
-    m_rect.changed = false;
-  } // m_rect.changed
+    m_PSSrect.changed = false;
+  } // m_PSSrect.changed
 
   if (m_ConfigOption == CF_FILE_RW ||
       m_ConfigOption == CF_FILE_RW_NEW) {
@@ -1655,11 +1641,8 @@ void PWSprefs::SaveApplicationPreferences()
       m_ConfigOption == CF_FILE_RW_NEW) {
     if (m_pXML_Config->XML_Store(m_csHKCU_PREF)) // can't be new after succ. store
       m_ConfigOption = CF_FILE_RW;
-    else
-    if (!m_pXML_Config->getReason().empty() &&
-        m_pReporter != nullptr)
+    else if (!m_pXML_Config->getReason().empty() && m_pReporter != nullptr)
       (*m_pReporter)(m_pXML_Config->getReason()); // show what went wrong
-
     m_pXML_Config->Unlock();
     delete m_pXML_Config;
     m_pXML_Config = nullptr;
