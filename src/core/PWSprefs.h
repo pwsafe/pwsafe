@@ -129,7 +129,7 @@ public:
     ListSortAscending,
     EnableWindowTransparency,
     ShowMenuSeparator,
-    OptimizedCellSize,
+    AutoAdjColWidth,
     ToolbarShowText,
     DragAndDropShowRoot,
     NumBoolPrefs};

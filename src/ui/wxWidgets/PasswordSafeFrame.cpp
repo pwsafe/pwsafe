@@ -1050,7 +1050,12 @@ void PasswordSafeFrame::ShowGrid(bool show)
           m_FilterManager.PassesFiltering(iter->second, m_core))
         m_grid->AddItem(iter->second, i++);
     }
-
+    
+    if(PWSprefs::GetInstance()->GetPref(PWSprefs::AutoAdjColWidth)) {
+      m_grid->AutoSizeColumns(false);
+      m_grid->Layout();
+    }
+    
     m_grid->UpdateSorting();
 
     m_guiInfo->RestoreGridViewInfo(m_grid);

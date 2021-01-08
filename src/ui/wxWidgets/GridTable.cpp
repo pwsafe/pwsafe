@@ -172,8 +172,6 @@ void GridTable::SetView(wxGrid* newGrid)
         newGrid->SetColPos(idx, PWSGridCellData[idx].position);
       }
     }
-    if(PWSprefs::GetInstance()->GetPref(PWSprefs::OptimizedCellSize))
-      newGrid->AutoSizeColumns(false);
   }
   else {
     wxCHECK_RET(oldGrid, wxT("Both old and new grid views are nullptr"));
