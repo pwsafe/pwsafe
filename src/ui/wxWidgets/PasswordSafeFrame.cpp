@@ -1879,36 +1879,21 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SHOWHIDE_UNSAVED:
-      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == UNSAVED) && m_core.IsDbOpen() && !isFileReadOnly && m_core.HasDBChanged());
-      if((m_CurrentPredefinedFilter == UNSAVED) && (!m_core.IsDbOpen() || isFileReadOnly || !m_core.HasDBChanged())) {
-        // Must set back filter when disable
-        ResetFilters();
-        RebuildGUI();
-      }
+      evt.Enable((m_CurrentPredefinedFilter == UNSAVED) || ((m_CurrentPredefinedFilter == NONE) && m_core.IsDbOpen() && !isFileReadOnly && m_core.HasDBChanged()));
       evt.Check(m_CurrentPredefinedFilter == UNSAVED);
       break;
 
     case ID_SHOW_ALL_EXPIRY:
-      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == EXPIRY) &&
+      evt.Enable((m_CurrentPredefinedFilter == EXPIRY) || ((m_CurrentPredefinedFilter == NONE) &&
        m_core.IsDbOpen() &&
-       m_core.GetExpirySize() != 0);
-      if((m_CurrentPredefinedFilter == EXPIRY) && (!m_core.IsDbOpen() || m_core.GetExpirySize() == 0)) {
-        // Must set back filter when disable
-        ResetFilters();
-        RebuildGUI();
-      }
+       m_core.GetExpirySize() != 0));
       evt.Check(m_CurrentPredefinedFilter == EXPIRY);
       break;
 
     case ID_SHOW_LAST_FIND_RESULTS:
-      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == LASTFIND) &&
+      evt.Enable((m_CurrentPredefinedFilter == LASTFIND) || ((m_CurrentPredefinedFilter == NONE) &&
                   m_core.IsDbOpen() &&
-                  m_FilterManager.GetFindFilterSize() != 0);
-      if((m_CurrentPredefinedFilter == LASTFIND) && (!m_core.IsDbOpen() || m_FilterManager.GetFindFilterSize() == 0)) {
-        // Must set back filter when disable
-        ResetFilters();
-        RebuildGUI();
-      }
+                  m_FilterManager.GetFindFilterSize() != 0));
       evt.Check(m_CurrentPredefinedFilter == LASTFIND);
       break;
 
@@ -2038,23 +2023,24 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &
   switch (ga) {
     case UpdateGUICommand::GUI_ADD_ENTRY:
       // Handled by individual views.
-      if(m_bFilterActive)
-        RebuildGUI();
-      break;
     case UpdateGUICommand::GUI_DELETE_ENTRY:
       // Handled by individual views.
-      if(m_bFilterActive)
+    case UpdateGUICommand::GUI_REFRESH_ENTRY:
+      // Handled by individual views.
+    case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
+      // Handled by individual views.
+    case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
+      // Handled by individual views.
+      
+      // But on Filter active the GUI must be updated
+      if(m_bFilterActive) {
         RebuildGUI();
+      }
       break;
     case UpdateGUICommand::GUI_REFRESH_TREE:
       // Caused by Database preference changed about showing username and/or
       // passwords in the Tree View
       RebuildGUI(iTreeOnly);
-      break;
-    case UpdateGUICommand::GUI_REFRESH_ENTRY:
-      // Handled by individual views.
-      if(m_bFilterActive)
-        RebuildGUI();
       break;
     case UpdateGUICommand::GUI_REDO_MERGESYNC:
     case UpdateGUICommand::GUI_UNDO_MERGESYNC:
@@ -2068,16 +2054,6 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &
     case UpdateGUICommand::GUI_UPDATE_STATUSBAR:
       // TODO: UpdateToolBarDoUndo();
       UpdateStatusBar();
-      break;
-    case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
-      // Handled by individual views.
-      if(m_bFilterActive)
-        RebuildGUI();
-      break;
-    case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
-      // Handled by individual views.
-      if(m_bFilterActive)
-        RebuildGUI();
       break;
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
     {
