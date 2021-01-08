@@ -62,11 +62,23 @@ void PasswordSafeFrame::OnPreferencesClick(wxCommandEvent& WXUNUSED(evt))
 {
   PWSprefs* prefs = PWSprefs::GetInstance();
   bool showMenuSeprator = prefs->GetPref(PWSprefs::ShowMenuSeparator);
+  bool autoAdjColWidth = prefs->GetPref(PWSprefs::AutoAdjColWidth);
+  bool toolbarShowText = prefs->GetPref(PWSprefs::ToolbarShowText);
   const StringX sxOldDBPrefsString(prefs->Store());
   OptionsPropertySheetDlg *window = new OptionsPropertySheetDlg(this, m_core);
   if (window->ShowModal() == wxID_OK) {
     if(showMenuSeprator != prefs->GetPref(PWSprefs::ShowMenuSeparator))
       ReCreateMainToolbarSeparator(prefs->GetPref(PWSprefs::ShowMenuSeparator));
+    if((autoAdjColWidth != prefs->GetPref(PWSprefs::AutoAdjColWidth)) && IsGridView() && IsShown())
+      Show(true);
+    if(toolbarShowText != prefs->GetPref(PWSprefs::ToolbarShowText)) {
+      wxToolBar* tb = GetToolBar();
+      if(prefs->GetPref(PWSprefs::ToolbarShowText))
+        tb->SetWindowStyle(tb->GetWindowStyle() | wxTB_TEXT);
+      else
+        tb->SetWindowStyle(tb->GetWindowStyle() & ~wxTB_TEXT);
+      tb->Realize();
+    }
     
     StringX sxNewDBPrefsString(prefs->Store(true));
     // Update system tray icon if visible so changes show up immediately

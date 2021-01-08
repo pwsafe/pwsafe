@@ -62,6 +62,8 @@ void PasswordSafeFrame::OnListViewClick(wxCommandEvent& WXUNUSED(evt))
 
   // Register view at core as new observer for notifications
   m_core.RegisterObserver(m_grid);
+  
+  UpdateTreeSortMenu();
 }
 
 /*!
@@ -81,6 +83,62 @@ void PasswordSafeFrame::OnTreeViewClick(wxCommandEvent& WXUNUSED(evt))
 
   // Register view at core as new observer for notifications
   m_core.RegisterObserver(m_tree);
+  
+  UpdateTreeSortMenu();
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_SORT_TREE_BY_GROUP
+ */
+
+void PasswordSafeFrame::OnSortByGroupClick(wxCommandEvent& WXUNUSED(evt))
+{
+  const TreeSortType oldSortType = m_currentSort;
+  
+  PWSprefs::GetInstance()->SetPref(PWSprefs::TreeSort, _T("group"));
+  SetTreeSortType(TreeSortType::GROUP);
+  UpdateTreeSortMenu();
+  m_tree->SetSortingGroup();
+  m_tree->SetShowGroup(false);
+  if (oldSortType != m_currentSort) {
+    ShowTree(IsTreeView());
+  }
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_SORT_TREE_BY_NAME
+ */
+
+void PasswordSafeFrame::OnSortByNameClick(wxCommandEvent& WXUNUSED(evt))
+{
+  const TreeSortType oldSortType = m_currentSort;
+  
+  PWSprefs::GetInstance()->SetPref(PWSprefs::TreeSort, _T("name"));
+  SetTreeSortType(TreeSortType::NAME);
+  UpdateTreeSortMenu();
+  m_tree->SetSortingName();
+  m_tree->SetShowGroup(true);
+  if (oldSortType != m_currentSort) {
+    ShowTree(IsTreeView());
+  }
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_SORT_TREE_BY_DATE
+ */
+
+void PasswordSafeFrame::OnSortByDateClick(wxCommandEvent& WXUNUSED(evt))
+{
+  const TreeSortType oldSortType = m_currentSort;
+  
+  PWSprefs::GetInstance()->SetPref(PWSprefs::TreeSort, _T("date"));
+  SetTreeSortType(TreeSortType::DATE);
+  UpdateTreeSortMenu();
+  m_tree->SetSortingDate();
+  m_tree->SetShowGroup(true);
+  if (oldSortType != m_currentSort) {
+    ShowTree(IsTreeView());
+  }
 }
 
 void PasswordSafeFrame::OnExpandAll(wxCommandEvent& WXUNUSED(evt))

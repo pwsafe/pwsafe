@@ -51,6 +51,7 @@ class wxTimer;
 #define ID_YUBIBTN2 10000
 #define ID_CONFIRM 10077
 #define ID_YUBISTATUS 10230
+#define ID_SHOWCOMBINATION 10505
 #define SYMBOL_SAFECOMBINATIONCHANGEDLG_TITLE _("Change Safe Combination")
 #define SYMBOL_SAFECOMBINATIONCHANGEDLG_IDNAME ID_SAFECOMBINATIONCHANGEDLG
 #define SYMBOL_SAFECOMBINATIONCHANGEDLG_SIZE wxSize(400, 300)
@@ -139,6 +140,8 @@ private:
 ////@end SafeCombinationChangeDlg member variables
   StringX m_oldresponse;
   PWScore &m_core;
+  
+  bool m_isPasswordHidden;
 
 #ifndef NO_YUBI
   // try having 2 mixin objects to handle things:

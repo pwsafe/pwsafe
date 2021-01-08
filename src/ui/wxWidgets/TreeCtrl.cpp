@@ -112,6 +112,9 @@ BEGIN_EVENT_TABLE( TreeCtrl, wxTreeCtrl )
   EVT_TREE_END_LABEL_EDIT( ID_TREECTRL, TreeCtrl::OnEndLabelEdit )
   EVT_TREE_END_LABEL_EDIT( ID_TREECTRL_1, TreeCtrl::OnEndLabelEdit )
   EVT_TREE_KEY_DOWN( ID_TREECTRL, TreeCtrl::OnKeyDown )
+  EVT_TREE_BEGIN_DRAG(ID_TREECTRL, TreeCtrl::OnBeginDrag )
+  EVT_TREE_END_DRAG(ID_TREECTRL, TreeCtrl::OnEndDrag )
+  EVT_MOTION( TreeCtrl::OnMouseMove )
   /*
     In Linux environments context menus appear on Right-Down mouse click.
     Which mouse click type (Right-Down/Right-Up) is the right one on a platform
@@ -134,6 +137,7 @@ BEGIN_EVENT_TABLE( TreeCtrl, wxTreeCtrl )
 END_EVENT_TABLE()
 
 const wchar_t GROUP_SEP = L'.';
+#define GROUP_SEL_STR wxT(".")
 
 // helper class to match CItemData with wxTreeItemId
 class PWTreeItemData : public wxTreeItemData
@@ -176,14 +180,18 @@ private:
  * TreeCtrl constructors
  */
 
-TreeCtrl::TreeCtrl(PWScore &core) : m_core(core)
+TreeCtrl::TreeCtrl(PWScore &core) : m_core(core),
+                                    m_collapse_timer(this, &TreeCtrl::CheckCollapseEntry, TreeCtrlTimer::DELAY_COLLAPSE),
+                                    m_scroll_timer(this, &TreeCtrl::CheckScrollList, TreeCtrlTimer::DELAY_SCROLLING)
 {
   Init();
 }
 
 TreeCtrl::TreeCtrl(wxWindow* parent, PWScore &core,
                          wxWindowID id, const wxPoint& pos,
-                         const wxSize& size, long style) : m_core(core)
+                         const wxSize& size, long style) : m_core(core),
+                                                           m_collapse_timer(this, &TreeCtrl::CheckCollapseEntry, TreeCtrlTimer::DELAY_COLLAPSE),
+                                                           m_scroll_timer(this, &TreeCtrl::CheckScrollList, TreeCtrlTimer::DELAY_SCROLLING)
 {
   Init();
   Create(parent, id, pos, size, style);
@@ -196,6 +204,7 @@ TreeCtrl::TreeCtrl(wxWindow* parent, PWScore &core,
 bool TreeCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 {
 ////@begin TreeCtrl creation
+  m_style = style;
   wxTreeCtrl::Create(parent, id, pos, size, style);
   CreateControls();
 ////@end TreeCtrl creation
@@ -209,6 +218,7 @@ bool TreeCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 TreeCtrl::~TreeCtrl()
 {
 ////@begin TreeCtrl destruction
+if(m_drag_image) wxDELETE(m_drag_image);
 ////@end TreeCtrl destruction
 }
 
@@ -219,6 +229,13 @@ TreeCtrl::~TreeCtrl()
 void TreeCtrl::Init()
 {
 ////@begin TreeCtrl member initialisation
+  m_sort = TreeSortType::GROUP;
+  m_show_group = false;
+  m_drag_item = nullptr;
+  m_style = 0L;
+  m_lower_scroll_limit = m_upper_scroll_limit = 0;
+  m_drag_image = nullptr;
+  m_had_been_out = false;
 ////@end TreeCtrl member initialisation
 }
 
@@ -348,8 +365,6 @@ void TreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &e
  */
 void TreeCtrl::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
 {
-  pws_os::Trace(wxT("TreeCtrl::GUIRefreshEntry"));
-
   if (item.GetStatus() == CItemData::ES_DELETED) {
     uuid_array_t uuid;
     item.GetUUID(uuid);
@@ -489,6 +504,11 @@ wxString TreeCtrl::ItemDisplayString(const CItemData &item) const
 
   // Title is a mandatory field - no need to worry if empty
   wxString disp = title;
+  
+  if (IsShowGroup()) {
+    const wxString group = item.GetGroup().c_str();
+    disp += wxT(" <") + group + wxT(">");
+  }
 
   if (prefs->GetPref(PWSprefs::ShowUsernameInTree)) {
     const wxString user = item.GetUser().c_str();
@@ -529,7 +549,7 @@ wxString TreeCtrl::GetPath(const wxTreeItemId &node) const
   for(iter = v.rbegin(); iter != v.rend(); iter++) {
     retval += *iter;
     if ((iter + 1) != v.rend())
-      retval += wxT(".");
+      retval += GROUP_SEL_STR;
   }
   return retval;
 }
@@ -544,7 +564,7 @@ wxString TreeCtrl::GetItemGroup(const wxTreeItemId& item) const
     if (path.IsEmpty())//parent is root
       return name; //group under root
     else
-      return path + wxT(".") + name; //sub-group of some (non-root) group
+      return path + GROUP_SEL_STR + name; //sub-group of some (non-root) group
   }
   else
     return GetPath(item);
@@ -555,7 +575,7 @@ void TreeCtrl::UpdateItem(const CItemData &item)
   const wxTreeItemId node = Find(item);
   if (node.IsOk()) {
     const wxString oldGroup = GetPath(node);
-    const wxString newGroup = item.GetGroup().c_str();
+    const wxString newGroup = GroupNameOfItem(item).c_str();
     if (oldGroup == newGroup) {
       const wxString disp = ItemDisplayString(item);
       SetItemText(node, disp);
@@ -579,7 +599,7 @@ void TreeCtrl::UpdateItem(const CItemData &item)
 void TreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft)
 {
   PWSprefs* prefs = PWSprefs::GetInstance();
-  if (ft == CItemData::GROUP) {
+  if (ft == CItemData::GROUP || (IsSortingName() && (ft == CItemData::TITLE || ft == CItemData::NAME)) || (IsSortingDate() && (ft == CItemData::CTIME || ft == CItemData::PMTIME || ft == CItemData::ATIME || ft == CItemData::XTIME || ft == CItemData::RMTIME))) {
     //remove & add again
     UpdateItem(item);
   }
@@ -594,10 +614,75 @@ void TreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft)
   }
 }
 
+StringX TreeCtrl::GroupNameOfItem(const CItemData &item)
+{
+  StringX group, title;
+  time_t gt, t;
+  
+  if (IsSortingGroup()) {
+    group = item.GetGroup();
+  } else if (IsSortingName()) {
+    title = item.GetTitle();
+    if (title.empty()) {
+      title = item.GetName();
+    }
+    if (! title.empty()) {
+      group = title.substr(0, 1);
+    } else {
+      group = L"?";
+    }
+    ToUpper(group);
+    if(! iswalnum(group[0]) && (group[0] <= 127)) {
+      group = L"#";
+    }
+  } else if (IsSortingDate()) {
+    if(item.GetCTime(t)) {
+      gt = t;
+    }
+    else {
+      gt = 0;
+    }
+    if(item.GetRMTime(t) && (t > gt)) {
+      gt = t;
+    }
+    if(item.GetPMTime(t) && (t > gt)) {
+      gt = t;
+    }
+    if(item.GetATime(t) && (t > gt)) {
+      gt = t;
+    }
+    
+    if (gt == 0) {
+      group = L"Undefind Time Value";
+    }
+    else {
+      TCHAR datetime_str[80];
+      struct tm *st;
+      struct tm st_s;
+      errno_t err;
+      err = localtime_s(&st_s, &gt);
+      if (err) {
+        group = L"Conversion Error on Time Value";
+      }
+      else {
+        st = &st_s;
+        _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
+                  _T("%Y.%m.%d"), st);
+        group = datetime_str;
+      }
+    }
+  } else {
+    wxASSERT(false);
+    group = L"Error";
+  }
+  
+  return group;
+}
+
 void TreeCtrl::AddItem(const CItemData &item)
 {
   wxTreeItemData *data = new PWTreeItemData(item);
-  wxTreeItemId gnode = AddGroup(item.GetGroup());
+  wxTreeItemId gnode = AddGroup(GroupNameOfItem(item));
   const wxString disp = ItemDisplayString(item);
   wxTreeItemId titem = AppendItem(gnode, disp, -1, -1, data);
   SetItemImage(titem, item);
@@ -617,7 +702,8 @@ void TreeCtrl::AddItem(const CItemData &item)
 void TreeCtrl::AddRootItem()
 {
   if (IsEmpty()) {
-    AddRoot(wxEmptyString);
+    AddRoot("..."); // For drag and drop use a string
+    wxTreeCtrl::SetItemImage(GetRootItem(), NODE_II);
   }
 }
 
@@ -780,8 +866,16 @@ void TreeCtrl::SelectItem(const CUUID & uuid)
   uuid_array_t uuid_array;
   uuid.GetARep(uuid_array);
   wxTreeItemId id = Find(uuid_array);
-  if (id.IsOk())
-      wxTreeCtrl::SelectItem(id);
+  if (id.IsOk()) {
+    wxTreeItemId parent = GetItemParent(id);
+    if(parent.IsOk() && (parent != GetRootItem()) && ! IsExpanded(parent))
+      Expand(parent);
+    ::wxYield();
+    EnsureVisible(id);
+    ::wxYield();
+    
+    wxTreeCtrl::SelectItem(id);
+  }
 }
 
 void TreeCtrl::OnGetToolTip( wxTreeEvent& evt )
@@ -807,7 +901,7 @@ void EditTreeLabel(wxTreeCtrl* tree, const wxTreeItemId& id)
   wxTextCtrl* edit = tree->EditLabel(id);
   if (edit) {
     wxTextValidator val(wxFILTER_EXCLUDE_CHAR_LIST);
-    const wxChar* dot = wxT(".");
+    const wxChar* dot = GROUP_SEL_STR;
     val.SetExcludes(wxArrayString(1, &dot));
     edit->SetValidator(val);
     edit->SelectAll();
@@ -818,7 +912,11 @@ void TreeCtrl::OnAddGroup(wxCommandEvent& WXUNUSED(evt))
 {
   wxCHECK_RET(IsShown(), wxT("Group can only be added while in tree view"));
   wxTreeItemId parentId = GetSelection();
-  wxString newItemPath = (!parentId || parentId == GetRootItem() || !ItemIsGroup(parentId))? wxString(_("New Group")): GetItemGroup(parentId) + wxT(".") + _("New Group");
+  wxString newItemPath = (!parentId || !parentId.IsOk() || parentId == GetRootItem() || !ItemIsGroup(parentId))? wxString(_("New Group")): GetItemGroup(parentId) + GROUP_SEL_STR + _("New Group");
+  if(Find(newItemPath, GetRootItem())) {
+    wxMessageBox(_("\"") + _("New Group") + _("\" ") + _("name exists"), _("Double group name"), wxOK|wxICON_ERROR);
+    return;
+  }
   wxTreeItemId newItem = AddGroup(tostringx(newItemPath));
   wxCHECK_RET(newItem.IsOk(), _("Could not add empty group item to tree"));
   // mark it as a new group that is still under construction.  wxWidgets would delete it
@@ -853,10 +951,26 @@ void TreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
     case ID_TREECTRL:
     {
       if (label.Find(wxT('.')) == wxNOT_FOUND) {
-      // Not safe to modify the tree ctrl in any way.  Wait for the stack to unwind.
-      wxTreeEvent newEvt(evt);
-      newEvt.SetId(ID_TREECTRL_1);
-      AddPendingEvent(newEvt);
+        wxTreeItemId item = evt.GetItem();
+        if(item.IsOk() && ItemIsGroup(item)) {
+          wxTreeItemIdValue cookie;
+          wxTreeItemId ti = GetFirstChild(GetItemParent(item), cookie);
+
+          while (ti) {
+            const wxString itemText = GetItemText(ti);
+            if ((itemText == label.c_str()) && (ti != item)) {
+              evt.Veto();
+              wxMessageBox(_("Same group name exists"), _("Double group name"), wxOK|wxICON_ERROR);
+              EditTreeLabel(this, item);
+              return;
+            }
+            ti = GetNextSibling(ti);
+          }
+        }
+        // Not safe to modify the tree ctrl in any way.  Wait for the stack to unwind.
+        wxTreeEvent newEvt(evt);
+        newEvt.SetId(ID_TREECTRL_1);
+        AddPendingEvent(newEvt);
       }
       else {
         evt.Veto();
@@ -899,6 +1013,429 @@ void TreeCtrl::OnKeyDown(wxTreeEvent& evt)
   }
 
   evt.Skip();
+}
+
+void TreeCtrlTimer::Notify() {
+  wxASSERT(m_owner);
+  (m_owner->*m_callback)();
+}
+
+void TreeCtrl::CheckScrollList()
+{
+  if(m_isDragging) {
+    int width, height;
+    wxPoint mousePt = ScreenToClient(wxGetMousePosition());  // Find where the mouse is in relation to the (exited) pane
+    
+    GetSize(&width, &height);  // Store window dimensions
+    
+    if((mousePt.x < 0) || (mousePt.x >= width)) { // Not in same area
+      resetScrolling();
+      return;
+    }
+    
+    int PosVert = GetScrollPos (wxVERTICAL);
+    int RangeVert = GetScrollRange (wxVERTICAL);
+    wxEventType commandType = wxEVT_NULL;
+    
+    if(mousePt.y <= 0) { // We're above the pane
+      StopAutoScrolling();
+      if(PosVert > 0) {
+        commandType = wxEVT_SCROLLWIN_PAGEUP;
+      }
+    }
+    else if(mousePt.y > height) {  // We're below the pane
+      StopAutoScrolling();
+      if(PosVert < RangeVert) { // Normally ThumVert should be added to PosVert = GetScrollThumb (wxVERTICAL), but we like to have more space at the end of the list
+        commandType = wxEVT_SCROLLWIN_PAGEDOWN;
+      }
+    }
+    else if(mousePt.y <= m_upper_scroll_limit) {
+      if(PosVert > 0) {
+        commandType = wxEVT_SCROLLWIN_LINEUP;
+      }
+    }
+    else if(mousePt.y >= m_lower_scroll_limit) {
+      if(PosVert < RangeVert) { // Normally ThumVert should be added to PosVert = GetScrollThumb (wxVERTICAL), but we like to have more space at the end of the list
+        commandType = wxEVT_SCROLLWIN_LINEDOWN;
+      }
+    }
+    
+    if(commandType != wxEVT_NULL) {
+      wxScrollWinEvent scrollEvent( commandType, GetId(), 0);
+      GetEventHandler()->ProcessEvent(scrollEvent);
+      m_scroll_timer.Start();
+    }
+    else {
+      resetScrolling();
+    }
+  }
+}
+
+void TreeCtrl::CheckCollapseEntry()
+{
+  if(! m_last_mice_item_in_drag_and_drop.IsOk()) return;
+  
+  int width, height;
+  wxPoint mousePt = ScreenToClient(wxGetMousePosition());  // Find where the mouse is in relation to the (exited) pane
+  
+  GetSize(&width, &height);  // Store window dimensions
+  
+  if((mousePt.x < 0) || (mousePt.x >= width) || (mousePt.y < 0) || (mousePt.y >= height)) { // Not in same area
+    m_last_mice_item_in_drag_and_drop = nullptr;
+    return;
+  }
+  
+  int flags = wxTREE_HITTEST_ONITEM;
+  wxTreeItemId currentItem = DoTreeHitTest(mousePt, flags);
+  bool itemSame = (currentItem == m_last_mice_item_in_drag_and_drop);
+  
+  if(itemSame) {
+    if(currentItem.IsOk() && ItemHasChildren(currentItem) && (currentItem != GetRootItem())) {
+      if(IsExpanded(currentItem)) {
+        Collapse(currentItem);
+        wxTreeItemId selectedItem = GetSelection();
+        if(selectedItem.IsOk()) UnselectAll();
+      }
+      else { // Is Collapsed
+        Expand(currentItem);
+        //scroll the last child of this node into visibility
+        EnsureVisible(GetLastChild(currentItem));
+        //but if that scrolled the parent out of the view, bring it back
+        EnsureVisible(currentItem);
+      }
+    }
+  }
+  else {
+    m_last_mice_item_in_drag_and_drop = nullptr;
+  }
+}
+
+void TreeCtrl::OnMouseMove(wxMouseEvent& event)
+{
+  bool bSetCursor = false;
+  wxCursor newCursor = wxNullCursor;
+  
+  if(m_isDragging && m_drag_item.IsOk())
+  {
+    int width, height;
+    wxPoint pt = ScreenToClient(wxGetMousePosition());
+  
+    GetSize(&width,  &height);
+    
+    if((pt.x >= 0) && (pt.x < width)) { // When inside of the windows area
+      int flags = wxTREE_HITTEST_ONITEM | wxTREE_HITTEST_BELOW | wxTREE_HITTEST_NOWHERE;
+      wxTreeItemId currentItem = DoTreeHitTest(pt, flags);
+      bool itemChanged = (currentItem != m_last_mice_item_in_drag_and_drop);
+      int PosVert = GetScrollPos (wxVERTICAL);
+      int RangeVert = GetScrollRange (wxVERTICAL);
+        
+      if((PosVert > 0) && (pt.y <= m_upper_scroll_limit)) {
+        if(! m_scroll_timer.IsRunning()) {
+          m_scroll_timer.Start();
+        }
+      } else if((PosVert < RangeVert) && (pt.y >= m_lower_scroll_limit)){ // Normally ThumVert should be added to PosVert = GetScrollThumb (wxVERTICAL), but we like to have more space at the end of the list
+        if(! m_scroll_timer.IsRunning()) {
+          m_scroll_timer.Start();
+        }
+      }
+      else if(m_scroll_timer.IsRunning()) {
+        resetScrolling();
+      }
+        
+      if(currentItem.IsOk()) {
+        wxString label = GetItemText(m_drag_item);
+        wxTreeItemId si;
+        // Set Cursor depending from kind of entry
+        if(ItemIsGroup(m_drag_item) && (IsDescendant(currentItem, m_drag_item) || (! ::wxGetKeyState(WXK_SHIFT) && ExistsInTree(currentItem, tostringx(label), si)))) {
+          bSetCursor = true; // Is already set to wxNullCursor, the default one, so change to wxCURSOR_NO_ENTRY
+          newCursor = wxCURSOR_NO_ENTRY;
+        }
+        else {
+          bSetCursor = true; // Is already set to wxNullCursor, the default one
+        }
+        // Check Collapse or Expand when taying for longer time over group entry
+        if(m_last_mice_item_in_drag_and_drop == nullptr) {
+          if(ItemHasChildren(currentItem)) {
+            m_last_mice_item_in_drag_and_drop = currentItem;
+            m_collapse_timer.Start();
+          }
+        } else if(itemChanged) {
+          if(m_collapse_timer.IsRunning())
+            m_collapse_timer.Stop();
+          if(ItemHasChildren(currentItem)) {
+            m_last_mice_item_in_drag_and_drop = currentItem;
+            m_collapse_timer.Start();
+          }
+        }
+        else { // Still the same, wait for timer expiry
+          // Do nothing
+        }
+      }
+      else {
+        if(m_last_mice_item_in_drag_and_drop) {
+          bSetCursor = true; // Is already set to wxNullCursor, the default one
+        }
+        if(m_collapse_timer.IsRunning())
+          m_collapse_timer.Stop();
+        m_last_mice_item_in_drag_and_drop = nullptr;
+      }
+    }
+    else {
+      if(m_drag_image) {
+        m_drag_image->Hide();
+      }
+      if(m_last_mice_item_in_drag_and_drop || m_scroll_timer.IsRunning()) { // left or right from tree window, reset scrolling
+        resetScrolling();
+        resetDragItems();
+      }
+    }
+    
+    if((pt.x >= 0) && (pt.x < width) && (pt.y >= 0) && (pt.y < height)) {
+      StopAutoScrolling();
+      if(m_drag_image) {
+        m_drag_image->Hide();
+        m_drag_image->Move(pt);
+        m_drag_image->Show();
+      }
+      if(m_had_been_out) {
+        bSetCursor = true; // Is already set to wxNullCursor, the default one
+        // TO BE FIXED: This cursor is not visible because macOS means the cursor is not on the current windows area
+        m_had_been_out = false;
+      }
+    }
+    else
+      m_had_been_out = true;
+  }
+  
+  wxTreeCtrl::OnMouse(event);
+  
+  // Call SetCurosr after wxTreeCtrl::OnMouse to overrule the setting of the library, which is working fine as long as we are not leaving the window in macOS, where the size change cursor is shown from now on.
+  if(bSetCursor) {
+    SetCursor(newCursor);
+  }
+}
+
+void TreeCtrl::OnBeginDrag(wxTreeEvent& evt)
+{
+  if (m_core.IsReadOnly() || !IsSortingGroup()) {
+    evt.Veto();
+    return;
+  }
+  
+  wxTreeItemId item = GetSelection();
+
+  if (item.IsOk() && (GetRootItem() != item)) {
+    m_drag_item = item;
+    m_had_been_out = false;
+    if(PWSprefs::GetInstance()->GetPref(PWSprefs::DragAndDropShowRoot)) // Show root for hard core user, setting in XML config only
+      SetWindowStyle(m_style & ~wxTR_HIDE_ROOT);
+    evt.Allow();
+    markDragItem(item);
+    Refresh();
+    resetDragItems(true);
+    m_drag_image = new wxDragImage(*this, item);
+    if(m_drag_image) {
+      wxPoint mousePt = ScreenToClient(wxGetMousePosition());
+      wxRect rect;
+      GetBoundingRect(item, rect, true);
+      if(! m_drag_image->BeginDrag(mousePt - rect.GetLeftTop(), this, true)) {
+        pws_os::Trace(L"BeginDrag failed");
+        wxDELETE(m_drag_image);
+      }
+      else {
+        ReleaseMouse(); // Must be released because BeginDrag() will Capture Mouse, but the code following event BeginDragging() will do as well
+        m_drag_image->Show();
+      }
+    }
+    return;
+  }
+
+  evt.Skip();
+}
+
+void TreeCtrl::resetScrolling()
+{
+  StopAutoScrolling();
+  if(m_scroll_timer.IsRunning()) m_scroll_timer.Stop();
+}
+
+void TreeCtrl::resetDragItems(bool initSize)
+{
+  if(m_scroll_timer.IsRunning()) m_scroll_timer.Stop();
+  if(m_collapse_timer.IsRunning()) m_collapse_timer.Stop();
+  m_last_mice_item_in_drag_and_drop = nullptr;
+  if(initSize) {
+    int width, height;
+    GetSize(&width,  &height);
+    m_lower_scroll_limit = height - GetCharHeight();
+    m_upper_scroll_limit = GetCharHeight();
+  }
+}
+
+void TreeCtrl::markDragItem(const wxTreeItemId itemSrc, bool markIt)
+{
+  if(markIt) {
+    m_drag_text_colour = GetItemTextColour(itemSrc);
+    m_drag_background_colour = GetItemBackgroundColour(itemSrc);
+    
+    SetItemTextColour(itemSrc, *wxWHITE);
+    SetItemBackgroundColour(itemSrc, *wxBLUE);
+  }
+  else {
+    SetItemTextColour(itemSrc, m_drag_text_colour);
+    SetItemBackgroundColour(itemSrc, m_drag_background_colour);
+  }
+}
+
+void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
+{
+  bool makeCopy = ::wxGetKeyState(WXK_CONTROL);
+  bool doOverride = ::wxGetKeyState(WXK_SHIFT);
+  int width, height;
+  wxPoint mousePt = ScreenToClient(wxGetMousePosition());  // Find where the mouse is in relation to the (exited) pane
+  GetSize(&width, &height);  // Store window dimensions
+  int flags = wxTREE_HITTEST_ONITEM | wxTREE_HITTEST_BELOW | wxTREE_HITTEST_NOWHERE;
+  wxTreeItemId currentItem = DoTreeHitTest(mousePt, flags); // Check current before removing root from screen
+  resetDragItems();
+  if(PWSprefs::GetInstance()->GetPref(PWSprefs::DragAndDropShowRoot)) // Restore Hiden Root
+    SetWindowStyle(m_style);
+  markDragItem(m_drag_item, false);
+  if(m_drag_image) {
+    m_drag_image->Hide();
+    CaptureMouse(); // EndDrag() will release the Mouse, but before call the mouse had been released from event handler
+    m_drag_image->EndDrag();
+    wxDELETE(m_drag_image);
+  }
+  Refresh();
+  
+  wxTreeItemId selectedItem = GetSelection();
+  if(selectedItem.IsOk()) UnselectAll();
+  
+  if((mousePt.x < 0) || (mousePt.x >= width) || (mousePt.y < 0) || (mousePt.y >= height)) { // Not in same area
+    evt.Skip();
+    m_drag_item = nullptr;
+    return;
+  }
+  
+  if (m_drag_item != nullptr) { // Drag and drop started
+
+    wxTreeItemId itemDst = evt.GetItem();
+    
+    if(! currentItem.IsOk() && (flags & (wxTREE_HITTEST_BELOW|wxTREE_HITTEST_NOWHERE))) {
+      itemDst = GetRootItem();
+    }
+    else if(itemDst.IsOk() && !(flags & wxTREE_HITTEST_ONITEM) && (currentItem != itemDst)) { // Mice is not over destination item, skip dragging
+      evt.Skip();
+      m_drag_item = nullptr;
+      return;
+    }
+
+    if(itemDst && itemDst.IsOk() &&
+       (itemDst != m_drag_item) &&
+       (itemDst != GetItemParent(m_drag_item)) &&
+       ((GetRootItem() != itemDst) || (GetRootItem() != GetItemParent(m_drag_item)))) { // Do not Drag and Drop on its own
+      if(GetRootItem() != itemDst) {
+        if(! ItemIsGroup(itemDst)) {              // On no group, use parent as destination
+          itemDst = GetItemParent(itemDst);
+        }
+        if(IsDescendant(itemDst, m_drag_item)) {  // Do not drag and drop into the moved tree
+          wxMessageBox(_("Destination cannot be inside source tree"), _("Drag and Drop failed"), wxOK|wxICON_ERROR);
+          evt.Skip();
+          m_drag_item = nullptr;
+          return;
+        }
+      }
+
+      if(! ItemIsGroup(m_drag_item)) {
+        // It's only one item to handle
+        CItemData *dataSrc = TreeCtrl::GetItem(m_drag_item);
+        wxASSERT(dataSrc);
+        StringX sxNewPath = tostringx((GetRootItem() != itemDst) ? GetItemGroup(itemDst) : "");
+        CItemData modifiedItem = CreateNewItemAsCopy(dataSrc, sxNewPath, ! doOverride, makeCopy);
+
+        if(makeCopy) {
+          if (dataSrc->IsDependent()) {
+            m_core.Execute(
+              AddEntryCommand::Create(&m_core, modifiedItem, dataSrc->GetBaseUUID())
+            );
+          } else { // not alias or shortcut
+            m_core.Execute(
+              AddEntryCommand::Create(&m_core, modifiedItem)
+            );
+          }
+        }
+        else {
+          time_t t;
+          time(&t);
+          modifiedItem.SetRMTime(t);
+          
+          // Move is same as rename
+          m_core.Execute(
+            EditEntryCommand::Create(&m_core, *dataSrc, modifiedItem)
+          );
+        }
+        
+        SelectItem(modifiedItem.GetUUID());
+      } else {
+        // For some reason, Command objects can't handle const references
+        StringX sxOldPath = tostringx(GetItemGroup(m_drag_item));
+        wxString label = GetItemText(m_drag_item);
+        StringX sxNewPath;
+        
+        if(GetRootItem() != itemDst) {
+          sxNewPath = tostringx(GetItemGroup(itemDst) + GROUP_SEL_STR + label);
+        }
+        else {
+          sxNewPath = tostringx(label);
+        }
+        if(! doOverride) {
+          wxTreeItemId si;
+          if(ExistsInTree(itemDst, tostringx(label), si)) {
+            evt.Veto();
+            wxMessageBox(_("Duplicate group name (use Shift to overrule)"), _("Double group name"), wxOK|wxICON_ERROR);
+            m_drag_item = nullptr;
+            return;
+          }
+        }
+
+        if(makeCopy) {
+          // On control key pressed do copy the tree
+          CreateCommandCopyGroup(m_drag_item, sxNewPath, sxOldPath, ! doOverride);
+        }
+        else {
+          // Without key board pressed to move, same as rename
+          CreateCommandRenamingGroup(sxNewPath, sxOldPath);
+        }
+        
+        wxTreeItemId newItem = Find(towxstring(sxNewPath), GetRootItem());
+        if (newItem.IsOk())
+          wxTreeCtrl::SelectItem(newItem);
+      }
+    }
+    else {
+      if(m_drag_item.IsOk())
+        wxTreeCtrl::SelectItem(m_drag_item);
+    }
+  }
+
+  evt.Skip();
+  m_drag_item = nullptr;
+}
+
+bool TreeCtrl::IsDescendant(const wxTreeItemId itemDst, const wxTreeItemId itemSrc)
+{
+  wxTreeItemId itemParent, itemCurrent = itemDst;
+
+  if(itemDst == GetRootItem()) return false;
+  if(itemDst == itemSrc) return true;
+  
+  do {
+    itemParent = GetItemParent(itemCurrent);
+    if(itemParent == itemSrc) return true;
+    itemCurrent = itemParent;
+  } while (itemCurrent && (itemCurrent != GetRootItem()));
+  
+  return false;
 }
 
 /*!
@@ -962,7 +1499,7 @@ void TreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
     wxString groupName = evt.GetLabel();
     for (wxTreeItemId parent = GetItemParent(groupItem);
                       parent != GetRootItem(); parent = GetItemParent(parent)) {
-      groupName = GetItemText(parent) + wxT(".") + groupName;
+      groupName = GetItemText(parent) + GROUP_SEL_STR + groupName;
     }
     StringX sxGroup = tostringx(groupName);
 
@@ -988,6 +1525,20 @@ void TreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, con
   if (evt.IsEditCancelled())
     return;
 
+  // For some reason, Command objects can't handle const references
+  StringX sxOldPath = tostringx(oldPath);
+  StringX sxNewPath = tostringx(GetItemGroup(groupItem));
+  
+  CreateCommandRenamingGroup(sxNewPath, sxOldPath);
+
+  // The old treeItem is gone, since it was renamed.  We need to find the new one to select it
+  wxTreeItemId newItem = Find(towxstring(sxNewPath), GetRootItem());
+  if (newItem.IsOk())
+    wxTreeCtrl::SelectItem(newItem);
+}
+
+void TreeCtrl::CreateCommandRenamingGroup(StringX sxNewPath, StringX sxOldPath)
+{
   // We DON'T need to handle these two as they can only occur while moving items
   //    not removing groups as they become empty
   //    renaming of groups that have only other groups as children
@@ -995,10 +1546,6 @@ void TreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, con
   MultiCommands* pmcmd = MultiCommands::Create(&m_core);
   if (!pmcmd)
     return;
-
-  // For some reason, Command objects can't handle const references
-  StringX sxOldPath = tostringx(oldPath);
-  StringX sxNewPath = tostringx(GetItemGroup(groupItem));
 
   // This takes care of modifying all the actual items
   pmcmd->Add(RenameGroupCommand::Create(&m_core, sxOldPath, sxNewPath));
@@ -1018,11 +1565,125 @@ void TreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, con
 
   if (pmcmd->GetSize())
     m_core.Execute(pmcmd);
+}
 
-  // The old treeItem is gone, since it was renamed.  We need to find the new one to select it
-  wxTreeItemId newItem = Find(towxstring(sxNewPath), GetRootItem());
-  if (newItem.IsOk())
-    wxTreeCtrl::SelectItem(newItem);
+CItemData TreeCtrl::CreateNewItemAsCopy(const CItemData *dataSrc, StringX sxNewPath, bool checkName, bool newEntry)
+{
+  wxASSERT(dataSrc);
+  CItemData modifiedItem(*dataSrc);
+  
+  modifiedItem.SetGroup(sxNewPath);
+  if(newEntry)
+    modifiedItem.CreateUUID();
+    
+  if(! checkName) {
+    // Do not add " Copy #" to title when shift key is pressed, as with new location the title is unique (hopefully)
+    modifiedItem.SetTitle(dataSrc->GetTitle());
+  }
+  else {
+    // Normal copy search for a unique "Title" at destination place
+    ItemListConstIter listpos;
+    int i = 0;
+    wxString s_copy;
+    const StringX ci2_user = dataSrc->GetUser();
+    const StringX ci2_title0 = dataSrc->GetTitle();
+    StringX ci2_title;
+    
+    listpos = m_core.Find(sxNewPath, ci2_title0, ci2_user);
+    if(listpos == m_core.GetEntryEndIter()) {
+      ci2_title = ci2_title0;
+    }
+    else {
+      do {
+        s_copy.clear();
+        i++;
+        s_copy << _(" Copy # ") << i;
+        ci2_title = ci2_title0 + tostringx(s_copy);
+        listpos = m_core.Find(sxNewPath, ci2_title, ci2_user);
+      } while (listpos != m_core.GetEntryEndIter());
+    }
+    modifiedItem.SetTitle(ci2_title);
+  }
+  modifiedItem.SetUser(dataSrc->GetUser());
+  modifiedItem.SetStatus(CItemData::ES_ADDED);
+  if (dataSrc->IsDependent()) {
+    modifiedItem.SetPassword(dataSrc->GetPassword());
+    if (dataSrc->IsAlias()) {
+      modifiedItem.SetAlias();
+    } else {
+      modifiedItem.SetShortcut();
+    }
+  } else { // not alias or shortcut
+    if(newEntry)
+      modifiedItem.SetNormal();
+  }
+  return modifiedItem;
+}
+
+void TreeCtrl::ExtendCommandCopyGroup(MultiCommands* pmCmd, wxTreeItemId itemSrc, StringX sxNewPath, bool checkName)
+{
+  if (!pmCmd)
+    return;
+  
+  wxASSERT(itemSrc != GetRootItem() && ItemIsGroup(itemSrc));
+
+  wxTreeItemIdValue cookie;
+  wxTreeItemId ti = GetFirstChild(itemSrc, cookie);
+  
+  while (ti) {
+    const StringX label = tostringx(GetItemText(ti));
+    
+    if(ItemIsGroup(ti)) {
+      ExtendCommandCopyGroup(pmCmd, ti, sxNewPath + GROUP_SEL_STR + label, checkName);
+    }
+    else {
+      CItemData *dataSrc = TreeCtrl::GetItem(ti);
+      wxASSERT(dataSrc);
+      CItemData modifiedItem = CreateNewItemAsCopy(dataSrc, sxNewPath, checkName, true);
+      
+      if (dataSrc->IsDependent()) {
+        pmCmd->Add(
+          AddEntryCommand::Create(&m_core, modifiedItem, dataSrc->GetBaseUUID())
+        );
+      } else { // not alias or shortcut
+        pmCmd->Add(
+          AddEntryCommand::Create(&m_core, modifiedItem)
+        );
+      }
+    }
+    ti = GetNextSibling(ti);
+  }
+}
+
+void TreeCtrl::CreateCommandCopyGroup(wxTreeItemId itemSrc, StringX sxNewPath, StringX sxOldPath, bool checkName)
+{
+  MultiCommands* pmcmd = MultiCommands::Create(&m_core);
+  if (!pmcmd)
+    return;
+  
+  // Copy the selected tree with all entries
+  wxASSERT(itemSrc != GetRootItem() && ItemIsGroup(itemSrc));
+  ExtendCommandCopyGroup(pmcmd, itemSrc, sxNewPath, checkName);
+  
+  // But we have to do the empty groups ourselves because EG_ADD is not recursive
+  typedef std::vector<StringX> EmptyGroupsArray;
+  const EmptyGroupsArray& emptyGroups = m_core.GetEmptyGroups();
+  StringX sxOldPathWithDot = sxOldPath + _T('.');
+  for(const auto & emptyGroup : emptyGroups)
+  {
+    if (emptyGroup == sxOldPath || emptyGroup.find(sxOldPathWithDot) == 0) {
+      StringX sxNew = sxNewPath + emptyGroup.substr(sxOldPath.size());
+      if(checkName) {
+        wxTreeItemId item = Find(towxstring(sxNew), GetRootItem());
+        if(item.IsOk() && ItemIsGroup(item))
+          continue; // Name as group already present at destination, skip this one
+      }
+      pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxNew, DBEmptyGroupsCommand::EG_ADD));
+    }
+  }
+  
+  if (pmcmd->GetSize())
+    m_core.Execute(pmcmd);
 }
 
 /*!

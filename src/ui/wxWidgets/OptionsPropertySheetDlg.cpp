@@ -535,6 +535,14 @@ wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel(const wxString& title)
   display_ShowMenuSeparatorCB->SetValue(false);
   itemBoxSizer30->Add(display_ShowMenuSeparatorCB, 0, wxALIGN_LEFT|wxALL, 5);
 
+  wxCheckBox* display_AutoAdjColWidthCB = new wxCheckBox( itemPanel29, ID_CHECKBOX44, _("Auto-adjust column width"), wxDefaultPosition, wxDefaultSize, 0 );
+  display_AutoAdjColWidthCB->SetValue(false);
+  itemBoxSizer30->Add(display_AutoAdjColWidthCB, 0, wxALIGN_LEFT|wxALL, 5);
+  
+  wxCheckBox* display_ToolbarShowTextCB = new wxCheckBox( itemPanel29, ID_CHECKBOX45, _("Show Text in Toolbar"), wxDefaultPosition, wxDefaultSize, 0 );
+  display_ToolbarShowTextCB->SetValue(false);
+  itemBoxSizer30->Add(display_ToolbarShowTextCB, 0, wxALIGN_LEFT|wxALL, 5);
+  
   wxStaticText* itemStaticText42 = new wxStaticText( itemPanel29, wxID_STATIC, _("days before passwords expire"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer39->Add(itemStaticText42, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -557,7 +565,9 @@ wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel(const wxString& title)
   display_PreExpiryWarnCB->SetValidator( wxGenericValidator(& m_Display_PreExpiryWarn) );
   display_TreeDisplayStatusAtOpenRB->SetValidator( wxGenericValidator(& m_Display_TreeDisplayStatusAtOpen) );
   display_ShowMenuSeparatorCB->SetValidator( wxGenericValidator(& m_Display_ShowMenuSeparator) );
-
+  display_AutoAdjColWidthCB->SetValidator( wxGenericValidator(& m_Display_AutoAdjColWidth) );
+  display_ToolbarShowTextCB->SetValidator( wxGenericValidator(& m_Display_ToolbarShowText) );
+  
   return itemPanel29;
 }
 
@@ -1040,7 +1050,9 @@ void OptionsPropertySheetDlg::PrefsToPropSheet()
   m_Display_PreExpiryWarnDaysSB->Enable(m_Display_PreExpiryWarn);
   m_Display_TreeDisplayStatusAtOpen = prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen);
   m_Display_ShowMenuSeparator = prefs->GetPref(PWSprefs::ShowMenuSeparator);
-
+  m_Display_AutoAdjColWidth = prefs->GetPref(PWSprefs::AutoAdjColWidth);
+  m_Display_ToolbarShowText = prefs->GetPref(PWSprefs::ToolbarShowText);
+  
   // Misc. preferences
   m_Misc_ConfirmDelete = !prefs->GetPref(PWSprefs::DeleteQuestion);
   m_Misc_MaintainDatetimeStamps = prefs->GetPref(PWSprefs::MaintainDateTimeStamps);
@@ -1219,6 +1231,8 @@ void OptionsPropertySheetDlg::PropSheetToPrefs()
 
   prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, m_Display_TreeDisplayStatusAtOpen, true);
   prefs->SetPref(PWSprefs::ShowMenuSeparator, m_Display_ShowMenuSeparator);
+  prefs->SetPref(PWSprefs::AutoAdjColWidth, m_Display_AutoAdjColWidth);
+  prefs->SetPref(PWSprefs::ToolbarShowText, m_Display_ToolbarShowText);
   prefs->SetPref(PWSprefs::ShowNotesDefault, m_Display_ShowNotesInEdit, true);
   prefs->SetPref(PWSprefs::MaintainDateTimeStamps, m_Misc_MaintainDatetimeStamps, true);
   prefs->SetPref(PWSprefs::UseDefaultUser, m_Misc_UseDefUsername, true);

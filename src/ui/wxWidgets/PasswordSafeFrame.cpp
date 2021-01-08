@@ -190,6 +190,9 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   // Connect event handlers
   EVT_MENU( ID_LIST_VIEW,               PasswordSafeFrame::OnListViewClick               )
   EVT_MENU( ID_TREE_VIEW,               PasswordSafeFrame::OnTreeViewClick               )
+  EVT_MENU( ID_SORT_TREE_BY_GROUP,      PasswordSafeFrame::OnSortByGroupClick            )
+  EVT_MENU( ID_SORT_TREE_BY_NAME,       PasswordSafeFrame::OnSortByNameClick             )
+  EVT_MENU( ID_SORT_TREE_BY_DATE,       PasswordSafeFrame::OnSortByDateClick             )
   EVT_MENU( ID_SHOWHIDE_TOOLBAR,        PasswordSafeFrame::OnShowHideToolBar             )
   EVT_MENU( ID_TOOLBAR_NEW,             PasswordSafeFrame::OnChangeToolbarType           )
   EVT_MENU( ID_TOOLBAR_CLASSIC,         PasswordSafeFrame::OnChangeToolbarType           )
@@ -217,6 +220,9 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   // Update menu items
   EVT_UPDATE_UI( ID_LIST_VIEW,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_TREE_VIEW,          PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SORT_TREE_BY_GROUP, PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SORT_TREE_BY_NAME,  PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SORT_TREE_BY_DATE,  PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOWHIDE_TOOLBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOWHIDE_DRAGBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOWHIDE_UNSAVED,   PasswordSafeFrame::OnUpdateUI                    )
@@ -417,6 +423,14 @@ void PasswordSafeFrame::Init()
 {
   m_currentView = (PWSprefs::GetInstance()->GetPref(PWSprefs::LastView) == _T("list")) ? ViewType::GRID : ViewType::TREE;
 
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeSort) == _T("date")) {
+    SetTreeSortType(TreeSortType::DATE);
+  } else if (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeSort) == _T("name")) {
+    SetTreeSortType(TreeSortType::NAME);
+  } else {
+    SetTreeSortType(TreeSortType::GROUP);
+  }
+  
   m_RUEList.SetMax(PWSprefs::GetInstance()->PWSprefs::MaxREItems);
 ////@begin PasswordSafeFrame member initialisation
   m_grid = nullptr;
@@ -595,6 +609,14 @@ void PasswordSafeFrame::CreateMenubar()
   menuView->Append(ID_LIST_VIEW, _("Flattened &List"), wxEmptyString, wxITEM_RADIO);
   menuView->Append(ID_TREE_VIEW, _("Nested &Tree"), wxEmptyString, wxITEM_RADIO);
   menuView->AppendSeparator();
+  
+  auto menuSortTree = new wxMenu;
+  menuSortTree->Append(ID_SORT_TREE_BY_GROUP, _("Sort by Group"), wxEmptyString, wxITEM_CHECK);
+  menuSortTree->Append(ID_SORT_TREE_BY_NAME, _("Sort by Name"), wxEmptyString, wxITEM_CHECK);
+  menuSortTree->Append(ID_SORT_TREE_BY_DATE, _("Sort by Date"), wxEmptyString, wxITEM_CHECK);
+  menuView->Append(ID_SORT_TREE_MENU, _("Tree Sort"), menuSortTree);
+  menuView->AppendSeparator();
+  
   menuView->Append(ID_SHOWHIDE_TOOLBAR, _("Toolbar &visible"), wxEmptyString, wxITEM_CHECK);
   menuView->AppendRadioItem(ID_TOOLBAR_NEW, _("&New Toolbar"));
   menuView->AppendRadioItem(ID_TOOLBAR_CLASSIC, _("&Classic Toolbar"));
@@ -684,6 +706,20 @@ void PasswordSafeFrame::CreateMenubar()
   // Update menu selections
   GetMenuBar()->Check((IsTreeView()) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
   GetMenuBar()->Check(PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW : ID_TOOLBAR_CLASSIC, true);
+  UpdateTreeSortMenu();
+}
+
+/**
+ * Update check for sorting and enable or disable the menu bar for orting
+ */
+void PasswordSafeFrame::UpdateTreeSortMenu()
+{
+  auto menuBar = GetMenuBar();
+  
+  menuBar->Check(ID_SORT_TREE_BY_GROUP, IsTreeSortGroup());
+  menuBar->Check(ID_SORT_TREE_BY_NAME, IsTreeSortName());
+  menuBar->Check(ID_SORT_TREE_BY_DATE, IsTreeSortDate());
+  menuBar->Refresh();
 }
 
 /**
@@ -708,6 +744,16 @@ void PasswordSafeFrame::CreateControls()
                             wxDefaultSize,
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
   wxASSERT(m_tree);
+  if(IsTreeSortGroup()) {
+    m_tree->SetSortingGroup();
+    m_tree->SetShowGroup(false);
+  } else if(IsTreeSortName()) {
+    m_tree->SetSortingName();
+    m_tree->SetShowGroup(true);
+  } else if(IsTreeSortDate()) {
+    m_tree->SetSortingDate();
+    m_tree->SetShowGroup(true);
+  }
   SetBackgroundColour(CurrentBackgroundColor);
 
   // let the tree ctrl handle ID_ADDGROUP & ID_RENAME all by itself
@@ -787,7 +833,7 @@ void PasswordSafeFrame::AddLanguage(int menu_id, wxLanguage lang_id, const wxStr
  */
 void PasswordSafeFrame::CreateMainToolbar()
 {
-  wxToolBar* toolbar = CreateToolBar(wxBORDER_NONE | wxTB_TOP | wxTB_HORIZONTAL, wxID_ANY, wxT("Main Toolbar"));
+  wxToolBar* toolbar = CreateToolBar(wxBORDER_NONE | wxTB_TOP | wxTB_HORIZONTAL | (PWSprefs::GetInstance()->GetPref(PWSprefs::ToolbarShowText) ? wxTB_TEXT : 0), wxID_ANY, wxT("Main Toolbar"));
 
   RefreshToolbarButtons();
 
@@ -842,10 +888,12 @@ void PasswordSafeFrame::RefreshToolbarButtons()
         if (PwsToolbarButton.id == ID_SEPARATOR) {
           if(pref->GetPref(PWSprefs::ShowMenuSeparator))
             tb->AddSeparator();
-        } else
-          tb->AddTool(PwsToolbarButton.id, wxEmptyString, wxBitmap(PwsToolbarButton.bitmap_normal),
+        }
+        else {
+          tb->AddTool(PwsToolbarButton.id, wxGetTranslation(PwsToolbarButton.toollabel), wxBitmap(PwsToolbarButton.bitmap_normal),
                               wxBitmap(PwsToolbarButton.bitmap_disabled), wxITEM_NORMAL,
                               wxGetTranslation(PwsToolbarButton.tooltip) );
+        }
       }
     }
     else {
@@ -853,9 +901,11 @@ void PasswordSafeFrame::RefreshToolbarButtons()
         if (PwsToolbarButton.id == ID_SEPARATOR) {
           if(pref->GetPref(PWSprefs::ShowMenuSeparator))
             tb->AddSeparator();
-        } else
-          tb->AddTool(PwsToolbarButton.id, wxEmptyString, wxBitmap(PwsToolbarButton.bitmap_classic),
-                          wxGetTranslation(PwsToolbarButton.tooltip) );
+        }
+        else {
+           tb->AddTool(PwsToolbarButton.id, wxGetTranslation(PwsToolbarButton.toollabel), wxBitmap(PwsToolbarButton.bitmap_classic),
+                      wxGetTranslation(PwsToolbarButton.tooltip) );
+        }
       }
     }
   }
@@ -1000,7 +1050,12 @@ void PasswordSafeFrame::ShowGrid(bool show)
           m_FilterManager.PassesFiltering(iter->second, m_core))
         m_grid->AddItem(iter->second, i++);
     }
-
+    
+    if(PWSprefs::GetInstance()->GetPref(PWSprefs::AutoAdjColWidth)) {
+      m_grid->AutoSizeColumns(false);
+      m_grid->Layout();
+    }
+    
     m_grid->UpdateSorting();
 
     m_guiInfo->RestoreGridViewInfo(m_grid);
@@ -1029,11 +1084,13 @@ void PasswordSafeFrame::ShowTree(bool show)
         m_tree->AddItem(iter->second);
     }
 
-    // Empty groups need to be added separately
-    typedef std::vector<StringX> StringVectorX;
-    const StringVectorX& emptyGroups = m_core.GetEmptyGroups();
-    for (const auto & emptyGroup : emptyGroups)
-      m_tree->AddEmptyGroup(emptyGroup);
+    if(IsTreeSortGroup()) {
+      // Empty groups need to be added separately
+      typedef std::vector<StringX> StringVectorX;
+      const StringVectorX& emptyGroups = m_core.GetEmptyGroups();
+      for (const auto & emptyGroup : emptyGroups)
+        m_tree->AddEmptyGroup(emptyGroup);
+    }
 
     if (m_tree->HasItems()) {// avoid assertion!
       m_tree->SortChildrenRecursively(m_tree->GetRootItem());
@@ -1507,11 +1564,14 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
       wxMenu groupEditMenu;
 
       groupEditMenu.Append(wxID_ADD, _("Add &Entry"));
-      groupEditMenu.Append(ID_ADDGROUP, _("Add &Group"));
+      
+      if (IsTreeSortGroup()) {
+        groupEditMenu.Append(ID_ADDGROUP, _("Add &Group"));
 
-      if (m_tree->IsGroupSelected()) {
-        groupEditMenu.Append(ID_RENAME, _("&Rename Group"));
-        groupEditMenu.Append(wxID_DELETE, _("&Delete Group"));
+        if (m_tree->IsGroupSelected()) {
+          groupEditMenu.Append(ID_RENAME, _("&Rename Group"));
+          groupEditMenu.Append(wxID_DELETE, _("&Delete Group"));
+        }
       }
 
       m_tree->PopupMenu(&groupEditMenu);
@@ -1714,14 +1774,21 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 #endif
       evt.Enable(m_core.IsDbOpen());
       break;
-
+      
+    case ID_SORT_TREE_MENU:
+    case ID_SORT_TREE_BY_GROUP:
+    case ID_SORT_TREE_BY_NAME:
+    case ID_SORT_TREE_BY_DATE:
+      evt.Enable(m_core.IsDbOpen() && isTreeView);
+      break;
+      
     case ID_EXPORTMENU:
     case ID_COMPARE:
       evt.Enable(m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
       break;
 
     case ID_ADDGROUP:
-      evt.Enable((isTreeViewGroupSelected || isTreeViewEmpty || !isTreeViewItemSelected) && !isFileReadOnly && m_core.IsDbOpen());
+      evt.Enable((isTreeViewGroupSelected || isTreeViewEmpty || !isTreeViewItemSelected) && !isFileReadOnly && IsTreeSortGroup() && m_core.IsDbOpen());
       break;
 
     case ID_EXPANDALL:
@@ -1731,7 +1798,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_RENAME:
       // only allowed if a GROUP item is selected in tree view
-      evt.Enable(isTreeViewGroupSelected && !isFileReadOnly);
+      evt.Enable(isTreeViewGroupSelected && !isFileReadOnly && IsTreeSortGroup());
       break;
 
     case ID_BROWSEURL:

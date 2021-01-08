@@ -189,5 +189,6 @@ where ... is a complex unique number for the build.
 ## Build installation package
 You have to create or update help and translations files. Call "make" in folder
 "help" and "src/ui/wxWidgets/I18N". For missing tools install "gettext" from "brew" for instance.
+In I18N you might update related po file in sub-folder pos and call "make mos".
 
-After building of pwsafe.app (in Xcode), language files and help you might call "make" in "install/macosx" to create the package in main folder.
+After building of pwsafe.app (in Xcode), language files and help you might call "make" in "install/macosx", after setting path to wxWidgets "locale" folder, to create the package in main folder.

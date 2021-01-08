@@ -20,6 +20,7 @@
 ////@begin includes
 #include <wx/treebase.h>
 #include <wx/treectrl.h>
+#include <wx/dragimag.h>
 ////@end includes
 
 #include "core/ItemData.h"
@@ -51,6 +52,38 @@ class TreeCtrl;
 
 typedef std::map<pws_os::CUUID, wxTreeItemId, std::less<pws_os::CUUID> > UUIDTIMapT;
 
+class TreeCtrl;
+
+typedef void (TreeCtrl:: *TreeCtrlMemberFncPtr)(void);
+
+class TreeCtrlTimer: public wxTimer
+{
+public:
+  enum {
+    // start scrolling 1/4 second (if the mouse hasn't been clicked)
+    DELAY_SCROLLING = 250,
+    // start Collapse or Expand after 1.5 second (if the mouse hasn't been clicked/moved)
+    DELAY_COLLAPSE = 1500
+  };
+  
+  TreeCtrlTimer(TreeCtrl *aowner, TreeCtrlMemberFncPtr acallback, int atime, bool aonetime = true) : m_owner(aowner), m_callback(acallback), m_time(atime), m_one_time(aonetime) { }
+  TreeCtrlTimer(TreeCtrlMemberFncPtr acallback, int atime, bool aonetime = true) : m_owner(nullptr), m_callback(acallback), m_time(atime), m_one_time(aonetime) { }
+  
+  void setOwner(TreeCtrl *owner) { m_owner = owner; };
+  bool Start() { return wxTimer::Start( m_time, m_one_time ); };
+
+  virtual void Notify();
+
+private:
+  // Avoid -Wreorder warning when using the same order of variable declaration and order in constructor
+  TreeCtrl *m_owner;
+  TreeCtrlMemberFncPtr m_callback;
+  int m_time;
+  bool m_one_time;
+
+  wxDECLARE_NO_COPY_CLASS(TreeCtrlTimer);
+};
+
 /*!
  * TreeCtrl class declaration
  */
@@ -60,6 +93,8 @@ class TreeCtrl : public wxTreeCtrl, public Observer
   DECLARE_CLASS( TreeCtrl )
   DECLARE_EVENT_TABLE()
 
+private:
+  enum class TreeSortType { GROUP, NAME, DATE };
 public:
   /// Constructors
   TreeCtrl(); // Declared, never defined, as we don't support this!
@@ -106,8 +141,9 @@ public:
 
   /// wxEVT_LEFT_DOWN event handler for mouse events
   void OnMouseLeftClick(wxMouseEvent& event);
-
-////@end TreeCtrl event handler declarations
+  
+  /// wxEVT_MOTION event handler for mouse events
+  void OnMouseMove(wxMouseEvent& event);
 
   void OnGetToolTip( wxTreeEvent& evt); // Added manually
 
@@ -117,15 +153,25 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_RENAME
   void OnRenameGroup(wxCommandEvent& evt);
 
+  /// EVT_TREE_END_LABEL_EDIT event handler for ID_TREECTRL and ID_TREECTRL_1
   void OnEndLabelEdit( wxTreeEvent& evt );
 
   /// wxEVT_TREE_KEY_DOWN event handler for ID_TREECTRL
   void OnKeyDown(wxTreeEvent& evt);
 
+  /// wxEVT_TREE_BEGIN_DRAG event handler for ID_TREECTRL
+  void OnBeginDrag(wxTreeEvent& evt);
+
+  /// wxEVT_TREE_END_DRAG event handler for ID_TREECTRL
+  void OnEndDrag(wxTreeEvent& evt);
+
+////@end TreeCtrl event handler declarations
+
 ////@begin TreeCtrl member function declarations
 ////@end TreeCtrl member function declarations
 
   void Clear(); // consistent name w/GridCtrl
+  StringX GroupNameOfItem(const CItemData &item);
   void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
   void UpdateItemField(const CItemData &item, CItemData::FieldType ft);
@@ -150,6 +196,19 @@ public:
   void SetGroupDisplayStateAllCollapsed();
   void SaveGroupDisplayState();
   void RestoreGroupDisplayState();
+  
+  void SetSorting(TreeSortType &v) { m_sort = v; }
+  void SetSortingGroup() { m_sort = TreeSortType::GROUP; }
+  void SetSortingName() { m_sort = TreeSortType::NAME; }
+  void SetSortingDate() { m_sort = TreeSortType::DATE; }
+  void SetShowGroup(bool v) { m_show_group = v; }
+  bool IsSortingGroup() const { return m_sort == TreeSortType::GROUP; }
+  bool IsSortingName() const { return m_sort == TreeSortType::NAME; }
+  bool IsSortingDate() const { return m_sort == TreeSortType::DATE; }
+  bool IsShowGroup() const { return m_show_group; }
+  
+  void CheckScrollList();
+  void CheckCollapseEntry();
 
 private:
   void PreferencesChanged();
@@ -162,6 +221,14 @@ private:
   void SetItemImage(const wxTreeItemId &node, const CItemData &item);
   void FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem);
   void FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, const wxString& oldPath);
+  CItemData CreateNewItemAsCopy(const CItemData *dataSrc, StringX sxNewPath, bool checkName, bool newEntry = false);
+  void ExtendCommandCopyGroup(MultiCommands* pmCmd, wxTreeItemId itemSrc, StringX sxNewPath, bool checkName);
+  void CreateCommandRenamingGroup(StringX sxNewPath, StringX sxOldPath);
+  void CreateCommandCopyGroup(wxTreeItemId itemSrc, StringX sxNewPath, StringX sxOldPath, bool checkName);
+  bool IsDescendant(const wxTreeItemId itemDst, const wxTreeItemId itemSrc);
+  void markDragItem(const wxTreeItemId itemSrc, bool markIt = true);
+  void resetDragItems(bool initSize = false);
+  void resetScrolling();
 
   std::vector<bool> GetGroupDisplayState();
   void SetGroupDisplayState(const std::vector<bool> &groupstates);
@@ -174,6 +241,25 @@ private:
 
   PWScore &m_core;
   UUIDTIMapT m_item_map; // given a uuid, find the tree item pronto!
+  
+  TreeSortType m_sort;
+  bool m_show_group;
+  
+  wxTreeItemId m_drag_item;
+  wxColour m_drag_text_colour;
+  wxColour m_drag_background_colour;
+
+  TreeCtrlTimer m_collapse_timer;
+  wxTreeItemId m_last_mice_item_in_drag_and_drop;
+  
+  int m_lower_scroll_limit, m_upper_scroll_limit;
+  bool m_had_been_out;
+  
+  TreeCtrlTimer m_scroll_timer;
+  
+  wxDragImage *m_drag_image;
+  
+  long m_style;
 };
 
 #endif // _TREECTRL_H_

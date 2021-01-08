@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-15 19:40+0100\n"
+"POT-Creation-Date: 2021-01-08 10:44+0100\n"
 "PO-Revision-Date: 2018-05-18 12:55+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -24,8 +24,8 @@ msgstr ""
 "X-Poedit-SearchPath-2: os/unix\n"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:141
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1429
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:407
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1443
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:426
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:508
 msgid "Password Safe"
 msgstr "Password Safe"
@@ -71,7 +71,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/AboutDlg.cpp:181
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:169
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:406
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:496
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:510
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:162
 #: ../../../ui/wxWidgets/SystemTray.cpp:137
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:197
@@ -163,7 +163,7 @@ msgstr "Autom. Eingabe"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:305
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1392
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:464
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:657
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:667
 msgid "Browse"
 msgstr "Suchen"
 
@@ -224,16 +224,15 @@ msgid "Password Policy"
 msgstr "Passwortrichtlinie"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:356
-#, fuzzy
 msgid "Attachment"
-msgstr "Referenz zum Anhang"
+msgstr "Anhang"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:369
 msgid "Set Date/Time"
 msgstr "Datum/Uhrzeit setzen"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:370
-#: ../../../core/core_st.cpp:135
+#: ../../../ui/wxWidgets/ToolbarButtons.h:203 ../../../core/core_st.cpp:135
 msgid "Password"
 msgstr "Passwort"
 
@@ -250,27 +249,27 @@ msgstr ""
 "im Feld Benutzername."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:394
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:189
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:211
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:244
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:285
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:207
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:229
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:262
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:303
 msgid "Group:"
 msgstr "Gruppe:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:400
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:861
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:194
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:216
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:249
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:290
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:212
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:234
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:267
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:308
 msgid "Title:"
 msgstr "Titel:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:406
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:199
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:221
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:254
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:295
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:217
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:239
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:272
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:313
 msgid "Username:"
 msgstr "Benutzername:"
 
@@ -279,7 +278,7 @@ msgid "Password:"
 msgstr "Passwort:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:418
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1693
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1711
 msgid "&Hide"
 msgstr "&Ausblenden"
 
@@ -321,12 +320,12 @@ msgid "Run Cmd:"
 msgstr "Ausführen:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:486
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:586
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:596
 msgid "Double-Click Action:"
 msgstr "Doppelklick Aktion:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:494
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:607
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:617
 msgid "Shift-Double-Click Action:"
 msgstr "Umschalt + Doppelklick Aktion:"
 
@@ -374,7 +373,7 @@ msgstr "Periodisch"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:601
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1440
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2425
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2443
 msgid "Never"
 msgstr "Niemals"
 
@@ -387,7 +386,7 @@ msgid "Statistics"
 msgstr "Statistiken"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:618
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:259
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:277
 msgid "Created on:"
 msgstr "Erstellt am:"
 
@@ -402,7 +401,7 @@ msgid "Static text"
 msgstr "Statischer Text"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:630
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:269
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:287
 msgid "Last accessed on:"
 msgstr "Letzter Zugriff am:"
 
@@ -421,40 +420,40 @@ msgstr "Letzter Zugriff am:"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1019
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1020
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1021
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:134
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:135
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:136
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:213
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:218
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:223
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:145
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:165
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:166
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:167
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:175
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:176
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:177
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:178
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:180
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:181
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:182
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:261
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:266
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:271
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:276
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:287
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:292
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:297
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:152
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:153
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:154
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:231
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:236
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:241
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:163
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:183
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:184
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:185
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:193
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:194
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:195
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:196
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:198
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:199
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:200
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:279
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:284
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:289
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:294
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:305
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:310
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:315
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:413
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:255
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:265
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:454
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:482
 msgid "N/A"
-msgstr "n. a."
+msgstr "n.a."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:636
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:274
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:292
 msgid "Any field last changed on:"
 msgstr "Irgendein Feld zuletzt geändert am:"
 
@@ -557,26 +556,23 @@ msgstr "0-9, a-f"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:835
 msgid "Preview"
-msgstr ""
+msgstr "Voransicht"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:843
-#, fuzzy
 msgid "File"
 msgstr "&Datei"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:848
-#, fuzzy
 msgid "Import..."
 msgstr "&Importieren"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:850
-#, fuzzy
 msgid "Export..."
 msgstr "Exportieren"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:852
 msgid "Remove"
-msgstr ""
+msgstr "Löschen"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:857
 #: ../../../ui/wxWidgets/PropertiesDlg.h:58
@@ -584,62 +580,57 @@ msgid "Properties"
 msgstr "Eigenschaften"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:863
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:196
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:201
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:251
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:256
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:214
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:219
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:269
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:274
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:877
 msgid "Text"
 msgstr "Text"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:866
 msgid "Media Type:"
-msgstr ""
+msgstr "Medium Typ:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:868
 msgid "Label1"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:871
-#, fuzzy
 msgid "Creation Date:"
-msgstr " 'Erstellungszeit'"
+msgstr "Erstellungszeit:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:873
 msgid "Label2"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:876
-#, fuzzy
 msgid "File Size:"
-msgstr "&Größe"
+msgstr "Datei Größe:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:878
 msgid "Label3"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:881
-#, fuzzy
 msgid "File Creation Date:"
-msgstr " 'Erstellungszeit'"
+msgstr "Datei Erstellungszeit:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:883
 msgid "Label4"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:886
-#, fuzzy
 msgid "File Last Modified Date:"
-msgstr "Zuletzt geändert"
+msgstr "Zuletzt geändert:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:888
 msgid "Label5"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:930
-#, fuzzy
 msgid "No Attachment Available"
-msgstr "Siehe Anhangfilter"
+msgstr "Kein Anhang verfügbar"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:965
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:160
@@ -651,26 +642,24 @@ msgstr "Unbekannt"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1005
 msgid "No preview available due to an error"
-msgstr ""
+msgstr "Keine Vorschau wegem einem Fehler verfügbar"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1009
 msgid "No preview available - unsupported media type"
-msgstr ""
+msgstr "Keine Vorschau verfügbar - nicht unterstützter Typ"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1031
 msgid "Image Preview"
-msgstr ""
+msgstr "Vorschau"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1090
-#, fuzzy
 msgid "Image files "
-msgstr "Verwalte Filter"
+msgstr "Filter"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1092
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1197
-#, fuzzy
 msgid "All files (*.*)|*.*"
-msgstr "Alle Dateien (*.*)"
+msgstr "Alle Dateien (*.*)|*.*"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1095
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1122
@@ -678,36 +667,33 @@ msgstr "Alle Dateien (*.*)"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1136
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1143
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1150
-#, fuzzy
 msgid "Import Attachment"
-msgstr "Text importieren"
+msgstr "Anhang importieren"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1122
 msgid "Failed to allocate required memory to import attachment data."
-msgstr ""
+msgstr "Nicht genug speicher für den Import des Anhangs"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1129
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1225
-#, fuzzy
 msgid "Failed to open file."
 msgstr "Dokument öffnen fehlgeschlagen."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1136
 msgid "File exceeds the allowed maximum size of 4.3GB (2^32GB)."
-msgstr ""
+msgstr "Dateigröße zu groß (Maximum 4.3GB (2^32GB)."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1143
-#, fuzzy
 msgid "An error occurred while reading the file."
-msgstr "Unbekannter Fehler aufgetreten beim Zugriff auf %1."
+msgstr "Unbekannter Fehler beim Zugriff aus der Datei."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1150
 msgid "Unexpected error occurred during attachment import."
-msgstr ""
+msgstr "unbekannter Fehler beim Importieren."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1163
 msgid "No attachment data to export."
-msgstr ""
+msgstr "Kein Anhang zum Export verfügbar."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1163
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1200
@@ -715,89 +701,87 @@ msgstr ""
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1225
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1232
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1239
-#, fuzzy
 msgid "Export Attachment"
-msgstr "Exportiere Text"
+msgstr "Exportiere Anhang"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1179
 #, c-format
 msgid "%s files (*.%s;*.jpg)|*.%s;*.jpg|"
-msgstr ""
+msgstr "%s-Datei (*.%s;*.jpg)|*.%s;*.jpg|"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1184
 #, c-format
 msgid "%s files (*.%s;*.gz)|*.%s;*.gz|"
-msgstr ""
+msgstr "%s-Datei (*.%s;*.gz)|*.%s;*.gz|"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1189
-#, fuzzy, c-format
+#, c-format
 msgid "%s files (*.%s)|*.%s|"
-msgstr "XML-Dateien (*.xml)|*.xml"
+msgstr "%s-Dateien (*.%s)|*.%s|"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1218
 msgid "Failed to allocate required memory to export attachment data."
-msgstr ""
+msgstr "Nicht genügend Speicher zum Exportieren des Anhangs vorhanden."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1232
-#, fuzzy
 msgid "An error occurred while writing the file."
-msgstr "Unbekannter Fehler aufgetreten beim Zugriff auf %1."
+msgstr "Unbekannter Fehler beim Zugriff auf die Datei."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1239
 msgid "Unexpected error occurred during attachment export."
-msgstr ""
+msgstr "Unbekannter Fehler während des Exports."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1420
 msgid "default"
 msgstr "Standard"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1540
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1558
 msgid "[Notes hidden - click here to display]"
 msgstr "[Notizen sind versteckt - Klicken Sie hier um diese anzuzeigen]"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1609
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1635
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2125
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2799
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1627
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1653
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2143
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2817
 #: ../../../core/core_st.cpp:74
 msgid "Default Policy"
 msgstr "Standard Richtlinie"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1662
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1680
 msgid "Couldn't generate password - invalid policy"
 msgstr "Passwort konnte nicht generiert werden - Ungültige Richtlinie"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1663
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1778
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1791
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1813
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1833
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2706
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2733
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1681
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1796
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1809
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1831
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1851
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2724
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2751
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:106
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:115
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:131
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:142
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:149
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:157
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:348
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:367
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1470
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:292
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:296
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:300
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:316
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1527
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:298
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:306
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:322
-#: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:71
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:358
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:365
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:419
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:540
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:307
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:328
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:334
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:404
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:328
+#: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:72
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:400
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:407
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:461
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:582
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:309
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:330
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:336
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:406
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:243
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:249
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:277
@@ -806,53 +790,53 @@ msgstr "Passwort konnte nicht generiert werden - Ungültige Richtlinie"
 msgid "Error"
 msgstr "Fehler"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1721
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1739
 msgid "&Show"
 msgstr "&Anzeigen"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1776
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1794
 #, c-format
 msgid "This entry must have a %ls"
 msgstr "Dieser Eintrag benötigt ein(en) %ls"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1777
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1795
 msgid "title"
 msgstr "Titel"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1777
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1795
 msgid "password"
 msgstr "Passwort"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1790
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1808
 msgid "Passwords do not match"
 msgstr "Die beiden Einträge sind verschieden."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1812
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1830
 msgid "Database name must not be empty if a database policy shall be used."
 msgstr ""
 "Der Datenbankname darf nicht leer sein, wenn eine Datenbankrichtlinie "
 "verwendet werden soll."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1832
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1850
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr ""
 "Ein Eintrag oder Verknüpfung mit der selben Gruppe, Titel und Benutzernamen "
 "besteht bereits."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2404
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2422
 #, c-format
 msgid " (every %d days)"
 msgstr " (alle %d Tage)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2705
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2723
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:755
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr ""
 "Entschuldigung, aber \"leicht lesbar\" und \"aussprechbar\" können nicht "
 "gemeinsam ausgewählt werden."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2732
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2750
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:736
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr ""
@@ -860,7 +844,7 @@ msgstr ""
 "gemeinsam ausgewählt werden."
 
 # no translation needed
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2784
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2802
 msgid "mailto:"
 msgstr ""
 
@@ -924,7 +908,7 @@ msgid "Identical items"
 msgstr "Identische Elemente"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:160
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:630
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:652
 msgid "&Compare"
 msgstr "&Vergleichen"
 
@@ -949,77 +933,82 @@ msgstr "Wähle eine PasswordSafe-Datenbank zum Vergleichen"
 msgid "Advanced Options..."
 msgstr "Erweiterte Optionen..."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:437
+#: ../../../ui/wxWidgets/CompareDlg.cpp:449
 msgid "Synchronize this item..."
 msgstr "Dieses Element synchronisieren..."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:439
-#: ../../../ui/wxWidgets/CompareDlg.cpp:722
+#: ../../../ui/wxWidgets/CompareDlg.cpp:451
+#: ../../../ui/wxWidgets/CompareDlg.cpp:747
 #: ../../../ui/wxWidgets/SyncWizard.cpp:639
 msgid "Synchronize"
 msgstr "Synchronisieren"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:439
-#: ../../../ui/wxWidgets/CompareDlg.cpp:445
-#: ../../../ui/wxWidgets/CompareDlg.cpp:449
+#: ../../../ui/wxWidgets/CompareDlg.cpp:451
+#: ../../../ui/wxWidgets/CompareDlg.cpp:459
+#: ../../../ui/wxWidgets/CompareDlg.cpp:464
 msgid "selected "
 msgstr "Ausgewählt "
 
 # no translation needed
-#: ../../../ui/wxWidgets/CompareDlg.cpp:439
+#: ../../../ui/wxWidgets/CompareDlg.cpp:451
 msgid "..."
 msgstr "..."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:442
+#: ../../../ui/wxWidgets/CompareDlg.cpp:456
 msgid "Synchronize all items..."
 msgstr "Alle Elemente synchronisieren..."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:445
+#: ../../../ui/wxWidgets/CompareDlg.cpp:459
 msgid "Copy"
 msgstr "Kopieren"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:445
-#: ../../../ui/wxWidgets/CompareDlg.cpp:468
+#: ../../../ui/wxWidgets/CompareDlg.cpp:459
+#: ../../../ui/wxWidgets/CompareDlg.cpp:485
 msgid " to current db"
 msgstr " zu aktueller DB"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:449
+#: ../../../ui/wxWidgets/CompareDlg.cpp:464
+#: ../../../ui/wxWidgets/ToolbarButtons.h:215
 msgid "Delete"
 msgstr "Löschen"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:449
+#: ../../../ui/wxWidgets/CompareDlg.cpp:464
 msgid " from current db"
 msgstr " aus aktueller DB"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:455
+#: ../../../ui/wxWidgets/CompareDlg.cpp:472
+msgid "&View entry in current db"
+msgstr "&Eintrag aus aktueller DB ansehen"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:472
 msgid "&Edit entry in current db"
 msgstr "Eintrag aus aktueller DB &bearbeiten"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:456
+#: ../../../ui/wxWidgets/CompareDlg.cpp:473
 msgid "&View entry in comparison db"
 msgstr "Eintrag aus Vergleichsdatenbank &anzeigen"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:464
+#: ../../../ui/wxWidgets/CompareDlg.cpp:481
 msgid "&Copy "
 msgstr "&Kopieren "
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:464
+#: ../../../ui/wxWidgets/CompareDlg.cpp:481
 msgid " selected "
 msgstr " ausgewählt "
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:466
+#: ../../../ui/wxWidgets/CompareDlg.cpp:483
 msgid " fields to current db"
 msgstr " Felder zu aktueller DB "
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:468
+#: ../../../ui/wxWidgets/CompareDlg.cpp:485
 msgid "&Copy this "
 msgstr "&Kopiere "
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:722
+#: ../../../ui/wxWidgets/CompareDlg.cpp:747
 msgid "Current safe was opened read-only"
 msgstr "Aktueller Safe wurde im Nur-Lese-Modus geöffnet"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:729
+#: ../../../ui/wxWidgets/CompareDlg.cpp:754
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:968
 #: ../../../ui/wxWidgets/SyncWizard.cpp:618
 #, c-format
@@ -1038,52 +1027,47 @@ msgstr ""
 "hat doppelte Einträge mit derselben Gruppe/Titel/Benutzer-Kombination. Bitte "
 "bereinigen Sie das durch Überprüfen der Datenbank."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:730
+#: ../../../ui/wxWidgets/CompareDlg.cpp:755
 #: ../../../ui/wxWidgets/SyncWizard.cpp:617
 msgid "Synchronization failed"
 msgstr "Synchronisation fehlgeschlagen"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:751
-#: ../../../ui/wxWidgets/CompareDlg.cpp:754
-#, fuzzy
+#: ../../../ui/wxWidgets/CompareDlg.cpp:776
+#: ../../../ui/wxWidgets/CompareDlg.cpp:779
 msgid "Synchronize items"
 msgstr "Einträge Synchronisieren"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:752
-#, fuzzy
+#: ../../../ui/wxWidgets/CompareDlg.cpp:777
 msgid "Select fields to synchronize"
-msgstr "Keine Felder zum Synchronisieren ausgewählt!"
+msgstr "Kein Feld zum Synchronisieren ausgewählt"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:753
-#, fuzzy
+#: ../../../ui/wxWidgets/CompareDlg.cpp:778
 msgid "You must select some fields to synchronize"
-msgstr "Einige Felder müssen ausgewählt sein zum "
+msgstr "Einige Felder müssen zum Synchronisieren ausgewählt sein"
 
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:81
 msgid "Create Shortcut"
 msgstr "Verknüpfung erstellen"
 
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:110
-#, fuzzy
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:127
 msgid "Shortcut to "
-msgstr "Verknüpfung # "
+msgstr "Verknüpfung zu "
 
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:182
-#, fuzzy
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:200
 msgid "Please enter the shortcut properties to the selected base entry."
-msgstr "Details dieser Verknüpfung zum Basiseintrag '%s':"
+msgstr ""
+"Bitte geben Sie die Verknüpfungseigenschaften zum ausgewählten Basiseintrag "
+"ein."
 
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:185
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:240
-#, fuzzy
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:203
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:258
 msgid "Shortcut"
 msgstr "Schnelltasten"
 
-#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:207
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:281
-#, fuzzy
+#: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:225
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:299
 msgid "Base Entry"
-msgstr "Basiseintrag:"
+msgstr "Basiseintrag"
 
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:47
 msgid "Encryption"
@@ -1103,16 +1087,16 @@ msgstr "Bitte geben Sie einen Entschlüsselungsschlüssel ein."
 
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:59
 msgid "Enter Key:"
-msgstr "Kürzel eingeben:"
+msgstr "Schlüssel eingeben:"
 
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:66
 msgid "Verify Key:"
-msgstr "Überprüfe Schlüssel:"
+msgstr "Überprüfungs Schlüssel:"
 
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:105
-#: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:71
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:357
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:327
+#: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:72
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:399
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:329
 msgid "The combination cannot be blank."
 msgstr "Das Master-Passwort darf nicht leer sein."
 
@@ -1127,7 +1111,7 @@ msgid "The entry cannot be blank."
 msgstr "Der Eintrag darf nicht leer sein."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:68
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1123
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1180
 msgid ""
 "Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
 "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
@@ -1139,7 +1123,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:78
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:78
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:207
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:208
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:152
 msgid "Safe Combination:"
 msgstr "Master-Passwort:"
@@ -1147,16 +1131,16 @@ msgstr "Master-Passwort:"
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:97
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:81
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:200
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:231
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:179
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:232
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:187
 msgid "Show Combination"
 msgstr "Passwort anzeigen"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:105
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:102
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:242
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:211
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:218
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:243
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:213
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:168
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:364
 #: ../../../ui/wxWidgets/YubiMixin.cpp:56
@@ -1164,21 +1148,21 @@ msgid "Please insert your YubiKey"
 msgstr "Bitte YubiKey hineinstecken"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:142
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:364
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:539
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:333
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:403
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:406
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:581
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:335
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:405
 msgid "File or path not found."
 msgstr "Datei oder Pfad nicht gefunden."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:149
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1143
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1200
 msgid "That file is already open."
 msgstr "Diese Datei ist bereits geöffnet."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:156
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:413
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:304
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:455
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:306
 msgid ""
 "Incorrect passkey, not a PasswordSafe database, or a corrupt database. "
 "(Backup database has same name as original, ending with '~')"
@@ -1243,12 +1227,13 @@ msgstr "Das Hineinziehen hatte ein unerwartetes Ergebnis zur Folge."
 msgid "Edit Shortcut"
 msgstr "Verknüpfung bearbeiten"
 
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:237
-#, fuzzy
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:255
 msgid "Please edit the shortcut properties to the selected base entry."
-msgstr "Details dieser Verknüpfung zum Basiseintrag '%s':"
+msgstr ""
+"Bitte bearbeiten Sie die Verknüpfungseigenschaften zum ausgewählten "
+"Basiseintrag."
 
-#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:264
+#: ../../../ui/wxWidgets/EditShortcutDlg.cpp:282
 msgid "Target last changed on:"
 msgstr "Ziel wurde zuletzt geändert am:"
 
@@ -1286,9 +1271,9 @@ msgstr "Auch benutzt um Punktzeichen im Titel-Feld zu ersetzen."
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:246
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:388
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:366
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:223
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:251
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:235
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:229
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:252
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:237
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:177
 msgid "&OK"
 msgstr ""
@@ -1296,9 +1281,9 @@ msgstr ""
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:139
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:249
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:391
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:227
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:255
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:231
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:233
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:256
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:233
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:180
 msgid "&Cancel"
 msgstr "&Abbrechen"
@@ -1307,10 +1292,10 @@ msgstr "&Abbrechen"
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:166
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:252
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:394
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:668
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:230
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:258
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:219
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:690
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:236
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:259
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:221
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:157
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:200
@@ -1318,7 +1303,6 @@ msgid "&Help"
 msgstr "&Hilfe"
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:149
-#, fuzzy
 msgid "&Advanced..."
 msgstr "Erweitert..."
 
@@ -1454,12 +1438,11 @@ msgid "&New"
 msgstr "&Neu"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:151
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:588
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:602
 msgid "&Edit"
 msgstr "&Bearbeiten"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:154
-#, fuzzy
 msgid "&Copy"
 msgstr "&Kopieren "
 
@@ -1473,20 +1456,19 @@ msgid "&Import"
 msgstr "&Importieren"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:163
-#, fuzzy
 msgid "E&xport"
 msgstr "Exportieren"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:172
-#, fuzzy
 msgid "Selected Filter Details:"
-msgstr "Details zur ausgewählten Richtlinie:"
+msgstr "Details zum ausgewählten Filter:"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:159
 msgid "Available Password Policies:"
 msgstr "Vorhandene Passwortrichtlinien:"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:183
+#: ../../../ui/wxWidgets/ToolbarButtons.h:213
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -1524,6 +1506,7 @@ msgid "Selected policy details:"
 msgstr "Details zur ausgewählten Richtlinie:"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:267
+#: ../../../ui/wxWidgets/ToolbarButtons.h:199
 msgid "Close"
 msgstr "Schließen"
 
@@ -1570,37 +1553,36 @@ msgid "Not used"
 msgstr "Nicht benutzt"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:286
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1600
 msgid " Copy # "
-msgstr " Kopieren # "
+msgstr " Kopie # "
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:527
 msgid ""
 "There is no view available for attachments that are not of image media "
 "type.\n"
-msgstr ""
+msgstr "Keine Voranschau für Anhänge die keine Bilder darstellen verfügbar.\n"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:528
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:544
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:586
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1601
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:600
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1661
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:37
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:71
-#, fuzzy
 msgid "View Attachment"
 msgstr "Anzahl der Anhänge:"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:543
 msgid "No preview available due to an error."
-msgstr ""
+msgstr "Keine Vorschau wegen eines Fehlers verfügbar."
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:676
 msgid "There was an error autotyping.  "
-msgstr "Bei der automatischen Eingabe ist ein Fehler aufgetreten."
+msgstr "Bei der automatischen Eingabe ist ein Fehler aufgetreten.  "
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:676
-#, fuzzy
 msgid "Autotype error"
-msgstr "Autom. Eingabe"
+msgstr "Fehler autom. Eingabe"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:696
 msgid ""
@@ -1638,14 +1620,14 @@ msgstr "Fehler beim Parsen des auszuführenden Kommandos"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:333
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:339
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:347
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:146
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:524
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:158
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:566
 msgid "Write Error"
 msgstr "Schreibfehler"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:60
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:145
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:523
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:157
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:565
 msgid "Could not open file for writing!"
 msgstr "Kann Datei nicht zum Schreiben öffnen!"
 
@@ -1669,7 +1651,7 @@ msgid "Do you want to save changes to the password database: "
 msgstr "Möchten Sie die Änderungen an der Passwortdatenbank speichern: "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:143
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:485
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:527
 msgid "Please choose a name for the new database"
 msgstr "Bitte wählen Sie einen Namen für die neue Datenbank aus"
 
@@ -1678,7 +1660,7 @@ msgid "psafe3 files (*.psafe3)|*.psafe3|All files(*.*; *)|*.*;*"
 msgstr "psafe3 Dateien (*.psafe3)|*.psafe3|All files(*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:208
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:450
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:492
 msgid "Please Choose a Database to Open:"
 msgstr "Bitte wählen Sie eine Datenbank zum Öffnen aus:"
 
@@ -1863,9 +1845,8 @@ msgid "Exporting database: "
 msgstr "Exportiere Datenbank: "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:811
-#, fuzzy
 msgid "Export complete.  Do you wish to see a detailed report?"
-msgstr "Möchten Sie einen ausführlichen Bericht sehen?"
+msgstr "Export beendet. Möchten Sie einen ausführlichen Bericht sehen?"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:822
 msgid "No entries satisfied your selection criteria and so none were exported!"
@@ -1918,7 +1899,7 @@ msgstr "Importierte %ls Datei: %ls"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:892
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:897
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:203
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:215
 #: ../../../ui/wxWidgets/SyncWizard.cpp:572
 #: ../../../ui/wxWidgets/wxUtilities.cpp:59
 #: ../../../ui/wxWidgets/wxUtilities.cpp:64
@@ -1927,7 +1908,7 @@ msgid "File Read Error"
 msgstr "Dateilesefehler"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:893
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:202
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:214
 #: ../../../ui/wxWidgets/wxUtilities.cpp:58
 msgid "Could not open file for reading!"
 msgstr "Konnte Datei nicht zum Lesen öffnen!"
@@ -2186,24 +2167,24 @@ msgstr "Zusammenführung von Datenbank: "
 msgid "Merge Complete"
 msgstr "Zusammenführung beendet"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:104
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:116
 msgid "Please Choose a Name for this Backup:"
 msgstr "Bitte wählen Sie einen Namen für diese Sicherungsdatei aus:"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:111
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:165
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:123
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:177
 msgid "Could not parse current file path"
 msgstr "Konnte aktuellen Dateipfad nicht parsen"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:119
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:131
 msgid "Password Safe Backups (*.bak)|*.bak"
 msgstr "Password Safe Sicherungen (*.bak)|*.bak"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:169
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:181
 msgid "Please Choose a Backup to Restore:"
 msgstr "Wählen Sie eine Sicherungsdatei zur Wiederherstellung:"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:173
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:185
 msgid ""
 "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
 "ibak)|*.ibak||"
@@ -2211,7 +2192,7 @@ msgstr ""
 "Password Safe Sicherungen (*.bak)|*.bak|Password Safe Zwischensicherungen (*."
 "ibak)|*.ibak||"
 
-#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:210
+#: ../../../ui/wxWidgets/MenuManageHandlers.cpp:222
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <hergestellte Sicherung ohne Titel>"
 
@@ -2272,7 +2253,6 @@ msgstr "Inkrementierte Nummer [001-999]"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:132
 #: ../../../core/core_st.cpp:66
-#, fuzzy
 msgid "Copy password to clipboard"
 msgstr "Passwort in Zwischenablage kopieren"
 
@@ -2281,13 +2261,13 @@ msgid "Edit/View selected entry"
 msgstr "Ausgewählten Eintrag bearbeiten/anzeigen"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:134
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:613
-#: ../../../core/core_st.cpp:62
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:623
+#: ../../../ui/wxWidgets/ToolbarButtons.h:208 ../../../core/core_st.cpp:62
 msgid "Autotype"
 msgstr "Autom. Eingabe"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:135
-#: ../../../ui/wxWidgets/ToolbarButtons.h:208 ../../../core/core_st.cpp:63
+#: ../../../ui/wxWidgets/ToolbarButtons.h:209 ../../../core/core_st.cpp:63
 msgid "Browse to URL"
 msgstr "URL aufrufen"
 
@@ -2439,179 +2419,188 @@ msgid "Show Menu Separator"
 msgstr "Menütrenner anzeigen"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:538
+msgid "Auto-adjust column width"
+msgstr "Optimierte Zellgröße in der Tabellenansicht anzeigen"
+
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:542
+msgid "Show Text in Toolbar"
+msgstr "Icon-Text in Toolbar anzeigen"
+
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:546
 msgid "days before passwords expire"
 msgstr "Tag(e) bevor Passwörter ablaufen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:542
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:550
 msgid "&Fully collapsed"
 msgstr "Alles &zugeklappt"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:543
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:551
 msgid "&Fully expanded"
 msgstr "Alles &aufgeklappt"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:544
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:552
 msgid "&Same as when last saved"
 msgstr "Wie zuletzt &gespeichert"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:545
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:553
 msgid "Initial Tree View"
 msgstr "Initiale Baumansicht"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:572
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:582
 msgid "Confirm deletion of items"
 msgstr "Löschen von Elementen bestätigen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:576
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:586
 msgid "Record last access times"
 msgstr "Datum des letzten Zugriffs speichern"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:580
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:590
 msgid "Escape key closes application"
 msgstr "Anwendung mit Escapetaste schließen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:616
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:626
 msgid "Minimize after Autotype"
 msgstr "Nach autom. Eingabe minimieren"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:622
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:632
 msgid "Default Autotype string:"
 msgstr "Steuerzeichen für autom. Eingabe:"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:629
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:639
 msgid "Default Username"
 msgstr "Standard-Benutzername"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:634
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:644
 msgid "Use"
 msgstr "Verwende"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:641
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:651
 msgid "as default username"
 msgstr "als Standardbenutzername"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:645
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:655
 msgid "Query user to set default username"
 msgstr "Benutzer zum Setzen des Standardbenutzernamens auffordern"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:649
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:659
 msgid "Alternate Browser"
 msgstr "Alternativer Browser"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:663
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:673
 msgid "Browser Command Line parameters"
 msgstr "Browser Kommandozeilenparameter"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:692
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:702
+#: ../../../ui/wxWidgets/ToolbarButtons.h:201
 msgid "Save"
-msgstr "Speichere"
+msgstr "Speichern"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:707
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:717
 msgid "previous passwords per entry"
 msgstr "bisherige Passwörter pro Eintrag"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:714
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:724
 msgid "Default password expiration (days)"
 msgstr "Standardkennwortablauf (Tagen)"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:729
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:739
 msgid "Manage password history of current entries"
 msgstr "Verwaltung der Passworthistorie aktueller Einträge"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:732
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:742
 msgid "No change"
 msgstr "Keine Änderung durchführen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:736
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:746
 msgid "Stop saving previous passwords"
 msgstr "Speicherung vorheriger Passwörter beenden"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:740
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:750
 msgid "Start saving previous passwords"
 msgstr "Speicherung vorheriger Passwörter beginnen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:744
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:754
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Maximale Anzahl gespeicherten Passwörtern auf obigen Wert setzen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:748
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:758
 msgid "Clear password history for ALL entries"
 msgstr "Passworthistorie für sämtliche Einträge löschen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:752
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:762
 msgid "Apply these changes to Protected Entries (if required)."
 msgstr "Änderungen an geschützten Einträgen anwenden (wenn gefordert)."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:756
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:766
 msgid "Apply"
 msgstr "Übernehmen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:775
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:785
 msgid "Clear clipboard upon minimize"
 msgstr "Zwischenablage nach Minimieren löschen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:779
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:789
 msgid "Clear clipboard upon exit"
 msgstr "Zwischenablage nach Beenden löschen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:783
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:793
 msgid "Confirm copy of password to clipboard"
 msgstr "Kopieren des Passworts in die Zwischenablage bestätigen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:787
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:797
 msgid "'Browse to URL' copies password to clipboard"
 msgstr "Mit 'Gehe zu URL' das Passwort in die Zwischenablage kopieren"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:791
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:801
 msgid "Lock password database on minimize"
 msgstr "Passwortdatenbank sperren wenn Anwendung minimiert"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:795
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:805
 msgid "Lock password database on workstation lock"
 msgstr "Passwortdatenbank sperren wenn Computer gesperrt"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:801
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:811
 msgid "Lock password database after"
 msgstr "Passwortdatenbank sperren nach"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:816
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:826
 msgid "minutes idle"
 msgstr "Minute(n) Leerlauf"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:821
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:831
 msgid "Unlock Difficulty:"
 msgstr "Entsperrschwierigkeitsgrad:"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:829
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:839
 msgid "Standard"
 msgstr "Standard"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:834
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:844
 msgid "Maximum"
 msgstr "Maximum"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:878
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:888
 msgid "System Tray"
 msgstr "Infobereich"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:881
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:891
 msgid "Put icon in System Tray"
 msgstr "Symbol im Infobereich"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:887
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:918
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:897
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:928
 msgid "  Remember last"
 msgstr "Merke letzte"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:901
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:911
 msgid "used entries in System Tray menu"
 msgstr "benutzte Einträge im Infobereich"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:904
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:914
 msgid "Start PasswordSafe at Login"
 msgstr "Password Safe beim Anmelden starten"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:908
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:918
 msgid ""
 "There appears to be no system tray support in your current environment.\n"
 "Any related functionality may not work as expected."
@@ -2620,37 +2609,37 @@ msgstr ""
 "Jegliche damit verbundene Funktionalität wird möglicherweise nicht\n"
 "erwartungsgemäß funktionieren."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:913
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:923
 msgid "Recent PasswordSafe Databases"
 msgstr "Zuletzt verwendete Password Safe-Datenbanken"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:932
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:942
 msgid "databases"
 msgstr "Datenbanken"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:935
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:945
 msgid "Recent Databases on File Menu rather than as a sub-menu"
 msgstr ""
 "Zuletzt verwendete Datenbanken direkt im Dateimenü aufführen,\n"
 "anstatt als Untermenü"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:939
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:949
 msgid "Open database as read-only by default"
 msgstr "Datenbank standardmäßig nur lesend öffnen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:943
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:953
 msgid "Allow multiple instances"
 msgstr "Mehrere Instanzen erlauben"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:948
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:958
 msgid "Use Primary Selection for clipboard"
 msgstr "Primäre Auswahl für Zwischenablage verwenden"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:952
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:962
 msgid "Use alternate AutoType method"
 msgstr "Alternative Methode für autom. Eingabe verwenden"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:954
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:964
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
 "XSendEvent can handle more control keys, but may be blocked by some "
@@ -2661,24 +2650,24 @@ msgstr ""
 "XSendEvent beherrscht mehr Steuertasten, kann jedoch durch andere "
 "Anwendungen blockiert sein."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:956
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:966
 msgid "If AutoType doesn't work, setting this may help."
 msgstr ""
 "Falls die autom. Eingabe nicht funktioniert, kann diese Einstellung evtl. "
 "Abhilfe schaffen."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1377
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1391
 msgid "Select a Browser"
 msgstr "Browser auswählen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1401
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1415
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to not save password "
 "history was: %d"
 msgstr "Bei %d Einträgen wurde das Speichern der Passworthistorie abgeschaltet"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1406
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1420
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to save password history "
@@ -2686,7 +2675,7 @@ msgid ""
 msgstr ""
 "Bei %d Einträgen wurde das Speichern der Passworthistorie eingeschaltet"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1411
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1425
 #, c-format
 msgid ""
 "Number of entries that had their 'maximum saved passwords' changed to the "
@@ -2695,48 +2684,48 @@ msgstr ""
 "Bei %d Einträgen wurde die 'max. Anzahl vorherige Passwörter' auf den neuen "
 "Standardwert geändert"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1416
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1430
 #, c-format
 msgid "Number of entries that had their password history removed was %d"
 msgstr "Bei %d Einträgen wurde die Passworthistorie entfernt"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:407
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:426
 msgid "Another instance of Password Safe is already running"
 msgstr "Eine andere Instanz von Password Safe läuft bereits"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:443
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:452
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:462
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:471
 msgid "Could not initialize help subsystem. Help will not be available."
 msgstr ""
 "Konnte die Hilfe nicht initialisieren. Diese wird somit nicht zur Verfügung "
 "stehen."
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:444
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:453
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:463
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:472
 msgid "Password Safe: Error initializing help"
 msgstr "Password Safe: Fehler beim Initialisieren der Hilfe"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:445
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:464
 msgid "Don't show this warning again"
 msgstr "Diese Warnung nicht nochmals anzeigen"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:821
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:849
 msgid "Missing help definition for page \""
 msgstr "Fehlende Definition der Hilfe für die Seite \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:822
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:850
 msgid "\" of \""
 msgstr "\" von \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:827
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:855
 msgid "Missing help definition for window \""
 msgstr "Fehlende Definition der Hilfe für das Fenster \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:838
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:866
 msgid "Please inform the developers."
 msgstr "Bitte informieren Sie die Entwickler."
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:839
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:867
 msgid "Help Undefined"
 msgstr "Undefinierte Hilfe"
 
@@ -2787,538 +2776,550 @@ msgstr "Standard Richtlinienname ist ​nicht erlaubt"
 msgid "Policy Error"
 msgstr "Richtlinienfehler"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:494
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:508
 msgid "&New..."
 msgstr "&Neu..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:495
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:509
 msgid "&Open..."
 msgstr "Ö&ffnen..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:500
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:514
 msgid "&Unlock Safe\tCtrl+I"
 msgstr "Safe &entsperren\tCtrl+I"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:503
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:517
 msgid "&Lock Safe\tCtrl+J"
 msgstr "Safe &sperren\tCtrl+J"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:517
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:531
 msgid "&Recent Safes..."
 msgstr "&Letzte Datenbanken..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:524
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:538
 msgid "Clear Recent Safe List"
 msgstr "Aktuelle Liste löschen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:526
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:540
 msgid "&Save..."
 msgstr "&Speichern"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:527
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:541
 msgid "Save &As..."
 msgstr "Speichern &unter..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:531
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:545
 msgid "v&1.x format..."
 msgstr "v&1.x Format..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:532
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:546
 msgid "v&2 format..."
 msgstr "v&2 Format..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:533
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:547
 msgid "v&4 format (EXPERIMENTAL)..."
 msgstr "v&4 Format (EXPERIMENTAL)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:534
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:548
 msgid "&Plain Text (tab separated)..."
 msgstr "&Klartext (Tabulatortrennung)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:535
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:540
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:549
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:554
 msgid "&XML format..."
 msgstr "&XML Format..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:536
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:550
 msgid "Export &To"
 msgstr "Exportieren &nach"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:539
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:553
 msgid "&Plain Text..."
 msgstr "&Klartext (Tabulatortrennung)..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:541
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:555
 msgid "&KeePass..."
 msgstr "&KeePass..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:542
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:556
 msgid "Import &From"
 msgstr "Importieren &von"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:544
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:558
 msgid "&Merge..."
 msgstr "&Zusammenführen..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:545
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:559
 msgid "&Compare..."
 msgstr "&Vergleichen..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:546
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:560
 msgid "S&ynchronize..."
 msgstr "S&ynchronisieren..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:548
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:562
 msgid "&Properties"
 msgstr "&Eigenschaften"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:550
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:564
 msgid "E&xit"
 msgstr "&Beenden"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:551
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:565
 msgid "&File"
 msgstr "&Datei"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:558
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:572
 msgid "&Add Entry...\tCtrl+A"
 msgstr "Eintrag &hinzufügen...\tCtrl+A"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:560
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:574
 msgid "&View Entry...\tCtrl+Enter"
 msgstr "Eintrag &anzeigen...\tCtrl+Enter"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:563
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:577
 msgid "Edit Entry...\tCtrl+Enter"
 msgstr "Eintrag bearbeiten...\tCtrl+Enter"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:565
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:579
 msgid "&Delete Entry\tDel"
 msgstr "Eintrag &löschen\tDel"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:566
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:580
 msgid "Rename Entry\tF2"
 msgstr "Eintrag umbenennen\tF2"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:567
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:581
 msgid "&Find Entry...\tCtrl+F"
 msgstr "Eintrag &suchen...\tCtrl+F"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:568
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:582
 msgid "&Duplicate Entry\tCtrl+D"
 msgstr "Eintrag &duplizieren\tCtrl+D"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:569
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1604
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:583
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1664
 msgid "Protect Entry"
 msgstr "Eintrag schützen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:571
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:585
 msgid "Add Group"
 msgstr "Gruppe hinzufü&gen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:575
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:589
 msgid "C&lear Clipboard\tCtrl+Del"
 msgstr "Zwischenablage &löschen\tCtrl+Del"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:577
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:591
 msgid "&Copy Password to Clipboard\tCtrl+C"
 msgstr "Passwort in Zwischenablage &kopieren\tCtrl+C"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:578
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:592
 msgid "Copy &Username to Clipboard\tCtrl+U"
 msgstr "Ben&utzername in Zwischenablage kopieren\tCtrl+U"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:579
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:593
 msgid "Copy &Notes to Clipboard\tCtrl+G"
 msgstr "&Notizen in Zwischenablage kopieren\tCtrl+G"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:580
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:594
 msgid "Copy URL to Clipboard\tCtrl+Alt+L"
 msgstr "URL in Zwischenablage kopieren\tCtrl+Alt+L"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:581
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:595
 msgid "&Browse to URL\tCtrl+L"
 msgstr "&URL aufrufen\tCtrl+L"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:582
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:596
 msgid "Perform Auto&type\tCtrl+T"
 msgstr "Autom. Eingabe &ausführen\tCtrl+T"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:583
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1554
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:597
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1614
 msgid "Create &Shortcut"
 msgstr "&Verknüpfung erstellen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:584
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:598
 msgid "Go to Base entry"
 msgstr "Zum Basiseintrag navigieren"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:595
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:609
 msgid "Flattened &List"
 msgstr "&Tabellenstruktur"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:596
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:610
 msgid "Nested &Tree"
 msgstr "&Baumstruktur"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:598
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:614
+msgid "Sort by Group"
+msgstr "Sortierung gemäß Gruppe"
+
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:615
+msgid "Sort by Name"
+msgstr "Sortierung gemäß Namen"
+
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:616
+msgid "Sort by Date"
+msgstr "Sortierung gemäß Datum"
+
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:617
+msgid "Tree Sort"
+msgstr "Sortierung im Baum"
+
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:620
 msgid "Toolbar &visible"
 msgstr "Toolleiste &sichtbar"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:599
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:621
 msgid "&New Toolbar"
 msgstr "&Moderne Toolleiste"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:600
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:622
 msgid "&Classic Toolbar"
 msgstr "&Klassische Toolleiste"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:601
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:623
 msgid "&Dragbar visible"
 msgstr "&Dragleiste sichtbar"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:603
-#: ../../../ui/wxWidgets/ToolbarButtons.h:216
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:625
+#: ../../../ui/wxWidgets/ToolbarButtons.h:217
 msgid "Expand All"
 msgstr "Alles aufklappen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:604
-#: ../../../ui/wxWidgets/ToolbarButtons.h:217
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:626
+#: ../../../ui/wxWidgets/ToolbarButtons.h:218
 msgid "Collapse All"
 msgstr "Alles zuklappen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:607
-#, fuzzy
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:629
 msgid "&Unsaved Changes"
-msgstr "Ingesicherte Änderungen"
+msgstr "&Ungesicherte Änderungen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:608
-#, fuzzy
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:630
 msgid "Entries with E&xpiry Dates"
-msgstr "Einträge mit &Ablaufdatum anzeigen"
+msgstr "Einträge mit Ablaufdatum anzeigen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:609
-#, fuzzy
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:631
 msgid "Last Find results"
 msgstr "Zuletzt gefundene Einträge"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:610
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:632
 msgid "Subviews"
-msgstr ""
+msgstr "Unteransichten"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:613
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:635
 msgid "&New/Edit Filter..."
 msgstr "Filter &neu/bearbeiten..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:614
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:636
 msgid "&Apply current"
 msgstr "&Aktuelles anwenden"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:615
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:637
 msgid "&Manage..."
 msgstr "&Verwalten..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:616
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:638
 msgid "&Filters"
 msgstr "&Filter"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:618
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:640
 msgid "Customize &Main Toolbar..."
 msgstr "&Toolleiste anpassen..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:621
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:643
 msgid "&Tree/List Font"
 msgstr "&Baum/Listen Schriftart"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:622
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:644
 msgid "&Add/Edit Font"
 msgstr "&Hinzufügen/Bearbeiten Schriftart"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:623
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:645
 msgid "&Password Font"
 msgstr "&Passwort Schriftart"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:624
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:646
 msgid "&Notes Font"
 msgstr "&Notizen Schriftart"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:627
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:649
 msgid "Change &Font"
 msgstr "Schriftart &ändern"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:631
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:653
 msgid "&Find"
 msgstr "&Suchen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:632
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:654
 msgid "Import &Text"
 msgstr "&Text importieren"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:633
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:655
 msgid "Import &XML"
 msgstr "&XML importieren"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:634
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:656
 msgid "&Merge"
 msgstr "&Zusammenführen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:635
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:657
 msgid "&Validate"
 msgstr "Ü&berprüfen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:636
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:658
 msgid "Reports"
 msgstr "Berichte"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:637
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:659
 msgid "&View"
 msgstr "&Ansicht"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:644
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:666
 msgid "&Change Safe Combination..."
 msgstr "&Master-Passwort ändern..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:646
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:668
 msgid "Make &Backup...\tCtrl+B"
 msgstr "&Sicherung erstellen...\tCtrl+B"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:647
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:669
 msgid "&Restore from Backup...\tCtrl+R"
 msgstr "Aus Sicherung &wiederherstellen...\tCtrl+R"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:649
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:671
 msgid "&Options...\tCtrl+M"
 msgstr "&Optionen...\tCtrl+M"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:650
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:672
 msgid "Password Policies..."
 msgstr "Passwortrichtlinien..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:652
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:674
 msgid "Generate &Password...\tCtrl+P"
 msgstr "&Passwort generieren...\tCtrl+P"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:652
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:674
 msgid "Generate Password"
 msgstr "Passwort generieren"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:654
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:676
 msgid "YubiKey..."
 msgstr "YubiKey..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:654
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:676
 msgid "Configure and backup YubiKeys"
 msgstr "YubiKeys konfigurieren und sichern"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:658
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:680
 msgid "&Manage"
 msgstr "&Verwalten"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:665
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:687
 msgid "Get &Help"
 msgstr "&Hilfe\tF1"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:666
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:688
 msgid "Visit Password Safe &website..."
 msgstr "Password Safe &Webseite besuchen..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:667
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:689
 #: ../../../ui/wxWidgets/SystemTray.cpp:146
 msgid "&About Password Safe..."
 msgstr "Über &Password Safe..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:767
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:813
 msgid "Select Language"
 msgstr "Sprache ändern"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1143
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1200
 msgid "Open database"
 msgstr "Öffne Datenbank"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1468
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1525
 #, c-format
 msgid "Unknown code: %d"
 msgstr "Unbekannter Feldercode: %d"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1509
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1522
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1566
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1582
 msgid "Add &Entry"
 msgstr "&Eintrag hinzufügen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1510
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1569
 msgid "Add &Group"
 msgstr "&Gruppe hinzufügen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1513
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1572
 msgid "&Rename Group"
 msgstr "&Gruppe umbenennen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1514
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1573
 msgid "&Delete Group"
 msgstr "&Gruppe löschen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1529
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1589
 msgid "Copy &Username to Clipboard"
 msgstr "Ben&utzername in Zwischenablage kopieren"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1530
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1590
 msgid "&Copy Password to Clipboard"
 msgstr "&Passwort in Zwischenablage kopieren"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1531
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1591
 msgid "Display subset of Password"
 msgstr "Teilmenge des Passwortes anzeigen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1533
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1593
 msgid "Display Password as &QR code"
 msgstr "Passwort als &QR Code anzeigen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1535
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1595
 msgid "Copy &Notes to Clipboard"
 msgstr "&Notizen in Zwischenablage kopieren"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1536
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1596
 msgid "Copy UR&L to Clipboard"
 msgstr "UR&L in Zwischenablage kopieren"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1537
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1597
 msgid "Copy email to Clipboard"
 msgstr "E-Mail in Zwischenablage kopieren"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1538
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1598
 msgid "Copy Run Command to Clipboard"
 msgstr "Auszuführendes Kommando in Zwischenablage kopieren"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1540
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1600
 #: ../../../ui/wxWidgets/SystemTray.cpp:205
 msgid "&Browse to URL"
 msgstr "&URL aufrufen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1541
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1601
 #: ../../../ui/wxWidgets/SystemTray.cpp:206
 msgid "Browse to URL + &Autotype"
 msgstr "URL aufrufen + Autom. Eingabe &ausführen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1542
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1602
 msgid "Send &email"
 msgstr "&E-Mail senden"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1543
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1603
 #: ../../../ui/wxWidgets/SystemTray.cpp:213
 msgid "&Run Command"
 msgstr "&Kommando ausführen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1544
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1604
 msgid "Perform Auto &Type"
 msgstr "Autom. Eingabe &ausführen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1547
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1607
 msgid "&View Entry..."
 msgstr "Eintrag &anzeigen..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1550
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1610
 msgid "Edit Entry..."
 msgstr "Eintrag bearbeiten..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1552
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1612
 msgid "&Duplicate Entry"
 msgstr "Eintrag &duplizieren"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1553
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1613
 msgid "Delete Entry"
 msgstr "Eintrag löschen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1595
-#, fuzzy
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1655
 msgid "Goto &Shortcuts..."
-msgstr "Schnelltasten"
+msgstr "Schnelltasten..."
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1598
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1658
 msgid "&Go to Base entry"
 msgstr "&Gehe zum Basiseintrag"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1599
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1659
 msgid "&Edit Base entry"
 msgstr "Basis&eintrag bearbeiten"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2043
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2110
 msgid "Could not re-load database: "
 msgstr "Konnte Datenbank nicht erneut laden: "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2044
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2111
 msgid "Error re-loading last database"
 msgstr "Fehler beim erneuten Laden der letzten Datenbak"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2291
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2358
 msgid "There was an error loading the database: "
 msgstr "Beim Laden der Datenbank ist ein Fehler aufgetreten: "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2292
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2359
 msgid "Could not load database"
 msgstr "Konnte Datenbank nicht laden"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2354
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2421
 msgid "Group copied "
 msgstr "Gruppe kopiert"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2357
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2424
 msgid "Title copied "
 msgstr "Titel kopiert"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2360
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2427
 msgid "User copied "
 msgstr "Benutzer kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2363
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2430
 msgid "Pswd copied "
 msgstr "Passwort kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2366
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2433
 msgid "Notes copied "
 msgstr "Notizen kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2369
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2436
 msgid "URL copied "
 msgstr "URL kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2372
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2439
 msgid "Autotype copied "
 msgstr "Autom. Eingabe kopiert"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2375
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2442
 msgid "RunCmd copied "
 msgstr "Auszuführendes Kommando kopiert"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2378
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2445
 msgid "Email copied "
 msgstr "Email kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2381
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2448
 msgid "Password History copied "
 msgstr "Passworthistorie kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2384
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2451
 msgid "Old Pswd copied "
 msgstr "Altes Passwort kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2423
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2490
 msgid "Select Tree/List display font"
 msgstr "Schriftart für Baum-/Listenansicht auswählen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2440
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2507
 msgid "Select Add/Edit display font"
 msgstr "Schriftart für Hinzufügen/Bearbeiten auswählen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2444
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2511
 msgid "Select Password display font"
 msgstr "Schriftart für Passwort auswählen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2448
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2515
 msgid "Select Notes display font"
 msgstr "Schriftart für Notizen auswählen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2452
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2519
 msgid "Select Virtual Keyboard font"
 msgstr "Schriftart für virtuelle Tastatur auswählen"
 
@@ -3521,19 +3522,17 @@ msgid "Please enter the new database description"
 msgstr "Bitte geben Sie eine neue Datenbankbeschreibung ein"
 
 #: ../../../ui/wxWidgets/QRCodeDlg.cpp:61
-#, fuzzy
 msgid "Closing in "
-msgstr "Suchleiste schließen"
+msgstr "Schliesst in "
 
 #: ../../../ui/wxWidgets/QRCodeDlg.cpp:76
-#, fuzzy
 msgid "Could not generate QR code"
-msgstr "Konnte die Suchleiste nicht erstellen"
+msgstr "Konnte QR code nicht erstellen"
 
 #: ../../../ui/wxWidgets/QRCodeDlg.cpp:114
 #, c-format
 msgid "%d seconds"
-msgstr ""
+msgstr "%d Sekunden"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:100
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:102
@@ -3562,82 +3561,79 @@ msgstr "Neues Master-Passwort:"
 msgid "Confirmation:"
 msgstr "Bestätigung:"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:291
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:297
 msgid "The old safe combination is not correct"
 msgstr "Das alte Master-Passwort ist nicht korrekt"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:295
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:301
 msgid "Cannot verify old safe combination - file gone?"
 msgstr "Kann das alte Master-Passwort nicht prüfen - Datei weg?"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:299
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:305
 msgid "New safe combination and confirmation do not match"
 msgstr "Neues Master-Passwort und Bestätigung sind nicht identisch"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:309
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:315
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:263
 msgid "Weak passphrase:"
 msgstr "Schwaches Master-Passwort:"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:314
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:320
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:268
 msgid "Use it anyway?"
 msgstr "Trotzdem benutzen?"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:367
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:401
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:373
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:407
 msgid "YubiKey safe combination incorrect"
 msgstr "Das YubiKey Master-Passwort ist nicht korrekt"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:369
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:375
 msgid "Enter new safe combination (if any) and click on bottom Yubikey button"
 msgstr ""
 "Geben Sie bitte, falls vorhanden, ein neues Master-Passwort ein und drücken "
 "Sie den unteren Yubikey Button"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:392
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:398
 msgid "Please confirm existing combination"
 msgstr "Bestätigen Sie bitte das existierende Master-Passwort"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:409
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:415
 msgid "Current safe combination incorrect"
 msgstr "Das aktuelle Master-Passwort ist nicht korrekt"
 
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:194
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:195
 msgid "Open Password Database:"
 msgstr "Passwortdatenbank öffnen:"
 
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:224
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:188
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:225
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:183
 msgid "Open as read-only"
 msgstr "Nur lesend öffnen"
 
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:235
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:236
 msgid "New..."
 msgstr "Neu..."
 
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:383
-#, fuzzy
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:425
 msgid "Could not lock file, opening read-only.\n"
-msgstr ""
-"Konnte die Datei nicht Sperren, so dass diese nur zum Lesen geöffnet wurde.\n"
-"Gesperrt durch "
+msgstr "Konnte die Datei nicht Sperren. Nur zum Lesen geöffnet.\n"
 
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:386
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:428
 msgid "Locked by "
 msgstr ""
 
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:392
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:434
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:269
 #: ../../../core/core_st.cpp:274
 msgid "Warning"
 msgstr "Warnung"
 
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:411
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:453
 msgid "Too many retries - exiting"
 msgstr "Zu viele Einträge - Beende"
 
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:452
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:494
 msgid ""
 "Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| "
 "All files (*.*; *)|*.*;*"
@@ -3645,7 +3641,7 @@ msgstr ""
 "Password Safe Datenbanken (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*."
 "dat| All files (*.*; *)|*.*;*"
 
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:487
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:529
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|"
 "*.*;*"
@@ -3665,12 +3661,12 @@ msgstr "Dateiname"
 msgid "Safe combination:"
 msgstr "Master-Passwort:"
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:224
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:226
 #: ../../../ui/wxWidgets/SystemTray.cpp:148
 msgid "&Exit"
 msgstr "&Beenden"
 
-#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:301
+#: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:303
 msgid "Three strikes - yer out!"
 msgstr "Drei Strikes - Du bist raus!"
 
@@ -3890,9 +3886,9 @@ msgid "Your database has been synchronized with \"%ls\""
 msgstr "Ihre Datenbank wurde synchronisiert mit \"%ls\""
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:586
-#, fuzzy, c-format
+#, c-format
 msgid "%ld %ls updated"
-msgstr "%d %ls aktualisiert"
+msgstr "%ld %ls aktualisiert"
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:588
 msgid "Synchronization completed successfully"
@@ -4047,25 +4043,62 @@ msgstr "E-Mail &Senden"
 msgid "&Delete from Recent Entry List"
 msgstr "&Löschen aus der Liste der letzten Einträge"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:810
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:915
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:917
 msgid "New Group"
 msgstr "Neue Gruppe"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:812
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:917
+msgid "\""
+msgstr "' "
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:917
+msgid "\" "
+msgstr "' "
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:917
+msgid "name exists"
+msgstr "Der Name existiert"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:917
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:963
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1395
+msgid "Double group name"
+msgstr "Doppelter Gruppenname"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:921
 msgid "Could not add empty group item to tree"
 msgstr "Konnte kein leeres Gruppenelement der Baumstruktur hinzufügen"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:825
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:934
 msgid "Renaming of non-Group items is not implemented"
 msgstr "Das Umbenennen von Nicht-Gruppenelementen ist nicht implementiert"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:852
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:963
+msgid "Same group name exists"
+msgstr "Der gleiche Gruppenname existiert bereits"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:977
 msgid "Dots are not allowed in group names"
 msgstr "Das Punktzeichen ist in Gruppennamen nicht erlaubt"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:852
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:977
 msgid "Invalid Character"
 msgstr "Ungültiges Zeichen"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1342
+msgid "Destination cannot be inside source tree"
+msgstr "Ziel kann nicht innerhalb des Quellbaums liegen"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1342
+msgid "Drag and Drop failed"
+msgstr "Drag und Drop fehlgeschlagen"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1395
+msgid "Duplicate group name (use Shift to overrule)"
+msgstr ""
+"Derselbe Gruppenname existiert bereits (verwenden Sie \"Umschalt\" zum "
+"Überstimmen)"
 
 #: ../../../ui/wxWidgets/ViewReportDlg.cpp:30
 msgid "View Report"
@@ -4169,9 +4202,8 @@ msgid "Add, Edit or View Entry"
 msgstr "Eintrag hinzufügen, bearbeiten oder anzeigen"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:269
-#, fuzzy
 msgid "No preview available"
-msgstr "Keine Nachricht zum Fehler vorhanden."
+msgstr "Keine Vorschau vorhanden"
 
 #: ../../../ui/wxWidgets/DeleteConfirmationDlg.h:43
 msgid "Delete Confirmation"
@@ -4189,13 +4221,13 @@ msgstr "Verwalte Filter"
 msgid "Manage Password Policies"
 msgstr "Passwortrichtlinien verwalten"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:133
-#: ../../../ui/wxWidgets/ToolbarButtons.h:219
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:135
+#: ../../../ui/wxWidgets/ToolbarButtons.h:220
 msgid "Options"
 msgstr "Optionen"
 
 # no translation needed
-#: ../../../ui/wxWidgets/PasswordSafeFrame.h:126
+#: ../../../ui/wxWidgets/PasswordSafeFrame.h:130
 #: ../../../ui/wxWidgets/wxMessages.h:23 ../../../ui/wxWidgets/wxMessages.h:38
 msgid "PasswordSafe"
 msgstr "PasswordSafe"
@@ -4204,7 +4236,7 @@ msgstr "PasswordSafe"
 msgid "Show a subset of the Password"
 msgstr "Teilmenge des Passwortes zeigen"
 
-#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.h:54
+#: ../../../ui/wxWidgets/SafeCombinationChangeDlg.h:55
 msgid "Change Safe Combination"
 msgstr "Ändere das Master-Passwort"
 
@@ -4224,63 +4256,103 @@ msgstr "Einstellung Master-Passwort"
 msgid "Set Display Filters"
 msgstr "Anzeigefilter setzen"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:196
+#: ../../../ui/wxWidgets/ToolbarButtons.h:197
+msgid "New"
+msgstr "Neu"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:197
 msgid "Make New Database"
 msgstr "Neue Datenbank erstellen"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:197
+#: ../../../ui/wxWidgets/ToolbarButtons.h:198
+msgid "Open"
+msgstr "Öffnen"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:198
 msgid "Open Another Database"
 msgstr "Andere Datenbank öffnen"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:198
+#: ../../../ui/wxWidgets/ToolbarButtons.h:199
 msgid "Close Database"
 msgstr "Datenbank schließen"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:199
+#: ../../../ui/wxWidgets/ToolbarButtons.h:200
+msgid "Lock"
+msgstr "Sperren"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:200
 msgid "Lock Database"
 msgstr "Datenbank sperren"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:200
+#: ../../../ui/wxWidgets/ToolbarButtons.h:201
 msgid "Save Database"
 msgstr "Datenbank speichern"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:202
+#: ../../../ui/wxWidgets/ToolbarButtons.h:203
 msgid "Copy Password to Clipboard"
 msgstr "Passwort in Zwischenablage kopieren"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:203
+#: ../../../ui/wxWidgets/ToolbarButtons.h:204 ../../../core/core_st.cpp:147
+msgid "Username"
+msgstr "Benutzername"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:204
 msgid "Copy Username to Clipboard"
 msgstr "Benutzername in Zwischenablage kopieren"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:204
+#: ../../../ui/wxWidgets/ToolbarButtons.h:205 ../../../core/core_st.cpp:134
+msgid "Notes"
+msgstr "Notizen"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:205
 msgid "Copy Notes to Clipboard"
 msgstr "Notizen in Zwischenablage kopieren"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:205
+#: ../../../ui/wxWidgets/ToolbarButtons.h:206
+msgid "Clr Clipboard"
+msgstr "Ablage löschen"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:206
 msgid "Clear the clipboard contents"
 msgstr "Inhalt der Zwischenablage löschen"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:207
+#: ../../../ui/wxWidgets/ToolbarButtons.h:208
 msgid "Perform Autotype"
 msgstr "Autom. Eingabe ausführen"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:209 ../../../core/core_st.cpp:70
+#: ../../../ui/wxWidgets/ToolbarButtons.h:209
+msgid "Browse URL"
+msgstr "URL aufrufen"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:210 ../../../core/core_st.cpp:70
 msgid "Send Email"
 msgstr "E-Mail senden"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:211
+#: ../../../ui/wxWidgets/ToolbarButtons.h:212
+msgid "Add"
+msgstr "Neu"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:212
 msgid "Add New Entry"
 msgstr "Neuen Eintrag hinzufügen"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:212
+#: ../../../ui/wxWidgets/ToolbarButtons.h:213
 msgid "Edit an Entry"
 msgstr "Eintrag bearbeiten"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:214
+#: ../../../ui/wxWidgets/ToolbarButtons.h:215
 msgid "Delete an Entry"
 msgstr "Eintrag löschen"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:221
+#: ../../../ui/wxWidgets/ToolbarButtons.h:217
+msgid "Expand"
+msgstr "Aufklappen"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:218
+msgid "Collapse"
+msgstr "Zuklappen"
+
+#: ../../../ui/wxWidgets/ToolbarButtons.h:222
 msgid "Help"
 msgstr "Hilfe"
 
@@ -4740,11 +4812,6 @@ msgstr "Gruppe/Titel"
 msgid "Keyboard Shortcut"
 msgstr "Tastaturkürzel"
 
-#: ../../../core/core_st.cpp:134
-#, fuzzy
-msgid "Notes"
-msgstr "Notizen:"
-
 #: ../../../core/core_st.cpp:136
 msgid "Password Modified Time"
 msgstr "Passwort Änderungszeit"
@@ -4776,10 +4843,6 @@ msgstr "Symbole"
 #: ../../../core/core_st.cpp:146
 msgid "URL"
 msgstr "URL"
-
-#: ../../../core/core_st.cpp:147
-msgid "Username"
-msgstr "Benutzername"
 
 #: ../../../core/core_st.cpp:148
 msgid "UUID"
@@ -5101,9 +5164,9 @@ msgid "  Invalid header: '%ls' (must be 5 hexadecimal characters)."
 msgstr "  Ungültiger Header: '%ls' (müssen 5 hexadezimale Zeichen sein)."
 
 #: ../../../core/core_st.cpp:206
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid lock file \"%ls\"."
-msgstr "Ungültiges Filterschema."
+msgstr "Ungültige Datei-Sperre \"%ls\"."
 
 #: ../../../core/core_st.cpp:207
 #, c-format
@@ -5322,7 +5385,7 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:248
 msgid "Unsaved changes"
-msgstr "Ingesicherte Änderungen"
+msgstr "Ungesicherte Änderungen"
 
 #: ../../../core/core_st.cpp:249
 msgid "is not set"
@@ -5395,9 +5458,8 @@ msgid "Pronounceable passwords"
 msgstr "Aussprechbare Passwörter"
 
 #: ../../../core/core_st.cpp:259
-#, fuzzy
 msgid "Use lowercase characters"
-msgstr "Verwende Großbuchstaben"
+msgstr "Verwende Kleinbuchstaben"
 
 #: ../../../core/core_st.cpp:261
 msgid "Use uppercase characters"
@@ -5763,9 +5825,8 @@ msgid "validation"
 msgstr "Überprüfung"
 
 #: ../../../core/core_st.cpp:340
-#, fuzzy
 msgid " (EasyVision Symbols)"
-msgstr "Ja - Easyvision Zeichen: %ls"
+msgstr " (Zeichen zum einfachen Erkennen)"
 
 #: ../../../core/core_st.cpp:341
 #, c-format
@@ -5773,20 +5834,22 @@ msgid "Yes (at least %d)"
 msgstr "Ja (mindestens %d)"
 
 #: ../../../core/core_st.cpp:342
-#, fuzzy
 msgid " (Pronounceable Symbols)"
-msgstr "Ja - Aussprechbare Symbole: %ls"
+msgstr " (Aussprechbare Symbole)"
 
 #: ../../../core/core_st.cpp:343
-#, fuzzy, c-format
+#, c-format
 msgid "Yes - At least %d from %ls: %ls%ls"
-msgstr "Ja - Mindestens %d von %ls: %ls"
+msgstr "Ja - Mindestens %d von %ls: %ls%ls"
+
+#~ msgid "Destination is not a group"
+#~ msgstr "Ziel ist keine Gruppe"
 
 #~ msgid "Show &Unsaved Changes"
 #~ msgstr "&Ungespeicherte Änderungen anzeigen"
 
 #~ msgid "<- Click on button to the left"
-#~ msgstr "<- Auf linken Button drücken"
+#~ msgstr "<- Auf linken Knopf drücken"
 
 #~ msgid "Double-click action"
 #~ msgstr "Doppelklick-Aktion"
@@ -5834,24 +5897,25 @@ msgstr "Ja - Mindestens %d von %ls: %ls"
 #~ "(z.B. kein 'l', '1', usw.)"
 
 # Kai, new for MacOS
+# Apple standard menu
 msgid "Services"
 msgstr "Dienste"
 
+# Apple standard menu
 msgid "Hide Others"
 msgstr "Andere ausblenden"
 
+# Apple standard menu
 msgid "Show All"
 msgstr "Alle einblenden"
 
+# Apple standard menu
 msgid "Quit %s"
 msgstr "PasswordSafe beenden"
 
+# Apple standard menu
 msgid "Hide %s"
 msgstr "PasswordSafe ausblenden"
-
-#, fuzzy
-#~ msgid "Initial tray icon color"
-#~ msgstr "Anfängliches Symbol im Infobereich"
 
 #~ msgid "Chinese"
 #~ msgstr "Chinesisch"
@@ -5865,6 +5929,7 @@ msgstr "PasswordSafe ausblenden"
 #~ msgid "French"
 #~ msgstr "Französisch"
 
+# For Language Menu German language in German typing
 msgid "German"
 msgstr "Deutsch"
 
@@ -5886,3754 +5951,38 @@ msgstr "Deutsch"
 #~ msgid "Swedish"
 #~ msgstr "Schwedisch"
 
-#~ msgid "Couldn't find policy %s\n"
-#~ msgstr "Konnte Richtlinie %s nicht finden\n"
-
-#~ msgid "Default"
-#~ msgstr "Standard"
-
-#~ msgid "Couldn't find uuid %s"
-#~ msgstr "Konnte uuid %s nicht finden"
-
-#~ msgid "%d/%d matches"
-#~ msgstr "%d von %d Übereinstimmungen"
-
-#~ msgid "\t* %s"
-#~ msgstr "\t* %s"
-
-#~ msgid ""
-#~ "This version of PasswordSafe does not support more than %d entries in a "
-#~ "database.\n"
-#~ "To get an unlimited version for the U3 platform, please visit http://"
-#~ "software.u3.com\n"
-#~ "Note: Saving this database will result in the removal of unread entries!"
-#~ msgstr ""
-#~ "Diese Version von PasswordSafe unterstützt nicht mehr als %d Einträge in "
-#~ "der Datenbank.\n"
-#~ "Um ein nicht limitierte Version für die U3 Platform , besuche bitte "
-#~ "http://software.u3.com\n"
-#~ "Hinweis: beim Speichern der Datenbank werden nicht gelesene Einträge "
-#~ "gelöscht!"
-
-#~ msgid "Trial Version Limitation"
-#~ msgstr "Einschränkung der Test-Version"
-
-#~ msgid "Do you want to see a detailed report?"
-#~ msgstr "Möchten Sie einen ausführlichen Bericht sehen?"
-
-#~ msgid "Default set"
-#~ msgstr "Standardsatz"
-
-#~ msgid "Special set"
-#~ msgstr "Spezieller Satz"
-
-#~ msgid ": "
-#~ msgstr " "
-
-#~ msgid "pwsafe.psafe3"
-#~ msgstr "pwsafe"
-
-#~ msgid "pwsafe"
-#~ msgstr "pwsafe"
-
-#~ msgid "%d)"
-#~ msgstr "%d"
-
-#~ msgid "N"
-#~ msgstr "Nein"
-
-#~ msgid "U"
-#~ msgstr "US"
-
-#~ msgid ""
-#~ "At least one type of character (lowercase, uppercase, digits,\n"
-#~ "symbols, hexadecimal) must be permitted."
-#~ msgstr ""
-#~ "Zumindest eine Art von Zeichen (Kleinbuchstabe, Großbuchstabe,\n"
-#~ "Ziffer, Symbol, hexadezimal) sollte erlaubt sein."
-
-#~ msgid "Shortcut Key"
-#~ msgstr "Tastenkombination"
-
-#~ msgid "Menu Item"
-#~ msgstr "Menüeintrag"
-
-#~ msgid "&Reset All"
-#~ msgstr "Alles rücksetzen"
-
-#~ msgid "-merged-"
-#~ msgstr "-zusammengeführt-"
-
-#~ msgid "View/Edit Entry"
-#~ msgstr "Eintrag bearbeiten"
-
-#~ msgid ""
-#~ "New\n"
-#~ "Database"
-#~ msgstr "Neue Datenbank"
-
-#~ msgid "Minimum password length"
-#~ msgstr "Passwortlänge:"
-
-#~ msgid "Password Expires on:"
-#~ msgstr "Passwort läuft ab am:"
-
-#~ msgid "Whenever"
-#~ msgstr "Wann immer"
-
-#~ msgid "Current Value:"
-#~ msgstr "Erforderliche Werte:"
-
-#~ msgid "&Clear"
-#~ msgstr "Lösche Suchbegriff"
-
-#~ msgid "Reset to Database Defaults"
-#~ msgstr "Rückse&tzen auf Datenbank Standard"
-
-#~ msgid "&Validate..."
-#~ msgstr "Ü&berprüfen..."
-
-#~ msgid "Please Choose a Database to Validate:"
-#~ msgstr "Bitte wählen Sie eine Datenbank zum Überprüfen aus:"
-
-#~ msgid "Database validated - no problems found."
-#~ msgstr "Datenbank überprüft - keine Probleme gefunden."
-
-#~ msgid "Undo"
-#~ msgstr "Rückgängig"
-
-#~ msgid "Database has some large entries!"
-#~ msgstr "Die Datenbank enthält einige große Einträge!"
-
-#~ msgid ""
-#~ "Warning - %d %s in your database may have one or more fields too large to "
-#~ "display or edit.\n"
-#~ "\n"
-#~ "The largest entry size found was ~%d %s.\n"
-#~ "\n"
-#~ "You can use the Filter to selectively display these record(s)."
-#~ msgstr ""
-#~ "Warnung - %d %s in Ihre Datenbank können ein oder mehrere Felder zu groß "
-#~ "zum Anzeigen oder Bearbeiten sein.\n"
-#~ "\n"
-#~ "Der größte gefundene Eintrag war ~%d %s.\n"
-#~ "\n"
-#~ "Sie können das Filter verwenden um gezielt diese Einträge anzuzeigen."
-
-#~ msgid " 'Autotype'"
-#~ msgstr " 'Autom. Eingabe'"
-
-#~ msgid " 'DCA'"
-#~ msgstr " 'DCA'"
-
-#~ msgid " 'Group'"
-#~ msgstr " 'Gruppe'"
-
-#~ msgid " 'Last Access Time'"
-#~ msgstr " 'Letzter Zugriff'"
-
-#~ msgid " 'Notes'"
-#~ msgstr " 'Anmerkungen'"
-
-#~ msgid " 'Password Expiry Time Interval'"
-#~ msgstr " 'Passwortablauf-Intervall'"
-
-#~ msgid " 'Password Expiry Time'"
-#~ msgstr " 'Passwort Ablaufzeit'"
-
-#~ msgid " 'Password History'"
-#~ msgstr " 'Passworthistorie'"
-
-#~ msgid " 'Password Modification Time'"
-#~ msgstr " 'Passwort Änderungszeit'"
-
-#~ msgid " 'Password Policy'"
-#~ msgstr " 'Passwort Richtlinie'"
-
-#~ msgid " 'Password'"
-#~ msgstr " 'Passwort'"
-
-#~ msgid " 'Record Modification Time'"
-#~ msgstr " 'Datensatz Änderungszeit'"
-
-#~ msgid " 'Shift+DCA'"
-#~ msgstr "'Umschalt+DCA'"
-
-#~ msgid " 'Title'"
-#~ msgstr " 'Titel'"
-
-#~ msgid " 'URL'"
-#~ msgstr " 'URL'"
-
-#~ msgid " 'email'"
-#~ msgstr " 'Email'"
-
-#~ msgid " 'protected'"
-#~ msgstr " 'geschützt'"
-
-#~ msgid " 'symbols'"
-#~ msgstr " 'Symbole'"
-
-#~ msgid " Drag # %d"
-#~ msgstr " Drag # %d"
-
-#~ msgid " [Process ID=%s]"
-#~ msgstr " [Prozess ID=%s]"
-
-#~ msgid "! Edit externally"
-#~ msgstr "! Extern bearbeiten"
-
-#~ msgid "# characters: %d"
-#~ msgstr "# Zeichen: %d"
-
-#~ msgid "#entries"
-#~ msgstr "#entries"
-
-#~ msgid "#format"
-#~ msgstr "#format"
-
-#~ msgid "#name"
-#~ msgstr "#Name"
-
-#~ msgid "#unkflds"
-#~ msgstr "#unkflds"
-
-#~ msgid "#uuid"
-#~ msgstr "#uuid"
-
-#~ msgid "#what"
-#~ msgstr "#what"
-
-#~ msgid "#when"
-#~ msgstr "#when"
-
-#~ msgid "#who"
-#~ msgstr "#who"
-
-#~ msgid "%1 contained an unexpected object."
-#~ msgstr "%1 enthält ein unerwartetes Objekt."
-
-#~ msgid "%1 contains an incorrect path."
-#~ msgstr "%1 enthält falscher Pfad."
-
-#~ msgid "%1 contains an incorrect schema."
-#~ msgstr "%1 enthält ein falsches Schema."
-
-#~ msgid "%1 has a bad format."
-#~ msgstr "%1 hat ein falsches Format."
-
-#~ msgid "%1 was not found."
-#~ msgstr "%1 wurde nicht gefunden."
-
-#~ msgid ""
-#~ "%1: %2\n"
-#~ "Continue running script?"
-#~ msgstr ""
-#~ "%1: %2\n"
-#~ "Skript weiter ausführen?"
-
-#~ msgid ""
-#~ "%1\n"
-#~ "Cannot find this file.\n"
-#~ "Verify that the correct path and file name are given."
-#~ msgstr ""
-#~ "%1\n"
-#~ "Kann diese Datei nicht finden.\n"
-#~ "Überprüfen Sie Pfad- und Dateiname auf Richtigkeit."
-
-#~ msgid "%d (%d) items"
-#~ msgstr "%d (%d) Angaben"
-
-#~ msgid "%d entries exported"
-#~ msgstr "%d Einträge exportiert"
-
-#~ msgid "%d entries synchronized"
-#~ msgstr "%d Einträge synchronisiert"
-
-#~ msgid "%s (database-specific)"
-#~ msgstr "%s (Datenbank spezifisch)"
-
-#~ msgid "%s [Recovered]"
-#~ msgstr "%s [Wiederhergestellt]"
-
-#~ msgid ""
-#~ "%s \n"
-#~ "\n"
-#~ "Can't open file. Please choose another."
-#~ msgstr ""
-#~ "%s \n"
-#~ "\n"
-#~ "Kann die Datei nicht öffnen. Bitte wählen Sie eine andere aus."
-
-#~ msgid "%s failed"
-#~ msgstr "%s fehlgeschlagen"
-
-#~ msgid "%s file being exported: %s"
-#~ msgstr "%s Datei wird exportiert: %s"
-
-#~ msgid "%s is a directory"
-#~ msgstr "%s ist ein Verzeichnis"
-
-#~ msgid "%sA newer release is available.%s"
-#~ msgstr "%sEine neue Ausgabe ist vorhanden.%s"
-
-#~ msgid "&Abort"
-#~ msgstr "&Abbrechen"
-
-#~ msgid "&Clear current"
-#~ msgstr "&Lösche aktuell"
-
-#~ msgid "&Continue"
-#~ msgstr "&Weiter"
-
-#~ msgid "&Create a New Database"
-#~ msgstr "&Neue Datenbank erstellen"
-
-#~ msgid "&Don't remind me again"
-#~ msgstr "&Nicht mehr erinnern"
-
-#~ msgid "&Duplicate Group"
-#~ msgstr "Gruppe &duplizieren"
-
-#~ msgid "&Export"
-#~ msgstr "&Exportieren"
-
-#~ msgid "&Find..."
-#~ msgstr "&Suchen..."
-
-#~ msgid "&Font:"
-#~ msgstr "&Schriftart:"
-
-#~ msgid "&Ignore"
-#~ msgstr "&Ignorieren"
-
-#~ msgid "&Keep"
-#~ msgstr "&die"
-
-#~ msgid "&New "
-#~ msgstr "&Neu "
-
-#~ msgid "&None"
-#~ msgstr "&Keine"
-
-#~ msgid "&On"
-#~ msgstr "&Am"
-
-#~ msgid "&Open"
-#~ msgstr "&Öffnen"
-
-#~ msgid "&Paste"
-#~ msgstr "&Einfügen"
-
-#~ msgid "&Quit"
-#~ msgstr "&Beenden"
-
-#~ msgid "&Refresh"
-#~ msgstr "&Aktualisieren"
-
-#~ msgid "&Reset"
-#~ msgstr "&Rücksetzen"
-
-#~ msgid "&Retry"
-#~ msgstr "Wiede&rholen"
-
-#~ msgid "&Select"
-#~ msgstr "&Auswahl"
-
-#~ msgid "&Synchronize"
-#~ msgstr "&Synchronisieren"
-
-#~ msgid "&Try Again"
-#~ msgstr "&Wiederholen"
-
-#~ msgid "&Try again"
-#~ msgstr "Wiede&rholen"
-
-#~ msgid "&View Aliases"
-#~ msgstr "&Alias anzeigen"
-
-#~ msgid "&View Report"
-#~ msgstr "&Zeige Report"
-
-#~ msgid "&Virtual Keyboard Font"
-#~ msgstr "&Virtuelle Tastatur Schriftart"
-
-#~ msgid "'Alt Gr' (right Alt) key"
-#~ msgstr "'Alt Gr' (rechte Alt) Taste"
-
-#~ msgid ""
-#~ "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and "
-#~ "Minimize' conflict. Please change one or both."
-#~ msgstr ""
-#~ "Konflikt bei 'Zwischenablage nach Minimieren löschen' und Doppelklick "
-#~ "Aktion 'Passwort kopieren und minimieren'. Bitte ändern Sei eins oder "
-#~ "beides."
-
-#~ msgid ""
-#~ "'\n"
-#~ "\n"
-#~ "If you would like to report this error, please reply 'Yes' below and "
-#~ "upload this file to your Bug Report. If you reply 'No', the file will be "
-#~ "deleted.\n"
-#~ "\n"
-#~ "The diagnostic information in this file does not include any of your "
-#~ "personal data nor any information from the database open at the time of "
-#~ "the error.\n"
-#~ "\n"
-#~ "However, if you prefer (and the problem is repeatable with a test "
-#~ "database), you may send us that minidump file as well as the test "
-#~ "database.\n"
-#~ "\n"
-#~ "Thank you for your help to improve PasswordSafe."
-#~ msgstr ""
-#~ "'\n"
-#~ "\n"
-#~ "Wenn Sie diesen Fehler melden wollen, antworten Sie bitte mit 'Ja', und "
-#~ "binden Sie diese Datei in der Fehlermeldung mit ein. Wenn Sie mit 'Nein' "
-#~ "antworten, wird die Datei gelöscht.\n"
-#~ "\n"
-#~ "Die Informationen zur Diagnostik enthällt keine einzige Information zu "
-#~ "Ihrer Person, und ebenso keine Information aus der zum Zeitpunkt des "
-#~ "Fehlers geöffneten Datenbank.\n"
-#~ "\n"
-#~ "Vorausgesetzt das Problem ist reproduzierbar mit einer Test-Datenbank, "
-#~ "können sie uns natürlich auch die minidump Datei und die Test-Datenbank "
-#~ "schicken.\n"
-#~ "\n"
-#~ "Besten Dank für Ihre Hilfe beim Verdessern von PasswordSafe."
-
-#~ msgid "(Also used to replace periods in Title field)"
-#~ msgstr "(Auch benutzt um Punkte im Feld Titel zu ersetzen)"
-
-#~ msgid "(Double-click an entry to edit it)"
-#~ msgstr "(Einen Eintrag zum bearbeite doppelklicken)"
-
-#~ msgid "(Requires a restart of PasswordSafe to take effect.)"
-#~ msgstr "(Bedingt ein Wiederstart von PasswordSafe um wirksam zu werden.)"
-
-#~ msgid "* means that the database has been modified since last save"
-#~ msgstr ""
-#~ "* bedeutet dass die Datenbank seit der letzten Speicherung geändert wurde"
-
-#~ msgid "- Physical -"
-#~ msgstr "- Physisch -"
-
-#~ msgid "....."
-#~ msgstr "....."
-
-#~ msgid "......."
-#~ msgstr "......."
-
-#~ msgid ""
-#~ ".dmp'\n"
-#~ "\n"
-#~ "in your temporary directory: \n"
-#~ "\n"
-#~ "\t'"
-#~ msgstr ""
-#~ ".dmp'\n"
-#~ "\n"
-#~ "in temporäres Verzeichnis: \n"
-#~ "\n"
-#~ "\t'"
-
-#~ msgid "0"
-#~ msgstr "0"
-
-#~ msgid "01"
-#~ msgstr "01"
-
-#~ msgid "02"
-#~ msgstr "02"
-
-#~ msgid "03"
-#~ msgstr "03"
-
-#~ msgid "04"
-#~ msgstr "04"
-
-#~ msgid "05"
-#~ msgstr "05"
-
-#~ msgid "06"
-#~ msgstr "06"
-
-#~ msgid "07"
-#~ msgstr "07"
-
-#~ msgid "08"
-#~ msgstr "08"
-
-#~ msgid "09"
-#~ msgstr "09"
-
-#~ msgid "1"
-#~ msgstr "1"
-
-#~ msgid "10"
-#~ msgstr "10"
-
-#~ msgid "101 Keys"
-#~ msgstr "101 Tasten"
-
-#~ msgid "102 Keys"
-#~ msgstr "102 Tasten"
-
-#~ msgid "106 Keys"
-#~ msgstr "106 Tasten"
-
-#~ msgid "11"
-#~ msgstr "11"
-
-#~ msgid "12"
-#~ msgstr "12"
-
-#~ msgid "13"
-#~ msgstr "13"
-
-#~ msgid "14"
-#~ msgstr "14"
-
-#~ msgid "15"
-#~ msgstr "15"
-
-#~ msgid "16"
-#~ msgstr "16"
-
-#~ msgid "17"
-#~ msgstr "17"
-
-#~ msgid "18"
-#~ msgstr "18"
-
-#~ msgid "19"
-#~ msgstr "19"
-
-#~ msgid "2"
-#~ msgstr "2"
-
-#~ msgid "20"
-#~ msgstr "20"
-
-#~ msgid "21"
-#~ msgstr "21"
-
-#~ msgid "22"
-#~ msgstr "22"
-
-#~ msgid "23"
-#~ msgstr "23"
-
-#~ msgid "24"
-#~ msgstr "24"
-
-#~ msgid "25"
-#~ msgstr "25"
-
-#~ msgid "26"
-#~ msgstr "26"
-
-#~ msgid "27"
-#~ msgstr "27"
-
-#~ msgid "28"
-#~ msgstr "28"
-
-#~ msgid "29"
-#~ msgstr "29"
-
-#~ msgid "3"
-#~ msgstr "3"
-
-#~ msgid "30"
-#~ msgstr "30"
-
-#~ msgid "31"
-#~ msgstr "31"
-
-#~ msgid "32"
-#~ msgstr "32"
-
-#~ msgid "33"
-#~ msgstr "33"
-
-#~ msgid "34"
-#~ msgstr "34"
-
-#~ msgid "35"
-#~ msgstr "35"
-
-#~ msgid "36"
-#~ msgstr "36"
-
-#~ msgid "37"
-#~ msgstr "37"
-
-#~ msgid "38"
-#~ msgstr "38"
-
-#~ msgid "39"
-#~ msgstr "39"
-
-#~ msgid "4"
-#~ msgstr "4"
-
-#~ msgid "40"
-#~ msgstr "40"
-
-#~ msgid "41"
-#~ msgstr "41"
-
-#~ msgid "42"
-#~ msgstr "42"
-
-#~ msgid "43"
-#~ msgstr "43"
-
-#~ msgid "44"
-#~ msgstr "44"
-
-#~ msgid "45"
-#~ msgstr "45"
-
-#~ msgid "46"
-#~ msgstr "46"
-
-#~ msgid "47"
-#~ msgstr "47"
-
-#~ msgid "48"
-#~ msgstr "48"
-
-#~ msgid "49"
-#~ msgstr "49"
-
-#~ msgid "5"
-#~ msgstr "5"
-
-#~ msgid "50"
-#~ msgstr "50"
-
-#~ msgid "51"
-#~ msgstr "51"
-
-#~ msgid "6"
-#~ msgstr "6"
-
-#~ msgid "7"
-#~ msgstr "7"
-
-#~ msgid "8"
-#~ msgstr "8"
-
-#~ msgid "9"
-#~ msgstr "9"
-
-#~ msgid "<"
-#~ msgstr "<"
-
-#~ msgid "<<"
-#~ msgstr "<<"
-
-#~ msgid ">"
-#~ msgstr ">"
-
-#~ msgid ">>"
-#~ msgstr ">>"
-
-#~ msgid "A dot is invalid as the first character of the Group field."
-#~ msgstr "Ein Punkt ist als erstes Zeichen einer Gruppe nicht zulässig."
-
-#~ msgid "A fatal error occurred: "
-#~ msgstr "Fataler Fehler aufgetreten: "
-
-#~ msgid "A future date is not valid for this field"
-#~ msgstr "Ein Datum in die Zukunft ist für dieses Feld nicht zulässig."
-
-#~ msgid ""
-#~ "A red and white indicator means that a filter is active\n"
-#~ "(double click to clear filter)"
-#~ msgstr ""
-#~ "Ein roter und weisser Indikator bedeuten dass das Filter aktiv ist\n"
-#~ "(Doppelklick zum löschen des Filters)"
-
-#~ msgid "A required resource was unavailable."
-#~ msgstr "Die erforderliche Ressource war nicht verfügbar."
-
-#~ msgid "ALL of the passwords and data"
-#~ msgstr "ALLE Passwörter und Daten"
-
-#~ msgid "AaBbYyZz 0O1lIL"
-#~ msgstr "AaBbYyZz 0O1lIL"
-
-#~ msgid "Absolute"
-#~ msgstr "Absolut"
-
-#~ msgid "Access to %1 was denied."
-#~ msgstr "Zugriff auf %1 verweigert."
-
-#~ msgid "Active"
-#~ msgstr "Aktiv"
-
-#~ msgid "Advanced Compare Options"
-#~ msgstr "Erweiterte Vergleichsoptionen"
-
-#~ msgid "Advanced Merge Extra"
-#~ msgstr "Erweiterte Zusammenführen Extra"
-
-#~ msgid "Advanced Synchronize Options"
-#~ msgstr "Erweiterte Synchronisieren Optionen"
-
-#~ msgid "Advanced Text 'Single Entry' Export Options"
-#~ msgstr "Erweiterte Optionen für Text Export eines 'einzelnen Eintrags'"
-
-#~ msgid "Advanced XML 'Single Entry' Export Options"
-#~ msgstr "Erweiterte Optionen für XML Export eines 'einzelnen Eintrags'"
-
-#~ msgid "Advanced field selection criteria"
-#~ msgstr "Erweitertes Feld für Auswahlkriterien"
-
-#~ msgid "Albanian"
-#~ msgstr "Albanisch"
-
-#~ msgid "Alias Base entry"
-#~ msgstr "Alias Basiseintrag"
-
-#~ msgid "Alias Base entry - password expired"
-#~ msgstr "Alias Basiseintrag - Passwort abgelaufen"
-
-#~ msgid "Alias Base entry - warning password will expire"
-#~ msgstr "Alias Basiseintrag - Achtung: Das Passwort läuft bald ab"
-
-#~ msgid "Alias Password Change"
-#~ msgstr "Alias Password ändern"
-
-#~ msgid "All available columns are being displayed."
-#~ msgstr "Alle verfügbaren Spalten werden angezeigt."
-
-#~ msgid "Allow multiple instances (requires all instances to be restarted)"
-#~ msgstr ""
-#~ "Mehrere Instanzen erlauben (bedingt ein Wiederstart aller Instanzen)"
-
-#~ msgid "Alt"
-#~ msgstr "Alt"
-
-#~ msgid "Alt Gr"
-#~ msgstr "Alt Gr"
-
-#~ msgid "Alt Num"
-#~ msgstr "Alt Num"
-
-#~ msgid "Alt+"
-#~ msgstr "Alt+"
-
-#~ msgid "Alternate Notes Text Editor"
-#~ msgstr "Alternativer Notizen Editor"
-
-#~ msgid "Always on top"
-#~ msgstr "Immer im Vordergrund"
-
-#~ msgid "An alias cannot refer to itself!"
-#~ msgstr "Ein Alias kann nicht auf sich selbst verweisen!"
-
-#~ msgid ""
-#~ "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already "
-#~ "exists."
-#~ msgstr ""
-#~ "Ein Eintrag mit Gruppe \"%s\", Titel \"%s\" und Benutzername \"%s\" "
-#~ "besteht bereits."
-
-#~ msgid ""
-#~ "An entry with Group \"%s\", Title \"%s\" and empty User Name already "
-#~ "exists."
-#~ msgstr ""
-#~ "Ein Eintrag mit Gruppe \"%s\", Titel \"%s\" und leerer Benutzername "
-#~ "besteht bereits."
-
-#~ msgid ""
-#~ "An entry with an empty Group, Title \"%s\" and empty User Name already "
-#~ "exists."
-#~ msgstr ""
-#~ "Ein Eintrag mit leerer Gruppe, Titel \"%s\" und leerer Benutzername "
-#~ "besteht bereits."
-
-#~ msgid "An incorrect file handle was associated with %1."
-#~ msgstr "Ein falscher Handle war gebunden mit %1."
-
-#~ msgid "An unknown error has occurred."
-#~ msgstr "Unbekannter Fehler aufgetreten."
-
-#~ msgid "And / Or"
-#~ msgstr "Und / Oder"
-
-#~ msgid "Arabic (101)"
-#~ msgstr "Arabisch (101)"
-
-#~ msgid "Armenian Eastern"
-#~ msgstr "Armenisch Östlich"
-
-#~ msgid "Armenian Western"
-#~ msgstr "Armenisch Westlich"
-
-#~ msgid ""
-#~ "As the double quotation character is used to delimit the whole notes "
-#~ "field, it cannot be used within it to delimit multiple lines. Please "
-#~ "enter another character."
-#~ msgstr ""
-#~ "Weil Gänzefüßchen das ganze Feld Notizen abgrenzen, kann es nicht benutzt "
-#~ "werden um vielfach Zeilen zu begrenzen. Bitte ein anderes Zeichen "
-#~ "benutzen."
-
-#~ msgid "Attempted an unsupported operation."
-#~ msgstr "Versuch einer nicht unterstützen Operation."
-
-#~ msgid "Attempted to access %1 past its end."
-#~ msgstr "Zugriffsversuch auf %1 hinter dem Ende."
-
-#~ msgid "Attempted to read from the writing %1."
-#~ msgstr "Leseversuch von der zu schreibende %1."
-
-#~ msgid "Attempted to write to the reading %1."
-#~ msgstr "Schreibversuch auf die zu lesende %1."
-
-#~ msgid "Autoload"
-#~ msgstr "Autoladen"
-
-#~ msgid "Azeri Cyrillic"
-#~ msgstr "Azeri (Kyrillisch)"
-
-#~ msgid "Azeri Latin"
-#~ msgstr "Azeri (Lateinisch)"
-
-#~ msgid "Backup Directory"
-#~ msgstr "Verzeichnis der Sicherung"
-
-#~ msgid "Belarusian"
-#~ msgstr "Weißrussisch"
-
-#~ msgid "Belgian (Comma)"
-#~ msgstr "Belgisch (Komma)"
-
-#~ msgid "Belgian (Period)"
-#~ msgstr "Belgisch (Punkt)"
-
-#~ msgid "Belgian French"
-#~ msgstr "Belgisch Französisch"
-
-#~ msgid "Bengali"
-#~ msgstr "Bengalisch"
-
-#~ msgid "Bengali - INSCRIPT"
-#~ msgstr "Bengalisch - INSCRIPT"
-
-#~ msgid "Bengali - INSCRIPT (Legacy)"
-#~ msgstr "Bengalisch - INSCRIPT (Legacy)"
-
-#~ msgid "BkSpc"
-#~ msgstr "Rschr"
-
-#~ msgid "Bosnian (Cyrillic)"
-#~ msgstr "Bosnisch (Kyrillisch)"
-
-#~ msgid "Bulgarian"
-#~ msgstr "Bulgarisch"
-
-#~ msgid "Bulgarian (Latin)"
-#~ msgstr "Bulgarisch (Lateinisch)"
-
-#~ msgid "Bulgarian (Phonetic Traditional)"
-#~ msgstr "Bulgarisch (Phonetisch Traditionell)"
-
-#~ msgid "Bulgarian (Typewriter)"
-#~ msgstr "Bulgarisch (Schreibmaschine)"
-
-#~ msgid "Bytes"
-#~ msgstr "Byte"
-
-#~ msgid "C++ Terminate"
-#~ msgstr "C++ Beenden"
-
-#~ msgid "C++ Unexpected"
-#~ msgstr "C++ Unerwartet"
-
-#~ msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
-#~ msgstr "CSV Dateien (*.csv)|*.csv|Alle Dateien (*.*)|*.*||"
-
-#~ msgid "Can only warn between 1 and 30 days before passwords expire"
-#~ msgstr ""
-#~ "Nur von 1 bis 30 Tage kann gewarnt werden bevor das Passwort abläuft"
-
-#~ msgid "Canadian French"
-#~ msgstr "Kanadisch Französisch"
-
-#~ msgid "Canadian French (Legacy)"
-#~ msgstr "Kanadisch Französisch (Legacy)"
-
-#~ msgid "Canadian Multilingual Standard"
-#~ msgstr "Kanada (Standard -- Multilingual)"
-
-#~ msgid "Cannot be less than zero."
-#~ msgstr "Kann nicht kleiner 0 sein."
-
-#~ msgid "Cannot be more than %d"
-#~ msgstr "Kann nicht mehr als %d sein"
-
-#~ msgid "Cannot create missing directories in path to the export file."
-#~ msgstr ""
-#~ "Kann die fehlende Verzeichnisse im Pfad nicht erzeugen um die Datei zu "
-#~ "exportieren."
-
-#~ msgid ""
-#~ "Cannot process as this entry has been deleted from the open database."
-#~ msgstr ""
-#~ "Bearbeitung nicht möglich, weil der Eintrag aus der aktuellen Datenbank "
-#~ "gelöscht wurde."
-
-#~ msgid "Caps Lock"
-#~ msgstr "Caps Lock"
-
-#~ msgid "Case sensitive search"
-#~ msgstr "Suchen mit Groß-/Kleinschreibung"
-
-#~ msgid "Chan&ge to R-O"
-#~ msgstr "Zu R-O ändern"
-
-#~ msgid "Chan&ge to R/W"
-#~ msgstr "Zu R/W ändern"
-
-#~ msgid "Change Base"
-#~ msgstr "Basis ändern"
-
-#~ msgid "Change Date"
-#~ msgstr "Datum ändern"
-
-#~ msgid "Change This"
-#~ msgstr "Dies ändern"
-
-#~ msgid "Change database mode?"
-#~ msgstr "Datenbank Modus ändern?"
-
-#~ msgid ""
-#~ "Change the maximum number of saved passwords for entries currently saving "
-#~ "password history to the new maximum, if currently saving fewer.\n"
-#~ "\n"
-#~ "Entries with more than this new maximum already saved will remain "
-#~ "unchanged."
-#~ msgstr ""
-#~ "Änderen Sie die maximale Anzahl gespeicherte Passwörter für Eingaben die "
-#~ "zur Zeit die Passworthistorie mit weniger als die neue maximale Anzahl "
-#~ "speichern.\n"
-#~ "\n"
-#~ "Eingaben mit mehr als die neue maximale Anzahl bleiben hiervon unberührt."
-
-#~ msgid "Changes to existing entries will be applied on pressing OK"
-#~ msgstr ""
-#~ "Änderungen zu bestehenden Einträge werden angewendet nach Drücken von OK"
-
-#~ msgid "Check"
-#~ msgstr "Aktiviere"
-
-#~ msgid "Chinese Bopomofo"
-#~ msgstr "Chinesisch Bopomofo"
-
-#~ msgid "Clear Buffer"
-#~ msgstr "Puffer löschen"
-
-#~ msgid "Click here or details on the various preferences."
-#~ msgstr ""
-#~ "Klicken Sie hier für Details zu den unterschiedlichen Einstellungen."
-
-#~ msgid "Click here to pick field"
-#~ msgstr "Klicken Sie hier um das Feld zu wählen"
-
-#~ msgid "Click to change case."
-#~ msgstr "Klicken zum Umschalten."
-
-#~ msgid "Click to copy to clipboard"
-#~ msgstr "Klicken Sie zum Kopieren in die Zwischenablage"
-
-#~ msgid ""
-#~ "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
-#~ msgstr ""
-#~ "Bitte Klicken Sie um in die Zwischenablage zu kopieren, Strg+Klick um "
-#~ "auch das URL Feld auf diesen Wert zu setzen"
-
-#~ msgid "Click to enable/disable this row"
-#~ msgstr "Klicken Sie zum Freigeben/Sperren der Zeile"
-
-#~ msgid ""
-#~ "Click to enter a character code via virtual numeric keypad. The character "
-#~ "is added when this button is clicked again."
-#~ msgstr ""
-#~ "Klicken sie zum Eintragen des Zeichenkodes via Ziffernblock. Das Zeichen "
-#~ "wird hinzugefügt nach dem erneuten Drücken dieser Taste."
-
-#~ msgid "Click to expand and copy to clipboard, Ctrl+Click to copy unexpanded"
-#~ msgstr ""
-#~ "Klicken sie zum Ausklappen und in die Zwischenanlage Kopieren, Strg"
-#~ "+Klicken zum Einklappen und Kopieren"
-
-#~ msgid "Click to go to link, Ctrl+Click to go and Autotype"
-#~ msgstr ""
-#~ "Mit Klick gehen Sie zur Verknüpfung, mit Strg-Klick gehen Sie mit Autom. "
-#~ "Eingabe"
-
-#~ msgid "Click to insert a new row below"
-#~ msgstr "Klicken Sie um eine neue Zeile einzufügen"
-
-#~ msgid "Click to randomise the characters in the virtual keypad."
-#~ msgstr ""
-#~ "Klicken zum zufälligen Anordnen der Zeichen in der virtuellen Tastatur."
-
-#~ msgid "Click to remove this row"
-#~ msgstr "Klicken Sie zum Löschen der Zeile"
-
-#~ msgid "Click to send email to this address"
-#~ msgstr "Bitte Klicken Sie zum senden einer Email zu dieser Adresse"
-
-#~ msgid "Click to set criteria for matching the field"
-#~ msgstr "Klicken Sie um die Kriterien dem Feld anzugleichen"
-
-#~ msgid "Click to set the field to filter by"
-#~ msgstr "Klicken Sie zum Setzen der Feldfilterkriterien"
-
-#~ msgid "Click to switch to English"
-#~ msgstr "Klicken Sie zum Umschalten auf Englisch"
-
-#~ msgid "Click to switch to Full-width"
-#~ msgstr "Klicken Sie zum Umschalten auf voller Breite"
-
-#~ msgid "Click to switch to Half-width"
-#~ msgstr "Klicken Sie zum Umschalten auf halber Breite"
-
-#~ msgid "Click to switch to Hiragana"
-#~ msgstr "Klicken Sie zum Umschalten auf Hiragana"
-
-#~ msgid "Click to switch to Kana"
-#~ msgstr "Klicken Sie zum Umschalten auf Kana"
-
-#~ msgid "Click to switch to Katakana"
-#~ msgstr "Bitte Klicken Sie zum Umschalten auf Katakana"
-
-#~ msgid "Click to switch to Korean"
-#~ msgstr "Klicken Sie zum Umschalten auf Koreanisch"
-
-#~ msgid "Click to toggle Caps Lock key."
-#~ msgstr "Klicken Sie zum Umschalten der Feststelltaste"
-
-#~ msgid "Click to toggle and/or relation to previous row"
-#~ msgstr "Klicken Sie zum Schalten und/oder Verbinden zur vorherigen Zeile"
-
-#~ msgid "Column Picker"
-#~ msgstr "Spaltenpflücker"
-
-#~ msgid "Command failed."
-#~ msgstr "Befehl fehlgeschlagen."
-
-#~ msgid "Compare"
-#~ msgstr "Vergleichen"
-
-#~ msgid "Compare Database Results"
-#~ msgstr "Vergleiche der Datenbank Ergebnisse"
-
-#~ msgid ""
-#~ "Compare complete of current database:\n"
-#~ "\t %s\n"
-#~ " and:\n"
-#~ "\t %s"
-#~ msgstr ""
-#~ "Vollständiger Vergleich zwischen aktueller Datenbank:\n"
-#~ "\t %s\n"
-#~ " und:\n"
-#~ "\t %s"
-
-#~ msgid "Comparing current database with:"
-#~ msgstr "Vergleiche aktuelle Datenbank mit:"
-
-#~ msgid "Comparison"
-#~ msgstr "Vergleich"
-
-#~ msgid "Comparison Database:"
-#~ msgstr "Vergleichsdatenbank:"
-
-#~ msgid "Con&firm Password:"
-#~ msgstr "Bestätige Passwort:"
-
-#~ msgid "Configuration Information"
-#~ msgstr "Konfigurationsinformation"
-
-#~ msgid "Configuration file status"
-#~ msgstr "Status der Konfigurationsdatei"
-
-#~ msgid ""
-#~ "Confirm that you wish to copy this entry from the %s database to the %s "
-#~ "database?\n"
-#~ "\n"
-#~ "If already present in the target database, it will be replaced!"
-#~ msgstr ""
-#~ "Sind Sie sicher dass dieser Eintrag von der %s Datenbank in die %s "
-#~ "Datenbank kopiert werden soll?\n"
-#~ "\n"
-#~ "Wenn dieser Eintrag bereits in der Zieldatenbank besteht, wird er ersetzt "
-#~ "werden!"
-
-#~ msgid "Continue"
-#~ msgstr "Weiter"
-
-#~ msgid "Copy Here"
-#~ msgstr "Hierher kopieren"
-
-#~ msgid "Copy to Orignal"
-#~ msgstr "Zum Orignal kopieren"
-
-#~ msgid "Copyright Notice"
-#~ msgstr "Copyright-Hinweis"
-
-#~ msgid "Could not create %1 because the directory is full."
-#~ msgstr "Konnte %1 nicht anlegen weil das Verzeichnis voll ist."
-
-#~ msgid "Could not open %1 because there are too many open files."
-#~ msgstr "Konnte %1 nicht öffnen, weil zu viele geöffnete Dateien da sind."
-
-#~ msgid "Could not remove %1 because it is the current directory."
-#~ msgstr "Konnte %1 nicht entfernen weil es das aktive Verzeichnis ist."
-
-#~ msgid "Couldn't save database - Please save manually"
-#~ msgstr "Konnte Datenbank nicht speichern - bitte manuell speichern"
-
-#~ msgid "Created"
-#~ msgstr "Erstellt"
-
-#~ msgid "Criteria"
-#~ msgstr "Kriterien"
-
-#~ msgid "Croatian"
-#~ msgstr "Kroatisch"
-
-#~ msgid "Ctrl"
-#~ msgstr "Strg"
-
-#~ msgid "Ctrl+"
-#~ msgstr "Strg+"
-
-#~ msgid "Cu&t"
-#~ msgstr "&Ausschneiden"
-
-#~ msgid ""
-#~ "Current version:\t%s\n"
-#~ "Latest version:\t%s\n"
-#~ "\n"
-#~ "Your purchase includes free upgrades for one year.\n"
-#~ "Please contact the PasswordSafe Administrator for your upgrade."
-#~ msgstr ""
-#~ "Aktuelle Version:\t%s\n"
-#~ "Neueste Version:\t%s\n"
-#~ "\n"
-#~ "Diese Anschaffung enthält kostenlose Upgrades für ein Jahr.\n"
-#~ "Bitte kontaktieren Sie den PasswordSafe Administrator für ein Upgrade."
-
-#~ msgid "Customize Main Toolbar"
-#~ msgstr "Toolleiste anpassen"
-
-#~ msgid "Czech"
-#~ msgstr "Tschechisch"
-
-#~ msgid "Czech (QWERTY)"
-#~ msgstr "Tschechisch (QWERTY)"
-
-#~ msgid "Czech Programmers"
-#~ msgstr "Tschechisch (Programmierer)"
-
-#~ msgid "DB Format"
-#~ msgstr "DB Format"
-
-#~ msgid "Database Unique ID"
-#~ msgstr "Datenbank Unique ID"
-
-#~ msgid ""
-#~ "Database is read-only. Changes to DB preferences will not be saved and "
-#~ "are only valid for this session."
-#~ msgstr ""
-#~ "Die Datenbank kann nur gelesen werden. Änderungen zu den "
-#~ "Datenbankvoreinstellungen werden nicht gesichert, und sind nur während "
-#~ "dieser Sitzung gültig."
-
-#~ msgid ""
-#~ "Database is read-only. Sorry, cannot save changed any database "
-#~ "preferences."
-#~ msgstr ""
-#~ "Datenbank ist Nur-Lesen. Somit kann keine Einstellung der Datenbank "
-#~ "gespeichert werden."
-
-#~ msgid ""
-#~ "Database mode: read-only (R-O) or read/write (R/W)\n"
-#~ "(Doubleclick to toggle mode)"
-#~ msgstr ""
-#~ "Database mode: read-only (R-O) or read/write (R/W)\n"
-#~ "(Doubleclick to toggle mode)"
-
-#~ msgid ""
-#~ "Default number of saved password history entries must be between 1 and "
-#~ "255."
-#~ msgstr ""
-#~ "Standard Anzahl der gespeicherten Passworthistorien muss zwischen 1 und "
-#~ "255 sein."
-
-#~ msgid "Delete a filter"
-#~ msgstr "Filter löschen"
-
-#~ msgid "Deselect all entries"
-#~ msgstr "Alle Einträge abwählen"
-
-#~ msgid "Deselect some entries"
-#~ msgstr "Einige Einträge abwählen"
-
-#~ msgid "Destination disk drive is full."
-#~ msgstr "Zielfestplatte ist voll."
-
-#~ msgid "Destination location does not exist or is not accessible."
-#~ msgstr "Ziel besteht nicht oder ist nicht zugreifbar"
-
-#~ msgid "Devanagari - INSCRIPT"
-#~ msgstr "Dewanagari - INSCRIPT"
-
-#~ msgid "Dialog"
-#~ msgstr "Dialog"
-
-#~ msgid "Disk full while accessing %1."
-#~ msgstr "Platte voll währen Zugriff auf %1."
-
-#~ msgid "Dispatch exception: %1"
-#~ msgstr "Dispatch Ausnahme: %1"
-
-#~ msgid "Display Filter - "
-#~ msgstr "Anzeigefilter - "
-
-#~ msgid "Do you want to recover these auto-saved documents?"
-#~ msgstr ""
-#~ "Wollen Sie diese automatish gespeicherte Dokumente wiederherstellen?"
-
-#~ msgid "Do you want to save changes to the password list?"
-#~ msgstr "Möchten Sie die Änderungen an der Passwortliste speichern?"
-
-#~ msgid ""
-#~ "Do you wish to change this entry's Base entry's password or change this "
-#~ "entry's own password?"
-#~ msgstr ""
-#~ "Wollen Sie das Passowrt vom Basiseintrag oder vom Eintrag selber ändern?"
-
-#~ msgid ""
-#~ "Do you wish to save the changes made to database:\n"
-#~ "\n"
-#~ "%s\n"
-#~ "\n"
-#~ "or Cancel the shutdown\\restart\\logoff?"
-#~ msgstr ""
-#~ "Möchten Sie die Änderungen an der Datenbank speichern:\n"
-#~ "\n"
-#~ "%s\n"
-#~ "\n"
-#~ "oder das Herunterfahren\\Neustart\\Abmelden abbrechen?"
-
-#~ msgid ""
-#~ "Don't recover the auto-saved documents\n"
-#~ "Use the last explicitly saved versions of the documents"
-#~ msgstr ""
-#~ "Die automatish gespeicherte Dokumente nicht wiederherstellen\n"
-#~ "Die zuletzt explizit gespeicherte Version der Dokumente hernehmen"
-
-#~ msgid "Double Click Action"
-#~ msgstr "Doppelklick Aktion"
-
-#~ msgid "Doubleclick action for current entry"
-#~ msgstr "Doppelklick Aktion für den aktuellen Eintrag"
-
-#~ msgid "Drag this image onto another window to start AutoType from there."
-#~ msgstr ""
-#~ "Ziehe dieses Bild in ein anderes Fenster um die Autom. Eingabe von dort "
-#~ "aus zu starten."
-
-#~ msgid ""
-#~ "Dropped entry '%s:%s:%s' password points to an entry that is also an "
-#~ "alias.\n"
-#~ "\n"
-#~ "The dropped entry now references that entry's base entry."
-#~ msgstr ""
-#~ "Ge'drop'ter Eintrag '%s:%s:%s' Passwort zeigt auf einem Eintrag der auch "
-#~ "ein Alias ist.\n"
-#~ "\n"
-#~ "Dieser Eintrag verweist nun auf dessen Basiseintrag."
-
-#~ msgid "Duplicate Group"
-#~ msgstr "Gruppe duplizieren"
-
-#~ msgid "E&xit\tCtrl+Q\\Alt+F4"
-#~ msgstr "&Beenden\tStrg+Q\\Alt+F4"
-
-#~ msgid "E&xport Entry To"
-#~ msgstr "E&xportiere Eintrag zu"
-
-#~ msgid "Edit Entry:   «%s» «%s» «%s»"
-#~ msgstr "Eintrag bearbeiten:   «%s» «%s» «%s»"
-
-#~ msgid ""
-#~ "Either unable to load the necessary DLL, or it is the incorrect version, "
-#~ "to support Autotype during Launch of a Browser or Run a command.\n"
-#~ "\n"
-#~ "Autotype for these functions is disabled."
-#~ msgstr ""
-#~ "Kann die notwendige DLL entweder nicht laden, oder die Version ist nicht "
-#~ "korrekt, um die Autom. Eingabe beim Starten des Browsers oder das "
-#~ "Ausführen eine Kommando zu ermöglichen.\n"
-#~ "Autom. Eingabe für diese Funktionen ist abgeschaltet."
-
-#~ msgid "Encountered a hardware I/O error while accessing %1."
-#~ msgstr "Hardware I/O Fehler aufgetreten während des Zugriffs auf %1."
-
-#~ msgid "Encountered a locking violation while accessing %1."
-#~ msgstr "Eine Sperrverletzung ist aufgetreten während des Zugriffs auf %1."
-
-#~ msgid "Encountered a sharing violation while accessing %1."
-#~ msgstr ""
-#~ "Eine Verletzung ist aufgetreten während des gemeinsamen Zugriffs auf %1."
-
-#~ msgid "Encountered an improper argument."
-#~ msgstr "Ein unzulässiges Argument ist aufgetreten."
-
-#~ msgid "Encountered an unexpected error while reading %1."
-#~ msgstr "Ein unerwarteter Fehler ist aufgetreten beim Lesen von %1."
-
-#~ msgid "Encountered an unexpected error while writing %1."
-#~ msgstr "Ein unerwarteter Fehler ist aufgetreten beim Schreiben von %1."
-
-#~ msgid "Encrypt/Decrypt"
-#~ msgstr "Verschlüsseln/Entschlüsseln"
-
-#~ msgid "Enter a GUID."
-#~ msgstr "Geben Sie eine GUID ein."
-
-#~ msgid "Enter a currency."
-#~ msgstr "Geben Sie eine Währung ein."
-
-#~ msgid "Enter a date and/or time."
-#~ msgstr "Geben Sie Datum und/oder Zeit ein."
-
-#~ msgid "Enter a date."
-#~ msgstr "Geben Sie ein Datum ein."
-
-#~ msgid "Enter a number between %1 and %2."
-#~ msgstr "Geben Sie eine Nummer zwischen %1 und %2 ein."
-
-#~ msgid "Enter a number."
-#~ msgstr "Geben Sie eine Nummer ein."
-
-#~ msgid "Enter a positive integer."
-#~ msgstr "Geben Sie ein Positiver Integer ein."
-
-#~ msgid "Enter a time."
-#~ msgstr "Geben Sie eine Zeit ein."
-
-#~ msgid "Enter an integer between %1 and %2."
-#~ msgstr "Geben Sie ein Integer zwischen %1 und %2 ein."
-
-#~ msgid "Enter an integer between 0 and 255."
-#~ msgstr "Geben Sie ein Integer zwischen 0 und 255 ein."
-
-#~ msgid "Enter an integer."
-#~ msgstr "Geben Sie ein Integer ein."
-
-#~ msgid "Enter no more than %1 characters."
-#~ msgstr "Geben Sie nicht mehr als %1 Zeichen ein."
-
-#~ msgid ""
-#~ "Enter positions of password characters separated by spaces, commas or "
-#~ "semi-colons:"
-#~ msgstr ""
-#~ "Positionen der Passwortzeichen getrennt mit Leerzeichen, Komma oder "
-#~ "Strichpunkt eingeben:"
-
-#~ msgid "Enter your Sample Text below"
-#~ msgstr "Beispieltext unten eingeben"
-
-#~ msgid "Entries in both databases but with differences:"
-#~ msgstr "Einträge in beiden Datenbanken aber mit Unterschiede:"
-
-#~ msgid "Entry Unique ID:"
-#~ msgstr "Eintrag Unique ID:"
-
-#~ msgid "Entry size"
-#~ msgstr "Größe des Eintrags"
-
-#~ msgid "Entry size:"
-#~ msgstr "Größe des Eintrags:"
-
-#~ msgid "Entry status"
-#~ msgstr "Status des Eintrags"
-
-#~ msgid "Entry type"
-#~ msgstr "Typ des Eintrags"
-
-#~ msgid "Estonian"
-#~ msgstr "Estnisch"
-
-#~ msgid "Expand/Collapse Group"
-#~ msgstr "Gruppe ausklappen/zuklappen"
-
-#~ msgid "Expiring Passwords"
-#~ msgstr "Ablaufende Passwörter"
-
-#~ msgid "Export &Text"
-#~ msgstr "Exportiere &Text"
-
-#~ msgid "Export &XML"
-#~ msgstr "Exportiere &XML"
-
-#~ msgid "Export Entry in XML format..."
-#~ msgstr "Exportiere Eintrag in XML Format..."
-
-#~ msgid "Export Entry to Plain Text..."
-#~ msgstr "Exportiere Eintrag als Text ..."
-
-#~ msgid "Export Text Extra"
-#~ msgstr "Text Extra exportieren"
-
-#~ msgid "Export file:"
-#~ msgstr "Edportdatei:"
-
-#~ msgid ""
-#~ "Export file: '%s' already exists.\n"
-#~ "Do you want to replace it?"
-#~ msgstr ""
-#~ "Exportdatei: '%s' besteht schon.\n"
-#~ "Wollen Sie sie ersetzent?"
-
-#~ msgid "Export_Text"
-#~ msgstr "Export_Text"
-
-#~ msgid "Export_XML"
-#~ msgstr "Export_XML"
-
-#~ msgid "Exporting to file:"
-#~ msgstr "Exportiere nach Datei:"
-
-#~ msgid "Faeroese"
-#~ msgstr "Färöisch"
-
-#~ msgid "Failed to create empty document."
-#~ msgstr "Erstellen eines leeren Dokuments fehlgeschlagen."
-
-#~ msgid "Failed to launch help."
-#~ msgstr "Start der Hilfe fehlgeschlagen."
-
-#~ msgid "Failed to save changed preferences."
-#~ msgstr "Speichern der geänderten Einstellungen fehlgeschlagen."
-
-#~ msgid "Failed to save document."
-#~ msgstr "Speichern des Dokuments fehlgeschlagen."
-
-#~ msgid ""
-#~ "Failed to switch from R-O to R/W because database is already open in R/W "
-#~ "mode by:\n"
-#~ "%s %s\n"
-#~ "(Only one R/W access at a time is allowed)"
-#~ msgstr ""
-#~ "Umschalten von R-O nach R/W fehlgeschlagen, weil die Datenbank schon in R/"
-#~ "W Modus geöffnet ist von:\n"
-#~ "%s %s\n"
-#~ "(Nur ein R/W Zugriff ist gleichzeitig erlaubt)"
-
-#~ msgid ""
-#~ "Failed to switch from R-O to R/W: Could not open the database. It may "
-#~ "have been deleted or renamed or there may be a problem with its drive."
-#~ msgstr ""
-#~ "Umschalten von R-O nach R/W fehlgeschlagen: Konnte die Datenbank nicht "
-#~ "öffnen. Sie könnte gelöscht oder umbenannt worden sein oder vielleicht "
-#~ "gibt es ein Problem mit dem Laufwerk."
-
-#~ msgid ""
-#~ "Failed to switch from R-O to R/W: The file appears to be too short to be "
-#~ "a valid database."
-#~ msgstr ""
-#~ "Umschalten von R-O nach R/W fehlgeschlagen: Die Datei scheint zu klein zu "
-#~ "sein um eine gültige Datenbank zu sein."
-
-#~ msgid ""
-#~ "Failed to switch from R/W to R-O: Could not release database lock.\n"
-#~ "Try exiting and restarting program."
-#~ msgstr ""
-#~ "Umschalten von R/W nach R-O fehlgeschlagen: konnte die Datenbanksperee "
-#~ "nicht aufheben.\n"
-#~ "Versuchen Sie das Programm zu beenden, und starten erneut."
-
-#~ msgid "Failsafe Backup Deletion"
-#~ msgstr "Löschen der Notsicherung"
-
-#~ msgid "Failsafe Backup Files"
-#~ msgstr "Notsicherungsdateien"
-
-#~ msgid "Field Separator"
-#~ msgstr "Feld Trennzeichen"
-
-#~ msgid "Field active"
-#~ msgstr "Feld aktiv"
-
-#~ msgid "Field present"
-#~ msgstr "Feld vorhanden"
-
-#~ msgid "File In Use"
-#~ msgstr "Datei in Verwendung"
-
-#~ msgid "File open error."
-#~ msgstr "Fehler beim Öffnen der Datei."
-
-#~ msgid "Filter1"
-#~ msgstr "Filter 1"
-
-#~ msgid "Filters successfully exported"
-#~ msgstr "Filter erfolgreich exportiert"
-
-#~ msgid "Filters successfully imported"
-#~ msgstr "Filter erfolgreich importiert"
-
-#~ msgid "Find"
-#~ msgstr "Suchen"
-
-#~ msgid "Finnish"
-#~ msgstr "Finnisch"
-
-#~ msgid "Finnish with Sami"
-#~ msgstr "Finnisch mit Samisch"
-
-#~ msgid "Font"
-#~ msgstr "Schriftart"
-
-#~ msgid "Font st&yle:"
-#~ msgstr "Schriftart Stil:"
-
-#~ msgid "Gaelic"
-#~ msgstr "Gälisch"
-
-#~ msgid "Georgian"
-#~ msgstr "Georgisch"
-
-#~ msgid "Georgian (Ergonomic)"
-#~ msgstr "Georgisch (ergonomisch)"
-
-#~ msgid "Georgian (QWERTY)"
-#~ msgstr "Georgisch (QWERTY)"
-
-#~ msgid "German (IBM)"
-#~ msgstr "Deutsch (IBM)"
-
-#~ msgid "Given path is a directory or file is read-only"
-#~ msgstr "Angegebener Pfad ist ein Verzeichnis oder die Datei ist Nur-Lesen"
-
-#~ msgid "Go "
-#~ msgstr "Go"
-
-#~ msgid "Go+"
-#~ msgstr "Go+"
-
-#~ msgid "Greek"
-#~ msgstr "Griechisch"
-
-#~ msgid "Greek (220)"
-#~ msgstr "Griechisch (220)"
-
-#~ msgid "Greek (220) Latin"
-#~ msgstr "Griechisch (220, Lateinisch)"
-
-#~ msgid "Greek (319)"
-#~ msgstr "Griechisch (319)"
-
-#~ msgid "Greek (319) Latin"
-#~ msgstr "Griechisch (319, Lateinisch)"
-
-#~ msgid "Greek Latin"
-#~ msgstr "Griechisch (Lateinisch)"
-
-#~ msgid "Greek Polytonic"
-#~ msgstr "Griechisch (Polytonisch)"
-
-#~ msgid "Group [Mandatory Field]"
-#~ msgstr "Gruppe [Pflichtfeld]"
-
-#~ msgid "Group\tTitle\tUsername\tPassword Expiry Date\n"
-#~ msgstr "Gruppe\tTitel\tBenutzername\tPasswort Ablaufdatum\n"
-
-#~ msgid "Gujarati"
-#~ msgstr "Gudscharati"
-
-#~ msgid "H"
-#~ msgstr "H"
-
-#~ msgid "HK"
-#~ msgstr "HK"
-
-#~ msgid "Hausa"
-#~ msgstr "Hausa"
-
-#~ msgid "Hebrew"
-#~ msgstr "Hebräisch"
-
-#~ msgid "Help (F1)"
-#~ msgstr "Hilfe (F1)"
-
-#~ msgid "Hide System Tray icon (Hot Key MUST be active)"
-#~ msgstr "Symbol im Infobereich verbergen (Tastenkürzel MUSS aktiv sein)"
-
-#~ msgid "Highlight changed entries"
-#~ msgstr "Geänderte Einträge kennzeichnen"
-
-#~ msgid "Hindi Traditional"
-#~ msgstr "Hindi (traditionell)"
-
-#~ msgid "Hot Key"
-#~ msgstr "Hotkey"
-
-#~ msgid "HotKey1"
-#~ msgstr "HotKey1"
-
-#~ msgid "Hungarian"
-#~ msgstr "Ungarisch "
-
-#~ msgid "Hungarian 101-key"
-#~ msgstr "Ungarisch (101-Tastatur)"
-
-#~ msgid "I am a ..."
-#~ msgstr "Ich bin ein ..."
-
-#~ msgid "ID:32002:V C +O"
-#~ msgstr "ID:32002:V C +O"
-
-#~ msgid "ID:32003:V C +N"
-#~ msgstr "ID:32003:V C +N"
-
-#~ msgid "ID:32005:V C +S"
-#~ msgstr "ID:32005:V C +S"
-
-#~ msgid "ID:32021:V C +Q"
-#~ msgstr "ID:32021:V C +Q"
-
-#~ msgid "ID:32051:V C +A"
-#~ msgstr "ID:32051:V C +A"
-
-#~ msgid "ID:32063:V C +D"
-#~ msgstr "ID:32063:V C +D"
-
-#~ msgid "ID:32066:V C +C"
-#~ msgstr "ID:32066:V C +C"
-
-#~ msgid "ID:32067:V C +B"
-#~ msgstr "ID:32067:V C +B"
-
-#~ msgid "ID:32068:V C +U"
-#~ msgstr "ID:32068:V C +U"
-
-#~ msgid "ID:32069:V C +G"
-#~ msgstr "ID:32069:V C +G"
-
-#~ msgid "ID:32070:VAC +L"
-#~ msgstr "ID:32070:VAC +L"
-
-#~ msgid "ID:32072:V C +L"
-#~ msgstr "ID:32072:V C +L"
-
-#~ msgid "ID:32073:VA  +L"
-#~ msgstr "ID:32073:VA  +L"
-
-#~ msgid "ID:32074:V C +E"
-#~ msgstr "ID:32074:V C +E"
-
-#~ msgid "ID:32075:V C +T"
-#~ msgstr "ID:32075:V C +T"
-
-#~ msgid "ID:32076:V C +R"
-#~ msgstr "ID:32076:V C +R"
-
-#~ msgid "ID:32079:V C +F"
-#~ msgstr "ID:32079:V C +F"
-
-#~ msgid "ID:32080:VAC +R"
-#~ msgstr "ID:32080:VAC +R"
-
-#~ msgid "ID:32082:V C +Z"
-#~ msgstr "ID:32082:V C +Z"
-
-#~ msgid "ID:32083:V C +Y"
-#~ msgstr "ID:32083:V C +Y"
-
-#~ msgid "ID:32108:V C +F"
-#~ msgstr "ID:32108:V C +F"
-
-#~ msgid "ID:32154:V C +M"
-#~ msgstr "ID:32154:V C +M"
-
-#~ msgid "ID:32157:V C +P"
-#~ msgstr "ID:32157:V C +P"
-
-#~ msgid "ID:32302:VAC +C"
-#~ msgstr "ID:32302:VAC +C"
-
-#~ msgid "ID:32304:VAC +S"
-#~ msgstr "ID:32304:VAC +S"
-
-#~ msgid "ID:32307:VAC +A"
-#~ msgstr "ID:32307:VAC +A"
-
-#~ msgid "ID:32500:V C +C"
-#~ msgstr "ID:32500:V C +C"
-
-#~ msgid "ID:32501:V C +E"
-#~ msgstr "ID:32501:V C +E"
-
-#~ msgid "ID:32502:V C +F"
-#~ msgstr "ID:32502:V C +F"
-
-#~ msgid "ID:32503:V C +L"
-#~ msgstr "ID:32503:V C +L"
-
-#~ msgid "ID:32504:V C +S"
-#~ msgstr "ID:32504:V C +S"
-
-#~ msgid "Icelandic"
-#~ msgstr "Isländisch"
-
-#~ msgid "Icon"
-#~ msgstr "Symbol"
-
-#~ msgid ""
-#~ "If enabled, a 'snapshot' will be taken before every save, and named "
-#~ "according to the options listed below."
-#~ msgstr ""
-#~ "Wenn aktiviert, wird vor jeder Sicherung ein 'Schnappschuss' gemacht, und "
-#~ "so benannt wie es die Optionen unten angeben."
-
-#~ msgid "If requested, then a delimiter character must be entered!"
-#~ msgstr "Wenn erforderlich muss ein Trennzeichen eingegeben werden!"
-
-#~ msgid ""
-#~ "If the passphrase is the same as the currently opened database, "
-#~ "properties of this backup are shown."
-#~ msgstr ""
-#~ "Wenn das Master-Passwort dasselbe ist wie die geöffnete Datenbank, werden "
-#~ "die Eigenschaften dieser Notsicherung angezeigt."
-
-#~ msgid ""
-#~ "If this is the first database opened on the startup of PasswordSafe, "
-#~ "PasswordSafe will exit.  If not, the new open will be cancelled and the "
-#~ "existing opened database, if any, will remain open."
-#~ msgstr ""
-#~ "Wenn dies die erste Datenbank ist beim Starten von PasswordSafe, wird "
-#~ "PasswordSafe beendet. Wenn nicht, wird das Öffnen abgebrochen und die "
-#~ "bereits geöffnete Datenbank -wenn vorhanden- bleibt offen."
-
-#~ msgid ""
-#~ "If this keyboard supports characters via the %s, then this key will be "
-#~ "enabled and can be used to select them.\n"
-#~ "\n"
-#~ "You may need to also select the Shift key to see them."
-#~ msgstr ""
-#~ "Wenn die Tastatur Zeichen via %s unterstützt, dann wird diese Taste "
-#~ "freigegeben, und kann benutzt werden.\n"
-#~ "\n"
-#~ "Eventuell muss auch die Stelltaste ausgewählt werden um sie zu sehen."
-
-#~ msgid "Igbo"
-#~ msgstr "Igbo"
-
-#~ msgid ""
-#~ "Ignore all Failsafe Backup files and continue with the currently selected "
-#~ "database."
-#~ msgstr ""
-#~ "Alle Notsicherungsdateien überspringen und mit der aktuell ausgewählten "
-#~ "Datenbank weitermachen."
-
-#~ msgid "Import KeePass V1 CSV"
-#~ msgstr "Importiere KeePass V1 CSV"
-
-#~ msgid "Import KeePass V1 TXT"
-#~ msgstr "Importiere KeePass V1 TXT"
-
-#~ msgid "Inactive"
-#~ msgstr "Inaktiv"
-
-#~ msgid "Incorrect Passkey"
-#~ msgstr "Falsches Master-Passwort"
-
-#~ msgid "Incorrect filename."
-#~ msgstr "Fehlerhafter Dateiname"
-
-#~ msgid "Index is bigger than password length (%d)."
-#~ msgstr "Index ist größer als die Passwortlänge (%d)."
-
-#~ msgid "Index must be greater than or equal to 1."
-#~ msgstr "Der Index muss größer oder gleich 1 sein. "
-
-#~ msgid "Insert"
-#~ msgstr "Einfügen"
-
-#~ msgid "Insufficient memory to perform operation."
-#~ msgstr "Nicht genügend Speicher um die Operation auszuführen."
-
-#~ msgid "Internal application error."
-#~ msgstr "Interner Anwendungsfehler."
-
-#~ msgid "Irish"
-#~ msgstr "Irisch"
-
-#~ msgid "Italian (142)"
-#~ msgstr "Italienisch (142)"
-
-#~ msgid "Japanese"
-#~ msgstr "Japanisch"
-
-#~ msgid "KBytes"
-#~ msgstr "KByte"
-
-#~ msgid "Kannada"
-#~ msgstr "Kanadisch"
-
-#~ msgid "Kazakh"
-#~ msgstr "Kasachisch"
-
-#~ msgid "KeePass V1 TXT File..."
-#~ msgstr "KeePass V1 TXT Datei..."
-
-#~ msgid "Keyboard type:"
-#~ msgstr "Tastatur Typ:"
-
-#~ msgid "Kyrgyz Cyrillic"
-#~ msgstr "Kirgisisch (Kyrillisch)"
-
-#~ msgid "L Ctrl"
-#~ msgstr "Strg links"
-
-#~ msgid "Last Accessed"
-#~ msgstr "Letzter Zugriff"
-
-#~ msgid "Last clipboard action"
-#~ msgstr "Letzte Zwischenablage Aktion"
-
-#~ msgid "Latest version? Click <a href=\"%s\">here</a> to check."
-#~ msgstr ""
-#~ "Neueste Version? Klicken Sie <a href=\"%s\">hier</a> um nach zu prüfen."
-
-#~ msgid "Latin American"
-#~ msgstr "Lateinamerikanisch"
-
-#~ msgid "Latvian"
-#~ msgstr "Lettisch"
-
-#~ msgid "Latvian (QWERTY)"
-#~ msgstr "Lettisch (QWERTY)"
-
-#~ msgid "Left Ctrl key"
-#~ msgstr "Linke Strg Taste"
-
-#~ msgid ""
-#~ "Left click here to change. Right click here to reset or remove it. After "
-#~ "selecting the shortcut key combination, press Enter to set it."
-#~ msgstr ""
-#~ "Links-Klicken Sie hier zum Ändern. Rechts-Klicken Sie hier zum "
-#~ "Rücksetzen. Nach Auswahl der Verknüpfungskombination, Enter drücken zum "
-#~ "Setzen."
-
-#~ msgid ""
-#~ "Length of passwords generated in hexadecimal format must be even\n"
-#~ "as each byte is two hexadecimal digits."
-#~ msgstr ""
-#~ "Die Passwortlänge im hexadezimalen Format muss gerade sein\n"
-#~ "weil jedes Byte aus 2 Hexadezimalzeichen besteht."
-
-#~ msgid "List1"
-#~ msgstr "List1"
-
-#~ msgid "Lithuanian"
-#~ msgstr "Litauisch"
-
-#~ msgid "Lithuanian IBM"
-#~ msgstr "Litauisch (IBM)"
-
-#~ msgid "Lithuanian Standard"
-#~ msgstr "Litauisch Standard"
-
-#~ msgid "MBytes"
-#~ msgstr "MByte"
-
-#~ msgid "Mail system DLL is invalid."
-#~ msgstr "Mailsystem DLL ist ungültig."
-
-#~ msgid "Maori"
-#~ msgstr "Maori"
-
-#~ msgid "Marathi"
-#~ msgstr "Marathi"
-
-#~ msgid ""
-#~ "Maximum number of backups kept using incremented number suffix\n"
-#~ "must be between 1 and 999."
-#~ msgstr ""
-#~ "Maximale Anzahl an Sicherungsdateien mit fortlaufender Nummerierung\n"
-#~ "muss zwischen 1 und 999 liegen."
-
-#~ msgid "Maximum number of days that can be specified is %d"
-#~ msgstr "Maximale Anzahl an Tagen, die angegeben werden kann, ist %d"
-
-#~ msgid "Maximum number stored"
-#~ msgstr "Max. gespeicherte Nummer"
-
-#~ msgid "Maximum value for first number and 'Between' rule"
-#~ msgstr "Maximaler Wert für die erste Zahl und 'Zwischen'-Regel"
-
-#~ msgid "Merge failed"
-#~ msgstr "Zusammenführen fehlgeschlagen"
-
-#~ msgid "Migrate PasswordSafe configuration to user directory"
-#~ msgstr "Migriere die PasswordSafe Konfiguration zum Anwenderverzeichnis"
-
-#~ msgid "Minimum digit characters"
-#~ msgstr "Minimales Zählzeichen"
-
-#~ msgid "Minimum symbol characters"
-#~ msgstr "Minimum Anzahl Symbole"
-
-#~ msgid "Mixed"
-#~ msgstr "Gemischt"
-
-#~ msgid "Mongolian Cyrillic"
-#~ msgstr "Mongolisches Kyrillisch"
-
-#~ msgid "Move Here"
-#~ msgstr "Hierher schieben"
-
-#~ msgid ""
-#~ "NOTE: Changing this entry's own password will make this a normal entry "
-#~ "and break the link with its base?"
-#~ msgstr ""
-#~ "HINWEIS: Beim Ändern des eigenen Passwortes, wird dies ein normaler "
-#~ "Eintrag, und die Verknüpfung mit dem Basiseintrag geht verloren."
-
-#~ msgid "Name"
-#~ msgstr "Name"
-
-#~ msgid "Name. Name. Name."
-#~ msgstr "Name. Name. Name."
-
-#~ msgid "New"
-#~ msgstr "Neu"
-
-#~ msgid "Next >"
-#~ msgstr "Folgende >"
-
-#~ msgid "No criteria defined"
-#~ msgstr "Keine Kriterien definiert"
-
-#~ msgid "No database open with which to compare against another database!"
-#~ msgstr ""
-#~ "Keine Datenbank geöffnet um sie mit einer weiteren Datenbank zu "
-#~ "vergleichen!"
-
-#~ msgid "No entry exists within this database matching your specifications."
-#~ msgstr "Kein Eintrag in dieser Datenbank passt auf Ihre Beschreibung"
-
-#~ msgid "No error occurred."
-#~ msgstr "Kein Fehler aufgetreten."
-
-#~ msgid "No fields selected for export!"
-#~ msgstr "Keine Felder für den Export markiert!"
-
-#~ msgid "No fields selected for searching!"
-#~ msgstr "Keine Felder zum Durchsuchen markiert!"
-
-#~ msgid "No fields selected to compare!"
-#~ msgstr "Keine Felder zum Vergleich markiert!"
-
-#~ msgid "No fields selected to filter the display!"
-#~ msgstr "Keine Felder ausgewählt um die Anzeige zu filtern!"
-
-#~ msgid "No function selected for basing your restrictions."
-#~ msgstr "Kein Funktion ausgewählt um Einschränkungen aufzusetzen."
-
-#~ msgid "No items matched your filter"
-#~ msgstr "Kein Angaben stimmen mit dem Filter überein"
-
-#~ msgid "No object selected for basing your restrictions."
-#~ msgstr "Kein Objekt ausgewählt um Einschränkungen aufzusetzen."
-
-#~ msgid "No reports exist in the same directory as the current database."
-#~ msgstr ""
-#~ "Kein Report besteht im selben Verzeichnis wie die aktuelle Datenbank."
-
-#~ msgid "No rows are enabled"
-#~ msgstr "Keine Zeile freigegeben"
-
-#~ msgid "Normal entry"
-#~ msgstr "Normaler Eintrag"
-
-#~ msgid "Normal entry - password expired"
-#~ msgstr "Normaler Eintrag - Passwort abgelaufen"
-
-#~ msgid "Normal entry - warning password will expire"
-#~ msgstr "Normaler Eintrag - Warnung Passwort läuft bald ab"
-
-#~ msgid "Norwegian"
-#~ msgstr "Norwegisch"
-
-#~ msgid "Norwegian with Sami"
-#~ msgstr "Norwegisch mit Sami"
-
-#~ msgid "Not all of the system registry entries (or INI file) were removed."
-#~ msgstr ""
-#~ "Nicht alle Registry-Einträge (oder INI-Dateien) konnten entfernt werden."
-
-#~ msgid ""
-#~ "Note that if you choose to recover the auto-saved documents, you must "
-#~ "explicitly save them to overwrite the original documents.  If you choose "
-#~ "to not recover the auto-saved versions, they will be deleted."
-#~ msgstr ""
-#~ "Beachten Sie dass, wenn Sie automatisch gesicherte Dokumente "
-#~ "wiederherstellen wollen, müssen Sie diese explizit sichern, um die "
-#~ "originale Dokumente zu überschreiben. Wenn Sie wünschen dass die  "
-#~ "automatisch gesicherte Versionen nicht wiederhergestellt werden, werden "
-#~ "diese gelöscht."
-
-#~ msgid "Number is set to the maximum value.  'Greater than' is not allowed."
-#~ msgstr "Nummer auf Maximalwert gesetzt. 'Größer als' ist nicht erlaubt."
-
-#~ msgid "Number is set to the minimum value.  'Less than' is not allowed."
-#~ msgstr "Nummer auf Minimalwert gesetzt. 'Kleiner als' ist nicht erlaubt."
-
-#~ msgid "Number of Entries"
-#~ msgstr "Anzahl Einträge"
-
-#~ msgid "Number of Groups"
-#~ msgstr "Anzahl Gruppen"
-
-#~ msgid "Number of Unknown Fields"
-#~ msgstr "Anzahl der unbekannten Felder"
-
-#~ msgid "Number of entries in database"
-#~ msgstr "Anzahl Einträge in der Datenbank"
-
-#~ msgid "Number of unknown fields:"
-#~ msgstr "Anzahl der unbekannten Felder:"
-
-#~ msgid "Number stored"
-#~ msgstr "Nummer abgespeichert"
-
-#~ msgid "Numeric Pad"
-#~ msgstr "Ziffernblock"
-
-#~ msgid "Off"
-#~ msgstr "Aus"
-
-#~ msgid ""
-#~ "One of more preferences have been changed. Are you sure you wish to "
-#~ "cancel?"
-#~ msgstr ""
-#~ "Ein oder mehrere Präferenzen wurden geändert. Sind sie sicher Abbrechen "
-#~ "zu wollen?"
-
-#~ msgid "One or more auto-saved documents were found."
-#~ msgstr "Es wurden ein oder mehr automatisch gesicherte Dokumente gefunden."
-
-#~ msgid ""
-#~ "Only in Original DB: %d; Only in Comparison DB: %d; In both "
-#~ "(differences): %d; In both (identical): %d"
-#~ msgstr ""
-#~ "Nur in der Original-Datenbank: %d; Nur in der Vergleichsdatenbank: %d; "
-#~ "mit Unterschieden in Beiden: %d; Identisch in Beiden: %d"
-
-#~ msgid "Open"
-#~ msgstr "Öffnen"
-
-#~ msgid "Original"
-#~ msgstr "Original"
-
-#~ msgid "Original Database:"
-#~ msgstr "Original Datenbank:"
-
-#~ msgid "Oriya"
-#~ msgstr "Oriya"
-
-#~ msgid "Other: "
-#~ msgstr "Andere:"
-
-#~ msgid "Out of memory."
-#~ msgstr "Nicht genug Speicher."
-
-#~ msgid "PWS_CPF_CDD"
-#~ msgstr "PWS_CPF_CDD"
-
-#~ msgid "PWS_CPF_TVDD"
-#~ msgstr "PWS_CPF_TVDD"
-
-#~ msgid "Passkey needed to save. Please unlock database and try again"
-#~ msgstr ""
-#~ "Ein Password wird zur Speicherung benötigt. Bitte entriegeln Sie die "
-#~ "Datenbank, und probieren Sie es nochmal."
-
-#~ msgid "Passphrase"
-#~ msgstr "Master-Passwort"
-
-#~ msgid "Passphrase character count:"
-#~ msgstr "Anzahl Zeichen im Master-Passwort:"
-
-#~ msgid "Password Generated based on displayed policy"
-#~ msgstr "Passwort generiert nach der dargestellten Passwortrichtlinie"
-
-#~ msgid "Password Length"
-#~ msgstr "Passwortlänge"
-
-#~ msgid "Password Modified"
-#~ msgstr "Passwort geändert"
-
-#~ msgid "Password Policy Filter"
-#~ msgstr "Passwortrichtlinie Filter"
-
-#~ msgid "Password Policy Override"
-#~ msgstr "Passwortrichtlinie übergehen"
-
-#~ msgid ""
-#~ "Password Safe has been compiled as %s but CPU is really %s.\n"
-#~ "You may not be able to open files or saved files may be incompatible with "
-#~ "other platforms."
-#~ msgstr ""
-#~ "Password Safe wurde als %s kompiliert, aber die CPU ist ein %s.\n"
-#~ "You may not be able to open files or saved files may be incompatible with "
-#~ "other platforms."
-
-#~ msgid "Password [Mandatory Field]"
-#~ msgstr "Passwort [Pflichtfeld]"
-
-#~ msgid "Password implies this is an alias entry, but "
-#~ msgstr "Laut Passwort ist dies ein Alias-Eintrag, aber"
-
-#~ msgid ""
-#~ "Password implies this is an alias entry, but specifies a base entry with "
-#~ "no title.\n"
-#~ "Every entry must have a title."
-#~ msgstr ""
-#~ "Password geht davon aus dass dies ein Aliaseintrag ist, aber spezifiziert "
-#~ "ein Basiseintrag ohne Titel.\n"
-#~ "Jeder Eintrag muss ein Titel haben."
-
-#~ msgid "Password minimum length"
-#~ msgstr "Minimale Länge des Passwortes"
-
-#~ msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
-#~ msgstr "PasswordSafe V%d.%d.%d (Build %s) hat einen Fehler gehabt."
-
-#~ msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
-#~ msgstr ""
-#~ "PasswordSafe: es bestehen Einträge mit abgelaufene oder bald ablaufende "
-#~ "Passwörter"
-
-#~ msgid "Persian"
-#~ msgstr "Persisch"
-
-#~ msgid "Physical Keyboard:"
-#~ msgstr "Physische Tastatur:"
-
-#~ msgid "Please Choose a Text File to Import"
-#~ msgstr "Bitte wählen sie eine Textdatei zum Importieren aus"
-
-#~ msgid ""
-#~ "Please confirm that you wish to delete current user's PasswordSafe "
-#~ "configuration information from the Windows registry.\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Bitte bestätigen Sie dass Sie die PasswordSafe Konfigurationsdaten des "
-#~ "aktuellen Benutzers aus der Windows Registry löschen wollen.\n"
-#~ "\n"
-
-#~ msgid "Please confirm you wish to delete the %s filter %s?"
-#~ msgstr "Bitte bestätige das Löschen von %s Filter %s?"
-
-#~ msgid "Please enter a search string"
-#~ msgstr "Bitte einen Suchbegriff eingeben."
-
-#~ msgid "Please enter your backup database prefix!"
-#~ msgstr "Bitte geben Sie das Präfix Ihrer Datenbanksicherung an!"
-
-#~ msgid "Please specify the destination location to contain all backups."
-#~ msgstr "Bitte wählen Sie den Speicherort für alle Sicherungsdateien aus."
-
-#~ msgid "Please specify the sub-directory to contain all backups."
-#~ msgstr ""
-#~ "Bitte wählen Sie das Unterverzeichnis für alle Sicherungsdateien aus."
-
-#~ msgid ""
-#~ "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
-#~ msgstr ""
-#~ "Bitte besuchen Sie die <a href=\"https://pwsafe.org/\">PasswordSafe "
-#~ "Homepage.</a>"
-
-#~ msgid "Polish (Programmers)"
-#~ msgstr "Polnisch (Programmierer)"
-
-#~ msgid "Portuguese"
-#~ msgstr "Portugiesisch"
-
-#~ msgid "Portuguese (Brazilian ABNT)"
-#~ msgstr "Portugiesisch  (Brasilianisch, ABNT)"
-
-#~ msgid "Press to delete all added characters."
-#~ msgstr "Drücken zum Löschen aller hinzugefügten Zeichen."
-
-#~ msgid ""
-#~ "Pressing OK will copy the password of the selected item to the clipboard. "
-#~ "The clipboard will be securely cleared when Password Safe is closed.\n"
-#~ "\n"
-#~ "Pressing Cancel stops the password being copied."
-#~ msgstr ""
-#~ "Mit Drücken von OK wird das Passwort des ausgewählten Eintrages in die "
-#~ "Zwischenablage kopiert. Die Zwischenablage wird sicher gelöscht, wenn "
-#~ "Password Safe schließt.\n"
-#~ "\n"
-#~ "Mit Drücken von Abbrechen wird das Kopieren des Passwortes angehalten."
-
-#~ msgid "Previous Passwords"
-#~ msgstr "Frühere Passwörter"
-
-#~ msgid "Processing entry:"
-#~ msgstr "Eintrag zur Bearbeitung:"
-
-#~ msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
-#~ msgstr "Programme (*.exe)|*.exe|Alle Dateien (*.*)|*.*||"
-
-#~ msgid "Properties of the currently selected database."
-#~ msgstr "Eigenschaften der aktuell ausgewählten Datenbank."
-
-#~ msgid "Protect All Entries"
-#~ msgstr "Schütze alle Eintrage"
-
-#~ msgid "Protected Entry:   «%s» «%s» «%s»"
-#~ msgstr "Geschüztzter Eintrag:   «%s» «%s» «%s»"
-
-#~ msgid "Punjabi"
-#~ msgstr "Pandschabi"
-
-#~ msgid "Purchase unlimited &U3 version..."
-#~ msgstr "Kaufen Sie eine unbeschränkte &U3-Version..."
-
-#~ msgid "R Ctrl"
-#~ msgstr "Strg rechts"
-
-#~ msgid "R/W"
-#~ msgstr "R/W"
-
-#~ msgid "Randomize"
-#~ msgstr "Zufällig"
-
-#~ msgid "Read-Only"
-#~ msgstr "Nur Lesen"
-
-#~ msgid "Read-Write"
-#~ msgstr "Lesen/Schreiben"
-
-#~ msgid "Recent"
-#~ msgstr "Zuletzt"
-
-#~ msgid ""
-#~ "Recover the auto-saved documents\n"
-#~ "Open the auto-saved versions instead of the explicitly saved versions"
-#~ msgstr ""
-#~ "Wiederherstellen der automatisch gesicherten Dokumente\n"
-#~ "Öffne die automatisch gesicherte Versionen anstelle der explizit "
-#~ "gesicherten Versionen"
-
-#~ msgid "Relative"
-#~ msgstr "Relativ"
-
-#~ msgid ""
-#~ "Relative dates are in days relative to today e.g. '-1' is yesterday and "
-#~ "'1' is tomorrow"
-#~ msgstr ""
-#~ "Ein relatives Datum bezeiht sich auf heute, z.B. '-1' ist gestern und '1' "
-#~ "ist morgen."
-
-#~ msgid "Remove PasswordSafe configuration from Registry"
-#~ msgstr "Lösche die PasswordSafe Konfiguration aus der Registry"
-
-#~ msgid "Report created"
-#~ msgstr "Bericht erstellt"
-
-#~ msgid "Requested mode change failed"
-#~ msgstr "Verlangte Modusänderung fehlgeschlagen"
-
-#~ msgid ""
-#~ "Required Unicode font is not installed on this system.\n"
-#~ "\n"
-#~ "Unable to provide Virtual Keyboard."
-#~ msgstr ""
-#~ "Der erforderliche Unicode Font ist nicht installiert in diesem System.\n"
-#~ "\n"
-#~ "Die virtuelle Tastatur kann nicht bereitgestellt werden."
-
-#~ msgid "Reserved shortcut '%s' ignored."
-#~ msgstr "Reservierte Verknüpfung '%s' ignoriert."
-
-#~ msgid "Reset Column Width"
-#~ msgstr "Spaltenbreite rücksetzen"
-
-#~ msgid "Reset Columns"
-#~ msgstr "Spalten rücksetzen"
-
-#~ msgid "Reset this shortcut"
-#~ msgstr "Diese Verknüpfung rücksetzen"
-
-#~ msgid "Result summary:"
-#~ msgstr "Ergebniszusammenfassung:"
-
-#~ msgid "Right Ctrl key"
-#~ msgstr "Rechte Strg Taste"
-
-#~ msgid ""
-#~ "Right-click on the 'Y' in either of the first 2 columns for additional "
-#~ "functions"
-#~ msgstr ""
-#~ "Klicke rechts auf 'Y' in einer der beiden ersten Spalten für zusätzliche "
-#~ "Funktionen"
-
-#~ msgid "Romanian (Legacy)"
-#~ msgstr "Rumänisch (Legacy)"
-
-#~ msgid "Romanian (Programmers)"
-#~ msgstr "Rumänisch (Programmierer)"
-
-#~ msgid "Romanian (Standard)"
-#~ msgstr "Rumänisch (Standard)"
-
-#~ msgid "Row %d is incomplete. Please set both Field and Criteria."
-#~ msgstr ""
-#~ "Zeile %d ist unvollständig. Bitte setzen Sie sowohl Felder als auch "
-#~ "Kriterien"
-
-#~ msgid "Row number"
-#~ msgstr "Zeilennummer"
-
-#~ msgid "Rule"
-#~ msgstr "Regel"
-
-#~ msgid "Rule:"
-#~ msgstr "Regel:"
-
-#~ msgid "Russian (Typewriter)"
-#~ msgstr "Russisch (Schreibmaschine)"
-
-#~ msgid "S"
-#~ msgstr "S"
-
-#~ msgid "Sami Extended Finland-Sweden"
-#~ msgstr "Samisch-erweitert Finnland-Schweden"
-
-#~ msgid "Sami Extended Norway"
-#~ msgstr "Samisch-erweitert Norwegen"
-
-#~ msgid "Sample"
-#~ msgstr "Beispiel"
-
-#~ msgid "Sample text cannot be empty"
-#~ msgstr "Beispieltext kann nicht leer sein"
-
-#~ msgid "Save As"
-#~ msgstr "Speichern &unter"
-
-#~ msgid "Save Error"
-#~ msgstr "Fehler beim Speichern"
-
-#~ msgid "Save changes to %1?"
-#~ msgstr "Änderungen speichern nach %1?"
-
-#~ msgid "Sc&ript:"
-#~ msgstr "Sk&ript:"
-
-#~ msgid "Second date must be later than first"
-#~ msgstr "Das zweite Datum muss später liegen als das erste"
-
-#~ msgid "Second number must be more than first"
-#~ msgstr "Die zweite Nummer muss größer als die erste sein."
-
-#~ msgid "Seek failed on %1"
-#~ msgstr "Seek bei %1 gescheitert"
-
-#~ msgid "Select"
-#~ msgstr "Auswahl"
-
-#~ msgid "Select &All"
-#~ msgstr "&Alle auswählen"
-
-#~ msgid "Select Keyboard:"
-#~ msgstr "Wählen Sie die Tastatur aus:"
-
-#~ msgid "Select Location for Intermediate Backups"
-#~ msgstr "Wähle den Speicherort für die Zwischen-Sicherung aus"
-
-#~ msgid "Select Test Dump Type"
-#~ msgstr "Wählen sie den Test Ausgabe Typ"
-
-#~ msgid "Select a button."
-#~ msgstr "Wählen sie eine Tatse aus."
-
-#~ msgid "Select all entries"
-#~ msgstr "Wähle alle Einträge aus"
-
-#~ msgid "Select and apply a filter"
-#~ msgstr "Filter auswählen und anwenden"
-
-#~ msgid "Select some entries"
-#~ msgstr "Einige Einträge auswählen"
-
-#~ msgid "Send Mail failed to send message."
-#~ msgstr "Senden der Email fehlgeschlagen."
-
-#~ msgid "Serbian (Cyrillic)"
-#~ msgstr "Serbisch (Kyrillisch)"
-
-#~ msgid "Serbian (Latin)"
-#~ msgstr "Serbisch (Lateinisch)"
-
-#~ msgid "Sesotho sa Leboa"
-#~ msgstr "Sesotho sa Leboa"
-
-#~ msgid "Session"
-#~ msgstr "Sitzung"
-
-#~ msgid "Set Default Username?"
-#~ msgstr "Standardbenutzername setzen?"
-
-#~ msgid "Set Display Filter"
-#~ msgstr "Anzeigefilter setzen"
-
-#~ msgid "Set Display Filters: %d Added; %d Active"
-#~ msgstr "Anzeigefilter setzen: %d dazu; %d aktiv"
-
-#~ msgid "Set Entry's Password Policy"
-#~ msgstr "Passwortrichtlinie des Eintrages setzen"
-
-#~ msgid "Set Password History Filters: %d Added; %d Active"
-#~ msgstr "Filter Passworthistorie setzen: %d dazu; %d Aktiv"
-
-#~ msgid "Set Password Policy Filters: %d Added; %d Active"
-#~ msgstr "Filter Passwortrichtlinie setzen: %d dazu; %d Aktiv"
-
-#~ msgid "Set Sample &Text"
-#~ msgstr "Beispiel&text setzen"
-
-#~ msgid "Setswana"
-#~ msgstr "Setswana"
-
-#~ msgid "Shift"
-#~ msgstr "Umsch"
-
-#~ msgid "Shift+"
-#~ msgstr "Umsch+"
-
-#~ msgid "Shift+Double Click Action"
-#~ msgstr "Umschalt+Doppelklick Aktion"
-
-#~ msgid "Shift+click to view current policy"
-#~ msgstr "Umschalt+Klick um die aktuelle Richtlinie anzuzeigen"
-
-#~ msgid "Shortcut '%s' already assigned to menu item '%s'."
-#~ msgstr "Verknüpfung '%s' ist schon mit Menueintrag '%s' gebunden."
-
-#~ msgid "Shortcut Base entry"
-#~ msgstr "Basiseintragverknüpfung"
-
-#~ msgid "Shortcut Base entry - password expired"
-#~ msgstr "Basiseintragverknüpfung - Passwort abgelaufen"
-
-#~ msgid "Shortcut Base entry - warning password will expire"
-#~ msgstr "Basiseintragverknüpfung - Warnung Passwort läuft bald ab"
-
-#~ msgid "Show &Find Toolbar"
-#~ msgstr "&Suchleiste einblenden"
-
-#~ msgid "Show Virtual Keyboard"
-#~ msgstr "Zeige die virtuelle Tastatur"
-
-#~ msgid ""
-#~ "Show entries with identical compared fields (Note: Unknown fields were "
-#~ "not compared.)"
-#~ msgstr ""
-#~ "Zeige Einträge mit identisch-verglichenen Feldern (Hinweis: unbekannte "
-#~ "Felder wurden nicht verglichen.)"
-
-#~ msgid "Show grid lines in List View"
-#~ msgstr "Zeige Gitterlinien in der Listendarstellung"
-
-#~ msgid "Shutdown, Restart or Logoff in progress"
-#~ msgstr "Ausschalten, Neu Starten oder Abmelden sind im Gange"
-
-#~ msgid "Signal Abort"
-#~ msgstr "Abbrechen Signal"
-
-#~ msgid "Signal Illegal Instruction"
-#~ msgstr "Ungültiger Befehl Signal"
-
-#~ msgid "Signal Terminate"
-#~ msgstr "Beenden Signal"
-
-#~ msgid "Slovak"
-#~ msgstr "Slowakisch"
-
-#~ msgid "Slovak (QWERTY)"
-#~ msgstr "Slowakisch (QWERTY)"
-
-#~ msgid "Slovenian"
-#~ msgstr "Slowenisch"
-
-#~ msgid ""
-#~ "Some characters may be missing or not be displayed correctly, as we were "
-#~ "unable to find the Arial Unicode MS font."
-#~ msgstr ""
-#~ "Einige Zeichen sind nicht da oder werden nicht dargestellt, weil der Font "
-#~ "Arial Unicode MS nicht gefunden wurde."
-
-#~ msgid ""
-#~ "Some of the entries in this database have passwords that have expired or "
-#~ "are about to.  Do you wish to list them and possibly update them?"
-#~ msgstr ""
-#~ "Einige der Einträge in der Datenbank haben Passwörter die abgelaufen sind "
-#~ "oder bald ablaufen. Wollen Sie diese auflisten und gegebenenfalls "
-#~ "aktualiseren?"
-
-#~ msgid "Sorbian Standard (Legacy)"
-#~ msgstr "Sorbisch Standard (Legacy)"
-
-#~ msgid ""
-#~ "Sorry - your requested HotKey is already being used.\n"
-#~ "\n"
-#~ "This feature has been temporarily disabled.\n"
-#~ "\n"
-#~ "To re-enable in this session, please select a different key combination."
-#~ msgstr ""
-#~ "Schade, aber der von Ihnen vorgeschlagene Hotkey wird bereits benutzt.\n"
-#~ "\n"
-#~ "Diese Eigenschaft wurde vorübergehend abgeschaltet.\n"
-#~ "\n"
-#~ "Um es wieder einzuschalten, wählen Sie bitte eine andere "
-#~ "Tastenkombination."
-
-#~ msgid ""
-#~ "Sorry but PasswordSafe has had a problem.\n"
-#~ "\n"
-#~ "Minimal diagnostic information has been written to file: \n"
-#~ "\n"
-#~ "\t'"
-#~ msgstr ""
-#~ "Sorry but PasswordSafe hat einen Problem gehabt.\n"
-#~ "\n"
-#~ "Minimale Information zur Diagnostik steht in der Datei: \n"
-#~ "\n"
-#~ "\t'"
-
-#~ msgid ""
-#~ "Sorry, can't specify a minimum number of characters with 'pronounceable' "
-#~ "or 'easy-to-read' options. Specified values ignored."
-#~ msgstr ""
-#~ "Schade, aber bei den Optionen 'aussprechbar' und 'leicht lesbar' kann man "
-#~ "keine Mindestlänge für Passwörter vorgeben. Angaben wurden ignoriert."
-
-#~ msgid "Source"
-#~ msgstr "Quelle"
-
-#~ msgid "Spanish Variation"
-#~ msgstr "Spanisch (Variation)"
-
-#~ msgid ""
-#~ "Start saving password history for all entries, to the above number of "
-#~ "entries."
-#~ msgstr ""
-#~ "Beginne mit der Speicherung der Passworthistorie für alle Einträge von "
-#~ "obiger Angaben."
-
-#~ msgid "Static_Static"
-#~ msgstr "Static_Static"
-
-#~ msgid "Status"
-#~ msgstr "Status"
-
-#~ msgid ""
-#~ "Stop saving password history for all entries.\n"
-#~ "\n"
-#~ "Saved histories will not be touched, but password changes will no longer "
-#~ "be stored by default."
-#~ msgstr ""
-#~ "Beenden Sie das Speichern der Passworthistorie für alle Einträge.\n"
-#~ "\n"
-#~ "Gespeicherte Passworthistorien werden nicht geändert, aber "
-#~ "Passwortänderungen werden nicht länger standardmäßig gespeichert."
-
-#~ msgid "String value:"
-#~ msgstr "String Wert:"
-
-#~ msgid "Swedish with Sami"
-#~ msgstr "Schwedisch mit Sami"
-
-#~ msgid "Swiss French"
-#~ msgstr "Schweizerisch Französisch"
-
-#~ msgid "Swiss German"
-#~ msgstr "Schweizerisch Deutsch"
-
-#~ msgid "Synchronizing current database with:"
-#~ msgstr "Synchronisiere aktuelle Datenbank mit:"
-
-#~ msgid ""
-#~ "System registry entries have been removed and the INI file (if any) was "
-#~ "deleted."
-#~ msgstr ""
-#~ "Einträge in der Registrierungsdatenbank und INI-Dateien (falls es welche "
-#~ "gab) wurden entfernt."
-
-#~ msgid "Sz"
-#~ msgstr "Sz"
-
-#~ msgid "TRIAL"
-#~ msgstr "TRIAL"
-
-#~ msgid "Tajik"
-#~ msgstr "Tajik"
-
-#~ msgid "Tamil"
-#~ msgstr "Tamilisch"
-
-#~ msgid "Tatar"
-#~ msgstr "Tatarisch"
-
-#~ msgid "Telugu"
-#~ msgstr "Telugu"
-
-#~ msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*||"
-#~ msgstr "Textdateien (*.txt)|*.txt|Alle Dateien (*.*)|*.*||"
-
-#~ msgid "Text will be red if the shortcut differs from its default value."
-#~ msgstr "Der Text wird rot wenn die Verknüpfung vom Standardwert abweicht."
-
-#~ msgid "Text:"
-#~ msgstr "Text:"
-
-#~ msgid "Thai Kedmanee"
-#~ msgstr "Thai Kedmanee"
-
-#~ msgid "Thai Kedmanee (non-ShiftLock)"
-#~ msgstr "Thai Kedmanee (non-ShiftLock)"
-
-#~ msgid "Thai Pattachote"
-#~ msgstr "Thai Pattachote"
-
-#~ msgid "Thai Pattachote (non-ShiftLock)"
-#~ msgstr "Thai Pattachote (non-ShiftLock)"
-
-#~ msgid ""
-#~ "The ALT key is not used on any keyboard to select characters. Use the "
-#~ "'Alt Num' key to enter a character via its decimal value."
-#~ msgstr ""
-#~ "Die ALT Taste wird an keiner Tastatur verwendet um zeichen auszuwählen. "
-#~ "Verwenden Sie die 'Alt Num' Taste um Zeichen in dezimaler Form einzugeben."
-
-#~ msgid ""
-#~ "The database %s couldn't be opened.\n"
-#~ "Do you wish to look for it elsewhere (Search), create a new database "
-#~ "(New), or Exit?"
-#~ msgstr ""
-#~ "Die Datenbank %s konnte nicht geöffnet werden.\n"
-#~ "Wollen Sie woanders danach suchen, eine neue Datenbank anlegen oder "
-#~ "PasswordSafe beenden?"
-
-#~ msgid ""
-#~ "The database has been changed since you opened it in R-O mode, so it is "
-#~ "not possible to switch to R/W mode.\n"
-#~ "\n"
-#~ "Please close the database and re-open it in R/W mode."
-#~ msgstr ""
-#~ "Die Datenbank wurde geändert seit sie in Modus R-O geöffnet wurde. Somit "
-#~ "ist es nicht möglich zum Modus R/W umzuschalten.\n"
-#~ "\n"
-#~ "Bitte schliessen Sie die Datenbank, und öffnen Sie sie wieder in Modus R/"
-#~ "W."
-
-#~ msgid ""
-#~ "The database:\n"
-#~ "%s\n"
-#~ "\n"
-#~ "is apparently being used by:\n"
-#~ "%s%s.\n"
-#~ "\n"
-#~ "Open the database for Read-Only or Exit?\n"
-#~ "\n"
-#~ "Note: Only one user at a time can open the database for writing."
-#~ msgstr ""
-#~ "Die Datenbank:\n"
-#~ "%s\n"
-#~ "\n"
-#~ "wird scheinbar schon benutzt von:\n"
-#~ "\n"
-#~ "%s%s.\n"
-#~ "\n"
-#~ "Öffnen der Datenbank im Nur-lese-Modus oder beenden?\n"
-#~ "\n"
-#~ "Hinweis: die Datenbank kann immer nur von einem Benutzer zum Schreiben "
-#~ "geöffnet werden."
-
-#~ msgid ""
-#~ "The database:\n"
-#~ "%s\n"
-#~ "\n"
-#~ "is apparently being used by:\n"
-#~ "%s%s.\n"
-#~ "\n"
-#~ "Open the database for Read-Only, Read-Write, or Exit?\n"
-#~ "\n"
-#~ "Note: Choose \"Read-Write\" only if you are certain that the file is in "
-#~ "fact not being used by anyone else,\n"
-#~ "including another copy of Password Safe running on your machine."
-#~ msgstr ""
-#~ "Die Datenbank:\n"
-#~ "%s\n"
-#~ " wird scheinbar schon benutzt von:\n"
-#~ "%s%s.\n"
-#~ "\n"
-#~ "Öffnen der Datenbank im Nur-lese-Modus oder mit Schreibzugriff, oder "
-#~ "beenden?\n"
-#~ "\n"
-#~ "Hinweis: Wählen Sie \"Lesen/Schreiben\" nur wenn Sie sich sicher sind, "
-#~ "dass diese Datei wirklich nicht benutzt wird,\n"
-#~ "auch nicht von einer anderen Instanz von PasswordSafe."
-
-#~ msgid "The entered passwords do not match.  Please re-enter them."
-#~ msgstr ""
-#~ "Die eingegebenen Passwörter sind unterschiedlich.  Bitte erneut eingeben."
-
-#~ msgid "The file is too large to open."
-#~ msgstr "Datei ist zu groß um sie zu öffnen."
-
-#~ msgid "The following entries' passwords are about to expire or expired:"
-#~ msgstr ""
-#~ "Die Passwörter der folgenden Einträge laufen bald ab oder sind abgelaufen:"
-
-#~ msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-#~ msgstr "Folgender Eintrag wurde in die %s Datenbank kopiert: '%s:%s:%s'"
-
-#~ msgid ""
-#~ "The notes field of this entry has more text than can be displayed. "
-#~ "Changing this field and saving the entry will result in this field being "
-#~ "truncated after %d characters.  To view the full contents, either copy it "
-#~ "to an editor via the clipboard or export this entry to XML before "
-#~ "changing it."
-#~ msgstr ""
-#~ "Im Feld Notizen diese Eintrages ist mehr ext als angezeigt werden kann. "
-#~ "Beim Ändern dieses Feldes and Speichern des Eintrages wird das Feld nach "
-#~ "%d Zeichen abgeschnitten. Um den ganzen Inhalt zu sehen, kopieren Sie es "
-#~ "in einen Editor oder exportieren Sie diesen Eintrag zu XML bevor Sie es "
-#~ "ändern."
-
-#~ msgid ""
-#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is "
-#~ "itself an alias.\n"
-#~ "\n"
-#~ "Do you wish this entry to point to the 'real' base entry?"
-#~ msgstr ""
-#~ "Das Passwort ist im Alias-Format, aber der referenzierte Eintrag '%s:%s:"
-#~ "%s' selbst ist ebenfalls im Alias-Format.\n"
-#~ "\n"
-#~ "Wollen Sie, dass dieser Eintrag auf den 'echten' Basiseintrag zeigt?"
-
-#~ msgid ""
-#~ "The password\n"
-#~ "\n"
-#~ "\"%s\"\n"
-#~ "\n"
-#~ "has been copied to the clipboard."
-#~ msgstr ""
-#~ "Das Passwort\n"
-#~ "\n"
-#~ "\"%s\"\n"
-#~ "\n"
-#~ " wurde in die Zwischenablage kopiert."
-
-#~ msgid ""
-#~ "The safe combination has been entered three times without success. If you "
-#~ "don't know the safe combination, you can either try to open another "
-#~ "password database, or create a new blank password database."
-#~ msgstr ""
-#~ "Das Master-Passwort wurde dreimal ohne Erfolg eingegeben. Wenn Sie sie "
-#~ "nicht wissen, können Sie entweder eine andere Passwortdatenbank probieren "
-#~ "zu öffnen oder eine neue, leere Passwortdatenbank anlegen."
-
-#~ msgid ""
-#~ "The selected Failsafe Backup file will be opened instead of selected "
-#~ "database."
-#~ msgstr ""
-#~ "Die ausgewählte Notsicherungsdatei wird anstelle der ausgewählten "
-#~ "Datenbank geöffnet."
-
-#~ msgid ""
-#~ "There are more than one entry that fits your selection. Please be more "
-#~ "specific."
-#~ msgstr ""
-#~ "Es gibt mehrere Einträge die Ihrer Auswahl entsprechen. Seien Sie bitte "
-#~ "genauer."
-
-#~ msgid ""
-#~ "There does not appear to be a Recycle Bin on the media containing this "
-#~ "Failsafe Backup file. You will not be able to undo deletes. Do you wish "
-#~ "to continue?"
-#~ msgstr ""
-#~ "Es scheint kein Papierkorb auf dem Medium mit der Notsicherungsdatei zu "
-#~ "bestehen. Es ist nicht möglich die Löschung rückgängig zu machen. Wollen "
-#~ "Sie weiterfahren?"
-
-#~ msgid ""
-#~ "These are more recently saved than the currently open documents and "
-#~ "contain changes that were made before the application closed."
-#~ msgstr ""
-#~ "Es gibt Dokumente die neuer sind als die gerade geöffnete, mit Änderungen "
-#~ "die gemacht wurden bevor das Programm geschlossen wurde."
-
-#~ msgid ""
-#~ "This alias' target [%s:%s:%s] is not a normal entry or already an alias "
-#~ "base."
-#~ msgstr ""
-#~ "Das Alias-Ziel [%s:%s:%s] ist kein normaler Eintrag oder schon eine Alias-"
-#~ "Basis."
-
-#~ msgid ""
-#~ "This allows you to keep backups in a separate location. Make sure that "
-#~ "you have write permission to the directory you specify."
-#~ msgstr ""
-#~ "Dies erlaubt Ihnen, Sicherungsdateien an einem anderen Ort zu verwahren. "
-#~ "Stellen Sie bitte sicher, dass Sie Schreibberechtigung in diesem "
-#~ "Verzeichnis haben."
-
-#~ msgid "This database is the same as the current database!"
-#~ msgstr "Das ist die gleiche Datenbank, wie die aktuell geöffnete!"
-
-#~ msgid "This entry has been changed. Are you sure you wish to cancel?"
-#~ msgstr "Dieser Eintrag wurde geändert. Sind sie sicher Abbrechen zu wollen?"
-
-#~ msgid ""
-#~ "This entry has the following %d %s:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Dieser Eintrag hat folgende %d %s:\n"
-#~ "%s"
-
-#~ msgid "This entry is protected."
-#~ msgstr "(geschützt)"
-
-#~ msgid "This entry must have a password."
-#~ msgstr "Dieser Eintrag muss ein Passwort enthalten."
-
-#~ msgid "This entry must have a valid target entry."
-#~ msgstr "Dieser Eintrag muss einen gültigen Zieleintrag enthalten."
-
-#~ msgid "This filter already exists"
-#~ msgstr "Das Filter besteht bereits"
-
-#~ msgid ""
-#~ "This is a DeadKey. Press it and then one of the combined keys then shown "
-#~ "to add that new character to the Passphrase."
-#~ msgstr ""
-#~ "Dies ist eine 'tote' Taste. Nach dem Drücken kann eines der dann "
-#~ "gezeigten Zeichen dem Master-Passwort hinzugefügt werden."
-
-#~ msgid "This is a shortcut base entry."
-#~ msgstr "Dies ist ein Verknüpfungs-Basiseintrag"
-
-#~ msgid "This is an alias base entry."
-#~ msgstr "Dies ist ein Alias Basiseintrag."
-
-#~ msgid "This is an alias of: '%s'"
-#~ msgstr "Dies ist ein Alias von: '%s'"
-
-#~ msgid ""
-#~ "This program is linked to the missing export %s in the file %s. This "
-#~ "machine may have an incompatible version of %s."
-#~ msgstr ""
-#~ "Dieses Programm wurde verlinkt mit der fehlenden Exportfunktion %s in der "
-#~ "Datei %s. Möglicherweise ist die Version von %s inkompatibel."
-
-#~ msgid ""
-#~ "This program requires the file %s, which was not found on this system."
-#~ msgstr ""
-#~ "Dieses Programm erfordert die Datei %s, welche auf diesem System nicht "
-#~ "gefunden wurde."
-
-#~ msgid ""
-#~ "This shortcut's target [%s:%s:%s] is not a normal entry or already a "
-#~ "shortcut base."
-#~ msgstr ""
-#~ "Das Ziel der Verknüpfung [%s:%s:%s] ist kein normaler Eintrag oder schon "
-#~ "eine Verknüpfung."
-
-#~ msgid ""
-#~ "This version of PasswordSafe does not support more than %d entries in a "
-#~ "database.\n"
-#~ "To get an unlimited version for the U3 platform, please visit http://"
-#~ "software.u3.com\n"
-#~ "Do you want to open this database anyway?\n"
-#~ "(Saving this database will result in the removal of unread entries!)"
-#~ msgstr ""
-#~ "Diese Version von PasswordSafe unterstützt nicht mehr als %d Einträge in "
-#~ "einer Datenbank.\n"
-#~ "Um eine unlimitierte Version für die U3-Platform zu bekommen, besuchen "
-#~ "Sie http://software.u3.com\n"
-#~ "Wollen Sie diese Datenbank dennoch öffnen?\n"
-#~ "BEIM SPEICHERN DER DATENBANK GEHEN DIE ÜBERZÄHLIGEN EINTRÄGE VERLOREN!"
-
-#~ msgid ""
-#~ "This will allow you to migrate your settings from the configuration file "
-#~ "in the PasswordSafe installation directory into a file in your own local "
-#~ "Application Data directory at the next invocation of PasswordSafe."
-#~ msgstr ""
-#~ "Dies ermöglicht Ihnen beim nächsten Aufruf von PasswordSafe Ihre "
-#~ "Einstellungen in der Konfigurationsdatei vom Installationsverzeichnis in "
-#~ "das Verzeichnis Ihrer persönlichen Anwenderdaten  zu verlagern."
-
-#~ msgid ""
-#~ "This will clear all traces of Password Safe from the machine's registry. "
-#~ "It may also cause previous versions of Password Safe to revert to default "
-#~ "values for some settings."
-#~ msgstr ""
-#~ "Dies wird alle Spuren von PasswordSafe aus der Registrierungsdatenbank "
-#~ "dieses Rechners löschen. Es kann auch dazu führen, dass frühere Versionen "
-#~ "von PasswordSafe Standard-Werte für einige Einstellungen benutzen."
-
-#~ msgid ""
-#~ "This will delete %d entries which are within this group and its subgroups."
-#~ msgstr ""
-#~ "Dies wird %d Einträge löschen, die sich innerhalb dieser Gruppe und ihrer "
-#~ "Untergruppen befinden."
-
-#~ msgid ""
-#~ "This will delete an entry which is within this group and/or its subgroups."
-#~ msgstr ""
-#~ "Dies wird einen Eintrag löschen, der sich innerhalb dieser Gruppe oder "
-#~ "ihrer Untergruppen befindet."
-
-#~ msgid ""
-#~ "This will delete the selected Failsafe Backup file.  If the current drive "
-#~ "has a Recycle Bin, it will be moved there. If not, it will be permanently "
-#~ "deleted."
-#~ msgstr ""
-#~ "Hiermit wird die ausgewählte Notsicherungsdatei gelöscht. Wenn dieses "
-#~ "Medium den Papierkorb unterstützt, wird sie dahin geschoben. Wenn nicht, "
-#~ "wird die Datei unwiederbringlich gelöscht."
-
-#~ msgid "Time out period must be between 1 and 600 minutes."
-#~ msgstr ""
-#~ "Die Dauer der Zeitüberschreitung muss zwischen 1 und 600 Minuten liegen."
-
-#~ msgid "Title [Mandatory Field]"
-#~ msgstr "Titel [Pflichtfeld]"
-
-#~ msgid ""
-#~ "To unprotect this entry, click on Close, use the Edit menu or right-click "
-#~ "on the entry and select Unprotect."
-#~ msgstr ""
-#~ "Um den Schütz dieses Eintrags zu entfernen, klicken Sie auf Schliessen, "
-#~ "benutzen das Bearbeiten Menu oder Rechtsklicken auf den Eintrag und "
-#~ "wählen Schutz entfernen"
-
-#~ msgid "Treat fields that only contain 'whitespace' as empty"
-#~ msgstr "Behandele Felder die nur 'whitespace' enthalten als seien sie leer."
-
-#~ msgid "Tree1"
-#~ msgstr "Baum1"
-
-#~ msgid "Turkish F"
-#~ msgstr "Türkisch F"
-
-#~ msgid "Turkish Q"
-#~ msgstr "Türkisch Q"
-
-#~ msgid "Turkmen"
-#~ msgstr "Turkmenisch"
-
-#~ msgid "U&RL:"
-#~ msgstr "U&RL:"
-
-#~ msgid "Ukrainian"
-#~ msgstr "Ukrainisch"
-
-#~ msgid "Ukrainian (Enhanced)"
-#~ msgstr "Ukrainisch (Enhanced)"
-
-#~ msgid ""
-#~ "Unable to import \"autoload_filters.xml\" filters.\n"
-#~ "\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Kann Filter \"autoload_filters.xml\" nicht importieren.\n"
-#~ "\n"
-#~ "%s"
-
-#~ msgid "Unable to load mail system support."
-#~ msgstr "Kann die Email-Unterstützung nicht starten."
-
-#~ msgid "Unable to read from %1, it is opened by someone else."
-#~ msgstr "Kann nicht aus %1 lesen. Sie wird schon von jemand anderem benutzt."
-
-#~ msgid "Unable to read write-only property."
-#~ msgstr "Kann die Nur-Schreib-Eigenschaft nicht lesen."
-
-#~ msgid "Unable to run command"
-#~ msgstr "Kann Kommando nicht ausführen"
-
-#~ msgid "Unable to write read-only property."
-#~ msgstr "Kann die Nur-Lese Eigenschaft nicht schreiben."
-
-#~ msgid "Unable to write to %1, it is read-only or opened by someone else."
-#~ msgstr ""
-#~ "Kann nicht in %1 schreiben. Sie wird schon von jemand anderem benutzt."
-
-#~ msgid "Unexpected file format."
-#~ msgstr "Unerwartetes Dateiformat"
-
-#~ msgid "United Kingdom"
-#~ msgstr "Vereinigtes Königreich"
-
-#~ msgid "United Kingdom Extended"
-#~ msgstr "Vereinigtes Königreich erweitert"
-
-#~ msgid "United States-International"
-#~ msgstr "United States-International"
-
-#~ msgid "Unknown            "
-#~ msgstr "Unbekannt            "
-
-#~ msgid "Unlock"
-#~ msgstr "Entsperren"
-
-#~ msgid "Unprotect All Entries"
-#~ msgstr "Schutz entfernen bei allen Einträgen"
-
-#~ msgid "Unprotect Entry"
-#~ msgstr "Schutz entfernen"
-
-#~ msgid ""
-#~ "Unsaved changes have been made to database:\n"
-#~ " %s."
-#~ msgstr ""
-#~ "Nicht gespeicherte Änderungen wurden in folgende Datenbank abgelegt:\n"
-#~ " %s."
-
-#~ msgid "Untitled"
-#~ msgstr "Unbenannt"
-
-#~ msgid "Urdu"
-#~ msgstr "Urdu"
-
-#~ msgid ""
-#~ "Usage: pwsafe [-r|-v] [password database]\n"
-#~ "or pwsafe [-e|-d] filename\n"
-#~ "or pwsafe [-c]\n"
-#~ "or pwsafe [-s] [password database]\n"
-#~ "or pwsafe -m\n"
-#~ "\n"
-#~ " where:\n"
-#~ "  -r = open read-only\n"
-#~ "  -v = validate & repair\n"
-#~ "  -e/d = encrypt/decrypt file\n"
-#~ "  -c = start closed i.e., no open database\n"
-#~ "  -s = start silently (minimized)\n"
-#~ "  -m = start minimized & closed\n"
-#~ "\n"
-#~ "In addition, the following flags may be used:\n"
-#~ " -u user (use user's preferences instead of login name)\n"
-#~ " -h host (use host to look up preferences instead of the machine's name)\n"
-#~ " -g config_file (use config_file instead of pwsafe.cfg)\n"
-#~ " -q (don't complain about missing fonts, dlls, etc.)"
-#~ msgstr ""
-#~ "Benutzung: pwsafe [-r|-v] [Passwortdatenbank]\n"
-#~ " oder pwsafe [-e|-d] Dateiname\n"
-#~ " oder pwsafe [-c]\n"
-#~ " oder pwsafe [-s] [Passwortdatenbank]\n"
-#~ " oder pwsafe -m\n"
-#~ "\n"
-#~ " wobei:\n"
-#~ "  -r = im Nur-Lese-Modus öffnen\n"
-#~ "  -v = Überprüfen und Reparieren\n"
-#~ "  -e/d = ver- / ent-schlüssele Datei\n"
-#~ "  -c = starte geschlossen (öffne keine Datenbank zu Beginn)\n"
-#~ "  -s = starte ruhig und minimiert\n"
-#~ "  -m = starte minimiert und geschlossen\n"
-#~ "\n"
-#~ "Folgende Optionen können zusätzlich benutzt werden:\n"
-#~ " -u Benutzer (benutze die Einstellungen des benannten Benutzers statt des "
-#~ "Login-Namens)\n"
-#~ " -h Rechner (benutze den Rechnernamen statt des Namens dieses Rechners um "
-#~ "die Benutzereinstellungen zu suchen)\n"
-#~ " -g Konfigurationsdatei (statt pwsafe.cfg)\n"
-#~ " -q (fehlende Fonts, DLL's, usw. nicht beanstanden)"
-
-#~ msgid "Use &Symbols (i.e. &&, %, $, etc.)"
-#~ msgstr "Benutze &Symbole (z.B. &&, %, $, usw.)"
-
-#~ msgid ""
-#~ "Use the application specified here to browse when an entry's URL field "
-#~ "starts with [alt], e.g., '[alt]http://foo.com'"
-#~ msgstr ""
-#~ "Benutze die hier eingestellte Anwendung um die URL eines Eintrags "
-#~ "aufzurufen wenn diese mit [alt] beginnt. z.B. '[alt]http://foo.com'"
-
-#~ msgid ""
-#~ "Use the application specified here to edit an entry's Notes field via the "
-#~ "right-click context menu during Add/Edit."
-#~ msgstr ""
-#~ "Benutze die hier definierte Anwendung zur Bearbeitung der Notizen des "
-#~ "Eintrags mit dem 'rechte Maus'-Kontextmenü während Hinzufügen/Bearbeiten."
-
-#~ msgid "Uyghur"
-#~ msgstr "Uyghur"
-
-#~ msgid "Uzbek Cyrillic"
-#~ msgstr "Usbekisches Kyrillisch"
-
-#~ msgid ""
-#~ "Version mismatch with On Screen Keyboard DLL. Please install version that "
-#~ "came with this version of Password Safe."
-#~ msgstr ""
-#~ "Versionsunterschied mit der Bildschirmtastatur DLL. Bitte installieren "
-#~ "sie die Version die mit dieser Version von Password Safe kam."
-
-#~ msgid "Vietnamese"
-#~ msgstr "Vietnamesisch"
-
-#~ msgid "View Aliases"
-#~ msgstr "Aliase ansehen"
-
-#~ msgid "View Entry:   «%s» «%s» «%s»"
-#~ msgstr "Siehe Eintrag:   «%s» «%s» «%s»"
-
-#~ msgid "View Shortcut"
-#~ msgstr "Zeige Verknüpfung"
-
-#~ msgid "View Shortcuts"
-#~ msgstr "Zeige Verknüpfungen"
-
-#~ msgid "View a filter"
-#~ msgstr "Filter anzeigen"
-
-#~ msgid ""
-#~ "WARNING: Use of an external editor may leave sensitive data on your hard "
-#~ "disk.\n"
-#~ "\n"
-#~ "Do you wish to continue?"
-#~ msgstr ""
-#~ "WARNUNG: die Benutzung eines externen Editors kann sensible Daten auf "
-#~ "Ihrer Festplatte hinterlassen.\n"
-#~ "\n"
-#~ "Wollen Sie fortfahren?"
-
-#~ msgid "Warning - excessive field contents"
-#~ msgstr "Warnung - übergroßer Feld Inhalte"
-
-#~ msgid "What saved"
-#~ msgstr "Was gespeichert"
-
-#~ msgid "When saved"
-#~ msgstr "Wann gespeichert"
-
-#~ msgid "Who saved"
-#~ msgstr "Wer sicherte"
-
-#~ msgid "Win32 Unhandled Exception"
-#~ msgstr "Win32 unbehandelte Ausnahme"
-
-#~ msgid "Windows Registry"
-#~ msgstr "Windows Registry"
-
-#~ msgid "Wolof"
-#~ msgstr "Wolof"
-
-#~ msgid "Word Wrap"
-#~ msgstr "Zeilenumbruch"
-
-#~ msgid ""
-#~ "Would you like to set \"%s\" as your default username?\n"
-#~ "\n"
-#~ "It would then automatically be put in the dialog each time you add a new "
-#~ "item."
-#~ msgstr ""
-#~ "Wollen Sie \"%s\" als Ihren Standardbenutzernamen setzen?\n"
-#~ "\n"
-#~ "Er wird dann automatisch beim Anlegen neuer Einträge als Benutzername "
-#~ "eingetragen."
-
-#~ msgid ""
-#~ "Write when an entry was accessed in the database. Ignored in read-only "
-#~ "mode."
-#~ msgstr ""
-#~ "Schreibe, wenn auf einen Eintrag in der Datenbank zugegriffen wurde. Wird "
-#~ "im Nur-Lese-Modus ignoriert."
-
-#~ msgid "X"
-#~ msgstr "X"
-
-#~ msgid "Yes:"
-#~ msgstr "Ja:"
-
-#~ msgid "Yoruba"
-#~ msgstr "Yoruba"
-
-#~ msgid ""
-#~ "You have chosen not to save your changes, which will be lost. Do you wish "
-#~ "to continue?"
-#~ msgstr ""
-#~ "Sie haben gewählt Ihre Änderungen nicht zu Sichern. Sie gehen dann "
-#~ "verloren. Wollen Sie weiterfahren?"
-
-#~ msgid ""
-#~ "Your currently opened database will be in the first row.  Failsafe Backup "
-#~ "files will be displayed below this.  If the passphrase is the same as the "
-#~ "current database, the properties of these backups will also be shown.  If "
-#~ "you aren't sure, continue with the current database and use the database "
-#~ "Compare function to view the differences between the versions."
-#~ msgstr ""
-#~ "Die aktuell geöffnete Datenbank wird in der ersten Zeile angezeigt. Die "
-#~ "Notsicherungsdateien werden darunter angezeigt. Wenn das Master-Passwort "
-#~ "dasselbe ist wie das der aktuellen Datenbank, werden die Eigenschaften "
-#~ "dieser Sicherungen auch angezeigt. Wenn Sie sich nicht entscheiden "
-#~ "können, dann fahren Sie fort mit der aktuelllen Datenbank und verwenden "
-#~ "dann die Vergleichsfunktion um die Unterschiede zu sehen."
-
-#~ msgid ""
-#~ "Your requested font '%s' is not installed on this system, using '%s' "
-#~ "instead."
-#~ msgstr ""
-#~ "Die erforderliche Schriftart '%s' ist in diesem System nicht installiert. "
-#~ "Es wird '%s' verwendet."
-
-#~ msgid ""
-#~ "\n"
-#~ "Add Group"
-#~ msgstr ""
-#~ "\n"
-#~ "Gruppe einfügen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Advanced Find Options"
-#~ msgstr ""
-#~ "\n"
-#~ "Erweiterte Suchen-Optionen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Browse to URL"
-#~ msgstr ""
-#~ "\n"
-#~ "Gehe zu URL"
-
-#~ msgid ""
-#~ "\n"
-#~ "Browse to URL + Autotype"
-#~ msgstr ""
-#~ "\n"
-#~ "Gehe zu URL + Autom.Eingabe"
-
-#~ msgid ""
-#~ "\n"
-#~ "Case insensitive search"
-#~ msgstr ""
-#~ "\n"
-#~ "Großschreibung missachtende Suche"
-
-#~ msgid ""
-#~ "\n"
-#~ "Case sensitive search"
-#~ msgstr ""
-#~ "\n"
-#~ "Großschreibung beachtende Suche"
-
-#~ msgid ""
-#~ "\n"
-#~ "Clear Find"
-#~ msgstr ""
-#~ "\n"
-#~ "Lösche Suchbegriff"
-
-#~ msgid ""
-#~ "\n"
-#~ "Close Find Bar"
-#~ msgstr ""
-#~ "\n"
-#~ "Suchleiste schließen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Collapse All"
-#~ msgstr ""
-#~ "\n"
-#~ "Alle zuklappen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Compare two Databases"
-#~ msgstr ""
-#~ "\n"
-#~ "Zwei Datenbanken vergleichen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Copy Run Command to Clipboard"
-#~ msgstr ""
-#~ "\n"
-#~ "Auszuführendes Kommando in Zwischenablage kopieren"
-
-#~ msgid ""
-#~ "\n"
-#~ "Create report of previous Find search"
-#~ msgstr ""
-#~ "\n"
-#~ "Erstelle Report der letzten Suche"
-
-#~ msgid ""
-#~ "\n"
-#~ "Display subset of Password"
-#~ msgstr ""
-#~ "\n"
-#~ "Teilmenge des Passwortes anzeigen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Duplicate Group"
-#~ msgstr ""
-#~ "\n"
-#~ "Gruppe duplizieren"
-
-#~ msgid ""
-#~ "\n"
-#~ "Edit Base entry"
-#~ msgstr ""
-#~ "\n"
-#~ "Basiseintrag bearbeiten"
-
-#~ msgid ""
-#~ "\n"
-#~ "Edit Filters"
-#~ msgstr ""
-#~ "\n"
-#~ "Bearbeite Filter"
-
-#~ msgid ""
-#~ "\n"
-#~ "Expand All"
-#~ msgstr ""
-#~ "\n"
-#~ "Alle ausklappen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Export Entry in XML format..."
-#~ msgstr ""
-#~ "\n"
-#~ "Exportiere Eintrag in XML Format..."
-
-#~ msgid ""
-#~ "\n"
-#~ "Export Entry to Plain Text..."
-#~ msgstr ""
-#~ "\n"
-#~ "Exportiere Eintrag als Text..."
-
-#~ msgid ""
-#~ "\n"
-#~ "Export to Text"
-#~ msgstr ""
-#~ "\n"
-#~ "Als Text exportieren"
-
-#~ msgid ""
-#~ "\n"
-#~ "Export to XML"
-#~ msgstr ""
-#~ "\n"
-#~ "Als XML exportieren"
-
-#~ msgid ""
-#~ "\n"
-#~ "Find Next"
-#~ msgstr ""
-#~ "\n"
-#~ "Suche nächste"
-
-#~ msgid ""
-#~ "\n"
-#~ "Find Previous"
-#~ msgstr ""
-#~ "\n"
-#~ "Suche vorherige"
-
-#~ msgid ""
-#~ "\n"
-#~ "Generate Password"
-#~ msgstr ""
-#~ "\n"
-#~ "Generiere Passwort"
-
-#~ msgid ""
-#~ "\n"
-#~ "Go to Base entry"
-#~ msgstr ""
-#~ "\n"
-#~ "Gehe zum Basiseintrag"
-
-#~ msgid ""
-#~ "\n"
-#~ "Help"
-#~ msgstr ""
-#~ "\n"
-#~ "Hilfe"
-
-#~ msgid ""
-#~ "\n"
-#~ "Import Text"
-#~ msgstr ""
-#~ "\n"
-#~ "Importiere Text"
-
-#~ msgid ""
-#~ "\n"
-#~ "Import XML"
-#~ msgstr ""
-#~ "\n"
-#~ "Importiere XML"
-
-#~ msgid ""
-#~ "\n"
-#~ "List View/Tree View"
-#~ msgstr ""
-#~ "\n"
-#~ "Listenansicht/Baumansicht"
-
-#~ msgid ""
-#~ "\n"
-#~ "Manage Filters"
-#~ msgstr ""
-#~ "\n"
-#~ "Verwalte Filter"
-
-#~ msgid ""
-#~ "\n"
-#~ "Merge into Database"
-#~ msgstr ""
-#~ "\n"
-#~ "In Datenbank zusammenführen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Program will terminate."
-#~ msgstr ""
-#~ "\n"
-#~ "Programm wird beendet."
-
-#~ msgid ""
-#~ "\n"
-#~ "Protect All Entries"
-#~ msgstr ""
-#~ "\n"
-#~ "Schütze alle Einträge"
-
-#~ msgid ""
-#~ "\n"
-#~ "Protect Entry"
-#~ msgstr ""
-#~ "\n"
-#~ "Eintrag schützen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Redo"
-#~ msgstr ""
-#~ "\n"
-#~ "Wiederholen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Renamed %d %s"
-#~ msgstr ""
-#~ "\n"
-#~ "%d %s Umbennant"
-
-#~ msgid ""
-#~ "\n"
-#~ "Run Command"
-#~ msgstr ""
-#~ "\n"
-#~ "Kommando ausführen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Save Database As..."
-#~ msgstr ""
-#~ "\n"
-#~ "Datenbank speichern unter..."
-
-#~ msgid ""
-#~ "\n"
-#~ "Select Entry"
-#~ msgstr ""
-#~ "\n"
-#~ "Eintrag auswählen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Send email"
-#~ msgstr ""
-#~ "\n"
-#~ "Email senden"
-
-#~ msgid ""
-#~ "\n"
-#~ "Set/Clear Filters"
-#~ msgstr ""
-#~ "\n"
-#~ "Filter Setzen/Löschen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Show Find Toolbar"
-#~ msgstr ""
-#~ "\n"
-#~ "Zeige Suchleiste"
-
-#~ msgid ""
-#~ "\n"
-#~ "Show Unsaved Changes"
-#~ msgstr ""
-#~ "\n"
-#~ "Ungesicherte Änderungen anzeigen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Show entries with Password Expiry dates"
-#~ msgstr ""
-#~ "\n"
-#~ "Zeige Einträge mit Passwörter mit abgelaufenem Datum"
-
-#~ msgid ""
-#~ "\n"
-#~ "Synchronize Databases"
-#~ msgstr ""
-#~ "\n"
-#~ "Synchronisiere Datenbanken"
-
-#~ msgid ""
-#~ "\n"
-#~ "Undo"
-#~ msgstr ""
-#~ "\n"
-#~ "Rückgängig"
-
-#~ msgid ""
-#~ "\n"
-#~ "Unprotect All Entries"
-#~ msgstr ""
-#~ "\n"
-#~ "Schutz entfernen bei allen Einträgen"
-
-#~ msgid ""
-#~ "\n"
-#~ "Unprotect Entry"
-#~ msgstr ""
-#~ "\n"
-#~ "Schutz entfernen"
-
-#~ msgid ""
-#~ "\n"
-#~ "View Reports"
-#~ msgstr ""
-#~ "\n"
-#~ "Zeige Berichte"
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Cannot open database. It probably does not exist.\n"
-#~ "Please select to Open another database, create a New database or Cancel."
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Kann die Datenbank nicht öffnen. Sie existiert wahrscheinlich nicht.\n"
-#~ "Bitte wählen sie Öffnen für eine andere Datenbank, Neu für eine neue "
-#~ "Datenbank oder Abbrechen."
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Ignore this and save anyway - Yes/no?"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Ignorieren und trotzdem sichern - Ja/Nein?"
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "The databases are identical when comparing the selected or default fields!"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Die Datenbanken sind identisch beim Vergleich der ausgewählten oder "
-#~ "Standard Felder!"
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Unknown fields will also be copied with the entry."
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Unbekannte Felder eines Eintrags werden auch mitkopiert."
-
-#~ msgid ""
-#~ "\n"
-#~ "with warnings"
-#~ msgstr ""
-#~ "\n"
-#~ "mit warnungen"
-
-#~ msgid ""
-#~ "\n"
-#~ "This field is being edited in your\n"
-#~ "default text editor."
-#~ msgstr ""
-#~ "\n"
-#~ "Dieses Feld wird in Ihrem \n"
-#~ "Standard-Texteditor bearbeitet."
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Select Yes to continue with this password or No to cancel?"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Wählen Sie Ja um mit diesem Passwort fortzufahren oder Nein zum Abbruch."
-
-#~ msgid ""
-#~ "\n"
-#~ "email: "
-#~ msgstr ""
-#~ "\n"
-#~ "Email: "
-
-#~ msgid "\t%s was restricted to the following fields:"
-#~ msgstr "\t%s wurde auf folgende Felder beschränkt:"
-
-#~ msgid ""
-#~ "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\n"
-#~ "\t\thas differences in the following fields:"
-#~ msgstr ""
-#~ "\tEintrag - Gruppe:\"%s\"; Titel:\"%s\"; Benutzer:\"%s\"\n"
-#~ "\t\that Unterschiede in folgende Felder:"
-
-#~ msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-#~ msgstr "\tGruppe:'%s'; Titel:'%s'; Benutzer:'%s'"
-
-#~ msgid "\tNo entries were found containing search string '%s'"
-#~ msgstr "\tKeine Einträge enthalten den Suchtext '%s'"
-
-#~ msgid "\tThe following entries contain search string '%s'"
-#~ msgstr "\tFolgende Einträge enthalten den Suchtext '%s'"
-
-#~ msgid ""
-#~ "\tThe following restrictions were selected:\n"
-#~ "\t\t %s"
-#~ msgstr ""
-#~ "\tDie folgenden Einschränkungen wurden ausgewählt:\n"
-#~ "\t\t %s"
-
-#~ msgid "an unnamed file"
-#~ msgstr "eine unbenannte Datei"
-
-#~ msgid "and"
-#~ msgstr "und"
-
-#~ msgid "big endian"
-#~ msgstr "Big Endian"
-
-#~ msgid "bottom"
-#~ msgstr "Ende"
-
-#~ msgid "day(s)"
-#~ msgstr "Tag(e)"
-
-#~ msgid "email"
-#~ msgstr "Email"
-
-#~ msgid "in"
-#~ msgstr "in"
-
-#~ msgid "little endian"
-#~ msgstr "Little Endian"
-
-#~ msgid ""
-#~ "multiple entries exist with title=%s and username=%s or with group=%s and "
-#~ "title=%s."
-#~ msgstr ""
-#~ "Mehrere Einträge mit Titel %s und Benutzername %s oder Gruppe %s und "
-#~ "Titel %s existieren."
-
-#~ msgid "multiple entries exist with title=%s."
-#~ msgstr "Mehrere Einträge mit Titel %s existieren."
-
-#~ msgid "no entry exists in the root with title=%s and username=%s."
-#~ msgstr ""
-#~ "Kein Eintrag mit Titel %s und Benutzername %s besteht in der Wurzel."
-
-#~ msgid "no entry exists with group=%s, title=%s and empty username."
-#~ msgstr ""
-#~ "Kein Eintrag mit Gruppe %s, Titel %s und leerem Benutzernamen besteht."
-
-#~ msgid "no entry exists with group=%s, title=%s and username=%s."
-#~ msgstr "Kein Eintrag mit Gruppe %s, Titel %s und Benutzername %s besteht."
-
-#~ msgid ""
-#~ "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-#~ msgstr ""
-#~ "Kein Eintrag mit Titel %s und Benutzername %s oder mit Gruppe %s und "
-#~ "Titel %s besteht."
-
-#~ msgid "no entry exists with title=%s."
-#~ msgstr "Kein Eintrag mit Titel=%s besteht."
-
-#~ msgid "pixels"
-#~ msgstr "Pixels"
-
-#~ msgid "shortcut to %s"
-#~ msgstr "Verknüpfung mit %s"
-
-#~ msgid "static"
-#~ msgstr "statisch"
-
-#~ msgid "subset: '%s' field '%s' '%s' %s"
-#~ msgstr "Teilmenge: '%s' Feld '%s' '%s' %s"
-
-#~ msgid "this entry's password and data"
-#~ msgstr "Passwort und Daten dieses Eintrags"
-
-#~ msgid "top"
-#~ msgstr "Beginn"
-
-#~ msgid "whatever"
-#~ msgstr "egal"
-
-#~ msgid "xxxxxx"
-#~ msgstr "xxxxxx"
-
+# wxString standard strings
 msgid "Bring All to Front"
 msgstr "Alle Einblenden"
 
+# wxString standard strings
 msgid "Quit PasswordSafe (wxWidgets)"
 msgstr "PasswordSafe beenden"
 
+# wxString standard strings
 msgid "Hide PasswordSafe (wxWidgets)"
-msgstr "PasswordSafe ausbelenden"
+msgstr "PasswordSafe ausblenden"
+
+# wxString standard strings
+msgid "Create new document"
+msgstr "Ein neues Dokument erstellen"
+
+# wxString standard strings
+msgid "Open an existing document"
+msgstr "Öffnen eines vorhandenen Dokumentes"
+
+# wxString standard strings
+msgid "Close current document"
+msgstr "Aktuelles Dokument schliessen"
+
+# wxString standard strings
+msgid "Save current document"
+msgstr "Aktuelles Dokument sichern"
+
+# wxString standard strings
+msgid "Save current document with a different filename"
+msgstr "Aktuelles Dokument unter anderem Dateinamen sichern"
+
+# wxString standard strings
+msgid "Quit this program"
+msgstr "Programm beenden"
