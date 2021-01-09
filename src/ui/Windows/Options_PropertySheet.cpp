@@ -35,6 +35,7 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
   SetLook(PropSheetLook_OutlookBar); // switch to nicer view. Will we need to make this a config option?
   ENSURE(SetIconsList(IDB_OPTION_PAGES, 32));
 
+
   // Set up initial values
   SetupInitialValues();
 
@@ -62,6 +63,8 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
   AddPage(m_pp_shortcuts);
   AddPage(m_pp_system);
  
+ EnablePageHeader(30); // Doesn't work with our pages - increases size on bottom, virtual function OnDrawPageHeader not called
+// so we added the page header manually in each dialog
   CString cs_caption(MAKEINTRESOURCE(nID));
   m_psh.pszCaption = _wcsdup(cs_caption);
 }

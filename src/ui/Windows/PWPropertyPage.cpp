@@ -24,6 +24,26 @@ DboxMain *CPWPropertyPage::GetMainDlg() const
   return app.GetMainDlg();
 }
 
+BOOL CPWPropertyPage::OnInitDialog()
+{
+  CWnd* pTitleWnd = GetDlgItem(IDC_PS_TITLE);
+
+  if (pTitleWnd != nullptr) {
+    // If there's a IDC_PS_TITLE text, emphasize it
+    CFont* pfont = pTitleWnd->GetFont();
+    LOGFONT lf; pfont->GetLogFont(&lf);
+    lf.lfItalic = TRUE;
+    lf.lfWeight = FW_BOLD;
+    lf.lfUnderline = TRUE;
+
+    HFONT hfont = ::CreateFontIndirect(&lf);
+    CFont* pBoldFont = CFont::FromHandle(hfont);
+    pTitleWnd->SetFont(pBoldFont);
+  }
+  return CPropertyPage::OnInitDialog();
+}
+
+
 bool CPWPropertyPage::InitToolTip(int Flags, int delayTimeFactor)
 {
   m_pToolTipCtrl = new CToolTipCtrl;

@@ -27,6 +27,7 @@ public:
   DECLARE_DYNAMIC(CPWPropertyPage)
 protected:
   DboxMain *GetMainDlg() const;
+  BOOL OnInitDialog() override;
   bool InitToolTip(int Flags = TTS_BALLOON | TTS_NOPREFIX, int delayTimeFactor = 1);
   void AddTool(int DlgItemID, int ResID);
   void ActivateToolTip();
