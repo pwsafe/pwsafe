@@ -396,6 +396,7 @@
 #define IDB_LOCKED_TRAY_INDEX           558
 #define IDB_UNLOCKED_TRAY_INDEX         559
 #define IDB_COPYPASSWORD_CLASSIC_D      560
+#define IDB_OPTION_PAGES                561
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -903,7 +904,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        561
+#define _APS_NEXT_RESOURCE_VALUE        562
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1597
 #define _APS_NEXT_SYMED_VALUE           557
