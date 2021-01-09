@@ -205,6 +205,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_EDITFILTER,              PasswordSafeFrame::OnEditFilter                  )
   EVT_MENU( ID_APPLYFILTER,             PasswordSafeFrame::OnApplyFilter                 )
   EVT_MENU( ID_MANAGEFILTERS,           PasswordSafeFrame::OnManageFilters               )
+  EVT_MENU( ID_SHOW_EMPTY_GROUP_IN_FILTER, PasswordSafeFrame::OnShowGroupInFilterClick   )
   EVT_MENU( ID_CHANGETREEFONT,          PasswordSafeFrame::OnChangeTreeFont              )
   EVT_MENU( ID_CHANGEADDEDITFONT,       PasswordSafeFrame::OnChangeAddEditFont           )
   EVT_MENU( ID_CHANGEPSWDFONT,          PasswordSafeFrame::OnChangePasswordFont          )
@@ -231,6 +232,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_COLLAPSEALL,        PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_EXPANDALL,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_FILTERMENU,         PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SHOW_EMPTY_GROUP_IN_FILTER, PasswordSafeFrame::OnUpdateUI            )
   EVT_UPDATE_UI( ID_CUSTOMIZETOOLBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_REPORTSMENU,        PasswordSafeFrame::OnUpdateUI                    )
 
@@ -436,6 +438,7 @@ void PasswordSafeFrame::Init()
   m_grid = nullptr;
   m_tree = nullptr;
   m_statusBar = nullptr;
+  m_bShowEmptyGroupsInFilter = false;
 ////@end PasswordSafeFrame member initialisation
 }
 
@@ -636,6 +639,7 @@ void PasswordSafeFrame::CreateMenubar()
   menuFilters->Append(ID_APPLYFILTER, _("&Apply current"), wxEmptyString, wxITEM_NORMAL); // TODO
   menuFilters->Append(ID_MANAGEFILTERS, _("&Manage..."), wxEmptyString, wxITEM_NORMAL); // TODO
   menuView->Append(ID_FILTERMENU, _("&Filters"), menuFilters);
+  menuView->Append(ID_SHOW_EMPTY_GROUP_IN_FILTER, _("Empty Group visible im Filter"), wxEmptyString, wxITEM_CHECK);
   menuView->AppendSeparator();
   menuView->Append(ID_CUSTOMIZETOOLBAR, _("Customize &Main Toolbar..."), wxEmptyString, wxITEM_NORMAL);
 
@@ -704,9 +708,11 @@ void PasswordSafeFrame::CreateMenubar()
   }
 
   // Update menu selections
-  GetMenuBar()->Check((IsTreeView()) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
-  GetMenuBar()->Check(PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW : ID_TOOLBAR_CLASSIC, true);
+  menuBar->Check((IsTreeView()) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
+  menuBar->Check(PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW : ID_TOOLBAR_CLASSIC, true);
+  menuBar->Check(ID_SHOW_EMPTY_GROUP_IN_FILTER, m_bShowEmptyGroupsInFilter);
   UpdateTreeSortMenu();
+  // Refresh is done on UpdateTreeSortMenu()
 }
 
 /**
@@ -1084,7 +1090,7 @@ void PasswordSafeFrame::ShowTree(bool show)
         m_tree->AddItem(iter->second);
     }
 
-    if(IsTreeSortGroup()) {
+    if(IsTreeSortGroup() && (!m_bFilterActive || m_bShowEmptyGroupsInFilter)) {
       // Empty groups need to be added separately
       typedef std::vector<StringX> StringVectorX;
       const StringVectorX& emptyGroups = m_core.GetEmptyGroups();
@@ -1782,6 +1788,10 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(m_core.IsDbOpen() && isTreeView);
       break;
       
+    case ID_SHOW_EMPTY_GROUP_IN_FILTER:
+      evt.Enable(m_core.IsDbOpen() && isTreeView && m_bFilterActive);
+      break;
+      
     case ID_EXPORTMENU:
     case ID_COMPARE:
       evt.Enable(m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
@@ -1879,33 +1889,21 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SHOWHIDE_UNSAVED:
-      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == UNSAVED) && m_core.IsDbOpen() && !isFileReadOnly && m_core.HasDBChanged());
-      if((m_CurrentPredefinedFilter == UNSAVED) && (!m_core.IsDbOpen() || isFileReadOnly || !m_core.HasDBChanged())) {
-        // Must set back filter when disable
-        ResetFilters();
-      }
+      evt.Enable((m_CurrentPredefinedFilter == UNSAVED) || ((m_CurrentPredefinedFilter == NONE) && m_core.IsDbOpen() && !isFileReadOnly && m_core.HasDBChanged()));
       evt.Check(m_CurrentPredefinedFilter == UNSAVED);
       break;
 
     case ID_SHOW_ALL_EXPIRY:
-      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == EXPIRY) &&
+      evt.Enable((m_CurrentPredefinedFilter == EXPIRY) || ((m_CurrentPredefinedFilter == NONE) &&
        m_core.IsDbOpen() &&
-       m_core.GetExpirySize() != 0);
-      if((m_CurrentPredefinedFilter == EXPIRY) && (!m_core.IsDbOpen() || m_core.GetExpirySize() == 0)) {
-        // Must set back filter when disable
-        ResetFilters();
-      }
+       m_core.GetExpirySize() != 0));
       evt.Check(m_CurrentPredefinedFilter == EXPIRY);
       break;
 
     case ID_SHOW_LAST_FIND_RESULTS:
-      evt.Enable((m_CurrentPredefinedFilter == NONE || m_CurrentPredefinedFilter == LASTFIND) &&
+      evt.Enable((m_CurrentPredefinedFilter == LASTFIND) || ((m_CurrentPredefinedFilter == NONE) &&
                   m_core.IsDbOpen() &&
-                  m_FilterManager.GetFindFilterSize() != 0);
-      if((m_CurrentPredefinedFilter == LASTFIND) && (!m_core.IsDbOpen() || m_FilterManager.GetFindFilterSize() == 0)) {
-        // Must set back filter when disable
-        ResetFilters();
-      }
+                  m_FilterManager.GetFindFilterSize() != 0));
       evt.Check(m_CurrentPredefinedFilter == LASTFIND);
       break;
 
@@ -2035,23 +2033,24 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &
   switch (ga) {
     case UpdateGUICommand::GUI_ADD_ENTRY:
       // Handled by individual views.
-      if(m_bFilterActive)
-        RebuildGUI(iTreeOnly);
-      break;
     case UpdateGUICommand::GUI_DELETE_ENTRY:
       // Handled by individual views.
-      if(m_bFilterActive)
-        RebuildGUI(iTreeOnly);
+    case UpdateGUICommand::GUI_REFRESH_ENTRY:
+      // Handled by individual views.
+    case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
+      // Handled by individual views.
+    case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
+      // Handled by individual views.
+      
+      // But on Filter active the GUI must be updated
+      if(m_bFilterActive) {
+        RebuildGUI();
+      }
       break;
     case UpdateGUICommand::GUI_REFRESH_TREE:
       // Caused by Database preference changed about showing username and/or
       // passwords in the Tree View
       RebuildGUI(iTreeOnly);
-      break;
-    case UpdateGUICommand::GUI_REFRESH_ENTRY:
-      // Handled by individual views.
-      if(m_bFilterActive)
-        RebuildGUI(iTreeOnly);
       break;
     case UpdateGUICommand::GUI_REDO_MERGESYNC:
     case UpdateGUICommand::GUI_UNDO_MERGESYNC:
@@ -2065,16 +2064,6 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &
     case UpdateGUICommand::GUI_UPDATE_STATUSBAR:
       // TODO: UpdateToolBarDoUndo();
       UpdateStatusBar();
-      break;
-    case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
-      // Handled by individual views.
-      if(m_bFilterActive)
-        RebuildGUI(iTreeOnly);
-      break;
-    case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
-      // Handled by individual views.
-      if(m_bFilterActive)
-        RebuildGUI(iTreeOnly);
       break;
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
     {

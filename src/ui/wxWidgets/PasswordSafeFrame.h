@@ -125,6 +125,7 @@ class PasswordSafeSearch;
 #define ID_SORT_TREE_BY_GROUP 10311
 #define ID_SORT_TREE_BY_NAME 10312
 #define ID_SORT_TREE_BY_DATE 10313
+#define ID_SHOW_EMPTY_GROUP_IN_FILTER 10314
 #define ID_STATUSBAR 10000
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
@@ -292,6 +293,9 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SORT_TREE_BY_DATE
   void OnSortByDateClick( wxCommandEvent& event );
+  
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOW_EMPTY_GROUP_IN_FILTER
+  void OnShowGroupInFilterClick( wxCommandEvent& event );
   
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOWHIDE_UNSAVED
   void OnShowUnsavedEntriesClick( wxCommandEvent& event );
@@ -664,6 +668,7 @@ private:
 
   enum {NONE, EXPIRY, UNSAVED, LASTFIND} m_CurrentPredefinedFilter;
   bool m_bFilterActive;
+  bool m_bShowEmptyGroupsInFilter;
   void ApplyFilters();
 
   bool m_InitialTreeDisplayStatusAtOpen;
