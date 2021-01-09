@@ -205,6 +205,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_EDITFILTER,              PasswordSafeFrame::OnEditFilter                  )
   EVT_MENU( ID_APPLYFILTER,             PasswordSafeFrame::OnApplyFilter                 )
   EVT_MENU( ID_MANAGEFILTERS,           PasswordSafeFrame::OnManageFilters               )
+  EVT_MENU( ID_SHOW_EMPTY_GROUP_IN_FILTER, PasswordSafeFrame::OnShowGroupInFilterClick   )
   EVT_MENU( ID_CHANGETREEFONT,          PasswordSafeFrame::OnChangeTreeFont              )
   EVT_MENU( ID_CHANGEADDEDITFONT,       PasswordSafeFrame::OnChangeAddEditFont           )
   EVT_MENU( ID_CHANGEPSWDFONT,          PasswordSafeFrame::OnChangePasswordFont          )
@@ -231,6 +232,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_COLLAPSEALL,        PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_EXPANDALL,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_FILTERMENU,         PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SHOW_EMPTY_GROUP_IN_FILTER, PasswordSafeFrame::OnUpdateUI            )
   EVT_UPDATE_UI( ID_CUSTOMIZETOOLBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_REPORTSMENU,        PasswordSafeFrame::OnUpdateUI                    )
 
@@ -436,6 +438,7 @@ void PasswordSafeFrame::Init()
   m_grid = nullptr;
   m_tree = nullptr;
   m_statusBar = nullptr;
+  m_bShowEmptyGroupsInFilter = false;
 ////@end PasswordSafeFrame member initialisation
 }
 
@@ -636,6 +639,7 @@ void PasswordSafeFrame::CreateMenubar()
   menuFilters->Append(ID_APPLYFILTER, _("&Apply current"), wxEmptyString, wxITEM_NORMAL); // TODO
   menuFilters->Append(ID_MANAGEFILTERS, _("&Manage..."), wxEmptyString, wxITEM_NORMAL); // TODO
   menuView->Append(ID_FILTERMENU, _("&Filters"), menuFilters);
+  menuView->Append(ID_SHOW_EMPTY_GROUP_IN_FILTER, _("Empty Group visible im Filter"), wxEmptyString, wxITEM_CHECK);
   menuView->AppendSeparator();
   menuView->Append(ID_CUSTOMIZETOOLBAR, _("Customize &Main Toolbar..."), wxEmptyString, wxITEM_NORMAL);
 
@@ -704,9 +708,11 @@ void PasswordSafeFrame::CreateMenubar()
   }
 
   // Update menu selections
-  GetMenuBar()->Check((IsTreeView()) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
-  GetMenuBar()->Check(PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW : ID_TOOLBAR_CLASSIC, true);
+  menuBar->Check((IsTreeView()) ? ID_TREE_VIEW : ID_LIST_VIEW, true);
+  menuBar->Check(PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ? ID_TOOLBAR_NEW : ID_TOOLBAR_CLASSIC, true);
+  menuBar->Check(ID_SHOW_EMPTY_GROUP_IN_FILTER, m_bShowEmptyGroupsInFilter);
   UpdateTreeSortMenu();
+  // Refresh is done on UpdateTreeSortMenu()
 }
 
 /**
@@ -1084,7 +1090,7 @@ void PasswordSafeFrame::ShowTree(bool show)
         m_tree->AddItem(iter->second);
     }
 
-    if(IsTreeSortGroup()) {
+    if(IsTreeSortGroup() && (!m_bFilterActive || m_bShowEmptyGroupsInFilter)) {
       // Empty groups need to be added separately
       typedef std::vector<StringX> StringVectorX;
       const StringVectorX& emptyGroups = m_core.GetEmptyGroups();
@@ -1780,6 +1786,10 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_SORT_TREE_BY_NAME:
     case ID_SORT_TREE_BY_DATE:
       evt.Enable(m_core.IsDbOpen() && isTreeView);
+      break;
+      
+    case ID_SHOW_EMPTY_GROUP_IN_FILTER:
+      evt.Enable(m_core.IsDbOpen() && isTreeView && m_bFilterActive);
       break;
       
     case ID_EXPORTMENU:

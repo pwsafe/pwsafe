@@ -141,6 +141,17 @@ void PasswordSafeFrame::OnSortByDateClick(wxCommandEvent& WXUNUSED(evt))
   }
 }
 
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOW_EMPTY_GROUP_IN_FILTER
+ */
+
+void PasswordSafeFrame::OnShowGroupInFilterClick(wxCommandEvent& WXUNUSED(evt))
+{
+  m_bShowEmptyGroupsInFilter = !m_bShowEmptyGroupsInFilter; // Toggle value
+  GetMenuBar()->Check(ID_SHOW_EMPTY_GROUP_IN_FILTER, m_bShowEmptyGroupsInFilter);
+  if(IsTreeView())
+    ShowTree();
+}
 void PasswordSafeFrame::OnExpandAll(wxCommandEvent& WXUNUSED(evt))
 {
   wxASSERT(IsTreeView());
