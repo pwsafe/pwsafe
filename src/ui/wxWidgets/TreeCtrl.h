@@ -207,6 +207,8 @@ public:
   bool IsSortingDate() const { return m_sort == TreeSortType::DATE; }
   bool IsShowGroup() const { return m_show_group; }
   
+  void SetFilterActive(bool v) { m_bFilterActive = v; }
+  
   void CheckScrollList();
   void CheckCollapseEntry();
 
@@ -260,6 +262,8 @@ private:
   wxDragImage *m_drag_image;
   
   long m_style;
+  
+  bool m_bFilterActive;
 };
 
 #endif // _TREECTRL_H_
