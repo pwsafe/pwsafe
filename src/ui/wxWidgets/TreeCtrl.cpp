@@ -236,6 +236,7 @@ void TreeCtrl::Init()
   m_lower_scroll_limit = m_upper_scroll_limit = 0;
   m_drag_image = nullptr;
   m_had_been_out = false;
+  m_bFilterActive = false;
 ////@end TreeCtrl member initialisation
 }
 
@@ -1223,6 +1224,11 @@ void TreeCtrl::OnBeginDrag(wxTreeEvent& evt)
   }
   
   wxTreeItemId item = GetSelection();
+  
+  if(m_bFilterActive && ItemIsGroupOrRoot(item)) { // On filter active we do not know if all items beneath group shall be moved/copied
+    evt.Veto();
+    return;
+  }
 
   if (item.IsOk() && (GetRootItem() != item)) {
     m_drag_item = item;
@@ -1717,6 +1723,7 @@ void TreeCtrl::SetFilterState(bool state)
   wxTreeItemId root = GetRootItem();
   if (root)
     ColourChildren(this, root, *colour);
+  SetFilterActive(state);
 }
 
 /**

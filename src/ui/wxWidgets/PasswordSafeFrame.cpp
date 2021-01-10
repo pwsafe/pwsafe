@@ -232,6 +232,9 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_COLLAPSEALL,        PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_EXPANDALL,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_FILTERMENU,         PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_EDITFILTER,         PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_APPLYFILTER,        PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_MANAGEFILTERS,      PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOW_EMPTY_GROUP_IN_FILTER, PasswordSafeFrame::OnUpdateUI            )
   EVT_UPDATE_UI( ID_CUSTOMIZETOOLBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_REPORTSMENU,        PasswordSafeFrame::OnUpdateUI                    )
@@ -638,8 +641,8 @@ void PasswordSafeFrame::CreateMenubar()
   menuFilters->Append(ID_EDITFILTER, _("&New/Edit Filter..."), wxEmptyString, wxITEM_NORMAL); // TODO
   menuFilters->Append(ID_APPLYFILTER, _("&Apply current"), wxEmptyString, wxITEM_NORMAL); // TODO
   menuFilters->Append(ID_MANAGEFILTERS, _("&Manage..."), wxEmptyString, wxITEM_NORMAL); // TODO
+  menuFilters->Append(ID_SHOW_EMPTY_GROUP_IN_FILTER, _("Empty Group visible in Filter"), wxEmptyString, wxITEM_CHECK);
   menuView->Append(ID_FILTERMENU, _("&Filters"), menuFilters);
-  menuView->Append(ID_SHOW_EMPTY_GROUP_IN_FILTER, _("Empty Group visible im Filter"), wxEmptyString, wxITEM_CHECK);
   menuView->AppendSeparator();
   menuView->Append(ID_CUSTOMIZETOOLBAR, _("Customize &Main Toolbar..."), wxEmptyString, wxITEM_NORMAL);
 
@@ -1304,6 +1307,8 @@ int PasswordSafeFrame::Open(const wxString &fname)
   // Tidy up filters
   m_currentfilter.Empty();
   m_bFilterActive = false;
+  if(m_tree)
+    m_tree->SetFilterActive(false);
 
   RefreshViews();
   SetInitialDatabaseDisplay();
@@ -1788,10 +1793,6 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(m_core.IsDbOpen() && isTreeView);
       break;
       
-    case ID_SHOW_EMPTY_GROUP_IN_FILTER:
-      evt.Enable(m_core.IsDbOpen() && isTreeView && m_bFilterActive);
-      break;
-      
     case ID_EXPORTMENU:
     case ID_COMPARE:
       evt.Enable(m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
@@ -1931,7 +1932,23 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_FILTERMENU:
+      evt.Enable(m_core.IsDbOpen() && isTreeView && m_bFilterActive); // Same as Show empty group in filter to allow this one
+      break;
+      
+    case ID_EDITFILTER:
       evt.Enable(false); // Mark unimplemented
+      break;
+      
+    case ID_APPLYFILTER:
+      evt.Enable(false); // Mark unimplemented
+      break;
+      
+    case ID_MANAGEFILTERS:
+      evt.Enable(false); // Mark unimplemented
+      break;
+      
+    case ID_SHOW_EMPTY_GROUP_IN_FILTER:
+      evt.Enable(m_core.IsDbOpen() && isTreeView && m_bFilterActive);
       break;
 
     case ID_SUBVIEWSMENU:
@@ -2558,6 +2575,8 @@ void PasswordSafeFrame::ResetFilters()
 { // Tidy up filters
   CurrentFilter().Empty();
   m_bFilterActive = false;
+  if(m_tree)
+    m_tree->SetFilterActive(false);
   m_CurrentPredefinedFilter = NONE;
   m_FilterManager.SetFindFilter(false);
   m_FilterManager.SetFilterFindEntries(nullptr);

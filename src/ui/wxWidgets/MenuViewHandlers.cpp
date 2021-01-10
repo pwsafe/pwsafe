@@ -239,10 +239,13 @@ void PasswordSafeFrame::OnShowAllExpiryClick( wxCommandEvent& event )
     CurrentFilter() = m_FilterManager.GetExpireFilter();
     // Entries with Expiry date iterates on entries only
     m_bShowEmptyGroupsInFilter = false;
-    GetMenuBar()->Check(ID_SHOW_EMPTY_GROUP_IN_FILTER, m_bShowEmptyGroupsInFilter);
-    GetMenuBar()->Refresh();
-  } else
+  } else {
     CurrentFilter().Empty();
+    // Set back to default value at end of filter
+    m_bShowEmptyGroupsInFilter = false;
+  }
+  GetMenuBar()->Check(ID_SHOW_EMPTY_GROUP_IN_FILTER, m_bShowEmptyGroupsInFilter);
+  GetMenuBar()->Refresh();
   ApplyFilters();
 }
 
@@ -259,10 +262,13 @@ void PasswordSafeFrame::OnShowUnsavedEntriesClick( wxCommandEvent& event )
     CurrentFilter() = m_FilterManager.GetUnsavedFilter();
     // Unsaved Entries might include groups, set show groups by default
     m_bShowEmptyGroupsInFilter = true;
-    GetMenuBar()->Check(ID_SHOW_EMPTY_GROUP_IN_FILTER, m_bShowEmptyGroupsInFilter);
-    GetMenuBar()->Refresh();
-  } else
+  } else {
     CurrentFilter().Empty();
+    // Set back to default value at end of filter
+    m_bShowEmptyGroupsInFilter = false;
+  }
+  GetMenuBar()->Check(ID_SHOW_EMPTY_GROUP_IN_FILTER, m_bShowEmptyGroupsInFilter);
+  GetMenuBar()->Refresh();
   ApplyFilters();
 }
 
@@ -280,10 +286,13 @@ void PasswordSafeFrame::OnShowLastFindClick( wxCommandEvent& event )
     CurrentFilter() = m_FilterManager.GetFoundFilter();
     // Last Find iterates on entries only
     m_bShowEmptyGroupsInFilter = false;
-    GetMenuBar()->Check(ID_SHOW_EMPTY_GROUP_IN_FILTER, m_bShowEmptyGroupsInFilter);
-    GetMenuBar()->Refresh();
-  } else
+  } else {
     CurrentFilter().Empty();
+    // Set back to default value at end of filter
+    m_bShowEmptyGroupsInFilter = false;
+  }
+  GetMenuBar()->Check(ID_SHOW_EMPTY_GROUP_IN_FILTER, m_bShowEmptyGroupsInFilter);
+  GetMenuBar()->Refresh();
   ApplyFilters();
 }
 
