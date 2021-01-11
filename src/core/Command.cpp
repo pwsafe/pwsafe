@@ -404,6 +404,8 @@ DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
 int DBEmptyGroupsCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
+    SaveDBInformation();
+      
     bool bChanged(false);
     if (m_bSingleGroup) {
       // Single Empty Group functions
@@ -414,7 +416,7 @@ int DBEmptyGroupsCommand::Execute()
           break;
         case EG_DELETE:
           bChanged = m_pcomInt->RemoveEmptyGroup(m_sxEmptyGroup);
-          m_pcomInt->AddChangedEmptyGroups(m_sxEmptyGroup);
+          // m_pcomInt->AddChangedEmptyGroups(m_sxEmptyGroup);
           break;
         case EG_RENAME:
           bChanged = m_pcomInt->RenameEmptyGroup(m_sxOldGroup, m_sxNewGroup);
@@ -503,6 +505,7 @@ void DBEmptyGroupsCommand::Undo()
           break;
       }
     }
+    RestoreDBInformation();
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE,
         CUUID::NullUUID());
@@ -962,6 +965,8 @@ void UpdateEntryCommand::Undo()
                                         m_old_ci.GetUUID(), m_ftype);
   
     RestoreDBInformation();
+    if (m_bNotifyGUI) // To update the filter view
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRY, m_old_ci.GetUUID());
   }
 }
 
@@ -1265,6 +1270,9 @@ int RenameGroupCommand::Execute()
       m_pmulticmds->Execute();
 
     m_CommandDBChange = DB;
+      
+    if (m_bNotifyGUI) // To update the filter view
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, pws_os::CUUID::NullUUID());
   }
   return rc;
 }
@@ -1276,6 +1284,9 @@ void RenameGroupCommand::Undo()
     m_pcomInt->UndoRenameGroup(m_pmulticmds);
   
     RestoreDBInformation();
+      
+    if (m_bNotifyGUI) // To update the filter view
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, pws_os::CUUID::NullUUID());
   }
 }
 
