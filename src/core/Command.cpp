@@ -64,6 +64,7 @@ void Command::SaveDBInformation()
     // We could change an entry and so here is where we save DB information
     // just in case.  Currently only modified nodes.
     m_vSavedModifiedNodes = m_pcomInt->GetModifiedNodes();
+    m_vSavedModifiedEmptyGroups = m_pcomInt->GetModifiedEmptyGroups();
   }
 }
 
@@ -76,15 +77,19 @@ void Command::RestoreDBInformation()
   if (!InMultiCommand() || (dynamic_cast<MultiCommands *>(this) != nullptr)) {
     // Get current modified nodes vector
     std::vector<StringX> vModifiedNodes = m_pcomInt->GetModifiedNodes();
+    std::vector<StringX> vModifiedEmptyGroups = m_pcomInt->GetModifiedEmptyGroups();
 
     // Only do this if executed outside a MultiCommand
     // We could change an entry and so here is where we save DB information
     // just in case.  Currently only modified nodes.
     m_pcomInt->SetModifiedNodes(m_vSavedModifiedNodes);
+    m_pcomInt->SetModifiedEmptyGroups(m_vSavedModifiedEmptyGroups);
 
     // We now have to refresh those modified groups now no longer modified
     std::sort(vModifiedNodes.begin(), vModifiedNodes.end());
+    std::sort(vModifiedEmptyGroups.begin(), vModifiedEmptyGroups.end());
     std::sort(m_vSavedModifiedNodes.begin(), m_vSavedModifiedNodes.end());
+    std::sort(m_vSavedModifiedEmptyGroups.begin(), m_vSavedModifiedEmptyGroups.end());
 
     // Remove those modified nodes that were modified before we executed this command
     std::vector<StringX> vChangedNodes;
@@ -399,18 +404,23 @@ DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
 int DBEmptyGroupsCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
+    SaveDBInformation();
+      
     bool bChanged(false);
     if (m_bSingleGroup) {
       // Single Empty Group functions
       switch (m_function) {
         case EG_ADD:
           bChanged = m_pcomInt->AddEmptyGroup(m_sxEmptyGroup);
+          m_pcomInt->AddChangedEmptyGroups(m_sxEmptyGroup);
           break;
         case EG_DELETE:
           bChanged = m_pcomInt->RemoveEmptyGroup(m_sxEmptyGroup);
+          // m_pcomInt->AddChangedEmptyGroups(m_sxEmptyGroup);
           break;
         case EG_RENAME:
           bChanged = m_pcomInt->RenameEmptyGroup(m_sxOldGroup, m_sxNewGroup);
+          m_pcomInt->AddChangedEmptyGroups(m_sxNewGroup);
           break;
         default:
           // Ignore multi-group functions
@@ -426,6 +436,7 @@ int DBEmptyGroupsCommand::Execute()
           for (size_t n = 0; n < m_vNewEmptyGroups.size(); n++) {
             if (m_pcomInt->AddEmptyGroup(m_vNewEmptyGroups[n]))
               count++;
+            m_pcomInt->AddChangedEmptyGroups(m_vNewEmptyGroups[n]);
           }
           bChanged = count > 0;
           break;
@@ -494,6 +505,7 @@ void DBEmptyGroupsCommand::Undo()
           break;
       }
     }
+    RestoreDBInformation();
     if (m_bNotifyGUI) {
       m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE,
         CUUID::NullUUID());
@@ -953,6 +965,8 @@ void UpdateEntryCommand::Undo()
                                         m_old_ci.GetUUID(), m_ftype);
   
     RestoreDBInformation();
+    if (m_bNotifyGUI) // To update the filter view
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRY, m_old_ci.GetUUID());
   }
 }
 
@@ -1256,6 +1270,9 @@ int RenameGroupCommand::Execute()
       m_pmulticmds->Execute();
 
     m_CommandDBChange = DB;
+      
+    if (m_bNotifyGUI) // To update the filter view
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, pws_os::CUUID::NullUUID());
   }
   return rc;
 }
@@ -1267,6 +1284,9 @@ void RenameGroupCommand::Undo()
     m_pcomInt->UndoRenameGroup(m_pmulticmds);
   
     RestoreDBInformation();
+      
+    if (m_bNotifyGUI) // To update the filter view
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, pws_os::CUUID::NullUUID());
   }
 }
 

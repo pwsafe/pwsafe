@@ -1093,10 +1093,10 @@ void PasswordSafeFrame::ShowTree(bool show)
         m_tree->AddItem(iter->second);
     }
 
-    if(IsTreeSortGroup() && (!m_bFilterActive || m_bShowEmptyGroupsInFilter)) {
+    if(IsTreeSortGroup() && (!m_bFilterActive || m_bShowEmptyGroupsInFilter || (m_CurrentPredefinedFilter == UNSAVED))) {
       // Empty groups need to be added separately
       typedef std::vector<StringX> StringVectorX;
-      const StringVectorX& emptyGroups = m_core.GetEmptyGroups();
+      const StringVectorX& emptyGroups = (m_bFilterActive && (m_CurrentPredefinedFilter == UNSAVED) && !m_bShowEmptyGroupsInFilter) ?  m_core.GetModifiedEmptyGroups() : m_core.GetEmptyGroups();
       for (const auto & emptyGroup : emptyGroups)
         m_tree->AddEmptyGroup(emptyGroup);
     }
@@ -1932,7 +1932,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_FILTERMENU:
-      evt.Enable(m_core.IsDbOpen() && isTreeView && m_bFilterActive); // Same as Show empty group in filter to allow this one
+      evt.Enable(false);
       break;
       
     case ID_EDITFILTER:

@@ -320,7 +320,9 @@ void TreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &e
       break;
     case UpdateGUICommand::GUI_ADD_ENTRY:
       ASSERT(item != nullptr);
-      AddItem(*item);
+      if(!m_bFilterActive) {
+        AddItem(*item);
+      }
       break;
     case UpdateGUICommand::GUI_DELETE_ENTRY:
       Remove(entry_uuid);

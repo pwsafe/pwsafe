@@ -595,6 +595,7 @@ private:
   
   // Following are private in PWScore, public in CommandInterface:
   void AddChangedNodes(StringX path);
+  void AddChangedEmptyGroups(StringX path);
 
   // EmptyGroups
   std::vector<StringX> m_vEmptyGroups;

@@ -74,6 +74,7 @@ class CommandInterface {
   virtual StringX GetHeaderItem(PWSfile::HeaderType ht) = 0;
 
   virtual void AddChangedNodes(StringX path) = 0;
+  virtual void AddChangedEmptyGroups(StringX path) = 0;
   
   virtual const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const = 0;
   virtual const ItemMMap &GetBase2AliasesMmap() const = 0;
@@ -118,12 +119,17 @@ class CommandInterface {
   void SetModifiedNodes(const std::vector<StringX> &saved_vNodes_Modified)
   { m_vModifiedNodes = saved_vNodes_Modified; }
 
-  
+  std::vector<StringX> &GetModifiedEmptyGroups() { return m_vModifiedEmptyGroups; }
+  void SetModifiedEmptyGroups(const std::vector<StringX> &saved_vEmptyGroups_Modified)
+  { m_vModifiedEmptyGroups = saved_vEmptyGroups_Modified; }
+    
   virtual ~CommandInterface() {}
 
  protected:
   // Changed groups
   std::vector<StringX> m_vModifiedNodes;
+  // Changed empty groups
+  std::vector<StringX> m_vModifiedEmptyGroups;
 };
 
 #endif /* __COMMANDINTERFACE_H */

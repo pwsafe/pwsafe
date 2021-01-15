@@ -261,7 +261,7 @@ void PasswordSafeFrame::OnShowUnsavedEntriesClick( wxCommandEvent& event )
   if (showUnsaved) {
     CurrentFilter() = m_FilterManager.GetUnsavedFilter();
     // Unsaved Entries might include groups, set show groups by default
-    m_bShowEmptyGroupsInFilter = true;
+    m_bShowEmptyGroupsInFilter = false;
   } else {
     CurrentFilter().Empty();
     // Set back to default value at end of filter
