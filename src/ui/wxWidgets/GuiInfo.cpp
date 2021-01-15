@@ -94,7 +94,6 @@ void GuiInfo::SaveTreeViewInfo(TreeCtrl* tree)
       }
       else {
         m_treeSelection.Clear();
-        wxFAIL_MSG(wxString(wxT("tree item \'")) << tree->GetItemText(selection) << wxT("\' found with no CItemData attached"));
       }
     }
   }
