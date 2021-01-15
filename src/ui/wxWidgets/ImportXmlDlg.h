@@ -23,7 +23,7 @@ class ImportXmlDlg : public wxDialog
   DECLARE_CLASS( ImportXmlDlg )
   
 public:
-  ImportXmlDlg(wxWindow* parent);
+  ImportXmlDlg(wxWindow* parent, const wxString filename = "");
 
 public:
   bool importUnderGroup;

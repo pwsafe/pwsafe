@@ -65,6 +65,7 @@
 #include "TreeCtrl.h"
 #include "ViewReportDlg.h"
 #include "wxUtilities.h"
+#include "DnDFile.h"
 
 #include <algorithm>
 
@@ -349,6 +350,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
   else {
     m_core.RegisterObserver(m_grid);
   }
+  SetDropTarget(new DnDFile(this));
 }
 
 /*!

@@ -31,6 +31,7 @@
 #include "os/UUID.h"
 
 #include "wxUtilities.h"
+#include "DnDFile.h"
 
 #include <tuple>
 #include <vector>
@@ -49,6 +50,7 @@ class GuiInfo;
 struct SelectionCriteria;
 class DragBarCtrl;
 class PasswordSafeSearch;
+class DnDFile;
 
 /*!
  * Control identifiers
@@ -675,6 +677,8 @@ private:
 
   wxString m_LastClipboardAction;
   CItem::FieldType m_LastAction;  // TODO: Check how this is used by Windows version
+  
+  friend class DnDFile;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()

@@ -26,7 +26,7 @@ class MergeDlg : public wxDialog
   DECLARE_EVENT_TABLE()
   
 public:
-  MergeDlg(wxWindow* parent, PWScore* core);
+  MergeDlg(wxWindow* parent, PWScore* core, const wxString filename = "");
   ~MergeDlg();
 
   void OnAdvancedSelection( wxCommandEvent& evt );

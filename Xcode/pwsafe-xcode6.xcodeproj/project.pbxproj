@@ -28,6 +28,7 @@
 		A2FE25911C5ACF7500210C36 /* PWSfileHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25891C5ACF7500210C36 /* PWSfileHeader.cpp */; };
 		A2FE25921C5ACF7500210C36 /* PWSfileV4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE258B1C5ACF7500210C36 /* PWSfileV4.cpp */; };
 		A2FE25951C5ACFBD00210C36 /* PWStime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25931C5ACFBD00210C36 /* PWStime.cpp */; };
+		D396FD9D25B1BBEC00E6EAFC /* DnDFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D396FD9C25B1BBEC00E6EAFC /* DnDFile.cpp */; };
 		D3A7B657254817F700E780B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B656254817F700E780B8 /* Foundation.framework */; };
 		D3A7B6712548229D00E780B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B656254817F700E780B8 /* Foundation.framework */; };
 		D3A7B67D254824C000E780B8 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B67C254824C000E780B8 /* AppKit.framework */; };
@@ -258,6 +259,8 @@
 		A2FE258C1C5ACF7500210C36 /* PWSfileV4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSfileV4.h; sourceTree = "<group>"; };
 		A2FE25931C5ACFBD00210C36 /* PWStime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWStime.cpp; sourceTree = "<group>"; };
 		A2FE25941C5ACFBD00210C36 /* PWStime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWStime.h; sourceTree = "<group>"; };
+		D396FD9B25B1BBEC00E6EAFC /* DnDFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DnDFile.h; sourceTree = "<group>"; };
+		D396FD9C25B1BBEC00E6EAFC /* DnDFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DnDFile.cpp; sourceTree = "<group>"; };
 		D3A7B656254817F700E780B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D3A7B67C254824C000E780B8 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E090D35624D742E90083BA2B /* ViewAttachmentDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewAttachmentDlg.cpp; sourceTree = "<group>"; };
@@ -1225,6 +1228,8 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				D396FD9C25B1BBEC00E6EAFC /* DnDFile.cpp */,
+				D396FD9B25B1BBEC00E6EAFC /* DnDFile.h */,
 				E090D35624D742E90083BA2B /* ViewAttachmentDlg.cpp */,
 				E090D35724D742E90083BA2B /* ViewAttachmentDlg.h */,
 				E0C3C44D2379CA7300715124 /* MenuFileHandlers.cpp */,
@@ -1819,6 +1824,7 @@
 				E6ADBA371195709A004E2BE5 /* AboutDlg.cpp in Sources */,
 				E6ADBA381195709A004E2BE5 /* AddEditPropSheetDlg.cpp in Sources */,
 				E6ADBA3A1195709A004E2BE5 /* CreateShortcutDlg.cpp in Sources */,
+				D396FD9D25B1BBEC00E6EAFC /* DnDFile.cpp in Sources */,
 				E6ADBA3B1195709A004E2BE5 /* DeleteConfirmationDlg.cpp in Sources */,
 				E6ADBA3C1195709A004E2BE5 /* EditShortcutDlg.cpp in Sources */,
 				E6ADBA3D1195709A004E2BE5 /* MenuEditHandlers.cpp in Sources */,

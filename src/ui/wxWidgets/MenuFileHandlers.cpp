@@ -839,7 +839,6 @@ void PasswordSafeFrame::DoExportText()
 
 void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
 {
-  UNREFERENCED_PARAMETER(evt);
   if (m_core.IsReadOnly()) {// disable in read-only mode
     wxMessageBox(_("The current database was opened in read-only mode.  You cannot import into it."),
                   _("Import text"), wxOK | wxICON_EXCLAMATION, this);
@@ -857,7 +856,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
     return;
   }
 
-  ImportTextDlg dlg(this);
+  ImportTextDlg dlg(this, evt.GetString());
   if (dlg.ShowModal() != wxID_OK)
     return;
 
@@ -957,7 +956,6 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
 {
-  UNREFERENCED_PARAMETER(evt);
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
@@ -982,7 +980,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   }
 #endif
 
-  ImportXmlDlg dlg(this);
+  ImportXmlDlg dlg(this, evt.GetString());
   if (dlg.ShowModal() != wxID_OK)
     return;
 
@@ -1104,19 +1102,25 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
 {
-  UNREFERENCED_PARAMETER(evt);
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
-  wxFileDialog fd(this, _("Please Choose a KeePass Text File to Import"),
-                  wxEmptyString, wxEmptyString,
+  wxString KPsFileName;
+  
+  if(evt.GetString().IsNull() || evt.GetString().IsEmpty()) {
+    wxFileDialog fd(this, _("Please Choose a KeePass Text File to Import"),
+                  wxEmptyString, evt.GetString(),
                   _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_PREVIEW));
 
-  if (fd.ShowModal() != wxID_OK )
-    return;
-
-  const wxString KPsFileName(fd.GetPath());
+    if (fd.ShowModal() != wxID_OK )
+      return;
+    
+    KPsFileName = fd.GetPath();
+  }
+  else {
+    KPsFileName = evt.GetString();
+  }
   CReport rpt;
 
   enum { KeePassCSV, KeePassTXT } ImportType = wxFileName(KPsFileName).GetExt() == wxT("csv")? KeePassCSV: KeePassTXT;
@@ -1191,8 +1195,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
 {
-  UNREFERENCED_PARAMETER(evt);
-  MergeDlg dlg(this, &m_core);
+  MergeDlg dlg(this, &m_core, evt.GetString());
   if (dlg.ShowModal() == wxID_OK) {
     PWScore othercore; // NOT PWSAuxCore, as we handle db prefs explicitly
     // Reading a new file changes the preferences as they are instance dependent

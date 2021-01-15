@@ -28,9 +28,10 @@
 
 IMPLEMENT_CLASS( ImportXmlDlg, wxDialog )
 
-ImportXmlDlg::ImportXmlDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxString(_("Import XML Settings"))),
+ImportXmlDlg::ImportXmlDlg(wxWindow* parent, const wxString filename) : wxDialog(parent, wxID_ANY, wxString(_("Import XML Settings"))),
                                                   importUnderGroup(false), 
-                                                  importPasswordsOnly(false)
+                                                  importPasswordsOnly(false),
+                                                  filepath(filename)
 {
   enum { TopMargin = 20, BottomMargin = 20, SideMargin = 30, RowSeparation = 10, ColSeparation = 20};
   
@@ -43,7 +44,7 @@ ImportXmlDlg::ImportXmlDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxStri
   dlgSizer->Add(new wxStaticText(this, wxID_ANY, _("XML file to import:")), borderFlags);
   dlgSizer->AddSpacer(RowSeparation/2);
   OpenFilePickerValidator validator(filepath);
-  dlgSizer->Add(new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString, 
+  dlgSizer->Add(new wxFilePickerCtrl(this, wxID_ANY, filepath,
                                           _("Please Choose a XML File to Import"), 
                                           _("XML files (*.xml)|*.xml"), 
                                           wxDefaultPosition, wxDefaultSize, 
